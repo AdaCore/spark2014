@@ -392,7 +392,7 @@ There are no dynamic semantics associated with these aspects.
       Sensor : Integer
          with Volatile,
               Async_Writers,
-              Address => System.Storage_Elements.To_Address (16#ACECAFE#);
+              Address => System.Storage_Elements.To_Address (16#ACECAF0#);
    end Input_Port;
 
    with System.Storage_Elements;
@@ -401,8 +401,8 @@ There are no dynamic semantics associated with these aspects.
       Sensor : Integer
          with Volatile,
               Async_Readers,
-              Address => System.Storage_Elements.To_Address (16#ACECAFE#);
-   end Input_Port;
+              Address => System.Storage_Elements.To_Address (16#ACECAF0#);
+   end Output_Port;
 
    with System.Storage_Elements;
    package Multiple_Ports
@@ -425,7 +425,7 @@ There are no dynamic semantics associated with these aspects.
       -- not have the same value.
       V_In_1 : Volatile_Type
          with Async_Writers,
-              Address => System.Storage_Elements.To_Address (16#A1CAFE#);
+              Address => System.Storage_Elements.To_Address (16#A1CAF0#);
 
       -- V_In_2 is similar to V_In_1 except that each value read is
       -- significant. V_In_2 can only be used as a Global with a
@@ -435,7 +435,7 @@ There are no dynamic semantics associated with these aspects.
       V_In_2 : Volatile_Type
          with Async_Writers,
               Effective_Reads,
-              Address => System.Storage_Elements.To_Address (16#ABCCAFE#);
+              Address => System.Storage_Elements.To_Address (16#ABCCAF0#);
 
 
       -- V_Out_1 is essentially an external output since it
@@ -444,14 +444,14 @@ There are no dynamic semantics associated with these aspects.
       -- observable effect.
       V_Out_1 : Volatile_Type
          with Async_Readers,
-              Address => System.Storage_Elements.To_Address (16#BBCCAFE#);
+              Address => System.Storage_Elements.To_Address (16#BBCCAF0#);
 
       -- V_Out_2 is similar to V_Out_1 except that each write to
       -- V_Out_2 is significant.
       V_Out_2 : Volatile_Type
          with Async_Readers,
               Effective_Writes,
-              Address => System.Storage_Elements.To_Address (16#ADACAFE#);
+              Address => System.Storage_Elements.To_Address (16#ADACAF0#);
 
       -- This declaration defaults to the following properties:
       -- Async_Readers => True,
@@ -462,7 +462,7 @@ There are no dynamic semantics associated with these aspects.
       -- which is bi-directional and each read and write has an
       -- observable effect.
       V_In_Out : Volatile_Type
-         with Address => System.Storage_Elements.To_Address (16#BEECAFE#);
+         with Address => System.Storage_Elements.To_Address (16#BEECAF0#);
 
       -- These volatile variable declarations may be used in specific ways
       -- as global items and actual parameters of subprogram calls
@@ -774,10 +774,6 @@ grammar of ``initialization_spec`` given below.
 
   initialization_item ::= name [ => input_list]
 
-.. ifconfig:: Display_Trace_Units
-
-   :Trace Unit: FE 7.1.5 Syntax
-
 .. _etu-initializes_aspects-syntax:
 
 .. centered:: **Legality Rules**
@@ -787,18 +783,10 @@ grammar of ``initialization_spec`` given below.
 1. An Initializes aspect shall only appear in the ``aspect_specification`` of a
    ``package_specification``.
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 7.1.5 LR Initializes aspect must be in package_specification
-
 .. _tu-fe-initializes_aspects-02:
 
 2. The Initializes aspect shall follow the Abstract_State aspect if one is
    present.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 7.1.5 LR Initializes aspect shall follow Abstract_State
 
 .. _tu-fe-initializes_aspects-03:
 
@@ -807,41 +795,21 @@ grammar of ``initialization_spec`` given below.
    an entire variable declared immediately within the visible part of the
    package.
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 7.1.5 LR each initialization_item shall denote a state
-                   abstraction or an entire variable declared immediately
-                   within the visible part of the package
-
 .. _tu-fe-initializes_aspects-04:
 
 4. Each ``name`` in the ``input_list`` shall denote an entire variable or a state
    abstraction but shall not denote an entity declared in the package with the
    ``aspect_specification`` containing the Initializes aspect.
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 7.1.5 LR input_list name shall denote entire variable or state
-                   abstraction but not entities declared in the package containing
-                   the Initializes aspect
-
 .. _tu-fe-initializes_aspects-05:
 
 5. Each entity in a single ``input_list`` shall be distinct.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 7.1.5 LR Entities in single input_list shall be distinct
 
 .. _tu-fe-initializes_aspects-06:
 
 6. An ``initialization_item`` with a **null** ``input_list`` is
    equivalent to the same ``initialization_item`` without an ``input_list``.
    [That is Initializes => (A => **null**) is equivalent to Initializes => A.]
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 7.1.5 LR Initializes => (A => null) is equivalent to Initializes => A.
 
 .. _etu-initializes_aspects-lr:
 
@@ -851,11 +819,6 @@ grammar of ``initialization_spec`` given below.
 
 7. The Initializes aspect of a package has visibility of the declarations
    occurring immediately within the visible part of the package.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 7.1.5 SS Initializes aspect has visibility of declarations
-                   occurring immediately within the visible part
 
 .. _tu-fa-initializes_aspects-08:
 
@@ -867,12 +830,6 @@ grammar of ``initialization_spec`` given below.
    [A package with a **null** ``initialization_list``, or no Initializes aspect
    does not initialize any of its state abstractions or variables.]
 
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FA 7.1.5 SS a null initialization_list package does not
-                   initialize any state abstractions or variables
-
 .. _tu-fe-initializes_aspects-09:
 
 9. An ``initialization_item`` shall have a an ``input_list`` if and
@@ -883,13 +840,6 @@ grammar of ``initialization_spec`` given below.
    determining the initial value of the state abstraction or variable
    denoted by the ``name`` of the ``initialization_item`` but are not
    constituents of the state abstraction.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 7.1.5 SS names in an input_list cannot be declared in the package
-                   containing the Initializes aspect and if the ininitalization_item
-                   is a state abstraction then the names in the input_list shall
-                   not be constituents of the state abstraction.
 
 .. _etu-initializes_aspects-ss:
 
@@ -911,11 +861,6 @@ There are no dynamic semantics associated with the Initializes aspect.
     Other parts of the visible state of the package shall not be
     initialized.
 
-    .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FA 7.1.5 VR only variables and state abstractions in the
-                   Initializes aspect shall be initialized
-
 .. _tu-fa-initializes_aspects-11:
 
 11. If an ``initialization_item`` has an ``input_list`` then the
@@ -923,23 +868,12 @@ There are no dynamic semantics associated with the Initializes aspect.
     be used in determining the initialized value of the entity denoted
     by the ``name`` of the ``initialization_item``.
 
-    .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FA 7.1.5 VR only entities in the input_list shall be used in
-                   determining the initialized value of an entity
-
 .. _tu-fa-initializes_aspects-12:
 
 12. All variables and state abstractions which are not declared within
     the package but are used in the initialization of an
     ``initialization_item`` shall appear in an ``input_list`` of the
     ``initialization_item``.
-
-    .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FA 7.1.5 VR entities used in the initialization of an
-                   initialization_item must appear in its input_list.
-
 
 .. _tu-nt-initializes_aspects-note_1:
 
@@ -1017,53 +951,31 @@ be a *Boolean_*\ ``expression``.
 1. An Initial_Condition aspect shall only be placed in an ``aspect_specification``
    of a ``package_specification``.
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 7.1.6 LR Initial_Condition aspect shall be placed on a package's
-                   specification
-
 .. _tu-fe-initial_condition_aspects-02:
 
 2. The Initial_Condition aspect shall follow the Abstract_State aspect and
    Initializes aspect if they are present.
 
-   .. ifconfig:: Display_Trace_Units
+.. _tu-nt-initial_condition_aspects-03:
 
-      :Trace Unit: FE 7.1.6 LR Initial_Condition aspect shall follow Abstract_State
-                   and Initializes aspects
-
-.. _tu-fe-initial_condition_aspects-03:
-
-3. Each variable or indirectly referenced state abstraction in an Initial_Condition
-   aspect of a package Q which is declared immediately within the visible part of Q
-   shall be initialized during the elaboration of Q and be denoted by a ``name``
-   of an ``initialization_item`` of the Initializes aspect of Q.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 7.1.6 LR variables and state abstractions in an Initial_Condition
-                   aspect shall be denoted by a name of an initialization_item of
-                   the Initializes aspect
+3. Rule removed.
 
 .. _etu-initial_condition_aspects-lr:
 
 .. centered:: **Static Semantics**
 
-.. _tu-fe-pr-fa-initial_condition_aspects-04:
+.. _tu-fe-pf-initial_condition_aspects-04:
 
-4. An Initial_Condition aspect is a sort of postcondition for the elaboration
-   of both the specification and body of a package. If present on a package, then
-   its *Boolean_*\ ``expression`` defines properties (a predicate) of the state
-   of the package which can be assumed to be true immediately following the
-   elaboration of the package. [The expression of the Initial_Condition cannot
-   denote a state abstraction. This means that to express properties of
-   hidden state, functions declared in the visible part acting on the state
+4. An Initial_Condition aspect is a sort of postcondition for the
+   elaboration of both the specification and body of a package. If
+   present on a package, then its *Boolean_*\ ``expression`` defines
+   properties (a predicate) of the state of the package which can be
+   assumed to be true immediately following the elaboration of the
+   package. [The expression of the Initial_Condition cannot denote a
+   state abstraction. This means that to express properties of hidden
+   state, functions declared in the visible part acting on the state
    abstractions of the package must be used.]
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE PR FA 7.1.6 SS Initial_Condition acts as postcondition. State
-                   abstractions cannot be denoted by an Initial_Condition aspect.
 
 .. _etu-initial_condition_aspects-ss:
 
@@ -1082,11 +994,6 @@ be a *Boolean_*\ ``expression``.
    point where it is evaluated [, at which point everything that it
    might freeze has already been frozen].
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: PR FA 7.1.6 DS Initial_Condition aspect is equivalent to an
-                   assertion located at the very end of the package's body
-
 .. _etu-initial_condition_aspects-ds:
 
 .. centered:: **Verification Rules**
@@ -1097,10 +1004,13 @@ be a *Boolean_*\ ``expression``.
    implementation of the ``package_specification`` and its body satisfy the
    predicate given in the Initial_Condition aspect.]
 
-   .. ifconfig:: Display_Trace_Units
+.. _tu-fe-initial_condition_aspects-07:
 
-      :Trace Unit: PR 7.1.6 VR Initial_Condition generates proof obligation that
-                   must be satisfied after package's spec and body
+7. Each variable or indirectly referenced state abstraction in an
+   Initial_Condition aspect of a package Q which is declared
+   immediately within the visible part of Q shall be initialized
+   during the elaboration of Q and be denoted by a ``name`` of an
+   ``initialization_item`` of the Initializes aspect of Q.
 
 .. _etu-initial_condition_aspects-vr:
 
@@ -1189,10 +1099,6 @@ where
 
   ``constituent ::=`` *object_*\ ``name | state_name``
 
-.. ifconfig:: Display_Trace_Units
-
-   :Trace Unit: FE 7.2.2 Syntax
-
 .. _etu-refined_state_aspects-syntax:
 
 .. centered:: **Name Resolution Rules**
@@ -1201,11 +1107,6 @@ where
 
 1. A Refined_State aspect of a ``package_body`` has visibility extended to the
    ``declarative_part`` of the body.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 7.2.2 NRR Refined_State has visibility of the declarative_part
-                   of the body
 
 .. _etu-refined_state_aspects-nr:
 
@@ -1217,20 +1118,10 @@ where
    ``package_body``. [The use of ``package_body`` rather than package body
    allows this aspect to be specified for generic package bodies.]
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 7.2.2 LR aspect Refined_State must appear in aspect
-                   specification of package_body
-
 .. _tu-fe-refined_state_aspects-03:
 
 3. If a ``package_specification`` has a non-null Abstract_State aspect its body
    shall have a Refined_State aspect.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 7.2.2 LR non-null Abstract_State packages must have
-                   Refined_State aspect
 
 .. _tu-fe-refined_state_aspects-04:
 
@@ -1238,26 +1129,13 @@ where
    then the corresponding ``package_body`` shall not have a Refined_State
    aspect.
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 7.2.2 LR cannot have Refined_State aspect without
-                   Abstract_State aspect
-
 .. _tu-fe-refined_state_aspects-05:
 
 5. Each ``constituent`` shall be either a variable or a state abstraction.
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 7.2.2 LR constituent must be variable or state abstraction
-
 .. _tu-fe-refined_state_aspects-06:
 
 6. An object which is a ``constituent`` shall be an entire object.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 7.2.2 LR constituent must be entire object
 
 .. _tu-fe-refined_state_aspects-07:
 
@@ -1267,23 +1145,12 @@ where
    has a Part_Of ``option`` or aspect which denotes this state
    abstraction (see :ref:`package_hierarchy`).
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 7.2.2 LR constituents of a state abstraction of
-         a package must either belong to the hidden state of a package
-         or have a Part_Of option that associates them with this state
-         abstraction
-
 .. _tu-fe-refined_state_aspects-08:
 
 8. Each *abstract_*\ ``state_name`` declared in the package
    specification shall be denoted exactly once as the ``state_name``
    of a ``refinement_clause`` in the Refined_State aspect of the body
    of the package.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 7.2.2 LR each abstract state_name shall have a refinement_clause
 
 .. _tu-fe-refined_state_aspects-09:
 
@@ -1293,11 +1160,6 @@ where
    [These ``constituents`` are either variables declared in the private part or
    body of the package, or the declarations from the visible part of
    nested packages declared immediately therein.]
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 7.2.2 LR hidden state constituents must be denoted
-                   exactly once and only by a single abstract state_name
 
 .. _tu-cbatu-refined_state_aspects-10:
 
@@ -1324,11 +1186,6 @@ where
     ``constituents`` of the *abstract_*\ ``state_names`` declared in
     the ``package_specification``.
 
-    .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 7.2.2 SS Refined_State completes declaration of all of the
-                   corresponding state abstractions
-
 .. _tu-fe-refined_state_aspects-13:
 
 13. A **null** ``constituent_list`` indicates that the named abstract
@@ -1337,11 +1194,6 @@ where
     all. [This feature may be useful to minimize changes to Global and
     Depends aspects if it is believed that a package may have some
     extra state in the future, or if hidden state is removed.]
-
-    .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 7.2.2 SS null constituent_list indicates the named
-                   abstract state has no constituents
 
 .. _etu-refined_state_aspects-ss:
 
@@ -1412,13 +1264,6 @@ which reside in another package, initialization by their declaring package.
      that such constituents will appear in the initialization clause
      of the declaring unit unless they are external states.]
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FA 7.2.3 VR each state abstraction in an Initializes aspect
-                   shall have all its constituents initialized by either the
-                   package, by assumed pre-initialization or by the other
-                   unit that declares the state abstraction constituent
-
 .. _etu-initialization_issues:
 
 .. _refined-global-aspect:
@@ -1453,13 +1298,6 @@ shall follow the grammar of ``global_specification`` in :ref:`global-aspects`.
    Global aspect which denotes a state abstraction declared by the package and
    the refinement of the state abstraction is visible.
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 7.2.4 LR Refined_Global is permitted on the body of a
-                   subprogram. Specs of the subprogram must have a Global
-                   aspect and there must be a Refined_State aspect on the
-                   body of the enclosing package
-
 .. _tu-fe-refined_global_aspects-03:
 
 3. A Refined_Global aspect specification shall *refine* the subprogram's
@@ -1488,21 +1326,10 @@ shall follow the grammar of ``global_specification`` in :ref:`global-aspects`.
    d. No other ``global_items`` shall be included in the Refined_Global
       aspect specification.
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 7.2.4 LR Refined_Global must reference constituents of the
-                   state abstractions denoted in the corresponding Global aspect
-                   or must repeat the state abstraction if its refinement is not
-                   visible
-
 .. _tu-fe-refined_global_aspects-04:
 
 4. ``Global_items`` in a Refined_Global ``aspect_specification`` shall denote
    distinct entities.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 7.2.4 LR Refined_Global aspect must denote distinct entities
 
 .. _tu-fe-refined_global_aspects-05:
 
@@ -1536,22 +1363,12 @@ shall follow the grammar of ``global_specification`` in :ref:`global-aspects`.
    the ``constituents`` are updated, some are preserved, that is the state
    abstraction has a self-dependency.]
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 7.2.4 LR refinement of an In_Out state abstraction must
-                   have both an Input and an Output mode_selector
-
 .. _tu-fe-refined_global_aspects-06:
 
 6. If the Global aspect specification references a state abstraction with a
    ``mode_selector`` of Output, whose refinement is visible, then every
    ``constituent`` of that state abstraction shall be referenced in the
    Refined_Global aspect specification.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 7.2.4 LR all constituents of an Output state abstraction
-                   must be referenced in the Refined_Global aspect
 
 .. _tu-cbatu-refined_global_aspects-07:
 
@@ -1570,13 +1387,6 @@ There are no dynamic semantics associated with a Refined_Global aspect.
 
 8. If a subprogram has a Refined_Global aspect it is used in the analysis of the
    subprogram body rather than its Global aspect.
-
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FA 7.2.4 VR if a Refined_Global aspect exists, then it is
-                   used instead of the Global aspect for the analysis of the
-                   subprogram body
 
 .. _tu-cbatu-refined_global_aspects-09:
 
@@ -1722,12 +1532,6 @@ shall follow the grammar of ``dependency_relation`` in :ref:`depends-aspects`.
    Depends aspect which denotes a state abstraction declared by the package and
    the refinement of the state abstraction is visible.
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 7.2.5 LR Refined_Depends is permitted on the body of a
-                   subprogram that has a spec with a Depends. The enclosing
-                   package must have a visible Refined_State
-
 .. _tu-fe-refined_depends_aspects-03:
 
 3. A Refined_Depends aspect specification is, in effect, a copy of
@@ -1790,12 +1594,6 @@ shall follow the grammar of ``dependency_relation`` in :ref:`depends-aspects`.
       above) to the original ``dependency_clause`` in the Depends
       aspect.
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 7.2.5 LR Refined_Depends references constituents of the
-                   state abstractions denoted in the corresponding Depends
-                   aspect and repeats everything that is not a refinement.
-
 .. _tu-fe-refined_depends_aspects-04:
 
 4. These rules result in omitting each state abstraction whose **null**
@@ -1803,22 +1601,12 @@ shall follow the grammar of ``dependency_relation`` in :ref:`depends-aspects`.
    required by the syntax, the state abstraction shall be replaced by a **null**
    symbol rather than being omitted.
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 7.2.5 LR state abstractions with null refinement must be
-                   replaced by null if required by the syntax
-
 .. _tu-fe-refined_depends_aspects-05:
 
 5. No other ``outputs`` or ``inputs`` shall be included in the Refined_Depends
    aspect specification. ``Outputs`` in the Refined_Depends aspect
    specification shall denote distinct entities. ``Inputs`` in an ``input_list``
    shall denote distinct entities.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 7.2.5 LR Refined_Depends must have no additional outputs
-                   or inputs and must denote distinct entities
 
 .. _tu-cbatu-refined_depends_aspects-06:
 
@@ -1853,11 +1641,6 @@ as it is used purely for static analysis purposes and is not executed.
 
 8. If a subprogram has a Refined_Depends aspect it is used in the analysis of
    the subprogram body rather than its Depends aspect.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FA 7.2.5 VR Refined_Depends aspect is used in the analysis of
-                   the subprogram body instead of Depends aspect
 
 .. _tu-cbatu-refined_depends_aspects-09:
 
@@ -2046,16 +1829,6 @@ private child unit (or a public descendant thereof).
    specified; the Part_Of indicator shall denote a state abstraction
    declared by the given package.
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 7.2.6 LR A variable declared immediately within
-          the private part of a given package or a variable or state
-          abstraction that is part of the visible state of a package
-          that is declared immediately within the private part of the
-          given package shall have its Part_Of indicator specified;
-          the Part_Of indicator shall denote a state abstraction
-          declared by the given package.
-
 .. _tu-fe-abstract_state_package_hierarchy_and_part_of-03:
 
 3. A variable or state abstraction which is part of the visible state
@@ -2063,15 +1836,6 @@ private child unit (or a public descendant thereof).
    its Part_Of indicator specified; the Part_Of indicator shall denote
    a state abstraction declared by either the parent unit of the
    private unit or by a public descendant of that parent unit.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 7.2.6 LR A variable or state abstraction which
-          is part of the visible state of a private child (or a public
-          descendant thereof) unit shall have its Part_Of indicator
-          specified; the Part_Of indicator shall denote a state
-          abstraction declared by either the parent unit of the
-          private unit or by a public descendant of that parent unit.
 
 .. _tu-nt-abstract_state_package_hierarchy_and_part_of-04:
 
@@ -2083,15 +1847,9 @@ private child unit (or a public descendant thereof).
    such an implicit specification are the same as for an explicit
    specification.
 
-.. _tu-fe-abstract_state_package_hierarchy_and_part_of-05:
+.. _tu-cbatu-abstract_state_package_hierarchy_and_part_of-05:
 
-5. No other declarations shall have a Part_Of
-   indicator.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 7.2.6 LR Part_Of indicators are only allowed for the
-          declarations described above.
+5. No other declarations shall have a Part_Of indicator.
 
 .. _tu-fe-abstract_state_package_hierarchy_and_part_of-06:
 
@@ -2099,12 +1857,6 @@ private child unit (or a public descendant thereof).
    indicator shall denote as ``constituents`` all of the declarations
    that have a Part_Of indicator denoting the state abstraction. [This
    might be performed once the package body has been processed.]
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 7.2.6 LR Each declaration associated with a
-                   Part_Of indicator must be a constituent of the
-                   encapsulating state abstraction
 
 .. _tu-fe-abstract_state_package_hierarchy_and_part_of-07:
 
@@ -2114,12 +1866,6 @@ private child unit (or a public descendant thereof).
    denotation must be consistent between the Global and Depends or
    between Refined_Global and Refined_Depends aspects of a single
    subprogram.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 7.2.6 LR if both an abstraction and its constituents are
-                   visible then Global and Depends aspects shall consistently
-                   denote one of them
 
 .. _etu-abstract_state_package_hierarchy_and_part_of-lr:
 
@@ -2143,18 +1889,6 @@ private child unit (or a public descendant thereof).
      regarded as updating its enclosing state abstraction with a self
      dependency as it is unknown what other ``constituents`` the state
      abstraction encapsulates.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 7.2.6 VR For flow analysis, where a state
-          abstraction is visible as well as one or more of its
-          ``constituents``, its refinement is not visible and the
-          Global and or Depends aspects of a subprogram denote the
-          state abstraction, then in the implementation of the
-          subprogram a direct or indirect read or update of a
-          ``constituent`` is treated as a read or update of the
-          encapsulating state. Each update of a ``constituent`` is an
-          update of the encapsulating state with a self-dependency.
 
 .. _etu-abstract_state_package_hierarchy_and_part_of-vr:
 
@@ -2473,12 +2207,6 @@ be a Boolean ``expression``.
    subprogram declaration in the visible part has no explicit postcondition, a
    postcondition of True is assumed for the abstract view.
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 7.2.8 LR Refined_Post must be on the body or body stub
-                   of a subprogram whose spec is on the visible part of a
-                   package.
-
 .. _tu-cbatu-refined_postcondition_aspects-02:
 
 2. The same legality rules apply to a Refined Postcondition as for
@@ -2501,20 +2229,11 @@ be a Boolean ``expression``.
    defaults to True) but for the body or body stub to have a
    Refined Postcondition.
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: PR 7.2.8 SS Refined_Post must imply abstract post
-
 .. _tu-pr-refined_postcondition_aspects-05:
 
 5. The default Refined_Post for an expression function, F, is
    F'Result = ``expression``, where ``expression`` is the expression defining
    the body of the function.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: PR 7.2.8 SS Expression functions have a default Refined_Post
-                   of F'Result = expression_of_expression_function
 
 .. _tu-cbatu-refined_postcondition_aspects-06:
 
@@ -2536,11 +2255,6 @@ be a Boolean ``expression``.
    do not evaluate to True then the exception Assertions.Assertion_Error is
    raised.
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 7.2.8 DS Refined_Post is evaluated right before Post and
-                   if either is False Assertions.Assertion_Error is raised
-
 .. _etu-refined_postcondition_aspects-ds:
 
 .. centered:: **Verification Rules**
@@ -2551,10 +2265,6 @@ be a Boolean ``expression``.
    together imply the postcondition of the declaration, that is:
 
    (Precondition and Refined Postcondition) -> Postcondition
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: PR 7.2.8 VR Pre and Refined_Post -> Post
 
 .. _etu-refined_postcondition_aspects-vr:
 
@@ -2957,12 +2667,12 @@ abstraction on to external states which are given in this section.
          with Volatile,
               Async_Readers,
               Effective_Writes, -- Every value written to the port is significant.
-              Address  => System.Storage_Elements.To_Address (16#ACECAFE#);
+              Address  => System.Storage_Elements.To_Address (16#ACECAF0#);
 
       In_Reg : Integer
          with Volatile,
               Async_Writers,
-              Address  => System.Storage_Elements.To_Address (16#A11CAFE#);
+              Address  => System.Storage_Elements.To_Address (16#A11CAF0#);
 
       function Last_Value_Sent return Integer
          with Refined_Global => Saved_Value -- Refined_Global aspect only
@@ -3093,7 +2803,7 @@ abstraction on to external states which are given in this section.
          with Volatile,
               Async_Writers,
               Effective_Reads,
-              Address => System.Storage_Elements.To_Address(16#A1CAFE#);
+              Address => System.Storage_Elements.To_Address(16#A1CAF0#);
 
       -- Each byte written is significant, it is a sequence of bytes
       -- and so Effective_Writes => True.
@@ -3101,7 +2811,7 @@ abstraction on to external states which are given in this section.
          with Volatile,
               Async_Readers,
               Effective_Writes,
-              Address => System.Storage_Elements.To_Address(16#A2CAFE#);
+              Address => System.Storage_Elements.To_Address(16#A2CAF0#);
 
       -- The read of the FIFO status is a snap shot of the current status
       -- individual reads are independent of other reads of the FIFO status
@@ -3109,7 +2819,7 @@ abstraction on to external states which are given in this section.
       Status: Byte_T
          with Volatile,
               Async_Writers,
-              Address => System.Storage_Elements.To_Address(16#A3CAFE#);
+              Address => System.Storage_Elements.To_Address(16#A3CAF0#);
 
       -- The value written to the FIFO control register are independent
       -- of other value written to the control register and so
@@ -3117,7 +2827,7 @@ abstraction on to external states which are given in this section.
       Control: Byte_T
          with Volatile,
               Async_Readers,
-              Address => System.Storage_Elements.To_Address(16#A4CAFE#);
+              Address => System.Storage_Elements.To_Address(16#A4CAF0#);
 
       -- This is a bidirectional port but individual reads and writes
       -- are independent and so Effective_Reads and Effective_Writes
@@ -3126,7 +2836,7 @@ abstraction on to external states which are given in this section.
          with Volatile,
               Async_Writers,
               Async_Readers,
-              Address => System.Storage_Elements.To_Address(16#A5CAFE#);
+              Address => System.Storage_Elements.To_Address(16#A5CAF0#);
 
       procedure Get_Byte (A_Byte : out Byte_T)
          with Refined_Global  => (In_Out => Read_FIFO),

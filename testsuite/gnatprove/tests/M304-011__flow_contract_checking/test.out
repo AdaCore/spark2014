@@ -1,6 +1,6 @@
 test.adb:14:24: warning: missing dependency "Y => Y" [depends_missing]
 test.adb:14:24: warning: incorrect dependency "Y => X" [depends_wrong]
-test.adb:29:47: "Par2" might not be initialized in "Check_Contract_6" [uninitialized]
+test.adb:29:47: warning: "Par2" might not be initialized in "Check_Contract_6" [uninitialized]
 test.adb:33:24: warning: missing dependency "X => Par1" [depends_missing]
 test.adb:35:13: "Z" must be listed in the Global aspect of "Check_Contract_7"
 test.adb:35:13: flow analysis of "Check_Contract_7" abandoned due to inconsistent graph

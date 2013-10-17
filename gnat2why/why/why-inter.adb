@@ -30,6 +30,7 @@ with Namet;               use Namet;
 with SPARK_Xrefs;         use SPARK_Xrefs;
 with Sem_Util;            use Sem_Util;
 with Sinfo;               use Sinfo;
+with Snames;              use Snames;
 with Stand;               use Stand;
 with String_Utils;        use String_Utils;
 
@@ -87,6 +88,16 @@ package body Why.Inter is
      (P        : Why_Section;
       T_Name   : String;
       Use_Kind : EW_Clone_Type);
+
+   function EW_Abstract_Shared
+     (N    : Node_Id;
+      Kind : EW_Type) return W_Type_Id
+     with Pre => Kind in EW_Abstract | EW_Split;
+   --  Build an type node from an Ada type node, either of kind Split or
+   --  Abstract
+
+   function New_Kind_Base_Type (E : Entity_Id; Kind : EW_Type) return W_Type_Id
+     with Pre => Kind in EW_Abstract | EW_Split;
 
    package Standard_Imports is
 
@@ -199,8 +210,8 @@ package body Why.Inter is
                      end case;
 
                   when Private_Kind =>
-                     if Entity_In_SPARK (Most_Underlying_Type (UE)) then
-                        Set_SI_Internal (Most_Underlying_Type (UE));
+                     if Entity_In_SPARK (MUT (UE)) then
+                        Set_SI_Internal (MUT (UE));
                      end if;
 
                   when E_Record_Type | E_Record_Subtype =>
@@ -270,35 +281,6 @@ package body Why.Inter is
       end To_String;
 
    end Standard_Imports;
-
-   --------------------
-   -- Add_Completion --
-   --------------------
-
-   procedure Add_Completion
-     (Name            : String;
-      Completion_Name : String;
-      Kind            : Why_Context_Section_Enum)
-   is
-      Unb_Name : constant Unbounded_String := To_Unbounded_String (Name);
-      Unb_Comp : constant Unbounded_String :=
-        To_Unbounded_String (Completion_Name);
-      Completions  : Why_File_Completion_Lists.List;
-   begin
-      pragma Assert (Unb_Name /= Unb_Comp);
-
-      if not Why_File_Completion.Contains (Unb_Name) then
-         Completions := Why_File_Completion_Lists.Empty_List;
-      else
-         Completions := Why_File_Completion.Element (Unb_Name);
-      end if;
-
-      Completions.Append (Why_File_Completion_Item'(Name => Unb_Comp,
-                                                    Kind => Kind));
-
-      Why_File_Completion.Include (Key      => Unb_Name,
-                                   New_Item => Completions);
-   end Add_Completion;
 
    -------------------------
    -- Compute_Ada_Nodeset --
@@ -456,98 +438,6 @@ package body Why.Inter is
       return SS.S;
    end Compute_Ada_Nodeset;
 
-   ---------------------
-   -- Get_Completions --
-   ---------------------
-
-   function Get_Completions
-     (Name       : String;
-      Up_To_Kind : Why_Section_Enum) return Why_Completions
-   is
-      function Num_Compl (L : Why_File_Completion_Lists.List) return Natural;
-      --  Find the number of completions from L
-
-      procedure Get_Compl
-        (L           :        Why_File_Completion_Lists.List;
-         Position    : in out Natural;
-         Completions : in out Why_Completions);
-      --  Find all the completions from L
-
-      ---------------
-      -- Num_Compl --
-      ---------------
-
-      function Num_Compl (L : Why_File_Completion_Lists.List) return Natural is
-         Count : Natural := 0;
-      begin
-         for Compl of L loop
-            if Compl.Kind <= Up_To_Kind then
-               Count := Count + 1;
-
-               if Why_File_Completion.Contains (Compl.Name) then
-                  Count := Count +
-                    Num_Compl (Why_File_Completion.Element (Compl.Name));
-               end if;
-            end if;
-         end loop;
-
-         return Count;
-      end Num_Compl;
-
-      ---------------
-      -- Get_Compl --
-      ---------------
-
-      procedure Get_Compl
-        (L           :        Why_File_Completion_Lists.List;
-         Position    : in out Natural;
-         Completions : in out Why_Completions) is
-      begin
-         for Compl of L loop
-            if Compl.Kind <= Up_To_Kind then
-               Completions (Position) := Compl;
-               Position := Position + 1;
-               if Why_File_Completion.Contains (Compl.Name) then
-                  Get_Compl (Why_File_Completion.Element (Compl.Name),
-                             Position, Completions);
-               end if;
-            end if;
-         end loop;
-      end Get_Compl;
-
-      Unb_Name : constant Unbounded_String := To_Unbounded_String (Name);
-      Count : Natural;
-      Direct_Completions : Why_File_Completion_Lists.List;
-
-   --  Start of Get_Completions
-
-   begin
-      if Why_File_Completion.Contains (Unb_Name) then
-         Direct_Completions := Why_File_Completion.Element (Unb_Name);
-
-         --  Find the number of completions for Name
-
-         Count := Num_Compl (Direct_Completions);
-
-         --  Return all completions
-
-         declare
-            Completions : Why_Completions (1 .. Count);
-            Position    : Positive := 1;
-         begin
-            Get_Compl (Direct_Completions, Position, Completions);
-            return Completions;
-         end;
-
-      else
-         declare
-            Completions : Why_Completions (1 .. 0);
-         begin
-            return Completions;
-         end;
-      end if;
-   end Get_Completions;
-
    ------------------------
    -- Add_Effect_Imports --
    ------------------------
@@ -579,6 +469,19 @@ package body Why.Inter is
    begin
       Add_Effect_Imports (P.Cur_Theory, S);
    end Add_Effect_Imports;
+
+   --------------------------
+   -- Add_Extra_Dependency --
+   --------------------------
+
+   procedure Add_Extra_Dependency
+     (Defined_Entity : Entity_Id;
+      New_Dependency : Entity_Id) is
+   begin
+      Add_To_Graph (Map  => Entity_Dependencies,
+                    From => Defined_Entity,
+                    To   => New_Dependency);
+   end Add_Extra_Dependency;
 
    ------------------------
    -- Add_Use_For_Entity --
@@ -626,19 +529,11 @@ package body Why.Inter is
       Add_With_Clause (P, Theory_Name, Import);
 
       if With_Completion then
-         declare
-            Completions  : constant Why_Completions :=
-              Get_Completions (Raw_Name, Up_To_Kind => P.Kind);
-         begin
-            for J in Completions'Range loop
-               declare
-                  Compl_Name : constant String :=
-                    Capitalize_First (To_String (Completions (J).Name));
-               begin
-                  Add_With_Clause (P, Compl_Name, Import);
-               end;
-            end loop;
-         end;
+         if Nkind (N) in N_Entity
+           and then not Entity_In_External_Axioms (N)
+         then
+            Add_With_Clause (P, Theory_Name & To_String (WNE_Axiom), Import);
+         end if;
       end if;
    end Add_Use_For_Entity;
 
@@ -742,129 +637,220 @@ package body Why.Inter is
    ------------------
 
    procedure Close_Theory
-     (P               : in out Why_Section;
-      Filter_Entity   : Entity_Id;
-      Defined_Entity  : Entity_Id := Empty;
-      Do_Closure      : Boolean := False;
-      No_Import       : Boolean := False;
-      With_Completion : Boolean := True)
+     (P              : in out Why_Section;
+      Kind           : Theory_Kind;
+      Defined_Entity : Entity_Id := Empty)
    is
       use Node_Sets;
       S : Set := Compute_Ada_Nodeset (+P.Cur_Theory);
 
-   begin
-      --  If required, compute the closure of entities on which Defined_Entity
-      --  depends, and add those in the set of nodes S used for computing
-      --  includes.
+      function Is_Relevant_Node_For_Imports
+        (N             : Node_Id;
+         Filter_Entity : Node_Id := Empty) return Boolean;
+      --  Returns True if N is relevant for theory imports. Filter_Entity is a
+      --  node that should not be considered in these imports.
 
-      if Do_Closure then
-         S.Union (Get_Graph_Closure (Entity_Dependencies, Defined_Entity));
-      end if;
+      procedure Add_Definition_Imports (Filter_Entity : Node_Id := Empty);
+      --  Adds imports for the definitions of symbols in S
 
-      Standard_Imports.Clear;
-      Add_Standard_With_Clause (P, "Main", EW_Import);
+      procedure Add_Axiom_Imports;
+      --  Adds imports for the axioms of symbols in S
 
-      if not (No_Import) then
+      procedure Add_Standard_Imports;
+      --  Adds imports for the standard Why library
 
-         if Present (Filter_Entity) then
-            Standard_Imports.Set_SI (Filter_Entity);
-         end if;
+      procedure Record_Dependencies (Defined_Entity : Entity_Id);
+      --  Records the dependencies between Defined_Entity and the nodes in S
 
-         --  S contains all mentioned Ada entities; for each, we get the
-         --  unit where it was defined and add it to the unit set
+      -----------------------
+      -- Add_Axiom_Imports --
+      -----------------------
 
+      procedure Add_Axiom_Imports is
+      begin
          for N of S loop
-            --  Here we need to consider entities and some non-entities
-            --  such as string literals. We do *not* consider the
-            --  Filter_Entity, nor its Full_View. Loop parameters are a
-            --  bit special, we want to deal with them only if they are
-            --  from loop, but not from a quantifier.
-
-            if N /= Filter_Entity
-              and then
-                (if Nkind (N) in N_Entity and then Is_Full_View (N) then
-                 Partial_View (N) /= Filter_Entity)
-              and then
-                (if Nkind (N) in N_Entity and then
-                 Ekind (N) = E_Loop_Parameter
-                 then not Is_Quantified_Loop_Param (N))
-            then
+            if Is_Relevant_Node_For_Imports (N) then
                Standard_Imports.Set_SI (N);
-               Add_Use_For_Entity (P, N, With_Completion => With_Completion);
-
-               --  When Defined_Entity is present, add the entities on which it
-               --  depends in the graph of dependencies.
-
-               if Present (Defined_Entity) then
-                  Add_To_Graph (Entity_Dependencies, Defined_Entity, N);
-               end if;
+               Add_Use_For_Entity (P, N, With_Completion => True);
             end if;
          end loop;
+      end Add_Axiom_Imports;
 
+      ----------------------------
+      -- Add_Definition_Imports --
+      ----------------------------
+
+      procedure Add_Definition_Imports (Filter_Entity : Node_Id := Empty) is
+      begin
+         for N of S loop
+            if Is_Relevant_Node_For_Imports (N, Filter_Entity) then
+               Standard_Imports.Set_SI (N);
+               Add_Use_For_Entity (P, N, With_Completion => False);
+            end if;
+         end loop;
+      end Add_Definition_Imports;
+
+      --------------------------
+      -- Add_Standard_Imports --
+      --------------------------
+
+      procedure Add_Standard_Imports is
+         use Standard_Imports;
+      begin
          --  We add the dependencies to Gnatprove_Standard theories that may
          --  have been triggered
 
-         declare
-            use Standard_Imports;
-         begin
-            for Index in Imports'Range loop
-               if Imports (Index) then
-                  case Index is
-                     when SI_Float32 | SI_Float64 =>
-                        null;
-                     when others =>
-                        Add_Standard_With_Clause
-                          (P,
-                           To_String (Index),
-                           EW_Clone_Default);
-                  end case;
+         for Index in Imports'Range loop
+            if Imports (Index) then
+               case Index is
+                  when SI_Float32 | SI_Float64 =>
+                     null;
+                  when others =>
+                     Add_Standard_With_Clause
+                       (P,
+                        To_String (Index),
+                        EW_Clone_Default);
+               end case;
 
-                  --  Two special cases for infix symbols; these are the only
-                  --  theories (as opposed to modules) that are used, and the
-                  --  only ones to be "use import"ed
+               --  Two special cases for infix symbols; these are the only
+               --  theories (as opposed to modules) that are used, and the
+               --  only ones to be "use import"ed
 
-                  case Index is
-                     when SI_Integer =>
-                        Add_With_Clause (P.Cur_Theory,
-                                         "int",
-                                         "Int",
-                                         EW_Import,
-                                         EW_Theory);
-                     when SI_Unknown_Float =>
-                        Add_With_Clause (P.Cur_Theory,
-                                         "real",
-                                         "RealInfix",
-                                         EW_Import,
-                                         EW_Theory);
-                     when SI_Float32 =>
-                        Add_With_Clause (P.Cur_Theory,
-                                         "real",
-                                         "RealInfix",
-                                         EW_Import,
-                                         EW_Theory);
-                        Add_With_Clause (P.Cur_Theory,
-                                         "ieee754",
-                                         "Single_RNE",
-                                         EW_Import,
-                                         EW_Theory);
-                     when SI_Float64 =>
-                        Add_With_Clause (P.Cur_Theory,
-                                         "real",
-                                         "RealInfix",
-                                         EW_Import,
-                                         EW_Theory);
-                        Add_With_Clause (P.Cur_Theory,
-                                         "ieee754",
-                                         "Double_RNE",
-                                         EW_Import,
-                                         EW_Theory);
-                     when others =>
-                        null;
-                  end case;
-               end if;
-            end loop;
-         end;
-      end if;
+               case Index is
+                  when SI_Integer =>
+                     Add_With_Clause (P.Cur_Theory,
+                                      "int",
+                                      "Int",
+                                      EW_Import,
+                                      EW_Theory);
+                  when SI_Unknown_Float =>
+                     Add_With_Clause (P.Cur_Theory,
+                                      "real",
+                                      "RealInfix",
+                                      EW_Import,
+                                      EW_Theory);
+                  when SI_Float32 =>
+                     Add_With_Clause (P.Cur_Theory,
+                                      "real",
+                                      "RealInfix",
+                                      EW_Import,
+                                      EW_Theory);
+                     Add_With_Clause (P.Cur_Theory,
+                                      "ieee754",
+                                      "Single_RNE",
+                                      EW_Import,
+                                      EW_Theory);
+                  when SI_Float64 =>
+                     Add_With_Clause (P.Cur_Theory,
+                                      "real",
+                                      "RealInfix",
+                                      EW_Import,
+                                      EW_Theory);
+                     Add_With_Clause (P.Cur_Theory,
+                                      "ieee754",
+                                      "Double_RNE",
+                                      EW_Import,
+                                      EW_Theory);
+                  when others =>
+                     null;
+               end case;
+            end if;
+         end loop;
+      end Add_Standard_Imports;
+
+      ----------------------------------
+      -- Is_Relevant_Node_For_Imports --
+      ----------------------------------
+
+      --  Here we need to consider entities and some non-entities such as
+      --  string literals. We do *not* consider the Filter_Entity, nor its
+      --  Full_View. Loop parameters are a bit special, we want to deal with
+      --  them only if they are from loop, but not from a quantifier.
+
+      function Is_Relevant_Node_For_Imports
+        (N             : Node_Id;
+         Filter_Entity : Node_Id := Empty) return Boolean is
+      begin
+         return N /= Filter_Entity
+           and then
+             (if Nkind (N) in N_Entity and then Is_Full_View (N) then
+                Partial_View (N) /= Filter_Entity)
+           and then
+             (if Nkind (N) in N_Entity
+                and then Ekind (N) = E_Loop_Parameter
+              then not Is_Quantified_Loop_Param (N));
+      end Is_Relevant_Node_For_Imports;
+
+      -------------------------
+      -- Record_Dependencies --
+      -------------------------
+
+      procedure Record_Dependencies (Defined_Entity : Entity_Id) is
+      begin
+         for N of S loop
+            if Is_Relevant_Node_For_Imports (N) then
+               Add_To_Graph (Entity_Dependencies, Defined_Entity, N);
+            end if;
+         end loop;
+      end Record_Dependencies;
+
+   --  Start of Close_Theory
+
+   begin
+      Standard_Imports.Clear;
+      Add_Standard_With_Clause (P, "Main", EW_Import);
+
+      case Kind is
+         --  case 1: a standalone theory with no imports
+
+         when Standalone_Theory =>
+            null;
+
+         --  case 2: a theory defining the symbols for Defined_Entity
+
+         --  Add dependencies between Defined_Entity and all other entities
+         --  used in the its definition. This will be used when importing the
+         --  axiom theories in case 4 below.
+
+         --  Add imports for other symbols used in the definition of
+         --  Defined_Entity. Make sure not to import the current theory
+         --  defining Defined_Entity itself. Add standard imports.
+
+         when Definition_Theory =>
+            if Present (Defined_Entity) then
+               Standard_Imports.Set_SI (Defined_Entity);
+               Record_Dependencies (Defined_Entity);
+            end if;
+            Add_Definition_Imports (Filter_Entity => Defined_Entity);
+            Add_Standard_Imports;
+
+         --  case 3: a theory giving axioms for Defined_Entity
+
+         --  Add dependencies between Defined_Entity and all other entities
+         --  used in the its axioms. This will be used when importing the
+         --  axiom theories in case 4 below.
+
+         --  Add imports for all symbols used in the axioms of Defined_Entity.
+         --  The definition theory for Defined_Entity will be one of those. Add
+         --  standard imports.
+
+         when Axiom_Theory =>
+            pragma Assert (Present (Defined_Entity));
+            Record_Dependencies (Defined_Entity);
+            Add_Definition_Imports;
+            Add_Standard_Imports;
+
+         --  case 4: a theory for generating VCs
+
+         --  Add to S the set of all axioms used transitively to define symbols
+         --  in the current theory. Add imports for all symbols used and their
+         --  axioms. Add standard imports.
+
+         when VC_Generation_Theory =>
+            S.Union (Get_Graph_Closure (Entity_Dependencies, S));
+            Add_Axiom_Imports;
+            Add_Standard_Imports;
+      end case;
 
       File_Append_To_Theories (P.File, +P.Cur_Theory);
       P.Cur_Theory := Why_Empty;
@@ -913,7 +899,7 @@ package body Why.Inter is
                --  needs visibility over the "variable" Why file.
 
                Has_Effects : constant Boolean :=
-                 Has_Global_Reads (Decl_E)
+                 Has_Global_Reads (Decl_E, Include_Constants => False)
                    or else Has_Global_Writes (Decl_E);
             begin
                --  Subprograms without read/write global effects are declared
@@ -1034,12 +1020,7 @@ package body Why.Inter is
 
    function Eq_Base_Type (Left, Right : W_Type_Id) return Boolean is
    begin
-      if Left = Right then
-         return True;
-      end if;
-      return Get_Kind (+Left) = W_Type
-        and then Get_Kind (+Right) = W_Type
-        and then Eq_Base (+Left, +Right);
+      return Left = Right or else Eq_Base (Left, Right);
    end Eq_Base_Type;
 
    -----------------
@@ -1048,54 +1029,46 @@ package body Why.Inter is
 
    function EW_Abstract (N : Node_Id) return W_Type_Id is
    begin
+      return EW_Abstract_Shared (N, EW_Abstract);
+   end EW_Abstract;
+
+   ------------------------
+   -- EW_Abstract_Shared --
+   ------------------------
+
+   function EW_Abstract_Shared
+     (N    : Node_Id;
+      Kind : EW_Type) return W_Type_Id is
+   begin
       if Is_Standard_Boolean_Type (N) then
          return EW_Bool_Type;
       elsif N = Universal_Fixed then
          return EW_Real_Type;
-
-      --  Private types that are not in SPARK should be translated at the
-      --  special __private abstract type. Other private types should be
-      --  translated into the most underlying type.
-
       elsif Ekind (N) in Private_Kind
         or else Has_Private_Declaration (N)
       then
          if Entity_In_External_Axioms (N) then
-            return New_Abstract_Base_Type (N);
+            return New_Kind_Base_Type (N, Kind);
+         elsif Entity_In_SPARK (MUT (N)) then
+            if MUT (N) = N then
+               return New_Kind_Base_Type (N, Kind);
+            else
+               return EW_Abstract (MUT (N));
+            end if;
          else
-            declare
-               Under_Typ : constant Entity_Id := Most_Underlying_Type (N);
-            begin
-               if Entity_In_SPARK (Under_Typ) then
-
-                  --  Avoid infinite recursion if the private type is its own
-                  --  most underlying type. Return the expected abstract type
-                  --  directly.
-
-                  if Under_Typ = N then
-                     return New_Abstract_Base_Type (N);
-
-                  --  Recurse with the most underlying type
-
-                  else
-                     return EW_Abstract (Under_Typ);
-                  end if;
-
-               --  The underlying type is not in SPARK, return the special
-               --  __private abstract type.
-
-               else
-                  return EW_Private_Type;
-               end if;
-            end;
+            return EW_Private_Type;
          end if;
-
-      --  Normal case: the type is translated into its own abstract type
-
+      elsif not Entity_In_SPARK (N) then
+         return EW_Private_Type;
       else
-         return New_Abstract_Base_Type (N);
+         return New_Kind_Base_Type (N, Kind);
       end if;
-   end EW_Abstract;
+   end EW_Abstract_Shared;
+
+   function EW_Split (N : Node_Id) return W_Type_Id is
+   begin
+      return EW_Abstract_Shared (N, EW_Split);
+   end EW_Split;
 
    -------------------------
    -- Extract_Object_Name --
@@ -1121,34 +1094,6 @@ package body Why.Inter is
          return Obj;
       end if;
    end Extract_Object_Name;
-
-   ------------------------------
-   -- File_Base_Name_Of_Entity --
-   ------------------------------
-
-   function File_Base_Name_Of_Entity (E : Entity_Id) return String is
-      U : Node_Id;
-   begin
-      if Is_In_Standard_Package (E) then
-         return Standard_Why_Package_Name;
-      end if;
-      U := Enclosing_Comp_Unit_Node (E);
-
-      --  Itypes are not attached to the tree, so we go through the
-      --  associated node
-
-      if not Present (U) and then Is_Itype (E) then
-         U := Enclosing_Comp_Unit_Node (Associated_Node_For_Itype (E));
-      end if;
-
-      --  Special handling for entities of subunits, we extract the library
-      --  unit
-
-      while Nkind (Unit (U)) = N_Subunit loop
-         U := Library_Unit (U);
-      end loop;
-      return Spec_File_Name_Without_Suffix (U);
-   end File_Base_Name_Of_Entity;
 
    -----------------
    -- Get_EW_Type --
@@ -1222,8 +1167,8 @@ package body Why.Inter is
          when Private_Kind =>
             if Entity_In_External_Axioms (Ty) then
                return EW_Abstract;
-            elsif Entity_In_SPARK (Most_Underlying_Type (Ty)) then
-               return Get_EW_Term_Type (Most_Underlying_Type (Ty));
+            elsif Entity_In_SPARK (MUT (Ty)) then
+               return Get_EW_Term_Type (MUT (Ty));
             else
                return EW_Private;
             end if;
@@ -1260,8 +1205,8 @@ package body Why.Inter is
    --------------------------
 
    function Is_Record_Conversion (Left, Right : W_Type_Id) return Boolean
-   is (Get_Base_Type (Base_Why_Type (Left)) = EW_Abstract and then
-       Get_Base_Type (Base_Why_Type (Right)) = EW_Abstract and then
+   is (Get_Base_Type (Base_Why_Type (Left)) in EW_Abstract | EW_Split and then
+       Get_Base_Type (Base_Why_Type (Right)) in EW_Abstract | EW_Split and then
        Is_Record_Type (Get_Ada_Node (+Left)) and then
        Is_Record_Type (Get_Ada_Node (+Right)));
 
@@ -1270,8 +1215,8 @@ package body Why.Inter is
    -------------------------
 
    function Is_Array_Conversion (Left, Right : W_Type_Id) return Boolean
-   is (Get_Base_Type (Base_Why_Type (Left)) = EW_Abstract and then
-       Get_Base_Type (Base_Why_Type (Right)) = EW_Abstract and then
+   is (Get_Base_Type (Base_Why_Type (Left)) in EW_Abstract | EW_Split and then
+       Get_Base_Type (Base_Why_Type (Right)) in EW_Abstract | EW_Split and then
        Is_Array_Type (Get_Ada_Node (+Left)) and then
        Is_Array_Type (Get_Ada_Node (+Right)));
 
@@ -1331,7 +1276,7 @@ package body Why.Inter is
          return
            Get_Name_String
              (Identifier_Get_Symbol
-                (+Ada_Ent_To_Why.Element (Extra_Modules_Map, N).B_Name));
+                (+Ada_Ent_To_Why.Element (Extra_Modules_Map, N).Main.B_Name));
       else
          return Full_Name (N);
       end if;
@@ -1343,11 +1288,33 @@ package body Why.Inter is
 
    function New_Abstract_Base_Type (E : Entity_Id) return W_Type_Id is
    begin
-      return New_Type (Ada_Node   => E,
-                       Is_Mutable => False,
-                       Base_Type  => EW_Abstract,
-                       Name       => To_Why_Id (E));
+      return New_Kind_Base_Type (E, EW_Abstract);
    end New_Abstract_Base_Type;
+
+   ------------------------
+   -- New_Kind_Base_Type --
+   ------------------------
+
+   function New_Kind_Base_Type
+     (E    : Entity_Id;
+      Kind : EW_Type) return W_Type_Id is
+   begin
+      if Kind = EW_Abstract then
+         return New_Type (Ada_Node   => E,
+                          Is_Mutable => False,
+                          Base_Type  => EW_Abstract,
+                          Name       => To_Why_Id (E));
+      else
+         return New_Type (Ada_Node   => E,
+                          Is_Mutable => False,
+                          Base_Type  => EW_Split,
+                          Name       =>
+                            New_Identifier
+                              (Ada_Node => E,
+                               Name     => "__split",
+                               Context  => Full_Name (E)));
+      end if;
+   end New_Kind_Base_Type;
 
    --------------------
    -- New_Named_Type --
@@ -1402,7 +1369,8 @@ package body Why.Inter is
    function To_Why_Id (E      : Entity_Id;
                        Domain : EW_Domain := EW_Prog;
                        Local  : Boolean := False;
-                       Rec    : Entity_Id := Empty) return W_Identifier_Id
+                       Rec    : Entity_Id := Empty;
+                       Typ    : W_Type_Id := Why_Empty) return W_Identifier_Id
    is
       Suffix : constant String :=
         (if Ekind (E) in Subprogram_Kind | E_Subprogram_Body and then
@@ -1427,23 +1395,27 @@ package body Why.Inter is
          begin
             if Local then
                return New_Identifier (Ada_Node => Ada_N,
-                                      Name     => Field);
+                                      Name     => Field,
+                                      Typ      => Typ);
             else
                return New_Identifier (Ada_Node => Ada_N,
                                       Name     => Field,
-                                      Context  => Full_Name (Ada_N));
+                                      Context  => Full_Name (Ada_N),
+                                      Typ      => Typ);
             end if;
          end;
       elsif Local then
-         return New_Identifier (Ada_Node => E, Name => Suffix);
+         return New_Identifier (Ada_Node => E, Name => Suffix, Typ => Typ);
       elsif Suffix = "" then
          return New_Identifier (Ada_Node => E,
-                                Name     => Full_Name (E));
+                                Name     => Full_Name (E),
+                                Typ      => Typ);
       else
          return
            New_Identifier (Ada_Node => E,
                            Name     => Suffix,
-                           Context => Full_Name (E));
+                           Context  => Full_Name (E),
+                           Typ      => Typ);
       end if;
    end To_Why_Id;
 
@@ -1492,6 +1464,15 @@ package body Why.Inter is
          return EW_Bool_Type;
       elsif E = Universal_Fixed then
          return EW_Real_Type;
+      elsif Nkind (N) = N_Attribute_Reference and then
+        Get_Attribute_Id (Attribute_Name (N)) in
+          Attribute_Old | Attribute_Loop_Entry then
+         return Type_Of_Node (Prefix (N));
+      elsif Nkind (N) in N_Identifier | N_Expanded_Name and then
+        Ekind (Entity (N)) in Object_Kind and then
+        Ekind (Entity (N)) not in E_Discriminant | E_Component
+      then
+         return Why_Type_Of_Entity (Entity (N));
       else
          return EW_Abstract (E);
       end if;

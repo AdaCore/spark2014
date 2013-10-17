@@ -1,4 +1,4 @@
-package body Linked_List is 
+package body Linked_List is pragma SPARK_Mode (On);
 
    function Search (L : in List) return Cursor is
       Cu : Cursor := First (L);

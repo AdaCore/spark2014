@@ -57,6 +57,7 @@ package body Arr_Aggregate is
    end P3_Bis;
 
    procedure P3_Ter (A : in out A3; B : Integer) is
+      pragma SPARK_Mode (Off);  --  partially initialized aggregate
    begin
       case B is
 	 when 1 =>

@@ -20,7 +20,7 @@ use type PrivTypes.PrivilegeT;
 with Keyboard; use Keyboard;
 
 package body Admin
-is
+is pragma SPARK_Mode (On);
 
    function RolePresent (TheAdmin : T) return PrivTypes.PrivilegeT is
      (TheAdmin.RolePresent);

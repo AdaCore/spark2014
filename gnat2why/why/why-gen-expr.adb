@@ -24,13 +24,18 @@
 ------------------------------------------------------------------------------
 
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Text_IO;
 
 with Atree;                 use Atree;
 with Einfo;                 use Einfo;
 with Errout;                use Errout;
+with Namet;                 use Namet;
+with Nlists;                use Nlists;
 with Sem_Eval;              use Sem_Eval;
+with Sem_Util;              use Sem_Util;
 with Sinfo;                 use Sinfo;
 with Sinput;                use Sinput;
+with Stand;                 use Stand;
 with String_Utils;          use String_Utils;
 with Uintp;                 use Uintp;
 
@@ -47,9 +52,8 @@ with Why.Gen.Progs;         use Why.Gen.Progs;
 with Why.Gen.Records;       use Why.Gen.Records;
 with Why.Inter;             use Why.Inter;
 
-with Gnat2Why.Expr;         use Gnat2Why.Expr;
-with Gnat2Why.Nodes;        use Gnat2Why.Nodes;
 with Gnat2Why.Subprograms;  use Gnat2Why.Subprograms;
+with Gnat2Why.Util;         use Gnat2Why.Util;
 
 package body Why.Gen.Expr is
 
@@ -57,7 +61,6 @@ package body Why.Gen.Expr is
      (Ada_Node : Node_Id;
       Domain   : EW_Domain;
       To       : W_Type_Id;
-      From     : W_Type_Id;
       Expr     : W_Expr_Id) return W_Expr_Id;
    --  Assuming that there is at most one step between To and From in the
    --  type hierarchy (i.e. that it exists a conversion from From
@@ -88,6 +91,107 @@ package body Why.Gen.Expr is
       end if;
    end Cur_Subp_Sloc;
 
+   --------------
+   -- Get_Type --
+   --------------
+
+   function Get_Type (E : W_Expr_Id) return W_Type_Id is
+   begin
+      case Get_Kind (+E) is
+         when W_Integer_Constant =>
+            return EW_Int_Type;
+
+         when W_Real_Constant =>
+            return EW_Real_Type;
+
+         when W_Literal =>
+            return EW_Bool_Type;
+
+         when W_Void
+            | W_While_Loop
+            | W_Assignment
+            | W_Assert =>
+            return EW_Unit_Type;
+
+         when W_Relation
+            | W_Connection
+            | W_Not
+            | W_Universal_Quantif
+            | W_Existential_Quantif =>
+            return EW_Bool_Type;
+
+         when W_Binary_Op =>
+            return Why_Types (Get_Op_Type (W_Binary_Op_Id (E)));
+
+         when W_Unary_Op =>
+            return Why_Types (Get_Op_Type (W_Unary_Op_Id (E)));
+
+         when W_Identifier =>
+            return Get_Typ (W_Identifier_Id (E));
+
+         when W_Tagged =>
+            return Get_Typ (W_Tagged_Id (E));
+
+         when W_Call =>
+            return Get_Typ (W_Call_Id (E));
+
+         when W_Binding =>
+            return Get_Typ (W_Binding_Id (E));
+
+         when W_Elsif =>
+            return Get_Typ (W_Elsif_Id (E));
+
+         when W_Conditional =>
+            return Get_Typ (W_Conditional_Id (E));
+
+         when W_Deref =>
+            return Get_Typ (W_Deref_Id (E));
+
+         when W_Record_Access =>
+            return Get_Typ (W_Record_Access_Id (E));
+
+         when W_Record_Update =>
+            return Get_Typ (W_Record_Update_Id (E));
+
+         when W_Record_Aggregate =>
+            return Get_Typ (W_Record_Aggregate_Id (E));
+
+         when W_Binding_Ref =>
+            return Get_Typ (W_Binding_Ref_Id (E));
+
+         when W_Any_Expr =>
+            return Get_Return_Type (W_Any_Expr_Id (E));
+
+         when W_Abstract_Expr =>
+            return Get_Typ (W_Abstract_Expr_Id (E));
+
+         when W_Try_Block =>
+            return Get_Typ (W_Try_Block_Id (E));
+
+         when W_Raise =>
+            return Get_Typ (W_Raise_Id (E));
+
+         when W_Label =>
+            return Get_Typ (W_Label_Id (E));
+
+         --  ??? The following nodes should get their own Type field at some
+         --  point, right now we use recursion.
+
+         when W_Statement_Sequence =>
+            declare
+               use Node_Lists;
+               L : constant List :=
+                 Get_List (+Get_Statements (W_Statement_Sequence_Id (E)));
+            begin
+               return Get_Type (+Last_Element (L));
+            end;
+
+         when others =>
+            raise Program_Error;
+      end case;
+
+   end Get_Type;
+
    -------------------------
    -- Cur_Subp_Name_Label --
    -------------------------
@@ -110,9 +214,9 @@ package body Why.Gen.Expr is
       Ada_Node   : Node_Id := Empty;
       Expr       : W_Expr_Id;
       To         : W_Type_Id;
-      From       : W_Type_Id;
       Need_Check : Boolean := False) return W_Expr_Id
    is
+      From      : constant W_Type_Id := Get_Type (Expr);
       To_Ent    : constant Entity_Id := Get_Ada_Node (+To);
       From_Ent  : constant Entity_Id := Get_Ada_Node (+From);
       Dim       : constant Positive := Positive (Number_Dimensions (To_Ent));
@@ -121,20 +225,20 @@ package body Why.Gen.Expr is
       --  Check whether a conversion between those types requires sliding.
 
       function Insert_Length_Check
-        (Expr             : W_Expr_Id;
-         From_Ent, To_Ent : Entity_Id) return W_Prog_Id;
+        (Expr   : W_Expr_Id;
+         To_Ent : Entity_Id) return W_Prog_Id;
 
       function Insert_Array_Range_Check
-        (Expr             : W_Expr_Id;
-         From_Ent, To_Ent : Entity_Id) return W_Prog_Id;
+        (Expr   : W_Expr_Id;
+         To_Ent : Entity_Id) return W_Prog_Id;
 
       ------------------------------
       -- Insert_Array_Range_Check --
       ------------------------------
 
       function Insert_Array_Range_Check
-        (Expr             : W_Expr_Id;
-         From_Ent, To_Ent : Entity_Id) return W_Prog_Id
+        (Expr   : W_Expr_Id;
+         To_Ent : Entity_Id) return W_Prog_Id
       is
          Check   : W_Pred_Id;
          Args    : W_Expr_Array (1 .. 2 * Dim);
@@ -142,16 +246,17 @@ package body Why.Gen.Expr is
       begin
          for I in 1 .. Dim loop
             Add_Attr_Arg
-              (EW_Prog, Args, Expr, From_Ent, Attribute_First, I, Arg_Ind);
+              (EW_Prog, Args, Expr, Attribute_First, I, Arg_Ind);
             Add_Attr_Arg
-              (EW_Prog, Args, Expr, From_Ent, Attribute_Last, I, Arg_Ind);
+              (EW_Prog, Args, Expr, Attribute_Last, I, Arg_Ind);
          end loop;
          Check :=
            New_Call (Name   =>
                        Prefix (Ada_Node => To_Ent,
                                P        => Full_Name (To_Ent),
                                N        => "range_check"),
-                     Args   => Args);
+                     Args   => Args,
+                     Typ    => EW_Abstract (To_Ent));
          return New_Located_Assert (Ada_Node, Check, VC_Range_Check);
       end Insert_Array_Range_Check;
 
@@ -160,17 +265,17 @@ package body Why.Gen.Expr is
       -------------------------
 
       function Insert_Length_Check
-        (Expr             : W_Expr_Id;
-         From_Ent, To_Ent : Entity_Id) return W_Prog_Id
+        (Expr   : W_Expr_Id;
+         To_Ent : Entity_Id) return W_Prog_Id
       is
          Check : W_Pred_Id := True_Pred;
       begin
          for I in 1 .. Dim loop
             declare
                Input_Length    : constant W_Expr_Id :=
-                 Build_Length_Expr (Domain, Expr, From_Ent, I);
+                 Build_Length_Expr (Domain, Expr, I);
                Expected_Length : constant W_Expr_Id :=
-                 Build_Length_Expr (Domain, Why_Empty, To_Ent, I);
+                 Build_Length_Expr (Domain, To_Ent, I);
             begin
                Check :=
                  +New_And_Then_Expr
@@ -248,9 +353,28 @@ package body Why.Gen.Expr is
 
       if To_Ent = From_Ent then
 
-         --  No range check needed
+         --  In the case of unconstrained arrays, the Ada entity may be equal,
+         --  but in Why we have to convert from the split representation to the
+         --  unique representation. This is checked here.
 
-         return Expr;
+         if not Is_Constrained (To_Ent) then
+            if Get_Base_Type (From) = EW_Split and then
+              Get_Base_Type (To) = EW_Abstract
+            then
+               return Array_Convert_From_Base (Domain, Expr);
+            elsif Get_Base_Type (From) = EW_Abstract and then
+              Get_Base_Type (To) = EW_Split then
+               return Array_Convert_To_Base (Domain, Expr);
+            else
+               return Expr;
+            end if;
+
+         else
+
+            --  No range check needed
+
+            return Expr;
+         end if;
       end if;
 
       --  We need a temp whenever there is a sliding, or when the "from" is
@@ -260,7 +384,7 @@ package body Why.Gen.Expr is
                      and then (Sliding or else not Is_Constrained (From_Ent));
 
       if Needs_Tmp then
-         Tmp_Var := New_Temp_Identifier;
+         Tmp_Var := New_Temp_Identifier (Typ => From);
          Arr_Expr := +Tmp_Var;
       else
          Arr_Expr := Expr;
@@ -268,18 +392,19 @@ package body Why.Gen.Expr is
 
       --  ??? do not forget range checks
 
-      if Is_Constrained (To_Ent) then
+      if Is_Constrained (To_Ent) or else
+        Get_Base_Type (To) = EW_Split then
          if Sliding then
             declare
                Args    : W_Expr_Array (1 .. 1 + 2 * Dim);
             begin
-               Add_Map_Arg (Domain, Args, Arr_Expr, From_Ent, Arg_Ind);
+               Add_Map_Arg (Domain, Args, Arr_Expr, Arg_Ind);
                for I in 1 .. Dim loop
                   Add_Attr_Arg
-                    (Domain, Args, Arr_Expr, From_Ent,
+                    (Domain, Args, Arr_Expr,
                      Attribute_First, Dim, Arg_Ind);
                   Add_Attr_Arg
-                    (Domain, Args, Arr_Expr, To_Ent,
+                    (Domain, Args, To_Ent,
                      Attribute_First, Dim, Arg_Ind);
                end loop;
                T := New_Call
@@ -287,26 +412,38 @@ package body Why.Gen.Expr is
                   Name   =>
                     Prefix (P => To_String (Ada_Array_Name (Int (Dim))),
                             N => "slide"),
-                  Args   => Args);
+                  Args   => Args,
+                  Typ    => To);
             end;
-         elsif not Is_Constrained (From_Ent) then
-               T :=
-                 New_Call
-                   (Domain => Domain,
-                    Name   =>
-                      Prefix (Ada_Node => From_Ent,
-                              S        => Full_Name (From_Ent),
-                              W        => WNE_To_Array),
-                    Args => (1 => Arr_Expr));
+         elsif not Is_Constrained (From_Ent) and then
+           Get_Base_Type (From) /= EW_Split
+         then
+            T :=
+              New_Call
+                (Domain => Domain,
+                 Name   =>
+                   Prefix (Ada_Node => From_Ent,
+                           S        => Full_Name (From_Ent),
+                           W        => WNE_To_Array),
+                 Args => (1 => Arr_Expr),
+                 Typ  => To);
+
+         --  No actual why call or conversion is inserted here, but we still
+         --  need to change the type of the Why AST node. We do that by adding
+         --  a dummy node
+
          else
-            T := Arr_Expr;
+            T := New_Label (Labels => (1 .. 0 => <>),
+                            Def    => Arr_Expr,
+                            Domain => Domain,
+                            Typ    => To);
          end if;
       else
          declare
             Args     : W_Expr_Array (1 .. 2 * Dim + 1);
             Arg_Ind  : Positive := 1;
          begin
-            Add_Array_Arg (Domain, Args, Arr_Expr, From_Ent, Arg_Ind);
+            Add_Array_Arg (Domain, Args, Arr_Expr, Arg_Ind);
             T :=
               New_Call
                 (Domain => Domain,
@@ -314,7 +451,8 @@ package body Why.Gen.Expr is
                    Prefix (Ada_Node => To_Ent,
                            S        => Full_Name (To_Ent),
                            W        => WNE_Of_Array),
-                 Args => Args);
+                 Args => Args,
+                 Typ  => To);
          end;
       end if;
 
@@ -324,11 +462,11 @@ package body Why.Gen.Expr is
          begin
             if Is_Constrained (Check_Type) then
                T := +Sequence
-                 (Insert_Length_Check (Arr_Expr, From_Ent, Check_Type),
+                 (Insert_Length_Check (Arr_Expr, Check_Type),
                   +T);
             else
                T := +Sequence
-                 (Insert_Array_Range_Check (Arr_Expr, From_Ent, Check_Type),
+                 (Insert_Array_Range_Check (Arr_Expr, Check_Type),
                  +T);
             end if;
          end;
@@ -336,7 +474,7 @@ package body Why.Gen.Expr is
 
       if Needs_Tmp then
          T :=
-           New_Binding
+           New_Typed_Binding
              (Domain  => Domain,
               Name    => Tmp_Var,
               Def     => +Expr,
@@ -354,16 +492,16 @@ package body Why.Gen.Expr is
       Ada_Type : Entity_Id;
       Domain   : EW_Domain;
       Expr     : W_Expr_Id;
-      To       : W_Type_Id;
-      From     : W_Type_Id) return W_Expr_Id
+      To       : W_Type_Id) return W_Expr_Id
    is
       --  When converting between Ada types, detect cases where a check is not
       --  needed.
 
+      From : constant W_Type_Id := Get_Type (Expr);
       Check_Needed : constant Boolean :=
-        (if Get_Base_Type (From) = EW_Abstract
+        (if Get_Base_Type (From) in EW_Abstract | EW_Split
               and
-            Get_Base_Type (To) = EW_Abstract
+            Get_Base_Type (To) in EW_Abstract | EW_Split
          then
             Check_Needed_On_Conversion (From => Get_Ada_Node (+From),
                                         To   => Get_Ada_Node (+To))
@@ -382,7 +520,6 @@ package body Why.Gen.Expr is
          T := Insert_Record_Conversion (Domain     => Domain,
                                         Ada_Node   => Ada_Node,
                                         Expr       => T,
-                                        From       => From,
                                         To         => To,
                                         Need_Check => Check_Needed);
 
@@ -393,7 +530,6 @@ package body Why.Gen.Expr is
          T := Insert_Array_Conversion (Domain     => Domain,
                                        Ada_Node   => Ada_Node,
                                        Expr       => T,
-                                       From       => From,
                                        To         => To,
                                        Need_Check => Check_Needed);
 
@@ -443,7 +579,6 @@ package body Why.Gen.Expr is
             T := Insert_Scalar_Conversion (Domain      => Domain,
                                            Ada_Node    => Ada_Node,
                                            Expr        => T,
-                                           From        => From,
                                            To          => To,
                                            Round_Func  => Round_Func,
                                            Range_Check => Range_Check_Node);
@@ -461,10 +596,10 @@ package body Why.Gen.Expr is
      (Ada_Node   : Node_Id;
       Domain     : EW_Domain;
       Expr       : W_Expr_Id;
-      From       : W_Type_Id;
       To         : W_Type_Id;
       Need_Check : Boolean := False) return W_Expr_Id
    is
+      From       : constant W_Type_Id := Get_Type (Expr);
       --  Current result expression
       Result : W_Expr_Id := Expr;
 
@@ -485,7 +620,6 @@ package body Why.Gen.Expr is
       Result := Insert_Single_Conversion (Domain   => Domain,
                                           Ada_Node => Ada_Node,
                                           To       => Base,
-                                          From     => From,
                                           Expr     => Result);
 
       --  2. Possibly perform the discriminant check
@@ -505,11 +639,72 @@ package body Why.Gen.Expr is
       Result := Insert_Single_Conversion (Domain   => Domain,
                                           Ada_Node => Ada_Node,
                                           To       => To,
-                                          From     => Base,
                                           Expr     => Result);
 
       return Result;
    end Insert_Record_Conversion;
+
+   -----------------------------
+   -- Do_Range_Or_Index_Check --
+   -----------------------------
+
+   function Do_Range_Or_Index_Check
+     (Ada_Node   : Node_Id;
+      Ty         : Entity_Id;
+      W_Expr     : W_Expr_Id;
+      Check_Kind : Range_Check_Kind) return W_Prog_Id is
+   begin
+      if Type_Is_Modeled_As_Int_Or_Real (Ty) then
+         declare
+            Tmp_Var : constant W_Identifier_Id :=
+              New_Temp_Identifier (Typ => Get_Type (W_Expr));
+            First : constant W_Expr_Id :=
+              New_Attribute_Expr (Ty, Attribute_First);
+            Last : constant W_Expr_Id :=
+              New_Attribute_Expr (Ty, Attribute_Last);
+            Rel_First        : constant W_Pred_Id :=
+              New_Relation
+                (Op_Type  => Get_Base_Type (Get_Type (W_Expr)),
+                 Left     => +First,
+                 Right    => +Tmp_Var,
+                 Op       => EW_Le);
+            Rel_Last         : constant W_Pred_Id :=
+              New_Relation
+                (Op_Type  => Get_Base_Type (Get_Type (W_Expr)),
+                 Left     => +Tmp_Var,
+                 Right    => +Last,
+                 Op       => EW_Le);
+            In_Bounds : constant W_Expr_Id :=
+              New_And_Expr (Domain => EW_Pred,
+                            Left   => +Rel_First,
+                            Right  => +Rel_Last);
+            Check : constant W_Prog_Id :=
+              New_Assert
+                (Pred =>
+                   +New_VC_Expr (Ada_Node => Ada_Node,
+                                 Expr     => In_Bounds,
+                                 Reason   => To_VC_Kind (Check_Kind),
+                                 Domain   => EW_Prog));
+            Do_Check : constant W_Expr_Id :=
+              New_Typed_Binding
+                (Domain  => EW_Prog,
+                 Name    => Tmp_Var,
+                 Def     => +W_Expr,
+                 Context => +Sequence (Check, +Tmp_Var));
+
+         begin
+            return +Do_Check;
+         end;
+      else
+         return +New_VC_Call (Domain   => EW_Prog,
+                              Ada_Node => Ada_Node,
+                              Name     =>
+                                Range_Check_Name (Ty, Check_Kind),
+                              Progs    => (1 => +W_Expr),
+                              Reason   => To_VC_Kind (Check_Kind),
+                              Typ      => Get_Type (W_Expr));
+      end if;
+   end Do_Range_Or_Index_Check;
 
    ------------------------------
    -- Insert_Scalar_Conversion --
@@ -520,10 +715,206 @@ package body Why.Gen.Expr is
       Ada_Node      : Node_Id := Empty;
       Expr          : W_Expr_Id;
       To            : W_Type_Id;
-      From          : W_Type_Id;
       Round_Func    : W_Identifier_Id := Why_Empty;
       Range_Check   : Node_Id := Empty) return W_Expr_Id
    is
+      procedure Get_Range_Check_Info
+        (Expr       : Node_Id;
+         Check_Type : out Entity_Id;
+         Check_Kind : out Range_Check_Kind);
+      --  The frontend sets Do_Range_Check flag to True both for range checks
+      --  and for index checks. We distinguish between these by calling this
+      --  procedure, which also sets the bounds against which the value of Expr
+      --  should be checked. Expr should have the flag Do_Range_Check flag set
+      --  to True. Check_Type is set to the entity giving the bounds for the
+      --  check. Check_Kind is set to VC_Range_Check or VC_Index_Check.
+
+      function Insert_Range_Check
+        (Expr : Node_Id;
+         T    : W_Expr_Id) return W_Expr_Id;
+      --  Inserts a check on top of the Why expression T, which might be either
+      --  a range check, or an index check, depending on the corresponding
+      --  Ada node Expr. Expr also determines the bounds for the check.
+      --  [Get_Range_Check_Info] is called to determine the type and kind
+      --  of the check.
+
+      --------------------------
+      -- Get_Range_Check_Info --
+      --------------------------
+
+      procedure Get_Range_Check_Info
+        (Expr       : Node_Id;
+         Check_Type : out Entity_Id;
+         Check_Kind : out Range_Check_Kind)
+      is
+         Par : constant Node_Id := Parent (Expr);
+
+      begin
+         --  Set the appropriate entity in Check_Type giving the bounds for the
+         --  check, depending on the parent node Par.
+
+         case Nkind (Par) is
+
+         when N_Assignment_Statement =>
+            Check_Type := Etype (Name (Par));
+
+         --  For an array access, retrieve the type for the corresponding index
+
+         when N_Indexed_Component =>
+
+            Indexed_Component : declare
+               Obj        : constant Node_Id := Prefix (Par);
+               Array_Type : Entity_Id;
+               Act_Cursor : Node_Id;
+               Ty_Cursor  : Node_Id;
+               Found      : Boolean;
+
+            begin
+               --  When present, the Actual_Subtype of the entity should be
+               --  used instead of the Etype of the prefix.
+
+               if Is_Entity_Name (Obj)
+                 and then Present (Actual_Subtype (Entity (Obj)))
+               then
+                  Array_Type := Actual_Subtype (Entity (Obj));
+               else
+                  Array_Type := Etype (Obj);
+               end if;
+
+               --  Find the index type that corresponds to the expression
+
+               Ty_Cursor  := First_Index (Unique_Entity (Array_Type));
+               Act_Cursor := First (Expressions (Par));
+               Found      := False;
+               while Present (Act_Cursor) loop
+                  if Expr = Act_Cursor then
+                     Check_Type := Etype (Ty_Cursor);
+                     Found := True;
+                     exit;
+                  end if;
+
+                  Next (Act_Cursor);
+                  Next_Index (Ty_Cursor);
+               end loop;
+
+               --  The only possible child node of an indexed component with a
+               --  range check should be one of the expressions, so Found
+               --  should always be True at this point.
+
+               if not Found then
+                  raise Program_Error;
+               end if;
+            end Indexed_Component;
+
+         when N_Type_Conversion =>
+            Check_Type := Etype (Par);
+
+         when N_Qualified_Expression =>
+            Check_Type := Etype (Par);
+
+         when N_Simple_Return_Statement =>
+            Check_Type :=
+              Etype (Return_Applies_To (Return_Statement_Entity (Par)));
+
+            --  For a call, retrieve the type for the corresponding argument
+
+         when N_Function_Call            |
+              N_Procedure_Call_Statement |
+              N_Parameter_Association    =>
+            Check_Type := Get_Formal_Type_From_Actual (Expr);
+
+         when N_Attribute_Reference =>
+            Attribute : declare
+               Aname   : constant Name_Id := Attribute_Name (Par);
+               Attr_Id : constant Attribute_Id := Get_Attribute_Id (Aname);
+            begin
+               case Attr_Id is
+                  when Attribute_Pred |
+                       Attribute_Succ |
+                       Attribute_Val  =>
+                     Check_Type := Base_Type (Entity (Prefix (Par)));
+
+                  when others =>
+                     Ada.Text_IO.Put_Line ("[Get_Range_Check_Info] attr ="
+                                           & Attribute_Id'Image (Attr_Id));
+                     raise Program_Error;
+               end case;
+            end Attribute;
+
+         when N_Object_Declaration =>
+            Check_Type := Etype (Defining_Identifier (Par));
+
+         when N_Op_Expon =>
+
+            --  A range check on exponentiation is only possible on the right
+            --  operand, and in this case the check range is "Natural"
+
+            Check_Type := Standard_Natural;
+
+         when others =>
+            Ada.Text_IO.Put_Line ("[Get_Range_Check_Info] kind ="
+                                  & Node_Kind'Image (Nkind (Par)));
+            raise Program_Error;
+         end case;
+
+         --  Reach through a non-private type in order to query its kind
+
+         Check_Type := MUT (Check_Type);
+
+         --  If the parent expression is an array access, this is an index
+         --  check.
+
+         if Nkind (Par) = N_Indexed_Component then
+            Check_Kind := RCK_Index;
+
+         --  If the target type is a constrained array, we have a length check.
+
+         elsif Is_Array_Type (Check_Type) and then
+           Is_Constrained (Check_Type) then
+            Check_Kind := RCK_Length;
+
+         --  For 'Pred and 'Succ, it's also a range check, but the range is a
+         --  bit different. We use a different Check_Kind here.
+
+         elsif Nkind (Par) = N_Attribute_Reference and then
+           Get_Attribute_Id (Attribute_Name (Par)) = Attribute_Pred then
+            Check_Kind := RCK_Not_First;
+         elsif Nkind (Par) = N_Attribute_Reference and then
+           Get_Attribute_Id (Attribute_Name (Par)) = Attribute_Succ then
+            Check_Kind := RCK_Not_Last;
+
+         --  Otherwise, this is a range check
+
+         else
+            Check_Kind := RCK_Range;
+         end if;
+      end Get_Range_Check_Info;
+
+      ------------------------
+      -- Insert_Range_Check --
+      ------------------------
+
+      function Insert_Range_Check
+        (Expr : Node_Id;
+         T    : W_Expr_Id) return W_Expr_Id
+      is
+         Check_Type : Entity_Id;
+         Check_Kind : Range_Check_Kind;
+
+      begin
+         --  Determine the type Check_Type, whose base type will give the
+         --  bounds for the check, and whether the check is a range check or
+         --  an index check.
+
+         Get_Range_Check_Info (Expr, Check_Type, Check_Kind);
+
+         return +Do_Range_Or_Index_Check (Ada_Node   => Expr,
+                                          Ty         => Check_Type,
+                                          W_Expr     => T,
+                                          Check_Kind => Check_Kind);
+      end Insert_Range_Check;
+
+      From : constant W_Type_Id := Get_Type (Expr);
       --  Current result expression
       Result : W_Expr_Id := Expr;
 
@@ -536,6 +927,8 @@ package body Why.Gen.Expr is
 
       --  Set to True after range check has been applied
       Range_Check_Applied : Boolean := False;
+
+   --  Start of Insert_Scalar_Conversion
 
    begin
       --  When From = To and no check nor rounding needs to be inserted, do
@@ -566,7 +959,6 @@ package body Why.Gen.Expr is
          Result := Insert_Single_Conversion (Ada_Node => Ada_Node,
                                              Domain   => Domain,
                                              To       => Cur,
-                                             From     => From,
                                              Expr     => Result);
       end if;
 
@@ -586,16 +978,11 @@ package body Why.Gen.Expr is
       --     real), convert from one to the other.
 
       if Base_Why_Type (From) /= Base_Why_Type (To) then
-         declare
-            Save : constant W_Type_Id := Cur;
-         begin
-            Cur := Base_Why_Type (To);
-            Result := Insert_Single_Conversion (Ada_Node => Ada_Node,
-                                                Domain   => Domain,
-                                                To       => Cur,
-                                                From     => Save,
-                                                Expr     => Result);
-         end;
+         Cur := Base_Why_Type (To);
+         Result := Insert_Single_Conversion (Ada_Node => Ada_Node,
+                                             Domain   => Domain,
+                                             To       => Cur,
+                                             Expr     => Result);
       end if;
 
       --  4. When converting to a floating-point or fixed-point type, always
@@ -605,7 +992,8 @@ package body Why.Gen.Expr is
          pragma Assert (Get_Base_Type (Cur) = EW_Real);
          Result := New_Call (Domain   => Domain,
                              Name     => Round_Func,
-                             Args     => (1 => Result));
+                             Args     => (1 => Result),
+                             Typ      => EW_Real_Type);
       end if;
 
       --  5. Possibly perform the range check, if not already applied
@@ -625,7 +1013,6 @@ package body Why.Gen.Expr is
          Result := Insert_Single_Conversion (Ada_Node => Ada_Node,
                                              Domain   => Domain,
                                              To       => To,
-                                             From     => Cur,
                                              Expr     => Result);
       end if;
 
@@ -640,8 +1027,9 @@ package body Why.Gen.Expr is
      (Ada_Node : Node_Id := Empty;
       Domain   : EW_Domain;
       Expr     : W_Expr_Id;
-      To       : W_Type_Id;
-      From     : W_Type_Id) return W_Expr_Id is
+      To       : W_Type_Id) return W_Expr_Id
+   is
+      From : constant W_Type_Id := Get_Type (Expr);
    begin
       --  Nothing to do if From = To
 
@@ -653,21 +1041,18 @@ package body Why.Gen.Expr is
          return Insert_Record_Conversion (Domain   => Domain,
                                           Ada_Node => Ada_Node,
                                           Expr     => Expr,
-                                          From     => From,
                                           To       => To);
 
       elsif Is_Array_Conversion (To, From) then
          return Insert_Array_Conversion (Domain   => Domain,
                                          Ada_Node => Ada_Node,
                                          Expr     => Expr,
-                                         From     => From,
                                          To       => To);
 
       else
          return Insert_Scalar_Conversion (Domain   => Domain,
                                           Ada_Node => Ada_Node,
                                           Expr     => Expr,
-                                          From     => From,
                                           To       => To);
       end if;
    end Insert_Simple_Conversion;
@@ -680,18 +1065,20 @@ package body Why.Gen.Expr is
      (Ada_Node : Node_Id;
       Domain   : EW_Domain;
       To       : W_Type_Id;
-      From     : W_Type_Id;
       Expr     : W_Expr_Id) return W_Expr_Id
    is
+      From     : constant W_Type_Id := Get_Type (Expr);
    begin
       if Eq_Base (From, To) then
          return Expr;
       end if;
 
-      return New_Call (Domain   => Domain,
-                       Ada_Node => Ada_Node,
-                       Name     => Conversion_Name (From => From, To => To),
-                       Args     => (1 => +Expr));
+      return
+        New_Call (Domain   => Domain,
+                  Ada_Node => Ada_Node,
+                  Name     => Conversion_Name (From => From, To => To),
+                  Args     => (1 => +Expr),
+                  Typ      => To);
    end Insert_Single_Conversion;
 
    ----------------------
@@ -740,7 +1127,8 @@ package body Why.Gen.Expr is
       else
          return New_Call (Domain => Domain,
                           Name   => To_Ident (WNE_Bool_And),
-                          Args   => (1 => +Left, 2 => +Right));
+                          Args   => (1 => +Left, 2 => +Right),
+                          Typ    => EW_Bool_Type);
       end if;
    end New_And_Expr;
 
@@ -768,13 +1156,15 @@ package body Why.Gen.Expr is
               New_Call (Domain => Domain,
                         Name   => To_Ident (WNE_Bool_And),
                         Args   => (1 => +Conjuncts (Conjuncts'First),
-                                   2 => +Conjuncts (Conjuncts'First + 1)));
+                                   2 => +Conjuncts (Conjuncts'First + 1)),
+                        Typ    => EW_Bool_Type);
          begin
             for K in Conjuncts'First + 2 .. Conjuncts'Last loop
                Result := New_Call (Domain => Domain,
                                    Name   => To_Ident (WNE_Bool_And),
                                    Args   => (1 => Result,
-                                              2 => +Conjuncts (K)));
+                                              2 => +Conjuncts (K)),
+                                   Typ    => EW_Bool_Type);
             end loop;
 
             return Result;
@@ -793,7 +1183,8 @@ package body Why.Gen.Expr is
          return
            New_Call (Domain => Domain,
                      Name   => To_Ident (WNE_Bitwise_And),
-                     Args   => (1 => +Left, 2 => +Right));
+                     Args   => (1 => +Left, 2 => +Right),
+                     Typ    => EW_Int_Type);
       end if;
    end New_And_Expr;
 
@@ -853,10 +1244,23 @@ package body Why.Gen.Expr is
             S : constant String :=
               (if Is_Standard_Boolean_Type (Ty) then "Boolean"
                else Full_Name (Ty));
+            T : W_Expr_Id;
+            BT : constant W_Type_Id :=
+              (if Is_Standard_Boolean_Type (Ty) then
+                    EW_Int_Type
+               else Base_Why_Type (Ty));
          begin
-            return +Prefix (Ada_Node => Ty,
-                            S        => S,
-                            W        => Attr_To_Why_Name (Attr));
+            T := +Prefix (Ada_Node => Ty,
+                          S        => S,
+                          W        => Attr_To_Why_Name (Attr),
+                          Typ      => BT);
+
+            if Type_Is_Modeled_As_Int_Or_Real (Ty) then
+               T := New_Deref (Right => +T,
+                               Typ   => BT);
+            end if;
+
+            return T;
          end;
       end if;
    end New_Attribute_Expr;
@@ -868,20 +1272,20 @@ package body Why.Gen.Expr is
    function New_Comparison
      (Cmp         : EW_Relation;
       Left, Right : W_Expr_Id;
-      Arg_Types   : W_Type_Id;
       Domain      : EW_Domain)
      return W_Expr_Id
    is
-      Op_Type : W_Type_Id;
-      Left1   : W_Expr_Id;
-      Right1  : W_Expr_Id;
+      Op_Type  : W_Type_Id;
+      Left1    : W_Expr_Id;
+      Right1   : W_Expr_Id;
+      Arg_Type : constant W_Type_Id := Get_Type (Left);
 
    begin
       --  The only comparisons between Boolean operands that we translate in
       --  Why without going throught integers are the equality and inequality
       --  in a predicate context, translated as equivalence or inequivalence.
 
-      if Get_Base_Type (Arg_Types) = EW_Bool
+      if Get_Base_Type (Arg_Type) = EW_Bool
         and then (Cmp in EW_Inequality or else Domain /= EW_Pred)
       then
          Op_Type := EW_Int_Type;
@@ -889,16 +1293,14 @@ package body Why.Gen.Expr is
            Insert_Simple_Conversion
              (Domain => Domain,
               Expr   => Left,
-              From   => Arg_Types,
               To     => EW_Int_Type);
          Right1 :=
            Insert_Simple_Conversion
              (Domain => Domain,
               Expr   => Right,
-              From   => Arg_Types,
               To     => EW_Int_Type);
       else
-         Op_Type := Arg_Types;
+         Op_Type := Arg_Type;
          Left1  := Left;
          Right1 := Right;
       end if;
@@ -910,7 +1312,8 @@ package body Why.Gen.Expr is
                  (Domain => Domain,
                   Name   => To_Fp_Ident (Get_Base_Type (Op_Type), Cmp),
                   Args   => (1 => +Left1,
-                             2 => +Right1));
+                             2 => +Right1),
+                  Typ    => EW_Bool_Type);
 
             when others =>
                return New_Relation
@@ -925,9 +1328,60 @@ package body Why.Gen.Expr is
            New_Call
              (Name   => New_Bool_Cmp (Cmp, Op_Type),
               Args   => (1 => +Left1, 2 => +Right1),
-              Domain => Domain);
+              Domain => Domain,
+              Typ    => EW_Bool_Type);
       end if;
    end New_Comparison;
+
+   -----------------
+   -- New_Int_Add --
+   -----------------
+
+   function New_Int_Add
+     (Domain : EW_Domain;
+      Left   : W_Expr_Id;
+      Right  : W_Expr_Id) return W_Expr_Id is
+   begin
+      return
+        New_Binary_Op
+          (Op      => EW_Add,
+           Op_Type => EW_Int,
+           Left    =>
+             Insert_Scalar_Conversion
+               (Domain => Domain,
+                Expr   => Left,
+                To     => EW_Int_Type),
+           Right   =>
+             Insert_Scalar_Conversion
+               (Domain => Domain,
+                Expr   => Right,
+                To     => EW_Int_Type));
+   end New_Int_Add;
+
+   -----------------------
+   -- New_Int_Substract --
+   -----------------------
+
+   function New_Int_Substract
+     (Domain : EW_Domain;
+      Left   : W_Expr_Id;
+      Right  : W_Expr_Id) return W_Expr_Id is
+   begin
+      return
+        New_Binary_Op
+          (Op      => EW_Substract,
+           Op_Type => EW_Int,
+           Left    =>
+             Insert_Scalar_Conversion
+               (Domain => Domain,
+                Expr   => Left,
+                To     => EW_Int_Type),
+           Right   =>
+             Insert_Scalar_Conversion
+               (Domain => Domain,
+                Expr   => Right,
+                To     => EW_Int_Type));
+   end New_Int_Substract;
 
    ----------------------
    -- New_Located_Expr --
@@ -969,10 +1423,20 @@ package body Why.Gen.Expr is
       --  are rewritten in a strange manner, so we do not do this optimization
       --  in that case. See also [New_Pretty_Label].
 
-      if (not Left_Most and then Is_VC) or else
-        (Comes_From_Source (N) and then Original_Node (N) /= N and then
-        Nkind (Original_Node (N)) = N_And_Then) then
+      if (not Left_Most and Is_VC)
+            or else
+         (Comes_From_Source (N)
+           and then Original_Node (N) /= N
+           and then Nkind (Original_Node (N)) = N_And_Then)
+      then
          Slc := Sloc (N);
+
+      --  First_Sloc does some magic to point before the opening parentheses in
+      --  an expression, which does not work on locations inside instances of
+      --  generics. Use Sloc on First_Node instead in that case.
+
+      elsif Instantiation_Location (Sloc (N)) /= No_Location then
+         Slc := Sloc (First_Node (N));
       else
          Slc := First_Sloc (N);
       end if;
@@ -1039,7 +1503,8 @@ package body Why.Gen.Expr is
       else
          return New_Call (Domain => Domain,
                           Name   => To_Ident (WNE_Bool_Or),
-                          Args   => (1 => +Left, 2 => +Right));
+                          Args   => (1 => +Left, 2 => +Right),
+                          Typ    => EW_Bool_Type);
       end if;
    end New_Or_Expr;
 
@@ -1073,7 +1538,8 @@ package body Why.Gen.Expr is
                Result := New_Call (Domain => Domain,
                                    Name   => To_Ident (WNE_Bool_Or),
                                    Args   => (1 => Result,
-                                              2 => +Conjuncts (K)));
+                                              2 => +Conjuncts (K)),
+                                   Typ    => EW_Bool_Type);
             end loop;
 
             return Result;
@@ -1092,7 +1558,8 @@ package body Why.Gen.Expr is
          return
            New_Call (Domain => Domain,
                      Name   => To_Ident (WNE_Bitwise_Or),
-                     Args   => (1 => +Left, 2 => +Right));
+                     Args   => (1 => +Left, 2 => +Right),
+                     Typ    => EW_Int_Type);
       end if;
    end New_Or_Expr;
 
@@ -1164,7 +1631,6 @@ package body Why.Gen.Expr is
 
    function New_Range_Expr
      (Domain    : EW_Domain;
-      Base_Type : W_Type_Id;
       Low, High : W_Expr_Id;
       Expr      : W_Expr_Id) return W_Expr_Id
    is
@@ -1174,16 +1640,14 @@ package body Why.Gen.Expr is
            (Left  =>
               New_Comparison
                 (Domain    => Domain,
-                 Arg_Types => Base_Type,
                  Cmp       => EW_Le,
-                 Left      => +Low,
-                 Right     => +Expr),
+                 Left      => Low,
+                 Right     => Expr),
             Right  =>
               New_Comparison
                 (Domain    => Domain,
-                 Arg_Types => Base_Type,
                  Cmp       => EW_Le,
-                 Left      => +Expr,
+                 Left      => Expr,
                  Right     => High),
             Domain => Domain);
    end New_Range_Expr;
@@ -1209,9 +1673,27 @@ package body Why.Gen.Expr is
              (Condition => +Condition,
               Then_Part => Then_Part,
               Else_Part => Else_Part,
-              Domain    => Domain);
+              Domain    => Domain,
+              Typ       => Get_Type (Then_Part));
       end if;
    end New_Simpl_Conditional;
+
+   -----------------------
+   -- New_Typed_Binding --
+   -----------------------
+
+   function New_Typed_Binding
+     (Ada_Node : Node_Id := Empty;
+      Domain   : EW_Domain;
+      Name     : W_Identifier_Id;
+      Def      : W_Expr_Id;
+      Context  : W_Expr_Id)
+      return W_Expr_Id is
+   begin
+      return
+        New_Binding
+          (Ada_Node, Domain, Name, Def, Context, Get_Type (Context));
+   end New_Typed_Binding;
 
    -----------------
    -- New_VC_Call --
@@ -1222,7 +1704,8 @@ package body Why.Gen.Expr is
        Name     : W_Identifier_Id;
        Progs    : W_Expr_Array;
        Reason   : VC_Kind;
-       Domain   : EW_Domain) return W_Expr_Id
+       Domain   : EW_Domain;
+       Typ      : W_Type_Id) return W_Expr_Id
    is
    begin
       return
@@ -1234,7 +1717,8 @@ package body Why.Gen.Expr is
                (Ada_Node => Ada_Node,
                 Name     => Name,
                 Args     => Progs,
-                Domain   => Domain),
+                Domain   => Domain,
+                Typ      => Typ),
            Domain  => Domain);
    end New_VC_Call;
 
@@ -1255,7 +1739,8 @@ package body Why.Gen.Expr is
               (Ada_Node => Ada_Node,
                Labels   => New_VC_Labels (Ada_Node, Reason),
                Def      => Expr,
-               Domain   => Domain);
+               Domain   => Domain,
+               Typ      => Get_Type (Expr));
       else
          return Expr;
       end if;
@@ -1326,10 +1811,23 @@ package body Why.Gen.Expr is
               New_Call
                 (Domain => Domain,
                  Name   => Id,
-                 Args   => (1 => +Left, 2 => +Right));
+                 Args   => (1 => +Left, 2 => +Right),
+                 Typ    =>
+                   (if Base = EW_Bool_Type then EW_Bool_Type
+                    else EW_Int_Type));
          end;
       end if;
    end New_Xor_Expr;
+
+   ------------
+   -- To_Int --
+   ------------
+
+   function To_Int (D : EW_Domain; E : W_Expr_Id) return W_Expr_Id is
+   begin
+      return
+        Insert_Scalar_Conversion (Domain => D, Expr => E, To => EW_Int_Type);
+   end To_Int;
 
    -----------------------
    -- Why_Default_Value --
@@ -1345,7 +1843,8 @@ package body Why.Gen.Expr is
          return +New_Identifier (Ada_Node => E,
                                  Domain  => Domain,
                                  Context => Full_Name (E),
-                                 Name    => To_String (WNE_Dummy));
+                                 Name    => To_String (WNE_Dummy),
+                                 Typ     => EW_Abstract (E));
       end if;
    end Why_Default_Value;
 

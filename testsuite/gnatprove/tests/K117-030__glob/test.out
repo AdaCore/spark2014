@@ -1,1 +1,1 @@
-glob.ads:6:14: postcondition not proved, requires not G
+glob.ads:6:14: warning: postcondition might fail, requires not G

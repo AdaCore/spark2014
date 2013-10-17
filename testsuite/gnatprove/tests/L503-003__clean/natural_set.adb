@@ -1,5 +1,5 @@
-package body Natural_Set
-is
+package body Natural_Set is
+   pragma SPARK_Mode (On);
 
    procedure Create (S : out T)
    is

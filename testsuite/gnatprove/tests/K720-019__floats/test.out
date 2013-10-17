@@ -1,8 +1,8 @@
 pack.adb:5:17: info: overflow check proved
-pack.adb:10:14: precondition not proved
+pack.adb:10:14: warning: precondition might fail
 pack.adb:10:19: info: precondition proved
-pack.adb:10:42: precondition not proved
+pack.adb:10:42: warning: precondition might fail
 pack.adb:10:52: info: precondition proved
 pack.ads:15:19: info: postcondition proved
 pack.ads:15:37: info: overflow check proved
-pack.ads:18:19: postcondition not proved, requires Associativity_Test'Result = true
+pack.ads:18:19: warning: postcondition might fail, requires Associativity_Test'Result = true

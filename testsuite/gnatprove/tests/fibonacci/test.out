@@ -1,110 +1,128 @@
-fib.adb:7:11: range check not proved
-fib.adb:8:10: loop invariant initialization not proved
-fib.adb:8:10: loop invariant preservation not proved
-fib.adb:10:17: overflow check not proved
-fib.adb:28:10: loop invariant initialization not proved
-fib.adb:28:10: loop invariant preservation not proved
-fib.adb:28:38: precondition not proved
-fib.adb:29:30: precondition not proved
-fib.adb:29:42: range check not proved
-fib.adb:32:10: loop variant not proved
-fib.adb:33:19: overflow check not proved
-fib.adb:34:19: overflow check not proved
-fib.adb:34:19: range check not proved
-fib.adb:35:19: range check not proved
-fib.adb:36:17: overflow check not proved
-fib.adb:40:10: loop invariant initialization not proved
-fib.adb:40:10: loop invariant preservation not proved
-fib.adb:40:38: precondition not proved
-fib.adb:41:30: precondition not proved
-fib.adb:41:42: range check not proved
-fib.adb:44:10: loop variant not proved
-fib.adb:45:19: overflow check not proved
-fib.adb:46:19: overflow check not proved
-fib.adb:46:19: range check not proved
-fib.adb:47:19: range check not proved
-fib.adb:48:17: overflow check not proved
-fib.adb:66:11: range check not proved
-fib.adb:67:17: overflow check not proved
-fib.adb:67:17: range check not proved
-fib.adb:75:11: range check not proved
-fib.adb:76:10: loop invariant initialization not proved, requires p1 = Factorial(i - 1)
-fib.adb:76:10: loop invariant preservation not proved, requires p1 = Factorial(i - 1)
-fib.adb:76:38: precondition not proved
-fib.adb:77:18: overflow check not proved
-fib.adb:77:18: range check not proved
-fib.adb:80:11: range check not proved
-fib.adb:81:10: loop invariant initialization not proved, requires p2 = Factorial(i - 1)
-fib.adb:81:10: loop invariant preservation not proved, requires p2 = Factorial(i - 1)
-fib.adb:81:38: precondition not proved
-fib.adb:82:18: overflow check not proved
-fib.adb:82:18: range check not proved
-fib.adb:94:10: loop invariant initialization not proved, requires a1 ** n1 = p1 * (b1 ** k1
-fib.adb:94:10: loop invariant preservation not proved, requires a1 ** n1 = p1 * (b1 ** k1
-fib.adb:95:10: loop variant not proved
-fib.adb:96:17: division check not proved
-fib.adb:97:13: assertion not proved, requires p1 * (b1 * b1) ** (k1 mod 2) = a1 ** n1
-fib.adb:97:50: division check not proved
-fib.adb:98:22: division check not proved
-fib.adb:99:22: overflow check not proved
-fib.adb:101:13: assertion not proved, requires p1 * b1) * (b1 ** (k1 - 1)) = a1 ** n1
-fib.adb:101:51: range check not proved
-fib.adb:102:22: range check not proved
-fib.adb:103:22: overflow check not proved
-fib.adb:110:10: loop invariant initialization not proved
-fib.adb:110:10: loop invariant preservation not proved
-fib.adb:112:10: loop variant not proved
-fib.adb:113:17: division check not proved
-fib.adb:114:13: assertion not proved, requires p2 * (b2 * b2) ** (k2 mod 2) = a2 ** n2
-fib.adb:114:50: division check not proved
-fib.adb:115:22: division check not proved
-fib.adb:116:22: overflow check not proved
-fib.adb:118:13: assertion not proved
-fib.adb:118:51: range check not proved
-fib.adb:120:22: range check not proved
-fib.adb:121:22: overflow check not proved
-fib.adb:130:11: range check not proved
-fib.adb:131:13: index check not proved
-fib.adb:131:22: index check not proved
-fib.adb:133:11: range check not proved
-fib.adb:133:33: overflow check not proved
-fib.adb:134:13: index check not proved
-fib.adb:134:24: index check not proved
-fib.adb:134:24: overflow check not proved
-fib.adb:136:11: range check not proved
-fib.adb:137:13: index check not proved
-fib.adb:137:22: index check not proved
-fib.adb:139:11: range check not proved
-fib.adb:139:33: overflow check not proved
-fib.adb:140:13: index check not proved
-fib.adb:140:24: index check not proved
-fib.adb:140:24: overflow check not proved
-fib.adb:148:11: info: range check proved
-fib.adb:149:13: index check not proved
-fib.adb:149:22: index check not proved
-fib.adb:151:11: range check not proved
-fib.adb:151:32: overflow check not proved
-fib.adb:152:13: index check not proved
-fib.adb:152:24: index check not proved
-fib.adb:152:24: overflow check not proved
-fib.adb:154:11: range check not proved
-fib.adb:155:13: index check not proved
-fib.adb:155:22: index check not proved
-fib.adb:157:11: range check not proved
-fib.adb:157:32: overflow check not proved
-fib.adb:158:13: index check not proved
-fib.adb:158:24: index check not proved
-fib.adb:158:24: overflow check not proved
-fib.ads:14:14: postcondition not proved, requires l1 = l2
-fib.ads:25:14: postcondition not proved, requires p1 = p2
-fib.ads:33:14: postcondition not proved, requires p1 = p1
-fib.ads:41:50: index check not proved
-fib.ads:41:58: index check not proved
-fib.ads:42:55: index check not proved
-fib.ads:42:68: index check not proved
-fib.ads:43:49: postcondition not proved, requires A1(I) = A2(I)
-fib.ads:51:49: index check not proved
-fib.ads:51:57: index check not proved
-fib.ads:52:54: index check not proved
-fib.ads:52:66: index check not proved
-fib.ads:53:49: postcondition not proved, requires A1(I) = A2(I)
+fib.adb:20:15: warning: unused assignment [ineffective]
+fib.adb:21:15: warning: unused assignment [ineffective]
+fib.adb:26:09: warning: unused assignment [ineffective]
+fib.adb:36:12: warning: unused assignment [ineffective]
+fib.adb:38:09: warning: unused assignment [ineffective]
+fib.adb:48:12: warning: unused assignment [ineffective]
+fib.adb:131:16: warning: "A1" might not be initialized [uninitialized]
+fib.adb:134:16: warning: "A1" might not be initialized [uninitialized]
+fib.adb:137:16: warning: "A2" might not be initialized [uninitialized]
+fib.adb:140:16: warning: "A2" might not be initialized [uninitialized]
+fib.adb:149:16: warning: "A1" might not be initialized [uninitialized]
+fib.adb:152:16: warning: "A1" might not be initialized [uninitialized]
+fib.adb:155:16: warning: "A2" might not be initialized [uninitialized]
+fib.adb:158:16: warning: "A2" might not be initialized [uninitialized]
+fib.adb:7:11: warning: range check might fail
+fib.adb:8:10: warning: loop invariant might fail in first iteration
+fib.adb:8:10: warning: loop invariant might fail after first iteration
+fib.adb:10:17: warning: overflow check might fail
+fib.adb:28:10: warning: loop invariant might fail in first iteration
+fib.adb:28:10: warning: loop invariant might fail after first iteration
+fib.adb:28:38: warning: precondition might fail
+fib.adb:29:30: warning: precondition might fail
+fib.adb:29:42: warning: range check might fail
+fib.adb:32:10: warning: loop variant might fail
+fib.adb:33:19: warning: overflow check might fail
+fib.adb:34:19: warning: overflow check might fail
+fib.adb:34:19: warning: range check might fail
+fib.adb:35:19: warning: range check might fail
+fib.adb:36:17: warning: overflow check might fail
+fib.adb:40:10: warning: loop invariant might fail in first iteration
+fib.adb:40:10: warning: loop invariant might fail after first iteration
+fib.adb:40:38: warning: precondition might fail
+fib.adb:41:30: warning: precondition might fail
+fib.adb:41:42: warning: range check might fail
+fib.adb:44:10: warning: loop variant might fail
+fib.adb:45:19: warning: overflow check might fail
+fib.adb:46:19: warning: overflow check might fail
+fib.adb:46:19: warning: range check might fail
+fib.adb:47:19: warning: range check might fail
+fib.adb:48:17: warning: overflow check might fail
+fib.adb:66:11: warning: range check might fail
+fib.adb:67:17: warning: overflow check might fail
+fib.adb:67:17: warning: range check might fail
+fib.adb:75:11: warning: range check might fail
+fib.adb:76:10: warning: loop invariant might fail in first iteration, requires p1 = Factorial(i - 1)
+fib.adb:76:10: warning: loop invariant might fail after first iteration, requires p1 = Factorial(i - 1)
+fib.adb:76:38: warning: precondition might fail
+fib.adb:77:18: warning: overflow check might fail
+fib.adb:77:18: warning: range check might fail
+fib.adb:80:11: warning: range check might fail
+fib.adb:81:10: warning: loop invariant might fail in first iteration, requires p2 = Factorial(i - 1)
+fib.adb:81:10: warning: loop invariant might fail after first iteration, requires p2 = Factorial(i - 1)
+fib.adb:81:38: warning: precondition might fail
+fib.adb:82:18: warning: overflow check might fail
+fib.adb:82:18: warning: range check might fail
+fib.adb:94:10: warning: loop invariant might fail in first iteration, requires a1 ** n1 = p1 * (b1 ** k1
+fib.adb:94:10: warning: loop invariant might fail after first iteration, requires a1 ** n1 = p1 * (b1 ** k1
+fib.adb:95:10: warning: loop variant might fail
+fib.adb:96:17: warning: divide by zero might fail
+fib.adb:97:13: warning: assertion might fail, requires p1 * (b1 * b1) ** (k1 mod 2) = a1 ** n1
+fib.adb:97:50: warning: divide by zero might fail
+fib.adb:98:22: warning: divide by zero might fail
+fib.adb:99:22: warning: overflow check might fail
+fib.adb:101:13: warning: assertion might fail, requires p1 * b1) * (b1 ** (k1 - 1)) = a1 ** n1
+fib.adb:101:51: warning: range check might fail
+fib.adb:102:22: warning: range check might fail
+fib.adb:103:22: warning: overflow check might fail
+fib.adb:110:10: warning: loop invariant might fail in first iteration
+fib.adb:110:10: warning: loop invariant might fail after first iteration
+fib.adb:112:10: warning: loop variant might fail
+fib.adb:113:17: warning: divide by zero might fail
+fib.adb:114:13: warning: assertion might fail, requires p2 * (b2 * b2) ** (k2 mod 2) = a2 ** n2
+fib.adb:114:50: warning: divide by zero might fail
+fib.adb:115:22: warning: divide by zero might fail
+fib.adb:116:22: warning: overflow check might fail
+fib.adb:118:13: warning: assertion might fail
+fib.adb:118:51: warning: range check might fail
+fib.adb:120:22: warning: range check might fail
+fib.adb:121:22: warning: overflow check might fail
+fib.adb:130:11: warning: range check might fail
+fib.adb:131:13: warning: array index check might fail
+fib.adb:131:22: warning: array index check might fail
+fib.adb:133:11: warning: range check might fail
+fib.adb:133:33: warning: overflow check might fail
+fib.adb:134:13: warning: array index check might fail
+fib.adb:134:24: warning: array index check might fail
+fib.adb:134:24: warning: overflow check might fail
+fib.adb:136:11: warning: range check might fail
+fib.adb:137:13: warning: array index check might fail
+fib.adb:137:22: warning: array index check might fail
+fib.adb:139:11: warning: range check might fail
+fib.adb:139:33: warning: overflow check might fail
+fib.adb:140:13: warning: array index check might fail
+fib.adb:140:24: warning: array index check might fail
+fib.adb:140:24: warning: overflow check might fail
+fib.adb:148:11: warning: range check might fail
+fib.adb:149:13: warning: array index check might fail
+fib.adb:149:22: warning: array index check might fail
+fib.adb:151:11: warning: range check might fail
+fib.adb:151:32: warning: overflow check might fail
+fib.adb:152:13: warning: array index check might fail
+fib.adb:152:24: warning: array index check might fail
+fib.adb:152:24: warning: overflow check might fail
+fib.adb:154:11: warning: range check might fail
+fib.adb:155:13: warning: array index check might fail
+fib.adb:155:22: warning: array index check might fail
+fib.adb:157:11: warning: range check might fail
+fib.adb:157:32: warning: overflow check might fail
+fib.adb:158:13: warning: array index check might fail
+fib.adb:158:24: warning: array index check might fail
+fib.adb:158:24: warning: overflow check might fail
+fib.ads:36:41: warning: "A1" might not be initialized in "Arraypartitionedtransfersc" [uninitialized]
+fib.ads:36:45: warning: "A2" might not be initialized in "Arraypartitionedtransfersc" [uninitialized]
+fib.ads:47:43: warning: "A1" might not be initialized in "Arraypartitionedtransfersifl" [uninitialized]
+fib.ads:47:47: warning: "A2" might not be initialized in "Arraypartitionedtransfersifl" [uninitialized]
+fib.ads:14:14: warning: postcondition might fail, requires l1 = l2
+fib.ads:25:14: warning: postcondition might fail, requires p1 = p2
+fib.ads:33:14: warning: postcondition might fail, requires p1 = p1
+fib.ads:41:50: warning: array index check might fail
+fib.ads:41:58: warning: array index check might fail
+fib.ads:42:55: warning: array index check might fail
+fib.ads:42:68: warning: array index check might fail
+fib.ads:43:49: warning: postcondition might fail, requires A1(I) = A2(I)
+fib.ads:51:49: warning: array index check might fail
+fib.ads:51:57: warning: array index check might fail
+fib.ads:52:54: warning: array index check might fail
+fib.ads:52:66: warning: array index check might fail
+fib.ads:53:49: warning: postcondition might fail, requires A1(I) = A2(I)

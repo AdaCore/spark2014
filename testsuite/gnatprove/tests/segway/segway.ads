@@ -1,3 +1,5 @@
+pragma SPARK_Mode (On);
+
 package Segway is
 
    type State_Type is (Still, Forward, Backward);

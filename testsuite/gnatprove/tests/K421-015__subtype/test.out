@@ -9,4 +9,4 @@ p.adb:12:04: warning: statement has no effect [ineffective]
 p.adb:13:04: warning: statement has no effect [ineffective]
 p.adb:14:04: warning: statement has no effect [ineffective]
 p.adb:3:15: info: range check proved
-p.adb:4:15: range check not proved
+p.adb:4:15: warning: range check might fail

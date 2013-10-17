@@ -2,7 +2,7 @@ Stop at compilation:
 --------------------
 p.adb:2:09: warning: type "M" is not referenced
 p.adb:2:19: warning: suspicious "mod" value, was ** intended?
-p.adb:6:04: warning: "X" is not modified, could be declared constant
+p.adb:10:04: warning: "X" is not modified, could be declared constant
 
    compilation of p.adb failed
 
@@ -13,9 +13,9 @@ Issue all compilation warnings, stop at flow warnings treated as errors:
 ------------------------------------------------------------------------
 p.adb:2:09: warning: type "M" is not referenced
 p.adb:2:19: warning: suspicious "mod" value, was ** intended?
-p.adb:6:04: warning: "X" is not modified, could be declared constant
-p.adb:8:04: warning: statement has no effect [ineffective]
-p.adb:9:09: warning: unused assignment [ineffective]
+p.adb:10:04: warning: "X" is not modified, could be declared constant
+p.adb:12:04: warning: statement has no effect [ineffective]
+p.adb:13:09: warning: unused assignment [ineffective]
 
    compilation of p.adb failed
 
@@ -25,8 +25,8 @@ gnatprove: error during translation to intermediate language, aborting.
 Do not issue all compilation warnings, stop at flow warnings treated as errors:
 -------------------------------------------------------------------------------
 p.adb:2:19: warning: suspicious "mod" value, was ** intended?
-p.adb:8:04: warning: statement has no effect [ineffective]
-p.adb:9:09: warning: unused assignment [ineffective]
+p.adb:12:04: warning: statement has no effect [ineffective]
+p.adb:13:09: warning: unused assignment [ineffective]
 
    compilation of p.adb failed
 
@@ -35,8 +35,8 @@ gnatprove: error during translation to intermediate language, aborting.
 
 Do not issue any compilation warnings, stop at flow warnings treated as errors:
 -------------------------------------------------------------------------------
-p.adb:8:04: warning: statement has no effect [ineffective]
-p.adb:9:09: warning: unused assignment [ineffective]
+p.adb:12:04: warning: statement has no effect [ineffective]
+p.adb:13:09: warning: unused assignment [ineffective]
 
    compilation of p.adb failed
 
@@ -47,36 +47,124 @@ Issue all compilation warnings, issue flow warnings and continue:
 -----------------------------------------------------------------
 p.adb:2:09: warning: type "M" is not referenced
 p.adb:2:19: warning: suspicious "mod" value, was ** intended?
-p.adb:6:04: warning: "X" is not modified, could be declared constant
-p.adb:8:04: warning: statement has no effect [ineffective]
-p.adb:9:09: warning: unused assignment [ineffective]
-p.adb:12:4: info: assertion proved
+p.adb:10:04: warning: "X" is not modified, could be declared constant
+p.adb:12:04: warning: statement has no effect [ineffective]
+p.adb:13:09: warning: unused assignment [ineffective]
+p.adb:16:4: info: assertion proved
 
 Do not issue all compilation warnings, do not issue flow warnings and continue:
 ------------------------------------------------------------------------
 p.adb:2:19: warning: suspicious "mod" value, was ** intended?
-p.adb:8:04: warning: statement has no effect [ineffective]
-p.adb:9:09: warning: unused assignment [ineffective]
-p.adb:12:4: info: assertion proved
+p.adb:12:04: warning: statement has no effect [ineffective]
+p.adb:13:09: warning: unused assignment [ineffective]
+p.adb:16:4: info: assertion proved
 
 Do not issue any compilation warnings, issue flow warnings and continue:
 ------------------------------------------------------------------------
-p.adb:8:04: warning: statement has no effect [ineffective]
-p.adb:9:09: warning: unused assignment [ineffective]
-p.adb:12:4: info: assertion proved
+p.adb:12:04: warning: statement has no effect [ineffective]
+p.adb:13:09: warning: unused assignment [ineffective]
+p.adb:16:4: info: assertion proved
 
 Issue all compilation warnings, do not issue flow warnings and continue:
 ------------------------------------------------------------------------
 p.adb:2:09: warning: type "M" is not referenced
 p.adb:2:19: warning: suspicious "mod" value, was ** intended?
-p.adb:6:04: warning: "X" is not modified, could be declared constant
-p.adb:12:4: info: assertion proved
+p.adb:10:04: warning: "X" is not modified, could be declared constant
+p.adb:16:4: info: assertion proved
 
 Do not issue all compilation warnings, do not issue flow warnings and continue:
 -------------------------------------------------------------------------------
 p.adb:2:19: warning: suspicious "mod" value, was ** intended?
-p.adb:12:4: info: assertion proved
+p.adb:16:4: info: assertion proved
 
 Do not issue any compilation warnings, do not issue flow warnings and continue:
 -------------------------------------------------------------------------------
-p.adb:12:4: info: assertion proved
+p.adb:16:4: info: assertion proved
+Stop at compilation:
+--------------------
+p.adb:2:09: warning: type "M" is not referenced
+p.adb:2:19: warning: suspicious "mod" value, was ** intended?
+p.adb:10:04: warning: "X" is not modified, could be declared constant
+
+   compilation of p.adb failed
+
+gprbuild: *** compilation phase failed
+gnatprove: error during frame condition computation, aborting.
+
+Issue all compilation warnings, stop at flow warnings treated as errors:
+------------------------------------------------------------------------
+p.adb:2:09: warning: type "M" is not referenced
+p.adb:2:19: warning: suspicious "mod" value, was ** intended?
+p.adb:10:04: warning: "X" is not modified, could be declared constant
+
+   compilation of p.adb failed
+
+gprbuild: *** compilation phase failed
+gnatprove: error during translation to intermediate language, aborting.
+{"file":"p.adb","line":12,"col":4,"message":"warning: statement has no effect","rule":"ineffective","severity":"warning","entity":{"file":"p.adb","line":1,"name":"GP_Subp"},"tracefile":"7b355efaa64cdd59a6d76b50d5b2f5ced320015b.trace"}
+{"file":"p.adb","line":13,"col":9,"message":"warning: unused assignment","rule":"ineffective","severity":"warning","entity":{"file":"p.adb","line":1,"name":"GP_Subp"},"tracefile":"e072f43cf7e1b1902bc2b8e4e6afa54ef8444e28.trace"}
+
+Do not issue all compilation warnings, stop at flow warnings treated as errors:
+-------------------------------------------------------------------------------
+p.adb:2:19: warning: suspicious "mod" value, was ** intended?
+
+   compilation of p.adb failed
+
+gprbuild: *** compilation phase failed
+gnatprove: error during translation to intermediate language, aborting.
+{"file":"p.adb","line":12,"col":4,"message":"warning: statement has no effect","rule":"ineffective","severity":"warning","entity":{"file":"p.adb","line":1,"name":"GP_Subp"},"tracefile":"7b355efaa64cdd59a6d76b50d5b2f5ced320015b.trace"}
+{"file":"p.adb","line":13,"col":9,"message":"warning: unused assignment","rule":"ineffective","severity":"warning","entity":{"file":"p.adb","line":1,"name":"GP_Subp"},"tracefile":"e072f43cf7e1b1902bc2b8e4e6afa54ef8444e28.trace"}
+
+Do not issue any compilation warnings, stop at flow warnings treated as errors:
+-------------------------------------------------------------------------------
+
+   compilation of p.adb failed
+
+gprbuild: *** compilation phase failed
+gnatprove: error during translation to intermediate language, aborting.
+{"file":"p.adb","line":12,"col":4,"message":"warning: statement has no effect","rule":"ineffective","severity":"warning","entity":{"file":"p.adb","line":1,"name":"GP_Subp"},"tracefile":"7b355efaa64cdd59a6d76b50d5b2f5ced320015b.trace"}
+{"file":"p.adb","line":13,"col":9,"message":"warning: unused assignment","rule":"ineffective","severity":"warning","entity":{"file":"p.adb","line":1,"name":"GP_Subp"},"tracefile":"e072f43cf7e1b1902bc2b8e4e6afa54ef8444e28.trace"}
+
+Issue all compilation warnings, issue flow warnings and continue:
+-----------------------------------------------------------------
+p.adb:2:09: warning: type "M" is not referenced
+p.adb:2:19: warning: suspicious "mod" value, was ** intended?
+p.adb:10:04: warning: "X" is not modified, could be declared constant
+completed 1 out of 1 (100%)...
+{"file":"p.adb","line":12,"col":4,"message":"warning: statement has no effect","rule":"ineffective","severity":"warning","entity":{"file":"p.adb","line":1,"name":"GP_Subp"},"tracefile":"7b355efaa64cdd59a6d76b50d5b2f5ced320015b.trace"}
+{"file":"p.adb","line":13,"col":9,"message":"warning: unused assignment","rule":"ineffective","severity":"warning","entity":{"file":"p.adb","line":1,"name":"GP_Subp"},"tracefile":"e072f43cf7e1b1902bc2b8e4e6afa54ef8444e28.trace"}
+{"file":"p.adb","line":16,"col":4,"message":"info: assertion proved","rule":"assertion","severity":"info","tracefile":"","entity":{"name":"P","file":"p.adb","line":1}}
+
+Do not issue all compilation warnings, do not issue flow warnings and continue:
+------------------------------------------------------------------------
+p.adb:2:19: warning: suspicious "mod" value, was ** intended?
+completed 1 out of 1 (100%)...
+{"file":"p.adb","line":12,"col":4,"message":"warning: statement has no effect","rule":"ineffective","severity":"warning","entity":{"file":"p.adb","line":1,"name":"GP_Subp"},"tracefile":"7b355efaa64cdd59a6d76b50d5b2f5ced320015b.trace"}
+{"file":"p.adb","line":13,"col":9,"message":"warning: unused assignment","rule":"ineffective","severity":"warning","entity":{"file":"p.adb","line":1,"name":"GP_Subp"},"tracefile":"e072f43cf7e1b1902bc2b8e4e6afa54ef8444e28.trace"}
+{"file":"p.adb","line":16,"col":4,"message":"info: assertion proved","rule":"assertion","severity":"info","tracefile":"","entity":{"name":"P","file":"p.adb","line":1}}
+
+Do not issue any compilation warnings, issue flow warnings and continue:
+------------------------------------------------------------------------
+completed 1 out of 1 (100%)...
+{"file":"p.adb","line":12,"col":4,"message":"warning: statement has no effect","rule":"ineffective","severity":"warning","entity":{"file":"p.adb","line":1,"name":"GP_Subp"},"tracefile":"7b355efaa64cdd59a6d76b50d5b2f5ced320015b.trace"}
+{"file":"p.adb","line":13,"col":9,"message":"warning: unused assignment","rule":"ineffective","severity":"warning","entity":{"file":"p.adb","line":1,"name":"GP_Subp"},"tracefile":"e072f43cf7e1b1902bc2b8e4e6afa54ef8444e28.trace"}
+{"file":"p.adb","line":16,"col":4,"message":"info: assertion proved","rule":"assertion","severity":"info","tracefile":"","entity":{"name":"P","file":"p.adb","line":1}}
+
+Issue all compilation warnings, do not issue flow warnings and continue:
+------------------------------------------------------------------------
+p.adb:2:09: warning: type "M" is not referenced
+p.adb:2:19: warning: suspicious "mod" value, was ** intended?
+p.adb:10:04: warning: "X" is not modified, could be declared constant
+completed 1 out of 1 (100%)...
+{"file":"p.adb","line":16,"col":4,"message":"info: assertion proved","rule":"assertion","severity":"info","tracefile":"","entity":{"name":"P","file":"p.adb","line":1}}
+
+Do not issue all compilation warnings, do not issue flow warnings and continue:
+-------------------------------------------------------------------------------
+p.adb:2:19: warning: suspicious "mod" value, was ** intended?
+completed 1 out of 1 (100%)...
+{"file":"p.adb","line":16,"col":4,"message":"info: assertion proved","rule":"assertion","severity":"info","tracefile":"","entity":{"name":"P","file":"p.adb","line":1}}
+
+Do not issue any compilation warnings, do not issue flow warnings and continue:
+-------------------------------------------------------------------------------
+completed 1 out of 1 (100%)...
+{"file":"p.adb","line":16,"col":4,"message":"info: assertion proved","rule":"assertion","severity":"info","tracefile":"","entity":{"name":"P","file":"p.adb","line":1}}

@@ -1,5 +1,5 @@
-after_tax.adb:5:22: overflow check not proved
-after_tax.adb:5:22: range check not proved
-after_tax.adb:5:36: overflow check not proved
-after_tax.adb:5:44: info: division check proved
-after_tax.ads:6:11: postcondition not proved, requires After_Tax'Result <= Before_Tax
+after_tax.adb:7:22: warning: overflow check might fail
+after_tax.adb:7:22: warning: range check might fail
+after_tax.adb:7:36: warning: overflow check might fail
+after_tax.adb:7:44: info: division check proved
+after_tax.ads:8:11: warning: postcondition might fail, requires After_Tax'Result <= Before_Tax

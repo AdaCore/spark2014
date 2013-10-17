@@ -1,0 +1,19 @@
+sorted_vectors.adb:10:9: info: precondition proved
+sorted_vectors.adb:11:10: info: loop invariant initialization proved
+sorted_vectors.adb:11:10: info: loop invariant preservation proved
+sorted_vectors.adb:13:13: info: precondition proved
+sorted_vectors.adb:13:42: info: range check proved
+sorted_vectors.adb:14:31: info: range check proved
+sorted_vectors.adb:17:7: info: precondition proved
+sorted_vectors.ads:27:8: warning: postcondition might fail
+sorted_vectors.ads:28:50: info: overflow check proved
+sorted_vectors.ads:29:6: info: precondition proved
+sorted_vectors.ads:31:12: info: precondition proved
+sorted_vectors.ads:31:32: warning: range check might fail
+sorted_vectors.ads:31:37: info: precondition proved
+sorted_vectors.ads:31:61: warning: range check might fail
+sorted_vectors.ads:33:14: info: precondition proved
+sorted_vectors.ads:33:34: info: range check proved
+sorted_vectors.ads:33:39: info: precondition proved
+sorted_vectors.ads:33:64: info: overflow check proved
+sorted_vectors.ads:33:64: info: range check proved

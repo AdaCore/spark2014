@@ -189,6 +189,15 @@ package body Get_Targ is
       return 1;
    end Get_Bits_BE;
 
+   ---------------------
+   -- Get_Short_Enums --
+   ---------------------
+
+   function Get_Short_Enums return Int is
+   begin
+      return 0;
+   end Get_Short_Enums;
+
    --------------------------
    -- Get_Strict_Alignment --
    --------------------------

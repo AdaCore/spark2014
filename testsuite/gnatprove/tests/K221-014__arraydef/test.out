@@ -1,1 +1,1 @@
-arraydef.adb:6:24: overflow check not proved
+arraydef.adb:6:24: warning: overflow check might fail

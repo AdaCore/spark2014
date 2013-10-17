@@ -23,6 +23,79 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+--  This program (SPARK_Report) is run at the very end of SPARK analysis (see
+--  also the comment in gnatprove.adb). The different bits of analysis have
+--  stored the results of the analysis in various files, This program reads
+--  all those files in and prints a summary in a file called "gnatprove.out".
+--
+--  For each unit, the tool expects files to be present that look like this:
+--    * <unit>.spark contains the SPARK status for all subprograms and packages
+--    * <unit>.flow contains the flow warnings/error messages for all
+--         subprograms and packages in SPARK
+--    * <unit>.proof contains the proved/unproved VCs for all subprograms and
+--        packages in SPARK
+--
+--  All these files are JSON files, and contain a list of entries that will be
+--  read in by SPARK_Report. We now describe the format of each file.
+--
+--  --------------
+--  -- Entities --
+--  --------------
+--
+--  At various places, we refer to entities. These are Ada entities,
+--  subprograms or packages. Entities are defined by their name and their
+--  source location (file and line). In JSON this translates to the following
+--  dictionary for entities:
+--    { name  : string,
+--      file  : string,
+--      line  : int }
+
+--  -----------------------
+--  -- SPARK status file --
+--  -----------------------
+--
+--  This file is called <unit>.spark and is a list of entities, with an extra
+--  field for spark status, so that the entire dict looks like this:
+--    { name  : string,
+--      file  : string,
+--      line  : int,
+--      spark : string }
+--  the entry "spark" is one of "body", "spec" or "no" and describes the SPARK
+--  status of the entity.
+--
+--  -----------------
+--  --  Proof File --
+--  -----------------
+--
+--  This file is called <unit>.proof and is a list of dictionaries of the
+--  folling form:
+--    { file     : string,
+--      line     : int,
+--      col      : int,
+--      message  : string,
+--      rule     : string,
+--      severity : string,
+--      tracefile: string,
+--      entity   : entity }
+--  - (file, line, col) describe the source location of the message.
+--  - "message" is the message text.
+--  - "rule" describes the kind of VC, the possible values are described
+--    in the file vc_kinds.ads.
+--  - "severity" describes the kind status of the message, possible values used
+--    by gnatwhy3 are "info" and "error"
+--  - "tracefile" contains the name of a trace file, if any
+--  - "entity" contains the entity dictionary for the entity that this VC
+--    belongs to
+--
+--  ----------------
+--  --  Flow File --
+--  ----------------
+--
+--  This file is called <unit>.flow and is a list of dictionaries of the same
+--  form as for proof. Differences are in the possible values for:
+--  - severity: ??? document what severities flow uses
+--  - rule:     ??? document possible values for flow
+
 with Ada.Command_Line;
 with Ada.Directories;
 with Ada.Text_IO;
@@ -34,7 +107,6 @@ with GNATCOLL.JSON;
 
 with Call;                    use Call;
 with String_Utils;            use String_Utils;
-with SPARK_Violations;
 with VC_Kinds;
 
 with Configuration;           use Configuration;
@@ -114,7 +186,7 @@ procedure SPARK_Report is
             begin
                Add_SPARK_Status (Unit,
                                  Mk_Subp_Of_Entity (Result),
-                                 Get (Get (Result, "spark")));
+                                 Get (Get (Result, "spark")) = "body");
             end;
          end loop;
       end;
@@ -180,7 +252,7 @@ procedure SPARK_Report is
 
    begin
       Ada.Directories.Set_Directory (Dir);
-      Iterate_SPARK (Path => '*' & SPARK_Violations.SPARK_Suffix);
+      Iterate_SPARK (Path => '*' & VC_Kinds.SPARK_Suffix);
       Iterate_Proof (Path => '*' & VC_Kinds.Proof_Suffix);
       Ada.Directories.Set_Directory (Save_Dir);
    exception
@@ -240,9 +312,15 @@ procedure SPARK_Report is
                 Int_Image (Num_Subps (Unit)) & " analyzed");
          Iter_Unit_Subps (Unit, For_Each_Subp'Access);
       end For_Each_Unit;
+
+      --  Start of processing for Print_Proof_Report
+
+      N_Un : constant Integer := Num_Units;
    begin
-      Put_Line (Handle, "Analyzed" & Num_Units'Img & " units");
-      Iter_Units (For_Each_Unit'Access);
+      if N_Un > 0 then
+         Put_Line (Handle, "Analyzed" & N_Un'Img & " units");
+         Iter_Units (For_Each_Unit'Access);
+      end if;
    end Print_Proof_Report;
 
    procedure Iterate_Source_Dirs is new For_Line_In_File (Handle_Source_Dir);

@@ -1,1 +1,1 @@
-ALL XFAIL not fixed yet
+all XFAIL Formal containers should be initialized (MA07-042)

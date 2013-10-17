@@ -4,7 +4,7 @@
 
 
 package body F954A00 is   -- Printer server abstraction.
-
+   pragma SPARK_Mode (Off);
 
    protected body Printers is
 
@@ -23,7 +23,7 @@ package body F954A00 is   -- Printer server abstraction.
       end Done_Printing;                              -- printer interrupt).
 
 
-      procedure Handle_Interrupt is                   -- Called when the 
+      procedure Handle_Interrupt is                   -- Called when the
       begin                                           -- printer interrupts,
          Ready := True;                               -- indicating that
       end Handle_Interrupt;                           -- printing is done.

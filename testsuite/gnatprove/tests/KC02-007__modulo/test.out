@@ -1,4 +1,4 @@
-p.ads:7:14: postcondition not proved, requires F'Result = 17
+p.ads:7:14: warning: postcondition might fail, requires F'Result = 17
 p.ads:12:14: info: postcondition proved
 p.ads:16:19: info: postcondition proved
 p.ads:19:20: info: postcondition proved

@@ -25,6 +25,7 @@ with Section_4_3_2;
 use Section_4_3_2;
 
 Package body Section_4_6 is
+   pragma SPARK_Mode (On);
    function transition(mode : etcs_mode_t) return etcs_mode_t is
    begin
       return No_Power;

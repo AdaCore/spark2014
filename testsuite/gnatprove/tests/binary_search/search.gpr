@@ -1,5 +1,0 @@
-project Search is
-   package Compiler is
-      for Default_Switches ("Ada") use ("-gnat2012");
-   end Compiler;
-end Search;

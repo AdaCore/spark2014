@@ -1,4 +1,4 @@
-p.adb:2:04: warning: statement has no effect [ineffective]
+p.adb:2:04: warning: initialization has no effect [ineffective]
 p.adb:4:28: warning: unused assignment [ineffective]
 p.adb:2:18: info: length check proved
-p.adb:4:31: length check not proved
+p.adb:4:31: info: length check proved

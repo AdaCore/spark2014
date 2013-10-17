@@ -1,0 +1,18 @@
+project State_Machine_Examples is
+
+   for Main use ("main.adb");
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-gnatVa", "-gnat12", "-gnato", "-fstack-check", "-gnatE", "-gnatf", "-gnata", "-g");
+   end Compiler;
+
+   package Ide is
+      for Vcs_Kind use "Subversion";
+   end Ide;
+
+   package Prove is
+      for Switches use ("--timeout=2");
+   end Prove;
+
+end State_Machine_Examples;
+

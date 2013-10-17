@@ -1,3 +1,3 @@
-tctouch.adb:4:03: warning: statement has no effect [ineffective]
-tctouch.adb:8:22: overflow check not proved
-tctouch.adb:9:17: index check not proved
+tctouch.adb:4:03: warning: initialization has no effect [ineffective]
+tctouch.adb:8:22: warning: overflow check might fail
+tctouch.adb:9:17: warning: array index check might fail

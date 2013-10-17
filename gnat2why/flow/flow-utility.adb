@@ -21,8 +21,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Nlists;   use Nlists;
+with Errout;   use Errout;
 with Namet;    use Namet;
+with Nlists;   use Nlists;
 
 with Treepr;   use Treepr;
 
@@ -74,7 +75,7 @@ package body Flow.Utility is
    function Find_Contracts (E    : Entity_Id;
                             Name : Name_Id)
                             return Node_Lists.List
-     with Pre => Ekind (E) in Subprogram_Kind;
+     with Pre => Ekind (E) in Subprogram_Kind | E_Package;
    --  Walk the Contract node attached to E and return the pragma
    --  matching Name.
 
@@ -185,15 +186,26 @@ package body Flow.Utility is
       Other_Name : Name_Id;
    begin
       case Name is
-         when Name_Precondition   |
-              Name_Postcondition  |
-              Name_Contract_Cases =>
+         when Name_Precondition      |
+              Name_Postcondition     |
+              Name_Refined_Post      |
+              Name_Contract_Cases    |
+              Name_Initial_Condition =>
+
             if Name = Name_Precondition then
                Other_Name := Name_Pre;
                P := Pre_Post_Conditions (C);
             elsif Name = Name_Postcondition then
                Other_Name := Name_Post;
                P := Pre_Post_Conditions (C);
+            elsif Name = Name_Refined_Post then
+               Other_Name := Name_Refined_Post;
+               P := Pre_Post_Conditions
+                 (Contract (Defining_Unit_Name (Specification
+                                                  (Get_Subprogram_Body (E)))));
+            elsif Name = Name_Initial_Condition then
+               Other_Name := Name_Initial_Condition;
+               P := Classifications (C);
             else
                Other_Name := Name_Contract_Cases;
                P := Contract_Test_Cases (C);
@@ -250,8 +262,9 @@ package body Flow.Utility is
    --  Get_Variable_Set  --
    ------------------------
 
-   function Get_Variable_Set (Scope : Scope_Ptr;
-                              N     : Node_Id)
+   function Get_Variable_Set (Scope   : Scope_Ptr;
+                              N       : Node_Id;
+                              Reduced : Boolean := False)
                               return Flow_Id_Sets.Set
    is
       VS : Flow_Id_Sets.Set;
@@ -290,12 +303,18 @@ package body Flow.Utility is
                       Writes       => Global_Writes,
                       Refined_View => Should_Use_Refined_View (Scope,
                                                                Callsite));
-         pragma Assert (Flow_Id_Sets.Length (Global_Writes) = 0);
+         if Flow_Id_Sets.Length (Global_Writes) > 0 then
+            Error_Msg_NE
+              (Msg => "side-effects of function & are not modelled in SPARK",
+               N   => Callsite,
+               E   => Subprogram);
+         end if;
 
          Used_Variables :=
            Used_Variables or
            Get_Variable_Set (Scope,
-                             Parameter_Associations (Callsite));
+                             Parameter_Associations (Callsite),
+                             Reduced);
 
          for G of Global_Reads loop
             for F of Flatten_Variable (G) loop
@@ -335,7 +354,11 @@ package body Flow.Utility is
                        E_Out_Parameter |
                        E_In_Parameter |
                        E_In_Out_Parameter =>
-                        VS.Union (Flatten_Variable (Entity (N)));
+                        if Reduced then
+                           VS.Include (Direct_Mapping_Id (Entity (N)));
+                        else
+                           VS.Union (Flatten_Variable (Entity (N)));
+                        end if;
                      when others =>
                         null;
                   end case;
@@ -348,16 +371,30 @@ package body Flow.Utility is
                     E_Out_Parameter |
                     E_In_Parameter |
                     E_In_Out_Parameter =>
-                     VS.Union (Flatten_Variable (N));
+                     if Reduced then
+                        VS.Include (Direct_Mapping_Id (N));
+                     else
+                        VS.Union (Flatten_Variable (N));
+                     end if;
                   when others =>
                      null;
                end case;
 
             when N_Selected_Component | N_Indexed_Component =>
-               --  We strip out loop entry references as they are
-               --  dealt with by Do_Pragma and Do_Loop_Statement in
-               --  the CFG construction.
-               if not Contains_Loop_Entry_Reference (N) then
+
+               if Reduced then
+
+                  --  In reduced mode we just keep traversing the
+                  --  tree.
+
+                  return OK;
+
+               elsif not Contains_Loop_Entry_Reference (N) then
+
+                  --  We strip out loop entry references as they are
+                  --  dealt with by Do_Pragma and Do_Loop_Statement in
+                  --  the CFG construction.
+
                   declare
                      D, U : Flow_Id_Sets.Set;
                   begin
@@ -368,8 +405,13 @@ package body Flow.Utility is
                      VS.Union (D);
                      VS.Union (U);
                   end;
+                  return Skip;
+
+               else
+
+                  return Skip;
+
                end if;
-               return Skip;
 
             when N_Attribute_Reference =>
                case Get_Attribute_Id (Attribute_Name (N)) is
@@ -402,8 +444,9 @@ package body Flow.Utility is
       return Filter_Out_Constants (VS);
    end Get_Variable_Set;
 
-   function Get_Variable_Set (Scope : Scope_Ptr;
-                              L     : List_Id)
+   function Get_Variable_Set (Scope   : Scope_Ptr;
+                              L       : List_Id;
+                              Reduced : Boolean := False)
                               return Flow_Id_Sets.Set
    is
       VS : Flow_Id_Sets.Set;
@@ -411,7 +454,7 @@ package body Flow.Utility is
    begin
       P := First (L);
       while Present (P) loop
-         VS.Union (Get_Variable_Set (Scope, P));
+         VS.Union (Get_Variable_Set (Scope, P, Reduced));
 
          P := Next (P);
       end loop;
@@ -672,7 +715,22 @@ package body Flow.Utility is
                when N_Unchecked_Type_Conversion =>
                   --  See above.
                   Vars_Defined.Union (Get_Variable_Set
-                                      (Scope, Expression (End_Of_Record)));
+                                        (Scope, Expression (End_Of_Record)));
+
+               when N_Attribute_Reference =>
+                  declare
+                     P : Node_Id := End_Of_Record;
+                  begin
+                     while Nkind (P) = N_Attribute_Reference loop
+                        P := Prefix (P);
+                     end loop;
+                     Vars_Defined.Include
+                       (Direct_Mapping_Id (Entity (P)));
+                     if Partial_Use then
+                        Vars_Used.Include
+                          (Direct_Mapping_Id (Entity (P)));
+                     end if;
+                  end;
 
                when others =>
                   Vars_Defined.Include
@@ -698,7 +756,7 @@ package body Flow.Utility is
    ----------------------------------
 
    function Get_Precondition_Expressions (E : Entity_Id)
-                               return Node_Lists.List
+                                          return Node_Lists.List
    is
       Precondition_Expressions : Node_Lists.List :=
         Find_Contracts (E, Name_Precondition);
@@ -728,6 +786,51 @@ package body Flow.Utility is
       return Precondition_Expressions;
 
    end Get_Precondition_Expressions;
+
+   -----------------------------------
+   -- Get_Postcondition_Expressions --
+   -----------------------------------
+
+   function Get_Postcondition_Expressions (E : Entity_Id)
+                                           return Node_Lists.List
+   is
+      P_Expr : Node_Lists.List;
+      P_CC   : Node_Lists.List;
+   begin
+      case Ekind (E) is
+         when Subprogram_Kind =>
+            P_Expr := Find_Contracts (E, Name_Postcondition);
+            P_CC   := Find_Contracts (E, Name_Contract_Cases);
+
+            --  If a Contract_Cases aspect was found then we pull out
+            --  every right-hand-side.
+            if not P_CC.Is_Empty then
+               declare
+                  Ptr : Node_Id;
+               begin
+                  Ptr := First (Component_Associations
+                                  (P_CC.First_Element));
+                  while Present (Ptr) loop
+                     P_Expr.Append (Expression (Ptr));
+                     Ptr := Next (Ptr);
+                  end loop;
+               end;
+            end if;
+
+            for X of Find_Contracts (E, Name_Refined_Post) loop
+               P_Expr.Append (X);
+            end loop;
+
+         when E_Package =>
+            P_Expr := Find_Contracts (E, Name_Initial_Condition);
+
+         when others =>
+            raise Program_Error;
+
+      end case;
+
+      return P_Expr;
+   end Get_Postcondition_Expressions;
 
    ---------------------------
    -- Is_Precondition_Check --

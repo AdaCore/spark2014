@@ -1,0 +1,13 @@
+gcc -c volatiles_illegal_1.adb
+gcc -S volatiles_illegal_2.ads
+gcc -S volatiles_illegal_3.ads
+gcc -c volatiles_illegal_4.adb
+gcc -c volatiles_illegal_5.adb
+gcc -c volatiles_illegal_6.adb
+gcc -c volatiles_illegal_7.adb
+gcc -c volatiles_illegal_8.adb
+gcc -c volatiles_illegal_9.adb
+gcc -S volatiles_illegal_10.ads
+gcc -S volatiles_illegal_11.ads
+gcc -S volatiles_illegal_12.ads
+gcc -S volatiles_illegal_13.ads

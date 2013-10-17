@@ -18,7 +18,8 @@
 with Clock;
 
 private package Clock.Interfac
-   with Abstract_State => (Now with Part_Of => Clock.Now)
+  with Abstract_State => (Now with External,
+                                   Part_Of => Clock.Now)
 is
 
    ------------------------------------------------------------------

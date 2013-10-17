@@ -23,11 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers.Hashed_Maps;
-with Ada.Containers.Doubly_Linked_Lists;
-with Ada.Strings.Unbounded;              use Ada.Strings.Unbounded;
-with Ada.Strings.Unbounded.Hash;
-
 with SPARK_Frame_Conditions;             use SPARK_Frame_Conditions;
 
 with Types;                              use Types;
@@ -52,13 +47,16 @@ package Why.Inter is
    with Post => (Make_Empty_Why_File'Result.Cur_Theory = Why_Empty);
    --  Return an empty Why_File with the given name and kind
 
+   type Theory_Kind is
+     (Standalone_Theory,      --  standalone definition of symbols
+      Definition_Theory,      --  definition of symbols
+      Axiom_Theory,           --  axioms for previously defined symbols
+      VC_Generation_Theory);  --  generation of VCs
+
    procedure Close_Theory
-     (P               : in out Why_Section;
-      Filter_Entity   : Entity_Id;
-      Defined_Entity  : Entity_Id := Empty;
-      Do_Closure      : Boolean := False;
-      No_Import       : Boolean := False;
-      With_Completion : Boolean := True);
+     (P              : in out Why_Section;
+      Kind           : Theory_Kind;
+      Defined_Entity : Entity_Id := Empty);
    --  Close the current theory by adding all necessary imports and adding
    --  the theory to the file. If not Empty, Defined_Entity is the entity
    --  defined by the current theory, which is used to complete the graph
@@ -66,6 +64,11 @@ package Why.Inter is
    --  dependencies are used to get all entities on which this definition
    --  depends. With_Completion is True if the completion theories should be
    --  added too.
+
+   procedure Add_Extra_Dependency
+     (Defined_Entity : Entity_Id;
+      New_Dependency : Entity_Id);
+   --  Add an extra dependency New_Dependency for entity Defined_Entity
 
    procedure Discard_Theory (P : in out Why_Section);
    --  Remove the current theory from P
@@ -100,46 +103,6 @@ package Why.Inter is
    --  Mappings from Ada nodes to Why logic functions for their translation
    --  This map is used for string literals and aggregates
 
-   -----------------
-   -- Completions --
-   -----------------
-
-   --  Some entities are defined in more than one module. There might be one or
-   --  two additional modules, one in the contextual file for the spec, and
-   --  one in the contextual file for the body. For each additional module,
-   --  Add_Completion is called to record that completion. Later, when a
-   --  dependence on this entity is noted, Get_Completions is called to
-   --  retrieve the names of the additional modules to include.
-
-   --  This mechanism is also used to trace the dependence between an instance
-   --  of a generic package with a Why axiomatization and the expression
-   --  functions coming from its actuals.
-
-   subtype Why_Context_Section_Enum is Why_Section_Enum range
-     WF_Pure .. WF_Context;
-
-   type Why_File_Completion_Item is record
-      Name : Unbounded_String;
-      Kind : Why_Context_Section_Enum;
-   end record;
-
-   type Why_Completions is array (Positive range <>) of
-     Why_File_Completion_Item;
-   --  Return type of Get_Completions, to get all completions of a theory
-
-   procedure Add_Completion
-     (Name            : String;
-      Completion_Name : String;
-      Kind            : Why_Context_Section_Enum);
-   --  Add the completion Completion_Name to theory Name
-
-   function Get_Completions
-     (Name       : String;
-      Up_To_Kind : Why_Section_Enum) return Why_Completions;
-   --  Return the completions for the theory called Name, in a file of kind
-   --  Why_File_Enum, so only completions of kinds less than Why_File_Enum are
-   --  taken into account, to avoid circularities in Why file dependences.
-
    Standard_Why_Package_Name : constant String := "_standard";
 
    procedure Init_Why_Files (Unit : Node_Id);
@@ -160,10 +123,6 @@ package Why.Inter is
                               Th_Type  : EW_Theory_Type := EW_Module);
    --  Add a package name to the context of a Why package.
 
-   function File_Base_Name_Of_Entity (E : Entity_Id) return String;
-   --  return the base name of the unit in which the entity is
-   --  defined
-
    function Name_Of_Node (N : Node_Id) return String;
    --  Return the uncapitalized name which needs to be used to include the
    --  Why entity for that node (after capitalization).
@@ -183,7 +142,8 @@ package Why.Inter is
    function To_Why_Id (E      : Entity_Id;
                        Domain : EW_Domain := EW_Prog;
                        Local  : Boolean := False;
-                       Rec    : Entity_Id := Empty) return W_Identifier_Id;
+                       Rec    : Entity_Id := Empty;
+                       Typ    : W_Type_Id := Why_Empty) return W_Identifier_Id;
    --  The one and only way to transform an Ada Entity to a Why identifier.
    --  However, sometimes the exact way differs between program and logic world
    --  There is also a local and a global name of each identifier. The local
@@ -209,6 +169,15 @@ package Why.Inter is
    function Why_Types (E : EW_Basic_Type) return W_Type_Id;
 
    function EW_Abstract (N : Node_Id) return W_Type_Id;
+   --  Convert an Ada type entity into a Why type. This function respects the
+   --  gnat2why encoding. For example, for N = Boolean the function returns
+   --  EW_Bool_Type, for non-SPARK types and private types, EW_Private_Type
+   --  is returned. For all the details, see the implementation.
+
+   function EW_Split (N : Node_Id) return W_Type_Id;
+   --  This function does the exact same thing as EW_Abstract, but changes the
+   --  kind of the node to EW_Split
+
    function New_Abstract_Base_Type (E : Entity_Id) return W_Type_Id;
    function New_Named_Type (Name : W_Identifier_Id) return W_Type_Id;
    function New_Ref_Type (Ty : W_Type_Id) return W_Type_Id;
@@ -261,21 +230,6 @@ package Why.Inter is
    --  Return True if Left and Right corresponds to the same Why identifier
 
 private
-   package Why_File_Completion_Lists is new Ada.Containers.Doubly_Linked_Lists
-     (Element_Type    => Why_File_Completion_Item,
-      "="             => "=");
-
-   package Why_File_Completions is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Unbounded_String,
-      Element_Type    => Why_File_Completion_Lists.List,
-      Hash            => Ada.Strings.Unbounded.Hash,
-      Equivalent_Keys => "=",
-      "="             => Why_File_Completion_Lists."=");
-   --  Data type storing chained completions of theories
-
-   Why_File_Completion : Why_File_Completions.Map;
-   --  Global variable storing completions of theories
-
    Entity_Dependencies : Node_Graphs.Map;
    --  Mapping from an entity to the set of entities on which it depends. This
    --  map is filled by Close_Theory.

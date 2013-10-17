@@ -1,14 +1,17 @@
+fb20a00.adb:25:24: warning: "Ret" might not be initialized [uninitialized]
+fb20a00.adb:27:24: warning: "Ret" might not be initialized [uninitialized]
+fb20a00.adb:30:10: warning: "Ret" might not be initialized [uninitialized]
 fb20a00.adb:9:7: info: range check proved
 fb20a00.adb:10:7: info: range check proved
 fb20a00.adb:18:10: info: range check proved
 fb20a00.adb:25:38: info: range check proved
-fb20a00.adb:34:18: length check not proved
-fb20a00.adb:35:18: length check not proved
-fb20a00.adb:37:34: overflow check not proved
-fb20a00.adb:37:49: overflow check not proved
-fb20a00.adb:39:11: range check not proved
-fb20a00.adb:39:31: overflow check not proved
-fb20a00.adb:39:46: overflow check not proved
-fb20a00.adb:42:21: overflow check not proved
-fb20a00.adb:45:30: overflow check not proved
-fb20a00.adb:45:45: overflow check not proved
+fb20a00.adb:34:18: warning: length check might fail
+fb20a00.adb:35:18: warning: length check might fail
+fb20a00.adb:37:34: warning: overflow check might fail
+fb20a00.adb:37:49: warning: overflow check might fail
+fb20a00.adb:39:11: warning: range check might fail
+fb20a00.adb:39:31: warning: overflow check might fail
+fb20a00.adb:39:46: warning: overflow check might fail
+fb20a00.adb:42:21: warning: overflow check might fail
+fb20a00.adb:45:30: warning: overflow check might fail
+fb20a00.adb:45:45: warning: overflow check might fail

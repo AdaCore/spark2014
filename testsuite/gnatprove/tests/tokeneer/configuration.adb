@@ -32,7 +32,7 @@ use type Clock.DurationT;
 use type AuditTypes.FileSizeT;
 
 package body Configuration
-is
+is pragma SPARK_Mode (On);
 
    ------------------------------------------------------------------
    -- Types

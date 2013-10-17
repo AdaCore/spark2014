@@ -22,26 +22,28 @@
 ------------------------------------------------------------------------------
 
 with Ada.Characters.Latin_1;
-with Ada.Strings;               use Ada.Strings;
+with Ada.Strings;                   use Ada.Strings;
 with Ada.Strings.Maps;
 
-with Namet;                     use Namet;
-with Nlists;                    use Nlists;
-with Sem_Util;                  use Sem_Util;
-with Snames;                    use Snames;
-with Sprint;                    use Sprint;
-with Sinfo;                     use Sinfo;
-with Lib;                       use Lib;
+with Namet;                         use Namet;
+with Nlists;                        use Nlists;
+with Sem_Util;                      use Sem_Util;
+with Snames;                        use Snames;
+with Sprint;                        use Sprint;
+with Sinfo;                         use Sinfo;
+with Lib;                           use Lib;
+with Errout;                        use Errout;
+with Osint;                         use Osint;
 
-with Output;                    use Output;
-with Treepr;                    use Treepr;
+with Output;                        use Output;
+with Treepr;                        use Treepr;
 
 with Why;
-with SPARK_Definition;          use SPARK_Definition;
+with SPARK_Definition;              use SPARK_Definition;
 with SPARK_Util;
 
 with Gnat2Why_Args;
-with GNAT.Directory_Operations; use GNAT.Directory_Operations;
+with GNAT.Directory_Operations;     use GNAT.Directory_Operations;
 
 with Flow.Analysis;
 with Flow.Control_Dependence_Graph;
@@ -50,7 +52,8 @@ with Flow.Data_Dependence_Graph;
 with Flow.Interprocedural;
 with Flow.Program_Dependence_Graph;
 
-with Flow.Utility;              use Flow.Utility;
+with Flow.Utility;                  use Flow.Utility;
+with Flow_Error_Messages;           use Flow_Error_Messages;
 
 use type Ada.Containers.Count_Type;
 
@@ -90,12 +93,15 @@ package body Flow is
    --  Flow_Id. This is used for emitting more helpful error messages
    --  if a Magic_String Flow_Id is concerened.
 
-   function Flow_Analyse_Entity (E : Entity_Id)
+   function Flow_Analyse_Entity (E : Entity_Id;
+                                 S : Node_Id)
                                  return Flow_Analysis_Graphs
      with Pre  => Ekind (E) in Subprogram_Kind | E_Package | E_Package_Body,
           Post => Is_Valid (Flow_Analyse_Entity'Result);
-   --  Flow analyse the given entity. This subprogram does nothing for
-   --  entities without a body and not in SPARK 2014.
+   --  Flow analyse the given entity E. S should be the node
+   --  representing the specification of E (i.e. where the N_Contract
+   --  node is attached). This subprogram does nothing for entities
+   --  without a body and not in SPARK 2014.
 
    -------------------------
    -- Add_To_Temp_String  --
@@ -376,9 +382,6 @@ package body Flow is
          --  computed globals...
 
          declare
-            ALI_Reads  : constant Name_Set.Set := Get_Reads (Subprogram);
-            ALI_Writes : constant Name_Set.Set := Get_Writes (Subprogram);
-
             function Get_Flow_Id
               (Name : Entity_Name;
                View : Parameter_Variant)
@@ -402,9 +405,30 @@ package body Flow is
                return Magic_String_Id (Name, View);
             end Get_Flow_Id;
 
+            ALI_Reads  : constant Name_Set.Set :=
+              Get_Reads (Subprogram, Include_Constants => True);
+            ALI_Writes : constant Name_Set.Set := Get_Writes (Subprogram);
+
+            F : Flow_Id;
          begin
+
+            --  We process the reads
+
             for R of ALI_Reads loop
-               Reads.Include (Get_Flow_Id (R, In_View));
+               F := Get_Flow_Id (R, In_View);
+               case F.Kind is
+                  when Direct_Mapping =>
+                     if Ekind (Get_Direct_Mapping_Id (F)) /= E_Constant then
+                        --  We completely ignore all constants for now.
+                        Reads.Include (F);
+                     end if;
+
+                  when Magic_String =>
+                     Reads.Include (F);
+
+                  when Null_Value | Record_Field =>
+                     raise Program_Error;
+               end case;
             end loop;
 
             for W of ALI_Writes loop
@@ -414,8 +438,9 @@ package body Flow is
                --
                --  This also takes care of discriminants as every out
                --  is really an in out.
-               Reads.Include (Get_Flow_Id (W, In_View));
-               Writes.Include (Get_Flow_Id (W, Out_View));
+               F := Get_Flow_Id (W, Out_View);
+               Reads.Include (Change_Variant (F, In_View));
+               Writes.Include (F);
             end loop;
          end;
 
@@ -779,7 +804,8 @@ package body Flow is
    -- Flow_Analyse_Entity --
    -------------------------
 
-   function Flow_Analyse_Entity (E : Entity_Id)
+   function Flow_Analyse_Entity (E : Entity_Id;
+                                 S : Node_Id)
                                  return Flow_Analysis_Graphs
    is
       FA : Flow_Analysis_Graphs;
@@ -790,6 +816,7 @@ package body Flow is
               (Kind              => E_Subprogram_Body,
                Analyzed_Entity   => E,
                Scope             => SPARK_Util.Get_Subprogram_Body (E),
+               Spec_Node         => S,
                Start_Vertex      => Null_Vertex,
                End_Vertex        => Null_Vertex,
                CFG               => Create,
@@ -811,13 +838,15 @@ package body Flow is
                                            (Get_Pragma (E, Pragma_Depends))),
                Last_Statement_Is_Raise => Last_Statement_Is_Raise (E),
                Depends_N         => Empty,
-               Refined_Depends_N => Empty);
+               Refined_Depends_N => Empty,
+               Function_Side_Effects_Present => False);
 
          when E_Package =>
             FA := Flow_Analysis_Graphs'
               (Kind              => E_Package,
                Analyzed_Entity   => E,
                Scope             => Get_Enclosing_Scope (E),
+               Spec_Node         => S,
                Start_Vertex      => Null_Vertex,
                End_Vertex        => Null_Vertex,
                CFG               => Create,
@@ -838,6 +867,7 @@ package body Flow is
               (Kind              => E_Package_Body,
                Analyzed_Entity   => E,
                Scope             => Get_Enclosing_Body_Scope (E),
+               Spec_Node         => S,
                Start_Vertex      => Null_Vertex,
                End_Vertex        => Null_Vertex,
                CFG               => Create,
@@ -932,7 +962,7 @@ package body Flow is
    -- Flow_Analyse_CUnit --
    ------------------------
 
-   procedure Flow_Analyse_CUnit is
+   procedure Flow_Analyse_CUnit (GNAT_Root : Node_Id) is
       FA_Graphs : Analysis_Maps.Map;
       Success   : Boolean;
 
@@ -1022,7 +1052,7 @@ package body Flow is
                if Analysis_Requested (E)
                  and Entity_Body_In_SPARK (E)
                then
-                  FA_Graphs.Include (E, Flow_Analyse_Entity (E));
+                  FA_Graphs.Include (E, Flow_Analyse_Entity (E, E));
                end if;
 
             when E_Package =>
@@ -1031,10 +1061,10 @@ package body Flow is
                   Pkg_Body : Node_Id;
                begin
                   if Analysis_Requested (E)
-                    and Entity_In_SPARK (E)
+                    and Entity_Body_In_SPARK (E)
                     and not In_Predefined_Unit (E)
                   then
-                     FA_Graphs.Include (E, Flow_Analyse_Entity (E));
+                     FA_Graphs.Include (E, Flow_Analyse_Entity (E, E));
 
                      Pkg_Body := Pkg_Spec;
                      while Present (Pkg_Body) and
@@ -1051,7 +1081,7 @@ package body Flow is
                                          and then
                                          Ekind (Pkg_Body) = E_Package_Body);
                         FA_Graphs.Include (Pkg_Body,
-                                           Flow_Analyse_Entity (Pkg_Body));
+                                           Flow_Analyse_Entity (Pkg_Body, E));
                      end if;
                   end if;
                end;
@@ -1098,10 +1128,14 @@ package body Flow is
                   Analysis.Find_Use_Of_Uninitialised_Variables (FA);
                   Analysis.Find_Ineffective_Statements (FA);
                   Analysis.Find_Illegal_Updates (FA);
+                  Analysis.Find_Use_Of_Uninitialised_Variables (FA);
             end case;
          end if;
 
       end loop;
+
+      --  Create the "unit.flow" file that contains all emitted flow messages.
+      Create_Flow_Msgs_File (GNAT_Root);
 
       if Gnat2Why_Args.Flow_Advanced_Debug then
          Write_Str (Character'Val (8#33#) & "[33m" &
@@ -1110,6 +1144,14 @@ package body Flow is
          Write_Eol;
       end if;
 
+      --  If an error was found then print all errors/warnings and return
+      --  with an error status.
+
+      if Found_Flow_Error then
+         Errout.Finalize (Last_Call => True);
+         Errout.Output_Messages;
+         Exit_Program (E_Errors);
+      end if;
    end Flow_Analyse_CUnit;
 
 end Flow;

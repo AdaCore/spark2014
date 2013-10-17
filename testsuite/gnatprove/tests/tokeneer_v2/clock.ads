@@ -19,7 +19,7 @@ with BasicTypes;
 
 package Clock
    with Abstract_State => (CurrentTime,
-                           (Now with External, Input_Only))
+                           (Now with External))
 is
 
    ------------------------------------------------------------------

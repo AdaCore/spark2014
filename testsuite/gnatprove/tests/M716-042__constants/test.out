@@ -1,0 +1,14 @@
+const_in_loop.adb:2:04: warning: initialization has no effect [ineffective]
+const_in_loop.adb:10:09: warning: statement has no effect [ineffective]
+const_in_loop.adb:11:15: warning: unused assignment [ineffective]
+const_in_loop.adb:13:12: warning: unused assignment [ineffective]
+const_in_loop.adb:8:17: info: range check proved
+const_in_loop.adb:14:9: warning: assertion might fail, requires V1 = V2
+const_in_loop.adb:15:9: info: loop invariant initialization proved
+const_in_loop.adb:15:9: info: loop invariant preservation proved
+dynamic_in_loop.adb:6:09: warning: initialization has no effect [ineffective]
+dynamic_in_loop.adb:5:17: info: range check proved
+dynamic_in_loop.adb:6:18: info: range check proved
+dynamic_in_loop.adb:8:9: info: loop invariant initialization proved
+dynamic_in_loop.adb:8:9: info: loop invariant preservation proved
+dynamic_in_loop.adb:9:16: warning: overflow check might fail

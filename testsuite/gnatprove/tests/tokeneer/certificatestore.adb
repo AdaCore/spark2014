@@ -25,7 +25,7 @@ package body CertificateStore
 --# own State is NextSerialNumber,
 --#              Overflow &
 --#     FileState is StoreFile;
-is
+is pragma SPARK_Mode (On);
 
    ------------------------------------------------------------------
    -- Types

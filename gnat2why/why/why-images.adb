@@ -72,6 +72,7 @@ package body Why.Images is
          when EW_Bool     => return "bool";
          when EW_Private  => return To_String (WNE_Private);
          when EW_Abstract => return "[abstract node]";
+         when EW_Split    => return "[split node]";
       end case;
    end Img;
 

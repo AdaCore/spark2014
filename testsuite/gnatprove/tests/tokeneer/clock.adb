@@ -22,7 +22,7 @@ use type BasicTypes.Unsigned32T;
 
 package body Clock
 --# own Now is in Clock.Interfac.Now;
-is
+is pragma SPARK_Mode (On);
 
    ------------------------------------------------------------------
    -- Types and constants

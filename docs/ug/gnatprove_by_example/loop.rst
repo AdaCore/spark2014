@@ -40,7 +40,9 @@ is no need for invariants to be placed right at the top of loops.
 The proof results show that |GNATprove| is able to prove all the checks for the
 loop invariant (which must be shown to hold for the path leading into the loop,
 and for the path back around the loop), the postcondition, and for overflow and
-range checks.
+range checks. (Note that to ensure that the loop invariant is free from overflow
+the compiler switch ``-gnato13`` was specified, as explained earlier for the bounded
+addition example.)
 
 .. literalinclude:: gnatprove_by_example/results/t1q4.prove
    :language: none

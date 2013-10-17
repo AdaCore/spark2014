@@ -1,4 +1,5 @@
 package Stack is 
+   pragma Spark_Mode (On);
    type Stack  is private;
 
    package Model is
@@ -31,5 +32,5 @@ private
       Content : Intarray (R2);
    end record;
 
-   function Top (S : Stack) return Integer is (S.Top);
+   function Top (S : Stack) return Integer is (S.Content (S.Top));
 end Stack;

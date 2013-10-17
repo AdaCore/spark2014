@@ -1,4 +1,14 @@
-shift_main.adb:30:04: warning: statement has no effect [ineffective]
+shift_main.adb:7:14: warning: no Global contract available for "Shift_Right"
+shift_main.adb:7:14: warning:  assuming "Shift_Right" has no effect on global items
+shift_main.adb:12:14: warning: no Global contract available for "Shift_Left"
+shift_main.adb:12:14: warning:  assuming "Shift_Left" has no effect on global items
+shift_main.adb:17:14: warning: no Global contract available for "Rotate_Left"
+shift_main.adb:17:14: warning:  assuming "Rotate_Left" has no effect on global items
+shift_main.adb:22:14: warning: no Global contract available for "Rotate_Right"
+shift_main.adb:22:14: warning:  assuming "Rotate_Right" has no effect on global items
+shift_main.adb:27:14: warning: no Global contract available for "Shift_Right_Arithmetic"
+shift_main.adb:27:14: warning:  assuming "Shift_Right_Arithmetic" has no effect on global items
+shift_main.adb:30:04: warning: initialization has no effect [ineffective]
 shift_main.adb:32:06: warning: unused assignment [ineffective]
 shift_main.adb:33:06: warning: unused assignment [ineffective]
 shift_main.adb:34:06: warning: unused assignment [ineffective]

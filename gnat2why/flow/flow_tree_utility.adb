@@ -30,17 +30,14 @@ with SPARK_Util; use SPARK_Util;
 
 with Why;
 
---  with Treepr; use Treepr;
---  with Output; use Output;
-
 package body Flow_Tree_Utility is
 
    --------------------------------
    -- Lexicographic_Entity_Order --
    --------------------------------
 
-   function Lexicographic_Entity_Order (Left, Right : Node_Id)
-                                        return Boolean is
+   function Lexicographic_Entity_Order
+     (Left, Right : Node_Id) return Boolean is
    begin
       return Unique_Name (Left) < Unique_Name (Right);
    end Lexicographic_Entity_Order;
@@ -49,16 +46,14 @@ package body Flow_Tree_Utility is
    -- Contains_Loop_Entry_Reference --
    -----------------------------------
 
-   function Contains_Loop_Entry_Reference (N : Node_Id) return Boolean
-   is
+   function Contains_Loop_Entry_Reference (N : Node_Id) return Boolean is
       Found_Loop_Entry : Boolean := False;
 
       function Proc (N : Node_Id) return Traverse_Result;
       --  Sets found_loop_entry if the N is a loop_entry attribute
       --  reference.
 
-      function Proc (N : Node_Id) return Traverse_Result
-      is
+      function Proc (N : Node_Id) return Traverse_Result is
       begin
          case Nkind (N) is
             when N_Attribute_Reference =>
@@ -77,6 +72,7 @@ package body Flow_Tree_Utility is
       end Proc;
 
       procedure Search_For_Loop_Entry is new Traverse_Proc (Proc);
+
    begin
       Search_For_Loop_Entry (N);
       return Found_Loop_Entry;
@@ -86,8 +82,7 @@ package body Flow_Tree_Utility is
    -- Get_Procedure_Specification --
    ---------------------------------
 
-   function Get_Procedure_Specification (E : Entity_Id) return Node_Id
-   is
+   function Get_Procedure_Specification (E : Entity_Id) return Node_Id is
       N : Node_Id;
    begin
       N := Parent (E);
@@ -105,8 +100,7 @@ package body Flow_Tree_Utility is
    -- Might_Be_Main --
    -------------------
 
-   function Might_Be_Main (E : Entity_Id) return Boolean
-   is
+   function Might_Be_Main (E : Entity_Id) return Boolean is
    begin
       return (Scope_Depth_Value (E) = Uint_1 or else
                 (Is_Generic_Instance (E) and then
@@ -118,11 +112,15 @@ package body Flow_Tree_Utility is
    -- Find_Node_In_Initializes --
    ------------------------------
 
-   function Find_Node_In_Initializes (E : Entity_Id) return Node_Id
-   is
-      P : Entity_Id := E;
+   function Find_Node_In_Initializes (E : Entity_Id) return Node_Id is
+      P  : Entity_Id := E;
+      UE : constant Entity_Id := Unique_Entity (E);
+
+      PAA      : Node_Id;
+      Row, LHS : Node_Id;
+
    begin
-      --  !!! Fix this to support refined state
+      --  ??? Fix this to support refined state
 
       while Ekind (P) /= E_Package loop
          case Ekind (P) is
@@ -137,57 +135,107 @@ package body Flow_Tree_Utility is
          return Empty;
       end if;
 
-      pragma Assert (List_Length (Pragma_Argument_Associations (P)) = 1);
-      P := First (Pragma_Argument_Associations (P));
-      P := Expression (P);
-      case Nkind (P) is
-         when N_Aggregate =>
-            if Present (Expressions (P)) then
-               P := First (Expressions (P));
-               while Present (P) loop
-                  case Nkind (P) is
-                     when N_Identifier | N_Expanded_Name =>
-                        if Entity (P) = E then
-                           return P;
-                        end if;
-                     when others =>
-                        raise Why.Unexpected_Node;
-                  end case;
-                  P := Next (P);
-               end loop;
-            elsif Present (Component_Associations (P)) then
-               P := First (Component_Associations (P));
-               while Present (P) loop
-                  pragma Assert (List_Length (Choices (P)) = 1);
-                  if Entity (First (Choices (P))) = E then
-                     return First (Choices (P));
-                  end if;
-                  P := Next (P);
-               end loop;
-            else
-               raise Why.Unexpected_Node;
-            end if;
+      --  This code closely mirrors the one in Flow_Dependency_Maps,
+      --  but I have not found a good way to refactor them.
 
+      pragma Assert
+        (List_Length (Pragma_Argument_Associations (P)) = 1);
+      PAA := First (Pragma_Argument_Associations (P));
+      pragma Assert (Nkind (PAA) = N_Pragma_Argument_Association);
+
+      case Nkind (Expression (PAA)) is
+         when N_Null =>
+            --  Aspect => null
             return Empty;
 
-         when N_Identifier | N_Expanded_Name =>
-            if Entity (P) = E then
-               return P;
-            else
-               return Empty;
+         when N_Aggregate =>
+            --  Aspect => (...)
+
+            --  We will deal with this in the following, in detail,
+            --  extracting information from both the epxressions and
+            --  component_associations of the aggregate.
+            null;
+
+         when N_Identifier =>
+            --  Aspect => Foobar
+            if Unique_Entity (Entity (Expression (PAA))) = UE then
+               return Expression (PAA);
             end if;
 
          when others =>
             raise Why.Unexpected_Node;
       end case;
+
+      pragma Assert_And_Cut (Nkind (Expression (PAA)) = N_Aggregate);
+      --  Aspect => (...)
+
+      --  First we should look at the expressions of the aggregate,
+      --  i.e. foo and bar in (foo, bar, baz => ..., bork => ...)
+      Row := First (Expressions (Expression (PAA)));
+      while Present (Row) loop
+         if Unique_Entity (Entity (Row)) = UE then
+            return Row;
+         end if;
+
+         Row := Next (Row);
+      end loop;
+
+      --  Next, we look at the component associations, i.e. baz and
+      --  bork in the above example.
+      Row := First (Component_Associations (Expression (PAA)));
+      while Present (Row) loop
+
+         --  Process LHS (outputs)
+
+         pragma Assert (List_Length (Choices (Row)) = 1);
+         LHS := First (Choices (Row));
+         case Nkind (LHS) is
+            when N_Aggregate =>
+               --  (Foo, Bar, Baz) => ...
+               LHS := First (Expressions (LHS));
+               while Present (LHS) loop
+                  pragma Assert (Present (Entity (LHS)));
+                  if Unique_Entity (Entity (LHS)) = UE then
+                     return LHS;
+                  end if;
+                  LHS := Next (LHS);
+               end loop;
+
+            when N_Identifier | N_Expanded_Name =>
+               --  Foo => ...
+               pragma Assert (Present (Entity (LHS)));
+               if Unique_Entity (Entity (LHS)) = UE then
+                  return LHS;
+               end if;
+
+            when N_Null =>
+               --  null => ...
+               null;
+
+            when others =>
+               raise Why.Unexpected_Node;
+         end case;
+
+         --  Process RHS (inputs)
+         --
+         --  We're not interested in these for the purpose of finding
+         --  entities which are initialized.
+
+         --  Assemble map
+         --
+         --  Again, nothing to do here.
+
+         Row := Next (Row);
+      end loop;
+
+      return Empty;
    end Find_Node_In_Initializes;
 
    -----------------------------------
    -- Is_Initialized_At_Elaboration --
    -----------------------------------
 
-   function Is_Initialized_At_Elaboration (E : Entity_Id) return Boolean
-   is
+   function Is_Initialized_At_Elaboration (E : Entity_Id) return Boolean is
    begin
       case Ekind (E) is
          when E_Abstract_State =>
@@ -195,8 +243,9 @@ package body Flow_Tree_Utility is
 
          when E_Variable =>
             if Is_Package_State (E) then
-               if Present (Refined_State (E)) then
-                  return Is_Initialized_At_Elaboration (Refined_State (E));
+               if Present (Encapsulating_State (E)) then
+                  return
+                    Is_Initialized_At_Elaboration (Encapsulating_State (E));
                else
                   return Find_Node_In_Initializes (E) /= Empty;
                end if;
@@ -213,8 +262,7 @@ package body Flow_Tree_Utility is
    -- Is_Package_State --
    ----------------------
 
-   function Is_Package_State (E : Entity_Id) return Boolean
-   is
+   function Is_Package_State (E : Entity_Id) return Boolean is
    begin
       case Ekind (E) is
          when E_Abstract_State =>
@@ -231,7 +279,6 @@ package body Flow_Tree_Utility is
 
          when others =>
             return False;
-
       end case;
    end Is_Package_State;
 
@@ -239,8 +286,7 @@ package body Flow_Tree_Utility is
    -- Get_Body --
    --------------
 
-   function Get_Body (E : Entity_Id) return Entity_Id
-   is
+   function Get_Body (E : Entity_Id) return Entity_Id is
       P : constant Node_Id := Parent (Parent (E));
    begin
       case Nkind (P) is
@@ -264,8 +310,7 @@ package body Flow_Tree_Utility is
    -- Get_Enclosing_Scope --
    -------------------------
 
-   function Get_Enclosing_Scope (N : Node_Id) return Scope_Ptr
-   is
+   function Get_Enclosing_Scope (N : Node_Id) return Scope_Ptr is
       P : Node_Id := Parent (N);
    begin
       while Present (P) and then
@@ -284,8 +329,7 @@ package body Flow_Tree_Utility is
    -- Get_Enclosing_Body_Scope --
    ------------------------------
 
-   function Get_Enclosing_Body_Scope (N : Node_Id) return Scope_Ptr
-   is
+   function Get_Enclosing_Body_Scope (N : Node_Id) return Scope_Ptr is
       P : Node_Id := Parent (N);
    begin
       while Present (P) and then
@@ -301,9 +345,9 @@ package body Flow_Tree_Utility is
    -- Should_Use_Refined_View --
    -----------------------------
 
-   function Should_Use_Refined_View (Scope : Scope_Ptr;
-                                     N     : Node_Id)
-                                     return Boolean
+   function Should_Use_Refined_View
+     (Scope : Scope_Ptr;
+      N     : Node_Id) return Boolean
    is
       Spec_E : constant Node_Id := Entity (Name (N));
       Body_E : constant Node_Id := Get_Body (Spec_E);
@@ -311,8 +355,8 @@ package body Flow_Tree_Utility is
       Scope_Of_Called_Subprogram : Scope_Ptr;
       P                          : Scope_Ptr;
    begin
-      --  !!! To be resolved completely in M314-012 once M619-012 is
-      --  !!! answered.
+      --  ??? To be resolved completely in M314-012 once M619-012 is answered.
+
       if Present (Body_E) then
          Scope_Of_Called_Subprogram := Get_Enclosing_Body_Scope
            (Get_Enclosing_Body_Scope (Body_E));

@@ -23,10 +23,13 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Snames;    use Snames;
-with Types;     use Types;
-with Why.Ids;   use Why.Ids;
-with Why.Sinfo; use Why.Sinfo;
+with Snames;              use Snames;
+with Types;               use Types;
+with Why.Ids;             use Why.Ids;
+with Why.Sinfo;           use Why.Sinfo;
+
+with Why.Atree.Accessors; use Why.Atree.Accessors;
+with Why.Gen.Expr;        use Why.Gen.Expr;
 
 package Why.Gen.Arrays is
    --  This package encapsulates the encoding of Ada arrays into Why.
@@ -129,12 +132,21 @@ package Why.Gen.Arrays is
      (Domain  : EW_Domain;
       Args    : in out W_Expr_Array;
       Expr    : W_Expr_Id;
+      Attr    : Attribute_Id;
+      Dim     : Positive;
+      Arg_Ind : in out Positive);
+   --  Add an argument for the corresponding attribute of the array. See
+   --  alse [Get_Array_Attr]. Add_Attr_Arg will work with constrained and
+   --  unconstrained arrays.
+
+   procedure Add_Attr_Arg
+     (Domain  : EW_Domain;
+      Args    : in out W_Expr_Array;
       Ty      : Entity_Id;
       Attr    : Attribute_Id;
       Dim     : Positive;
       Arg_Ind : in out Positive);
-   --  Add an argument for the corresponding attribute of the array. See alse
-   --  [Get_Array_Attr].
+   --  This variant of Add_Attr_Arg will only work for constrained types
 
    procedure Declare_Ada_Array
      (Theory         : W_Theory_Declaration_Id;
@@ -145,37 +157,47 @@ package Why.Gen.Arrays is
 
    function New_Array_Access
      (Ada_Node  : Node_Id;
-      Ty_Entity : Entity_Id;
       Ar        : W_Expr_Id;
       Index     : W_Expr_Array;
-      Domain    : EW_Domain;
-      Dimension : Pos) return W_Expr_Id;
+      Domain    : EW_Domain) return W_Expr_Id;
    --  Generate an expr that corresponds to an array access.
 
    function Array_Convert_To_Base
-     (Ty_Entity : Entity_Id;
-      Domain    : EW_Domain;
-      Ar        : W_Expr_Id) return W_Expr_Id;
-   --  "Prepare" an array access by converting the array in argument to its
-   --  Why3 base type.
+     (Domain    : EW_Domain;
+      Ar        : W_Expr_Id) return W_Expr_Id
+   with Pre => Get_Base_Type (Get_Type (Ar)) = EW_Abstract;
+   --  "Ar" must be a Why expression of unconstrained array type. Convert it to
+   --  the "split" view of UC arrays
+
+   function Array_Convert_From_Base
+     (Domain    : EW_Domain;
+      Ar        : W_Expr_Id) return W_Expr_Id
+   with Pre => Get_Base_Type (Get_Type (Ar)) = EW_Split;
+   --  "Ar" must be a Why expression of unconstrained array type, in split
+   --  form. Convert it to the regular unconstrained form.
+
+   function Array_Convert_From_Base
+     (Domain    : EW_Domain;
+      Target    : Entity_Id;
+      Ar        : W_Expr_Id;
+      First     : W_Expr_Id;
+      Last      : W_Expr_Id) return W_Expr_Id;
+   --  This variant can be used when we need to build an unconstrained array,
+   --  but "Ar" is not in split form. We need to provide the target type and
+   --  first/last expressions explicitly.
 
    function New_Array_Update
       (Ada_Node  : Node_Id;
-       Ty_Entity : Entity_Id;
        Ar        : W_Expr_Id;
        Index     : W_Expr_Array;
        Value     : W_Expr_Id;
-       Domain    : EW_Domain;
-       Dimension : Pos) return W_Expr_Id;
+       Domain    : EW_Domain) return W_Expr_Id;
 
    function New_Element_Equality
      (Ada_Node   : Node_Id := Empty;
       Left_Arr   : W_Expr_Id;
-      Left_Type  : Entity_Id;
       Right_Arr  : W_Expr_Id;
-      Right_Type : Entity_Id;
-      Index      : W_Expr_Array;
-      Dimension  : Pos) return W_Pred_Id;
+      Index      : W_Expr_Array) return W_Pred_Id;
    --  Return a predicate of the form:
    --
    --    <left_arr>[<index>] = <right_arr>[<index>]
@@ -184,7 +206,6 @@ package Why.Gen.Arrays is
      (Domain  : EW_Domain;
       Args    : in out W_Expr_Array;
       Expr    : W_Expr_Id;
-      Ty      : Entity_Id;
       Arg_Ind : in out Positive);
    --  Add an argument just for the "map" of the array. For constrained arrays,
    --  this is the identity, for unconstrained arrays, this corresponds to the
@@ -198,8 +219,12 @@ package Why.Gen.Arrays is
 
    function Build_Length_Expr
      (Domain : EW_Domain;
-      Expr   : W_Expr_Id;
       Ty     : Entity_Id;
+      Dim    : Positive) return W_Expr_Id;
+
+   function Build_Length_Expr
+     (Domain : EW_Domain;
+      Expr   : W_Expr_Id;
       Dim    : Positive) return W_Expr_Id;
    --  Given a type and an array expression, build the length expression for
    --  this array.
@@ -208,7 +233,6 @@ package Why.Gen.Arrays is
      (Domain  : EW_Domain;
       Args    : in out W_Expr_Array;
       Expr    : W_Expr_Id;
-      Ty      : Entity_Id;
       Arg_Ind : in out Positive);
    --  This procedure is suitable to add the arguments (array, first, last) to
    --  an argument list, and the bounds of other dimensions if the array is not
@@ -220,11 +244,31 @@ package Why.Gen.Arrays is
    function Get_Array_Attr
      (Domain : EW_Domain;
       Expr   : W_Expr_Id;
-      Ty     : Entity_Id;
       Attr   : Attribute_Id;
-      Dim    : Positive) return W_Expr_Id;
+      Dim    : Positive) return W_Expr_Id
+     with Pre =>
+       Attr in Attribute_First | Attribute_Last | Attribute_Length;
    --  Get the expression for the attribute (first/last) of the array.
    --  For constrained arrays, this refers to the introduced constant,
    --  for unconstrained arrays this is translated to a field access.
+
+   function Get_Array_Attr
+     (Domain : EW_Domain;
+      Ty     : Entity_Id;
+      Attr   : Attribute_Id;
+      Dim    : Positive) return W_Expr_Id;
+   --  Same as Get_Array_Attr, can be used when the type is already known
+
+   function New_Concat_Call
+     (Domain : EW_Domain;
+      Args   : W_Expr_Array;
+      Typ    : W_Type_Id) return W_Expr_Id;
+   --  return a call to the concat function in Why array theory
+
+   function New_Singleton_Call
+     (Domain : EW_Domain;
+      Elt    : W_Expr_Id;
+      Pos    : W_Expr_Id) return W_Expr_Id;
+   --  return a call to the singleton function in Why array theory
 
 end Why.Gen.Arrays;

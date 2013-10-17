@@ -21,5 +21,15 @@ for result_file in glob("out/*.result"):
             .replace("out/", "tests/")\
             .replace(".result", "/test.out")
         if os.path.exists(new_out_file):
-            os.rename(new_out_file, old_out_file)
-            print "Updated output %s" % old_out_file
+            if not os.path.exists(old_out_file):
+                os.rename(new_out_file, old_out_file)
+                print "Add output %s" % old_out_file
+                print "THIS OUTPUT SHOULD BE ADDED TO VERSION CONTROL"
+            else:
+                os.rename(new_out_file, old_out_file)
+                print "Update output %s" % old_out_file
+        else:
+            if os.path.exists(old_out_file):
+                os.remove(old_out_file)
+                print "Remove output %s" % old_out_file
+

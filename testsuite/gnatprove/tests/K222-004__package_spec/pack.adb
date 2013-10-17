@@ -1,4 +1,6 @@
-package body Pack is  
+package body Pack
+   with SPARK_Mode
+is
    function F return Boolean is
       pragma SPARK_Mode (Off);
       B : access Boolean;
@@ -9,7 +11,7 @@ package body Pack is
    end F;
 
    procedure P is
-      
+
    begin
       declare
          B : access Boolean;

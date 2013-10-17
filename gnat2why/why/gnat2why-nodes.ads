@@ -83,6 +83,12 @@ package Gnat2Why.Nodes is
 
    function Get_Graph_Closure
      (Map  : Node_Graphs.Map;
+      From : Node_Sets.Set) return Node_Sets.Set;
+   --  Return the set of nodes reachable from nodes in From by following the
+   --  edges in the graph Map.
+
+   function Get_Graph_Closure
+     (Map  : Node_Graphs.Map;
       From : Node_Id) return Node_Sets.Set;
    --  Return the set of nodes reachable from node From by following the edges
    --  in the graph Map.
@@ -129,7 +135,7 @@ package Gnat2Why.Nodes is
    --  or not
 
    function Subp_Location (E : Entity_Id) return String
-   with Pre => (Ekind (E) in Subprogram_Kind);
+   with Pre => (Ekind (E) in Subprogram_Kind | E_Package);
    --  for a given subprogram entity, compute the string that identifies this
    --  subprogram. The string will be of the form GP_Subp:foo.ads:12, where
    --  this is the file and line where this subprogram is declared.
@@ -252,17 +258,6 @@ package Gnat2Why.Nodes is
          when RCK_Not_First => VC_Range_Check,
          when RCK_Not_Last  => VC_Range_Check);
    --  to convert a Range_Check_Kind to a VC_Kind
-
-   procedure Get_Range_Check_Info
-     (Expr       : Node_Id;
-      Check_Type : out Entity_Id;
-      Check_Kind : out Range_Check_Kind);
-   --  The frontend sets Do_Range_Check flag to True both for range checks and
-   --  for index checks. We distinguish between these by calling this
-   --  procedure, which also sets the bounds against which the value of Expr
-   --  should be checked. Expr should have the flag Do_Range_Check flag set to
-   --  True. Check_Type is set to the entity giving the bounds for the check.
-   --  Check_Kind is set to VC_Range_Check or VC_Index_Check.
 
    generic
       with procedure Handle_Argument (Formal, Actual : Node_Id);

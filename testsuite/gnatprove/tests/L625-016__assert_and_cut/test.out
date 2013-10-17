@@ -13,4 +13,4 @@ proc.adb:34:4: info: assertion proved
 proc.adb:36:14: info: overflow check proved
 proc.adb:38:4: info: assertion proved
 proc.adb:40:14: info: overflow check proved
-proc.adb:42:4: assertion not proved, requires H = 0
+proc.adb:42:4: warning: assertion might fail, requires H = 0

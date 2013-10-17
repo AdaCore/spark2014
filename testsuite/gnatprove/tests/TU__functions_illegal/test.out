@@ -1,0 +1,14 @@
+functions_illegal.adb:21:22: global mode "Output" is not applicable to functions (SPARK RM 6.1.4(10))
+functions_illegal.adb:33:22: global mode "In_Out" is not applicable to functions (SPARK RM 6.1.4(10))
+functions_illegal.ads:11:22: global mode "Output" is not applicable to functions (SPARK RM 6.1.4(10))
+functions_illegal.ads:19:22: global mode "In_Out" is not applicable to functions (SPARK RM 6.1.4(10))
+functions_illegal_2.adb:16:13: function with "out" parameter is not allowed in SPARK
+functions_illegal_2.adb:16:13:  violation of aspect SPARK_Mode at line 2
+functions_illegal_2.adb:27:13: function with "in" "out" parameter is not allowed in SPARK
+functions_illegal_2.adb:27:13:  violation of aspect SPARK_Mode at line 2
+functions_illegal_2.ads:4:13: function with "out" parameter is not allowed in SPARK
+functions_illegal_2.ads:4:13:  violation of aspect SPARK_Mode at line 2
+functions_illegal_2.ads:10:13: function with "in" "out" parameter is not allowed in SPARK
+functions_illegal_2.ads:10:13:  violation of aspect SPARK_Mode at line 2
+gprbuild: *** compilation phase failed
+gnatprove: error during translation to intermediate language, aborting.

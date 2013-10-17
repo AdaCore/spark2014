@@ -1,41 +1,41 @@
-ng.adb:34:17: postcondition not proved, requires Result = 207 * ThisCount - PrevCount + 207 * ThisCount - PrevCount * CurrTime - ThisTime / ... - ... * ... / ...
-ng.adb:36:27: overflow check not proved
-ng.adb:36:62: overflow check not proved
-ng.adb:37:29: overflow check not proved
-ng.adb:38:22: overflow check not proved
-ng.adb:39:22: division check not proved
-ng.adb:39:22: overflow check not proved
-ng.adb:40:19: overflow check not proved
-ng.adb:41:19: division check not proved
-ng.adb:41:19: overflow check not proved
-ng.adb:41:19: range check not proved
-ng.adb:60:18: overflow check not proved
-ng.adb:60:18: range check not proved
-ng.adb:61:17: overflow check not proved
-ng.adb:61:23: division check not proved
-ng.adb:61:23: overflow check not proved
-ng.adb:61:23: range check not proved
-ng.adb:64:23: overflow check not proved
-ng.adb:64:29: overflow check not proved
-ng.adb:64:37: division check not proved
-ng.adb:64:37: overflow check not proved
-ng.adb:64:37: range check not proved
-ng.adb:64:43: overflow check not proved
-ng.adb:77:7: precondition not proved
+ng.adb:34:17: warning: postcondition might fail, requires Result = 207 * ThisCount - PrevCount + 207 * ThisCount - PrevCount * CurrTime - ThisTime / ... - ... * ... / ...
+ng.adb:36:27: warning: overflow check might fail
+ng.adb:36:62: warning: overflow check might fail
+ng.adb:37:29: warning: overflow check might fail
+ng.adb:38:22: warning: overflow check might fail
+ng.adb:39:22: warning: divide by zero might fail
+ng.adb:39:22: warning: overflow check might fail
+ng.adb:40:19: warning: overflow check might fail
+ng.adb:41:19: warning: divide by zero might fail
+ng.adb:41:19: warning: overflow check might fail
+ng.adb:41:19: warning: range check might fail
+ng.adb:60:18: warning: overflow check might fail
+ng.adb:60:18: warning: range check might fail
+ng.adb:61:17: warning: overflow check might fail
+ng.adb:61:23: warning: divide by zero might fail
+ng.adb:61:23: warning: overflow check might fail
+ng.adb:61:23: warning: range check might fail
+ng.adb:64:23: warning: overflow check might fail
+ng.adb:64:29: warning: overflow check might fail
+ng.adb:64:37: warning: divide by zero might fail
+ng.adb:64:37: warning: overflow check might fail
+ng.adb:64:37: warning: range check might fail
+ng.adb:64:43: warning: overflow check might fail
+ng.adb:77:7: warning: precondition might fail
 ng_v1.adb:5:13: warning: null global effect assumed on imported subprogram
 ng_v1.adb:8:13: warning: null global effect assumed on imported subprogram
 ng_v1.adb:11:13: warning: null global effect assumed on imported subprogram
-ng_v1.adb:30:23: division check not proved
-ng_v1.adb:33:53: division check not proved
-ng_v1.ads:28:17: postcondition not proved, requires EstimatedGroundVelocity = (((WHCF * (ThisCount - PrevCount)) + ((WHCF * (ThisCount - PrevCount)) * (CurrTime - ThisTime)) / (ThisTime - PrevTime)) * 3600) / (CurrTime - PrevTime
+ng_v1.adb:30:23: warning: divide by zero might fail
+ng_v1.adb:33:53: warning: divide by zero might fail
+ng_v1.ads:28:17: warning: postcondition might fail, requires EstimatedGroundVelocity = (((WHCF * (ThisCount - PrevCount)) + ((WHCF * (ThisCount - PrevCount)) * (CurrTime - ThisTime)) / (ThisTime - PrevTime)) * 3600) / (CurrTime - PrevTime
 ng_v1.ads:31:23: info: division check proved
-ng_v1.ads:32:28: division check not proved
+ng_v1.ads:32:28: warning: divide by zero might fail
 ng_v2.adb:5:13: warning: null global effect assumed on imported subprogram
 ng_v2.adb:8:13: warning: null global effect assumed on imported subprogram
 ng_v2.adb:11:13: warning: null global effect assumed on imported subprogram
 ng_v2.adb:49:9: info: division check proved
-ng_v2.adb:52:44: precondition not proved
+ng_v2.adb:52:44: warning: precondition might fail
 ng_v2.adb:65:13: info: precondition proved
-ng_v2.adb:68:53: division check not proved
-ng_v2.ads:13:17: postcondition not proved, requires EstimatedGroundVelocity = (DistanceSinceLastClickBeforeLastUpdate * 3600) / (TimeSinceLastClickBeforeLastUpdate)
-ng_v2.ads:14:67: division check not proved
+ng_v2.adb:68:53: warning: divide by zero might fail
+ng_v2.ads:13:17: warning: postcondition might fail, requires EstimatedGroundVelocity = (DistanceSinceLastClickBeforeLastUpdate * 3600) / (TimeSinceLastClickBeforeLastUpdate)
+ng_v2.ads:14:67: warning: divide by zero might fail

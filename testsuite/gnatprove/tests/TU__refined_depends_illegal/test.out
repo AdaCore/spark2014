@@ -1,0 +1,13 @@
+refined_depends_illegal.adb:6:14: useless refinement, subprogram "P1" does not mention abstract state with visible refinement
+refined_depends_illegal.adb:20:14: useless refinement, subprogram "No_Depends_Contract" lacks dependence clauses (SPARK RM 7.2.5(2))
+refined_depends_illegal.adb:33:14: aspect "Refined_Depends" cannot apply to a stand alone body
+refined_depends_illegal.adb:50:48: item "X" must appear in exactly one output dependence list (SPARK RM 6.1.5(10))
+refined_depends_illegal.adb:59:51: item "Var2" must appear in at least one input dependence list (SPARK RM 6.1.5(8))
+refined_depends_illegal.adb:60:44: item "Var" must appear in exactly one output dependence list (SPARK RM 6.1.5(10))
+refined_depends_illegal.adb:70:39: unmatched or extra clause in dependence refinement
+refined_depends_illegal.adb:79:48: duplicate use of item
+refined_depends_illegal.adb:87:48: cannot mix null and non-null dependency items
+refined_depends_illegal_2.adb:8:31: warning: missing dependency "Par => Y" [depends_missing]
+refined_depends_illegal_2.adb:18:31: warning: missing dependency "Y => Par" [depends_missing]
+refined_depends_illegal_2.adb:11:16: warning: overflow check might fail
+refined_depends_illegal_2.adb:22:14: warning: overflow check might fail

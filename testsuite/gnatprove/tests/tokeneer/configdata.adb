@@ -40,7 +40,7 @@ package body ConfigData
 --#    AlarmThresholdSize,
 --#    SystemMaxFar &
 --# FileState is ConfigFile;
-is
+is pragma SPARK_Mode (On);
 
    ------------------------------------------------------------------
    -- Types

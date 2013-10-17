@@ -1,5 +1,6 @@
 project Test is
-   package Compiler is
-      for Default_Switches ("ada") use ("-gnatdk", "-gnato13");
-   end Compiler;
+  package Compiler is
+    for Default_Switches ("Ada") use ("-gnatws", "-gnato13");
+    for Local_Configuration_Pragmas use "test.adc";
+  end Compiler;
 end Test;

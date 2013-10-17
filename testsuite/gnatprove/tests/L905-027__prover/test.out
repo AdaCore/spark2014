@@ -4,5 +4,5 @@ segway.adb:38:10: info: loop invariant initialization proved
 segway.adb:38:10: info: loop invariant preservation proved
 segway.adb:40:13: info: precondition proved
 segway.adb:42:13: info: precondition proved
-segway.ads:24:17: postcondition not proved, requires (Speed_Is_Valid)
+segway.ads:24:17: warning: postcondition might fail, requires (Speed_Is_Valid)
 segway.ads:28:17: info: postcondition proved

@@ -1,4 +1,4 @@
-package S is  
+package S is
 
    type Array_Range is range 1 .. 10;
 
@@ -10,10 +10,10 @@ package S is
 
    procedure Test_Index;
 
-   procedure Move (Dest, Src : out IntArray) with
+   procedure Move (Dest : out IntArray; Src : in out IntArray) with
      Post => (for all J in Dest'Range => Dest (J) = Src'Old (J));
 
-   procedure Move2 (Dest, Src : out IntArray) with
+   procedure Move2 (Dest : out IntArray; Src : in out IntArray) with
      Post => (for all J in Dest'Range => Dest (J) = Src'Old (J));
 
 end S;

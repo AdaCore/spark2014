@@ -1,1 +1,1 @@
-t1q1a.adb:7:12: overflow check not proved
+t1q1a.adb:7:12: warning: overflow check might fail

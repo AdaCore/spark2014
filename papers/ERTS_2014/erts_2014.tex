@@ -3,6 +3,30 @@
 \usepackage{url}
 \usepackage{xspace}
 \usepackage{hyperref}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{listings}
+\newcommand{\CodeSymbol}[1]{\textcolor{Bittersweet}{#1}}
+\lstset{
+   language=Ada,
+   keywordstyle=\color{RedViolet}\ttfamily\bf,
+   showspaces=false,
+   basicstyle=\ttfamily,
+   commentstyle=\color{red}\textit,
+   stringstyle=\color{MidnightBlue}\ttfamily,
+   showtabs=false,
+   showstringspaces=false,
+   morekeywords=[1]Pre,
+   morekeywords=[2]Post,
+   morekeywords=[3]Test\_Case,
+   literate={(}{{\CodeSymbol{(}}}1
+            {)}{{\CodeSymbol{)}}}1
+            {>}{{\CodeSymbol{$>$}}}1
+            {<}{{\CodeSymbol{$<$}}}1
+            {=}{{\CodeSymbol{$=$}}}1
+            {:}{{\CodeSymbol{$:$}}}1
+            {.}{{\CodeSymbol{$.$}}}1
+            {;}{{\CodeSymbol{$;$}}}1
+}
 
 \newcommand{\DO}{\textsc{do-178}\xspace}
 \newcommand{\DOB}{\textsc{do-178b}\xspace}
@@ -25,12 +49,16 @@
 \newcommand{\aka}{a.k.a.\xspace}
 \newcommand{\resp}{resp.\xspace}
 
+\lstset{basicstyle={\scriptsize \sffamily}}
+\newcommand{\SPARK}[1]{\lstinline[language=Ada,basicstyle={\footnotesize
+      \sffamily},framesep=0pt]$#1$}
+
 \begin{document}
 
 \title{Rail, Space, Security: Three Case Studies for SPARK 2014}
 
 \author{%
-\large Pavlos Efstathopoulos$^1$, David Lesens$^2$, David Mentré$^3$ and Yannick Moy$^4$\\
+\large Claire Dross$^4$, Pavlos Efstathopoulos$^1$, David Lesens$^2$, David Mentré$^3$ and Yannick Moy$^4$\\
 \normalsize 1: Altran Praxis, 20 Manvers Street, Bath BA1 1PX (United Kingdom),\\
 \normalsize 2: Astrium Space Transportation, 51-61 route de Verneuil F-78130 Les Mureaux (France),\\
 \normalsize 3: Mitsubishi Electric R\&D Centre Europe, 1 allée de
@@ -157,33 +185,190 @@ train control system where trains inform a Radio Block Centre about
 their location and receive Movement Authorities, using cab signaling
 instead of track-side signaling.
 
+We made some experiments with \newspark to see if one could formalize
+the ETCS System Requirement Specification (SRS, ERA UNISIG
+SUBSET-026).
+
+We should acknowledge that using \newspark for formalizing
+\emph{system} requirements (and not only software requirements) is a
+bit excessive and out of scope for the language. We made nonetheless
+this formalization attempt for two reasons. Firstly we wanted to give
+a formal semantics to this system specification and \newspark
+first-order logic used for contract annotation should be suitable for
+this task. This formalization would allow us to formally verify some
+properties at the specification level.  Secondly, the ETCS'
+specifications are quite low-level in some of its content, therefore
+not as far from software requirements as one would have expected.
+
 \subsection{Description of the Software}
 
-We will describe the establishment of communication, the mode transition table
-and the step functions.
+We made several experiments but due to space constraints we will only
+detail two of them.
+
+Our first example is partial modeling of mode transition table SRS
+mode transition table (SRS §4.6). It is a big table that describes,
+for each of the 17 modes, under which conditions the ETCS on-board can
+change from one mode to another one. Those conditions are specific
+state of the on-board, actions of the driver and an explicit
+priority. For example, transition from mode Stand By (SB) mode to Full
+Supervision (FS) mode is conditioned by fulfilling condition 10, at
+priority 7. Condition 10 states that ``(valid Train Data is stored on
+board) AND (MA + SSP + gradient on-board) AND (no specific mode is
+required by a Mode Profile)''.
+
+We have converted above conditions into \newspark Boolean variables,
+with an explicit priority variable. Above condition thus becomes:
+\begin{lstlisting}
+type priority_t is range 1..7;
+priority : priority_t;
+
+valid_train_data_is_stored_on_board : Boolean;
+[...]
+
+function condition_10 return Boolean is
+  (valid_train_data_is_stored_on_board
+   AND ma_ssp_gardient_on_board
+   AND no_specific_mode_required_by_a_mode_profile);
+[...]
+
+function condition_transition_SB_to_FS
+  return Boolean is
+  (condition_10 AND priority = 7);
+[...]
+\end{lstlisting}
+
+We can thus model all possible transitions of the transition table.
+
+Our second example is the coding of set functions, aka functions
+constant by interval, used in Speed and distance monitoring section
+(SRS §3.13). Such functions are used to model for example speed
+restrictions along distance. One of the main goal is to model the
+merge of two speed restrictions, taking at each point the most
+restrictive one.
+
+To encode step function, we used the following data structure:
+\begin{lstlisting}
+package Step_Function is pragma SPARK_Mode (On);
+   type Num_Delimiters_Range is range 0 .. 10;
+
+   type Function_Range is new Natural;
+
+   type Delimiter_Entry is record
+      Delimiter : Function_Range;
+      Value : Float;
+   end record;
+
+   type Delimiter_Values is array
+     (Num_Delimiters_Range) of Delimiter_Entry;
+
+   type Step_Function_t is record
+      Number_Of_Delimiters : Num_Delimiters_Range;
+      Step : Delimiter_Values;
+   end record;
+[...]
+\end{lstlisting}
+
+A step function can have up to 11 steps separated by 10 ``delimiters''
+stored in \SPARK{Step_Function_t.Step} array. Each delimiter of type
+\SPARK{Delimiter_Entry} contains the delimiter position
+(\SPARK{Delimiter} field) and the associated function constant value
+(\SPARK{Value} field). \SPARK{Number_Of_Delimiters} stores the number
+of delimiters currently used for this step function.
+
+On this data structure, we build several functions like
+\SPARK{Get_Value(SFun : Step_Function_t; X: Function_Range)}
+\SPARK{return Float} that returns the value of step function
+\SPARK{SFun} at point \SPARK{X} or \SPARK{Minimum_Until_Point(SFun :
+  Step_Function_t;} \SPARK{X: Function_Range)} \SPARK{return Float}
+that returns the minimum of the step function \SPARK{SFun} until point
+\SPARK{X}. But probably the most interesting function is function
+\SPARK{Restrictive_Merge} whose contract is given in following
+section.
 
 \subsection{Formalization of Properties}
 
-We made some experiments with \newspark to see if one could formalize the
-System Requirement Specification (ERA UNISIG SUBSET-026).
+Regarding mode transition table, we wanted to check requirement
+§4.6.1.5 of SRS that states that all transitions are exclusive, even
+at the same priority. We thus used the \SPARK{Contract_Cases} of
+\newspark to check that all conditions are indeed disjoint. In
+practice, we wrote the following function specification:
 
-We should acknowledge that using \newspark for formalizing \emph{system
-  requirements} (and not only software requirements) is a bit excessive and out
-of scope for the language. We made nonetheless this formalization for two
-reasons. Firstly we wanted to give a formal semantics to this system
-specification and \newspark first-order logic used for contract annotation
-should be suitable for this task. This formalization would allow us to formally
-verify some properties at the specification level.  Secondly, the ETCS'
-specifications are quite low-level in some of its content, therefore not as far
-from software requirements as one would have expected.
+\begin{lstlisting}
+function transition(mode : etcs_mode_t)
+  return etcs_mode_t
+with Contract_Cases =>
+    (condition_transition_SB_to_SH => True,
+     condition_transition_SB_to_FS => True,
+     condition_transition_SB_to_IS => True);
+\end{lstlisting}
 
-We will present SRS excerpts and corresponding \newspark contracts.
+\gnatprove tool generates the Verification Conditions that must be
+checked.
+
+Regarding the step functions, we wrote a formal specification for all
+functions. For example procedure \SPARK{Restrictive_Merge} has
+following contract:
+
+\begin{lstlisting}
+procedure
+ Restrictive_Merge(SFun1, SFun2 : in Step_Function_t;
+                   Merge : out Step_Function_t)
+with Pre => Is_Valid(SFun1) and Is_Valid(SFun2)
+  and
+ SFun1.Number_Of_Delimiters + SFun2.Number_Of_Delimiters <=
+    Num_Delimiters_Range'Last,
+Post =>
+-- (1) Output is valid step function
+Is_Valid(Merge)
+-- (2) All SFun1 delimiters are valid delimiters in Merge
+and
+ (for all i in
+       Num_Delimiters_Range'First..SFun1.Number_Of_Delimiters =>
+   (for some j in
+     Num_Delimiters_Range'First..Merge.Number_Of_Delimiters =>
+      (Merge.Step(j).Delimiter = SFun1.Step(i).Delimiter)))
+-- (3) All SFun2 delimiters are valid delimiters in Merge
+and
+ (for all i in
+      Num_Delimiters_Range'First..SFun2.Number_Of_Delimiters =>
+   (for some j in
+     Num_Delimiters_Range'First..Merge.Number_Of_Delimiters =>
+      (Merge.Step(j).Delimiter = SFun2.Step(i).Delimiter)))
+-- (4) For all delimiters of Merge, its value is the
+-- minimum of SFun1 and SFun2
+and
+ (for all i in
+     Num_Delimiters_Range'First..Merge.Number_Of_Delimiters =>
+   (Merge.Step(i).Value
+    = Min(Get_Value(SFun1, Merge.Step(i).Delimiter),
+          Get_Value(SFun2, Merge.Step(i).Delimiter))));
+\end{lstlisting}
+
+This contract formally states that, given two valid step functions
+\SPARK{SFun1} and \SPARK{SFun2} without too many delimiters, the
+resulting step function is a valid one (1), it contains all the
+delimiters of \SPARK{SFun1} (2) and \SPARK{SFun2} (3) and for each of
+those delimiters, the value of the step function is the minimum of
+both initial step functions (4).
+
 
 \subsection{Formal Verification Results}
 
-Our main results is that it is possible to express most of the requirements,
-which can then be checked during testing. We will probably present partial
-proof of results, due to the time needed to achieve full proof.
+Overall, we were quite satisfied to express most of the requirements
+in a formal way. The very expressive data structure of \newspark
+(records, arrays, ...) were very helpful and we found it leads to
+readable specifications.
+
+Regarding mode transition table, we were not able to prove the shown
+contract of function \SPARK{transition}... because the contract cannot
+be proved. In fact, this experiment shown that the transitions given
+in the specification table lack details to determine if the transition
+are exclusive or not. Those details are given in other parts of the
+specification and it would be a major work.
+
+Regarding the step functions, we were able to prove FIXME
+
+FIXME: proof of step function merge
 
 \subsection{Lessons Learned}
 

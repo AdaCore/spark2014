@@ -1004,11 +1004,16 @@ module Ada__containers__formal_ordered_maps__strict_equal
   axiom strict_equal__def:
     forall co1 co2 : map [strict_equal co1 co2].
     ((forall cu:cursor [position co1 cu | position co2 cu].
-       position co1 cu = position co2 cu) /\
+       position co1 cu > 0 <-> position co2 cu > 0) /\
      (forall cu:cursor [key co1 cu | key co2 cu]. position co1 cu > 0 ->
         Ada__containers__formal_ordered_maps__key_type.to_base (key co1 cu) = Ada__containers__formal_ordered_maps__key_type.to_base (key co2 cu)) /\
      (forall cu:cursor [element co1 cu | element co2 cu]. position co1 cu > 0 ->
         Ada__containers__formal_ordered_maps__element_type.to_base (element co1 cu) = Ada__containers__formal_ordered_maps__element_type.to_base (element co2 cu))) <->  strict_equal co1 co2 = True
+
+  axiom strict_equal__position:
+    forall co1 co2 : map [strict_equal co1 co2].
+    strict_equal co1 co2 = True -> (forall cu:cursor [position co1 cu | position co2 cu].
+       position co1 cu = position co2 cu)
 
   axiom strict_equal_length_:
     forall co1 co2 : map [strict_equal co1 co2].
@@ -1168,16 +1173,15 @@ module Ada__containers__formal_ordered_maps__copy
   use import Ada__containers__formal_ordered_maps__length
   use import Ada__containers__formal_ordered_maps__strict_equal
 
-  predicate cap_is_max map map int
-
- axiom cap_is_max_def:
-   forall co1 co2:map, max:int 
-                  [cap_is_max co1 co2 max].
-   if capacity co1 > max then capacity co2 = capacity co1 else capacity co2 = max
-
   function copy map int : map
 
+  axiom copy__def:
+    forall co : map, cap : int [copy co cap].
+       strict_equal co (copy co cap) = True /\
+       (cap = 0 -> capacity co = capacity (copy co cap)) /\
+       (cap >= capacity co ->  capacity (copy co cap) = cap)
+
   val copy (co: map) (cap:int) : map
-     ensures { strict_equal co (result) = True /\ 
-                      cap_is_max co result cap /\ result = copy co cap }
+     requires { cap = 0 \/ cap >= capacity co}
+     ensures { result = copy co cap }
 end

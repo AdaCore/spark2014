@@ -6,11 +6,11 @@ p.ads:9:31: warning: unused initial value of "X" [unused_initial_value]
 p.ads:9:34: warning: unused initial value of "Y" [unused_initial_value]
 p.ads:12:33: warning: unused initial value of "X" [unused_initial_value]
 p.ads:12:36: warning: unused initial value of "Y" [unused_initial_value]
-p.ads:4:15: division check not proved
-p.ads:4:15: overflow check not proved
+p.ads:4:15: warning: divide by zero might fail
+p.ads:4:15: warning: overflow check might fail
 p.ads:7:31: info: division check proved
-p.ads:7:31: overflow check not proved
+p.ads:7:31: warning: overflow check might fail
 p.ads:10:31: info: division check proved
-p.ads:10:31: overflow check not proved
+p.ads:10:31: warning: overflow check might fail
 p.ads:13:15: info: division check proved
 p.ads:13:15: info: overflow check proved

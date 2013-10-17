@@ -1,0 +1,39 @@
+Readme
+
+This folder contains files representing three methods of implementing
+a state machine in SPARK 2014:
+
+   - sm_using_case_stmt.ads and .adb:
+       - example state machine implemented in nested case statements.
+       - The compiler ensures that all combinations of states and
+         triggers are defined.
+   - sm_using_table.ads and .adb:
+       - example based on the original 'C' code
+       - An "assert" statement checks that all combinations of
+         states and triggers are defined and also that all states
+         are reachable. This assert can be check statically and at run-time.
+   - sm_using_contracts.ads & adb:
+       - this example adds contracts to the specification to define the
+         behaviour of each subprogram.
+       - the proof tools will check that the implementation fully satisfies
+         the contracts.
+   - sm_using_case_expression.ads * adb
+       - this example combines elements from the two previous ones
+       - the example demonstrates how a concrete implementation can be proven
+         to be compliant with an abstract specification written using a case 
+         expression.
+       - it also shows how this method of specification is amenable to the following
+         checks:
+            - all states are reachable; and
+            - all valid state/trigger pairs are defined.
+
+This folder contains the following supporting files:
+   - sm_types.ads:
+       - contains some simple state and trigger types
+   - sm_operations.ads & adb:
+       - this package supports 'C' like subprogram pointers
+       - it has been designed such that the subprograms can be fully
+         SPARK compliant even though SPARK does not allow pointers.
+   - main.adb:
+       - calls the sm_using_case_expression example to demonstrate how
+         unprovable VCs can be checked at run-time during testing.

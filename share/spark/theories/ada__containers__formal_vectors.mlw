@@ -5,7 +5,7 @@ module Ada__containers__formal_vectors__index_type_helper
   use "ada__containers__formal_vectors__args".Ada__containers__formal_vectors__index_type
 
   function index_type_length "inline" : int =
-      Ada__containers__formal_vectors__index_type.last - 
+      Ada__containers__formal_vectors__index_type.last -
       Ada__containers__formal_vectors__index_type.first + 1
 
   axiom index_type_length:
@@ -25,16 +25,16 @@ module Ada__containers__formal_vectors__capacity_range
   use import Ada__containers__formal_vectors__index_type_helper
 
  type capacity_range "bounded_type"
- 
+
  function first  : int = 0
- 
+
  function last  : int = index_type_length
- 
+
  function attr__ATTRIBUTE_MODULUS :int
- 
- clone export "ada__model".Discrete with
- type t = capacity_range, 
- function first = first, 
+
+ clone export "ada__model".Static_Discrete with
+ type t = capacity_range,
+ function first = first,
  function last = last
 end
 
@@ -44,18 +44,18 @@ module  Ada__containers__formal_vectors__extended_index
   use "ada__containers__formal_vectors__args".Ada__containers__formal_vectors__index_type
 
  type extended_index "bounded_type"
- 
- function first  : int = 
+
+ function first  : int =
       Ada__containers__formal_vectors__index_type.first - 1
- 
- function last  : int = 
+
+ function last  : int =
       Ada__containers__formal_vectors__index_type.last
- 
+
  function attr__ATTRIBUTE_MODULUS :int
- 
- clone export "ada__model".Discrete with
- type t = extended_index, 
- function first = first, 
+
+ clone export "ada__model".Static_Discrete with
+ type t = extended_index,
+ function first = first,
  function last = last
 end
 
@@ -114,7 +114,7 @@ module Ada__containers__formal_vectors__length
   use import Ada__containers__formal_vectors__vector
 
   function length (co : vector) : Ada__containers__count_type.count_type
-  
+
   function length_ "inline" (co : vector) : int =
     Ada__containers__count_type.to_int (length co)
 
@@ -154,17 +154,17 @@ module Ada__containers__formal_vectors__to_index
 
   val to_index (cu : cursor) : extended_index
       ensures { result = to_index cu }
-  
+
   function to_index_ "inline" (co : vector) (cu : cursor) : int = extended_index__to_index (to_int (real_to_index co cu))
 
   function to_cursor_ vector int : cursor
-  
+
   axiom to_index_range:
     forall cu : cursor, v : vector.
         0 <= to_index_ v cu <= length_ (v)
 
   axiom to_index_to_cursor:
-   forall co : vector, i :int [to_index_ co (to_cursor_ co i)]. 0 < i <= length_ co -> 
+   forall co : vector, i :int [to_index_ co (to_cursor_ co i)]. 0 < i <= length_ co ->
               to_index_ co (to_cursor_ co i) = i
 
   axiom to_cursor_to_index:
@@ -176,10 +176,10 @@ module Ada__containers__formal_vectors__to_cursor
   use import "_gnatprove_standard".Main
   use import Ada__containers__formal_vectors__extended_index_helper
   use import Ada__containers__formal_vectors__vector
-  
+
   use import Ada__containers__formal_vectors__cursor
   use import Ada__containers__formal_vectors__to_index
-  
+
   function to_cursor (co : vector) (i : int) : cursor =
         to_cursor_ co (extended_index__to_index i)
 
@@ -198,7 +198,7 @@ module Ada__containers__formal_vectors__first_index
   axiom first_index__def :
   forall  co:vector [first_index co].
 	Ada__containers__formal_vectors__index_type.to_int (first_index co) = index_type__of_index 1
- 
+
   val first_index (co:vector) : Ada__containers__formal_vectors__index_type.index_type
       ensures { Ada__containers__formal_vectors__index_type.to_int (result) = index_type__of_index 1 }
 end
@@ -256,7 +256,7 @@ module Ada__containers__formal_vectors__is_empty
   function is_empty vector : bool
 
   axiom is_empty:
-    forall co:vector [is_empty (co)]. 
+    forall co:vector [is_empty (co)].
           is_empty (co) = True <-> length_ co = 0
 
   val is_empty (co:vector) : bool
@@ -394,9 +394,9 @@ module Ada__containers__formal_vectors__element
   use import Ada__containers__formal_vectors__vector
   use import Ada__containers__formal_vectors__length
   use import Ada__containers__formal_vectors__length
-  
+
   function element_ vector int : Ada__containers__formal_vectors__element_type.element_type
-  
+
   function element "inline" (co:vector) (i : int) : Ada__containers__formal_vectors__element_type.element_type = element_ co (index_type__to_index i)
 
   val element (co:vector) (i : int) : Ada__containers__formal_vectors__element_type.element_type
@@ -413,7 +413,7 @@ module Ada__containers__formal_vectors__element__2
   use import Ada__containers__formal_vectors__cursor
   use import Ada__containers__formal_vectors__to_index
   use import Ada__containers__formal_vectors__element
-  
+
   function element__2 (v : vector) (cu :cursor) : Ada__containers__formal_vectors__element_type.element_type =
     element_ v (to_index_ v cu)
 
@@ -469,7 +469,7 @@ module Ada__containers__formal_vectors__find_index
   function find_index_ vector Ada__containers__formal_vectors__element_type.base_type int : extended_index
 
   function find_index "inline" (co:vector) (e:Ada__containers__formal_vectors__element_type.base_type) (i : int) : extended_index = find_index_ co e (index_type__to_index i)
-  
+
   function find_ "inline" (co:vector) (e:Ada__containers__formal_vectors__element_type.base_type) (i:int) : int =
     extended_index__to_index (to_int (find_index_ co e i))
 
@@ -479,7 +479,7 @@ module Ada__containers__formal_vectors__find_index
 
   axiom find_no:
     forall v:vector, e:Ada__containers__formal_vectors__element_type.base_type, n:int [find_index_ v e n].
-      find_ v e n = 0 -> 
+      find_ v e n = 0 ->
       forall i : int [element_ v i]. n <= i <= length_ v /\ i > 0 ->
           Ada__containers__formal_vectors__oeq.oeq (Ada__containers__formal_vectors__element_type.to_base (element_ v i)) e = False
 
@@ -489,7 +489,7 @@ module Ada__containers__formal_vectors__find_index
 
   axiom find_oth:
     forall v:vector, e:Ada__containers__formal_vectors__element_type.base_type, n:int [find_index_ v e n].
-      find_ v e n > 0 -> 
+      find_ v e n > 0 ->
       forall i : int [element_ v i]. n <= i < find_ v e n /\ i > 0 ->
               Ada__containers__formal_vectors__oeq.oeq (Ada__containers__formal_vectors__element_type.to_base (element_ v i)) e = False
 
@@ -533,7 +533,7 @@ module Ada__containers__formal_vectors__reverse_find_index
   use import Ada__containers__formal_vectors__element
 
   function reverse_find_index_ vector Ada__containers__formal_vectors__element_type.base_type int : extended_index
-  
+
   function reverse_find_ "inline" (co : vector) (e :Ada__containers__formal_vectors__element_type.base_type) (i : int) : int =
     extended_index__to_index (to_int (reverse_find_index_ co e i))
 
@@ -543,7 +543,7 @@ module Ada__containers__formal_vectors__reverse_find_index
 
   axiom reverse_find_no:
     forall v:vector, e:Ada__containers__formal_vectors__element_type.base_type, n:int [reverse_find_index_ v e n].
-      reverse_find_ v e n = 0 -> 
+      reverse_find_ v e n = 0 ->
       forall i : int [element_ v i]. 0 < i <= n /\ i <= length_ v -> Ada__containers__formal_vectors__oeq.oeq (Ada__containers__formal_vectors__element_type.to_base (element_ v i)) e = False
 
   axiom reverse_find_ex:
@@ -552,7 +552,7 @@ module Ada__containers__formal_vectors__reverse_find_index
 
   axiom reverse_find_oth:
     forall v:vector, e:Ada__containers__formal_vectors__element_type.base_type, n:int [reverse_find_index_ v e n].
-      reverse_find_ v e n > 0 -> 
+      reverse_find_ v e n > 0 ->
       forall i : int [element_ v i]. reverse_find_ v e n < i <= n /\ i <= length_ v -> Ada__containers__formal_vectors__oeq.oeq (Ada__containers__formal_vectors__element_type.to_base (element_ v i)) e = False
 
   function reverse_find_index (co:vector) (e:Ada__containers__formal_vectors__element_type.base_type) (i:int) : extended_index =
@@ -601,7 +601,7 @@ module Ada__containers__formal_vectors__Oeq__2
   use import Ada__containers__formal_vectors__vector
   use import Ada__containers__formal_vectors__length
   use import Ada__containers__formal_vectors__element
-  
+
   function oeq__2 (co1 : vector) (co2 : vector) : bool
 
   axiom oeq__2__def:
@@ -622,7 +622,7 @@ module Ada__containers__formal_vectors__strict_equal
   use import Ada__containers__formal_vectors__cursor
   use import Ada__containers__formal_vectors__to_index
   use import Ada__containers__formal_vectors__element
-  
+
 (* Should be added to Vector.ads *)
   function strict_equal (co1 : vector) (co2 : vector) : bool
 
@@ -649,7 +649,7 @@ module Ada__containers__formal_vectors__replace_element
   use import Ada__containers__formal_vectors__cursor
   use import Ada__containers__formal_vectors__to_index
   use import Ada__containers__formal_vectors__element
-  
+
   predicate replace_element (co1 : vector) (i : int)
         (e : Ada__containers__formal_vectors__element_type.base_type) (co2 : vector) =
     0 < i <= length_ co1 /\length_ co1 = length_ co2 /\
@@ -690,7 +690,7 @@ module Ada__containers__formal_vectors__left
   use import Ada__containers__formal_vectors__to_index
   use import Ada__containers__formal_vectors__no_element
   use import Ada__containers__formal_vectors__element
-  
+
   function left_ vector int : vector
 
   axiom left_lgth:
@@ -714,7 +714,7 @@ module Ada__containers__formal_vectors__left
       i = length_ co + 1 -> left_ co i = co
 
   (* Should be changed to take index as argument rather than cursors *)
-  function left (co:vector) (cu : cursor) : vector = 
+  function left (co:vector) (cu : cursor) : vector =
      let i = if cu = no_element then length_ co + 1 else to_index_ co cu in
        left_ co i
 
@@ -733,7 +733,7 @@ module Ada__containers__formal_vectors__right
   use import Ada__containers__formal_vectors__to_index
   use import Ada__containers__formal_vectors__no_element
   use import Ada__containers__formal_vectors__element
-  
+
   function right_ vector int : vector
 
   axiom right_lgth:
@@ -748,7 +748,7 @@ module Ada__containers__formal_vectors__right
     forall co:vector, i j:int [element_ (right_ co i) j].
       0 < i <= length_ co + 1 ->  0 < j <= length_ co - i + 1 -> element_ co (j + i - 1) = element_ (right_ co i) j
 
-  function right (co:vector) (cu : cursor) : vector = 
+  function right (co:vector) (cu : cursor) : vector =
      let i = if cu = no_element then length_ co + 1 else to_index_ co cu in
        right_ co i
 
@@ -777,7 +777,7 @@ module Ada__containers__formal_vectors__to_vector
   val to_vector (e:Ada__containers__formal_vectors__element_type.base_type) (lgth:int) : vector
     requires { index_type_length >= lgth >= 0 }
     ensures { result = to_vector e lgth /\ length_ result = lgth /\
-                            forall i:int [element_ result i]. 0 < i <= lgth -> 	
+                            forall i:int [element_ result i]. 0 < i <= lgth ->
                                    Ada__containers__formal_vectors__element_type.to_base (element_ (result) i) = e }
 end
 
@@ -820,11 +820,11 @@ module Ada__containers__formal_vectors__insert
   axiom insert_vect_element3bis:
     forall li1 li2 nv : vector, i j : int [insert_vect li1 i nv li2, element_ li2 j].
 	insert_vect li1 i nv li2 -> i + length_ nv <= j <= length_ li2 -> element_ li1 (j - length_ nv) = element_ li2 j
-  
+
   axiom insert_vect_curs:
-    forall co1 co2 nv: vector, i : int, cu : cursor 
+    forall co1 co2 nv: vector, i : int, cu : cursor
    [insert_vect co1 i nv co2, real_to_index co1 cu | insert_vect co1 i nv co2, real_to_index co2 cu ].
-    insert_vect co1 i nv co2 -> (0 < to_index_ co1 cu < i \/ 0 < to_index_ co2 cu < i) -> 
+    insert_vect co1 i nv co2 -> (0 < to_index_ co1 cu < i \/ 0 < to_index_ co2 cu < i) ->
     to_index_ co1 cu = to_index_ co2 cu
 
   val insert (co : ref vector) (i:int) (new_item : vector) : unit
@@ -879,7 +879,7 @@ module Ada__containers__formal_vectors__insert__4
   use import Ada__containers__formal_vectors__length
   use import Ada__containers__formal_vectors__to_vector
   use import Ada__containers__formal_vectors__insert
-  
+
   val insert__4 (co :ref vector) (i:int) (e : Ada__containers__formal_vectors__element_type.base_type) (c:int) : unit
      requires {0 < extended_index__to_index i <= length_ !co + 1 /\   length_ !co + c <= capacity !co }
      writes     { co }
@@ -899,7 +899,7 @@ module Ada__containers__formal_vectors__insert__5
   use import Ada__containers__formal_vectors__to_vector
   use import Ada__containers__formal_vectors__insert
 
-  val insert__5 (co : ref vector) (cu : cursor) (e : Ada__containers__formal_vectors__element_type.base_type) 
+  val insert__5 (co : ref vector) (cu : cursor) (e : Ada__containers__formal_vectors__element_type.base_type)
 	(c:int) : unit
      requires { (to_index_ !co cu > 0 \/ cu = no_element)  /\  length_ !co + c <= capacity !co }
      writes     { co }
@@ -951,7 +951,7 @@ module Ada__containers__formal_vectors__prepend__2
   use import Ada__containers__formal_vectors__to_vector
   use import Ada__containers__formal_vectors__insert
 
-  val prepend__2 (co:ref vector) (e:Ada__containers__formal_vectors__element_type.base_type) 
+  val prepend__2 (co:ref vector) (e:Ada__containers__formal_vectors__element_type.base_type)
                                              (c : int) : unit
      requires { length_ !co + c <= capacity !co }
      writes     { co }
@@ -982,7 +982,7 @@ module Ada__containers__formal_vectors__append__2
   use import Ada__containers__formal_vectors__to_vector
   use import Ada__containers__formal_vectors__insert
 
-  val append__2 (co:ref vector) (e:Ada__containers__formal_vectors__element_type.base_type) 
+  val append__2 (co:ref vector) (e:Ada__containers__formal_vectors__element_type.base_type)
                                              (c : int) : unit
      requires { length_ !co + c <= capacity !co }
      writes     { co }
@@ -1166,23 +1166,23 @@ module Ada__containers__formal_vectors__delete
   axiom delete_capacity:
     forall co1 co2 : vector, i l : int [delete_ co1 i l co2].
       delete_ co1 i l co2 -> capacity co1 = capacity co2
-  
+
   axiom delete_elmt1 :
     forall li1 li2 : vector, i l j : int [delete_ li1 i l li2, element_ li1 j |  delete_ li1 i l li2, element_ li2 j].
     delete_ li1 i l li2 -> 0 < j < i -> element_ li1 j = element_ li2 j
-  
+
   axiom delete_elmt2 :
     forall li1 li2 : vector, i l j : int [delete_ li1 i l li2, element_ li1 j].
     delete_ li1 i l li2 -> i + l <= j <= length_ li1 -> element_ li1 j = element_ li2 (j - l)
-  
+
   axiom delete_elmt2bis :
     forall li1 li2 : vector, i l j : int [delete_ li1 i l li2, element_ li2 j].
     delete_ li1 i l li2 -> i <= j <= length_ li2 -> element_ li1 (j+l) = element_ li2 j
-  
+
   axiom delete_curs:
     forall co1 co2 : vector, i l : int, cu : cursor [delete_ co1 i l co2, real_to_index co1 cu |
                                                                                        delete_ co1 i l co2, real_to_index co2 cu ].
-    delete_ co1 i l co2 -> (0 < to_index_ co1 cu < i \/ 0 < to_index_ co2 cu < i) -> 
+    delete_ co1 i l co2 -> (0 < to_index_ co1 cu < i \/ 0 < to_index_ co2 cu < i) ->
     to_index_ co1 cu = to_index_ co2 cu
 
   predicate delete_end vector int vector
@@ -1198,15 +1198,15 @@ module Ada__containers__formal_vectors__delete
   axiom delete_end_capacity:
     forall co1 co2 : vector, i : int [delete_end co1 i co2].
       delete_end co1 i co2 -> capacity co1 = capacity co2
-  
+
   axiom delete_end_elmt1 :
     forall li1 li2 : vector, i j : int [delete_end li1 i li2, element_ li1 j |  delete_end li1 i li2, element_ li2 j].
     delete_end li1 i li2 -> 0 < j < i -> element_ li1 j = element_ li2 j
-  
+
   axiom delete_end_curs:
     forall co1 co2 : vector, i : int, cu : cursor [delete_end co1 i co2, real_to_index co1 cu |
                                                                                        delete_end co1 i co2, real_to_index co2 cu ].
-    delete_end co1 i co2 -> (0 < to_index_ co1 cu < i \/ 0 < to_index_ co2 cu < i) -> 
+    delete_end co1 i co2 -> (0 < to_index_ co1 cu < i \/ 0 < to_index_ co2 cu < i) ->
     to_index_ co1 cu = to_index_ co2 cu
 
   predicate delete_mult vector int int vector
@@ -1337,7 +1337,7 @@ module Ada__containers__formal_vectors__contains
   use import Ada__containers__formal_vectors__extended_index_helper
   use import Ada__containers__formal_vectors__vector
   use import Ada__containers__formal_vectors__find_index
-  
+
   function contains (co : vector) (e : Ada__containers__formal_vectors__element_type.base_type) : bool =
     if extended_index__to_index (to_int (find_index_ co e 1))  > 0 then True else False
 
@@ -1420,23 +1420,17 @@ module Ada__containers__formal_vectors__copy
   use import Ada__containers__formal_vectors__length
   use import Ada__containers__formal_vectors__strict_equal
 
-  predicate cap_is_max vector vector int
-
- axiom cap_is_max_def:
-   forall co1 co2:vector, max:int 
-                  [cap_is_max co1 co2 max].
-   if capacity co1 > max then capacity co2 = capacity co1 else capacity co2 = max
-
   function copy vector int : vector
 
-  axiom copy_def:
-    forall co:vector, cap:int [copy co cap].
-          cap <= index_type_length -> strict_equal co (copy co cap)  = True
-                       /\ cap_is_max co (copy co cap) cap
+  axiom copy__def:
+    forall co : vector, cap : int [copy co cap].
+       strict_equal co (copy co cap) = True /\
+       (cap = 0 -> capacity co = capacity (copy co cap)) /\
+       (index_type_length >= cap >= length_ co ->  capacity (copy co cap) = cap)
 
   val copy (co: vector) (cap:int) : vector
-     requires { cap <= index_type_length }
-     ensures  { strict_equal co (result) = True /\ cap_is_max co result cap  }
+     requires { cap = 0 \/ index_type_length >= cap >= length_ co}
+     ensures { result = copy co cap }
 end
 
 module Ada__containers__formal_vectors__set_length

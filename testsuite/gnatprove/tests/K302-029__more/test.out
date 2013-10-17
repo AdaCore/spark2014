@@ -1,5 +1,5 @@
 pack.adb:6:13: explicit dereference is not allowed in SPARK
-pack.adb:6:13:  violation of pragma SPARK_Mode at pack.ads:2
+pack.adb:6:13:  violation of pragma SPARK_Mode at line 2
 pack.ads:5:09: access type is not allowed in SPARK
 pack.ads:5:09:  violation of pragma SPARK_Mode at line 2
 pack.ads:15:30: explicit dereference is not allowed in SPARK
@@ -10,8 +10,9 @@ pack.ads:15:30:  violation of pragma SPARK_Mode at line 2
 gprbuild: *** compilation phase failed
 gnatprove: error during translation to intermediate language, aborting.
 [
-{ "name" : "Pack.P0", "file" :"pack.ads", "line" :  13, "spark" : true, "violations" : [] }
-, { "name" : "Pack.P1", "file" :"pack.ads", "line" :  15, "spark" : true, "violations" : [] }
-, { "name" : "Pack.P2", "file" :"pack.ads", "line" :  17, "spark" : true, "violations" : [] }
+{ "name" : "Pack.P0", "file" :"pack.ads", "line" :  13, "spark" : "body" }
+, { "name" : "Pack.P1", "file" :"pack.ads", "line" :  15, "spark" : "body" }
+, { "name" : "Pack.P2", "file" :"pack.ads", "line" :  17, "spark" : "body" }
+, { "name" : "Pack", "file" :"pack.ads", "line" :  1, "spark" : "body" }
 ]
 

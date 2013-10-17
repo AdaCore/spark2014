@@ -7,5 +7,5 @@ p.adb:19:09: warning: unused assignment [ineffective]
 p.adb:20:09: warning: unused assignment [ineffective]
 p.adb:22:35: warning: statement has no effect [ineffective]
 p.adb:23:12: warning: unused assignment [ineffective]
-p.adb:15:12: range check not proved
-p.adb:16:15: range check not proved
+p.adb:15:12: warning: range check might fail
+p.adb:16:15: warning: range check might fail

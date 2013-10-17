@@ -37,6 +37,8 @@ with VC_Kinds;            use VC_Kinds;
 with Why.Ids;             use Why.Ids;
 with Why.Sinfo;           use Why.Sinfo;
 
+with Gnat2Why.Nodes;      use Gnat2Why.Nodes;
+
 package Why.Gen.Expr is
 
    function Is_False_Boolean (P : W_Expr_Id) return Boolean;
@@ -67,7 +69,6 @@ package Why.Gen.Expr is
    function New_Comparison
      (Cmp         : EW_Relation;
       Left, Right : W_Expr_Id;
-      Arg_Types   : W_Type_Id;
       Domain      : EW_Domain)
       return W_Expr_Id;
 
@@ -129,7 +130,8 @@ package Why.Gen.Expr is
        Name     : W_Identifier_Id;
        Progs    : W_Expr_Array;
        Reason   : VC_Kind;
-       Domain   : EW_Domain) return W_Expr_Id;
+       Domain   : EW_Domain;
+       Typ      : W_Type_Id) return W_Expr_Id;
    --  If we are not in the term domain, build a call with VC and location
    --  labels.
 
@@ -148,25 +150,49 @@ package Why.Gen.Expr is
    --  VC reason
 
    function Cur_Subp_Sloc return W_Identifier_Id;
-   --  Return a label that identifies the current subprogram
+   --  Return a label that identifies the current subprogram or package
 
    function Cur_Subp_Name_Label return W_Identifier_Id;
-   --  Return a label that contains the name of the current subprogram.
+   --  Return a label that contains the name of the current subprogram or
+   --  package.
 
    function New_Range_Expr
      (Domain    : EW_Domain;
-      Base_Type : W_Type_Id;
       Low, High : W_Expr_Id;
       Expr      : W_Expr_Id) return W_Expr_Id;
    --  Build an expression (Low <= Expr and then Expr <= High), all
    --  comparisons being in Base_Type (int or real)
+
+   function New_Int_Add
+     (Domain : EW_Domain;
+      Left   : W_Expr_Id;
+      Right  : W_Expr_Id) return W_Expr_Id;
+   --  Function to build Left + Right with integer addition; will convert Left
+   --  and Right to "int" if necessary
+
+   function New_Int_Substract
+     (Domain : EW_Domain;
+      Left   : W_Expr_Id;
+      Right  : W_Expr_Id) return W_Expr_Id;
+   --  Function to build Left - Right with integer addition; will convert Left
+   --  and Right to "int" if necessary
+
+   function To_Int (D : EW_Domain; E : W_Expr_Id) return W_Expr_Id;
+   --  Convert argument to int if not already done
+
+   function Do_Range_Or_Index_Check
+     (Ada_Node   : Node_Id;
+      Ty         : Entity_Id;
+      W_Expr     : W_Expr_Id;
+      Check_Kind : Range_Check_Kind) return W_Prog_Id;
+   --  Returns the Why program that does range of index checking on W_Expr, for
+   --  type Ty.
 
    function Insert_Array_Conversion
      (Domain     : EW_Domain;
       Ada_Node   : Node_Id := Empty;
       Expr       : W_Expr_Id;
       To         : W_Type_Id;
-      From       : W_Type_Id;
       Need_Check : Boolean := False) return W_Expr_Id;
    --  Generate a conversion between two Ada array types. If Range check
    --  is set, add a length or range check to the expression. Which
@@ -178,8 +204,7 @@ package Why.Gen.Expr is
       Ada_Type : Entity_Id;
       Domain   : EW_Domain;
       Expr     : W_Expr_Id;
-      To       : W_Type_Id;
-      From     : W_Type_Id) return W_Expr_Id;
+      To       : W_Type_Id) return W_Expr_Id;
    --  Returns the expression of type To that converts Expr of type From,
    --  possibly inserting checks during the conversion.
 
@@ -187,8 +212,7 @@ package Why.Gen.Expr is
      (Ada_Node : Node_Id := Empty;
       Domain   : EW_Domain;
       Expr     : W_Expr_Id;
-      To       : W_Type_Id;
-      From     : W_Type_Id) return W_Expr_Id;
+      To       : W_Type_Id) return W_Expr_Id;
    --  Returns the expression of type To that converts Expr of type From. No
    --  check is inserted in the conversion.
 
@@ -197,7 +221,6 @@ package Why.Gen.Expr is
       Ada_Node    : Node_Id := Empty;
       Expr        : W_Expr_Id;
       To          : W_Type_Id;
-      From        : W_Type_Id;
       Round_Func  : W_Identifier_Id := Why_Empty;
       Range_Check : Node_Id := Empty) return W_Expr_Id;
    --  We expect Expr to be of the type that corresponds to the type "From".
@@ -211,14 +234,24 @@ package Why.Gen.Expr is
      (Ada_Node   : Node_Id;
       Domain     : EW_Domain;
       Expr       : W_Expr_Id;
-      From       : W_Type_Id;
       To         : W_Type_Id;
       Need_Check : Boolean := False) return W_Expr_Id;
    --  when Discr_Check is set, a discriminant check is inserted into the
    --  conversion, and the node is used to determine the subtype for the check.
 
+   function New_Typed_Binding
+     (Ada_Node : Node_Id := Empty;
+      Domain   : EW_Domain;
+      Name     : W_Identifier_Id;
+      Def      : W_Expr_Id;
+      Context  : W_Expr_Id)
+      return W_Expr_Id;
+   --  same as New_Binding, but adds type information coming from Context
+
    function New_Attribute_Expr
      (Ty   : Entity_Id;
       Attr : Attribute_Id) return W_Expr_Id;
 
+   function Get_Type (E : W_Expr_Id) return W_Type_Id;
+   --  extract the type of a given expression
 end Why.Gen.Expr;

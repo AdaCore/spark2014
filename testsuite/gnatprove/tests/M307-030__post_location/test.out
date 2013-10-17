@@ -1,4 +1,4 @@
 p.adb:15:04: warning: statement has no effect [ineffective]
 p.adb:15:07: warning: unused assignment to "X" [ineffective]
 p.adb:15:10: warning: unused assignment to "Y" [ineffective]
-p.adb:3:14: postcondition not proved
+p.adb:3:14: warning: postcondition might fail

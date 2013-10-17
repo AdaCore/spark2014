@@ -28,16 +28,14 @@ with Unchecked_Deallocation;
 
 with Atree;                  use Atree;
 with Einfo;                  use Einfo;
+with Fname.UF;
 with Get_SPARK_Xrefs;
-with Output;                 use Output;
+with Lib;
+with Osint;
 with Sem_Aux;                use Sem_Aux;
 with Sem_Util;               use Sem_Util;
-with Snames;                 use Snames;
 with SPARK_Xrefs;            use SPARK_Xrefs;
-
-with SPARK_Util;             use SPARK_Util;
-
-with Gnat2Why.Nodes;         use Gnat2Why.Nodes;
+with Uname;
 
 package body SPARK_Frame_Conditions is
 
@@ -119,7 +117,8 @@ package body SPARK_Frame_Conditions is
    Entity_Ids : Name_To_Id_Map.Map;    --  Map name to id
    Entity_Names : Id_To_Name_Map.Map;  --  Map id to name
 
-   Scopes  : Id_Set.Set;  --  All scope entities
+   Scopes       : Id_Set.Set;  --  All scope entities
+   Constants    : Id_Set.Set;  --  All constants
 
    File_Defines : Name_Map.Map;  --  File defining each entities
    Defines      : Id_Map.Map;  --  Entities defined by each scope
@@ -531,16 +530,21 @@ package body SPARK_Frame_Conditions is
       is
          pragma Unreferenced (Key);
       begin
+         --  External objects are those in the sets of defined objects Defines,
+         --  that are not constant objects from the set Constants.
+
          for Elt of S loop
-            declare
-               E : constant Entity_Name := Entity_Names.Element (Elt);
-               C : constant Name_Set.Cursor :=
-                 Translated_Object_Entities.Find (E);
-            begin
-               if not (Name_Set.Has_Element (C)) then
-                  Process (E);
-               end if;
-            end;
+            if not Constants.Contains (Elt) then
+               declare
+                  E : constant Entity_Name := Entity_Names.Element (Elt);
+                  C : constant Name_Set.Cursor :=
+                    Translated_Object_Entities.Find (E);
+               begin
+                  if not (Name_Set.Has_Element (C)) then
+                     Process (E);
+                  end if;
+               end;
+            end if;
          end loop;
       end For_All_Define_Sets;
 
@@ -569,7 +573,10 @@ package body SPARK_Frame_Conditions is
    -- Get_Reads --
    ---------------
 
-   function Get_Reads (E : Entity_Id) return Name_Set.Set is
+   function Get_Reads
+     (E                 : Entity_Id;
+      Include_Constants : Boolean) return Name_Set.Set
+   is
       E_Alias : constant Entity_Id :=
         (if Present (Alias (E)) then Ultimate_Alias (E) else E);
       Name    : aliased constant String := Unique_Name (E_Alias);
@@ -577,7 +584,6 @@ package body SPARK_Frame_Conditions is
         Make_Entity_Name (Name'Unrestricted_Access);
       E_Id    : Id;
       Read_Ids : Id_Set.Set := Id_Set.Empty_Set;
-      Global_Node : constant Node_Id := Get_Pragma (E_Alias, Pragma_Global);
 
    begin
       --  Abstract subprograms not yet supported. Avoid issuing an error on
@@ -588,34 +594,10 @@ package body SPARK_Frame_Conditions is
       end if;
 
       E_Id := Entity_Ids.Element (E_Name);
+      Read_Ids := Reads.Element (E_Id);
 
-      if Present (Global_Node) then
-         declare
-            Reads  : Node_Sets.Set;
-            Writes : Node_Sets.Set;
-         begin
-            Get_Global_Items (Global_Node,
-                              Reads  => Reads,
-                              Writes => Writes);
-            for R of Reads loop
-               --  References to constant objects are not considered in SPARK
-               --  section, as these will be translated as constants in the
-               --  intermediate language for formal verification, and should
-               --  therefore never appear in frame conditions.
-
-               if not Is_Constant_Object (R) then
-                  declare
-                     Name    : aliased constant String := Unique_Name (R);
-                     R_Name  : constant Entity_Name    :=
-                       Make_Entity_Name (Name'Unrestricted_Access);
-                  begin
-                     Read_Ids.Include (Entity_Ids.Element (R_Name));
-                  end;
-               end if;
-            end loop;
-         end;
-      else
-         Read_Ids := Reads.Element (E_Id);
+      if not Include_Constants then
+         Read_Ids := Read_Ids - Constants;
       end if;
 
       return To_Names (Read_Ids - Defines.Element (E_Id));
@@ -641,7 +623,6 @@ package body SPARK_Frame_Conditions is
         Make_Entity_Name (Name'Unrestricted_Access);
       E_Id    : Id;
       Write_Ids : Id_Set.Set := Id_Set.Empty_Set;
-      Global_Node : constant Node_Id := Get_Pragma (E_Alias, Pragma_Global);
 
    begin
       --  Abstract subprograms not yet supported. Avoid issuing an error on
@@ -652,28 +633,7 @@ package body SPARK_Frame_Conditions is
       end if;
 
       E_Id := Entity_Ids.Element (E_Name);
-
-      if Present (Global_Node) then
-         declare
-            Reads  : Node_Sets.Set;
-            Writes : Node_Sets.Set;
-         begin
-            Get_Global_Items (Global_Node,
-                              Reads  => Reads,
-                              Writes => Writes);
-            for W of Writes loop
-               declare
-                  Name    : aliased constant String := Unique_Name (W);
-                  W_Name  : constant Entity_Name    :=
-                    Make_Entity_Name (Name'Unrestricted_Access);
-               begin
-                  Write_Ids.Include (Entity_Ids.Element (W_Name));
-               end;
-            end loop;
-         end;
-      else
-         Write_Ids := Writes.Element (E_Id);
-      end if;
+      Write_Ids := Writes.Element (E_Id);
 
       return To_Names (Write_Ids - Defines.Element (E_Id));
    exception
@@ -685,6 +645,51 @@ package body SPARK_Frame_Conditions is
             return Name_Set.Empty_Set;
          end if;
    end Get_Writes;
+
+   -------------------------
+   -- Has_Computed_Global --
+   -------------------------
+
+   --  A Global contract is computed for E whenever the corresponding ALI file
+   --  has been loaded.
+
+   function Has_Computed_Global (E : Entity_Id) return Boolean is
+
+      --  The code for retrieving the right name for the ALI file is similar
+      --  to the one printing 'W' lines in ALI files (see lib-writ.adb), which
+      --  needs to deal with non-standard naming schemes.
+
+      U : Unit_Name_Type;
+      Body_Fname : File_Name_Type;
+      ALI_File_Name : File_Name_Type;
+
+   begin
+      --  Compute the name of the ALI file containing the local effects of
+      --  subprogram E.
+
+      U := Lib.Unit_Name (Lib.Get_Source_Unit (E));
+
+      if Uname.Is_Spec_Name (U) then
+         Body_Fname :=
+           Fname.UF.Get_File_Name
+             (Uname.Get_Body_Name (U),
+              Subunit => False, May_Fail => True);
+
+         if Body_Fname = No_File then
+            Body_Fname := Fname.UF.Get_File_Name (U, Subunit => False);
+         end if;
+
+      else
+         Body_Fname := Fname.UF.Get_File_Name (U, Subunit => False);
+      end if;
+
+      ALI_File_Name := Osint.Lib_File_Name (Body_Fname);
+
+      --  Effects were computed for subprogram E iff the ALI file with its
+      --  local effects was loaded.
+
+      return Loaded_ALI_Files.Contains (ALI_File_Name);
+   end Has_Computed_Global;
 
    ------------------
    -- Id_Of_Entity --
@@ -715,7 +720,10 @@ package body SPARK_Frame_Conditions is
    -- Load_SPARK_Xrefs --
    ----------------------
 
-   procedure Load_SPARK_Xrefs (ALI_Filename : String) is
+   procedure Load_SPARK_Xrefs
+     (ALI_Filename    : String;
+      Has_SPARK_Xrefs : out Boolean)
+   is
       ALI_File : Ada.Text_IO.File_Type;
       Line     : String (1 .. 1024);
       Last     : Natural;
@@ -786,11 +794,8 @@ package body SPARK_Frame_Conditions is
             --  No SPARK cross-reference information in this ALI
 
             Close (ALI_File);
-            Write_Str ("error:" & ALI_Filename &
-                         " does not contain SPARK Xrefs section");
-            Write_Eol;
-
-            raise Terminate_Program;
+            Has_SPARK_Xrefs := False;
+            return;
          end if;
 
          Get_Line (ALI_File, Line, Last);
@@ -803,6 +808,7 @@ package body SPARK_Frame_Conditions is
          end case;
       end loop Scan_ALI;
 
+      Has_SPARK_Xrefs := True;
       Index := 1;
 
       Get_SPARK_From_ALI;
@@ -947,7 +953,7 @@ package body SPARK_Frame_Conditions is
 
                      if Current_Entity /= Ref_Entity
                        and then not Is_Heap_Variable (Ref_Entity)
-                       and then Xref.Rtype in 'r' | 'm'
+                       and then Xref.Rtype in 'c' | 'r' | 'm'
                      then
                         Add_To_Map (Defines,
                                     Id_Of_Entity (Def_Scope_Ent),
@@ -962,6 +968,12 @@ package body SPARK_Frame_Conditions is
                            Add_To_Map (Reads,
                                        Id_Of_Entity (Ref_Scope_Ent),
                                        Id_Of_Entity (Ref_Entity));
+                        when 'c' =>
+                           Constants.Include (Id_Of_Entity (Ref_Entity));
+                           Add_To_Map (Reads,
+                                       Id_Of_Entity (Ref_Scope_Ent),
+                                       Id_Of_Entity (Ref_Entity));
+
                         when 'm' =>
                            Add_To_Map (Writes,
                                        Id_Of_Entity (Ref_Scope_Ent),

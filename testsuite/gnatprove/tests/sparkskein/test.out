@@ -1,92 +1,190 @@
-skein.adb:114:7: assertion not proved, requires Dst'First = 0
-skein.adb:116:7: assertion not proved, requires Src'First = 0
-skein.adb:118:7: assertion not proved, requires Dst'Last >= Dst_Offset + (Byte_Count - 1
-skein.adb:120:7: assertion not proved, requires Src'Last + 1) * 8 >= Byte_Count
+skein.adb:136:48: warning: no Global contract available for "Shift_Right"
+skein.adb:136:48: warning:  assuming "Shift_Right" has no effect on global items
+skein.adb:184:26: warning: "Dst" might not be initialized [uninitialized]
+skein.adb:186:22: warning: no Global contract available for "Shift_Left"
+skein.adb:186:22: warning:  assuming "Shift_Left" has no effect on global items
+skein.adb:187:22: warning: no Global contract available for "Shift_Left"
+skein.adb:187:22: warning:  assuming "Shift_Left" has no effect on global items
+skein.adb:188:22: warning: no Global contract available for "Shift_Left"
+skein.adb:188:22: warning:  assuming "Shift_Left" has no effect on global items
+skein.adb:189:22: warning: no Global contract available for "Shift_Left"
+skein.adb:189:22: warning:  assuming "Shift_Left" has no effect on global items
+skein.adb:190:22: warning: no Global contract available for "Shift_Left"
+skein.adb:190:22: warning:  assuming "Shift_Left" has no effect on global items
+skein.adb:191:22: warning: no Global contract available for "Shift_Left"
+skein.adb:191:22: warning:  assuming "Shift_Left" has no effect on global items
+skein.adb:192:22: warning: no Global contract available for "Shift_Left"
+skein.adb:192:22: warning:  assuming "Shift_Left" has no effect on global items
+skein.adb:297:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:297:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:304:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:304:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:310:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:310:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:316:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:316:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:326:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:326:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:333:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:333:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:339:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:339:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:345:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:345:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:355:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:355:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:362:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:362:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:368:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:368:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:374:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:374:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:384:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:384:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:391:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:391:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:397:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:397:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:403:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:403:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:413:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:413:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:420:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:420:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:426:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:426:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:432:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:432:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:442:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:442:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:449:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:449:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:455:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:455:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:461:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:461:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:471:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:471:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:478:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:478:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:484:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:484:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:490:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:490:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:500:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:500:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:507:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:507:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:513:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:513:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:519:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:519:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:534:20: warning: "Ks" might not be initialized [uninitialized]
+skein.adb:883:62: warning: no Global contract available for "Shift_Right"
+skein.adb:883:62: warning:  assuming "Shift_Right" has no effect on global items
+skein.adb:884:62: warning: no Global contract available for "Shift_Right"
+skein.adb:884:62: warning:  assuming "Shift_Right" has no effect on global items
+skein.adb:885:62: warning: no Global contract available for "Shift_Right"
+skein.adb:885:62: warning:  assuming "Shift_Right" has no effect on global items
+skein.adb:886:62: warning: no Global contract available for "Shift_Right"
+skein.adb:886:62: warning:  assuming "Shift_Right" has no effect on global items
+skein.adb:887:62: warning: no Global contract available for "Shift_Right"
+skein.adb:887:62: warning:  assuming "Shift_Right" has no effect on global items
+skein.adb:888:62: warning: no Global contract available for "Shift_Right"
+skein.adb:888:62: warning:  assuming "Shift_Right" has no effect on global items
+skein.adb:889:62: warning: no Global contract available for "Shift_Right"
+skein.adb:889:62: warning:  assuming "Shift_Right" has no effect on global items
+skein.adb:114:7: warning: assertion might fail, requires Dst'First = 0
+skein.adb:116:7: warning: assertion might fail, requires Src'First = 0
+skein.adb:118:7: warning: assertion might fail, requires Dst'Last >= Dst_Offset + (Byte_Count - 1
+skein.adb:120:7: warning: assertion might fail, requires Src'Last + 1) * 8 >= Byte_Count
 skein.adb:124:14: info: range check proved
 skein.adb:135:29: info: index check proved
-skein.adb:135:29: overflow check not proved
+skein.adb:135:29: warning: overflow check might fail
 skein.adb:137:48: info: division check proved
 skein.adb:137:48: info: index check proved
 skein.adb:138:43: info: overflow check proved
 skein.adb:138:43: info: range check proved
 skein.adb:138:48: info: division check proved
-skein.adb:138:56: range check not proved
-skein.adb:162:7: assertion not proved, requires Src'First = 0
-skein.adb:164:7: assertion not proved, requires Dst'First = 0
-skein.adb:166:7: assertion not proved, requires Src_Offset <= Src'last
-skein.adb:168:7: assertion not proved, requires Src_Offset + (Dst'Last * 8) + 7 <= Src'last
-skein.adb:184:15: index check not proved
-skein.adb:185:41: index check not proved
-skein.adb:186:74: index check not proved
-skein.adb:186:74: overflow check not proved
-skein.adb:187:74: index check not proved
-skein.adb:187:74: overflow check not proved
-skein.adb:188:74: index check not proved
-skein.adb:188:74: overflow check not proved
-skein.adb:189:74: index check not proved
-skein.adb:189:74: overflow check not proved
-skein.adb:190:74: index check not proved
-skein.adb:190:74: overflow check not proved
-skein.adb:191:74: index check not proved
-skein.adb:191:74: overflow check not proved
-skein.adb:192:74: index check not proved
-skein.adb:192:74: overflow check not proved
-skein.adb:207:33: range check not proved
-skein.adb:210:33: overflow check not proved
+skein.adb:138:56: warning: range check might fail
+skein.adb:162:7: warning: assertion might fail, requires Src'First = 0
+skein.adb:164:7: warning: assertion might fail, requires Dst'First = 0
+skein.adb:166:7: warning: assertion might fail, requires Src_Offset <= Src'last
+skein.adb:168:7: warning: assertion might fail, requires Src_Offset + (Dst'Last * 8) + 7 <= Src'last
+skein.adb:184:15: warning: array index check might fail
+skein.adb:185:41: warning: array index check might fail
+skein.adb:186:74: warning: array index check might fail
+skein.adb:186:74: warning: overflow check might fail
+skein.adb:187:74: warning: array index check might fail
+skein.adb:187:74: warning: overflow check might fail
+skein.adb:188:74: warning: array index check might fail
+skein.adb:188:74: warning: overflow check might fail
+skein.adb:189:74: warning: array index check might fail
+skein.adb:189:74: warning: overflow check might fail
+skein.adb:190:74: warning: array index check might fail
+skein.adb:190:74: warning: overflow check might fail
+skein.adb:191:74: warning: array index check might fail
+skein.adb:191:74: warning: overflow check might fail
+skein.adb:192:74: warning: array index check might fail
+skein.adb:192:74: warning: overflow check might fail
+skein.adb:207:33: warning: range check might fail
+skein.adb:210:33: warning: overflow check might fail
 skein.adb:283:76: info: division check proved
-skein.adb:283:76: range check not proved
+skein.adb:283:76: warning: range check might fail
 skein.adb:286:56: info: division check proved
-skein.adb:286:56: range check not proved
+skein.adb:286:56: warning: range check might fail
 skein.adb:287:62: info: division check proved
-skein.adb:287:62: range check not proved
+skein.adb:287:62: warning: range check might fail
 skein.adb:558:26: info: length check proved
 skein.adb:569:25: info: length check proved
 skein.adb:609:41: info: length check proved
-skein.adb:662:17: range check not proved
-skein.adb:663:35: overflow check not proved
-skein.adb:688:36: length check not proved
-skein.adb:696:38: length check not proved
-skein.adb:703:83: length check not proved
-skein.adb:757:25: range check not proved
-skein.adb:759:30: overflow check not proved
-skein.adb:759:30: range check not proved
-skein.adb:760:30: overflow check not proved
-skein.adb:760:30: range check not proved
-skein.adb:763:36: index check not proved
+skein.adb:662:17: warning: range check might fail
+skein.adb:663:35: warning: overflow check might fail
+skein.adb:688:36: warning: length check might fail
+skein.adb:696:38: warning: length check might fail
+skein.adb:703:83: warning: length check might fail
+skein.adb:757:25: warning: range check might fail
+skein.adb:759:30: warning: overflow check might fail
+skein.adb:759:30: warning: range check might fail
+skein.adb:760:30: warning: overflow check might fail
+skein.adb:760:30: warning: range check might fail
+skein.adb:763:36: warning: array index check might fail
 skein.adb:773:27: info: range check proved
 skein.adb:774:27: info: overflow check proved
-skein.adb:777:50: overflow check not proved
-skein.adb:782:38: overflow check not proved
-skein.adb:782:38: range check not proved
-skein.adb:785:26: overflow check not proved
-skein.adb:788:42: range check not proved
+skein.adb:777:50: warning: overflow check might fail
+skein.adb:782:38: warning: overflow check might fail
+skein.adb:782:38: warning: range check might fail
+skein.adb:785:26: warning: overflow check might fail
+skein.adb:788:42: warning: range check might fail
 skein.adb:794:50: info: overflow check proved
 skein.adb:794:50: info: range check proved
 skein.adb:795:54: info: overflow check proved
 skein.adb:811:49: info: division check proved
-skein.adb:811:49: range check not proved
-skein.adb:819:41: overflow check not proved
-skein.adb:819:41: range check not proved
-skein.adb:822:54: overflow check not proved
-skein.adb:822:54: range check not proved
-skein.adb:824:54: overflow check not proved
+skein.adb:811:49: warning: range check might fail
+skein.adb:819:41: warning: overflow check might fail
+skein.adb:819:41: warning: range check might fail
+skein.adb:822:54: warning: overflow check might fail
+skein.adb:822:54: warning: range check might fail
+skein.adb:824:54: warning: overflow check might fail
 skein.adb:866:14: info: range check proved
-skein.adb:882:60: range check not proved
-skein.adb:883:89: range check not proved
-skein.adb:884:89: range check not proved
-skein.adb:885:89: range check not proved
-skein.adb:886:89: range check not proved
-skein.adb:887:89: range check not proved
-skein.adb:888:89: range check not proved
-skein.adb:889:89: range check not proved
-skein.adb:913:47: overflow check not proved
+skein.adb:882:60: warning: range check might fail
+skein.adb:883:89: warning: range check might fail
+skein.adb:884:89: warning: range check might fail
+skein.adb:885:89: warning: range check might fail
+skein.adb:886:89: warning: range check might fail
+skein.adb:887:89: warning: range check might fail
+skein.adb:888:89: warning: range check might fail
+skein.adb:889:89: warning: range check might fail
+skein.adb:913:47: warning: overflow check might fail
 skein.adb:913:52: info: division check proved
-skein.adb:913:52: range check not proved
-skein.adb:918:44: length check not proved
-skein.adb:921:44: division check not proved
-skein.adb:948:26: overflow check not proved
-skein.adb:948:26: range check not proved
-skein.adb:948:41: overflow check not proved
-skein.adb:955:56: overflow check not proved
-skein.adb:955:56: range check not proved
-skein.adb:961:37: range check not proved
+skein.adb:913:52: warning: range check might fail
+skein.adb:918:44: warning: length check might fail
+skein.adb:921:44: warning: divide by zero might fail
+skein.adb:948:26: warning: overflow check might fail
+skein.adb:948:26: warning: range check might fail
+skein.adb:948:41: warning: overflow check might fail
+skein.adb:955:56: warning: overflow check might fail
+skein.adb:955:56: warning: range check might fail
+skein.adb:961:37: warning: range check might fail
+skein.ads:266:52: warning: length check might fail
+skein.ads:267:52: warning: length check might fail

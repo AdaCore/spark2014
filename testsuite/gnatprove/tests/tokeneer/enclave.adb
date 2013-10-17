@@ -41,7 +41,7 @@ with AlarmTypes; use AlarmTypes;
 
 package body Enclave
 --# own State is Status;
-is
+is pragma SPARK_Mode (On);
 
    ------------------------------------------------------------------
    --  Types
@@ -2493,7 +2493,7 @@ is
                 not Admin.IsDoingOp(TheAdmin) )) and
 
          ( (not Admin.IsPresent(TheAdmin)) <= (not Admin.IsDoingOp(TheAdmin)) )
-         and 
+         and
 
          ( ( Status = GotAdminToken or else
             Status = WaitingRemoveAdminTokenFail ) <=
@@ -2710,32 +2710,32 @@ is
 
          ( ( Status = WaitingStartAdminOp or else
              Status = WaitingFinishAdminOp ) <=
-           ( Admin.IsDoingOp(TheAdmin) and 
-             Admin.IsPresent(TheAdmin) and 
+           ( Admin.IsDoingOp(TheAdmin) and
+             Admin.IsPresent(TheAdmin) and
              Admin.RolePresent(TheAdmin) = Admin.RolePresent(TheAdmin)'Old ) )
          and
 
          ( (Status = EnclaveQuiescent) <=
-           ( not Admin.IsDoingOp(TheAdmin) and 
+           ( not Admin.IsDoingOp(TheAdmin) and
                Admin.RolePresent(TheAdmin) = Admin.RolePresent(TheAdmin)'Old ) )
-         and 
+         and
 
          ( (Status = Shutdown) <=
            ( not Admin.IsDoingOp(TheAdmin) and then
-             Admin.RolePresent(TheAdmin) = PrivTypes.UserOnly ) ) and 
+             Admin.RolePresent(TheAdmin) = PrivTypes.UserOnly ) ) and
 
          ( ( Admin.IsDoingOp(TheAdmin) and then
              Admin.TheCurrentOp(TheAdmin) = Admin.ShutdownOp ) <=
-                       (Status = WaitingStartAdminOp) ) and 
+                       (Status = WaitingStartAdminOp) ) and
 
          ( (Admin.RolePresent(TheAdmin) = PrivTypes.Guard) <=
               ( AdminToken.IsGood and then
                 AdminToken.AuthCertValid and then
-                AdminToken.TheAuthCertRole = PrivTypes.Guard )) and 
+                AdminToken.TheAuthCertRole = PrivTypes.Guard )) and
 
          ( ( Admin.IsDoingOp(TheAdmin) and then
              Admin.TheCurrentOp(TheAdmin) = Admin.OverrideLock ) <=
-              (Admin.RolePresent(TheAdmin) = PrivTypes.Guard) ) and 
+              (Admin.RolePresent(TheAdmin) = PrivTypes.Guard) ) and
 
          ( (Admin.RolePresent(TheAdmin) = PrivTypes.Guard) <=
               ( ( Admin.IsDoingOp(TheAdmin) and then
@@ -2909,37 +2909,37 @@ is
 
          pragma Postcondition
            (( Status = EnclaveQuiescent or else
-              Status = WaitingStartAdminOp ) and 
+              Status = WaitingStartAdminOp ) and
 
             ( (Admin.RolePresent(TheAdmin) = PrivTypes.Guard) <=
                  ( AdminToken.IsGood and then
                    AdminToken.AuthCertValid and then
-                   AdminToken.TheAuthCertRole = PrivTypes.Guard )) and 
+                   AdminToken.TheAuthCertRole = PrivTypes.Guard )) and
 
             ( ( Admin.IsDoingOp(TheAdmin) and then
                 Admin.TheCurrentOp(TheAdmin) = Admin.OverrideLock ) <=
-                 (Admin.RolePresent(TheAdmin) = PrivTypes.Guard) ) and 
+                 (Admin.RolePresent(TheAdmin) = PrivTypes.Guard) ) and
 
             ( (Admin.RolePresent(TheAdmin) = PrivTypes.Guard) <=
                  ( ( Admin.IsDoingOp(TheAdmin) and then
                      Admin.TheCurrentOp(TheAdmin) = Admin.OverrideLock ) or else
-                   not Admin.IsDoingOp(TheAdmin) )) and 
+                   not Admin.IsDoingOp(TheAdmin) )) and
 
             ( ( Admin.IsDoingOp(TheAdmin) and then
                 Admin.TheCurrentOp(TheAdmin) = Admin.ShutdownOp ) <=
-                          (Status = WaitingStartAdminOp) ) and 
+                          (Status = WaitingStartAdminOp) ) and
 
             ( ( Status = WaitingStartAdminOp or else
                 Status = WaitingFinishAdminOp ) <=
-              ( Admin.IsDoingOp(TheAdmin) and 
-                Admin.IsPresent(TheAdmin) and 
+              ( Admin.IsDoingOp(TheAdmin) and
+                Admin.IsPresent(TheAdmin) and
                     Admin.RolePresent(TheAdmin) =
-                      Admin.RolePresent(TheAdmin)'Old ) ) and 
+                      Admin.RolePresent(TheAdmin)'Old ) ) and
 
             ( (Status = EnclaveQuiescent) <=
-              ( not Admin.IsDoingOp(TheAdmin) and 
+              ( not Admin.IsDoingOp(TheAdmin) and
                   Admin.RolePresent(TheAdmin) =
-                    Admin.RolePresent(TheAdmin)'Old ) ) and 
+                    Admin.RolePresent(TheAdmin)'Old ) ) and
 
             ( (Status = Shutdown) <=
               ( not Admin.IsDoingOp(TheAdmin) and then

@@ -1,5 +1,3 @@
-.. highlight:: ada
-
 .. _Appendix:
 
 ********
@@ -9,60 +7,67 @@ Appendix
 .. _command line:
 
 Command-line Options
---------------------
+====================
 
-|GNATprove| is executed with the following command line:
+|GNATprove| is executed with the following command line::
 
-   ``gnatprove -P <project_file.gpr> [switches] [optional_list_of_files]``
+ Usage: gnatprove -Pproj [files] [switches] [-cargs switches]
+ proj is a GNAT project file
+ files is one or more file names
+ -cargs switches are passed to gcc
 
-|GNATprove| accepts the following basic switches:
+ gnatprove basic switches:
+ -f                 Force recompilation/analysis of all units
+ -jnnn              Use nnn parallel processes (default: 1)
+ -k                 Do not stop analysis at the first error
+     --mode=m       Set the mode of GNATprove (m=check, flow, prove, all*)
+ -q, --quiet        Be quiet/terse
+     --clean        Remove GNATprove intermediate files, and exit
+     --report=r     Set the report mode of GNATprove (r=fail*, all, statistics)
+ -u                 Unique compilation, only prove the given files
+ -U                 Prove all files of all projects
+ -v, --verbose      Output extra verbose information
+     --version      Output version of the tool and exit
+     --warnings=w   Set the warning mode of GNATprove (w=off, on, error*)
+ -h, --help         Display this usage information
 
-* ``-f``      Force recompilation/proving of all units and all VCs
-* ``-jnnn``   Use nnn parallel processes (default: 1)
-* ``-k```     Do not stop analysis at the first error
-* ``--mode=M`` Proof mode
+ * Main mode values
+   . check - Check SPARK restrictions for code where SPARK_Mode=On
+   . flow  - Prove object initialization and flow contracts
+   . prove - Prove subprogram contracts and absence of run-time errors
+   . all   - Activates all modes (default)
 
-  * ``check`` - Check SPARK restrictions for code where SPARK_Mode=On
-  * ``flow``  - Prove object initialization, globals and depends contracts
-  * ``prove`` - Prove subprogram contracts and absence of run-time
-    errors (default)
-  * ``all``   - Activates all modes
+ * Report mode values
+   . fail       - Report failures to prove checks (default)
+   . all        - Report all results of proving checks
+   . statistics - Same as all, plus timing and steps information
 
-* ``-q``      Be quiet/terse
-* ``--clean`` Remove GNATprove intermediate files, and exit
-* ``--report=M`` Output mode
+ * Warning mode values
+   . off   - Do not issue warnings
+   . on    - Issue warnings
+   . error - Treat warnings as errors (default)
 
-  * ``fail``       - Report failures to prove VCs (default)
-  * ``all``        - Report all results of proving VCs
-  * ``statistics`` - Report all results of proving VCs, including
-    timing and steps information
+ gnatprove advanced switches:
+ -d, --debug        Debug mode
+ --flow-debug       Extra debugging for flow analysis (requires graphviz)
+     --proof=p      Set the proof mode (p=no_split*, then_split, path_wp,
+                    no_wp, all_split)
+     --RTS=dir      Specify the Ada runtime name/location
+     --show-tag     Append a unique tag to each error message
+     --pedantic     Use a strict interpretation of the Ada standard
+     --steps=nnn    Set the maximum number of proof steps to nnn for Alt-Ergo
+     --timeout=s    Set the prover timeout in seconds (default: 1)
+     --limit-line=s Limit analysis to given file and line
+     --limit-subp=s Limit analysis to subprogram defined by file and line
+     --prover=s     Use given prover instead of default Alt-Ergo prover
 
-* ``-u``      Unique compilation, only prove the given files
-* ``-U``      Prove all files of all projects
-* ``-v``, ``--verbose`` Output extra verbose information
-* ``--version``         Output version of the tool and exit
-* ``-h``, ``--help``    Display usage information
-
-|GNATprove| accepts the following advanced switches:
-
-* ``-d``, ``--debug``   Debug mode
-* ``--proof=M``         Proof mode
-
-  * ``no_wp``      - Do not compute VCs, do not call prover
-  * ``all_split``  - Compute all VCs, save them to file, do not call prover
-  * ``path_wp``    - Generate one formula per path for each check
-  * ``no_split``   - Generate one formula per check
-  * ``then_split`` - Start with one formula per check, then split into
-    paths when needed
-
-* ``--RTS=DIR``   Specify the Ada runtime name/location
-* ``--pedantic``  Use a strict interpretation of the Ada standard
-* ``--steps=nnn`` Set the maximum number of proof steps to nnn for Alt-Ergo
-* ``--timeout=s`` Set the prover timeout in seconds (default: 1)
-* ``--limit-line=file:line`` Limit proofs to the specified file and line
-* ``--limit-subp=file:line`` Limit proofs to the specified subprogram
-  declared at the location given by file and line
-* ``--prover=s``  Use given prover instead of default Alt-Ergo prover
+ * Proof mode values
+   . no_split   - Generate one formula per check (default)
+   . then_split - Start with one formula per check, then split into
+                  paths when needed
+   . path_wp    - Generate one formula per path for each check
+   . no_wp      - Do not compute checks, do not call prover
+   . all_split  - Compute all checks, save them to file, do not call prover
 
 .. _Alternative_Provers:
 
@@ -77,7 +82,7 @@ search your PATH for any supported provers and add them to the config
 file. Any such prover can then be used with the ``--prover`` option,
 for example:
 
-   ``gnatprove -P foo.gpr --prover=cvc4_gnatprove``
+   ``gnatprove -P foo.gpr --prover=cvc4``
 
 .. _Project_Attributes:
 
@@ -87,15 +92,197 @@ Project Attributes
 |GNATprove| reads the package ``Prove`` in the given project file. This package
 is allowed to contain an attribute ``Switches``, which defines additional
 command line switches that are used for the invokation of |GNATprove|. As an
-example, the following package in the project file sets the default mode of
-|GNATprove| to ``prove``::
+example, the following package in the project file sets the default report mode
+of |GNATprove| to ``all``::
 
     package Prove is
-       for Switches use ("--mode=prove");
+       for Switches use ("--report=all");
     end Prove;
 
 Switches given on the command line have priority over switches given in the
 project file.
+
+Implementation Defined Pragmas
+==============================
+
+.. _Pragma_SPARK_Mode:
+
+Pragma ``SPARK_Mode``
+---------------------
+
+SPARK_Mode is a three-valued aspect. At least until we get to the
+next paragraph, a SPARK_Mode of On, Off, or Auto is associated
+with each Ada construct. In general, On indicates that the construct is
+required to be in |SPARK|, Off indicates otherwise, and Auto
+is discussed below.
+
+Some Ada constructs are said to have more than one "section".
+For example, a declaration which requires a completion will have (at least)
+two sections: the initial declaration and the completion. The SPARK_Modes
+of the different sections of one entity may differ. In other words,
+SPARK_Mode is not an aspect of an entity but rather of a section of an entity.
+
+For example, if a subprogram declaration has a SPARK_Mode of On while
+its body has a SPARK_Mode of Off, then an error would be generated if
+the subprogram  took a parameter of an access type but not if
+the subprogram declared a local variable of an
+access type (recall that access types are not in |SPARK|).
+
+A package is defined to have 4 sections: its visible part, its private part,
+its body declarations, and its body statements. Non-package declarations which
+require a completion have two sections, as noted above; all other entities and
+constructs have only one section.
+
+If the SPARK_Mode of a section of an entity is Off, then the SPARK_Mode
+of a later section of that entity shall not be On. [For example, a subprogram
+can have a SPARK declaration and a non-SPARK body, but not vice versa.]
+
+If the SPARK_Mode of a section of an entity is Auto, then the SPARK_Mode
+of a later section of that entity shall not be On or Off.
+
+The SPARK_Mode aspect can be specified either via a pragma or via an
+aspect_specification. In some contexts, only a pragma can be used
+because of syntactic limitations. In those contexts where an
+aspect_specification can be used, it has the same effect as a
+corresponding pragma.
+
+The form of a pragma SPARK_Mode is as follows:
+
+.. code-block:: ada
+
+   pragma SPARK_Mode [ (On | Off) ]
+
+The form for the aspect_definition of a SPARK_Mode aspect_specification is
+as follows:
+
+.. code-block:: ada
+
+   [ On | Off ]
+
+For example:
+
+.. code-block:: ada
+
+   package P
+      with SPARK_Mode => On
+   is
+
+The pragma can be used as a configuration pragma. The effect of
+such a configuration pragma is described below in the rules for
+determining the SPARK_Mode aspect value for an arbitrary section of an
+arbitrary Ada entity or construct.
+
+Pragma ``SPARK_Mode`` shall be used as a local pragma in only the following
+contexts and has the described semantics:
+
+* When the pragma appears at the start of the visible declarations (preceded
+  only by other pragmas) of a package declaration, it specifies the
+  SPARK_Mode aspect of the visible part of the package. This can also
+  be accomplished via a SPARK_Mode aspect specification as part of the
+  package_specification.
+
+* When the pragma appears at the start of the private declarations of a
+  package (only other pragmas can appear between the ``private`` keyword
+  and the ``SPARK_Mode`` pragma), it specifies the SPARK_Mode aspect
+  of the private part of the package. [This cannot be accomplished via
+  an aspect_specification.]
+
+* When the pragma appears immediately at the start of the declarations of a
+  package body (preceded only by other pragmas),
+  it specifies the SPARK_Mode aspect of the body declarations of the package.
+  This can also be accomplished via a SPARK_Mode aspect specification
+  as part of the package_body.
+
+* When the pragma appears at the start of the elaboration statements of
+  a package body (only other pragmas can appear between the ``begin``
+  keyword and the ``SPARK_Mode`` pragma),
+  it specifies the SPARK_Mode aspect of the body
+  the default mode of the package body). [This cannot be accomplished via
+  an aspect_specification.]
+
+* When the pragma appears after a subprogram declaration (with only other
+  pragmas intervening), it specifies the SPARK_Mode aspect of the
+  subprogram's specification. This can also be accomplished via a SPARK_Mode
+  aspect_specification as part of the subprogram_declaration.
+  [This does not include the case of a subprogram whose initial declaration
+  is via a subprogram_body_stub. Such a subprogram has only one section
+  because a subunit is not a completion.]
+
+* When the pragma appears at the start of the declarations of a subprogram
+  body (preceded only by other pragmas), it specifies the SPARK_Mode aspect
+  of the subprogram's body. This can also be accomplished via a SPARK_Mode
+  aspect_specification as part of the subprogram_body.
+
+A default argument of On is assumed for any SPARK_Mode pragma or
+aspect_specification for which no argument is explicitly specified.
+
+A Spark_Mode of Auto cannot be explicitly specified; the
+cases in which a Spark_Mode of Auto is implicitly specified are
+described below. Roughly speaking, Auto indicates that it is left up to
+the formal verification tools to determine whether or not a given construct
+is in |SPARK|.
+
+A SPARK_Mode pragma or aspect specification shall only apply to a
+(section of a) library-level package or subprogram.
+
+The SPARK_Mode aspect value of an arbitrary section of an arbitrary
+Ada entity or construct is then defined to be the following value
+(except if this yields a result of Auto for a non-package; see below):
+
+- If SPARK_Mode has been specified for the given section of the
+  given entity or construct, then the specified value;
+
+- else for the private part of a package, if SPARK_Mode has been specified
+  for the public part of the same package, then the SPARK_Mode of
+  the public part;
+
+- else for a package body statements, if SPARK_Mode has been specified for the
+  body declarations of the same package, then the SPARK_Mode of the
+  body declarations;
+
+- else for any of the visible part or body declarations of a library
+  unit package or either section of a library unit subprogram,
+  if there is an applicable SPARK_Mode configuration pragma then the
+  value specified by the pragma; if no such configuration pragma
+  applies, then an implicit specification of Auto is assumed;
+
+- else the SPARK_Mode of the enclosing section of the nearest enclosing
+  package or subprogram;
+
+- Corner cases: the SPARK_Mode of the visible declarations of the
+  limited view of a package is always Auto; the SPARK_Mode of any
+  section of a generic library unit is On.
+  [Recall that any generic unit is in |SPARK|.]
+
+If the above computation yields a result of Auto for any construct
+other than one of the four sections of a package, then a result of On
+or Off is determined instead based on the legality (with respect to
+the rules of |SPARK|) of the construct. The construct's SPARK_Mode is
+On if and only if the construct is in |SPARK|. [A SPARK_Mode of Auto
+is therefore only possible for (sections of) a package.]
+
+In code where SPARK_Mode is On (also called "SPARK code"), the rules of
+|SPARK| are enforced. In particular, such code shall not reference
+non-SPARK entities, although such code may reference a SPARK declaration
+with one or more non-SPARK subsequent sections (e.g., a package whose
+visible part has a SPARK_Mode of On but whose private part has a SPARK_Mode
+of Off; a package whose visible part has a SPARK_Mode of Auto may also be
+referenced).
+Similarly, code where SPARK_Mode is On shall not enclose code where
+SPARK_Mode is Off unless the non-SPARK code is part of the "completion"
+(using that term imprecisely, because we are including the private
+part of a package as part of its "completion" here) of a SPARK declaration.
+
+SPARK_Mode is an implementation-defined Ada aspect; it is not (strictly
+speaking) part of the |SPARK| language. It is used to notionally transform
+programs which would otherwise not be in |SPARK| so that they can
+be viewed (at least in part) as |SPARK| programs.
+
+[TBD: Do we need to state rules for handling multiple applicable Spark_Mode
+configuration pragmas? Simplest rule: "it is always an error".
+Alternatively (and very roughly speaking), "two pragmas in the same file
+is an error, but any .ads/.adb file configuration pragma takes precedence
+over any .adc file pragma".]
 
 .. _GNATprove_Limitations:
 
@@ -115,7 +302,7 @@ globals and dependency aspects. We expect to remove this limitation
 after the first release.
 
 Portability Issues
-------------------
+==================
 
 To execute a |SPARK| program, it is expected that users will compile
 the program (as an Ada program) using an Ada compiler.
@@ -195,34 +382,3 @@ introduced in a later version of Ada must be avoided (unless it is
 expressed as a safely-ignored pragma). This seems worth mentioning because
 Ada 2012 constructs such as quantified expressions
 and conditional expressions are often heavily used in |SPARK| programs.
-
-Language Features Not Yet Supported
------------------------------------
-
-The major features not yet supported are:
-
-* OO programming: tagged types, dispatching
-* invariants on types (invariants and predicates)
-
-|GNATprove| outputs in the :ref:`summary file` which features from |SPARK| are
-not yet supported and used in the program [using brackets]:
-
-* aggregate: aggregate extension;
-* arithmetic operation: not yet implemented arithmetic operation;
-* attribute: not yet implemented attribute;
-* concatenation: array concatenation;
-* container: formal container;
-* dispatch: dispatching;
-* expression with action: expression with action;
-* multi dim array: multi-dimensional array of dimension > 4;
-* pragma: not yet implemented pragma;
-* representation clause: representation clause;
-* tagged type: tagged type;
-* type invariant;
-* type predicate;
-* operation on arrays: rarely used operation on arrays, such as boolean
-  operators;
-* iterators: loops with iterators;
-* class wide types: class wide types;
-* interfaces: interfaces;
-* not yet implemented: any other not yet implemented construct.

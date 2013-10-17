@@ -23,6 +23,7 @@
 
 with Ada.Containers.Doubly_Linked_Lists;
 
+with Errout;
 with Nlists;                          use Nlists;
 with Sem_Eval;                        use Sem_Eval;
 with Sem_Util;                        use Sem_Util;
@@ -30,7 +31,6 @@ with Sinfo;                           use Sinfo;
 with Snames;                          use Snames;
 
 with Treepr;                          use Treepr;
-with Output;                          use Output;
 
 with Flow.Debug;                      use Flow.Debug;
 pragma Unreferenced (Flow.Debug);
@@ -38,6 +38,7 @@ pragma Unreferenced (Flow.Debug);
 with Flow.Antialiasing;               use Flow.Antialiasing;
 with Flow.Control_Flow_Graph.Utility; use Flow.Control_Flow_Graph.Utility;
 with Flow.Utility;                    use Flow.Utility;
+with Flow_Error_Messages;             use Flow_Error_Messages;
 
 with Why;
 
@@ -1223,7 +1224,8 @@ package body Flow.Control_Flow_Graph is
 
          procedure Find_Return is new Traverse_Proc (Process => Proc);
 
-         V : Flow_Graphs.Vertex_Id;
+         V           : Flow_Graphs.Vertex_Id;
+         Faux_Exit_V : Flow_Graphs.Vertex_Id;
 
       begin
          --  Check if we have a return statement.
@@ -1251,9 +1253,28 @@ package body Flow.Control_Flow_Graph is
          else
             --  We have neither return nor exit, so we simulate an
             --  "exit when false" at the end of the loop.
-            --  !!! Workaround for stdlib bug
-            CM (Union_Id (N)).Standard_Exits.Union
-              (CM.Element (Union_Id (Statements (N))).Standard_Exits);
+
+            --  We need a previously unused node, we can abuse the end
+            --  label for this. This represents our "exit when false"
+            --  node. We cannot just add a fake exit to the very last
+            --  vertex in the loop body, as this introduces
+            --  interesting (and unwanted) control dependencies on it.
+            FA.CFG.Add_Vertex
+              (Direct_Mapping_Id (End_Label (N)),
+               Make_Aux_Vertex_Attributes (E_Loc => N),
+               Faux_Exit_V);
+
+            --  We now thread this at the back of the connection map
+            --  for Statements (N). Sorry, this is really quite ugly.
+            Linkup (FA.CFG,
+                    CM (Union_Id (Statements (N))).Standard_Exits,
+                    Faux_Exit_V);
+            CM (Union_Id (Statements (N))).Standard_Exits :=
+              Vertex_Sets.To_Set (Faux_Exit_V);
+
+            --  Finally we add a mark the faux exit vertex as a
+            --  possible exit of this loop.
+            CM (Union_Id (N)).Standard_Exits.Include (Faux_Exit_V);
          end if;
 
          --  Loop the loop: V -> body -> V
@@ -1427,7 +1448,7 @@ package body Flow.Control_Flow_Graph is
          end if;
       end if;
 
-      --  Now we need to glue the loop entry checks to the front of
+      --  Now we need to glue the 'loop_entry checks to the front of
       --  the loop.
       declare
          Augmented_Loop : Union_Lists.List := Union_Lists.Empty_List;
@@ -2309,14 +2330,24 @@ package body Flow.Control_Flow_Graph is
       case Get_Pragma_Id (N) is
          when Pragma_Abstract_State               |
               Pragma_Ada_05                       |
+              Pragma_Ada_12                       |
+              Pragma_Ada_2005                     |
               Pragma_Ada_2012                     |
+              Pragma_Ada_83                       |
+              Pragma_Ada_95                       |
               Pragma_Annotate                     |
+              Pragma_Assertion_Policy             |
+              Pragma_Check_Policy                 |
               Pragma_Contract_Cases               |
               Pragma_Convention                   |
               Pragma_Depends                      |
+              Pragma_Elaborate                    |
+              Pragma_Elaborate_All                |
               Pragma_Elaborate_Body               |
               Pragma_Export                       |
               Pragma_Global                       |
+              Pragma_Import                       |
+              Pragma_Initial_Condition            |
               Pragma_Initializes                  |
               Pragma_Inline                       |
               Pragma_Inline_Always                |
@@ -2324,12 +2355,13 @@ package body Flow.Control_Flow_Graph is
               Pragma_Pack                         |
               Pragma_Postcondition                |
               Pragma_Precondition                 |
-              Pragma_Preelaborate                 |
               Pragma_Preelaborable_Initialization |
+              Pragma_Preelaborate                 |
               Pragma_Pure                         |
               Pragma_Pure_Function                |
               Pragma_Refined_Depends              |
               Pragma_Refined_Global               |
+              Pragma_Refined_Post                 |
               Pragma_Refined_State                |
               Pragma_SPARK_Mode                   |
               Pragma_Test_Case                    |
@@ -2348,23 +2380,15 @@ package body Flow.Control_Flow_Graph is
                return True;
             end if;
 
-         when Pragma_Import =>
-            return True;
-
          when Pragma_Unmodified   |
               Pragma_Unreferenced =>
             return True;
 
-         when Unknown_Pragma =>
-            --  If we find an Unknown_Pragma we raise Why.Not_SPARK
-            raise Why.Not_SPARK;
-
          when others =>
-            --  If we find another pragma which got past the "in
-            --  SPARK" check we should do one of the above.
-            Write_Str ("Unexpected pragma: " &
-                         Pragma_Id'Image (Get_Pragma_Id (N)));
-            Write_Eol;
+            Errout.Error_Msg_Name_1 := Pragma_Name (N);
+            Errout.Error_Msg_N
+              ("?pragma % is not yet supported in flow analysis", N);
+            Errout.Error_Msg_N ("\\ it is currently ignored", N);
             return False;
       end case;
 
@@ -2387,6 +2411,7 @@ package body Flow.Control_Flow_Graph is
       Precon_Block    : Graph_Connections;
       Body_N          : Node_Id;
       Spec_N          : Node_Id;
+      Tracefile       : Unbounded_String;
    begin
       pragma Assert (Is_Valid (FA));
 
@@ -2491,6 +2516,21 @@ package body Flow.Control_Flow_Graph is
                                      Is_Write => True);
                      end if;
                      Globals.Include (Change_Variant (G, Normal_Use), P);
+
+                     --  If we are dealing with a function, since we found a
+                     --  global output, we raise an error.
+                     if Ekind (FA.Analyzed_Entity) = E_Function then
+                        Error_Msg_Flow
+                          (FA  => FA,
+                           Tracefile => Tracefile,
+                           Msg       => "function with output global & " &
+                             "is not allowed in SPARK",
+                           N   => FA.Analyzed_Entity,
+                           F1  => G,
+                           Tag => "side_effects");
+
+                        FA.Function_Side_Effects_Present := True;
+                     end if;
                   end;
                end loop;
 
@@ -2534,18 +2574,26 @@ package body Flow.Control_Flow_Graph is
                   then Get_Pragma (FA.Analyzed_Entity, Pragma_Initializes)
                   else Get_Pragma (Spec_Entity (FA.Analyzed_Entity),
                                    Pragma_Initializes));
+
+               Global_Ins : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+               --  We need to make sure to only add each global once
+               --  (an entity might be used to derive more than one of
+               --  our states).
             begin
                if Present (Initializes_Contract) then
                   for Opt_In of Parse_Initializes (Initializes_Contract) loop
                      if Opt_In.Exists then
                         for G of Opt_In.The_Set loop
-                           Create_Initial_And_Final_Vertices
-                             (F             => G,
-                              Mode          => Mode_In,
-                              Uninitialized =>
-                                not Is_Initialized_At_Elaboration
-                                (Get_Direct_Mapping_Id (G)),
-                              FA            => FA);
+                           if not Global_Ins.Contains (G) then
+                              Global_Ins.Include (G);
+                              Create_Initial_And_Final_Vertices
+                                (F             => G,
+                                 Mode          => Mode_In,
+                                 Uninitialized =>
+                                   not Is_Initialized_At_Elaboration
+                                   (Get_Direct_Mapping_Id (G)),
+                                 FA            => FA);
+                           end if;
                         end loop;
                      end if;
                   end loop;

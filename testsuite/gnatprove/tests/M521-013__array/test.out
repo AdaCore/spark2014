@@ -1,2 +1,2 @@
 arrays.adb:6:22: warning: unused initial value of "A" [unused_initial_value]
-arrays.adb:9:7: assertion not proved
+arrays.adb:9:7: warning: assertion might fail

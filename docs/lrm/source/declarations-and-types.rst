@@ -306,10 +306,11 @@ Type Extensions
 
 Tagged types are currently not in |SPARK|.
 
-.. todo:: The following rule applies to type extensions: A type
-     extension declared within a subprogram body, block statement, or
-     generic body which does not also enclose the declaration of each
-     of its ancestor types is not in |SPARK|.
+.. todo:: Tagged types are not in release 1.  The following rule
+     applies to type extensions: A type extension declared within a
+     subprogram body, block statement, or generic body which does not
+     also enclose the declaration of each of its ancestor types is not
+     in |SPARK|. To be completed in a post-Release 1 of theis document.
 
 
 Dispatching Operations of Tagged Types

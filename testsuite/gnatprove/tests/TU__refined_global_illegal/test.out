@@ -1,0 +1,14 @@
+refined_global_illegal.adb:6:14: useless refinement, subprogram "P1" does not mention abstract state with visible refinement
+refined_global_illegal.adb:20:14: useless refinement, subprogram "No_Global_Contract" lacks global items
+refined_global_illegal.adb:33:14: aspect "Refined_Global" cannot apply to a stand alone body
+refined_global_illegal.adb:49:43: cannot mention state "State" in global refinement, use its constituents instead (SPARK RM 6.1.4(8))
+refined_global_illegal.adb:57:14: extra constituent "Y"
+refined_global_illegal.adb:65:47: duplicate global item (SPARK RM 6.1.4(11))
+refined_global_illegal.adb:73:14: global refinement of state "State" redefines the mode of its constituents (SPARK RM 7.2.4(5))
+refined_global_illegal.adb:81:14: global refinement of state "State" redefines the mode of its constituents (SPARK RM 7.2.4(5))
+refined_global_illegal.adb:89:14: output state "State2" must be replaced by all its constituents in global refinement (SPARK RM 7.2.5(3))
+refined_global_illegal.adb:89:14:   constituent "Z" is missing in output list
+refined_global_illegal_2.ads:6:14: "Y" must be listed in the Global aspect of "P1"
+refined_global_illegal_2.ads:12:14: "Y" must be listed in the Global aspect of "P2"
+gprbuild: *** compilation phase failed
+gnatprove: error during translation to intermediate language, aborting.

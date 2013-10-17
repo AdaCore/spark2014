@@ -1,0 +1,1 @@
+all XFAIL global_illegal_3.adb: P6 and P7 use Proof_In but IFA cannot process it [M930-001]

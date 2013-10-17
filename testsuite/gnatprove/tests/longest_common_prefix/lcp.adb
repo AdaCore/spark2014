@@ -1,3 +1,4 @@
+pragma SPARK_Mode (On);
 with Types; use Types;
 
 function LCP (A : Text; X, Y : Integer) return Natural is

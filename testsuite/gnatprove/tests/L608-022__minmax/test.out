@@ -1,9 +1,9 @@
-minmax.adb:2:04: warning: statement has no effect [ineffective]
-minmax.adb:3:04: warning: statement has no effect [ineffective]
-minmax.adb:11:04: warning: statement has no effect [ineffective]
-minmax.adb:12:04: warning: statement has no effect [ineffective]
-minmax.adb:17:04: warning: statement has no effect [ineffective]
-minmax.adb:18:04: warning: statement has no effect [ineffective]
+minmax.adb:2:04: warning: initialization has no effect [ineffective]
+minmax.adb:3:04: warning: initialization has no effect [ineffective]
+minmax.adb:11:04: warning: initialization has no effect [ineffective]
+minmax.adb:12:04: warning: initialization has no effect [ineffective]
+minmax.adb:17:04: warning: initialization has no effect [ineffective]
+minmax.adb:18:04: warning: initialization has no effect [ineffective]
 minmax.adb:39:11: warning: unused assignment [ineffective]
 minmax.adb:40:11: warning: unused assignment [ineffective]
 minmax.adb:56:12: warning: unused assignment [ineffective]
@@ -31,9 +31,9 @@ minmax.adb:57:16: info: range check proved
 minmax.adb:58:7: info: assertion proved
 minmax.adb:59:7: info: assertion proved
 minmax.adb:64:16: info: range check proved
-minmax.adb:64:27: overflow check not proved
-minmax.adb:65:16: range check not proved
-minmax.adb:65:24: overflow check not proved
+minmax.adb:64:27: warning: overflow check might fail
+minmax.adb:65:16: warning: range check might fail
+minmax.adb:65:24: warning: overflow check might fail
 minmax.adb:66:7: info: assertion proved
 minmax.adb:67:7: info: assertion proved
 minmax.adb:67:31: info: overflow check proved

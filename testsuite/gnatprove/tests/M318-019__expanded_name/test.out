@@ -1,6 +1,6 @@
 p.adb:2:14: warning: unused initial value of "A" [unused_initial_value]
 p.adb:2:17: warning: unused initial value of "B" [unused_initial_value]
-p.adb:6:04: warning: statement has no effect [ineffective]
-p.adb:6:15: length check not proved
-p.adb:8:42: assertion not proved, requires X(J) = A
-p.adb:8:44: index check not proved
+p.adb:6:04: warning: initialization has no effect [ineffective]
+p.adb:6:15: warning: length check might fail
+p.adb:8:42: warning: assertion might fail, requires X(J) = A
+p.adb:8:44: warning: array index check might fail

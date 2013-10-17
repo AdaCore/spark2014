@@ -167,6 +167,7 @@ package body Flow.Antialiasing is
          --  which is not in SPARK)
 
          --  Type conversion
+         N_Qualified_Expression      => True,
          N_Type_Conversion           => True,
 
          --  Function call is boring in SPARK as it can't return
@@ -188,7 +189,8 @@ package body Flow.Antialiasing is
          others                => False);
 
       Is_Conversion : constant array (Node_Kind) of Boolean :=
-        (N_Type_Conversion           => True,
+        (N_Qualified_Expression      => True,
+         N_Type_Conversion           => True,
          N_Unchecked_Type_Conversion => True,
          others                      => False);
 
@@ -242,7 +244,9 @@ package body Flow.Antialiasing is
          case Nkind (N) is
             when N_Indexed_Component | N_Slice | N_Selected_Component =>
                return Prefix (N);
-            when N_Type_Conversion | N_Unchecked_Type_Conversion =>
+            when N_Type_Conversion |
+                 N_Unchecked_Type_Conversion |
+                 N_Qualified_Expression =>
                return Expression (N);
             when others =>
                raise Program_Error;

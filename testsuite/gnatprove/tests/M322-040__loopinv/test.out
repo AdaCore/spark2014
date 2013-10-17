@@ -1,19 +1,19 @@
-max.adb:11:18: assertion not proved, requires M = Max
+max.adb:11:18: warning: assertion might fail, requires M = Max
 max.adb:8:25: info: range check proved
 max.adb:8:53: info: index check proved
 max.adb:10:26: info: range check proved
 max.adb:10:54: info: index check proved
-max.adb:12:7: assertion not proved
+max.adb:12:7: warning: assertion might fail
 max.adb:14:19: info: range check proved
 max.adb:14:49: info: index check proved
 max.adb:16:20: info: range check proved
 max.adb:16:50: info: index check proved
-max.adb:26:18: assertion not proved, requires M = Max
+max.adb:26:18: warning: assertion might fail, requires M = Max
 max.adb:23:25: info: range check proved
 max.adb:23:53: info: index check proved
 max.adb:25:26: info: range check proved
 max.adb:25:54: info: index check proved
-max.adb:35:10: assertion not proved
+max.adb:35:10: warning: assertion might fail
 max.adb:35:34: info: range check proved
 max.adb:35:64: info: index check proved
 max.adb:37:35: info: range check proved

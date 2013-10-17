@@ -1,11 +1,11 @@
-p.adb:5:07: warning: statement has no effect [ineffective]
-p.adb:6:07: warning: statement has no effect [ineffective]
-p.adb:13:07: warning: statement has no effect [ineffective]
-p.adb:14:07: warning: statement has no effect [ineffective]
-p.adb:21:07: warning: statement has no effect [ineffective]
-p.adb:22:07: warning: statement has no effect [ineffective]
-p.adb:29:07: warning: statement has no effect [ineffective]
-p.adb:30:07: warning: statement has no effect [ineffective]
+p.adb:5:07: warning: initialization has no effect [ineffective]
+p.adb:6:07: warning: initialization has no effect [ineffective]
+p.adb:13:07: warning: initialization has no effect [ineffective]
+p.adb:14:07: warning: initialization has no effect [ineffective]
+p.adb:21:07: warning: initialization has no effect [ineffective]
+p.adb:22:07: warning: initialization has no effect [ineffective]
+p.adb:29:07: warning: initialization has no effect [ineffective]
+p.adb:30:07: warning: initialization has no effect [ineffective]
 p.adb:37:04: warning: statement has no effect [ineffective]
 p.adb:38:04: warning: statement has no effect [ineffective]
 p.adb:39:04: warning: statement has no effect [ineffective]
@@ -15,10 +15,10 @@ p.adb:6:31: info: length check proved
 p.adb:9:7: info: assertion proved
 p.adb:13:31: info: length check proved
 p.adb:14:31: info: length check proved
-p.adb:17:7: assertion not proved, requires My_S2 (2) /= 1
+p.adb:17:7: warning: assertion might fail, requires My_S2 (2) /= 1
 p.adb:21:31: info: length check proved
 p.adb:22:31: info: length check proved
-p.adb:25:7: assertion not proved, requires My_S2 (2) = 2
+p.adb:25:7: warning: assertion might fail, requires My_S2 (2) = 2
 p.adb:29:31: info: length check proved
 p.adb:30:31: info: length check proved
 p.adb:33:7: info: assertion proved

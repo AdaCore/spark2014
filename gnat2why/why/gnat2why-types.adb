@@ -131,7 +131,7 @@ package body Gnat2Why.Types is
    begin
       if Is_Standard_Boolean_Type (E) then
          return New_Identifier (Name => "bool");
-      elsif not Entity_In_SPARK (Most_Underlying_Type (E)) then
+      elsif not Entity_In_SPARK (MUT (E)) then
          return New_Identifier (Name => To_String (WNE_Private));
       else
          return To_Why_Id (E);
@@ -143,8 +143,9 @@ package body Gnat2Why.Types is
    --------------------
 
    procedure Translate_Type
-     (File : in out Why_Section;
-      E    : Entity_Id)
+     (File       : in out Why_Section;
+      E          : Entity_Id;
+      New_Theory : out Boolean)
    is
       procedure Translate_Underlying_Type
         (Theory : W_Theory_Declaration_Id;
@@ -249,45 +250,54 @@ package body Gnat2Why.Types is
 
    begin
       if Is_Standard_Boolean_Type (E) or else E = Universal_Fixed then
+         New_Theory := False;
          return;
-      end if;
 
-      Open_Theory (File, Name,
-                   Comment =>
-                     "Module for axiomatizing type "
-                       & """" & Get_Name_String (Chars (E)) & """"
-                       & (if Sloc (E) > 0 then
-                            " defined at " & Build_Location_String (Sloc (E))
-                          else "")
-                       & ", created in " & GNAT.Source_Info.Enclosing_Entity);
-
-      Translate_Underlying_Type (File.Cur_Theory, E);
-
-      --  We declare a default value for all types, in principle.
-      --  Cloned subtypes are a special case, they do not need such a
-      --  definition.
-
-      if Is_Record_Type (E) and then
-        (if Ekind (E) = E_Record_Subtype then
-           not (Present (Cloned_Subtype (E))))
-      then
-         Emit
-           (File.Cur_Theory,
-            New_Function_Decl
-              (Domain      => EW_Term,
-               Name        => To_Ident (WNE_Dummy),
-               Binders     => (1 .. 0 => <>),
-               Return_Type =>
-                 +New_Named_Type (Name => To_Why_Id (E, Local => True))));
-      end if;
-
-      --  If E is the full view of a private type, use its partial view as the
-      --  filtering entity, as it is the entity used everywhere in AST.
-
-      if Is_Full_View (E) then
-         Close_Theory (File, Filter_Entity => Partial_View (E));
       else
-         Close_Theory (File, Filter_Entity => E);
+         New_Theory := True;
+
+         Open_Theory
+           (File, Name,
+            Comment =>
+              "Module for axiomatizing type "
+                & """" & Get_Name_String (Chars (E)) & """"
+                & (if Sloc (E) > 0 then
+                    " defined at " & Build_Location_String (Sloc (E))
+                   else "")
+                & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+         Translate_Underlying_Type (File.Cur_Theory, E);
+
+         --  We declare a default value for all types, in principle.
+         --  Cloned subtypes are a special case, they do not need such a
+         --  definition.
+
+         if Is_Record_Type (E) and then
+           (if Ekind (E) = E_Record_Subtype then
+                not (Present (Cloned_Subtype (E))))
+         then
+            Emit
+              (File.Cur_Theory,
+               New_Function_Decl
+                 (Domain      => EW_Term,
+                  Name        => To_Ident (WNE_Dummy),
+                  Binders     => (1 .. 0 => <>),
+                  Return_Type =>
+                    +New_Named_Type (Name => To_Why_Id (E, Local => True))));
+         end if;
+
+         --  If E is the full view of a private type, use its partial view as
+         --  the filtering entity, as it is the entity used everywhere in AST.
+
+         if Is_Full_View (E) then
+            Close_Theory (File,
+                          Kind => Definition_Theory,
+                          Defined_Entity => Partial_View (E));
+         else
+            Close_Theory (File,
+                          Kind => Definition_Theory,
+                          Defined_Entity => E);
+         end if;
       end if;
    end Translate_Type;
 

@@ -45,6 +45,17 @@ with Flow_Dependency_Maps; use Flow_Dependency_Maps;
 package Flow is
 
    ----------------------------------------------------------------------
+   --  Global variables
+   ----------------------------------------------------------------------
+
+   JSON_Msgs_List   : Unbounded_String_Lists.List;
+   --  This will holds all of the emitted flow messages in JSON format
+
+   Found_Flow_Error : Boolean := False;
+   --  This boolean becomes True if we find a flow error or if we find a
+   --  flow warning while Warning_Mode = Treat_As_Error.
+
+   ----------------------------------------------------------------------
    --  Flow_Graphs
    ----------------------------------------------------------------------
 
@@ -100,6 +111,10 @@ package Flow is
       Analyzed_Entity   : Entity_Id;
       Scope             : Scope_Ptr;
       --  The entity and scope of the analysed entity.
+
+      Spec_Node         : Entity_Id;
+      --  Useful shorthand to the node where the n_contract node is
+      --  attached.
 
       Start_Vertex      : Flow_Graphs.Vertex_Id;
       End_Vertex        : Flow_Graphs.Vertex_Id;
@@ -158,6 +173,10 @@ package Flow is
             Refined_Depends_N : Node_Id;
             --  A few contract nodes cached as they can be a bit
             --  tedious to find.
+
+            Function_Side_Effects_Present : Boolean;
+            --  Set to true if we are dealing with a function that has side
+            --  effects.
 
          when E_Package =>
             null;
@@ -262,7 +281,7 @@ package Flow is
    --  Main entry to flo analysis
    ----------------------------------------------------------------------
 
-   procedure Flow_Analyse_CUnit;
-   --  Flow analyses the current compilation unit
+   procedure Flow_Analyse_CUnit (GNAT_Root : Node_Id);
+   --  Flow analyses the current compilation unit.
 
 end Flow;

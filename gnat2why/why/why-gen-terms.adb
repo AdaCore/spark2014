@@ -28,6 +28,7 @@ with Why.Atree.Tables;    use Why.Atree.Tables;
 with Why.Atree.Traversal; use Why.Atree.Traversal;
 with Why.Conversions;     use Why.Conversions;
 with Why.Gen.Names;       use Why.Gen.Names;
+with Why.Gen.Expr;       use Why.Gen.Expr;
 
 package body Why.Gen.Terms is
 
@@ -129,7 +130,8 @@ package body Why.Gen.Terms is
    begin
          return New_Tagged (Def    => Expr,
                             Tag    => NID (""),
-                            Domain => Domain);
+                            Domain => Domain,
+                            Typ    => Get_Type (Expr));
    end New_Old;
 
 end Why.Gen.Terms;

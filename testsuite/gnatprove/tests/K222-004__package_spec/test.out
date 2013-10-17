@@ -1,19 +1,17 @@
-pack.adb:15:14: type access to "Boolean" is not allowed in SPARK
-pack.adb:15:14:  violation of aspect SPARK_Mode at pack.ads:2
-pack.adb:17:10: type used access to "Boolean" is not allowed in SPARK
-pack.adb:17:10:  violation of aspect SPARK_Mode at pack.ads:2
-pack.adb:17:15: type used access to "Boolean" is not allowed in SPARK
-pack.adb:17:15:  violation of aspect SPARK_Mode at pack.ads:2
-pack.adb:18:10: explicit dereference is not allowed in SPARK
-pack.adb:18:10:  violation of aspect SPARK_Mode at pack.ads:2
-pack.adb:19:13: explicit dereference is not allowed in SPARK
-pack.adb:19:13:  violation of aspect SPARK_Mode at pack.ads:2
-pack.ads:4:08: type access to "Boolean" is not allowed in SPARK
+pack.adb:17:14: access to "Boolean" is not allowed in SPARK
+pack.adb:17:14:  violation of aspect SPARK_Mode at line 2
+pack.adb:19:10: access to "Boolean" is not allowed in SPARK
+pack.adb:19:10:  violation of aspect SPARK_Mode at line 2
+pack.adb:19:15: access to "Boolean" is not allowed in SPARK
+pack.adb:19:15:  violation of aspect SPARK_Mode at line 2
+pack.adb:20:10: explicit dereference is not allowed in SPARK
+pack.adb:20:10:  violation of aspect SPARK_Mode at line 2
+pack.adb:21:13: explicit dereference is not allowed in SPARK
+pack.adb:21:13:  violation of aspect SPARK_Mode at line 2
+pack.ads:4:08: access to "Boolean" is not allowed in SPARK
 pack.ads:4:08:  violation of aspect SPARK_Mode at line 2
-pack.ads:4:26: type used access to "Boolean" is not allowed in SPARK
+pack.ads:4:26: access to "Boolean" is not allowed in SPARK
 pack.ads:4:26:  violation of aspect SPARK_Mode at line 2
-pack.ads:6:13: function with side-effects is not allowed in SPARK
-pack.ads:6:13:  violation of aspect SPARK_Mode at line 2
 pack.ads:7:18: explicit dereference is not allowed in SPARK
 pack.ads:7:18:  violation of aspect SPARK_Mode at line 2
 

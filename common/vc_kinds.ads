@@ -49,6 +49,7 @@ package VC_Kinds is
 
       --  Assertions
 
+      VC_Initial_Condition,
       VC_Precondition,
       VC_Postcondition,
       VC_Contract_Case,
@@ -65,6 +66,8 @@ package VC_Kinds is
         VC_Postcondition |
         VC_Loop_Invariant |
         VC_Assert);
+
+   SPARK_Suffix : constant String := ".spark";
 
    Proof_Suffix : constant String := ".proof";
 

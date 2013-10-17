@@ -22,7 +22,7 @@ use type BasicTypes.PresenceT;
 
 package body Keyboard
 --# own Input is in Keyboard.Interfac.Input;
-is
+is pragma SPARK_Mode (On);
 
    ------------------------------------------------------------------
    -- Init

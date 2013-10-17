@@ -1,3 +1,3 @@
 from test_support import *
 
-prove() # flow requires conditional errors M906-011
+prove() # requires correct handling of main program M318-028

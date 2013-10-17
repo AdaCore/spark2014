@@ -1,12 +1,9 @@
 pack.adb:10:07: warning: statement has no effect [ineffective]
-pack.adb:18:10: warning: statement has no effect [ineffective]
+pack.adb:18:10: warning: initialization has no effect [ineffective]
 pack.adb:20:10: warning: statement has no effect [ineffective]
-pack.adb:48:10: warning: unused assignment [ineffective]
-pack.ads:5:14: warning: unused global "X" [unused]
-pack.ads:9:14: warning: unused global "X" [unused]
-pack.ads:10:14: warning: unused global "X" [unused]
-pack.ads:5:48: postcondition not proved, requires X = true
-pack.ads:6:48: postcondition not proved, requires X = true
-pack.ads:7:48: postcondition not proved, requires X = true
-pack.ads:9:48: postcondition not proved, requires X = true
-pack.ads:10:48: postcondition not proved, requires X = true
+pack.adb:49:10: warning: unused assignment [ineffective]
+pack.ads:5:48: warning: postcondition might fail, requires X = true
+pack.ads:6:48: warning: postcondition might fail, requires X = true
+pack.ads:7:48: warning: postcondition might fail, requires X = true
+pack.ads:9:48: warning: postcondition might fail, requires X = true
+pack.ads:10:48: warning: postcondition might fail, requires X = true

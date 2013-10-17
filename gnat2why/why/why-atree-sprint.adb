@@ -219,30 +219,6 @@ package body Why.Atree.Sprint is
       State.Control := Abandon_Children;
    end Binder_Pre_Op;
 
-   ------------------------
-   -- Constr_Decl_Pre_Op --
-   ------------------------
-
-   procedure Constr_Decl_Pre_Op
-      (State : in out Printer_State;
-       Node : W_Constr_Decl_Id)
-   is
-      Args : constant W_Type_List := Get_Arg_List (Node);
-      Name : constant W_Identifier_Id := Get_Name (Node);
-   begin
-      P (O, "| ");
-      Traverse (State, +Name);
-
-      if not Is_Empty (+Args) then
-         P (O, " (");
-         Print_List (State, +Args, ", ");
-         P (O, " )");
-      end if;
-
-      NL (O);
-      State.Control := Abandon_Children;
-   end Constr_Decl_Pre_Op;
-
    ------------------------------
    -- Record_Definition_Pre_Op --
    ------------------------------
@@ -287,26 +263,6 @@ package body Why.Atree.Sprint is
       Print_List (State, +Terms);
       State.Control := Abandon_Children;
    end Trigger_Pre_Op;
-
-   -----------------------
-   -- Match_Case_Pre_Op --
-   -----------------------
-
-   procedure Match_Case_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Match_Case_Id)
-   is
-   begin
-      P (O, "| ");
-      Traverse (State, +Get_Pattern (Node));
-      P (O, " -> ");
-      NL (O);
-      Relative_Indent (O, 1);
-      Traverse (State, +Get_Term (Node));
-      Relative_Indent (O, -1);
-      NL (O);
-      State.Control := Abandon_Children;
-   end Match_Case_Pre_Op;
 
    --------------------------
    -- Postcondition_Pre_Op --
@@ -520,11 +476,11 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Relation_Id)
    is
-      Left   : constant W_Value_Id := Get_Left (Node);
+      Left   : constant W_Expr_Id := Get_Left (Node);
       Op     : constant EW_Relation := Get_Op (Node);
-      Right  : constant W_Value_Id := Get_Right (Node);
+      Right  : constant W_Expr_Id := Get_Right (Node);
       Op2    : constant EW_Relation := Get_Op2 (Node);
-      Right2 : constant W_Value_OId := Get_Right2 (Node);
+      Right2 : constant W_Expr_OId := Get_Right2 (Node);
    begin
       P (O, "( ");
       Traverse (State, +Left);
@@ -668,21 +624,6 @@ package body Why.Atree.Sprint is
 
       State.Control := Abandon_Children;
    end Call_Pre_Op;
-
-   -------------------
-   -- Constr_Pre_Op --
-   -------------------
-
-   procedure Constr_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Constr_Id) is
-   begin
-      Traverse (State, +Get_Name (Node));
-      P (O, "(");
-      Print_List (State, +Get_Args (Node), ", ");
-      P (O, ")");
-      State.Control := Abandon_Children;
-   end Constr_Pre_Op;
 
    --------------------
    -- Literal_Pre_Op --
@@ -869,30 +810,11 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Deref_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
       P (O, "!");
-   end Deref_Pre_Op;
-
-   ------------------
-   -- Match_Pre_Op --
-   ------------------
-
-   procedure Match_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Match_Id)
-   is
-   begin
-      P (O, "match ");
-      Traverse (State, +Get_Term (Node));
-      PL (O, " with");
-      Relative_Indent (O, 1);
-      Traverse_List (State, +Get_Branches (Node));
-      Relative_Indent (O, -1);
-      PL (O, "end");
+      Traverse (State, +Get_Right (Node));
       State.Control := Abandon_Children;
-   end Match_Pre_Op;
+   end Deref_Pre_Op;
 
    --------------------
    -- Binding_Pre_Op --
@@ -903,7 +825,7 @@ package body Why.Atree.Sprint is
       Node  : W_Binding_Id)
    is
       Name             : constant W_Identifier_Id := Get_Name (Node);
-      Def              : constant W_Value_Id := Get_Def (Node);
+      Def              : constant W_Expr_Id := Get_Def (Node);
       Context          : constant W_Expr_Id := Get_Context (Node);
       Binding_Sequence : constant Boolean := Get_Kind (+Context) = W_Binding;
    begin
@@ -927,22 +849,6 @@ package body Why.Atree.Sprint is
 
       State.Control := Abandon_Children;
    end Binding_Pre_Op;
-
-   -------------------------
-   -- Array_Access_Pre_Op --
-   -------------------------
-
-   procedure Array_Access_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Array_Access_Id)
-   is
-   begin
-      Traverse (State, +Get_Name (Node));
-      P (O, " [");
-      Traverse (State, +Get_Index (Node));
-      P (O, "]");
-      State.Control := Abandon_Children;
-   end Array_Access_Pre_Op;
 
    --------------------------
    -- Record_Access_Pre_Op --
@@ -1005,6 +911,7 @@ package body Why.Atree.Sprint is
       Traverse (State, +Get_Value (Node));
       State.Control := Abandon_Children;
    end Field_Association_Pre_Op;
+
    ---------------------
    -- Any_Expr_Pre_Op --
    ---------------------
@@ -1049,23 +956,6 @@ package body Why.Atree.Sprint is
       P (O, " )");
       State.Control := Abandon_Children;
    end Assignment_Pre_Op;
-
-   -------------------------
-   -- Array_Update_Pre_Op --
-   -------------------------
-
-   procedure Array_Update_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Array_Update_Id)
-   is
-   begin
-      Traverse (State, +Get_Name (Node));
-      P (O, " [");
-      Traverse (State, +Get_Index (Node));
-      P (O, "] := ");
-      Traverse (State, +Get_Value (Node));
-      State.Control := Abandon_Children;
-   end Array_Update_Pre_Op;
 
    ------------------------
    -- Binding_Ref_Pre_Op --
@@ -1257,44 +1147,6 @@ package body Why.Atree.Sprint is
       P (O, "end");
       State.Control := Abandon_Children;
    end Try_Block_Pre_Op;
-
-   ----------------------
-   -- Tag_Intro_Pre_Op --
-   ----------------------
-
-   procedure Tag_Intro_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Tag_Intro_Id)
-   is
-   begin
-      P (O, "( '");
-      P (O, +Get_Tag (Node));
-      P (O, " : ");
-      Traverse (State, +Get_Prog (Node));
-      P (O, " )");
-      State.Control := Abandon_Children;
-   end Tag_Intro_Pre_Op;
-
-   -----------------------------
-   -- Unreachable_Code_Pre_Op --
-   -----------------------------
-
-   procedure Unreachable_Code_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Unreachable_Code_Id)
-   is
-      Exn_Type : constant W_Type_OId :=
-                   Get_Exn_Type (Node);
-   begin
-      P (O, "absurd");
-
-      if Exn_Type /= Why_Empty then
-         P (O, " : ");
-         Traverse (State, +Exn_Type);
-      end if;
-
-      State.Control := Abandon_Children;
-   end Unreachable_Code_Pre_Op;
 
    --------------------------
    -- Function_Decl_Pre_Op --

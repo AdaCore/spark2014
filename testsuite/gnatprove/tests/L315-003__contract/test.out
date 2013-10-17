@@ -1,5 +1,5 @@
 math.adb:6:18: info: overflow check proved
-math.adb:6:23: overflow check not proved
+math.adb:6:23: warning: overflow check might fail
 math.adb:6:30: info: overflow check proved
 math.adb:7:21: info: overflow check proved
 math.ads:9:18: warning: unused initial value of "X" [unused_initial_value]
@@ -11,6 +11,6 @@ math.ads:7:31: info: contract case proved
 math.ads:11:14: info: postcondition proved
 math.ads:12:6: info: disjoint contract cases proved
 math.ads:12:6: info: complete contract cases proved
-math.ads:12:27: overflow check not proved
+math.ads:12:27: warning: overflow check might fail
 math.ads:12:35: info: contract case proved
-math.ads:13:35: contract case not proved
+math.ads:13:35: warning: contract case might fail

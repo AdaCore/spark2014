@@ -1,4 +1,4 @@
-package body Gen is pragma SPARK_Mode (On); 
+package body Gen is
 
    procedure X ( Z : T) is
    begin

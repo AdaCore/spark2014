@@ -20,6 +20,16 @@ const.adb:34:7: info: assertion proved
 const.adb:35:7: info: assertion proved
 const.adb:36:7: info: assertion proved
 const.adb:37:7: info: assertion proved
-const.adb:41:7: assertion not proved, requires O = 1
-const.adb:42:7: assertion not proved, requires P = 1
-const.ads:36:04: warning: statement has no effect [ineffective]
+const.adb:41:7: warning: assertion might fail, requires O = 1
+const.adb:42:7: warning: assertion might fail, requires P = 1
+const.ads:36:04: warning: initialization has no effect [ineffective]
+const.ads:9:24: info: length check proved
+const.ads:10:27: info: length check proved
+const.ads:12:24: info: length check proved
+const.ads:13:27: info: length check proved
+const.ads:24:30: info: overflow check proved
+const.ads:24:35: info: overflow check proved
+const.ads:28:30: info: overflow check proved
+const.ads:28:35: info: overflow check proved
+const.ads:32:30: info: overflow check proved
+const.ads:32:39: info: overflow check proved

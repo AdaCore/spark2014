@@ -23,21 +23,24 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Directories;
+--  ??? A comment about what the gnatprove wrapper actually does would be
+--  helpful.
+
+with Ada.Directories;    use Ada.Directories;
 with Ada.Environment_Variables;
 with Ada.Strings.Unbounded;
-with Ada.Text_IO;       use Ada.Text_IO;
-with Call;              use Call;
-with Configuration;     use Configuration;
+with Ada.Text_IO;        use Ada.Text_IO;
+with Call;               use Call;
+with Configuration;      use Configuration;
 
 with GNAT.OS_Lib;
 
-with GNATCOLL.Projects; use GNATCOLL.Projects;
-with GNATCOLL.VFS;      use GNATCOLL.VFS;
-with GNATCOLL.Utils;    use GNATCOLL.Utils;
+with GNATCOLL.Projects;  use GNATCOLL.Projects;
+with GNATCOLL.VFS;       use GNATCOLL.VFS;
+with GNATCOLL.Utils;     use GNATCOLL.Utils;
 
-with String_Utils;      use String_Utils;
-with GNAT.Strings;      use GNAT.Strings;
+with String_Utils;       use String_Utils;
+with GNAT.Strings;       use GNAT.Strings;
 
 with Gnat2Why_Args;
 
@@ -83,6 +86,9 @@ procedure Gnatprove is
      (Obj_Dir : String;
       Obj_Path  : File_Array);
    --  Generate the SPARK report.
+
+   function Report_File_Is_Empty (Filename : String) return Boolean;
+   --  Check if the given file is empty
 
    procedure Generate_Project_File
       (Filename     : String;
@@ -381,6 +387,18 @@ procedure Gnatprove is
       end if;
    end Execute_Step;
 
+   --------------------------
+   -- Report_File_Is_Empty --
+   --------------------------
+
+   function Report_File_Is_Empty (Filename : String) return Boolean is
+   begin
+      --  ??? This is a bit of a hack; we assume that the report file is
+      --  basically empty when the character count is very low (but not zero).
+
+      return Ada.Directories.Size (Filename) <= 3;
+   end Report_File_Is_Empty;
+
    ---------------------------
    -- Generate_SPARK_Report --
    ---------------------------
@@ -416,7 +434,21 @@ procedure Gnatprove is
       end if;
 
       if not Quiet then
-         Put_Line ("Summary logged in " & SPARK_Report_File (Obj_Dir));
+         declare
+            File : constant String := SPARK_Report_File (Obj_Dir);
+         begin
+            --  If nothing is in SPARK, the user has probably forgotten to put
+            --  a SPARK_Mode pragma somewhere.
+
+            if Report_File_Is_Empty (File) then
+               Put_Line (Standard_Error,
+                         " warning: no code was analyzed by GNATprove");
+               Put_Line (Standard_Error,
+                         " use SPARK_Mode to enable analysis");
+            else
+               Put_Line ("Summary logged in " & SPARK_Report_File (Obj_Dir));
+            end if;
+         end;
       end if;
    end Generate_SPARK_Report;
 
@@ -552,7 +584,7 @@ procedure Gnatprove is
    ---------------------
 
    procedure Set_Environment is
-      use Ada.Environment_Variables, GNAT.OS_Lib, Ada.Directories;
+      use Ada.Environment_Variables, GNAT.OS_Lib;
 
       Path_Val : constant String := Value ("PATH", "");
       Gpr_Val  : constant String := Value ("GPR_PROJECT_PATH", "");
@@ -656,8 +688,6 @@ procedure Gnatprove is
 
       Args.Append ("-cargs:Ada");
       Args.Append ("-gnatc");       --  No object file generation
-      Args.Append ("-I");
-      Args.Append (Stdlib_ALI_Dir);
 
       if Show_Tag then
          Args.Append ("-gnatw.d"); -- generation of unique tag

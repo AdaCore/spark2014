@@ -1,3 +1,5 @@
+pragma SPARK_Mode;
+
 procedure Illegal_Update (X : in out Integer)
 is
    Tmp : Integer := 0;

@@ -1,0 +1,20 @@
+refined_state_illegal.adb:5:43: cannot mix null and non-null constituents
+refined_state_illegal.adb:24:12: useless refinement, package "Pac4" does not define abstract states (SPARK RM 7.2.2(3))
+refined_state_illegal.adb:31:35: constituent "F1" must denote a variable or state (SPARK RM 7.2.2(5))
+refined_state_illegal.adb:40:44: malformed constituent
+refined_state_illegal.adb:65:17: body of package "Pac9" has unused hidden states
+refined_state_illegal.adb:65:17:   variable "Var1" defined at line 68
+refined_state_illegal.adb:71:33: extra global item "Var1" (SPARK RM 7.2.4(3))
+refined_state_illegal.ads:25:11: aspect "Refined_State" must apply to a package body
+refined_state_illegal.ads:31:12: package "Pac3" requires state refinement
+refined_state_illegal.ads:75:34: abstract state "S2" must be refined
+refined_state_illegal.ads:99:07: indicator Part_Of is required in this context (SPARK RM 7.2.6(2))
+refined_state_illegal.ads:99:07: "Pr_Var1" is declared in the private part of package "Pac8"
+refined_state_illegal.ads:100:07: indicator Part_Of is required in this context (SPARK RM 7.2.6(2))
+refined_state_illegal.ads:100:07: "Pr_Var2" is declared in the private part of package "Pac8"
+refined_state_illegal.ads:125:34: abstract state "S2" must be refined
+
+   compilation of refined_state_illegal.adb failed
+
+gprbuild: *** compilation phase failed
+gnatprove: error during frame condition computation, aborting.

@@ -1,0 +1,2 @@
+formal_parameters_legal.adb:14:19: info: postcondition proved
+formal_parameters_legal.adb:17:22: info: length check proved

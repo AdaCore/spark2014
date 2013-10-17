@@ -1,2 +1,1 @@
-
-qack.ads:6:19: postcondition not proved, requires X = X'old
+qack.ads:6:19: warning: postcondition might fail, requires X = X'old

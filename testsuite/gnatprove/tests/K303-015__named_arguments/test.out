@@ -1,6 +1,6 @@
-substract.adb:4:20: overflow check not proved
-substract.adb:10:20: overflow check not proved
-substract.adb:10:29: overflow check not proved
+substract.adb:4:20: warning: overflow check might fail
+substract.adb:10:20: warning: overflow check might fail
+substract.adb:10:29: warning: overflow check might fail
 substract.ads:3:20: info: postcondition proved
 substract.ads:3:40: info: overflow check proved
 substract.ads:6:20: info: postcondition proved

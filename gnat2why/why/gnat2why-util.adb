@@ -23,12 +23,17 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Atree;                  use Atree;
-with Einfo;                  use Einfo;
-with Sinfo;                  use Sinfo;
-with Uintp;                  use Uintp;
+with Atree;               use Atree;
+with Einfo;               use Einfo;
+with Sem_Eval;            use Sem_Eval;
+with Sem_Util;            use Sem_Util;
+with Sinfo;               use Sinfo;
+with Uintp;               use Uintp;
 
-with Why.Atree.Builders;     use Why.Atree.Builders;
+with SPARK_Definition;
+
+with Why.Atree.Accessors; use Why.Atree.Accessors;
+with Why.Atree.Builders;  use Why.Atree.Builders;
 
 package body Gnat2Why.Util is
 
@@ -43,12 +48,12 @@ package body Gnat2Why.Util is
       -------------
 
       function Element (M : Map; E : Entity_Id)
-                            return Binder_Type is
+                            return Item_Type is
       begin
          return M.Entity_Ids.Element (E);
       end Element;
 
-      function Element (C : Cursor) return Binder_Type is
+      function Element (C : Cursor) return Item_Type is
       begin
          case C.Kind is
             when CK_Ent =>
@@ -122,7 +127,7 @@ package body Gnat2Why.Util is
 
       procedure Insert (M : in out Map;
                         E : Entity_Id;
-                        W : Binder_Type)
+                        W : Item_Type)
       is
          C : Ent_To_Why.Cursor;
          Inserted : Boolean;
@@ -155,7 +160,7 @@ package body Gnat2Why.Util is
 
       procedure Insert (M : in out Map;
                         E : Entity_Name;
-                        W : Binder_Type) is
+                        W : Item_Type) is
          C : Name_To_Why_Map.Cursor;
          Inserted : Boolean;
       begin
@@ -267,10 +272,12 @@ package body Gnat2Why.Util is
       begin
          if Nkind_In (N, N_Identifier, N_Expanded_Name)
            and then Present (Entity (N))
-           and then (case Ekind (Entity (N)) is
-                        when Object_Kind     => Is_Mutable_In_Why (Entity (N)),
-                        when Subprogram_Kind => Has_Global_Reads (Entity (N)),
-                        when others          => False)
+           and then
+             (case Ekind (Entity (N)) is
+                 when Object_Kind     => Is_Mutable_In_Why (Entity (N)),
+                 when Subprogram_Kind =>
+                    Has_Global_Reads (Entity (N), Include_Constants => False),
+                 when others          => False)
          then
             Variable_Reference_Seen := True;
             return Abandon;
@@ -307,6 +314,64 @@ package body Gnat2Why.Util is
       return Result;
    end Create_Zero_Binding;
 
+   -------------------
+   -- Insert_Entity --
+   -------------------
+
+   procedure Insert_Entity (E       : Entity_Id;
+                            Name    : W_Identifier_Id;
+                            Mutable : Boolean := False) is
+   begin
+      Ada_Ent_To_Why.Insert (Symbol_Table,
+                             E,
+                             Item_Type'(Regular,
+                               Binder_Type'(
+                                 B_Name   => Name,
+                                 B_Ent    => null,
+                                 Ada_Node => E,
+                                 Mutable  => Mutable)));
+   end Insert_Entity;
+
+   -----------------
+   -- Insert_Item --
+   -----------------
+
+   procedure Insert_Item (E : Entity_Id; I : Item_Type) is
+   begin
+      Ada_Ent_To_Why.Insert (Symbol_Table, E, I);
+   end Insert_Item;
+
+   ----------------------------
+   -- Is_Dynamic_Scalar_Type --
+   ----------------------------
+
+   function Type_Is_Modeled_As_Int_Or_Real (T : Entity_Id) return Boolean is
+   begin
+      return SPARK_Definition.Loop_Entity_Set.Contains (T)
+        and then not Is_Static_Subtype (T);
+   end Type_Is_Modeled_As_Int_Or_Real;
+
+   --------------------------------
+   -- Is_Locally_Defined_In_Loop --
+   --------------------------------
+
+   function Is_Locally_Defined_In_Loop (N : Node_Id) return Boolean is
+      Stmt : Node_Id := Parent (N);
+   begin
+      while Present (Stmt) loop
+         if Nkind (Stmt) = N_Loop_Statement then
+            return True;
+
+         elsif Is_Body_Or_Package_Declaration (Stmt) then
+            return False;
+         end if;
+
+         Stmt := Parent (Stmt);
+      end loop;
+
+      return False;
+   end Is_Locally_Defined_In_Loop;
+
    -----------------------
    -- Is_Mutable_In_Why --
    -----------------------
@@ -330,14 +395,35 @@ package body Gnat2Why.Util is
                          E_Discriminant        |
                          Named_Kind            |
                          Subprogram_Kind
-              or else
-            Is_Constant_Object (N)
       then
+         return False;
+
+      --  Constants defined locally to a loop inside a subprogram (or any
+      --  other dynamic scope) may end up having different values, so should
+      --  be mutable in Why, except when they are defined inside "actions" (in
+      --  which case they are defined as local "let" bound variables in Why).
+
+      elsif Ekind (N) = E_Constant
+        and then SPARK_Definition.Loop_Entity_Set.Contains (N)
+        and then not SPARK_Definition.Actions_Entity_Set.Contains (N)
+      then
+         return True;
+
+      elsif Is_Constant_Object (N) then
          return False;
 
       else
          return True;
       end if;
    end Is_Mutable_In_Why;
+
+   ------------------------
+   -- Why_Type_Of_Entity --
+   ------------------------
+
+   function Why_Type_Of_Entity (E : Entity_Id) return W_Type_Id is
+   begin
+      return Get_Typ (Ada_Ent_To_Why.Element (Symbol_Table, E).Main.B_Name);
+   end Why_Type_Of_Entity;
 
 end Gnat2Why.Util;

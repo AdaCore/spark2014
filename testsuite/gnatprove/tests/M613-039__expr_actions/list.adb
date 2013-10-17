@@ -1,5 +1,7 @@
+pragma SPARK_Mode;
+
 with Stack; use Stack;
-package body List is 
+package body List is
    use Stack.Model;
 
    ------------------

@@ -1,5 +1,6 @@
 package T1Q3C
 is
+  pragma SPARK_Mode;
 
   type Day is (Mon, Tue, Wed, Thu, Fri, Sat, Sun);
 

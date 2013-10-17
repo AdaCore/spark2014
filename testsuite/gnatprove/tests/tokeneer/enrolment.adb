@@ -27,7 +27,7 @@ use type Clock.DurationT;
 use type CryptoTypes.IssuerIDT;
 
 package body Enrolment
-is
+is pragma SPARK_Mode (On);
 
    ------------------------------------------------------------------
    -- Types

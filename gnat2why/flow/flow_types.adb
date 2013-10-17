@@ -24,8 +24,6 @@
 with Ada.Strings;
 with Ada.Strings.Hash;
 
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-
 with Aspects;  use Aspects;
 with Einfo;    use Einfo;
 with Namet;    use Namet;

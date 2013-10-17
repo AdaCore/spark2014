@@ -953,16 +953,15 @@ module Ada__containers__formal_hashed_maps__copy
   use import Ada__containers__formal_hashed_maps__length
   use import Ada__containers__formal_hashed_maps__strict_equal
 
-  predicate cap_is_max map map int
-
- axiom cap_is_max_def:
-   forall co1 co2:map, max:int 
-                  [cap_is_max co1 co2 max].
-   if capacity co1 > max then capacity co2 = capacity co1 else capacity co2 = max
-
   function copy map int : map
 
+  axiom copy__def:
+    forall co : map, cap : int [copy co cap].
+       strict_equal co (copy co cap) = True /\
+       (cap = 0 -> capacity co = capacity (copy co cap)) /\
+       (cap >= capacity co ->  capacity (copy co cap) = cap)
+
   val copy (co: map) (cap:int) : map
-     ensures { strict_equal co (result) = True /\ 
-                      cap_is_max co result cap /\ result = copy co cap }
+     requires { cap = 0 \/ cap >= capacity co}
+     ensures { result = copy co cap }
 end

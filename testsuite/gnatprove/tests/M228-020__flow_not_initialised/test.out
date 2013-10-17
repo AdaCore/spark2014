@@ -1,6 +1,6 @@
-test.adb:18:23: "B" might not be initialized in "Test_02" [uninitialized]
-test.adb:30:23: "B" might not be initialized in "Test_03" [uninitialized]
-test.adb:31:23: "C" might not be initialized in "Test_03" [uninitialized]
+test.adb:18:23: warning: "B" might not be initialized in "Test_02" [uninitialized]
+test.adb:30:23: warning: "B" might not be initialized in "Test_03" [uninitialized]
+test.adb:31:23: "C" is not initialized in "Test_03" [uninitialized]
 
    compilation of test.adb failed
 

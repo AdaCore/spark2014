@@ -1,6 +1,6 @@
-package body Pack is  
-   
-
+package body Pack
+  with SPARK_Mode => On
+is
    function F return Boolean is
       B : access Boolean;
    begin

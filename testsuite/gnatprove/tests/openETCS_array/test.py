@@ -1,3 +1,3 @@
 from test_support import *
 
-prove(steps=1000) # flow requires conditional errors M906-011
+prove (steps=1000) # requires correct handling of main program M318-028

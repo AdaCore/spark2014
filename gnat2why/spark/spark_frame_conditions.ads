@@ -36,6 +36,7 @@ with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Hashed_Sets;
 with Ada.Strings.Hash;
 
+with Namet;                      use Namet;
 with Types;                      use Types;
 
 package SPARK_Frame_Conditions is
@@ -70,20 +71,43 @@ package SPARK_Frame_Conditions is
    --  Is filled by gnat2why-driver.adb, and represents all object entities
    --  that are actually translated to Why
 
+   function File_Name_Hash (F : File_Name_Type) return Hash_Type is
+      (Hash_Type (F));
+
+   package File_Name_Set is new Hashed_Sets
+     (Element_Type        => File_Name_Type,
+      Hash                => File_Name_Hash,
+      Equivalent_Elements => "=",
+      "="                 => "=");
+   use File_Name_Set;
+
+   Loaded_ALI_Files : File_Name_Set.Set := File_Name_Set.Empty_Set;
+   --  Set of ALI files with SPARK Xrefs loaded for computing Global contracts
+
    function Is_Heap_Variable (Ent : Entity_Name) return Boolean;
    --  Return whether Ent is the special variable "__HEAP"
 
    procedure Display_Maps;
    --  Send maps to output for debug
 
-   function Get_Reads (E : Entity_Id) return Name_Set.Set;
-   --  Get the variables read by subprogram E
+   function Has_Computed_Global (E : Entity_Id) return Boolean;
+   --  Returns whether a Global contract has been computed for subprogram E
+
+   function Get_Reads
+     (E                 : Entity_Id;
+      Include_Constants : Boolean) return Name_Set.Set;
+   --  Get the variables read by subprogram E. Include_Constants is True for
+   --  including constants in the returned set (for flow analysis) and False
+   --  for not including them in the returned set (for proof).
 
    function Get_Writes (E : Entity_Id) return Name_Set.Set;
    --  Get the variables written by subprogram E
 
-   function Has_Global_Reads (E : Entity_Id) return Boolean is
-     (not Get_Reads (E).Is_Empty);
+   function Has_Global_Reads
+     (E                 : Entity_Id;
+      Include_Constants : Boolean) return Boolean
+   is
+     (not Get_Reads (E, Include_Constants).Is_Empty);
    --  Return True if subprogram E reads to global variables
 
    function Has_Global_Writes (E : Entity_Id) return Boolean is
@@ -93,7 +117,8 @@ package SPARK_Frame_Conditions is
    function File_Of_Entity (E : Entity_Name) return Entity_Name;
    --  Return the name of the file defining the entity E
 
-   procedure Load_SPARK_Xrefs (ALI_Filename : String);
+   procedure Load_SPARK_Xrefs (ALI_Filename    : String;
+                               Has_SPARK_Xrefs : out Boolean);
    --  Extract xref information from an ALI file
 
    procedure Set_Ignore_Errors (Ignore_Errors : Boolean);

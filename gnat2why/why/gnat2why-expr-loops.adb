@@ -40,7 +40,6 @@ with Why;                use Why;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Atree.Tables;   use Why.Atree.Tables;
 with Why.Conversions;    use Why.Conversions;
-with Why.Gen.Binders;    use Why.Gen.Binders;
 with Why.Gen.Expr;       use Why.Gen.Expr;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Progs;      use Why.Gen.Progs;
@@ -484,16 +483,11 @@ package body Gnat2Why.Expr.Loops is
          Loop_Param_Ent :=
            Defining_Identifier (Loop_Parameter_Specification (Scheme));
          Loop_Index     :=
-           To_Why_Id (E => Loop_Param_Ent, Domain => EW_Prog);
+           To_Why_Id (E      => Loop_Param_Ent,
+                      Domain => EW_Prog,
+                      Typ    => EW_Int_Type);
          Ada_Ent_To_Why.Push_Scope (Symbol_Table);
-         Ada_Ent_To_Why.Insert (Symbol_Table,
-                                Loop_Param_Ent,
-                                Binder_Type'(
-                                  Ada_Node => Loop_Param_Ent,
-                                  B_Name   => Loop_Index,
-                                  B_Ent    => null,
-                                  B_Type   => +EW_Int_Type,
-                                  Mutable  => True));
+         Insert_Entity (Loop_Param_Ent, Loop_Index, Mutable => True);
       end if;
 
       --  Retrieve the different parts of the loop
@@ -659,6 +653,7 @@ package body Gnat2Why.Expr.Loops is
             Cond_Pred : constant W_Pred_Id :=
               +Transform_Expr_With_Actions (Condition (Scheme),
                                             Condition_Actions (Scheme),
+                                            EW_Bool_Type,
                                             EW_Pred,
                                             Params => Body_Params);
 
@@ -705,7 +700,8 @@ package body Gnat2Why.Expr.Loops is
             Index_Deref  : constant W_Prog_Id :=
                              New_Deref
                                (Ada_Node => Stmt,
-                                Right    => +Loop_Index);
+                                Right    => +Loop_Index,
+                                Typ      => EW_Int_Type);
             Update_Op    : constant EW_Binary_Op :=
                              (if Is_Reverse then EW_Substract
                               else EW_Add);
@@ -732,13 +728,15 @@ package body Gnat2Why.Expr.Loops is
 
             Cond_Pred    : constant W_Pred_Id :=
               +Range_Expr (Loop_Range,
-                           New_Deref (Right => Loop_Index),
+                           New_Deref (Right => Loop_Index, Typ => EW_Int_Type),
                            EW_Pred,
                            Params => Body_Params,
                            T_Type => EW_Int_Type);
             Actual_Range : constant Node_Id := Get_Range (Loop_Range);
-            Low_Ident    : constant W_Identifier_Id := New_Temp_Identifier;
-            High_Ident   : constant W_Identifier_Id := New_Temp_Identifier;
+            Low_Ident    : constant W_Identifier_Id :=
+              New_Temp_Identifier (Typ => EW_Int_Type);
+            High_Ident   : constant W_Identifier_Id :=
+              New_Temp_Identifier (Typ => EW_Int_Type);
             Init_Index   : constant W_Identifier_Id :=
               (if Is_Reverse then High_Ident else Low_Ident);
             Exit_Index   : constant W_Identifier_Id :=
@@ -753,7 +751,6 @@ package body Gnat2Why.Expr.Loops is
                             Right   => +Exit_Index);
             Cond_Prog    : constant W_Prog_Id :=
               +New_Range_Expr (Domain    => EW_Prog,
-                               Base_Type => EW_Int_Type,
                                Low       => +Low_Ident,
                                High      => +High_Ident,
                                Expr      => +Index_Deref);
@@ -783,21 +780,25 @@ package body Gnat2Why.Expr.Loops is
                       Value  => +Init_Index),
                  Entire_Loop);
             Entire_Loop :=
-               New_Binding
+               +New_Typed_Binding
                  (Name    => High_Ident,
+                  Domain  => EW_Prog,
                   Def     => +Transform_Expr (High_Bound (Actual_Range),
-                                              EW_Int_Type,
-                                              EW_Prog,
-                                              Params => Body_Params),
+                                             EW_Int_Type,
+                                             EW_Prog,
+                                             Params => Body_Params),
                   Context => +Entire_Loop);
             Entire_Loop :=
-               New_Binding
-                 (Name    => Low_Ident,
-                  Def     => +Transform_Expr (Low_Bound (Actual_Range),
-                                              EW_Int_Type,
-                                              EW_Prog,
-                                              Params => Body_Params),
-                  Context => +Entire_Loop);
+              +New_Typed_Binding
+                (Name    => Low_Ident,
+                 Domain  => EW_Prog,
+                 Def     =>
+                   +Transform_Expr
+                     (Low_Bound (Actual_Range),
+                      EW_Int_Type,
+                      EW_Prog,
+                      Params => Body_Params),
+                 Context => +Entire_Loop);
 
             --  For loop_parameter_specification whose
             --  discrete_subtype_definition is a subtype_indication,
@@ -935,8 +936,9 @@ package body Gnat2Why.Expr.Loops is
       begin
          return +New_Comparison (Cmp       => Cmp,
                                  Left      => Variant_Expr (Expr, EW_Term),
-                                 Right     => New_Deref (Right => +Name),
-                                 Arg_Types => EW_Int_Type,
+                                 Right     =>
+                                   New_Deref (Right => +Name,
+                                              Typ => EW_Int_Type),
                                  Domain    => EW_Pred);
       end Variant_Part_Does_Progress;
 
@@ -952,8 +954,9 @@ package body Gnat2Why.Expr.Loops is
       begin
          return +New_Comparison (Cmp       => EW_Eq,
                                  Left      => Variant_Expr (Expr, EW_Term),
-                                 Right     => New_Deref (Right => +Name),
-                                 Arg_Types => EW_Int_Type,
+                                 Right     =>
+                                   New_Deref (Right => +Name,
+                                              Typ => EW_Int_Type),
                                  Domain    => EW_Pred);
       end Variant_Part_Stays_Constant;
 

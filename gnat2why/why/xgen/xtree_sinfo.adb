@@ -39,26 +39,22 @@ package body Xtree_Sinfo is
       New_Domain ("W_Expr",
                   "W_Expr",
                   W_Universal_Quantif,
-                  W_Unreachable_Code);
+                  W_Try_Block);
       New_Domain ("W_Pred",
                   "W_Expr",
                   W_Universal_Quantif,
                   W_Conditional);
       New_Domain ("W_Term",
                   "W_Prog",
-                  W_Identifier,
+                  W_Label,
                   W_Record_Aggregate);
       New_Domain ("W_Prog",
                   "W_Expr",
                   W_Not,
-                  W_Unreachable_Code);
+                  W_Try_Block);
       Init_Domains;
 
       --  Classes
-
-      New_Class ("W_Value",
-                 W_Not,
-                 W_Unreachable_Code);
 
       New_Class ("W_Type_Definition",
                  W_Transparent_Type_Definition,
@@ -125,24 +121,6 @@ package body Xtree_Sinfo is
                  "Type_Definition", "W_Type", Id_One);
       Set_Domain (W_Effects, EW_Term);
 
-      ----------------------
-      -- W_Adt_Definition --
-      ----------------------
-
-      New_Field (W_Adt_Definition,
-                 "Constructors", "W_Constr_Decl", Id_Some);
-      Set_Domain (W_Adt_Definition, EW_Term);
-
-      -------------------
-      -- W_Constr_Decl --
-      -------------------
-
-      New_Field (W_Constr_Decl,
-                 "Name", "W_Identifier", Id_One);
-      New_Field (W_Constr_Decl,
-                 "Arg_List", "W_Type", Id_Set);
-      Set_Domain (W_Constr_Decl, EW_Term);
-
       -------------------------
       -- W_Record_Definition --
       -------------------------
@@ -166,26 +144,6 @@ package body Xtree_Sinfo is
       New_Field (W_Trigger,
                  "Terms", "W_Expr", Id_Some);
       Set_Domain (W_Trigger, EW_Term);
-
-      ------------------
-      -- W_Match_Case --
-      ------------------
-
-      New_Field (W_Match_Case,
-                 "Pattern", "W_Term", Id_One);
-      New_Field (W_Match_Case,
-                 "Term", "W_Term", Id_One);
-      Set_Domain (W_Match_Case, EW_Term);
-
-      --------------
-      -- W_Constr --
-      --------------
-
-      New_Field (W_Constr,
-                 "Name", "W_Identifier", Id_One);
-      New_Field (W_Constr,
-                 "Args", "W_Expr", Id_Set);
-      Set_Domain (W_Constr, EW_Term);
 
       ---------------------
       -- W_Postcondition --
@@ -291,15 +249,15 @@ package body Xtree_Sinfo is
       New_Field (W_Relation,
                  "Op_Type", "EW_Not_Null_Type");
       New_Field (W_Relation,
-                 "Left", "W_Value", Id_One);
+                 "Left", "W_Expr", Id_One);
       New_Field (W_Relation,
                  "Op", "EW_Relation");
       New_Field (W_Relation,
-                 "Right", "W_Value", Id_One);
+                 "Right", "W_Expr", Id_One);
       New_Field (W_Relation,
                  "Op2", "EW_Relation", "EW_None");
       New_Field (W_Relation,
-                 "Right2", "W_Value", Id_Lone);
+                 "Right2", "W_Expr", Id_Lone);
 
       ------------------
       -- W_Connection --
@@ -319,9 +277,11 @@ package body Xtree_Sinfo is
       -------------
 
       New_Field (W_Label,
-                 "Labels", "W_Identifier", Id_Some);
+                 "Labels", "W_Identifier", Id_Set);
       New_Field (W_Label,
                  "Def", "W_Expr", Id_One);
+      New_Field (W_Label,
+                 "Typ", "W_Type", Id_Lone);
 
       ------------------
       -- W_Identifier --
@@ -329,6 +289,7 @@ package body Xtree_Sinfo is
 
       New_Field (W_Identifier, "Symbol", "Name_Id");
       New_Field (W_Identifier, "Context", "Name_Id");
+      New_Field (W_Identifier, "Typ", "W_Type", Id_Lone);
 
       --------------
       -- W_Tagged --
@@ -336,6 +297,7 @@ package body Xtree_Sinfo is
 
       New_Field (W_Tagged, "Tag", "Name_Id");
       New_Field (W_Tagged, "Def", "W_Expr", Id_One);
+      New_Field (W_Tagged, "Typ", "W_Type", Id_Lone);
 
       ------------
       -- W_Call --
@@ -343,15 +305,15 @@ package body Xtree_Sinfo is
 
       New_Field (W_Call,
                  "Name", "W_Identifier", Id_One);
-      New_Field (W_Call,
-                 "Args", "W_Expr", Id_Set);
+      New_Field (W_Call, "Args", "W_Expr", Id_Set);
+      New_Field (W_Call, "Typ", "W_Type", Id_Lone);
 
       ---------------
       -- W_Literal --
       ---------------
 
-      New_Field (W_Literal,
-                 "Value", "EW_Literal");
+      New_Field (W_Literal, "Value", "EW_Literal");
+      New_Field (W_Literal, "Typ", "W_Type", Id_Lone);
 
       ---------------
       -- W_Binding --
@@ -360,9 +322,10 @@ package body Xtree_Sinfo is
       New_Field (W_Binding,
                  "Name", "W_Identifier", Id_One);
       New_Field (W_Binding,
-                 "Def", "W_Value", Id_One);
+                 "Def", "W_Expr", Id_One);
       New_Field (W_Binding,
                  "Context", "W_Expr", Id_One);
+      New_Field (W_Binding, "Typ", "W_Type", Id_Lone);
 
       -------------
       -- W_Elsif --
@@ -372,6 +335,8 @@ package body Xtree_Sinfo is
                  "Condition", "W_Expr", Id_One);
       New_Field (W_Elsif,
                  "Then_Part", "W_Expr", Id_One);
+      New_Field (W_Elsif,
+                 "Typ", "W_Type", Id_Lone);
 
       -------------------
       -- W_Conditional --
@@ -385,20 +350,19 @@ package body Xtree_Sinfo is
                  "Elsif_Parts", "W_Expr", Id_Set);
       New_Field (W_Conditional,
                  "Else_Part", "W_Expr", Id_Lone);
+      New_Field (W_Conditional, "Typ", "W_Type", Id_Lone);
 
       ------------------------
       -- W_Integer_Constant --
       ------------------------
 
-      New_Field (W_Integer_Constant,
-                 "Value", "Uint");
+      New_Field (W_Integer_Constant, "Value", "Uint");
 
       ---------------------
       -- W_Real_Constant --
       ---------------------
 
-      New_Field (W_Real_Constant,
-                 "Value", "Ureal");
+      New_Field (W_Real_Constant, "Value", "Ureal");
 
       -----------------
       -- W_Binary_Op --
@@ -430,25 +394,8 @@ package body Xtree_Sinfo is
 
       New_Field (W_Deref,
                  "Right", "W_Identifier", Id_One);
-
-      -------------
-      -- W_Match --
-      -------------
-
-      Set_Mutable (W_Match);
-      New_Field (W_Match,
-                 "Term", "W_Term", Id_One);
-      New_Field (W_Match,
-                 "Branches", "W_Match_Case", Id_Some);
-
-      --------------------
-      -- W_Array_Access --
-      --------------------
-
-      New_Field (W_Array_Access,
-                 "Name", "W_Identifier", Id_One);
-      New_Field (W_Array_Access,
-                 "Index", "W_Prog", Id_One);
+      New_Field (W_Deref,
+                 "Typ", "W_Type", Id_Lone);
 
       ---------------------
       -- W_Record_Access --
@@ -458,6 +405,8 @@ package body Xtree_Sinfo is
                  "Name", "W_Expr", Id_One);
       New_Field (W_Record_Access,
                  "Field", "W_Identifier", Id_One);
+      New_Field (W_Record_Access,
+                 "Typ", "W_Type", Id_Lone);
 
       ---------------------
       -- W_Record_Update --
@@ -467,6 +416,8 @@ package body Xtree_Sinfo is
                  "Name", "W_Expr", Id_One);
       New_Field (W_Record_Update,
                  "Updates", "W_Field_Association", Id_Some);
+      New_Field (W_Record_Update,
+                 "Typ", "W_Type", Id_Lone);
 
       ------------------------
       -- W_Record_Aggregate --
@@ -474,6 +425,8 @@ package body Xtree_Sinfo is
 
       New_Field (W_Record_Aggregate,
                  "Associations", "W_Field_Association", Id_Some);
+      New_Field (W_Record_Aggregate,
+                 "Typ", "W_Type", Id_Lone);
 
       ----------------
       -- W_Any_Expr --
@@ -495,17 +448,6 @@ package body Xtree_Sinfo is
       New_Field (W_Assignment,
                  "Value", "W_Prog", Id_One);
 
-      --------------------
-      -- W_Array_Update --
-      --------------------
-
-      New_Field (W_Array_Update,
-                 "Name", "W_Identifier", Id_One);
-      New_Field (W_Array_Update,
-                 "Index", "W_Prog", Id_One);
-      New_Field (W_Array_Update,
-                 "Value", "W_Prog", Id_One);
-
       -------------------
       -- W_Binding_Ref --
       -------------------
@@ -518,6 +460,8 @@ package body Xtree_Sinfo is
                  "Labels", "W_Identifier", Id_Set);
       New_Field (W_Binding_Ref,
                  "Context", "W_Prog", Id_One);
+      New_Field (W_Binding_Ref,
+                 "Typ", "W_Type", Id_Lone);
 
       ------------------
       -- W_While_Loop --
@@ -546,7 +490,9 @@ package body Xtree_Sinfo is
       New_Field (W_Abstract_Expr,
                 "Expr", "W_Prog", Id_One);
       New_Field (W_Abstract_Expr,
-                "Post", "W_Pred", Id_One);
+                 "Post", "W_Pred", Id_One);
+      New_Field (W_Abstract_Expr,
+                 "Typ", "W_Type", Id_Lone);
 
       --------------
       -- W_Assert --
@@ -563,6 +509,8 @@ package body Xtree_Sinfo is
                  "Name", "W_Identifier", Id_One);
       New_Field (W_Raise,
                  "Exn_Type", "W_Type", Id_Lone);
+      New_Field (W_Raise,
+                 "Typ", "W_Type", Id_Lone);
 
       -----------------
       -- W_Try_Block --
@@ -572,21 +520,8 @@ package body Xtree_Sinfo is
                  "Prog", "W_Prog", Id_One);
       New_Field (W_Try_Block,
                  "Handler", "W_Handler", Id_Some);
-
-      -----------------
-      -- W_Tag_Intro --
-      -----------------
-
-      New_Field (W_Tag_Intro,
-                 "Prog", "W_Prog", Id_One);
-      New_Field (W_Tag_Intro, "Tag", "Name_Id");
-
-      ------------------------
-      -- W_Unreachable_Code --
-      ------------------------
-
-      New_Field (W_Unreachable_Code,
-                 "Exn_Type", "W_Type", Id_Lone);
+      New_Field (W_Try_Block,
+                 "Typ", "W_Type", Id_Lone);
 
       ---------------------
       -- W_Function_Decl --

@@ -1,4 +1,5 @@
-package body P is  
+package body P is
+   pragma SPARK_Mode;
    procedure Set is
    begin
       X.all := True;

@@ -41,7 +41,7 @@ package body Screen
 --#
 --#     Output is out Screen.Interfac.Output;
 
-is
+is pragma SPARK_Mode (On);
 
    ------------------------------------------------------------------
    -- Types

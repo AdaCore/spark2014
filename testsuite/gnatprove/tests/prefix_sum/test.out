@@ -1,224 +1,224 @@
-prefixsum.adb:9:10: loop invariant initialization not proved
-prefixsum.adb:9:10: loop invariant preservation not proved
-prefixsum.adb:10:40: range check not proved
-prefixsum.adb:15:27: division check not proved
-prefixsum.adb:22:30: division check not proved
-prefixsum.adb:25:60: index check not proved
-prefixsum.adb:26:41: index check not proved
-prefixsum.adb:26:62: index check not proved
-prefixsum.adb:27:30: division check not proved
-prefixsum.adb:30:60: index check not proved
-prefixsum.adb:33:10: loop variant not proved
-prefixsum.adb:38:13: loop invariant initialization not proved
-prefixsum.adb:38:13: loop invariant preservation not proved
-prefixsum.adb:39:26: division check not proved
-prefixsum.adb:41:56: range check not proved
-prefixsum.adb:43:57: range check not proved
-prefixsum.adb:45:26: division check not proved
-prefixsum.adb:51:37: division check not proved
-prefixsum.adb:53:64: index check not proved
-prefixsum.adb:56:13: loop variant not proved
-prefixsum.adb:58:31: overflow check not proved
-prefixsum.adb:59:16: index check not proved
-prefixsum.adb:59:29: index check not proved
-prefixsum.adb:59:35: overflow check not proved
-prefixsum.adb:59:40: index check not proved
-prefixsum.adb:60:31: overflow check not proved
-prefixsum.adb:60:31: range check not proved
-prefixsum.adb:60:39: overflow check not proved
-prefixsum.adb:62:25: overflow check not proved
-prefixsum.adb:62:25: range check not proved
-prefixsum.adb:76:27: division check not proved
-prefixsum.adb:79:10: loop invariant initialization not proved
-prefixsum.adb:79:10: loop invariant preservation not proved
-prefixsum.adb:82:36: division check not proved
-prefixsum.adb:82:49: range check not proved
-prefixsum.adb:87:49: division check not proved
-prefixsum.adb:88:64: index check not proved
-prefixsum.adb:89:49: division check not proved
-prefixsum.adb:90:45: index check not proved
-prefixsum.adb:93:49: division check not proved
-prefixsum.adb:101:10: loop variant not proved
-prefixsum.adb:103:25: overflow check not proved
-prefixsum.adb:103:29: overflow check not proved
-prefixsum.adb:103:29: range check not proved
-prefixsum.adb:105:13: loop invariant initialization not proved
-prefixsum.adb:105:13: loop invariant preservation not proved
-prefixsum.adb:108:31: division check not proved
-prefixsum.adb:109:66: index check not proved
-prefixsum.adb:110:34: division check not proved
-prefixsum.adb:111:47: index check not proved
-prefixsum.adb:117:27: division check not proved
-prefixsum.adb:121:13: loop variant not proved
-prefixsum.adb:123:32: overflow check not proved
-prefixsum.adb:123:32: range check not proved
-prefixsum.adb:124:29: index check not proved
-prefixsum.adb:125:16: index check not proved
-prefixsum.adb:125:29: index check not proved
-prefixsum.adb:125:35: overflow check not proved
-prefixsum.adb:125:40: index check not proved
-prefixsum.adb:126:16: index check not proved
-prefixsum.adb:127:32: overflow check not proved
-prefixsum.adb:127:32: range check not proved
-prefixsum.adb:127:40: overflow check not proved
-prefixsum.adb:129:25: division check not proved
+prefixsum.adb:9:10: warning: loop invariant might fail in first iteration
+prefixsum.adb:9:10: warning: loop invariant might fail after first iteration
+prefixsum.adb:10:40: warning: range check might fail
+prefixsum.adb:15:27: warning: divide by zero might fail
+prefixsum.adb:22:30: warning: divide by zero might fail
+prefixsum.adb:25:60: warning: array index check might fail
+prefixsum.adb:26:41: warning: array index check might fail
+prefixsum.adb:26:62: warning: array index check might fail
+prefixsum.adb:27:30: warning: divide by zero might fail
+prefixsum.adb:30:60: warning: array index check might fail
+prefixsum.adb:33:10: warning: loop variant might fail
+prefixsum.adb:38:13: warning: loop invariant might fail in first iteration
+prefixsum.adb:38:13: warning: loop invariant might fail after first iteration
+prefixsum.adb:39:26: warning: divide by zero might fail
+prefixsum.adb:41:56: warning: range check might fail
+prefixsum.adb:43:57: warning: range check might fail
+prefixsum.adb:45:26: warning: divide by zero might fail
+prefixsum.adb:51:37: warning: divide by zero might fail
+prefixsum.adb:53:64: warning: array index check might fail
+prefixsum.adb:56:13: warning: loop variant might fail
+prefixsum.adb:58:31: warning: overflow check might fail
+prefixsum.adb:59:16: warning: array index check might fail
+prefixsum.adb:59:29: warning: array index check might fail
+prefixsum.adb:59:35: warning: overflow check might fail
+prefixsum.adb:59:40: warning: array index check might fail
+prefixsum.adb:60:31: warning: overflow check might fail
+prefixsum.adb:60:31: warning: range check might fail
+prefixsum.adb:60:39: warning: overflow check might fail
+prefixsum.adb:62:25: warning: overflow check might fail
+prefixsum.adb:62:25: warning: range check might fail
+prefixsum.adb:76:27: warning: divide by zero might fail
+prefixsum.adb:79:10: warning: loop invariant might fail in first iteration
+prefixsum.adb:79:10: warning: loop invariant might fail after first iteration
+prefixsum.adb:82:36: warning: divide by zero might fail
+prefixsum.adb:82:49: warning: range check might fail
+prefixsum.adb:87:49: warning: divide by zero might fail
+prefixsum.adb:88:64: warning: array index check might fail
+prefixsum.adb:89:49: warning: divide by zero might fail
+prefixsum.adb:90:45: warning: array index check might fail
+prefixsum.adb:93:49: warning: divide by zero might fail
+prefixsum.adb:101:10: warning: loop variant might fail
+prefixsum.adb:103:25: warning: overflow check might fail
+prefixsum.adb:103:29: warning: overflow check might fail
+prefixsum.adb:103:29: warning: range check might fail
+prefixsum.adb:105:13: warning: loop invariant might fail in first iteration
+prefixsum.adb:105:13: warning: loop invariant might fail after first iteration
+prefixsum.adb:108:31: warning: divide by zero might fail
+prefixsum.adb:109:66: warning: array index check might fail
+prefixsum.adb:110:34: warning: divide by zero might fail
+prefixsum.adb:111:47: warning: array index check might fail
+prefixsum.adb:117:27: warning: divide by zero might fail
+prefixsum.adb:121:13: warning: loop variant might fail
+prefixsum.adb:123:32: warning: overflow check might fail
+prefixsum.adb:123:32: warning: range check might fail
+prefixsum.adb:124:29: warning: array index check might fail
+prefixsum.adb:125:16: warning: array index check might fail
+prefixsum.adb:125:29: warning: array index check might fail
+prefixsum.adb:125:35: warning: overflow check might fail
+prefixsum.adb:125:40: warning: array index check might fail
+prefixsum.adb:126:16: warning: array index check might fail
+prefixsum.adb:127:32: warning: overflow check might fail
+prefixsum.adb:127:32: warning: range check might fail
+prefixsum.adb:127:40: warning: overflow check might fail
+prefixsum.adb:129:25: warning: divide by zero might fail
 prefixsum.ads:43:07: warning: unused initial value of "Ghost" [unused_initial_value]
 prefixsum.ads:26:23: info: division check proved
-prefixsum.ads:27:28: overflow check not proved
-prefixsum.ads:27:36: overflow check not proved
-prefixsum.ads:27:44: overflow check not proved
-prefixsum.ads:27:52: overflow check not proved
-prefixsum.ads:28:28: overflow check not proved
-prefixsum.ads:28:36: overflow check not proved
-prefixsum.ads:28:44: overflow check not proved
-prefixsum.ads:29:25: division check not proved
-prefixsum.ads:30:28: overflow check not proved
-prefixsum.ads:30:34: index check not proved
-prefixsum.ads:30:38: overflow check not proved
-prefixsum.ads:30:44: index check not proved
-prefixsum.ads:30:48: overflow check not proved
-prefixsum.ads:30:54: index check not proved
-prefixsum.ads:31:25: division check not proved
-prefixsum.ads:32:28: overflow check not proved
-prefixsum.ads:32:34: index check not proved
-prefixsum.ads:38:14: postcondition not proved
+prefixsum.ads:27:28: warning: overflow check might fail
+prefixsum.ads:27:36: warning: overflow check might fail
+prefixsum.ads:27:44: warning: overflow check might fail
+prefixsum.ads:27:52: warning: overflow check might fail
+prefixsum.ads:28:28: warning: overflow check might fail
+prefixsum.ads:28:36: warning: overflow check might fail
+prefixsum.ads:28:44: warning: overflow check might fail
+prefixsum.ads:29:25: warning: divide by zero might fail
+prefixsum.ads:30:28: warning: overflow check might fail
+prefixsum.ads:30:34: warning: array index check might fail
+prefixsum.ads:30:38: warning: overflow check might fail
+prefixsum.ads:30:44: warning: array index check might fail
+prefixsum.ads:30:48: warning: overflow check might fail
+prefixsum.ads:30:54: warning: array index check might fail
+prefixsum.ads:31:25: warning: divide by zero might fail
+prefixsum.ads:32:28: warning: overflow check might fail
+prefixsum.ads:32:34: warning: array index check might fail
+prefixsum.ads:38:14: warning: postcondition might fail
 prefixsum.ads:40:17: info: precondition proved
 prefixsum.ads:48:17: info: precondition proved
-prefixsum.ads:50:8: postcondition not proved
+prefixsum.ads:50:8: warning: postcondition might fail
 prefixsum_expanded.adb:117:15: warning: unused assignment [ineffective]
-prefixsum_expanded.adb:11:10: loop invariant initialization not proved
-prefixsum_expanded.adb:11:10: loop invariant preservation not proved
-prefixsum_expanded.adb:12:40: range check not proved
-prefixsum_expanded.adb:52:10: loop variant not proved
-prefixsum_expanded.adb:57:13: loop invariant initialization not proved
-prefixsum_expanded.adb:57:13: loop invariant preservation not proved
-prefixsum_expanded.adb:58:26: division check not proved
-prefixsum_expanded.adb:60:56: range check not proved
-prefixsum_expanded.adb:62:57: range check not proved
-prefixsum_expanded.adb:64:26: division check not proved
-prefixsum_expanded.adb:70:37: division check not proved
-prefixsum_expanded.adb:72:64: index check not proved
-prefixsum_expanded.adb:75:13: loop variant not proved
-prefixsum_expanded.adb:77:31: overflow check not proved
-prefixsum_expanded.adb:78:16: index check not proved
-prefixsum_expanded.adb:78:29: index check not proved
-prefixsum_expanded.adb:78:35: overflow check not proved
-prefixsum_expanded.adb:78:40: index check not proved
-prefixsum_expanded.adb:79:31: overflow check not proved
-prefixsum_expanded.adb:79:31: range check not proved
-prefixsum_expanded.adb:79:39: overflow check not proved
-prefixsum_expanded.adb:81:25: overflow check not proved
-prefixsum_expanded.adb:81:25: range check not proved
-prefixsum_expanded.adb:84:7: assertion not proved
-prefixsum_expanded.adb:116:27: division check not proved
-prefixsum_expanded.adb:118:7: assertion not proved
-prefixsum_expanded.adb:136:10: loop invariant initialization not proved
-prefixsum_expanded.adb:136:10: loop invariant preservation not proved
-prefixsum_expanded.adb:139:36: division check not proved
-prefixsum_expanded.adb:139:49: range check not proved
-prefixsum_expanded.adb:161:10: loop variant not proved
-prefixsum_expanded.adb:163:25: overflow check not proved
-prefixsum_expanded.adb:163:29: overflow check not proved
-prefixsum_expanded.adb:163:29: range check not proved
-prefixsum_expanded.adb:165:13: loop invariant initialization not proved
-prefixsum_expanded.adb:165:13: loop invariant preservation not proved
-prefixsum_expanded.adb:168:31: division check not proved
-prefixsum_expanded.adb:169:66: index check not proved
-prefixsum_expanded.adb:170:34: division check not proved
-prefixsum_expanded.adb:171:47: index check not proved
-prefixsum_expanded.adb:177:27: division check not proved
-prefixsum_expanded.adb:181:13: loop variant not proved
-prefixsum_expanded.adb:183:32: overflow check not proved
-prefixsum_expanded.adb:183:32: range check not proved
-prefixsum_expanded.adb:184:29: index check not proved
-prefixsum_expanded.adb:185:16: index check not proved
-prefixsum_expanded.adb:185:29: index check not proved
-prefixsum_expanded.adb:185:35: overflow check not proved
-prefixsum_expanded.adb:185:40: index check not proved
-prefixsum_expanded.adb:186:16: index check not proved
-prefixsum_expanded.adb:187:32: overflow check not proved
-prefixsum_expanded.adb:187:32: range check not proved
-prefixsum_expanded.adb:187:40: overflow check not proved
-prefixsum_expanded.adb:189:25: division check not proved
-prefixsum_expanded.adb:192:7: assertion not proved
+prefixsum_expanded.adb:11:10: warning: loop invariant might fail in first iteration
+prefixsum_expanded.adb:11:10: warning: loop invariant might fail after first iteration
+prefixsum_expanded.adb:12:40: warning: range check might fail
+prefixsum_expanded.adb:52:10: warning: loop variant might fail
+prefixsum_expanded.adb:57:13: warning: loop invariant might fail in first iteration
+prefixsum_expanded.adb:57:13: warning: loop invariant might fail after first iteration
+prefixsum_expanded.adb:58:26: warning: divide by zero might fail
+prefixsum_expanded.adb:60:56: warning: range check might fail
+prefixsum_expanded.adb:62:57: warning: range check might fail
+prefixsum_expanded.adb:64:26: warning: divide by zero might fail
+prefixsum_expanded.adb:70:37: warning: divide by zero might fail
+prefixsum_expanded.adb:72:64: warning: array index check might fail
+prefixsum_expanded.adb:75:13: warning: loop variant might fail
+prefixsum_expanded.adb:77:31: warning: overflow check might fail
+prefixsum_expanded.adb:78:16: warning: array index check might fail
+prefixsum_expanded.adb:78:29: warning: array index check might fail
+prefixsum_expanded.adb:78:35: warning: overflow check might fail
+prefixsum_expanded.adb:78:40: warning: array index check might fail
+prefixsum_expanded.adb:79:31: warning: overflow check might fail
+prefixsum_expanded.adb:79:31: warning: range check might fail
+prefixsum_expanded.adb:79:39: warning: overflow check might fail
+prefixsum_expanded.adb:81:25: warning: overflow check might fail
+prefixsum_expanded.adb:81:25: warning: range check might fail
+prefixsum_expanded.adb:84:7: warning: assertion might fail
+prefixsum_expanded.adb:116:27: warning: divide by zero might fail
+prefixsum_expanded.adb:118:7: warning: assertion might fail
+prefixsum_expanded.adb:136:10: warning: loop invariant might fail in first iteration
+prefixsum_expanded.adb:136:10: warning: loop invariant might fail after first iteration
+prefixsum_expanded.adb:139:36: warning: divide by zero might fail
+prefixsum_expanded.adb:139:49: warning: range check might fail
+prefixsum_expanded.adb:161:10: warning: loop variant might fail
+prefixsum_expanded.adb:163:25: warning: overflow check might fail
+prefixsum_expanded.adb:163:29: warning: overflow check might fail
+prefixsum_expanded.adb:163:29: warning: range check might fail
+prefixsum_expanded.adb:165:13: warning: loop invariant might fail in first iteration
+prefixsum_expanded.adb:165:13: warning: loop invariant might fail after first iteration
+prefixsum_expanded.adb:168:31: warning: divide by zero might fail
+prefixsum_expanded.adb:169:66: warning: array index check might fail
+prefixsum_expanded.adb:170:34: warning: divide by zero might fail
+prefixsum_expanded.adb:171:47: warning: array index check might fail
+prefixsum_expanded.adb:177:27: warning: divide by zero might fail
+prefixsum_expanded.adb:181:13: warning: loop variant might fail
+prefixsum_expanded.adb:183:32: warning: overflow check might fail
+prefixsum_expanded.adb:183:32: warning: range check might fail
+prefixsum_expanded.adb:184:29: warning: array index check might fail
+prefixsum_expanded.adb:185:16: warning: array index check might fail
+prefixsum_expanded.adb:185:29: warning: array index check might fail
+prefixsum_expanded.adb:185:35: warning: overflow check might fail
+prefixsum_expanded.adb:185:40: warning: array index check might fail
+prefixsum_expanded.adb:186:16: warning: array index check might fail
+prefixsum_expanded.adb:187:32: warning: overflow check might fail
+prefixsum_expanded.adb:187:32: warning: range check might fail
+prefixsum_expanded.adb:187:40: warning: overflow check might fail
+prefixsum_expanded.adb:189:25: warning: divide by zero might fail
+prefixsum_expanded.adb:192:7: warning: assertion might fail
 prefixsum_expanded.ads:48:07: warning: unused initial value of "Ghost" [unused_initial_value]
-prefixsum_expanded.ads:25:23: overflow check not proved
-prefixsum_expanded.ads:25:31: overflow check not proved
-prefixsum_expanded.ads:25:39: overflow check not proved
-prefixsum_expanded.ads:25:47: overflow check not proved
-prefixsum_expanded.ads:25:55: overflow check not proved
-prefixsum_expanded.ads:25:63: overflow check not proved
-prefixsum_expanded.ads:25:71: overflow check not proved
-prefixsum_expanded.ads:27:23: overflow check not proved
-prefixsum_expanded.ads:27:31: overflow check not proved
-prefixsum_expanded.ads:27:39: overflow check not proved
-prefixsum_expanded.ads:29:23: overflow check not proved
-prefixsum_expanded.ads:31:23: overflow check not proved
-prefixsum_expanded.ads:43:14: postcondition not proved
-prefixsum_expanded.ads:45:17: precondition not proved
+prefixsum_expanded.ads:25:23: warning: overflow check might fail
+prefixsum_expanded.ads:25:31: warning: overflow check might fail
+prefixsum_expanded.ads:25:39: warning: overflow check might fail
+prefixsum_expanded.ads:25:47: warning: overflow check might fail
+prefixsum_expanded.ads:25:55: warning: overflow check might fail
+prefixsum_expanded.ads:25:63: warning: overflow check might fail
+prefixsum_expanded.ads:25:71: warning: overflow check might fail
+prefixsum_expanded.ads:27:23: warning: overflow check might fail
+prefixsum_expanded.ads:27:31: warning: overflow check might fail
+prefixsum_expanded.ads:27:39: warning: overflow check might fail
+prefixsum_expanded.ads:29:23: warning: overflow check might fail
+prefixsum_expanded.ads:31:23: warning: overflow check might fail
+prefixsum_expanded.ads:43:14: warning: postcondition might fail
+prefixsum_expanded.ads:45:17: warning: precondition might fail
 prefixsum_expanded.ads:53:17: info: precondition proved
-prefixsum_expanded.ads:55:8: postcondition not proved
-prefixsum_general.adb:12:10: loop invariant initialization not proved
-prefixsum_general.adb:12:10: loop invariant preservation not proved
-prefixsum_general.adb:13:22: division check not proved
-prefixsum_general.adb:21:24: division check not proved
-prefixsum_general.adb:30:27: division check not proved
-prefixsum_general.adb:31:25: precondition not proved
-prefixsum_general.adb:31:56: range check not proved
-prefixsum_general.adb:32:10: loop variant not proved
-prefixsum_general.adb:34:21: overflow check not proved
-prefixsum_general.adb:35:13: loop invariant initialization not proved
-prefixsum_general.adb:35:13: loop invariant preservation not proved
-prefixsum_general.adb:38:25: division check not proved
-prefixsum_general.adb:44:27: division check not proved
-prefixsum_general.adb:56:43: division check not proved
-prefixsum_general.adb:57:28: precondition not proved
-prefixsum_general.adb:57:52: range check not proved
-prefixsum_general.adb:58:46: division check not proved
-prefixsum_general.adb:59:28: precondition not proved
-prefixsum_general.adb:59:52: range check not proved
-prefixsum_general.adb:61:19: index check not proved
-prefixsum_general.adb:61:27: precondition not proved
-prefixsum_general.adb:61:54: range check not proved
-prefixsum_general.adb:61:63: range check not proved
-prefixsum_general.adb:63:24: index check not proved
-prefixsum_general.adb:63:35: precondition not proved
-prefixsum_general.adb:63:58: range check not proved
-prefixsum_general.adb:63:68: range check not proved
-prefixsum_general.adb:64:13: loop variant not proved
-prefixsum_general.adb:66:31: overflow check not proved
-prefixsum_general.adb:67:16: index check not proved
-prefixsum_general.adb:67:29: index check not proved
-prefixsum_general.adb:67:35: overflow check not proved
-prefixsum_general.adb:67:40: index check not proved
-prefixsum_general.adb:68:31: overflow check not proved
-prefixsum_general.adb:68:31: range check not proved
-prefixsum_general.adb:68:39: overflow check not proved
-prefixsum_general.adb:70:25: overflow check not proved
-prefixsum_general.adb:70:25: range check not proved
+prefixsum_expanded.ads:55:8: warning: postcondition might fail
+prefixsum_general.adb:12:10: warning: loop invariant might fail in first iteration
+prefixsum_general.adb:12:10: warning: loop invariant might fail after first iteration
+prefixsum_general.adb:13:22: warning: divide by zero might fail
+prefixsum_general.adb:21:24: warning: divide by zero might fail
+prefixsum_general.adb:30:27: warning: divide by zero might fail
+prefixsum_general.adb:31:25: warning: precondition might fail
+prefixsum_general.adb:31:56: warning: range check might fail
+prefixsum_general.adb:32:10: warning: loop variant might fail
+prefixsum_general.adb:34:21: warning: overflow check might fail
+prefixsum_general.adb:35:13: warning: loop invariant might fail in first iteration
+prefixsum_general.adb:35:13: warning: loop invariant might fail after first iteration
+prefixsum_general.adb:38:25: warning: divide by zero might fail
+prefixsum_general.adb:44:27: warning: divide by zero might fail
+prefixsum_general.adb:56:43: warning: divide by zero might fail
+prefixsum_general.adb:57:28: warning: precondition might fail
+prefixsum_general.adb:57:52: warning: range check might fail
+prefixsum_general.adb:58:46: warning: divide by zero might fail
+prefixsum_general.adb:59:28: warning: precondition might fail
+prefixsum_general.adb:59:52: warning: range check might fail
+prefixsum_general.adb:61:19: warning: array index check might fail
+prefixsum_general.adb:61:27: warning: precondition might fail
+prefixsum_general.adb:61:54: warning: range check might fail
+prefixsum_general.adb:61:63: warning: range check might fail
+prefixsum_general.adb:63:24: warning: array index check might fail
+prefixsum_general.adb:63:35: warning: precondition might fail
+prefixsum_general.adb:63:58: warning: range check might fail
+prefixsum_general.adb:63:68: warning: range check might fail
+prefixsum_general.adb:64:13: warning: loop variant might fail
+prefixsum_general.adb:66:31: warning: overflow check might fail
+prefixsum_general.adb:67:16: warning: array index check might fail
+prefixsum_general.adb:67:29: warning: array index check might fail
+prefixsum_general.adb:67:35: warning: overflow check might fail
+prefixsum_general.adb:67:40: warning: array index check might fail
+prefixsum_general.adb:68:31: warning: overflow check might fail
+prefixsum_general.adb:68:31: warning: range check might fail
+prefixsum_general.adb:68:39: warning: overflow check might fail
+prefixsum_general.adb:70:25: warning: overflow check might fail
+prefixsum_general.adb:70:25: warning: range check might fail
 prefixsum_general.adb:84:27: info: division check proved
-prefixsum_general.adb:87:10: loop variant not proved
-prefixsum_general.adb:89:25: overflow check not proved
-prefixsum_general.adb:89:29: overflow check not proved
-prefixsum_general.adb:89:29: range check not proved
-prefixsum_general.adb:91:13: loop variant not proved
-prefixsum_general.adb:93:32: overflow check not proved
-prefixsum_general.adb:93:32: range check not proved
-prefixsum_general.adb:94:29: index check not proved
-prefixsum_general.adb:95:16: index check not proved
-prefixsum_general.adb:95:29: index check not proved
-prefixsum_general.adb:95:35: overflow check not proved
-prefixsum_general.adb:95:40: index check not proved
-prefixsum_general.adb:96:16: index check not proved
-prefixsum_general.adb:97:32: overflow check not proved
-prefixsum_general.adb:97:32: range check not proved
-prefixsum_general.adb:97:40: overflow check not proved
-prefixsum_general.adb:99:25: division check not proved
+prefixsum_general.adb:87:10: warning: loop variant might fail
+prefixsum_general.adb:89:25: warning: overflow check might fail
+prefixsum_general.adb:89:29: warning: overflow check might fail
+prefixsum_general.adb:89:29: warning: range check might fail
+prefixsum_general.adb:91:13: warning: loop variant might fail
+prefixsum_general.adb:93:32: warning: overflow check might fail
+prefixsum_general.adb:93:32: warning: range check might fail
+prefixsum_general.adb:94:29: warning: array index check might fail
+prefixsum_general.adb:95:16: warning: array index check might fail
+prefixsum_general.adb:95:29: warning: array index check might fail
+prefixsum_general.adb:95:35: warning: overflow check might fail
+prefixsum_general.adb:95:40: warning: array index check might fail
+prefixsum_general.adb:96:16: warning: array index check might fail
+prefixsum_general.adb:97:32: warning: overflow check might fail
+prefixsum_general.adb:97:32: warning: range check might fail
+prefixsum_general.adb:97:40: warning: overflow check might fail
+prefixsum_general.adb:99:25: warning: divide by zero might fail
 prefixsum_general.ads:24:07: warning: unused initial value of "Ghost" [unused_initial_value]
 prefixsum_general.ads:24:07: warning: unused variable "Ghost" [unused]
 prefixsum_general.ads:8:56: info: division check proved
-prefixsum_general.ads:16:25: overflow check not proved
+prefixsum_general.ads:16:25: warning: overflow check might fail
 prefixsum_general.ads:16:27: info: precondition proved
-prefixsum_general.ads:16:60: range check not proved
-prefixsum_general.ads:20:14: postcondition not proved
+prefixsum_general.ads:16:60: warning: range check might fail
+prefixsum_general.ads:20:14: warning: postcondition might fail
 prefixsum_general.ads:21:30: info: precondition proved

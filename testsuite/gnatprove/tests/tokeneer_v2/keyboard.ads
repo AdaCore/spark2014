@@ -18,7 +18,7 @@
 with BasicTypes;
 
 package Keyboard
-   with Abstract_State => (Inputs with External, Input_Only)
+   with Abstract_State => (Inputs with External)
 is
 
    ------------------------------------------------------------------

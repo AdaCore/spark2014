@@ -1,4 +1,4 @@
-p.ads:2:08: type access to "Boolean" is not allowed in SPARK
+p.ads:2:08: access to "Boolean" is not allowed in SPARK
 p.ads:2:08:  violation of aspect SPARK_Mode at line 1
 
    compilation of p.adb failed

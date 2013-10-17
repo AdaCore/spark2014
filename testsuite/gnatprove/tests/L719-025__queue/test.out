@@ -1,10 +1,12 @@
+queue.adb:4:19: info: precondition proved
+queue.adb:11:19: info: precondition proved
 queue.adb:13:7: info: precondition proved
 queue.adb:19:14: info: precondition proved
 queue.ads:16:14: info: precondition proved
 queue.ads:16:14: info: postcondition proved
-queue.ads:20:14: postcondition not proved, requires Strict_Equal (Tail'Result, Left (Q, Last (Q)
+queue.ads:20:14: warning: postcondition might fail, requires Strict_Equal (Tail'Result, Left (Q, Last (Q)
 queue.ads:20:41: info: precondition proved
-queue.ads:24:14: postcondition not proved
+queue.ads:24:14: warning: postcondition might fail
 queue.ads:25:6: info: precondition proved
 queue.ads:26:21: info: precondition proved
 queue.ads:27:21: info: precondition proved

@@ -1,6 +1,6 @@
 with List; use List;
-with Text_IO; use Text_IO;
-procedure Main is 
+with Print;
+procedure Main is pragma SPARK_Mode (On);
 
    L : List.List;
 
@@ -12,6 +12,6 @@ begin
    L:= Reverse_List (L);
 
    for I in 1 .. 10 loop
-      Put_Line (My_Lists.Element (L, I)'img);
+      Print.Put (My_Lists.Element (L, I));
    end loop;
  end main;

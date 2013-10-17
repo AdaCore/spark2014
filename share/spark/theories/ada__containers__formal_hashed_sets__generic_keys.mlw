@@ -1,0 +1,149 @@
+module Ada__containers__formal_hashed_sets__generic_keys__witness
+  use import real.Real
+  use import "ada__containers__formal_hashed_sets".Ada__containers__formal_hashed_sets__witness
+  use "ada__containers__formal_hashed_sets__generic_keys__args".Ada__containers__formal_hashed_sets__generic_keys__key
+  use "ada__containers__formal_hashed_sets__generic_keys__args".Ada__containers__formal_hashed_sets__generic_keys__key_type
+  use "ada__containers__formal_hashed_sets__args".Ada__containers__formal_hashed_sets__element_type
+  use import "ada__containers__formal_hashed_sets".Ada__containers__formal_hashed_sets__witness
+  use import "ada__containers__formal_hashed_sets".Ada__containers__formal_hashed_sets__set
+  use import  "ada__containers__formal_hashed_sets".Ada__containers__formal_hashed_sets__find
+  use import  "ada__containers__formal_hashed_sets".Ada__containers__formal_hashed_sets__element
+
+  function witness Ada__containers__formal_hashed_sets__generic_keys__key_type.base_type : real
+
+  axiom witness_def:
+    (forall e : Ada__containers__formal_hashed_sets__element_type.base_type
+ [Ada__containers__formal_hashed_sets__witness.witness e].
+  Ada__containers__formal_hashed_sets__witness.witness e =
+  witness (Ada__containers__formal_hashed_sets__generic_keys__key_type.to_base (Ada__containers__formal_hashed_sets__generic_keys__key.key e)))
+end
+
+module Ada__containers__formal_hashed_sets__generic_keys__key__2
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use "ada__containers__formal_hashed_sets__args".Ada__containers__formal_hashed_sets__element_type
+  use "ada__containers__formal_hashed_sets__generic_keys__args".Ada__containers__formal_hashed_sets__generic_keys__key_type
+  use "ada__containers__formal_hashed_sets__generic_keys__args".Ada__containers__formal_hashed_sets__generic_keys__key
+  use import Ada__containers__formal_hashed_sets__generic_keys__witness
+  use import "ada__containers__formal_hashed_sets".Ada__containers__formal_hashed_sets__set
+  use import "ada__containers__formal_hashed_sets".Ada__containers__formal_hashed_sets__length
+  use import "ada__containers__formal_hashed_sets".Ada__containers__formal_hashed_sets__cursor
+  use import "ada__containers__formal_hashed_sets".Ada__containers__formal_hashed_sets__element
+
+  function key__2 "inline" (co:set) (cu:cursor) : Ada__containers__formal_hashed_sets__generic_keys__key_type.key_type =
+  Ada__containers__formal_hashed_sets__generic_keys__key.key (Ada__containers__formal_hashed_sets__element_type.to_base (element co cu))
+
+  val key__2 (co:set) (cu:cursor) : Ada__containers__formal_hashed_sets__generic_keys__key_type.key_type
+     requires { position co cu > 0 }
+     ensures  { result = key__2 co cu }
+end
+
+module Ada__containers__formal_hashed_sets__generic_keys__find
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use  "ada__containers__formal_hashed_sets__generic_keys__args".Ada__containers__formal_hashed_sets__generic_keys__key_type
+  use import "ada__containers__formal_hashed_sets".Ada__containers__formal_hashed_sets__set
+  use import Ada__containers__formal_hashed_sets__generic_keys__witness
+  use import "ada__containers__formal_hashed_sets".Ada__containers__formal_hashed_sets__cursor
+  use import "ada__containers__formal_hashed_sets".Ada__containers__formal_hashed_sets__find
+
+  function find "inline" (co : set) (e:Ada__containers__formal_hashed_sets__generic_keys__key_type.base_type) : cursor =
+  find_ co (witness e)
+
+  val find (co:set) (e:Ada__containers__formal_hashed_sets__generic_keys__key_type.base_type)  : cursor
+     ensures  { result = find co e }
+end
+
+module Ada__containers__formal_hashed_sets__generic_keys__element
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use "ada__containers__formal_hashed_sets__generic_keys__args".Ada__containers__formal_hashed_sets__generic_keys__key_type
+  use "ada__containers__formal_hashed_sets__args".Ada__containers__formal_hashed_sets__element_type
+  use import Ada__containers__formal_hashed_sets__generic_keys__witness
+  use import "ada__containers__formal_hashed_sets".Ada__containers__formal_hashed_sets__set
+  use import "ada__containers__formal_hashed_sets".Ada__containers__formal_hashed_sets__cursor
+  use import "ada__containers__formal_hashed_sets".Ada__containers__formal_hashed_sets__element
+  use import "ada__containers__formal_hashed_sets".Ada__containers__formal_hashed_sets__find
+
+  function element "inline" (co:set) (k:Ada__containers__formal_hashed_sets__generic_keys__key_type.base_type) : Ada__containers__formal_hashed_sets__element_type.element_type =
+Ada__containers__formal_hashed_sets__element.element co (find_ co (witness k))
+
+  val element (co:set) (k:Ada__containers__formal_hashed_sets__generic_keys__key_type.base_type) : Ada__containers__formal_hashed_sets__element_type.element_type
+     requires { position co (find_ co (witness k)) > 0 }
+     ensures  { result = element co k }
+end
+
+module Ada__containers__formal_hashed_sets__generic_keys__replace
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use  "ada__containers__formal_hashed_sets__generic_keys__args".Ada__containers__formal_hashed_sets__generic_keys__key_type
+  use "ada__containers__formal_hashed_sets__args".Ada__containers__formal_hashed_sets__element_type
+  use import Ada__containers__formal_hashed_sets__generic_keys__witness
+  use import "ada__containers__formal_hashed_sets".Ada__containers__formal_hashed_sets__set
+  use import "ada__containers__formal_hashed_sets".Ada__containers__formal_hashed_sets__cursor
+  use import "ada__containers__formal_hashed_sets".Ada__containers__formal_hashed_sets__no_element
+  use import "ada__containers__formal_hashed_sets".Ada__containers__formal_hashed_sets__find 
+  use import "ada__containers__formal_hashed_sets".Ada__containers__formal_hashed_sets__replace_element
+
+  val replace (co :ref set) (k:Ada__containers__formal_hashed_sets__generic_keys__key_type.base_type) (e:Ada__containers__formal_hashed_sets__element_type.base_type) : unit
+     requires { find_ !co (witness k) <> no_element }
+     writes { co }
+     reads { co }
+     ensures { replace_element (old !co) (find_ !co (witness k)) e !co }
+end
+
+module Ada__containers__formal_hashed_sets__generic_keys__delete
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use "ada__containers__formal_hashed_sets__generic_keys__args".Ada__containers__formal_hashed_sets__generic_keys__key_type
+  use import Ada__containers__formal_hashed_sets__generic_keys__witness
+  use import "ada__containers__formal_hashed_sets".Ada__containers__formal_hashed_sets__set
+  use import "ada__containers__formal_hashed_sets".Ada__containers__formal_hashed_sets__cursor
+  use import "ada__containers__formal_hashed_sets".Ada__containers__formal_hashed_sets__no_element
+  use import "ada__containers__formal_hashed_sets".Ada__containers__formal_hashed_sets__find
+  use import "ada__containers__formal_hashed_sets".Ada__containers__formal_hashed_sets__delete
+
+  val delete (co:ref set) (k : Ada__containers__formal_hashed_sets__generic_keys__key_type.base_type) : unit
+     requires { find_ !co (witness k) <> no_element }
+     writes     { co }
+     reads      { co }
+     ensures { delete (old !co) (find_ (old !co) (witness k)) !co }
+end
+
+module Ada__containers__formal_hashed_sets__generic_keys__exclude
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use "ada__containers__formal_hashed_sets__generic_keys__args".Ada__containers__formal_hashed_sets__generic_keys__key_type
+  use import Ada__containers__formal_hashed_sets__generic_keys__witness
+  use import "ada__containers__formal_hashed_sets".Ada__containers__formal_hashed_sets__set
+  use import "ada__containers__formal_hashed_sets".Ada__containers__formal_hashed_sets__cursor
+  use import "ada__containers__formal_hashed_sets".Ada__containers__formal_hashed_sets__no_element
+  use import "ada__containers__formal_hashed_sets".Ada__containers__formal_hashed_sets__find
+  use import "ada__containers__formal_hashed_sets".Ada__containers__formal_hashed_sets__delete
+
+  val exclude (co:ref set) (k:Ada__containers__formal_hashed_sets__generic_keys__key_type.base_type) : unit
+     writes     { co }
+     reads      { co }
+     ensures { if find_ (old !co) (witness k) = no_element then  old !co = !co
+                         else delete (old !co) (find_ (old !co) (witness k)) !co  }
+end
+
+module Ada__containers__formal_hashed_sets__generic_keys__contains
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use "ada__containers__formal_hashed_sets__generic_keys__args".Ada__containers__formal_hashed_sets__generic_keys__key_type
+  use import Ada__containers__formal_hashed_sets__generic_keys__witness
+  use import "ada__containers__formal_hashed_sets".Ada__containers__formal_hashed_sets__set
+  use import "ada__containers__formal_hashed_sets".Ada__containers__formal_hashed_sets__cursor
+  use import "ada__containers__formal_hashed_sets".Ada__containers__formal_hashed_sets__find
+  use import "ada__containers__formal_hashed_sets".Ada__containers__formal_hashed_sets__delete
+
+  function contains set Ada__containers__formal_hashed_sets__generic_keys__key_type.base_type : bool
+
+  axiom contains_c:
+  forall co : set, e : Ada__containers__formal_hashed_sets__generic_keys__key_type.base_type [contains co e].
+    contains co e = True <-> 0 < position co (find_ co (witness e))
+
+  val contains (co:set) (e:Ada__containers__formal_hashed_sets__generic_keys__key_type.base_type) : bool
+     ensures { contains co e = result }
+end

@@ -1,4 +1,4 @@
-package body Rec_Aggregate is 
+package body Rec_Aggregate is
    procedure P1 (R : in out R1; B : Integer) is
    begin
       case B is
@@ -24,7 +24,7 @@ package body Rec_Aggregate is
 	    R := (Y => 2, others => One);
       end case;
    end P2;
-   
+
    procedure P3 (R : in out R3; B : Integer) is
    begin
       case B is
@@ -40,8 +40,9 @@ package body Rec_Aggregate is
 	    R := (Y => 2, Z => (Y => 2, others => One), others => One);
       end case;
    end P3;
-   
+
    procedure P4 (R : in out R4; B : Integer) is
+      pragma SPARK_Mode (Off);  --  partially initialized aggregate
    begin
       case B is
 	 when 1 =>

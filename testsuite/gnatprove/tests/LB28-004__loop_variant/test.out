@@ -1,144 +1,251 @@
-p.adb:10:12: index check not proved
-p.adb:11:14: overflow check not proved
-p.adb:12:7: loop variant not proved
-p.adb:19:12: overflow check not proved
-p.adb:20:14: index check not proved
-p.adb:20:14: overflow check not proved
-p.adb:22:17: overflow check not proved
-p.adb:24:17: overflow check not proved
-p.adb:26:7: loop variant not proved
-p.adb:35:12: index check not proved
-p.adb:36:14: overflow check not proved
-p.adb:37:14: overflow check not proved
-p.adb:38:7: loop variant not proved
-p.adb:39:7: loop variant not proved
-p.adb:47:12: index check not proved
-p.adb:48:14: overflow check not proved
-p.adb:49:7: loop variant not proved
-p.adb:50:14: overflow check not proved
-p.adb:51:7: loop variant not proved
-p.adb:58:12: index check not proved
-p.adb:59:14: overflow check not proved
-p.adb:60:7: loop variant not proved
-p.adb:61:57: loop invariant initialization not proved, requires Tab (L) = L
-p.adb:61:57: loop invariant preservation not proved, requires Tab (L) = L
-p.adb:61:50: overflow check not proved
-p.adb:61:62: index check not proved
-p.adb:68:12: index check not proved
-p.adb:69:14: overflow check not proved
-p.adb:70:57: loop invariant initialization not proved, requires Tab (L) = L
-p.adb:70:57: loop invariant preservation not proved, requires Tab (L) = L
-p.adb:70:50: overflow check not proved
-p.adb:70:62: index check not proved
-p.adb:71:7: loop variant not proved
-p.adb:78:57: loop invariant initialization not proved, requires Tab (L) = L
-p.adb:78:57: loop invariant preservation not proved, requires Tab (L) = L
-p.adb:78:50: overflow check not proved
-p.adb:78:62: index check not proved
-p.adb:79:12: index check not proved
-p.adb:80:14: overflow check not proved
-p.adb:81:7: loop variant not proved
-p.adb:86:12: index check not proved
-p.adb:87:53: loop invariant initialization not proved, requires Tab (L) = L
-p.adb:87:53: loop invariant preservation not proved, requires Tab (L) = L
-p.adb:87:58: index check not proved
-p.adb:88:14: overflow check not proved
-p.adb:89:7: loop variant not proved
-p.adb:94:7: loop variant not proved
-p.adb:95:12: index check not proved
-p.adb:96:53: loop invariant initialization not proved, requires Tab (L) = L
-p.adb:96:53: loop invariant preservation not proved, requires Tab (L) = L
-p.adb:96:58: index check not proved
-p.adb:97:14: overflow check not proved
-p.adb:102:7: loop variant not proved
-p.adb:103:12: index check not proved
-p.adb:104:14: overflow check not proved
-p.adb:105:57: loop invariant initialization not proved, requires Tab (L) = L
-p.adb:105:57: loop invariant preservation not proved, requires Tab (L) = L
-p.adb:105:50: overflow check not proved
-p.adb:105:62: index check not proved
-p.adb:110:12: index check not proved
-p.adb:111:7: loop variant not proved
-p.adb:112:14: overflow check not proved
-p.adb:113:57: loop invariant initialization not proved, requires Tab (L) = L
-p.adb:113:57: loop invariant preservation not proved, requires Tab (L) = L
-p.adb:113:50: overflow check not proved
-p.adb:113:62: index check not proved
-p.adb:121:12: index check not proved
-p.adb:122:14: overflow check not proved
-p.adb:123:14: overflow check not proved
-p.adb:124:7: loop invariant initialization not proved
-p.adb:124:7: loop invariant preservation not proved
-p.adb:124:36: overflow check not proved
-p.adb:125:7: loop variant not proved
-p.adb:126:50: overflow check not proved
-p.adb:126:62: index check not proved
-p.adb:127:7: loop variant not proved
-p.adb:128:50: overflow check not proved
-p.adb:128:54: overflow check not proved
-p.adb:128:66: index check not proved
-p.adb:134:12: index check not proved
-p.adb:135:14: overflow check not proved
-p.adb:136:14: overflow check not proved
-p.adb:137:7: loop invariant initialization not proved
-p.adb:137:7: loop invariant preservation not proved
-p.adb:137:36: overflow check not proved
-p.adb:138:50: overflow check not proved
-p.adb:138:62: index check not proved
-p.adb:139:7: loop variant not proved
-p.adb:140:7: loop variant not proved
-p.adb:141:50: overflow check not proved
-p.adb:141:54: overflow check not proved
-p.adb:141:66: index check not proved
-p.adb:147:12: index check not proved
-p.adb:148:14: overflow check not proved
-p.adb:149:14: overflow check not proved
-p.adb:150:7: loop variant not proved
-p.adb:151:7: loop invariant initialization not proved
-p.adb:151:7: loop invariant preservation not proved
-p.adb:151:36: overflow check not proved
-p.adb:152:50: overflow check not proved
-p.adb:152:62: index check not proved
-p.adb:153:50: overflow check not proved
-p.adb:153:54: overflow check not proved
-p.adb:153:66: index check not proved
-p.adb:154:7: loop variant not proved
-p.adb:162:12: index check not proved
-p.adb:163:14: overflow check not proved
-p.adb:164:7: loop variant not proved
-p.adb:165:14: overflow check not proved
-p.adb:166:7: loop invariant initialization not proved
-p.adb:166:7: loop invariant preservation not proved
-p.adb:166:36: overflow check not proved
-p.adb:167:50: overflow check not proved
-p.adb:167:62: index check not proved
-p.adb:168:7: loop variant not proved
-p.adb:169:50: overflow check not proved
-p.adb:169:54: overflow check not proved
-p.adb:169:66: index check not proved
-p.adb:175:7: loop variant not proved
-p.adb:176:12: index check not proved
-p.adb:177:7: loop invariant initialization not proved
-p.adb:177:7: loop invariant preservation not proved
-p.adb:177:36: overflow check not proved
-p.adb:178:58: index check not proved
-p.adb:179:50: overflow check not proved
-p.adb:179:62: index check not proved
-p.adb:180:14: overflow check not proved
-p.adb:181:14: overflow check not proved
-p.adb:182:7: loop variant not proved
-p.adb:188:12: index check not proved
-p.adb:189:14: overflow check not proved
-p.adb:190:7: loop variant not proved
-p.adb:191:57: loop invariant initialization not proved, requires Tab (L) = L
-p.adb:191:57: loop invariant preservation not proved, requires Tab (L) = L
-p.adb:191:50: overflow check not proved
-p.adb:191:62: index check not proved
-p.adb:192:14: overflow check not proved
-p.adb:193:7: loop invariant not proved, requires J = A + K
-p.adb:193:36: overflow check not proved
-p.adb:194:61: loop invariant not proved, requires Tab (L) = L
-p.adb:194:50: overflow check not proved
-p.adb:194:54: overflow check not proved
-p.adb:194:66: index check not proved
-p.adb:195:7: loop variant not proved
+p.adb:1:14: warning: unused initial value of "A" [unused_initial_value]
+p.adb:1:17: warning: unused initial value of "B" [unused_initial_value]
+p.adb:8:06: warning: unused assignment [ineffective]
+p.adb:9:17: warning: statement has no effect [ineffective]
+p.adb:10:15: warning: unused assignment [ineffective]
+p.adb:10:15: warning: "Tab" might not be initialized [uninitialized]
+p.adb:11:09: warning: unused assignment [ineffective]
+p.adb:17:06: warning: unused assignment [ineffective]
+p.adb:18:06: warning: unused assignment [ineffective]
+p.adb:19:21: warning: statement has no effect [ineffective]
+p.adb:20:19: warning: unused assignment [ineffective]
+p.adb:20:19: warning: "Tab" might not be initialized [uninitialized]
+p.adb:21:07: warning: statement has no effect [ineffective]
+p.adb:22:12: warning: unused assignment [ineffective]
+p.adb:24:12: warning: unused assignment [ineffective]
+p.adb:32:06: warning: unused assignment [ineffective]
+p.adb:33:06: warning: unused assignment [ineffective]
+p.adb:34:17: warning: statement has no effect [ineffective]
+p.adb:35:15: warning: unused assignment [ineffective]
+p.adb:35:15: warning: "Tab" might not be initialized [uninitialized]
+p.adb:36:09: warning: unused assignment [ineffective]
+p.adb:37:09: warning: unused assignment [ineffective]
+p.adb:44:06: warning: unused assignment [ineffective]
+p.adb:45:06: warning: unused assignment [ineffective]
+p.adb:46:17: warning: statement has no effect [ineffective]
+p.adb:47:15: warning: unused assignment [ineffective]
+p.adb:47:15: warning: "Tab" might not be initialized [uninitialized]
+p.adb:48:09: warning: unused assignment [ineffective]
+p.adb:50:09: warning: unused assignment [ineffective]
+p.adb:56:06: warning: unused assignment [ineffective]
+p.adb:57:17: warning: statement has no effect [ineffective]
+p.adb:58:15: warning: unused assignment [ineffective]
+p.adb:58:15: warning: "Tab" might not be initialized [uninitialized]
+p.adb:59:09: warning: unused assignment [ineffective]
+p.adb:66:06: warning: unused assignment [ineffective]
+p.adb:67:17: warning: statement has no effect [ineffective]
+p.adb:68:15: warning: unused assignment [ineffective]
+p.adb:68:15: warning: "Tab" might not be initialized [uninitialized]
+p.adb:69:09: warning: unused assignment [ineffective]
+p.adb:76:06: warning: unused assignment [ineffective]
+p.adb:77:17: warning: statement has no effect [ineffective]
+p.adb:78:07: warning: "Tab" might not be initialized [uninitialized]
+p.adb:79:15: warning: unused assignment [ineffective]
+p.adb:79:15: warning: "Tab" might not be initialized [uninitialized]
+p.adb:80:09: warning: unused assignment [ineffective]
+p.adb:84:06: warning: unused assignment [ineffective]
+p.adb:85:17: warning: statement has no effect [ineffective]
+p.adb:86:15: warning: unused assignment [ineffective]
+p.adb:86:15: warning: "Tab" might not be initialized [uninitialized]
+p.adb:88:09: warning: unused assignment [ineffective]
+p.adb:92:06: warning: unused assignment [ineffective]
+p.adb:93:17: warning: statement has no effect [ineffective]
+p.adb:95:15: warning: unused assignment [ineffective]
+p.adb:95:15: warning: "Tab" might not be initialized [uninitialized]
+p.adb:97:09: warning: unused assignment [ineffective]
+p.adb:100:06: warning: unused assignment [ineffective]
+p.adb:101:17: warning: statement has no effect [ineffective]
+p.adb:103:15: warning: unused assignment [ineffective]
+p.adb:103:15: warning: "Tab" might not be initialized [uninitialized]
+p.adb:104:09: warning: unused assignment [ineffective]
+p.adb:108:06: warning: unused assignment [ineffective]
+p.adb:109:17: warning: statement has no effect [ineffective]
+p.adb:110:15: warning: unused assignment [ineffective]
+p.adb:110:15: warning: "Tab" might not be initialized [uninitialized]
+p.adb:112:09: warning: unused assignment [ineffective]
+p.adb:118:06: warning: unused assignment [ineffective]
+p.adb:119:06: warning: unused assignment [ineffective]
+p.adb:120:17: warning: statement has no effect [ineffective]
+p.adb:121:15: warning: unused assignment [ineffective]
+p.adb:121:15: warning: "Tab" might not be initialized [uninitialized]
+p.adb:122:09: warning: unused assignment [ineffective]
+p.adb:123:09: warning: unused assignment [ineffective]
+p.adb:131:06: warning: unused assignment [ineffective]
+p.adb:132:06: warning: unused assignment [ineffective]
+p.adb:133:17: warning: statement has no effect [ineffective]
+p.adb:134:15: warning: unused assignment [ineffective]
+p.adb:134:15: warning: "Tab" might not be initialized [uninitialized]
+p.adb:135:09: warning: unused assignment [ineffective]
+p.adb:136:09: warning: unused assignment [ineffective]
+p.adb:144:06: warning: unused assignment [ineffective]
+p.adb:145:06: warning: unused assignment [ineffective]
+p.adb:146:17: warning: statement has no effect [ineffective]
+p.adb:147:15: warning: unused assignment [ineffective]
+p.adb:147:15: warning: "Tab" might not be initialized [uninitialized]
+p.adb:148:09: warning: unused assignment [ineffective]
+p.adb:149:09: warning: unused assignment [ineffective]
+p.adb:159:06: warning: unused assignment [ineffective]
+p.adb:160:06: warning: unused assignment [ineffective]
+p.adb:161:17: warning: statement has no effect [ineffective]
+p.adb:162:15: warning: unused assignment [ineffective]
+p.adb:162:15: warning: "Tab" might not be initialized [uninitialized]
+p.adb:163:09: warning: unused assignment [ineffective]
+p.adb:165:09: warning: unused assignment [ineffective]
+p.adb:172:06: warning: unused assignment [ineffective]
+p.adb:173:06: warning: unused assignment [ineffective]
+p.adb:174:17: warning: statement has no effect [ineffective]
+p.adb:176:15: warning: unused assignment [ineffective]
+p.adb:176:15: warning: "Tab" might not be initialized [uninitialized]
+p.adb:180:09: warning: unused assignment [ineffective]
+p.adb:181:09: warning: unused assignment [ineffective]
+p.adb:185:06: warning: unused assignment [ineffective]
+p.adb:186:06: warning: unused assignment [ineffective]
+p.adb:187:17: warning: statement has no effect [ineffective]
+p.adb:188:15: warning: unused assignment [ineffective]
+p.adb:188:15: warning: "Tab" might not be initialized [uninitialized]
+p.adb:189:09: warning: unused assignment [ineffective]
+p.adb:192:09: warning: unused assignment [ineffective]
+p.adb:10:12: warning: array index check might fail
+p.adb:11:14: warning: overflow check might fail
+p.adb:12:7: warning: loop variant might fail
+p.adb:19:12: warning: overflow check might fail
+p.adb:20:14: warning: array index check might fail
+p.adb:20:14: warning: overflow check might fail
+p.adb:22:17: warning: overflow check might fail
+p.adb:24:17: warning: overflow check might fail
+p.adb:26:7: warning: loop variant might fail
+p.adb:35:12: warning: array index check might fail
+p.adb:36:14: warning: overflow check might fail
+p.adb:37:14: warning: overflow check might fail
+p.adb:38:7: warning: loop variant might fail
+p.adb:39:7: warning: loop variant might fail
+p.adb:47:12: warning: array index check might fail
+p.adb:48:14: warning: overflow check might fail
+p.adb:49:7: warning: loop variant might fail
+p.adb:50:14: warning: overflow check might fail
+p.adb:51:7: warning: loop variant might fail
+p.adb:58:12: warning: array index check might fail
+p.adb:59:14: warning: overflow check might fail
+p.adb:60:7: warning: loop variant might fail
+p.adb:61:57: warning: loop invariant might fail in first iteration, requires Tab (L) = L
+p.adb:61:57: warning: loop invariant might fail after first iteration, requires Tab (L) = L
+p.adb:61:50: warning: overflow check might fail
+p.adb:61:62: warning: array index check might fail
+p.adb:68:12: warning: array index check might fail
+p.adb:69:14: warning: overflow check might fail
+p.adb:70:57: warning: loop invariant might fail in first iteration, requires Tab (L) = L
+p.adb:70:57: warning: loop invariant might fail after first iteration, requires Tab (L) = L
+p.adb:70:50: warning: overflow check might fail
+p.adb:70:62: warning: array index check might fail
+p.adb:71:7: warning: loop variant might fail
+p.adb:78:57: warning: loop invariant might fail in first iteration, requires Tab (L) = L
+p.adb:78:57: warning: loop invariant might fail after first iteration, requires Tab (L) = L
+p.adb:78:50: warning: overflow check might fail
+p.adb:78:62: warning: array index check might fail
+p.adb:79:12: warning: array index check might fail
+p.adb:80:14: warning: overflow check might fail
+p.adb:81:7: warning: loop variant might fail
+p.adb:86:12: warning: array index check might fail
+p.adb:87:53: warning: loop invariant might fail in first iteration, requires Tab (L) = L
+p.adb:87:53: warning: loop invariant might fail after first iteration, requires Tab (L) = L
+p.adb:87:58: warning: array index check might fail
+p.adb:88:14: warning: overflow check might fail
+p.adb:89:7: warning: loop variant might fail
+p.adb:94:7: warning: loop variant might fail
+p.adb:95:12: warning: array index check might fail
+p.adb:96:53: warning: loop invariant might fail in first iteration, requires Tab (L) = L
+p.adb:96:53: warning: loop invariant might fail after first iteration, requires Tab (L) = L
+p.adb:96:58: warning: array index check might fail
+p.adb:97:14: warning: overflow check might fail
+p.adb:102:7: warning: loop variant might fail
+p.adb:103:12: warning: array index check might fail
+p.adb:104:14: warning: overflow check might fail
+p.adb:105:57: warning: loop invariant might fail in first iteration, requires Tab (L) = L
+p.adb:105:57: warning: loop invariant might fail after first iteration, requires Tab (L) = L
+p.adb:105:50: warning: overflow check might fail
+p.adb:105:62: warning: array index check might fail
+p.adb:110:12: warning: array index check might fail
+p.adb:111:7: warning: loop variant might fail
+p.adb:112:14: warning: overflow check might fail
+p.adb:113:57: warning: loop invariant might fail in first iteration, requires Tab (L) = L
+p.adb:113:57: warning: loop invariant might fail after first iteration, requires Tab (L) = L
+p.adb:113:50: warning: overflow check might fail
+p.adb:113:62: warning: array index check might fail
+p.adb:121:12: warning: array index check might fail
+p.adb:122:14: warning: overflow check might fail
+p.adb:123:14: warning: overflow check might fail
+p.adb:124:7: warning: loop invariant might fail in first iteration
+p.adb:124:7: warning: loop invariant might fail after first iteration
+p.adb:124:36: warning: overflow check might fail
+p.adb:125:7: warning: loop variant might fail
+p.adb:126:50: warning: overflow check might fail
+p.adb:126:62: warning: array index check might fail
+p.adb:127:7: warning: loop variant might fail
+p.adb:128:50: warning: overflow check might fail
+p.adb:128:54: warning: overflow check might fail
+p.adb:128:66: warning: array index check might fail
+p.adb:134:12: warning: array index check might fail
+p.adb:135:14: warning: overflow check might fail
+p.adb:136:14: warning: overflow check might fail
+p.adb:137:7: warning: loop invariant might fail in first iteration
+p.adb:137:7: warning: loop invariant might fail after first iteration
+p.adb:137:36: warning: overflow check might fail
+p.adb:138:50: warning: overflow check might fail
+p.adb:138:62: warning: array index check might fail
+p.adb:139:7: warning: loop variant might fail
+p.adb:140:7: warning: loop variant might fail
+p.adb:141:50: warning: overflow check might fail
+p.adb:141:54: warning: overflow check might fail
+p.adb:141:66: warning: array index check might fail
+p.adb:147:12: warning: array index check might fail
+p.adb:148:14: warning: overflow check might fail
+p.adb:149:14: warning: overflow check might fail
+p.adb:150:7: warning: loop variant might fail
+p.adb:151:7: warning: loop invariant might fail in first iteration
+p.adb:151:7: warning: loop invariant might fail after first iteration
+p.adb:151:36: warning: overflow check might fail
+p.adb:152:50: warning: overflow check might fail
+p.adb:152:62: warning: array index check might fail
+p.adb:153:50: warning: overflow check might fail
+p.adb:153:54: warning: overflow check might fail
+p.adb:153:66: warning: array index check might fail
+p.adb:154:7: warning: loop variant might fail
+p.adb:162:12: warning: array index check might fail
+p.adb:163:14: warning: overflow check might fail
+p.adb:164:7: warning: loop variant might fail
+p.adb:165:14: warning: overflow check might fail
+p.adb:166:7: warning: loop invariant might fail in first iteration
+p.adb:166:7: warning: loop invariant might fail after first iteration
+p.adb:166:36: warning: overflow check might fail
+p.adb:167:50: warning: overflow check might fail
+p.adb:167:62: warning: array index check might fail
+p.adb:168:7: warning: loop variant might fail
+p.adb:169:50: warning: overflow check might fail
+p.adb:169:54: warning: overflow check might fail
+p.adb:169:66: warning: array index check might fail
+p.adb:175:7: warning: loop variant might fail
+p.adb:176:12: warning: array index check might fail
+p.adb:177:7: warning: loop invariant might fail in first iteration
+p.adb:177:7: warning: loop invariant might fail after first iteration
+p.adb:177:36: warning: overflow check might fail
+p.adb:178:58: warning: array index check might fail
+p.adb:179:50: warning: overflow check might fail
+p.adb:179:62: warning: array index check might fail
+p.adb:180:14: warning: overflow check might fail
+p.adb:181:14: warning: overflow check might fail
+p.adb:182:7: warning: loop variant might fail
+p.adb:188:12: warning: array index check might fail
+p.adb:189:14: warning: overflow check might fail
+p.adb:190:7: warning: loop variant might fail
+p.adb:191:57: warning: loop invariant might fail in first iteration, requires Tab (L) = L
+p.adb:191:57: warning: loop invariant might fail after first iteration, requires Tab (L) = L
+p.adb:191:50: warning: overflow check might fail
+p.adb:191:62: warning: array index check might fail
+p.adb:192:14: warning: overflow check might fail
+p.adb:193:7: warning: loop invariant might fail, requires J = A + K
+p.adb:193:36: warning: overflow check might fail
+p.adb:194:61: warning: loop invariant might fail, requires Tab (L) = L
+p.adb:194:50: warning: overflow check might fail
+p.adb:194:54: warning: overflow check might fail
+p.adb:194:66: warning: array index check might fail
+p.adb:195:7: warning: loop variant might fail

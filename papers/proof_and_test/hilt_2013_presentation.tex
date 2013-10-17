@@ -76,16 +76,43 @@
 
 \begin{frame}[fragile]{Agenda}
   \begin{itemize}
-     \item Technical planning (REVEAL, INFORMED, V-lifecylce)
-     \item Verification spectrum (checks with traffic lights on left, code on right, demonstrate each level of verification with an error - start with full Ada)
-     \item Example code: Presenter and audience counter (first is more precise)o
-     \item ask audience to id faults? Give them a 10-second count=down timer.
+     \item When to start thinking about proof and test?
+     \item The verification spectrum
+     \item Informally combining proof and test
+     \item Formally combining proof and test (the 178C way)
+     \item Scenario summary
+     \item Only prove
+     \item Only test
+     \item Prove and test
+     \item Test to debug contracts
+     \item Test to prove contracts (state machine example)
+     \item Conclusions
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Techncial Planning}
+  \begin{itemize}
+      \item This slide will be an animation of a V-lifecycle diagram
+      \item Key messages: If you are thinking about combining proof and test, ake sure you consider it at the start of your project
+      \item SPARK often seen as just a coding language
+      \item Proof means SPARK also covers unit verification
+      \item Proof implies formal specification which brings SPARK into LLRs
+      \item NB review of Tokeneer Z suggests writing spec in SPARK isn't any more challenging than writing in Z but provides plenty of benefits (eg don't need to respecify to prove properties, rapid prototyping options available etc)
+      \item Modular verification means SPARK can be applied at architecture and architecture can be verified statically
+
   \end{itemize}
 \end{frame}
 
 \section{What?}
 
-\begin{frame}[fragile]{Static Analysis Summary}
+\begin{frame}[fragile]{Verification Spectrum}
+  \begin{itemize}
+      \item The following slides will walk through the verification spectrum with code examples.
+     \item Example code: Presenter and audience counter (first is more precise)o
+     \item ask audience to id faults? Give them a 10-second count=down timer.
+  \end{itemize}
+\end{frame}
+\begin{frame}[fragile]{Verification Spectrum}
 
   \lstdefinestyle{magic}{
     basicstyle=\tiny\tt,
@@ -238,6 +265,97 @@
     \end{column}
   \end{columns}
 
+\end{frame}
+
+\begin{frame}[fragile]{Combining proof and test overview}
+  \begin{itemize}
+     \item This slide could be a Venn diagram (rings: proof, test, 178)
+     \item Key message: neither full proof, nor full test is sufficient
+     \item talk about system test as out of scope
+     \item List properties that can be proven/tested (RTE, partial correctness, full correctness, spec validation, full state space coverage, termination, hw integration, sw integration)
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Scenario Summary}
+  \begin{itemize}
+     \item Key message: 
+  \end{itemize}
+\begin{center}
+\begin{tabular}{l | c | c | c}
+    & Fully specify & Partially specify & Can't specify \\
+  \hline
+  Only prove & R & NA & NA \\
+  Only test & O & O & R \\
+  Prove some and test some & O & O & O \\
+  Test to debug contracts & O & O & NA \\
+\end{tabular}
+\end{center}
+
+\end{frame}
+
+\begin{frame}[fragile]{Only prove}
+  \begin{itemize}
+     \item Key message: Proof isn't just possible, it is often easier than test!
+     \item Show code for Proven and Are_Coprime and say they were proven automatically - much better than testing!!
+     \item Don't show code for Factorial because it relies on "Assume"
+     \item Use simple state machine example with bug in code 
+     \item Take screenshot from GPS to show path of error 
+
+     \item simple methods of increasing provability:
+     \begin{itemize}
+        \item Describe when proof is easy/hard (linear/non-linear arithmetic) (logic vs computations?)
+        \item increase time spent by prover
+        \item strengthen pre-conditions
+        \item add assertions to the code
+     \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Only test}
+  \begin{itemize}
+     \item Key message: Examples where proof is not effective, VectorCast provide a solution
+     \item Code structure may be v. complex
+     \item Contracts hard to formalise
+     \item One slide to show an the mergesort example
+     \item One slide to show screen shot from VectorCast (Mergesort_Same_Values.csv)
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Prove and test}
+  \begin{itemize}
+     \item Key message: Mixing of proof and test most effective method
+     \item Often find lowest-level operations proof automatically
+     \item concentrating test effort on high-level ops is better value
+     \item Start by attempting to prove, give up then
+     \item resort to testing
+     \item prove a subset of the properties (eg RTE, safety properties)
+     
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Test to debug contracts}
+  \begin{itemize}
+     \item Key message: Executing contracts is a great way of checking them
+     \item state machine post-condition
+     \item can be done without the body being implemented
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Test to prove contracts}
+  \begin{itemize}
+     \item Key message: When provers aren't capable, execute contract over all cases
+     \item state machine assert example
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Conclusions}
+  \begin{itemize}
+     \item Key message: Read the paper, checkout spark2014 Beta
+     \item SPARK 2014 make formal methods easier to use and 
+     \item 178C makes it easier to apply formal methods
+     \item combining proof and test can be more efficient than test alone
+     \item 
+  \end{itemize}
 \end{frame}
 
 \end{document}

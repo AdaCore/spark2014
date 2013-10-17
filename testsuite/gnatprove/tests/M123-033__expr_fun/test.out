@@ -1,62 +1,62 @@
 main.adb:6:04: warning: statement has no effect [ineffective]
 main.adb:8:10: info: assertion proved
 main.adb:10:10: info: assertion proved
-main.adb:12:10: assertion not proved, requires F3 = 1
-main.adb:14:10: assertion not proved, requires F4 = 1
+main.adb:12:10: warning: assertion might fail, requires F3 = 1
+main.adb:14:10: warning: assertion might fail, requires F4 = 1
 main.adb:16:10: info: assertion proved
-main.adb:18:10: assertion not proved, requires G2 = 1
-main.adb:20:10: assertion not proved, requires G3 = 1
-main.adb:22:10: assertion not proved, requires G4 = 1
+main.adb:18:10: warning: assertion might fail, requires G2 = 1
+main.adb:20:10: warning: assertion might fail, requires G3 = 1
+main.adb:22:10: warning: assertion might fail, requires G4 = 1
 p.adb:5:07: warning: statement has no effect [ineffective]
 p.adb:31:07: warning: statement has no effect [ineffective]
 p.adb:7:13: info: assertion proved
 p.adb:9:13: info: assertion proved
 p.adb:11:13: info: assertion proved
-p.adb:13:13: assertion not proved, requires F4 = 1
+p.adb:13:13: warning: assertion might fail, requires F4 = 1
 p.adb:15:13: info: assertion proved
-p.adb:17:13: assertion not proved, requires G2 = 1
-p.adb:19:13: assertion not proved, requires G3 = 1
-p.adb:21:13: assertion not proved, requires G4 = 1
+p.adb:17:13: warning: assertion might fail, requires G2 = 1
+p.adb:19:13: warning: assertion might fail, requires G3 = 1
+p.adb:21:13: warning: assertion might fail, requires G4 = 1
 p.adb:33:13: info: assertion proved
 p.adb:35:13: info: assertion proved
 p.adb:37:13: info: assertion proved
-p.adb:39:13: assertion not proved, requires F4 = 1
+p.adb:39:13: warning: assertion might fail, requires F4 = 1
 p.adb:41:13: info: assertion proved
-p.adb:43:13: assertion not proved, requires G2 = 1
-p.adb:45:13: assertion not proved, requires G3 = 1
-p.adb:47:13: assertion not proved, requires G4 = 1
+p.adb:43:13: warning: assertion might fail, requires G2 = 1
+p.adb:45:13: warning: assertion might fail, requires G3 = 1
+p.adb:47:13: warning: assertion might fail, requires G4 = 1
 p.ads:4:38: info: overflow check proved
 p.ads:4:43: info: overflow check proved
-p.ads:6:38: overflow check not proved
+p.ads:6:38: warning: overflow check might fail
 p.ads:6:43: info: overflow check proved
 private_main.adb:6:04: warning: statement has no effect [ineffective]
 private_main.adb:8:10: info: assertion proved
 private_main.adb:10:10: info: assertion proved
-private_main.adb:12:10: assertion not proved, requires F3 = 1
-private_main.adb:14:10: assertion not proved, requires F4 = 1
+private_main.adb:12:10: warning: assertion might fail, requires F3 = 1
+private_main.adb:14:10: warning: assertion might fail, requires F4 = 1
 private_main.adb:16:10: info: assertion proved
-private_main.adb:18:10: assertion not proved, requires G2 = 1
-private_main.adb:20:10: assertion not proved, requires G3 = 1
-private_main.adb:22:10: assertion not proved, requires G4 = 1
+private_main.adb:18:10: warning: assertion might fail, requires G2 = 1
+private_main.adb:20:10: warning: assertion might fail, requires G3 = 1
+private_main.adb:22:10: warning: assertion might fail, requires G4 = 1
 private_p.adb:5:07: warning: statement has no effect [ineffective]
 private_p.adb:29:07: warning: statement has no effect [ineffective]
 private_p.adb:7:13: info: assertion proved
 private_p.adb:9:13: info: assertion proved
 private_p.adb:11:13: info: assertion proved
-private_p.adb:13:13: assertion not proved, requires F4 = 1
+private_p.adb:13:13: warning: assertion might fail, requires F4 = 1
 private_p.adb:15:13: info: assertion proved
-private_p.adb:17:13: assertion not proved, requires G2 = 1
-private_p.adb:19:13: assertion not proved, requires G3 = 1
-private_p.adb:21:13: assertion not proved, requires G4 = 1
+private_p.adb:17:13: warning: assertion might fail, requires G2 = 1
+private_p.adb:19:13: warning: assertion might fail, requires G3 = 1
+private_p.adb:21:13: warning: assertion might fail, requires G4 = 1
 private_p.adb:31:13: info: assertion proved
 private_p.adb:33:13: info: assertion proved
 private_p.adb:35:13: info: assertion proved
-private_p.adb:37:13: assertion not proved, requires F4 = 1
+private_p.adb:37:13: warning: assertion might fail, requires F4 = 1
 private_p.adb:39:13: info: assertion proved
-private_p.adb:41:13: assertion not proved, requires G2 = 1
-private_p.adb:43:13: assertion not proved, requires G3 = 1
-private_p.adb:45:13: assertion not proved, requires G4 = 1
-private_p.ads:8:38: overflow check not proved
+private_p.adb:41:13: warning: assertion might fail, requires G2 = 1
+private_p.adb:43:13: warning: assertion might fail, requires G3 = 1
+private_p.adb:45:13: warning: assertion might fail, requires G4 = 1
+private_p.ads:8:38: warning: overflow check might fail
 private_p.ads:8:43: info: overflow check proved
 private_p.ads:9:38: info: overflow check proved
 private_p.ads:9:43: info: overflow check proved
@@ -64,16 +64,16 @@ private_q.adb:6:07: warning: statement has no effect [ineffective]
 private_q.adb:30:07: warning: statement has no effect [ineffective]
 private_q.adb:8:13: info: assertion proved
 private_q.adb:10:13: info: assertion proved
-private_q.adb:12:13: assertion not proved, requires F3 = 1
-private_q.adb:14:13: assertion not proved, requires F4 = 1
+private_q.adb:12:13: warning: assertion might fail, requires F3 = 1
+private_q.adb:14:13: warning: assertion might fail, requires F4 = 1
 private_q.adb:16:13: info: assertion proved
 private_q.adb:18:13: info: assertion proved
 private_q.adb:20:13: info: assertion proved
 private_q.adb:22:13: info: assertion proved
 private_q.adb:32:13: info: assertion proved
 private_q.adb:34:13: info: assertion proved
-private_q.adb:36:13: assertion not proved, requires F3 = 1
-private_q.adb:38:13: assertion not proved, requires F4 = 1
+private_q.adb:36:13: warning: assertion might fail, requires F3 = 1
+private_q.adb:38:13: warning: assertion might fail, requires F4 = 1
 private_q.adb:40:13: info: assertion proved
 private_q.adb:42:13: info: assertion proved
 private_q.adb:44:13: info: assertion proved
@@ -86,8 +86,8 @@ q.adb:6:07: warning: statement has no effect [ineffective]
 q.adb:33:07: warning: statement has no effect [ineffective]
 q.adb:8:13: info: assertion proved
 q.adb:10:13: info: assertion proved
-q.adb:12:13: assertion not proved, requires F3 = 1
-q.adb:14:13: assertion not proved, requires F4 = 1
+q.adb:12:13: warning: assertion might fail, requires F3 = 1
+q.adb:14:13: warning: assertion might fail, requires F4 = 1
 q.adb:16:13: info: assertion proved
 q.adb:18:13: info: assertion proved
 q.adb:20:13: info: assertion proved
@@ -96,8 +96,8 @@ q.adb:28:38: info: overflow check proved
 q.adb:28:43: info: overflow check proved
 q.adb:35:13: info: assertion proved
 q.adb:37:13: info: assertion proved
-q.adb:39:13: assertion not proved, requires F3 = 1
-q.adb:41:13: assertion not proved, requires F4 = 1
+q.adb:39:13: warning: assertion might fail, requires F3 = 1
+q.adb:41:13: warning: assertion might fail, requires F4 = 1
 q.adb:43:13: info: assertion proved
 q.adb:45:13: info: assertion proved
 q.adb:47:13: info: assertion proved
@@ -107,48 +107,48 @@ q.ads:5:43: info: overflow check proved
 reorder_main.adb:6:04: warning: statement has no effect [ineffective]
 reorder_main.adb:8:10: info: assertion proved
 reorder_main.adb:10:10: info: assertion proved
-reorder_main.adb:12:10: assertion not proved, requires F3 = 1
-reorder_main.adb:14:10: assertion not proved, requires F4 = 1
+reorder_main.adb:12:10: warning: assertion might fail, requires F3 = 1
+reorder_main.adb:14:10: warning: assertion might fail, requires F4 = 1
 reorder_main.adb:16:10: info: assertion proved
-reorder_main.adb:18:10: assertion not proved, requires G2 = 1
-reorder_main.adb:20:10: assertion not proved, requires G3 = 1
-reorder_main.adb:22:10: assertion not proved, requires G4 = 1
+reorder_main.adb:18:10: warning: assertion might fail, requires G2 = 1
+reorder_main.adb:20:10: warning: assertion might fail, requires G3 = 1
+reorder_main.adb:22:10: warning: assertion might fail, requires G4 = 1
 reorder_p.adb:5:07: warning: statement has no effect [ineffective]
 reorder_p.adb:29:07: warning: statement has no effect [ineffective]
 reorder_p.adb:7:13: info: assertion proved
 reorder_p.adb:9:13: info: assertion proved
 reorder_p.adb:11:13: info: assertion proved
-reorder_p.adb:13:13: assertion not proved, requires F4 = 1
+reorder_p.adb:13:13: warning: assertion might fail, requires F4 = 1
 reorder_p.adb:15:13: info: assertion proved
-reorder_p.adb:17:13: assertion not proved, requires G2 = 1
-reorder_p.adb:19:13: assertion not proved, requires G3 = 1
-reorder_p.adb:21:13: assertion not proved, requires G4 = 1
+reorder_p.adb:17:13: warning: assertion might fail, requires G2 = 1
+reorder_p.adb:19:13: warning: assertion might fail, requires G3 = 1
+reorder_p.adb:21:13: warning: assertion might fail, requires G4 = 1
 reorder_p.adb:31:13: info: assertion proved
 reorder_p.adb:33:13: info: assertion proved
 reorder_p.adb:35:13: info: assertion proved
-reorder_p.adb:37:13: assertion not proved, requires F4 = 1
+reorder_p.adb:37:13: warning: assertion might fail, requires F4 = 1
 reorder_p.adb:39:13: info: assertion proved
-reorder_p.adb:41:13: assertion not proved, requires G2 = 1
-reorder_p.adb:43:13: assertion not proved, requires G3 = 1
-reorder_p.adb:45:13: assertion not proved, requires G4 = 1
+reorder_p.adb:41:13: warning: assertion might fail, requires G2 = 1
+reorder_p.adb:43:13: warning: assertion might fail, requires G3 = 1
+reorder_p.adb:45:13: warning: assertion might fail, requires G4 = 1
 reorder_p.ads:4:38: info: overflow check proved
 reorder_p.ads:4:43: info: overflow check proved
-reorder_p.ads:6:38: overflow check not proved
+reorder_p.ads:6:38: warning: overflow check might fail
 reorder_p.ads:6:43: info: overflow check proved
 reorder_q.adb:6:07: warning: statement has no effect [ineffective]
 reorder_q.adb:30:07: warning: statement has no effect [ineffective]
 reorder_q.adb:8:13: info: assertion proved
 reorder_q.adb:10:13: info: assertion proved
-reorder_q.adb:12:13: assertion not proved, requires F3 = 1
-reorder_q.adb:14:13: assertion not proved, requires F4 = 1
+reorder_q.adb:12:13: warning: assertion might fail, requires F3 = 1
+reorder_q.adb:14:13: warning: assertion might fail, requires F4 = 1
 reorder_q.adb:16:13: info: assertion proved
 reorder_q.adb:18:13: info: assertion proved
 reorder_q.adb:20:13: info: assertion proved
 reorder_q.adb:22:13: info: assertion proved
 reorder_q.adb:32:13: info: assertion proved
 reorder_q.adb:34:13: info: assertion proved
-reorder_q.adb:36:13: assertion not proved, requires F3 = 1
-reorder_q.adb:38:13: assertion not proved, requires F4 = 1
+reorder_q.adb:36:13: warning: assertion might fail, requires F3 = 1
+reorder_q.adb:38:13: warning: assertion might fail, requires F4 = 1
 reorder_q.adb:40:13: info: assertion proved
 reorder_q.adb:42:13: info: assertion proved
 reorder_q.adb:44:13: info: assertion proved

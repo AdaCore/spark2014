@@ -28,6 +28,7 @@ with Ada.Containers.Indefinite_Hashed_Sets;
 with Ada.Strings.Hash;
 
 package String_Utils is
+
    package String_Lists is new
      Ada.Containers.Indefinite_Doubly_Linked_Lists (String);
 

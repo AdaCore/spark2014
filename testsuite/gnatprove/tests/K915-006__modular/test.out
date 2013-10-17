@@ -1,4 +1,4 @@
-pack.adb:27:22: info: division check proved
+pack.adb:27:22: warning: divide by zero might fail
 pack.ads:6:19: info: postcondition proved
 pack.ads:10:19: info: postcondition proved
 pack.ads:14:19: info: postcondition proved

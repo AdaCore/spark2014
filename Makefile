@@ -20,20 +20,15 @@
 #
 #    This builds gnatprove, gnat2why, why3 and alt-ergo.
 #
-# 3) make stdlib
-#
-#    This applies gnat2why to the standard GNAT library to obtain precompiled
-#    Why files.
-#
-# 4) make install-all
+# 3) make install-all
 #
 #    This copies all the necessary files into the install/ subdirectory, for
 #    gnatprove, why3 and alt-ergo.
 #
-# 5) Put the directory install/bin in your path:
+# 4) Put the directory install/bin in your path:
 #	export PATH=<path_to_hilite_repo>/install/bin:$PATH
 
-.PHONY: clean doc gnat1why gnat2why gnatprove stdlib install install-stdlib \
+.PHONY: clean doc gnat1why gnat2why gnatprove install \
 	install-all gnatmerge why3 alt-ergo all setup all-nightly doc-nightly
 
 ADAINCLUDE=$(strip $(shell gnatls -v | grep adainclude))
@@ -43,10 +38,8 @@ SHAREDIR=$(INSTALLDIR)/share
 EXAMPLESDIR=$(SHAREDIR)/examples/spark
 DOCDIR=$(SHAREDIR)/doc/spark
 GNATPROVEDIR=$(SHAREDIR)/spark
-ALI_DIR=$(INSTALLDIR)/lib/spark/ali
 CONFIGDIR=$(GNATPROVEDIR)/config
 THEORIESDIR=$(GNATPROVEDIR)/theories
-STDLIB_TMP=stdlib_tmp
 DOC=ug lrm
 
 CP=cp -pr
@@ -55,7 +48,7 @@ CP=cp -pr
 all: gnat2why gnatprove why3 alt-ergo
 
 # main target for nightly builds
-all-nightly: gnat1why gnatprove-nightly local-stdlib install install-examples
+all-nightly: gnat1why gnatprove-nightly install install-examples
 
 # Setup and installation of why3 and alt-ergo
 # ===========================================
@@ -83,7 +76,7 @@ install-all:
 	$(MAKE) -C why3 install
 	$(MAKE) -C alt-ergo install
 
-install: install-stdlib
+install:
 	mkdir -p $(CONFIGDIR)
 	mkdir -p $(THEORIESDIR)
 	$(CP) share/spark/config/*cgpr $(CONFIGDIR)
@@ -92,11 +85,12 @@ install: install-stdlib
 
 doc: $(DOC)
 
-doc-nightly: doc
-	cd docs/ug; $(MAKE) generate-nightly
+doc-nightly:
+	# cd docs/ug; $(MAKE) generate-nightly
+	$(MAKE) doc
 
 $(DOC):
-	$(MAKE) -C docs/$@ latexpdf
+	echo x | $(MAKE) -C docs/$@ latexpdf
 	$(MAKE) -C docs/$@ html
 	mkdir -p $(DOCDIR)/pdf
 	mkdir -p $(DOCDIR)/html/$@
@@ -129,45 +123,6 @@ gnatmerge:
 install-gnatmerge:
 	$(MAKE) -C gnatmerge INSTALLDIR=$(INSTALLDIR) install
 
-# Translating the standard library for GNATprove
-# ==============================================
-#
-# We need two different targets to build the standard library:
-#   local-stdlib  this target is used by the nightly builds
-#   stdlib        this target is used by the developers
-# The reason for two different systems is the following: We want to make sure
-# (especially in nightly builds) to use the "right" gnat2why, ie the local one
-# in ../install/bin. We do so by using the -B switch of gnat2why, but this
-# switch is only available in nightly builds.
-# The target "stdlib" does not guarantee to use the correct gnat2why, but it
-# works with both versions of gnat2why (nightly and developer version)
-
-# Developers of GNATprove should always use "make stdlib", while nightly
-# builds should always use "local-stdlib"
-
-local-stdlib:
-	rm -rf $(STDLIB_TMP)
-	mkdir -p $(STDLIB_TMP)
-	$(CP) Makefile.libprove $(STDLIB_TMP)
-	$(MAKE) -C $(STDLIB_TMP) -f Makefile.libprove ROOT=$(GNAT_ROOT) \
-	GNAT2WHY="../install/bin/gnat2why -B ../install/bin -I$(ADAINCLUDE)"
-
-stdlib:
-	rm -rf $(STDLIB_TMP)
-	mkdir -p $(STDLIB_TMP)
-	$(CP) Makefile.libprove $(STDLIB_TMP)
-	$(MAKE) -C $(STDLIB_TMP) -f Makefile.libprove ROOT=$(GNAT_ROOT)
-
-# "make stdlib-check" will run why on all Why files of the standard library,
-# to detect problems with the translation to Why
-
-stdlib-check:
-	$(MAKE) -C $(STDLIB_TMP) -f Makefile.libprove ROOT=$(GNAT_ROOT) check
-
-install-stdlib:
-	mkdir -p $(ALI_DIR)
-	$(CP) $(STDLIB_TMP)/*.ali $(ALI_DIR)
-
 install-examples:
 	mkdir -p $(EXAMPLESDIR)
 	for dir in `cat MANIFEST.examples` ; do \
@@ -182,3 +137,22 @@ clean:
 	$(MAKE) -C docs/lrm clean
 	$(MAKE) -C why3 clean
 	$(MAKE) -C alt-ergo clean
+
+# Translating the standard library for GNATprove
+# ==============================================
+#
+# This applies gnat2why to the standard GNAT library. This is only used for debug.
+
+STDLIB_TMP=stdlib_tmp
+
+stdlib:
+	rm -rf $(STDLIB_TMP)
+	mkdir -p $(STDLIB_TMP)
+	$(CP) Makefile.libprove $(STDLIB_TMP)
+	$(MAKE) -C $(STDLIB_TMP) -f Makefile.libprove ROOT=$(GNAT_ROOT)
+
+# "make stdlib-check" will run why on all Why files of the standard library,
+# to detect problems with the translation to Why
+
+stdlib-check:
+	$(MAKE) -C $(STDLIB_TMP) -f Makefile.libprove ROOT=$(GNAT_ROOT) check

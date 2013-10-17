@@ -1,7 +1,0 @@
-project Taxes is
-  for Source_Dirs use (".");
-
-  package Compiler is
-    for Default_Switches ("Ada") use ("-gnat12");
-  end Compiler;
-end Taxes;

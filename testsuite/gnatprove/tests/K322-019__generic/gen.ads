@@ -1,6 +1,6 @@
 generic
    type T is private;
-package Gen is pragma SPARK_Mode (On); 
+package Gen is
    procedure X ( Z : T);
 end Gen;
 

@@ -1,3 +1,3 @@
 from test_support import *
 
-prove(opt=["s.adb", "-u"]) # flow requires M906-011 (conditional errors)
+prove_all (opt=["s.adb", "-u"], steps=400)
