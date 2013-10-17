@@ -1,5 +1,5 @@
 a.adb:9:10: info: loop invariant initialization proved
-a.adb:9:10: loop invariant preservation not proved
+a.adb:9:10: warning: loop invariant might fail after first iteration
 a.adb:12:25: info: overflow check proved
 a.adb:12:35: info: overflow check proved
 a.adb:12:49: info: overflow check proved
@@ -8,23 +8,23 @@ a.adb:13:25: info: overflow check proved
 a.adb:13:35: info: overflow check proved
 a.adb:13:49: info: overflow check proved
 a.adb:13:59: info: overflow check proved
-a.adb:14:10: loop variant not proved
+a.adb:14:10: warning: loop variant might fail
 a.adb:17:19: info: division check proved
 a.adb:20:14: info: overflow check proved
 a.adb:26:22: info: precondition proved
 a.adb:29:18: info: overflow check proved
 a.adb:29:23: info: division check proved
 a.adb:29:23: info: overflow check proved
-a.adb:32:14: overflow check not proved
-a.ads:7:7: postcondition not proved, requires Pgcd'Result = 0 or else Pgcd'Result in 1 .. abs A or else Pgcd'Result in 1 .. abs B
-a.ads:8:34: overflow check not proved
-a.ads:9:34: overflow check not proved
-a.ads:14:25: overflow check not proved
-a.ads:14:47: overflow check not proved
-a.ads:17:7: postcondition not proved, requires Ppcm'Result = 0 or else Ppcm'Result in abs A .. abs (A * B) or else Ppcm'Result in abs B .. abs (A * B
-a.ads:18:29: overflow check not proved
+a.adb:32:14: warning: overflow check might fail
+a.ads:7:7: warning: postcondition might fail, requires Pgcd'Result = 0 or else Pgcd'Result in 1 .. abs A or else Pgcd'Result in 1 .. abs B
+a.ads:8:34: warning: overflow check might fail
+a.ads:9:34: warning: overflow check might fail
+a.ads:14:25: warning: overflow check might fail
+a.ads:14:47: warning: overflow check might fail
+a.ads:17:7: warning: postcondition might fail, requires Ppcm'Result = 0 or else Ppcm'Result in abs A .. abs (A * B) or else Ppcm'Result in abs B .. abs (A * B
+a.ads:18:29: warning: overflow check might fail
 a.ads:18:38: info: overflow check proved
 a.ads:18:45: info: overflow check proved
-a.ads:19:29: overflow check not proved
+a.ads:19:29: warning: overflow check might fail
 a.ads:19:38: info: overflow check proved
 a.ads:19:45: info: overflow check proved
