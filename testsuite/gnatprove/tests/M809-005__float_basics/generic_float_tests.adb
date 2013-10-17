@@ -1,5 +1,5 @@
 package body Generic_Float_Tests
-  with SPARK_Mode
+
 is
 
    ----------------------------------------------------------------------

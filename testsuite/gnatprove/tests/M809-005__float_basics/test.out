@@ -250,7 +250,7 @@ generic_interval_tests.adb:97:12: info: overflow check proved, in instantiation 
 generic_interval_tests.adb:97:12: info: overflow check proved, in instantiation at bar.ads:11
 generic_interval_tests.adb:98:10: warning: assertion might fail, requires X < , in instantiation at bar.ads:7
 generic_interval_tests.adb:98:10: warning: assertion might fail, requires X < , in instantiation at bar.ads:11
-generic_interval_tests.adb:129:16: warning: postcondition might fail, requires Z <= 6.0) xor (Z >= , in instantiation at bar.ads:11
+generic_interval_tests.adb:129:20: warning: postcondition might fail, requires Z <= 6.0) xor (Z >= , in instantiation at bar.ads:11
 generic_interval_tests.adb:129:20: warning: postcondition might fail, requires Z <= 6.0) xor (Z >= , in instantiation at bar.ads:7
 generic_interval_tests.adb:132:14: info: overflow check proved, in instantiation at bar.ads:7
 generic_interval_tests.adb:132:14: info: overflow check proved, in instantiation at bar.ads:11
