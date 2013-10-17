@@ -20,7 +20,6 @@ with Keyboard;
 
 private package Keyboard.Interfac
    with Abstract_State => (Inputs with External,
-                                       Input_Only,
                                        Part_Of => Keyboard.Inputs)
 is
 

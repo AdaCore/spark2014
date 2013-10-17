@@ -296,9 +296,9 @@ is
       --
       ------------------------------------------------------------------
       function ConvertTimesToText return AuditTypes.DescriptionT
-         with Global => (FirstTime, LastTime, TimeOK)
+        with Global => (FirstTime, LastTime, TimeOK)
       is
-         pragma SPARK_Mode (Off);
+         --  pragma SPARK_Mode (Off);
          Descr : AuditTypes.DescriptionT;
       begin
          if TimeOK then
@@ -405,7 +405,7 @@ is
                                    return AuditTypes.DescriptionT
          with Global  => (LastTime, TimeOK)
       is
-         pragma SPARK_Mode (Off);
+         --  pragma SPARK_Mode (Off);
          Descr : AuditTypes.DescriptionT;
          FirstTime : Clock.TimeTextT;
          Offset : Positive;
@@ -586,7 +586,7 @@ is
    ------------------------------------------------------------------
       function NameOfType (E : AuditTypes.ElementT) return ElementTextT
       is
-         pragma SPARK_Mode (Off);
+         --  pragma SPARK_Mode (Off);
 
          ElementText : ElementTextT := NoElement;
 
@@ -736,11 +736,11 @@ is
                          NumberLogEntries = NumberLogEntries'Old + 1 and then
                          ((LogFileEntries(CurrentLogFile)'Old = MaxLogFileEntries) <=
                             (LogFileEntries(CurrentLogFile) = 1 and then
-                               UsedLogFiles.Length = UsedLogFiles.Length'Old + 1)) and then
+                               UsedLogFiles.Length = UsedLogFiles'Old.Length + 1)) and then
                          ((LogFileEntries(CurrentLogFile)'Old < MaxLogFileEntries) <=
                             (LogFileEntries(CurrentLogFile) =
                                LogFileEntries(CurrentLogFile)'Old + 1 and then
-                               UsedLogFiles.Length = UsedLogFiles.Length'Old)))
+                               UsedLogFiles.Length = UsedLogFiles'Old.Length)))
 
    is
       ------------------------------------------------------------------
@@ -1257,7 +1257,7 @@ is
      --
      ------------------------------------------------------------------
      function AgeLessThan (Left, Right : Clock.TimeTextT) return Boolean
-        with SPARK_Mode => Off
+        --  with SPARK_Mode => Off
      is
      begin
         return Left < Right;
