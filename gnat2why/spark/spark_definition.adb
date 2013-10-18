@@ -963,6 +963,7 @@ package body SPARK_Definition is
    ----------
 
    procedure Mark (N : Node_Id) is
+
       -----------------------
       -- Local subprograms --
       -----------------------
@@ -987,18 +988,16 @@ package body SPARK_Definition is
       -- Is_Update_Aggregate --
       -------------------------
 
-      function Is_Update_Aggregate
-        (Aggr : Node_Id) return Boolean
-      is
+      function Is_Update_Aggregate (Aggr : Node_Id) return Boolean is
          Result : Boolean := False;
          Par    : Node_Id;
       begin
          if Nkind (Aggr) = N_Aggregate then
             Par := Parent (Aggr);
             if Present (Par)
-              and then (Nkind (Par) = N_Attribute_Reference
-                          and then Get_Attribute_Id
-                          (Attribute_Name (Par)) = Attribute_Update)
+              and then Nkind (Par) = N_Attribute_Reference
+              and then Get_Attribute_Id
+                         (Attribute_Name (Par)) = Attribute_Update
             then
                Result := True;
             end if;
@@ -1006,12 +1005,11 @@ package body SPARK_Definition is
          return Result;
       end Is_Update_Aggregate;
 
-      -----------------------------
-      -- Is_Multidim_Update_Aggr --
-      -----------------------------
+      -------------------------------------
+      -- Is_Special_Multidim_Update_Aggr --
+      -------------------------------------
 
-      function Is_Special_Multidim_Update_Aggr
-        (Aggr : Node_Id) return Boolean
+      function Is_Special_Multidim_Update_Aggr (Aggr : Node_Id) return Boolean
       is
          Result : Boolean := False;
          Par, Grand_Par, Grand_Grand_Par : Node_Id;
