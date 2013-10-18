@@ -33,38 +33,22 @@ with Flow_Types;                         use Flow_Types;
 package Flow_Error_Messages is
 
    procedure Create_Flow_Msgs_File (GNAT_Root : Node_Id);
-   --  Creates the "unit.flow" file that will later be populated by all flow
-   --  messages that were emitted in JSON format.
+   --  Creates the "unit.flow" file that will later be populated by
+   --  all flow messages that were emitted in JSON format.
 
    procedure Error_Msg_Flow (FA        : Flow_Analysis_Graphs;
                              Tracefile : out Unbounded_String;
                              Msg       : String;
                              N         : Node_Id;
-                             Tag       : String := "";
-                             Warning   : Boolean := False);
-   --  Output an error (or warning) message attached to the given node. It
-   --  also adds a JSON entry in the "unit.flow" file.
-
-   procedure Error_Msg_Flow (FA        : Flow_Analysis_Graphs;
-                             Tracefile : out Unbounded_String;
-                             Msg       : String;
-                             N         : Node_Id;
-                             F1        : Flow_Id;
-                             Tag       : String := "";
-                             Warning   : Boolean := False);
+                             F1        : Flow_Id := Null_Flow_Id;
+                             F2        : Flow_Id := Null_Flow_Id;
+                             Tag       : String  := "";
+                             Warning   : Boolean := False)
+   with Pre => (if Present (F2) then Present (F1));
    --  Output a message attached to the given node with a substitution
-   --  using F1. Use & or # as the substitution characters, which
-   --  quote the flow id with or without double quotes respectively.
-   --  It also adds a JSON entry in the "unit.flow" file.
-
-   procedure Error_Msg_Flow (FA        : Flow_Analysis_Graphs;
-                             Tracefile : out Unbounded_String;
-                             Msg       : String;
-                             N         : Node_Id;
-                             F1        : Flow_Id;
-                             F2        : Flow_Id;
-                             Tag       : String := "";
-                             Warning   : Boolean := False);
-   --  As above with two nodes to substitute.
+   --  using F1 and F2. Use & or # as the substitution characters,
+   --  which quote the flow id with or without double quotes
+   --  respectively.  It also adds a JSON entry in the "unit.flow"
+   --  file.
 
 end Flow_Error_Messages;

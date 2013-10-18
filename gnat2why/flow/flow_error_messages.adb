@@ -199,16 +199,15 @@ package body Flow_Error_Messages is
         Int_Image (Integer (Get_Column_Number (Sloc (N))));
 
    begin
+
       --  Assemble message string
 
-      if F1 /= Null_Flow_Id
-        and then F2 /= Null_Flow_Id
-      then
-         M := Substitute (Substitute (To_Unbounded_String (Msg), F1), F2);
-      elsif F1 /= Null_Flow_Id then
-         M := Substitute (To_Unbounded_String (Msg), F1);
-      else
-         M := To_Unbounded_String (Msg);
+      M := To_Unbounded_String (Msg);
+      if Present (F1) then
+         M := Substitute (M, F1);
+      end if;
+      if Present (F2) then
+         M := Substitute (M, F2);
       end if;
 
       --  If we are dealing with a warning and warnings should be suppressed
@@ -230,15 +229,16 @@ package body Flow_Error_Messages is
          end;
       end if;
 
-      --  A flow error is found if we are not dealing with a warning or we are
-      --  dealing with a warning and the Warning_Mode is Treat_As_Error.
+      --  Signal we have found an errror if:
+      --     * we are not dealing with a warning or
+      --     * the Warning_Mode is Treat_As_Error.
 
-      if not Warning or else Opt.Warning_Mode = Treat_As_Error then
+      if not Warning or Opt.Warning_Mode = Treat_As_Error then
          Found_Flow_Error := True;
       end if;
 
       --  Append file
-      JSON_M := "{""file"":""" & To_Unbounded_String (File) &""",";
+      JSON_M := "{""file"":""" & To_Unbounded_String (File) & """,";
 
       --  Append line
       JSON_M := JSON_M & """line"":" & To_Unbounded_String (Line);
@@ -259,7 +259,7 @@ package body Flow_Error_Messages is
 
          for Index in Positive range 1 .. Length (M) loop
             if Element (M, Index) = '"' then
-               Append (Escaped_M, "\");
+               Append (Escaped_M, '\');
             end if;
             Append (Escaped_M, Element (M, Index));
          end loop;
@@ -385,7 +385,9 @@ package body Flow_Error_Messages is
       Tracefile : out Unbounded_String;
       Msg       : String;
       N         : Node_Id;
-      Tag       : String := "";
+      F1        : Flow_Id := Null_Flow_Id;
+      F2        : Flow_Id := Null_Flow_Id;
+      Tag       : String  := "";
       Warning   : Boolean := False)
    is
       Entity : Unbounded_String;
@@ -396,64 +398,8 @@ package body Flow_Error_Messages is
          Entity := Null_Unbounded_String;
       end if;
 
-      --  Call Print_JSON_Msg_Or_Normal_Msg. If required, a JSON message will
-      --  also be printed.
-      Print_JSON_Or_Normal_Msg
-        (Msg       => Msg,
-         N         => N,
-         F1        => Null_Flow_Id,
-         F2        => Null_Flow_Id,
-         Tag       => Tag,
-         Warning   => Warning,
-         Tracefile => Tracefile,
-         Entity    => To_String (Entity));
-   end Error_Msg_Flow;
-
-   procedure Error_Msg_Flow
-     (FA        : Flow_Analysis_Graphs;
-      Tracefile : out Unbounded_String;
-      Msg       : String;
-      N         : Node_Id;
-      F1        : Flow_Id;
-      Tag       : String := "";
-      Warning   : Boolean := False)
-   is
-      Entity : Unbounded_String;
-   begin
-      if Ekind (FA.Analyzed_Entity) in Subprogram_Kind | E_Package then
-         Entity := To_Unbounded_String (Subp_Location (FA.Analyzed_Entity));
-      else
-         Entity := Null_Unbounded_String;
-      end if;
-
-      Print_JSON_Or_Normal_Msg
-        (Msg       => Msg,
-         N         => N,
-         F1        => F1,
-         F2        => Null_Flow_Id,
-         Tag       => Tag,
-         Warning   => Warning,
-         Tracefile => Tracefile,
-         Entity    => To_String (Entity));
-   end Error_Msg_Flow;
-
-   procedure Error_Msg_Flow
-     (FA        : Flow_Analysis_Graphs;
-      Tracefile : out Unbounded_String;
-      Msg       : String;
-      N         : Node_Id;
-      F1        : Flow_Id;
-      F2        : Flow_Id;
-      Tag       : String := "";
-      Warning   : Boolean := False)
-   is
-      Entity : Unbounded_String;
-   begin
-      if Ekind (FA.Analyzed_Entity) in Subprogram_Kind | E_Package then
-         Entity := To_Unbounded_String (Subp_Location (FA.Analyzed_Entity));
-      else
-         Entity := Null_Unbounded_String;
-      end if;
+      --  Call Print_JSON_Msg_Or_Normal_Msg. If required, a JSON
+      --  message will also be printed.
 
       Print_JSON_Or_Normal_Msg
         (Msg       => Msg,
