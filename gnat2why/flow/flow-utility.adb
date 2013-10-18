@@ -815,7 +815,7 @@ package body Flow.Utility is
       function Proc (N : Node_Id) return Traverse_Result is
       begin
          case Nkind (N) is
-            when N_Indexed_Component =>
+            when N_Indexed_Component | N_Attribute_Reference =>
                Vars_Used.Union (Get_Variable_Set (Scope, Prefix (N)));
                Vars_Used.Union (Get_Variable_Set (Scope, Expressions (N)));
                return OK;
