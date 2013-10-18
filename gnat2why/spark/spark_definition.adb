@@ -1013,20 +1013,19 @@ package body SPARK_Definition is
       is
          Result : Boolean := False;
          Pref, Par, Grand_Par, Grand_Grand_Par : Node_Id;
-         Pref_Typ : Entity_Id;
       begin
          if Nkind (Aggr) = N_Aggregate then
             Par := Parent (Aggr);
             if Present (Par) then
                Grand_Par := Parent (Par);
                if Present (Grand_Par)
-                 and then Is_Update_Aggregate (Grand_Par) then
+                 and then Is_Update_Aggregate (Grand_Par)
+               then
                   Grand_Grand_Par := Parent (Grand_Par);
                   Pref := Prefix (Grand_Grand_Par);
-                  Pref_Typ := Type_Of_Node (Pref);
-                  if (Is_Array_Type (Pref_Typ) or else
-                        Is_String_Type (Pref_Typ))
-                    and then 1 < Number_Dimensions (Type_Of_Node (Pref)) then
+                  if Is_Array_Type (Etype (Pref))
+                    and then Number_Dimensions (Etype (Pref)) > 1
+                  then
                      Result := True;
                   end if;
                end if;
