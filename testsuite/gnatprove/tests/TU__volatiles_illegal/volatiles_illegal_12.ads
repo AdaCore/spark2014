@@ -1,6 +1,6 @@
 with System.Storage_Elements;
 
-package Volatiles_Illegal_12
+package Volatiles_Illegal_10
   with SPARK_Mode
 is
    type Vol_Int_T is new Integer with Volatile;
@@ -13,4 +13,4 @@ is
          when others => I : Integer;
       end case;
    end record;
-end Volatiles_Illegal_12;
+end Volatiles_Illegal_10;
