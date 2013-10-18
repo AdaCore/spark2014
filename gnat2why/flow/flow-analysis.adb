@@ -1072,10 +1072,10 @@ package body Flow.Analysis is
                      Error_Msg_Flow
                        (FA        => FA,
                         Tracefile => Tracefile,
-                        Msg     => "initialization has no effect",
-                        N       => Error_Location (FA.PDG, V),
-                        Tag     => Tag,
-                        Warning => True);
+                        Msg       => "initialization has no effect",
+                        N         => Error_Location (FA.PDG, V),
+                        Tag       => Tag,
+                        Warning   => True);
 
                   else
                      Error_Msg_Flow
