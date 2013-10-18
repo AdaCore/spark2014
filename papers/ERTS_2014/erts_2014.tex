@@ -209,16 +209,16 @@ not as far from software requirements as one would have expected.
 We made several experiments but due to space constraints we will only
 detail two of them.
 
-Our first example is partial modeling of mode transition table SRS
-mode transition table (SRS §4.6). It is a big table that describes,
-for each of the 17 modes, under which conditions the ETCS on-board can
-change from one mode to another one. Those conditions are specific
-state of the on-board, actions of the driver and an explicit
-priority. For example, transition from mode Stand By (SB) mode to Full
-Supervision (FS) mode is conditioned by fulfilling condition 10, at
-priority 7. Condition 10 states that ``(valid Train Data is stored on
-board) AND (MA + SSP + gradient on-board) AND (no specific mode is
-required by a Mode Profile)''.
+Our first example is partial modeling of SRS mode transition table
+(SRS §4.6). It is a big table that describes, for each of the 17
+modes, under which conditions the ETCS on-board can change from one
+mode to another one. Those conditions are specific state of the
+on-board, actions of the driver and an explicit priority. For example,
+transition from mode Stand By (SB) mode to Full Supervision (FS) mode
+is conditioned by fulfilling condition 10, at priority 7. Condition 10
+states that ``(valid Train Data is stored on board) AND (MA + SSP +
+gradient on-board) AND (no specific mode is required by a Mode
+Profile)''.
 
 We have converted above conditions into \newspark Boolean variables,
 with an explicit priority variable. Above condition thus becomes:
@@ -244,13 +244,13 @@ function condition_transition_SB_to_FS
 We can thus model all possible transitions of the transition table.
 
 Our second example is the coding of step functions, \aka functions
-constant by interval, used in Speed and distance monitoring section
-(SRS §3.13). Such functions are used to model for example speed
-restrictions along distance. One of the main goal is to model the
-merge of two speed restrictions, taking at each point the most
+constant by interval, used in ``Speed and distance monitoring''
+section (SRS §3.13). Such functions are used to model for example
+speed restrictions along distance. One of our main goal is to model
+the merge of two speed restrictions, taking at each point the most
 restrictive (\ie smaller) one.
 
-To encode step function, we used the following data structure:
+To encode step functions, we used the following data structure:
 \begin{lstlisting}
 package Step_Function is pragma SPARK_Mode (On);
    type Num_Delimiters_Range is range 0 .. 10;
@@ -286,7 +286,7 @@ On this data structure, we build several functions like
   Step_Function_t;} \SPARK{X: Function_Range)} \SPARK{return Float}
 that returns the minimum of the step function \SPARK{SFun} until point
 \SPARK{X}. But probably the most interesting function is function
-\SPARK{Restrictive_Merge} whose contract is given in following
+\SPARK{Restrictive_Merge} whose contract is given in the following
 section.
 
 \subsection{Formalization of Properties}
@@ -309,9 +309,9 @@ with Contract_Cases =>
 \gnatprove tool generates the Verification Conditions that must be
 checked.
 
-Regarding the step functions, we wrote a formal specification for all
-functions. For example procedure \SPARK{Restrictive_Merge} has
-following contract:
+Regarding the step functions, we wrote a formal \emph{functional}
+specification for all functions. For example procedure
+\SPARK{Restrictive_Merge} has following contract:
 
 \begin{lstlisting}
 procedure
@@ -348,12 +348,12 @@ and
           Get_Value(SFun2, Merge.Step(i).Delimiter))));
 \end{lstlisting}
 
-This contract formally states that, given two valid step functions
-\SPARK{SFun1} and \SPARK{SFun2} without too many delimiters, the
-resulting step function is a valid one (1), it contains all the
-delimiters of \SPARK{SFun1} (2) and \SPARK{SFun2} (3) and for each of
-those delimiters, the value of the step function is the minimum of
-both initial step functions (4).
+This contract formally states that, given two valid (\ie with strictly
+increasing delimiters) step functions \SPARK{SFun1} and \SPARK{SFun2}
+without too many delimiters, the resulting step function is a valid
+one (1), it contains all the delimiters of \SPARK{SFun1} (2) and
+\SPARK{SFun2} (3) and for each of those delimiters, the value of the
+step function is the minimum of both initial step functions (4).
 
 
 \subsection{Formal Verification Results}
@@ -363,15 +363,15 @@ expressive enough to describe the objects of the requirements:
 requirement text, transition tables, breaking curve equations, \etc
 Overall, we were quite satisfied to be able express most of the
 requirements in a formal way. The very expressive data structure of
-\newspark (records, arrays, enumerations, ...) were very helpful and
-we found it leads to readable specifications.
+\newspark (type definition, records, arrays, enumerations, ...) were
+very helpful and we found it leads to quite readable specifications.
 
 The second goal was to evaluate the proving capabilities of \newspark
 on some parts of the specification.
 
 Regarding mode transition table, we were not able to prove the shown
 contract of function \SPARK{transition}... because the contract cannot
-be proved. In fact, this experiment shown that the transitions given
+be proved! In fact, this experiment shown that the transitions given
 in the specification table lack details to determine if the transition
 are exclusive or not. Those details are given in other parts of the
 specification and it would be a major work to formalize it.
@@ -389,22 +389,24 @@ of irrelevant hypotheses.
 
 As said previously, we were rather pleased by the expression
 capabilities of \newspark, making specification and code writing
-rather easy and more important clear for the reader.
+rather easy and, more important, clearer for the reader. The ability
+to define new data types for specific ranges and incompatible with
+other types is crucial in this regard.
 
 Another important finding is that the code should be written with
 proof in mind. For example, in one of the step function procedure, we
 wrote a loop with an early exit. However \altergo is unable to prove
 this loop because it lacks induction reasoning, even if all elements
 of the induction could be easily pointed out to the prover. We had to
-change the code with a loop without early exit, the proof becoming
-trivial.
+change the code with a loop without early exit, the proof then
+becoming trivial.
 
 A third finding is that contracts that can be automatically proved are
 not the most natural contracts, \ie contracts a reviewer would
 understand more easily. For example, for \SPARK{Restrictive_Merge}
 procedure, we would have prefer to write that the resulting function
 is the minimum of both input functions for all possible input
-value. It would have been impossible to prove this contract. Other
+values. It would have been impossible to prove this contract. Other
 formal approaches with formal refinement like B~Method would probably
 be able to formalize such contract, at the expense of manual proofs.
 
@@ -412,8 +414,9 @@ Our last finding, not entirely surprising, is that writing the correct
 invariant for a complex loop is not an easy task, as we experimented
 it for \SPARK{Restrictive_Merge} procedure. It can necessitate several
 hours of work of skilled people, trained in the proof environment and
-the reaction of the automatic prover. The ability to compile and test
-the loop invariant is very useful to help ``debug'' the invariant.
+the reaction of the automatic prover. In such case, the ability to
+compile and test the loop invariant is very useful to help ``debug''
+the invariant.
 
 Overall, we think that the programmer should be trained to exploit the
 feedback provided by the proof environment, much like a programmer
