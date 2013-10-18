@@ -13,7 +13,7 @@ sorted_vectors.ads:31:32: warning: range check might fail
 sorted_vectors.ads:31:37: info: precondition proved
 sorted_vectors.ads:31:61: warning: range check might fail
 sorted_vectors.ads:33:14: info: precondition proved
-sorted_vectors.ads:33:34: info: range check proved
+sorted_vectors.ads:33:34: warning: range check might fail
 sorted_vectors.ads:33:39: info: precondition proved
-sorted_vectors.ads:33:64: info: overflow check proved
-sorted_vectors.ads:33:64: info: range check proved
+sorted_vectors.ads:33:64: warning: overflow check might fail
+sorted_vectors.ads:33:64: warning: range check might fail
