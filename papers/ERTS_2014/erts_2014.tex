@@ -39,6 +39,7 @@
 \newcommand{\spark}{SPARK\xspace}
 \newcommand{\ada}{Ada\xspace}
 \newcommand{\adatwtw}{Ada~2012\xspace}
+\newcommand{\altergo}{Alt-Ergo\xspace}
 
 \newcommand{\etc}{\textit{etc.}\xspace}
 \newcommand{\ie}{\textit{i.e.,}\xspace}
@@ -133,6 +134,8 @@ approach~\cite{meyer:1988:OSC}.
 We will
 describe shortly in this subsection the key features defined in \newspark for
 formal verification.
+
+FIXME: introduce \gnatprove and \altergo.
 
 \subsection{Benefits of Executable Contracts}
 
@@ -240,12 +243,12 @@ function condition_transition_SB_to_FS
 
 We can thus model all possible transitions of the transition table.
 
-Our second example is the coding of set functions, aka functions
+Our second example is the coding of step functions, \aka functions
 constant by interval, used in Speed and distance monitoring section
 (SRS §3.13). Such functions are used to model for example speed
 restrictions along distance. One of the main goal is to model the
 merge of two speed restrictions, taking at each point the most
-restrictive one.
+restrictive (\ie smaller) one.
 
 To encode step function, we used the following data structure:
 \begin{lstlisting}
@@ -263,7 +266,7 @@ package Step_Function is pragma SPARK_Mode (On);
      (Num_Delimiters_Range) of Delimiter_Entry;
 
    type Step_Function_t is record
-      Number_Of_Delimiters : Num_Delimiters_Range;
+      Num_Delim : Num_Delimiters_Range;
       Step : Delimiter_Values;
    end record;
 [...]
@@ -273,7 +276,7 @@ A step function can have up to 11 steps separated by 10 ``delimiters''
 stored in \SPARK{Step_Function_t.Step} array. Each delimiter of type
 \SPARK{Delimiter_Entry} contains the delimiter position
 (\SPARK{Delimiter} field) and the associated function constant value
-(\SPARK{Value} field). \SPARK{Number_Of_Delimiters} stores the number
+(\SPARK{Value} field). \SPARK{Num_Delim} stores the number
 of delimiters currently used for this step function.
 
 On this data structure, we build several functions like
@@ -316,30 +319,30 @@ procedure
                    Merge : out Step_Function_t)
 with Pre => Is_Valid(SFun1) and Is_Valid(SFun2)
   and
- SFun1.Number_Of_Delimiters + SFun2.Number_Of_Delimiters <=
+ SFun1.Num_Delim + SFun2.Num_Delim <=
     Num_Delimiters_Range'Last,
 Post =>
 -- (1) Output is valid step function
 Is_Valid(Merge)
--- (2) All SFun1 delimiters are valid delimiters in Merge
+-- (2) All SFun1 delimiters are valid in Merge
 and
  (for all i in
-       Num_Delimiters_Range'First..SFun1.Number_Of_Delimiters =>
+       Num_Delimiters_Range'First..SFun1.Num_Delim =>
    (for some j in
-     Num_Delimiters_Range'First..Merge.Number_Of_Delimiters =>
+     Num_Delimiters_Range'First..Merge.Num_Delim =>
       (Merge.Step(j).Delimiter = SFun1.Step(i).Delimiter)))
--- (3) All SFun2 delimiters are valid delimiters in Merge
+-- (3) All SFun2 delimiters are valid in Merge
 and
  (for all i in
-      Num_Delimiters_Range'First..SFun2.Number_Of_Delimiters =>
+      Num_Delimiters_Range'First..SFun2.Num_Delim =>
    (for some j in
-     Num_Delimiters_Range'First..Merge.Number_Of_Delimiters =>
+     Num_Delimiters_Range'First..Merge.Num_Delim =>
       (Merge.Step(j).Delimiter = SFun2.Step(i).Delimiter)))
 -- (4) For all delimiters of Merge, its value is the
 -- minimum of SFun1 and SFun2
 and
  (for all i in
-     Num_Delimiters_Range'First..Merge.Number_Of_Delimiters =>
+     Num_Delimiters_Range'First..Merge.Num_Delim =>
    (Merge.Step(i).Value
     = Min(Get_Value(SFun1, Merge.Step(i).Delimiter),
           Get_Value(SFun2, Merge.Step(i).Delimiter))));
@@ -355,35 +358,69 @@ both initial step functions (4).
 
 \subsection{Formal Verification Results}
 
-Overall, we were quite satisfied to express most of the requirements
-in a formal way. The very expressive data structure of \newspark
-(records, arrays, ...) were very helpful and we found it leads to
-readable specifications.
+The first goal of this experiment was to check if \newspark was
+expressive enough to describe the objects of the requirements:
+requirement text, transition tables, breaking curve equations, \etc
+Overall, we were quite satisfied to be able express most of the
+requirements in a formal way. The very expressive data structure of
+\newspark (records, arrays, enumerations, ...) were very helpful and
+we found it leads to readable specifications.
+
+The second goal was to evaluate the proving capabilities of \newspark
+on some parts of the specification.
 
 Regarding mode transition table, we were not able to prove the shown
 contract of function \SPARK{transition}... because the contract cannot
 be proved. In fact, this experiment shown that the transitions given
 in the specification table lack details to determine if the transition
 are exclusive or not. Those details are given in other parts of the
-specification and it would be a major work.
+specification and it would be a major work to formalize it.
 
-Regarding the step functions, we were able to prove FIXME
-
-FIXME: proof of step function merge
+Regarding the step functions, we were able to prove all function
+contracts except \SPARK{Restrictive_Merge}. In this procedure, the
+post-condition and a main loop invariant could not be automatically
+proved by \altergo. The main reason is that the proof context is too
+big and \altergo gets lost in all possible quantification
+instantiations. We have checked that some parts of the loop invariant
+could be automatically proved if the proof context was manually pruned
+of irrelevant hypotheses.
 
 \subsection{Lessons Learned}
 
-The first goal of this experiment was to check if \newspark was expressive
-enough to describe the objects of the requirements: requirement text,
-transition tables, breaking curve equations, \etc The second goal was to
-evaluate the proving capabilities of \newspark on some parts of the
-specification.
+As said previously, we were rather pleased by the expression
+capabilities of \newspark, making specification and code writing
+rather easy and more important clear for the reader.
 
-Our findings are the following. Support for rich types in \newspark is useful
-for clarity of contracts and helps with automatic proofs. The code needs to be
-designed with proof in mind (\eg avoid early exit). Verifiable contracts are
-not always the most natural contracts. It is essential to use feedback from the
-tool and to define a proof methodology.
+Another important finding is that the code should be written with
+proof in mind. For example, in one of the step function procedure, we
+wrote a loop with an early exit. However \altergo is unable to prove
+this loop because it lacks induction reasoning, even if all elements
+of the induction could be easily pointed out to the prover. We had to
+change the code with a loop without early exit, the proof becoming
+trivial.
+
+A third finding is that contracts that can be automatically proved are
+not the most natural contracts, \ie contracts a reviewer would
+understand more easily. For example, for \SPARK{Restrictive_Merge}
+procedure, we would have prefer to write that the resulting function
+is the minimum of both input functions for all possible input
+value. It would have been impossible to prove this contract. Other
+formal approaches with formal refinement like B~Method would probably
+be able to formalize such contract, at the expense of manual proofs.
+
+Our last finding, not entirely surprising, is that writing the correct
+invariant for a complex loop is not an easy task, as we experimented
+it for \SPARK{Restrictive_Merge} procedure. It can necessitate several
+hours of work of skilled people, trained in the proof environment and
+the reaction of the automatic prover. The ability to compile and test
+the loop invariant is very useful to help ``debug'' the invariant.
+
+Overall, we think that the programmer should be trained to exploit the
+feedback provided by the proof environment, much like a programmer
+exploits feedback of debuggers and tests to debug his/her program.
+Moreover, as complete code proof can become very costly, a proof
+methodology must be defined to avoid spending to much time on proofs
+that would be broken afterward due to other code changes.
 
 \section{Flight Control and Vehicle Management in Space}
 
