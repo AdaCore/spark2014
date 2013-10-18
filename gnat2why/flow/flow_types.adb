@@ -595,4 +595,33 @@ package body Flow_Types is
       return R;
    end To_Entire_Variables;
 
+   -----------------
+   -- To_Name_Set --
+   -----------------
+
+   function To_Name_Set (S : Flow_Id_Sets.Set)
+                         return Name_Set.Set
+   is
+      N : Name_Set.Set := Name_Set.Empty_Set;
+   begin
+      for X of S loop
+         case X.Kind is
+            when Direct_Mapping | Record_Field =>
+               declare
+                  E_Name : constant Entity_Name :=
+                    new String'(Unique_Name (X.Node));
+               begin
+                  N.Include (E_Name);
+               end;
+
+            when Magic_String =>
+               N.Include (X.Name);
+
+            when Null_Value =>
+               raise Program_Error;
+         end case;
+      end loop;
+      return N;
+   end To_Name_Set;
+
 end Flow_Types;

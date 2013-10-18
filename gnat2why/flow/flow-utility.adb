@@ -267,7 +267,8 @@ package body Flow.Utility is
                           Reads                  : out Flow_Id_Sets.Set;
                           Writes                 : out Flow_Id_Sets.Set;
                           Refined_View           : Boolean;
-                          Consider_Discriminants : Boolean := False)
+                          Consider_Discriminants : Boolean := False;
+                          Globals_For_Proof      : Boolean := False)
    is
       Has_Global_Aspect : Boolean;
       Global_Node       : Node_Id;
@@ -432,7 +433,8 @@ package body Flow.Utility is
             end Get_Flow_Id;
 
             ALI_Reads  : constant Name_Set.Set :=
-              Get_Reads (Subprogram, Include_Constants => True);
+              Get_Reads (Subprogram,
+                         Include_Constants => not Globals_For_Proof);
             ALI_Writes : constant Name_Set.Set := Get_Writes (Subprogram);
 
             F : Flow_Id;

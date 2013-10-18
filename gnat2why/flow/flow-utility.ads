@@ -38,7 +38,8 @@ package Flow.Utility is
                           Reads                  : out Flow_Id_Sets.Set;
                           Writes                 : out Flow_Id_Sets.Set;
                           Refined_View           : Boolean;
-                          Consider_Discriminants : Boolean := False)
+                          Consider_Discriminants : Boolean := False;
+                          Globals_For_Proof      : Boolean := False)
    with Pre  => Ekind (Subprogram) in E_Procedure | E_Function,
         Post => (for all G of Reads  => G.Variant = In_View) and
                 (for all G of Writes => G.Variant = Out_View);
@@ -53,6 +54,9 @@ package Flow.Utility is
    --  If Consider_Discriminants is provided then an out global will
    --  include a corresponding read if the global includes at least
    --  one discriminant.
+   --
+   --  If Globals_For_Proof is set then the calls to Get_Reads will
+   --  not specify Include_Constants.
 
    function Get_Variable_Set (Scope   : Scope_Ptr;
                               N       : Node_Id;
