@@ -1012,10 +1012,9 @@ package body SPARK_Definition is
       function Is_Special_Multidim_Update_Aggr (Aggr : Node_Id) return Boolean
       is
          Result : Boolean := False;
-         Par, Grand_Par, Grand_Grand_Par : Node_Id;
+         Pref, Par, Grand_Par, Grand_Grand_Par : Node_Id;
+         Pref_Typ : Entity_Id;
       begin
-         --  AW: also test for multidim
-         --  if 1 < Number_Dimensions (Typ)
          if Nkind (Aggr) = N_Aggregate then
             Par := Parent (Aggr);
             if Present (Par) then
@@ -1023,9 +1022,13 @@ package body SPARK_Definition is
                if Present (Grand_Par)
                  and then Is_Update_Aggregate (Grand_Par) then
                   Grand_Grand_Par := Parent (Grand_Par);
-                  pragma Assert (1 < Number_Dimensions
-                                   (Type_Of_Node (Prefix (Grand_Grand_Par))));
-                  Result := True;
+                  Pref := Prefix (Grand_Grand_Par);
+                  Pref_Typ := Type_Of_Node (Pref);
+                  if (Is_Array_Type (Pref_Typ) or else
+                        Is_String_Type (Pref_Typ))
+                    and then 1 < Number_Dimensions (Type_Of_Node (Pref)) then
+                     Result := True;
+                  end if;
                end if;
             end if;
          end if;
