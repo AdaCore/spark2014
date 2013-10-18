@@ -963,12 +963,86 @@ package body SPARK_Definition is
    ----------
 
    procedure Mark (N : Node_Id) is
+      -----------------------
+      -- Local subprograms --
+      -----------------------
+
+      function Is_Update_Aggregate (Aggr : Node_Id) return Boolean;
+      --  Detect whether Aggr is an aggregate node modelling 'Update. Returns
+      --  false for a normal aggregate.
+
+      function Is_Special_Multidim_Update_Aggr (Aggr : Node_Id) return Boolean;
+      --  Detect special case of AST node.
+      --  For an 'Update of a multidimensional array, the indexed components
+      --    (the expressions (1, 1), (2, 2) and (3, 3) in example
+      --     Arr_A2D'Update ((1, 1) => 1,  (2, 2) => 2, (3, 3) => 3,
+      --     where Arr_A2D is a two-dimensional array)
+      --  are modelled in the AST using an aggregate node which does not have a
+      --  a type. An aggregate node is expected to have a type, but this
+      --  kind of expression (indexed components) is not, so need to detect
+      --  special case here.
+      --  Why aren't these kind of nodes Indexed_Components instead?
+
+      -------------------------
+      -- Is_Update_Aggregate --
+      -------------------------
+
+      function Is_Update_Aggregate
+        (Aggr : Node_Id) return Boolean
+      is
+         Result : Boolean := False;
+         Par    : Node_Id;
+      begin
+         if Nkind (Aggr) = N_Aggregate then
+            Par := Parent (Aggr);
+            if Present (Par)
+              and then (Nkind (Par) = N_Attribute_Reference
+                          and then Get_Attribute_Id
+                          (Attribute_Name (Par)) = Attribute_Update)
+            then
+               Result := True;
+            end if;
+         end if;
+         return Result;
+      end Is_Update_Aggregate;
+
+      -----------------------------
+      -- Is_Multidim_Update_Aggr --
+      -----------------------------
+
+      function Is_Special_Multidim_Update_Aggr
+        (Aggr : Node_Id) return Boolean
+      is
+         Result : Boolean := False;
+         Par, Grand_Par, Grand_Grand_Par : Node_Id;
+      begin
+         --  AW: also test for multidim
+         --  if 1 < Number_Dimensions (Typ)
+         if Nkind (Aggr) = N_Aggregate then
+            Par := Parent (Aggr);
+            if Present (Par) then
+               Grand_Par := Parent (Par);
+               if Present (Grand_Par)
+                 and then Is_Update_Aggregate (Grand_Par) then
+                  Grand_Grand_Par := Parent (Grand_Par);
+                  pragma Assert (1 < Number_Dimensions
+                                   (Type_Of_Node (Prefix (Grand_Grand_Par))));
+                  Result := True;
+               end if;
+            end if;
+         end if;
+         return Result;
+      end Is_Special_Multidim_Update_Aggr;
+
+      --  Start of processing for Mark
+
    begin
       --  If present, the type of N should be in SPARK. This also allows
       --  marking Itypes and class-wide types at their first occurrence
       --  (inside In_SPARK).
 
-      if Nkind (N) in N_Has_Etype
+      if not Is_Special_Multidim_Update_Aggr (N)
+        and then Nkind (N) in N_Has_Etype
         and then not In_SPARK (Etype (N))
       then
          Mark_Violation (N, From => Etype (N));
@@ -982,11 +1056,13 @@ package body SPARK_Definition is
             Mark_Violation ("abstract subprogram", N);
 
          when N_Aggregate =>
-            if not Aggregate_Is_Fully_Initialized (N) then
-               Mark_Violation ("aggregate not fully defined", N, "SRM 4.3");
+            if not Is_Update_Aggregate (N)
+            and then not Is_Special_Multidim_Update_Aggr (N) then
+               if not Aggregate_Is_Fully_Initialized (N) then
+                  Mark_Violation ("aggregate not fully defined", N, "SRM 4.3");
+               end if;
+               Mark_Most_Underlying_Type_In_SPARK (Etype (N), N);
             end if;
-
-            Mark_Most_Underlying_Type_In_SPARK (Etype (N), N);
             Mark_List (Expressions (N));
             Mark_List (Component_Associations (N));
 
