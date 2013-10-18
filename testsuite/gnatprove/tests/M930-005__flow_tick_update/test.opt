@@ -1,1 +1,1 @@
-ALL XFAIL not implemented yet
+ALL XFAIL crashes in gnat2why
