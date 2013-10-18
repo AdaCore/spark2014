@@ -1,1 +1,16 @@
-NOT IMPLEMENTED YET
+nested_pkg.adb:29:25: warning: unused initial value of "State" [unused_initial_value]
+nested_pkg.adb:44:25: warning: unused initial value of "State" [unused_initial_value]
+nested_pkg.adb:51:10: warning: statement has no effect [ineffective]
+nested_pkg.adb:51:10: warning: unused assignment to "State" [ineffective]
+nested_pkg.adb:57:22: warning: unused initial value of "State" [unused_initial_value]
+nested_pkg.adb:64:08: warning: statement has no effect [ineffective]
+nested_pkg.adb:64:08: warning: unused assignment to "State" [ineffective]
+stack_asm.adb:38:40: "The_Stack" is not initialized [uninitialized]
+test.adb:21:41: "State" is not initialized [uninitialized]
+test.adb:24:09: "State" is not initialized [uninitialized]
+
+   compilation of test.adb failed
+   compilation of stack_asm.adb failed
+
+gprbuild: *** compilation phase failed
+gnatprove: error during translation to intermediate language, aborting.

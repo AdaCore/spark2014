@@ -11,8 +11,8 @@ is
 
 private
    -- A variable declared in the private part must have a Part_Of aspect
-   Hidden_State : Integer;
-   --     with Part_Of => A2;
+   Hidden_State : Integer
+     with Part_Of => A2;
 
    package Inner
      with Abstract_state => (B1 with Part_Of => Outer.A1)

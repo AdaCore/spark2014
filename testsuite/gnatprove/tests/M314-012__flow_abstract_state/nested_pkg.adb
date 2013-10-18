@@ -1,7 +1,7 @@
 package body Nested_Pkg
   with Refined_State => (Foobar => Z.State)
 is
-   
+
 
    function G return Boolean is (True);
 
@@ -40,7 +40,9 @@ is
          null;
       end Wibble;
 
-      procedure Test is
+      procedure Test
+        with Global => Z.State
+      is
       begin
          pragma Assert (F);  --  body visible
 
@@ -52,6 +54,7 @@ is
    end X;
 
    procedure Test
+     with Global => Z.State
    is
    begin
       pragma Assert (X.F);   --  spec visible
