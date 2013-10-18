@@ -31,6 +31,8 @@ with Sprint; use Sprint;
 
 with Why;
 
+with Flow.Utility; use Flow.Utility;
+
 package body Flow.Antialiasing is
 
    Trace_Antialiasing : constant Boolean := False;
