@@ -25,6 +25,7 @@ with Errout;   use Errout;
 with Namet;    use Namet;
 with Nlists;   use Nlists;
 
+with Sprint;   use Sprint;
 with Treepr;   use Treepr;
 
 with Why;
@@ -598,6 +599,7 @@ package body Flow.Utility is
       begin
          case Nkind (N) is
             when N_Indexed_Component =>
+               Vars_Used.Union (Get_Variable_Set (Scope, Prefix (N)));
                Vars_Used.Union (Get_Variable_Set (Scope, Expressions (N)));
                return OK;
             when N_Slice =>
@@ -619,6 +621,7 @@ package body Flow.Utility is
       Vars_Defined := Flow_Id_Sets.Empty_Set;
 
       if Debug_Trace_Untangle then
+         Sprint_Node (N);
          Print_Node_Subtree (N);
       end if;
 
