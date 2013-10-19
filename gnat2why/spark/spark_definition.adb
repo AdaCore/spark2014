@@ -1101,6 +1101,7 @@ package body SPARK_Definition is
          when N_Component_Association =>
             pragma Assert (No (Loop_Actions (N)));
             Mark_List (Choices (N));
+
             if Box_Present (N) then
                Mark_Violation ("aggregate not full defined", N, "SRM 4.3");
             else
