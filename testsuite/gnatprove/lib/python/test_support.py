@@ -54,7 +54,11 @@ def xfail_test():
 def sort_key_for_errors(line):
     """given a line of output, return a key that can be used for sorting
 
-       if the line is of the form "file:line:col:msg", then the key is "file",
+       if the line is of the form "file:line:col:msg", then the key is "file"
+
+       if the line is of the form "compilation of file failed", then the key
+       is "zzzfile", to be bigger than most other strings of the previous kind
+
        otherwise the key is a constant string which is bigger than most other
        strings
     """
@@ -62,7 +66,11 @@ def sort_key_for_errors(line):
     if len(sl) == 4:
         return sl[0]
     else:
-        return "zzzzz"
+        sl = line.lstrip(' ').split(' ', 3)
+        if len(sl) == 4 and sl[0] == "compilation" and sl[1] == "of":
+            return "zzz" + sl[2]
+        else:
+            return "zzzzz"
 
 def print_sorted(strlist):
     strlist.sort(key=sort_key_for_errors)
