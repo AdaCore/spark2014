@@ -51,8 +51,44 @@ def xfail_test():
                     return True
     return False
 
+def msg_key(line):
+    """if the line is of the form "file:line:col:msg", then the key is "msg"
+       otherwise it's the line itself
+    """
+    sl = line.split(':', 3)
+    if len(sl) == 4:
+        return sl[3]
+    else:
+        return line
+
+def col_key(line):
+    """if the line is of the form "file:line:col:msg", then the key is "col"
+       otherwise it's 0
+    """
+    sl = line.split(':', 3)
+    if len(sl) == 4:
+        try:
+            return int(sl[2])
+        except ValueError:
+            return 0
+    else:
+        return 0
+
+def line_key(line):
+    """if the line is of the form "file:line:col:msg", then the key is "line"
+       otherwise it's 0
+    """
+    sl = line.split(':', 3)
+    if len(sl) == 4:
+        try:
+            return int(sl[1])
+        except ValueError:
+            return 0
+    else:
+        return 0
+
 def sort_key_for_errors(line):
-    """given a line of output, return a key that can be used for sorting
+    """given a line of output, return a main key that can be used for sorting
 
        if the line is of the form "file:line:col:msg", then the key is "file"
 
@@ -73,6 +109,15 @@ def sort_key_for_errors(line):
             return "zzzzz"
 
 def print_sorted(strlist):
+    # sort by message first
+    strlist.sort(key=msg_key)
+    # then sort by column
+    strlist.sort(key=col_key)
+    # then sort by line
+    strlist.sort(key=line_key)
+    # then sort by main key. By doing this in reverse order, and because
+    # Python sort is stable, we've now sorted the list by main key, then
+    # line, then column, then message.
     strlist.sort(key=sort_key_for_errors)
     for line in strlist:
         print line
@@ -196,7 +241,6 @@ def gnatprove_(opt=["-P", "test.gpr"]):
         if not fake_output_generated:
             fake_output_generated = True
             print "dummy output for XFAIL test"
-        return []
 
     # Otherwise, in quick mode, ignore test output and copy instead the
     # expected output.
@@ -204,13 +248,11 @@ def gnatprove_(opt=["-P", "test.gpr"]):
         if os.path.exists("test.out") and not fake_output_generated:
             fake_output_generated = True
             cat("test.out", True)
-        return []
 
     # Otherwise, print the command output sorted
     else:
         strlist = str.splitlines(process.out)
-        strlist.sort(key=sort_key_for_errors)
-        return strlist
+        print_sorted(strlist)
 
 def gnatprove(opt=["-P", "test.gpr"]):
     """Invoke gnatprove
@@ -218,9 +260,7 @@ def gnatprove(opt=["-P", "test.gpr"]):
     PARAMETERS
     opt: options to give to gnatprove
     """
-    out = gnatprove_(opt)
-    for line in out:
-        print line
+    gnatprove_(opt)
 
 def prove(opt=None, steps=max_steps, procs=parallel_procs,\
           vc_timeout=vc_timeout(), mode="prove"):
