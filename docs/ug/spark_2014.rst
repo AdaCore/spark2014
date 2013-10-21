@@ -842,6 +842,57 @@ unbounded intermediate results. In this mode, |GNATprove| does not generate a
 check for the addition of ``X`` and ``Y`` in the precondition of ``Add``, as
 there is no possible overflow here.
 
+There are three overflow modes:
+
+* Use base type for intermediate operations (STRICT): in this mode, all
+  intermediate results for predefined arithmetic operators are computed using
+  the base type, and the result must be in range of the base type.
+* Most intermediate overflows avoided (MINIMIZED): in this mode, the compiler
+  attempts to avoid intermediate overflows by using a larger integer type,
+  typically Long_Long_Integer, as the type in which arithmetic is performed
+  for predefined arithmetic operators.
+* All intermediate overflows avoided (ELIMINATED): in this mode, the compiler
+  avoids all intermediate overflows by using arbitrary precision arithmetic as
+  required.
+
+The desired mode of for handling intermediate overflow can be specified using
+either the Overflow_Mode pragma or an equivalent compiler switch. The pragma
+has the form::
+
+    pragma Overflow_Mode ([General =>] MODE [, [Assertions =>] MODE]);
+
+where MODE is one of
+
+* STRICT: intermediate overflows checked (using base type)
+* MINIMIZED: minimize intermediate overflows
+* ELIMINATED: eliminate intermediate overflows
+
+For example:
+
+.. code-block:: ada
+
+   pragma Overflow_Mode (General => Strict, Assertions => Eliminated);
+
+specifies that general expressions outside assertions be evaluated in the usual
+strict mode, and expressions within assertions be evaluated in "eliminate
+intermediate overflows" mode. Currently, GNATprove only supports pragma
+``Overflow_Mode`` being specified in a configuration pragma file.
+
+Additionally, a compiler switch ``-gnato??`` can be used to control the
+checking mode default. Here `?` is one of the digits `1` through `3`:
+
+#. use base type for intermediate operations (STRICT)
+#. minimize intermediate overflows (MINIMIZED)
+#. eliminate intermediate overflows (ELIMINATED)
+
+The switch ``-gnato13``, like the ``Overflow_Pragma`` above, specifies that
+general expressions outside assertions be evaluated in the usual strict mode,
+and expressions within assertions be evaluated in "eliminate intermediate
+overflows" mode.
+
+For details of the meaning of these modes, please refer to the "Overflow Check
+Handling in GNAT" appendix in the |GNAT Pro| User's Guide.
+
 |SPARK| Libraries
 =================
 
@@ -859,12 +910,12 @@ alternative to pointer-intensive data structures.
 There are 6 formal containers, which are part of the GNAT standard
 library:
 
- * ``Ada.Containers.Formal_Vectors``
- * ``Ada.Containers.Formal_Doubly_Linked_Lists``
- * ``Ada.Containers.Formal_Hashed_Sets``
- * ``Ada.Containers.Formal_Ordered_Sets``
- * ``Ada.Containers.Formal_Hashed_Maps``
- * ``Ada.Containers.Formal_Ordered_Maps``
+* ``Ada.Containers.Formal_Vectors``
+* ``Ada.Containers.Formal_Doubly_Linked_Lists``
+* ``Ada.Containers.Formal_Hashed_Sets``
+* ``Ada.Containers.Formal_Ordered_Sets``
+* ``Ada.Containers.Formal_Hashed_Maps``
+* ``Ada.Containers.Formal_Ordered_Maps``
 
 They are adapted to critical software
 development. They are bounded, so that there can be no dynamic
