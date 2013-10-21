@@ -187,6 +187,26 @@ is
    ------------------------------------------------------------------
 
    ------------------------------------------------------------------
+   -- AgeLessThan
+   --
+   --    Description:
+   --       Compares two date strings.
+   --
+   --    Implementation Notes:
+   --       Hidden since string comparison not supported by VCG.
+   --
+   ------------------------------------------------------------------
+   function AgeLessThan (Left, Right : Clock.TimeTextT) return Boolean
+     with SPARK_Mode;
+
+   function AgeLessThan (Left, Right : Clock.TimeTextT) return Boolean
+     with SPARK_Mode => Off
+   is
+   begin
+      return Left < Right;
+   end AgeLessThan;
+
+   ------------------------------------------------------------------
    -- NextListIndex
    --
    --    Description:
@@ -247,6 +267,10 @@ is
    ------------------------------------------------------------------
    function ConvertToAuditDescription(Description : String)
                                      return AuditTypes.DescriptionT
+     with SPARK_Mode;
+
+   function ConvertToAuditDescription(Description : String)
+                                     return AuditTypes.DescriptionT
       with SPARK_Mode => Off
    is
       LocalDesc : AuditTypes.DescriptionT := AuditTypes.NoDescription;
@@ -298,7 +322,6 @@ is
       function ConvertTimesToText return AuditTypes.DescriptionT
         with Global => (FirstTime, LastTime, TimeOK)
       is
-         --  pragma SPARK_Mode (Off);
          Descr : AuditTypes.DescriptionT;
       begin
          if TimeOK then
@@ -405,7 +428,6 @@ is
                                    return AuditTypes.DescriptionT
          with Global  => (LastTime, TimeOK)
       is
-         --  pragma SPARK_Mode (Off);
          Descr : AuditTypes.DescriptionT;
          FirstTime : Clock.TimeTextT;
          Offset : Positive;
@@ -487,13 +509,15 @@ is
    --       its purpose is to remove a temporary file - not modelled in SPARK.
    ------------------------------------------------------------------
    procedure DeleteArchiveFile
-      with Depends => null
+     with SPARK_Mode,
+          Depends => null;
+
+   procedure DeleteArchiveFile
+     with SPARK_Mode => Off
    is
-      pragma SPARK_Mode (Off);
       Archive : File.T;
       Unused : Boolean;
    begin
-
       Archive := File.Construct (TheName => ArchiveFileName);
 
       File.OpenRead(TheFile => Archive,
@@ -586,7 +610,6 @@ is
    ------------------------------------------------------------------
       function NameOfType (E : AuditTypes.ElementT) return ElementTextT
       is
-         --  pragma SPARK_Mode (Off);
 
          ElementText : ElementTextT := NoElement;
 
@@ -888,7 +911,6 @@ is
 
       else
 
-         --# check LogFileEntries(CurrentLogFile) = MaxLogFileEntries;
          pragma Assert (LogFileEntries(CurrentLogFile) = MaxLogFileEntries);
 
          AddElementToNextFile
@@ -1104,10 +1126,9 @@ is
                                 NumberLogEntries,
                                 UsedLogFiles) => LogFiles),
            Refined_Post    => (UsedLogFiles.Length >= 1 and then
-                                 NumberLogEntries =
+                               NumberLogEntries =
                                  LogEntryCountT(UsedLogFiles.Length - 1) * MaxLogFileEntries +
                                  LogFileEntries(CurrentLogFile))
-   --# post NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile);
    is
      type FileAgeT is array (LogFileIndexT) of Clock.TimeTextT;
      FileAges      : FileAgeT;
@@ -1199,10 +1220,6 @@ is
                     end if;
                     -- See how full it is
                     while not File.EndOfFile(FileH) loop
-                       --# assert NumberEntries >= 0 and NumberEntries < MaxLogFileEntries;
-                       --  pragma Loop_Invariant
-                       --    (NumberEntries >= 0 and then
-                       --     NumberEntries < MaxLogFileEntries);
                        File.SkipLine(FileH, 1);
                        NumberEntries := NumberEntries + 1;
                        exit when NumberEntries = MaxLogFileEntries;
@@ -1247,23 +1264,6 @@ is
      end SetFileDetails;
 
      ------------------------------------------------------------------
-     -- AgeLessThan
-     --
-     --    Description:
-     --       Compares two date strings.
-     --
-     --    Implementation Notes:
-     --       Hidden since string comparison not supported by VCG.
-     --
-     ------------------------------------------------------------------
-     function AgeLessThan (Left, Right : Clock.TimeTextT) return Boolean
-        --  with SPARK_Mode => Off
-     is
-     begin
-        return Left < Right;
-     end AgeLessThan;
-
-     ------------------------------------------------------------------
      -- begin Init
      ------------------------------------------------------------------
    begin
@@ -1278,12 +1278,6 @@ is
 
       UsedLogFiles := EmptyList;
       for I in LogFileIndexT loop
-         --# assert I in LogFileIndexT and UsedLogFiles.Length in LogFileCountT and UsedLogFiles.Length < I and UsedLogFiles.LastI in LogFileIndexT and (UsedLogFiles.Length > 0 -> UsedLogFiles.LastI < I) and (for all N in LogFileIndexT => (LogFileEntries(N) in FileEntryCountT))  and (for all N in LogFileIndexT => (UsedLogFiles.List(N) in LogFileIndexT));
-         pragma Loop_Invariant
-           (UsedLogFiles.Length in LogFileCountT and then
-            UsedLogFiles.Length < I and then
-            UsedLogFiles.LastI in LogFileIndexT and then
-              ((UsedLogFiles.Length > 0) <= (UsedLogFiles.LastI < I)));
          if LogFilesStatus(I) = Used then
             if UsedLogFiles.Length = 0 then
                -- easy case list currently empty
@@ -1293,14 +1287,6 @@ is
                UsedLogFiles.List(UsedLogFiles.Head) := I;
             else
                for J in LogFileIndexT  range 1..UsedLogFiles.LastI loop
-                  --# assert I in LogFileIndexT and J in LogFileIndexT and J <= UsedLogFiles.LastI and UsedLogFiles.LastI in LogFileIndexT and UsedLogFiles.Length in LogFileCountT and UsedLogFiles.Length > 0 and UsedLogFiles.Length < I and (UsedLogFiles.Length > 0 -> UsedLogFiles.LastI < I) and (for all N in LogFileIndexT => (LogFileEntries(N) in FileEntryCountT)) and (for all N in LogFileIndexT => (UsedLogFiles.List(N) in LogFileIndexT));
-                  pragma Loop_Invariant
-                    (J <= UsedLogFiles.LastI and then
-                     UsedLogFiles.LastI in LogFileIndexT and then
-                     UsedLogFiles.Length in LogFileCountT and then
-                     UsedLogFiles.Length > 0 and then
-                     UsedLogFiles.Length < I and then
-                       ((UsedLogFiles.Length > 0) <= (UsedLogFiles.LastI < I)));
                   if AgeLessThan(FileAges(I), FileAges(UsedLogFiles.List(J))) then
                      -- this is where the new entry goes.
                      -- move all other entries up the list to make room
@@ -1308,15 +1294,6 @@ is
                      UsedLogFiles.Length := UsedLogFiles.Length + 1;
                      for K in reverse LogFileIndexT
                        range J + 1..UsedLogFiles.LastI loop
-                        --# assert K in LogFileIndexT and J in LogFileIndexT and I in LogFileIndexT and J = J% and K >= J + 1 and K <= UsedLogFiles.LastI and UsedLogFiles.LastI in LogFileIndexT and UsedLogFiles.Length in LogFileCountT and UsedLogFiles.Length > 0 and UsedLogFiles.Length <= I and UsedLogFiles.LastI <= I and (for all N in LogFileIndexT => (LogFileEntries(N) in FileEntryCountT)) and (for all N in LogFileIndexT => (UsedLogFiles.List(N) in LogFileIndexT));
-                        pragma Loop_Invariant
-                          (K >= J + 1 and then
-                           K <= UsedLogFiles.LastI and then
-                           UsedLogFiles.LastI in LogFileIndexT and then
-                           UsedLogFiles.Length in LogFileCountT and then
-                           UsedLogFiles.Length > 0 and then
-                           UsedLogFiles.Length <= I and then
-                           UsedLogFiles.LastI <= I);
                         UsedLogFiles.List(K) := UsedLogFiles.List(K - 1);
                      end loop;
                      UsedLogFiles.List(J) := I;
@@ -1334,14 +1311,6 @@ is
          end if;
       end loop;
 
-      --# assert UsedLogFiles.Length in LogFileCountT and UsedLogFiles.LastI in LogFileIndexT and (for all N in LogFileIndexT => (LogFileEntries(N) in FileEntryCountT))  and (for all N in LogFileIndexT => (UsedLogFiles.List(N) in LogFileIndexT));
-      pragma Assert_And_Cut
-        (UsedLogFiles.Length in LogFileCountT and then
-         UsedLogFiles.LastI in LogFileIndexT and then
-         (for all N in LogFileIndexT =>
-           (LogFileEntries(N) in FileEntryCountT)) and then
-         (for all N in LogFileIndexT =>
-           (UsedLogFiles.List(N) in LogFileIndexT)));
       if UsedLogFiles.Length = 0 then
          CurrentLogFile := LogFileIndexT'First;
          -- The current file is the first used file.
@@ -1353,13 +1322,6 @@ is
       else
          CurrentLogFile := UsedLogFiles.List(UsedLogFiles.LastI);
       end if;
-
-      --# assert UsedLogFiles.Length in LogFileCountT and UsedLogFiles.Length > 0 and (LogFileEntries(CurrentLogFile) in FileEntryCountT) and CurrentLogFile in LogFileIndexT;
-      pragma Assert_And_Cut
-        (UsedLogFiles.Length in LogFileCountT and then
-         UsedLogFiles.Length > 0 and then
-           (LogFileEntries(CurrentLogFile) in FileEntryCountT) and then
-         CurrentLogFile in LogFileIndexT);
 
       NumberLogEntries := LogEntryCountT(UsedLogFiles.Length - 1) * MaxLogFileEntries
         + LogFileEntries(CurrentLogFile);
@@ -1557,11 +1519,8 @@ is
 
          while ArchivedFileCount < MaxNumberArchivableFiles
             and ArchivedFileCount < UsedLogFiles.Length loop
-            --# assert FileIndexInUsedList in LogFileIndexT and ArchivedFileCount >= 0 and ArchivedFileCount < MaxNumberArchivableFiles and NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile);
             pragma Loop_Invariant
-              (ArchivedFileCount >= 0 and then
-               ArchivedFileCount < MaxNumberArchivableFiles and then
-               NumberLogEntries =
+              (NumberLogEntries =
                  LogEntryCountT(UsedLogFiles.Length - 1) * MaxLogFileEntries +
                  LogFileEntries(CurrentLogFile));
 
@@ -1599,7 +1558,6 @@ is
 
       end if;
 
-      --# assert NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile);
       pragma Assert_And_Cut
         (NumberLogEntries =
            LogEntryCountT(UsedLogFiles.Length - 1) * MaxLogFileEntries +
@@ -1686,7 +1644,6 @@ is
       -- Note the CurrentLogFile cannot be Archived.
 
       while UsedLogFiles.Length > 1 loop
-         --# assert UsedLogFiles.Length > 1 and NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile);
          pragma Loop_Invariant
            (UsedLogFiles.Length > 1 and then
             NumberLogEntries =
