@@ -1,8 +1,8 @@
 .. _introduction to SPARK:
 
-*******************
-Overview of |SPARK|
-*******************
+****************************
+Overview of |SPARK| Language
+****************************
 
 This chapter provides an overview of the |SPARK| language, detailing for each
 feature its consequences in terms of execution and formal verification. This is
@@ -856,10 +856,17 @@ Libraries. In critical software where verification objectives
 severely restrict the use of pointers, containers offer an attractive
 alternative to pointer-intensive data structures.
 
-There are 6 formal containers: ``Formal_Vectors``,
-``Formal_Doubly_Linked_Lists``, ``Formal_Hashed_Sets``,
-``Formal_Ordered_Sets``, ``Formal_Hashed_Maps``, and
-``Formal_Ordered_Maps``. They are adapted to critical software
+There are 6 formal containers, which are part of the GNAT standard
+library:
+
+ * ``Ada.Containers.Formal_Vectors``
+ * ``Ada.Containers.Formal_Doubly_Linked_Lists``
+ * ``Ada.Containers.Formal_Hashed_Sets``
+ * ``Ada.Containers.Formal_Ordered_Sets``
+ * ``Ada.Containers.Formal_Hashed_Maps``
+ * ``Ada.Containers.Formal_Ordered_Maps``
+
+They are adapted to critical software
 development. They are bounded, so that there can be no dynamic
 allocation and they have preconditions that can be used to ensure that
 there is no error at run-time. They are experimental, and, as such,
