@@ -23,7 +23,6 @@ is
          R := (D    => Foo,
                X    => X,
                Flag => False);
-         --  Missing Flag here would be illegal.
       else
          R := (D    => Baz,
                Z    => Bar,
@@ -132,15 +131,11 @@ is
       X := R;
    end Test_Definite_05;
 
-   --  procedure Test_Definite_06 (X : out Search_Result;
-   --                              Y : out Boolean)
-   --  with Global => null,
-   --       Depends => (X       => null,
-   --                   X.Found => null,
-   --                   Y       => X.Found);
-
    procedure Test_Definite_06 (X : out Search_Result;
                                Y : out Boolean)
+   with Global => null,
+        Depends => (X => null,
+                    Y => X)
    is
    begin
       Y := X.Found;
@@ -150,31 +145,14 @@ is
    procedure Test_Definite_07 (X : out Search_Result;
                                Y : out Boolean)
    with Global => null,
-        Depends => (X => null,
-                    Y => X);
-
-   procedure Test_Definite_07 (X : out Search_Result;
-                               Y : out Boolean)
-   is
-   begin
-      Y := X.Found;
-      X := (False, Dont_Care);
-   end Test_Definite_07;
-
-   procedure Test_Definite_08 (X : out Search_Result;
-                               Y : out Boolean)
-   with Global => null,
         Depends => (X    => null,
                     Y    => null,
-                    null => X);
-
-   procedure Test_Definite_08 (X : out Search_Result;
-                               Y : out Boolean)
+                    null => X)
    is
    begin
       Y := False;
       X := (False, Dont_Care);
-   end Test_Definite_08;
+   end Test_Definite_07;
 
    ----------------------------------------------------------------------
 

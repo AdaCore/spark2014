@@ -138,13 +138,14 @@ is
       end case;
    end Test_02_ND;
 
-   --  procedure Test_03 (X : out T)
-   --  with Global  => null,
-   --       Depends => (X => null)
-   --  is
-   --  begin
-   --     X := (File_Not_Found, 0);
-   --  end Test_03;
+   procedure Test_03 (X : out T)
+   with Global  => null,
+        Depends => (X => null,
+                    null => X)
+   is
+   begin
+      X := (File_Not_Found, 0);
+   end Test_03;
 
    procedure Test_03_ND (X : out T)
    with Global => null
@@ -162,5 +163,15 @@ is
    begin
       X := (File_Not_Found, I);
    end Test_04;
+
+   procedure Test_05 (X :    out T;
+                      I : in     Integer)
+   with Global => null,
+   Depends => (X => I,
+               null => X)
+   is
+   begin
+      X := (File_Not_Found, I);
+   end Test_05;
 
 end Definite;
