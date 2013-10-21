@@ -55,6 +55,13 @@ package SPARK_Util is
    --  not private, it simply returns it. E. As a special case, return the
    --  first type in a package with external axioms found.
 
+   function MUT_Kind (T : Entity_Id) return Entity_Kind with
+     Pre => Ekind (T) in Type_Kind;
+   --  Returns the entity kind of the "most underlying type" of a type T.
+   --  This is not the same as Ekind (MUT (T)), because MUT (T) may still
+   --  be a private type for those types defined in a unit with an external
+   --  axiomatization.
+
    --  The following functions provide wrappers for the query functions
    --  in Einfo, that apply the query on the most underlying type of its
    --  argument, hence skipping all layers of pivate types. To avoid confusion,
@@ -62,28 +69,28 @@ package SPARK_Util is
    --  Has_Such_And_Such_Type.
 
    function Has_Array_Type (T : Entity_Id) return Boolean is
-     (Is_Array_Type (MUT (T)));
+     (MUT_Kind (T) in Array_Kind);
 
    function Has_Composite_Type (T : Entity_Id) return Boolean is
-     (Is_Composite_Type (MUT (T)));
+     (MUT_Kind (T) in Composite_Kind);
 
    function Has_Discrete_Type (T : Entity_Id) return Boolean is
-     (Is_Discrete_Type (MUT (T)));
+     (MUT_Kind (T) in Discrete_Kind);
 
    function Has_Enumeration_Type (T : Entity_Id) return Boolean is
-     (Is_Enumeration_Type (MUT (T)));
+     (MUT_Kind (T) in Enumeration_Kind);
 
    function Has_Modular_Integer_Type (T : Entity_Id) return Boolean is
-     (Is_Modular_Integer_Type (MUT (T)));
+     (MUT_Kind (T) in Modular_Integer_Kind);
 
    function Has_Record_Type (T : Entity_Id) return Boolean is
-     (Is_Record_Type (MUT (T)));
+     (MUT_Kind (T) in Record_Kind);
 
    function Has_Scalar_Type (T : Entity_Id) return Boolean is
-     (Is_Scalar_Type (MUT (T)));
+     (MUT_Kind (T) in Scalar_Kind);
 
    function Has_Signed_Integer_Type (T : Entity_Id) return Boolean is
-     (Is_Signed_Integer_Type (MUT (T)));
+     (MUT_Kind (T) in Signed_Integer_Kind);
 
    ---------------
    -- Utilities --

@@ -1095,6 +1095,24 @@ package body SPARK_Util is
       end loop;
    end MUT;
 
+   --------------
+   -- MUT_Kind --
+   --------------
+
+   function MUT_Kind (T : Entity_Id) return Entity_Kind is
+      Typ : Entity_Id := T;
+   begin
+      loop
+         if Ekind (Typ) in Private_Kind then
+            Typ := Underlying_Type (Typ);
+         else
+            exit;
+         end if;
+      end loop;
+
+      return Ekind (Typ);
+   end MUT_Kind;
+
    -----------------------
    -- Number_Components --
    -----------------------

@@ -597,7 +597,16 @@ package body Why.Gen.Expr is
       L : constant Node_Id := Get_Ada_Node (+From);
       R : constant Node_Id := Get_Ada_Node (+To);
       pragma Assert (Root_Record_Type (L) = Root_Record_Type (R));
-      Base : constant W_Type_Id := EW_Abstract (Root_Record_Type (L));
+
+      --  Record in units with external axiomatization may have a root type not
+      --  in SPARK. Conversions between these record types is expected to be
+      --  noop, and so we use type L as common type.
+
+      Base : constant W_Type_Id :=
+        (if Entity_In_External_Axioms (Root_Record_Type (L)) then
+           EW_Abstract (L)
+         else
+           EW_Abstract (Root_Record_Type (L)));
 
    begin
       --  When From = To and no check needs to be inserted, do nothing

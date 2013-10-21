@@ -1389,11 +1389,13 @@ package body Gnat2Why.Decls is
    is
       Name : constant String := Full_Name (E);
       Typ  : constant W_Type_Id :=
-        (if Ekind (E) = E_Loop_Parameter
-         then EW_Int_Type
-         elsif Is_Array_Type (Etype (E)) and then
-           not Is_Constrained (Etype (E)) then
-              EW_Split (Etype (E))
+        (if Ekind (E) = E_Loop_Parameter then
+           EW_Int_Type
+         elsif Is_Array_Type (Etype (E))
+           and then Ekind (E) in Formal_Kind
+           and then not Is_Constrained (Etype (E))
+         then
+           EW_Split (Etype (E))
          else
            EW_Abstract (Etype (E)));
       Why_Name : constant W_Identifier_Id :=

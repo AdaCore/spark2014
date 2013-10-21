@@ -601,7 +601,18 @@ package body Why.Inter is
    begin
       case E is
          when EW_Abstract =>
-            if Is_Record_Type (Typ) then
+
+            --  For a record type, we take as base type its root type, in order
+            --  to allow conversions between all types that derive from it.
+
+            --  Record in units with external axiomatization may have a root
+            --  type not in SPARK. Conversions between these record types is
+            --  expected to be noop, so the base type is taken to be the same
+            --  as the type in that case.
+
+            if Has_Record_Type (Typ)
+              and then not Entity_In_External_Axioms (Typ)
+            then
                return EW_Abstract (Root_Record_Type (Typ));
             else
                return EW_Abstract (Typ);
@@ -1157,8 +1168,8 @@ package body Why.Inter is
    function Is_Record_Conversion (Left, Right : W_Type_Id) return Boolean
    is (Get_Base_Type (Base_Why_Type (Left)) in EW_Abstract | EW_Split and then
        Get_Base_Type (Base_Why_Type (Right)) in EW_Abstract | EW_Split and then
-       Is_Record_Type (Get_Ada_Node (+Left)) and then
-       Is_Record_Type (Get_Ada_Node (+Right)));
+       Has_Record_Type (Get_Ada_Node (+Left)) and then
+       Has_Record_Type (Get_Ada_Node (+Right)));
 
    -------------------------
    -- Is_Array_Conversion --
@@ -1167,8 +1178,8 @@ package body Why.Inter is
    function Is_Array_Conversion (Left, Right : W_Type_Id) return Boolean
    is (Get_Base_Type (Base_Why_Type (Left)) in EW_Abstract | EW_Split and then
        Get_Base_Type (Base_Why_Type (Right)) in EW_Abstract | EW_Split and then
-       Is_Array_Type (Get_Ada_Node (+Left)) and then
-       Is_Array_Type (Get_Ada_Node (+Right)));
+       Has_Array_Type (Get_Ada_Node (+Left)) and then
+       Has_Array_Type (Get_Ada_Node (+Right)));
 
    ---------
    -- LCA --
