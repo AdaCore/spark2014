@@ -1,0 +1,4 @@
+foo.adb:6:04: warning: initialization has no effect [ineffective]
+foo.adb:9:06: warning: unused assignment [ineffective]
+foo.adb:10:04: warning: statement has no effect [ineffective]
+foo.adb:11:09: warning: unused assignment [ineffective]

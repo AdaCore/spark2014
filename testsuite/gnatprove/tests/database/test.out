@@ -1,11 +1,7 @@
-database.adb:31:07: warning: initialization has no effect [ineffective]
 database.adb:32:35: info: length check proved
-database.adb:34:07: warning: initialization has no effect [ineffective]
 database.adb:45:17: info: postcondition proved
 database.adb:53:17: info: postcondition proved
-database.adb:98:04: warning: initialization has no effect [ineffective]
 database.adb:98:52: info: length check proved
-database.adb:101:04: warning: initialization has no effect [ineffective]
 database.adb:102:46: info: length check proved
 database.adb:113:21: info: range check proved
 database.adb:114:17: info: index check proved
@@ -17,8 +13,6 @@ database.adb:143:13: info: loop invariant initialization proved
 database.adb:143:13: info: loop invariant preservation proved
 database.adb:145:31: info: overflow check proved
 database.adb:164:30: info: range check proved
-database.adb:173:07: warning: statement has no effect [ineffective]
-database.adb:173:07: warning: unused assignment to "Links" [ineffective]
 database.adb:242:19: info: precondition proved
 database.adb:263:10: info: precondition proved
 database.adb:274:22: info: precondition proved

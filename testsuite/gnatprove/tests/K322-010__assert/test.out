@@ -3,7 +3,6 @@ pack.adb:6:7: warning: assertion might fail, requires X = 10
 pack.adb:11:4: info: assertion proved
 pack.adb:14:7: warning: assertion might fail, requires X > 0
 pack.adb:16:7: warning: assertion might fail, requires X = 10
-pack.ads:3:04: warning: initialization has no effect [ineffective]
 pack.ads:5:4: info: assertion proved
 pack.ads:9:19: warning: postcondition might fail, requires 1 / X > 0
 pack.ads:9:21: info: division check proved

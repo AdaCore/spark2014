@@ -21,7 +21,6 @@ initializes_illegal_4.adb:9:07: warning: initialization has no effect [ineffecti
 initializes_illegal_4.adb:11:09: warning: unused assignment [ineffective]
 initializes_illegal_4.adb:22:17: warning: unused assignment [ineffective]
 initializes_illegal_4.adb:25:17: "G_Var2" must be listed in the Initializes aspect of "Pac3"
-initializes_illegal_4.ads:4:04: warning: initialization has no effect [ineffective]
 initializes_illegal_4.ads:35:07: warning: initialization has no effect [ineffective]
 initializes_illegal_4.ads:38:12: "G_Var2" must be listed in the Initializes aspect of "Pac3"
 gprbuild: *** compilation phase failed

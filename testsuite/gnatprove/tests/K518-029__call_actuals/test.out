@@ -1,4 +1,3 @@
-call_actuals.adb:3:04: warning: initialization has no effect [ineffective]
 call_actuals.adb:8:14: warning: overflow check might fail
 call_actuals.adb:13:12: warning: range check might fail
 call_actuals.adb:14:14: warning: overflow check might fail

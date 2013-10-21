@@ -2438,9 +2438,15 @@ package body Flow.Control_Flow_Graph is
             Spec_N := FA.Scope;
             Body_N := Spec_N;
 
+            FA.Initializes_N := Get_Pragma (FA.Analyzed_Entity,
+                                            Pragma_Initializes);
+
          when E_Package_Body =>
             Body_N := FA.Scope;
             Spec_N := Get_Enclosing_Scope (Corresponding_Spec (Body_N));
+
+            FA.Initializes_N := Get_Pragma (Spec_Entity (FA.Analyzed_Entity),
+                                            Pragma_Initializes);
       end case;
 
       --  Create the magic start and end vertices.
@@ -2569,19 +2575,13 @@ package body Flow.Control_Flow_Graph is
             --  Any such globals are global inputs *only* as packages
             --  are only allowed to initialise their own state.
             declare
-               Initializes_Contract : constant Node_Id :=
-                 (if FA.Kind = E_Package
-                  then Get_Pragma (FA.Analyzed_Entity, Pragma_Initializes)
-                  else Get_Pragma (Spec_Entity (FA.Analyzed_Entity),
-                                   Pragma_Initializes));
-
                Global_Ins : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
                --  We need to make sure to only add each global once
                --  (an entity might be used to derive more than one of
                --  our states).
             begin
-               if Present (Initializes_Contract) then
-                  for Opt_In of Parse_Initializes (Initializes_Contract) loop
+               if Present (FA.Initializes_N) then
+                  for Opt_In of Parse_Initializes (FA.Initializes_N) loop
                      if Opt_In.Exists then
                         for G of Opt_In.The_Set loop
                            if not Global_Ins.Contains (G) then

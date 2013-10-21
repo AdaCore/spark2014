@@ -643,7 +643,8 @@ package body Flow is
                Loops             => Node_Sets.Empty_Set,
                Magic_Source      => Magic_String_To_Node_Sets.Empty_Map,
                Aliasing_Present  => False,
-               Base_Filename     => To_Unbounded_String ("package_spec_"));
+               Base_Filename     => To_Unbounded_String ("package_spec_"),
+               Initializes_N     => Empty);
 
          when E_Package_Body =>
             FA := Flow_Analysis_Graphs'
@@ -664,7 +665,8 @@ package body Flow is
                Loops             => Node_Sets.Empty_Set,
                Magic_Source      => Magic_String_To_Node_Sets.Empty_Map,
                Aliasing_Present  => False,
-               Base_Filename     => To_Unbounded_String ("package_body_"));
+               Base_Filename     => To_Unbounded_String ("package_body_"),
+               Initializes_N     => Empty);
 
          when others =>
             raise Why.Not_SPARK;

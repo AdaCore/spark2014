@@ -922,7 +922,13 @@ package body Flow.Analysis is
    procedure Find_Ineffective_Statements (FA : in out Flow_Analysis_Graphs) is
       Tracefile : Unbounded_String;
 
-      function Is_Final_Use (V : Flow_Graphs.Vertex_Id) return Boolean;
+      function Is_Final_Use_Any_Export (V : Flow_Graphs.Vertex_Id)
+                                        return Boolean;
+      --  Checks if the given vertex V is a final-use vertex that is
+      --  also an export.
+
+      function Is_Any_Final_Use (V : Flow_Graphs.Vertex_Id)
+                                 return Boolean;
       --  Checks if the given vertex V is a final-use vertex.
 
       function Find_Masking_Code
@@ -940,11 +946,30 @@ package body Flow.Analysis is
       --  Skips any conversions (unchecked or otherwise) and jumps to
       --  the actual object.
 
-      function Is_Final_Use (V : Flow_Graphs.Vertex_Id) return Boolean is
+      -----------------------------
+      -- Is_Final_Use_Any_Export --
+      -----------------------------
+
+      function Is_Final_Use_Any_Export (V : Flow_Graphs.Vertex_Id)
+                                        return Boolean is
       begin
          return FA.PDG.Get_Key (V).Variant = Final_Value and then
            FA.PDG.Get_Attributes (V).Is_Export;
-      end Is_Final_Use;
+      end Is_Final_Use_Any_Export;
+
+      ----------------------
+      -- Is_Any_Final_Use --
+      ----------------------
+
+      function Is_Any_Final_Use (V : Flow_Graphs.Vertex_Id)
+                                 return Boolean is
+      begin
+         return FA.PDG.Get_Key (V).Variant = Final_Value;
+      end Is_Any_Final_Use;
+
+      -----------------------
+      -- Find_Masking_Code --
+      -----------------------
 
       function Find_Masking_Code
         (Ineffective_Statement : Flow_Graphs.Vertex_Id)
@@ -985,6 +1010,10 @@ package body Flow.Analysis is
          return Mask;
       end Find_Masking_Code;
 
+      --------------------------
+      -- Skip_Any_Conversions --
+      --------------------------
+
       function Skip_Any_Conversions (N : Node_Or_Entity_Id)
                                      return Node_Or_Entity_Id
       is
@@ -1001,7 +1030,7 @@ package body Flow.Analysis is
          end loop;
       end Skip_Any_Conversions;
 
-   begin
+   begin --  Find_Ineffective_Statements
       for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
             N    : Node_Id;
@@ -1015,8 +1044,25 @@ package body Flow.Analysis is
               Atr.Is_Parameter or
               Atr.Is_Global_Parameter
             then
-               if not FA.PDG.Non_Trivial_Path_Exists
-                 (V, Is_Final_Use'Access)
+               --  A vertex is ineffective if there is no path in the
+               --  PDG to *any* final use vertex that is also an
+               --  export.
+               --
+               --  If we analyse a package, we supress this message if
+               --  we don't have a initializes clause *and* the the
+               --  given vertex has an effect on any final use (export
+               --  or otherwise).
+               if
+                 --  Basic check here
+                 not FA.PDG.Non_Trivial_Path_Exists
+                 (V, Is_Final_Use_Any_Export'Access) and then
+
+                 --  Supression for packages without initializes
+                 (if FA.Kind in E_Package | E_Package_Body and then
+                    not Present (FA.Initializes_N)
+                  then
+                     not FA.PDG.Non_Trivial_Path_Exists
+                       (V, Is_Any_Final_Use'Access))
                then
                   Mask := Find_Masking_Code (V);
                   if FA.PDG.Get_Key (V) = Null_Flow_Id then

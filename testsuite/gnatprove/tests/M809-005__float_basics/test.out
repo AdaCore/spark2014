@@ -324,4 +324,3 @@ homothetical.adb:65:33: warning: overflow check might fail
 homothetical.ads:24:14: warning: postcondition might fail
 reduced_01.ads:7:32: info: overflow check proved
 reduced_02.ads:9:15: info: range check proved
-An error occurred when calling the prover.

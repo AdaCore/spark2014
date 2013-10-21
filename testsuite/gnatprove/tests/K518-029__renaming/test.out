@@ -1,2 +1,1 @@
-renam.ads:2:04: warning: initialization has no effect [ineffective]
 renam.ads:5:33: warning: postcondition might fail, requires X = X'old

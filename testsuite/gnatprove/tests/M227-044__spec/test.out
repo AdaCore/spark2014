@@ -1,4 +1,3 @@
-test.adb:3:03: warning: initialization has no effect [ineffective]
 test.adb:13:5: info: precondition proved
 test.adb:14:5: warning: assertion might fail, requires X = 0
 test.adb:13:5: info: precondition proved

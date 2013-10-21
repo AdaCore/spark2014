@@ -1,8 +1,5 @@
-pack.adb:3:04: warning: initialization has no effect [ineffective]
 pack.adb:3:23: info: length check proved
-pack.adb:4:04: warning: initialization has no effect [ineffective]
 pack.adb:4:32: info: length check proved
-pack.adb:9:04: warning: initialization has no effect [ineffective]
 pack.adb:12:07: warning: initialization has no effect [ineffective]
 pack.adb:12:34: info: length check proved
 pack.adb:13:41: info: length check proved
