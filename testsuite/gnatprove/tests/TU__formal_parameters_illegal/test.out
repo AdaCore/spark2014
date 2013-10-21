@@ -3,5 +3,5 @@ formal_parameters_illegal.adb:30:11: "Arr" is not initialized [uninitialized]
    compilation of formal_parameters_illegal.adb failed
 
 
-gprbuild: *** compilation phase failed
 gnatprove: error during translation to intermediate language, aborting.
+gprbuild: *** compilation phase failed
