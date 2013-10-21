@@ -8,9 +8,9 @@ nested_pkg.adb:64:08: warning: unused assignment to "State" [ineffective]
 stack_asm.adb:38:40: "The_Stack" is not initialized [uninitialized]
 test.adb:21:41: "State" is not initialized [uninitialized]
 test.adb:24:09: "State" is not initialized [uninitialized]
-
-   compilation of test.adb failed
    compilation of stack_asm.adb failed
+   compilation of test.adb failed
+
 
 gprbuild: *** compilation phase failed
 gnatprove: error during translation to intermediate language, aborting.
