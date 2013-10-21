@@ -1,0 +1,7 @@
+formal_parameters_illegal.adb:10:44: "Rec.B" is not initialized in "Formal_Not_Fully_Initialized" [uninitialized]
+formal_parameters_illegal.adb:30:11: "Arr" is not initialized [uninitialized]
+   compilation of formal_parameters_illegal.adb failed
+
+
+gprbuild: *** compilation phase failed
+gnatprove: error during translation to intermediate language, aborting.
