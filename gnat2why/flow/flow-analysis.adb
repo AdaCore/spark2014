@@ -545,8 +545,9 @@ package body Flow.Analysis is
             --  quantifier.
             V_Used : constant Ordered_Flow_Id_Sets.Set :=
               To_Ordered_Flow_Id_Set
-              (Get_Variable_Set (FA.Scope, Expr, True) -
-                 Quantified_Variables (Expr));
+              (To_Entire_Variables
+                 (Get_Variable_Set (FA.Scope, Expr, True) -
+                    Quantified_Variables (Expr)));
 
             Tmp : constant String :=
               (case FA.Kind is

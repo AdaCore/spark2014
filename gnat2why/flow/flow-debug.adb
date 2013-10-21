@@ -42,6 +42,19 @@ package body Flow.Debug is
       Outdent;
    end Print_Node_Set;
 
+   procedure Print_Node_Set (S : Ordered_Flow_Id_Sets.Set) is
+   begin
+      Write_Str ("Ordered_Flow_Id_Set with ");
+      Write_Int (Int (S.Length));
+      Write_Str (" elements:");
+      Write_Eol;
+      Indent;
+      for F of S loop
+         Print_Flow_Id (F);
+      end loop;
+      Outdent;
+   end Print_Node_Set;
+
    --------------------------
    -- Print_Dependency_Map --
    --------------------------
