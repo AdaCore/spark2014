@@ -1,4 +1,4 @@
-package body Test is 
+package body Test is
 
    G : Integer;
 
@@ -6,8 +6,8 @@ package body Test is
                              X : out Integer)
    is
    begin
-      if A then    --  ***
-         return;   --  ***
+      if A then
+         return;
       end if;
       X := 12;
    end Output_Not_Set;
@@ -15,15 +15,15 @@ package body Test is
    procedure Use_Of_Uninitialised (A : Boolean;
                                    X : out Integer)
    is
-      N : Integer;       --  Should we include this?
-      M : Integer := 8;  --  Not sure if we need to include this
+      N : Integer;
+      M : Integer := 8;
    begin
-      if A then          --  ***
+      if A then
          N := 12;
       else
-         M := 12;        --  ***
+         M := 12;
       end if;
-      X := N + M;        --  ***
+      X := N + M;  -- use of N
    end Use_Of_Uninitialised;
 
    procedure Extra_Dep (A, B, C : Integer;
@@ -65,6 +65,5 @@ package body Test is
          X := 7;
       end if;
    end Masked_Code;
-
 
 end Test;

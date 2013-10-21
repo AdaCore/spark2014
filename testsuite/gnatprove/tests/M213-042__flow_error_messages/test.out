@@ -1,1 +1,6 @@
-NOT IMPLEMENTED YET
+test.adb:6:30: warning: "X" might not be initialized in "Output_Not_Set" [uninitialized]
+test.adb:26:09: warning: "N" might not be initialized [uninitialized]
+test.adb:31:23: warning: missing dependency "X => C" [depends_missing]
+test.adb:56:07: warning: statement has no effect [ineffective]
+test.adb:57:12: warning: unused assignment [ineffective]
+test.adb:59:12: warning: unused assignment [ineffective]
