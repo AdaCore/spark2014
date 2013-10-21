@@ -24,7 +24,7 @@
 
 package SPARK2014VSN is
 
-   SPARK2014_Static_Version_String : constant String := "14.0.0w";
+   SPARK2014_Static_Version_String : constant String := "14.0.0rc";
    --  Static string identifying this version, that can be used as an argument
    --  to e.g. pragma Ident.
    --
