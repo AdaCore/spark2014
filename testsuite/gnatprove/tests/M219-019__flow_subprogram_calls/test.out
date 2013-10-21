@@ -6,12 +6,12 @@ test.adb:83:21: warning: missing dependency "Y => Y" [depends_missing]
 test.adb:87:21: warning: missing dependency "X => X" [depends_missing]
 test.adb:88:21: warning: missing dependency "Y => Y" [depends_missing]
 test.adb:176:33: warning: "Counter" might not be initialized [uninitialized]
-test.adb:195:07: warning: unused assignment to "Counter" [ineffective]
 test.adb:195:07: "Counter" is not initialized [uninitialized]
+test.adb:195:07: warning: unused assignment to "Counter" [ineffective]
 test.adb:196:07: warning: statement has no effect [ineffective]
 test.adb:196:07: warning: unused assignment to "Counter" [ineffective]
-test.adb:218:07: warning: unused assignment to "Counter" [ineffective]
 test.adb:218:07: "Counter" is not initialized [uninitialized]
+test.adb:218:07: warning: unused assignment to "Counter" [ineffective]
 test.adb:219:07: warning: statement has no effect [ineffective]
 test.adb:219:07: warning: unused assignment to "Counter" [ineffective]
 test.adb:248:24: warning: unused initial value of "S" [unused_initial_value]
@@ -21,8 +21,8 @@ test.adb:273:10: "S" must be a global output of "Indirect_Update" [illegal_updat
 test.adb:274:15: "X" must be a global output of "Indirect_Update" [illegal_update]
 test.adb:283:07: warning: statement has no effect [ineffective]
 test.adb:283:07: warning: unused assignment to "S" [ineffective]
-
    compilation of test.adb failed
 
-gprbuild: *** compilation phase failed
+
 gnatprove: error during translation to intermediate language, aborting.
+gprbuild: *** compilation phase failed

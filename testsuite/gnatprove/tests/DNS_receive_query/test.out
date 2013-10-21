@@ -4,8 +4,8 @@ parse.adb:50:42: info: range check proved
 parse.adb:57:16: info: precondition proved
 parse.adb:63:16: info: precondition proved
 parse.adb:69:16: info: precondition proved
-util.adb:6:14: warning: no Global contract available for "Shift_Left"
 util.adb:6:14: warning:  assuming "Shift_Left" has no effect on global items
-util.adb:17:09: warning: no Global contract available for "Shift_Right"
-util.adb:17:09: warning:  assuming "Shift_Right" has no effect on global items
+util.adb:6:14: warning: no Global contract available for "Shift_Left"
 util.adb:7:36: info: index check proved
+util.adb:17:09: warning:  assuming "Shift_Right" has no effect on global items
+util.adb:17:09: warning: no Global contract available for "Shift_Right"

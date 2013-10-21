@@ -1,2 +1,2 @@
-anon.adb:4:13: warning: unused assignment [ineffective]
 anon.adb:4:13: warning: "My_A" might not be initialized [uninitialized]
+anon.adb:4:13: warning: unused assignment [ineffective]

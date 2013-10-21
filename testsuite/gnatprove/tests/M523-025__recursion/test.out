@@ -1,7 +1,7 @@
-broken.adb:4:19: possible infinite recursion
 broken.adb:4:19: Storage_Error might have been raised at run time
-
+broken.adb:4:19: possible infinite recursion
    compilation of broken.adb failed
 
-gprbuild: *** compilation phase failed
+
 gnatprove: error during frame condition computation, aborting.
+gprbuild: *** compilation phase failed

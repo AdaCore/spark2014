@@ -1,15 +1,15 @@
-unconstr.adb:47:34: warning: unused initial value of "X" [unused_initial_value]
-unconstr.adb:49:07: warning: initialization has no effect [ineffective]
-unconstr.adb:51:24: warning: statement has no effect [ineffective]
-unconstr.adb:52:16: warning: unused assignment [ineffective]
-unconstr.adb:56:30: warning: unused initial value of "X" [unused_initial_value]
 unconstr.adb:9:20: info: postcondition proved
 unconstr.adb:18:20: warning: postcondition might fail, requires Constr_Call'Result = true
 unconstr.adb:22:31: info: length check proved
 unconstr.adb:23:33: info: length check proved
 unconstr.adb:30:20: info: postcondition proved
 unconstr.adb:44:14: info: length check proved
+unconstr.adb:47:34: warning: unused initial value of "X" [unused_initial_value]
+unconstr.adb:49:07: warning: initialization has no effect [ineffective]
 unconstr.adb:49:21: info: length check proved
+unconstr.adb:51:24: warning: statement has no effect [ineffective]
+unconstr.adb:52:16: warning: unused assignment [ineffective]
+unconstr.adb:56:30: warning: unused initial value of "X" [unused_initial_value]
 unconstr.adb:57:20: info: postcondition proved
 unconstr.adb:61:7: info: range check proved
 unconstr.adb:61:30: warning: length check might fail

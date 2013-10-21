@@ -9,8 +9,8 @@ test.adb:77:20: "R" is not initialized [uninitialized]
 test.adb:109:27: "X" is not initialized in "For_Test_01" [uninitialized]
 test.adb:112:33: warning: statement has no effect [ineffective]
 test.adb:113:12: warning: unused assignment [ineffective]
-
    compilation of test.adb failed
 
-gprbuild: *** compilation phase failed
+
 gnatprove: error during translation to intermediate language, aborting.
+gprbuild: *** compilation phase failed

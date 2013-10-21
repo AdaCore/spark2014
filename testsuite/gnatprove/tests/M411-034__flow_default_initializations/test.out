@@ -4,8 +4,8 @@ test.adb:42:09: "Tmp.A" is not initialized [uninitialized]
 test.adb:80:09: "Tmp.A.A" is not initialized [uninitialized]
 test.adb:91:14: flow analysis of "Test_06" abandoned due to records with non-manifest initializations
 test.adb:100:25: default initialization cannot depend on "Tmp"
-
    compilation of test.adb failed
 
-gprbuild: *** compilation phase failed
+
 gnatprove: error during translation to intermediate language, aborting.
+gprbuild: *** compilation phase failed

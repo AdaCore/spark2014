@@ -3,10 +3,10 @@ pack.adb:6:25: warning: range check might fail
 pack.adb:7:27: warning: overflow check might fail
 pack.adb:7:27: warning: range check might fail
 pack.ads:4:04: warning: initialization has no effect [ineffective]
-pack.ads:13:04: warning: initialization has no effect [ineffective]
-pack.ads:14:04: warning: initialization has no effect [ineffective]
 pack.ads:7:12: warning: range check might fail
 pack.ads:11:48: warning: range check might fail
+pack.ads:13:04: warning: initialization has no effect [ineffective]
+pack.ads:14:04: warning: initialization has no effect [ineffective]
 pack.ads:18:19: warning: postcondition might fail, requires Stash + Pocket = Stash'Old + Pocket'old
 pack.ads:18:26: warning: overflow check might fail
 pack.ads:18:47: warning: overflow check might fail

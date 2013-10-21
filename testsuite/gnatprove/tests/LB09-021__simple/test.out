@@ -1,6 +1,6 @@
-p.adb:5:24: warning: unused assignment [ineffective]
 p.adb:5:6: info: discriminant check proved
 p.adb:5:12: warning: discriminant check might fail
+p.adb:5:24: warning: unused assignment [ineffective]
 p.ads:18:16: warning: "V.Field" is not modified, could be "in" [inout_only_read]
 p.ads:18:16: warning: "V.Z" is not modified, could be "in" [inout_only_read]
 p.ads:18:16: warning: unused variable "V" [unused]

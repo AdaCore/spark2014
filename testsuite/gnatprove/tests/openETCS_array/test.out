@@ -1,13 +1,3 @@
-deceleration_curve.adb:89:21: warning: no Global contract available for "Sqrt"
-deceleration_curve.adb:89:21: warning:  assuming "Sqrt" has no effect on global items
-deceleration_curve.adb:107:10: warning: no Global contract available for "Put"
-deceleration_curve.adb:107:10: warning:  assuming "Put" has no effect on global items
-deceleration_curve.adb:108:10: warning: no Global contract available for "Put"
-deceleration_curve.adb:108:10: warning:  assuming "Put" has no effect on global items
-deceleration_curve.adb:109:10: warning: no Global contract available for "Put"
-deceleration_curve.adb:109:10: warning:  assuming "Put" has no effect on global items
-deceleration_curve.adb:111:10: warning: no Global contract available for "New_Line"
-deceleration_curve.adb:111:10: warning:  assuming "New_Line" has no effect on global items
 deceleration_curve.adb:37:10: info: assertion proved
 deceleration_curve.adb:39:10: warning: assertion might fail
 deceleration_curve.adb:40:10: warning: assertion might fail
@@ -27,6 +17,8 @@ deceleration_curve.adb:69:36: info: division check proved
 deceleration_curve.adb:69:36: info: range check proved
 deceleration_curve.adb:81:9: info: precondition proved
 deceleration_curve.adb:89:19: warning: overflow check might fail
+deceleration_curve.adb:89:21: warning:  assuming "Sqrt" has no effect on global items
+deceleration_curve.adb:89:21: warning: no Global contract available for "Sqrt"
 deceleration_curve.adb:89:32: warning: overflow check might fail
 deceleration_curve.adb:90:13: warning: overflow check might fail
 deceleration_curve.adb:90:29: warning: overflow check might fail
@@ -36,7 +28,15 @@ deceleration_curve.adb:91:46: warning: overflow check might fail
 deceleration_curve.adb:96:36: warning: overflow check might fail
 deceleration_curve.adb:96:36: warning: range check might fail
 deceleration_curve.adb:106:9: warning: precondition might fail
+deceleration_curve.adb:107:10: warning:  assuming "Put" has no effect on global items
+deceleration_curve.adb:107:10: warning: no Global contract available for "Put"
+deceleration_curve.adb:108:10: warning:  assuming "Put" has no effect on global items
+deceleration_curve.adb:108:10: warning: no Global contract available for "Put"
+deceleration_curve.adb:109:10: warning:  assuming "Put" has no effect on global items
+deceleration_curve.adb:109:10: warning: no Global contract available for "Put"
 deceleration_curve.adb:110:12: warning: precondition might fail
+deceleration_curve.adb:111:10: warning:  assuming "New_Line" has no effect on global items
+deceleration_curve.adb:111:10: warning: no Global contract available for "New_Line"
 deceleration_curve.ads:27:6: info: precondition proved
 deceleration_curve_test.adb:6:31: info: precondition proved
 deceleration_curve_test.adb:15:4: warning: assertion might fail, requires Distance_To_Speed(initial_speed, 0.0, -1.0) = 1000
@@ -55,8 +55,8 @@ sec_3_13_2_monitoring_inputs.ads:184:24: info: precondition proved
 sec_3_13_2_monitoring_inputs.ads:199:8: info: postcondition proved
 sec_3_13_2_monitoring_inputs.ads:200:24: info: precondition proved
 sec_3_13_2_monitoring_inputs.ads:243:46: info: precondition proved
-sec_3_13_6_deceleration.adb:26:37: warning: range check might fail
 sec_3_13_6_deceleration.adb:26:37: info: precondition proved
+sec_3_13_6_deceleration.adb:26:37: warning: range check might fail
 sec_3_13_6_deceleration.ads:39:6: info: postcondition proved
 sec_3_13_6_deceleration.ads:40:37: info: range check proved
 sec_3_13_6_deceleration.ads:40:37: warning: precondition might fail
@@ -76,12 +76,11 @@ sec_3_13_8_targets_decel_curves.adb:24:7: warning: precondition might fail
 section_3_5_3.adb:41:54: info: overflow check proved
 section_3_5_3.ads:77:14: warning: postcondition might fail, requires Contains(Connections, destination)
 section_4_6.ads:105:06: warning: contract cases do not mention result
-section_4_6.ads:105:6: warning: contract cases might not be disjoint
 section_4_6.ads:105:6: warning: contract cases might not be complete
+section_4_6.ads:105:6: warning: contract cases might not be disjoint
 section_4_6.ads:105:55: info: contract case proved
 section_4_6.ads:106:55: info: contract case proved
 section_4_6.ads:107:55: info: contract case proved
-step_function.adb:118:35: warning: "Merge.Step" may be referenced before it has a value
 step_function.adb:31:27: warning: assertion might fail, requires X >= SFun.Step(j).Delimiter
 step_function.adb:31:42: info: index check proved
 step_function.adb:32:61: info: index check proved
@@ -96,6 +95,7 @@ step_function.adb:78:17: info: range check proved
 step_function.adb:95:7: info: assertion proved
 step_function.adb:98:10: info: loop invariant initialization proved
 step_function.adb:98:10: warning: loop invariant might fail after first iteration
+step_function.adb:118:35: warning: "Merge.Step" may be referenced before it has a value
 step_function.adb:118:47: info: index check proved
 step_function.adb:118:74: info: index check proved
 step_function.adb:121:49: info: index check proved

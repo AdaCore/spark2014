@@ -1,31 +1,31 @@
-calls.adb:8:07: tasking is not allowed in SPARK
 calls.adb:8:07:  violation of pragma SPARK_Mode at line 1
-calls.adb:13:07: tasking is not allowed in SPARK
+calls.adb:8:07: tasking is not allowed in SPARK
 calls.adb:13:07:  violation of pragma SPARK_Mode at line 1
-calls.adb:23:07: call through access to procedure is not allowed in SPARK
+calls.adb:13:07: tasking is not allowed in SPARK
 calls.adb:23:07:  violation of pragma SPARK_Mode at line 1
-calls.adb:26:07: tasking is not allowed in SPARK
+calls.adb:23:07: call through access to procedure is not allowed in SPARK
 calls.adb:26:07:  violation of pragma SPARK_Mode at line 1
-calls.adb:29:07: tasking is not allowed in SPARK
+calls.adb:26:07: tasking is not allowed in SPARK
 calls.adb:29:07:  violation of pragma SPARK_Mode at line 1
-calls.adb:32:07: "R'Class" is not allowed in SPARK
+calls.adb:29:07: tasking is not allowed in SPARK
 calls.adb:32:07:  violation of pragma SPARK_Mode at line 1
-calls.ads:7:13: access to subprogram with profile "T2s" is not allowed in SPARK
+calls.adb:32:07: "R'Class" is not allowed in SPARK
 calls.ads:7:13:  violation of pragma SPARK_Mode at line 1
-calls.ads:7:33: access to subprogram with profile "T2s" is not allowed in SPARK
+calls.ads:7:13: access to subprogram with profile "T2s" is not allowed in SPARK
 calls.ads:7:33:  violation of pragma SPARK_Mode at line 1
-calls.ads:9:12: tasking is not allowed in SPARK
+calls.ads:7:33: access to subprogram with profile "T2s" is not allowed in SPARK
 calls.ads:9:12:  violation of pragma SPARK_Mode at line 1
-calls.ads:13:17: tasking is not allowed in SPARK
+calls.ads:9:12: tasking is not allowed in SPARK
 calls.ads:13:17:  violation of pragma SPARK_Mode at line 1
-calls.ads:17:12: tagged type is not allowed in SPARK
+calls.ads:13:17: tasking is not allowed in SPARK
 calls.ads:17:12:  violation of pragma SPARK_Mode at line 1
-calls.ads:18:17: "R'Class" is not allowed in SPARK
+calls.ads:17:12: tagged type is not allowed in SPARK
 calls.ads:18:17:  violation of pragma SPARK_Mode at line 1
-calls.ads:20:11: "R'Class" is not allowed in SPARK
+calls.ads:18:17: "R'Class" is not allowed in SPARK
 calls.ads:20:11:  violation of pragma SPARK_Mode at line 1
-
+calls.ads:20:11: "R'Class" is not allowed in SPARK
    compilation of calls.adb failed
 
-gprbuild: *** compilation phase failed
+
 gnatprove: error during translation to intermediate language, aborting.
+gprbuild: *** compilation phase failed

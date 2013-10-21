@@ -25,8 +25,8 @@ amortized_queue.ads:35:29: info: range check proved
 amortized_queue.ads:36:14: info: precondition proved
 amortized_queue.ads:36:32: info: range check proved
 amortized_queue.ads:40:14: warning: postcondition might fail, requires Is_Model (Q, Model'result)
-amortized_queue.ads:45:17: warning: postcondition might fail, requires Last_Element (Model (Q)) = Front'result
 amortized_queue.ads:44:31: info: precondition proved
+amortized_queue.ads:45:17: warning: postcondition might fail, requires Last_Element (Model (Q)) = Front'result
 amortized_queue.ads:45:31: info: precondition proved
 amortized_queue.ads:49:14: warning: postcondition might fail
 amortized_queue.ads:50:23: info: precondition proved

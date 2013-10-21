@@ -1,18 +1,18 @@
 p.adb:6:09: warning: unused assignment [ineffective]
-p.adb:12:09: warning: unused assignment [ineffective]
-p.adb:18:09: warning: unused assignment [ineffective]
-p.adb:24:09: warning: unused assignment [ineffective]
-p.adb:30:09: warning: unused assignment [ineffective]
-p.adb:36:09: warning: unused assignment [ineffective]
-p.adb:43:09: warning: unused assignment [ineffective]
-p.adb:50:09: warning: unused assignment [ineffective]
 p.adb:6:12: info: length check proved
+p.adb:12:09: warning: unused assignment [ineffective]
 p.adb:12:14: info: length check proved
+p.adb:18:09: warning: unused assignment [ineffective]
 p.adb:18:14: info: length check proved
+p.adb:24:09: warning: unused assignment [ineffective]
 p.adb:24:12: info: length check proved
+p.adb:30:09: warning: unused assignment [ineffective]
 p.adb:30:12: info: length check proved
+p.adb:36:09: warning: unused assignment [ineffective]
 p.adb:36:12: info: length check proved
+p.adb:43:09: warning: unused assignment [ineffective]
 p.adb:43:12: info: length check proved
+p.adb:50:09: warning: unused assignment [ineffective]
 p.adb:50:12: info: length check proved
 [
 { "name" : "P.Proc", "file" :"p.ads", "line" :  2, "spark" : "body" }

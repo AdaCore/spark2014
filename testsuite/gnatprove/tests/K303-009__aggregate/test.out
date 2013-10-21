@@ -31,14 +31,14 @@ arr_aggregate.adb:46:7: info: precondition proved
 arr_aggregate.adb:51:7: info: precondition proved
 arr_aggregate.adb:56:7: info: precondition proved
 arr_aggregate.ads:9:18: warning: unused initial value of "A" [unused_initial_value]
-arr_aggregate.ads:14:18: warning: unused initial value of "A" [unused_initial_value]
-arr_aggregate.ads:22:18: warning: unused initial value of "A" [unused_initial_value]
 arr_aggregate.ads:11:14: info: postcondition proved
 arr_aggregate.ads:11:43: info: index check proved
+arr_aggregate.ads:14:18: warning: unused initial value of "A" [unused_initial_value]
 arr_aggregate.ads:16:14: info: postcondition proved
 arr_aggregate.ads:16:41: info: index check proved
 arr_aggregate.ads:19:38: info: index check proved
 arr_aggregate.ads:20:43: info: index check proved
+arr_aggregate.ads:22:18: warning: unused initial value of "A" [unused_initial_value]
 arr_aggregate.ads:24:14: warning: postcondition might fail
 arr_aggregate.ads:24:69: info: index check proved
 arr_aggregate.ads:27:69: info: index check proved
@@ -57,12 +57,12 @@ arr_aggregate.ads:48:50: info: length check proved
 arr_aggregate.ads:49:45: info: length check proved
 arr_aggregate.ads:49:55: info: length check proved
 rec_aggregate.ads:24:18: warning: unused initial value of "R" [unused_initial_value]
-rec_aggregate.ads:37:18: warning: unused initial value of "R" [unused_initial_value]
-rec_aggregate.ads:45:18: warning: unused initial value of "R" [unused_initial_value]
-rec_aggregate.ads:53:21: warning: unused initial value of "R" [unused_initial_value]
-rec_aggregate.ads:53:21: warning: unused variable "R" [unused]
 rec_aggregate.ads:26:14: info: postcondition proved
 rec_aggregate.ads:31:14: info: postcondition proved
+rec_aggregate.ads:37:18: warning: unused initial value of "R" [unused_initial_value]
 rec_aggregate.ads:39:14: warning: postcondition might fail
 rec_aggregate.ads:39:47: info: overflow check proved
+rec_aggregate.ads:45:18: warning: unused initial value of "R" [unused_initial_value]
 rec_aggregate.ads:47:14: warning: postcondition might fail
+rec_aggregate.ads:53:21: warning: unused initial value of "R" [unused_initial_value]
+rec_aggregate.ads:53:21: warning: unused variable "R" [unused]

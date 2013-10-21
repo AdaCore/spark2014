@@ -1,7 +1,7 @@
-s.adb:21:22: warning: "Dest" might not be initialized [uninitialized]
 s.adb:6:9: info: loop invariant initialization proved
 s.adb:6:9: info: loop invariant preservation proved
 s.adb:7:33: info: index check proved
+s.adb:21:22: warning: "Dest" might not be initialized [uninitialized]
 s.adb:24:9: info: loop invariant initialization proved
 s.adb:24:9: info: loop invariant preservation proved
 s.adb:25:33: info: index check proved

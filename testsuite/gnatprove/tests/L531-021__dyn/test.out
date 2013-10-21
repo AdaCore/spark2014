@@ -1,4 +1,4 @@
 proc.adb:20:07: warning: initialization has no effect [ineffective]
-proc.adb:21:07: warning: initialization has no effect [ineffective]
 proc.adb:20:19: info: length check proved
+proc.adb:21:07: warning: initialization has no effect [ineffective]
 proc.adb:21:33: warning: length check might fail

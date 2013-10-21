@@ -1,16 +1,16 @@
 p.ads:3:27: warning: unused initial value of "X" [unused_initial_value]
 p.ads:3:30: warning: unused initial value of "Y" [unused_initial_value]
-p.ads:6:32: warning: unused initial value of "X" [unused_initial_value]
-p.ads:6:35: warning: unused initial value of "Y" [unused_initial_value]
-p.ads:9:31: warning: unused initial value of "X" [unused_initial_value]
-p.ads:9:34: warning: unused initial value of "Y" [unused_initial_value]
-p.ads:12:33: warning: unused initial value of "X" [unused_initial_value]
-p.ads:12:36: warning: unused initial value of "Y" [unused_initial_value]
 p.ads:4:15: warning: divide by zero might fail
 p.ads:4:15: warning: overflow check might fail
+p.ads:6:32: warning: unused initial value of "X" [unused_initial_value]
+p.ads:6:35: warning: unused initial value of "Y" [unused_initial_value]
 p.ads:7:31: info: division check proved
 p.ads:7:31: warning: overflow check might fail
+p.ads:9:31: warning: unused initial value of "X" [unused_initial_value]
+p.ads:9:34: warning: unused initial value of "Y" [unused_initial_value]
 p.ads:10:31: info: division check proved
 p.ads:10:31: warning: overflow check might fail
+p.ads:12:33: warning: unused initial value of "X" [unused_initial_value]
+p.ads:12:36: warning: unused initial value of "Y" [unused_initial_value]
 p.ads:13:15: info: division check proved
 p.ads:13:15: info: overflow check proved

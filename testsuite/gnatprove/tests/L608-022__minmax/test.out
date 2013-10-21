@@ -4,29 +4,17 @@ minmax.adb:11:04: warning: initialization has no effect [ineffective]
 minmax.adb:12:04: warning: initialization has no effect [ineffective]
 minmax.adb:17:04: warning: initialization has no effect [ineffective]
 minmax.adb:18:04: warning: initialization has no effect [ineffective]
-minmax.adb:39:11: warning: unused assignment [ineffective]
-minmax.adb:40:11: warning: unused assignment [ineffective]
-minmax.adb:56:12: warning: unused assignment [ineffective]
-minmax.adb:57:12: warning: unused assignment [ineffective]
-minmax.adb:83:04: warning: statement has no effect [ineffective]
-minmax.adb:83:04: warning: unused assignment to "Max" [ineffective]
-minmax.adb:83:04: warning: unused assignment to "Min" [ineffective]
-minmax.adb:84:04: warning: statement has no effect [ineffective]
-minmax.adb:84:04: warning: unused assignment to "Max" [ineffective]
-minmax.adb:84:04: warning: unused assignment to "Min" [ineffective]
-minmax.adb:85:04: warning: statement has no effect [ineffective]
-minmax.adb:85:04: warning: unused assignment to "Mint" [ineffective]
-minmax.adb:85:04: warning: unused assignment to "Maxt" [ineffective]
-minmax.adb:86:04: warning: statement has no effect [ineffective]
-minmax.adb:86:04: warning: unused assignment to "Mine" [ineffective]
-minmax.adb:86:04: warning: unused assignment to "Maxe" [ineffective]
 minmax.adb:29:7: info: assertion proved
 minmax.adb:30:7: info: assertion proved
+minmax.adb:39:11: warning: unused assignment [ineffective]
+minmax.adb:40:11: warning: unused assignment [ineffective]
 minmax.adb:41:7: info: assertion proved
 minmax.adb:42:7: info: assertion proved
 minmax.adb:46:7: info: assertion proved
 minmax.adb:47:7: info: assertion proved
+minmax.adb:56:12: warning: unused assignment [ineffective]
 minmax.adb:56:16: info: range check proved
+minmax.adb:57:12: warning: unused assignment [ineffective]
 minmax.adb:57:16: info: range check proved
 minmax.adb:58:7: info: assertion proved
 minmax.adb:59:7: info: assertion proved
@@ -40,8 +28,20 @@ minmax.adb:67:31: info: overflow check proved
 minmax.adb:78:7: info: assertion proved
 minmax.adb:79:7: info: assertion proved
 minmax.adb:83:4: info: precondition proved
+minmax.adb:83:04: warning: statement has no effect [ineffective]
+minmax.adb:83:04: warning: unused assignment to "Max" [ineffective]
+minmax.adb:83:04: warning: unused assignment to "Min" [ineffective]
 minmax.adb:84:4: info: precondition proved
+minmax.adb:84:04: warning: statement has no effect [ineffective]
+minmax.adb:84:04: warning: unused assignment to "Max" [ineffective]
+minmax.adb:84:04: warning: unused assignment to "Min" [ineffective]
 minmax.adb:84:9: info: range check proved
 minmax.adb:84:12: info: range check proved
 minmax.adb:85:4: info: precondition proved
+minmax.adb:85:04: warning: statement has no effect [ineffective]
+minmax.adb:85:04: warning: unused assignment to "Maxt" [ineffective]
+minmax.adb:85:04: warning: unused assignment to "Mint" [ineffective]
 minmax.adb:86:4: info: precondition proved
+minmax.adb:86:04: warning: statement has no effect [ineffective]
+minmax.adb:86:04: warning: unused assignment to "Maxe" [ineffective]
+minmax.adb:86:04: warning: unused assignment to "Mine" [ineffective]

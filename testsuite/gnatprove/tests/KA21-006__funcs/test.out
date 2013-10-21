@@ -2,64 +2,64 @@ funcs.adb:21:17: warning: unused initial value of "X" [unused_initial_value]
 funcs.adb:21:17: warning: unused variable "X" [unused]
 funcs.adb:23:17: warning: unused initial value of "X" [unused_initial_value]
 funcs.adb:23:17: warning: unused variable "X" [unused]
-funcs.adb:65:09: warning: unused assignment [ineffective]
-funcs.adb:67:09: warning: unused assignment [ineffective]
-funcs.adb:69:09: warning: unused assignment [ineffective]
-funcs.adb:71:09: warning: unused assignment [ineffective]
-funcs.adb:73:09: warning: unused assignment [ineffective]
-funcs.adb:78:09: warning: unused assignment [ineffective]
-funcs.adb:80:09: warning: unused assignment [ineffective]
-funcs.adb:82:09: warning: unused assignment [ineffective]
-funcs.adb:84:09: warning: unused assignment [ineffective]
-funcs.adb:86:09: warning: unused assignment [ineffective]
-funcs.adb:91:09: warning: unused assignment [ineffective]
-funcs.adb:95:09: warning: unused assignment [ineffective]
-funcs.adb:97:09: warning: unused assignment [ineffective]
-funcs.adb:102:09: warning: unused assignment [ineffective]
-funcs.adb:106:09: warning: unused assignment [ineffective]
-funcs.adb:108:09: warning: unused assignment [ineffective]
 funcs.adb:53:58: info: postcondition proved
 funcs.adb:64:7: info: assertion proved
+funcs.adb:65:09: warning: unused assignment [ineffective]
 funcs.adb:65:20: info: assertion proved
 funcs.adb:66:7: info: assertion proved
+funcs.adb:67:09: warning: unused assignment [ineffective]
 funcs.adb:67:20: info: assertion proved
 funcs.adb:68:7: info: assertion proved
+funcs.adb:69:09: warning: unused assignment [ineffective]
 funcs.adb:69:20: info: assertion proved
 funcs.adb:70:7: info: assertion proved
+funcs.adb:71:09: warning: unused assignment [ineffective]
 funcs.adb:71:20: info: assertion proved
 funcs.adb:72:7: info: assertion proved
+funcs.adb:73:09: warning: unused assignment [ineffective]
 funcs.adb:73:20: info: assertion proved
 funcs.adb:77:7: info: assertion proved
+funcs.adb:78:09: warning: unused assignment [ineffective]
 funcs.adb:78:20: info: assertion proved
 funcs.adb:79:7: info: assertion proved
+funcs.adb:80:09: warning: unused assignment [ineffective]
 funcs.adb:80:20: info: assertion proved
 funcs.adb:81:7: info: assertion proved
+funcs.adb:82:09: warning: unused assignment [ineffective]
 funcs.adb:82:20: info: assertion proved
 funcs.adb:83:7: info: assertion proved
+funcs.adb:84:09: warning: unused assignment [ineffective]
 funcs.adb:84:20: info: assertion proved
 funcs.adb:85:7: info: assertion proved
+funcs.adb:86:09: warning: unused assignment [ineffective]
 funcs.adb:86:20: info: assertion proved
 funcs.adb:90:7: info: assertion proved
 funcs.adb:90:22: info: precondition proved
+funcs.adb:91:09: warning: unused assignment [ineffective]
 funcs.adb:91:12: info: precondition proved
 funcs.adb:91:20: info: assertion proved
 funcs.adb:91:39: info: precondition proved
 funcs.adb:94:7: info: assertion proved
 funcs.adb:94:22: info: precondition proved
+funcs.adb:95:09: warning: unused assignment [ineffective]
 funcs.adb:95:12: info: precondition proved
 funcs.adb:95:20: info: assertion proved
 funcs.adb:95:39: info: precondition proved
 funcs.adb:96:7: info: assertion proved
 funcs.adb:96:22: info: precondition proved
 funcs.adb:96:31: info: precondition proved
+funcs.adb:97:09: warning: unused assignment [ineffective]
 funcs.adb:97:12: info: precondition proved
 funcs.adb:97:20: info: assertion proved
 funcs.adb:97:39: info: precondition proved
 funcs.adb:101:7: info: assertion proved
+funcs.adb:102:09: warning: unused assignment [ineffective]
 funcs.adb:102:20: info: assertion proved
 funcs.adb:105:7: info: assertion proved
+funcs.adb:106:09: warning: unused assignment [ineffective]
 funcs.adb:106:20: info: assertion proved
 funcs.adb:107:7: info: assertion proved
+funcs.adb:108:09: warning: unused assignment [ineffective]
 funcs.adb:108:20: info: assertion proved
 funcs.ads:8:17: warning: unused initial value of "X" [unused_initial_value]
 funcs.ads:8:17: warning: unused variable "X" [unused]

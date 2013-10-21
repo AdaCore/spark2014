@@ -1,5 +1,3 @@
-r.adb:42:07: warning: initialization has no effect [ineffective]
-r.adb:51:07: warning: initialization has no effect [ineffective]
 r.adb:23:12: info: length check proved
 r.adb:23:29: info: length check proved
 r.adb:23:51: info: index check proved
@@ -8,12 +6,14 @@ r.adb:31:12: info: length check proved
 r.adb:31:29: info: length check proved
 r.adb:31:51: warning: array index check might fail
 r.adb:31:57: info: index check proved
+r.adb:42:07: warning: initialization has no effect [ineffective]
 r.adb:42:22: info: index check proved
 r.adb:42:25: info: index check proved
 r.adb:44:12: info: length check proved
 r.adb:44:23: info: length check proved
 r.adb:44:45: info: index check proved
 r.adb:44:48: info: index check proved
+r.adb:51:07: warning: initialization has no effect [ineffective]
 r.adb:51:22: warning: array index check might fail
 r.adb:51:25: info: index check proved
 r.adb:53:12: info: length check proved

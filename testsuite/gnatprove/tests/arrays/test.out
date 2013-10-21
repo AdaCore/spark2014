@@ -4,8 +4,8 @@ arrays.adb:16:20: warning: overflow check might fail
 arrays.adb:23:17: info: overflow check proved
 arrays.adb:23:17: info: range check proved
 arrays.ads:5:14: warning: postcondition might fail, requires Sum'Result >= X'length
-arrays.ads:6:6: warning: contract cases might not be disjoint
 arrays.ads:6:6: warning: contract cases might not be complete
+arrays.ads:6:6: warning: contract cases might not be disjoint
 arrays.ads:6:38: info: contract case proved
 arrays.ads:7:52: info: index check proved
 arrays.ads:7:60: info: contract case proved

@@ -1,4 +1,4 @@
-pack.adb:19:04: warning: statement has no effect [ineffective]
-pack.adb:23:04: warning: statement has no effect [ineffective]
 pack.adb:7:29: info: length check proved, in instantiation at pack.adb:16
 pack.adb:11:32: info: length check proved, in instantiation at pack.adb:16
+pack.adb:19:04: warning: statement has no effect [ineffective]
+pack.adb:23:04: warning: statement has no effect [ineffective]

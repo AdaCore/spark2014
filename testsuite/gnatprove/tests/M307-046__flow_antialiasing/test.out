@@ -2,9 +2,9 @@ test.adb:113:14: flow analysis of "Test_01" abandoned due to aliasing
 test.adb:116:14: formal parameters "X" and "Y" must not be aliased
 test.adb:125:14: flow analysis of "Test_03" abandoned due to aliasing
 test.adb:128:14: formal parameter "X" and global "Global_RA" must not be aliased
-test.adb:131:23: warning: "X.C" is not modified, could be "in" [inout_only_read]
-test.adb:131:23: warning: "X.B" is not modified, could be "in" [inout_only_read]
 test.adb:131:23: warning: "X.A" is not modified, could be "in" [inout_only_read]
+test.adb:131:23: warning: "X.B" is not modified, could be "in" [inout_only_read]
+test.adb:131:23: warning: "X.C" is not modified, could be "in" [inout_only_read]
 test.adb:138:14: flow analysis of "Test_05" abandoned due to aliasing
 test.adb:142:19: formal parameters "Y" and "Z" must not be aliased
 test.adb:145:14: flow analysis of "Test_06" abandoned due to aliasing
@@ -42,8 +42,8 @@ test.adb:331:14: flow analysis of "Test_Tc_1" abandoned due to aliasing
 test.adb:334:15: formal parameters "A" and "B" must not be aliased
 test.adb:337:14: flow analysis of "Test_Tc_2" abandoned due to aliasing
 test.adb:340:15: formal parameters "A" and "B" must not be aliased
-
    compilation of test.adb failed
 
-gprbuild: *** compilation phase failed
+
 gnatprove: error during translation to intermediate language, aborting.
+gprbuild: *** compilation phase failed

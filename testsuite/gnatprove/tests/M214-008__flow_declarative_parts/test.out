@@ -17,8 +17,8 @@ test.adb:124:21: warning: incorrect dependency "B => A" [depends_wrong]
 test.adb:131:24: warning: unused initial value of "A" [unused_initial_value]
 test.adb:134:09: warning: missing dependency "null => A" [depends_null]
 test.adb:135:21: warning: incorrect dependency "B => A" [depends_wrong]
-
    compilation of test.adb failed
 
-gprbuild: *** compilation phase failed
+
 gnatprove: error during translation to intermediate language, aborting.
+gprbuild: *** compilation phase failed

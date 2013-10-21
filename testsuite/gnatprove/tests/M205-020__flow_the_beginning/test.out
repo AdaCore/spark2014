@@ -2,11 +2,11 @@ foo.adb:3:16: warning: unused initial value of "Y" [unused_initial_value]
 foo.adb:4:16: "Z" is not initialized in "Foo" [uninitialized]
 foo.adb:9:04: warning: statement has no effect [ineffective]
 foo.adb:10:09: warning: unused assignment [ineffective]
-foo.adb:12:09: warning: unused assignment [ineffective]
 foo.adb:12:09: "Z" is not initialized [uninitialized]
+foo.adb:12:09: warning: unused assignment [ineffective]
 foo.adb:15:04: "B" is not initialized [uninitialized]
-
    compilation of foo.adb failed
 
-gprbuild: *** compilation phase failed
+
 gnatprove: error during translation to intermediate language, aborting.
+gprbuild: *** compilation phase failed

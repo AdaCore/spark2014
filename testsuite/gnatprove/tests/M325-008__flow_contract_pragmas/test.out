@@ -7,8 +7,8 @@ test.adb:59:18: "G" is not initialized [uninitialized]
 test.adb:69:38: warning: unused initial value of "X" [unused_initial_value]
 test.adb:69:41: warning: unused initial value of "Y" [unused_initial_value]
 test.adb:69:44: warning: unused initial value of "Z" [unused_initial_value]
-
    compilation of test.adb failed
 
-gprbuild: *** compilation phase failed
+
 gnatprove: error during translation to intermediate language, aborting.
+gprbuild: *** compilation phase failed

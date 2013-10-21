@@ -1,6 +1,6 @@
 tab.adb:6:49: warning: range check might fail
-tab.adb:9:10: warning: loop invariant might fail in first iteration
 tab.adb:9:10: warning: loop invariant might fail after first iteration
+tab.adb:9:10: warning: loop invariant might fail in first iteration
 tab.adb:10:21: info: range check proved
 tab.adb:11:22: info: index check proved
 tab.adb:12:28: warning: range check might fail

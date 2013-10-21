@@ -6,8 +6,8 @@ test.adb:39:27: warning: statement has no effect [ineffective]
 test.adb:43:38: "X" is not initialized [uninitialized]
 test.adb:52:45: "X" is not initialized [uninitialized]
 test.adb:61:26: "X" is not initialized [uninitialized]
-
    compilation of test.adb failed
 
-gprbuild: *** compilation phase failed
+
 gnatprove: error during translation to intermediate language, aborting.
+gprbuild: *** compilation phase failed

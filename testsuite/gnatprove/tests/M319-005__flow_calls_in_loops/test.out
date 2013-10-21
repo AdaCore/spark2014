@@ -1,8 +1,8 @@
 broken.adb:2:04: warning: initialization has no effect [ineffective]
 broken.adb:18:14: flow analysis of "Test_02" abandoned due to aliasing
 broken.adb:22:20: formal parameter "N" and global "I" must not be aliased
-
    compilation of broken.adb failed
 
-gprbuild: *** compilation phase failed
+
 gnatprove: error during translation to intermediate language, aborting.
+gprbuild: *** compilation phase failed

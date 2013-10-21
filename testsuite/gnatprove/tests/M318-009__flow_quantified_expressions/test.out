@@ -1,6 +1,6 @@
 test.adb:22:26: warning: statement has no effect [ineffective]
-test.adb:23:28: warning: unused assignment [ineffective]
 test.adb:23:28: warning: "Temp_Table" might not be initialized [uninitialized]
+test.adb:23:28: warning: unused assignment [ineffective]
 // package_body_test_cfg
 digraph G {
    graph [splines=True];

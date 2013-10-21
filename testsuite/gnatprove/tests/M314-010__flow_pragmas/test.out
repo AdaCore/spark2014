@@ -1,9 +1,9 @@
 uninitialized.adb:6:07: "B" is not initialized [uninitialized]
-
    compilation of uninitialized.adb failed
 
-gprbuild: *** compilation phase failed
+
 gnatprove: error during translation to intermediate language, aborting.
+gprbuild: *** compilation phase failed
 // package_body_uninitialized_cfg
 digraph G {
    graph [splines=True];

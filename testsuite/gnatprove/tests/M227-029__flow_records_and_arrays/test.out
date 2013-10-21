@@ -1,15 +1,15 @@
 message_tests.adb:40:33: warning: unused initial value of "C" [unused_initial_value]
 message_tests.adb:40:33: warning: unused variable "C" [unused]
-message_tests.adb:48:32: "C.Flags.B" is not initialized in "Not_All_Used_Out" [uninitialized]
 message_tests.adb:48:32: "C.Flags.A" is not initialized in "Not_All_Used_Out" [uninitialized]
+message_tests.adb:48:32: "C.Flags.B" is not initialized in "Not_All_Used_Out" [uninitialized]
 message_tests.adb:48:32: "C.W" is not initialized in "Not_All_Used_Out" [uninitialized]
 message_tests.adb:66:15: "F.B" is not initialized [uninitialized]
 parameter_tests.adb:36:32: "G.Y" is not initialized [uninitialized]
 parameter_tests.adb:50:33: warning: unused initial value of "G" [unused_initial_value]
 parameter_tests.adb:50:36: warning: "H" is not modified, could be "input" [inout_only_read]
-
    compilation of message_tests.adb failed
    compilation of parameter_tests.adb failed
 
-gprbuild: *** compilation phase failed
+
 gnatprove: error during translation to intermediate language, aborting.
+gprbuild: *** compilation phase failed

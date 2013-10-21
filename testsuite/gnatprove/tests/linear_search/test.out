@@ -8,8 +8,8 @@ search.adb:25:21: info: overflow check proved
 search.ads:23:37: info: index check proved
 search.ads:30:14: info: postcondition proved
 search.ads:31:40: info: discriminant check proved
-search.ads:32:6: info: disjoint contract cases proved
 search.ads:32:6: info: complete contract cases proved
+search.ads:32:6: info: disjoint contract cases proved
 search.ads:33:20: info: contract case proved
 search.ads:34:31: info: discriminant check proved
 search.ads:35:67: info: contract case proved

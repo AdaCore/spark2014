@@ -49,8 +49,8 @@ auditlog.adb:168:28: info: length check proved
 auditlog.adb:169:28: info: length check proved
 auditlog.adb:194:26: info: range check proved
 auditlog.adb:244:46: warning: length check might fail
-auditlog.adb:246:23: warning: range check might fail
 auditlog.adb:246:23: info: length check proved
+auditlog.adb:246:23: warning: range check might fail
 auditlog.adb:499:22: info: precondition proved
 auditlog.adb:600:34: warning: length check might fail
 auditlog.adb:753:47: warning: range check might fail
@@ -121,7 +121,7 @@ auditlog.adb:1852:50: info: range check proved
 auditlog.adb:1852:53: info: overflow check proved
 auditlog.adb:1852:72: info: overflow check proved
 auditlog.adb:1858:53: info: range check proved
-auditlog.adb:1861:47: info: range check proved
+auditlog.adb:1861:47: warning: range check might fail
 auditlog.adb:1868:7: warning: assertion might fail, requires NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile)
 auditlog.adb:1870:47: warning: range check might fail
 auditlog.adb:1870:50: warning: overflow check might fail
@@ -133,8 +133,8 @@ bio.adb:126:10: warning: assertion might fail, requires Result = InternalError
 certificatestore.adb:37:42: info: length check proved
 certificatestore.adb:220:49: info: length check proved
 certificatestore.adb:223:31: warning: range check might fail
-certificatestore.adb:224:29: warning: range check might fail
 certificatestore.adb:224:29: warning: length check might fail
+certificatestore.adb:224:29: warning: range check might fail
 certificatestore.adb:225:45: warning: length check might fail
 certificatestore.adb:353:47: info: range check proved
 certtypes.ads:39:22: info: length check proved
@@ -365,8 +365,8 @@ keystore.adb:195:30: info: range check proved
 keystore.adb:195:41: info: overflow check proved
 keystore.adb:195:57: info: overflow check proved
 keystore.adb:197:49: info: length check proved
-keystore.adb:206:33: warning: array index check might fail
 keystore.adb:206:33: info: overflow check proved
+keystore.adb:206:33: warning: array index check might fail
 keystore.adb:206:49: info: overflow check proved
 keystore.adb:223:52: info: division check proved
 keystore.adb:226:14: warning: range check might fail
@@ -398,8 +398,8 @@ screen.adb:135:7: info: length check proved
 screen.adb:136:7: info: length check proved
 screen.adb:815:43: info: length check proved
 screen.adb:816:40: info: length check proved
-screen.adb:818:40: warning: range check might fail
 screen.adb:818:40: warning: length check might fail
+screen.adb:818:40: warning: range check might fail
 stats.adb:53:57: info: overflow check proved
 stats.adb:70:51: info: overflow check proved
 stats.adb:87:53: info: overflow check proved

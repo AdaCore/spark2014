@@ -1,8 +1,8 @@
 ic.adb:58:34: "Y" must be listed in the Initializes aspect of "Test_04"
 ic.adb:73:45: "X" must be listed in the Initializes aspect of "Test_05"
 ic.adb:73:45: "Y" must be listed in the Initializes aspect of "Test_05"
-ic.adb:97:09: warning: pragma "REFINED_POST" is not yet supported
 ic.adb:97:09: warning:  it is currently ignored
+ic.adb:97:09: warning: pragma "REFINED_POST" is not yet supported
 ic.adb:97:29: "Y" must be listed in the Global aspect of "Sanity_Check_5"
 ic.adb:108:26: "Y" must be listed in the Global aspect of "Sanity_Check_1"
 ic.adb:117:44: "Y" must be listed in the Global aspect of "Sanity_Check_2"
@@ -16,15 +16,14 @@ pkg_b.adb:1:14: "Y" must be listed in the Initializes aspect of "Pkg_B"
 pkg_b.adb:1:14: flow analysis of "Pkg_B" abandoned due to inconsistent graph
 pkg_c.adb:10:06: "X" is not initialized [uninitialized]
 pkg_c.adb:13:06: warning: unused assignment [ineffective]
-pkg_c.adb:15:12: warning: unused assignment [ineffective]
 pkg_c.adb:15:12: illegal update of "X", which is not part of "Pkg_C" [illegal_update]
+pkg_c.adb:15:12: warning: unused assignment [ineffective]
 pkg_d.adb:6:06: "X" is not initialized [uninitialized]
 pkg_d.ads:4:32: "X" is not initialized [uninitialized]
 pkg_e.adb:6:03: "X" is not initialized in "Pkg_E" [uninitialized]
 pkg_e.adb:14:06: warning: unused assignment [ineffective]
 pkg_e.ads:7:03: "Vis_A" is not initialized in "Pkg_E" [uninitialized]
 pkg_e.ads:10:03: warning: initialization has no effect [ineffective]
-
    compilation of ic.adb failed
    compilation of pkg_a.adb failed
    compilation of pkg_b.adb failed
@@ -32,5 +31,6 @@ pkg_e.ads:10:03: warning: initialization has no effect [ineffective]
    compilation of pkg_d.adb failed
    compilation of pkg_e.adb failed
 
-gprbuild: *** compilation phase failed
+
 gnatprove: error during translation to intermediate language, aborting.
+gprbuild: *** compilation phase failed

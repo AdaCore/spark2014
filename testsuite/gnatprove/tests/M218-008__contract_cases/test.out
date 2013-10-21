@@ -11,18 +11,18 @@ subprograms.ads:11:11: warning: contract cases might not be complete
 subprograms.ads:11:39: warning: contract case might fail
 subprograms.ads:16:11: info: complete contract cases proved
 subprograms.ads:16:39: info: contract case proved
-subprograms.ads:19:11: warning: contract cases might not be disjoint
 subprograms.ads:19:11: info: complete contract cases proved
+subprograms.ads:19:11: warning: contract cases might not be disjoint
 subprograms.ads:19:40: warning: contract case might fail
 subprograms.ads:20:40: info: contract case proved
 subprograms.ads:21:40: warning: contract case might fail
-subprograms.ads:26:11: info: disjoint contract cases proved
 subprograms.ads:26:11: info: complete contract cases proved
+subprograms.ads:26:11: info: disjoint contract cases proved
 subprograms.ads:26:39: info: contract case proved
 subprograms.ads:27:39: info: contract case proved
 subprograms.ads:28:39: info: contract case proved
-subprograms.ads:32:11: info: disjoint contract cases proved
 subprograms.ads:32:11: info: complete contract cases proved
+subprograms.ads:32:11: info: disjoint contract cases proved
 subprograms.ads:32:35: info: overflow check proved
 subprograms.ads:32:44: info: contract case proved
 subprograms.ads:32:61: info: overflow check proved

@@ -2,16 +2,14 @@ testfloat.adb:4:04: warning: initialization has no effect [ineffective]
 testfloat.adb:5:04: warning: initialization has no effect [ineffective]
 testfloat.adb:6:04: warning: initialization has no effect [ineffective]
 testfloat.adb:7:04: warning: initialization has no effect [ineffective]
-testfloat.adb:11:23: warning: unused initial value of "X" [unused_initial_value]
-testfloat.adb:11:26: warning: unused initial value of "Y" [unused_initial_value]
-testfloat.adb:11:29: warning: unused initial value of "Z" [unused_initial_value]
-testfloat.adb:19:07: warning: initialization has no effect [ineffective]
-testfloat.adb:49:04: warning: statement has no effect [ineffective]
-testfloat.adb:50:04: warning: statement has no effect [ineffective]
 testfloat.adb:7:20: info: overflow check proved
 testfloat.adb:7:25: info: division check proved
 testfloat.adb:7:25: info: overflow check proved
+testfloat.adb:11:23: warning: unused initial value of "X" [unused_initial_value]
+testfloat.adb:11:26: warning: unused initial value of "Y" [unused_initial_value]
+testfloat.adb:11:29: warning: unused initial value of "Z" [unused_initial_value]
 testfloat.adb:14:23: info: overflow check proved
+testfloat.adb:19:07: warning: initialization has no effect [ineffective]
 testfloat.adb:19:23: warning: overflow check might fail
 testfloat.adb:19:28: info: division check proved
 testfloat.adb:19:28: warning: overflow check might fail
@@ -36,4 +34,6 @@ testfloat.adb:44:4: warning: assertion might fail, requires Float'Ceiling (T) = 
 testfloat.adb:46:4: info: assertion proved
 testfloat.adb:47:4: info: assertion proved
 testfloat.adb:49:4: info: precondition proved
+testfloat.adb:49:04: warning: statement has no effect [ineffective]
 testfloat.adb:50:4: info: precondition proved
+testfloat.adb:50:04: warning: statement has no effect [ineffective]

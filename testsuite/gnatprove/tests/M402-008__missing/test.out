@@ -1,6 +1,6 @@
+foo.adb:10:12: warning: divide by zero might fail, in instantiation at foo.adb:19
+foo.adb:10:12: warning: overflow check might fail, in instantiation at foo.adb:19
 foo.adb:17:04: warning: initialization has no effect [ineffective]
 foo.adb:21:04: warning: statement has no effect [ineffective]
 foo.adb:21:09: warning: unused assignment to "X" [ineffective]
 foo.adb:21:12: warning: unused assignment to "Y" [ineffective]
-foo.adb:10:12: warning: divide by zero might fail, in instantiation at foo.adb:19
-foo.adb:10:12: warning: overflow check might fail, in instantiation at foo.adb:19

@@ -1,26 +1,26 @@
-s.adb:18:07: warning: initialization has no effect [ineffective]
-s.adb:20:28: warning: statement has no effect [ineffective]
-s.adb:22:12: warning: unused assignment [ineffective]
-s.adb:25:09: warning: unused assignment [ineffective]
-s.adb:26:36: warning: statement has no effect [ineffective]
-s.adb:28:12: warning: unused assignment [ineffective]
-s.adb:36:23: warning: "Dest" might not be initialized [uninitialized]
-s.adb:49:23: warning: "Dest" might not be initialized [uninitialized]
 s.adb:6:10: info: loop invariant initialization proved
 s.adb:6:10: info: loop invariant preservation proved
 s.adb:7:34: info: index check proved
+s.adb:18:07: warning: initialization has no effect [ineffective]
+s.adb:20:28: warning: statement has no effect [ineffective]
 s.adb:21:10: info: loop invariant initialization proved
 s.adb:21:10: info: loop invariant preservation proved
+s.adb:22:12: warning: unused assignment [ineffective]
 s.adb:24:7: info: assertion proved
+s.adb:25:09: warning: unused assignment [ineffective]
+s.adb:26:36: warning: statement has no effect [ineffective]
 s.adb:27:10: info: loop invariant initialization proved
 s.adb:27:10: info: loop invariant preservation proved
+s.adb:28:12: warning: unused assignment [ineffective]
 s.adb:30:7: info: assertion proved
+s.adb:36:23: warning: "Dest" might not be initialized [uninitialized]
 s.adb:39:10: info: loop invariant initialization proved
 s.adb:39:10: info: loop invariant preservation proved
 s.adb:40:42: info: index check proved
 s.adb:40:63: info: index check proved
 s.adb:42:43: info: index check proved
 s.adb:42:64: info: index check proved
+s.adb:49:23: warning: "Dest" might not be initialized [uninitialized]
 s.adb:52:10: info: loop invariant initialization proved
 s.adb:52:10: info: loop invariant preservation proved
 s.adb:53:42: info: index check proved

@@ -1,5 +1,5 @@
 original.ads:3:14: info: postcondition proved
 report.adb:8:09: warning: unused assignment [ineffective]
-report.adb:11:09: warning: unused assignment [ineffective]
 report.adb:9:7: info: assertion proved
+report.adb:11:09: warning: unused assignment [ineffective]
 report.adb:12:7: info: assertion proved

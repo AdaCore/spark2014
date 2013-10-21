@@ -1,18 +1,18 @@
-p.adb:7:25: warning: unused assignment to "I" [ineffective]
-p.adb:9:18: warning: unused assignment to "Cu" [ineffective]
-p.adb:16:18: warning: unused assignment to "Cu" [ineffective]
-p.adb:17:25: warning: unused assignment to "I" [ineffective]
 p.adb:7:7: info: precondition proved
+p.adb:7:25: warning: unused assignment to "I" [ineffective]
 p.adb:8:7: info: assertion proved
 p.adb:9:7: info: precondition proved
+p.adb:9:18: warning: unused assignment to "Cu" [ineffective]
 p.adb:13:27: info: precondition proved
 p.adb:16:7: info: precondition proved
+p.adb:16:18: warning: unused assignment to "Cu" [ineffective]
 p.adb:17:7: info: precondition proved
+p.adb:17:25: warning: unused assignment to "I" [ineffective]
 p.adb:18:7: info: assertion proved
 p.adb:24:10: info: precondition proved
 p.adb:26:10: info: precondition proved
-p.ads:18:14: info: precondition proved
 p.ads:18:14: info: postcondition proved
+p.ads:18:14: info: precondition proved
 p.ads:22:14: warning: postcondition might fail, requires Strict_Equal (L, L'old)
 p.ads:25:13: info: precondition proved
 p.ads:26:14: warning: postcondition might fail
