@@ -283,7 +283,7 @@ package body Flow_Error_Messages is
       end if;
 
       --  Assemble Entity_Str
-      if Ekind (Entity) in Subprogram_Kind | E_Package then
+      if Present (Entity) then
          Entity_Str := To_Unbounded_String (Subp_Location (Entity));
       else
          Entity_Str := Null_Unbounded_String;
@@ -397,9 +397,15 @@ package body Flow_Error_Messages is
       Tag       : String  := "";
       Warning   : Boolean := False)
    is
+      E : Entity_Id;
    begin
-      --  Call Print_JSON_Msg_Or_Normal_Msg. If required, a JSON
-      --  message will also be printed.
+
+      case FA.Kind is
+         when E_Subprogram_Body | E_Package =>
+            E := FA.Analyzed_Entity;
+         when E_Package_Body =>
+            E := Spec_Entity (FA.Analyzed_Entity);
+      end case;
 
       Print_JSON_Or_Normal_Msg
         (Msg       => Msg,
@@ -409,7 +415,8 @@ package body Flow_Error_Messages is
          Tag       => Tag,
          Warning   => Warning,
          Tracefile => Tracefile,
-         Entity    => FA.Analyzed_Entity);
+         Entity    => E);
+
    end Error_Msg_Flow;
 
 end Flow_Error_Messages;
