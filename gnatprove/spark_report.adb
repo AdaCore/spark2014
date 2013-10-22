@@ -117,6 +117,9 @@ procedure SPARK_Report is
    procedure Handle_SPARK_File (Fn : String);
    --  Parse and extract all information from a single SPARK file.
 
+   procedure Handle_Flow_File (Fn : String);
+   --  Parse and extract all information from a flow result file
+
    procedure Handle_Proof_File (Fn : String);
    --  Parse and extract all information from a proof result file
 
@@ -127,7 +130,7 @@ procedure SPARK_Report is
       return Subp_Type;
    --  convert a json entity dict to a subp
 
-   procedure Print_Proof_Report (Handle : Ada.Text_IO.File_Type);
+   procedure Print_Analysis_Report (Handle : Ada.Text_IO.File_Type);
    --  print the proof report in the given file
 
    -----------------------
@@ -144,12 +147,11 @@ procedure SPARK_Report is
                  Get (Get (Ent, "line")));
    end Mk_Subp_Of_Entity;
 
-   -----------------------
-   -- Handle_Proof_File --
-   -----------------------
+   ----------------------
+   -- Handle_Flow_File --
+   ----------------------
 
-   procedure Handle_Proof_File (Fn : String)
-   is
+   procedure Handle_Flow_File (Fn : String) is
       use GNATCOLL.JSON;
       Dict : constant JSON_Value := Read (Read_File_Into_String (Fn), Fn);
       Unit : constant Unit_Type := Mk_Unit (Ada.Directories.Base_Name (Fn));
@@ -160,9 +162,33 @@ procedure SPARK_Report is
             Result : constant JSON_Value := Get (Entries, Index);
             Severe : constant String     := Get (Get (Result, "severity"));
          begin
-            Add_Proof_Result (Unit,
-                              Mk_Subp_Of_Entity (Get (Result, "entity")),
-                              Severe = "info");
+            Add_Flow_Result
+              (Unit  => Unit,
+               Subp  => Mk_Subp_Of_Entity (Get (Result, "entity")),
+               Error => Severe = "error");
+         end;
+      end loop;
+   end Handle_Flow_File;
+
+   -----------------------
+   -- Handle_Proof_File --
+   -----------------------
+
+   procedure Handle_Proof_File (Fn : String) is
+      use GNATCOLL.JSON;
+      Dict : constant JSON_Value := Read (Read_File_Into_String (Fn), Fn);
+      Unit : constant Unit_Type := Mk_Unit (Ada.Directories.Base_Name (Fn));
+      Entries : constant JSON_Array := Get (Dict);
+   begin
+      for Index in 1 .. Length (Entries) loop
+         declare
+            Result : constant JSON_Value := Get (Entries, Index);
+            Severe : constant String     := Get (Get (Result, "severity"));
+         begin
+            Add_Proof_Result
+              (Unit   => Unit,
+               Subp   => Mk_Subp_Of_Entity (Get (Result, "entity")),
+               Proved => Severe = "info");
          end;
       end loop;
    end Handle_Proof_File;
@@ -171,11 +197,34 @@ procedure SPARK_Report is
    -- Handle_SPARK_File --
    -----------------------
 
-   procedure Handle_SPARK_File (Fn : String)
-   is
+   procedure Handle_SPARK_File (Fn : String) is
       use GNATCOLL.JSON;
       Dict : constant JSON_Value := Read (Read_File_Into_String (Fn), Fn);
-      Unit : constant Unit_Type := Mk_Unit (Ada.Directories.Base_Name (Fn));
+      Basename : constant String := Ada.Directories.Base_Name (Fn);
+      Unit : constant Unit_Type := Mk_Unit (Basename);
+      Has_Flow : constant Boolean :=
+        Ada.Directories.Exists
+          (Ada.Directories.Compose (Name      => Basename,
+                                    Extension => VC_Kinds.Flow_Suffix));
+      Has_Proof : constant Boolean :=
+        Ada.Directories.Exists
+          (Ada.Directories.Compose (Name      => Basename,
+                                    Extension => VC_Kinds.Proof_Suffix));
+
+      --  Status of analysis performed on all subprograms and packages of a
+      --  unit depend on presence of a file <unit>.flow and <unit>.proof in
+      --  the same directory as the file <unit>.spark.
+
+      --  This status is only relevant for subprograms and packages which are
+      --  in SPARK. Also, we do not currently take into account the fact that
+      --  possibly a single subprogram/line in the unit was analyzed.
+
+      Analysis : constant Analysis_Status :=
+        (if Has_Flow and Has_Proof then Flow_And_Proof
+         elsif Has_Flow then Flow_Analysis
+         elsif Has_Proof then Proof_Only
+         else No_Analysis);
+
    begin
       declare
          Entries : constant JSON_Array := Get (Dict);
@@ -184,9 +233,11 @@ procedure SPARK_Report is
             declare
                Result : constant JSON_Value := Get (Entries, Index);
             begin
-               Add_SPARK_Status (Unit,
-                                 Mk_Subp_Of_Entity (Result),
-                                 Get (Get (Result, "spark")) = "body");
+               Add_SPARK_Status
+                 (Unit         => Unit,
+                  Subp         => Mk_Subp_Of_Entity (Result),
+                  SPARK_Status => Get (Get (Result, "spark")) = "body",
+                  Analysis     => Analysis);
             end;
          end loop;
       end;
@@ -204,11 +255,31 @@ procedure SPARK_Report is
          Quit    : in out Boolean);
       --  Wrapper for Handle_SPARK_File
 
+      procedure Local_Handle_Flow_File
+        (Item    : String;
+         Index   : Positive;
+         Quit    : in out Boolean);
+      --  Wrapper for Handle_Flow_File
+
       procedure Local_Handle_Proof_File
         (Item    : String;
          Index   : Positive;
          Quit    : in out Boolean);
       --  Wrapper for Handle_Proof_File
+
+      ----------------------------
+      -- Local_Handle_Flow_File --
+      ----------------------------
+
+      procedure Local_Handle_Flow_File
+        (Item    : String;
+         Index   : Positive;
+         Quit    : in out Boolean) is
+      begin
+         pragma Unreferenced (Index);
+         pragma Unreferenced (Quit);
+         Handle_Flow_File (Item);
+      end Local_Handle_Flow_File;
 
       -----------------------------
       -- Local_Handle_Proof_File --
@@ -242,18 +313,23 @@ procedure SPARK_Report is
          GNAT.Directory_Operations.Iteration.Wildcard_Iterator
           (Action => Local_Handle_SPARK_File);
 
+      procedure Iterate_Flow is new
+         GNAT.Directory_Operations.Iteration.Wildcard_Iterator
+          (Action => Local_Handle_Flow_File);
+
       procedure Iterate_Proof is new
          GNAT.Directory_Operations.Iteration.Wildcard_Iterator
           (Action => Local_Handle_Proof_File);
 
       Save_Dir : constant String := Ada.Directories.Current_Directory;
 
-      --  beginning of processing for Handle_Source_Dir;
+   --  Start of Handle_Source_Dir
 
    begin
       Ada.Directories.Set_Directory (Dir);
-      Iterate_SPARK (Path => '*' & VC_Kinds.SPARK_Suffix);
-      Iterate_Proof (Path => '*' & VC_Kinds.Proof_Suffix);
+      Iterate_SPARK (Path => "*." & VC_Kinds.SPARK_Suffix);
+      Iterate_Flow (Path => "*." & VC_Kinds.Flow_Suffix);
+      Iterate_Proof (Path => "*." & VC_Kinds.Proof_Suffix);
       Ada.Directories.Set_Directory (Save_Dir);
    exception
       when others =>
@@ -261,11 +337,11 @@ procedure SPARK_Report is
          raise;
    end Handle_Source_Dir;
 
-   ------------------------
-   -- Print_Proof_Report --
-   ------------------------
+   ---------------------------
+   -- Print_Analysis_Report --
+   ---------------------------
 
-   procedure Print_Proof_Report (Handle : Ada.Text_IO.File_Type) is
+   procedure Print_Analysis_Report (Handle : Ada.Text_IO.File_Type) is
       use Ada.Text_IO;
 
       procedure For_Each_Unit (Unit : Unit_Type);
@@ -288,16 +364,36 @@ procedure SPARK_Report is
             Put (Handle,
                  "  " & Subp_Name (Subp) & " at " & Subp_File (Subp) & ":" &
                    Int_Image (Subp_Line (Subp)));
+
             if Stat.SPARK then
-               if Stat.VC_Count = Stat.VC_Proved then
-                  Put_Line
-                    (Handle,
-                     " proved (" & Int_Image (Stat.VC_Count) & " checks)");
+               if Stat.Analysis = No_Analysis then
+                  Put_Line (Handle, " not analyzed");
                else
-                  Put_Line (Handle,
-                            " not proved," & Stat.VC_Proved'Img &
-                              " checks out of" & Stat.VC_Count'Img &
-                              " proved");
+                  if Stat.Analysis in Flow_Analysis | Flow_And_Proof then
+                     Put (Handle,
+                          " flow analyzed ("
+                          & Int_Image (Stat.Flow_Errors) & " errors and "
+                          & Int_Image (Stat.Flow_Warnings) & " warnings)");
+                  end if;
+
+                  if Stat.Analysis = Flow_And_Proof then
+                     Put (Handle, " and");
+                  end if;
+
+                  if Stat.Analysis in Proof_Only | Flow_And_Proof then
+                     if Stat.VC_Count = Stat.VC_Proved then
+                        Put (Handle,
+                             " proved ("
+                             & Int_Image (Stat.VC_Count) & " checks)");
+                     else
+                        Put (Handle,
+                             " not proved," & Stat.VC_Proved'Img
+                             & " checks out of" & Stat.VC_Count'Img
+                             & " proved");
+                     end if;
+                  end if;
+
+                  Put_Line (Handle, "");
                end if;
             else
                Put_Line (Handle, " skipped");
@@ -305,23 +401,24 @@ procedure SPARK_Report is
          end For_Each_Subp;
 
       begin
-         Put_Line
-           (Handle,
-            "in unit " & Unit_Name (Unit) & ", " &
-              Int_Image (Num_Subps_SPARK (Unit)) & " subprograms out of " &
-                Int_Image (Num_Subps (Unit)) & " analyzed");
-         Iter_Unit_Subps (Unit, For_Each_Subp'Access);
+         Put_Line (Handle,
+                   "in unit " & Unit_Name (Unit) & ", "
+                   & Int_Image (Num_Subps_SPARK (Unit))
+                   & " subprograms and packages out of "
+                   & Int_Image (Num_Subps (Unit)) & " analyzed");
+         Iter_Unit_Subps (Unit, For_Each_Subp'Access, Ordered => True);
       end For_Each_Unit;
 
-      --  Start of processing for Print_Proof_Report
-
       N_Un : constant Integer := Num_Units;
+
+   --  Start of Print_Analysis_Report
+
    begin
       if N_Un > 0 then
          Put_Line (Handle, "Analyzed" & N_Un'Img & " units");
-         Iter_Units (For_Each_Unit'Access);
+         Iter_Units (For_Each_Unit'Access, Ordered => True);
       end if;
-   end Print_Proof_Report;
+   end Print_Analysis_Report;
 
    procedure Iterate_Source_Dirs is new For_Line_In_File (Handle_Source_Dir);
 
@@ -344,6 +441,6 @@ begin
            Configuration.SPARK_Report_File
              (GNAT.Directory_Operations.Dir_Name
                 (Source_Directories_File.all)));
-   Print_Proof_Report (Handle);
+   Print_Analysis_Report (Handle);
    Close (Handle);
 end SPARK_Report;

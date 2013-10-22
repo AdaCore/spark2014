@@ -25,6 +25,7 @@
 
 with Ada.Containers;
 with Ada.Containers.Hashed_Maps;
+with Ada.Containers.Ordered_Sets;
 
 with GNATCOLL.Utils;
 
@@ -35,7 +36,12 @@ package body Report_Database is
    Symbol_Table : constant Symbol_Table_Access := Allocate;
 
    Default_Stat : constant Stat_Rec :=
-     Stat_Rec'(VC_Count => 0, VC_Proved => 0, SPARK => False);
+     Stat_Rec'(SPARK         => False,
+               Analysis      => No_Analysis,
+               Flow_Warnings => 0,
+               Flow_Errors   => 0,
+               VC_Count      => 0,
+               VC_Proved     => 0);
 
    function Hash (S : Subp_Type_Rec) return Ada.Containers.Hash_Type;
 
@@ -63,6 +69,21 @@ package body Report_Database is
         Equivalent_Keys => "=",
         "="             => "=");
 
+   function "<" (Left, Right : Symbol) return Boolean is
+     (Get (Left, Empty_If_Null => True).all <
+        Get (Right, Empty_If_Null => True).all);
+
+   function "<" (Left, Right : Subp_Type) return Boolean is
+     (if Left.File < Right.File then True
+      elsif Right.File < Left.File then False
+      elsif Left.Name < Right.Name then True
+      elsif Right.Name < Left.Name then False
+      else Left.Line < Right.Line);
+
+   package Ordered_Subp_Sets is new
+     Ada.Containers.Ordered_Sets (Element_Type => Subp_Type,
+                                  "<"          => "<");
+
    package Unit_Maps is new
      Ada.Containers.Hashed_Maps
        (Key_Type        => Unit_Type,
@@ -70,6 +91,13 @@ package body Report_Database is
         Hash            => Hash,
         Equivalent_Keys => "=",
         "="             => Subp_Maps."=");
+
+   function "<" (Left, Right : Unit_Type) return Boolean is
+     (Symbol (Left) < Symbol (Right));
+
+   package Ordered_Unit_Sets is new
+     Ada.Containers.Ordered_Sets (Element_Type => Unit_Type,
+                                  "<"          => "<");
 
    Unit_Map : Unit_Maps.Map := Unit_Maps.Empty_Map;
 
@@ -81,6 +109,37 @@ package body Report_Database is
    --  unit/subp didn't exist yet, they are added, and a default Stat_Rec
    --  is created.
 
+   ---------------------
+   -- Add_Flow_Result --
+   ---------------------
+
+   procedure Add_Flow_Result
+     (Unit  : Unit_Type;
+      Subp  : Subp_Type;
+      Error : Boolean)
+   is
+      procedure Process (Stat : in out Stat_Rec);
+      --  Do the actual work
+
+      -------------
+      -- Process --
+      -------------
+
+      procedure Process (Stat : in out Stat_Rec) is
+      begin
+         if Error then
+            Stat.Flow_Errors := Stat.Flow_Errors + 1;
+         else
+            Stat.Flow_Warnings := Stat.Flow_Warnings + 1;
+         end if;
+      end Process;
+
+   --  Start of Add_Flow_Result
+
+   begin
+      Update_Subp_Entry (Unit, Subp, Process'Access);
+   end Add_Flow_Result;
+
    ----------------------
    -- Add_Proof_Result --
    ----------------------
@@ -90,7 +149,6 @@ package body Report_Database is
       Subp   : Subp_Type;
       Proved : Boolean)
    is
-
       procedure Process (Stat : in out Stat_Rec);
       --  Do the actual work
 
@@ -98,8 +156,7 @@ package body Report_Database is
       -- Process --
       -------------
 
-      procedure Process (Stat : in out Stat_Rec)
-      is
+      procedure Process (Stat : in out Stat_Rec) is
       begin
          Stat.VC_Count := Stat.VC_Count + 1;
          if Proved then
@@ -107,16 +164,21 @@ package body Report_Database is
          end if;
       end Process;
 
-      --  begin processing for Add_Proof_Result
+   --  Start of Add_Proof_Result
 
    begin
       Update_Subp_Entry (Unit, Subp, Process'Access);
    end Add_Proof_Result;
 
+   ----------------------
+   -- Add_SPARK_Status --
+   ----------------------
+
    procedure Add_SPARK_Status
      (Unit         : Unit_Type;
       Subp         : Subp_Type;
-      SPARK_Status : Boolean) is
+      SPARK_Status : Boolean;
+      Analysis     : Analysis_Status) is
 
       procedure Process (Stat : in out Stat_Rec);
       --  Do the actual work
@@ -128,9 +190,10 @@ package body Report_Database is
       procedure Process (Stat : in out Stat_Rec) is
       begin
          Stat.SPARK := SPARK_Status;
+         Stat.Analysis := Analysis;
       end Process;
 
-      --  begin processing for Add_SPARK_Status
+   --  Start of Add_SPARK_Status
 
    begin
       Update_Subp_Entry (Unit, Subp, Process'Access);
@@ -175,11 +238,34 @@ package body Report_Database is
    ----------------
 
    procedure Iter_Units
-     (Process : not null access procedure (U : Unit_Type)) is
+     (Process : not null access procedure (U : Unit_Type);
+      Ordered : Boolean := False) is
    begin
-      for Unit_C in Unit_Map.Iterate loop
-         Process (Unit_Maps.Key (Unit_C));
-      end loop;
+      --  To iterate over units in the order of their names, first insert all
+      --  unit symbols in an ordered set, and then iterate over this ordered
+      --  set.
+
+      if Ordered then
+         declare
+            use Ordered_Unit_Sets;
+            Names : Set;
+         begin
+            for Unit_C in Unit_Map.Iterate loop
+               Names.Include (Unit_Maps.Key (Unit_C));
+            end loop;
+
+            for Unit of Names loop
+               Process (Unit);
+            end loop;
+         end;
+
+      --  Otherwise, directly iterate over map of units
+
+      else
+         for Unit_C in Unit_Map.Iterate loop
+            Process (Unit_Maps.Key (Unit_C));
+         end loop;
+      end if;
    end Iter_Units;
 
    ---------------------
@@ -187,21 +273,44 @@ package body Report_Database is
    ---------------------
 
    procedure Iter_Unit_Subps
-     (Unit : Unit_Type;
-      Process : not null access procedure (Subp : Subp_Type; Stat : Stat_Rec))
+     (Unit    : Unit_Type;
+      Process : not null access procedure (Subp : Subp_Type; Stat : Stat_Rec);
+      Ordered : Boolean := False)
    is
-
       procedure Iter_Subp_Map (Unit : Unit_Type; Map : Subp_Maps.Map);
 
       -------------------
       -- Iter_Subp_Map --
       -------------------
+
       procedure Iter_Subp_Map (Unit : Unit_Type; Map : Subp_Maps.Map) is
          pragma Unreferenced (Unit);
       begin
-         for Subp_C in Map.Iterate loop
-            Process (Subp_Maps.Key (Subp_C), Subp_Maps.Element (Subp_C));
-         end loop;
+         --  To iterate over subprograms in the order of their names, first
+         --  insert all subprogram symbols in an ordered set, and then iterate
+         --  over this ordered set.
+
+         if Ordered then
+            declare
+               use Ordered_Subp_Sets;
+               Names : Set;
+            begin
+               for Subp_C in Map.Iterate loop
+                  Names.Include (Subp_Maps.Key (Subp_C));
+               end loop;
+
+               for Subp of Names loop
+                  Process (Subp, Subp_Maps.Element (Map, Subp));
+               end loop;
+            end;
+
+         --  Otherwise, directly iterate over map of units
+
+         else
+            for Subp_C in Map.Iterate loop
+               Process (Subp_Maps.Key (Subp_C), Subp_Maps.Element (Subp_C));
+            end loop;
+         end if;
       end Iter_Subp_Map;
 
       C : constant Unit_Maps.Cursor := Unit_Map.Find (Unit);
@@ -297,7 +406,7 @@ package body Report_Database is
          Count := Count + 1;
       end Update;
 
-      --  beginning of processing for Num_Units
+   --  Start of Num_Units
 
    begin
       Iter_Units (Update'Access);
@@ -386,7 +495,7 @@ package body Report_Database is
       C        : Cursor;
       Inserted : Boolean;
 
-      --  begin processing for Add_Proof_Result
+   --  Start of Update_Subp_Entry
 
    begin
       Unit_Map.Insert (Unit, Subp_Maps.Empty_Map, C, Inserted);

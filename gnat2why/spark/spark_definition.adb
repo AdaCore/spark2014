@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Directories;
 with Ada.Text_IO;                        use Ada.Text_IO;
 
 with Atree;                              use Atree;
@@ -288,7 +289,9 @@ package body SPARK_Definition is
 
    procedure Before_Marking (Basename : String) is
    begin
-      Create (Output_File, Out_File, Basename & VC_Kinds.SPARK_Suffix);
+      Create (Output_File, Out_File,
+              Ada.Directories.Compose (Name      => Basename,
+                                       Extension => VC_Kinds.SPARK_Suffix));
       Put_Line (Output_File, "[");
    end Before_Marking;
 

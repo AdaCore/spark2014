@@ -727,11 +727,12 @@ begin
    Execute_Step (GS_ALI, Project_File.all, Tree);
    Execute_Step (GS_Gnat2Why, Project_File.all, Tree);
 
-   if MMode in GPM_Check | GPM_Flow then
-      GNAT.OS_Lib.OS_Exit (0);
-   end if;
    Ada.Directories.Set_Directory (Proj_Type.Object_Dir.Display_Full_Name);
-   Execute_Step (GS_Why, Project_File.all, Tree);
+
+   if MMode in GPM_Prove | GPM_All then
+      Execute_Step (GS_Why, Project_File.all, Tree);
+   end if;
+
    declare
       Obj_Path : constant File_Array :=
         Object_Path (Proj_Type, Recursive => True);

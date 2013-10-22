@@ -34,10 +34,20 @@ package Report_Database is
 
    type Subp_Type is private;
 
+   type Analysis_Status is
+     (No_Analysis,      --  No analysis was performed on the unit
+      Flow_Analysis,    --  Only flow analysis was performed on the unit
+      Proof_Only,       --  Only proof was performed on the unit
+      Flow_And_Proof);  --  Flow analysis and proof were performed on the unit
+
+   --  Record of results obtained for a given subprogram or package
    type Stat_Rec is record
-      VC_Count  : Integer;
-      VC_Proved : Integer;
-      SPARK     : Boolean;
+      SPARK         : Boolean;          --  In SPARK or not
+      Analysis      : Analysis_Status;  --  Status of analysis performed
+      Flow_Warnings : Natural;          --  Number of flow analysis warnings
+      Flow_Errors   : Natural;          --  Number of flow analysis errors
+      VC_Count      : Natural;          --  Total number of checks
+      VC_Proved     : Natural;          --  Number of checks that were proved
    end record;
 
    function Mk_Unit (Name : String) return Unit_Type;
@@ -47,15 +57,26 @@ package Report_Database is
                      return Subp_Type;
    --  Build a a subp object from its defining components
 
+   procedure Add_Flow_Result
+     (Unit  : Unit_Type;
+      Subp  : Subp_Type;
+      Error : Boolean);
+   --  For the subprogram in the given unit, register a flow result, which is
+   --  either a warning or an error.
+
    procedure Add_Proof_Result
-     (Unit : Unit_Type; Subp : Subp_Type; Proved : Boolean);
+     (Unit   : Unit_Type;
+      Subp   : Subp_Type;
+      Proved : Boolean);
    --  For the subprogram in the given unit, register a proof result
 
    procedure Add_SPARK_Status
      (Unit         : Unit_Type;
       Subp         : Subp_Type;
-      SPARK_Status : Boolean);
-   --  register the SPARK status for the given unit
+      SPARK_Status : Boolean;
+      Analysis     : Analysis_Status);
+   --  Registers the SPARK status as well as the level of analysis performed
+   --  for the given unit.
 
    procedure Iter_All_Subps
      (Process : not null access
@@ -80,13 +101,18 @@ package Report_Database is
    --  return the number of subprograms in SPARK in the unit
 
    procedure Iter_Units
-     (Process : not null access procedure (U : Unit_Type));
-   --  Iterate over all units
+     (Process : not null access procedure (U : Unit_Type);
+      Ordered : Boolean := False);
+   --  Iterate over all units. If Ordered is True, iterate in a fixed order
+   --  defined by the lexicographic order on unit names.
 
    procedure Iter_Unit_Subps
-     (Unit : Unit_Type;
-      Process : not null access procedure (Subp : Subp_Type; Stat : Stat_Rec));
-   --  Iterate over all subprograms of a given Unit
+     (Unit    : Unit_Type;
+      Process : not null access procedure (Subp : Subp_Type; Stat : Stat_Rec);
+      Ordered : Boolean := False);
+   --  Iterate over all subprograms of a given Unit. If Ordered is True,
+   --  iterate in a fixed order defined by the lexicographic order on
+   --  subprogram names.
 
 private
 

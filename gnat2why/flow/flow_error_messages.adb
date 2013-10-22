@@ -21,7 +21,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Directories;
 with Ada.Text_IO;                        use Ada.Text_IO;
+
 with GNAT.String_Split;
 with GNAT.SHA1;
 
@@ -36,6 +38,8 @@ with Opt;                                use Opt;
 with Sem_Util;                           use Sem_Util;
 
 with String_Utils;                       use String_Utils;
+with VC_Kinds;
+
 with Gnat2Why.Nodes;                     use Gnat2Why.Nodes;
 with Gnat2Why_Args;                      use Gnat2Why_Args;
 
@@ -356,8 +360,11 @@ package body Flow_Error_Messages is
    procedure Create_Flow_Msgs_File (GNAT_Root : Node_Id) is
       FD : Ada.Text_IO.File_Type;
 
-      Flow_File_Name : constant String := Spec_File_Name_Without_Suffix
-        (Enclosing_Comp_Unit_Node (GNAT_Root)) & ".flow";
+      Flow_File_Name : constant String :=
+        Ada.Directories.Compose
+          (Name      => Spec_File_Name_Without_Suffix
+                          (Enclosing_Comp_Unit_Node (GNAT_Root)),
+           Extension => VC_Kinds.Flow_Suffix);
       --  Holds the name of the file that contains all emitted flow messages
    begin
       Ada.Text_IO.Create (FD, Ada.Text_IO.Out_File, Flow_File_Name);
