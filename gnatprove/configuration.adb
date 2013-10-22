@@ -166,8 +166,6 @@ ASCII.LF &
 ASCII.LF &
 "     --RTS=dir      Specify the Ada runtime name/location" &
 ASCII.LF &
-"     --show-tag     Append a unique tag to each error message" &
-ASCII.LF &
 "     --pedantic     Use a strict interpretation of the Ada standard" &
 ASCII.LF &
 "     --steps=nnn    Set the maximum number of proof steps to nnn for Alt-Ergo"

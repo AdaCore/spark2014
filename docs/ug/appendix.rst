@@ -53,7 +53,6 @@ Command-line Options
      --proof=p      Set the proof mode (p=no_split*, then_split, path_wp,
                     no_wp, all_split)
      --RTS=dir      Specify the Ada runtime name/location
-     --show-tag     Append a unique tag to each error message
      --pedantic     Use a strict interpretation of the Ada standard
      --steps=nnn    Set the maximum number of proof steps to nnn for Alt-Ergo
      --timeout=s    Set the prover timeout in seconds (default: 1)

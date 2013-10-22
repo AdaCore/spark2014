@@ -284,9 +284,8 @@ is about ``Y``, and that |GNATprove| was unable to prove that ``Y`` cannot be
 zero. The explanations in the table below should be read with the context that
 is given by the source location.
 
-The left column of the table contains the *tag* for each error message. Using
-option ``--show-tag``, |GNATprove| prints the tag for each error message at the
-end of the message, in brackets.
+The left column of the table contains the *tag* identifying each warning or
+error message.
 
 The following table shows the kinds of warnings issued by proof.
 
