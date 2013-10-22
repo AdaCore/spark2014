@@ -1,4 +1,6 @@
+queue.adb:4:19: info: discriminant check proved
 queue.adb:4:19: info: precondition proved
+queue.adb:11:19: info: discriminant check proved
 queue.adb:11:19: info: precondition proved
 queue.adb:13:7: info: precondition proved
 queue.adb:19:14: info: precondition proved

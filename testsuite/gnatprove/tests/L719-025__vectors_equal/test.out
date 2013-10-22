@@ -3,6 +3,7 @@ p.adb:6:7: info: precondition proved
 p.adb:10:27: info: precondition proved
 p.adb:12:7: info: precondition proved
 p.adb:13:7: warning: precondition might fail
+p.adb:17:33: info: discriminant check proved
 p.adb:17:33: info: precondition proved
 p.adb:19:7: info: precondition proved
 p.adb:20:7: warning: assertion might fail, requires Element (L, I1) = Element (L_In, I2)
