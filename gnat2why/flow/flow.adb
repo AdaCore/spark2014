@@ -132,46 +132,54 @@ package body Flow is
          Global_Writes : Flow_Id_Sets.Set;
          Tmp           : Flow_Id;
          Globals       : Flow_Id_Sets.Set;
+         Subprogram    : Entity_Id;
       begin
          case Nkind (N) is
+            when N_Generic_Subprogram_Declaration |
+                 N_Generic_Package_Declaration =>
+               return Skip;
+
             when N_Function_Call | N_Procedure_Call_Statement =>
+               Subprogram := Entity (Name (N));
+
                if Nkind (Name (N)) = N_Explicit_Dereference then
                   --  Deal with this non-spark case
-                  return OK;
+                  return Skip;
+
+               elsif Is_Formal_Subprogram (Subprogram) then
+                  --  Skip call to generic (they won't have effects)
+                  return Skip;
                end if;
 
-               declare
-                  Subprogram : constant Entity_Id := Entity (Name (N));
-               begin
-                  case Ekind (Subprogram) is
-                     when E_Procedure | E_Function =>
-                        for View in Boolean loop
-                           Get_Globals (Subprogram   => Subprogram,
-                                        Reads        => Global_Reads,
-                                        Writes       => Global_Writes,
-                                        Refined_View => View);
-                           Globals := Global_Reads or Global_Writes;
+               case Ekind (Subprogram) is
+                  when E_Procedure | E_Function =>
+                     for View in Boolean loop
+                        Get_Globals (Subprogram   => Subprogram,
+                                     Reads        => Global_Reads,
+                                     Writes       => Global_Writes,
+                                     Refined_View => View);
+                        Globals := Global_Reads or Global_Writes;
 
-                           for F of Globals loop
-                              if F.Kind = Magic_String then
-                                 Tmp := Change_Variant (F, Normal_Use);
-                                 if RV.Contains (Tmp.Name) then
-                                    RV (Tmp.Name).Include (Subprogram);
-                                 else
-                                    RV.Include (Tmp.Name,
-                                                Node_Sets.To_Set (Subprogram));
-                                 end if;
+                        for F of Globals loop
+                           if F.Kind = Magic_String then
+                              Tmp := Change_Variant (F, Normal_Use);
+                              if RV.Contains (Tmp.Name) then
+                                 RV (Tmp.Name).Include (Subprogram);
+                              else
+                                 RV.Include (Tmp.Name,
+                                             Node_Sets.To_Set (Subprogram));
                               end if;
-                           end loop;
+                           end if;
                         end loop;
+                     end loop;
 
-                     when E_Generic_Procedure | E_Generic_Function =>
-                        return Skip;
+                  when E_Generic_Procedure |
+                       E_Generic_Function =>
+                     return Skip;
 
-                     when others =>
-                        raise Why.Unexpected_Node;
-                  end case;
-               end;
+                  when others =>
+                     raise Why.Unexpected_Node;
+               end case;
 
             when others =>
                null;

@@ -1,4 +1,4 @@
-package Test is 
+package Test is
    --  Generic subprograms
 
    --  Exchange  --
@@ -72,7 +72,7 @@ package Test is
                                   New_Content   : in     New_Item_T)
             with Pre     => Old_Inventory'First = New_Inventory'First and
                             Old_Inventory'Last  = New_Inventory'Last,
-                 Depends => (New_Inventory => (Old_Inventory, New_Content));
+                 Depends => (New_Inventory =>+ (Old_Inventory, New_Content));
       end Internal_Generic;
    end External_Generic;
 end Test;

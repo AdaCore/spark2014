@@ -1,0 +1,7 @@
+test.adb:44:14: flow analysis of "Sum_And_Reverse" abandoned due to aliasing
+test.adb:55:16: formal parameters "U" and "V" might be aliased
+   compilation of test.adb failed
+
+
+gnatprove: error during translation to intermediate language, aborting.
+gprbuild: *** compilation phase failed
