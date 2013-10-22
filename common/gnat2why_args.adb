@@ -47,6 +47,7 @@ package body Gnat2Why_Args is
    Global_Gen_Mode_Name     : constant String := "global_gen_mode";
    Check_Mode_Name          : constant String := "check_mode";
    Flow_Analysis_Mode_Name  : constant String := "flow_analysis_mode";
+   Prove_Mode_Name          : constant String := "prove_mode";
    Flow_Debug_Mode_Name     : constant String := "flow_debug";
    Flow_Advanced_Debug_Name : constant String := "flow_advanced_debug";
    Analyze_File_Name        : constant String := "analyze_file";
@@ -87,6 +88,9 @@ package body Gnat2Why_Args is
 
       elsif Token = Flow_Analysis_Mode_Name then
          Flow_Analysis_Mode := True;
+
+      elsif Token = Prove_Mode_Name then
+         Prove_Mode := True;
 
       elsif Token = Flow_Debug_Mode_Name then
          Flow_Debug_Mode := True;
@@ -191,6 +195,10 @@ package body Gnat2Why_Args is
 
       if Flow_Analysis_Mode then
          Write_Line (Flow_Analysis_Mode_Name);
+      end if;
+
+      if Prove_Mode then
+         Write_Line (Prove_Mode_Name);
       end if;
 
       if Flow_Debug_Mode then

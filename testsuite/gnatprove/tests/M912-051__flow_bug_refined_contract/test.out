@@ -1,6 +1,4 @@
 outer.ads:15:11: warning:  it is currently ignored
 outer.ads:15:11: warning:  it is currently ignored
-outer.ads:15:11: warning:  it is currently ignored
 outer.ads:15:11: warning: pragma "Part_Of" is not yet supported
 outer.ads:15:11: warning: pragma "Part_Of" is not yet supported in flow analysis
-outer.ads:15:11: warning: pragma "Part_Of" is not yet supported in proof

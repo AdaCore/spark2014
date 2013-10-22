@@ -1,1 +1,6 @@
-NOT IMPLEMENTED YET
+foo.adb:22:21: warning: missing dependency "D => B" [depends_missing]
+foo.adb:22:21: warning: missing dependency "D => C" [depends_missing]
+foo.adb:23:21: warning: missing dependency "E => A" [depends_missing]
+foo.adb:23:21: warning: missing dependency "E => C" [depends_missing]
+foo.adb:24:21: warning: missing dependency "F => A" [depends_missing]
+foo.adb:24:21: warning: missing dependency "F => B" [depends_missing]

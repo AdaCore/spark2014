@@ -69,10 +69,14 @@ package Gnat2Why_Args is
 
    Check_Mode : Boolean := False;
 
-   --  Flow Analysis mode. In this mode, gnat2why will do flow analysis, in
-   --  addition to translation to Why.
+   --  Flow Analysis mode. In this mode, gnat2why will do flow analysis.
 
    Flow_Analysis_Mode : Boolean := False;
+
+   --  Prove mode. In this mode gnat2why will perform translation to
+   --  why.
+
+   Prove_Mode : Boolean := False;
 
    --  Enable basic debugging for flow analysis. This will dump the
    --  CFG and PDG is dot format.

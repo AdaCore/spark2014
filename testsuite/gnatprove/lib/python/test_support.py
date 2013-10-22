@@ -240,15 +240,8 @@ def do_flow(opt=None, procs=parallel_procs):
     """Call gnatprove with standard options for flow"""
     if opt is None:
         opt = []
-    opt += ["-P",
-            "test.gpr",
-            "--quiet",
-            "--mode=flow",
-            "--warnings=on",
-            "--debug",
-            "-j%d"%(procs)
-            ]
-    gnatprove(opt)
+    opt += ["--debug"]
+    prove(opt, mode="flow")
 
 def prove_all(opt=None, steps=max_steps, procs=parallel_procs,\
               vc_timeout=vc_timeout()):

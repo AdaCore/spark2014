@@ -270,9 +270,11 @@ package body Gnat2Why.Driver is
 
       --  Start the translation to Why
 
-      Init_Why_Files (GNAT_Root);
-      Translate_Standard_Package;
-      Translate_CUnit;
+      if Gnat2Why_Args.Prove_Mode then
+         Init_Why_Files (GNAT_Root);
+         Translate_Standard_Package;
+         Translate_CUnit;
+      end if;
    end GNAT_To_Why;
 
    ------------------------
