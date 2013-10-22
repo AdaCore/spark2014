@@ -1,0 +1,20 @@
+Analyzed 1 units
+in unit p, 2 subprograms and packages out of 2 analyzed
+  P at p.ads:1 flow analyzed (0 errors and 0 warnings)
+  P.Op at p.ads:4 flow analyzed (0 errors and 0 warnings)
+
+Analyzed 1 units
+in unit p, 2 subprograms and packages out of 2 analyzed
+  P at p.ads:1 proved (0 checks)
+  P.Op at p.ads:4 proved (2 checks)
+
+Analyzed 1 units
+in unit p, 2 subprograms and packages out of 2 analyzed
+  P at p.ads:1 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
+  P.Op at p.ads:4 flow analyzed (0 errors and 0 warnings) and proved (2 checks)
+
+Analyzed 1 units
+in unit p, 2 subprograms and packages out of 2 analyzed
+  P at p.ads:1 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
+  P.Op at p.ads:4 flow analyzed (0 errors and 0 warnings) and proved (2 checks)
+
