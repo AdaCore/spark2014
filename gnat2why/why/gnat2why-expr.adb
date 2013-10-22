@@ -273,9 +273,11 @@ package body Gnat2Why.Expr is
    --  On the aggregate (1 => (1 => X, others => Y), 2 => Z), components are
    --  {X, Y, Z}.)
    --
-   --  If the aggregate is not a "normal" aggregate but a model of a 'Update
-   --  expression, there are some additional properties for the logic function
-   --  created (F):
+   --  In_Attribute_Update is True for an aggregate used as argument of a
+   --  'Update attribute_reference, and False for a regular aggregate.
+   --
+   --  If In_Attribute_Update is True, there are some additional properties for
+   --  the logic function created (F):
    --
    --    a) the prefix array is sent as an extra parameter. "Others" is not
    --       allowed so no parameter for that, instead the values from the
