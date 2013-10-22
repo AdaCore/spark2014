@@ -65,11 +65,10 @@ The way checks are passed to Alt-Ergo can also be influenced using the option
 assertion (mode ``no_split``). This can be changed using mode ``path_wp`` to
 invoke Alt-Ergo for each *path* that leads to the check. This option usually
 takes much longer, because Alt-Ergo is invoked much more often, but may give
-better proof results. Using mode ``all_split``, in addition, conjunctions (such
-as ``and`` and ``and then``) in assertions are split and passed seperately to
-Alt-Ergo. Finally, in mode ``then_split``, invoking Alt-Ergo a single time on
-the entire check is tried, and only if the check is not proved, the other
-techniques (splitting conjunctions and trying each path separately) are tried.
+better proof results. Finally, in mode ``then_split``, invoking Alt-Ergo a
+single time on the entire check is tried, and only if the check is not proved,
+the other techniques (splitting conjunctions and trying each path separately)
+are tried.
 
 By default, |GNATprove| avoids reanalyzing unchanged files, on a
 per-unit basis. This mechanism can be disabled with the option ``-f``.
