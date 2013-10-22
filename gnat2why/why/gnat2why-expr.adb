@@ -4488,8 +4488,6 @@ package body Gnat2Why.Expr is
                   T := Transform_Aggregate (Params => Local_Params,
                                             Domain => Domain,
                                             Expr   => Expr);
-                  --  (don't need the prefix for a normal aggregate)
-
                end if;
             end;
 
