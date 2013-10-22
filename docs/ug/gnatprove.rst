@@ -290,6 +290,8 @@ end of the message, in brackets.
 
 The following table shows the kinds of warnings issued by proof.
 
+.. tabularcolumns:: |l|p{4.5in}|
+
 .. csv-table::
    :header: "Message Tag", "Explanation"
    :widths: 1, 4
@@ -317,6 +319,8 @@ them might result in a program which can raise a constraint error at run
 time. F(low) errors indicate a serious problem with a dependency relation, if
 such an error is not fixed, the dependency relations cannot be relied on. All
 other unclassified messages are warnings about questionable code constructs.
+
+.. tabularcolumns:: |l|l|p{4in}|
 
 .. csv-table::
    :header: "Message Tag", "Class", "Explanation"
