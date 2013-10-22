@@ -26,10 +26,12 @@ with GNAT.String_Split;
 with GNAT.SHA1;
 
 with Atree;                              use Atree;
+with Sinfo;                              use Sinfo;
 with Sinput;                             use Sinput;
 with Einfo;                              use Einfo;
 with Errout;                             use Errout;
 with Erroutc;                            use Erroutc;
+with Namet;                              use Namet;
 with Opt;                                use Opt;
 with Sem_Util;                           use Sem_Util;
 
@@ -63,7 +65,7 @@ package body Flow_Error_Messages is
       Tag       : String;
       Warning   : Boolean;
       Tracefile : out Unbounded_String;
-      Entity    : String);
+      Entity    : Entity_Id);
    --  If Ide_Mode is set then we print a JSON message. Otherwise, we just
    --  print a regular message. It also generates a unique Tracefile name
    --  based on a SHA1 hash of the JSON_Msg and adds a JSON entry to the
@@ -185,21 +187,20 @@ package body Flow_Error_Messages is
       Tag       : String;
       Warning   : Boolean;
       Tracefile : out Unbounded_String;
-      Entity    : String)
+      Entity    : Entity_Id)
    is
-      M      : Unbounded_String;
-      JSON_M : Unbounded_String;
-      Subs   : GNAT.String_Split.Slice_Set;  --  Contain the substrings
-      Sep    : constant String := ":";       --  Set the separator to ':'
-      C      : GNAT.SHA1.Context;
+      M          : Unbounded_String;
+      JSON_M     : Unbounded_String;
+      Subs       : GNAT.String_Split.Slice_Set;  --  Contain the substrings
+      Sep        : constant String := ":";       --  Set the separator to ':'
+      C          : GNAT.SHA1.Context;
+      Entity_Str : Unbounded_String;
 
-      File   : constant String := File_Name (Sloc (N));
-      Line   : constant String := Get_Logical_Line_Number_Img (Sloc (N));
-      Col    : constant String :=
+      File       : constant String := File_Name (Sloc (N));
+      Line       : constant String := Get_Logical_Line_Number_Img (Sloc (N));
+      Col        : constant String :=
         Int_Image (Integer (Get_Column_Number (Sloc (N))));
-
    begin
-
       --  Assemble message string
 
       M := To_Unbounded_String (Msg);
@@ -281,11 +282,18 @@ package body Flow_Error_Messages is
          JSON_M := JSON_M & "error"",";
       end if;
 
+      --  Assemble Entity_Str
+      if Ekind (Entity) in Subprogram_Kind | E_Package then
+         Entity_Str := To_Unbounded_String (Subp_Location (Entity));
+      else
+         Entity_Str := Null_Unbounded_String;
+      end if;
+
       --  Append entity information
       --  Originally the entity info looks like "GP_Subp:foo.ads:12" so
       --  we split it up (using ':' as the separator).
       GNAT.String_Split.Create (S          => Subs,
-                                From       => Entity,
+                                From       => To_String (Entity_Str),
                                 Separators => Sep);
 
       JSON_M := JSON_M & """entity"":{""file"":""";
@@ -302,8 +310,7 @@ package body Flow_Error_Messages is
       JSON_M := JSON_M & ",";
 
       if Integer (GNAT.String_Split.Slice_Count (Subs)) >= 1 then
-         JSON_M := JSON_M & """name"":""" & To_Unbounded_String
-           (GNAT.String_Split.Slice (Subs, 1));
+         JSON_M := JSON_M & """name"":""" & Get_Name_String (Chars (Entity));
       end if;
       JSON_M := JSON_M & """},";
 
@@ -390,14 +397,7 @@ package body Flow_Error_Messages is
       Tag       : String  := "";
       Warning   : Boolean := False)
    is
-      Entity : Unbounded_String;
    begin
-      if Ekind (FA.Analyzed_Entity) in Subprogram_Kind | E_Package then
-         Entity := To_Unbounded_String (Subp_Location (FA.Analyzed_Entity));
-      else
-         Entity := Null_Unbounded_String;
-      end if;
-
       --  Call Print_JSON_Msg_Or_Normal_Msg. If required, a JSON
       --  message will also be printed.
 
@@ -409,7 +409,7 @@ package body Flow_Error_Messages is
          Tag       => Tag,
          Warning   => Warning,
          Tracefile => Tracefile,
-         Entity    => To_String (Entity));
+         Entity    => FA.Analyzed_Entity);
    end Error_Msg_Flow;
 
 end Flow_Error_Messages;
