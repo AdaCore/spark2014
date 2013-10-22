@@ -20,7 +20,8 @@ package Update is
 
    --  aggregate reference test, compare WHY VC models
    function F1 (Init_Val : Integer) return Array_1D
-     with Post => (F1'Result =
+     with Pre => Init_Val < Integer'Last,
+          Post => (F1'Result =
                      Array_1D'(1..2   => X,
                                3      => Init_Val + 1,
                                Others => An_Arr(5)));
@@ -40,7 +41,7 @@ package Update is
      with Post => A = A'Old'Update(I => New_Val);
 
    --  dynamic choice interval
-   function F2 (Arr_In : Array_1D; I : Index; J : Index) return Array_1D
+   function F2 (Arr_In : Array_1D; I : Index) return Array_1D
      with Post => (F2'Result = Arr_In'Update(1..I => 7));
 
    --  overlapping choice intervals

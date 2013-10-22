@@ -1,27 +1,25 @@
 update.adb:4:34: info: length check proved
-update.adb:4:54: warning: overflow check might fail
+update.adb:8:26: info: overflow check proved
 update.adb:53:21: info: length check proved
 update.adb:59:21: info: length check proved
 update.adb:60:21: info: range check proved
 update.ads:15:34: info: length check proved
-update.ads:23:19: warning: postcondition might fail, requires F1'Result = Array_1DArray_1D'(1..2 => X), (3 => Init_Val + 1), (others => An_Arr (5))
-update.ads:24:31: info: length check proved
-update.ads:25:51: info: overflow check proved
-update.ads:32:19: info: postcondition proved
-update.ads:40:19: info: postcondition proved
-update.ads:40:36: info: range check proved
-update.ads:43:47: warning: unused initial value of "J" [unused_initial_value]
-update.ads:43:47: warning: unused variable "J" [unused]
-update.ads:44:19: info: postcondition proved
-update.ads:48:19: warning: postcondition might fail, requires F3'Result = Arr_In'update
-update.ads:54:19: info: postcondition proved
-update.ads:58:19: info: postcondition proved
-update.ads:62:19: info: postcondition proved
-update.ads:62:32: info: length check proved
-update.ads:66:19: info: postcondition proved
-update.ads:66:32: info: length check proved
-update.ads:66:53: info: range check proved
-update.ads:71:19: warning: postcondition might fail, requires A = A'Old'update
-update.ads:75:19: info: postcondition proved
-update.ads:75:43: info: range check proved
+update.ads:24:19: info: postcondition proved
+update.ads:25:31: info: length check proved
+update.ads:26:51: info: overflow check proved
+update.ads:33:19: info: postcondition proved
+update.ads:41:19: info: postcondition proved
+update.ads:41:36: info: range check proved
+update.ads:45:19: info: postcondition proved
+update.ads:49:19: info: postcondition proved
+update.ads:55:19: info: postcondition proved
+update.ads:59:19: info: postcondition proved
+update.ads:63:19: info: postcondition proved
+update.ads:63:32: info: length check proved
+update.ads:67:19: info: postcondition proved
+update.ads:67:32: info: length check proved
+update.ads:67:53: info: range check proved
+update.ads:72:19: warning: postcondition might fail, requires A = A'Old'update
+update.ads:76:19: info: postcondition proved
 update.ads:76:43: info: range check proved
+update.ads:77:43: info: range check proved

@@ -1,11 +1,11 @@
 package body Update is
 
    function F1 (Init_Val : Integer) return Array_1D is
-      Arr : Array_1D := Array_1D'(others => Init_Val + 1);
+      Arr : Array_1D := Array_1D'(others => An_Arr(5));
    begin
       Arr(1) := X;
       Arr(2) := X;
-      Arr(3) := X;
+      Arr(3) := Init_Val + 1;
       return Arr;
    end F1;
 
@@ -21,7 +21,7 @@ package body Update is
      A(I) := New_Val;
    end Basic_Array_Update2;
 
-   function F2 (Arr_In : Array_1D; I : Index; J : Index) return Array_1D is
+   function F2 (Arr_In : Array_1D; I : Index) return Array_1D is
    begin
       return Arr_In'Update(1..I => 7);
    end F2;
