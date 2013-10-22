@@ -2,10 +2,10 @@
 -- Tokeneer ID Station Core Software
 --
 -- Copyright (2003) United States Government, as represented
--- by the Director, National Security Agency. All rights reserved.
+-- by the Director, National Security Agency.All rights reserved.
 --
 -- This material was originally developed by Praxis High Integrity
--- Systems Ltd. under contract to the National Security Agency.
+-- Systems Ltd.under contract to the National Security Agency.
 ------------------------------------------------------------------
 
 ------------------------------------------------------------------
@@ -125,7 +125,8 @@ package body Cert.Attr.Auth is
       ------------------------------------------------------------------
       procedure ConvertTISTime(Time : in     Clock.TimeT;
                                Raw  :    out CertProcessing.TimeT)
-      --# derives Raw from Time;
+        with Global  => null,
+             Depends => (Raw => Time)
       is
          TheYear   : Clock.YearsT;
          TheMonth  : Clock.MonthsT;

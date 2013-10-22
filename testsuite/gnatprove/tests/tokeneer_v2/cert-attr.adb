@@ -2,10 +2,10 @@
 -- Tokeneer ID Station Core Software
 --
 -- Copyright (2003) United States Government, as represented
--- by the Director, National Security Agency. All rights reserved.
+-- by the Director, National Security Agency.All rights reserved.
 --
 -- This material was originally developed by Praxis High Integrity
--- Systems Ltd. under contract to the National Security Agency.
+-- Systems Ltd.under contract to the National Security Agency.
 ------------------------------------------------------------------
 
 ------------------------------------------------------------------
@@ -28,12 +28,12 @@ package body Cert.Attr is
    -- ExtractUser
    --
    -- Implementation Notes:
-   --     Prints the Issuer ID & SerialNumber.
+   --     Prints the Issuer ID& SerialNumber.
    ------------------------------------------------------------------
 
    function ExtractUser (Contents : ContentsT) return AuditTypes.UserTextT
+     with SPARK_Mode => Off
    is
-      --# hide ExtractUser;
       LocalUser : AuditTypes.UserTextT := AuditTypes.NoUser;
 
          FullString : String := "Issuer: "
@@ -45,9 +45,9 @@ package body Cert.Attr is
          -- if the Full string is shorter then use it all otherwise
          -- truncate it.
          if FullString'Last <= AuditTypes.UserTextI'Last then
-            LocalUser (1.. FullString'Last) := FullString;
+            LocalUser (1..FullString'Last) := FullString;
          else
-            LocalUser := FullString (1 .. AuditTypes.UserTextI'Last);
+            LocalUser := FullString (1..AuditTypes.UserTextI'Last);
          end if;
 
       return LocalUser;

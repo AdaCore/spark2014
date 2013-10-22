@@ -2,17 +2,17 @@
 -- Tokeneer ID Station Core Software
 --
 -- Copyright (2003) United States Government, as represented
--- by the Director, National Security Agency. All rights reserved.
+-- by the Director, National Security Agency.All rights reserved.
 --
 -- This material was originally developed by Praxis High Integrity
--- Systems Ltd. under contract to the National Security Agency.
+-- Systems Ltd.under contract to the National Security Agency.
 ------------------------------------------------------------------
 
 ------------------------------------------------------------------
 -- PrivCert
 --
 -- Description:
---    Defines the contents of a priv certificate. Certificates enter
+--    Defines the contents of a priv certificate.Certificates enter
 --    the system as raw data, and are stored in an internally-defined
 --    record structure.
 --    Inherits the operations defined in AttrCert.
@@ -22,11 +22,6 @@
 with Cert.Attr,
      CertTypes,
      PrivTypes;
---# inherit Cert.Attr,
---#         CertProcessing,
---#         CertTypes,
---#         Clock,
---#         PrivTypes;
 
 package Cert.Attr.Priv is
 
@@ -83,9 +78,8 @@ package Cert.Attr.Priv is
    ------------------------------------------------------------------
    procedure Extract (RawCert  : in     CertTypes.RawCertificateT;
                       Contents :    out ContentsT;
-                      Success  :    out Boolean);
-   --# derives Contents,
-   --#         Success  from RawCert;
+                      Success  :    out Boolean)
+     with Depends => ((Contents, Success) => RawCert);
 
 
    ------------------------------------------------------------------
@@ -97,8 +91,8 @@ package Cert.Attr.Priv is
    -- Traceunit : C.PrivCert.Clear
    --
    ------------------------------------------------------------------
-   procedure Clear (Contents :    out ContentsT);
-   --# derives Contents from ;
+   procedure Clear (Contents :    out ContentsT)
+     with Depends => (Contents => null);
 
    --  Converts the extended type to the original one.
    function Cert_Attr_Priv_To_Cert (X : in ContentsT) return Cert.ContentsT;
@@ -121,7 +115,7 @@ package Cert.Attr.Priv is
          end record;
 
      NullContents : constant ContentsT :=
-       ContentsT'( ID         => CertTypes.NullID,
+       ContentsT'(ID         => CertTypes.NullID,
                    NotBefore  => Clock.ZeroTime,
                    NotAfter   => Clock.ZeroTime,
                    Mechanism  => CryptoTypes.AlgorithmT'First,

@@ -18,7 +18,7 @@
 with BasicTypes;
 
 package Keyboard
-   with Abstract_State => (Inputs with External)
+  with Abstract_State => (Inputs with External)
 is
 
    ------------------------------------------------------------------
@@ -46,8 +46,8 @@ is
    -- Traceto:  FD.TIS.TISStartup
    ------------------------------------------------------------------
    procedure Init
-      with Global  => (Input  => Inputs),
-           Depends => (null => Inputs);
+     with Global  => (Input  => Inputs),
+          Depends => (null => Inputs);
 
 
    ------------------------------------------------------------------
@@ -59,8 +59,8 @@ is
    -- Traceunit: C.Keyboard.Finalise
    ------------------------------------------------------------------
    procedure Finalise
-      with Global  => (Input  => Inputs),
-           Depends => (null => Inputs);
+     with Global  => (Input  => Inputs),
+          Depends => (null => Inputs);
 
 
    ------------------------------------------------------------------
@@ -77,8 +77,8 @@ is
    procedure Read
      (DataPresence :    out BasicTypes.PresenceT;
       Data         :    out DataT)
-      with Global  => (Input  => Inputs),
-           Depends => ((Data, DataPresence) => Inputs);
+     with Global  => (Input  => Inputs),
+          Depends => ((Data, DataPresence) => Inputs);
 
    ------------------------------------------------------------------
    -- Poll
@@ -90,7 +90,7 @@ is
    -- Traceto: FD.Poll.Keyboard
    ------------------------------------------------------------------
    procedure Poll
-      with Global  => (Input  => Inputs),
-           Depends => (null => Inputs);
+     with Global  => (Input  => Inputs),
+          Depends => (null => Inputs);
 
 end Keyboard;

@@ -24,8 +24,9 @@ with BasicTypes,
      Auditlog;
 
 package KeyStore
-   with Abstract_State => (State, Store),
-        Initializes    => Store
+  with Abstract_State => (State,
+                          Store),
+       Initializes    => Store
 is
 
    ------------------------------------------------------------------
@@ -43,19 +44,19 @@ is
    -- Traceto   : FD.TIS.TISStartup
    ------------------------------------------------------------------
    procedure Init
-      with Global  => (Input  => (Clock.Now,
-                                  ConfigData.State,
-                                  Store),
-                       Output => State,
-                       In_Out => (AuditLog.FileState,
-                                  AuditLog.State)),
-           Depends => ((AuditLog.FileState,
-                        AuditLog.State)    => (AuditLog.FileState,
-                                               AuditLog.State,
-                                               Clock.Now,
-                                               ConfigData.State,
-                                               Store),
-                       State => Store);
+     with Global  => (Input  => (Clock.Now,
+                                 ConfigData.State,
+                                 Store),
+                      Output => State,
+                      In_Out => (AuditLog.FileState,
+                                 AuditLog.State)),
+          Depends => ((AuditLog.FileState,
+                       AuditLog.State)    => (AuditLog.FileState,
+                                              AuditLog.State,
+                                              Clock.Now,
+                                              ConfigData.State,
+                                              Store),
+                      State => Store);
 
    ------------------------------------------------------------------
    -- KeyMatchingIssuerPresent
@@ -71,20 +72,20 @@ is
    ------------------------------------------------------------------
    procedure KeyMatchingIssuerPresent(Issuer    : in     CryptoTypes.IssuerT;
                                       IsPresent :    out Boolean)
-      with Global  => (Input  => (Clock.Now,
-                                  ConfigData.State,
-                                  Store),
-                       In_Out => (AuditLog.FileState,
-                                  AuditLog.State)),
-           Depends => ((AuditLog.FileState,
-                        AuditLog.State)     => (AuditLog.FileState,
-                                                AuditLog.State,
-                                                Clock.Now,
-                                                ConfigData.State,
-                                                Issuer,
-                                                Store),
-                       IsPresent => (Issuer,
-                                     Store));
+     with Global  => (Input  => (Clock.Now,
+                                 ConfigData.State,
+                                 Store),
+                      In_Out => (AuditLog.FileState,
+                                 AuditLog.State)),
+          Depends => ((AuditLog.FileState,
+                       AuditLog.State)     => (AuditLog.FileState,
+                                               AuditLog.State,
+                                               Clock.Now,
+                                               ConfigData.State,
+                                               Issuer,
+                                               Store),
+                      IsPresent => (Issuer,
+                                    Store));
 
    ------------------------------------------------------------------
    -- PrivateKeyPresent
@@ -97,7 +98,7 @@ is
    -- Traceto   : FD.Certificate.AuthCertSignedOk
    ------------------------------------------------------------------
    function PrivateKeyPresent return Boolean
-      with Global  => State;
+     with Global  => State;
 
    ------------------------------------------------------------------
    -- IssuerIsThisTIS
@@ -108,9 +109,8 @@ is
    -- Traceunit : C.KeyStore.IssuerIsThisTIS
    -- Traceto   : FD.Certificate.AuthCertSignedOk
    ------------------------------------------------------------------
-   function IssuerIsThisTIS(Issuer : CryptoTypes.IssuerT)
-     return Boolean
-      with Global  => State;
+   function IssuerIsThisTIS(Issuer : CryptoTypes.IssuerT) return Boolean
+     with Global  => State;
 
    ------------------------------------------------------------------
    -- ThisTIS
@@ -122,7 +122,7 @@ is
    -- Traceto   : FD.KeyStore.State
    ------------------------------------------------------------------
    function ThisTIS return CryptoTypes.IssuerT
-      with Global  => State;
+     with Global  => State;
 
    ------------------------------------------------------------------
    -- IsVerifiedBy
@@ -138,26 +138,26 @@ is
                            Signature   : in     CertTypes.SignatureT;
                            TheIssuer   : in     CryptoTypes.IssuerT;
                            Verified    :    out Boolean)
-      with Global  => (Input  => (Clock.Now,
-                                  ConfigData.State,
-                                  Store),
-                       In_Out => (AuditLog.FileState,
-                                  AuditLog.State)),
-           Depends => ((AuditLog.FileState,
-                        AuditLog.State) => (AuditLog.FileState,
-                                            AuditLog.State,
-                                            Clock.Now,
-                                            ConfigData.State,
-                                            Mechanism,
-                                            RawCertData,
-                                            Signature,
-                                            Store,
-                                            TheIssuer),
-                       Verified => (Mechanism,
-                                    RawCertData,
-                                    Signature,
-                                    Store,
-                                    TheIssuer));
+     with Global  => (Input  => (Clock.Now,
+                                 ConfigData.State,
+                                 Store),
+                      In_Out => (AuditLog.FileState,
+                                 AuditLog.State)),
+          Depends => ((AuditLog.FileState,
+                       AuditLog.State) => (AuditLog.FileState,
+                                           AuditLog.State,
+                                           Clock.Now,
+                                           ConfigData.State,
+                                           Mechanism,
+                                           RawCertData,
+                                           Signature,
+                                           Store,
+                                           TheIssuer),
+                      Verified => (Mechanism,
+                                   RawCertData,
+                                   Signature,
+                                   Store,
+                                   TheIssuer));
 
    ------------------------------------------------------------------
    -- Sign
@@ -171,21 +171,21 @@ is
    procedure  Sign(RawCertData : in     CertTypes.RawDataT;
                    Signature   :    out CertTypes.SignatureT;
                    Signed      :    out Boolean)
-      with Global  => (Input  => (Clock.Now,
-                                  ConfigData.State,
-                                  Store),
-                       In_Out => (AuditLog.FileState,
-                                  AuditLog.State)),
-           Depends => ((AuditLog.FileState,
-                        AuditLog.State)     => (AuditLog.FileState,
-                                                AuditLog.State,
-                                                Clock.Now,
-                                                ConfigData.State,
-                                                RawCertData,
-                                                Store),
-                       (Signature,
-                        Signed)    => (RawCertData,
-                                       Store));
+     with Global  => (Input  => (Clock.Now,
+                                 ConfigData.State,
+                                 Store),
+                      In_Out => (AuditLog.FileState,
+                                 AuditLog.State)),
+          Depends => ((AuditLog.FileState,
+                       AuditLog.State)     => (AuditLog.FileState,
+                                               AuditLog.State,
+                                               Clock.Now,
+                                               ConfigData.State,
+                                               RawCertData,
+                                               Store),
+                      (Signature,
+                       Signed)    => (RawCertData,
+                                      Store));
 
    ------------------------------------------------------------------
    -- AddKey
@@ -200,33 +200,33 @@ is
                     TheKey   : in     CryptoTypes.KeyPartT;
                     IsPublic : in     Boolean;
                     Added    :    out Boolean)
-      with Global  => (Input  => (Clock.Now,
-                                  ConfigData.State),
-                       In_Out => (AuditLog.FileState,
-                                  AuditLog.State,
-                                  State,
-                                  Store)),
-           Depends => ((Added,
-                        Store) => (IsPublic,
-                                   Store,
-                                   TheKey,
-                                   TheOwner),
-                       (AuditLog.FileState,
-                        AuditLog.State)     => (AuditLog.FileState,
-                                                AuditLog.State,
-                                                Clock.Now,
-                                                ConfigData.State,
-                                                IsPublic,
-                                                Store,
-                                                TheKey,
-                                                TheOwner),
-                       State =>+ (IsPublic,
+     with Global  => (Input  => (Clock.Now,
+                                 ConfigData.State),
+                      In_Out => (AuditLog.FileState,
+                                 AuditLog.State,
+                                 State,
+                                 Store)),
+          Depends => ((Added,
+                       Store) => (IsPublic,
                                   Store,
                                   TheKey,
-                                  TheOwner)),
-           Post    => (if (Added and then not IsPublic) then PrivateKeyPresent) and then
-                         (if (not (Added and then not IsPublic)) then
-                            (PrivateKeyPresent = PrivateKeyPresent'Old));
+                                  TheOwner),
+                      (AuditLog.FileState,
+                       AuditLog.State)     => (AuditLog.FileState,
+                                               AuditLog.State,
+                                               Clock.Now,
+                                               ConfigData.State,
+                                               IsPublic,
+                                               Store,
+                                               TheKey,
+                                               TheOwner),
+                      State =>+ (IsPublic,
+                                 Store,
+                                 TheKey,
+                                 TheOwner)),
+          Post    => (Added and (not IsPublic) and PrivateKeyPresent) or
+                     ((not Added) and (not IsPublic) and
+                        (PrivateKeyPresent = PrivateKeyPresent'Old));
 
    ------------------------------------------------------------------
    -- Delete
@@ -238,8 +238,10 @@ is
    -- Traceto   : FD.KeyTypes.UpdateKeyStore
    ------------------------------------------------------------------
    procedure Delete
-      with Global  => (Output => State, In_Out => Store),
-           Depends => (State => null, Store =>+ null),
-           Post    => not PrivateKeyPresent;
+     with Global  => (Output => State,
+                      In_Out => Store),
+          Depends => (State =>  null,
+                      Store =>+ null),
+          Post    => not PrivateKeyPresent;
 
 end KeyStore;

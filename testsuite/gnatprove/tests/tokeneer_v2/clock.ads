@@ -18,8 +18,8 @@
 with BasicTypes;
 
 package Clock
-   with Abstract_State => (CurrentTime,
-                           (Now with External))
+  with Abstract_State => (CurrentTime,
+                          (Now with External))
 is
 
    ------------------------------------------------------------------
@@ -95,9 +95,9 @@ is
    ------------------------------------------------------------------
 
    procedure Poll
-      with Global  => (Input  => Now,
-		       Output => CurrentTime),
-           Depends => (CurrentTime => Now);
+     with Global  => (Input  => Now,
+                      Output => CurrentTime),
+          Depends => (CurrentTime => Now);
 
    ------------------------------------------------------------------
    -- TheCurrentTime
@@ -109,7 +109,7 @@ is
    -- Traceto: FD.RealWorld.State
    ------------------------------------------------------------------
    function TheCurrentTime return TimeT
-      with Global => CurrentTime;
+     with Global => CurrentTime;
 
    ------------------------------------------------------------------
    -- GetNow
@@ -121,7 +121,7 @@ is
    -- Traceto: FD.MonitoredRealWorld.State
    ------------------------------------------------------------------
    function GetNow return TimeT
-      with Global  => Now;
+     with Global  => Now;
 
 
    ------------------------------------------------------------------
@@ -186,12 +186,12 @@ is
       Min     : in     BasicTypes.Unsigned32T;
       TheTime :    out TimeT;
       Success :    out Boolean)
-      with Depends => ((Success,
-                        TheTime) => (Day,
-                                     Hour,
-                                     Min,
-                                     Month,
-                                     Year));
+     with Depends => ((Success,
+                       TheTime) => (Day,
+                                    Hour,
+                                    Min,
+                                    Month,
+                                    Year));
 
    ------------------------------------------------------------------
    -- SplitTime
@@ -209,11 +209,11 @@ is
       Day     :    out DaysT;
       Hour    :    out HoursT;
       Min     :    out MinutesT)
-      with Depends => ((Day,
-                        Hour,
-                        Min,
-                        Month,
-                        Year)  => TheTime);
+     with Depends => ((Day,
+                       Hour,
+                       Min,
+                       Month,
+                       Year)  => TheTime);
 
    ------------------------------------------------------------------
    -- StartOfDay

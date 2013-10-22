@@ -2,17 +2,17 @@
 -- Tokeneer ID Station Core Software
 --
 -- Copyright (2003) United States Government, as represented
--- by the Director, National Security Agency. All rights reserved.
+-- by the Director, National Security Agency.All rights reserved.
 --
 -- This material was originally developed by Praxis High Integrity
--- Systems Ltd. under contract to the National Security Agency.
+-- Systems Ltd.under contract to the National Security Agency.
 ------------------------------------------------------------------
 
 ------------------------------------------------------------------
 -- AttrCert
 --
 -- Description:
---    Defines the common contents of an attribute certificate,
+--    Defines the common contents of an attribute certificate, 
 --    and operations on those contents.
 --    Certificates enter the system as raw data, and are stored in
 --    an internally-defined record structure.
@@ -20,13 +20,10 @@
 --
 ------------------------------------------------------------------
 
-with AuditTypes,
-     Cert,
+with AuditTypes, 
+     Cert, 
      CertTypes;
 
---# inherit AuditTypes,
---#         Cert,
---#         CertTypes;
 
 package Cert.Attr is
 
@@ -83,10 +80,10 @@ package Cert.Attr is
          end record;
 
      NullContents : constant ContentsT :=
-       ContentsT'( ID         => CertTypes.NullID,
-                   NotBefore  => Clock.ZeroTime,
-                   NotAfter   => Clock.ZeroTime,
-                   Mechanism  => CryptoTypes.AlgorithmT'First,
+       ContentsT'(ID         => CertTypes.NullID, 
+                   NotBefore  => Clock.ZeroTime, 
+                   NotAfter   => Clock.ZeroTime, 
+                   Mechanism  => CryptoTypes.AlgorithmT'First, 
                    BaseCertID => CertTypes.NullID);
 
 

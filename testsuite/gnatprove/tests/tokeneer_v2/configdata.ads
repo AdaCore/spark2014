@@ -26,8 +26,8 @@ with IandATypes;
 
 
 package ConfigData
-   with Abstract_State => (FileState, State),
-        Initializes    => Filestate
+  with Abstract_State => (FileState, State),
+       Initializes    => Filestate
 --# initializes FileState;
 is
 
@@ -122,22 +122,22 @@ is
       TheAlarmThresholdSize   : in     AuditTypes.FileSizeT;
       TheSystemMaxFar         : in     IandATypes.FarT
       )
-      with Global  => (In_Out => FileState),
-           Depends => ((FileState,
-                        Success) => (FileState,
-                                     TheAccessPolicy,
-                                     TheAlarmSilentDuration,
-                                     TheAlarmThresholdSize,
-                                     TheEnclaveClearance,
-                                     TheFingerWaitDuration,
-                                     TheLatchUnlockDuration,
-                                     TheMaxAuthDuration,
-                                     TheMinEntryClass,
-                                     TheMinPreservedLogSize,
-                                     TheSystemMaxFar,
-                                     TheTokenRemovalDuration,
-                                     TheWorkingHoursEnd,
-                                     TheWorkingHoursStart));
+     with Global  => (In_Out => FileState),
+          Depends => ((FileState,
+                       Success) => (FileState,
+                                    TheAccessPolicy,
+                                    TheAlarmSilentDuration,
+                                    TheAlarmThresholdSize,
+                                    TheEnclaveClearance,
+                                    TheFingerWaitDuration,
+                                    TheLatchUnlockDuration,
+                                    TheMaxAuthDuration,
+                                    TheMinEntryClass,
+                                    TheMinPreservedLogSize,
+                                    TheSystemMaxFar,
+                                    TheTokenRemovalDuration,
+                                    TheWorkingHoursEnd,
+                                    TheWorkingHoursStart));
 
    ------------------------------------------------------------------
    -- TheDisplayFields
@@ -163,20 +163,20 @@ is
       TheAlarmThresholdSize   : out AuditTypes.FileSizeT;
       TheSystemMaxFar         : out IandATypes.FarT
       )
-      with Global  => (Input  => State),
-           Depends => ((TheAccessPolicy,
-                        TheAlarmSilentDuration,
-                        TheAlarmThresholdSize,
-                        TheEnclaveClearance,
-                        TheFingerWaitDuration,
-                        TheLatchUnlockDuration,
-                        TheMaxAuthDuration,
-                        TheMinEntryClass,
-                        TheMinPreservedLogSize,
-                        TheSystemMaxFar,
-                        TheTokenRemovalDuration,
-                        TheWorkingHoursEnd,
-                        TheWorkingHoursStart) => State);
+     with Global  => (Input  => State),
+          Depends => ((TheAccessPolicy,
+                       TheAlarmSilentDuration,
+                       TheAlarmThresholdSize,
+                       TheEnclaveClearance,
+                       TheFingerWaitDuration,
+                       TheLatchUnlockDuration,
+                       TheMaxAuthDuration,
+                       TheMinEntryClass,
+                       TheMinPreservedLogSize,
+                       TheSystemMaxFar,
+                       TheTokenRemovalDuration,
+                       TheWorkingHoursEnd,
+                       TheWorkingHoursStart) => State);
 
    ------------------------------------------------------------------
    -- ValidateFile
@@ -205,21 +205,21 @@ is
       TheAlarmThresholdSize   :    out AuditTypes.FileSizeT;
       TheSystemMaxFar         :    out IandATypes.FarT
       )
-      with Depends => ((Success,
-                        TheAccessPolicy,
-                        TheAlarmSilentDuration,
-                        TheAlarmThresholdSize,
-                        TheEnclaveClearance,
-                        TheFile,
-                        TheFingerWaitDuration,
-                        TheLatchUnlockDuration,
-                        TheMaxAuthDuration,
-                        TheMinEntryClass,
-                        TheMinPreservedLogSize,
-                        TheSystemMaxFar,
-                        TheTokenRemovalDuration,
-                        TheWorkingHoursEnd,
-                        TheWorkingHoursStart) => TheFile);
+     with Depends => ((Success,
+                       TheAccessPolicy,
+                       TheAlarmSilentDuration,
+                       TheAlarmThresholdSize,
+                       TheEnclaveClearance,
+                       TheFile,
+                       TheFingerWaitDuration,
+                       TheLatchUnlockDuration,
+                       TheMaxAuthDuration,
+                       TheMinEntryClass,
+                       TheMinPreservedLogSize,
+                       TheSystemMaxFar,
+                       TheTokenRemovalDuration,
+                       TheWorkingHoursEnd,
+                       TheWorkingHoursStart) => TheFile);
 
    ------------------------------------------------------------------
    -- AuthPeriodIsEmpty
@@ -231,7 +231,7 @@ is
    -- Traceto : FD.CongfigData.State
    ------------------------------------------------------------------
    function AuthPeriodIsEmpty return Boolean
-      with Global  => State;
+     with Global  => State;
 
    ------------------------------------------------------------------
    -- GetAuthPeriod
@@ -246,10 +246,10 @@ is
      (TheTime   : in     Clock.TimeT;
        NotBefore :    out Clock.TimeT;
        NotAfter  :    out Clock.TimeT)
-      with Global  => (Input  => State),
-           Depends => ((NotAfter,
-                        NotBefore) => (State,
-                                       TheTime));
+     with Global  => (Input  => State),
+          Depends => ((NotAfter,
+                       NotBefore) => (State,
+                                      TheTime));
 
    ------------------------------------------------------------------
    -- IsInEntryPeriod
@@ -264,7 +264,7 @@ is
    function IsInEntryPeriod
      (Class   : PrivTypes.ClassT;
        TheTime : Clock.TimeT) return Boolean
-      with Global  => State;
+     with Global  => State;
 
    ------------------------------------------------------------------
    -- TheLatchUnlockDuration
@@ -276,7 +276,7 @@ is
    -- Traceto : FD.CongfigData.State
    ------------------------------------------------------------------
    function TheLatchUnlockDuration return DurationT
-      with Global  => State;
+     with Global  => State;
 
    ------------------------------------------------------------------
    -- TheAlarmSilentDuration
@@ -288,7 +288,7 @@ is
    -- Traceto : FD.CongfigData.State
    ------------------------------------------------------------------
    function TheAlarmSilentDuration return DurationT
-      with Global  => State;
+     with Global  => State;
 
    ------------------------------------------------------------------
    -- TheFingerWaitDuration
@@ -300,7 +300,7 @@ is
    -- Traceto : FD.CongfigData.State
    ------------------------------------------------------------------
    function TheFingerWaitDuration return DurationT
-      with Global  => State;
+     with Global  => State;
 
    ------------------------------------------------------------------
    -- TheTokenRemovalDuration
@@ -324,7 +324,7 @@ is
    -- Traceto : FD.CongfigData.State
    ------------------------------------------------------------------
    function TheEnclaveClearance return PrivTypes.ClassT
-      with Global  => State;
+     with Global  => State;
 
    ------------------------------------------------------------------
    -- TheSystemMaxFar
@@ -336,7 +336,7 @@ is
    -- Traceto : FD.CongfigData.State
    ------------------------------------------------------------------
    function TheSystemMaxFar return IandATypes.FarT
-      with Global  => State;
+     with Global  => State;
 
    ------------------------------------------------------------------
    -- TheAlarmThresholdEntries
@@ -348,6 +348,6 @@ is
    -- Traceto : FD.CongfigData.State
    ------------------------------------------------------------------
    function TheAlarmThresholdEntries return AuditTypes.AuditEntryCountT
-      with Global  => State;
+     with Global  => State;
 
 end ConfigData;

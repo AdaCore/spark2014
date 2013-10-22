@@ -29,6 +29,7 @@ use type CryptoTypes.IssuerIDT;
 use type BasicTypes.Unsigned32T;
 
 package body Crypto
+  with SPARK_Mode => Off
 is
 
    -- State.

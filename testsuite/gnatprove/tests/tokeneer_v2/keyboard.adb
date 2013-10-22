@@ -21,7 +21,7 @@ with BasicTypes;
 use type BasicTypes.PresenceT;
 
 package body Keyboard
-   with Refined_State => (Inputs => Keyboard.Interfac.Inputs)
+  with Refined_State => (Inputs => Keyboard.Interfac.Inputs)
 is
 
    ------------------------------------------------------------------
@@ -31,8 +31,8 @@ is
    --   None.
    ------------------------------------------------------------------
    procedure Init
-      with Refined_Global  => (Input  => Interfac.Inputs),
-           Refined_Depends => (null => Interfac.Inputs)
+     with Refined_Global  => (Input  => Interfac.Inputs),
+          Refined_Depends => (null => Interfac.Inputs)
    is
    begin
       Interfac.Init;
@@ -45,8 +45,8 @@ is
    --   None.
    ------------------------------------------------------------------
    procedure Finalise
-      with Refined_Global  => (Input  => Interfac.Inputs),
-           Refined_Depends => (null => Interfac.Inputs)
+     with Refined_Global  => (Input  => Interfac.Inputs),
+          Refined_Depends => (null => Interfac.Inputs)
    is
    begin
       Interfac.Finalise;
@@ -61,8 +61,8 @@ is
    procedure Read
      (DataPresence :    out BasicTypes.PresenceT;
       Data         :    out DataT)
-      with Refined_Global  => (Input  => Interfac.Inputs),
-           Refined_Depends => ((Data, DataPresence) => Interfac.Inputs)
+     with Refined_Global  => (Input  => Interfac.Inputs),
+          Refined_Depends => ((Data, DataPresence) => Interfac.Inputs)
    is
       LocalData : DataTextT;
       LocalLength : DataLengthT;
@@ -84,8 +84,8 @@ is
    --   None.
    ------------------------------------------------------------------
    procedure Poll
-      with Refined_Global  => (Input  => Interfac.Inputs),
-           Refined_Depends => (null => Interfac.Inputs)
+     with Refined_Global  => (Input  => Interfac.Inputs),
+          Refined_Depends => (null => Interfac.Inputs)
    is
    begin
       Interfac.Poll;

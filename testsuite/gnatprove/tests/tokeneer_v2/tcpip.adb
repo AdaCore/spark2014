@@ -16,7 +16,9 @@ with Ada.Command_Line;
 
 use type GNAT.Sockets.Selector_Status;
 
-package body TcpIp is
+package body TcpIp
+  with SPARK_Mode => Off
+is
 
    --
    -- Current SPRE information...

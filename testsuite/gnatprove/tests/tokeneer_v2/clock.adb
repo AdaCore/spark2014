@@ -21,8 +21,8 @@ with Clock.Interfac,
 use type BasicTypes.Unsigned32T;
 
 package body Clock
-   with Refined_State => (CurrentTime => CurrentTimeVar,
-                          Now         => Clock.Interfac.Now)
+  with Refined_State => (CurrentTime => CurrentTimeVar,
+                         Now         => Clock.Interfac.Now)
 is
 
    ------------------------------------------------------------------
@@ -60,10 +60,10 @@ is
       Value  : in     Natural;
       SStart : in     Positive;
       SEnd   : in     Positive)
-      with Depends => (S =>+ (Value,
-                              SEnd,
-                              SStart)),
-           Pre     => S'Last >= SEnd and S'First <= SStart
+     with Depends => (S =>+ (Value,
+                             SEnd,
+                             SStart)),
+          Pre     => S'Last >= SEnd and S'First <= SStart
    is
       V : Natural;
    begin
@@ -90,9 +90,9 @@ is
    ------------------------------------------------------------------
 
    procedure Poll
-      with Refined_Global  => (Input  => Interfac.Now,
-                               Output => CurrentTimeVar),
-           Refined_Depends => (CurrentTimeVar => Interfac.Now)
+     with Refined_Global  => (Input  => Interfac.Now,
+                              Output => CurrentTimeVar),
+          Refined_Depends => (CurrentTimeVar => Interfac.Now)
    is
    begin
       CurrentTimeVar := Interfac.TheTime;
@@ -107,7 +107,7 @@ is
    ------------------------------------------------------------------
 
    function TheCurrentTime return TimeT
-      with Refined_Global => CurrentTimeVar
+     with Refined_Global => CurrentTimeVar
    is
    begin
       return CurrentTimeVar;
@@ -122,7 +122,7 @@ is
    ------------------------------------------------------------------
 
    function GetNow return TimeT
-      with Refined_Global => Interfac.Now
+     with Refined_Global => Interfac.Now
    is
    begin
       return Interfac.TheTime;

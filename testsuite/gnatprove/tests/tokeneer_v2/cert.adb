@@ -2,10 +2,10 @@
 -- Tokeneer ID Station Core Software
 --
 -- Copyright (2003) United States Government, as represented
--- by the Director, National Security Agency. All rights reserved.
+-- by the Director, National Security Agency.All rights reserved.
 --
 -- This material was originally developed by Praxis High Integrity
--- Systems Ltd. under contract to the National Security Agency.
+-- Systems Ltd.under contract to the National Security Agency.
 ------------------------------------------------------------------
 
 ------------------------------------------------------------------
@@ -64,12 +64,12 @@ package body Cert is
    -- ExtractUser
    --
    -- Implementation Notes:
-   --     Prints the Issuer ID & SerialNumber.
+   --     Prints the Issuer ID& SerialNumber.
    ------------------------------------------------------------------
 
    function ExtractUser (Contents : ContentsT) return AuditTypes.UserTextT
+     with SPARK_Mode => Off
    is
-      --# hide ExtractUser;
       LocalUser : AuditTypes.UserTextT := AuditTypes.NoUser;
 
          FullString : String := "Issuer: "
@@ -81,9 +81,9 @@ package body Cert is
          -- if the Full string is shorter then use it all otherwise
          -- truncate it.
          if FullString'Last <= AuditTypes.UserTextI'Last then
-            LocalUser (1.. FullString'Last) := FullString;
+            LocalUser (1..FullString'Last) := FullString;
          else
-            LocalUser := FullString (1 .. AuditTypes.UserTextI'Last);
+            LocalUser := FullString (1..AuditTypes.UserTextI'Last);
          end if;
 
       return LocalUser;
@@ -116,7 +116,7 @@ package body Cert is
    is
    begin
        return
-         Clock.GreaterThanOrEqual( Clock.TheCurrentTime, Contents.NotBefore) and
+         Clock.GreaterThanOrEqual(Clock.TheCurrentTime, Contents.NotBefore) and
          Clock.LessThanOrEqual(Clock.TheCurrentTime, Contents.NotAfter);
    end IsCurrent;
 
@@ -134,8 +134,7 @@ package body Cert is
       LocalRawData : CertTypes.RawDataT;
       Ignored      : Boolean;
    begin
-      --# accept F, 10, Ignored, "Ineffective assignment expected here" &
-      --#        F, 33, Ignored, "Ineffective assignment expected here";
+      --# accept F, 10, Ignored, "Ineffective assignment expected here"& F, 33, Ignored, "Ineffective assignment expected here";
       CertProcessing.ObtainRawData(RawCert => RawCert,
                                    RawData => LocalRawData,
                                    ObtainSuccess => Ignored);
@@ -156,8 +155,7 @@ package body Cert is
       LocalSig : CertTypes.SignatureT;
       Ignored  : Boolean;
    begin
-      --# accept F, 10, Ignored, "Ineffective assignment expected here" &
-      --#        F, 33, Ignored, "Ineffective assignment expected here";
+      --# accept F, 10, Ignored, "Ineffective assignment expected here"& F, 33, Ignored, "Ineffective assignment expected here";
       CertProcessing.ObtainSignatureData(RawCert => RawCert,
                                          SignatureData => LocalSig,
                                          ObtainSuccess => Ignored);
@@ -174,12 +172,12 @@ package body Cert is
    ------------------------------------------------------------------
 
    procedure IssuerKnown (Contents : in     ContentsT;
-                          IsKnown   :    out Boolean )
+                          IsKnown   :    out Boolean)
    is
    begin
 
       KeyStore.KeyMatchingIssuerPresent
-        ( Issuer    => Contents.ID.Issuer,
+        (Issuer    => Contents.ID.Issuer,
           IsPresent => IsKnown);
 
    end IssuerKnown;
@@ -203,7 +201,7 @@ package body Cert is
 
        if IsKnown then
           KeyStore.IsVerifiedBy
-            ( Mechanism   => Contents.Mechanism,
+            (Mechanism   => Contents.Mechanism,
               RawCertData => GetData(RawCert),
               Signature   => GetSignature(RawCert),
               TheIssuer   => Contents.ID.Issuer,

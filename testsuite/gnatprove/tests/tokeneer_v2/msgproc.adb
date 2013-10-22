@@ -19,7 +19,9 @@
 with Ada.Strings;
 with Ada.Strings.Fixed;
 
-package body MsgProc is
+package body MsgProc
+  with SPARK_Mode => Off
+is
 
    ------------------------------------------------------------------
    -- GetStringByPos

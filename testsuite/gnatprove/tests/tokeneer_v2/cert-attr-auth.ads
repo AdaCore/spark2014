@@ -2,10 +2,10 @@
 -- Tokeneer ID Station Core Software
 --
 -- Copyright (2003) United States Government, as represented
--- by the Director, National Security Agency. All rights reserved.
+-- by the Director, National Security Agency.All rights reserved.
 --
 -- This material was originally developed by Praxis High Integrity
--- Systems Ltd. under contract to the National Security Agency.
+-- Systems Ltd.under contract to the National Security Agency.
 ------------------------------------------------------------------
 
 ------------------------------------------------------------------
@@ -24,17 +24,6 @@ with CertTypes,
      Clock,
      Cert.Attr,
      PrivTypes;
---# inherit AuditTypes,
---#         AuditLog,
---#         BasicTypes,
---#         Cert.Attr,
---#         CertProcessing,
---#         CertTypes,
---#         CryptoTypes,
---#         Clock,
---#         ConfigData,
---#         PrivTypes,
---#         KeyStore;
 
 package Cert.Attr.Auth is
 
@@ -90,9 +79,8 @@ package Cert.Attr.Auth is
    ------------------------------------------------------------------
    procedure Extract (RawCert  : in     CertTypes.RawCertificateT;
                       Contents :    out ContentsT;
-                      Success  :    out Boolean);
-   --# derives Contents,
-   --#         Success  from RawCert;
+                      Success  :    out Boolean)
+     with Depends => ((Contents, Success) => RawCert);
 
 
    ------------------------------------------------------------------
@@ -105,8 +93,9 @@ package Cert.Attr.Auth is
    -- traceto: FD.Types.Certificates
    ------------------------------------------------------------------
    procedure Construct (Contents : in     ContentsT;
-                        RawCert  :    out CertTypes.RawCertificateT);
-   --# derives RawCert from Contents;
+                        RawCert  :    out CertTypes.RawCertificateT)
+     with Global  => null,
+          Depends => (RawCert => Contents);
 
 
    ------------------------------------------------------------------
@@ -126,14 +115,14 @@ package Cert.Attr.Auth is
       BaseCertID : in     CertTypes.IDT;
       Role       : in     PrivTypes.PrivilegeT;
       Clearance  : in     PrivTypes.ClearanceT;
-      Contents   :    out ContentsT);
-   --# derives Contents from ID,
-   --#                       NotBefore,
-   --#                       NotAfter,
-   --#                       Mechanism,
-   --#                       BaseCertID,
-   --#                       Role,
-   --#                       Clearance;
+      Contents   :    out ContentsT)
+     with Depends => (Contents => (BaseCertID,
+                                   Clearance,
+                                   ID,
+                                   Mechanism,
+                                   NotAfter,
+                                   NotBefore,
+                                   Role));
 
 
    ------------------------------------------------------------------
@@ -148,25 +137,25 @@ package Cert.Attr.Auth is
    ------------------------------------------------------------------
    procedure IsOK (RawCert    : in     CertTypes.RawCertificateT;
                    Contents   : in     ContentsT;
-                   IsVerified :    out Boolean);
-   --# global in     KeyStore.Store;
-   --#        in     KeyStore.State;
-   --#        in     Clock.Now;
-   --#        in     ConfigData.State;
-   --#        in out AuditLog.FileState;
-   --#        in out AuditLog.State;
-   --# derives AuditLog.FileState,
-   --#         AuditLog.State     from Contents,
-   --#                                 RawCert,
-   --#                                 KeyStore.Store,
-   --#                                 AuditLog.FileState,
-   --#                                 AuditLog.State,
-   --#                                 Clock.Now,
-   --#                                 ConfigData.State &
-   --#         IsVerified         from Contents,
-   --#                                 RawCert,
-   --#                                 KeyStore.Store,
-   --#                                 KeyStore.State;
+                   IsVerified :    out Boolean)
+     with Global  => (Input  => (Clock.Now,
+                                 ConfigData.State,
+                                 KeyStore.State,
+                                 KeyStore.Store),
+                      In_Out => (AuditLog.FileState,
+                                 AuditLog.State)),
+          Depends => ((AuditLog.FileState,
+                       AuditLog.State) => (AuditLog.FileState,
+                                           AuditLog.State,
+                                           Clock.Now,
+                                           ConfigData.State,
+                                           Contents,
+                                           KeyStore.Store,
+                                           RawCert),
+                      IsVerified => (Contents,
+                                     KeyStore.State,
+                                     KeyStore.Store,
+                                     RawCert));
 
    ------------------------------------------------------------------
    -- Clear
@@ -177,8 +166,8 @@ package Cert.Attr.Auth is
    -- Traceunit : C.Cert.Attr.Auth.Clear
    --
    ------------------------------------------------------------------
-   procedure Clear (Contents :    out ContentsT);
-   --# derives Contents from ;
+   procedure Clear (Contents :    out ContentsT)
+     with Depends => (Contents => null);
 
    --  Converts the extended type to the original one.
    function Cert_Attr_Auth_To_Cert (X : in ContentsT) return Cert.ContentsT;
@@ -201,7 +190,7 @@ package Cert.Attr.Auth is
          end record;
 
      NullContents : constant ContentsT :=
-       ContentsT'( ID         => CertTypes.NullID,
+       ContentsT'(ID         => CertTypes.NullID,
                    NotBefore  => Clock.ZeroTime,
                    NotAfter   => Clock.ZeroTime,
                    Mechanism  => CryptoTypes.AlgorithmT'First,

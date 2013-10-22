@@ -2,10 +2,10 @@
 -- Tokeneer ID Station Core Software
 --
 -- Copyright (2003) United States Government, as represented
--- by the Director, National Security Agency. All rights reserved.
+-- by the Director, National Security Agency.All rights reserved.
 --
 -- This material was originally developed by Praxis High Integrity
--- Systems Ltd. under contract to the National Security Agency.
+-- Systems Ltd.under contract to the National Security Agency.
 ------------------------------------------------------------------
 
 ------------------------------------------------------------------
@@ -68,13 +68,13 @@ package body Cert.ID is
                       Success  :    out Boolean)
    is
       LocalContents : CertProcessing.IDCertDataT;
-      Extracted,
-      KeyLengthOK,
-      NotBeforeOk,
+      Extracted, 
+      KeyLengthOK, 
+      NotBeforeOk, 
       NotAfterOk    : Boolean;
    begin
-      CertProcessing.ExtractIDCertData(RawIDCert    => RawCert,
-                                       IDCert       => LocalContents,
+      CertProcessing.ExtractIDCertData(RawIDCert    => RawCert, 
+                                       IDCert       => LocalContents, 
                                        ExtractSuccess => Extracted);
 
       Contents.ID.Issuer        := LocalContents.Issuer;
@@ -105,21 +105,21 @@ package body Cert.ID is
       -- NotBefore and NotAfter are read as unsigned 32 bit words -
       -- convert to Clock.TimeT
       Clock.ConstructTime(
-               Year    => LocalContents.Validity.NotBefore.Year,
-               Month   => LocalContents.Validity.NotBefore.Month,
-               Day     => LocalContents.Validity.NotBefore.Day,
-               Hour    => LocalContents.Validity.NotBefore.Hour,
-               Min     => LocalContents.Validity.NotBefore.Minute,
-               TheTime => Contents.NotBefore,
+               Year    => LocalContents.Validity.NotBefore.Year, 
+               Month   => LocalContents.Validity.NotBefore.Month, 
+               Day     => LocalContents.Validity.NotBefore.Day, 
+               Hour    => LocalContents.Validity.NotBefore.Hour, 
+               Min     => LocalContents.Validity.NotBefore.Minute, 
+               TheTime => Contents.NotBefore, 
                Success => NotBeforeOK);
 
       Clock.ConstructTime(
-               Year    => LocalContents.Validity.NotAfter.Year,
-               Month   => LocalContents.Validity.NotAfter.Month,
-               Day     => LocalContents.Validity.NotAfter.Day,
-               Hour    => LocalContents.Validity.NotAfter.Hour,
-               Min     => LocalContents.Validity.NotAfter.Minute,
-               TheTime => Contents.NotAfter,
+               Year    => LocalContents.Validity.NotAfter.Year, 
+               Month   => LocalContents.Validity.NotAfter.Month, 
+               Day     => LocalContents.Validity.NotAfter.Day, 
+               Hour    => LocalContents.Validity.NotAfter.Hour, 
+               Min     => LocalContents.Validity.NotAfter.Minute, 
+               TheTime => Contents.NotAfter, 
                Success => NotAfterOK);
 
       Success := Extracted and NotBeforeOK and NotAfterOK and KeyLengthOK;
@@ -142,9 +142,9 @@ package body Cert.ID is
    --  Converts the extended type to the original one.
    function Cert_Id_To_Cert (X : in ContentsT) return Cert.ContentsT
    is
-      Temp : Cert.ContentsT := Cert.ContentsT'(ID        => X.ID,
-                                               NotBefore => X.NotBefore,
-                                               NotAfter  => X.NotAfter,
+      Temp : Cert.ContentsT := Cert.ContentsT'(ID        => X.ID, 
+                                               NotBefore => X.NotBefore, 
+                                               NotAfter  => X.NotAfter, 
                                                Mechanism => X.Mechanism);
    begin
       return Temp;

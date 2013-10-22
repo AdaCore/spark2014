@@ -2,10 +2,10 @@
 -- Tokeneer ID Station Core Software
 --
 -- Copyright (2003) United States Government, as represented
--- by the Director, National Security Agency. All rights reserved.
+-- by the Director, National Security Agency.All rights reserved.
 --
 -- This material was originally developed by Praxis High Integrity
--- Systems Ltd. under contract to the National Security Agency.
+-- Systems Ltd.under contract to the National Security Agency.
 ------------------------------------------------------------------
 
 ------------------------------------------------------------------
@@ -18,7 +18,9 @@
 
 with CertProc;
 
-package body CertProcessing is
+package body CertProcessing
+  with SPARK_Mode => Off
+is
 
    ------------------------------------------------------------------
    -- Exported Subprograms
@@ -294,8 +296,8 @@ package body CertProcessing is
    --
    -- Implementation Notes:
    --    Adds the 'SignatureData' key and encloses the data with braces.
-   --    Digest ID in SignatureData is the 'correct' ID - i.e. the ID created
-   --    from digesting the unsigned cert. This needs to overwrite the
+   --    Digest ID in SignatureData is the 'correct' ID - i.e.the ID created
+   --    from digesting the unsigned cert.This needs to overwrite the
    --    DigestID in the fictional Crypto dictionary.
    --
    ------------------------------------------------------------------

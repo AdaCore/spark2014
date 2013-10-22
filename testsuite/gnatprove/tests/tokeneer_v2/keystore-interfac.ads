@@ -21,8 +21,8 @@ with BasicTypes,
 
 
 private package KeyStore.Interfac
-   with Abstract_State => (Store with Part_Of => Keystore.Store),
-        Initializes    => Store
+  with Abstract_State => (Store with Part_Of => Keystore.Store),
+       Initializes    => Store
 is
 
    -- As this library will only be storing key objects we are only
@@ -121,8 +121,8 @@ is
    --
    ------------------------------------------------------------------
    procedure Initialize(ReturnValue : out ReturnValueT)
-      with Global  => (Input  => Store),
-           Depends => (ReturnValue => Store);
+     with Global  => (Input  => Store),
+          Depends => (ReturnValue => Store);
 
    ------------------------------------------------------------------
    -- Finalize
@@ -132,8 +132,8 @@ is
    --
    ------------------------------------------------------------------
    procedure Finalize(ReturnValue : out ReturnValueT)
-      with Global  => (Input  => Store),
-           Depends => (ReturnValue => Store);
+     with Global  => (Input  => Store),
+          Depends => (ReturnValue => Store);
 
    ------------------------------------------------------------------
    -- CreateObject
@@ -144,8 +144,8 @@ is
    ------------------------------------------------------------------
    procedure CreateObject(Template     : in     KeyTemplateT;
                           ReturnValue  :    out ReturnValueT)
-      with Global  => (In_Out => Store),
-           Depends => ((ReturnValue, Store) => (Store, Template));
+     with Global  => (In_Out => Store),
+          Depends => ((ReturnValue, Store) => (Store, Template));
 
    ------------------------------------------------------------------
    -- FindObjectsInit
@@ -157,8 +157,8 @@ is
    ------------------------------------------------------------------
    procedure FindObjectsInit(Template    : in     KeyTemplateT;
                              ReturnValue :    out ReturnValueT)
-      with Global  => (Input  => Store),
-           Depends => (ReturnValue => (Store, Template));
+     with Global  => (Input  => Store),
+          Depends => (ReturnValue => (Store, Template));
 
    ------------------------------------------------------------------
    -- FindObjects
@@ -171,11 +171,11 @@ is
    procedure FindObjects(HandleCount   : in out BasicTypes.Unsigned32T;
                          ObjectHandles :    out HandleArrayT;
                          ReturnValue   :    out ReturnValueT)
-      with Global  => (Input  => Store),
-           Depends => ((HandleCount,
-                        ObjectHandles,
-                        ReturnValue)   => (HandleCount,
-                                           Store));
+     with Global  => (Input  => Store),
+          Depends => ((HandleCount,
+                       ObjectHandles,
+                       ReturnValue)   => (HandleCount,
+                                          Store));
 
    ------------------------------------------------------------------
    -- FindObjectsFinal
@@ -185,8 +185,8 @@ is
    --
    ------------------------------------------------------------------
    procedure FindObjectsFinal(ReturnValue : out ReturnValueT)
-      with Global  => (Input  => Store),
-           Depends => (ReturnValue => Store);
+     with Global  => (Input  => Store),
+          Depends => (ReturnValue => Store);
 
    ------------------------------------------------------------------
    -- DigestInit
@@ -200,8 +200,8 @@ is
    ------------------------------------------------------------------
    procedure DigestInit(Mechanism   : in     CryptoTypes.AlgorithmT;
                         ReturnValue :    out ReturnValueT)
-      with Global  => (Input  => Store),
-           Depends => (ReturnValue => (Mechanism, Store));
+     with Global  => (Input  => Store),
+          Depends => (ReturnValue => (Mechanism, Store));
 
 
    ------------------------------------------------------------------
@@ -217,8 +217,8 @@ is
    procedure DigestUpdate(DataBlock   : in     HundredByteArrayT;
                           ByteCount   : in     BasicTypes.Unsigned32T;
                           ReturnValue :    out ReturnValueT)
-      with Global  => (Input  => Store),
-           Depends => (ReturnValue => (ByteCount, DataBlock, Store));
+     with Global  => (Input  => Store),
+          Depends => (ReturnValue => (ByteCount, DataBlock, Store));
 
    ------------------------------------------------------------------
    -- DigestFinal
@@ -230,8 +230,8 @@ is
    ------------------------------------------------------------------
    procedure DigestFinal(Digest       : out DigestT;
                          ReturnValue  : out ReturnValueT)
-      with Global  => (Input  => Store),
-           Depends => ((Digest, ReturnValue) => Store);
+     with Global  => (Input  => Store),
+          Depends => ((Digest, ReturnValue) => Store);
 
    ------------------------------------------------------------------
    -- Sign
@@ -245,12 +245,12 @@ is
                   Digest       : in     DigestT;
                   Signature    :    out CertTypes.SignatureT;
                   ReturnValue  :    out ReturnValueT)
-      with Global  => (Input  => Store),
-           Depends => ((ReturnValue,
-                        Signature) => (Digest,
-                                       KeyHandle,
-                                       Mechanism,
-                                       Store));
+     with Global  => (Input  => Store),
+          Depends => ((ReturnValue,
+                       Signature) => (Digest,
+                                      KeyHandle,
+                                      Mechanism,
+                                      Store));
 
    ------------------------------------------------------------------
    -- Verify
@@ -265,12 +265,12 @@ is
                     Digest       : in     DigestT;
                     Signature    : in     CertTypes.SignatureT;
                     ReturnValue  :    out ReturnValueT)
-      with Global  => (Input  => Store),
-           Depends => (ReturnValue => (Digest,
-                                       KeyHandle,
-                                       Mechanism,
-                                       Signature,
-                                       Store));
+     with Global  => (Input  => Store),
+          Depends => (ReturnValue => (Digest,
+                                      KeyHandle,
+                                      Mechanism,
+                                      Signature,
+                                      Store));
 
    ------------------------------------------------------------------
    -- GetAttributeValue
@@ -282,11 +282,11 @@ is
    procedure GetAttributeValue(KeyHandle   : in     BasicTypes.Unsigned32T;
                                Template    : in out KeyTemplateT;
                                ReturnValue :    out ReturnValueT)
-      with Global  => (Input  => Store),
-           Depends => ((ReturnValue,
-                        Template) => (KeyHandle,
-                                      Store,
-                                      Template));
+     with Global  => (Input  => Store),
+          Depends => ((ReturnValue,
+                       Template) => (KeyHandle,
+                                     Store,
+                                     Template));
 
    ------------------------------------------------------------------
    -- Delete
@@ -296,7 +296,7 @@ is
    --
    ------------------------------------------------------------------
    procedure Delete
-      with Global  => (In_Out => Store),
-           Depends => (Store =>+ null);
+     with Global  => (In_Out => Store),
+          Depends => (Store =>+ null);
 
 end KeyStore.Interfac;

@@ -18,7 +18,7 @@
 with Crypto;
 
 package body KeyStore.Interfac
-   with SPARK_Mode => Off
+  with SPARK_Mode => Off
 is
 
    ------------------------------------------------------------------

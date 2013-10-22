@@ -25,35 +25,20 @@ with AuditTypes;
 use type AuditTypes.FileSizeT;
 
 package body ConfigData
---# own State is
---#    LatchUnlockDuration,
---#    AlarmSilentDuration,
---#    FingerWaitDuration,
---#    TokenRemovalDuration,
---#    EnclaveClearance,
---#    WorkingHoursStart,
---#    WorkingHoursEnd,
---#    MaxAuthDuration,
---#    AccessPolicy,
---#    MinEntryClass,
---#    MinPreservedLogSize,
---#    AlarmThresholdSize,
---#    SystemMaxFar &
---# FileState is ConfigFile;
-   with Refined_State => (State => (LatchUnlockDuration,
-                                    AlarmSilentDuration,
-                                    FingerWaitDuration,
-                                    TokenRemovalDuration,
-                                    EnclaveClearance,
-                                    WorkingHoursStart,
-                                    WorkingHoursEnd,
-                                    MaxAuthDuration,
-                                    AccessPolicy,
-                                    MinEntryClass,
-                                    MinPreservedLogSize,
-                                    AlarmThresholdSize,
-                                    SystemMaxFar),
-                          FileState => ConfigFile)
+  with Refined_State => (State => (LatchUnlockDuration,
+                                   AlarmSilentDuration,
+                                   FingerWaitDuration,
+                                   TokenRemovalDuration,
+                                   EnclaveClearance,
+                                   WorkingHoursStart,
+                                   WorkingHoursEnd,
+                                   MaxAuthDuration,
+                                   AccessPolicy,
+                                   MinEntryClass,
+                                   MinPreservedLogSize,
+                                   AlarmThresholdSize,
+                                   SystemMaxFar),
+                         FileState => ConfigFile)
 is
 
    ------------------------------------------------------------------
@@ -222,14 +207,9 @@ is
       --      convert to 1/10sec for storage.
       ------------------------------------------------------------------
       procedure ReadDuration(Value : out DurationT)
-      --# global in out TheFile;
-      --#           out Success;
-      --# derives TheFile,
-      --#         Value,
-      --#         Success from TheFile;
-         with Global  => (In_Out => TheFile,
-                          Output => Success),
-              Depends => ((TheFile, Value, Success) => TheFile)
+        with Global  => (In_Out => TheFile,
+                         Output => Success),
+             Depends => ((TheFile, Value, Success) => TheFile)
       is
          RawDuration : Integer;
       begin
@@ -276,14 +256,9 @@ is
       --      convert to bytes for storage.
       ------------------------------------------------------------------
       procedure ReadFileSize( Value : out AuditTypes.FileSizeT)
-      --# global in out TheFile;
-      --#           out Success;
-      --# derives TheFile,
-      --#         Value,
-      --#         Success from TheFile;
-         with Global  => (In_Out => TheFile,
-                          Output => Success),
-              Depends => ((TheFile, Value, Success) => TheFile)
+        with Global  => (In_Out => TheFile,
+                         Output => Success),
+             Depends => ((TheFile, Value, Success) => TheFile)
       is
          RawSize : Integer;
       begin
@@ -317,14 +292,9 @@ is
       --      None.
       ------------------------------------------------------------------
       procedure ReadClass( Value : out PrivTypes.ClassT)
-      --# global in out TheFile;
-      --#           out Success;
-      --# derives TheFile,
-      --#         Value,
-      --#         Success from TheFile;
-         with Global  => (In_Out => TheFile,
-                          Output => Success),
-              Depends => ((TheFile, Value, Success) => TheFile)
+        with Global  => (In_Out => TheFile,
+                         Output => Success),
+             Depends => ((TheFile, Value, Success) => TheFile)
       is
          RawClass : ClassTextT;
          Stop     : Natural;
@@ -334,23 +304,13 @@ is
          File.GetLine(TheFile, RawClass, Stop);
          for C in PrivTypes.ClassT loop
 
-            --# assert C in PrivTypes.ClassT;
-
             if Stop = ClassStringLookUp(C).Length then
-
-               --# assert Stop in ClassTextI and
-               --#        C in PrivTypes.ClassT;
 
                -- could be the correct text
 
                Matched := True;
                for I in ClassTextI range 1 .. Stop loop
 
-                  --# assert Stop in ClassTextI and
-                  --#        Stop = Stop% and
-                  --#        I in ClassTextI and
-                  --#        C in PrivTypes.ClassT and
-                  --#        I <= Stop;
                   pragma Loop_Invariant (Stop = Stop'Loop_Entry and
                                          I <= Stop);
 
@@ -380,14 +340,9 @@ is
       --     Working hours is held internally as a duration in 1/10 secs.
       ------------------------------------------------------------------
       procedure ReadWorkingHours(TheDuration : out Clock.DurationT)
-      --# global in out TheFile;
-      --#           out Success;
-      --# derives TheFile,
-      --#         Success,
-      --#         TheDuration from TheFile;
-         with Global  => (In_Out => TheFile,
-                          Output => Success),
-              Depends => ((TheFile, Success, TheDuration) => TheFile)
+        with Global  => (In_Out => TheFile,
+                         Output => Success),
+             Depends => ((TheFile, Success, TheDuration) => TheFile)
       is
          RawHours   : Integer;
          RawMinutes : Integer;
@@ -428,14 +383,9 @@ is
       --      None.
       ------------------------------------------------------------------
       procedure ReadFar( Value : out IandATypes.FarT)
-      --# global in out TheFile;
-      --#           out Success;
-      --# derives TheFile,
-      --#         Value,
-      --#         Success from TheFile;
-         with Global  => (In_Out => TheFile,
-                          Output => Success),
-              Depends => ((TheFile, Value, Success) => TheFile)
+        with Global  => (In_Out => TheFile,
+                         Output => Success),
+             Depends => ((TheFile, Value, Success) => TheFile)
       is
          RawFar : Integer;
       begin
@@ -469,15 +419,9 @@ is
       --      None.
       ------------------------------------------------------------------
       procedure ReadAlarmSilent
-      --# global in out TheFile;
-      --#           out Success;
-      --#           out TheAlarmSilentDuration;
-      --# derives TheFile,
-      --#         Success,
-      --#         TheAlarmSilentDuration from TheFile;
-         with Global  => (In_Out => TheFile,
-                          Output => (Success, TheAlarmSilentDuration)),
-              Depends => ((TheFile, Success, TheAlarmSilentDuration) => TheFile)
+        with Global  => (In_Out => TheFile,
+                         Output => (Success, TheAlarmSilentDuration)),
+             Depends => ((TheFile, Success, TheAlarmSilentDuration) => TheFile)
       is
          TheTitle : AlarmSilentTextT;
          Stop : Natural;
@@ -505,15 +449,9 @@ is
       --      None.
       ------------------------------------------------------------------
       procedure ReadLatchUnlock
-      --# global in out TheFile;
-      --#           out Success;
-      --#           out TheLatchUnlockDuration;
-      --# derives TheFile,
-      --#         Success,
-      --#         TheLatchUnlockDuration from TheFile;
-         with Global  => (In_Out => TheFile,
-                          Output => (Success, TheLatchUnlockDuration)),
-              Depends => ((TheFile, Success, TheLatchUnlockDuration) => TheFile)
+        with Global  => (In_Out => TheFile,
+                         Output => (Success, TheLatchUnlockDuration)),
+             Depends => ((TheFile, Success, TheLatchUnlockDuration) => TheFile)
       is
          TheTitle : LatchUnlockTextT;
          Stop     : Natural;
@@ -541,15 +479,9 @@ is
       --      None.
       ------------------------------------------------------------------
       procedure ReadFingerWait
-      --# global in out TheFile;
-      --#           out Success;
-      --#           out TheFingerWaitDuration;
-      --# derives TheFile,
-      --#         Success,
-      --#         TheFingerWaitDuration from TheFile;
-         with Global  => (In_Out => TheFile,
-                          Output => (Success, TheFingerWaitDuration)),
-              Depends => ((TheFile, Success, TheFingerWaitDuration) => TheFile)
+        with Global  => (In_Out => TheFile,
+                         Output => (Success, TheFingerWaitDuration)),
+             Depends => ((TheFile, Success, TheFingerWaitDuration) => TheFile)
       is
          TheTitle : FingerWaitTextT;
          Stop : Natural;
@@ -576,15 +508,9 @@ is
       --      None.
       ------------------------------------------------------------------
       procedure ReadTokenRemoval
-      --# global in out TheFile;
-      --#           out Success;
-      --#           out TheTokenRemovalDuration;
-      --# derives TheFile,
-      --#         Success,
-      --#         TheTokenRemovalDuration from TheFile;
-         with Global  => (In_Out => TheFile,
-                          Output => (Success, TheTokenRemovalDuration)),
-              Depends => ((TheFile, Success, TheTokenRemovalDuration) => TheFile)
+        with Global  => (In_Out => TheFile,
+                         Output => (Success, TheTokenRemovalDuration)),
+             Depends => ((TheFile, Success, TheTokenRemovalDuration) => TheFile)
       is
          TheTitle : TokenRemovalTextT;
          Stop : Natural;
@@ -611,15 +537,9 @@ is
       --      None.
       ------------------------------------------------------------------
       procedure ReadClearance
-      --# global in out TheFile;
-      --#           out Success;
-      --#           out TheEnclaveClearance;
-      --# derives TheFile,
-      --#         Success,
-      --#         TheEnclaveClearance from TheFile;
-         with Global  => (In_Out => TheFile,
-                          Output => (Success, TheEnclaveClearance)),
-              Depends => ((TheFile, Success, TheEnclaveClearance) => TheFile)
+        with Global  => (In_Out => TheFile,
+                         Output => (Success, TheEnclaveClearance)),
+             Depends => ((TheFile, Success, TheEnclaveClearance) => TheFile)
       is
          TheTitle : ClearanceTextT;
          Stop : Natural;
@@ -647,15 +567,9 @@ is
       --      None.
       ------------------------------------------------------------------
       procedure ReadWorkingStart
-      --# global in out TheFile;
-      --#           out Success;
-      --#           out TheWorkingHoursStart;
-      --# derives TheFile,
-      --#         Success,
-      --#         TheWorkingHoursStart from TheFile;
-         with Global  => (In_Out => TheFile,
-                          Output => (Success, TheWorkingHoursStart)),
-              Depends => ((TheFile, Success, TheWorkingHoursStart) => TheFile)
+        with Global  => (In_Out => TheFile,
+                         Output => (Success, TheWorkingHoursStart)),
+             Depends => ((TheFile, Success, TheWorkingHoursStart) => TheFile)
       is
          TheTitle : WorkingStartTextT;
          Stop : Natural;
@@ -682,15 +596,9 @@ is
       --      None.
       ------------------------------------------------------------------
       procedure ReadWorkingEnd
-      --# global in out TheFile;
-      --#           out Success;
-      --#           out TheWorkingHoursEnd;
-      --# derives TheFile,
-      --#         Success,
-      --#         TheWorkingHoursEnd from TheFile;
-         with Global  => (In_Out => TheFile,
-                          Output => (Success, TheWorkingHoursEnd)),
-              Depends => ((TheFile, Success, TheWorkingHoursEnd) => TheFile)
+        with Global  => (In_Out => TheFile,
+                         Output => (Success, TheWorkingHoursEnd)),
+             Depends => ((TheFile, Success, TheWorkingHoursEnd) => TheFile)
       is
          TheTitle : WorkingEndTextT;
          Stop : Natural;
@@ -718,15 +626,9 @@ is
       --      None.
       ------------------------------------------------------------------
       procedure ReadAuthDuration
-      --# global in out TheFile;
-      --#           out Success;
-      --#           out TheMaxAuthDuration;
-      --# derives TheFile,
-      --#         Success,
-      --#         TheMaxAuthDuration from TheFile;
-         with Global  => (In_Out => TheFile,
-                          Output => (Success, TheMaxAuthDuration)),
-              Depends => ((TheFile, Success, TheMaxAuthDuration) => TheFile)
+        with Global  => (In_Out => TheFile,
+                         Output => (Success, TheMaxAuthDuration)),
+             Depends => ((TheFile, Success, TheMaxAuthDuration) => TheFile)
       is
          TheTitle : MaxAuthDurationTextT;
          Stop : Natural;
@@ -754,15 +656,9 @@ is
       --      None.
       ------------------------------------------------------------------
       procedure ReadAccessPolicy
-      --# global in out TheFile;
-      --#           out Success;
-      --#           out TheAccessPolicy;
-      --# derives TheFile,
-      --#         Success,
-      --#         TheAccessPolicy from TheFile;
-         with Global  => (In_Out => TheFile,
-                          Output => (Success, TheAccessPolicy)),
-              Depends => ((TheFile, Success, TheAccessPolicy) => TheFile)
+        with Global  => (In_Out => TheFile,
+                         Output => (Success, TheAccessPolicy)),
+             Depends => ((TheFile, Success, TheAccessPolicy) => TheFile)
       is
          TheTitle : AccessPolicyTextT;
          RawAccessPolicy : AccessTextT;
@@ -778,19 +674,11 @@ is
 
             File.GetLine(TheFile, RawAccessPolicy, Stop);
             for AP in AccessPolicyT loop
-               --# assert AP in AccessPolicyT;
                if Stop = AccessStringLookUp(AP).Length then
-                  --# assert AP in AccessPolicyT and
-                  --#        Stop in AccessTextI;
 
                   -- could be the correct text
                   Matched := True;
                   for I in AccessTextI range 1 .. Stop loop
-                     --# assert AP in AccessPolicyT and
-                     --#        Stop in AccessTextI and
-                     --#        Stop = Stop% and
-                     --#        I in AccessTextI and
-                     --#        I <= Stop;
                      pragma Loop_Invariant (Stop = Stop'Loop_Entry and
                                             I <= Stop);
                      if AccessStringLookUp(AP).Text(I) /= RawAccessPolicy(I) then
@@ -823,15 +711,9 @@ is
       --      None.
       ------------------------------------------------------------------
       procedure ReadMinEntryClass
-      --# global in out TheFile;
-      --#           out Success;
-      --#           out TheMinEntryClass;
-      --# derives TheFile,
-      --#         Success,
-      --#         TheMinEntryClass from TheFile;
-         with Global  => (In_Out => TheFile,
-                          Output => (Success, TheMinEntryClass)),
-              Depends => ((TheFile, Success, TheMinEntryClass) => TheFile)
+        with Global  => (In_Out => TheFile,
+                         Output => (Success, TheMinEntryClass)),
+             Depends => ((TheFile, Success, TheMinEntryClass) => TheFile)
       is
          TheTitle : MinEntryClassTextT;
          Stop : Natural;
@@ -859,15 +741,9 @@ is
       --      None.
       ------------------------------------------------------------------
       procedure ReadMinPreservedLog
-      --# global in out TheFile;
-      --#           out Success;
-      --#           out TheMinPreservedLogSize;
-      --# derives TheFile,
-      --#         Success,
-      --#         TheMinPreservedLogSize from TheFile;
-         with Global  => (In_Out => TheFile,
-                          Output => (Success, TheMinPreservedLogSize)),
-              Depends => ((TheFile, Success, TheMinPreservedLogSize) => TheFile)
+        with Global  => (In_Out => TheFile,
+                         Output => (Success, TheMinPreservedLogSize)),
+             Depends => ((TheFile, Success, TheMinPreservedLogSize) => TheFile)
       is
          TheTitle : MinPreservedLogSizeTextT;
          Stop : Natural;
@@ -895,15 +771,9 @@ is
       --      None.
       ------------------------------------------------------------------
       procedure ReadAlarmThreshold
-      --# global in out TheFile;
-      --#           out Success;
-      --#           out TheAlarmThresholdSize;
-      --# derives TheFile,
-      --#         Success,
-      --#         TheAlarmThresholdSize from TheFile;
-         with Global  => (In_Out => TheFile,
-                          Output => (Success, TheAlarmThresholdSize)),
-              Depends => ((TheFile, Success, TheAlarmThresholdSize) => TheFile)
+        with Global  => (In_Out => TheFile,
+                         Output => (Success, TheAlarmThresholdSize)),
+             Depends => ((TheFile, Success, TheAlarmThresholdSize) => TheFile)
       is
          TheTitle : AlarmThresholdTextT;
          Stop : Natural;
@@ -932,15 +802,9 @@ is
       --      None.
       ------------------------------------------------------------------
       procedure ReadSystemMaxFar
-      --# global in out TheFile;
-      --#           out Success;
-      --#           out TheSystemMaxFar;
-      --# derives TheFile,
-      --#         Success,
-      --#         TheSystemMaxFar from TheFile;
-         with Global  => (In_Out => TheFile,
-                          Output => (Success, TheSystemMaxFar)),
-              Depends => ((TheFile, Success, TheSystemMaxFar) => TheFile)
+        with Global  => (In_Out => TheFile,
+                         Output => (Success, TheSystemMaxFar)),
+             Depends => ((TheFile, Success, TheSystemMaxFar) => TheFile)
       is
          TheTitle : SystemMaxFarTextT;
          Stop : Natural;
@@ -974,7 +838,6 @@ is
          TheAlarmSilentDuration := DurationT'First;
       end if;
 
-      --# assert True;
       pragma Assert_And_Cut (True);
 
       if Success then
@@ -983,7 +846,6 @@ is
          TheLatchUnlockDuration  := DurationT'First;
       end if;
 
-      --# assert True;
       pragma Assert_And_Cut (True);
 
       if Success then
@@ -992,7 +854,6 @@ is
          TheTokenRemovalDuration  := DurationT'First;
       end if;
 
-      --# assert True;
       pragma Assert_And_Cut (True);
 
       if Success then
@@ -1007,7 +868,6 @@ is
          TheEnclaveClearance     := PrivTypes.ClassT'First;
       end if;
 
-      --# assert True;
       pragma Assert_And_Cut (True);
 
       if Success then
@@ -1016,7 +876,6 @@ is
          TheWorkingHoursStart    := Clock.DurationT'First;
       end if;
 
-      --# assert True;
       pragma Assert_And_Cut (True);
 
       if Success then
@@ -1025,7 +884,6 @@ is
          TheWorkingHoursEnd    := Clock.DurationT'First;
       end if;
 
-      --# assert True;
       pragma Assert_And_Cut (True);
 
       if Success then
@@ -1034,7 +892,6 @@ is
          TheMaxAuthDuration    := Clock.DurationT'First;
       end if;
 
-      --# assert True;
       pragma Assert_And_Cut (True);
 
       if Success then
@@ -1043,7 +900,6 @@ is
          TheAccessPolicy   := AccessPolicyT'First;
       end if;
 
-      --# assert True;
       pragma Assert_And_Cut (True);
 
       if Success then
@@ -1052,7 +908,6 @@ is
          TheMinEntryClass   := PrivTypes.ClassT'First;
       end if;
 
-      --# assert True;
       pragma Assert_And_Cut (True);
 
       if Success then
@@ -1061,7 +916,6 @@ is
          TheMinPreservedLogSize  := AuditTypes.FileSizeT'First;
       end if;
 
-      --# assert True;
       pragma Assert_And_Cut (True);
 
       if Success then
@@ -1070,7 +924,6 @@ is
          TheAlarmThresholdSize  := AuditTypes.FileSizeT'First;
       end if;
 
-      --# assert True;
       pragma Assert_And_Cut (True);
 
       if Success then
@@ -1115,38 +968,22 @@ is
       TheAlarmThresholdSize   : in     AuditTypes.FileSizeT;
       TheSystemMaxFar         : in     IandATypes.FarT
       )
-   --# global in out ConfigFile;
-   --# derives Success,
-   --#         ConfigFile from ConfigFile,
-   --#                         TheAlarmSilentDuration,
-   --#                         TheLatchUnlockDuration,
-   --#                         TheFingerWaitDuration,
-   --#                         TheTokenRemovalDuration,
-   --#                         TheEnclaveClearance,
-   --#                         TheWorkingHoursStart,
-   --#                         TheWorkingHoursEnd,
-   --#                         TheMaxAuthDuration,
-   --#                         TheAccessPolicy,
-   --#                         TheMinEntryClass,
-   --#                         TheMinPreservedLogSize,
-   --#                         TheAlarmThresholdSize,
-   --#                         TheSystemMaxFar;
-      with Refined_Global  => (In_Out => ConfigFile),
-           Refined_Depends => ((Success,
-                                Configfile) => (ConfigFile,
-                                                TheAlarmSilentDuration,
-                                                TheLatchUnlockDuration,
-                                                TheFingerWaitDuration,
-                                                TheTokenRemovalDuration,
-                                                TheEnclaveClearance,
-                                                TheWorkingHoursStart,
-                                                TheWorkingHoursEnd,
-                                                TheMaxAuthDuration,
-                                                TheAccessPolicy,
-                                                TheMinEntryClass,
-                                                TheMinPreservedLogSize,
-                                                TheAlarmThresholdSize,
-                                                TheSystemMaxFar))
+     with Refined_Global  => (In_Out => ConfigFile),
+          Refined_Depends => ((Success,
+                               Configfile) => (ConfigFile,
+                                               TheAlarmSilentDuration,
+                                               TheLatchUnlockDuration,
+                                               TheFingerWaitDuration,
+                                               TheTokenRemovalDuration,
+                                               TheEnclaveClearance,
+                                               TheWorkingHoursStart,
+                                               TheWorkingHoursEnd,
+                                               TheMaxAuthDuration,
+                                               TheAccessPolicy,
+                                               TheMinEntryClass,
+                                               TheMinPreservedLogSize,
+                                               TheAlarmThresholdSize,
+                                               TheSystemMaxFar))
    is
       CloseOK : Boolean;
 
@@ -1192,7 +1029,6 @@ is
                       Success => Success);
       end if;
 
-      --# assert True;
       pragma Assert_And_Cut (True);
 
       if Success then
@@ -1344,62 +1180,34 @@ is
    --        None.
    ------------------------------------------------------------------
    procedure Init
-   --# global in out ConfigFile;
-   --#           out LatchUnlockDuration;
-   --#           out AlarmSilentDuration;
-   --#           out FingerWaitDuration;
-   --#           out TokenRemovalDuration;
-   --#           out EnclaveClearance;
-   --#           out WorkingHoursStart;
-   --#           out WorkingHoursEnd;
-   --#           out MaxAuthDuration;
-   --#           out AccessPolicy;
-   --#           out MinEntryClass;
-   --#           out MinPreservedLogSize;
-   --#           out AlarmThresholdSize;
-   --#           out SystemMaxFar;
-   --# derives ConfigFile,
-   --#         LatchUnlockDuration,
-   --#         AlarmSilentDuration,
-   --#         FingerWaitDuration,
-   --#         TokenRemovalDuration,
-   --#         EnclaveClearance,
-   --#         WorkingHoursStart,
-   --#         WorkingHoursEnd,
-   --#         MaxAuthDuration,
-   --#         AccessPolicy,
-   --#         MinEntryClass,
-   --#         MinPreservedLogSize,
-   --#         AlarmThresholdSize,
-   --#         SystemMaxFar         from ConfigFile;
-      with Refined_Global => (In_Out => ConfigFile,
-                              Output => (LatchUnlockDuration,
-                                         AlarmSilentDuration,
-                                         FingerWaitDuration,
-                                         TokenRemovalDuration,
-                                         EnclaveClearance,
-                                         WorkingHoursStart,
-                                         WorkingHoursEnd,
-                                         MaxAuthDuration,
-                                         AccessPolicy,
-                                         MinEntryClass,
-                                         MinPreservedLogSize,
-                                         AlarmThresholdSize,
-                                         SystemMaxFar)),
-           Refined_Depends => ((ConfigFile,
-                                LatchUnlockDuration,
-                                AlarmSilentDuration,
-                                FingerWaitDuration,
-                                TokenRemovalDuration,
-                                EnclaveClearance,
-                                WorkingHoursStart,
-                                WorkingHoursEnd,
-                                MaxAuthDuration,
-                                AccessPolicy,
-                                MinEntryClass,
-                                MinPreservedLogSize,
-                                AlarmThresholdSize,
-                                SystemMaxFar) => ConfigFile)
+     with Refined_Global => (In_Out => ConfigFile,
+                             Output => (LatchUnlockDuration,
+                                        AlarmSilentDuration,
+                                        FingerWaitDuration,
+                                        TokenRemovalDuration,
+                                        EnclaveClearance,
+                                        WorkingHoursStart,
+                                        WorkingHoursEnd,
+                                        MaxAuthDuration,
+                                        AccessPolicy,
+                                        MinEntryClass,
+                                        MinPreservedLogSize,
+                                        AlarmThresholdSize,
+                                        SystemMaxFar)),
+          Refined_Depends => ((ConfigFile,
+                               LatchUnlockDuration,
+                               AlarmSilentDuration,
+                               FingerWaitDuration,
+                               TokenRemovalDuration,
+                               EnclaveClearance,
+                               WorkingHoursStart,
+                               WorkingHoursEnd,
+                               MaxAuthDuration,
+                               AccessPolicy,
+                               MinEntryClass,
+                               MinPreservedLogSize,
+                               AlarmThresholdSize,
+                               SystemMaxFar) => ConfigFile)
    is
 
       OK, Unused : Boolean;
@@ -1428,58 +1236,32 @@ is
    --
    ------------------------------------------------------------------
       procedure SetDefaults
-      --# global out LatchUnlockDuration;
-      --#        out AlarmSilentDuration;
-      --#        out FingerWaitDuration;
-      --#        out TokenRemovalDuration;
-      --#        out EnclaveClearance;
-      --#        out WorkingHoursStart;
-      --#        out WorkingHoursEnd;
-      --#        out MaxAuthDuration;
-      --#        out AccessPolicy;
-      --#        out MinEntryClass;
-      --#        out MinPreservedLogSize;
-      --#        out AlarmThresholdSize;
-      --#        out SystemMaxFar;
-      --# derives LatchUnlockDuration,
-      --#         AlarmSilentDuration,
-      --#         FingerWaitDuration,
-      --#         TokenRemovalDuration,
-      --#         EnclaveClearance,
-      --#         WorkingHoursStart,
-      --#         WorkingHoursEnd,
-      --#         MaxAuthDuration,
-      --#         AccessPolicy,
-      --#         MinEntryClass,
-      --#         MinPreservedLogSize,
-      --#         AlarmThresholdSize,
-      --#         SystemMaxFar         from ;
-         with Global  => (Output => (LatchUnlockDuration,
-                                     AlarmSilentDuration,
-                                     FingerWaitDuration,
-                                     TokenRemovalDuration,
-                                     EnclaveClearance,
-                                     WorkingHoursStart,
-                                     WorkingHoursEnd,
-                                     MaxAuthDuration,
-                                     AccessPolicy,
-                                     MinEntryClass,
-                                     MinPreservedLogSize,
-                                     AlarmThresholdSize,
-                                     SystemMaxFar)),
-              Depends => ((LatchUnlockDuration,
-                           AlarmSilentDuration,
-                           FingerWaitDuration,
-                           TokenRemovalDuration,
-                           EnclaveClearance,
-                           WorkingHoursStart,
-                           WorkingHoursEnd,
-                           MaxAuthDuration,
-                           AccessPolicy,
-                           MinEntryClass,
-                           MinPreservedLogSize,
-                           AlarmThresholdSize,
-                           SystemMaxFar) => null)
+        with Global  => (Output => (LatchUnlockDuration,
+                                    AlarmSilentDuration,
+                                    FingerWaitDuration,
+                                    TokenRemovalDuration,
+                                    EnclaveClearance,
+                                    WorkingHoursStart,
+                                    WorkingHoursEnd,
+                                    MaxAuthDuration,
+                                    AccessPolicy,
+                                    MinEntryClass,
+                                    MinPreservedLogSize,
+                                    AlarmThresholdSize,
+                                    SystemMaxFar)),
+             Depends => ((LatchUnlockDuration,
+                          AlarmSilentDuration,
+                          FingerWaitDuration,
+                          TokenRemovalDuration,
+                          EnclaveClearance,
+                          WorkingHoursStart,
+                          WorkingHoursEnd,
+                          MaxAuthDuration,
+                          AccessPolicy,
+                          MinEntryClass,
+                          MinPreservedLogSize,
+                          AlarmThresholdSize,
+                          SystemMaxFar) => null)
       is
       begin
 
@@ -1586,58 +1368,32 @@ is
       TheAlarmThresholdSize   : in     AuditTypes.FileSizeT;
       TheSystemMaxFar         : in     IandATypes.FarT
       )
-   --# global out LatchUnlockDuration;
-   --#        out AlarmSilentDuration;
-   --#        out FingerWaitDuration;
-   --#        out TokenRemovalDuration;
-   --#        out EnclaveClearance;
-   --#        out WorkingHoursStart;
-   --#        out WorkingHoursEnd;
-   --#        out MaxAuthDuration;
-   --#        out AccessPolicy;
-   --#        out MinEntryClass;
-   --#        out MinPreservedLogSize;
-   --#        out AlarmThresholdSize;
-   --#        out SystemMaxFar;
-   --# derives LatchUnlockDuration  from TheLatchUnlockDuration &
-   --#         AlarmSilentDuration  from TheAlarmSilentDuration &
-   --#         FingerWaitDuration   from TheFingerWaitDuration &
-   --#         TokenRemovalDuration from TheTokenRemovalDuration &
-   --#         EnclaveClearance     from TheEnclaveClearance &
-   --#         WorkingHoursStart    from TheWorkingHoursStart &
-   --#         WorkingHoursEnd      from TheWorkingHoursEnd &
-   --#         MaxAuthDuration      from TheMaxAuthDuration &
-   --#         AccessPolicy         from TheAccessPolicy &
-   --#         MinEntryClass        from TheMinEntryClass &
-   --#         MinPreservedLogSize  from TheMinPreservedLogSize &
-   --#         AlarmThresholdSize   from TheAlarmThresholdSize &
-   --#         SystemMaxFar         from TheSystemMaxFar;
-       with Refined_Global  => (Output =>  (LatchUnlockDuration,
-                                            AlarmSilentDuration,
-                                            FingerWaitDuration,
-                                            TokenRemovalDuration,
-                                            EnclaveClearance,
-                                            WorkingHoursStart,
-                                            WorkingHoursEnd,
-                                            MaxAuthDuration,
-                                            AccessPolicy,
-                                            MinEntryClass,
-                                            MinPreservedLogSize,
-                                            AlarmThresholdSize,
-                                            SystemMaxFar)),
-            Refined_Depends => (LatchUnlockDuration  => TheLatchUnlockDuration,
-                                AlarmSilentDuration  => TheAlarmSilentDuration,
-                                FingerWaitDuration   => TheFingerWaitDuration,
-                                TokenRemovalDuration => TheTokenRemovalDuration,
-                                EnclaveClearance     => TheEnclaveClearance,
-                                WorkingHoursStart    => TheWorkingHoursStart,
-                                WorkingHoursEnd      => TheWorkingHoursEnd,
-                                MaxAuthDuration      => TheMaxAuthDuration,
-                                AccessPolicy         => TheAccessPolicy,
-                                MinEntryClass        => TheMinEntryClass,
-                                MinPreservedLogSize  => TheMinPreservedLogSize,
-                                AlarmThresholdSize   => TheAlarmThresholdSize,
-                                SystemMaxFar         => TheSystemMaxFar)
+     with Refined_Global  => (Output =>  (LatchUnlockDuration,
+                                          AlarmSilentDuration,
+                                          FingerWaitDuration,
+                                          TokenRemovalDuration,
+                                          EnclaveClearance,
+                                          WorkingHoursStart,
+                                          WorkingHoursEnd,
+                                          MaxAuthDuration,
+                                          AccessPolicy,
+                                          MinEntryClass,
+                                          MinPreservedLogSize,
+                                          AlarmThresholdSize,
+                                          SystemMaxFar)),
+          Refined_Depends => (LatchUnlockDuration  => TheLatchUnlockDuration,
+                              AlarmSilentDuration  => TheAlarmSilentDuration,
+                              FingerWaitDuration   => TheFingerWaitDuration,
+                              TokenRemovalDuration => TheTokenRemovalDuration,
+                              EnclaveClearance     => TheEnclaveClearance,
+                              WorkingHoursStart    => TheWorkingHoursStart,
+                              WorkingHoursEnd      => TheWorkingHoursEnd,
+                              MaxAuthDuration      => TheMaxAuthDuration,
+                              AccessPolicy         => TheAccessPolicy,
+                              MinEntryClass        => TheMinEntryClass,
+                              MinPreservedLogSize  => TheMinPreservedLogSize,
+                              AlarmThresholdSize   => TheAlarmThresholdSize,
+                              SystemMaxFar         => TheSystemMaxFar)
    is
    begin
        LatchUnlockDuration  := TheLatchUnlockDuration;
@@ -1677,58 +1433,32 @@ is
       TheAlarmThresholdSize   : out AuditTypes.FileSizeT;
       TheSystemMaxFar         : out IandATypes.FarT
       )
-   --# global in LatchUnlockDuration;
-   --#        in AlarmSilentDuration;
-   --#        in FingerWaitDuration;
-   --#        in TokenRemovalDuration;
-   --#        in EnclaveClearance;
-   --#        in WorkingHoursStart;
-   --#        in WorkingHoursEnd;
-   --#        in MaxAuthDuration;
-   --#        in AccessPolicy;
-   --#        in MinEntryClass;
-   --#        in MinPreservedLogSize;
-   --#        in AlarmThresholdSize;
-   --#        in SystemMaxFar;
-   --# derives TheAlarmSilentDuration  from AlarmSilentDuration &
-   --#         TheLatchUnlockDuration  from LatchUnlockDuration &
-   --#         TheFingerWaitDuration   from FingerWaitDuration &
-   --#         TheTokenRemovalDuration from TokenRemovalDuration &
-   --#         TheEnclaveClearance     from EnclaveClearance &
-   --#         TheWorkingHoursStart    from WorkingHoursStart &
-   --#         TheWorkingHoursEnd      from WorkingHoursEnd &
-   --#         TheMaxAuthDuration      from MaxAuthDuration &
-   --#         TheAccessPolicy         from AccessPolicy &
-   --#         TheMinEntryClass        from MinEntryClass &
-   --#         TheMinPreservedLogSize  from MinPreservedLogSize &
-   --#         TheAlarmThresholdSize   from AlarmThresholdSize &
-   --#         TheSystemMaxFar         from SystemMaxFar;
-      with Refined_Global  => (LatchUnlockDuration,
-                               AlarmSilentDuration,
-                               FingerWaitDuration,
-                               TokenRemovalDuration,
-                               EnclaveClearance,
-                               WorkingHoursStart,
-                               WorkingHoursEnd,
-                               MaxAuthDuration,
-                               AccessPolicy,
-                               MinEntryClass,
-                               MinPreservedLogSize,
-                               AlarmThresholdSize,
-                               SystemMaxFar),
-           Refined_Depends => (TheAlarmSilentDuration  => AlarmSilentDuration,
-                               TheLatchUnlockDuration  => LatchUnlockDuration,
-                               TheFingerWaitDuration   => FingerWaitDuration,
-                               TheTokenRemovalDuration => TokenRemovalDuration,
-                               TheEnclaveClearance     => EnclaveClearance,
-                               TheWorkingHoursStart    => WorkingHoursStart,
-                               TheWorkingHoursEnd      => WorkingHoursEnd,
-                               TheMaxAuthDuration      => MaxAuthDuration,
-                               TheAccessPolicy         => AccessPolicy,
-                               TheMinEntryClass        => MinEntryClass,
-                               TheMinPreservedLogSize  => MinPreservedLogSize,
-                               TheAlarmThresholdSize   => AlarmThresholdSize,
-                               TheSystemMaxFar         => SystemMaxFar)
+     with Refined_Global  => (LatchUnlockDuration,
+                              AlarmSilentDuration,
+                              FingerWaitDuration,
+                              TokenRemovalDuration,
+                              EnclaveClearance,
+                              WorkingHoursStart,
+                              WorkingHoursEnd,
+                              MaxAuthDuration,
+                              AccessPolicy,
+                              MinEntryClass,
+                              MinPreservedLogSize,
+                              AlarmThresholdSize,
+                              SystemMaxFar),
+          Refined_Depends => (TheAlarmSilentDuration  => AlarmSilentDuration,
+                              TheLatchUnlockDuration  => LatchUnlockDuration,
+                              TheFingerWaitDuration   => FingerWaitDuration,
+                              TheTokenRemovalDuration => TokenRemovalDuration,
+                              TheEnclaveClearance     => EnclaveClearance,
+                              TheWorkingHoursStart    => WorkingHoursStart,
+                              TheWorkingHoursEnd      => WorkingHoursEnd,
+                              TheMaxAuthDuration      => MaxAuthDuration,
+                              TheAccessPolicy         => AccessPolicy,
+                              TheMinEntryClass        => MinEntryClass,
+                              TheMinPreservedLogSize  => MinPreservedLogSize,
+                              TheAlarmThresholdSize   => AlarmThresholdSize,
+                              TheSystemMaxFar         => SystemMaxFar)
    is
    begin
        TheLatchUnlockDuration  := LatchUnlockDuration;
@@ -1755,14 +1485,10 @@ is
    --
    ------------------------------------------------------------------
    function AuthPeriodIsEmpty return Boolean
-   --# global WorkingHoursStart,
-   --#        WorkingHoursEnd,
-   --#        MaxAuthDuration,
-   --#        AccessPolicy;
-      with Refined_Global => (WorkingHoursStart,
-                              WorkingHoursEnd,
-                              MaxAuthDuration,
-                              AccessPolicy)
+     with Refined_Global => (WorkingHoursStart,
+                             WorkingHoursEnd,
+                             MaxAuthDuration,
+                             AccessPolicy)
    is
       Result : Boolean;
 
@@ -1797,28 +1523,17 @@ is
      ( TheTime   : in     Clock.TimeT;
        NotBefore :    out Clock.TimeT;
        NotAfter  :    out Clock.TimeT)
-   --# global in WorkingHoursStart;
-   --#        in WorkingHoursEnd;
-   --#        in MaxAuthDuration;
-   --#        in AccessPolicy;
-   --# derives NotBefore from WorkingHoursStart,
-   --#                        AccessPolicy,
-   --#                        TheTime &
-   --#         NotAfter  from WorkingHoursEnd,
-   --#                        MaxAuthDuration,
-   --#                        AccessPolicy,
-   --#                        TheTime;
-      with Refined_Global  => (WorkingHoursStart,
-                               WorkingHoursEnd,
-                               MaxAuthDuration,
-                               AccessPolicy),
-           Refined_Depends => (NotBefore => (WorkingHoursStart,
-                                             AccessPolicy,
-                                             TheTime),
-                               NotAfter  => (WorkingHoursEnd,
-                                             MaxAuthDuration,
-                                             AccessPolicy,
-                                             TheTime))
+     with Refined_Global  => (WorkingHoursStart,
+                              WorkingHoursEnd,
+                              MaxAuthDuration,
+                              AccessPolicy),
+          Refined_Depends => (NotBefore => (WorkingHoursStart,
+                                            AccessPolicy,
+                                            TheTime),
+                              NotAfter  => (WorkingHoursEnd,
+                                            MaxAuthDuration,
+                                            AccessPolicy,
+                                            TheTime))
    is
       DayStart : Clock.TimeT;
 
@@ -1850,14 +1565,10 @@ is
    function IsInEntryPeriod
      ( Class : PrivTypes.ClassT;
        TheTime : Clock.TimeT) return Boolean
-   --# global WorkingHoursStart,
-   --#        WorkingHoursEnd,
-   --#        AccessPolicy,
-   --#        MinEntryClass;
-      with Refined_Global => (WorkingHoursStart,
-                              WorkingHoursEnd,
-                              AccessPolicy,
-                              MinEntryClass)
+     with Refined_Global => (WorkingHoursStart,
+                             WorkingHoursEnd,
+                             AccessPolicy,
+                             MinEntryClass)
    is
       Result : Boolean;
       DayStart : Clock.TimeT;
@@ -1894,8 +1605,7 @@ is
    --
    ------------------------------------------------------------------
    function TheLatchUnlockDuration return DurationT
-   --# global LatchUnlockDuration;
-      with Refined_Global => LatchUnlockDuration
+     with Refined_Global => LatchUnlockDuration
    is
    begin
       return LatchUnlockDuration;
@@ -1908,8 +1618,7 @@ is
    --
    ------------------------------------------------------------------
    function TheAlarmSilentDuration return DurationT
-   --# global AlarmSilentDuration;
-      with Refined_Global => AlarmSilentDuration
+     with Refined_Global => AlarmSilentDuration
    is
    begin
       return AlarmSilentDuration;
@@ -1923,8 +1632,7 @@ is
    --
    ------------------------------------------------------------------
    function TheFingerWaitDuration return DurationT
-   --# global FingerWaitDuration;
-      with Refined_Global => FingerWaitDuration
+     with Refined_Global => FingerWaitDuration
    is
    begin
       return FingerWaitDuration;
@@ -1938,8 +1646,7 @@ is
    --
    ------------------------------------------------------------------
    function TheTokenRemovalDuration return DurationT
-   --# global TokenRemovalDuration;
-      with Refined_Global => TokenRemovalDuration
+     with Refined_Global => TokenRemovalDuration
    is
    begin
       return TokenRemovalDuration;
@@ -1953,8 +1660,7 @@ is
    --
    ------------------------------------------------------------------
    function TheEnclaveClearance return PrivTypes.ClassT
-   --# global EnclaveClearance;
-      with Refined_Global => EnclaveClearance
+     with Refined_Global => EnclaveClearance
    is
    begin
       return EnclaveClearance;
@@ -1968,8 +1674,7 @@ is
    --
    ------------------------------------------------------------------
    function TheSystemMaxFar return IandATypes.FarT
-   --# global SystemMaxFar;
-      with Refined_Global => SystemMaxFar
+     with Refined_Global => SystemMaxFar
    is
    begin
       return SystemMaxFar;
@@ -1994,8 +1699,7 @@ is
    --    always gives the next integer >= alarmThresholdSize/sizeAuditElement
    ------------------------------------------------------------------
    function TheAlarmThresholdEntries return AuditTypes.AuditEntryCountT
-   --# global AlarmThresholdSize;
-      with Refined_Global => AlarmThresholdSize
+     with Refined_Global => AlarmThresholdSize
    is
       LocalSize : AuditTypes.AuditEntryCountT;
    begin

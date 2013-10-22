@@ -19,8 +19,8 @@ with BasicTypes;
 with Keyboard;
 
 private package Keyboard.Interfac
-   with Abstract_State => (Inputs with External,
-                                       Part_Of => Keyboard.Inputs)
+  with Abstract_State => (Inputs with External,
+                                      Part_Of => Keyboard.Inputs)
 is
 
    ------------------------------------------------------------------
@@ -35,10 +35,10 @@ is
      (KeyedDataPresence : out BasicTypes.PresenceT;
       KeyedData         : out Keyboard.DataTextT;
       KeyedDataLength   : out Keyboard.DataLengthT)
-      with Global  => (Input  => Inputs),
-           Depends => ((KeyedData,
-                        KeyedDataLength,
-                        KeyedDataPresence) => Inputs);
+     with Global  => (Input  => Inputs),
+          Depends => ((KeyedData,
+                       KeyedDataLength,
+                       KeyedDataPresence) => Inputs);
 
    ------------------------------------------------------------------
    -- Init
@@ -48,8 +48,8 @@ is
    --
    ------------------------------------------------------------------
    procedure Init
-      with Global  => (Input  => Inputs),
-           Depends => (null => Inputs);
+     with Global  => (Input  => Inputs),
+          Depends => (null => Inputs);
 
    ------------------------------------------------------------------
    -- Finalise
@@ -59,8 +59,8 @@ is
    --
    ------------------------------------------------------------------
    procedure Finalise
-      with Global  => (Input  => Inputs),
-           Depends => (null => Inputs);
+     with Global  => (Input  => Inputs),
+          Depends => (null => Inputs);
 
    ------------------------------------------------------------------
    -- Poll
@@ -70,7 +70,7 @@ is
    --
    ------------------------------------------------------------------
    procedure Poll
-      with Global  => (Input  => Inputs),
-           Depends => (null => Inputs);
+     with Global  => (Input  => Inputs),
+          Depends => (null => Inputs);
 
 end Keyboard.Interfac;

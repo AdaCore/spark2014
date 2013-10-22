@@ -21,7 +21,7 @@ with Ada.Calendar;
 use Ada.Calendar;
 
 package body Clock.Interfac
-   with SPARK_Mode => Off
+  with SPARK_Mode => Off
 is
 
    ------------------------------------------------------------------

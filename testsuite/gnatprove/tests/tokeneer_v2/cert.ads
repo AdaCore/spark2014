@@ -1,14 +1,11 @@
-
-
-
 ------------------------------------------------------------------
 -- Tokeneer ID Station Core Software
 --
 -- Copyright (2003) United States Government, as represented
--- by the Director, National Security Agency. All rights reserved.
+-- by the Director, National Security Agency.All rights reserved.
 --
 -- This material was originally developed by Praxis High Integrity
--- Systems Ltd. under contract to the National Security Agency.
+-- Systems Ltd.under contract to the National Security Agency.
 ------------------------------------------------------------------
 
 ------------------------------------------------------------------
@@ -16,25 +13,18 @@
 --
 -- Description:
 --    Defines the common contents of a certificate, and operations on
---    those contents. Certificates enter the system as raw data, and
+--    those contents.Certificates enter the system as raw data, and
 --    are stored in an internally-defined record structure.
 --
 ------------------------------------------------------------------
 
-with AuditTypes,
+with AuditLog,
+     AuditTypes,
      CertTypes,
      Clock,
-     CryptoTypes;
-
---# inherit AuditTypes,
---#         AuditLog,
---#         BasicTypes,
---#         ConfigData,
---#         CertProcessing,
---#         CertTypes,
---#         Clock,
---#         CryptoTypes,
---#         KeyStore;
+     ConfigData,
+     CryptoTypes,
+     Keystore;
 
 
 package Cert is
@@ -118,8 +108,8 @@ package Cert is
    -- Traceto   : FD.Certificate.IsCurrent
    ------------------------------------------------------------------
 
-   function IsCurrent (Contents : ContentsT) return Boolean;
-   --# global Clock.CurrentTime;
+   function IsCurrent (Contents : ContentsT) return Boolean
+     with Global  => Clock.CurrentTime;
 
 
    ------------------------------------------------------------------
@@ -161,26 +151,21 @@ package Cert is
    ------------------------------------------------------------------
 
    procedure IssuerKnown (Contents : in     ContentsT;
-                         IsKnown   :    out Boolean );
-   --# global in     KeyStore.Store;
-   --#        in     Clock.Now;
-   --#        in     ConfigData.State;
-   --#        in out AuditLog.FileState;
-   --#        in out AuditLog.State;
-   --# derives IsKnown            from Contents,
-   --#                                 KeyStore.Store &
-   --#         AuditLog.FileState from *,
-   --#                                 ConfigData.State,
-   --#                                 Contents,
-   --#                                 KeyStore.Store,
-   --#                                 AuditLog.State,
-   --#                                 Clock.Now &
-   --#         AuditLog.State     from *,
-   --#                                 Contents,
-   --#                                 KeyStore.Store,
-   --#                                 AuditLog.FileState,
-   --#                                 Clock.Now,
-   --#                                 ConfigData.State;
+                         IsKnown   :    out Boolean)
+     with Global  => (Input  => (Clock.Now,
+                                 ConfigData.State,
+                                 KeyStore.Store),
+                      In_Out => (AuditLog.FileState,
+                                 AuditLog.State)),
+          Depends => ((AuditLog.FileState,
+                       AuditLog.State)    => (AuditLog.FileState,
+                                              AuditLog.State,
+                                              Clock.Now,
+                                              ConfigData.State,
+                                              Contents,
+                                              KeyStore.Store),
+                      IsKnown => (Contents,
+                                  KeyStore.Store));
 
 
    ------------------------------------------------------------------
@@ -196,23 +181,23 @@ package Cert is
 
    procedure IsOK (RawCert    : in     CertTypes.RawCertificateT;
                    Contents   : in     ContentsT;
-                   IsVerified :    out Boolean);
-   --# global in     KeyStore.Store;
-   --#        in     Clock.Now;
-   --#        in     ConfigData.State;
-   --#        in out AuditLog.FileState;
-   --#        in out AuditLog.State;
-   --# derives AuditLog.FileState,
-   --#         AuditLog.State     from Contents,
-   --#                                 KeyStore.Store,
-   --#                                 AuditLog.FileState,
-   --#                                 AuditLog.State,
-   --#                                 Clock.Now,
-   --#                                 ConfigData.State,
-   --#                                 RawCert &
-   --#         IsVerified         from Contents,
-   --#                                 KeyStore.Store,
-   --#                                 RawCert;
+                   IsVerified :    out Boolean)
+     with Global  => (Input  => (Clock.Now,
+                                 ConfigData.State,
+                                 KeyStore.Store),
+                      In_Out => (AuditLog.FileState,
+                                 AuditLog.State)),
+          Depends => ((AuditLog.FileState,
+                       AuditLog.State) => (AuditLog.FileState,
+                                           AuditLog.State,
+                                           Clock.Now,
+                                           ConfigData.State,
+                                           Contents,
+                                           KeyStore.Store,
+                                           RawCert),
+                      IsVerified => (Contents,
+                                     KeyStore.Store,
+                                     RawCert));
 
 
    private
@@ -226,7 +211,7 @@ package Cert is
          end record;
 
      NullContents : constant ContentsT :=
-       ContentsT'( ID        => CertTypes.NullID,
+       ContentsT'(ID        => CertTypes.NullID,
                    NotBefore => Clock.ZeroTime,
                    NotAfter  => Clock.ZeroTime,
                    Mechanism => CryptoTypes.AlgorithmT'First);

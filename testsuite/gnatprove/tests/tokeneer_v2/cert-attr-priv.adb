@@ -2,10 +2,10 @@
 -- Tokeneer ID Station Core Software
 --
 -- Copyright (2003) United States Government, as represented
--- by the Director, National Security Agency. All rights reserved.
+-- by the Director, National Security Agency.All rights reserved.
 --
 -- This material was originally developed by Praxis High Integrity
--- Systems Ltd. under contract to the National Security Agency.
+-- Systems Ltd.under contract to the National Security Agency.
 ------------------------------------------------------------------
 
 ------------------------------------------------------------------
@@ -15,7 +15,7 @@
 --     None
 --
 ------------------------------------------------------------------
-with CertProcessing,
+with CertProcessing, 
      Clock;
 
 package body Cert.Attr.Priv is
@@ -59,12 +59,12 @@ package body Cert.Attr.Priv is
                       Success  :    out Boolean)
    is
       LocalContents : CertProcessing.PrivCertDataT;
-      Extracted,
-      NotBeforeOk,
+      Extracted, 
+      NotBeforeOk, 
       NotAfterOk    : Boolean;
    begin
-      CertProcessing.ExtractPrivCertData(RawPrivCert    => RawCert,
-                                         PrivCert       => LocalContents,
+      CertProcessing.ExtractPrivCertData(RawPrivCert    => RawCert, 
+                                         PrivCert       => LocalContents, 
                                          ExtractSuccess => Extracted);
 
       Contents.ID.Issuer       := LocalContents.Issuer;
@@ -78,21 +78,21 @@ package body Cert.Attr.Priv is
       -- NotBefore and NotAfter are read as 5 unsigned 32 bit words -
       -- convert to Clock.TimeT
       Clock.ConstructTime(
-               Year    => LocalContents.AttCertValidity.NotBefore.Year,
-               Month   => LocalContents.AttCertValidity.NotBefore.Month,
-               Day     => LocalContents.AttCertValidity.NotBefore.Day,
-               Hour    => LocalContents.AttCertValidity.NotBefore.Hour,
-               Min     => LocalContents.AttCertValidity.NotBefore.Minute,
-               TheTime => Contents.NotBefore,
+               Year    => LocalContents.AttCertValidity.NotBefore.Year, 
+               Month   => LocalContents.AttCertValidity.NotBefore.Month, 
+               Day     => LocalContents.AttCertValidity.NotBefore.Day, 
+               Hour    => LocalContents.AttCertValidity.NotBefore.Hour, 
+               Min     => LocalContents.AttCertValidity.NotBefore.Minute, 
+               TheTime => Contents.NotBefore, 
                Success => NotBeforeOK);
 
       Clock.ConstructTime(
-               Year    => LocalContents.AttCertValidity.NotAfter.Year,
-               Month   => LocalContents.AttCertValidity.NotAfter.Month,
-               Day     => LocalContents.AttCertValidity.NotAfter.Day,
-               Hour    => LocalContents.AttCertValidity.NotAfter.Hour,
-               Min     => LocalContents.AttCertValidity.NotAfter.Minute,
-               TheTime => Contents.NotAfter,
+               Year    => LocalContents.AttCertValidity.NotAfter.Year, 
+               Month   => LocalContents.AttCertValidity.NotAfter.Month, 
+               Day     => LocalContents.AttCertValidity.NotAfter.Day, 
+               Hour    => LocalContents.AttCertValidity.NotAfter.Hour, 
+               Min     => LocalContents.AttCertValidity.NotAfter.Minute, 
+               TheTime => Contents.NotAfter, 
                Success => NotAfterOK);
 
       Success := Extracted and NotBeforeOK and NotAfterOK;
@@ -114,9 +114,9 @@ package body Cert.Attr.Priv is
    --  Converts the extended type to the original one.
    function Cert_Attr_Priv_To_Cert (X : in ContentsT) return Cert.ContentsT
    is
-      Temp : Cert.ContentsT := Cert.ContentsT'(ID        => X.ID,
-                                               NotBefore => X.NotBefore,
-                                               NotAfter  => X.NotAfter,
+      Temp : Cert.ContentsT := Cert.ContentsT'(ID        => X.ID, 
+                                               NotBefore => X.NotBefore, 
+                                               NotAfter  => X.NotAfter, 
                                                Mechanism => X.Mechanism);
    begin
       return Temp;
@@ -128,10 +128,10 @@ package body Cert.Attr.Priv is
       return Cert.Attr.ContentsT
    is
       Temp : Cert.Attr.ContentsT := Cert.Attr.ContentsT'(
-                                      ID         => X.ID,
-                                      NotBefore  => X.NotBefore,
-                                      NotAfter   => X.NotAfter,
-                                      Mechanism  => X.Mechanism,
+                                      ID         => X.ID, 
+                                      NotBefore  => X.NotBefore, 
+                                      NotAfter   => X.NotAfter, 
+                                      Mechanism  => X.Mechanism, 
                                       BaseCertID => X.BaseCertID);
    begin
       return Temp;

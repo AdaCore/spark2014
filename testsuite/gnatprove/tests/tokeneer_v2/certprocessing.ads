@@ -2,10 +2,10 @@
 -- Tokeneer ID Station Core Software
 --
 -- Copyright (2003) United States Government, as represented
--- by the Director, National Security Agency. All rights reserved.
+-- by the Director, National Security Agency.All rights reserved.
 --
 -- This material was originally developed by Praxis High Integrity
--- Systems Ltd. under contract to the National Security Agency.
+-- Systems Ltd.under contract to the National Security Agency.
 ------------------------------------------------------------------
 
 ------------------------------------------------------------------
@@ -22,11 +22,6 @@ with BasicTypes,
      IandATypes,
      PrivTypes;
 
---# inherit BasicTypes,
---#         CertTypes,
---#         CryptoTypes,
---#         IandATypes,
---#         PrivTypes;
 
 package CertProcessing is
 
@@ -36,7 +31,7 @@ package CertProcessing is
    --
    ------------------------------------------------------------------
 
-   -- ValidityT is a set of two times - NotBefore and NotAfter. These times
+   -- ValidityT is a set of two times - NotBefore and NotAfter.These times
    -- are returned from the certificate processing library as five 32-bit
    -- words.
    type TimeT is record
@@ -119,9 +114,8 @@ package CertProcessing is
                    RawIDCert      : in     CertTypes.RawCertificateT;
                    IDCert         :    out IDCertDataT;
                    ExtractSuccess :    out Boolean
-                   );
-   --# derives IDCert,
-   --#         ExtractSuccess from RawIDCert;
+                   )
+     with Depends => ((ExtractSuccess, IDCert) => RawIDCert);
 
    ------------------------------------------------------------------
    -- ExtractPrivCertData
@@ -138,9 +132,8 @@ package CertProcessing is
                    RawPrivCert    : in     CertTypes.RawCertificateT;
                    PrivCert       :    out PrivCertDataT;
                    ExtractSuccess :    out Boolean
-                   );
-   --# derives PrivCert,
-   --#         ExtractSuccess from RawPrivCert;
+                   )
+     with Depends => ((ExtractSuccess, PrivCert) => RawPrivCert);
 
 
    ------------------------------------------------------------------
@@ -158,9 +151,8 @@ package CertProcessing is
                    RawIACert      : in     CertTypes.RawCertificateT;
                    IACert         :    out IACertDataT;
                    ExtractSuccess :    out Boolean
-                   );
-   --# derives IACert,
-   --#         ExtractSuccess from RawIACert;
+                   )
+     with Depends => ((ExtractSuccess, IACert) => RawIACert);
 
 
    ------------------------------------------------------------------
@@ -178,9 +170,8 @@ package CertProcessing is
                    RawAuthCert    : in     CertTypes.RawCertificateT;
                    AuthCert       :    out AuthCertDataT;
                    ExtractSuccess :    out Boolean
-                   );
-   --# derives AuthCert,
-   --#         ExtractSuccess from RawAuthCert;
+                   )
+     with Depends => ((AuthCert, ExtractSuccess) => RawAuthCert);
 
 
    ------------------------------------------------------------------
@@ -197,9 +188,8 @@ package CertProcessing is
                    RawCert       : in     CertTypes.RawCertificateT;
                    RawData       :    out CertTypes.RawDataT;
                    ObtainSuccess :    out Boolean
-                   );
-   --# derives RawData,
-   --#         ObtainSuccess from RawCert;
+                   )
+     with Depends => ((ObtainSuccess, RawData) => RawCert);
 
 
    ------------------------------------------------------------------
@@ -216,9 +206,8 @@ package CertProcessing is
                    RawCert       : in     CertTypes.RawCertificateT;
                    SignatureData :    out CertTypes.SignatureT;
                    ObtainSuccess :    out Boolean
-                   );
-   --# derives SignatureData,
-   --#         ObtainSuccess from RawCert;
+                   )
+     with Depends => ((ObtainSuccess, SignatureData) => RawCert);
 
 
    ------------------------------------------------------------------
@@ -236,8 +225,9 @@ package CertProcessing is
    procedure ConstructAuthCert(
                    AuthCert            : in     AuthCertDataT;
                    UnsignedRawAuthCert :    out CertTypes.RawCertificateT
-                   );
-   --# derives UnsignedRawAuthCert from AuthCert;
+                   )
+     with Global => null,
+          Depends => (UnsignedRawAuthCert => AuthCert);
 
 
    ------------------------------------------------------------------
@@ -254,8 +244,7 @@ package CertProcessing is
    procedure AddAuthSignature(
                    UnsignedRawAuthCert : in     CertTypes.RawCertificateT;
                    SignatureData       : in     CertTypes.SignatureT;
-                   SignedRawAuthCert   :    out CertTypes.RawCertificateT);
-   --# derives SignedRawAuthCert from UnsignedRawAuthCert,
-   --#                                SignatureData;
+                   SignedRawAuthCert   :    out CertTypes.RawCertificateT)
+     with Depends => (SignedRawAuthCert => (SignatureData, UnsignedRawAuthCert));
 
 end CertProcessing;
