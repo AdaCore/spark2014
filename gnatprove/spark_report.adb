@@ -114,8 +114,12 @@ with Report_Database;         use Report_Database;
 
 procedure SPARK_Report is
 
-   procedure Handle_SPARK_File (Fn : String);
+   procedure Handle_SPARK_File
+     (Fn               : String;
+      No_Analysis_Done : out Boolean);
    --  Parse and extract all information from a single SPARK file.
+   --  No_Analysis_Done is set to true if no subprogram or package was
+   --  analyzed in this unit.
 
    procedure Handle_Flow_File (Fn : String);
    --  Parse and extract all information from a flow result file
@@ -197,7 +201,10 @@ procedure SPARK_Report is
    -- Handle_SPARK_File --
    -----------------------
 
-   procedure Handle_SPARK_File (Fn : String) is
+   procedure Handle_SPARK_File
+     (Fn               : String;
+      No_Analysis_Done : out Boolean)
+   is
       use GNATCOLL.JSON;
       Dict : constant JSON_Value := Read (Read_File_Into_String (Fn), Fn);
       Basename : constant String := Ada.Directories.Base_Name (Fn);
@@ -226,18 +233,30 @@ procedure SPARK_Report is
          else No_Analysis);
 
    begin
+      No_Analysis_Done := True;
+
       declare
          Entries : constant JSON_Array := Get (Dict);
       begin
          for Index in 1 .. Length (Entries) loop
             declare
-               Result : constant JSON_Value := Get (Entries, Index);
+               Result   : constant JSON_Value := Get (Entries, Index);
+               In_SPARK : constant Boolean :=
+                 Get (Get (Result, "spark")) = "body";
             begin
                Add_SPARK_Status
                  (Unit         => Unit,
                   Subp         => Mk_Subp_Of_Entity (Result),
-                  SPARK_Status => Get (Get (Result, "spark")) = "body",
+                  SPARK_Status => In_SPARK,
                   Analysis     => Analysis);
+
+               --  If at least one subprogram or package was analyzed (either
+               --  flow analysis or proof), then record that the analysis was
+               --  effective.
+
+               if In_SPARK and Analysis /= No_Analysis then
+                  No_Analysis_Done := False;
+               end if;
             end;
          end loop;
       end;
@@ -247,8 +266,11 @@ procedure SPARK_Report is
    -- Handle_Source_Dir --
    -----------------------
 
-   procedure Handle_Source_Dir (Dir : String)
-   is
+   procedure Handle_Source_Dir (Dir : String) is
+
+      No_Analysis_Done : Boolean := True;
+      --  Set to True if no analysis was performed at all
+
       procedure Local_Handle_SPARK_File
         (Item    : String;
          Index   : Positive;
@@ -302,11 +324,14 @@ procedure SPARK_Report is
       procedure Local_Handle_SPARK_File
         (Item    : String;
          Index   : Positive;
-         Quit    : in out Boolean) is
+         Quit    : in out Boolean)
+      is
+         Local_No_Analysis_Done : Boolean;
       begin
          pragma Unreferenced (Index);
          pragma Unreferenced (Quit);
-         Handle_SPARK_File (Item);
+         Handle_SPARK_File (Item, Local_No_Analysis_Done);
+         No_Analysis_Done := No_Analysis_Done and Local_No_Analysis_Done;
       end Local_Handle_SPARK_File;
 
       procedure Iterate_SPARK is new
@@ -328,8 +353,14 @@ procedure SPARK_Report is
    begin
       Ada.Directories.Set_Directory (Dir);
       Iterate_SPARK (Path => "*." & VC_Kinds.SPARK_Suffix);
-      Iterate_Flow (Path => "*." & VC_Kinds.Flow_Suffix);
-      Iterate_Proof (Path => "*." & VC_Kinds.Proof_Suffix);
+
+      if No_Analysis_Done then
+         Reset_All_Results;
+      else
+         Iterate_Flow (Path => "*." & VC_Kinds.Flow_Suffix);
+         Iterate_Proof (Path => "*." & VC_Kinds.Proof_Suffix);
+      end if;
+
       Ada.Directories.Set_Directory (Save_Dir);
    exception
       when others =>

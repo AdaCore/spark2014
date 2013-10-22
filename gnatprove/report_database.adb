@@ -413,6 +413,15 @@ package body Report_Database is
       return Count;
    end Num_Units;
 
+   -----------------------
+   -- Reset_All_Results --
+   -----------------------
+
+   procedure Reset_All_Results is
+   begin
+      Unit_Map := Unit_Maps.Empty_Map;
+   end Reset_All_Results;
+
    ---------------
    -- Subp_Name --
    ---------------

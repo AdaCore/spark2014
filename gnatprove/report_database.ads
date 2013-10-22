@@ -78,6 +78,9 @@ package Report_Database is
    --  Registers the SPARK status as well as the level of analysis performed
    --  for the given unit.
 
+   procedure Reset_All_Results;
+   --  Resets the results, removing all information on units and subprograms
+
    procedure Iter_All_Subps
      (Process : not null access
                    procedure (U : Unit_Type;

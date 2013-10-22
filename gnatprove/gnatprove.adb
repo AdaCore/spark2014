@@ -442,9 +442,9 @@ procedure Gnatprove is
 
             if Report_File_Is_Empty (File) then
                Put_Line (Standard_Error,
-                         " warning: no code was analyzed by GNATprove");
+                         "warning: no code was analyzed by GNATprove");
                Put_Line (Standard_Error,
-                         " use SPARK_Mode to enable analysis");
+                         "use SPARK_Mode to enable analysis");
             else
                Put_Line ("Summary logged in " & SPARK_Report_File (Obj_Dir));
             end if;
