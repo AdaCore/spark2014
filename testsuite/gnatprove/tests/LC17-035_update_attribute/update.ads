@@ -45,7 +45,7 @@ package Update is
 
    --  overlapping choice intervals
    function F3 (Arr_In : Array_1D) return Array_1D
-     with Post => (F3'Result = Arr_In'Update(1..5 => X,
+     with Post => (F3'Result = Arr_In'Update(1..4 => X,
                                              2    => 1,
                                              3    => An_Arr(4)));
 
