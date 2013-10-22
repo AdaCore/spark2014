@@ -248,16 +248,15 @@ package body Gnat2Why.Expr is
    function Transform_Aggregate
      (Params : Transformation_Params;
       Domain : EW_Domain;
-      Expr   : Node_Id) return W_Expr_Id;
+      Expr   : Node_Id;
+      Pref   : Node_Id) return W_Expr_Id;
    --  Transform an aggregate Expr. It may be called multiple times on the
    --  same Ada node, corresponding to different phases of the translation. The
    --  first time it is called on an Ada node, a logic function is generated
    --  and stored in Ada_To_Why_Func, so that the function and axiom are
    --  generated only once per source aggregate. This function F is used
-   --  for generating each translation of this node. It takes in parameters
-   --  all components passed to the aggregate. This is simply the list of
-   --  components for a one-dimensional aggregate, and it takes into account
-   --  sub-components for multi-dimensional aggregates.
+   --  for generating each translation of this node. The general signature for
+   --  F  is:
    --
    --     function F (<params>) : <type of aggregate>
    --
@@ -265,9 +264,37 @@ package body Gnat2Why.Expr is
    --        forall R:<type of aggregate>. forall <params>.
    --           R = F(<params>) -> <proposition for the aggregate R>
    --
-   --  On the aggregate (1 => X, others => Y), components are {X, Y}.
+   --  F takes as in parameters all components passed to the aggregate.
+   --  This is simply the list of components for a one-dimensional aggregate,
+   --  and it takes into account sub-components for multi-dimensional
+   --  aggregates.
+   --
+   --  ( On the aggregate (1 => X, others => Y), components are {X, Y}.
    --  On the aggregate (1 => (1 => X, others => Y), 2 => Z), components are
-   --  {X, Y, Z}.
+   --  {X, Y, Z}.)
+   --
+   --  If the aggregate is not a "normal" aggregate but a model of a 'Update
+   --  expression, there are some additional properties for the logic function
+   --  created (F):
+   --
+   --    a) the prefix array is sent as an extra parameter. "Others" is not
+   --       allowed so no parameter for that, instead the values from the
+   --       prefix array are used.
+   --
+   --    b) an extra parameter for every choice, since they can be dynamic,
+   --       and an extra pair of parameters for each choice range (high and
+   --       low range bounds).
+   --
+   --    c) the order of the cases in the generated why if statement in the
+   --       axiom for the logic function needs to be the _reverse_ of that
+   --       given in the aggregate, because associations can duplicate indices,
+   --       and the prefix should be updated in the order the associations and
+   --       choices are given.
+   --
+   --  As an example:
+   --  Arr'Update(1 .. 3 => 10, 2 => 20, 2 .. 4 => 30, 3 => 40));
+   --  is allowed for an array and should mean
+   --  Arr(1) = 10 and Arr(2) = 30 and Arr(3) = 40 and Arr(4) = 30
 
    function Transform_Slice
      (Params       : Transformation_Params;
@@ -1933,27 +1960,42 @@ package body Gnat2Why.Expr is
    function Transform_Aggregate
      (Params : Transformation_Params;
       Domain : EW_Domain;
-      Expr   : Node_Id) return W_Expr_Id
+      Expr   : Node_Id;
+      Pref   : Node_Id) return W_Expr_Id
    is
       -----------------------
       -- Local subprograms --
       -----------------------
 
+      function Is_Update_Aggregate (Aggr : Node_Id) return Boolean;
+      --  Detect whether aggregate Aggr is an aggregate node modelling
+      --  'Update. Return false for a normal aggregate.
+
+      function Is_Update_Prefix (N : Node_Id) return Boolean;
+      --  Detect whether node is the prefix of a 'Update.
+
       procedure Get_Aggregate_Elements
         (Expr         : Node_Id;
+         Pref         : Node_Id;
          Values       : out List_Of_Nodes.List;
          Types        : out List_Of_Nodes.List;
          Index_Values : out List_Of_Nodes.List;
          Index_Types  : out List_Of_Nodes.List);
-      --  Extract elements of the aggregate Expr that will be passed in
-      --  parameter. Each element of Values is an element of the (possibly
-      --  multi-dimensional) aggregate, with the corresponding type stored
-      --  at the same position in Types. Each element of Index_Values is a
-      --  component_association whose choices need to be checked against the
+      --  Extract parts of the aggregate Expr that will be passed in
+      --  parameter to the logic function for the aggregate.
+      --  Collect these parameters in Values, with the corresponding type
+      --  stored at the same position in Types.
+      --  For a normal aggregate each element of Values is an element of the
+      --  (possibly multi-dimensional) aggregate.
+      --  For a 'Update aggregate, the choice indexes are
+      --  collected in Values in addition to the elements.
+      --  Each element of Index_Values is a component_association whose
+      --  choices need to be checked against the
       --  type at the same position in Index_Types.
 
       procedure Generate_Logic_Function
         (Expr   : Node_Id;
+         Pref   : Node_Id;
          Values : List_Of_Nodes.List;
          Types  : List_Of_Nodes.List);
       --  Generate the logic function definition for the aggregate Expr, with a
@@ -1967,6 +2009,7 @@ package body Gnat2Why.Expr is
 
       function Transform_Array_Component_Associations
         (Expr   : Node_Id;
+         Pref   : Node_Id;
          Arr    : W_Expr_Id;
          Args   : Ada_Ent_To_Why.Map;
          Params : Transformation_Params) return W_Pred_Id;
@@ -2064,12 +2107,54 @@ package body Gnat2Why.Expr is
          return R;
       end Complete_Translation;
 
+      -------------------------
+      -- Is_Update_Aggregate --
+      -------------------------
+
+      function Is_Update_Aggregate (Aggr : Node_Id) return Boolean is
+         Result : Boolean := False;
+         Par    : Node_Id;
+      begin
+         if Nkind (Aggr) = N_Aggregate then
+            Par := Parent (Aggr);
+            if Present (Par)
+              and then Nkind (Par) = N_Attribute_Reference
+              and then Get_Attribute_Id
+                         (Attribute_Name (Par)) = Attribute_Update
+            then
+               Result := True;
+            end if;
+         end if;
+         return Result;
+      end Is_Update_Aggregate;
+
+      ----------------------
+      -- Is_Update_Prefix --
+      ----------------------
+
+      function Is_Update_Prefix (N : Node_Id) return Boolean is
+         Result : Boolean := False;
+         Par    : Node_Id;
+      begin
+         Par := Parent (N);
+         if Present (Par)
+           and then Nkind (Par) = N_Attribute_Reference
+           and then Get_Attribute_Id
+           (Attribute_Name (Par)) = Attribute_Update
+           and then N = Prefix (Par)
+         then
+            Result := True;
+         end if;
+         return Result;
+      end Is_Update_Prefix;
+
       -----------------------------
       -- Generate_Logic_Function --
       -----------------------------
 
       procedure Generate_Logic_Function
         (Expr   : Node_Id;
+         Pref   : Node_Id;
          Values : List_Of_Nodes.List;
          Types  : List_Of_Nodes.List)
       is
@@ -2077,7 +2162,7 @@ package body Gnat2Why.Expr is
 
          use List_Of_Nodes;
 
-         Expr_Typ      : constant Entity_Id := Type_Of_Node (Expr);
+         Expr_Typ   : constant Entity_Id  := Type_Of_Node (Expr);
 
          --  Generate name for the function based on the location of the
          --  aggregate.
@@ -2087,7 +2172,7 @@ package body Gnat2Why.Expr is
                            New_Identifier (Name     => Name,
                                            Ada_Node => Expr);
 
-         --  Predicate used to define the aggregate
+         --  Predicate used to define the aggregate/updated object
 
          Params_No_Ref : constant Transformation_Params :=
                            (Theory      => Params.Theory,
@@ -2099,7 +2184,11 @@ package body Gnat2Why.Expr is
          --  Values used in calls to the aggregate function
 
          Ret_Type      : constant W_Type_Id :=
-                           EW_Abstract (Expr_Typ);
+            (if Is_Update_Aggregate (Expr)
+             then
+                EW_Abstract (Etype (Pref))
+             else
+                EW_Abstract (Expr_Typ));
 
          --  Arrays of binders and arguments, and mapping of nodes to names
 
@@ -2189,6 +2278,7 @@ package body Gnat2Why.Expr is
               Context =>
                 +Transform_Array_Component_Associations
                   (Expr   => Expr,
+                   Pref   => Pref,
                    Arr    => +Aggr_Temp,
                    Args   => Args_Map,
                    Params => Params_No_Ref));
@@ -2201,7 +2291,11 @@ package body Gnat2Why.Expr is
          Open_Theory
            (Decl_File, Name,
             Comment =>
-              "Module for defining the value of the aggregate at "
+              "Module for defining the value of the "
+                & (if Is_Update_Aggregate (Expr)
+                   then "update attribute"
+                   else "aggregate")
+                & " at "
                 & (if Sloc (Expr) > 0 then
                       Build_Location_String (Sloc (Expr))
                    else "<no location>")
@@ -2236,13 +2330,15 @@ package body Gnat2Why.Expr is
 
       procedure Get_Aggregate_Elements
         (Expr         : Node_Id;
+         Pref         : Node_Id;
          Values       : out List_Of_Nodes.List;
          Types        : out List_Of_Nodes.List;
          Index_Values : out List_Of_Nodes.List;
          Index_Types  : out List_Of_Nodes.List)
       is
-         Typ     : constant Entity_Id := Type_Of_Node (Expr);
-         Num_Dim : constant Pos       := Number_Dimensions (Typ);
+         Typ             : constant Entity_Id := Type_Of_Node (Expr);
+         Num_Dim         : constant Pos       := Number_Dimensions (Typ);
+         Collect_Choices : Boolean;
 
          -----------------------
          -- Local subprograms --
@@ -2251,13 +2347,15 @@ package body Gnat2Why.Expr is
          procedure Traverse_Value_At_Index
            (Dim                 : Pos;
             Index               : Node_Id;
-            Expr_Or_Association : Node_Id);
+            Expr_Or_Association : Node_Id;
+            Collect_Choices     : Boolean);
          --  Traverse the value Expr_Or_Association to collect desired elements
 
          procedure Traverse_Rec_Aggregate
-           (Dim   : Pos;
-            Index : Node_Id;
-            Expr  : Node_Id);
+           (Dim                 : Pos;
+            Index               : Node_Id;
+            Expr                : Node_Id;
+            Collect_Choices     : Boolean);
          --  Main recursive function operating over multi-dimensional array
          --  aggregates.
 
@@ -2268,9 +2366,14 @@ package body Gnat2Why.Expr is
          procedure Traverse_Value_At_Index
            (Dim                 : Pos;
             Index               : Node_Id;
-            Expr_Or_Association : Node_Id)
+            Expr_Or_Association : Node_Id;
+            Collect_Choices     : Boolean)
          is
-            Expr : Node_Id;
+            Expr   : Node_Id;
+
+            Choice : Node_Id;
+            Rng    : Node_Id;
+
          begin
             --  Fill together the arrays Index_Values and Index_Types
 
@@ -2279,10 +2382,37 @@ package body Gnat2Why.Expr is
             then
                Index_Values.Append (Expr_Or_Association);
                Index_Types.Append (Etype (Index));
+
+               if Collect_Choices then
+
+                  --  Collect the choices as parameters as well.
+                  --  We cannot use Index_Values directly since they store
+                  --  the whole associations. Instead, populate Values with
+                  --  the parameters needed.
+
+                  Choice := First (Choices (Expr_Or_Association));
+                  while Present (Choice) loop
+                     if Nkind (Choice) = N_Range then
+
+                        --  The high and low bounds of a range both needs to
+                        --  be parameters.
+
+                        Rng := Get_Range (Choice);
+                        Values.Append (Low_Bound (Rng));
+                        Types.Append (Etype (Index));
+                        Values.Append (High_Bound (Rng));
+                        Types.Append (Etype (Index));
+                     else
+                        Values.Append (Choice);
+                        Types.Append (Etype (Index));
+                     end if;
+                     Next (Choice);
+                  end loop;
+               end if;
             end if;
 
-            --  Fill together the arrays Values and Types
-
+            --  Fill the component expression as well to the arrays
+            --  Values and Types.
             if Nkind (Expr_Or_Association) = N_Component_Association
               and then Box_Present (Expr_Or_Association)
             then
@@ -2298,7 +2428,8 @@ package body Gnat2Why.Expr is
 
                if Dim < Num_Dim then
                   pragma Assert (Nkind (Expr) = N_Aggregate);
-                  Traverse_Rec_Aggregate (Dim + 1, Next_Index (Index), Expr);
+                  Traverse_Rec_Aggregate
+                    (Dim + 1, Next_Index (Index), Expr, Collect_Choices);
                else
                   declare
                      Exp_Type  : constant Node_Id := Component_Type (Typ);
@@ -2315,9 +2446,10 @@ package body Gnat2Why.Expr is
          ----------------------------
 
          procedure Traverse_Rec_Aggregate
-           (Dim   : Pos;
-            Index : Node_Id;
-            Expr  : Node_Id)
+           (Dim                 : Pos;
+            Index               : Node_Id;
+            Expr                : Node_Id;
+            Collect_Choices     : Boolean)
          is
             Exprs       : constant List_Id := Expressions (Expr);
             Assocs      : constant List_Id := Component_Associations (Expr);
@@ -2326,7 +2458,8 @@ package body Gnat2Why.Expr is
 
          begin
             while Present (Expression) loop
-               Traverse_Value_At_Index (Dim, Index, Expression);
+               Traverse_Value_At_Index
+                 (Dim, Index, Expression, Collect_Choices);
                Next (Expression);
             end loop;
 
@@ -2335,7 +2468,8 @@ package body Gnat2Why.Expr is
             --  in the list of associations, so we always do the following.
 
             while Present (Association) loop
-               Traverse_Value_At_Index (Dim, Index, Association);
+               Traverse_Value_At_Index
+                 (Dim, Index, Association, Collect_Choices);
                Next (Association);
             end loop;
          end Traverse_Rec_Aggregate;
@@ -2343,9 +2477,26 @@ package body Gnat2Why.Expr is
          --  Start of Get_Aggregate_Elements
 
       begin
+
+         if Is_Update_Aggregate (Expr) then
+
+            --  Add the prefix to be a parameter to the logic function
+
+            Values.Append (Pref);
+            Types.Append (Etype (Pref));
+
+            --  For 'Update aggregates we also need the choices as
+            --  parameters since they can be dynamic
+
+            Collect_Choices := True;
+         else
+            Collect_Choices := False;
+         end if;
+
          Traverse_Rec_Aggregate (Dim   => 1,
                                  Index => First_Index (Typ),
-                                 Expr  => Expr);
+                                 Expr  => Expr,
+                                 Collect_Choices => Collect_Choices);
       end Get_Aggregate_Elements;
 
       --------------------------------------------
@@ -2354,6 +2505,7 @@ package body Gnat2Why.Expr is
 
       function Transform_Array_Component_Associations
         (Expr   : Node_Id;
+         Pref   : Node_Id;
          Arr    : W_Expr_Id;
          Args   : Ada_Ent_To_Why.Map;
          Params : Transformation_Params) return W_Pred_Id
@@ -2405,10 +2557,12 @@ package body Gnat2Why.Expr is
          --  Return the value for Index at Offset from Id'First
 
          function Select_These_Choices
-           (Dim : Pos;
-            L   : List_Id) return W_Expr_Id;
+           (Dim             : Pos;
+            L               : List_Id;
+            Choices_As_Args : Boolean) return W_Expr_Id;
          --  Return a proposition that expresses that Index satisfies one
-         --  choice in the list of choices L.
+         --  choice in the list of choices L. If Choices_As_Args is true the
+         --  choices will be pulled from the arguments (to the logic function).
 
          function Transform_Rec_Aggregate
            (Dim  : Pos;
@@ -2431,6 +2585,8 @@ package body Gnat2Why.Expr is
             Expr_Or_Association : Node_Id;
             Callback            : Transform_Rec_Func) return W_Expr_Id
          is
+            --  Note that Expr_Or_Association here can be the prefix
+            --  in the default case of the logic function of 'Update
             Expr : Node_Id;
 
          begin
@@ -2452,15 +2608,25 @@ package body Gnat2Why.Expr is
                   return Callback (Dim + 1, Expr);
                else
                   declare
-                     Value     : constant W_Expr_Id :=
+                     Arg_Val : constant W_Expr_Id :=
                        +Ada_Ent_To_Why.Element (Args, Expr).Main.B_Name;
-                     Read      : constant W_Expr_Id :=
-                       New_Array_Access
-                         (Ada_Node => Expr_Or_Association,
-                          Domain   => EW_Term,
-                          Ar       => Arr,
-                          Index     => Indexes);
+                     Value   : W_Expr_Id;
+                     Read    : W_Expr_Id;
                   begin
+                     if Is_Update_Prefix (Expr) then
+                        Value := New_Array_Access (Ada_Node => Empty,
+                                                   Domain   => EW_Term,
+                                                   Ar       => Arg_Val,
+                                                   Index     => Indexes);
+
+                     else
+                        Value := Arg_Val;
+                     end if;
+
+                     Read := New_Array_Access (Ada_Node => Expr_Or_Association,
+                                               Domain   => EW_Term,
+                                               Ar       => Arr,
+                                               Index     => Indexes);
                      return New_Comparison
                        (Cmp       => EW_Eq,
                         Left      => Read,
@@ -2499,6 +2665,12 @@ package body Gnat2Why.Expr is
             end Check_Simple;
 
          begin
+            if Is_Update_Aggregate (Expr) then
+               --  No such thing as a simple tick update aggregate.
+               Is_Simple := False;
+               return Is_Simple;
+            end if;
+
             Expression  := Nlists.First (Exprs);
             Association := Nlists.First (Assocs);
 
@@ -2579,23 +2751,72 @@ package body Gnat2Why.Expr is
          --------------------------
 
          function Select_These_Choices
-           (Dim : Pos;
-            L   : List_Id) return W_Expr_Id
+           (Dim             : Pos;
+            L               : List_Id;
+            Choices_As_Args : Boolean) return W_Expr_Id
          is
-            Result : W_Expr_Id := +False_Pred;
-            Choice : Node_Id   := First (L);
+            Result     : W_Expr_Id := +False_Pred;
+            Choice     : Node_Id := First (L);
+            Rng_Expr   : W_Expr_Id;
+            Low        : Node_Id;
+            High       : Node_Id;
+            Arg_Low    : W_Expr_Id;
+            Arg_High   : W_Expr_Id;
+            Arg_Choice : W_Expr_Id;
          begin
             while Present (Choice) loop
-               Result := New_Or_Expr
-                 (Left   => Result,
-                  Right  =>
+               if Choices_As_Args then
+                  if Nkind (Choice) = N_Range then
+                     Low        := Low_Bound (Get_Range (Choice));
+                     High       := High_Bound (Get_Range (Choice));
+
+                     Arg_Low :=
+                       +Ada_Ent_To_Why.Element (Args, Low).Main.B_Name;
+                     Arg_Low :=
+                       Insert_Simple_Conversion (Domain => EW_Term,
+                                                 Expr   => Arg_Low,
+                                                 To     => EW_Int_Type);
+                     Arg_High :=
+                       +Ada_Ent_To_Why.Element (Args, High).Main.B_Name;
+
+                     Arg_High :=
+                       Insert_Simple_Conversion (Domain => EW_Term,
+                                                 Expr   => Arg_High,
+                                                 To     => EW_Int_Type);
+                     Rng_Expr :=
+                       New_Range_Expr (Domain    => EW_Pred,
+                                       Low       => Arg_Low,
+                                       High      => Arg_High,
+                                       Expr      => Indexes (Integer (Dim)));
+                  else
+                     Arg_Choice :=
+                       +Ada_Ent_To_Why.Element (Args, Choice).Main.B_Name;
+                     Arg_Choice :=
+                       Insert_Simple_Conversion (Domain => EW_Term,
+                                                 Expr => Arg_Choice,
+                                                 To => EW_Int_Type);
+                     Rng_Expr :=
+                       New_Comparison (Cmp       => EW_Eq,
+                                       Left      => Indexes (Integer (Dim)),
+                                       Right     => Arg_Choice,
+                                       Domain    => EW_Pred);
+
+                  end if;
+               else
+                  --  The choices are not arguments, proceed with standard
+                  --  transformation of discrete choice
+                  Rng_Expr :=
                     Transform_Discrete_Choice
-                      (Choice      => Choice,
-                       Choice_Type => Empty,
-                       Expr        => Indexes (Integer (Dim)),
-                       Domain      => EW_Pred,
-                       Params => Params),
-                  Domain => EW_Pred);
+                    (Choice      => Choice,
+                     Choice_Type => Empty,
+                     Expr        => Indexes (Integer (Dim)),
+                     Domain      => EW_Pred,
+                     Params => Params);
+               end if;
+
+               Result := New_Or_Expr (Left   => Result,
+                                      Right  => Rng_Expr,
+                                      Domain => EW_Pred);
                Next (Choice);
             end loop;
             return Result;
@@ -2609,45 +2830,72 @@ package body Gnat2Why.Expr is
            (Dim  : Pos;
             Expr : Node_Id) return W_Expr_Id
          is
-            Callback    : constant Transform_Rec_Func :=
-                            Transform_Rec_Aggregate'Access;
-            Exprs       : constant List_Id := Expressions (Expr);
-            Assocs      : constant List_Id := Component_Associations (Expr);
-            Association : Node_Id;
-            Expression  : Node_Id;
-            Else_Part   : W_Expr_Id := +True_Pred;
-            Assocs_Len  : Nat;
+            Callback : constant Transform_Rec_Func :=
+                         Transform_Rec_Aggregate'Access;
+            Exprs    : constant List_Id := Expressions (Expr);
+            Assocs   : constant List_Id := Component_Associations (Expr);
+
+            Association     : Node_Id;
+            Expression      : Node_Id;
+            Else_Part       : W_Expr_Id := +True_Pred;
+            Assocs_Len      : Nat;
+            Choices_As_Args : Boolean := False;
 
          begin
             Assocs_Len := List_Length (Assocs);
+            --  Starting with last association
             Association :=
               (if Nlists.Is_Empty_List (Assocs) then Empty
                else Nlists.Last (Assocs));
 
-            --  Special case for "others" choice, which must appear alone as
-            --  last association. This case also deals with a single
-            --  association, wich may be useful when an "others" dynamic range
-            --  is represented using X'Range or X'First..X'Last or X, which
-            --  should not be translated as such. Indeed, these reference
-            --  variable X which is not known in the context of the proposition
-            --  generated here.
+            --  First, generate else part:
+            if Present (Association) then
+               if Is_Update_Aggregate (Expr) then
 
-            if Present (Association)
-              and then
-                --  case of "others" choice
-                ((List_Length (Choices (Association)) = 1
-                    and then
-                  Nkind (First (Choices (Association))) = N_Others_Choice)
-                    or else
-                  --  case of a single association
-                  Assocs_Len = 1)
-            then
-               if not Box_Present (Association) then
+                  --  Setting up for 'Update transformation/axiom generation...
+
+                  --  The choices of the 'Update associations are parameters
+                  --  to the logic function.
+                  Choices_As_Args := True;
+
+                  --  For 'Update we always want a default value in
+                  --  the logic function so populate the else part properly.
+                  --  Send the Prefix in to use for default value in the
+                  --  logic function.
                   Else_Part :=
-                    Constrain_Value_At_Index (Dim, Association, Callback);
+                    Constrain_Value_At_Index (Dim, Pref, Callback);
+
+                  --  Next, constructing else part for a "normal" aggregate,
+                  --  special case for "others" choice...
+               elsif (List_Length (Choices (Association)) = 1
+                        and then
+                        --  case of "others" choice
+                        Nkind (First (Choices (Association))) =
+                        N_Others_Choice)
+                 or else
+                 --  case of a single association
+                 Assocs_Len = 1
+               then
+                  --  Special case for "others" choice, which must
+                  --  appear alone as last association. This case also
+                  --  deals with a single association, wich may be
+                  --  useful when an "others" dynamic range is
+                  --  represented using X'Range or X'First..X'Last or
+                  --  X, which should not be translated as
+                  --  such. Indeed, these reference variable X which
+                  --  is not known in the context of the proposition
+                  --  generated here.
+                  if not Box_Present (Association) then
+                     Else_Part :=
+                       Constrain_Value_At_Index (Dim, Association, Callback);
+                  end if;
+                  --  Dropping this single (and thus last) element.
+                  Prev (Association);
+                  Assocs_Len := Assocs_Len - 1;
+               else
+                  --  default else part for a normal aggregate
+                  Else_Part := +True_Pred;
                end if;
-               Prev (Association);
-               Assocs_Len := Assocs_Len - 1;
             end if;
 
             Expression :=
@@ -2693,31 +2941,61 @@ package body Gnat2Why.Expr is
                end;
 
             elsif Present (Association) then
+               --  This either empty, or still at the last association
+               --  (second from last if we have chopped off an others)
+
                declare
+                  Condition   : W_Expr_Id;
+                  Then_Part   : W_Expr_Id;
                   Elsif_Parts : W_Expr_Array (1 .. Integer (Assocs_Len) - 1);
                begin
-                  for Offset in reverse 1 .. Assocs_Len - 1 loop
-                     Elsif_Parts (Integer (Offset)) := New_Elsif
-                       (Domain    => EW_Pred,
-                        Condition =>
-                          +Select_These_Choices (Dim, Choices (Association)),
-                        Then_Part =>
-                          Constrain_Value_At_Index
-                            (Dim, Association, Callback));
-                     Prev (Association);
-                  end loop;
+                  --  The conditional in the logic function axiom must be
+                  --  generated in the reverse order of the associations
+                  --  for 'Update semantics which allows duplicate choices.
+                  --  For a normal aggregate this order does not matter since
+                  --  they cannot have overlapping choices. So we share this
+                  --  implementation.
+                  --
+                  --  Generate If condition and Then part:
+                  --
+                  --  The first condition (if) in the axiom corresponds to
+                  --  the last association:
+                  Condition := +Select_These_Choices (Dim,
+                                                      Choices (Association),
+                                                      Choices_As_Args);
+                  Then_Part := Constrain_Value_At_Index (Dim,
+                                                         Association,
+                                                         Callback);
+                  Prev (Association);
+                  if Present (Association) then
+                     --  If we have any more associations they go into
+                     --  the elsif branches, in reverse order:
 
-                  return New_Conditional
-                    (Domain      => EW_Pred,
-                     Condition   =>
-                       +Select_These_Choices (Dim, Choices (Association)),
-                     Then_Part   =>
-                       Constrain_Value_At_Index
-                         (Dim, Association, Callback),
-                     Elsif_Parts => Elsif_Parts,
-                     Else_Part   => Else_Part);
+                     for Offset in reverse 1 .. Assocs_Len - 1 loop
+                        --  Loop to generate Elsif Then parts.
+
+                        --  Store in reverse order here (Assocs_Len - Offset)
+                        Elsif_Parts (Integer (Assocs_Len - Offset)) :=
+                          New_Elsif
+                          (Domain    => EW_Pred,
+                           Condition =>
+                             +Select_These_Choices
+                             (Dim, Choices (Association), Choices_As_Args),
+                           Then_Part =>
+                             Constrain_Value_At_Index
+                             (Dim, Association, Callback));
+                        Prev (Association);
+                     end loop;
+                  end if;
+
+                  --  Finally, generate the whole ITE
+                  return
+                    New_Conditional (Domain      => EW_Pred,
+                                     Condition   => Condition,
+                                     Then_Part   => Then_Part,
+                                     Elsif_Parts => Elsif_Parts,
+                                     Else_Part   => Else_Part);
                end;
-
             else
                return Else_Part;
             end if;
@@ -2828,7 +3106,8 @@ package body Gnat2Why.Expr is
    begin
       --  Get the aggregate elements that should be passed in parameter
 
-      Get_Aggregate_Elements (Expr, Values, Types, Index_Values, Index_Types);
+      Get_Aggregate_Elements
+        (Expr, Pref, Values, Types, Index_Values, Index_Types);
 
       --  If not done already, generate the logic function
 
@@ -2837,7 +3116,7 @@ package body Gnat2Why.Expr is
            Ada_Ent_To_Why.Find (Extra_Modules_Map, Expr);
       begin
          if not Ada_Ent_To_Why.Has_Element (C) then
-            Generate_Logic_Function (Expr, Values, Types);
+            Generate_Logic_Function (Expr, Pref, Values, Types);
          end if;
          return
            Complete_Translation
@@ -3462,6 +3741,36 @@ package body Gnat2Why.Expr is
                      Name     => Func,
                      Args     => (1 => T),
                      Typ      => Base_Why_Type (Var));
+               end if;
+            end;
+
+         when Attribute_Update =>
+            declare
+               Pref        : constant Node_Id := Prefix (Expr);
+               Pref_Typ    : constant Entity_Id := Etype (Pref);
+               Aggr        : constant Node_Id := First (Expressions (Expr));
+
+            begin
+               if Is_Record_Type (Pref_Typ) then
+                  Ada.Text_IO.Put_Line ("[Transform_Attr] record "
+                                          & Attribute_Id'Image (Attr_Id));
+                  raise Not_Implemented;
+               else
+                  pragma Assert
+                    (Is_Array_Type (Pref_Typ) or else
+                       Is_String_Type (Pref_Typ));
+                  if 1 < Number_Dimensions (Pref_Typ) then
+                     Ada.Text_IO.Put_Line
+                       ("[Transform_Attr] multi-dimensional "
+                          & Attribute_Id'Image (Attr_Id));
+                     raise Not_Implemented;
+                  else
+                     T := Transform_Aggregate
+                       (Params => Params,
+                        Domain => Domain,
+                        Expr   => Aggr,
+                        Pref   => Pref);
+                  end if;
                end if;
             end;
 
@@ -4247,7 +4556,13 @@ package body Gnat2Why.Expr is
                   pragma Assert
                     (Is_Array_Type (Expr_Type) or else
                      Is_String_Type (Expr_Type));
-                  T := Transform_Aggregate (Local_Params, Domain, Expr);
+
+                  T := Transform_Aggregate (Params => Local_Params,
+                                            Domain => Domain,
+                                            Expr   => Expr,
+                                            Pref   => Empty);
+                  --  (don't need the prefix for a normal aggregate)
+
                end if;
             end;
 
