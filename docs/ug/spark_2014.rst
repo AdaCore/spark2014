@@ -687,6 +687,8 @@ given below:
 .. code-block:: ada
    :linenos:
 
+   type IntArray is array (1 .. 10) of Integer;
+
    function Contains (Table : IntArray; Value : Integer) return Boolean with
      Post => (if Contains'Result then
                 (for some J in Table'Range => Table (J) = Value)
@@ -709,33 +711,44 @@ given below:
 
 When the loop involves modifying a variable, it may be necessary to refer to
 the value of the variable at loop entry. This can be done using
-attribute ``Loop_Entry``. For example, in order to prove the postcondition of
-function ``Move`` below, one has to write a loop invariant referring to
-``Src'Loop_Entry`` such as the one given below:
+attribute ``Loop_Entry``. For example, the following procedure
+reverses the contents of an array in-place. In order to prove
+the postcondition, the loop invariant needs to refer to the original
+value of ``A'Loop_Entry`` not the value of ``A`` that has been modified
+by earlier iterations of the loop.
 
 .. code-block:: ada
    :linenos:
 
-   procedure Move (Dest, Src : out IntArray) with
-     Post => (for all J in Dest'Range => Dest (J) = Src'Old (J));
+   procedure Reverse_Order (A : in out IntArray)
+      with Post =>
+         (for all J in A'Range => A (J) = A'Old (A'Last - J + 1) and
+                                  A (A'Last - J + 1) = A'Old (J));
 
-   procedure Move (Dest, Src : out IntArray) is
+   procedure Reverse_Order (A : in out IntArray)
+   is
+      Temp : Integer;
    begin
-      for Index in Dest'Range loop
-         pragma Loop_Invariant ((for all J in Dest'First .. Index - 1 =>
-                                  Dest (J) = Src'Loop_Entry (J))
-                                    and then
-                                (for all J in Index .. Dest'Last =>
-                                  Src (J) = Src'Loop_Entry (J)));
+      for Index in A'First .. (A'Last + 1) / 2 loop
+         Temp := A (Index);
+         A (Index) := A (A'Last - Index + 1);
+         A (A'Last - Index + 1) := Temp;
+         pragma Loop_Invariant (-- Elements that have visited so far are swapped
+                                (for all J in A'First .. Index =>
+                                    A (J) = A'Loop_Entry (A'Last - J + 1) and
+                                    A (A'Last - J + 1) = A'Loop_Entry (J))
+                                   and then
+                                   -- Elements not yet visited are unchanged
+                                   (for all J in Index + 1 .. A'Last - Index =>
+                                       A (J) = A'Loop_Entry (J)));
 
-         Dest (Index) := Src (Index);
-         Src (Index) := 0;
       end loop;
-   end Move;
+   end Reverse_Order;
 
-Note in particular the second conjunct in the loop invariant, which states that
-the ``Src`` array has not been modified between indexes ``Index`` and
-``Dest'Last``. This part of an invariant or contract stating what has not been
+
+Note in particular the second conjunct in the loop invariant, which states the
+elements of ``A`` that have not yet been swapped. This part of an invariant
+or contract stating what has not been
 modified, called in the scientific literature the *frame condition*, is essential for
 |GNATprove| to work effectively. Special care should be taken to write adequate
 frame conditions, as they usually look obvious to programmers, and so it is
