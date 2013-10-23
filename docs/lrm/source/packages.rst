@@ -1534,13 +1534,14 @@ shall follow the grammar of ``dependency_relation`` in :ref:`depends-aspects`.
 
 .. _tu-fe-refined_depends_aspects-03:
 
-3. A Refined_Depends aspect specification is, in effect, a copy of
-   the corresponding Depends aspect specification except that any references in
-   the Depends aspect to a state abstraction, whose refinement is
-   visible at the point of the Refined_Depends specification, are replaced with
-   references to zero or more direct or indirect constituents of that state
-   abstraction. A Refined_Depends aspect is defined by creating a new
-   ``dependency_relation`` from the original given in the Depends aspect as
+3. A Refined_Depends aspect specification is, in effect, a copy of the
+   corresponding Depends aspect specification except that any
+   references in the Depends aspect to a state abstraction, whose
+   refinement is visible at the point of the Refined_Depends
+   specification, are replaced with references to zero or more direct
+   or indirect constituents of that state abstraction. A
+   Refined_Depends aspect shall have a ``dependency_relation`` which
+   is derivable from the original given in the Depends aspect as
    follows:
 
    a. A *partially refined dependency relation* is created by first
@@ -1562,26 +1563,18 @@ shall follow the grammar of ``dependency_relation`` in :ref:`depends-aspects`.
       denote a ``constituent`` of the state abstraction.
 
    c. If the ``output`` in the Depends_Aspect denotes a state
-      abstraction which is not also an ``input``, then all of the
-      ``constituents`` [for a non-**null** refinement] of the state
-      abstraction shall be denoted as ``outputs`` of the partially
-      refined dependency relation.  If the ``output`` in the
-      Depends_Aspect denotes a state abstraction, S, which is also an
-      ``input`` then not all of its consituents have to be an
-      ``output`` of the Refined_Depends aspect as their value may be
-      preserved by the state abstraction.  [It is as if there is an
-      implicit C => S dependency relation for any constituent which is
-      not denoted as an ``output``.]
+      abstraction which is not also an ``input``, then each
+      ``constituent`` of the state abstraction shall be denoted as an
+      ``output`` of the partially refined dependency relation.
 
    d. These rules may, for each ``output`` in the Depends aspect,
       introduce more than one ``output`` in the partially refined
       dependency relation. Each of these ``outputs`` has an
       ``input_list`` that has zero or more of the ``inputs`` from the
       ``input_list`` of the original ``output``.  The union of these
-      ``inputs`` (including any resulting from the implicit
-      dependencies on the state abstraction described in 3(c) above)
-      shall denote the same ``inputs`` that appear in the
-      ``input_list`` of the original ``output``.
+      ``inputs`` and the original state abstraction, if it is an
+      ``input`` in the ``input_list``, shall denote the same ``inputs``
+      that appear in the ``input_list`` of the original ``output``.
 
    e. If the Depends aspect has a ``null_dependency_clause``, then the
       partially refined dependency relation has a
@@ -1592,19 +1585,24 @@ shall follow the grammar of ``dependency_relation`` in :ref:`depends-aspects`.
       replacing each ``input`` which is a state abstraction, whose
       refinement is visible at the point of the Refined_Depends
       aspect, by zero or more ``inputs`` which are its
-      constituents. If the ``input`` is a state abstraction, S,
-      introduced as the dependency of a ``constituent`` as described
-      in 3(c) then it is replaced by the ``constituent``.  [In other
-      words C => S becomes C => C.]
+      constituents.
 
-   g. If a state abstraction is denoted in an ``input_list`` and its
-      non **null** refinement is visible at the point of the
-      Refined_Depends aspect, then at least one of its
-      ``constituents`` shall be denoted as an ``input`` in at least
-      one of the ``dependency_clauses`` of the Refined_Depends aspect
-      corresponding (via the process described in the rules 3a - 3f
-      above) to the original ``dependency_clause`` in the Depends
-      aspect.
+   g. If a state abstraction is denoted in an ``input_list`` of a
+      ``dependency_clause`` of the original Depends aspect and its
+      refinement is visible at the point of the Refined_Depends aspect
+      (derived via the process described in the rules 3a - 3f above),
+      then either:
+
+      - at least one of its ``constituents`` shall be denoted as an
+        ``input`` in at least one of the ``dependency_clauses`` of the
+        Refined_Depends aspect corresponding to the original
+        ``dependency_clause`` in the Depends aspect; or
+
+      - the state abstraction is both an ``input`` and an ``output``
+        and not every ``constituent`` the state abstraction is an
+        ``output`` of the Refined_Depends aspect. [This rule does not
+        exclude denoting a ``constituent`` of such a state abstraction
+        in an ``input_list``.]
 
 .. _tu-fe-refined_depends_aspects-04:
 
@@ -1629,12 +1627,15 @@ shall follow the grammar of ``dependency_relation`` in :ref:`depends-aspects`.
    the point of the Refined_Depends aspect, is replaced by its representative
    state abstraction with duplicate ``inputs`` removed.
 
-   Each ``output`` in the Refined_Depends aspect, which is a ``constituent`` of
-   the same state abstraction whose refinement is visible at the point of the
-   Refined_Depends aspect, is merged along with its ``input_list`` into a single
-   ``dependency_clause`` whose ``output`` denotes the state abstraction and
-   ``input_list`` is the union of all of the ``inputs`` from the original
-   ``input_lists``.]
+   Each ``output`` in the Refined_Depends aspect, which is a
+   ``constituent`` of the same state abstraction whose refinement is
+   visible at the point of the Refined_Depends aspect, is merged along
+   with its ``input_list`` into a single ``dependency_clause`` whose
+   ``output`` denotes the state abstraction and ``input_list`` is the
+   union of all of the ``inputs`` replaced by their encapsulating
+   state abstraction, as described above, and the state abstraction
+   itself if not every ``constituent`` of the state abstraction
+   appears as an ``output`` in the Refined_Depends aspect.]
 
 .. _tu-cbatu-refined_depends_aspects-07:
 
