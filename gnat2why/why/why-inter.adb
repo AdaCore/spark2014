@@ -841,19 +841,11 @@ package body Why.Inter is
 
    function Dispatch_Entity (E : Entity_Id) return Why_Section_Enum is
    begin
+      --  Theories for nodes that are not entities should never depend on
+      --  variables.
+
       if Nkind (E) in N_Has_Theory then
-
-         --  Theories which depend on variables are defined in context files
-
-         if Expression_Depends_On_Variables (E) then
-            return WF_Context;
-
-         --  Theories which do not depend on variables are defined in type
-         --  files.
-
-         else
-            return WF_Pure;
-         end if;
+         return WF_Pure;
       end if;
 
       case Ekind (E) is
@@ -872,13 +864,13 @@ package body Why.Inter is
                  Has_Global_Reads (Decl_E, Include_Constants => False)
                    or else Has_Global_Writes (Decl_E);
             begin
-               --  Subprograms without read/write global effects are declared
+               --  Functions without read/write global effects are declared
                --  in the "type" Why files instead of the "context" Why files,
                --  so that they can be used as parameters of generics whose
                --  axiomatization in Why is written manually (example: formal
                --  containers).
 
-               if Has_Effects then
+               if Ekind (E) = E_Procedure or else Has_Effects then
                   return WF_Context;
                else
                   return WF_Pure;
