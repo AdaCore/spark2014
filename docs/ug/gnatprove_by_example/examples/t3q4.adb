@@ -1,5 +1,6 @@
 package body T3Q4
 is
+   pragma SPARK_Mode;
 
    -- Summed_Between is needed for proof purposes only
    function Summed_Between (A : in ArrayType;

@@ -1,5 +1,6 @@
 package body Swap_Incorrect_B
 is
+   pragma SPARK_Mode;
 
    Call_Count : Natural := 0;
 

@@ -1,5 +1,6 @@
 package body T1Q4
 is
+   pragma SPARK_Mode;
 
    procedure ISQRT (N: in Natural; Root: out Natural)
    is
