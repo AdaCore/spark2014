@@ -1,0 +1,6 @@
+foo.ads:10:04: "X" is not initialized in "Foo" [uninitialized]
+   compilation of foo.ads failed
+
+
+gnatprove: error during translation to intermediate language, aborting.
+gprbuild: *** compilation phase failed

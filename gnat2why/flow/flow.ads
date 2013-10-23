@@ -182,7 +182,6 @@ package Flow is
             Initializes_N : Node_Id;
             --  A few contract nodes cached as they can be a bit
             --  tedious to find.
-
       end case;
    end record;
 

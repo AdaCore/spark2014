@@ -25,14 +25,15 @@ with Ada.Characters.Latin_1;
 with Ada.Strings;                   use Ada.Strings;
 with Ada.Strings.Maps;
 
+with Errout;                        use Errout;
+with Lib;                           use Lib;
 with Namet;                         use Namet;
+with Osint;                         use Osint;
+with Sem_Ch7;                       use Sem_Ch7;
 with Sem_Util;                      use Sem_Util;
+with Sinfo;                         use Sinfo;
 with Snames;                        use Snames;
 with Sprint;                        use Sprint;
-with Sinfo;                         use Sinfo;
-with Lib;                           use Lib;
-with Errout;                        use Errout;
-with Osint;                         use Osint;
 
 with Output;                        use Output;
 
@@ -850,15 +851,14 @@ package body Flow is
 
             when E_Package =>
                declare
-                  Pkg_Spec : constant Node_Id := Get_Enclosing_Scope (E);
-                  Pkg_Body : Node_Id;
+                  Pkg_Spec   : constant Node_Id := Get_Enclosing_Scope (E);
+                  Pkg_Body   : Node_Id;
+                  Needs_Body : Boolean := Unit_Requires_Body (E);
                begin
                   if Analysis_Requested (E)
-                    and Entity_Body_In_SPARK (E)
+                    and Entity_Spec_In_SPARK (E)
                     and not In_Predefined_Unit (E)
                   then
-                     FA_Graphs.Include (E, Flow_Analyse_Entity (E, E));
-
                      Pkg_Body := Pkg_Spec;
                      while Present (Pkg_Body) and
                        Nkind (Pkg_Body) /= N_Package_Declaration
@@ -870,12 +870,24 @@ package body Flow is
                      end if;
 
                      if Present (Pkg_Body) then
-                        pragma Assert (Nkind (Pkg_Body) = N_Defining_Identifier
-                                         and then
-                                         Ekind (Pkg_Body) = E_Package_Body);
-                        FA_Graphs.Include (Pkg_Body,
-                                           Flow_Analyse_Entity (Pkg_Body, E));
+                        pragma Assert
+                          (Nkind (Pkg_Body) = N_Defining_Identifier and then
+                             Ekind (Pkg_Body) = E_Package_Body);
+                        Needs_Body := True;
                      end if;
+
+                     if Needs_Body and Entity_Body_In_SPARK (E) then
+                        FA_Graphs.Include
+                          (Pkg_Body,
+                           Flow_Analyse_Entity (Pkg_Body, E));
+                     elsif not Needs_Body then
+                        FA_Graphs.Include (E, Flow_Analyse_Entity (E, E));
+                     else
+                        null;
+                        --  ??? warning that we can't flow analyze
+                        --      elaboration?
+                     end if;
+
                   end if;
                end;
 
@@ -913,9 +925,10 @@ package body Flow is
                   Analysis.Analyse_Main (FA);
 
                when E_Package =>
-                  --  ??? Issue here with detection of uninitialized
-                  --  state. See resolution of M628-002.
-                  null;
+                  Analysis.Find_Use_Of_Uninitialised_Variables (FA);
+                  Analysis.Find_Ineffective_Statements (FA);
+                  Analysis.Find_Illegal_Updates (FA);
+                  Analysis.Find_Use_Of_Uninitialised_Variables (FA);
 
                when E_Package_Body =>
                   Analysis.Find_Use_Of_Uninitialised_Variables (FA);
