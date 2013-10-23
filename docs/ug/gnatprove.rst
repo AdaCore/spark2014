@@ -94,6 +94,10 @@ switches:
 
 * ``-gnateT`` for specifying the target configuration
 * ``--pedantic`` for warning about possible implementation-defined behavior
+ 
+Note that |GNATprove| will always choose the smallest multiple of 8
+bits for the base type, which is a safe and conservative choice for any Ada
+compiler.
 
 Target Parameterization
 ^^^^^^^^^^^^^^^^^^^^^^^
