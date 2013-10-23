@@ -9,7 +9,7 @@ admin.adb:110:10: info: loop invariant preservation proved
 admin.adb:121:13: warning: assertion might fail
 admin.adb:129:17: info: range check proved
 admin.adb:137:16: info: loop invariant initialization proved
-admin.adb:137:16: warning: loop invariant might fail after first iteration
+admin.adb:137:16: info: loop invariant preservation proved
 admin.adb:144:38: info: index check proved
 admin.adb:156:36: info: index check proved
 admin.adb:253:16: info: range check proved
@@ -121,7 +121,7 @@ auditlog.adb:1852:50: info: range check proved
 auditlog.adb:1852:53: info: overflow check proved
 auditlog.adb:1852:72: info: overflow check proved
 auditlog.adb:1858:53: info: range check proved
-auditlog.adb:1861:47: warning: range check might fail
+auditlog.adb:1861:47: info: range check proved
 auditlog.adb:1868:7: warning: assertion might fail, requires NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile)
 auditlog.adb:1870:47: warning: range check might fail
 auditlog.adb:1870:50: warning: overflow check might fail
@@ -261,7 +261,7 @@ display.adb:128:11: info: range check proved
 display.adb:137:30: info: index check proved
 display.adb:138:30: info: index check proved
 display.adb:139:30: info: index check proved
-display.adb:140:32: warning: range check might fail
+display.adb:140:32: info: range check proved
 display.adb:143:11: info: range check proved
 display.adb:148:33: warning: array index check might fail
 display.adb:148:33: warning: overflow check might fail
@@ -304,7 +304,7 @@ enclave.adb:1302:15: info: precondition proved
 enclave.adb:1311:19: info: precondition proved
 enclave.adb:1316:24: info: precondition proved
 enclave.adb:1320:10: warning: postcondition might fail
-enclave.adb:1344:19: warning: precondition might fail
+enclave.adb:1344:19: info: precondition proved
 enclave.adb:1349:24: info: precondition proved
 enclave.adb:1354:22: info: precondition proved
 enclave.adb:1368:12: warning: precondition might fail
@@ -326,7 +326,7 @@ enclave.adb:1883:22: info: precondition proved
 enclave.adb:1885:17: info: precondition proved
 enclave.adb:1887:13: info: precondition proved
 enclave.adb:1890:13: info: precondition proved
-enclave.adb:1893:13: warning: precondition might fail
+enclave.adb:1893:13: info: precondition proved
 enclave.adb:1896:13: warning: precondition might fail
 enclave.adb:2079:13: info: precondition proved
 enclave.adb:2082:13: info: precondition proved

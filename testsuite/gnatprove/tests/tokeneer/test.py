@@ -1,3 +1,3 @@
 from test_support import *
 
-prove(steps=50) # legit errors (M909-012)
+prove(steps=60) # legit errors (M909-012)
