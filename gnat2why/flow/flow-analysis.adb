@@ -86,6 +86,34 @@ package body Flow.Analysis is
    --  because of computed globals) we just return S which is a useful
    --  fallback place to raise an error.
 
+   type Var_Use_Kind is (Use_Read, Use_Write);
+
+   function First_Variable_Use (N       : Node_Id;
+                                Scope   : Scope_Ptr;
+                                Var     : Flow_Id;
+                                Precise : Boolean)
+                                return Node_Id;
+   --  Given a node N, we traverse the tree to find the most deeply
+   --  nested node which still uses Var. If Precise is True look only
+   --  for Var (for example R.Y), otherwise we also look for the
+   --  entire variable represented by Var (in our example we'd also
+   --  look for R).
+   --
+   --  If we cannot find any suitable node we return N itself.
+
+   function First_Variable_Use (FA      : Flow_Analysis_Graphs;
+                                Var     : Flow_Id;
+                                Kind    : Var_Use_Kind;
+                                Precise : Boolean)
+                                return Node_Id;
+   --  Find a suitable node in the tree which uses the given
+   --  variable. If Precise is True look only for Var (for example
+   --  R.Y), otherwise we also look for the entire variable
+   --  represented by Var (in our example we'd also look for R).
+   --
+   --  If no suitable node can be found we return FA.Analyzed_Entity
+   --  as a fallback.
+
    --------------------
    -- Error_Location --
    --------------------
@@ -339,6 +367,172 @@ package body Flow.Analysis is
       end case;
    end Find_Global;
 
+   ------------------------
+   -- First_Variable_Use --
+   ------------------------
+
+   function First_Variable_Use (N       : Node_Id;
+                                Scope   : Scope_Ptr;
+                                Var     : Flow_Id;
+                                Precise : Boolean)
+                                return Node_Id
+   is
+      First_Use : Node_Id := N;
+      Var_Tgt   : constant Flow_Id :=
+        Change_Variant ((if Precise then Var else Entire_Variable (Var)),
+                        Normal_Use);
+
+      function Search_Expr (N : Node_Id) return Traverse_Result;
+      --  This function sets First_Use to the given node if it
+      --  contains the variable we're looking for. If not, we abort
+      --  the search.
+
+      -----------------
+      -- Search_Expr --
+      -----------------
+
+      function Search_Expr (N : Node_Id) return Traverse_Result is
+      begin
+         if Get_Variable_Set (Scope            => Scope,
+                              N                => N,
+                              Reduced          => not Precise,
+                              Allow_Statements => True).Contains (Var_Tgt)
+         then
+            First_Use := N;
+            return OK;
+         else
+            return Skip;
+         end if;
+      end Search_Expr;
+
+      procedure Search_Expression is new Traverse_Proc (Search_Expr);
+      --  This will narrow down the location of the searched for
+      --  variable in the given node as far as possible.
+
+   begin
+      Search_Expression (N);
+      return First_Use;
+   end First_Variable_Use;
+
+   function First_Variable_Use (FA      : Flow_Analysis_Graphs;
+                                Var     : Flow_Id;
+                                Kind    : Var_Use_Kind;
+                                Precise : Boolean)
+                                return Node_Id
+   is
+      Var_Normal   : constant Flow_Id := Change_Variant (Var, Normal_Use);
+      E_Var_Normal : constant Flow_Id := Entire_Variable (Var_Normal);
+
+      First_Use : Node_Id := FA.Analyzed_Entity;
+
+      procedure Proc (V      : Flow_Graphs.Vertex_Id;
+                      Origin : Flow_Graphs.Vertex_Id;
+                      Depth  : Natural;
+                      T_Ins  : out Flow_Graphs.Simple_Traversal_Instruction);
+      --  Checks if vertex V contains a reference to Var. If so, we
+      --  set First_Use and abort the search.
+
+      ----------
+      -- Proc --
+      ----------
+
+      procedure Proc (V      : Flow_Graphs.Vertex_Id;
+                      Origin : Flow_Graphs.Vertex_Id;
+                      Depth  : Natural;
+                      T_Ins  : out Flow_Graphs.Simple_Traversal_Instruction)
+      is
+         pragma Unreferenced (Origin, Depth);
+
+         Atr         : constant V_Attributes := FA.CFG.Get_Attributes (V);
+         Check_Read  : constant Boolean      := Kind = Use_Read;
+         Check_Write : constant Boolean      := Kind = Use_Write;
+         Of_Interest : Boolean               := False;
+
+      begin
+
+         --  First we check if the current vertex contains the
+         --  variable of interest.
+
+         if Check_Read then
+            if Atr.Variables_Used.Contains (Var_Normal) or
+              (not Precise and then
+                 To_Entire_Variables (Atr.Variables_Used).Contains
+                 (E_Var_Normal))
+            then
+               Of_Interest := True;
+            end if;
+         end if;
+         if Check_Write then
+            if Atr.Variables_Defined.Contains (Var_Normal) or
+              (not Precise and then
+                 To_Entire_Variables (Atr.Variables_Defined).Contains
+                 (E_Var_Normal))
+            then
+               Of_Interest := True;
+            end if;
+         end if;
+
+         --  If not we stop here.
+
+         if not Of_Interest then
+            T_Ins := Flow_Graphs.Continue;
+            return;
+         else
+            T_Ins := Flow_Graphs.Abort_Traversal;
+         end if;
+
+         --  Not all vertices containing the variable are actually
+         --  interesting. We want to deal only with program statements
+         --  and procedure calls.
+
+         if (Atr.Is_Program_Node or Atr.Is_Precondition) and
+           not Atr.Is_Callsite
+         then
+            First_Use := Get_Direct_Mapping_Id (FA.CFG.Get_Key (V));
+         elsif Atr.Is_Parameter then
+            First_Use := Get_Direct_Mapping_Id (Atr.Parameter_Actual);
+         elsif Atr.Is_Global_Parameter then
+            --  If we have a global, the procedure call itself is the
+            --  best location we can provide.
+            First_Use := Get_Direct_Mapping_Id (Atr.Call_Vertex);
+            return;
+         else
+            --  If we don't have any of the above, we should keep
+            --  searching for other, more suitable, vertices.
+            T_Ins := Flow_Graphs.Continue;
+            return;
+         end if;
+
+         --  We have found a suitable vertex. We can now narrow down
+         --  the location to the individual subexpression which
+         --  contains the variable.
+
+         case Nkind (First_Use) is
+            when N_If_Statement | N_Elsif_Part =>
+               First_Use := Condition (First_Use);
+
+            when N_Case_Statement =>
+               First_Use := Expression (First_Use);
+
+            when N_Loop_Statement =>
+               First_Use := Iteration_Scheme (First_Use);
+
+            when others =>
+               null;
+         end case;
+
+         First_Use := First_Variable_Use (N       => First_Use,
+                                          Scope   => FA.Scope,
+                                          Var     => Var,
+                                          Precise => Precise);
+      end Proc;
+   begin
+      FA.CFG.BFS (Start         => FA.Start_Vertex,
+                  Include_Start => False,
+                  Visitor       => Proc'Access);
+      return First_Use;
+   end First_Variable_Use;
+
    ------------------
    -- Analyse_Main --
    ------------------
@@ -562,7 +756,10 @@ package body Flow.Analysis is
                      Tracefile => Tracefile,
                      Msg       => "& must be listed in the " & Tmp &
                        " aspect of &",
-                     N         => Expr,
+                     N         => First_Variable_Use (N       => Expr,
+                                                      Scope   => FA.Scope,
+                                                      Var     => Var,
+                                                      Precise => False),
                      F1        => Entire_Variable (Var),
                      F2        => Direct_Mapping_Id (FA.Analyzed_Entity));
                   Sane := False;
@@ -609,7 +806,10 @@ package body Flow.Analysis is
                               Tracefile => Tracefile,
                               Msg       => "& must be listed in the " & Tmp &
                                 " aspect of &",
-                              N   => FA.Analyzed_Entity,
+                              N   => First_Variable_Use (FA      => FA,
+                                                         Var     => Var,
+                                                         Kind    => Use_Read,
+                                                         Precise => False),
                               F1  => Entire_Variable (Var),
                               F2  => Direct_Mapping_Id (FA.Analyzed_Entity));
 

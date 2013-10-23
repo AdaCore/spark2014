@@ -480,17 +480,18 @@ package body Flow.Utility is
    --  Get_Variable_Set  --
    ------------------------
 
-   function Get_Variable_Set (Scope   : Scope_Ptr;
-                              N       : Node_Id;
-                              Reduced : Boolean := False)
+   function Get_Variable_Set (Scope            : Scope_Ptr;
+                              N                : Node_Id;
+                              Reduced          : Boolean := False;
+                              Allow_Statements : Boolean := False)
                               return Flow_Id_Sets.Set
    is
       VS : Flow_Id_Sets.Set;
 
-      procedure Process_Function_Call
+      procedure Process_Subprogram_Call
         (Callsite       : Node_Id;
          Used_Variables : in out Flow_Id_Sets.Set)
-         with Pre => Nkind (Callsite) = N_Function_Call;
+         with Pre => Nkind (Callsite) in N_Subprogram_Call;
       --  Work out which variables (including globals) are used in the
       --  function call and add them to the given set.
 
@@ -506,11 +507,12 @@ package body Flow.Utility is
       -- Process_Function_Call --
       ---------------------------
 
-      procedure Process_Function_Call
+      procedure Process_Subprogram_Call
         (Callsite       : Node_Id;
-         Used_Variables : in out Flow_Id_Sets.Set) is
+         Used_Variables : in out Flow_Id_Sets.Set)
+      is
 
-         Subprogram : constant Entity_Id := Entity (Name (Callsite));
+         Subprogram    : constant Entity_Id := Entity (Name (Callsite));
 
          Global_Reads  : Flow_Id_Sets.Set;
          Global_Writes : Flow_Id_Sets.Set;
@@ -521,7 +523,9 @@ package body Flow.Utility is
                       Writes       => Global_Writes,
                       Refined_View => Should_Use_Refined_View (Scope,
                                                                Callsite));
-         if Flow_Id_Sets.Length (Global_Writes) > 0 then
+         if Nkind (Callsite) = N_Function_Call and then
+           Flow_Id_Sets.Length (Global_Writes) > 0
+         then
             Error_Msg_NE
               (Msg => "side-effects of function & are not modelled in SPARK",
                N   => Callsite,
@@ -539,7 +543,7 @@ package body Flow.Utility is
                Used_Variables.Include (Change_Variant (F, Normal_Use));
             end loop;
          end loop;
-      end Process_Function_Call;
+      end Process_Subprogram_Call;
 
       ----------
       -- Proc --
@@ -549,10 +553,17 @@ package body Flow.Utility is
       begin
          case Nkind (N) is
             when N_Procedure_Call_Statement =>
-               --  If we ever get one of these we have a problem -
-               --  Get_Variable_Set is only really meant to be called
-               --  on expressions and not statements.
-               raise Program_Error;
+               if not Allow_Statements then
+                  --  If we ever get one of these we have a problem -
+                  --  Get_Variable_Set is only really meant to be
+                  --  called on expressions and not statements.
+                  raise Program_Error;
+
+               else
+                  Process_Subprogram_Call (Callsite       => N,
+                                           Used_Variables => VS);
+                  return Skip;
+               end if;
 
             when N_Later_Decl_Item =>
                --  These should allow us to go through package specs
@@ -560,8 +571,8 @@ package body Flow.Utility is
                return Skip;
 
             when N_Function_Call =>
-               Process_Function_Call (Callsite       => N,
-                                      Used_Variables => VS);
+               Process_Subprogram_Call (Callsite       => N,
+                                        Used_Variables => VS);
                return Skip;
 
             when N_Identifier | N_Expanded_Name =>
@@ -662,9 +673,10 @@ package body Flow.Utility is
       return Filter_Out_Constants (VS);
    end Get_Variable_Set;
 
-   function Get_Variable_Set (Scope   : Scope_Ptr;
-                              L       : List_Id;
-                              Reduced : Boolean := False)
+   function Get_Variable_Set (Scope            : Scope_Ptr;
+                              L                : List_Id;
+                              Reduced          : Boolean := False;
+                              Allow_Statements : Boolean := False)
                               return Flow_Id_Sets.Set
    is
       VS : Flow_Id_Sets.Set;
@@ -672,7 +684,7 @@ package body Flow.Utility is
    begin
       P := First (L);
       while Present (P) loop
-         VS.Union (Get_Variable_Set (Scope, P, Reduced));
+         VS.Union (Get_Variable_Set (Scope, P, Reduced, Allow_Statements));
 
          P := Next (P);
       end loop;

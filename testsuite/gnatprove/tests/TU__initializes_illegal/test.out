@@ -20,9 +20,9 @@ initializes_illegal_4.adb:19:28: warning: variable "Body_Var3" is read but never
 initializes_illegal_4.adb:9:07: warning: initialization has no effect [ineffective]
 initializes_illegal_4.adb:11:09: warning: unused assignment [ineffective]
 initializes_illegal_4.adb:22:17: warning: unused assignment [ineffective]
-initializes_illegal_4.adb:25:17: "G_Var2" must be listed in the Initializes aspect of "Pac3"
 initializes_illegal_4.ads:35:07: warning: initialization has no effect [ineffective]
-initializes_illegal_4.ads:56:12: "G_Var" must be listed in the Initializes aspect of "Pac4"
+initializes_illegal_4.ads:52:32: "G_Var2" must be listed in the Initializes aspect of "Pac3"
+initializes_illegal_4.ads:64:22: "G_Var" must be listed in the Initializes aspect of "Pac4"
 gprbuild: *** compilation phase failed
 gnatprove: error during translation to intermediate language, aborting.
 initializes_illegal_5.ads:1:14: current unit must also be private descendant of "Initializes_Illegal_5"

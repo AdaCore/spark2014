@@ -58,16 +58,21 @@ package Flow.Utility is
    --  If Globals_For_Proof is set then the calls to Get_Reads will
    --  not specify Include_Constants.
 
-   function Get_Variable_Set (Scope   : Scope_Ptr;
-                              N       : Node_Id;
-                              Reduced : Boolean := False)
+   function Get_Variable_Set (Scope            : Scope_Ptr;
+                              N                : Node_Id;
+                              Reduced          : Boolean := False;
+                              Allow_Statements : Boolean := False)
                               return Flow_Id_Sets.Set;
    --  Obtain all variables used in an expression. If reduced is true,
    --  onbtain only entire variables.
+   --
+   --  If allow_statements is false, we raise an exception if we
+   --  encounter certain statements such as procedure calls.
 
-   function Get_Variable_Set (Scope   : Scope_Ptr;
-                              L       : List_Id;
-                              Reduced : Boolean := False)
+   function Get_Variable_Set (Scope            : Scope_Ptr;
+                              L                : List_Id;
+                              Reduced          : Boolean := False;
+                              Allow_Statements : Boolean := False)
                               return Flow_Id_Sets.Set;
    --  As above, but operating on a list.
 
