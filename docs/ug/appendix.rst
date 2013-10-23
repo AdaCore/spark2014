@@ -295,7 +295,7 @@ Local_Configuration_Pragmas use "pragmas.adc";``.
 Defining multiple units in the same file is not supported. Instead,
 define each unit in a separate file.
 
-Features not yet implemented
+Features Not Yet Implemented
 ----------------------------
 
 The following limitations relate to features that are not yet
@@ -305,6 +305,20 @@ features which are listed below as unsupported, but the
 analysis results relating to those features may be missing
 or incorrect.
 
+Features Not Yet Implemented in Both Flow Analysis and Proof
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+#. The following aspects are not supported:
+
+ - Volatile
+ - External
+ - Async_Readers
+ - Async_Writers
+ - Effective_Writes
+
+Features Not Yet Implemented in Flow Analysis
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 #. Flow analysis currently treats all constants and array bounds as
    static, as the current language does not allow constants to appear in
    global and dependency contracts.
@@ -313,19 +327,22 @@ or incorrect.
 
 #. Flow analysis does not support dependency contracts on functions.
 
-#. Function postconditions are not taken into account in other contracts.
-
 #. The model of floats cannot distinguish between +0 and -0.
 
 #. The following aspects are not supported:
 
  - Initial_Condition
  - Part_Of
- - Volatile
- - External
- - Async_Readers
- - Async_Writers
- - Effective_Writes
+
+Features Not Yet Implemented in Proof
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+#. Postconditions of regular functions called in contracts and assertion
+   pragmas are not available, possibly leading to unproved checks. The current
+   workaround is to use expression functions instead for those functions called
+   in contracts and assertion pragmas.
+
+#. The model of floats cannot distinguish between +0 and -0.
 
 Portability Issues
 ==================
