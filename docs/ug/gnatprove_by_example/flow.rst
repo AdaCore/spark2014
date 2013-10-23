@@ -42,7 +42,7 @@ but the subprogram also increments a call counter.
 The call counter is a global variable that is both read and written by
 the subprogram, but the global aspect specified that the subprogram did
 not reference any global variables, so |GNATprove| reports the following
-errors.
+error.
 
 .. literalinclude:: gnatprove_by_example/results/swap_incorrect_b.flow
    :language: none
