@@ -1,0 +1,5 @@
+t1q1d.adb:8:14: info: overflow check proved
+t1q1d.adb:14:7: info: precondition proved
+t1q1d.adb:15:7: warning: precondition might fail
+t1q1d.ads:10:19: warning: postcondition might fail, requires X = X'Old + 2
+t1q1d.ads:10:29: info: overflow check proved
