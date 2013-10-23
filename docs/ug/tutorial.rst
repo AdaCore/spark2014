@@ -28,7 +28,8 @@ It specifies that the source code to inspect is in the current directory, and
 that the code should be compiled at maximum warning level (switch
 ``-gnatwa``). GNAT projects are used by most tools in the |GNAT Pro| toolsuite;
 for in-depth documentation of this technology, consult the |GNAT Pro|
-User's Guide.
+User's Guide. Documentation and examples for the |SPARK| language and tools are
+also available via the :menuselection:`Help --> SPARK` menu in GPS.
 
 The obvious specification of ``Search`` is given in file ``search.ads``, where
 we specify that the spec is in |SPARK| by using pragma ``SPARK_Mode``.
