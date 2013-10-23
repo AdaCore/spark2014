@@ -163,51 +163,62 @@ as external properties of an external state abstraction.
      only be True if Async_Writers is True and Effective_Writes can only
      be True if Async_Readers is True.]
 
+.. _tu-fe-external_state-07:
+
+7. If an external state has set to True any of:
+
+   - Async_Readers, Effective_Writes or Effective_Reads - it must have
+     a ``mode_selector`` of Output or In_Out when denoted as a
+     ``global_item``; or
+ 
+    - Async_Writers - it must have a ``mode_selector`` of Input or
+      In_Out when denoted as a ``global_item``.
+
 .. _etu-external_state-lr:
 
 .. centered:: **Static Semantics**
 
-.. _tu-fa-external_state-07:
+.. _tu-fa-external_state-08:
 
-7. Every update of an external state is considered to be read by
+8. Every update of an external state is considered to be read by
    some external reader if Async_Readers => True.
 
-.. _tu-pr-external_state-08:
+.. _tu-pr-external_state-09:
 
-8. Each successive read of an external state might have a different
+9. Each successive read of an external state might have a different
    value [written by some external writer] if Async_Writers => True.
 
-.. _tu-fa-external_state-09:
+.. _tu-fa-external_state-10:
 
-9. If Effective_Writes => True, then every value written to the
-   external state is significant. [For instance writing a sequence
-   of values to a port.]
+10. If Effective_Writes => True, then every value written to the
+    external state is significant. [For instance writing a sequence
+    of values to a port.]
 
-.. _tu-pr-external_state-10:
+.. _tu-pr-external_state-11:
 
-10. If Effective_Reads => True, then every value read from the
+11. If Effective_Reads => True, then every value read from the
     external state is significant. [For example a value read from a
     port might be used in determining how the next value is
     processed.]
 
-.. _tu-fa-external_state-11:
+.. _tu-fa-external_state-12:
 
-11. Each update of an external state has no external effect if both
+12. Each update of an external state has no external effect if both
     Async_Readers => False and Effective_Writes => False.
 
-.. _tu-pr-external_state-12:
+.. _tu-pr-external_state-13:
 
-12. Each successive read of an external state will result in the last
+13. Each successive read of an external state will result in the last
     value explicitly written [by the program] if Async_Writers => False.
-
-.. _tu-fa-external_state-13:
-
-13. Every explicit update of an external state might affect the next value
-    read from the external state even if Async_Writers => True.
 
 .. _tu-fa-external_state-14:
 
-14. An external state which has the property Async_Readers => True
+14. Every explicit update of an external state might affect the next value
+    read from the external state even if Async_Writers => True.
+
+.. _tu-fa-external_state-15:
+
+15. An external state which has the property Async_Readers => True
     need not be initialized before being read although explicit
     initialization is permitted. [The external state might be
     initialized by an external writer.]
@@ -306,9 +317,15 @@ The new aspects are:
 
 .. _tu-fe-external_state_variables-11:
 
-11. If a Volatile object has Effective_Reads set to True then it must
-    have a ``mode_selector`` of Output or In_Out when denoted as a
-    ``global_item``.
+11. If a Volatile object has set to True any of:
+
+   - Async_Readers, Effective_Writes or Effective_Reads - it may only
+     used as an actual parameter of a procedure whose corresponding
+     formal parameter is of mode **out** or **in out**; or
+ 
+    - Async_Writers - it may only used as an actual parameter of a
+      procedure whose corresponding formal parameter is of mode **in**
+      or **in out**.
 
 .. _tu-fe-external_state_variables-12:
 
