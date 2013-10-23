@@ -1,0 +1,8 @@
+upd.adb:4:14: info: postcondition proved
+upd.adb:4:28: info: range check proved
+upd.adb:9:04: warning: initialization has no effect [ineffective]
+upd.adb:9:15: info: length check proved
+upd.adb:11:04: warning: statement has no effect [ineffective]
+upd.adb:11:12: warning: unused assignment to "A" [ineffective]
+upd.adb:12:04: warning: statement has no effect [ineffective]
+upd.adb:12:12: warning: unused assignment to "A" [ineffective]
