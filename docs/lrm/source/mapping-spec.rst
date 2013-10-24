@@ -172,35 +172,36 @@ Specification in SPARK 2005:
 
 .. _ms-adt_private_refinement-label:
 
-Private type with refined pre/post contracts in the body
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. commented out, makes heavy use of refined pre
+  Private type with refined pre/post contracts in the body
+  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This example demonstrates how `pre` and `post` conditions, that lie in the specification
-of a package, can be refined in the package's body. Contracts that need not be refined, do
-not have to be repeated in the body of a package. In this particular example, the body of
-the SPARK 2005 might seem to be needlessly repeating contracts. However, this is not true
-since the contracts that are being repeated are indirectly being refined through the
-refinement of the `Is_Empty` and `Is_Full` functions.
+  This example demonstrates how `pre` and `post` conditions, that lie in the specification
+  of a package, can be refined in the package's body. Contracts that need not be refined, do
+  not have to be repeated in the body of a package. In this particular example, the body of
+  the SPARK 2005 might seem to be needlessly repeating contracts. However, this is not true
+  since the contracts that are being repeated are indirectly being refined through the
+  refinement of the `Is_Empty` and `Is_Full` functions.
 
-Specification in SPARK 2005:
+  Specification in SPARK 2005:
 
    .. literalinclude:: ../code/adt_private_refinement/05/stacks_05.ads
       :language: ada
       :linenos:
 
-Body in SPARK 2005:
+  Body in SPARK 2005:
 
    .. literalinclude:: ../code/adt_private_refinement/05/stacks_05.adb
       :language: ada
       :linenos:
 
-Specification in |SPARK|:
+  Specification in |SPARK|:
 
    .. literalinclude:: ../code/adt_private_refinement/14/stacks_14.ads
       :language: ada
       :linenos:
 
-Body in |SPARK|:
+  Body in |SPARK|:
 
    .. literalinclude:: ../code/adt_private_refinement/14/stacks_14.adb
       :language: ada
@@ -1278,10 +1279,11 @@ Body in |SPARK|:
 Main_Program annotation
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-See the main program annotation used in section `Basic Input and Output Device Drivers`_.
+This annotation isn't needed.
 
-RavenSPARK patterns
-~~~~~~~~~~~~~~~~~~~
+..
+  RavenSPARK patterns
+  ~~~~~~~~~~~~~~~~~~~
 
-The Ravenscar profile for tasking is not yet supported in |SPARK|.
-Mapping examples will be added here in future.
+  The Ravenscar profile for tasking is not yet supported in |SPARK|.
+  Mapping examples will be added here in future.
