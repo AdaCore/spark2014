@@ -246,6 +246,3 @@ A list of restrictions by section and their effect:
     A ``constituent`` of a Volatile ``abstract_state_name`` must be
     Volatile and be of the same mode.
 
-
-
-END OF FILE
