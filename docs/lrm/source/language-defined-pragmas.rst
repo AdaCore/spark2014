@@ -105,7 +105,7 @@ SPARK_Mode         	      Yes                    Language defined but implementa
 ============================= ====================== =================================================
 Pragma                        Allowed in SPARK 2014  Comment
 ============================= ====================== =================================================
-Annotate		      Yes	
+Annotate		      Yes
 Restriction_Warnings  	      ?			     We amy need this for SPARK profiles
 Test_Case          	      Yes
 Warnings           	      Yes
@@ -128,6 +128,7 @@ Check	 		      Yes		     Is this used by SPARK in a specific way?
 Check_Policy 		      Yes		     Is this used by SPARK in a specific way?
 Inline_Always      	      Yes
 Pure_Function      	      Yes
+Style_Checks      	      Yes
 ============================= ====================== =================================================
 
 
@@ -136,4 +137,3 @@ Pure_Function      	      Yes
 What about other Gnat specific pragmas?
 
 .. todo:: complete this section
-
