@@ -3761,6 +3761,21 @@ package body Gnat2Why.Expr is
                               Typ      => Base);
             end;
 
+         --  Currently support attribute Valid by assuming it always evaluates
+         --  to True.
+
+         when Attribute_Valid =>
+            if Domain = EW_Prog then
+               declare
+                  Why_Expr : constant W_Expr_Id :=
+                    Transform_Expr (Var, Domain, Params);
+               begin
+                  T := +Sequence (New_Ignore (Prog => +Why_Expr), +True_Term);
+               end;
+            else
+               T := +True_Term;
+            end if;
+
          when others =>
             Ada.Text_IO.Put_Line ("[Transform_Attr] id ="
                                   & Attribute_Id'Image (Attr_Id));

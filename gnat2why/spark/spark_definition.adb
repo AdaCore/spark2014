@@ -1735,8 +1735,10 @@ package body SPARK_Definition is
            Attribute_Update     |
            Attribute_Val        |
            Attribute_Value      =>
-
             null;
+
+         when Attribute_Valid =>
+            Error_Msg_F ("?attribute Valid is assumed to return True", N);
 
          when others =>
             Violation_Detected := True;
