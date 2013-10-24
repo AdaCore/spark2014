@@ -196,7 +196,7 @@ contexts and has the described semantics:
   a package body (only other pragmas can appear between the ``begin``
   keyword and the ``SPARK_Mode`` pragma),
   it specifies the SPARK_Mode aspect of the body
-  the default mode of the package body). [This cannot be accomplished via
+  statements of the package. [This cannot be accomplished via
   an aspect_specification.]
 
 * When the pragma appears after a subprogram declaration (with only other
@@ -215,8 +215,8 @@ contexts and has the described semantics:
 A default argument of On is assumed for any SPARK_Mode pragma or
 aspect_specification for which no argument is explicitly specified.
 
-A Spark_Mode of Auto cannot be explicitly specified; the
-cases in which a Spark_Mode of Auto is implicitly specified are
+A SPARK_Mode of Auto cannot be explicitly specified; the
+cases in which a SPARK_Mode of Auto is implicitly specified are
 described below. Roughly speaking, Auto indicates that it is left up to
 the formal verification tools to determine whether or not a given construct
 is in |SPARK|.
@@ -277,7 +277,7 @@ speaking) part of the |SPARK| language. It is used to notionally transform
 programs which would otherwise not be in |SPARK| so that they can
 be viewed (at least in part) as |SPARK| programs.
 
-[TBD: Do we need to state rules for handling multiple applicable Spark_Mode
+[TBD: Do we need to state rules for handling multiple applicable SPARK_Mode
 configuration pragmas? Simplest rule: "it is always an error".
 Alternatively (and very roughly speaking), "two pragmas in the same file
 is an error, but any .ads/.adb file configuration pragma takes precedence
@@ -327,12 +327,11 @@ Features Not Yet Implemented in Flow Analysis
 
 #. Flow analysis does not support dependency contracts on functions.
 
-#. The model of floats cannot distinguish between +0 and -0.
+#. The Part_Of aspect is not supported.
 
-#. The following aspects are not supported:
-
- - Initial_Condition
- - Part_Of
+#. Verification of the dependency relationship specified by an
+   Initializes aspect is not supported, although the implicit
+   Global aspect is verified.
 
 Features Not Yet Implemented in Proof
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -378,7 +377,7 @@ Furthermore, aspect specification syntax was introduced in Ada 2012
 and will be rejected if the program is compiled as, for example, an
 Ada 95 program.
 
-Many Spark-defined constructs have no dynamic semantics (e.g., the Global,
+Many SPARK-defined constructs have no dynamic semantics (e.g., the Global,
 Depends, and Abstract_State aspects), so the run-time behavior of
 a program is unaffected if they are ignored by a compiler. Thus, there is
 no problem if these constructs are expressed as pragmas which are
@@ -398,7 +397,7 @@ an Assume pragma at run time is deemed to be unacceptable, then it can
 be replaced with an Assert pragma (at the cost of introducing a source
 code difference between the |SPARK| program that is analyzed statically
 and the Ada program that is executed). An ignored Assume pragma is the
-only case where the use of a Spark-specific construct can lead to a
+only case where the use of a SPARK-specific construct can lead to a
 portability problem which is not detected at compile time. In all
 other cases, either the Ada compiler will reject (as opposed to ignore)
 an unrecognized construct or the construct can safely be ignored.
