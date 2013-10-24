@@ -335,6 +335,10 @@ Features Not Yet Implemented in Proof
    workaround is to use expression functions instead for those functions called
    in contracts and assertion pragmas.
 
+#. Global contracts for subprograms that are only declared (no body is
+   available) are ignored in proof. A ``null`` Global contract is used for
+   these subprograms.
+
 #. The model of floats cannot distinguish between +0 and -0.
 
 #. The 'Update notation for specifying updates to arrays and records in proof
