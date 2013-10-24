@@ -344,6 +344,10 @@ Features Not Yet Implemented in Proof
 
 #. The model of floats cannot distinguish between +0 and -0.
 
+#. The 'Update notation for specifying updates to arrays and records in proof
+   contracts only supports one-dimensional arrays at present. Multi-dimensional
+   arrays and records are not yet supported.
+
 Portability Issues
 ==================
 
