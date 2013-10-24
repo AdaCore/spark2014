@@ -64,16 +64,13 @@ assertion policy..
 A special feature of |SPARK| is that numbers in assertion expressions
 may have extended or "infinite" arithmetic to make it simpler to write
 specifications as they can be written without having to consider the
-possibility of overflow within the specification.  The numbers behave
-mathematically (see :ref:`exec_sem`).
+possibility of overflow within the specification.  The numbers may therefore
+behave mathematically (see :ref:`exec_sem`).
 
 Structure of Introduction
 -------------------------
 
 This introduction contains the following sections:
-
-- Section :ref:`lifecycle` describes how this document will evolve up to
-  and beyond the first formal release of the |SPARK| language and toolset.
 
 - Section :ref:`read_interpret` describes how to read and interpret this document.
 
@@ -92,28 +89,6 @@ This introduction contains the following sections:
   toolset.
 
 - Section :ref:`explain_sprs` provides expanded detail on the main strategic requirements.
-
-.. _lifecycle:
-
-Lifecycle of this Document
---------------------------
-
-This document will be developed incrementally towards a number of milestones
--- this version of the document represents Milestone 5 (Preview Release) --
-culminating in Release 1 of the document that matches the first formal release
-of the toolset. Subsequent releases of the document will follow, associated with
-subsequent formal releases of the toolset. Hence, where inclusion of particular
-scope is deferred, it may be deferred to:
-
-- A specified milestone, meaning that the feature will be included in the first
-  formal release of the toolset.
-
-- A release subsequent to Release 1, meaning that the feature will be
-  implemented *after* the first formal release of the toolset.
-
-Note that the content currently in scope for the current draft of this document will only
-be regarded as definitive when the Release 1 version of the document is ready,
-and so may be subject to change.
 
 .. _read_interpret:
 
@@ -135,7 +110,7 @@ with the Ada 2012 RM).
 
 The |SPARK| RM uses and introduces technical terms in its
 descriptions, those that are less well known or introduced are
-summarised in a :ref:`glossary` following the sections covering the
+summarized in a :ref:`glossary` following the sections covering the
 Ada annexes.
 
 |SPARK| introduces a number of aspects. The language rules are written as if all
@@ -362,7 +337,7 @@ exception.  In this mode the assertion expressions may still be
 executable and use extended or infinite precision numbers.  This mode
 might be acceptable if assertion expressions are not to be executed in
 the delivered code or if the overhead of executing contracts is not an
-issue,
+issue.
 
 If the mode is not chosen, then |SPARK| requires checks that have to
 be proven to demonstrate that an overflow cannot occur.  In the above
@@ -469,8 +444,8 @@ Some are expanded in subsequent sections within this chapter.
   subset for which verification evidence could not be generated]. See section
   :ref:`test_and_proof` for further details. Note, however, that a core goal of
   is to provide a language expressive enough for the whole of a program
-  to written in |SPARK| making it potentially entirely provable largely using
-  automatic proof tools.
+  to be written in |SPARK|, making it potentially entirely provable largely
+  using automatic proof tools.
 
 - |SPARK| shall support *constructive*, modular development which allows
   contracts to be specified on the declaration of program units and allows
@@ -494,11 +469,9 @@ Some are expanded in subsequent sections within this chapter.
 - Although a goal of |SPARK| is to provide a language that supports as many
   Ada 2012 features as practical, there is another goal which is to support good
   programming practice guidelines and coding standards applicable to certain
-  domains or standards. This goal is met by *Code Policies* that shall be
-  allowed that reduce the subset of |SPARK| that may be used in line with
-  specific goals such as domain needs or certification requirements. The use of
-  a code policy may also have the effect of simplifying proof or analysis. See
-  section :ref:`code_policy` for further details.
+  domains or standards. This goal is met either by standard Ada Restrictions and
+  Profile pragmas, or via existing tools (e.g. pragma Restriction_Warnings in
+  GNAT, or the coding standard checker gnatcheck).
 
 - |SPARK| shall allow the mixing of code written in the |SPARK| subset
   with code written in full Ada 2012. See section :ref:`in_out` for
@@ -555,17 +528,6 @@ Some are expanded in subsequent sections within this chapter.
   language feature that for which sound analysis is difficult or impractical
   will be eliminated or its use constrained to meet this goal. See section
   :ref:`main_restricts` for further details.
-
-.. todo:: Ensure that all strategic requirements have been
-     implemented.  I think a strategic requirement of AdaCore is the
-     suport for tagged types and dynamic dispatching.  To be completed
-     in a post-Release 1 version of this document.
-
-.. todo:: Where Ada 2012 language features are designated as not in
-     SPARK 2014 in subsequent chapters of this document, add tracing
-     back to the strategic requirement that motivates that
-     designation. To be completed in a post-Release 1 version of this
-     document.
 
 .. _explain_sprs:
 
@@ -797,47 +759,6 @@ must satisfy the following conditions:
   subprogram is called.  The proof of the called subprogram relies on
   its precondition evaluating to True.
 
-.. _code_policy:
-
-Code Policies
-~~~~~~~~~~~~~
-
-The restrictions imposed on the subset of Ada that could be used in writing
-SPARK 2005 programs were not simply derived from what was or is amenable to
-formal verification. In particular, those restrictions stemmed partly from good
-programming practice guidelines and the need to impose certain restrictions when
-working in certain domains or against certain safety standards. Hence, we want
-to allow such restrictions to be applied by users in a systematic and
-tool-checked way despite the goal that |SPARK| embodies
-the largest subset of Ada 2012 that is practical to formally verify.
-
-Since |SPARK| will allow use of as large a subset of Ada 2012 as possible, this allows
-for the definition of multiple *Code Policies* that allow different language
-subsets to be used as opposed to the single subset given by SPARK 2005. Each of these
-code policies can be targeted to meeting a specific user need, and where a user has multiple
-needs then multiple policies may be enforced. Needs could be driven by:
-
-- Application domains - for example, server-class information systems,
-
-- Standards - for example, DO-178C Level A,
-
-- Technical requirements - for example, systems requiring software that is
-  compatible with a "zero footprint" run-time library.
-
-As an example, a user developing an air traffic control system against DO-178C
-might impose two code policies, one for the domain of interest and one for the
-standard of interest.
-
-These capabilities will be handled outside of the language since the need
-is not specific to SPARK, and has already been resolved either by
-Ada 2012 (pragma Restrictions and pragma Profile), or GNAT (pragma
-Restriction_Warnings) or by coding standard checkers (e.g. gnatcheck).
-
-.. todo::
-   Complete detail on Code Policies.
-   To be completed in the Milestone 4 version of this document.
-   Consider referencing the User's Guide for details of the various profiles.
-
 .. _ghost_entities:
 
 Ghost Functions
@@ -1062,7 +983,7 @@ only part of a program is formally verified.  Thus, combining these results
 with other verification results depends on the verification of global and local
 assumptions made during formal verification.
 
-Full details on the SPARK_Mode aspect are given in the SPARK Toolset User's Guide (reference TBD).
+Full details on the SPARK_Mode aspect are given in the SPARK Toolset User's Guide (*Identifying |SPARK| Code*).
 
 .. _volatile:
 
