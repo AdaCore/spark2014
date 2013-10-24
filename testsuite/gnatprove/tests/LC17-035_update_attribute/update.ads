@@ -68,8 +68,7 @@ package Update is
 
    --  prefix is 'Old attribute
    procedure Swap_Elements (I, J: in Index; A: in out Array_1D)
-     --  with Post => (A = A'Old'Update(I => A'Old(J), J => A'Old(I)));
-     with Post => (A = A'Old'Update(3 => 5, 2 => 6));
+     with Post => (A = A'Old'Update(I => A'Old(J), J => A'Old(I)));
 
    --  array update, swap inversion check, prefix is 'Result
    function Swap_Fun (Arr_In : Array_1D; I, J : Index) return Array_1D
