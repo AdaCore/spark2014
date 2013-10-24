@@ -49,11 +49,9 @@ SPARK 2014 Reference Manual
 .. toctree::
    :maxdepth: 3
 
-   A. SPARK 2005 to |SPARK| Mapping Specification <mapping-spec>
-   B. Restrictions and Profiles <restrictions-and-profiles>
+   A. SPARK 2005 to SPARK 2014 Mapping Specification <mapping-spec>
+   B. GNU Free Documentation License <gfdl>
+
+.. uncomment and rename todo-summary.rst.wip to todo-summary.rst to enable todo
    C. To-Do Summary <todo-summary>
-   D. GNU Free Documentation License <gfdl>
-
-
-
 
