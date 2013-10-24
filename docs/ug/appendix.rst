@@ -277,12 +277,6 @@ speaking) part of the |SPARK| language. It is used to notionally transform
 programs which would otherwise not be in |SPARK| so that they can
 be viewed (at least in part) as |SPARK| programs.
 
-[TBD: Do we need to state rules for handling multiple applicable SPARK_Mode
-configuration pragmas? Simplest rule: "it is always an error".
-Alternatively (and very roughly speaking), "two pragmas in the same file
-is an error, but any .ads/.adb file configuration pragma takes precedence
-over any .adc file pragma".]
-
 .. _GNATprove_Limitations:
 
 |GNATprove| Limitations
