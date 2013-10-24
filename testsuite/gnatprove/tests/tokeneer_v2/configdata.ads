@@ -17,18 +17,15 @@
 --
 ------------------------------------------------------------------
 
-with Clock;
-with PrivTypes;
-with AuditTypes;
-with File;
-with IandATypes;
---# inherit AuditTypes,  Clock,  File,  IandATypes,  PrivTypes;
-
+with AuditTypes,
+     Clock,
+     File,
+     IandATypes,
+     PrivTypes;
 
 package ConfigData
   with Abstract_State => (FileState, State),
        Initializes    => Filestate
---# initializes FileState;
 is
 
    ------------------------------------------------------------------
@@ -52,9 +49,9 @@ is
    -- Traceto: FD.TIS.InitIDStation
    ------------------------------------------------------------------
    procedure Init
-      with Global  => (Output => State,
-                       In_Out => FileState),
-           Depends => ((FileState, State) => FileState);
+     with Global  => (Output => State,
+                      In_Out => FileState),
+          Depends => ((FileState, State) => FileState);
 
    ------------------------------------------------------------------
    -- UpdateData
@@ -81,20 +78,20 @@ is
       TheAlarmThresholdSize   : in     AuditTypes.FileSizeT;
       TheSystemMaxFar         : in     IandATypes.FarT
       )
-      with Global  => (Output => State),
-           Depends => (State => (TheAccessPolicy,
-                                 TheAlarmSilentDuration,
-                                 TheAlarmThresholdSize,
-                                 TheEnclaveClearance,
-                                 TheFingerWaitDuration,
-                                 TheLatchUnlockDuration,
-                                 TheMaxAuthDuration,
-                                 TheMinEntryClass,
-                                 TheMinPreservedLogSize,
-                                 TheSystemMaxFar,
-                                 TheTokenRemovalDuration,
-                                 TheWorkingHoursEnd,
-                                 TheWorkingHoursStart));
+     with Global  => (Output => State),
+          Depends => (State => (TheAccessPolicy,
+                                TheAlarmSilentDuration,
+                                TheAlarmThresholdSize,
+                                TheEnclaveClearance,
+                                TheFingerWaitDuration,
+                                TheLatchUnlockDuration,
+                                TheMaxAuthDuration,
+                                TheMinEntryClass,
+                                TheMinPreservedLogSize,
+                                TheSystemMaxFar,
+                                TheTokenRemovalDuration,
+                                TheWorkingHoursEnd,
+                                TheWorkingHoursStart));
 
    ------------------------------------------------------------------
    -- WriteFile

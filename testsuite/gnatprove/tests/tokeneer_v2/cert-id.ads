@@ -54,7 +54,6 @@ package Cert.ID is
 
    function TheSubject (Contents : ContentsT) return CryptoTypes.IssuerT;
 
-
    ------------------------------------------------------------------
    -- ThePublicKey
    --
@@ -66,7 +65,6 @@ package Cert.ID is
    ------------------------------------------------------------------
 
    function ThePublicKey (Contents : ContentsT) return CryptoTypes.KeyPartT;
-
 
    ------------------------------------------------------------------
    -- Extract
@@ -82,7 +80,6 @@ package Cert.ID is
                       Success  :    out Boolean)
      with Depends => ((Contents, Success) => RawCert);
 
-
    ------------------------------------------------------------------
    -- Clear
    --
@@ -96,8 +93,7 @@ package Cert.ID is
      with Depends => (Contents => null);
 
    --  Converts the extended type to the original one.
-   function Cert_Id_To_Cert (X : in ContentsT) return Cert.ContentsT;
-
+   function Cert_Id_To_Cert (Contents : in ContentsT) return Cert.ContentsT;
 
    private
       type ContentsT is
@@ -112,11 +108,10 @@ package Cert.ID is
 
      NullContents : constant ContentsT :=
        ContentsT'(ID               => CertTypes.NullID,
-                   NotBefore        => Clock.ZeroTime,
-                   NotAfter         => Clock.ZeroTime,
-                   Mechanism        => CryptoTypes.AlgorithmT'First,
-                   Subject          => CryptoTypes.NullIssuer,
-                   SubjectPublicKey => CryptoTypes.NullKeyPart);
-
+                  NotBefore        => Clock.ZeroTime,
+                  NotAfter         => Clock.ZeroTime,
+                  Mechanism        => CryptoTypes.AlgorithmT'First,
+                  Subject          => CryptoTypes.NullIssuer,
+                  SubjectPublicKey => CryptoTypes.NullKeyPart);
 
 end Cert.ID;

@@ -67,7 +67,6 @@ is
 
    end GetStringByPos;
 
-
    ------------------------------------------------------------------
    -- GetDictionary
    --
@@ -132,7 +131,6 @@ is
       return DictionaryT(LocalReturn(1..DicFin - 1 - DicStart));
 
    end GetDictionary;
-
 
    ------------------------------------------------------------------
    -- GetStringByKey
@@ -271,7 +269,6 @@ is
          return "";
    end GetDictionaryByKey;
 
-
    ------------------------------------------------------------------
    -- GetResponseFromMsg
    --
@@ -310,7 +307,6 @@ is
          return "";
    end GetResponseFromMsg;
 
-
    ------------------------------------------------------------------
    -- StringFrom32
    --
@@ -324,7 +320,6 @@ is
       return Ada.Strings.Fixed.Trim(BasicTypes.Unsigned32T'Image(Num),
                                     Ada.Strings.Both);
    end StringFrom32;
-
 
    ------------------------------------------------------------------
    -- StringFromInt

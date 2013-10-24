@@ -53,9 +53,8 @@ is
                Text           => "SHUTDOWN          "));
 
 
-   function RolePresent (TheAdmin : T) return PrivTypes.PrivilegeT
-   is
-      (TheAdmin.RolePresent);
+   function RolePresent (TheAdmin : T) return PrivTypes.PrivilegeT is
+     (TheAdmin.RolePresent);
 
 
    ------------------------------------------------------------------
@@ -67,12 +66,11 @@ is
    ------------------------------------------------------------------
 
    function Str_Comp (KeyedOp : Keyboard.DataT;
-                      Op      : OpT) return Boolean
-   is
-      (KeyedOp.Length >= OpToKeyed(Op).MinMatchLength
-        and then KeyedOp.Length <= OpToKeyed(Op).Length
-        and then (for all I in 1 .. KeyedOp.Length =>
-                    OpToKeyed(Op).Text(I) = KeyedOp.Text(I)));
+                      Op      : OpT) return Boolean is
+     (KeyedOp.Length >= OpToKeyed(Op).MinMatchLength and then
+      KeyedOp.Length <= OpToKeyed(Op).Length and then
+      (for all I in 1 .. KeyedOp.Length =>
+         OpToKeyed(Op).Text(I) = KeyedOp.Text(I)));
 
 
    --------------------------------------------------------------------
@@ -83,9 +81,8 @@ is
    --------------------------------------------------------------------
 
    function AllowedOp (TheAdmin : T;
-                       Op       : OpT) return Boolean
-   is
-      (IsAvailable(TheAdmin.RolePresent)(Op));
+                       Op       : OpT) return Boolean is
+     (IsAvailable(TheAdmin.RolePresent)(Op));
 
    ------------------------------------------------------------------
    -- Init
@@ -153,9 +150,8 @@ is
    --
    ------------------------------------------------------------------
 
-   function IsDoingOp (TheAdmin : T) return Boolean
-   is
-      (TheAdmin.CurrentOp /= NullOp);
+   function IsDoingOp (TheAdmin : T) return Boolean is
+     (TheAdmin.CurrentOp /= NullOp);
 
 
    ------------------------------------------------------------------
@@ -229,9 +225,8 @@ is
    --
    ------------------------------------------------------------------
 
-   function TheCurrentOp (TheAdmin : T) return OpT
-   is
-      (TheAdmin.CurrentOp);
+   function TheCurrentOp (TheAdmin : T) return OpT is
+     (TheAdmin.CurrentOp);
 
 
    ------------------------------------------------------------------
@@ -244,8 +239,7 @@ is
    -- traceto   : FD.Interfac.UpdateScreen
    ------------------------------------------------------------------
 
-   function SecurityOfficerIsPresent (TheAdmin : T) return Boolean
-   is
-      (TheAdmin.RolePresent = PrivTypes.SecurityOfficer);
+   function SecurityOfficerIsPresent (TheAdmin : T) return Boolean is
+     (TheAdmin.RolePresent = PrivTypes.SecurityOfficer);
 
 end Admin;

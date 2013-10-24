@@ -106,12 +106,9 @@ is
    --
    ------------------------------------------------------------------
 
-   function TheCurrentTime return TimeT
-     with Refined_Global => CurrentTimeVar
-   is
-   begin
-      return CurrentTimeVar;
-   end TheCurrentTime;
+   function TheCurrentTime return TimeT is
+     (CurrentTimeVar)
+     with Refined_Global => CurrentTimeVar;
 
    ------------------------------------------------------------------
    -- GetNow
@@ -121,12 +118,9 @@ is
    --
    ------------------------------------------------------------------
 
-   function GetNow return TimeT
-     with Refined_Global => Interfac.Now
-   is
-   begin
-      return Interfac.TheTime;
-   end GetNow;
+   function GetNow return TimeT is
+     (Interfac.TheTime)
+     with Refined_Global => Interfac.Now;
 
    ------------------------------------------------------------------
    -- GreaterThan
@@ -136,10 +130,8 @@ is
    --
    ------------------------------------------------------------------
 
-   function GreaterThan (Left, Right : TimeT) return Boolean
-   is
-   begin
-      return Left.Year > Right.Year
+   function GreaterThan (Left, Right : TimeT) return Boolean is
+     (Left.Year > Right.Year
         or (Left.Year = Right.Year
             and Left.Month > Right.Month )
         or (Left.Year = Right.Year
@@ -148,8 +140,7 @@ is
         or (Left.Year = Right.Year
             and Left.Month = Right.Month
             and Left.Day = Right.Day
-            and Left.MilliSec > Right.MilliSec);
-   end GreaterThan;
+            and Left.MilliSec > Right.MilliSec));
 
    ------------------------------------------------------------------
    -- LessThan
@@ -159,10 +150,8 @@ is
    --
    ------------------------------------------------------------------
 
-   function LessThan (Left, Right : TimeT) return Boolean
-   is
-   begin
-      return Left.Year < Right.Year
+   function LessThan (Left, Right : TimeT) return Boolean is
+     (Left.Year < Right.Year
         or (Left.Year = Right.Year
             and Left.Month < Right.Month )
         or (Left.Year = Right.Year
@@ -171,8 +160,7 @@ is
         or (Left.Year= Right.Year
             and Left.Month = Right.Month
             and Left.Day = Right.Day
-            and Left.MilliSec < Right.MilliSec);
-   end LessThan;
+            and Left.MilliSec < Right.MilliSec));
 
    ------------------------------------------------------------------
    -- GreaterThanOrEqual
@@ -182,11 +170,8 @@ is
    --
    ------------------------------------------------------------------
 
-   function GreaterThanOrEqual (Left, Right : TimeT) return Boolean
-   is
-   begin
-       return GreaterThan (Left, Right) or Left = Right;
-   end GreaterThanOrEqual;
+   function GreaterThanOrEqual (Left, Right : TimeT) return Boolean is
+     (GreaterThan (Left, Right) or Left = Right);
 
    ------------------------------------------------------------------
    -- LessThanOrEqual
@@ -196,11 +181,8 @@ is
    --
    ------------------------------------------------------------------
 
-   function LessThanOrEqual (Left, Right : TimeT) return Boolean
-   is
-   begin
-       return LessThan (Left, Right) or Left = Right;
-   end LessThanOrEqual;
+   function LessThanOrEqual (Left, Right : TimeT) return Boolean is
+     (LessThan (Left, Right) or Left = Right);
 
    ------------------------------------------------------------------
    -- ConstructTime
@@ -220,15 +202,15 @@ is
    is
    begin
       if BasicTypes.Unsigned32T(YearsT'First) <= Year and
-           Year <= BasicTypes.Unsigned32T(YearsT'Last) and
-           BasicTypes.Unsigned32T(MonthsT'First) <= Month and
-           Month <= BasicTypes.Unsigned32T(MonthsT'Last) and
-           BasicTypes.Unsigned32T(DaysT'First) <= Day and
-           Day <= BasicTypes.Unsigned32T(DaysT'Last) and
-           BasicTypes.Unsigned32T(HoursT'First) <= Hour and
-           Hour <= BasicTypes.Unsigned32T(HoursT'Last) and
-           BasicTypes.Unsigned32T(MinutesT'First) <= Min and
-           Min <= BasicTypes.Unsigned32T(MinutesT'Last)
+        Year <= BasicTypes.Unsigned32T(YearsT'Last) and
+        BasicTypes.Unsigned32T(MonthsT'First) <= Month and
+        Month <= BasicTypes.Unsigned32T(MonthsT'Last) and
+        BasicTypes.Unsigned32T(DaysT'First) <= Day and
+        Day <= BasicTypes.Unsigned32T(DaysT'Last) and
+        BasicTypes.Unsigned32T(HoursT'First) <= Hour and
+        Hour <= BasicTypes.Unsigned32T(HoursT'Last) and
+        BasicTypes.Unsigned32T(MinutesT'First) <= Min and
+        Min <= BasicTypes.Unsigned32T(MinutesT'Last)
       then
 
          TheTime := TimeT'
@@ -281,15 +263,11 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   function StartOfDay (TheTime : TimeT) return TimeT
-   is
-   begin
-      return TimeT'(Year     => TheTime.Year,
-                    Month    => TheTime.Month,
-                    Day      => TheTime.Day,
-                    MilliSec => MilliSecsT'First);
-   end StartOfDay;
-
+   function StartOfDay (TheTime : TimeT) return TimeT is
+     (TimeT'(Year     => TheTime.Year,
+             Month    => TheTime.Month,
+             Day      => TheTime.Day,
+             MilliSec => MilliSecsT'First));
 
    ------------------------------------------------------------------
    -- PrintDuration
@@ -429,8 +407,6 @@ is
    function AddDuration
      (TheTime : TimeT; TheDuration : DurationT) return TimeT
    is
-   begin
-      return Interfac.AddDuration(TheTime, TheDuration);
-   end AddDuration;
+     (Interfac.AddDuration(TheTime, TheDuration));
 
 end Clock;

@@ -42,7 +42,6 @@ package Cert.Attr.Auth is
    ------------------------------------------------------------------
    type ContentsT is private;
 
-
    ------------------------------------------------------------------
    -- TheRole
    --
@@ -54,7 +53,6 @@ package Cert.Attr.Auth is
    ------------------------------------------------------------------
 
    function TheRole (Contents : ContentsT) return PrivTypes.PrivilegeT;
-
 
    ------------------------------------------------------------------
    -- TheClearance
@@ -82,7 +80,6 @@ package Cert.Attr.Auth is
                       Success  :    out Boolean)
      with Depends => ((Contents, Success) => RawCert);
 
-
    ------------------------------------------------------------------
    -- Construct
    --
@@ -96,7 +93,6 @@ package Cert.Attr.Auth is
                         RawCert  :    out CertTypes.RawCertificateT)
      with Global  => null,
           Depends => (RawCert => Contents);
-
 
    ------------------------------------------------------------------
    -- SetContents
@@ -123,7 +119,6 @@ package Cert.Attr.Auth is
                                    NotAfter,
                                    NotBefore,
                                    Role));
-
 
    ------------------------------------------------------------------
    -- IsOK
@@ -170,12 +165,12 @@ package Cert.Attr.Auth is
      with Depends => (Contents => null);
 
    --  Converts the extended type to the original one.
-   function Cert_Attr_Auth_To_Cert (X : in ContentsT) return Cert.ContentsT;
+   function Cert_Attr_Auth_To_Cert (Contents : in ContentsT)
+                                   return Cert.ContentsT;
 
    --  Converts the extended type to the original one.
-   function Cert_Attr_Auth_To_Cert_Attr
-     (X : in ContentsT)
-      return Cert.Attr.ContentsT;
+   function Cert_Attr_Auth_To_Cert_Attr (Contents : in ContentsT)
+                                        return Cert.Attr.ContentsT;
 
    private
       type ContentsT is
@@ -198,6 +193,5 @@ package Cert.Attr.Auth is
                    Role       => PrivTypes.PrivilegeT'First,
                    Clearance  => PrivTypes.ClearanceT'
                                    (Class => PrivTypes.ClassT'First));
-
 
 end Cert.Attr.Auth;

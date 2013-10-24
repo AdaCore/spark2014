@@ -36,19 +36,19 @@ package body Cert.Attr is
    is
       LocalUser : AuditTypes.UserTextT := AuditTypes.NoUser;
 
-         FullString : String := "Issuer: "
-           & CryptoTypes.IssuerIdT'Image(Contents.BaseCertID.Issuer.ID)
-           & " SerialNo:  "
-           & CertTypes.SerialNumberT'Image(Contents.BaseCertID.SerialNumber);
-      begin
+      FullString : String := "Issuer: "
+        & CryptoTypes.IssuerIdT'Image(Contents.BaseCertID.Issuer.ID)
+        & " SerialNo:  "
+        & CertTypes.SerialNumberT'Image(Contents.BaseCertID.SerialNumber);
+   begin
 
-         -- if the Full string is shorter then use it all otherwise
-         -- truncate it.
-         if FullString'Last <= AuditTypes.UserTextI'Last then
-            LocalUser (1..FullString'Last) := FullString;
-         else
-            LocalUser := FullString (1..AuditTypes.UserTextI'Last);
-         end if;
+      -- if the Full string is shorter then use it all otherwise
+      -- truncate it.
+      if FullString'Last <= AuditTypes.UserTextI'Last then
+         LocalUser (1..FullString'Last) := FullString;
+      else
+         LocalUser := FullString (1..AuditTypes.UserTextI'Last);
+      end if;
 
       return LocalUser;
    end ExtractUser;
@@ -60,11 +60,6 @@ package body Cert.Attr is
    --     None
    ------------------------------------------------------------------
 
-   function TheBaseCert (Contents : ContentsT) return CertTypes.IDT
-   is
-   begin
-      return Contents.BaseCertID;
-   end TheBaseCert;
-
-
+   function TheBaseCert (Contents : ContentsT) return CertTypes.IDT is
+     (Contents.BaseCertID);
 end Cert.Attr;

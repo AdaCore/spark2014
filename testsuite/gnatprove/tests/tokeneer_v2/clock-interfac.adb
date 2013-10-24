@@ -68,11 +68,8 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   function TheTime return Clock.TimeT
-   is
-   begin
-      return Convert(Ada.Calendar.Clock);
-   end TheTime;
+   function TheTime return Clock.TimeT is
+     (Convert(Ada.Calendar.Clock));
 
    ------------------------------------------------------------------
    -- AddDuration

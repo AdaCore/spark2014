@@ -16,28 +16,27 @@
 --
 ------------------------------------------------------------------
 
-package PrivTypes
-is
+package PrivTypes is
 
    ------------------------------------------------------------------
    -- Types
    --
    ------------------------------------------------------------------
    type PrivilegeT is (
-      UserOnly, 
-      Guard, 
-      AuditManager, 
+      UserOnly,
+      Guard,
+      AuditManager,
       SecurityOfficer
       );
 
    subtype AdminPrivilegeT is PrivilegeT range Guard..SecurityOfficer;
 
    type ClassT is (
-      Unmarked, 
-      Unclassified, 
-      Restricted, 
-      Confidential, 
-      Secret, 
+      Unmarked,
+      Unclassified,
+      Restricted,
+      Confidential,
+      Secret,
       Topsecret
       );
 

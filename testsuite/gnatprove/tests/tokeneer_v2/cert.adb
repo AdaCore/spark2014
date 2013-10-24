@@ -20,7 +20,6 @@ with BasicTypes,
      CertProcessing,
      KeyStore;
 
-
 package body Cert is
 
    ------------------------------------------------------------------
@@ -40,11 +39,8 @@ package body Cert is
    --     None.
    ------------------------------------------------------------------
 
-   function TheIssuer (Contents : ContentsT) return CryptoTypes.IssuerT
-   is
-   begin
-      return Contents.ID.Issuer;
-   end TheIssuer;
+   function TheIssuer (Contents : ContentsT) return CryptoTypes.IssuerT is
+     (Contents.ID.Issuer);
 
    ------------------------------------------------------------------
    -- TheID
@@ -53,12 +49,7 @@ package body Cert is
    --     None.
    ------------------------------------------------------------------
 
-   function TheID (Contents : ContentsT) return CertTypes.IDT
-   is
-   begin
-      return Contents.ID;
-   end TheID;
-
+   function TheID (Contents : ContentsT) return CertTypes.IDT is (Contents.ID);
 
    ------------------------------------------------------------------
    -- ExtractUser
@@ -72,19 +63,19 @@ package body Cert is
    is
       LocalUser : AuditTypes.UserTextT := AuditTypes.NoUser;
 
-         FullString : String := "Issuer: "
-           & CryptoTypes.IssuerIdT'Image(Contents.ID.Issuer.ID)
-           & " SerialNo:  "
-           & CertTypes.SerialNumberT'Image(Contents.ID.SerialNumber);
-      begin
+      FullString : String := "Issuer: "
+        & CryptoTypes.IssuerIdT'Image(Contents.ID.Issuer.ID)
+        & " SerialNo:  "
+        & CertTypes.SerialNumberT'Image(Contents.ID.SerialNumber);
+   begin
 
-         -- if the Full string is shorter then use it all otherwise
-         -- truncate it.
-         if FullString'Last <= AuditTypes.UserTextI'Last then
-            LocalUser (1..FullString'Last) := FullString;
-         else
-            LocalUser := FullString (1..AuditTypes.UserTextI'Last);
-         end if;
+      -- if the Full string is shorter then use it all otherwise
+      -- truncate it.
+      if FullString'Last <= AuditTypes.UserTextI'Last then
+         LocalUser (1..FullString'Last) := FullString;
+      else
+         LocalUser := FullString (1..AuditTypes.UserTextI'Last);
+      end if;
 
       return LocalUser;
    end ExtractUser;
@@ -97,13 +88,9 @@ package body Cert is
    --     None.
    ------------------------------------------------------------------
 
-   function TheMechanism (Contents : ContentsT)
-         return CryptoTypes.AlgorithmT
+   function TheMechanism (Contents : ContentsT) return CryptoTypes.AlgorithmT
    is
-   begin
-      return Contents.Mechanism;
-   end TheMechanism;
-
+     (Contents.Mechanism);
 
    ------------------------------------------------------------------
    -- IsCurrent
@@ -112,14 +99,9 @@ package body Cert is
    --     None.
    ------------------------------------------------------------------
 
-   function IsCurrent (Contents : ContentsT) return Boolean
-   is
-   begin
-       return
-         Clock.GreaterThanOrEqual(Clock.TheCurrentTime, Contents.NotBefore) and
-         Clock.LessThanOrEqual(Clock.TheCurrentTime, Contents.NotAfter);
-   end IsCurrent;
-
+   function IsCurrent (Contents : ContentsT) return Boolean is
+     (Clock.GreaterThanOrEqual(Clock.TheCurrentTime, Contents.NotBefore) and
+      Clock.LessThanOrEqual(Clock.TheCurrentTime, Contents.NotAfter));
 
    ------------------------------------------------------------------
    -- GetData
@@ -129,7 +111,7 @@ package body Cert is
    ------------------------------------------------------------------
 
    function GetData (RawCert : CertTypes.RawCertificateT)
-         return CertTypes.RawDataT
+                    return CertTypes.RawDataT
    is
       LocalRawData : CertTypes.RawDataT;
       Ignored      : Boolean;
@@ -162,7 +144,6 @@ package body Cert is
 
       return LocalSig;
    end GetSignature;
-
 
    ------------------------------------------------------------------
    -- IssuerKnown

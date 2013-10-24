@@ -54,7 +54,6 @@ package Cert.Attr.IandA is
 
    function TheTemplate (Contents : ContentsT) return IandATypes.TemplateT;
 
-
    ------------------------------------------------------------------
    -- Extract
    --
@@ -69,7 +68,6 @@ package Cert.Attr.IandA is
                       Success  :    out Boolean)
      with Depends => ((Contents, Success) => RawCert);
 
-
    ------------------------------------------------------------------
    -- Clear
    --
@@ -83,12 +81,10 @@ package Cert.Attr.IandA is
      with Depends => (Contents => null);
 
    --  Converts the extended type to the original one.
-   function Cert_Attr_Ianda_To_Cert (X : in ContentsT) return Cert.ContentsT;
+   function Cert_Attr_Ianda_To_Cert (Contents : in ContentsT) return Cert.ContentsT;
 
    --  Converts the extended type to the original one.
-   function Cert_Attr_Ianda_To_Cert_Attr
-     (X : in ContentsT)
-      return Cert.Attr.ContentsT;
+   function Cert_Attr_Ianda_To_Cert_Attr (Contents : in ContentsT) return Cert.Attr.ContentsT;
 
    private
       type ContentsT is
@@ -108,6 +104,5 @@ package Cert.Attr.IandA is
                    Mechanism  => CryptoTypes.AlgorithmT'First,
                    BaseCertID => CertTypes.NullID,
                    Template   => IandATypes.NullTemplate);
-
 
 end Cert.Attr.IandA;

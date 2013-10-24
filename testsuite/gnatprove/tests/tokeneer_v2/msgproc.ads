@@ -49,7 +49,6 @@ package MsgProc is
    function GetStringByPos(Msg : String;
                            Arg : Positive) return String;
 
-
    ------------------------------------------------------------------
    -- GetDictionary
    --
@@ -61,7 +60,6 @@ package MsgProc is
    function GetDictionary(Msg : String;
                           Arg : Positive) return DictionaryT;
 
-
    ------------------------------------------------------------------
    -- GetStringByKey
    --
@@ -71,8 +69,7 @@ package MsgProc is
    --
    ------------------------------------------------------------------
    function GetStringByKey (Dic : DictionaryT;
-                            Key : String)
-                    return String;
+                            Key : String) return String;
 
    ------------------------------------------------------------------
    -- GetDictionaryByKey
@@ -83,8 +80,7 @@ package MsgProc is
    ------------------------------------------------------------------
 
    function GetDictionaryByKey (Dic : DictionaryT;
-                                Key : String)
-                    return DictionaryT;
+                                Key : String) return DictionaryT;
 
    ------------------------------------------------------------------
    -- GetResponseFromMsg
@@ -104,7 +100,6 @@ package MsgProc is
    --
    ------------------------------------------------------------------
    function StringFrom32(Num : in     BasicTypes.Unsigned32T) return String;
-
 
    ------------------------------------------------------------------
    -- StringFromInt

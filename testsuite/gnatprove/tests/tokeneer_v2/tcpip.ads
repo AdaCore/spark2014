@@ -34,7 +34,6 @@ package TcpIp is
    NullMsg  : constant MessageT := (Data   => (others => ASCII.Nul),
                                     Length => 0);
 
-
    --------------------------------------------------------------------
    -- ConnectToSPRE
    --
@@ -45,7 +44,6 @@ package TcpIp is
 
    procedure ConnectToSPRE ( IsAdmin : in     Boolean;
                              Success :    out Boolean);
-
 
    --------------------------------------------------------------------
    -- DisconnectFromSPRE
@@ -58,7 +56,6 @@ package TcpIp is
    procedure DisconnectFromSPRE (IsAdmin : in     Boolean;
                                   Success :    out Boolean);
 
-
    --------------------------------------------------------------------
    -- OpenAll
    --
@@ -69,7 +66,6 @@ package TcpIp is
 
    procedure OpenAll(Success : out Boolean);
 
-
    --------------------------------------------------------------------
    -- CloseAll
    --
@@ -79,7 +75,6 @@ package TcpIp is
    --------------------------------------------------------------------
 
    procedure CloseAll;
-
 
    --------------------------------------------------------------------
    -- SendAndReceive

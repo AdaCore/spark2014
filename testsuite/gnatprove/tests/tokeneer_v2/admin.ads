@@ -20,9 +20,6 @@ with PrivTypes,
      Keyboard;
 use PrivTypes;
 
---# inherit PrivTypes,
---#         Keyboard;
-
 package Admin
 is
 
@@ -43,8 +40,6 @@ is
    type T is private;
 
 
-   --# function prf_rolePresent(TheAdmin : T)
-   --#    return PrivTypes.PrivilegeT;
    function RolePresent (TheAdmin : T) return PrivTypes.PrivilegeT;
 
 
@@ -60,7 +55,6 @@ is
 
    function IsDoingOp (TheAdmin : T) return Boolean;
 
-
    ------------------------------------------------------------------
    -- TheCurrentOp
    --
@@ -72,9 +66,7 @@ is
    ------------------------------------------------------------------
 
    function TheCurrentOp (TheAdmin : T) return OpT
-   --# pre IsDoingOp(TheAdmin);
-      with Pre => IsDoingOp(TheAdmin);
-
+     with Pre => IsDoingOp(TheAdmin);
 
    ------------------------------------------------------------------
    -- Str_Comp
@@ -86,7 +78,6 @@ is
    function Str_Comp (KeyedOp : Keyboard.DataT;
                       Op      : OpT) return Boolean;
 
-
    --------------------------------------------------------------------
    -- AllowedOp
    --
@@ -96,7 +87,7 @@ is
 
    function AllowedOp (TheAdmin : T;
                        Op       : OpT) return Boolean
-      with Pre => IsPresent(TheAdmin);
+     with Pre => IsPresent(TheAdmin);
 
    ------------------------------------------------------------------
    -- IsPresent
@@ -110,7 +101,6 @@ is
 
    function IsPresent (TheAdmin : T) return Boolean;
 
-
    ------------------------------------------------------------------
    -- Init
    --
@@ -122,13 +112,9 @@ is
    ------------------------------------------------------------------
 
    procedure Init (TheAdmin :    out T)
-   --# derives TheAdmin from ;
-   --# post not IsPresent(TheAdmin) and
-   --#      not IsDoingOp(TheAdmin);
-      with Depends => (TheAdmin => null),
-           Post    => not IsPresent(TheAdmin)
-                        and then not IsDoingOp(TheAdmin);
-
+     with Depends => (TheAdmin => null),
+          Post    => not IsPresent(TheAdmin)
+                       and then not IsDoingOp(TheAdmin);
 
    ------------------------------------------------------------------
    -- OpIsAvailable
@@ -144,13 +130,11 @@ is
 
    function OpIsAvailable (TheAdmin : T;
                            KeyedOp  : Keyboard.DataT) return OpAndNullT
-   --# pre IsPresent(TheAdmin);
-       with Pre  => IsPresent(TheAdmin),
-            Post => (for some Op in Opt => Str_Comp(KeyedOp, Op)
-                       and AllowedOp(TheAdmin, Op)
-                       and OpIsAvailable'Result = Op)
-                    xor OpIsAvailable'Result = NullOp;
-
+     with Pre  => IsPresent(TheAdmin),
+          Post => (for some Op in Opt => Str_Comp(KeyedOp, Op)
+                     and AllowedOp(TheAdmin, Op)
+                     and OpIsAvailable'Result = Op)
+                   xor OpIsAvailable'Result = NullOp;
 
    ------------------------------------------------------------------
    -- Logon
@@ -164,12 +148,10 @@ is
 
    procedure Logon (TheAdmin :    out T;
                     Role     : in     PrivTypes.AdminPrivilegeT)
-   --# derives TheAdmin from Role;
-      with Depends => (TheAdmin => Role),
-           Post    => RolePresent(TheAdmin) = Role
-                        and then not IsDoingOp(TheAdmin)
-                        and then IsPresent(TheAdmin);
-
+     with Depends => (TheAdmin => Role),
+          Post    => RolePresent(TheAdmin) = Role
+                       and then not IsDoingOp(TheAdmin)
+                       and then IsPresent(TheAdmin);
 
    ------------------------------------------------------------------
    -- Logout
@@ -182,12 +164,8 @@ is
    ------------------------------------------------------------------
 
    procedure Logout (TheAdmin :    out T)
-   --# derives TheAdmin from ;
-   --# post not IsPresent(TheAdmin) and
-   --#      not IsDoingOp(TheAdmin);
-      with Post => not IsPresent(TheAdmin)
-                     and then not IsDoingOp(TheAdmin);
-
+     with Post => not IsPresent(TheAdmin)
+                    and then not IsDoingOp(TheAdmin);
 
    ------------------------------------------------------------------
    -- StartOp
@@ -201,22 +179,12 @@ is
 
    procedure StartOp (TheAdmin : in out T;
                       Op       : in     OpT)
-   --# derives TheAdmin from TheAdmin,
-   --#                       Op;
-   --# pre  IsPresent(TheAdmin);
-   --# post ( Op = OverrideLock <->
-   --#         prf_rolePresent(TheAdmin) = PrivTypes.Guard ) and
-   --#      TheCurrentOp(TheAdmin) = Op and
-   --#      IsDoingOp(TheAdmin) and
-   --#      prf_rolePresent(TheAdmin) = prf_rolePresent(TheAdmin~) and
-   --#      IsPresent(TheAdmin);
-      with Depends => (TheAdmin => (TheAdmin, Op)),
-           Pre     => IsPresent(TheAdmin),
-           Post    => RolePresent(TheAdmin) = RolePresent(TheAdmin'Old)
-                        and then IsPresent(TheAdmin)
-                        and then IsDoingOp(TheAdmin)
-                        and then TheCurrentOp(TheAdmin) = Op;
-
+     with Depends => (TheAdmin => (TheAdmin, Op)),
+          Pre     => IsPresent(TheAdmin),
+          Post    => RolePresent(TheAdmin) = RolePresent(TheAdmin'Old)
+                       and then IsPresent(TheAdmin)
+                       and then IsDoingOp(TheAdmin)
+                       and then TheCurrentOp(TheAdmin) = Op;
 
    ------------------------------------------------------------------
    -- FinishOp
@@ -229,17 +197,12 @@ is
    ------------------------------------------------------------------
 
    procedure FinishOp (TheAdmin : in out T)
-   --# derives TheAdmin from TheAdmin;
-   --# pre  IsPresent(TheAdmin);
-   --# post not IsDoingOp(TheAdmin) and
-   --#      prf_rolePresent(TheAdmin) = prf_rolePresent(TheAdmin~) and
-   --#      IsPresent(TheAdmin);
-      with Depends => (TheAdmin => TheAdmin),
-           Pre     => IsPresent(TheAdmin)
-                        and then IsDoingOp(TheAdmin),
-           Post    => not IsDoingOp(TheAdmin)
-                        and then RolePresent(TheAdmin) = RolePresent(TheAdmin'Old)
-                        and then IsPresent(TheAdmin);
+     with Depends => (TheAdmin => TheAdmin),
+          Pre     => IsPresent(TheAdmin)
+                       and then IsDoingOp(TheAdmin),
+          Post    => not IsDoingOp(TheAdmin)
+                       and then RolePresent(TheAdmin) = RolePresent(TheAdmin'Old)
+                       and then IsPresent(TheAdmin);
 
 
    ------------------------------------------------------------------

@@ -19,7 +19,7 @@ with BasicTypes;
 
 package Clock
   with Abstract_State => (CurrentTime,
-                          (Now with External))
+                          (Now with External => Async_Writers))
 is
 
    ------------------------------------------------------------------
@@ -122,7 +122,6 @@ is
    ------------------------------------------------------------------
    function GetNow return TimeT
      with Global  => Now;
-
 
    ------------------------------------------------------------------
    -- GreaterThan

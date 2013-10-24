@@ -70,7 +70,6 @@ package Cert is
 
    function TheID (Contents : ContentsT) return CertTypes.IDT;
 
-
    ------------------------------------------------------------------
    -- ExtractUser
    --
@@ -83,7 +82,6 @@ package Cert is
 
    function ExtractUser (Contents : ContentsT) return AuditTypes.UserTextT;
 
-
    ------------------------------------------------------------------
    -- TheMechanism
    --
@@ -94,9 +92,7 @@ package Cert is
    -- Traceto   : FD.Types.Certificates
    ------------------------------------------------------------------
 
-   function TheMechanism (Contents : ContentsT)
-         return CryptoTypes.AlgorithmT;
-
+   function TheMechanism (Contents : ContentsT) return CryptoTypes.AlgorithmT;
 
    ------------------------------------------------------------------
    -- IsCurrent
@@ -111,7 +107,6 @@ package Cert is
    function IsCurrent (Contents : ContentsT) return Boolean
      with Global  => Clock.CurrentTime;
 
-
    ------------------------------------------------------------------
    -- GetData
    --
@@ -123,7 +118,7 @@ package Cert is
    ------------------------------------------------------------------
 
    function GetData (RawCert : CertTypes.RawCertificateT)
-         return CertTypes.RawDataT;
+                    return CertTypes.RawDataT;
 
    ------------------------------------------------------------------
    -- GetSignature
@@ -136,8 +131,7 @@ package Cert is
    ------------------------------------------------------------------
 
    function GetSignature (RawCert : CertTypes.RawCertificateT)
-         return CertTypes.SignatureT;
-
+                         return CertTypes.SignatureT;
 
    ------------------------------------------------------------------
    -- IssuerKnown
@@ -166,7 +160,6 @@ package Cert is
                                               KeyStore.Store),
                       IsKnown => (Contents,
                                   KeyStore.Store));
-
 
    ------------------------------------------------------------------
    -- IsOK
@@ -198,7 +191,6 @@ package Cert is
                       IsVerified => (Contents,
                                      KeyStore.Store,
                                      RawCert));
-
 
    private
 

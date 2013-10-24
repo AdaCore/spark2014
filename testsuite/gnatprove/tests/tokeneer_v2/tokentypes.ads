@@ -2,25 +2,32 @@
 -- Tokeneer ID Station Core Software
 --
 -- Copyright (2003) United States Government, as represented
--- by the Director, National Security Agency.All rights reserved.
+-- by the Director, National Security Agency. All rights reserved.
 --
 -- This material was originally developed by Praxis High Integrity
--- Systems Ltd.under contract to the National Security Agency.
+-- Systems Ltd. under contract to the National Security Agency.
 ------------------------------------------------------------------
 
 ------------------------------------------------------------------
--- AlarmTypes
+-- TokenTypes
 --
 -- Description:
---    Provides the possible states for an alarm (Alarming/Silent)
+--    Types that appear within the context of tokens
 --
 ------------------------------------------------------------------
+with BasicTypes,
+     CryptoTypes;
 
-package AlarmTypes is
+package TokenTypes
+  with SPARK_Mode
+is
+
    ------------------------------------------------------------------
    -- Types
    --
    ------------------------------------------------------------------
-   type StatusT is (Alarming, Silent);
+   subtype TokenIDT is BasicTypes.Unsigned32T;
 
-end AlarmTypes;
+   type TryT is (NoToken, BadToken, GoodToken);
+
+end TokenTypes;

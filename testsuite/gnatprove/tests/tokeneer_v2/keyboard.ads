@@ -18,7 +18,7 @@
 with BasicTypes;
 
 package Keyboard
-  with Abstract_State => (Inputs with External)
+  with Abstract_State => (Inputs with External => Async_Writers)
 is
 
    ------------------------------------------------------------------

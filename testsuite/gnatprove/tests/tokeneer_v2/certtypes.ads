@@ -18,8 +18,7 @@
 with BasicTypes,
      CryptoTypes;
 
-package CertTypes
-is
+package CertTypes is
 
    ------------------------------------------------------------------
    -- Types

@@ -12,7 +12,7 @@
 -- AttrCert
 --
 -- Description:
---    Defines the common contents of an attribute certificate, 
+--    Defines the common contents of an attribute certificate,
 --    and operations on those contents.
 --    Certificates enter the system as raw data, and are stored in
 --    an internally-defined record structure.
@@ -20,10 +20,9 @@
 --
 ------------------------------------------------------------------
 
-with AuditTypes, 
-     Cert, 
+with AuditTypes,
+     Cert,
      CertTypes;
-
 
 package Cert.Attr is
 
@@ -68,7 +67,6 @@ package Cert.Attr is
 
    function TheBaseCert (Contents : ContentsT) return CertTypes.IDT;
 
-
    private
       type ContentsT is
          record
@@ -80,10 +78,10 @@ package Cert.Attr is
          end record;
 
      NullContents : constant ContentsT :=
-       ContentsT'(ID         => CertTypes.NullID, 
-                   NotBefore  => Clock.ZeroTime, 
-                   NotAfter   => Clock.ZeroTime, 
-                   Mechanism  => CryptoTypes.AlgorithmT'First, 
+       ContentsT'(ID         => CertTypes.NullID,
+                   NotBefore  => Clock.ZeroTime,
+                   NotAfter   => Clock.ZeroTime,
+                   Mechanism  => CryptoTypes.AlgorithmT'First,
                    BaseCertID => CertTypes.NullID);
 
 

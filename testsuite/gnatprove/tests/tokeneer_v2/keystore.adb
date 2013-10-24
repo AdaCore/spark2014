@@ -207,7 +207,6 @@ is
          return Result;
       end GetBlock;
 
-
    begin
       TheDigest := Interfac.NullDigest;
 
@@ -378,7 +377,6 @@ is
 
    end DoFind;
 
-
    ------------------------------------------------------------------
    -- KeyMatchingIssuer
    --
@@ -448,7 +446,6 @@ is
 
    end KeyMatchingIssuer;
 
-
    ------------------------------------------------------------------
    -- PrivateKey
    --
@@ -510,7 +507,6 @@ is
       PrivateKeyHandle := Handles(1);
 
    end PrivateKey;
-
 
    ------------------------------------------------------------------
    -- Exported Subprograms
@@ -579,7 +575,6 @@ is
       end if;
    end Init;
 
-
    ------------------------------------------------------------------
    -- KeyMatchingIssuerPresent
    --
@@ -613,7 +608,6 @@ is
 
    end KeyMatchingIssuerPresent;
 
-
    ------------------------------------------------------------------
    -- PrivateKeyPresent
    --
@@ -621,12 +615,9 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   function PrivateKeyPresent return Boolean
-     with Refined_Global  => ThisTISInfo
-   is
-   begin
-      return ThisTISInfo.IsPresent;
-   end PrivateKeyPresent;
+   function PrivateKeyPresent return Boolean is
+     (ThisTISInfo.IsPresent)
+     with Refined_Global  => ThisTISInfo;
 
 
    ------------------------------------------------------------------
@@ -637,19 +628,13 @@ is
    --
    ------------------------------------------------------------------
    function IssuerIsThisTIS(Issuer : in     CryptoTypes.IssuerT)
-     return  Boolean
-     with Refined_Global  => ThisTISInfo
+                           return  Boolean
    is
-      IsTIS : Boolean;
-   begin
-      if PrivateKeyPresent then
-         IsTIS := (Issuer = ThisTISInfo.Owner);
+     (if PrivateKeyPresent then
+         Issuer = ThisTISInfo.Owner
       else
-         IsTIS := False;
-      end if;
-      return IsTIS;
-   end IssuerIsThisTIS;
-
+         False)
+     with Refined_Global  => ThisTISInfo;
 
    ------------------------------------------------------------------
    -- ThisTIS
@@ -658,13 +643,9 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   function ThisTIS return CryptoTypes.IssuerT
-     with Refined_Global  => ThisTISInfo
-   is
-   begin
-      return ThisTISInfo.Owner;
-   end ThisTIS;
-
+   function ThisTIS return CryptoTypes.IssuerT is
+     (ThisTISInfo.Owner)
+     with Refined_Global  => ThisTISInfo;
 
    ------------------------------------------------------------------
    -- IsVerifiedBy
@@ -739,8 +720,6 @@ is
 
    end IsVerifiedBy;
 
-
-
    ------------------------------------------------------------------
    -- Sign
    --
@@ -810,7 +789,6 @@ is
       end if;
 
    end Sign;
-
 
    ------------------------------------------------------------------
    -- AddKey
@@ -882,7 +860,6 @@ is
                 );
       end if;
    end AddKey;
-
 
    ------------------------------------------------------------------
    -- Delete

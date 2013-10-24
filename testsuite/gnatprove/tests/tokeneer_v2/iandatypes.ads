@@ -18,8 +18,7 @@
 with BasicTypes,
      CryptoTypes;
 
-package IandATypes
-is
+package IandATypes is
 
    ------------------------------------------------------------------
    -- Types
@@ -63,6 +62,5 @@ is
        RequiredMaxFAR => FarT'First,
        ID             => TemplateIDT'(others => ' '),
        Pad            => NullTemplatePad);
-
 
 end IandATypes;

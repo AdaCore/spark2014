@@ -244,7 +244,6 @@ is
 
       end ReadDuration;
 
-
       ------------------------------------------------------------------
       -- ReadFileSize
       --
@@ -372,7 +371,6 @@ is
          end if;
       end ReadWorkingHours;
 
-
       ------------------------------------------------------------------
       -- ReadFar
       --
@@ -407,7 +405,6 @@ is
          end if;
 
       end ReadFar;
-
 
       ------------------------------------------------------------------
       -- ReadAlarmSilent
@@ -772,8 +769,11 @@ is
       ------------------------------------------------------------------
       procedure ReadAlarmThreshold
         with Global  => (In_Out => TheFile,
-                         Output => (Success, TheAlarmThresholdSize)),
-             Depends => ((TheFile, Success, TheAlarmThresholdSize) => TheFile)
+                         Output => (Success,
+                                    TheAlarmThresholdSize)),
+             Depends => ((TheFile,
+                          Success,
+                          TheAlarmThresholdSize) => TheFile)
       is
          TheTitle : AlarmThresholdTextT;
          Stop : Natural;
@@ -791,7 +791,6 @@ is
 
       end ReadAlarmThreshold;
 
-
       ------------------------------------------------------------------
       -- ReadSystemMaxFar
       --
@@ -803,8 +802,11 @@ is
       ------------------------------------------------------------------
       procedure ReadSystemMaxFar
         with Global  => (In_Out => TheFile,
-                         Output => (Success, TheSystemMaxFar)),
-             Depends => ((TheFile, Success, TheSystemMaxFar) => TheFile)
+                         Output => (Success,
+                                    TheSystemMaxFar)),
+             Depends => ((TheFile,
+                          Success,
+                          TheSystemMaxFar) => TheFile)
       is
          TheTitle : SystemMaxFarTextT;
          Stop : Natural;
@@ -821,8 +823,6 @@ is
          end if;
 
       end ReadSystemMaxFar;
-
-
 
    ---------------------------------------------------------------
    -- begin ValidateFile
@@ -1225,16 +1225,16 @@ is
       LocalAlarmThresholdSize   : AuditTypes.FileSizeT;
       LocalSystemMaxFar         : IandATypes.FarT;
 
-   ------------------------------------------------------------------
-   -- SetDefaults
-   --
-   -- Description:
-   --      Initialises the configuration data to default values.
-   --
-   -- Implementation Notes:
-   --    None.
-   --
-   ------------------------------------------------------------------
+      ------------------------------------------------------------------
+      -- SetDefaults
+      --
+      -- Description:
+      --      Initialises the configuration data to default values.
+      --
+      -- Implementation Notes:
+      --    None.
+      --
+      ------------------------------------------------------------------
       procedure SetDefaults
         with Global  => (Output => (LatchUnlockDuration,
                                     AlarmSilentDuration,
@@ -1280,7 +1280,6 @@ is
          SystemMaxFar         := 1000;
 
       end SetDefaults;
-
 
    ----------------------------------------------------------------------
    -- begin Init
@@ -1343,8 +1342,6 @@ is
       end if;
 
    end Init;
-
-
 
    ------------------------------------------------------------------
    -- UpdateData
@@ -1411,6 +1408,7 @@ is
        SystemMaxFar         := TheSystemMaxFar;
 
    end UpdateData;
+
    ------------------------------------------------------------------
    -- TheDisplayFields
    --
@@ -1512,6 +1510,7 @@ is
 
       return Result;
    end AuthPeriodIsEmpty;
+
    ------------------------------------------------------------------
    -- GetAuthPeriod
    --
@@ -1597,6 +1596,7 @@ is
 
       return Result;
    end IsInEntryPeriod;
+
    ------------------------------------------------------------------
    -- TheLatchUnlockDuration
    --
@@ -1604,12 +1604,10 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   function TheLatchUnlockDuration return DurationT
-     with Refined_Global => LatchUnlockDuration
-   is
-   begin
-      return LatchUnlockDuration;
-   end TheLatchUnlockDuration;
+   function TheLatchUnlockDuration return DurationT is
+     (LatchUnlockDuration)
+     with Refined_Global => LatchUnlockDuration;
+
    ------------------------------------------------------------------
    -- TheAlarmSilentDuration
    --
@@ -1617,12 +1615,9 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   function TheAlarmSilentDuration return DurationT
-     with Refined_Global => AlarmSilentDuration
-   is
-   begin
-      return AlarmSilentDuration;
-   end TheAlarmSilentDuration;
+   function TheAlarmSilentDuration return DurationT is
+     (AlarmSilentDuration)
+     with Refined_Global => AlarmSilentDuration;
 
    ------------------------------------------------------------------
    -- TheFingerWaitDuration
@@ -1631,12 +1626,9 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   function TheFingerWaitDuration return DurationT
-     with Refined_Global => FingerWaitDuration
-   is
-   begin
-      return FingerWaitDuration;
-   end TheFingerWaitDuration;
+   function TheFingerWaitDuration return DurationT is
+     (FingerWaitDuration)
+     with Refined_Global => FingerWaitDuration;
 
    ------------------------------------------------------------------
    -- TheTokenRemovalDuration
@@ -1645,12 +1637,9 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   function TheTokenRemovalDuration return DurationT
-     with Refined_Global => TokenRemovalDuration
-   is
-   begin
-      return TokenRemovalDuration;
-   end TheTokenRemovalDuration;
+   function TheTokenRemovalDuration return DurationT is
+     (TokenRemovalDuration)
+     with Refined_Global => TokenRemovalDuration;
 
    ------------------------------------------------------------------
    -- TheEnclaveClearance
@@ -1659,12 +1648,9 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   function TheEnclaveClearance return PrivTypes.ClassT
-     with Refined_Global => EnclaveClearance
-   is
-   begin
-      return EnclaveClearance;
-   end TheEnclaveClearance;
+   function TheEnclaveClearance return PrivTypes.ClassT is
+     (EnclaveClearance)
+     with Refined_Global => EnclaveClearance;
 
    ------------------------------------------------------------------
    -- TheSystemMaxFar
@@ -1673,12 +1659,9 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   function TheSystemMaxFar return IandATypes.FarT
-     with Refined_Global => SystemMaxFar
-   is
-   begin
-      return SystemMaxFar;
-   end TheSystemMaxFar;
+   function TheSystemMaxFar return IandATypes.FarT is
+     (SystemMaxFar)
+     with Refined_Global => SystemMaxFar;
 
    ------------------------------------------------------------------
    -- TheAlarmThresholdEntries
@@ -1698,24 +1681,16 @@ is
    --         (alarmThresholdSize + sizeAuditElement -1) div sizeAuditElement
    --    always gives the next integer >= alarmThresholdSize/sizeAuditElement
    ------------------------------------------------------------------
-   function TheAlarmThresholdEntries return AuditTypes.AuditEntryCountT
-     with Refined_Global => AlarmThresholdSize
-   is
-      LocalSize : AuditTypes.AuditEntryCountT;
-   begin
-      if AuditTypes.FileSizeT'Last - AlarmThresholdSize <
+   function TheAlarmThresholdEntries return AuditTypes.AuditEntryCountT is
+     (if AuditTypes.FileSizeT'Last - AlarmThresholdSize <
         AuditTypes.FileSizeT'(AuditTypes.SizeAuditElement) - 1
       then
-         LocalSize := AuditTypes.AuditEntryCountT'Last;
+         AuditTypes.AuditEntryCountT'Last
       else
-         LocalSize := AuditTypes.AuditEntryCountT
-          (((AlarmThresholdSize
-             + AuditTypes.FileSizeT'(AuditTypes.SizeAuditElement)) - 1)
-                / AuditTypes.SizeAuditElement);
-      end if;
-
-      return LocalSize;
-
-   end TheAlarmThresholdEntries;
+         AuditTypes.AuditEntryCountT
+           (((AlarmThresholdSize
+                + AuditTypes.FileSizeT'(AuditTypes.SizeAuditElement)) - 1)
+            / AuditTypes.SizeAuditElement))
+     with Refined_Global => AlarmThresholdSize;
 
 end ConfigData;

@@ -53,7 +53,6 @@ package Cert.Attr.Priv is
 
    function TheRole (Contents : ContentsT) return PrivTypes.PrivilegeT;
 
-
    ------------------------------------------------------------------
    -- TheClearance
    --
@@ -65,7 +64,6 @@ package Cert.Attr.Priv is
    ------------------------------------------------------------------
 
    function TheClearance (Contents : ContentsT) return PrivTypes.ClearanceT;
-
 
    ------------------------------------------------------------------
    -- Extract
@@ -81,7 +79,6 @@ package Cert.Attr.Priv is
                       Success  :    out Boolean)
      with Depends => ((Contents, Success) => RawCert);
 
-
    ------------------------------------------------------------------
    -- Clear
    --
@@ -95,12 +92,11 @@ package Cert.Attr.Priv is
      with Depends => (Contents => null);
 
    --  Converts the extended type to the original one.
-   function Cert_Attr_Priv_To_Cert (X : in ContentsT) return Cert.ContentsT;
+   function Cert_Attr_Priv_To_Cert
+     (Contents : in ContentsT) return Cert.ContentsT;
 
    function Cert_Attr_Priv_To_Cert_Attr
-     (X : in ContentsT)
-      return Cert.Attr.ContentsT;
-
+     (Contents : in ContentsT) return Cert.Attr.ContentsT;
 
    private
       type ContentsT is
@@ -123,6 +119,5 @@ package Cert.Attr.Priv is
                    Role       => PrivTypes.PrivilegeT'First,
                    Clearance  => PrivTypes.ClearanceT'
                                    (Class => PrivTypes.ClassT'First));
-
 
 end Cert.Attr.Priv;

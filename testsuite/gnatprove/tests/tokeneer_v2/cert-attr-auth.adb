@@ -23,7 +23,6 @@ use type BasicTypes.Unsigned32T;
 
 package body Cert.Attr.Auth is
 
-
    ------------------------------------------------------------------
    -- TheRole
    --
@@ -31,11 +30,8 @@ package body Cert.Attr.Auth is
    --     None
    ------------------------------------------------------------------
 
-   function TheRole (Contents : ContentsT) return PrivTypes.PrivilegeT
-   is
-   begin
-      return Contents.Role;
-   end TheRole;
+   function TheRole (Contents : ContentsT) return PrivTypes.PrivilegeT is
+     (Contents.Role);
 
 
    ------------------------------------------------------------------
@@ -45,13 +41,8 @@ package body Cert.Attr.Auth is
    --     None
    ------------------------------------------------------------------
 
-   function TheClearance (Contents : ContentsT) return PrivTypes.ClearanceT
-   is
-   begin
-      return Contents.Clearance;
-   end TheClearance;
-
-
+   function TheClearance (Contents : ContentsT) return PrivTypes.ClearanceT is
+     (Contents.Clearance);
 
    ------------------------------------------------------------------
    -- Extract
@@ -167,7 +158,6 @@ package body Cert.Attr.Auth is
                         UnsignedRawAuthCert => RawCert);
    end Construct;
 
-
    ------------------------------------------------------------------
    -- SetContents
    --
@@ -193,7 +183,6 @@ package body Cert.Attr.Auth is
       Contents.Role       := Role;
       Contents.Clearance  := Clearance;
    end SetContents;
-
 
    ------------------------------------------------------------------
    -- IsOK
@@ -230,29 +219,20 @@ package body Cert.Attr.Auth is
    end Clear;
 
    --  Converts the extended type to the original one.
-   function Cert_Attr_Auth_To_Cert (X : in ContentsT) return Cert.ContentsT
-   is
-      Temp : Cert.ContentsT := Cert.ContentsT'(ID        => X.ID,
-                                               NotBefore => X.NotBefore,
-                                               NotAfter  => X.NotAfter,
-                                               Mechanism => X.Mechanism);
-   begin
-      return Temp;
-   end Cert_Attr_Auth_To_Cert;
+   function Cert_Attr_Auth_To_Cert (Contents : in ContentsT)
+                                   return Cert.ContentsT  is
+     (Cert.ContentsT'(ID        => Contents.ID,
+                      NotBefore => Contents.NotBefore,
+                      NotAfter  => Contents.NotAfter,
+                      Mechanism => Contents.Mechanism));
 
    --  Converts the extended type to the original one.
-   function Cert_Attr_Auth_To_Cert_Attr
-     (X : in ContentsT)
-      return Cert.Attr.ContentsT
-   is
-      Temp : Cert.Attr.ContentsT := Cert.Attr.ContentsT'(
-                                      ID         => X.ID,
-                                      NotBefore  => X.NotBefore,
-                                      NotAfter   => X.NotAfter,
-                                      Mechanism  => X.Mechanism,
-                                      BaseCertID => X.BaseCertID);
-   begin
-      return Temp;
-   end Cert_Attr_Auth_To_Cert_Attr;
+   function Cert_Attr_Auth_To_Cert_Attr (Contents : in ContentsT)
+                                        return Cert.Attr.ContentsT is
+      (Cert.Attr.ContentsT'(ID         => Contents.ID,
+                            NotBefore  => Contents.NotBefore,
+                            NotAfter   => Contents.NotAfter,
+                            Mechanism  => Contents.Mechanism,
+                            BaseCertID => Contents.BaseCertID));
 
 end Cert.Attr.Auth;
