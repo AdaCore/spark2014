@@ -48,7 +48,9 @@ Save this file as ``main.adb``.
 The program is intended to calculate the difference between ``X`` and ``Y`` and
 store the result in ``Z``.  This is reflected in the Depends aspect which
 states that the output value of Z depends on the input values of X and Y, but,
-as you may have noticed, there is a bug in the code. To analyze this program,
+as you may have noticed, there is a bug in the code. Note the use of pragma
+``SPARK_Mode`` to identify this as |SPARK| code to be analysed with the |SPARK| tools.
+To analyze this program,
 select :menuselection:`SPARK --> Examine File` from the menu in
 GPS. |GNATprove| executes in flow analysis mode and reports:
 
