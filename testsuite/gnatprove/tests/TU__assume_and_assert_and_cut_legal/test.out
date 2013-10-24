@@ -1,0 +1,2 @@
+assume_and_assert_and_cut_legal.adb:8:19: info: postcondition proved
+assume_and_assert_and_cut_legal.adb:12:17: info: overflow check proved
