@@ -106,7 +106,7 @@ SPARK_Mode         	      Yes                    Language defined but implementa
 Pragma                        Allowed in SPARK 2014  Comment
 ============================= ====================== =================================================
 Annotate		      Yes
-Restriction_Warnings  	      ?			     We amy need this for SPARK profiles
+Restriction_Warnings  	      Yes
 Test_Case          	      Yes
 Warnings           	      Yes
 ============================= ====================== =================================================
