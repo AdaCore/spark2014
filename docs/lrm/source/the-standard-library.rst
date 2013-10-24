@@ -60,17 +60,6 @@ No additions or restrictions.
    supported?  How much of the standard library will be available, and in which run-time
    profiles?
 
-The Package SPARK (A.2.1)
-~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The package SPARK serves essentially the same purpose in |SPARK| as
-the package Ada in Ada.  It is the root of SPARK library packages
-which are either unique to SPARK or are an alternative to an
-equivalent Ada package which is not compatible with SPARK.
-
-It contains the declaration of the file types used in |SPARK| for the
-input-output packages which are children of SPARK.
-
 Character Handling (A.3)
 ------------------------
 
@@ -288,16 +277,12 @@ The Numerics Packages (A.5)
 Input-Output (A.6)
 ------------------
 
-Alternative |SPARK| language-defined packages are provided for input and
-output to be used rather than the standard Ada input and output
-packages.  Each |SPARK| input and output package is a child of the root
-package SPARK.  Details of the |SPARK| input output packages are given
-in the following subsections.
-   
+No additions or restrictions.
+  
 External Files and File Objects (A.7)
 -------------------------------------
 
-Equivalent |SPARK| types are derived from the types described in this section.
+No additions or restrictions.
 
 Sequential and Direct Files (A.8)
 ---------------------------------
@@ -312,19 +297,14 @@ use it may give rise to flow-errors as the effect of reads and writes
 is not captured in the subprogram contracts. Calls to its subprograms
 may raise IO_Exceptions based on external events.
 
-A |SPARK| version of this generic package is not yet available.
-
 File Management (A.8.2)
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-Equivalent |SPARK| versions of the subprograms described in this
-section are provided where required.
+No additions or restrictions.
 
 Sequential Input-Output Operations (A.8.3)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Equivalent |SPARK| versions of the subprograms described in this
-section are provided where required.
+No additions or restrictions.
 
 The Generic Package Direct_IO (A.8.4)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -334,13 +314,11 @@ use it may give rise to flow-errors as the effect of reads and writes
 is not captured in the subprogram contracts. Calls to its subprograms
 may raise IO_Exceptions based on external events.
 
-A |SPARK| version of this generic package is not yet available.
 
 Direct Input-Output Operations (A.8.5)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Equivalent |SPARK| versions of the subprograms described in this
-section are provided where required.
+No additions or restrictions.
 
 The Generic Package Storage_IO (A.9)
 ------------------------------------
@@ -350,12 +328,10 @@ use it may give rise to flow-errors as the effect of reads and writes
 is not captured in the subprogram contracts. Calls to its subprograms
 may raise IO_Exceptions based on external events.
 
-A |SPARK| version of this generic package is not yet available.
-
 Text Input-Output (A.10)
 ------------------------
 
-Equivalent |SPARK| types are derived from the types described in this section.
+No additions or restrictions.
 
 The Package Text_IO (A.10.1)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -370,56 +346,10 @@ Set_Output and Set_Error should not be called as they introduce an
 alias to the file passed as a parameter.  Calls to the subprograms of
 Ada.Text_IO may raise IO_Exceptions based on external events.
 
-A |SPARK| version of this package, SPARK.Text_IO, is available and it
-is strongly recommended that this is used instead of Ada.Text_IO.
-
-The Package SPARK.Text_IO (A.10.1.1)
-####################################
-
-The package SPARK.Text_IO provides equivalent types and subprograms to
-nearly all of the types and subprograms declared in Ada.Text_IO.  The
-differences are:
-
-   - the subprograms of SPARK.Text_IO do not raise the predefined
-     IO_Exceptions each file has a status that may be queried to
-     ascertain the success or failure of an operation.  The possible
-     Status of a file correspond to the IO_Exceptions that may be
-     raised by subprograms of Ada.Text_IO;
-
-   - the formal parameters of File_Type for Create and Open are mode
-     **out** rather than **in out** avoiding flow errors regarding the
-     use of uninitialized variables;
-
-   - the formal parameters of File_Type of subprograms which read and
-     write to files or change the properties of a file are mode **in
-     out** rather than mode **in** to indicate that the operation has
-     an effect on the file;
-
-   - the use of **in out** parameters means that Standard_Input,
-     Standard_Output and Standard_Error are variables rather than
-     functions.  These variables are pre-declared in SPARK.Text_IO;
-
-   - the results of read operations are a discriminated type, the
-     returned object only has a value if the operation is a success;
-
-   - using a discriminated result type allows the Get_Line procedure
-     to return a dynamically sized string and subsume the need for a
-     Get_Line function which is not allowed in |SPARK|;
-
-   - The default file is always Standard_Input for read operations or
-     Standard_Output for write operations and cannot be changed; and
-
-   - the subprograms have pre and postconditions to support formal
-     proofs to demonstrate that they are used correctly.
-
-For details of SPARK.Text_IO see the comments in the package specification.
-
 Text File Management (A.10.2)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-|SPARK| equivalents of the subprograms mentioned in this section are
- provided in SPARK.Text_IO.  They provide the same functionality but
- return a status rather than raising an exception.
+No additions or restrictions.
 
 Default Input, Output and Error Files (A.10.3)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -428,57 +358,41 @@ The subprograms Ada.Text_IO.Set_Input, Ada.Text_IO.Set_Output and
 Ada.Text_IO.Set_Error should not be called from |SPARK| program text
 as they introduce an alias of the file parameter.  
 
-In SPARK.Text_IO the default input is always Standard_Input and the
-default output is always Standard_Output and so the above subprograms
-are not supported, neither are the functions Current_Input,
-Current_Output or Current_Error.  The subprogram Flush is supported by
-SPARK.Text_IO.
-
 Specification of Line and Page Lengths (A.10.4)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-|SPARK| equivalents of the subprograms described in this section are
-provided in SPARK.Text_IO.
+No additions or restrictions.
 
 Operations on Columns, Lines and Pages (A.10.5)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-|SPARK| equivalents of the subprograms described in this section are
-provided in SPARK.Text_IO.
+No additions or restrictions.
 
 Get and Put Procedures (A.10.6)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-|SPARK| equivalents of the subprograms described in this section are
-provided in SPARK.Text_IO.
+No additions or restrictions.
  
 Input-Output of Characters and Strings (A.10.7)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The functions Ada.Text_IO.Get_Line should not be called from |SPARK|
 program text as the functions have a side effect of reading from a file.
-
-|SPARK| equivalents of the subprograms described in this section are
-provided in SPARK.Text_IO. The SPARK.Text_IO.Get_Line provides the
-functionality of the function Ada.Text_IO.Get_Line.
  
 Input-Output for Integer Types (A.10.8)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-|SPARK| equivalents of the subprograms described in this section are
-provided in SPARK.Text_IO.
+No additions or restrictions.
  
 Input-Output for Real Types (A.10.9)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-|SPARK| equivalents of the subprograms described in this section are
-provided in SPARK.Text_IO.
+No additions or restrictions.
  
 Input-Output for Enumeration Types (A.10.10)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-|SPARK| equivalents of the subprograms described in this section are
-provided in SPARK.Text_IO.
+No additions or restrictions.
  
 Input-Output for Bounded Strings (A.10.11)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -488,7 +402,6 @@ use it may give rise to flow-errors as the effect of reads and writes
 is not captured in the subprogram contracts. Calls to its subprograms
 may raise IO_Exceptions based on external events.
 
-A |SPARK| version of this generic package is not yet available.
  
 Input-Output of Unbounded Strings (A.10.12)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -501,18 +414,11 @@ may raise IO_Exceptions based on external events.
 The functions Ada.Text_IO.Unbounded_IO.Get_Line should not be called
 from |SPARK| program text as the functions have a side effect of
 reading from a file.
-
-|SPARK| equivalents of the subprograms described in this section are
-provided in SPARK.Text_IO.Unbounded_IO. The
-SPARK.Text_IO.Unbounded_IO.Get_Line provides the functionality of the
-function Ada.Text_IO.Unbounded_IO.Get_Line.
  
 Wide Text Input-Output and Wide Wide Text Input-Output (A.11)
 -------------------------------------------------------------
 
 These packages have the same constraints as was discussed for Ada.Text_IO.
-
-Currently there is no |SPARK| version of these packages.
 
 Stream Input-Output (A.12)
 --------------------------
@@ -528,11 +434,6 @@ The exceptions declared in package Ada.IO_Exceptions which are raised
 by the Ada input-output subprograms are in |SPARK| but the exceptions
 cannot be handled in |SPARK| program text.
 
-The package SPARK.Text_IO provides an equivalent set of subprograms
-that do not raise these exceptions.  Instead the file affected by a
-subprogram call has a status that can be read.  The status values
-correspond in name to the exceptions declared in this package.
-
 File Sharing (A.14)
 -------------------
 
@@ -541,7 +442,9 @@ File sharing is not permitted in |SPARK|, it introduces an alias.
 The Package Command_Line (A.15)
 -------------------------------
 
-The package Command_Line is in |SPARK| except that the function Argument may propagate Constraint_Error.  To avoid this exception each call to Argument should be immediately preceded by the assertion:
+The package Command_Line is in |SPARK| except that the function
+Argument may propagate Constraint_Error.  To avoid this exception each
+call to Argument should be immediately preceded by the assertion:
 
 .. code-block:: ada
 
@@ -557,8 +460,6 @@ use it may give rise to flow-errors as the effect of reads and writes
 is not captured in the subprogram contracts. Calls to its subprograms
 may raise IO_Exceptions based on external events.
 
-A |SPARK| equivalent of this package is not provided yet.
-
 The Package Environment_Variables (A.17)
 ----------------------------------------
 
@@ -568,8 +469,6 @@ writes is not captured in the subprogram contracts. Calls to its
 subprograms may raise IO_Exceptions based on external events.
 
 The procedure Iterate is not in |SPARK|.
-
-A |SPARK| equivalent of this package is not provided yet.
 
 Containers (A.18)
 -----------------
