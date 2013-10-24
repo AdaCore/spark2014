@@ -34,9 +34,6 @@ with Types; use Types;
 with Gnat2Why.Nodes;         use Gnat2Why.Nodes;
 --  Node_Sets and Node_Hash
 
-with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
---  Entity_Name
-
 with Graph;
 with Flow_Types;           use Flow_Types;
 with Flow_Tree_Utility;    use Flow_Tree_Utility;
@@ -88,13 +85,6 @@ package Flow is
       Element_Type => Flow_Graphs.Vertex_Id,
       "="          => Flow_Graphs."=");
 
-   package Magic_String_To_Node_Sets is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Entity_Name,
-      Element_Type    => Node_Sets.Set,
-      Hash            => Name_Hash,
-      Equivalent_Keys => Name_Equal,
-      "="             => Node_Sets."=");
-
    ----------------------------------------------------------------------
    --  Flow_Analysis_Graphs
    ----------------------------------------------------------------------
@@ -140,11 +130,6 @@ package Flow is
 
       Loops             : Node_Sets.Set;
       --  A set of all loops (identified by label).
-
-      Magic_Source      : Magic_String_To_Node_Sets.Map;
-      --  A mapping of any magic string to entities of the
-      --  subprogram(s) they originate from. We need this to print
-      --  more helpful error messages.
 
       Base_Filename     : Unbounded_String;
       --  A string with the name of the entity that is being analysed.

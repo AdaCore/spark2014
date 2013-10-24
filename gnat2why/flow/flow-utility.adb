@@ -21,16 +21,17 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Errout;   use Errout;
-with Namet;    use Namet;
-with Nlists;   use Nlists;
+with Errout;                 use Errout;
+with Namet;                  use Namet;
+with Nlists;                 use Nlists;
 
-with Sprint;   use Sprint;
-with Treepr;   use Treepr;
+with Sprint;                 use Sprint;
+with Treepr;                 use Treepr;
 
 with Why;
+with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 
-with Flow.Debug;        use Flow.Debug;
+with Flow.Debug;             use Flow.Debug;
 
 package body Flow.Utility is
 

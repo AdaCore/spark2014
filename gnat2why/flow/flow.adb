@@ -64,12 +64,6 @@ package body Flow is
    Debug_Print_Intermediates : constant Boolean := False;
    Debug_Print_PDG           : constant Boolean := True;
 
-   --  These debug options print certain bits of the datastructures
-   --  calculated.
-
-   Debug_Print_Magic_Source_Set : constant Boolean := False;
-   --  Enable this to visualise the magic_source set.
-
    ------------------------------------------------------------
 
    use Flow_Graphs;
@@ -83,14 +77,6 @@ package body Flow is
    procedure Add_To_Temp_String (S : String);
    --  Nasty nasty hack to add the given string to a global variable,
    --  Temp_String. We use this to pretty print nodes via Sprint_Node.
-
-   function Calculate_Magic_Mapping
-     (N : Node_Id)
-      return Magic_String_To_Node_Sets.Map;
-   --  Traverse the tree rooted at N, making a note of each function
-   --  and procedure call which introduces a Magic_String
-   --  Flow_Id. This is used for emitting more helpful error messages
-   --  if a Magic_String Flow_Id is concerened.
 
    function Flow_Analyse_Entity (E : Entity_Id;
                                  S : Node_Id)
@@ -112,90 +98,6 @@ package body Flow is
         (Temp_String,
          Trim (To_Unbounded_String (S), Whitespace, Whitespace));
    end Add_To_Temp_String;
-
-   -----------------------------
-   -- Calculate_Magic_Mapping --
-   -----------------------------
-
-   function Calculate_Magic_Mapping
-     (N : Node_Id)
-      return Magic_String_To_Node_Sets.Map
-   is
-      use type Flow_Id_Sets.Set;
-
-      RV : Magic_String_To_Node_Sets.Map;
-
-      function Proc (N : Node_Id) return Traverse_Result;
-      --  Update mapping if N is a function or procedure call.
-
-      function Proc (N : Node_Id) return Traverse_Result is
-         Global_Reads  : Flow_Id_Sets.Set;
-         Global_Writes : Flow_Id_Sets.Set;
-         Tmp           : Flow_Id;
-         Globals       : Flow_Id_Sets.Set;
-         Subprogram    : Entity_Id;
-      begin
-         case Nkind (N) is
-            when N_Generic_Subprogram_Declaration |
-                 N_Generic_Package_Declaration =>
-               return Skip;
-
-            when N_Function_Call | N_Procedure_Call_Statement =>
-               Subprogram := Entity (Name (N));
-
-               if Nkind (Name (N)) = N_Explicit_Dereference then
-                  --  Deal with this non-spark case
-                  return Skip;
-
-               elsif Is_Formal_Subprogram (Subprogram) then
-                  --  Skip call to generic (they won't have effects)
-                  return Skip;
-               end if;
-
-               case Ekind (Subprogram) is
-                  when E_Procedure | E_Function =>
-                     for View in Boolean loop
-                        Get_Globals (Subprogram   => Subprogram,
-                                     Reads        => Global_Reads,
-                                     Writes       => Global_Writes,
-                                     Refined_View => View);
-                        Globals := Global_Reads or Global_Writes;
-
-                        for F of Globals loop
-                           if F.Kind = Magic_String then
-                              Tmp := Change_Variant (F, Normal_Use);
-                              if RV.Contains (Tmp.Name) then
-                                 RV (Tmp.Name).Include (Subprogram);
-                              else
-                                 RV.Include (Tmp.Name,
-                                             Node_Sets.To_Set (Subprogram));
-                              end if;
-                           end if;
-                        end loop;
-                     end loop;
-
-                  when E_Generic_Procedure |
-                       E_Generic_Function =>
-                     return Skip;
-
-                  when others =>
-                     raise Why.Unexpected_Node;
-               end case;
-
-            when others =>
-               null;
-         end case;
-
-         return OK;
-      end Proc;
-
-      procedure Traverse is new Traverse_Proc (Proc);
-
-   begin
-      RV := Magic_String_To_Node_Sets.Empty_Map;
-      Traverse (N);
-      return RV;
-   end Calculate_Magic_Mapping;
 
    --------------
    -- Is_Valid --
@@ -620,7 +522,6 @@ package body Flow is
                Unmodified_Vars   => Node_Sets.Empty_Set,
                Unreferenced_Vars => Node_Sets.Empty_Set,
                Loops             => Node_Sets.Empty_Set,
-               Magic_Source      => Magic_String_To_Node_Sets.Empty_Map,
                Aliasing_Present  => False,
                Base_Filename     => To_Unbounded_String ("subprogram_"),
                Is_Main           => Might_Be_Main (E),
@@ -650,7 +551,6 @@ package body Flow is
                Unmodified_Vars   => Node_Sets.Empty_Set,
                Unreferenced_Vars => Node_Sets.Empty_Set,
                Loops             => Node_Sets.Empty_Set,
-               Magic_Source      => Magic_String_To_Node_Sets.Empty_Map,
                Aliasing_Present  => False,
                Base_Filename     => To_Unbounded_String ("package_spec_"),
                Initializes_N     => Empty);
@@ -672,7 +572,6 @@ package body Flow is
                Unmodified_Vars   => Node_Sets.Empty_Set,
                Unreferenced_Vars => Node_Sets.Empty_Set,
                Loops             => Node_Sets.Empty_Set,
-               Magic_Source      => Magic_String_To_Node_Sets.Empty_Map,
                Aliasing_Present  => False,
                Base_Filename     => To_Unbounded_String ("package_body_"),
                Initializes_N     => Empty);
@@ -693,22 +592,6 @@ package body Flow is
                       Get_Name_String (Chars (E)) &
                       Character'Val (8#33#) & "[0m");
          Write_Eol;
-      end if;
-
-      FA.Magic_Source := Calculate_Magic_Mapping (FA.Scope);
-
-      if Debug_Print_Magic_Source_Set then
-         for C in FA.Magic_Source.Iterate loop
-            Write_Str (Magic_String_To_Node_Sets.Key (C).all);
-            Write_Eol;
-
-            Indent;
-            for E of Magic_String_To_Node_Sets.Element (C) loop
-               Sprint_Node (E);
-               Write_Eol;
-            end loop;
-            Outdent;
-         end loop;
       end if;
 
       Control_Flow_Graph.Create (FA);

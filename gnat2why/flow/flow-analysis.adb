@@ -74,7 +74,7 @@ package body Flow.Analysis is
    procedure Global_Required
      (FA  : Flow_Analysis_Graphs;
       Var : Flow_Id)
-      with Pre => Var.Kind = Magic_String;
+   with Pre  => Var.Kind = Magic_String;
    --  Emit an error message that (the first call) introducing the
    --  global Var requires a global annotation.
 
@@ -86,7 +86,7 @@ package body Flow.Analysis is
    --  because of computed globals) we just return S which is a useful
    --  fallback place to raise an error.
 
-   type Var_Use_Kind is (Use_Read, Use_Write);
+   type Var_Use_Kind is (Use_Read, Use_Write, Use_Any);
 
    function First_Variable_Use (N       : Node_Id;
                                 Scope   : Scope_Ptr;
@@ -196,97 +196,41 @@ package body Flow.Analysis is
      (FA  : Flow_Analysis_Graphs;
       Var : Flow_Id)
    is
-      Offending_Subprograms : constant Node_Sets.Set :=
-        FA.Magic_Source (Var.Name);
-
-      Error_Issued : Boolean := False;
-      Tracefile    : Unbounded_String;
-
-      function Find_First_Call_With_Global (F : Flow_Id) return Node_Id;
-      --  Find the first statement which defines or depends on Var.
-
-      function Proc_Issue_Errors (N : Node_Id) return Traverse_Result;
-      --  Issue errors on each offending subprogram call.
-
-      function Find_First_Call_With_Global (F : Flow_Id) return Node_Id is
-         RV    : Node_Id;
-         Found : Boolean := False;
-
-         procedure Are_We_There_Yet
-           (V      : Flow_Graphs.Vertex_Id;
-            Origin : Flow_Graphs.Vertex_Id;
-            Depth  : Natural;
-            T_Ins  : out Flow_Graphs.Simple_Traversal_Instruction);
-         --  Check if we have found a call with F as a global.
-
-         procedure Are_We_There_Yet
-           (V      : Flow_Graphs.Vertex_Id;
-            Origin : Flow_Graphs.Vertex_Id;
-            Depth  : Natural;
-            T_Ins  : out Flow_Graphs.Simple_Traversal_Instruction)
-         is
-            pragma Unreferenced (Depth, Origin);
-
-            A : constant V_Attributes := FA.CFG.Get_Attributes (V);
-         begin
-            if A.Is_Global_Parameter and then
-              Change_Variant (F, Normal_Use) =
-              Change_Variant (A.Parameter_Formal, Normal_Use)
-            then
-               --  We have found a procedure call where F is a global.
-               T_Ins := Flow_Graphs.Abort_Traversal;
-               RV    := Get_Direct_Mapping_Id (A.Call_Vertex);
-               Found := True;
-
-            elsif A.Variables_Used.Contains
-              (Change_Variant (F, Normal_Use))
-            then
-               --  We have found an expression which directly depends
-               --  on the global.
-               T_Ins := Flow_Graphs.Abort_Traversal;
-               RV    := Get_Direct_Mapping_Id (FA.CFG.Get_Key (V));
-               Found := True;
-
-            else
-               T_Ins := Flow_Graphs.Continue;
-            end if;
-         end Are_We_There_Yet;
-
-      begin
-         FA.CFG.BFS (Start         => FA.Start_Vertex,
-                     Include_Start => False,
-                     Visitor       => Are_We_There_Yet'Access);
-         pragma Assert (Found);
-         return RV;
-      end Find_First_Call_With_Global;
-
-      function Proc_Issue_Errors (N : Node_Id) return Traverse_Result is
-      begin
-         case Nkind (N) is
-            when N_Procedure_Call_Statement | N_Function_Call =>
-               if Offending_Subprograms.Contains (Entity (Name (N))) then
-                  Error_Msg_Flow
-                    (FA        => FA,
-                     Tracefile => Tracefile,
-                     Msg       => "called subprogram & requires GLOBAL " &
-                       "aspect to make state visible",
-                     N         => N,
-                     F1        => Direct_Mapping_Id (Entity (Name (N))));
-
-                  Error_Issued := True;
-               end if;
-
-            when others =>
-               null;
-         end case;
-         return OK;
-      end Proc_Issue_Errors;
-
-      procedure Traverse is new Traverse_Proc (Process => Proc_Issue_Errors);
-
+      First_Use : Node_Id;
+      Tracefile : Unbounded_String;
    begin
-      Traverse (Find_First_Call_With_Global (Var));
-      pragma Assert (Error_Issued);
+
+      First_Use := First_Variable_Use (FA      => FA,
+                                       Var     => Var,
+                                       Kind    => Use_Any,
+                                       Precise => True);
+
+      if First_Use = FA.Analyzed_Entity then
+         --  Ok, we did not actually find a node which make use of
+         --  Var, which is a bit odd. This means that the computed
+         --  globals for FA.Analyzed_Entity contain a symbol Var for
+         --  no good reason.
+         Error_Msg_Flow
+           (FA        => FA,
+            Tracefile => Tracefile,
+            Msg       => "bug: & contains reference to &, " &
+              "but no use can be found",
+            N         => FA.Analyzed_Entity,
+            F1        => Direct_Mapping_Id (FA.Analyzed_Entity),
+            F2        => Var);
+
+      else
+         pragma Assert (Nkind (First_Use) in N_Subprogram_Call);
+
+         Error_Msg_Flow
+           (FA        => FA,
+            Tracefile => Tracefile,
+            Msg       => "called subprogram & requires GLOBAL " &
+              "aspect to make state visible",
+            N         => First_Use,
+            F1        => Direct_Mapping_Id (Entity (Name (First_Use))));
+      end if;
+
    end Global_Required;
 
    -----------------
@@ -444,8 +388,8 @@ package body Flow.Analysis is
          pragma Unreferenced (Origin, Depth);
 
          Atr         : constant V_Attributes := FA.CFG.Get_Attributes (V);
-         Check_Read  : constant Boolean      := Kind = Use_Read;
-         Check_Write : constant Boolean      := Kind = Use_Write;
+         Check_Read  : constant Boolean      := Kind in Use_Read | Use_Any;
+         Check_Write : constant Boolean      := Kind in Use_Write | Use_Any;
          Of_Interest : Boolean               := False;
 
       begin
