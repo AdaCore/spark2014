@@ -348,6 +348,8 @@ Features Not Yet Implemented in Proof
    contracts only supports one-dimensional arrays at present. Multi-dimensional
    arrays and records are not yet supported.
 
+#. Attribute 'Valid is currently assumed to always return True.
+
 Portability Issues
 ==================
 
