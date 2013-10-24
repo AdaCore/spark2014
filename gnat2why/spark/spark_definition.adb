@@ -2478,6 +2478,7 @@ package body SPARK_Definition is
               Pragma_Refined_Global               |
               Pragma_Refined_State                |
               Pragma_SPARK_Mode                   |
+              Pragma_Style_Checks                 |
               Pragma_Test_Case                    |
               Pragma_Unmodified                   |
               Pragma_Unreferenced                 |
