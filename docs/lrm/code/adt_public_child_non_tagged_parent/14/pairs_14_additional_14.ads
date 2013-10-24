@@ -1,10 +1,9 @@
-package Pairs_14.Additional_14
-is
+package Pairs_14.Additional_14 is
 
    --  Additional operation to add to the ADT, which
    --  increments each value in the Pair.
    procedure Increment (Value: in out Pairs_14.Pair);
-      with Depends => (Value => Value);
+     with Depends => (Value => Value);
 
 private
 

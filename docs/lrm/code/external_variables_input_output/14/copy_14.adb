@@ -1,9 +1,9 @@
 with Input_Port_14, Output_Port_14, Stacks_14;
---  Approach for identifying main program is TBD.
+--  No need to specify that Copy_14 is a main program
 procedure Copy_14
-   with Global  => (Input  => Input_Port_14.Input_State,
-                    Output => Output_Port_14.Output_State),
-        Depends => (Output_Port_14.Output_State => Input_Port_14.Input_State)
+  with Global  => (Input  => Input_Port_14.Input_State,
+                   Output => Output_Port_14.Output_State),
+       Depends => (Output_Port_14.Output_State => Input_Port_14.Input_State)
 is
    The_Stack   : Stacks_14.Stack;
    Value       : Integer;

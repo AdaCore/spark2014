@@ -1,10 +1,8 @@
-package body Pairs_14
-is   
+package body Pairs_14 is   
 
-   function Sum (Value : in Pair) return Integer
-   is
+   function Sum (Value : in Pair) return Integer is
    begin
-        return Value.Value_One + Value.Value_Two;
+      return Value.Value_One + Value.Value_Two;
    end Sum;
 
 end Pairs_14;

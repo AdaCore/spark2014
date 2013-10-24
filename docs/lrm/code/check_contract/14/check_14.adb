@@ -1,13 +1,11 @@
-package body Check_14
-is
-   procedure Compare(A, B : in Small; C : in out Big)
-   is
+package body Check_14 is
+   procedure Compare(A, B : in Small; C : in out Big) is
    begin
-      if (A + B >= C) then
+      if A + B >= C then
 	 C := A;
 	 C := C + B;
 	 C := C + 1;
       end if;
-      pragma Assert(A + B < C);
+      pragma Assert (A + B < C);
    end Compare;
 end Check_14;

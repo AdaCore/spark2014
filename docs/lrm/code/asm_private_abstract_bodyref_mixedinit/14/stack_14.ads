@@ -1,12 +1,13 @@
 package Stack_14
-   with Abstract_State => Stack,
-        Initializes    => Stack
+  with Abstract_State => Stack,
+       Initializes    => Stack
 is
    procedure Push(X : in Integer)
-      with Global => (In_Out => Stack);
+     with Global => (In_Out => Stack);
 
    procedure Pop(X : out Integer)
-      with Global => (In_Out => Stack);
+     with Global => (In_Out => Stack);
+
 private
    Stack_Size : constant := 100;
    type    Pointer_Range is range 0 .. Stack_Size;

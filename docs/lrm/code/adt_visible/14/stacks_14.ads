@@ -4,11 +4,10 @@ package Stacks_14 is
    subtype Index_Range is Pointer_Range range 1 .. Stack_Size;
    type Vector is array(Index_Range) of Integer;
 
-   type Stack is
-      record
-         Stack_Vector : Vector;
-         Stack_Pointer : Pointer_Range;
-      end record;
+   type Stack is record
+      Stack_Vector : Vector;
+      Stack_Pointer : Pointer_Range;
+   end record;
 
    function Is_Empty(S : Stack) return Boolean;
    function Is_Full(S : Stack) return Boolean;

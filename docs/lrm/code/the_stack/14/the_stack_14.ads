@@ -9,25 +9,26 @@
 -- The state of a package may be represented by more than one abstraction but
 -- all the state of the package must be encompased by the abstractions and the
 -- constituent state of each abstraction must be mutually exclusive.
+
 package the_stack_14
-   with Abstract_State => State,
-        Initializes    => State
+  with Abstract_State => State,
+       Initializes    => State
 is
    function Is_Empty return Boolean
-      with Global => State;
+     with Global => State;
 
    function Is_Full return Boolean
-      with Global => State;
+     with Global => State;
 
    function Top return Integer
-      with Global => State;
+     with Global => State;
 
    procedure Push(X: in Integer)
-      with Global => (In_Out => State);
+     with Global => (In_Out => State);
 
    procedure Pop(X: out Integer)
-      with Global => (In_Out => State);
+     with Global => (In_Out => State);
 
    procedure Swap (X : in Integer)
-      with Global => (In_Out => State);
+     with Global => (In_Out => State);
 end the_stack_14;

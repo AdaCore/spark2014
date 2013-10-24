@@ -1,6 +1,5 @@
 with Processing;
-package Calculate
-is
+package Calculate is
 
    procedure Read_Calculated_Value (Value : out Integer)
       with Global  => (Input => (Processing.State, Raw_Data.State)),

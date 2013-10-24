@@ -9,11 +9,10 @@ package Pairs_14 is
 
 private
 
-   type Pair is
-      record
-         Value_One : Integer;
-         Value_Two : Integer;
-      end record;
+   type Pair is record
+      Value_One : Integer;
+      Value_Two : Integer;
+   end record;
 
     Inc_Value : constant Integer := 1;
 

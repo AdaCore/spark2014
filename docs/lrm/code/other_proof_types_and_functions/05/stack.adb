@@ -5,7 +5,6 @@ is
 
    procedure Push(X : in Integer)
    --# global in out My_Stack;
-   --# pre My_Stack.Pointer < Pointer_Range'Last;
    --# post My_Stack.Pointer /= 0;
    is
    begin
@@ -15,7 +14,6 @@ is
 
    procedure Swap2
    --# global in out My_Stack;
-   --# pre  My_Stack.Pointer >= 2;
    --# post My_Stack.Pointer = My_Stack~.Pointer;
    is
       Temp : Integer;

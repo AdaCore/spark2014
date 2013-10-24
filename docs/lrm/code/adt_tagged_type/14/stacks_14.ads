@@ -6,17 +6,17 @@ package Stacks_14 is
    function Is_Full(S : Stack) return Boolean;
 
    procedure Clear(S : out Stack)
-      with Depends => (S => null);
+     with Depends => (S => null);
 
    procedure Push(S : in out Stack; X : in Integer)
-      with Depends => (S =>+ X);
+     with Depends => (S =>+ X);
    --  The =>+ symbolizes that any variable on the left side of =>+,
    --  depends on all variables that are on the right side of =>+
    --  plus itself. For example (X, Y) =>+ Z would mean that
    --  X depends on X, Z and Y depends on Y, Z.
 
    procedure Pop(S : in out Stack; X : out Integer)
-      with Depends => ((S,X) => S);
+     with Depends => ((S,X) => S);
 
 private
    Stack_Size : constant := 100;
@@ -24,9 +24,8 @@ private
    subtype Index_Range is Pointer_Range range 1 .. Stack_Size;
    type Vector is array(Index_Range) of Integer;
 
-   type Stack is tagged
-      record
-         Stack_Vector : Vector;
-         Stack_Pointer : Pointer_Range;
-      end record;
+   type Stack is tagged record
+      Stack_Vector  : Vector;
+      Stack_Pointer : Pointer_Range;
+   end record;
 end Stacks_14;
