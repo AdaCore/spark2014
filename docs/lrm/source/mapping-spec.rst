@@ -1,7 +1,7 @@
 .. _mapping-spec-label:
 
-SPARK 2005 to |SPARK| Mapping Specification
-===========================================
+SPARK 2005 to SPARK 2014 Mapping Specification
+==============================================
 
 This appendix defines the mapping between SPARK 2005 and |SPARK|.
 It is intended as both a completeness check for the |SPARK| language
