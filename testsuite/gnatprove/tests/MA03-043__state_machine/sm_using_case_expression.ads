@@ -13,7 +13,7 @@ is
    with Global => Abs_State;
 
    procedure Set_State (New_State : in States_T)
-   with Global => Abs_State,
+   with Global => (Output => Abs_State),
         Post => Get_State = New_State;
 
    -- The following types set up an array or records where each record
@@ -89,6 +89,7 @@ is
 
 
    -- Returns true if the state of the system is "Finish"
-   function Is_Final_State return Boolean is (Get_State = States_T'Last);
+   function Is_Final_State return Boolean is (Get_State = States_T'Last) with
+     Global => Abs_State;
 
 end SM_Using_Case_Expression;

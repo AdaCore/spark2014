@@ -12,7 +12,7 @@ is
      with Refined_Global => State;
 
    procedure Set_State(New_State : in States_T)
-     with Refined_Global => State
+     with Refined_Global => (Output => State)
    is
    begin
       State := New_State;
