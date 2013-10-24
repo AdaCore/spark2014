@@ -107,7 +107,7 @@ pygments_style = 'sphinx'
 #modindex_common_prefix = []
 
 # Treat todo and todolist blocks specially
-todo_include_todos = True
+todo_include_todos = False
 
 # -- Options for HTML output ---------------------------------------------------
 
