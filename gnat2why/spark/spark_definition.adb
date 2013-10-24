@@ -1732,10 +1732,38 @@ package body SPARK_Definition is
            Attribute_Rounding   |
            Attribute_Truncation |
            Attribute_Succ       |
-           Attribute_Update     |
            Attribute_Val        |
            Attribute_Value      =>
             null;
+
+         when Attribute_Update =>
+            declare
+               Pref_Typ    : constant Entity_Id := Etype (P);
+            begin
+               if Is_Record_Type (Pref_Typ) then
+                  Violation_Detected := True;
+                  if SPARK_Pragma_Is (Opt.On) then
+                     Error_Msg_N
+                       ("\'Update attribute for records is not yet supported",
+                        N);
+                  end if;
+                  return;
+               else
+                  pragma Assert
+                    (Is_Array_Type (Pref_Typ) or else
+                       Is_String_Type (Pref_Typ));
+                  if 1 < Number_Dimensions (Pref_Typ) then
+                     Violation_Detected := True;
+                     if SPARK_Pragma_Is (Opt.On) then
+                        Error_Msg_N
+                          ("Update attribute for multi-dimensional arrays is "
+                             & "not yet supported",
+                           N);
+                     end if;
+                     return;
+                  end if;
+               end if;
+            end;
 
          when Attribute_Valid =>
             Error_Msg_F ("?attribute Valid is assumed to return True", N);
