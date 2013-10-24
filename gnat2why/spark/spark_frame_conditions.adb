@@ -569,11 +569,11 @@ package body SPARK_Frame_Conditions is
       end loop;
    end Free_SCCs;
 
-   ---------------
-   -- Get_Reads --
-   ---------------
+   -------------------------
+   -- Get_Generated_Reads --
+   -------------------------
 
-   function Get_Reads
+   function Get_Generated_Reads
      (E                 : Entity_Id;
       Include_Constants : Boolean) return Name_Set.Set
    is
@@ -609,13 +609,13 @@ package body SPARK_Frame_Conditions is
          else
             return Name_Set.Empty_Set;
          end if;
-   end Get_Reads;
+   end Get_Generated_Reads;
 
-   ----------------
-   -- Get_Writes --
-   ----------------
+   --------------------------
+   -- Get_Generated_Writes --
+   --------------------------
 
-   function Get_Writes (E : Entity_Id) return Name_Set.Set is
+   function Get_Generated_Writes (E : Entity_Id) return Name_Set.Set is
       E_Alias : constant Entity_Id :=
         (if Present (Alias (E)) then Ultimate_Alias (E) else E);
       Name    : aliased constant String := Unique_Name (E_Alias);
@@ -644,7 +644,7 @@ package body SPARK_Frame_Conditions is
          else
             return Name_Set.Empty_Set;
          end if;
-   end Get_Writes;
+   end Get_Generated_Writes;
 
    -------------------------
    -- Has_Computed_Global --

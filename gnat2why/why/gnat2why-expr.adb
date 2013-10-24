@@ -52,6 +52,9 @@ with SPARK_Util;             use SPARK_Util;
 
 with VC_Kinds;               use VC_Kinds;
 
+with Flow_Types;
+with Flow.Utility;
+
 with Why;                    use Why;
 with Why.Unchecked_Ids;      use Why.Unchecked_Ids;
 with Why.Atree.Builders;     use Why.Atree.Builders;
@@ -895,9 +898,22 @@ package body Gnat2Why.Expr is
       Subp   : constant Entity_Id := Entity (Name (Call));
       Assocs : constant List_Id := Parameter_Associations (Call);
       Len    : Nat;
-      Read_Names : constant Name_Set.Set :=
-        Get_Reads (Subp, Include_Constants => False);
+
+      Read_Ids    : Flow_Types.Flow_Id_Sets.Set;
+      Write_Ids   : Flow_Types.Flow_Id_Sets.Set;
+      Read_Names  : Name_Set.Set;
+
    begin
+      --  Collect global variables potentially read
+
+      Flow.Utility.Get_Globals (Subprogram             => Subp,
+                                Reads                  => Read_Ids,
+                                Writes                 => Write_Ids,
+                                Refined_View           => True,
+                                Consider_Discriminants => False,
+                                Globals_For_Proof      => True);
+      Read_Names := Flow_Types.To_Name_Set (Read_Ids);
+
       Nb_Of_Refs := 0;
       Len := List_Length (Assocs);
 

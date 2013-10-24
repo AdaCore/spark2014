@@ -477,6 +477,10 @@ package body Gnat2Why.Driver is
                Generate_Empty_Axiom_Theory (File, E);
             end if;
 
+         when E_Abstract_State =>
+            Translate_Abstract_State (File, E);
+            Generate_Empty_Axiom_Theory (File, E);
+
          when Subprogram_Kind =>
             if Entity_In_SPARK (E) then
                Translate_Subprogram_Spec (File, E);

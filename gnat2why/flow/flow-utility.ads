@@ -55,7 +55,27 @@ package Flow.Utility is
    --  include a corresponding read if the global includes at least
    --  one discriminant.
    --
-   --  If Globals_For_Proof is set then the calls to Get_Reads will
+   --  If Globals_For_Proof is set then the calls to Get_Generated_Reads will
+   --  not specify Include_Constants.
+
+   function Has_Global_Reads
+     (Subprogram        : Entity_Id;
+      Globals_For_Proof : Boolean := False) return Boolean
+   with Pre => Ekind (Subprogram) in E_Procedure | E_Function;
+   --  Returns True if Subprogram has a Global Input or In_Out contract,
+   --  whether user-defined or generated.
+   --
+   --  If Globals_For_Proof is set then the calls to Get_Generated_Reads will
+   --  not specify Include_Constants.
+
+   function Has_Global_Writes
+     (Subprogram        : Entity_Id;
+      Globals_For_Proof : Boolean := False) return Boolean
+   with Pre => Ekind (Subprogram) in E_Procedure | E_Function;
+   --  Returns True if Subprogram has a Global Output or In_Out contract,
+   --  whether user-defined or generated.
+   --
+   --  If Globals_For_Proof is set then the calls to Get_Generated_Reads will
    --  not specify Include_Constants.
 
    function Get_Variable_Set (N                : Node_Id;

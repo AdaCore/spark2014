@@ -37,6 +37,8 @@ with Constant_Tree;
 with SPARK_Definition;    use SPARK_Definition;
 with SPARK_Util;          use SPARK_Util;
 
+with Flow.Utility;
+
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Atree.Mutators;  use Why.Atree.Mutators;
@@ -855,14 +857,6 @@ package body Why.Inter is
          when Subprogram_Kind | E_Subprogram_Body =>
             declare
                Decl_E : constant Entity_Id := Unique_Entity (E);
-
-               --  If the subprogram reads or writes a variables in an outter
-               --  scope, it cannot be declared in the "type" Why file, as it
-               --  needs visibility over the "variable" Why file.
-
-               Has_Effects : constant Boolean :=
-                 Has_Global_Reads (Decl_E, Include_Constants => False)
-                   or else Has_Global_Writes (Decl_E);
             begin
                --  Functions without read/write global effects are declared
                --  in the "type" Why files instead of the "context" Why files,
@@ -870,10 +864,17 @@ package body Why.Inter is
                --  axiomatization in Why is written manually (example: formal
                --  containers).
 
-               if Ekind (E) = E_Procedure or else Has_Effects then
-                  return WF_Context;
-               else
+               if Ekind (E) = E_Function
+                 and then not Flow.Utility.Has_Global_Reads
+                                (Subprogram        => Decl_E,
+                                 Globals_For_Proof => True)
+                 and then not Flow.Utility.Has_Global_Writes
+                                (Subprogram        => Decl_E,
+                                 Globals_For_Proof => True)
+               then
                   return WF_Pure;
+               else
+                  return WF_Context;
                end if;
             end;
 
@@ -901,6 +902,9 @@ package body Why.Inter is
 
          when E_Loop =>
             return WF_Context;
+
+         when E_Abstract_State =>
+            return WF_Variables;
 
          when others =>
             raise Program_Error;
@@ -1326,13 +1330,20 @@ package body Why.Inter is
                        Typ    : W_Type_Id := Why_Empty) return W_Identifier_Id
    is
       Suffix : constant String :=
-        (if Ekind (E) in Subprogram_Kind | E_Subprogram_Body and then
-         Domain = EW_Prog then Short_Name (E)
-         elsif Ekind (E) in Subprogram_Kind | E_Subprogram_Body |
-         Named_Kind | Type_Kind | Object_Kind then
-         Short_Name (E)
+        (if Ekind (E) in Subprogram_Kind | E_Subprogram_Body
+              and then Domain = EW_Prog
+         then
+            Short_Name (E)
+         elsif Ekind (E) in Subprogram_Kind
+                          | E_Subprogram_Body
+                          | Named_Kind
+                          | Type_Kind
+                          | Object_Kind
+                          | E_Abstract_State
+         then
+            Short_Name (E)
          elsif Ekind (E) = E_Loop then
-         Capitalize_First (Short_Name (E))
+            Capitalize_First (Short_Name (E))
          else "");
    begin
 

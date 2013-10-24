@@ -40,6 +40,9 @@ with SPARK_Definition;       use SPARK_Definition;
 with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 with SPARK_Util;             use SPARK_Util;
 
+with Flow_Types;
+with Flow.Utility;
+
 with Why;                    use Why;
 with Why.Atree.Accessors;    use Why.Atree.Accessors;
 with Why.Atree.Builders;     use Why.Atree.Builders;
@@ -106,8 +109,9 @@ package body Gnat2Why.Subprograms is
    --  subprogram E (if any), to be used in the postcondition of the program
    --  function.
 
-   function Compute_Effects (File : Why_Section;
-                             E    : Entity_Id) return W_Effects_Id;
+   function Compute_Effects
+     (File : Why_Section;
+      E    : Entity_Id) return W_Effects_Id;
    --  Compute the effects of the generated Why function.
 
    function Compute_Logic_Binders (E : Entity_Id) return Item_Array;
@@ -152,7 +156,8 @@ package body Gnat2Why.Subprograms is
 
    begin
       if Arg_Length = 0
-        and then not Has_Global_Reads (E, Include_Constants => False)
+        and then not Flow.Utility.Has_Global_Reads (Subprogram        => E,
+                                                    Globals_For_Proof => True)
       then
          return W_Expr_Array'(1 => New_Void);
       end if;
@@ -194,11 +199,15 @@ package body Gnat2Why.Subprograms is
    -- Compute_Effects --
    ---------------------
 
-   function Compute_Effects (File : Why_Section;
-                             E    : Entity_Id) return W_Effects_Id is
-      Read_Names      : Name_Set.Set;
-      Write_Names     : Name_Set.Set;
-      Eff             : constant W_Effects_Id := New_Effects;
+   function Compute_Effects
+     (File : Why_Section;
+      E    : Entity_Id) return W_Effects_Id
+   is
+      Read_Ids    : Flow_Types.Flow_Id_Sets.Set;
+      Write_Ids   : Flow_Types.Flow_Id_Sets.Set;
+      Read_Names  : Name_Set.Set;
+      Write_Names : Name_Set.Set;
+      Eff         : constant W_Effects_Id := New_Effects;
 
       Ada_Binders : constant List_Id :=
                       Parameter_Specifications (Get_Subprogram_Spec (E));
@@ -206,8 +215,14 @@ package body Gnat2Why.Subprograms is
    begin
       --  Collect global variables potentially read and written
 
-      Read_Names  := Get_Reads (E, Include_Constants => False);
-      Write_Names := Get_Writes (E);
+      Flow.Utility.Get_Globals (Subprogram             => E,
+                                Reads                  => Read_Ids,
+                                Writes                 => Write_Ids,
+                                Refined_View           => True,
+                                Consider_Discriminants => False,
+                                Globals_For_Proof      => True);
+      Read_Names  := Flow_Types.To_Name_Set (Read_Ids);
+      Write_Names := Flow_Types.To_Name_Set (Write_Ids);
 
       for Name of Write_Names loop
          Effects_Append_To_Writes
@@ -289,14 +304,23 @@ package body Gnat2Why.Subprograms is
 
    function Compute_Logic_Binders (E : Entity_Id) return Item_Array is
       Binders     : constant Item_Array := Compute_Raw_Binders (E);
-      Read_Names  : Name_Set.Set;
       Num_Binders : Integer;
       Count       : Integer;
+
+      Read_Ids    : Flow_Types.Flow_Id_Sets.Set;
+      Write_Ids   : Flow_Types.Flow_Id_Sets.Set;
+      Read_Names  : Name_Set.Set;
 
    begin
       --  Collect global variables potentially read
 
-      Read_Names := Get_Reads (E, Include_Constants => False);
+      Flow.Utility.Get_Globals (Subprogram             => E,
+                                Reads                  => Read_Ids,
+                                Writes                 => Write_Ids,
+                                Refined_View           => True,
+                                Consider_Discriminants => False,
+                                Globals_For_Proof      => True);
+      Read_Names := Flow_Types.To_Name_Set (Read_Ids);
 
       --  If E has no parameters and no read effects, return a singleton of
       --  unit type.
@@ -1214,15 +1238,27 @@ package body Gnat2Why.Subprograms is
         To_Binder_Array (Logic_Func_Binders);
       Logic_Id           : constant W_Identifier_Id :=
                              To_Why_Id (E, Domain => EW_Term, Local => False);
-      Read_Names         : constant Name_Set.Set :=
-        Get_Reads (E, Include_Constants => False);
 
       Base_Name : constant String := Full_Name (E);
       Name      : constant String := Base_Name & To_String (WNE_Axiom);
 
       Params : Transformation_Params;
 
+      Read_Ids    : Flow_Types.Flow_Id_Sets.Set;
+      Write_Ids   : Flow_Types.Flow_Id_Sets.Set;
+      Read_Names  : Name_Set.Set;
+
    begin
+      --  Collect global variables potentially read
+
+      Flow.Utility.Get_Globals (Subprogram             => E,
+                                Reads                  => Read_Ids,
+                                Writes                 => Write_Ids,
+                                Refined_View           => True,
+                                Consider_Discriminants => False,
+                                Globals_For_Proof      => True);
+      Read_Names := Flow_Types.To_Name_Set (Read_Ids);
+
       Open_Theory (File, Name,
                    Comment =>
                      "Module giving a defining axiom for the "

@@ -28,6 +28,7 @@ with Ada.Text_IO;                        use Ada.Text_IO;
 
 with Atree;                              use Atree;
 with Einfo;                              use Einfo;
+with Elists;                             use Elists;
 with Errout;                             use Errout;
 with Namet;                              use Namet;
 with Nlists;                             use Nlists;
@@ -928,10 +929,11 @@ package body SPARK_Definition is
 
          when E_Loop           => null;
 
-         --  Mark_Entity is only called on package spec which are fully
-         --  declared as SPARK_Mode => On.
+         --  Mark_Entity is called on all abstract state variables, and on all
+         --  package spec which are fully declared as SPARK_Mode => On.
 
-         when E_Package        => null;
+         when E_Abstract_State |
+              E_Package        => null;
 
          when others           =>
             Ada.Text_IO.Put_Line ("[Mark_Entity] kind ="
@@ -1045,8 +1047,13 @@ package body SPARK_Definition is
       --  marking Itypes and class-wide types at their first occurrence
       --  (inside In_SPARK).
 
-      if not Is_Special_Multidim_Update_Aggr (N)
-        and then Nkind (N) in N_Has_Etype
+      --  The type may be absent on kinds of nodes that should have types,
+      --  in very special cases, like the fake aggregate node in a 'Update
+      --  attribute_reference, and the fake identifier node for an abstract
+      --  state. So we also check that the type is explicitly present.
+
+      if Nkind (N) in N_Has_Etype
+        and then Present (Etype (N))
         and then not In_SPARK (Etype (N))
       then
          Mark_Violation (N, From => Etype (N));
@@ -2055,7 +2062,7 @@ package body SPARK_Definition is
                  E_Subprogram_Body       =>
                null;
 
-            --  We should not encounter abstract state in this traversal
+            --  Abstract state entities are passed directly to Mark_Entity
 
             when E_Abstract_State =>
                raise Program_Error;
@@ -2349,6 +2356,21 @@ package body SPARK_Definition is
       end if;
 
       Current_SPARK_Pragma := SPARK_Pragma (Id);
+
+      --  Mark abstract state entities
+
+      declare
+         States : constant Elist_Id := Abstract_States (Id);
+         State  : Elmt_Id;
+      begin
+         if Present (States) then
+            State := First_Elmt (States);
+            while Present (State) loop
+               Mark_Entity (Node (State));
+               Next_Elmt (State);
+            end loop;
+         end if;
+      end;
 
       if SPARK_Pragma_Is (Opt.On) then
          Specs_In_SPARK.Include (Id);

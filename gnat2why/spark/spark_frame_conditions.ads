@@ -93,26 +93,15 @@ package SPARK_Frame_Conditions is
    function Has_Computed_Global (E : Entity_Id) return Boolean;
    --  Returns whether a Global contract has been computed for subprogram E
 
-   function Get_Reads
+   function Get_Generated_Reads
      (E                 : Entity_Id;
       Include_Constants : Boolean) return Name_Set.Set;
    --  Get the variables read by subprogram E. Include_Constants is True for
    --  including constants in the returned set (for flow analysis) and False
    --  for not including them in the returned set (for proof).
 
-   function Get_Writes (E : Entity_Id) return Name_Set.Set;
+   function Get_Generated_Writes (E : Entity_Id) return Name_Set.Set;
    --  Get the variables written by subprogram E
-
-   function Has_Global_Reads
-     (E                 : Entity_Id;
-      Include_Constants : Boolean) return Boolean
-   is
-     (not Get_Reads (E, Include_Constants).Is_Empty);
-   --  Return True if subprogram E reads to global variables
-
-   function Has_Global_Writes (E : Entity_Id) return Boolean is
-     (not Get_Writes (E).Is_Empty);
-   --  Return True if subprogram E writes to global variables
 
    function File_Of_Entity (E : Entity_Name) return Entity_Name;
    --  Return the name of the file defining the entity E

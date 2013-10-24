@@ -448,9 +448,10 @@ package body Flow.Utility is
             end Get_Flow_Id;
 
             ALI_Reads  : constant Name_Set.Set :=
-              Get_Reads (Subprogram,
-                         Include_Constants => not Globals_For_Proof);
-            ALI_Writes : constant Name_Set.Set := Get_Writes (Subprogram);
+              Get_Generated_Reads (Subprogram,
+                                   Include_Constants => not Globals_For_Proof);
+            ALI_Writes : constant Name_Set.Set :=
+              Get_Generated_Writes (Subprogram);
 
             F : Flow_Id;
          begin
@@ -754,6 +755,52 @@ package body Flow.Utility is
       Traverse (N);
       return RV;
    end Quantified_Variables;
+
+   ----------------------
+   -- Has_Global_Reads --
+   ----------------------
+
+   function Has_Global_Reads
+     (Subprogram        : Entity_Id;
+      Globals_For_Proof : Boolean := False) return Boolean
+   is
+      Read_Ids  : Flow_Types.Flow_Id_Sets.Set;
+      Write_Ids : Flow_Types.Flow_Id_Sets.Set;
+   begin
+      --  Collect global variables potentially read and written
+
+      Flow.Utility.Get_Globals (Subprogram             => Subprogram,
+                                Reads                  => Read_Ids,
+                                Writes                 => Write_Ids,
+                                Refined_View           => False,
+                                Consider_Discriminants => False,
+                                Globals_For_Proof      => Globals_For_Proof);
+
+      return not Read_Ids.Is_Empty;
+   end Has_Global_Reads;
+
+   -----------------------
+   -- Has_Global_Writes --
+   -----------------------
+
+   function Has_Global_Writes
+     (Subprogram        : Entity_Id;
+      Globals_For_Proof : Boolean := False) return Boolean
+   is
+      Read_Ids  : Flow_Types.Flow_Id_Sets.Set;
+      Write_Ids : Flow_Types.Flow_Id_Sets.Set;
+   begin
+      --  Collect global variables potentially read and written
+
+      Flow.Utility.Get_Globals (Subprogram             => Subprogram,
+                                Reads                  => Read_Ids,
+                                Writes                 => Write_Ids,
+                                Refined_View           => False,
+                                Consider_Discriminants => False,
+                                Globals_For_Proof      => Globals_For_Proof);
+
+      return not Write_Ids.Is_Empty;
+   end Has_Global_Writes;
 
    ----------------------
    -- Flatten_Variable --

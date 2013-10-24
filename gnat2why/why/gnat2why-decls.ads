@@ -33,6 +33,11 @@ package Gnat2Why.Decls is
    --  Decide whether for function declarations, the Why base type should be
    --  used instead of the Ada type
 
+   procedure Translate_Abstract_State
+     (File : in out Why_Section;
+      E    : Entity_Id);
+   --  Generate Why declarations that correspond to an abstract state
+
    procedure Translate_Variable
      (File : in out Why_Section;
       E    : Entity_Id);

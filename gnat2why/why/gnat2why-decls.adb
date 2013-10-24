@@ -231,6 +231,54 @@ package body Gnat2Why.Decls is
         (Decls  => Visible_Declarations (Get_Package_Spec (E)));
    end Register_External_Entities;
 
+   ------------------------------
+   -- Translate_Abstract_State --
+   ------------------------------
+
+   procedure Translate_Abstract_State
+     (File : in out Why_Section;
+      E    : Entity_Id)
+   is
+      Name     : constant String := Full_Name (E);
+      Typ      : constant W_Type_Id := EW_Private_Type;
+      Why_Name : constant W_Identifier_Id := To_Why_Id (E => E, Typ => Typ);
+      Decl     : constant W_Declaration_Id :=
+        New_Type_Decl (Name  => To_Ident (WNE_Type),
+                       Alias => Typ);
+      Var      : constant Item_Type := Mk_Item_Of_Entity (E, Why_Name);
+
+   begin
+      Open_Theory (File, Name,
+                   Comment =>
+                     "Module for defining a ref holding the value "
+                       & "of abstract state "
+                       & """" & Get_Name_String (Chars (E)) & """"
+                       & (if Sloc (E) > 0 then
+                            " defined at " & Build_Location_String (Sloc (E))
+                          else "")
+                       & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+      --  Generate an alias for the name of the object's type, based on the
+      --  name of the object. This is useful when generating logic functions
+      --  from Ada functions, to generate additional parameters for the global
+      --  objects read.
+
+      Emit (File.Cur_Theory, Decl);
+
+      --  We generate a global ref
+
+      Emit
+        (File.Cur_Theory,
+         New_Global_Ref_Declaration
+           (Name     => To_Why_Id (E, Local => True),
+            Ref_Type => New_Named_Type (To_Ident (WNE_Type))));
+
+      Insert_Item (E, Var);
+
+      Close_Theory (File,
+                    Kind => Standalone_Theory);
+   end Translate_Abstract_State;
+
    ------------------------
    -- Translate_Constant --
    ------------------------
