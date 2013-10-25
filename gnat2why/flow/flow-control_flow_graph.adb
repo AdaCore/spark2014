@@ -2353,8 +2353,11 @@ package body Flow.Control_Flow_Graph is
               Pragma_Inline_Always                |
               Pragma_Inspection_Point             |
               Pragma_Linker_Options               |
+              Pragma_List                         |
+              Pragma_Optimize                     |
               Pragma_Overflow_Mode                |
               Pragma_Pack                         |
+              Pragma_Page                         |
               Pragma_Postcondition                |
               Pragma_Precondition                 |
               Pragma_Preelaborable_Initialization |
@@ -2365,6 +2368,7 @@ package body Flow.Control_Flow_Graph is
               Pragma_Refined_Global               |
               Pragma_Refined_Post                 |
               Pragma_Refined_State                |
+              Pragma_Reviewable                   |
               Pragma_SPARK_Mode                   |
               Pragma_Style_Checks                 |
               Pragma_Test_Case                    |

@@ -2499,7 +2499,10 @@ package body SPARK_Definition is
               Pragma_Inline_Always                |
               Pragma_Inspection_Point             |
               Pragma_Linker_Options               |
+              Pragma_List                         |
+              Pragma_Optimize                     |
               Pragma_Pack                         |
+              Pragma_Page                         |
               Pragma_Postcondition                |
               Pragma_Precondition                 |
               Pragma_Preelaborate                 |
@@ -2509,6 +2512,7 @@ package body SPARK_Definition is
               Pragma_Refined_Depends              |
               Pragma_Refined_Global               |
               Pragma_Refined_State                |
+              Pragma_Reviewable                   |
               Pragma_SPARK_Mode                   |
               Pragma_Style_Checks                 |
               Pragma_Test_Case                    |
