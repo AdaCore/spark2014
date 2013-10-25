@@ -510,7 +510,7 @@ offered by Ada's Annex D.
 Distributed Systems
 -------------------
 
-TBD.
+|SPARK| does not support the distributed systems annex.
 
 Information Systems
 -------------------
