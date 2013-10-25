@@ -5559,6 +5559,8 @@ package body Gnat2Why.Expr is
               Pragma_Initial_Condition            |
               Pragma_Inline                       |
               Pragma_Inline_Always                |
+              Pragma_Inspection_Point             |
+              Pragma_Linker_Options               |
               Pragma_Loop_Variant                 |
               Pragma_Pack                         |
               Pragma_Postcondition                |

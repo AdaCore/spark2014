@@ -2497,6 +2497,8 @@ package body SPARK_Definition is
               Pragma_Initial_Condition            |
               Pragma_Inline                       |
               Pragma_Inline_Always                |
+              Pragma_Inspection_Point             |
+              Pragma_Linker_Options               |
               Pragma_Pack                         |
               Pragma_Postcondition                |
               Pragma_Precondition                 |

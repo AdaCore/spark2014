@@ -2351,6 +2351,8 @@ package body Flow.Control_Flow_Graph is
               Pragma_Initializes                  |
               Pragma_Inline                       |
               Pragma_Inline_Always                |
+              Pragma_Inspection_Point             |
+              Pragma_Linker_Options               |
               Pragma_Overflow_Mode                |
               Pragma_Pack                         |
               Pragma_Postcondition                |
