@@ -1752,7 +1752,7 @@ package body SPARK_Definition is
                else
                   pragma Assert (Is_Array_Type (Pref_Typ));
 
-                  if 1 < Number_Dimensions (Pref_Typ) then
+                  if Number_Dimensions (Pref_Typ) > 1 then
                      Violation_Detected := True;
                      if SPARK_Pragma_Is (Opt.On) then
                         Error_Msg_N
