@@ -1,0 +1,5 @@
+project Test is
+   package Compiler is
+      for Switches ("Ada") use ("-g", "-O");
+   end Compiler;
+end Test;
