@@ -1,0 +1,8 @@
+project Test is
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-gnatws");
+   end Compiler;
+
+end Test;
+

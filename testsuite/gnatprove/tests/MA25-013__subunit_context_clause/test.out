@@ -1,0 +1,17 @@
+skein.adb:50:26: warning: "Dst" might not be initialized [uninitialized]
+skein.adb:92:11: warning: unused assignment [ineffective]
+skein.ads:110:30: "Ctx.B" is not initialized in "Skein_512_Init" [uninitialized]
+skein.ads:110:30: "Ctx.H.Byte_Count" is not initialized in "Skein_512_Init" [uninitialized]
+skein.ads:110:30: "Ctx.H.Tweak_Words.Bit_Pad" is not initialized in "Skein_512_Init" [uninitialized]
+skein.ads:110:30: "Ctx.H.Tweak_Words.Byte_Count_Lsb" is not initialized in "Skein_512_Init" [uninitialized]
+skein.ads:110:30: "Ctx.H.Tweak_Words.Byte_Count_Msb" is not initialized in "Skein_512_Init" [uninitialized]
+skein.ads:110:30: "Ctx.H.Tweak_Words.Field_Type" is not initialized in "Skein_512_Init" [uninitialized]
+skein.ads:110:30: "Ctx.H.Tweak_Words.Final_Block" is not initialized in "Skein_512_Init" [uninitialized]
+skein.ads:110:30: "Ctx.H.Tweak_Words.First_Block" is not initialized in "Skein_512_Init" [uninitialized]
+skein.ads:110:30: "Ctx.H.Tweak_Words.Reserved" is not initialized in "Skein_512_Init" [uninitialized]
+skein.ads:110:30: "Ctx.H.Tweak_Words.Tree_Level" is not initialized in "Skein_512_Init" [uninitialized]
+   compilation of skein.adb failed
+
+
+gnatprove: error during translation to intermediate language, aborting.
+gprbuild: *** compilation phase failed
