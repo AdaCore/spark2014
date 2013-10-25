@@ -31,31 +31,31 @@ Import             	      Yes
 Independent        	      ?
 Independent_Components 	      ?
 Inline             	      Yes
-Inspection_Point   	      Warn		     Warning otherwise ignored?
+Inspection_Point   	      Yes
 Interrupt_Handler  	      No		     No tasking
 Interrupt_Priority 	      No		     No tasking
-Linker_Options     	      Warn             	     Warning otherwise ignored?
-List               	      Warn             	     Warning otherwise ignored?
+Linker_Options     	      Yes
+List               	      Yes
 Locking_Policy    	      No		     No tasking
 No_Return          	      ?             	     I thought we were going to support these?
 Normalize_Scalars  	      No            	     No support for invalid values
-Optimise           	      Warn             	     Warning otherwise ignored?
+Optimise           	      Yes
 Pack              	      Yes
-Page               	      Warn		     Warning otherwise ignored?
+Page               	      Yes
 Partition_Elaboration_Policy  ?   		     Partition wide would it appear in a compilation unit?
 Preelaborable_Initialization  Yes
 Preelaborate       	      Yes
 Priority  	  	      No		     No tasking
 Priority_Specific_Dispatching No  		     No tasking
-Profile            	      ?  	             Probably required
+Profile            	      Yes
 Pure               	      Y
 Queuing_Policy 	 	      No		     No Tasking
 Relative_Deadline  	      No		     No Tasking
-Remote_Call_Interface 	      ?
-Remote_Types 	 	      ?
-Restrictions 	 	      ?			     Does this apply to a partition?
-Reviewable         	      Warn	    	     Warning otherwise ignored?
-Shared_Passive     	      ?
+Remote_Call_Interface 	      No		     Distributed systems
+Remote_Types 	 	      No		     Distributed systems
+Restrictions 	 	      Yes
+Reviewable         	      Yes
+Shared_Passive     	      No                     Distributed systems
 Storage_Size 	 	      No		     No tasking
 Suppress           	      ?			     Would this also supress the proof check?
 Task_Dispatching_Policy       No		     No tasking
