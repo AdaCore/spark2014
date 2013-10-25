@@ -715,6 +715,113 @@ package body Flow.Analysis is
          return;
       end if;
 
+      --  Sanity check all written vertices to see if the write is
+      --  legal.
+
+      pragma Assert_And_Cut (Sane);
+
+      for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
+         declare
+            A : constant V_Attributes := FA.PDG.Get_Attributes (V);
+
+            Written_Vars : constant Ordered_Flow_Id_Sets.Set :=
+              To_Ordered_Flow_Id_Set (A.Variables_Defined);
+
+            F                    : Flow_Id;
+            Corresp_Final_Vertex : Flow_Graphs.Vertex_Id;
+            Final_Atr            : V_Attributes;
+         begin
+            for Var of Written_Vars loop
+               F := Change_Variant (Var, Normal_Use);
+
+               if not FA.All_Vars.Contains (F) and
+                 FA.Kind in E_Package | E_Package_Body
+               then
+
+                  --  We have a write to a variable a package knows
+                  --  nothing about. This is always an illegal update.
+
+                  case F.Kind is
+                     when Direct_Mapping | Record_Field =>
+                        Error_Msg_Flow
+                          (FA        => FA,
+                           Tracefile => Tracefile,
+                           Msg       => "cannot write & during " &
+                             "elaboration of & (SPARK RM 7.7.1(5))",
+                           N   => Error_Location (FA.PDG, V),
+                           F1  => Entire_Variable (Var),
+                           F2  => Direct_Mapping_Id (FA.Analyzed_Entity));
+
+                     when Magic_String =>
+                        Global_Required (FA, Var);
+
+                     when others =>
+                        raise Program_Error;
+                  end case;
+                  Sane := False;
+
+               elsif not FA.All_Vars.Contains (F) then
+
+                  --  This case is dealt with in the next sanity
+                  --  check.
+
+                  null;
+
+               elsif FA.PDG.Get_Key (V).Variant not in
+                 Initial_Value | Final_Value
+               then
+
+                  --  We do know about that particular global. Now we
+                  --  need to check if the update is OK.
+
+                  Corresp_Final_Vertex :=
+                    FA.PDG.Get_Vertex (Change_Variant (Var, Final_Value));
+                  pragma Assert (Corresp_Final_Vertex /=
+                                   Flow_Graphs.Null_Vertex);
+                  Final_Atr := FA.PDG.Get_Attributes (Corresp_Final_Vertex);
+
+                  if Final_Atr.Is_Global and
+                    Final_Atr.Is_Constant and
+                    not Final_Atr.Is_Loop_Parameter
+                  then
+
+                     if FA.Kind in E_Package | E_Package_Body then
+                        Error_Msg_Flow
+                          (FA        => FA,
+                           Tracefile => Tracefile,
+                           Msg       => "cannot write & during " &
+                             "elaboration of & (SPARK RM 7.7.1(5))",
+                           N         => Error_Location (FA.PDG, V),
+                           F1        => Var,
+                           F2        => Direct_Mapping_Id
+                             (FA.Analyzed_Entity));
+
+                     else
+                        Error_Msg_Flow
+                          (FA        => FA,
+                           Tracefile => Tracefile,
+                           Msg       => "& must be a global output of &",
+                           N         => Error_Location (FA.PDG, V),
+                           F1        =>
+                             (if A.Is_Parameter
+                              then A.Parameter_Formal
+                              else Var),
+                           F2        => Direct_Mapping_Id (FA.Analyzed_Entity),
+                           Tag       => "illegal_update");
+                     end if;
+                     Sane := False;
+
+                  end if;
+
+               end if;
+
+            end loop;
+         end;
+      end loop;
+      if not Sane then
+         return;
+      end if;
+
       --  Sanity check all vertices if they mention a flow id that we
       --  do not know about.
 
@@ -726,62 +833,46 @@ package body Flow.Analysis is
 
             All_Vars : constant Ordered_Flow_Id_Sets.Set :=
               To_Ordered_Flow_Id_Set (A.Variables_Used or A.Variables_Defined);
+
+            Aspect_To_Fix : constant String :=
+              (case FA.Kind is
+                  when E_Subprogram_Body => "Global",
+                  when others            => "Initializes");
+
+            F : Flow_Id;
          begin
             for Var of All_Vars loop
-               declare
-                  Neutral : constant Flow_Id :=
-                    Change_Variant (Var, Normal_Use);
-                  Tmp : constant String :=
-                    (case FA.Kind is
-                        when E_Subprogram_Body => "Global",
-                        when others            => "Initializes");
-               begin
-                  if not FA.All_Vars.Contains (Neutral) then
-                     case Neutral.Kind is
-                        when Direct_Mapping | Record_Field =>
-                           --  ??? hopefully we can move this to
-                           --  spark_definition too
+               F := Change_Variant (Var, Normal_Use);
 
-                           --  ??? maybe also point to the first
-                           --  occurrence of the variable, possibly
-                           --  via a continuation message
-                           Error_Msg_Flow
-                             (FA        => FA,
-                              Tracefile => Tracefile,
-                              Msg       => "& must be listed in the " & Tmp &
-                                " aspect of &",
-                              N   => First_Variable_Use (FA      => FA,
-                                                         Var     => Var,
-                                                         Kind    => Use_Read,
-                                                         Precise => False),
-                              F1  => Entire_Variable (Var),
-                              F2  => Direct_Mapping_Id (FA.Analyzed_Entity));
+               if not FA.All_Vars.Contains (F) then
 
-                        when Magic_String =>
-                           Global_Required (FA, Var);
+                  --  Here we are dealing with a missing global.
+                  case F.Kind is
+                     when Direct_Mapping | Record_Field =>
+                        Error_Msg_Flow
+                          (FA        => FA,
+                           Tracefile => Tracefile,
+                           Msg       => "& must be listed in the " &
+                             Aspect_To_Fix & " aspect of &",
+                           N   => First_Variable_Use (FA      => FA,
+                                                      Var     => Var,
+                                                      Kind    => Use_Read,
+                                                      Precise => False),
+                           F1  => Entire_Variable (Var),
+                           F2  => Direct_Mapping_Id (FA.Analyzed_Entity));
 
-                        when others =>
-                           raise Why.Unexpected_Node;
-                     end case;
-                     Sane := False;
-                  end if;
-               end;
+                     when Magic_String =>
+                        Global_Required (FA, Var);
+
+                     when others =>
+                        raise Why.Unexpected_Node;
+                  end case;
+                  Sane := False;
+               end if;
+
             end loop;
          end;
       end loop;
-
-      if not Sane then
-         if Gnat2Why_Args.Flow_Debug_Mode then
-            Error_Msg_Flow
-              (FA        => FA,
-               Tracefile => Tracefile,
-               Msg       => "flow analysis of & abandoned due to " &
-                 "inconsistent graph",
-               N   => FA.Analyzed_Entity,
-               F1  => Direct_Mapping_Id (FA.Analyzed_Entity));
-         end if;
-         return;
-      end if;
 
    end Sanity_Check;
 
@@ -974,90 +1065,6 @@ package body Flow.Analysis is
          end;
       end loop;
    end Find_Ineffective_Imports;
-
-   --------------------------
-   -- Find_Illegal_Updates --
-   --------------------------
-
-   procedure Find_Illegal_Updates (FA : in out Flow_Analysis_Graphs) is
-      Tracefile : Unbounded_String;
-
-      procedure Print_Error (Illegal_Use_Loc : Flow_Graphs.Vertex_Id;
-                             The_Global_Id   : Flow_Id;
-                             The_Global_Atr  : V_Attributes);
-      --  Helper procedure to print the error message.
-
-      procedure Print_Error (Illegal_Use_Loc : Flow_Graphs.Vertex_Id;
-                             The_Global_Id   : Flow_Id;
-                             The_Global_Atr  : V_Attributes)
-      is
-         Illegal_Use_Atr : constant V_Attributes :=
-           FA.PDG.Get_Attributes (Illegal_Use_Loc);
-         Tag : constant String := "illegal_update";
-      begin
-         if The_Global_Atr.Is_Global then
-            if FA.Kind in E_Package | E_Package_Body then
-               Error_Msg_Flow
-                 (FA        => FA,
-                  Tracefile => Tracefile,
-                  Msg       => "illegal update of &," &
-                    " which is not part of &",
-                  N         => Error_Location (FA.PDG, Illegal_Use_Loc),
-                  F1        => The_Global_Id,
-                  F2        => Direct_Mapping_Id (FA.Analyzed_Entity),
-                  Tag       => Tag);
-
-            else
-               Error_Msg_Flow
-                 (FA        => FA,
-                  Tracefile => Tracefile,
-                  Msg       => "& must be a global output of &",
-                  N         => Error_Location (FA.PDG, Illegal_Use_Loc),
-                  F1        => (if Illegal_Use_Atr.Is_Parameter
-                                then Illegal_Use_Atr.Parameter_Formal
-                                else The_Global_Id),
-                  F2        => Direct_Mapping_Id (FA.Analyzed_Entity),
-                  Tag       => Tag);
-            end if;
-         else
-            --  It *has* to be a global. The compiler would catch any
-            --  updates to in parameters and loop parameters...
-            raise Why.Unexpected_Node;
-         end if;
-      end Print_Error;
-   begin
-      --  We look at all vertices...
-      for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
-         --  For any vertex which defines a variable (at most one, I
-         --  suppose) we check we are allowed to define that variable.
-         for Var of FA.PDG.Get_Attributes (V).Variables_Defined loop
-            declare
-               Corresp_Final_Vertex : constant Flow_Graphs.Vertex_Id :=
-                 FA.PDG.Get_Vertex (Change_Variant (Var, Final_Value));
-               pragma Assert (Corresp_Final_Vertex /=
-                                Flow_Graphs.Null_Vertex);
-
-               Final_Atr : constant V_Attributes :=
-                 FA.PDG.Get_Attributes (Corresp_Final_Vertex);
-            begin
-               --  We only do this check if Var is something which we
-               --  should not change.
-               if Final_Atr.Is_Constant and not
-                 Final_Atr.Is_Loop_Parameter then
-                  if FA.PDG.Get_Key (V).Variant = Initial_Value then
-                     --  The initial use vertex is, of course, allowed
-                     --  to define the variable.
-                     null;
-                  else
-                     Print_Error (Illegal_Use_Loc => V,
-                                  The_Global_Id   => Var,
-                                  The_Global_Atr  => Final_Atr);
-                  end if;
-               end if;
-            end;
-         end loop;
-      end loop;
-   end Find_Illegal_Updates;
 
    ---------------------------------
    -- Find_Ineffective_Statements --

@@ -37,6 +37,8 @@ package Flow.Analysis is
    --     - do we somehow depend on a record with non-manifest constant
    --       default initializations?
    --     - are all global variables used declared as such?
+   --     - are we updating a variable we shouldn't (in parameter / global
+   --       or package external state in an elaboration)
    --
    --  Complexity is O(N)
 
@@ -49,13 +51,6 @@ package Flow.Analysis is
    --  Find all ineffective initial values.
    --
    --  Complexity is O(N^2)
-
-   procedure Find_Illegal_Updates (FA : in out Flow_Analysis_Graphs);
-   --  Find all cases where we update an in parameter or global.
-   --
-   --  Complexity is O(N)
-   --
-   --  !!! this should be moved to spark_definition
 
    procedure Find_Ineffective_Statements (FA : in out Flow_Analysis_Graphs);
    --  Find all ineffective statements.

@@ -800,7 +800,6 @@ package body Flow is
                when E_Subprogram_Body =>
                   Analysis.Find_Unwritten_Exports (FA);
                   Analysis.Find_Ineffective_Imports (FA);
-                  Analysis.Find_Illegal_Updates (FA);
                   Analysis.Find_Ineffective_Statements (FA);
                   Analysis.Find_Use_Of_Uninitialised_Variables (FA);
                   Analysis.Find_Unused_Objects (FA);
@@ -810,13 +809,11 @@ package body Flow is
                when E_Package =>
                   Analysis.Find_Use_Of_Uninitialised_Variables (FA);
                   Analysis.Find_Ineffective_Statements (FA);
-                  Analysis.Find_Illegal_Updates (FA);
                   Analysis.Find_Use_Of_Uninitialised_Variables (FA);
 
                when E_Package_Body =>
                   Analysis.Find_Use_Of_Uninitialised_Variables (FA);
                   Analysis.Find_Ineffective_Statements (FA);
-                  Analysis.Find_Illegal_Updates (FA);
                   Analysis.Find_Use_Of_Uninitialised_Variables (FA);
             end case;
          end if;

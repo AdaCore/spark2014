@@ -1,0 +1,7 @@
+foo.adb:13:04: warning: unused variable "Vt" [unused]
+foo.adb:18:10: cannot write "Vt" during elaboration of "P" (SPARK RM 7.7.1(5))
+   compilation of foo.adb failed
+
+
+gnatprove: error during translation to intermediate language, aborting.
+gprbuild: *** compilation phase failed
