@@ -30,7 +30,10 @@ is
 
    procedure Proc
      with Global => Vol2;
-   --  TU: 11. If a Volatile object has Effective_Reads set to True then it
-   --  must have a ``mode_selector`` of Output or In_Out when denoted as a
-   --  ``global_item``.
+   --  TU: 7. If an external state has set to True any of:
+   --  - Async_Readers, Effective_Writes or Effective_Reads - it must have
+   --    a ``mode_selector`` of Output or In_Out when denoted as a
+   --    ``global_item``; or
+   --  - Async_Writers - it must have a ``mode_selector`` of Input or
+   --    In_Out when denoted as a ``global_item``.
 end Volatiles_Illegal_3;

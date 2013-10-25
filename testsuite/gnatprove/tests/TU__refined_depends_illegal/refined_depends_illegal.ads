@@ -37,10 +37,11 @@ is
       --  of the corresponding Depends aspect specification except that any
       --  references in the Depends aspect to a state abstraction, whose
       --  refinement is visible at the point of the Refined_Depends
-      --  specification, are replaced with references to zero or more direct or
-      --  indirect constituents of that state abstraction. A Refined_Depends
-      --  aspect is defined by creating a new ``dependency_relation`` from the
-      --  original given in the Depends aspect as follows:
+      --  specification, are replaced with references to zero or more direct
+      --  or indirect constituents of that state abstraction. A
+      --  Refined_Depends aspect shall have a ``dependency_relation`` which
+      --  is derivable from the original given in the Depends aspect as
+      --  follows:
       --  a. A *partially refined dependency relation* is created by first
       --     copying, from the Depends aspect, each ``output`` that is not
       --     state abstraction whose refinement is visible at the point of
@@ -58,33 +59,40 @@ is
       --     **null** refinement, otherwise all of the ``outputs`` shall
       --     denote a ``constituent`` of the state abstraction.
       --  c. If the ``output`` in the Depends_Aspect denotes a state
-      --     abstraction which is not also an ``input``, then all of the
-      --     ``constituents`` [for a non-**null** refinement] of the state
-      --     abstraction shall be denoted as ``outputs`` of the partially
-      --     refined dependency relation.
+      --     abstraction which is not also an ``input``, then each
+      --     ``constituent`` of the state abstraction shall be denoted as an
+      --     ``output`` of the partially refined dependency relation.
       --  d. These rules may, for each ``output`` in the Depends aspect,
       --     introduce more than one ``output`` in the partially refined
       --     dependency relation. Each of these ``outputs`` has an
       --     ``input_list`` that has zero or more of the ``inputs`` from the
-      --     ``input_list`` of the original ``output``. The union of these
-      --     ``inputs`` shall denote the same ``inputs`` that appear in the
-      --     ``input_list`` of the original ``output``.
+      --     ``input_list`` of the original ``output``.  The union of these
+      --     ``inputs`` and the original state abstraction, if it is an
+      --     ``input`` in the ``input_list``, shall denote the same ``inputs``
+      --     that appear in the ``input_list`` of the original ``output``.
       --  e. If the Depends aspect has a ``null_dependency_clause``, then the
       --     partially refined dependency relation has a
       --     ``null_dependency_clause`` added with an ``input_list`` denoting
       --     the same ``inputs`` as the original.
       --  f. The partially refined dependency relation is completed by
-      --     replacing the ``inputs`` which are state abstractions, whose
-      --     refinements are visible at the point of the Refined_Depends
-      --     aspect, by zero or more ``inputs``.
-      --  g. If a state abstraction is denoted in an ``input_list`` and its
-      --     non **null** refinement is visible at the point of the
-      --     Refined_Depends aspect, then at least one of its
-      --     ``constituents`` shall be denoted as an ``input`` in at least
-      --     one of the ``dependency_clauses`` of the Refined_Depends aspect
-      --     corresponding (via the process described in the rules 3a - 3e
-      --     above) to the original ``dependency_clause`` in the Depends
-      --     aspect.
+      --     replacing each ``input`` which is a state abstraction, whose
+      --     refinement is visible at the point of the Refined_Depends
+      --     aspect, by zero or more ``inputs`` which are its
+      --     constituents.
+      --  g. If a state abstraction is denoted in an ``input_list`` of a
+      --     ``dependency_clause`` of the original Depends aspect and its
+      --     refinement is visible at the point of the Refined_Depends aspect
+      --     (derived via the process described in the rules 3a - 3f above),
+      --     then either:
+      --     - at least one of its ``constituents`` shall be denoted as an
+      --       ``input`` in at least one of the ``dependency_clauses`` of the
+      --       Refined_Depends aspect corresponding to the original
+      --       ``dependency_clause`` in the Depends aspect; or
+      --     - the state abstraction is both an ``input`` and an ``output``
+      --       and not every ``constituent`` the state abstraction is an
+      --       ``output`` of the Refined_Depends aspect. [This rule does not
+      --       exclude denoting a ``constituent`` of such a state abstraction
+      --       in an ``input_list``.]
       procedure Not_Correctly_Refined
         with Global  => (Input  => Var,
                          Output => State),
