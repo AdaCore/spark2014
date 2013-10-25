@@ -1,4 +1,6 @@
-package body Initial_Condition_Illegal is
+package body Initial_Condition_Illegal
+  with SPARK_Mode
+is
    package body Incorrect_Placement
      with Refined_State     => (State => Flag),
           Initial_Condition => F1

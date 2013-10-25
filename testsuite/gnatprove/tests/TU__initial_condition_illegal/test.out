@@ -1,0 +1,11 @@
+initial_condition_illegal.adb:6:11: aspect "Initial_Condition" must apply to a package declaration
+initial_condition_illegal.ads:20:11: aspect "Initializes" cannot come after aspect "Initial_Condition"
+initial_condition_illegal.ads:31:11: aspect "Abstract_State" cannot come after aspect "Initial_Condition"
+initial_condition_illegal.ads:32:11: aspect "Initializes" cannot come after aspect "Initial_Condition"
+initial_condition_illegal.ads:45:11: "Initial_Condition" requires the presence of aspect or pragma "Initializes"
+initial_condition_illegal_2.adb:5:04: warning: initialization has no effect [ineffective]
+initial_condition_illegal_2.ads:10:32: "State" must be listed in the Initializes aspect of "Initial_Condition_Illegal_2"
+gprbuild: *** compilation phase failed
+gnatprove: error during translation to intermediate language, aborting.
+initial_condition_illegal_3.ads:15:04: warning: initialization has no effect [ineffective]
+initial_condition_illegal_3.ads:13:8: warning: initial condition might fail
