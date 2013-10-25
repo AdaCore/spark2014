@@ -1,0 +1,6 @@
+p.adb:15:62: overflow check not proved
+p.adb:15:62: range check not proved
+p.adb:16:30: range check not proved
+p.adb:22:38: overflow check not proved
+p.adb:22:38: range check not proved
+p.adb:23:30: range check not proved
