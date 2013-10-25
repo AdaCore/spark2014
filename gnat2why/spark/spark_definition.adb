@@ -1891,6 +1891,7 @@ package body SPARK_Definition is
 
    procedure Mark_Call (N : Node_Id) is
       Nam     : constant Node_Id := Name (N);
+      E       : Node_Id;
       Actuals : constant List_Id := Parameter_Associations (N);
 
    begin
@@ -1923,21 +1924,25 @@ package body SPARK_Definition is
          Mark_Violation (N, From => Entity (Nam));
 
       else
+         E := Entity (Nam);
+
          --  Issue a warning for calls to subprograms with no Global contract,
          --  either manually-written or computed. This is the case for standard
          --  and external library subprograms for which no Global contract
          --  is supplied. Note that subprograms for which an external
          --  axiomatization is provided are exempted, as they should not
          --  have any effect on global items.
+         --  Exempt also pure subprograms which have no global effects.
 
-         if not Has_Computed_Global (Entity (Nam))
-           and then No (Get_Pragma (Entity (Nam), Pragma_Global))
-           and then not Entity_In_External_Axioms (Entity (Nam))
+         if not Has_Computed_Global (E)
+           and then No (Get_Pragma (E, Pragma_Global))
+           and then not Entity_In_External_Axioms (E)
+           and then not Is_Pure (E)
          then
             Error_Msg_NE
-              ("?no Global contract available for &", N, Entity (Nam));
+              ("?no Global contract available for &", N, E);
             Error_Msg_NE
-              ("\\ assuming & has no effect on global items", N, Entity (Nam));
+              ("\\ assuming & has no effect on global items", N, E);
          end if;
       end if;
    end Mark_Call;
@@ -2448,6 +2453,7 @@ package body SPARK_Definition is
             --     1. is a subprogram
             --     2. and is marked as In-SPARK
             --     3. and no global aspect has been specified
+            --     4. and the subprogram is not Pure
             --  then we warn that null global effect was assumed.
             declare
                Argument_Associations : constant List_Id :=
@@ -2461,6 +2467,7 @@ package body SPARK_Definition is
                  and then Entity_In_SPARK (Associated_Subprogram)
                  and then No (Get_Pragma
                                 (Associated_Subprogram, Pragma_Global))
+                 and then not Is_Pure (Associated_Subprogram)
                then
                   Error_Msg_N ("?null global effect assumed on imported"
                                  & " subprogram", Associated_Subprogram);
