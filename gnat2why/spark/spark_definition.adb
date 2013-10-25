@@ -2507,11 +2507,14 @@ package body SPARK_Definition is
               Pragma_Precondition                 |
               Pragma_Preelaborate                 |
               Pragma_Preelaborable_Initialization |
+              Pragma_Profile                      |
               Pragma_Pure                         |
               Pragma_Pure_Function                |
               Pragma_Refined_Depends              |
               Pragma_Refined_Global               |
               Pragma_Refined_State                |
+              Pragma_Restrictions                 |
+              Pragma_Restriction_Warnings         |
               Pragma_Reviewable                   |
               Pragma_SPARK_Mode                   |
               Pragma_Style_Checks                 |
