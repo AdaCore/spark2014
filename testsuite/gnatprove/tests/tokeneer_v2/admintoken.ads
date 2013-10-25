@@ -37,9 +37,14 @@ is
    -- Types
    --
    ------------------------------------------------------------------
-   function TheAuthCertRole return PrivTypes.PrivilegeT;
-   function IsGood return Boolean;
-   function AuthCertValid return Boolean;
+   function TheAuthCertRole return PrivTypes.PrivilegeT
+     with Global => State;
+
+   function IsGood return Boolean
+     with Global => State;
+
+   function AuthCertValid return Boolean
+     with Global => State;
 
    ------------------------------------------------------------------
    -- Init
@@ -54,7 +59,8 @@ is
    procedure Init
      with Global  => (Output => State,
                       In_Out => Status),
-          Depends => ((State, Status) => Status),
+          Depends => ((State,
+                       Status) => Status),
           Post    => (not IsGood) and then
                      (not AuthCertValid) and then
                      not (TheAuthCertRole in PrivTypes.AdminPrivilegeT);

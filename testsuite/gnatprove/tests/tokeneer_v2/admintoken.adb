@@ -71,11 +71,14 @@ is
    IDCert    : ValidIDCertT;
 
    function TheAuthCertRole return PrivTypes.PrivilegeT is
-     (TheRole (AuthCert.Contents));
+     (TheRole (AuthCert.Contents))
+     with Refined_Global => AuthCert;
 
-   function IsGood return Boolean is (IDCert.Valid);
+   function IsGood return Boolean is (IDCert.Valid)
+     with Refined_Global => IDCert;
 
-   function AuthCertValid return Boolean is (AuthCert.Valid);
+   function AuthCertValid return Boolean is (AuthCert.Valid)
+     with Refined_Global => AuthCert;
 
    ------------------------------------------------------------------
    -- Public Operations
@@ -117,14 +120,16 @@ is
    --    None.
    ------------------------------------------------------------------
    procedure Poll
-     with Refined_Global  => (Input  => (Clock.Now,
-                                         ConfigData.State,
-                                         Interfac.Input),
-                              Output => TokenPresence,
-                              In_Out => (AuditLog.FileState,
-                                         AuditLog.State,
-                                         Interfac.State,
-                                         Interfac.Status)),
+     with Refined_Global  => (Input    => (Clock.Now,
+                                           ConfigData.State,
+                                           Interfac.Input),
+                              Output   => TokenPresence,
+                              In_Out   => (AuditLog.FileState,
+                                           AuditLog.State,
+                                           Interfac.State,
+                                           Interfac.Status),
+                              Proof_In => (AuthCert,
+                                           IDCert)),
           Refined_Depends => ((AuditLog.FileState,
                                AuditLog.State) => (AuditLog.FileState,
                                                    AuditLog.State,
