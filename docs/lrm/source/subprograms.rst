@@ -202,13 +202,13 @@ where
 
 2. A ``consequence`` expression is considered to be a postcondition
    expression for purposes of determining the legality of Old or
-   Result ``attribute_references``. An expression occuring
+   Result ``attribute_references``. An expression occurring
    within an ``consequence`` expression is defined to be not
-   potentially unevaluated. [This means that Ada's rule that 
+   potentially unevaluated. [This means that Ada's rule that
    "The prefix of an Old attribute_reference that is potentially unevaluated
    shall statically denote an entity" is ineffective anywhere within a
    ``consequence`` expression.]
-   
+
 .. _etu-contract_cases-lr:
 
 .. centered:: **Static Semantics**
@@ -1278,7 +1278,7 @@ subprograms.
         declaration of the object.  Make worst-case assumptions about
         private types for this rule, or blast through privacy? To be
         decided in a post-Release 1 version of this document.
-       
+
 .. _tu-fe-ghost_functions-09:
 
 9. A ghost instantiation shall not be an instantiation of a non-ghost
