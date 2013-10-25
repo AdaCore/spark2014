@@ -1,6 +1,4 @@
 evoting.adb:34:45: info: length check proved
-evoting.adb:44:07: warning:  assuming "Assert" has no effect on global items
-evoting.adb:44:07: warning: no Global contract available for "Assert"
 evoting.adb:54:60: info: length check proved
 evoting.adb:55:07: warning:  assuming "Open" has no effect on global items
 evoting.adb:55:07: warning: no Global contract available for "Open"
@@ -56,8 +54,6 @@ evoting.adb:183:16: warning:  assuming "Put" has no effect on global items
 evoting.adb:183:16: warning: no Global contract available for "Put"
 evoting.adb:185:16: warning:  assuming "Put_Line" has no effect on global items
 evoting.adb:185:16: warning: no Global contract available for "Put_Line"
-evoting.adb:202:07: warning:  assuming "Assert" has no effect on global items
-evoting.adb:202:07: warning: no Global contract available for "Assert"
 evoting.adb:211:10: info: loop invariant initialization proved
 evoting.adb:211:10: warning: loop invariant might fail after first iteration
 evoting.adb:215:24: info: range check proved

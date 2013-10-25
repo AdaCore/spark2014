@@ -293,8 +293,6 @@ homothetical.adb:12:10: info: overflow check proved
 homothetical.adb:12:21: warning: overflow check might fail
 homothetical.adb:12:24: info: division check proved
 homothetical.adb:12:24: warning: overflow check might fail
-homothetical.adb:13:17: warning:  assuming "Sqrt" has no effect on global items
-homothetical.adb:13:17: warning: no Global contract available for "Sqrt"
 homothetical.adb:13:22: warning: overflow check might fail
 homothetical.adb:13:28: warning: overflow check might fail
 homothetical.adb:31:32: info: length check proved
