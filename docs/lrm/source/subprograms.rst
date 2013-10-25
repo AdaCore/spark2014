@@ -202,8 +202,13 @@ where
 
 2. A ``consequence`` expression is considered to be a postcondition
    expression for purposes of determining the legality of Old or
-   Result ``attribute_references``.
-
+   Result ``attribute_references``. An expression occuring
+   within an ``consequence`` expression is defined to be not
+   potentially unevaluated. [This means that Ada's rule that 
+   "The prefix of an Old attribute_reference that is potentially unevaluated
+   shall statically denote an entity" is ineffective anywhere within a
+   ``consequence`` expression.]
+   
 .. _etu-contract_cases-lr:
 
 .. centered:: **Static Semantics**
