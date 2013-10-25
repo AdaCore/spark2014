@@ -1,4 +1,7 @@
 pragma SPARK_Mode;
+pragma Restrictions (No_Recursion);
+pragma Restriction_Warnings (No_Floating_Point);
+pragma Profile (Ravenscar);
 
 procedure P is
    pragma Warnings (Off);
