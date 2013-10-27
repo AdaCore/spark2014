@@ -1,5 +1,5 @@
 package body Assert_No_Loop_14 is
-   procedure Compare(A, B : in Small; C : in out Big) is
+   procedure Compare (A, B : in Small; C : in out Big) is
    begin
       if A + B >= C then
 	 C := A;
