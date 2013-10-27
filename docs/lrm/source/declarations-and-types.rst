@@ -53,8 +53,7 @@ Types and Subtypes
    non-preelaborable subtype declaration shall not be denoted in
    Global, Depends, Initializes or Refined_State aspects.  [This means
    that non-preelaborable subtypes are not taken into account in
-   determining and checking dependency relations. This may change in
-   the future to facilitate a more in depth and complete analysis.]
+   determining and checking dependency relations.]
 
 .. _etu-types_and_subtypes:
 
@@ -164,9 +163,7 @@ Object Declarations
 2. Constants including those that are not preelaborable shall not be
    denoted in Global, Depends, Initializes or Refined_State
    aspects. [This means that non-preelaborable constants are not taken
-   into account in determining and checking dependency relations. This
-   may change in the future to facilitate a more in depth and complete
-   analysis.]
+   into account in determining and checking dependency relations.]
 
 .. _etu-object_declarations:
 
@@ -271,18 +268,16 @@ is ignored for purposes of this rule.]
 
 [The enforcement of this rule requires looking at the ``full_type_declaration``
 of a ``private_type`` declaration. This is inconsistent with SPARK's usual
-"everything you need to know should be in the specification" design.
-A future version of |SPARK| may introduce some mechanism to
-somehow (at least optionally)  provide the needed
-information as part of the specification of a private type.]
+"everything you need to know should be in the specification" design.]
+
+.. todo: Consider introducing some mechanism to optionally provide the needed
+         information as part of the specification of a private type.
 
 Tagged Types and Type Extensions
 --------------------------------
 
-In this first release of |SPARK| tagged types and type extensions are not supported
+|SPARK| tagged types and type extensions are not supported
 nor is the use of the 'Class attribute.
-
-[This restriction is planned to be relaxed in a future release of |SPARK|.]
 
 .. centered:: **Legality Rules**
 

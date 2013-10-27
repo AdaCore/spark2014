@@ -16,10 +16,10 @@ and objects in |SPARK|:
 .. _tu-shared_variable_control-02:
 
 2. A component of a non-volatile type declaration shall not be volatile.
-   
-   [This may require determining whether a private type is volatile.]
-   
-   [The above two rules may be relaxed in a future version.]
+
+.. todo:: This may require determining whether a private type is volatile.
+
+.. todo:: The above two rules may be relaxed in a future version.
    
 .. _tu-shared_variable_control-03:
 

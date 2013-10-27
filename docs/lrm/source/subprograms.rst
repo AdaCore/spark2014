@@ -377,7 +377,8 @@ follow the grammar of ``global_specification``
 
 7. A ``global_item`` shall not denote a constant object other than
    a formal parameter [of an enclosing subprogram] of mode **in**.
-   [This restriction may be relaxed in some way at some point in the future.]
+
+.. todo:: Consider relaxing this restriction.
 
 .. _tu-fe-global_aspects-08:
 
@@ -856,10 +857,10 @@ elements of an array have been updated by a subprogram if individual
 array elements are updated. The mode of a formal parameter of an
 array with such updates should be **in out**.
 
-[In future |SPARK| may provide a way of proving that all elements of
-an array have been updated individually and or providing a means to
-specify that a composite object is updated but not read by a
-subprogram.]
+.. todo: Consider providing a way of proving that all elements of
+         an array have been updated individually and providing a means to
+         specify that a composite object is updated but not read by a
+         subprogram.
 
 A formal parameter with a mode of **out** is treated as not having an
 entry value (apart from any discriminant or attributes of properties
@@ -976,10 +977,12 @@ calls.
 .. centered:: **Static Semantics**
 
 1. Objects are assumed to have overlapping locations if it cannot be established
-   statically that they do not. [This definition of overlapping is necessary since
-   these anti-aliasing checks will initially be implemented by flow analysis;
-   in a future tool release it is intended that these checks will be implemented by
-   the proof engine and so the static checking may be suppressed.]
+   statically that they do not.
+
+.. todo:: This definition of overlapping is necessary since
+          these anti-aliasing checks are implemented by flow analysis;
+          If checks are implemented by the proof engine instead, these static
+          checking may be suppressed.
 
 .. centered:: **Dynamic Semantics**
 
@@ -1199,15 +1202,11 @@ transformation other than evaluating fewer known to be true assertion
 expressions.
 
 The rules below are given in general terms in relation to "ghost
-entities" since in the future it is intended that ghost types and
-ghost variables will be allowed. Currently, however, only ghost
-functions are allowed and so an additional legality rule is provided
-that allows only functions to be explicitly declared as a ghost
-(though entities declared within a ghost function are regarded
-implicitly as ghost entities). When the full scope of ghost entities
-is allowed, the rules given in this section may be moved to other
-sections as appropriate, since they will refer to more than just
-subprograms.
+entities" to allow room for ghost types and ghost variables.
+Currently, however, only ghost functions are allowed and so an additional
+legality rule is provided that allows only functions to be explicitly
+declared as a ghost (though entities declared within a ghost function are
+regarded implicitly as ghost entities).
 
 .. todo::
    Add ghost types and ghost variables to |SPARK|. To be completed in

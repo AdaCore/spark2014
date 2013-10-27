@@ -44,7 +44,7 @@ Interrupt_Handler  	      No		     No tasking
 Interrupt_Priority 	      No		     No tasking
 Iterator_Element	      No
 Layout (record)		      Yes
-Link_Name     	      	      Warn             	     Warning otherwise ignored?
+Link_Name     	      	      Yes
 Machine_Radix		      ?
 No_Return          	      ?             	     I thought we were going to support these?
 Output			      No		     No streams
@@ -69,7 +69,7 @@ Storage_Size (access)         No		     No access types
 Storage_Size (task)	      No		     No tasking
 Stream_Size  		      No		     No streams
 Synchronization		      No		     No tasking
-Type_Invariant		      No		     To be supported in a future release
+Type_Invariant		      No
 Type_Invariant'Class	      No		     No tasking
 Unchecked_Union		      No
 Variable_Indexing	      No
@@ -129,7 +129,7 @@ S'Aft				      ?
 S'Alignment	    		      Warn                   Warning in pedantic mode
 X'Alignment	    		      Warn		     Warning in pedantic mode
 S'Base				      Yes	
-S'Bit_Order	    		      Yes		     Warning in pedantic mode
+S'Bit_Order	    		      Warn		     Warning in pedantic mode
 P'Body_Version 			      Yes	
 T'Callable	    		      No		     No tasking
 E'Caller	    		      No	             No tasking

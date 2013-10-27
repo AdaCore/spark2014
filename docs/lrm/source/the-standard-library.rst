@@ -25,24 +25,12 @@ No checks or warnings are given that this protocol is followed.  The
 onus is on the user to ensure that a library subprogram is called with
 consistent actual parameters.
 
-[A future version of |SPARK| may provide suitable preconditions on
-library subprograms but to avoid semantic differences between the Ada
-and |SPARK| and views of the library subprograms such preconditions
-require the use of exception expressions which are not currently
-supported by |SPARK|.]
-
+.. todo:: Provide suitable preconditions on library subprograms using
+          raise expressions for compatibility with Ada 2012. Post release 1.
 
 .. todo:: Provide detail on Standard Libraries.
           To be completed in a post-Release 1 version of this document. This targeting applies
           to all ToDos in this chapter.
-
-.. todo:: In particular, it is intended that predefined container generics
-          suitable for use in |SPARK| will be provided. These will
-          have specifications as similar as possible to those of
-          Ada's bounded containers (i.e., Ada.Containers.Bounded_*), but with
-          constructs removed or modified as needed in order to maintain the
-          language invariants that |SPARK| relies upon in providing
-          formal program verification.
 
 The Package Standard (A.1)
 --------------------------

@@ -42,10 +42,6 @@ provably never executed.]
 
 .. _etu-raise_statements-lr:
 
-[It is intended that these two rules will be relaxed at some point in
-the future (this is why raise expressions are mentioned in the
-Verification Rules section below).]
-
 .. centered:: **Verification Rules**
 
 .. _tu-raise_statements-03:
@@ -57,7 +53,10 @@ Verification Rules section below).]
 
    [In other words, the proof obligations introduced for a raise
    statement are the same as those introduced for a runtime check
-   which fails unconditionally. A raise expression (see Ada AI12-0022
+   which fails unconditionally.]
+
+.. commented out since raise expression are not part of the language yet
+   A raise expression (see Ada AI12-0022
    for details) introduces a similar obligation to prove that the
    expression will not be evaluated.]
 

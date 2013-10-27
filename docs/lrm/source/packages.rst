@@ -3036,9 +3036,6 @@ Type Invariants
 
 .. _etu-type_invariants:
 
-[Type invariants are not currently supported in |SPARK| but are intended
-to be introduced in a future release.]
-
 .. todo:: Add support for type invariants in SPARK 2014.
           To be completed in a post-Release 1 version of this document.
 

@@ -57,11 +57,6 @@ is to assume that a generic formal subprogram references no globals
 and to only instantiate the generic with actual subprograms that
 meet this requirement.]
 
-[At some point in the future, a more sophisticated treatment of
-generics may be defined, allowing a generic to be "proven" and
-eliminating the need separately verify the correctness of each
-instantiation. That is not today's approach.]
-
 .. todo:: Discsuss LSP-ish rules for globals, similar to the
    compatibility rules for Global/Depends aspects of a subprogram
    which overrides a dispatching operation. OK, for example, if a

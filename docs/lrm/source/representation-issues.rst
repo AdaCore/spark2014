@@ -73,8 +73,8 @@ unchecked type conversion is valid (see :ref:`data_validity`).
 Data Validity
 ~~~~~~~~~~~~~
 
-Currently |SPARK| does not check for data validity [, though this may be changed
-in a future release]. It is therefore up to users to ensure that data read from
+Currently |SPARK| does not check for data validity.
+It is therefore up to users to ensure that data read from
 external sources and values from unchecked type conversions are valid.
 
 Validity can be ensured by using a type for the target of the data

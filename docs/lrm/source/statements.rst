@@ -29,9 +29,8 @@ related to tasking and synchronization.
 
 .. _etu-simple_and_compound_statements:
 
-[A future release of |SPARK| is planned to support the Ravenscar multi-tasking
-profile and then some of the tasking statements such as
-``entry_call_statement``, and ``delay_statement`` will be permitted.]
+.. todo: Adding Ravenscar support would allow some of the tasking statements
+         such as ``entry_call_statement``, and ``delay_statement``.
 
 Assignment Statements
 ---------------------

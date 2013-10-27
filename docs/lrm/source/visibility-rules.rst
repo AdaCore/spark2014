@@ -91,8 +91,9 @@ through" to the renamed unit.
 .. _tu-subprogram_renaming_declarations-01:
 
 1. The ``aspect_specification`` on a ``subprogram_renaming_declaration`` shall not
-   include any of the |SPARK|-defined aspects introduced in this document. [This restriction
-   may be relaxed in the future.]
+   include any of the |SPARK|-defined aspects introduced in this document.
+
+.. todo:: Consider relaxing this restriction.
 
 .. _etu-subprogram_renaming_declarations:
 
