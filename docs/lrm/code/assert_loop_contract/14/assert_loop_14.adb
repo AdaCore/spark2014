@@ -3,8 +3,9 @@ package body Assert_Loop_14 is
       I : Index := Index'First;
    begin
       while A (I) /= X and I < Index'Last loop
-         pragma Loop_Invariant (I < Index'Last and
-            (for all M in Index range Index'First .. I => (A(M) /= X)));
+         pragma Loop_Invariant
+           (I < Index'Last
+            and (for all M in Index'First .. I => (A(M) /= X)));
          I := I + 1;
       end loop;
       return A (I) = X;
