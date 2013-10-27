@@ -1204,25 +1204,41 @@ Check contract
 ^^^^^^^^^^^^^^
 
 The SPARK 2005 `check` annotation is replaced by `pragma assert` in |SPARK|. This
-annotation adds a new hypothesis to the list of existing hypotheses. The code is
-not presented but can be found under "code\\check_contract".
+annotation adds a new hypothesis to the list of existing hypotheses.
+
+Specification for Check annotation in SPARK 2005:
+
+   .. literalinclude:: ../code/check_contract/05/check_05.ads
+      :language: ada
+      :linenos:
+
+Body for Check annotation in SPARK 2005:
+
+   .. literalinclude:: ../code/check_contract/05/check_05.adb
+      :language: ada
+      :linenos:
+
+Specification for Check annotation in |SPARK|:
+
+   .. literalinclude:: ../code/check_contract/14/check_14.ads
+      :language: ada
+      :linenos:
+
+Body for Check annotation in |SPARK|:
+
+   .. literalinclude:: ../code/check_contract/14/check_14.adb
+      :language: ada
+      :linenos:
 
 Assert used to control path explosion
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This example will be added in future, based on the Tutorial 5, Exercise 1 example from
-the advanced SPARK course.
+This capability is in general not needed with the |SPARK| toolset where
+path explosion is handled automatically. In the rare cases where this is
+needed, you can use the `pragma Assert_And_Cut` for that purpose.
 
 Other Contracts and Annotations
 -------------------------------
-
-Declare annotation
-~~~~~~~~~~~~~~~~~~
-
-.. todo:: The declare annotation SPARK is used to control the generation of proof
-   rules for composite objects. It is not clear that this will be required in
-   |SPARK|, so this section will be updated or removed in future.
-   To be completed in the Milestone 4 version of this document.
 
 Always_Valid assertion
 ~~~~~~~~~~~~~~~~~~~~~~
