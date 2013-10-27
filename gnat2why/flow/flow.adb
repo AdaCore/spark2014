@@ -884,7 +884,7 @@ package body Flow is
          end case;
       end loop;
 
-      --  TODO: Perform interprocedural analysis
+      --  ??? Perform interprocedural analysis
 
       --  Analyse graphs and produce error messages
       for FA of FA_Graphs loop
@@ -913,8 +913,8 @@ package body Flow is
                   Analysis.Analyse_Main (FA);
 
                when E_Package =>
-                  --  !!! Issue here with detection of uninitialized
-                  --  !!! state. Needs resolution of M628-002.
+                  --  ??? Issue here with detection of uninitialized
+                  --  state. See resolution of M628-002.
                   null;
 
                when E_Package_Body =>

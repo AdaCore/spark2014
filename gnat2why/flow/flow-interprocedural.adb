@@ -141,8 +141,8 @@ package body Flow.Interprocedural is
       if Has_Depends (Called_Procedure) then
          --  We have a dependency aspect, so we should use it.
 
-         --  !!! M318-017 (variant records) will need to change this
-         --  !!! to deal with the hidden ins in out parameters.
+         --  ??? M318-017 (variant records) will need to change this
+         --  to deal with the hidden ins in out parameters.
          declare
             Deps : Dependency_Maps.Map;
          begin

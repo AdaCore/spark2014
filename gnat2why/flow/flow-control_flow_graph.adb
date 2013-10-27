@@ -985,7 +985,7 @@ package body Flow.Control_Flow_Graph is
       Stmts : constant List_Id := Statements (N);
    begin
       Process_Statement_List (Stmts, FA, CM, Ctx);
-      --  !!! Workaround for stdlib bug
+      --  ??? Workaround for stdlib bug
       CM.Include (Union_Id (N), CM.Element (Union_Id (Stmts)));
    end Do_Handled_Sequence_Of_Statements;
 
@@ -1874,7 +1874,7 @@ package body Flow.Control_Flow_Graph is
             CM (Union_Id (Declarations (N))).Standard_Exits,
             CM (Union_Id (Handled_Statement_Sequence (N))).Standard_Entry);
 
-         --  !!! Workaround for stdlib bug
+         --  ??? Workaround for stdlib bug
          CM.Include
            (Union_Id (N),
             Graph_Connections'
@@ -1884,7 +1884,7 @@ package body Flow.Control_Flow_Graph is
                  (Union_Id (Handled_Statement_Sequence (N))).Standard_Exits));
 
       elsif Present (Declarations (N)) then
-         --  !!! Workaround for stdlib bug
+         --  ??? Workaround for stdlib bug
          CM.Include
            (Union_Id (N),
             Graph_Connections'
@@ -1894,7 +1894,7 @@ package body Flow.Control_Flow_Graph is
                  (Union_Id (Declarations (N))).Standard_Exits));
 
       elsif Present (Handled_Statement_Sequence (N)) then
-         --  !!! Workaround for stdlib bug
+         --  ??? Workaround for stdlib bug
          CM.Include
            (Union_Id (N),
             Graph_Connections'
@@ -2627,7 +2627,7 @@ package body Flow.Control_Flow_Graph is
                FA, Connection_Map, The_Context);
 
          when E_Package =>
-            --  !!! Look into initial conditions
+            --  ??? Look into initial conditions
             Process_Quantified_Expressions
               (Visible_Declarations (Spec_N), FA, Connection_Map, The_Context);
             Process_Quantified_Expressions
@@ -2681,7 +2681,7 @@ package body Flow.Control_Flow_Graph is
             end;
 
          when E_Package | E_Package_Body =>
-            --  !!! process initial condition
+            --  ??? process initial condition
             null;
       end case;
 

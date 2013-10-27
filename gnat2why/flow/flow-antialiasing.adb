@@ -563,7 +563,7 @@ package body Flow.Antialiasing is
          Append (Msg, "s & and &");
          Error_Msg_Node_2 := B_Formal;
       else
-         --  !!! maybe have a special message for generated globals
+         --  ??? maybe have a special message for generated globals
          Append (Msg, " & and global &");
          Error_Msg_Node_2 := B;
       end if;
@@ -760,8 +760,8 @@ package body Flow.Antialiasing is
          end loop;
       end;
 
-      --  !!! To do: check for aliasing between abstract state and
-      --  computed globals.
+      --  ??? Need to check for aliasing between abstract state and computed
+      --  globals.
 
    end Check_Procedure_Call;
 

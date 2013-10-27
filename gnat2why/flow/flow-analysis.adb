@@ -282,9 +282,9 @@ package body Flow.Analysis is
       begin
          case Nkind (N) is
             when N_Identifier | N_Expanded_Name =>
-               if Present (Entity (N)) and then
-                 Nkind (Entity (N)) in N_Entity and then  -- !!! workaround
-                 Unique_Entity (Entity (N)) = Needle
+               if Present (Entity (N))
+                 and then Nkind (Entity (N)) in N_Entity  -- ??? workaround
+                 and then Unique_Entity (Entity (N)) = Needle
                then
                   The_Global := N;
                   return Abandon;
@@ -366,7 +366,7 @@ package body Flow.Analysis is
       --  Note we never actually need writes in this analysis.
 
       for R of Reads loop
-         --  !!! Fix this for magic strings once M711-031 is implemented
+         --  ??? Fix this for magic strings once M711-031 is implemented
          if not (R.Kind in Direct_Mapping | Record_Field and then
                    Is_Initialized_At_Elaboration (Get_Direct_Mapping_Id (R)))
          then
@@ -425,7 +425,7 @@ package body Flow.Analysis is
                                                   Expression (N)));
                   begin
                      for F of Deps loop
-                        --  !!! consider moving this to spark_definition
+                        --  ??? consider moving this to spark_definition
                         Error_Msg_Flow
                           (FA        => FA,
                            Tracefile => Tracefile,
@@ -598,10 +598,10 @@ package body Flow.Analysis is
                   if not FA.All_Vars.Contains (Neutral) then
                      case Neutral.Kind is
                         when Direct_Mapping | Record_Field =>
-                           --  !!! hopefully we can move this to
+                           --  ??? hopefully we can move this to
                            --  spark_definition too
 
-                           --  !!! maybe also point to the first
+                           --  ??? maybe also point to the first
                            --  occurrence of the variable, possibly
                            --  via a continuation message
                            Error_Msg_Flow
@@ -819,7 +819,7 @@ package body Flow.Analysis is
                        (FA        => FA,
                         Tracefile => Tracefile,
                         Msg       => "unused initial value of &",
-                        --  !!! find_import
+                        --  ??? find_import
                         N         => Error_Location (FA.PDG, V),
                         F1        => F,
                         Tag       => "unused_initial_value",
@@ -1791,7 +1791,7 @@ package body Flow.Analysis is
                         Warning   => True);
                   end if;
                else
-                  --  !!! distinguish between variables and parameters
+                  --  ??? distinguish between variables and parameters
                   Error_Msg_Flow
                     (FA        => FA,
                      Tracefile => Tracefile,
@@ -1912,7 +1912,7 @@ package body Flow.Analysis is
             F_Out : constant Flow_Id := Dependency_Maps.Key (C);
          begin
             if not Actual_Deps.Contains (F_Out) then
-               --  !!! check quotation in errout.ads
+               --  ??? check quotation in errout.ads
                Error_Msg_Flow
                  (FA        => FA,
                   Tracefile => Tracefile,
@@ -1954,8 +1954,8 @@ package body Flow.Analysis is
                Global_Required (FA, F_Out);
                Proceed_With_Analysis := False;
             else
-               --  !!! legality error, should be moved to frontend;
-               --  !!! possibly raise exception here
+               --  ??? legality error, should be moved to frontend;
+               --  ??? possibly raise exception here
                Error_Msg_Flow
                  (FA        => FA,
                   Tracefile => Tracefile,
@@ -2010,7 +2010,7 @@ package body Flow.Analysis is
                         F2        => Missing_Var,
                         Tag       => "depends_missing",
                         Warning   => True);
-                     --  !!! show path
+                     --  ??? show path
                   end if;
                end loop;
 
