@@ -985,7 +985,7 @@ package body Flow.Control_Flow_Graph is
       Stmts : constant List_Id := Statements (N);
    begin
       Process_Statement_List (Stmts, FA, CM, Ctx);
-      --  ??? Workaround for stdlib bug
+      --  ??? [MA27-005] Workaround for bug in stdlib
       CM.Include (Union_Id (N), CM.Element (Union_Id (Stmts)));
    end Do_Handled_Sequence_Of_Statements;
 
@@ -1874,7 +1874,7 @@ package body Flow.Control_Flow_Graph is
             CM (Union_Id (Declarations (N))).Standard_Exits,
             CM (Union_Id (Handled_Statement_Sequence (N))).Standard_Entry);
 
-         --  ??? Workaround for stdlib bug
+         --  ??? [MA27-005] Workaround for bug in stdlib
          CM.Include
            (Union_Id (N),
             Graph_Connections'
@@ -1884,7 +1884,7 @@ package body Flow.Control_Flow_Graph is
                  (Union_Id (Handled_Statement_Sequence (N))).Standard_Exits));
 
       elsif Present (Declarations (N)) then
-         --  ??? Workaround for stdlib bug
+         --  ??? [MA27-005] Workaround for bug in stdlib
          CM.Include
            (Union_Id (N),
             Graph_Connections'
@@ -1894,7 +1894,7 @@ package body Flow.Control_Flow_Graph is
                  (Union_Id (Declarations (N))).Standard_Exits));
 
       elsif Present (Handled_Statement_Sequence (N)) then
-         --  ??? Workaround for stdlib bug
+         --  ??? [MA27-005] Workaround for bug in stdlib
          CM.Include
            (Union_Id (N),
             Graph_Connections'
