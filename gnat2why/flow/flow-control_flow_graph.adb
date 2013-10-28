@@ -2356,6 +2356,7 @@ package body Flow.Control_Flow_Graph is
               Pragma_List                         |
               Pragma_Optimize                     |
               Pragma_Overflow_Mode                |
+              Pragma_No_Return                    |
               Pragma_Pack                         |
               Pragma_Page                         |
               Pragma_Postcondition                |

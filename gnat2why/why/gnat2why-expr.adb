@@ -5534,7 +5534,7 @@ package body Gnat2Why.Expr is
             return New_Void (Prag);
 
          --  Ignore pragmas which have no effect on proof, or whose effect
-         --  is taken into account elsewhere (contract, loop variant).
+         --  is taken into account elsewhere (e.g. contract, loop variant).
 
          when Pragma_Abstract_State               |
               Pragma_Ada_83                       |
@@ -5563,6 +5563,7 @@ package body Gnat2Why.Expr is
               Pragma_Linker_Options               |
               Pragma_List                         |
               Pragma_Loop_Variant                 |
+              Pragma_No_Return                    |
               Pragma_Optimize                     |
               Pragma_Pack                         |
               Pragma_Page                         |

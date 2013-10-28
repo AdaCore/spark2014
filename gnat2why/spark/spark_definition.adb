@@ -2507,6 +2507,7 @@ package body SPARK_Definition is
               Pragma_Inspection_Point             |
               Pragma_Linker_Options               |
               Pragma_List                         |
+              Pragma_No_Return                    |
               Pragma_Optimize                     |
               Pragma_Pack                         |
               Pragma_Page                         |
