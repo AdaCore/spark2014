@@ -37,7 +37,7 @@ Interrupt_Priority 	      No		     No tasking
 Linker_Options     	      Yes
 List               	      Yes
 Locking_Policy    	      No		     No tasking
-No_Return          	      ?             	     I thought we were going to support these?
+No_Return          	      Yes
 Normalize_Scalars  	      No            	     No support for invalid values
 Optimise           	      Yes
 Pack              	      Yes

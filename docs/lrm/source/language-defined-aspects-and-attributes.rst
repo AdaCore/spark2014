@@ -6,7 +6,7 @@ Language-Defined Aspects
 
 .. _tu-fe-language_defined_aspects-01:
 
-1. Ada language aspects are permitted as shown in the following table: 
+1. Ada language aspects are permitted as shown in the following table:
 
 ============================= ====================== ===============================================
 Aspect                        Allowed in SPARK 2014  Comment
@@ -46,7 +46,7 @@ Iterator_Element	      No
 Layout (record)		      Yes
 Link_Name     	      	      Yes
 Machine_Radix		      ?
-No_Return          	      ?             	     I thought we were going to support these?
+No_Return          	      Yes
 Output			      No		     No streams
 Pack              	      Yes
 Pre			      Yes
@@ -123,101 +123,101 @@ Attribute                              Allowed in SPARK 2014 Comment
 ===================================== ====================== ====================================================
 P'Access			      No		     No access types
 X'Access	    		      No
-X'Address	    		      Warn		     Warning in pedantic mode	
+X'Address	    		      Warn		     Warning in pedantic mode
 S'Adjacent	    		      No
-S'Aft				      ?	
+S'Aft				      ?
 S'Alignment	    		      Warn                   Warning in pedantic mode
 X'Alignment	    		      Warn		     Warning in pedantic mode
-S'Base				      Yes	
+S'Base				      Yes
 S'Bit_Order	    		      Warn		     Warning in pedantic mode
-P'Body_Version 			      Yes	
+P'Body_Version 			      Yes
 T'Callable	    		      No		     No tasking
 E'Caller	    		      No	             No tasking
-S'Ceiling	    		      Yes	
+S'Ceiling	    		      Yes
 S'Class				      No		     No tagged types
 X'Component_Size    		      Warn     		     Warning in pedantic mode
-S'Compose	    		      No	
-A'Constrained			      Yes	
+S'Compose	    		      No
+A'Constrained			      Yes
 S'Copy_Sign	    		      Yes		     Possibly limited at first
 E'Count				      No		     No tasking
-S'Definite	    		      Yes	
-S'Delta				      ?	
+S'Definite	    		      Yes
+S'Delta				      ?
 S'Denorm	    		      Yes		     Not supported at the moment
-S'Digits	    		      Yes	
-S'Exponent	    		      No	
+S'Digits	    		      Yes
+S'Exponent	    		      No
 S'External_Tag			      No	             No tagged types
-A'First				      Yes	
-S'First	 			      Yes	
-A'First(N)	    		      Yes	
-R.C'First_Bit			      Warn		     Warning in Pedantic mode	
-S'First_Valid			      Yes	
-S'Floor				      Yes	
-S'Fore				      ?	
-S'Fraction	    		      No	
-X'Has_Same_Storage  		      No	
-E'Identity	    		      ?	
+A'First				      Yes
+S'First	 			      Yes
+A'First(N)	    		      Yes
+R.C'First_Bit			      Warn		     Warning in Pedantic mode
+S'First_Valid			      Yes
+S'Floor				      Yes
+S'Fore				      ?
+S'Fraction	    		      No
+X'Has_Same_Storage  		      No
+E'Identity	    		      ?
 T'Identity	    		      No		     No tasking
-S'Image				      Y	
+S'Image				      Y
 S'Class'Input			      No		     No tagged types and no streams
 S'Input				      No		     No streams
-A'Last				      Yes	
-S'Last				      Yes	
-A'Last(N)	    		      Yes	
-R.C'Last_Bit			      Warn		     Warning in pedantic mode	
-S'Last_Valid			      Yes	
+A'Last				      Yes
+S'Last				      Yes
+A'Last(N)	    		      Yes
+R.C'Last_Bit			      Warn		     Warning in pedantic mode
+S'Last_Valid			      Yes
 S'Leading_Part			      No		     As 'Exponent is not supported
-A'Length	    		      Yes	
+A'Length	    		      Yes
 A'Length(N)	    		      Yes
-X'Loop_Entry        		      Yes	
+X'Loop_Entry        		      Yes
 S'Machine	    		      Yes		     What use is this?
-S'Machine_Emax			      Yes	
-S'Machine_Emin			      Yes	
-S'Machine_Mantissa  		      Yes	
-S'Machine_Overflows 		      Yes	
-S'Machine_Radix			      Yes	
-S'Machine_Rounding  		      Yes	
-S'Machine_Rounds    		      Yes	
-S'Max				      Yes	
+S'Machine_Emax			      Yes
+S'Machine_Emin			      Yes
+S'Machine_Mantissa  		      Yes
+S'Machine_Overflows 		      Yes
+S'Machine_Radix			      Yes
+S'Machine_Rounding  		      Yes
+S'Machine_Rounds    		      Yes
+S'Max				      Yes
 S'Max_Alignment_For_Allocation 	      No	             No access type
 S'Max_Size_In_Storage_Elements 	      No		     No access type
-S'Min				      Yes	
+S'Min				      Yes
 S'Mod				      Yes
-S'Model				      ???	
-S'Model_Emin			      ???	
-S'Model_Epsilon			      ???	
-S'Model_Mantissa		      ???	
-S'Model_Small			      ???	
+S'Model				      ???
+S'Model_Emin			      ???
+S'Model_Epsilon			      ???
+S'Model_Mantissa		      ???
+S'Model_Small			      ???
 S'Modulus	   		      Yes
-X'Old				      Yes	
+X'Old				      Yes
 S'Class'Output			      No		     No tagged types and no streams
 S'Output	   		      No		     No streams
 X'Overlaps_Storage 		      No
-D'Partition_Id			      Yes	
-S'Pos				      Yes	
-R.C'Position			      Warn                   Warning in pedantic mode	
+D'Partition_Id			      Yes
+S'Pos				      Yes
+R.C'Position			      Warn                   Warning in pedantic mode
 S'Pred				      Yes	       	     In short term not for floats
 P'Priority	   		      No		     No tasking
-A'Range				      Yes	
-S'Range				      Yes	
-A'Range(N)	   		      Yes	
+A'Range				      Yes
+S'Range				      Yes
+A'Range(N)	   		      Yes
 S'Class'Read			      No		     No tagged types
 S'Read				      No		     No streams
-S'Remainder	   		      Yes	
-F'Result	   		      Yes	
+S'Remainder	   		      Yes
+F'Result	   		      Yes
 S'Round				      ?			     Are we supporting decimal fixed points?
-S'Rounding	   		      Yes	
-S'Safe_First			      ???	
-S'Safe_Last	    		      ???	
+S'Rounding	   		      Yes
+S'Safe_First			      ???
+S'Safe_Last	    		      ???
 S'Scale				      ?	                     Are we supporting decimal fixed points?
-S'Scaling	   		      ?	
+S'Scaling	   		      ?
 S'Size				      Warn                   Warning in pedantic
 X'Size				      Warn     		     Warning in pedantic
-S'Small				      Yes	
+S'Small				      Yes
 S'Storage_Pool			      No		     No access types
 S'Storage_Size			      No		     No access types
 T'Storage_Size			      No		     No tasking
 S'Stream_Size			      No		     No streams
-S'Succ				      Yes	
+S'Succ				      Yes
 S'Tag				      No		     No tagged types
 X'Tag				      No		     No tagged types
 T'Terminated			      No		     No tasking
@@ -227,15 +227,15 @@ X'Unchecked_Access  		      No		     No access types or aliases
 X'Update            		      Yes
 S'Val				      Yes
 X'Valid				      Yes	             First release does not use this in proofs
-S'Value				      Yes	
-P'Version	  		      Yes	
-S'Wide_Image			      Yes	
-S'Wide_Value			      Yes	
-S'Wide_Wide_Image 		      Yes	
-S'Wide_Wide_Value 		      Yes	
-S'Wide_Wide_Width		      Yes	
-S'Wide_Width			      Yes	
-S'Width				      Yes	
+S'Value				      Yes
+P'Version	  		      Yes
+S'Wide_Image			      Yes
+S'Wide_Value			      Yes
+S'Wide_Wide_Image 		      Yes
+S'Wide_Wide_Value 		      Yes
+S'Wide_Wide_Width		      Yes
+S'Wide_Width			      Yes
+S'Width				      Yes
 S'Class'Write			      No		     No tagged types
 S'Write				      No		     No streams
 ===================================== ====================== ====================================================
