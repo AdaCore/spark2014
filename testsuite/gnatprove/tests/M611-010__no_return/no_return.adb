@@ -1,4 +1,4 @@
-package body No_Return is 
+package body No_Return is
 
    X : Integer := 0;
 
@@ -7,6 +7,7 @@ package body No_Return is
       if X /= 0 then
          X := 1;
       end if;
+      raise Program_Error;
    end Aborting;
 
    procedure P is
