@@ -1,6 +1,0 @@
-Phase 1 of 3: frame condition computation ...
-Phase 2 of 3: translation to intermediate language ...
-p.adb:26:14: warning: statement has no effect [ineffective]
-p.adb:39:07: warning: statement has no effect [ineffective]
-p.adb:39:28: warning: statement has no effect [ineffective]
-gprbuild: *** compilation phase failed
