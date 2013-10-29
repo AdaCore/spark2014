@@ -292,9 +292,10 @@ define each unit in a separate file.
 Features Not Yet Implemented
 ----------------------------
 
-The following limitations relate to features that are not yet
+This section lists features that are not yet
 implemented in the tools but which we expect to remove in
-future. Note that in some cases it may be possible to use
+future. It is not exhaustive but lists the key limitations.
+Note that in some cases it may be possible to use
 features which are listed below as unsupported, but the
 analysis results relating to those features may be missing
 or incorrect.
