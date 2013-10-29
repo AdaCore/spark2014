@@ -275,7 +275,7 @@ but also a few drawbacks that |SPARK| to a large extent mitigates.
 The Ada pragma Assertion_Policy controls whether contracts and
 assertion expressions in general are executed and checked at run-time.
 Assertion expressions are always significant in static analysis and
-proof and, indeed, form that basis of the specification against which
+proof and, indeed, form the basis of the specification against which
 the implementation is verified.
 
 In summary, Ada 2012 in itself enables contract-based, dynamic
@@ -297,11 +297,11 @@ the programmer in a number of ways:
 
   * executable assertions can be enabled and checked at run time, and
     this gives valuable information to the user. When an assertion
-    fails, it means that the code failed to obey desired properties (
-    i.e., the code is erroneous), or that the intent of the code has
-    been incorrectly expressed ( i.e., the assertion is erroneous)
-    and experience shows that both situations arise equally often. In
-    any case, the understanding of the code and properties of the
+    fails, it means that the code failed to obey desired properties
+    (i.e., the code is erroneous), or that the intent of the code has
+    been incorrectly expressed (i.e., the assertion is erroneous) and
+    experience shows that both situations arise equally often. In any
+    case, the understanding of the code and properties of the
     programmer are improved. This also means that users get immediate
     benefits from writing additional assertions and contracts, which
     greatly encourages the adoption of contract-based programming;
@@ -407,10 +407,10 @@ compilation or execution of the program may fail.
 Main Program
 ------------
 
-In SPARK 2005, a dedicated annotation was used to identify the main program.
-There is no corresponding aspect in |SPARK| and instead it is expected that
-any implementation of |SPARK| will have its own mechanism to allow the tools
-to identify the main program (albeit not within the language itself).
+There is no aspect or pragma in |SPARK| indicationg taht a subprogram
+is a main program.  Instead it is expected that any implementation of
+|SPARK| will have its own mechanism to allow the tools to identify the
+main program (albeit not within the language itself).
 
 .. _sprs:
 
@@ -717,14 +717,14 @@ by the called subprogram:
   Depends) aspect is correct as the |SPARK| tools do not check this
   because the subprogarm is not in |SPARK|;
 
-- it shall not update any variable or state abstraction
-  known to the |SPARK| program, directly or indirectly, apart from
-  through an actual parameter of the subprogram or a global item
-  listed in its Global aspect.  Updating a variable or state
-  abstraction through an object of an access type or through a
-  subprogram call is an indirect update. Here again, if the subprogram
-  is not in |SPARK| and can be flow analyzed, the onus is on the user
-  to show this condition is met; and
+- it shall not update any variable or state abstraction known to the
+  |SPARK| program, directly or indirectly, apart from through an
+  actual parameter of the subprogram or a global item listed in its
+  Global aspect.  Updating a variable or state abstraction through an
+  object of an access type or through a subprogram call is an indirect
+  update. Here again, if the subprogram is not in |SPARK| and cannot
+  be flow analyzed, the onus is on the user to show this condition is
+  met; and
 
 - if it has a postcondition sufficient testing to demonstrate to a
   high-level of confidence that the postcondition is always True must
@@ -770,15 +770,16 @@ entities and their use should be restricted to places where they do not affect
 the functionality of the program. Complete removal of *ghost* entities has no
 functional impact on the program.
 
-|SPARK| currently supports ghost functions but not ghost types or variables.
-Ghost functions may be executable or non-executable. Non-executable ghost
-functions have no implementation and can be used for the purposes of formal
-verification only. Such functions may have their specification defined within an
-external proof tool to facilitate formal verification. This specification is
-outside of the |SPARK| language and toolset and therefore cannot be checked by
-the tools. An unsound definition may lead to an unsound proof which is of no
-use. Ideally any definition will be checked for soundness by the external proof
-tools.
+|SPARK| currently supports ghost functions but not ghost types or
+variables.  Ghost functions may be executable or
+non-executable. Non-executable ghost functions have no implementation
+and can be used for the purposes of formal verification only. Such
+functions may have their specification defined within an external
+proof tool to facilitate formal verification. This specification is
+outside of the |SPARK| language and toolset and therefore cannot be
+checked by the tools. An incorrect definition of function may lead to
+an unsound proof which is of no use. Ideally any definition will be
+checked for soundness by the external proof tools.
 
 If the postcondition of a function, F, can be specified in |SPARK| as
 F'Result = E, then the postcondition may be recast as the expression of an
@@ -854,11 +855,6 @@ implementation code or from other |SPARK| aspects as follows:
     a single state abstraction for every variable shall be provided. A
     Refined_State aspect shall be synthesized which shows the constituents of
     each state.
-
-  * If no Initializes aspect is specified for a package but it declares
-    persistent variables which are initialized then an Initializes aspect shall
-    be synthesized stating the visible variables that are initialized and the
-    state abstractions representing the hidden variables that are initialized.
 
 The syntheses described above do not include all of the |SPARK| aspects and nor
 do the syntheses cover all facets of the aspects. In complex programs where
