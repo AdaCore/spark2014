@@ -477,7 +477,7 @@ offered by Ada's Annex B.
 .. todo:: How much to say here?  S95 supports a subset of Interfaces, and a very small subset of
    Interfaces.C but that's about it. 
 
-.. todo:: What is status of supported for pragma ``Unchecked_Union`` in GNATProve at present?
+.. todo:: Note that pragma ``Unchecked_Union`` is not supported in release 1.
 
 Systems Programming
 -------------------
