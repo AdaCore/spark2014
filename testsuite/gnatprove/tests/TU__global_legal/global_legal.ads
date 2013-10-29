@@ -36,9 +36,9 @@ is
 
    procedure P_Many_Moded_Global_Lists (Par : Integer)
      --  global_specification ::= moded_global_list {, moded_global_list}
-     with Global => (In_Out   => (A1, A2),
-                     Input    => (A5, A6),
-                     Output   => (A7, A8),
+     with Global => (In_Out   => (A1, A2, A6, A8),
+                     Input    => A7,
+                     Output   => A5,
                      Proof_In => (A3, A4));
 
    function F_Null (Par : Integer) return Integer
@@ -59,6 +59,6 @@ is
 
    function F_Many_Moded_Global_Lists (Par : Integer) return Integer
      --  global_specification ::= moded_global_list {, moded_global_list}
-     with Global => (Input    => (X, A5, Comp, A6),
-                     Proof_In => (A3, A4));
+     with Global => (Input    => (X, A1, Comp),
+                     Proof_In => (A3, A4, A7));
 end Global_Legal;
