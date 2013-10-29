@@ -126,6 +126,7 @@ Ada_12             	      Yes
 Ada_2012           	      Yes
 Check	 		      Yes		     Is this used by SPARK in a specific way?
 Check_Policy 		      Yes		     Is this used by SPARK in a specific way?
+Debug			      Yes		     Ignored (replaced by null statement)
 Inline_Always      	      Yes
 Pure_Function      	      Yes
 Style_Checks      	      Yes
@@ -134,6 +135,6 @@ Style_Checks      	      Yes
 
 .. _etu-language_defined_pragmas:
 
-What about other Gnat specific pragmas?
+..  What about other Gnat specific pragmas?
 
 .. todo:: complete this section
