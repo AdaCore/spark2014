@@ -310,6 +310,8 @@ Features Not Yet Implemented in Both Flow Analysis and Proof
  - Async_Readers
  - Async_Writers
  - Effective_Writes
+ - Static_Predicate
+ - Predicate
 
 #. Separate packages and subprograms may not be analyzed, as well as
    the code of their parent following the declaration of the corresponding
