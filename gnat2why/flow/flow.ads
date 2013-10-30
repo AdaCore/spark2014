@@ -100,7 +100,9 @@ package Flow is
    is record
       Analyzed_Entity   : Entity_Id;
       Scope             : Scope_Ptr;
-      --  The entity and scope of the analysed entity.
+      Spec_Scope        : Scope_Ptr;
+      --  The entity and scope (of the body and spec) of the analysed
+      --  entity. The two scopes might be the same in some cases.
 
       Spec_Node         : Entity_Id;
       --  Useful shorthand to the node where the n_contract node is
@@ -118,7 +120,7 @@ package Flow is
       --  The graphs.
 
       All_Vars          : Flow_Id_Sets.Set;
-      --  A set of all variables used.
+      --  A set of all variables used in the body.
 
       Unmodified_Vars   : Node_Sets.Set;
       --  A set of all variables that are not expected to be modified
@@ -167,6 +169,8 @@ package Flow is
             Initializes_N : Node_Id;
             --  A few contract nodes cached as they can be a bit
             --  tedious to find.
+
+            Visible_Vars : Flow_Id_Sets.Set;
       end case;
    end record;
 

@@ -1,6 +1,6 @@
-sm_using_case_expression.adb:38:7: warning: assertion might fail
-sm_using_case_expression.adb:51:18: warning: assertion might fail, requires My_SM(State2, Trigger) /= Invalid_State or (...
+sm_using_case_expression.adb:42:7: warning: assertion might fail
+sm_using_case_expression.adb:55:18: warning: assertion might fail, requires My_SM(State2, Trigger) /= Invalid_State or (...
 sm_using_case_expression.ads:17:17: info: postcondition proved
 sm_using_case_expression.ads:39:63: info: length check proved
-sm_using_case_expression.ads:54:19: info: postcondition proved
-sm_using_case_expression.ads:88:19: info: postcondition proved
+sm_using_case_expression.ads:55:19: info: postcondition proved
+sm_using_case_expression.ads:90:19: info: postcondition proved

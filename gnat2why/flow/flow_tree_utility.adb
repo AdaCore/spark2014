@@ -357,7 +357,10 @@ package body Flow_Tree_Utility is
    begin
       --  ??? To be resolved completely in M314-012 once M619-012 is answered.
 
-      if Present (Body_E) then
+      if No (Scope) then
+         return False;
+
+      elsif Present (Body_E) then
          Scope_Of_Called_Subprogram := Get_Enclosing_Body_Scope
            (Get_Enclosing_Body_Scope (Body_E));
          P                          := Scope;

@@ -42,6 +42,14 @@ package Flow.Analysis is
    --
    --  Complexity is O(N)
 
+   procedure Sanity_Check_Postcondition (FA   : Flow_Analysis_Graphs;
+                                         Sane : in out Boolean)
+   with Pre => Sane;
+   --  Check post, refined_post and initializes for use of variables
+   --  we have not introduced through a global or parameter.
+   --
+   --  Complexity is O(N)
+
    procedure Find_Unwritten_Exports (FA : in out Flow_Analysis_Graphs);
    --  Find outputs which are never written to.
    --

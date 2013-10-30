@@ -36,6 +36,7 @@ with Snames;                        use Snames;
 with Sprint;                        use Sprint;
 
 with Output;                        use Output;
+with Treepr;                        use Treepr;
 
 with Why;
 with SPARK_Definition;              use SPARK_Definition;
@@ -63,6 +64,10 @@ package body Flow is
    Debug_Print_CFG           : constant Boolean := True;
    Debug_Print_Intermediates : constant Boolean := False;
    Debug_Print_PDG           : constant Boolean := True;
+
+   --  These debug options control some of the tracing produced.
+
+   Debug_Trace_Scoping : constant Boolean := False;
 
    ------------------------------------------------------------
 
@@ -510,6 +515,7 @@ package body Flow is
               (Kind              => E_Subprogram_Body,
                Analyzed_Entity   => E,
                Scope             => SPARK_Util.Get_Subprogram_Body (E),
+               Spec_Scope        => Get_Enclosing_Scope (E),
                Spec_Node         => S,
                Start_Vertex      => Null_Vertex,
                End_Vertex        => Null_Vertex,
@@ -539,6 +545,7 @@ package body Flow is
               (Kind              => E_Package,
                Analyzed_Entity   => E,
                Scope             => Get_Enclosing_Scope (E),
+               Spec_Scope        => Get_Enclosing_Scope (E),
                Spec_Node         => S,
                Start_Vertex      => Null_Vertex,
                End_Vertex        => Null_Vertex,
@@ -553,13 +560,15 @@ package body Flow is
                Loops             => Node_Sets.Empty_Set,
                Aliasing_Present  => False,
                Base_Filename     => To_Unbounded_String ("package_spec_"),
-               Initializes_N     => Empty);
+               Initializes_N     => Empty,
+               Visible_Vars      => Flow_Id_Sets.Empty_Set);
 
          when E_Package_Body =>
             FA := Flow_Analysis_Graphs'
               (Kind              => E_Package_Body,
                Analyzed_Entity   => E,
                Scope             => Get_Enclosing_Body_Scope (E),
+               Spec_Scope        => Get_Enclosing_Scope (S),
                Spec_Node         => S,
                Start_Vertex      => Null_Vertex,
                End_Vertex        => Null_Vertex,
@@ -574,7 +583,8 @@ package body Flow is
                Loops             => Node_Sets.Empty_Set,
                Aliasing_Present  => False,
                Base_Filename     => To_Unbounded_String ("package_body_"),
-               Initializes_N     => Empty);
+               Initializes_N     => Empty,
+               Visible_Vars      => Flow_Id_Sets.Empty_Set);
 
          when others =>
             raise Why.Not_SPARK;
@@ -592,6 +602,17 @@ package body Flow is
                       Get_Name_String (Chars (E)) &
                       Character'Val (8#33#) & "[0m");
          Write_Eol;
+
+         if Debug_Trace_Scoping then
+            Indent;
+            Write_Str ("Entity:     ");
+            Print_Node_Briefly (FA.Analyzed_Entity);
+            Write_Str ("Scope:      ");
+            Print_Tree_Node (FA.Scope);
+            Write_Str ("Spec_Scope: ");
+            Print_Tree_Node (FA.Spec_Scope);
+            Outdent;
+         end if;
       end if;
 
       Control_Flow_Graph.Create (FA);
@@ -795,6 +816,9 @@ package body Flow is
          end if;
 
          Analysis.Sanity_Check (FA, Success);
+         if Success then
+            Analysis.Sanity_Check_Postcondition (FA, Success);
+         end if;
          if Success then
             case FA.Kind is
                when E_Subprogram_Body =>

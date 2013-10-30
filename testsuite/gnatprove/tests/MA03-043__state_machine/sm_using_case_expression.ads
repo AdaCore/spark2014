@@ -51,7 +51,8 @@ is
 
    -- Initialises the system state to "Start"
    procedure Initialise
-     with Post => (Get_State = States_T'First);
+     with Global => (Output => Abs_State),
+          Post => (Get_State = States_T'First);
 
    -- Expression function to specify the state machine
    function My_SM(State : in States_T; Trigger: in Triggers_T)
@@ -85,7 +86,8 @@ is
 
    -- Progresses the system state based on the trigger
    procedure Progress_SM(Trigger : in Triggers_T)
-     with Post => (Get_State = My_SM(Get_State'old, Trigger));
+   with Global => (In_Out => Abs_State),
+        Post   => (Get_State = My_SM(Get_State'old, Trigger));
 
 
    -- Returns true if the state of the system is "Finish"

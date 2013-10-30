@@ -20,12 +20,16 @@ is
    end Set_State;
 
 
-   procedure Initialise is
+   procedure Initialise
+   with Refined_Global => (Output => State)
+   is
    begin
       Set_State(States_T'First);
    end;
 
-   procedure Progress_SM(Trigger : in Triggers_T) is
+   procedure Progress_SM(Trigger : in Triggers_T)
+   with Refined_Global => (In_Out => State)
+   is
       -- This copy of state is required for the pragmas,
       -- in later releases this could be declared as a
       -- ghost function to ensure it isn't used by the code.

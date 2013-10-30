@@ -228,7 +228,7 @@ package body Flow.Control_Flow_Graph.Utility is
            (Ekind (Formal) in E_In_Parameter | E_In_Out_Parameter or else
               Discriminants_Only);
 
-         Tmp_Used := Get_Variable_Set (Scope, Actual);
+         Tmp_Used := Get_Variable_Set (Actual, Scope => Scope);
          for F of Tmp_Used loop
             if not Discriminants_Only or else Is_Discriminant (F) then
                A.Variables_Used.Include (F);
@@ -418,7 +418,8 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Default_Init_Val  := Get_Default_Initialization (F);
 
       A.Variables_Defined := Flow_Id_Sets.To_Set (F);
-      A.Variables_Used    := Get_Variable_Set (Scope, A.Default_Init_Val);
+      A.Variables_Used    := Get_Variable_Set (A.Default_Init_Val,
+                                               Scope => Scope);
 
       Add_Volatile_Effects (A);
       return A;

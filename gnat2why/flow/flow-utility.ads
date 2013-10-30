@@ -58,23 +58,41 @@ package Flow.Utility is
    --  If Globals_For_Proof is set then the calls to Get_Reads will
    --  not specify Include_Constants.
 
-   function Get_Variable_Set (Scope            : Scope_Ptr;
-                              N                : Node_Id;
-                              Reduced          : Boolean := False;
-                              Allow_Statements : Boolean := False)
-                              return Flow_Id_Sets.Set;
+   function Get_Variable_Set (N                : Node_Id;
+                              Reduced          : Boolean   := False;
+                              Allow_Statements : Boolean   := False;
+                              Scope            : Scope_Ptr := Empty;
+                              Force_Abstract   : Boolean   := False;
+                              Force_Refined    : Boolean   := False)
+                              return Flow_Id_Sets.Set
+     with Pre => (if Present (Scope)
+                  then not (Force_Abstract or Force_Refined)
+                  else Force_Abstract xor Force_Refined);
    --  Obtain all variables used in an expression. If reduced is true,
    --  onbtain only entire variables.
    --
    --  If allow_statements is false, we raise an exception if we
    --  encounter certain statements such as procedure calls.
+   --
+   --  We use Scope to determine if called subprograms should provide
+   --  their abstract or refined view; or one of the Force_*
+   --  parameters may be set to provide a detailed instruction.
 
-   function Get_Variable_Set (Scope            : Scope_Ptr;
-                              L                : List_Id;
-                              Reduced          : Boolean := False;
-                              Allow_Statements : Boolean := False)
-                              return Flow_Id_Sets.Set;
+   function Get_Variable_Set (L                : List_Id;
+                              Reduced          : Boolean   := False;
+                              Allow_Statements : Boolean   := False;
+                              Scope            : Scope_Ptr := Empty;
+                              Force_Abstract   : Boolean   := False;
+                              Force_Refined    : Boolean   := False)
+                              return Flow_Id_Sets.Set
+     with Pre => (if Present (Scope)
+                  then not (Force_Abstract or Force_Refined)
+                  else Force_Abstract xor Force_Refined);
    --  As above, but operating on a list.
+
+   function Quantified_Variables (N : Node_Id) return Flow_Id_Sets.Set;
+   --  Return the set of entire variables which are introduced in a
+   --  quantifier under node N
 
    function Flatten_Variable (E : Entity_Id) return Flow_Id_Sets.Set;
    --  Returns a set of flow_ids for all parts of the unique entity
@@ -114,8 +132,9 @@ package Flow.Utility is
    --  its precondition and the condition(s) of its Contract_Cases (or
    --  return the empty list if none of these exist).
 
-   function Get_Postcondition_Expressions
-     (E : Entity_Id) return Node_Lists.List
+   function Get_Postcondition_Expressions (E       : Entity_Id;
+                                           Refined : Boolean)
+                                           return Node_Lists.List
      with Pre => Ekind (E) in Subprogram_Kind | E_Package;
    --  Given the entity for a subprogram or package, return all
    --  expression(s) associated with postconditions: the

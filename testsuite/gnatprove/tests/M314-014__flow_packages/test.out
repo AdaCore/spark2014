@@ -3,7 +3,7 @@ ic.adb:73:34: "X" must be listed in the Initializes aspect of "Test_05"
 ic.adb:73:34: "Y" must be listed in the Initializes aspect of "Test_05"
 ic.adb:97:09: warning:  it is currently ignored
 ic.adb:97:09: warning: pragma "REFINED_POST" is not yet supported
-ic.adb:97:31: "Y" must be listed in the Global aspect of "Sanity_Check_5"
+ic.adb:97:31: "Y" must be listed in the Refined_Global aspect of "Sanity_Check_5"
 ic.adb:108:35: "Y" must be listed in the Global aspect of "Sanity_Check_1"
 ic.adb:117:41: "Y" must be listed in the Global aspect of "Sanity_Check_2"
 pkg_a.adb:7:04: "A" is not initialized in "Pkg_A" [uninitialized]

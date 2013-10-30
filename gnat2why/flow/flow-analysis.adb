@@ -38,8 +38,9 @@ with Flow.Slice;            use Flow.Slice;
 with Flow.Utility;          use Flow.Utility;
 with Flow_Error_Messages;   use Flow_Error_Messages;
 
---  with Treepr;                use Treepr;
---  with Flow.Debug;            use Flow.Debug;
+--  with Output;     use Output;
+--  with Treepr;     use Treepr;
+--  with Flow.Debug; use Flow.Debug;
 
 package body Flow.Analysis is
 
@@ -337,8 +338,8 @@ package body Flow.Analysis is
 
       function Search_Expr (N : Node_Id) return Traverse_Result is
       begin
-         if Get_Variable_Set (Scope            => Scope,
-                              N                => N,
+         if Get_Variable_Set (N,
+                              Scope            => Scope,
                               Reduced          => not Precise,
                               Allow_Statements => True).Contains (Var_Tgt)
          then
@@ -531,16 +532,10 @@ package body Flow.Analysis is
                            Sane : out Boolean)
    is
       Tracefile : Unbounded_String;
-      All_Vars : constant Flow_Id_Sets.Set :=
-        To_Entire_Variables (FA.All_Vars);
 
       function Proc_Record_Decl (N : Node_Id) return Traverse_Result;
       --  Check each component declaration for use of non-manifest
       --  constants.
-
-      function Quantified_Variables (N : Node_Id) return Flow_Id_Sets.Set;
-      --  Return the set of variables which are introduced in a
-      --  quantifier under node N
 
       function Proc_Record_Decl (N : Node_Id) return Traverse_Result
       is
@@ -558,9 +553,12 @@ package body Flow.Analysis is
                if Present (Expression (N)) then
                   declare
                      Deps : constant Ordered_Flow_Id_Sets.Set :=
-                       To_Ordered_Flow_Id_Set (Get_Variable_Set
-                                                 (Get_Enclosing_Body_Scope (N),
-                                                  Expression (N)));
+                       To_Ordered_Flow_Id_Set
+                       (Get_Variable_Set
+                          (Expression (N),
+                           Scope => (if Present (Get_Enclosing_Body_Scope (N))
+                                     then Get_Enclosing_Body_Scope (N)
+                                     else Get_Enclosing_Scope (N))));
                   begin
                      for F of Deps loop
                         --  ??? consider moving this to spark_definition
@@ -584,36 +582,6 @@ package body Flow.Analysis is
 
       procedure Check_Record_Declarations is
         new Traverse_Proc (Proc_Record_Decl);
-
-      function Quantified_Variables (N : Node_Id) return Flow_Id_Sets.Set
-      is
-         RV : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
-
-         function Proc (N : Node_Id) return Traverse_Result;
-
-         function Proc (N : Node_Id) return Traverse_Result is
-         begin
-            case Nkind (N) is
-               when N_Quantified_Expression =>
-                  --  Sanity check: Iterator_Specification is not in
-                  --  SPARK so it should always be empty.
-                  pragma Assert (not Present (Iterator_Specification (N)));
-
-                  RV.Include (Direct_Mapping_Id
-                                (Defining_Identifier
-                                   (Loop_Parameter_Specification (N))));
-
-               when others =>
-                  null;
-            end case;
-            return OK;
-         end Proc;
-
-         procedure Traverse is new Traverse_Proc (Proc);
-      begin
-         Traverse (N);
-         return RV;
-      end Quantified_Variables;
 
    begin
       --  Innocent until proven guilty.
@@ -668,49 +636,6 @@ package body Flow.Analysis is
                N         => FA.Analyzed_Entity,
                F1        => Direct_Mapping_Id (FA.Analyzed_Entity));
          end if;
-         return;
-      end if;
-
-      --  Sanity check that postconditions do not reference
-      --  non-visible state.
-
-      pragma Assert_And_Cut (Sane);
-
-      for Expr of Get_Postcondition_Expressions (FA.Spec_Node) loop
-         declare
-            --  The variables used are all variables appearing in the
-            --  expression - any that have been introduced through a
-            --  quantifier.
-            V_Used : constant Ordered_Flow_Id_Sets.Set :=
-              To_Ordered_Flow_Id_Set
-              (To_Entire_Variables
-                 (Get_Variable_Set (FA.Scope, Expr, True) -
-                    Quantified_Variables (Expr)));
-
-            Tmp : constant String :=
-              (case FA.Kind is
-                  when E_Subprogram_Body => "Global",
-                  when others            => "Initializes");
-         begin
-            for Var of V_Used loop
-               if not All_Vars.Contains (Var) then
-                  Error_Msg_Flow
-                    (FA        => FA,
-                     Tracefile => Tracefile,
-                     Msg       => "& must be listed in the " & Tmp &
-                       " aspect of &",
-                     N         => First_Variable_Use (N       => Expr,
-                                                      Scope   => FA.Scope,
-                                                      Var     => Var,
-                                                      Precise => False),
-                     F1        => Entire_Variable (Var),
-                     F2        => Direct_Mapping_Id (FA.Analyzed_Entity));
-                  Sane := False;
-               end if;
-            end loop;
-         end;
-      end loop;
-      if not Sane then
          return;
       end if;
 
@@ -872,8 +797,98 @@ package body Flow.Analysis is
             end loop;
          end;
       end loop;
-
    end Sanity_Check;
+
+   --------------------------------
+   -- Sanity_Check_Postcondition --
+   --------------------------------
+
+   procedure Sanity_Check_Postcondition (FA   : Flow_Analysis_Graphs;
+                                         Sane : in out Boolean)
+   is
+      Vars_Used  : Flow_Id_Sets.Set;
+      Vars_Known : Flow_Id_Sets.Set;
+      Tracefile  : Unbounded_String;
+   begin
+
+      for Refined in Boolean loop
+         declare
+            Scope : constant Scope_Ptr :=
+              (if Refined then FA.Scope else FA.Spec_Scope);
+
+            Aspect_To_Fix : constant String :=
+              (case FA.Kind is
+                  when E_Subprogram_Body => (if Refined
+                                             then "Refined_Global"
+                                             else "Global"),
+                  when others => "Initializes");
+
+         begin
+
+            if Refined then
+               Vars_Known := To_Entire_Variables (FA.All_Vars);
+            else
+               case FA.Kind is
+                  when E_Subprogram_Body =>
+                     Vars_Known := Flow_Id_Sets.Empty_Set;
+
+                     --  We need to assemble the variables known from
+                     --  the spec: these are parameters and globals.
+                     declare
+                        E : Entity_Id;
+                        Tmp_A, Tmp_B : Flow_Id_Sets.Set;
+                     begin
+                        E := First_Formal (FA.Spec_Node);
+                        while Present (E) loop
+                           Vars_Known.Include (Direct_Mapping_Id (E));
+                           E := Next_Formal (E);
+                        end loop;
+
+                        Get_Globals (Subprogram   => FA.Spec_Node,
+                                     Reads        => Tmp_A,
+                                     Writes       => Tmp_B,
+                                     Refined_View => False);
+                        for F of To_Entire_Variables (Tmp_A or Tmp_B) loop
+                           Vars_Known.Include (Change_Variant (F, Normal_Use));
+                        end loop;
+                     end;
+
+                  when E_Package | E_Package_Body =>
+                     Vars_Known := FA.Visible_Vars;
+               end case;
+            end if;
+
+            for Expr of Get_Postcondition_Expressions (FA.Spec_Node,
+                                                       Refined)
+            loop
+               Vars_Used := To_Entire_Variables
+                 (Get_Variable_Set (Expr,
+                                    Reduced => True,
+                                    Scope   => Scope)) -
+                 Quantified_Variables (Expr);
+
+               for Var of Vars_Used loop
+                  if not Vars_Known.Contains (Var) then
+                     Error_Msg_Flow
+                       (FA        => FA,
+                        Tracefile => Tracefile,
+                        Msg       => "& must be listed in the " &
+                          Aspect_To_Fix &
+                          " aspect of &",
+                        N         => First_Variable_Use (N       => Expr,
+                                                         Scope   => Scope,
+                                                         Var     => Var,
+                                                         Precise => False),
+                        F1        => Entire_Variable (Var),
+                        F2        => Direct_Mapping_Id (FA.Analyzed_Entity));
+                     Sane := False;
+                  end if;
+               end loop;
+            end loop;
+         end;
+      end loop;
+
+   end Sanity_Check_Postcondition;
 
    ----------------------------
    -- Find_Unwritten_Exports --
@@ -1454,7 +1469,8 @@ package body Flow.Analysis is
             Used : Flow_Id_Sets.Set;
          begin
             if Nkind (Key_U.Node) = N_Assignment_Statement then
-               Used := Get_Variable_Set (FA.Scope, Expression (Key_U.Node));
+               Used := Get_Variable_Set (Expression (Key_U.Node),
+                                         Scope => FA.Scope);
                return Used.Contains (The_Var);
             end if;
 

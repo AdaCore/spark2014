@@ -284,6 +284,14 @@ package body Flow.Utility is
          Has_Global_Aspect := True;
          Global_Node       := Get_Pragma (Body_E, Pragma_Refined_Global);
 
+      elsif Refined_View
+        and then (Ekind (Subprogram) = E_Function and then
+                    Is_Expression_Function (Subprogram))
+        and then Present (Body_E)
+      then
+         Global_Node       := Get_Pragma (Subprogram, Pragma_Global);
+         Has_Global_Aspect := Present (Global_Node);
+
       elsif Present (Get_Pragma (Subprogram, Pragma_Global)) then
          Has_Global_Aspect := True;
          Global_Node       := Get_Pragma (Subprogram, Pragma_Global);
@@ -316,8 +324,14 @@ package body Flow.Utility is
             begin
                case The_Mode is
                   when Name_Input =>
-                     Reads.Insert (Direct_Mapping_Id
-                                     (The_Global, In_View));
+                     if not Globals_For_Proof or else
+                       Ekind (The_Global) /= E_In_Parameter
+                     then
+                        --  Proof does not count in parameters as
+                        --  globals (as they are constants).
+                        Reads.Insert (Direct_Mapping_Id
+                                        (The_Global, In_View));
+                     end if;
                   when Name_In_Out =>
                      Reads.Insert (Direct_Mapping_Id
                                      (The_Global, In_View));
@@ -481,10 +495,12 @@ package body Flow.Utility is
    --  Get_Variable_Set  --
    ------------------------
 
-   function Get_Variable_Set (Scope            : Scope_Ptr;
-                              N                : Node_Id;
-                              Reduced          : Boolean := False;
-                              Allow_Statements : Boolean := False)
+   function Get_Variable_Set (N                : Node_Id;
+                              Reduced          : Boolean   := False;
+                              Allow_Statements : Boolean   := False;
+                              Scope            : Scope_Ptr := Empty;
+                              Force_Abstract   : Boolean   := False;
+                              Force_Refined    : Boolean   := False)
                               return Flow_Id_Sets.Set
    is
       VS : Flow_Id_Sets.Set;
@@ -522,8 +538,8 @@ package body Flow.Utility is
          Get_Globals (Subprogram   => Subprogram,
                       Reads        => Global_Reads,
                       Writes       => Global_Writes,
-                      Refined_View => Should_Use_Refined_View (Scope,
-                                                               Callsite));
+                      Refined_View => Force_Refined or else
+                        Should_Use_Refined_View (Scope, Callsite));
          if Nkind (Callsite) = N_Function_Call and then
            Flow_Id_Sets.Length (Global_Writes) > 0
          then
@@ -535,9 +551,11 @@ package body Flow.Utility is
 
          Used_Variables :=
            Used_Variables or
-           Get_Variable_Set (Scope,
-                             Parameter_Associations (Callsite),
-                             Reduced);
+           Get_Variable_Set (Parameter_Associations (Callsite),
+                             Reduced        => Reduced,
+                             Scope          => Scope,
+                             Force_Abstract => Force_Abstract,
+                             Force_Refined  => Force_Refined);
 
          for G of Global_Reads loop
             for F of Flatten_Variable (G) loop
@@ -670,14 +688,20 @@ package body Flow.Utility is
 
       procedure Traverse is new Traverse_Proc (Process => Proc);
    begin
+      if Force_Refined or Force_Abstract then
+         raise Why.Not_Implemented;
+      end if;
+
       Traverse (N);
       return Filter_Out_Constants (VS);
    end Get_Variable_Set;
 
-   function Get_Variable_Set (Scope            : Scope_Ptr;
-                              L                : List_Id;
-                              Reduced          : Boolean := False;
-                              Allow_Statements : Boolean := False)
+   function Get_Variable_Set (L                : List_Id;
+                              Reduced          : Boolean   := False;
+                              Allow_Statements : Boolean   := False;
+                              Scope            : Scope_Ptr := Empty;
+                              Force_Abstract   : Boolean   := False;
+                              Force_Refined    : Boolean   := False)
                               return Flow_Id_Sets.Set
    is
       VS : Flow_Id_Sets.Set;
@@ -685,12 +709,51 @@ package body Flow.Utility is
    begin
       P := First (L);
       while Present (P) loop
-         VS.Union (Get_Variable_Set (Scope, P, Reduced, Allow_Statements));
+         VS.Union (Get_Variable_Set (P,
+                                     Reduced          => Reduced,
+                                     Allow_Statements => Allow_Statements,
+                                     Scope            => Scope,
+                                     Force_Abstract   => Force_Abstract,
+                                     Force_Refined    => Force_Refined));
 
          P := Next (P);
       end loop;
       return VS;
    end Get_Variable_Set;
+
+   --------------------------
+   -- Quantified_Variables --
+   --------------------------
+
+   function Quantified_Variables (N : Node_Id) return Flow_Id_Sets.Set
+   is
+      RV : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+
+      function Proc (N : Node_Id) return Traverse_Result;
+
+      function Proc (N : Node_Id) return Traverse_Result is
+      begin
+         case Nkind (N) is
+            when N_Quantified_Expression =>
+               --  Sanity check: Iterator_Specification is not in
+               --  SPARK so it should always be empty.
+               pragma Assert (not Present (Iterator_Specification (N)));
+
+               RV.Include (Direct_Mapping_Id
+                             (Defining_Identifier
+                                (Loop_Parameter_Specification (N))));
+
+            when others =>
+               null;
+         end case;
+         return OK;
+      end Proc;
+
+      procedure Traverse is new Traverse_Proc (Proc);
+   begin
+      Traverse (N);
+      return RV;
+   end Quantified_Variables;
 
    ----------------------
    -- Flatten_Variable --
@@ -829,11 +892,14 @@ package body Flow.Utility is
       begin
          case Nkind (N) is
             when N_Indexed_Component | N_Attribute_Reference =>
-               Vars_Used.Union (Get_Variable_Set (Scope, Prefix (N)));
-               Vars_Used.Union (Get_Variable_Set (Scope, Expressions (N)));
+               Vars_Used.Union (Get_Variable_Set (Prefix (N),
+                                                  Scope => Scope));
+               Vars_Used.Union (Get_Variable_Set (Expressions (N),
+                                                  Scope => Scope));
                return OK;
             when N_Slice =>
-               Vars_Used.Union (Get_Variable_Set (Scope, Discrete_Range (N)));
+               Vars_Used.Union (Get_Variable_Set (Discrete_Range (N),
+                                                  Scope => Scope));
                return OK;
             when others =>
                return OK;
@@ -865,7 +931,7 @@ package body Flow.Utility is
 
          when N_Identifier | N_Expanded_Name =>
             --  X :=
-            Vars_Defined := Get_Variable_Set (Scope, N);
+            Vars_Defined := Get_Variable_Set (N, Scope => Scope);
 
          when N_Selected_Component | N_Indexed_Component | N_Slice =>
             --  R.A :=
@@ -908,7 +974,8 @@ package body Flow.Utility is
                   case Nkind (Prefix (End_Of_Record)) is
                      when N_Function_Call =>
                         Vars_Defined.Union
-                          (Get_Variable_Set (Scope, Prefix (End_Of_Record)));
+                          (Get_Variable_Set (Prefix (End_Of_Record),
+                                             Scope => Scope));
 
                      when N_Unchecked_Type_Conversion =>
                         --  This is an interesting special case. We
@@ -918,8 +985,8 @@ package body Flow.Utility is
                         --  argument to the unchecked conversion.
                         Vars_Defined.Union
                           (Get_Variable_Set
-                             (Scope,
-                              Expression (Prefix (End_Of_Record))));
+                             (Expression (Prefix (End_Of_Record)),
+                              Scope => Scope));
 
                         --  Since we are using the defined variable
                         --  only partially, we need to make sure its
@@ -943,12 +1010,14 @@ package body Flow.Utility is
                when N_Function_Call =>
                   --  Not strictly right, but this will satisfy the
                   --  postcondition.
-                  Vars_Defined.Union (Get_Variable_Set (Scope, End_Of_Record));
+                  Vars_Defined.Union (Get_Variable_Set (End_Of_Record,
+                                                        Scope => Scope));
 
                when N_Unchecked_Type_Conversion =>
                   --  See above.
                   Vars_Defined.Union (Get_Variable_Set
-                                        (Scope, Expression (End_Of_Record)));
+                                        (Expression (End_Of_Record),
+                                         Scope => Scope));
 
                when N_Attribute_Reference =>
                   declare
@@ -1024,7 +1093,8 @@ package body Flow.Utility is
    -- Get_Postcondition_Expressions --
    -----------------------------------
 
-   function Get_Postcondition_Expressions (E : Entity_Id)
+   function Get_Postcondition_Expressions (E       : Entity_Id;
+                                           Refined : Boolean)
                                            return Node_Lists.List
    is
       P_Expr : Node_Lists.List;
@@ -1032,30 +1102,34 @@ package body Flow.Utility is
    begin
       case Ekind (E) is
          when Subprogram_Kind =>
-            P_Expr := Find_Contracts (E, Name_Postcondition);
-            P_CC   := Find_Contracts (E, Name_Contract_Cases);
+            if Refined then
+               P_Expr := Find_Contracts (E, Name_Refined_Post);
+            else
+               P_Expr := Find_Contracts (E, Name_Postcondition);
+               P_CC   := Find_Contracts (E, Name_Contract_Cases);
 
-            --  If a Contract_Cases aspect was found then we pull out
-            --  every right-hand-side.
-            if not P_CC.Is_Empty then
-               declare
-                  Ptr : Node_Id;
-               begin
-                  Ptr := First (Component_Associations
-                                  (P_CC.First_Element));
-                  while Present (Ptr) loop
-                     P_Expr.Append (Expression (Ptr));
-                     Ptr := Next (Ptr);
-                  end loop;
-               end;
+               --  If a Contract_Cases aspect was found then we pull out
+               --  every right-hand-side.
+               if not P_CC.Is_Empty then
+                  declare
+                     Ptr : Node_Id;
+                  begin
+                     Ptr := First (Component_Associations
+                                     (P_CC.First_Element));
+                     while Present (Ptr) loop
+                        P_Expr.Append (Expression (Ptr));
+                        Ptr := Next (Ptr);
+                     end loop;
+                  end;
+               end if;
             end if;
 
-            for X of Find_Contracts (E, Name_Refined_Post) loop
-               P_Expr.Append (X);
-            end loop;
-
          when E_Package =>
-            P_Expr := Find_Contracts (E, Name_Initial_Condition);
+            if Refined then
+               P_Expr := Node_Lists.Empty_List;
+            else
+               P_Expr := Find_Contracts (E, Name_Initial_Condition);
+            end if;
 
          when others =>
             raise Program_Error;

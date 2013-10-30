@@ -745,7 +745,8 @@ package body Flow.Control_Flow_Graph is
       --  would be used).
    begin
       --  Work out which variables we use and define.
-      V_Used_RHS := Get_Variable_Set (FA.Scope, Expression (N));
+      V_Used_RHS := Get_Variable_Set (Expression (N),
+                                      Scope => FA.Scope);
 
       Untangle_Assignment_Target (Scope        => FA.Scope,
                                   N            => Name (N),
@@ -792,7 +793,8 @@ package body Flow.Control_Flow_Graph is
       FA.CFG.Add_Vertex
         (Direct_Mapping_Id (N),
          Make_Basic_Attributes (Var_Use => Get_Variable_Set
-                                  (FA.Scope, Expression (N)),
+                                  (Expression (N),
+                                   Scope => FA.Scope),
                                 Loops   => Ctx.Current_Loops,
                                 E_Loc   => N),
          V);
@@ -867,8 +869,9 @@ package body Flow.Control_Flow_Graph is
       else
          FA.CFG.Add_Vertex
            (Direct_Mapping_Id (N),
-            Make_Basic_Attributes (Var_Use => Get_Variable_Set (FA.Scope,
-                                                                Condition (N)),
+            Make_Basic_Attributes (Var_Use => Get_Variable_Set
+                                     (Condition (N),
+                                      Scope => FA.Scope),
                                    Loops   => Ctx.Current_Loops,
                                    E_Loc   => N),
             V);
@@ -930,7 +933,8 @@ package body Flow.Control_Flow_Graph is
         (Direct_Mapping_Id (Ret_Entity),
          Make_Extended_Return_Attributes
               (Var_Def         => Flatten_Variable (FA.Analyzed_Entity),
-               Var_Use         => Get_Variable_Set (FA.Scope, Ret_Object),
+               Var_Use         => Get_Variable_Set (Ret_Object,
+                                                    Scope => FA.Scope),
                Object_Returned => Ret_Object,
                Loops           => Ctx.Current_Loops,
                E_Loc           => Ret_Entity),
@@ -1008,8 +1012,9 @@ package body Flow.Control_Flow_Graph is
       --  We have a vertex for the if statement itself.
       FA.CFG.Add_Vertex
         (Direct_Mapping_Id (N),
-         Make_Basic_Attributes (Var_Use => Get_Variable_Set (FA.Scope,
-                                                             Condition (N)),
+         Make_Basic_Attributes (Var_Use => Get_Variable_Set
+                                  (Condition (N),
+                                   Scope => FA.Scope),
                                 Loops   => Ctx.Current_Loops,
                                 E_Loc   => N),
          V);
@@ -1060,8 +1065,8 @@ package body Flow.Control_Flow_Graph is
                FA.CFG.Add_Vertex
                  (Direct_Mapping_Id (Elsif_Statement),
                   Make_Basic_Attributes (Var_Use => Get_Variable_Set
-                                           (FA.Scope,
-                                            Condition (Elsif_Statement)),
+                                           (Condition (Elsif_Statement),
+                                            Scope => FA.Scope),
                                          Loops   => Ctx.Current_Loops,
                                          E_Loc   => Elsif_Statement),
                   V);
@@ -1289,8 +1294,8 @@ package body Flow.Control_Flow_Graph is
          FA.CFG.Add_Vertex
            (Direct_Mapping_Id (N),
             Make_Basic_Attributes (Var_Use => Get_Variable_Set
-                                     (FA.Scope,
-                                      Condition (Iteration_Scheme (N))),
+                                     (Condition (Iteration_Scheme (N)),
+                                      Scope => FA.Scope),
                                    Loops   => Ctx.Current_Loops,
                                    E_Loc   => N),
             V);
@@ -1381,7 +1386,7 @@ package body Flow.Control_Flow_Graph is
               (Direct_Mapping_Id (N),
                Make_Basic_Attributes
                  (Var_Def => Flatten_Variable (LP),
-                  Var_Use => Get_Variable_Set (FA.Scope, DSD),
+                  Var_Use => Get_Variable_Set (DSD, Scope => FA.Scope),
                   Loops   => Ctx.Current_Loops,
                   E_Loc   => N),
                V);
@@ -1460,8 +1465,8 @@ package body Flow.Control_Flow_Graph is
             FA.CFG.Add_Vertex
               (Direct_Mapping_Id (Reference),
                Make_Sink_Vertex_Attributes
-                 (Var_Use       => Get_Variable_Set (FA.Scope,
-                                                     Prefix (Reference)),
+                 (Var_Use       => Get_Variable_Set (Prefix (Reference),
+                                                     Scope => FA.Scope),
                   Is_Loop_Entry => True),
                V);
 
@@ -1563,7 +1568,7 @@ package body Flow.Control_Flow_Graph is
          FA.CFG.Add_Vertex
            (Direct_Mapping_Id (N),
             Make_Sink_Vertex_Attributes
-              (Var_Use => Get_Variable_Set (FA.Scope, Expression (N)),
+              (Var_Use => Get_Variable_Set (Expression (N), Scope => FA.Scope),
                E_Loc   => N),
             V);
          Inits.Append (V);
@@ -1574,7 +1579,7 @@ package body Flow.Control_Flow_Graph is
            (Direct_Mapping_Id (N),
             Make_Basic_Attributes
               (Var_Def => Flatten_Variable (Defining_Identifier (N)),
-               Var_Use => Get_Variable_Set (FA.Scope, Expression (N)),
+               Var_Use => Get_Variable_Set (Expression (N), Scope => FA.Scope),
                Loops   => Ctx.Current_Loops,
                E_Loc   => N),
             V);
@@ -1650,8 +1655,8 @@ package body Flow.Control_Flow_Graph is
          FA.CFG.Add_Vertex
            (Direct_Mapping_Id (N),
             Make_Sink_Vertex_Attributes
-              (Var_Use => Get_Variable_Set (FA.Scope,
-                                            Pragma_Argument_Associations (N)),
+              (Var_Use => Get_Variable_Set (Pragma_Argument_Associations (N),
+                                            Scope => FA.Scope),
                E_Loc   => N),
             V);
 
@@ -1734,7 +1739,7 @@ package body Flow.Control_Flow_Graph is
       FA.CFG.Add_Vertex
         (Direct_Mapping_Id (Pre),
          Make_Sink_Vertex_Attributes
-           (Var_Use         => Get_Variable_Set (FA.Scope, Pre),
+           (Var_Use         => Get_Variable_Set (Pre, Scope => FA.Scope),
             Is_Precondition => True,
             E_Loc           => Pre),
          V);
@@ -1831,7 +1836,7 @@ package body Flow.Control_Flow_Graph is
            (Direct_Mapping_Id (N),
             Make_Basic_Attributes
               (Var_Def => Flatten_Variable (FA.Analyzed_Entity),
-               Var_Use => Get_Variable_Set (FA.Scope, Expression (N)),
+               Var_Use => Get_Variable_Set (Expression (N), Scope => FA.Scope),
                Loops   => Ctx.Current_Loops,
                E_Loc   => N),
             V);
@@ -1936,7 +1941,7 @@ package body Flow.Control_Flow_Graph is
       FA.CFG.Add_Vertex
         (Direct_Mapping_Id (N),
          Make_Sink_Vertex_Attributes
-           (Var_Use => Get_Variable_Set (FA.Scope, N),
+           (Var_Use => Get_Variable_Set (N, Scope => FA.Scope),
             E_Loc   => N),
          V);
       CM.Include (Union_Id (N),
@@ -2420,6 +2425,7 @@ package body Flow.Control_Flow_Graph is
       Body_N          : Node_Id;
       Spec_N          : Node_Id;
       Tracefile       : Unbounded_String;
+      Package_Writes  : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
    begin
       pragma Assert (Is_Valid (FA));
 
@@ -2587,9 +2593,17 @@ package body Flow.Control_Flow_Graph is
                --  We need to make sure to only add each global once
                --  (an entity might be used to derive more than one of
                --  our states).
+
+               The_Out : Flow_Id;
+               Opt_In  : Optional_Flow_Id_Set;
+               ODM     : Optional_Dependency_Maps.Map;
             begin
                if Present (FA.Initializes_N) then
-                  for Opt_In of Parse_Initializes (FA.Initializes_N) loop
+                  ODM := Parse_Initializes (FA.Initializes_N);
+                  for C in ODM.Iterate loop
+                     The_Out := Optional_Dependency_Maps.Key (C);
+                     Opt_In  := Optional_Dependency_Maps.Element (C);
+
                      if Opt_In.Exists then
                         for G of Opt_In.The_Set loop
                            if not Global_Ins.Contains (G) then
@@ -2603,6 +2617,10 @@ package body Flow.Control_Flow_Graph is
                                  FA            => FA);
                            end if;
                         end loop;
+                     end if;
+
+                     if Present (The_Out) then
+                        Package_Writes.Include (The_Out);
                      end if;
                   end loop;
                end if;
@@ -2713,6 +2731,13 @@ package body Flow.Control_Flow_Graph is
                                           FA, Connection_Map, The_Context);
                   UL.Append (Union_Id (Visible_Declarations (Spec_N)));
                end if;
+
+               --  Ok, we need a copy of all variables from the spec +
+               --  initializes. Although this is somewhat
+               --  out-of-place, this is the only place we can
+               --  assemble them easily without re-doing a lot of the
+               --  hard work we've done so far.
+               FA.Visible_Vars := FA.All_Vars or Package_Writes;
 
                if Present (Private_Declarations (Spec_N)) then
                   Process_Statement_List (Private_Declarations (Spec_N),
