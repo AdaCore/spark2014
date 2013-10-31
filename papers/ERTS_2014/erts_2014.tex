@@ -19,6 +19,8 @@
    morekeywords=[2]Post,
    morekeywords=[3]Test\_Case,
    morekeywords=[4]Contract\_Cases,
+   morekeywords=[5]some,
+   morekeywords=[5]Old,
    literate={(}{{\CodeSymbol{(}}}1
             {)}{{\CodeSymbol{)}}}1
             {>}{{\CodeSymbol{$>$}}}1
@@ -86,17 +88,18 @@ Certification and dependability
 
 \section{Introduction}
 
-\newspark is a major evolution of the SPARK language and toolset with two main objectives for improving the take-up of formal verification technology:
+\newspark is a major evolution of the SPARK language and toolset with two main
+objectives:
 %
 \begin{enumerate}
-\item lowering the hurdle for non-expert users, and
-\item improving the cost-benefit argument.
+\item being accessible to non-expert users, and
+\item being compatible with testing.
 \end{enumerate}
 
 In this paper, we describe how \newspark achieves these objectives, based on
 practical use of the language and associated formal verification tool
 \gnatprove on three industrial case studies developed in the context of the
-\hilite project.
+\hilite research project.
 
 \section{SPARK 2014}
 
@@ -110,32 +113,98 @@ unambiguously defined, and simple enough that formal verification tools can
 perform an automatic diagnostic of conformance between a program specification
 and its implementation. The SPARK language and toolset for static verification
 has been applied for many years in on-board aircraft systems, control systems,
-cryptographic systems, and rail systems~\cite{sparkbook2012,oneill2012}.
+cryptographic systems, and rail systems~\cite{sparkbook2012,oneill2012}. The
+new version \newspark builds on the new specification features added in
+\adatwtw~\cite{ada2012rationale}, so formal specifications are now understood
+by the usual development tools and can be executed.
 
-SPARK evolution has followed the evolutions of Ada, with a new version of SPARK
-for each new version of Ada: SPARK 83, SPARK 95, SPARK 2005, and now SPARK
-2014. Up to the version \oldspark, the specification of the intended behavior
-of a program was written in special comments, that were ignored by the usual
-development tools (compiler, debugger), but interpreted by the formal
-verification tools. The new version \newspark builds on the new specification
-features added in \adatwtw, so formal specifications are now understood by the
-usual development tools and can be executed.
+\subsection{Key Language Features}
 
-\subsection{Key Features for Formal Verification}
+The most useful feature in \newspark is the ability to specify a contract on
+subprograms. Subprogram contracts were popularized in the Design-by-Contract
+approach~\cite{meyer:1988:OSC} as a means to separate responsibilities in
+software between a caller and a callee. The callee's \textit{precondition}
+states the responsibility of its caller, while the callee's
+\textit{postcondition} states the responsibility of the callee itself.  For
+example, the following contract for procedure \SPARK{Swap} specifies that it
+should be called with index parameters within the range of the array parameter,
+and that \SPARK{Swap} will ensure on return that the corresponding values in
+the array have been swapped. Attribute \SPARK{Old} in the postcondition is used
+to refer to values on entry to the subprogram.
 
-\adatwtw introduced new language features for facilitating the specification of
-programs~\cite{ada2012rationale}, many of which were inspired from the
-corresponding features in \oldspark. The most useful of these new features is
-without doubts the preconditions and postconditions (which together are
-referred to as a contract) popularised by the Design-by-Contract
-approach~\cite{meyer:1988:OSC}.
-%% \newspark is based on the features of \adatwtw,
-%% to which it adds new ones, some of which inspired from \oldspark.
-We will
-describe shortly in this subsection the key features defined in \newspark for
-formal verification.
+\begin{lstlisting}
+procedure Swap (A : in out Arr; X, Y : Idx) with
+  Pre  => X in A'Range and Y in A'Range,
+  Post => A(X) = A(Y)'Old and A(Y) = A(X)'Old;
+\end{lstlisting}
 
-FIXME: introduce \gnatprove and \altergo.
+In \newspark, subprogram contracts may additionally specify global variables
+read and written in the subprogram, as well the flow of information from inputs
+(parameters and global variables reads) to outputs (parameters and global
+variables written). For example, the following contract for procedure
+\SPARK{Swap} specifies that the subprogram writes global variable
+\SPARK{Backup}, that the value of \SPARK{Backup} on return depends only on the
+input value of \SPARK{A}, and that the value of \SPARK{A} on return depends on
+the input values of all parameters.
+
+\begin{lstlisting}
+procedure Swap (A : in out Arr; X, Y : Idx) with
+  Global  => (Output => Backup),
+  Depends => (Backup => A,
+              A      => (A, X, Y));
+\end{lstlisting}
+
+Instead of preconditions and postconditions, or in addition to them, subprogram
+contracts may be specified by a set of disjoint and complete cases. For
+example, the following contract for procedure \SPARK{Swap} states separate
+sub-contracts for the cases where the elements at indexes \SPARK{X} and
+\SPARK{Y} are equal or different. The first case specifies that, if
+\SPARK{A(X)} equald \SPARK{A(Y)} on entry, then \SPARK{A} should not be
+modified by the call. The second case specifies that, if \SPARK{A(X)} is
+different from \SPARK{A(Y)} on entry, then \SPARK{A} should be modified by the
+call.
+
+\begin{lstlisting}
+procedure Swap (A : in out Arr; X, Y : Idx) with
+  Contract_Cases =>
+    (A(X) = A(Y)  => A = A'Old,
+     A(X) /= A(Y) => A /= A'Old);
+\end{lstlisting}
+
+New expressions make it easier to express contracts. If-expressions and
+case-expressions are the expression forms which correspond to the usual
+if-statements and case-statements. Note that an if-expression without else-part
+\SPARK{(if A then B)} expresses a logical implication of \SPARK{B} by
+\SPARK{A}. Quantified expressions \SPARK{(for all X in A)} and \SPARK{(for some
+  X in A)} correspond to the mathematical universal and existential
+quantifications, only on a bounded domain. Expression functions define a
+function with a single expression, like in functional programming languages. As
+expression functions can be part of the specification of programs (contrary to
+regular function bodies), they provide a powerful way to abstract complex parts
+of contracts.
+
+The second most useful feature in \newspark (after contracts) is the ability to
+specify properties of loops. A loop invariant expresses the cumulated effect
+of the loop up to that point. For example, the following loop invariant
+expresses that the array \SPARK{A} has been zeroed out up to the current loop
+index \SPARK{J}, and that the rest of the array has not been modified.
+Attribute \SPARK{Loop_Entry} is used to refer to values on entry to the loop.
+
+\begin{lstlisting}
+pragma Loop_Invariant
+  (for all K in A'Range =>
+    (if K < J then A(K) = 0
+     else A(K) = A'Loop_Entry(K)));
+\end{lstlisting}
+
+A loop variant expresses that a quantity varies monotonically at each iteration
+of the loop, which can be used to show loop termination. For example, the
+following loop variant expresses that scalar variable \SPARK{J} increases at
+each loop iteration.
+
+\begin{lstlisting}
+pragma Loop_Variant (Increases => J);
+\end{lstlisting}
 
 \subsection{Benefits of Executable Contracts}
 
@@ -149,30 +218,66 @@ semantics.\cite{tseChalin10}
 
 \newspark reconciles the logic semantics and executable semantics of contracts,
 so users can now execute contracts, debug them like code, and test them when
-formal verification is too difficult to achieve. Furthermore, there is an
-advantage in keeping the annotation language the same as the programming
-language: users don't have to learn one more language.
+formal verification is too difficult to achieve. Furthermore, by keeping the
+annotation language the same as the programming language, users don't have to
+learn one more language.
 
-\subsection{Integrating Testing and Formal Verification}
+Except for the Global and Depends contracts, all the contracts and assertion
+pragmas presented previously lead to run-time assertions. If a given property
+is not satisfied at run time, an exception is raised with a message indicating
+the failing property, for example on the procedure \SPARK{Swap}:
 
-\ifdefined\abstractonly
+\begin{verbatim}
+failed precondition from swap.ads:4
+failed postcondition from swap.ads:5
+contract cases overlap for subprogram swap
+swap.ads:5 contract cases incomplete
+failed contract case at swap.ads:7
+Loop_Invariant failed at swap.adb:5
+Loop_Variant failed at swap.adb:4
+\end{verbatim}
 
-We will present how \newspark supports a combination of formal verification and
-testing~\cite{hiliteERTS2012}.
+\subsection{Key Tool Features}
 
-\else
-Formal methods are complementary to testing, and may find faults that
-are not detected by testing, but they cannot establish verification
-evidence for the target hardware. Therefore testing on the target is
-still required. However, formal analysis of source code can be used to
-show compliance with the low-level requirements. \DOC requires an
-argument for property preservation between the source code and the
-object code for those properties that have been verified formally at
-the source level. Since formal program verification and testing are
-complementary, we would like to use each method where it is most
-efficient. For this we need to make sure that the combination is at
-least as strong as testing alone.
-\fi
+\gnatprove is the formal verification tool that analyzes \newspark code. It
+performs two different analyses:
+
+\begin{enumerate}
+\item flow analysis of the program;
+\item proof of program properties.
+\end{enumerate}
+
+Flow analysis checks correct access to data in the program: first, correct
+access to global variables (as specified in Global and Depends contracts), and
+second, correct access to initialized data. It is a fast static analysis
+(typically comparable with compilation time) based on the computation of the
+Program Dependence Graphs~\cite{Horwitz:1988:ISU:53990.53994}.
+
+Proof checks that the program is free from run-time errors, and that the
+implementation respects the specified contracts. It internally generates
+mathematical formulas for each property, that are given to the automatic prover
+\altergo. If \altergo manages to prove the formula in the given time, then the
+property is known to hold. Otherwise, more work is required from the user to
+understand why the property is not proved. In our experience, a very useful
+feature of \gnatprove is its ability to display the paths in the program that
+lead to unproved properties. This path can be displayed in GPS or in Eclipse,
+the two Integrated Development Environments which support \newspark. The user
+can also change the parameters of the tool to perform more precise proofs, at
+the expense of longer running time.
+
+%% \subsection{Combining Testing and Proof}
+
+%% Formal methods are complementary to testing, and may find faults that
+%% are not detected by testing, but they cannot establish verification
+%% evidence for the target hardware. Therefore testing on the target is
+%% still required. However, formal analysis of source code can be used to
+%% show compliance with the low-level requirements. \DOC requires an
+%% argument for property preservation between the source code and the
+%% object code for those properties that have been verified formally at
+%% the source level. Since formal program verification and testing are
+%% complementary, we would like to use each method where it is most
+%% efficient. For this we need to make sure that the combination is at
+%% least as strong as testing alone.~\cite{hiliteERTS2012}.
 
 \section{Train Control Systems}
 
@@ -511,7 +616,7 @@ on:
 	\begin{lstlisting}
    type T_Monitoring is (No_Window, Window);
 
-   type T_Event_Status 
+   type T_Event_Status
      (Monitoring : T_Monitoring := No_Window)
    is record
      case Monitoring is
@@ -534,10 +639,10 @@ The contracts defined on algorithmic code are mainly related to the ranges of va
 \paragraph{Example of contract in algorithmic code:}
 
 \begin{lstlisting}
-   subtype T_Angle_180 is T_Float32 
+   subtype T_Angle_180 is T_Float32
    range -180 .. 180;
 
-   function Normalise (X : in T_Float32) 
+   function Normalise (X : in T_Float32)
    return T_Angle_180
    with Pre => (X >= -720.0) and
                (X <=  720.0);
@@ -558,12 +663,12 @@ The contracts defined on mission and vehicle management code have (among others)
 \paragraph{Example of contract in mission and vehicle management code:}
 
 \begin{lstlisting}
-   procedure Reset_Event 
+   procedure Reset_Event
      (Event_Id :        T_Event_Id;
       Events   : in out T_Events)
    with
      Post =>
-       Get_Status (Event_Id, Events) = Inactive) 
+       Get_Status (Event_Id, Events) = Inactive)
        and then
        (for all Other_Id in T_Event_Id =>
          (if Other_Id /= Event_Id then
@@ -603,14 +708,14 @@ Some algorithmic functions are not completely known by \gnatprove.
 \paragraph{Example:}
 
 \begin{lstlisting}
-   function Arctan (X : T_Float32) 
+   function Arctan (X : T_Float32)
    return T_Float32
    with
-     Post => 
+     Post =>
        (Arctan'Result >= -C_Halfpi32) and then
        (Arctan'Result <=  C_Halfpi32);
 
-   function Arctan (X : T_Float32) 
+   function Arctan (X : T_Float32)
    return T_Float32
    is (Num32.Arctan (X));
 \end{lstlisting}
@@ -625,7 +730,7 @@ In the following example, the second assertion is not proved.
 \paragraph{Example:}
 
 \begin{lstlisting}
-   function Round_Closest (X : T_Float32) 
+   function Round_Closest (X : T_Float32)
    return T_Float32
    is (T_Float32'Rounding (X));
 
@@ -647,7 +752,7 @@ In the following example, the last assertion is not proved.
    pragma Assert (Z >= 0.0 and then Z <= 1.0);
    pragma Assert (X + Y >= 0.0);
    Result := X + Y * Z;
-   pragma Assert (Result >= 0.0 and then 
+   pragma Assert (Result >= 0.0 and then
                   Result <= 360.0);
 \end{lstlisting}
 
