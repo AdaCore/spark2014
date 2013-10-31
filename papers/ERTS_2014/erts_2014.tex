@@ -301,55 +301,56 @@ SUBSET-026).
 We should acknowledge that using \newspark for formalizing
 \emph{system} requirements (and not only software requirements) is a
 bit excessive and out of scope for the language. We made nonetheless
-this formalization attempt for two reasons. Firstly we wanted to give
+this formalization attempt for two reasons. Firstly, we wanted to give
 a formal semantics to this system specification and \newspark
-first-order logic used for contract annotation should be suitable for
-this task. This formalization would allow us to formally verify some
-properties at the specification level.  Secondly, the ETCS'
-specifications are quite low-level in some of its content, therefore
-not as far from software requirements as one would have expected.
+first-order logic used in contracts seemed suitable for
+this task. The goal of this formalization was to formally verify some
+properties at the specification level.  Secondly, some of
+the content of the ETCS specifications is quite low-level, therefore
+not as far from software requirements as one would expect.
 
 \subsection{Description of the Software}
 
 We made several experiments but due to space constraints we will only
 detail two of them.
 
-Our first example is partial modeling of SRS mode transition table
+\subsubsection{Mode Transition Table}
+
+Our first example is a partial modeling of SRS mode transition table
 (SRS §4.6). It is a big table that describes, for each of the 17
 modes, under which conditions the ETCS on-board can change from one
-mode to another one. Those conditions are specific state of the
-on-board, actions of the driver and an explicit priority. For example,
-transition from mode Stand By (SB) mode to Full Supervision (FS) mode
+mode to another one. Those conditions are the specific state of the
+on-board, the actions of the driver and an explicit priority. For example,
+transition from mode Stand By (SB) to mode Full Supervision (FS)
 is conditioned by fulfilling condition 10, at priority 7. Condition 10
-states that ``(valid Train Data is stored on board) AND (MA + SSP +
+states that \textit{(valid Train Data is stored on board) AND (MA + SSP +
 gradient on-board) AND (no specific mode is required by a Mode
-Profile)''.
+Profile)}.
 
-We have converted above conditions into \newspark Boolean variables,
-with an explicit priority variable. Above condition thus becomes:
+We have converted the above conditions into \newspark Boolean variables, with
+an explicit priority variable, thus modeling all possible transitions of the
+transition table. For example, the above condition becomes:
+
 \begin{lstlisting}
 type priority_t is range 1..7;
 priority : priority_t;
 
 valid_train_data_is_stored_on_board : Boolean;
-[...]
 
 function condition_10 return Boolean is
   (valid_train_data_is_stored_on_board
-   AND ma_ssp_gardient_on_board
-   AND no_specific_mode_required_by_a_mode_profile);
-[...]
+   and ma_ssp_gardient_on_board
+   and no_specific_mode_required_by_a_mode_profile);
 
 function condition_transition_SB_to_FS
-  return Boolean is
-  (condition_10 AND priority = 7);
-[...]
+  return Boolean
+is (condition_10 and priority = 7);
 \end{lstlisting}
 
-We can thus model all possible transitions of the transition table.
+\subsubsection{Step Functions}
 
 Our second example is the coding of step functions, \aka functions
-constant by interval, used in ``Speed and distance monitoring''
+constant by interval, used in the \textit{Speed and distance monitoring}
 section (SRS §3.13). Such functions are used to model for example
 speed restrictions along distance. One of our main goal is to model
 the merge of two speed restrictions, taking at each point the most
@@ -357,133 +358,129 @@ restrictive (\ie smaller) one.
 
 To encode step functions, we used the following data structure:
 \begin{lstlisting}
-package Step_Function is pragma SPARK_Mode (On);
-   type Num_Delimiters_Range is range 0 .. 10;
+type Num_Delimiters_Range is range 0 .. 10;
 
-   type Function_Range is new Natural;
+type Function_Range is new Natural;
 
-   type Delimiter_Entry is record
-      Delimiter : Function_Range;
-      Value : Float;
-   end record;
+type Delimiter_Entry is record
+   Delimiter : Function_Range;
+   Value     : Float;
+end record;
 
-   type Delimiter_Values is array
-     (Num_Delimiters_Range) of Delimiter_Entry;
+type Delimiter_Values is array
+  (Num_Delimiters_Range) of Delimiter_Entry;
 
-   type Step_Function_t is record
-      Num_Delim : Num_Delimiters_Range;
-      Step : Delimiter_Values;
-   end record;
-[...]
+type Step_Function_t is record
+   Num_Delim : Num_Delimiters_Range;
+   Step      : Delimiter_Values;
+end record;
 \end{lstlisting}
 
-A step function can have up to 11 steps separated by 10 ``delimiters''
-stored in \SPARK{Step_Function_t.Step} array. Each delimiter of type
-\SPARK{Delimiter_Entry} contains the delimiter position
-(\SPARK{Delimiter} field) and the associated function constant value
-(\SPARK{Value} field). \SPARK{Num_Delim} stores the number
-of delimiters currently used for this step function.
+A step function of type \SPARK{Step_Function_t} can have up to 11 steps
+separated by 10 delimiters. Each delimiter of type \SPARK{Delimiter_Entry}
+contains the delimiter position and the associated constant value for the
+function.
 
-On this data structure, we build several functions like
-\SPARK{Get_Value(SFun : Step_Function_t; X: Function_Range)}
-\SPARK{return Float} that returns the value of step function
-\SPARK{SFun} at point \SPARK{X} or \SPARK{Minimum_Until_Point(SFun :
-  Step_Function_t;} \SPARK{X: Function_Range)} \SPARK{return Float}
-that returns the minimum of the step function \SPARK{SFun} until point
-\SPARK{X}. But probably the most interesting function is function
-\SPARK{Restrictive_Merge} whose contract is given in the following
-section.
+We defined several subprograms that query or update step functions:
+\begin{itemize}
+\item \SPARK{Get_Value(SFun,X)} returns the value of step function \SPARK{SFun}
+  at point \SPARK{X};
+\item \SPARK{Minimum_Until_Point(SFun,X)} returns the minimum of the step
+  function \SPARK{SFun} until point \SPARK{X};
+\item \SPARK{Restrictive_Merge(SFun1,SFun2,Merge)} merges step functions
+  \SPARK{SFun1} and \SPARK{SFun2} into step function \SPARK{Merge}.
+\end{itemize}
 
 \subsection{Formalization of Properties}
 
-Regarding mode transition table, we wanted to check requirement
-§4.6.1.5 of SRS that states that all transitions are exclusive, even
-at the same priority. We thus used the \SPARK{Contract_Cases} of
-\newspark to check that all conditions are indeed disjoint. In
-practice, we wrote the following function specification:
+\subsubsection{Mode Transition Table}
+
+We wanted to check requirement §4.6.1.5 of SRS that states that all transitions
+are exclusive, even at the same priority. We used \SPARK{Contract_Cases} to
+express this requirement. For example, for transitions from mode Stand By:
 
 \begin{lstlisting}
 function transition(mode : etcs_mode_t)
   return etcs_mode_t
 with Contract_Cases =>
-    (condition_transition_SB_to_SH => True,
-     condition_transition_SB_to_FS => True,
-     condition_transition_SB_to_IS => True);
+  (condition_transition_SB_to_SH => True,
+   condition_transition_SB_to_FS => True,
+   condition_transition_SB_to_IS => True);
 \end{lstlisting}
 
-\gnatprove tool generates the Verification Conditions that must be
-checked.
+\subsubsection{Step Functions}
 
-Regarding the step functions, we wrote a formal \emph{functional}
-specification for all functions. For example procedure
-\SPARK{Restrictive_Merge} has following contract:
+We wanted to check full functional correctness of this critical unit. We used
+contracts to express the specifications of all subprograms.  For example, for
+procedure \SPARK{Restrictive_Merge}, we specified that, given two valid (\ie
+with strictly increasing delimiters) step functions \SPARK{SFun1} and
+\SPARK{SFun2} without too many delimiters, the resulting step function is a
+valid one (1), it contains all the delimiters of \SPARK{SFun1} (2) and
+\SPARK{SFun2} (3) and for each of those delimiters, the value of the step
+function is the minimum of both initial step functions (4).
 
 \begin{lstlisting}
-procedure
- Restrictive_Merge(SFun1, SFun2 : in Step_Function_t;
-                   Merge : out Step_Function_t)
-with Pre => Is_Valid(SFun1) and Is_Valid(SFun2)
-  and
- SFun1.Num_Delim + SFun2.Num_Delim <=
+procedure Restrictive_Merge
+  (SFun1, SFun2 : in Step_Function_t;
+   Merge        : out Step_Function_t)
+with
+Pre =>
+  Is_Valid(SFun1) and Is_Valid(SFun2)
+    and
+  SFun1.Num_Delim + SFun2.Num_Delim <=
     Num_Delimiters_Range'Last,
 Post =>
--- (1) Output is valid step function
-Is_Valid(Merge)
--- (2) All SFun1 delimiters are valid in Merge
-and
- (for all i in
-       Num_Delimiters_Range'First..SFun1.Num_Delim =>
+  -- (1) Output is a valid step function
+  Is_Valid(Merge)
+  -- (2) All SFun1 delimiters are valid in Merge
+    and
+  (for all i in
+     Num_Delimiters_Range'First..SFun1.Num_Delim =>
    (for some j in
      Num_Delimiters_Range'First..Merge.Num_Delim =>
-      (Merge.Step(j).Delimiter = SFun1.Step(i).Delimiter)))
--- (3) All SFun2 delimiters are valid in Merge
-and
- (for all i in
-      Num_Delimiters_Range'First..SFun2.Num_Delim =>
+      (Merge.Step(j).Delimiter
+        = SFun1.Step(i).Delimiter)))
+  -- (3) All SFun2 delimiters are valid in Merge
+    and
+  (for all i in
+     Num_Delimiters_Range'First..SFun2.Num_Delim =>
    (for some j in
      Num_Delimiters_Range'First..Merge.Num_Delim =>
-      (Merge.Step(j).Delimiter = SFun2.Step(i).Delimiter)))
--- (4) For all delimiters of Merge, its value is the
--- minimum of SFun1 and SFun2
-and
- (for all i in
+      (Merge.Step(j).Delimiter
+        = SFun2.Step(i).Delimiter)))
+  -- (4) For each delimiter of Merge, its value is the
+  --     minimum of SFun1 and SFun2
+    and
+  (for all i in
      Num_Delimiters_Range'First..Merge.Num_Delim =>
    (Merge.Step(i).Value
     = Min(Get_Value(SFun1, Merge.Step(i).Delimiter),
           Get_Value(SFun2, Merge.Step(i).Delimiter))));
 \end{lstlisting}
 
-This contract formally states that, given two valid (\ie with strictly
-increasing delimiters) step functions \SPARK{SFun1} and \SPARK{SFun2}
-without too many delimiters, the resulting step function is a valid
-one (1), it contains all the delimiters of \SPARK{SFun1} (2) and
-\SPARK{SFun2} (3) and for each of those delimiters, the value of the
-step function is the minimum of both initial step functions (4).
-
-
 \subsection{Formal Verification Results}
 
-The first goal of this experiment was to check if \newspark was
-expressive enough to describe the objects of the requirements:
-requirement text, transition tables, breaking curve equations, \etc
-Overall, we were quite satisfied to be able express most of the
-requirements in a formal way. The very expressive data structure of
-\newspark (type definition, records, arrays, enumerations, ...) were
-very helpful and we found it leads to quite readable specifications.
+The first goal of this experiment was to check if \newspark was expressive
+enough to describe the objects of the requirements: requirement text,
+transition tables, breaking curve equations, \etc Overall, we were quite
+satisfied, as we were able to express most of the requirements in a formal
+way. The very expressive data structures of \newspark (records, arrays,
+enumerations, \etc) compared to other specification languages were very helpful
+and we found that it lead to quite readable specifications.
 
-The second goal was to evaluate the proving capabilities of \newspark
+The second goal was to evaluate the automatic proving capabilities of \newspark
 on some parts of the specification.
 
-Regarding mode transition table, we were not able to prove the shown
-contract of function \SPARK{transition}... because the contract cannot
-be proved! In fact, this experiment shown that the transitions given
-in the specification table lack details to determine if the transition
+Regarding the mode transition table, we were not able to prove the
+contracts we specified, because the contracts were not
+provable! We discovered with this experiment that the transitions given
+in the specification table lack details to determine if the transitions
 are exclusive or not. Those details are given in other parts of the
-specification and it would be a major work to formalize it.
+specification and it would be a major work to formalize them.
 
-Regarding the step functions, we were able to prove all function
-contracts except \SPARK{Restrictive_Merge}. In this procedure, the
-post-condition and a main loop invariant could not be automatically
+Regarding step functions, we were able to prove all subprogram
+contracts except the one of \SPARK{Restrictive_Merge}. In this procedure, the
+postcondition and the loop invariant could not be automatically
 proved by \altergo. The main reason is that the proof context is too
 big and \altergo gets lost in all possible quantification
 instantiations. We have checked that some parts of the loop invariant
@@ -500,7 +497,7 @@ other types is crucial in this regard.
 
 Another important finding is that the code should be written with
 proof in mind. For example, in one of the step function procedure, we
-wrote a loop with an early exit. However \altergo is unable to prove
+wrote a loop with an early exit. However \altergo was unable to prove
 this loop because it lacks induction reasoning, even if all elements
 of the induction could be easily pointed out to the prover. We had to
 change the code with a loop without early exit, the proof then
@@ -509,7 +506,7 @@ becoming trivial.
 A third finding is that contracts that can be automatically proved are
 not the most natural contracts, \ie contracts a reviewer would
 understand more easily. For example, for \SPARK{Restrictive_Merge}
-procedure, we would have prefer to write that the resulting function
+procedure, we would have preferred to write that the resulting function
 is the minimum of both input functions for all possible input
 values. It would have been impossible to prove this contract. Other
 formal approaches with formal refinement like B~Method would probably
@@ -532,44 +529,42 @@ that would be broken afterward due to other code changes.
 
 \section{Flight Control and Vehicle Management in Space}
 
-% Astrium case study
-
-
 \subsection{Description of the Software}
 
-A typical space applicative flight program is made up of two parts:
-\ifdefined\abstractonly
-Flight control or more generally numerical control / command algorithm, and Mission and Vehicle Management.
-
-\else
+A typical space applicative flight program is made up of two parts, which we
+both considered in our case study:
 
 \begin{itemize}
-\item Flight control or more generally numerical control / command algorithm
+\item Flight control or more generally numerical command and control algorithm
 \item Mission and Vehicle Management
 \end{itemize}
-\fi
 
-\subsubsection{Numerical control / command algorithms}
+\subsubsection{Numerical Command and Control Algorithms}
 
-\ifdefined\abstractonly
-\else
-Numerical control / command algorithms take as inputs floating point values, perform some numerical computations (with the classical basic mathematical operators such as additions, subtractions, multiplications, divisions, absolute values, trigonometry or operations on vectors and arrays, \etc) and return floating point results. Such algorithms have generally a retroaction loop, \ie internal states.
+Numerical command and control algorithms take as inputs floating point values,
+perform some numerical computations (with the classical basic mathematical
+operators such as additions, subtractions, multiplications, divisions, absolute
+values, trigonometry or operations on vectors and arrays, \etc) and return
+floating point results. Such algorithms have generally a retroaction loop, \ie
+internal states.
 
-It is generally not possible to define interesting functional contracts for such code. Indeed, the functional contract of the equation:
+It is generally not possible to define interesting functional contracts for
+such code. Indeed, the functional contract of the equation:
 
 \begin{lstlisting}
    X := A * Y + Cos (Z)
 \end{lstlisting}
 
 \noindent
-is just itself (\ie it is not possible to specify in a more abstract way this equation). Then, instead of defining functional contracts, the objective on this kind of software is the proof of absence of run-time errors (such as division by zero) and the correctness of variable ranges (such as, for instance, a velocity shall always be between 0 and 25 km/s).
-\fi
+is just itself (\ie it is not possible to specify in a more abstract way this
+equation). Then, instead of defining functional contracts, the objective on
+this kind of software is the proof of absence of run-time errors (such as
+division by zero) and the correctness of variable ranges (such as, for
+instance, a velocity shall always be between 0 and 25 km/s).
 
 \newspark has been first experimented on a solar wing management software (for a spacecraft such as the ATV / Automated Transfer Vehicle).
 This piece of code uses a mathematical library which implementation is not in \newspark, implying that it could not be formally proved, but only tested. However, the interface of this mathematical library is in \newspark. The contracts defined on the mathematical library can then be used to prove the application code.
 
-\ifdefined\abstractonly
-\else
 \paragraph{Example of contract in the mathematical library:}
 
 \begin{lstlisting}
@@ -581,7 +576,6 @@ This piece of code uses a mathematical library which implementation is not in \n
      Post => (Sin32'Result >= -1.0) and then
              (Sin32'Result <=  1.0);
 \end{lstlisting}
-\fi
 
 \subsubsection{Mission and Vehicle Management}
 
@@ -591,51 +585,51 @@ The Mission and Vehicle Management of a spacecraft is described by an ECSS (Euro
 {\bf ECSS-E-ST-70-01C Space engineering - Spacecraft on-board control procedures}
 \end{center}
 
-This standard defines the general principles of a On Board Control Procedure (OBCP). An OBCP is in practice represented by a simplified programming language interpreted onboard the spacecraft. This interpreter is generally at the highest level of criticality of the spacecraft. The implementation of this interpreter in \newspark is table driven and relies greatly
-\ifdefined\abstractonly
-on: generic packages and discriminants.
-\else
-on:
-\begin{itemize}
-\item Generic packages
+This standard defines the general principles of a On Board Control Procedure
+(OBCP). An OBCP is in practice represented by a simplified programming language
+interpreted onboard the spacecraft. This interpreter is generally at the
+highest level of criticality of the spacecraft. The implementation of this
+interpreter in \newspark is table driven and relies greatly on generic packages
+and discriminants. The generic packages allow an easy customization of the
+code, while use of discriminants ensures a strong typing of the code, even in
+case of heterogeneous communication between components of the system.
 
-	The generic packages allow an easy customization of the code:
+%% \begin{itemize}
+%% \item Generic packages
 
-	\begin{lstlisting}
-     generic
-        -- the list of events
-        type T_Event_Id is (<>);
 
-     package Mvm.Events is
-	\end{lstlisting}
+%% 	\begin{lstlisting}
+%%      generic
+%%         -- the list of events
+%%         type T_Event_Id is (<>);
 
-\item Discriminant
+%%      package Mvm.Events is
+%% 	\end{lstlisting}
 
-	The discriminants ensures a strong typing of the code, even in case of heterogeneous communication between components of the system:
+%% \item Discriminant
 
-	\begin{lstlisting}
-   type T_Monitoring is (No_Window, Window);
+%% 	The discriminants
 
-   type T_Event_Status
-     (Monitoring : T_Monitoring := No_Window)
-   is record
-     case Monitoring is
-     when No_Window => null;
-     when Window    =>
-       Start_Window : T_Float32;
-       End_Window   : T_Float32;
-     end case;
-   end record;
-	\end{lstlisting}
-\end{itemize}
-\fi
+%% 	\begin{lstlisting}
+%%    type T_Monitoring is (No_Window, Window);
+
+%%    type T_Event_Status
+%%      (Monitoring : T_Monitoring := No_Window)
+%%    is record
+%%      case Monitoring is
+%%      when No_Window => null;
+%%      when Window    =>
+%%        Start_Window : T_Float32;
+%%        End_Window   : T_Float32;
+%%      end case;
+%%    end record;
+%% 	\end{lstlisting}
+%% \end{itemize}
 
 \subsection{Formalization of Properties}
 
 The contracts defined on algorithmic code are mainly related to the ranges of variables.
 
-\ifdefined\abstractonly
-\else
 \paragraph{Example of contract in algorithmic code:}
 
 \begin{lstlisting}
@@ -647,7 +641,6 @@ The contracts defined on algorithmic code are mainly related to the ranges of va
    with Pre => (X >= -720.0) and
                (X <=  720.0);
 \end{lstlisting}
-\fi
 
 The contracts defined on mission and vehicle management code have (among others) the following objectives:
 
@@ -658,8 +651,6 @@ The contracts defined on mission and vehicle management code have (among others)
 \item Ensuring the absence of run-time errors
 \end{itemize}
 
-\ifdefined\abstractonly
-\else
 \paragraph{Example of contract in mission and vehicle management code:}
 
 \begin{lstlisting}
@@ -675,14 +666,11 @@ The contracts defined on mission and vehicle management code have (among others)
            Get_Status (Other_Id, Events) =
            Get_Status (Other_Id, Events'Old))));
 \end{lstlisting}
-\fi
 
 \subsection{Formal Verification Results}
 
 All the contracts have been checked by dynamic testing. This phase is quite classical, except for the fact that the testing includes the preconditions and the postconditions defined in the software. Then, \gnatprove has been applied.
 
-\ifdefined\abstractonly
-\else
 \subsubsection{Subprograms not in \newspark}
 
 The origins of subprograms not yet in \newspark are mainly the following:
@@ -778,22 +766,9 @@ An improvement of \gnatprove is in progress in order to deal with such case.
 
 The remaining non proved VCs are due to too complex subprograms.
 These subprograms shall be split in several smaller subprograms to be proved.
-\fi
 
 \subsection{Lessons Learned}
 
-\ifdefined\abstractonly
-We will present how \newspark fulfilled the initial objectives that we set:
-capability to formalize the test cases, verification that all test procedures
-cover all the test cases, support to the verification / validation of the
-absence of run-time errors, support to the verification / validation of
-functional properties, verification of the correctness of the access of all
-global variables, verification of the absence of out of range values, internal
-consistency of software unit, capability to assess the commandability and
-observability, help proving that numerical protection mechanisms are correctly
-implemented, prove the correctness of a generic code in a specific context.
-
-\else
 Our initial objectives were that \newspark should fulfill the following requirements:
 
 \begin{itemize}
@@ -828,7 +803,6 @@ Current assessment: Very good
 
 Current assessment: Very good
 \end{itemize}
-\fi
 
 \section{Biometric Access to a Secure Enclave}
 
