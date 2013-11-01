@@ -1,1 +1,1 @@
-swap_incorrect_b.ads:5:14: "Call_Count" must be listed in the Global aspect of "Swap"
+swap_incorrect_b.adb:15:07: "Call_Count" must be listed in the Global aspect of "Swap"
