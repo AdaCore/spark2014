@@ -810,64 +810,160 @@ Current assessment: Very good
 
 \subsection{Description of the Software}
 
-Tokeneer is a highly secure biometric software system that was originally
-developed by Altran in \oldspark. The system provides protection to secure
-information held on a network of workstations situated in a physically
-secure enclave. The Tokeneer project was commissioned by the US National
-Security Agency (NSA) to demonstrate the feasibility of developing systems
-to the level of rigour required by the higher assurance levels of the
-Common Criteria. The original development artefacts, including all source code,
-are publicly available. For more details see
+Tokeneer is a highly secure biometric software system that was
+originally developed by Altran in \oldspark. The system provides
+protection to secure information held on a network of workstations
+situated in a physically secure enclave. The Tokeneer project was
+commissioned by the US National Security Agency (NSA) to demonstrate
+the feasibility of developing systems to the level of rigour required
+by the higher assurance levels of the Common Criteria. The original
+development artefacts, including all source code, are publicly
+available. For more details see
 \url{www.adacore.com/sparkpro/tokeneer}.
 
-During this study, the source code for Tokeneer has been translated into \newspark.
-The core system now consists of approximately \emph{10,000} lines of \newspark code
-(declarations and executable lines, excluding blank lines, comments and
-SPARK annotations). There are also approximately 3,700 lines of supporting
-code written in Ada which mimicked the drivers to peripherals connected
-to the core system.
+During this study, the source code for Tokeneer has been translated
+into \newspark. The core system now consists of approximately
+\emph{10,000} lines of \newspark code (declarations and executable
+lines, excluding blank lines, comments and SPARK annotations). There
+are also approximately 3,700 lines of supporting code written in Ada
+which mimicked the drivers to peripherals connected to the core
+system.
 
 
 \subsection{Formalization of Properties}
 
-The contracts defined in the Tokeneer source code consist of information flow contracts (expressed as Depends aspects) and functional behavioral contracts (expressed as Pre and Post aspects).
+The contracts defined in the Tokeneer source code consist of
+information flow contracts (expressed as Depends aspects) and
+functional behavioural contracts (expressed as Pre and Post aspects).
 
 The verification objectives supported by these contracts are as follows:
 
-%\begin{itemize}
- Detecting improper initialization;
- Identifying innefective assignments;
- Showing the code is free from any run time exceptions, such as buffer overflow or divide-by-zero;
- Ensuring secure infomration flow;
- Proving that key security properties are guaranteed by the implementation.
-%\end{itemize}
+Detecting improper initialization; Identifying innefective
+assignments; Showing the code is free from any run time exceptions,
+such as buffer overflow or divide-by-zero; Ensuring secure information
+flow; Proving that key security properties are guaranteed by the
+implementation.
 
 %%\emph{Examples of the various types of contract will be added here.}
 
 \subsection{Formal Verification Results}
 
-The source code of Tokeneer was proven to be free of runtime exceptions
-and some key security properties were proven to hold but full functional
-proof was not performed on the entirety of the code. This study will
-focus on proving the biggest possible subset of the aforementioned
-attributes using the \newspark toolset.
+The source code of Tokeneer was proven to be free of runtime
+exceptions and some key security properties were proven to hold but
+full functional proof was not performed on the entirety of the
+code. This study will focus on proving the biggest possible subset of
+the aforementioned attributes using the \newspark toolset.
+
+\subsection{Fully specifying and proving a package}
+
+The \oldspark version of the code performed proof of functional
+behaviour on a limited number of packages. In order to measure the
+expressiveness and proving power of the \newspark tools, a specific
+package, on which functional behaviour proof had not been attempted,
+was selected and then fully augmented with functional behaviour
+annotations. Package \emph{admin}, which is the package that was
+augmented, contains the state of the administrator of the system and a
+set of operations that administrators can perform.
+
+In order to illustrate how functional behaviour contracts were added,
+we will consider subroutine \emph{OpIsAvailable} of package admin. An
+administrator can be either a ``UserOnly'', a ``Guard'', an
+``AuditManager'' or a ``SecurityOfficer''. Each of the aforementioned
+types of administrators have a set of predefined operations that they
+are allowed to perform. Function \emph{OpIsAvailable} takes as input
+an administrator and a string that is read from the keyboard and
+determines if this string corresponds to an operation available to the
+administrator. If the operation is indeed available, then this
+operation is returned, otherwise \emph{NullOp} is returned.
+
+\oldspark code:
+
+\begin{lstlisting}
+function OpIsAvailable(TheAdmin : T;
+                       KeyedOp  : Keyboard.DataT)
+                      return OpAndNullT;
+--# pre IsPresent(TheAdmin);
+--# return R => (R /= NullOp ->
+--#                (R = OverrideLock <->
+--#                 prf_rolePresent(TheAdmin) =
+--#                   PrivTypes.Guard));
+\end{lstlisting}
+Here, the postcondition \oldspark annotation serve only as a test
+case. It ensures that if a non null operation was returned and if that
+operation was \emph{OverrideLock} then the administrator was of type
+\emph{Guard}. This annotation is incomplete since it does not specify
+any other kind of valid combinations of administrator types and their
+corresponding operations (\Eg the administrator being of type
+\emph{SecurityOfficer} and the operation being \emph{UpdateConfigData}
+or \emph{ShutdownOp}) or under which circumstances \emph{NullOp}
+should be returned.
+
+\newspark code:
+
+\begin{lstlisting}
+function OpIsAvailable(TheAdmin : T;
+                       KeyedOp  : Keyboard.DataT)
+                      return OpAndNullT
+  with Pre  => IsPresent(TheAdmin),
+       Post => (for some Op in Opt =>
+                          Str_Comp(KeyedOp, Op)
+                  and AllowedOp(TheAdmin, Op)
+                  and OpIsAvailable'Result = Op)
+               xor OpIsAvailable'Result = NullOp;
+\end{lstlisting}
+This \newspark Post aspect states that we have two mutually exclusive
+cases. If there exists some operation in Opt that matches the string
+read from the keyboard and this operation is allowed for the current
+administrator then the result of function \emph{OpIsAvailable} is this
+operation, otherwise, the result is \emph{NullOp}.
+
+The \newspark tools discharge all 24 verification conditions
+associated with the augmented \emph{admin} package in a couple of
+seconds. The \oldspark tools also prove all properties associated with
+the non-augmented \emph{admin} package but a total of 12 user rules is
+required in order to achieve this.
+
+
+\subsection{Converting \oldspark to \newspark}
+
+-In-type assertions are often no longer needed. {give example code}
+
+-Some code no longer needs to be hidden (string concatenation example).
+
+-Proof functions can be replaced with actual functions that have
+Convention =$>$ Ghost. {give example code}
+
+\subsection{General observations}
+
+-Flaws in specifications can be detected (see highlight report).
+
+-Low level Z specs look very much like the \newspark code.
+
+-Test the unproved parts of the code.
+
+\subsection{Non proved VCs and flow warnings}
+
+-Explain why we have packages where not everything is proven and why we
+have some flow warnings (\oldspark was getting away with these because
+it was using rlu/prv files and the flow warnings were accepted).
 
 \subsection{Lessons Learned}
 
-Some additional aims of this study are the following:
-   Evaluate how easy is it to convert programs from \oldspark to \newspark;
-   Investigate how executable semantics affect the way code has to be written
-        and what advantages/disadvantages they introduce;
-   Discover the percentage of the code that can be automatically proven;
-        and the combination of options/provers that achieve the best results
-        for this specific test case;
-   Provide feedback and suggest features or changes that could improve future versions of the \newspark toolset.
+Some additional aims of this study are the following: Evaluate how
+easy is it to convert programs from \oldspark to \newspark;
+Investigate how executable semantics affect the way code has to be
+written and what advantages/disadvantages they introduce; Discover the
+percentage of the code that can be automatically proven; and the
+combination of options/provers that achieve the best results for this
+specific test case; Provide feedback and suggest features or changes
+that could improve future versions of the \newspark toolset.
 
 \section{Common Findings and Dissimilarities}
 
-We will discuss the common findings between the three case studies, denoting
-instrinsic properties of \newspark, and the dissimilarities, which may be
-explained by differences in domains, backgrounds, processes, \etc
+We will discuss the common findings between the three case studies,
+denoting instrinsic properties of \newspark, and the dissimilarities,
+which may be explained by differences in domains, backgrounds,
+processes, \etc
 
 \section{Conclusion}
 
