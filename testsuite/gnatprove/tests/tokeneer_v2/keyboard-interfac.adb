@@ -127,8 +127,7 @@ is
       ---------------------------------------------------------------------
       procedure GetData(KeyedData : out Keyboard.DataTextT;
                         Length    : out Keyboard.DataLengthT;
-                        Presence  : out BasicTypes.PresenceT)
-      is
+                        Presence  : out BasicTypes.PresenceT) is
       begin
          KeyedData := TheData;
          Length := TheLength;
@@ -146,10 +145,8 @@ is
       --    None.
       --
       ---------------------------------------------------------------------
-      procedure Refresh
-      is
+      procedure Refresh is
       begin
-
          if not IsFresh then
             TheData := (others => ' ');
             ThePresence := BasicTypes.Absent;
@@ -157,7 +154,6 @@ is
          else
             IsFresh := False;
          end if;
-
       end Refresh;
 
    end KeyedDataStore;
@@ -180,12 +176,11 @@ is
    -- Implementation Notes:
    --    None.
    ---------------------------------------------------------------------
+
    task Reader is
       entry Start;
       entry Stop;
    end;
-
-
 
    ----------------------------------------------------------------------
    -- Read
@@ -197,10 +192,12 @@ is
    -- Implementation Notes:
    --    None.
    ---------------------------------------------------------------------
-   procedure Read(Buffer :    out String;
-                  Len    :    out Natural;
-                  OK     :    out Boolean)
+   procedure Read
+     (Buffer : out String;
+      Len    : out Natural;
+      OK     : out Boolean)
    is
+      pragma Unreferenced (Buffer);
    begin
       OK := True;
       Len := 0;
@@ -264,7 +261,6 @@ is
               Ada.Characters.Handling.To_Upper(LocalKeyedData(I));
          end loop;
       end if;
-
    end ReadKeyboardData;
 
    ------------------------------------------------------------------
@@ -274,8 +270,7 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   procedure Init
-   is
+   procedure Init is
    begin
       Reader.Start;
    end Init;
@@ -289,8 +284,7 @@ is
    --    It is then possible to stop the Reader Task.
    --
    ------------------------------------------------------------------
-   procedure Finalise
-   is
+   procedure Finalise is
    begin
       Reader.Stop;
    end Finalise;
@@ -302,14 +296,9 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   procedure Poll
-   is
-
+   procedure Poll is
    begin
-
       KeyedDataStore.Refresh;
-
    end Poll;
-
 
 end Keyboard.Interfac;

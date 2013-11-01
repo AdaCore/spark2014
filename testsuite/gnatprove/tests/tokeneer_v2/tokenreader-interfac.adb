@@ -20,10 +20,7 @@ with TokenAPI;
 with Ada.Strings.Fixed,
      Ada.Strings;
 
-package body TokenReader.Interfac
-  with SPARK_Mode => Off
-is
-
+package body TokenReader.Interfac is
 
    ------------------------------------------------------------------
    -- ConvertToTISRawCert
@@ -34,9 +31,8 @@ is
    -- Implementation Notes:
    --     None.
    ------------------------------------------------------------------
-   function ConvertToTISRawCert (Cert : TokenAPI.GenericRawCertT)
-                                 return CertTypes.RawCertificateT
-   is
+   function ConvertToTISRawCert
+     (Cert : TokenAPI.GenericRawCertT) return CertTypes.RawCertificateT is
    begin
        return Cert.CertData;
    end ConvertToTISRawCert;
@@ -50,20 +46,19 @@ is
    -- Implementation Notes:
    --     None.
    ------------------------------------------------------------------
-   function ConvertFromTISRawCert (Cert : CertTypes.RawCertificateT)
-                                 return  TokenAPI.GenericRawCertT
+   function ConvertFromTISRawCert
+     (Cert : CertTypes.RawCertificateT) return TokenAPI.GenericRawCertT
    is
-      TrimmedCert : String := Ada.Strings.Fixed.Trim(
-                                    Source => Cert,
-                                    Side   => Ada.Strings.Right);
+      TrimmedCert : constant String :=
+        Ada.Strings.Fixed.Trim (Source => Cert,
+                                Side   => Ada.Strings.Right);
    begin
-       return TokenAPI.GenericRawCertT'(
-                 CertData   => Ada.Strings.Fixed.Overwrite(
-                                      Source   => TokenApi.NullGenericRawCert.
-                                                  CertData,
-                                      Position => 1,
-                                      New_Item => TrimmedCert),
-                 CertLength => TrimmedCert'Length);
+       return
+         (CertData   => Ada.Strings.Fixed.Overwrite
+            (Source   => TokenApi.NullGenericRawCert.CertData,
+             Position => 1,
+             New_Item => TrimmedCert),
+          CertLength => TrimmedCert'Length);
    end ConvertFromTISRawCert;
 
 
@@ -80,23 +75,20 @@ is
                           ResponseCode :    out BasicTypes.Unsigned32T)
    is
       LocalResponseCode : CommonTypes.Unsigned32T;
-      LocalNumber : CommonTypes.Unsigned32T
-        := CommonTypes.Unsigned32T(Number);
+      LocalNumber : CommonTypes.Unsigned32T := CommonTypes.Unsigned32T (Number);
       LocalList : CommonTypes.String8ArrayT;
    begin
-
-      TokenAPI.ListReaders(List         => LocalList,
+      TokenAPI.ListReaders (List         => LocalList,
                             Number       => LocalNumber,
                             ResponseCode => LocalResponseCode);
 
-      for I in ReaderArrayI loop
-         List(I) := LocalList(I);
+      for J in ReaderArrayI loop
+         List (J) := LocalList(J);
       end loop;
 
-      Number := BasicTypes.Unsigned32T(LocalNumber);
-      ResponseCode := BasicTypes.Unsigned32T(LocalResponseCode);
+      Number := BasicTypes.Unsigned32T (LocalNumber);
+      ResponseCode := BasicTypes.Unsigned32T (LocalResponseCode);
    end ListReaders;
-
 
    ------------------------------------------------------------------
    -- GetStatusChange
@@ -114,8 +106,8 @@ is
       LocalResponseCode : CommonTypes.Unsigned32T;
       LocalCurrentState : TokenAPI.ReaderStateT;
       LocalNewState : CommonTypes.Unsigned32T;
-   begin
 
+   begin
       LocalCurrentState := TokenAPI.ReaderStateT'Val
           (TokenAPI.ReaderStateT'Pos(TokenAPI.Unaware) +
            ReaderStateT'Pos(CurrentState) - ReaderStateT'Pos(Unaware));
@@ -140,7 +132,6 @@ is
    procedure Connect (Reader       : in     ReaderNameT;
                       CardHandle   :    out CardHandleT;
                       ResponseCode :    out BasicTypes.Unsigned32T)
-
    is
       LocalResponseCode : CommonTypes.Unsigned32T;
       LocalCardHandle : CommonTypes.Unsigned32T;
@@ -165,7 +156,6 @@ is
                      CState       :    out BasicTypes.Unsigned32T;
                      ATR          :    out TokenTypes.TokenIDT;
                      ResponseCode :    out BasicTypes.Unsigned32T)
-
    is
       LocalResponseCode : CommonTypes.Unsigned32T;
       LocalCState :  CommonTypes.Unsigned32T;
@@ -201,8 +191,6 @@ is
       ResponseCode := BasicTypes.Unsigned32T(LocalResponseCode);
    end Disconnect;
 
-
-
    ------------------------------------------------------------------
    -- GetIDCert
    --
@@ -228,7 +216,6 @@ is
       ResponseCode := BasicTypes.Unsigned32T(LocalResponseCode);
    end GetIDCert;
 
-
    ------------------------------------------------------------------
    -- GetPrivCert
    --
@@ -253,7 +240,6 @@ is
       RawPrivCert := ConvertToTISRawCert(LocalRawCert);
       ResponseCode := BasicTypes.Unsigned32T(LocalResponseCode);
    end GetPrivCert;
-
 
    ------------------------------------------------------------------
    -- GetIACert
@@ -329,6 +315,5 @@ is
 
       ResponseCode := BasicTypes.Unsigned32T(LocalResponseCode);
    end UpdateAuthCert;
-
 
 end TokenReader.Interfac;

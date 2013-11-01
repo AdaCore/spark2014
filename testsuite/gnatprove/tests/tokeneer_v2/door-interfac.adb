@@ -18,9 +18,7 @@
 with DoorAPI;
 use type DoorAPI.DoorStateT;
 
-package body Door.Interfac
-  with SPARK_Mode => Off
-is
+package body Door.Interfac is
 
    ------------------------------------------------------------------
    -- Types
@@ -36,8 +34,9 @@ is
    --
    ------------------------------------------------------------------
 
-   procedure GetDoorState (DoorState  :    out Door.T;
-                           Fault      :    out Boolean)
+   procedure GetDoorState
+     (DoorState : out Door.T;
+      Fault     : out Boolean)
    is
       TempState : DoorAPI.DoorStateT := DoorAPI.GetDoorState;
    begin

@@ -21,13 +21,10 @@ with Latch.Interfac,
      AuditTypes;
 
 package body Latch
-  with SPARK_Mode,
-       Refined_State => (State => (CurrentLatch,
+  with Refined_State => (State => (CurrentLatch,
                                    LatchTimeout),
                          Output => Latch.Interfac.Output)
 is
-
-
    CurrentLatch : T;
    LatchTimeout : Clock.TimeT;
 

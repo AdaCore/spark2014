@@ -26,10 +26,7 @@ with Door.Interfac,
 use type AlarmTypes.StatusT;
 
 package body Door
-  with SPARK_Mode,
-       Refined_State => (State => (CurrentDoor,
-                                   AlarmTimeout,
-                                   DoorAlarm),
+  with Refined_State => (State => (CurrentDoor, AlarmTimeout, DoorAlarm),
                          Input => Door.Interfac.Input)
 is
 

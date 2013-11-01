@@ -28,8 +28,7 @@ with BasicTypes;
 use type BasicTypes.Unsigned32T;
 
 package body TokenReader
-  with SPARK_Mode,
-       Refined_State => (State => ReaderStatus,
+  with Refined_State => (State => ReaderStatus,
                          Status => TokenReader.Interfac.ReaderStatus,
                          Input => TokenReader.Interfac.ReaderInput,
                          Output => TokenReader.Interfac.ReaderOutput)
@@ -171,7 +170,6 @@ is
      (Text         : String;
       ResponseCode : BasicTypes.Unsigned32T) return AuditTypes.DescriptionT
    is
-      --  pragma SPARK_Mode (Off);  --  concatenation
       Result : AuditTypes.DescriptionT := AuditTypes.NoDescription;
       TheCodeName : Interfac.ResponseCodeT;
 
@@ -193,31 +191,23 @@ is
                                      Text,
                                      TheCodeName))
       is
-         --  pragma SPARK_Mode (Off);
-
-         FullString : String := Text& ": "
+         FullString : constant String := Text & ": "
            & Interfac.ResponseCodeT'Image(TheCodeName)& " ("
            & BasicTypes.Unsigned32T'Image(ResponseCode)& ")";
       begin
-
          -- if the Full string is shorter then use it all otherwise
          -- truncate it.
          if FullString'Last <= AuditTypes.DescriptionI'Last then
-            Result (1..FullString'Last) := FullString;
+            Result (1 .. FullString'Last) := FullString;
          else
-            Result := FullString (1..AuditTypes.DescriptionI'Last);
+            Result := FullString (1 .. AuditTypes.DescriptionI'Last);
          end if;
       end SetResultString;
 
-
    begin
-
       TheCodeName := GetResponseCode (ResponseCode);
-
       SetResultString;
-
       return Result;
-
    end MakeDescription;
 
    ------------------------------------------------------------------

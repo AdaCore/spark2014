@@ -23,8 +23,7 @@ is
 
    Is_Alarming : Boolean;
 
-   function IsAlarming return Boolean is
-     (Is_Alarming);
+   function IsAlarming return Boolean is (Is_Alarming);
 
    ------------------------------------------------------------------
    -- Types
@@ -40,8 +39,7 @@ is
    --
    ------------------------------------------------------------------
 
-   procedure Activate
-   is
+   procedure Activate is
    begin
       AlarmAPI.Activate;
       Is_Alarming := True;
@@ -56,8 +54,7 @@ is
    --
    ------------------------------------------------------------------
 
-   procedure Deactivate
-   is
+   procedure Deactivate is
    begin
       AlarmAPI.Deactivate;
       Is_Alarming := False;

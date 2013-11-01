@@ -34,8 +34,7 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   function Convert (T : Ada.Calendar.Time) return Clock.TimeT
-   is
+   function Convert (T : Ada.Calendar.Time) return Clock.TimeT is
       Year  : Ada.Calendar.Year_Number;
       Month : Ada.Calendar.Month_Number;
       Day   : Ada.Calendar.Day_Number;
@@ -53,13 +52,12 @@ is
          Sec := Sec - 0.0005;
       end if;
 
-      return  Clock.TimeT'
+      return Clock.TimeT'
         (Year     => Clock.YearsT(Year),
          Month    => Clock.MonthsT(Month),
          Day      => Clock.DaysT(Day),
          MilliSec => Clock.MillisecsT(Sec * Clock.MilliSecsInSec));
    end Convert;
-
 
    ------------------------------------------------------------------
    -- TheTime
@@ -68,8 +66,7 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   function TheTime return Clock.TimeT is
-     (Convert(Ada.Calendar.Clock));
+   function TheTime return Clock.TimeT is (Convert (Ada.Calendar.Clock));
 
    ------------------------------------------------------------------
    -- AddDuration
@@ -79,12 +76,11 @@ is
    --     If the addition causes an overflow then the duration is not added.
    --
    ------------------------------------------------------------------
-   function AddDuration (T : Clock.TimeT ; D : Clock.DurationT)
-                         return Clock.TimeT
+   function AddDuration
+     (T : Clock.TimeT ; D : Clock.DurationT) return Clock.TimeT
    is
       LocalTime : Ada.Calendar.Time;
    begin
-
       LocalTime := (Duration(D) / 10) +
         Ada.Calendar.Time_Of
         (Year    => Ada.Calendar.Year_Number(T.Year),
@@ -95,8 +91,9 @@ is
 
       return Convert(LocalTime);
 
-   exception when Ada.Calendar.Time_Error =>
-      return T;
+   exception
+      when Ada.Calendar.Time_Error =>
+         return T;
    end AddDuration;
 
    ------------------------------------------------------------------
@@ -106,8 +103,7 @@ is
    --    If the time can be converted to a system time then it is valid.
    --
    ------------------------------------------------------------------
-   function IsValidTime (T : Clock.TimeT) return Boolean
-   is
+   function IsValidTime (T : Clock.TimeT) return Boolean is
       LocalTime : Ada.Calendar.Time;
    begin
       LocalTime :=
@@ -119,8 +115,9 @@ is
 
       return True;
 
-   exception when Ada.Calendar.Time_Error =>
-      return False;
+   exception
+      when Ada.Calendar.Time_Error =>
+         return False;
    end IsValidTime;
 
 end Clock.Interfac;

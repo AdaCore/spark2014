@@ -86,7 +86,7 @@ is
                                   Severity,
                                   State,
                                   User)),
-          Pre     => Valid_NumberLogEntries;
+          Pre     => Valid_NumberLogEntries and Description'First = 1;
 
    ------------------------------------------------------------------
    -- ArchiveLog

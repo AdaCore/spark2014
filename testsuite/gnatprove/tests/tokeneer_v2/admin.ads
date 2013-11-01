@@ -20,8 +20,7 @@ with PrivTypes,
      Keyboard;
 use PrivTypes;
 
-package Admin
-is
+package Admin is
 
    ------------------------------------------------------------------
    -- Types
@@ -66,7 +65,7 @@ is
    ------------------------------------------------------------------
 
    function TheCurrentOp (TheAdmin : T) return OpT
-     with Pre => IsDoingOp(TheAdmin);
+     with Pre => IsDoingOp (TheAdmin);
 
    ------------------------------------------------------------------
    -- Str_Comp
@@ -75,8 +74,9 @@ is
    --    Returns true if the KeyedOp matches the current Operation
    ------------------------------------------------------------------
 
-   function Str_Comp (KeyedOp : Keyboard.DataT;
-                      Op      : OpT) return Boolean;
+   function Str_Comp
+     (KeyedOp : Keyboard.DataT;
+      Op      : OpT) return Boolean;
 
    --------------------------------------------------------------------
    -- AllowedOp
@@ -85,9 +85,10 @@ is
    --    Returns true if Op is allowed for the current Admin
    --------------------------------------------------------------------
 
-   function AllowedOp (TheAdmin : T;
-                       Op       : OpT) return Boolean
-     with Pre => IsPresent(TheAdmin);
+   function AllowedOp
+     (TheAdmin : T;
+      Op       : OpT) return Boolean
+     with Pre => IsPresent (TheAdmin);
 
    ------------------------------------------------------------------
    -- IsPresent
@@ -130,9 +131,9 @@ is
 
    function OpIsAvailable (TheAdmin : T;
                            KeyedOp  : Keyboard.DataT) return OpAndNullT
-     with Pre  => IsPresent(TheAdmin),
-          Post => (for some Op in Opt => Str_Comp(KeyedOp, Op)
-                     and AllowedOp(TheAdmin, Op)
+     with Pre  => IsPresent (TheAdmin),
+          Post => (for some Op in Opt => Str_Comp (KeyedOp, Op)
+                     and AllowedOp (TheAdmin, Op)
                      and OpIsAvailable'Result = Op)
                    xor OpIsAvailable'Result = NullOp;
 
@@ -149,9 +150,9 @@ is
    procedure Logon (TheAdmin :    out T;
                     Role     : in     PrivTypes.AdminPrivilegeT)
      with Depends => (TheAdmin => Role),
-          Post    => RolePresent(TheAdmin) = Role
-                       and then not IsDoingOp(TheAdmin)
-                       and then IsPresent(TheAdmin);
+          Post    => RolePresent (TheAdmin) = Role
+                       and then not IsDoingOp (TheAdmin)
+                       and then IsPresent (TheAdmin);
 
    ------------------------------------------------------------------
    -- Logout
@@ -164,8 +165,8 @@ is
    ------------------------------------------------------------------
 
    procedure Logout (TheAdmin :    out T)
-     with Post => not IsPresent(TheAdmin)
-                    and then not IsDoingOp(TheAdmin);
+     with Post => not IsPresent (TheAdmin)
+                    and then not IsDoingOp (TheAdmin);
 
    ------------------------------------------------------------------
    -- StartOp
@@ -180,12 +181,12 @@ is
    procedure StartOp (TheAdmin : in out T;
                       Op       : in     OpT)
      with Depends => (TheAdmin => (TheAdmin, Op)),
-          Pre     => IsPresent(TheAdmin)
-                       and then not IsDoingOp(TheAdmin),
-          Post    => RolePresent(TheAdmin) = RolePresent(TheAdmin'Old)
-                       and then IsPresent(TheAdmin)
-                       and then IsDoingOp(TheAdmin)
-                       and then TheCurrentOp(TheAdmin) = Op;
+          Pre     => IsPresent (TheAdmin)
+                       and then not IsDoingOp (TheAdmin),
+          Post    => RolePresent (TheAdmin) = RolePresent (TheAdmin'Old)
+                       and then IsPresent (TheAdmin)
+                       and then IsDoingOp (TheAdmin)
+                       and then TheCurrentOp (TheAdmin) = Op;
 
    ------------------------------------------------------------------
    -- FinishOp
@@ -199,11 +200,11 @@ is
 
    procedure FinishOp (TheAdmin : in out T)
      with Depends => (TheAdmin => TheAdmin),
-          Pre     => IsPresent(TheAdmin)
-                       and then IsDoingOp(TheAdmin),
-          Post    => not IsDoingOp(TheAdmin)
-                       and then RolePresent(TheAdmin) = RolePresent(TheAdmin'Old)
-                       and then IsPresent(TheAdmin);
+          Pre     => IsPresent (TheAdmin) and then IsDoingOp (TheAdmin),
+          Post    => not IsDoingOp (TheAdmin)
+                       and then RolePresent (TheAdmin)
+                                  = RolePresent (TheAdmin'Old)
+                       and then IsPresent (TheAdmin);
 
    ------------------------------------------------------------------
    -- SecurityOfficerIsPresent
@@ -218,29 +219,24 @@ is
    function SecurityOfficerIsPresent (TheAdmin : T) return Boolean;
 
 private
-   type T is
-      record
-         RolePresent : PrivTypes.PrivilegeT;
-         CurrentOp   : OpAndNullT;
-      end record;
+   type T is record
+      RolePresent : PrivTypes.PrivilegeT;
+      CurrentOp   : OpAndNullT;
+   end record;
 
    type AvailOpsT is array (OpT) of Boolean;
    type PrivToAvailOpsT is array (PrivTypes.AdminPrivilegeT) of AvailOpsT;
 
    IsAvailable : constant PrivToAvailOpsT :=
-     PrivToAvailOpsT'(
-                      PrivTypes.Guard           => AvailOpsT'(
-                                                              OverrideLock => True,
-                                                              others       => False
-                                                             ),
-                      PrivTypes.AuditManager    => AvailOpsT'(
-                                                              ArchiveLog => True,
-                                                              others     => False
-                                                             ),
-                      PrivTypes.SecurityOfficer => AvailOpsT'(
-                                                              UpdateConfigData => True,
-                                                              ShutdownOp       => True,
-                                                              others           => False
-                                                             )
-                     );
+     PrivToAvailOpsT'
+       (PrivTypes.Guard           =>
+          AvailOpsT'(OverrideLock => True, others => False),
+
+        PrivTypes.AuditManager    =>
+          AvailOpsT'(ArchiveLog => True, others => False),
+
+        PrivTypes.SecurityOfficer =>
+          AvailOpsT'
+            (UpdateConfigData => True, ShutdownOp => True, others => False));
+
 end Admin;

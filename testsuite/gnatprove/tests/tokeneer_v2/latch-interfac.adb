@@ -17,20 +17,16 @@
 ------------------------------------------------------------------
 with LatchAPI;
 
-package body Latch.Interfac
-  with SPARK_Mode => Off
-is
+package body Latch.Interfac is
 
    Locked : Boolean;
 
-   function isLocked return Boolean is
-     (Locked);
+   function isLocked return Boolean is (Locked);
 
    ------------------------------------------------------------------
    -- Types
    --
    ------------------------------------------------------------------
-
 
    ------------------------------------------------------------------
    -- Lock
@@ -40,10 +36,9 @@ is
    --
    ------------------------------------------------------------------
 
-   procedure Lock(Fault :    out Boolean)
-   is
+   procedure Lock (Fault : out Boolean) is
    begin
-      LatchAPI.Lock(Failed => Fault);
+      LatchAPI.Lock (Failed => Fault);
       if not Fault then
          Locked := True;
       end if;
@@ -57,10 +52,10 @@ is
    --
    ------------------------------------------------------------------
 
-   procedure Unlock(Fault :    out Boolean)
-   is
+   procedure Unlock (Fault : out Boolean) is
    begin
-      LatchAPI.Unlock(Failed => Fault);
+      LatchAPI.Unlock (Failed => Fault);
+
       if not Fault then
          Locked := False;
       end if;

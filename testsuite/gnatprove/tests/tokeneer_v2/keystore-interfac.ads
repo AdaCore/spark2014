@@ -19,7 +19,6 @@ with BasicTypes,
      CertTypes,
      CryptoTypes;
 
-
 private package KeyStore.Interfac
   with Abstract_State => (Store with Part_Of => Keystore.Store),
        Initializes    => Store

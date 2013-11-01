@@ -1,6 +1,3 @@
-
-
-
 ------------------------------------------------------------------
 -- Tokeneer ID Station Support Software
 --
@@ -46,46 +43,39 @@ is
    -- DigestState keeps track of the state of a digest operation
    -- Holds the certificate read so far, and the current index
    -- (at which to write the next chunk).
-   type DigestStateT is
-      record
-         Initialized : Boolean;
-         RawCert     : CertTypes.RawCertificateT;
-         CertIndex   : CertTypes.RawCertificateI;
-      end record;
+   type DigestStateT is record
+      Initialized : Boolean;
+      RawCert     : CertTypes.RawCertificateT;
+      CertIndex   : CertTypes.RawCertificateI;
+   end record;
 
    NullDigestState : constant DigestStateT :=
-                 DigestStateT'(Initialized => False,
-                               RawCert     => (others => ASCII.nul),
-                               CertIndex   => CertTypes.RawCertificateI'First);
+     (Initialized => False,
+      RawCert     => (others => ASCII.nul),
+      CertIndex   => CertTypes.RawCertificateI'First);
 
    DigestState : DigestStateT := NullDigestState;
 
    -- FindState keeps track of the state of a find operation
-   type FindStateT is
-      record
-         Initialized  : Boolean;
-         FindTemplate : KeyTemplateT;
-      end record;
+   type FindStateT is record
+      Initialized  : Boolean;
+      FindTemplate : KeyTemplateT;
+   end record;
 
    NullKeyTemplate : constant KeyTemplateT :=
-        KeyTemplateT'(
-              AttrMask => 15,
-              Owner => CryptoTypes.IssuerT'(
-                    ID => 0,
-                    NameLength => 0,
-                    Name => CryptoTypes.NameT'(others => ' ')
-                    ),
-              KeyID => 0,
-              KeyLength => 0,
-              IsPublic => True,
-              Padding => KeyPaddingT'(others => 0)
-              );
+     (AttrMask => 15,
+      Owner => CryptoTypes.IssuerT'
+        (ID => 0,
+         NameLength => 0,
+         Name => CryptoTypes.NameT'(others => ' ')),
+      KeyID => 0,
+      KeyLength => 0,
+      IsPublic => True,
+      Padding => KeyPaddingT'(others => 0));
 
    NullFindState : constant FindStateT :=
-        FindStateT'(
-              Initialized  => False,
-              FindTemplate => NullKeyTemplate
-              );
+     (Initialized  => False,
+      FindTemplate => NullKeyTemplate);
 
    FindState : FindStateT := NullFindState;
 
@@ -140,18 +130,17 @@ is
                              of MechanismTypeT;
 
    TypeOf : constant MechanismToTypeT :=
-         MechanismToTypeT'(CryptoTypes.RSA           => Signing,
-                           CryptoTypes.MD2           => Digesting,
-                           CryptoTypes.MD5           => Digesting,
-                           CryptoTypes.SHA_1         => Digesting,
-                           CryptoTypes.RIPEMD128     => Digesting,
-                           CryptoTypes.RIPEMD160     => Digesting,
-                           CryptoTypes.MD2_RSA       => Combined,
-                           CryptoTypes.MD5_RSA       => Combined,
-                           CryptoTypes.SHA1_RSA      => Combined,
-                           CryptoTypes.RIPEMD128_RSA => Combined,
-                           CryptoTypes.RIPEMD160_RSA => Combined
-                           );
+     (CryptoTypes.RSA           => Signing,
+      CryptoTypes.MD2           => Digesting,
+      CryptoTypes.MD5           => Digesting,
+      CryptoTypes.SHA_1         => Digesting,
+      CryptoTypes.RIPEMD128     => Digesting,
+      CryptoTypes.RIPEMD160     => Digesting,
+      CryptoTypes.MD2_RSA       => Combined,
+      CryptoTypes.MD5_RSA       => Combined,
+      CryptoTypes.SHA1_RSA      => Combined,
+      CryptoTypes.RIPEMD128_RSA => Combined,
+      CryptoTypes.RIPEMD160_RSA => Combined);
 
    ------------------------------------------------------------------
    -- Local subprograms
@@ -166,8 +155,9 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   procedure Create(FileHandle :    out SPARK_IO.File_Type;
-                    Created    :    out Boolean)
+   procedure Create
+     (FileHandle :    out SPARK_IO.File_Type;
+      Created    :    out Boolean)
    is
       Status : SPARK_IO.File_Status;
    begin
@@ -225,8 +215,7 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   function ToString(Ch : Character) return String
-   is
+   function ToString(Ch : Character) return String is
    begin
       return Ada.Strings.Fixed."*"(1,Ch);
    end ToString;
@@ -244,8 +233,7 @@ is
    --
    ------------------------------------------------------------------
 
-   procedure Initialize(ReturnValue : out ReturnValueT)
-   is
+   procedure Initialize(ReturnValue : out ReturnValueT) is
       Keys         : SPARK_IO.File_Type;
       Open, Closed : Boolean;
       Created      : Boolean := False;
@@ -262,8 +250,7 @@ is
       --    None.
       --
       ------------------------------------------------------------------
-      procedure UpdateLocalStore
-      is
+      procedure UpdateLocalStore is
          CurrentHandle : HandleT := HandleT'First;
 
 
@@ -280,43 +267,42 @@ is
          --    are done blind - that is they just read the next line.
          --
          ------------------------------------------------------------------
-         procedure ReadOwnerID
-         is
+         procedure ReadOwnerID is
             IDTitle  : OwnerIDT;
-            IDString : String(1..20) := (others => ' ');
+            IDString : String (1 .. 20) := (others => ' ');
             IDLength : Natural;
             Index    : Integer;
 
          begin
             -- Find the start of the next Key.
-            while not SPARK_IO.End_Of_File(File => Keys) loop
-               SPARK_IO.Get_String(File => Keys,
-                                   Item => IDTitle,
-                                   Stop => Index);
+            while not SPARK_IO.End_Of_File (File => Keys) loop
+               SPARK_IO.Get_String (File => Keys,
+                                    Item => IDTitle,
+                                    Stop => Index);
 
                exit when Index = OwnerIDIndexT'Last and then
                          IDTitle = OwnerIDTitle;
             end loop;
 
-            if not SPARK_IO.End_Of_File(File => Keys) then
+            if not SPARK_IO.End_Of_File (File => Keys) then
 
                -- Found the Owner ID title; attempt to read the ID.
-               SPARK_IO.Get_Line(File => Keys,
-                                 Item => IDString,
-                                 Stop => IDLength);
+               SPARK_IO.Get_Line (File => Keys,
+                                  Item => IDString,
+                                  Stop => IDLength);
 
-               KeyStore(CurrentHandle).Owner.ID :=
-                       CryptoTypes.IssuerIDT'Value(IDString);
+               KeyStore (CurrentHandle).Owner.ID :=
+                       CryptoTypes.IssuerIDT'Value (IDString);
 
             end if; -- Do nothing if end of file
+
          exception
             when E : others =>
                -- What we read was not a 32-bit integer - fail
                ReadOK := False;
          end ReadOwnerID;
 
-         procedure ReadOwnerText
-         is
+         procedure ReadOwnerText is
             TextTitle : OwnerTextT;
             Count : CryptoTypes.NameCountT := 0;
             Name : CryptoTypes.NameT := (others => ' ');
@@ -326,29 +312,26 @@ is
             SPARK_IO.Get_String(File => Keys,
                                 Item => TextTitle,
                                 Stop => Index);
+
             if Index = OwnerTextIndexT'Last and then
                TextTitle = OwnerTextTitle then
 
-               SPARK_IO.Get_Line(File => Keys,
-                                 Item => Name,
-                                 Stop => Count);
+               SPARK_IO.Get_Line (File => Keys,
+                                  Item => Name,
+                                  Stop => Count);
 
-               KeyStore(CurrentHandle).Owner.Name := Name;
-               KeyStore(CurrentHandle).Owner.NameLength := Count;
-
+               KeyStore (CurrentHandle).Owner.Name := Name;
+               KeyStore (CurrentHandle).Owner.NameLength := Count;
             else
                ReadOK := False;
             end if;
-
          end ReadOwnerText;
 
-
-         procedure ReadKeyID
-         is
-            IDTitle      : KeyIDT;
-            IDString     : String(1..20) := (others => ' ');
-            IDLength     : Natural;
-            Index        : Integer;
+         procedure ReadKeyID is
+            IDTitle  : KeyIDT;
+            IDString : String (1 .. 20) := (others => ' ');
+            IDLength : Natural;
+            Index    : Integer;
 
          begin
             SPARK_IO.Get_String(File => Keys,
@@ -377,8 +360,7 @@ is
                ReadOK := False;
          end ReadKeyID;
 
-         procedure ReadKeyLength
-         is
+         procedure ReadKeyLength is
             LengthTitle  : KeyLengthT;
             LenString    : String(1..20) := (others => ' ');
             LenStrLength : Natural;
@@ -407,9 +389,7 @@ is
                ReadOK := False;
          end ReadKeyLength;
 
-
-         procedure ReadIsPublic
-         is
+         procedure ReadIsPublic is
             PublicTitle : IsPublicT;
             TheChar  : Character;
             Index    : Integer;
@@ -438,16 +418,12 @@ is
 
                else
                   ReadOK := False;
-
                end if;
 
-               SPARK_IO.Skip_Line(File    => Keys,
-                                  Spacing => 1);
-
+               SPARK_IO.Skip_Line(File    => Keys, Spacing => 1);
             else
                ReadOK := False;
             end if;
-
          end ReadIsPublic;
 
       begin -- UpdateLocalStore
@@ -476,31 +452,21 @@ is
          end loop;
 
          NextHandle := CurrentHandle;
-
       end UpdateLocalStore;
 
    begin -- Initialize
-
       NextHandle := 1;
-      OpenForReading(FileHandle => Keys,
-                     Open       => Open);
+      OpenForReading (FileHandle => Keys, Open => Open);
 
       if not Open then
-
-         Create(FileHandle => Keys,
-                Created    => Created);
-
+         Create (FileHandle => Keys, Created => Created);
       else
-
          UpdateLocalStore;
-
       end if;
 
-      Close(FileHandle => Keys,
-            Closed => Closed);
+      Close (FileHandle => Keys, Closed => Closed);
 
-      if ((Open and ReadOK) or Created) and
-          Closed then
+      if ((Open and ReadOK) or Created) and Closed then
          if not IsInit then
             ReturnValue := Ok;
             IsInit := True;
@@ -528,8 +494,7 @@ is
    --
    ------------------------------------------------------------------
 
-   procedure Finalize(ReturnValue : out ReturnValueT)
-   is
+   procedure Finalize (ReturnValue : out ReturnValueT) is
    begin
       ReturnValue := Ok;
       IsInit := False;
@@ -544,9 +509,9 @@ is
    --
    ------------------------------------------------------------------
 
-   procedure CreateObject(Template     : in     KeyTemplateT;
-                          ObjectHandle :    out BasicTypes.Unsigned32T;
-                          ReturnValue  :    out ReturnValueT)
+   procedure CreateObject (Template     : in     KeyTemplateT;
+                           ObjectHandle :    out BasicTypes.Unsigned32T;
+                           ReturnValue  :    out ReturnValueT)
    is
       Keys : SPARK_IO.File_Type;
       Open, Closed : Boolean;
@@ -561,10 +526,8 @@ is
       --    The file should already be open for appending
       --
       ------------------------------------------------------------------
-      procedure AddOwner
-      is
+      procedure AddOwner is
       begin
-
          SPARK_IO.Put_String(File => Keys,
                              Item => OwnerIDTitle,
                              Stop => 0);
@@ -590,8 +553,7 @@ is
                            Spacing => 1);
       end AddOwner;
 
-      procedure AddKey
-      is
+      procedure AddKey is
       begin
          SPARK_IO.Put_String(File => Keys,
                              Item => KeyIDTitle,
@@ -618,8 +580,7 @@ is
                            Spacing => 1);
       end AddKey;
 
-      procedure AddIsPublic
-      is
+      procedure AddIsPublic is
       begin
          SPARK_IO.Put_String(File => Keys,
                              Item => IsPublicTitle,
@@ -639,7 +600,6 @@ is
                            Spacing => 1);
       end AddIsPublic;
 
-
    begin -- CreateObject
 
       ObjectHandle := 0;
@@ -649,8 +609,7 @@ is
          ReturnValue := FunctionFailed;
       else
          -- Add key to store
-         OpenForAppending(FileHandle => Keys,
-                          Open       => Open);
+         OpenForAppending(FileHandle => Keys, Open => Open);
 
          if Open then
             AddOwner;
@@ -659,21 +618,17 @@ is
             ObjectHandle := NextHandle;
          end if;
 
-         Close(FileHandle => Keys,
-               Closed     => Closed);
+         Close (FileHandle => Keys, Closed => Closed);
 
-         if (Open and Closed) then
-
+         if Open and Closed then
             ReturnValue := Ok;
             -- Success, so update local store
-            KeyStore(NextHandle) := Template;
+            KeyStore (NextHandle) := Template;
             NextHandle := NextHandle + 1;
-
          else
             ReturnValue := FunctionFailed;
          end if;
       end if;
-
    end CreateObject;
 
 
@@ -685,11 +640,10 @@ is
    --
    ------------------------------------------------------------------
 
-   procedure FindObjectsInit(Template    : in     KeyTemplateT;
-                             ReturnValue :    out ReturnValueT)
-   is
+   procedure FindObjectsInit
+     (Template    : in     KeyTemplateT;
+      ReturnValue :    out ReturnValueT) is
    begin
-
       if not IsInit then
          ReturnValue := CryptokiNotInitialized;
       elsif FindState.Initialized or
@@ -1283,8 +1237,7 @@ is
    --    Clears all data from the keystore file
    --
    ------------------------------------------------------------------
-   procedure ClearStore
-   is
+   procedure ClearStore is
       Status : SPARK_IO.File_Status;
       Keys   : SPARK_IO.File_Type;
    begin

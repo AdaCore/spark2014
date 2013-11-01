@@ -17,9 +17,7 @@
 ------------------------------------------------------------------
 with Crypto;
 
-package body KeyStore.Interfac
-  with SPARK_Mode => Off
-is
+package body KeyStore.Interfac is
 
    ------------------------------------------------------------------
    -- GetKeystoreReturn
@@ -52,13 +50,10 @@ is
    --    None
    --
    ------------------------------------------------------------------
-   function GetCryptoReturn(StoreRet : ReturnValueT)
-      return Crypto.ReturnValueT
-   is
+   function GetCryptoReturn
+     (StoreRet : ReturnValueT) return Crypto.ReturnValueT is
    begin
-      return Crypto.ReturnValueT'Val(
-                ReturnValueT'Pos(
-                   StoreRet));
+      return Crypto.ReturnValueT'Val (ReturnValueT'Pos (StoreRet));
    end GetCryptoReturn;
 
    ------------------------------------------------------------------
@@ -68,12 +63,11 @@ is
    --    None
    --
    ------------------------------------------------------------------
-   procedure Initialize(ReturnValue : out ReturnValueT)
-   is
+   procedure Initialize (ReturnValue : out ReturnValueT) is
       LocalReturnValue : Crypto.ReturnValueT;
    begin
-      Crypto.Initialize(ReturnValue => LocalReturnValue);
-      ReturnValue := GetKeystoreReturn(LocalReturnValue);
+      Crypto.Initialize (ReturnValue => LocalReturnValue);
+      ReturnValue := GetKeystoreReturn (LocalReturnValue);
    end Initialize;
 
    ------------------------------------------------------------------
@@ -83,8 +77,7 @@ is
    --    None
    --
    ------------------------------------------------------------------
-   procedure Finalize(ReturnValue : out ReturnValueT)
-   is
+   procedure Finalize (ReturnValue : out ReturnValueT) is
       LocalReturnValue : Crypto.ReturnValueT;
    begin
       Crypto.Finalize(ReturnValue => LocalReturnValue);
@@ -98,8 +91,9 @@ is
    --    The object handle isn't required here
    --
    ------------------------------------------------------------------
-   procedure CreateObject(Template     : in     KeyTemplateT;
-                          ReturnValue  :    out ReturnValueT)
+   procedure CreateObject
+     (Template     : in     KeyTemplateT;
+      ReturnValue  :    out ReturnValueT)
    is
       LocalTemplate    : Crypto.KeyTemplateT :=
           (AttrMask  => Crypto.MaskT(Template.AttrMask),
@@ -337,8 +331,7 @@ is
    --    None
    --
    ------------------------------------------------------------------
-   procedure Delete
-   is
+   procedure Delete is
    begin
       Crypto.ClearStore;
    end Delete;

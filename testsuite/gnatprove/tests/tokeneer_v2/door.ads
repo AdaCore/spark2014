@@ -21,12 +21,8 @@ with Clock;       use Clock;
 with ConfigData;
 with Latch;       use Latch;
 
-
-
 package Door
-  with SPARK_Mode,
-       Abstract_State => (State,
-                          (Input with External => Async_Writers))
+  with Abstract_State => (State, (Input with External => Async_Writers))
 is
 
    ------------------------------------------------------------------

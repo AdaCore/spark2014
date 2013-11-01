@@ -155,50 +155,54 @@ is
    --    None.
    ------------------------------------------------------------------
    procedure ReadAndCheck
-     (Description :    out AuditTypes.DescriptionT;
-      TokenOK     :    out Boolean)
-     with Refined_Global  => (Input  => (Clock.CurrentTime,
-                                         Clock.Now,
-                                         ConfigData.State,
-                                         Interfac.Input,
-                                         Interfac.State,
-                                         KeyStore.State,
-                                         KeyStore.Store),
-                              Output => (AuthCert,
-                                         IDCert,
-                                         TokenTry),
-                              In_Out => (AuditLog.FileState,
-                                         AuditLog.State,
-                                         Interfac.Status,
-                                         TokenID)),
-          Refined_Depends => ((AuditLog.FileState,
-                               AuditLog.State) => (AuditLog.FileState,
-                                                   AuditLog.State,
-                                                   Clock.Now,
-                                                   ConfigData.State,
-                                                   Interfac.Input,
-                                                   Interfac.State,
-                                                   Interfac.Status,
-                                                   KeyStore.Store),
-                              (AuthCert,
-                               Description,
-                               TokenOK) => (Clock.CurrentTime,
-                                            Interfac.Input,
-                                            Interfac.State,
-                                            Interfac.Status,
-                                            KeyStore.State,
-                                            KeyStore.Store),
-                              IDCert => (Interfac.Input,
-                                         Interfac.State,
-                                         Interfac.Status,
-                                         KeyStore.Store),
-                              (Interfac.Status,
-                               TokenID) =>+ Interfac.State,
-                              TokenTry => Interfac.State),
-          Refined_Post    => TokenOk = (IDCert.Valid and then
-                                        AuthCert.Valid and then
-                                        Cert.Attr.Auth.TheRole(AuthCert.Contents) in
-                                          PrivTypes.AdminPrivilegeT)
+     (Description : out AuditTypes.DescriptionT;
+      TokenOK     : out Boolean)
+     with Refined_Global =>
+            (Input  => (Clock.CurrentTime,
+                        Clock.Now,
+                        ConfigData.State,
+                        Interfac.Input,
+                        Interfac.State,
+                        KeyStore.State,
+                        KeyStore.Store),
+             Output => (AuthCert,
+                        IDCert,
+                        TokenTry),
+             In_Out => (AuditLog.FileState,
+                        AuditLog.State,
+                        Interfac.Status,
+                        TokenID)),
+
+          Refined_Depends =>
+            ((AuditLog.FileState, AuditLog.State)
+              => (AuditLog.FileState,
+                  AuditLog.State,
+                  Clock.Now,
+                  ConfigData.State,
+                  Interfac.Input,
+                  Interfac.State,
+                  Interfac.Status,
+                  KeyStore.Store),
+            (AuthCert, Description, TokenOK)
+              => (Clock.CurrentTime,
+                  Interfac.Input,
+                  Interfac.State,
+                  Interfac.Status,
+                  KeyStore.State,
+                  KeyStore.Store),
+            IDCert => (Interfac.Input,
+                       Interfac.State,
+                       Interfac.Status,
+                       KeyStore.Store),
+            (Interfac.Status, TokenID)
+              =>+ Interfac.State,
+            TokenTry => Interfac.State),
+
+          Refined_Post =>
+            TokenOk = (IDCert.Valid
+                       and then AuthCert.Valid
+                       and then Cert.Attr.Auth.TheRole (AuthCert.Contents)
+                         in PrivTypes.AdminPrivilegeT)
    is
       AuthValid, IDValid, RoleOK : Boolean;
 
@@ -212,22 +216,20 @@ is
       --    Constructs a description from a piece of text,
       --    truncating if required.
       --
-      -- Implementation Notes:
-      --    Hidden from SPARK because of use of slicing.
       ------------------------------------------------------------------
-      function MakeDescription (Text : in String)
-                               return AuditTypes.DescriptionT
+      function MakeDescription
+        (Text : in String) return AuditTypes.DescriptionT
+        with Pre => Text'First = 1
       is
-         --  pragma SPARK_Mode (Off);
          Result : AuditTypes.DescriptionT := AuditTypes.NoDescription;
       begin
          if Text'Last < Result'Last then
-            Result(1..Text'Last) := Text;
+            Result (1 .. Text'Last) := Text;
          else
-            Result := Text(1..Result'Last);
+            Result := Text (1 .. Result'Last);
          end if;
-         return Result;
 
+         return Result;
       end MakeDescription;
 
       ------------------------------------------------------------------
@@ -312,10 +314,10 @@ is
            and TokenIDMatches and Verified;
 
          if not CertFound or not ExtractOK or not TokenIDMatches then
-            Description := MakeDescription("ID Certificate Bad");
+            Description := MakeDescription ("ID Certificate Bad");
          elsif not Verified then
             Description :=
-              MakeDescription("ID Certificate Not Verifiable");
+              MakeDescription ("ID Certificate Not Verifiable");
          else
             Description := AuditTypes.NoDescription;
          end if;
@@ -419,13 +421,13 @@ is
          if Description = AuditTypes.NoDescription then
             if not CertFound or not ExtractOK
               or not BaseIDMatches then
-               Description := MakeDescription("Authorisation Certificate Bad");
+               Description := MakeDescription ("Authorisation Certificate Bad");
             elsif not Verified then
                Description :=
-                  MakeDescription("Authorisation Certificate Not Verifiable");
+                  MakeDescription ("Authorisation Certificate Not Verifiable");
             elsif not Current then
                Description :=
-                  MakeDescription("Authorisation Certificate Not Current");
+                  MakeDescription ("Authorisation Certificate Not Current");
             end if;
          end if;
 
@@ -466,7 +468,7 @@ is
          AuthValid   := False;
          IDValid     := False;
          RoleOK      := False;
-         Description := MakeDescription("Token Bad");
+         Description := MakeDescription ("Token Bad");
 
       end if;
 

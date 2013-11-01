@@ -363,8 +363,6 @@ private
       Handle : FilePtr := null;
    end record;
 
-   NullFile : constant T := T'(NameT'(NameTextT'(others => ' '),
-                                      0),
-                               null);
+   NullFile : constant T := T'(NameT'(NameTextT'(others => ' '), 0), null);
 
 end File;

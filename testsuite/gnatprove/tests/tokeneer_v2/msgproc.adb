@@ -63,8 +63,7 @@ is
          end if;
       end loop;
 
-      return LocalMsg(1 .. ValFin-1);
-
+      return LocalMsg (1 .. ValFin-1);
    end GetStringByPos;
 
    ------------------------------------------------------------------
@@ -74,9 +73,7 @@ is
    --    Performed by searching for open and close braces.
    --
    ------------------------------------------------------------------
-   function GetDictionary(Msg : String;
-                          Arg : Positive) return DictionaryT
-   is
+   function GetDictionary (Msg : String; Arg : Positive) return DictionaryT is
       DicStart,
       DicFin,
       PrimaryCount,
@@ -85,30 +82,24 @@ is
       LocalReturn : String := Msg;
 
    begin
-
       -- Search for the required dictionary, given by Arg.
-      for i in Positive range 1..Msg'Length loop
-
-         if Msg(i) = '{' then
+      for i in 1 .. Msg'Length loop
+         if Msg (i) = '{' then
             -- Found a dictionary start
             -- Is it a dictionary at the highest level?
             if not PrimaryOpen then
-
                PrimaryOpen := True;
                PrimaryCount := PrimaryCount + 1;
                -- Is this the dictionary we want?
                if PrimaryCount = Arg then
                   DicStart := i;
                end if;
-
             else
-
                -- an internal dictionary, increment count
                SecondaryCount := SecondaryCount + 1;
-
             end if;
 
-         elsif Msg(i) = '}' then
+         elsif Msg (i) = '}' then
             -- Found a dictionary end
             -- Is there an internal dictionary to close?
             if SecondaryCount /= 0 then
@@ -122,14 +113,13 @@ is
                end if;
             end if;
          end if;
-
       end loop;
 
-      Ada.Strings.Fixed.Move(Source => Msg(DicStart+1 .. DicFin-1),
-                             Target => LocalReturn);
+      Ada.Strings.Fixed.Move
+        (Source => Msg(DicStart+1 .. DicFin-1),
+         Target => LocalReturn);
 
       return DictionaryT(LocalReturn(1..DicFin - 1 - DicStart));
-
    end GetDictionary;
 
    ------------------------------------------------------------------
@@ -143,16 +133,15 @@ is
    --
    ------------------------------------------------------------------
 
-   function GetStringByKey (Dic : DictionaryT;
-                            Key : String)
-                    return String is
-
+   function GetStringByKey
+     (Dic : DictionaryT;
+      Key : String) return String
+   is
       ValStart,ValFin,
       KeyStart         : TcpIp.MessageLengthT := 0;
       LocalMsg : String := String(Dic);
 
    begin
-
       loop
          KeyStart := Ada.Strings.Fixed.Index(Source  => LocalMsg,
                                              Pattern => Key);
@@ -197,7 +186,7 @@ is
 
       end if; -- else key does not appear, return null string
 
-      return LocalMsg(1 .. ValFin);
+      return LocalMsg (1 .. ValFin);
 
    exception
       when E : others =>
@@ -314,11 +303,10 @@ is
    --    Trims the image of the number.
    --
    ------------------------------------------------------------------
-   function StringFrom32(Num : in     BasicTypes.Unsigned32T) return String
-   is
+   function StringFrom32 (Num : BasicTypes.Unsigned32T) return String is
    begin
-      return Ada.Strings.Fixed.Trim(BasicTypes.Unsigned32T'Image(Num),
-                                    Ada.Strings.Both);
+      return Ada.Strings.Fixed.Trim
+        (BasicTypes.Unsigned32T'Image(Num), Ada.Strings.Both);
    end StringFrom32;
 
    ------------------------------------------------------------------
@@ -328,11 +316,9 @@ is
    --    Trims the image of the number.
    --
    ------------------------------------------------------------------
-   function StringFromInt(Int : in     Integer) return String
-   is
+   function StringFromInt (Int : Integer) return String is
    begin
-      return Ada.Strings.Fixed.Trim(Integer'Image(Int),
-                                    Ada.Strings.Both);
+      return Ada.Strings.Fixed.Trim(Integer'Image(Int), Ada.Strings.Both);
    end StringFromInt;
 
 end MsgProc;

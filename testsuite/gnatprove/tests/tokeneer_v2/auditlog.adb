@@ -190,16 +190,9 @@ is
    --    Description:
    --       Compares two date strings.
    --
-   --    Implementation Notes:
-   --       Hidden since string comparison not supported by VCG.
-   --
    ------------------------------------------------------------------
-   function AgeLessThan (Left, Right : Clock.TimeTextT) return Boolean
-     with SPARK_Mode;
 
-   function AgeLessThan (Left, Right : Clock.TimeTextT) return Boolean
-     with SPARK_Mode => Off
-   is
+   function AgeLessThan (Left, Right : Clock.TimeTextT) return Boolean is
    begin
       return Left < Right;
    end AgeLessThan;
@@ -253,25 +246,20 @@ is
    --       Converts a string to an audit description.
    --       Truncating if necessary.
    --
-   --   Implementation Notes:
-   --      Hidden as uses slicing
-   --
    ------------------------------------------------------------------
-   function ConvertToAuditDescription(Description : String)
-                                     return AuditTypes.DescriptionT
-     with SPARK_Mode;
 
-   function ConvertToAuditDescription(Description : String)
-                                     return AuditTypes.DescriptionT
-     with SPARK_Mode => Off
+   function ConvertToAuditDescription
+     (Description : String) return AuditTypes.DescriptionT
+     with Pre => Description'First = 1
    is
       LocalDesc : AuditTypes.DescriptionT := AuditTypes.NoDescription;
    begin
       if Description'Last < LocalDesc'Last then
-         LocalDesc(1..Description'Last) := Description;
+         LocalDesc (1 .. Description'Last) := Description;
       else
-         LocalDesc := Description(1..LocalDesc'Last);
+         LocalDesc := Description (1 .. LocalDesc'Last);
       end if;
+
       return LocalDesc;
    end ConvertToAuditDescription;
 
@@ -313,10 +301,12 @@ is
       ------------------------------------------------------------------
       function ConvertTimesToText return AuditTypes.DescriptionT is
         (if TimeOK then
-            ConvertToAuditDescription("From: "& FirstTime & " to: " & LastTime)
+            ConvertToAuditDescription
+              ("From: "& FirstTime & " to: " & LastTime)
          else
-            ConvertToAuditDescription("Error obtaining times from file.Best estimate is from: "
-                                        & FirstTime& " to: "& LastTime))
+            ConvertToAuditDescription
+              ("Error obtaining times from file.Best estimate is from: "
+               & FirstTime& " to: "& LastTime))
         with Global => (FirstTime, LastTime, TimeOK);
 
    -------------------------------------------------------------------
@@ -427,16 +417,15 @@ is
                                   Offset + FirstTime'Last);
 
          if BothTimesOK then
-            Descr :=
-              ConvertToAuditDescription("From: "& FirstTime& " to: "& LastTime);
+            Descr := ConvertToAuditDescription
+              ("From: "& FirstTime& " to: "& LastTime);
          else
-            Descr :=
-              ConvertToAuditDescription("Error obtaining times from file.Best estimate is from: "
-                                          & FirstTime& " to: "& LastTime);
+            Descr := ConvertToAuditDescription
+              ("Error obtaining times from file.Best estimate is from: "
+               & FirstTime & " to: "& LastTime);
          end if;
 
          return Descr;
-
       end OverwriteTimeInText;
 
    -------------------------------------------------------------------
@@ -490,6 +479,7 @@ is
    --       This routine has no effect in the SPARK context,
    --       its purpose is to remove a temporary file - not modelled in SPARK.
    ------------------------------------------------------------------
+
    procedure DeleteArchiveFile
      with SPARK_Mode,
           Depends => null;
@@ -1369,14 +1359,13 @@ is
       OldAlarm : AlarmTypes.StatusT;
 
    begin
-
       OldAlarm := AuditAlarm;
 
       AddElementToLogFileWithTruncateChecks
         (ElementID   => ElementID,
          Severity    => Severity,
          User        => User,
-         Description => ConvertToAuditDescription(Description));
+         Description => ConvertToAuditDescription (Description));
 
       CheckLogAlarm;
 
@@ -1387,9 +1376,7 @@ is
             Severity    => AuditTypes.Warning,
             User        => AuditTypes.NoUser,
             Description => AuditTypes.NoDescription);
-
       end if;
-
    end AddElementToLog;
 
    ------------------------------------------------------------------

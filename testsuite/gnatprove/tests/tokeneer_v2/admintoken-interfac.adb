@@ -33,8 +33,7 @@ is
    --    tokens in the user token interface.
    ------------------------------------------------------------------
 
-   procedure Init
-   is
+   procedure Init is
    begin
       null;
    end Init;
@@ -46,10 +45,9 @@ is
    --    None.
    ------------------------------------------------------------------
 
-   procedure Poll
-   is
+   procedure Poll is
    begin
-       TokenReader.Poll(Reader => TokenReader.Admin);
+      TokenReader.Poll(Reader => TokenReader.Admin);
    end Poll;
 
    ------------------------------------------------------------------
@@ -92,8 +90,7 @@ is
    procedure GetCertificate
      (CertType  : in     CertTypes.CertificateT;
       RawCert   :    out CertTypes.RawCertificateT;
-      Found     :    out Boolean)
-   is
+      Found     :    out Boolean) is
    begin
       TokenReader.GetCertificate
         (Reader   => TokenReader.Admin,

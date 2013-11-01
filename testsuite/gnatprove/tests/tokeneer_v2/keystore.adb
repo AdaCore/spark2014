@@ -54,38 +54,36 @@ is
    NullKey : constant BasicTypes.Unsigned32T := 0;
 
    -- Crypto errors can be groupes as a System Error, or a User Error.
-   IsSystem : constant IsSystemT := IsSystemT'(
-                 Interfac.Ok                         => False,
-                 Interfac.HostMemory                 => True,
-                 Interfac.GeneralError               => True,
-                 Interfac.FunctionFailed             => True,
-                 Interfac.ArgumentsBad               => False,
-                 Interfac.AttributeReadOnly          => False,
-                 Interfac.AttributeTypeInvalid       => False,
-                 Interfac.AttributeValueInvalid      => False,
-                 Interfac.DataInvalid                => False,
-                 Interfac.DataLenRange               => False,
-                 Interfac.DeviceError                => True,
-                 Interfac.DeviceMemory               => True,
-                 Interfac.FunctionCanceled           => True,
-                 Interfac.KeyHandleInvalid           => False,
-                 Interfac.KeySizeRange               => False,
-                 Interfac.KeyTypeInconsistent        => False,
-                 Interfac.KeyFunctionNotPermitted    => False,
-                 Interfac.MechanismInvalid           => False,
-                 Interfac.MechanismParamInvalid      => False,
-                 Interfac.ObjectHandleInvalid        => False,
-                 Interfac.OperationActive            => True,
-                 Interfac.OperationNotInitialized    => True,
-                 Interfac.SignatureInvalid           => False,
-                 Interfac.SignatureLenRange          => False,
-                 Interfac.TemplateIncomplete         => False,
-                 Interfac.TemplateInconsistent       => False,
-                 Interfac.BufferTooSmall             => True,
-                 Interfac.CryptokiNotInitialized     => True,
-                 Interfac.CryptokiAlreadyInitialized => True
-                                              );
-
+   IsSystem : constant IsSystemT := IsSystemT'
+     (Interfac.Ok                         => False,
+      Interfac.HostMemory                 => True,
+      Interfac.GeneralError               => True,
+      Interfac.FunctionFailed             => True,
+      Interfac.ArgumentsBad               => False,
+      Interfac.AttributeReadOnly          => False,
+      Interfac.AttributeTypeInvalid       => False,
+      Interfac.AttributeValueInvalid      => False,
+      Interfac.DataInvalid                => False,
+      Interfac.DataLenRange               => False,
+      Interfac.DeviceError                => True,
+      Interfac.DeviceMemory               => True,
+      Interfac.FunctionCanceled           => True,
+      Interfac.KeyHandleInvalid           => False,
+      Interfac.KeySizeRange               => False,
+      Interfac.KeyTypeInconsistent        => False,
+      Interfac.KeyFunctionNotPermitted    => False,
+      Interfac.MechanismInvalid           => False,
+      Interfac.MechanismParamInvalid      => False,
+      Interfac.ObjectHandleInvalid        => False,
+      Interfac.OperationActive            => True,
+      Interfac.OperationNotInitialized    => True,
+      Interfac.SignatureInvalid           => False,
+      Interfac.SignatureLenRange          => False,
+      Interfac.TemplateIncomplete         => False,
+      Interfac.TemplateInconsistent       => False,
+      Interfac.BufferTooSmall             => True,
+      Interfac.CryptokiNotInitialized     => True,
+      Interfac.CryptokiAlreadyInitialized => True);
 
    ------------------------------------------------------------------
    -- Local Subprograms
@@ -102,22 +100,21 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   function ConvertRetValToText(RetVal : Interfac.ReturnValueT;
-                                Op     : String) return AuditTypes.DescriptionT
-     with SPARK_Mode;
 
-   function ConvertRetValToText(RetVal : Interfac.ReturnValueT;
-                                Op     : String) return AuditTypes.DescriptionT
-     with SPARK_Mode => Off
+   function ConvertRetValToText
+     (RetVal : Interfac.ReturnValueT;
+      Op     : String) return AuditTypes.DescriptionT
    is
-      Result : AuditTypes.DescriptionT := AuditTypes.NoDescription;
-      TheString : String := "Crypto Library Error in "& Op& " : "&
-                               Interfac.ReturnValueT'Image(RetVal);
+      Result    : AuditTypes.DescriptionT := AuditTypes.NoDescription;
+      TheString : constant String :=
+        "Crypto Library Error in "& Op& " : "
+        & Interfac.ReturnValueT'Image (RetVal);
+
    begin
       if TheString'Length <= AuditTypes.DescriptionT'Last then
-         Result(1..TheString'Length) := TheString;
+         Result (1 .. TheString'Length) := TheString;
       else
-         Result := TheString(1..AuditTypes.DescriptionT'Last);
+         Result := TheString (1 .. AuditTypes.DescriptionT'Last);
       end if;
 
       return Result;
@@ -178,30 +175,28 @@ is
       --    None.
       --
       ------------------------------------------------------------------
-      function GetBlock(Data      : CertTypes.RawCertificateT;
-                        BlockNo   : Positive;
-                        BlockSize : BasicTypes.Unsigned32T)
-                  return Interfac.HundredByteArrayT
-        with Pre     => 1 <= BlockNo and then
-                        BlockNo <= 41 and then
-                        1 <= BlockSize and then
-                        BlockSize <= 100 and then
-                        Positive(BlockSize) + (BlockNo - 1) * 100 <=
-                          CertTypes.RawCertificateI'Last
+      function GetBlock
+        (Data      : CertTypes.RawCertificateT;
+         BlockNo   : Positive;
+         BlockSize : BasicTypes.Unsigned32T) return Interfac.HundredByteArrayT
+        with Pre => BlockNo in 1 .. 41
+                      and then BlockSize in 1 .. 100
+                      and then Positive (BlockSize) + (BlockNo - 1) * 100
+                        <= CertTypes.RawCertificateI'Last
       is
          Result : Interfac.HundredByteArrayT :=
                      Interfac.HundredByteArrayT'(others => ' ');
       begin
-         for i in CertTypes.RawCertificateI range 1..100 loop
-            pragma Loop_Invariant (1 <= BlockNo and
-                                   BlockNo <= 41 and
-                                   1 <= BlockSize and
-                                   BlockSize <= 100 and
-                                   1 <= i and
-                                   i <= 100 and
-                                   BasicTypes.Unsigned32T(i) <= BlockSize);
-            Result(i) := Data(i + (BlockNo - 1) * 100);
-            exit when BasicTypes.Unsigned32T(i) = BlockSize;
+         for J in CertTypes.RawCertificateI range 1 .. 100 loop
+            pragma Loop_Invariant
+              (BlockNo in 1 .. 41
+               and BlockSize in 1 .. 100
+               and J in 1 .. 100
+               and BasicTypes.Unsigned32T (J) <= BlockSize);
+
+            Result (J) := Data (J + (BlockNo - 1) * 100);
+
+            exit when BasicTypes.Unsigned32T (J) = BlockSize;
          end loop;
 
          return Result;
@@ -210,53 +205,52 @@ is
    begin
       TheDigest := Interfac.NullDigest;
 
-      Interfac.DigestInit(Mechanism   => Mechanism,
-                           ReturnValue => RetValIni);
-      -- is Mechanism is dom Digest?
-      if RetValIni = Interfac.Ok then
+      Interfac.DigestInit
+        (Mechanism   => Mechanism,
+         ReturnValue => RetValIni);
 
+      -- is Mechanism is dom Digest?   ??? comment is not proper english
+
+      if RetValIni = Interfac.Ok then
          -- If so perform digest...
          LoopMax := ((RawCertData.DataLength - 1) / 100) + 1;
          BytesLeft := RawCertData.DataLength;
 
-         for i in Positive range 1..LoopMax loop
-
-            pragma Loop_Invariant (LoopMax = ((RawCertData.DataLength - 1) / 100) + 1 and
-                                   LoopMax = LoopMax'Loop_Entry and
-                                   1 <= i and
-                                   i <= LoopMax and
-                                   BytesLeft = (RawCertData.DataLength) - (i - 1) * 100 and
-                                   1 <= RawCertData.DataLength and
-                                   RawCertData.DataLength <= 4096 and
-                                   1 <= Size and
-                                   Size <= 100 and
-                                   RetValIni = Interfac.Ok and
-                                   RetValFin = Interfac.Ok);
+         for J in 1 .. LoopMax loop
+            pragma Loop_Invariant
+              (LoopMax = ((RawCertData.DataLength - 1) / 100) + 1
+               and LoopMax = LoopMax'Loop_Entry
+               and J in 1 .. LoopMax
+               and BytesLeft = (RawCertData.DataLength) - (J - 1) * 100
+               and RawCertData.DataLength in 1 .. 4096
+               and Size in 1 .. 100
+               and RetValIni = Interfac.Ok
+               and RetValFin = Interfac.Ok);
 
             if BytesLeft < 100 then
-               Size := BasicTypes.Unsigned32T(BytesLeft);
+               Size := BasicTypes.Unsigned32T (BytesLeft);
             end if;
 
-            Block := GetBlock(Data      => RawCertData.RawData,
-                              BlockNo   => i,
-                              BlockSize => Size);
+            Block := GetBlock
+              (Data      => RawCertData.RawData,
+               BlockNo   => J,
+               BlockSize => Size);
 
-            Interfac.DigestUpdate(DataBlock   => Block,
-                                   ByteCount   => Size,
-                                   ReturnValue => RetValUpd);
+            Interfac.DigestUpdate
+              (DataBlock   => Block,
+               ByteCount   => Size,
+               ReturnValue => RetValUpd);
 
-            exit when RetValUpd /= Interfac.Ok or
-                   i = LoopMax;
+            exit when RetValUpd /= Interfac.Ok or J = LoopMax;
 
             BytesLeft := BytesLeft - 100;
-
          end loop;
 
          -- If everything OK, then get the calculated digest
          if RetValUpd = Interfac.Ok then
-
-            Interfac.DigestFinal(Digest       => TheDigest,
-                                  ReturnValue  => RetValFin);
+            Interfac.DigestFinal
+              (Digest       => TheDigest,
+               ReturnValue  => RetValFin);
          end if;
       end if;
 
@@ -264,31 +258,28 @@ is
                  RetValUpd = Interfac.Ok and
                  RetValFin = Interfac.Ok;
 
-      if IsSystem(RetValIni) then
-         AuditLog.AddElementToLog(
-                ElementID    => AuditTypes.SystemFault,
-                Severity     => AuditTypes.Warning,
-                User         => AuditTypes.NoUser,
-                Description  => ConvertRetValToText(RetValIni, "DigestInit")
-                );
+      if IsSystem (RetValIni) then
+         AuditLog.AddElementToLog
+           (ElementID    => AuditTypes.SystemFault,
+            Severity     => AuditTypes.Warning,
+            User         => AuditTypes.NoUser,
+            Description  => ConvertRetValToText(RetValIni, "DigestInit"));
       end if;
 
-      if IsSystem(RetValUpd) then
-         AuditLog.AddElementToLog(
-                ElementID    => AuditTypes.SystemFault,
-                Severity     => AuditTypes.Warning,
-                User         => AuditTypes.NoUser,
-                Description  => ConvertRetValToText(RetValUpd, "DigestUpdate")
-                );
+      if IsSystem (RetValUpd) then
+         AuditLog.AddElementToLog
+           (ElementID    => AuditTypes.SystemFault,
+            Severity     => AuditTypes.Warning,
+            User         => AuditTypes.NoUser,
+            Description  => ConvertRetValToText(RetValUpd, "DigestUpdate"));
       end if;
 
-      if IsSystem(RetValFin) then
-         AuditLog.AddElementToLog(
-                ElementID   => AuditTypes.SystemFault,
-                Severity    => AuditTypes.Warning,
-                User        => AuditTypes.NoUser,
-                Description => ConvertRetValToText(RetValFin, "DigestFinal")
-                );
+      if IsSystem (RetValFin) then
+         AuditLog.AddElementToLog
+           (ElementID   => AuditTypes.SystemFault,
+            Severity    => AuditTypes.Warning,
+            User        => AuditTypes.NoUser,
+            Description => ConvertRetValToText(RetValFin, "DigestFinal"));
       end if;
    end Digest;
 
@@ -304,22 +295,23 @@ is
    --    None
    --
    ------------------------------------------------------------------
-   procedure DoFind(Template    : in     Interfac.KeyTemplateT;
-                    HandleCount : in out BasicTypes.Unsigned32T;
-                    Handles     :    out Interfac.HandleArrayT)
+   procedure DoFind
+     (Template    : in     Interfac.KeyTemplateT;
+      HandleCount : in out BasicTypes.Unsigned32T;
+      Handles     :    out Interfac.HandleArrayT)
      with Global  => (Input  => (Clock.Now,
                                  ConfigData.State,
                                  Interfac.Store),
                       In_Out => (AuditLog.FileState,
                                  AuditLog.State)),
           Depends => ((AuditLog.FileState,
-                       AuditLog.State)     => (AuditLog.FileState,
-                                               AuditLog.State,
-                                               Clock.Now,
-                                               ConfigData.State,
-                                               HandleCount,
-                                               Interfac.Store,
-                                               Template),
+                       AuditLog.State) => (AuditLog.FileState,
+                                           AuditLog.State,
+                                           Clock.Now,
+                                           ConfigData.State,
+                                           HandleCount,
+                                           Interfac.Store,
+                                           Template),
                       (HandleCount,
                        Handles)     => (HandleCount,
                                         Interfac.Store,
@@ -345,36 +337,29 @@ is
          end if;
       end if;
 
-      if IsSystem(RetValIni) then
-
-         AuditLog.AddElementToLog(
-                ElementID   => AuditTypes.SystemFault,
-                Severity    => AuditTypes.Warning,
-                User        => AuditTypes.NoUser,
-                Description => ConvertRetValToText(RetValIni, "FindObjectsInit ")
-                );
+      if IsSystem (RetValIni) then
+         AuditLog.AddElementToLog
+           (ElementID   => AuditTypes.SystemFault,
+            Severity    => AuditTypes.Warning,
+            User        => AuditTypes.NoUser,
+            Description => ConvertRetValToText (RetValIni, "FindObjectsInit "));
       end if;
 
-      if IsSystem(RetValDo) then
-
-         AuditLog.AddElementToLog(
-                ElementID   => AuditTypes.SystemFault,
-                Severity    => AuditTypes.Warning,
-                User        => AuditTypes.NoUser,
-                Description => ConvertRetValToText(RetValDo, "FindObjects ")
-                );
+      if IsSystem (RetValDo) then
+         AuditLog.AddElementToLog
+           (ElementID   => AuditTypes.SystemFault,
+            Severity    => AuditTypes.Warning,
+            User        => AuditTypes.NoUser,
+            Description => ConvertRetValToText(RetValDo, "FindObjects "));
       end if;
 
-      if IsSystem(RetValFin) then
-
-         AuditLog.AddElementToLog(
-                ElementID   => AuditTypes.SystemFault,
-                Severity    => AuditTypes.Warning,
-                User        => AuditTypes.NoUser,
-                Description => ConvertRetValToText(RetValFin, "FindObjectsFinal ")
-                );
+      if IsSystem (RetValFin) then
+         AuditLog.AddElementToLog
+           (ElementID   => AuditTypes.SystemFault,
+            Severity    => AuditTypes.Warning,
+            User        => AuditTypes.NoUser,
+            Description => ConvertRetValToText(RetValFin, "FindObjectsFinal "));
       end if;
-
    end DoFind;
 
    ------------------------------------------------------------------
@@ -784,8 +769,10 @@ is
          -- the Digest subprogram adds an entry to the audit log if
          -- there is a system fault
          Signed := False;
-         Signature := CertTypes.SignatureT'(SigData   => CertTypes.SigDataT'(others => ' '),
-                                            SigLength => 1);
+         Signature :=
+           CertTypes.SignatureT'
+             (SigData   => CertTypes.SigDataT'(others => ' '),
+              SigLength => 1);
       end if;
 
    end Sign;
@@ -870,6 +857,7 @@ is
    -- Traceunit : C.KeyStore.AddKey
    -- Traceto   : FD.KeyTypes.UpdateKeyStore
    ------------------------------------------------------------------
+
    procedure Delete
      with Refined_Global  => (Output => ThisTISInfo,
                               In_Out => Interfac.Store),
@@ -877,12 +865,11 @@ is
                               ThisTISInfo => null)
    is
    begin
-
       Interfac.Delete;
 
-      ThisTISInfo := OptionalPrivateKeyT'(
-                         IsPresent => False,
-                         Owner     => CryptoTypes.NullIssuer);
+      ThisTISInfo := OptionalPrivateKeyT'
+        (IsPresent => False,
+         Owner     => CryptoTypes.NullIssuer);
    end Delete;
 
 end KeyStore;

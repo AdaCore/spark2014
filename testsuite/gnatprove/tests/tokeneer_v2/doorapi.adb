@@ -20,20 +20,12 @@ with Ada.Strings.Fixed;
 with TcpIp;
 with MsgProc;
 
-package body DoorAPI
-  with SPARK_Mode => Off  --  exception handler
-is
+package body DoorAPI is
 
-   ------------------------------------------------------------------
-   -- GetDoorState
-   --
-   -- Implementation Notes:
-   --    Set return value to Error if door state cannot be determined.
-   --
-   ------------------------------------------------------------------
+   function GetDoorStateRaw return DoorStateT;
+   --  Same as GetDoorState, compatible with SPARK (no exception handler)
 
-   function GetDoorState return DoorStateT is
-
+   function GetDoorStateRaw return DoorStateT is
       InMsg       : TcpIp.MessageT;
       OutMsg      : constant TcpIp.MessageT :=
                        (Data   => Ada.Strings.Fixed.Overwrite(
@@ -47,46 +39,53 @@ is
       CommsIsOK   : Boolean;
 
    begin
-
-      TcpIp.SendAndReceive (IsAdmin  => False,
-                            Outgoing => OutMsg,
-                            Incoming => InMsg,
-                            Success  => CommsIsOK);
+      TcpIp.SendAndReceive
+        (IsAdmin  => False,
+         Outgoing => OutMsg,
+         Incoming => InMsg,
+         Success  => CommsIsOK);
 
       if CommsIsOK then
-         declare Msg : String :=
-                    MsgProc.GetResponseFromMsg(InMsg);
-                 StateDict : MsgProc.DictionaryT :=
-                                MsgProc.GetDictionary(Msg => Msg,
-                                                      Arg => 1);
+         declare
+            Msg : String := MsgProc.GetResponseFromMsg (InMsg);
+            StateDict : MsgProc.DictionaryT :=
+               MsgProc.GetDictionary (Msg => Msg, Arg => 1);
          begin
-            IsOp     := Boolean'Value(MsgProc.GetStringByKey(
-                                              Dic => StateDict,
-                                              Key => "operational?"));
-            IsClosed := Boolean'Value(MsgProc.GetStringByKey(
-                                              Dic => StateDict,
-                                              Key => "closed?"));
+            IsOp := Boolean'Value
+              (MsgProc.GetStringByKey
+                (Dic => StateDict, Key => "operational?"));
+            IsClosed := Boolean'Value
+              (MsgProc.GetStringByKey (Dic => StateDict, Key => "closed?"));
          end;
 
          if IsOp then
-
             if IsClosed then
                DoorState := Closed;
             else
                DoorState := Open;
             end if;
-
          end if;
       end if;
 
       return DoorState;
+   end GetDoorStateRaw;
 
+   ------------------------------------------------------------------
+   -- GetDoorState
+   --
+   -- Implementation Notes:
+   --    Set return value to Error if door state cannot be determined.
+   --
+   ------------------------------------------------------------------
+
+   function GetDoorState return DoorStateT
+     with SPARK_Mode => Off
+   is
+   begin
+      return GetDoorStateRaw;
    exception
-
-      when E : others =>
-
-          return Error;
-
+      when others =>
+         return Error;
    end GetDoorState;
 
 end DoorAPI;
