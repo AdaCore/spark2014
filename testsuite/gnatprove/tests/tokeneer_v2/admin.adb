@@ -56,7 +56,6 @@ is
    function RolePresent (TheAdmin : T) return PrivTypes.PrivilegeT is
      (TheAdmin.RolePresent);
 
-
    ------------------------------------------------------------------
    -- Str_Comp
    --
@@ -99,7 +98,6 @@ is
                      CurrentOp   => NullOp);
    end Init;
 
-
    ------------------------------------------------------------------
    -- IsPresent
    --
@@ -110,7 +108,6 @@ is
 
    function IsPresent (TheAdmin : T) return Boolean is
      (TheAdmin.RolePresent /= PrivTypes.UserOnly);
-
 
    ------------------------------------------------------------------
    -- OpIsAvailable
@@ -141,7 +138,6 @@ is
       return TheOp;
    end OpIsAvailable;
 
-
    ------------------------------------------------------------------
    -- IsDoingOp
    --
@@ -152,7 +148,6 @@ is
 
    function IsDoingOp (TheAdmin : T) return Boolean is
      (TheAdmin.CurrentOp /= NullOp);
-
 
    ------------------------------------------------------------------
    -- Logon
@@ -170,7 +165,6 @@ is
       TheAdmin.CurrentOp   := NullOp;
    end Logon;
 
-
    ------------------------------------------------------------------
    -- Logout
    --
@@ -184,7 +178,6 @@ is
    begin
       Init(TheAdmin);
    end Logout;
-
 
    ------------------------------------------------------------------
    -- StartOp
@@ -201,7 +194,6 @@ is
       TheAdmin.CurrentOp := Op;
    end StartOp;
 
-
    ------------------------------------------------------------------
    -- FinishOp
    --
@@ -216,7 +208,6 @@ is
       TheAdmin.CurrentOp := NullOp;
    end FinishOp;
 
-
    ------------------------------------------------------------------
    -- TheCurrentOp
    --
@@ -227,7 +218,6 @@ is
 
    function TheCurrentOp (TheAdmin : T) return OpT is
      (TheAdmin.CurrentOp);
-
 
    ------------------------------------------------------------------
    -- SecurityOfficerIsPresent

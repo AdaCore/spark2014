@@ -39,9 +39,9 @@ is
 
    type T is private;
 
-
-   function RolePresent (TheAdmin : T) return PrivTypes.PrivilegeT;
-
+   --  Returns the role of TheAdmin.
+   function RolePresent (TheAdmin : T) return PrivTypes.PrivilegeT
+     with Convention => Ghost;
 
    ------------------------------------------------------------------
    -- IsDoingOp
@@ -180,7 +180,8 @@ is
    procedure StartOp (TheAdmin : in out T;
                       Op       : in     OpT)
      with Depends => (TheAdmin => (TheAdmin, Op)),
-          Pre     => IsPresent(TheAdmin),
+          Pre     => IsPresent(TheAdmin)
+                       and then not IsDoingOp(TheAdmin),
           Post    => RolePresent(TheAdmin) = RolePresent(TheAdmin'Old)
                        and then IsPresent(TheAdmin)
                        and then IsDoingOp(TheAdmin)
@@ -204,7 +205,6 @@ is
                        and then RolePresent(TheAdmin) = RolePresent(TheAdmin'Old)
                        and then IsPresent(TheAdmin);
 
-
    ------------------------------------------------------------------
    -- SecurityOfficerIsPresent
    --
@@ -217,31 +217,30 @@ is
 
    function SecurityOfficerIsPresent (TheAdmin : T) return Boolean;
 
+private
+   type T is
+      record
+         RolePresent : PrivTypes.PrivilegeT;
+         CurrentOp   : OpAndNullT;
+      end record;
 
-   private
-      type T is
-         record
-            RolePresent : PrivTypes.PrivilegeT;
-            CurrentOp   : OpAndNullT;
-         end record;
+   type AvailOpsT is array (OpT) of Boolean;
+   type PrivToAvailOpsT is array (PrivTypes.AdminPrivilegeT) of AvailOpsT;
 
-      type AvailOpsT is array (OpT) of Boolean;
-      type PrivToAvailOpsT is array (PrivTypes.AdminPrivilegeT) of AvailOpsT;
-
-      IsAvailable : constant PrivToAvailOpsT :=
-            PrivToAvailOpsT'(
-                  PrivTypes.Guard           => AvailOpsT'(
-                                                     OverrideLock => True,
-                                                     others       => False
-                                                     ),
-                  PrivTypes.AuditManager    => AvailOpsT'(
-                                                     ArchiveLog => True,
-                                                     others     => False
-                                                     ),
-                  PrivTypes.SecurityOfficer => AvailOpsT'(
-                                                     UpdateConfigData => True,
-                                                     ShutdownOp       => True,
-                                                     others           => False
-                                                     )
-                  );
+   IsAvailable : constant PrivToAvailOpsT :=
+     PrivToAvailOpsT'(
+                      PrivTypes.Guard           => AvailOpsT'(
+                                                              OverrideLock => True,
+                                                              others       => False
+                                                             ),
+                      PrivTypes.AuditManager    => AvailOpsT'(
+                                                              ArchiveLog => True,
+                                                              others     => False
+                                                             ),
+                      PrivTypes.SecurityOfficer => AvailOpsT'(
+                                                              UpdateConfigData => True,
+                                                              ShutdownOp       => True,
+                                                              others           => False
+                                                             )
+                     );
 end Admin;
