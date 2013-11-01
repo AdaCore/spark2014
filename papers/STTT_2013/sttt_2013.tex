@@ -77,23 +77,23 @@
 %
 \begin{abstract}
   Extensive and expensive testing is the method most widely used for
-  gaining confidence in safety-critical software. With a few exceptions,
-  such as SPARK, formal verification is rarely used in industry due to
-  its high cost and level of skill required. The grand challenge of
-  building a \emph{verifiying compiler} for static formal
+  gaining confidence in safety-critical software. With a few
+  exceptions, such as SPARK, formal verification is rarely used in
+  industry due to its high cost and level of skill required. The grand
+  challenge of building a \emph{verifiying compiler} for static formal
   verification of programs aims at bringing formal verification to
   non-expert users of powerful programming languages. This challenge
   has nurtured competition and collaboration among verification tool
-  builders; an example is the VerifyThis competition. In this paper we
-  describe our approach to popularising formal verification in the
-  design of the \newspark\ language and the associated formal
-  verification tool \gnatprove. In particular, we present our solution
-  to combining tests and proofs, which provides a cost competitive
-  way to develop software to standards such as \DO.
-  At the heart of our technique is executable
-  contracts, and the ability to both test and prove those. We use
-  running examples from the VerifyThis 2012 competition and discuss
-  the results of using our tools on those problems.
+  builders; an example is the VerifyThis competition
+  \cite{VerifyThis2012}. In this paper we describe our approach to
+  popularising formal verification in the design of the
+  \newspark\ language and the associated formal verification tool
+  \gnatprove. In particular, we present our solution to combining
+  tests and proofs, which provides a cost competitive way to develop
+  software to standards such as \DO.  At the heart of our technique is
+  executable contracts, and the ability to both test and prove
+  those. We use running examples from the VerifyThis 2012 competition
+  and discuss the results of using our tools on those problems.
 \end{abstract}
 %
 \section{Introduction}
@@ -165,8 +165,8 @@ naturally from experiences in industrial use of \oldspark. Then in
 section \ref{hilite} we describe our unique integration of testing and
 proving, which was developed in the collaborative research project
 \hilite\ \cite{hiliteERTS2012} between Altran (formerly Praxis),
-AdaCore, and INRIA. In the resulting new tool architecture the
-compiler and the verifier are based on same the same front-end
+AdaCore, and Inria. In the resulting new tool architecture the
+compiler and the verifier are based on the same front-end
 \cite{ksd2012}. In section \ref{overflowsemantics} we describe
 specific language features which enables specifications to be written
 more naturally. We present in section \ref{automation} GNATprove, our
@@ -205,27 +205,32 @@ function LCP (A : Text; X, Y : Integer) return Natural with
 \end{lstlisting}
 
 In the postcondition of a function, the new attribute \verb|Result| is
-used to refer to the result of the function. Another attribute
-\verb|Old| is used to refer to the value of some variables on entry to
-a subprogram. The latter we used in solving challenge 2 (the binary
-tree sum) of the VerifyThis competition. Note that we use the
-short-circuit Boolean operator \verb|and then| for which the second
-argument is only executed or evaluated if the first argument is not
-enough to determine the value of the expression. This is helpful for
-example in producing valid specifications involving partial functions,
-like \verb|Y /= 0 and then X div Y|.
+used to refer to the result of the function. The attribute \verb|Last|
+represents the last value (upper bound) in the range of type
+\verb|Index|. Another new attribute \verb|Old| is used to refer to the
+value of some variables on entry to a subprogram. The latter we used
+in solving challenge 2 (the binary tree sum) of the VerifyThis
+competition. Note that we use the short-circuit Boolean operator
+\verb|and then| for which the second argument is only executed or
+evaluated if the first argument is not enough to determine the value
+of the expression. This is helpful for example in producing valid
+specifications involving partial functions, like
+\verb|Y /= 0 and then X div Y|.
 
-The expression of specifications is made easier by new expression forms in Ada
-2012. If-expressions and case-expressions are the expression forms which
-correspond to the usual if-statements and case-statements. Note that an
-if-expression without else-part \verb|(if A then B)| expresses a logical
-implication of \verb|B| by \verb|A|. Quantified expressions
-\verb|(for all X in A)| and \verb|(for some X in A)| correspond to the
-mathematical universal and existential quantifications, only on a bounded
-domain. Expression functions define a function with a single expression, like
-in functional programming languages. As expression functions can be part of the
-specification of programs (contrary to regular function bodies), they provide a
-powerful way to abstract complex parts of specifications.
+The expression of specifications is made easier by new expression
+forms in Ada 2012. If-expressions and case-expressions are the
+expression forms which correspond to the usual if-statements and
+case-statements. Note that an if-expression without else-part
+\verb|(if A then B)| expresses a logical implication of \verb|B| by
+\verb|A|. Quantified expressions \verb|(for all X in A)| and
+\verb|(for some X in A)| correspond to the mathematical universal and
+existential quantifications (see Section \ref{overflowsemantics} for
+more information about the domain of bound variables). Expression
+functions define a function with a single expression, like in
+functional programming languages. As expression functions can be part
+of the specification of programs (contrary to regular function
+bodies), they provide a powerful way to abstract complex parts of
+specifications.
 
 \subsection{SPARK 2014}
 
@@ -245,19 +250,27 @@ pragma Loop_Invariant
   (for all K in 0 .. L - 1 => A (X + K) = A (Y + K));
 \end{lstlisting}
 
-Note that a loop invariant in SPARK does not have the same semantics
-as the loop invariant introduced by Hoare \cite{hoare69cacm}. The
-latter has to hold when reaching the loop, at the start of each
-iteration of the loop, and when exiting the loop. The former only has
-to hold when execution reaches the corresponding program point. The
-SPARK semantics are easier to work with for programmers.
+Note that a loop invariant in SPARK has a slightly different semantics
+to the classic loop invariant introduced by Hoare
+\cite{hoare69cacm}. A classic loop invariant has to hold when reaching
+the loop, at the start of each iteration of the loop, and when exiting
+the loop. A SPARK loop invariant only has to hold when execution
+reaches the corresponding program point. Essentially the loop
+invariant is like an assert except it also acts as a cut point in
+formal verification. A cut point means that the prover is free to
+forget all information about modified variables that has been
+established within the loop. Only the given Boolean expression is
+carried forward. For formal verification in SPARK, checks are
+generated for initialisation and preservation of the loop invariant,
+similarly to the classic approach. The SPARK semantics are easier to
+work with for programmers.
 
 In formal verification, it is very common that loop invariants compare
 the value of a variable at loop entry and at the n$^{th}$ iteration of
 the loop. To enable such specifications, SPARK 2014 introduces the
 \verb|Loop_Entry| attribute, which can be applied to such a
 variable. We have used that feature in our solution to the binary tree sum
-challenge, see section \ref{verifythis}.
+challenge, see Section \ref{verifythis}.
 
 A loop variant pragma has also been defined in SPARK 2014, to express
 a quantity varying monotonically at each iteration of the loop. As
@@ -270,17 +283,20 @@ pragma Loop_Variant (Increases => L);
 \end{lstlisting}
 
 Note that this variant does not take the usual non-negative decreasing
-argument. Instead, it takes a list of increasing or decreasing integer values,
-bounded by their type in Ada, and the overall order over this list is the
-lexicographic order combined with individual directions. In the example above,
-there is only one element in the list, so it should increase at each run
-through the loop. Like for loop invariants, the point where this increase
-matters is the program point where the loop variant appears in the code.
+argument. Instead, it takes a list of increasing or decreasing integer
+values, bounded by their type in Ada, and the overall order over this
+list is the lexicographic order combined with individual
+directions. In the example above, there is only one element in the
+list, so it should increase at each run through the loop. Like for
+loop invariants, the point where this increase matters is the program
+point where the loop variant appears in the code. As in the classic
+case, the value of the variant is compared against the value at the
+corresponding program point in the previous iteration of the loop.
 
 Subprogram contracts can become quite large, even with the use of (expression)
 functions to abstract common parts of contracts. Therefore, SPARK 2014 allows
 the definition of contracts by cases, similar to behaviours in
-JML\cite{JML}. For example, the contract of \verb|LCP| can state separately
+JML \cite{JML}. For example, the contract of \verb|LCP| can state separately
 sub-contracts for the cases where the elements at \verb|X| and \verb|Y| are
 different, or \verb|X| and \verb|Y| are equal. This contract may be used
 instead of or in addition to a precondition and a postcondition.
@@ -338,7 +354,7 @@ and verifying output of these tests. Our goal is to reduce this cost,
 while still meeting the objectives prescribed by the standard.
 
 Formal methods can help to verify that no anomalous behaviour will
-occur, for example it can be used prove the absence of run-time
+occur, for example it can be used to prove the absence of run-time
 errors. Formal methods can also be used to show compliance between a
 program's actual and intended behaviour. Furthermore, a proof of
 program correctness is comparable to exhaustive analysis achieving
@@ -421,7 +437,7 @@ checking semantics. Furthermore he developed a semantics to allow
 formal executable contracts, i.e. compatible with run-time assertion
 checking, in the hope that those users who are already annotating
 their code with assert statements, could more easily be convinced to
-start writing contracts. Ada 2012 and thus \newspark has such
+start writing contracts. Ada 2012 and thus \newspark have such
 semantics.
 
 As users can execute contracts, they can also debug them like code, and test
@@ -561,10 +577,21 @@ three alternative overflow checking modes in GNAT and \gnatprove:
 \item Minimized mode: larger base type (64bits) used when needed
 \item Eliminated mode: use bignum library in the remaining cases
 \end{enumerate}
-This gives a flexible solution, where the user chooses between 3
-modes. The choice is independent for assertions and code. However, the
-same choice for execution and formal verification is required for our
-hybrid verification with test and proof to be sound.
+In the second and third cases the compiler performs a simple static
+analysis and decides if a larger machine integer, or even an unbounded
+one, is needed. This gives a flexible solution, where the user chooses
+between 3 modes. The choice is independent for assertions and
+code. However, the same choice for execution and formal verification
+is required for our hybrid verification with test and proof to be
+sound.
+
+There is a potential source of confusion in providing several overflow
+checking modes but this is managed with SPARK language profiles. SPARK
+users can chose pre-defined profiles and customise their own profile
+to prohibit particular language features, and enforce tool settings
+such as overflow semantics, according to project-specific constraints
+and regulations.
+
 \section{Making Automatic Verification Work}
 \label{automation}
 
