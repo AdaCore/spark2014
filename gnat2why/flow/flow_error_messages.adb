@@ -69,7 +69,7 @@ package body Flow_Error_Messages is
       Tag       : String;
       Warning   : Boolean;
       Tracefile : out Unbounded_String;
-      Entity    : Entity_Id);
+      E         : Entity_Id);
    --  If Ide_Mode is set then we print a JSON message. Otherwise, we just
    --  print a regular message. It also generates a unique Tracefile name
    --  based on a SHA1 hash of the JSON_Msg and adds a JSON entry to the
@@ -191,7 +191,7 @@ package body Flow_Error_Messages is
       Tag       : String;
       Warning   : Boolean;
       Tracefile : out Unbounded_String;
-      Entity    : Entity_Id)
+      E         : Entity_Id)
    is
       M          : Unbounded_String;
       JSON_M     : Unbounded_String;
@@ -204,6 +204,52 @@ package body Flow_Error_Messages is
       Line       : constant String := Get_Logical_Line_Number_Img (Sloc (N));
       Col        : constant String :=
         Int_Image (Integer (Get_Column_Number (Sloc (N))));
+
+      function Warning_Disabled_For_Local_Entity return Boolean;
+      --  Returns True if either of N, F1, F2 correspond to an entity that
+      --  Has_Warnings_Off.
+
+      ---------------------------------------
+      -- Warning_Disabled_For_Local_Entity --
+      ---------------------------------------
+
+      function Warning_Disabled_For_Local_Entity return Boolean is
+         function Is_Entity_And_Has_Warnings_Off (N : Node_Or_Entity_Id)
+                                                 return Boolean
+         is (if Is_Entity_Name (N)
+               and then Has_Warnings_Off (Entity (N))
+             then
+                True
+             elsif Nkind (N) in N_Entity
+               and then Has_Warnings_Off (N)
+             then
+                True
+             else
+                False);
+         --  Returns True if N is an entity and Has_Warnings_Off (N)
+
+      begin
+         if Is_Entity_And_Has_Warnings_Off (N) then
+            return True;
+         end if;
+
+         if Present (F1)
+           and then F1.Kind in Direct_Mapping | Record_Field
+           and then Is_Entity_And_Has_Warnings_Off (F1.Node)
+         then
+            return True;
+         end if;
+
+         if Present (F2)
+           and then F2.Kind in Direct_Mapping | Record_Field
+           and then Is_Entity_And_Has_Warnings_Off (F2.Node)
+         then
+            return True;
+         end if;
+
+         return False;
+      end Warning_Disabled_For_Local_Entity;
+
    begin
       --  Assemble message string
 
@@ -220,6 +266,10 @@ package body Flow_Error_Messages is
 
       if Warning then
          if Warnings_Suppressed (Sloc (N)) then
+            return;
+         end if;
+
+         if Warning_Disabled_For_Local_Entity then
             return;
          end if;
 
@@ -287,8 +337,8 @@ package body Flow_Error_Messages is
       end if;
 
       --  Assemble Entity_Str
-      if Present (Entity) then
-         Entity_Str := To_Unbounded_String (Subp_Location (Entity));
+      if Present (E) then
+         Entity_Str := To_Unbounded_String (Subp_Location (E));
       else
          Entity_Str := Null_Unbounded_String;
       end if;
@@ -314,7 +364,7 @@ package body Flow_Error_Messages is
       JSON_M := JSON_M & ",";
 
       if Integer (GNAT.String_Split.Slice_Count (Subs)) >= 1 then
-         JSON_M := JSON_M & """name"":""" & Get_Name_String (Chars (Entity));
+         JSON_M := JSON_M & """name"":""" & Get_Name_String (Chars (E));
       end if;
       JSON_M := JSON_M & """},";
 
@@ -422,7 +472,7 @@ package body Flow_Error_Messages is
          Tag       => Tag,
          Warning   => Warning,
          Tracefile => Tracefile,
-         Entity    => E);
+         E         => E);
 
    end Error_Msg_Flow;
 
