@@ -5,6 +5,9 @@ is
    function Read_Partial_0 return Integer
      with Global => Abs_0;
 
+   function Read_Partial_Combined return Integer
+     with Global => Abs_0;
+
    function Wibble_0 return Integer is (Read_Partial_0 + 1)
      with Global => Abs_0;
 

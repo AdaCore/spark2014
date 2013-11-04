@@ -16,7 +16,8 @@ is
   with Refined_Global => Y;
 
   procedure Test_01
-    with Global => (In_Out => X)
+    with Global => (Input => Y,
+                    In_Out => X)
   is
   begin
      if Wibble then

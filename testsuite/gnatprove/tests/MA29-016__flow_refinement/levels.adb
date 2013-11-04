@@ -128,5 +128,12 @@ is
       Nested_1.Test_11 (A);
    end Test_03;
 
+   function Read_Partial_Combined return Integer
+   with Refined_Global => (X0, Nested_1.Abs_1)
+   is
+   begin
+      return X0 + Nested_1.Read_Partial_1;
+   end Read_Partial_Combined;
+
 
 end Levels;

@@ -2355,11 +2355,12 @@ package body Flow.Control_Flow_Graph is
               Pragma_Inspection_Point             |
               Pragma_Linker_Options               |
               Pragma_List                         |
+              Pragma_No_Return                    |
               Pragma_Optimize                     |
               Pragma_Overflow_Mode                |
-              Pragma_No_Return                    |
               Pragma_Pack                         |
               Pragma_Page                         |
+              Pragma_Part_Of                      |
               Pragma_Postcondition                |
               Pragma_Precondition                 |
               Pragma_Preelaborable_Initialization |
