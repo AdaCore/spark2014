@@ -4,11 +4,16 @@ deceleration_curve.adb:39:10: info: loop invariant initialization proved
 deceleration_curve.adb:39:10: warning: loop invariant might fail after first iteration
 deceleration_curve.adb:41:10: warning: assertion might fail
 deceleration_curve.adb:41:34: warning: divide by zero might fail
+deceleration_curve.adb:41:34: warning: overflow check might fail
 deceleration_curve.adb:41:48: warning: divide by zero might fail
+deceleration_curve.adb:41:48: warning: overflow check might fail
 deceleration_curve.adb:42:10: warning: assertion might fail, requires Speed_t(Minimum_Valid_Acceleration) / Minimum_Valid_Speed) <= Speed_t(Acceleration) / speed
 deceleration_curve.adb:44:38: warning: divide by zero might fail
+deceleration_curve.adb:44:38: warning: overflow check might fail
 deceleration_curve.adb:45:10: warning: assertion might fail, requires Speed_t(Minimum_Valid_Acceleration) / Minimum_Valid_Speed) * Speed_t(Distance_Resolution) <= (Speed_t(Acceleration) / speed) * Distance_Resolution
 deceleration_curve.adb:48:39: warning: divide by zero might fail
+deceleration_curve.adb:48:39: warning: overflow check might fail
+deceleration_curve.adb:48:48: warning: overflow check might fail
 deceleration_curve.adb:50:48: warning: divide by zero might fail
 deceleration_curve.adb:50:48: warning: overflow check might fail
 deceleration_curve.adb:51:12: warning: overflow check might fail

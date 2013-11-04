@@ -6,12 +6,18 @@ generic_float_tests.adb:35:7: info: assertion proved, in instantiation at foo.ad
 generic_float_tests.adb:35:7: info: assertion proved, in instantiation at foo.ads:9
 generic_float_tests.adb:48:7: warning: assertion might fail, requires X + Y >= X, in instantiation at foo.ads:14
 generic_float_tests.adb:48:7: warning: assertion might fail, requires X + Y >= X, in instantiation at foo.ads:9
+generic_float_tests.adb:48:24: warning: overflow check might fail, in instantiation at foo.ads:14
+generic_float_tests.adb:48:24: warning: overflow check might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:57:7: warning: assertion might fail, requires X + Y > X, in instantiation at foo.ads:14
 generic_float_tests.adb:57:7: warning: assertion might fail, requires X + Y > X, in instantiation at foo.ads:9
+generic_float_tests.adb:57:24: warning: overflow check might fail, in instantiation at foo.ads:14
+generic_float_tests.adb:57:24: warning: overflow check might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:66:7: warning: assertion might fail, requires false, in instantiation at foo.ads:14
 generic_float_tests.adb:66:7: warning: assertion might fail, requires false, in instantiation at foo.ads:9
 generic_float_tests.adb:72:19: info: postcondition proved, in instantiation at foo.ads:14
 generic_float_tests.adb:72:19: info: postcondition proved, in instantiation at foo.ads:9
+generic_float_tests.adb:72:41: info: overflow check proved, in instantiation at foo.ads:14
+generic_float_tests.adb:72:41: info: overflow check proved, in instantiation at foo.ads:9
 generic_float_tests.adb:75:18: info: overflow check proved, in instantiation at foo.ads:14
 generic_float_tests.adb:75:18: info: overflow check proved, in instantiation at foo.ads:9
 generic_float_tests.adb:80:19: warning: postcondition might fail, requires Underflow_1'Result > , in instantiation at foo.ads:14
@@ -30,18 +36,26 @@ generic_float_tests.adb:93:25: info: division check proved, in instantiation at 
 generic_float_tests.adb:93:25: info: division check proved, in instantiation at foo.ads:9
 generic_float_tests.adb:93:25: info: overflow check proved, in instantiation at foo.ads:14
 generic_float_tests.adb:93:25: info: overflow check proved, in instantiation at foo.ads:9
+generic_float_tests.adb:97:20: warning: overflow check might fail, in instantiation at foo.ads:14
+generic_float_tests.adb:97:20: warning: overflow check might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:98:19: warning: postcondition might fail, requires Underflow_2'result, in instantiation at foo.ads:14
 generic_float_tests.adb:98:19: warning: postcondition might fail, requires Underflow_2'result, in instantiation at foo.ads:9
 generic_float_tests.adb:106:19: warning: postcondition might fail, requires Underflow_3'Result > , in instantiation at foo.ads:14
 generic_float_tests.adb:106:19: warning: postcondition might fail, requires Underflow_3'Result > , in instantiation at foo.ads:9
 generic_float_tests.adb:109:16: warning: overflow check might fail, in instantiation at foo.ads:14
 generic_float_tests.adb:109:16: warning: overflow check might fail, in instantiation at foo.ads:9
+generic_float_tests.adb:113:20: warning: overflow check might fail, in instantiation at foo.ads:14
+generic_float_tests.adb:113:20: warning: overflow check might fail, in instantiation at foo.ads:9
+generic_float_tests.adb:113:34: warning: overflow check might fail, in instantiation at foo.ads:14
+generic_float_tests.adb:113:34: warning: overflow check might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:114:19: warning: postcondition might fail, requires Sqrt_Comedy_1'result, in instantiation at foo.ads:14
 generic_float_tests.adb:114:19: warning: postcondition might fail, requires Sqrt_Comedy_1'result, in instantiation at foo.ads:9
 generic_float_tests.adb:122:19: warning: postcondition might fail, requires Bad_Optimisation_1'Result = A / B, in instantiation at foo.ads:14
 generic_float_tests.adb:122:19: warning: postcondition might fail, requires Bad_Optimisation_1'Result = A / B, in instantiation at foo.ads:9
 generic_float_tests.adb:122:49: info: division check proved, in instantiation at foo.ads:14
 generic_float_tests.adb:122:49: info: division check proved, in instantiation at foo.ads:9
+generic_float_tests.adb:122:49: warning: overflow check might fail, in instantiation at foo.ads:14
+generic_float_tests.adb:122:49: warning: overflow check might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:125:16: warning: overflow check might fail, in instantiation at foo.ads:14
 generic_float_tests.adb:125:16: warning: overflow check might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:125:23: info: division check proved, in instantiation at foo.ads:14
@@ -50,22 +64,62 @@ generic_float_tests.adb:125:23: warning: overflow check might fail, in instantia
 generic_float_tests.adb:125:23: warning: overflow check might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:131:7: warning: assertion might fail, requires X + X = X - (-X, in instantiation at foo.ads:14
 generic_float_tests.adb:131:7: warning: assertion might fail, requires X + X = X - (-X, in instantiation at foo.ads:9
+generic_float_tests.adb:131:24: warning: overflow check might fail, in instantiation at foo.ads:14
+generic_float_tests.adb:131:24: warning: overflow check might fail, in instantiation at foo.ads:9
+generic_float_tests.adb:131:32: warning: overflow check might fail, in instantiation at foo.ads:14
+generic_float_tests.adb:131:32: warning: overflow check might fail, in instantiation at foo.ads:9
+generic_float_tests.adb:131:35: info: overflow check proved, in instantiation at foo.ads:14
+generic_float_tests.adb:131:35: info: overflow check proved, in instantiation at foo.ads:9
 generic_float_tests.adb:138:7: warning: assertion might fail, requires X - Y = 0.0) = (X = Y, in instantiation at foo.ads:14
 generic_float_tests.adb:138:7: warning: assertion might fail, requires X - Y = 0.0) = (X = Y, in instantiation at foo.ads:9
+generic_float_tests.adb:138:25: warning: overflow check might fail, in instantiation at foo.ads:14
+generic_float_tests.adb:138:25: warning: overflow check might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:145:7: warning: assertion might fail, requires X - Y) + Y = X, in instantiation at foo.ads:14
 generic_float_tests.adb:145:7: warning: assertion might fail, requires X - Y) + Y = X, in instantiation at foo.ads:9
+generic_float_tests.adb:145:25: warning: overflow check might fail, in instantiation at foo.ads:14
+generic_float_tests.adb:145:25: warning: overflow check might fail, in instantiation at foo.ads:9
+generic_float_tests.adb:145:30: warning: overflow check might fail, in instantiation at foo.ads:14
+generic_float_tests.adb:145:30: warning: overflow check might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:152:7: warning: assertion might fail, requires X + Y) - Y = X, in instantiation at foo.ads:14
 generic_float_tests.adb:152:7: warning: assertion might fail, requires X + Y) - Y = X, in instantiation at foo.ads:9
+generic_float_tests.adb:152:25: warning: overflow check might fail, in instantiation at foo.ads:14
+generic_float_tests.adb:152:25: warning: overflow check might fail, in instantiation at foo.ads:9
+generic_float_tests.adb:152:30: warning: overflow check might fail, in instantiation at foo.ads:14
+generic_float_tests.adb:152:30: warning: overflow check might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:159:7: warning: assertion might fail, requires 1.0 / X > , in instantiation at foo.ads:14
 generic_float_tests.adb:159:7: warning: assertion might fail, requires 1.0 / X > , in instantiation at foo.ads:9
 generic_float_tests.adb:159:26: info: division check proved, in instantiation at foo.ads:14
 generic_float_tests.adb:159:26: info: division check proved, in instantiation at foo.ads:9
+generic_float_tests.adb:159:26: warning: overflow check might fail, in instantiation at foo.ads:14
+generic_float_tests.adb:159:26: warning: overflow check might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:165:7: warning: assertion might fail, requires A + B) + C = A + (B + C, in instantiation at foo.ads:14
 generic_float_tests.adb:165:7: warning: assertion might fail, requires A + B) + C = A + (B + C, in instantiation at foo.ads:9
+generic_float_tests.adb:165:25: warning: overflow check might fail, in instantiation at foo.ads:14
+generic_float_tests.adb:165:25: warning: overflow check might fail, in instantiation at foo.ads:9
+generic_float_tests.adb:165:30: warning: overflow check might fail, in instantiation at foo.ads:14
+generic_float_tests.adb:165:30: warning: overflow check might fail, in instantiation at foo.ads:9
+generic_float_tests.adb:165:38: warning: overflow check might fail, in instantiation at foo.ads:14
+generic_float_tests.adb:165:38: warning: overflow check might fail, in instantiation at foo.ads:9
+generic_float_tests.adb:165:43: warning: overflow check might fail, in instantiation at foo.ads:14
+generic_float_tests.adb:165:43: warning: overflow check might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:171:7: info: assertion proved, in instantiation at foo.ads:14
 generic_float_tests.adb:171:7: info: assertion proved, in instantiation at foo.ads:9
+generic_float_tests.adb:171:25: warning: overflow check might fail, in instantiation at foo.ads:14
+generic_float_tests.adb:171:25: warning: overflow check might fail, in instantiation at foo.ads:9
+generic_float_tests.adb:171:35: warning: overflow check might fail, in instantiation at foo.ads:14
+generic_float_tests.adb:171:35: warning: overflow check might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:177:7: warning: assertion might fail, requires A * (B + C) = (A * B) + (A * C, in instantiation at foo.ads:14
 generic_float_tests.adb:177:7: warning: assertion might fail, requires A * (B + C) = (A * B) + (A * C, in instantiation at foo.ads:9
+generic_float_tests.adb:177:24: warning: overflow check might fail, in instantiation at foo.ads:14
+generic_float_tests.adb:177:24: warning: overflow check might fail, in instantiation at foo.ads:9
+generic_float_tests.adb:177:29: warning: overflow check might fail, in instantiation at foo.ads:14
+generic_float_tests.adb:177:29: warning: overflow check might fail, in instantiation at foo.ads:9
+generic_float_tests.adb:177:39: warning: overflow check might fail, in instantiation at foo.ads:14
+generic_float_tests.adb:177:39: warning: overflow check might fail, in instantiation at foo.ads:9
+generic_float_tests.adb:177:44: warning: overflow check might fail, in instantiation at foo.ads:14
+generic_float_tests.adb:177:44: warning: overflow check might fail, in instantiation at foo.ads:9
+generic_float_tests.adb:177:49: warning: overflow check might fail, in instantiation at foo.ads:14
+generic_float_tests.adb:177:49: warning: overflow check might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:190:7: info: assertion proved, in instantiation at foo.ads:14
 generic_float_tests.adb:190:7: info: assertion proved, in instantiation at foo.ads:9
 generic_float_tests.adb:198:14: warning: divide by zero might fail, in instantiation at foo.ads:14
@@ -76,8 +130,12 @@ generic_float_tests.adb:208:7: info: assertion proved, in instantiation at foo.a
 generic_float_tests.adb:208:7: info: assertion proved, in instantiation at foo.ads:9
 generic_float_tests.adb:208:24: warning: divide by zero might fail, in instantiation at foo.ads:14
 generic_float_tests.adb:208:24: warning: divide by zero might fail, in instantiation at foo.ads:9
+generic_float_tests.adb:208:24: warning: overflow check might fail, in instantiation at foo.ads:14
+generic_float_tests.adb:208:24: warning: overflow check might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:208:32: warning: divide by zero might fail, in instantiation at foo.ads:14
 generic_float_tests.adb:208:32: warning: divide by zero might fail, in instantiation at foo.ads:9
+generic_float_tests.adb:208:32: warning: overflow check might fail, in instantiation at foo.ads:14
+generic_float_tests.adb:208:32: warning: overflow check might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:216:18: warning: divide by zero might fail, in instantiation at foo.ads:14
 generic_float_tests.adb:216:18: warning: divide by zero might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:216:18: warning: overflow check might fail, in instantiation at foo.ads:14
@@ -90,6 +148,8 @@ generic_float_tests.adb:225:7: info: assertion proved, in instantiation at foo.a
 generic_float_tests.adb:225:7: info: assertion proved, in instantiation at foo.ads:9
 generic_float_tests.adb:236:10: info: assertion proved, in instantiation at foo.ads:14
 generic_float_tests.adb:236:10: info: assertion proved, in instantiation at foo.ads:9
+generic_float_tests.adb:242:22: info: overflow check proved, in instantiation at foo.ads:14
+generic_float_tests.adb:242:22: info: overflow check proved, in instantiation at foo.ads:9
 generic_float_tests.adb:245:7: warning: assertion might fail, requires F = , in instantiation at foo.ads:14
 generic_float_tests.adb:245:7: warning: assertion might fail, requires F = , in instantiation at foo.ads:9
 generic_float_tests.adb:249:19: warning: postcondition might fail, requires F = F'old, in instantiation at foo.ads:14
@@ -100,6 +160,8 @@ generic_float_tests.adb:259:7: warning: assertion might fail, requires X / X = ,
 generic_float_tests.adb:259:7: warning: assertion might fail, requires X / X = , in instantiation at foo.ads:9
 generic_float_tests.adb:259:24: info: division check proved, in instantiation at foo.ads:14
 generic_float_tests.adb:259:24: info: division check proved, in instantiation at foo.ads:9
+generic_float_tests.adb:259:24: warning: overflow check might fail, in instantiation at foo.ads:14
+generic_float_tests.adb:259:24: warning: overflow check might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:271:16: warning: divide by zero might fail, in instantiation at foo.ads:14
 generic_float_tests.adb:271:16: warning: divide by zero might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:271:16: warning: overflow check might fail, in instantiation at foo.ads:14
@@ -130,6 +192,10 @@ generic_float_tests.adb:284:7: warning: assertion might fail, requires X = B, in
 generic_float_tests.adb:284:7: warning: assertion might fail, requires X = B, in instantiation at foo.ads:9
 generic_float_tests.adb:296:7: warning: assertion might fail, requires - (- X) = + X, in instantiation at foo.ads:14
 generic_float_tests.adb:296:7: warning: assertion might fail, requires - (- X) = + X, in instantiation at foo.ads:9
+generic_float_tests.adb:296:22: info: overflow check proved, in instantiation at foo.ads:14
+generic_float_tests.adb:296:22: info: overflow check proved, in instantiation at foo.ads:9
+generic_float_tests.adb:296:25: info: overflow check proved, in instantiation at foo.ads:14
+generic_float_tests.adb:296:25: info: overflow check proved, in instantiation at foo.ads:9
 generic_float_tests.adb:301:19: info: postcondition proved, in instantiation at foo.ads:14
 generic_float_tests.adb:301:19: info: postcondition proved, in instantiation at foo.ads:9
 generic_float_tests.adb:309:19: info: postcondition proved, in instantiation at foo.ads:14
@@ -138,10 +204,16 @@ generic_float_tests.adb:318:19: info: postcondition proved, in instantiation at 
 generic_float_tests.adb:318:19: info: postcondition proved, in instantiation at foo.ads:9
 generic_float_tests.adb:328:7: warning: assertion might fail, requires FT'Floor (X) <= FT'floor, in instantiation at foo.ads:14
 generic_float_tests.adb:328:7: warning: assertion might fail, requires FT'Floor (X) <= FT'floor, in instantiation at foo.ads:9
+generic_float_tests.adb:328:50: warning: overflow check might fail, in instantiation at foo.ads:14
+generic_float_tests.adb:328:50: warning: overflow check might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:335:7: warning: assertion might fail, requires X < FT'floor, in instantiation at foo.ads:14
 generic_float_tests.adb:335:7: warning: assertion might fail, requires X < FT'floor, in instantiation at foo.ads:9
+generic_float_tests.adb:335:38: info: overflow check proved, in instantiation at foo.ads:14
+generic_float_tests.adb:335:38: info: overflow check proved, in instantiation at foo.ads:9
 generic_float_tests.adb:342:7: warning: assertion might fail, requires X < FT'floor, in instantiation at foo.ads:14
 generic_float_tests.adb:342:7: warning: assertion might fail, requires X < FT'floor, in instantiation at foo.ads:9
+generic_float_tests.adb:342:38: warning: overflow check might fail, in instantiation at foo.ads:14
+generic_float_tests.adb:342:38: warning: overflow check might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:348:7: info: assertion proved, in instantiation at foo.ads:14
 generic_float_tests.adb:348:7: info: assertion proved, in instantiation at foo.ads:9
 generic_float_tests.adb:357:10: info: assertion proved, in instantiation at foo.ads:14
@@ -188,6 +260,10 @@ generic_float_tests.adb:389:34: warning: contract case might fail, in instantiat
 generic_float_tests.adb:389:34: warning: contract case might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:398:19: warning: postcondition might fail, in instantiation at foo.ads:14
 generic_float_tests.adb:398:19: warning: postcondition might fail, in instantiation at foo.ads:9
+generic_float_tests.adb:398:26: warning: overflow check might fail, in instantiation at foo.ads:14
+generic_float_tests.adb:398:26: warning: overflow check might fail, in instantiation at foo.ads:9
+generic_float_tests.adb:398:37: warning: overflow check might fail, in instantiation at foo.ads:14
+generic_float_tests.adb:398:37: warning: overflow check might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:406:19: info: postcondition proved, in instantiation at foo.ads:14
 generic_float_tests.adb:406:19: info: postcondition proved, in instantiation at foo.ads:9
 generic_float_tests.adb:421:19: info: postcondition proved, in instantiation at foo.ads:14
@@ -224,20 +300,38 @@ generic_interval_tests.adb:18:19: warning: postcondition might fail, in instanti
 generic_interval_tests.adb:18:19: warning: postcondition might fail, in instantiation at bar.ads:7
 generic_interval_tests.adb:21:14: info: overflow check proved, in instantiation at bar.ads:11
 generic_interval_tests.adb:21:14: info: overflow check proved, in instantiation at bar.ads:7
+generic_interval_tests.adb:25:21: warning: overflow check might fail, in instantiation at bar.ads:11
+generic_interval_tests.adb:25:21: warning: overflow check might fail, in instantiation at bar.ads:7
 generic_interval_tests.adb:26:19: warning: postcondition might fail, in instantiation at bar.ads:11
 generic_interval_tests.adb:26:19: warning: postcondition might fail, in instantiation at bar.ads:7
 generic_interval_tests.adb:34:19: warning: postcondition might fail, in instantiation at bar.ads:11
 generic_interval_tests.adb:34:19: warning: postcondition might fail, in instantiation at bar.ads:7
+generic_interval_tests.adb:34:21: info: overflow check proved, in instantiation at bar.ads:11
+generic_interval_tests.adb:34:21: info: overflow check proved, in instantiation at bar.ads:7
+generic_interval_tests.adb:41:21: warning: overflow check might fail, in instantiation at bar.ads:11
+generic_interval_tests.adb:41:21: warning: overflow check might fail, in instantiation at bar.ads:7
+generic_interval_tests.adb:41:23: info: overflow check proved, in instantiation at bar.ads:11
+generic_interval_tests.adb:41:23: info: overflow check proved, in instantiation at bar.ads:7
 generic_interval_tests.adb:42:19: warning: postcondition might fail, in instantiation at bar.ads:11
 generic_interval_tests.adb:42:19: warning: postcondition might fail, in instantiation at bar.ads:7
 generic_interval_tests.adb:50:19: warning: postcondition might fail, requires X * Y >= X, in instantiation at bar.ads:11
 generic_interval_tests.adb:50:19: warning: postcondition might fail, requires X * Y >= X, in instantiation at bar.ads:7
+generic_interval_tests.adb:50:21: warning: overflow check might fail, in instantiation at bar.ads:11
+generic_interval_tests.adb:50:21: warning: overflow check might fail, in instantiation at bar.ads:7
 generic_interval_tests.adb:58:19: warning: postcondition might fail, requires X * Y > X, in instantiation at bar.ads:11
 generic_interval_tests.adb:58:19: warning: postcondition might fail, requires X * Y > X, in instantiation at bar.ads:7
+generic_interval_tests.adb:58:21: warning: overflow check might fail, in instantiation at bar.ads:11
+generic_interval_tests.adb:58:21: warning: overflow check might fail, in instantiation at bar.ads:7
+generic_interval_tests.adb:65:19: info: overflow check proved, in instantiation at bar.ads:11
+generic_interval_tests.adb:65:19: info: overflow check proved, in instantiation at bar.ads:7
 generic_interval_tests.adb:66:19: warning: postcondition might fail, requires X / Y <= abs X, in instantiation at bar.ads:11
 generic_interval_tests.adb:66:19: warning: postcondition might fail, requires X / Y <= abs X, in instantiation at bar.ads:7
 generic_interval_tests.adb:66:21: info: division check proved, in instantiation at bar.ads:11
 generic_interval_tests.adb:66:21: info: division check proved, in instantiation at bar.ads:7
+generic_interval_tests.adb:66:21: warning: overflow check might fail, in instantiation at bar.ads:11
+generic_interval_tests.adb:66:21: warning: overflow check might fail, in instantiation at bar.ads:7
+generic_interval_tests.adb:66:28: info: overflow check proved, in instantiation at bar.ads:11
+generic_interval_tests.adb:66:28: info: overflow check proved, in instantiation at bar.ads:7
 generic_interval_tests.adb:77:12: info: overflow check proved, in instantiation at bar.ads:11
 generic_interval_tests.adb:77:12: info: overflow check proved, in instantiation at bar.ads:7
 generic_interval_tests.adb:78:10: warning: assertion might fail, requires X < , in instantiation at bar.ads:11

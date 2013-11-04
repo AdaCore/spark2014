@@ -2,11 +2,16 @@ deceleration_curve.adb:37:10: info: assertion proved
 deceleration_curve.adb:39:10: warning: assertion might fail
 deceleration_curve.adb:40:10: warning: assertion might fail
 deceleration_curve.adb:40:34: info: division check proved
+deceleration_curve.adb:40:34: warning: overflow check might fail
 deceleration_curve.adb:40:48: info: division check proved
+deceleration_curve.adb:40:48: warning: overflow check might fail
 deceleration_curve.adb:41:10: warning: assertion might fail, requires Speed_t(Minimum_Valid_Acceleration) / Minimum_Valid_Speed) <= Speed_t(Acceleration) / speed
 deceleration_curve.adb:43:38: info: division check proved
+deceleration_curve.adb:43:38: warning: overflow check might fail
 deceleration_curve.adb:44:10: warning: assertion might fail, requires Speed_t(Minimum_Valid_Acceleration) / Minimum_Valid_Speed) * Speed_t(Distance_Resolution) <= (Speed_t(Acceleration) / speed) * Distance_Resolution
 deceleration_curve.adb:47:39: info: division check proved
+deceleration_curve.adb:47:39: warning: overflow check might fail
+deceleration_curve.adb:47:48: warning: overflow check might fail
 deceleration_curve.adb:49:48: info: division check proved
 deceleration_curve.adb:49:48: warning: overflow check might fail
 deceleration_curve.adb:50:12: warning: overflow check might fail
