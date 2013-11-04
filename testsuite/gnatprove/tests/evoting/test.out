@@ -55,11 +55,11 @@ evoting.adb:183:16: warning: no Global contract available for "Put"
 evoting.adb:185:16: warning:  assuming "Put_Line" has no effect on global items
 evoting.adb:185:16: warning: no Global contract available for "Put_Line"
 evoting.adb:211:10: info: loop invariant initialization proved
-evoting.adb:211:10: warning: loop invariant might fail after first iteration
 evoting.adb:215:24: info: range check proved
 evoting.adb:218:64: info: index check proved
 evoting.adb:220:24: info: range check proved
 evoting.adb:222:30: info: index check proved
+evoting.adb:223:19: warning: loop invariant might fail after first iteration, requires Counters(Latest_Highest_Score) = Counters(J)
 evoting.adb:223:61: info: index check proved
 evoting.adb:225:61: info: index check proved
 evoting.adb:228:16: info: loop invariant initialization proved
@@ -68,7 +68,7 @@ evoting.adb:229:27: info: range check proved
 evoting.adb:230:31: info: index check proved
 evoting.adb:231:24: info: index check proved
 evoting.adb:247:13: info: loop invariant initialization proved
-evoting.adb:247:13: warning: loop invariant might fail after first iteration
+evoting.adb:247:13: info: loop invariant preservation proved
 evoting.adb:247:73: info: overflow check proved
 evoting.adb:248:30: info: index check proved
 evoting.adb:250:29: info: index check proved
@@ -112,12 +112,12 @@ evoting.adb:317:7: info: precondition proved
 evoting.ads:32:45: info: length check proved
 evoting.ads:58:28: warning: postcondition might fail, requires candidates(i)(j) = ' '
 evoting.ads:58:40: info: index check proved
-evoting.ads:94:6: warning: postcondition might fail
+evoting.ads:95:11: warning: postcondition might fail, requires counters(i) = 0
 evoting.ads:95:20: info: index check proved
-evoting.ads:104:12: warning: postcondition might fail
 evoting.ads:105:25: info: range check proved
-evoting.ads:106:57: warning: array index check might fail
-evoting.ads:107:50: warning: array index check might fail
+evoting.ads:106:57: info: index check proved
+evoting.ads:107:22: warning: postcondition might fail, requires counters(winner) > counters(i)
+evoting.ads:107:50: info: index check proved
 evoting.ads:109:55: info: index check proved
-evoting.ads:110:52: warning: array index check might fail
+evoting.ads:110:52: info: index check proved
 evoting.ads:114:27: info: index check proved
