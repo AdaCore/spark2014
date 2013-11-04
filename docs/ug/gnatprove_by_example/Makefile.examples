@@ -21,12 +21,17 @@ prove:
 
 results: $(ALL_FLOW_MSG) $(ALL_PROVE_MSG)
 
-# Apparently useless use of 'cat' to ignore empty result of 'grep'
+# The apparently useless use of 'cat' is meant to ignore a possible empty
+# result of 'grep'. In that case, force generation of a non-empty output,
+# to avoid errors when creating the pdf document.
+
 $(RESULTS)/%.flow: force
 	cd $(RESULTS) && grep -e '^$*.ad' ../flow/flow.results | cat > $@
+	test -s $@ || echo "no output" > $@
 
 $(RESULTS)/%.prove: force
 	cd $(RESULTS) && grep -e '^$*.ad' ../prove/prove.results | cat > $@
+	test -s $@ || echo "no output" > $@
 
 clean:
 	rm -rf flow prove
