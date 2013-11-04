@@ -6,12 +6,9 @@ package body Trace
   with SPARK_Mode => Off
 is
 
-   Flags : Skein.Debug_Flag_Set := Skein.Debug_None;
-
-   procedure Set_Flags (F : in Debug_Flag_Set)
-   is
+   procedure Set_Flags (F : in out Integer) is
    begin
-      Flags := F;
+      F := F + 1;
    end Set_Flags;
 
 end Trace;
