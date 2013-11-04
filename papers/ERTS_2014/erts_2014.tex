@@ -838,7 +838,7 @@ functional behavioural contracts (expressed as Pre and Post aspects).
 
 The verification objectives supported by these contracts are as follows:
 
-Detecting improper initialization; Identifying innefective
+Detecting improper initialization; Identifying ineffective
 assignments; Showing the code is free from any run time exceptions,
 such as buffer overflow or divide-by-zero; Ensuring secure information
 flow; Proving that key security properties are guaranteed by the
@@ -848,33 +848,46 @@ implementation.
 
 \subsection{Formal Verification Results}
 
-The source code of Tokeneer was proven to be free of runtime
+The source code of Tokeneer was proven to be free of run time
 exceptions and some key security properties were proven to hold but
 full functional proof was not performed on the entirety of the
 code. This study will focus on proving the biggest possible subset of
 the aforementioned attributes using the \newspark toolset.
 
+\subsection{Converting \oldspark to \newspark}
+
+For the majority of the code, translating \oldspark to \newspark is
+very straight forward since most of the original annotations map
+directly to the new ones. {should I put a table here?}
+
+-In-type assertions are often no longer needed. {give example code}
+
+-Some code no longer needs to be hidden (string concatenation example).
+
+-Proof functions can be replaced with actual functions that have
+Convention =$>$ Ghost. {give example code}
+
 \subsection{Fully specifying and proving a package}
 
-The \oldspark version of the code performed proof of functional
-behaviour on a limited number of packages. In order to measure the
-expressiveness and proving power of the \newspark tools, a specific
-package, on which functional behaviour proof had not been attempted,
-was selected and then fully augmented with functional behaviour
-annotations. Package \emph{admin}, which is the package that was
-augmented, contains the state of the administrator of the system and a
-set of operations that administrators can perform.
+The \oldspark code performed proof of functional behaviour on a
+limited number of packages. In order to measure the expressiveness and
+proving power of the \newspark tools, a specific package, on which
+functional behaviour proof had not been attempted, was selected and
+then fully augmented with functional behaviour annotations. Package
+\emph{admin}, which is the package that was augmented, contains the
+state of the administrator of the system and a set of operations that
+administrators can perform.
 
 In order to illustrate how functional behaviour contracts were added,
 we will consider subroutine \emph{OpIsAvailable} of package admin. An
 administrator can be either a ``UserOnly'', a ``Guard'', an
-``AuditManager'' or a ``SecurityOfficer''. Each of the aforementioned
-types of administrators have a set of predefined operations that they
-are allowed to perform. Function \emph{OpIsAvailable} takes as input
-an administrator and a string that is read from the keyboard and
-determines if this string corresponds to an operation available to the
-administrator. If the operation is indeed available, then this
-operation is returned, otherwise \emph{NullOp} is returned.
+``AuditManager'' or a ``SecurityOfficer''. Each type of administrator
+has a set of predefined operations that it is allowed to
+perform. Function \emph{OpIsAvailable} takes as input an administrator
+and a string that is read from the keyboard and determines if this
+string corresponds to an operation available to the administrator. If
+the operation is indeed available, then this operation is returned,
+otherwise \emph{NullOp} is returned.
 
 \oldspark code:
 
@@ -888,8 +901,8 @@ function OpIsAvailable(TheAdmin : T;
 --#                 prf_rolePresent(TheAdmin) =
 --#                   PrivTypes.Guard));
 \end{lstlisting}
-Here, the postcondition \oldspark annotation serve only as a test
-case. It ensures that if a non null operation was returned and if that
+Here, the \oldspark postcondition serves only as a test case. It
+ensures that if a non null operation was returned and if that
 operation was \emph{OverrideLock} then the administrator was of type
 \emph{Guard}. This annotation is incomplete since it does not specify
 any other kind of valid combinations of administrator types and their
@@ -911,27 +924,18 @@ function OpIsAvailable(TheAdmin : T;
                   and OpIsAvailable'Result = Op)
                xor OpIsAvailable'Result = NullOp;
 \end{lstlisting}
-This \newspark Post aspect states that we have two mutually exclusive
-cases. If there exists some operation in Opt that matches the string
-read from the keyboard and this operation is allowed for the current
-administrator then the result of function \emph{OpIsAvailable} is this
-operation, otherwise, the result is \emph{NullOp}.
+This \newspark \emph{Post} aspect states that we have two mutually
+exclusive cases. If there exists some operation in \emph{Opt} that
+matches the string read from the keyboard and this operation is
+allowed for the current administrator then the result of function
+\emph{OpIsAvailable} is this operation, otherwise, the result is
+\emph{NullOp}.
 
 The \newspark tools discharge all 24 verification conditions
-associated with the augmented \emph{admin} package in a couple of
+associated with the augmented \emph{admin} package in a matter of
 seconds. The \oldspark tools also prove all properties associated with
-the non-augmented \emph{admin} package but a total of 12 user rules is
-required in order to achieve this.
-
-
-\subsection{Converting \oldspark to \newspark}
-
--In-type assertions are often no longer needed. {give example code}
-
--Some code no longer needs to be hidden (string concatenation example).
-
--Proof functions can be replaced with actual functions that have
-Convention =$>$ Ghost. {give example code}
+the non-augmented \emph{admin} package but a total of 12 user rules had
+to be provided.
 
 \subsection{General observations}
 
