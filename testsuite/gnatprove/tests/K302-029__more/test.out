@@ -10,8 +10,14 @@ pack.ads:15:30: explicit dereference is not allowed in SPARK
 gnatprove: error during translation to intermediate language, aborting.
 gprbuild: *** compilation phase failed
 [
-{ "name" : "Pack.P0", "file" :"pack.ads", "line" :  13, "spark" : "body" }
+{ "name" : "Pack.P0.P3", "file" :"pack.adb", "line" :  4, "spark" : "body" }
+, { "name" : "Pack.P0.P0_Ok", "file" :"pack.adb", "line" :  10, "spark" : "body" }
+, { "name" : "Pack.P0", "file" :"pack.ads", "line" :  13, "spark" : "body" }
+, { "name" : "Pack.P1.P4", "file" :"pack.adb", "line" :  19, "spark" : "body" }
+, { "name" : "Pack.P1.P1_Ok", "file" :"pack.adb", "line" :  25, "spark" : "body" }
 , { "name" : "Pack.P1", "file" :"pack.ads", "line" :  15, "spark" : "body" }
+, { "name" : "Pack.P2.B_2.P5", "file" :"pack.adb", "line" :  38, "spark" : "body" }
+, { "name" : "Pack.P2.B_2.P2_Ok", "file" :"pack.adb", "line" :  47, "spark" : "body" }
 , { "name" : "Pack.P2", "file" :"pack.ads", "line" :  17, "spark" : "body" }
 , { "name" : "Pack", "file" :"pack.ads", "line" :  1, "spark" : "body" }
 ]
