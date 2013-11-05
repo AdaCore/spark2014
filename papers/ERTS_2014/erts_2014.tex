@@ -312,44 +312,9 @@ not as far from software requirements as one would expect.
 \subsection{Description of the Software}
 
 We made several experiments but due to space constraints we will only
-detail two of them.
+detail one of them.
 
-\subsubsection{Mode Transition Table}
-
-Our first example is a partial modeling of SRS mode transition table
-(SRS §4.6). It is a big table that describes, for each of the 17
-modes, under which conditions the ETCS on-board can change from one
-mode to another one. Those conditions are the specific state of the
-on-board, the actions of the driver and an explicit priority. For example,
-transition from mode Stand By (SB) to mode Full Supervision (FS)
-is conditioned by fulfilling condition 10, at priority 7. Condition 10
-states that \textit{(valid Train Data is stored on board) AND (MA + SSP +
-gradient on-board) AND (no specific mode is required by a Mode
-Profile)}.
-
-We have converted the above conditions into \newspark Boolean variables, with
-an explicit priority variable, thus modeling all possible transitions of the
-transition table. For example, the above condition becomes:
-
-\begin{lstlisting}
-type priority_t is range 1..7;
-priority : priority_t;
-
-valid_train_data_is_stored_on_board : Boolean;
-
-function condition_10 return Boolean is
-  (valid_train_data_is_stored_on_board
-   and ma_ssp_gardient_on_board
-   and no_specific_mode_required_by_a_mode_profile);
-
-function condition_transition_SB_to_FS
-  return Boolean
-is (condition_10 and priority = 7);
-\end{lstlisting}
-
-\subsubsection{Step Functions}
-
-Our second example is the coding of step functions, \aka functions
+This example is the coding of step functions, \aka functions
 constant by interval, used in the \textit{Speed and distance monitoring}
 section (SRS §3.13). Such functions are used to model for example
 speed restrictions along distance. One of our main goal is to model
@@ -376,44 +341,62 @@ type Step_Function_t is record
 end record;
 \end{lstlisting}
 
-A step function of type \SPARK{Step_Function_t} can have up to 11 steps
-separated by 10 delimiters. Each delimiter of type \SPARK{Delimiter_Entry}
-contains the delimiter position and the associated constant value for the
-function.
+A step function of type \SPARK{Step_Function_t} can have up to 11
+steps separated by 10 delimiters (in \SPARK{Num_Delimiters_Range},
+delimiter 0 being the initial value of the step function). Each
+delimiter of type \SPARK{Delimiter_Entry} contains the delimiter
+position (\SPARK{Delimiter}) and the associated constant value
+(\SPARK{Value}) for the function. The currently used number of
+delimiters is stored in \SPARK{Num_Delim}.
 
 We defined several subprograms that query or update step functions:
 \begin{itemize}
-\item \SPARK{Get_Value(SFun,X)} returns the value of step function \SPARK{SFun}
+\item \SPARK{Get_Value(SFun, X)} returns the value of step function \SPARK{SFun}
   at point \SPARK{X};
-\item \SPARK{Minimum_Until_Point(SFun,X)} returns the minimum of the step
+\item \SPARK{Minimum_Until_Point(SFun, X)} returns the minimum of the step
   function \SPARK{SFun} until point \SPARK{X};
-\item \SPARK{Restrictive_Merge(SFun1,SFun2,Merge)} merges step functions
+\item \SPARK{Restrictive_Merge(SFun1, SFun2, Merge)} merges step functions
   \SPARK{SFun1} and \SPARK{SFun2} into step function \SPARK{Merge}.
 \end{itemize}
 
 \subsection{Formalization of Properties}
 
-\subsubsection{Mode Transition Table}
+We wanted to check full functional correctness of this critical unit. We used
+contracts to express the specifications of all subprograms.
 
-We wanted to check requirement §4.6.1.5 of SRS that states that all transitions
-are exclusive, even at the same priority. We used \SPARK{Contract_Cases} to
-express this requirement. For example, for transitions from mode Stand By:
+For example, in following function \SPARK{Minimum_Until_Point}, we
+specified that given a valid (\ie with strictly increasing delimiters)
+step function \SPARK{SFun} and a point \SPARK{X}, the returned value
+(\SPARK{Minimum_Until_Point'Result}) is the minimum until point X (1)
+and effectively belongs to the domain of the step function (2).
 
 \begin{lstlisting}
-function transition(mode : etcs_mode_t)
-  return etcs_mode_t
-with Contract_Cases =>
-  (condition_transition_SB_to_SH => True,
-   condition_transition_SB_to_FS => True,
-   condition_transition_SB_to_IS => True);
+function Minimum_Until_Point
+    (SFun : Step_Function_t; X : Function_Range)
+                             return Float
+with
+  Pre => Is_Valid(SFun),
+Post =>
+-- (1) Returned value is the minimum until point X
+  (for all i in
+    Num_Delimiters_Range'First..SFun.Num_delim =>
+     (if X >= SFun.Step(i).Delimiter then
+      Minimum_Until_Point'Result
+         <= SFun.Step(i).Value))
+  and
+-- (2) Returned value is a value of the step
+--     function until point X
+  ((for some i in
+     Num_Delimiters_Range'First..SFun.Num_delim =>
+      (X >= SFun.Step(i).Delimiter
+       and
+         (Minimum_Until_Point'Result
+             = SFun.Step(i).Value))));
 \end{lstlisting}
 
-\subsubsection{Step Functions}
-
-We wanted to check full functional correctness of this critical unit. We used
-contracts to express the specifications of all subprograms.  For example, for
-procedure \SPARK{Restrictive_Merge}, we specified that, given two valid (\ie
-with strictly increasing delimiters) step functions \SPARK{SFun1} and
+In our next example is more complex.
+In procedure \SPARK{Restrictive_Merge} we specified that, given two
+valid step functions \SPARK{SFun1} and
 \SPARK{SFun2} without too many delimiters, the resulting step function is a
 valid one (1), it contains all the delimiters of \SPARK{SFun1} (2) and
 \SPARK{SFun2} (3) and for each of those delimiters, the value of the step
@@ -421,7 +404,7 @@ function is the minimum of both initial step functions (4).
 
 \begin{lstlisting}
 procedure Restrictive_Merge
-  (SFun1, SFun2 : in Step_Function_t;
+  (SFun1, SFun2 : in  Step_Function_t;
    Merge        : out Step_Function_t)
 with
 Pre =>
@@ -432,25 +415,25 @@ Pre =>
 Post =>
   -- (1) Output is a valid step function
   Is_Valid(Merge)
-  -- (2) All SFun1 delimiters are valid in Merge
     and
+  -- (2) All SFun1 delimiters are valid in Merge
   (for all i in
      Num_Delimiters_Range'First..SFun1.Num_Delim =>
    (for some j in
      Num_Delimiters_Range'First..Merge.Num_Delim =>
       (Merge.Step(j).Delimiter
         = SFun1.Step(i).Delimiter)))
-  -- (3) All SFun2 delimiters are valid in Merge
     and
+  -- (3) All SFun2 delimiters are valid in Merge
   (for all i in
      Num_Delimiters_Range'First..SFun2.Num_Delim =>
    (for some j in
      Num_Delimiters_Range'First..Merge.Num_Delim =>
       (Merge.Step(j).Delimiter
         = SFun2.Step(i).Delimiter)))
+    and
   -- (4) For each delimiter of Merge, its value is the
   --     minimum of SFun1 and SFun2
-    and
   (for all i in
      Num_Delimiters_Range'First..Merge.Num_Delim =>
    (Merge.Step(i).Value
@@ -458,34 +441,40 @@ Post =>
           Get_Value(SFun2, Merge.Step(i).Delimiter))));
 \end{lstlisting}
 
+Please also notice that through the use of \SPARK{in} and \SPARK{out}
+parameters, only \SPARK{Merge} can be written to and \SPARK{SFun1} and
+\SPARK{SFun2} should be kept unmodified.
+
 \subsection{Formal Verification Results}
 
-The first goal of this experiment was to check if \newspark was expressive
-enough to describe the objects of the requirements: requirement text,
-transition tables, breaking curve equations, \etc Overall, we were quite
-satisfied, as we were able to express most of the requirements in a formal
-way. The very expressive data structures of \newspark (records, arrays,
-enumerations, \etc) compared to other specification languages were very helpful
-and we found that it lead to quite readable specifications.
+The first goal of this experiment was to check if \newspark was
+expressive enough to describe the objects of the requirements:
+requirement text, transition tables, breaking curve equations, \etc
+Overall, we were quite satisfied, as we were able to express most of
+the requirements in a formal way. The very expressive data structures
+of \newspark (records, arrays, enumerations, \etc) were very helpful
+compared to other specification languages like B~Method\cite{b-book}
+(lacking usable record structure) or Frama-C's ACSL\cite{acsl}
+(lacking record with variant part or easy limited range data type
+definition). We found that it lead to quite readable specifications.
 
 The second goal was to evaluate the automatic proving capabilities of \newspark
 on some parts of the specification.
 
-Regarding the mode transition table, we were not able to prove the
-contracts we specified, because the contracts were not
-provable! We discovered with this experiment that the transitions given
-in the specification table lack details to determine if the transitions
-are exclusive or not. Those details are given in other parts of the
-specification and it would be a major work to formalize them.
-
-Regarding step functions, we were able to prove all subprogram
+On step functions, we were able to prove all subprogram
 contracts except the one of \SPARK{Restrictive_Merge}. In this procedure, the
 postcondition and the loop invariant could not be automatically
 proved by \altergo. The main reason is that the proof context is too
 big and \altergo gets lost in all possible quantification
 instantiations. We have checked that some parts of the loop invariant
 could be automatically proved if the proof context was manually pruned
-of irrelevant hypotheses.
+of irrelevant hypotheses. Moreover, we compiled and tested the
+contracts and formal annotations, making us more confident about their
+correctness.
+
+We should also notice that in all those subprograms, we needed about
+the same number of lines of formal annotations than of executable
+code.
 
 \subsection{Lessons Learned}
 
