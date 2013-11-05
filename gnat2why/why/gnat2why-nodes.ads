@@ -25,7 +25,7 @@
 
 with Ada.Containers;
 with Ada.Containers.Doubly_Linked_Lists;
-with Ada.Containers.Hashed_Sets;
+with Ada.Containers.Ordered_Sets;
 with Ada.Containers.Hashed_Maps;
 
 with AA_Util;                use AA_Util;
@@ -55,12 +55,14 @@ package Gnat2Why.Nodes is
    is (Ada.Containers.Hash_Type (X));
    --  Compute the hash of a node
 
-   package Node_Sets is new Ada.Containers.Hashed_Sets
-     (Element_Type        => Node_Id,
-      Hash                => Node_Hash,
-      Equivalent_Elements => "=",
-      "="                 => "=");
-   --  Sets of nodes
+   package Node_Sets is new Ada.Containers.Ordered_Sets
+     (Element_Type => Node_Id,
+      "<"          => "<",
+      "="          => "=");
+   --  Sets of ordered nodes. We prefer ordered nodes instead of hashed nodes,
+   --  as the order in these sets influence the generation of Why code, which
+   --  we intend to be as predictable as possible on all machines, to get the
+   --  same proof results on all machines when possible.
 
    package Node_Maps is new Ada.Containers.Hashed_Maps
      (Key_Type        => Node_Id,

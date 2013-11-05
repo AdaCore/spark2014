@@ -1500,7 +1500,8 @@ package body Gnat2Why.Decls is
       Insert_Item (E, Var);
 
       Close_Theory (File,
-                    Kind => Standalone_Theory);
+                    Kind           => Definition_Theory,
+                    Defined_Entity => E);
    end Translate_Variable;
 
    -----------------------

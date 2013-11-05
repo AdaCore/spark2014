@@ -347,9 +347,9 @@ package body Why.Inter is
          end if;
       end Analyze_Ada_Node;
 
-      ----------------------
-      -- Base_Type_Pre_Op --
-      ----------------------
+      -----------------
+      -- Type_Pre_Op --
+      -----------------
 
       procedure Type_Pre_Op
         (State : in out Search_State;
@@ -492,7 +492,7 @@ package body Why.Inter is
 
       function Import_Type_Of_Entity (E : Entity_Id) return EW_Clone_Type is
       begin
-         if Nkind (E) in N_Has_Etype then
+         if Nkind (E) in N_Has_Theory then
             return EW_Import;
          end if;
          return EW_Clone_Default;
