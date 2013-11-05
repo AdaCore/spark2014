@@ -829,19 +829,30 @@ system.
 
 \subsubsection{Converting \oldspark to \newspark}
 
-For the majority of the code, translating \oldspark to \newspark is
+For the majority of the code, translating \oldspark to \newspark was
 very straight forward since most of the original annotations map
 directly to the new ones. This section will focus on the more
-interesting occasions where the conversion is not trivial.
+interesting occasions where the conversion was non-trivial.
 
--Proof functions can be replaced with actual functions that have
-Convention =$>$ Ghost. {give example code}
+Proof functions were replaced with ghost functions. In \oldspark, the
+behaviour of a proof function was often defined in a user rule. In
+\newspark, this behaviour is described in the body of the ghost
+function.
 
--Some code no longer needs to be hidden (string concatenation example).
+The \newspark Global aspect has an additional mode
+(\emph{Proof\_In}). All global variables of mode \emph{in} that were
+used exclusively inside annotations had to be turned into
+\emph{Proof\_In} global variables in \newspark.
+
+\newspark supports a bigger subset of Ada than \oldspark. As a
+consequence, pieces of code that could previously not get analysed and
+were hidden, were now analysable. Two occasions that fall under this
+category and were frequently encountered involved string concatenation
+and array slices.
 
 In-type checks are added automatically by the new toolset. This
 simplifies both the work of the programmer and the code
-itself. The following two segments are equivalent:
+itself. Consider the following two code segments:
 
 \begin{lstlisting}[caption=\oldspark]
 for I in LogFileIndexT loop
@@ -901,10 +912,11 @@ for I in LogFileIndexT loop
       loop
         ...
 \end{lstlisting}
-The difference in lines of code is apparent. However, at this point,
-it should be pointed out that since the development of the Tokeneer
-project the \oldspark tools have greatly evolved and some of the
-original annotations might actually now be redundant.
+Even though these segments are equivalent the difference in lines of
+code is apparent. However, at this point, it should be pointed out
+that since the development of the Tokeneer project the \oldspark tools
+have greatly evolved and some of the original annotations might
+actually now be redundant.
 
 \subsection{Formalization of Properties}
 
@@ -914,7 +926,7 @@ functional behavioural contracts (expressed as Pre and Post aspects).
 
 The Depends aspects facilitate flow analysis of the code. Flow
 analysis detects improper initialization, identifies ineffective
-assignments and ensures secure information flow.
+assignments and ensures secure flow of information.
 
 The Pre and Post aspects enable the prover to show that the code is
 free from run time exceptions, such as buffer overflow or
@@ -923,25 +935,22 @@ guaranteed by the implementation.
 
 \subsection{Formal Verification Results}
 
-The source code of Tokeneer was proven to be free of run time
+The original source code of Tokeneer was proven to be free of run time
 exceptions and some key security properties were proven to hold but
-full functional proof was not performed on the entirety of the
-code. This study will focus on proving the biggest possible subset of
-the aforementioned attributes using the \newspark toolset.
+full functional proof was not performed on the entirety of the code.
 
 \subsubsection{Fully specifying and proving a package}
 
-The \oldspark code performed proof of functional behaviour on a
-limited number of packages. In order to measure the expressiveness and
-proving power of the \newspark tools, a specific package, on which
-functional behaviour proof had not been attempted, was selected and
-then fully augmented with functional behaviour annotations. Package
-\emph{admin}, which is the package that was augmented, contains the
-state of the administrator of the system and a set of operations that
+In order to measure the expressiveness and proving power of the
+\newspark tools, a specific package, on which functional behaviour
+proof had not been attempted, was selected and then fully augmented
+with functional behaviour annotations. Package \emph{admin}, which is
+the package that was augmented, contains the state of the
+administrator of the system and a set of operations that
 administrators can perform.
 
-In order to illustrate how functional behaviour contracts were added,
-we will consider subroutine \emph{OpIsAvailable} of package admin. An
+To illustrate how functional behaviour contracts were added, we will
+consider subroutine \emph{OpIsAvailable} of package admin. An
 administrator can be either a ``UserOnly'', a ``Guard'', an
 ``AuditManager'' or a ``SecurityOfficer''. Each type of administrator
 has a set of predefined operations that it is allowed to
@@ -995,26 +1004,27 @@ seconds. The \oldspark tools also prove all properties associated with
 the non-augmented \emph{admin} package but a total of 12 user rules had
 to be provided.
 
-\subsection{General observations}
+\subsection{Lessons Learned}
+
+-Conversion of the majority of the code is straight forward.
 
 -Flaws in specifications can be detected (see HiLite report).
 
 -Low level Z specs look very much like the \newspark code.
 
--Test the unproved parts of the code.
-
 -Explain why we have packages where not everything is proven and why we
 have some flow warnings (\oldspark was getting away with these because
 it was using rlu/prv files and the flow warnings were accepted).
 
-Some additional aims of this study are the following: Evaluate how
-easy is it to convert programs from \oldspark to \newspark;
-Investigate how executable semantics affect the way code has to be
-written and what advantages/disadvantages they introduce; Discover the
-percentage of the code that can be automatically proven; and the
-combination of options/provers that achieve the best results for this
-specific test case; Provide feedback and suggest features or changes
-that could improve future versions of the \newspark toolset.
+-Investigate how executable semantics affect the way code has to be
+written and what advantages/disadvantages they introduce
+
+-Discover the percentage of the code that can be automatically proven;
+and the combination of options/provers that achieve the best results
+for this specific test case.
+
+-Provide feedback and suggest features or changes that could improve
+future versions of the \newspark toolset.
 
 \section{Common Findings and Dissimilarities}
 
