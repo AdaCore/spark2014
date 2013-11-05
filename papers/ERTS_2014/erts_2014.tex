@@ -806,6 +806,8 @@ Current assessment: Very good
 
 \subsection{Description of the Software}
 
+\subsubsection{Overview}
+
 Tokeneer is a highly secure biometric software system that was
 originally developed by Altran in \oldspark. The system provides
 protection to secure information held on a network of workstations
@@ -825,6 +827,84 @@ are also approximately 3,700 lines of supporting code written in Ada
 which mimicked the drivers to peripherals connected to the core
 system.
 
+\subsubsection{Converting \oldspark to \newspark}
+
+For the majority of the code, translating \oldspark to \newspark is
+very straight forward since most of the original annotations map
+directly to the new ones. This section will focus on the more
+interesting occasions where the conversion is not trivial.
+
+-Proof functions can be replaced with actual functions that have
+Convention =$>$ Ghost. {give example code}
+
+-Some code no longer needs to be hidden (string concatenation example).
+
+In-type checks are added automatically by the new toolset. This
+simplifies both the work of the programmer and the code
+itself. The following two segments are equivalent:
+
+\begin{lstlisting}[caption=\oldspark]
+for I in LogFileIndexT loop
+--# assert
+--# I in LogFileIndexT and
+--# UsedLogFiles.Length in LogFileCountT and
+--# UsedLogFiles.Length < I and
+--# UsedLogFiles.LastI in LogFileIndexT and
+--# (UsedLogFiles.Length > 0 ->
+--#   UsedLogFiles.LastI < I) and
+--# (for all N in LogFileIndexT =>
+--#   (LogFileEntries(N) in FileEntryCountT)) and
+--# (for all N in LogFileIndexT =>
+--#   (UsedLogFiles.List(N) in LogFileIndexT));
+  if LogFilesStatus(I) = Used then
+    if UsedLogFiles.Length = 0 then
+       -- easy case list currently empty
+       UsedLogFiles.Head := LogFileIndexT'First;
+       UsedLogFiles.LastI := LogFileIndexT'First;
+       UsedLogFiles.Length := 1;
+       UsedLogFiles.List(UsedLogFiles.Head) := I;
+    else
+      for J in LogFileIndexT
+        range 1 .. UsedLogFiles.LastI
+      loop
+      --# assert
+      --# I in LogFileIndexT and
+      --# J in LogFileIndexT and
+      --# J <= UsedLogFiles.LastI and
+      --# UsedLogFiles.LastI in LogFileIndexT and
+      --# UsedLogFiles.Length in LogFileCountT and
+      --# UsedLogFiles.Length > 0 and
+      --# UsedLogFiles.Length < I and
+      --# (UsedLogFiles.Length > 0 ->
+      --#   UsedLogFiles.LastI < I) and
+      --# (for all N in LogFileIndexT =>
+      --#   (LogFileEntries(N) in
+      --#    FileEntryCountT)) and
+      --# (for all N in LogFileIndexT =>
+      --#   (UsedLogFiles.List(N) in
+      --#    LogFileIndexT));
+        ...
+\end{lstlisting}
+
+\begin{lstlisting}[caption=\newspark]
+for I in LogFileIndexT loop
+  if LogFilesStatus(I) = Used then
+    if UsedLogFiles.Length = 0 then
+      -- easy case list currently empty
+      UsedLogFiles.Head := LogFileIndexT'First;
+      UsedLogFiles.LastI := LogFileIndexT'First;
+      UsedLogFiles.Length := 1;
+      UsedLogFiles.List(UsedLogFiles.Head) := I;
+    else
+      for J in LogFileIndexT
+        range 1..UsedLogFiles.LastI
+      loop
+        ...
+\end{lstlisting}
+The difference in lines of code is apparent. However, at this point,
+it should be pointed out that since the development of the Tokeneer
+project the \oldspark tools have greatly evolved and some of the
+original annotations might actually now be redundant.
 
 \subsection{Formalization of Properties}
 
@@ -832,15 +912,14 @@ The contracts defined in the Tokeneer source code consist of
 information flow contracts (expressed as Depends aspects) and
 functional behavioural contracts (expressed as Pre and Post aspects).
 
-The verification objectives supported by these contracts are as follows:
+The Depends aspects facilitate flow analysis of the code. Flow
+analysis detects improper initialization, identifies ineffective
+assignments and ensures secure information flow.
 
-Detecting improper initialization; Identifying ineffective
-assignments; Showing the code is free from any run time exceptions,
-such as buffer overflow or divide-by-zero; Ensuring secure information
-flow; Proving that key security properties are guaranteed by the
-implementation.
-
-%%\emph{Examples of the various types of contract will be added here.}
+The Pre and Post aspects enable the prover to show that the code is
+free from run time exceptions, such as buffer overflow or
+divide-by-zero and assist in proving that key security properties are
+guaranteed by the implementation.
 
 \subsection{Formal Verification Results}
 
@@ -850,20 +929,7 @@ full functional proof was not performed on the entirety of the
 code. This study will focus on proving the biggest possible subset of
 the aforementioned attributes using the \newspark toolset.
 
-\subsection{Converting \oldspark to \newspark}
-
-For the majority of the code, translating \oldspark to \newspark is
-very straight forward since most of the original annotations map
-directly to the new ones. {should I put a table here?}
-
--In-type assertions are often no longer needed. {give example code}
-
--Some code no longer needs to be hidden (string concatenation example).
-
--Proof functions can be replaced with actual functions that have
-Convention =$>$ Ghost. {give example code}
-
-\subsection{Fully specifying and proving a package}
+\subsubsection{Fully specifying and proving a package}
 
 The \oldspark code performed proof of functional behaviour on a
 limited number of packages. In order to measure the expressiveness and
@@ -885,9 +951,7 @@ string corresponds to an operation available to the administrator. If
 the operation is indeed available, then this operation is returned,
 otherwise \emph{NullOp} is returned.
 
-\oldspark code:
-
-\begin{lstlisting}
+\begin{lstlisting}[caption=\oldspark]
 function OpIsAvailable(TheAdmin : T;
                        KeyedOp  : Keyboard.DataT)
                       return OpAndNullT;
@@ -907,9 +971,7 @@ corresponding operations (\Eg the administrator being of type
 or \emph{ShutdownOp}) or under which circumstances \emph{NullOp}
 should be returned.
 
-\newspark code:
-
-\begin{lstlisting}
+\begin{lstlisting}[caption=\newspark]
 function OpIsAvailable(TheAdmin : T;
                        KeyedOp  : Keyboard.DataT)
                       return OpAndNullT
@@ -935,19 +997,15 @@ to be provided.
 
 \subsection{General observations}
 
--Flaws in specifications can be detected (see highlight report).
+-Flaws in specifications can be detected (see HiLite report).
 
 -Low level Z specs look very much like the \newspark code.
 
 -Test the unproved parts of the code.
 
-\subsection{Non proved VCs and flow warnings}
-
 -Explain why we have packages where not everything is proven and why we
 have some flow warnings (\oldspark was getting away with these because
 it was using rlu/prv files and the flow warnings were accepted).
-
-\subsection{Lessons Learned}
 
 Some additional aims of this study are the following: Evaluate how
 easy is it to convert programs from \oldspark to \newspark;
