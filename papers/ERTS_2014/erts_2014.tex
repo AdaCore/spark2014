@@ -445,6 +445,11 @@ Please also notice that through the use of \SPARK{in} and \SPARK{out}
 parameters, only \SPARK{Merge} can be written to and \SPARK{SFun1} and
 \SPARK{SFun2} should be kept unmodified.
 
+As last note, our contracts could have been lightened by attaching the
+\SPARK{Is_Valid} function as a type invariant to
+\SPARK{Step_Function_t} data structure. This is not currently
+supported in \newspark but will in future releases.
+
 \subsection{Formal Verification Results}
 
 The first goal of this experiment was to check if \newspark was
