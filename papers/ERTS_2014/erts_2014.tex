@@ -20,7 +20,7 @@
    morekeywords=[3]Test\_Case,
    morekeywords=[4]Contract\_Cases,
    morekeywords=[5]some,
-   morekeywords=[5]Old,
+   morekeywords=[6]Old,
    literate={(}{{\CodeSymbol{(}}}1
             {)}{{\CodeSymbol{)}}}1
             {>}{{\CodeSymbol{$>$}}}1
@@ -35,6 +35,7 @@
 \newcommand{\DOB}{\textsc{do-178b}\xspace}
 \newcommand{\DOC}{\textsc{do-178c}\xspace}
 \newcommand{\hilite}{Hi-Lite\xspace}
+\newcommand{\openetcs}{openETCS\xspace}
 \newcommand{\gnatprove}{GNATprove\xspace}
 \newcommand{\oldspark}{SPARK~2005\xspace}
 \newcommand{\newspark}{SPARK~2014\xspace}
@@ -99,7 +100,7 @@ objectives:
 In this paper, we describe how \newspark achieves these objectives, based on
 practical use of the language and associated formal verification tool
 \gnatprove on three industrial case studies developed in the context of the
-\hilite research project.
+\hilite and \openetcs research projects.
 
 \section{SPARK 2014}
 
@@ -283,7 +284,7 @@ the expense of longer running time.
 
 % openETCS case study
 
-The openETCS\footnote{\url{http://openetcs.org/}} European project
+The \openetcs\footnote{\url{http://openetcs.org/}} European project
 aims at making an open-sourced, open-proofs reference model of ETCS
 (European Train Control System). ETCS is a radio-based train control
 system aiming at unifying train signaling and control over all
@@ -342,7 +343,8 @@ end record;
 \end{lstlisting}
 
 A step function of type \SPARK{Step_Function_t} can have up to 11
-steps separated by 10 delimiters (in \SPARK{Num_Delimiters_Range},
+steps (stored in array \SPARK{Step}) separated by 10 delimiters (in
+\SPARK{Num_Delimiters_Range},
 delimiter 0 being the initial value of the step function). Each
 delimiter of type \SPARK{Delimiter_Entry} contains the delimiter
 position (\SPARK{Delimiter}) and the associated constant value
@@ -367,7 +369,7 @@ contracts to express the specifications of all subprograms.
 For example, in following function \SPARK{Minimum_Until_Point}, we
 specified that given a valid (\ie with strictly increasing delimiters)
 step function \SPARK{SFun} and a point \SPARK{X}, the returned value
-(\SPARK{Minimum_Until_Point'Result}) is the minimum until point X (1)
+(\SPARK{Minimum_Until_Point'Result}) is the minimum until point \SPARK{X} (1)
 and effectively belongs to the domain of the step function (2).
 
 \begin{lstlisting}
@@ -394,7 +396,7 @@ Post =>
              = SFun.Step(i).Value))));
 \end{lstlisting}
 
-In our next example is more complex.
+Our next example is more complex.
 In procedure \SPARK{Restrictive_Merge} we specified that, given two
 valid step functions \SPARK{SFun1} and
 \SPARK{SFun2} without too many delimiters, the resulting step function is a
@@ -972,7 +974,7 @@ evolutions of \newspark.
 
 Part of this work was funded by the ``Direction Générale de la
 compétitivité, de l'industrie et des services'' (DGCIS) (Grant
-No. 112930309) in the context of the ITEA2 project openETCS.
+No. 112930309) in the context of the ITEA2 project \openetcs.
 
 \bibliographystyle{plain}
 \bibliography{erts_2014}
