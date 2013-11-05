@@ -20,7 +20,9 @@ with TokenAPI;
 with Ada.Strings.Fixed,
      Ada.Strings;
 
-package body TokenReader.Interfac is
+package body TokenReader.Interfac
+  with SPARK_Mode => Off
+is
 
    ------------------------------------------------------------------
    -- ConvertToTISRawCert

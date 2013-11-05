@@ -193,9 +193,8 @@ is
    ------------------------------------------------------------------
 
    function AgeLessThan (Left, Right : Clock.TimeTextT) return Boolean is
-   begin
-      return Left < Right;
-   end AgeLessThan;
+      (Left < Right);
+
 
    ------------------------------------------------------------------
    -- NextListIndex
@@ -347,7 +346,7 @@ is
                TimeOK := False;
             end if;
 
-        end if;
+         end if;
 
          File.Close(TheFile => TheFile,
                     Success => OK);
@@ -457,10 +456,10 @@ is
 
         end if;
 
-         File.Close(TheFile => TheFile,
-                    Success => OK);
+        File.Close(TheFile => TheFile,
+                   Success => OK);
 
-         AuditSystemFault := AuditSystemFault or not OK;
+        AuditSystemFault := AuditSystemFault or not OK;
 
       end if;
 
@@ -602,11 +601,9 @@ is
 
       File.OpenAppend (TheFile, OK);
       if not OK then
-
-           -- if can't open then create it and it is empty
-           File.Create(TheFile => TheFile,
-                        Success => OK);
-
+         -- if can't open then create it and it is empty
+         File.Create(TheFile => TheFile,
+                     Success => OK);
       end if;
 
       if OK then
@@ -864,7 +861,6 @@ is
          LogFileEntries(CurrentLogFile) := 1;
 
       end AddElementToNextFile;
-
 
    -------------------------------------------------
    -- AddElementToLogFile
@@ -1212,9 +1208,9 @@ is
 
         end GetFileDetails;
 
-        ------------------------------------------------------------------
-        -- begin SetFileDetails
-        ------------------------------------------------------------------
+     ------------------------------------------------------------------
+     -- begin SetFileDetails
+     ------------------------------------------------------------------
      begin
 
         --# accept F, 23, LogFilesStatus, "Array initialization is total in loop"& F, 23, LogFileEntries, "Array initialization is total in loop"& F, 23, FileAges, "Array initialization is total in loop";
@@ -1252,14 +1248,15 @@ is
                UsedLogFiles.Length := 1;
                UsedLogFiles.List(UsedLogFiles.Head) := I;
             else
-               for J in LogFileIndexT  range 1..UsedLogFiles.LastI loop
+               for J in LogFileIndexT range 1..UsedLogFiles.LastI loop
                   if AgeLessThan(FileAges(I), FileAges(UsedLogFiles.List(J))) then
                      -- this is where the new entry goes.
                      -- move all other entries up the list to make room
                      UsedLogFiles.LastI := UsedLogFiles.LastI + 1;
                      UsedLogFiles.Length := UsedLogFiles.Length + 1;
                      for K in reverse LogFileIndexT
-                       range J + 1..UsedLogFiles.LastI loop
+                       range J + 1..UsedLogFiles.LastI
+                     loop
                         UsedLogFiles.List(K) := UsedLogFiles.List(K - 1);
                      end loop;
                      UsedLogFiles.List(J) := I;

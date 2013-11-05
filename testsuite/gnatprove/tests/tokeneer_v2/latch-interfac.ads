@@ -27,8 +27,7 @@ is
    -- Types
    --
    ------------------------------------------------------------------
-   function isLocked return Boolean
-     with Global => Output;
+   function isLocked return Boolean;
 
    ------------------------------------------------------------------
    -- Lock

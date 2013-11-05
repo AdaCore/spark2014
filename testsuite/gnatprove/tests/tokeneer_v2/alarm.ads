@@ -38,8 +38,7 @@ is
    -- The Interfac.prf_isAlarming proof function is       --
    -- effectively a refinement of this proof function.    --
    ---------------------------------------------------------
-   function IsAlarming return Boolean
-     with Global => Output;
+   function IsAlarming return Boolean;
 
    ------------------------------------------------------------------
    -- UpdateDevice

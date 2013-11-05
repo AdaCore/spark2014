@@ -18,7 +18,9 @@
 with DoorAPI;
 use type DoorAPI.DoorStateT;
 
-package body Door.Interfac is
+package body Door.Interfac
+  with SPARK_Mode => Off
+is
 
    ------------------------------------------------------------------
    -- Types

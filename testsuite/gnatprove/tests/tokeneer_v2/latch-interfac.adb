@@ -17,7 +17,9 @@
 ------------------------------------------------------------------
 with LatchAPI;
 
-package body Latch.Interfac is
+package body Latch.Interfac
+  with SPARK_Mode => Off
+is
 
    Locked : Boolean;
 

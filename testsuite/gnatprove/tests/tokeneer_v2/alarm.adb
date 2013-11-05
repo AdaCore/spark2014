@@ -27,9 +27,7 @@ package body Alarm
        Refined_State => (Output => Alarm.Interfac.Output)
 is
 
-   function IsAlarming return Boolean is
-     (Alarm.Interfac.IsAlarming)
-     with Refined_Global => Alarm.Interfac.Output;
+   function IsAlarming return Boolean is (Alarm.Interfac.IsAlarming);
 
    ------------------------------------------------------------------
    -- UpdateDevice

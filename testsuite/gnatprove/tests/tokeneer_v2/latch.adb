@@ -28,17 +28,13 @@ is
    CurrentLatch : T;
    LatchTimeout : Clock.TimeT;
 
-   function Current_Latch return T is
-     (CurrentLatch)
+   function Current_Latch return T is (CurrentLatch)
      with Refined_Global => CurrentLatch;
 
-   function Latch_Timeout return Clock.TimeT is
-     (LatchTimeout)
+   function Latch_Timeout return Clock.TimeT is (LatchTimeout)
      with Refined_Global => LatchTimeout;
 
-   function LatchIsLocked return Boolean is
-     (Latch.Interfac.IsLocked)
-     with Refined_Global => Latch.Interfac.Output;
+   function LatchIsLocked return Boolean is (Latch.Interfac.IsLocked);
 
    ------------------------------------------------------------------
    -- Init

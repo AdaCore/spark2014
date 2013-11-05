@@ -39,8 +39,7 @@ is
    function Latch_Timeout return Clock.TimeT
      with Global => State;
 
-   function LatchIsLocked return Boolean
-     with Global => Output;
+   function LatchIsLocked return Boolean;
 
    ------------------------------------------------------------------
    -- Init

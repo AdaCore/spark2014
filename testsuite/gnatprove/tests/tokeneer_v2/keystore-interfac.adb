@@ -17,7 +17,9 @@
 ------------------------------------------------------------------
 with Crypto;
 
-package body KeyStore.Interfac is
+package body KeyStore.Interfac
+  with SPARK_Mode => Off
+is
 
    ------------------------------------------------------------------
    -- GetKeystoreReturn

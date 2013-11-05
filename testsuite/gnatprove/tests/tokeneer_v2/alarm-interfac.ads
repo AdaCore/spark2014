@@ -31,12 +31,11 @@ is
    -- PROOF ANNOTATIONS FOR SECURITY PROPERTY 3          --
    --====================================================--
    -- A proof function is required to model the state    --
-   -- of the alarm (Interfac.Output, which is not       --
-   -- visible outside the alarm package body).--
-   -- The function is true iff Alarm.Activate is called.--
+   -- of the alarm (Interfac.Output, which is not        --
+   -- visible outside the alarm package body).           --
+   -- The function is true if Alarm.Activate is called.  --
    --------------------------------------------------------
-   function IsAlarming return Boolean
-     with Global => Output;
+   function IsAlarming return Boolean;
 
    ------------------------------------------------------------------
    -- Activate
