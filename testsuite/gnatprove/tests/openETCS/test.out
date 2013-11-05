@@ -24,7 +24,7 @@ deceleration_curve.adb:70:36: info: division check proved
 deceleration_curve.adb:70:36: info: range check proved
 deceleration_curve.adb:82:9: info: precondition proved
 deceleration_curve.adb:90:19: warning: overflow check might fail
-deceleration_curve.adb:90:21: warning: assuming "Sqrt" has no effect on global items
+deceleration_curve.adb:90:21: warning:  assuming "Sqrt" has no effect on global items
 deceleration_curve.adb:90:21: warning: no Global contract available for "Sqrt"
 deceleration_curve.adb:90:32: warning: overflow check might fail
 deceleration_curve.adb:91:13: warning: overflow check might fail
@@ -35,14 +35,14 @@ deceleration_curve.adb:92:46: warning: overflow check might fail
 deceleration_curve.adb:97:36: warning: overflow check might fail
 deceleration_curve.adb:97:36: warning: range check might fail
 deceleration_curve.adb:107:9: warning: precondition might fail
-deceleration_curve.adb:108:10: warning: assuming "Put" has no effect on global items
+deceleration_curve.adb:108:10: warning:  assuming "Put" has no effect on global items
 deceleration_curve.adb:108:10: warning: no Global contract available for "Put"
-deceleration_curve.adb:109:10: warning: assuming "Put" has no effect on global items
+deceleration_curve.adb:109:10: warning:  assuming "Put" has no effect on global items
 deceleration_curve.adb:109:10: warning: no Global contract available for "Put"
-deceleration_curve.adb:110:10: warning: assuming "Put" has no effect on global items
+deceleration_curve.adb:110:10: warning:  assuming "Put" has no effect on global items
 deceleration_curve.adb:110:10: warning: no Global contract available for "Put"
 deceleration_curve.adb:111:12: warning: precondition might fail
-deceleration_curve.adb:112:10: warning: assuming "New_Line" has no effect on global items
+deceleration_curve.adb:112:10: warning:  assuming "New_Line" has no effect on global items
 deceleration_curve.adb:112:10: warning: no Global contract available for "New_Line"
 deceleration_curve.ads:27:6: warning: precondition might fail
 deceleration_curve_test.adb:6:31: warning: precondition might fail
@@ -167,17 +167,17 @@ step_function_test.adb:41:4: warning: assertion might fail, requires Is_Valid(SF
 step_function_test.adb:42:4: warning: assertion might fail, requires Is_Valid(SFun2)
 step_function_test.adb:43:4: warning: assertion might fail, requires Step_Function.Is_Valid(sfun3)
 step_function_test.adb:44:4: warning: assertion might fail, requires Step_Function.Is_Valid(sfun4)
-step_function_test.adb:46:4: warning: assertion might fail, requires Get_Value(SFun1, 0) =
+step_function_test.adb:46:4: warning: assertion might fail, requires Get_Value(SFun1, 0) = 
 step_function_test.adb:46:19: info: precondition proved
-step_function_test.adb:47:4: warning: assertion might fail, requires Get_Value(SFun1, 1) =
+step_function_test.adb:47:4: warning: assertion might fail, requires Get_Value(SFun1, 1) = 
 step_function_test.adb:47:19: info: precondition proved
-step_function_test.adb:48:4: warning: assertion might fail, requires Get_Value(SFun1, 3) =
+step_function_test.adb:48:4: warning: assertion might fail, requires Get_Value(SFun1, 3) = 
 step_function_test.adb:48:19: info: precondition proved
-step_function_test.adb:49:4: warning: assertion might fail, requires Get_Value(SFun1, 4) =
+step_function_test.adb:49:4: warning: assertion might fail, requires Get_Value(SFun1, 4) = 
 step_function_test.adb:49:19: info: precondition proved
-step_function_test.adb:50:4: warning: assertion might fail, requires Get_Value(SFun1, 5) =
+step_function_test.adb:50:4: warning: assertion might fail, requires Get_Value(SFun1, 5) = 
 step_function_test.adb:50:19: info: precondition proved
-step_function_test.adb:51:4: warning: assertion might fail, requires Get_Value(SFun1, Function_Range'Last) =
+step_function_test.adb:51:4: warning: assertion might fail, requires Get_Value(SFun1, Function_Range'Last) = 
 step_function_test.adb:51:19: info: precondition proved
 step_function_test.adb:54:4: warning: assertion might fail, requires Has_Same_Delimiters(SFun1, SFun2)
 step_function_test.adb:56:4: info: precondition proved
@@ -185,11 +185,11 @@ step_function_test.adb:61:7: warning: assertion might fail, requires Get_Value(s
 step_function_test.adb:61:22: info: precondition proved
 step_function_test.adb:62:28: info: precondition proved
 step_function_test.adb:62:49: info: precondition proved
-step_function_test.adb:65:4: warning: assertion might fail, requires Minimum_Until_Point(sfun4, 1) =
+step_function_test.adb:65:4: warning: assertion might fail, requires Minimum_Until_Point(sfun4, 1) = 
 step_function_test.adb:65:19: info: precondition proved
-step_function_test.adb:66:4: warning: assertion might fail, requires Minimum_Until_Point(sfun4, 5) =
+step_function_test.adb:66:4: warning: assertion might fail, requires Minimum_Until_Point(sfun4, 5) = 
 step_function_test.adb:66:19: info: precondition proved
-step_function_test.adb:67:4: warning: assertion might fail, requires Minimum_Until_Point(sfun_merge, 11) =
+step_function_test.adb:67:4: warning: assertion might fail, requires Minimum_Until_Point(sfun_merge, 11) = 
 step_function_test.adb:67:19: info: precondition proved
 units.adb:24:38: warning: overflow check might fail
 units.adb:24:48: info: division check proved
