@@ -2365,7 +2365,9 @@ package body SPARK_Definition is
       begin
          if Present (States) then
             State := First_Elmt (States);
-            while Present (State) loop
+            while Present (State)
+              and then not Is_Null_State (Node (State))
+            loop
                Mark_Entity (Node (State));
                Next_Elmt (State);
             end loop;

@@ -347,6 +347,8 @@ package body Flow.Utility is
                      end if;
                      Writes.Insert (Direct_Mapping_Id
                                       (The_Global, Out_View));
+                  when Name_Proof_In =>
+                     null;  --  ??? Until Proof_In is supported
                   when others =>
                      raise Program_Error;
                end case;
