@@ -57,7 +57,7 @@ auditlog.adb:753:47: warning: range check might fail
 auditlog.adb:753:50: info: overflow check proved
 auditlog.adb:753:69: info: overflow check proved
 auditlog.adb:757:10: warning: postcondition might fail
-auditlog.adb:758:47: info: range check proved
+auditlog.adb:758:47: warning: range check might fail
 auditlog.adb:758:50: warning: overflow check might fail
 auditlog.adb:758:69: warning: overflow check might fail
 auditlog.adb:808:13: info: postcondition proved
