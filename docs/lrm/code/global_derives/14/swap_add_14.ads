@@ -1,6 +1,9 @@
-package Swap_Add_14
-  with Abstract_State => (X, Y)
-is
+pragma SPARK_Mode (On);
+package Swap_Add_14 is
+   
+   -- Visible variables are not state abstractions.
+   X, Y: Integer;
+   
    procedure Swap
      with Global  => (In_Out => (X, Y)),
           Depends => (X => Y,   -- to be read as "X depends on Y"

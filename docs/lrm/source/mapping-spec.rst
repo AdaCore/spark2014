@@ -27,9 +27,21 @@ Specification in SPARK 2005:
       :language: ada
       :linenos:
 
+body in SPARK 2005:
+
+   .. literalinclude:: ../code/global_derives/05/swap_add_05.adb
+      :language: ada
+      :linenos:
+
 Specification in |SPARK|:
 
    .. literalinclude:: ../code/global_derives/14/swap_add_14.ads
+      :language: ada
+      :linenos:
+
+Body in |SPARK|:
+
+   .. literalinclude:: ../code/global_derives/14/swap_add_14.adb
       :language: ada
       :linenos:
 
@@ -38,16 +50,18 @@ Specification in |SPARK|:
 Pre/Post/Return contracts
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This example demonstrates how the `Pre`/`Post`/`Return` contracts are restructured
-and how they map from SPARK 2005 to |SPARK|. Procedure `Swap` and function
-`Add` perform the same task as in the previous example, but they have been
-augmented by post annotations. Two additional functions (`Max` and `Divide`)
-and one additional procedure (`Swap_Array_Elements`) have also been included
-in this example in order to demonstrate further features. `Max` returns the
-maximum of the two globals. `Divide` returns the division of the two globals
-after having ensured that the divisor is not equal to zero. The `Swap_Array_Elements`
-procedure swaps the contents of two elements of an array. For the same reasons
-as in the previous example, the bodies are not included.
+This example demonstrates how the `Pre`/`Post`/`Return` contracts are
+restructured and how they map from SPARK 2005 to |SPARK|. Procedure
+`Swap` and function `Add` perform the same task as in the previous
+example, but the global variables have been replaced by parameters
+(this is not necessarry for proof) and they have been augmented by pre
+and post annotations. Two additional functions (`Max` and `Divide`)
+and one additional procedure (`Swap_Array_Elements`) have also been
+included in this example in order to demonstrate further
+features. `Max` returns the maximum of the two parameters. `Divide`
+returns the division of the two parameters after having ensured that the
+divisor is not equal to zero. The `Swap_Array_Elements` procedure
+swaps the contents of two elements of an array.
 
 Specification in SPARK 2005:
 
@@ -55,9 +69,21 @@ Specification in SPARK 2005:
       :language: ada
       :linenos:
 
+Body in SPARK 2005:
+
+   .. literalinclude:: ../code/pre_post_return/05/swap_add_max_05.adb
+      :language: ada
+      :linenos:
+
 Specification in |SPARK|:
 
    .. literalinclude:: ../code/pre_post_return/14/swap_add_max_14.ads
+      :language: ada
+      :linenos:
+
+Boy in |SPARK|:
+
+   .. literalinclude:: ../code/pre_post_return/14/swap_add_max_14.adb
       :language: ada
       :linenos:
 
@@ -89,11 +115,6 @@ Specification in |SPARK|:
       :language: ada
       :linenos:
 
-.. todo::
-   Depending on the outcome of M423-014, either pragma Annotate or pragma Warning
-   will be utilized to accept warnings/errors in |SPARK|.
-   To be completed in the Milestone 4 version of this document.
-
 Body in |SPARK|:
 
    .. literalinclude:: ../code/attributes_of_unconstrained_out_parameter_in_precondition/14/p.adb
@@ -102,12 +123,17 @@ Body in |SPARK|:
 
 .. _ms-nesting_refinement-label:
 
-Nesting of subprograms, including more refinement
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Data Abstraction, Refinement and Initialization
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This example demonstrates how procedures and functions can be nested within
-other procedures and functions. Furthermore, it illustrates how global variables
-refinement can be performed.
+This example demonstrates data abstraction and refinement.  It also
+shows how abstract data is shown to be initialized during package
+elaboration (it need not be it could be initialized through an
+explicit subprogram call, in which case the Initalizes annotation
+should not be given).  There is also a demonstration of how procedures
+and functions can be nested within other procedures and
+functions. Furthermore, it illustrates how global variable refinement
+can be performed.
 
 Specification in SPARK 2005:
 
@@ -172,145 +198,152 @@ Specification in SPARK 2005:
 
 .. _ms-adt_private_refinement-label:
 
-.. commented out, makes heavy use of refined pre
-  Private type with refined pre/post contracts in the body
-  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Private type with pre/post contracts
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-  This example demonstrates how `pre` and `post` conditions, that lie in the specification
-  of a package, can be refined in the package's body. Contracts that need not be refined, do
-  not have to be repeated in the body of a package. In this particular example, the body of
-  the SPARK 2005 might seem to be needlessly repeating contracts. However, this is not true
-  since the contracts that are being repeated are indirectly being refined through the
-  refinement of the `Is_Empty` and `Is_Full` functions.
+This example demonstrates how `pre` and `post` conditions of
+subprograms may be specified in terms of functions declared in the
+same package specification.  The function declarations are completed
+in the body and the postconditions of the completed functions are used
+to prove the implementations of the other subprograms.  In |SPARK|
+explicit postconditions do not have to be specified on the bodies of
+the functions as they are implemented as expression functions and the
+expression, E, of the function acts as a default refined
+postcondition, i.e., F'Result = E.  Note that the |SPARK| version is
+proven entirely automatically whereas the SPARK 2005 version requires
+user defined proof rules.
 
-  Specification in SPARK 2005:
+Specification in SPARK 2005:
 
-   .. literalinclude:: ../code/adt_private_refinement/05/stacks_05.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/adt_private_refinement/05/stacks_05.ads
+  :language: ada
+  :linenos:
 
-  Body in SPARK 2005:
+Body in SPARK 2005:
 
-   .. literalinclude:: ../code/adt_private_refinement/05/stacks_05.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/adt_private_refinement/05/stacks_05.adb
+  :language: ada
+  :linenos:
 
-  Specification in |SPARK|:
+Specification in |SPARK|:
 
-   .. literalinclude:: ../code/adt_private_refinement/14/stacks_14.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/adt_private_refinement/14/stacks_14.ads
+  :language: ada
+  :linenos:
 
-  Body in |SPARK|:
+Body in |SPARK|:
 
-   .. literalinclude:: ../code/adt_private_refinement/14/stacks_14.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/adt_private_refinement/14/stacks_14.adb
+  :language: ada
+  :linenos:
 
 .. _ms-adt_public_child_non_tagged_parent-label:
 
-Public child extends non-tagged parent ADT
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. Tagged types not supported as yet
+    Public child extends non-tagged parent ADT
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The following example covers the main differences between a child package
-and an arbitrary package, namely:
+    The following example covers the main differences between a child package
+    and an arbitrary package, namely:
 
-* The private part of a child package can access the private part of its parent.
-* The body of a child package can access the private part of its parent.
-* The child does not need a with clause for its parent.
+    * The private part of a child package can access the private part of its parent.
+    * The body of a child package can access the private part of its parent.
+    * The child does not need a with clause for its parent.
 
-A private type and private constant are declared in the parent. The former is accessed
-in the body of the child, while the latter is accessed in the private part of the child.
+    A private type and private constant are declared in the parent. The former is accessed
+    in the body of the child, while the latter is accessed in the private part of the child.
 
-Specifications of both parent and child in SPARK 2005:
+    Specifications of both parent and child in SPARK 2005:
 
-   .. literalinclude:: ../code/adt_public_child_non_tagged_parent/05/pairs_05.ads
-      :language: ada
-      :linenos:
+       .. literalinclude:: ../code/adt_public_child_non_tagged_parent/05/pairs_05.ads
+	  :language: ada
+	  :linenos:
 
-   .. literalinclude:: ../code/adt_public_child_non_tagged_parent/05/pairs_05_additional_05.ads
-      :language: ada
-      :linenos:
+       .. literalinclude:: ../code/adt_public_child_non_tagged_parent/05/pairs_05_additional_05.ads
+	  :language: ada
+	  :linenos:
 
-Bodies of both parent and child in SPARK 2005:
+    Bodies of both parent and child in SPARK 2005:
 
-   .. literalinclude:: ../code/adt_public_child_non_tagged_parent/05/pairs_05.adb
-      :language: ada
-      :linenos:
+       .. literalinclude:: ../code/adt_public_child_non_tagged_parent/05/pairs_05.adb
+	  :language: ada
+	  :linenos:
 
-   .. literalinclude:: ../code/adt_public_child_non_tagged_parent/05/pairs_05_additional_05.adb
-      :language: ada
-      :linenos:
+       .. literalinclude:: ../code/adt_public_child_non_tagged_parent/05/pairs_05_additional_05.adb
+	  :language: ada
+	  :linenos:
 
-Specifications of both parent and child in |SPARK|:
+    Specifications of both parent and child in |SPARK|:
 
-   .. literalinclude:: ../code/adt_public_child_non_tagged_parent/14/pairs_14.ads
-      :language: ada
-      :linenos:
+       .. literalinclude:: ../code/adt_public_child_non_tagged_parent/14/pairs_14.ads
+	  :language: ada
+	  :linenos:
 
-   .. literalinclude:: ../code/adt_public_child_non_tagged_parent/14/pairs_14_additional_14.ads
-      :language: ada
-      :linenos:
+       .. literalinclude:: ../code/adt_public_child_non_tagged_parent/14/pairs_14_additional_14.ads
+	  :language: ada
+	  :linenos:
 
-Bodies of both parent and child in |SPARK|:
+    Bodies of both parent and child in |SPARK|:
 
-As per SPARK 2005.
+    As per SPARK 2005.
 
 .. _ms-adt_tagged_type-label:
 
-Tagged type in root ADT package
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. Tagged types not supported as yet
+    Tagged type in root ADT package
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The following example illustrates the use of a tagged type in an ADT package.
+    The following example illustrates the use of a tagged type in an ADT package.
 
-Specification in SPARK 2005:
+    Specification in SPARK 2005:
 
-   .. literalinclude:: ../code/adt_tagged_type/05/stacks_05.ads
-      :language: ada
-      :linenos:
+       .. literalinclude:: ../code/adt_tagged_type/05/stacks_05.ads
+	  :language: ada
+	  :linenos:
 
-Body in SPARK 2005:
+    Body in SPARK 2005:
 
-N/A
+    N/A
 
-Specification in |SPARK|:
+    Specification in |SPARK|:
 
-   .. literalinclude:: ../code/adt_tagged_type/14/stacks_14.ads
-      :language: ada
-      :linenos:
+       .. literalinclude:: ../code/adt_tagged_type/14/stacks_14.ads
+	  :language: ada
+	  :linenos:
 
-Body in |SPARK|:
+    Body in |SPARK|:
 
-N/A
+    N/A
 
 .. _ms-adt_tagged_type_extension-label:
 
-Extension of tagged type in child package ADT
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. Tagged types not supported as yet
+    Extension of tagged type in child package ADT
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The following example illustrates the extension of a tagged type in a child package.
+    The following example illustrates the extension of a tagged type in a child package.
 
-Specification in SPARK 2005:
+    Specification in SPARK 2005:
 
-   .. literalinclude:: ../code/adt_tagged_type_extension/05/stacks_05_monitored_05.ads
-      :language: ada
-      :linenos:
+       .. literalinclude:: ../code/adt_tagged_type_extension/05/stacks_05_monitored_05.ads
+	  :language: ada
+	  :linenos:
 
-Body in SPARK 2005:
+    Body in SPARK 2005:
 
-   .. literalinclude:: ../code/adt_tagged_type_extension/05/stacks_05_monitored_05.adb
-      :language: ada
-      :linenos:
+       .. literalinclude:: ../code/adt_tagged_type_extension/05/stacks_05_monitored_05.adb
+	  :language: ada
+	  :linenos:
 
-Specification in |SPARK|:
+    Specification in |SPARK|:
 
-   .. literalinclude:: ../code/adt_tagged_type_extension/14/stacks_14_monitored_14.ads
-      :language: ada
-      :linenos:
+       .. literalinclude:: ../code/adt_tagged_type_extension/14/stacks_14_monitored_14.ads
+	  :language: ada
+	  :linenos:
 
-Body in |SPARK|:
+    Body in |SPARK|:
 
-As per SPARK 2005.
+    As per SPARK 2005.
 
 .. _ms-adt_private_public_child_visibility-label:
 
@@ -328,7 +361,7 @@ Applying the SPARK tools on the following files will produce certain errors. Thi
 intentionally done in order to illustrate both legal and illegal access attempts.
 
 |SPARK| shares Ada2012's visibility rules. No restrictions have been applied
-in terms of visibility and thus no |SPARK| code is provided in this section.
+in terms of visibility.  Note that |SPARK| code does not require Inherit annotations. 
 
 Specification of parent in SPARK 2005:
 
@@ -338,25 +371,25 @@ Specification of parent in SPARK 2005:
 
 Specification of private child A in SPARK 2005:
 
-   .. literalinclude:: ../code/adt_private_public_child_visibility/05/parent_05_private_child_a_05.ads
+   .. literalinclude:: ../code/adt_private_public_child_visibility/05/parent_05-private_child_a_05.ads
       :language: ada
       :linenos:
 
 Specification of private child B in SPARK 2005:
 
-   .. literalinclude:: ../code/adt_private_public_child_visibility/05/parent_05_private_child_b_05.ads
+   .. literalinclude:: ../code/adt_private_public_child_visibility/05/parent_05-private_child_b_05.ads
       :language: ada
       :linenos:
 
 Specification of public child A in SPARK 2005:
 
-   .. literalinclude:: ../code/adt_private_public_child_visibility/05/parent_05_public_child_a_05.ads
+   .. literalinclude:: ../code/adt_private_public_child_visibility/05/parent_05-public_child_a_05.ads
       :language: ada
       :linenos:
 
 Specification of public child B in SPARK 2005:
 
-   .. literalinclude:: ../code/adt_private_public_child_visibility/05/parent_05_public_child_b_05.ads
+   .. literalinclude:: ../code/adt_private_public_child_visibility/05/parent_05-public_child_b_05.ads
       :language: ada
       :linenos:
 
@@ -368,7 +401,73 @@ Body of parent in SPARK 2005:
 
 Body of public child A in SPARK 2005:
 
-   .. literalinclude:: ../code/adt_private_public_child_visibility/05/parent_05_public_child_a_05.adb
+   .. literalinclude:: ../code/adt_private_public_child_visibility/05/parent_05-public_child_a_05.adb
+      :language: ada
+      :linenos:
+
+Body of public child B in SPARK 2005:
+
+   .. literalinclude:: ../code/adt_private_public_child_visibility/05/parent_05-public_child_b_05.adb
+      :language: ada
+      :linenos:
+
+Body of private child B in SPARK 2005:
+
+   .. literalinclude:: ../code/adt_private_public_child_visibility/05/parent_05-private_child_b_05.adb
+      :language: ada
+      :linenos:
+
+Specification of parent in |SPARK|:
+
+   .. literalinclude:: ../code/adt_private_public_child_visibility/14/parent_14.ads
+      :language: ada
+      :linenos:
+
+Specification of private child A in |SPARK|:
+
+   .. literalinclude:: ../code/adt_private_public_child_visibility/14/parent_14-private_child_a_14.ads
+      :language: ada
+      :linenos:
+
+Specification of private child B in |SPARK|:
+
+   .. literalinclude:: ../code/adt_private_public_child_visibility/14/parent_14-private_child_b_14.ads
+      :language: ada
+      :linenos:
+
+Specification of public child A in |SPARK|:
+
+   .. literalinclude:: ../code/adt_private_public_child_visibility/14/parent_14-public_child_a_14.ads
+      :language: ada
+      :linenos:
+
+Specification of public child B in |SPARK|:
+
+   .. literalinclude:: ../code/adt_private_public_child_visibility/14/parent_14-public_child_b_14.ads
+      :language: ada
+      :linenos:
+
+Body of parent in |SPARK|:
+
+   .. literalinclude:: ../code/adt_private_public_child_visibility/14/parent_14.adb
+      :language: ada
+      :linenos:
+
+Body of public child A in |SPARK|:
+
+   .. literalinclude:: ../code/adt_private_public_child_visibility/14/parent_14-public_child_a_14.adb
+      :language: ada
+      :linenos:
+
+Body of public child B in |SPARK|:
+
+   .. literalinclude:: ../code/adt_private_public_child_visibility/14/parent_14-public_child_b_14.adb
+      :language: ada
+      :linenos:
+
+Body of private child B in |SPARK|:
+
+   .. literalinclude:: ../code/adt_private_public_child_visibility/14/parent_14-private_child_b_14.adb
       :language: ada
       :linenos:
 
@@ -383,10 +482,17 @@ Visible, concrete state
 Initialized by declaration
 ++++++++++++++++++++++++++
 
-The example that follows presents a way of initializing a concrete state (a state that
-cannot be refined) at the point of the declaration of the variables that compose it.
-This can only be done in SPARK 2005. In |SPARK| state abstractions cannot share names
-with variables and concequently cannot be implicitly refined.
+The example that follows presents a way in SPARK 2005 of initializing
+a concrete own variables (a state that is not refined) at the point
+of the declaration of the variables that compose it.
+
+In |SPARK| the client's view of package state is either visible
+(declared in the visible part of the package) or a state abstraction
+representing hidden state.  A variable cannot overload the name of a
+state abstraction and therefore a state abstraction must be completed
+by a refinement given in the body of the package - there is no concept
+of a concrete state abstraction.  The constituents of a state
+abstraction may be initialized at their declaration.
 
 Specification in SPARK 2005:
 
@@ -429,16 +535,21 @@ Body in SPARK 2005:
 
 Body in |SPARK|:
 
-As per SPARK 2005.
+   .. literalinclude:: ../code/asm_visible_concrete_initialized_by_elaboration/14/stack_14.adb
+      :language: ada
+      :linenos:
 
 .. _ms-asm_private_concrete-label:
 
 Private, concrete state
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-The following example demonstrates how variables, that need to be hidden from the users
-of a package, can be placed on the package's private section. The SPARK 2005 body has
-not been included since it does not contain any annotations.
+In SPARK 2005 variables decared in the private part of a package are
+considered to be concrete own variables.  In |SPARK| they are hidden
+state and must be constituents of a state abstraction. 
+
+The SPARK 2005 body has not been included since it does not contain
+any annotations.
 
 Specification in SPARK 2005:
 
@@ -586,10 +697,14 @@ Body in |SPARK|:
 Initial condition
 ^^^^^^^^^^^^^^^^^
 
-This example introduces a new |SPARK| feature that did not exist in SPARK 2005.
-On top of declaring an abstract state and promising to initialize it, we also illustrate
-certain conditions that will be valid after initialization. The body is not being provided
-since it does not add any further insight.
+This example introduces a new |SPARK| feature that did not exist in
+SPARK 2005.  On top of declaring an abstract state and promising to
+initialize it, we also illustrate certain conditions that will be
+valid after initialization. There is a proof obligation to show that
+immediately after the elaboration of the package that the specified
+Initial_Condition is True.  Checks will be generated that have to be
+proven (or executed at run-time) to show that the initial condition is
+True.
 
 Specification in |SPARK|:
 
@@ -597,15 +712,20 @@ Specification in |SPARK|:
       :language: ada
       :linenos:
 
+Body in |SPARK|:
+
+   .. literalinclude:: ../code/asm_initial_condition/14/stack_14.adb
+      :language: ada
+      :linenos:
 
 .. _ms-asm_abstract_state_refined_in_private_child-label:
 
-Private, abstract state, refining onto concrete state of private child
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Private, abstract state, refining onto state of private child
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The following example shows a parent package Power that contains a State own
-variable. This own variable is refined onto concrete state contained within the
-two private children Source_A and Source_B.
+The following example shows a parent package Power that contains an
+own variable (a state abstraction). This state abstraction is refined
+onto state abstractions of two private children Source_A and Source_B.
 
 
 Specification of Parent in SPARK 2005:
@@ -654,21 +774,21 @@ Body of Parent in |SPARK|:
 
 Specifications of Private Children in |SPARK|:
 
-   .. literalinclude:: ../code/asm_abstract_state_refined_in_private_child/14/power_14_source_a_14.ads
+   .. literalinclude:: ../code/asm_abstract_state_refined_in_private_child/14/power_14-source_a_14.ads
       :language: ada
       :linenos:
 
-   .. literalinclude:: ../code/asm_abstract_state_refined_in_private_child/14/power_14_source_b_14.ads
+   .. literalinclude:: ../code/asm_abstract_state_refined_in_private_child/14/power_14-source_b_14.ads
       :language: ada
       :linenos:
 
 Bodies of Private Children in |SPARK|:
 
-   .. literalinclude:: ../code/asm_abstract_state_refined_in_private_child/14/power_14_source_a_14.adb
+   .. literalinclude:: ../code/asm_abstract_state_refined_in_private_child/14/power_14-source_a_14.adb
       :language: ada
       :linenos:
 
-   .. literalinclude:: ../code/asm_abstract_state_refined_in_private_child/14/power_14_source_b_14.adb
+   .. literalinclude:: ../code/asm_abstract_state_refined_in_private_child/14/power_14-source_b_14.adb
       :language: ada
       :linenos:
 
@@ -677,9 +797,10 @@ Bodies of Private Children in |SPARK|:
 Private, abstract state, refining onto concrete state of embedded package
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This example is based around the packages from section `Private, abstract state,
-refining onto concrete state of private child`_, with the private child packages
-converted into embedded packages.
+This example is based around the packages from section
+:ref:`ms-asm_abstract_state_refined_in_embedded_package-label`,
+with the private child packages converted into embedded packages and
+the refinement onto concrete visible state.
 
 Specification in SPARK 2005:
 
@@ -710,9 +831,9 @@ Body in |SPARK|:
 Private, abstract state, refining onto mixture of the above
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This example is based around the packages from sections `Private, abstract state,
-refining onto concrete state of private child`_
-and `Private, abstract state, refining onto concrete state of embedded package`_.
+This example is based around the packages from sections 
+:ref:`ms-asm_abstract_state_refined_in_private_child-label`
+and :ref:`ms-asm_abstract_state_refined_in_embedded_package-label`.
 Source_A is an embedded package, while Source_B is a private child. In order to
 avoid repetition, the code of this example is not being presented.
 
@@ -802,10 +923,9 @@ and adds a contract using the 'Tail attribute. The example also use the Always_V
 in order to allow proof to succeed (otherwise, there is no guarantee in the proof context
 that the value read from the port is of the correct type).
 
-.. todo::
-   There will not be an equivalent of \'Append and \'Tail in |SPARK|. However, we will be
-   able to achieve the same functionality using generics. To be completed in the Milestone 4
-   version of this document.
+|SPARK| does not have the attribute 'Tail but an equivalent proof can
+be often achieved using assert pragmas.  Neither is there a direct equivalent of the
+Always_Valid attribute but the paragma Assume may be used to the same effect.
 
 Specification in SPARK 2005:
 

@@ -1,32 +1,25 @@
-package Swap_Add_Max_14
-  with Abstract_State => (X, Y)
-is
+pragma SPARK_Mode (On);
+package Swap_Add_Max_14 is
    subtype Index      is Integer range 1..100;
    type    Array_Type is array (Index) of Integer;
 
-   procedure Swap
-     with Global  => (In_Out => (X, Y)),
-          Depends => (X => Y,
-                      Y => X),
-          Post    => (X = Y'Old and Y = X'Old);
+   procedure Swap (X, Y : in out Integer)
+     with Post => (X = Y'Old and Y = X'Old);
 
-   function Add return Integer
-     with Global  => (Input => (X, Y)),
-          Post    => Add'Result = X + Y;
+   function Add (X, Y : Integer) return Integer
+     with Pre  => (if X >= 0 and Y >= 0 then X <= Integer'Last - Y
+                     elsif X < 0 and Y < 0 then X >= Integer'First - Y),
+          -- The precondition may be written as X + Y in Integer if
+          -- an extended arithmetic mode is selected
+          Post => Add'Result = X + Y;
 
-   function Max return Integer
-     with Global  => (Input => (X, Y)),
-          Post    => (if X >= Y then Max'Result = X
-                      else Max'Result = Y);
+   function Max (X, Y : Integer) return Integer
+     with Post => Max'Result = (if X >= Y then X else Y);
 
-   function Divide return Float
-     with Global  => (Input => (X, Y)),
-          Pre     => Y /= 0,
-          Post    => Divide'Result = Float(X / Y);
+   function Divide (X, Y : Integer) return Integer
+     with Pre  => Y /= 0 and X > Integer'First and Y > Integer'First,
+          Post => Divide'Result = X / Y;
 
-   procedure Swap_Array_Elements(A: in out Array_Type)
-     with Global  => (Input => (X, Y)),
-          Depends => (A => (A, X, Y)),
-          Pre     => X in Index and Y in Index,
-          Post    => A = A'Old'Update (X => A'Old (Y), Y => A'Old (X));
+   procedure Swap_Array_Elements(I, J : Index; A: in out Array_Type)
+     with Post => A = A'Old'Update (I => A'Old (J), J => A'Old (I));
 end Swap_Add_Max_14;

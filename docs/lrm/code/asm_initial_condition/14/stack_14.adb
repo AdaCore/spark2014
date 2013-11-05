@@ -1,3 +1,4 @@
+pragma SPARK_Mode (On);
 package body stack_14
   with Refined_State => (State => (S, Pointer)) -- State refinement
 is
@@ -13,29 +14,15 @@ is
    -- The subprogram contracts are refined in terms of the constituents.
    -- Expression functions could be used where applicable
 
-   function Is_Empty  return Boolean
-     with Refined_Global => Pointer,
-          Refined_Post   => Is_Empty'Result = (Pointer = 0)
-   is
-   begin
-      return Pointer = 0;
-   end Is_Empty;
+   function Is_Empty  return Boolean is (Pointer = 0)
+      with Refined_Global => Pointer;
 
-   function Is_Full  return Boolean
-     with Refined_Global => Pointer,
-          Refined_Post   => Is_Full'Result = (Pointer = Max_Stack_Size)
-   is
-   begin
-      return Pointer = Max_Stack_Size;
-   end Is_Full;
 
-   function Top return Integer
-     with Refined_Global => (Pointer, S),
-          Refined_Post   => Top'Result = S (Pointer)
-   is
-   begin
-      return S (Pointer);
-   end Top;
+   function Is_Full  return Boolean is (Pointer = Max_Stack_Size)
+      with Refined_Global => Pointer;
+
+   function Top return Integer is (S (Pointer))
+     with Refined_Global => (Pointer, S);
 
    procedure Push(X: in Integer)
      with Refined_Global => (In_Out => (Pointer, S))
@@ -55,6 +42,7 @@ is
    end Pop;
 
 begin -- Initialization - we promised to initialize the state
-   Pointer := 0;
+      -- and that initially the stack will be empty
+   Pointer := 0;  -- Is_Empty is True.
    S := Vector'(Index_Range => 0);
 end stack_14;

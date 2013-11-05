@@ -22,9 +22,6 @@ package body Stacks_05 is
    end Clear;
 
    procedure Push (S : in out Stack; X : in Integer)
-   --# post not Is_Empty(S) and
-   --#      S.Stack_Pointer = S~.Stack_Pointer + 1 and
-   --#      S.Stack_Vector = S~.Stack_Vector[S.Stack_Pointer => X];
    is
    begin
       S.Stack_Pointer := S.Stack_Pointer + 1;
@@ -32,10 +29,6 @@ package body Stacks_05 is
    end Push;
 
    procedure Pop (S : in out Stack; X : out Integer)
-   --# post not Is_Full(S) and
-   --#      X = S.Stack_Vector(S~.Stack_Pointer) and
-   --#      S.Stack_Pointer = S~.Stack_Pointer - 1 and
-   --#      S.Stack_Vector = S~.Stack_Vector;
    is
    begin
       X := S.Stack_Vector (S.Stack_Pointer);

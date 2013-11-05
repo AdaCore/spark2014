@@ -2,12 +2,9 @@ package body P is
 
    procedure Init (X : out A) is
    begin
-      --# accept F,  23, X,    "OK" &
-      --#        F, 602, X, X, "OK";
-      for I in Positive range X'Range loop
-         X (I) := 0;
-         --# assert for all J in Positive range X'First .. I => (X (J) = 0);
-      end loop;
-   end Init;
+      X := (others => 0);
+      X (1) := X'Last;
+      X (20) := -1;
+  end Init;
 
 end P;

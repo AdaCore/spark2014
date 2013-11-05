@@ -1,3 +1,4 @@
+pragma SPARK_Mode (On);
 with Power_14.Source_A_14, Power_14.Source_B_14;
 
 package body Power_14

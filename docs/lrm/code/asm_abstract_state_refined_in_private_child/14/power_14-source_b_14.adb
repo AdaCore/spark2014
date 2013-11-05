@@ -1,13 +1,14 @@
-package body Power_14.Source_A_14
+pragma SPARK_Mode (On);
+package body Power_14.Source_B_14
   with Refined_State => (State => S)
 is
-   S : Integer;
+   S : Integer := 0;
 
    procedure Read (Level : out Integer)
-     with Refined_Global  => S,
+     with Refined_Global  => (Input => S),
           Refined_Depends => (Level => S)
    is
    begin
       Level := S;
    end Read;
-end Power_14.Source_A_14;
+end Power_14.Source_B_14;

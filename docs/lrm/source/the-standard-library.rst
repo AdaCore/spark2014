@@ -262,6 +262,36 @@ immediately preceding each call of such a subprogram.
 The Numerics Packages (A.5)
 ---------------------------
 
+No additions or restrictions
+
+Elementary Functions (A.5.1)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Most of the elementarty functions may raise an exception.  The
+functions have no preconditions to guard against an exception being
+raised.  The functions should be treated as tested code and call of an
+elementary function should be immediately preceded by a pragma assert
+in lieu of a precondition.
+
+For instance a call to Log (X, Base) should be immediately preceded by
+the assert statement:
+
+.. code-block:: ada
+
+  pragma Assert (X > 0  and Base > 1); 
+
+Even with such a guard certain elementary functions may raise a
+constraint error.  The onus is on the user to ensure this does not
+happen or is handled in non-|SPARK| text in a manner compatible with
+|SPARK|.
+
+Random Number Generation (A.5.2)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The package Ada.Numerics.Float_Random and an instantiation of package
+Ada.Numerics.Discrete_Random is ostensibly in |SPARK| but the functions
+have side effects and should not be called from |SPARK| text.
+
 Input-Output (A.6)
 ------------------
 

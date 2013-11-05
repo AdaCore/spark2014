@@ -1,7 +1,5 @@
 package body Swap_Add_05
-is   
-   X, Y: Integer;
-   
+is
    procedure Swap
    is
       Temporary: Integer;
@@ -10,7 +8,7 @@ is
       X         := Y;
       Y         := Temporary;
    end Swap;
-   
+
    function Add return Integer
    is
    begin

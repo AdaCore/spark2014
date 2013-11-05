@@ -1,3 +1,4 @@
+pragma SPARK_Mode (On);
 package stack_14
   with Abstract_State    => State,
        Initializes       => State,

@@ -1,8 +1,12 @@
+pragma SPARK_Mode (On);
+with System.Storage_Elements;
 package body Input_Port_14
   with Refined_State => (Input_State => Input_S)
 is
    Input_S : Integer
-     with Address => 16#CAFE#, Volatile;
+     with Volatile,
+          Async_Writers,
+          Address => System.Storage_Elements.To_Address (16#ACECAE0#);
 
    procedure Read_From_Port(Input_Value : out Integer)
      with Refined_Global  => (Input => Input_S),

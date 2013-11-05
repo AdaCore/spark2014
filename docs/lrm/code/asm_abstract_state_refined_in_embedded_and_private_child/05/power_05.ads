@@ -1,6 +1,7 @@
 -- Use of embedded packages to encapsulate state
 package Power_05
 --# own State;
+--# initializes State;
 is
    procedure Read_Power(Level : out Integer);
    --# global State;

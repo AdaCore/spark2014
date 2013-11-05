@@ -6,8 +6,10 @@ is
 
   --  Embedded package spec for Source_A
   package Source_A
-    with Abstract_State => State
+     with Initializes => State
   is
+     State : Integer := 0;
+
      procedure Read (Level : out Integer)
        with Global  => State,
             Depends => (Level => State);
@@ -15,12 +17,11 @@ is
 
   --  Embedded package body for Source_A
   package body Source_A is
-    State : Integer;
 
-    procedure Read (Level : out Integer) is
-    begin
-      Level := State;
-    end Read;
+     procedure Read (Level : out Integer) is
+     begin
+        Level := State;
+     end Read;
   end Source_A;
 
   procedure Read_Power(Level : out Integer)

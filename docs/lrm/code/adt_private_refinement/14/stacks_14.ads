@@ -1,3 +1,4 @@
+pragma SPARK_Mode (On);
 package Stacks_14 is
    type Stack is private;
 

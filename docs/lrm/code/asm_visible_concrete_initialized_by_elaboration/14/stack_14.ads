@@ -1,11 +1,12 @@
+pragma SPARK_Mode (On);
 package Stack_14
-  with Abstract_State => (S, Pointer), -- concrete state
-       Initializes    => (S, Pointer)
+  with Abstract_State => (S_State, Pointer_State),
+       Initializes    => (S_State, Pointer_State)
 is
    procedure Push (X : in Integer)
-     with Global => (In_Out => (S, Pointer));
+     with Global => (In_Out => (S_State, Pointer_State));
 
    procedure Pop (X : out Integer)
-     with Global => (Input  => S,
-                     In_Out => Pointer);
+     with Global => (Input  => S_State,
+                     In_Out => Pointer_State);
 end Stack_14;

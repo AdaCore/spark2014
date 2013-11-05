@@ -1,3 +1,4 @@
+pragma SPARK_Mode (On);
 with Input_Port_14, Output_Port_14, Stacks_14;
 --  No need to specify that Copy_14 is a main program
 procedure Copy_14

@@ -1,54 +1,45 @@
+pragma SPARK_Mode (On);
 package body Power_14
   with Refined_State => (State => (Source_A.State, Source_B.State))
 is
 
   --  Embedded package spec for Source_A
-  package Source_A
-    with Abstract_State => State
-  is
-     procedure Read (Level : out Integer)
-       with Global  => State,
-            Depends => (Level => State);
-  end Source_A;
+   package Source_A
+     with Initializes => State
+   is
+      State : Integer := 0;
 
-  --  Embedded package spec for Source_B.
-  package Source_B
-    with Abstract_State => State
-  is
-    procedure Read (Level : out Integer)
-      with Global  => State,
-           Depends => (Level => State);
-  end Source_B;
+      procedure Read (Level : out Integer)
+        with Global  => State,
+        Depends => (Level => State);
+   end Source_A;
 
-  --  Embedded package body for Source_A
-  package body Source_A
-    with Refined_State => (State => S)
-  is
-    S : Integer;
+   --  Embedded package spec for Source_B.
+   package Source_B
+     with Initializes => State
+   is
+      State : Integer := 0;
 
-    procedure Read (Level : out Integer)
-      with Refined_Global  => S,
-           Refined_Depends => (Level => S)
-    is
-    begin
-      Level := S;
+      procedure Read (Level : out Integer)
+        with Global  => State,
+             Depends => (Level => State);
+   end Source_B;
+
+   --  Embedded package body for Source_A
+   package body Source_A is
+
+      procedure Read (Level : out Integer) is
+      begin
+         Level := State;
     end Read;
   end Source_A;
 
   --  Embedded package body for Source_B
-  package body Source_B
-    with Refined_State => (State => S)
-  is
-    S : Integer;
-
-    procedure Read (Level : out Integer)
-      with Refined_Global  => S,
-           Refined_Depends => (Level => S)
-    is
-    begin
-      Level := S;
-    end Read;
-
+   package body Source_B is
+      procedure Read (Level : out Integer) is
+      begin
+         Level := State;
+      end Read;
   end Source_B;
 
   procedure Read_Power(Level : out Integer)

@@ -1,3 +1,4 @@
+pragma SPARK_Mode (On);
 package body Nesting_Refinement_14
   -- State is refined onto two concrete variables X and Y
   with Refined_State => (State => (X, Y))

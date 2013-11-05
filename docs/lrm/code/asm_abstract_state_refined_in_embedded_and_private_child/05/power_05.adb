@@ -7,7 +7,8 @@ is
 
   --  Embedded package spec for Source_A
   package Source_A
-  --# own State;        
+  --# own State;
+  --# initializes State;
   is
      procedure Read (Level : out Integer);
       --# global State;
@@ -16,13 +17,16 @@ is
 
   --  Embedded package body for Source_A
   package body Source_A
+  --# own State is S;
   is
-    State : Integer;
+    S : Integer := 0;
 
     procedure Read (Level : out Integer)
+    --# global S;
+    --# derives Level from S;
     is
     begin
-      Level := State;
+      Level := S;
     end Read;
   end Source_A;
 

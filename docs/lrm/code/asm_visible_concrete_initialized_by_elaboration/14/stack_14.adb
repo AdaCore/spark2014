@@ -1,4 +1,8 @@
-package body Stack_14 is
+pragma SPARK_Mode (On);
+package body Stack_14
+  with Refined_State => (S_State       => S,
+                         Pointer_State => Pointer)
+is
    Stack_Size : constant := 100;
    type    Pointer_Range is range 0 .. Stack_Size;
    subtype Index_Range   is Pointer_Range range 1..Stack_Size;
@@ -7,13 +11,18 @@ package body Stack_14 is
    S : Vector;
    Pointer : Pointer_Range;
 
-   procedure Push(X : in Integer) is
+   procedure Push (X : in Integer)
+     with Refined_Global => (In_Out => (S, Pointer))
+   is
    begin
       Pointer := Pointer + 1;
       S (Pointer) := X;
    end Push;
 
-   procedure Pop (X : out Integer) is
+   procedure Pop(X : out Integer)
+     with Refined_Global => (Input  => S,
+                             In_Out => Pointer)
+   is
    begin
       X := S (Pointer);
       Pointer := Pointer - 1;

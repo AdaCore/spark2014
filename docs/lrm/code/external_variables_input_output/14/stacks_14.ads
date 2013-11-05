@@ -1,4 +1,5 @@
-package Stacks is
+pragma SPARK_Mode (On);
+package Stacks_14 is
    type Stack is private;
 
    function Is_Empty(S : Stack) return Boolean;
@@ -22,4 +23,4 @@ private
       Stack_Vector : Vector;
       Stack_Pointer : Pointer_Range;
    end record;
-end Stacks;
+end Stacks_14;

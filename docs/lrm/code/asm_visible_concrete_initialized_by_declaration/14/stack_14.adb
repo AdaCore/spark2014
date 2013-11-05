@@ -1,3 +1,4 @@
+pragma SPARK_Mode (On);
 package body Stack_14
   with Refined_State => (S_State       => S,
                          Pointer_State => Pointer)

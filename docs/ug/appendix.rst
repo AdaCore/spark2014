@@ -354,6 +354,12 @@ Features Not Yet Implemented in Proof
 
 #. Attribute 'Valid is currently assumed to always return True.
 
+#. Values read from an external source are assumed to be valid values. 
+   Currently there is no model of invalidity or undefinedness.  The onus 
+   is on the user to ensure that all values read from an external source are 
+   valid.  The use of an invalid value invalidates any proofs associated with 
+   the value.
+
 Portability Issues
 ==================
 

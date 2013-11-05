@@ -5,9 +5,11 @@ is
    -- Shows that X'First and X'Last _can_ be used in
    -- precondition here, even though X is mode "out"...
    procedure Init (X : out A);
-   --# derives X from ;
-   --# pre X'First <= 2  and
+   --# pre X'First = 1  and
    --#     X'Last  >= 20;
-   --# post for all I in Positive range X'Range => (X (I) = 0);
+   --# post for all I in Positive range X'Range =>
+   --#      ((I /= 20 -> (X (I) = 0)) and
+   --#         (I = 1 -> (X (I) = X'Last)) and
+   --#         (I = 20 -> (X (I) = -1)));
 
 end P;

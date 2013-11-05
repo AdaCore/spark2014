@@ -1,10 +1,13 @@
 package body Power_05.Source_B_05
+--# own State is S;
 is
-   State : Integer;
+   S : Integer := 0;
 
    procedure Read (Level : out Integer)
+   --# global in S;
+   --# derives Level from S;
    is
    begin
-      Level := State;
+      Level := S;
    end Read;
 end Power_05.Source_B_05;

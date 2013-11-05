@@ -1,7 +1,12 @@
 package body Stack_05
 --# own Stack is S, Pointer; -- state refinement
 is
+   Stack_Size : constant := 100;
+   type    Pointer_Range is range 0 .. Stack_Size;
+   subtype Index_Range   is Pointer_Range range 1..Stack_Size;
+   type    Vector        is array(Index_Range) of Integer;
    S : Vector;
+
    Pointer : Pointer_Range := 0;
    -- initialization by elaboration of declaration
 

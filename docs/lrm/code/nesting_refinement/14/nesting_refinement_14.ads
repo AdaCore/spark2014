@@ -1,3 +1,4 @@
+pragma SPARK_Mode (On);
 package Nesting_Refinement_14
   with Abstract_State => State,
        Initializes    => State

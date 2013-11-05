@@ -1,6 +1,6 @@
+pragma SPARK_Mode (On);
 package body Swap_Add_14 is   
-   X, Y: Integer;
-   
+
    procedure Swap is
       Temporary: Integer;
    begin

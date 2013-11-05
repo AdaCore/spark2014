@@ -1,34 +1,24 @@
-package Swap_Add_Max_05
---# own X, Y: Integer;
-is
+package Swap_Add_Max_05 is
 
    subtype Index      is Integer range 1..100;
    type    Array_Type is array (Index) of Integer;
 
-   procedure Swap;
-   --# global in out X, Y;
-   --# derives X from Y &
-   --#         Y from X;
+   procedure Swap (X , Y : in out Integer);
    --# post X = Y~ and Y = X~;
 
-   function Add return Integer;
-   --# global in X, Y;
+   function Add (X, Y : Integer) return Integer;
+   --# pre X + Y <= Integer'Last and X + Y >= Integer'First;
    --# return X + Y;
 
-   function Max return Integer;
-   --# global in X, Y;
+   function Max (X, Y : Integer) return Integer;
    --# return Z => (X >= Y -> Z = X) and
    --#             (Y >  X -> Z = Y);
 
-   function Divide return Float;
-   --# global in X, Y;
-   --# pre Y /= 0;
-   --# return Float(X / Y);
+   function Divide (X , Y : Integer) return Integer;
+   --# pre Y /= 0 and X / Y <= Integer'Last;
+   --# return X / Y;
 
-   procedure Swap_Array_Elements(A: in out Array_Type);
-   --# global in X, Y;
-   --# derives A from A, X, Y;
-   --# pre  X in Index and Y in Index;
-   --# post A = A~[X => A~(Y); Y => A~(X)];
+   procedure Swap_Array_Elements(I, J : Index; A: in out Array_Type);
+   --# post A = A~[I => A~(J); J => A~(I)];
 
 end Swap_Add_Max_05;

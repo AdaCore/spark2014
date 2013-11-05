@@ -1,7 +1,7 @@
+pragma SPARK_Mode (On);
 package body Swap_Add_Max_14 is
-   X, Y: Integer;
 
-   procedure Swap is
+   procedure Swap (X, Y : in out Integer) is
       Temporary: Integer;
    begin
       Temporary := X;
@@ -9,12 +9,12 @@ package body Swap_Add_Max_14 is
       Y         := Temporary;
    end Swap;
 
-   function Add return Integer is
+   function Add (X, Y : Integer) return Integer is
    begin
       return X + Y;
    end Add;
 
-   function Max return Integer is
+   function Max (X, Y : Integer) return Integer is
       Result: Integer;
    begin
       if X >= Y then
@@ -25,18 +25,16 @@ package body Swap_Add_Max_14 is
       return Result;
    end Max;
 
-   function Divide return Float is
-      Result: Float;
+   function Divide (X, Y : Integer) return Integer is
    begin
-      Result := Float(X / Y);
-      return Result;
+      return X / Y;
    end Divide;
 
-   procedure Swap_Array_Elements(A: in out Array_Type) is
+   procedure Swap_Array_Elements(I, J : Index; A: in out Array_Type) is
       Temporary: Integer;
    begin
-      Temporary := A(X);
-      A(X)      := A(Y);
-      A(Y)      := Temporary;
+      Temporary := A(I);
+      A(I)      := A(J);
+      A(J)      := Temporary;
    end Swap_Array_Elements;
 end Swap_Add_Max_14;

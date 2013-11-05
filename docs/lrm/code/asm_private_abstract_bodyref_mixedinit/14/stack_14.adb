@@ -1,6 +1,12 @@
+pragma SPARK_Mode (On);
 package body Stack_14
   with Refined_State => (Stack => (S, Pointer)) -- state refinement
 is
+   Stack_Size : constant := 100;
+   type    Pointer_Range is range 0 .. Stack_Size;
+   subtype Index_Range   is Pointer_Range range 1..Stack_Size;
+   type    Vector        is array(Index_Range) of Integer;
+
    S : Vector; -- left uninitialized
    Pointer : Pointer_Range := 0;
    -- initialization by elaboration of declaration
@@ -23,5 +29,5 @@ is
    end Pop;
 
 begin  -- partial initialization by body statements
-   S := Vector'(Index_Range => 0);
+   S := (Index_Range => 0);
 end Stack_14;
