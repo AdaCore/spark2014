@@ -256,14 +256,15 @@ package body SPARK_Definition is
    --  Produce a line in output file for subprogram Id, in JSON format, with
    --  following interface:
 
-   --   { name : string,          name of the subprogram
-   --     file : string,          file name of the spec
-   --     line : int,             line of the spec
-   --     spark : bool,           subp is in SPARK
-   --     violations : string[]   the list of violations of the SPARK rules
+   --   { name  : string,          name of the subprogram
+   --     file  : string,          file name of the spec
+   --     line  : int,             line of the spec
+   --     spark : string           subp spec/body is in SPARK or not
    --   }
-   --  Note that when field "spark" is set to false, and no violations are
-   --  reported, then it means that spark_mode was "off".
+
+   --  Field "spark" takes value in "spec", "body" or "no" to denote
+   --  respectively that the subprogram spec is in SPARK, both spec/body are
+   --  in SPARK, or the spec is not in SPARK.
 
    Output_File : Ada.Text_IO.File_Type;
    --  <file>.alfa in which this pass generates information about subprograms
@@ -2237,9 +2238,7 @@ package body SPARK_Definition is
       --  Postprocessing: indicate in output file if package is in
       --  SPARK or not, for reporting, debug and verifications.
 
-      if Is_Toplevel_Entity (Id) then
-         Generate_Output_In_Out_SPARK (Id);
-      end if;
+      Generate_Output_In_Out_SPARK (Id);
 
       Current_SPARK_Pragma := Save_SPARK_Pragma;
    end Mark_Package_Body;
@@ -2712,9 +2711,7 @@ package body SPARK_Definition is
       --  Postprocessing: indicate in output file if subprogram is in
       --  SPARK or not, for reporting, debug and verifications.
 
-      if Is_Toplevel_Entity (E) then
-         Generate_Output_In_Out_SPARK (E);
-      end if;
+      Generate_Output_In_Out_SPARK (E);
 
       Current_SPARK_Pragma := Save_SPARK_Pragma;
    end Mark_Subprogram_Body;
