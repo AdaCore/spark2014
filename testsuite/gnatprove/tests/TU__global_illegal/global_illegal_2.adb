@@ -54,8 +54,6 @@ is
    procedure P4 (Par1 : out Integer)
      --  TU: 7. A ``global_item`` shall not denote a constant object other than
      --  a formal parameter [of an enclosing subprogram] of mode **in**.
-     --  [This restriction may be relaxed in some way at some point in the
-     --  future.]
      with Global => Z
    is
    begin

@@ -378,6 +378,8 @@ follow the grammar of ``global_specification``
 7. A ``global_item`` shall not denote a constant object other than
    a formal parameter [of an enclosing subprogram] of mode **in**.
 
+.. _etu-global_aspects-07:
+
 .. todo:: Consider relaxing this restriction.
 
 .. _tu-fe-global_aspects-08:
