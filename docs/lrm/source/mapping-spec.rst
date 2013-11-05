@@ -881,6 +881,7 @@ Body of output port in SPARK 2005:
       :linenos:
 
 Specification of main program in |SPARK|:
+
    .. literalinclude:: ../code/external_variables_input_output/14/copy_14.adb
       :language: ada
       :linenos:
@@ -915,17 +916,18 @@ This is as per SPARK 2005, but uses aspects instead of representation clauses an
 
 .. _ms-external_variables_input_append_tail-label:
 
-Input driver using \'Append and \'Tail contracts
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Input driver using \'Tail in a contract
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This example uses the Input_Port package from section `Basic Input and Output Device Drivers`_
 and adds a contract using the 'Tail attribute. The example also use the Always_Valid attribute
 in order to allow proof to succeed (otherwise, there is no guarantee in the proof context
 that the value read from the port is of the correct type).
 
-|SPARK| does not have the attribute 'Tail but an equivalent proof can
-be often achieved using assert pragmas.  Neither is there a direct equivalent of the
-Always_Valid attribute but the paragma Assume may be used to the same effect.
+|SPARK| does not have the attribute 'Tail but, often, an equivalent
+proof can be achieved using assert pragmas.  Neither is there a direct
+equivalent of the Always_Valid attribute but the paragma Assume may be
+used to the same effect.
 
 Specification in SPARK 2005:
 
@@ -939,18 +941,28 @@ Body in SPARK 2005:
       :language: ada
       :linenos:
 
+Specification in SPARK 2014:
+
+   .. literalinclude:: ../code/external_variables_input_append_tail/14/input_port_14.ads
+      :language: ada
+      :linenos:
+
+Body in SPARK 2014:
+
+   .. literalinclude:: ../code/external_variables_input_append_tail/14/input_port_14.adb
+      :language: ada
+      :linenos:
+
 .. _ms-external_variables_output_append_tail-label:
 
-Output driver using \'Append and \'Tail contracts
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Output driver using \'Append in a contract
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This example uses the Output package from section `Basic Input and Output Device Drivers`_
 and adds a contract using the 'Append attribute.
 
-.. todo::
-   There will not be an equivalent of \'Append and \'Tail in |SPARK|. However, we will be
-   able to achieve the same functionality using generics. To be completed in the Milestone 4
-   version of this document.
+|SPARK| does not have the attribute 'Append but, often, an equivalent proof can
+be achieved using assert pragmas.
 
 Specification in SPARK 2005:
 
@@ -961,6 +973,18 @@ Specification in SPARK 2005:
 Body in SPARK 2005:
 
    .. literalinclude:: ../code/external_variables_output_append_tail/05/output_port_05.adb
+      :language: ada
+      :linenos:
+
+Specification in SPARK 2014:
+
+   .. literalinclude:: ../code/external_variables_output_append_tail/14/output_port_14.ads
+      :language: ada
+      :linenos:
+
+Body in SPARK 2014:
+
+   .. literalinclude:: ../code/external_variables_output_append_tail/14/output_port_14.adb
       :language: ada
       :linenos:
 
@@ -1363,7 +1387,7 @@ Other Contracts and Annotations
 Always_Valid assertion
 ~~~~~~~~~~~~~~~~~~~~~~
 
-See section `Input driver using \'Append and \'Tail contracts`_ for use of an assertion involving
+See section `Input driver using \'Tail in a contract`_ for use of an assertion involving
 the Always_Valid attribute.
 
 Rule declaration annotation
