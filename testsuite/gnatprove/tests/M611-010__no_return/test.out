@@ -1,2 +1,3 @@
+no_return.adb:10:7: warning: exception might be raised
 no_return.adb:15:7: warning: precondition might fail
-no_return.ads:5:14: warning: postcondition might fail
+no_return.ads:5:14: info: postcondition proved
