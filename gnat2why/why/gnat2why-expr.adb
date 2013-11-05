@@ -5941,10 +5941,13 @@ package body Gnat2Why.Expr is
                   raise Program_Error;
             end case;
 
-         --  ??? NEED TO BE IMPLEMENTED (M121-026)
-
          when N_Raise_Statement =>
-            return New_Void;
+            return
+              New_Assert
+                (Pred =>
+                    New_Label
+                   (Labels => New_VC_Labels (Stat, VC_Raise),
+                    Def    => +False_Pred));
 
          when others =>
             raise Program_Error;

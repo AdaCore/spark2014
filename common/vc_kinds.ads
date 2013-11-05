@@ -59,7 +59,8 @@ package VC_Kinds is
       VC_Loop_Invariant_Init,
       VC_Loop_Invariant_Preserv,
       VC_Loop_Variant,
-      VC_Assert);
+      VC_Assert,
+      VC_Raise);
 
    function Is_Assertion_Kind (V : VC_Kind) return Boolean is
      (V in
