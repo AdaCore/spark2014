@@ -35,3 +35,11 @@
                             or
 
     "-nt-"        (not tested/testable)
+
+7) Explanation of prefixes in SPARK rm:
+
+   "tu"   stands for trace unit.
+   "etu"  stands for end trace unit
+   "-fa-" means this trace unit tested by the flow analysis
+   "-fe-" means this trace unit tested by the front end
+   "-pr-" means this trace unit tested by proof
