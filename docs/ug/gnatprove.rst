@@ -475,17 +475,20 @@ other unclassified messages are warnings about questionable code constructs.
 How to Investigate Unproved Checks
 ==================================
 
-One of the most challenging aspects of formal verification is the analysis of
-failed proofs. If |GNATprove| fails to prove automatically that a run-time
-check or an assertion holds, there might be various reasons:
+One of the most challenging aspects of formal verification is the analysis
+of failed proofs. If |GNATprove| fails to prove automatically that a
+run-time check or an assertion holds, there might be various reasons:
 
 * [CODE] The check or assertion does not hold, because the code is wrong.
 * [ASSERT] The assertion does not hold, because it is incorrect.
 * [SPEC] The check or assertion cannot be proved, because of some missing
   assertions about the behavior of the program.
-* [TIMEOUT] The check or assertion is not proved because the prover timeouts.
-* [PROVER] The check or assertion is not proved because the prover is not smart
-  enough.
+* [MODEL] The check or assertion is not proved because of current
+  limitations in the model used by |GNATProve|.
+* [TIMEOUT] The check or assertion is not proved because the prover
+  timeouts.
+* [PROVER] The check or assertion is not proved because the prover is not
+  smart enough.
 
 Investigating Incorrect Code or Assertion
 -----------------------------------------
@@ -504,7 +507,7 @@ following GNAT switches can be used:
 Investigating Unprovable Properties
 -----------------------------------
 
-The second step is to consider whether the property is provable [SPEC].  A
+The second step is to consider whether the property is provable [SPEC]. A
 check or assertion might be unprovable because a necessary annotation is
 missing:
 
@@ -515,18 +518,33 @@ missing:
 
 In particular, |GNATprove| does not look into subprogram bodies, so all the
 necessary information for calls should be explicit in the subprogram
-contracts. A focused manual review of the code and assertions can efficiently
-diagnose many cases of missing annotations. Even when an assertion is quite
-large, |GNATprove| precisely locates the part that it cannot prove, which can
-help figuring out the problem. It may useful to simplify the code during this
-investigation, for example by adding a simpler assertion and trying to prove
-it.
+contracts. A focused manual review of the code and assertions can
+efficiently diagnose many cases of missing annotations. Even when an
+assertion is quite large, |GNATprove| precisely locates the part that it
+cannot prove, which can help figuring out the problem. It may useful to
+simplify the code during this investigation, for example by adding a
+simpler assertion and trying to prove it.
 
-|GNATprove| provides path information that might help the code review. You can
-display inside the editor the path on which the proof failed, as described in
-:ref:`GPS integration`. In many cases, this is sufficient to spot a missing
-assertion. To further assist the user, we plan to add to this path some
-information about the values taken by variables from a counterexample.
+|GNATprove| provides path information that might help the code review. You
+can display inside the editor the path on which the proof failed, as
+described in :ref:`GPS integration`. In many cases, this is sufficient to
+spot a missing assertion. To further assist the user, we plan to add to
+this path some information about the values taken by variables from a
+counterexample.
+
+A property can also be conceptually provable, but the model used by
+|GNATProve| can currently not reason about it [MODEL]. (See
+:ref:`GNATProve_Limitations` for a list of the current limitations in
+|GNATProve|.) In particular using the following features of the language
+may yield VCs that should be true, but cannot be discharged:
+
+* Subtypes of discriminant records
+* Floating point arithmetic
+* Bitwise operations for modular types
+* The content of string literals
+
+In these cases the missing information can usually be added using ``pragma
+Assume``.
 
 Investigating Prover Shortcomings
 ---------------------------------
@@ -548,25 +566,51 @@ involving multiplication, division, modulo or exponentiation.
 
 In that case, a user may either:
 
-* manually review the unproved checks and record that they can be trusted (for
-  example by storing the result of |GNATprove| under version control), or
-* add an assumption in the code to help the prover, in the form of a ``pragma
-  Assume``. |GNATprove| assumes it holds, so does not attempt to prove it, and
-  uses it in subsequent code. The assumption can be manually reviewed like
-  mentioned above, and marking it as an assumption in the code helps
-  documenting it.
+* manually review the unproved checks and record that they can be trusted
+  (for example by storing the result of |GNATprove| under version control),
+  or
+* add an assumption in the code to help the prover, in the form of a
+  ``pragma Assume``. |GNATprove| assumes it holds, so does not attempt to
+  prove it, and uses it in subsequent code. The assumption can be manually
+  reviewed like mentioned above, and marking it as an assumption in the
+  code helps documenting it, or
+* instantiate a lemma which makes the missing property available.
+
+The last is a technique which is a combination of expression functions and
+``pragma Assume``. For example the below code is currently not provable
+with Alt-Ergo using the default setup:
+
+   .. literalinclude:: lemmas/example1.adb
+      :language: ada
+      :linenos:
+
+This code can be made provable by using a lemma. All VCs for this function
+are easily discharged, showing that the lemma holds in all cases.
+
+   .. literalinclude:: lemmas/lemmas.ads
+      :language: ada
+      :linenos:
+
+Note the postcondition on the expression function ensures that VCs are
+generated showing it is always valid. The lemma can then be used though an
+assumption (although it is planned to extend ``pragma Assert`` to support
+this pattern):
+
+   .. literalinclude:: lemmas/example2.adb
+      :language: ada
+      :linenos:
 
 We plan to provide a `user view` of the formula passed to the prover, for
 advanced users to inspect. This view will express in an Ada-like syntax the
-actual formula whose proof failed, to make it easier for users to interpret it.
-This format is yet to be defined.
+actual formula whose proof failed, to make it easier for users to interpret
+it. This format is yet to be defined.
 
-For very advanced users, in particular those who would like to do manual proof,
-we will provide a description of the format of the proof files generated by
-|GNATprove|, so that users can understand the actual files passed to the
-prover. Each individual file is stored under the sub-directory ``gnatprove`` of
-the project object directory (default is the project directory). The file name
-follows the convention::
+For very advanced users, in particular those who would like to do manual
+proof, we will provide a description of the format of the proof files
+generated by |GNATprove|, so that users can understand the actual files
+passed to the prover. Each individual file is stored under the
+sub-directory ``gnatprove`` of the project object directory (default is the
+project directory). The file name follows the convention::
 
   <file>_<line>_<column>_<check>_<num>.why
 
