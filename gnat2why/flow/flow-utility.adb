@@ -203,8 +203,8 @@ package body Flow.Utility is
             elsif Name = Name_Refined_Post then
                Other_Name := Name_Refined_Post;
                P := Pre_Post_Conditions
-                 (Contract (Defining_Unit_Name (Specification
-                                                  (Get_Subprogram_Body (E)))));
+                 (Contract (Defining_Entity (Specification
+                                               (Get_Subprogram_Body (E)))));
             elsif Name = Name_Initial_Condition then
                Other_Name := Name_Initial_Condition;
                P := Classifications (C);

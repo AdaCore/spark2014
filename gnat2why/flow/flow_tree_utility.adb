@@ -287,8 +287,14 @@ package body Flow_Tree_Utility is
    --------------
 
    function Get_Body (E : Entity_Id) return Entity_Id is
-      P : constant Node_Id := Parent (Parent (E));
+      P : Node_Id := Parent (E);
    begin
+      if Nkind (P) = N_Defining_Program_Unit_Name then
+         P := Parent (P);
+      end if;
+
+      P := Parent (P);
+
       case Nkind (P) is
          when N_Subprogram_Body =>
             pragma Assert (Acts_As_Spec (P));
