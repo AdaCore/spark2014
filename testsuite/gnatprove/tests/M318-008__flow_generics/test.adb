@@ -1,4 +1,4 @@
-package body Test is 
+package body Test is
    ----------------
    --  Exchange  --
    ----------------
@@ -13,7 +13,7 @@ package body Test is
    end Exchange;
 
    procedure Swap is new Exchange (Item_T => Integer);
-   procedure Swap is new Exchange (Character);
+   procedure Swap is new Exchange (Item_T => Character);
 
    procedure Call_Both (A, B : in out Integer;
                         C, D : in out Character)
@@ -28,31 +28,38 @@ package body Test is
    ------------------
 
    package body On_Vectors is
-      procedure Sum (A, B : Vector_T; C : in out Vector_T)
-      is
+      procedure Sum (A, B : in     Vector_T;
+                     C    : in out Vector_T) is
       begin
          for I in A'Range loop
-            C (I) := Sum (A (I), B (I + B'First - A'First));
+            C (I) := A (I) + B (I + B'First - A'First);
          end loop;
       end Sum;
    end On_Vectors;
 
    type Table is array (Positive range <>) of Integer;
 
-   package Int_Vectors is new On_Vectors(Integer, Table, "+");
+   package Int_Vectors is new On_Vectors (Item_T   => Integer,
+                                          Vector_T => Table,
+                                          "+"      => "+");
 
-   procedure Sum_And_Reverse (A, B : in Table ; C : in out Table)
-      with Depends => (C =>+ (A, B)),
-           Pre => A'First = C'First and
-                  A'Last  = C'Last  and
-                  A'Length = B'Length;
-
-   procedure Sum_And_Reverse (A, B : in Table; C : in out Table)
+   procedure Sum_And_Reverse (A, B : in     Table;
+                              C    : in out Table)
+     with Depends => (C =>+ (A, B)),
+          Pre => A'First = C'First and
+                 A'Last  = C'Last  and
+                 A'Length = B'Length
    is
    begin
       Int_Vectors.Sum (A, B, C);
       for I in C'First .. C'Last / 2 loop
-         Swap (C (I), C (C'Last - I + C'First));
+         declare
+            Temp : Integer;
+         begin
+            Temp  := C (I);
+            C (I) := C (C'Last - I + C'First);
+            C (C'Last - I + C'First) := Temp;
+         end;
       end loop;
    end Sum_And_Reverse;
 
@@ -61,8 +68,8 @@ package body Test is
    ------------------
 
    package body On_Records is
-      procedure Copy_One_Item (Rec1 : in Record_T; Rec2 : in out Record_T)
-      is
+      procedure Copy_One_Item (Rec1 : in     Record_T;
+                               Rec2 : in out Record_T) is
       begin
          if Rec1.D = 1 then
             Rec2.Single_Item := Rec1.Single_Item;
@@ -79,20 +86,31 @@ package body Test is
                                Watermellon, Fake_Watermellon,
                                Pistol, Knife, Grenade);
    --  subtype Weapons is Fruits_And_Weapons range Pistol .. Grenade;
-   subtype Fruits  is Fruits_And_Weapons range None  .. Fake_Watermellon;
+   subtype Fruits is Fruits_And_Weapons range None  .. Fake_Watermellon;
 
    package Fruit_Rec is new On_Records (Item_T => Fruits);
    use Fruit_Rec;
 
-   procedure Replace_A_Fruit (Rec1 : in Record_T; Rec2 : in out Record_T)
+   procedure Replace_A_Fruit (Rec1 : in     Record_T;
+                              Rec2 : in out Record_T)
      renames Copy_One_Item;
 
-   Apple_Basket : Record_T (0) := (D => 0, Arr => (Apple, Apple, Apple, Apple, Apple));
-   Mixed_Basket : Record_T := (D => 0, Arr => (Banana, Strawberries, Orange, Grapes, Pineapple));
+   Apple_Basket : Record_T (0) := (D => 0,
+                                   Arr => (Apple,
+                                           Apple,
+                                           Apple,
+                                           Apple,
+                                           Apple));
+   Mixed_Basket : Record_T := (D => 0,
+                               Arr => (Banana,
+                                       Strawberries,
+                                       Orange,
+                                       Grapes,
+                                       Pineapple));
 
    procedure Replace_And_Search_For_Apple (Has_Apple : out Boolean)
-      with Global => (Input  => Apple_Basket,
-                      In_Out => Mixed_Basket)
+     with Global => (Input  => Apple_Basket,
+                     In_Out => Mixed_Basket)
    is
    begin
       Replace_A_Fruit (Apple_Basket, Mixed_Basket);
@@ -120,9 +138,9 @@ package body Test is
    --  Nested Generics  --
    -----------------------
 
-   package body External_Generic
-   is
-      procedure Fill_Empty_Slots (Inventory : in out Inventory_T ; Fill_With : Item_T) is
+   package body External_Generic is
+      procedure Fill_Empty_Slots (Inventory : in out Inventory_T;
+                                  Fill_With : in     Item_T) is
       begin
          for I in Inventory'Range loop
             if Is_Empty (Inventory (I)) then
@@ -149,25 +167,14 @@ package body Test is
       end Internal_Generic;
    end External_Generic;
 
-   function Found_None (Fruit : Fruits) return Boolean
-   is
-   begin
-      if Fruit = None then
-         return True;
-      else
-         return False;
-      end if;
-   end Found_None;
+   function Found_None (Fruit : in Fruits) return Boolean is (Fruit = None);
 
-   function Fruits_To_Fruits_And_Weapons (Fruit : Fruits) return Fruits_And_Weapons
-   is
-   begin
-      return Fruits_And_Weapons (Fruit);
-   end Fruits_To_Fruits_And_Weapons;
+   function Fruits_To_Fruits_And_Weapons (Fruit : in Fruits)
+                                         return Fruits_And_Weapons
+   is (Fruits_And_Weapons (Fruit));
 
    type Fruit_Crate             is array (Positive range <>) of Fruits;
    type Fruit_And_Weapons_Crate is array (Positive range <>) of Fruits_And_Weapons;
-
 
    package Fruit_Crates is new External_Generic (Item_T      => Fruits,
                                                  Inventory_T => Fruit_Crate,
@@ -176,10 +183,10 @@ package body Test is
 
    procedure Weapon_Smuggling (Initial_Crate : in out Fruit_Crate;
                                Final_Crate   : in out Fruit_And_Weapons_Crate)
-      with Pre     => (Initial_Crate'First = Final_Crate'First and
-                       Initial_Crate'Last  = Final_Crate'Last),
-           Depends => (Initial_Crate =>  Initial_Crate,
-                       Final_Crate   =>+ Initial_Crate);
+     with Pre     => Initial_Crate'First = Final_Crate'First and
+                     Initial_Crate'Last  = Final_Crate'Last,
+          Depends => (Initial_Crate =>  Initial_Crate,
+                      Final_Crate   =>+ Initial_Crate);
 
    procedure Weapon_Smuggling (Initial_Crate : in out Fruit_Crate;
                                Final_Crate   : in out Fruit_And_Weapons_Crate)
