@@ -332,7 +332,7 @@ The following table shows the kinds of warnings issued by proof.
    "overflow_check", "Check that the result of the given arithmetic operation is within the bounds of the base type."
    "range_check", "Check that the given value is within the bounds of the expected scalar subtype."
    "length_check", "Check that the given array is of the length of the expected array subtype."
-   "discriminant_check", "Check that the discriminant of the given discriminant record has the expected value. For variant records, this can happen for a simple access to a record field. But there are other cases where a fixed value of the discriminant is required."
+   "discriminant_check", "Check that the discriminant of the given discriminated record has the expected value. For variant records, this can happen for a simple access to a record field. But there are other cases where a fixed value of the discriminant is required."
    "initial_condition", "Check that the initial condition of a package is true after elaboration."
    "precondition", "Check that the precondition aspect of the given call evaluates to True."
    "postcondition", "Check that the postcondition aspect of the subprogram evaluates to True."
@@ -538,7 +538,7 @@ A property can also be conceptually provable, but the model used by
 |GNATProve|.) In particular using the following features of the language
 may yield VCs that should be true, but cannot be discharged:
 
-* Subtypes of discriminant records
+* Subtypes of discriminated records
 * Floating point arithmetic
 * Bitwise operations for modular types
 * The content of string literals
@@ -560,8 +560,8 @@ Note that for the above experiments, it is quite convenient to use the
 Subprogram` menus in GPS, as described in :ref:`GPS integration`, to get faster
 results for the desired line or subprogram.
 
-A common limitation of automatic provers is that they don't handle well
-non-linear arithmetic. For example, they might fail to prove simple checks
+A common limitation of automatic provers is that they don't handle
+non-linear arithmetic well. For example, they might fail to prove simple checks
 involving multiplication, division, modulo or exponentiation.
 
 In that case, a user may either:
