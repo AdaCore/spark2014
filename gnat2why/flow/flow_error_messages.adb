@@ -69,7 +69,8 @@ package body Flow_Error_Messages is
       Tag       : String;
       Warning   : Boolean;
       Tracefile : out Unbounded_String;
-      E         : Entity_Id);
+      E         : Entity_Id)
+     with Pre => Present (E);
    --  If Ide_Mode is set then we print a JSON message. Otherwise, we just
    --  print a regular message. It also generates a unique Tracefile name
    --  based on a SHA1 hash of the JSON_Msg and adds a JSON entry to the
@@ -195,37 +196,41 @@ package body Flow_Error_Messages is
    is
       M          : Unbounded_String;
       JSON_M     : Unbounded_String;
-      Subs       : GNAT.String_Split.Slice_Set;  --  Contain the substrings
-      Sep        : constant String := ":";       --  Set the separator to ':'
       C          : GNAT.SHA1.Context;
-      Entity_Str : Unbounded_String;
 
       File       : constant String := File_Name (Sloc (N));
       Line       : constant String := Get_Logical_Line_Number_Img (Sloc (N));
       Col        : constant String :=
         Int_Image (Integer (Get_Column_Number (Sloc (N))));
 
-      function Warning_Disabled_For_Local_Entity return Boolean;
+      function Warning_Disabled_For_Entity return Boolean;
       --  Returns True if either of N, F1, F2 correspond to an entity that
       --  Has_Warnings_Off.
+
+      function Json_Mapping (Name      : String;
+                             Value     : String;
+                             Quote_Val : Boolean := True;
+                             Is_Last   : Boolean := False)
+                             return Unbounded_String;
+      --  Helper function to produce the string
+      --     "name": "value",
+      --  Where name and value are substituted by the relevant
+      --  parameters.
+      --
+      --  If Is_Last is set, then the trailing comma is omitted.
+      --
+      --  If Quote_Val is not set, the quotes around value are omitted.
 
       ---------------------------------------
       -- Warning_Disabled_For_Local_Entity --
       ---------------------------------------
 
-      function Warning_Disabled_For_Local_Entity return Boolean is
+      function Warning_Disabled_For_Entity return Boolean is
+
          function Is_Entity_And_Has_Warnings_Off (N : Node_Or_Entity_Id)
-                                                 return Boolean
-         is (if Is_Entity_Name (N)
-               and then Has_Warnings_Off (Entity (N))
-             then
-                True
-             elsif Nkind (N) in N_Entity
-               and then Has_Warnings_Off (N)
-             then
-                True
-             else
-                False);
+                                                  return Boolean
+         is ((Is_Entity_Name (N) and then Has_Warnings_Off (Entity (N)))
+             or else (Nkind (N) in N_Entity and then Has_Warnings_Off (N)));
          --  Returns True if N is an entity and Has_Warnings_Off (N)
 
       begin
@@ -235,20 +240,49 @@ package body Flow_Error_Messages is
 
          if Present (F1)
            and then F1.Kind in Direct_Mapping | Record_Field
-           and then Is_Entity_And_Has_Warnings_Off (F1.Node)
+           and then Is_Entity_And_Has_Warnings_Off (Get_Direct_Mapping_Id (F1))
          then
             return True;
          end if;
 
          if Present (F2)
            and then F2.Kind in Direct_Mapping | Record_Field
-           and then Is_Entity_And_Has_Warnings_Off (F2.Node)
+           and then Is_Entity_And_Has_Warnings_Off (Get_Direct_Mapping_Id (F2))
          then
             return True;
          end if;
 
          return False;
-      end Warning_Disabled_For_Local_Entity;
+      end Warning_Disabled_For_Entity;
+
+      function Json_Mapping (Name      : String;
+                             Value     : String;
+                             Quote_Val : Boolean := True;
+                             Is_Last   : Boolean := False)
+                             return Unbounded_String
+      is
+         S : Unbounded_String := Null_Unbounded_String;
+      begin
+         Append (S, '"');
+         Append (S, Name);
+         Append (S, '"');
+
+         Append (S, ": ");
+
+         if Quote_Val then
+            Append (S, '"');
+         end if;
+         Append (S, Value);
+         if Quote_Val then
+            Append (S, '"');
+         end if;
+
+         if not Is_Last then
+            Append (S, ", ");
+         end if;
+
+         return S;
+      end Json_Mapping;
 
    begin
       --  Assemble message string
@@ -269,15 +303,15 @@ package body Flow_Error_Messages is
             return;
          end if;
 
-         if Warning_Disabled_For_Local_Entity then
+         if Warning_Disabled_For_Entity then
             return;
          end if;
 
          declare
             Temp : aliased String := To_String (M);
          begin
-            if Warning_Specifically_Suppressed
-                 (Sloc (N), Temp'Unchecked_Access)
+            if Warning_Specifically_Suppressed (Sloc (N),
+                                                Temp'Unchecked_Access)
             then
                return;
             end if;
@@ -292,16 +326,11 @@ package body Flow_Error_Messages is
          Found_Flow_Error := True;
       end if;
 
-      --  Append file
-      JSON_M := "{""file"":""" & To_Unbounded_String (File) & """,";
-
-      --  Append line
-      JSON_M := JSON_M & """line"":" & To_Unbounded_String (Line);
-      JSON_M := JSON_M & ",";
-
-      --  Append column
-      JSON_M := JSON_M & """col"":" & To_Unbounded_String (Col);
-      JSON_M := JSON_M & ",";
+      --  Append file, line and column
+      JSON_M := To_Unbounded_String ("{");
+      Append (JSON_M, Json_Mapping ("file", File));
+      Append (JSON_M, Json_Mapping ("line", Line, Quote_Val => False));
+      Append (JSON_M, Json_Mapping ("col", Col, Quote_Val => False));
 
       --  Before appending the message we first escape any '"' that are
       --  in it. The script is in python so we use '\' to escape it.
@@ -320,75 +349,69 @@ package body Flow_Error_Messages is
          end loop;
 
          --  Append escaped message
-         JSON_M := JSON_M & """message"":""" & Escaped_M;
-         JSON_M := JSON_M & """,";
+         Append (JSON_M, Json_Mapping ("message", To_String (Escaped_M)));
       end;
 
-      --  Append rule
-      JSON_M := JSON_M & """rule"":""" & To_Unbounded_String (Tag);
-      JSON_M := JSON_M & """,";
+      --  Append rule and severity
+      Append (JSON_M, Json_Mapping ("rule", Tag));
+      Append (JSON_M, Json_Mapping ("severity", (if Warning
+                                                 then "warning"
+                                                 else "error")));
 
-      --  Append severity
-      JSON_M := JSON_M & """severity"":""";
-      if Warning then
-         JSON_M := JSON_M & "warning"",";
-      else
-         JSON_M := JSON_M & "error"",";
-      end if;
+      --  Append entity
+      declare
+         Ent_Dict : Unbounded_String := To_Unbounded_String ("{");
+         Subs     : GNAT.String_Split.Slice_Set;
+         use type GNAT.String_Split.Slice_Number;
+      begin
+         --  Append entity information
+         --  Originally the entity info looks like "GP_Subp:foo.ads:12" so
+         --  we split it up (using ':' as the separator).
+         GNAT.String_Split.Create (S          => Subs,
+                                   From       => Subp_Location (E),
+                                   Separators => ":");
+         pragma Assert (GNAT.String_Split.Slice_Count (Subs) >= 3);
 
-      --  Assemble Entity_Str
-      if Present (E) then
-         Entity_Str := To_Unbounded_String (Subp_Location (E));
-      else
-         Entity_Str := Null_Unbounded_String;
-      end if;
+         Append (Ent_Dict, Json_Mapping ("file",
+                                         GNAT.String_Split.Slice (Subs, 2)));
 
-      --  Append entity information
-      --  Originally the entity info looks like "GP_Subp:foo.ads:12" so
-      --  we split it up (using ':' as the separator).
-      GNAT.String_Split.Create (S          => Subs,
-                                From       => To_String (Entity_Str),
-                                Separators => Sep);
+         Append (Ent_Dict, Json_Mapping ("line",
+                                         GNAT.String_Split.Slice (Subs, 3),
+                                         Quote_Val => False));
 
-      JSON_M := JSON_M & """entity"":{""file"":""";
-      if Integer (GNAT.String_Split.Slice_Count (Subs)) >= 2 then
-         JSON_M := JSON_M & To_Unbounded_String
-           (GNAT.String_Split.Slice (Subs, 2));
-      end if;
-      JSON_M := JSON_M & """,";
+         Append (Ent_Dict, Json_Mapping ("name",
+                                         Get_Name_String (Chars (E)),
+                                         Is_Last => True));
 
-      if Integer (GNAT.String_Split.Slice_Count (Subs)) >= 3 then
-         JSON_M := JSON_M & """line"":" & To_Unbounded_String
-           (GNAT.String_Split.Slice (Subs, 3));
-      end if;
-      JSON_M := JSON_M & ",";
+         Append (Ent_Dict, "}");
 
-      if Integer (GNAT.String_Split.Slice_Count (Subs)) >= 1 then
-         JSON_M := JSON_M & """name"":""" & Get_Name_String (Chars (E));
-      end if;
-      JSON_M := JSON_M & """},";
+         Append (JSON_M, Json_Mapping ("entity",
+                                       To_String (Ent_Dict),
+                                       Quote_Val => False));
+      end;
 
       --  Create a SHA1 hash of the current JSON message and then set
       --  that as the name of the tracefile.
       GNAT.SHA1.Update (C, To_String (JSON_M));
       Tracefile := To_Unbounded_String (GNAT.SHA1.Digest (C) & ".trace");
 
-      --  Append tracefile
-      JSON_M := JSON_M & """tracefile"":""";
-      JSON_M := JSON_M & Tracefile & """}";
+      --  Append tracefile and end the dictionary
+      Append (JSON_M, Json_Mapping ("tracefile", To_String (Tracefile),
+                                    Is_Last => True));
+      Append (JSON_M, "}");
 
       --  Append the JSON message to JSON_Msgs_List.
       JSON_Msgs_List.Append (JSON_M);
 
-      --  If Ide_Mode is set, then we print the JSON message
-
       if Ide_Mode then
+
+         --  If Ide_Mode is set, then we print the JSON message
+
          Put_Line (To_String (JSON_M));
 
-      --  Otherwise we issue an error message
-
       else
-         --  Assemble message string to be passed to Error_Msg_N
+
+         --  Otherwise we issue an error message
 
          M := Escape (M);
          if Tag'Length >= 1 then
@@ -400,7 +423,9 @@ package body Flow_Error_Messages is
          end if;
 
          Error_Msg_N (To_String (M), N);
+
       end if;
+
    end Print_JSON_Or_Normal_Msg;
 
    ---------------------------
