@@ -1004,12 +1004,23 @@ seconds. The \oldspark tools also prove all properties associated with
 the non-augmented \emph{admin} package but a total of 12 user rules had
 to be provided.
 
+\subsubsection{Overall provability}
+
+More than 95\% of the verification conditions that were associated
+with the converted code were automatically discharged. The remaining
+5\% consisted of checks that either derived from code that was
+previously not analyzable (and hence no provision was in place to
+assist in their provability) or required something similar to the
+\oldspark user rules to assist the prover in discharging them (this
+can potentially also be achieved through utilizing a combination of
+pragmas Assert and Assume).
+
 \subsection{Lessons Learned}
 
 While augmenting package \emph{admin}, it was noticed that formulating
 the functional behaviour annotations based on the low level Z
 specifications was very intuitive. This suggests that it might be
-possible for future projects to skip this step and provide directly
+possible for future projects to skip this step and directly provide
 \newspark annotated specifications.
 
 An interesting case of how executable semantics affect the way code
