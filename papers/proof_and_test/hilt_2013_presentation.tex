@@ -10,7 +10,7 @@
 \usetikzlibrary{backgrounds,shadows}
 
 \setbeamertemplate{note page}[plain]
-% \setbeameroption{show notes}
+\setbeameroption{show notes}
 
 
 \lstdefinestyle{tinystyle} {basicstyle=\scriptsize\tt,
@@ -98,7 +98,7 @@
 \end{frame}
 
 \begin{frame}[fragile]{SPARK 2014 language evolution}
-\note[item]{Duality of execution and proof of contracts changes the game}
+\note[item]<1>{Duality of execution and proof of contracts changes the game}
   \begin{changemargin}{-0.75cm}{-0.75cm}
     \begin{center}
       \begin{tikzpicture}[font=\tiny,y=0.95cm]
@@ -199,6 +199,23 @@
 \end{frame}
 
 \section{What?}
+
+\begin{frame}[fragile]{A very short introduction to formal verification}
+   \begin{itemize}
+      \item Source code is modelled formally
+      \begin{itemize}
+         \item Code converted to sets of verification conditions
+         \item VCs contain hypotheses representing what is known
+         \item and conclusions representing what must be demonstrated
+      \end{itemize}
+      \item Conclusions include: 
+      \begin{itemize}
+         \item Checks that run-time errors won't be raised
+         \item Checks that contracts are met
+      \end{itemize}
+      \item Automatic theorem provers typically discharge \textgreater 95\% of VCs
+   \end{itemize}
+\end{frame}
 
 \begin{frame}[fragile]{Verification Spectrum}
   \note[item]<1>{The following slides will walk through the verification spectrum with code examples.}
@@ -462,8 +479,8 @@
 
            procedure Inc_Audience (N : Integer)
            with Global => (In_Out => Audience_Count),
-                Pre    => (0 <= N, Audience_Count + N <= Max_Attendance),
-                `Post   => (Audience_Count > Audience_Count'Old);`
+                Pre    => 0 <= N and Audience_Count + N <= Max_Attendance,
+                `Post   => Audience_Count > Audience_Count'Old;`
 
         end Conference_Attendance;
 
@@ -489,8 +506,8 @@
 
            procedure Inc_Audience (N : Integer)
            with Global => (In_Out => Audience_Count),
-                Pre    => (0 <= N, Audience_Count + N <= Max_Attendance),
-                Post   => (Audience_Count > Audience_Count'Old);
+                Pre    => 0 <= N and Audience_Count + N <= Max_Attendance,
+                Post   => Audience_Count > Audience_Count'Old;
 
         end Conference_Attendance;
 
@@ -517,8 +534,8 @@
 
            procedure Inc_Audience (N : Integer)
            with Global => (In_Out => Audience_Count),
-                Pre    => (0 <= N, Audience_Count + N <= Max_Attendance),
-                Post   => (`Audience_Count = Audience_Count'Old + N`);
+                Pre    => 0 <= N and Audience_Count + N <= Max_Attendance,
+                Post   => `Audience_Count = Audience_Count'Old + N`;
 
         end Conference_Attendance;
 
@@ -545,8 +562,8 @@
 
            procedure Inc_Audience (N : Integer)
            with Global => (In_Out => Audience_Count),
-                Pre    => (0 <= N, Audience_Count + N <= Max_Attendance),
-                Post   => (`Audience_Count = Audience_Count'Old + N`);
+                Pre    => 0 <= N and Audience_Count + N <= Max_Attendance,
+                Post   => `Audience_Count = Audience_Count'Old + N`;
 
         end Conference_Attendance;
 
@@ -573,8 +590,8 @@
 
            procedure Inc_Audience (N : Integer)
            with Global => (In_Out => Audience_Count),
-                Pre    => (0 <= N, Audience_Count + N <= Max_Attendance),
-                Post   => (Audience_Count = Audience_Count'Old + N);
+                Pre    => 0 <= N and Audience_Count + N <= Max_Attendance,
+                Post   => Audience_Count = Audience_Count'Old + N;
 
         end Conference_Attendance;
 
@@ -684,9 +701,9 @@ M: Mandatory; HR: Highly Recommended; R: Recommended;
 
   --  Calculates the square root of X
   function Sqrt (X : in Natural) return Natural 
-  with Postcondition =>
-         ((Sqrt'Result * Sqrt'Result) <= X and
-          (Sqrt'Result + 1) * (Sqrt'Result + 1) > X);
+  with Post =>
+         (Sqrt'Result * Sqrt'Result) <= X and
+          (Sqrt'Result + 1) * (Sqrt'Result + 1) > X;
 
 
 
@@ -881,16 +898,19 @@ M: Mandatory; HR: Highly Recommended; R: Recommended;
          \begin{minipage}[t!]{0.5\textwidth}
           \begin{onlyenv}<1>
             \begin{pxcode}[language=SPARK,style=magic,gobble=15]
-               procedure Sort (Table : in out Array_Type)
+               function Has_Duplicates(Table : in Array_Type)
+                  return Boolean;
              \end{pxcode}
           \end{onlyenv}
 
           \begin{onlyenv}<2->
            \begin{pxcode}[language=SPARK,style=magic,gobble=15]
-               procedure Sort(Table : in out Array_Type)
-               with Postcondition( 
-                      Ordered(Table, 1, Max_Table_Size) and
-                      Perm(Table, Table’Old));
+               function Has_Duplicates(Table : in Array_Type)
+                  return Boolean
+               with Post => 
+                      for all i in Array_Type'Range => 
+                         for all j in Array_Type'Range => 
+                            if i /= j then Table(i) /= Table(j);
 
            \end{pxcode}
           \end{onlyenv}
@@ -901,19 +921,18 @@ M: Mandatory; HR: Highly Recommended; R: Recommended;
          \begin{minipage}[t!]{0.25\textwidth}
           \begin{onlyenv}<-2>
             \begin{pxcode}[language=SPARK,style=magic,gobble=15]
-               function Perm(A, B: Array_Type) 
-                  return Boolean;
+               procedure Sort(A : in out Array_Type);
              \end{pxcode}
           \end{onlyenv}
 
           \begin{onlyenv}<3->
            \begin{pxcode}[language=SPARK,style=magic,gobble=15]
-               function Perm(A, B: Array_Type) 
-                return Boolean
-               with Postcondition => 
-                (for all I in Index_Type =>
-                    Occurrences(A, 1, Max_Size, A(I)) =
-                    Occurrences(B, 1, Max_Size, A(I)));
+               procedure Sort(A : in out Array_Type) 
+               with Post => 
+                       (for all I in 
+                          Array_Type'First .. 
+                             Array_Type'Last - 1 =>
+                             A(I) <= A (I + 1));
            \end{pxcode}
           \end{onlyenv}
          \end{minipage} };
@@ -922,23 +941,20 @@ M: Mandatory; HR: Highly Recommended; R: Recommended;
          \begin{minipage}[t!]{5cm}
           \begin{onlyenv}<-2>
            \begin{pxcode}[language=SPARK,style=magic,gobble=13]
-             function Ordered(A   : Array_T;
-                              L, U: Index_T) 
+             function Ordered_Has_Duplicates(A : Array_T)
                 return Boolean;
            \end{pxcode}
           \end{onlyenv}
 
           \begin{onlyenv}<3>
            \begin{pxcode}[language=SPARK,style=magic,gobble=13]
-             function Ordered(A   : Array_T;
-                              L, U: Index_T) 
-             return Boolean
-             with Precondition  => (L < U)
-                  Postcondition => 
-                    (Ordered’Result =
-                       (for all I in Index_Type 
-                          range L .. U - 1 =>
-                           A(I) <= A (I + 1)));
+             function Ordered_Has_Duplicates(A : Array_T)
+                  return Boolean
+               with Post => 
+                       (for all I in 
+                          Array_Type'First .. 
+                             Array_Type'Last - 1 =>
+                             A(I) /= A(I + 1));
 
            \end{pxcode}
           \end{onlyenv}
@@ -999,8 +1015,10 @@ M: Mandatory; HR: Highly Recommended; R: Recommended;
      \item Try testing your code using Ada 2012 contracts
      \item Visit www.spark-2014.org
      \item SPARK 2014 Beta tools are available - ask us for more info
-     \item Come and chat or send me an e-mail: andrew.hawthorn@altran.com
+     \item Ask questions now, come and chat or send me an e-mail: andrew.hawthorn@altran.com
   \end{itemize}
+
+  \vspace{0.3cm}
 
   \begin{center}
      \includegraphics[width=5cm]{partnership_logo_big.png}
