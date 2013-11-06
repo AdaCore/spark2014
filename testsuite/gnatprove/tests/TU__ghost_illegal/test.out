@@ -1,0 +1,13 @@
+ghost_illegal_1.ads:8:04: "Ghost_Var" may not have Ghost convention
+ghost_illegal_1.ads:8:04: only functions are permitted to have Ghost convention
+ghost_illegal_1.ads:15:14: "Ghost_Proc" may not have Ghost convention
+ghost_illegal_1.ads:15:14: only functions are permitted to have Ghost convention
+ghost_illegal_2.ads:2:06: "Ghost_Illegal_2 (body)" depends on "Ghost_Illegal_2 (spec)"
+ghost_illegal_2.ads:2:06: "Ghost_Illegal_2 (spec)" depends on "Helper (spec)"
+ghost_illegal_2.ads:2:06: file "helper.ads" not found
+   compilation of ghost_illegal_1.ads failed
+   compilation of ghost_illegal_2.adb failed
+
+
+gnatprove: error during frame condition computation, aborting.
+gprbuild: *** compilation phase failed

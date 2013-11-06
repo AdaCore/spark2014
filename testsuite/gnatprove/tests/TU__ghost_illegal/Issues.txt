@@ -1,9 +1,0 @@
-ghost_illegal_2.adb: Vol_Ghost is both a volatile and a ghost variable.
-                     This should not be allowed.
-
-                     No error is emitted for reading a volatile while from
-                     within a ghost function.
-
-                     Function Return_First_Int emits no error. Is this OK
-                     since it's an instantiation of generic function rather
-                     than a generic package?

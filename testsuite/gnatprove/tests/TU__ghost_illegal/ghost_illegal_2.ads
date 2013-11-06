@@ -34,13 +34,5 @@ is
    subtype Odd is Integer
      with Dynamic_Predicate => not Is_Even (Odd);
 
-   --  TU: 9. A ghost instantiation shall not be an instantiation of a
-   --  non-ghost generic package. [This is a conservative rule until we have
-   --  more precise rules about the side effects of elaborating an instance of
-   --  a generic package. We will need the general rule that the elaboration of
-   --  a ghost declaration of any kind cannot modify non-ghost state.]
-   function Return_First_Int is new Return_First (Elem => Integer)
-     with Convention => Ghost;
-
    procedure Ghost_Func_In_Flow_Exprpession (Par : in out Integer);
 end Ghost_Illegal_2;
