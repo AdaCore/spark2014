@@ -10,7 +10,8 @@ private
      --  the list.
      --  [This eliminates the possibility of a positional
      --  association following a named association in the property list.]
-     with Abstract_State => (Pr_S with External, Part_Of => S, Input_Only)
+     with Abstract_State => (Pr_S with Part_Of => S,
+                                       External)
    is
       procedure P2;
    end Nested_Private_Package;
