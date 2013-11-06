@@ -920,8 +920,8 @@ actually now be redundant.
 
 \subsection{Formalization of Properties}
 
-The contracts defined in the Tokeneer source code consist of
-information flow contracts (expressed as Depends aspects) and
+The contracts that have been added in the Tokeneer source code consist
+of information flow contracts (expressed as Depends aspects) and
 functional behavioural contracts (expressed as Pre and Post aspects).
 
 The Depends aspects facilitate flow analysis of the code. Flow
@@ -1006,25 +1006,31 @@ to be provided.
 
 \subsection{Lessons Learned}
 
--Conversion of the majority of the code is straight forward.
+While augmenting package \emph{admin}, it was noticed that formulating
+the functional behaviour annotations based on the low level Z
+specifications was very intuitive. This suggests that it might be
+possible for future projects to skip this step and provide directly
+\newspark annotated specifications.
 
--Flaws in specifications can be detected (see HiLite report).
+An interesting case of how executable semantics affect the way code
+and annotations have to be written was uncovered while attempting to
+prove package AuditLog. Converting \oldspark annotations into their
+\newspark equivalents introduced several run time checks that
+previously did not exist. Some of these checks were not automatically
+discharged. A more in depth investigation revealed that an invariant
+was missing from the original specifications. This invariant described
+the property of always using at least one log file
+($UsedLogFile.Lenfth >= 1$). Another report that has documented and
+has elaborated on this observation can be found at
+\url{www.open-do.org/wp-content/uploads/2013/05/Industrial_Case_Studies_Final_Report.pdf}.
 
--Low level Z specs look very much like the \newspark code.
-
--Explain why we have packages where not everything is proven and why we
-have some flow warnings (\oldspark was getting away with these because
-it was using rlu/prv files and the flow warnings were accepted).
-
--Investigate how executable semantics affect the way code has to be
-written and what advantages/disadvantages they introduce
-
--Discover the percentage of the code that can be automatically proven;
-and the combination of options/provers that achieve the best results
-for this specific test case.
-
--Provide feedback and suggest features or changes that could improve
-future versions of the \newspark toolset.
+When analysing a single package in isolation, it was easy to
+understand which verification conditions were proved and which were
+not. However, when more than one files were analysed in a single run,
+it became increasing complicated to retain supervision of both
+individual and overall provability. Having a tool that summarizes the
+results and informs about remaining undischarged verification
+conditions would greatly assist users.
 
 \section{Common Findings and Dissimilarities}
 
