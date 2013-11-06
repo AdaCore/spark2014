@@ -17,14 +17,14 @@ skein.adb:102:72: warning: range check might fail
 skein.adb:115:52: info: division check proved
 skein.adb:115:52: warning: range check might fail
 skein.adb:118:44: info: length check proved
-skein.adb:121:44: info: division check proved
+skein.adb:121:44: warning: divide by zero might fail
 skein.adb:146:37: warning: range check might fail
-skein.ads:110:21: info: length check proved
-skein.ads:113:21: info: length check proved
-skein.ads:116:21: info: length check proved
-skein.ads:121:21: info: length check proved
-skein.ads:268:52: info: length check proved
-skein.ads:269:52: info: length check proved
+skein.ads:110:21: warning: length check might fail
+skein.ads:113:21: warning: length check might fail
+skein.ads:116:21: warning: length check might fail
+skein.ads:121:21: warning: length check might fail
+skein.ads:268:52: warning: length check might fail
+skein.ads:269:52: warning: length check might fail
 Analyzed 1 units
 in unit skein, 7 subprograms and packages out of 7 analyzed
   Skein.Put_64_LSB_First at skein.adb:27 flow analyzed (0 errors and 0 warnings) and not proved, 2 checks out of 6 proved
@@ -32,6 +32,6 @@ in unit skein, 7 subprograms and packages out of 7 analyzed
   Skein.Skein_512_Final.Zero_Pad_B at skein.adb:84 flow analyzed (0 errors and 0 warnings) and proved (1 checks)
   Skein.Skein_Start_New_Type at skein.adb:42 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
   Skein.Zero_Pad at skein.adb:60 flow analyzed (0 errors and 0 warnings) and proved (1 checks)
-  Skein at skein.ads:6 flow analyzed (0 errors and 0 warnings) and proved (6 checks)
-  Skein.Skein_512_Final at skein.ads:131 flow analyzed (0 errors and 0 warnings) and not proved, 3 checks out of 5 proved
+  Skein at skein.ads:6 flow analyzed (0 errors and 0 warnings) and not proved, 0 checks out of 6 proved
+  Skein.Skein_512_Final at skein.ads:131 flow analyzed (0 errors and 0 warnings) and not proved, 2 checks out of 5 proved
 
