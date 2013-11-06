@@ -59,8 +59,8 @@ is
    ------------------------------------------------------------------
 
    procedure Deactivate
-      with Global  => (Output => Output),
-           Depends => (Output => null),
-           Post    => not IsAlarming;
+     with Global  => (Output => Output),
+          Depends => (Output => null),
+          Post    => not IsAlarming;
 
 end Alarm.Interfac;
