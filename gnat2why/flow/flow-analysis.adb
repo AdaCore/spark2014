@@ -40,7 +40,7 @@ with Flow_Error_Messages;   use Flow_Error_Messages;
 
 --  with Output;     use Output;
 --  with Treepr;     use Treepr;
---  with Flow.Debug; use Flow.Debug;
+with Flow.Debug; use Flow.Debug;
 
 package body Flow.Analysis is
 
@@ -49,6 +49,9 @@ package body Flow.Analysis is
    --  not specified. This may later be a configurable restriction
    --  (requires_depends or similar); but it is quite useful for
    --  debugging anyway.
+
+   Debug_Trace_Depends : constant Boolean := False;
+   --  Enable this to show the specified and computed dependency relation.
 
    use type Ada.Containers.Count_Type;
    use type Flow_Graphs.Vertex_Id;
@@ -2065,8 +2068,10 @@ package body Flow.Analysis is
 
       Actual_Deps := Compute_Dependency_Relation (FA);
 
-      --  Print_Dependency_Map (User_Deps);
-      --  Print_Dependency_Map (Actual_Deps);
+      if Debug_Trace_Depends then
+         Print_Dependency_Map (User_Deps);
+         Print_Dependency_Map (Actual_Deps);
+      end if;
 
       --  If the user depds do not include something we have in the
       --  actual deps we will raise an appropriate error. We should

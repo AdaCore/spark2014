@@ -324,9 +324,12 @@ package body Flow.Control_Flow_Graph.Utility is
               E_In_Out_Parameter | E_In_Parameter;
 
             if Is_Discriminant (F_Ent) then
-               --  Discriminants are *always* initialized imports.
+               --  Discriminants are *always* initialized. They are also
+               --  implicit imports if they are out parameters.
                A.Is_Initialised := True;
-               A.Is_Import      := True;
+               if Ekind (Entire_Var) = E_Out_Parameter then
+                  A.Is_Import := True;
+               end if;
             end if;
 
             A.Is_Loop_Parameter := Ekind (Entire_Var) = E_Loop_Parameter;
