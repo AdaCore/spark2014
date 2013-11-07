@@ -3,32 +3,32 @@ with System.Storage_Elements;
 package Volatiles_Legal
   with SPARK_Mode
 is
-   --  TU: 8. Every update of an external state is considered to be read by
+   --  TU: 7. Every update of an external state is considered to be read by
    --  some external reader if Async_Readers => True.
 
-   --  TU: 9. Each successive read of an external state might have a different
+   --  TU: 8. Each successive read of an external state might have a different
    --  value [written by some external writer] if Async_Writers => True.
 
-   --  TU: 10. If Effective_Writes => True, then every value written to the
+   --  TU: 9. If Effective_Writes => True, then every value written to the
    --  external state is significant. [For instance writing a sequence
    --  of values to a port.]
 
-   --  TU: 11. If Effective_Reads => True, then every value read from the
+   --  TU: 10. If Effective_Reads => True, then every value read from the
    --  external state is significant. [For example a value read from a
    --  port might be used in determining how the next value is
    --  processed.]
 
-   --  TU: 12. Each update of an external state has no external effect if both
+   --  TU: 11. Each update of an external state has no external effect if both
    --  Async_Readers => False and Effective_Writes => False.
 
-   --  TU: 13. Each successive read of an external state will result in the
+   --  TU: 12. Each successive read of an external state will result in the
    --  last value explicitly written [by the program] if Async_Writers =>
    --  False.
 
-   --  TU: 14. Every explicit update of an external state might affect the next
+   --  TU: 13. Every explicit update of an external state might affect the next
    --  value read from the external state even if Async_Writers => True.
 
-   --  TU: 15. An external state which has the property Async_Readers => True
+   --  TU: 14. An external state which has the property Async_Readers => True
    --  need not be initialized before being read although explicit
    --  initialization is permitted. [The external state might be
    --  initialized by an external writer.]

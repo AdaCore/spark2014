@@ -27,13 +27,4 @@ is
 
    function F2 (Par : Vol_T) return Boolean;
    --  TU: 10. A function shall not have a formal parameter of a Volatile type.
-
-   procedure Proc
-     with Global => Vol2;
-   --  TU: 7. If an external state has set to True any of:
-   --  - Async_Readers, Effective_Writes or Effective_Reads - it must have
-   --    a ``mode_selector`` of Output or In_Out when denoted as a
-   --    ``global_item``; or
-   --  - Async_Writers - it must have a ``mode_selector`` of Input or
-   --    In_Out when denoted as a ``global_item``.
 end Volatiles_Illegal_3;
