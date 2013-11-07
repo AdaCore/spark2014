@@ -1068,11 +1068,12 @@ Constituents of each ``state_name`` have to be initialized
 consistently with that of their representative ``state_name`` as
 determined by its denotation in the Initializes aspect of the package.
 
-A subprogram may have an *abstract view* and a *refined view*. The abstract
-view is a subprogram declaration in the visible part of a package where a
-subprogram may refer to private types and state abstractions whose details are
-not visible. A refined view of a subprogram is the body or body stub of the
-subprogram in the package body whose visible part declares its abstract view.
+A subprogram may have an *abstract view* and a *refined view*. The
+abstract view is a subprogram declaration in a package specification
+of a package where a subprogram may refer to private types and
+state abstractions whose details are not visible. A refined view of a
+subprogram is the body or body stub of the subprogram in the package
+body whose specification declares its abstract view.
 
 In a refined view a subprogram has visibility of the full type declarations of
 any private types declared by the enclosing package and visibility of the
@@ -1277,12 +1278,13 @@ which reside in another package, initialization by their declaring package.
 Refined_Global Aspects
 ~~~~~~~~~~~~~~~~~~~~~~
 
-A subprogram declared in the visible part of a package may have a Refined_Global
-aspect applied to its body or body stub. A Refined_Global aspect of a subprogram
-defines a *refinement* of the Global Aspect of the subprogram; that is, the
-Refined_Global aspect repeats the Global aspect of the subprogram except that
-references to state abstractions whose refinements are visible at the point
-of the subprogram_body are replaced with references to [some or all of the]
+A subprogram declared in the specification of a package may
+have a Refined_Global aspect applied to its body or body stub. A
+Refined_Global aspect of a subprogram defines a *refinement* of the
+Global Aspect of the subprogram; that is, the Refined_Global aspect
+repeats the Global aspect of the subprogram except that references to
+state abstractions whose refinements are visible at the point of the
+subprogram_body are replaced with references to [some or all of the]
 constituents of those abstractions.
 
 The Refined_Global aspect is introduced by an ``aspect_specification`` where
@@ -1300,7 +1302,7 @@ shall follow the grammar of ``global_specification`` in :ref:`global-aspects`.
 
 2. A Refined_Global aspect is permitted on a body_stub (if one is
    present) or subprogram body if and only if it has a declaration in the
-   visible part of an enclosing package, the declaration has a
+   specification of an enclosing package, the declaration has a
    Global aspect which denotes a state abstraction declared by the package and
    the refinement of the state abstraction is visible.
 
@@ -1511,7 +1513,7 @@ There are no dynamic semantics associated with a Refined_Global aspect.
 Refined_Depends Aspects
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-A subprogram declared in the visible part of a package may have a Refined_Depends
+A subprogram declared in the specification of a package may have a Refined_Depends
 aspect applied to its body or body stub. A Refined_Depends aspect of a
 subprogram defines a *refinement* of the Depends aspect of the subprogram; that
 is, the Refined_Depends aspect repeats the Depends aspect of the subprogram
@@ -1534,7 +1536,7 @@ shall follow the grammar of ``dependency_relation`` in :ref:`depends-aspects`.
 
 2. A Refined_Depends aspect is permitted on a body_stub (if one is
    present) or subprogram body if and only if it has a declaration in the
-   visible part of an enclosing package and the declaration has a
+   specification of an enclosing package and the declaration has a
    Depends aspect which denotes a state abstraction declared by the package and
    the refinement of the state abstraction is visible.
 
@@ -2206,7 +2208,7 @@ private child unit (or a public descendant thereof).
 Refined Postcondition Aspects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-A subprogram declared in the visible part of a package may have a Refined
+A subprogram declared in the specification of a package may have a Refined
 Postcondition aspect applied to its body or body stub. The Refined Postcondition
 may be used to restate a postcondition given on the declaration of a subprogram
 in terms of the full view of a private type or the ``constituents`` of a refined
@@ -2222,7 +2224,7 @@ be a Boolean ``expression``.
 
 1. A Refined_Post aspect may only appear on a body_stub (if one is
    present) or the body (if no stub is present) of a subprogram which is
-   declared in the visible part of a package, its abstract view. If the
+   declared in the specification of a package, its abstract view. If the
    subprogram declaration in the visible part has no explicit postcondition, a
    postcondition of True is assumed for the abstract view.
 
@@ -2467,7 +2469,7 @@ be a Boolean ``expression``.
      determined.
 
 .. Text commented out until decision on Refined_Pre is finalised.
-   A subprogram declared in the visible part of a package may have a Refined
+   A subprogram declared in the specification of a package may have a Refined
    Precondition aspect applied to its body or body stub. The Refined
    Precondition may be used to restate a precondition given on the declaration
    of a subprogram in terms of the full view of a private type or the
@@ -2481,7 +2483,7 @@ be a Boolean ``expression``.
 
    #. A Refined_Pre aspect may appear only on a body_stub (if one is present) or
       the body (if no stub is present) of subprogram if the subprogram is declared
-      in the visible part of a package, its abstract view. If the subprogram
+      in the specification of a package, its abstract view. If the subprogram
       declaration in the visible part has no explicit precondition, a precondition
       of True is assumed for its abstract view.
 
