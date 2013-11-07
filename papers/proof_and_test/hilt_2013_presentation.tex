@@ -10,7 +10,7 @@
 \usetikzlibrary{backgrounds,shadows}
 
 \setbeamertemplate{note page}[plain]
-\setbeameroption{show notes}
+% \setbeameroption{show notes}
 
 
 \lstdefinestyle{tinystyle} {basicstyle=\scriptsize\tt,
@@ -201,10 +201,11 @@
 \section{What?}
 
 \begin{frame}[fragile]{A very short introduction to formal verification}
+   \note{With SPARK Pro 11, RTE VCs you can actually claim more: Its generally better than 99\%! (iFACTS stats are around 99\%, stuff like SPARKSkein and libSPARKcrypty its 100\%.)}
    \begin{itemize}
-      \item Source code is modelled formally
+      \item Source code is modelled formally:
       \begin{itemize}
-         \item Code converted to sets of verification conditions
+         \item Code converted to sets of verification conditions (VCs)
          \item VCs contain hypotheses representing what is known
          \item and conclusions representing what must be demonstrated
       \end{itemize}
@@ -453,7 +454,7 @@
 
            procedure Inc_Audience (N : Integer)
            with Global => (In_Out => Audience_Count),
-                `Pre    => (0 <= N, Audience_Count + N <= Max_Attendance);`
+                `Pre    => 0 <= N and Audience_Count + N <= Max_Attendance;`
 
         end Conference_Attendance;
 
@@ -908,9 +909,9 @@ M: Mandatory; HR: Highly Recommended; R: Recommended;
                function Has_Duplicates(Table : in Array_Type)
                   return Boolean
                with Post => 
-                      for all i in Array_Type'Range => 
-                         for all j in Array_Type'Range => 
-                            if i /= j then Table(i) /= Table(j);
+                      (for all i in Array_Type'Range => 
+                         (for all j in Array_Type'Range => 
+                            (if i /= j then Table(i) /= Table(j) )));
 
            \end{pxcode}
           \end{onlyenv}
