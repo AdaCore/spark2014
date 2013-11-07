@@ -111,9 +111,20 @@ Pragma ``SPARK_Mode``
 
 SPARK_Mode is a three-valued aspect. At least until we get to the
 next paragraph, a SPARK_Mode of On, Off, or Auto is associated
-with each Ada construct. In general, On indicates that the construct is
-required to be in |SPARK|, Off indicates otherwise, and Auto
-is discussed below.
+with each Ada construct. Roughly, the meaning of the three values is the
+following:
+
+ * a value of On means that the construct is required to be in |SPARK|, and
+   the construct will be analyzed by |GNATprove|.
+ * a value of Off means that the construct will not be analyzed by
+   |GNATprove|, and does not need to obey the |SPARK| restrictions. The
+   construct also cannot be referenced from other parts that are required to
+   be in |SPARK|.
+ * a value of Auto means that the construct will not be analyzed, and
+   |GNATprove| will infer whether this construct can be used in other |SPARK|
+   parts or not.
+
+We now explain in more detail how the SPARK_Mode pragma works.
 
 Some Ada constructs are said to have more than one "section".
 For example, a declaration which requires a completion will have (at least)
