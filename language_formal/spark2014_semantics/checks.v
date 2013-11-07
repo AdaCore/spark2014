@@ -1,3 +1,14 @@
+(** 
+_AUTHOR_
+
+<<
+Zhi Zhang
+Departmnt of Computer and Information Sciences
+Kansas State University
+zhangzhi@ksu.edu
+>>
+*)
+
 Require Import language.
 Require Import values.
 Require Import util.
@@ -61,7 +72,7 @@ Inductive check_flags: expression -> run_time_check_set -> Prop :=
     min_signed: -2^31 
     max_signed: 2^31-1
     
-    if v1 = -2^31 and v2 = -1 then v1 ÷ v2 = 2^31, which is out of its range; 
+    if v1 = -2^31 and v2 = -1 then v1 / v2 = 2^31, which is out of its range; 
 *)
 Inductive do_check: binary_operator -> value -> value -> bool -> Prop :=
     | Do_Overflow_Check_On_Plus: forall v1 v2 b,
@@ -77,9 +88,9 @@ Inductive do_check: binary_operator -> value -> value -> bool -> Prop :=
         (Zge_bool (v1 * v2) min_signed) && (Zle_bool (v1 * v2) max_signed) = b ->
         do_check Multiply (Int v1) (Int v2) b
     | Do_Division_By_Zero_And_Overflow_Check_On_Divide: forall v1 v2 b,
-        (* min_signed <= (v1 ÷ v2) <= max_signed and v2 is not zero *)
+        (* min_signed <= (v1 / v2) <= max_signed and v2 is not zero *)
         (* (negb (Zeq_bool v2 0)) && (Zeq_bool v1 min_signed) && (Zeq_bool v2 (-1)) = b -> *)
-        (negb (Zeq_bool v2 0)) && ((Zge_bool (v1 ÷ v2) min_signed) && (Zle_bool (v1 ÷ v2) max_signed)) = b ->
+        (negb (Zeq_bool v2 0)) && ((Zge_bool (Z.quot v1 v2) min_signed) && (Zle_bool (Z.quot v1 v2) max_signed)) = b ->
         do_check Divide (Int v1) (Int v2) b
     | Do_Nothing: forall op v1 v2,
         op <> Plus ->
@@ -102,7 +113,7 @@ Inductive do_flagged_check: run_time_checks -> binary_operator -> value -> value
         do_flagged_check Do_Overflow_Check Multiply (Int v1) (Int v2) b
     | Do_Overflow_Check_Divide: forall v1 v2 b,
         (* (Zeq_bool v1 min_signed) && (Zeq_bool v2 (-1)) = b -> *)
-        (Zge_bool (v1 ÷ v2) min_signed) && (Zle_bool (v1 ÷ v2) max_signed) = b ->
+        (Zge_bool (Z.quot v1 v2) min_signed) && (Zle_bool (Z.quot v1 v2) max_signed) = b ->
         do_flagged_check Do_Overflow_Check Divide (Int v1) (Int v2) b
     | Do_Division_By_Zero_Check: forall v1 v2 b,
         negb (Zeq_bool v2 0) = b ->
@@ -159,7 +170,7 @@ Function f_do_check (op: binary_operator) (v1: value) (v2: value): option bool :
     | Divide => (* both division by zero check and overflow check *)
         match v1, v2 with
         | Int v1', Int v2' => 
-            Some ((negb (Zeq_bool v2' 0)) && ((Zge_bool (v1' ÷ v2') min_signed) && (Zle_bool (v1' ÷ v2') max_signed)))
+            Some ((negb (Zeq_bool v2' 0)) && ((Zge_bool (Z.quot v1' v2') min_signed) && (Zle_bool (Z.quot v1' v2') max_signed)))
         | _, _ => None
         end
     | _ => Some true
@@ -189,7 +200,7 @@ Function f_do_flagged_check (rtc: run_time_checks) (op: binary_operator) (v1: va
         end
     | Do_Overflow_Check, Divide => 
         match v1, v2 with
-        | Int v1', Int v2' => Some ((Zge_bool (v1' ÷ v2') min_signed) && (Zle_bool (v1' ÷ v2') max_signed))
+        | Int v1', Int v2' => Some ((Zge_bool (Z.quot v1' v2') min_signed) && (Zle_bool (Z.quot v1' v2') max_signed))
         | _, _ => None
         end
     | Do_Division_Check, Divide => 
@@ -511,11 +522,11 @@ Proof.
       destruct v2.
       * exists false; 
         constructor; auto.
-      * remember ((Zge_bool (v1 ÷ (Z.pos p)) min_signed) && (Zle_bool (v1 ÷ (Z.pos p)) max_signed)) as b.
+      * remember ((Zge_bool (Z.quot v1 (Z.pos p)) min_signed) && (Zle_bool (Z.quot v1 (Z.pos p)) max_signed)) as b.
         destruct b;
         [exists true | exists false];
         constructor; auto.
-      * remember ((Zge_bool (v1 ÷ (Z.neg p)) min_signed) && (Zle_bool (v1 ÷ (Z.neg p)) max_signed)) as b.
+      * remember ((Zge_bool (Z.quot v1 (Z.neg p)) min_signed) && (Zle_bool (Z.quot v1 (Z.neg p)) max_signed)) as b.
         destruct b;
         [exists true | exists false];
         constructor; auto.

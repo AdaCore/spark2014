@@ -1,3 +1,14 @@
+(** 
+_AUTHOR_
+
+<<
+Zhi Zhang
+Departmnt of Computer and Information Sciences
+Kansas State University
+zhangzhi@ksu.edu
+>>
+*)
+
 Require Export values.
 
 (** for any valid variable x, it has an in/out mode, type and value 
@@ -6,20 +17,20 @@ Require Export values.
     at compile time, we keep these invariant information in a symbol 
     table called _symtb_; while the value of a variable will change 
     as the program executes, and it's used in run time evaluation, 
-    so we keep this information in a stack called _stack_;
+    so we keep this information in a store called _store_;
 *)
 
-(** * Stack *)
+(** * Store *)
 
-(** ** Stack as a list *)
+(** ** Store as a list *)
 (** it's a map from a variable, represented with natural number,
     to its value;
 *)
-Definition stack : Type := list (idnum * val).
+Definition store : Type := list (idnum * val).
 
-(** ** Stack operations *)
+(** ** Store operations *)
 (** check whether variable x has already been declared *)
-Function reside (x : idnum) (s : stack) := 
+Function reside (x : idnum) (s : store) := 
     match s with 
     | (y, v) :: s' =>
       if beq_nat x y then
@@ -29,8 +40,8 @@ Function reside (x : idnum) (s : stack) :=
     | nil => false
     end.
 
-(** fetch the value of x that has already been initialized in stack *)
-Function fetch (x : idnum) (s : stack): option value := 
+(** fetch the value of x that has already been initialized in store *)
+Function fetch (x : idnum) (s : store): option value := 
     match s with 
     | (y, v) :: s' =>
       if beq_nat x y then
@@ -43,7 +54,7 @@ Function fetch (x : idnum) (s : stack): option value :=
     end.
 
 (** update the latest binding for x *)
-Function update (s: stack) (x : idnum) (v: val): option stack := 
+Function update (s: store) (x : idnum) (v: val): option store := 
     match s with 
     | (y, v') :: s' => 
       if beq_nat x y then 
@@ -56,7 +67,7 @@ Function update (s: stack) (x : idnum) (v: val): option stack :=
    | nil => None
    end.
 
-(** ** Lemmas about stack operations *)
+(** ** Lemmas about store operations *)
 Lemma fetch_in: forall x s v, 
     fetch x s = Some v -> List.In (x, Value v) s.
 Proof.
@@ -143,75 +154,75 @@ Fixpoint lookup (x : idnum) (tb: symtb) :=
 *)
 
 Inductive state: Type :=
-    | S_Normal: stack -> state
+    | S_Normal: store -> state
     | S_Run_Time_Error: state
     | S_Unterminated: state
     | S_Abnormal: state.
 
 (** * Type Check Stack *)
 
-(** ** Type checker for stack *)
+(** ** Type checker for store *)
 (** for any valid variable x, it has an in/out mode, type and value 
     (either defined or undefined); as the in/out mode and type are
     invariant since the variable is declared, and they are used only
     at compile time, we keep these invariant information in a symbol 
     table called _symtb_; while the value of a variable will change 
     as the program executes, and it's used in run time evaluation, 
-    so we keep this information in a stack called _stack_;
+    so we keep this information in a store called _store_;
     
     Type Check Stack means: for any variable x, its stored value in
-    stack should be consistent with its declared type recorded in
+    store should be consistent with its declared type recorded in
     symbol table symtb;
     
-    This section defines the type checker for stack in both relational
+    This section defines the type checker for store in both relational
     and functional logic and prove their bisimulation relation
-    - relational one: type_check_stack;
-    - functional one: f_type_check_stack;
+    - relational one: type_check_store;
+    - functional one: f_type_check_store;
     - bisilumation proof between relational and functional one;
 *)
-Inductive type_check_stack: symtb -> stack -> Prop :=
-    | TC_Empty: type_check_stack nil nil
+Inductive type_check_store: symtb -> store -> Prop :=
+    | TC_Empty: type_check_store nil nil
     | TC_Bool: forall tb s x m b,
-          type_check_stack tb s ->
-          type_check_stack ((x, (m, Boolean)) :: tb) ((x, (Value (Bool b))) :: s)
+          type_check_store tb s ->
+          type_check_store ((x, (m, Boolean)) :: tb) ((x, (Value (Bool b))) :: s)
     | TC_Int: forall tb s x m v,
-          type_check_stack tb s ->
-          type_check_stack ((x, (m, Integer)) :: tb) ((x, (Value (Int v))) :: s)
+          type_check_store tb s ->
+          type_check_store ((x, (m, Integer)) :: tb) ((x, (Value (Int v))) :: s)
     | TC_Undefined_Bool: forall tb s x m,
-          type_check_stack tb s ->
-          type_check_stack ((x, (m, Boolean)) :: tb) ((x, Undefined) :: s)
+          type_check_store tb s ->
+          type_check_store ((x, (m, Boolean)) :: tb) ((x, Undefined) :: s)
     | TC_Undefined_Int: forall tb s x m,
-          type_check_stack tb s ->
-          type_check_stack ((x, (m, Integer)) :: tb) ((x, Undefined) :: s).
+          type_check_store tb s ->
+          type_check_store ((x, (m, Integer)) :: tb) ((x, Undefined) :: s).
 
-Function f_type_check_stack (tb: symtb) (s: stack): bool :=
+Function f_type_check_store (tb: symtb) (s: store): bool :=
     match tb, s with
     | nil, nil => true
     | (u :: tb'), (v :: s') => 
         match u, v with
         | (x, (m, Boolean)), (y, (Value (Bool b))) => 
-            if beq_nat x y then f_type_check_stack tb' s' else false
+            if beq_nat x y then f_type_check_store tb' s' else false
         | (x, (m, Integer)), (y, (Value (Int v))) => 
-            if beq_nat x y then f_type_check_stack tb' s' else false
+            if beq_nat x y then f_type_check_store tb' s' else false
         | (x, (m, Boolean)), (y, Undefined) => 
-            if beq_nat x y then f_type_check_stack tb' s' else false
+            if beq_nat x y then f_type_check_store tb' s' else false
         | (x, (m, Integer)), (y, Undefined) => 
-            if beq_nat x y then f_type_check_stack tb' s' else false
+            if beq_nat x y then f_type_check_store tb' s' else false
         | _, _ => false
         end
     | _, _ => false
     end.
 
-(** Bisimulation proof between f_type_check_stack and type_check_stack: 
-    - f_type_check_stack_correct
-    - f_type_check_stack_complete
+(** Bisimulation proof between f_type_check_store and type_check_store: 
+    - f_type_check_store_correct
+    - f_type_check_store_complete
 *)
-Lemma f_type_check_stack_correct: forall tb s,
-    f_type_check_stack tb s = true ->
-        type_check_stack tb s.
+Lemma f_type_check_store_correct: forall tb s,
+    f_type_check_store tb s = true ->
+        type_check_store tb s.
 Proof.
     intros tb s.
-    functional induction (f_type_check_stack tb s);
+    functional induction (f_type_check_store tb s);
     intros h1;
     try match goal with
     | h: false = true |- _ => inversion h
@@ -219,25 +230,25 @@ Proof.
     end; constructor; auto.
 Qed.
 
-Lemma f_type_check_stack_complete: forall tb s,
-    type_check_stack tb s ->
-        f_type_check_stack tb s = true.
+Lemma f_type_check_store_complete: forall tb s,
+    type_check_store tb s ->
+        f_type_check_store tb s = true.
 Proof.
     intros tb s h1.
     induction h1;
     simpl;
     repeat match goal with
     | |- context[beq_nat ?x ?x] => rewrite <- (beq_nat_refl x)
-    | h: f_type_check_stack ?tb ?s = true |- _ => rewrite h
+    | h: f_type_check_store ?tb ?s = true |- _ => rewrite h
     end; auto.
 Qed.
 
 (** ** Some lemmas *)
-(** typed_value means: for any variable x in a type checked stack,
+(** typed_value means: for any variable x in a type checked store,
     it should has some type t that can be found in the symbol table;
 *)
 Lemma typed_value: forall tb s x v,
-    type_check_stack tb s ->
+    type_check_store tb s ->
     fetch x s = Some v ->
     (exists t, value_of_type v t /\ ( exists m, lookup x tb = Some (m, t))).
 Proof.
@@ -302,13 +313,13 @@ Ltac tv_l2 f1 f2 h1 h2 x x0 tac :=
       rm_ex; auto
     ].
 
-(** typed_value' means: for any type checked stack s with respect to 
+(** typed_value' means: for any type checked store s with respect to 
     the symbol table tb, if tb includes a variable x of type t, then 
-    x should also reside in stack s, and if x has a defined value v,
+    x should also reside in store s, and if x has a defined value v,
     then v should have the type of t;
 *)
 Lemma typed_value': forall tb s x m t,
-    type_check_stack tb s ->
+    type_check_store tb s ->
     lookup x tb = Some (m, t) -> 
     reside x s = true /\ 
     (forall v, (Some v = fetch x s) -> value_of_type v t).

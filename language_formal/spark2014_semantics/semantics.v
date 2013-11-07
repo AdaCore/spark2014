@@ -1,3 +1,14 @@
+(** 
+_AUTHOR_
+
+<<
+Zhi Zhang
+Departmnt of Computer and Information Sciences
+Kansas State University
+zhangzhi@ksu.edu
+>>
+*)
+
 Require Export values.
 Require Export environment.
 Require Export util.
@@ -47,7 +58,7 @@ Inductive eval_bin_expr: binary_operator -> value -> value -> value -> Prop :=
         (v1 * v2)%Z =v3 ->
         eval_bin_expr Multiply (Int v1) (Int v2) (Int v3)
     | Bin_Div: forall v1 v2 v3,
-        (v1 ÷ v2)%Z =v3 ->
+        (Z.quot v1 v2)%Z =v3 ->
         eval_bin_expr Divide (Int v1) (Int v2) (Int v3).
 
 (** interpret the unary operation *)
@@ -91,7 +102,7 @@ Qed.
     normal binary operation result is returned;
 *)
 
-Inductive eval_expr: stack -> expression -> return_val -> Prop :=
+Inductive eval_expr: store -> expression -> return_val -> Prop :=
     | eval_E_Literal: forall l v s ast_num,
         eval_literal l = v ->
         eval_expr s (E_Literal ast_num l) (Val_Normal v)
@@ -133,7 +144,7 @@ Inductive eval_expr: stack -> expression -> return_val -> Prop :=
    evaluate the statement into a normal state; 
 *)
 
-Inductive eval_stmt: stack -> statement -> state -> Prop := 
+Inductive eval_stmt: store -> statement -> state -> Prop := 
     | eval_S_Assignment1: forall s e ast_num x,
         eval_expr s e Val_Run_Time_Error ->
         eval_stmt s (S_Assignment ast_num x e) S_Run_Time_Error
@@ -233,7 +244,7 @@ Definition f_eval_unary_expr (op: unary_operator) (v: value): return_val :=
 (* here use 'Function' instead of 'Fixpoint' in order to use 
    tactic 'functional induction (f_eval_expr _ _)' in proofs;
 *)
-Function f_eval_expr (s: stack) (e: expression): return_val :=
+Function f_eval_expr (s: store) (e: expression): return_val :=
     match e with
     | E_Literal _ v => Val_Normal (eval_literal v)
     | E_Identifier _ x =>
@@ -274,7 +285,7 @@ Function f_eval_expr (s: stack) (e: expression): return_val :=
    zero check) are encoded inside the functional semantics;
 *)
 
-Function f_eval_stmt k (s: stack) (c: statement) {struct k}: state := 
+Function f_eval_stmt k (s: store) (c: statement) {struct k}: state := 
   match k with
   | 0 => S_Unterminated
   | S k' => 
@@ -886,7 +897,7 @@ Qed.
 (** relational (eval_decl) and functional (f_eval_decl) semantics for 
     variable declaration;
 *)
-Inductive eval_decl: stack -> object_declaration -> state -> Prop :=
+Inductive eval_decl: store -> object_declaration -> state -> Prop :=
     | eval_Decl_E: forall e d s,
         Some e = d.(initialization_expression) ->
         eval_expr s e Val_Run_Time_Error ->
@@ -901,7 +912,7 @@ Inductive eval_decl: stack -> object_declaration -> state -> Prop :=
         None = d.(initialization_expression) ->
         eval_decl s d (S_Normal ((x, Undefined) :: s)).
 
-Function f_eval_decl (s: stack) (d: object_declaration): state :=
+Function f_eval_decl (s: store) (d: object_declaration): state :=
     let x := d.(object_name) in
     let e := d.(initialization_expression) in
     match e with
@@ -919,7 +930,7 @@ Function f_eval_decl (s: stack) (d: object_declaration): state :=
 (** relational (eval_decls) and functional (f_eval_decls) semantics 
     for a sequence of object declarations;
 *)
-Inductive eval_decls: stack -> (list object_declaration) -> state -> Prop :=
+Inductive eval_decls: store -> (list object_declaration) -> state -> Prop :=
     | eval_EmptyDecls: forall s,
         eval_decls s nil (S_Normal s)
     | eval_Decls_E: forall d tl s,
@@ -930,7 +941,7 @@ Inductive eval_decls: stack -> (list object_declaration) -> state -> Prop :=
         eval_decls s2 tl s3 ->
         eval_decls s1 (d::tl) s3.
 
-Function f_eval_decls (s: stack) (d: list object_declaration): state :=
+Function f_eval_decls (s: store) (d: list object_declaration): state :=
     match d with
     | d' :: tl => 
         match f_eval_decl s d' with
@@ -1085,7 +1096,7 @@ Qed.
 (* = = = = = = Subprogram Body = = = = = =  *)
 (** relational and functional semantics for procedure body; *)
 
-Inductive eval_proc: stack -> procedure_body -> state -> Prop :=
+Inductive eval_proc: store -> procedure_body -> state -> Prop :=
     | eval_Proc_E: forall f s,
         eval_decls s f.(procedure_declarative_part) S_Run_Time_Error ->
         eval_proc s f S_Run_Time_Error
@@ -1094,7 +1105,7 @@ Inductive eval_proc: stack -> procedure_body -> state -> Prop :=
         eval_stmt s2 f.(procedure_statements) s3 ->
         eval_proc s1 f s3.
 
-Function f_eval_proc k (s: stack) (f: procedure_body): state :=
+Function f_eval_proc k (s: store) (f: procedure_body): state :=
     match (f_eval_decls s f.(procedure_declarative_part)) with
     | S_Normal s' => f_eval_stmt k s' f.(procedure_statements)
     | S_Run_Time_Error => S_Run_Time_Error
@@ -1106,12 +1117,12 @@ Function f_eval_proc k (s: stack) (f: procedure_body): state :=
 
 (** relational and functional semantics for main procedure; *)
 
-Inductive eval_subprogram: stack -> subprogram -> state -> Prop :=
+Inductive eval_subprogram: store -> subprogram -> state -> Prop :=
     | eval_Procedure: forall s s' ast_num f,
         eval_proc s f s' ->
         eval_subprogram s (Procedure ast_num f) s'.
 
-Function f_eval_subprogram k (s: stack) (f: subprogram): state := 
+Function f_eval_subprogram k (s: store) (f: subprogram): state := 
     match f with 
     | Procedure ast_num f' => f_eval_proc k s f'
     end.

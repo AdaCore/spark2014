@@ -31,19 +31,19 @@ Require Import wellformedness.
 Definition f_prime :=
 Procedure 3 (
         mkprocedure_body 4
-          (* Procedure Body - Name *)
+          (* Procedure Name *)
           (*Test_for_Coq*) 1
-          (* Procedure Body - Specification *)
+          (* Specification *)
           (nil)
-          (* Procedure Body - Parameters *)
+          (* Parameters *)
           (nil) 
-          (* Procedure Body - Variable Declarations *)
+          (* Variable Declarations *)
           (
           mkobject_declaration 5 (*N*) 1 1 (Some (E_Literal 6 (Integer_Literal 25))) :: 
           mkobject_declaration 7 (*Result*) 2 2 None :: 
           mkobject_declaration 8 (*I*) 3 1 None :: 
           mkobject_declaration 9 (*X*) 4 1 None :: nil)
-          (* Procedure Body - Statements *) (
+          (* Procedure Body *) (
             S_Sequence 10 (
               S_Assignment 11 ((*Result*) 2) (E_Literal 12 (Boolean_Literal true)) ) ( 
               S_Sequence 13 (
@@ -63,52 +63,50 @@ Procedure 3 (
                     ) ) ) )
           )).
 
-(* 1. program is syntax correct *)
 Check f_prime.
 
-(* 2. run the program in reference semantics *)
-Definition result := f_eval_subprogram 100 nil f_prime.
-
-Eval compute in result.
-
-(* 3. program with right checks at right places should be semantical equivelent with reference semantics  *)
-
-Definition expected_run_time_checks := f_check_generator_subprogram nil f_prime.
-
-Eval compute in expected_run_time_checks.
-
-Definition result_with_checks := f_eval_subprogram_with_checks 100 expected_run_time_checks nil f_prime.
-
-Eval compute in result_with_checks.
-
-(* 4. certified static analyzer *)
+(* 1. certified static analyzer *)
 
 Definition ast_num_inc := f_ast_num_inc_subprogram f_prime.
 
 Eval compute in ast_num_inc.
 
-(* 4.1 well-typed *)
+(* 1.1 well-typed *)
 Definition well_typed := f_well_typed_subprogram nil f_prime.
 
 Eval compute in well_typed.
 
-(* 4.2 well-defined *)
+(* 1.2 well-defined *)
 Definition well_initialized := f_well_defined_subprogram nil f_prime.
 
 Eval compute in well_initialized.
 
-(* 4.3 well-checked *)
+(* 1.3 well-checked *)
+Definition expected_run_time_checks := f_check_generator_subprogram nil f_prime.
+
 Definition actual_run_time_checks := expected_run_time_checks.
 
 Definition well_checked := f_checks_match actual_run_time_checks expected_run_time_checks.
 
 Eval compute in well_checked.
 
-(* 4.4 well-formed (well-typed, well-defined and well-checked) program should always run correctly *)
-Definition result_with_checks' := f_eval_subprogram_with_checks 100 actual_run_time_checks nil f_prime.
+(* 1.4 well-formed (well-typed, well-defined and well-checked) program should always run correctly *)
+Definition well_formed_program_result := f_eval_subprogram_with_checks 100 actual_run_time_checks nil f_prime.
 
-Eval compute in result_with_checks'.
+Eval compute in well_formed_program_result.
 
+(* 2. run the program in certified interpreter *)
+Definition expected_result := f_eval_subprogram 100 nil f_prime.
+
+Eval compute in expected_result.
+
+(*
+     = S_Normal
+         ((4, Value (Int 5))
+          :: (3, Value (Int 6))
+             :: (2, Value (Bool false)) :: (1, Value (Int 25)) :: nil)
+     : state
+*)
 
 (****************
   - Example 2 -
@@ -140,19 +138,19 @@ Eval compute in result_with_checks'.
 Definition f_prime_div_zero :=
 Procedure 3 (
         mkprocedure_body 4
-          (* Procedure Body - Name *)
+          (* Procedure Name *)
           (*Test_for_Coq1*) 1
-          (* Procedure Body - Specification *)
+          (* Specification *)
           (nil)
-          (* Procedure Body - Parameters *)
+          (* Parameters *)
           (nil) 
-          (* Procedure Body - Variable Declarations *)
+          (* Variable Declarations *)
           (
           mkobject_declaration 5 (*N*) 1 1 (Some (E_Literal 6 (Integer_Literal 25))) :: 
           mkobject_declaration 7 (*Result*) 2 2 None :: 
           mkobject_declaration 8 (*I*) 3 1 None :: 
           mkobject_declaration 9 (*X*) 4 1 None :: nil)
-          (* Procedure Body - Statements *) (
+          (* Procedure Body *) (
             S_Sequence 10 (
               S_Assignment 11 ((*Result*) 2) (E_Literal 12 (Boolean_Literal true)) ) ( 
               S_Sequence 13 (
@@ -173,22 +171,17 @@ Procedure 3 (
           )
       ).
 
-(* 1. run the program in reference semantics *)
-Definition result_1 := f_eval_subprogram 100 nil f_prime_div_zero.
-
-Eval compute in result_1.
-
-(* 2.1 well-typed *)
+(* 1.1 well-typed *)
 Definition well_typed_1 := f_well_typed_subprogram nil f_prime_div_zero.
 
 Eval compute in well_typed_1.
 
-(* 2.2 well-defined *)
+(* 1.2 well-defined *)
 Definition well_initialized_1 := f_well_defined_subprogram nil f_prime_div_zero.
 
 Eval compute in well_initialized_1.
 
-(* 2.3 well-checked *)
+(* 1.3 well-checked *)
 Definition expected_run_time_checks_1 := f_check_generator_subprogram nil f_prime_div_zero.
 
 Eval compute in expected_run_time_checks_1.
@@ -199,7 +192,7 @@ Definition well_checked_1 := f_checks_match actual_run_time_checks_1 expected_ru
 
 Eval compute in well_checked_1.
 
-(* 2.4 well-formed (well-typed, well-defined and well-checked) program should always run correctly *)
+(* 1.4 well-formed (well-typed, well-defined and well-checked) program should always run correctly *)
 Definition result_with_checks_1 := f_eval_subprogram_with_checks 100 actual_run_time_checks_1 nil f_prime_div_zero.
 
 Eval compute in result_with_checks_1.
@@ -215,10 +208,11 @@ Definition result_with_bad_checks := f_eval_subprogram_with_checks 100 not_compl
 
 Eval compute in result_with_bad_checks.
 
-(* ast numbers are unique *)
-Definition ast_num_inc_1 := f_ast_num_inc_subprogram f_prime_div_zero.
+(* 2. run the program in certified interpreter *)
+Definition expected_result' := f_eval_subprogram 100 nil f_prime_div_zero.
 
-Eval compute in ast_num_inc_1.
+Eval compute in expected_result'.
+
 
 (****************
   - Example 3 -
@@ -248,22 +242,22 @@ Eval compute in ast_num_inc_1.
  = = = = = = = = = = = = = =*)
 
 Definition f_prime_uninitialized :=
-(* Procedure Body Declaration *)
+(* Procedure Declaration *)
       Procedure 3 (
         mkprocedure_body 4
-          (* Procedure Body - Name *)
+          (* Procedure Name *)
           (*Uninitialized*) 1
-          (* Procedure Body - Specification *)
+          (* Specification *)
           (nil)
-          (* Procedure Body - Parameters *)
+          (* Parameters *)
           (nil) 
-          (* Procedure Body - Variable Declarations *)
+          (* Variable Declarations *)
           (
           mkobject_declaration 5 (*N*) 1 1 None :: 
           mkobject_declaration 6 (*Result*) 2 2 None :: 
           mkobject_declaration 7 (*I*) 3 1 None :: 
           mkobject_declaration 8 (*X*) 4 1 None :: nil)
-          (* Procedure Body - Statements *) (
+          (* Procedure Body *) (
             S_Sequence 9 (
               S_Assignment 10 ((*Result*) 2) (E_Literal 11 (Boolean_Literal true)) ) ( 
               S_Sequence 12 (

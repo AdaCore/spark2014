@@ -1,3 +1,14 @@
+(** 
+_AUTHOR_
+
+<<
+Zhi Zhang
+Departmnt of Computer and Information Sciences
+Kansas State University
+zhangzhi@ksu.edu
+>>
+*)
+
 (** * Customized Tactics *)
 
 Ltac simpl_unop unfunc := 

@@ -54,6 +54,14 @@ Coq source code for SPARK subset formalization are organized in the following mo
           The following section shows how to use Jago to translate SPARK programs into Coq AST, and 
           evaluate it in Coq;
 
+============================
+ Compile/Document Coq Files
+============================
+1. Compile all the Coq source files (be care of their dependence)
+   coqc language.v values.v environment.v util.v checks.v semantics.v wellformedness.v propertyProof.v
+
+2. Generate HTML document from Coq source files
+   coqdoc language.v values.v environment.v util.v checks.v semantics.v wellformedness.v propertyProof.v -toc --no-lib-name
 
 =================
  Getting Started
@@ -83,7 +91,7 @@ In terminal:
 
 For example:
     "Eval compute in (f_eval_subprogram 100 nil f)." means that run the procedure f, 
-    starting from empty stack, within 100 execution steps.
+    starting from empty stack, within maximum 100 execution steps.
 
 Please see test.v for some small examples.
 
@@ -98,8 +106,9 @@ Please see test.v for some small examples.
  Next Steps
 ============
 1. Extend the language subset with more SPARK features, for example, functional call, 
-   Pre/Post contract and loop invariants;
+   array, record, subtypes, Pre/Post contract and loop invariants;
 2. Add run time checks optimizations and prove its correctness;
 3. Develop verified static analysis and translation tools based on current language 
-   formalization work;
+   formalization work and certified SPARK frontend for CompCert certified compiler 
+   framework;
 

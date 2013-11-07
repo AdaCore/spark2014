@@ -1,3 +1,14 @@
+(** 
+_AUTHOR_
+
+<<
+Zhi Zhang
+Departmnt of Computer and Information Sciences
+Kansas State University
+zhangzhi@ksu.edu
+>>
+*)
+
 Require Export util.
 Require Export wellformedness.
 Require Export semantics.
@@ -30,7 +41,7 @@ Ltac rm_contradict :=
     with the type computed by the type checker;
 *)
 Lemma eval_type_reserve: forall tb s e v t,
-    type_check_stack tb s -> 
+    type_check_store tb s -> 
     eval_expr s e (Val_Normal v) ->
     well_typed_expr tb e t ->
     value_of_type v t.
@@ -72,7 +83,7 @@ Qed.
     are check flags requiring to do that;
 *)
 Lemma eval_type_reserve2: forall tb s cks e v t,
-    type_check_stack tb s -> 
+    type_check_store tb s -> 
     eval_expr_with_checks cks s e (Val_Normal v) ->
     well_typed_expr tb e t ->
     value_of_type v t.
@@ -1743,7 +1754,7 @@ Definition well_checked_subprogram := check_generator_subprogram.
     where v can be either a normal value or a run time error;
 *)
 Lemma well_formed_expr0: forall tb s m e t cks0 cks1 max,
-    type_check_stack tb s -> 
+    type_check_store tb s -> 
     mode_mapping tb s m -> (* m: a map from variable to its initialization state and in/out mode *)
     well_defined_expr m e ->
     well_typed_expr tb e t ->
@@ -1892,10 +1903,10 @@ Proof.
               repeat constructor; auto.
           }
           (* 4. Divide *)
-          { remember ((negb (Zeq_bool n 0)) && ((Zge_bool (n0 ÷ n) min_signed) && (Zle_bool (n0 ÷ n) max_signed))) as x.
+          { remember ((negb (Zeq_bool n 0)) && ((Zge_bool (Z.quot n0 n) min_signed) && (Zle_bool (Z.quot n0 n) max_signed))) as x.
             symmetry in Heqx.
             destruct x.
-            * exists (Val_Normal (Int (n0 ÷ n))).
+            * exists (Val_Normal (Int (Z.quot n0 n))).
               eapply eval_Binary_Operation4.
               apply ha1. apply H. symmetry in H14; apply H14.
               repeat constructor; auto;
@@ -1964,7 +1975,7 @@ Qed.
     where v can be either a normal value or a run time error;
 *)
 Theorem well_formed_expr: forall tb s m e t cks0 cks1 max,
-    type_check_stack tb s -> 
+    type_check_store tb s -> 
     mode_mapping tb s m -> (* m: a map from variable to its initialization state and in/out mode *)
     well_defined_expr m e ->
     well_typed_expr tb e t ->
@@ -1986,7 +1997,7 @@ Qed.
 (* some help lemmas *)
 
 Lemma valid_update: forall tb s ast_id x e v,
-    type_check_stack tb s ->
+    type_check_store tb s ->
     well_typed_stmt tb (S_Assignment ast_id x e) ->
     exists s', update s x (Value v) = Some s'.
 Proof.
@@ -2008,15 +2019,15 @@ Proof.
     + inversion H.
 Qed.
 
-(** for a well-typed stack, any updates to its element x with a value of its expected type should
-     should still keep the stack well-typed;
+(** for a well-typed store, any updates to its element x with a value of its expected type should
+     should still keep the store well-typed;
 *)
 Lemma type_reserve_update: forall s x v s' tb m t ,
     update s x (Value v) = Some s' ->    
-    type_check_stack tb s -> 
+    type_check_store tb s -> 
     lookup x tb = Some (m, t)-> 
     value_of_type v t ->
-    type_check_stack tb s'.
+    type_check_store tb s'.
 Proof.
     intros s x v.
     remember (Value v) as v'0.
@@ -2046,15 +2057,15 @@ Proof.
   - inversion h1.
 Qed.
 
-(** the resulting stack should be well-typed after the modification 
-    to the initially well-typed stack by a well-typed assignment;
+(** the resulting store should be well-typed after the modification 
+    to the initially well-typed store by a well-typed assignment;
 *)
 Lemma type_reserve_assign: forall tb s ast_id x e v s',
-    type_check_stack tb s -> 
+    type_check_store tb s -> 
     well_typed_stmt tb (S_Assignment ast_id x e) -> 
     eval_expr s e (Val_Normal v) ->
     update s x (Value v) = Some s' ->
-    type_check_stack tb s'. 
+    type_check_store tb s'. 
 Proof.
     intros tb s ast_id x e v s' h1 h2 h3 h4.
     inversion h2; subst.
@@ -2068,10 +2079,10 @@ Qed.
     a normal state; 
 *)
 Lemma well_typed_stmt_result: forall tb s c s',
-    type_check_stack tb s -> 
+    type_check_store tb s -> 
     well_typed_stmt tb c ->
     eval_stmt s c s' -> 
-    s' = S_Run_Time_Error \/ (exists s0, s' = S_Normal s0 /\ type_check_stack tb s0).
+    s' = S_Run_Time_Error \/ (exists s0, s' = S_Normal s0 /\ type_check_store tb s0).
 Proof.
     intros tb s c s' h1 h2 h3.
     induction h3;
@@ -2114,15 +2125,15 @@ Proof.
     split; auto.
 Qed.
 
-(** if the initial stack is well-typed, and when we execute a 
-    well-typed statement, the resulting normal stack should also 
+(** if the initial store is well-typed, and when we execute a 
+    well-typed statement, the resulting normal store should also 
     be well-typed;
 *)
 Lemma type_reserve_stmt: forall tb s c s',
-    type_check_stack tb s -> 
+    type_check_store tb s -> 
     well_typed_stmt tb c ->
     eval_stmt s c (S_Normal s') -> 
-    type_check_stack tb s'. 
+    type_check_store tb s'. 
 Proof.
     intros tb s c s' h1 h2 h3.
     remember (S_Normal s') as s1.
@@ -2134,11 +2145,11 @@ Proof.
     assumption.
 Qed.
 
-Lemma typed_stack_reserve_decl: forall tb s d tb' s',
-    type_check_stack tb s ->
+Lemma typed_store_reserve_decl: forall tb s d tb' s',
+    type_check_store tb s ->
     well_typed_decl tb d tb' ->
     eval_decl s d (S_Normal s') ->
-    type_check_stack tb' s'.
+    type_check_store tb' s'.
 Proof.
     intros.
     induction H0.
@@ -2155,27 +2166,27 @@ Proof.
       inversion H9.
 Qed.
 
-Lemma typed_stack_reserve_decls: forall tl tb s d tb' s',
-    type_check_stack tb s ->
+Lemma typed_store_reserve_decls: forall tl tb s d tb' s',
+    type_check_store tb s ->
     well_typed_decls tb (d :: tl) tb' ->
     eval_decls s (d :: tl) (S_Normal s') ->
-    type_check_stack tb' s'.
+    type_check_store tb' s'.
 Proof.
     induction tl; intros.
   - inversion H0; subst.
     inversion H1; subst.
     inversion H7; subst.
     inversion H9; subst.
-    specialize (typed_stack_reserve_decl _ _ _ _ _ H H5 H6); auto.
+    specialize (typed_store_reserve_decl _ _ _ _ _ H H5 H6); auto.
   - inversion H0; subst.
     inversion H1; subst.
-    specialize (typed_stack_reserve_decl _ _ _ _ _ H H5 H6); intros hz1.
+    specialize (typed_store_reserve_decl _ _ _ _ _ H H5 H6); intros hz1.
     specialize (IHtl _ _ _ _ _ hz1 H7 H9).
     assumption.
 Qed.
 
 Lemma mode_mapping_consis_decl: forall tb s m d tb' m' s',
-    type_check_stack tb s ->
+    type_check_store tb s ->
     mode_mapping tb s m ->
     well_typed_decl tb d tb' ->
     well_defined_decl m d m' ->
@@ -2202,7 +2213,7 @@ Proof.
 Qed.
 
 Lemma mode_mapping_consis_decls: forall tl tb s m d tb' m' s',
-    type_check_stack tb s ->
+    type_check_store tb s ->
     mode_mapping tb s m ->
     well_typed_decls tb (d :: tl) tb' ->
     well_defined_decls m (d :: tl) m' ->
@@ -2217,7 +2228,7 @@ Proof.
     inversion H11; subst;
     inversion H13; subst.
     specialize (mode_mapping_consis_decl _ _ _ _ _ _ _ H H0 H7 H8 H10); auto.
-  - specialize (typed_stack_reserve_decl _ _ _ _ _ H H7 H10); intros hz1.
+  - specialize (typed_store_reserve_decl _ _ _ _ _ H H7 H10); intros hz1.
     specialize (mode_mapping_consis_decl _ _ _ _ _ _ _ H H0 H7 H8 H10); intros hz2.
     specialize (IHtl _ _ _ _ _ _ _ hz1 hz2 H9 H11 H13).
     assumption.
@@ -2627,12 +2638,12 @@ Qed.
 
 (**
     tb: a symbol table mapping from variable to a pair (type, in/out mode);
-    s: a stack mapping from variable to value;
+    s: a store mapping from variable to value;
     istate: is a mode table constructed from tb and s, which maps 
             from variable to a pair (initialization mode, in/out mode),
-            for a variable x, if it's initialized according to the stack s, 
+            for a variable x, if it's initialized according to the store s, 
             then it's initialization mode is "Init", otherwise, it's "Uninit";
-    if we update the stack s with variable x by a value v, and the 
+    if we update the store s with variable x by a value v, and the 
     resulting state is s1, then the mode table istate1 constructed 
     from tb and s1 should be the same as istate'1 which is the 
     result of updating istate directly by (Init, md);
@@ -2684,11 +2695,11 @@ Qed.
 
 (**
     tb: a symbol table mapping from variable to a pair (type, in/out mode);
-    s: a stack mapping from variable to value;
+    s: a store mapping from variable to value;
     istate: is a mode table constructed from tb and s, which maps 
             from variable to a pair (initialization mode, in/out mode),
             for a variable x, if it's initialized according to the 
-            stack s, then it's initialization mode is "Init", 
+            store s, then it's initialization mode is "Init", 
             otherwise, it's "Uninit";
     whenever we execute the statement c from state s1 to state s2 
     under the refence semantics eval_stmt, if istate1 is the mode 
@@ -2700,7 +2711,7 @@ Qed.
 *)
 Lemma initialization_inc: forall s1 c s2 tb istate1 istate2,
     eval_stmt s1 c (S_Normal s2) ->
-    type_check_stack tb s1 ->
+    type_check_store tb s1 ->
     well_typed_stmt tb c ->
     mode_mapping tb s1 istate1 ->
     mode_mapping tb s2 istate2 ->
@@ -2775,11 +2786,11 @@ Qed.
 
 (**
     tb: a symbol table mapping from variable to a pair (type, in/out mode);
-    s: a stack mapping from variable to value;
+    s: a store mapping from variable to value;
     istate: is a mode table constructed from tb and s, which maps 
             from variable to a pair (initialization mode, in/out mode),
             for a variable x, if it's initialized according to the 
-            stack s, then it's initialization mode is "Init", 
+            store s, then it's initialization mode is "Init", 
             otherwise, it's "Uninit";
     when we define "well_defined_stmt", we adopt the following 
     strategy: for conditional and while loop, we do intersection on
@@ -2790,7 +2801,7 @@ Qed.
 *)
 Lemma eval_stmt_greater: forall c s s' tb istate istate' istate1,
      eval_stmt s c (S_Normal s') ->
-     type_check_stack tb s ->
+     type_check_store tb s ->
      well_typed_stmt tb c -> 
      mode_mapping tb s istate->
      well_defined_stmt istate c istate' -> 
@@ -2843,7 +2854,7 @@ Qed.
 
 (* destruct a disjunction of the following type in the hypothesis, among its disjunct elements, most of
     which can be removed quickly:
-    IHs0 : (exists s' : stack,
+    IHs0 : (exists s' : store,
           SNormal s1 = SNormal s' /\
           eval_stmt_with_checks ls2 s c1 (SNormal s')) \/
        SNormal s1 = SException /\ eval_stmt_with_checks ls2 s c1 SException \/
@@ -2865,7 +2876,7 @@ Ltac destruct_disj IH :=
 *)
 
 Lemma well_formed_stmt0: forall k s c tb m0 m1 cks0 cks1 max,
-    type_check_stack tb s ->
+    type_check_store tb s ->
     mode_mapping tb s m0 -> (* m: a map from variable to its initialization state and in/out mode *)
     well_defined_stmt m0 c m1 ->
     well_typed_stmt tb c ->
@@ -3133,7 +3144,7 @@ Qed.
 *)
 
 Theorem well_formed_stmt: forall tb s m0 c m1 cks0 cks1 max k,
-    type_check_stack tb s ->
+    type_check_store tb s ->
     mode_mapping tb s m0 -> (* m0: a map from variable to its initialization state and in/out mode *)
     well_defined_stmt m0 c m1 ->
     well_typed_stmt tb c ->
@@ -3163,7 +3174,7 @@ Qed.
 (***********************************************************)
 
 Lemma well_formed_decl: forall tb s m d m' tb' cks cks' max,
-    type_check_stack tb s ->
+    type_check_store tb s ->
     mode_mapping tb s m -> (* m: a map from variable to its initialization state and in/out mode *)
     well_defined_decl m d m' ->
     well_typed_decl tb d tb' ->
@@ -3213,7 +3224,7 @@ Proof.
 Qed.
 
 Lemma well_formed_decls: forall tl s d tb m m' tb' cks cks' max,
-    type_check_stack tb s ->
+    type_check_store tb s ->
     mode_mapping tb s m -> (* m: a map from variable to its initialization state and in/out mode *)
     well_defined_decls m (d :: tl) m' ->
     well_typed_decls tb (d :: tl) tb' ->
@@ -3260,7 +3271,7 @@ Proof.
     destruct hz2 as [hz2 | hz2].
     + destruct hz2 as [s'1 hz2].
       rewrite hz2 in *.
-      specialize (typed_stack_reserve_decl _ _ _ _ _ h1 H3 hc2); intros hz3.
+      specialize (typed_store_reserve_decl _ _ _ _ _ h1 H3 hc2); intros hz3.
       specialize (mode_mapping_consis_decl _ _ _ _ _ _ _ h1 h2 H3 H2 hc2); intros hz4.      
       specialize (IHtl _ _ _ _ _ _ _ _ _ hz3 hz4 H4 H6 H8 hz0 H11).
       destruct IHtl as [s1 H].
@@ -3278,7 +3289,7 @@ Proof.
 Qed.
 
 Lemma well_formed_proc_body: forall tb s m f m' cks cks' max k,
-    type_check_stack tb s ->
+    type_check_store tb s ->
     mode_mapping tb s m -> (* m: a map from variable to its initialization state and in/out mode *)
     well_defined_proc_body m f m' ->
     well_typed_proc_body tb f ->
@@ -3333,7 +3344,7 @@ Proof.
     destruct hz5 as [hz5 | hz5].
     + destruct hz5 as [s'1 hz5].
       rewrite hz5 in *.
-      specialize (typed_stack_reserve_decls _ _ _ _ _ _ h1 H1 hc2); intros hz6.
+      specialize (typed_store_reserve_decls _ _ _ _ _ _ h1 H1 hc2); intros hz6.
       specialize (mode_mapping_consis_decls _ _ _ _ _ _ _ _ h1 h2 H1 H hc2); intros hz7.
       specialize (well_formed_stmt _ _ _ _ _ _ _ _ k hz6 hz7 H0 H2 H4 hz2 H7); intros hz8.
       destruct hz8 as [hz8 | hz8].
@@ -3367,7 +3378,7 @@ Qed.
     always performed according to the checking rules;
 *)
 Theorem well_formed_subprogram: forall tb s m ast_num f m' cks cks' max k,
-    type_check_stack tb s ->
+    type_check_store tb s ->
     mode_mapping tb s m -> (* m: a map from variable to its initialization state and in/out mode *)
     well_defined_subprogram m (Procedure ast_num f) m' ->
     well_typed_subprogram tb (Procedure ast_num f) ->

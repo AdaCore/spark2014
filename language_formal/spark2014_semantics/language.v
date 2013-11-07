@@ -1,18 +1,33 @@
-(** This module is from Kansas State University. It is the current
-    (may 2013) target Coq format of the translator from Ada xml ast to
-    coq.
+(* *********************************************************************)
+(*                                                                                                *)
+(*              Formalization of SPARK 2014 Subset                      *)
+(*                                                                                                *)
+(*                Zhi Zhang, Kansas State University                        *)
+(*                                                                                                *)
+(*  Copyright and licence to be determined by KSU.                 *)
+(*                                                                                                *)
+(* *********************************************************************)
 
-    Copyright and licence to be determined by KSU. Any transformation
-    of this file is experimental and cannot reach publicity without
-    permission of KSU. *)
+(** 
+_AUTHOR_
+
+<<
+Zhi Zhang
+Departmnt of Computer and Information Sciences
+Kansas State University
+zhangzhi@ksu.edu
+>>
+*)
 
 Require Export ZArith.
 Require Export Coq.Lists.List.
 Require Export Coq.Bool.Bool.
 Require Export Coq.Strings.String.
 
-(* command to generate HTML document from Coq source files: 
-   coqdoc language.v values.v environment.v semantics.v wellformedness.v propertyProof.v -toc --no-lib-name 
+(* 1. command to generate HTML document from Coq source files: 
+       coqdoc language.v values.v environment.v util.v checks.v semantics.v wellformedness.v propertyProof.v -toc --no-lib-name
+    2. compile all the Coq files 
+       coqc language.v values.v environment.v util.v checks.v semantics.v wellformedness.v propertyProof.v
 *)
 
 (** * SPARK Subset Language *)

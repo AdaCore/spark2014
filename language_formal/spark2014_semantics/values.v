@@ -1,3 +1,14 @@
+(** 
+_AUTHOR_
+
+<<
+Zhi Zhang
+Departmnt of Computer and Information Sciences
+Kansas State University
+zhangzhi@ksu.edu
+>>
+*)
+
 Require Export language.
 
 (** * Value Types *) 
@@ -29,7 +40,7 @@ Inductive value : Type :=
     | Int (n : Z)
     | Bool (b : bool).
 
-(** Type of stored values in the stack *)
+(** Type of stored values in the store *)
 Inductive val: Type := 
     | Value: value -> val
     | Undefined: val.

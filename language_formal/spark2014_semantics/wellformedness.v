@@ -1,3 +1,14 @@
+(** 
+_AUTHOR_
+
+<<
+Zhi Zhang
+Departmnt of Computer and Information Sciences
+Kansas State University
+zhangzhi@ksu.edu
+>>
+*)
+
 Require Export environment.
 Require Export semantics.
 
@@ -793,10 +804,10 @@ Qed.
     (initialization state * in/out mode) 
 *)
 (** 
-   for any variable in a stack, if it has a defined value then it
+   for any variable in a store, if it has a defined value then it
    has an initialized state, otherwise, it's uninitialized;
 *)
-Inductive mode_mapping: symtb -> stack -> (mode_map) -> Prop :=
+Inductive mode_mapping: symtb -> store -> (mode_map) -> Prop :=
     | M_Empty: mode_mapping nil nil nil
     | M_Bool: forall tb s x m b ls,
           mode_mapping tb s ls ->
@@ -834,13 +845,13 @@ Qed.
 
 
 Lemma mode_mapping_exists: forall tb s,
-    type_check_stack tb s ->
+    type_check_store tb s ->
     exists m, mode_mapping tb s m.
 Proof.
     intros.
     induction H;
     [ exists nil; constructor | | | | ];
-    inversion IHtype_check_stack;
+    inversion IHtype_check_store;
     [exists ((x, (Init, m)) :: x0) | exists ((x, (Init, m)) :: x0) | 
      exists ((x, (Uninit, m)) :: x0) | exists ((x, (Uninit, m)) :: x0)
     ]; constructor; assumption.
@@ -881,7 +892,7 @@ Proof.
 Qed.
 
 (* =============================== *)
-Function f_mode_mapping (tb: symtb) (s: stack): option mode_map :=
+Function f_mode_mapping (tb: symtb) (s: store): option mode_map :=
     match tb, s with
     | nil, nil => Some nil
     | ((x, (md, Boolean)) :: tb'), ((x', (Value (Bool b))) :: s') => 
@@ -2305,7 +2316,7 @@ Qed.
     as a parameter telling whether a checks are needed to be performed 
     or not before executing the expression ast node;
 *)
-Inductive eval_expr_with_checks (cps: check_points): stack -> expression -> return_val -> Prop :=
+Inductive eval_expr_with_checks (cps: check_points): store -> expression -> return_val -> Prop :=
     | eval_Literal: forall l v s ast_num,
         eval_literal l = v ->
         eval_expr_with_checks cps s (E_Literal ast_num l) (Val_Normal v)
@@ -2347,7 +2358,7 @@ Inductive eval_expr_with_checks (cps: check_points): stack -> expression -> retu
     statement; right now, we only consider the division and overflow checks
     for expressions, and there are no checks enfornced on the statements;
 *)
-Inductive eval_stmt_with_checks (cps: check_points): stack -> statement -> state -> Prop :=
+Inductive eval_stmt_with_checks (cps: check_points): store -> statement -> state -> Prop :=
     | eval_Assignment1: forall s e ast_num x,
         eval_expr_with_checks cps s e Val_Run_Time_Error ->
         eval_stmt_with_checks cps s (S_Assignment ast_num x e) S_Run_Time_Error
@@ -2391,11 +2402,11 @@ Inductive eval_stmt_with_checks (cps: check_points): stack -> statement -> state
 (** variables declaration with initialization expression are a little 
     defferent from the assignments:
     for variable declaration, we add the new declared variable with 
-    its initialization value to the initial stack, because all declared 
+    its initialization value to the initial store, because all declared 
     variables have unique names; for assignment, we update the initial 
-    stack by assigning new value to its existing variable;
+    store by assigning new value to its existing variable;
 *)
-Inductive eval_decl_with_checks (cps: check_points): stack -> object_declaration -> state -> Prop :=
+Inductive eval_decl_with_checks (cps: check_points): store -> object_declaration -> state -> Prop :=
     | eval_Decl0: forall x d s,
         x = d.(object_name) ->
         None = d.(initialization_expression) ->
@@ -2411,7 +2422,7 @@ Inductive eval_decl_with_checks (cps: check_points): stack -> object_declaration
         eval_decl_with_checks cps s d (S_Normal ((x, Value v) :: s)).
 
 Inductive eval_decls_with_checks (cps: check_points): 
-    stack -> list object_declaration -> state -> Prop :=
+    store -> list object_declaration -> state -> Prop :=
     | eval_Decls_Empty: forall s,
         eval_decls_with_checks cps s nil (S_Normal s)
     | eval_Decls0: forall s d tl,
@@ -2423,7 +2434,7 @@ Inductive eval_decls_with_checks (cps: check_points):
         eval_decls_with_checks cps s (d :: tl) s'.
 
 Inductive eval_proc_body_with_checks (cps: check_points): 
-    stack -> procedure_body -> state -> Prop :=
+    store -> procedure_body -> state -> Prop :=
     | eval_Proc_Body0: forall s f,
         eval_decls_with_checks cps s f.(procedure_declarative_part) S_Run_Time_Error ->
         eval_proc_body_with_checks cps s f S_Run_Time_Error
@@ -2432,7 +2443,7 @@ Inductive eval_proc_body_with_checks (cps: check_points):
         eval_stmt_with_checks cps s'0 f.(procedure_statements) s' ->
         eval_proc_body_with_checks cps s f s'.
 
-Inductive eval_subprogram_with_checks (cps: check_points): stack -> subprogram -> state -> Prop :=
+Inductive eval_subprogram_with_checks (cps: check_points): store -> subprogram -> state -> Prop :=
     | eval_Subprogram: forall s1 f s2 ast_num,
         eval_proc_body_with_checks cps s1 f s2 ->
         eval_subprogram_with_checks cps s1 (Procedure ast_num f) s2.
@@ -2635,7 +2646,7 @@ Qed.
 (** Functional semantics for expression and statement evaluation 
     with flagged run time checks as passed in parameters; 
 *)
-Function f_eval_expr_with_checks (ckp: check_points) (s: stack) (e: expression): return_val :=
+Function f_eval_expr_with_checks (ckp: check_points) (s: store) (e: expression): return_val :=
     match e with
     | E_Literal ast_num l => Val_Normal (eval_literal l)
     | E_Identifier ast_num x => 
@@ -2668,7 +2679,7 @@ Function f_eval_expr_with_checks (ckp: check_points) (s: stack) (e: expression):
         end
     end.
 
-Function f_eval_stmt_with_checks k (ckp: check_points) (s: stack) (c: statement): state :=
+Function f_eval_stmt_with_checks k (ckp: check_points) (s: store) (c: statement): state :=
   match k with
   | 0 => S_Unterminated
   | S k' =>
@@ -2713,7 +2724,7 @@ Function f_eval_stmt_with_checks k (ckp: check_points) (s: stack) (c: statement)
     end
   end.
 
-Function f_eval_decl_with_checks (cps: check_points) (s: stack) (d: object_declaration): state :=
+Function f_eval_decl_with_checks (cps: check_points) (s: store) (d: object_declaration): state :=
     match d.(initialization_expression) with
     | Some i =>
         match f_eval_expr_with_checks cps s i with
@@ -2724,7 +2735,7 @@ Function f_eval_decl_with_checks (cps: check_points) (s: stack) (d: object_decla
     | None => S_Normal ((d.(object_name), Undefined) :: s)
     end.
 
-Function f_eval_decls_with_checks (cps: check_points) (s: stack) (ds: list object_declaration): state :=
+Function f_eval_decls_with_checks (cps: check_points) (s: store) (ds: list object_declaration): state :=
     match ds with
     | nil => S_Normal s
     | d :: tl =>
@@ -2735,14 +2746,14 @@ Function f_eval_decls_with_checks (cps: check_points) (s: stack) (ds: list objec
         end
     end.
 
-Function f_eval_proc_body_with_checks k (cps: check_points) (s: stack) (f: procedure_body): state :=
+Function f_eval_proc_body_with_checks k (cps: check_points) (s: store) (f: procedure_body): state :=
     match f_eval_decls_with_checks cps s f.(procedure_declarative_part) with
     | S_Normal s1 => f_eval_stmt_with_checks k cps s1 f.(procedure_statements)
     | S_Run_Time_Error => S_Run_Time_Error
     | _ => S_Abnormal
     end.
 
-Function f_eval_subprogram_with_checks k (cps: check_points) (s: stack) (p: subprogram): state :=
+Function f_eval_subprogram_with_checks k (cps: check_points) (s: store) (p: subprogram): state :=
     match p with
     | Procedure ast_num f =>
         f_eval_proc_body_with_checks k cps s f
