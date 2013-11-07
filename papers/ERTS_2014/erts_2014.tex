@@ -64,7 +64,7 @@
 
 \author{%
 \large Claire Dross$^4$, Pavlos Efstathopoulos$^1$, David Lesens$^2$, David Mentré$^3$ and Yannick Moy$^4$\\
-\normalsize 1: ALTRAN, 22 St Lawrence Street, Bath BA1 1AN (United Kingdom),\\
+\normalsize 1: Altran UK, 22 St Lawrence Street, Bath BA1 1AN (United Kingdom),\\
 \normalsize 2: Astrium Space Transportation, 51-61 route de Verneuil F-78130 Les Mureaux (France),\\
 \normalsize 3: Mitsubishi Electric R\&D Centre Europe, 1 allée de
 Beaulieu, CS 10806, F-35708 Rennes (France),\\
@@ -75,13 +75,14 @@ Beaulieu, CS 10806, F-35708 Rennes (France),\\
 \maketitle
 
 \paragraph{Abstract}
-SPARK is a subset of the Ada programming language targeted at safety and
-security critical applications. \newspark is a major evolution of the SPARK
-language and toolset, that integrates formal program verification in the
-existing development and verification processes, in order to decrease the cost
-of verification for software submitted to certification constraints. We present
-industrial case studies in three different certification domains that show the
-benefits of using formal verification with \newspark.
+SPARK is a subset of the Ada programming language targeted at safety
+and security critical applications. \newspark is a major evolution of
+the SPARK language and toolset, that integrates formal program
+verification in the existing development and verification processes,
+in order to decrease the cost of verification for software subject to
+certification constraints. We present industrial case studies in three
+different certification domains that show the benefits of using formal
+verification with \newspark.
 
 \paragraph{Keywords}
 System formal development, Verification and validation,
@@ -740,7 +741,8 @@ In the following example, the last assertion is not proved.
                   Result <= 360.0);
 \end{lstlisting}
 
-\gnatprove is not yet able to verify the index of an array which dimension is defined by a type descriminant
+\gnatprove is not yet able to verify the index of an array which
+dimension is defined by a type discriminant
 
 \paragraph{Example:}
 
@@ -852,51 +854,7 @@ and array slices.
 
 In-type checks are added automatically by the new toolset. This
 simplifies both the work of the programmer and the code
-itself. Consider the following two code segments:
-
-\begin{lstlisting}[caption=\oldspark]
-for I in LogFileIndexT loop
---# assert
---# I in LogFileIndexT and
---# UsedLogFiles.Length in LogFileCountT and
---# UsedLogFiles.Length < I and
---# UsedLogFiles.LastI in LogFileIndexT and
---# (UsedLogFiles.Length > 0 ->
---#   UsedLogFiles.LastI < I) and
---# (for all N in LogFileIndexT =>
---#   (LogFileEntries(N) in FileEntryCountT)) and
---# (for all N in LogFileIndexT =>
---#   (UsedLogFiles.List(N) in LogFileIndexT));
-  if LogFilesStatus(I) = Used then
-    if UsedLogFiles.Length = 0 then
-       -- easy case list currently empty
-       UsedLogFiles.Head := LogFileIndexT'First;
-       UsedLogFiles.LastI := LogFileIndexT'First;
-       UsedLogFiles.Length := 1;
-       UsedLogFiles.List(UsedLogFiles.Head) := I;
-    else
-      for J in LogFileIndexT
-        range 1 .. UsedLogFiles.LastI
-      loop
-      --# assert
-      --# I in LogFileIndexT and
-      --# J in LogFileIndexT and
-      --# J <= UsedLogFiles.LastI and
-      --# UsedLogFiles.LastI in LogFileIndexT and
-      --# UsedLogFiles.Length in LogFileCountT and
-      --# UsedLogFiles.Length > 0 and
-      --# UsedLogFiles.Length < I and
-      --# (UsedLogFiles.Length > 0 ->
-      --#   UsedLogFiles.LastI < I) and
-      --# (for all N in LogFileIndexT =>
-      --#   (LogFileEntries(N) in
-      --#    FileEntryCountT)) and
-      --# (for all N in LogFileIndexT =>
-      --#   (UsedLogFiles.List(N) in
-      --#    LogFileIndexT));
-        ...
-\end{lstlisting}
-
+itself. Consider the following code segment:
 \begin{lstlisting}[caption=\newspark]
 for I in LogFileIndexT loop
   if LogFilesStatus(I) = Used then
@@ -912,11 +870,12 @@ for I in LogFileIndexT loop
       loop
         ...
 \end{lstlisting}
-Even though these segments are equivalent the difference in lines of
-code is apparent. However, at this point, it should be pointed out
-that since the development of the Tokeneer project the \oldspark tools
-have greatly evolved and some of the original annotations might
-actually now be redundant.
+The \oldspark equivalent contained an additional 25 lines which were
+required to prove that all variables are within their respective
+types. However, at this point, it should be pointed out that since the
+development of the Tokeneer project the \oldspark tools have greatly
+evolved and some of the original annotations might actually now be
+redundant.
 
 \subsection{Formalization of Properties}
 
