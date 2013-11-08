@@ -1,0 +1,1 @@
+ALL XFAIL procedure call in pragma Debug is referenced but GNATprove thinks it isn't
