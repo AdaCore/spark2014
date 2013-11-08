@@ -1,4 +1,6 @@
-package body Global_Illegal_3 is
+package body Global_Illegal_3
+  with SPARK_Mode
+is
    --  TU: 16. Each entity denoted by a ``global_item`` in a
     --  ``global_specification`` of a subprogram that is an input or
     --  output of the subprogram shall satisfy the following mode
