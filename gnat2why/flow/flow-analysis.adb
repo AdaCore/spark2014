@@ -34,7 +34,6 @@ with Why;
 
 with Gnat2Why_Args;
 
-with Flow.Slice;            use Flow.Slice;
 with Flow.Utility;          use Flow.Utility;
 with Flow_Error_Messages;   use Flow_Error_Messages;
 
@@ -2117,7 +2116,7 @@ package body Flow.Analysis is
          return;
       end if;
 
-      Actual_Deps := Compute_Dependency_Relation (FA);
+      Actual_Deps := FA.Dependency_Map;
 
       if Debug_Trace_Depends then
          Print_Dependency_Map (User_Deps);
