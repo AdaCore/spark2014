@@ -161,7 +161,7 @@ contracts may be specified by a set of disjoint and complete cases. For
 example, the following contract for procedure \SPARK{Swap} states separate
 sub-contracts for the cases where the elements at indexes \SPARK{X} and
 \SPARK{Y} are equal or different. The first case specifies that, if
-\SPARK{A(X)} equald \SPARK{A(Y)} on entry, then \SPARK{A} should not be
+\SPARK{A(X)} equals \SPARK{A(Y)} on entry, then \SPARK{A} should not be
 modified by the call. The second case specifies that, if \SPARK{A(X)} is
 different from \SPARK{A(Y)} on entry, then \SPARK{A} should be modified by the
 call.
@@ -722,13 +722,13 @@ Total          & 27       & 25     & 92  \\ % & 2                 & 7           
 Some algorithmic functions are not completely known by \gnatprove.
 
 \begin{lstlisting}
-   function Arctan (X : T_Float32) 
+   function Arctan (X : T_Float32)
 	 return T_Float32
    with
      Post =>  Arctan'Result >= -C_Halfpi32
      and then Arctan'Result <=  C_Halfpi32;
 
-   function Arctan (X : T_Float32) 
+   function Arctan (X : T_Float32)
 	 return T_Float32
    is (Num32.Arctan (X));
 \end{lstlisting}
@@ -788,7 +788,7 @@ Total          & 265      & 262    & 98  \\ % & 3                 & 1           
 In the following example, the second assertion is not proved.
 
 \begin{lstlisting}
-   function Round_Closest (X : T_Float32) 
+   function Round_Closest (X : T_Float32)
    return T_Float32
    is (T_Float32'Rounding (X));
 
