@@ -133,17 +133,21 @@ models of complex existing language features have been devised to
 increase the reasoning capabilities for mainstream programming
 languages. See \cite{HatcliffLLMP12} for many insights in the
 programming language approach to program verification. However, there
-are still some remaining challenges before we can expect verifying
+are still many remaining challenges before we can expect verifying
 compilers to be as widely used as testing.
 
-There are some notable exceptions where formal software verification
-has been successfully used and scaled to large industrial
-projects. For example the SPARK language and toolset for static
-verification has been applied for many years in on-board aircraft
-systems, control systems, cryptographic systems, and rail systems
-\cite{sparkbook2012,oneill2012}.
+Formal software verification has been successfully used and scaled to
+large industrial projects \cite{Woodcock2009,vcc2009}. While many case
+studies have been successful, few formal methods have reached the
+take-up and maturity level where industrial non-experts continue to
+use the method for project after the project, and where this formal
+method is a permanent part of the business of industrial software
+development. There are some notable exceptions, for example the SPARK
+language and toolset for static verification has been applied for many
+years in on-board aircraft systems, control systems, cryptographic
+systems, and rail systems \cite{sparkbook2012,oneill2012}.
 
-We would like to identify two main hurdles that currently hinder the
+We identify two main hurdles that currently hinder the
 take-up of verifying compiler technology:
 %
 \begin{enumerate}
@@ -1140,7 +1144,6 @@ expressions and if expressions.
 
 %% \caption Snapshot of GNATprove results on challenge 1 in GPS
 
-
 \section{Ongoing Work}
 \label{ongoing}
 
@@ -1152,7 +1155,7 @@ support for investigating unproved VCs, and improvements of the SMT prover.
 
 Flow analysis is the verification of the data dependences of
 subprograms. This analysis which has always been a component of SPARK
-verification is currently being redeveloped for \newspark, based on
+verification is being redeveloped for \newspark, based on
 program dependence graphs~\cite{horwitz:1988:pldi}. An important
 novelty is that, while \oldspark requires that the user annotates
 programs with data dependence contracts, they are optional in
@@ -1188,6 +1191,18 @@ make these modes the default inside \gnatprove.
 %% \item adaptation for non-executable annotations and proof assistants
 %% \end{itemize}
 
+\section{Conclusions}
+\label{conclusions}
+In this paper we have described the key elements of the design of
+\newspark and \gnatprove. This design is based on experience over many
+years working with both expert and non-expert \oldspark developers in
+industry. The design focus particularly on improving the usability for
+non-expert users and providing a convincing cost-benefit argument for
+using formal verification in the regulated industry. \newspark and
+\gnatprove are still being implemented, and it is still early days for
+\DOC, but early evaluations are very encouraging, and some are
+documented in the case study developed by Astrium Space Transportation
+\cite{dasia2013}.
 %
 \bibliographystyle{alpha}
 \bibliography{sttt_2013}
