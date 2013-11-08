@@ -1152,9 +1152,9 @@ package body Why.Inter is
                   Why_Section_Enum'Pred (Why_Section_Enum'Last)
       loop
          Why_Sections (Kind) :=
-           Make_Empty_Why_File (Kind => Kind);
+           Make_Empty_Why_Section (Kind => Kind);
       end loop;
-      Why_Sections (WF_Main) := Make_Empty_Why_File (Kind => WF_Main);
+      Why_Sections (WF_Main) := Make_Empty_Why_Section (Kind => WF_Main);
    end Init_Why_Files;
 
    --------------------------
@@ -1211,17 +1211,6 @@ package body Why.Inter is
          end if;
       end if;
    end LCA;
-
-   -------------------------
-   -- Make_Empty_Why_File --
-   -------------------------
-
-   function Make_Empty_Why_File (Kind : Why_Section_Enum) return Why_Section is
-   begin
-      return Why_Section'(File       => New_File,
-                       Kind       => Kind,
-                       Cur_Theory => Why_Empty);
-   end Make_Empty_Why_File;
 
    ------------------
    -- Name_Of_Node --

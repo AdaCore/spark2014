@@ -345,15 +345,17 @@ package body Gnat2Why.Util is
       Ada_Ent_To_Why.Insert (Symbol_Table, E, I);
    end Insert_Item;
 
-   ----------------------------
-   -- Is_Dynamic_Scalar_Type --
-   ----------------------------
+   -------------------------
+   -- Make_Empty_Why_File --
+   -------------------------
 
-   function Type_Is_Modeled_As_Int_Or_Real (T : Entity_Id) return Boolean is
+   function Make_Empty_Why_Section (Kind : Why_Section_Enum)
+                                    return Why_Section is
    begin
-      return SPARK_Definition.Loop_Entity_Set.Contains (T)
-        and then not Is_Static_Subtype (T);
-   end Type_Is_Modeled_As_Int_Or_Real;
+      return Why_Section'(File       => New_File,
+                          Kind       => Kind,
+                          Cur_Theory => Why.Types.Why_Empty);
+   end Make_Empty_Why_Section;
 
    --------------------------------
    -- Is_Locally_Defined_In_Loop --
@@ -420,6 +422,16 @@ package body Gnat2Why.Util is
          return True;
       end if;
    end Is_Mutable_In_Why;
+
+   ------------------------------------
+   -- Type_Is_Modeled_As_Int_Or_Real --
+   ------------------------------------
+
+   function Type_Is_Modeled_As_Int_Or_Real (T : Entity_Id) return Boolean is
+   begin
+      return SPARK_Definition.Loop_Entity_Set.Contains (T)
+        and then not Is_Static_Subtype (T);
+   end Type_Is_Modeled_As_Int_Or_Real;
 
    ------------------------
    -- Why_Type_Of_Entity --

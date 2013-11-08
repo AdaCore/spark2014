@@ -42,11 +42,6 @@ package Why.Inter is
    --  This package contains types that are used to represent intermediate
    --  phases of the translation process.
 
-   function Make_Empty_Why_File
-     (Kind : Why_Section_Enum) return Why_Section
-   with Post => (Make_Empty_Why_File'Result.Cur_Theory = Why_Empty);
-   --  Return an empty Why_File with the given name and kind
-
    type Theory_Kind is
      (Standalone_Theory,      --  standalone definition of symbols
       Definition_Theory,      --  definition of symbols
