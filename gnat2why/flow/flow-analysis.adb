@@ -1997,9 +1997,6 @@ package body Flow.Analysis is
             else
                for Input of Inputs loop
                   declare
-                     V_O : constant Flow_Graphs.Vertex_Id :=
-                       FA.PDG.Get_Vertex (Change_Variant (Output,
-                                                          Final_Value));
                      V_I : constant Flow_Graphs.Vertex_Id :=
                        FA.PDG.Get_Vertex (Change_Variant (Input,
                                                           Initial_Value));
@@ -2012,7 +2009,8 @@ package body Flow.Analysis is
                            Tracefile => Tracefile,
                            Msg       => "export & must not depend " &
                              "on Proof_In &",
-                           N         => Error_Location (FA.PDG, V_O),
+                           N         => Find_Global (FA.Analyzed_Entity,
+                                                     Input),
                            F1        => Output,
                            F2        => Input,
                            Tag       => "export_depends_on_proof_in");
