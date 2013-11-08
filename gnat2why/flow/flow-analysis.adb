@@ -38,9 +38,9 @@ with Flow.Slice;            use Flow.Slice;
 with Flow.Utility;          use Flow.Utility;
 with Flow_Error_Messages;   use Flow_Error_Messages;
 
---  with Output;     use Output;
---  with Treepr;     use Treepr;
-with Flow.Debug; use Flow.Debug;
+--  with Output;                use Output;
+--  with Treepr;                use Treepr;
+with Flow.Debug;            use Flow.Debug;
 
 package body Flow.Analysis is
 
@@ -985,9 +985,9 @@ package body Flow.Analysis is
             FA.PDG.Get_Attributes (V).Is_Export);
       --  Checks if the given vertex V is a final-use vertex.
 
-      Effective_Ids   : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
-      Entire_Ids      : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
-      Tracefile       : Unbounded_String;
+      Effective_Ids : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
+      Entire_Ids    : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
+      Tracefile     : Unbounded_String;
    begin
       for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
@@ -1052,6 +1052,9 @@ package body Flow.Analysis is
 
                   if Is_Discriminant (F) then
                      --  Discriminants are never ineffective imports.
+                     null;
+                  elsif A.Mode = Mode_Proof then
+                     --  Proof_Ins are never ineffective imports.
                      null;
                   elsif A.Is_Global then
                      if FA.Kind = E_Subprogram_Body and then
@@ -1975,6 +1978,54 @@ package body Flow.Analysis is
       end loop;
    end Find_Unused_Objects;
 
+   ------------------------------------------
+   --  Find_Exports_Derived_From_Proof_Ins  -
+   ------------------------------------------
+
+   procedure Find_Exports_Derived_From_Proof_Ins
+     (FA : in out Flow_Analysis_Graphs)
+   is
+      Tracefile : Unbounded_String;
+   begin
+      --  We go through the actual dependencies
+      for O in FA.Dependency_Map.Iterate loop
+         declare
+            Output : constant Flow_Id          := Dependency_Maps.Key (O);
+            Inputs : constant Flow_Id_Sets.Set := Dependency_Maps.Element (O);
+         begin
+            if Output = Null_Flow_Id then
+               null;
+            else
+               for Input of Inputs loop
+                  declare
+                     V_O : constant Flow_Graphs.Vertex_Id :=
+                       FA.PDG.Get_Vertex (Change_Variant (Output,
+                                                          Final_Value));
+                     V_I : constant Flow_Graphs.Vertex_Id :=
+                       FA.PDG.Get_Vertex (Change_Variant (Input,
+                                                          Initial_Value));
+                  begin
+                     if V_I /= Flow_Graphs.Null_Vertex
+                       and then FA.PDG.Get_Attributes (V_I).Mode = Mode_Proof
+                     then
+                        Error_Msg_Flow
+                          (FA        => FA,
+                           Tracefile => Tracefile,
+                           Msg       => "export & must not depend " &
+                             "on Proof_In &",
+                           N         => Error_Location (FA.PDG, V_O),
+                           F1        => Output,
+                           F2        => Input,
+                           Tag       => "export_depends_on_proof_in");
+                     end if;
+                  end;
+               end loop;
+            end if;
+
+         end;
+      end loop;
+   end Find_Exports_Derived_From_Proof_Ins;
+
    ---------------------
    -- Check_Contracts --
    ---------------------
@@ -2159,30 +2210,42 @@ package body Flow.Analysis is
                Wrong_Deps   := To_Ordered_Flow_Id_Set (U_Deps - A_Deps);
 
                for Missing_Var of Missing_Deps loop
-                  --  Something that the user dependency fails to
-                  --  mention.
-                  if F_Out = Null_Flow_Id then
-                     Error_Msg_Flow
-                       (FA        => FA,
-                        Tracefile => Tracefile,
-                        Msg       => "missing dependency ""null => #""",
-                        N         => Depends_Location,
-                        F1        => Missing_Var,
-                        Tag       => "depends_null",
-                        Warning   => True);
-                  else
-                     Error_Msg_Flow
-                       (FA        => FA,
-                        Tracefile => Tracefile,
-                        Msg       => "missing dependency ""# => #""",
-                        N         => Find_Export
-                          (Get_Direct_Mapping_Id (F_Out)),
-                        F1        => F_Out,
-                        F2        => Missing_Var,
-                        Tag       => "depends_missing",
-                        Warning   => True);
-                     --  ??? show path
-                  end if;
+                  declare
+                     V : constant Flow_Graphs.Vertex_Id :=
+                       FA.PDG.Get_Vertex (Change_Variant (Missing_Var,
+                                                          Initial_Value));
+                  begin
+                     if V /= Flow_Graphs.Null_Vertex
+                       and then FA.PDG.Get_Attributes (V).Mode = Mode_Proof
+                     then
+                        null;
+                     else
+                        --  Something that the user dependency fails to
+                        --  mention.
+                        if F_Out = Null_Flow_Id then
+                           Error_Msg_Flow
+                             (FA        => FA,
+                              Tracefile => Tracefile,
+                              Msg       => "missing dependency ""null => #""",
+                              N         => Depends_Location,
+                              F1        => Missing_Var,
+                              Tag       => "depends_null",
+                              Warning   => True);
+                        else
+                           Error_Msg_Flow
+                             (FA        => FA,
+                              Tracefile => Tracefile,
+                              Msg       => "missing dependency ""# => #""",
+                              N         => Find_Export
+                                (Get_Direct_Mapping_Id (F_Out)),
+                              F1        => F_Out,
+                              F2        => Missing_Var,
+                              Tag       => "depends_missing",
+                              Warning   => True);
+                           --  ??? show path
+                        end if;
+                     end if;
+                  end;
                end loop;
 
                for Wrong_Var of Wrong_Deps loop

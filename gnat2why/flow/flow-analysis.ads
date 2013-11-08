@@ -96,6 +96,12 @@ package Flow.Analysis is
    --
    --  Complexity is O(N)
 
+   procedure Find_Exports_Derived_From_Proof_Ins
+     (FA : in out Flow_Analysis_Graphs);
+   --  Finds exports derived from global variables with mode Proof_In.
+   --
+   --  Complexity is O(N)
+
    procedure Check_Contracts (FA : in out Flow_Analysis_Graphs);
    --  Check the given depends against the reality. If there is no
    --  depends aspect this procedure does nothing.

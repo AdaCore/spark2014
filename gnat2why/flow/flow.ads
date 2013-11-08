@@ -142,6 +142,9 @@ package Flow is
       --  True if this subprogram introduces (bad)
       --  aliasing. Subsequent analysis is then meaningless.
 
+      Dependency_Map    : Dependency_Maps.Map;
+      --  A map of all the dependencies.
+
       case Kind is
          when E_Subprogram_Body =>
             Is_Main : Boolean;

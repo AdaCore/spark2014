@@ -54,6 +54,7 @@ with Flow.Program_Dependence_Graph;
 
 with Flow.Utility;                  use Flow.Utility;
 with Flow_Error_Messages;           use Flow_Error_Messages;
+with Flow.Slice;                    use Flow.Slice;
 
 use type Ada.Containers.Count_Type;
 
@@ -529,6 +530,7 @@ package body Flow is
                Unreferenced_Vars => Node_Sets.Empty_Set,
                Loops             => Node_Sets.Empty_Set,
                Aliasing_Present  => False,
+               Dependency_Map    => Dependency_Maps.Empty_Map,
                Base_Filename     => To_Unbounded_String ("subprogram_"),
                Is_Main           => Might_Be_Main (E),
                Is_Generative     => not (Present
@@ -559,6 +561,7 @@ package body Flow is
                Unreferenced_Vars => Node_Sets.Empty_Set,
                Loops             => Node_Sets.Empty_Set,
                Aliasing_Present  => False,
+               Dependency_Map    => Dependency_Maps.Empty_Map,
                Base_Filename     => To_Unbounded_String ("package_spec_"),
                Initializes_N     => Empty,
                Visible_Vars      => Flow_Id_Sets.Empty_Set);
@@ -582,6 +585,7 @@ package body Flow is
                Unreferenced_Vars => Node_Sets.Empty_Set,
                Loops             => Node_Sets.Empty_Set,
                Aliasing_Present  => False,
+               Dependency_Map    => Dependency_Maps.Empty_Map,
                Base_Filename     => To_Unbounded_String ("package_body_"),
                Initializes_N     => Empty,
                Visible_Vars      => Flow_Id_Sets.Empty_Set);
@@ -820,6 +824,8 @@ package body Flow is
             Analysis.Sanity_Check_Postcondition (FA, Success);
          end if;
          if Success then
+            FA.Dependency_Map := Compute_Dependency_Relation (FA);
+
             case FA.Kind is
                when E_Subprogram_Body =>
                   Analysis.Find_Unwritten_Exports (FA);
@@ -827,6 +833,7 @@ package body Flow is
                   Analysis.Find_Ineffective_Statements (FA);
                   Analysis.Find_Use_Of_Uninitialised_Variables (FA);
                   Analysis.Find_Unused_Objects (FA);
+                  Analysis.Find_Exports_Derived_From_Proof_Ins (FA);
                   Analysis.Check_Contracts (FA);
                   Analysis.Analyse_Main (FA);
 

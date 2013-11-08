@@ -267,6 +267,7 @@ package body Flow.Utility is
    procedure Get_Globals (Subprogram             : Entity_Id;
                           Reads                  : out Flow_Id_Sets.Set;
                           Writes                 : out Flow_Id_Sets.Set;
+                          Proof_Ins              : out Flow_Id_Sets.Set;
                           Refined_View           : Boolean;
                           Consider_Discriminants : Boolean := False;
                           Globals_For_Proof      : Boolean := False)
@@ -275,8 +276,9 @@ package body Flow.Utility is
       Global_Node       : Node_Id;
       Body_E            : constant Entity_Id := Get_Body (Subprogram);
    begin
-      Reads  := Flow_Id_Sets.Empty_Set;
-      Writes := Flow_Id_Sets.Empty_Set;
+      Reads     := Flow_Id_Sets.Empty_Set;
+      Writes    := Flow_Id_Sets.Empty_Set;
+      Proof_Ins := Flow_Id_Sets.Empty_Set;
 
       if Refined_View and then Present (Body_E) and then
         Present (Get_Pragma (Body_E, Pragma_Refined_Global))
@@ -348,7 +350,8 @@ package body Flow.Utility is
                      Writes.Insert (Direct_Mapping_Id
                                       (The_Global, Out_View));
                   when Name_Proof_In =>
-                     null;  --  ??? Until Proof_In is supported
+                     Proof_Ins.Insert (Direct_Mapping_Id
+                                         (The_Global, In_View));
                   when others =>
                      raise Program_Error;
                end case;
@@ -492,6 +495,26 @@ package body Flow.Utility is
 
       end if;
 
+   end Get_Globals;
+
+   procedure Get_Globals (Subprogram             : Entity_Id;
+                          Reads                  : out Flow_Id_Sets.Set;
+                          Writes                 : out Flow_Id_Sets.Set;
+                          Refined_View           : Boolean;
+                          Consider_Discriminants : Boolean := False;
+                          Globals_For_Proof      : Boolean := False)
+   is
+      Proof_Ins : Flow_Id_Sets.Set;
+   begin
+      Get_Globals (Subprogram             => Subprogram,
+                   Reads                  => Reads,
+                   Writes                 => Writes,
+                   Proof_Ins              => Proof_Ins,
+                   Refined_View           => Refined_View,
+                   Consider_Discriminants => Consider_Discriminants,
+                   Globals_For_Proof      => Globals_For_Proof);
+
+      Reads.Union (Proof_Ins);
    end Get_Globals;
 
    ------------------------

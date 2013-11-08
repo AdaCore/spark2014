@@ -37,12 +37,14 @@ package Flow.Utility is
    procedure Get_Globals (Subprogram             : Entity_Id;
                           Reads                  : out Flow_Id_Sets.Set;
                           Writes                 : out Flow_Id_Sets.Set;
+                          Proof_Ins              : out Flow_Id_Sets.Set;
                           Refined_View           : Boolean;
                           Consider_Discriminants : Boolean := False;
                           Globals_For_Proof      : Boolean := False)
    with Pre  => Ekind (Subprogram) in E_Procedure | E_Function,
-        Post => (for all G of Reads  => G.Variant = In_View) and
-                (for all G of Writes => G.Variant = Out_View);
+        Post => (for all G of Reads     => G.Variant = In_View) and
+                (for all G of Writes    => G.Variant = Out_View) and
+                (for all G of Proof_Ins => G.Variant = In_View);
    --  Given a subprogram call, work out globals from the provided
    --  aspect or the computed globals. The sets returned will contain
    --  Flow_Id with the variant set to Global_In_View and
@@ -57,6 +59,17 @@ package Flow.Utility is
    --
    --  If Globals_For_Proof is set then the calls to Get_Generated_Reads will
    --  not specify Include_Constants.
+
+   procedure Get_Globals (Subprogram             : Entity_Id;
+                          Reads                  : out Flow_Id_Sets.Set;
+                          Writes                 : out Flow_Id_Sets.Set;
+                          Refined_View           : Boolean;
+                          Consider_Discriminants : Boolean := False;
+                          Globals_For_Proof      : Boolean := False)
+   with Pre  => Ekind (Subprogram) in E_Procedure | E_Function,
+        Post => (for all G of Reads  => G.Variant = In_View) and
+                (for all G of Writes => G.Variant = Out_View);
+   --  Same as above but Reads consists of both the Reads and Proof_Ins.
 
    function Has_Global_Reads
      (Subprogram        : Entity_Id;

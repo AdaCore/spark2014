@@ -2497,8 +2497,9 @@ package body Flow.Control_Flow_Graph is
          when E_Subprogram_Body =>
             declare
                type G_Prop is record
-                  Is_Read  : Boolean;
-                  Is_Write : Boolean;
+                  Is_Read     : Boolean;
+                  Is_Write    : Boolean;
+                  Is_Proof_In : Boolean;
                end record;
 
                package Global_Maps is new Ada.Containers.Hashed_Maps
@@ -2508,18 +2509,27 @@ package body Flow.Control_Flow_Graph is
                   Equivalent_Keys => "=",
                   "="             => "=");
 
-               Reads   : Flow_Id_Sets.Set;
-               Writes  : Flow_Id_Sets.Set;
-               Globals : Global_Maps.Map := Global_Maps.Empty_Map;
+               Reads     : Flow_Id_Sets.Set;
+               Writes    : Flow_Id_Sets.Set;
+               Proof_Ins : Flow_Id_Sets.Set;
+               Globals   : Global_Maps.Map := Global_Maps.Empty_Map;
             begin
                Get_Globals (Subprogram   => Subprogram_Spec,
                             Reads        => Reads,
                             Writes       => Writes,
+                            Proof_Ins    => Proof_Ins,
                             Refined_View => True);
                for G of Reads loop
                   Globals.Include (Change_Variant (G, Normal_Use),
-                                   G_Prop'(Is_Read  => True,
-                                           Is_Write => False));
+                                   G_Prop'(Is_Read     => True,
+                                           Is_Write    => False,
+                                           Is_Proof_In => False));
+               end loop;
+               for G of Proof_Ins loop
+                  Globals.Include (Change_Variant (G, Normal_Use),
+                                   G_Prop'(Is_Read     => False,
+                                           Is_Write    => False,
+                                           Is_Proof_In => True));
                end loop;
                for G of Writes loop
                   declare
@@ -2529,8 +2539,9 @@ package body Flow.Control_Flow_Graph is
                         P := Globals (Change_Variant (G, Normal_Use));
                         P.Is_Write := True;
                      else
-                        P := G_Prop'(Is_Read  => False,
-                                     Is_Write => True);
+                        P := G_Prop'(Is_Read     => False,
+                                     Is_Write    => True,
+                                     Is_Proof_In => False);
                      end if;
                      Globals.Include (Change_Variant (G, Normal_Use), P);
 
@@ -2564,6 +2575,8 @@ package body Flow.Control_Flow_Graph is
                         Mode := Mode_In;
                      elsif P.Is_Write then
                         Mode := Mode_Out;
+                     elsif P.Is_Proof_In then
+                        Mode := Mode_Proof;
                      else
                         raise Program_Error;
                      end if;
