@@ -4,337 +4,148 @@
 Usage Scenarios for |SPARK|
 ***************************
 
-..  Note that, in many cases, ad-hoc data structures based on pointers can be
-    replaced by the use of standard Ada containers (vectors, lists, sets, maps,
-    etc.) Although the implementation of standard containers is not in |SPARK|,
-    we have defined a slightly modified version of these targeted at formal
-    verification. These formal containers are implemented in the GNAT standard
-    library. These alternative containers are typical of the tradeoffs implicit
-    in |SPARK|: favor automatic formal verification as much as possible, at the
-    cost of minor adaptations to the code.
-
 This section discusses in more detail the various types of verification that
 |GNATprove| may be used for, ranging from flow analysis to formal verification
 of correctness properties.
 
-.. _flow analysis of unannotated code:
+This section discusses some of the common usage scenarios (or use cases) in
+which |SPARK| may be used. It is illustrative, and is certainly not intended
+to be an exhaustive list.
 
-Flow Analysis of Unannotated Code
----------------------------------
+.. _develop new code from scratch:
 
-When |GNATprove| is run in ``flow`` mode it performs flow analysis to check
-for errors relating to initialization of, and information flow between,
-variables. If the code under analysis does not include global or depends
-annotations then this analysis will detect errors relating to:
-
- - the use of uninitialized variables;
- - unused variables;
- - unused assignments;
- - ineffective statements.
-
-(Note that the terms "unused" and "ineffective" both mean that the construct
-in question ultimately has no impact on any output from the subprogram.)
-
-This corresponds to the "generative" or "retrospective" style of analysis.
-For example, in the code shown below |GNATprove| warns that the initial value
-of ``X`` is unused.
-
-.. code-block:: ada
-   :linenos:
-
-   procedure P (X : in out Integer) is
-   begin
-      X := 10;
-   end P;
-
-If this is the intended behaviour then the warning can be eliminated by
-changing the mode of the parameter to ``out`` as has been done below.
-But in this version the result of the first assignment is overwritten
-by the second assignment, so |GNATprove| warns that the initial
-assignment is unused.
-
-.. code-block:: ada
-   :linenos:
-
-   procedure P (X : out Integer) is
-   begin
-      X := 0;
-      X := 10;
-   end P;
-
-The previous examples were instances of warnings, but the use of
-uninitialized variables is considered more serious and results in
-an error being reported, as in the case below.
-
-.. code-block:: ada
-   :linenos:
-
-   procedure P (X : out Integer) is
-      T : Integer;
-   begin
-      X := T;
-   end P;
-
-Here |GNATprove| reports the error that ``T`` might not be initialized.
-The reason for the word "might" is that the flow analyser cannot, in
-general, determine whether the use of the uninitialized variable is on
-a non-executable path. To do so would require proof, and it is possible
-that this may be done in a future version of the tools.
-
-Flow analysis will also detect unused variables as in this example
-where |GNATprove| warns that ``T`` is unused.
-
-.. code-block:: ada
-   :linenos:
-
-   procedure P (X : out Integer) is
-      T : Integer;
-   begin
-      X := 0;
-   end P;
-
-.. _flow analysis of code with globals:
-
-Flow Analysis of Code with Globals
-----------------------------------
-
-If the user has added global annotations to the code then |GNATprove|
-is able to go further with flow analysis and report any discrepancies
-between the contract specified in the annotation and the executable
-code. Here, ``P`` has an annotation specifying that the global ``G``
-is an input (but not an output).
-
-.. code-block:: ada
-   :linenos:
-
-   procedure P
-      with Global => (Input => G)
-   is
-   begin
-      G := G + 1;
-   end P;
-
-|GNATprove| reports that ``G`` must be a global output. This corresponds
-to the constructive analysis style, where the contract must be provided
-by the user before the executable code is written (or at least simultaneously
-with writing the code). Note that if the global aspect was not present then
-|GNATprove| would synthesize a global contract that matched the code and no
-error would be reported. This corresponds to the generative or retrospective
-style of analysis which has the advantage of not requiring the user to add
-the annotations but the disadvantage of not being able to detect cases where
-the user-supplied annotation is correct but the code is incorrect. Note also
-that for the code shown above |GNATprove| reports one more warning, that
-initial value of ``G`` is unused. This may seem surprising at first glance,
-because the initial value of ``G`` must be read in order to increment it.
-However, the global aspect states that ``G`` is not an output, so the
-assignment statement is not considered to affect any outputs and the new
-value of ``G`` is unused. Both of these messages disappear when the global
-annotation is corrected and the code is reanalysed.
-
-.. _flow analysis of code with depends:
-
-Flow Analysis of Code with Depends
-----------------------------------
-
-If the user has specified depends annotations then |GNATprove| can go still
-further with the flow analysis it performs. This typically corresponds to a
-scenario where the constructive analysis style is being used and the extra
-analysis is considered to be valuable, for example when it is important to
-see the flows of information between inputs and outputs on a security or
-safety related system. The presence of depends annotations, which specify
-the relationships between inputs and outputs of a subprogram, allows
-|GNATprove| to check the specified dependency against the executable code
-and report any discrepancies.
-
-Here is our old friend ``Swap`` which is intended to exchange the values
-of its two integer parameters, ``X`` and ``Y``. The depends annotation
-correctly captures this specification, but the user has made a mistake in
-the implementation.
-
-.. code-block:: ada
-   :linenos:
-
-   procedure Swap (X, Y : in out Integer)
-      with Depends => (X => Y, Y => X)
-   is
-      T : Integer;
-   begin
-      T := Y; -- should be T := X;
-      X := Y;
-      Y := T;
-   end Swap;
-
-|GNATprove| analyses the body, calculates the actual dependencies between
-inputs and outputs, compares these with the specified dependencies and
-reports the following warnings:
-
-.. code-block:: ada
-
-   q.adb:4:20: warning: unused initial value of "X" [unused_initial_value]
-   q.adb:5:12: warning: missing dependency "null => X" [depends_null]
-   q.adb:5:32: warning: missing dependency "Y => Y" [depends_missing]
-   q.adb:5:32: warning: incorrect dependency "Y => X" [depends_wrong]
-
-Note that the style of these messages implies that the code is correct and
-the depends annotation should be fixed. However it should be borne in
-mind that where a discrepancy between the code and the depends annotation
-is detected it is generally up to the user to decide whether the code or
-the annotation is incorrect and to take the appropriate corrective action.
-In this case it is the code which is wrong, and correcting the first
-assignment statement will eliminate all of the errors listed above.
-
-It is important to note that the inclusion of user-supplied global and
-depends annotations is not an "all or nothing" decision that must be
-applied rigidly across all files. The tools are flexible enough to make
-use of, and check against, the annotations where they are present, and
-to synthesize them otherwise. There are various usage scenarios where
-there might be a mix of annotated and unannotated code, for example:
-
- - Some projects, working in the constructive style, might opt to write
-   global and depends annotations for subprograms at the lower levels
-   of the calling hierarchy, but only use globals at the higher levels.
-   The depends annotations tend to give more value at the lower levels
-   of the hierarchy but can become more unweildy and less informative at
-   the higher levels.
-
- - Some projects might opt to write the global and depends aspects for
-   the most critical areas of the software, but leave the less critical
-   parts unannotated.
-
- - If an existing Ada project is adopting |SPARK|, annotations might be
-   added to all newly written code, but not retrospectively applied to
-   existing code. Or such a project might choose to gradually introduce
-   annotations to the code base as existing modules are modified, rather
-   than having to go for a "big bang" approach of applying annotations to
-   everything at the same time.
-
-These are just some of the possible usage scenarios. Yet more combinations
-can be envisaged when we consider that the proof contracts may also be
-specified or not, depending on the circumstances of the project. The
-following sections consider how |GNATprove| can be used for formal
-verification.
-
-.. _absence of run-time errors:
-
-Absence of Run-Time Errors
---------------------------
-
-This verification activity is available in mode ``prove``.
-|GNATprove| automatically generates Verification Conditions (VCs) whose proof
-ensures that the code of the subprogram being analyzed will not violate any of
-the following checks when it is executed:
-
-* overflow check
-* range check
-* index check
-* division check
-* discriminant check
-* length check
-
-The precise meaning of these checks is given by the Ada Language Reference
-Manual. An *overflow check* violation occurs when the result of an arithmetic
-operation cannot be represented in the base type (usually a machine integer)
-for this operation. A *range check* violation occurs when a value does not
-respect the range constraint for its type. An *index check* violation occurs
-when the value used to index into an array does not fit between the array
-bounds. A *division check* violation occurs when the divisor of a division
-operation (or ``rem`` or ``mod``) is zero. A *discriminant check* violation
-occurs when the discriminant(s) of a discriminant record does not have the
-expected value for a given operation. A *length check* violation occurs when an
-array does not have the expected length.
-
-|GNATprove| also takes into account checks that occur within preconditions.
-VCs are generated to show that preconditions of subprograms can never raise
-run-time errors, whatever the calling context. In order to achieve this
-property for preconditions, the user should in general guard all expressions
-which may raise a ``Constraint_Error`` in Ada, such as array accesses and
-arithmetic operations.
-
-These guards may take the form desired by the user. In particular, no guard is
-necessary if the operation cannot raise a run-time error, e.g. due to the
-ranges of variables involved. As an example, consider the following subprogram
-specifications:
-
-.. code-block:: ada
-   :linenos:
-
-   procedure Not_Guarded (X, Y : Integer) with
-     Pre => X / Y > 0;
-
-   procedure Guarded_And_Then (X, Y : Integer) with
-     Pre => Y /= 0 and then X / Y > 0;
-
-   procedure Guarded_If_Then (X, Y : Integer) with
-     Pre => (if Y /= 0 then X / Y > 0);
-
-   procedure No_Need_For_Guard (X, Y : Positive) with
-     Pre => X / Y > 0;
-
-|GNATprove| is able to show that only the precondition of the first of these
-specifications could raise a run-time error::
-
-   p.ads:4:15: division check not proved
-   p.ads:7:31: (info) division check proved
-   p.ads:10:31: (info) division check proved
-   p.ads:13:15: (info) division check proved
-
-Notice also that division might also overflow here, if ``X`` is the minimal
-integer value and ``Y`` is ``-1`` (standard 32-bits integers are assumed
-here). |GNATprove| checks this overflow condition, and it detects that only
-the precondition of the last of these specifications cannot raise a run-time
-error::
-
-   p.ads:4:15: overflow check not proved
-   p.ads:7:31: overflow check not proved
-   p.ads:10:31: overflow check not proved
-   p.ads:13:15: (info) overflow check proved
-
-Similar VCs are generated to ensure that postconditions and assertions are
-also free from run-time exceptions.
-
-.. _functional verification:
-
-Functional Verification
------------------------
-
-This verification activity is available in mode ``prove``.  |GNATprove| generates
-VCs to prove that all subprograms called in the code of a subprogram analyzed
-have their precondition satisfied at the point of call. It also generates VCs
-to prove that the postcondition of the subprogram analyzed is satisfied.
-
-In order to prove such VCs, the user may have to write loop invariants, for
-which specific VCs are generated, to prove that the loop invariant is initially
-valid (*loop invariant initiation*) and that it is preserved through the loop
-(*loop invariant preservation*).
-
-..  See :ref:`how to write loop invariants`.
-
-Analysing Incomplete Programs
+Develop New Code from Scratch
 -----------------------------
 
-It is often necessary to analyse |SPARK| programs which are not complete.
-This may occur when the program is under development and package specifications
-have been written but the corresponding bodies have not yet been implemented, or
-perhaps the bodies are being developed and currently have errors in them.
-Another situation might be that existing Ada code is being converted to |SPARK|
-and there are bodies which are not yet compliant with the |SPARK| rules, although
-this would typically be dealt with by using pragma SPARK_Mode to
-identify code which is intended to be in and out of |SPARK|.
+This is the 'green field' development scenario where new software is
+being written and there are no constraints imposed in terms of having
+to base the development on pre-existing code. |SPARK| may be used for
+all software components or (more likely) the software may be developed
+in a mixture of |SPARK|, full Ada and other languages. For example, Ada
+may be employed in modules where it is deemed essential to make use of
+language features that are not currently in the |SPARK| subset, or in
+a safety-related project |SPARK| might be used for all of the
+safety-related software components.
 
-When developing new code, if a package specification is present but the body does
-not yet exist the tools will assume that the specification is correct when
-analysing code that depends on it. But if the body is present and contains
-errors this will prevent the analysis of units that depend on it. This might be
-an issue when software is being developed by a team and a developer checks in a
-new package body containing errors, causing other developers' analyses to fail.
-This would typically be avoided by having project procedures which do not allow
-code to be checked in until it analyses and compiles cleanly. Another, possibly
-more robust, option is to manage the issue via the GNAT project file. Any
-problematic bodies can be excluded from analysis as follows:
+A typical development process for this scenario might be:
 
-.. code-block:: ada
+#. Produce the high level (architectural) design in terms of package
+   specifications. Determine which packages will be in |SPARK| and add
+   contracts to those packages. The package contracts identify the
+   key elements of abstract state, and the subprogram global contracts
+   show which subprograms read and write that state. Optionally, dependency
+   contracts can be added to specify information flow relations, and
+   postconditions can be added to specify high-level properties such
+   as safety requiremensts that must be satisfied.
+   
+#. Identify the |SPARK| packages by adding pragma SPARK_Mode to them. At
+   this stage the high-level package structure can be analysed with the tools
+   (using the 'Examine' command in GPS) before any executable code is implemented.
 
-   for Excluded_Source_Files use ("body_with_errors.adb", ...);
+#. Begin implementing the package bodies. One typical method of doing this
+   is to use a process of top-down decomposition, starting with a top-level
+   subprogram specification and implementing the body by breaking it down
+   into further (nested) subprograms which are themselves specified but not
+   yet implemented, and to iterate until a level is reached where it is
+   appropriate to start writing executable code. However the exact process
+   is not mandated and will depend on other factors such as the design
+   methodology being employed.
 
-Alternatively, the project file could list only the package specifications, not
-the bodies.
+#. As each subprogram is implemented it can be verified (against its contract,
+   and to show absence of run-time errors) by proof, testing (with assertion
+   checking enabled) or both.
+
+   - Users may opt to try proving first then, if a particular proof is
+     tricky to discharge, execute test cases to either give confidence that
+     the code and contract is correct or to help diagnose why it is failing. 
+
+   - Alternatively, users may prefer to execute the code with suitable
+     test cases during development, then use proof to verify it once they
+     believe it to be correct.
+
+#. Once verification is complete the executable can be compiled with
+   assertion checks either enabled or disabled depending on the policy chosen
+   by the project.
+
+.. _convert SPARK 2005 to SPARK 2014:
+
+Convert existing SPARK 2005 software to SPARK 2014
+--------------------------------------------------
+
+If an existing piece of software has been developed in SPARK 2005 and is
+still undergoing active development/maintenance then it may be advantageous
+to upgrade to using SPARK 2014 in order to make use of the larger language
+subset and the new tools and environment. The |SPARK| Language Reference Manual
+has an appendix containing a SPARK 2005 to |SPARK| Mapping Specification which
+can be used to guide the conversion process. As the |SPARK| subset is larger
+then the SPARK 2005 subset, and the mapping of features between the two languages
+is defined, the translation should be relatively straightforward. There are two
+main options for the conversion process:
+
+#. All of the software is converted from SPARK 2005 to |SPARK| at the same time.
+   The |SPARK| tools should be used to analyse the work in progress throughout
+   the conversion process (which implies that a bottom-up approach may work best)
+   and any errors corrected as they are found. Once the conversion is complete,
+   development and maintenance can continue in |SPARK|.
+
+#. A more gradual approach could be employed, where code is only converted to
+   |SPARK| when it needs to be changed. (The granularity of how much code needs
+   to be converted when a module is touched should be considered, and is likely to
+   be at the level of the whole package.) The |SPARK| tools can then be used to
+   analyse the new/changed code, and will attempt to analyse any dependent units,
+   which may or may not be in |SPARK|. It is not necessary for dependent units to
+   be fully in |SPARK| but any declarations from them that are used in |SPARK|
+   packages must be in |SPARK|. 
+
+.. _analse legacy Ada software:
+
+Analyse legacy Ada software
+---------------------------
+
+If a legacy system has been developed in Ada then analysing it with the |SPARK|
+tools may be a good first step in order to assess the quality of the code prior
+to performing a full or partial conversion to |SPARK|. The suggested workflow is:
+
+#. Identify units which are highest priority for conversion to |SPARK|. These may
+   already be known, or potential candidates could be identified by:
+
+   - putting pragma SPARK_Mode in a global configuration file so that all code is
+     analysed as if it were intended to be |SPARK|;
+
+   - running the 'Examine' command on all code;
+
+   - use the errors in the summary report to guide the selection process - files
+     with fewer errors are likely to be easier to convert and would be a good
+     starting point;
+
+   - remove the global configuration pragma SPARK_Mode before proceeding.
+
+#. For each unit to be converted to |SPARK|:
+
+   - Identify the specification as |SPARK| (SPARK_Mode => On) but identify the body
+     as not in |SPARK| (SPARK_Mode => Off).
+
+   - Analyse (Examine) the specification and correct any errors that are reported
+     by the tools, iterating until no errors remain.
+
+   - Mark the body as |SPARK| (change SPARK_Mode from Off to On).
+
+   - Analyse (Examine) the body and correct any errors that are reported
+     by the tools, iterating until no errors remain.
+
+   - Each subprogram can then be verified to show absence of run-time errors by proof,
+     testing (with assertion checking enabled) or both.
+
+     - Users may opt to try proving first then, if a particular proof is
+       tricky to discharge, execute test cases to either give confidence that
+       the code is correct or to help diagnose why it is failing. 
+
+     - Alternatively, users may prefer to execute the code with suitable
+       test cases first, then use proof to verify it once they believe it
+       to be correct.
+
+#. Once conversion and verification is complete, the executable can be compiled with
+   assertion checks either enabled or disabled depending on the policy chosen
+   by the project. At this point users might begin adding contracts to the code in
+   order to perform verification of functional properties.
+
