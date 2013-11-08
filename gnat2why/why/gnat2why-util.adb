@@ -318,6 +318,23 @@ package body Gnat2Why.Util is
       return Result;
    end Create_Zero_Binding;
 
+   --------------------
+   -- Init_Why_Files --
+   --------------------
+
+   procedure Init_Why_Sections (Unit : Node_Id) is
+      Body_Prefix : constant String := Body_File_Name_Without_Suffix (Unit);
+   begin
+      Why_File_Name := new String'(Body_Prefix & Why_File_Suffix);
+      for Kind in Why_Section_Enum'First ..
+                  Why_Section_Enum'Pred (Why_Section_Enum'Last)
+      loop
+         Why_Sections (Kind) :=
+           Make_Empty_Why_Section (Kind => Kind);
+      end loop;
+      Why_Sections (WF_Main) := Make_Empty_Why_Section (Kind => WF_Main);
+   end Init_Why_Sections;
+
    -------------------
    -- Insert_Entity --
    -------------------

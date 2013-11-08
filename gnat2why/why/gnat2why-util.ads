@@ -191,8 +191,14 @@ package Gnat2Why.Util is
        (Make_Empty_Why_Section'Result.Cur_Theory = Why.Types.Why_Empty);
    --  Return an empty Why_Section with the given kind
 
-   Why_Sections : array (Why_Section_Enum) of Why_Section;
    Why_File_Name : String_Access;
+
+   procedure Init_Why_Sections (Unit : Node_Id);
+   --  Call this procedure to initialize the predefined sections of the Why
+   --  file. The Unit node is used to initialize the above Why_File_Name
+   --  variable.
+
+   Why_Sections : array (Why_Section_Enum) of Why_Section;
 
    Why_File_Suffix : constant String := ".mlw";
 

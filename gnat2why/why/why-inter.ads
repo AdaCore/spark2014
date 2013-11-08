@@ -98,12 +98,6 @@ package Why.Inter is
    --  Mappings from Ada nodes to Why logic functions for their translation
    --  This map is used for string literals and aggregates
 
-   procedure Init_Why_Files (Unit : Node_Id);
-   procedure Init_Why_Files (Prefix : String);
-   --  Call this procedure to initialize the predefined Why_Files
-   --  The "String" variant uses the same prefix for all files. The other one
-   --  uses the spec or body prefix as appropriate.
-
    procedure Add_With_Clause (T        : W_Theory_Declaration_Id;
                               T_Name   : String;
                               Use_Kind : EW_Clone_Type;
