@@ -1977,16 +1977,129 @@ package body Flow.Analysis is
       end loop;
    end Find_Unused_Objects;
 
-   ------------------------------------------
-   --  Find_Exports_Derived_From_Proof_Ins  -
-   ------------------------------------------
+   -------------------------------------------
+   --  Find_Exports_Derived_From_Proof_Ins  --
+   -------------------------------------------
 
    procedure Find_Exports_Derived_From_Proof_Ins
      (FA : in out Flow_Analysis_Graphs)
    is
-      Tracefile : Unbounded_String;
-   begin
-      --  We go through the actual dependencies
+      function Path_Leading_To_Proof_In_Dependency
+        (From : Flow_Graphs.Vertex_Id;
+         To   : Flow_Graphs.Vertex_Id)
+        return Vertex_Sets.Set;
+      --  Returns a set of vertices that highlight the path in the CFG
+      --  where the export depends on a Proof_In.
+
+      ------------------------------------------
+      --  Path_Leading_To_Proof_In_Dependency --
+      ------------------------------------------
+
+      function Path_Leading_To_Proof_In_Dependency
+        (From : Flow_Graphs.Vertex_Id;
+         To   : Flow_Graphs.Vertex_Id)
+        return Vertex_Sets.Set
+      is
+         function Vertices_Between_From_And_To
+           (From      : Flow_Graphs.Vertex_Id;
+            To        : Flow_Graphs.Vertex_Id;
+            CFG_Graph : Boolean := False)
+           return Vertex_Sets.Set;
+         --  Returns the smallest set of vertices that make up a path
+         --  from "From" to "To" (excluding vertices "From" and "To").
+         --  By default it operates on the PDG graph. If CFG_Graph is
+         --  set to True then it operates on the CFG graph.
+
+         ------------------------------------
+         --  Vertices_Between_From_And_To  --
+         ------------------------------------
+
+         function Vertices_Between_From_And_To
+           (From      : Flow_Graphs.Vertex_Id;
+            To        : Flow_Graphs.Vertex_Id;
+            CFG_Graph : Boolean := False)
+           return Vertex_Sets.Set
+         is
+            Vertices : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
+
+            procedure Add_Loc (V : Flow_Graphs.Vertex_Id);
+            --  Step procedure for Shortest_Path.
+
+            procedure Are_We_There_Yet
+              (V           : Flow_Graphs.Vertex_Id;
+               Instruction : out Flow_Graphs.Traversal_Instruction);
+            --  Visitor procedure for Shortest_Path.
+
+            ---------------
+            --  Add_Loc  --
+            ---------------
+
+            procedure Add_Loc
+              (V : Flow_Graphs.Vertex_Id)
+            is
+               F : constant Flow_Id := (if CFG_Graph then FA.CFG.Get_Key (V)
+                                        else FA.PDG.Get_Key (V));
+            begin
+               if V /= To and V /= From and F.Kind = Direct_Mapping then
+                  Vertices.Include (V);
+               end if;
+            end Add_Loc;
+
+            ------------------------
+            --  Are_We_There_Yet  --
+            ------------------------
+
+            procedure Are_We_There_Yet
+              (V           : Flow_Graphs.Vertex_Id;
+               Instruction : out Flow_Graphs.Traversal_Instruction)
+            is
+            begin
+               if V = To then
+                  Instruction := Flow_Graphs.Found_Destination;
+               else
+                  Instruction := Flow_Graphs.Continue;
+               end if;
+            end Are_We_There_Yet;
+
+         begin --  Vertices_Between_Proof_In_And_Export
+            if CFG_Graph then
+               FA.CFG.Shortest_Path (Start         => From,
+                                     Allow_Trivial => False,
+                                     Search        => Are_We_There_Yet'Access,
+                                     Step          => Add_Loc'Access);
+            else
+               FA.PDG.Shortest_Path (Start         => From,
+                                     Allow_Trivial => False,
+                                     Search        => Are_We_There_Yet'Access,
+                                     Step          => Add_Loc'Access);
+            end if;
+
+            return Vertices;
+         end Vertices_Between_From_And_To;
+
+         Vertices_To_Cover : constant Vertex_Sets.Set :=
+           Vertices_Between_From_And_To (From => From,
+                                         To   => To);
+         Path              : Vertex_Sets.Set := Vertices_To_Cover;
+         Start             : Flow_Graphs.Vertex_Id;
+      begin  --  Path_Leading_To_Proof_In_Dependency
+         --  Sanity check that we do not have an empty set.
+         pragma Assert (Vertices_To_Cover.Length >= 1);
+
+         Start := FA.Start_Vertex;
+         for Vert of Vertices_To_Cover loop
+            Path.Union (Vertices_Between_From_And_To
+                          (From      => Start,
+                           To        => Vert,
+                           CFG_Graph => True));
+
+            Start := Vert;
+         end loop;
+
+         return Path;
+      end Path_Leading_To_Proof_In_Dependency;
+
+   begin  --  Find_Exports_Derived_From_Proof_Ins
       for O in FA.Dependency_Map.Iterate loop
          declare
             Output : constant Flow_Id          := Dependency_Maps.Key (O);
@@ -1997,12 +2110,14 @@ package body Flow.Analysis is
             else
                for Input of Inputs loop
                   declare
-                     V_I : constant Flow_Graphs.Vertex_Id :=
+                     V              : constant Flow_Graphs.Vertex_Id :=
                        FA.PDG.Get_Vertex (Change_Variant (Input,
                                                           Initial_Value));
+                     Tracefile      : Unbounded_String;
+                     Vertices_Trail : Vertex_Sets.Set;
                   begin
-                     if V_I /= Flow_Graphs.Null_Vertex
-                       and then FA.PDG.Get_Attributes (V_I).Mode = Mode_Proof
+                     if V /= Flow_Graphs.Null_Vertex
+                       and then FA.PDG.Get_Attributes (V).Mode = Mode_Proof
                      then
                         Error_Msg_Flow
                           (FA        => FA,
@@ -2014,6 +2129,17 @@ package body Flow.Analysis is
                            F1        => Output,
                            F2        => Input,
                            Tag       => "export_depends_on_proof_in");
+
+                        Vertices_Trail := Path_Leading_To_Proof_In_Dependency
+                          (From => V,
+                           To   => FA.PDG.Get_Vertex (Change_Variant
+                                                        (Output,
+                                                         Final_Value)));
+
+                        Write_Vertex_Set
+                          (G        => FA.PDG,
+                           Set      => Vertices_Trail,
+                           Filename => To_String (Tracefile));
                      end if;
                   end;
                end loop;
