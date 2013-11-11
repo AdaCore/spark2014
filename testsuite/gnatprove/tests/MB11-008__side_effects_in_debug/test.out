@@ -1,0 +1,4 @@
+p.adb:16:14: warning: overflow check might fail
+p.adb:24:14: warning: overflow check might fail
+p2.adb:9:14: warning: overflow check might fail
+p2.adb:17:14: warning: overflow check might fail

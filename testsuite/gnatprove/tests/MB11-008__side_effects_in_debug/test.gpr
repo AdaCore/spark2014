@@ -1,0 +1,10 @@
+project Test is
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-g", "-O2");
+   end Compiler;
+
+   for Source_Dirs use ("./**");
+
+end Test;
+
