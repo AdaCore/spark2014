@@ -40,6 +40,6 @@
 
    "tu"   stands for trace unit.
    "etu"  stands for end trace unit
-   "-fa-" means this trace unit tested by the flow analysis
-   "-fe-" means this trace unit tested by the front end
-   "-pr-" means this trace unit tested by proof
+   "-fa-" means this trace unit is tested by flow analysis
+   "-fe-" means this trace unit is tested by the front end
+   "-pr-" means this trace unit is tested by proof
