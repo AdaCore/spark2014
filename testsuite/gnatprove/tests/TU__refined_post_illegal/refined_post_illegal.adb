@@ -10,7 +10,7 @@ is
    function Inv_Func_2 return Integer
      --  TU: 1. A Refined_Post aspect may only appear on a body_stub (if one is
      --  present) or the body (if no stub is present) of a subprogram which is
-     --  declared in the visible part of a package, its abstract view. If the
+     --  declared in the specification of a package, its abstract view. If the
      --  subprogram declaration in the visible part has no explicit
      --  postcondition, a postcondition of True is assumed for the abstract
      --  view.
@@ -28,7 +28,7 @@ is
    function Inv_Func_3 (X : Integer) return Boolean
      --  TU: 1. A Refined_Post aspect may only appear on a body_stub (if one is
      --  present) or the body (if no stub is present) of a subprogram which is
-     --  declared in the visible part of a package, its abstract view. If the
+     --  declared in the specification of a package, its abstract view. If the
      --  subprogram declaration in the visible part has no explicit
      --  postcondition, a postcondition of True is assumed for the abstract
      --  view.
@@ -45,7 +45,7 @@ is
    function Inv_Func_4 (X, Y : Boolean) return Boolean is (X and Y)
      --  TU: 1. A Refined_Post aspect may only appear on a body_stub (if one is
      --  present) or the body (if no stub is present) of a subprogram which is
-     --  declared in the visible part of a package, its abstract view. If the
+     --  declared in the specification of a package, its abstract view. If the
      --  subprogram declaration in the visible part has no explicit
      --  postcondition, a postcondition of True is assumed for the abstract
      --  view.

@@ -27,7 +27,7 @@ is
       procedure Refined_Depends_On_Body_As_Spec (Par : out Integer)
         --  TU: 2. A Refined_Depends aspect is permitted on a body_stub (if one
         --  is present) or subprogram body if and only if it has a declaration
-        --  in the visible part of an enclosing package and the declaration has
+        --  in the specification of an enclosing package and the declaration has
         --  a Depends aspect which denotes a state abstraction declared by the
         --  package and the refinement of the state abstraction is visible.
         with Refined_Depends => (Par => Var)

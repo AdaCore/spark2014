@@ -2,27 +2,27 @@ package body Global_Illegal_3
   with SPARK_Mode
 is
    --  TU: 16. Each entity denoted by a ``global_item`` in a
-    --  ``global_specification`` of a subprogram that is an input or
-    --  output of the subprogram shall satisfy the following mode
-    --  specification rules [which are checked during analysis of the
-    --  subprogram body]:
-    --  * a ``global_item`` that denotes an input but not an output has a
-    --    ``mode_selector`` of Input;
-    --  * a ``global_item`` has a ``mode_selector`` of Output if:
-    --    - it denotes an output but not an input, other than the use of a
-    --      discriminant or an attribute related to a property, not its
-    --      value, of the ``global_item`` [examples of attributes that may
-    --      be used are A'Last, A'First and A'Length; examples of
-    --      attributes that are dependent on the value of the object and
-    --      shall not be used are X'Old and X'Update] and
-    --    - is always *fully initialized* (that is, all parts of the
-    --      ``global_item`` are initialized) as a result of any successful
-    --      execution of a call of the subprogram. A state abstraction
-    --      whose refinement is not visible is not fully initialized by
-    --      only updating one or more of its constituents [because it may
-    --      have other constituents that are not visible];
-    --  * otherwise the ``global_item`` denotes both an input and an output,
-    --    and has a ``mode_selector`` of In_Out.
+   --  ``global_specification`` of a subprogram that is an input or
+   --  output of the subprogram shall satisfy the following mode
+   --  specification rules [which are checked during analysis of the
+   --  subprogram body]:
+   --  * a ``global_item`` that denotes an input but not an output has a
+   --    ``mode_selector`` of Input;
+   --  * a ``global_item`` has a ``mode_selector`` of Output if:
+   --    - it denotes an output but not an input, other than the use of a
+   --      discriminant or an attribute related to a property, not its
+   --      value, of the ``global_item`` [examples of attributes that may
+   --      be used are A'Last, A'First and A'Length; examples of
+   --      attributes that are dependent on the value of the object and
+   --      shall not be used are X'Old and X'Update] and
+   --    - is always *fully initialized* (that is, all parts of the
+   --      ``global_item`` are initialized) as a result of any successful
+   --      execution of a call of the subprogram. A state abstraction
+   --      whose refinement is not visible is not fully initialized by
+   --      only updating one or more of its constituents [because it may
+   --      have other constituents that are not visible];
+   --  * otherwise the ``global_item`` denotes both an input and an output,
+   --    and has a ``mode_selector`` of In_Out.
 
    procedure P1 (Par1 : out Integer)
      --  TU: 13. For a subprogram that has a ``global_specification``, an
