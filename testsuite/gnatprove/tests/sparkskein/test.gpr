@@ -1,5 +1,15 @@
 project Test is
+
+   for Source_Dirs use ("./**");
+
    package Compiler is
-      for Default_Switches ("ada") use ("-gnato13");
+      for Default_Switches ("ada") use ("-g", "-O2", "-gnatwa", "-gnaty", "-gnata");
+      for Local_Configuration_Pragmas use "skein.adc";
    end Compiler;
+
+   package Prove is
+      for Switches use ("--report=fail");
+   end Prove;
+
 end Test;
+
