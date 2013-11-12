@@ -2,7 +2,7 @@ package body Output_Port
 is
 
    Outputs : Integer;
-   for Outputs'Address use 16#CAFE#;
+   for Outputs'Address use System.Storage_Elements.To_Address (16#ACECAF10#);
    pragma Volatile (Outputs);
 
    procedure Write_To_Port(Output_Value : in Integer)

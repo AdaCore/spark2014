@@ -1,5 +1,5 @@
 package Device
-  with Abstract_State => State,
+  with Abstract_State => (State with External => (Async_Readers, Async_Writers)),
        Initializes    => State
 is
   procedure Write (X : in Integer)
