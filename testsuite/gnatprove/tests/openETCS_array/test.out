@@ -142,7 +142,7 @@ step_function.ads:58:27: info: index check proved
 step_function.ads:59:36: info: index check proved
 step_function.ads:60:50: info: index check proved
 step_function.ads:72:6: warning: postcondition might fail
-step_function.ads:73:28: warning: array index check might fail
+step_function.ads:73:28: info: index check proved
 step_function.ads:74:50: warning: array index check might fail
 step_function.ads:78:26: info: index check proved
 step_function.ads:80:53: info: index check proved

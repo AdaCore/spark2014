@@ -219,6 +219,6 @@ prefixsum_general.ads:16:25: warning: overflow check might fail
 prefixsum_general.ads:16:27: info: precondition proved
 prefixsum_general.ads:16:60: warning: range check might fail
 prefixsum_general.ads:20:14: warning: postcondition might fail
-prefixsum_general.ads:21:30: info: precondition proved
+prefixsum_general.ads:21:30: warning: precondition might fail
 prefixsum_general.ads:24:07: warning: unused initial value of "Ghost" [unused_initial_value]
 prefixsum_general.ads:24:07: warning: unused variable "Ghost" [unused]

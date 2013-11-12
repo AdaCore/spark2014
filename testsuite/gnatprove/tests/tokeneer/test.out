@@ -379,7 +379,7 @@ keystore.ads:275:26: warning: postcondition might fail, requires not (PrivateKey
 latch.ads:107:7: warning: postcondition might fail
 latch.ads:142:8: warning: postcondition might fail, requires IsLocked = LatchisLocked or SystemFault
 latch.ads:162:26: warning: postcondition might fail, requires Latch_Timeout = Time
-poll.ads:132:11: warning: postcondition might fail
+poll.ads:132:11: info: postcondition proved
 screen.adb:122:6: info: length check proved
 screen.adb:122:7: info: length check proved
 screen.adb:123:7: info: length check proved

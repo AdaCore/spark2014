@@ -111,7 +111,7 @@ fib.adb:158:24: warning: array index check might fail
 fib.adb:158:24: warning: overflow check might fail
 fib.ads:14:14: warning: postcondition might fail, requires l1 = l2
 fib.ads:25:14: warning: postcondition might fail, requires p1 = p2
-fib.ads:33:14: warning: postcondition might fail, requires p1 = p1
+fib.ads:33:14: info: postcondition proved
 fib.ads:36:41: warning: "A1" might not be initialized in "Arraypartitionedtransfersc" [uninitialized]
 fib.ads:36:45: warning: "A2" might not be initialized in "Arraypartitionedtransfersc" [uninitialized]
 fib.ads:41:50: warning: array index check might fail
