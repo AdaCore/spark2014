@@ -1,0 +1,29 @@
+pupils.adb:20:8: info: length check proved
+pupils.adb:25:49: warning: array index check might fail
+pupils.adb:29:43: warning: array index check might fail
+pupils.adb:33:46: warning: range check might fail
+pupils.adb:34:26: info: index check proved
+pupils.adb:35:26: info: index check proved
+pupils.adb:36:26: info: index check proved
+pupils.ads:40:17: info: length check proved
+pupils.ads:46:46: info: length check proved
+pupils.ads:76:32: info: length check proved
+pupils.ads:102:16: warning: postcondition might fail
+pupils.ads:102:25: info: range check proved
+pupils.ads:103:35: info: index check proved
+pupils.ads:103:60: info: index check proved
+pupils.ads:107:39: info: length check proved
+pupils.ads:109:39: info: length check proved
+pupils.ads:112:39: info: length check proved
+pupils.ads:116:38: info: index check proved
+pupils.ads:122:68: info: index check proved
+pupils.ads:125:28: info: range check proved
+pupils.ads:125:53: info: range check proved
+pupils.ads:126:28: info: range check proved
+pupils.ads:126:53: info: range check proved
+pupils.ads:127:28: info: range check proved
+pupils.ads:127:53: info: range check proved
+pupils.ads:128:28: info: range check proved
+pupils.ads:128:53: info: range check proved
+pupils.ads:129:28: info: range check proved
+pupils.ads:129:53: info: range check proved
