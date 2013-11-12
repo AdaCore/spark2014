@@ -30,7 +30,7 @@ package Fib is pragma SPARK_Mode (On);   --In total 608 VCs
      Pre  => (a1 = a2 and then n1 = n2 and then
                 (a1 /= 0 or else n1 /= 0) and then
                 a1 ** n1 < Integer'Last), --overflow
-     Post => (p1 = p1);
+     Post => (p1 = p2);
 
    --Naive self composed version of ArrayPartitionedTransfer
    procedure ArrayPartitionedTransferSC(A1, A2 : out IntArray;
