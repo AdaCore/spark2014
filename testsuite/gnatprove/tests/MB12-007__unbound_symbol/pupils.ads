@@ -119,7 +119,7 @@ is
                         -- rst of the postcondition) to P'Old and removing
                         -- the 'Old from Scores the unreferenced symbol
                         -- is eliminated
-                        Scores => P.PupilEntries (P'Old.NumberOfPupils + 1).
+                        Scores => P.PupilEntries (P.NumberOfPupils + 1).
                                   Scores'Old'Update
 
                           (Subj0 => (True, Score0), Subj1 => (True, Score1),
