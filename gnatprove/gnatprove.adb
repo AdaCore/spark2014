@@ -458,10 +458,12 @@ procedure Gnatprove is
             --  a SPARK_Mode pragma somewhere.
 
             if Report_File_Is_Empty (File) then
-               Put_Line (Standard_Error,
-                         "warning: no code was analyzed by GNATprove");
-               Put_Line (Standard_Error,
-                         "use SPARK_Mode to enable analysis");
+               Put_Line
+                 (Standard_Error,
+                  "warning: no bodies have been analyzed by GNATprove");
+               Put_Line
+                 (Standard_Error,
+                  "enable analysis of a body using SPARK_Mode");
             else
                Put_Line ("Summary logged in " & SPARK_Report_File (Obj_Dir));
             end if;
