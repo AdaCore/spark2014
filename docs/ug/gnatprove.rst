@@ -349,6 +349,11 @@ Both compiler and flow analysis warnings can be suppressed selectively by the
 use of ``pragma Warnings`` in the source code. See |GNAT Pro| Reference Manual
 for more details.
 
+.. note::
+
+   A pragma Warnings Off on an entity disables all flow analysis
+   warnings related to this entity, anywhere they occur.
+
 Warning and Error Messages
 ==========================
 
