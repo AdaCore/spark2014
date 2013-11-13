@@ -1391,7 +1391,7 @@ The final feedback on the space case study was that:
 \subsubsection{Overview}
 
 Tokeneer is a highly secure biometric software system that was
-originally developed by Altran in \oldspark. The system provides
+originally developed by Altran using \oldspark. The system provides
 protection to secure information held on a network of workstations
 situated in a physically secure enclave. The Tokeneer project was
 commissioned by the US National Security Agency (NSA) to demonstrate
@@ -1403,8 +1403,7 @@ available. For more details see
 
 During this study, the source code for Tokeneer has been translated
 into \newspark. The core system now consists of approximately
-\emph{10,000} lines of \newspark code (declarations and executable
-lines, excluding blank lines, comments and SPARK annotations). There
+10,000 lines of \newspark code. There
 are also approximately 3,700 lines of supporting code written in Ada
 which mimicked the drivers to peripherals connected to the core
 system.
@@ -1435,7 +1434,7 @@ and array slices.
 In-type checks are added automatically by the new toolset. This
 simplifies both the work of the programmer and the code
 itself. Consider the following code segment:
-\begin{lstlisting}[caption=\newspark]
+\begin{lstlisting}
 for I in LogFileIndexT loop
   if LogFilesStatus(I) = Used then
     if UsedLogFiles.Length = 0 then
@@ -1452,10 +1451,12 @@ for I in LogFileIndexT loop
 \end{lstlisting}
 The \oldspark equivalent contained an additional 25 lines which were
 required to prove that all variables are within their respective
-types. However, at this point, it should be pointed out that since the
-development of the Tokeneer project the \oldspark tools have greatly
-evolved and some of the original annotations might actually now be
-redundant.
+types. 
+
+%% However, at this point, it should be pointed out that since the
+%% development of the Tokeneer project the \oldspark tools have greatly
+%% evolved and some of the original annotations might actually now be
+%% redundant.
 
 \subsection{Formalization of Properties}
 
@@ -1483,23 +1484,22 @@ full functional proof was not performed on the entirety of the code.
 In order to measure the expressiveness and proving power of the
 \newspark tools, a specific package, on which functional behaviour
 proof had not been attempted, was selected and then fully augmented
-with functional behaviour annotations. Package \emph{admin}, which is
+with functional behaviour annotations. Package \SPARK{admin}, which is
 the package that was augmented, contains the state of the
 administrator of the system and a set of operations that
 administrators can perform.
 
-To illustrate how functional behaviour contracts were added, we will
-consider subroutine \emph{OpIsAvailable} of package admin. An
-administrator can be either a ``UserOnly'', a ``Guard'', an
-``AuditManager'' or a ``SecurityOfficer''. Each type of administrator
-has a set of predefined operations that it is allowed to
-perform. Function \emph{OpIsAvailable} takes as input an administrator
-and a string that is read from the keyboard and determines if this
-string corresponds to an operation available to the administrator. If
-the operation is indeed available, then this operation is returned,
-otherwise \emph{NullOp} is returned.
+To illustrate how functional behaviour contracts were added, we will consider
+subroutine \SPARK{OpIsAvailable} of package admin. An administrator can be
+either a \SPARK{UserOnly}, a \SPARK{Guard}, an \SPARK{AuditManager} or a
+\SPARK{SecurityOfficer}. Each type of administrator has a set of predefined
+operations that it is allowed to perform. Function \SPARK{OpIsAvailable} takes
+as input an administrator and a string that is read from the keyboard and
+determines if this string corresponds to an operation available to the
+administrator. If the operation is indeed available, then this operation is
+returned, otherwise \SPARK{NullOp} is returned.
 
-\begin{lstlisting}[caption=\oldspark]
+\begin{lstlisting}
 function OpIsAvailable(TheAdmin : T;
                        KeyedOp  : Keyboard.DataT)
                       return OpAndNullT;
@@ -1511,15 +1511,15 @@ function OpIsAvailable(TheAdmin : T;
 \end{lstlisting}
 Here, the \oldspark postcondition serves only as a test case. It
 ensures that if a non null operation was returned and if that
-operation was \emph{OverrideLock} then the administrator was of type
-\emph{Guard}. This annotation is incomplete since it does not specify
+operation was \SPARK{OverrideLock} then the administrator was of type
+\SPARK{Guard}. This annotation is incomplete since it does not specify
 any other kind of valid combinations of administrator types and their
-corresponding operations (\Eg the administrator being of type
-\emph{SecurityOfficer} and the operation being \emph{UpdateConfigData}
-or \emph{ShutdownOp}) or under which circumstances \emph{NullOp}
+corresponding operations (\eg the administrator being of type
+\SPARK{SecurityOfficer} and the operation being \SPARK{UpdateConfigData}
+or \SPARK{ShutdownOp}) or under which circumstances \SPARK{NullOp}
 should be returned.
 
-\begin{lstlisting}[caption=\newspark]
+\begin{lstlisting}
 function OpIsAvailable(TheAdmin : T;
                        KeyedOp  : Keyboard.DataT)
                       return OpAndNullT
@@ -1530,17 +1530,17 @@ function OpIsAvailable(TheAdmin : T;
                   and OpIsAvailable'Result = Op)
                xor OpIsAvailable'Result = NullOp;
 \end{lstlisting}
-This \newspark \emph{Post} aspect states that we have two mutually
-exclusive cases. If there exists some operation in \emph{Opt} that
+This \newspark Post aspect states that we have two mutually
+exclusive cases. If there exists some operation in \SPARK{Opt} that
 matches the string read from the keyboard and this operation is
 allowed for the current administrator then the result of function
-\emph{OpIsAvailable} is this operation, otherwise, the result is
-\emph{NullOp}.
+\SPARK{OpIsAvailable} is this operation, otherwise, the result is
+\SPARK{NullOp}.
 
 The \newspark tools discharge all 24 verification conditions
-associated with the augmented \emph{admin} package in a matter of
+associated with the augmented \SPARK{admin} package in a matter of
 seconds. The \oldspark tools also prove all properties associated with
-the non-augmented \emph{admin} package but a total of 12 user rules had
+the non-augmented \SPARK{admin} package but a total of 12 user rules had
 to be provided.
 
 \subsubsection{Overall provability}
@@ -1556,7 +1556,7 @@ pragmas Assert and Assume).
 
 \subsection{Lessons Learned}
 
-While augmenting package \emph{admin}, it was noticed that formulating
+While augmenting package \SPARK{admin}, it was noticed that formulating
 the functional behaviour annotations based on the low level Z
 specifications was very intuitive. This suggests that it might be
 possible for future projects to skip this step and directly provide
