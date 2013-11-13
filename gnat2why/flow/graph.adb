@@ -1402,14 +1402,17 @@ package body Graph is
 
          pragma Unreferenced (Success, Return_Code);
       begin
-         Spawn (Program_Name => Exec.all,
-                Args         => Args.all,
-                Output_File  => Filename & ".pdf",
-                Success      => Success,
-                Return_Code  => Return_Code,
-                Err_To_Out   => False);
+         --  If "dot" not found on PATH, then do nothing
+         if Exec /= null then
+            Spawn (Program_Name => Exec.all,
+                   Args         => Args.all,
+                   Output_File  => Filename & ".pdf",
+                   Success      => Success,
+                   Return_Code  => Return_Code,
+                   Err_To_Out   => False);
 
-         System.Strings.Free (Exec);
+            System.Strings.Free (Exec);
+         end if;
          System.Strings.Free (Args);
       end;
    end Write_Pdf_File;
