@@ -662,63 +662,140 @@ The contracts defined on mission and vehicle management code have (among others)
 
 All the contracts have been checked by dynamic testing. This phase is quite classical, except for the fact that the testing includes the preconditions and the post-conditions defined in the software. Then, \gnatprove has been applied.
 
-In the following, for each component are provided:
-
-\begin{itemize}
-\item The duration of the analysis
-\item A table showing the number of subprograms in \newspark, not in \newspark or partially in \newspark.
-\item A table showing for each kind of VC (Verification Condition):
-
-\begin{itemize}
-\item The number of VCs
-\item The number of VCs proved
-\item The percents (the sum of percents can be different from 100 because of rounding)
-\end{itemize}
-\end{itemize}
-
-\subsubsection{Results for ``Mathematical Library''}
-
-Analysis duration: 233 seconds (0 h 3 mn 53 s)
+The following table provides for each component: 
+The number of subprograms fully in \newspark (``Ok''), 
+the number of bodies not in \newspark (``BN''),
+the number of specifications not in \newspark (``SN''),
+the number of bodies not yet in \newspark (``BNY'') and 
+the number of specifications not yet in \newspark (``SNY''):
 
 \vspace{5mm}
 
-\begin{tabular}{|l|c|}
+\begin{tabular}{|l|c|c|c|c|c|}
 \hline
-Subprograms fully in \newspark  & 15 \\
+Component   & Ok  & BN  & SN & BNY & SNY \\
 \hline
-Bodies not in \newspark         & 0  \\
+Library     &  15 &   0 &  0 &   0 &   0 \\
 \hline
-Specifications not in \newspark & 0  \\
+Algorithms  &  30 &   0 &  0 &   0 &   0 \\
 \hline
-Bodies not yet in \newspark     & 0  \\
+Time        &   3 &   0 &  0 &   0 &   0 \\
 \hline
-Bodies not yet in \newspark     & 0  \\
+Variable    &  85 &   0 &  0 &   0 &   0 \\
+\hline
+Variables   & 140 &   0 &  0 &   0 &   0 \\
+\hline
+Events      &  24 &   0 &  0 &   0 &   0 \\
+\hline
+Expressions & 331 &   0 &  0 &   0 &   0 \\
+\hline
+Parameters  &  62 &   0 &  0 &   0 &   0 \\
+\hline
+Units       &  76 &   0 &  0 &  13 &  13 \\
+\hline
+Sequences   & 192 &  28 & 15 &   3 &   3 \\
+\hline
+OBCP        & 547 & 447 & 30 &  13 &  13 \\
 \hline
 \end{tabular}
+
+\vspace{5mm}
+
+The origins of subprograms not yet in \newspark are the following:
+
+\begin{itemize}
+\item class wide types (53 subprograms)
+\item tagged type (81 subprograms)
+\item attribute (10 subprograms)
+\end{itemize}
+
+These origins are related to Object Oriented Programming. The analysis of Object Oriented software is foreseen but has not yet been implemented.
+
+The origins of subprograms not in \newspark are the following:
+
+\begin{itemize}
+\item access (87 subprograms)
+\item unchecked conversion (377 subprograms)
+\end{itemize}
+
+Accesses are used to store objects in a table.
+This kind of design can not be proved by \gnatprove.
+
+The unchecked conversion are used in a library allowing reading external inputs.
+All the concerned subprograms are very small and shall be validated by intensive testing because there are out of the perimeter of \newspark.
+
+\vspace{5mm}
+
+The following table provides for each component: the number of lines of code (``size''), the number of preconditions (``pre''), the number of postconditions (``post'') and the duration of analysis in seconds (``duration''):
+
+\vspace{5mm}
+
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+Component   & Size & Pre & Post & Duration \\
+\hline
+Library     &  694 &  34 &   39 &   233 \\
+\hline
+Algorithms  &  795 &   8 &    2 &   653 \\
+\hline
+Time        &   13 &   0 &    2 &    10 \\
+\hline
+Variable    &  260 &  41 &   30 &   118 \\
+\hline
+Variables   &  438 &  43 &   31 &   274 \\
+\hline
+Events      &  249 &  16 &   17 &   371 \\
+\hline
+Expressions & 1253 &  93 &   79 &  1992 \\
+\hline
+Parameters  &   75 &   0 &    1 &   279 \\
+\hline
+Units       &  463 &  13 &    8 &  2921 \\
+\hline
+Sequences   &  276 &   5 &    5 &  7803 \\
+\hline
+OBCP        &  714 &  33 &   15 & 13705 \\
+\hline
+\end{tabular}
+
+\subsection{Analysis of the non proved checks}
+
+The following table provides for each type of checks, their number and the number proved:
 
 \vspace{5mm}
 
 \begin{tabular}{|l|c|c|c|}
 \hline
-Features       & Total VC & Proved & \%  \\ % & Number not proved & Percent not proved \\
+Features            & Checks & Proved & \%  \\
 \hline
-division check & 3        & 3      & 100 \\ % & 0                 & 0                  \\
+division check      & 22     & 22     & 100 \\
 \hline
-overflow check & 9        & 9      & 100 \\ % & 0                 & 0                  \\
+overflow check      & 164    & 164    & 100 \\
 \hline
-postcondition  & 4        & 3      & 75  \\ % & 1                 & 25                 \\
+precondition        & 1410   & 1400   & 99  \\
 \hline
-precondition   & 1        & 1      & 100 \\ % & 0                 & 0                  \\
+postcondition       & 369    & 344    & 93  \\
 \hline
-range check    & 10       & 9      & 90  \\ % & 1                 & 10                 \\
+range check         & 232    & 194    & 87  \\
 \hline
-Total          & 27       & 25     & 92  \\ % & 2                 & 7                  \\
+assertion           & 967    & 961    & 99  \\
+\hline
+index check         & 184    & 46     & 25  \\
+\hline
+discriminant check  & 2334   & 2327   & 99  \\
+\hline
+loop initialization & 14     & 12     & 86  \\
+\hline
+loop  preservation  & 14     & 14     & 100 \\
 \hline
 \end{tabular}
 
-%\vspace{5mm}
+\vspace{5mm}
 
-\paragraph{Analysis of the non proved VCs:}
+The analysis of the non proved checks is the following.
+
+\vspace{5mm}
+
 Some algorithmic functions are not completely known by \gnatprove.
 
 \begin{lstlisting}
@@ -737,53 +814,8 @@ The post condition is not proved by \gnatprove.
 The exact behaviour of algorithmic functions depending of the implementation, this behaviour is acceptable.
 Algorithmic functions and their contracts are preferably validated by intensive testing.
 
-\subsubsection{Results for ``Numerical Algorithms''}
-
-Analysis duration: 653 seconds (0 h 10 mn 53 s)
-
 \vspace{5mm}
 
-\begin{tabular}{|l|c|}
-\hline
-Subprograms fully in \newspark  & 30  \\
-\hline
-Bodies not in \newspark         & 0   \\
-\hline
-Specifications not in \newspark & 0   \\
-\hline
-Bodies not yet in \newspark     & 0   \\
-\hline
-Bodies not yet in \newspark     & 0   \\
-\hline
-\end{tabular}
-
-\vspace{5mm}
-
-\begin{tabular}{|l|c|c|c|}
-\hline
-Features       & Total VC & Proved & \%  \\ % & Number not proved & Percent not proved \\
-\hline
-assertion      & 42       & 42     & 100 \\ % & 0                 & 0                  \\
-\hline
-division check & 9        & 9      & 100 \\ % & 0                 & 0                  \\
-\hline
-index check    & 2        & 2      & 100 \\ % & 0                 & 0                  \\
-\hline
-overflow check & 95       & 95     & 100 \\ % & 0                 & 0                  \\
-\hline
-postcondition  & 2        & 2      & 100 \\ % & 0                 & 0                  \\
-\hline
-precondition   & 34       & 34     & 100 \\ % & 0                 & 0                  \\
-\hline
-range check    & 81       & 78     & 96  \\ % & 3                 & 3                  \\
-\hline
-Total          & 265      & 262    & 98  \\ % & 3                 & 1                  \\
-\hline
-\end{tabular}
-
-%\vspace{5mm}
-
-\paragraph{Analysis of the non proved VCs:}
 \gnatprove has some difficulties to take into account rounding.
 In the following example, the second assertion is not proved.
 
@@ -799,6 +831,8 @@ In the following example, the second assertion is not proved.
                   Round_Y <=  11160.0);
 \end{lstlisting}
 
+\vspace{5mm}
+
 \gnatprove currently does not prove non linear equation.
 In the following example, the last assertion is not proved.
 
@@ -812,310 +846,9 @@ In the following example, the last assertion is not proved.
                   Result <= 360.0);
 \end{lstlisting}
 
-<<<<<<< HEAD
-\gnatprove is not yet able to verify the index of an array which
-dimension is defined by a type discriminant
-
-\paragraph{Example:}
-=======
-\subsubsection{Results for ``Time Management''}
-
-Analysis duration: 10 seconds (0 h 0 mn 10 s)
-
 \vspace{5mm}
 
-\begin{tabular}{|l|c|}
-\hline
-Subprograms fully in \newspark  & 3 \\
-\hline
-Bodies not in \newspark         & 0 \\
-\hline
-Specifications not in \newspark & 0 \\
-\hline
-Bodies not yet in \newspark     & 0 \\
-\hline
-Bodies not yet in \newspark     & 0 \\
-\hline
-\end{tabular}
-
-\vspace{5mm}
-
-\begin{tabular}{|l|c|c|c|}
-\hline
-Features      & Total VC & Proved & \%  \\ % & Number not proved & Percent not proved \\
-\hline
-postcondition & 2        & 2      & 100 \\ % & 0                 & 0                  \\
-\hline
-range check   & 1        & 1      & 100 \\ % & 0                 & 0                  \\
-\hline
-Total         & 3        & 3      & 100 \\ % & 0                 & 0                  \\
-\hline
-\end{tabular}
-
-\subsubsection{Results for ``Mathematical Library''}
-
-Analysis duration: 475 seconds (0 h 7 mn 55 s)
-
-\vspace{5mm}
-
-\begin{tabular}{|l|c|}
-\hline
-Subprograms fully in \newspark  & 83 \\
-\hline
-Bodies not in \newspark         & 0  \\
-\hline
-Specifications not in \newspark & 0  \\
-\hline
-Bodies not yet in \newspark     & 0  \\
-\hline
-Bodies not yet in \newspark     & 0  \\
-\hline
-\end{tabular}
-
-\vspace{5mm}
-
-\begin{tabular}{|l|c|c|c|}
-\hline
-Features       & Total VC & Proved & \%  \\ % & Number not proved & Percent not proved \\
-\hline
-division check & 10       & 10     & 100 \\ % & 0                 & 0                  \\
-\hline
-overflow check & 46       & 46     & 100 \\ % & 0                 & 0                  \\
-\hline
-postcondition  & 26       & 24     & 92  \\ % & 2                 & 7                  \\
-\hline
-precondition   & 6        & 6      & 100 \\ % & 0                 & 0                  \\
-\hline
-range check    & 49       & 47     & 95  \\ % & 2                 & 4                  \\
-\hline
-Total          & 137      & 133    & 97  \\ % & 4                 & 2                  \\
-\hline
-\end{tabular}
-
-%\vspace{5mm}
-
-\paragraph{Analysis of the non proved VCs:}
-The reasons are similar to the mathematical library used for the SGS case study.
-
-\subsubsection{Results for ``Single Variable''}
-
-Analysis duration: 118 seconds (0 h 1 mn 58 s)
-
-\vspace{5mm}
-
-\begin{tabular}{|l|c|}
-\hline
-Subprograms fully in \newspark  & 85 \\
-\hline
-Bodies not in \newspark         & 0  \\
-\hline
-Specifications not in \newspark & 0  \\
-\hline
-Bodies not yet in \newspark     & 0  \\
-\hline
-Bodies not yet in \newspark     & 0  \\
-\hline
-\end{tabular}
-
-\vspace{5mm}
-
-\begin{tabular}{|l|c|c|c|}
-\hline
-Features           & Total VC & Proved & \%  \\ % & Number not proved & Percent not proved \\
-\hline
-discriminant check & 123      & 123    & 100 \\ % & 0                 & 0                  \\
-\hline
-postcondition      & 30       & 30     & 100 \\ % & 0                 & 0                  \\
-\hline
-precondition       & 115      & 115    & 100 \\ % & 0                 & 0                  \\
-\hline
-Total              & 268      & 268    & 100 \\ % & 0                 & 0                  \\
-\hline
-\end{tabular}
-
-\subsubsection{Results for ``List Of Variables''}
-
-Analysis duration: 274 seconds (0 h 4 mn 34 s)
-
-\vspace{5mm}
-
-\begin{tabular}{|l|c|}
-\hline
-Subprograms fully in \newspark  & 140 \\
-\hline
-Bodies not in \newspark         & 0   \\
-\hline
-Specifications not in \newspark & 0   \\
-\hline
-Bodies not yet in \newspark     & 0   \\
-\hline
-Bodies not yet in \newspark     & 0   \\
-\hline
-\end{tabular}
-
-\vspace{5mm}
-
-\begin{tabular}{|l|c|c|c|}
-\hline
-Features            & Total VC & Proved & \%  \\ % & Number not proved & Percent not proved \\
-\hline
-assertion           & 85       & 85     & 100 \\ % & 0                 & 0                  \\
-\hline
-loop initialization & 2        & 2      & 100 \\ % & 0                 & 0                  \\
-\hline
-loop  preservation  & 2        & 2      & 100 \\ % & 0                 & 0                  \\
-\hline
-postcondition       & 31       & 31     & 100 \\ % & 0                 & 0                  \\
-\hline
-precondition        & 132      & 132    & 100 \\ % & 0                 & 0                  \\
-\hline
-Total               & 252      & 252    & 100 \\ % & 0                 & 0                  \\
-\hline
-\end{tabular}
-
-\subsubsection{Results for ``Events''}
-
-Analysis duration: 371 seconds (0 h 6 mn 11 s)
-
-\vspace{5mm}
-
-\begin{tabular}{|l|c|}
-\hline
-Subprograms fully in \newspark  & 24 \\
-\hline
-Bodies not in \newspark         & 0  \\
-\hline
-Specifications not in \newspark & 0  \\
-\hline
-Bodies not yet in \newspark     & 0  \\
-\hline
-Bodies not yet in \newspark     & 0  \\
-\hline
-\end{tabular}
-
-\vspace{5mm}
-
-\begin{tabular}{|l|c|c|c|}
-\hline
-Features             & Total VC & Proved & \%  \\ % & Number not proved & Percent not proved \\
-\hline
-assertion            & 27       & 27     & 100 \\ % & 0                 & 0                  \\
-\hline
-discriminant check   & 104      & 104    & 100 \\ % & 0                 & 0                  \\
-\hline
-loop  initialization & 1        & 1      & 100 \\ % & 0                 & 0                  \\
-\hline
-loop  preservation   & 1        & 1      & 100 \\ % & 0                 & 0                  \\
-\hline
-overflow check       & 5        & 5      & 100 \\ % & 0                 & 0                  \\
-\hline
-postcondition        & 17       & 17     & 100 \\ % & 0                 & 0                  \\
-\hline
-precondition         & 57       & 57     & 100 \\ % & 0                 & 0                  \\
-\hline
-range check          & 1        & 1      & 100 \\ % & 0                 & 0                  \\
-\hline
-Total                & 213      & 213    & 100 \\ % & 0                 & 0                  \\
-\hline
-\end{tabular}
-
-\subsubsection{Results for ``Expressions''}
-
-Analysis duration: 1992 seconds (0 h 33 mn 12 s)
-
-\vspace{5mm}
-
-\begin{tabular}{|l|c|}
-\hline
-Subprograms fully in \newspark  &  331 \\
-\hline
-Bodies not in \newspark         &    0 \\
-\hline
-Specifications not in \newspark &    0 \\
-\hline
-Bodies not yet in \newspark     &    0 \\
-\hline
-Bodies not yet in \newspark     &    0 \\
-\hline
-\end{tabular}
-
-\vspace{5mm}
-
-\begin{tabular}{|l|c|c|c|}
-\hline
-Features             & Total VC & Proved & \%  \\ % & Number not proved & Percent not proved \\
-\hline
-assertion            & 385      & 385    & 100 \\ % & 0                 & 0                  \\
-\hline
-discriminant check   & 767      & 767    & 100 \\ % & 0                 & 0                  \\
-\hline
-loop  initialization & 2        & 2      & 100 \\ % & 0                 & 0                  \\
-\hline
-loop preservation    & 2        & 2      & 100 \\ % & 0                 & 0                  \\
-\hline
-overflow check       & 2        & 2      & 100 \\ % & 0                 & 0                  \\
-\hline
-postcondition        & 97       & 97     & 100 \\ % & 0                 & 0                  \\
-\hline
-precondition         & 413      & 413    & 100 \\ % & 0                 & 0                  \\
-\hline
-range check          & 2        & 2      & 100 \\ % & 0                 & 0                  \\
-\hline
-Total                & 1670     & 1670   & 100 \\ % & 0                 & 0                  \\
-\hline
-\end{tabular}
-
-\subsubsection{Results for ``Parameters''}
-
-Analysis duration: 279 seconds (0 h 4 mn 39 s)
-
-\vspace{5mm}
-
-\begin{tabular}{|l|c|}
-\hline
-Subprograms fully in \newspark  & 62 \\
-\hline
-Bodies not in \newspark         & 0  \\
-\hline
-Specifications not in \newspark & 0  \\
-\hline
-Bodies not yet in \newspark     & 0  \\
-\hline
-Bodies not yet in \newspark     & 0  \\
-\hline
-\end{tabular}
-
-\vspace{5mm}
-
-\begin{tabular}{|l|c|c|c|}
-\hline
-Features            & Total VC & Proved & \%  \\ % & Number not proved & Percent not proved \\
-\hline
-assertion           & 2        & 2      & 100 \\ % & 0                 & 0                  \\
-\hline
-discriminant check  & 11       & 11     & 100 \\ % & 0                 & 0                  \\
-\hline
-index check         & 6        & 4      & 66  \\ % & 2                 & 33                 \\
-\hline
-loop initialization & 1        & 1      & 100 \\ % & 0                 & 0                  \\
-\hline
-loop preservation   & 1        & 1      & 100 \\ % & 0                 & 0                  \\
-\hline
-postcondition       & 2        & 2      & 100 \\ % & 0                 & 0                  \\
-\hline
-precondition        & 1        & 1      & 100 \\ % & 0                 & 0                  \\
-\hline
-range check         & 7        & 7      & 100 \\ % & 0                 & 0                  \\
-\hline
-Total               & 31       & 29     & 93  \\ % & 2                 & 6                  \\
-\hline
-\end{tabular}
-
-%\vspace{5mm}
-
-\paragraph{Analysis of the non proved VCs:}
 \gnatprove is not yet able to verify the index of an array which dimension is defined by a type discriminant, for example:
->>>>>>> Update of the space test case with detailed results
 
 \begin{lstlisting}
    subtype R is Integer range 1 .. 100;
@@ -1132,219 +865,9 @@ Total               & 31       & 29     & 93  \\ % & 2                 & 6      
 In function ``G'', the index check ``X.A (I)'' is not proved even if ``I'' is defined in the range of ``X.A''
 An improvement of \gnatprove is in progress in order to deal with such case.
 
-\subsubsection{Results for ``Functional Unit''}
-
-Analysis duration: 2921 seconds (0 h 48 mn 41 s)
-
 \vspace{5mm}
 
-\begin{tabular}{|l|c|}
-\hline
-Subprograms fully in \newspark  &   76 \\
-\hline
-Bodies not in \newspark         &    0 \\
-\hline
-Specifications not in \newspark &    0 \\
-\hline
-Bodies not yet in \newspark     &   13 \\
-\hline
-Bodies not yet in \newspark     &   13 \\
-\hline
-\end{tabular}
-
-\vspace{5mm}
-
-The origins of subprograms not yet in \newspark are the following:
-
-\begin{itemize}
-\item class wide types (5 subprograms)
-\item tagged type (17 subprograms)
-\end{itemize}
-
-These origins are related to Object Oriented Programming. The analysis of Object Oriented software is foreseen but has not yet been implemented.
-
-\vspace{5mm}
-
-\begin{tabular}{|l|c|c|c|}
-\hline
-Features            & Total VC & Proved & \%  \\ % & Number not proved & Percent not proved \\
-\hline
-assertion           & 2        & 2      & 100 \\ % & 0                 & 0                  \\
-\hline
-discriminant check  & 58       & 58     & 100 \\ % & 0                 & 0                  \\
-\hline
-index check         & 26       & 4      & 15  \\ % & 22                & 84                 \\
-\hline
-loop initialization & 1        & 1      & 100 \\ % & 0                 & 0                  \\
-\hline
-loop  preservation  & 1        & 1      & 100 \\ % & 0                 & 0                  \\
-\hline
-postcondition       & 3        & 2      & 66  \\ % & 1                 & 33                 \\
-\hline
-precondition        & 1        & 1      & 100 \\ % & 0                 & 0                  \\
-\hline
-range check         & 14       & 10     & 71  \\ % & 4                 & 28                 \\
-\hline
-Total               & 106      & 79     & 74  \\ % & 27                & 25                 \\
-\hline
-\end{tabular}
-
-%\vspace{5mm}
-
-\paragraph{Analysis of the non proved VCs:}
-Most of the non proved VCs are due to index of an array which dimension is defined by a type discriminant (see ``Parameters'' section).
-The proof of the post condition is not possible before the other proofs.
-
-\subsubsection{Results for ``Automated Procedure''}
-
-Analysis duration: 7803 seconds (2 h 10 mn 3 s)
-
-\vspace{5mm}
-
-\begin{tabular}{|l|c|}
-\hline
-Subprograms fully in \newspark  &  192 \\
-\hline
-Bodies not in \newspark         &   28 \\
-\hline
-Specifications not in \newspark &   15 \\
-\hline
-Bodies not yet in \newspark     &    3 \\
-\hline
-Bodies not yet in \newspark     &    3 \\
-\hline
-\end{tabular}
-
-\vspace{5mm}
-
-The origins of subprograms not in \newspark are the following:
-
-\begin{itemize}
-\item access (26 subprograms)
-\end{itemize}
-
-Accesses are used in the case study to store objects in a table.
-This kind of design can not be proved by \gnatprove.
-
-The origins of subprograms not yet in \newspark are the following:
-
-\begin{itemize}
-\item class wide types (20 subprograms)
-\item tagged type (22 subprograms)
-\end{itemize}
-
-As before, this is due to Object Oriented programming.
-
-\vspace{5mm}
-
-\begin{tabular}{|l|c|c|c|}
-\hline
-Features            & Total VC & Proved & \%  \\ % & Number not proved & Percent not proved \\
-\hline
-assertion           & 6        & 3      & 50  \\ % & 3                 & 50                 \\
-\hline
-discriminant check  & 158      & 157    & 99  \\ % & 1                 & 0                  \\
-\hline
-index check         & 68       & 17     & 25  \\ % & 51                & 75                 \\
-\hline
-loop initialization & 2        & 1      & 50  \\ % & 1                 & 50                 \\
-\hline
-loop  preservation  & 2        & 2      & 100 \\ % & 0                 & 0                  \\
-\hline
-postcondition       & 7        & 4      & 57  \\ % & 3                 & 42                 \\
-\hline
-precondition        & 13       & 12     & 92  \\ % & 1                 & 7                  \\
-\hline
-range check         & 28       & 15     & 53  \\ % & 13                & 46                 \\
-\hline
-Total               & 284      & 211    & 74  \\ % & 73                & 25                 \\
-\hline
-\end{tabular}
-
-%\vspace{5mm}
-
-\paragraph{Analysis of the non proved VCs:}
-A part of the non proved VCs are due to index of an array which dimension is defined by a type discriminant (see ``Parameters'' section).
-The remaining non proved VCs are due to a too complex subprogram.
-This subprogram shall be split in several smaller subprograms to be proved.
-
-\subsubsection{Results for ``On Board Control Procedure''}
-
-Analysis duration: 13705 seconds (3 h 48 mn 25 s)
-
-\vspace{5mm}
-
-\begin{tabular}{|l|c|}
-\hline
-Subprograms fully in \newspark  &  547 \\
-\hline
-Bodies not in \newspark         &  447 \\
-\hline
-Specifications not in \newspark &   30 \\
-\hline
-Bodies not yet in \newspark     &   13 \\
-\hline
-Bodies not yet in \newspark     &   13 \\
-\hline
-\end{tabular}
-
-\vspace{5mm}
-
-The origins of subprograms not in \newspark are the following:
-
-\begin{itemize}
-\item access (61 subprograms)
-\item unchecked conversion (377 subprograms)
-\end{itemize}
-
-Access is used with Object (see ``Automated Procedure'' section)
-
-The unchecked conversion are used in a library allowing reading external inputs.
-All the concerned subprograms are very small and shall be validated by intensive testing because there are out of the perimeter of Hi-Lite and of SPARK.
-
-The origins of subprograms not yet in \newspark are the following:
-
-\begin{itemize}
-\item attribute (10 subprograms)
-\item class wide types (23 subprograms)
-\item tagged type (25 subprograms)
-\end{itemize}
-
-As before, this is due to Object Oriented programming.
-
-\vspace{5mm}
-
-\begin{tabular}{|l|c|c|c|}
-\hline
-Features             & Total VC & Proved & \%  \\ % & Number not proved & Percent not proved \\
-\hline
-           assertion &      418 &    415 &  99 \\ % &                 3 &                  0 \\
-\hline
-  discriminant check &     1113 &   1107 &  99 \\ % &                 6 &                  0 \\
-\hline
-         index check &       82 &     19 &  23 \\ % &                63 &                 76 \\
-\hline
- loop initialization &        5 &      4 &  80 \\ % &                 1 &                 20 \\
-\hline
-  loop  preservation &        5 &      5 & 100 \\ % &                 0 &                  0 \\
-\hline
-      overflow check &        7 &      7 & 100 \\ % &                 0 &                  0 \\
-\hline
-       postcondition &      148 &    130 &  87 \\ % &                18 &                 12 \\
-\hline
-        precondition &      637 &    628 &  98 \\ % &                 9 &                  1 \\
-\hline
-         range check &       39 &     24 &  61 \\ % &                15 &                 38 \\
-\hline
-               Total &     2454 &   2339 &  95 \\ % &               115 &                  4 \\
-\hline
-\end{tabular}
-
-%\vspace{5mm}
-
-\paragraph{Analysis of the non proved VCs:}
-A part of the non proved VCs are due to index of an array which dimension is defined by a type discriminant (see ``Parameters'' section).
-The remaining non proved VCs are due to too complex subprograms.
+The remaining non proved checks are due to a too complex subprogram.
 These subprograms shall be split in several smaller subprograms to be proved.
 
 \subsection{Lessons Learned}
@@ -1380,7 +903,12 @@ The final feedback on the space case study was that:
 \item The writing of effective contracts for formal proof requires a dedicated training and sometimes the involvement of an expert in \newspark
 \end{itemize}
 
-
+The following needs are then expressed for \gnatprove in order to make possible its efficient use in an industrial context:
+\begin{itemize}
+\item ability to prove generic units once (instead of proving each instance like done currently)
+\item need to use a sound model of floating-points instead of real numbers
+\item some loop invariants generated automatically
+\end{itemize}
 
 \section{Biometric Access to a Secure Enclave}
 
