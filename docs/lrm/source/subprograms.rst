@@ -252,6 +252,14 @@ where
      evaluates to True; Assertions.Assertion_Error is raised if this
      check fails.
 
+.. _tu-fe-contract_cases-05:
+
+5. If an Old ``attribute_reference`` occurs within a ``consequence``
+   other than the ``consequence`` selected for (later) evaluation
+   as described above, then the associated implicit constant declaration
+   (see Ada RM 6.1.1) is not elaborated. [In particular, the prefix of the
+   Old ``attribute_reference`` is not evaluated].
+
 .. _etu-contract_cases-ds:
 
 
