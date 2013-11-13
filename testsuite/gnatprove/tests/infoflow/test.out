@@ -62,7 +62,7 @@ infoflow.adb:154:29: info: index check proved
 infoflow.adb:155:16: info: index check proved
 infoflow.adb:155:31: info: index check proved
 infoflow.adb:155:31: warning: overflow check might fail
-infoflow.adb:156:18: warning: array index check might fail
+infoflow.adb:156:18: info: index check proved
 infoflow.adb:156:18: warning: overflow check might fail
 infoflow.adb:161:7: warning: precondition might fail
 infoflow.adb:163:7: warning: precondition might fail
@@ -74,14 +74,14 @@ infoflow.adb:173:44: info: index check proved
 infoflow.adb:174:16: info: index check proved
 infoflow.adb:174:22: warning: "A_V1" might not be initialized [uninitialized]
 infoflow.adb:174:31: info: index check proved
+infoflow.adb:177:7: info: assertion proved
 infoflow.adb:177:07: warning: "A_V1" might not be initialized [uninitialized]
-infoflow.adb:179:12: warning: assertion might fail, requires A_V1 (M) = B_V1 (M)
 infoflow.adb:179:18: info: index check proved
 infoflow.adb:179:29: info: index check proved
 infoflow.adb:181:22: warning: overflow check might fail
 infoflow.adb:182:10: info: loop invariant initialization proved
+infoflow.adb:182:10: info: loop invariant preservation proved
 infoflow.adb:182:10: warning: "A_V1" might not be initialized [uninitialized]
-infoflow.adb:182:10: warning: loop invariant might fail after first iteration
 infoflow.adb:183:42: info: index check proved
 infoflow.adb:183:53: info: index check proved
 infoflow.adb:186:42: info: index check proved
@@ -115,8 +115,8 @@ infoflow.adb:213:19: info: index check proved
 infoflow.adb:213:30: info: index check proved
 infoflow.adb:215:22: warning: overflow check might fail
 infoflow.adb:216:10: info: loop invariant initialization proved
+infoflow.adb:216:10: info: loop invariant preservation proved
 infoflow.adb:216:10: warning: "A_V2" might not be initialized [uninitialized]
-infoflow.adb:216:10: warning: loop invariant might fail after first iteration
 infoflow.adb:217:42: info: index check proved
 infoflow.adb:217:53: info: index check proved
 infoflow.adb:220:42: info: index check proved
@@ -125,8 +125,8 @@ infoflow.adb:221:16: info: index check proved
 infoflow.adb:221:22: warning: "A_V2" might not be initialized [uninitialized]
 infoflow.adb:221:36: info: index check proved
 infoflow.adb:221:36: info: overflow check proved
+infoflow.ads:9:6: info: disjoint contract cases proved
 infoflow.ads:9:6: warning: contract cases might not be complete
-infoflow.ads:9:6: warning: contract cases might not be disjoint
 infoflow.ads:12:24: info: contract case proved
 infoflow.ads:16:24: warning: contract case might fail
 infoflow.ads:29:14: info: postcondition proved

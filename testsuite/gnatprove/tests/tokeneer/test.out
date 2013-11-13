@@ -9,7 +9,7 @@ admin.adb:110:10: info: loop invariant preservation proved
 admin.adb:121:13: warning: assertion might fail
 admin.adb:129:17: info: range check proved
 admin.adb:137:16: info: loop invariant initialization proved
-admin.adb:137:16: info: loop invariant preservation proved
+admin.adb:137:16: warning: loop invariant might fail after first iteration
 admin.adb:144:38: info: index check proved
 admin.adb:156:36: info: index check proved
 admin.adb:253:16: info: range check proved

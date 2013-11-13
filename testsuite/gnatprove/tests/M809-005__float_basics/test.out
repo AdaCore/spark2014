@@ -216,16 +216,16 @@ generic_float_tests.adb:342:38: warning: overflow check might fail, in instantia
 generic_float_tests.adb:342:38: warning: overflow check might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:348:7: info: assertion proved, in instantiation at foo.ads:14
 generic_float_tests.adb:348:7: info: assertion proved, in instantiation at foo.ads:9
-generic_float_tests.adb:357:10: info: assertion proved, in instantiation at foo.ads:14
-generic_float_tests.adb:357:10: info: assertion proved, in instantiation at foo.ads:9
+generic_float_tests.adb:357:10: warning: assertion might fail, requires FT'Floor (X) = , in instantiation at foo.ads:14
+generic_float_tests.adb:357:10: warning: assertion might fail, requires FT'Floor (X) = , in instantiation at foo.ads:9
 generic_float_tests.adb:358:10: warning: assertion might fail, requires FT'Ceiling (X) = , in instantiation at foo.ads:14
 generic_float_tests.adb:358:10: warning: assertion might fail, requires FT'Ceiling (X) = , in instantiation at foo.ads:9
-generic_float_tests.adb:361:10: info: assertion proved, in instantiation at foo.ads:14
-generic_float_tests.adb:361:10: info: assertion proved, in instantiation at foo.ads:9
+generic_float_tests.adb:361:10: warning: assertion might fail, requires FT'Floor (X) = , in instantiation at foo.ads:14
+generic_float_tests.adb:361:10: warning: assertion might fail, requires FT'Floor (X) = , in instantiation at foo.ads:9
 generic_float_tests.adb:362:10: warning: assertion might fail, requires FT'Ceiling (X) = , in instantiation at foo.ads:14
 generic_float_tests.adb:362:10: warning: assertion might fail, requires FT'Ceiling (X) = , in instantiation at foo.ads:9
-generic_float_tests.adb:365:10: info: assertion proved, in instantiation at foo.ads:14
-generic_float_tests.adb:365:10: info: assertion proved, in instantiation at foo.ads:9
+generic_float_tests.adb:365:10: warning: assertion might fail, requires FT'Floor (X) = , in instantiation at foo.ads:14
+generic_float_tests.adb:365:10: warning: assertion might fail, requires FT'Floor (X) = , in instantiation at foo.ads:9
 generic_float_tests.adb:366:10: warning: assertion might fail, requires FT'Ceiling (X) = , in instantiation at foo.ads:14
 generic_float_tests.adb:366:10: warning: assertion might fail, requires FT'Ceiling (X) = , in instantiation at foo.ads:9
 generic_float_tests.adb:369:10: info: assertion proved, in instantiation at foo.ads:14

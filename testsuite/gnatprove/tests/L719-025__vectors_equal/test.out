@@ -12,4 +12,4 @@ p.adb:20:40: warning: precondition might fail
 p.adb:21:7: info: precondition proved
 p.ads:19:14: warning: postcondition might fail, requires L = L'old
 p.ads:23:14: warning: postcondition might fail, requires L = L'old
-p.ads:28:14: info: postcondition proved
+p.ads:28:14: warning: postcondition might fail, requires L = L'old
