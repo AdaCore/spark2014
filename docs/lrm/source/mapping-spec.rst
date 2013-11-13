@@ -1094,10 +1094,11 @@ the first values read from the sequence are in ascending order. This example
 shows that postconditions can refer to multiple individual elements of the
 input stream.
 
-.. todo::
-   There will not be an equivalent of \'Append and \'Tail in |SPARK|. However, we will be
-   able to achieve the same functionality using generics. To be completed in the Milestone 4
-   version of this document.
+In |SPARK| we can use assert pragmas in the subprogram instead of
+specifying the action in the postcondition, as was done in
+:ref:`ms-external_variables_input_append_tail-label`.  Another
+alternative, as shown in this example is to use a discriminated
+composite result.
 
 Specification in SPARK 2005:
 
@@ -1108,6 +1109,18 @@ Specification in SPARK 2005:
 Body in SPARK 2005:
 
    .. literalinclude:: ../code/external_variables_increasing_values_in_input_stream/05/inc.adb
+      :language: ada
+      :linenos:
+
+Specification in SPARK 2014:
+
+   .. literalinclude:: ../code/external_variables_increasing_values_in_input_stream/14/inc.ads
+      :language: ada
+      :linenos:
+
+Body in SPARK 2014:
+
+   .. literalinclude:: ../code/external_variables_increasing_values_in_input_stream/14/inc.adb
       :language: ada
       :linenos:
 

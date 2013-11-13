@@ -1,5 +1,9 @@
  package Inc
---# own in Sensor;
+--# own in Sensor : Integer;
 is
-   pragma Elaborate_Body (Inc);
+   procedure Increases (Result : out Boolean;
+                        Valid  : out Boolean);
+   --# global in Sensor;
+   --# post Valid -> (Result <-> Sensor'Tail (Sensor~) > Sensor~);
+
 end Inc;

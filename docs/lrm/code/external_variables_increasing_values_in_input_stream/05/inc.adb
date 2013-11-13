@@ -1,23 +1,24 @@
+with System.Storage_Elements;
 package body Inc
---# own Sensor is in S;
+-- Cannot refine own variable Sensor as it has been given a concrete type.
 is
-   S : Integer;
-   for S'Address use 16#DEADBEEF#;
-   pragma Volatile (S);
+   Sensor : Integer;
+   for Sensor'Address use System.Storage_Elements.To_Address (16#DEADBEE0#);
+   pragma Volatile (Sensor);
 
    procedure Read (V     : out Integer;
                    Valid : out Boolean)
-   --# global in S;
-   --# post (Valid -> V = S~) and
-   --#      (S = S'Tail (S~));
+   --# global in Sensor;
+   --# post (Valid -> V = Sensor~) and
+   --#      (Sensor = Sensor'Tail (Sensor~));
    is
       Tmp : Integer;
    begin
-      Tmp := S;
+      Tmp := Sensor;
       if Tmp'Valid then
          V := Tmp;
          Valid := True;
-         --# check S = S'Tail (S~);
+         --# check Sensor = Sensor'Tail (Sensor~);
       else
          V := 0;
          Valid := False;
@@ -26,8 +27,6 @@ is
 
    procedure Increases (Result : out Boolean;
                         Valid  : out Boolean)
-   --# global in S;
-   --# post Valid -> (Result <-> S'Tail (S~) > S~);
    is
       A, B : Integer;
    begin

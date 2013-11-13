@@ -4,8 +4,10 @@ package body Device
 --#                 out Register;
 -- refinement on to mix of external and ordinary variables
 is
+   type Status_Port_Type is mod 2**32;
+
   OldX : Integer := 0; -- only component that needs initialization
-  StatusPort : Integer;
+  StatusPort : Status_Port_Type;
   pragma Volatile (StatusPort);
   -- address clause would be added here
   
@@ -25,7 +27,7 @@ is
   --# global in StatusPort;
   --# derives OK from StatusPort;
   is
-    RawValue : Integer;
+    RawValue : Status_Port_Type;
   begin
     RawValue := StatusPort; -- only assignment allowed here
     OK := RawValue = 16#FFFF_FFFF#;
