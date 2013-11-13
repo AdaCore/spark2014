@@ -6,6 +6,7 @@ nested_pkg.adb:57:22: warning: unused initial value of "State" [unused_initial_v
 nested_pkg.adb:64:08: warning: statement has no effect [ineffective]
 nested_pkg.adb:64:08: warning: unused assignment to "State" [ineffective]
 stack_asm.adb:38:40: "The_Stack" is not initialized [uninitialized]
+stack_asm.adb:38:40: warning: unused global "The_Stack" [unused]
 test.adb:21:41: "State" is not initialized [uninitialized]
 test.adb:24:09: "State" is not initialized [uninitialized]
    compilation of stack_asm.adb failed

@@ -197,6 +197,7 @@ package body Flow_Error_Messages is
       M          : Unbounded_String;
       JSON_M     : Unbounded_String;
       C          : GNAT.SHA1.Context;
+      Slc        : Source_Ptr;
 
       File       : constant String := File_Name (Sloc (N));
       Line       : constant String := Get_Logical_Line_Number_Img (Sloc (N));
@@ -255,6 +256,10 @@ package body Flow_Error_Messages is
          return False;
       end Warning_Disabled_For_Entity;
 
+      ------------------
+      -- Json_Mapping --
+      ------------------
+
       function Json_Mapping (Name      : String;
                              Value     : String;
                              Quote_Val : Boolean := True;
@@ -293,6 +298,18 @@ package body Flow_Error_Messages is
       end if;
       if Present (F2) then
          M := Substitute (M, F2);
+      end if;
+
+      if Instantiation_Location (Sloc (N)) /= No_Location then
+         --  If we are dealing with an instantiation of a generic we change
+         --  the message to point at the implementation of the generic and we
+         --  mention where the generic is instantiated.
+         Slc := Original_Location (Sloc (N));
+
+         Append (M, ", in instantiation at " &
+                   Build_Location_String (Instantiation_Location (Sloc (N))));
+      else
+         Slc := Sloc (N);
       end if;
 
       --  If we are dealing with a warning and warnings should be suppressed
@@ -422,7 +439,7 @@ package body Flow_Error_Messages is
             Append (M, '?');
          end if;
 
-         Error_Msg_N (To_String (M), N);
+         Error_Msg (To_String (M), Slc);
 
       end if;
 

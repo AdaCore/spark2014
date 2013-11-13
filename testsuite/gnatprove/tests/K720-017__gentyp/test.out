@@ -1,2 +1,1 @@
-gentyp.ads:3:04: warning: in instantiation at p.adb:3
-gentyp.ads:3:04: warning: unused variable "Z" [unused]
+p.adb:3:07: warning: unused variable "Z", in instantiation at gentyp.ads:3 [unused]
