@@ -1,0 +1,6 @@
+pack.adb:11:16: "B" must be listed in the Refined_Global aspect of "Update_Content"
+   compilation of pack.adb failed
+
+
+gnatprove: error during translation to intermediate language, aborting.
+gprbuild: *** compilation phase failed
