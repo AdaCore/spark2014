@@ -306,8 +306,21 @@ package body Flow_Error_Messages is
          --  mention where the generic is instantiated.
          Slc := Original_Location (Sloc (N));
 
-         Append (M, ", in instantiation at " &
-                   Build_Location_String (Instantiation_Location (Sloc (N))));
+         declare
+            Tmp  : Source_Ptr := Sloc (First_Node (N));
+            File : Unbounded_String;
+            Line : Physical_Line_Number;
+         begin
+            loop
+               Tmp := Instantiation_Location (Tmp);
+               exit when Tmp = No_Location;
+               File := To_Unbounded_String (File_Name (Tmp));
+               Line := Get_Physical_Line_Number (Tmp);
+               Append (M, ", in instantiation at " &
+                         To_String (File) & ":" & Int_Image (Integer (Line)));
+            end loop;
+         end;
+
       else
          Slc := Sloc (N);
       end if;
