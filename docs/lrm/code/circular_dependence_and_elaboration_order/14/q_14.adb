@@ -1,7 +1,7 @@
 pragma SPARK_Mode (On);
 with P_14;
-pragma Elaborate_All (P_14); -- Required because the body
-                             -- (indirectly) calls P_14.Init
+pragma Elaborate_All (P_14); -- Required because the elaboration of the
+                             -- body of Q_14 (indirectly) calls P_14.Init
 package body Q_14
   with Refined_State => (Q_State => Q_S)
 is

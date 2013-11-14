@@ -1097,8 +1097,8 @@ input stream.
 In |SPARK| we can use assert pragmas in the subprogram instead of
 specifying the action in the postcondition, as was done in
 :ref:`ms-external_variables_input_append_tail-label`.  Another
-alternative, as shown in this example is to use a discriminated
-composite result.
+alternative, as shown in this example, is to use a formal parameter of
+a private type to keep a trace of the values read.
 
 Specification in SPARK 2005:
 
@@ -1128,6 +1128,9 @@ Body in SPARK 2014:
 Package Inheritance
 ~~~~~~~~~~~~~~~~~~~
 
+|SPARK| does not have the SPARK 2005 concept of package
+inheritance.  It has the same package visibility rules as Ada 2012.
+ 
 .. _ms-contracts_with_remote_state-label:
 
 Contracts with remote state
@@ -1221,54 +1224,58 @@ Switch body in |SPARK|:
 Circular dependence and elaboration order
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This example demonstrates how the Examiner locates and disallows circular dependence
-and elaboration relations.
+SPARK 2005 avoided issues of circular dependence and elaboration order
+dependencies through a combination of the inherit annotation and the
+restrictions that initialization expressions are constant, user
+defined subprograms cannot be called in the sequence of statements of
+a package body and a package can only initialize variables declared in
+its delarative part.
 
-Specification of package P_05 in SPARK 2005:
+|SPARK| does not have the inherit annotation and only enforces the
+restriction that a package can only initialize an object declared in
+its declarative region.  Hence, in |SPARK| two package bodies that
+depend on each other's specification may be legal as is calling a user
+defined suprogram.
 
-   .. literalinclude:: ../code/circular_dependence_and_elaboration_order/05/p_05.ads
-      :language: ada
-      :linenos:
+Instead of the restrictions of SPARK 2005 a set of rules is applied in
+|SPARK| which determines when a pargama Elaborate_Body, Elaborate_All
+or Elaborate is required for a package.  These rules avoid elaboration
+order dependencies.
 
-Specification of package Q_05 in SPARK 2005:
+Examples of the features of |SPARK| elaboration order rules are given
+below.  In the example described below the partial elaboration order
+would be either of P_14 or Q_14 specifications first followed by P_14
+body because of the Elaborate_All on the specification of R_14
+specification and the body of Q_14, then the elaboration of Q_14 body
+or the specification of R_14 and the body of R_14 after the
+elaboration of Q_14.  Elaboration order dependencies are avoided by
+checking the dependencies of the various sorts of Elaborate pragmas.
 
-   .. literalinclude:: ../code/circular_dependence_and_elaboration_order/05/q_05.ads
-      :language: ada
-      :linenos:
-
-Body of package P_05 in SPARK 2005:
-
-   .. literalinclude:: ../code/circular_dependence_and_elaboration_order/05/p_05.adb
-      :language: ada
-      :linenos:
-
-Body of package Q_05 in SPARK 2005:
-
-   .. literalinclude:: ../code/circular_dependence_and_elaboration_order/05/q_05.adb
-      :language: ada
-      :linenos:
-
-Specification of package P_14 in |SPARK|:
+Package Specifications in |SPARK|:
 
    .. literalinclude:: ../code/circular_dependence_and_elaboration_order/14/p_14.ads
       :language: ada
       :linenos:
 
-Specification of package Q_14 in |SPARK|:
-
    .. literalinclude:: ../code/circular_dependence_and_elaboration_order/14/q_14.ads
       :language: ada
       :linenos:
 
-Body of package P_14 in |SPARK|:
+   .. literalinclude:: ../code/circular_dependence_and_elaboration_order/14/r_14.ads
+      :language: ada
+      :linenos:
+
+Package Bodies in |SPARK|
 
    .. literalinclude:: ../code/circular_dependence_and_elaboration_order/14/p_14.adb
       :language: ada
       :linenos:
 
-Body of package Q_14 in |SPARK|:
-
    .. literalinclude:: ../code/circular_dependence_and_elaboration_order/14/q_14.adb
+      :language: ada
+      :linenos:
+
+   .. literalinclude:: ../code/circular_dependence_and_elaboration_order/14/r_14.adb
       :language: ada
       :linenos:
 
