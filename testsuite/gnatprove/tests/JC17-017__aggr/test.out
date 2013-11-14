@@ -15,16 +15,16 @@ p.adb:43:12: info: length check proved
 p.adb:50:09: warning: unused assignment [ineffective]
 p.adb:50:12: info: length check proved
 [
-{ "name" : "P.Proc", "file" :"p.ads", "line" :  2, "spark" : "body" }
-, { "name" : "P.Proc2", "file" :"p.adb", "line" :  9, "spark" : "body" }
-, { "name" : "P.Proc3", "file" :"p.adb", "line" :  15, "spark" : "body" }
-, { "name" : "P.Proc4", "file" :"p.adb", "line" :  21, "spark" : "body" }
-, { "name" : "P.Proc5", "file" :"p.adb", "line" :  27, "spark" : "body" }
-, { "name" : "P.Proc6", "file" :"p.adb", "line" :  33, "spark" : "body" }
-, { "name" : "P.Proc7.Zero", "file" :"p.adb", "line" :  40, "spark" : "body" }
-, { "name" : "P.Proc7", "file" :"p.adb", "line" :  39, "spark" : "body" }
-, { "name" : "P.Proc8.Zero", "file" :"p.adb", "line" :  47, "spark" : "body" }
-, { "name" : "P.Proc8", "file" :"p.adb", "line" :  46, "spark" : "body" }
-, { "name" : "P", "file" :"p.ads", "line" :  1, "spark" : "body" }
+{ "name" : "P.Proc", "file" :"p.ads", "line" :  2, "spark" : "all" }
+, { "name" : "P.Proc2", "file" :"p.adb", "line" :  9, "spark" : "all" }
+, { "name" : "P.Proc3", "file" :"p.adb", "line" :  15, "spark" : "all" }
+, { "name" : "P.Proc4", "file" :"p.adb", "line" :  21, "spark" : "all" }
+, { "name" : "P.Proc5", "file" :"p.adb", "line" :  27, "spark" : "all" }
+, { "name" : "P.Proc6", "file" :"p.adb", "line" :  33, "spark" : "all" }
+, { "name" : "P.Proc7.Zero", "file" :"p.adb", "line" :  40, "spark" : "all" }
+, { "name" : "P.Proc7", "file" :"p.adb", "line" :  39, "spark" : "all" }
+, { "name" : "P.Proc8.Zero", "file" :"p.adb", "line" :  47, "spark" : "all" }
+, { "name" : "P.Proc8", "file" :"p.adb", "line" :  46, "spark" : "all" }
+, { "name" : "P", "file" :"p.ads", "line" :  1, "spark" : "all" }
 ]
 

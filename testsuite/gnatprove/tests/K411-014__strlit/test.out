@@ -8,7 +8,7 @@ strlit.adb:7:07: warning: initialization has no effect [ineffective]
 strlit.adb:7:19: info: length check proved
 strlit.ads:5:20: info: postcondition proved
 [
-{ "name" : "Strlit.DoSome", "file" :"strlit.ads", "line" :  4, "spark" : "body" }
-, { "name" : "Strlit", "file" :"strlit.ads", "line" :  1, "spark" : "body" }
+{ "name" : "Strlit.DoSome", "file" :"strlit.ads", "line" :  4, "spark" : "all" }
+, { "name" : "Strlit", "file" :"strlit.ads", "line" :  1, "spark" : "all" }
 ]
 

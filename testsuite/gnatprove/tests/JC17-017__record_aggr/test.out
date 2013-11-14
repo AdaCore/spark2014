@@ -7,16 +7,16 @@ p.adb:39:09: warning: unused assignment [ineffective]
 p.adb:46:09: warning: unused assignment [ineffective]
 p.adb:53:09: warning: unused assignment [ineffective]
 [
-{ "name" : "P.Proc", "file" :"p.ads", "line" :  2, "spark" : "body" }
-, { "name" : "P.Proc2", "file" :"p.adb", "line" :  12, "spark" : "body" }
-, { "name" : "P.Proc3", "file" :"p.adb", "line" :  18, "spark" : "body" }
-, { "name" : "P.Proc4", "file" :"p.adb", "line" :  24, "spark" : "body" }
-, { "name" : "P.Proc5", "file" :"p.adb", "line" :  30, "spark" : "body" }
-, { "name" : "P.Proc6", "file" :"p.adb", "line" :  36, "spark" : "body" }
-, { "name" : "P.Proc7.Zero", "file" :"p.adb", "line" :  43, "spark" : "body" }
-, { "name" : "P.Proc7", "file" :"p.adb", "line" :  42, "spark" : "body" }
-, { "name" : "P.Proc8.Zero", "file" :"p.adb", "line" :  50, "spark" : "body" }
-, { "name" : "P.Proc8", "file" :"p.adb", "line" :  49, "spark" : "body" }
-, { "name" : "P", "file" :"p.ads", "line" :  1, "spark" : "body" }
+{ "name" : "P.Proc", "file" :"p.ads", "line" :  2, "spark" : "all" }
+, { "name" : "P.Proc2", "file" :"p.adb", "line" :  12, "spark" : "all" }
+, { "name" : "P.Proc3", "file" :"p.adb", "line" :  18, "spark" : "all" }
+, { "name" : "P.Proc4", "file" :"p.adb", "line" :  24, "spark" : "all" }
+, { "name" : "P.Proc5", "file" :"p.adb", "line" :  30, "spark" : "all" }
+, { "name" : "P.Proc6", "file" :"p.adb", "line" :  36, "spark" : "all" }
+, { "name" : "P.Proc7.Zero", "file" :"p.adb", "line" :  43, "spark" : "all" }
+, { "name" : "P.Proc7", "file" :"p.adb", "line" :  42, "spark" : "all" }
+, { "name" : "P.Proc8.Zero", "file" :"p.adb", "line" :  50, "spark" : "all" }
+, { "name" : "P.Proc8", "file" :"p.adb", "line" :  49, "spark" : "all" }
+, { "name" : "P", "file" :"p.ads", "line" :  1, "spark" : "all" }
 ]
 
