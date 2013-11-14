@@ -4,8 +4,9 @@ package Calculate
 is
 
    procedure Read_Calculated_Value (Value : out Integer);
-   --# global in Processing.State, Raw_Data.State;
-   --# derives Value from Processing.State, Raw_Data.State;
-   --# post Raw_Data.Data_Is_Valid (Value);
+   --# global in out Processing.State;
+   --#        in     Raw_Data.State;
+   --# derives Value, Processing.State from Processing.State, Raw_Data.State;
+   --# pre Raw_Data.Data_Is_Valid (Raw_Data.State);
 
 end Calculate;

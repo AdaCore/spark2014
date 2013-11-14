@@ -1,9 +1,13 @@
-with Processing;
+pragma SPARK_Mode (On);
+with Processing,
+     Raw_Data;
 package Calculate is
 
    procedure Read_Calculated_Value (Value : out Integer)
-      with Global  => (Input => (Processing.State, Raw_Data.State)),
-           Depends => (Value => (Processing.State, Raw_Data.State)),
-           Post    => Raw_Data.Data_Is_Valid (Value);
+     with Global  => (In_Out => Processing.State,
+                      Input  => Raw_Data.State),
+          Depends => ((Value, Processing.State) =>
+                         (Processing.State, Raw_Data.State)),
+           Pre    => Raw_Data.Data_Is_Valid;
 
 end Calculate;

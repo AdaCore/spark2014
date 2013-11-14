@@ -1,5 +1,6 @@
+pragma SPARK_Mode (On);
 package Switch
-  with Abstract_State => (State with External, Input_Only)
+  with Abstract_State => (State with External => Async_Writers)
 is
    type Reading is (on, off, unknown);
 

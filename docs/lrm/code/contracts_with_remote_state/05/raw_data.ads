@@ -1,12 +1,17 @@
 package Raw_Data
 --# own State;
+--# Initializes State;
 is
 
-   --# function Data_Is_Valid (Value : Integer) return Boolean;
+   function Data_Is_Valid return Boolean;
+   --# global State;
 
-   procedure Read (Value : out Integer);
-   --# global in State;
-   --# derives Value from State;
-   --# post Data_Is_Valid (Value);
+   function Get_Value return Integer;
+   --# global State;
+
+   procedure Read_Next;
+   --# global in out State;
+   --# derives State from State;
+
 
 end Raw_Data;

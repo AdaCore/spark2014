@@ -1,3 +1,4 @@
+pragma SPARK_Mode (On);
 with Switch.Val1;
 with Switch.Val2;
 with Switch.Val3;
