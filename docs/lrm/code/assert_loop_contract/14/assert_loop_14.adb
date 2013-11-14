@@ -1,3 +1,4 @@
+pragma SPARK_Mode (On);
 package body Assert_Loop_14 is
    function Value_Present (A : A_Type; X : Integer) return Boolean is
       I : Index := Index'First;

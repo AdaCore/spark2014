@@ -1,9 +1,12 @@
+pragma SPARK_Mode (On);
+with System.Storage_Elements;
 package body Input_Port
   with Refined_State => (State_Inputs => Inputs)
 is
-   Inputs : Integer;
-   for Inputs'Address use 16#CAFE#;
-   pragma Volatile (Inputs);
+   Inputs : Integer
+     with Volatile,
+          Async_Writers,
+          Address => System.Storage_Elements.To_Address (16#CAFE0#);
 
    procedure Read_From_Port(Input_Value : out Integer)
      with Refined_Global  => (Input => Inputs),

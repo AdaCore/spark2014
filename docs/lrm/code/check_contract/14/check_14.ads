@@ -1,3 +1,4 @@
+pragma SPARK_Mode (On);
 package Check_14 is
    subtype Small is Integer range 1 .. 10;
    subtype Big   is Integer range 1 .. 21;

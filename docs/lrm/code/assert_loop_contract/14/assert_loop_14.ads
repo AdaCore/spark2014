@@ -1,3 +1,4 @@
+pragma SPARK_Mode (On);
 package Assert_Loop_14 is
    subtype Index is Integer range 1 .. 10;
    type A_Type is Array (Index) of Integer;

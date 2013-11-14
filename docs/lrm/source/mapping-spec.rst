@@ -1290,10 +1290,23 @@ Assert, Assume, Check contracts
 Assert (in loop) contract
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The following example demonstrates how the `assert` annotation can be used inside a loop.
-At each run of the loop the list of existing hypotheses is cleared and the statements that
-are within the `assert` annotation are added as the new hypotheses. The |SPARK| equivalent of
-`assert`, while within a loop, is `pragma Loop_Invariant`.
+The following example demonstrates how the SPARK 2005 `assert`
+annotation is used inside a loop as a loop invariant. It cuts the loop
+and on each iteration of the loop and the list of existing hypotheses
+for the path is cleared and the expression of the assert expression
+generates a verification condition to prove the expression is True and
+the expression is the basis of the new hypotheses.
+
+|SPARK| has a specific pragma for defining a loop invariant, `pragma
+Loop_Invariant` which is more sophisticated than the SPARK 2005 assert
+annotation and often requires less conditions in the invariant
+expression than in SPARK 2005.  As in SPARK 2005 a default loop
+invariant will be used if one is not provided which, often, may be
+sufficient to prove absence of run-time exceptions.  Like all
+|SPARK| assertion expressions the loop invariant is executable.
+
+Note in the example below the |SPARK| version proves absence of
+run-time exceptions without an explicit loop invariant being provided.
 
 Specification in SPARK 2005:
 
@@ -1325,18 +1338,24 @@ Body in |SPARK|:
 Assert (no loop) contract
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-While not in a loop, the SPARK 2005 `assert` annotation maps to `pragma Assert_And_Cut`
-in |SPARK|. These statements clear the list of hypotheses and add the statements that
-are within them as the new hypotheses.
+While not in a loop, the SPARK 2005 `assert` annotation maps to
+`pragma Assert_And_Cut` in |SPARK|. Both the assert annotation and
+pragma assert clear the list of hypotheses on the path, generate a
+verification condition to prove the assertion expression and use the
+assertion expression as the basis of the new hypotheses.
 
 .. _ms-proof_assume_contract-label:
 
 Assume contract
 ^^^^^^^^^^^^^^^
 
-The following example illustrates use of an Assume annotation (in this case,
-the Assume annotation is effectively being used to implement the Always_Valid
-attribute).
+The following example illustrates use of an Assume annotation.  The
+assumed expression does not generate a verification condition and is
+not proved (although it is executed in |SPARK| if assertion
+expressions are not ignored at run-time. 
+
+In this example, the Assume annotation is effectively being used to 
+implement the SPARK 2005 Always_Valid attribute.
 
 Specification for Assume annotation in SPARK 2005:
 
@@ -1367,8 +1386,10 @@ Body for Assume annotation in |SPARK|:
 Check contract
 ^^^^^^^^^^^^^^
 
-The SPARK 2005 `check` annotation is replaced by `pragma assert` in |SPARK|. This
-annotation adds a new hypothesis to the list of existing hypotheses.
+The SPARK 2005 `check` annotation is replaced by `pragma assert` in
+|SPARK|. This annotation generates a verification condition to prove
+the checked expression and adds the expression as a new hypothesis to
+the list of existing hypotheses.
 
 Specification for Check annotation in SPARK 2005:
 
@@ -1426,11 +1447,28 @@ and proof types are needed to state those pre- and postconditions. In addition, 
 an example of the use of a rule declaration annotation - in the body of procedure Initialize -
 to introduce a rule related to the components of a constant record value.
 
-.. todo::
-   *Note that the* |SPARK| *version of the rule declaration annotation has not yet been
-   defined [M520-006] - note that it might not even be needed, though this is to be determined -
-   and so there is no equivalent included in the* |SPARK| *code.*
-   To be completed in the Milestone 4 version of this document.
+|SPARK| does not have a direct equivalent of proof types and proof
+functions.  State abstractions cannot have a type and all functions in
+|SPARK| are Ada functions.  Functions may be denoted as having the
+convention Ghost which means that they can only be called within an
+assertion expression such as a pre or postcondition.  Assertion
+expressions may be executed or ignored at run-time and if they are
+ignored Ghost functions behave much like SPARK 2005 proof functions.
+
+Rule declaration annotations for structured constants are not required in |SPARK|.
+
+The SPARK 2005 version of the example given below will require user
+defined proof rules to discharge the proofs because refined
+definitions of some of the proof functions cannot be provided as they
+would have different formal parameters.  The |SPARK| version does not
+suffer from this problem as functions called within assertion expressions
+may have global items.
+
+If it is wished to use an external prover such as Isabelle, with rules
+defining a ghost function written in the prover input language, this
+can be done in |SPARK| by denoting the ghost function as an Import in
+lieu of providing a body for the function.  Of course such ghost
+functions cannot be executed.
 
 Specification in SPARK 2005:
 
@@ -1455,6 +1493,14 @@ Body in |SPARK|:
    .. literalinclude:: ../code/other_proof_types_and_functions/14/stack.adb
       :language: ada
       :linenos:
+
+Specification in |SPARK| using an external prover
+
+   .. literalinclude:: ../code/other_proof_types_and_functions/14/stack_external_prover.ads
+      :language: ada
+      :linenos:
+
+
 
 Main_Program annotation
 ~~~~~~~~~~~~~~~~~~~~~~~

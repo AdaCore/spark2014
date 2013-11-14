@@ -1,3 +1,4 @@
+pragma SPARK_Mode (On);
 package body Check_14 is
    procedure Compare(A, B : in Small; C : in out Big) is
    begin

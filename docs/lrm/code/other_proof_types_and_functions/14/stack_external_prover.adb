@@ -1,5 +1,5 @@
 pragma SPARK_Mode (On);
-package body Stack
+package body Stack_External_Prover
   with Refined_State => (State => My_Stack)
 is
    Stack_Size : constant := 100;
@@ -16,16 +16,6 @@ is
      Stack_Type'(S       => Vector'(others => 0),
                  Pointer => 0);
    My_Stack : Stack_Type;
-
-   function Max_Stack_Size return Natural is (Stack_Size);
-
-   function Count return Natural is (Natural (My_Stack.Pointer))
-     with Refined_Global => My_Stack;
-
-   function Stack_Entry (N : Natural) return Integer is
-     (My_Stack.S (Index_Range (N)))
-     with Refined_Global => My_Stack;
-
 
    procedure Push(X : in Integer)
      with Refined_Global => (In_Out => My_Stack)
@@ -54,4 +44,4 @@ is
    end Swap2;
 begin
    My_Stack := Initial_Stack;
-end Stack;
+end Stack_External_Prover;

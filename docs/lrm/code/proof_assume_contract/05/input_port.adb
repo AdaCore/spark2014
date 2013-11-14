@@ -1,9 +1,9 @@
-
+with System.Storage_Elements;
 package body Input_Port
 is
 
    Inputs : Integer;
-   for Inputs'Address use 16#CAFE#;
+   for Inputs'Address use System.Storage_Elements.To_Address (16#CAFE0#);
    pragma Volatile (Inputs);
 
    procedure Read_From_Port(Input_Value : out Integer)
