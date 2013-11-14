@@ -254,18 +254,19 @@ package body SPARK_Definition is
    ------------------------------
 
    procedure Generate_Output_In_Out_SPARK (Id : Entity_Id);
-   --  Produce a line in output file for subprogram Id, in JSON format, with
-   --  following interface:
+   --  Produce a line in output file for subprogram or package Id, in JSON
+   --  format, with following interface:
 
-   --   { name  : string,          name of the subprogram
+   --   { name  : string,          name of the subprogram / package
    --     file  : string,          file name of the spec
    --     line  : int,             line of the spec
-   --     spark : string           subp spec/body is in SPARK or not
+   --     spark : string           spec/body is in SPARK or not
    --   }
 
-   --  Field "spark" takes value in "spec", "body" or "no" to denote
-   --  respectively that the subprogram spec is in SPARK, both spec/body are
-   --  in SPARK, or the spec is not in SPARK.
+   --  Field "spark" takes value in "spec", "all" or "no" to denote
+   --  respectively that only the spec is in SPARK, both spec/body are in SPARK
+   --  (or spec is in SPARK for a package without body), or the spec is not in
+   --  SPARK.
 
    Output_File : Ada.Text_IO.File_Type;
    --  <file>.alfa in which this pass generates information about subprograms
@@ -303,8 +304,12 @@ package body SPARK_Definition is
 
    procedure Generate_Output_In_Out_SPARK (Id : Entity_Id) is
       SPARK_Status : constant String :=
-        (if Entity_Body_In_SPARK (Id) then "body"
-         elsif Entity_Spec_In_SPARK (Id) then "spec"
+        (if Entity_Body_In_SPARK (Id) then "all"
+         elsif Entity_Spec_In_SPARK (Id) then
+             (if Ekind (Id) = E_Package
+                   and then
+                 No (Get_Package_Body (Id))
+              then "all" else "spec")
          else "no");
       Line_Num     : constant String :=
         Get_Logical_Line_Number (Sloc (Id))'Img;
@@ -2395,6 +2400,15 @@ package body SPARK_Definition is
       end if;
 
       Current_SPARK_Pragma := Save_SPARK_Pragma;
+
+      --  Postprocessing: indicate in output file if package is in SPARK or
+      --  not, for reporting, debug and verifications. Only do so if there
+      --  is no corresponding package body, otherwise it is reported when
+      --  marking the package body.
+
+      if Is_In_Current_Unit (Id) and then No (Get_Package_Body (Id)) then
+         Generate_Output_In_Out_SPARK (Id);
+      end if;
    end Mark_Package_Declaration;
 
    -----------------

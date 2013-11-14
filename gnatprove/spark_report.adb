@@ -60,7 +60,7 @@
 --      file  : string,
 --      line  : int,
 --      spark : string }
---  the entry "spark" is one of "body", "spec" or "no" and describes the SPARK
+--  the entry "spark" is one of "all", "spec" or "no" and describes the SPARK
 --  status of the entity.
 --
 --  -----------------
@@ -242,7 +242,7 @@ procedure SPARK_Report is
             declare
                Result   : constant JSON_Value := Get (Entries, Index);
                In_SPARK : constant Boolean :=
-                 Get (Get (Result, "spark")) = "body";
+                 Get (Get (Result, "spark")) = "all";
             begin
                Add_SPARK_Status
                  (Unit         => Unit,
