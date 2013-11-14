@@ -83,11 +83,13 @@ is
       --     ``dependency_clause`` of the original Depends aspect and its
       --     refinement is visible at the point of the Refined_Depends aspect
       --     (derived via the process described in the rules 3a - 3f above),
-      --     then either:
+      --     then:
       --     - at least one of its ``constituents`` shall be denoted as an
       --       ``input`` in at least one of the ``dependency_clauses`` of the
       --       Refined_Depends aspect corresponding to the original
       --       ``dependency_clause`` in the Depends aspect; or
+      --     - at least one of its ``constituents`` shall be denoted in the
+      --       ``input_list`` of a ``null_dependency_clause``; or
       --     - the state abstraction is both an ``input`` and an ``output``
       --       and not every ``constituent`` the state abstraction is an
       --       ``output`` of the Refined_Depends aspect. [This rule does not
