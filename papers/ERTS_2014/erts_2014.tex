@@ -532,11 +532,8 @@ that would be broken afterward due to other code changes.
 
 A typical space applicative flight program is made up of two parts, which we
 both considered in our case study:
-
-\begin{itemize}
-\item Flight control or more generally numerical command and control algorithm
-\item Mission and Vehicle Management
-\end{itemize}
+Flight control (or more generally numerical command and control algorithm) and
+Mission and Vehicle Management.
 
 \subsubsection{Numerical Command and Control Algorithms}
 
@@ -548,13 +545,8 @@ floating point results. Such algorithms have generally a retro-action loop, \ie
 internal states.
 
 It is generally not possible to define interesting functional contracts for
-such code. Indeed, the functional contract of the equation:
-
-\begin{lstlisting}
-   X := A * Y + Cos (Z)
-\end{lstlisting}
-
-\noindent
+such code. Indeed, the functional contract of the equation
+``X := A * Y + Cos (Z)''
 is just itself (\ie it is not possible to specify in a more abstract way this
 equation). Then, instead of defining functional contracts, the objective on
 this kind of software is the proof of absence of run-time errors (such as
@@ -565,76 +557,67 @@ instance, a velocity shall always be between 0 and 25 km/s).
 This piece of code uses a mathematical library which implementation is not in \newspark, implying that it could not be formally proved, but only tested. However, the interface of this mathematical library is in \newspark. The contracts defined on the mathematical library can then be used to prove the application code.
 
 \begin{lstlisting}
-   function Sin32 (X : T_Float32)
-   return T_Float32
-   with
-     Pre  => (X >= -C_2Pi32) and then
-             (X <=  C_2Pi32),
-     Post => (Sin32'Result >= -1.0) and then
-             (Sin32'Result <=  1.0);
+   function Sin (X : T_Float) return T_Float
+   with Pre  => (X >= -C_2Pi) and then
+                (X <=  C_2Pi),
+        Post => (Sin'Result >= -1.0) and then
+                (Sin'Result <=  1.0);
 \end{lstlisting}
 
 \subsubsection{Mission and Vehicle Management}
 
-The Mission and Vehicle Management of a spacecraft is described by an ECSS (European Cooperation for Space Standardization) standard:
-
-\begin{center}
-{\bf ECSS-E-ST-70-01C Space engineering - Spacecraft on-board control procedures}
-\end{center}
-
-This standard defines the general principles of a On Board Control Procedure
+The Mission and Vehicle Management of a spacecraft is described by the ECSS (European Cooperation for Space Standardization) standard
+{\bf ECSS-E-ST-70-01C ``Space engineering - Spacecraft on-board control procedures''}.
+This standard defines the general principles of an On Board Control Procedure
 (OBCP). An OBCP is in practice represented by a simplified programming language
 interpreted on-board the spacecraft. This interpreter is generally at the
 highest level of criticality of the spacecraft. The implementation of this
 interpreter in \newspark is table driven and relies greatly on generic packages
-and discriminants.
+(allowing an easy customization of the code)
+and discriminants
+(ensuring a strict typing of the code, even in case of heterogeneous communication between components of the system).
 
-The generic packages allow an easy customization of the code:
-
-\begin{lstlisting}
-     generic
-        -- the list of events
-        type T_Event_Id is (<>);
-
-     package Mvm.Events is
-\end{lstlisting}
-
-The discriminants ensures a strict typing of the code, even in case of heterogeneous communication between components of the system:
-
-\begin{lstlisting}
-   type T_Monitoring_Type is
-     (No_Window,
-      Time_Window,
-      Protected_Window);
-
-   type T_Event_Status
-     (Monitoring : T_Monitoring := No_Window)
-   is
-      record
-         Detection_Time : T_Float32;
-         case Monitoring_Type is
-         when No_Window =>
-            null;
-         when Time_Window | Protected_Window =>
-            Start_Window : T_Float32;
-            End_Window   : T_Float32;
-         end case;
-      end record;
-\end{lstlisting}
+%%\begin{itemize}
+%%\item The generic packages allow an easy customization of the code:
+%%
+%%\begin{lstlisting}
+%% generic
+%%    -- the list of events
+%%    type T_Event_Id is (<>);
+%%\end{lstlisting}
+%%\item The discriminants ensures a strict typing of the code, even in case of heterogeneous communication between components of the system:
+%%
+%%\begin{lstlisting}
+%% type T_Monitoring is
+%%   (Simple, Window, Protected_Window);
+%%
+%% type T_Event_Status
+%%   (Monitoring : T_Monitoring := Simple) is
+%%    record
+%%       Detection_Time : T_Float;
+%%       case Monitoring is
+%%       when Simple => null;
+%%       when Window | Protected_Window =>
+%%          Start_Window : T_Float;
+%%          End_Window   : T_Float;
+%%       end case;
+%%    end record;
+%%\end{lstlisting}
+%%\end{itemize}
 
 \subsection{Formalization of Properties}
 
 The contracts defined on algorithmic code are mainly related to the ranges of variables.
 
-\begin{lstlisting}
-   subtype T_Angle_180 is T_Float32
-   range -180 .. 180;
-
-   function Normalise (X : in T_Float32)
-   return T_Angle_180
-   with Pre => (X >= -720.0) and
-               (X <=  720.0);
-\end{lstlisting}
+%%\begin{lstlisting}
+%%   subtype T_Angle_180 is T_Float
+%%   range -180 .. 180;
+%%
+%%   function Normalise (X : in T_Float)
+%%   return T_Angle_180
+%%   with Pre => (X >= -720.0) and
+%%               (X <=  720.0);
+%%\end{lstlisting}
 
 The contracts defined on mission and vehicle management code have (among others) the following objectives:
 
@@ -645,23 +628,23 @@ The contracts defined on mission and vehicle management code have (among others)
 \item Ensuring the absence of run-time errors
 \end{itemize}
 
-\begin{lstlisting}
-   procedure Reset_Event
-     (Event_Id :        T_Event_Id;
-      Events   : in out T_Events)
-   with
-     Post =>
-       Get_Status (Event_Id, Events) = Inactive)
-       and then
-       (for all Other_Id in T_Event_Id =>
-         (if Other_Id /= Event_Id then
-           Get_Status (Other_Id, Events) =
-           Get_Status (Other_Id, Events'Old))));
-\end{lstlisting}
+%%\begin{lstlisting}
+%%   procedure Reset_Event
+%%     (Event_Id :        T_Event_Id;
+%%      Events   : in out T_Events)
+%%   with
+%%     Post =>
+%%       Get_Status (Event_Id, Events) = Inactive)
+%%       and then
+%%       (for all Other_Id in T_Event_Id =>
+%%         (if Other_Id /= Event_Id then
+%%           Get_Status (Other_Id, Events) =
+%%           Get_Status (Other_Id, Events'Old))));
+%%\end{lstlisting}
 
 \subsection{Formal Verification Results}
 
-All the contracts have been checked by dynamic testing. This phase is quite classical, except for the fact that the testing includes the preconditions and the post-conditions defined in the software. Then, \gnatprove has been applied.
+All the contracts have been checked by dynamic testing. This phase is quite classical, except for the fact that the testing includes the preconditions and the postconditions defined in the software. Then, \gnatprove has been applied.
 
 The following table provides for each component:
 The number of subprograms fully in \newspark (``Ok''),
@@ -703,29 +686,21 @@ OBCP        & 547 & 447 & 30 &  13 &  13 \\
 \vspace{5mm}
 
 The origins of subprograms not yet in \newspark are the following:
-
-\begin{itemize}
-\item class wide types (53 subprograms)
-\item tagged type (81 subprograms)
-\item attribute (10 subprograms)
-\end{itemize}
-
+class wide types (53 subprograms),
+tagged type (81 subprograms) and
+attribute (10 subprograms). 
 These origins are related to Object Oriented Programming. The analysis of Object Oriented software is foreseen but has not yet been implemented.
 
 The origins of subprograms not in \newspark are the following:
 
 \begin{itemize}
-\item access (87 subprograms)
-\item unchecked conversion (377 subprograms)
+\item access (87 subprograms).
+      Accesses are used to store objects in a table.
+      This kind of design can not be proved by \gnatprove.
+\item unchecked conversion (377 subprograms).
+      The unchecked conversion are used in a library allowing reading external inputs.
+      All the concerned subprograms are very small and shall be validated by intensive testing because there are out of the perimeter of \newspark.
 \end{itemize}
-
-Accesses are used to store objects in a table.
-This kind of design can not be proved by \gnatprove.
-
-The unchecked conversion are used in a library allowing reading external inputs.
-All the concerned subprograms are very small and shall be validated by intensive testing because there are out of the perimeter of \newspark.
-
-\vspace{5mm}
 
 The following table provides for each component: the number of lines of code (``size''), the number of preconditions (``pre''), the number of postconditions (``post'') and the duration of analysis in seconds (``duration''):
 
@@ -795,48 +770,19 @@ loop  preservation  & 14     & 14     & 100 \\
 
 The analysis of the non proved checks is the following.
 
-\vspace{5mm}
-
-Some algorithmic functions are not completely known by \gnatprove.
-
-\begin{lstlisting}
-   function Arctan (X : T_Float32)
-	 return T_Float32
-   with
-     Post =>  Arctan'Result >= -C_Halfpi32
-     and then Arctan'Result <=  C_Halfpi32;
-
-   function Arctan (X : T_Float32)
-	 return T_Float32
-   is (Num32.Arctan (X));
-\end{lstlisting}
-
-The post condition is not proved by \gnatprove.
-The exact behaviour of algorithmic functions depending of the implementation, this behaviour is acceptable.
-Algorithmic functions and their contracts are preferably validated by intensive testing.
-
-\vspace{5mm}
+Some algorithmic functions (e.g.trigonometric functions) are not completely known by \gnatprove and then can not be used in proofs.
 
 \gnatprove has some difficulties to take into account rounding.
 In the following example, the second assertion is not proved.
-
 \begin{lstlisting}
-   function Round_Closest (X : T_Float32)
-   return T_Float32
-   is (T_Float32'Rounding (X));
-
    pragma Assert (Y >= -11160.002 and then
                   Y <=  11160.002);
-   Round_Y := Ml.Round_Closest (Y);
+   Round_Y := Round_Closest (Y);
    pragma Assert (Round_Y >= -11160.0 and then
                   Round_Y <=  11160.0);
 \end{lstlisting}
-
-\vspace{5mm}
-
 \gnatprove currently does not prove non linear equation.
 In the following example, the last assertion is not proved.
-
 \begin{lstlisting}
    pragma Assert (X >= 0.0 and then X <= 180.0);
    pragma Assert (Y >= -180.0 and then Y <= 0.0);
@@ -846,27 +792,21 @@ In the following example, the last assertion is not proved.
    pragma Assert (Result >= 0.0 and then
                   Result <= 360.0);
 \end{lstlisting}
-
-\vspace{5mm}
-
-\gnatprove is not yet able to verify the index of an array which dimension is defined by a type discriminant, for example:
-
-\begin{lstlisting}
-   subtype R is Integer range 1 .. 100;
-   type T_Array is array (R range <>) of Boolean;
-
-   type T_Record (L : R) is record
-      A : T_Array (1 .. L);
-   end record;
-
-   function G (X : T_Record) return Boolean is
-     (for all I in X.A'Range => X.A (I));
-\end{lstlisting}
-
-In function ``G'', the index check ``X.A (I)'' is not proved even if ``I'' is defined in the range of ``X.A''
-An improvement of \gnatprove is in progress in order to deal with such case.
-
-\vspace{5mm}
+\gnatprove is not yet able to verify the index of an array which dimension is defined by a type discriminant.
+%%, for example:
+%%\begin{lstlisting}
+%%   subtype R is Integer range 1 .. 100;
+%%   type T_Array is array (R range <>) of Boolean;
+%%
+%%   type T_Record (L : R) is record
+%%      A : T_Array (1 .. L);
+%%   end record;
+%%
+%%   function G (X : T_Record) return Boolean is
+%%     (for all I in X.A'Range => X.A (I));
+%%\end{lstlisting}
+%%In function ``G'', the index check ``X.A (I)'' is not proved even if ``I'' is defined in the range of ``X.A''
+%%An improvement of \gnatprove is in progress in order to deal with such case.
 
 The remaining non proved checks are due to a too complex subprogram.
 These subprograms shall be split in several smaller subprograms to be proved.
@@ -878,12 +818,10 @@ During the development of this case study, the following process has been define
 \begin{enumerate}
 \item Writing of the contracts of each subprogram
 \item Development of the body and of the tests
-\item Test of the software with executable contracts, and potentially correction
-
+\item Test of the software with executable contracts, and potentially correction.
 			In 50\% of the cases, the error comes from the code, and in the other
 			50\%, the error comes from the contract itself.
-\item Formal proof of contracts
-
+\item Formal proof of contracts.
 			The exhaustive formal proof of a contract is very often not achieved at the first run.
 			The reason(s) may be sometimes very difficult to understand
 			\begin{itemize}
@@ -896,7 +834,7 @@ During the development of this case study, the following process has been define
 			\end{itemize}
 \end{enumerate}
 
-The final feedback on the space case study was that:
+The final feedback on this case study was that:
 \begin{itemize}
 \item The quality of the code has been dramatically improved thanks to both executable contracts and formal proof.
 \item The writing of contracts for testing should become a natural activity of any software developer
