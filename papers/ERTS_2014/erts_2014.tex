@@ -917,22 +917,20 @@ The following needs are then expressed for \gnatprove in order to make possible 
 
 \subsection{Description of the Software}
 
-Tokeneer is a highly secure biometric software system that was
-originally developed by Altran. The system provides protection to
-secure information held on a network of workstations situated in a
-physically secure enclave. The Tokeneer project was commissioned by
-the US National Security Agency (NSA) to demonstrate the feasibility
-of developing systems to the level of rigour required by the higher
-assurance levels of the Common Criteria. The requirements of the
-system were captured using the Z notation and the implementation was
-in \oldspark. The original development artefacts, including all source
-code, are publicly available. For more details see
-\url{www.adacore.com/sparkpro/tokeneer}.
+Tokeneer~\footnote{\url{www.adacore.com/sparkpro/tokeneer}} is a highly secure
+biometric software system that was originally developed by Altran. The system
+provides protection to secure information held on a network of workstations
+situated in a physically secure enclave. The Tokeneer project was commissioned
+by the US National Security Agency (NSA) to demonstrate the feasibility of
+developing systems to the level of rigor required by the higher assurance
+levels of the Common Criteria. The requirements of the system were captured
+using the Z notation and the implementation was in \oldspark. The original
+development artefacts, including all source code, are publicly available.
 
 During this study, the source code for Tokeneer has been translated
 into \newspark. The core system now consists of approximately 10,000
 lines of \newspark code. There are also approximately 3,700 lines of
-supporting code written in Ada which mimicked the drivers to
+supporting code written in Ada which mimick the drivers to
 peripherals connected to the core system.
 
 \subsection{Converting \oldspark to \newspark}
@@ -946,28 +944,30 @@ Often, it is convenient to introduce a function which exists
 solely for the sake of proof and does not contribute at all in
 the final executing program. The constructs which achieve this
 functionality for \oldspark and \newspark respectively are proof
-functions and ghost functions. In \oldspark, the behaviour of a proof
-function was often defined in a user rule. In \newspark, this
-behaviour is described in the body of the ghost function.
+functions and ghost functions. In \oldspark, the behavior of a proof
+function was defined with user rules, which are axioms expressed in a special
+syntax and given to the proof system. In \newspark, this
+behavior is simply given by the body of the ghost function.
 
-The \newspark Global aspect has an additional mode. Global variables
-of a subroutine which appear solely within contracts and assertions
-and do not affect any of the subroutine's exports, must have mode
-\emph{Proof\_In} in \newspark. Global variables of mode \emph{in} that
-were used exclusively inside annotations had to be turned into
-\emph{Proof\_In} global variables in \newspark.
+The Global aspect has an additional mode \SPARK{Proof\_In} in \newspark \wrt
+\oldspark. This mode is used to specify global variables of a subprogram which
+appear solely within contracts and assertions. Therefore, the translation
+required separating global variables of mode \SPARK{in} that were used
+exclusively inside annotations (translated as \SPARK{Proof\_In} global
+variables), from those that were used in code (translated as \SPARK{Input}
+global variables).
 
-Code that contained constructs which were outside the Ada subset
-supported by \oldspark, were specially annotated so as to be hidden
-from the examiner. \newspark supports a bigger subset of Ada than
-\oldspark. As a consequence, pieces of code that were previously
-hidden, were now analyzable. Two occasions that fall under this
-category and were frequently encountered involved string concatenation
-and array slices.
+Parts of the code were specially annotated to be ignored during formal
+verification, because they contained constructs which were outside the Ada
+subset supported by \oldspark. As \newspark supports a bigger subset of Ada
+than \oldspark, a lot of this code is now formally analyzable. The two
+constructs most often encountered that fall under this category are string
+concatenation and array slices.
 
-In-type checks are added automatically by the new toolset. This
-simplifies both the work of the programmer and the code
-itself. Consider the following code segment:
+The information that values of variables respect the constraints of their type
+is available for proofs with the new toolset. This simplifies both the work of
+the programmer and the code itself. Consider the following code segment:
+
 \begin{lstlisting}
 for I in LogFileIndexT loop
   if LogFilesStatus(I) = Used then
@@ -983,11 +983,12 @@ for I in LogFileIndexT loop
       loop
         ...
 \end{lstlisting}
-The \oldspark equivalent contained an additional 25 lines which were
-required to prove that all variables are within their respective
-types. Assertions appearing within loops result in some of the
-previously formulated hypotheses being forgotten. The new tools are
-more sophisticated and preserve more of the context.
+
+In \oldspark, it was necessary to add 25 lines of assertions to repeat that the
+values of variables like \SPARK{I} and components like
+\SPARK{UsedLogFiles.Head} are within the bounds allowed by their type, as this
+information was lost inside loops. The new tools are more sophisticated and
+preserve more of the context.
 
 %% However, at this point, it should be pointed out that since the
 %% development of the Tokeneer project the \oldspark tools have greatly
@@ -997,8 +998,8 @@ more sophisticated and preserve more of the context.
 \subsection{Formalization of Properties}
 
 The contracts that have been added in the Tokeneer source code consist
-of information flow contracts (expressed as Depends aspects) and
-functional behavioural contracts (expressed as Pre and Post aspects).
+of information flow contracts expressed as Depends aspects and
+functional behavioral contracts expressed as Pre and Post aspects.
 
 The Depends aspects facilitate flow analysis of the code. Flow
 analysis detects improper initialization, identifies ineffective
@@ -1079,9 +1080,12 @@ any other kind of valid combinations of administrator types and their
 corresponding operations (\eg the administrator being of type
 \SPARK{SecurityOfficer} and the operation being
 \SPARK{UpdateConfigData} or \SPARK{ShutdownOp}) or under which
-circumstances \SPARK{NullOp} should be returned. In \oldspark, the
+circumstances \SPARK{NullOp} should be returned. 
+The \oldspark tools also prove all properties associated with
+the non-augmented \SPARK{admin} package but a total of 12 user rules had
+to be provided. The
 effort associated with proving the completed version of this
-postcondition is significant and hence this was not attempted.
+postcondition would have been significant and hence this was not attempted.
 
 \begin{lstlisting}
 function OpIsAvailable(TheAdmin : T;
@@ -1103,9 +1107,7 @@ allowed for the current administrator then the result of function
 
 The \newspark tools discharge all 24 verification conditions
 associated with the augmented \SPARK{admin} package in a matter of
-seconds. The \oldspark tools also prove all properties associated with
-the non-augmented \SPARK{admin} package but a total of 12 user rules had
-to be provided.
+seconds. 
 
 \subsubsection{Overall provability}
 
@@ -1139,9 +1141,7 @@ executable~\ref{subsec:ExecutableContracts}. Some of these checks were
 not automatically discharged. A more in depth investigation revealed
 that an invariant was missing from the original specifications. This
 invariant described the property of always using at least one log file
-($UsedLogFile.Lenfth >= 1$). Another report that has documented and
-has elaborated on this observation can be found at
-\url{www.open-do.org/wp-content/uploads/2013/05/Industrial_Case_Studies_Final_Report.pdf}.
+($UsedLogFile.Lenfth >= 1$).\footnote{\url{www.open-do.org/wp-content/uploads/2013/05/Industrial_Case_Studies_Final_Report.pdf}}.
 
 When analyzing a single package in isolation, it was easy to
 understand which verification conditions were proved and which were
