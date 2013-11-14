@@ -43,7 +43,6 @@ with SPARK_Definition;              use SPARK_Definition;
 with SPARK_Util;
 
 with Gnat2Why_Args;
-with GNAT.Directory_Operations;     use GNAT.Directory_Operations;
 
 with Flow.Analysis;
 with Flow.Control_Dependence_Graph;
@@ -693,90 +692,12 @@ package body Flow is
       FA_Graphs : Analysis_Maps.Map;
       Success   : Boolean;
 
-      function Analysis_Requested (E : Entity_Id) return Boolean;
-      --  Returns true if entity E has to be analyzed.
-
-      function Is_In_Analyzed_Files (E : Entity_Id) return Boolean;
-      --  Returns true if E belongs to one of the entities that correspond
-      --  to the files that are to be analyzed. If Analyze_Files is an empty
-      --  list then we return true since we need to analyze everything.
-
-      function Is_Requested_Subprogram (E : Entity_Id) return Boolean;
-      --  Returns true if E is the entity corresponding to the single
-      --  subprogram that needs to be analyzed, or if Gnat2Why_Args.Limit_Subp
-      --  is the Null_Unbounded_String.
-
-      ------------------------
-      -- Analysis_Requested --
-      ------------------------
-
-      function Analysis_Requested (E : Entity_Id) return Boolean is
-         (Is_In_Analyzed_Files (E) and then Is_Requested_Subprogram (E));
-
-      --------------------------
-      -- Is_In_Analyzed_Files --
-      --------------------------
-
-      function Is_In_Analyzed_Files (E : Entity_Id) return Boolean is
-      begin
-         --  If the entity is not in the compilation unit that is
-         --  currently being analyzed then return false.
-         if Cunit (Main_Unit) /= Enclosing_Comp_Unit_Node (E)
-           and then Library_Unit (Cunit (Main_Unit)) /=
-             Enclosing_Comp_Unit_Node (E)
-         then
-            return False;
-         end if;
-
-         --  If an empty files list has been provided then all entities that
-         --  are in the compilation unit that is currently being analyzed must
-         --  be analyzed.
-         if Gnat2Why_Args.Analyze_File.Is_Empty then
-            return True;
-         end if;
-
-         declare
-            Spec_Prefix : constant String := Spec_File_Name (E);
-            Body_Prefix : constant String := Body_File_Name (E);
-         begin
-            for A_File of Gnat2Why_Args.Analyze_File loop
-               declare
-                  Filename : constant String := File_Name (A_File);
-               begin
-                  if Filename = Body_Prefix or Filename = Spec_Prefix then
-                     return True;
-                  end if;
-               end;
-            end loop;
-            return False;
-         end;
-      end Is_In_Analyzed_Files;
-
-      -----------------------------
-      -- Is_Requested_Subprogram --
-      -----------------------------
-
-      function Is_Requested_Subprogram (E : Entity_Id) return Boolean is
-      begin
-         if Gnat2Why_Args.Limit_Subp = Null_Unbounded_String then
-            return True;
-         end if;
-
-         if Ekind (E) in Subprogram_Kind
-           and then "GP_Subp:" & To_String (Gnat2Why_Args.Limit_Subp) =
-           Gnat2Why.Nodes.Subp_Location (E)
-         then
-            return True;
-         else
-            return False;
-         end if;
-      end Is_Requested_Subprogram;
    begin
       --  Process entities and construct graphs if necessary
       for E of Entity_Set loop
          case Ekind (E) is
             when Subprogram_Kind =>
-               if Analysis_Requested (E)
+               if SPARK_Util.Analysis_Requested (E)
                  and Entity_Body_In_SPARK (E)
                then
                   FA_Graphs.Include (E, Flow_Analyse_Entity (E, E));
@@ -788,7 +709,7 @@ package body Flow is
                   Pkg_Body   : Node_Id;
                   Needs_Body : Boolean := Unit_Requires_Body (E);
                begin
-                  if Analysis_Requested (E)
+                  if SPARK_Util.Analysis_Requested (E)
                     and Entity_Spec_In_SPARK (E)
                     and not In_Predefined_Unit (E)
                   then

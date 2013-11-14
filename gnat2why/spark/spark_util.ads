@@ -322,4 +322,7 @@ package SPARK_Util is
    --  Returns True if N is a sybtype of Standard_Boolean with the same
    --  Scalar_Range
 
+   function Analysis_Requested (E : Entity_Id) return Boolean;
+   --  Returns true if entity E has to be analyzed.
+
 end SPARK_Util;

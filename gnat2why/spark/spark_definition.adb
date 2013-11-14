@@ -313,17 +313,26 @@ package body SPARK_Definition is
          else "no");
       Line_Num     : constant String :=
         Get_Logical_Line_Number (Sloc (Id))'Img;
+
    begin
-      if First_Entry then
-         First_Entry := False;
-      else
-         Put (Output_File, ", ");
+      --  Only add infomation for Id if analysis is requested for that
+      --  subprogram or package. Then, absence of errors in flow and warnings
+      --  in proof for that subprogram/package can be interpreted as correct
+      --  flow analysis or proof of that entity.
+
+      if Analysis_Requested (Id) then
+         if First_Entry then
+            First_Entry := False;
+         else
+            Put (Output_File, ", ");
+         end if;
+         Put_Line
+           (Output_File,
+            "{ ""name"" : """ & Subprogram_Full_Source_Name (Id) & """, " &
+              """file"" :""" & File_Name (Sloc (Id)) & """, " &
+              """line"" : " & Line_Num & ", " &
+              """spark"" : """ & SPARK_Status & """ }");
       end if;
-      Put_Line (Output_File,
-                "{ ""name"" : """ & Subprogram_Full_Source_Name (Id) & """, " &
-                  """file"" :""" & File_Name (Sloc (Id)) & """, " &
-                  """line"" : " & Line_Num & ", " &
-                  """spark"" : """ & SPARK_Status & """ }");
    end Generate_Output_In_Out_SPARK;
 
    ----------------------------------
