@@ -1,3 +1,3 @@
 from test_support import *
 
-gnatprove(opt=["-u", "client.adb"])
+gnatprove(opt=["-P", "test.gpr", "-u", "client.adb"])
