@@ -36,7 +36,7 @@ with Snames;                        use Snames;
 with Sprint;                        use Sprint;
 
 with Output;                        use Output;
-with Treepr;                        use Treepr;
+--  with Treepr;                        use Treepr;
 
 with Why;
 with SPARK_Definition;              use SPARK_Definition;
@@ -52,9 +52,10 @@ with Flow.Data_Dependence_Graph;
 with Flow.Interprocedural;
 with Flow.Program_Dependence_Graph;
 
+with Flow.Debug;                    use Flow.Debug;
+with Flow.Slice;                    use Flow.Slice;
 with Flow.Utility;                  use Flow.Utility;
 with Flow_Error_Messages;           use Flow_Error_Messages;
-with Flow.Slice;                    use Flow.Slice;
 
 use type Ada.Containers.Count_Type;
 
@@ -68,7 +69,7 @@ package body Flow is
 
    --  These debug options control some of the tracing produced.
 
-   Debug_Trace_Scoping : constant Boolean := False;
+   Debug_Trace_Scoping : constant Boolean := True;
 
    ------------------------------------------------------------
 
@@ -517,6 +518,9 @@ package body Flow is
                Analyzed_Entity   => E,
                Scope             => SPARK_Util.Get_Subprogram_Body (E),
                Spec_Scope        => Get_Enclosing_Scope (E),
+               S_Body            => Get_Flow_Scope
+                 (SPARK_Util.Get_Subprogram_Body (E)),
+               S_Spec            => Get_Flow_Scope (E),
                Spec_Node         => S,
                Start_Vertex      => Null_Vertex,
                End_Vertex        => Null_Vertex,
@@ -548,6 +552,8 @@ package body Flow is
                Analyzed_Entity   => E,
                Scope             => Get_Enclosing_Scope (E),
                Spec_Scope        => Get_Enclosing_Scope (E),
+               S_Body            => Flow_Scope'(E, Body_Part),
+               S_Spec            => Flow_Scope'(E, Private_Part),
                Spec_Node         => S,
                Start_Vertex      => Null_Vertex,
                End_Vertex        => Null_Vertex,
@@ -572,6 +578,8 @@ package body Flow is
                Analyzed_Entity   => E,
                Scope             => Get_Enclosing_Body_Scope (E),
                Spec_Scope        => Get_Enclosing_Scope (S),
+               S_Body            => Flow_Scope'(Spec_Entity (E), Body_Part),
+               S_Spec            => Flow_Scope'(Spec_Entity (E), Private_Part),
                Spec_Node         => S,
                Start_Vertex      => Null_Vertex,
                End_Vertex        => Null_Vertex,
@@ -609,12 +617,29 @@ package body Flow is
 
          if Debug_Trace_Scoping then
             Indent;
-            Write_Str ("Entity:     ");
-            Print_Node_Briefly (FA.Analyzed_Entity);
-            Write_Str ("Scope:      ");
-            Print_Tree_Node (FA.Scope);
+
             Write_Str ("Spec_Scope: ");
-            Print_Tree_Node (FA.Spec_Scope);
+            Print_Flow_Scope (FA.S_Spec);
+            declare
+               Ptr : Flow_Scope := FA.S_Spec;
+            begin
+               Indent;
+               while Ptr /= Null_Flow_Scope loop
+                  case Valid_Section_T'(Ptr.Section) is
+                     when Body_Part =>
+                        Ptr.Section := Private_Part;
+
+                     when Private_Part | Spec_Part =>
+                        Ptr := Get_Enclosing_Flow_Scope (Ptr);
+                  end case;
+                  if Ptr /= Null_Flow_Scope then
+                     Print_Flow_Scope (Ptr);
+                  end if;
+               end loop;
+               Outdent;
+            end;
+            Write_Str ("Body_Scope: ");
+            Print_Flow_Scope (FA.S_Body);
             Outdent;
          end if;
       end if;

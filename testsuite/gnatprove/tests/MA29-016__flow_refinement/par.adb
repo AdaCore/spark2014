@@ -13,6 +13,13 @@ is
 
    Z : Integer;
 
+   function Wibble return Integer
+--   with Refined_Global => (X, Y, Z)
+   is
+   begin
+      return X + Y + Z;
+   end Wibble;
+
    procedure Stuff
    is
    begin
@@ -36,4 +43,3 @@ is
    end Test_2;
 
 end Par;
-

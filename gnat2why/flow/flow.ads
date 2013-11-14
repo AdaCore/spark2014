@@ -38,6 +38,7 @@ with Graph;
 with Flow_Types;           use Flow_Types;
 with Flow_Tree_Utility;    use Flow_Tree_Utility;
 with Flow_Dependency_Maps; use Flow_Dependency_Maps;
+with Flow_Refinement;      use Flow_Refinement;
 
 package Flow is
 
@@ -101,6 +102,8 @@ package Flow is
       Analyzed_Entity   : Entity_Id;
       Scope             : Scope_Ptr;
       Spec_Scope        : Scope_Ptr;
+      S_Body            : Flow_Scope;
+      S_Spec            : Flow_Scope;
       --  The entity and scope (of the body and spec) of the analysed
       --  entity. The two scopes might be the same in some cases.
 

@@ -14,6 +14,6 @@ private
 
    function G return Integer is (Par.X + Par.Y);
    -- par|spec is visible
-   -- par|priv is not visible
+   -- par|priv is visible
 
 end Par.Pub;

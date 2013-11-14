@@ -12,5 +12,6 @@ private
 
    Y : Integer with Part_Of => State;
 
-end Par;
+   function Wibble return Integer;
 
+end Par;

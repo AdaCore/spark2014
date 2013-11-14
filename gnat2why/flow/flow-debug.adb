@@ -22,6 +22,7 @@
 ------------------------------------------------------------------------------
 
 with Output; use Output;
+with Sprint; use Sprint;
 
 package body Flow.Debug is
 
@@ -118,5 +119,26 @@ package body Flow.Debug is
       end if;
       Outdent;
    end Print_Optional_Dependency_Map;
+
+   ----------------------
+   -- Print_Flow_Scope --
+   ----------------------
+
+   procedure Print_Flow_Scope (S : Flow_Scope)
+   is
+   begin
+      if Present (S.Pkg) then
+         Sprint_Node (S.Pkg);
+         Write_Str ("|");
+         case Valid_Section_T (S.Section) is
+            when Spec_Part    => Write_Str ("spec");
+            when Private_Part => Write_Str ("priv");
+            when Body_Part    => Write_Str ("body");
+         end case;
+      else
+         Write_Str ("null_flow_scope");
+      end if;
+      Write_Eol;
+   end Print_Flow_Scope;
 
 end Flow.Debug;
