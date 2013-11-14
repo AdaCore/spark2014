@@ -3103,12 +3103,18 @@ package body Gnat2Why.Expr is
         Transform_Expr (Left, Subdomain, Params);
       Left_Name : constant W_Expr_Id :=
         (if Left_Simp then Left_Expr
-         else +New_Temp_Identifier (Typ => Get_Type (Left_Expr)));
+         else
+         +New_Temp_Identifier
+           (Ada_Node => Get_Ada_Node (+Left_Expr),
+            Typ => Get_Type (Left_Expr)));
       Right_Expr : constant W_Expr_Id :=
         Transform_Expr (Right, Subdomain, Params);
       Right_Name : constant W_Expr_Id :=
         (if Right_Simp then Right_Expr
-         else +New_Temp_Identifier (Typ => Get_Type (Right_Expr)));
+         else
+         +New_Temp_Identifier
+           (Ada_Node => Get_Ada_Node (+Right_Expr),
+            Typ      => Get_Type (Right_Expr)));
       Arg_Ind    : Positive := 1;
    begin
       Add_Array_Arg (Subdomain, Args, Left_Name, Arg_Ind);
@@ -5329,7 +5335,7 @@ package body Gnat2Why.Expr is
       end if;
 
       if Is_Mutable_In_Why (Ent) and then Params.Ref_Allowed then
-         T := New_Deref (Ada_Node => Expr,
+         T := New_Deref (Ada_Node => Get_Ada_Node (+T),
                          Right    => +T,
                          Typ      => Get_Type (T));
       end if;

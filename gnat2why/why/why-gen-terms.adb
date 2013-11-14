@@ -128,10 +128,11 @@ package body Why.Gen.Terms is
    function New_Old (Expr : W_Expr_Id; Domain : EW_Domain) return W_Expr_Id
    is
    begin
-         return New_Tagged (Def    => Expr,
-                            Tag    => NID (""),
-                            Domain => Domain,
-                            Typ    => Get_Type (Expr));
+      return New_Tagged (Ada_Node => Get_Ada_Node (+Expr),
+                         Def      => Expr,
+                         Tag      => NID (""),
+                         Domain   => Domain,
+                         Typ      => Get_Type (Expr));
    end New_Old;
 
 end Why.Gen.Terms;
