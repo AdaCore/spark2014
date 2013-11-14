@@ -1,0 +1,1 @@
+ALL XFAIL proof required and performed but gnatprove.out is empty (MB14-016)
