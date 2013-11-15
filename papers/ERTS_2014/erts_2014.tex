@@ -230,7 +230,7 @@ Traditionally, contracts have been interpreted quite differently depending on
 whether they were used for run-time assertion checking or for formal program
 verification. For run-time assertion checking, contracts have been interpreted
 as assertions on entry and exit of subprograms. For formal program
-verification, assertions have typically been interpreted as formulae in
+verification, assertions have typically been interpreted as formulas in
 classical first-order logic. This was the situation with SPARK prior to
 \newspark. Practitioners have struggled with this interpretation, which was not
 consistent with the run-time assertion checking semantics.\cite{tseChalin10}
@@ -279,20 +279,37 @@ Flow analysis checks correct access to data in the program: correct access to
 global variables (as specified in Global and Depends contracts) and correct
 access to initialized data. It is a fast static analysis (typically comparable
 with compilation time) based on the computation of the Program Dependence
-Graphs~\cite{Horwitz:1988:ISU:53990.53994}.
+Graphs.~\cite{Horwitz:1988:ISU:53990.53994}
 
 Proof is used to demonstrate that the program is free from run-time errors, and
 that the specified contracts are correctly implemented. It internally generates
 mathematical formulas for each property, that are given to the automatic prover
-\altergo~\footnote{\url{http://alt-ergo.ocamlpro.com/}}. If \altergo manages to
+\altergo.~\footnote{\url{http://alt-ergo.ocamlpro.com/}} If \altergo manages to
 prove the formula in the given time, then the property is known to
 hold. Otherwise, more work is required from the user to understand why the
-property is not proved. In our experience, a very useful feature of \gnatprove
-is its ability to display the paths in the program that lead to unproved
-properties. This path can be displayed in GPS or in Eclipse, the two Integrated
-Development Environments which support \newspark. The user can also change the
-parameters of the tool to perform more precise proofs, at the expense of longer
-running time.
+property is not proved. 
+
+As proof requires interactions between the user and the tool until the
+specification can be proved automatically, the efficiency and the granularity
+at which the tool can be applied are critical. For efficiency, \gnatprove uses
+a compilation-like model, where only parts that are impacted by a change need
+to be reanalyzed, where the dependencies are both syntactic (coarse-grain) and
+semantic (fine-grain). Also, the generation of formulas uses an efficient
+algorithm~\cite{leino:2005:ipl} that avoids the possible combinatorial
+explosion of the classical algorithm, and a small timeout of 1s is used by
+default for the prover. For convenient interaction with the user during the
+development of specifications, \gnatprove allows focusing on a single unit, a
+single subprogram inside this unit, or even a single line inside this
+subprogram.
+
+A very useful feature of \gnatprove to investigate unproved properties is its
+ability to display the paths in the program that lead to unproved
+properties. This path can be displayed in
+GPS~\footnote{\url{http://www.adacore.com/gnatpro/toolsuite/gps/}} or in
+Eclipse~\footnote{\url{http://www.adacore.com/gnatpro/toolsuite/gnatbench/}},
+the two Integrated Development Environments which support \newspark. The user
+can also change the parameters of the tool to perform more precise proofs, at
+the expense of longer running time.
 
 %% \subsection{Combining Testing and Proof}
 
