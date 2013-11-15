@@ -16,19 +16,31 @@
    showtabs=false,
    showstringspaces=false,
    morekeywords=[1]Pre,
-   morekeywords=[2]Post,
-   morekeywords=[3]Test\_Case,
-   morekeywords=[4]Contract\_Cases,
-   morekeywords=[5]some,
-   morekeywords=[6]Old,
+   morekeywords=[1]Post,
+   morekeywords=[1]Test\_Case,
+   morekeywords=[1]Contract\_Cases,
+   morekeywords=[1]some,
+   morekeywords=[1]Old,
+   morekeywords=[1]Global,
+   morekeywords=[1]Depends,
+   morekeywords=[1]Loop\_Invariant,
+   morekeywords=[1]Loop\_Variant,
+   morekeywords=[1]Loop\_Entry,
+   morekeywords=[1]Increases,
    literate={(}{{\CodeSymbol{(}}}1
             {)}{{\CodeSymbol{)}}}1
             {>}{{\CodeSymbol{$>$}}}1
+            {>=}{{\CodeSymbol{$\ge$}}}1
             {<}{{\CodeSymbol{$<$}}}1
+            {<=}{{\CodeSymbol{$\le$}}}1
             {=}{{\CodeSymbol{$=$}}}1
             {:}{{\CodeSymbol{$:$}}}1
             {.}{{\CodeSymbol{$.$}}}1
             {;}{{\CodeSymbol{$;$}}}1
+            {/=}{{\CodeSymbol{$\ne$}}}1
+            {=>}{{\CodeSymbol{$\Rightarrow$}}}1
+            {->}{{\CodeSymbol{$\rightarrow$}}}1
+            {<->}{{\CodeSymbol{$\leftrightarrow$}}}1
 }
 
 \newcommand{\DO}{\textsc{do-178}\xspace}
@@ -90,8 +102,8 @@ Certification and dependability
 
 \section{Introduction}
 
-\newspark is a major evolution of the SPARK language and toolset with two main
-objectives:
+\newspark is a major evolution of the SPARK subset of Ada and associated formal
+verification toolset with two main objectives:
 %
 \begin{enumerate}
 \item being accessible to non-expert users, and
@@ -101,24 +113,25 @@ objectives:
 In this paper, we describe how \newspark achieves these objectives, based on
 practical use of the language and associated formal verification tool
 \gnatprove on three industrial case studies developed in the context of the
-\hilite and \openetcs research projects.
+\hilite~\footnote{\url{http://www.open-do.org/projects/hi-lite/}} and
+\openetcs~\footnote{\url{http://openetcs.org/}} research projects.
 
 \section{SPARK 2014}
 
 %%\subsection{SPARK: Past and Present}
 
-SPARK is a programming language subset targeted at safety and security critical
-applications. It is a subset of the Ada programming language, thus building on
-the strengths of Ada for creating highly reliable and long-lived
-software. SPARK restrictions ensure that the behavior of a SPARK program is
-unambiguously defined, and simple enough that formal verification tools can
-perform an automatic diagnostic of conformance between a program specification
-and its implementation. The SPARK language and toolset for static verification
-has been applied for many years in on-board aircraft systems, control systems,
-cryptographic systems, and rail systems~\cite{sparkbook2012,oneill2012}. The
-new version \newspark builds on the new specification features added in
-\adatwtw~\cite{ada2012rationale}, so formal specifications are now understood
-by the usual development tools and can be executed.
+SPARK is a subset of the Ada programming language targeted at safety and
+security critical applications. SPARK builds on the strengths of Ada for
+creating highly reliable and long-lived software. SPARK restrictions ensure
+that the behavior of a SPARK program is unambiguously defined, and simple
+enough that formal verification tools can perform an automatic diagnostic of
+conformance between a program specification and its implementation. The SPARK
+language and toolset for formal verification has been applied for many years in
+on-board aircraft systems, control systems, cryptographic systems, and rail
+systems~\cite{sparkbook2012,oneill2012}. The new version \newspark builds on
+the new specification features added in \adatwtw~\cite{ada2012rationale}, so
+formal specifications are now understood by the usual development tools and can
+be executed.
 
 \subsection{Key Language Features}
 
@@ -137,12 +150,12 @@ to refer to values on entry to the subprogram.
 \begin{lstlisting}
 procedure Swap (A : in out Arr; X, Y : Idx) with
   Pre  => X in A'Range and Y in A'Range,
-  Post => A(X) = A(Y)'Old and A(Y) = A(X)'Old;
+  Post => A(X) = A(Y)`Old and A(Y) = A(X)`Old;
 \end{lstlisting}
 
 In \newspark, subprogram contracts may additionally specify global variables
 read and written in the subprogram, as well the flow of information from inputs
-(parameters and global variables reads) to outputs (parameters and global
+(parameters and global variables read) to outputs (parameters and global
 variables written). For example, the following contract for procedure
 \SPARK{Swap} specifies that the subprogram writes global variable
 \SPARK{Backup}, that the value of \SPARK{Backup} on return depends only on the
@@ -153,7 +166,7 @@ the input values of all parameters.
 procedure Swap (A : in out Arr; X, Y : Idx) with
   Global  => (Output => Backup),
   Depends => (Backup => A,
-              A      => (A, X, Y));
+              A     => (A, X, Y));
 \end{lstlisting}
 
 Instead of preconditions and postconditions, or in addition to them, subprogram
@@ -169,7 +182,7 @@ call.
 \begin{lstlisting}
 procedure Swap (A : in out Arr; X, Y : Idx) with
   Contract_Cases =>
-    (A(X) = A(Y)  => A = A'Old,
+    (A(X) = A(Y) => A = A'Old,
      A(X) /= A(Y) => A /= A'Old);
 \end{lstlisting}
 
@@ -195,8 +208,10 @@ Attribute \SPARK{Loop_Entry} is used to refer to values on entry to the loop.
 \begin{lstlisting}
 pragma Loop_Invariant
   (for all K in A'Range =>
-    (if K < J then A(K) = 0
-     else A(K) = A'Loop_Entry(K)));
+    (if K <= J then 
+       A(K) = 0
+     else 
+       A(K) = A'Loop_Entry(K)));
 \end{lstlisting}
 
 A loop variant expresses that a quantity varies monotonically at each iteration
@@ -212,12 +227,13 @@ pragma Loop_Variant (Increases => J);
 \label{subsec:ExecutableContracts}
 
 Traditionally, contracts have been interpreted quite differently depending on
-whether used for formal program verification or for run-time assertion
-checking. For formal program verification, assertions have typically been
-interpreted as formulae in classical first-order logic. This was the situation
-with SPARK until version \oldspark. Practitioners have struggled with this
-interpretation, which was not consistent with the run-time assertion checking
-semantics.\cite{tseChalin10}
+whether they were used for run-time assertion checking or for formal program
+verification. For run-time assertion checking, contracts have been interpreted
+as assertions on entry and exit of subprograms. For formal program
+verification, assertions have typically been interpreted as formulae in
+classical first-order logic. This was the situation with SPARK prior to
+\newspark. Practitioners have struggled with this interpretation, which was not
+consistent with the run-time assertion checking semantics.\cite{tseChalin10}
 
 \newspark reconciles the logic semantics and executable semantics of contracts,
 so users can now execute contracts, debug them like code, and test them when
@@ -227,9 +243,10 @@ learn one more language.
 
 Except for the Global and Depends contracts, all the contracts and assertion
 pragmas presented previously lead to run-time assertions. If a given property
-is not satisfied at run-time, an exception is raised with a message indicating
+is not satisfied at run time, an exception is raised with a message indicating
 the failing property, for example on the procedure \SPARK{Swap}:
 
+\begin{footnotesize}
 \begin{verbatim}
 failed precondition from swap.ads:4
 failed postcondition from swap.ads:5
@@ -239,6 +256,14 @@ failed contract case at swap.ads:7
 Loop_Invariant failed at swap.adb:5
 Loop_Variant failed at swap.adb:4
 \end{verbatim}
+\end{footnotesize}
+
+Another key benefit of executable contracts is that they can be used by other
+tools working at the level of code. For example, the CodePeer~\cite{codepeer}
+static analysis tool uses contracts and assertion pragmas to issue more precise
+messages. Most notably, this allows also combining the results of formal
+verification and testing, when only part of a program is formally
+analyzed.~\cite{hiliteERTS2012}
 
 \subsection{Key Tool Features}
 
@@ -250,23 +275,24 @@ performs two different analyses:
 \item proof of program properties.
 \end{enumerate}
 
-Flow analysis checks correct access to data in the program: first, correct
-access to global variables (as specified in Global and Depends contracts), and
-second, correct access to initialized data. It is a fast static analysis
-(typically comparable with compilation time) based on the computation of the
-Program Dependence Graphs~\cite{Horwitz:1988:ISU:53990.53994}.
+Flow analysis checks correct access to data in the program: correct access to
+global variables (as specified in Global and Depends contracts) and correct
+access to initialized data. It is a fast static analysis (typically comparable
+with compilation time) based on the computation of the Program Dependence
+Graphs~\cite{Horwitz:1988:ISU:53990.53994}.
 
-Proof checks that the program is free from run-time errors, and that the
-implementation respects the specified contracts. It internally generates
+Proof is used to demonstrate that the program is free from run-time errors, and
+that the specified contracts are correctly implemented. It internally generates
 mathematical formulas for each property, that are given to the automatic prover
-\altergo. If \altergo manages to prove the formula in the given time, then the
-property is known to hold. Otherwise, more work is required from the user to
-understand why the property is not proved. In our experience, a very useful
-feature of \gnatprove is its ability to display the paths in the program that
-lead to unproved properties. This path can be displayed in GPS or in Eclipse,
-the two Integrated Development Environments which support \newspark. The user
-can also change the parameters of the tool to perform more precise proofs, at
-the expense of longer running time.
+\altergo~\footnote{\url{http://alt-ergo.ocamlpro.com/}}. If \altergo manages to
+prove the formula in the given time, then the property is known to
+hold. Otherwise, more work is required from the user to understand why the
+property is not proved. In our experience, a very useful feature of \gnatprove
+is its ability to display the paths in the program that lead to unproved
+properties. This path can be displayed in GPS or in Eclipse, the two Integrated
+Development Environments which support \newspark. The user can also change the
+parameters of the tool to perform more precise proofs, at the expense of longer
+running time.
 
 %% \subsection{Combining Testing and Proof}
 
@@ -379,17 +405,17 @@ function Minimum_Until_Point
     (SFun : Step_Function_t; X : Function_Range)
                              return Float
 with
-  Pre => Is_Valid(SFun),
+Pre  => Is_Valid(SFun),
 Post =>
--- (1) Returned value is the minimum until point X
+  -- (1) Returned value is the minimum until point X
   (for all i in
     Num_Delimiters_Range'First..SFun.Num_delim =>
      (if X >= SFun.Step(i).Delimiter then
       Minimum_Until_Point'Result
          <= SFun.Step(i).Value))
   and
--- (2) Returned value is a value of the step
---     function until point X
+  -- (2) Returned value is a value of the step
+  --     function until point X
   ((for some i in
      Num_Delimiters_Range'First..SFun.Num_delim =>
       (X >= SFun.Step(i).Delimiter
@@ -557,11 +583,10 @@ instance, a velocity shall always be between 0 and 25 km/s).
 This piece of code uses a mathematical library which implementation is not in \newspark, implying that it could not be formally proved, but only tested. However, the interface of this mathematical library is in \newspark. The contracts defined on the mathematical library can then be used to prove the application code.
 
 \begin{lstlisting}
-   function Sin (X : T_Float) return T_Float
-   with Pre  => (X >= -C_2Pi) and then
-                (X <=  C_2Pi),
-        Post => (Sin'Result >= -1.0) and then
-                (Sin'Result <=  1.0);
+function Sin (X : T_Float) return T_Float
+with 
+  Pre  => (X >= -C_2Pi) and (X <= C_2Pi),
+  Post => (Sin'Result >= -1.0) and (Sin'Result <= 1.0);
 \end{lstlisting}
 
 \subsubsection{Mission and Vehicle Management}
@@ -775,22 +800,19 @@ Some algorithmic functions (e.g.trigonometric functions) are not completely know
 \gnatprove has some difficulties to take into account rounding.
 In the following example, the second assertion is not proved.
 \begin{lstlisting}
-   pragma Assert (Y >= -11160.002 and then
-                  Y <=  11160.002);
-   Round_Y := Round_Closest (Y);
-   pragma Assert (Round_Y >= -11160.0 and then
-                  Round_Y <=  11160.0);
+pragma Assert (Y in -11160.002 .. 11160.002);
+Round_Y := Round_Closest (Y);
+pragma Assert (Round_Y in -11160.0 .. 11160.0);
 \end{lstlisting}
 \gnatprove currently does not prove non linear equation.
 In the following example, the last assertion is not proved.
 \begin{lstlisting}
-   pragma Assert (X >= 0.0 and then X <= 180.0);
-   pragma Assert (Y >= -180.0 and then Y <= 0.0);
-   pragma Assert (Z >= 0.0 and then Z <= 1.0);
-   pragma Assert (X + Y >= 0.0);
-   Result := X + Y * Z;
-   pragma Assert (Result >= 0.0 and then
-                  Result <= 360.0);
+pragma Assert (X in 0.0 .. 180.0);
+pragma Assert (Y in -180.0 .. 0.0);
+pragma Assert (Z in 0.0 .. 1.0);
+pragma Assert (X + Y >= 0.0);
+Result := X + Y * Z;
+pragma Assert (Result in 0.0 .. 360.0);
 \end{lstlisting}
 \gnatprove is not yet able to verify the index of an array which dimension is defined by a type discriminant.
 %%, for example:
@@ -910,7 +932,6 @@ the programmer and the code itself. Consider the following code segment:
 for I in LogFileIndexT loop
   if LogFilesStatus(I) = Used then
     if UsedLogFiles.Length = 0 then
-      -- easy case list currently empty
       UsedLogFiles.Head := LogFileIndexT'First;
       UsedLogFiles.LastI := LogFileIndexT'First;
       UsedLogFiles.Length := 1;
@@ -1001,14 +1022,14 @@ administrator. If the operation is indeed available, then this
 operation is returned, otherwise \SPARK{NullOp} is returned.
 
 \begin{lstlisting}
-function OpIsAvailable(TheAdmin : T;
-                       KeyedOp  : Keyboard.DataT)
-                      return OpAndNullT;
+function OpIsAvailable
+  (TheAdmin : T; KeyedOp : Keyboard.DataT)
+  return OpAndNullT;
 --# pre IsPresent(TheAdmin);
---# return R => (R /= NullOp ->
---#                (R = OverrideLock <->
---#                 prf_rolePresent(TheAdmin) =
---#                   PrivTypes.Guard));
+--# return R => 
+--#   (R /= NullOp ->
+--#     (R = OverrideLock <->
+--#       prf_rolePresent(TheAdmin) = PrivTypes.Guard));
 \end{lstlisting}
 Here, the \oldspark postcondition serves only as a test case. It
 ensures that if a non null operation was returned and if that
@@ -1026,15 +1047,16 @@ effort associated with proving the completed version of this
 postcondition would have been significant and hence this was not attempted.
 
 \begin{lstlisting}
-function OpIsAvailable(TheAdmin : T;
-                       KeyedOp  : Keyboard.DataT)
-                      return OpAndNullT
-  with Pre  => IsPresent(TheAdmin),
-       Post => (for some Op in Opt =>
-                          Str_Comp(KeyedOp, Op)
-                  and AllowedOp(TheAdmin, Op)
-                  and OpIsAvailable'Result = Op)
-               xor OpIsAvailable'Result = NullOp;
+function OpIsAvailable
+  (TheAdmin : T; KeyedOp : Keyboard.DataT)
+  return OpAndNullT;
+with 
+  Pre  => IsPresent(TheAdmin),
+  Post => (for some Op in Opt =>
+             Str_Comp(KeyedOp, Op)
+               and AllowedOp(TheAdmin, Op)
+               and OpIsAvailable'Result = Op)
+          xor OpIsAvailable'Result = NullOp;
 \end{lstlisting}
 This \newspark Post aspect states that we have two mutually
 exclusive cases. If there exists some operation in \SPARK{Opt} that
