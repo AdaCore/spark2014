@@ -352,10 +352,6 @@ is
       TenthSecIndex   : constant TimeTextI := 21;
 
    begin
-      pragma Assert
-        (LocalText'First = TimeTextI'First and then
-         LocalText'Last = TimeTextI'Last);
-
       SetStringSegment(LocalText,
                        Natural(TheTime.Year),
                        FirstYearIndex,
