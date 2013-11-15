@@ -507,7 +507,7 @@ the requirements in a formal way. The very expressive data structures
 of \newspark (records, arrays, enumerations, \etc) were very helpful
 compared to other specification languages like B~Method~\cite{b-book}
 (lacking usable record structures) or ACSL~\cite{acsl} for C programs
-(lacking record with variant part or bounded integers). 
+(lacking record with variant part or bounded integers).
 We found that it lead to quite readable specifications.
 
 The second goal was to evaluate the automatic proving capabilities of \newspark
@@ -531,7 +531,7 @@ ranges and incompatible with other types is crucial in this regard.
 
 Another important finding is that the code should be written with proof in
 mind. For example, function \SPARK{Minimum\_Until\_Point} was initially
-unprovable, because an early exit in a loop lead to the formula 
+unprovable, because an early exit in a loop lead to the formula
 \begin{multline*}
 (\forall~K. A(K-1)<A(K)) \wedge X<A(1) \\
 \rightarrow (\forall~K. K>1 \rightarrow X<A(K))
@@ -539,7 +539,7 @@ unprovable, because an early exit in a loop lead to the formula
 which requires support for induction in the automatic prover, a feature still
 missing from most automatic provers.~\cite{leino:2012:vmcai} As the early exit
 was not necessary for correct behavior, it was sufficient to remove it to
-achieve automatic proof with \altergo. 
+achieve automatic proof with \altergo.
 
 A third finding is that contracts that can be automatically proved are
 not always the most natural contracts, \ie contracts a reviewer would
@@ -1108,10 +1108,10 @@ Thanks to the new toolset's proving power, users are no longer
 required to add intermediate cutpoints. In the Tokeneer case study,
 neither pragma Assert nor pragma Assert\_And\_Cut had to be provided
 to facilitate proof. However, it is hypothesised that their usage
-could improve readability of the code, since it would signify that a
-certain property holds at a certain point in the code, and it would
-result is the generation of smaller verification conditions which
-would in turn make manual proof easier.
+could improve readability of the code since it would signify that a
+certain property holds at a given point in the code. In addition,
+should manual proof be required, the verification conditions would be
+significantly smaller and hence proving them would be easier.
 
 While augmenting package \SPARK{admin}, it was noticed that formulating
 the functional behaviour annotations based on the low level Z
