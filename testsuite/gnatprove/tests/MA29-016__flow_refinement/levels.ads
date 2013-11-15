@@ -12,7 +12,7 @@ is
      with Global => Abs_0;
 
    procedure Post_Test_01
-     with Global => Abs_0,
+     with Global => (Proof_In => Abs_0),
           Post   => Wibble_0 > Read_Partial_0;
 
    procedure Post_Test_02
@@ -21,5 +21,11 @@ is
 
    procedure Test_03 (A : out Integer)
    with Global => Abs_0;
+
+   procedure D_Test_01 (X : out Integer;
+                        Y : in out Integer)
+     with Global  => Abs_0,
+          Depends => (X => Abs_0,
+                      Y =>+ Abs_0);
 
 end Levels;

@@ -865,12 +865,8 @@ package body Why.Inter is
                --  containers).
 
                if Ekind (E) = E_Function
-                 and then not Flow.Utility.Has_Global_Reads
-                                (Subprogram        => Decl_E,
-                                 Globals_For_Proof => True)
-                 and then not Flow.Utility.Has_Global_Writes
-                                (Subprogram        => Decl_E,
-                                 Globals_For_Proof => True)
+                 and then not Flow.Utility.Has_Proof_Global_Reads (Decl_E)
+                 and then not Flow.Utility.Has_Proof_Global_Writes (Decl_E)
                then
                   return WF_Pure;
                else

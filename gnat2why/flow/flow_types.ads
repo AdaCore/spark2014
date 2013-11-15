@@ -270,10 +270,18 @@ package Flow_Types is
    --  Convert a set containing flattened records into a set
    --  containing only entire variables.
 
-   function To_Name_Set (S : Flow_Id_Sets.Set)
-                         return Name_Set.Set;
+   function To_Name_Set (S : Flow_Id_Sets.Set) return Name_Set.Set;
    --  Convert a flow id set to a name set. Any record fields are
    --  changed into entire variables.
+
+   function To_Node_Set (S : Flow_Id_Sets.Set) return Node_Sets.Set
+     with Pre => (for all F of S => F.Kind = Direct_Mapping);
+   --  Convert a simple flow_id set to a node set.
+
+   function To_Flow_Id_Set (S : Node_Sets.Set) return Flow_Id_Sets.Set
+     with Post => (for all F of To_Flow_Id_Set'Result =>
+                     F.Kind = Direct_Mapping);
+   --  Convert a node set to a flow_id set.
 
    ----------------------------------------------------------------------
    --  V_Attributes
@@ -341,10 +349,6 @@ package Flow_Types is
 
       Is_Callsite         : Boolean;
       --  True if the vertex represents a subprogram call.
-
-      Use_Refined_View    : Boolean;
-      --  Should we use the abstract or refined view for this
-      --  callsite?
 
       Is_Parameter        : Boolean;
       --  True if this vertex models an argument to a procedure call.
@@ -415,7 +419,6 @@ package Flow_Types is
                    Is_Package_State                => False,
                    Is_Constant                     => False,
                    Is_Callsite                     => False,
-                   Use_Refined_View                => False,
                    Is_Parameter                    => False,
                    Is_Discriminants_Only_Parameter => False,
                    Is_Global_Parameter             => False,

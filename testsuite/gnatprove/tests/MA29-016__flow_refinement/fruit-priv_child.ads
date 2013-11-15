@@ -3,7 +3,7 @@ private package Fruit.Priv_Child
        Initializes    => Price_Related_Stuff
 is
    procedure Increase_Price_Of_Apple
-     with Global => (In_Out => Fruits);
+     with Global => (In_Out => Price_Of_Apple);
 
    procedure Increase_Price_Of_Orange
      with Global => (In_Out => Price_Of_Orange);

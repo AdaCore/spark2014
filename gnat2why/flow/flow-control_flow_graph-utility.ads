@@ -82,15 +82,13 @@ package Flow.Control_Flow_Graph.Utility is
 
    function Make_Call_Attributes
      (Callsite     : Node_Id           := Empty;
-      Refined_View : Boolean           := False;
       Loops        : Node_Sets.Set     := Node_Sets.Empty_Set;
       E_Loc        : Node_Or_Entity_Id := Empty)
       return V_Attributes
       with Pre  => Present (Callsite),
            Post => not Make_Call_Attributes'Result.Is_Null_Node and
                    Make_Call_Attributes'Result.Is_Program_Node and
-                   Make_Call_Attributes'Result.Is_Callsite and
-                   Make_Call_Attributes'Result.Use_Refined_View = Refined_View;
+                   Make_Call_Attributes'Result.Is_Callsite;
    --  Create attributes for callsite vertices. Automatically sets the
    --  following:
    --     * Perform_IPFA
@@ -175,7 +173,7 @@ package Flow.Control_Flow_Graph.Utility is
    --  uninitialised (unless the global is a disciminant).
 
    function Make_Default_Initialization_Attributes
-     (Scope   : Scope_Ptr;
+     (Scope   : Flow_Scope;
       F       : Flow_Id;
       Loops   : Node_Sets.Set     := Node_Sets.Empty_Set;
       E_Loc   : Node_Or_Entity_Id := Empty)

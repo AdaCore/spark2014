@@ -21,6 +21,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Elists;                 use Elists;
 with Errout;                 use Errout;
 with Namet;                  use Namet;
 with Nlists;                 use Nlists;
@@ -265,44 +266,22 @@ package body Flow.Utility is
    -----------------
 
    procedure Get_Globals (Subprogram             : Entity_Id;
+                          Scope                  : Flow_Scope;
+                          Proof_Ins              : out Flow_Id_Sets.Set;
                           Reads                  : out Flow_Id_Sets.Set;
                           Writes                 : out Flow_Id_Sets.Set;
-                          Proof_Ins              : out Flow_Id_Sets.Set;
-                          Refined_View           : Boolean;
                           Consider_Discriminants : Boolean := False;
                           Globals_For_Proof      : Boolean := False)
    is
-      Has_Global_Aspect : Boolean;
-      Global_Node       : Node_Id;
-      Body_E            : constant Entity_Id := Get_Body (Subprogram);
+      Global_Node : constant Node_Id := Get_Contract_Node (Subprogram,
+                                                           Scope,
+                                                           Global_Contract);
    begin
+      Proof_Ins := Flow_Id_Sets.Empty_Set;
       Reads     := Flow_Id_Sets.Empty_Set;
       Writes    := Flow_Id_Sets.Empty_Set;
-      Proof_Ins := Flow_Id_Sets.Empty_Set;
 
-      if Refined_View and then Present (Body_E) and then
-        Present (Get_Pragma (Body_E, Pragma_Refined_Global))
-      then
-         Has_Global_Aspect := True;
-         Global_Node       := Get_Pragma (Body_E, Pragma_Refined_Global);
-
-      elsif Refined_View
-        and then (Ekind (Subprogram) = E_Function and then
-                    Is_Expression_Function (Subprogram))
-        and then Present (Body_E)
-      then
-         Global_Node       := Get_Pragma (Subprogram, Pragma_Global);
-         Has_Global_Aspect := Present (Global_Node);
-
-      elsif Present (Get_Pragma (Subprogram, Pragma_Global)) then
-         Has_Global_Aspect := True;
-         Global_Node       := Get_Pragma (Subprogram, Pragma_Global);
-
-      else
-         Has_Global_Aspect := False;
-      end if;
-
-      if Has_Global_Aspect then
+      if Present (Global_Node) then
          declare
             pragma Assert
               (List_Length (Pragma_Argument_Associations (Global_Node)) = 1);
@@ -314,6 +293,10 @@ package body Flow.Utility is
             Row      : Node_Id;
             The_Mode : Name_Id;
             RHS      : Node_Id;
+
+            G_Proof : Node_Sets.Set := Node_Sets.Empty_Set;
+            G_In    : Node_Sets.Set := Node_Sets.Empty_Set;
+            G_Out   : Node_Sets.Set := Node_Sets.Empty_Set;
 
             procedure Process (The_Mode   : Name_Id;
                                The_Global : Entity_Id);
@@ -331,32 +314,41 @@ package body Flow.Utility is
                      then
                         --  Proof does not count in parameters as
                         --  globals (as they are constants).
-                        Reads.Insert (Direct_Mapping_Id
-                                        (The_Global, In_View));
+                        G_In.Insert (The_Global);
                      end if;
+
                   when Name_In_Out =>
-                     Reads.Insert (Direct_Mapping_Id
-                                     (The_Global, In_View));
-                     Writes.Insert (Direct_Mapping_Id
-                                      (The_Global, Out_View));
+                     G_In.Insert (The_Global);
+                     G_Out.Insert (The_Global);
+
                   when Name_Output =>
                      if Consider_Discriminants and then
                        Contains_Discriminants
                        (Direct_Mapping_Id (The_Global, In_View))
                      then
-                        Reads.Insert (Direct_Mapping_Id
-                                        (The_Global, In_View));
+                        G_In.Insert (The_Global);
                      end if;
-                     Writes.Insert (Direct_Mapping_Id
-                                      (The_Global, Out_View));
+                     G_Out.Insert (The_Global);
+
                   when Name_Proof_In =>
-                     Proof_Ins.Insert (Direct_Mapping_Id
-                                         (The_Global, In_View));
+                     if not Globals_For_Proof or else
+                       Ekind (The_Global) /= E_In_Parameter
+                     then
+                        --  See above.
+                        G_Proof.Insert (The_Global);
+                     end if;
+
                   when others =>
                      raise Program_Error;
                end case;
             end Process;
          begin
+
+            ---------------------------------------------------------------
+            --  Step 1: Process global annotation, filling in g_proof,
+            --  g_in, and g_out.
+            ---------------------------------------------------------------
+
             if Nkind (Expression (PAA)) = N_Null then
                --  global => null
                --  No globals, nothing to do.
@@ -423,6 +415,37 @@ package body Flow.Utility is
             else
                raise Why.Unexpected_Node;
             end if;
+
+            ---------------------------------------------------------------
+            --  Step 2: Expand any abstract state that might be too refiend
+            --  for our given scope.
+            ---------------------------------------------------------------
+
+            G_Proof := Down_Project (G_Proof, Scope);
+            G_In    := Down_Project (G_In,    Scope);
+            G_Out   := Down_Project (G_Out,   Scope);
+
+            ---------------------------------------------------------------
+            --  Step 3: Sanity check that none of the proof ins are
+            --  mentioned as ins.
+            ---------------------------------------------------------------
+
+            --  pragma Assert ((G_Proof and G_In) = Node_Sets.Empty_Set);
+
+            ---------------------------------------------------------------
+            --  Step 4: Convert to a Flow_Id set.
+            ---------------------------------------------------------------
+
+            for V of G_Proof loop
+               Proof_Ins.Include (Direct_Mapping_Id (V, In_View));
+            end loop;
+            for V of G_In loop
+               Reads.Include (Direct_Mapping_Id (V, In_View));
+            end loop;
+            for V of G_Out loop
+               Writes.Include (Direct_Mapping_Id (V, Out_View));
+            end loop;
+
          end;
       else
          --  We don't have a global aspect, so we should look at the
@@ -497,36 +520,130 @@ package body Flow.Utility is
 
    end Get_Globals;
 
-   procedure Get_Globals (Subprogram             : Entity_Id;
-                          Reads                  : out Flow_Id_Sets.Set;
-                          Writes                 : out Flow_Id_Sets.Set;
-                          Refined_View           : Boolean;
-                          Consider_Discriminants : Boolean := False;
-                          Globals_For_Proof      : Boolean := False)
+   -----------------------
+   -- Get_Proof_Globals --
+   -----------------------
+
+   procedure Get_Proof_Globals (Subprogram : Entity_Id;
+                                Reads      : out Flow_Id_Sets.Set;
+                                Writes     : out Flow_Id_Sets.Set)
    is
       Proof_Ins : Flow_Id_Sets.Set;
-   begin
-      Get_Globals (Subprogram             => Subprogram,
-                   Reads                  => Reads,
-                   Writes                 => Writes,
-                   Proof_Ins              => Proof_Ins,
-                   Refined_View           => Refined_View,
-                   Consider_Discriminants => Consider_Discriminants,
-                   Globals_For_Proof      => Globals_For_Proof);
+      Tmp_In    : Flow_Id_Sets.Set;
+      Tmp_Out   : Flow_Id_Sets.Set;
+      Body_E    : constant Entity_Id := Get_Body (Subprogram);
 
-      Reads.Union (Proof_Ins);
-   end Get_Globals;
+      function Expand (F : Flow_Id) return Flow_Id_Sets.Set;
+      --  If F represents abstract state, return the set of all its
+      --  components. Otherwise return F.
+
+      ------------
+      -- Expand --
+      ------------
+
+      function Expand (F : Flow_Id) return Flow_Id_Sets.Set
+      is
+         Tmp : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+         Ptr : Elmt_Id;
+      begin
+         case F.Kind is
+            when Direct_Mapping =>
+               case Ekind (Get_Direct_Mapping_Id (F)) is
+                  when E_Abstract_State =>
+                     Ptr := First_Elmt (Refinement_Constituents
+                                          (Get_Direct_Mapping_Id (F)));
+                     while Present (Ptr) loop
+                        Tmp.Union (Expand (Direct_Mapping_Id (Node (Ptr),
+                                                              F.Variant)));
+                        Ptr := Next_Elmt (Ptr);
+                     end loop;
+
+                     Ptr := First_Elmt (Part_Of_Constituents
+                                          (Get_Direct_Mapping_Id (F)));
+                     while Present (Ptr) loop
+                        Tmp.Union (Expand (Direct_Mapping_Id (Node (Ptr),
+                                                              F.Variant)));
+                        Ptr := Next_Elmt (Ptr);
+                     end loop;
+
+                  when others =>
+                     Tmp.Insert (F);
+               end case;
+
+            when Magic_String =>
+               Tmp.Insert (F);
+
+            when Record_Field | Null_Value =>
+               raise Program_Error;
+         end case;
+         return Tmp;
+      end Expand;
+
+   begin
+      Get_Globals
+        (Subprogram             => Subprogram,
+         Scope                  => (if Present (Body_E)
+                                    then Get_Flow_Scope (Body_E)
+                                    else Get_Flow_Scope (Subprogram)),
+         Proof_Ins              => Proof_Ins,
+         Reads                  => Tmp_In,
+         Writes                 => Tmp_Out,
+         Consider_Discriminants => False,
+         Globals_For_Proof      => True);
+
+      --  Merge the proof ins with the reads.
+      Tmp_In.Union (Proof_Ins);
+
+      --  Expand all variables.
+      Reads := Flow_Id_Sets.Empty_Set;
+      for F of Tmp_In loop
+         Reads.Union (Expand (F));
+      end loop;
+
+      Writes := Flow_Id_Sets.Empty_Set;
+      for F of Tmp_Out loop
+         Writes.Union (Expand (F));
+      end loop;
+   end Get_Proof_Globals;
+
+   ----------------------------
+   -- Has_Proof_Global_Reads --
+   ----------------------------
+
+   function Has_Proof_Global_Reads (Subprogram : Entity_Id) return Boolean
+   is
+      Read_Ids  : Flow_Types.Flow_Id_Sets.Set;
+      Write_Ids : Flow_Types.Flow_Id_Sets.Set;
+   begin
+      Get_Proof_Globals (Subprogram => Subprogram,
+                         Reads      => Read_Ids,
+                         Writes     => Write_Ids);
+      return not Read_Ids.Is_Empty;
+   end Has_Proof_Global_Reads;
+
+   -----------------------------
+   -- Has_Proof_Global_Writes --
+   -----------------------------
+
+   function Has_Proof_Global_Writes (Subprogram : Entity_Id) return Boolean
+   is
+      Read_Ids  : Flow_Types.Flow_Id_Sets.Set;
+      Write_Ids : Flow_Types.Flow_Id_Sets.Set;
+   begin
+      Get_Proof_Globals (Subprogram => Subprogram,
+                         Reads      => Read_Ids,
+                         Writes     => Write_Ids);
+      return not Write_Ids.Is_Empty;
+   end Has_Proof_Global_Writes;
 
    ------------------------
    --  Get_Variable_Set  --
    ------------------------
 
    function Get_Variable_Set (N                : Node_Id;
-                              Reduced          : Boolean   := False;
-                              Allow_Statements : Boolean   := False;
-                              Scope            : Scope_Ptr := Empty;
-                              Force_Abstract   : Boolean   := False;
-                              Force_Refined    : Boolean   := False)
+                              Scope            : Flow_Scope;
+                              Reduced          : Boolean := False;
+                              Allow_Statements : Boolean := False)
                               return Flow_Id_Sets.Set
    is
       VS : Flow_Id_Sets.Set;
@@ -557,15 +674,17 @@ package body Flow.Utility is
 
          Subprogram    : constant Entity_Id := Entity (Name (Callsite));
 
+         Proof_Reads   : Flow_Id_Sets.Set;
          Global_Reads  : Flow_Id_Sets.Set;
          Global_Writes : Flow_Id_Sets.Set;
-
       begin
          Get_Globals (Subprogram   => Subprogram,
+                      Scope        => Scope,
+                      Proof_Ins    => Proof_Reads,
                       Reads        => Global_Reads,
-                      Writes       => Global_Writes,
-                      Refined_View => Force_Refined or else
-                        Should_Use_Refined_View (Scope, Callsite));
+                      Writes       => Global_Writes);
+         Global_Reads.Union (Proof_Reads);
+
          if Nkind (Callsite) = N_Function_Call and then
            Flow_Id_Sets.Length (Global_Writes) > 0
          then
@@ -575,13 +694,10 @@ package body Flow.Utility is
                E   => Subprogram);
          end if;
 
-         Used_Variables :=
-           Used_Variables or
-           Get_Variable_Set (Parameter_Associations (Callsite),
-                             Reduced        => Reduced,
-                             Scope          => Scope,
-                             Force_Abstract => Force_Abstract,
-                             Force_Refined  => Force_Refined);
+         Used_Variables.Union
+           (Get_Variable_Set (Parameter_Associations (Callsite),
+                              Scope          => Scope,
+                              Reduced        => Reduced));
 
          for G of Global_Reads loop
             for F of Flatten_Variable (G) loop
@@ -672,8 +788,8 @@ package body Flow.Utility is
                   declare
                      D, U : Flow_Id_Sets.Set;
                   begin
-                     Untangle_Assignment_Target (Scope        => Scope,
-                                                 N            => N,
+                     Untangle_Assignment_Target (N            => N,
+                                                 Scope        => Scope,
                                                  Vars_Defined => D,
                                                  Vars_Used    => U);
                      VS.Union (D);
@@ -714,20 +830,14 @@ package body Flow.Utility is
 
       procedure Traverse is new Traverse_Proc (Process => Proc);
    begin
-      if Force_Refined or Force_Abstract then
-         raise Why.Not_Implemented;
-      end if;
-
       Traverse (N);
       return Filter_Out_Constants (VS);
    end Get_Variable_Set;
 
    function Get_Variable_Set (L                : List_Id;
-                              Reduced          : Boolean   := False;
-                              Allow_Statements : Boolean   := False;
-                              Scope            : Scope_Ptr := Empty;
-                              Force_Abstract   : Boolean   := False;
-                              Force_Refined    : Boolean   := False)
+                              Scope            : Flow_Scope;
+                              Reduced          : Boolean := False;
+                              Allow_Statements : Boolean := False)
                               return Flow_Id_Sets.Set
    is
       VS : Flow_Id_Sets.Set;
@@ -736,11 +846,9 @@ package body Flow.Utility is
       P := First (L);
       while Present (P) loop
          VS.Union (Get_Variable_Set (P,
-                                     Reduced          => Reduced,
-                                     Allow_Statements => Allow_Statements,
                                      Scope            => Scope,
-                                     Force_Abstract   => Force_Abstract,
-                                     Force_Refined    => Force_Refined));
+                                     Reduced          => Reduced,
+                                     Allow_Statements => Allow_Statements));
 
          P := Next (P);
       end loop;
@@ -780,52 +888,6 @@ package body Flow.Utility is
       Traverse (N);
       return RV;
    end Quantified_Variables;
-
-   ----------------------
-   -- Has_Global_Reads --
-   ----------------------
-
-   function Has_Global_Reads
-     (Subprogram        : Entity_Id;
-      Globals_For_Proof : Boolean := False) return Boolean
-   is
-      Read_Ids  : Flow_Types.Flow_Id_Sets.Set;
-      Write_Ids : Flow_Types.Flow_Id_Sets.Set;
-   begin
-      --  Collect global variables potentially read and written
-
-      Flow.Utility.Get_Globals (Subprogram             => Subprogram,
-                                Reads                  => Read_Ids,
-                                Writes                 => Write_Ids,
-                                Refined_View           => False,
-                                Consider_Discriminants => False,
-                                Globals_For_Proof      => Globals_For_Proof);
-
-      return not Read_Ids.Is_Empty;
-   end Has_Global_Reads;
-
-   -----------------------
-   -- Has_Global_Writes --
-   -----------------------
-
-   function Has_Global_Writes
-     (Subprogram        : Entity_Id;
-      Globals_For_Proof : Boolean := False) return Boolean
-   is
-      Read_Ids  : Flow_Types.Flow_Id_Sets.Set;
-      Write_Ids : Flow_Types.Flow_Id_Sets.Set;
-   begin
-      --  Collect global variables potentially read and written
-
-      Flow.Utility.Get_Globals (Subprogram             => Subprogram,
-                                Reads                  => Read_Ids,
-                                Writes                 => Write_Ids,
-                                Refined_View           => False,
-                                Consider_Discriminants => False,
-                                Globals_For_Proof      => Globals_For_Proof);
-
-      return not Write_Ids.Is_Empty;
-   end Has_Global_Writes;
 
    ----------------------
    -- Flatten_Variable --
@@ -889,8 +951,8 @@ package body Flow.Utility is
    --------------------------------
 
    procedure Untangle_Assignment_Target
-     (Scope        : Scope_Ptr;
-      N            : Node_Id;
+     (N            : Node_Id;
+      Scope        : Flow_Scope;
       Vars_Defined : out Flow_Id_Sets.Set;
       Vars_Used    : out Flow_Id_Sets.Set)
    is
@@ -996,8 +1058,8 @@ package body Flow.Utility is
       case Nkind (N) is
          when N_Type_Conversion =>
             Untangle_Assignment_Target
-              (Scope        => Scope,
-               N            => Expression (N),
+              (N            => Expression (N),
+               Scope        => Scope,
                Vars_Defined => Vars_Defined,
                Vars_Used    => Vars_Used);
 

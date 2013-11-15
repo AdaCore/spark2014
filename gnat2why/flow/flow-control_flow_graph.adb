@@ -437,7 +437,6 @@ package body Flow.Control_Flow_Graph is
 
    procedure Process_Subprogram_Globals
      (Callsite          : Node_Id;
-      Refined_View      : Boolean;
       In_List           : in out Vertex_Vectors.Vector;
       Out_List          : in out Vertex_Vectors.Vector;
       FA                : in out Flow_Analysis_Graphs;
@@ -746,10 +745,10 @@ package body Flow.Control_Flow_Graph is
    begin
       --  Work out which variables we use and define.
       V_Used_RHS := Get_Variable_Set (Expression (N),
-                                      Scope => FA.Scope);
+                                      Scope => FA.B_Scope);
 
-      Untangle_Assignment_Target (Scope        => FA.Scope,
-                                  N            => Name (N),
+      Untangle_Assignment_Target (N            => Name (N),
+                                  Scope        => FA.B_Scope,
                                   Vars_Used    => V_Used_LHS,
                                   Vars_Defined => V_Def_LHS);
 
@@ -794,7 +793,7 @@ package body Flow.Control_Flow_Graph is
         (Direct_Mapping_Id (N),
          Make_Basic_Attributes (Var_Use => Get_Variable_Set
                                   (Expression (N),
-                                   Scope => FA.Scope),
+                                   Scope => FA.B_Scope),
                                 Loops   => Ctx.Current_Loops,
                                 E_Loc   => N),
          V);
@@ -871,7 +870,7 @@ package body Flow.Control_Flow_Graph is
            (Direct_Mapping_Id (N),
             Make_Basic_Attributes (Var_Use => Get_Variable_Set
                                      (Condition (N),
-                                      Scope => FA.Scope),
+                                      Scope => FA.B_Scope),
                                    Loops   => Ctx.Current_Loops,
                                    E_Loc   => N),
             V);
@@ -934,7 +933,7 @@ package body Flow.Control_Flow_Graph is
          Make_Extended_Return_Attributes
               (Var_Def         => Flatten_Variable (FA.Analyzed_Entity),
                Var_Use         => Get_Variable_Set (Ret_Object,
-                                                    Scope => FA.Scope),
+                                                    Scope => FA.B_Scope),
                Object_Returned => Ret_Object,
                Loops           => Ctx.Current_Loops,
                E_Loc           => Ret_Entity),
@@ -1013,7 +1012,7 @@ package body Flow.Control_Flow_Graph is
         (Direct_Mapping_Id (N),
          Make_Basic_Attributes (Var_Use => Get_Variable_Set
                                   (Condition (N),
-                                   Scope => FA.Scope),
+                                   Scope => FA.B_Scope),
                                 Loops   => Ctx.Current_Loops,
                                 E_Loc   => N),
          V);
@@ -1065,7 +1064,7 @@ package body Flow.Control_Flow_Graph is
                  (Direct_Mapping_Id (Elsif_Statement),
                   Make_Basic_Attributes (Var_Use => Get_Variable_Set
                                            (Condition (Elsif_Statement),
-                                            Scope => FA.Scope),
+                                            Scope => FA.B_Scope),
                                          Loops   => Ctx.Current_Loops,
                                          E_Loc   => Elsif_Statement),
                   V);
@@ -1294,7 +1293,7 @@ package body Flow.Control_Flow_Graph is
            (Direct_Mapping_Id (N),
             Make_Basic_Attributes (Var_Use => Get_Variable_Set
                                      (Condition (Iteration_Scheme (N)),
-                                      Scope => FA.Scope),
+                                      Scope => FA.B_Scope),
                                    Loops   => Ctx.Current_Loops,
                                    E_Loc   => N),
             V);
@@ -1385,7 +1384,7 @@ package body Flow.Control_Flow_Graph is
               (Direct_Mapping_Id (N),
                Make_Basic_Attributes
                  (Var_Def => Flatten_Variable (LP),
-                  Var_Use => Get_Variable_Set (DSD, Scope => FA.Scope),
+                  Var_Use => Get_Variable_Set (DSD, Scope => FA.B_Scope),
                   Loops   => Ctx.Current_Loops,
                   E_Loc   => N),
                V);
@@ -1465,7 +1464,7 @@ package body Flow.Control_Flow_Graph is
               (Direct_Mapping_Id (Reference),
                Make_Sink_Vertex_Attributes
                  (Var_Use       => Get_Variable_Set (Prefix (Reference),
-                                                     Scope => FA.Scope),
+                                                     Scope => FA.B_Scope),
                   Is_Loop_Entry => True),
                V);
 
@@ -1541,7 +1540,7 @@ package body Flow.Control_Flow_Graph is
                if Present (DI) then
                   FA.CFG.Add_Vertex
                     (Make_Default_Initialization_Attributes
-                       (Scope => FA.Scope,
+                       (Scope => FA.B_Scope,
                         F     => F,
                         Loops => Ctx.Current_Loops,
                         E_Loc => DI),
@@ -1567,7 +1566,8 @@ package body Flow.Control_Flow_Graph is
          FA.CFG.Add_Vertex
            (Direct_Mapping_Id (N),
             Make_Sink_Vertex_Attributes
-              (Var_Use => Get_Variable_Set (Expression (N), Scope => FA.Scope),
+              (Var_Use => Get_Variable_Set (Expression (N),
+                                            Scope => FA.B_Scope),
                E_Loc   => N),
             V);
          Inits.Append (V);
@@ -1578,7 +1578,8 @@ package body Flow.Control_Flow_Graph is
            (Direct_Mapping_Id (N),
             Make_Basic_Attributes
               (Var_Def => Flatten_Variable (Defining_Identifier (N)),
-               Var_Use => Get_Variable_Set (Expression (N), Scope => FA.Scope),
+               Var_Use => Get_Variable_Set (Expression (N),
+                                            Scope => FA.B_Scope),
                Loops   => Ctx.Current_Loops,
                E_Loc   => N),
             V);
@@ -1655,7 +1656,7 @@ package body Flow.Control_Flow_Graph is
            (Direct_Mapping_Id (N),
             Make_Sink_Vertex_Attributes
               (Var_Use => Get_Variable_Set (Pragma_Argument_Associations (N),
-                                            Scope => FA.Scope),
+                                            Scope => FA.B_Scope),
                E_Loc   => N),
             V);
 
@@ -1738,7 +1739,7 @@ package body Flow.Control_Flow_Graph is
       FA.CFG.Add_Vertex
         (Direct_Mapping_Id (Pre),
          Make_Sink_Vertex_Attributes
-           (Var_Use         => Get_Variable_Set (Pre, Scope => FA.Scope),
+           (Var_Use         => Get_Variable_Set (Pre, Scope => FA.B_Scope),
             Is_Precondition => True,
             E_Loc           => Pre),
          V);
@@ -1764,14 +1765,11 @@ package body Flow.Control_Flow_Graph is
 
       In_List  : Vertex_Vectors.Vector := Vertex_Vectors.Empty_Vector;
       Out_List : Vertex_Vectors.Vector := Vertex_Vectors.Empty_Vector;
-
-      Refined_View : constant Boolean := Should_Use_Refined_View (FA.Scope, N);
    begin
       --  A vertex for the actual call.
       FA.CFG.Add_Vertex
         (Direct_Mapping_Id (N),
          Make_Call_Attributes (Callsite     => N,
-                               Refined_View => Refined_View,
                                Loops        => Ctx.Current_Loops,
                                E_Loc        => N),
          V);
@@ -1785,7 +1783,6 @@ package body Flow.Control_Flow_Graph is
 
       --  Process globals.
       Process_Subprogram_Globals (N,
-                                  Refined_View,
                                   In_List, Out_List,
                                   FA, CM, Ctx);
 
@@ -1835,7 +1832,8 @@ package body Flow.Control_Flow_Graph is
            (Direct_Mapping_Id (N),
             Make_Basic_Attributes
               (Var_Def => Flatten_Variable (FA.Analyzed_Entity),
-               Var_Use => Get_Variable_Set (Expression (N), Scope => FA.Scope),
+               Var_Use => Get_Variable_Set (Expression (N),
+                                            Scope => FA.B_Scope),
                Loops   => Ctx.Current_Loops,
                E_Loc   => N),
             V);
@@ -1937,7 +1935,7 @@ package body Flow.Control_Flow_Graph is
       FA.CFG.Add_Vertex
         (Direct_Mapping_Id (N),
          Make_Sink_Vertex_Attributes
-           (Var_Use => Get_Variable_Set (N, Scope => FA.Scope),
+           (Var_Use => Get_Variable_Set (N, Scope => FA.B_Scope),
             E_Loc   => N),
          V);
       CM.Include (Union_Id (N),
@@ -2025,7 +2023,6 @@ package body Flow.Control_Flow_Graph is
 
    procedure Process_Subprogram_Globals
      (Callsite          : Node_Id;
-      Refined_View      : Boolean;
       In_List           : in out Vertex_Vectors.Vector;
       Out_List          : in out Vertex_Vectors.Vector;
       FA                : in out Flow_Analysis_Graphs;
@@ -2034,17 +2031,20 @@ package body Flow.Control_Flow_Graph is
    is
       pragma Unreferenced (CM);
 
-      Reads  : Flow_Id_Sets.Set;
-      Writes : Flow_Id_Sets.Set;
-      V      : Flow_Graphs.Vertex_Id;
-      Atr    : V_Attributes;
+      Proof_Reads : Flow_Id_Sets.Set;
+      Reads       : Flow_Id_Sets.Set;
+      Writes      : Flow_Id_Sets.Set;
+      V           : Flow_Graphs.Vertex_Id;
+      Atr         : V_Attributes;
    begin
       --  Obtain globals (either from contracts or the computed
       --  stuff).
       Get_Globals (Subprogram   => Entity (Name (Callsite)),
+                   Scope        => FA.B_Scope,
+                   Proof_Ins    => Proof_Reads,
                    Reads        => Reads,
-                   Writes       => Writes,
-                   Refined_View => Refined_View);
+                   Writes       => Writes);
+      Reads.Union (Proof_Reads);
 
       for R of Reads loop
          FA.CFG.Add_Vertex (Make_Global_Attributes
@@ -2431,21 +2431,27 @@ package body Flow.Control_Flow_Graph is
             Body_N        := Get_Subprogram_Body (FA.Analyzed_Entity);
             Preconditions := Get_Precondition_Expressions (FA.Analyzed_Entity);
 
-            FA.Depends_N := Get_Pragma (FA.Analyzed_Entity,
-                                        Pragma_Depends);
+            FA.Depends_N := Get_Pragma (FA.Analyzed_Entity, Pragma_Depends);
+            FA.Global_N  := Get_Pragma (FA.Analyzed_Entity, Pragma_Global);
 
             if Acts_As_Spec (Body_N) then
                Subprogram_Spec := Defining_Unit_Name (Specification (Body_N));
                FA.Refined_Depends_N :=
                  Get_Pragma (FA.Analyzed_Entity, Pragma_Refined_Depends);
+               FA.Refined_Global_N :=
+                 Get_Pragma (FA.Analyzed_Entity, Pragma_Refined_Global);
             else
                Subprogram_Spec := Corresponding_Spec (Body_N);
                FA.Refined_Depends_N :=
                  Get_Pragma (Get_Body (FA.Analyzed_Entity),
                              Pragma_Refined_Depends);
+               FA.Refined_Global_N :=
+                 Get_Pragma (Get_Body (FA.Analyzed_Entity),
+                             Pragma_Refined_Global);
             end if;
 
          when E_Package =>
+            --  !!! Fix
             Spec_N := FA.Scope;
             Body_N := Spec_N;
 
@@ -2509,27 +2515,27 @@ package body Flow.Control_Flow_Graph is
                   Equivalent_Keys => "=",
                   "="             => "=");
 
+               Proof_Ins : Flow_Id_Sets.Set;
                Reads     : Flow_Id_Sets.Set;
                Writes    : Flow_Id_Sets.Set;
-               Proof_Ins : Flow_Id_Sets.Set;
                Globals   : Global_Maps.Map := Global_Maps.Empty_Map;
             begin
-               Get_Globals (Subprogram   => Subprogram_Spec,
-                            Reads        => Reads,
-                            Writes       => Writes,
-                            Proof_Ins    => Proof_Ins,
-                            Refined_View => True);
-               for G of Reads loop
-                  Globals.Include (Change_Variant (G, Normal_Use),
-                                   G_Prop'(Is_Read     => True,
-                                           Is_Write    => False,
-                                           Is_Proof_In => False));
-               end loop;
+               Get_Globals (Subprogram => Subprogram_Spec,
+                            Scope      => FA.B_Scope,
+                            Proof_Ins  => Proof_Ins,
+                            Reads      => Reads,
+                            Writes     => Writes);
                for G of Proof_Ins loop
                   Globals.Include (Change_Variant (G, Normal_Use),
                                    G_Prop'(Is_Read     => False,
                                            Is_Write    => False,
                                            Is_Proof_In => True));
+               end loop;
+               for G of Reads loop
+                  Globals.Include (Change_Variant (G, Normal_Use),
+                                   G_Prop'(Is_Read     => True,
+                                           Is_Write    => False,
+                                           Is_Proof_In => False));
                end loop;
                for G of Writes loop
                   declare

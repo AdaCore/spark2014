@@ -278,9 +278,7 @@ package body Gnat2Why.Util is
              (case Ekind (Entity (N)) is
                  when Object_Kind     => Is_Mutable_In_Why (Entity (N)),
                  when Subprogram_Kind =>
-                    Flow.Utility.Has_Global_Reads
-                      (Subprogram        => Entity (N),
-                       Globals_For_Proof => True),
+                    Flow.Utility.Has_Proof_Global_Reads (Entity (N)),
                  when others          => False)
          then
             Variable_Reference_Seen := True;

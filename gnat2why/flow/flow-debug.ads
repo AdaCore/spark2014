@@ -42,4 +42,8 @@ package Flow.Debug is
    procedure Print_Flow_Scope (S : Flow_Scope);
    --  Print a human-readable form of the given scope.
 
+   procedure pfs (S : Flow_Scope);
+   pragma Export (Ada, pfs);
+   --  Function for use in GDB. Prints the given flow scope.
+
 end Flow.Debug;

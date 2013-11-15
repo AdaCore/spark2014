@@ -115,7 +115,6 @@ package body Flow.Interprocedural is
       pragma Assert (not A.Perform_IPFA);
 
       Called_Procedure : constant Entity_Id := Entity (Name (N));
-      Use_Refined_View : constant Boolean   := A.Use_Refined_View;
 
       procedure Add_TD_Edge (A, B : Flow_Id);
       --  Add a parameter dependency edge from the input A to the
@@ -146,7 +145,9 @@ package body Flow.Interprocedural is
          declare
             Deps : Dependency_Maps.Map;
          begin
-            Get_Depends (Called_Procedure, Use_Refined_View, Deps);
+            Get_Depends (Subprogram => Called_Procedure,
+                         Scope      => Get_Flow_Scope (N),
+                         Depends    => Deps);
             for C in Deps.Iterate loop
                declare
                   Output : constant Flow_Id := Dependency_Maps.Key (C);
@@ -168,15 +169,17 @@ package body Flow.Interprocedural is
          --  We do not have a dependency aspect, so we will make up
          --  one (all outputs depend on all inputs).
          declare
-            Inputs  : Flow_Id_Sets.Set;
-            Outputs : Flow_Id_Sets.Set;
-            E       : Entity_Id;
+            Proof_Ins : Flow_Id_Sets.Set;
+            Inputs    : Flow_Id_Sets.Set;
+            Outputs   : Flow_Id_Sets.Set;
+            E         : Entity_Id;
          begin
             --  Collect all the globals first.
             Get_Globals (Subprogram             => Called_Procedure,
+                         Scope                  => Get_Flow_Scope (N),
+                         Proof_Ins              => Proof_Ins,
                          Reads                  => Inputs,
                          Writes                 => Outputs,
-                         Refined_View           => Use_Refined_View,
                          Consider_Discriminants => True);
 
             --  Add parameters.

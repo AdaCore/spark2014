@@ -38,9 +38,19 @@ use type Ada.Containers.Count_Type;
 
 package Flow_Refinement is
 
-   type Section_T is (Null_Part, Spec_Part, Private_Part, Body_Part);
+   ----------------
+   -- Flow_Scope --
+   ----------------
 
-   type Contract_T is (Global_Contract, Depends_Contract);
+   --  The scope we care about in flow analysis is restrictured to
+   --  packages, since we only care about refinement of abstracts state and
+   --  packages are the only entities which contain abstract state.
+   --
+   --  There are three places any particular variable or subprogram can be
+   --  declared or implemented: a package's spec, its private part, or its
+   --  body. Thus a flow scope is a package entity + spec|priv|body.
+
+   type Section_T is (Null_Part, Spec_Part, Private_Part, Body_Part);
 
    subtype Valid_Section_T is Section_T range Spec_Part .. Body_Part;
 
@@ -58,6 +68,16 @@ package Flow_Refinement is
                                 else Flow_Scope.Section = Null_Part);
 
    Null_Flow_Scope : constant Flow_Scope := (Empty, Null_Part);
+
+   -----------------
+   -- Other types --
+   -----------------
+
+   type Contract_T is (Global_Contract, Depends_Contract);
+
+   ---------------------------
+   -- Queries and utilities --
+   ---------------------------
 
    function Present (S : Flow_Scope) return Boolean is (Present (S.Pkg));
    --  Returns true iff S is not the Null_Flow_Scope.
@@ -106,5 +126,8 @@ package Flow_Refinement is
      with Pre => S.Section in Spec_Part | Private_Part;
    --  Returns the most nested scope of the parent of S.Pkg that is visible
    --  from S. Returns the null scope once we reach the Standard package.
+   --
+   --  This is really an internal function, but as its useful for debug and
+   --  trace it has been made visible.
 
 end Flow_Refinement;

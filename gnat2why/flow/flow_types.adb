@@ -507,20 +507,27 @@ package body Flow_Types is
    is
       R : Unbounded_String := Null_Unbounded_String;
    begin
-      --  case F.Kind is
-      --     when Direct_Mapping | Record_Field =>
-      --        case Nkind (F.Node) is
-      --           when N_Entity =>
-      --              Get_Name_String (Chars (Scope (F.Node)));
-      --           when others =>
-      --              Get_Name_String (Chars (Scope (Entity (F.Node))));
-      --        end case;
-      --        Set_Casing (Mixed_Case);
-      --        Append (R, Name_Buffer (1 .. Name_Len));
-      --        Append (R, ".");
-      --     when Null_Value | Magic_String =>
-      --        null;
-      --  end case;
+      case F.Kind is
+         when Direct_Mapping | Record_Field =>
+            if Nkind (F.Node) in N_Entity and then
+              Ekind (F.Node) = E_Abstract_State
+            then
+               --  Print "Prefix.State" instead of just "State", but only
+               --  for abstract state for now. (However, the code below
+               --  would work for any other flow id as well.)
+               case Nkind (F.Node) is
+                  when N_Entity =>
+                     Get_Name_String (Chars (Scope (F.Node)));
+                  when others =>
+                     Get_Name_String (Chars (Scope (Entity (F.Node))));
+               end case;
+               Set_Casing (Mixed_Case);
+               Append (R, Name_Buffer (1 .. Name_Len));
+               Append (R, ".");
+            end if;
+         when Null_Value | Magic_String =>
+            null;
+      end case;
 
       case F.Kind is
          when Null_Value =>
@@ -605,9 +612,7 @@ package body Flow_Types is
    -- To_Name_Set --
    -----------------
 
-   function To_Name_Set (S : Flow_Id_Sets.Set)
-                         return Name_Set.Set
-   is
+   function To_Name_Set (S : Flow_Id_Sets.Set) return Name_Set.Set is
       N : Name_Set.Set := Name_Set.Empty_Set;
    begin
       for X of S loop
@@ -629,5 +634,32 @@ package body Flow_Types is
       end loop;
       return N;
    end To_Name_Set;
+
+   -----------------
+   -- To_Node_Set --
+   -----------------
+
+   function To_Node_Set (S : Flow_Id_Sets.Set) return Node_Sets.Set is
+      N : Node_Sets.Set := Node_Sets.Empty_Set;
+   begin
+      for F of S loop
+         pragma Assert (F.Kind = Direct_Mapping);
+         N.Include (Get_Direct_Mapping_Id (F));
+      end loop;
+      return N;
+   end To_Node_Set;
+
+   --------------------
+   -- To_Flow_Id_Set --
+   --------------------
+
+   function To_Flow_Id_Set (S : Node_Sets.Set) return Flow_Id_Sets.Set is
+      Fs : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+   begin
+      for E of S loop
+         Fs.Include (Direct_Mapping_Id (E));
+      end loop;
+      return Fs;
+   end To_Flow_Id_Set;
 
 end Flow_Types;

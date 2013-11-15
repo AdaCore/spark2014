@@ -15,7 +15,7 @@ is
    end Read_Partial_0;
 
    procedure Post_Test_01
-   with Refined_Global => (X0, Y0, Nested_1.Abs_1),
+   with Refined_Global => (Proof_In => (X0, Y0, Nested_1.Abs_1)),
         Refined_Post   => Wibble_0 > Read_Partial_0
    is
    begin
@@ -39,13 +39,6 @@ is
       A := Read_Partial_0;
    end Test_01;
 
-   procedure Test_02 (A : out Integer)
-   with Global => X0 -- I can't reference nested_1 here...
-   is
-   begin
-      A := Wibble_0;  -- uses X0, Y0 and Nested_1.Abs_1
-   end Test_02;
-
    package Nested_1
    with Abstract_State => Abs_1
    is
@@ -60,7 +53,29 @@ is
       with Global => (X0, Abs_1),
            Post => A = Read_Partial_0 + Read_Partial_1 + Read_Partial_1_Inner;
 
+      procedure D_Test_02 (X : out Integer)
+      with Global => (X0, Abs_1),
+           Depends => (X => (X0, Abs_1));
+
    end Nested_1;
+
+   procedure D_Test_01 (X : out Integer;
+                        Y : in out Integer)
+     with Refined_Global  => (X0, Nested_1.Abs_1),
+          Refined_Depends => (X => (X0, Nested_1.Abs_1),
+                              Y =>+ X0)
+   is
+   begin
+      X := X0 + Nested_1.Read_Partial_1;
+      Y := Y + X0;
+   end D_Test_01;
+
+   procedure Test_02 (A : out Integer)
+   with Global => (X0, Y0, Nested_1.Abs_1)
+   is
+   begin
+      A := Wibble_0;  -- uses X0, Y0 and Nested_1.Abs_1
+   end Test_02;
 
    package body Nested_1
    with Refined_State => (Abs_1 => (X1, Y1, Nested_2.Abs_2))
@@ -117,6 +132,16 @@ is
       begin
          A := X0 + X1 + Nested_2.Read_Partial_2;
       end Test_11;
+
+      procedure D_Test_02 (X : out Integer)
+      with Refined_Global  => (X0, X1, Y1, Nested_2.Abs_2),
+           Refined_Depends => (X => (X0, X1, Y1, Nested_2.Abs_2))
+      is
+         Tmp : Integer := 12;
+      begin
+         D_Test_01 (X, Tmp);
+         X := X + Tmp;
+      end D_Test_02;
 
    end Nested_1;
 

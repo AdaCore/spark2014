@@ -906,12 +906,9 @@ package body Gnat2Why.Expr is
    begin
       --  Collect global variables potentially read
 
-      Flow.Utility.Get_Globals (Subprogram             => Subp,
-                                Reads                  => Read_Ids,
-                                Writes                 => Write_Ids,
-                                Refined_View           => True,
-                                Consider_Discriminants => False,
-                                Globals_For_Proof      => True);
+      Flow.Utility.Get_Proof_Globals (Subprogram => Subp,
+                                      Reads      => Read_Ids,
+                                      Writes     => Write_Ids);
       Read_Names := Flow_Types.To_Name_Set (Read_Ids);
 
       Nb_Of_Refs := 0;

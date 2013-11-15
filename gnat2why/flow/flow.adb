@@ -30,7 +30,6 @@ with Lib;                           use Lib;
 with Namet;                         use Namet;
 with Osint;                         use Osint;
 with Sem_Ch7;                       use Sem_Ch7;
-with Sem_Util;                      use Sem_Util;
 with Sinfo;                         use Sinfo;
 with Snames;                        use Snames;
 with Sprint;                        use Sprint;
@@ -157,48 +156,53 @@ package body Flow is
       return Present (Get_Pragma (Subprogram, Pragma_Depends));
    end Has_Depends;
 
-   -------------------------
-   -- Has_Refined_Depends --
-   -------------------------
-
-   function Has_Refined_Depends (Subprogram : Entity_Id) return Boolean is
-      Body_N : constant Node_Id := Get_Subprogram_Body (Subprogram);
-   begin
-      if Present (Body_N) then
-         if Acts_As_Spec (Body_N) then
-            return Present (Get_Pragma (Subprogram, Pragma_Refined_Depends));
-         else
-            return Present (Get_Pragma (Get_Body (Subprogram),
-                                        Pragma_Refined_Depends));
-         end if;
-      else
-         return False;
-      end if;
-   end Has_Refined_Depends;
-
    -----------------
    -- Get_Depends --
    -----------------
 
    procedure Get_Depends (Subprogram : Entity_Id;
-                          Refined    : Boolean;
+                          Scope      : Flow_Scope;
                           Depends    : out Dependency_Maps.Map)
    is
-      Body_N : constant Node_Id := Get_Subprogram_Body (Subprogram);
-      Deps   : Node_Id          := Empty;
+      Tmp : Dependency_Maps.Map;
    begin
-      if Refined and then Present (Body_N) then
-         if Acts_As_Spec (Body_N) then
-            Deps := Get_Pragma (Subprogram, Pragma_Refined_Depends);
-         else
-            Deps := Get_Pragma (Get_Body (Subprogram), Pragma_Refined_Depends);
-         end if;
-      end if;
-      if not Present (Deps) then
-         Deps := Get_Pragma (Subprogram, Pragma_Depends);
-      end if;
-      pragma Assert (Present (Deps));
-      Depends := Parse_Depends (Deps);
+
+      ----------------------------------------------------------------------
+      --  Step 1: parse the appropriate dependency relation.
+      ----------------------------------------------------------------------
+
+      Tmp := Parse_Depends (Get_Contract_Node (Subprogram,
+                                               Scope,
+                                               Depends_Contract));
+
+      ----------------------------------------------------------------------
+      --  Step 2: expand out any abstract state for which the refinement is
+      --  visible, similar to what we do for globals.
+      ----------------------------------------------------------------------
+
+      Depends := Dependency_Maps.Empty_Map;
+      for C in Tmp.Iterate loop
+         declare
+            D_In  : constant Flow_Id_Sets.Set :=
+              (if Present (Dependency_Maps.Key (C))
+               then To_Flow_Id_Set (Down_Project
+                                      (Node_Sets.To_Set
+                                         (Get_Direct_Mapping_Id
+                                            (Dependency_Maps.Key (C))),
+                                       Scope))
+               else Flow_Id_Sets.To_Set (Dependency_Maps.Key (C)));
+
+            D_Out : constant Flow_Id_Sets.Set :=
+              To_Flow_Id_Set (Down_Project
+                                (To_Node_Set (Dependency_Maps.Element (C)),
+                                 Scope));
+         begin
+            for I of D_In loop
+               Depends.Include (I, D_Out);
+            end loop;
+         end;
+      end loop;
+
    end Get_Depends;
 
    -----------------
@@ -517,9 +521,9 @@ package body Flow is
                Analyzed_Entity   => E,
                Scope             => SPARK_Util.Get_Subprogram_Body (E),
                Spec_Scope        => Get_Enclosing_Scope (E),
-               S_Body            => Get_Flow_Scope
+               B_Scope           => Get_Flow_Scope
                  (SPARK_Util.Get_Subprogram_Body (E)),
-               S_Spec            => Get_Flow_Scope (E),
+               S_Scope           => Get_Flow_Scope (E),
                Spec_Node         => S,
                Start_Vertex      => Null_Vertex,
                End_Vertex        => Null_Vertex,
@@ -543,6 +547,8 @@ package body Flow is
                Last_Statement_Is_Raise => Last_Statement_Is_Raise (E),
                Depends_N         => Empty,
                Refined_Depends_N => Empty,
+               Global_N          => Empty,
+               Refined_Global_N  => Empty,
                Function_Side_Effects_Present => False);
 
          when E_Package =>
@@ -551,8 +557,8 @@ package body Flow is
                Analyzed_Entity   => E,
                Scope             => Get_Enclosing_Scope (E),
                Spec_Scope        => Get_Enclosing_Scope (E),
-               S_Body            => Flow_Scope'(E, Body_Part),
-               S_Spec            => Flow_Scope'(E, Private_Part),
+               B_Scope           => Flow_Scope'(E, Body_Part),
+               S_Scope           => Flow_Scope'(E, Private_Part),
                Spec_Node         => S,
                Start_Vertex      => Null_Vertex,
                End_Vertex        => Null_Vertex,
@@ -577,8 +583,8 @@ package body Flow is
                Analyzed_Entity   => E,
                Scope             => Get_Enclosing_Body_Scope (E),
                Spec_Scope        => Get_Enclosing_Scope (S),
-               S_Body            => Flow_Scope'(Spec_Entity (E), Body_Part),
-               S_Spec            => Flow_Scope'(Spec_Entity (E), Private_Part),
+               B_Scope           => Flow_Scope'(Spec_Entity (E), Body_Part),
+               S_Scope           => Flow_Scope'(Spec_Entity (E), Private_Part),
                Spec_Node         => S,
                Start_Vertex      => Null_Vertex,
                End_Vertex        => Null_Vertex,
@@ -618,9 +624,9 @@ package body Flow is
             Indent;
 
             Write_Str ("Spec_Scope: ");
-            Print_Flow_Scope (FA.S_Spec);
+            Print_Flow_Scope (FA.S_Scope);
             declare
-               Ptr : Flow_Scope := FA.S_Spec;
+               Ptr : Flow_Scope := FA.S_Scope;
             begin
                Indent;
                while Ptr /= Null_Flow_Scope loop
@@ -638,7 +644,7 @@ package body Flow is
                Outdent;
             end;
             Write_Str ("Body_Scope: ");
-            Print_Flow_Scope (FA.S_Body);
+            Print_Flow_Scope (FA.B_Scope);
             Outdent;
          end if;
       end if;

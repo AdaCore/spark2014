@@ -141,4 +141,14 @@ package body Flow.Debug is
       Write_Eol;
    end Print_Flow_Scope;
 
+   ---------
+   -- pfs --
+   ---------
+
+   procedure pfs (S : Flow_Scope)
+   is
+   begin
+      Print_Flow_Scope (S);
+   end pfs;
+
 end Flow.Debug;

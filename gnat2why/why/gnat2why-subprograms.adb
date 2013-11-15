@@ -156,8 +156,7 @@ package body Gnat2Why.Subprograms is
 
    begin
       if Arg_Length = 0
-        and then not Flow.Utility.Has_Global_Reads (Subprogram        => E,
-                                                    Globals_For_Proof => True)
+        and then not Flow.Utility.Has_Proof_Global_Reads (E)
       then
          return W_Expr_Array'(1 => New_Void);
       end if;
@@ -215,12 +214,9 @@ package body Gnat2Why.Subprograms is
    begin
       --  Collect global variables potentially read and written
 
-      Flow.Utility.Get_Globals (Subprogram             => E,
-                                Reads                  => Read_Ids,
-                                Writes                 => Write_Ids,
-                                Refined_View           => True,
-                                Consider_Discriminants => False,
-                                Globals_For_Proof      => True);
+      Flow.Utility.Get_Proof_Globals (Subprogram => E,
+                                      Reads      => Read_Ids,
+                                      Writes     => Write_Ids);
       Read_Names  := Flow_Types.To_Name_Set (Read_Ids);
       Write_Names := Flow_Types.To_Name_Set (Write_Ids);
 
@@ -314,12 +310,9 @@ package body Gnat2Why.Subprograms is
    begin
       --  Collect global variables potentially read
 
-      Flow.Utility.Get_Globals (Subprogram             => E,
-                                Reads                  => Read_Ids,
-                                Writes                 => Write_Ids,
-                                Refined_View           => True,
-                                Consider_Discriminants => False,
-                                Globals_For_Proof      => True);
+      Flow.Utility.Get_Proof_Globals (Subprogram => E,
+                                      Reads      => Read_Ids,
+                                      Writes     => Write_Ids);
       Read_Names := Flow_Types.To_Name_Set (Read_Ids);
 
       --  If E has no parameters and no read effects, return a singleton of
@@ -1251,12 +1244,9 @@ package body Gnat2Why.Subprograms is
    begin
       --  Collect global variables potentially read
 
-      Flow.Utility.Get_Globals (Subprogram             => E,
-                                Reads                  => Read_Ids,
-                                Writes                 => Write_Ids,
-                                Refined_View           => True,
-                                Consider_Discriminants => False,
-                                Globals_For_Proof      => True);
+      Flow.Utility.Get_Proof_Globals (Subprogram => E,
+                                      Reads      => Read_Ids,
+                                      Writes     => Write_Ids);
       Read_Names := Flow_Types.To_Name_Set (Read_Ids);
 
       Open_Theory (File, Name,

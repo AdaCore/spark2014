@@ -92,7 +92,7 @@ package body Flow.Analysis is
    type Var_Use_Kind is (Use_Read, Use_Write, Use_Any);
 
    function First_Variable_Use (N       : Node_Id;
-                                Scope   : Scope_Ptr;
+                                Scope   : Flow_Scope;
                                 Var     : Flow_Id;
                                 Precise : Boolean)
                                 return Node_Id;
@@ -319,7 +319,7 @@ package body Flow.Analysis is
    ------------------------
 
    function First_Variable_Use (N       : Node_Id;
-                                Scope   : Scope_Ptr;
+                                Scope   : Flow_Scope;
                                 Var     : Flow_Id;
                                 Precise : Boolean)
                                 return Node_Id
@@ -469,7 +469,7 @@ package body Flow.Analysis is
          end case;
 
          First_Use := First_Variable_Use (N       => First_Use,
-                                          Scope   => FA.Scope,
+                                          Scope   => FA.B_Scope,
                                           Var     => Var,
                                           Precise => Precise);
       end Proc;
@@ -485,9 +485,10 @@ package body Flow.Analysis is
    ------------------
 
    procedure Analyse_Main (FA : in out Flow_Analysis_Graphs) is
-      Reads     : Flow_Id_Sets.Set;
-      Unused    : Flow_Id_Sets.Set;
-      Tracefile : Unbounded_String;
+      Proof_Reads : Flow_Id_Sets.Set;
+      Reads       : Flow_Id_Sets.Set;
+      Unused      : Flow_Id_Sets.Set;
+      Tracefile   : Unbounded_String;
    begin
       if not FA.Is_Main then
          --  Nothing to see here, move along.
@@ -499,11 +500,12 @@ package body Flow.Analysis is
       --     Input   ->   State must be initialized
       --     In_Out  ->   State must be initialized
       --     Output  ->   Always OK
-      Get_Globals (Subprogram   => FA.Analyzed_Entity,
-                   Reads        => Reads,
-                   Writes       => Unused,
-                   Refined_View => True);
-      Reads := To_Entire_Variables (Reads);
+      Get_Globals (Subprogram => FA.Analyzed_Entity,
+                   Scope      => FA.B_Scope,
+                   Proof_Ins  => Proof_Reads,
+                   Reads      => Reads,
+                   Writes     => Unused);
+      Reads := To_Entire_Variables (Reads or Proof_Reads);
       --  Note we never actually need writes in this analysis.
 
       for R of Reads loop
@@ -558,9 +560,7 @@ package body Flow.Analysis is
                        To_Ordered_Flow_Id_Set
                        (Get_Variable_Set
                           (Expression (N),
-                           Scope => (if Present (Get_Enclosing_Body_Scope (N))
-                                     then Get_Enclosing_Body_Scope (N)
-                                     else Get_Enclosing_Scope (N))));
+                           Get_Flow_Scope (N)));
                   begin
                      for F of Deps loop
                         --  ??? consider moving this to spark_definition
@@ -762,7 +762,9 @@ package body Flow.Analysis is
 
             Aspect_To_Fix : constant String :=
               (case FA.Kind is
-                  when E_Subprogram_Body => "Global",
+                  when E_Subprogram_Body => (if Present (FA.Refined_Global_N)
+                                             then "Refined_Global"
+                                             else "Global"),
                   when others            => "Initializes");
 
             F : Flow_Id;
@@ -815,9 +817,6 @@ package body Flow.Analysis is
 
       for Refined in Boolean loop
          declare
-            Scope : constant Scope_Ptr :=
-              (if Refined then FA.Scope else FA.Spec_Scope);
-
             Aspect_To_Fix : constant String :=
               (case FA.Kind is
                   when E_Subprogram_Body => (if Refined
@@ -837,8 +836,8 @@ package body Flow.Analysis is
                      --  We need to assemble the variables known from
                      --  the spec: these are parameters and globals.
                      declare
-                        E : Entity_Id;
-                        Tmp_A, Tmp_B : Flow_Id_Sets.Set;
+                        E                   : Entity_Id;
+                        Tmp_A, Tmp_B, Tmp_C : Flow_Id_Sets.Set;
                      begin
                         E := First_Formal (FA.Spec_Node);
                         while Present (E) loop
@@ -846,11 +845,15 @@ package body Flow.Analysis is
                            E := Next_Formal (E);
                         end loop;
 
-                        Get_Globals (Subprogram   => FA.Spec_Node,
-                                     Reads        => Tmp_A,
-                                     Writes       => Tmp_B,
-                                     Refined_View => False);
-                        for F of To_Entire_Variables (Tmp_A or Tmp_B) loop
+                        Get_Globals (Subprogram => FA.Spec_Node,
+                                     Scope      => FA.S_Scope,
+                                     Proof_Ins  => Tmp_A,
+                                     Reads      => Tmp_B,
+                                     Writes     => Tmp_C);
+                        for F of To_Entire_Variables (Tmp_A or
+                                                        Tmp_B or
+                                                        Tmp_C)
+                        loop
                            Vars_Known.Include (Change_Variant (F, Normal_Use));
                         end loop;
                      end;
@@ -866,7 +869,7 @@ package body Flow.Analysis is
                Vars_Used := To_Entire_Variables
                  (Get_Variable_Set (Expr,
                                     Reduced => True,
-                                    Scope   => Scope)) -
+                                    Scope   => Get_Flow_Scope (Expr))) -
                  Quantified_Variables (Expr);
 
                for Var of Vars_Used loop
@@ -877,10 +880,11 @@ package body Flow.Analysis is
                         Msg       => "& must be listed in the " &
                           Aspect_To_Fix &
                           " aspect of &",
-                        N         => First_Variable_Use (N       => Expr,
-                                                         Scope   => Scope,
-                                                         Var     => Var,
-                                                         Precise => False),
+                        N         => First_Variable_Use
+                          (N       => Expr,
+                           Scope   => FA.B_Scope,
+                           Var     => Var,
+                           Precise => False),
                         F1        => Entire_Variable (Var),
                         F2        => Direct_Mapping_Id (FA.Analyzed_Entity));
                      Sane := False;
@@ -1475,7 +1479,7 @@ package body Flow.Analysis is
          begin
             if Nkind (Key_U.Node) = N_Assignment_Statement then
                Used := Get_Variable_Set (Expression (Key_U.Node),
-                                         Scope => FA.Scope);
+                                         Scope => FA.B_Scope);
                return Used.Contains (The_Var);
             end if;
 

@@ -35,23 +35,20 @@ use type Ada.Containers.Count_Type;
 package Flow.Utility is
 
    procedure Get_Globals (Subprogram             : Entity_Id;
+                          Scope                  : Flow_Scope;
+                          Proof_Ins              : out Flow_Id_Sets.Set;
                           Reads                  : out Flow_Id_Sets.Set;
                           Writes                 : out Flow_Id_Sets.Set;
-                          Proof_Ins              : out Flow_Id_Sets.Set;
-                          Refined_View           : Boolean;
                           Consider_Discriminants : Boolean := False;
                           Globals_For_Proof      : Boolean := False)
    with Pre  => Ekind (Subprogram) in E_Procedure | E_Function,
-        Post => (for all G of Reads     => G.Variant = In_View) and
-                (for all G of Writes    => G.Variant = Out_View) and
-                (for all G of Proof_Ins => G.Variant = In_View);
-   --  Given a subprogram call, work out globals from the provided
-   --  aspect or the computed globals. The sets returned will contain
-   --  Flow_Id with the variant set to Global_In_View and
-   --  Global_Out_View.
-   --
-   --  If refined_view is false, then the global are returned. If
-   --  true, the refined globals are returned instead.
+     Post => (for all G of Proof_Ins => G.Variant = In_View) and
+             (for all G of Reads     => G.Variant = In_View) and
+             (for all G of Writes    => G.Variant = Out_View);
+   --  Given a subprogram call, work out globals from the appropriate
+   --  aspect (relative to Scope) or the computed globals, if no global
+   --  contract is given. The sets returned will contain Flow_Id with the
+   --  variant set to In_View and Out_View.
    --
    --  If Consider_Discriminants is provided then an out global will
    --  include a corresponding read if the global includes at least
@@ -60,49 +57,33 @@ package Flow.Utility is
    --  If Globals_For_Proof is set then the calls to Get_Generated_Reads will
    --  not specify Include_Constants.
 
-   procedure Get_Globals (Subprogram             : Entity_Id;
-                          Reads                  : out Flow_Id_Sets.Set;
-                          Writes                 : out Flow_Id_Sets.Set;
-                          Refined_View           : Boolean;
-                          Consider_Discriminants : Boolean := False;
-                          Globals_For_Proof      : Boolean := False)
+   procedure Get_Proof_Globals (Subprogram : Entity_Id;
+                                Reads      : out Flow_Id_Sets.Set;
+                                Writes     : out Flow_Id_Sets.Set)
    with Pre  => Ekind (Subprogram) in E_Procedure | E_Function,
         Post => (for all G of Reads  => G.Variant = In_View) and
                 (for all G of Writes => G.Variant = Out_View);
-   --  Same as above but Reads consists of both the Reads and Proof_Ins.
+   --  Same as above but Reads consists of both the Reads and Proof_Ins,
+   --  discriminants receive no special handling and globals are proof
+   --  globals, and we always return the most refined view possible.
 
-   function Has_Global_Reads
-     (Subprogram        : Entity_Id;
-      Globals_For_Proof : Boolean := False) return Boolean
-   with Pre => Ekind (Subprogram) in E_Procedure | E_Function;
+   function Has_Proof_Global_Reads (Subprogram : Entity_Id) return Boolean
+     with Pre => Ekind (Subprogram) in E_Procedure | E_Function;
    --  Returns True if Subprogram has a Global Input or In_Out contract,
    --  whether user-defined or generated.
-   --
-   --  If Globals_For_Proof is set then the calls to Get_Generated_Reads will
-   --  not specify Include_Constants.
 
-   function Has_Global_Writes
-     (Subprogram        : Entity_Id;
-      Globals_For_Proof : Boolean := False) return Boolean
-   with Pre => Ekind (Subprogram) in E_Procedure | E_Function;
+   function Has_Proof_Global_Writes (Subprogram : Entity_Id) return Boolean
+     with Pre => Ekind (Subprogram) in E_Procedure | E_Function;
    --  Returns True if Subprogram has a Global Output or In_Out contract,
    --  whether user-defined or generated.
-   --
-   --  If Globals_For_Proof is set then the calls to Get_Generated_Reads will
-   --  not specify Include_Constants.
 
    function Get_Variable_Set (N                : Node_Id;
-                              Reduced          : Boolean   := False;
-                              Allow_Statements : Boolean   := False;
-                              Scope            : Scope_Ptr := Empty;
-                              Force_Abstract   : Boolean   := False;
-                              Force_Refined    : Boolean   := False)
-                              return Flow_Id_Sets.Set
-     with Pre => (if Present (Scope)
-                  then not (Force_Abstract or Force_Refined)
-                  else Force_Abstract xor Force_Refined);
+                              Scope            : Flow_Scope;
+                              Reduced          : Boolean := False;
+                              Allow_Statements : Boolean := False)
+                              return Flow_Id_Sets.Set;
    --  Obtain all variables used in an expression. If reduced is true,
-   --  onbtain only entire variables.
+   --  obtain only entire variables.
    --
    --  If allow_statements is false, we raise an exception if we
    --  encounter certain statements such as procedure calls.
@@ -112,15 +93,10 @@ package Flow.Utility is
    --  parameters may be set to provide a detailed instruction.
 
    function Get_Variable_Set (L                : List_Id;
-                              Reduced          : Boolean   := False;
-                              Allow_Statements : Boolean   := False;
-                              Scope            : Scope_Ptr := Empty;
-                              Force_Abstract   : Boolean   := False;
-                              Force_Refined    : Boolean   := False)
-                              return Flow_Id_Sets.Set
-     with Pre => (if Present (Scope)
-                  then not (Force_Abstract or Force_Refined)
-                  else Force_Abstract xor Force_Refined);
+                              Scope            : Flow_Scope;
+                              Reduced          : Boolean := False;
+                              Allow_Statements : Boolean := False)
+                              return Flow_Id_Sets.Set;
    --  As above, but operating on a list.
 
    function Quantified_Variables (N : Node_Id) return Flow_Id_Sets.Set;
@@ -141,8 +117,8 @@ package Flow.Utility is
    --  always returns the full view.
 
    procedure Untangle_Assignment_Target
-     (Scope        : Scope_Ptr;
-      N            : Node_Id;
+     (N            : Node_Id;
+      Scope        : Flow_Scope;
       Vars_Defined : out Flow_Id_Sets.Set;
       Vars_Used    : out Flow_Id_Sets.Set)
      with Pre => Nkind (N) in N_Identifier |

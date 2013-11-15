@@ -102,8 +102,8 @@ package Flow is
       Analyzed_Entity   : Entity_Id;
       Scope             : Scope_Ptr;
       Spec_Scope        : Scope_Ptr;
-      S_Body            : Flow_Scope;
-      S_Spec            : Flow_Scope;
+      B_Scope           : Flow_Scope;
+      S_Scope           : Flow_Scope;
       --  The entity and scope (of the body and spec) of the analysed
       --  entity. The two scopes might be the same in some cases.
 
@@ -162,6 +162,8 @@ package Flow is
             --  True if the last statement of the subprogram is an
             --  N_Raise_Statement.
 
+            Global_N          : Node_Id;
+            Refined_Global_N  : Node_Id;
             Depends_N         : Node_Id;
             Refined_Depends_N : Node_Id;
             --  A few contract nodes cached as they can be a bit
@@ -204,26 +206,21 @@ package Flow is
    --  parameter or Empty.
 
    function Has_Depends (Subprogram : Entity_Id) return Boolean
-   with Pre => Ekind (Subprogram) in E_Procedure | E_Function;
+     with Pre => Ekind (Subprogram) in Subprogram_Kind;
    --  Return true if the given subprogram has been annotated with a
    --  dependency relation.
 
-   function Has_Refined_Depends (Subprogram : Entity_Id) return Boolean
-   with Pre => Ekind (Subprogram) in E_Procedure | E_Function;
-   --  Return true if the given subprogram has been annotated with a
-   --  refined dependency relation.
-
    procedure Get_Depends (Subprogram : Entity_Id;
-                          Refined    : Boolean;
+                          Scope      : Flow_Scope;
                           Depends    : out Dependency_Maps.Map)
-   with Pre  => Ekind (Subprogram) in E_Procedure | E_Function and
+   with Pre  => Ekind (Subprogram) in Subprogram_Kind and
                 Has_Depends (Subprogram),
         Post => (for all C in Depends.Iterate =>
                    (for all D of Dependency_Maps.Element (C) =>
                       Present (D)));
-   --  Return the dependency relation of the given subprogram. The
-   --  dependency relation is represented as a map from entities to
-   --  sets of entities.
+   --  Return the dependency relation of the given Subprogram, as viewed
+   --  from the given Scope. The dependency relation is represented as a
+   --  map from entities to sets of entities.
    --
    --  For example (X, Y) =>+ Z would be represented as:
    --     x -> {x, z}

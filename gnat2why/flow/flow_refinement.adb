@@ -26,6 +26,8 @@ with Nlists;   use Nlists;
 with Snames;   use Snames;
 with Stand;    use Stand;
 
+with SPARK_Definition;  use SPARK_Definition;
+
 with Flow_Tree_Utility; use Flow_Tree_Utility;
 
 package body Flow_Refinement is
@@ -43,7 +45,38 @@ package body Flow_Refinement is
    function Is_Visible (Target_Scope : Flow_Scope;
                         S            : Flow_Scope)
                         return Boolean;
-   --  Returns true iff the target scope is visible from S.
+   --  Returns true iff the target scope is visible from S. We do this by
+   --  moving up the scope DAG from S and testing if we have reached the
+   --  target scope. If we hit the top (the null scope) without finding it,
+   --  we return False.
+   --
+   --  The scope DAG may look like a twisty maze, but it is actually
+   --  reasonably easy to traverse upwards. The only complication is when
+   --  we deal with a private part, in which case we need to quickly check
+   --  one extra scope (the visible part), but then we continue on as
+   --  normal.
+   --
+   --     S is...     Next node is...
+   --     =======     ===============
+   --     X|body      X|priv
+   --     X|priv      X|spec                (check this first)
+   --                 enclosing_scope (S)   (then continue here)
+   --     X|spec      enclosing_scope (S)
+   --
+   --  The enclosing scope of S is computed by Get_Enclosing_Flow_Scope and
+   --  may be one of:
+   --
+   --     1. The first parent (just going up the AST) of S which is a
+   --        package declaration (this deals with nested packages)
+   --
+   --     2. The first Scope (see einfo.ads) which is a package (this deals
+   --        with public and private children)
+   --
+   --     3. null (if we have hit Standard)
+   --
+   --  The visibility is the same as before, i.e.
+   --     s.section = enclosing_scope(s).section
+   --  Unless S is a privat descendant, in which case it is always "priv".
 
    function Is_Visible (N : Node_Id;
                         S : Flow_Scope)
@@ -155,7 +188,13 @@ package body Flow_Refinement is
          if Enclosing_Scope = Null_Flow_Scope and then
            Scope (S.Pkg) /= Standard_Standard
          then
-            Enclosing_Scope := Flow_Scope'(Scope (S.Pkg), S.Section);
+            Ptr := Scope (S.Pkg);
+            while Present (Ptr) and then Ekind (Ptr) /= E_Package loop
+               Ptr := Scope (Ptr);
+            end loop;
+            if Present (Ptr) and then Ptr /= Standard_Standard then
+               Enclosing_Scope := Flow_Scope'(Ptr, S.Section);
+            end if;
          end if;
       end;
 
@@ -275,6 +314,13 @@ package body Flow_Refinement is
            (Body_E, (case C is
                         when Global_Contract => Pragma_Refined_Global,
                         when Depends_Contract => Pragma_Refined_Depends));
+
+         if No (N) and not Entity_Body_In_SPARK (E) then
+            --  If we *need* the refiend view, but the body is not in SPARK
+            --  we should fall back to the computed contracts.
+            return Empty;
+         end if;
+
       end if;
 
       if No (N) then
@@ -324,6 +370,13 @@ package body Flow_Refinement is
                      Tmp.Union (Expand (Node (Ptr)));
                      Ptr := Next_Elmt (Ptr);
                   end loop;
+
+                  if Tmp.Length = 0 then
+                     --  We seem to have an abstract state which has no
+                     --  refinement. Odd. Lets include the abstract state
+                     --  itself.
+                     Tmp.Include (E);
+                  end if;
 
                else
                   Tmp.Include (E);
