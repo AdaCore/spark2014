@@ -288,7 +288,7 @@ mathematical formulas for each property, that are given to the automatic prover
 \altergo.~\footnote{\url{http://alt-ergo.ocamlpro.com/}} If \altergo manages to
 prove the formula in the given time, then the property is known to
 hold. Otherwise, more work is required from the user to understand why the
-property is not proved. 
+property is not proved.
 
 As proof requires interactions between the user and the tool until the
 specification can be proved automatically, the efficiency and the granularity
@@ -1103,6 +1103,15 @@ transformations would have to be applied when performing a manual
 proof.
 
 \subsection{Lessons Learned}
+
+Thanks to the new toolset's proving power, users are no longer
+required to add intermediate cutpoints. In the Tokeneer case study,
+neither pragma Assert nor pragma Assert\_And\_Cut had to be provided
+to facilitate proof. However, it is hypothesised that their usage
+could improve readability of the code, since it would signify that a
+certain property holds at a certain point in the code, and it would
+result is the generation of smaller verification conditions which
+would in turn make manual proof easier.
 
 While augmenting package \SPARK{admin}, it was noticed that formulating
 the functional behaviour annotations based on the low level Z
