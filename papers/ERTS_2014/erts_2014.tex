@@ -170,22 +170,22 @@ procedure Swap (A : in out Arr; X, Y : Idx) with
               A     => (A, X, Y));
 \end{lstlisting}
 
-Instead of preconditions and postconditions, or in addition to them, subprogram
-contracts may be specified by a set of disjoint and complete cases. For
-example, the following contract for procedure \SPARK{Swap} states separate
-sub-contracts for the cases where the elements at indexes \SPARK{X} and
-\SPARK{Y} are equal or different. The first case specifies that, if
-\SPARK{A(X)} equals \SPARK{A(Y)} on entry, then \SPARK{A} should not be
-modified by the call. The second case specifies that, if \SPARK{A(X)} is
-different from \SPARK{A(Y)} on entry, then \SPARK{A} should be modified by the
-call.
+%% Instead of preconditions and postconditions, or in addition to them, subprogram
+%% contracts may be specified by a set of disjoint and complete cases. For
+%% example, the following contract for procedure \SPARK{Swap} states separate
+%% sub-contracts for the cases where the elements at indexes \SPARK{X} and
+%% \SPARK{Y} are equal or different. The first case specifies that, if
+%% \SPARK{A(X)} equals \SPARK{A(Y)} on entry, then \SPARK{A} should not be
+%% modified by the call. The second case specifies that, if \SPARK{A(X)} is
+%% different from \SPARK{A(Y)} on entry, then \SPARK{A} should be modified by the
+%% call.
 
-\begin{lstlisting}
-procedure Swap (A : in out Arr; X, Y : Idx) with
-  Contract_Cases =>
-    (A(X) = A(Y) => A = A'Old,
-     A(X) /= A(Y) => A /= A'Old);
-\end{lstlisting}
+%% \begin{lstlisting}
+%% procedure Swap (A : in out Arr; X, Y : Idx) with
+%%   Contract_Cases =>
+%%     (A(X) = A(Y) => A = A'Old,
+%%      A(X) /= A(Y) => A /= A'Old);
+%% \end{lstlisting}
 
 New expressions make it easier to express contracts. If-expressions and
 case-expressions are the expression forms which correspond to the usual
@@ -358,8 +358,9 @@ not as far from software requirements as one would expect.
 
 \subsection{Description of the Software}
 
-We made several experiments but due to space constraints we will only
-detail one of them.
+We made several experiments but due to space constraints we will only detail
+one of them. The complete code is available
+online.~\footnote{\url{https://github.com/openETCS/model-evaluation/tree/master/model/GNATprove-MERCE}}
 
 This example is the coding of step functions, \aka functions
 constant by interval, used in the \textit{Speed and distance monitoring}
@@ -443,53 +444,53 @@ Post =>
 The most complex subprogram we specified is \SPARK{Restrictive_Merge}.  We
 specified that, given two valid step functions \SPARK{SFun1} and \SPARK{SFun2}
 without too many delimiters, \SPARK{Restrictive_Merge} generates a step
-function \SPARK{Merge} that is valid~(1), that contains all the delimiters of
-\SPARK{SFun1}~(2) and \SPARK{SFun2}~(3) and that, for each of those delimiters,
+function \SPARK{Merge} that is valid, that contains all the delimiters of
+\SPARK{SFun1} and \SPARK{SFun2} and that, for each of those delimiters,
 the value of the \SPARK{Merge} step function is the minimum over both input
-step functions~(4).
+step functions.
 
-\begin{lstlisting}
-procedure Restrictive_Merge
-  (SFun1, SFun2 : in  Step_Function_t;
-   Merge        : out Step_Function_t)
-with
-Pre =>
-  Is_Valid(SFun1) and Is_Valid(SFun2)
-    and
-  SFun1.Num_Delim + SFun2.Num_Delim <=
-    Num_Delimiters_Range'Last,
-Post =>
-  -- (1) Output is a valid step function
-  Is_Valid(Merge)
-    and
-  -- (2) All SFun1 delimiters are valid in Merge
-  (for all i in
-     Num_Delimiters_Range'First..SFun1.Num_Delim =>
-   (for some j in
-     Num_Delimiters_Range'First..Merge.Num_Delim =>
-      (Merge.Step(j).Delimiter
-        = SFun1.Step(i).Delimiter)))
-    and
-  -- (3) All SFun2 delimiters are valid in Merge
-  (for all i in
-     Num_Delimiters_Range'First..SFun2.Num_Delim =>
-   (for some j in
-     Num_Delimiters_Range'First..Merge.Num_Delim =>
-      (Merge.Step(j).Delimiter
-        = SFun2.Step(i).Delimiter)))
-    and
-  -- (4) For each delimiter of Merge, its value is
-  --     the minimum of SFun1 and SFun2
-  (for all i in
-     Num_Delimiters_Range'First..Merge.Num_Delim =>
-   (Merge.Step(i).Value = Min
-     (Get_Value(SFun1, Merge.Step(i).Delimiter),
-      Get_Value(SFun2, Merge.Step(i).Delimiter))));
-\end{lstlisting}
+%% \begin{lstlisting}
+%% procedure Restrictive_Merge
+%%   (SFun1, SFun2 : in  Step_Function_t;
+%%    Merge        : out Step_Function_t)
+%% with
+%% Pre =>
+%%   Is_Valid(SFun1) and Is_Valid(SFun2)
+%%     and
+%%   SFun1.Num_Delim + SFun2.Num_Delim <=
+%%     Num_Delimiters_Range'Last,
+%% Post =>
+%%   -- (1) Output is a valid step function
+%%   Is_Valid(Merge)
+%%     and
+%%   -- (2) All SFun1 delimiters are valid in Merge
+%%   (for all i in
+%%      Num_Delimiters_Range'First..SFun1.Num_Delim =>
+%%    (for some j in
+%%      Num_Delimiters_Range'First..Merge.Num_Delim =>
+%%       (Merge.Step(j).Delimiter
+%%         = SFun1.Step(i).Delimiter)))
+%%     and
+%%   -- (3) All SFun2 delimiters are valid in Merge
+%%   (for all i in
+%%      Num_Delimiters_Range'First..SFun2.Num_Delim =>
+%%    (for some j in
+%%      Num_Delimiters_Range'First..Merge.Num_Delim =>
+%%       (Merge.Step(j).Delimiter
+%%         = SFun2.Step(i).Delimiter)))
+%%     and
+%%   -- (4) For each delimiter of Merge, its value is
+%%   --     the minimum of SFun1 and SFun2
+%%   (for all i in
+%%      Num_Delimiters_Range'First..Merge.Num_Delim =>
+%%    (Merge.Step(i).Value = Min
+%%      (Get_Value(SFun1, Merge.Step(i).Delimiter),
+%%       Get_Value(SFun2, Merge.Step(i).Delimiter))));
+%% \end{lstlisting}
 
-Note that the signature of \SPARK{Restrictive_Merge} already specifies that
-\SPARK{SFun1} and \SPARK{SFun2} cannot be modified, as they are passed as
-\SPARK{in} parameters.
+%% Note that the signature of \SPARK{Restrictive_Merge} already specifies that
+%% \SPARK{SFun1} and \SPARK{SFun2} cannot be modified, as they are passed as
+%% \SPARK{in} parameters.
 
 Overall, the number of lines for contracts and assertion pragmas (in particular
 loop invariants) is about the same as the number of lines of code. We could
@@ -554,9 +555,19 @@ Post =>
      (Get_Value(SFun1, Merge.Step(i).Delimiter),
       Get_Value(SFun2, Merge.Step(i).Delimiter))));
 \end{lstlisting}
-It would have been impossible to prove this contract automatically. Ideally,
-the tool should allow users to manually prove such contracts, like done for
-example in B~Method tools.
+It would have been impossible to prove this contract automatically, so we wrote
+instead that the resulting function is the minimum of both input functions for
+all possible delimiter values:
+\begin{lstlisting}
+Post =>
+  (for all i in
+     Num_Delimiters_Range'First..Merge.Num_Delim =>
+   (Merge.Step(i).Value = Min
+     (Get_Value(SFun1, Merge.Step(i).Delimiter),
+      Get_Value(SFun2, Merge.Step(i).Delimiter))));
+\end{lstlisting}
+Ideally, the tool should allow users to manually prove contracts that cannot be
+proved automatically, like done for example in B~Method tools.
 
 Our last finding, not entirely surprising, is that writing the correct
 loop invariant for a complex loop is not an easy task, as we experienced
