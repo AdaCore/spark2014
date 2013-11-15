@@ -2,6 +2,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{url}
 \usepackage{xspace}
+\usepackage{amsmath}
 \usepackage{hyperref}
 \usepackage[usenames,dvipsnames]{color}
 \usepackage{listings}
@@ -387,14 +388,13 @@ type Step_Function_t is record
 end record;
 \end{lstlisting}
 
-A step function of type \SPARK{Step_Function_t} can have up to 11
-steps (stored in array \SPARK{Step}) separated by 10 delimiters (in
-\SPARK{Num_Delimiters_Range},
-delimiter 0 being the initial value of the step function). Each
-delimiter of type \SPARK{Delimiter_Entry} contains the delimiter
-position (\SPARK{Delimiter}) and the associated constant value
-(\SPARK{Value}) for the function. The currently used number of
-delimiters is stored in \SPARK{Num_Delim}.
+A step function of type \SPARK{Step_Function_t} can have up to 11 steps
+separated by 10 delimiters, stored together with the initial value of the step
+function (as first element of the array) in component \SPARK{Step}. Each
+delimiter of type \SPARK{Delimiter_Entry} contains the delimiter position
+(\SPARK{Delimiter}) and the associated constant value (\SPARK{Value}) for the
+function. The number of delimiters used is stored in component
+\SPARK{Num_Delim}.
 
 We defined several subprograms that query or update step functions:
 \begin{itemize}
@@ -411,11 +411,10 @@ We defined several subprograms that query or update step functions:
 We wanted to check full functional correctness of this critical unit. We used
 contracts to express the specifications of all subprograms.
 
-For example, in following function \SPARK{Minimum_Until_Point}, we
-specified that given a valid (\ie with strictly increasing delimiters)
-step function \SPARK{SFun} and a point \SPARK{X}, the returned value
-(\SPARK{Minimum_Until_Point'Result}) is the minimum until point \SPARK{X} (1)
-and effectively belongs to the domain of the step function (2).
+For example, we specified that, given a valid (\ie with strictly increasing
+delimiters) step function \SPARK{SFun} and a point \SPARK{X}, function
+\SPARK{Minimum_Until_Point} returns a value of the step function~(2) where the
+step function reaches its minimum on the given domain~(1).
 
 \begin{lstlisting}
 function Minimum_Until_Point
@@ -424,7 +423,7 @@ function Minimum_Until_Point
 with
 Pre  => Is_Valid(SFun),
 Post =>
-  -- (1) Returned value is the minimum until point X
+  -- (1) Returned value is the minimum before X
   (for all i in
     Num_Delimiters_Range'First..SFun.Num_delim =>
      (if X >= SFun.Step(i).Delimiter then
@@ -432,22 +431,22 @@ Post =>
          <= SFun.Step(i).Value))
   and
   -- (2) Returned value is a value of the step
-  --     function until point X
+  --     function before X
   ((for some i in
      Num_Delimiters_Range'First..SFun.Num_delim =>
       (X >= SFun.Step(i).Delimiter
-       and
-         (Minimum_Until_Point'Result
-             = SFun.Step(i).Value))));
+        and
+      (Minimum_Until_Point'Result
+        = SFun.Step(i).Value))));
 \end{lstlisting}
 
-Our next example is more complex.
-In procedure \SPARK{Restrictive_Merge} we specified that, given two
-valid step functions \SPARK{SFun1} and
-\SPARK{SFun2} without too many delimiters, the resulting step function is a
-valid one (1), it contains all the delimiters of \SPARK{SFun1} (2) and
-\SPARK{SFun2} (3) and for each of those delimiters, the value of the step
-function is the minimum of both initial step functions (4).
+The most complex subprogram we specified is \SPARK{Restrictive_Merge}.  We
+specified that, given two valid step functions \SPARK{SFun1} and \SPARK{SFun2}
+without too many delimiters, \SPARK{Restrictive_Merge} generates a step
+function \SPARK{Merge} that is valid~(1), that contains all the delimiters of
+\SPARK{SFun1}~(2) and \SPARK{SFun2}~(3) and that, for each of those delimiters,
+the value of the \SPARK{Merge} step function is the minimum over both input
+step functions~(4).
 
 \begin{lstlisting}
 procedure Restrictive_Merge
@@ -479,23 +478,24 @@ Post =>
       (Merge.Step(j).Delimiter
         = SFun2.Step(i).Delimiter)))
     and
-  -- (4) For each delimiter of Merge, its value is the
-  --     minimum of SFun1 and SFun2
+  -- (4) For each delimiter of Merge, its value is
+  --     the minimum of SFun1 and SFun2
   (for all i in
      Num_Delimiters_Range'First..Merge.Num_Delim =>
-   (Merge.Step(i).Value
-    = Min(Get_Value(SFun1, Merge.Step(i).Delimiter),
-          Get_Value(SFun2, Merge.Step(i).Delimiter))));
+   (Merge.Step(i).Value = Min
+     (Get_Value(SFun1, Merge.Step(i).Delimiter),
+      Get_Value(SFun2, Merge.Step(i).Delimiter))));
 \end{lstlisting}
 
-Please also notice that through the use of \SPARK{in} and \SPARK{out}
-parameters, only \SPARK{Merge} can be written to and \SPARK{SFun1} and
-\SPARK{SFun2} should be kept unmodified.
+Note that the signature of \SPARK{Restrictive_Merge} already specifies that
+\SPARK{SFun1} and \SPARK{SFun2} cannot be modified, as they are passed as
+\SPARK{in} parameters.
 
-As last note, our contracts could have been lightened by attaching the
-\SPARK{Is_Valid} function as a type invariant to
-\SPARK{Step_Function_t} data structure. This is not currently
-supported in \newspark but will in future releases.
+Overall, the number of lines for contracts and assertion pragmas (in particular
+loop invariants) is about the same as the number of lines of code. We could
+have simplified the contracts by specifying that \SPARK{Is_Valid} is a type
+invariant of \SPARK{Step_Function_t}, but this Ada feature is not yet supported
+in \newspark, although it is planned for the future.
 
 \subsection{Formal Verification Results}
 
@@ -505,69 +505,73 @@ requirement text, transition tables, breaking curve equations, \etc
 Overall, we were quite satisfied, as we were able to express most of
 the requirements in a formal way. The very expressive data structures
 of \newspark (records, arrays, enumerations, \etc) were very helpful
-compared to other specification languages like B~Method\cite{b-book}
-(lacking usable record structure) or Frama-C's ACSL\cite{acsl}
-(lacking record with variant part or easy limited range data type
-definition). We found that it lead to quite readable specifications.
+compared to other specification languages like B~Method~\cite{b-book}
+(lacking usable record structures) or ACSL~\cite{acsl} for C programs
+(lacking record with variant part or bounded integers). 
+We found that it lead to quite readable specifications.
 
 The second goal was to evaluate the automatic proving capabilities of \newspark
-on some parts of the specification.
-
-On step functions, we were able to prove all subprogram
-contracts except the one of \SPARK{Restrictive_Merge}. In this procedure, the
-postcondition and the loop invariant could not be automatically
-proved by \altergo. The main reason is that the proof context is too
-big and \altergo gets lost in all possible quantification
-instantiations. We have checked that some parts of the loop invariant
-could be automatically proved if the proof context was manually pruned
-of irrelevant hypotheses. Moreover, we compiled and tested the
-contracts and formal annotations, making us more confident about their
-correctness.
-
-We should also notice that in all those subprograms, we needed about
-the same number of lines of formal annotations than of executable
-code.
+on some parts of the specification. We were able to prove the complete absence
+of run-time errors, plus the contracts of all subprograms except the one of
+\SPARK{Restrictive_Merge}. In this procedure, the postcondition and the loop
+invariant (added to be able to prove the postcondition) could not be
+automatically proved by \altergo. The main reason is that the proof context is
+too big and \altergo gets lost in all the possible quantifier
+instantiations. We have checked that some parts of the loop invariant could be
+automatically proved if the proof context was manually pruned of irrelevant
+hypotheses. Moreover, we compiled and tested the contracts and assertion
+pragmas, which increased our confidence in their correctness.
 
 \subsection{Lessons Learned}
 
-As said previously, we were rather pleased by the expression
-capabilities of \newspark, making specification and code writing
-rather easy and, more important, clearer for the reader. The ability
-to define new data types for specific ranges and incompatible with
-other types is crucial in this regard.
+We were rather pleased by the expression capabilities of \newspark, making
+specification and code writing rather easy and, more important, clearer for the
+reader. The ability inherited from Ada to define new data types for specific
+ranges and incompatible with other types is crucial in this regard.
 
-Another important finding is that the code should be written with
-proof in mind. For example, in one of the step function procedure, we
-wrote a loop with an early exit. However \altergo was unable to prove
-this loop because it lacks induction reasoning, even if all elements
-of the induction could be easily pointed out to the prover. We had to
-change the code with a loop without early exit, the proof then
-becoming trivial.
+Another important finding is that the code should be written with proof in
+mind. For example, function \SPARK{Minimum\_Until\_Point} was initially
+unprovable, because an early exit in a loop lead to the formula 
+\begin{multline*}
+(\forall~K. A(K-1)<A(K)) \wedge X<A(1) \\
+\rightarrow (\forall~K. K>1 \rightarrow X<A(K))
+\end{multline*}
+which requires support for induction in the automatic prover, a feature still
+missing from most automatic provers.~\cite{leino:2012:vmcai} As the early exit
+was not necessary for correct behavior, it was sufficient to remove it to
+achieve automatic proof with \altergo. 
 
 A third finding is that contracts that can be automatically proved are
-not the most natural contracts, \ie contracts a reviewer would
+not always the most natural contracts, \ie contracts a reviewer would
 understand more easily. For example, for \SPARK{Restrictive_Merge}
 procedure, we would have preferred to write that the resulting function
 is the minimum of both input functions for all possible input
-values. It would have been impossible to prove this contract. Other
-formal approaches with formal refinement like B~Method would probably
-be able to formalize such contract, at the expense of manual proofs.
+values:
+\begin{lstlisting}
+Post =>
+  (for all i in Function_Range =>
+   (Merge.Step(i).Value = Min
+     (Get_Value(SFun1, Merge.Step(i).Delimiter),
+      Get_Value(SFun2, Merge.Step(i).Delimiter))));
+\end{lstlisting}
+It would have been impossible to prove this contract automatically. Ideally,
+the tool should allow users to manually prove such contracts, like done for
+example in B~Method tools.
 
 Our last finding, not entirely surprising, is that writing the correct
-invariant for a complex loop is not an easy task, as we experimented
-it for \SPARK{Restrictive_Merge} procedure. It can necessitate several
+loop invariant for a complex loop is not an easy task, as we experienced
+it for procedure \SPARK{Restrictive_Merge}. It can require several
 hours of work of skilled people, trained in the proof environment and
-the reaction of the automatic prover. In such case, the ability to
+the use of the automatic prover. In such cases, the ability to
 compile and test the loop invariant is very useful to help ``debug''
-the invariant.
+the loop invariant.
 
 Overall, we think that the programmer should be trained to exploit the
 feedback provided by the proof environment, much like a programmer
-exploits feedback of debuggers and tests to debug his/her program.
-Moreover, as complete code proof can become very costly, a proof
+exploits feedback of debuggers and tests to debug her program.
+Moreover, as a complete proof of the program can be very costly, a proof
 methodology must be defined to avoid spending to much time on proofs
-that would be broken afterward due to other code changes.
-
+that could be broken by future code changes.
 
 \section{Flight Control and Vehicle Management in Space}
 
