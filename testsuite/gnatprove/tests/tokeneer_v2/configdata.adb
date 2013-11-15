@@ -193,7 +193,6 @@ is
       TheSystemMaxFar         :    out IandATypes.FarT
       )
    is
-
       OK : Boolean;
 
       ------------------------------------------------------------------
@@ -213,7 +212,6 @@ is
       is
          RawDuration : Integer;
       begin
-
          Value := DurationT'First;
          File.GetInteger(TheFile, RawDuration, 0, Success);
 
@@ -261,7 +259,6 @@ is
       is
          RawSize : Integer;
       begin
-
          Value := AuditTypes.FileSizeT'First;
          File.GetInteger(TheFile, RawSize, 0, Success);
          if Success and then
@@ -346,19 +343,19 @@ is
          RawHours   : Integer;
          RawMinutes : Integer;
          Char       : Character;
-
       begin
-
          TheDuration := Clock.DurationT'First;
          File.GetInteger(TheFile, RawHours, 2,Success);
          if Success and
            RawHours >= Integer(Clock.HoursT'First) and
-           RawHours <= Integer(Clock.HoursT'Last) then
+           RawHours <= Integer(Clock.HoursT'Last)
+         then
             File.GetChar(TheFile, Char);
             File.GetInteger(TheFile, RawMinutes, 2, Success);
             if Success and Char = ':' and
               RawMinutes >= Integer(Clock.MinutesT'First) and
-              RawMinutes <= Integer(Clock.MinutesT'Last) then
+              RawMinutes <= Integer(Clock.MinutesT'Last)
+            then
                TheDuration := 600 *
                  (Clock.DurationT(RawHours) * 60 + Clock.DurationT(RawMinutes));
             end if;
@@ -387,7 +384,6 @@ is
       is
          RawFar : Integer;
       begin
-
          Value := IandATypes.FarT'First;
          File.GetInteger(TheFile, RawFar, 0, Success);
          if Success and then
@@ -421,9 +417,8 @@ is
              Depends => ((TheFile, Success, TheAlarmSilentDuration) => TheFile)
       is
          TheTitle : AlarmSilentTextT;
-         Stop : Natural;
+         Stop     : Natural;
       begin
-
          TheAlarmSilentDuration := DurationT'First;
          File.GetString(TheFile, TheTitle, Stop);
          if Stop = TheTitle'Last and then
@@ -453,7 +448,6 @@ is
          TheTitle : LatchUnlockTextT;
          Stop     : Natural;
       begin
-
          TheLatchUnlockDuration := DurationT'First;
          File.GetString(TheFile, TheTitle, Stop);
          if Stop = TheTitle'Last and then
@@ -481,9 +475,8 @@ is
              Depends => ((TheFile, Success, TheFingerWaitDuration) => TheFile)
       is
          TheTitle : FingerWaitTextT;
-         Stop : Natural;
+         Stop     : Natural;
       begin
-
          TheFingerWaitDuration := DurationT'First;
          File.GetString(TheFile, TheTitle, Stop);
          if Stop = TheTitle'Last and then
@@ -510,7 +503,7 @@ is
              Depends => ((TheFile, Success, TheTokenRemovalDuration) => TheFile)
       is
          TheTitle : TokenRemovalTextT;
-         Stop : Natural;
+         Stop     : Natural;
       begin
 
          TheTokenRemovalDuration := DurationT'First;
@@ -539,9 +532,8 @@ is
              Depends => ((TheFile, Success, TheEnclaveClearance) => TheFile)
       is
          TheTitle : ClearanceTextT;
-         Stop : Natural;
+         Stop     : Natural;
       begin
-
          TheEnclaveClearance := PrivTypes.ClassT'First;
          File.GetString(TheFile, TheTitle, Stop);
          if Stop = TheTitle'Last and then
@@ -569,9 +561,8 @@ is
              Depends => ((TheFile, Success, TheWorkingHoursStart) => TheFile)
       is
          TheTitle : WorkingStartTextT;
-         Stop : Natural;
+         Stop     : Natural;
       begin
-
          TheWorkingHoursStart := Clock.DurationT'First;
          File.GetString(TheFile, TheTitle, Stop);
          if Stop = TheTitle'Last and then
@@ -598,9 +589,8 @@ is
              Depends => ((TheFile, Success, TheWorkingHoursEnd) => TheFile)
       is
          TheTitle : WorkingEndTextT;
-         Stop : Natural;
+         Stop     : Natural;
       begin
-
          TheWorkingHoursEnd := Clock.DurationT'First;
          File.GetString(TheFile, TheTitle, Stop);
          if Stop = TheTitle'Last and then
@@ -628,9 +618,8 @@ is
              Depends => ((TheFile, Success, TheMaxAuthDuration) => TheFile)
       is
          TheTitle : MaxAuthDurationTextT;
-         Stop : Natural;
+         Stop     : Natural;
       begin
-
          TheMaxAuthDuration := Clock.DurationT'First;
          File.GetString(TheFile, TheTitle, Stop);
          if Stop = TheTitle'Last and then
@@ -657,12 +646,11 @@ is
                          Output => (Success, TheAccessPolicy)),
              Depends => ((TheFile, Success, TheAccessPolicy) => TheFile)
       is
-         TheTitle : AccessPolicyTextT;
+         TheTitle        : AccessPolicyTextT;
          RawAccessPolicy : AccessTextT;
-         Stop : Natural;
-         Matched : Boolean := False;
+         Stop            : Natural;
+         Matched         : Boolean := False;
       begin
-
          TheAccessPolicy := AccessPolicyT'First;
          File.GetString(TheFile, TheTitle, Stop);
          if Stop = TheTitle'Last and then
@@ -713,7 +701,7 @@ is
              Depends => ((TheFile, Success, TheMinEntryClass) => TheFile)
       is
          TheTitle : MinEntryClassTextT;
-         Stop : Natural;
+         Stop     : Natural;
       begin
 
          TheMinEntryClass := PrivTypes.ClassT'First;
@@ -743,9 +731,8 @@ is
              Depends => ((TheFile, Success, TheMinPreservedLogSize) => TheFile)
       is
          TheTitle : MinPreservedLogSizeTextT;
-         Stop : Natural;
+         Stop     : Natural;
       begin
-
          TheMinPreservedLogSize := AuditTypes.FileSizeT'First;
          File.GetString(TheFile, TheTitle, Stop);
          if Stop = TheTitle'Last and then
@@ -829,7 +816,6 @@ is
    ---------------------------------------------------------------
    begin
 
-
       File.OpenRead (TheFile => TheFile,
                      Success => Success);
       if Success then
@@ -838,23 +824,17 @@ is
          TheAlarmSilentDuration := DurationT'First;
       end if;
 
-      pragma Assert_And_Cut (True);
-
       if Success then
          ReadLatchUnlock;
       else
          TheLatchUnlockDuration  := DurationT'First;
       end if;
 
-      pragma Assert_And_Cut (True);
-
       if Success then
          ReadTokenRemoval;
       else
          TheTokenRemovalDuration  := DurationT'First;
       end if;
-
-      pragma Assert_And_Cut (True);
 
       if Success then
          ReadFingerWait;
@@ -868,15 +848,11 @@ is
          TheEnclaveClearance     := PrivTypes.ClassT'First;
       end if;
 
-      pragma Assert_And_Cut (True);
-
       if Success then
          ReadWorkingStart;
       else
          TheWorkingHoursStart    := Clock.DurationT'First;
       end if;
-
-      pragma Assert_And_Cut (True);
 
       if Success then
          ReadWorkingEnd;
@@ -884,15 +860,11 @@ is
          TheWorkingHoursEnd    := Clock.DurationT'First;
       end if;
 
-      pragma Assert_And_Cut (True);
-
       if Success then
          ReadAuthDuration;
       else
          TheMaxAuthDuration    := Clock.DurationT'First;
       end if;
-
-      pragma Assert_And_Cut (True);
 
       if Success then
          ReadAccessPolicy;
@@ -900,15 +872,11 @@ is
          TheAccessPolicy   := AccessPolicyT'First;
       end if;
 
-      pragma Assert_And_Cut (True);
-
       if Success then
          ReadMinEntryClass;
       else
          TheMinEntryClass   := PrivTypes.ClassT'First;
       end if;
-
-      pragma Assert_And_Cut (True);
 
       if Success then
          ReadMinPreservedLog;
@@ -916,15 +884,11 @@ is
          TheMinPreservedLogSize  := AuditTypes.FileSizeT'First;
       end if;
 
-      pragma Assert_And_Cut (True);
-
       if Success then
          ReadAlarmThreshold;
       else
          TheAlarmThresholdSize  := AuditTypes.FileSizeT'First;
       end if;
-
-      pragma Assert_And_Cut (True);
 
       if Success then
          ReadSystemMaxFar;
@@ -1001,7 +965,7 @@ is
       ------------------------------------------------------------------
       function WorkingHoursText (Value : Clock.DurationT) return String5T
       is
-         LocalText : String5T := "00:00";
+         LocalText  : String5T := "00:00";
          LocalValue : Clock.DurationT;
       begin
 
@@ -1028,8 +992,6 @@ is
          File.Create (TheFile => ConfigFile,
                       Success => Success);
       end if;
-
-      pragma Assert_And_Cut (True);
 
       if Success then
 
@@ -1338,7 +1300,6 @@ is
 
       else
          SetDefaults;
-
       end if;
 
    end Init;
@@ -1393,20 +1354,19 @@ is
                               SystemMaxFar         => TheSystemMaxFar)
    is
    begin
-       LatchUnlockDuration  := TheLatchUnlockDuration;
-       AlarmSilentDuration  := TheAlarmSilentDuration;
-       FingerWaitDuration   := TheFingerWaitDuration;
-       TokenRemovalDuration := TheTokenRemovalDuration;
-       EnclaveClearance     := TheEnclaveClearance;
-       WorkingHoursStart    := TheWorkingHoursStart;
-       WorkingHoursEnd      := TheWorkingHoursEnd;
-       MaxAuthDuration      := TheMaxAuthDuration;
-       AccessPolicy         := TheAccessPolicy;
-       MinEntryClass        := TheMinEntryClass;
-       MinPreservedLogSize  := TheMinPreservedLogSize;
-       AlarmThresholdSize   := TheAlarmThresholdSize;
-       SystemMaxFar         := TheSystemMaxFar;
-
+      LatchUnlockDuration  := TheLatchUnlockDuration;
+      AlarmSilentDuration  := TheAlarmSilentDuration;
+      FingerWaitDuration   := TheFingerWaitDuration;
+      TokenRemovalDuration := TheTokenRemovalDuration;
+      EnclaveClearance     := TheEnclaveClearance;
+      WorkingHoursStart    := TheWorkingHoursStart;
+      WorkingHoursEnd      := TheWorkingHoursEnd;
+      MaxAuthDuration      := TheMaxAuthDuration;
+      AccessPolicy         := TheAccessPolicy;
+      MinEntryClass        := TheMinEntryClass;
+      MinPreservedLogSize  := TheMinPreservedLogSize;
+      AlarmThresholdSize   := TheAlarmThresholdSize;
+      SystemMaxFar         := TheSystemMaxFar;
    end UpdateData;
 
    ------------------------------------------------------------------
@@ -1459,20 +1419,19 @@ is
                               TheSystemMaxFar         => SystemMaxFar)
    is
    begin
-       TheLatchUnlockDuration  := LatchUnlockDuration;
-       TheAlarmSilentDuration  := AlarmSilentDuration;
-       TheFingerWaitDuration   := FingerWaitDuration;
-       TheTokenRemovalDuration := TokenRemovalDuration;
-       TheEnclaveClearance     := EnclaveClearance;
-       TheWorkingHoursStart    := WorkingHoursStart;
-       TheWorkingHoursEnd      := WorkingHoursEnd;
-       TheMaxAuthDuration      := MaxAuthDuration;
-       TheAccessPolicy         := AccessPolicy;
-       TheMinEntryClass        := MinEntryClass;
-       TheMinPreservedLogSize  := MinPreservedLogSize;
-       TheAlarmThresholdSize   := AlarmThresholdSize;
-       TheSystemMaxFar         := SystemMaxFar;
-
+      TheLatchUnlockDuration  := LatchUnlockDuration;
+      TheAlarmSilentDuration  := AlarmSilentDuration;
+      TheFingerWaitDuration   := FingerWaitDuration;
+      TheTokenRemovalDuration := TokenRemovalDuration;
+      TheEnclaveClearance     := EnclaveClearance;
+      TheWorkingHoursStart    := WorkingHoursStart;
+      TheWorkingHoursEnd      := WorkingHoursEnd;
+      TheMaxAuthDuration      := MaxAuthDuration;
+      TheAccessPolicy         := AccessPolicy;
+      TheMinEntryClass        := MinEntryClass;
+      TheMinPreservedLogSize  := MinPreservedLogSize;
+      TheAlarmThresholdSize   := AlarmThresholdSize;
+      TheSystemMaxFar         := SystemMaxFar;
    end TheDisplayFields;
 
    ------------------------------------------------------------------
@@ -1489,9 +1448,7 @@ is
                              AccessPolicy)
    is
       Result : Boolean;
-
    begin
-
       if AccessPolicy = AllHours then
          if MaxAuthDuration > 0 then
             Result := False;
@@ -1519,9 +1476,9 @@ is
    --
    ------------------------------------------------------------------
    procedure GetAuthPeriod
-     ( TheTime   : in     Clock.TimeT;
-       NotBefore :    out Clock.TimeT;
-       NotAfter  :    out Clock.TimeT)
+     (TheTime   : in     Clock.TimeT;
+      NotBefore :    out Clock.TimeT;
+      NotAfter  :    out Clock.TimeT)
      with Refined_Global  => (WorkingHoursStart,
                               WorkingHoursEnd,
                               MaxAuthDuration,
@@ -1535,9 +1492,7 @@ is
                                             TheTime))
    is
       DayStart : Clock.TimeT;
-
    begin
-
       if AccessPolicy = AllHours then
          NotBefore := TheTime;
          if MaxAuthDuration > 0 then
@@ -1545,7 +1500,6 @@ is
          else
             NotAfter := Clock.ZeroTime;
          end if;
-
       else  -- AccessPolicy = WorkingHours
          DayStart := Clock.StartOfDay (TheTime => TheTime);
 
@@ -1562,16 +1516,15 @@ is
    --
    ------------------------------------------------------------------
    function IsInEntryPeriod
-     ( Class : PrivTypes.ClassT;
-       TheTime : Clock.TimeT) return Boolean
+     (Class   : PrivTypes.ClassT;
+      TheTime : Clock.TimeT) return Boolean
      with Refined_Global => (WorkingHoursStart,
                              WorkingHoursEnd,
                              AccessPolicy,
                              MinEntryClass)
    is
-      Result : Boolean;
+      Result   : Boolean;
       DayStart : Clock.TimeT;
-
    begin
       if Class >= MinEntryClass then
          if AccessPolicy = AllHours then
@@ -1604,8 +1557,7 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   function TheLatchUnlockDuration return DurationT is
-     (LatchUnlockDuration)
+   function TheLatchUnlockDuration return DurationT is (LatchUnlockDuration)
      with Refined_Global => LatchUnlockDuration;
 
    ------------------------------------------------------------------
@@ -1615,8 +1567,7 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   function TheAlarmSilentDuration return DurationT is
-     (AlarmSilentDuration)
+   function TheAlarmSilentDuration return DurationT is (AlarmSilentDuration)
      with Refined_Global => AlarmSilentDuration;
 
    ------------------------------------------------------------------
@@ -1626,8 +1577,7 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   function TheFingerWaitDuration return DurationT is
-     (FingerWaitDuration)
+   function TheFingerWaitDuration return DurationT is (FingerWaitDuration)
      with Refined_Global => FingerWaitDuration;
 
    ------------------------------------------------------------------
@@ -1637,8 +1587,7 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   function TheTokenRemovalDuration return DurationT is
-     (TokenRemovalDuration)
+   function TheTokenRemovalDuration return DurationT is (TokenRemovalDuration)
      with Refined_Global => TokenRemovalDuration;
 
    ------------------------------------------------------------------
@@ -1648,8 +1597,7 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   function TheEnclaveClearance return PrivTypes.ClassT is
-     (EnclaveClearance)
+   function TheEnclaveClearance return PrivTypes.ClassT is (EnclaveClearance)
      with Refined_Global => EnclaveClearance;
 
    ------------------------------------------------------------------
@@ -1659,8 +1607,7 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   function TheSystemMaxFar return IandATypes.FarT is
-     (SystemMaxFar)
+   function TheSystemMaxFar return IandATypes.FarT is (SystemMaxFar)
      with Refined_Global => SystemMaxFar;
 
    ------------------------------------------------------------------

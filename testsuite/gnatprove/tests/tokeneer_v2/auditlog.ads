@@ -30,7 +30,8 @@ is
    --  AddElementToLog, ArchiveLog and ClearLogEntries. It allows us
    --  to refer to types and variables that are declared in the body
    --  and are not visible here and it acts as an invariant.
-   function Valid_NumberLogEntries return Boolean;
+   function Valid_NumberLogEntries return Boolean
+     with Global => State;
 
    ------------------------------------------------------------------
    -- Types
@@ -54,7 +55,8 @@ is
                       In_Out => FileState),
           Depends => (FileState =>+ null,
                       State => (ConfigData.State,
-                                FileState));
+                                FileState)),
+          Post    => Valid_NumberLogEntries;
 
    ------------------------------------------------------------------
    -- AddElementToLog
@@ -69,10 +71,10 @@ is
    -- Traceto   : FD.AuditLog.AddElementToLog
    ------------------------------------------------------------------
    procedure AddElementToLog (
-                ElementID    : in     AuditTypes.ElementT;
-                Severity     : in     AuditTypes.SeverityT;
-                User         : in     AuditTypes.UserTextT;
-                Description  : in     String)
+                ElementID   : in     AuditTypes.ElementT;
+                Severity    : in     AuditTypes.SeverityT;
+                User        : in     AuditTypes.UserTextT;
+                Description : in     String)
      with Global  => (Input  => (Clock.Now,
                                  ConfigData.State),
                       In_Out => (FileState,
@@ -86,7 +88,8 @@ is
                                   Severity,
                                   State,
                                   User)),
-          Pre     => Valid_NumberLogEntries and Description'First = 1;
+          Pre     => Valid_NumberLogEntries and Description'First = 1,
+          Post    => Valid_NumberLogEntries;
 
    ------------------------------------------------------------------
    -- ArchiveLog
@@ -112,7 +115,8 @@ is
                                   FileState,
                                   State,
                                   User)),
-          Pre     => Valid_NumberLogEntries;
+          Pre     => Valid_NumberLogEntries,
+          Post    => Valid_NumberLogEntries;
 
    ------------------------------------------------------------------
    -- ClearLogEntries
@@ -124,7 +128,7 @@ is
    -- Traceunit : C.AuditLog.ClearLogEntries
    -- Traceto   : FD.AuditLog.ClearLog
    ------------------------------------------------------------------
-   procedure ClearLogEntries (User    : in     AuditTypes.UserTextT)
+   procedure ClearLogEntries (User : in     AuditTypes.UserTextT)
      with Global  => (Input  => (Clock.Now,
                                  ConfigData.State),
                       In_Out => (FileState,
@@ -135,7 +139,8 @@ is
                                   FileState,
                                   State,
                                   User)),
-          Pre     => Valid_NumberLogEntries;
+          Pre     => Valid_NumberLogEntries,
+          Post    => Valid_NumberLogEntries;
 
    ------------------------------------------------------------------
    -- CancelArchive

@@ -208,9 +208,9 @@ Attribute \SPARK{Loop_Entry} is used to refer to values on entry to the loop.
 \begin{lstlisting}
 pragma Loop_Invariant
   (for all K in A'Range =>
-    (if K <= J then 
+    (if K <= J then
        A(K) = 0
-     else 
+     else
        A(K) = A'Loop_Entry(K)));
 \end{lstlisting}
 
@@ -601,7 +601,7 @@ This piece of code uses a mathematical library which implementation is not in \n
 
 \begin{lstlisting}
 function Sin (X : T_Float) return T_Float
-with 
+with
   Pre  => (X >= -C_2Pi) and (X <= C_2Pi),
   Post => (Sin'Result >= -1.0) and (Sin'Result <= 1.0);
 \end{lstlisting}
@@ -1003,9 +1003,7 @@ Pre                 & 28 \\
 \hline
 Post                & 41 \\
 \hline
-Assert              & 0 \\
-\hline
-Assert\_And\_Cut    & 17 \\
+Assume              & 3 \\
 \hline
 Loop\_Invariant     & 10 \\
 \hline
@@ -1043,7 +1041,7 @@ function OpIsAvailable
   (TheAdmin : T; KeyedOp : Keyboard.DataT)
   return OpAndNullT;
 --# pre IsPresent(TheAdmin);
---# return R => 
+--# return R =>
 --#   (R /= NullOp ->
 --#     (R = OverrideLock <->
 --#       prf_rolePresent(TheAdmin) = PrivTypes.Guard));
@@ -1067,7 +1065,7 @@ postcondition would have been significant and hence this was not attempted.
 function OpIsAvailable
   (TheAdmin : T; KeyedOp : Keyboard.DataT)
   return OpAndNullT;
-with 
+with
   Pre  => IsPresent(TheAdmin),
   Post => (for some Op in Opt =>
              Str_Comp(KeyedOp, Op)
