@@ -194,7 +194,7 @@ is
    --
    ------------------------------------------------------------------
    function AgeLessThan (Left, Right : Clock.TimeTextT) return Boolean is
-     (True);--  (Left < Right);
+     (Left < Right);
 
    ------------------------------------------------------------------
    -- NextListIndex
