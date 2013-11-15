@@ -13,7 +13,7 @@ global_illegal.ads:86:26: cannot mix null and non-null global items
 global_illegal.ads:91:21: global item must denote variable or state (SPARK RM 6.1.4(4))
 global_illegal.ads:97:22: global mode "Output" is not applicable to functions (SPARK RM 6.1.4(10))
 global_illegal.ads:98:22: global mode "In_Out" is not applicable to functions (SPARK RM 6.1.4(10))
-global_illegal_2.adb:8:04: aspect specifications must appear in subprogram declaration
+global_illegal_2.adb:12:11: aspect specification must appear in subprogram declaration
 global_illegal_2.adb:24:31: reference to "A" not allowed (SPARK RM 6.1.4(8))
 global_illegal_2.adb:24:31: refinement of "A" is visible at line 3
 global_illegal_2.adb:42:35: global item "X" cannot have mode In_Out or Output (SPARK RM 6.1.4(12))
