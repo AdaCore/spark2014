@@ -1330,10 +1330,10 @@ is
             SetDefaults;
             -- Delete the faulty file.
 
-            --# accept F, 10, Unused, "Ineffective assignment expected here" &
-            --#        F, 33, Unused, "Ineffective assignment expected here";
+            pragma Warnings (Off, "unused assignment to *");
             File.OpenRead (ConfigFile, Unused);
             File.Delete (ConfigFile, Unused);
+            pragma Warnings (On, "unused assignment to *");
          end if;
 
       else

@@ -133,9 +133,9 @@ package Admin is
                            KeyedOp  : Keyboard.DataT) return OpAndNullT
      with Pre  => IsPresent (TheAdmin),
           Post => (for some Op in Opt => Str_Comp (KeyedOp, Op)
-                     and AllowedOp (TheAdmin, Op)
-                     and OpIsAvailable'Result = Op)
-                   xor OpIsAvailable'Result = NullOp;
+                                           and AllowedOp (TheAdmin, Op)
+                                           and OpIsAvailable'Result = Op)
+                  xor OpIsAvailable'Result = NullOp;
 
    ------------------------------------------------------------------
    -- Logon

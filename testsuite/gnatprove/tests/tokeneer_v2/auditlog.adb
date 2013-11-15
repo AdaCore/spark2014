@@ -195,7 +195,6 @@ is
    function AgeLessThan (Left, Right : Clock.TimeTextT) return Boolean is
       (Left < Right);
 
-
    ------------------------------------------------------------------
    -- NextListIndex
    --
@@ -1648,7 +1647,9 @@ is
          User        => User,
          Description => AuditTypes.NoDescription);
 
+      pragma Warnings (Off, "statement has no effect [ineffective]");
       DeleteArchiveFile;
+      pragma Warnings (On, "statement has no effect [ineffective]");
 
    end ClearLogEntries;
 
@@ -1669,7 +1670,9 @@ is
          end if;
       end loop;
 
+      pragma Warnings (Off, "statement has no effect [ineffective]");
       DeleteArchiveFile;
+      pragma Warnings (On, "statement has no effect [ineffective]");
 
    end CancelArchive;
 
