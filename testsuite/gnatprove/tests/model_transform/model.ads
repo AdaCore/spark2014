@@ -138,12 +138,14 @@ package Model is
      (Self : in out UML_Activity;
       Val  : UML_Action_Vector)
    with
-     Post => Owned_Action(Self) = Val;
+     Post => Owned_Action(Self) = Val and
+     Owned_Flow(Self) = Owned_Flow(Self'Old);
    procedure Set_Owned_Flow
      (Self : in out UML_Activity;
       Val  : UML_Control_Flow_Vector)
    with
-     Post => Owned_Flow(Self) = Val;
+     Post => Owned_Flow(Self) = Val and
+     Owned_Action(Self) = Owned_Action(Self'Old);
 
    ---------------------
    -- Transformations --

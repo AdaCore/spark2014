@@ -17,5 +17,5 @@ model.ads:100:6: info: length check proved
 model.ads:111:14: info: postcondition proved
 model.ads:115:14: info: postcondition proved
 model.ads:141:14: info: postcondition proved
-model.ads:146:14: info: postcondition proved
-model.ads:163:12: warning: postcondition might fail, requires Name(Owned_State(SM)(From(Owned_Transition(SM)(T)))) = Name(Owned_Action(Transform'Result) (From(Owned_Flow(Transform'Result) (T)
+model.ads:147:14: info: postcondition proved
+model.ads:165:12: warning: postcondition might fail, requires Name(Owned_State(SM)(From(Owned_Transition(SM)(T)))) = Name(Owned_Action(Transform'Result) (From(Owned_Flow(Transform'Result) (T)
