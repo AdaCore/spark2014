@@ -51,6 +51,7 @@ skein.adb:887:61: warning: range check might fail
 skein.adb:888:61: warning: range check might fail
 skein.adb:889:61: warning: range check might fail
 skein.adb:890:61: warning: range check might fail
+skein.adb:896:12: warning: length check might fail
 skein.adb:900:10: warning: precondition might fail
 skein.adb:906:7: warning: precondition might fail
 skein.adb:914:52: warning: divide by zero might fail

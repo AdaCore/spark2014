@@ -415,8 +415,9 @@ package body Why.Gen.Records is
                    (Domain => EW_Term,
                     Field  => To_Why_Id (Field),
                     Value  =>
-                      Why_Default_Value (Domain => EW_Term,
-                                         E      => Etype (Field)));
+                      Why_Default_Value
+                        (Domain => EW_Term,
+                         E      => Etype (Field)));
                Index := Index + 1;
             end if;
             Next_Component_Or_Discriminant (Field);
@@ -1061,7 +1062,8 @@ package body Why.Gen.Records is
                 New_Field_Association
                   (Domain => Domain,
                    Field  => To_Why_Id (Field, Domain, Rec => Ty),
-                   Value  => Value)));
+                   Value  => Value)),
+           Typ      => Get_Type (Name));
 
    begin
       if Domain = EW_Prog then

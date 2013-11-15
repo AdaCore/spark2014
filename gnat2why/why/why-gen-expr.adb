@@ -68,6 +68,53 @@ package body Why.Gen.Expr is
    --  to To; a counterexample would be two abstract types whose base
    --  types differ), insert the corresponding conversion.
 
+   Temp_Names_Map : Why_Node_Maps.Map := Why_Node_Maps.Empty_Map;
+
+   ----------------------
+   -- Binding_For_Temp --
+   ----------------------
+
+   function Binding_For_Temp
+     (Ada_Node : Node_Id := Empty;
+      Domain   : EW_Domain;
+      Tmp      : W_Expr_Id;
+      Context  : W_Expr_Id)
+     return W_Expr_Id
+   is
+      use Why_Node_Maps;
+      C : Cursor := Temp_Names_Map.Find (+Tmp);
+   begin
+      pragma Assert (Has_Element (C));
+      declare
+         E : constant W_Expr_Id := +Element (C);
+      begin
+
+         --  in any case we delete the entry, so that the map doesn't grow too
+         --  much.
+
+         Temp_Names_Map.Delete (C);
+
+         --  if there is a real expression, we really introduced a temp and
+         --  need to build a binding now.
+
+         if E /= Why_Empty then
+            return
+              New_Typed_Binding
+                (Ada_Node => Ada_Node,
+                 Domain   => Domain,
+                 Name     => +Tmp,
+                 Def      => E,
+                 Context  => Context);
+
+         --  Otherwise, a temp was not actually created, and we just return the
+         --  context.
+
+         else
+            return Context;
+         end if;
+      end;
+   end Binding_For_Temp;
+
    -------------------
    -- Cur_Subp_Sloc --
    -------------------
@@ -344,7 +391,7 @@ package body Why.Gen.Expr is
          --  but in Why we have to convert from the split representation to the
          --  unique representation. This is checked here.
 
-         if not Is_Constrained (To_Ent) then
+         if not Is_Static_Array_Type (To_Ent) then
             if Get_Base_Type (From) = EW_Split and then
               Get_Base_Type (To) = EW_Abstract
             then
@@ -368,8 +415,10 @@ package body Why.Gen.Expr is
       --  We need a temp whenever there is a sliding, or when the "from" is
       --  unconstrained, and only when the expression is not a variable already
 
-      Needs_Tmp := Get_Kind (+Expr) not in W_Identifier | W_Deref
-                     and then (Sliding or else not Is_Constrained (From_Ent));
+      Needs_Tmp :=
+        Get_Kind (+Expr) not in W_Identifier | W_Deref
+        and then (Sliding or else
+                    not Is_Static_Array_Type (From_Ent));
 
       if Needs_Tmp then
          Tmp_Var := New_Temp_Identifier (Typ => From);
@@ -380,7 +429,7 @@ package body Why.Gen.Expr is
 
       --  ??? do not forget range checks
 
-      if Is_Constrained (To_Ent) or else
+      if Is_Static_Array_Type (To_Ent) or else
         Get_Base_Type (To) = EW_Split
       then
          if Sliding then
@@ -404,7 +453,7 @@ package body Why.Gen.Expr is
                   Args   => Args,
                   Typ    => To);
             end;
-         elsif not Is_Constrained (From_Ent) and then
+         elsif not Is_Static_Array_Type (From_Ent) and then
            Get_Base_Type (From) /= EW_Split
          then
             T :=
@@ -449,7 +498,7 @@ package body Why.Gen.Expr is
          declare
             Check_Type : constant Entity_Id := Get_Ada_Node (+To);
          begin
-            if Is_Constrained (Check_Type) then
+            if Is_Static_Array_Type (Check_Type) then
                T := +Sequence
                  (Insert_Length_Check (Arr_Expr, Check_Type),
                   +T);
@@ -1722,6 +1771,47 @@ package body Why.Gen.Expr is
    end New_Simpl_Conditional;
 
    -----------------------
+   -- New_Temp_For_Expr --
+   -----------------------
+
+   function New_Temp_For_Expr
+     (E         : W_Expr_Id;
+      Need_Temp : Boolean := True)
+      return W_Expr_Id
+   is
+   begin
+
+      --  Internally, we use a map to store the expression for which we
+      --  introduce a temporary variable. The map can hold two kinds of
+      --  entries:
+      --    Identifier -> Expr
+      --  This is the regular entry which allows us (in Binding_For_Temp) to
+      --  get the expression for the temp
+      --    Expr -> Empty
+      --  This is a marker which shows that the user indeed tried to obtain a
+      --  temp for Expr, but it was not actually necessary to generate one. The
+      --  second kind of entries allows us to distinguish (in Binding_For_Temp)
+      --  between incorrect usage of the API and a value for which no temp was
+      --  necessary.
+
+      if Need_Temp
+        and then Get_Kind (+E) not in W_Identifier | W_Deref
+      then
+         declare
+            Tmp : constant W_Expr_Id :=
+              +New_Temp_Identifier (Ada_Node => Get_Ada_Node (+E),
+                                    Typ      => Get_Type (E));
+         begin
+            Temp_Names_Map.Insert (+Tmp, +E);
+            return Tmp;
+         end;
+      else
+         Temp_Names_Map.Insert (+E, Why_Empty);
+         return E;
+      end if;
+   end New_Temp_For_Expr;
+
+   -----------------------
    -- New_Typed_Binding --
    -----------------------
 
@@ -1878,16 +1968,17 @@ package body Why.Gen.Expr is
    function Why_Default_Value (Domain : EW_Domain;
                                E      : Entity_Id) return W_Expr_Id
    is
+      Why_Ent : constant Entity_Id :=
+        Get_Ada_Node (+EW_Abstract (E));
    begin
       if Is_Standard_Boolean_Type (E) then
          return New_Literal (Domain => Domain, Value => EW_True);
       else
-         return
-           +New_Identifier (Ada_Node => E,
-                            Domain  => Domain,
-                            Module  => E_Module (E),
-                            Name    => To_String (WNE_Dummy),
-                            Typ     => EW_Abstract (E));
+         return +New_Identifier (Ada_Node => Why_Ent,
+                                 Domain  => Domain,
+                                 Module  => E_Module (Why_Ent),
+                                 Name    => To_String (WNE_Dummy),
+                                 Typ     => EW_Abstract (Why_Ent));
       end if;
    end Why_Default_Value;
 

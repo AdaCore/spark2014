@@ -42,6 +42,7 @@ pack.adb:71:07: warning: initialization has no effect
 pack.adb:71:36: info: length check proved
 pack.adb:77:19: info: postcondition proved
 pack.adb:77:47: info: index check proved
+pack.adb:81:9: warning: length check might fail
 pack.adb:87:07: warning: statement has no effect
 pack.adb:87:13: warning: unused assignment to "A"
 pack.adb:88:7: warning: assertion might fail, requires A (8) = 1

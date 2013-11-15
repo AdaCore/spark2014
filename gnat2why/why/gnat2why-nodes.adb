@@ -32,7 +32,6 @@ with Elists;                use Elists;
 with Lib;                   use Lib;
 with Nlists;                use Nlists;
 with Pprint;                use Pprint;
-with Sem_Util;              use Sem_Util;
 with Snames;                use Snames;
 with Stringt;               use Stringt;
 with Urealp;                use Urealp;

@@ -27,6 +27,7 @@ with Ada.Containers; use Ada.Containers;
 with Ada.Containers.Vectors;
 with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Containers.Hashed_Sets;
+with Ada.Containers.Hashed_Maps;
 
 with Why.Classes; use Why.Classes;
 
@@ -103,6 +104,13 @@ package Why.Atree.Tables is
                   Hash                => Why_Node_Hash,
                   Equivalent_Elements => "=",
                   "="                 => "=");
+
+   package Why_Node_Maps is new
+     Hashed_Maps (Key_Type        => Why_Node_Id,
+                  Element_Type    => Why_Node_Id,
+                  Hash            => Why_Node_Hash,
+                  Equivalent_Keys => "=",
+                  "="             => "=");
 
    function Get_List (List_Id : Why_Node_List) return Node_Lists.List;
 

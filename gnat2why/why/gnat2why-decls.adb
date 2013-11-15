@@ -33,7 +33,6 @@ with Sinput;              use Sinput;
 with Snames;              use Snames;
 with String_Utils;        use String_Utils;
 
-with SPARK_Definition;    use SPARK_Definition;
 with SPARK_Util;          use SPARK_Util;
 
 with Why.Ids;             use Why.Ids;
@@ -53,15 +52,17 @@ with Gnat2Why.Nodes;      use Gnat2Why.Nodes;
 
 package body Gnat2Why.Decls is
 
-   function Mk_Item_Of_Entity (E    : Entity_Id;
-                               Name : W_Identifier_Id) return Item_Type;
+   function Mk_Item_Of_Entity
+     (E    : Entity_Id;
+      Name : W_Identifier_Id) return Item_Type;
 
    -------------------------
    -- Mk_Item_From_Entity --
    -------------------------
 
-   function Mk_Item_Of_Entity (E    : Entity_Id;
-                               Name : W_Identifier_Id)
+   function Mk_Item_Of_Entity
+     (E    : Entity_Id;
+      Name : W_Identifier_Id)
      return Item_Type
    is
       Binder   : constant Binder_Type :=
@@ -70,9 +71,9 @@ package body Gnat2Why.Decls is
                      B_Ent    => null,
                      Mutable  => Is_Mutable_In_Why (E));
    begin
-      if Ekind (E) in Object_Kind
+      if Ekind (E) in Formal_Kind
         and then Is_Array_Type (Etype (E))
-        and then not Is_Constrained (Etype (E))
+        and then not Is_Static_Array_Type (Etype (E))
       then
          declare
             Result : Item_Type :=
@@ -85,10 +86,10 @@ package body Gnat2Why.Decls is
             for D in 1 .. Result.Dim loop
                Result.Bounds (D).First :=
                  Attr_Append (Name, Attribute_First, D,
-                              EW_Abstract (Etype (Index)));
+                              EW_Abstract (Base_Type (Etype (Index))));
                Result.Bounds (D).Last :=
                  Attr_Append (Name, Attribute_Last, D,
-                              EW_Abstract (Etype (Index)));
+                              EW_Abstract (Base_Type (Etype (Index))));
                Next_Index (Index);
             end loop;
             return Result;
@@ -370,16 +371,19 @@ package body Gnat2Why.Decls is
       E     : Entity_Id)
    is
       Name : constant String := Full_Name (E);
+
+      --  We first build the type that we use in Why; this may be e.g. String
+
+      Use_Ty : constant W_Type_Id := EW_Abstract (Etype (E));
+
       Typ  : constant W_Type_Id :=
         (if Ekind (E) = E_Loop_Parameter then
            EW_Int_Type
          elsif Is_Array_Type (Etype (E))
            and then Ekind (E) in Formal_Kind
-           and then not Is_Constrained (Etype (E))
-         then
-           EW_Split (Etype (E))
-         else
-           EW_Abstract (Etype (E)));
+           and then not Is_Static_Array_Type (Etype (E))
+         then EW_Split (Etype (E))
+         else Use_Ty);
       Why_Name : constant W_Identifier_Id :=
         To_Why_Id (E => E, Typ => Typ);
       Local_Name : constant W_Identifier_Id :=
@@ -390,26 +394,6 @@ package body Gnat2Why.Decls is
            Alias => Typ);
 
       Var : constant Item_Type := Mk_Item_Of_Entity (E, Why_Name);
-
-      function Normalize_Type (E : Entity_Id) return Entity_Id;
-      --  Choose the correct type to use
-
-      --------------------
-      -- Normalize_Type --
-      --------------------
-
-      function Normalize_Type (E : Entity_Id) return Entity_Id is
-      begin
-         if not (Ekind (E) in Private_Kind) or else
-           Entity_In_External_Axioms (E)
-         then
-            return E;
-         end if;
-         if Entity_In_SPARK (MUT (E)) then
-            return Normalize_Type (MUT (E));
-         end if;
-         return E;
-      end Normalize_Type;
 
    --  Start of Translate_Variable
 
@@ -429,11 +413,6 @@ package body Gnat2Why.Decls is
       --  objects read.
 
       Emit (File.Cur_Theory, Decl);
-
-      if Entity_In_SPARK (MUT (Etype (E))) then
-         Add_Use_For_Entity
-           (File, Normalize_Type (Etype (E)), With_Completion => False);
-      end if;
 
       --  We generate a global ref
 

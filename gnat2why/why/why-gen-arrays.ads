@@ -149,8 +149,8 @@ package Why.Gen.Arrays is
    --  This variant of Add_Attr_Arg will only work for constrained types
 
    procedure Declare_Ada_Array
-     (Theory         : W_Theory_Declaration_Id;
-      Und_Ent        : Entity_Id);
+     (Theory : W_Theory_Declaration_Id;
+      E      : Entity_Id);
    --  Introduce all the necessary declarations for an Ada array declaration
    --  Und_Ent is the entity which contains the relevant type information (the
    --  underlying type)

@@ -14,10 +14,8 @@ list.adb:31:10: warning: precondition might fail
 list.adb:32:10: warning: loop invariant might fail after first iteration
 list.adb:32:10: warning: loop invariant might fail in first iteration
 list.adb:33:38: info: overflow check proved
-list.adb:34:21: warning: length check might fail
 list.adb:34:21: warning: range check might fail
 list.adb:34:44: info: overflow check proved
-list.adb:35:24: warning: length check might fail
 list.adb:35:24: warning: range check might fail
 list.adb:35:58: info: overflow check proved
 list.adb:37:15: warning: precondition might fail
@@ -35,11 +33,11 @@ list.ads:16:83: warning: overflow check might fail
 list.ads:16:83: warning: range check might fail
 main.adb:9:15: warning: precondition might fail
 main.adb:15:26: warning: precondition might fail
-stack.adb:4:47: warning: range check might fail
-stack.adb:5:55: warning: range check might fail
+stack.adb:4:47: info: range check proved
+stack.adb:5:55: info: range check proved
 stack.adb:20:22: info: range check proved
 stack.adb:21:19: info: index check proved
 stack.adb:32:22: info: range check proved
 stack.ads:19:14: info: precondition proved
 stack.ads:19:14: warning: postcondition might fail
-stack.ads:23:14: warning: postcondition might fail, requires To_But_Top (S'old) = To (S)
+stack.ads:23:14: info: postcondition proved

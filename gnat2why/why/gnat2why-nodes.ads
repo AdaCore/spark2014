@@ -28,19 +28,20 @@ with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Containers.Ordered_Sets;
 with Ada.Containers.Hashed_Maps;
 
-with AA_Util;                use AA_Util;
-with Atree;                  use Atree;
-with Einfo;                  use Einfo;
-with Namet;                  use Namet;
-with Sinfo;                  use Sinfo;
-with Sinput;                 use Sinput;
-with Stand;                  use Stand;
-with Types;                  use Types;
-with Uintp;                  use Uintp;
+with AA_Util;   use AA_Util;
+with Atree;     use Atree;
+with Einfo;     use Einfo;
+with Namet;     use Namet;
+with Sem_Util;  use Sem_Util;
+with Sinfo;     use Sinfo;
+with Sinput;    use Sinput;
+with Stand;     use Stand;
+with Types;     use Types;
+with Uintp;     use Uintp;
 
-with VC_Kinds;               use VC_Kinds;
+with VC_Kinds;  use VC_Kinds;
 
-with Why.Types;              use Why.Types;
+with Why.Types; use Why.Types;
 
 package Gnat2Why.Nodes is
    --  This package contains data structures and facilities to deal with the
@@ -154,7 +155,13 @@ package Gnat2Why.Nodes is
    --  This is used e.g. for the --limit-subp option of gnatprove.
 
    function Is_Pragma_Assert_And_Cut (N : Node_Id) return Boolean
-   with Pre => (Nkind (N) = N_Pragma);
+     with Pre => (Nkind (N) = N_Pragma);
+
+   function Is_Static_Array_Type (E : Entity_Id) return Boolean
+   is (Is_Array_Type (E)
+       and then Is_Constrained (E)
+       and then Has_Static_Array_Bounds (E))
+   with Pre => (Ekind (E) in Type_Kind);
 
    function Translate_Location (Loc : Source_Ptr) return Source_Ptr is
      (if Instantiation_Location (Loc) /= No_Location then

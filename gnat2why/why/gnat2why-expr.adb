@@ -1731,7 +1731,13 @@ package body Gnat2Why.Expr is
                Domain   => Domain,
                Name     => Pref,
                Field    => Entity (Selector_Name (N)),
-               Value    => Value);
+               Value    =>
+                  Insert_Simple_Conversion
+                 (Ada_Node => N,
+                  Domain   => Domain,
+                  Expr     => Value,
+                  To       =>
+                     EW_Abstract (Etype (Entity (Selector_Name (N))))));
 
          when N_Indexed_Component =>
             declare
@@ -1759,7 +1765,7 @@ package body Gnat2Why.Expr is
          when N_Slice =>
             declare
                Prefix_Name : constant W_Identifier_Id :=
-                 New_Temp_Identifier (Typ => Get_Type (Value));
+                 New_Temp_Identifier (Typ => Get_Type (Pref));
                Value_Name  : constant W_Identifier_Id :=
                  New_Temp_Identifier (Typ => Get_Type (Value));
                Prefix_Expr : constant W_Expr_Id :=
@@ -2215,7 +2221,6 @@ package body Gnat2Why.Expr is
          --  Variables for the call, guard and proposition for the axiom
 
          Aggr          : W_Expr_Id;
-         Call          : W_Expr_Id;
          Def_Pred      : W_Pred_Id;
 
          Aggr_Temp     : constant W_Identifier_Id :=
@@ -2272,16 +2277,12 @@ package body Gnat2Why.Expr is
                      Name     => Func,
                      Args     => Call_Args,
                      Typ      => EW_Abstract (Etype (Expr)));
-         Call :=
-           Array_Convert_To_Base
-             (Domain    => EW_Term,
-              Ar        => Aggr);
 
          Def_Pred :=
            +New_Typed_Binding
              (Name   => Aggr_Temp,
               Domain => EW_Pred,
-              Def    => Call,
+              Def    => Aggr,
               Context =>
                 +Transform_Array_Component_Associations
                   (Expr   => Expr,
@@ -3216,61 +3217,32 @@ package body Gnat2Why.Expr is
         (if Domain = EW_Pred then EW_Term else Domain);
       Args      : W_Expr_Array (1 .. 4 * Dim + 2);
       T         : W_Expr_Id;
-      Left_Simp : constant Boolean :=
-        Is_Constrained (Left_Ty) or else
-        Nkind (Left) in N_Identifier | N_Expanded_Name;
-      Right_Simp : constant Boolean :=
-        Is_Constrained (Etype (Right)) or else
-        Nkind (Right) in N_Identifier | N_Expanded_Name;
       Left_Expr : constant W_Expr_Id :=
-        Transform_Expr (Left, Subdomain, Params);
-      Left_Name : constant W_Expr_Id :=
-        (if Left_Simp then Left_Expr
-         else
-         +New_Temp_Identifier
-           (Ada_Node => Get_Ada_Node (+Left_Expr),
-            Typ => Get_Type (Left_Expr)));
+        New_Temp_For_Expr (Transform_Expr (Left, Subdomain, Params));
       Right_Expr : constant W_Expr_Id :=
-        Transform_Expr (Right, Subdomain, Params);
-      Right_Name : constant W_Expr_Id :=
-        (if Right_Simp then Right_Expr
-         else
-         +New_Temp_Identifier
-           (Ada_Node => Get_Ada_Node (+Right_Expr),
-            Typ      => Get_Type (Right_Expr)));
+        New_Temp_For_Expr (Transform_Expr (Right, Subdomain, Params));
       Arg_Ind    : Positive := 1;
    begin
-      Add_Array_Arg (Subdomain, Args, Left_Name, Arg_Ind);
-      Add_Array_Arg (Subdomain, Args, Right_Name, Arg_Ind);
+      Add_Array_Arg (Subdomain, Args, Left_Expr, Arg_Ind);
+      Add_Array_Arg (Subdomain, Args, Right_Expr, Arg_Ind);
       T :=
         New_Call
           (Ada_Node => Expr,
            Domain   => Subdomain,
            Name     =>
              Prefix
-               (Ada_Node => Etype (Left),
-                M        =>
+               (M        =>
                   Array_Modules
                     (Positive (Number_Dimensions (Type_Of_Node (Left)))),
                 W        => WNE_Bool_Eq),
            Args     => Args,
            Typ      => EW_Bool_Type);
-      if not Left_Simp then
-         T :=
-           New_Typed_Binding
-             (Domain  => Domain,
-              Name    => +Left_Name,
-              Def     => +Left_Expr,
-              Context => T);
-      end if;
-      if not Right_Simp then
-         T :=
-           New_Typed_Binding
-             (Domain  => Domain,
-              Name    => +Right_Name,
-              Def     => +Right_Expr,
-              Context => T);
-      end if;
+      T := Binding_For_Temp (Domain  => Domain,
+                             Tmp     => Left_Expr,
+                             Context => T);
+      T := Binding_For_Temp (Domain  => Domain,
+                             Tmp     => Right_Expr,
+                             Context => T);
       if Domain = EW_Pred then
          T := New_Comparison
            (Cmp       => Transform_Compare_Op (Nkind (Expr)),
@@ -3298,191 +3270,123 @@ package body Gnat2Why.Expr is
       Expr         : Node_Id) return W_Expr_Id
    is
 
-      function Range_Contained_In_Ty
-        (Ty : Entity_Id;
-         N  : Node_Id) return Boolean;
-      --  Check if the range node N is statically contained in the type Ty
-
-      ---------------------------
-      -- Range_Contained_In_Ty --
-      ---------------------------
-
-      function Range_Contained_In_Ty
-        (Ty : Entity_Id;
-         N  : Node_Id) return Boolean
-      is
-      begin
-         if not Is_Constrained (Ty) then
-            return False;
-         end if;
-         if not Is_Static_Range (N) then
-            return False;
-         end if;
-         declare
-            Ind_Ty : constant Entity_Id := Nth_Index_Type (Ty, 1);
-            Low    : constant Uint := Expr_Value (Low_Bound (N));
-            High   : constant Uint := Expr_Value (High_Bound (N));
-         begin
-            if not Is_Static_Subtype (Ind_Ty) then
-               return False;
-            else
-               declare
-                  Ind_Low  : constant Uint :=
-                    Expr_Value (Low_Bound (Scalar_Range (Ind_Ty)));
-                  Ind_High : constant Uint :=
-                    Expr_Value (High_Bound (Scalar_Range (Ind_Ty)));
-               begin
-                  return
-                    Ind_Low <= Low and then Low <= Ind_High and then
-                    Ind_Low <= Low and then High <= Ind_High;
-               end;
-            end if;
-         end;
-      end Range_Contained_In_Ty;
-
       Prefx     : constant Node_Id := Sinfo.Prefix (Expr);
-      Ty_Ent    : constant Entity_Id := Unique_Entity (Etype (Prefx));
+      Target_Ty : constant W_Type_Id := EW_Abstract (Etype (Expr));
+      Rng       : constant Node_Id := Get_Range (Discrete_Range (Expr));
+      Pref_Expr : W_Expr_Id;
       T         : W_Expr_Id;
-      Need_Tmp  : constant Boolean :=
-        not Is_Constrained (Ty_Ent) and then Domain = EW_Prog;
-      Tmp_Var   : W_Identifier_Id;
-      Tmp_Expr  : W_Expr_Id;
-      Orig_Expr : W_Expr_Id;
-
+      Low_Expr  : constant W_Expr_Id :=
+        New_Temp_For_Expr
+          (Transform_Expr (Low_Bound (Rng), EW_Int_Type, Domain, Params));
+      High_Expr  : constant W_Expr_Id :=
+        New_Temp_For_Expr
+          (Transform_Expr (High_Bound (Rng), EW_Int_Type, Domain, Params));
    begin
 
       --  We start by translating the prefix itself.
 
-      T := Transform_Expr (Prefx, Domain, Params);
+      Pref_Expr :=
+        Transform_Expr (Prefx, Domain, Params);
 
-      if Need_Tmp then
-         Tmp_Var := New_Temp_Identifier (Typ => Get_Type (T));
-         Tmp_Expr := +Tmp_Var;
-         Orig_Expr := T;
-      else
-         Tmp_Expr := T;
-      end if;
+      --  in the case where the slice indices are static, we can simply deal
+      --  with the array contents, and bounds will be derived from the type
 
-      --  Only in the case of an unconstrained prefix we need an actual
-      --  conversion in Why
+      if Is_Static_Array_Type (Etype (Expr)) then
 
-      if not Is_Constrained (Ty_Ent) then
+         --  a conversion may be needed to the target type
+
          T :=
            Insert_Array_Conversion
              (Domain => Domain,
-              Expr   => Tmp_Expr,
-              To     => EW_Abstract (Etype (Expr)));
+              Expr   => Pref_Expr,
+              To     => Target_Ty);
 
-      --  Even when there is no conversion, we still need to change the type
-      --  node of the resulting expression. We do this by putting a dummy label
-      --  node on top of the current node.
+      --  when the slice bounds are not static, we produce a compound object
+      --  contents + bounds.
 
       else
-         T := New_Label (Labels => Name_Id_Sets.Empty_Set,
-                         Domain => Domain,
-                         Def    => Tmp_Expr,
-                         Typ    => EW_Abstract (Etype (Expr)));
-      end if;
+         Pref_Expr := New_Temp_For_Expr (Pref_Expr);
+         T := Pref_Expr;
 
-      --  Now we insert checks. There are two things that we need to check
-      --  here: First, the expression(s) that define the slice range don't
-      --  contain RTE themselves; Second, if the range is non-empty, the
-      --  bounds of the range need to be in the bounds of the prefix.
+         if not Is_Static_Array_Type (Get_Ada_Node (+Get_Type (Pref_Expr)))
+           and then Get_Base_Type (Get_Type (Pref_Expr)) /= EW_Split
+         then
+            T := Array_Convert_To_Base (Domain, Pref_Expr);
+         end if;
 
-      if Domain = EW_Prog and then
-        not Range_Contained_In_Ty
-          (Ty_Ent,
-           Get_Range (Discrete_Range (Expr)))
-      then
-         declare
-            Rng      : constant Node_Id := Get_Range (Discrete_Range (Expr));
-            Tmp_Low  : constant W_Identifier_Id := New_Temp_Identifier;
-            Tmp_High : constant W_Identifier_Id := New_Temp_Identifier;
-            Ar_Low   : constant W_Expr_Id :=
-              Get_Array_Attr (Domain => EW_Pred,
-                              Expr   => Tmp_Expr,
-                              Attr   => Attribute_First,
-                              Dim    => 1);
-            Ar_High  : constant W_Expr_Id :=
-              Get_Array_Attr (Domain => EW_Pred,
-                              Expr   => Tmp_Expr,
-                              Attr   => Attribute_Last,
-                              Dim    => 1);
-            Check    : constant W_Pred_Id :=
-              New_Connection
-                (Op     => EW_Imply,
-                 Left   =>
-                   New_Relation (Domain  => EW_Pred,
-                                 Op_Type => EW_Int,
-                                 Op      => EW_Le,
-                                 Left    => +Tmp_Low,
-                                 Right   => +Tmp_High),
-                 Right  =>
-                   New_And_Then_Expr
-                     (Domain => EW_Pred,
-                      Left   =>
-                        New_Relation
-                          (Domain  => EW_Pred,
-                           Op_Type => EW_Int,
-                           Op      => EW_Le,
-                           Left    => +Ar_Low,
-                           Right   => +Tmp_Low,
-                           Op2     => EW_Le,
-                           Right2  => +Ar_High),
-                      Right =>
-                        New_Relation
-                          (Domain  => EW_Pred,
-                           Op_Type => EW_Int,
-                           Op      => EW_Le,
-                           Left    => +Ar_Low,
-                           Right   => +Tmp_High,
-                           Op2     => EW_Le,
-                           Right2  => +Ar_High)));
-         begin
-            T :=
-              New_Typed_Binding
-                (Domain  => EW_Prog,
-                 Name    => Tmp_Low,
-                 Def     =>
-                 +Transform_Expr
-                   (Low_Bound (Rng),
-                    EW_Int_Type,
-                    EW_Prog,
-                    Params),
-                 Context =>
-                   New_Typed_Binding
-                     (Domain => EW_Prog,
-                      Name   => Tmp_High,
-                      Def    =>
-                      +Transform_Expr
-                        (High_Bound (Rng),
-                         EW_Int_Type,
-                         Domain,
-                         Params),
-                      Context =>
-                      +Sequence
-                        (New_Located_Assert (Expr, Check, VC_Range_Check),
-                         +T)));
-         end;
-      end if;
+         if Domain = EW_Prog then
+            declare
+               Ar_Low   : constant W_Expr_Id :=
+                 Get_Array_Attr (Domain => EW_Pred,
+                                 Expr   => Pref_Expr,
+                                 Attr   => Attribute_First,
+                                 Dim    => 1);
+               Ar_High  : constant W_Expr_Id :=
+                 Get_Array_Attr (Domain => EW_Pred,
+                                 Expr   => Pref_Expr,
+                                 Attr   => Attribute_Last,
+                                 Dim    => 1);
+               Check    : constant W_Pred_Id :=
+                 New_Connection
+                   (Op     => EW_Imply,
+                    Left   =>
+                      New_Relation (Domain  => EW_Pred,
+                                    Op_Type => EW_Int,
+                                    Op      => EW_Le,
+                                    Left    => Low_Expr,
+                                    Right   => High_Expr),
+                    Right  =>
+                      New_And_Then_Expr
+                        (Domain => EW_Pred,
+                         Left   =>
+                           New_Relation
+                             (Domain  => EW_Pred,
+                              Op_Type => EW_Int,
+                              Op      => EW_Le,
+                              Left    => +Ar_Low,
+                              Right   => Low_Expr,
+                              Op2     => EW_Le,
+                              Right2  => +Ar_High),
+                         Right =>
+                           New_Relation
+                             (Domain  => EW_Pred,
+                              Op_Type => EW_Int,
+                              Op      => EW_Le,
+                              Left    => +Ar_Low,
+                              Right   => +High_Expr,
+                              Op2     => EW_Le,
+                              Right2  => +Ar_High)));
+            begin
+               T :=
+                 +Sequence
+                 (New_Located_Assert (Expr, Check, VC_Range_Check), +T);
+            end;
+         end if;
 
-      --  ??? Currently, if Slice bounds are not static, they get forgotten,
-      --  because we do not actually use the expression(s) that define the
-      --  slice range other than for absence of RTE checks. TBD. For static
-      --  ranges, this still works, because access to the bounds of the slice
-      --  is done by going through the subtype declaration, which has the
-      --  necessary definitions in case of static bounds.
-
-      --  if a tmp was generated for the expression, introduce the binding here
-
-      if Need_Tmp then
          T :=
-           New_Typed_Binding
+           Binding_For_Temp
+             (Domain  => Domain,
+              Tmp     => Pref_Expr,
+              Context => T);
+         T :=
+           Array_Convert_From_Base
              (Domain => Domain,
-              Name   => Tmp_Var,
-              Def    => +Orig_Expr,
+              Ar     => T,
+              Target => Get_Ada_Node (+Target_Ty),
+              First  => Low_Expr,
+              Last   => High_Expr);
+         T :=
+           Binding_For_Temp
+             (Domain  => Domain,
+              Tmp     => Low_Expr,
+              Context => T);
+         T :=
+           Binding_For_Temp
+             (Domain  => Domain,
+              Tmp     => High_Expr,
               Context => T);
       end if;
+
       return T;
    end Transform_Slice;
 
@@ -3494,28 +3398,80 @@ package body Gnat2Why.Expr is
    is
       Lvalue   : constant Node_Id := Name (Stmt);
       Exp_Entity : constant W_Type_Id := Expected_Type_Of_Prefix (Lvalue);
+      L_Type   : constant W_Type_Id :=
+        EW_Abstract (Etype (Lvalue));
+      T        : W_Prog_Id :=
+        +Transform_Expr
+        (Expression (Stmt),
+         L_Type,
+         EW_Prog,
+         Params => Body_Params);
+      Need_Check : constant Boolean :=
+        Present (Get_Ada_Node (+L_Type)) and then
+        Is_Array_Type (Get_Ada_Node (+L_Type)) and then
+        not Is_Static_Array_Type (Get_Ada_Node (+L_Type));
+      Tmp      : constant W_Expr_Id :=
+        New_Temp_For_Expr (+T, Need_Check);
    begin
 
       --  The Exp_Entity type is in fact the type that is expected in Why.
-      --  The Etype of Lvalue is a more precise type entity in Ada. We have to
+      --  The L_Type is a more precise type entity in Ada. We have to
       --  respect both constraints here, so we first convert to the Ada type
       --  (to get checks), and then convert to Why (without checks) to get the
       --  types right.
 
+      if Need_Check then
+         declare
+            Check : W_Pred_Id := True_Pred;
+            Lval  : constant W_Expr_Id :=
+              New_Temp_For_Expr (Transform_Expr (Lvalue, EW_Term, Body_Params),
+                                 True);
+            Dim   : constant Positive :=
+              Positive (Number_Dimensions (Get_Ada_Node (+L_Type)));
+         begin
+            for I in 1 .. Dim loop
+               declare
+                  Input_Length    : constant W_Expr_Id :=
+                    Build_Length_Expr (EW_Term, Tmp, I);
+                  Expected_Length : constant W_Expr_Id :=
+                    Build_Length_Expr (EW_Term, Lval, I);
+               begin
+                  Check :=
+                    +New_And_Then_Expr
+                    (Domain => EW_Pred,
+                     Left   => +Check,
+                     Right  =>
+                       New_Relation
+                         (Domain  => EW_Pred,
+                          Op_Type => EW_Int,
+                          Op      => EW_Eq,
+                          Left    => +Input_Length,
+                          Right   => +Expected_Length));
+               end;
+            end loop;
+            T :=
+              Sequence
+                (New_Located_Assert (Stmt, Check, VC_Length_Check),
+                 +Tmp);
+            T := +Binding_For_Temp (Ada_Node => Empty,
+                                   Domain   => EW_Prog,
+                                   Tmp      => Lval,
+                                   Context  => +T);
+         end;
+      else
+         T := +Tmp;
+      end if;
+      T :=
+        +Insert_Simple_Conversion
+        (Domain => EW_Prog,
+         To     => Exp_Entity,
+         Expr   => +T);
+      T := +Binding_For_Temp (Empty, EW_Prog, Tmp, +T);
       return
         Gnat2Why.Expr.New_Assignment
           (Ada_Node => Stmt,
            Lvalue   => Lvalue,
-           Expr     =>
-             +Insert_Simple_Conversion
-               (Domain => EW_Prog,
-                To     => Exp_Entity,
-                Expr   =>
-                  +Transform_Expr
-                  (Expression (Stmt),
-                   EW_Abstract (Etype (Lvalue)),
-                   EW_Prog,
-                   Params => Body_Params)));
+           Expr     => T);
    end Transform_Assignment_Statement;
 
    -----------------------------
@@ -3997,7 +3953,7 @@ package body Gnat2Why.Expr is
         (if Is_Component_Left_Opnd (Expr) then
            Nkind (Left_Opnd (Expr)) in N_Identifier | N_Expanded_Name
          else
-           (Is_Constrained (Etype (Left_Opnd (Expr)))
+           (Is_Static_Array_Type (Etype (Left_Opnd (Expr)))
               or else
             Nkind (Left_Opnd (Expr)) in N_Identifier | N_Expanded_Name));
       Left_Name : constant W_Expr_Id :=
@@ -4008,7 +3964,7 @@ package body Gnat2Why.Expr is
         (if Is_Component_Right_Opnd (Expr) then
            Nkind (Right_Opnd (Expr)) in N_Identifier | N_Expanded_Name
          else
-           (Is_Constrained (Etype (Right_Opnd (Expr)))
+           (Is_Static_Array_Type (Etype (Right_Opnd (Expr)))
               or else
             Nkind (Right_Opnd (Expr)) in N_Identifier | N_Expanded_Name));
       Right_Name : constant W_Expr_Id :=
@@ -4022,6 +3978,8 @@ package body Gnat2Why.Expr is
       Low_Type   : Entity_Id;
       One_Term   : constant W_Expr_Id :=
         New_Integer_Constant (Value => Uint_1);
+      Exp_Type   : constant Entity_Id :=
+        Get_Ada_Node (+EW_Abstract (Etype (Expr)));
 
       function Build_Last_Expr return W_Expr_Id;
       --  build the expression that yields the value of the 'Last attribute
@@ -4063,7 +4021,7 @@ package body Gnat2Why.Expr is
 
       Low_Type := First_Subtype (Root_Type (Base_Type (Etype (Expr))));
 
-      if Is_Constrained (Low_Type) then
+      if Is_Static_Array_Type (Low_Type) then
          First_Expr := Get_Array_Attr (Domain, Low_Type, Attribute_First, 1);
 
       elsif Is_Component_Left_Opnd (Expr) then
@@ -4105,7 +4063,7 @@ package body Gnat2Why.Expr is
       --  the new low bound is the one of the left opnd. Correct that.
 
       if not Is_Component_Left_Opnd (Expr)
-        and then Is_Constrained (Low_Type)
+        and then Is_Static_Array_Type (Low_Type)
       then
          T :=
            New_Call
@@ -4126,9 +4084,9 @@ package body Gnat2Why.Expr is
       --  unconstrained representation. This situation also requires a range
       --  check.
 
-      if not Is_Constrained (Etype (Expr)) then
+      if not Is_Static_Array_Type (Etype (Expr)) then
          declare
-            Target    : constant Entity_Id := Nth_Index_Type (Etype (Expr), 1);
+            Target    : constant Entity_Id := Nth_Index_Type (Exp_Type, 1);
             Last_Expr : W_Expr_Id := Build_Last_Expr;
          begin
             if Domain = EW_Prog then
@@ -4139,7 +4097,7 @@ package body Gnat2Why.Expr is
                                            Check_Kind => RCK_Range);
             end if;
             T := Array_Convert_From_Base (Domain => Domain,
-                                          Target => Etype (Expr),
+                                          Target => Exp_Type,
                                           Ar     => T,
                                           First  => First_Expr,
                                           Last   => Last_Expr);

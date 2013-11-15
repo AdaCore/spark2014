@@ -273,4 +273,36 @@ package Why.Gen.Expr is
 
    function Get_Type (E : W_Expr_Id) return W_Type_Id;
    --  extract the type of a given expression
+
+   -------------------------------------
+   -- Introducing temporary variables --
+   -------------------------------------
+
+   --  The following two functions are intended to be used as follows:
+   --  Tmp : W_Expr_Id := New_Temp_For_Expr (E);
+   --  .... build a complex expression R using Tmp ...
+   --  Result : W_Expr_Id := Binding_For_Temp (Tmp, R);
+
+   --  the result is that a temporary variable is introduced (when necessary)
+   --  for E, which is used in the complex expression. The user of these two
+   --  functions just uses "Tmp" everywhere and can forget about "E". The call
+   --  to Binding_For_Temp puts the let-binding on top of the resulting term,
+   --  or simply returns "Context" when no temp was in fact necessary.
+
+   function New_Temp_For_Expr
+     (E         : W_Expr_Id;
+      Need_Temp : Boolean := True) return W_Expr_Id;
+   --  Return a temp variable for the given expression, and store the provided
+   --  expression for later use. If Need_Temp is set, do not actually introduce
+   --  a temp variable.
+
+   function Binding_For_Temp
+     (Ada_Node : Node_Id := Empty;
+      Domain   : EW_Domain;
+      Tmp      : W_Expr_Id;
+      Context  : W_Expr_Id)
+      return W_Expr_Id;
+   --  Introduce a let binding for Tmp on top of "Context". The value of Tmp is
+   --  the one provided to the corresponding call to New_Temp_For_Expr.
+
 end Why.Gen.Expr;

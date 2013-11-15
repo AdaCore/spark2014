@@ -82,7 +82,7 @@ package body Why.Gen.Arrays is
       W_Ty    : constant W_Type_Id := Get_Type (Expr);
       Ty      : constant Entity_Id := Get_Ada_Node (+W_Ty);
    begin
-      if Is_Constrained (Ty) or else Get_Base_Type (W_Ty) = EW_Split then
+      if Is_Static_Array_Type (Ty) or else Get_Base_Type (W_Ty) = EW_Split then
          Args (Arg_Ind) := Expr;
       else
          Args (Arg_Ind) :=
@@ -296,16 +296,15 @@ package body Why.Gen.Arrays is
    -----------------------
 
    procedure Declare_Ada_Array
-     (Theory         : W_Theory_Declaration_Id;
-      Und_Ent        : Entity_Id)
+     (Theory : W_Theory_Declaration_Id;
+      E      : Entity_Id)
    is
-      Why_Name : constant W_Identifier_Id :=
-        To_Why_Id (Und_Ent, Local => True);
+      Why_Name : constant W_Identifier_Id := To_Why_Id (E, Local => True);
    begin
-      if Is_Constrained (Und_Ent) then
-         Declare_Constrained (Theory, Why_Name, Und_Ent);
+      if Is_Static_Array_Type (E) then
+         Declare_Constrained (Theory, Why_Name, E);
       else
-         Declare_Unconstrained (Theory, Why_Name, Und_Ent);
+         Declare_Unconstrained (Theory, Why_Name, E);
       end if;
    end Declare_Ada_Array;
 
@@ -617,7 +616,7 @@ package body Why.Gen.Arrays is
 
       --  If the type is constrained, just use the type information
 
-      if Is_Constrained (Ty) then
+      if Is_Static_Array_Type (Ty) then
          return Get_Array_Attr (Domain, Ty, Attr, Dim);
 
       --  if the object is a split object, look up the required expressions in
@@ -721,7 +720,7 @@ package body Why.Gen.Arrays is
       Ret_Ty   : constant W_Type_Id :=
         Type_Of_Node (Component_Type (Unique_Entity (Ty_Entity)));
    begin
-      if Is_Constrained (Ty_Entity) or else
+      if Is_Static_Array_Type (Ty_Entity) or else
         Get_Base_Type (Why_Ty) = EW_Split
       then
          Elts := Ar;
@@ -756,7 +755,7 @@ package body Why.Gen.Arrays is
         Prefix (M => Array_Modules (Positive (Dimension)),
                 W => WNE_Array_Update);
    begin
-      if Is_Constrained (Ty_Entity) or else
+      if Is_Static_Array_Type (Ty_Entity) or else
         Get_Base_Type (W_Ty) = EW_Split
       then
          return
