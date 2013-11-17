@@ -114,8 +114,16 @@ verification toolset with two main objectives:
 In this paper, we describe how \newspark achieves these objectives, based on
 practical use of the language and associated formal verification tool
 \gnatprove on three industrial case studies developed in the context of the
-\hilite~\footnote{\url{http://www.open-do.org/projects/hi-lite/}} and
-\openetcs~\footnote{\url{http://openetcs.org/}} research projects.
+\hilite\footnote{\url{http://www.open-do.org/projects/hi-lite/}} and
+\openetcs\footnote{\url{http://openetcs.org/}} research projects. The first
+case study by Mitsubishi Electric R\&D Centre Europe evaluates the use of Ada
+and SPARK on a small subset of requirements for the European Train Control
+Systems. The second case study by Astrium Space Transportation is an extensive
+evaluation of the technology over a period of three years, consisting in the
+re-development of various parts of a Flight Control and Vehicle Management
+software. The third case study by Altran compares the benefits of the new
+technology \wrt previous version, on the well-known Tokeneer case study in
+SPARK. 
 
 \section{SPARK 2014}
 
@@ -154,21 +162,21 @@ procedure Swap (A : in out Arr; X, Y : Idx) with
   Post => A(X) = A(Y)`Old and A(Y) = A(X)`Old;
 \end{lstlisting}
 
-In \newspark, subprogram contracts may additionally specify global variables
-read and written in the subprogram, as well the flow of information from inputs
-(parameters and global variables read) to outputs (parameters and global
-variables written). For example, the following contract for procedure
-\SPARK{Swap} specifies that the subprogram writes global variable
-\SPARK{Backup}, that the value of \SPARK{Backup} on return depends only on the
-input value of \SPARK{A}, and that the value of \SPARK{A} on return depends on
-the input values of all parameters.
+%% In \newspark, subprogram contracts may additionally specify global variables
+%% read and written in the subprogram, as well the flow of information from inputs
+%% (parameters and global variables read) to outputs (parameters and global
+%% variables written). For example, the following contract for procedure
+%% \SPARK{Swap} specifies that the subprogram writes global variable
+%% \SPARK{Backup}, that the value of \SPARK{Backup} on return depends only on the
+%% input value of \SPARK{A}, and that the value of \SPARK{A} on return depends on
+%% the input values of all parameters.
 
-\begin{lstlisting}
-procedure Swap (A : in out Arr; X, Y : Idx) with
-  Global  => (Output => Backup),
-  Depends => (Backup => A,
-              A     => (A, X, Y));
-\end{lstlisting}
+%% \begin{lstlisting}
+%% procedure Swap (A : in out Arr; X, Y : Idx) with
+%%   Global  => (Output => Backup),
+%%   Depends => (Backup => A,
+%%               A     => (A, X, Y));
+%% \end{lstlisting}
 
 %% Instead of preconditions and postconditions, or in addition to them, subprogram
 %% contracts may be specified by a set of disjoint and complete cases. For
@@ -242,7 +250,8 @@ formal verification is too difficult to achieve. Furthermore, by keeping the
 annotation language the same as the programming language, users don't have to
 learn one more language.
 
-Except for the Global and Depends contracts, all the contracts and assertion
+% Except for the Global and Depends contracts, 
+All the contracts and assertion
 pragmas presented previously lead to run-time assertions. If a given property
 is not satisfied at run time, an exception is raised with a message indicating
 the failing property, for example on the procedure \SPARK{Swap}:
@@ -250,14 +259,15 @@ the failing property, for example on the procedure \SPARK{Swap}:
 \begin{footnotesize}
 \begin{verbatim}
 failed precondition from swap.ads:4
-failed postcondition from swap.ads:5
-contract cases overlap for subprogram swap
-swap.ads:5 contract cases incomplete
-failed contract case at swap.ads:7
-Loop_Invariant failed at swap.adb:5
-Loop_Variant failed at swap.adb:4
 \end{verbatim}
 \end{footnotesize}
+
+%% failed postcondition from swap.ads:5
+%% contract cases overlap for subprogram swap
+%% swap.ads:5 contract cases incomplete
+%% failed contract case at swap.ads:7
+%% Loop_Invariant failed at swap.adb:5
+%% Loop_Variant failed at swap.adb:4
 
 Another key benefit of executable contracts is that they can be used by other
 tools working at the level of code. For example, the CodePeer~\cite{codepeer}
@@ -277,7 +287,9 @@ performs two different analyses:
 \end{enumerate}
 
 Flow analysis checks correct access to data in the program: correct access to
-global variables (as specified in Global and Depends contracts) and correct
+global variables
+% (as specified in Global and Depends contracts) 
+and correct
 access to initialized data. It is a fast static analysis (typically comparable
 with compilation time) based on the computation of the Program Dependence
 Graphs.~\cite{Horwitz:1988:ISU:53990.53994}
@@ -285,7 +297,7 @@ Graphs.~\cite{Horwitz:1988:ISU:53990.53994}
 Proof is used to demonstrate that the program is free from run-time errors, and
 that the specified contracts are correctly implemented. It internally generates
 mathematical formulas for each property, that are given to the automatic prover
-\altergo.~\footnote{\url{http://alt-ergo.ocamlpro.com/}} If \altergo manages to
+\altergo.\footnote{\url{http://alt-ergo.ocamlpro.com/}} If \altergo manages to
 prove the formula in the given time, then the property is known to
 hold. Otherwise, more work is required from the user to understand why the
 property is not proved.
@@ -306,8 +318,8 @@ subprogram.
 A very useful feature of \gnatprove to investigate unproved properties is its
 ability to display the paths in the program that lead to unproved
 properties. This path can be displayed in
-GPS~\footnote{\url{http://www.adacore.com/gnatpro/toolsuite/gps/}} or in
-Eclipse~\footnote{\url{http://www.adacore.com/gnatpro/toolsuite/gnatbench/}},
+GPS\footnote{\url{http://www.adacore.com/gnatpro/toolsuite/gps/}} or in
+Eclipse\footnote{\url{http://www.adacore.com/gnatpro/toolsuite/gnatbench/}},
 the two Integrated Development Environments which support \newspark. The user
 can also change the parameters of the tool to perform more precise proofs, at
 the expense of longer running time.
@@ -361,7 +373,7 @@ not as far from software requirements as one would expect.
 
 We made several experiments but due to space constraints we will only detail
 one of them. The complete code is available
-online.~\footnote{\url{https://github.com/openETCS/model-evaluation/tree/master/model/GNATprove-MERCE}}
+online.\footnote{\url{https://github.com/openETCS/model-evaluation/tree/master/model/GNATprove-MERCE}}
 
 This example is the coding of step functions, \aka functions
 constant by interval, used in the \textit{Speed and distance monitoring}
@@ -396,17 +408,16 @@ function (as first element of the array) in component \SPARK{Step}. Each
 delimiter of type \SPARK{Delimiter_Entry} contains the delimiter position
 (\SPARK{Delimiter}) and the associated constant value (\SPARK{Value}) for the
 function. The number of delimiters used is stored in component
-\SPARK{Num_Delim}.
-
-We defined several subprograms that query or update step functions:
-\begin{itemize}
-\item \SPARK{Get_Value(SFun, X)} returns the value of step function \SPARK{SFun}
-  at point \SPARK{X};
-\item \SPARK{Minimum_Until_Point(SFun, X)} returns the minimum of the step
-  function \SPARK{SFun} until point \SPARK{X};
-\item \SPARK{Restrictive_Merge(SFun1, SFun2, Merge)} merges step functions
-  \SPARK{SFun1} and \SPARK{SFun2} into step function \SPARK{Merge}.
-\end{itemize}
+\SPARK{Num_Delim}. 
+We defined several subprograms that query or update step functions.
+%% \begin{itemize}
+%% \item \SPARK{Get_Value(SFun, X)} returns the value of step function \SPARK{SFun}
+%%   at point \SPARK{X};
+%% \item \SPARK{Minimum_Until_Point(SFun, X)} returns the minimum of the step
+%%   function \SPARK{SFun} until point \SPARK{X};
+%% \item \SPARK{Restrictive_Merge(SFun1, SFun2, Merge)} merges step functions
+%%   \SPARK{SFun1} and \SPARK{SFun2} into step function \SPARK{Merge}.
+%% \end{itemize}
 
 \subsection{Formalization of Properties}
 
@@ -558,7 +569,8 @@ Post =>
 \end{lstlisting}
 It would have been impossible to prove this contract automatically, so we wrote
 instead that the resulting function is the minimum of both input functions for
-all possible delimiter values:
+all possible delimiter values, which is logically equivalent and proved
+automatically:
 \begin{lstlisting}
 Post =>
   (for all i in
@@ -587,6 +599,10 @@ that could be broken by future code changes.
 
 \section{Flight Control and Vehicle Management in Space}
 \label{sec:space}
+
+This case study was carried in the project \hilite as a means to evaluate the
+adequacy of formal verification for future space programs. Detailed results
+have been published elsewhere.~\cite{lesens:2013:dasia}
 
 \subsection{Description of the Software}
 
@@ -710,66 +726,62 @@ the following objectives:
 %%           Get_Status (Other_Id, Events'Old))));
 %%\end{lstlisting}
 
-A majority of the program could be formally analyzed, although some subprograms
-fell outside the boundary of \newspark.
-The following table provides for each component:
-the number of subprograms fully in \newspark (``Ok''),
-the number of bodies not in \newspark (``BN''),
-the number of specifications not in \newspark (``SN''),
-the number of bodies not yet in \newspark (``BNY'') and
-the number of specifications not yet in \newspark (``SNY'').
+A majority of the program could be formally analyzed (1505 out of 2054
+subprograms), although some subprograms fell outside the boundary of \newspark.
+Subprograms that could not be analyzed either used access types (\aka
+``pointers'') that are outside the language (87 subprograms), or unchecked type
+conversions that are not verified (377 subprograms).  The 377 subprograms using
+unchecked type conversions are very small subprograms defined in a library for
+reading external inputs and could be validated by intensive testing. The
+remaining unanalyzed subprograms used features that are expected to be included
+in a future version of the language: class wide types (53 subprograms), tagged
+types (81 subprograms) and specific attributes (10 subprograms). These
+correspond to Object Oriented Programming features, allowing dynamic binding of
+subprograms depending on the type of objects at run time.
 
-\vspace{5mm}
+%% The following table provides for each component: the number of subprograms
+%% fully in \newspark (``Ok''), the number of bodies not in \newspark (``BN''),
+%% the number of specifications not in \newspark (``SN''), the number of bodies
+%% not yet in \newspark (``BNY'') and the number of specifications not yet in
+%% \newspark (``SNY'').
 
-\begin{tabular}{|l|c|c|c|c|c|}
-\hline
-Component   & Ok  & BN  & SN & BNY & SNY \\
-\hline
-Library     &  15 &   0 &  0 &   0 &   0 \\
-\hline
-Algorithms  &  30 &   0 &  0 &   0 &   0 \\
-\hline
-Time        &   3 &   0 &  0 &   0 &   0 \\
-\hline
-Variable    &  85 &   0 &  0 &   0 &   0 \\
-\hline
-Variables   & 140 &   0 &  0 &   0 &   0 \\
-\hline
-Events      &  24 &   0 &  0 &   0 &   0 \\
-\hline
-Expressions & 331 &   0 &  0 &   0 &   0 \\
-\hline
-Parameters  &  62 &   0 &  0 &   0 &   0 \\
-\hline
-Units       &  76 &   0 &  0 &  13 &  13 \\
-\hline
-Sequences   & 192 &  28 & 15 &   3 &   3 \\
-\hline
-OBCP        & 547 & 447 & 30 &  13 &  13 \\
-\hline
-\end{tabular}
+%% \vspace{5mm}
 
-\vspace{5mm}
+%% \begin{tabular}{|l|c|c|c|c|c|}
+%% \hline
+%% Component   & Ok  & BN  & SN & BNY & SNY \\
+%% \hline
+%% Library     &  15 &   0 &  0 &   0 &   0 \\
+%% \hline
+%% Algorithms  &  30 &   0 &  0 &   0 &   0 \\
+%% \hline
+%% Time        &   3 &   0 &  0 &   0 &   0 \\
+%% \hline
+%% Variable    &  85 &   0 &  0 &   0 &   0 \\
+%% \hline
+%% Variables   & 140 &   0 &  0 &   0 &   0 \\
+%% \hline
+%% Events      &  24 &   0 &  0 &   0 &   0 \\
+%% \hline
+%% Expressions & 331 &   0 &  0 &   0 &   0 \\
+%% \hline
+%% Parameters  &  62 &   0 &  0 &   0 &   0 \\
+%% \hline
+%% Units       &  76 &   0 &  0 &  13 &  13 \\
+%% \hline
+%% Sequences   & 192 &  28 & 15 &   3 &   3 \\
+%% \hline
+%% OBCP        & 547 & 447 & 30 &  13 &  13 \\
+%% \hline
+%% \end{tabular}
 
-Subprograms are said to be not in \newspark when they use access types (\aka
-``pointers'') that are either outside the language (87 subprograms), or when
-they use unchecked type conversions that are not verified (377 subprograms).
-The unchecked type conversions are used in a library for reading external
-inputs. The 377 subprograms are very small and shall be validated by intensive
-testing.
+%% \vspace{5mm}
 
-Subprograms are said to be not yet in \newspark when they use features that are
-expected to be included in a future version of the language: class wide types
-(53 subprograms), tagged types (81 subprograms) and specific attributes (10
-subprograms). These correspond to Object Oriented Programming features,
-allowing dynamic binding of subprograms depending on the type of objects at run
-time.
-
-Subprograms in columns ``Ok'' and ``BN'' above were specified with a
-precondition and a postcondition when appropriate.  The following table
-provides for each component: the number of lines of code (``Size''), the number
-of preconditions (``Pre''), the number of postconditions (``Post'') and the
-duration of analysis in seconds (``Duration''):
+Subprograms that were analyzed were first specified with a precondition and a
+postcondition. The following table provides for each
+component: the number of lines of code (``Size''), the number of preconditions
+(``Pre''), the number of postconditions (``Post'') and the duration of analysis
+in seconds (``Duration''):
 
 \vspace{5mm}
 
@@ -839,7 +851,6 @@ loop  preservation  & 14     & 14     & 100 \\
 \vspace{5mm}
 
 These results are globally satisfactory, a quite limited number of checks having not been proved.
-
 All unproved checks were analyzed to determine why they were not proved, which
 uncovered a few limitations of the tool. Some algorithmic functions
 (\eg trigonometric functions) are not completely known by \gnatprove and then
@@ -920,7 +931,7 @@ generated automatically.
 
 \subsection{Description of the Software}
 
-Tokeneer~\footnote{\url{www.adacore.com/sparkpro/tokeneer}} is a highly secure
+Tokeneer\footnote{\url{www.adacore.com/sparkpro/tokeneer}} is a highly secure
 biometric software system that was originally developed by Altran. The system
 provides protection to secure information held on a network of workstations
 situated in a physically secure enclave. The Tokeneer project was commissioned
@@ -969,28 +980,33 @@ concatenation and array slices.
 
 The information that values of variables respect the constraints of their type
 is available for proofs with the new toolset. This simplifies both the work of
-the programmer and the code itself. Consider the following code segment:
+the programmer and the code itself.  In \oldspark, it was necessary to add many
+lines of assertions to repeat that the values of variables and components are
+within the bounds allowed by their type, as this information was lost inside
+loops.  The new tools are more sophisticated and preserve more of the context.
 
-\begin{lstlisting}
-for I in LogFileIndexT loop
-  if LogFilesStatus(I) = Used then
-    if UsedLogFiles.Length = 0 then
-      UsedLogFiles.Head := LogFileIndexT'First;
-      UsedLogFiles.LastI := LogFileIndexT'First;
-      UsedLogFiles.Length := 1;
-      UsedLogFiles.List(UsedLogFiles.Head) := I;
-    else
-      for J in LogFileIndexT
-        range 1..UsedLogFiles.LastI
-      loop
-        ...
-\end{lstlisting}
+%% Consider the following code segment:
 
-In \oldspark, it was necessary to add 25 lines of assertions to repeat that the
-values of variables like \SPARK{I} and components like
-\SPARK{UsedLogFiles.Head} are within the bounds allowed by their type, as this
-information was lost inside loops. The new tools are more sophisticated and
-preserve more of the context.
+%% \begin{lstlisting}
+%% for I in LogFileIndexT loop
+%%   if LogFilesStatus(I) = Used then
+%%     if UsedLogFiles.Length = 0 then
+%%       UsedLogFiles.Head := LogFileIndexT'First;
+%%       UsedLogFiles.LastI := LogFileIndexT'First;
+%%       UsedLogFiles.Length := 1;
+%%       UsedLogFiles.List(UsedLogFiles.Head) := I;
+%%     else
+%%       for J in LogFileIndexT
+%%         range 1..UsedLogFiles.LastI
+%%       loop
+%%         ...
+%% \end{lstlisting}
+
+%% In \oldspark, it was necessary to add 25 lines of assertions to repeat that the
+%% values of variables like \SPARK{I} and components like
+%% \SPARK{UsedLogFiles.Head} are within the bounds allowed by their type, as this
+%% information was lost inside loops. 
+
 
 %% However, at this point, it should be pointed out that since the
 %% development of the Tokeneer project the \oldspark tools have greatly
@@ -999,13 +1015,13 @@ preserve more of the context.
 
 \subsection{Formalization of Properties}
 
-The contracts that have been added in the Tokeneer source code consist
-of information flow contracts expressed as Depends aspects and
-functional behavioral contracts expressed as Pre and Post aspects.
+The contracts that have been added in the Tokeneer source code consist of
+information flow contracts expressed as Depends aspects and functional
+behavioral contracts expressed as Pre and Post aspects.
 
-The Depends aspects facilitate flow analysis of the code. Flow
-analysis detects improper initialization, identifies ineffective
-assignments and ensures secure flow of information.
+The Depends aspects (not presented previously for lack of space) facilitate
+flow analysis of the code. Flow analysis detects improper initialization,
+identifies ineffective assignments and ensures secure flow of information.
 
 The Pre and Post aspects enable the prover to show that the code is
 free from run-time exceptions, such as buffer overflow or
@@ -1035,14 +1051,6 @@ Loop\_Invariant     & 10 \\
 \hline
 \end{tabular}
 
-\subsection{Formal Verification Results}
-
-The original source code of Tokeneer was proven to be free of run-time
-exceptions and some key security properties were proven to hold but
-full functional proof was not performed on the entirety of the code.
-
-\subsubsection{Fully specifying and proving a package}
-
 In order to measure the expressiveness and proving power of the
 \newspark tools, a specific package, on which functional behaviour
 proof had not been attempted, was selected and then fully augmented
@@ -1062,26 +1070,28 @@ determines if this string corresponds to an operation available to the
 administrator. If the operation is indeed available, then this
 operation is returned, otherwise \SPARK{NullOp} is returned.
 
-\begin{lstlisting}
-function OpIsAvailable
-  (TheAdmin : T; KeyedOp : Keyboard.DataT)
-  return OpAndNullT;
---# pre IsPresent(TheAdmin);
---# return R =>
---#   (R /= NullOp ->
---#     (R = OverrideLock <->
---#       prf_rolePresent(TheAdmin) = PrivTypes.Guard));
-\end{lstlisting}
-Here, the \oldspark postcondition serves only as a test case. It
-ensures that if a non null operation was returned and if that
+%% \begin{lstlisting}
+%% function OpIsAvailable
+%%   (TheAdmin : T; KeyedOp : Keyboard.DataT)
+%%   return OpAndNullT;
+%% --# pre IsPresent(TheAdmin);
+%% --# return R =>
+%% --#   (R /= NullOp ->
+%% --#     (R = OverrideLock <->
+%% --#       prf_rolePresent(TheAdmin) = PrivTypes.Guard));
+%% \end{lstlisting}
+The \oldspark postcondition served only as a test case. It
+ensured that if a non null operation was returned and if that
 operation was \SPARK{OverrideLock} then the administrator was of type
-\SPARK{Guard}. This annotation is incomplete since it does not specify
+\SPARK{Guard}. This annotation was incomplete since it did not specify
 any other kind of valid combinations of administrator types and their
-corresponding operations (\eg the administrator being of type
-\SPARK{SecurityOfficer} and the operation being
-\SPARK{UpdateConfigData} or \SPARK{ShutdownOp}) or under which
+corresponding operations
+%%  (\eg the administrator being of type
+%% \SPARK{SecurityOfficer} and the operation being
+%% \SPARK{UpdateConfigData} or \SPARK{ShutdownOp}) 
+or under which
 circumstances \SPARK{NullOp} should be returned.
-The \oldspark tools also prove all properties associated with
+The \oldspark tools proved all properties associated with
 the non-augmented \SPARK{admin} package but a total of 12 user rules had
 to be provided. The
 effort associated with proving the completed version of this
@@ -1106,11 +1116,15 @@ allowed for the current administrator then the result of function
 \SPARK{OpIsAvailable} is this operation, otherwise, the result is
 \SPARK{NullOp}.
 
+\subsection{Formal Verification Results}
+
+The original source code of Tokeneer was proven to be free of run-time
+exceptions and some key security properties were proven to hold but
+full functional proof was not performed on the entirety of the code.
+
 The \newspark tools discharge all 24 verification conditions
 associated with the augmented \SPARK{admin} package in a matter of
 seconds.
-
-\subsubsection{Overall provability}
 
 More than 95\% of the checks that were associated with the converted
 code were automatically discharged. The remaining 5\% consisted of
@@ -1172,6 +1186,18 @@ achieved and resort to testing for the rest.
 % denoting instrinsic properties of \newspark, and the dissimilarities,
 % which may be explained by differences in domains, backgrounds,
 % processes, \etc
+
+Not surprisingly, the lessons learned in all three case studies partly reflect
+the level of expertise in Ada and SPARK of the engineers who carried the case
+studies. The first case study was a first-time experience with Ada and SPARK
+from someone with extensive experience in other programming languages (C) and
+formal verification tools (B~Method, Frama-C), hence the very positive feedback
+on the support for rich data types. The second case study was the occasion of a
+discovery of Ada 2012 and SPARK 2014 from someone with previous experience of
+both Ada and SPARK, hence the emphasis on support for rich language
+features. The third case study was carried in the team who developed the
+previous versions of SPARK, hence the enthusiatic feedback on automatic proof
+improvements.
 
 The three case studies confirm some good properties of \newspark.
 One of the principal objectives of \newspark is to offer an expressive
