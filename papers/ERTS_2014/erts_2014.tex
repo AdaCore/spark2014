@@ -67,9 +67,6 @@
 \newcommand{\aka}{a.k.a.\xspace}
 \newcommand{\resp}{resp.\xspace}
 
-\newcommand{\SPARK}[1]{\lstinline[language=Ada,basicstyle={\footnotesize
-      \sffamily},framesep=0pt]$#1$}
-
 \urlstyle{sf}
 
 \begin{document}
@@ -149,10 +146,10 @@ approach~\cite{meyer:1988:OSC} as a means to separate responsibilities in
 software between a caller and a callee. The callee's \textit{precondition}
 states the responsibility of its caller, while the callee's
 \textit{postcondition} states the responsibility of the callee itself.  For
-example, the following contract for procedure \SPARK{Swap} specifies that it
+example, the following contract for procedure \verb|Swap| specifies that it
 should be called with index parameters within the range of the array parameter,
-and that \SPARK{Swap} will ensure on return that the corresponding values in
-the array have been swapped. Attribute \SPARK{Old} in the postcondition is used
+and that \verb|Swap| will ensure on return that the corresponding values in
+the array have been swapped. Attribute \verb|Old| in the postcondition is used
 to refer to values on entry to the subprogram.
 
 \begin{lstlisting}
@@ -165,7 +162,7 @@ procedure Swap (A : in out Arr; X, Y : Idx) with
 %% read and written in the subprogram, as well the flow of information from inputs
 %% (parameters and global variables read) to outputs (parameters and global
 %% variables written). For example, the following contract for procedure
-%% \SPARK{Swap} specifies that the subprogram writes global variable
+%% \verb|Swap| specifies that the subprogram writes global variable
 %% \SPARK{Backup}, that the value of \SPARK{Backup} on return depends only on the
 %% input value of \SPARK{A}, and that the value of \SPARK{A} on return depends on
 %% the input values of all parameters.
@@ -194,24 +191,25 @@ procedure Swap (A : in out Arr; X, Y : Idx) with
 %%      A(X) /= A(Y) => A /= A'Old);
 %% \end{lstlisting}
 
-New expressions make it easier to express contracts. If-expressions and
-case-expressions are the expression forms which correspond to the usual
-if-statements and case-statements. Note that an if-expression without else-part
-\SPARK{(if A then B)} expresses a logical implication of \SPARK{B} by
-\SPARK{A}. Quantified expressions \SPARK{(for all X in A)} and \SPARK{(for some
-  X in A)} correspond to the mathematical universal and existential
-quantifications, only on a bounded domain. Expression functions define a
-function with a single expression, like in functional programming languages. As
-expression functions can be part of the specification of programs (contrary to
-regular function bodies), they provide a powerful way to abstract complex parts
-of contracts.
+New expressions make it easier to express contracts. If-expressions
+and case-expressions are the expression forms which correspond to the
+usual if-statements and case-statements. Note that an if-expression
+without else-part \verb|(if A then B)| expresses a logical implication
+of \verb|B| by \verb|A|. Quantified expressions
+\verb|(for all X in A)| and \verb|(for some X in A)| correspond to the
+mathematical universal and existential quantifications, only on a
+bounded domain. Expression functions define a function with a single
+expression, like in functional programming languages. As expression
+functions can be part of the specification of programs (contrary to
+regular function bodies), they provide a powerful way to abstract
+complex parts of contracts.
 
 The second most useful feature in \newspark (after contracts) is the ability to
 specify properties of loops. A loop invariant expresses the cumulated effect
 of the loop up to that point. For example, the following loop invariant
-expresses that the array \SPARK{A} has been zeroed out up to the current loop
-index \SPARK{J}, and that the rest of the array has not been modified.
-Attribute \SPARK{Loop_Entry} is used to refer to values on entry to the loop.
+expresses that the array \verb|A| has been zeroed out up to the current loop
+index \verb|J|, and that the rest of the array has not been modified.
+Attribute \verb|Loop_Entry| is used to refer to values on entry to the loop.
 
 \begin{lstlisting}
 pragma Loop_Invariant
@@ -224,7 +222,7 @@ pragma Loop_Invariant
 
 A loop variant expresses that a quantity varies monotonically at each iteration
 of the loop, which can be used to show loop termination. For example, the
-following loop variant expresses that scalar variable \SPARK{J} increases at
+following loop variant expresses that scalar variable \verb|J| increases at
 each loop iteration.
 
 \begin{lstlisting}
@@ -253,7 +251,7 @@ learn one more language.
 All the previously presented contracts and assertion
 pragmas lead to run-time assertions. If a given property
 is not satisfied at run time, an exception is raised with a message indicating
-the failing property, for example on the procedure \SPARK{Swap}:
+the failing property, for example on the procedure \verb|Swap|:
 
 \begin{footnotesize}
 \begin{verbatim}
@@ -386,21 +384,21 @@ type Step_Function_t is record
 end record;
 \end{lstlisting}
 
-A step function of type \SPARK{Step_Function_t} can have up to 11 steps
+A step function of type \verb|Step_Function_t| can have up to 11 steps
 separated by 10 delimiters, stored together with the initial value of the step
-function (as first element of the array) in component \SPARK{Step}. Each
-delimiter of type \SPARK{Delimiter_Entry} contains the delimiter position
-(\SPARK{Delimiter}) and the associated constant value (\SPARK{Value}) for the
+function (as first element of the array) in component \verb|Step|. Each
+delimiter of type \verb|Delimiter_Entry| contains the delimiter position
+(\verb|Delimiter|) and the associated constant value (\verb|Value|) for the
 function. The number of delimiters used is stored in component
-\SPARK{Num_Delim}.
+\verb|Num_Delim|.
 We defined several subprograms that query or update step functions.
 %% \begin{itemize}
-%% \item \SPARK{Get_Value(SFun, X)} returns the value of step function \SPARK{SFun}
-%%   at point \SPARK{X};
-%% \item \SPARK{Minimum_Until_Point(SFun, X)} returns the minimum of the step
-%%   function \SPARK{SFun} until point \SPARK{X};
-%% \item \SPARK{Restrictive_Merge(SFun1, SFun2, Merge)} merges step functions
-%%   \SPARK{SFun1} and \SPARK{SFun2} into step function \SPARK{Merge}.
+%% \item \verb|Get_Value(SFun, X)| returns the value of step function \verb|SFun|
+%%   at point \verb|X|;
+%% \item \verb|Minimum_Until_Point(SFun, X)| returns the minimum of the step
+%%   function \verb|SFun| until point \verb|X|;
+%% \item \verb|Restrictive_Merge(SFun1, SFun2, Merge)| merges step functions
+%%   \verb|SFun1| and \verb|SFun2| into step function \verb|Merge|.
 %% \end{itemize}
 
 \subsection{Formalization of Properties}
@@ -409,8 +407,8 @@ We wanted to check full functional correctness of this critical unit. We used
 contracts to express the specifications of all subprograms.
 
 For example, we specified that, given a valid (\ie with strictly increasing
-delimiters) step function \SPARK{SFun} and a point \SPARK{X}, function
-\SPARK{Minimum_Until_Point} returns a value of the step function~(2) where the
+delimiters) step function \verb|SFun| and a point \verb|X|, function
+\verb|Minimum_Until_Point| returns a value of the step function~(2) where the
 step function reaches its minimum on the given domain~(1).
 
 \begin{lstlisting}
@@ -437,12 +435,12 @@ Post =>
         = SFun.Step(i).Value))));
 \end{lstlisting}
 
-The most complex subprogram we specified is \SPARK{Restrictive_Merge}.  We
-specified that, given two valid step functions \SPARK{SFun1} and \SPARK{SFun2}
-without too many delimiters, \SPARK{Restrictive_Merge} generates a step
-function \SPARK{Merge} that is valid, that contains all the delimiters of
-\SPARK{SFun1} and \SPARK{SFun2} and that, for each of those delimiters,
-the value of the \SPARK{Merge} step function is the minimum over both input
+The most complex subprogram we specified is \verb|Restrictive_Merge|.  We
+specified that, given two valid step functions \verb|SFun1| and \verb|SFun2|
+without too many delimiters, \verb|Restrictive_Merge| generates a step
+function \verb|Merge| that is valid, that contains all the delimiters of
+\verb|SFun1| and \verb|SFun2| and that, for each of those delimiters,
+the value of the \verb|Merge| step function is the minimum over both input
 step functions.
 
 %% \begin{lstlisting}
@@ -484,14 +482,14 @@ step functions.
 %%       Get_Value(SFun2, Merge.Step(i).Delimiter))));
 %% \end{lstlisting}
 
-%% Note that the signature of \SPARK{Restrictive_Merge} already specifies that
-%% \SPARK{SFun1} and \SPARK{SFun2} cannot be modified, as they are passed as
-%% \SPARK{in} parameters.
+%% Note that the signature of \verb|Restrictive_Merge| already specifies that
+%% \verb|SFun1| and \verb|SFun2| cannot be modified, as they are passed as
+%% \verb|in| parameters.
 
 Overall, the number of lines for contracts and assertion pragmas (in particular
 loop invariants) is about the same as the number of lines of code. We could
-have simplified the contracts by specifying that \SPARK{Is_Valid} is a type
-invariant of \SPARK{Step_Function_t}, but this Ada feature is not yet supported
+have simplified the contracts by specifying that \verb|Is_Valid| is a type
+invariant of \verb|Step_Function_t|, but this Ada feature is not yet supported
 in \newspark, although it is planned for the future.
 
 \subsection{Formal Verification Results}
@@ -510,7 +508,7 @@ We found that it lead to quite readable specifications.
 The second goal was to evaluate the automatic proving capabilities of \newspark
 on some parts of the specification. We were able to prove the complete absence
 of run-time errors, plus the contracts of all subprograms except the one of
-\SPARK{Restrictive_Merge}. In this procedure, the postcondition and the loop
+\verb|Restrictive_Merge|. In this procedure, the postcondition and the loop
 invariant (added to be able to prove the postcondition) could not be
 automatically proved by \altergo. The main reason is that the proof context is
 too big and \altergo gets lost in all the possible quantifier
@@ -527,7 +525,7 @@ reader. The ability inherited from Ada to define new data types for specific
 ranges, which are incompatible with other types, is crucial in this regard.
 
 Another important finding is that the code should be written with proof in
-mind. For example, function \SPARK{Minimum\_Until\_Point} was initially
+mind. For example, function \verb|Minimum_Until_Point| was initially
 unprovable, because an early exit in a loop lead to the formula
 \begin{multline*}
 (\forall~K. A(K-1)<A(K)) \wedge X<A(1) \\
@@ -540,7 +538,7 @@ achieve automatic proof with \altergo.
 
 A third finding is that contracts that can be automatically proved are
 not always the most natural contracts, \ie contracts a reviewer would
-understand more easily. For example, for \SPARK{Restrictive_Merge}
+understand more easily. For example, for \verb|Restrictive_Merge|
 procedure, we would have preferred to write that the resulting function
 is the minimum of both input functions for all possible input
 values:
@@ -568,7 +566,7 @@ proved automatically, like done for example in B~Method tools.
 
 Our last finding, not entirely surprising, is that writing the correct
 loop invariant for a complex loop is not an easy task, as we experienced
-it for procedure \SPARK{Restrictive_Merge}. It can require several
+it for procedure \verb|Restrictive_Merge|. It can require several
 hours of work of skilled people, trained in the proof environment and
 the use of the automatic prover. In such cases, the ability to
 compile and test the loop invariant is very useful to help ``debug''
@@ -919,7 +917,7 @@ by the US National Security Agency (NSA) to demonstrate the feasibility of
 developing systems to the level of rigor required by the higher assurance
 levels of the Common Criteria. The requirements of the system were captured
 using the Z notation and the implementation was in \oldspark. The original
-development artefacts, including all source code, are publicly available.
+development artifacts, including all source code, are publicly available.
 
 During this study, the source code for Tokeneer has been translated
 into \newspark. The core system now consists of approximately 10,000
@@ -930,7 +928,7 @@ peripherals connected to the core system.
 \subsection{Converting \oldspark to \newspark}
 
 For the majority of the code, translating \oldspark to \newspark was
-very straight forward since most of the original annotations map
+very straightforward since most of the original annotations map
 directly to the new ones. This section will focus on the more
 interesting occasions where the conversion was non-trivial.
 
@@ -943,12 +941,12 @@ function was defined with user rules, which are axioms expressed in a special
 syntax and given to the proof system. In \newspark, this
 behavior is simply given by the body of the ghost function.
 
-The Global aspect has an additional mode \SPARK{Proof\_In} in \newspark \wrt
+The Global aspect has an additional mode \verb|Proof_In| in \newspark \wrt
 \oldspark. This mode is used to specify global variables of a subprogram which
 appear solely within contracts and assertions. Therefore, the translation
-required separating global variables of mode \SPARK{in} that were used
-exclusively inside annotations (translated as \SPARK{Proof\_In} global
-variables), from those that were used in code (translated as \SPARK{Input}
+required separating global variables of mode \verb|in| that were used
+exclusively inside annotations (translated as \verb|Proof_In| global
+variables), from those that were used in code (translated as \verb|Input|
 global variables).
 
 Parts of the original code were specially annotated to be ignored during formal
@@ -983,8 +981,8 @@ loops.  The new tools are more sophisticated and preserve more of the context.
 %% \end{lstlisting}
 
 %% In \oldspark, it was necessary to add 25 lines of assertions to repeat that the
-%% values of variables like \SPARK{I} and components like
-%% \SPARK{UsedLogFiles.Head} are within the bounds allowed by their type, as this
+%% values of variables like \verb|I| and components like
+%% \verb|UsedLogFiles.Head| are within the bounds allowed by their type, as this
 %% information was lost inside loops.
 
 
@@ -1031,23 +1029,23 @@ Loop\_Invariant     & 10 \\
 \end{tabular}
 
 In order to measure the expressiveness and proving power of the
-\newspark tools, a specific package, on which functional behaviour
+\newspark tools, a specific package, on which functional behavior
 proof had not been attempted, was selected and then fully augmented
-with functional behaviour annotations. Package \SPARK{admin}, which is
+with functional behavior annotations. Package \verb|admin|, which is
 the package that was augmented, contains the state of the
 administrator of the system and a set of operations that
 administrators can perform.
 
-To illustrate how functional behaviour contracts were added, we will
-consider subroutine \SPARK{OpIsAvailable} of package \SPARK{admin}. An
-administrator can be either a \SPARK{UserOnly}, a \SPARK{Guard}, an
-\SPARK{AuditManager} or a \SPARK{SecurityOfficer}. Each type of
+To illustrate how functional behavior contracts were added, we will
+consider subroutine \verb|OpIsAvailable| of package \verb|admin|. An
+administrator can be either a \verb|UserOnly|, a \verb|Guard|, an
+\verb|AuditManager| or a \verb|SecurityOfficer|. Each type of
 administrator has a set of predefined operations that it is allowed to
-perform. Function \SPARK{OpIsAvailable} takes as input an
+perform. Function \verb|OpIsAvailable| takes as input an
 administrator and a string that is read from the keyboard and
 determines if this string corresponds to an operation available to the
 administrator. If the operation is indeed available, then this
-operation is returned, otherwise \SPARK{NullOp} is returned.
+operation is returned, otherwise \verb|NullOp| is returned.
 
 %% \begin{lstlisting}
 %% function OpIsAvailable
@@ -1061,17 +1059,17 @@ operation is returned, otherwise \SPARK{NullOp} is returned.
 %% \end{lstlisting}
 The \oldspark postcondition served only as a test case. It
 ensured that if a non null operation was returned and if that
-operation was \SPARK{OverrideLock} then the administrator was of type
-\SPARK{Guard}. This annotation was incomplete since it did not specify
+operation was \verb|OverrideLock| then the administrator was of type
+\verb|Guard|. This annotation was incomplete since it did not specify
 any other kind of valid combinations of administrator types and their
 corresponding operations
 %%  (\eg the administrator being of type
-%% \SPARK{SecurityOfficer} and the operation being
-%% \SPARK{UpdateConfigData} or \SPARK{ShutdownOp})
+%% \verb|SecurityOfficer| and the operation being
+%% \verb|UpdateConfigData| or \verb|ShutdownOp|)
 or under which
-circumstances \SPARK{NullOp} should be returned.
+circumstances \verb|NullOp| should be returned.
 The \oldspark tools proved all properties associated with
-the non-augmented \SPARK{admin} package but a total of 12 user rules had
+the non-augmented \verb|admin| package but a total of 12 user rules had
 to be provided. The
 effort associated with proving the completed version of this
 postcondition would have been significant and hence this was not attempted.
@@ -1089,11 +1087,11 @@ with
           xor OpIsAvailable'Result = NullOp;
 \end{lstlisting}
 This \newspark Post aspect states that we have two mutually
-exclusive cases. If there exists some operation in \SPARK{Opt} that
+exclusive cases. If there exists some operation in \verb|Opt| that
 matches the string read from the keyboard and this operation is
 allowed for the current administrator then the result of function
-\SPARK{OpIsAvailable} is this operation, otherwise, the result is
-\SPARK{NullOp}.
+\verb|OpIsAvailable| is this operation, otherwise, the result is
+\verb|NullOp|.
 
 \subsection{Formal Verification Results}
 
@@ -1102,7 +1100,7 @@ exceptions and some key security properties were proven to hold but
 full functional proof was not performed on the entirety of the code.
 
 The \newspark tools discharge all 24 verification conditions
-associated with the augmented \SPARK{admin} package in a matter of
+associated with the augmented \verb|admin| package in a matter of
 seconds.
 
 More than 95\% of the checks that were associated with the converted
@@ -1121,37 +1119,34 @@ proof.
 
 Thanks to the new toolset's proving power, users are no longer
 required to add intermediate cutpoints. In the Tokeneer case study,
-neither pragma Assert nor pragma Assert\_And\_Cut had to be provided
-to facilitate proof. However, it is hypothesised that their usage
-could improve readability of the code since it would signify that a
-certain property holds at a given point in the code. In addition,
-should manual proof be required, the verification conditions would be
-significantly smaller and hence proving them would be easier.
+pragma \verb|Assert| did not have to be provided to facilitate
+proof. However, it is hypothesised that its usage could improve
+readability of the code since it would signify that a certain property
+holds at a given point in the code.
 
-While augmenting package \SPARK{admin}, it was noticed that formulating
-the functional behaviour annotations based on the low level Z
+While augmenting package \verb|admin|, it was noticed that formulating
+the functional behavior annotations based on the low level Z
 specifications was very intuitive. This suggests that it might be
 possible for future projects to skip this step and directly provide
 \newspark annotated specifications.
 
 An interesting case of how executable semantics affect the way code
 and annotations have to be written was uncovered while attempting to
-prove package \SPARK{AuditLog}. Converting \oldspark annotations into
+prove package \verb|AuditLog|. Converting \oldspark annotations into
 their \newspark equivalents introduced several run-time checks that
 previously did not exist. The extra checks are a byproduct of the
 contracts and assertions being
 executable (Section~\ref{subsec:ExecutableContracts}). Some of these checks were
-not automatically discharged. A more in depth investigation revealed
+not automatically discharged. A more in-depth investigation revealed
 that an invariant was missing from the original specifications. This
 invariant described the property of always using at least one log file
-(\SPARK{UsedLogFile.Length >=
-1})\footnote{\url{
+(\verb|UsedLogFile.Length >= 1|)\footnote{\url{
 www.open-do.org/wp-content/uploads/2013/05/Industrial_Case_Studies_Final_Report.
 pdf}}.
 
 When analyzing a single package in isolation, it was easy to
 understand which verification conditions were proved and which were
-not. However, when more than one files were analyzed in a single run,
+not. However, when more than one file was analyzed in a single run,
 due to the magnitude of the output, it became increasing complicated
 to retain supervision of both individual and overall
 provability. Having a tool that summarizes the results and informs
@@ -1166,17 +1161,18 @@ resort to testing for the rest.
 % which may be explained by differences in domains, backgrounds,
 % processes, \etc
 
-Not surprisingly, the lessons learned in all three case studies partly reflect
-the level of expertise in Ada and SPARK of the engineers who carried the case
-studies. The first case study was a first-time experience with Ada and SPARK
-from someone with extensive experience in other programming languages (C) and
-formal verification tools (B~Method, Frama-C), hence the very positive feedback
-on the support for rich data types. The second case study was the occasion of a
-discovery of Ada 2012 and SPARK 2014 from someone with previous experience of
-both Ada and SPARK, hence the emphasis on support for rich language
-features. The third case study was carried in the team who developed the
-previous versions of SPARK, hence the enthusiatic feedback on automatic proof
-improvements.
+Not surprisingly, the lessons learned in all three case studies partly
+reflect the level of expertise in Ada and SPARK of the engineers who
+carried out the case studies. The first case study was a first-time
+experience with Ada and SPARK from someone with extensive experience
+in other programming languages (C) and formal verification tools
+(B~Method, Frama-C), hence the very positive feedback on the support
+for rich data types. The second case study was the occasion of a
+discovery of Ada 2012 and SPARK 2014 from someone with previous
+experience of both Ada and SPARK, hence the emphasis on support for
+rich language features. The third case study was carried in the team
+who developed the previous versions of SPARK, hence the enthusiastic
+feedback on automatic proof improvements.
 
 The three case studies confirm some good properties of \newspark.
 One of the principal objectives of \newspark is to offer an expressive
@@ -1239,12 +1235,13 @@ and~\ref{sec:space}).
 % evolutions of \newspark.
 
 Railway, space, and security are three domains subject to an important
-certification requirement that implies costly verification processes. The three
-case studies show that verification with \newspark can bring a solution to this
-problem thanks to an expressive language, executable contracts, and
-an improved provability. Even if there is still room for improvement in
-usability, the actual tool state already allows to integrate formal proofs into
-the standard developer's work-flow.
+certification requirement that implies costly verification
+processes. The three case studies show that verification with
+\newspark can bring a solution to this problem thanks to an expressive
+language, executable contracts, and improved provability. Even if
+there is still room for improvement in usability, the actual tool
+state already allows integration of formal proofs into the standard
+developer's work-flow.
 
 
 \bibliographystyle{plain}
