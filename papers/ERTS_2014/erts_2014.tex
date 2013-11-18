@@ -220,14 +220,14 @@ pragma Loop_Invariant
        A(K) = A'Loop_Entry(K)));
 \end{lstlisting}
 
-A loop variant expresses that a quantity varies monotonically at each iteration
-of the loop, which can be used to show loop termination. For example, the
-following loop variant expresses that scalar variable \verb|J| increases at
-each loop iteration.
+%% A loop variant expresses that a quantity varies monotonically at each iteration
+%% of the loop, which can be used to show loop termination. For example, the
+%% following loop variant expresses that scalar variable \verb|J| increases at
+%% each loop iteration.
 
-\begin{lstlisting}
-pragma Loop_Variant (Increases => J);
-\end{lstlisting}
+%% \begin{lstlisting}
+%% pragma Loop_Variant (Increases => J);
+%% \end{lstlisting}
 
 \subsection{Benefits of Executable Contracts}
 \label{subsec:ExecutableContracts}
@@ -267,10 +267,11 @@ failed precondition from swap.ads:4
 %% Loop_Variant failed at swap.adb:4
 
 Another key benefit of executable contracts is that they can be used by other
-tools working at the level of code. For example, the CodePeer~\cite{codepeer}
-static analysis tool uses contracts and assertion pragmas to issue more precise
-messages. Most notably, this allows also combining the results of formal
-verification and testing, when only part of a program is formally
+tools working at the level of code. For example, the
+CodePeer\footnote{\url{http://www.adacore.com/codepeer}} static analysis tool
+uses contracts and assertion pragmas to issue more precise messages. Most
+notably, this allows also combining the results of formal verification and
+testing, when only part of a program is formally
 analyzed~\cite{hiliteERTS2012}.
 
 \subsection{Key Tool Features}
@@ -284,8 +285,7 @@ global variables
 % (as specified in Global and Depends contracts)
 and correct
 access to initialized data. It is a fast static analysis (analysis time
-typically comparable with compilation time) based on the computation of the
-Program Dependence Graphs~\cite{Horwitz:1988:ISU:53990.53994}.
+typically comparable with compilation time).
 
 Proof is used to demonstrate that the program is free from run-time errors, and
 that the specified contracts are correctly implemented. It internally generates
@@ -299,14 +299,10 @@ As proof requires interactions between the user and the tool until the
 specification can be proved automatically, the efficiency and the granularity
 at which the tool can be applied are critical. For efficiency, \gnatprove uses
 a compilation-like model, where only parts that are impacted by a change need
-to be reanalyzed, where the dependencies are both syntactic (coarse-grain) and
-semantic (fine-grain). Also, the generation of formulas uses an efficient
-algorithm~\cite{leino:2005:ipl} that avoids the possible combinatorial
-explosion of the classical algorithm, and a small timeout of 1s is used by
-default for the prover. For convenient interaction with the user during the
-development of specifications, \gnatprove allows focusing on a single unit, a
-single subprogram inside this unit, or even a single line inside this
-subprogram.
+to be reanalyzed, and a fast generation of formulas~\cite{leino:2005:ipl}.
+For convenient interaction, \gnatprove
+allows focusing on a single unit, a single subprogram inside this unit, or even
+a single line inside this subprogram.
 
 A very useful feature of \gnatprove to investigate unproved properties is its
 ability to display the paths in the program that lead to unproved
@@ -532,7 +528,7 @@ unprovable, because an early exit in a loop lead to the formula
 \rightarrow (\forall~K. K>1 \rightarrow X<A(K))
 \end{multline*}
 which requires support for induction in the automatic prover, a feature still
-missing from most automatic provers~\cite{leino:2012:vmcai}. As the early exit
+missing from most automatic provers. As the early exit
 was not necessary for correct behavior, it was sufficient to remove it to
 achieve automatic proof with \altergo.
 
@@ -832,25 +828,26 @@ loop  preservation  & 14     & 14     & 100 \\
 
 These results are globally satisfactory, a quite limited number of checks having not been proved.
 All unproved checks were analyzed to determine why they were not proved, which
-uncovered a few limitations of the tool. Some algorithmic functions
+uncovered a few limitations of the tool: some algorithmic functions
 (\eg trigonometric functions) are not completely known by \gnatprove and then
-can not be used in proofs. \gnatprove has some difficulties to take into account rounding. For example, the second assertion below is not proved:
-\begin{lstlisting}
-pragma Assert (Y in -11160.002 .. 11160.002);
-Round_Y := Round_Closest (Y);
-pragma Assert (Round_Y in -11160.0 .. 11160.0);
-\end{lstlisting}
-\gnatprove currently does not prove non linear equations involving floating-point values. For example, the last assertion below is not proved:
-\begin{lstlisting}
-pragma Assert (X in 0.0 .. 180.0);
-pragma Assert (Y in -180.0 .. 0.0);
-pragma Assert (Z in 0.0 .. 1.0);
-pragma Assert (X + Y >= 0.0);
-Result := X + Y * Z;
-pragma Assert (Result in 0.0 .. 360.0);
-\end{lstlisting}
-\gnatprove is not yet able to verify index checks when accessing an array whose
-dimension is defined by a record discriminant.
+can not be used in proofs, \gnatprove had some difficulties to take into account rounding,
+%% For example, the second assertion below is not proved:
+%% \begin{lstlisting}
+%% pragma Assert (Y in -11160.002 .. 11160.002);
+%% Round_Y := Round_Closest (Y);
+%% pragma Assert (Round_Y in -11160.0 .. 11160.0);
+%% \end{lstlisting}
+\gnatprove could not prove non linear equations involving floating-point values,
+%% For example, the last assertion below is not proved:
+%% \begin{lstlisting}
+%% pragma Assert (X in 0.0 .. 180.0);
+%% pragma Assert (Y in -180.0 .. 0.0);
+%% pragma Assert (Z in 0.0 .. 1.0);
+%% pragma Assert (X + Y >= 0.0);
+%% Result := X + Y * Z;
+%% pragma Assert (Result in 0.0 .. 360.0);
+%% \end{lstlisting}
+\gnatprove could not prove some index checks in discriminated record.
 %%, for example:
 %%\begin{lstlisting}
 %%   subtype R is Integer range 1 .. 100;
@@ -866,7 +863,7 @@ dimension is defined by a record discriminant.
 %%In function ``G'', the index check ``X.A (I)'' is not proved even if ``I'' is
 %%defined in the range of ``X.A''
 %%An improvement of \gnatprove is in progress in order to deal with such case.
-The remaining non proved checks are due to a too complex subprogram.
+The remaining non proved checks were due to too complex subprograms.
 These subprograms shall be split in several smaller subprograms to be proved.
 
 
@@ -997,15 +994,6 @@ The contracts that have been added in the Tokeneer source code consist of
 information flow contracts expressed as Depends aspects and functional
 behavioral contracts expressed as Pre and Post aspects.
 
-The Depends aspects (not presented previously for lack of space) facilitate
-flow analysis of the code. Flow analysis detects improper initialization,
-identifies ineffective assignments and ensures secure flow of information.
-
-The Pre and Post aspects enable the prover to show that the code is
-free from run-time exceptions, such as buffer overflow or
-divide-by-zero and assist in proving that key security properties are
-guaranteed by the implementation.
-
 \begin{tabular}{|l|c|}
 \hline
 {\bf Aspect/Pragma}       & {\bf Num. of occurrences}  \\
@@ -1027,6 +1015,15 @@ Assume              & 3 \\
 Loop\_Invariant     & 10 \\
 \hline
 \end{tabular}
+
+The Depends aspects (not presented previously for lack of space) facilitate
+flow analysis of the code. Flow analysis detects improper initialization,
+identifies ineffective assignments and ensures secure flow of information.
+
+The Pre and Post aspects enable the prover to show that the code is
+free from run-time exceptions, such as buffer overflow or
+divide-by-zero and assist in proving that key security properties are
+guaranteed by the implementation.
 
 In order to measure the expressiveness and proving power of the
 \newspark tools, a specific package, on which functional behavior
@@ -1161,18 +1158,11 @@ resort to testing for the rest.
 % which may be explained by differences in domains, backgrounds,
 % processes, \etc
 
-Not surprisingly, the lessons learned in all three case studies partly
-reflect the level of expertise in Ada and SPARK of the engineers who
-carried out the case studies. The first case study was a first-time
-experience with Ada and SPARK from someone with extensive experience
-in other programming languages (C) and formal verification tools
-(B~Method, Frama-C), hence the very positive feedback on the support
-for rich data types. The second case study was the occasion of a
-discovery of Ada 2012 and SPARK 2014 from someone with previous
-experience of both Ada and SPARK, hence the emphasis on support for
-rich language features. The third case study was carried in the team
-who developed the previous versions of SPARK, hence the enthusiastic
-feedback on automatic proof improvements.
+Not surprisingly, the lessons learned in all three case studies partly reflect
+the level of expertise in Ada and SPARK of the engineers involved: first-time
+experience with Ada and SPARK for the first case study, extensive experience in
+previous versions of Ada and SPARK for the second case study, member of the
+team developing \gnatprove for the third case study.
 
 The three case studies confirm some good properties of \newspark.
 One of the principal objectives of \newspark is to offer an expressive
@@ -1239,10 +1229,9 @@ certification requirement that implies costly verification
 processes. The three case studies show that verification with
 \newspark can bring a solution to this problem thanks to an expressive
 language, executable contracts, and improved provability. Even if
-there is still room for improvement in usability, the actual tool
-state already allows integration of formal proofs into the standard
-developer's work-flow.
-
+there is still room for improvement in usability, the current toolset
+already allows integration of formal proofs into the standard
+developer's workflow.
 
 \bibliographystyle{plain}
 \bibliography{erts_2014}
