@@ -70,6 +70,8 @@
 \newcommand{\SPARK}[1]{\lstinline[language=Ada,basicstyle={\footnotesize
       \sffamily},framesep=0pt]$#1$}
 
+\urlstyle{sf}
+
 \begin{document}
 
 \title{Rail, Space, Security: Three Case Studies for SPARK 2014}
@@ -102,13 +104,10 @@ Certification and dependability
 
 \section{Introduction}
 
-\newspark is a major evolution of the SPARK subset of Ada and associated formal
-verification toolset with two main objectives:
-%
-\begin{enumerate}
-\item being accessible to non-expert users, and
-\item being compatible with testing.
-\end{enumerate}
+\newspark is a major evolution of the SPARK subset of Ada and
+associated formal verification toolset with two main objectives: (i)
+being accessible to non-expert users, and (ii) being compatible with
+testing.
 
 In this paper, we describe how \newspark achieves these objectives, based on
 practical use of the language and associated formal verification tool
@@ -278,13 +277,9 @@ analyzed~\cite{hiliteERTS2012}.
 
 \subsection{Key Tool Features}
 
-\gnatprove is the formal verification tool that analyzes \newspark code. It
-performs two different analyses:
-
-\begin{enumerate}
-\item flow analysis of the program;
-\item proof of program properties.
-\end{enumerate}
+\gnatprove is the formal verification tool that analyzes \newspark
+code. It performs two different analyses: (i) flow analysis of the
+program and (ii) proof of program properties.
 
 Flow analysis checks correct access to data in the program: correct access to
 global variables
@@ -356,20 +351,14 @@ instead of track-side signaling.
 
 We made some experiments with \newspark to see if one could formalize
 the ETCS System Requirement Specification (SRS, ERA UNISIG
-SUBSET-026).
+SUBSET-026). We should acknowledge that using \newspark for
+formalizing \emph{system} requirements (and not only software
+requirements) is a bit excessive and out of scope for the language. We
+made nonetheless this formalization attempt because we wanted to give
+a formal semantics to this system specification and some of the
+content of the ETCS specifications is quite low-level.
 
-We should acknowledge that using \newspark for formalizing
-\emph{system} requirements (and not only software requirements) is a
-bit excessive and out of scope for the language. We made nonetheless
-this formalization attempt for two reasons. Firstly, we wanted to give
-a formal semantics to this system specification and \newspark
-first-order logic used in contracts seemed suitable for
-this task. The goal of this formalization was to formally verify some
-properties at the specification level.  Secondly, some of
-the content of the ETCS specifications is quite low-level, therefore
-not as far from software requirements as one would expect.
-
-\subsection{Description of the Software}
+%\subsection{Description of the Software}
 
 We made several experiments but due to space constraints we will only detail
 one of them. The complete code is available
@@ -384,17 +373,13 @@ each point the most restrictive (\ie smaller) one.
 To encode step functions, we used the following data structure:
 \begin{lstlisting}
 type Num_Delimiters_Range is range 0 .. 10;
-
 type Function_Range is new Natural;
-
 type Delimiter_Entry is record
    Delimiter : Function_Range;
    Value     : Float;
 end record;
-
 type Delimiter_Values is array
   (Num_Delimiters_Range) of Delimiter_Entry;
-
 type Step_Function_t is record
    Num_Delim : Num_Delimiters_Range;
    Step      : Delimiter_Values;
@@ -603,14 +588,12 @@ This case study was carried in the project \hilite as a means to evaluate the
 adequacy of formal verification for future space programs. Detailed results
 have been published in \cite{lesens:2013:dasia}.
 
-\subsection{Description of the Software}
-
 A typical space applicative flight program is made up of two parts, which we
 both considered in our case study:
 Flight control (or more generally numerical command and control algorithm) and
 Mission and Vehicle Management.
 
-\subsubsection{Numerical Command and Control Algorithms}
+\subsection{Numerical Command and Control Algorithms}
 
 Numerical command and control algorithms take as inputs floating point values,
 perform some numerical computations (with the classical basic mathematical
@@ -642,7 +625,7 @@ with
   Post => Sin'Result in -1.0 .. 1.0;
 \end{lstlisting}
 
-\subsubsection{Mission and Vehicle Management}
+\subsection{Mission and Vehicle Management}
 
 The Mission and Vehicle Management of a spacecraft is described by the ECSS (European Cooperation for Space Standardization) standard
 {\it ECSS-E-ST-70-01C ``Space engineering -- Spacecraft on-board control
@@ -782,7 +765,7 @@ component: the number of lines of code (``Size''), the number of preconditions
 (``Pre''), the number of postconditions (``Post'') and the duration of analysis
 in seconds (``Duration''):
 
-\vspace{5mm}
+%\vspace{2mm}
 
 \begin{tabular}{|l|c|c|c|c|}
 \hline
@@ -819,7 +802,7 @@ classical, except for the fact that preconditions and postconditions were also
 tested. Then, \gnatprove has been applied. The following table provides for each
 type of checks, their number and the number proved:
 
-\vspace{5mm}
+%\vspace{2mm}
 
 \begin{tabular}{|l|c|c|c|}
 \hline
@@ -847,7 +830,7 @@ loop  preservation  & 14     & 14     & 100 \\
 \hline
 \end{tabular}
 
-\vspace{5mm}
+%\vspace{2mm}
 
 These results are globally satisfactory, a quite limited number of checks having not been proved.
 All unproved checks were analyzed to determine why they were not proved, which
@@ -927,8 +910,6 @@ generated automatically.
 \section{Biometric Access to a Secure Enclave}
 \label{sec:tokeneer}
 % Tokeneer case study
-
-\subsection{Description of the Software}
 
 Tokeneer\footnote{\url{www.adacore.com/sparkpro/tokeneer}} is a highly secure
 biometric software system that was originally developed by Altran. The system
@@ -1029,7 +1010,7 @@ guaranteed by the implementation.
 
 \begin{tabular}{|l|c|}
 \hline
-{\bf Aspect/Pragma}       & {\bf Number of occurrences}  \\
+{\bf Aspect/Pragma}       & {\bf Num. of occurrences}  \\
 \hline
 Global              & 197 \\
 \hline
