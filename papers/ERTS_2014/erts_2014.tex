@@ -242,7 +242,7 @@ as assertions on entry and exit of subprograms. For formal program
 verification, assertions have typically been interpreted as formulas in
 classical first-order logic. This was the situation with SPARK prior to
 \newspark. Practitioners have struggled with this interpretation, which was not
-consistent with the run-time assertion checking semantics.\cite{tseChalin10}
+consistent with the run-time assertion checking semantics~\cite{tseChalin10}.
 
 \newspark reconciles the logic semantics and executable semantics of contracts,
 so users can now execute contracts, debug them like code, and test them when
@@ -251,8 +251,8 @@ annotation language the same as the programming language, users don't have to
 learn one more language.
 
 % Except for the Global and Depends contracts,
-All the contracts and assertion
-pragmas presented previously lead to run-time assertions. If a given property
+All the previously presented contracts and assertion
+pragmas lead to run-time assertions. If a given property
 is not satisfied at run time, an exception is raised with a message indicating
 the failing property, for example on the procedure \SPARK{Swap}:
 
@@ -274,7 +274,7 @@ tools working at the level of code. For example, the CodePeer~\cite{codepeer}
 static analysis tool uses contracts and assertion pragmas to issue more precise
 messages. Most notably, this allows also combining the results of formal
 verification and testing, when only part of a program is formally
-analyzed.~\cite{hiliteERTS2012}
+analyzed~\cite{hiliteERTS2012}.
 
 \subsection{Key Tool Features}
 
@@ -290,14 +290,14 @@ Flow analysis checks correct access to data in the program: correct access to
 global variables
 % (as specified in Global and Depends contracts)
 and correct
-access to initialized data. It is a fast static analysis (typically comparable
-with compilation time) based on the computation of the Program Dependence
-Graphs.~\cite{Horwitz:1988:ISU:53990.53994}
+access to initialized data. It is a fast static analysis (analysis time
+typically comparable with compilation time) based on the computation of the
+Program Dependence Graphs~\cite{Horwitz:1988:ISU:53990.53994}.
 
 Proof is used to demonstrate that the program is free from run-time errors, and
 that the specified contracts are correctly implemented. It internally generates
 mathematical formulas for each property, that are given to the automatic prover
-\altergo.\footnote{\url{http://alt-ergo.ocamlpro.com/}} If \altergo manages to
+\altergo\footnote{\url{http://alt-ergo.ocamlpro.com/}}. If \altergo manages to
 prove the formula in the given time, then the property is known to
 hold. Otherwise, more work is required from the user to understand why the
 property is not proved.
@@ -322,7 +322,7 @@ GPS\footnote{\url{http://www.adacore.com/gnatpro/toolsuite/gps/}} or in
 Eclipse\footnote{\url{http://www.adacore.com/gnatpro/toolsuite/gnatbench/}},
 the two Integrated Development Environments which support \newspark. The user
 can also change the parameters of the tool to perform more precise proofs, at
-the expense of longer running time.
+the expense of longer analysis time.
 
 %% \subsection{Combining Testing and Proof}
 
@@ -375,12 +375,11 @@ We made several experiments but due to space constraints we will only detail
 one of them. The complete code is available
 online.\footnote{\url{https://github.com/openETCS/model-evaluation/tree/master/model/GNATprove-MERCE}}
 
-This example is the coding of step functions, \aka functions
-constant by interval, used in the \textit{Speed and distance monitoring}
-section (SRS §3.13). Such functions are used to model for example
-speed restrictions along distance. One of our main goal is to model
-the merge of two speed restrictions, taking at each point the most
-restrictive (\ie smaller) one.
+This example is the coding of step functions, or piecewise constant functions,
+used in the \textit{Speed and distance monitoring} section (SRS §3.13). Such
+functions are used to model for example speed restrictions along distance. One
+of our main goal is to model the merge of two speed restrictions, taking at
+each point the most restrictive (\ie smaller) one.
 
 To encode step functions, we used the following data structure:
 \begin{lstlisting}
@@ -538,9 +537,9 @@ pragmas, which increased our confidence in their correctness.
 \subsection{Lessons Learned}
 
 We were rather pleased by the expression capabilities of \newspark, making
-specification and code writing rather easy and, more important, clearer for the
+specification and code writing rather easy and, more importantly, clearer for the
 reader. The ability inherited from Ada to define new data types for specific
-ranges and incompatible with other types is crucial in this regard.
+ranges, which are incompatible with other types, is crucial in this regard.
 
 Another important finding is that the code should be written with proof in
 mind. For example, function \SPARK{Minimum\_Until\_Point} was initially
@@ -550,7 +549,7 @@ unprovable, because an early exit in a loop lead to the formula
 \rightarrow (\forall~K. K>1 \rightarrow X<A(K))
 \end{multline*}
 which requires support for induction in the automatic prover, a feature still
-missing from most automatic provers.~\cite{leino:2012:vmcai} As the early exit
+missing from most automatic provers~\cite{leino:2012:vmcai}. As the early exit
 was not necessary for correct behavior, it was sufficient to remove it to
 achieve automatic proof with \altergo.
 
@@ -594,7 +593,7 @@ Overall, we think that the programmer should be trained to exploit the
 feedback provided by the proof environment, much like a programmer
 exploits feedback of debuggers and tests to debug her program.
 Moreover, as a complete proof of the program can be very costly, a proof
-methodology must be defined to avoid spending to much time on proofs
+methodology must be defined to avoid spending too much time on proofs
 that could be broken by future code changes.
 
 \section{Flight Control and Vehicle Management in Space}
@@ -602,7 +601,7 @@ that could be broken by future code changes.
 
 This case study was carried in the project \hilite as a means to evaluate the
 adequacy of formal verification for future space programs. Detailed results
-have been published elsewhere.~\cite{lesens:2013:dasia}
+have been published elsewhere~\cite{lesens:2013:dasia}.
 
 \subsection{Description of the Software}
 
@@ -617,7 +616,7 @@ Numerical command and control algorithms take as inputs floating point values,
 perform some numerical computations (with the classical basic mathematical
 operators such as additions, subtractions, multiplications, divisions, absolute
 values, trigonometry or operations on vectors and arrays, \etc) and return
-floating point results. Such algorithms have generally a retro-action loop, \ie
+floating point results. Such algorithms generally have a retro-action loop, \ie
 internal states.
 
 It is generally not possible to define interesting functional contracts for
@@ -708,7 +707,7 @@ the following objectives:
 \begin{itemize}
 \item Ensuring the permanent consistency of the software tables.
 \item Ensuring the permanent consistency between the Mission and Vehicle Management function and other functionalities (such as, for instance, the solar wing management).
-\item Ensuring the respect of some functional properties such as mutual exclusion between executions of some automated procedures.
+\item Ensuring that functional properties such as mutual exclusion between executions of some automated procedures are respected.
 \item Ensuring the absence of run-time errors.
 \end{itemize}
 
@@ -1161,11 +1160,11 @@ prove package \SPARK{AuditLog}. Converting \oldspark annotations into
 their \newspark equivalents introduced several run-time checks that
 previously did not exist. The extra checks are a byproduct of the
 contracts and assertions being
-executable~\ref{subsec:ExecutableContracts}. Some of these checks were
+executable (Section~\ref{subsec:ExecutableContracts}). Some of these checks were
 not automatically discharged. A more in depth investigation revealed
 that an invariant was missing from the original specifications. This
 invariant described the property of always using at least one log file
-($UsedLogFile.Lenfth >=
+($\mathit{UsedLogFile.Length} >=
 1$)\footnote{\url{
 www.open-do.org/wp-content/uploads/2013/05/Industrial_Case_Studies_Final_Report.
 pdf}}.
@@ -1212,11 +1211,11 @@ to \oldspark to allow an easy translation of annotations but also supports
 constructs that were previously excluded from the language
 (Section~\ref{sec:tokeneer}).
 
-Tests remain an important mean of gaining confidence in a program's
+Tests remain an important means of gaining confidence in a program's
 specification and implementation, even when formal methods are involved. As
 stated in Bowen's ninth commandment of formal methods, \emph{Thou shalt test,
-test, and test again}. Executable contracts is a key language
-feature~\ref{subsec:ExecutableContracts} of \newspark as it allows to execute
+test, and test again}. Executable contracts are a key language
+feature (see Section~\ref{subsec:ExecutableContracts}) of \newspark as it allows to execute
 the contracts while testing. They were found to be beneficial both to increase
 confidence in annotations (Section~\ref{sec:openETCS}) and to improve overall
 code quality (Section~\ref{sec:space}). What is more, the constraint implied by
@@ -1229,7 +1228,7 @@ Another objective of \newspark was to improve the amount of proofs that could
 go through automatically with respect to \oldspark. The case study in
 Section~\ref{sec:tokeneer} shows that obtaining automated proofs with \newspark
 requires smaller loop-invariant, as information about bounds of variables is
-persevered, less user rules, as ghost functions can now have bodies, and less
+preserved, less user rules, as ghost functions can now have bodies, and less
 user written additional assertions.
 
 The case studies also raise some usability issues.
@@ -1259,7 +1258,7 @@ and~\ref{sec:space}).
 % We will summarize the three case studies, and present the planned future
 % evolutions of \newspark.
 
-Railway, space, and security are three domains subjected to an important
+Railway, space, and security are three domains subject to an important
 certification requirement that implies costly verification processes. The three
 case studies show that verification with \newspark can bring a solution to this
 problem thanks to an expressive language, executable contracts, and
