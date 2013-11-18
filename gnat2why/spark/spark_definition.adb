@@ -2546,8 +2546,8 @@ package body SPARK_Definition is
               Pragma_Elaborate_Body               |
               Pragma_Export                       |
               Pragma_Global                       |
-              Pragma_Initializes                  |
               Pragma_Initial_Condition            |
+              Pragma_Initializes                  |
               Pragma_Inline                       |
               Pragma_Inline_Always                |
               Pragma_Inspection_Point             |
@@ -2557,18 +2557,19 @@ package body SPARK_Definition is
               Pragma_Optimize                     |
               Pragma_Pack                         |
               Pragma_Page                         |
+              Pragma_Part_Of                      |
               Pragma_Postcondition                |
               Pragma_Precondition                 |
-              Pragma_Preelaborate                 |
               Pragma_Preelaborable_Initialization |
+              Pragma_Preelaborate                 |
               Pragma_Profile                      |
               Pragma_Pure                         |
               Pragma_Pure_Function                |
               Pragma_Refined_Depends              |
               Pragma_Refined_Global               |
               Pragma_Refined_State                |
-              Pragma_Restrictions                 |
               Pragma_Restriction_Warnings         |
+              Pragma_Restrictions                 |
               Pragma_Reviewable                   |
               Pragma_SPARK_Mode                   |
               Pragma_Style_Checks                 |
