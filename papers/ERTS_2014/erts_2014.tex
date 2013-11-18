@@ -123,7 +123,7 @@ evaluation of the technology over a period of three years, consisting in the
 re-development of various parts of a Flight Control and Vehicle Management
 software. The third case study by Altran compares the benefits of the new
 technology \wrt previous version, on the well-known Tokeneer case study in
-SPARK. 
+SPARK.
 
 \section{SPARK 2014}
 
@@ -250,7 +250,7 @@ formal verification is too difficult to achieve. Furthermore, by keeping the
 annotation language the same as the programming language, users don't have to
 learn one more language.
 
-% Except for the Global and Depends contracts, 
+% Except for the Global and Depends contracts,
 All the contracts and assertion
 pragmas presented previously lead to run-time assertions. If a given property
 is not satisfied at run time, an exception is raised with a message indicating
@@ -288,7 +288,7 @@ performs two different analyses:
 
 Flow analysis checks correct access to data in the program: correct access to
 global variables
-% (as specified in Global and Depends contracts) 
+% (as specified in Global and Depends contracts)
 and correct
 access to initialized data. It is a fast static analysis (typically comparable
 with compilation time) based on the computation of the Program Dependence
@@ -408,7 +408,7 @@ function (as first element of the array) in component \SPARK{Step}. Each
 delimiter of type \SPARK{Delimiter_Entry} contains the delimiter position
 (\SPARK{Delimiter}) and the associated constant value (\SPARK{Value}) for the
 function. The number of delimiters used is stored in component
-\SPARK{Num_Delim}. 
+\SPARK{Num_Delim}.
 We defined several subprograms that query or update step functions.
 %% \begin{itemize}
 %% \item \SPARK{Get_Value(SFun, X)} returns the value of step function \SPARK{SFun}
@@ -892,12 +892,12 @@ These subprograms shall be split in several smaller subprograms to be proved.
 
 \subsection{Lessons Learned}
 
-A precise process was followed for the development of this case study: 
+A precise process was followed for the development of this case study:
 (1) writing of the contracts of each subprogram,
 (2) development of the body and of the tests,
 (3) test of the software with executable contracts, and potentially fixes,
 (4) formal proof of contracts.
-The errors detected in the testing phase were in the code 
+The errors detected in the testing phase were in the code
 in 50\% of the cases, and in the contracts in the remaining 50\%.
 
 The first run of \gnatprove was often not sufficient to achieve 100\% automatic
@@ -1005,7 +1005,7 @@ loops.  The new tools are more sophisticated and preserve more of the context.
 %% In \oldspark, it was necessary to add 25 lines of assertions to repeat that the
 %% values of variables like \SPARK{I} and components like
 %% \SPARK{UsedLogFiles.Head} are within the bounds allowed by their type, as this
-%% information was lost inside loops. 
+%% information was lost inside loops.
 
 
 %% However, at this point, it should be pointed out that since the
@@ -1088,7 +1088,7 @@ any other kind of valid combinations of administrator types and their
 corresponding operations
 %%  (\eg the administrator being of type
 %% \SPARK{SecurityOfficer} and the operation being
-%% \SPARK{UpdateConfigData} or \SPARK{ShutdownOp}) 
+%% \SPARK{UpdateConfigData} or \SPARK{ShutdownOp})
 or under which
 circumstances \SPARK{NullOp} should be returned.
 The \oldspark tools proved all properties associated with
@@ -1166,7 +1166,7 @@ not automatically discharged. A more in depth investigation revealed
 that an invariant was missing from the original specifications. This
 invariant described the property of always using at least one log file
 ($UsedLogFile.Lenfth >=
-1$).\footnote{\url{
+1$)\footnote{\url{
 www.open-do.org/wp-content/uploads/2013/05/Industrial_Case_Studies_Final_Report.
 pdf}}.
 
@@ -1178,8 +1178,8 @@ to retain supervision of both individual and overall
 provability. Having a tool that summarizes the results and informs
 about remaining undischarged checks would greatly assist. For
 instance, this would enable users to focus their efforts only on
-proving packages for which more than 95\% automated proof was
-achieved and resort to testing for the rest.
+proving packages for which 100\% automated proof was achievable and
+resort to testing for the rest.
 
 \section{Common Findings and Dissimilarities}
 % We will discuss the common findings between the three case studies,
@@ -1232,7 +1232,7 @@ requires smaller loop-invariant, as information about bounds of variables is
 persevered, less user rules, as ghost functions can now have bodies, and less
 user written additional assertions.
 
-The case studies also raise some usability issues. 
+The case studies also raise some usability issues.
 \newspark strives to define a subset of Ada as big as possible while remaining
 amenable to formal verification. For example, pointers are excluded but a
 library of containers adapted to formal specification is provided to alleviate
