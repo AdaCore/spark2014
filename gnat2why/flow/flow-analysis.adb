@@ -43,12 +43,6 @@ with Flow.Debug;            use Flow.Debug;
 
 package body Flow.Analysis is
 
-   Debug_Depends_Required : constant Boolean := False;
-   --  Enable this to always check the dependency relation, even if
-   --  not specified. This may later be a configurable restriction
-   --  (requires_depends or similar); but it is quite useful for
-   --  debugging anyway.
-
    Debug_Trace_Depends : constant Boolean := False;
    --  Enable this to show the specified and computed dependency relation.
 
@@ -2229,20 +2223,15 @@ package body Flow.Analysis is
 
    begin --  Check_Contracts
 
-      if Present (FA.Refined_Depends_N) then
-         User_Deps := Parse_Depends (FA.Refined_Depends_N);
-
-      elsif Present (FA.Depends_N) then
-         User_Deps := Parse_Depends (FA.Depends_N);
-
-      elsif Debug_Depends_Required then
-         User_Deps := Dependency_Maps.Empty_Map;
-
-      else
-         --  If the user has not specified a dependency relation we
-         --  have no work to do.
+      if No (FA.Depends_N) then
+         --  If the user has not specified a dependency relation we have no
+         --  work to do.
          return;
       end if;
+
+      Get_Depends (Subprogram => FA.Analyzed_Entity,
+                   Scope      => FA.B_Scope,
+                   Depends    => User_Deps);
 
       Actual_Deps := FA.Dependency_Map;
 

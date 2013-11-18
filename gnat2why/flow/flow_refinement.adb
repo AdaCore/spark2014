@@ -355,6 +355,7 @@ package body Flow_Refinement is
       is
          Tmp : Node_Sets.Set := Node_Sets.Empty_Set;
          Ptr : Elmt_Id;
+         Hs  : Boolean := False;
       begin
          case Ekind (E) is
             when E_Abstract_State =>
@@ -364,21 +365,24 @@ package body Flow_Refinement is
                      Tmp.Union (Expand (Node (Ptr)));
                      Ptr := Next_Elmt (Ptr);
                   end loop;
-
-                  Ptr := First_Elmt (Part_Of_Constituents (E));
-                  while Present (Ptr) loop
-                     Tmp.Union (Expand (Node (Ptr)));
-                     Ptr := Next_Elmt (Ptr);
-                  end loop;
-
-                  if Tmp.Length = 0 then
-                     --  We seem to have an abstract state which has no
-                     --  refinement. Odd. Lets include the abstract state
-                     --  itself.
-                     Tmp.Include (E);
-                  end if;
-
                else
+                  Hs := True;
+               end if;
+
+               Ptr := First_Elmt (Part_Of_Constituents (E));
+               while Present (Ptr) loop
+                  if Is_Visible (Node (Ptr), S) then
+                     Tmp.Union (Expand (Node (Ptr)));
+                  else
+                     Hs := True;
+                  end if;
+                  Ptr := Next_Elmt (Ptr);
+               end loop;
+
+               if Tmp.Length = 0 or Hs then
+                  --  We seem to have an abstract state which has no
+                  --  refinement, or where we have unexpanded state. Lets
+                  --  include the abstract state itself.
                   Tmp.Include (E);
                end if;
 

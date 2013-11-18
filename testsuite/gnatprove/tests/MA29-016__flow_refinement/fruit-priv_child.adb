@@ -1,9 +1,8 @@
-with Fruit.Pub_Child; use Fruit.Pub_Child;
-
 package body Fruit.Priv_Child
   with Refined_State => (Price_Related_Stuff => Extra_Cost)
 is
-   procedure Increase_Price_Of_Apple is
+   procedure Increase_Price_Of_Apple
+   is
    begin
       if Price_Of_Apple <= Natural'Last - Extra_Cost then
          Price_Of_Apple := Price_Of_Apple + Extra_Cost;
@@ -12,7 +11,10 @@ is
       end if;
    end Increase_Price_Of_Apple;
 
-   procedure Increase_Price_Of_Orange is
+   procedure Increase_Price_Of_Orange
+     with Refined_Global => (Input  => Extra_Cost,
+                             In_Out => Price_Of_Orange)
+   is
    begin
       if Price_Of_Orange <= Natural'Last - Extra_Cost then
          Price_Of_Orange := Price_Of_Orange + Extra_Cost;

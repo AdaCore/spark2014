@@ -1,12 +1,16 @@
 with Fruit.Priv_Child;
 
 package body Fruit
-  with Refined_State => (Fruits => (Apples,
+  with Refined_State => (Fruits => (X,
+                                    Apples,
                                     Oranges,
                                     Price_Of_Apple,
                                     Price_Of_Orange,
                                     Fruit.Priv_Child.Price_Related_Stuff))
 is
+
+   X : Integer;
+
    function Number_Of_Apples return Natural is (Apples)
      with Refined_Global => Apples;
 
