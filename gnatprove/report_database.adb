@@ -35,14 +35,6 @@ package body Report_Database is
 
    Symbol_Table : constant Symbol_Table_Access := Allocate;
 
-   Default_Stat : constant Stat_Rec :=
-     Stat_Rec'(SPARK         => False,
-               Analysis      => No_Analysis,
-               Flow_Warnings => 0,
-               Flow_Errors   => 0,
-               VC_Count      => 0,
-               VC_Proved     => 0);
-
    function Hash (S : Subp_Type_Rec) return Ada.Containers.Hash_Type;
 
    ----------
@@ -68,6 +60,15 @@ package body Report_Database is
         Hash            => Unique_Subps.Hash,
         Equivalent_Keys => "=",
         "="             => "=");
+
+   Default_Stat : constant Stat_Rec :=
+     Stat_Rec'(SPARK         => False,
+               Analysis      => No_Analysis,
+               Suppr_Msgs    => Warning_Lists.Empty_List,
+               Flow_Warnings => 0,
+               Flow_Errors   => 0,
+               VC_Count      => 0,
+               VC_Proved     => 0);
 
    function "<" (Left, Right : Symbol) return Boolean is
      (Get (Left, Empty_If_Null => True).all <
@@ -198,6 +199,40 @@ package body Report_Database is
    begin
       Update_Subp_Entry (Unit, Subp, Process'Access);
    end Add_SPARK_Status;
+
+   ---------------------
+   -- Add_Flow_Result --
+   ---------------------
+
+   procedure Add_Suppressed_Warning
+     (Unit   : Unit_Type;
+      Subp   : Subp_Type;
+      Reason : String;
+      File   : String;
+      Line   : Integer;
+      Column : Integer)
+   is
+      procedure Process (Stat : in out Stat_Rec);
+      --  Do the actual work
+
+      -------------
+      -- Process --
+      -------------
+
+      procedure Process (Stat : in out Stat_Rec) is
+      begin
+         Stat.Suppr_Msgs.Append
+           (Suppressed_Warning'(Reason => To_Unbounded_String (Reason),
+                                File   => To_Unbounded_String (File),
+                                Line   => Line,
+                                Column => Column));
+      end Process;
+
+   --  Start of Add_Flow_Result
+
+   begin
+      Update_Subp_Entry (Unit, Subp, Process'Access);
+   end Add_Suppressed_Warning;
 
    ----------------
    -- Iter_Subps --

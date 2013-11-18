@@ -95,9 +95,13 @@
 --  form as for proof. Differences are in the possible values for:
 --  - severity: ??? document what severities flow uses
 --  - rule:     ??? document possible values for flow
+--  The special value "pragma_warning" is used for suppressed warnings. In
+--  this case, the field "message" contains the reason for the message to
+--  be suppressed, instead of the message string.
 
 with Ada.Command_Line;
 with Ada.Directories;
+with Ada.Strings.Unbounded;
 with Ada.Text_IO;
 
 with GNAT.Directory_Operations.Iteration;
@@ -165,11 +169,24 @@ procedure SPARK_Report is
          declare
             Result : constant JSON_Value := Get (Entries, Index);
             Severe : constant String     := Get (Get (Result, "severity"));
+            Kind   : constant String     := Get (Get (Result, "rule"));
+            Subp   : constant Subp_Type  :=
+              Mk_Subp_Of_Entity (Get (Result, "entity"));
          begin
-            Add_Flow_Result
-              (Unit  => Unit,
-               Subp  => Mk_Subp_Of_Entity (Get (Result, "entity")),
-               Error => Severe = "error");
+            if Kind = "pragma_warning" then
+               Add_Suppressed_Warning
+                 (Unit   => Unit,
+                  Subp   => Subp,
+                  Reason => Get (Get (Result, "message")),
+                  File   => Get (Get (Result, "file")),
+                  Line   => Get (Get (Result, "line")),
+                  Column => Get (Get (Result, "col")));
+            else
+               Add_Flow_Result
+                 (Unit  => Unit,
+                  Subp  => Subp,
+                  Error => Severe = "error");
+            end if;
          end;
       end loop;
    end Handle_Flow_File;
@@ -425,6 +442,19 @@ procedure SPARK_Report is
                   end if;
 
                   Put_Line (Handle, "");
+
+                  if not Stat.Suppr_Msgs.Is_Empty then
+                     Put_Line (Handle, "   suppressed messages:");
+                     for Msg of Stat.Suppr_Msgs loop
+                        Put_Line (Handle,
+                                  "    " &
+                                  Ada.Strings.Unbounded.To_String (Msg.File) &
+                                    ":" & Int_Image (Msg.Line) & ":" &
+                                    Int_Image (Msg.Column) & ": " &
+                                    Ada.Strings.Unbounded.To_String
+                                    (Msg.Reason));
+                     end loop;
+                  end if;
                end if;
             else
                Put_Line (Handle, " skipped");

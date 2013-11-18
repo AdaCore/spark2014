@@ -26,7 +26,10 @@
 --  This package manages registering and querying the analysis results of
 --  gnatprove.
 
-with GNATCOLL.Symbols; use GNATCOLL.Symbols;
+with Ada.Containers.Doubly_Linked_Lists;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+
+with GNATCOLL.Symbols;      use GNATCOLL.Symbols;
 
 package Report_Database is
 
@@ -40,14 +43,25 @@ package Report_Database is
       Proof_Only,       --  Only proof was performed on the unit
       Flow_And_Proof);  --  Flow analysis and proof were performed on the unit
 
+   type Suppressed_Warning is record
+      Reason : Unbounded_String;
+      File   : Unbounded_String;
+      Line   : Integer;
+      Column : Integer;
+   end record;
+
+   package Warning_Lists is new
+     Ada.Containers.Doubly_Linked_Lists (Suppressed_Warning, "=");
+
    --  Record of results obtained for a given subprogram or package
    type Stat_Rec is record
-      SPARK         : Boolean;          --  In SPARK or not
-      Analysis      : Analysis_Status;  --  Status of analysis performed
-      Flow_Warnings : Natural;          --  Number of flow analysis warnings
-      Flow_Errors   : Natural;          --  Number of flow analysis errors
-      VC_Count      : Natural;          --  Total number of checks
-      VC_Proved     : Natural;          --  Number of checks that were proved
+      SPARK         : Boolean;            --  In SPARK or not
+      Analysis      : Analysis_Status;    --  Status of analysis performed
+      Suppr_Msgs    : Warning_Lists.List; --  list of suppressed messages
+      Flow_Warnings : Natural;            --  Number of flow analysis warnings
+      Flow_Errors   : Natural;            --  Number of flow analysis errors
+      VC_Count      : Natural;            --  Total number of checks
+      VC_Proved     : Natural;            --  Number of checks that were proved
    end record;
 
    function Mk_Unit (Name : String) return Unit_Type;
@@ -77,6 +91,16 @@ package Report_Database is
       Analysis     : Analysis_Status);
    --  Registers the SPARK status as well as the level of analysis performed
    --  for the given unit.
+
+   procedure Add_Suppressed_Warning
+     (Unit   : Unit_Type;
+      Subp   : Subp_Type;
+      Reason : String;
+      File   : String;
+      Line   : Integer;
+      Column : Integer);
+   --  For the subprogram in the given unit, register a suppressed warning with
+   --  a reason
 
    procedure Reset_All_Results;
    --  Resets the results, removing all information on units and subprograms

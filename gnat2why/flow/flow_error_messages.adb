@@ -22,25 +22,25 @@
 ------------------------------------------------------------------------------
 
 with Ada.Directories;
-with Ada.Text_IO;                        use Ada.Text_IO;
+with Ada.Text_IO;    use Ada.Text_IO;
 
 with GNAT.String_Split;
 with GNAT.SHA1;
 
-with Atree;                              use Atree;
-with Sinfo;                              use Sinfo;
-with Sinput;                             use Sinput;
-with Einfo;                              use Einfo;
-with Errout;                             use Errout;
-with Erroutc;                            use Erroutc;
-with Opt;                                use Opt;
-with Sem_Util;                           use Sem_Util;
-
-with String_Utils;                       use String_Utils;
+with Atree;          use Atree;
+with Einfo;          use Einfo;
+with Errout;         use Errout;
+with Erroutc;        use Erroutc;
+with Opt;            use Opt;
+with Sem_Util;       use Sem_Util;
+with Sinfo;          use Sinfo;
+with Sinput;         use Sinput;
+with Stringt;        use Stringt;
+with String_Utils;   use String_Utils;
 with VC_Kinds;
 
-with Gnat2Why.Nodes;                     use Gnat2Why.Nodes;
-with Gnat2Why_Args;                      use Gnat2Why_Args;
+with Gnat2Why.Nodes; use Gnat2Why.Nodes;
+with Gnat2Why_Args;  use Gnat2Why_Args;
 
 package body Flow_Error_Messages is
 
@@ -203,10 +203,20 @@ package body Flow_Error_Messages is
       Line       : constant String := Get_Logical_Line_Number_Img (Sloc (N));
       Col        : constant String :=
         Int_Image (Integer (Get_Column_Number (Sloc (N))));
+      Suppr_Reason : String_Id := No_String;
 
       function Warning_Disabled_For_Entity return Boolean;
       --  Returns True if either of N, F1, F2 correspond to an entity that
       --  Has_Warnings_Off.
+
+      function Json_Entry (Reason : String_Id) return Unbounded_String;
+      --  Build the string which contains the JSON dictionary. The Reason
+      --  argument has the following meaning: if it is absent (= No_String),
+      --  the warning is not suppressed; if it is empty (=Null_String_Id)
+      --  the warning is suppressed, but we don't have a reason; Otherwise,
+      --  the String contains the reason for the suppression.
+      --  For suppressed messages, the JSON record will contain the reason of
+      --  the suppression, if available.
 
       function Json_Mapping (Name      : String;
                              Value     : String;
@@ -255,6 +265,110 @@ package body Flow_Error_Messages is
 
          return False;
       end Warning_Disabled_For_Entity;
+
+      ----------------
+      -- Json_Entry --
+      ----------------
+
+      function Json_Entry (Reason : String_Id) return Unbounded_String is
+         JSON_M     : Unbounded_String;
+         Escaped_M : Unbounded_String := Null_Unbounded_String;
+         Ent_Dict : Unbounded_String := To_Unbounded_String ("{");
+         Subs     : GNAT.String_Split.Slice_Set;
+         use type GNAT.String_Split.Slice_Number;
+      begin
+
+         --  Append file, line and column
+
+         JSON_M := To_Unbounded_String ("{");
+         Append (JSON_M, Json_Mapping ("file", File));
+         Append (JSON_M, Json_Mapping ("line", Line, Quote_Val => False));
+         Append (JSON_M, Json_Mapping ("col", Col, Quote_Val => False));
+
+         if Reason = No_String then
+
+            --  Before appending the message we first escape any '"' that are
+            --  in it. The script is in python so we use '\' to escape it.
+
+            if Warning then
+               Append (Escaped_M, "warning: ");
+            end if;
+
+            for Index in Positive range 1 .. Length (M) loop
+               if Element (M, Index) = '"' then
+                  Append (Escaped_M, '\');
+               end if;
+               Append (Escaped_M, Element (M, Index));
+            end loop;
+         else
+            for Index in Int range 1 .. String_Length (Reason) loop
+               if Character'Val (Get_String_Char (Reason, Index)) = '"' then
+                  Append (Escaped_M, '\');
+               end if;
+               Append (Escaped_M,
+                       Character'Val (Get_String_Char (Reason, Index)));
+            end loop;
+         end if;
+         Append (JSON_M,
+                 Json_Mapping ("message", To_String (Escaped_M)));
+
+         --  Append rule and severity
+         Append (JSON_M,
+                 Json_Mapping
+                   ("rule",
+                    (if Reason /= No_String then "pragma_warning" else Tag)));
+
+         Append (JSON_M,
+                 Json_Mapping
+                   ("severity",
+                    (if Warning then "warning" else "error")));
+
+         --  Append entity information
+         --  Originally the entity info looks like "GP_Subp:foo.ads:12" so
+         --  we split it up (using ':' as the separator).
+
+         GNAT.String_Split.Create (S          => Subs,
+                                   From       => Subp_Location (E),
+                                   Separators => ":");
+         pragma Assert (GNAT.String_Split.Slice_Count (Subs) >= 3);
+
+         Append (Ent_Dict, Json_Mapping ("file",
+                                         GNAT.String_Split.Slice (Subs, 2)));
+
+         Append (Ent_Dict, Json_Mapping ("line",
+                                         GNAT.String_Split.Slice (Subs, 3),
+                                         Quote_Val => False));
+
+         Append (Ent_Dict, Json_Mapping ("name",
+                                         Subprogram_Full_Source_Name (E),
+                                         Is_Last => True));
+
+         Append (Ent_Dict, "}");
+
+         Append (JSON_M,
+                 Json_Mapping ("entity",
+                               To_String (Ent_Dict),
+                               Quote_Val => False,
+                               Is_Last => Reason /= No_String));
+
+         --  a suppressed warning never has a trace file
+
+         if Reason = No_String then
+            --  Create a SHA1 hash of the current JSON message and then set
+            --  that as the name of the tracefile.
+
+            GNAT.SHA1.Update (C, To_String (JSON_M));
+            Tracefile := To_Unbounded_String (GNAT.SHA1.Digest (C) & ".trace");
+
+            --  Append tracefile and end the dictionary
+            Append (JSON_M, Json_Mapping ("tracefile", To_String (Tracefile),
+                    Is_Last => True));
+         end if;
+
+         Append (JSON_M, "}");
+
+         return JSON_M;
+      end Json_Entry;
 
       ------------------
       -- Json_Mapping --
@@ -325,28 +439,26 @@ package body Flow_Error_Messages is
          Slc := Sloc (N);
       end if;
 
-      --  If we are dealing with a warning and warnings should be suppressed
-      --  for the given node, then we do nothing.
+      --  If the current message is a warning, we check if the warning should
+      --  be suppressed. Suppressed warnings will still be handled below.
 
       if Warning then
-         if Warnings_Suppressed (Sloc (N)) /= No_String then
-            return;
-         end if;
-
-         if Warning_Disabled_For_Entity then
-            return;
-         end if;
-
-         declare
-            Temp : aliased String := To_String (M);
-         begin
-            if Warning_Specifically_Suppressed
-               (Sloc (N),
-                Temp'Unchecked_Access) /= No_String
+         Suppr_Reason := Warnings_Suppressed (Sloc (N));
+         if Suppr_Reason = No_String then
+            declare
+               Temp : aliased String := To_String (M);
+            begin
+               Suppr_Reason :=
+                 Warning_Specifically_Suppressed
+                   (Sloc (N),
+                    Temp'Unchecked_Access);
+            end;
+            if Suppr_Reason = No_String
+              and then Warning_Disabled_For_Entity
             then
-               return;
+               Suppr_Reason := Null_String_Id;
             end if;
-         end;
+         end if;
       end if;
 
       --  Signal we have found an error if:
@@ -357,103 +469,32 @@ package body Flow_Error_Messages is
          Found_Flow_Error := True;
       end if;
 
-      --  Append file, line and column
-      JSON_M := To_Unbounded_String ("{");
-      Append (JSON_M, Json_Mapping ("file", File));
-      Append (JSON_M, Json_Mapping ("line", Line, Quote_Val => False));
-      Append (JSON_M, Json_Mapping ("col", Col, Quote_Val => False));
-
-      --  Before appending the message we first escape any '"' that are
-      --  in it. The script is in python so we use '\' to escape it.
-      declare
-         Escaped_M : Unbounded_String := Null_Unbounded_String;
-      begin
-         if Warning then
-            Append (Escaped_M, "warning: ");
-         end if;
-
-         for Index in Positive range 1 .. Length (M) loop
-            if Element (M, Index) = '"' then
-               Append (Escaped_M, '\');
-            end if;
-            Append (Escaped_M, Element (M, Index));
-         end loop;
-
-         --  Append escaped message
-         Append (JSON_M, Json_Mapping ("message", To_String (Escaped_M)));
-      end;
-
-      --  Append rule and severity
-      Append (JSON_M, Json_Mapping ("rule", Tag));
-      Append (JSON_M, Json_Mapping ("severity", (if Warning
-                                                 then "warning"
-                                                 else "error")));
-
-      --  Append entity
-      declare
-         Ent_Dict : Unbounded_String := To_Unbounded_String ("{");
-         Subs     : GNAT.String_Split.Slice_Set;
-         use type GNAT.String_Split.Slice_Number;
-      begin
-         --  Append entity information
-         --  Originally the entity info looks like "GP_Subp:foo.ads:12" so
-         --  we split it up (using ':' as the separator).
-         GNAT.String_Split.Create (S          => Subs,
-                                   From       => Subp_Location (E),
-                                   Separators => ":");
-         pragma Assert (GNAT.String_Split.Slice_Count (Subs) >= 3);
-
-         Append (Ent_Dict, Json_Mapping ("file",
-                                         GNAT.String_Split.Slice (Subs, 2)));
-
-         Append (Ent_Dict, Json_Mapping ("line",
-                                         GNAT.String_Split.Slice (Subs, 3),
-                                         Quote_Val => False));
-
-         Append (Ent_Dict, Json_Mapping ("name",
-                                         Subprogram_Full_Source_Name (E),
-                                         Is_Last => True));
-
-         Append (Ent_Dict, "}");
-
-         Append (JSON_M, Json_Mapping ("entity",
-                                       To_String (Ent_Dict),
-                                       Quote_Val => False));
-      end;
-
-      --  Create a SHA1 hash of the current JSON message and then set
-      --  that as the name of the tracefile.
-      GNAT.SHA1.Update (C, To_String (JSON_M));
-      Tracefile := To_Unbounded_String (GNAT.SHA1.Digest (C) & ".trace");
-
-      --  Append tracefile and end the dictionary
-      Append (JSON_M, Json_Mapping ("tracefile", To_String (Tracefile),
-                                    Is_Last => True));
-      Append (JSON_M, "}");
+      JSON_M := Json_Entry (Suppr_Reason);
 
       --  Append the JSON message to JSON_Msgs_List.
       JSON_Msgs_List.Append (JSON_M);
 
-      if Ide_Mode then
+      if Suppr_Reason = No_String then
+         if Ide_Mode then
 
-         --  If Ide_Mode is set, then we print the JSON message
+            --  If Ide_Mode is set, then we print the JSON message
 
-         Put_Line (To_String (JSON_M));
+            Put_Line (To_String (JSON_M));
 
-      else
+         else
 
-         --  Otherwise we issue an error message
+            --  Otherwise we issue an error message
 
-         M := Escape (M);
-         Append (M, "!!");
-         if Warning then
-            Append (M, '?');
+            M := Escape (M);
+            Append (M, "!!");
+            if Warning then
+               Append (M, '?');
+            end if;
+
+            Error_Msg (To_String (M), Slc);
+
          end if;
-
-         Error_Msg (To_String (M), Slc);
-
       end if;
-
    end Print_JSON_Or_Normal_Msg;
 
    ---------------------------
