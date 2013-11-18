@@ -114,7 +114,8 @@ In this paper, we describe how \newspark achieves these objectives, based on
 practical use of the language and associated formal verification tool
 \gnatprove on three industrial case studies developed in the context of the
 \hilite\footnote{\url{http://www.open-do.org/projects/hi-lite/}} and
-\openetcs\footnote{\url{http://openetcs.org/}} research projects. The first
+\openetcs\footnote{Part of this work was funded by the DGCIS (Grant
+No. 112930309) in the context of the ITEA2 project \openetcs \url{http://openetcs.org/}.} research projects. The first
 case study by Mitsubishi Electric R\&D Centre Europe evaluates the use of Ada
 and SPARK on a small subset of requirements for the European Train Control
 Systems. The second case study by Astrium Space Transportation is an extensive
@@ -342,7 +343,7 @@ the expense of longer analysis time.
 
 % openETCS case study
 
-The \openetcs\footnote{\url{http://openetcs.org/}} European project
+The \openetcs European project
 aims at making an open-sourced, open-proofs reference model of ETCS
 (European Train Control System). ETCS is a radio-based train control
 system aiming at unifying train signaling and control over all
@@ -600,7 +601,7 @@ that could be broken by future code changes.
 
 This case study was carried in the project \hilite as a means to evaluate the
 adequacy of formal verification for future space programs. Detailed results
-have been published elsewhere~\cite{lesens:2013:dasia}.
+have been published in \cite{lesens:2013:dasia}.
 
 \subsection{Description of the Software}
 
@@ -704,9 +705,9 @@ The contracts defined on mission and vehicle management code have (among others)
 the following objectives:
 
 \begin{itemize}
-\item Ensuring the permanent consistency of the software tables.
-\item Ensuring the permanent consistency between the Mission and Vehicle Management function and other functionalities (such as, for instance, the solar wing management).
-\item Ensuring that functional properties such as mutual exclusion between executions of some automated procedures are respected.
+\item Ensuring the permanent consistency of the software tables;
+\item Ensuring the permanent consistency between the Mission and Vehicle Management function and other functionalities (such as, for instance, the solar wing management);
+\item Ensuring that functional properties such as mutual exclusion between executions of some automated procedures are respected;
 \item Ensuring the absence of run-time errors.
 \end{itemize}
 
@@ -902,9 +903,9 @@ The first run of \gnatprove was often not sufficient to achieve 100\% automatic
 proof. Investigating the failed proofs was sometimes very difficult:
 \begin{itemize}
 \item Errors in the code are generally quite easy to find (as it is
-  the classical activity of an engineer)
+  the classical activity of an engineer);
 \item Missing contracts or assertion pragmas were almost always very difficult to detect without
-  the help of an expert in \newspark.
+  the help of an expert in \newspark;
 \item Conclusions on a tool limitation shall almost always be confirmed by
   a senior expert on \newspark.
 \end{itemize}
@@ -1162,8 +1163,8 @@ executable (Section~\ref{subsec:ExecutableContracts}). Some of these checks were
 not automatically discharged. A more in depth investigation revealed
 that an invariant was missing from the original specifications. This
 invariant described the property of always using at least one log file
-($\mathit{UsedLogFile.Length} >=
-1$)\footnote{\url{
+(\SPARK{UsedLogFile.Length >=
+1})\footnote{\url{
 www.open-do.org/wp-content/uploads/2013/05/Industrial_Case_Studies_Final_Report.
 pdf}}.
 
@@ -1264,11 +1265,6 @@ an improved provability. Even if there is still room for improvement in
 usability, the actual tool state already allows to integrate formal proofs into
 the standard developer's work-flow.
 
-\section{Acknowledgment}
-
-Part of this work was funded by the ``Direction Générale de la
-compétitivité, de l'industrie et des services'' (DGCIS) (Grant
-No. 112930309) in the context of the ITEA2 project \openetcs.
 
 \bibliographystyle{plain}
 \bibliography{erts_2014}
