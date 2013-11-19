@@ -678,14 +678,12 @@ variables.
 %%\end{lstlisting}
 
 The contracts defined on mission and vehicle management code have (among others)
-the following objectives:
-
-\begin{itemize}
-\item Ensuring the permanent consistency of the software tables;
-\item Ensuring the permanent consistency between the Mission and Vehicle Management function and other functionalities (such as, for instance, the solar wing management);
-\item Ensuring that functional properties such as mutual exclusion between executions of some automated procedures are respected;
-\item Ensuring the absence of run-time errors.
-\end{itemize}
+the objectives of ensuring
+ the permanent consistency of the software tables,
+ the permanent consistency between the Mission and Vehicle Management function and other functionalities (such as, for instance, the solar wing management),
+  some functional properties such as mutual exclusion between executions of
+  some automated procedures are respected and
+  the absence of run-time errors.
 
 %%\begin{lstlisting}
 %%   procedure Reset_Event
@@ -752,17 +750,11 @@ subprograms depending on the type of objects at run time.
 
 %% \vspace{5mm}
 
-Subprograms that were analyzed were first specified with a precondition and a
-postcondition. The following table provides for each
-component: the number of lines of code (``Size''), the number of preconditions
-(``Pre''), the number of postconditions (``Post'') and the duration of analysis
-in seconds (``Duration''):
-
 %\vspace{2mm}
 
 \begin{tabular}{|l|c|c|c|c|}
 \hline
-{\bf Component}   & {\bf Size} & {\bf Pre} & {\bf Post} & {\bf Duration} \\
+{\bf Component}   & {\bf Size} & {\bf Pre} & {\bf Post} & {\bf Time} \\
 \hline
 Library     &  694 &  34 &   39 &   233 \\
 \hline
@@ -787,6 +779,12 @@ Sequences   &  276 &   5 &    5 &  7803 \\
 OBCP        &  714 &  33 &   15 & 13705 \\
 \hline
 \end{tabular}
+
+Subprograms that were analyzed were first specified with a precondition and a
+postcondition. The above table provides for each
+component: the number of lines of code (``Size''), the number of preconditions
+(``Pre''), the number of postconditions (``Post'') and analysis time
+in seconds (``Time'').
 
 \subsection{Formal Verification Results}
 
@@ -877,15 +875,13 @@ The errors detected in the testing phase were in the code
 in 50\% of the cases, and in the contracts in the remaining 50\%.
 
 The first run of \gnatprove was often not sufficient to achieve 100\% automatic
-proof. Investigating the failed proofs was sometimes very difficult:
-\begin{itemize}
-\item Errors in the code are generally quite easy to find (as it is
-  the classical activity of an engineer);
-\item Missing contracts or assertion pragmas were almost always very difficult to detect without
-  the help of an expert in \newspark;
-\item Conclusions on a tool limitation shall almost always be confirmed by
+proof. Investigating the failed proofs was sometimes very difficult.
+While errors in the code are generally quite easy to find (as it is
+  the classical activity of an engineer),
+missing contracts or assertion pragmas were almost always very difficult to detect without
+  the help of an expert in \newspark. Moreover,
+ conclusions on a tool limitation shall almost always be confirmed by
   a senior expert on \newspark.
-\end{itemize}
 
 The quality of the code has been dramatically improved thanks to both
 executable contracts and formal proof.  The writing of contracts for testing
