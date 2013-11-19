@@ -337,7 +337,7 @@ aims at making an open-sourced, open-proofs reference model of ETCS
 (European Train Control System). ETCS is a radio-based train control
 system aiming at unifying train signaling and control over all
 European countries. Organized in several levels, ETCS can range from,
-at Level 0, a simple ATP (Automatic Train Protection) system
+at Level 0, a simple Automatic Train Protection system
 monitoring train speed to, at Level 3, a fully featured radio-based
 train control system where trains inform a Radio Block Centre about
 their location and receive Movement Authorities, using cab signaling
@@ -346,8 +346,8 @@ instead of track-side signaling.
 We made some experiments with \newspark to see if one could formalize
 the ETCS System Requirement Specification (SRS, ERA UNISIG
 SUBSET-026). We should acknowledge that using \newspark for
-formalizing \emph{system} requirements (and not only software
-requirements) is a bit excessive and out of scope for the language. We
+formalizing \emph{system} requirements
+is a bit excessive and out of scope for the language. We
 made nonetheless this formalization attempt because we wanted to give
 a formal semantics to this system specification and some of the
 content of the ETCS specifications is quite low-level.
@@ -357,7 +357,6 @@ content of the ETCS specifications is quite low-level.
 We made several experiments but due to space constraints we will only detail
 one of them. The complete code is available
 online.\footnote{\url{https://github.com/openETCS/model-evaluation/tree/master/model/GNATprove-MERCE}}
-
 This example is the coding of step functions, or piecewise constant functions,
 used in the \textit{Speed and distance monitoring} section (SRS §3.13). Such
 functions are used to model for example speed restrictions along distance. One
@@ -523,10 +522,12 @@ ranges, which are incompatible with other types, is crucial in this regard.
 Another important finding is that the code should be written with proof in
 mind. For example, function \verb|Minimum_Until_Point| was initially
 unprovable, because an early exit in a loop lead to the formula
+{\footnotesize
 \begin{multline*}
 (\forall~K. A(K-1)<A(K)) \wedge X<A(1) \\
 \rightarrow (\forall~K. K>1 \rightarrow X<A(K))
 \end{multline*}
+}
 which requires support for induction in the automatic prover, a feature still
 missing from most automatic provers. As the early exit
 was not necessary for correct behavior, it was sufficient to remove it to
@@ -541,9 +542,8 @@ values:
 \begin{lstlisting}
 Post =>
   (for all i in Function_Range =>
-   (Merge.Step(i).Value = Min
-     (Get_Value(SFun1, Merge.Step(i).Delimiter),
-      Get_Value(SFun2, Merge.Step(i).Delimiter))));
+   (Get_Value(Merge, i) =
+  Min(Get_Value(SFun1, i), Get_Value(SFun2, i))));
 \end{lstlisting}
 It would have been impossible to prove this contract automatically, so we wrote
 instead that the resulting function is the minimum of both input functions for
@@ -563,13 +563,12 @@ proved automatically, like done for example in B~Method tools.
 Our last finding, not entirely surprising, is that writing the correct
 loop invariant for a complex loop is not an easy task, as we experienced
 it for procedure \verb|Restrictive_Merge|. It can require several
-hours of work of skilled people, trained in the proof environment and
-the use of the automatic prover. In such cases, the ability to
+hours of work of skilled people, trained in the proof environment.
+In such cases, the ability to
 compile and test the loop invariant is very useful to help ``debug''
 the loop invariant.
 
-Overall, we think that the programmer should be trained to exploit the
-feedback provided by the proof environment, much like a programmer
+Overall, we think that the programmer should be trained in the proof environment, much like a programmer
 exploits feedback of debuggers and tests to debug her program.
 Moreover, as a complete proof of the program can be very costly, a proof
 methodology must be defined to avoid spending too much time on proofs
