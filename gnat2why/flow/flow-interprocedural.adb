@@ -133,7 +133,7 @@ package body Flow.Interprocedural is
             V,
             Change_Variant (B, Out_View));
 
-         FA.TDG.Add_Edge (V_A, V_B, EC_TD);
+         FA.TDG.Add_Edge (V_A, V_B, EC_TDG);
       end Add_TD_Edge;
 
    begin
@@ -217,7 +217,7 @@ package body Flow.Interprocedural is
                for Output of Outputs loop
                   FA.TDG.Add_Edge (Find_Parameter_Vertex (FA.CDG, V, Input),
                                    Find_Parameter_Vertex (FA.CDG, V, Output),
-                                   EC_TD);
+                                   EC_TDG);
                end loop;
             end loop;
          end;

@@ -483,7 +483,7 @@ package body Flow is
                null;
             when EC_DDG =>
                Rv.Colour := To_Unbounded_String ("red");
-            when EC_TD =>
+            when EC_TDG =>
                Rv.Colour := To_Unbounded_String ("cornflowerblue");
          end case;
          return Rv;

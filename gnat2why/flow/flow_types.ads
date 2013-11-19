@@ -99,7 +99,7 @@ package Flow_Types is
    subtype Exported_Global_Modes is Param_Mode
      range Mode_In_Out .. Mode_Out;
 
-   type Edge_Colours is (EC_Default, EC_DDG, EC_TD);
+   type Edge_Colours is (EC_Default, EC_DDG, EC_TDG);
 
    type Flow_Id_Kind is (Null_Value,
                          --  No reference or any entity or node
