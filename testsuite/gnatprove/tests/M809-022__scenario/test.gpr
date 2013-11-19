@@ -1,0 +1,12 @@
+project Test is
+   type Build_Type is ("proof", "compile");
+   Mode : Build_Type := external ("mode", "compile");
+
+   case Mode is
+      when "proof" =>
+         for Excluded_Source_Files use ("q.adb", "q.ads");
+      when "compile" =>
+         null;
+   end case;
+
+end Test;
