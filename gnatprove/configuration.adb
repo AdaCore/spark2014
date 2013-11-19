@@ -56,12 +56,17 @@ package body Configuration is
    --  Set to True when --clean was given. Triggers clean_up of GNATprove
    --  intermediate files.
 
+   Proj_Env     : Project_Environment_Access;
+   --  This is the project environment used to load the project. It may be
+   --  modified before loading it, e.g. -X switches
+
    procedure Clean_Up (Tree : Project_Tree);
 
-   procedure Do_Nothing (Switch    : String;
-                         Parameter : String;
-                         Section   : String);
-   --  Dummy procedure.
+   procedure Handle_Scenarios
+     (Switch    : String;
+      Parameter : String;
+      Section   : String);
+   --  Command line handler which deals with -X switches
 
    procedure Handle_Switch
      (Switch    : String;
@@ -209,12 +214,44 @@ ASCII.LF;
    -- Do_Nothing --
    ----------------
 
-   procedure Do_Nothing (Switch    : String;
-                         Parameter : String;
-                         Section   : String) is
+   procedure Handle_Scenarios
+     (Switch    : String;
+      Parameter : String;
+      Section   : String)
+   is
+      pragma Unreferenced (Section, Parameter);
+      Equal : Natural := 0;
    begin
-      null;
-   end Do_Nothing;
+      if Switch'Length > 2
+        and then Switch (Switch'First + 1) = 'X'
+      then
+
+         --  When a -X switch was found, we need to:
+         --  * add the scenario variable to the environment that we use to load
+         --    the project;
+         --  * store the switch to add it to calls to gprbuild that we do later
+
+         --  First we add the variable to the environment. For that, we search
+         --  for the "=" sign which separates the variable from the value ..
+
+         Equal := Switch'First + 2;
+         while Equal in Switch'Range
+           and then Switch (Equal) /= '='
+         loop
+            Equal := Equal + 1;
+         end loop;
+
+         --  ... and then set the variable in the environment.
+
+         Proj_Env.Change_Environment
+           (Switch (Switch'First + 2 .. Equal - 1),
+            Switch (Equal + 1 .. Switch'Last));
+
+         --  Second, we add the whole switch to the list of Scenario switches
+
+         Scenario_Variables.Append (Switch);
+      end if;
+   end Handle_Scenarios;
 
    -------------------
    -- Handle_Switch --
@@ -235,6 +272,12 @@ ASCII.LF;
 
          File_List.Append (Switch);
 
+      --  We can ignore -X switches, have been parsed by the first pass
+
+      elsif Switch'Length >= 2
+        and then Switch (Switch'First + 1) = 'X'
+      then
+         null;
       else
          raise Invalid_Switch;
       end if;
@@ -287,12 +330,10 @@ ASCII.LF;
       ----------
 
       function Init return Project_Tree is
-         Proj_Env     : Project_Environment_Access;
          GNAT_Version : GNAT.Strings.String_Access;
          Tree         : Project_Tree;
 
       begin
-         Initialize (Proj_Env);
          Set_Path_From_Gnatls (Proj_Env.all, "gnatls", GNAT_Version);
          Set_Object_Subdir (Proj_Env.all, Subdir_Name);
          Proj_Env.Register_Default_Language_Extension ("C", ".h", ".c");
@@ -321,14 +362,18 @@ ASCII.LF;
         (1 .. Ada.Command_Line.Argument_Count => <>);
 
    begin
-      --  We parse the command line *twice*.
 
-      --  First parsing recognizes all switches with "immediate"
-      --  behavior that either does not need a project file, or does not need
-      --  the extra switches that may be defined in the project file.
+      --  We parse the command line *twice*. The reason is that before parsing
+      --  the commandline, we need to load the project (e.g. because the
+      --  project also may specify extra switches), but loading the project
+      --  requires reading some specific switches such as -P and -X.
 
-      --  We then concatenate the extra switches to the command line and,
-      --  reparse the whole thing.
+      --  The first parsing only defines -P, -X and immediately terminating
+      --  switches such as --version and --clean. We also need a wildcard to
+      --  ignore the other switches.
+
+      --  Then, the project is loaded. We concatenate the extra switches to the
+      --  command line and then we reparse the whole thing.
 
       --  As parsing the command line consumes it, we start by copying it.
 
@@ -336,10 +381,6 @@ ASCII.LF;
          Com_Lin (Index) :=
            new String'(Ada.Command_Line.Argument (Index));
       end loop;
-
-      --  The first parsing only defines the project file switch, and
-      --  immediately terminating switches such as --version and --clean. We
-      --  also need a wildcard to ignore the other switches.
 
       Set_Usage
         (First_Config,
@@ -365,8 +406,13 @@ ASCII.LF;
 
       Define_Switch (First_Config, "*", Help => "list of source files");
 
+      --  We now initialize the project environment; it may be changed by the
+      --  first parse of the command line.
+
+      Initialize (Proj_Env);
+
       Getopt (First_Config,
-              Callback => Do_Nothing'Access,
+              Callback => Handle_Scenarios'Access,
               Concatenate => False);
 
       if Version then

@@ -178,6 +178,10 @@ procedure Gnatprove is
 
       Args.Prepend ("-c");
 
+      for Var of Configuration.Scenario_Variables loop
+         Args.Prepend (Var);
+      end loop;
+
       if RTS_Dir /= "" then
          Args.Prepend ("--RTS=" & RTS_Dir);
       end if;

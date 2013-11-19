@@ -120,6 +120,9 @@ package Configuration is
    Cargs_List   : String_Lists.List;
    --  The options to be passed to the compilers
 
+   Scenario_Variables : String_Lists.List;
+   --  Scenario variables to be passed to gprbuild
+
    Subdir_Name  : constant Filesystem_String := "gnatprove";
    --  The name of the directory in which all work takes place
 
