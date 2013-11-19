@@ -71,6 +71,17 @@ package Flow_Types is
 
    ----------------------------------------------------------------------
    --  Flow_Id
+   --
+   --  Represents an instance of a Node or Entity that is involved
+   --  in flow analysis. A reference to just the Entity_Id or Node_Id
+   --  is not sufficient, though, in a few cases:
+   --    1) Initial and Final values need to be differentiated from
+   --       "Normal" use of an entity.
+   --    2) Individual record field(s) need to be modelled in addition
+   --       to the "entire variable" represented by the Entity_Id.
+   --    3) Entities referenced as a result of global-frame-computataion
+   --       but are NOT in the AST are represented by a "magic string"
+   --       rather than an Entity or Node ID.
    ----------------------------------------------------------------------
 
    type Param_Mode is (Mode_Invalid,
@@ -91,9 +102,18 @@ package Flow_Types is
    type Edge_Colours is (EC_Default, EC_DDG, EC_TD);
 
    type Flow_Id_Kind is (Null_Value,
+                         --  No reference or any entity or node
+
                          Direct_Mapping,
+                         --  Direct reference to Entity or Node in the AST
+
                          Record_Field,
-                         Magic_String);
+                         --  Reference to list of record field(s) as well
+                         --  as whole variable entity in the AST
+
+                         Magic_String
+                         --  Entity not in AST, so referred to by a String
+                        );
 
    type Flow_Id_Variant is (
       Normal_Use,

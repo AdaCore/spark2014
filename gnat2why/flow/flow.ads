@@ -43,6 +43,20 @@ with Flow_Refinement;      use Flow_Refinement;
 package Flow is
 
    ----------------------------------------------------------------------
+   --  Common abbreviations and acronyms
+   --
+   --  Through the Flow.* package hierarchy, the following abbreviations
+   --  and acronyms are used:
+   --
+   --  CDG  - Control Dependence Graph
+   --  CFG  - Control Flow Graph
+   --  DDG  - Data Dependence Graph
+   --  IPFA - Interprocedural Flow Analysis
+   --  PDG  - Program Dependence Graph
+   --  TDG  - Transitive Dependence Graph
+   ----------------------------------------------------------------------
+
+   ----------------------------------------------------------------------
    --  Global variables
    ----------------------------------------------------------------------
 
