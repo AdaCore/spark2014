@@ -106,51 +106,55 @@ associated formal verification toolset with two main objectives: (i)
 being accessible to non-expert users, and (ii) being compatible with
 testing.
 
-In this paper, we describe how \newspark achieves these objectives, based on
-practical use of the language and associated formal verification tool
-\gnatprove on three industrial case studies developed in the context of the
+In this paper, we describe how \newspark achieves these objectives,
+based on practical use of the language and associated formal
+verification tool \gnatprove on three industrial case studies
+developed in the context of the
 \hilite\footnote{\url{http://www.open-do.org/projects/hi-lite/}} and
 \openetcs\footnote{Part of this work was funded by the DGCIS (Grant
-No. 112930309) in the context of the ITEA2 project \openetcs \url{http://openetcs.org/}.} research projects. The first
-case study by Mitsubishi Electric R\&D Centre Europe evaluates the use of Ada
-and SPARK on a small subset of requirements for the European Train Control
-Systems. The second case study by Astrium Space Transportation is an extensive
-evaluation of the technology over a period of three years, consisting in the
-re-development of various parts of a Flight Control and Vehicle Management
-software. The third case study by Altran compares the benefits of the new
-technology \wrt previous version, on the well-known Tokeneer case study in
-SPARK.
+  No. 112930309) in the context of the ITEA2 project \openetcs
+  \url{http://openetcs.org/}.} research projects. The first case study
+by Mitsubishi Electric R\&D Centre Europe evaluates the use of Ada and
+SPARK on a small subset of requirements for the European Train Control
+Systems. The second case study by Astrium Space Transportation is an
+extensive evaluation of the technology over a period of three years,
+consisting in the re-development of various parts of a Flight Control
+and Vehicle Management software. The third case study by Altran
+compares the benefits of the new technology \wrt previous version, on
+the well-known Tokeneer case study in SPARK.
 
 \section{SPARK 2014}
 
 %%\subsection{SPARK: Past and Present}
 
-SPARK is a subset of the Ada programming language targeted at safety and
-security critical applications. SPARK builds on the strengths of Ada for
-creating highly reliable and long-lived software. SPARK restrictions ensure
-that the behavior of a SPARK program is unambiguously defined, and simple
-enough that formal verification tools can perform an automatic diagnostic of
-conformance between a program specification and its implementation. The SPARK
-language and toolset for formal verification has been applied for many years in
-on-board aircraft systems, control systems, cryptographic systems, and rail
-systems~\cite{sparkbook2012,oneill2012}. The new version \newspark builds on
-the new specification features added in \adatwtw~\cite{ada2012rationale}, so
-formal specifications are now understood by the usual development tools and can
-be executed.
+SPARK is a subset of the Ada programming language targeted at safety
+and security critical applications. SPARK builds on the strengths of
+Ada for creating highly reliable and long-lived software. SPARK
+restrictions ensure that the behavior of a SPARK program is
+unambiguously defined, and simple enough that formal verification
+tools can perform an automatic diagnostic of conformance between a
+program specification and its implementation. The SPARK language and
+toolset for formal verification has been applied for many years in
+on-board aircraft systems, control systems, cryptographic systems, and
+rail systems~\cite{sparkbook2012,oneill2012}. The new version
+\newspark builds on the new specification features added in
+\adatwtw~\cite{ada2012rationale}, so formal specifications are now
+understood by the usual development tools and can be executed.
 
 \subsection{Key Language Features}
 
-The most useful feature in \newspark is the ability to specify a contract on
-subprograms. Subprogram contracts were popularized in the Design-by-Contract
-approach~\cite{meyer:1988:OSC} as a means to separate responsibilities in
-software between a caller and a callee. The callee's \textit{precondition}
-states the responsibility of its caller, while the callee's
-\textit{postcondition} states the responsibility of the callee itself.  For
-example, the following contract for procedure \verb|Swap| specifies that it
-should be called with index parameters within the range of the array parameter,
-and that \verb|Swap| will ensure on return that the corresponding values in
-the array have been swapped. Attribute \verb|Old| in the postcondition is used
-to refer to values on entry to the subprogram.
+The most useful feature in \newspark is the ability to specify a
+contract on subprograms. Subprogram contracts were popularized in the
+Design-by-Contract approach~\cite{meyer:1988:OSC} as a means to
+separate responsibilities in software between a caller and a
+callee. The callee's \textit{precondition} states the responsibility
+of its caller, while the callee's \textit{postcondition} states the
+responsibility of the callee itself.  For example, the following
+contract for procedure \verb|Swap| specifies that it should be called
+with index parameters within the range of the array parameter, and
+that \verb|Swap| will ensure on return that the corresponding values
+in the array have been swapped. Attribute \verb|Old| in the
+postcondition is used to refer to values on entry to the subprogram.
 
 \begin{lstlisting}
 procedure Swap (A : in out Arr; X, Y : Idx) with
@@ -158,14 +162,15 @@ procedure Swap (A : in out Arr; X, Y : Idx) with
   Post => A(X) = A(Y)`Old and A(Y) = A(X)`Old;
 \end{lstlisting}
 
-%% In \newspark, subprogram contracts may additionally specify global variables
-%% read and written in the subprogram, as well the flow of information from inputs
-%% (parameters and global variables read) to outputs (parameters and global
-%% variables written). For example, the following contract for procedure
-%% \verb|Swap| specifies that the subprogram writes global variable
-%% \SPARK{Backup}, that the value of \SPARK{Backup} on return depends only on the
-%% input value of \SPARK{A}, and that the value of \SPARK{A} on return depends on
-%% the input values of all parameters.
+%% In \newspark, subprogram contracts may additionally specify global
+%% variables read and written in the subprogram, as well the flow of
+%% information from inputs (parameters and global variables read) to
+%% outputs (parameters and global variables written). For example, the
+%% following contract for procedure \verb|Swap| specifies that the
+%% subprogram writes global variable \SPARK{Backup}, that the value of
+%% \SPARK{Backup} on return depends only on the input value of
+%% \SPARK{A}, and that the value of \SPARK{A} on return depends on the
+%% input values of all parameters.
 
 %% \begin{lstlisting}
 %% procedure Swap (A : in out Arr; X, Y : Idx) with
@@ -174,15 +179,16 @@ procedure Swap (A : in out Arr; X, Y : Idx) with
 %%               A     => (A, X, Y));
 %% \end{lstlisting}
 
-%% Instead of preconditions and postconditions, or in addition to them, subprogram
-%% contracts may be specified by a set of disjoint and complete cases. For
-%% example, the following contract for procedure \SPARK{Swap} states separate
-%% sub-contracts for the cases where the elements at indexes \SPARK{X} and
-%% \SPARK{Y} are equal or different. The first case specifies that, if
-%% \SPARK{A(X)} equals \SPARK{A(Y)} on entry, then \SPARK{A} should not be
-%% modified by the call. The second case specifies that, if \SPARK{A(X)} is
-%% different from \SPARK{A(Y)} on entry, then \SPARK{A} should be modified by the
-%% call.
+%% Instead of preconditions and postconditions, or in addition to
+%% them, subprogram contracts may be specified by a set of disjoint
+%% and complete cases. For example, the following contract for
+%% procedure \SPARK{Swap} states separate sub-contracts for the cases
+%% where the elements at indexes \SPARK{X} and \SPARK{Y} are equal or
+%% different. The first case specifies that, if \SPARK{A(X)} equals
+%% \SPARK{A(Y)} on entry, then \SPARK{A} should not be modified by the
+%% call. The second case specifies that, if \SPARK{A(X)} is different
+%% from \SPARK{A(Y)} on entry, then \SPARK{A} should be modified by
+%% the call.
 
 %% \begin{lstlisting}
 %% procedure Swap (A : in out Arr; X, Y : Idx) with
@@ -204,12 +210,13 @@ functions can be part of the specification of programs (contrary to
 regular function bodies), they provide a powerful way to abstract
 complex parts of contracts.
 
-The second most useful feature in \newspark (after contracts) is the ability to
-specify properties of loops. A loop invariant expresses the cumulated effect
-of the loop up to that point. For example, the following loop invariant
-expresses that the array \verb|A| has been zeroed out up to the current loop
-index \verb|J|, and that the rest of the array has not been modified.
-Attribute \verb|Loop_Entry| is used to refer to values on entry to the loop.
+The second most useful feature in \newspark (after contracts) is the
+ability to specify properties of loops. A loop invariant expresses the
+cumulated effect of the loop up to that point. For example, the
+following loop invariant expresses that the array \verb|A| has been
+zeroed out up to the current loop index \verb|J|, and that the rest of
+the array has not been modified.  Attribute \verb|Loop_Entry| is used
+to refer to values on entry to the loop.
 
 \begin{lstlisting}
 pragma Loop_Invariant
@@ -220,10 +227,10 @@ pragma Loop_Invariant
        A(K) = A'Loop_Entry(K)));
 \end{lstlisting}
 
-%% A loop variant expresses that a quantity varies monotonically at each iteration
-%% of the loop, which can be used to show loop termination. For example, the
-%% following loop variant expresses that scalar variable \verb|J| increases at
-%% each loop iteration.
+%% A loop variant expresses that a quantity varies monotonically at
+%% each iteration of the loop, which can be used to show loop
+%% termination. For example, the following loop variant expresses that
+%% scalar variable \verb|J| increases at each loop iteration.
 
 %% \begin{lstlisting}
 %% pragma Loop_Variant (Increases => J);
@@ -232,26 +239,28 @@ pragma Loop_Invariant
 \subsection{Benefits of Executable Contracts}
 \label{subsec:ExecutableContracts}
 
-Traditionally, contracts have been interpreted quite differently depending on
-whether they were used for run-time assertion checking or for formal program
-verification. For run-time assertion checking, contracts have been interpreted
-as assertions on entry and exit of subprograms. For formal program
-verification, assertions have typically been interpreted as formulas in
-classical first-order logic. This was the situation with SPARK prior to
-\newspark. Practitioners have struggled with this interpretation, which was not
-consistent with the run-time assertion checking semantics~\cite{tseChalin10}.
+Traditionally, contracts have been interpreted quite differently
+depending on whether they were used for run-time assertion checking or
+for formal program verification. For run-time assertion checking,
+contracts have been interpreted as assertions on entry and exit of
+subprograms. For formal program verification, assertions have
+typically been interpreted as formulas in classical first-order
+logic. This was the situation with SPARK prior to
+\newspark. Practitioners have struggled with this interpretation,
+which was not consistent with the run-time assertion checking
+semantics~\cite{tseChalin10}.
 
-\newspark reconciles the logic semantics and executable semantics of contracts,
-so users can now execute contracts, debug them like code, and test them when
-formal verification is too difficult to achieve. Furthermore, by keeping the
-annotation language the same as the programming language, users don't have to
-learn one more language.
+\newspark reconciles the logic semantics and executable semantics of
+contracts, so users can now execute contracts, debug them like code,
+and test them when formal verification is too difficult to
+achieve. Furthermore, by keeping the annotation language the same as
+the programming language, users don't have to learn one more language.
 
 % Except for the Global and Depends contracts,
-All the previously presented contracts and assertion
-pragmas lead to run-time assertions. If a given property
-is not satisfied at run time, an exception is raised with a message indicating
-the failing property, for example on the procedure \verb|Swap|:
+All the previously presented contracts and assertion pragmas lead to
+run-time assertions. If a given property is not satisfied at run time,
+an exception is raised with a message indicating the failing property,
+for example on the procedure \verb|Swap|:
 
 \begin{footnotesize}
 \begin{verbatim}
@@ -266,13 +275,13 @@ failed precondition from swap.ads:4
 %% Loop_Invariant failed at swap.adb:5
 %% Loop_Variant failed at swap.adb:4
 
-Another key benefit of executable contracts is that they can be used by other
-tools working at the level of code. For example, the
-CodePeer\footnote{\url{http://www.adacore.com/codepeer}} static analysis tool
-uses contracts and assertion pragmas to issue more precise messages. Most
-notably, this allows also combining the results of formal verification and
-testing, when only part of a program is formally
-analyzed~\cite{hiliteERTS2012}.
+Another key benefit of executable contracts is that they can be used
+by other tools working at the level of code. For example, the
+CodePeer\footnote{\url{http://www.adacore.com/codepeer}} static
+analysis tool uses contracts and assertion pragmas to issue more
+precise messages. Most notably, this allows also combining the results
+of formal verification and testing, when only part of a program is
+formally analyzed~\cite{hiliteERTS2012}.
 
 \subsection{Key Tool Features}
 
@@ -280,20 +289,20 @@ analyzed~\cite{hiliteERTS2012}.
 code. It performs two different analyses: (i) flow analysis of the
 program and (ii) proof of program properties.
 
-Flow analysis checks correct access to data in the program: correct access to
-global variables
+Flow analysis checks correct access to data in the program: correct
+access to global variables
 % (as specified in Global and Depends contracts)
-and correct
-access to initialized data. It is a fast static analysis (analysis time
-typically comparable with compilation time).
+and correct access to initialized data. It is a fast static analysis
+(analysis time typically comparable with compilation time).
 
-Proof is used to demonstrate that the program is free from run-time errors, and
-that the specified contracts are correctly implemented. It internally generates
-mathematical formulas for each property, that are given to the automatic prover
-\altergo\footnote{\url{http://alt-ergo.ocamlpro.com/}}. If \altergo manages to
-prove the formula in the given time, then the property is known to
-hold. Otherwise, more work is required from the user to understand why the
-property is not proved.
+Proof is used to demonstrate that the program is free from run-time
+errors, and that the specified contracts are correctly implemented. It
+internally generates mathematical formulas for each property, that are
+given to the automatic prover
+\altergo\footnote{\url{http://alt-ergo.ocamlpro.com/}}. If \altergo
+manages to prove the formula in the given time, then the property is
+known to hold. Otherwise, more work is required from the user to
+understand why the property is not proved.
 
 As proof requires interactions between the user and the tool until the
 specification can be proved automatically, the efficiency and the granularity
@@ -304,64 +313,67 @@ For convenient interaction, \gnatprove
 allows focusing on a single unit, a single subprogram inside this unit, or even
 a single line inside this subprogram.
 
-A very useful feature of \gnatprove to investigate unproved properties is its
-ability to display the paths in the program that lead to unproved
-properties. This path can be displayed in
-GPS\footnote{\url{http://www.adacore.com/gnatpro/toolsuite/gps/}} or in
+A very useful feature of \gnatprove to investigate unproved properties
+is its ability to display the paths in the program that lead to
+unproved properties. This path can be displayed in
+GPS\footnote{\url{http://www.adacore.com/gnatpro/toolsuite/gps/}} or
+in
 Eclipse\footnote{\url{http://www.adacore.com/gnatpro/toolsuite/gnatbench/}},
-the two Integrated Development Environments which support \newspark. The user
-can also change the parameters of the tool to perform more precise proofs, at
-the expense of longer analysis time.
+the two Integrated Development Environments which support
+\newspark. The user can also change the parameters of the tool to
+perform more precise proofs, at the expense of longer analysis time.
 
 %% \subsection{Combining Testing and Proof}
 
-%% Formal methods are complementary to testing, and may find faults that
-%% are not detected by testing, but they cannot establish verification
-%% evidence for the target hardware. Therefore testing on the target is
-%% still required. However, formal analysis of source code can be used to
-%% show compliance with the low-level requirements. \DOC requires an
-%% argument for property preservation between the source code and the
-%% object code for those properties that have been verified formally at
-%% the source level. Since formal program verification and testing are
-%% complementary, we would like to use each method where it is most
-%% efficient. For this we need to make sure that the combination is at
-%% least as strong as testing alone.~\cite{hiliteERTS2012}.
+%% Formal methods are complementary to testing, and may find faults
+%% that are not detected by testing, but they cannot establish
+%% verification evidence for the target hardware. Therefore testing on
+%% the target is still required. However, formal analysis of source
+%% code can be used to show compliance with the low-level
+%% requirements. \DOC requires an argument for property preservation
+%% between the source code and the object code for those properties
+%% that have been verified formally at the source level. Since formal
+%% program verification and testing are complementary, we would like
+%% to use each method where it is most efficient. For this we need to
+%% make sure that the combination is at least as strong as testing
+%% alone.~\cite{hiliteERTS2012}.
 
 \section{Train Control Systems}
 \label{sec:openETCS}
 
 % openETCS case study
 
-The \openetcs European project
-aims at making an open-sourced, open-proofs reference model of ETCS
-(European Train Control System). ETCS is a radio-based train control
-system aiming at unifying train signaling and control over all
-European countries. Organized in several levels, ETCS can range from,
-at Level 0, a simple Automatic Train Protection system
-monitoring train speed to, at Level 3, a fully featured radio-based
-train control system where trains inform a Radio Block Centre about
-their location and receive Movement Authorities, using cab signaling
-instead of track-side signaling.
+
+The \openetcs European project aims at making an open-sourced,
+open-proofs reference model of ETCS (European Train Control
+System). ETCS is a radio-based train control system aiming at unifying
+train signaling and control over all European countries. Organized in
+several levels, ETCS can range from, at Level 0, a simple Automatic
+Train Protection system monitoring train speed to, at Level 3, a fully
+featured radio-based train control system where trains inform a Radio
+Block Centre about their location and receive Movement Authorities,
+using cab signaling instead of track-side signaling.
 
 We made some experiments with \newspark to see if one could formalize
 the ETCS System Requirement Specification (SRS, ERA UNISIG
 SUBSET-026). We should acknowledge that using \newspark for
-formalizing \emph{system} requirements
-is a bit excessive and out of scope for the language. We
-made nonetheless this formalization attempt because we wanted to give
-a formal semantics to this system specification and some of the
-content of the ETCS specifications is quite low-level.
+formalizing \emph{system} requirements is a bit excessive and out of
+scope for the language. We made nonetheless this formalization attempt
+because we wanted to give a formal semantics to this system
+specification and some of the content of the ETCS specifications is
+quite low-level.
 
 %\subsection{Description of the Software}
 
-We made several experiments but due to space constraints we will only detail
-one of them. The complete code is available
-online.\footnote{\url{https://github.com/openETCS/model-evaluation/tree/master/model/GNATprove-MERCE}}
-This example is the coding of step functions, or piecewise constant functions,
-used in the \textit{Speed and distance monitoring} section (SRS §3.13). Such
-functions are used to model for example speed restrictions along distance. One
-of our main goal is to model the merge of two speed restrictions, taking at
-each point the most restrictive (\ie smaller) one.
+We made several experiments but due to space constraints we will only
+detail one of them. The complete code is available
+online\footnote{\url{https://github.com/openETCS/model-evaluation/tree/master/model/GNATprove-MERCE}}.
+This example is the coding of step functions, or piecewise constant
+functions, used in the \textit{Speed and distance monitoring} section
+(SRS §3.13). Such functions are used to model for example speed
+restrictions along distance. One of our main goals is to model the
+merge of two speed restrictions, taking at each point the most
+restrictive (\ie smaller) one.
 
 To encode step functions, we used the following data structure:
 \begin{lstlisting}
@@ -380,31 +392,34 @@ end record;
 \end{lstlisting}
 
 A step function of type \verb|Step_Function_t| can have up to 11 steps
-separated by 10 delimiters, stored together with the initial value of the step
-function (as first element of the array) in component \verb|Step|. Each
-delimiter of type \verb|Delimiter_Entry| contains the delimiter position
-(\verb|Delimiter|) and the associated constant value (\verb|Value|) for the
-function. The number of delimiters used is stored in component
-\verb|Num_Delim|.
-We defined several subprograms that query or update step functions.
+separated by 10 delimiters, stored together with the initial value of
+the step function (as first element of the array) in component
+\verb|Step|. Each delimiter of type \verb|Delimiter_Entry| contains
+the delimiter position (\verb|Delimiter|) and the associated constant
+value (\verb|Value|) for the function. The number of delimiters used
+is stored in component \verb|Num_Delim|. We defined several
+subprograms that query or update step functions.
 %% \begin{itemize}
-%% \item \verb|Get_Value(SFun, X)| returns the value of step function \verb|SFun|
-%%   at point \verb|X|;
-%% \item \verb|Minimum_Until_Point(SFun, X)| returns the minimum of the step
-%%   function \verb|SFun| until point \verb|X|;
-%% \item \verb|Restrictive_Merge(SFun1, SFun2, Merge)| merges step functions
-%%   \verb|SFun1| and \verb|SFun2| into step function \verb|Merge|.
+%% \item \verb|Get_Value(SFun, X)| returns the value of step function
+%%   \verb|SFun| at point \verb|X|;
+%% \item \verb|Minimum_Until_Point(SFun, X)| returns the minimum of
+%%   the step function \verb|SFun| until point \verb|X|;
+%% \item \verb|Restrictive_Merge(SFun1, SFun2, Merge)| merges step
+%%   functions \verb|SFun1| and \verb|SFun2| into step function
+%%   \verb|Merge|.
 %% \end{itemize}
 
 \subsection{Formalization of Properties}
 
-We wanted to check full functional correctness of this critical unit. We used
-contracts to express the specifications of all subprograms.
+We wanted to check full functional correctness of this critical
+unit. We used contracts to express the specifications of all
+subprograms.
 
-For example, we specified that, given a valid (\ie with strictly increasing
-delimiters) step function \verb|SFun| and a point \verb|X|, function
-\verb|Minimum_Until_Point| returns a value of the step function~(2) where the
-step function reaches its minimum on the given domain~(1).
+For example, we specified that, given a valid (\ie with strictly
+increasing delimiters) step function \verb|SFun| and a point \verb|X|,
+function \verb|Minimum_Until_Point| returns a value of the step
+function~(2) where the step function reaches its minimum on the given
+domain~(1).
 
 \begin{lstlisting}
 function Minimum_Until_Point
@@ -430,13 +445,13 @@ Post =>
         = SFun.Step(i).Value))));
 \end{lstlisting}
 
-The most complex subprogram we specified is \verb|Restrictive_Merge|.  We
-specified that, given two valid step functions \verb|SFun1| and \verb|SFun2|
-without too many delimiters, \verb|Restrictive_Merge| generates a step
-function \verb|Merge| that is valid, that contains all the delimiters of
-\verb|SFun1| and \verb|SFun2| and that, for each of those delimiters,
-the value of the \verb|Merge| step function is the minimum over both input
-step functions.
+The most complex subprogram we specified is \verb|Restrictive_Merge|.
+We specified that, given two valid step functions \verb|SFun1| and
+\verb|SFun2| without too many delimiters, \verb|Restrictive_Merge|
+generates a step function \verb|Merge| which is valid and contains all
+the delimiters of \verb|SFun1| and \verb|SFun2| and also, for each of
+those delimiters, the value of the \verb|Merge| step function is the
+minimum over both input step functions.
 
 %% \begin{lstlisting}
 %% procedure Restrictive_Merge
@@ -477,15 +492,16 @@ step functions.
 %%       Get_Value(SFun2, Merge.Step(i).Delimiter))));
 %% \end{lstlisting}
 
-%% Note that the signature of \verb|Restrictive_Merge| already specifies that
-%% \verb|SFun1| and \verb|SFun2| cannot be modified, as they are passed as
-%% \verb|in| parameters.
+%% Note that the signature of \verb|Restrictive_Merge| already
+%% specifies that \verb|SFun1| and \verb|SFun2| cannot be modified, as
+%% they are passed as \verb|in| parameters.
 
-Overall, the number of lines for contracts and assertion pragmas (in particular
-loop invariants) is about the same as the number of lines of code. We could
-have simplified the contracts by specifying that \verb|Is_Valid| is a type
-invariant of \verb|Step_Function_t|, but this Ada feature is not yet supported
-in \newspark, although it is planned for the future.
+Overall, the number of lines for contracts and assertion pragmas (in
+particular loop invariants) is about the same as the number of lines
+of code. We could have simplified the contracts by specifying that
+\verb|Is_Valid| is a type invariant of \verb|Step_Function_t|, but
+this Ada feature is not yet supported in \newspark, although it is
+planned for the future.
 
 \subsection{Formal Verification Results}
 
@@ -497,47 +513,50 @@ the requirements in a formal way. The very expressive data structures
 of \newspark (records, arrays, enumerations, \etc) were very helpful
 compared to other specification languages like B~Method~\cite{b-book}
 (lacking usable record structures) or ACSL~\cite{acsl} for C programs
-(lacking record with variant part or bounded integers).
-We found that it lead to quite readable specifications.
+(lacking record with variant part or bounded integers).  We found that
+it lead to quite readable specifications.
 
-The second goal was to evaluate the automatic proving capabilities of \newspark
-on some parts of the specification. We were able to prove the complete absence
-of run-time errors, plus the contracts of all subprograms except the one of
-\verb|Restrictive_Merge|. In this procedure, the postcondition and the loop
-invariant (added to be able to prove the postcondition) could not be
-automatically proved by \altergo. The main reason is that the proof context is
-too big and \altergo gets lost in all the possible quantifier
-instantiations. We have checked that some parts of the loop invariant could be
-automatically proved if the proof context was manually pruned of irrelevant
-hypotheses. Moreover, we compiled and tested the contracts and assertion
-pragmas, which increased our confidence in their correctness.
+The second goal was to evaluate the automatic proving capabilities of
+\newspark on some parts of the specification. We were able to prove
+the complete absence of run-time errors, plus the contracts of all
+subprograms except the one of \verb|Restrictive_Merge|. In this
+procedure, the postcondition and the loop invariant (added to be able
+to prove the postcondition) could not be automatically proved by
+\altergo. The main reason is that the proof context is too big and
+\altergo gets lost in all the possible quantifier instantiations. We
+have checked that some parts of the loop invariant could be
+automatically proved if the proof context was manually pruned of
+irrelevant hypotheses. Moreover, we compiled and tested the contracts
+and assertion pragmas, which increased our confidence in their
+correctness.
 
 \subsection{Lessons Learned}
 
-We were rather pleased by the expression capabilities of \newspark, making
-specification and code writing rather easy and, more importantly, clearer for the
-reader. The ability inherited from Ada to define new data types for specific
-ranges, which are incompatible with other types, is crucial in this regard.
+We were rather pleased by the expression capabilities of \newspark,
+making specification and code writing rather easy and, more
+importantly, clearer for the reader. The ability inherited from Ada to
+define new data types for specific ranges, which are incompatible with
+other types, is crucial in this regard.
 
-Another important finding is that the code should be written with proof in
-mind. For example, function \verb|Minimum_Until_Point| was initially
-unprovable, because an early exit in a loop lead to the formula
-{\footnotesize
+Another important finding is that the code should be written with
+proof in mind. For example, function \verb|Minimum_Until_Point| was
+initially unprovable, because an early exit in a loop lead to the
+formula {\footnotesize
 \begin{multline*}
 (\forall~K. A(K-1)<A(K)) \wedge X<A(1) \\
 \rightarrow (\forall~K. K>1 \rightarrow X<A(K))
 \end{multline*}
 }
-which requires support for induction in the automatic prover, a feature still
-missing from most automatic provers. As the early exit
-was not necessary for correct behavior, it was sufficient to remove it to
-achieve automatic proof with \altergo.
+which requires support for induction in the automatic prover, a
+feature still missing from most automatic provers. As the early exit
+was not necessary for correct behavior, it was sufficient to remove it
+to achieve automatic proof with \altergo.
 
 A third finding is that contracts that can be automatically proved are
 not always the most natural contracts, \ie contracts a reviewer would
 understand more easily. For example, for \verb|Restrictive_Merge|
-procedure, we would have preferred to write that the resulting function
-is the minimum of both input functions for all possible input
+procedure, we would have preferred to write that the resulting
+function is the minimum of both input functions for all possible input
 values:
 \begin{lstlisting}
 Post =>
@@ -545,10 +564,10 @@ Post =>
    (Get_Value(Merge, i) =
   Min(Get_Value(SFun1, i), Get_Value(SFun2, i))));
 \end{lstlisting}
-It would have been impossible to prove this contract automatically, so we wrote
-instead that the resulting function is the minimum of both input functions for
-all possible delimiter values, which is logically equivalent and proved
-automatically:
+It would have been impossible to prove this contract automatically, so
+we wrote instead that the resulting function is the minimum of both
+input functions for all possible delimiter values, which is logically
+equivalent and proved automatically:
 \begin{lstlisting}
 Post =>
   (for all i in
@@ -557,59 +576,64 @@ Post =>
      (Get_Value(SFun1, Merge.Step(i).Delimiter),
       Get_Value(SFun2, Merge.Step(i).Delimiter))));
 \end{lstlisting}
-Ideally, the tool should allow users to manually prove contracts that cannot be
-proved automatically, like done for example in B~Method tools.
+Ideally, the tool should allow users to manually prove contracts that
+cannot be proved automatically, like done for example in B~Method
+tools.
 
 Our last finding, not entirely surprising, is that writing the correct
-loop invariant for a complex loop is not an easy task, as we experienced
-it for procedure \verb|Restrictive_Merge|. It can require several
-hours of work of skilled people, trained in the proof environment.
-In such cases, the ability to
-compile and test the loop invariant is very useful to help ``debug''
-the loop invariant.
+loop invariant for a complex loop is not an easy task, as we
+experienced it for procedure \verb|Restrictive_Merge|. It can require
+several hours of work of skilled people, trained in the proof
+environment. In such cases, the ability to compile and test the loop
+invariant is very useful to help ``debug'' the loop invariant.
 
-Overall, we think that the programmer should be trained in the proof environment, much like a programmer
-exploits feedback of debuggers and tests to debug her program.
-Moreover, as a complete proof of the program can be very costly, a proof
-methodology must be defined to avoid spending too much time on proofs
-that could be broken by future code changes.
+Overall, we think that the programmer should be trained in the proof
+environment, much like a programmer exploits feedback of debuggers and
+tests to debug her program. Moreover, as a complete proof of the
+program can be very costly, a proof methodology must be defined to
+avoid spending too much time on proofs that could be broken by future
+code changes.
 
 \section{Flight Control and Vehicle Management in Space}
 \label{sec:space}
 
-This case study was carried in the project \hilite as a means to evaluate the
-adequacy of formal verification for future space programs. Detailed results
-have been published in \cite{lesens:2013:dasia}.
+This case study was carried out as part of project \hilite as a means
+to evaluate the adequacy of formal verification for future space
+programs. Detailed results have been published in
+\cite{lesens:2013:dasia}.
 
-A typical space applicative flight program is made up of two parts, which we
-both considered in our case study:
-Flight control (or more generally numerical command and control algorithm) and
-Mission and Vehicle Management.
+A typical space flight program is made up of two parts, both of which
+are considered in our case study: Flight control (or more generally
+numerical command and control algorithm) and Mission and Vehicle
+Management.
 
 \subsection{Numerical Command and Control Algorithms}
 
-Numerical command and control algorithms take as inputs floating point values,
-perform some numerical computations (with the classical basic mathematical
-operators such as additions, subtractions, multiplications, divisions, absolute
-values, trigonometry or operations on vectors and arrays, \etc) and return
-floating point results. Such algorithms generally have a retro-action loop, \ie
+Numerical command and control algorithms take as input floating point
+values, perform some numerical computations (using the classical basic
+mathematical operators such as additions, subtractions,
+multiplications, divisions, absolute values, trigonometry or
+operations on vectors and arrays, \etc) and return floating point
+results. Such algorithms generally have a retro-action loop, \ie
 internal states.
 
-It is generally not possible to define interesting functional contracts for
-such code. Indeed, the functional contract of the equation
-``X := A * Y + Cos (Z)''
-is just itself (\ie it is not possible to specify in a more abstract way this
-equation). Then, instead of defining functional contracts, the objective on
-this kind of software is the proof of absence of run-time errors (such as
+It is generally not possible to define interesting functional
+contracts for such code. Indeed, the functional contract of the
+equation ``X := A * Y + Cos (Z)'' is just itself (\ie it is not
+possible to specify in a more abstract way this equation). Then,
+instead of defining functional contracts, the objective on this kind
+of software is the proof of absence of run-time errors (such as
 division by zero) and the correctness of variable ranges (such as, for
 instance, a velocity shall always be between 0 and 25 km/s).
 
-\newspark has been first experimented on a solar wing management software (for a spacecraft such as the ATV -- Automated Transfer Vehicle).
-This piece of code uses a mathematical library whose implementation is not in
-\newspark, implying that it could not be formally proved, but only tested.
-However, the interface of this mathematical library is in \newspark. The
-contracts defined on the mathematical library can then be used to prove the
-application code. For example:
+\newspark has been first experimented on a solar wing management
+software (for a spacecraft such as the ATV -- Automated Transfer
+Vehicle). This piece of code uses a mathematical library whose
+implementation is not in \newspark, implying that it could not be
+formally proved, but only tested. However, the interface of this
+mathematical library is in \newspark. The contracts defined on the
+mathematical library can then be used to prove the application's
+code. For example:
 
 \begin{lstlisting}
 function Sin (X : T_Float) return T_Float
@@ -620,18 +644,18 @@ with
 
 \subsection{Mission and Vehicle Management}
 
-The Mission and Vehicle Management of a spacecraft is described by the ECSS (European Cooperation for Space Standardization) standard
-{\it ECSS-E-ST-70-01C ``Space engineering -- Spacecraft on-board control
-procedures''}.
-This standard defines the general principles of an On Board Control Procedure
-(OBCP). An OBCP is in practice represented by a simplified programming language
-interpreted on-board the spacecraft. This interpreter is generally at the
-highest level of criticality of the spacecraft. The implementation of this
-interpreter in \newspark is table driven and relies greatly on rich features of Ada such as generic packages
-(allowing an easy customization of the code)
-and discriminants
-(ensuring a strict typing of the code, even in case of heterogeneous
-communication between components of the system).
+The Mission and Vehicle Management of a spacecraft is described by the
+ECSS (European Cooperation for Space Standardization) standard {\it
+  ECSS-E-ST-70-01C ``Space engineering -- Spacecraft on-board control
+  procedures''}. This standard defines the general principles of an On
+Board Control Procedure (OBCP). An OBCP is in practice represented by
+a simplified programming language interpreted on-board the
+spacecraft. This interpreter is generally at the highest level of
+criticality of the spacecraft. The implementation of this interpreter
+in \newspark is table driven and relies greatly on rich features of
+Ada such as generic packages (allowing an easy customization of the
+code) and discriminants (ensuring a strict typing of the code, even in
+case of heterogeneous communication between components of the system).
 
 %%\begin{itemize}
 %%\item The generic packages allow an easy customization of the code:
@@ -664,8 +688,8 @@ communication between components of the system).
 
 \subsection{Formalization of Properties}
 
-The contracts defined on algorithmic code are mainly related to the ranges of
-variables.
+The contracts defined on algorithmic code are mainly related to the
+ranges of variables.
 
 %%\begin{lstlisting}
 %%   subtype T_Angle_180 is T_Float
@@ -677,13 +701,13 @@ variables.
 %%               (X <=  720.0);
 %%\end{lstlisting}
 
-The contracts defined on mission and vehicle management code have (among others)
-the objectives of ensuring
- the permanent consistency of the software tables,
- the permanent consistency between the Mission and Vehicle Management function and other functionalities (such as, for instance, the solar wing management),
-  some functional properties such as mutual exclusion between executions of
-  some automated procedures are respected and
-  the absence of run-time errors.
+The contracts defined on mission and vehicle management code have
+(among others) the objectives of ensuring the permanent consistency of
+the software tables, the permanent consistency between the Mission and
+Vehicle Management function and other functionalities (such as, for
+instance, the solar wing management), some functional properties such
+as mutual exclusion between executions of some automated procedures
+are respected and the absence of run-time errors.
 
 %%\begin{lstlisting}
 %%   procedure Reset_Event
@@ -700,23 +724,26 @@ the objectives of ensuring
 %%\end{lstlisting}
 
 A majority of the program could be formally analyzed (1505 out of 2054
-subprograms), although some subprograms fell outside the boundary of \newspark.
-Subprograms that could not be analyzed either used access types (\aka
-``pointers'') that are outside the language (87 subprograms), or unchecked type
-conversions that are not verified (377 subprograms).  The 377 subprograms using
-unchecked type conversions are very small subprograms defined in a library for
-reading external inputs and could be validated by intensive testing. The
-remaining unanalyzed subprograms used features that are expected to be included
-in a future version of the language: class wide types (53 subprograms), tagged
-types (81 subprograms) and specific attributes (10 subprograms). These
-correspond to Object Oriented Programming features, allowing dynamic binding of
-subprograms depending on the type of objects at run time.
+subprograms), although some subprograms fell outside the boundary of
+\newspark.  Subprograms that could not be analyzed either used access
+types (\aka ``pointers'') that are outside the language (87
+subprograms), or unchecked type conversions that are not verified (377
+subprograms).  The 377 subprograms using unchecked type conversions
+are very small subprograms defined in a library for reading external
+inputs and could be validated by intensive testing. The remaining
+unanalyzed subprograms used features that are expected to be included
+in a future version of the language: class wide types (53
+subprograms), tagged types (81 subprograms) and specific attributes
+(10 subprograms). These correspond to Object Oriented Programming
+features, allowing dynamic binding of subprograms depending on the
+type of objects at run time.
 
-%% The following table provides for each component: the number of subprograms
-%% fully in \newspark (``Ok''), the number of bodies not in \newspark (``BN''),
-%% the number of specifications not in \newspark (``SN''), the number of bodies
-%% not yet in \newspark (``BNY'') and the number of specifications not yet in
-%% \newspark (``SNY'').
+%% The following table provides for each component: the number of
+%% subprograms fully in \newspark (``Ok''), the number of bodies not
+%% in \newspark (``BN''), the number of specifications not in
+%% \newspark (``SN''), the number of bodies not yet in \newspark
+%% (``BNY'') and the number of specifications not yet in \newspark
+%% (``SNY'').
 
 %% \vspace{5mm}
 
@@ -788,10 +815,11 @@ in seconds (``Time'').
 
 \subsection{Formal Verification Results}
 
-All the contracts have been checked by dynamic testing. This phase is quite
-classical, except for the fact that preconditions and postconditions were also
-tested. Then, \gnatprove has been applied. The following table provides for each
-type of checks, their number and the number proved:
+All the contracts have been checked by dynamic testing. This phase is
+quite classical, except for the fact that preconditions and
+postconditions were also tested. Then, \gnatprove has been
+applied. The following table provides for each type of checks, their
+number and the number proved:
 
 %\vspace{2mm}
 
@@ -823,18 +851,21 @@ loop  preservation  & 14     & 14     & 100 \\
 
 %\vspace{2mm}
 
-These results are globally satisfactory, a quite limited number of checks having not been proved.
-All unproved checks were analyzed to determine why they were not proved, which
-uncovered a few limitations of the tool: some algorithmic functions
-(\eg trigonometric functions) are not completely known by \gnatprove and then
-can not be used in proofs, \gnatprove had some difficulties to take into account rounding,
+These results are globally satisfactory, a quite limited number of
+checks having not been proved. All unproved checks were analyzed to
+determine why they were not proved, which uncovered a few limitations
+of the tool: some algorithmic functions (\eg trigonometric functions)
+are not completely known to \gnatprove and therefore cannot be used in
+proofs, \gnatprove had some difficulties to take into account
+rounding,
 %% For example, the second assertion below is not proved:
 %% \begin{lstlisting}
 %% pragma Assert (Y in -11160.002 .. 11160.002);
 %% Round_Y := Round_Closest (Y);
 %% pragma Assert (Round_Y in -11160.0 .. 11160.0);
 %% \end{lstlisting}
-\gnatprove could not prove non linear equations involving floating-point values,
+\gnatprove could not prove non linear equations involving
+floating-point values,
 %% For example, the last assertion below is not proved:
 %% \begin{lstlisting}
 %% pragma Assert (X in 0.0 .. 180.0);
@@ -861,7 +892,8 @@ can not be used in proofs, \gnatprove had some difficulties to take into account
 %%defined in the range of ``X.A''
 %%An improvement of \gnatprove is in progress in order to deal with such case.
 The remaining non proved checks were due to too complex subprograms.
-These subprograms shall be split in several smaller subprograms to be proved.
+These subprograms shall be split in several smaller subprograms to be
+proved.
 
 
 \subsection{Lessons Learned}
@@ -874,48 +906,51 @@ A precise process was followed for the development of this case study:
 The errors detected in the testing phase were in the code
 in 50\% of the cases, and in the contracts in the remaining 50\%.
 
-The first run of \gnatprove was often not sufficient to achieve 100\% automatic
-proof. Investigating the failed proofs was sometimes very difficult.
-While errors in the code are generally quite easy to find (as it is
-  the classical activity of an engineer),
-missing contracts or assertion pragmas were almost always very difficult to detect without
-  the help of an expert in \newspark. Moreover,
- conclusions on a tool limitation shall almost always be confirmed by
-  a senior expert on \newspark.
+The first run of \gnatprove was often not sufficient to achieve 100\%
+automatic proof. Investigating the failed proofs was sometimes very
+difficult. While errors in the code are generally quite easy to find
+(as it is the classical activity of an engineer), missing contracts or
+assertion pragmas were almost always very difficult to detect without
+the help of an expert in \newspark. Moreover, conclusions on a tool
+limitation shall almost always be confirmed by a senior expert on
+\newspark.
 
 The quality of the code has been dramatically improved thanks to both
-executable contracts and formal proof.  The writing of contracts for testing
-should become a natural activity of any software developer. Understanding why a
-proof (which may seem sometimes really obvious) does not work may require the
-involvement of an expert in \newspark. The writing of effective contracts for
-formal proof requires a dedicated training and sometimes the involvement of an
-expert in \newspark
+executable contracts and formal proof. The writing of contracts for
+testing should become a natural activity of any software
+developer. Understanding why a proof (which may seem sometimes really
+obvious) does not work may require the involvement of a \newspark
+expert. The writing of effective contracts for formal proof requires a
+dedicated training and sometimes the involvement of an expert in
+\newspark.
 
-The following needs are then expressed for \gnatprove in order to make possible
-its efficient use in an industrial context: ability to prove generic units once
-(instead of proving each instance like done currently), need to use a sound
-model of floating-points instead of real numbers, some loop invariants
-generated automatically.
+The following needs are then expressed for \gnatprove in order to make
+possible its efficient use in an industrial context: ability to prove
+generic units once (instead of proving each instance like done
+currently), need to use a sound model of floating-points instead of
+real numbers, some loop invariants generated automatically.
 
 \section{Biometric Access to a Secure Enclave}
 \label{sec:tokeneer}
 % Tokeneer case study
 
-Tokeneer\footnote{\url{www.adacore.com/sparkpro/tokeneer}} is a highly secure
-biometric software system that was originally developed by Altran. The system
-provides protection to secure information held on a network of workstations
-situated in a physically secure enclave. The Tokeneer project was commissioned
-by the US National Security Agency (NSA) to demonstrate the feasibility of
-developing systems to the level of rigor required by the higher assurance
-levels of the Common Criteria. The requirements of the system were captured
-using the Z notation and the implementation was in \oldspark. The original
-development artifacts, including all source code, are publicly available.
+Tokeneer\footnote{\url{www.adacore.com/sparkpro/tokeneer}} is a highly
+secure biometric software system that was originally developed by
+Altran. The system provides protection to secure information held on a
+network of workstations situated in a physically secure enclave. The
+Tokeneer project was commissioned by the US National Security Agency
+(NSA) to demonstrate the feasibility of developing systems to the
+level of rigor required by the higher assurance levels of the Common
+Criteria. The requirements of the system were captured using the Z
+notation and the implementation was in \oldspark. The original
+development artifacts, including all source code, are publicly
+available.
 
 During this study, the source code for Tokeneer has been translated
 into \newspark. The core system now consists of approximately 10,000
 lines of \newspark code. There are also approximately 3,700 lines of
-supporting code written in Ada which mimick the drivers to
-peripherals connected to the core system.
+supporting code written in Ada which mimick the drivers to peripherals
+connected to the core system.
 
 \subsection{Converting \oldspark to \newspark}
 
@@ -924,36 +959,39 @@ very straightforward since most of the original annotations map
 directly to the new ones. This section will focus on the more
 interesting occasions where the conversion was non-trivial.
 
-Often, it is convenient to introduce a function which exists
-solely for the sake of proof and does not contribute at all in
-the final executing program. The constructs which achieve this
-functionality for \oldspark and \newspark respectively are proof
-functions and ghost functions. In \oldspark, the behavior of a proof
-function was defined with user rules, which are axioms expressed in a special
-syntax and given to the proof system. In \newspark, this
-behavior is simply given by the body of the ghost function.
+Often, it is convenient to introduce a function which exists solely
+for the sake of proof and does not contribute at all in the final
+executing program. The constructs which achieve this functionality for
+\oldspark and \newspark respectively are proof functions and ghost
+functions. In \oldspark, the behavior of a proof function was defined
+with user rules, which are axioms expressed in a special syntax and
+given to the proof system. In \newspark, this behavior is simply given
+by the body of the ghost function.
 
-The Global aspect has an additional mode \verb|Proof_In| in \newspark \wrt
-\oldspark. This mode is used to specify global variables of a subprogram which
-appear solely within contracts and assertions. Therefore, the translation
-required separating global variables of mode \verb|in| that were used
-exclusively inside annotations (translated as \verb|Proof_In| global
-variables), from those that were used in code (translated as \verb|Input|
-global variables).
+The Global aspect has an additional mode \verb|Proof_In| in \newspark
+\wrt \oldspark. This mode is used to specify global variables of a
+subprogram which appear solely within contracts and
+assertions. Therefore, the translation required separating global
+variables of mode \verb|in| that were used exclusively inside
+annotations (translated as \verb|Proof_In| global variables), from
+those that were used in code (translated as \verb|Input| global
+variables).
 
-Parts of the original code were specially annotated to be ignored during formal
-verification, because they contained constructs which were outside the Ada
-subset supported by \oldspark. As \newspark supports a bigger subset of Ada
-than \oldspark, a lot of this code is now formally analyzable. The two
-constructs most often encountered that fall under this category are string
-concatenation and array slices.
+Parts of the original code were specially annotated to be ignored
+during formal verification, because they contained constructs which
+were outside the Ada subset supported by \oldspark. As \newspark
+supports a bigger subset of Ada than \oldspark, a lot of this code is
+now formally analyzable. The two constructs most often encountered,
+which fall under this category, are string concatenation and array
+slices.
 
-The information that values of variables respect the constraints of their type
-is available for proofs with the new toolset. This simplifies both the work of
-the programmer and the code itself.  In \oldspark, it was necessary to add many
-lines of assertions to repeat that the values of variables and components are
-within the bounds allowed by their type, as this information was lost inside
-loops.  The new tools are more sophisticated and preserve more of the context.
+The information that values of variables respect the constraints of
+their type is available for proofs with the new toolset. This
+simplifies both the work of the programmer and the code itself. In
+\oldspark, it was necessary to add many lines of assertions to repeat
+that the values of variables and components are within the bounds
+allowed by their type, as this information was lost inside loops. The
+new tools are more sophisticated and preserve more of the context.
 
 %% Consider the following code segment:
 
@@ -972,22 +1010,22 @@ loops.  The new tools are more sophisticated and preserve more of the context.
 %%         ...
 %% \end{lstlisting}
 
-%% In \oldspark, it was necessary to add 25 lines of assertions to repeat that the
-%% values of variables like \verb|I| and components like
-%% \verb|UsedLogFiles.Head| are within the bounds allowed by their type, as this
-%% information was lost inside loops.
+%% In \oldspark, it was necessary to add 25 lines of assertions to
+%% repeat that the values of variables like \verb|I| and components
+%% like \verb|UsedLogFiles.Head| are within the bounds allowed by
+%% their type, as this information was lost inside loops.
 
 
 %% However, at this point, it should be pointed out that since the
-%% development of the Tokeneer project the \oldspark tools have greatly
-%% evolved and some of the original annotations might actually now be
-%% redundant.
+%% development of the Tokeneer project the \oldspark tools have
+%% greatly evolved and some of the original annotations might actually
+%% now be redundant.
 
 \subsection{Formalization of Properties}
 
-The contracts that have been added in the Tokeneer source code consist of
-information flow contracts expressed as Depends aspects and functional
-behavioral contracts expressed as Pre and Post aspects.
+The contracts that have been added in the Tokeneer source code consist
+of information flow contracts expressed as Depends aspects and
+functional behavioral contracts expressed as Pre and Post aspects.
 
 \begin{tabular}{|l|c|}
 \hline
@@ -1011,9 +1049,10 @@ Loop\_Invariant     & 10 \\
 \hline
 \end{tabular}
 
-The Depends aspects (not presented previously for lack of space) facilitate
-flow analysis of the code. Flow analysis detects improper initialization,
-identifies ineffective assignments and ensures secure flow of information.
+The Depends aspects (not presented previously for lack of space)
+facilitate flow analysis of the code. Flow analysis detects improper
+initialization, identifies ineffective assignments and ensures secure
+flow of information.
 
 The Pre and Post aspects enable the prover to show that the code is
 free from run-time exceptions, such as buffer overflow or
@@ -1033,11 +1072,11 @@ consider subroutine \verb|OpIsAvailable| of package \verb|admin|. An
 administrator can be either a \verb|UserOnly|, a \verb|Guard|, an
 \verb|AuditManager| or a \verb|SecurityOfficer|. Each type of
 administrator has a set of predefined operations that it is allowed to
-perform. Function \verb|OpIsAvailable| takes as input an
-administrator and a string that is read from the keyboard and
-determines if this string corresponds to an operation available to the
-administrator. If the operation is indeed available, then this
-operation is returned, otherwise \verb|NullOp| is returned.
+perform. Function \verb|OpIsAvailable| takes as input an administrator
+and a string that is read from the keyboard and determines if this
+string corresponds to an operation available to the administrator. If
+the operation is indeed available, then this operation is returned,
+otherwise \verb|NullOp| is returned.
 
 %% \begin{lstlisting}
 %% function OpIsAvailable
@@ -1049,22 +1088,21 @@ operation is returned, otherwise \verb|NullOp| is returned.
 %% --#     (R = OverrideLock <->
 %% --#       prf_rolePresent(TheAdmin) = PrivTypes.Guard));
 %% \end{lstlisting}
-The \oldspark postcondition served only as a test case. It
-ensured that if a non null operation was returned and if that
-operation was \verb|OverrideLock| then the administrator was of type
+The \oldspark postcondition served only as a test case. It ensured
+that if a non null operation was returned and if that operation was
+\verb|OverrideLock| then the administrator was of type
 \verb|Guard|. This annotation was incomplete since it did not specify
 any other kind of valid combinations of administrator types and their
 corresponding operations
 %%  (\eg the administrator being of type
 %% \verb|SecurityOfficer| and the operation being
 %% \verb|UpdateConfigData| or \verb|ShutdownOp|)
-or under which
-circumstances \verb|NullOp| should be returned.
-The \oldspark tools proved all properties associated with
-the non-augmented \verb|admin| package but a total of 12 user rules had
-to be provided. The
-effort associated with proving the completed version of this
-postcondition would have been significant and hence this was not attempted.
+or under which circumstances \verb|NullOp| should be returned.  The
+\oldspark tools proved all properties associated with the
+non-augmented \verb|admin| package but a total of 12 user rules had to
+be provided. The effort associated with proving the completed version
+of this postcondition would have been significant and hence this was
+not attempted.
 
 \begin{lstlisting}
 function OpIsAvailable
@@ -1078,12 +1116,11 @@ with
                and OpIsAvailable'Result = Op)
           xor OpIsAvailable'Result = NullOp;
 \end{lstlisting}
-This \newspark Post aspect states that we have two mutually
-exclusive cases. If there exists some operation in \verb|Opt| that
-matches the string read from the keyboard and this operation is
-allowed for the current administrator then the result of function
-\verb|OpIsAvailable| is this operation, otherwise, the result is
-\verb|NullOp|.
+This \newspark Post aspect states that we have two mutually exclusive
+cases. If there exists some operation in \verb|Opt| that matches the
+string read from the keyboard and this operation is allowed for the
+current administrator then the result of function \verb|OpIsAvailable|
+is this operation, otherwise, the result is \verb|NullOp|.
 
 \subsection{Formal Verification Results}
 
@@ -1127,14 +1164,14 @@ and annotations have to be written was uncovered while attempting to
 prove package \verb|AuditLog|. Converting \oldspark annotations into
 their \newspark equivalents introduced several run-time checks that
 previously did not exist. The extra checks are a byproduct of the
-contracts and assertions being
-executable (Section~\ref{subsec:ExecutableContracts}). Some of these checks were
+contracts and assertions being executable
+(Section~\ref{subsec:ExecutableContracts}). Some of these checks were
 not automatically discharged. A more in-depth investigation revealed
 that an invariant was missing from the original specifications. This
 invariant described the property of always using at least one log file
 (\verb|UsedLogFile.Length >= 1|)\footnote{\url{
-www.open-do.org/wp-content/uploads/2013/05/Industrial_Case_Studies_Final_Report.
-pdf}}.
+    www.open-do.org/wp-content/uploads/2013/05/Industrial_Case_Studies_Final_Report.
+    pdf}}.
 
 When analyzing a single package in isolation, it was easy to
 understand which verification conditions were proved and which were
@@ -1149,71 +1186,77 @@ resort to testing for the rest.
 
 \section{Common Findings and Dissimilarities}
 % We will discuss the common findings between the three case studies,
-% denoting instrinsic properties of \newspark, and the dissimilarities,
-% which may be explained by differences in domains, backgrounds,
-% processes, \etc
+% denoting instrinsic properties of \newspark, and the
+% dissimilarities, which may be explained by differences in domains,
+% backgrounds, processes, \etc
 
-Not surprisingly, the lessons learned in all three case studies partly reflect
-the level of expertise in Ada and SPARK of the engineers involved: first-time
-experience with Ada and SPARK for the first case study, extensive experience in
-previous versions of Ada and SPARK for the second case study, member of the
-team developing \gnatprove for the third case study.
+Not surprisingly, the lessons learned in all three case studies partly
+reflect the level of expertise in Ada and SPARK of the engineers
+involved: first-time experience with Ada and SPARK for the first case
+study, extensive experience in previous versions of Ada and SPARK for
+the second case study, member of the team developing \gnatprove for
+the third case study.
 
-The three case studies confirm some good properties of \newspark.
-One of the principal objectives of \newspark is to offer an expressive
+The three case studies confirm some good properties of \newspark.  One
+of the principal objectives of \newspark is to offer an expressive
 language for formal verification. As stated by Jonathan P. Bowen in
-Ten Commandments of Formal Methods~\cite{bowen1995ten}, \emph{Thou shalt choose
-an appropriate notation}. The three case studies confirm that
-expressiveness is indeed perceived as an advantage of \newspark. It provides
-both rich data-structures such as records and enumerations
-(Section~\ref{sec:openETCS}) and support for advanced coding structures such as
-generic packages and discriminants (Section~\ref{sec:space}). It is close enough
-to \oldspark to allow an easy translation of annotations but also supports
-constructs that were previously excluded from the language
-(Section~\ref{sec:tokeneer}).
+Ten Commandments of Formal Methods~\cite{bowen1995ten}, \emph{Thou
+  shalt choose an appropriate notation}. The three case studies
+confirm that expressiveness is indeed perceived as an advantage of
+\newspark. It provides both rich data-structures such as records and
+enumerations (Section~\ref{sec:openETCS}) and support for advanced
+coding structures such as generic packages and discriminants
+(Section~\ref{sec:space}). It is close enough to \oldspark to allow an
+easy translation of annotations but also supports constructs that were
+previously excluded from the language (Section~\ref{sec:tokeneer}).
 
 Tests remain an important means of gaining confidence in a program's
-specification and implementation, even when formal methods are involved. As
-stated in Bowen's ninth commandment of formal methods, \emph{Thou shalt test,
-test, and test again}. Executable contracts are a key language
-feature (see Section~\ref{subsec:ExecutableContracts}) of \newspark as it allows to execute
-the contracts while testing. They were found to be beneficial both to increase
-confidence in annotations (Section~\ref{sec:openETCS}) and to improve overall
-code quality (Section~\ref{sec:space}). What is more, the constraint implied by
-executability of contracts does not seem to be too important as additional
-checks introduced by the verification of absence of runtime errors in contracts
-on a project that had not be annotated with this constraint in mind could be
-discharged (Section~\ref{sec:tokeneer}).
+specification and implementation, even when formal methods are
+involved. As stated in Bowen's ninth commandment of formal methods,
+\emph{Thou shalt test, test, and test again}. Executable contracts are
+a key language feature (see Section~\ref{subsec:ExecutableContracts})
+of \newspark as it allows to execute the contracts while testing. They
+were found to be beneficial both to increase confidence in annotations
+(Section~\ref{sec:openETCS}) and to improve overall code quality
+(Section~\ref{sec:space}). What is more, the constraint implied by
+executability of contracts does not seem to be too important as
+additional checks introduced by the verification of absence of
+run-time errors in contracts on a project that had not be annotated
+with this constraint in mind could be discharged
+(Section~\ref{sec:tokeneer}).
 
-Another objective of \newspark was to improve the amount of proofs that could
-go through automatically with respect to \oldspark. The case study in
-Section~\ref{sec:tokeneer} shows that obtaining automated proofs with \newspark
-requires smaller loop-invariant, as information about bounds of variables is
-preserved, less user rules, as ghost functions can now have bodies, and less
-user written additional assertions.
+Another objective of \newspark was to improve the amount of proofs
+that could go through automatically with respect to \oldspark. The
+case study in Section~\ref{sec:tokeneer} shows that obtaining
+automated proofs with \newspark requires smaller loop-invariant, as
+information about bounds of variables is preserved, less user rules,
+as ghost functions can now have bodies, and less user written
+additional assertions.
 
-The case studies also raise some usability issues.
-\newspark strives to define a subset of Ada as big as possible while remaining
-amenable to formal verification. For example, pointers are excluded but a
-library of containers adapted to formal specification is provided to alleviate
-this restriction~\cite{dross2011correct}. The case studies show that both code
-and contracts must also be adapted for formal proof to go through automatically
+The case studies also raise some usability issues. \newspark strives
+to define a subset of Ada as big as possible while remaining amenable
+to formal verification. For example, pointers are excluded but a
+library of containers adapted to formal specification is provided to
+alleviate this restriction~\cite{dross2011correct}. The case studies
+show that both code and contracts must also be adapted for formal
+proof to go through automatically (Sections~\ref{sec:openETCS}
+and~\ref{sec:space}).
+
+Determining why a proof doesn't succeed is a really difficult
+task. Even if specific feedback can be provided by the proof
+environment for a failed proof in the form of an execution trace, the
+results of the case-study show that there is room for improvement in
+that matter. For example, the tool could provide inputs on which the
+annotation is not verified.  What is more, it appears that programmers
+should be trained to debug their proof and annotations
 (Sections~\ref{sec:openETCS} and~\ref{sec:space}).
 
-Determining why a proof doesn't succeed is a really difficult task. Even if
-specific feedback can be provided by the proof environment for a failed proof
-in the form of an execution trace, the results of the case-study show
-that there is room for improvement in that matter. For example, the
-tool could provide inputs on which the annotation is not verified.
-What is more, it appears that programmers should be trained to debug their proof
-and annotations (Sections~\ref{sec:openETCS} and~\ref{sec:space}).
-
-Finely, as stated in Bowen's fourth commandment, \emph{Thou shalt have a formal
-methods guru on call}. If automated formal verification of runtime errors is
-achievable by an implementer, the case studies show that, as the desired
-properties become more complex, their expression and their verification may
-require the involvement of an expert (Sections~\ref{sec:openETCS}
-and~\ref{sec:space}).
+Finally, as stated in Bowen's fourth commandment, \emph{Thou shalt
+  have a formal methods guru on call}. If automated formal
+verification of run-time errors is achievable by an implementer, the
+case studies show that, as the desired properties become more complex,
+their expression and their verification may require the involvement of
+an expert (Sections~\ref{sec:openETCS} and~\ref{sec:space}).
 
 \section{Conclusion}
 % We will summarize the three case studies, and present the planned future
