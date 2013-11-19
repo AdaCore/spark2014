@@ -1,0 +1,9 @@
+stack_14.adb:24:39: info: index check proved
+stack_14.adb:31:26: info: range check proved
+stack_14.adb:32:10: info: index check proved
+stack_14.adb:40:15: info: index check proved
+stack_14.adb:41:26: info: range check proved
+stack_14.adb:47:16: info: length check proved
+stack_14.ads:5:8: info: initial condition proved
+stack_14.ads:21:21: info: postcondition proved
+stack_14.ads:21:21: info: precondition proved

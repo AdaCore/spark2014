@@ -1,0 +1,4 @@
+p.ads:10:19: info: postcondition proved
+p.ads:11:40: info: index check proved
+p.ads:12:44: info: index check proved
+p.ads:13:31: info: index check proved

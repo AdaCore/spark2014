@@ -1,0 +1,45 @@
+stack.adb:16:36: info: length check proved
+stack.adb:26:32: info: range check proved
+stack.adb:34:44: info: range check proved
+stack.adb:35:26: info: index check proved
+stack.adb:42:32: info: index check proved
+stack.adb:43:44: info: range check proved
+stack.adb:51:35: info: index check proved
+stack.adb:52:27: info: index check proved
+stack.adb:52:69: info: index check proved
+stack.adb:53:36: info: index check proved
+stack.ads:5:8: info: initial condition proved
+stack.ads:50:21: warning: postcondition might fail
+stack.ads:50:39: info: overflow check proved
+stack.ads:52:21: info: precondition proved
+stack.ads:53:21: warning: precondition might fail
+stack.ads:53:40: info: range check proved
+stack.ads:53:47: warning: precondition might fail
+stack.ads:53:66: warning: range check might fail
+stack.ads:61:21: warning: postcondition might fail
+stack.ads:62:25: warning: precondition might fail
+stack.ads:68:21: warning: postcondition might fail
+stack.ads:69:21: info: precondition proved
+stack.ads:69:43: info: precondition proved
+stack.ads:69:62: info: range check proved
+stack.ads:70:21: info: precondition proved
+stack.ads:70:40: info: range check proved
+stack.ads:70:47: info: precondition proved
+stack_external_prover.adb:16:36: info: length check proved
+stack_external_prover.adb:24:44: warning: range check might fail
+stack_external_prover.adb:25:26: info: index check proved
+stack_external_prover.adb:32:32: warning: array index check might fail
+stack_external_prover.adb:33:44: warning: range check might fail
+stack_external_prover.adb:41:35: warning: array index check might fail
+stack_external_prover.adb:42:27: warning: array index check might fail
+stack_external_prover.adb:42:69: warning: array index check might fail
+stack_external_prover.adb:43:36: warning: array index check might fail
+stack_external_prover.ads:5:8: warning: initial condition might fail
+stack_external_prover.ads:41:21: warning: postcondition might fail
+stack_external_prover.ads:41:39: warning: overflow check might fail
+stack_external_prover.ads:44:40: warning: range check might fail
+stack_external_prover.ads:44:66: warning: range check might fail
+stack_external_prover.ads:49:21: warning: postcondition might fail
+stack_external_prover.ads:55:21: warning: postcondition might fail
+stack_external_prover.ads:56:62: info: range check proved
+stack_external_prover.ads:57:40: warning: range check might fail

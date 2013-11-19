@@ -1,0 +1,25 @@
+copy_14.adb:8:43: warning: "Input_Port_14.Input_State" might not be initialized after elaboration of main program "Copy_14" [uninitialized]
+input_port_14.adb:8:11: warning:  it is currently ignored
+input_port_14.adb:8:11: warning:  it is currently ignored
+input_port_14.adb:8:11: warning:  it is currently ignored
+input_port_14.adb:8:11: warning: pragma "Volatile" is not yet supported
+input_port_14.adb:8:11: warning: pragma "Volatile" is not yet supported in flow analysis
+input_port_14.adb:8:11: warning: pragma "Volatile" is not yet supported in proof
+input_port_14.adb:9:11: warning:  it is currently ignored
+input_port_14.adb:9:11: warning:  it is currently ignored
+input_port_14.adb:9:11: warning:  it is currently ignored
+input_port_14.adb:9:11: warning: pragma "Async_Writers" is not yet supported
+input_port_14.adb:9:11: warning: pragma "Async_Writers" is not yet supported in flow analysis
+input_port_14.adb:9:11: warning: pragma "Async_Writers" is not yet supported in proof
+output_port_14.adb:8:11: warning:  it is currently ignored
+output_port_14.adb:8:11: warning:  it is currently ignored
+output_port_14.adb:8:11: warning:  it is currently ignored
+output_port_14.adb:8:11: warning: pragma "Volatile" is not yet supported
+output_port_14.adb:8:11: warning: pragma "Volatile" is not yet supported in flow analysis
+output_port_14.adb:8:11: warning: pragma "Volatile" is not yet supported in proof
+output_port_14.adb:9:11: warning:  it is currently ignored
+output_port_14.adb:9:11: warning:  it is currently ignored
+output_port_14.adb:9:11: warning:  it is currently ignored
+output_port_14.adb:9:11: warning: pragma "Async_Readers" is not yet supported
+output_port_14.adb:9:11: warning: pragma "Async_Readers" is not yet supported in flow analysis
+output_port_14.adb:9:11: warning: pragma "Async_Readers" is not yet supported in proof

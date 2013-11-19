@@ -1,0 +1,3 @@
+check_14.adb:8:17: info: range check proved
+check_14.adb:9:17: info: range check proved
+check_14.adb:11:7: info: assertion proved

@@ -1,0 +1,15 @@
+swap_add_max_14.adb:12:55: info: overflow check proved
+swap_add_max_14.adb:18:58: info: division check proved
+swap_add_max_14.adb:18:58: info: overflow check proved
+swap_add_max_14.ads:8:19: info: postcondition proved
+swap_add_max_14.ads:11:64: info: overflow check proved
+swap_add_max_14.ads:12:66: info: overflow check proved
+swap_add_max_14.ads:15:19: info: postcondition proved
+swap_add_max_14.ads:15:34: info: overflow check proved
+swap_add_max_14.ads:18:19: info: postcondition proved
+swap_add_max_14.ads:22:19: info: postcondition proved
+swap_add_max_14.ads:22:37: info: division check proved
+swap_add_max_14.ads:22:37: info: overflow check proved
+swap_add_max_14.ads:25:19: info: postcondition proved
+swap_add_max_14.ads:25:37: info: range check proved
+swap_add_max_14.ads:26:37: info: range check proved

@@ -1,0 +1,4 @@
+q_14.adb:15:19: info: overflow check proved
+r_14.adb:16:21: info: overflow check proved
+r_14.adb:24:34: info: overflow check proved
+r_14.adb:26:18: info: overflow check proved

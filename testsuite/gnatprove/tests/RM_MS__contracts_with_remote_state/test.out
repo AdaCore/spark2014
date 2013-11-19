@@ -1,0 +1,6 @@
+calculate.adb:6:17: info: precondition proved
+processing.adb:19:62: info: overflow check proved
+processing.adb:22:18: info: overflow check proved
+processing.adb:23:31: info: overflow check proved
+processing.adb:24:17: info: overflow check proved
+processing.adb:24:17: info: range check proved

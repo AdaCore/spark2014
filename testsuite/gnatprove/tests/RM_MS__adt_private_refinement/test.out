@@ -1,0 +1,7 @@
+stacks_14.adb:19:42: info: range check proved
+stacks_14.adb:20:23: info: index check proved
+stacks_14.adb:25:28: info: index check proved
+stacks_14.adb:26:42: info: range check proved
+stacks_14.ads:10:19: info: postcondition proved
+stacks_14.ads:14:19: info: postcondition proved
+stacks_14.ads:18:19: info: postcondition proved

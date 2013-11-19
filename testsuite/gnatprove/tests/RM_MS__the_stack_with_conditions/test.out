@@ -1,0 +1,16 @@
+the_stack_with_conditions_14.adb:36:11: warning:  it is currently ignored
+the_stack_with_conditions_14.adb:36:11: warning:  it is currently ignored
+the_stack_with_conditions_14.adb:36:11: warning: pragma "refined_post" is not yet supported
+the_stack_with_conditions_14.adb:36:11: warning: pragma "refined_post" is not yet supported in proof
+the_stack_with_conditions_14.adb:40:11: warning:  it is currently ignored
+the_stack_with_conditions_14.adb:40:11: warning:  it is currently ignored
+the_stack_with_conditions_14.adb:40:11: warning: pragma "refined_post" is not yet supported
+the_stack_with_conditions_14.adb:40:11: warning: pragma "refined_post" is not yet supported in proof
+the_stack_with_conditions_14.adb:42:39: info: index check proved
+the_stack_with_conditions_14.adb:49:26: info: range check proved
+the_stack_with_conditions_14.adb:50:10: info: index check proved
+the_stack_with_conditions_14.adb:58:15: info: index check proved
+the_stack_with_conditions_14.adb:59:26: info: range check proved
+the_stack_with_conditions_14.adb:67:10: info: index check proved
+the_stack_with_conditions_14.adb:73:16: info: length check proved
+the_stack_with_conditions_14.ads:23:8: info: initial condition proved

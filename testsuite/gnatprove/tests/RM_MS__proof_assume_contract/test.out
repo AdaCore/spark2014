@@ -1,0 +1,12 @@
+input_port.adb:8:11: warning:  it is currently ignored
+input_port.adb:8:11: warning:  it is currently ignored
+input_port.adb:8:11: warning:  it is currently ignored
+input_port.adb:8:11: warning: pragma "Volatile" is not yet supported
+input_port.adb:8:11: warning: pragma "Volatile" is not yet supported in flow analysis
+input_port.adb:8:11: warning: pragma "Volatile" is not yet supported in proof
+input_port.adb:9:11: warning:  it is currently ignored
+input_port.adb:9:11: warning:  it is currently ignored
+input_port.adb:9:11: warning:  it is currently ignored
+input_port.adb:9:11: warning: pragma "Async_Writers" is not yet supported
+input_port.adb:9:11: warning: pragma "Async_Writers" is not yet supported in flow analysis
+input_port.adb:9:11: warning: pragma "Async_Writers" is not yet supported in proof

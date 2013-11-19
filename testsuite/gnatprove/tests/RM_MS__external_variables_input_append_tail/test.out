@@ -1,0 +1,15 @@
+input_port_14.adb:8:11: warning:  it is currently ignored
+input_port_14.adb:8:11: warning:  it is currently ignored
+input_port_14.adb:8:11: warning:  it is currently ignored
+input_port_14.adb:8:11: warning: pragma "Volatile" is not yet supported
+input_port_14.adb:8:11: warning: pragma "Volatile" is not yet supported in flow analysis
+input_port_14.adb:8:11: warning: pragma "Volatile" is not yet supported in proof
+input_port_14.adb:9:11: warning:  it is currently ignored
+input_port_14.adb:9:11: warning:  it is currently ignored
+input_port_14.adb:9:11: warning:  it is currently ignored
+input_port_14.adb:9:11: warning: pragma "Async_Writers" is not yet supported
+input_port_14.adb:9:11: warning: pragma "Async_Writers" is not yet supported in flow analysis
+input_port_14.adb:9:11: warning: pragma "Async_Writers" is not yet supported in proof
+input_port_14.adb:20:22: warning: attribute Valid is assumed to return True
+input_port_14.adb:24:25: warning: attribute Valid is assumed to return True
+input_port_14.adb:29:7: info: assertion proved

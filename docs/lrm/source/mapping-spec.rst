@@ -23,27 +23,27 @@ while `Add` returns their sum.
 
 Specification in SPARK 2005:
 
-   .. literalinclude:: ../code/global_derives/05/swap_add_05.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/global_derives/05/swap_add_05.ads
+   :language: ada
+   :linenos:
 
 body in SPARK 2005:
 
-   .. literalinclude:: ../code/global_derives/05/swap_add_05.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/global_derives/05/swap_add_05.adb
+   :language: ada
+   :linenos:
 
 Specification in |SPARK|:
 
-   .. literalinclude:: ../code/global_derives/14/swap_add_14.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__global_derives/swap_add_14.ads
+   :language: ada
+   :linenos:
 
 Body in |SPARK|:
 
-   .. literalinclude:: ../code/global_derives/14/swap_add_14.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__global_derives/swap_add_14.adb
+   :language: ada
+   :linenos:
 
 .. _ms-pre_post_return-label:
 
@@ -65,27 +65,27 @@ swaps the contents of two elements of an array.
 
 Specification in SPARK 2005:
 
-   .. literalinclude:: ../code/pre_post_return/05/swap_add_max_05.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/pre_post_return/05/swap_add_max_05.ads
+   :language: ada
+   :linenos:
 
 Body in SPARK 2005:
 
-   .. literalinclude:: ../code/pre_post_return/05/swap_add_max_05.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/pre_post_return/05/swap_add_max_05.adb
+   :language: ada
+   :linenos:
 
 Specification in |SPARK|:
 
-   .. literalinclude:: ../code/pre_post_return/14/swap_add_max_14.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__pre_post_return/swap_add_max_14.ads
+   :language: ada
+   :linenos:
 
 Boy in |SPARK|:
 
-   .. literalinclude:: ../code/pre_post_return/14/swap_add_max_14.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__pre_post_return/swap_add_max_14.adb
+   :language: ada
+   :linenos:
 
 .. _ms-attributes_of_unconstrained_out_parameter_in_precondition-label:
 
@@ -99,27 +99,27 @@ X'Last are well-defined in the body, even though the content of X is not.
 
 Specification in SPARK 2005:
 
-   .. literalinclude:: ../code/attributes_of_unconstrained_out_parameter_in_precondition/05/p.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/attributes_of_unconstrained_out_parameter_in_precondition/05/p.ads
+   :language: ada
+   :linenos:
 
 Body in SPARK 2005:
 
-   .. literalinclude:: ../code/attributes_of_unconstrained_out_parameter_in_precondition/05/p.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/attributes_of_unconstrained_out_parameter_in_precondition/05/p.adb
+   :language: ada
+   :linenos:
 
 Specification in |SPARK|:
 
-   .. literalinclude:: ../code/attributes_of_unconstrained_out_parameter_in_precondition/14/p.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__attributes_of_unconstrained_out_parameter_in_precondition/p.ads
+   :language: ada
+   :linenos:
 
 Body in |SPARK|:
 
-   .. literalinclude:: ../code/attributes_of_unconstrained_out_parameter_in_precondition/14/p.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__attributes_of_unconstrained_out_parameter_in_precondition/p.adb
+   :language: ada
+   :linenos:
 
 .. _ms-nesting_refinement-label:
 
@@ -137,27 +137,27 @@ can be performed.
 
 Specification in SPARK 2005:
 
-   .. literalinclude:: ../code/nesting_refinement/05/nesting_refinement_05.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/nesting_refinement/05/nesting_refinement_05.ads
+   :language: ada
+   :linenos:
 
 Body in SPARK 2005:
 
-   .. literalinclude:: ../code/nesting_refinement/05/nesting_refinement_05.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/nesting_refinement/05/nesting_refinement_05.adb
+   :language: ada
+   :linenos:
 
 Specification in |SPARK|:
 
-   .. literalinclude:: ../code/nesting_refinement/14/nesting_refinement_14.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__nesting_refinement/nesting_refinement_14.ads
+   :language: ada
+   :linenos:
 
 Body in |SPARK|:
 
-   .. literalinclude:: ../code/nesting_refinement/14/nesting_refinement_14.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__nesting_refinement/nesting_refinement_14.adb
+   :language: ada
+   :linenos:
 
 Package patterns
 ----------------
@@ -177,9 +177,9 @@ is purely public and an equivalent one that also has private elements.
 
 Specification in SPARK 2005:
 
-   .. literalinclude:: ../code/adt_visible/05/stacks_05.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/adt_visible/05/stacks_05.ads
+   :language: ada
+   :linenos:
 
 .. _ms-adt_private-label:
 
@@ -192,9 +192,9 @@ the 2005 version shall be presented.
 
 Specification in SPARK 2005:
 
-   .. literalinclude:: ../code/adt_private/05/stacks_05.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/adt_private/05/stacks_05.ads
+   :language: ada
+   :linenos:
 
 .. _ms-adt_private_refinement-label:
 
@@ -216,26 +216,26 @@ user defined proof rules.
 Specification in SPARK 2005:
 
 .. literalinclude:: ../code/adt_private_refinement/05/stacks_05.ads
-  :language: ada
-  :linenos:
+   :language: ada
+   :linenos:
 
 Body in SPARK 2005:
 
 .. literalinclude:: ../code/adt_private_refinement/05/stacks_05.adb
-  :language: ada
-  :linenos:
+   :language: ada
+   :linenos:
 
 Specification in |SPARK|:
 
-.. literalinclude:: ../code/adt_private_refinement/14/stacks_14.ads
-  :language: ada
-  :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__adt_private_refinement/stacks_14.ads
+   :language: ada
+   :linenos:
 
 Body in |SPARK|:
 
-.. literalinclude:: ../code/adt_private_refinement/14/stacks_14.adb
-  :language: ada
-  :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__adt_private_refinement/stacks_14.adb
+   :language: ada
+   :linenos:
 
 .. _ms-adt_public_child_non_tagged_parent-label:
 
@@ -255,33 +255,33 @@ Body in |SPARK|:
 
     Specifications of both parent and child in SPARK 2005:
 
-       .. literalinclude:: ../code/adt_public_child_non_tagged_parent/05/pairs_05.ads
-	  :language: ada
-	  :linenos:
+    .. literalinclude:: ../code/adt_public_child_non_tagged_parent/05/pairs_05.ads
+       :language: ada
+       :linenos:
 
-       .. literalinclude:: ../code/adt_public_child_non_tagged_parent/05/pairs_05_additional_05.ads
-	  :language: ada
-	  :linenos:
+    .. literalinclude:: ../code/adt_public_child_non_tagged_parent/05/pairs_05_additional_05.ads
+       :language: ada
+       :linenos:
 
     Bodies of both parent and child in SPARK 2005:
 
-       .. literalinclude:: ../code/adt_public_child_non_tagged_parent/05/pairs_05.adb
-	  :language: ada
-	  :linenos:
+    .. literalinclude:: ../code/adt_public_child_non_tagged_parent/05/pairs_05.adb
+       :language: ada
+       :linenos:
 
-       .. literalinclude:: ../code/adt_public_child_non_tagged_parent/05/pairs_05_additional_05.adb
-	  :language: ada
-	  :linenos:
+    .. literalinclude:: ../code/adt_public_child_non_tagged_parent/05/pairs_05_additional_05.adb
+       :language: ada
+       :linenos:
 
     Specifications of both parent and child in |SPARK|:
 
-       .. literalinclude:: ../code/adt_public_child_non_tagged_parent/14/pairs_14.ads
-	  :language: ada
-	  :linenos:
+    .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__adt_public_child_non_tagged_parent/pairs_14.ads
+       :language: ada
+       :linenos:
 
-       .. literalinclude:: ../code/adt_public_child_non_tagged_parent/14/pairs_14_additional_14.ads
-	  :language: ada
-	  :linenos:
+    .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__adt_public_child_non_tagged_parent/pairs_14_additional_14.ads
+       :language: ada
+       :linenos:
 
     Bodies of both parent and child in |SPARK|:
 
@@ -297,9 +297,9 @@ Body in |SPARK|:
 
     Specification in SPARK 2005:
 
-       .. literalinclude:: ../code/adt_tagged_type/05/stacks_05.ads
-	  :language: ada
-	  :linenos:
+    .. literalinclude:: ../code/adt_tagged_type/05/stacks_05.ads
+       :language: ada
+       :linenos:
 
     Body in SPARK 2005:
 
@@ -307,9 +307,9 @@ Body in |SPARK|:
 
     Specification in |SPARK|:
 
-       .. literalinclude:: ../code/adt_tagged_type/14/stacks_14.ads
-	  :language: ada
-	  :linenos:
+    .. literalinclude:: ../code/adt_tagged_type/14/stacks_14.ads
+       :language: ada
+       :linenos:
 
     Body in |SPARK|:
 
@@ -325,21 +325,21 @@ Body in |SPARK|:
 
     Specification in SPARK 2005:
 
-       .. literalinclude:: ../code/adt_tagged_type_extension/05/stacks_05_monitored_05.ads
-	  :language: ada
-	  :linenos:
+    .. literalinclude:: ../code/adt_tagged_type_extension/05/stacks_05_monitored_05.ads
+       :language: ada
+       :linenos:
 
     Body in SPARK 2005:
 
-       .. literalinclude:: ../code/adt_tagged_type_extension/05/stacks_05_monitored_05.adb
-	  :language: ada
-	  :linenos:
+    .. literalinclude:: ../code/adt_tagged_type_extension/05/stacks_05_monitored_05.adb
+       :language: ada
+       :linenos:
 
     Specification in |SPARK|:
 
-       .. literalinclude:: ../code/adt_tagged_type_extension/14/stacks_14_monitored_14.ads
-	  :language: ada
-	  :linenos:
+    .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__adt_tagged_type_extension/stacks_14_monitored_14.ads
+       :language: ada
+       :linenos:
 
     Body in |SPARK|:
 
@@ -361,115 +361,115 @@ Applying the SPARK tools on the following files will produce certain errors. Thi
 intentionally done in order to illustrate both legal and illegal access attempts.
 
 |SPARK| shares Ada2012's visibility rules. No restrictions have been applied
-in terms of visibility.  Note that |SPARK| code does not require Inherit annotations. 
+in terms of visibility.  Note that |SPARK| code does not require Inherit annotations.
 
 Specification of parent in SPARK 2005:
 
-   .. literalinclude:: ../code/adt_private_public_child_visibility/05/parent_05.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/adt_private_public_child_visibility/05/parent_05.ads
+   :language: ada
+   :linenos:
 
 Specification of private child A in SPARK 2005:
 
-   .. literalinclude:: ../code/adt_private_public_child_visibility/05/parent_05-private_child_a_05.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/adt_private_public_child_visibility/05/parent_05-private_child_a_05.ads
+   :language: ada
+   :linenos:
 
 Specification of private child B in SPARK 2005:
 
-   .. literalinclude:: ../code/adt_private_public_child_visibility/05/parent_05-private_child_b_05.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/adt_private_public_child_visibility/05/parent_05-private_child_b_05.ads
+   :language: ada
+   :linenos:
 
 Specification of public child A in SPARK 2005:
 
-   .. literalinclude:: ../code/adt_private_public_child_visibility/05/parent_05-public_child_a_05.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/adt_private_public_child_visibility/05/parent_05-public_child_a_05.ads
+   :language: ada
+   :linenos:
 
 Specification of public child B in SPARK 2005:
 
-   .. literalinclude:: ../code/adt_private_public_child_visibility/05/parent_05-public_child_b_05.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/adt_private_public_child_visibility/05/parent_05-public_child_b_05.ads
+   :language: ada
+   :linenos:
 
 Body of parent in SPARK 2005:
 
-   .. literalinclude:: ../code/adt_private_public_child_visibility/05/parent_05.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/adt_private_public_child_visibility/05/parent_05.adb
+   :language: ada
+   :linenos:
 
 Body of public child A in SPARK 2005:
 
-   .. literalinclude:: ../code/adt_private_public_child_visibility/05/parent_05-public_child_a_05.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/adt_private_public_child_visibility/05/parent_05-public_child_a_05.adb
+   :language: ada
+   :linenos:
 
 Body of public child B in SPARK 2005:
 
-   .. literalinclude:: ../code/adt_private_public_child_visibility/05/parent_05-public_child_b_05.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/adt_private_public_child_visibility/05/parent_05-public_child_b_05.adb
+   :language: ada
+   :linenos:
 
 Body of private child B in SPARK 2005:
 
-   .. literalinclude:: ../code/adt_private_public_child_visibility/05/parent_05-private_child_b_05.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/adt_private_public_child_visibility/05/parent_05-private_child_b_05.adb
+   :language: ada
+   :linenos:
 
 Specification of parent in |SPARK|:
 
-   .. literalinclude:: ../code/adt_private_public_child_visibility/14/parent_14.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__adt_private_public_child_visibility/parent_14.ads
+   :language: ada
+   :linenos:
 
 Specification of private child A in |SPARK|:
 
-   .. literalinclude:: ../code/adt_private_public_child_visibility/14/parent_14-private_child_a_14.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__adt_private_public_child_visibility/parent_14-private_child_a_14.ads
+   :language: ada
+   :linenos:
 
 Specification of private child B in |SPARK|:
 
-   .. literalinclude:: ../code/adt_private_public_child_visibility/14/parent_14-private_child_b_14.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__adt_private_public_child_visibility/parent_14-private_child_b_14.ads
+   :language: ada
+   :linenos:
 
 Specification of public child A in |SPARK|:
 
-   .. literalinclude:: ../code/adt_private_public_child_visibility/14/parent_14-public_child_a_14.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__adt_private_public_child_visibility/parent_14-public_child_a_14.ads
+   :language: ada
+   :linenos:
 
 Specification of public child B in |SPARK|:
 
-   .. literalinclude:: ../code/adt_private_public_child_visibility/14/parent_14-public_child_b_14.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__adt_private_public_child_visibility/parent_14-public_child_b_14.ads
+   :language: ada
+   :linenos:
 
 Body of parent in |SPARK|:
 
-   .. literalinclude:: ../code/adt_private_public_child_visibility/14/parent_14.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__adt_private_public_child_visibility/parent_14.adb
+   :language: ada
+   :linenos:
 
 Body of public child A in |SPARK|:
 
-   .. literalinclude:: ../code/adt_private_public_child_visibility/14/parent_14-public_child_a_14.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__adt_private_public_child_visibility/parent_14-public_child_a_14.adb
+   :language: ada
+   :linenos:
 
 Body of public child B in |SPARK|:
 
-   .. literalinclude:: ../code/adt_private_public_child_visibility/14/parent_14-public_child_b_14.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__adt_private_public_child_visibility/parent_14-public_child_b_14.adb
+   :language: ada
+   :linenos:
 
 Body of private child B in |SPARK|:
 
-   .. literalinclude:: ../code/adt_private_public_child_visibility/14/parent_14-private_child_b_14.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__adt_private_public_child_visibility/parent_14-private_child_b_14.adb
+   :language: ada
+   :linenos:
 
 Abstract State Machines (ASMs)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -496,27 +496,27 @@ abstraction may be initialized at their declaration.
 
 Specification in SPARK 2005:
 
-   .. literalinclude:: ../code/asm_visible_concrete_initialized_by_declaration/05/stack_05.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/asm_visible_concrete_initialized_by_declaration/05/stack_05.ads
+   :language: ada
+   :linenos:
 
 Body in SPARK 2005:
 
-   .. literalinclude:: ../code/asm_visible_concrete_initialized_by_declaration/05/stack_05.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/asm_visible_concrete_initialized_by_declaration/05/stack_05.adb
+   :language: ada
+   :linenos:
 
 Specification in |SPARK|:
 
-   .. literalinclude:: ../code/asm_visible_concrete_initialized_by_declaration/14/stack_14.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__asm_visible_concrete_initialized_by_declaration/stack_14.ads
+   :language: ada
+   :linenos:
 
 Body in |SPARK|:
 
-   .. literalinclude:: ../code/asm_visible_concrete_initialized_by_declaration/14/stack_14.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__asm_visible_concrete_initialized_by_declaration/stack_14.adb
+   :language: ada
+   :linenos:
 
 .. _ms-asm_visible_concrete_initialized_by_elaboration-label:
 
@@ -529,15 +529,15 @@ are not presented since they are identical to the specifications of the previous
 
 Body in SPARK 2005:
 
-   .. literalinclude:: ../code/asm_visible_concrete_initialized_by_elaboration/05/stack_05.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/asm_visible_concrete_initialized_by_elaboration/05/stack_05.adb
+   :language: ada
+   :linenos:
 
 Body in |SPARK|:
 
-   .. literalinclude:: ../code/asm_visible_concrete_initialized_by_elaboration/14/stack_14.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__asm_visible_concrete_initialized_by_elaboration/stack_14.adb
+   :language: ada
+   :linenos:
 
 .. _ms-asm_private_concrete-label:
 
@@ -546,28 +546,28 @@ Private, concrete state
 
 In SPARK 2005 variables decared in the private part of a package are
 considered to be concrete own variables.  In |SPARK| they are hidden
-state and must be constituents of a state abstraction. 
+state and must be constituents of a state abstraction.
 
 The SPARK 2005 body has not been included since it does not contain
 any annotations.
 
 Specification in SPARK 2005:
 
-   .. literalinclude:: ../code/asm_private_concrete/05/stack_05.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/asm_private_concrete/05/stack_05.ads
+   :language: ada
+   :linenos:
 
 Specification in |SPARK|:
 
-   .. literalinclude:: ../code/asm_private_concrete/14/stack_14.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__asm_private_concrete/stack_14.ads
+   :language: ada
+   :linenos:
 
 Body in |SPARK|:
 
-   .. literalinclude:: ../code/asm_private_concrete/14/stack_14.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__asm_private_concrete/stack_14.adb
+   :language: ada
+   :linenos:
 
 Private, abstract state, refining onto concrete states in body
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -582,27 +582,27 @@ Procedure `Init` can be invoked by users of the package, in order to initialize 
 
 Specification in SPARK 2005:
 
-   .. literalinclude:: ../code/asm_private_abstract_bodyref_procedureinit/05/stack_05.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/asm_private_abstract_bodyref_procedureinit/05/stack_05.ads
+   :language: ada
+   :linenos:
 
 Body in SPARK 2005:
 
-   .. literalinclude:: ../code/asm_private_abstract_bodyref_procedureinit/05/stack_05.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/asm_private_abstract_bodyref_procedureinit/05/stack_05.adb
+   :language: ada
+   :linenos:
 
 Specification in |SPARK|:
 
-   .. literalinclude:: ../code/asm_private_abstract_bodyref_procedureinit/14/stack_14.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__asm_private_abstract_bodyref_procedureinit/stack_14.ads
+   :language: ada
+   :linenos:
 
 Body in |SPARK|:
 
-   .. literalinclude:: ../code/asm_private_abstract_bodyref_procedureinit/14/stack_14.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__asm_private_abstract_bodyref_procedureinit/stack_14.adb
+   :language: ada
+   :linenos:
 
 .. _ms-asm_private_abstract_bodyref_elaborationinit-label:
 
@@ -614,27 +614,27 @@ at the body. The constituents of the abstract state are initialized at declarati
 
 Specification in SPARK 2005:
 
-   .. literalinclude:: ../code/asm_private_abstract_bodyref_elaborationinit/05/stack_05.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/asm_private_abstract_bodyref_elaborationinit/05/stack_05.ads
+   :language: ada
+   :linenos:
 
 Body in SPARK 2005:
 
-   .. literalinclude:: ../code/asm_private_abstract_bodyref_elaborationinit/05/stack_05.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/asm_private_abstract_bodyref_elaborationinit/05/stack_05.adb
+   :language: ada
+   :linenos:
 
 Specification in |SPARK|:
 
-   .. literalinclude:: ../code/asm_private_abstract_bodyref_elaborationinit/14/stack_14.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__asm_private_abstract_bodyref_elaborationinit/stack_14.ads
+   :language: ada
+   :linenos:
 
 Body in |SPARK|:
 
-   .. literalinclude:: ../code/asm_private_abstract_bodyref_elaborationinit/14/stack_14.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__asm_private_abstract_bodyref_elaborationinit/stack_14.adb
+   :language: ada
+   :linenos:
 
 .. _ms-asm_private_abstract_bodyref_statementinit-label:
 
@@ -648,15 +648,15 @@ example and have thus not been included.
 
 Body in SPARK 2005:
 
-   .. literalinclude:: ../code/asm_private_abstract_bodyref_statementinit/05/stack_05.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/asm_private_abstract_bodyref_statementinit/05/stack_05.adb
+   :language: ada
+   :linenos:
 
 Body in |SPARK|:
 
-   .. literalinclude:: ../code/asm_private_abstract_bodyref_statementinit/14/stack_14.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__asm_private_abstract_bodyref_statementinit/stack_14.adb
+   :language: ada
+   :linenos:
 
 .. _ms-asm_private_abstract_bodyref_mixedinit-label:
 
@@ -669,28 +669,27 @@ the rest at the statements part of the body.
 
 Specification in SPARK 2005:
 
-   .. literalinclude:: ../code/asm_private_abstract_bodyref_mixedinit/05/stack_05.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/asm_private_abstract_bodyref_mixedinit/05/stack_05.ads
+   :language: ada
+   :linenos:
 
 Body in SPARK 2005:
 
-   .. literalinclude:: ../code/asm_private_abstract_bodyref_mixedinit/05/stack_05.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/asm_private_abstract_bodyref_mixedinit/05/stack_05.adb
+   :language: ada
+   :linenos:
 
 Specification in |SPARK|:
 
-   .. literalinclude:: ../code/asm_private_abstract_bodyref_mixedinit/14/stack_14.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__asm_private_abstract_bodyref_mixedinit/stack_14.ads
+   :language: ada
+   :linenos:
 
 Body in |SPARK|:
 
-   .. literalinclude:: ../code/asm_private_abstract_bodyref_mixedinit/14/stack_14.adb
-      :language: ada
-      :linenos:
-
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__asm_private_abstract_bodyref_mixedinit/stack_14.adb
+   :language: ada
+   :linenos:
 
 .. _ms-asm_initial_condition-label:
 
@@ -698,25 +697,25 @@ Initial condition
 ^^^^^^^^^^^^^^^^^
 
 This example introduces a new |SPARK| feature that did not exist in
-SPARK 2005.  On top of declaring an abstract state and promising to
+SPARK 2005. On top of declaring an abstract state and promising to
 initialize it, we also illustrate certain conditions that will be
 valid after initialization. There is a proof obligation to show that
 immediately after the elaboration of the package that the specified
-Initial_Condition is True.  Checks will be generated that have to be
+Initial_Condition is True. Checks will be generated that have to be
 proven (or executed at run-time) to show that the initial condition is
 True.
 
 Specification in |SPARK|:
 
-   .. literalinclude:: ../code/asm_initial_condition/14/stack_14.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__asm_initial_condition/stack_14.ads
+   :language: ada
+   :linenos:
 
 Body in |SPARK|:
 
-   .. literalinclude:: ../code/asm_initial_condition/14/stack_14.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__asm_initial_condition/stack_14.adb
+   :language: ada
+   :linenos:
 
 .. _ms-asm_abstract_state_refined_in_private_child-label:
 
@@ -727,70 +726,69 @@ The following example shows a parent package Power that contains an
 own variable (a state abstraction). This state abstraction is refined
 onto state abstractions of two private children Source_A and Source_B.
 
-
 Specification of Parent in SPARK 2005:
 
-   .. literalinclude:: ../code/asm_abstract_state_refined_in_private_child/05/power_05.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/asm_abstract_state_refined_in_private_child/05/power_05.ads
+   :language: ada
+   :linenos:
 
 Body of Parent in SPARK 2005:
 
-   .. literalinclude:: ../code/asm_abstract_state_refined_in_private_child/05/power_05.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/asm_abstract_state_refined_in_private_child/05/power_05.adb
+   :language: ada
+   :linenos:
 
 Specifications of Private Children in SPARK 2005:
 
-   .. literalinclude:: ../code/asm_abstract_state_refined_in_private_child/05/power_05_source_a_05.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/asm_abstract_state_refined_in_private_child/05/power_05_source_a_05.ads
+   :language: ada
+   :linenos:
 
-   .. literalinclude:: ../code/asm_abstract_state_refined_in_private_child/05/power_05_source_b_05.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/asm_abstract_state_refined_in_private_child/05/power_05_source_b_05.ads
+   :language: ada
+   :linenos:
 
 Bodies of Private Children in SPARK 2005:
 
-   .. literalinclude:: ../code/asm_abstract_state_refined_in_private_child/05/power_05_source_a_05.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/asm_abstract_state_refined_in_private_child/05/power_05_source_a_05.adb
+   :language: ada
+   :linenos:
 
-   .. literalinclude:: ../code/asm_abstract_state_refined_in_private_child/05/power_05_source_b_05.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/asm_abstract_state_refined_in_private_child/05/power_05_source_b_05.adb
+   :language: ada
+   :linenos:
 
 Specification of Parent in |SPARK|:
 
-   .. literalinclude:: ../code/asm_abstract_state_refined_in_private_child/14/power_14.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__asm_abstract_state_refined_in_private_child/power_14.ads
+   :language: ada
+   :linenos:
 
 Body of Parent in |SPARK|:
 
-   .. literalinclude:: ../code/asm_abstract_state_refined_in_private_child/14/power_14.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__asm_abstract_state_refined_in_private_child/power_14.adb
+   :language: ada
+   :linenos:
 
 Specifications of Private Children in |SPARK|:
 
-   .. literalinclude:: ../code/asm_abstract_state_refined_in_private_child/14/power_14-source_a_14.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__asm_abstract_state_refined_in_private_child/power_14-source_a_14.ads
+   :language: ada
+   :linenos:
 
-   .. literalinclude:: ../code/asm_abstract_state_refined_in_private_child/14/power_14-source_b_14.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__asm_abstract_state_refined_in_private_child/power_14-source_b_14.ads
+   :language: ada
+   :linenos:
 
 Bodies of Private Children in |SPARK|:
 
-   .. literalinclude:: ../code/asm_abstract_state_refined_in_private_child/14/power_14-source_a_14.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__asm_abstract_state_refined_in_private_child/power_14-source_a_14.adb
+   :language: ada
+   :linenos:
 
-   .. literalinclude:: ../code/asm_abstract_state_refined_in_private_child/14/power_14-source_b_14.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__asm_abstract_state_refined_in_private_child/power_14-source_b_14.adb
+   :language: ada
+   :linenos:
 
 .. _ms-asm_abstract_state_refined_in_embedded_package-label:
 
@@ -804,34 +802,34 @@ the refinement onto concrete visible state.
 
 Specification in SPARK 2005:
 
-   .. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_package/05/power_05.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_package/05/power_05.ads
+   :language: ada
+   :linenos:
 
 Body in SPARK 2005:
 
-   .. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_package/05/power_05.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_package/05/power_05.adb
+   :language: ada
+   :linenos:
 
 Specification in |SPARK|:
 
-   .. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_package/14/power_14.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__asm_abstract_state_refined_in_embedded_package/power_14.ads
+   :language: ada
+   :linenos:
 
 Body in |SPARK|:
 
-   .. literalinclude:: ../code/asm_abstract_state_refined_in_embedded_package/14/power_14.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__asm_abstract_state_refined_in_embedded_package/power_14.adb
+   :language: ada
+   :linenos:
 
 .. _ms-asm_abstract_state_refined_in_embedded_and_private_child-label:
 
 Private, abstract state, refining onto mixture of the above
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This example is based around the packages from sections 
+This example is based around the packages from sections
 :ref:`ms-asm_abstract_state_refined_in_private_child-label`
 and :ref:`ms-asm_abstract_state_refined_in_embedded_package-label`.
 Source_A is an embedded package, while Source_B is a private child. In order to
@@ -852,67 +850,67 @@ stack package are not being presented since they are identical to previous examp
 
 Specification of main program in SPARK 2005:
 
-   .. literalinclude:: ../code/external_variables_input_output/05/copy_05.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/external_variables_input_output/05/copy_05.adb
+   :language: ada
+   :linenos:
 
 Specification of input port in SPARK 2005:
 
-   .. literalinclude:: ../code/external_variables_input_output/05/input_port_05.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/external_variables_input_output/05/input_port_05.ads
+   :language: ada
+   :linenos:
 
 Body of input port in SPARK 2005:
 
-   .. literalinclude:: ../code/external_variables_input_output/05/input_port_05.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/external_variables_input_output/05/input_port_05.adb
+   :language: ada
+   :linenos:
 
 Specification of output port in SPARK 2005:
 
-   .. literalinclude:: ../code/external_variables_input_output/05/output_port_05.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/external_variables_input_output/05/output_port_05.ads
+   :language: ada
+   :linenos:
 
 Body of output port in SPARK 2005:
 
-   .. literalinclude:: ../code/external_variables_input_output/05/output_port_05.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/external_variables_input_output/05/output_port_05.adb
+   :language: ada
+   :linenos:
 
 Specification of main program in |SPARK|:
 
-   .. literalinclude:: ../code/external_variables_input_output/14/copy_14.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__external_variables_input_output/copy_14.adb
+   :language: ada
+   :linenos:
 
 Specification of input port in |SPARK|:
 
-   .. literalinclude:: ../code/external_variables_input_output/14/input_port_14.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__external_variables_input_output/input_port_14.ads
+   :language: ada
+   :linenos:
 
 Specification of output port in |SPARK|:
 
-   .. literalinclude:: ../code/external_variables_input_output/14/output_port_14.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__external_variables_input_output/output_port_14.ads
+   :language: ada
+   :linenos:
 
 Body of input port in |SPARK|:
 
 This is as per SPARK 2005, but uses aspects instead of representation clauses and pragmas.
 
-   .. literalinclude:: ../code/external_variables_input_output/14/input_port_14.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__external_variables_input_output/input_port_14.adb
+   :language: ada
+   :linenos:
 
 Body of output port in |SPARK|:
 
 This is as per SPARK 2005, but uses aspects instead of representation clauses and pragmas.
 
-   .. literalinclude:: ../code/external_variables_input_output/14/output_port_14.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__external_variables_input_output/output_port_14.adb
+   :language: ada
+   :linenos:
 
 .. _ms-external_variables_input_append_tail-label:
 
@@ -931,27 +929,27 @@ used to the same effect.
 
 Specification in SPARK 2005:
 
-   .. literalinclude:: ../code/external_variables_input_append_tail/05/input_port_05.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/external_variables_input_append_tail/05/input_port_05.ads
+   :language: ada
+   :linenos:
 
 Body in SPARK 2005:
 
-   .. literalinclude:: ../code/external_variables_input_append_tail/05/input_port_05.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/external_variables_input_append_tail/05/input_port_05.adb
+   :language: ada
+   :linenos:
 
-Specification in SPARK 2014:
+Specification in |SPARK|:
 
-   .. literalinclude:: ../code/external_variables_input_append_tail/14/input_port_14.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__external_variables_input_append_tail/input_port_14.ads
+   :language: ada
+   :linenos:
 
-Body in SPARK 2014:
+Body in |SPARK|:
 
-   .. literalinclude:: ../code/external_variables_input_append_tail/14/input_port_14.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__external_variables_input_append_tail/input_port_14.adb
+   :language: ada
+   :linenos:
 
 .. _ms-external_variables_output_append_tail-label:
 
@@ -966,27 +964,27 @@ be achieved using assert pragmas.
 
 Specification in SPARK 2005:
 
-   .. literalinclude:: ../code/external_variables_output_append_tail/05/output_port_05.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/external_variables_output_append_tail/05/output_port_05.ads
+   :language: ada
+   :linenos:
 
 Body in SPARK 2005:
 
-   .. literalinclude:: ../code/external_variables_output_append_tail/05/output_port_05.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/external_variables_output_append_tail/05/output_port_05.adb
+   :language: ada
+   :linenos:
 
-Specification in SPARK 2014:
+Specification in |SPARK|:
 
-   .. literalinclude:: ../code/external_variables_output_append_tail/14/output_port_14.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__external_variables_output_append_tail/output_port_14.ads
+   :language: ada
+   :linenos:
 
-Body in SPARK 2014:
+Body in |SPARK|:
 
-   .. literalinclude:: ../code/external_variables_output_append_tail/14/output_port_14.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__external_variables_output_append_tail/output_port_14.adb
+   :language: ada
+   :linenos:
 
 .. _ms-external_variables_refinement_voting_input_switch-label:
 
@@ -998,55 +996,55 @@ switches and the voting performed on the values read.
 
 Abstract Switch specification in SPARK 2005:
 
-   .. literalinclude:: ../code/external_variables_refinement_voting_input_switch/05/switch.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/external_variables_refinement_voting_input_switch/05/switch.ads
+   :language: ada
+   :linenos:
 
 Component Switch specifications in SPARK 2005:
 
-   .. literalinclude:: ../code/external_variables_refinement_voting_input_switch/05/switch-val1.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/external_variables_refinement_voting_input_switch/05/switch-val1.ads
+   :language: ada
+   :linenos:
 
-   .. literalinclude:: ../code/external_variables_refinement_voting_input_switch/05/switch-val2.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/external_variables_refinement_voting_input_switch/05/switch-val2.ads
+   :language: ada
+   :linenos:
 
-   .. literalinclude:: ../code/external_variables_refinement_voting_input_switch/05/switch-val3.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/external_variables_refinement_voting_input_switch/05/switch-val3.ads
+   :language: ada
+   :linenos:
 
 Switch body in SPARK 2005:
 
-   .. literalinclude:: ../code/external_variables_refinement_voting_input_switch/05/switch.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/external_variables_refinement_voting_input_switch/05/switch.adb
+   :language: ada
+   :linenos:
 
 Abstract Switch specification in |SPARK|:
 
-   .. literalinclude:: ../code/external_variables_refinement_voting_input_switch/14/switch.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__external_variables_refinement_voting_input_switch/switch.ads
+   :language: ada
+   :linenos:
 
 Component Switch specifications in |SPARK|:
 
-   .. literalinclude:: ../code/external_variables_refinement_voting_input_switch/14/switch-val1.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__external_variables_refinement_voting_input_switch/switch-val1.ads
+   :language: ada
+   :linenos:
 
-   .. literalinclude:: ../code/external_variables_refinement_voting_input_switch/14/switch-val2.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__external_variables_refinement_voting_input_switch/switch-val2.ads
+   :language: ada
+   :linenos:
 
-   .. literalinclude:: ../code/external_variables_refinement_voting_input_switch/14/switch-val3.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__external_variables_refinement_voting_input_switch/switch-val3.ads
+   :language: ada
+   :linenos:
 
 Switch body in |SPARK|:
 
-   .. literalinclude:: ../code/external_variables_refinement_voting_input_switch/14/switch.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__external_variables_refinement_voting_input_switch/switch.adb
+   :language: ada
+   :linenos:
 
 .. _ms-external_variables_complex_io_device-label:
 
@@ -1061,27 +1059,27 @@ and an output external variable.
 
 Specification in SPARK 2005:
 
-   .. literalinclude:: ../code/external_variables_complex_io_device/05/device.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/external_variables_complex_io_device/05/device.ads
+   :language: ada
+   :linenos:
 
 Body in SPARK 2005:
 
-   .. literalinclude:: ../code/external_variables_complex_io_device/05/device.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/external_variables_complex_io_device/05/device.adb
+   :language: ada
+   :linenos:
 
 Specification in |SPARK|:
 
-   .. literalinclude:: ../code/external_variables_complex_io_device/14/device.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__external_variables_complex_io_device/device.ads
+   :language: ada
+   :linenos:
 
 Body in |SPARK|:
 
-   .. literalinclude:: ../code/external_variables_complex_io_device/14/device.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__external_variables_complex_io_device/device.adb
+   :language: ada
+   :linenos:
 
 .. _ms-external_variables_increasing_values_in_input_stream-label:
 
@@ -1096,41 +1094,40 @@ input stream.
 
 In |SPARK| we can use assert pragmas in the subprogram instead of
 specifying the action in the postcondition, as was done in
-:ref:`ms-external_variables_input_append_tail-label`.  Another
+:ref:`ms-external_variables_input_append_tail-label`. Another
 alternative, as shown in this example, is to use a formal parameter of
 a private type to keep a trace of the values read.
 
 Specification in SPARK 2005:
 
-   .. literalinclude:: ../code/external_variables_increasing_values_in_input_stream/05/inc.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/external_variables_increasing_values_in_input_stream/05/inc.ads
+   :language: ada
+   :linenos:
 
 Body in SPARK 2005:
 
-   .. literalinclude:: ../code/external_variables_increasing_values_in_input_stream/05/inc.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/external_variables_increasing_values_in_input_stream/05/inc.adb
+   :language: ada
+   :linenos:
 
-Specification in SPARK 2014:
+Specification in |SPARK|:
 
-   .. literalinclude:: ../code/external_variables_increasing_values_in_input_stream/14/inc.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__external_variables_increasing_values_in_input_stream/inc.ads
+   :language: ada
+   :linenos:
 
-Body in SPARK 2014:
+Body in |SPARK|:
 
-   .. literalinclude:: ../code/external_variables_increasing_values_in_input_stream/14/inc.adb
-      :language: ada
-      :linenos:
-
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__external_variables_increasing_values_in_input_stream/inc.adb
+   :language: ada
+   :linenos:
 
 Package Inheritance
 ~~~~~~~~~~~~~~~~~~~
 
 |SPARK| does not have the SPARK 2005 concept of package
 inheritance.  It has the same package visibility rules as Ada 2012.
- 
+
 .. _ms-contracts_with_remote_state-label:
 
 Contracts with remote state
@@ -1144,31 +1141,31 @@ calls through to Read_Processed_Data in Processing, which calls through to Read 
 
 Specifications in SPARK 2005:
 
-   .. literalinclude:: ../code/contracts_with_remote_state/05/raw_data.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/contracts_with_remote_state/05/raw_data.ads
+   :language: ada
+   :linenos:
 
-   .. literalinclude:: ../code/contracts_with_remote_state/05/processing.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/contracts_with_remote_state/05/processing.ads
+   :language: ada
+   :linenos:
 
-   .. literalinclude:: ../code/contracts_with_remote_state/05/calculate.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/contracts_with_remote_state/05/calculate.ads
+   :language: ada
+   :linenos:
 
 Specifications in |SPARK|:
 
-   .. literalinclude:: ../code/contracts_with_remote_state/14/raw_data.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__contracts_with_remote_state/raw_data.ads
+   :language: ada
+   :linenos:
 
-   .. literalinclude:: ../code/contracts_with_remote_state/14/processing.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__contracts_with_remote_state/processing.ads
+   :language: ada
+   :linenos:
 
-   .. literalinclude:: ../code/contracts_with_remote_state/14/calculate.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__contracts_with_remote_state/calculate.ads
+   :language: ada
+   :linenos:
 
 .. _ms-package_nested_inside_package-label:
 
@@ -1188,9 +1185,9 @@ use of a package nested within a subprogram.
 
 Abstract Switch specification in SPARK 2005:
 
-   .. literalinclude:: ../code/package_nested_inside_subprogram/05/switch.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/package_nested_inside_subprogram/05/switch.ads
+   :language: ada
+   :linenos:
 
 Component Switch specifications in SPARK 2005:
 
@@ -1198,15 +1195,15 @@ As in `Refinement of external state - voting input switch`_
 
 Switch body in SPARK 2005:
 
-   .. literalinclude:: ../code/package_nested_inside_subprogram/05/switch.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/package_nested_inside_subprogram/05/switch.adb
+   :language: ada
+   :linenos:
 
 Abstract Switch specification in |SPARK|:
 
-   .. literalinclude:: ../code/package_nested_inside_subprogram/14/switch.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__package_nested_inside_subprogram/switch.ads
+   :language: ada
+   :linenos:
 
 Component Switch specification in |SPARK|:
 
@@ -1214,9 +1211,9 @@ As in `Refinement of external state - voting input switch`_
 
 Switch body in |SPARK|:
 
-   .. literalinclude:: ../code/package_nested_inside_subprogram/14/switch.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__package_nested_inside_subprogram/switch.adb
+   :language: ada
+   :linenos:
 
 
 .. _ms-circular_dependence_and_elaboration_order-label:
@@ -1233,7 +1230,7 @@ its delarative part.
 
 |SPARK| does not have the inherit annotation and only enforces the
 restriction that a package can only initialize an object declared in
-its declarative region.  Hence, in |SPARK| two package bodies that
+its declarative region. Hence, in |SPARK| two package bodies that
 depend on each other's specification may be legal as is calling a user
 defined suprogram.
 
@@ -1243,41 +1240,41 @@ or Elaborate is required for a package.  These rules avoid elaboration
 order dependencies.
 
 Examples of the features of |SPARK| elaboration order rules are given
-below.  In the example described below the partial elaboration order
+below. In the example described below the partial elaboration order
 would be either of P_14 or Q_14 specifications first followed by P_14
 body because of the Elaborate_All on the specification of R_14
 specification and the body of Q_14, then the elaboration of Q_14 body
 or the specification of R_14 and the body of R_14 after the
-elaboration of Q_14.  Elaboration order dependencies are avoided by
+elaboration of Q_14. Elaboration order dependencies are avoided by
 checking the dependencies of the various sorts of Elaborate pragmas.
 
 Package Specifications in |SPARK|:
 
-   .. literalinclude:: ../code/circular_dependence_and_elaboration_order/14/p_14.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__circular_dependence_and_elaboration_order/p_14.ads
+   :language: ada
+   :linenos:
 
-   .. literalinclude:: ../code/circular_dependence_and_elaboration_order/14/q_14.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__circular_dependence_and_elaboration_order/q_14.ads
+   :language: ada
+   :linenos:
 
-   .. literalinclude:: ../code/circular_dependence_and_elaboration_order/14/r_14.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__circular_dependence_and_elaboration_order/r_14.ads
+   :language: ada
+   :linenos:
 
 Package Bodies in |SPARK|
 
-   .. literalinclude:: ../code/circular_dependence_and_elaboration_order/14/p_14.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__circular_dependence_and_elaboration_order/p_14.adb
+   :language: ada
+   :linenos:
 
-   .. literalinclude:: ../code/circular_dependence_and_elaboration_order/14/q_14.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__circular_dependence_and_elaboration_order/q_14.adb
+   :language: ada
+   :linenos:
 
-   .. literalinclude:: ../code/circular_dependence_and_elaboration_order/14/r_14.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__circular_dependence_and_elaboration_order/r_14.adb
+   :language: ada
+   :linenos:
 
 Bodies and Proof
 ----------------
@@ -1300,9 +1297,9 @@ the expression is the basis of the new hypotheses.
 |SPARK| has a specific pragma for defining a loop invariant, `pragma
 Loop_Invariant` which is more sophisticated than the SPARK 2005 assert
 annotation and often requires less conditions in the invariant
-expression than in SPARK 2005.  As in SPARK 2005 a default loop
+expression than in SPARK 2005. As in SPARK 2005 a default loop
 invariant will be used if one is not provided which, often, may be
-sufficient to prove absence of run-time exceptions.  Like all
+sufficient to prove absence of run-time exceptions. Like all
 |SPARK| assertion expressions the loop invariant is executable.
 
 Note in the example below the |SPARK| version proves absence of
@@ -1310,28 +1307,27 @@ run-time exceptions without an explicit loop invariant being provided.
 
 Specification in SPARK 2005:
 
-   .. literalinclude:: ../code/assert_loop_contract/05/assert_loop_05.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/assert_loop_contract/05/assert_loop_05.ads
+   :language: ada
+   :linenos:
 
 Body in SPARK 2005:
 
-   .. literalinclude:: ../code/assert_loop_contract/05/assert_loop_05.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/assert_loop_contract/05/assert_loop_05.adb
+   :language: ada
+   :linenos:
 
 Specification in |SPARK|:
 
-   .. literalinclude:: ../code/assert_loop_contract/14/assert_loop_14.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__assert_loop_contract/assert_loop_14.ads
+   :language: ada
+   :linenos:
 
 Body in |SPARK|:
 
-   .. literalinclude:: ../code/assert_loop_contract/14/assert_loop_14.adb
-      :language: ada
-      :linenos:
-
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__assert_loop_contract/assert_loop_14.adb
+   :language: ada
+   :linenos:
 
 .. _ms-assert_no_loop_contract-label:
 
@@ -1352,34 +1348,34 @@ Assume contract
 The following example illustrates use of an Assume annotation.  The
 assumed expression does not generate a verification condition and is
 not proved (although it is executed in |SPARK| if assertion
-expressions are not ignored at run-time. 
+expressions are not ignored at run-time.
 
-In this example, the Assume annotation is effectively being used to 
+In this example, the Assume annotation is effectively being used to
 implement the SPARK 2005 Always_Valid attribute.
 
 Specification for Assume annotation in SPARK 2005:
 
-   .. literalinclude:: ../code/proof_assume_contract/05/input_port.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/proof_assume_contract/05/input_port.ads
+   :language: ada
+   :linenos:
 
 Body for Assume annotation in SPARK 2005:
 
-   .. literalinclude:: ../code/proof_assume_contract/05/input_port.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/proof_assume_contract/05/input_port.adb
+   :language: ada
+   :linenos:
 
 Specification for Assume annotation in |SPARK|:
 
-   .. literalinclude:: ../code/proof_assume_contract/14/input_port.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__proof_assume_contract/input_port.ads
+   :language: ada
+   :linenos:
 
 Body for Assume annotation in |SPARK|:
 
-   .. literalinclude:: ../code/proof_assume_contract/14/input_port.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__proof_assume_contract/input_port.adb
+   :language: ada
+   :linenos:
 
 .. _ms-check_contract-label:
 
@@ -1393,27 +1389,27 @@ the list of existing hypotheses.
 
 Specification for Check annotation in SPARK 2005:
 
-   .. literalinclude:: ../code/check_contract/05/check_05.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/check_contract/05/check_05.ads
+   :language: ada
+   :linenos:
 
 Body for Check annotation in SPARK 2005:
 
-   .. literalinclude:: ../code/check_contract/05/check_05.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/check_contract/05/check_05.adb
+   :language: ada
+   :linenos:
 
 Specification for Check annotation in |SPARK|:
 
-   .. literalinclude:: ../code/check_contract/14/check_14.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__check_contract/check_14.ads
+   :language: ada
+   :linenos:
 
 Body for Check annotation in |SPARK|:
 
-   .. literalinclude:: ../code/check_contract/14/check_14.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__check_contract/check_14.adb
+   :language: ada
+   :linenos:
 
 Assert used to control path explosion
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1451,7 +1447,7 @@ to introduce a rule related to the components of a constant record value.
 functions.  State abstractions cannot have a type and all functions in
 |SPARK| are Ada functions.  Functions may be denoted as having the
 convention Ghost which means that they can only be called within an
-assertion expression such as a pre or postcondition.  Assertion
+assertion expression such as a pre or postcondition. Assertion
 expressions may be executed or ignored at run-time and if they are
 ignored Ghost functions behave much like SPARK 2005 proof functions.
 
@@ -1460,45 +1456,45 @@ Rule declaration annotations for structured constants are not required in |SPARK
 The SPARK 2005 version of the example given below will require user
 defined proof rules to discharge the proofs because refined
 definitions of some of the proof functions cannot be provided as they
-would have different formal parameters.  The |SPARK| version does not
+would have different formal parameters. The |SPARK| version does not
 suffer from this problem as functions called within assertion expressions
 may have global items.
 
 If it is wished to use an external prover such as Isabelle, with rules
 defining a ghost function written in the prover input language, this
 can be done in |SPARK| by denoting the ghost function as an Import in
-lieu of providing a body for the function.  Of course such ghost
+lieu of providing a body for the function. Of course such ghost
 functions cannot be executed.
 
 Specification in SPARK 2005:
 
-   .. literalinclude:: ../code/other_proof_types_and_functions/05/stack.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/other_proof_types_and_functions/05/stack.ads
+   :language: ada
+   :linenos:
 
 Body in SPARK 2005:
 
-   .. literalinclude:: ../code/other_proof_types_and_functions/05/stack.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../code/other_proof_types_and_functions/05/stack.adb
+   :language: ada
+   :linenos:
 
 Specification in |SPARK|
 
-   .. literalinclude:: ../code/other_proof_types_and_functions/14/stack.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__other_proof_types_and_functions/stack.ads
+   :language: ada
+   :linenos:
 
 Body in |SPARK|:
 
-   .. literalinclude:: ../code/other_proof_types_and_functions/14/stack.adb
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__other_proof_types_and_functions/stack.adb
+   :language: ada
+   :linenos:
 
 Specification in |SPARK| using an external prover
 
-   .. literalinclude:: ../code/other_proof_types_and_functions/14/stack_external_prover.ads
-      :language: ada
-      :linenos:
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__other_proof_types_and_functions/stack_external_prover.ads
+   :language: ada
+   :linenos:
 
 
 

@@ -1,0 +1,20 @@
+output_port_14.adb:8:11: warning:  it is currently ignored
+output_port_14.adb:8:11: warning:  it is currently ignored
+output_port_14.adb:8:11: warning:  it is currently ignored
+output_port_14.adb:8:11: warning: pragma "Volatile" is not yet supported
+output_port_14.adb:8:11: warning: pragma "Volatile" is not yet supported in flow analysis
+output_port_14.adb:8:11: warning: pragma "Volatile" is not yet supported in proof
+output_port_14.adb:9:11: warning:  it is currently ignored
+output_port_14.adb:9:11: warning:  it is currently ignored
+output_port_14.adb:9:11: warning:  it is currently ignored
+output_port_14.adb:9:11: warning: pragma "Async_Readers" is not yet supported
+output_port_14.adb:9:11: warning: pragma "Async_Readers" is not yet supported in flow analysis
+output_port_14.adb:9:11: warning: pragma "Async_Readers" is not yet supported in proof
+output_port_14.adb:17:22: info: postcondition proved
+output_port_14.adb:32:10: warning: statement has no effect [ineffective]
+output_port_14.adb:32:10: warning: unused assignment to "Output_Port" [ineffective]
+output_port_14.adb:32:23: warning: unused assignment to "Out_1" [ineffective]
+output_port_14.adb:33:34: warning: unused assignment to "Out_2" [ineffective]
+output_port_14.adb:35:34: warning: unused assignment to "Out_1" [ineffective]
+output_port_14.adb:36:16: warning: unused assignment [ineffective]
+output_port_14.adb:39:7: info: assertion proved

@@ -1,0 +1,5 @@
+stack_14.adb:17:26: warning: range check might fail
+stack_14.adb:18:10: info: index check proved
+stack_14.adb:26:15: warning: array index check might fail
+stack_14.adb:27:26: warning: range check might fail
+stack_14.adb:35:12: info: length check proved
