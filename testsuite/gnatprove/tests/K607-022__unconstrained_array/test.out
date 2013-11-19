@@ -1,105 +1,169 @@
-simple_unc_arrays.adb:26:36: info: discriminant check proved
-simple_unc_arrays.adb:26:36: range check not proved
-simple_unc_arrays.adb:33:44: loop invariant initialization not proved, requires A.V (J) = AV_Old (A.Last - J + 1)
-simple_unc_arrays.adb:33:44: loop invariant preservation not proved, requires A.V (J) = AV_Old (A.Last - J + 1)
-simple_unc_arrays.adb:33:46: discriminant check not proved
-simple_unc_arrays.adb:33:50: index check not proved
-simple_unc_arrays.adb:33:74: index check not proved
-simple_unc_arrays.adb:33:74: overflow check not proved
-simple_unc_arrays.adb:38:17: discriminant check not proved
-simple_unc_arrays.adb:38:21: index check not proved
-simple_unc_arrays.adb:38:28: discriminant check not proved
-simple_unc_arrays.adb:38:32: index check not proved
-simple_unc_arrays.adb:39:22: overflow check not proved
-simple_unc_arrays.adb:40:23: range check not proved
-simple_unc_arrays.adb:49:22: info: discriminant check proved
-simple_unc_arrays.adb:49:26: index check not proved
-simple_unc_arrays.adb:52:60: loop invariant initialization not proved, requires Res <= A.V (J)
-simple_unc_arrays.adb:52:60: loop invariant preservation not proved, requires Res <= A.V (J)
-simple_unc_arrays.adb:52:68: discriminant check not proved
-simple_unc_arrays.adb:52:72: index check not proved
-simple_unc_arrays.adb:54:20: discriminant check not proved
-simple_unc_arrays.adb:54:24: index check not proved
-simple_unc_arrays.adb:55:21: discriminant check not proved
-simple_unc_arrays.adb:55:25: index check not proved
-simple_unc_arrays.adb:88:20: overflow check not proved
-simple_unc_arrays.adb:88:23: info: discriminant check proved
-simple_unc_arrays.adb:88:27: index check not proved
-simple_unc_arrays.adb:91:18: division check not proved
-simple_unc_arrays.adb:91:18: overflow check not proved
-simple_unc_arrays.adb:101:17: info: discriminant check proved
-simple_unc_arrays.adb:102:10: info: loop invariant initialization proved
-simple_unc_arrays.adb:102:60: loop invariant preservation not proved, requires A.V (J) /= V
-simple_unc_arrays.adb:102:61: info: discriminant check proved
-simple_unc_arrays.adb:102:65: index check not proved
-simple_unc_arrays.adb:104:14: info: discriminant check proved
-simple_unc_arrays.adb:104:18: info: index check proved
-simple_unc_arrays.adb:124:19: info: discriminant check proved
-simple_unc_arrays.adb:124:25: index check not proved
-simple_unc_arrays.adb:124:25: overflow check not proved
-simple_unc_arrays.adb:124:35: info: discriminant check proved
-simple_unc_arrays.adb:124:39: index check not proved
-simple_unc_arrays.adb:125:25: info: discriminant check proved
-simple_unc_arrays.adb:125:29: index check not proved
-simple_unc_arrays.adb:125:36: info: discriminant check proved
-simple_unc_arrays.adb:125:41: index check not proved
-simple_unc_arrays.adb:125:41: overflow check not proved
-simple_unc_arrays.adb:147:35: overflow check not proved
-simple_unc_arrays.adb:147:42: overflow check not proved
-simple_unc_arrays.adb:147:47: info: division check proved
-simple_unc_arrays.adb:148:29: info: discriminant check proved
-simple_unc_arrays.adb:148:33: index check not proved
-simple_unc_arrays.adb:157:44: info: discriminant check proved
-simple_unc_arrays.adb:157:48: index check not proved
-simple_unc_arrays.adb:158:32: overflow check not proved
-simple_unc_arrays.adb:161:46: info: discriminant check proved
-simple_unc_arrays.adb:161:50: index check not proved
-simple_unc_arrays.adb:162:34: range check not proved
-simple_unc_arrays.adb:167:23: info: discriminant check proved
-simple_unc_arrays.adb:167:27: index check not proved
-simple_unc_arrays.adb:167:35: info: discriminant check proved
-simple_unc_arrays.adb:167:39: index check not proved
-simple_unc_arrays.adb:170:32: overflow check not proved
-simple_unc_arrays.adb:171:34: range check not proved
-simple_unc_arrays.adb:176:34: range check not proved
-simple_unc_arrays.ads:30:20: postcondition not proved, requires A.V (J) = A.V'old
+my_test.adb:5:04: warning: initialization has no effect [ineffective]
+my_test.adb:5:23: info: length check proved
+my_test.adb:6:04: warning: "T2" is not modified, could be declared constant
+my_test.adb:6:04: warning: initialization has no effect [ineffective]
+my_test.adb:6:23: info: length check proved
+my_test.adb:11:04: warning: statement has no effect [ineffective]
+my_test.adb:11:22: warning: precondition might fail
+my_test.adb:12:04: warning: statement has no effect [ineffective]
+my_test.adb:12:22: warning: precondition might fail
+my_test.adb:13:04: warning: statement has no effect [ineffective]
+my_test.adb:13:26: warning: precondition might fail
+my_test.adb:14:04: warning: statement has no effect [ineffective]
+my_test.adb:15:04: warning: statement has no effect [ineffective]
+my_test.adb:17:07: warning: unused assignment [ineffective]
+my_test.adb:17:10: warning: discriminant check might fail
+my_test.adb:17:10: warning: precondition might fail
+my_test.adb:18:48: warning: assertion might fail, requires T3.V (I) = 9
+my_test.adb:18:50: info: discriminant check proved
+my_test.adb:18:54: warning: array index check might fail
+my_test.adb:20:07: warning: unused assignment [ineffective]
+my_test.adb:20:10: warning: discriminant check might fail
+my_test.adb:21:04: warning: statement has no effect [ineffective]
+my_test.adb:21:16: warning: unused assignment to "T1" [ineffective]
+my_test.adb:22:4: warning: assertion might fail, requires T1 = T3
+simple_unc_arrays.adb:10:07: warning: "C.V" might not be initialized [uninitialized]
+simple_unc_arrays.adb:12:13: warning: "C.V" might not be initialized [uninitialized]
+simple_unc_arrays.adb:18:21: warning: "C.V" might not be initialized [uninitialized]
+simple_unc_arrays.adb:28:36: info: discriminant check proved
+simple_unc_arrays.adb:28:36: warning: length check might fail
+simple_unc_arrays.adb:35:44: warning: loop invariant might fail after first iteration, requires A.V (J) = AV_Old (A.Last - J + 1)
+simple_unc_arrays.adb:35:44: warning: loop invariant might fail in first iteration, requires A.V (J) = AV_Old (A.Last - J + 1)
+simple_unc_arrays.adb:35:46: warning: discriminant check might fail
+simple_unc_arrays.adb:35:50: warning: array index check might fail
+simple_unc_arrays.adb:35:74: warning: array index check might fail
+simple_unc_arrays.adb:35:74: warning: overflow check might fail
+simple_unc_arrays.adb:40:10: warning: precondition might fail
+simple_unc_arrays.adb:40:23: warning: discriminant check might fail
+simple_unc_arrays.adb:40:23: warning: length check might fail
+simple_unc_arrays.adb:40:32: warning: range check might fail
+simple_unc_arrays.adb:41:22: warning: overflow check might fail
+simple_unc_arrays.adb:42:23: warning: range check might fail
+simple_unc_arrays.adb:51:22: info: discriminant check proved
+simple_unc_arrays.adb:51:26: warning: array index check might fail
+simple_unc_arrays.adb:54:60: warning: loop invariant might fail after first iteration, requires Res <= A.V (J)
+simple_unc_arrays.adb:54:60: warning: loop invariant might fail in first iteration, requires Res <= A.V (J)
+simple_unc_arrays.adb:54:68: info: discriminant check proved
+simple_unc_arrays.adb:54:72: warning: array index check might fail
+simple_unc_arrays.adb:56:20: info: discriminant check proved
+simple_unc_arrays.adb:56:24: warning: array index check might fail
+simple_unc_arrays.adb:57:21: info: discriminant check proved
+simple_unc_arrays.adb:57:25: warning: array index check might fail
+simple_unc_arrays.adb:90:20: warning: overflow check might fail
+simple_unc_arrays.adb:90:23: info: discriminant check proved
+simple_unc_arrays.adb:90:27: warning: array index check might fail
+simple_unc_arrays.adb:93:18: warning: divide by zero might fail
+simple_unc_arrays.adb:93:18: warning: overflow check might fail
+simple_unc_arrays.adb:103:17: info: discriminant check proved
+simple_unc_arrays.adb:104:10: info: loop invariant initialization proved
+simple_unc_arrays.adb:104:60: warning: loop invariant might fail after first iteration, requires A.V (J) /= V
+simple_unc_arrays.adb:104:61: info: discriminant check proved
+simple_unc_arrays.adb:104:65: warning: array index check might fail
+simple_unc_arrays.adb:106:14: info: discriminant check proved
+simple_unc_arrays.adb:106:18: info: index check proved
+simple_unc_arrays.adb:121:23: info: discriminant check proved
+simple_unc_arrays.adb:126:19: info: discriminant check proved
+simple_unc_arrays.adb:126:25: warning: array index check might fail
+simple_unc_arrays.adb:126:25: warning: overflow check might fail
+simple_unc_arrays.adb:126:35: info: discriminant check proved
+simple_unc_arrays.adb:126:39: warning: array index check might fail
+simple_unc_arrays.adb:127:16: warning: precondition might fail
+simple_unc_arrays.adb:127:31: warning: discriminant check might fail
+simple_unc_arrays.adb:127:39: warning: overflow check might fail
+simple_unc_arrays.adb:149:35: warning: overflow check might fail
+simple_unc_arrays.adb:149:42: warning: overflow check might fail
+simple_unc_arrays.adb:149:47: info: division check proved
+simple_unc_arrays.adb:150:29: info: discriminant check proved
+simple_unc_arrays.adb:150:33: warning: array index check might fail
+simple_unc_arrays.adb:159:44: info: discriminant check proved
+simple_unc_arrays.adb:159:48: warning: array index check might fail
+simple_unc_arrays.adb:160:32: warning: overflow check might fail
+simple_unc_arrays.adb:163:46: info: discriminant check proved
+simple_unc_arrays.adb:163:50: warning: array index check might fail
+simple_unc_arrays.adb:164:34: warning: range check might fail
+simple_unc_arrays.adb:169:16: warning: precondition might fail
+simple_unc_arrays.adb:169:29: warning: discriminant check might fail
+simple_unc_arrays.adb:169:29: warning: length check might fail
+simple_unc_arrays.adb:169:33: warning: range check might fail
+simple_unc_arrays.adb:169:39: warning: range check might fail
+simple_unc_arrays.adb:172:32: warning: overflow check might fail
+simple_unc_arrays.adb:173:34: warning: range check might fail
+simple_unc_arrays.adb:178:16: warning: unused assignment to "A" [ineffective]
+simple_unc_arrays.adb:178:34: warning: range check might fail
+simple_unc_arrays.adb:182:16: warning: unused assignment to "A" [ineffective]
+simple_unc_arrays.adb:187:06: warning: "Tmp" is not modified, could be declared constant
+simple_unc_arrays.adb:190:07: warning: unused assignment to "A" [ineffective]
+simple_unc_arrays.adb:203:07: warning: initialization has no effect [ineffective]
+simple_unc_arrays.adb:203:25: warning: array index check might fail
+simple_unc_arrays.adb:205:19: warning: array index check might fail
+simple_unc_arrays.adb:206:10: warning: array index check might fail
+simple_unc_arrays.adb:206:13: warning: useless assignment of object to itself
+simple_unc_arrays.adb:206:19: warning: array index check might fail
+simple_unc_arrays.adb:207:10: warning: array index check might fail
+simple_unc_arrays.ads:20:13: warning: postcondition might fail
+simple_unc_arrays.ads:22:36: info: discriminant check proved
+simple_unc_arrays.ads:22:40: warning: array index check might fail
+simple_unc_arrays.ads:22:46: info: discriminant check proved
+simple_unc_arrays.ads:22:50: warning: array index check might fail
+simple_unc_arrays.ads:22:53: warning: overflow check might fail
+simple_unc_arrays.ads:22:56: info: discriminant check proved
+simple_unc_arrays.ads:22:60: warning: array index check might fail
+simple_unc_arrays.ads:30:20: warning: postcondition might fail, requires A.V (J) = A.V'Old (A.Last - J + 1)
 simple_unc_arrays.ads:30:22: info: discriminant check proved
-simple_unc_arrays.ads:30:26: index check not proved
+simple_unc_arrays.ads:30:26: warning: array index check might fail
 simple_unc_arrays.ads:30:32: info: discriminant check proved
-simple_unc_arrays.ads:30:51: index check not proved
-simple_unc_arrays.ads:30:51: overflow check not proved
-simple_unc_arrays.ads:40:14: postcondition not proved
+simple_unc_arrays.ads:30:51: warning: array index check might fail
+simple_unc_arrays.ads:30:51: warning: overflow check might fail
+simple_unc_arrays.ads:40:14: warning: postcondition might fail
 simple_unc_arrays.ads:40:60: info: discriminant check proved
-simple_unc_arrays.ads:40:64: index check not proved
+simple_unc_arrays.ads:40:64: warning: array index check might fail
 simple_unc_arrays.ads:42:61: info: discriminant check proved
-simple_unc_arrays.ads:42:65: index check not proved
-simple_unc_arrays.ads:64:14: postcondition not proved
-simple_unc_arrays.ads:64:14: precondition not proved
-simple_unc_arrays.ads:65:15: precondition not proved
-simple_unc_arrays.ads:74:17: postcondition not proved, requires Search'Result = 0 and then Not_In (A, V, 1 ,A.Last)) or else (A.V (Search'Result) = V and then Not_In (A, V, 1, Search'Result-1)
+simple_unc_arrays.ads:42:65: warning: array index check might fail
+simple_unc_arrays.ads:52:15: warning: postcondition might fail
+simple_unc_arrays.ads:52:61: info: discriminant check proved
+simple_unc_arrays.ads:52:64: warning: array index check might fail
+simple_unc_arrays.ads:54:64: info: discriminant check proved
+simple_unc_arrays.ads:54:68: warning: array index check might fail
+simple_unc_arrays.ads:64:14: warning: postcondition might fail
+simple_unc_arrays.ads:64:14: warning: precondition might fail
+simple_unc_arrays.ads:65:15: warning: precondition might fail
+simple_unc_arrays.ads:74:17: warning: postcondition might fail, requires Search'Result = 0 and then Not_In (A, V, 1 ,A.Last)) or else (A.V (Search'Result) = V and then Not_In (A, V, 1, Search'Result-1)
 simple_unc_arrays.ads:75:16: info: discriminant check proved
-simple_unc_arrays.ads:75:26: index check not proved
-simple_unc_arrays.ads:76:54: range check not proved
-simple_unc_arrays.ads:84:17: postcondition not proved
+simple_unc_arrays.ads:75:26: warning: array index check might fail
+simple_unc_arrays.ads:76:54: warning: range check might fail
+simple_unc_arrays.ads:84:17: warning: postcondition might fail
 simple_unc_arrays.ads:85:34: info: discriminant check proved
-simple_unc_arrays.ads:85:38: index check not proved
+simple_unc_arrays.ads:85:38: warning: array index check might fail
 simple_unc_arrays.ads:85:62: info: discriminant check proved
-simple_unc_arrays.ads:85:67: index check not proved
-simple_unc_arrays.ads:85:67: overflow check not proved
+simple_unc_arrays.ads:85:67: warning: array index check might fail
+simple_unc_arrays.ads:85:67: warning: overflow check might fail
 simple_unc_arrays.ads:88:22: info: discriminant check proved
-simple_unc_arrays.ads:88:26: index check not proved
+simple_unc_arrays.ads:88:26: warning: array index check might fail
 simple_unc_arrays.ads:88:49: info: discriminant check proved
-simple_unc_arrays.ads:88:53: index check not proved
-simple_unc_arrays.ads:96:17: postcondition not proved
+simple_unc_arrays.ads:88:53: warning: array index check might fail
+simple_unc_arrays.ads:96:17: warning: postcondition might fail
 simple_unc_arrays.ads:96:52: info: discriminant check proved
-simple_unc_arrays.ads:96:56: index check not proved
+simple_unc_arrays.ads:96:56: warning: array index check might fail
 simple_unc_arrays.ads:96:63: info: discriminant check proved
-simple_unc_arrays.ads:96:68: index check not proved
-simple_unc_arrays.ads:96:68: overflow check not proved
+simple_unc_arrays.ads:96:68: warning: array index check might fail
+simple_unc_arrays.ads:96:68: warning: overflow check might fail
 simple_unc_arrays.ads:98:47: info: discriminant check proved
-simple_unc_arrays.ads:98:55: index check not proved
+simple_unc_arrays.ads:98:55: warning: array index check might fail
 simple_unc_arrays.ads:98:61: info: discriminant check proved
-simple_unc_arrays.ads:98:65: index check not proved
+simple_unc_arrays.ads:98:65: warning: array index check might fail
+simple_unc_arrays.ads:105:20: warning: unused initial value of "A" [unused_initial_value]
+simple_unc_arrays.ads:105:20: warning: unused variable "A" [unused]
+simple_unc_arrays.ads:106:25: warning: unused initial value of "A" [unused_initial_value]
+simple_unc_arrays.ads:106:25: warning: unused variable "A" [unused]
+simple_unc_arrays.ads:106:28: warning: unused initial value of "B" [unused_initial_value]
+simple_unc_arrays.ads:106:28: warning: unused variable "B" [unused]
 simple_unc_arrays.ads:112:57: info: discriminant check proved
-simple_unc_arrays.ads:112:61: index check not proved
-simple_unc_arrays.ads:116:18: postcondition not proved
+simple_unc_arrays.ads:112:61: warning: array index check might fail
+simple_unc_arrays.ads:116:18: warning: postcondition might fail
+simple_unc_arrays.ads:121:20: warning: postcondition might fail
+simple_unc_arrays.ads:121:24: warning: array index check might fail
+simple_unc_arrays.ads:121:36: warning: array index check might fail
+simple_unc_arrays.ads:121:46: warning: array index check might fail
+simple_unc_arrays.ads:121:58: warning: array index check might fail
+simple_unc_arrays.ads:123:55: warning: array index check might fail
+simple_unc_arrays.ads:123:67: warning: array index check might fail

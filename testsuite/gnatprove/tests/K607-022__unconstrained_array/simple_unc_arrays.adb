@@ -1,4 +1,6 @@
-package body Simple_Unc_Arrays is pragma SPARK_Mode (On); 
+with Ada.Text_IO; use Ada.Text_IO;
+
+package body Simple_Unc_Arrays is pragma SPARK_Mode (On);
   ---------
    -- Add --
    ---------
@@ -8,11 +10,7 @@ package body Simple_Unc_Arrays is pragma SPARK_Mode (On);
       return C : Table (A.Last) do
          for I in 1 .. A.Last loop
             pragma Loop_Invariant
-              ((for all J in 1 .. I-1 => C.V (J) = A.V (J) + B.V (J))
---              and then
---                 (for all K in I .. A.Last => C.V (K) = C.V'Old (K))
-               );
-
+              ((for all J in 1 .. I-1 => C.V (J) = A.V (J) + B.V (J)));
             C.V (I) := A.V (I) + B.V (I);
          end loop;
       end return;
@@ -23,19 +21,17 @@ package body Simple_Unc_Arrays is pragma SPARK_Mode (On);
    -------------
 
   procedure Inverse (A : in out Table) is
-      AV_Old : constant Values := A.V;
       Low  : Positive := 1;
       High : Natural := A.Last;
 
    begin
       while Low < High loop
          pragma Loop_Invariant
-           ((for all J in 1 .. Low - 1  => (A.V (J) = AV_Old (A.Last - J + 1)))
---            and then
---              (for all J in Low -1 .. A.Last => (A.V (J) = A.V'Old (J)))
-            );
+           ((for all J in 1 .. Low - 1  => (A.V (J) = A.V'Loop_Entry (A.Last - J + 1)))
+             and
+             (for all J in Low -1 .. A.Last => (A.V (J) = A.V'Loop_Entry (J))));
 
-         Swap (A.V (Low), A.V (High));
+         Swap_Cells (A.V, Low, High);
          Low  := Low + 1;
          High := High - 1;
       end loop;
@@ -122,7 +118,7 @@ package body Simple_Unc_Arrays is pragma SPARK_Mode (On);
          Bull := False;
          for I in 1 .. Res.Last - 1 loop
             if Res.V (I + 1) < Res.V (I) then
-               Swap (Res.V (I), Res.V (I+1));
+               Swap_Cells (Res.V, I, I+1);
                Bull := True;
             end if;
          end loop;
@@ -164,7 +160,7 @@ package body Simple_Unc_Arrays is pragma SPARK_Mode (On);
 
                exit when Left >= Right;
 
-               Swap (A.V (Left), A.V (Right));
+               Swap_Cells (A.V, Left, Right);
 
                if Left < Last and Right > First then
                   Left := Left + 1;
@@ -182,16 +178,33 @@ package body Simple_Unc_Arrays is pragma SPARK_Mode (On);
          end if;
      end Q_S;
 
+     Tmp : Natural := A.Last;
+
    begin
-      Q_S (1, A.Last);
+      Q_S (1, Tmp);
    end Quick_Sort;
 
-procedure Swap (V, W : in out Value) is pragma SPARK_Mode (On); 
+   procedure Swap (V, W : in out Value) is pragma SPARK_Mode (On);
       Tmp : Value;
    begin
       Tmp := V;
       V   := W;
       W   := Tmp;
    end Swap;
+
+   procedure Swap_Cells (A : in out Values; I, J : Positive) is
+      pragma SPARK_Mode (On);
+      Tmp : Value := A (I);
+   begin
+      Tmp   := A (J);
+      A (J) := A (J);
+      A (I) := Tmp;
+   end Swap_Cells;
+
+   procedure Output (S : String; I : Value) is
+      pragma SPARK_Mode (Off);
+   begin
+      Put_Line (S & I'Img);
+   end Output;
 
 end Simple_Unc_Arrays;

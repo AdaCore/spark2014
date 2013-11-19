@@ -116,4 +116,13 @@ package Simple_Unc_Arrays is pragma SPARK_Mode (On);
    with Post => (V = W'Old and then W = V'Old);
    --  Swaps two values V and W
 
+   procedure Swap_Cells (A : in out Values; I, J : Positive)
+      with Pre  => I in A'Range and J in A'Range,
+           Post => (A (I) = A'Old (J) and A (J) = A'Old (I) and
+                     (for all K in A'Range =>
+                        (if K /= I and K /= J then A (K) = A'Old (K))));
+   --  Swaps two values V and W
+   --
+   procedure Output (S : String; I : Value);
+
 end Simple_Unc_Arrays;
