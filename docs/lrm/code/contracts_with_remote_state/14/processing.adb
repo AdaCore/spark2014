@@ -8,8 +8,9 @@ is
    S : State_Type := 77;
 
    procedure Get_Processed_Data (Value : out Integer)
-     with Refined_Global  => (In_Out => S),
-          Refined_Depends => ((Value, S) => S)
+     with Refined_Global  => (Input  => Raw_Data.State,
+                              In_Out => S),
+          Refined_Depends => ((Value, S) => (S, Raw_Data.State))
    is
       Local_Value : Integer;
    begin

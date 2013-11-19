@@ -11,7 +11,5 @@ is
 
    procedure Read_Next
      with Global  => (In_Out => State),
-          Depends => (State => State),
-          Pre     => Data_Is_Valid;
-
+          Depends => (State => State);
 end Raw_Data;
