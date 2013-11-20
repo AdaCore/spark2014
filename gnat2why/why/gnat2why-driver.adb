@@ -453,6 +453,8 @@ package body Gnat2Why.Driver is
                Translated_Object_Entities.Include (Ent_Name);
             end;
 
+            --  Constants and variables are translated differently
+
             if not Is_Mutable_In_Why (E) then
                if Entity_In_SPARK (E) then
                   if Ekind (E) = E_Constant then
@@ -472,6 +474,7 @@ package body Gnat2Why.Driver is
                      Generate_Empty_Axiom_Theory (File, E);
                   end if;
                end if;
+
             else
                Translate_Variable (File, E);
                Generate_Empty_Axiom_Theory (File, E);

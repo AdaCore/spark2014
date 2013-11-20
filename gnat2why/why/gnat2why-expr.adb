@@ -74,6 +74,7 @@ with Why.Inter;              use Why.Inter;
 
 with Gnat2Why.Decls;         use Gnat2Why.Decls;
 with Gnat2Why.Expr.Loops;    use Gnat2Why.Expr.Loops;
+with Gnat2Why.Subprograms;   use Gnat2Why.Subprograms;
 
 package body Gnat2Why.Expr is
 
@@ -5312,7 +5313,6 @@ package body Gnat2Why.Expr is
       --    also be refs)
       --  * enumeration literals (we have a separate function)
       --  * ids of Standard.ASCII (transform to integer)
-      --  * loop parameters (set type to integer)
       --  * quantified variables (use local name instead of global name)
 
       if Ada_Ent_To_Why.Has_Element (C) then
@@ -6092,9 +6092,33 @@ package body Gnat2Why.Expr is
                  New_Raise
                    (Ada_Node => Stmt_Or_Decl,
                     Name     => To_Ident (WNE_Result_Exc));
+               Expr        : W_Prog_Id :=
+                 Transform_Statements_And_Declarations
+                   (Return_Object_Declarations (Stmt_Or_Decl));
+               Ret_Obj     : constant Entity_Id :=
+                 Get_Return_Object_Entity (Stmt_Or_Decl);
+               Obj_Deref   : constant W_Prog_Id :=
+                 +Insert_Simple_Conversion
+                   (Domain => EW_Prog,
+                    Expr   =>
+                      New_Deref
+                      (Right => To_Why_Id (E => Ret_Obj),
+                       Typ   => Why_Type_Of_Entity (Ret_Obj)),
+                    To     => EW_Abstract (Etype (Current_Subp)));
             begin
-               --  ??? Need to implement extended returns properly: M301-019
-               return Raise_Stmt;
+               Expr :=
+                 Sequence
+                   (Expr,
+                    Transform_Statements_And_Declarations
+                      (Statements
+                         (Handled_Statement_Sequence (Stmt_Or_Decl))));
+               Expr :=
+                 Sequence
+                   (Expr,
+                    New_Assignment
+                      (Name  => Name_For_Result,
+                       Value => Obj_Deref));
+               return Sequence (Expr, Raise_Stmt);
             end;
 
          when N_Procedure_Call_Statement =>

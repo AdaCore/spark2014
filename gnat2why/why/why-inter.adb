@@ -1387,17 +1387,27 @@ package body Why.Inter is
    is
       E : constant Entity_Id := Type_Of_Node (N);
    begin
+
+      --  Handle special cases boolean/real
+
       if Is_Standard_Boolean_Type (E) then
          return EW_Bool_Type;
       elsif E = Universal_Fixed then
          return EW_Real_Type;
-      elsif Nkind (N) = N_Attribute_Reference and then
-        Get_Attribute_Id (Attribute_Name (N)) in
-          Attribute_Old | Attribute_Loop_Entry then
+
+      --  look through 'old and 'loop_entry
+
+      elsif Nkind (N) = N_Attribute_Reference
+        and then Get_Attribute_Id (Attribute_Name (N)) in
+          Attribute_Old | Attribute_Loop_Entry
+      then
          return Type_Of_Node (Prefix (N));
-      elsif Nkind (N) in N_Identifier | N_Expanded_Name and then
-        Ekind (Entity (N)) in Object_Kind and then
-        Ekind (Entity (N)) not in E_Discriminant | E_Component
+
+      --  for objects, we want to look at the Why type of the Why object
+
+      elsif Nkind (N) in N_Identifier | N_Expanded_Name
+        and then Ekind (Entity (N)) in Object_Kind
+        and then Ekind (Entity (N)) not in E_Discriminant | E_Component
       then
          return Why_Type_Of_Entity (Entity (N));
       else

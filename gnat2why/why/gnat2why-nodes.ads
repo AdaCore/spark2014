@@ -136,6 +136,11 @@ package Gnat2Why.Nodes is
    --  check whether the E_Loop_Parameter in argument comes from a quantifier
    --  or not
 
+   function Get_Return_Object_Entity (Stmt : Node_Id) return Entity_Id
+     with Pre => Nkind (Stmt) = N_Extended_Return_Statement;
+   --  find the return object that corresponds to the extended return statement
+   --  in argument
+
    function Subp_Location (E : Entity_Id) return String
    with Pre => (Ekind (E) in Subprogram_Kind | E_Package);
    --  for a given subprogram entity, compute the string that identifies this

@@ -292,6 +292,22 @@ package body Gnat2Why.Nodes is
       end case;
    end Get_Range;
 
+   -----------------------
+   -- Get_Return_Object --
+   -----------------------
+
+   function Get_Return_Object_Entity (Stmt : Node_Id) return Entity_Id is
+      Decl : Node_Id := First (Return_Object_Declarations (Stmt));
+   begin
+      while Present (Decl) loop
+         exit when
+           Is_Return_Object (Defining_Identifier (Decl));
+         Next (Decl);
+      end loop;
+      pragma Assert (Present (Decl));
+      return Defining_Identifier (Decl);
+   end Get_Return_Object_Entity;
+
    ----------------------
    -- Has_Precondition --
    ----------------------
