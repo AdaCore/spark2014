@@ -162,7 +162,7 @@ S.IFA.DataFlow.Subprogram
 
 :Description: The tools shall analyse the data flow of an operation body and identify the following errors:
 
-   #. uninitialised variables;
+   #. uninitialized variables;
    #. unused variables;
    #. stable loops;
    #. ineffective statements; and
@@ -178,7 +178,7 @@ S.IFA.DataFlow.InterProcedural
 
 :Description: The tools shall analyse the data flow of an entire body and identify the following errors:
 
-   #. uninitialised variables;
+   #. uninitialized variables;
    #. unused variables;
    #. stable loops;
    #. ineffective statements; and

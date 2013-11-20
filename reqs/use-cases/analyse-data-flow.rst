@@ -25,7 +25,7 @@ Scenario
 #. Developer requests source code is checked against |SPARK|;
 
 #. |SPARK tools| reports if the code contains any:
-    * uninitialised variables;
+    * uninitialized variables;
 
     * unused variables;
 

@@ -518,7 +518,7 @@ other unclassified messages are warnings about questionable code constructs.
    * Next: Is it the establishment of the loop invariant that fails?  If
      the rest of the loop proof has succeded, the reason for this failure
      is external to the loop. Consider if the precondition of your loop
-     is strong enough? Maybe you need some more initialisation code
+     is strong enough? Maybe you need some more initialization code
      before your loop? Or a pre-condition to the subprogram? Lastly,
      consider if your loop invariant is too strong? Is it contradictory?
 

@@ -160,13 +160,13 @@ value of T is assigned to Y.
 
 .. code-block:: ada
 
-   procedure Exchange_No_Post_Uninitialised (X, Y : in out Integer)
+   procedure Exchange_No_Post_Uninitialized (X, Y : in out Integer)
    is
       T : Integer;
    begin
       X := Y;
       Y := T;
-   end Exchange_No_Post_Uninitialised;
+   end Exchange_No_Post_Uninitialized;
 
 When analysed with --mode=flow GNATprove reports the use of uninitialized
 variable T in the assignment to Y.
@@ -216,16 +216,16 @@ but with the addition of a postcondition.
 
 .. code-block:: ada
 
-   procedure Exchange_With_Post_Uninitialised (X, Y : in out Integer)
+   procedure Exchange_With_Post_Uninitialized (X, Y : in out Integer)
      with Post => (X = Y'Old and Y = X'Old);
 
-   procedure Exchange_With_Post_Uninitialised (X, Y : in out Integer)
+   procedure Exchange_With_Post_Uninitialized (X, Y : in out Integer)
    is
       T : Integer;
    begin
       X := Y;
       Y := T;
-   end Exchange_With_Post_Uninitialised;
+   end Exchange_With_Post_Uninitialized;
 
 GNATprove is able to detect the discrepancy between the postcondition and the 
 implementation and reports "postcondition not proved, requires Y = X'old". 
@@ -1533,7 +1533,7 @@ Sum elements of array
 ---------------------
 SumArray sums the elements of an array. SumArray_Shift is similar, and has the same postcondition,
 but a 'Shift' parameter has been added to make the implementation and proof more complex. Rather than
-initialising the sum to zero it is initialised to Shift, but the value of Shift is then subtracted
+initializing the sum to zero it is initialized to Shift, but the value of Shift is then subtracted
 again in the body of the loop so Shift has no impact on the end result (provided it doesn't cause or
 prevent an overflow).
 

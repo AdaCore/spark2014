@@ -49,7 +49,7 @@ error.
    :linenos:
 
 This implementation contains an ineffective statement (the
-initialisation of ``Old_X`` at declaration) and an unused variable.
+initialization of ``Old_X`` at declaration) and an unused variable.
 
 .. literalinclude:: gnatprove_by_example/examples/swap_incorrect_c.adb
    :language: ada
