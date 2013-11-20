@@ -31,8 +31,8 @@
 --  Access_Check), and which GNATprove can detect (it excludes
 --  Storage_Check), plus various assertions that we want to distinguish.
 
---  Changes in VC_Kind should be reflected in gnat_expl.ml in gnatwhy3, the
---  driver for VC generation and proof.
+--  Changes in VC_Kind should be reflected in gnat_expl.ml in gnatwhy3, file
+--  gnat_expl.ml, and in the SPARK UG.
 
 package VC_Kinds is
 

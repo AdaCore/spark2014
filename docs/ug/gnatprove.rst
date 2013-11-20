@@ -401,6 +401,7 @@ The following table shows the kinds of warnings issued by proof.
    "loop_invariant_preservation", "Check that the loop invariant evaluates to True at each further iteration of the loop."
    "loop_variant", "Check that the given loop variant decreases/increases as specified during each iteration of the loop. This implies termination of the loop."
    "assertion", "Check that the given assertion evaluates to True."
+   "raise_statement", "Check that the raise statement can never be reached."
 
 The following table shows all flow analysis messages, which come in three
 classes: I(nitialization) errors are the most serious flow errors as not fixing
