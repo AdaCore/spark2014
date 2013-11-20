@@ -7,6 +7,68 @@ This appendix defines the mapping between SPARK 2005 and |SPARK|.
 It is intended as both a completeness check for the |SPARK| language
 design, and as a guide for projects upgrading from SPARK 2005 to |SPARK|.
 
+SPARK 2005 Features and |SPARK| Alternatives
+--------------------------------------------
+
+Nearly every SPARK 2005 feature has a |SPARK| equivalent or there is
+an alternative way of providing the same feature in |SPARK|.  The only
+SPARK 2005 (not including RavenSPARK) features that are not needed in
+|SPARK| and do not have an alternative are: 
+ 
+  * the 'Always_Valid attribute;
+
+  * the ability to add pre and postconditions to an instantiation of a
+    generic subprogram, e.g., Unchecked_Conversion; and  
+
+  * a precondition on the body of a subprogram refining the one on the
+    specification - this is not usually required in |SPARK|, it is
+    normally replaced by the use of expression functions.
+
+At the moment the first two features have to be accomplished using
+pragma Assume.
+
+The following subsections of this appendix demonstrate how many SPARK
+2005 idioms map into |SPARK|.  As a quick reference the table below
+shows, for each SPARK 2005 annotation or SPARK 2005 specific feature,
+a reference to the equivalent or alternative in |SPARK|.  In the table
+headings 2014 RM is the |SPARK| Reference Manual and Mapping is this
+appendix, The SPARK 2005 to |SPARK| mapping specification.
+
+================= ======================================== ================================================ ========
+SPARK 2005        SPARK 2014 Alternative                   2014 RM                                          Mapping
+================= ======================================== ================================================ ========
+~ in post         'Old attribute   - see Ada RM 6.1.1                                                       :ref:`A.2.2 <ms-pre_post_return-label>`
+~ in body         'Loop_Entry attribute                    :ref:`5.5.3 <loop_entry>`                        :ref:`A.7 <ms-value_of_variable_on_entry_to_a_loop-label>`
+<->               =                                        
+A -> B            (if A then B)     - see Ada RM 4.5.7                                                      :ref:`A.2.2 <ms-pre_post_return-label>`
+%                 not needed                                                                                :ref:`A.7 <ms-value_of_variable_on_entry_to_a_loop-label>`
+always_valid      not supported                                                                             :ref:`A.4.1 <ms-proof_assume_contract-label>`
+assert            pragma Assert_And_Cut                    :ref:`5.9 <pragma_assume>`                       :ref:`A.4.2 <ms-assert_no_loop_contract-label>`
+assert in loop    pragma Loop_Invariant                    :ref:`5.5.3 <loop_invariants>`                   :ref:`A.4.1 <ms-assert_loop_contract-label>`
+assume            pragma Assume                            :ref:`5.9 <pragma_assume>`                       :ref:`A.4.1 <ms-proof_assume_contract-label>`
+check             pragma Assert     - see Ada RM 11.4.2                                                     :ref:`A.4.1 <ms-check_contract-label>`
+derives on spec   Depends aspect                           :ref:`6.1.5 <depends-aspects>`                   :ref:`A.2.1 <ms-global_derives-label>`
+derives on body   Refined Depends aspect                   :ref:`7.2.5 <refined-depends-aspect>`            :ref:`A.3.2 <ms-asm_abstract_state_refined_in_private_child-label>`
+for all           quantified_expression - see Ada RM 4.5.8                                                  :ref:`A.2.3 <ms-attributes_of_unconstrained_out_parameter_in_precondition-label>` 
+for some          quantified_expression - See Ada RM 4.5.8                                                  :ref:`A.4.1 <ms-assert_loop_contract-label>`
+global on spec    Global aspect                            :ref:`6.1.4 <global-aspects>`                    :ref:`A.2.1 <ms-global_derives-label>`
+global on body    Refined_Global aspect                    :ref:`7.2.4 <refined-global-aspect>`             :ref:`A.2.4 <ms-nesting_refinement-label>`
+hide              pragma SPARK_Mode - see User Guide       
+inherit           not needed                                                                                :ref:`A.3.4 <ms-package_inheritance-label>`
+initializes       Initializes aspect                       :ref:`7.1.5 <initializes_aspect>`                :ref:`A.2.4 <ms-nesting_refinement-label>`
+main_program      not needed                               
+object assertions rule declarations are not needed                                                          :ref:`A.5.3 <ms-proof_types_and_proof_functions-label>`
+own on spec       Abstract_State aspect                    :ref:`7.1.4 <abstract-state-aspect>`             :ref:`A.3.2 <ms-asm-label>`
+own on body       Refined_State aspect                     :ref:`7.2.2 <refined_state_aspect>`              :ref:`A.3.2 <ms-asm-label>`
+post on spec      postcondition     - see Ada RM 6.1.1     :ref:`6.1.1 <preconditions-and-postconditions>`  :ref:`A.2.2 <ms-pre_post_return-label>`
+post on body      Refined_Post aspect                      :ref:`7.2.7 <refined-postcondition>`
+pre               precondition      - see Ada RM 6.1.1     :ref:`6.1.1 <preconditions-and-postconditions>`
+proof functions   Ghost functions                          :ref:`6.9 <ghost-functions>`                     :ref:`A.5.3 <ms-proof_types_and_proof_functions-label>`
+proof types       Ada types                                                                                 :ref:`A.5.5 <ms-quote_own_variable_in_contract-label>`
+return            'Result attribute - see Ada RM 6.1.1                                                      :ref:`A.2.2 <ms-pre_post_return-label>`
+update            'Update attribute                        :ref:`4.4.1 <update-expressions>`                :ref:`A.6 <ms-quote_own_variable_in_contract-label>`
+================= ======================================== ================================================ ========
+
 Subprogram patterns
 -------------------
 
@@ -470,6 +532,8 @@ Body of private child B in |SPARK|:
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__adt_private_public_child_visibility/parent_14-private_child_b_14.adb
    :language: ada
    :linenos:
+
+.. _ms-asm-label:
 
 Abstract State Machines (ASMs)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1122,6 +1186,8 @@ Body in |SPARK|:
    :language: ada
    :linenos:
 
+.. _ms-package_inheritance-label:
+
 Package Inheritance
 ~~~~~~~~~~~~~~~~~~~
 
@@ -1501,8 +1567,10 @@ Specification in |SPARK| using an external prover:
    :language: ada
    :linenos:
 
+.. _ms-quote_own_variable_in_contract-label:
+
 Quoting an Own Variable in a Contract
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Sometimes it is necessary to reference an own variable (a state
 abstraction) in a contract. In SPARK 2005 this was achieved by
@@ -1556,6 +1624,77 @@ Main_Program annotation
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 This annotation isn't needed.
+
+.. _ms-update_expressions-label:
+
+Update Expressions
+------------------
+
+SPARK 2005 has update expressions for updating records and arrays.
+They can only be used in SPARK 2005 proof contexts.
+
+The equivalent in |SPARK| is the '*Update* attribute.  This can be
+used in any Ada expression.
+
+Specification in SPARK 2005:
+
+.. literalinclude:: ../code/update_examples/05/update_examples.ads
+   :language: ada
+   :linenos:
+
+Specification in |SPARK|
+
+.. literalinclude:: ../../../testsuite/gnatprove/tests/M930-005__flow_update/update_examples.ads
+   :language: ada
+   :linenos:
+
+.. _ms-value_of_variable_on_entry_to_a_loop-label:
+
+Value of Variable on Entry to a Loop
+------------------------------------
+
+In SPARK 2005 the entry value of a for loop variable variable, X, can
+be referenced using the notation X%.  This notation is required
+frequently when the variable is referenced in a proof context within
+the loop.  Often it is needed to state that the value of X is not
+changed within the loop by stating X = X%.  This notation is
+restricted to a variable which defines the lower or upper range of a
+for loop.
+
+|SPARK| has a more general scheme whereby the loop entry value of any
+variable can be denoted within any sort of loop using the
+'*Loop_Entry* attribute.  However, its main use is not for showing
+that the value of a for loop variable has not changed as the |SPARK|
+tools are able to determine this automatically.  Rather it is used
+instead of ~ in loops because the attribute 'Old is only permitted in
+postconditions (including Contract_Cases).
+
+Specification in SPARK 2005:
+
+.. literalinclude:: ../code/loop_entry/05/loop_entry.ads
+   :language: ada
+   :linenos:
+
+Body in SPARK 2005:
+
+.. literalinclude:: ../code/loop_entry/05/loop_entry.adb
+   :language: ada
+   :linenos:
+
+Specification in |SPARK|:
+
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__loop_entry/loop_entry.ads
+   :language: ada
+   :linenos:
+
+Body in |SPARK|:
+
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__loop_entry/loop_entry.adb
+   :language: ada
+   :linenos:
+
+
+
 
 ..
   RavenSPARK patterns

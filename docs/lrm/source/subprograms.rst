@@ -64,6 +64,8 @@ a subprogram.
 
 .. _etu-subprogram_declarations:
 
+.. _preconditions-and-postconditions:
+
 Preconditions and Postconditions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -1194,6 +1196,7 @@ Expression Functions
    function Expr_Func_1 (X : Natural; Y : Natural) return Natural is (X + Y)
      with Pre => X <= Natural'Last - Y;
 
+.. _ghost-functions:
 
 Ghost Functions
 ---------------

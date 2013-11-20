@@ -168,6 +168,8 @@ which is initialized with the value of a variable.]
 Dynamic_Predicate is currently in |SPARK|. This rule is added
 in anticipation of the possible relaxation of that restriction.]
 
+.. _update-expressions:
+
 Update Expressions
 ~~~~~~~~~~~~~~~~~~
 

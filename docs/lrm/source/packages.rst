@@ -2207,6 +2207,7 @@ private child unit (or a public descendant thereof).
 
    end R.Child;
 
+.. _refined-postcondition:
 
 Refined Postcondition Aspects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

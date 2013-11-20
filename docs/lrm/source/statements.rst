@@ -7,7 +7,7 @@ are used for verification, particularly involving loop statements.
 Simple and Compound Statements - Sequences of Statements
 --------------------------------------------------------
 
-|SPARK| restricts statements that complicate verification, and excludes statements
+|SPARK| restricts statements tha`t complicate verification, and excludes statements
 related to tasking and synchronization.
 
 .. centered:: **Legality Rules**
@@ -226,6 +226,8 @@ The following example illustrates some pragmas of this section
 
 Note that in this example, the loop variant is unnecessarily complex, stating
 that ``I`` increases is enough to prove termination of this simple loop.
+
+.. _loop_entry:
 
 Attribute Loop_Entry
 ^^^^^^^^^^^^^^^^^^^^
