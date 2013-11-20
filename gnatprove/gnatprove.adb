@@ -318,9 +318,6 @@ procedure Gnatprove is
       if IDE_Progress_Bar then
          Args.Append ("--ide-progress-bar");
       end if;
-      if Show_Tag then
-         Args.Append ("--show-tag");
-      end if;
       if Parallel > 1 then
          Args.Append ("-j");
          Args.Append (Int_Image (Parallel));
@@ -712,10 +709,6 @@ procedure Gnatprove is
 
       Args.Append ("-cargs:Ada");
       Args.Append ("-gnatc");       --  No object file generation
-
-      if Show_Tag then
-         Args.Append ("-gnatw.d"); -- generation of unique tag
-      end if;
 
       Args.Append ("-gnates=" & Opt_File);
 

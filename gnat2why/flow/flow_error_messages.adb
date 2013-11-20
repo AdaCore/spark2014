@@ -444,9 +444,6 @@ package body Flow_Error_Messages is
          --  Otherwise we issue an error message
 
          M := Escape (M);
-         if Tag'Length >= 1 then
-            Append (M, " '[" & Tag & "']");
-         end if;
          Append (M, "!!");
          if Warning then
             Append (M, '?');

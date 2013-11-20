@@ -487,11 +487,6 @@ ASCII.LF;
          Long_Switch => "--ide-progress-bar");
 
       Define_Switch
-        (Config,
-         Show_Tag'Access,
-         Long_Switch => "--show-tag");
-
-      Define_Switch
          (Config,
           Quiet'Access,
           "-q", Long_Switch => "--quiet");

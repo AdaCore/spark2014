@@ -66,9 +66,6 @@ package Configuration is
    --  progress for display in IDE.
    RTS_Dir          : aliased GNAT.Strings.String_Access;
    --  The RTS dir set by option --RTS
-   Show_Tag          : aliased Boolean;
-   --  True if --show_tag switch is present. Add a unique tag to each error
-   --  message.
    Limit_Line        : aliased GNAT.Strings.String_Access;
    --  Set to non-empty string when option --limit-line= was given
    Limit_Subp        : aliased GNAT.Strings.String_Access;
