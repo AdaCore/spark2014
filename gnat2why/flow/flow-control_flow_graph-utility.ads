@@ -144,7 +144,7 @@ package Flow.Control_Flow_Graph.Utility is
    --  Create attributes for the initial_value and final_use
    --  vertices. We also calculate the following attributes
    --  automatically:
-   --     * Is_Initialised
+   --     * Is_Initialized
    --     * Is_Function_Return
    --     * Is_Global (always false)
    --     * Is_Loop_Parameter
@@ -164,13 +164,13 @@ package Flow.Control_Flow_Graph.Utility is
 
    --  Create attributes for the initial_value and final_use vertices
    --  for globals. The following is calculated automatically:
-   --     * Is_Initialised
+   --     * Is_Initialized
    --     * Is_Global (always true)
    --     * Is_Export
    --     * Variables_Defined or Variables_Used
    --
    --  If uninit is set then the vertex is always marked as
-   --  uninitialised (unless the global is a disciminant).
+   --  uninitialized (unless the global is a disciminant).
 
    function Make_Default_Initialization_Attributes
      (Scope   : Flow_Scope;

@@ -313,7 +313,7 @@ package body Flow.Control_Flow_Graph.Utility is
 
       case F_Ent.Variant is
          when Initial_Value =>
-            A.Is_Initialised := Ekind (Entire_Var) in
+            A.Is_Initialized := Ekind (Entire_Var) in
               E_In_Out_Parameter |
                  E_In_Parameter  |
                  E_Loop_Parameter;
@@ -324,7 +324,7 @@ package body Flow.Control_Flow_Graph.Utility is
             if Is_Discriminant (F_Ent) then
                --  Discriminants are *always* initialized. They are also
                --  implicit imports if they are out parameters.
-               A.Is_Initialised := True;
+               A.Is_Initialized := True;
                if Ekind (Entire_Var) = E_Out_Parameter then
                   A.Is_Import := True;
                end if;
@@ -373,16 +373,16 @@ package body Flow.Control_Flow_Graph.Utility is
 
       case F.Variant is
          when Initial_Value =>
-            A.Is_Initialised    := (not Uninit) and
-              Mode in Initialised_Global_Modes;
+            A.Is_Initialized    := (not Uninit) and
+              Mode in Initialized_Global_Modes;
 
             if Is_Discriminant (F) then
                --  Discriminants are *always* initialized imports.
-               A.Is_Initialised := True;
+               A.Is_Initialized := True;
                A.Is_Import      := True;
             end if;
 
-            A.Is_Import         := A.Is_Initialised;
+            A.Is_Import         := A.Is_Initialized;
             A.Variables_Defined :=
               Flow_Id_Sets.To_Set (Change_Variant (F, Normal_Use));
 

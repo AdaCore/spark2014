@@ -28,7 +28,7 @@ package Flow.Analysis is
 
    procedure Analyse_Main (FA : in out Flow_Analysis_Graphs);
    --  If FA corresponds to a main program, we ensure that
-   --  all globals it references are initialised.
+   --  all globals it references are initialized.
 
    procedure Sanity_Check (FA   : Flow_Analysis_Graphs;
                            Sane : out Boolean);
@@ -65,9 +65,9 @@ package Flow.Analysis is
    --
    --  Complexity is O(N^2)
 
-   procedure Find_Use_Of_Uninitialised_Variables
+   procedure Find_Use_Of_Uninitialized_Variables
      (FA : in out Flow_Analysis_Graphs);
-   --  Find all instances where uninitialised variables are used. If a
+   --  Find all instances where uninitialized variables are used. If a
    --  variable is always uninitialized then raise an Error, otherwise
    --  raise a Warning.
    --

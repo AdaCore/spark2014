@@ -30,13 +30,13 @@ package body Exchange_Examples is
       Y := X;
    end Exchange_No_Post_Unused;
 
-   procedure Exchange_No_Post_Uninitialised (X, Y : in out Integer)
+   procedure Exchange_No_Post_Uninitialized (X, Y : in out Integer)
    is
       T : Integer;
    begin
       X := Y;
       Y := T;
-   end Exchange_No_Post_Uninitialised;
+   end Exchange_No_Post_Uninitialized;
 
    procedure Exchange_With_Post_Unused (X, Y : in out Integer)
      with Post => (X = Y'Old and Y = X'Old);
@@ -50,16 +50,16 @@ package body Exchange_Examples is
       Y := X;
    end Exchange_With_Post_Unused;
 
-   procedure Exchange_With_Post_Uninitialised (X, Y : in out Integer)
+   procedure Exchange_With_Post_Uninitialized (X, Y : in out Integer)
      with Post => (X = Y'Old and Y = X'Old);
 
-   procedure Exchange_With_Post_Uninitialised (X, Y : in out Integer)
+   procedure Exchange_With_Post_Uninitialized (X, Y : in out Integer)
    is
       T : Integer;
    begin
       X := Y;
       Y := T;
-   end Exchange_With_Post_Uninitialised;
+   end Exchange_With_Post_Uninitialized;
 
    procedure Exchange_RTE (X, Y : in out Integer)
      with Pre  => Y < Integer'Last,

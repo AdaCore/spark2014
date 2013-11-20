@@ -319,7 +319,7 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
       with Pre => Nkind (N) = N_Object_Declaration;
-   --  Deal with declarations (with an optional initialisation). We
+   --  Deal with declarations (with an optional initialization). We
    --  either generate a null vertex which is then stripped from the
    --  graph or a simple defining vertex.
 
@@ -329,7 +329,7 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
       with Pre => Nkind (N) = N_Pragma;
-   --  Deals with pragmas. We only check for uninitialised variables. We
+   --  Deals with pragmas. We only check for uninitialized variables. We
    --  do not check for ineffective statements since all pragmas ought to
    --  be ineffective by definition.
    --
@@ -650,7 +650,7 @@ package body Flow.Control_Flow_Graph is
       end if;
 
       for F of Flatten_Variable (E) loop
-         --  Setup the n'initial vertex. Note that initialisation for
+         --  Setup the n'initial vertex. Note that initialization for
          --  variables is detected (and set) when building the flow graph
          --  for declarative parts.
          A := Make_Variable_Attributes (F_Ent => Change_Variant
@@ -691,7 +691,7 @@ package body Flow.Control_Flow_Graph is
       A : V_Attributes;
    begin
       for F_Part of Flatten_Variable (F) loop
-         --  Setup the n'initial vertex. Initialisation is deduced from
+         --  Setup the n'initial vertex. Initialization is deduced from
          --  the mode.
          A := Make_Global_Variable_Attributes
            (F      => Change_Variant (F_Part, Initial_Value),
@@ -1199,7 +1199,7 @@ package body Flow.Control_Flow_Graph is
       --        v
       --
       --  The PARAMETER block defines the loop parameter (which is
-      --  also flagged as Is_Initialised and Is_Loop_Parameter so that
+      --  also flagged as Is_Initialized and Is_Loop_Parameter so that
       --  it can be suitably ignored by subsequent analysis).
       --
       --  We distinguish this case (non-empty range) from the previous
@@ -1651,7 +1651,7 @@ package body Flow.Control_Flow_Graph is
    begin
       if Pragma_Relevant_To_Flow (N) then
          --  If we care, we create a sink vertex to check for
-         --  uninitialised variables.
+         --  uninitialized variables.
          FA.CFG.Add_Vertex
            (Direct_Mapping_Id (N),
             Make_Sink_Vertex_Attributes
@@ -1735,7 +1735,7 @@ package body Flow.Control_Flow_Graph is
 
       V : Flow_Graphs.Vertex_Id;
    begin
-      --  We just need to check for uninitialised variables.
+      --  We just need to check for uninitialized variables.
       FA.CFG.Add_Vertex
         (Direct_Mapping_Id (Pre),
          Make_Sink_Vertex_Attributes
@@ -2595,7 +2595,7 @@ package body Flow.Control_Flow_Graph is
          when E_Package | E_Package_Body =>
             --  Packages have no obvious globals, but we can extract a
             --  list of global variables used from the optional rhs of
-            --  the initialises clause:
+            --  the initializes clause:
             --
             --     Initializes => (State => (Global_A, ...),
             --
@@ -2603,7 +2603,7 @@ package body Flow.Control_Flow_Graph is
             --  7.1.5, verification rule 12).
             --
             --  Any such globals are global inputs *only* as packages
-            --  are only allowed to initialise their own state.
+            --  are only allowed to initialize their own state.
             declare
                Global_Ins : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
                --  We need to make sure to only add each global once

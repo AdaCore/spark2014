@@ -992,7 +992,7 @@ package body Flow.Analysis is
             Atr : constant V_Attributes := FA.PDG.Get_Attributes (V);
          begin
             if Key.Variant = Initial_Value
-              and then Atr.Is_Initialised
+              and then Atr.Is_Initialized
               and then (not Atr.Is_Loop_Parameter)
             then
                --  Note the entire variable.
@@ -1315,10 +1315,10 @@ package body Flow.Analysis is
    end Find_Ineffective_Statements;
 
    -----------------------------------------
-   -- Find_Use_Of_Uninitialised_Variables --
+   -- Find_Use_Of_Uninitialized_Variables --
    -----------------------------------------
 
-   procedure Find_Use_Of_Uninitialised_Variables
+   procedure Find_Use_Of_Uninitialized_Variables
      (FA : in out Flow_Analysis_Graphs)
    is
       Tracefile : Unbounded_String;
@@ -1612,27 +1612,27 @@ package body Flow.Analysis is
          return Is_Defined_In_Other_Path;
       end Might_Be_Defined_In_Other_Path;
 
-   begin --  Find_Use_Of_Uninitialised_Variables
+   begin --  Find_Use_Of_Uninitialized_Variables
       for V_Initial of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
 
          --  We loop through all vertices, finding the ones that
-         --  represent initial values that are not initialised.
+         --  represent initial values that are not initialized.
 
          declare
             Key_I : constant Flow_Id      := FA.PDG.Get_Key (V_Initial);
             Atr_I : constant V_Attributes := FA.PDG.Get_Attributes (V_Initial);
          begin
             if Key_I.Variant = Initial_Value and then
-              not Atr_I.Is_Initialised
+              not Atr_I.Is_Initialized
             then
 
-               --  V_Initial is a vertex of an uninitialised initial value
+               --  V_Initial is a vertex of an uninitialized initial value
                --  Key_I     is its flow_id
                --  Atr_I     are its attributes
 
                --  We now look at all its out neighbours in the PDG
                --  (these are vertices using (or depending on) this
-               --  uninitialised initial value).
+               --  uninitialized initial value).
 
                for V_Use of FA.PDG.Get_Collection
                  (V_Initial, Flow_Graphs.Out_Neighbours) loop
@@ -1646,7 +1646,7 @@ package body Flow.Analysis is
                      --  Key_U is its flow_id
                      --  Atr_U are its attributes
 
-                     --  There are a number of places an uninitialised
+                     --  There are a number of places an uninitialized
                      --  value might be used, we issue slightly
                      --  different error messages depending on what
                      --  V_Use represents.
@@ -1796,7 +1796,7 @@ package body Flow.Analysis is
             end if;
          end;
       end loop;
-   end Find_Use_Of_Uninitialised_Variables;
+   end Find_Use_Of_Uninitialized_Variables;
 
    --------------------------
    -- Find_Stable_Elements --

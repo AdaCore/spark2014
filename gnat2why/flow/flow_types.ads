@@ -93,7 +93,7 @@ package Flow_Types is
    subtype In_Global_Modes is Param_Mode
      range Mode_Proof .. Mode_In;
 
-   subtype Initialised_Global_Modes is Param_Mode
+   subtype Initialized_Global_Modes is Param_Mode
      range Mode_Proof .. Mode_In_Out;
 
    subtype Exported_Global_Modes is Param_Mode
@@ -206,7 +206,7 @@ package Flow_Types is
    function Get_Default_Initialization (F : Flow_Id) return Node_Id;
    --  Get the default initialization expression for the given flow id
    --  (this only really works for record fields and direct mappings;
-   --  magic strings are assumed to not be default initialised)
+   --  magic strings are assumed to not be default initialized)
 
    function Is_Volatile (F : Flow_Id) return Boolean;
    --  Returns true if the given flow id is volatile in any way.
@@ -335,9 +335,9 @@ package Flow_Types is
       --  each variable where we use 'Loop_Entry we have one of these
       --  at the top of the actual loop.
 
-      Is_Initialised      : Boolean;
+      Is_Initialized      : Boolean;
       --  True if an initial value is either imported (in or in out)
-      --  or otherwise initialised.
+      --  or otherwise initialized.
 
       Is_Function_Return  : Boolean;
       --  True if this vertex models the returned value of a function.
@@ -429,7 +429,7 @@ package Flow_Types is
                    Is_Precondition                 => False,
                    Is_Default_Init                 => False,
                    Is_Loop_Entry                   => False,
-                   Is_Initialised                  => False,
+                   Is_Initialized                  => False,
                    Is_Function_Return              => False,
                    Is_Global                       => False,
                    Is_Loop_Parameter               => False,

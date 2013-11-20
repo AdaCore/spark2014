@@ -1035,7 +1035,7 @@ package body Graph is
       --  Step 1
 
       --  Pred is In_Neighbours and is already set.
-      --  Bucket is initialised to be VIL.Empty_Vector, see above.
+      --  Bucket is initialized to be VIL.Empty_Vector, see above.
       --  Semi is already set to 0.
 
       DT_DFS (R);
