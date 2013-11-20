@@ -4,22 +4,23 @@ package Stack_External_Prover
        Initializes       => State,
        Initial_Condition => Is_Empty
 is
-   --  A Ghost function may be an Import which means that no body is given
-   --  in the SPARK 2014 code and the proof has to be discharged by an external
-   --  prover.  Of course, such functions are not executable.
+   --  A Ghost function may be an Import which means that no body is
+   --  given in the SPARK 2014 code and the proof has to be discharged
+   --  by an external prover. Of course, such functions are not
+   --  executable.
    function Max_Stack_Size return Natural
-     with Global => null,
+     with Global     => null,
           Convention => Ghost,
           Import;
 
-   -- Returns the number of elements on the stack
+   --  Returns the number of elements on the stack
    function Count return Natural
      with Global     => (Input => State),
           Convention => Ghost,
           Import;
 
-   -- Returns the Nth entry on the stack.
-   -- Stack_Entry (Count) is the top of stack
+   --  Returns the Nth entry on the stack. Stack_Entry (Count) is the
+   --  top of stack
    function Stack_Entry (N : Natural) return Integer
      with Global     => (Input => State),
           Convention => Ghost,
@@ -38,16 +39,13 @@ is
    procedure Push (X : in Integer)
      with Global => (In_Out => State),
           Pre    => not Is_Full,
-          Post   => Count = Count'Old + 1 and
-                    Count <= Max_Stack_Size and
-                    Stack_Entry (Count) = X and
-                    Stack_Entry (Count - 1) = Stack_Entry (Count - 1)'Old;
+          Post   => Count = Count'Old + 1 and Count <= Max_Stack_Size and
+                    Stack_Entry (Count) = X;
 
    procedure Pop (X : out Integer)
      with Global => (In_Out => State),
           Pre    => not Is_Empty,
-          Post   => Count = Count'Old - 1 and
-                    X = Stack_Entry (Count'Old);
+          Post   => Count = Count'Old - 1;
 
    procedure Swap2
      with Global => (In_Out => State),

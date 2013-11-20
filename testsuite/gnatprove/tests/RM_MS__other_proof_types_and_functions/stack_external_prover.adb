@@ -8,7 +8,7 @@ is
    type    Vector        is array(Index_Range) of Integer;
 
    type Stack_Type is record
-      S       : Vector;
+      S : Vector;
       Pointer : Pointer_Range;
    end record;
 

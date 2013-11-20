@@ -1,4 +1,4 @@
-package Stack
+package Stack_Functional_Spec
 --# own State : Abstract_Stack;
 is
    --  It is not possible to specify that the stack will be
@@ -17,16 +17,16 @@ is
 
    --  Proof function returns the Nth entry on the stack.
    --  Stack_Entry (Count (State)) is the top of stack
-   --# function Stack_Entry (N : Natural; S : Abstract_Stack) return Integer;
+   --# function Stack_Entry (S : Abstract_Stack; N : Natural) return Integer;
    --# pre N in 1 .. Count (S);
    --  A refined version of this function cannot be written because
    --  the abstract view has a formal parameter of type Abstract_Stack
    --  whereas the refined view would not have this parameter but use
-   --  a global. A user defined proof rule would be required to define
-   --  this function. Alternatively, it could be written as an Ada
-   --  function where the the global and formal parameter views would
-   --  be available. However, the function would then be callable and
-   --  generate implementation code.
+   --  a global. A user defined proof rule would be required to
+   --  define this function. Alternatively, it could be written as an
+   --  Ada function where the the global and formal parameter views
+   --  would be available. However, the function would then be
+   --  callable and generate implementation code.
 
    --# function Is_Empty(Input : Abstract_Stack) return Boolean;
    --# return Count (Input) = 0;
@@ -36,36 +36,51 @@ is
 
    --  The precondition requires the stack is not full when a value, X,
    --  is pushed onto it.
+   --  Functions with global items (Is_Full with global State in this case)
+   --  can be called in an assertion expression such as the precondition here.
    --  The postcondition indicates that the count of the stack will be
    --  incremented after a push and therefore the stack will be non-empty.
-   --  The item X is now the top of the stack.
+   --  The item X is now the top of the stack and the contents of the rest of
+   --  the stack are unchanged.
    procedure Push(X : in Integer);
    --# global in out State;
    --# pre  not Is_Full(State);
    --# post Count (State) = Count (State~) + 1 and
    --#      Count (State) <= Max_Stack_Size and
-   --#      Stack_Entry (Count (State), State) = X;
+   --#      Stack_Entry (State, Count (State)) = X and
+   --#      (for all I in Natural range 1 .. Count (State~) =>
+   --#          (Stack_Entry (State, I) = Stack_Entry (State~, I)));
 
    --  The precondition requires the stack is not empty when we
    --  pull a value from it.
-   --  The postcondition indicates the stack count is decremented.
+   --  The postcondition indicates that the X = the old top of stack,
+   --  the stack count is decremented, and the contents of the stack excluding
+   --  the old top of stack are unchanged.
    procedure Pop (X : out Integer);
    --# global in out State;
    --# pre not Is_Empty (State);
-   --# post Count (State) = Count (State~) - 1;
+   --# post Count (State) = Count (State~) - 1 and
+   --#      X = Stack_Entry (State~, Count (State~)) and
+   --#      (for all I in Natural range 1 .. Count (State) =>
+   --#          (Stack_Entry (State, I) = Stack_Entry (State~, I)));
 
-   --  Procedure that swaps the first two elements in a stack.
+   --  The precondition requires that the stack has at least 2 entries
+   --  (Count >= 2).
+   --  The postcondition states that the top two elements of the stack are
+   --  transposed but the remainder of the stack is unchanged.
    procedure Swap2;
    --# global in out State;
    --# pre  Count(State) >= 2;
    --# post Count(State) =  Count(State~) and
-   --#      Stack_Entry (Count (State), State) =
-   --#         Stack_Entry (Count (State) - 1, State~) and
-   --#      Stack_Entry (Count (State) - 1, State) =
-   --#         Stack_Entry (Count (State), State~);
+   --#      Stack_Entry (State, Count (State)) =
+   --#         Stack_Entry (State~, Count (State) - 1) and
+   --#      Stack_Entry (State, Count (State) - 1) =
+   --#         Stack_Entry (State~, Count (State)) and
+   --#      (for all I in Natural range 1 .. Count (State) =>
+   --#          (Stack_Entry (State, I) = Stack_Entry (State~, I)));
 
    --  Initializes the Stack.
    procedure Initialize;
    --# global out State;
    --# post Is_Empty (State);
-end Stack;
+end Stack_Functional_Spec;

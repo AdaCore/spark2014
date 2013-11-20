@@ -8,7 +8,7 @@ is
    type    Vector        is array(Index_Range) of Integer;
 
    type Stack_Type is record
-      S       : Vector;
+      S : Vector;
       Pointer : Pointer_Range;
    end record;
 
@@ -36,7 +36,7 @@ is
    end Push;
 
    procedure Pop (X : out Integer)
-      with Refined_Global => (In_Out => My_Stack)
+     with Refined_Global => (In_Out => My_Stack)
    is
    begin
       X := My_Stack.S (My_Stack.Pointer);

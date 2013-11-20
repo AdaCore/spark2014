@@ -9,22 +9,17 @@ stack.adb:52:27: info: index check proved
 stack.adb:52:69: info: index check proved
 stack.adb:53:36: info: index check proved
 stack.ads:5:8: info: initial condition proved
-stack.ads:50:21: warning: postcondition might fail
-stack.ads:50:39: info: overflow check proved
-stack.ads:52:21: info: precondition proved
-stack.ads:53:21: warning: precondition might fail
-stack.ads:53:40: info: range check proved
-stack.ads:53:47: warning: precondition might fail
-stack.ads:53:66: warning: range check might fail
-stack.ads:61:21: warning: postcondition might fail
-stack.ads:62:25: warning: precondition might fail
-stack.ads:68:21: warning: postcondition might fail
-stack.ads:69:21: info: precondition proved
-stack.ads:69:43: info: precondition proved
-stack.ads:69:62: info: range check proved
+stack.ads:53:21: info: postcondition proved
+stack.ads:53:39: info: overflow check proved
+stack.ads:55:21: info: precondition proved
+stack.ads:63:21: info: postcondition proved
+stack.ads:69:21: info: postcondition proved
 stack.ads:70:21: info: precondition proved
-stack.ads:70:40: info: range check proved
-stack.ads:70:47: info: precondition proved
+stack.ads:70:43: info: precondition proved
+stack.ads:70:62: info: range check proved
+stack.ads:71:21: info: precondition proved
+stack.ads:71:40: info: range check proved
+stack.ads:71:47: info: precondition proved
 stack_external_prover.adb:16:36: info: length check proved
 stack_external_prover.adb:24:44: warning: range check might fail
 stack_external_prover.adb:25:26: info: index check proved
@@ -35,11 +30,38 @@ stack_external_prover.adb:42:27: warning: array index check might fail
 stack_external_prover.adb:42:69: warning: array index check might fail
 stack_external_prover.adb:43:36: warning: array index check might fail
 stack_external_prover.ads:5:8: warning: initial condition might fail
-stack_external_prover.ads:41:21: warning: postcondition might fail
-stack_external_prover.ads:41:39: warning: overflow check might fail
-stack_external_prover.ads:44:40: warning: range check might fail
-stack_external_prover.ads:44:66: warning: range check might fail
-stack_external_prover.ads:49:21: warning: postcondition might fail
-stack_external_prover.ads:55:21: warning: postcondition might fail
-stack_external_prover.ads:56:62: info: range check proved
-stack_external_prover.ads:57:40: warning: range check might fail
+stack_external_prover.ads:42:21: warning: postcondition might fail
+stack_external_prover.ads:42:39: warning: overflow check might fail
+stack_external_prover.ads:48:21: warning: postcondition might fail, requires Count = Count'Old - 1
+stack_external_prover.ads:53:21: warning: postcondition might fail
+stack_external_prover.ads:54:62: info: range check proved
+stack_external_prover.ads:55:40: warning: range check might fail
+stack_functional_spec.adb:6:36: info: length check proved
+stack_functional_spec.adb:32:25: info: range check proved
+stack_functional_spec.adb:38:44: info: range check proved
+stack_functional_spec.adb:39:26: info: index check proved
+stack_functional_spec.adb:46:32: info: index check proved
+stack_functional_spec.adb:47:44: info: range check proved
+stack_functional_spec.adb:55:35: info: index check proved
+stack_functional_spec.adb:56:27: info: index check proved
+stack_functional_spec.adb:56:69: info: index check proved
+stack_functional_spec.adb:57:36: info: index check proved
+stack_functional_spec.ads:5:8: info: initial condition proved
+stack_functional_spec.ads:57:21: warning: postcondition might fail
+stack_functional_spec.ads:57:55: info: overflow check proved
+stack_functional_spec.ads:59:21: info: precondition proved
+stack_functional_spec.ads:61:25: info: precondition proved
+stack_functional_spec.ads:61:50: info: precondition proved
+stack_functional_spec.ads:71:21: info: postcondition proved
+stack_functional_spec.ads:72:25: info: precondition proved
+stack_functional_spec.ads:74:24: info: precondition proved
+stack_functional_spec.ads:74:49: info: precondition proved
+stack_functional_spec.ads:83:21: warning: postcondition might fail
+stack_functional_spec.ads:84:21: info: precondition proved
+stack_functional_spec.ads:85:24: info: precondition proved
+stack_functional_spec.ads:85:62: info: range check proved
+stack_functional_spec.ads:86:21: info: precondition proved
+stack_functional_spec.ads:86:55: info: range check proved
+stack_functional_spec.ads:87:24: info: precondition proved
+stack_functional_spec.ads:89:25: info: precondition proved
+stack_functional_spec.ads:89:50: info: precondition proved

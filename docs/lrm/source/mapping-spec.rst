@@ -1437,14 +1437,16 @@ See section `Proof types and proof functions`_.
 Proof types and proof functions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The following example gives pre- and postconditions on operations that act upon
-the concrete representation of an abstract own variable. This means that proof functions
-and proof types are needed to state those pre- and postconditions. In addition, it gives
-an example of the use of a rule declaration annotation - in the body of procedure Initialize -
-to introduce a rule related to the components of a constant record value.
+The following example gives pre- and postconditions on operations that
+act upon the concrete representation of an abstract own variable. This
+means that proof functions and proof types are needed to state those
+pre- and postconditions. In addition, it gives an example of the use
+of a rule declaration annotation - in the body of procedure
+Initialize - to introduce a rule related to the components of a
+constant record value.
 
 |SPARK| does not have a direct equivalent of proof types and proof
-functions.  State abstractions cannot have a type and all functions in
+functions. State abstractions cannot have a type and all functions in
 |SPARK| are Ada functions.  Functions may be denoted as having the
 convention Ghost which means that they can only be called within an
 assertion expression such as a pre or postcondition. Assertion
@@ -1459,12 +1461,6 @@ definitions of some of the proof functions cannot be provided as they
 would have different formal parameters. The |SPARK| version does not
 suffer from this problem as functions called within assertion expressions
 may have global items.
-
-If it is wished to use an external prover such as Isabelle, with rules
-defining a ghost function written in the prover input language, this
-can be done in |SPARK| by denoting the ghost function as an Import in
-lieu of providing a body for the function. Of course such ghost
-functions cannot be executed.
 
 Specification in SPARK 2005:
 
@@ -1490,13 +1486,71 @@ Body in |SPARK|:
    :language: ada
    :linenos:
 
-Specification in |SPARK| using an external prover
+Using an External Prover
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+If it is wished to use an external prover such as Isabelle, with rules
+defining a ghost function written in the prover input language, this
+can be done in |SPARK| by denoting the ghost function as an Import in
+lieu of providing a body for the function. Of course such ghost
+functions cannot be executed.
+
+Specification in |SPARK| using an external prover:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__other_proof_types_and_functions/stack_external_prover.ads
    :language: ada
    :linenos:
 
+Quoting an Own Variable in a Contract
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+Sometimes it is necessary to reference an own variable (a state
+abstraction) in a contract. In SPARK 2005 this was achieved by
+declaring the own variable with a type, either concrete or
+abstract. As seen in :ref:`ms-proof_types_and_proof_functions-label`.
+Once the own variable has a type it can be used in a SPARK 2005 proof
+context.
+
+A state abstraction in |SPARK| does not have a type. Instead, an Ada
+type to represent the state abstract state is declared. A function
+which has the state abstraction as a global item is then declared
+which returns an object of the type. This function may have the same
+name as the state abstraction (the name is overloaded). References
+which appear to be the abstract state in an assertion expression are
+in fact calls to the overloaded function.
+
+An example of this technique is given in the following example which
+is a version of the stack example given in
+:ref:`ms-proof_types_and_proof_functions-label` but with the post
+conditions extended to express the functional properties of the stack.
+
+The extension requires the quoting of the own variable/state
+abstraction in the postcondition in order to state that the contents
+of the stack other than the top entries are not changed.
+
+Specification in SPARK 2005:
+
+.. literalinclude:: ../code/other_proof_types_and_functions/05/stack_functional_spec.ads
+   :language: ada
+   :linenos:
+
+Body in SPARK 2005:
+
+.. literalinclude:: ../code/other_proof_types_and_functions/05/stack_functional_spec.adb
+   :language: ada
+   :linenos:
+
+Specification in |SPARK|
+
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__other_proof_types_and_functions/stack_functional_spec.ads
+   :language: ada
+   :linenos:
+
+Body in |SPARK|:
+
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__other_proof_types_and_functions/stack_functional_spec.adb
+   :language: ada
+   :linenos:
 
 Main_Program annotation
 ~~~~~~~~~~~~~~~~~~~~~~~

@@ -1,4 +1,4 @@
-package body Stack
+package body Stack_Functional_Spec
 --# own State is My_Stack;
 is
    Stack_Size : constant := 100;
@@ -6,10 +6,11 @@ is
    subtype Index_Range   is Pointer_Range range 1..Stack_Size;
    type    Vector        is array(Index_Range) of Integer;
 
-   type Stack_Type is record
-      S : Vector;
-      Pointer : Pointer_Range;
-   end record;
+   type Stack_Type is
+      record
+         S : Vector;
+         Pointer : Pointer_Range;
+      end record;
 
    Initial_Stack : constant Stack_Type :=
       Stack_Type'(S       => Vector'(others => 0),
@@ -54,4 +55,5 @@ is
    begin
       My_Stack := Initial_Stack;
    end Initialize;
-end Stack;
+
+end Stack_Functional_Spec;
