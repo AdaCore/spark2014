@@ -1,4 +1,4 @@
-package body MaxAndSum is pragma SPARK_Mode (On); 
+package body MaxAndSum is pragma SPARK_Mode (On);
 
    procedure MaxAndSum (A : ElementArray; Sum : out Natural; Max : out Element)
    is
@@ -11,7 +11,7 @@ package body MaxAndSum is pragma SPARK_Mode (On);
          if Max < A (I) then
             Max := A (I);
          end if;
-         pragma Loop_Invariant (Sum <= I*Max);
+         pragma Assert (Sum <= I*Max);
       end loop;
    end MaxAndSum;
 

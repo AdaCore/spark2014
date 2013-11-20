@@ -24,8 +24,8 @@ package body Loop_Related_Legal is
          begin
             X := 0;
             pragma Loop_Invariant (Par > X);
+            pragma Loop_Variant (Decreases => Par);
          end;
-         pragma Loop_Variant (Decreases => Par);
          Par := Par - 1;
          exit when Par <= 0;
       end loop;

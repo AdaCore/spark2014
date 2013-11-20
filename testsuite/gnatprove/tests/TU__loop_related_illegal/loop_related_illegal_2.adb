@@ -28,9 +28,9 @@ is
    begin
       loop
          pragma Loop_Invariant (X <= Natural'Last - Par);
-         X := X + Par;
          pragma Loop_Variant (Increases => X);
          --  The above should not be provable (Par = 0)
+         X := X + Par;
          exit when X > 2000;
       end loop;
    end Expression_Remains_The_Same;
