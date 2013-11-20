@@ -315,7 +315,10 @@ package body Flow_Refinement is
                         when Global_Contract => Pragma_Refined_Global,
                         when Depends_Contract => Pragma_Refined_Depends));
 
-         if No (N) and not Entity_Body_In_SPARK (E) then
+         if C = Global_Contract and then
+           No (N) and then
+           not Entity_Body_In_SPARK (E)
+         then
             --  If we *need* the refiend view, but the body is not in SPARK
             --  we should fall back to the computed contracts.
             return Empty;
