@@ -24,7 +24,7 @@
 package Flow.Interprocedural is
 
    procedure Create (FA : in out Flow_Analysis_Graphs);
-   --  Initializee the transitive dependency graph by filling in the
-   --  non-ipfa dependencies.
+   --  Initialize the transitive dependency graph by filling in the
+   --  non-IPFA dependencies.
 
 end Flow.Interprocedural;

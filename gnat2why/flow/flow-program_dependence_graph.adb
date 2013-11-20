@@ -1,4 +1,4 @@
-------------------------------------------------------------------------------
+-----------------------------------------------------------------------------
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
@@ -27,8 +27,11 @@ package body Flow.Program_Dependence_Graph is
      (FA : in out Flow_Analysis_Graphs)
    is
    begin
+      --  Initialize the PDG with a copy of the vertices of the CFG,
+      --  but not the edges
       FA.PDG := FA.CFG.Create;
 
+      --  Edges in the PDG are the union of edges from the CDG, DDG and TDG
       FA.PDG.Copy_Edges (FA.CDG);
       FA.PDG.Copy_Edges (FA.DDG);
       FA.PDG.Copy_Edges (FA.TDG);
