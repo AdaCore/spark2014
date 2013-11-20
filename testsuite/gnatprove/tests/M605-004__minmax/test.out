@@ -1,2 +1,2 @@
-minmax.adb:9:09: warning: unused assignment [ineffective]
-minmax.adb:11:09: warning: unused assignment [ineffective]
+minmax.adb:9:09: warning: unused assignment
+minmax.adb:11:09: warning: unused assignment

@@ -1,5 +1,5 @@
-main.adb:7:08: warning: unused assignment [ineffective]
-main.adb:8:08: warning: unused assignment [ineffective]
+main.adb:7:08: warning: unused assignment
+main.adb:8:08: warning: unused assignment
 misovattr.adb:6:7: info: assertion proved
 misovattr.adb:6:35: warning: range check might fail
 misovattr.adb:7:7: info: assertion proved

@@ -1,10 +1,10 @@
-p.adb:48:04: warning: initialization has no effect [ineffective]
+p.adb:48:04: warning: initialization has no effect
 p.adb:48:19: info: precondition proved
-p.adb:49:04: warning: initialization has no effect [ineffective]
+p.adb:49:04: warning: initialization has no effect
 p.adb:49:19: info: precondition proved
-p.adb:50:04: warning: initialization has no effect [ineffective]
+p.adb:50:04: warning: initialization has no effect
 p.adb:50:19: info: precondition proved
-p.adb:51:04: warning: initialization has no effect [ineffective]
+p.adb:51:04: warning: initialization has no effect
 p.adb:51:19: info: precondition proved
-p.adb:52:04: warning: initialization has no effect [ineffective]
+p.adb:52:04: warning: initialization has no effect
 p.adb:52:19: info: precondition proved

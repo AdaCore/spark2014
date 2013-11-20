@@ -1,10 +1,10 @@
 p.adb:4:17: info: discriminant check proved
-p.adb:4:26: warning: statement has no effect [ineffective]
-p.ads:3:18: warning: "X.C" is not modified, could be "in" [inout_only_read]
-p.ads:3:18: warning: "X.I" is not modified, could be "in" [inout_only_read]
-p.ads:3:18: warning: unused variable "X" [unused]
+p.adb:4:26: warning: statement has no effect
+p.ads:3:18: warning: "X.C" is not modified, could be "in"
+p.ads:3:18: warning: "X.I" is not modified, could be "in"
+p.ads:3:18: warning: unused variable "X"
 q.adb:4:17: info: discriminant check proved
-q.adb:4:26: warning: statement has no effect [ineffective]
-q.ads:4:18: warning: "X.C" is not modified, could be "in" [inout_only_read]
-q.ads:4:18: warning: "X.I" is not modified, could be "in" [inout_only_read]
-q.ads:4:18: warning: unused variable "X" [unused]
+q.adb:4:26: warning: statement has no effect
+q.ads:4:18: warning: "X.C" is not modified, could be "in"
+q.ads:4:18: warning: "X.I" is not modified, could be "in"
+q.ads:4:18: warning: unused variable "X"

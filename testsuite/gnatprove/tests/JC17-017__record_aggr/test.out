@@ -1,11 +1,11 @@
-p.adb:9:09: warning: unused assignment [ineffective]
-p.adb:15:09: warning: unused assignment [ineffective]
-p.adb:21:09: warning: unused assignment [ineffective]
-p.adb:27:09: warning: unused assignment [ineffective]
-p.adb:33:09: warning: unused assignment [ineffective]
-p.adb:39:09: warning: unused assignment [ineffective]
-p.adb:46:09: warning: unused assignment [ineffective]
-p.adb:53:09: warning: unused assignment [ineffective]
+p.adb:9:09: warning: unused assignment
+p.adb:15:09: warning: unused assignment
+p.adb:21:09: warning: unused assignment
+p.adb:27:09: warning: unused assignment
+p.adb:33:09: warning: unused assignment
+p.adb:39:09: warning: unused assignment
+p.adb:46:09: warning: unused assignment
+p.adb:53:09: warning: unused assignment
 [
 { "name" : "P.Proc", "file" :"p.ads", "line" :  2, "spark" : "all" }
 , { "name" : "P.Proc2", "file" :"p.adb", "line" :  12, "spark" : "all" }

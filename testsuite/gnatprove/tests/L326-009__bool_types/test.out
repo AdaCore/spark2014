@@ -1,2 +1,2 @@
-p.adb:6:04: warning: unused assignment to "B2" [ineffective]
+p.adb:6:04: warning: unused assignment to "B2"
 p.adb:8:4: info: precondition proved

@@ -1,4 +1,4 @@
-tab_init.adb:5:15: warning: "T" might not be initialized [uninitialized]
+tab_init.adb:5:15: warning: "T" might not be initialized
 tab_init.adb:5:19: warning: overflow check might fail
 tab_init.adb:6:10: info: loop invariant initialization proved
 tab_init.adb:6:10: info: loop invariant preservation proved

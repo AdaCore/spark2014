@@ -4,8 +4,8 @@ data.ads:7:30: warning:  it is currently ignored
 data.ads:7:30: warning: pragma "Volatile" is not yet supported
 data.ads:7:30: warning: pragma "Volatile" is not yet supported in flow analysis
 data.ads:7:30: warning: pragma "Volatile" is not yet supported in proof
-validate.adb:3:11: warning: "Sensor" might not be initialized after elaboration of main program "Validate" [uninitialized]
-validate.adb:3:11: warning: "Sensor_Valid" might not be initialized after elaboration of main program "Validate" [uninitialized]
+validate.adb:3:11: warning: "Sensor" might not be initialized after elaboration of main program "Validate"
+validate.adb:3:11: warning: "Sensor_Valid" might not be initialized after elaboration of main program "Validate"
 validate.adb:4:11: info: postcondition proved
 validate.adb:4:31: warning: attribute Valid is assumed to return True
 validate.adb:7:25: warning: attribute Valid is assumed to return True

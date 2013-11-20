@@ -1,15 +1,15 @@
-test.adb:25:26: warning: unused initial value of "X" [unused_initial_value]
-test.adb:26:26: warning: unused initial value of "Y" [unused_initial_value]
-test.adb:30:12: warning: unused assignment [ineffective]
-test.adb:31:41: warning: statement has no effect [ineffective]
-test.adb:32:15: warning: unused assignment [ineffective]
-test.adb:33:13: warning: statement has no effect [ineffective]
-test.adb:35:12: warning: unused assignment [ineffective]
-test.adb:77:20: "R" is not initialized [uninitialized]
-test.adb:109:27: "X" is not initialized in "For_Test_01" [uninitialized]
-test.adb:109:27: warning: unused variable "X" [unused]
-test.adb:112:33: warning: statement has no effect [ineffective]
-test.adb:113:12: warning: unused assignment [ineffective]
+test.adb:25:26: warning: unused initial value of "X"
+test.adb:26:26: warning: unused initial value of "Y"
+test.adb:30:12: warning: unused assignment
+test.adb:31:41: warning: statement has no effect
+test.adb:32:15: warning: unused assignment
+test.adb:33:13: warning: statement has no effect
+test.adb:35:12: warning: unused assignment
+test.adb:77:20: "R" is not initialized
+test.adb:109:27: "X" is not initialized in "For_Test_01"
+test.adb:109:27: warning: unused variable "X"
+test.adb:112:33: warning: statement has no effect
+test.adb:113:12: warning: unused assignment
    compilation of test.adb failed
 
 

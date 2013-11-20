@@ -1,2 +1,2 @@
-p_body.adb:6:06: warning: initialization has no effect [ineffective]
-t.adb:5:05: warning: statement has no effect [ineffective]
+p_body.adb:6:06: warning: initialization has no effect
+t.adb:5:05: warning: statement has no effect

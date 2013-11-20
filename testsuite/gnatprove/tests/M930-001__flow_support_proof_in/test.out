@@ -1,10 +1,10 @@
 proof_in_legal.adb:16:7: warning: assertion might fail, requires Var = 0
 proof_in_legal.adb:18:14: warning: overflow check might fail
 proof_in_illegal.adb:5:04: warning: variable "Body_Var" is read but never assigned
-proof_in_illegal.adb:8:43: export "Error_Derived_From_Proof_In" must not depend on Proof_In "Body_Var" [export_depends_on_proof_in]
-proof_in_illegal.adb:9:43: export "Error_Derived_From_Proof_In" must not depend on Proof_In "Var" [export_depends_on_proof_in]
-proof_in_illegal.adb:20:43: warning: unused global "Body_Var" [unused]
-proof_in_illegal.adb:21:43: warning: unused global "Var" [unused]
+proof_in_illegal.adb:8:43: export "Error_Derived_From_Proof_In" must not depend on Proof_In "Body_Var"
+proof_in_illegal.adb:9:43: export "Error_Derived_From_Proof_In" must not depend on Proof_In "Var"
+proof_in_illegal.adb:20:43: warning: unused global "Body_Var"
+proof_in_illegal.adb:21:43: warning: unused global "Var"
 gprbuild: *** compilation phase failed
 gnatprove: error during translation to intermediate language, aborting.
 {"file": "proof_in_illegal_2.adb", "line": 10, "col": 7, "message": "warning: initialization has no effect", "rule": "ineffective", "severity": "warning", "entity": {"file": "proof_in_illegal_2.ads", "line": 6, "name": "error_derived_from_proof_in"}, "tracefile": "02ae445aaaf27920d9dfcfa194812c08509a5e5a.trace"}

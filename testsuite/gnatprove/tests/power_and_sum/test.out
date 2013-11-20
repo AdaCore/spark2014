@@ -9,8 +9,8 @@ power_and_sum.adb:22:31: warning: overflow check might fail
 power_and_sum.adb:23:17: warning: overflow check might fail
 power_and_sum.adb:25:7: warning: assertion might fail, requires 2*TotalSum = N*(N+1
 power_and_sum.adb:26:17: warning: range check might fail
-power_and_sum.adb:31:07: warning: initialization has no effect [ineffective]
-power_and_sum.adb:33:07: warning: initialization has no effect [ineffective]
+power_and_sum.adb:31:07: warning: initialization has no effect
+power_and_sum.adb:33:07: warning: initialization has no effect
 power_and_sum.adb:36:10: warning: loop invariant might fail after first iteration, requires 6*TotalSum = (I-1)*I*(I+1
 power_and_sum.adb:36:10: warning: loop invariant might fail in first iteration, requires 6*TotalSum = (I-1)*I*(I+1
 power_and_sum.adb:41:13: warning: loop invariant might fail after first iteration, requires 2*InnerSum = J*(J-1

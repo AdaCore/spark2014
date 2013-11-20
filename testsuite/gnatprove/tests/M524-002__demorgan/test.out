@@ -1,5 +1,5 @@
-test.adb:3:21: warning: unused initial value of "A" [unused_initial_value]
-test.adb:3:24: warning: unused initial value of "B" [unused_initial_value]
+test.adb:3:21: warning: unused initial value of "A"
+test.adb:3:24: warning: unused initial value of "B"
 test.adb:6:7: info: assertion proved
 test.adb:8:7: info: assertion proved
 test.adb:10:7: info: assertion proved

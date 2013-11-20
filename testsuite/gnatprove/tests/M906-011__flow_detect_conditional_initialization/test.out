@@ -1,24 +1,24 @@
-uninitialized.adb:29:09: warning: "X" might not be initialized [uninitialized]
-uninitialized.adb:40:14: "Var" is not initialized [uninitialized]
-uninitialized.adb:46:32: warning: "Var" might not be initialized [uninitialized]
-uninitialized.adb:58:21: warning: "An_Arr" might not be initialized [uninitialized]
-uninitialized.adb:68:18: "Arr" is not initialized [uninitialized]
-uninitialized.adb:80:15: warning: "Rec.Boo" might not be initialized [uninitialized]
-uninitialized.adb:83:22: warning: "Rec.Arr" might not be initialized [uninitialized]
-uninitialized.adb:90:17: "A_Rec.Boo" is not initialized [uninitialized]
-uninitialized.adb:93:24: "A_Rec.Arr" is not initialized [uninitialized]
-uninitialized.adb:103:13: "Another_Rec.Arr" is not initialized [uninitialized]
-uninitialized.adb:110:18: warning: "An_Arr" might not be initialized [uninitialized]
+uninitialized.adb:29:09: warning: "X" might not be initialized
+uninitialized.adb:40:14: "Var" is not initialized
+uninitialized.adb:46:32: warning: "Var" might not be initialized
+uninitialized.adb:58:21: warning: "An_Arr" might not be initialized
+uninitialized.adb:68:18: "Arr" is not initialized
+uninitialized.adb:80:15: warning: "Rec.Boo" might not be initialized
+uninitialized.adb:83:22: warning: "Rec.Arr" might not be initialized
+uninitialized.adb:90:17: "A_Rec.Boo" is not initialized
+uninitialized.adb:93:24: "A_Rec.Arr" is not initialized
+uninitialized.adb:103:13: "Another_Rec.Arr" is not initialized
+uninitialized.adb:110:18: warning: "An_Arr" might not be initialized
 uninitialized.adb:118:15: formal parameters "X" and "Y" might be aliased
-uninitialized.adb:127:30: warning: statement has no effect [ineffective]
-uninitialized.adb:128:15: "A" is not initialized [uninitialized]
-uninitialized.adb:128:15: warning: unused assignment [ineffective]
-uninitialized.adb:129:15: warning: "A" might not be initialized [uninitialized]
-uninitialized.adb:129:15: warning: unused assignment [ineffective]
-uninitialized.adb:137:07: warning: statement has no effect [ineffective]
-uninitialized.adb:138:12: warning: unused assignment [ineffective]
-uninitialized.adb:140:09: warning: "X" might not be initialized [uninitialized]
-uninitialized.adb:140:09: warning: unused assignment [ineffective]
+uninitialized.adb:127:30: warning: statement has no effect
+uninitialized.adb:128:15: "A" is not initialized
+uninitialized.adb:128:15: warning: unused assignment
+uninitialized.adb:129:15: warning: "A" might not be initialized
+uninitialized.adb:129:15: warning: unused assignment
+uninitialized.adb:137:07: warning: statement has no effect
+uninitialized.adb:138:12: warning: unused assignment
+uninitialized.adb:140:09: warning: "X" might not be initialized
+uninitialized.adb:140:09: warning: unused assignment
    compilation of uninitialized.adb failed
 
 

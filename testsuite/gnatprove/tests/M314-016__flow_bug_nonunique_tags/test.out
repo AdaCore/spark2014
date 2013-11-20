@@ -1,15 +1,15 @@
-segway.adb:11:10: "Speed" is not initialized [uninitialized]
-segway.adb:12:19: "Speed" is not initialized [uninitialized]
-segway.adb:15:10: "Speed" is not initialized [uninitialized]
-segway.adb:16:19: "Speed" is not initialized [uninitialized]
-segway.adb:19:16: "Speed" is not initialized [uninitialized]
-segway.adb:21:07: warning: "Speed" might not be initialized [uninitialized]
-segway.adb:23:07: warning: "Speed" might not be initialized [uninitialized]
-segway.adb:25:07: warning: "Speed" might not be initialized [uninitialized]
-segway.ads:23:16: "Speed" is not initialized [uninitialized]
-segway.ads:23:16: "State" is not initialized [uninitialized]
-segway.ads:25:31: warning: "Speed" might not be initialized [uninitialized]
-segway.ads:25:38: warning: "State" might not be initialized [uninitialized]
+segway.adb:11:10: "Speed" is not initialized
+segway.adb:12:19: "Speed" is not initialized
+segway.adb:15:10: "Speed" is not initialized
+segway.adb:16:19: "Speed" is not initialized
+segway.adb:19:16: "Speed" is not initialized
+segway.adb:21:07: warning: "Speed" might not be initialized
+segway.adb:23:07: warning: "Speed" might not be initialized
+segway.adb:25:07: warning: "Speed" might not be initialized
+segway.ads:23:16: "Speed" is not initialized
+segway.ads:23:16: "State" is not initialized
+segway.ads:25:31: warning: "Speed" might not be initialized
+segway.ads:25:38: warning: "State" might not be initialized
    compilation of segway.adb failed
 
 

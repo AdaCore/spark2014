@@ -1,22 +1,22 @@
-test.adb:10:29: warning: unused initial value of "N" [unused_initial_value]
-test.adb:43:23: warning: unused initial value of "S" [unused_initial_value]
-test.adb:43:23: warning: unused variable "S" [unused]
-test.adb:54:24: warning: unused initial value of "A" [unused_initial_value]
-test.adb:57:09: warning: missing dependency "null => A" [depends_null]
-test.adb:57:21: warning: incorrect dependency "B => A" [depends_wrong]
-test.adb:66:24: warning: unused initial value of "A" [unused_initial_value]
-test.adb:69:09: warning: missing dependency "null => A" [depends_null]
-test.adb:69:21: warning: incorrect dependency "B => A" [depends_wrong]
-test.adb:89:07: "A" is not initialized [uninitialized]
-test.adb:99:36: "A" is not initialized [uninitialized]
-test.adb:99:41: "A" is not initialized [uninitialized]
-test.adb:113:21: warning: incorrect dependency "B => A" [depends_wrong]
-test.adb:120:24: warning: unused initial value of "A" [unused_initial_value]
-test.adb:123:09: warning: missing dependency "null => A" [depends_null]
-test.adb:124:21: warning: incorrect dependency "B => A" [depends_wrong]
-test.adb:131:24: warning: unused initial value of "A" [unused_initial_value]
-test.adb:134:09: warning: missing dependency "null => A" [depends_null]
-test.adb:135:21: warning: incorrect dependency "B => A" [depends_wrong]
+test.adb:10:29: warning: unused initial value of "N"
+test.adb:43:23: warning: unused initial value of "S"
+test.adb:43:23: warning: unused variable "S"
+test.adb:54:24: warning: unused initial value of "A"
+test.adb:57:09: warning: missing dependency "null => A"
+test.adb:57:21: warning: incorrect dependency "B => A"
+test.adb:66:24: warning: unused initial value of "A"
+test.adb:69:09: warning: missing dependency "null => A"
+test.adb:69:21: warning: incorrect dependency "B => A"
+test.adb:89:07: "A" is not initialized
+test.adb:99:36: "A" is not initialized
+test.adb:99:41: "A" is not initialized
+test.adb:113:21: warning: incorrect dependency "B => A"
+test.adb:120:24: warning: unused initial value of "A"
+test.adb:123:09: warning: missing dependency "null => A"
+test.adb:124:21: warning: incorrect dependency "B => A"
+test.adb:131:24: warning: unused initial value of "A"
+test.adb:134:09: warning: missing dependency "null => A"
+test.adb:135:21: warning: incorrect dependency "B => A"
    compilation of test.adb failed
 
 

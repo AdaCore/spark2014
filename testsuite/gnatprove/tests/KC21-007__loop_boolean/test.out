@@ -1,5 +1,5 @@
-p.adb:7:04: warning: initialization has no effect [ineffective]
-p.adb:9:27: warning: statement has no effect [ineffective]
-p.adb:10:18: warning: "To_Int" might not be initialized [uninitialized]
-p.adb:10:18: warning: unused assignment [ineffective]
-p.adb:11:11: warning: unused assignment [ineffective]
+p.adb:7:04: warning: initialization has no effect
+p.adb:9:27: warning: statement has no effect
+p.adb:10:18: warning: "To_Int" might not be initialized
+p.adb:10:18: warning: unused assignment
+p.adb:11:11: warning: unused assignment

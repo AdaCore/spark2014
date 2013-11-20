@@ -2,14 +2,14 @@ test.adb:113:14: flow analysis of "Test_01" abandoned due to aliasing
 test.adb:116:14: formal parameters "X" and "Y" must not be aliased
 test.adb:125:14: flow analysis of "Test_03" abandoned due to aliasing
 test.adb:128:14: formal parameter "X" and global "Global_RA" must not be aliased
-test.adb:131:23: warning: "X.A" is not modified, could be "in" [inout_only_read]
-test.adb:131:23: warning: "X.B" is not modified, could be "in" [inout_only_read]
-test.adb:131:23: warning: "X.C" is not modified, could be "in" [inout_only_read]
+test.adb:131:23: warning: "X.A" is not modified, could be "in"
+test.adb:131:23: warning: "X.B" is not modified, could be "in"
+test.adb:131:23: warning: "X.C" is not modified, could be "in"
 test.adb:138:14: flow analysis of "Test_05" abandoned due to aliasing
 test.adb:142:19: formal parameters "Y" and "Z" must not be aliased
 test.adb:145:14: flow analysis of "Test_06" abandoned due to aliasing
 test.adb:148:14: formal parameters "X" and "Y" must not be aliased
-test.adb:155:17: warning: unused assignment to "Y" [ineffective]
+test.adb:155:17: warning: unused assignment to "Y"
 test.adb:158:14: flow analysis of "Test_08" abandoned due to aliasing
 test.adb:162:14: formal parameters "X" and "Y" must not be aliased
 test.adb:165:14: flow analysis of "Test_09" abandoned due to aliasing
@@ -18,7 +18,7 @@ test.adb:183:14: flow analysis of "Test_12" abandoned due to aliasing
 test.adb:186:15: formal parameters "X" and "Y" must not be aliased
 test.adb:189:14: flow analysis of "Test_13" abandoned due to aliasing
 test.adb:193:15: formal parameters "X" and "Y" might be aliased
-test.adb:213:24: warning: "B" is not modified, could be "in" [inout_only_read]
+test.adb:213:24: warning: "B" is not modified, could be "in"
 test.adb:219:14: flow analysis of "Slice_03" abandoned due to aliasing
 test.adb:223:23: formal parameters "X" and "Y" might be aliased
 test.adb:226:14: flow analysis of "Slice_04" abandoned due to aliasing

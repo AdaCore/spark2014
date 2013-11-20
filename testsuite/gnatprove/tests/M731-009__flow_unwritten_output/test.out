@@ -1,3 +1,3 @@
-q.adb:7:32: warning: "G" is not modified, could be "input" [inout_only_read]
-q.adb:13:32: warning: "G" is not modified, could be "input" [inout_only_read]
-q.adb:20:23: warning: "G" is not modified, could be "in" [inout_only_read]
+q.adb:7:32: warning: "G" is not modified, could be "input"
+q.adb:13:32: warning: "G" is not modified, could be "input"
+q.adb:20:23: warning: "G" is not modified, could be "in"

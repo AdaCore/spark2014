@@ -1,4 +1,4 @@
-foo.ads:10:04: "X" is not initialized in "Foo" [uninitialized]
+foo.ads:10:04: "X" is not initialized in "Foo"
    compilation of foo.ads failed
 
 

@@ -1,5 +1,5 @@
 dynamic.adb:4:33: info: overflow check proved
-dynamic.adb:5:07: warning: initialization has no effect [ineffective]
+dynamic.adb:5:07: warning: initialization has no effect
 dynamic.adb:5:24: info: overflow check proved
 dynamic.adb:6:15: info: range check proved
 dynamic.adb:7:15: info: range check proved
@@ -10,22 +10,22 @@ dynamic.adb:11:15: info: range check proved
 dynamic.adb:12:15: info: range check proved
 dynamic.adb:12:46: info: overflow check proved
 dynamic.adb:14:12: info: range check proved
-dynamic.adb:16:07: warning: initialization has no effect [ineffective]
+dynamic.adb:16:07: warning: initialization has no effect
 dynamic.adb:16:17: info: range check proved
-dynamic.adb:17:07: warning: initialization has no effect [ineffective]
+dynamic.adb:17:07: warning: initialization has no effect
 dynamic.adb:17:17: info: range check proved
-dynamic.adb:18:07: warning: initialization has no effect [ineffective]
+dynamic.adb:18:07: warning: initialization has no effect
 dynamic.adb:18:17: info: range check proved
-dynamic.adb:19:07: warning: initialization has no effect [ineffective]
+dynamic.adb:19:07: warning: initialization has no effect
 dynamic.adb:19:17: info: range check proved
-dynamic.adb:20:07: warning: initialization has no effect [ineffective]
+dynamic.adb:20:07: warning: initialization has no effect
 dynamic.adb:20:19: warning: range check might fail
 dynamic.adb:21:17: warning: range check might fail
-dynamic.adb:22:07: warning: initialization has no effect [ineffective]
+dynamic.adb:22:07: warning: initialization has no effect
 dynamic.adb:22:19: info: overflow check proved
 dynamic.adb:22:19: warning: range check might fail
-dynamic.adb:24:09: warning: unused assignment [ineffective]
+dynamic.adb:24:09: warning: unused assignment
 dynamic.adb:24:14: info: overflow check proved
-dynamic.ads:5:16: warning: unused initial value of "X" [unused_initial_value]
+dynamic.ads:5:16: warning: unused initial value of "X"
 dynamic.ads:7:21: info: postcondition proved
 dynamic.ads:7:23: info: overflow check proved

@@ -1,8 +1,8 @@
 stacks.adb:5:18: info: range check proved
 stacks.adb:11:18: info: range check proved
-stacks.ads:8:33: warning: unused initial value of "Data" [unused_initial_value]
-stacks.ads:8:33: warning: unused variable "Data" [unused]
+stacks.ads:8:33: warning: unused initial value of "Data"
+stacks.ads:8:33: warning: unused variable "Data"
 stacks.ads:18:14: info: postcondition proved
 stacks.ads:18:58: info: overflow check proved
-stacks.ads:20:40: warning: "Data" is not modified, could be "in" [inout_only_read]
+stacks.ads:20:40: warning: "Data" is not modified, could be "in"
 stacks.ads:22:26: info: postcondition proved

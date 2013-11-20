@@ -1,10 +1,10 @@
 gen.adb:9:7: warning: assertion might fail, requires T'Last = X, in instantiation at main.adb:5
 gen.adb:9:7: warning: assertion might fail, requires T'Last = X, in instantiation at main.adb:6
-gen.adb:10:09: warning: statement has no effect, in instantiation at main.adb:5 [ineffective]
-gen.adb:10:09: warning: statement has no effect, in instantiation at main.adb:6 [ineffective]
-gen.ads:4:17: warning: unused initial value of "X", in instantiation at main.adb:5 [unused_initial_value]
-gen.ads:4:17: warning: unused initial value of "X", in instantiation at main.adb:6 [unused_initial_value]
+gen.adb:10:09: warning: statement has no effect, in instantiation at main.adb:5
+gen.adb:10:09: warning: statement has no effect, in instantiation at main.adb:6
+gen.ads:4:17: warning: unused initial value of "X", in instantiation at main.adb:5
+gen.ads:4:17: warning: unused initial value of "X", in instantiation at main.adb:6
 gen2.adb:5:7: warning: assertion might fail, requires T'Last = X, in instantiation at gen.adb:5, in instantiation at main.adb:5
 gen2.adb:5:7: warning: assertion might fail, requires T'Last = X, in instantiation at gen.adb:5, in instantiation at main.adb:6
-gen2.ads:4:17: warning: unused initial value of "X", in instantiation at gen.adb:5, in instantiation at main.adb:5 [unused_initial_value]
-gen2.ads:4:17: warning: unused initial value of "X", in instantiation at gen.adb:5, in instantiation at main.adb:6 [unused_initial_value]
+gen2.ads:4:17: warning: unused initial value of "X", in instantiation at gen.adb:5, in instantiation at main.adb:5
+gen2.ads:4:17: warning: unused initial value of "X", in instantiation at gen.adb:5, in instantiation at main.adb:6

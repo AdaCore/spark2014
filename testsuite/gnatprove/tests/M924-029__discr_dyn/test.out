@@ -1,3 +1,3 @@
-discr_dyn.adb:15:04: warning: initialization has no effect [ineffective]
+discr_dyn.adb:15:04: warning: initialization has no effect
 discr_dyn.adb:15:29: warning: discriminant check might fail
 discr_dyn.adb:15:44: warning: length check might fail

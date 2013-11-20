@@ -1,30 +1,30 @@
-test.adb:16:07: warning: "Y" might not be initialized [uninitialized]
-test.adb:38:51: warning: "C" might not be initialized in "Uninitialized_3" [uninitialized]
-test.adb:56:31: warning: "Export" might not be initialized in "Uninitialized_4" [uninitialized]
-test.adb:76:31: warning: "A" might not be initialized in "Uninitialized_5" [uninitialized]
-test.adb:79:21: "C" is not initialized [uninitialized]
-test.adb:80:12: "A" is not initialized [uninitialized]
-test.adb:88:43: warning: unused initial value of "B" [unused_initial_value]
-test.adb:97:12: warning: unused assignment [ineffective]
-test.adb:106:40: warning: unused initial value of "A" [unused_initial_value]
-test.adb:106:43: warning: unused initial value of "B" [unused_initial_value]
-test.adb:108:07: warning: statement has no effect [ineffective]
-test.adb:109:12: warning: unused assignment [ineffective]
-test.adb:111:12: warning: unused assignment [ineffective]
-test.adb:140:07: warning: statement has no effect [ineffective]
-test.adb:140:07: warning: unused assignment to "Temp" [ineffective]
-test.adb:149:40: warning: unused initial value of "Import" [unused_initial_value]
-test.adb:150:07: warning: initialization has no effect [ineffective]
-test.adb:161:12: warning: unused assignment [ineffective]
-test.adb:190:39: warning: unused initial value of "Par2" [unused_initial_value]
-test.adb:190:39: warning: unused variable "Par2" [unused]
-test.adb:192:13: warning: unused variable "Z" [unused]
-test.adb:195:29: warning: unused global "Y" [unused]
-test.adb:195:29: warning: unused initial value of "Y" [unused_initial_value]
-test.adb:213:34: warning: unused initial value of "Condition" [unused_initial_value]
-test.adb:216:07: warning: statement has no effect [ineffective]
-test.adb:218:12: warning: unused assignment [ineffective]
-test.adb:222:15: warning: unused assignment [ineffective]
+test.adb:16:07: warning: "Y" might not be initialized
+test.adb:38:51: warning: "C" might not be initialized in "Uninitialized_3"
+test.adb:56:31: warning: "Export" might not be initialized in "Uninitialized_4"
+test.adb:76:31: warning: "A" might not be initialized in "Uninitialized_5"
+test.adb:79:21: "C" is not initialized
+test.adb:80:12: "A" is not initialized
+test.adb:88:43: warning: unused initial value of "B"
+test.adb:97:12: warning: unused assignment
+test.adb:106:40: warning: unused initial value of "A"
+test.adb:106:43: warning: unused initial value of "B"
+test.adb:108:07: warning: statement has no effect
+test.adb:109:12: warning: unused assignment
+test.adb:111:12: warning: unused assignment
+test.adb:140:07: warning: statement has no effect
+test.adb:140:07: warning: unused assignment to "Temp"
+test.adb:149:40: warning: unused initial value of "Import"
+test.adb:150:07: warning: initialization has no effect
+test.adb:161:12: warning: unused assignment
+test.adb:190:39: warning: unused initial value of "Par2"
+test.adb:190:39: warning: unused variable "Par2"
+test.adb:192:13: warning: unused variable "Z"
+test.adb:195:29: warning: unused global "Y"
+test.adb:195:29: warning: unused initial value of "Y"
+test.adb:213:34: warning: unused initial value of "Condition"
+test.adb:216:07: warning: statement has no effect
+test.adb:218:12: warning: unused assignment
+test.adb:222:15: warning: unused assignment
    compilation of test.adb failed
 
 

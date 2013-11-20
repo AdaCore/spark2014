@@ -14,8 +14,8 @@ Issue all compilation warnings, stop at flow warnings treated as errors:
 p.adb:2:09: warning: type "M" is not referenced
 p.adb:2:19: warning: suspicious "mod" value, was ** intended?
 p.adb:10:04: warning: "X" is not modified, could be declared constant
-p.adb:12:04: warning: statement has no effect [ineffective]
-p.adb:13:09: warning: unused assignment [ineffective]
+p.adb:12:04: warning: statement has no effect
+p.adb:13:09: warning: unused assignment
    compilation of p.adb failed
 
 
@@ -25,8 +25,8 @@ gprbuild: *** compilation phase failed
 Do not issue all compilation warnings, stop at flow warnings treated as errors:
 -------------------------------------------------------------------------------
 p.adb:2:19: warning: suspicious "mod" value, was ** intended?
-p.adb:12:04: warning: statement has no effect [ineffective]
-p.adb:13:09: warning: unused assignment [ineffective]
+p.adb:12:04: warning: statement has no effect
+p.adb:13:09: warning: unused assignment
    compilation of p.adb failed
 
 
@@ -35,8 +35,8 @@ gprbuild: *** compilation phase failed
 
 Do not issue any compilation warnings, stop at flow warnings treated as errors:
 -------------------------------------------------------------------------------
-p.adb:12:04: warning: statement has no effect [ineffective]
-p.adb:13:09: warning: unused assignment [ineffective]
+p.adb:12:04: warning: statement has no effect
+p.adb:13:09: warning: unused assignment
    compilation of p.adb failed
 
 
@@ -48,21 +48,21 @@ Issue all compilation warnings, issue flow warnings and continue:
 p.adb:2:09: warning: type "M" is not referenced
 p.adb:2:19: warning: suspicious "mod" value, was ** intended?
 p.adb:10:04: warning: "X" is not modified, could be declared constant
-p.adb:12:04: warning: statement has no effect [ineffective]
-p.adb:13:09: warning: unused assignment [ineffective]
+p.adb:12:04: warning: statement has no effect
+p.adb:13:09: warning: unused assignment
 p.adb:16:4: info: assertion proved
 
 Do not issue all compilation warnings, do not issue flow warnings and continue:
 ------------------------------------------------------------------------
 p.adb:2:19: warning: suspicious "mod" value, was ** intended?
-p.adb:12:04: warning: statement has no effect [ineffective]
-p.adb:13:09: warning: unused assignment [ineffective]
+p.adb:12:04: warning: statement has no effect
+p.adb:13:09: warning: unused assignment
 p.adb:16:4: info: assertion proved
 
 Do not issue any compilation warnings, issue flow warnings and continue:
 ------------------------------------------------------------------------
-p.adb:12:04: warning: statement has no effect [ineffective]
-p.adb:13:09: warning: unused assignment [ineffective]
+p.adb:12:04: warning: statement has no effect
+p.adb:13:09: warning: unused assignment
 p.adb:16:4: info: assertion proved
 
 Issue all compilation warnings, do not issue flow warnings and continue:

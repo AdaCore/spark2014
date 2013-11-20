@@ -1,3 +1,3 @@
 pack.adb:7:07: warning:  assuming "Put_Line" has no effect on global items
 pack.adb:7:07: warning: no Global contract available for "Put_Line"
-pack.adb:7:07: warning: statement has no effect [ineffective]
+pack.adb:7:07: warning: statement has no effect

@@ -1,11 +1,11 @@
-p.adb:1:14: warning: unused initial value of "Havok_X" [unused_initial_value]
-p.adb:1:23: warning: unused initial value of "Havok_Y" [unused_initial_value]
-p.adb:3:04: warning: initialization has no effect [ineffective]
+p.adb:1:14: warning: unused initial value of "Havok_X"
+p.adb:1:23: warning: unused initial value of "Havok_Y"
+p.adb:3:04: warning: initialization has no effect
 p.adb:3:24: info: division check proved
 p.adb:3:24: info: range check proved
-p.adb:4:04: warning: initialization has no effect [ineffective]
+p.adb:4:04: warning: initialization has no effect
 p.adb:4:24: info: division check proved
 p.adb:4:24: info: range check proved
-p.adb:6:04: warning: statement has no effect [ineffective]
-p.adb:9:04: warning: statement has no effect [ineffective]
-p.adb:12:04: warning: statement has no effect [ineffective]
+p.adb:6:04: warning: statement has no effect
+p.adb:9:04: warning: statement has no effect
+p.adb:12:04: warning: statement has no effect

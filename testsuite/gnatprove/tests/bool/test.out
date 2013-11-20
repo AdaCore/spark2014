@@ -1,34 +1,34 @@
 bool.adb:4:14: info: postcondition proved
 bool.adb:15:14: info: postcondition proved
-bool.adb:29:06: warning: unused assignment [ineffective]
-bool.adb:29:18: warning: unused assignment [ineffective]
-bool.adb:29:28: warning: statement has no effect [ineffective]
-bool.adb:29:34: warning: unused assignment to "X" [ineffective]
-bool.adb:29:37: warning: unused assignment to "Y" [ineffective]
-bool.adb:29:41: warning: statement has no effect [ineffective]
-bool.adb:29:50: warning: unused assignment to "X" [ineffective]
-bool.adb:29:53: warning: unused assignment to "Y" [ineffective]
-bool.adb:30:06: warning: unused assignment [ineffective]
-bool.adb:30:18: warning: unused assignment [ineffective]
-bool.adb:30:28: warning: statement has no effect [ineffective]
-bool.adb:30:34: warning: unused assignment to "X" [ineffective]
-bool.adb:30:37: warning: unused assignment to "Y" [ineffective]
-bool.adb:30:41: warning: statement has no effect [ineffective]
-bool.adb:30:50: warning: unused assignment to "X" [ineffective]
-bool.adb:30:53: warning: unused assignment to "Y" [ineffective]
-bool.adb:31:06: warning: unused assignment [ineffective]
-bool.adb:31:18: warning: unused assignment [ineffective]
-bool.adb:31:28: warning: statement has no effect [ineffective]
-bool.adb:31:34: warning: unused assignment to "X" [ineffective]
-bool.adb:31:37: warning: unused assignment to "Y" [ineffective]
-bool.adb:31:41: warning: statement has no effect [ineffective]
-bool.adb:31:50: warning: unused assignment to "X" [ineffective]
-bool.adb:31:53: warning: unused assignment to "Y" [ineffective]
-bool.adb:32:06: warning: unused assignment [ineffective]
-bool.adb:32:18: warning: unused assignment [ineffective]
-bool.adb:32:28: warning: statement has no effect [ineffective]
-bool.adb:32:34: warning: unused assignment to "X" [ineffective]
-bool.adb:32:37: warning: unused assignment to "Y" [ineffective]
-bool.adb:32:41: warning: statement has no effect [ineffective]
-bool.adb:32:50: warning: unused assignment to "X" [ineffective]
-bool.adb:32:53: warning: unused assignment to "Y" [ineffective]
+bool.adb:29:06: warning: unused assignment
+bool.adb:29:18: warning: unused assignment
+bool.adb:29:28: warning: statement has no effect
+bool.adb:29:34: warning: unused assignment to "X"
+bool.adb:29:37: warning: unused assignment to "Y"
+bool.adb:29:41: warning: statement has no effect
+bool.adb:29:50: warning: unused assignment to "X"
+bool.adb:29:53: warning: unused assignment to "Y"
+bool.adb:30:06: warning: unused assignment
+bool.adb:30:18: warning: unused assignment
+bool.adb:30:28: warning: statement has no effect
+bool.adb:30:34: warning: unused assignment to "X"
+bool.adb:30:37: warning: unused assignment to "Y"
+bool.adb:30:41: warning: statement has no effect
+bool.adb:30:50: warning: unused assignment to "X"
+bool.adb:30:53: warning: unused assignment to "Y"
+bool.adb:31:06: warning: unused assignment
+bool.adb:31:18: warning: unused assignment
+bool.adb:31:28: warning: statement has no effect
+bool.adb:31:34: warning: unused assignment to "X"
+bool.adb:31:37: warning: unused assignment to "Y"
+bool.adb:31:41: warning: statement has no effect
+bool.adb:31:50: warning: unused assignment to "X"
+bool.adb:31:53: warning: unused assignment to "Y"
+bool.adb:32:06: warning: unused assignment
+bool.adb:32:18: warning: unused assignment
+bool.adb:32:28: warning: statement has no effect
+bool.adb:32:34: warning: unused assignment to "X"
+bool.adb:32:37: warning: unused assignment to "Y"
+bool.adb:32:41: warning: statement has no effect
+bool.adb:32:50: warning: unused assignment to "X"
+bool.adb:32:53: warning: unused assignment to "Y"

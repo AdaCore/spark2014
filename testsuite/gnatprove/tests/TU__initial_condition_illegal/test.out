@@ -6,5 +6,5 @@ initial_condition_illegal.ads:45:11: "Initial_Condition" requires the presence o
 initial_condition_illegal_2.ads:10:32: "Initial_Condition_Illegal_2.State" must be listed in the Initializes aspect of "Initial_Condition_Illegal_2"
 gprbuild: *** compilation phase failed
 gnatprove: error during translation to intermediate language, aborting.
-initial_condition_illegal_3.ads:15:04: warning: initialization has no effect [ineffective]
+initial_condition_illegal_3.ads:15:04: warning: initialization has no effect
 initial_condition_illegal_3.ads:13:8: warning: initial condition might fail

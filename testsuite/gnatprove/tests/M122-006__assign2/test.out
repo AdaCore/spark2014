@@ -1,4 +1,4 @@
-p.adb:6:07: warning: initialization has no effect [ineffective]
-p.adb:8:09: warning: unused assignment [ineffective]
-p.adb:12:07: warning: initialization has no effect [ineffective]
-p.adb:14:09: warning: unused assignment [ineffective]
+p.adb:6:07: warning: initialization has no effect
+p.adb:8:09: warning: unused assignment
+p.adb:12:07: warning: initialization has no effect
+p.adb:14:09: warning: unused assignment

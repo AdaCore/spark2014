@@ -1,7 +1,7 @@
-contract_cases.adb:8:39: "Num_Out" is not initialized [uninitialized]
-contract_cases.adb:9:39: "Num_Out" is not initialized [uninitialized]
-contract_cases.adb:19:33: "Y" is not initialized [uninitialized]
-contract_cases.adb:20:33: "Y" is not initialized [uninitialized]
+contract_cases.adb:8:39: "Num_Out" is not initialized
+contract_cases.adb:9:39: "Num_Out" is not initialized
+contract_cases.adb:19:33: "Y" is not initialized
+contract_cases.adb:20:33: "Y" is not initialized
    compilation of contract_cases.adb failed
 
 

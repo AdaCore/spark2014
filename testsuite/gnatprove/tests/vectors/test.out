@@ -1,4 +1,4 @@
-vectors.adb:5:14: warning: "counter.count" is not modified, could be "input" [inout_only_read]
+vectors.adb:5:14: warning: "counter.count" is not modified, could be "input"
 vectors.adb:17:38: warning: overflow check might fail
 vectors.adb:22:49: info: length check proved
 vectors.adb:37:56: warning: range check might fail

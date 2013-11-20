@@ -1,7 +1,7 @@
 p.adb:7:08: warning:  assuming "Tracing" has no effect on global items
 p.adb:7:08: warning: no Global contract available for "Tracing"
-p.adb:7:08: warning: statement has no effect [ineffective]
+p.adb:7:08: warning: statement has no effect
 p.adb:8:14: info: overflow check proved
-p.adb:7:08: warning: statement has no effect [ineffective]
+p.adb:7:08: warning: statement has no effect
 p.adb:8:14: info: overflow check proved
 q.adb:6:7: warning: assertion might fail, requires false

@@ -1,5 +1,5 @@
-bug0.adb:5:07: warning: initialization has no effect [ineffective]
+bug0.adb:5:07: warning: initialization has no effect
 bug0.adb:5:24: info: length check proved
 bug0.adb:7:7: info: assertion proved
-bug0.ads:4:19: warning: "S" is not modified, could be "in" [inout_only_read]
+bug0.ads:4:19: warning: "S" is not modified, could be "in"
 bug0.ads:5:12: info: postcondition proved

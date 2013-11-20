@@ -1,13 +1,13 @@
-infoflow.adb:59:23: warning: "Cache_V1" might not be initialized [uninitialized]
+infoflow.adb:59:23: warning: "Cache_V1" might not be initialized
 infoflow.adb:60:10: info: loop invariant initialization proved
 infoflow.adb:60:10: info: loop invariant preservation proved
-infoflow.adb:67:23: warning: "Cache_V2" might not be initialized [uninitialized]
+infoflow.adb:67:23: warning: "Cache_V2" might not be initialized
 infoflow.adb:68:10: info: loop invariant initialization proved
 infoflow.adb:68:10: info: loop invariant preservation proved
-infoflow.adb:79:25: warning: "Outkeys_V1" might not be initialized [uninitialized]
+infoflow.adb:79:25: warning: "Outkeys_V1" might not be initialized
 infoflow.adb:80:10: info: loop invariant initialization proved
 infoflow.adb:80:10: info: loop invariant preservation proved
-infoflow.adb:87:25: warning: "Outkeys_V2" might not be initialized [uninitialized]
+infoflow.adb:87:25: warning: "Outkeys_V2" might not be initialized
 infoflow.adb:88:10: info: loop invariant initialization proved
 infoflow.adb:88:10: info: loop invariant preservation proved
 infoflow.adb:99:28: info: division check proved
@@ -68,29 +68,29 @@ infoflow.adb:161:7: warning: precondition might fail
 infoflow.adb:163:7: warning: precondition might fail
 infoflow.adb:172:10: info: loop invariant initialization proved
 infoflow.adb:172:10: info: loop invariant preservation proved
-infoflow.adb:172:10: warning: "A_V1" might not be initialized [uninitialized]
+infoflow.adb:172:10: warning: "A_V1" might not be initialized
 infoflow.adb:173:33: info: index check proved
 infoflow.adb:173:44: info: index check proved
 infoflow.adb:174:16: info: index check proved
-infoflow.adb:174:22: warning: "A_V1" might not be initialized [uninitialized]
+infoflow.adb:174:22: warning: "A_V1" might not be initialized
 infoflow.adb:174:31: info: index check proved
 infoflow.adb:177:7: info: assertion proved
-infoflow.adb:177:07: warning: "A_V1" might not be initialized [uninitialized]
+infoflow.adb:177:07: warning: "A_V1" might not be initialized
 infoflow.adb:179:18: info: index check proved
 infoflow.adb:179:29: info: index check proved
 infoflow.adb:181:22: warning: overflow check might fail
 infoflow.adb:182:10: info: loop invariant initialization proved
 infoflow.adb:182:10: info: loop invariant preservation proved
-infoflow.adb:182:10: warning: "A_V1" might not be initialized [uninitialized]
+infoflow.adb:182:10: warning: "A_V1" might not be initialized
 infoflow.adb:183:42: info: index check proved
 infoflow.adb:183:53: info: index check proved
 infoflow.adb:186:42: info: index check proved
 infoflow.adb:186:55: info: index check proved
 infoflow.adb:187:16: info: index check proved
-infoflow.adb:187:22: warning: "A_V1" might not be initialized [uninitialized]
+infoflow.adb:187:22: warning: "A_V1" might not be initialized
 infoflow.adb:187:36: info: index check proved
 infoflow.adb:187:36: info: overflow check proved
-infoflow.adb:190:07: warning: "A_V1" might not be initialized [uninitialized]
+infoflow.adb:190:07: warning: "A_V1" might not be initialized
 infoflow.adb:190:7: warning: assertion might fail
 infoflow.adb:192:19: info: index check proved
 infoflow.adb:192:30: info: index check proved
@@ -98,14 +98,14 @@ infoflow.adb:195:19: info: index check proved
 infoflow.adb:195:32: info: index check proved
 infoflow.adb:200:10: info: loop invariant initialization proved
 infoflow.adb:200:10: info: loop invariant preservation proved
-infoflow.adb:200:10: warning: "A_V2" might not be initialized [uninitialized]
+infoflow.adb:200:10: warning: "A_V2" might not be initialized
 infoflow.adb:201:33: info: index check proved
 infoflow.adb:201:44: info: index check proved
 infoflow.adb:202:16: info: index check proved
-infoflow.adb:202:22: warning: "A_V2" might not be initialized [uninitialized]
+infoflow.adb:202:22: warning: "A_V2" might not be initialized
 infoflow.adb:202:31: info: index check proved
-infoflow.adb:205:07: warning: "A_V1" might not be initialized [uninitialized]
-infoflow.adb:205:07: warning: "A_V2" might not be initialized [uninitialized]
+infoflow.adb:205:07: warning: "A_V1" might not be initialized
+infoflow.adb:205:07: warning: "A_V2" might not be initialized
 infoflow.adb:205:7: warning: assertion might fail
 infoflow.adb:207:19: info: index check proved
 infoflow.adb:207:30: info: index check proved
@@ -116,13 +116,13 @@ infoflow.adb:213:30: info: index check proved
 infoflow.adb:215:22: warning: overflow check might fail
 infoflow.adb:216:10: info: loop invariant initialization proved
 infoflow.adb:216:10: info: loop invariant preservation proved
-infoflow.adb:216:10: warning: "A_V2" might not be initialized [uninitialized]
+infoflow.adb:216:10: warning: "A_V2" might not be initialized
 infoflow.adb:217:42: info: index check proved
 infoflow.adb:217:53: info: index check proved
 infoflow.adb:220:42: info: index check proved
 infoflow.adb:220:55: info: index check proved
 infoflow.adb:221:16: info: index check proved
-infoflow.adb:221:22: warning: "A_V2" might not be initialized [uninitialized]
+infoflow.adb:221:22: warning: "A_V2" might not be initialized
 infoflow.adb:221:36: info: index check proved
 infoflow.adb:221:36: info: overflow check proved
 infoflow.ads:9:6: info: disjoint contract cases proved
@@ -134,10 +134,10 @@ infoflow.ads:37:6: warning: contract cases might not be complete
 infoflow.ads:38:24: info: contract case proved
 infoflow.ads:48:6: info: complete contract cases proved
 infoflow.ads:48:30: info: contract case proved
-infoflow.ads:61:07: warning: unused initial value of "J" [unused_initial_value]
+infoflow.ads:61:07: warning: unused initial value of "J"
 infoflow.ads:63:6: warning: contract cases might not be complete
 infoflow.ads:64:27: info: contract case proved
-infoflow.ads:73:54: warning: unused initial value of "I" [unused_initial_value]
+infoflow.ads:73:54: warning: unused initial value of "I"
 infoflow.ads:74:6: warning: contract cases might not be complete
 infoflow.ads:74:6: warning: contract cases might not be disjoint
 infoflow.ads:78:40: info: division check proved
@@ -156,7 +156,7 @@ infoflow.ads:86:70: info: division check proved
 infoflow.ads:87:24: warning: contract case might fail
 infoflow.ads:87:33: warning: array index check might fail
 infoflow.ads:87:44: warning: array index check might fail
-infoflow.ads:89:55: warning: unused initial value of "I" [unused_initial_value]
+infoflow.ads:89:55: warning: unused initial value of "I"
 infoflow.ads:90:6: warning: contract cases might not be complete
 infoflow.ads:90:6: warning: contract cases might not be disjoint
 infoflow.ads:94:40: info: division check proved
@@ -175,9 +175,9 @@ infoflow.ads:102:70: info: division check proved
 infoflow.ads:103:24: warning: contract case might fail
 infoflow.ads:103:33: warning: array index check might fail
 infoflow.ads:103:44: warning: array index check might fail
-infoflow.ads:112:07: warning: "A_V1" might not be initialized in "Arraypartitionedtransfer" [uninitialized]
-infoflow.ads:112:13: warning: "A_V2" might not be initialized in "Arraypartitionedtransfer" [uninitialized]
-infoflow.ads:114:17: warning: unused initial value of "I" [unused_initial_value]
+infoflow.ads:112:07: warning: "A_V1" might not be initialized in "Arraypartitionedtransfer"
+infoflow.ads:112:13: warning: "A_V2" might not be initialized in "Arraypartitionedtransfer"
+infoflow.ads:114:17: warning: unused initial value of "I"
 infoflow.ads:129:6: warning: contract cases might not be complete
 infoflow.ads:129:6: warning: contract cases might not be disjoint
 infoflow.ads:131:33: info: index check proved

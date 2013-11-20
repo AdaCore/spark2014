@@ -1,29 +1,29 @@
-basic.adb:6:07: warning: statement has no effect [ineffective]
-basic.adb:8:13: warning: statement has no effect [ineffective]
+basic.adb:6:07: warning: statement has no effect
+basic.adb:8:13: warning: statement has no effect
 basic.adb:8:17: info: discriminant check proved
-basic.adb:9:18: warning: unused assignment [ineffective]
-basic.adb:13:13: warning: statement has no effect [ineffective]
+basic.adb:9:18: warning: unused assignment
+basic.adb:13:13: warning: statement has no effect
 basic.adb:13:17: warning: discriminant check might fail
-basic.adb:14:18: warning: unused assignment [ineffective]
-basic.adb:17:13: warning: statement has no effect [ineffective]
+basic.adb:14:18: warning: unused assignment
+basic.adb:17:13: warning: statement has no effect
 basic.adb:17:17: info: discriminant check proved
-basic.adb:18:18: warning: unused assignment [ineffective]
+basic.adb:18:18: warning: unused assignment
 basic.adb:18:22: info: discriminant check proved
-basic.ads:45:17: warning: unused initial value of "V" [unused_initial_value]
+basic.ads:45:17: warning: unused initial value of "V"
 conv.adb:6:20: info: postcondition proved
-conv.adb:15:07: warning: initialization has no effect [ineffective]
+conv.adb:15:07: warning: initialization has no effect
 conv.adb:15:17: info: discriminant check proved
-conv.adb:16:07: warning: initialization has no effect [ineffective]
-conv.adb:17:07: warning: initialization has no effect [ineffective]
+conv.adb:16:07: warning: initialization has no effect
+conv.adb:17:07: warning: initialization has no effect
 conv.adb:17:17: info: discriminant check proved
 conv.adb:19:7: warning: assertion might fail, requires Id (X) = Id (Y)
 special.adb:7:7: warning: assertion might fail, requires V.X = A
 special.adb:8:8: info: discriminant check proved
-special.adb:12:07: warning: initialization has no effect [ineffective]
+special.adb:12:07: warning: initialization has no effect
 special.adb:14:7: info: assertion proved
 special.adb:15:8: info: discriminant check proved
-special.adb:15:17: warning: unused assignment [ineffective]
-subty.adb:4:07: warning: initialization has no effect [ineffective]
+special.adb:15:17: warning: unused assignment
+subty.adb:4:07: warning: initialization has no effect
 subty.adb:4:16: info: discriminant check proved
 subty.adb:6:7: info: assertion proved
 subty.adb:7:7: info: assertion proved
@@ -32,7 +32,7 @@ subty.adb:8:7: info: assertion proved
 subty.adb:8:23: info: discriminant check proved
 subty.adb:9:7: warning: assertion might fail, requires V.X = A
 subty.adb:11:8: info: discriminant check proved
-subty.adb:11:17: warning: unused assignment [ineffective]
+subty.adb:11:17: warning: unused assignment
 subty.adb:11:21: info: discriminant check proved
 subty.adb:11:30: warning: overflow check might fail
 subty.adb:12:7: info: assertion proved
@@ -40,4 +40,4 @@ subty.adb:12:23: info: discriminant check proved
 subty.adb:12:35: info: discriminant check proved
 subty.adb:12:44: info: overflow check proved
 subty.adb:13:7: info: assertion proved
-subty.ads:7:17: warning: unused initial value of "V" [unused_initial_value]
+subty.ads:7:17: warning: unused initial value of "V"

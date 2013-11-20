@@ -1,2 +1,2 @@
 a1.adb:4:5: info: precondition proved
-a1.adb:4:05: warning: statement has no effect [ineffective]
+a1.adb:4:05: warning: statement has no effect

@@ -1,6 +1,6 @@
-shift_main.adb:30:04: warning: initialization has no effect [ineffective]
-shift_main.adb:32:06: warning: unused assignment [ineffective]
-shift_main.adb:33:06: warning: unused assignment [ineffective]
-shift_main.adb:34:06: warning: unused assignment [ineffective]
-shift_main.adb:35:06: warning: unused assignment [ineffective]
-shift_main.adb:36:06: warning: unused assignment [ineffective]
+shift_main.adb:30:04: warning: initialization has no effect
+shift_main.adb:32:06: warning: unused assignment
+shift_main.adb:33:06: warning: unused assignment
+shift_main.adb:34:06: warning: unused assignment
+shift_main.adb:35:06: warning: unused assignment
+shift_main.adb:36:06: warning: unused assignment
