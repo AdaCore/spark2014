@@ -90,14 +90,6 @@ package Flow_Tree_Utility is
    --  Returns the first parent of N which is a N_Subprogram_Body or
    --  N_Package_Body.
 
-   function Should_Use_Refined_View (Scope : Scope_Ptr;
-                                     N     : Node_Id)
-                                     return Boolean
-      with Pre => Nkind (N) in N_Subprogram_Call;
-   --  For a given function or procedure call N, this function returns
-   --  true if we should use the Refined_Global and Refined_Depends
-   --  aspects or the Global and Depends aspects.
-
    function Last_Statement_Is_Raise (E : Entity_Id) return Boolean
       with Pre => Ekind (E) in Subprogram_Kind;
    --  Returns True if the last statement in the Handled_Sequence_Of_Statements
