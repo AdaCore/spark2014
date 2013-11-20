@@ -1,0 +1,9 @@
+discr.adb:5:09:  violation of pragma SPARK_Mode at test.adc:1
+discr.adb:5:09: discriminant renaming is not allowed in SPARK
+discr.adb:7:11:  violation of pragma SPARK_Mode at test.adc:1
+discr.adb:7:11: subtype of "Square" is not allowed in SPARK
+   compilation of discr.adb failed
+
+
+gnatprove: error during translation to intermediate language, aborting.
+gprbuild: *** compilation phase failed
