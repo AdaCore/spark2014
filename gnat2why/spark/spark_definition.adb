@@ -817,6 +817,27 @@ package body SPARK_Definition is
                end;
             end if;
 
+            --  Discriminant renamings are not in SPARK, this is checked here
+
+            declare
+               Disc  : Entity_Id := First_Discriminant (E);
+               Found : Boolean := False;
+            begin
+               while Present (Disc) loop
+                  if Present (Corresponding_Discriminant (Disc))
+                    and then
+                      Chars (Disc) /= Chars (Corresponding_Discriminant (Disc))
+                  then
+                     Found := True;
+                  end if;
+                  exit when Found;
+                  Next_Discriminant (Disc);
+               end loop;
+               if Found then
+                  Mark_Violation ("discriminant renaming", E);
+               end if;
+            end;
+
          when E_Class_Wide_Type    |
               E_Class_Wide_Subtype =>
             Mark_Violation ("type definition", E);

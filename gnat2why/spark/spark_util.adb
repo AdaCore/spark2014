@@ -319,6 +319,23 @@ package body SPARK_Util is
       return Only_Expression_Functions;
    end Expression_Functions_All_The_Way;
 
+   ------------------------
+   -- First_Discriminant --
+   ------------------------
+
+   function First_Discriminant (Id : E) return E is
+      Comp_Id : E := First_Entity (Id);
+
+   begin
+      Comp_Id := First_Entity (Id);
+      while Present (Comp_Id) loop
+         exit when Ekind (Comp_Id) = E_Discriminant;
+         Comp_Id := Next_Entity (Comp_Id);
+      end loop;
+
+      return Comp_Id;
+   end First_Discriminant;
+
    -------------------------------
    -- Get_Enclosing_Declaration --
    -------------------------------

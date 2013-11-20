@@ -138,9 +138,6 @@ package body Why.Gen.Records is
    --  Opposite of Einfo.Is_Completely_Hidden, which also returns True if E is
    --  not a discriminant.
 
-   function First_Discriminant (Id : E) return E;
-   --  Get the first discriminant of the record type entity [Id]
-
    function Count_Why_Record_Fields (E : Entity_Id) return Natural;
    --  count the number of fields
 
@@ -921,26 +918,6 @@ package body Why.Gen.Records is
                Pre         => Pre_Cond,
                Post        => Post));
    end Declare_Conversion_Check_Function;
-
-   ------------------------
-   -- First_Discriminant --
-   ------------------------
-
-   function First_Discriminant (Id : E) return E is
-      Comp_Id : E;
-
-   begin
-      pragma Assert
-        (Is_Record_Type (Id) or else Is_Incomplete_Or_Private_Type (Id));
-
-      Comp_Id := First_Entity (Id);
-      while Present (Comp_Id) loop
-         exit when Ekind (Comp_Id) = E_Discriminant;
-         Comp_Id := Next_Entity (Comp_Id);
-      end loop;
-
-      return Comp_Id;
-   end First_Discriminant;
 
    ---------------------------------------
    -- Insert_Subtype_Discriminant_Check --

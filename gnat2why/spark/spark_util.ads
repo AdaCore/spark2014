@@ -247,6 +247,11 @@ package SPARK_Util is
    function Number_Components (Typ : Entity_Id) return Natural;
    --  Count the number of components in record type Typ
 
+   function First_Discriminant (Id : E) return E
+     with Pre =>
+       (Is_Record_Type (Id) or else Is_Incomplete_Or_Private_Type (Id));
+   --  Get the first discriminant of the record type entity [Id]
+
    procedure Append
      (To    : in out List_Of_Nodes.List;
       Elmts : List_Of_Nodes.List);
