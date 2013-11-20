@@ -39,6 +39,7 @@ with Flow.Antialiasing;               use Flow.Antialiasing;
 with Flow.Control_Flow_Graph.Utility; use Flow.Control_Flow_Graph.Utility;
 with Flow.Utility;                    use Flow.Utility;
 with Flow_Error_Messages;             use Flow_Error_Messages;
+with Flow_Tree_Utility;               use Flow_Tree_Utility;
 
 with Why;
 
@@ -2451,16 +2452,18 @@ package body Flow.Control_Flow_Graph is
             end if;
 
          when E_Package =>
-            --  !!! Fix
-            Spec_N := FA.Scope;
+            Spec_N := Get_Enclosing (FA.Analyzed_Entity,
+                                     N_Package_Specification);
             Body_N := Spec_N;
 
             FA.Initializes_N := Get_Pragma (FA.Analyzed_Entity,
                                             Pragma_Initializes);
 
          when E_Package_Body =>
-            Body_N := FA.Scope;
-            Spec_N := Get_Enclosing_Scope (Corresponding_Spec (Body_N));
+            Body_N := Get_Enclosing (FA.Analyzed_Entity,
+                                     N_Package_Body);
+            Spec_N := Get_Enclosing (Corresponding_Spec (Body_N),
+                                     N_Package_Specification);
 
             FA.Initializes_N := Get_Pragma (Spec_Entity (FA.Analyzed_Entity),
                                             Pragma_Initializes);

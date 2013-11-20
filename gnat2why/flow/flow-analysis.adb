@@ -33,9 +33,11 @@ with Snames;                use Snames;
 with Why;
 
 with Gnat2Why_Args;
+with SPARK_Util;            use SPARK_Util;
 
 with Flow.Utility;          use Flow.Utility;
 with Flow_Error_Messages;   use Flow_Error_Messages;
+with Flow_Tree_Utility;     use Flow_Tree_Utility;
 
 --  with Output;                use Output;
 --  with Treepr;                use Treepr;
@@ -529,7 +531,8 @@ package body Flow.Analysis is
    procedure Sanity_Check (FA   : Flow_Analysis_Graphs;
                            Sane : out Boolean)
    is
-      Tracefile : Unbounded_String;
+      Tracefile  : Unbounded_String;
+      Entry_Node : Node_Id;
 
       function Proc_Record_Decl (N : Node_Id) return Traverse_Result;
       --  Check each component declaration for use of non-manifest
@@ -542,11 +545,12 @@ package body Flow.Analysis is
             when N_Subprogram_Body | N_Package_Body =>
                --  We do not want to process declarations any nested
                --  subprograms or packages.
-               if N = FA.Scope then
+               if N = Entry_Node then
                   return OK;
                else
                   return Skip;
                end if;
+
             when N_Component_Declaration =>
                if Present (Expression (N)) then
                   declare
@@ -621,7 +625,23 @@ package body Flow.Analysis is
 
       pragma Assert_And_Cut (Sane);
 
-      Check_Record_Declarations (FA.Scope);
+      case FA.Kind is
+         when E_Subprogram_Body =>
+            Entry_Node := SPARK_Util.Get_Subprogram_Body (FA.Analyzed_Entity);
+            pragma Assert (Nkind (Entry_Node) = N_Subprogram_Body);
+
+         when E_Package =>
+            Entry_Node := Get_Enclosing (FA.Analyzed_Entity,
+                                         N_Package_Specification);
+
+         when E_Package_Body =>
+            Entry_Node := Get_Enclosing (FA.Analyzed_Entity,
+                                         N_Package_Body);
+      end case;
+      --  Please don't try to simplify/delete Entry_Node here, it is also a
+      --  global in Check_Record_Declarations.
+      Check_Record_Declarations (Entry_Node);
+
       if not Sane then
          if Gnat2Why_Args.Flow_Debug_Mode then
             Error_Msg_Flow

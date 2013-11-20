@@ -36,7 +36,6 @@ with Gnat2Why.Nodes;         use Gnat2Why.Nodes;
 
 with Graph;
 with Flow_Types;           use Flow_Types;
-with Flow_Tree_Utility;    use Flow_Tree_Utility;
 with Flow_Dependency_Maps; use Flow_Dependency_Maps;
 with Flow_Refinement;      use Flow_Refinement;
 
@@ -114,8 +113,6 @@ package Flow is
                                      E_Subprogram_Body)
    is record
       Analyzed_Entity   : Entity_Id;
-      Scope             : Scope_Ptr;
-      Spec_Scope        : Scope_Ptr;
       B_Scope           : Flow_Scope;
       S_Scope           : Flow_Scope;
       --  The entity and scope (of the body and spec) of the analysed

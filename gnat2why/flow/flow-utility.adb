@@ -33,6 +33,7 @@ with Why;
 with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 
 with Flow.Debug;             use Flow.Debug;
+with Flow_Tree_Utility;      use Flow_Tree_Utility;
 
 package body Flow.Utility is
 

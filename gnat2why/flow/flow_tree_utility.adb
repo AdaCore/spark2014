@@ -312,41 +312,6 @@ package body Flow_Tree_Utility is
       end case;
    end Get_Body;
 
-   -------------------------
-   -- Get_Enclosing_Scope --
-   -------------------------
-
-   function Get_Enclosing_Scope (N : Node_Id) return Scope_Ptr is
-      P : Node_Id := Parent (N);
-   begin
-      while Present (P) and then
-        Nkind (P) not in N_Function_Specification |
-                         N_Procedure_Specification |
-                         N_Package_Specification |
-                         N_Subprogram_Body |
-                         N_Package_Body
-      loop
-         P := Parent (P);
-      end loop;
-      return P;
-   end Get_Enclosing_Scope;
-
-   ------------------------------
-   -- Get_Enclosing_Body_Scope --
-   ------------------------------
-
-   function Get_Enclosing_Body_Scope (N : Node_Id) return Scope_Ptr is
-      P : Node_Id := Parent (N);
-   begin
-      while Present (P) and then
-        Nkind (P) not in N_Subprogram_Body |
-                         N_Package_Body
-      loop
-         P := Parent (P);
-      end loop;
-      return P;
-   end Get_Enclosing_Body_Scope;
-
    -----------------------------
    -- Last_Statement_Is_Raise --
    -----------------------------
@@ -359,5 +324,19 @@ package body Flow_Tree_Utility is
       return (Nkind (Last_Statement) = N_Raise_Statement
                 or else Nkind (Last_Statement) in N_Raise_xxx_Error);
    end Last_Statement_Is_Raise;
+
+   -------------------
+   -- Get_Enclosing --
+   -------------------
+
+   function Get_Enclosing (N : Node_Id; K : Node_Kind) return Node_Id
+   is
+      Ptr : Node_Id := N;
+   begin
+      while Present (Ptr) and then Nkind (Ptr) /= K loop
+         Ptr := Parent (Ptr);
+      end loop;
+      return Ptr;
+   end Get_Enclosing;
 
 end Flow_Tree_Utility;

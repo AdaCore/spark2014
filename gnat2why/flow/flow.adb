@@ -54,6 +54,7 @@ with Flow.Debug;                    use Flow.Debug;
 with Flow.Slice;                    use Flow.Slice;
 with Flow.Utility;                  use Flow.Utility;
 with Flow_Error_Messages;           use Flow_Error_Messages;
+with Flow_Tree_Utility;             use Flow_Tree_Utility;
 
 use type Ada.Containers.Count_Type;
 
@@ -519,8 +520,6 @@ package body Flow is
             FA := Flow_Analysis_Graphs'
               (Kind              => E_Subprogram_Body,
                Analyzed_Entity   => E,
-               Scope             => SPARK_Util.Get_Subprogram_Body (E),
-               Spec_Scope        => Get_Enclosing_Scope (E),
                B_Scope           => Get_Flow_Scope
                  (SPARK_Util.Get_Subprogram_Body (E)),
                S_Scope           => Get_Flow_Scope (E),
@@ -555,8 +554,6 @@ package body Flow is
             FA := Flow_Analysis_Graphs'
               (Kind              => E_Package,
                Analyzed_Entity   => E,
-               Scope             => Get_Enclosing_Scope (E),
-               Spec_Scope        => Get_Enclosing_Scope (E),
                B_Scope           => Flow_Scope'(E, Body_Part),
                S_Scope           => Flow_Scope'(E, Private_Part),
                Spec_Node         => S,
@@ -581,8 +578,6 @@ package body Flow is
             FA := Flow_Analysis_Graphs'
               (Kind              => E_Package_Body,
                Analyzed_Entity   => E,
-               Scope             => Get_Enclosing_Body_Scope (E),
-               Spec_Scope        => Get_Enclosing_Scope (S),
                B_Scope           => Flow_Scope'(Spec_Entity (E), Body_Part),
                S_Scope           => Flow_Scope'(Spec_Entity (E), Private_Part),
                Spec_Node         => S,
@@ -711,7 +706,8 @@ package body Flow is
 
             when E_Package =>
                declare
-                  Pkg_Spec   : constant Node_Id := Get_Enclosing_Scope (E);
+                  Pkg_Spec   : constant Node_Id :=
+                    Get_Enclosing (E, N_Package_Specification);
                   Pkg_Body   : Node_Id;
                   Needs_Body : Boolean := Unit_Requires_Body (E);
                begin
