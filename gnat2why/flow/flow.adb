@@ -790,12 +790,10 @@ package body Flow is
                   Analysis.Analyse_Main (FA);
 
                when E_Package =>
-                  Analysis.Find_Use_Of_Uninitialised_Variables (FA);
                   Analysis.Find_Ineffective_Statements (FA);
                   Analysis.Find_Use_Of_Uninitialised_Variables (FA);
 
                when E_Package_Body =>
-                  Analysis.Find_Use_Of_Uninitialised_Variables (FA);
                   Analysis.Find_Ineffective_Statements (FA);
                   Analysis.Find_Use_Of_Uninitialised_Variables (FA);
             end case;
