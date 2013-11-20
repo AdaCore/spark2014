@@ -374,34 +374,31 @@ is about ``Y``, and that |GNATprove| was unable to prove that ``Y`` cannot be
 zero. The explanations in the table below should be read with the context that
 is given by the source location.
 
-The left column of the table contains the *tag* identifying each warning or
-error message.
-
 The following table shows the kinds of warnings issued by proof.
 
 .. tabularcolumns:: |l|p{4.5in}|
 
 .. csv-table::
-   :header: "Message Tag", "Explanation"
+   :header: "Message Kind", "Explanation"
    :widths: 1, 4
 
-   "division_check", "Check that the second operand of the division, mod or rem operation is different from zero."
-   "index_check", "Check that the given index is within the bounds of the array."
-   "overflow_check", "Check that the result of the given arithmetic operation is within the bounds of the base type."
-   "range_check", "Check that the given value is within the bounds of the expected scalar subtype."
-   "length_check", "Check that the given array is of the length of the expected array subtype."
-   "discriminant_check", "Check that the discriminant of the given discriminated record has the expected value. For variant records, this can happen for a simple access to a record field. But there are other cases where a fixed value of the discriminant is required."
-   "initial_condition", "Check that the initial condition of a package is true after elaboration."
+   "divide by zero", "Check that the second operand of the division, mod or rem operation is different from zero."
+   "index check", "Check that the given index is within the bounds of the array."
+   "overflow check", "Check that the result of the given arithmetic operation is within the bounds of the base type."
+   "range check", "Check that the given value is within the bounds of the expected scalar subtype."
+   "length check", "Check that the given array is of the length of the expected array subtype."
+   "discriminant check", "Check that the discriminant of the given discriminated record has the expected value. For variant records, this can happen for a simple access to a record field. But there are other cases where a fixed value of the discriminant is required."
+   "initial condition", "Check that the initial condition of a package is true after elaboration."
    "precondition", "Check that the precondition aspect of the given call evaluates to True."
    "postcondition", "Check that the postcondition aspect of the subprogram evaluates to True."
-   "contract_case", "Check that all cases of the contract case evaluate to true at the end of the subprogram."
-   "disjoint_contract_cases", "Check that the cases of the contract cases aspect are all mutually disjoint."
-   "complete_contract_cases", "Check that the cases of the contract cases aspect cover the state space that is allowed by the precondition aspect."
-   "loop_invariant_initialization", "Check that the loop invariant evaluates to True on the first iteration of the loop."
-   "loop_invariant_preservation", "Check that the loop invariant evaluates to True at each further iteration of the loop."
-   "loop_variant", "Check that the given loop variant decreases/increases as specified during each iteration of the loop. This implies termination of the loop."
+   "contract case", "Check that all cases of the contract case evaluate to true at the end of the subprogram."
+   "disjoint contract cases", "Check that the cases of the contract cases aspect are all mutually disjoint."
+   "complete contract cases", "Check that the cases of the contract cases aspect cover the state space that is allowed by the precondition aspect."
+   "loop invariant in first iteration", "Check that the loop invariant evaluates to True on the first iteration of the loop."
+   "loop invariant after first iteration", "Check that the loop invariant evaluates to True at each further iteration of the loop."
+   "loop variant", "Check that the given loop variant decreases/increases as specified during each iteration of the loop. This implies termination of the loop."
    "assertion", "Check that the given assertion evaluates to True."
-   "raise_statement", "Check that the raise statement can never be reached."
+   "exception, raise statement", "Check that the raise statement can never be reached."
 
 The following table shows all flow analysis messages, which come in three
 classes: I(nitialization) errors are the most serious flow errors as not fixing
@@ -413,19 +410,23 @@ other unclassified messages are warnings about questionable code constructs.
 .. tabularcolumns:: |l|l|p{4in}|
 
 .. csv-table::
-   :header: "Message Tag", "Class", "Explanation"
+   :header: "Message Kind", "Class", "Explanation"
    :widths: 1, 1, 6
 
-   "depends_missing", "F", "A dependency is missing from the dependency relation."
-   "depends_missing_clause", "F", "An out parameter or global is missing from the dependency relation."
-   "depends_null", "F", "A variable is missing from the null dependency."
-   "depends_wrong", "F", "A stated dependency is not fulfilled."
-   "illegal_update", "I", "Flow analysis has detected an update of an in mode global."
-   "ineffective",, "Flow analysis has detected an ineffective statement, such as an unused assignment."
-   "unused_initial_value",, "An in or in out parameter or global has been found which does not have any effect on any out or in out parameter or global."
-   "stable",, "A questionable loop construct where a variable is assigned the same value on each loop iteration."
-   "uninitialized", "I", "Flow analysis has detected the use of an uninitialized variable."
+   "missing dependency", "F", "A dependency is missing from the dependency relation."
+   "dependency relation", "F", "An out parameter or global is missing from the dependency relation."
+   "missing null dependency", "F", "A variable is missing from the null dependency."
+   "incorrect dependency", "F", "A stated dependency is not fulfilled."
+   "must be a global output", "I", "Flow analysis has detected an update of an in mode global."
+   "is not modified",, "The variable is declared with mode in out, but is never modified, so could be declared with mode in."
+   "unused assignment",, "Flow analysis has detected an assignment to a variable which is not read after the assignment."
+   "initialization has no effect",, "Flow analysis has detected an object which is initialized, but never read."
+   "statement has no effect",, "Flow analysis has detected a statement which has no effect."
+   "unused initial value",, "An in or in out parameter or global has been found which does not have any effect on any out or in out parameter or global."
+   "not initialized", "I", "Flow analysis has detected the use of an uninitialized variable."
    "unused",, "A global or locally declared variable is never used."
+   "missing return",, "A return statement seems to be missing from the function."
+   "export must not depend on Proof_In",, "Flow analysis has detected an output of a subprogram that depends on a constant which is marked Proof_In."
 
 .. _how to write loop invariants:
 
