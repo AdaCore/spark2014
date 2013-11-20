@@ -1,0 +1,6 @@
+example.adb:8:17: info: index check proved
+example.adb:9:12: info: index check proved
+example.ads:7:40: info: contract case proved
+example.ads:7:49: info: index check proved
+example.ads:7:62: info: index check proved
+example.ads:8:40: info: contract case proved
