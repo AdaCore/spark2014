@@ -63,4 +63,18 @@ is
           Depends => (D                 => (A, B, C),
                       Logging.TestPoint => A);
    
+   procedure Op9 (A : in     Integer;
+		  B : in     Boolean;
+		  C : in     Character;
+		  D :    out Integer)
+     with Global => null,
+          Depends => (D => (A, B, C));
+
+   procedure Op10 (A : in     Integer;
+		   B : in     Boolean;
+		   C : in     Character;
+		   D :    out Integer)
+     with Global => null,
+          Depends => (D => (A, B, C));
+
 end P;

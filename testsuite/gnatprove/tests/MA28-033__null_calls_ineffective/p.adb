@@ -93,12 +93,44 @@ is
 
       --  Call Logging.Trace_Mixed directly
       --  TWO calls in sequence. First assignment to Logging.TestPoint
-      --  IS ineffective.  Assignemnts from B to "null" are
+      --  IS ineffective.  Assignments from B to "null" are
       --  NOT ineffective
       Logging.Trace_Mixed (A, B);
       Logging.Trace_Mixed (A+1, B);
    end Op8;
    
+   procedure Op9 (A : in     Integer;
+		  B : in     Boolean;
+		  C : in     Character;
+		  D :    out Integer)
+   is
+      Tmp : Integer;
+   begin
+      D := A + Boolean'Pos (B) + Character'Pos (C);
+
+      -- Should NOT be ineffective
+      Tmp := A + 1;
+
+      -- Should NOT be ineffective
+      Logging.Trace1 (Tmp);
+   end Op9;
    
+   procedure Op10 (A : in     Integer;
+		   B : in     Boolean;
+		   C : in     Character;
+		   D :    out Integer)
+   is
+   begin
+      D := A + Boolean'Pos (B) + Character'Pos (C);
+
+      -- Should NOT be ineffective
+      if A > 10 then
+         -- Should NOT be ineffective
+         Logging.Trace1 (A + 5);
+      else
+         -- Should NOT be ineffective
+         Logging.Trace1 (A - 5);
+      end if;
+   end Op10;
    
 end P;
