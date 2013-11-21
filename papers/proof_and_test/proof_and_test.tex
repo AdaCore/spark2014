@@ -47,30 +47,30 @@
 \title{Optimising Verification Effort with \newspark}
 
 \author{Pavlos Efstathopoulos, Andrew Hawthorn}
-\institute{ALTRAN, 22 St Lawrence Street, Bath BA1 1AN (United Kingdom)}
+\institute{Altran UK, 22 St Lawrence Street, Bath BA1 1AN (United Kingdom)}
 
 \maketitle
 
 \begin{abstract}
-This paper considers the problems of subprogram specification,
-implementation and verification in the context of SPARK 2014.  We
-touch lightly on specification and implementation and focus on how to
-combine formal verification and test efficiently.
+  This paper considers the problems of subprogram specification,
+  implementation and verification in the context of SPARK 2014. We
+  touch lightly on specification and implementation and focus on how
+  to combine formal verification and test efficiently.
 
-The method of specification and implementation are covered briefly as
-the methods used affect how formal methods can be applied. We explain
-how different depths of formal analysis can be used but focus on the
-case where full functional specifications are provided.
+  The method of specification and implementation are covered briefly
+  as the methods used affect how formal methods can be applied. We
+  explain how different depths of formal analysis can be used but
+  focus on the case where full functional specifications are provided.
 
-We then consider a number of scenarios where proof, test or a
-combination of both can be used to verify the functional behaviour of
-software. For each scenario, we identify the most effective method of
-verification and demonstrate it using the SPARK 2014 toolset and or a
-commercial unit testing tool.
+  We then consider a number of scenarios where proof, test or a
+  combination of both can be used to verify the functional behaviour
+  of software. For each scenario, we identify the most effective
+  method of verification and demonstrate it using the SPARK 2014
+  toolset and/or a commercial unit testing tool.
 
-We conclude by summarising our views on the most effective combination
-of proof and test and any limitations in current tooling.
-
+  We conclude by summarising our views on the most effective
+  combination of proof and test and any limitations in current
+  tooling.
 \end{abstract}
 
 \paragraph{Keywords}
@@ -124,10 +124,9 @@ and test combination are:
 \begin{itemize}
 \item language subsetting;
 \item flow analysis;
-\item the use of theorem provers to demonstrate absence of run-time
+\item the use of theorem provers to demonstrate absence of runtime
   errors;
-\item partial and full specification using pre- and post-conditions;
-  and
+\item partial and full specification using pre and postconditions; and
 \item the use of global contracts.
 \end{itemize}
 
@@ -162,19 +161,19 @@ used to verify a subprogram.
 
 \subsection{\newspark Flow analysis}
 Flow analysis is the term we use for identifying uninitialized and
-unused variables and ineffective statements.  It is important for
-proof and test because the proof relies on all variables being
-initialised and test results can be skewed in the presence of
-uninitialised variables. Coverage analysis can also benefit from flow
-analysis because it can identify ineffective statements.
+unused variables and ineffective statements. It is important for proof
+and test because the proof relies on all variables being initialised
+and test results can be skewed in the presence of uninitialised
+variables. Coverage analysis can also benefit from flow analysis
+because it can identify ineffective statements.
 
 For these reasons, the authors recommend that flow analysis is carried
 out on all subprograms irrespective of whether or not proof or test is
 being used to verify a subprogram.
 
-\subsection{Proof of absence of run-time errors}
+\subsection{Proof of absence of runtime errors}
 
-Proof of absence of run-time errors verifies that no exceptions will
+Proof of absence of runtime errors verifies that no exceptions will
 be raised. This covers the following Ada checks:
 
 \begin{itemize}
@@ -189,14 +188,14 @@ be raised. This covers the following Ada checks:
 See the Ada Language Reference Manual for the precise definitions.
 
 For these reasons, the authors recommend that proof of absenct of
-run-time errors is carried out on all subprograms irrespective of
+runtime errors is carried out on all subprograms irrespective of
 whether or not proof or test is being used to verify a subprogram.
 
-\subsection{\adatwtw Pre- and postconditions}
+\subsection{\adatwtw pre and postconditions}
 
-\ada \emph{Pre} and \emph{Post}-conditions can be used for a variety
+\ada \emph{Pre} and \emph{Post}conditions can be used for a variety
 of purposes. At their simplest they can be used to support proof of
-absence of run-time errors (\eg by constraining the ranges of inputs
+absence of runtime errors (\eg by constraining the ranges of inputs
 and outputs). They can also be used to specify specific properties of
 a program (\eg a safety property is always true). They can also be
 used to fully specify the behaviour of a subprogram (\ie the effect of
@@ -213,10 +212,10 @@ procedure Inc_A_Counter (N : in Integer)
         Post => A_Counter = A_Counter'Old + N;
 \end{lstlisting}
 
-The executable nature of the pre- and postconditions means that we
-have an in-built method of checking that the result of a subprogram
-call meets its specification. This is an extremely powerful feature
-that can be used both informally and formally.
+The executable nature of the pre and postconditions means that we have
+an in-built method of checking that the result of a subprogram call
+meets its specification. This is an extremely powerful feature that
+can be used both informally and formally.
 
 In \newspark these contracts can be refined in the body but these
 refinements are less interesting from a proof and test perspective.
@@ -255,10 +254,10 @@ procedure Inc_A_Counter (N : in Integer)
 In this section we consider how easy it is to represent specifications
 that would normally be written in \emph{Z} in Ada expressions. We
 start with Z because it is a popular specification language for
-software systems that need to use formal methods. In the first subsection
-we provide an example Z specification and convert it to Ada.
-In the second subsection we report results from an analysis of the
-Z specification in an industrial case study.
+software systems that need to use formal methods. In the first
+subsection we provide an example Z specification and convert it to
+Ada. In the second subsection we report results from an analysis of
+the Z specification in an industrial case study.
 
 \subsection{Example Z to Ada translation}
 
@@ -321,61 +320,59 @@ will not be developed further here.
 
 \subsection{Industrial case study analysis}
 
-Tokeneer \cite{tokeneer} is an industrial demonstration project carried
-out by the NSA that was fully specified in Z. Here we consider how
-easily the Tokeneer Z specification could be represented in Ada
+Tokeneer \cite{tokeneer} is an industrial demonstration project
+carried out by the NSA that was fully specified in Z. Here we consider
+how easily the Tokeneer Z specification could be represented in Ada
 specifications.
 
-There are a total of 196 schemas and definitions in the Z specification 
-(excluding type definitions). Of these 90\% represent functional definitions,
-the remaining primarily restric access to state. Of the 90\% schemas
-and definitions that represent functional definitions, 80\% can be 
-represented in Ada pre- and postconditions with virtually no translation
-effort. The remaining 20\% can easily be translated by:
+There are a total of 196 schemas and definitions in the Z
+specification (excluding type definitions). Of these 90\% represent
+functional definitions, the remaining primarily restric access to
+state. Of the 90\% schemas and definitions that represent functional
+definitions, 80\% can be represented in Ada pre and postconditions
+with virtually no translation effort. The remaining 20\% can easily be
+translated by:
 
 \begin{itemize}
-  \item using the Ada Container ``Hashed\_Sets'';
-  \item defining a bi-conditional (<->) expression function;
-  \item using `Update instead of the relational override operator;
-  \item defining inverse functions where required; and
-  \item adding other basic expression functions.
+\item using the Ada Container ``Hashed\_Sets'';
+\item defining a bi-conditional (<->) expression function;
+\item using `Update instead of the relational override operator;
+\item defining inverse functions where required; and
+\item adding other basic expression functions.
 \end{itemize}
 
 Whilst carrying out the analysis the following notes were made:
 \begin{itemize}
-   \item For Z specifications the design is not taken into account
-         but for specifications written in Ada pre- and post- conditions
-         the software architecture (down to at least the high-level
-         package specifications) must be defined. Given detailed 
-         specifications have to make some design decisions 
-         (\eg splitting up system state) this formalisation of
-         design decisions will help simplify the mapping to the 
-         implementation.
-         
-   \item 
+\item For Z specifications the design is not taken into account but
+  for specifications written in Ada pre and postconditions the
+  software architecture (down to at least the high-level package
+  specifications) must be defined. Given detailed specifications have
+  to make some design decisions (\eg splitting up system state) this
+  formalisation of design decisions will help simplify the mapping to
+  the implementation.
 \end{itemize}
 
-ToDe: We then consider the practical expressiveness of \newspark pre-
-and post-conditions in comparison with Z using Tokeneer as an example
+ToDe: We then consider the practical expressiveness of \newspark pre
+and postconditions in comparison with Z using Tokeneer as an example
 application. There are 157 schemas in Tokeneer.
 
 
 \section{Scenario identification}
 
-We now consider a number of scenarios where proof and test may be
-used to demonstrate code compliance with a formal
-specification on a single subprogram.  The Hi-Lite project has already
-demonstrated \cite{hiliteERTS2012} how proven and tested subprograms 
-can be combined so we focus on how a combination of proof and test
-can used to efficiently verify a single program.
+We now consider a number of scenarios where proof and test may be used
+to demonstrate code compliance with a formal specification on a single
+subprogram. The Hi-Lite project has already demonstrated
+\cite{hiliteERTS2012} how proven and tested subprograms can be
+combined so we focus on how a combination of proof and test can used
+to efficiently verify a single program.
 
-The following table presents valid combinations of proof and test
-for individual subprograms. The rows define combinations of proof
-and test and the columns define the level of formal specification
-(using Ada pre- and post-conditions). Each cell in the table is
-labelled with a letter indicating whether or not the combination
-of specification level and proof/test combination is required (R),
-optional (O) or not applicable (NA).
+The following table presents valid combinations of proof and test for
+individual subprograms. The rows define combinations of proof and test
+and the columns define the level of formal specification (using Ada
+pre and postconditions). Each cell in the table is labelled with a
+letter indicating whether or not the combination of specification
+level and proof/test combination is required (R), optional (O) or not
+applicable (NA).
 
 \begin{center}
 \begin{tabular}{l | c | c | c}
@@ -388,51 +385,41 @@ optional (O) or not applicable (NA).
 \end{tabular}
 \end{center}
 
-In all cases, test uses the executable semantics of pre- and 
+In all cases, test uses the executable semantics of pre and
 postconditions to check the program partially meets its specification.
-If the behaviour is fully specified, then the pre- and postconditions 
-can be used without additional test output checking - thus saving more.
+If the behaviour is fully specified, then the pre and postconditions
+can be used without additional test output checking - thus saving
+more.
 
-The following list covers all of the interesting combinations from 
-the table above.
-Unless explicitly stated
-otherwise, each scenario assumes a full specification is provided in
-pre-/post-conditions and proof initially fails.  
-We assume the user has used the \newspark subset,
-carried out flow analysis and completed proof of absence of run-time
-errors.
-
+The following list covers all of the interesting combinations from the
+table above. Unless explicitly stated otherwise, each scenario assumes
+a full specification is provided in preconditions/postconditions and
+proof initially fails. We assume the user has used the \newspark
+subset, carried out flow analysis and completed proof of absence of
+runtime errors.
 
 \begin {enumerate}
-\item \emph{Only prove} - try to fully prove
-  the code by strengthening preconditions and adding assertions until
-  full proof is achieved. No testing is involved in this scenario.
-
-\item \emph{Only test} - there are at least two reasons why a user
-   may resort to only testing a subprogram:
-
-   \begin{itemize}
-      \item the proof may be too difficult to perform because the 
-            structure of the code is very different from the structure
-            of the specification or
-
-      \item contracts can not be written in Ada 2012, for example 
-            because they represent an interface to an external device
-   \end{itemize}
-
-
+\item \emph{Only prove} - try to fully prove the code by strengthening
+  preconditions and adding assertions until full proof is achieved. No
+  testing is involved in this scenario.
+\item \emph{Only test} - there are at least two reasons why a user may
+  resort to only testing a subprogram:
+  \begin{itemize}
+  \item the proof may be too difficult to perform because the
+    structure of the code is very different from the structure of the
+    specification or
+  \item contracts can not be written in Ada 2012, for example because
+    they represent an interface to an external device
+  \end{itemize}
 \item \emph{Prove some, test some} - attempt to prove the code, fail
   and resort to testing. At this point the user has two different
   options:
-
   \begin{itemize}
   \item Perform exclusively testing (prove no properties).
-
   \item Prove only a subset of the properties of the code and test the
-    remaining. For instance, prove freedom of run-time exceptions and
+    remaining. For instance, prove freedom of runtime exceptions and
     test functional behaviour-related contracts.
   \end{itemize}
-
 \item \emph{Test to debug contracts} - make a first unsuccessful
   attempt to prove the code and afterwards utilize testing to identify
   potential issues with the contracts or the implementation. The tests
@@ -440,12 +427,11 @@ errors.
   it provable. In this scenario, testing reveals the actions that need
   be performed to achieve full proof. [Angela's solution to the
   ?VSTTE? competition.]
-
-\item \emph{Prove some, test everything} - a standard may require
-  all functionality to be tested. 
-  However, as an additional verification activity, performing proof could
-  improve the safety case and provide more confidence in the code. In
-  this scenario the user would try to prove as much as possible.
+\item \emph{Prove some, test everything} - a standard may require all
+  functionality to be tested. However, as an additional verification
+  activity, performing proof could improve the safety case and provide
+  more confidence in the code. In this scenario the user would try to
+  prove as much as possible.
 \end{enumerate}
 
 When more than one units have to be analysed, any combination of the
@@ -456,11 +442,9 @@ would be possible to have:
   provided. Consequently Q is tested. Subprogram P, which has to be
   proven, calls Q. A partial specification is therefore added to Q to
   assist with the proof of P.
-
 \item a subprogram that has only been tested is utilized in the proof
   of one of its callers.
 \end{itemize}
-
 
 
 \section{Scenario evaluation}
@@ -469,22 +453,19 @@ would be possible to have:
 In this section, we will demonstrate how three functions can be fully
 verified without resorting to testing.
 
-The entire
-process that was followed will be presented. The chosen functions have
-precise mathematical definitions and consequently it was hypothesised
-that fully proving them should be possible. The functions being 
-verified are:
+The entire process that was followed will be presented. The chosen
+functions have precise mathematical definitions and consequently it
+was hypothesised that fully proving them should be possible. The
+functions being verified are:
 \begin{enumerate}
 \item Function \emph{Is\_Prime} takes a natural number as its single
   parameter and returns true if that number is a prime and false if it
   is not. A natural number (\ie $1, 2, 3, 4, \dots$) is called a prime
   if it has exactly two positive divisors, $1$ and the number itself.
-
 \item Function \emph{Are\_Coprime} takes two natural numbers as
   parameters and returns true if these numbers are coprime and false
   if they are not. Two naturals X and Y are called coprime if the only
   natural that evenly divides both of them is $1$.
-
 \item Function \emph{Factorial} takes a natural number as its
   parameter and returns this number's factorial. The factorial of a
   natural number is the product of that number and all natural numbers
@@ -511,7 +492,6 @@ To resolve these, it must be shown that:
 \begin{enumerate}
 \item the value returned by the expression $N * Factorial (N - 1)$ is
   within the range $Natural'First .. Natural'Last$.
-
 \item the result of $N - 1$ is within the range $Natural'First
   .. Natural'Last$.
 \end{enumerate}
@@ -538,86 +518,84 @@ are discharged.
 The initial assumption that was made was that the selected functions
 would be proof-friendly due to their mathematically well-defined
 nature. This was indeed the case. However, recursive definitions (such
-as the definition of function \emph{Factorial}) can 
-complicate the proving process.
+as the definition of function \emph{Factorial}) can complicate the
+proving process.
+
 
 \subsection{Only test}
 Proving a unit may not be possible because either the contract can not
-easily be specified in terms of Ada pre- and post-conditions or 
-because it is difficult to derive the implementation from the 
-specification.  This section provides an example where
-testing was deemed to be more efficient.
+easily be specified in terms of Ada pre and postconditions or because
+it is difficult to derive the implementation from the specification.
+This section provides an example where testing was deemed to be more
+efficient.
 
 \subsubsection{Mergesort}
 The code that follows is an Ada implementation of the top-down version
 of a well known sorting algorithm called mergesort.
-\lstinputlisting[language=SPARK, title=Mergesort's
-  Spec]{Code/tested/mergesort.ads} \lstinputlisting[language=SPARK,
-  title=Mergesort's Body]{Code/tested/mergesort.adb}
+\lstinputlisting[language=SPARK, title=Mergesort's Spec]{Code/tested/mergesort.ads}
+\lstinputlisting[language=SPARK, title=Mergesort's Body]{Code/tested/mergesort.adb}
 
 \subsubsection{\vectorcast tool and testing results}
-We used \vectorcast to try to verify the software against the 
+We used \vectorcast to try to verify the software against the
 specification for Mergesort.
 
-\vectorcast reads the Ada source code and
-assists in the generation of a test harness and provides a convenient
-interface for defining test input data and expected results.
-The effort to define the test harness and test cases was just a few
-hours but we expect that for users who have been on a \vectorcast
-training course and are familiar with the tool 
-would be able to put together
-the test harness and full test suite for mergesort within 30 minutes.
+\vectorcast reads the Ada source code and assists in the generation of
+a test harness and provides a convenient interface for defining test
+input data and expected results. The effort to define the test
+harness and test cases was just a few hours but we expect that for
+users who have been on a \vectorcast training course and are familiar
+with the tool would be able to put together the test harness and full
+test suite for mergesort within 30 minutes.
 
-If \vectorcast had support for Ada 2012 Pre- and Postconditions then 
-it would have been possible to decide not to define the expected results
+If \vectorcast had support for Ada 2012 pre and postconditions then it
+would have been possible to decide not to define the expected results
 and use the success or failure of the execution of the postcondition
-to represent the result of the test. This would have reduced 
-testing effort.
+to represent the result of the test. This would have reduced testing
+effort.
 
 Even though the tests that were added were very basic (a total of 3
 pairs of inputs and their expected outputs were written), 100\%
 statement coverage and 96\% branch coverage was achieved. All tests
 yielded the expected results.
 
-
 \subsubsection{Examples where proof should not be used}
-There are some cases where proof is difficult to achieve even when
-a formal specificaton has been defined. This is unusual in the 
-applications we have developed but should be considered a valid
-reason for deciding not to prove a subprogram. Some examples are:
+There are some cases where proof is difficult to achieve even when a
+formal specificaton has been defined. This is unusual in the
+applications we have developed but should be considered a valid reason
+for deciding not to prove a subprogram. Some examples are:
 
 \begin{itemize}
-   \item Contract or code contains non-linear expressions, for example 
-         Result = X**Y (although Factorial defined above is a 
-         counter-example);
-   \item Code structure is significantly differenet from specification
-         (binary sort is an example where proof is possible but
-          should only be tackled by advanced users)
+\item Contract or code contains non-linear expressions, for example
+  Result = X**Y (although Factorial defined above is a
+  counter-example);
+\item Code structure is significantly differenet from specification
+  (binary sort is an example where proof is possible but should only
+  be tackled by advanced users)
 \end{itemize}
 
 
 \subsection{Prove some and test some}
 Having an accurate contract and a flawlessly annotated implementation,
 unfortunately, does not always guarantee that all properties of the
-code will be fully verified.  Theorem provers are the best option
+code will be fully verified. Theorem provers are the best option
 currently available for performing automated reasoning and even though
-they improve on a daily basis they are still far from perfect.  This
+they improve on a daily basis they are still far from perfect. This
 section presents two examples and shows two different courses of
 action that a user can follow when proof is not (directly) achievable.
 
 \subsubsection{Fall back to testing}
 Current theorem provers are great with linear arithmetic but struggle
 with non-linear arithmetic as shown in this example.
-\lstinputlisting[language=SPARK, title=Spec Of Example
-  One]{Code/proof_failed/example_one/example_one.ads}
-\lstinputlisting[language=SPARK, title=Body Of Example
-  One]{Code/proof_failed/example_one/example_one.adb} The given code
-should be provable with its current annotations but the tools are not
-able to discharge the overflow check associated with line
-10. Restructuring the code and/or the annotations could potentially
-enable the tools to achieve full proof. However, for this example, due
-to the simplicity of the code, performing a manual review and writing
-some basic tests was deemed to be more cost-effective.
+\lstinputlisting[language=SPARK, title=Spec Of Example One]
+{Code/proof_failed/example_one/example_one.ads}
+\lstinputlisting[language=SPARK, title=Body Of Example One]
+{Code/proof_failed/example_one/example_one.adb}
+The given code should be provable with its current annotations but the
+tools are not able to discharge the overflow check associated with
+line 10. Restructuring the code and/or the annotations could
+potentially enable the tools to achieve full proof. However, for this
+example, due to the simplicity of the code, performing a manual review
+and writing some basic tests was deemed to be more cost-effective.
 
 \subsubsection{Perform a partial proof}
 Proof is easily applied to leaf procedures and functions but can be
@@ -625,10 +603,12 @@ more tricky for higher level procedures. In the following example all
 of the functions declared in the specification were proven
 automatically. Test was used to demonstrate the top-level Sort
 procedure.
-\lstinputlisting[language=SPARK, title=Spec Of Example
-Two]{Code/proof_failed/example_two/sorting.ads}
-\lstinputlisting[language=SPARK, title=Body Of Example
-Two]{Code/proof_failed/example_two/sorting.adb}
+
+\lstinputlisting[language=SPARK, title=Spec Of Example Two]
+{Code/proof_failed/example_two/sorting.ads}
+
+\lstinputlisting[language=SPARK, title=Body Of Example Two]
+{Code/proof_failed/example_two/sorting.adb}
 
 \subsubsection{Points of interest arising from attempting to verify}
 When the tools are unable to discharge a verification condition and
@@ -644,16 +624,16 @@ Predicting if a prover will be able to discharge a certain
 verification condition is not always possible. Results might
 occasionally even differ between provers. None the less, there are
 certain areas where provers are known to perform well (linear
-arithmetic) and other areas where automated proof is harder to
-achieve (non-linear arithmetics). The more accustomed a user becomes
-to the tools, the easier it becomes to predict what will be
-automatically provable. Performing proof when it is expected to be
-easy and testing the remainder of the code is theorised to be the most
-time-efficient code-validating method.
+arithmetic) and other areas where automated proof is harder to achieve
+(non-linear arithmetics). The more accustomed a user becomes to the
+tools, the easier it becomes to predict what will be automatically
+provable. Performing proof when it is expected to be easy and testing
+the remainder of the code is theorised to be the most time-efficient
+code-validating method.
 
 \subsection{Test to debug contracts}
 Unit test can be used to debug contracts, in some cases, unit tests
-may identify invalid pre- or postconditions more quickly than review.
+may identify invalid pre or postconditions more quickly than review.
 
 Todo: Expand this section.
 
@@ -671,11 +651,12 @@ view of the outside world required for the formal model. In this case,
 a combination of partial proof and test is ideal although pure test
 would be sufficient.
 
-An example of this is a logging procedure. We may want to prove that higher 
-level functions call the logging procedure and update a log when an
-error occurs but the proof may not care what data is written. In this case
-we would write a partial postcondition on the logging function and write
-a test to ensure the correct data is written to the file.
+An example of this is a logging procedure. We may want to prove that
+higher level functions call the logging procedure and update a log
+when an error occurs but the proof may not care what data is
+written. In this case we would write a partial postcondition on the
+logging function and write a test to ensure the correct data is
+written to the file.
 
 \section{Summary}
 
@@ -704,8 +685,8 @@ generally applicable.
 
 Unit testing: At least Ada 2012 support required in unit testing
 tools. Unit test tools should support the execution of contracts and
-allow the result of a postcondition execution in place of "expected
-outputs". Unit test tools should support turning on and off execution
+allow the result of a postcondition execution in place of ``expected
+outputs''. Unit test tools should support turning on and off execution
 of specific contracts (to support formal testing)
 
 Proof: non-linear proof floating point proof
