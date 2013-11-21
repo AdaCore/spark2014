@@ -1444,10 +1444,14 @@ package body Flow.Analysis is
 
          The_Var_Is_Array : constant Boolean :=
            (The_Var.Kind = Direct_Mapping
-              and then Is_Array_Type (Etype (The_Var.Node)))
+              and then Ekind (Etype (The_Var.Node)) in Type_Kind
+              and then Has_Array_Type (Etype (The_Var.Node)))
            or else
            (The_Var.Kind = Record_Field
-              and then Is_Array_Type (Etype (The_Var.Component.Last_Element)));
+              and then Ekind (Etype (The_Var.Component.Last_Element))
+                         in Type_Kind
+              and then Has_Array_Type
+                         (Etype (The_Var.Component.Last_Element)));
          --  Notes if The_Var refers to an array.
 
          Use_Vertex_Points_To_Itself : constant Boolean :=

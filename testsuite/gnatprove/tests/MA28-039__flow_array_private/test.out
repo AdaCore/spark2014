@@ -1,0 +1,2 @@
+init.adb:15:18: warning: "A" might not be initialized
+init.adb:15:23: warning: range check might fail
