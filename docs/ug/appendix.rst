@@ -391,7 +391,7 @@ Rules and Restrictions that are Not Yet Checked
    or safety is incomplete if such subtypes or constants are used.  A
    user selectable restriction that disallows the use of such
    constants and subtypes rendering the dependency relations complete
-   is planned but not yet implmented.  The onus is currently on the
+   is planned but not yet implemented.  The onus is currently on the
    user to check that nonpreealborable constants and subtypes are not
    used if complete dependency relations for information-flow analysis
    are required.
