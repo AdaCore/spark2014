@@ -1,0 +1,2 @@
+ALL XFAIL currently fails in gnat2why translation (LC17-035)
+
