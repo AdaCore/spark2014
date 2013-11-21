@@ -1,4 +1,4 @@
-package body NG is 
+package body NG is
 
    --  Interface to sensors
 
@@ -52,6 +52,7 @@ package body NG is
    begin
       if ThisCount - PrevCount < ThisTime - PrevTime then
          Success := False;
+         Result  := 0;
          return;
       end if;
 

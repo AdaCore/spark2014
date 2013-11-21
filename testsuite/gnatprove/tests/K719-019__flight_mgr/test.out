@@ -5,8 +5,10 @@ flight_manager.adb:13:46: info: overflow check proved
 flight_manager.adb:19:21: warning: overflow check might fail
 flight_manager.adb:19:43: info: division check proved
 flight_manager.adb:19:43: warning: overflow check might fail
+flight_manager.adb:36:27: warning: "Result.X_Speed" might not be initialized
 flight_manager.adb:36:37: warning: overflow check might fail
 flight_manager.adb:36:53: warning: overflow check might fail
+flight_manager.adb:37:27: warning: "Result.Y_Speed" might not be initialized
 flight_manager.adb:37:37: warning: overflow check might fail
 flight_manager.adb:37:53: warning: overflow check might fail
 flight_manager.ads:10:17: warning: postcondition might fail

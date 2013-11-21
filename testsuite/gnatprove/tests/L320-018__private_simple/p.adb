@@ -1,10 +1,12 @@
 package body P is
    pragma SPARK_Mode (Off);
-   function Get (X : T) return T is
-      Tmp : T;
+
+   function Init return T is
+      A : T;
    begin
-      Tmp := X;
-      return Tmp;
-   end Get;
+      return A;
+   end Init;
+
+   function Get (X : T) return T is (X);
 end P;
 

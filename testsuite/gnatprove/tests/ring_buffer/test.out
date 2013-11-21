@@ -1,16 +1,37 @@
+harness.adb:3:20: warning: unused initial value of "X"
+harness.adb:3:23: warning: unused initial value of "Y"
+harness.adb:3:26: warning: unused initial value of "Z"
+harness.adb:7:04: warning: statement has no effect
+harness.adb:7:11: warning: unused assignment to "R"
 harness.adb:8:4: info: precondition proved
+harness.adb:8:04: warning: statement has no effect
+harness.adb:8:10: warning: unused assignment to "R"
 harness.adb:9:4: info: precondition proved
+harness.adb:9:04: warning: statement has no effect
+harness.adb:9:10: warning: unused assignment to "R"
 harness.adb:10:4: info: precondition proved
+harness.adb:10:04: warning: statement has no effect
+harness.adb:10:09: warning: unused assignment to "R"
+harness.adb:10:12: warning: unused assignment to "H"
 harness.adb:11:4: warning: assertion might fail, requires H = X
 harness.adb:12:4: info: precondition proved
+harness.adb:12:04: warning: statement has no effect
+harness.adb:12:10: warning: unused assignment to "R"
 harness.adb:13:4: info: precondition proved
+harness.adb:13:04: warning: statement has no effect
+harness.adb:13:09: warning: unused assignment to "R"
+harness.adb:13:12: warning: unused assignment to "H"
 harness.adb:14:4: warning: assertion might fail, requires H = Y
 harness.adb:15:4: info: precondition proved
+harness.adb:15:04: warning: statement has no effect
+harness.adb:15:09: warning: unused assignment to "R"
+harness.adb:15:12: warning: unused assignment to "H"
 harness.adb:16:4: warning: assertion might fail, requires H = Z
-ring_buf.adb:11:36: info: division check proved
-ring_buf.adb:12:28: info: range check proved
-ring_buf.adb:19:32: info: division check proved
-ring_buf.adb:20:28: info: range check proved
+ring_buf.adb:7:29: info: length check proved
+ring_buf.adb:13:36: info: division check proved
+ring_buf.adb:14:28: info: range check proved
+ring_buf.adb:21:32: info: division check proved
+ring_buf.adb:22:28: info: range check proved
 ring_buf.ads:47:20: info: postcondition proved
 ring_buf.ads:55:19: info: postcondition proved
 ring_buf.ads:60:15: info: postcondition proved

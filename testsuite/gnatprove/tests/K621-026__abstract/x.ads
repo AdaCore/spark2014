@@ -3,8 +3,8 @@ package X is
    procedure P (x : T);
 private
    pragma SPARK_Mode (Off);
-type Ptr is access integer;
+   type Ptr is access integer;
    type T is record
-      A : Ptr;
+      A : Ptr := null;
    end record;
 end X;

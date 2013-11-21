@@ -1,4 +1,4 @@
-package body Subar is 
+package body Subar is
 
    procedure F (X : A) is
    begin
@@ -22,6 +22,7 @@ package body Subar is
    procedure Try_D is
       AD : D (1..10);
    begin
+      AD := D'(1 .. 10 => 10);
       AD (1) := 1;
       G (AD);
    end Try_D;
@@ -37,6 +38,7 @@ package body Subar is
       type Smaller_Local is new Smaller (X - 1 .. X + 1);
       Z : Smaller_Local;
    begin
+      Z := Smaller_Local'(X - 1 .. X + 1 => 0);
       Z (X) := 1;
    end Local;
 

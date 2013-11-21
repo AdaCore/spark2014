@@ -1,4 +1,4 @@
-package body Flight_Manager is 
+package body Flight_Manager is
 
    function Set_Engine_Speed
      (Position_X, Position_Y : Integer; Target_X, Target_Y : Integer)
@@ -34,9 +34,9 @@ package body Flight_Manager is
       end if;
 
       if Position_Y > Target_Y then
-         Result.X_Speed  := -100;
+         Result.Y_Speed  := -100;
       elsif Position_Y < Target_Y then
-         Result.X_Speed  := 100;
+         Result.Y_Speed  := 100;
       end if;
 
       Adjust_Speed (Result.X_Speed, My_Abs (Position_X - Target_X));

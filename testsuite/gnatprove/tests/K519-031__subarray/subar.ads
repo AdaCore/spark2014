@@ -1,4 +1,4 @@
-package Subar is 
+package Subar is
    type One_Twenty is range 1 .. 20;
    subtype One_Ten is One_Twenty range 1 .. 10;
 
@@ -19,11 +19,11 @@ package Subar is
    type Test is array (11..19) of Integer;
 
    procedure F (X : A)
-      with Pre => (X (1) = 1);
+     with Pre => (X (1) = 1);
 
    procedure G (X : C)
-      with Pre => (X (X'First) = 1);
+     with Pre => (X (X'First) = 1);
 
    procedure Local (X : One_Twenty)
-      with Pre => (1 < X and then X < 10);
+     with Pre => (1 < X and then X < 10);
 end Subar;

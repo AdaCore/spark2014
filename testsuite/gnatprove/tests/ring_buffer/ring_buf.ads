@@ -10,7 +10,7 @@
 --    Alfa)
 --    * We do not consider initialization issues
 
-package Ring_Buf is 
+package Ring_Buf is
 
    Buf_Size : constant := 10000;
    --  The problem description requires an array of variable size to be stored
@@ -41,9 +41,9 @@ package Ring_Buf is
    --  return a buffer of size N. As we have fixed N, this function does not
    --  make much sense, and a user of this interface can simply declare a
    --  variable of type Ring_Buffer.
-   -- function Create (N : Positive) return Ring_Buffer;
+   --  function Create (N : Positive) return Ring_Buffer;
 
-   procedure Clear (R : in out Ring_Buffer)
+   procedure Clear (R : out Ring_Buffer)
       with Post => (Is_Empty (R));
 
    function Head (R : in Ring_Buffer) return Integer is (R.Data (R.First));

@@ -1,15 +1,37 @@
 subar.adb:5:7: info: assertion proved
+subar.adb:12:14: warning: "Ab" might not be initialized
+subar.adb:12:14: warning: unused assignment
 subar.adb:13:7: info: precondition proved
+subar.adb:13:07: warning: statement has no effect
 subar.adb:13:10: info: length check proved
 subar.adb:18:7: info: assertion proved
 subar.adb:18:26: warning: array index check might fail
-subar.adb:26:7: info: precondition proved
-subar.adb:33:7: info: precondition proved
-subar.adb:37:7: warning: range check might fail
-subar.adb:40:10: info: index check proved
-subar.adb:48:11: info: range check proved
-subar.adb:51:14: info: overflow check proved
-subar.adb:52:11: info: range check proved
-subar.adb:55:14: info: overflow check proved
-subar.adb:57:11: warning: range check might fail
-subar.ads:25:24: warning: array index check might fail
+subar.adb:25:10: warning: unused assignment
+subar.adb:25:14: info: length check proved
+subar.adb:26:14: warning: unused assignment
+subar.adb:27:7: info: precondition proved
+subar.adb:27:07: warning: statement has no effect
+subar.adb:33:14: warning: "Ae" might not be initialized
+subar.adb:33:14: warning: unused assignment
+subar.adb:34:7: info: precondition proved
+subar.adb:34:07: warning: statement has no effect
+subar.adb:38:7: warning: range check might fail
+subar.adb:41:09: warning: unused assignment
+subar.adb:41:26: warning: length check might fail
+subar.adb:42:10: info: index check proved
+subar.adb:42:13: warning: unused assignment
+subar.adb:48:07: warning: initialization has no effect
+subar.adb:50:11: info: range check proved
+subar.adb:50:32: warning: statement has no effect
+subar.adb:53:09: warning: unused assignment
+subar.adb:53:14: info: overflow check proved
+subar.adb:54:11: info: range check proved
+subar.adb:54:32: warning: statement has no effect
+subar.adb:57:09: warning: unused assignment
+subar.adb:57:14: info: overflow check proved
+subar.adb:59:11: warning: range check might fail
+subar.adb:59:32: warning: statement has no effect
+subar.ads:21:17: warning: unused initial value of "X"
+subar.ads:24:17: warning: unused initial value of "X"
+subar.ads:25:23: warning: array index check might fail
+subar.ads:27:21: warning: unused initial value of "X"
