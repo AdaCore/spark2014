@@ -7,6 +7,7 @@ is
    --  * the ``sequence_of_statements`` of a ``loop_statement``; or
    --  * the ``sequence_of_statements`` or ``declarative_part`` of a
    --    ``block_statement``.
+   --  The construct is said to apply to the innermost enclosing loop.
    --  [Roughly speaking, a Loop_Invariant or Loop_Variant pragma shall only
    --  occur immediately within a loop statement except that intervening
    --  block statements are ignored for purposes of this rule.]
@@ -23,6 +24,7 @@ is
    --  * the ``sequence_of_statements`` of a ``loop_statement``; or
    --  * the ``sequence_of_statements`` or ``declarative_part`` of a
    --    ``block_statement``.
+   --  The construct is said to apply to the innermost enclosing loop.
    --  [Roughly speaking, a Loop_Invariant or Loop_Variant pragma shall only
    --  occur immediately within a loop statement except that intervening
    --  block statements are ignored for purposes of this rule.]

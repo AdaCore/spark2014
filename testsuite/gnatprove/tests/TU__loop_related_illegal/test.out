@@ -1,11 +1,11 @@
-loop_related_illegal.adb:16:07: pragma "Loop_Invariant" must appear immediately within the statements of a loop
-loop_related_illegal.adb:34:13: pragma "Loop_Invariant" must appear immediately within the statements of a loop
-loop_related_illegal.adb:49:44: expected a discrete type
-loop_related_illegal.adb:49:44: found type "Real" defined at line 44
-loop_related_illegal.adb:70:07: pragma "Assert" with Loop_Entry must appear immediately within the statements of a loop
-loop_related_illegal.adb:86:16: attribute "Loop_Entry" must appear within appropriate pragma
-loop_related_illegal.adb:111:36: prefix of attribute "Loop_Entry" cannot reference local entities
-loop_related_illegal.adb:131:37: prefix of attribute "Loop_Entry" that applies to outer loop must denote an entity
+loop_related_illegal.adb:17:07: pragma "Loop_Invariant" must appear immediately within the statements of a loop
+loop_related_illegal.adb:36:13: pragma "Loop_Invariant" must appear immediately within the statements of a loop
+loop_related_illegal.adb:51:44: expected a discrete type
+loop_related_illegal.adb:51:44: found type "Real" defined at line 46
+loop_related_illegal.adb:72:07: pragma "Assert" with Loop_Entry must appear immediately within the statements of a loop
+loop_related_illegal.adb:88:16: attribute "Loop_Entry" must appear within appropriate pragma
+loop_related_illegal.adb:113:36: prefix of attribute "Loop_Entry" cannot reference local entities
+loop_related_illegal.adb:133:37: prefix of attribute "Loop_Entry" that applies to outer loop must denote an entity
 loop_related_illegal_2.adb:10:07: warning: initialization has no effect
 loop_related_illegal_2.adb:14:12: warning: unused assignment
 loop_related_illegal_2.adb:16:12: warning: unused assignment

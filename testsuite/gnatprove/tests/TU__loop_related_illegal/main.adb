@@ -1,7 +1,7 @@
 with Loop_Related_Illegal_2; use Loop_Related_Illegal_2;
 
 procedure Main is
---  TU: 9. The elaboration of a Checked Loop_Variant pragma begins by
+--  TU: 10. The elaboration of a Checked Loop_Variant pragma begins by
 --  evaluating the ``discrete_expressions`` in textual order. For the first
 --  elaboration of the pragma within a given execution of the enclosing loop
 --  statement, no further action is taken. For subsequent elaborations of the
