@@ -355,8 +355,8 @@ Block Centre about their location and receive Movement Authorities,
 using cab signaling instead of track-side signaling.
 
 We made some experiments with \newspark to see if one could formalize
-the ETCS System Requirement Specification (SRS, ERA UNISIG
-SUBSET-026). We should acknowledge that using \newspark for
+the ETCS System Requirement Specification (SRS, \emph{ERA UNISIG
+SUBSET-026}). We should acknowledge that using \newspark for
 formalizing \emph{system} requirements is a bit excessive and out of
 scope for the language. We made nonetheless this formalization attempt
 because we wanted to give a formal semantics to this system
@@ -518,7 +518,7 @@ it lead to quite readable specifications.
 
 The second goal was to evaluate the automatic proving capabilities of
 \newspark on some parts of the specification. We were able to prove
-the complete absence of run-time errors, plus the contracts of all
+the complete absence of run-time errors, plus the functional contracts of all
 subprograms except the one of \verb|Restrictive_Merge|. In this
 procedure, the postcondition and the loop invariant (added to be able
 to prove the postcondition) could not be automatically proved by
