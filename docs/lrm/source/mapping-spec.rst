@@ -143,7 +143,7 @@ Specification in |SPARK|:
    :language: ada
    :linenos:
 
-Boy in |SPARK|:
+Body in |SPARK|:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__pre_post_return/swap_add_max_14.adb
    :language: ada
@@ -156,7 +156,7 @@ Attributes of unconstrained out parameter in precondition
 
 The following example illustrates the fact that the attributes of an unconstrained
 formal array parameter of mode "out" are permitted to appear in a precondition.
-The flow analyser also needs to be smart about this, since it knows the X'First and
+The flow analyzer also needs to be smart about this, since it knows that X'First and
 X'Last are well-defined in the body, even though the content of X is not.
 
 Specification in SPARK 2005:
@@ -190,7 +190,7 @@ Data Abstraction, Refinement and Initialization
 
 This example demonstrates data abstraction and refinement.  It also
 shows how abstract data is shown to be initialized during package
-elaboration (it need not be it could be initialized through an
+elaboration (it need not be - it could be initialized through an
 explicit subprogram call, in which case the Initalizes annotation
 should not be given).  There is also a demonstration of how procedures
 and functions can be nested within other procedures and
@@ -547,7 +547,7 @@ Initialized by declaration
 ++++++++++++++++++++++++++
 
 The example that follows presents a way in SPARK 2005 of initializing
-a concrete own variables (a state that is not refined) at the point
+a concrete own variable (a state that is not refined) at the point
 of the declaration of the variables that compose it.
 
 In |SPARK| the client's view of package state is either visible
@@ -608,7 +608,7 @@ Body in |SPARK|:
 Private, concrete state
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-In SPARK 2005 variables decared in the private part of a package are
+In SPARK 2005 variables declared in the private part of a package are
 considered to be concrete own variables.  In |SPARK| they are hidden
 state and must be constituents of a state abstraction.
 
@@ -909,8 +909,8 @@ Basic Input and Output Device Drivers
 
 The following example shows a main program - Copy - that reads all available data
 from a given input port, stores it internally during the reading process in a stack
-and then outputs all the data read to an output port. The specification of the
-stack package are not being presented since they are identical to previous examples.
+and then outputs all the data read to an output port. The specifications of the
+stack packages are not presented since they are identical to previous examples.
 
 Specification of main program in SPARK 2005:
 
@@ -1297,11 +1297,11 @@ its delarative part.
 |SPARK| does not have the inherit annotation and only enforces the
 restriction that a package can only initialize an object declared in
 its declarative region. Hence, in |SPARK| two package bodies that
-depend on each other's specification may be legal as is calling a user
+depend on each other's specification may be legal, as is calling a user
 defined suprogram.
 
 Instead of the restrictions of SPARK 2005 a set of rules is applied in
-|SPARK| which determines when a pargama Elaborate_Body, Elaborate_All
+|SPARK| which determines when a pragma Elaborate_Body, Elaborate_All
 or Elaborate is required for a package.  These rules avoid elaboration
 order dependencies.
 
@@ -1355,7 +1355,7 @@ Assert (in loop) contract
 
 The following example demonstrates how the SPARK 2005 `assert`
 annotation is used inside a loop as a loop invariant. It cuts the loop
-and on each iteration of the loop and the list of existing hypotheses
+and on each iteration of the loop the list of existing hypotheses
 for the path is cleared and the expression of the assert expression
 generates a verification condition to prove the expression is True and
 the expression is the basis of the new hypotheses.
