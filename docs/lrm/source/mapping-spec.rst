@@ -32,7 +32,7 @@ The following subsections of this appendix demonstrate how many SPARK
 shows, for each SPARK 2005 annotation or SPARK 2005 specific feature,
 a reference to the equivalent or alternative in |SPARK|.  In the table
 headings 2014 RM is the |SPARK| Reference Manual and Mapping is this
-appendix, The SPARK 2005 to |SPARK| mapping specification.
+appendix, the SPARK 2005 to |SPARK| mapping specification.
 
 ================= ======================================== ================================================ ========
 SPARK 2005        SPARK 2014 Alternative                   2014 RM                                          Mapping
