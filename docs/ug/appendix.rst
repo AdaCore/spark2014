@@ -365,10 +365,10 @@ Features Not Yet Implemented in Proof
 
 #. Attribute 'Valid is currently assumed to always return True.
 
-#. Values read from an external source are assumed to be valid values. 
-   Currently there is no model of invalidity or undefinedness.  The onus 
-   is on the user to ensure that all values read from an external source are 
-   valid.  The use of an invalid value invalidates any proofs associated with 
+#. Values read from an external source are assumed to be valid values.
+   Currently there is no model of invalidity or undefinedness.  The onus
+   is on the user to ensure that all values read from an external source are
+   valid.  The use of an invalid value invalidates any proofs associated with
    the value.
 
 Rules and Restrictions that are Not Yet Checked
@@ -395,7 +395,7 @@ Rules and Restrictions that are Not Yet Checked
    user to check that nonpreealborable constants and subtypes are not
    used if complete dependency relations for information-flow analysis
    are required.
-   
+
 
 Portability Issues
 ==================

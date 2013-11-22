@@ -134,8 +134,8 @@ The basic rule is that you can't turn SPARK_Mode back On, once you
 have explicitly (with a pragma) turned if Off. So the following rules
 apply:
 
-If a subprogram spec has SPARK_Mode Off, then the body must also have
-SPARK_Mode Off.
+If a subprogram spec has SPARK_Mode Off, then the body cannot have
+SPARK_Mode On.
 
 For a package, we have four parts:
 
@@ -145,8 +145,8 @@ For a package, we have four parts:
 #. the elaboration code after ``begin``
 
 For a package, the rule is that if you explicitly turn SPARK_Mode
-Off for any part, then all the following parts must have SPARK_Mode
-Off. Note that this may require repeating a pragma SPARK_Mode (Off)
+Off for any part, then all the following parts cannot have SPARK_Mode
+On. Note that this may require repeating a pragma SPARK_Mode (Off)
 in the body. For example, if we have a configuration pragma
 SPARK_Mode (On) that turns the mode on by default everywhere, and
 one particular package spec has pragma SPARK_Mode (Off), then that
