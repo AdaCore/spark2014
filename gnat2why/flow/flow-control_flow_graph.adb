@@ -1512,7 +1512,7 @@ package body Flow.Control_Flow_Graph is
          V);
       CM.Include (Union_Id (N), No_Connections);
       CM (Union_Id (N)).Standard_Entry := V;
-      CM (Union_Id (N)).Standard_Exits.Insert (V);
+      CM (Union_Id (N)).Standard_Exits := To_Set (V);
    end Do_Null_Or_Raise_Statement;
 
    -----------------------------
