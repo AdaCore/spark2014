@@ -5402,9 +5402,11 @@ package body Gnat2Why.Expr is
         (Var       : W_Identifier_Id;
          In_Expr   : Node_Id) return W_Expr_Id
       is
-         Bool_True  : constant W_Expr_Id :=
-           New_Literal (Domain => EW_Term,
-                        Value  => EW_True);
+         True_Expr  : constant W_Expr_Id :=
+           (if Domain = EW_Pred then +True_Pred
+            else
+               New_Literal (Domain => EW_Term,
+                            Value  => EW_True));
       begin
 
          --  First handle the case where there is a subtype mark of a record
@@ -5426,7 +5428,7 @@ package body Gnat2Why.Expr is
                  not Has_Discriminants (Ty) or else
                  not Is_Constrained (Ty)
                then
-                  return Bool_True;
+                  return True_Expr;
                end if;
 
                declare
@@ -5440,15 +5442,19 @@ package body Gnat2Why.Expr is
                                 Prepare_Args_For_Subtype_Check (Ty, +Var),
                               Typ  => EW_Bool_Type);
                begin
-                  return
-                    New_Conditional
-                      (Domain    => Domain,
-                       Condition => Call,
-                       Then_Part => Bool_True,
-                         Else_Part =>
-                           New_Literal (Domain => EW_Term,
-                                        Value => EW_False),
-                       Typ       => EW_Bool_Type);
+                  if Domain = EW_Pred then
+                     return Call;
+                  else
+                     return
+                       New_Conditional
+                         (Domain    => Domain,
+                          Condition => Call,
+                          Then_Part => True_Expr,
+                          Else_Part =>
+                            New_Literal (Domain => EW_Term,
+                                         Value => EW_False),
+                          Typ       => EW_Bool_Type);
+                  end if;
                end;
             end;
          else
