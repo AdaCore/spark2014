@@ -331,9 +331,15 @@ Features Not Yet Implemented in Both Flow Analysis and Proof
 Features Not Yet Implemented in Flow Analysis
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-#. Flow analysis currently treats all constants and array bounds as
-   static, as the current language does not allow constants to appear in
-   global and dependency contracts.
+#. Flow analysis currently treats all constants, types and array bounds as
+   static, as the current language does not allow constants and types to
+   appear in global and dependency contracts. The consequence is that
+   information flow through constants, type and array bounds is not
+   captured by flow analysis.
+
+   Information flow through constants declared locally is captured, but
+   only in the subprogram they have been declared in (they are again
+   considered to be static objects in nested subprograms).
 
 #. The mode Proof_In for global contracts is not yet supported.
 
