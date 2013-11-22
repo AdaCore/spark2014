@@ -269,7 +269,7 @@ package AR is
   procedure TestB01
 	    (A: in out Arr2T; I1: in IT1; I2: in IT2; E: in ET1)
      with Depends => (A =>+ (E, I1, I2)),
-          Post    => (for all M in IT2 => (A(M) in Arr1T)) and (for all N in IT1 => (for all M in IT2 => (A(M)(N) in ET1)));
+          Post    => (for all M in IT2 => (for all N in IT1 => (for all M in IT2 => (A(M)(N) in ET1))));
 
   procedure TestB02
 	    (A: in out Arr2T; I1: in IT1; I2: in IT2; E: in ET1)
@@ -301,7 +301,7 @@ package AR is
   procedure TestB07
             (A: in out Arr2T; I: in IT2; B: in Arr1T)
      with Depends => (A =>+ (B, I)),
-          Post    => (for all N in IT2 => (A(N) in Arr1T));
+          Post    => True;
 
   procedure TestB08
             (A: in out Arr2T; I: in IT2; B: in Arr1T)
@@ -316,7 +316,7 @@ package AR is
   procedure TestB10
 	    (A: in out Arr2T; I: in IT1; J: in IT2; E: in ET1)
      with Depends => (A =>+ (E, I, J)),
-          Post    => (for all M in IT2 => (A(M) in Arr1T)) and (for all N in IT1 => (for all M in IT2 => (A(M)(N) in ET1)));
+          Post    => (for all N in IT1 => (for all M in IT2 => (A(M)(N) in ET1)));
 
   procedure TestB11
 	    (A: in out Arr2T; I: in IT1; J: in IT2; E: in ET1)
@@ -326,7 +326,7 @@ package AR is
   procedure TestB12
 	    (A: in out Arr2T; I: in IT1; J: in IT2; E: in ET1)
      with Depends => (A =>+ (E, I, J)),
-          Post    => (for all M in IT2 => (A(M) in Arr1T)) and (for all N in IT1 => (for all M in IT2 => (A(M)(N) in ET1)));
+          Post    => (for all N in IT1 => (for all M in IT2 => (A(M)(N) in ET1)));
 
   procedure TestB13
 	    (A: in out Arr2T; I: in IT1; J: in IT2; E: in ET1)
@@ -336,7 +336,7 @@ package AR is
   procedure TestB14
 	    (A: in out Arr2T; I: in IT1; J: in IT2; E: in ET1)
      with Depends => (A =>+ (E, I, J)),
-          Post    => (for all M in IT2 => (A(M) in Arr1T)) and (for all N in IT1 => (for all M in IT2 => (A(M)(N) in ET1)));
+          Post    => (for all N in IT1 => (for all M in IT2 => (A(M)(N) in ET1)));
 
   procedure TestB15
 	    (A: in out Arr2T; I: in IT1; J: in IT2; E: in ET1)
@@ -346,7 +346,7 @@ package AR is
   procedure TestB16
             (A: in out Arr2T; I, J: in IT2; B, C: in Arr1T)
      with Depends => (A =>+ (B, C, I, J)),
-          Post    => (for all N in IT2 => (A(N) in Arr1T));
+          Post    => True;
 
   procedure TestB17
             (A: in out Arr2T; I, J: in IT2; B, C: in Arr1T)
@@ -386,7 +386,7 @@ package AR is
   procedure TestC01
 	    (A: in out Arr3T; I1: in IT1; I2: in IT2; I3: in IT3; E: in ET1)
      with Depends => (A =>+ (E, I1, I2, I3)),
-          Post    => (for all M in IT3 => (A(M) in Arr2T)) and (for all M in IT3 => (for all N in IT2 => (A(M)(N) in Arr1T))) and (for all M in IT3 => (for all N in IT2 => (for all O in IT1 => (A(M)(N)(O) in ET1))));
+          Post    => (for all M in IT3 => (for all N in IT2 => (for all O in IT1 => (A(M)(N)(O) in ET1))));
 
   procedure TestC02
 	    (A: in out Arr3T; I1: in IT1; I2: in IT2; I3: in IT3; E: in ET1)
@@ -418,7 +418,7 @@ package AR is
   procedure TestC07
             (A: in out Arr3T; I: in IT3; B: in Arr2T)
      with Depends => (A =>+ (B, I)),
-          Post    => (for all M in IT3 => (A(M) in Arr2T)) and (for all M in IT3 => (for all N in IT2 => (A(M)(N) in Arr1T))) and (for all M in IT3 => (for all N in IT2 => (for all O in IT1 => (A(M)(N)(O) in ET1))));
+          Post    => (for all M in IT3 => (for all N in IT2 => (for all O in IT1 => (A(M)(N)(O) in ET1))));
 
   procedure TestC08
             (A: in out Arr3T; I: in IT3; B: in Arr2T)
@@ -433,7 +433,7 @@ package AR is
   procedure TestC10
             (A: in out Arr3T; I: in IT3; J: in IT2; B: in Arr1T)
      with Depends => (A =>+ (B, I, J)),
-          Post    => (for all M in IT3 => (A(M) in Arr2T)) and (for all M in IT3 => (for all N in IT2 => (A(M)(N) in Arr1T))) and (for all M in IT3 => (for all N in IT2 => (for all O in IT1 => (A(M)(N)(O) in ET1))));
+          Post    => (for all M in IT3 => (for all N in IT2 => (for all O in IT1 => (A(M)(N)(O) in ET1))));
 
   procedure TestC11
             (A: in out Arr3T; I: in IT3; J: in IT2; B: in Arr1T)
@@ -448,7 +448,7 @@ package AR is
   procedure TestC13
             (A: in out Arr3T; I: in IT3; J: in IT2; B: in Arr2T; C: in Arr1T)
      with Depends => (A =>+ (B, C, I, J)),
-          Post    => (for all M in IT3 => (A(M) in Arr2T)) and (for all M in IT3 => (for all N in IT2 => (A(M)(N) in Arr1T))) and (for all M in IT3 => (for all N in IT2 => (for all O in IT1 => (A(M)(N)(O) in ET1))));
+    Post    => (for all M in IT3 => (for all N in IT2 => (for all O in IT1 => (A(M)(N)(O) in ET1))));
 
   procedure TestC14
             (A: in out Arr3T; I: in IT3; J: in IT2; B: in Arr2T; C: in Arr1T)
@@ -463,7 +463,7 @@ package AR is
   procedure TestC16
 	    (A: in out Arr3T; I: in IT1; J: in IT2; K: in IT3; E: in ET1)
      with Depends => (A =>+ (E, I, J, K)),
-          Post    => (for all M in IT3 => (A(M) in Arr2T)) and (for all M in IT3 => (for all N in IT2 => (A(M)(N) in Arr1T))) and (for all O in IT1 => (for all N in IT2 => (for all M in IT3 => (A(M)(N)(O) in ET1))));
+          Post    => (for all O in IT1 => (for all N in IT2 => (for all M in IT3 => (A(M)(N)(O) in ET1))));
 
   procedure TestC17
 	    (A: in out Arr3T; I: in IT1; J: in IT2; K: in IT3; E: in ET1)
@@ -473,7 +473,7 @@ package AR is
   procedure TestC18
 	    (A: in out Arr3T; I: in IT1; J: in IT2; K: in IT3; E: in ET1)
      with Depends => (A =>+ (E, I, J, K)),
-          Post    => (for all M in IT3 => (A(M) in Arr2T)) and (for all M in IT3 => (for all N in IT2 => (A(M)(N) in Arr1T))) and (for all O in IT1 => (for all N in IT2 => (for all M in IT3 => (A(M)(N)(O) in ET1))));
+          Post    => (for all O in IT1 => (for all N in IT2 => (for all M in IT3 => (A(M)(N)(O) in ET1))));
 
   procedure TestC19
 	    (A: in out Arr3T; I: in IT1; J: in IT2; K: in IT3; E: in ET1)
@@ -483,7 +483,7 @@ package AR is
   procedure TestC20
 	    (A: in out Arr3T; I: in IT1; J: in IT2; K: in IT3; E: in ET1)
      with Depends => (A =>+ (E, I, J, K)),
-          Post    => (for all M in IT3 => (A(M) in Arr2T)) and (for all M in IT3 => (for all N in IT2 => (A(M)(N) in Arr1T))) and (for all O in IT1 => (for all N in IT2 => (for all M in IT3 => (A(M)(N)(O) in ET1))));
+          Post    => (for all O in IT1 => (for all N in IT2 => (for all M in IT3 => (A(M)(N)(O) in ET1))));
 
   procedure TestC21
 	    (A: in out Arr3T; I: in IT1; J: in IT2; K: in IT3; E: in ET1)
@@ -493,7 +493,7 @@ package AR is
   procedure TestC22
             (A: in out Arr3T; I, J: in IT3; B, C: in Arr2T)
      with Depends => (A =>+ (B, C, I, J)),
-          Post    => (for all N in IT3 => (A(N) in Arr2T));
+          Post    => True;
 
   procedure TestC23
             (A: in out Arr3T; I, J: in IT3; B, C: in Arr2T)
@@ -515,7 +515,7 @@ package AR is
   procedure TestC26
             (A: in out Arr3T; I: in IT3; J: in IT2; B: Arr2T; C: in Arr1T)
      with Depends => (A =>+ (B, C, I, J)),
-          Post    => (for all N in IT3 => (A(N) in Arr2T));
+          Post    => True;
 
   procedure TestC27
             (A: in out Arr3T; I: in IT3; J: in IT2; B: Arr2T; C: in Arr1T)
@@ -535,7 +535,7 @@ package AR is
   procedure TestC30
             (A: in out Arr3T; I1, I2: in IT3; J1, J2: in IT2; B, C: in Arr1T)
      with Depends => (A =>+ (B, C, I1, I2, J1, J2)),
-          Post    => (for all N in IT3 => (A(N) in Arr2T));
+          Post    => True;
 
   procedure TestC31
             (A: in out Arr3T; I1, I2: in IT3; J1, J2: in IT2; B, C: in Arr1T)
@@ -571,7 +571,7 @@ package AR is
   procedure TestD01
 	    (A: in out Arr4T; I1: in IT1; I2: in IT2; I3: in IT3; I4: in IT4; E: in ET1)
      with Depends => (A =>+ (E, I1, I2, I3, I4)),
-          Post    => (for all M in IT4 => (A(M) in Arr3T)) and (for all M in IT4 => (for all N in IT3 => (A(M)(N) in Arr2T))) and (for all M in IT4 => (for all N in IT3 => (for all O in IT2 => (A(M)(N)(O) in Arr1T)))) and (for all M in IT4 => (for all N in IT3 => (for all O in IT2 => (for all P in IT1 => (A(M)(N)(O)(P) in ET1)))));
+          Post    => (for all M in IT4 => (for all N in IT3 => (for all O in IT2 => (for all P in IT1 => (A(M)(N)(O)(P) in ET1)))));
 
   procedure TestD02
 	    (A: in out Arr4T; I1: in IT1; I2: in IT2; I3: in IT3; I4: in IT4; E: in ET1)
@@ -606,7 +606,7 @@ package AR is
   procedure TestD07
             (A: in out Arr4T; I: in IT4; B: in Arr3T)
      with Depends => (A =>+ (B, I)),
-          Post    => (for all M in IT4 => (A(M) in Arr3T)) and (for all M in IT4 => (for all N in IT3 => (A(M)(N) in Arr2T))) and (for all M in IT4 => (for all N in IT3 => (for all O in IT2 => (A(M)(N)(O) in Arr1T)))) and (for all M in IT4 => (for all N in IT3 => (for all O in IT2 => (for all P in IT1 => (A(M)(N)(O)(P) in ET1)))));
+          Post    => (for all M in IT4 => (for all N in IT3 => (for all O in IT2 => (for all P in IT1 => (A(M)(N)(O)(P) in ET1)))));
 
   procedure TestD08
             (A: in out Arr4T; I: in IT4; B: in Arr3T)
@@ -627,7 +627,7 @@ package AR is
   procedure TestD11
             (A: in out Arr4T; I, J: in IT4; B, C: in Arr3T)
      with Depends => (A =>+ (B, C, I, J)),
-          Post    => (for all N in IT4 => (A(N) in Arr3T));
+          Post    => True;
 
   procedure TestD12
             (A: in out Arr4T; I, J: in IT4; B, C: in Arr3T)
@@ -650,7 +650,7 @@ package AR is
             (A: in out Arr4T; I: in IT4; J: in IT3; K: in IT2; B: Arr3T; C: in Arr2T;
 	     D: in Arr1T)
      with Depends => (A =>+ (B, C, D, I, J, K)),
-          Post    => (for all N in IT4 => (A(N) in Arr3T));
+          Post    => True;
 
   procedure TestD16
             (A: in out Arr4T; I: in IT4; J: in IT3; K: in IT2; B: Arr3T; C: in Arr2T;
@@ -673,7 +673,7 @@ package AR is
   procedure TestD19
             (A: in out Arr4T; I1, I2: in IT4; J1, J2: in IT3; K1, K2: in IT2; B, C: in Arr1T)
      with Depends => (A =>+ (B, C, I1, I2, J1, J2, K1, K2)),
-          Post    => (for all N in IT4 => (A(N) in Arr3T));
+          Post    => True;
 
   procedure TestD20
             (A: in out Arr4T; I1, I2: in IT4; J1, J2: in IT3; K1, K2: in IT2; B, C: in Arr1T)
@@ -1495,7 +1495,7 @@ package AR is
   procedure TestN17
 	    (R: out RofA1; A: in Arr1T; E: in Enum2T)
      with Depends => (R => (A, E)),
-          Post    => (for all N in IT1 => (R.S1(N) in ET1)) and R.S1 in Arr1T and R.T1 in Enum2T;
+          Post    => (for all N in IT1 => (R.S1(N) in ET1)) and R.T1 in Enum2T;
 
   procedure TestN18
 	    (R: out RofA1; A: in Arr1T; E: in Enum2T)
@@ -1615,7 +1615,7 @@ package AR is
   procedure TestQ01
 	    (R: in out RofA4; I: in IT2; J: in IT1; E, F: in ET1)
      with Depends => (R =>+ (E, F, I, J)),
-          Post    => (for all N in IT1 => ((for all M in IT2 => (R.T4(M)(N) in ET1 and R.T4(M) in Arr1T)) and R.S4(N) in ET1));
+          Post    => (for all N in IT1 => ((for all M in IT2 => (R.T4(M)(N) in ET1)) and R.S4(N) in ET1));
 
   procedure TestQ02
 	    (R: in out RofA4; I: in IT2; J: in IT1; E, F: in ET1)
@@ -1638,7 +1638,7 @@ package AR is
   procedure TestR01
 	    (A: in out AofRofA1; I: in IT3; J: in IT1; E: in ET1)
      with Depends => (A =>+ (E, I, J)),
-          Post    => (for all M in IT3 => (A(M) in RofA1 and A(M).T1 in Enum2T and A(M).S1 in Arr1T)) and (for all M in IT3 => (for all N in IT1 => (A(M).S1(N) in ET1)));
+          Post    => (for all M in IT3 => (A(M) in RofA1 and A(M).T1 in Enum2T)) and (for all M in IT3 => (for all N in IT1 => (A(M).S1(N) in ET1)));
 
   procedure TestR02
 	    (A: in out AofRofA1; I: in IT3; J: in IT1; E: in ET1)
@@ -1658,7 +1658,7 @@ package AR is
   procedure TestR05
 	    (A: in out AofRofA1; I, X: in IT3; J: in IT1; E: in ET1; R: in RofA1)
      with Depends => (A =>+ (E, I, J, R, X)),
-          Post    => (for all M in IT3 => (A(M) in RofA1 and A(M).T1 in Enum2T and A(M).S1 in Arr1T)) and (for all M in IT3 => (for all N in IT1 => (A(M).S1(N) in ET1)));
+          Post    => (for all M in IT3 => (A(M) in RofA1 and A(M).T1 in Enum2T)) and (for all M in IT3 => (for all N in IT1 => (A(M).S1(N) in ET1)));
 
   procedure TestR06
 	    (A: in out AofRofA1; I, X: in IT3; J: in IT1; E: in ET1; R: in RofA1)
@@ -1694,7 +1694,7 @@ package AR is
 	    (A: out AofRofA1; I: in IT3; J: in IT1; B: in AofRofA1; C: RofA1; D: Arr1T;
 	     E: in ET1)
      with Depends => (A => (B, C, D, E, I, J)),
-          Post    => (for all M in IT3 => (A(M) in RofA1 and A(M).T1 in Enum2T and A(M).S1 in Arr1T)) and (for all M in IT3 => (for all N in IT1 => (A(M).S1(N) in ET1)));
+          Post    => (for all M in IT3 => (A(M) in RofA1 and A(M).T1 in Enum2T)) and (for all M in IT3 => (for all N in IT1 => (A(M).S1(N) in ET1)));
 
   procedure TestR12
 	    (A: out AofRofA1; I: in IT3; J: in IT1; B: in AofRofA1; C: RofA1; D: Arr1T;
@@ -1720,7 +1720,7 @@ package AR is
   procedure TestS01
 	    (A: in out AofRofA2; I: in IT4; J: in IT2; K: in IT1; E: in ET1)
      with Depends => (A =>+ (E, I, J, K)),
-          Post    => (for all M in IT4 => (A(M) in RofA4 and A(M).S4 in Arr1T and A(M).T4 in Arr2T)) and (for all M in IT4 => (for all N in IT1 => (A(M).S4(N) in ET1))) and (for all M in IT4 => (for all N in IT2 => (A(M).T4(N) in Arr1T and (for all O in IT1 => (A(M).T4(N)(O) in ET1)))));
+          Post    => (for all M in IT4 => (A(M) in RofA4)) and (for all M in IT4 => (for all N in IT1 => (A(M).S4(N) in ET1))) and (for all M in IT4 => (for all N in IT2 => (for all O in IT1 => (A(M).T4(N)(O) in ET1))));
 
   procedure TestS02
 	    (A: in out AofRofA2; I: in IT4; J: in IT2; K: in IT1; E: in ET1)
@@ -1740,7 +1740,7 @@ package AR is
   procedure TestS05
 	    (A: in out AofRofA2; I: in IT4; J: in IT2; K: in IT1; E, F: in ET1)
      with Depends => (A =>+ (E, F, I, J, K)),
-          Post    => (for all M in IT4 => (A(M) in RofA4 and A(M).S4 in Arr1T and A(M).T4 in Arr2T)) and (for all M in IT4 => (for all N in IT1 => (A(M).S4(N) in ET1))) and (for all M in IT4 => (for all N in IT2 => (A(M).T4(N) in Arr1T and (for all O in IT1 => (A(M).T4(N)(O) in ET1)))));
+          Post    => (for all M in IT4 => (A(M) in RofA4)) and (for all M in IT4 => (for all N in IT1 => (A(M).S4(N) in ET1))) and (for all M in IT4 => (for all N in IT2 => (for all O in IT1 => (A(M).T4(N)(O) in ET1))));
 
   procedure TestS06
 	    (A: in out AofRofA2; I: in IT4; J: in IT2; K: in IT1; E, F: in ET1)
@@ -1852,7 +1852,7 @@ package AR is
   procedure TestV01
 	    (A: in out AofRofAofR; I: in IT2; J: in IT1; E: in ET1)
      with Depends => (A =>+ (E, I, J)),
-          Post    => (for all M in IT2 => (A(M) in RofAofR1 and A(M).A1 in AofR1 and (for all N in IT1 => (A(M).A1(N) in Rec1T and A(M).A1(N).F1 in ET1 and A(M).A1(N).G1 in ET2)) and A(M).B1 in Boolean and A(M).C1 in Enum1T));
+          Post    => (for all M in IT2 => (A(M) in RofAofR1 and (for all N in IT1 => (A(M).A1(N) in Rec1T and A(M).A1(N).F1 in ET1 and A(M).A1(N).G1 in ET2)) and A(M).B1 in Boolean and A(M).C1 in Enum1T));
 
   procedure TestV02
 	    (A: in out AofRofAofR; I: in IT2; J: in IT1; E: in ET1)
@@ -1875,7 +1875,7 @@ package AR is
   procedure TestW01
 	    (R: in out RofAofRofA; I: in IT3; J: in IT1; E: in ET1)
      with Depends => (R =>+ (E, I, J)),
-          Post    => (for all M in IT3 => (R.D1(M) in RofA1 and R.D1(M).S1 in Arr1T and R.D1(M).T1 in Enum2T and (for all N in IT1 => (R.D1(M).S1(N) in ET1)))) and R.D1 in AofRofA1 and R.E1 in Arr1T and (for all N in IT1 => (R.E1(N) in ET1));
+          Post    => (for all M in IT3 => (R.D1(M) in RofA1 and R.D1(M).T1 in Enum2T and (for all N in IT1 => (R.D1(M).S1(N) in ET1)))) and (for all N in IT1 => (R.E1(N) in ET1));
 
   procedure TestW02
 	    (R: in out RofAofRofA; I: in IT3; J: in IT1; E: in ET1)
