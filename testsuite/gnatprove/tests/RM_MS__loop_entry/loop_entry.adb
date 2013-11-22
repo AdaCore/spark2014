@@ -12,7 +12,7 @@ is
               (if N < L or N > I then A(N) = A'Loop_Entry(N))));
       -- Note it is not necessary to show that the vaule of U does not change
       -- within the loop.
-      -- However 'Loop_Entry must be used rater than 'Old.
+      -- However 'Loop_Entry must be used rather than 'Old.
     end loop;
   end Clear;
 

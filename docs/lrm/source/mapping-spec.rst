@@ -1414,7 +1414,7 @@ Assume contract
 The following example illustrates use of an Assume annotation.  The
 assumed expression does not generate a verification condition and is
 not proved (although it is executed in |SPARK| if assertion
-expressions are not ignored at run-time.
+expressions are not ignored at run-time).
 
 In this example, the Assume annotation is effectively being used to
 implement the SPARK 2005 Always_Valid attribute.
@@ -1482,7 +1482,7 @@ Assert used to control path explosion
 
 This capability is in general not needed with the |SPARK| toolset where
 path explosion is handled automatically. In the rare cases where this is
-needed, you can use the `pragma Assert_And_Cut` for that purpose.
+needed you can use `pragma Assert_And_Cut`.
 
 Other Contracts and Annotations
 -------------------------------
@@ -1555,11 +1555,11 @@ Body in |SPARK|:
 Using an External Prover
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-If it is wished to use an external prover such as Isabelle, with rules
-defining a ghost function written in the prover input language, this
+One may wish to use an external prover such as Isabelle, with rules
+defining a ghost function written in the prover input language. This
 can be done in |SPARK| by denoting the ghost function as an Import in
-lieu of providing a body for the function. Of course such ghost
-functions cannot be executed.
+lieu of providing a body for it. Of course such ghost functions cannot
+be executed.
 
 Specification in |SPARK| using an external prover:
 
@@ -1580,7 +1580,7 @@ Once the own variable has a type it can be used in a SPARK 2005 proof
 context.
 
 A state abstraction in |SPARK| does not have a type. Instead, an Ada
-type to represent the state abstract state is declared. A function
+type to represent the abstract state is declared. A function
 which has the state abstraction as a global item is then declared
 which returns an object of the type. This function may have the same
 name as the state abstraction (the name is overloaded). References

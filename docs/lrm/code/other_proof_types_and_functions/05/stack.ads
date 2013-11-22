@@ -3,7 +3,7 @@ package Stack
 is
    --  It is not possible to specify that the stack will be
    --  initialized to empty except by having an initialization
-   --  subprogram called during program executiion (as opposed to
+   --  subprogram called during program execution (as opposed to
    --  package elaboration).
 
    --  Proof functions to indicate whether or not the Stack is empty
