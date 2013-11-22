@@ -1356,9 +1356,9 @@ Assert (in loop) contract
 The following example demonstrates how the SPARK 2005 `assert`
 annotation is used inside a loop as a loop invariant. It cuts the loop
 and on each iteration of the loop the list of existing hypotheses
-for the path is cleared and the expression of the assert expression
-generates a verification condition to prove the expression is True and
-the expression is the basis of the new hypotheses.
+for the path is cleared. A verification condition is generated to prove
+that the assert expression is True, and the expression is the basis of
+the new hypotheses.
 
 |SPARK| has a specific pragma for defining a loop invariant, `pragma
 Loop_Invariant` which is more sophisticated than the SPARK 2005 assert
