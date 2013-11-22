@@ -201,7 +201,8 @@ package body Flow.Control_Flow_Graph.Utility is
    -------------------------------
 
    function Make_Parameter_Attributes
-     (Call_Vertex        : Node_Id;
+     (FA                 : Flow_Analysis_Graphs;
+      Call_Vertex        : Node_Id;
       Actual             : Node_Id;
       Formal             : Node_Id;
       In_Vertex          : Boolean;
@@ -227,7 +228,7 @@ package body Flow.Control_Flow_Graph.Utility is
            (Ekind (Formal) in E_In_Parameter | E_In_Out_Parameter or else
               Discriminants_Only);
 
-         Tmp_Used := Get_Variable_Set (Actual, Scope => Scope);
+         Tmp_Used := Get_Variable_Set (Actual, FA, Scope => Scope);
          for F of Tmp_Used loop
             if not Discriminants_Only or else Is_Discriminant (F) then
                A.Variables_Used.Include (F);
@@ -237,8 +238,9 @@ package body Flow.Control_Flow_Graph.Utility is
          pragma Assert
            (Ekind (Formal) in E_Out_Parameter | E_In_Out_Parameter);
          pragma Assert (not Discriminants_Only);
-         Untangle_Assignment_Target (Scope        => Scope,
-                                     N            => Actual,
+         Untangle_Assignment_Target (N            => Actual,
+                                     FA           => FA,
+                                     Scope        => Scope,
                                      Vars_Defined => A.Variables_Defined,
                                      Vars_Used    => A.Variables_Used);
       end if;
@@ -404,7 +406,8 @@ package body Flow.Control_Flow_Graph.Utility is
    --------------------------------------------
 
    function Make_Default_Initialization_Attributes
-     (Scope   : Flow_Scope;
+     (FA      : Flow_Analysis_Graphs;
+      Scope   : Flow_Scope;
       F       : Flow_Id;
       Loops   : Node_Sets.Set     := Node_Sets.Empty_Set;
       E_Loc   : Node_Or_Entity_Id := Empty)
@@ -421,6 +424,7 @@ package body Flow.Control_Flow_Graph.Utility is
 
       A.Variables_Defined := Flow_Id_Sets.To_Set (F);
       A.Variables_Used    := Get_Variable_Set (A.Default_Init_Val,
+                                               FA    => FA,
                                                Scope => Scope);
 
       Add_Volatile_Effects (A);

@@ -4,27 +4,26 @@ test.adb:56:31: warning: "Export" might not be initialized in "Uninitialized_4"
 test.adb:76:31: warning: "A" might not be initialized in "Uninitialized_5"
 test.adb:79:21: "C" is not initialized
 test.adb:80:12: "A" is not initialized
-test.adb:88:43: warning: unused initial value of "B"
-test.adb:97:12: warning: unused assignment
-test.adb:106:40: warning: unused initial value of "A"
-test.adb:106:43: warning: unused initial value of "B"
-test.adb:108:07: warning: statement has no effect
-test.adb:109:12: warning: unused assignment
-test.adb:111:12: warning: unused assignment
-test.adb:140:07: warning: statement has no effect
-test.adb:140:07: warning: unused assignment to "Temp"
-test.adb:149:40: warning: unused initial value of "Import"
-test.adb:150:07: warning: initialization has no effect
-test.adb:161:12: warning: unused assignment
-test.adb:190:39: warning: unused initial value of "Par2"
-test.adb:190:39: warning: unused variable "Par2"
-test.adb:192:13: warning: unused variable "Z"
-test.adb:195:29: warning: unused global "Y"
-test.adb:195:29: warning: unused initial value of "Y"
-test.adb:213:34: warning: unused initial value of "Condition"
-test.adb:216:07: warning: statement has no effect
-test.adb:218:12: warning: unused assignment
-test.adb:222:15: warning: unused assignment
+test.adb:92:12: warning: unused assignment
+test.adb:101:40: warning: unused initial value of "A"
+test.adb:101:43: warning: unused initial value of "B"
+test.adb:103:07: warning: statement has no effect
+test.adb:104:12: warning: unused assignment
+test.adb:106:12: warning: unused assignment
+test.adb:135:07: warning: statement has no effect
+test.adb:135:07: warning: unused assignment to "Temp"
+test.adb:144:40: warning: unused initial value of "Import"
+test.adb:145:07: warning: initialization has no effect
+test.adb:156:12: warning: unused assignment
+test.adb:185:39: warning: unused initial value of "Par2"
+test.adb:185:39: warning: unused variable "Par2"
+test.adb:187:13: warning: unused variable "Z"
+test.adb:190:29: warning: unused global "Y"
+test.adb:190:29: warning: unused initial value of "Y"
+test.adb:208:34: warning: unused initial value of "Condition"
+test.adb:211:07: warning: statement has no effect
+test.adb:213:12: warning: unused assignment
+test.adb:217:15: warning: unused assignment
    compilation of test.adb failed
 
 

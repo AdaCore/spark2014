@@ -88,6 +88,7 @@ package body Flow.Analysis is
    type Var_Use_Kind is (Use_Read, Use_Write, Use_Any);
 
    function First_Variable_Use (N       : Node_Id;
+                                FA      : Flow_Analysis_Graphs;
                                 Scope   : Flow_Scope;
                                 Var     : Flow_Id;
                                 Precise : Boolean)
@@ -315,6 +316,7 @@ package body Flow.Analysis is
    ------------------------
 
    function First_Variable_Use (N       : Node_Id;
+                                FA      : Flow_Analysis_Graphs;
                                 Scope   : Flow_Scope;
                                 Var     : Flow_Id;
                                 Precise : Boolean)
@@ -337,6 +339,7 @@ package body Flow.Analysis is
       function Search_Expr (N : Node_Id) return Traverse_Result is
       begin
          if Get_Variable_Set (N,
+                              FA               => FA,
                               Scope            => Scope,
                               Reduced          => not Precise,
                               Allow_Statements => True).Contains (Var_Tgt)
@@ -465,6 +468,7 @@ package body Flow.Analysis is
          end case;
 
          First_Use := First_Variable_Use (N       => First_Use,
+                                          FA      => FA,
                                           Scope   => FA.B_Scope,
                                           Var     => Var,
                                           Precise => Precise);
@@ -558,7 +562,8 @@ package body Flow.Analysis is
                        To_Ordered_Flow_Id_Set
                        (Get_Variable_Set
                           (Expression (N),
-                           Get_Flow_Scope (N)));
+                           FA    => FA,
+                           Scope => Get_Flow_Scope (N)));
                   begin
                      for F of Deps loop
                         --  ??? consider moving this to spark_definition
@@ -882,8 +887,9 @@ package body Flow.Analysis is
             loop
                Vars_Used := To_Entire_Variables
                  (Get_Variable_Set (Expr,
-                                    Reduced => True,
-                                    Scope   => Get_Flow_Scope (Expr))) -
+                                    FA      => FA,
+                                    Scope   => Get_Flow_Scope (Expr),
+                                    Reduced => True)) -
                  Quantified_Variables (Expr);
 
                for Var of Vars_Used loop
@@ -896,6 +902,7 @@ package body Flow.Analysis is
                           " aspect of &",
                         N         => First_Variable_Use
                           (N       => Expr,
+                           FA      => FA,
                            Scope   => FA.B_Scope,
                            Var     => Var,
                            Precise => False),
@@ -1304,13 +1311,16 @@ package body Flow.Analysis is
                         Warning   => True);
 
                   elsif Nkind (N) = N_Object_Declaration then
-                     Error_Msg_Flow
-                       (FA        => FA,
-                        Tracefile => Tracefile,
-                        Msg       => "initialization has no effect",
-                        N         => Error_Location (FA.PDG, V),
-                        Tag       => Tag,
-                        Warning   => True);
+                     if not Constant_Present (N) then
+                        Error_Msg_Flow
+                          (FA        => FA,
+                           Tracefile => Tracefile,
+                           Msg       => "initialization has no effect",
+                           N         => Error_Location (FA.PDG, V),
+                           Tag       => Tag,
+                           Warning   => True);
+                     end if;
+                     --  This warning is ignored for local constants.
 
                   else
                      Error_Msg_Flow
@@ -1497,6 +1507,7 @@ package body Flow.Analysis is
          begin
             if Nkind (Key_U.Node) = N_Assignment_Statement then
                Used := Get_Variable_Set (Expression (Key_U.Node),
+                                         FA    => FA,
                                          Scope => FA.B_Scope);
                return Used.Contains (The_Var);
             end if;

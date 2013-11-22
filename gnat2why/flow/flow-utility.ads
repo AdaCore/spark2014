@@ -78,6 +78,7 @@ package Flow.Utility is
    --  whether user-defined or generated.
 
    function Get_Variable_Set (N                : Node_Id;
+                              FA               : Flow_Analysis_Graphs;
                               Scope            : Flow_Scope;
                               Reduced          : Boolean := False;
                               Allow_Statements : Boolean := False)
@@ -93,6 +94,7 @@ package Flow.Utility is
    --  parameters may be set to provide a detailed instruction.
 
    function Get_Variable_Set (L                : List_Id;
+                              FA               : Flow_Analysis_Graphs;
                               Scope            : Flow_Scope;
                               Reduced          : Boolean := False;
                               Allow_Statements : Boolean := False)
@@ -118,6 +120,7 @@ package Flow.Utility is
 
    procedure Untangle_Assignment_Target
      (N            : Node_Id;
+      FA           : Flow_Analysis_Graphs;
       Scope        : Flow_Scope;
       Vars_Defined : out Flow_Id_Sets.Set;
       Vars_Used    : out Flow_Id_Sets.Set)

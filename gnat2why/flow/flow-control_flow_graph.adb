@@ -633,8 +633,8 @@ package body Flow.Control_Flow_Graph is
       A : V_Attributes;
       M : Param_Mode;
    begin
-      if Ekind (E) = E_Constant then
-         --  We ignore constants (for now).
+      if Ekind (E) = E_Constant and not FA.Local_Constants.Contains (E) then
+         --  We ignore non-local constants (for now).
          return;
       end if;
 
@@ -746,9 +746,11 @@ package body Flow.Control_Flow_Graph is
    begin
       --  Work out which variables we use and define.
       V_Used_RHS := Get_Variable_Set (Expression (N),
+                                      FA    => FA,
                                       Scope => FA.B_Scope);
 
       Untangle_Assignment_Target (N            => Name (N),
+                                  FA           => FA,
                                   Scope        => FA.B_Scope,
                                   Vars_Used    => V_Used_LHS,
                                   Vars_Defined => V_Def_LHS);
@@ -794,6 +796,7 @@ package body Flow.Control_Flow_Graph is
         (Direct_Mapping_Id (N),
          Make_Basic_Attributes (Var_Use => Get_Variable_Set
                                   (Expression (N),
+                                   FA    => FA,
                                    Scope => FA.B_Scope),
                                 Loops   => Ctx.Current_Loops,
                                 E_Loc   => N),
@@ -871,6 +874,7 @@ package body Flow.Control_Flow_Graph is
            (Direct_Mapping_Id (N),
             Make_Basic_Attributes (Var_Use => Get_Variable_Set
                                      (Condition (N),
+                                      FA    => FA,
                                       Scope => FA.B_Scope),
                                    Loops   => Ctx.Current_Loops,
                                    E_Loc   => N),
@@ -934,6 +938,7 @@ package body Flow.Control_Flow_Graph is
          Make_Extended_Return_Attributes
               (Var_Def         => Flatten_Variable (FA.Analyzed_Entity),
                Var_Use         => Get_Variable_Set (Ret_Object,
+                                                    FA    => FA,
                                                     Scope => FA.B_Scope),
                Object_Returned => Ret_Object,
                Loops           => Ctx.Current_Loops,
@@ -1013,6 +1018,7 @@ package body Flow.Control_Flow_Graph is
         (Direct_Mapping_Id (N),
          Make_Basic_Attributes (Var_Use => Get_Variable_Set
                                   (Condition (N),
+                                   FA    => FA,
                                    Scope => FA.B_Scope),
                                 Loops   => Ctx.Current_Loops,
                                 E_Loc   => N),
@@ -1065,6 +1071,7 @@ package body Flow.Control_Flow_Graph is
                  (Direct_Mapping_Id (Elsif_Statement),
                   Make_Basic_Attributes (Var_Use => Get_Variable_Set
                                            (Condition (Elsif_Statement),
+                                            FA    => FA,
                                             Scope => FA.B_Scope),
                                          Loops   => Ctx.Current_Loops,
                                          E_Loc   => Elsif_Statement),
@@ -1294,6 +1301,7 @@ package body Flow.Control_Flow_Graph is
            (Direct_Mapping_Id (N),
             Make_Basic_Attributes (Var_Use => Get_Variable_Set
                                      (Condition (Iteration_Scheme (N)),
+                                      FA    => FA,
                                       Scope => FA.B_Scope),
                                    Loops   => Ctx.Current_Loops,
                                    E_Loc   => N),
@@ -1385,7 +1393,7 @@ package body Flow.Control_Flow_Graph is
               (Direct_Mapping_Id (N),
                Make_Basic_Attributes
                  (Var_Def => Flatten_Variable (LP),
-                  Var_Use => Get_Variable_Set (DSD, Scope => FA.B_Scope),
+                  Var_Use => Get_Variable_Set (DSD, FA, Scope => FA.B_Scope),
                   Loops   => Ctx.Current_Loops,
                   E_Loc   => N),
                V);
@@ -1465,6 +1473,7 @@ package body Flow.Control_Flow_Graph is
               (Direct_Mapping_Id (Reference),
                Make_Sink_Vertex_Attributes
                  (Var_Use       => Get_Variable_Set (Prefix (Reference),
+                                                     FA    => FA,
                                                      Scope => FA.B_Scope),
                   Is_Loop_Entry => True),
                V);
@@ -1528,6 +1537,26 @@ package body Flow.Control_Flow_Graph is
       V     : Flow_Graphs.Vertex_Id;
       Inits : Vertex_Vectors.Vector := Vertex_Vectors.Empty_Vector;
    begin
+      --  We are dealing with a local constant. These constants are *not*
+      --  ignored.
+      if Constant_Present (N) then
+         if Present (Expression (N)) then
+            FA.Local_Constants.Include (Defining_Identifier (N));
+         else
+            --  This is a deferred constant. We ignore it - we will deal
+            --  with it once we get to the actual constant.
+            --
+            --  ??? What should we do if the private part is not in SPARK?
+            FA.CFG.Add_Vertex (Direct_Mapping_Id (N),
+                               Null_Node_Attributes,
+                               V);
+            CM.Include (Union_Id (N), No_Connections);
+            CM (Union_Id (N)).Standard_Entry := V;
+            CM (Union_Id (N)).Standard_Exits := To_Set (V);
+            return;
+         end if;
+      end if;
+
       --  First, we need a 'initial and 'final vertex for this object.
       Create_Initial_And_Final_Vertices (Defining_Identifier (N), False, FA);
 
@@ -1541,7 +1570,8 @@ package body Flow.Control_Flow_Graph is
                if Present (DI) then
                   FA.CFG.Add_Vertex
                     (Make_Default_Initialization_Attributes
-                       (Scope => FA.B_Scope,
+                       (FA    => FA,
+                        Scope => FA.B_Scope,
                         F     => F,
                         Loops => Ctx.Current_Loops,
                         E_Loc => DI),
@@ -1560,19 +1590,6 @@ package body Flow.Control_Flow_Graph is
             Inits.Append (V);
          end if;
 
-      elsif Constant_Present (N) then
-         --  We have a sink vertex as we have a constant declaration
-         --  (so we need to check for uninitialized variables) but
-         --  otherwise have no flow.
-         FA.CFG.Add_Vertex
-           (Direct_Mapping_Id (N),
-            Make_Sink_Vertex_Attributes
-              (Var_Use => Get_Variable_Set (Expression (N),
-                                            Scope => FA.B_Scope),
-               E_Loc   => N),
-            V);
-         Inits.Append (V);
-
       else
          --  We have a variable declaration with an initialization.
          FA.CFG.Add_Vertex
@@ -1580,6 +1597,7 @@ package body Flow.Control_Flow_Graph is
             Make_Basic_Attributes
               (Var_Def => Flatten_Variable (Defining_Identifier (N)),
                Var_Use => Get_Variable_Set (Expression (N),
+                                            FA    => FA,
                                             Scope => FA.B_Scope),
                Loops   => Ctx.Current_Loops,
                E_Loc   => N),
@@ -1657,6 +1675,7 @@ package body Flow.Control_Flow_Graph is
            (Direct_Mapping_Id (N),
             Make_Sink_Vertex_Attributes
               (Var_Use => Get_Variable_Set (Pragma_Argument_Associations (N),
+                                            FA    => FA,
                                             Scope => FA.B_Scope),
                E_Loc   => N),
             V);
@@ -1740,7 +1759,7 @@ package body Flow.Control_Flow_Graph is
       FA.CFG.Add_Vertex
         (Direct_Mapping_Id (Pre),
          Make_Sink_Vertex_Attributes
-           (Var_Use         => Get_Variable_Set (Pre, Scope => FA.B_Scope),
+           (Var_Use         => Get_Variable_Set (Pre, FA, Scope => FA.B_Scope),
             Is_Precondition => True,
             E_Loc           => Pre),
          V);
@@ -1834,6 +1853,7 @@ package body Flow.Control_Flow_Graph is
             Make_Basic_Attributes
               (Var_Def => Flatten_Variable (FA.Analyzed_Entity),
                Var_Use => Get_Variable_Set (Expression (N),
+                                            FA    => FA,
                                             Scope => FA.B_Scope),
                Loops   => Ctx.Current_Loops,
                E_Loc   => N),
@@ -1936,7 +1956,7 @@ package body Flow.Control_Flow_Graph is
       FA.CFG.Add_Vertex
         (Direct_Mapping_Id (N),
          Make_Sink_Vertex_Attributes
-           (Var_Use => Get_Variable_Set (N, Scope => FA.B_Scope),
+           (Var_Use => Get_Variable_Set (N, FA, Scope => FA.B_Scope),
             E_Loc   => N),
          V);
       CM.Include (Union_Id (N),
@@ -2134,7 +2154,8 @@ package body Flow.Control_Flow_Graph is
             FA.CFG.Add_Vertex
               (Direct_Mapping_Id (P, In_View),
                Make_Parameter_Attributes
-                 (Call_Vertex        => Parent (L),
+                 (FA                 => FA,
+                  Call_Vertex        => Parent (L),
                   Actual             => Actual,
                   Formal             => Formal,
                   In_Vertex          => True,
@@ -2145,7 +2166,8 @@ package body Flow.Control_Flow_Graph is
             In_List.Append (V);
          elsif Ekind (Formal) = E_Out_Parameter then
             Atr := Make_Parameter_Attributes
-              (Call_Vertex        => Parent (L),
+              (FA                 => FA,
+               Call_Vertex        => Parent (L),
                Actual             => Actual,
                Formal             => Formal,
                In_Vertex          => True,
@@ -2165,7 +2187,8 @@ package body Flow.Control_Flow_Graph is
             FA.CFG.Add_Vertex
               (Direct_Mapping_Id (P, Out_View),
                Make_Parameter_Attributes
-                 (Call_Vertex        => Parent (L),
+                 (FA                 => FA,
+                  Call_Vertex        => Parent (L),
                   Actual             => Actual,
                   Formal             => Formal,
                   In_Vertex          => False,

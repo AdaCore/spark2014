@@ -87,11 +87,6 @@ package body Test is
 
    procedure Ineffective_Statements_1 (A, B : in out Integer) is
    begin
-      --  B is marked as an ineffective import.
-      --  This is not correct and will be fixed in
-      --  the future (when we start treating constants
-      --  as variables).
-
       for I in Integer range A .. B loop
          A := A * I;
          B := 5;

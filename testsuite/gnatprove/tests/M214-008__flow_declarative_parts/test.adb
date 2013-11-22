@@ -59,8 +59,8 @@ is
       Tmp : constant Integer := A;
    begin
       B := Tmp;
-      --  We get two errors: that A is not used and B does not depend
-      --  on A.
+      --  This is now fixed/hacked by treating local constants like
+      --  variables.
    end Issue_01;
 
    procedure Issue_02 (A : Integer;
@@ -71,7 +71,8 @@ is
       subtype Tmp is Integer range A .. A;
    begin
       B := Tmp'First;
-      --  Same as above, but with a type.
+      --  We get two errors: that A is not used and B does not depend
+      --  on A.
    end Issue_02;
 
    procedure Issue_03 (S : out String)

@@ -95,7 +95,8 @@ package Flow.Control_Flow_Graph.Utility is
    --     * Is_Callsite
 
    function Make_Parameter_Attributes
-     (Call_Vertex        : Node_Id;
+     (FA                 : Flow_Analysis_Graphs;
+      Call_Vertex        : Node_Id;
       Actual             : Node_Id;
       Formal             : Node_Id;
       In_Vertex          : Boolean;
@@ -173,7 +174,8 @@ package Flow.Control_Flow_Graph.Utility is
    --  uninitialized (unless the global is a disciminant).
 
    function Make_Default_Initialization_Attributes
-     (Scope   : Flow_Scope;
+     (FA      : Flow_Analysis_Graphs;
+      Scope   : Flow_Scope;
       F       : Flow_Id;
       Loops   : Node_Sets.Set     := Node_Sets.Empty_Set;
       E_Loc   : Node_Or_Entity_Id := Empty)

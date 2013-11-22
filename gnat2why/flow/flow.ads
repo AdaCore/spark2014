@@ -133,6 +133,12 @@ package Flow is
       PDG               : Flow_Graphs.T;
       --  The graphs.
 
+      Local_Constants   : Node_Sets.Set;
+      --  All constants that have been locally declared. This is used as a
+      --  workaround to the issue of constants being ignored in general.
+      --  This field should be removed once constants, attributes, etc. are
+      --  dealt with correctly.
+
       All_Vars          : Flow_Id_Sets.Set;
       --  A set of all variables used in the body.
 
