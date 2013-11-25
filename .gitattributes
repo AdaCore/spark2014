@@ -28,3 +28,5 @@ docs/ug/gnatprove_by_example/examples/* no-precommit-check
 docs/ug/linear_search/*/* no-precommit-check
 docs/ug/lemmas/* no-precommit-check
 trace_units_script/* no-precommit-check
+slides/*/* no-precommit-check
+slides/*/*/* no-precommit-check
