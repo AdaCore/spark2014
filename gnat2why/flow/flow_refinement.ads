@@ -75,12 +75,21 @@ package Flow_Refinement is
 
    type Contract_T is (Global_Contract, Depends_Contract);
 
-   ---------------------------
-   -- Queries and utilities --
-   ---------------------------
+   ---------------
+   -- Functions --
+   ---------------
 
    function Present (S : Flow_Scope) return Boolean is (Present (S.Pkg));
    --  Returns true iff S is not the Null_Flow_Scope.
+
+   function Private_Scope (S : Flow_Scope) return Flow_Scope
+   is (Flow_Scope'(S.Pkg, Private_Part))
+   with Pre => Present (S);
+   --  Returns the private scope for a valid scope.
+
+   ---------------------------
+   -- Queries and utilities --
+   ---------------------------
 
    function Get_Flow_Scope (N : Node_Id) return Flow_Scope
      with Pre => Present (N);

@@ -138,7 +138,6 @@ package body Flow.Debug is
       else
          Write_Str ("null_flow_scope");
       end if;
-      Write_Eol;
    end Print_Flow_Scope;
 
    ---------
@@ -149,6 +148,7 @@ package body Flow.Debug is
    is
    begin
       Print_Flow_Scope (S);
+      Write_Eol;
    end pfs;
 
 end Flow.Debug;

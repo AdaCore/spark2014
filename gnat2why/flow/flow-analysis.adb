@@ -878,19 +878,32 @@ package body Flow.Analysis is
                      end;
 
                   when E_Package | E_Package_Body =>
-                     Vars_Known := FA.Visible_Vars;
+                     Vars_Known := To_Flow_Id_Set
+                       (Down_Project (To_Node_Set (To_Entire_Variables
+                                                     (FA.Visible_Vars)),
+                                      FA.S_Scope));
                end case;
             end if;
 
             for Expr of Get_Postcondition_Expressions (FA.Spec_Node,
                                                        Refined)
             loop
-               Vars_Used := To_Entire_Variables
-                 (Get_Variable_Set (Expr,
-                                    FA      => FA,
-                                    Scope   => Get_Flow_Scope (Expr),
-                                    Reduced => True)) -
-                 Quantified_Variables (Expr);
+               case FA.Kind is
+                  when E_Subprogram_Body =>
+                     Vars_Used :=
+                       Get_Variable_Set (Expr,
+                                         FA      => FA,
+                                         Scope   => Get_Flow_Scope (Expr),
+                                         Reduced => True);
+                  when others =>
+                     Vars_Used :=
+                       Get_Variable_Set (Expr,
+                                         FA      => FA,
+                                         Scope   => Private_Scope
+                                           (Get_Flow_Scope (Expr)),
+                                         Reduced => True);
+               end case;
+               Vars_Used.Difference (Quantified_Variables (Expr));
 
                for Var of Vars_Used loop
                   if not Vars_Known.Contains (Var) then

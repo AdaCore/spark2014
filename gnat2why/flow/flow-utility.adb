@@ -26,13 +26,14 @@ with Errout;                 use Errout;
 with Namet;                  use Namet;
 with Nlists;                 use Nlists;
 
+with Output;                 use Output;
 with Sprint;                 use Sprint;
 with Treepr;                 use Treepr;
+with Flow.Debug;             use Flow.Debug;
 
 with Why;
 with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 
-with Flow.Debug;             use Flow.Debug;
 with Flow_Tree_Utility;      use Flow_Tree_Utility;
 
 package body Flow.Utility is
@@ -43,7 +44,10 @@ package body Flow.Utility is
    --  Debug
    ----------------------------------------------------------------------
 
-   Debug_Trace_Untangle : constant Boolean := False;
+   Debug_Trace_Get_Global : constant Boolean := False;
+   --  Enable this to debug Get_Global.
+
+   Debug_Trace_Untangle   : constant Boolean := False;
    --  Enable this to print the tree and def/use sets in each call of
    --  Untangle_Assignment_Target.
 
@@ -288,7 +292,23 @@ package body Flow.Utility is
       Reads     := Flow_Id_Sets.Empty_Set;
       Writes    := Flow_Id_Sets.Empty_Set;
 
+      if Debug_Trace_Get_Global then
+         Write_Str ("Get_Global (");
+         Sprint_Node (Subprogram);
+         Write_Str (", ");
+         Print_Flow_Scope (Scope);
+         Write_Str (")");
+         Write_Eol;
+      end if;
+
       if Present (Global_Node) then
+         if Debug_Trace_Get_Global then
+            Indent;
+            Write_Str ("using user annotation");
+            Write_Eol;
+            Outdent;
+         end if;
+
          declare
             pragma Assert
               (List_Length (Pragma_Argument_Associations (Global_Node)) = 1);
@@ -457,6 +477,13 @@ package body Flow.Utility is
       else
          --  We don't have a global aspect, so we should look at the
          --  computed globals...
+
+         if Debug_Trace_Get_Global then
+            Indent;
+            Write_Str ("using computed globals");
+            Write_Eol;
+            Outdent;
+         end if;
 
          declare
             function Get_Flow_Id

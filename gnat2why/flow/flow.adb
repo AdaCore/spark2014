@@ -618,11 +618,12 @@ package body Flow is
                       Character'Val (8#33#) & "[0m");
          Write_Eol;
 
-         if Debug_Trace_Scoping then
-            Indent;
+         Indent;
 
+         if Debug_Trace_Scoping then
             Write_Str ("Spec_Scope: ");
             Print_Flow_Scope (FA.S_Scope);
+            Write_Eol;
             declare
                Ptr : Flow_Scope := FA.S_Scope;
             begin
@@ -637,13 +638,14 @@ package body Flow is
                   end case;
                   if Ptr /= Null_Flow_Scope then
                      Print_Flow_Scope (Ptr);
+                     Write_Eol;
                   end if;
                end loop;
                Outdent;
             end;
             Write_Str ("Body_Scope: ");
             Print_Flow_Scope (FA.B_Scope);
-            Outdent;
+            Write_Eol;
          end if;
       end if;
 
@@ -683,6 +685,10 @@ package body Flow is
                       G            => FA.PDG,
                       Start_Vertex => FA.Start_Vertex,
                       End_Vertex   => FA.End_Vertex);
+      end if;
+
+      if Gnat2Why_Args.Flow_Advanced_Debug then
+         Outdent;
       end if;
 
       return FA;
