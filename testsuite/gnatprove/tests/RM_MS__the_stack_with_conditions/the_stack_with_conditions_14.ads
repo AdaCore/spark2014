@@ -19,8 +19,8 @@
 package the_stack_with_conditions_14
   with SPARK_Mode,
        Abstract_State => State,
-       Initializes => State,
-       Initial_Condition => Is_Empty
+       Initializes => State
+       -- Initial_Condition => Is_Empty
 is
    function Is_Empty return Boolean
      with Global => State;

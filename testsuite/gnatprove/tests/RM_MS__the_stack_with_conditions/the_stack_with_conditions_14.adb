@@ -32,12 +32,12 @@ is
    --  applicable.
 
    function Is_Empty return Boolean is (Pointer = 0)
-     with Refined_Global => Pointer,
-          Refined_Post   => Is_Empty'Result = (Pointer = 0);
+     with Refined_Global => Pointer;
+          -- Refined_Post   => Is_Empty'Result = (Pointer = 0);
 
    function Is_Full return Boolean is (Pointer = Max_Stack_Size)
-     with Refined_Global => Pointer,
-          Refined_Post   => Is_Full'Result = (Pointer = Max_Stack_Size);
+     with Refined_Global => Pointer;
+          -- Refined_Post   => Is_Full'Result = (Pointer = Max_Stack_Size);
 
    function Top return Integer is (S (Pointer))
      with Refined_Global => (Pointer, S);
