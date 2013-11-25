@@ -890,18 +890,18 @@ package body Flow.Analysis is
             loop
                case FA.Kind is
                   when E_Subprogram_Body =>
-                     Vars_Used :=
-                       Get_Variable_Set (Expr,
-                                         FA      => FA,
-                                         Scope   => Get_Flow_Scope (Expr),
-                                         Reduced => True);
+                     Vars_Used := To_Entire_Variables
+                       (Get_Variable_Set (Expr,
+                                          FA      => FA,
+                                          Scope   => Get_Flow_Scope (Expr),
+                                          Reduced => True));
                   when others =>
-                     Vars_Used :=
-                       Get_Variable_Set (Expr,
-                                         FA      => FA,
-                                         Scope   => Private_Scope
-                                           (Get_Flow_Scope (Expr)),
-                                         Reduced => True);
+                     Vars_Used := To_Entire_Variables
+                       (Get_Variable_Set (Expr,
+                                          FA      => FA,
+                                          Scope   => Private_Scope
+                                            (Get_Flow_Scope (Expr)),
+                                          Reduced => True));
                end case;
                Vars_Used.Difference (Quantified_Variables (Expr));
 

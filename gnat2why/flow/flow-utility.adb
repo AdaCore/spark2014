@@ -519,9 +519,21 @@ package body Flow.Utility is
          begin
 
             --  We process the reads
+            if Debug_Trace_Get_Global then
+               Indent;
+               Write_Str ("reads");
+               Write_Eol;
+               Indent;
+            end if;
 
             for R of ALI_Reads loop
                F := Get_Flow_Id (R, In_View);
+
+               if Debug_Trace_Get_Global then
+                  Sprint_Flow_Id (F);
+                  Write_Eol;
+               end if;
+
                case F.Kind is
                   when Direct_Mapping =>
                      if Ekind (Get_Direct_Mapping_Id (F)) /= E_Constant then
@@ -538,6 +550,13 @@ package body Flow.Utility is
                end case;
             end loop;
 
+            if Debug_Trace_Get_Global then
+               Outdent;
+               Write_Str ("writes");
+               Write_Eol;
+               Indent;
+            end if;
+
             for W of ALI_Writes loop
                --  This is not a mistake, we must assume that all
                --  values written may also not change or that they are
@@ -546,9 +565,20 @@ package body Flow.Utility is
                --  This also takes care of discriminants as every out
                --  is really an in out.
                F := Get_Flow_Id (W, Out_View);
+
+               if Debug_Trace_Get_Global then
+                  Sprint_Flow_Id (F);
+                  Write_Eol;
+               end if;
+
                Reads.Include (Change_Variant (F, In_View));
                Writes.Include (F);
             end loop;
+
+            if Debug_Trace_Get_Global then
+               Outdent;
+               Outdent;
+            end if;
          end;
 
       end if;
