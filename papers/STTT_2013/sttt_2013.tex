@@ -80,17 +80,17 @@
   gaining confidence in safety-critical software. With a few
   exceptions, such as SPARK, formal verification is rarely used in
   industry due to its high cost and level of skill required. The grand
-  challenge of building a \emph{verifiying compiler} for static formal
+  challenge of building a \emph{verifying compiler} for static formal
   verification of programs aims at bringing formal verification to
   non-expert users of powerful programming languages. This challenge
   has nurtured competition and collaboration among verification tool
   builders; an example is the VerifyThis competition
-  \cite{VerifyThis2012}. In this paper we describe our approach to
+  \cite{verifythis2012}. In this paper we describe our approach to
   popularising formal verification in the design of the
   \newspark\ language and the associated formal verification tool
   \gnatprove. In particular, we present our solution to combining
-  tests and proofs, which provides a cost competitive way to develop
-  software to standards such as \DO.  At the heart of our technique is
+  tests and proofs, which provides a cost-competitive way to develop
+  software to standards such as \DO.  At the heart of our technique are
   executable contracts, and the ability to both test and prove
   those. We use running examples from the VerifyThis 2012 competition
   and discuss the results of using our tools on those problems.
@@ -99,7 +99,7 @@
 \section{Introduction}
 \label{intro}
 High quality software, or low defect software, is often costly to
-develop. This is a common experience in safety critical systems
+develop. This is a common experience in safety-critical systems
 development, whether the development is driven by standards such as
 \DO, or by any other need to create highly reliable and long-lived
 software. Today, extensive and expensive testing is the primary method
@@ -166,16 +166,16 @@ features of \newspark, which is a complete update of the \oldspark\
 language and tools. \newspark has been designed with many lessons
 learned from the programming language and verification community, and
 naturally from experiences in industrial use of \oldspark. Then in
-section \ref{hilite} we describe our unique integration of testing and
+Section \ref{hilite} we describe our unique integration of testing and
 proving, which was developed in the collaborative research project
 \hilite\ \cite{hiliteERTS2012} between Altran (formerly Praxis),
 AdaCore, and Inria. In the resulting new tool architecture the
 compiler and the verifier are based on the same front-end
-\cite{ksd2012}. In section \ref{overflowsemantics} we describe
-specific language features which enables specifications to be written
-more naturally. In section \ref{automation}, we present GNATprove, our
+\cite{ksd2012}. In Section \ref{overflowsemantics} we describe
+specific language features that enables specifications to be written
+more naturally. In Section \ref{automation}, we present GNATprove, our
 formal verification tool, and in
-section \ref{verifythis} its results in the VerifyThis 2012
+Section \ref{verifythis} its results in the VerifyThis 2012
 competition. We conclude with future work.
 
 \section{Key Language Features for Verification}
@@ -213,7 +213,7 @@ used to refer to the result of the function. The attribute \verb|Last|
 represents the last value (upper bound) in the range of type
 \verb|Index|. Another new attribute \verb|Old| is used to refer to the
 value of some variables on entry to a subprogram. These were used
-in solving challenge 2 (the binary tree sum) of the VerifyThis
+in solving challenge~2 (the binary tree sum) of the VerifyThis
 competition. Note that we use the short-circuit Boolean operator
 \verb|and then| for which the second argument is only executed or
 evaluated if the first argument is not enough to determine the value
@@ -221,7 +221,7 @@ of the expression. This is helpful for example in producing valid
 specifications involving partial functions, like
 \verb|Y /= 0 and then X / Y|.
 
-The expression of specifications is made easier by new expression
+Writing specifications is made easier by new expression
 forms in Ada 2012. If-expressions and case-expressions are the
 expression forms which correspond to the usual if-statements and
 case-statements. Note that an if-expression without else-part
@@ -280,7 +280,7 @@ A loop variant pragma has also been defined in SPARK 2014, to express
 a quantity varying monotonically at each iteration of the loop. As
 loop invariants, a loop variant can appear anywhere in the main list
 of statements in a loop. For example, here is the loop variant used in
-the longest commmon prefix challenge:
+the longest common prefix challenge:
 
 \begin{lstlisting}
 pragma Loop_Variant (Increases => L);
@@ -325,15 +325,15 @@ language and toolset \newspark, we have a particular focus on
 providing a good cost-benefit argument and on reaching non-expert
 users.
 
-We will describe a few observations of what drives the current
-practices in the industry, in order to help us with the cost-benefit
+We will describe a few observations of what drives current practices
+in the industry, in order to help us with the cost-benefit
 argument. We will also see how progress in the research of behavioural
 interface specification languages \cite{HatcliffLLMP12} enables an
 approach where test and proof can be elegantly integrated.
 
 \subsection{Motivation: Industry Safety Standards and Testing}
 Industry standards and certification documents highly influence the
-state-of-the-practice safety-critical software development. \DOB\
+state-of-the-practice of safety-critical software development. \DOB\
 \cite{do178b} is a document that is used as a basis for certification
 of airborne software by institutions such as Federal Aviation
 Administration (FAA) and European Aviation Safety Agency
@@ -349,7 +349,7 @@ range tests cases and robustness (abnormal range) test cases. The
 standard requires verification of both high-level requirements and
 low-level requirements. Three levels of testing are defined in \DOB:
 hardware/software integration testing, software integration testing,
-and low-level testing - all based on requirements. The test cases must
+and low-level testing -- all based on requirements. The test cases must
 fully cover the code and all exercised code should be traceable to
 requirements. This requires coverage analysis such as MC/DC. Such
 structural low-level testing, together with robustness testing is
@@ -358,9 +358,9 @@ and verifying output of these tests. Our goal is to reduce this cost,
 while still meeting the objectives prescribed by the standard.
 
 Formal methods can help to verify that no anomalous behaviour will
-occur, for example it can be used to prove the absence of run-time
+occur, for example they can be used to prove the absence of run-time
 errors. Formal methods can also be used to show compliance between a
-program's actual and intended behaviour. Furthermore, a proof of
+program's actual and specified behaviour. Furthermore, a proof of
 program correctness is comparable to exhaustive analysis achieving
 100\% coverage. Though formal methods and other kinds of verification
 are recognised as beneficial, they do not contribute to \DOB\
@@ -391,7 +391,7 @@ least as strong as testing alone.
 \subsection{Executable Contracts}
 Programming using contracts is a way to organise your code. By stating
 a precondition and a postcondition of a subprogram as for example in
-section \ref{langfeatures}, we assign responsibilities. The subprogram
+Section \ref{langfeatures}, we assign responsibilities. The subprogram
 is responsible for the postcondition to be met, as long as it is
 called under the assumptions of its precondition, which it relies
 upon. Similarly, a caller of this subprogram is responsible for ensuring that
@@ -438,7 +438,7 @@ Much effort has been spent the last decades to popularise formal
 program verification. \cite{tseChalin10} did something as unusual as
 surveying practitioners, to find that they prefer run-time assertion
 checking semantics. Furthermore he developed a semantics to allow
-formal executable contracts, i.e. compatible with run-time assertion
+formal executable contracts \ie compatible with run-time assertion
 checking, in the hope that those users who are already annotating
 their code with assert statements, could more easily be convinced to
 start writing contracts. Ada 2012 and thus \newspark have such
@@ -468,7 +468,7 @@ the benefits of formal executable contracts are:
 \item Low-level requirements expressed as contracts
 \item Successful execution of postcondition $\rightarrow$ test successful
 \item No need to collect and verify output
-\item More run-time checks gives better robustness testing
+\item An increase in run-time checks gives better robustness testing
 \end{itemize}
 If the chosen verification method for a subprogram is proof, the
 benefits of formal executable contracts are:
@@ -483,7 +483,7 @@ benefits of formal executable contracts are:
 \end{itemize}
 %
 But what about soundness of the mixed approach? When some low-level
-requirements are tested and some are proved, remember in
+requirements are tested and some are proved, in
 \DOC-terms the combination needs to be as good as if all low-level
 requirements were tested.
 
@@ -517,13 +517,14 @@ have implemented these additional verifications in the GNAT compiler through
 dedicated switches that the user can set~\cite{hiliteERTS2012}.
 
 \subsection{Compiler Implementation}
-For \newspark\ we are building the verification tools using the GNAT compiler,
-see \cite{ksd2012} for a description and discussion of this architecture. One
-advantage here is that the compiler inserts these additional checks needed to
-verify at run time assumptions made during proof. Another advantage is that
-formal verification has access to the precise configuration of the target
-platform used for compilation (size of integers, endianness, \etc), which
-facilitates performing proofs that depend on the target.
+For \newspark\ we are building the verification tools using the GNAT
+compiler. See \cite{ksd2012} for a description and discussion of this
+architecture. One advantage here is that the compiler inserts these
+additional checks needed to verify at run time assumptions made during
+proof. Another advantage is that formal verification has access to the
+precise configuration of the target platform used for compilation
+(size of integers, endianness, \etc), which facilitates performing
+proofs that depend on the target.
 
 \section{Choosing the Right Semantics for Integers}
 \label{overflowsemantics}
@@ -532,10 +533,10 @@ interpretation of contracts depending on whether used for formal
 verification, or for run-time assertion checking. One area where this
 difference is of practical significance is in the semantics for
 integers. An effect of having the same semantics in assertions as in
-the program code, is that run-time exceptions must be considered, and
+the program code is that run-time exceptions must be considered, and
 avoided, in the assertions as well as in the program. As an example,
-consider a programmer who wants to state a pre-condition that the
-addition of two number fits in a desired integer type:
+consider a programmer who wants to state a precondition that the
+addition of two numbers fits in a desired integer type:
 
 \begin{lstlisting}
   Pre => X + Y in Some_Integer_Type
@@ -556,14 +557,17 @@ studies \cite{jotChalin04} show that users who are otherwise happy
 with run-time assertion checking semantics, still prefer mathematical
 semantics for intermediate integer operations in assertions.
 
-From a user perspective, mathematical semantics for integer operations in
-assertions is a good solution. However, for our hybrid verification argument
-described in the previous section to work, it is mandatory to have the same
-semantics for test and proof. Fortunately, we have the option to implement
-a solution for this in the compiler GNAT, which we are building our
-verification tools on. Also, the Ada standard supports this approach by not
-requiring that the program issues an overflow error when an intermediate value
-does not fit into the base type, providing the correct result is computed.
+From a user perspective, mathematical semantics for integer operations
+in assertions is a good solution. However, for our hybrid verification
+argument described in the previous section to work, it is mandatory to
+have the same semantics for test and proof. This means that the
+compiler needs to implement the ability to execute mathematical integer
+operations. Fortunately, it has been possible to implement a solution
+for this in the GNAT compiler, which we are building our verification
+tools on. Also, the Ada standard supports this approach by not
+requiring that the program issues an overflow error when an
+intermediate value does not fit into the base type, providing the
+correct result is computed.
 
 Existing users of \oldspark\ and potential new users of \newspark\
 together cover a wide spectrum of strong preferences regarding this
@@ -603,7 +607,7 @@ As \gnatprove uses the Why3 platform~\cite{why3} to generate VCs and
 call provers, it can target as many output formats and automatic or
 manual provers as the Why3 platform allows (many!), but we focus on
 the automatic proof of VCs through the use of the SMT prover
-Alt-Ergo~\cite{altergo} which is distributed with \gnatprove. There
+Alt-Ergo~\cite{altergo}, which is distributed with \gnatprove. There
 are two steps to make automatic verification work: first make it
 possible, then make it efficient.
 
@@ -658,21 +662,38 @@ associated annotations, to avoid unnecessary rework.
 \section{VerifyThis Competition}
 \label{verifythis}
 In this section, we will describe our solutions to two of the
-challenges from the 2012 VerifyThis competition. The first challenge
-is the longest common prefix problem, \verb|LCP|. The second challenge
-is a tree sum, \verb|PrefixSum|, which is a binary tree summation
+challenges from the 2012 VerifyThis competition. The organizers report
+of the competition \cite {verifythis2012}, include the full
+descriptions of the challenges. In this section we will restate the
+descriptions of the verification tasks briefly. The first challenge is
+the longest common prefix problem, \verb|LCP|. The second challenge is
+a tree sum, \verb|PrefixSum|, which is a binary tree summation
 algorithm implemented in-place on an array. For the latter we have one
 complete fixed-size solution suitable for automatic verification using
-the current prototype version of \newspark\ and
-\gnatprove. Furthermore, we have specified a general version of the
-\verb|Upsweep| procedure of the second challenge initially using
-\oldspark\ as a reference, then translated into \newspark,
-experiencing the benefits of executable annotations.
-\subsection{Solution to Challenge 1: Longest Common Prefix}
+the current version of \newspark\ and \gnatprove. Furthermore, we have
+specified a general version of the \verb|Upsweep| procedure of the
+second challenge initially using \oldspark\ as a reference, then
+translated into \newspark, experiencing the benefits of executable
+annotations.
 
+\subsection{Challenge~1: Longest Common Prefix}
+Longest Common Prefix (LCP) is a text query problem that can be
+informally specified as follows:
+
+\begin{itemize}
+\item Input: an integer array \verb|a|, and two indices \verb|x| and
+  \verb|y| into this array
+\item Output: length of the longest common prefix of the subarrays of
+  \verb|a| starting at \verb|x| and \verb|y| respectively.
+\end{itemize}
+%
+Prove that your implementation complies with a formalized
+version of the above specification.
+
+\subsection{Solution to Challenge~1: Longest Common Prefix}
 The longest common prefix solution can be readily coded in \newspark
 as follows:
-
+%
 \begin{lstlisting}
 subtype Index is Positive range 1 .. 1_000_000;
 type Text is array (Index range <>) of Integer;
@@ -756,7 +777,51 @@ is proved by \gnatprove.
 The final version of \verb|LCP| is proved in 6s on a laptop with 4G
 RAM and a 3GHz processor.
 
-\subsection{Solution to Challenge 2: Tree Sum}
+\subsection{Challenge~2: Tree Sum}
+This is an abbreviated description of the challenge from the
+organizers report of the competition \cite {verifythis2012}, excluding
+the provided reference implementations and figures.
+%
+\paragraph{Background:}
+The concept of a prefix sum is very simple. Given an integer array
+$a$, store in each cell $a[i]$ the value $a[0] + \ldots + a[i-1]$.
+For example, the prefix sum of the array [3, 1, 7, 0, 4, 1, 6, 3] is
+[0, 3, 4, 11, 11, 15, 16, 22].
+%
+Prefix sums have important applications in parallel vector
+programming, where the workload of calculating the sum is distributed
+over several processes. We will verify a sequentialized version of a
+prefix sum calculation algorithm.
+%
+\paragraph{Algorithm:}
+We assume that the length of the array is a power of two. This allows
+us to identify the array initially with the leaves of a complete
+binary tree. The computation proceeds along this tree in two phases:
+upsweep and downsweep. During the upsweep, which itself proceeds in
+phases, the sum of the children nodes is propagated to the parent
+nodes along the tree. A part of the array is overwritten with values
+stored in the inner nodes of the tree in this process. After the
+upsweep, the rightmost array cell is identified with the root of the
+tree. As preparation for the downsweep, a zero is inserted in the
+rightmost cell.  Then, in each step, each node at the current level
+passes to its left child its own value, and it passes to its right
+child, the sum of the left child from the upsweep phase and its own
+value.
+%
+\paragraph{Verification Task:}
+We provide an iterative and a recursive implementation of the algorithm. You
+may choose one of these to your liking.
+\begin{enumerate}
+\item Specify and verify the upsweep method. You can begin with a
+  slightly simpler requirement that the last array cell contains the
+  sum of the whole array in the post-state.
+\item Verify both upsweep and downsweep -- prove that the array cells
+  contain appropriate prefix sums in the post-state.
+\end{enumerate}
+If a general specification is not possible with your tool, assume the
+length of array is 8.
+
+\subsection{Solution to Challenge~2: Tree Sum}
 
 We have chosen to implement an iterative version of prefix sum
 instead of a recursive one, which better matches the constraints
@@ -765,7 +830,7 @@ usually not allowed. In order to make automatic proof possible, we fix
 the length of the array to 8. The complete solution is quite long (186
 lines of code, not counting empty lines), so we only show here
 selected parts. The initial solution without annotations is
-straightforward, and only 50 lines long. As an example, here is the
+straightforward and only 50 lines long. As an example, here is the
 implementation of procedure \verb|Upsweep|:
 
 \begin{lstlisting}
@@ -924,7 +989,7 @@ As mentioned, we chose to implement an iterative version of
 Though the presented complete solution makes automatic
 proof possible with the prototype version of our tools,
 the specification could be improved. Here we present
-a general specification for the simple property of the \verb|Upsweep|
+a general specification for the simpler property of the \verb|Upsweep|
 procedure. This solution avoids explicit listing of intermediate state in the
 contract, because it is too detailed and hard to judge whether it is
 correct, and it would be impossible to use that specification scheme
@@ -1096,25 +1161,25 @@ which helped to find errors early in the code and in the
 annotations. The most useful of these features is certainly the
 ability to execute annotations, which allows annotations to be tested
 and debugged as if they were code. It was used during the competition
-to quickly locate the reason for an unprovable VC on challenge 1: the
+to quickly locate the reason for an unprovable VC on challenge~1: the
 loop test was using a strict comparison operator instead of the
 correct non-strict one. To locate the problem, the participating
 author simply wrote a test exercising \verb|LCP| on an input, compiled
-it with run-time checks, and executed it. The run-time error raised
+it with run-time checks, and executed it. The raised run-time error
 precisely located the failing loop invariant. Although this example
 was simple enough to immediately understand the underlying problem, it
 would have been possible to use the debugger to further investigate
 the issue, which can be extremely useful on real industrial code. The
-ability to execute annotations was also useful for challenge 2, which
+ability to execute annotations was also useful for challenge~2, which
 requires the development of complex loop invariants, to quickly
 correct erroneous ones. This feature won the prize of user-assistance
 tool feature awarded by the jury of the VerifyThis competition.
 
 Another very useful feature for these challenges was the ability to eliminate
 completely all possibilities of numeric overflow in annotations, as described
-in section~\ref{overflowsemantics}. While using this feature results in only 10
-more overflow VCs in challenge 1, which are all proved with the current
-annotations, it adds 60 overflow VCs in challenge 2, most of which require
+in Section~\ref{overflowsemantics}. While using this feature results in only 10
+more overflow VCs in challenge~1, which are all proved with the current
+annotations, it adds 60 overflow VCs in challenge~2, most of which require
 modifications of annotations, or addition of new annotations, to be
 proved. Note that this feature is compatible with the execution of annotations,
 as compilation also takes into account the overflow mode when compiling
@@ -1138,7 +1203,7 @@ expressions and if expressions.
 
 \begin{figure*}
 \includegraphics[width=\linewidth]{gnatprove.png}
-\caption{Snapshot of GNATprove results on challenge 1 inside GPS}
+\caption{Snapshot of GNATprove results on challenge~1 inside GPS}
 \label{fig:snapshot}
 \end{figure*}
 
@@ -1155,21 +1220,28 @@ support for investigating unproved VCs, and improvements of the SMT prover.
 
 Flow analysis is the verification of the data dependences of
 subprograms. This analysis which has always been a component of SPARK
-verification is being redeveloped for \newspark, based on
-program dependence graphs~\cite{horwitz:1988:pldi}. An important
-novelty is that, while \oldspark requires that the user annotates
-programs with data dependence contracts, they are optional in
-\newspark, and \gnatprove generates them when not present. A minimal
-flow analysis is always required for the soundness of proofs, while a
-more complete flow analysis is optional. The minimal flow analysis
-ensures that all variables are initialized prior to being read.
+verification is being redeveloped for \newspark, based on program
+dependence graphs~\cite{horwitz:1988:pldi}. An important novelty is
+that, while \oldspark requires that the user annotates programs with
+data dependence contracts, they are optional in \newspark, and
+\gnatprove generates them when not present. A minimal flow analysis is
+always required for the soundness of proofs, while a more complete
+flow analysis is optional. The minimal flow analysis ensures that all
+variables are initialized prior to being read. For some types, their
+representation allow bit patterns that are outside of the values of
+the type. Examples of such types are Boolean represented by a Byte,
+floating point types, or integer types that do not span their entire
+base type. The implicit in-type assumption, required to deduce
+conclusions like $X = True \lor X = False$ where X is a Boolean
+program variable, is therefore not a sound assumption without the
+assumption that X is not uninitialized.
 
 Good support in the investigation of unproved VCs is key to making
 formal program verification cost-effective in industry. \gnatprove
 currently provides various solutions to that problem: the ability to
 execute annotations to detect errors in code and/or annotations; the
 display of program paths to detect errors or locate missing
-annotations; the possibility to call alternate provers to identify
+annotations; the possibility to call alternative provers to identify
 prover shortcomings. In the future, we would like to add the display
 of counter-examples generated by the prover, as already provided by
 some SMT provers~\cite{CVC3,Z3model}, and in Riposte
