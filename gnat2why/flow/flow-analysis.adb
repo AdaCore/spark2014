@@ -2474,16 +2474,14 @@ package body Flow.Analysis is
 
    procedure Check_Initializes_Contract (FA : in out Flow_Analysis_Graphs) is
       function Find_Entity (E    : Entity_Id;
-                            RHS  : Boolean := False;
                             E_In : Entity_Id := Empty)
-                           return Node_Id
-      with Pre => (if RHS then Present (E_In));
+                           return Node_Id;
       --  Looks through the initializes aspect on FA.Analyzed_Entity
       --  and returns the node which represents E in the
-      --  initializes_item. If RHS is set then we look at the right
-      --  hand side of an initializes_item. Otherwise, by default, we
-      --  look at the left hand side. If no node can be found, we
-      --  return FA.Initializes_N as a fallback.
+      --  initializes_item. If E_In is not Empty then we look at the
+      --  right hand side of an initializes_item. Otherwise, by
+      --  default, we look at the left hand side. If no node can be
+      --  found, we return FA.Initializes_N as a fallback.
 
       function Node_Id_Set_To_Flow_Id_Set
         (NS : Node_Sets.Set)
@@ -2494,7 +2492,6 @@ package body Flow.Analysis is
       -------------------
 
       function Find_Entity (E    : Entity_Id;
-                            RHS  : Boolean := False;
                             E_In : Entity_Id := Empty)
                            return Node_Id
       is
@@ -2513,7 +2510,7 @@ package body Flow.Analysis is
                   Tmp := First (Choices (N));
                   while Present (Tmp) loop
                      if Entity (Tmp) = E then
-                        if not RHS then
+                        if not Present (E_In) then
                            Needle := Tmp;
                            return Abandon;
                         else
@@ -2528,6 +2525,7 @@ package body Flow.Analysis is
                                     end if;
                                     Tmp := Next (Tmp);
                                  end loop;
+                                 return Skip;
 
                               when others =>
                                  Needle := Tmp;
@@ -2607,7 +2605,6 @@ package body Flow.Analysis is
                         Msg       => "# must be initialized at elaboration",
                         N         => Find_Entity
                           (E    => Get_Direct_Mapping_Id (The_Out),
-                           RHS  => True,
                            E_In => Get_Direct_Mapping_Id (G)),
                         F1        => G,
                         Tag       => "uninitialized");
