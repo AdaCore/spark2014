@@ -16,11 +16,11 @@
 --  (but see next example). The proof contracts within this package
 --  are executable.
 
-package the_stack_with_conditions_14
+package The_Stack_With_Conditions_14
   with SPARK_Mode,
-       Abstract_State => State,
-       Initializes => State
-       -- Initial_Condition => Is_Empty
+       Abstract_State    => State,
+       Initializes       => State,
+       Initial_Condition => Is_Empty
 is
    function Is_Empty return Boolean
      with Global => State;
@@ -45,4 +45,4 @@ is
    procedure Swap (X : in Integer)
      with Global => (In_Out => State),
           Pre    => not Is_Empty;
-end the_stack_with_conditions_14;
+end The_Stack_With_Conditions_14;

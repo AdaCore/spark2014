@@ -30,11 +30,4 @@ is
       function F1 return Boolean is (Flag)
         with Refined_Global => Flag;
    end Incorrect_Order_2;
-
-
-   package body Variable_Not_Denoted_By_Initializes is
-      procedure P1 is begin null; end P1;
-   begin
-      Var := 0;
-   end Variable_Not_Denoted_By_Initializes;
 end Initial_Condition_Illegal;

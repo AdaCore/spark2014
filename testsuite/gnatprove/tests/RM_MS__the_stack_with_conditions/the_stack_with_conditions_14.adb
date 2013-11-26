@@ -14,7 +14,7 @@
 --  function expressions which are both a refined postcondition and an
 --  implementation.
 
-package body the_stack_with_conditions_14
+package body The_Stack_With_Conditions_14
   with SPARK_Mode,
        Refined_State => (State => (S, Pointer)) -- State refinement
 is
@@ -42,7 +42,7 @@ is
    function Top return Integer is (S (Pointer))
      with Refined_Global => (Pointer, S);
 
-   procedure Push(X: in Integer)
+   procedure Push (X: in Integer)
      with Refined_Global => (In_Out => (Pointer, S))
    is
    begin
@@ -50,7 +50,7 @@ is
       S (Pointer) := X;
    end Push;
 
-   procedure Pop(X: out Integer)
+   procedure Pop (X: out Integer)
      with Refined_Global => (Input  => S,
                              In_Out => Pointer)
    is
@@ -71,4 +71,4 @@ begin
    -- Initialization - we promised to initialize the state
    Pointer := 0;
    S := Vector'(Index_Range => 0);
-end the_stack_with_conditions_14;
+end The_Stack_With_Conditions_14;
