@@ -1,0 +1,13 @@
+init.adb:8:44: warning: overflow check might fail
+init.adb:8:48: warning: overflow check might fail
+init.adb:11:42: warning: overflow check might fail
+init.adb:11:46: warning: overflow check might fail
+init.adb:11:50: warning: overflow check might fail
+initializes_illegal.adb:5:04: warning: variable "Y" is read but never assigned
+initializes_illegal.adb:5:04: "Y" is not initialized in "Initializes_Illegal"
+initializes_illegal.ads:6:27: warning: initialization of V must not depend on A
+initializes_illegal.ads:7:27: warning: initialization of X does not depend on A
+initializes_illegal.ads:8:27: warning: initialization of Initializes_Illegal.Sa must not depend on A
+initializes_illegal.ads:11:04: warning: initialization has no effect
+gprbuild: *** compilation phase failed
+gnatprove: error during translation to intermediate language, aborting.

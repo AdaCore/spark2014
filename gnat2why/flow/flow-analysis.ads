@@ -108,4 +108,11 @@ package Flow.Analysis is
    --
    --  Complexity is O(N^2)
 
+   procedure Check_Initializes_Contract (FA : in out Flow_Analysis_Graphs)
+   with Pre => FA.Kind in E_Package | E_Package_Body;
+   --  Checks if the Initializes contract has extra dependencies or missing
+   --  dependencies.
+   --
+   --  Complexity is O(N^2)
+
 end Flow.Analysis;

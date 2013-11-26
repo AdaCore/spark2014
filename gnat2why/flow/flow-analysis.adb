@@ -2468,4 +2468,242 @@ package body Flow.Analysis is
       end loop;
    end Check_Contracts;
 
+   ----------------------------------
+   --  Check_Initializes_Contract  --
+   ----------------------------------
+
+   procedure Check_Initializes_Contract (FA : in out Flow_Analysis_Graphs) is
+      function Find_Entity (E    : Entity_Id;
+                            RHS  : Boolean := False;
+                            E_In : Entity_Id := Empty)
+                           return Node_Id
+      with Pre => (if RHS then Present (E_In));
+      --  Looks through the initializes aspect on FA.Analyzed_Entity
+      --  and returns the node which represents E in the
+      --  initializes_item. If RHS is set then we look at the right
+      --  hand side of an initializes_item. Otherwise, by default, we
+      --  look at the left hand side. If no node can be found, we
+      --  return FA.Initializes_N as a fallback.
+
+      function Node_Id_Set_To_Flow_Id_Set
+        (NS : Node_Sets.Set)
+        return Flow_Id_Sets.Set;
+
+      -------------------
+      --  Find_Entity  --
+      -------------------
+
+      function Find_Entity (E    : Entity_Id;
+                            RHS  : Boolean := False;
+                            E_In : Entity_Id := Empty)
+                           return Node_Id
+      is
+         Initializes_Contract : constant Node_Id := FA.Initializes_N;
+         Needle               : Node_Id := Empty;
+
+         function Proc (N : Node_Id) return Traverse_Result;
+         --  Searches initializes aspect for export E and sets needle
+         --  to the node, if found.
+
+         function Proc (N : Node_Id) return Traverse_Result is
+            Tmp : Node_Id;
+         begin
+            case Nkind (N) is
+               when N_Component_Association =>
+                  Tmp := First (Choices (N));
+                  while Present (Tmp) loop
+                     if Entity (Tmp) = E then
+                        if not RHS then
+                           Needle := Tmp;
+                           return Abandon;
+                        else
+                           Tmp := Expression (N);
+                           case Nkind (Tmp) is
+                              when N_Aggregate =>
+                                 Tmp := First (Expressions (Tmp));
+                                 while Present (Tmp) loop
+                                    if Entity (Tmp) = E_In then
+                                       Needle := Tmp;
+                                       return Abandon;
+                                    end if;
+                                    Tmp := Next (Tmp);
+                                 end loop;
+
+                              when others =>
+                                 Needle := Tmp;
+                                 return Abandon;
+                           end case;
+                        end if;
+                     end if;
+                     Tmp := Next (Tmp);
+                  end loop;
+                  return Skip;
+
+               when others =>
+                  null;
+            end case;
+            return OK;
+         end Proc;
+
+         procedure Find_Export_Internal is new Traverse_Proc (Proc);
+
+      begin
+         Find_Export_Internal (Initializes_Contract);
+         if Present (Needle) then
+            return Needle;
+         else
+            return Initializes_Contract;
+         end if;
+      end Find_Entity;
+
+      ----------------------------------
+      --  Node_Id_Set_To_Flow_Id_Set  --
+      ----------------------------------
+
+      function Node_Id_Set_To_Flow_Id_Set
+        (NS : Node_Sets.Set)
+        return Flow_Id_Sets.Set
+      is
+         Tmp : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+      begin
+         for N of NS loop
+            Tmp.Insert (Direct_Mapping_Id (N));
+         end loop;
+
+         return Tmp;
+      end Node_Id_Set_To_Flow_Id_Set;
+
+      Tracefile : Unbounded_String;
+
+   begin
+      if not Present (FA.Initializes_N) then
+         --  If there is no Initializes contract then we have nothing to do
+         return;
+      end if;
+
+      declare
+         ODM                 : Optional_Dependency_Maps.Map;
+         The_Out             : Flow_Id;
+         Opt_In              : Optional_Flow_Id_Set;
+         All_Contract_Outs   : Flow_Id_Sets.Set;
+         All_Contract_Ins    : Flow_Id_Sets.Set;
+         All_Actual_Ins      : Flow_Id_Sets.Set;
+         Found_Uninitialized : Boolean := False;
+      begin
+         ODM := Parse_Initializes (FA.Initializes_N);
+
+         --  Check if everything in the RHS of an initialization_item
+         --  has been initializes.
+         for C in ODM.Iterate loop
+            The_Out := Optional_Dependency_Maps.Key (C);
+            Opt_In  := Optional_Dependency_Maps.Element (C);
+
+            if Opt_In.Exists then
+               for G of Opt_In.The_Set loop
+                  if not Is_Initialized_At_Elaboration (G) then
+                     Error_Msg_Flow
+                       (FA        => FA,
+                        Tracefile => Tracefile,
+                        Msg       => "# must be initialized at elaboration",
+                        N         => Find_Entity
+                          (E    => Get_Direct_Mapping_Id (The_Out),
+                           RHS  => True,
+                           E_In => Get_Direct_Mapping_Id (G)),
+                        F1        => G,
+                        Tag       => "uninitialized");
+                     Found_Uninitialized := True;
+                  end if;
+               end loop;
+            end if;
+         end loop;
+
+         if Found_Uninitialized then
+            --  If a variable or state abstraction that has not been
+            --  mentioned in an Initializes aspect was found in the
+            --  RHS of an initialization_item then we don't do any
+            --  further analysis.
+            return;
+         end if;
+
+         for C in ODM.Iterate loop
+            The_Out := Optional_Dependency_Maps.Key (C);
+            Opt_In  := Optional_Dependency_Maps.Element (C);
+            All_Contract_Outs := Flow_Id_Sets.Empty_Set;
+            All_Contract_Ins  := Flow_Id_Sets.Empty_Set;
+            All_Actual_Ins    := Flow_Id_Sets.Empty_Set;
+
+            --  Down project the LHS of an initialization_item
+            All_Contract_Outs := Node_Id_Set_To_Flow_Id_Set
+              (Down_Project
+                 (Vars => Node_Sets.To_Set (Get_Direct_Mapping_Id (The_Out)),
+                  S    => FA.B_Scope));
+
+            --  Down project the RHS of an initialization_item
+            if Opt_In.Exists then
+               for G of Opt_In.The_Set loop
+                  All_Contract_Ins.Union
+                    (Node_Id_Set_To_Flow_Id_Set
+                       (Down_Project
+                          (Vars => Node_Sets.To_Set
+                             (Get_Direct_Mapping_Id (G)),
+                           S    => FA.B_Scope)));
+               end loop;
+            end if;
+
+            --  Populate the All_Actual_Outs and All_Actual_Ins sets
+            for O in FA.Dependency_Map.Iterate loop
+               declare
+                  Actual_Out : constant Flow_Id :=
+                    Dependency_Maps.Key (O);
+
+                  Actual_Ins : constant Flow_Id_Sets.Set :=
+                    Dependency_Maps.Element (O);
+               begin
+
+                  if All_Contract_Outs.Contains (Actual_Out) then
+                     All_Actual_Ins.Union (Actual_Ins);
+                  end if;
+               end;
+            end loop;
+
+            --  Raise warnings for actual inputs that are not
+            --  mentioned by the Initializes.
+            for Actual_In of All_Actual_Ins loop
+               if Opt_In.Exists
+                 and then not All_Contract_Ins.Contains (Actual_In)
+               then
+                  Error_Msg_Flow
+                    (FA        => FA,
+                     Tracefile => Tracefile,
+                     Msg       => "initialization of # must not depend on #",
+                     N         => Find_Entity
+                       (Get_Direct_Mapping_Id (The_Out)),
+                     F1        => The_Out,
+                     F2        => Actual_In,
+                     Tag       => "initializes_wrong",
+                     Warning   => True);
+               end if;
+            end loop;
+
+            --  Raise warnings for inputs mentioned in the Initializes
+            --  that are not actual inputs.
+            for Contract_In of All_Contract_Ins loop
+               if not All_Actual_Ins.Contains (Contract_In) then
+                  Error_Msg_Flow
+                    (FA        => FA,
+                     Tracefile => Tracefile,
+                     Msg       => "initialization of # does not depend on #",
+                     N         => Find_Entity
+                       (Get_Direct_Mapping_Id (The_Out)),
+                     F1        => The_Out,
+                     F2        => Contract_In,
+                     Tag       => "initializes_wrong",
+                     Warning   => True);
+               end if;
+            end loop;
+
+         end loop;
+      end;
+   end Check_Initializes_Contract;
+
 end Flow.Analysis;

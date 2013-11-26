@@ -798,10 +798,12 @@ package body Flow is
                when E_Package =>
                   Analysis.Find_Ineffective_Statements (FA);
                   Analysis.Find_Use_Of_Uninitialized_Variables (FA);
+                  Analysis.Check_Initializes_Contract (FA);
 
                when E_Package_Body =>
                   Analysis.Find_Ineffective_Statements (FA);
                   Analysis.Find_Use_Of_Uninitialized_Variables (FA);
+                  Analysis.Check_Initializes_Contract (FA);
             end case;
          end if;
 

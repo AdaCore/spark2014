@@ -5600,6 +5600,7 @@ package body Gnat2Why.Expr is
               Pragma_Optimize                     |
               Pragma_Pack                         |
               Pragma_Page                         |
+              Pragma_Part_Of                      |
               Pragma_Postcondition                |
               Pragma_Precondition                 |
               Pragma_Preelaborate                 |
