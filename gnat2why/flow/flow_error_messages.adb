@@ -330,7 +330,7 @@ package body Flow_Error_Messages is
       --  for the given node, then we do nothing.
 
       if Warning then
-         if Warnings_Suppressed (Sloc (N)) then
+         if Warnings_Suppressed (Sloc (N)) /= No_String then
             return;
          end if;
 
@@ -341,8 +341,9 @@ package body Flow_Error_Messages is
          declare
             Temp : aliased String := To_String (M);
          begin
-            if Warning_Specifically_Suppressed (Sloc (N),
-                                                Temp'Unchecked_Access)
+            if Warning_Specifically_Suppressed
+               (Sloc (N),
+                Temp'Unchecked_Access) /= No_String
             then
                return;
             end if;
