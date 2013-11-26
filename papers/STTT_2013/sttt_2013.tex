@@ -125,8 +125,8 @@ and benefited from competition. An example of such beneficial
 competition is the VerifyThis competition, which is the context of
 this report.
 
-Great strides have been made in proof automation. At present, static
-so called ``push-button'' program verification is achievable for some
+Great strides have been made in proof automation. At present,
+so-called ``push-button'' static program verification is achievable for some
 substantial classes of industrial programs. New programming language
 features for program verification have been explored and theoretical
 models of complex existing language features have been devised to
@@ -140,9 +140,9 @@ Formal software verification has been successfully used and scaled to
 large industrial projects \cite{Woodcock2009,vcc2009}. While many case
 studies have been successful, few formal methods have reached the
 take-up and maturity level where industrial non-experts continue to
-use the method for project after the project, and where this formal
+use the method for project after project, and where this formal
 method is a permanent part of the business of industrial software
-development. There are some notable exceptions, for example the SPARK
+development. There are some notable exceptions: for example, the SPARK
 language and toolset for static verification has been applied for many
 years in on-board aircraft systems, control systems, cryptographic
 systems, and rail systems \cite{sparkbook2012,oneill2012}.
@@ -173,8 +173,8 @@ AdaCore, and Inria. In the resulting new tool architecture the
 compiler and the verifier are based on the same front-end
 \cite{ksd2012}. In section \ref{overflowsemantics} we describe
 specific language features which enables specifications to be written
-more naturally. We present in section \ref{automation} GNATprove, our
-formal verification tool, that is currently a prototype, and in
+more naturally. In section \ref{automation}, we present GNATprove, our
+formal verification tool, and in
 section \ref{verifythis} its results in the VerifyThis 2012
 competition. We conclude with future work.
 
@@ -212,14 +212,14 @@ In the postcondition of a function, the new attribute \verb|Result| is
 used to refer to the result of the function. The attribute \verb|Last|
 represents the last value (upper bound) in the range of type
 \verb|Index|. Another new attribute \verb|Old| is used to refer to the
-value of some variables on entry to a subprogram. The latter we used
+value of some variables on entry to a subprogram. These were used
 in solving challenge 2 (the binary tree sum) of the VerifyThis
 competition. Note that we use the short-circuit Boolean operator
 \verb|and then| for which the second argument is only executed or
 evaluated if the first argument is not enough to determine the value
 of the expression. This is helpful for example in producing valid
 specifications involving partial functions, like
-\verb|Y /= 0 and then X div Y|.
+\verb|Y /= 0 and then X / Y|.
 
 The expression of specifications is made easier by new expression
 forms in Ada 2012. If-expressions and case-expressions are the
@@ -326,14 +326,14 @@ providing a good cost-benefit argument and on reaching non-expert
 users.
 
 We will describe a few observations of what drives the current
-practises in the industry, in order to help us with the cost-benefit
+practices in the industry, in order to help us with the cost-benefit
 argument. We will also see how progress in the research of behavioural
 interface specification languages \cite{HatcliffLLMP12} enables an
-approach where test and proof can be nicely integrated.
+approach where test and proof can be elegantly integrated.
 
 \subsection{Motivation: Industry Safety Standards and Testing}
 Industry standards and certification documents highly influence the
-state-of-practise safety-critical software development. \DOB\
+state-of-the-practice safety-critical software development. \DOB\
 \cite{do178b} is a document that is used as a basis for certification
 of airborne software by institutions such as Federal Aviation
 Administration (FAA) and European Aviation Safety Agency
@@ -366,8 +366,8 @@ program correctness is comparable to exhaustive analysis achieving
 are recognised as beneficial, they do not contribute to \DOB\
 certification credit, and their use has had to be justified by other
 means. However, \DOC\ \cite{do178c}, the recently released successor and
-replacement of \DOB, allows to replace some of the prescribed testing
-activities by formal methods. From RTCA \cite{do178c}:
+replacement of \DOB, allows some of the prescribed testing
+activities to be replaced by formal methods. From RTCA \cite{do178c}:
 %
 \begin{quote}
   The use of formal methods is motivated by the expectation that, as
@@ -639,7 +639,7 @@ computation~\cite{leino2005ipl}, instead of generating one VC for each
 path leading to an assertion (also available in \gnatprove as an
 option). The choice of axiomatisation of Ada data types (integer
 types, enumeration types, record types, array types, \etc) in Why3
-also has a determinant effect on the provability of VCs. We have tuned
+also has a significant effect on the provability of VCs. We have tuned
 these axiomatisations to better suit the mechanisms inside SMT provers
 like Alt-Ergo. Similarly, we have tailored the axiomatisation for a
 generic library of containers~\cite{dross:2011:tap} to SMT provers.
@@ -758,7 +758,7 @@ RAM and a 3GHz processor.
 
 \subsection{Solution to Challenge 2: Tree Sum}
 
-We have chosen to implement an imperative version of prefix sum
+We have chosen to implement an iterative version of prefix sum
 instead of a recursive one, which better matches the constraints
 commonly found in critical embedded software where recursion is
 usually not allowed. In order to make automatic proof possible, we fix
@@ -919,11 +919,11 @@ the \verb|mod| operator are replaced by an explicit enumeration of the possible
 cases for all indexes, which \gnatprove is able to fully prove automatically.
 
 \subsection{General  Tree Sum}
-As mentioned, we chose to implement an imperative version of
-\verb|PrefixSum| better fit for critical embedded software; we are happy
-with that. Though the presented complete solution makes automatic
-proof possible with the prototype version of our tools, which we are
-also happy with, the specification could be improved. Here we present
+As mentioned, we chose to implement an iterative version of
+\verb|PrefixSum| as a better fit for critical embedded software.
+Though the presented complete solution makes automatic
+proof possible with the prototype version of our tools,
+the specification could be improved. Here we present
 a general specification for the simple property of the \verb|Upsweep|
 procedure. This solution avoids explicit listing of intermediate state in the
 contract, because it is too detailed and hard to judge whether it is
@@ -1129,7 +1129,7 @@ modify/verify loop during the competition. When a VC is not proved,
 the IDE can also display the corresponding statements in the code, to
 help figure out why some assertions do not hold on some paths.
 
-More generally, these small challenges already make use of numerous
+More generally, these challenges already make use of numerous
 language features in \adatwtw and \newspark that facilitate the
 expression of specifications: preconditions and postconditions, loop
 invariants and loop variants, special attributes \verb|'Result|,
@@ -1181,25 +1181,15 @@ axiomatisations as decision procedures~\cite{dross:2012:smt}, and incrementally
 selecting axioms~\cite{cgs09:ipo,kuhlwein:2012:ijcar}. More work is needed to
 make these modes the default inside \gnatprove.
 
-%% mention the following?
-
-%% \begin{itemize}
-%% \item proof of code containing containers
-%% \item visualisation of assumptions made for proof
-%% \item Coq formalisation of AST produced by frontend. possible verification of
-%%   the consistency of the generated AST with checks.
-%% \item adaptation for non-executable annotations and proof assistants
-%% \end{itemize}
-
 \section{Conclusions}
 \label{conclusions}
 In this paper we have described the key elements of the design of
 \newspark and \gnatprove. This design is based on experience over many
 years working with both expert and non-expert \oldspark developers in
-industry. The design focus particularly on improving the usability for
+industry. The design focuses particularly on improving the usability for
 non-expert users and providing a convincing cost-benefit argument for
-using formal verification in the regulated industry. \newspark and
-\gnatprove are still being implemented, and it is still early days for
+using formal verification in regulated industries. \newspark and
+\gnatprove are still being implemented, and it is early days for
 \DOC, but early evaluations are very encouraging, and some are
 documented in the case study developed by Astrium Space Transportation
 \cite{dasia2013}.
