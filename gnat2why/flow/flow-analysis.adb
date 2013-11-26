@@ -922,7 +922,29 @@ package body Flow.Analysis is
                         F1        => Entire_Variable (Var),
                         F2        => Direct_Mapping_Id (FA.Analyzed_Entity));
                      Sane := False;
+
+                  elsif FA.Kind in E_Package | E_Package_Body and then
+                    not Is_Initialized_At_Elaboration (Var)
+                  then
+
+                     --  If check an initial_condition aspect, we make sure
+                     --  that all variables mentioned are also mentioned in
+                     --  an initializes aspect.
+
+                     Error_Msg_Flow
+                       (FA        => FA,
+                        Tracefile => Tracefile,
+                        Msg       => "& must be initialized at elaboration",
+                        N         => First_Variable_Use (N       => Expr,
+                                                         FA      => FA,
+                                                         Scope   => FA.B_Scope,
+                                                         Var     => Var,
+                                                         Precise => False),
+                        F1        => Entire_Variable (Var));
+                     Sane := False;
+
                   end if;
+
                end loop;
             end loop;
          end;

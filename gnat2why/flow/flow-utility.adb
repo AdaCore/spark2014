@@ -1394,4 +1394,22 @@ package body Flow.Utility is
       end case;
    end Is_Discriminant;
 
+   -----------------------------------
+   -- Is_Initialized_At_Elaboration --
+   -----------------------------------
+
+   function Is_Initialized_At_Elaboration (F : Flow_Id) return Boolean is
+   begin
+      case F.Kind is
+         when Direct_Mapping | Record_Field =>
+            return Is_Initialized_At_Elaboration (Get_Direct_Mapping_Id (F));
+
+         when Magic_String =>
+            return False;
+
+         when Null_Value =>
+            raise Program_Error;
+      end case;
+   end Is_Initialized_At_Elaboration;
+
 end Flow.Utility;

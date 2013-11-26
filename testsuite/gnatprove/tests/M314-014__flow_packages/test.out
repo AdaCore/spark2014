@@ -1,3 +1,4 @@
+ic.adb:30:36: "Y" must be initialized at elaboration
 ic.adb:58:43: "Y" must be listed in the Initializes aspect of "Test_04"
 ic.adb:73:34: "X" must be listed in the Initializes aspect of "Test_05"
 ic.adb:73:34: "Y" must be listed in the Initializes aspect of "Test_05"

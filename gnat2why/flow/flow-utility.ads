@@ -168,4 +168,12 @@ package Flow.Utility is
    --  Returns true if the flattened variable for F contains at least
    --  one discriminant.
 
+   function Is_Initialized_At_Elaboration (F : Flow_Id) return Boolean;
+   --  Returns true if F is covered by an initializes aspect. If F is not a
+   --  record or direct mapping, we return false. (A magic string by
+   --  definition cannot be mentioned in an initializes aspect.)
+   --
+   --  This mirrors Is_Initialized_At_Elaboration from Flow_Tree_Utility,
+   --  but works for a Flow_Id instead of an Entity_Id.
+
 end Flow.Utility;
