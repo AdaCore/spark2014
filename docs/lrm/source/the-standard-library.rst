@@ -3,7 +3,7 @@ Predefined Language Environment (Annex A)
 
 This chapter describes how |SPARK| treats the Ada predefined
 language environment and standard libraries, corresponding
-to appendices A through H of the Ada RM. 
+to appendices A through H of the Ada RM.
 
 |SPARK| programs are able to use much of the Ada predefined language
 environment and standard libraries. The standard libraries are not
@@ -91,11 +91,11 @@ No additions or restrictions.
 The Package Strings (A.4.1)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-No additions or restrictions. 
+No additions or restrictions.
 
 The predefined exceptions are considered to be declared in Stings, but their use is
 constrained by other language restrictions.
- 
+
 .. _example_of_assert:
 
 The Package Strings.Maps (A.4.2)
@@ -103,7 +103,7 @@ The Package Strings.Maps (A.4.2)
 
 .. _tu-nk-the-package-strings.maps-01:
 
-1. The type declaration Character_Mapping_Function is not in |SPARK| and 
+1. The type declaration Character_Mapping_Function is not in |SPARK| and
    cannot be referenced within |SPARK| program text.
 
 .. _etu-the-package-strings.maps:
@@ -123,19 +123,19 @@ assert statement checking that the actual parameters are correct.
    -- itself. If From'Length /= To'Length, or if some character is
    -- repeated in From, then Translation_Error is propagated".
 
-   -- Each call should be preceded with a pragma Assert, checking the actual 
+   -- Each call should be preceded with a pragma Assert, checking the actual
    -- parameters, of the form:
-   pragma Assert (Actual_From'Length = Actual_To'Length and then 
-                    (for all I in Actual_From'Range => (for all J in Actual_From'Range => 
+   pragma Assert (Actual_From'Length = Actual_To'Length and then
+                    (for all I in Actual_From'Range => (for all J in Actual_From'Range =>
                         if I /= J then Actual_From (I) /= Actual_From (J))));
    CM := To_Mapping (From => Actual_From, To => Actual_To);
 
-   -- Alternatively To_Mapping could be wrapped in a user defined subprogram with a 
+   -- Alternatively To_Mapping could be wrapped in a user defined subprogram with a
    -- suitable precondition and used to call To_Mapping indirectly.  For example:
    function My_To_Mapping (From, To : in Character_Sequence)
       return Character_Mapping with
-      Pre => (From'Length = To'Length and then 
-                       (for all I in From'Range => (for all J in From'Range => 
+      Pre => (From'Length = To'Length and then
+                       (for all I in From'Range => (for all J in From'Range =>
                            if I /= J then From (I) /= From (J))));
     is
     begin
@@ -201,7 +201,7 @@ by a pragma Assert of the form:
 
 .. code-block:: ada
 
-  pragma Assert (Actual_Low  <= Length (Actual_Source) and 
+  pragma Assert (Actual_Low  <= Length (Actual_Source) and
                  Actual_High <= Length (Actual_Source));
 
 String-Handling Sets and Mappings (A.4.6)
@@ -219,7 +219,7 @@ Wide_String Handling (A.4.7)
    parameters of these types and cannot be denoted in |SPARK| program
    texts.
 
-.. _teu-wide-string-handling:
+.. _etu-wide-string-handling:
 
 Each call of a subprogram which may raise an exception if it is called
 with inconsistent actual parameters should be immediately preceded by
@@ -235,7 +235,7 @@ Wide_Wide_String Handling (A.4.8)
    parameters of these types and cannot be denoted in |SPARK| program
    texts.
 
-.. _teu-wide-wide-string-handling:
+.. _etu-wide-wide-string-handling:
 
 Each call of a subprogram which may raise an exception if it is called
 with inconsistent actual parameters should be immediately preceded by
@@ -278,7 +278,7 @@ the assert statement:
 
 .. code-block:: ada
 
-  pragma Assert (X > 0  and Base > 1); 
+  pragma Assert (X > 0  and Base > 1);
 
 Even with such a guard certain elementary functions may raise a
 constraint error.  The onus is on the user to ensure this does not
@@ -296,7 +296,7 @@ Input-Output (A.6)
 ------------------
 
 No additions or restrictions.
-  
+
 External Files and File Objects (A.7)
 -------------------------------------
 
@@ -374,7 +374,7 @@ Default Input, Output and Error Files (A.10.3)
 
 The subprograms Ada.Text_IO.Set_Input, Ada.Text_IO.Set_Output and
 Ada.Text_IO.Set_Error should not be called from |SPARK| program text
-as they introduce an alias of the file parameter.  
+as they introduce an alias of the file parameter.
 
 Specification of Line and Page Lengths (A.10.4)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -390,28 +390,28 @@ Get and Put Procedures (A.10.6)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 No additions or restrictions.
- 
+
 Input-Output of Characters and Strings (A.10.7)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The functions Ada.Text_IO.Get_Line should not be called from |SPARK|
 program text as the functions have a side effect of reading from a file.
- 
+
 Input-Output for Integer Types (A.10.8)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 No additions or restrictions.
- 
+
 Input-Output for Real Types (A.10.9)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 No additions or restrictions.
- 
+
 Input-Output for Enumeration Types (A.10.10)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 No additions or restrictions.
- 
+
 Input-Output for Bounded Strings (A.10.11)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -420,7 +420,7 @@ use it may give rise to flow-errors as the effect of reads and writes
 is not captured in the subprogram contracts. Calls to its subprograms
 may raise IO_Exceptions based on external events.
 
- 
+
 Input-Output of Unbounded Strings (A.10.12)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -432,7 +432,7 @@ may raise IO_Exceptions based on external events.
 The functions Ada.Text_IO.Unbounded_IO.Get_Line should not be called
 from |SPARK| program text as the functions have a side effect of
 reading from a file.
- 
+
 Wide Text Input-Output and Wide Wide Text Input-Output (A.11)
 -------------------------------------------------------------
 
@@ -498,14 +498,14 @@ The Package Locales (A.19)
 
 No additions or restrictions.
 
-Interface to Other Languages 
+Interface to Other Languages
 ----------------------------
 
 This section describes features for mixed-language programming in |SPARK|, covering facilities
 offered by Ada's Annex B.
 
 .. todo:: How much to say here?  S95 supports a subset of Interfaces, and a very small subset of
-   Interfaces.C but that's about it. 
+   Interfaces.C but that's about it.
 
 .. todo:: Note that pragma ``Unchecked_Union`` is not supported in release 1.
 
