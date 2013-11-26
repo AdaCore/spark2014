@@ -4,7 +4,8 @@ package Initial_Condition_Illegal_4
   --  within the visible part of Q shall be initialized during the
   --  elaboration of Q and be denoted by a ``name`` of an
   --  ``initialization_item`` of the Initializes aspect of Q.
-  with Initial_Condition => Var = 0
+  with SPARK_Mode,
+       Initial_Condition => Var = 0
 is
    Var : Integer;
    procedure P1;
