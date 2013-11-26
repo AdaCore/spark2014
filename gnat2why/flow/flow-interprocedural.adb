@@ -62,7 +62,8 @@ package body Flow.Interprocedural is
                if Parameter.Kind = Direct_Mapping and then
                  Parameter.Variant = F.Variant and then
                  Get_Direct_Mapping_Id (Parameter) =
-                 Get_Direct_Mapping_Id (A.Parameter_Formal) then
+                 Get_Direct_Mapping_Id (A.Parameter_Formal)
+               then
                   return V;
                end if;
 
@@ -75,13 +76,15 @@ package body Flow.Interprocedural is
                      if Parameter.Kind = Direct_Mapping and then
                        A.Parameter_Formal.Variant = Parameter.Variant and then
                        Get_Direct_Mapping_Id (Parameter) =
-                       Get_Direct_Mapping_Id (A.Parameter_Formal) then
+                       Get_Direct_Mapping_Id (A.Parameter_Formal)
+                     then
                         return V;
                      end if;
                   when Magic_String =>
                      if Parameter.Kind = Magic_String and then
                        A.Parameter_Formal.Variant = Parameter.Variant and then
-                       Parameter.Name.all = A.Parameter_Formal.Name.all then
+                       Parameter.Name.all = A.Parameter_Formal.Name.all
+                     then
                         return V;
                      end if;
                   when others =>

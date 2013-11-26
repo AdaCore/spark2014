@@ -94,7 +94,8 @@ package body Gnat2Why.Decls is
 
             --  If E has external axioms, return the empty list
             if Ekind (E) = E_Package and then
-              Package_Has_External_Axioms (E) then
+              Package_Has_External_Axioms (E)
+            then
                Result := List_Of_Entity.Empty_List;
                Found := True;
                if Present (Generic_Parent (Get_Package_Spec (E))) then
@@ -194,7 +195,8 @@ package body Gnat2Why.Decls is
          while Present (N) loop
             if Comes_From_Source (N) and then
               Nkind (N) in
-              N_Subprogram_Declaration | N_Object_Declaration then
+              N_Subprogram_Declaration | N_Object_Declaration
+            then
                declare
                   E : constant Entity_Id := Defining_Entity (N);
                begin
@@ -210,14 +212,16 @@ package body Gnat2Why.Decls is
             --  Package_Instantiation.
 
             if Comes_From_Source (N) and then
-              Nkind (N) = N_Package_Instantiation then
+              Nkind (N) = N_Package_Instantiation
+            then
                Register_Decls
                  (Decls  => Visible_Declarations
                     (Specification (Instance_Spec (N))));
             end if;
 
             if Comes_From_Source (N) and then
-              Nkind (N) in N_Package_Declaration then
+              Nkind (N) in N_Package_Declaration
+            then
                Register_Decls
                  (Decls  => Visible_Declarations (Get_Package_Spec (N)));
             end if;
@@ -817,7 +821,8 @@ package body Gnat2Why.Decls is
                            --  <Generic_Name>__<In_Range_Name>  => __ignore
 
                            if Is_Scalar_Type (Actual) and then
-                             not Is_Boolean_Type (Actual) then
+                             not Is_Boolean_Type (Actual)
+                           then
                               Subst (Subst_Cur + 1) := New_Custom_Substitution
                                 (Domain   => EW_Prog,
                                  From     => NID (Capitalize_First
@@ -1156,7 +1161,8 @@ package body Gnat2Why.Decls is
 
                   if Is_Input and then
                     Is_Scalar_Type (Actual) and then
-                    not Is_Boolean_Type (Actual) then
+                    not Is_Boolean_Type (Actual)
+                  then
                      return Base_Why_Type (Unique_Entity (Actual));
                   else
                      return EW_Abstract (Actual);
@@ -1165,7 +1171,8 @@ package body Gnat2Why.Decls is
             else
                if Is_Input and then
                  Is_Scalar_Type (Ty) and then
-                 not Is_Boolean_Type (Ty) then
+                 not Is_Boolean_Type (Ty)
+               then
 
                   --  If Is_Input is true, checks wether the base_type of
                   --  Ty should be used.
@@ -1192,7 +1199,8 @@ package body Gnat2Why.Decls is
             begin
 
                if Ekind (Formal) in Type_Kind and then
-                 not Full_Name_Is_Not_Unique_Name (Formal) then
+                 not Full_Name_Is_Not_Unique_Name (Formal)
+               then
 
                   --  For type parameters, generate a theory that renames the
                   --  theory of the actual. Necessary for conversion functions.
@@ -1225,7 +1233,8 @@ package body Gnat2Why.Decls is
                   end if;
 
                   if Ekind (Actual) in E_Record_Type and then
-                    Root_Record_Type (Actual) = Actual then
+                    Root_Record_Type (Actual) = Actual
+                  then
 
                      --  if the actual is a root type of a record type, we need
                      --  to define the conversion functions

@@ -433,7 +433,8 @@ package body Flow is
             end case;
 
             if A.Loops.Length > 0 and not (A.Is_Parameter or
-                                             A.Is_Global_Parameter) then
+                                             A.Is_Global_Parameter)
+            then
                Write_Str ("\nLoops:");
                for Loop_Identifier of A.Loops loop
                   Write_Str ("&nbsp;");

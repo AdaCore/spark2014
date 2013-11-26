@@ -766,7 +766,8 @@ package body Why.Gen.Records is
       --  function from this records subtype should go through the clone.
 
       if Ekind (E) = E_Record_Subtype and then
-        Present (Cloned_Subtype (E)) then
+        Present (Cloned_Subtype (E))
+      then
 
          --  This type is simply a copy of an existing type, we re-export the
          --  corresponding module and generate trivial conversion functions,
@@ -956,7 +957,8 @@ package body Why.Gen.Records is
 
       if not Is_Constrained (Check_Ty) and then
         Present (Discriminant_Constraint (Check_Ty)) and then
-        not Is_Empty_Elmt_List (Discriminant_Constraint (Check_Ty)) then
+        not Is_Empty_Elmt_List (Discriminant_Constraint (Check_Ty))
+      then
          return Expr;
       end if;
 
@@ -987,7 +989,8 @@ package body Why.Gen.Records is
         Type_Of_Node (Search_Component_By_Name (Ty, Field));
    begin
       if Domain = EW_Prog and then
-        Do_Discriminant_Check (Ada_Node) then
+        Do_Discriminant_Check (Ada_Node)
+      then
          return
            New_VC_Call
              (Ada_Node => Ada_Node,

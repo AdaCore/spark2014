@@ -166,7 +166,8 @@ package body Why.Inter is
             end if;
             SI_Seen.Include (UE);
             if Ekind (UE) in Object_Kind and then
-              not Entity_In_SPARK (UE) then
+              not Entity_In_SPARK (UE)
+            then
                return;
             end if;
             if Ekind (UE) in Type_Kind and then not Entity_In_SPARK (UE) then
@@ -1089,7 +1090,8 @@ package body Why.Inter is
       Ty : Node_Id := N;
    begin
       if Nkind (N) /= N_Defining_Identifier
-        or else not (Ekind (N) in Type_Kind) then
+        or else not (Ekind (N) in Type_Kind)
+      then
          Ty := Etype (N);
       end if;
 

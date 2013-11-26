@@ -2150,7 +2150,8 @@ package body Flow.Control_Flow_Graph is
 
          --  Build an in vertex.
          if Ekind (Formal) = E_In_Parameter or
-           Ekind (Formal) = E_In_Out_Parameter then
+           Ekind (Formal) = E_In_Out_Parameter
+         then
             FA.CFG.Add_Vertex
               (Direct_Mapping_Id (P, In_View),
                Make_Parameter_Attributes
@@ -2183,7 +2184,8 @@ package body Flow.Control_Flow_Graph is
 
          --  Build an out vertex.
          if Ekind (Formal) = E_In_Out_Parameter or
-           Ekind (Formal) = E_Out_Parameter then
+           Ekind (Formal) = E_Out_Parameter
+         then
             FA.CFG.Add_Vertex
               (Direct_Mapping_Id (P, Out_View),
                Make_Parameter_Attributes

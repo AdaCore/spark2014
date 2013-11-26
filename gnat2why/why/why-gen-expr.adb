@@ -328,7 +328,8 @@ package body Why.Gen.Expr is
             begin
                if not Is_Static_Expression (Low_From) or else
                  not Is_Static_Expression (Low_To) or else
-                 Expr_Value (Low_From) /= Expr_Value (Low_To) then
+                 Expr_Value (Low_From) /= Expr_Value (Low_To)
+               then
                   return True;
                end if;
             end;
@@ -363,7 +364,8 @@ package body Why.Gen.Expr is
             then
                return Array_Convert_From_Base (Domain, Expr);
             elsif Get_Base_Type (From) = EW_Abstract and then
-              Get_Base_Type (To) = EW_Split then
+              Get_Base_Type (To) = EW_Split
+            then
                return Array_Convert_To_Base (Domain, Expr);
             else
                return Expr;
@@ -393,7 +395,8 @@ package body Why.Gen.Expr is
       --  ??? do not forget range checks
 
       if Is_Constrained (To_Ent) or else
-        Get_Base_Type (To) = EW_Split then
+        Get_Base_Type (To) = EW_Split
+      then
          if Sliding then
             declare
                Args    : W_Expr_Array (1 .. 1 + 2 * Dim);
@@ -870,17 +873,20 @@ package body Why.Gen.Expr is
          --  If the target type is a constrained array, we have a length check.
 
          elsif Is_Array_Type (Check_Type) and then
-           Is_Constrained (Check_Type) then
+           Is_Constrained (Check_Type)
+         then
             Check_Kind := RCK_Length;
 
          --  For 'Pred and 'Succ, it's also a range check, but the range is a
          --  bit different. We use a different Check_Kind here.
 
          elsif Nkind (Par) = N_Attribute_Reference and then
-           Get_Attribute_Id (Attribute_Name (Par)) = Attribute_Pred then
+           Get_Attribute_Id (Attribute_Name (Par)) = Attribute_Pred
+         then
             Check_Kind := RCK_Not_First;
          elsif Nkind (Par) = N_Attribute_Reference and then
-           Get_Attribute_Id (Attribute_Name (Par)) = Attribute_Succ then
+           Get_Attribute_Id (Attribute_Name (Par)) = Attribute_Succ
+         then
             Check_Kind := RCK_Not_Last;
 
          --  Otherwise, this is a range check
@@ -1222,7 +1228,8 @@ package body Why.Gen.Expr is
      return W_Expr_Id is
    begin
       if Attr in Attribute_First | Attribute_Last | Attribute_Length and then
-        Ekind (Ty) = E_String_Literal_Subtype then
+        Ekind (Ty) = E_String_Literal_Subtype
+      then
          case Attr is
             when Attribute_First =>
                return New_Integer_Constant
@@ -1579,7 +1586,8 @@ package body Why.Gen.Expr is
       --  ??? fix String_Of_Node instead of this workaround
 
       if Comes_From_Source (N) and then Original_Node (N) /= N and then
-        Nkind (Original_Node (N)) = N_And_Then then
+        Nkind (Original_Node (N)) = N_And_Then
+      then
          Used_Node := Right_Opnd (Original_Node (N));
       end if;
       declare

@@ -269,7 +269,8 @@ package body Gnat2Why.Subprograms is
    begin
       for B of Binders loop
          if Present (B.Main.Ada_Node) and then
-           Use_Why_Base_Type (B.Main.Ada_Node) then
+           Use_Why_Base_Type (B.Main.Ada_Node)
+         then
 
             --  The Ada_Node contains the Ada entity for the parameter
 

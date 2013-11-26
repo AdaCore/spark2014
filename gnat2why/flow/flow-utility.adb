@@ -389,7 +389,8 @@ package body Flow.Utility is
                Process (Name_Input, Entity (Expression (PAA)));
 
             elsif Nkind (Expression (PAA)) = N_Aggregate and then
-              Expressions (Expression (PAA)) /= No_List then
+              Expressions (Expression (PAA)) /= No_List
+            then
                --  global => (foo, bar)
                --  Inputs
                RHS := First (Expressions (Expression (PAA)));
@@ -404,7 +405,8 @@ package body Flow.Utility is
                end loop;
 
             elsif Nkind (Expression (PAA)) = N_Aggregate and then
-              Component_Associations (Expression (PAA)) /= No_List then
+              Component_Associations (Expression (PAA)) /= No_List
+            then
                --  global => (mode => foo,
                --             mode => (bar, baz))
                --  A mixture of things.

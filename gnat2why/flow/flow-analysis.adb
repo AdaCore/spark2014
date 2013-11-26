@@ -1883,7 +1883,8 @@ package body Flow.Analysis is
                         for V of FA.PDG.Get_Collection
                           (N_Loop, Flow_Graphs.In_Neighbours) loop
                            if Tmp.Get_Attributes (V).Loops.Contains
-                             (Loop_Id) then
+                             (Loop_Id)
+                           then
                               Is_Stable := False;
                               exit;
                            end if;

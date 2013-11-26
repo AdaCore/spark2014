@@ -3269,7 +3269,8 @@ package body Gnat2Why.Expr is
       if Domain = EW_Prog and then
         not Range_Contained_In_Ty
           (Ty_Ent,
-           Get_Range (Discrete_Range (Expr))) then
+           Get_Range (Discrete_Range (Expr)))
+      then
          declare
             Rng      : constant Node_Id := Get_Range (Discrete_Range (Expr));
             Tmp_Low  : constant W_Identifier_Id := New_Temp_Identifier;
@@ -4464,7 +4465,8 @@ package body Gnat2Why.Expr is
 
       if Domain = EW_Pred
         and then Local_Params.Gen_Image
-        and then Is_Pretty_Node (Expr) then
+        and then Is_Pretty_Node (Expr)
+      then
          Pretty_Label := New_Pretty_Label (Expr);
          Local_Params.Gen_Image := False;
       end if;
@@ -4492,7 +4494,8 @@ package body Gnat2Why.Expr is
               Op       => EW_Eq);
       elsif Domain /= EW_Pred and then
         Is_Discrete_Type (Expr_Type) and then
-        Compile_Time_Known_Value (Expr) then
+        Compile_Time_Known_Value (Expr)
+      then
 
          --  Optimization: if we have a discrete value that is statically
          --  known, use the static value.
@@ -4592,7 +4595,8 @@ package body Gnat2Why.Expr is
 
             if Domain = EW_Pred and then
               Nkind (Expr) = N_Op_Eq and then
-              Is_Standard_Boolean_Type (Etype (Left_Opnd (Expr))) then
+              Is_Standard_Boolean_Type (Etype (Left_Opnd (Expr)))
+            then
                T :=
                  New_Connection
                    (Domain => EW_Pred,
