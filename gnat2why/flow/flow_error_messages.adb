@@ -149,7 +149,8 @@ package body Flow_Error_Messages is
                            case F.Name.all (Index) is
                               when '_' =>
                                  if Index < F.Name.all'Length and then
-                                   F.Name.all (Index + 1) = '_' then
+                                   F.Name.all (Index + 1) = '_'
+                                 then
                                     Append (R, ".");
                                     Index := Index + 2;
                                  else

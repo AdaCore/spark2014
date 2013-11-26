@@ -441,8 +441,7 @@ package body Why.Images is
             P (O, ">=");
       end case;
 
-      if Op_Type = EW_Real and then
-         not (Value in EW_Eq .. EW_Ne) then
+      if Op_Type = EW_Real and then not (Value in EW_Eq .. EW_Ne) then
          P (O, ".");
       end if;
    end P;

@@ -126,7 +126,8 @@ package body Xtree_Tables is
          end if;
 
       elsif Is_Why_Id (FI)
-        and then (IK = Unchecked or else Maybe_Null (FI)) then
+        and then (IK = Unchecked or else Maybe_Null (FI))
+      then
          return "Why_Empty";
 
       elsif Field_Kind (FI) = Field_Domain then

@@ -208,12 +208,14 @@ package body Xtree_Builders is
             PL (O, ";");
 
          elsif Field_Kind (FI) = Field_Domain
-           and then Is_Domain (Return_Type) then
+           and then Is_Domain (Return_Type)
+         then
             PL (O, New_Node & "." & FN & " := "
                 & Mixed_Case_Name (Get_Domain (Return_Type)) & ";");
 
          elsif Field_Kind (FI) = Field_Domain
-           and then Get_Domain (Kind) /= EW_Expr then
+           and then Get_Domain (Kind) /= EW_Expr
+         then
             PL (O, New_Node & "." & FN & " := "
                 & Mixed_Case_Name (Get_Domain (Kind)) & ";");
 
@@ -315,12 +317,14 @@ package body Xtree_Builders is
          end if;
 
          if Field_Kind (FI) = Field_Domain
-           and then Is_Domain (Return_Type) then
+           and then Is_Domain (Return_Type)
+         then
             return;
          end if;
 
          if Field_Kind (FI) = Field_Domain
-           and then Get_Domain (Kind) /= EW_Expr then
+           and then Get_Domain (Kind) /= EW_Expr
+         then
             return;
          end if;
 
@@ -396,7 +400,8 @@ package body Xtree_Builders is
 
          for CI of Classes loop
             if Kind in Class_First (CI) .. Class_Last (CI)
-              and Class_Name (CI) /= "W_Any_Node" then
+              and Class_Name (CI) /= "W_Any_Node"
+            then
                NL (O);
 
                Print_Builder_Declaration (O, Kind, Derived,
@@ -424,7 +429,8 @@ package body Xtree_Builders is
 
          for CI of Classes loop
             if Kind in Class_First (CI) .. Class_Last (CI)
-              and Class_Name (CI) /= "W_Any_Node" then
+              and Class_Name (CI) /= "W_Any_Node"
+            then
                NL (O);
                Print_Builder_Body (O, Kind, Derived,
                                    Id_Subtype (Class_Name (CI), Derived));

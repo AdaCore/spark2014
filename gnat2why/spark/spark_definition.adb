@@ -1103,7 +1103,8 @@ package body SPARK_Definition is
 
          when N_Aggregate =>
             if not Is_Update_Aggregate (N)
-            and then not Is_Special_Multidim_Update_Aggr (N) then
+              and then not Is_Special_Multidim_Update_Aggr (N)
+            then
                if not Aggregate_Is_Fully_Initialized (N) then
                   Mark_Violation ("aggregate not fully defined", N, "SRM 4.3");
                end if;

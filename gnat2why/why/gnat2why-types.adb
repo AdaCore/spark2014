@@ -203,7 +203,8 @@ package body Gnat2Why.Types is
             Declare_Ada_Abstract_Signed_Int_From_Range (Theory, E, E);
 
          elsif Type_Based_On_External_Axioms (E) and then
-           Ekind (Underlying_External_Axioms_Type (E)) in Private_Kind then
+           Ekind (Underlying_External_Axioms_Type (E)) in Private_Kind
+         then
             Declare_Private_Type (Theory, E,
                                   Underlying_External_Axioms_Type (E));
          else

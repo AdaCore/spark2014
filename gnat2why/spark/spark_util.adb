@@ -513,7 +513,8 @@ package body SPARK_Util is
          Process (Name_Input, Entity (Expression (PAA)));
 
       elsif Nkind (Expression (PAA)) = N_Aggregate and then
-        Expressions (Expression (PAA)) /= No_List then
+        Expressions (Expression (PAA)) /= No_List
+      then
          --  global => (foo, bar)
          --  Inputs
          RHS := First (Expressions (Expression (PAA)));
@@ -528,7 +529,8 @@ package body SPARK_Util is
          end loop;
 
       elsif Nkind (Expression (PAA)) = N_Aggregate and then
-        Component_Associations (Expression (PAA)) /= No_List then
+        Component_Associations (Expression (PAA)) /= No_List
+      then
          --  global => (mode => foo,
          --             mode => (bar, baz))
          --  A mixture of things.
@@ -1011,7 +1013,8 @@ package body SPARK_Util is
    begin
       if Present (E) then
          if Ekind (E) = E_Package and then
-           Package_Has_External_Axioms (E) then
+           Package_Has_External_Axioms (E)
+         then
             return True;
          end if;
          if Entity_In_External_Axioms (Scope (E)) then
@@ -1377,7 +1380,8 @@ package body SPARK_Util is
             Typ := Underlying_Type (Typ);
          elsif Ekind (Typ) in Record_Kind then
             if Typ = Etype (Typ) or else
-              Underlying_Type (Etype (Typ)) = Typ then
+              Underlying_Type (Etype (Typ)) = Typ
+            then
                return Empty;
             end if;
             Typ := Etype (Typ);

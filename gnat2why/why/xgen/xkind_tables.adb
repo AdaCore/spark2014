@@ -208,7 +208,8 @@ package body Xkind_Tables is
                      Set_Domain (Kind, DK);
 
                   elsif Is_Subclass (Get_Domain (Kind), CI)
-                    or else Get_Domain (Kind) = CI then
+                    or else Get_Domain (Kind) = CI
+                  then
                      null;
 
                   else
