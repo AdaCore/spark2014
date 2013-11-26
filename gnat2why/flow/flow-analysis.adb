@@ -2473,6 +2473,8 @@ package body Flow.Analysis is
    ----------------------------------
 
    procedure Check_Initializes_Contract (FA : in out Flow_Analysis_Graphs) is
+      Tracefile : Unbounded_String;
+
       function Find_Entity (E    : Entity_Id;
                             E_In : Entity_Id := Empty)
                            return Node_Id;
@@ -2486,6 +2488,23 @@ package body Flow.Analysis is
       function Node_Id_Set_To_Flow_Id_Set
         (NS : Node_Sets.Set)
         return Flow_Id_Sets.Set;
+      --  Takes a set of Node_Ids and returns a set of the
+      --  corresponding Flow_Ids.
+
+      function Flow_Id_Set_To_Vertex_Set
+        (FS : Flow_Id_Sets.Set)
+        return Vertex_Sets.Set;
+      --  Takes a set of Flow_Ids and returns a set of PDG Vertices
+      --  that correspond to these Flow_Ids after having changed
+      --  their variants to Final_Value.
+
+      procedure Write_Tracefile
+        (From : Flow_Graphs.Vertex_Id;
+         To   : Vertex_Sets.Set);
+      --  This procedure finds the shortest path connecting vertex
+      --  From and any vertex contained in To. It then writes a
+      --  tracefile containing all vertices in between (From
+      --  and To excluded).
 
       -------------------
       --  Find_Entity  --
@@ -2571,9 +2590,90 @@ package body Flow.Analysis is
          return Tmp;
       end Node_Id_Set_To_Flow_Id_Set;
 
-      Tracefile : Unbounded_String;
+      ---------------------------------
+      --  Flow_Id_Set_To_Vertex_Set  --
+      ---------------------------------
 
-   begin
+      function Flow_Id_Set_To_Vertex_Set
+        (FS : Flow_Id_Sets.Set)
+        return Vertex_Sets.Set
+      is
+         Tmp : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
+      begin
+         for F of FS loop
+            Tmp.Insert (FA.PDG.Get_Vertex
+                          (Change_Variant (F, Final_Value)));
+         end loop;
+
+         return Tmp;
+      end Flow_Id_Set_To_Vertex_Set;
+
+      -----------------------
+      --  Write_Tracefile  --
+      -----------------------
+
+      procedure Write_Tracefile
+        (From : Flow_Graphs.Vertex_Id;
+         To   : Vertex_Sets.Set)
+      is
+         Path_Found : Boolean := False;
+         Path       : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
+
+         procedure Are_We_There_Yet
+           (V           : Flow_Graphs.Vertex_Id;
+            Instruction : out Flow_Graphs.Traversal_Instruction);
+         --  Visitor procedure for Shortest_Path.
+
+         procedure Add_Loc
+           (V : Flow_Graphs.Vertex_Id);
+         --  Step procedure for Shortest_Path.
+
+         ----------------------
+         -- Are_We_There_Yet --
+         ----------------------
+
+         procedure Are_We_There_Yet
+           (V           : Flow_Graphs.Vertex_Id;
+            Instruction : out Flow_Graphs.Traversal_Instruction)
+         is
+         begin
+            if To.Contains (V) then
+               Instruction := Flow_Graphs.Found_Destination;
+               Path_Found  := True;
+            else
+               Instruction := Flow_Graphs.Continue;
+            end if;
+         end Are_We_There_Yet;
+
+         -------------
+         -- Add_Loc --
+         -------------
+
+         procedure Add_Loc
+           (V : Flow_Graphs.Vertex_Id)
+         is
+            F : constant Flow_Id := FA.CFG.Get_Key (V);
+         begin
+            if (not To.Contains (V)) and F.Kind = Direct_Mapping then
+               Path.Include (V);
+            end if;
+         end Add_Loc;
+
+      begin --  Write_Tracefile
+         FA.PDG.Shortest_Path (Start         => From,
+                               Allow_Trivial => False,
+                               Search        => Are_We_There_Yet'Access,
+                               Step          => Add_Loc'Access);
+
+         --  A little sanity check can't hurt.
+         pragma Assert (Path_Found);
+
+         Write_Vertex_Set (G        => FA.PDG,
+                           Set      => Path,
+                           Filename => To_String (Tracefile));
+      end Write_Tracefile;
+
+   begin  --  Check_Initializes_Contract
       if not Present (FA.Initializes_N) then
          --  If there is no Initializes contract then we have nothing to do
          return;
@@ -2656,7 +2756,6 @@ package body Flow.Analysis is
                   Actual_Ins : constant Flow_Id_Sets.Set :=
                     Dependency_Maps.Element (O);
                begin
-
                   if All_Contract_Outs.Contains (Actual_Out) then
                      All_Actual_Ins.Union (Actual_Ins);
                   end if;
@@ -2679,6 +2778,12 @@ package body Flow.Analysis is
                      F2        => Actual_In,
                      Tag       => "initializes_wrong",
                      Warning   => True);
+
+                  --  Generate and write the tracefile
+                  Write_Tracefile
+                    (From => FA.PDG.Get_Vertex
+                       (Change_Variant (Actual_In, Initial_Value)),
+                     To   => Flow_Id_Set_To_Vertex_Set (All_Contract_Outs));
                end if;
             end loop;
 
