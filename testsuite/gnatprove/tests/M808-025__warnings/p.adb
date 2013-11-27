@@ -1,11 +1,14 @@
 procedure P (Y : out Integer) is pragma SPARK_Mode (On);
    type M is mod 2*32;
-   pragma Warnings (Off);
+   pragma Warnings (Off); -- no reason given
    Z1 : Natural := 0;
    pragma Warnings (On);
-   pragma Warnings (Off, "*has no effect*");
+   pragma Warnings (Off, "*has no effect*", Reason => "unused Z2, but that's OK");
    Z2 : Natural := 0;
    pragma Warnings (On, "*has no effect*");
+   pragma Warnings (Off, Reason => "unused Z3, but that's also OK");
+   Z3 : Natural := 0;
+   pragma Warnings (On);
    pragma Unreferenced (Z2);
    X : Natural := 0;
 begin
