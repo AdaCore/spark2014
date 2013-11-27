@@ -1,10 +1,10 @@
 package Init
   with SPARK_Mode,
        Abstract_State    => State,
-       Initializes       => (State, A)--  ,
-       --  Initial_Condition => Sum_All = 0
+       Initializes       => (State, A),
+       Initial_Condition => Sum_All = 0
 is
-   A : Integer := 0;
+   A : Integer := 0;  --  OK
 
    function Sum_State return Integer
      with Global => State;
@@ -12,6 +12,6 @@ is
    function Sum_All return Integer
      with Global => (A, State);
 private
-   B : Integer := 0
+   B : Integer := 0  --  OK
      with Part_Of => State;
 end Init;

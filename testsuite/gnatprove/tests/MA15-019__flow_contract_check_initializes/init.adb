@@ -2,8 +2,8 @@ package body Init
   with SPARK_Mode,
        Refined_State => (State => (B, C, D))
 is
-   C : Integer := A;
-   D : Integer := B;
+   C : Integer := A;  --  OK
+   D : Integer := B;  --  OK
 
    function Sum_State return Integer is (B + C + D)
      with Refined_Global => (B, C, D);
