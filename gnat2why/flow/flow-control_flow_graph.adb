@@ -2003,14 +2003,20 @@ package body Flow.Control_Flow_Graph is
                end if;
 
             when N_Quantified_Expression =>
-               --  Sanity check: Iterator_Specification is not in
-               --  SPARK so it should always be empty.
-               pragma Assert (not Present (Iterator_Specification (N)));
-
-               Create_Initial_And_Final_Vertices
-                 (Defining_Identifier (Loop_Parameter_Specification (N)),
-                  False,
-                  FA);
+               if Present (Iterator_Specification (N)) then
+                  Create_Initial_And_Final_Vertices
+                    (Defining_Identifier (Iterator_Specification (N)),
+                     False,
+                     FA);
+               elsif Present (Loop_Parameter_Specification (N)) then
+                  Create_Initial_And_Final_Vertices
+                    (Defining_Identifier (Loop_Parameter_Specification (N)),
+                     False,
+                     FA);
+               else
+                  Print_Tree_Node (N);
+                  raise Why.Unexpected_Node;
+               end if;
 
             when others =>
                null;

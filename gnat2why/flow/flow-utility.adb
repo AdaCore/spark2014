@@ -942,8 +942,7 @@ package body Flow.Utility is
    -- Quantified_Variables --
    --------------------------
 
-   function Quantified_Variables (N : Node_Id) return Flow_Id_Sets.Set
-   is
+   function Quantified_Variables (N : Node_Id) return Flow_Id_Sets.Set is
       RV : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
 
       function Proc (N : Node_Id) return Traverse_Result;
@@ -952,13 +951,18 @@ package body Flow.Utility is
       begin
          case Nkind (N) is
             when N_Quantified_Expression =>
-               --  Sanity check: Iterator_Specification is not in
-               --  SPARK so it should always be empty.
-               pragma Assert (not Present (Iterator_Specification (N)));
-
-               RV.Include (Direct_Mapping_Id
-                             (Defining_Identifier
-                                (Loop_Parameter_Specification (N))));
+               if Present (Iterator_Specification (N)) then
+                  RV.Include (Direct_Mapping_Id
+                                (Defining_Identifier
+                                   (Iterator_Specification (N))));
+               elsif Present (Loop_Parameter_Specification (N)) then
+                  RV.Include (Direct_Mapping_Id
+                                (Defining_Identifier
+                                   (Loop_Parameter_Specification (N))));
+               else
+                  Print_Tree_Node (N);
+                  raise Why.Unexpected_Node;
+               end if;
 
             when others =>
                null;
