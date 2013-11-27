@@ -317,13 +317,13 @@ Tagged types are not currently in |SPARK|
 Abstract Types and Subprograms
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Tagged types are not currently in |SPARK|
+Abstract types and subprograms are not currently in |SPARK|
 
 
 Interface Types
 ~~~~~~~~~~~~~~~
 
-Tagged types are not in |SPARK|.
+Interface types are not in |SPARK|.
 
 .. todo:: Include interface types in SPARK 2014. To be completed in a post-Release 1
           version of this document.
