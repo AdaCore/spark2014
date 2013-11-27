@@ -33,7 +33,6 @@ with Sinput;                             use Sinput;
 with Einfo;                              use Einfo;
 with Errout;                             use Errout;
 with Erroutc;                            use Erroutc;
-with Namet;                              use Namet;
 with Opt;                                use Opt;
 with Sem_Util;                           use Sem_Util;
 
@@ -350,7 +349,7 @@ package body Flow_Error_Messages is
          end;
       end if;
 
-      --  Signal we have found an errror if:
+      --  Signal we have found an error if:
       --     * we are not dealing with a warning or
       --     * the Warning_Mode is Treat_As_Error.
 
@@ -412,7 +411,7 @@ package body Flow_Error_Messages is
                                          Quote_Val => False));
 
          Append (Ent_Dict, Json_Mapping ("name",
-                                         Get_Name_String (Chars (E)),
+                                         Subprogram_Full_Source_Name (E),
                                          Is_Last => True));
 
          Append (Ent_Dict, "}");
