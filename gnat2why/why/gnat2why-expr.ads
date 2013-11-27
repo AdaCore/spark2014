@@ -36,9 +36,9 @@ with Gnat2Why.Util;  use Gnat2Why.Util;
 
 package Gnat2Why.Expr is
 
-   Container_Type_To_Has_Element_Function : Node_Maps.Map;
-   --  Map of entities, from container's type to the corresponding Has_Element
-   --  function.
+   function Get_Iterable_Has_Element_Function (E : Entity_Id) return Entity_Id;
+   --  Function returning the corresponding Has_Element function of a type
+   --  with an Iterable aspect.
 
    function Assignment_Of_Obj_Decl (N : Node_Id) return W_Prog_Id;
    --  Generate an assignment from an object declaration

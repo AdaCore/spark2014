@@ -1206,7 +1206,44 @@ package body SPARK_Definition is
             Mark_List (Expressions (N));
 
          when N_Iterator_Specification =>
-            Mark_Violation ("iterator specification", N, "SRM 5.5.2");
+
+            --  Retrieve Iterable aspect specification if any
+
+            declare
+               Iterable_Aspect : constant Node_Id := Get_Iterable_Aspect
+                 (Etype (Name (N)));
+            begin
+
+               if Present (Iterable_Aspect) then
+
+                  --  Mark components of the Iterable aggregate
+
+                  declare
+                     Iterable_Component_Assoc : constant List_Id :=
+                       Component_Associations (Expression
+                                               (Iterable_Aspect));
+                     Iterable_Field : Node_Id :=
+                       First (Iterable_Component_Assoc);
+
+                  begin
+
+                     while Present (Iterable_Field) loop
+                        Mark (Expression (Iterable_Field));
+                        Next (Iterable_Field);
+                     end loop;
+
+                  end;
+
+                  Mark (Name (N));
+
+               else
+
+                  --  if no Iterable aspect is found, raise a violation
+                  --  other forms of iteration are not allowed in SPARK
+
+                  Mark_Violation ("iterator specification", N, "SRM 5.5.2");
+               end if;
+            end;
 
          when N_Loop_Statement =>
             declare

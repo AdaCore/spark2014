@@ -570,6 +570,21 @@ package body SPARK_Util is
       end if;
    end Get_Global_Items;
 
+   -------------------------
+   -- Get_Iterable_Aspect --
+   -------------------------
+
+   function Get_Iterable_Aspect (E : Entity_Id) return Node_Id is
+      Iterable_Aspect : Node_Id := First_Rep_Item (E);
+   begin
+      while Present (Iterable_Aspect) and then
+        Get_Attribute_Id (Chars (Identifier (Iterable_Aspect))) /=
+        Attribute_Iterable loop
+         Iterable_Aspect := Next_Rep_Item (Iterable_Aspect);
+      end loop;
+      return Iterable_Aspect;
+   end Get_Iterable_Aspect;
+
    ----------------------
    -- Get_Package_Body --
    ----------------------

@@ -330,4 +330,9 @@ package SPARK_Util is
    function Analysis_Requested (E : Entity_Id) return Boolean;
    --  Returns true if entity E has to be analyzed.
 
+   function Get_Iterable_Aspect (E : Entity_Id) return Node_Id
+     with Post => Nkind (Get_Iterable_Aspect'Result) = N_Aspect_Specification;
+   --  Returns the aspect specification node of an entity E with an Iterable
+   --  aspect.
+
 end SPARK_Util;

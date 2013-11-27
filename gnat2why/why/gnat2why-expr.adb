@@ -1093,12 +1093,45 @@ package body Gnat2Why.Expr is
    is
       Iter : constant Node_Id := Name (N);
    begin
-      pragma Assert
-        (Nkind (Iter) = N_Function_Call
-         and then Is_Entity_Name (Name (Iter))
-         and then Entity_In_External_Axioms (Entity (Name (Iter))));
-      return First (Parameter_Associations (Iter));
+      return (Iter);
    end Get_Container_In_Iterator_Specification;
+
+   ---------------------------------------
+   -- Get_Iterable_Has_Element_Function --
+   ---------------------------------------
+
+   function Get_Iterable_Has_Element_Function
+     (E : Entity_Id) return Entity_Id is
+      Iterable_Aspect : constant Node_Id := Get_Iterable_Aspect (E);
+   begin
+      pragma Assert (Present (Iterable_Aspect));
+
+      declare
+         Iterable_Component_Assoc : constant List_Id :=
+           Component_Associations (Expression (Iterable_Aspect));
+         Iterable_Field : Node_Id := First (Iterable_Component_Assoc);
+
+      begin
+
+         while Present (Iterable_Field) loop
+            declare
+               Choice : Node_Id := First (Choices (Iterable_Field));
+            begin
+
+               while Present (Choice) loop
+                  if Chars (Choice) = Name_Has_Element then
+                     return Entity (Expression (Iterable_Field));
+                  end if;
+                  Next (Choice);
+               end loop;
+            end;
+
+            Next (Iterable_Field);
+         end loop;
+
+         return Iterable_Field;
+      end;
+   end Get_Iterable_Has_Element_Function;
 
    -------------------------------------
    -- Get_Pure_Logic_Term_If_Possible --
@@ -1138,7 +1171,7 @@ package body Gnat2Why.Expr is
       Subdomain : constant EW_Domain :=
                     (if Domain = EW_Pred then EW_Term else Domain);
       Subp : constant Entity_Id :=
-               Container_Type_To_Has_Element_Function.Element (Etype (Cont));
+        Get_Iterable_Has_Element_Function (Etype (Cont));
       Name            : constant W_Identifier_Id :=
                           To_Why_Id (Subp, Domain, Local => False);
       Call            : constant W_Expr_Id :=
