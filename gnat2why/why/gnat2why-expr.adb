@@ -1168,12 +1168,12 @@ package body Gnat2Why.Expr is
       Domain : EW_Domain;
       Params : Transformation_Params) return W_Expr_Id
    is
-      Subdomain : constant EW_Domain :=
+      Subdomain       : constant EW_Domain :=
                     (if Domain = EW_Pred then EW_Term else Domain);
-      Subp : constant Entity_Id :=
+      Subp            : constant Entity_Id :=
         Get_Iterable_Has_Element_Function (Etype (Cont));
       Name            : constant W_Identifier_Id :=
-                          To_Why_Id (Subp, Domain, Local => False);
+        To_Why_Id (Subp, Domain, Local => False);
       Call            : constant W_Expr_Id :=
                           New_Call
                             (Domain   => Domain,
@@ -5840,16 +5840,26 @@ package body Gnat2Why.Expr is
       --  iterator-specification component.
 
       Index_Ent  : constant Entity_Id :=
-                     Extract_Index_Entity (Expr, Over_Range);
+        Extract_Index_Entity (Expr, Over_Range);
       Range_E    : constant Node_Id   := Extract_Set_Node (Expr, Over_Range);
       Index_Type : constant Entity_Id := Etype (Index_Ent);
       Index_Base : constant W_Type_Id :=
-                     (if Over_Range then EW_Int_Type
-                      else EW_Abstract (Index_Type));
+        (if Over_Range then EW_Int_Type
+         else EW_Abstract (Index_Type));
       Cond_Expr  : W_Expr_Id;
       Why_Id     : constant W_Identifier_Id :=
         New_Identifier (Name => Full_Name (Index_Ent),
                         Typ  => Index_Base);
+      Index_Id   : constant W_Expr_Id :=
+        (if Over_Range then +Why_Id
+         else Insert_Checked_Conversion
+           (Ada_Node => Index_Ent,
+            Ada_Type => Index_Type,
+            Domain   => EW_Term,
+            Expr     => +Why_Id,
+            To       => (if Use_Why_Base_Type (Index_Ent) then
+                            Base_Why_Type (Unique_Entity (Index_Type))
+                         else Type_Of_Node (Index_Ent))));
       --  Start of Transform_Quantified_Expression
 
    begin
@@ -5897,7 +5907,7 @@ package body Gnat2Why.Expr is
               (if Over_Range then
                  +Range_Expr (Range_E, +Why_Id, EW_Pred, Params)
                else
-                 +Has_Element_Expr (Range_E, +Why_Id, EW_Pred, Params));
+               +Has_Element_Expr (Range_E, +Index_Id, EW_Pred, Params));
             Connector  : constant EW_Connector :=
               (if All_Present (Expr) then EW_Imply else EW_And);
             Quant_Body : constant W_Pred_Id :=
@@ -5945,7 +5955,7 @@ package body Gnat2Why.Expr is
               (if Over_Range then
                  +Range_Expr (Range_E, +Why_Id, EW_Prog, Params)
                else
-                 +Has_Element_Expr (Range_E, +Why_Id, EW_Prog, Params));
+                 +Has_Element_Expr (Range_E, +Index_Id, EW_Prog, Params));
             return
               +Sequence
                 (+New_Typed_Binding
