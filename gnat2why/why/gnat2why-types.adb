@@ -283,6 +283,7 @@ package body Gnat2Why.Types is
                  (Domain      => EW_Term,
                   Name        => To_Ident (WNE_Dummy),
                   Binders     => (1 .. 0 => <>),
+                  Labels      => Name_Id_Sets.Empty_Set,
                   Return_Type =>
                     +New_Named_Type (Name => To_Why_Id (E, Local => True))));
          end if;

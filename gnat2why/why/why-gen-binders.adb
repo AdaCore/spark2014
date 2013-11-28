@@ -242,6 +242,7 @@ package body Why.Gen.Binders is
            (Ada_Node  => Ada_Node,
             Variables => (1 => Binders (Binders'First).B_Name),
             Var_Type  => Get_Type (+Binders (Binders'First).B_Name),
+            Labels    => Name_Id_Sets.Empty_Set,
             Pred      =>
               New_Existential_Quantif (Empty,
                                        Binders (Binders'First + 1
@@ -282,7 +283,7 @@ package body Why.Gen.Binders is
       Name        : W_Identifier_Id;
       Binders     : Binder_Array;
       Return_Type : W_Type_Id;
-      Labels      : W_Identifier_Array := (1 .. 0 => <>);
+      Labels      : Name_Id_Set;
       Effects     : W_Effects_Id := New_Effects;
       Pre         : W_Pred_Id := True_Pred;
       Post        : W_Pred_Id := True_Pred)
@@ -311,7 +312,7 @@ package body Why.Gen.Binders is
       Binders     : Binder_Array;
       Return_Type : W_Type_OId := Why_Empty;
       Def         : W_Expr_Id;
-      Labels      : W_Identifier_Array := (1 .. 0 => <>);
+      Labels      : Name_Id_Set;
       Pre         : W_Pred_Id := True_Pred;
       Post        : W_Pred_Id := True_Pred)
      return W_Declaration_Id
@@ -332,6 +333,7 @@ package body Why.Gen.Binders is
              (Domain      => Domain,
               Name        => Name,
               Binders     => Binders,
+              Labels      => Name_Id_Sets.Empty_Set,
               Return_Type => RT,
               Pre         => Pre,
               Post        => Post),
@@ -409,6 +411,7 @@ package body Why.Gen.Binders is
            (Ada_Node  => Ada_Node,
             Variables => (1 => Binders (Binders'First).B_Name),
             Var_Type  => Get_Type (+Binders (Binders'First).B_Name),
+            Labels    => Name_Id_Sets.Empty_Set,
             Triggers  => Triggers,
             Pred      => Pred);
 
@@ -463,6 +466,7 @@ package body Why.Gen.Binders is
                  (Ada_Node  => Ada_Node,
                   Variables => Vars,
                   Var_Type  => Typ,
+                  Labels    => Name_Id_Sets.Empty_Set,
                   Triggers  => Triggers,
                   Pred      => Pred);
             else
@@ -470,6 +474,7 @@ package body Why.Gen.Binders is
                  (Ada_Node  => Ada_Node,
                   Variables => Vars,
                   Var_Type  => Typ,
+                  Labels    => Name_Id_Sets.Empty_Set,
                   Pred      =>
                     New_Universal_Quantif (Ada_Node  => Empty,
                                            Binders   => Other_Binders,
@@ -495,10 +500,12 @@ package body Why.Gen.Binders is
    begin
       for S in Spec'Range loop
          declare
-            Label_Array : constant W_Identifier_Array :=
-               (if Spec (S).Label = Why_Empty then (1 .. 0 => <>) else
-                (1 => Spec (S).Label));
+            Label_Set : Name_Id_Set := Name_Id_Sets.Empty_Set;
          begin
+            if Spec (S).Label /= No_Name then
+               Label_Set.Include (Spec (S).Label);
+            end if;
+
             case Spec (S).Kind is
                when W_Function_Decl =>
                   case Spec (S).Domain is
@@ -511,7 +518,7 @@ package body Why.Gen.Binders is
                              (Ada_Node    => Ada_Node,
                               Domain      => Spec (S).Domain,
                               Name        => Spec (S).Name,
-                              Labels      => Label_Array,
+                              Labels      => Label_Set,
                               Binders     => Binders,
                               Return_Type => Return_Type));
                         Logic_Def_Emitted := True;
@@ -568,7 +575,7 @@ package body Why.Gen.Binders is
                             Domain      => EW_Prog,
                             Name        => Spec (S).Name,
                             Binders     => Binders,
-                            Labels      => Label_Array,
+                            Labels      => Label_Set,
                             Return_Type => Return_Type,
                             Pre         => Spec (S).Pre,
                             Effects     => Spec (S).Effects,
@@ -588,7 +595,7 @@ package body Why.Gen.Binders is
                               Domain      => Spec (S).Domain,
                               Name        => Spec (S).Name,
                               Binders     => Binders,
-                              Labels      => Label_Array,
+                              Labels      => Label_Set,
                               Return_Type => Return_Type,
                               Def         => +Spec (S).Term));
                         Logic_Def_Emitted := True;
@@ -601,7 +608,7 @@ package body Why.Gen.Binders is
                              (Ada_Node    => Ada_Node,
                               Domain      => Spec (S).Domain,
                               Name        => Spec (S).Name,
-                              Labels      => Label_Array,
+                              Labels      => Label_Set,
                               Binders     => Binders,
                               Def         => +Spec (S).Pred));
 
@@ -624,7 +631,7 @@ package body Why.Gen.Binders is
                              (Ada_Node    => Ada_Node,
                               Domain      => Spec (S).Domain,
                               Name        => Spec (S).Name,
-                              Labels      => Label_Array,
+                              Labels      => Label_Set,
                               Binders     => Binders,
                               Pre         => Spec (S).Pre,
                               Def         => +Spec (S).Prog,

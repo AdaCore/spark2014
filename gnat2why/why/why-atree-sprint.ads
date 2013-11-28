@@ -82,10 +82,6 @@ private
      (State : in out Printer_State;
       Node  : W_Loop_Annot_Id);
 
-   procedure Wf_Arg_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Wf_Arg_Id);
-
    procedure Handler_Pre_Op
      (State : in out Printer_State;
       Node  : W_Handler_Id);

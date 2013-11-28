@@ -42,6 +42,7 @@ with Why.Gen.Decl;        use Why.Gen.Decl;
 with Why.Gen.Names;       use Why.Gen.Names;
 with Why.Gen.Binders;     use Why.Gen.Binders;
 with Why.Inter;           use Why.Inter;
+with Why.Types;           use Why.Types;
 
 package body Why.Gen.Arrays is
 
@@ -341,18 +342,20 @@ package body Why.Gen.Arrays is
       begin
          if Present (Def) and then Is_Static_Expression (Def) then
             Emit (Theory,
-                  New_Function_Def (Domain => EW_Term,
-                                    Name   => Attr_Name,
-                                    Binders => (1 .. 0 => <>),
+                  New_Function_Def (Domain      => EW_Term,
+                                    Name        => Attr_Name,
+                                    Binders     => (1 .. 0 => <>),
+                                    Labels      => Name_Id_Sets.Empty_Set,
                                     Return_Type => Int_Type,
-                                    Def => New_Integer_Constant
+                                    Def         => New_Integer_Constant
                                       (Value => Expr_Value (Def))));
          else
             Emit (Theory,
                   Why.Atree.Builders.New_Function_Decl
-                    (Domain => EW_Term,
-                     Name   => Attr_Name,
-                     Binders => (1 .. 0 => <>),
+                    (Domain      => EW_Term,
+                     Name        => Attr_Name,
+                     Binders     => (1 .. 0 => <>),
+                     Labels      => Name_Id_Sets.Empty_Set,
                      Return_Type => Int_Type));
          end if;
          Subst (Cursor) :=
@@ -498,6 +501,7 @@ package body Why.Gen.Arrays is
                   Why.Gen.Binders.New_Function_Decl
                     (Domain      => EW_Term,
                      Name        => New_Identifier (Name => "to_string"),
+                     Labels      => Name_Id_Sets.Empty_Set,
                      Binders     =>
                        (1 =>
                           Binder_Type'(
@@ -510,6 +514,7 @@ package body Why.Gen.Arrays is
                   Why.Gen.Binders.New_Function_Decl
                     (Domain      => EW_Term,
                      Name        => New_Identifier (Name => "from_string"),
+                     Labels      => Name_Id_Sets.Empty_Set,
                      Binders     =>
                        (1 =>
                           Binder_Type'(

@@ -542,4 +542,15 @@ package body Why.Images is
       P (O, Img (Node));
    end P;
 
+   procedure P
+     (O         : Output_Id;
+      Value     : Name_Id_Set;
+      As_String : Boolean := False) is
+   begin
+      for Name of Value loop
+         P (O, Name, As_String);
+         P (O, " ");
+      end loop;
+   end P;
+
 end Why.Images;

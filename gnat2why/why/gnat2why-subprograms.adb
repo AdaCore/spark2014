@@ -951,16 +951,19 @@ package body Gnat2Why.Subprograms is
          Why_Body := Transform_Declarations_Block (Vis_Decls, Why_Body);
       end if;
 
-      Emit (File.Cur_Theory,
-        New_Function_Def
-          (Domain  => EW_Prog,
-           Name    => To_Ident (WNE_Def),
-           Binders => (1 => Unit_Param),
-           Labels  =>
-             (1 => Cur_Subp_Sloc,
-              2 => Cur_Subp_Name_Label),
-           Post    => Post,
-           Def     => +Why_Body));
+      declare
+         Label_Set : Name_Id_Set := Name_Id_Sets.To_Set (Cur_Subp_Sloc);
+      begin
+         Label_Set.Include (Cur_Subp_Name_Label);
+         Emit (File.Cur_Theory,
+               New_Function_Def
+                 (Domain  => EW_Prog,
+                  Name    => To_Ident (WNE_Def),
+                  Binders => (1 => Unit_Param),
+                  Labels  => Label_Set,
+                  Post    => Post,
+                  Def     => +Why_Body));
+      end;
 
       Close_Theory (File,
                     Kind => VC_Generation_Theory);
@@ -1091,10 +1094,8 @@ package body Gnat2Why.Subprograms is
                New_Global_Ref_Declaration
                  (Name     => Result_Name,
                   Labels =>
-                    (1 =>
-                         New_Identifier
-                       (Name =>
-                            """GP_Ada_Name:" & Source_Name (E) & "'Result""")),
+                    Name_Id_Sets.To_Set
+                      (NID ("""GP_Ada_Name:" & Source_Name (E) & "'Result""")),
                   Ref_Type => EW_Abstract (Etype (E))));
          end if;
 
@@ -1163,17 +1164,19 @@ package body Gnat2Why.Subprograms is
 
       Add_With_Clause (File.Cur_Theory, "int", "Int", EW_Import, EW_Theory);
 
-      Emit (File.Cur_Theory,
-            New_Function_Def
-              (Domain  => EW_Prog,
-               Name    => To_Ident (WNE_Def),
-               Binders => (1 => Unit_Param),
-               Labels  =>
-                 (1 => Cur_Subp_Sloc,
-                  2 => Cur_Subp_Name_Label),
-               Post    => Post
-                 ,
-               Def     => +Prog));
+      declare
+         Label_Set : Name_Id_Set := Name_Id_Sets.To_Set (Cur_Subp_Sloc);
+      begin
+         Label_Set.Include (Cur_Subp_Name_Label);
+         Emit (File.Cur_Theory,
+               New_Function_Def
+                 (Domain  => EW_Prog,
+                  Name    => To_Ident (WNE_Def),
+                  Binders => (1 => Unit_Param),
+                  Labels  => Label_Set,
+                  Post    => Post,
+                  Def     => +Prog));
+      end;
 
       --  We should *not* filter our own entity, it is needed for recursive
       --  calls
@@ -1510,6 +1513,7 @@ package body Gnat2Why.Subprograms is
                  (Domain      => EW_Term,
                   Name        => Logic_Id,
                   Binders     => Logic_Why_Binders,
+                  Labels      => Name_Id_Sets.Empty_Set,
                   Return_Type => Why_Type));
 
             Emit
@@ -1519,6 +1523,7 @@ package body Gnat2Why.Subprograms is
                   Name        => Prog_Id,
                   Binders     => Func_Why_Binders,
                   Return_Type => EW_Abstract (Etype (E)),
+                  Labels      => Name_Id_Sets.Empty_Set,
                   Effects     => Effects,
                   Pre         => Pre,
                   Post        => Param_Post));
@@ -1530,6 +1535,7 @@ package body Gnat2Why.Subprograms is
               (Domain      => EW_Prog,
                Name        => Prog_Id,
                Binders     => Func_Why_Binders,
+               Labels      => Name_Id_Sets.Empty_Set,
                Return_Type => EW_Unit_Type,
                Effects     => Effects,
                Pre         => Pre,

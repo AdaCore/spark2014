@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Namet;               use Namet;
 with Snames;              use Snames;
 with Types;               use Types;
 pragma Warnings (Off);
@@ -112,10 +113,10 @@ package Why.Gen.Expr is
    function New_Located_Label
      (N         : Node_Id;
       Is_VC     : Boolean;
-      Left_Most : Boolean := False) return W_Identifier_Id;
+      Left_Most : Boolean := False) return Name_Id;
    --  Return a label that contains the Ada Sloc of the node
 
-   function New_Pretty_Label (N : Node_Id) return W_Identifier_Id;
+   function New_Pretty_Label (N : Node_Id) return Name_Id;
    --  Return a label that contains the pretty printing for the given node
 
    function New_Located_Expr
@@ -145,14 +146,14 @@ package Why.Gen.Expr is
 
    function New_VC_Labels
      (N      : Node_Id;
-      Reason : VC_Kind) return W_Identifier_Array;
+      Reason : VC_Kind) return Name_Id_Set;
    --  Generate VC and location labels for the given Ada node, with the given
    --  VC reason
 
-   function Cur_Subp_Sloc return W_Identifier_Id;
+   function Cur_Subp_Sloc return Name_Id;
    --  Return a label that identifies the current subprogram or package
 
-   function Cur_Subp_Name_Label return W_Identifier_Id;
+   function Cur_Subp_Name_Label return Name_Id;
    --  Return a label that contains the name of the current subprogram or
    --  package.
 

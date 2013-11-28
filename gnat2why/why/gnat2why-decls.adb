@@ -275,6 +275,7 @@ package body Gnat2Why.Decls is
         (File.Cur_Theory,
          New_Global_Ref_Declaration
            (Name     => To_Why_Id (E, Local => True),
+            Labels   => Name_Id_Sets.Empty_Set,
             Ref_Type => New_Named_Type (To_Ident (WNE_Type))));
 
       Insert_Item (E, Var);
@@ -316,6 +317,7 @@ package body Gnat2Why.Decls is
               (Domain      => EW_Term,
                Name        => To_Why_Id (E, Domain => EW_Term, Local => True),
                Binders     => (1 .. 0 => <>),
+               Labels      => Name_Id_Sets.Empty_Set,
                Return_Type => Typ));
       Insert_Entity (E, To_Why_Id (E, Typ => Typ));
       Close_Theory (File,
@@ -461,6 +463,7 @@ package body Gnat2Why.Decls is
         (File.Cur_Theory,
          New_Global_Ref_Declaration
            (Name     => To_Why_Id (E.all, Local => True),
+            Labels   => Name_Id_Sets.Empty_Set,
             Ref_Type => New_Named_Type (Name => To_Ident (WNE_Type))));
 
       Close_Theory (File,
@@ -1257,6 +1260,7 @@ package body Gnat2Why.Decls is
                              (Domain      => EW_Term,
                               Name        => To_Ident (WNE_To_Base),
                               Binders     => R_Binder,
+                              Labels      => Name_Id_Sets.Empty_Set,
                               Return_Type => F_Ty,
                               Def         => +A_Ident));
                         Emit
@@ -1265,6 +1269,7 @@ package body Gnat2Why.Decls is
                              (Domain      => EW_Term,
                               Name        => To_Ident (WNE_Of_Base),
                               Binders     => R_Binder,
+                              Labels      => Name_Id_Sets.Empty_Set,
                               Return_Type => F_Ty,
                               Def         => +A_Ident));
 
@@ -1370,7 +1375,7 @@ package body Gnat2Why.Decls is
                            Binders     => Binders,
                            Return_Type => F_Type,
                            Labels      =>
-                             (1 => New_Identifier (Name => "inline")),
+                             Name_Id_Sets.To_Set (NID ("inline")),
                            Def         =>
                              Insert_Simple_Conversion
                              (Domain        => EW_Term,
@@ -1515,6 +1520,7 @@ package body Gnat2Why.Decls is
         (File.Cur_Theory,
          New_Global_Ref_Declaration
            (Name     => To_Why_Id (E, Local => True),
+            Labels      => Name_Id_Sets.Empty_Set,
             Ref_Type => New_Named_Type (To_Ident (WNE_Type))));
       case Var.Kind is
          when UCArray =>
@@ -1536,11 +1542,13 @@ package body Gnat2Why.Decls is
                              D,
                              Ty_First),
                         Binders     => (1 .. 0 => <>),
+                        Labels      => Name_Id_Sets.Empty_Set,
                         Return_Type => Ty_First));
                   Emit
                     (File.Cur_Theory,
                      Why.Atree.Builders.New_Function_Decl
                        (Domain      => EW_Term,
+                        Labels      => Name_Id_Sets.Empty_Set,
                         Name        =>
                           Attr_Append
                             (Local_Name,

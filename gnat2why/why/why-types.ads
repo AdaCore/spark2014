@@ -23,8 +23,12 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers;
+with Ada.Containers.Hashed_Sets;
+
+with Namet; use Namet;
+
 package Why.Types is
-   pragma Pure;
 
    --  This package hierarchy provides basic types for Why syntax trees
 
@@ -44,5 +48,16 @@ package Why.Types is
 
    function Present (N : Why_Node_Id) return Boolean is (N /= Why_Empty);
    --  Returns True if N is not the empty node, False otherwise
+
+   function Name_Hash (N : Name_Id) return Ada.Containers.Hash_Type is
+     (Ada.Containers.Hash_Type (N));
+
+   package Name_Id_Sets is new Ada.Containers.Hashed_Sets
+     (Element_Type        => Name_Id,
+      Hash                => Name_Hash,
+      Equivalent_Elements => "=",
+      "="                 => "=");
+
+   subtype Name_Id_Set is Name_Id_Sets.Set;
 
 end Why.Types;

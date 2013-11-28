@@ -427,6 +427,7 @@ package body Why.Gen.Records is
               (Domain      => EW_Term,
                Name        => To_Ident (WNE_To_Base),
                Binders     => R_Binder,
+               Labels      => Name_Id_Sets.Empty_Set,
                Return_Type =>
                  EW_Abstract (Root),
                Def         =>
@@ -438,6 +439,7 @@ package body Why.Gen.Records is
               (Domain      => EW_Term,
                Name        => From_Ident,
                Binders     => From_Binder,
+               Labels      => Name_Id_Sets.Empty_Set,
                Return_Type => Abstr_Ty,
                Def         =>
                  New_Record_Aggregate
@@ -502,6 +504,7 @@ package body Why.Gen.Records is
                   Binder_Type'(B_Name => B_Ident,
                                others => <>)),
                Return_Type => +EW_Bool_Type,
+               Labels      => Name_Id_Sets.Empty_Set,
                Def         =>
                  New_Conditional
                    (Domain    => EW_Term,
@@ -544,6 +547,7 @@ package body Why.Gen.Records is
                                 (Domain => EW_Pred,
                                  Name   => Pred_Name,
                                  Binders => R_Binder,
+                                 Labels  => Name_Id_Sets.Empty_Set,
                                  Def => +Pre_Cond));
                      end;
                   end if;
@@ -578,6 +582,7 @@ package body Why.Gen.Records is
                              (Domain      => EW_Prog,
                               Name        => Prog_Name,
                               Binders     => R_Binder,
+                              Labels  => Name_Id_Sets.Empty_Set,
                               Return_Type =>
                                 EW_Abstract (Etype (Field)),
                               Pre         => Precond,
@@ -802,6 +807,7 @@ package body Why.Gen.Records is
                     (Domain      => EW_Term,
                      Name        => To_Ident (WNE_To_Base),
                      Binders     => R_Binder,
+                     Labels  => Name_Id_Sets.Empty_Set,
                      Return_Type => Abstr_Ty,
                      Def         => +A_Ident));
                Emit
@@ -810,6 +816,7 @@ package body Why.Gen.Records is
                     (Domain      => EW_Term,
                      Name        => To_Ident (WNE_Of_Base),
                      Binders     => R_Binder,
+                     Labels  => Name_Id_Sets.Empty_Set,
                      Return_Type => Abstr_Ty,
                      Def         => +A_Ident));
             end if;
@@ -905,6 +912,7 @@ package body Why.Gen.Records is
             New_Function_Def
               (Domain      => EW_Pred,
                Name        => To_Ident (WNE_Range_Pred),
+               Labels  => Name_Id_Sets.Empty_Set,
                Binders     => R_Binder,
                Def         => +Check_Pred));
       Pre_Cond :=
@@ -915,6 +923,7 @@ package body Why.Gen.Records is
               (Domain      => EW_Prog,
                Name        => To_Ident (WNE_Range_Check_Fun),
                Binders     => R_Binder,
+               Labels  => Name_Id_Sets.Empty_Set,
                Return_Type => Root_Abstr,
                Pre         => Pre_Cond,
                Post        => Post));

@@ -1797,6 +1797,7 @@ package body Gnat2Why.Expr is
                                New_Universal_Quantif
                                  (Variables => Binders,
                                   Var_Type  => +EW_Int_Type,
+                                  Labels      => Name_Id_Sets.Empty_Set,
                                   Pred      => Def);
             begin
                return
@@ -2305,6 +2306,7 @@ package body Gnat2Why.Expr is
          Emit (Decl_File.Cur_Theory,
                New_Function_Decl (Domain      => EW_Term,
                                   Name        => Func,
+                                  Labels      => Name_Id_Sets.Empty_Set,
                                   Binders     => Call_Params,
                                   Return_Type => Ret_Type));
          Emit (Decl_File.Cur_Theory,
@@ -3067,6 +3069,7 @@ package body Gnat2Why.Expr is
             return New_Universal_Quantif
               (Variables => Binders,
                Var_Type  => +EW_Int_Type,
+               Labels      => Name_Id_Sets.Empty_Set,
                Pred      => +Transform_Rec_Aggregate (Dim => 1, Expr => Expr));
          end if;
       end Transform_Array_Component_Associations;
@@ -3288,7 +3291,7 @@ package body Gnat2Why.Expr is
       --  node on top of the current node.
 
       else
-         T := New_Label (Labels => (1 .. 0 => <>),
+         T := New_Label (Labels => Name_Id_Sets.Empty_Set,
                          Domain => Domain,
                          Def    => Tmp_Expr,
                          Typ    => EW_Abstract (Etype (Expr)));
@@ -4488,7 +4491,7 @@ package body Gnat2Why.Expr is
             Etype (Expr));
 
       T            : W_Expr_Id;
-      Pretty_Label : W_Identifier_Id := Why_Empty;
+      Pretty_Label : Name_Id := No_Name;
       Local_Params : Transformation_Params := Params;
 
    begin
@@ -5171,14 +5174,17 @@ package body Gnat2Why.Expr is
 
       --  This label will be used for pretty printing the expression
 
-      if Pretty_Label /= Why_Empty then
-         T :=
-           New_Label (Labels =>
-                        (1 => Pretty_Label,
-                         2 => New_Located_Label (Expr, Is_VC => False)),
-                      Def => T,
-                      Domain => Domain,
-                      Typ    => Get_Type (T));
+      if Pretty_Label /= No_Name then
+         declare
+            Label_Set : Name_Id_Set := Name_Id_Sets.To_Set (Pretty_Label);
+         begin
+            Label_Set.Include (New_Located_Label (Expr, Is_VC => False));
+            T :=
+              New_Label (Labels => Label_Set,
+                         Def => T,
+                         Domain => Domain,
+                         Typ    => Get_Type (T));
+         end;
       end if;
 
       --  Insert an overflow check if flag Do_Overflow_Check is set. No
@@ -5921,6 +5927,7 @@ package body Gnat2Why.Expr is
                   New_Universal_Quantif
                      (Ada_Node  => Expr,
                       Variables => (1 => Why_Id),
+                      Labels    => Name_Id_Sets.Empty_Set,
                       Var_Type  => Index_Base,
                       Pred      => Quant_Body);
             else
@@ -5928,6 +5935,7 @@ package body Gnat2Why.Expr is
                   New_Existential_Quantif
                      (Ada_Node  => Expr,
                       Variables => (1 => Why_Id),
+                      Labels    => Name_Id_Sets.Empty_Set,
                       Var_Type  => Index_Base,
                       Pred      => Quant_Body);
             end if;
@@ -6231,9 +6239,10 @@ package body Gnat2Why.Expr is
                      while Present (Cur) loop
                         Tail :=
                           New_Label
-                            (Labels => (1 =>
-                                         New_Located_Label
-                                           (Cur, Is_VC => False)),
+                            (Labels =>
+                               Name_Id_Sets.To_Set
+                                 (New_Located_Label
+                                    (Cur, Is_VC => False)),
                              Def    =>
                              +New_Simpl_Conditional
                                (Condition =>
@@ -6354,8 +6363,9 @@ package body Gnat2Why.Expr is
         Sequence
           (Result,
            New_Label (Labels =>
-                        (1 => New_Located_Label
-                         (Stmt_Or_Decl,
+                            Name_Id_Sets.To_Set
+                        (New_Located_Label
+                           (Stmt_Or_Decl,
                             Is_VC => False)),
                       Def    => +Prog));
       if Cut_Assertion /= Why_Empty then
@@ -6426,6 +6436,7 @@ package body Gnat2Why.Expr is
          Why.Atree.Builders.New_Function_Decl
            (Domain      => EW_Term,
             Name        => Id,
+            Labels      => Name_Id_Sets.Empty_Set,
             Binders     => (1 .. 0 => <>),
             Return_Type => Why_Type));
       Close_Theory (Decl_File,

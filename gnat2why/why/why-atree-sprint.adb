@@ -52,31 +52,6 @@ package body Why.Atree.Sprint is
    --  Print a node list on current output, separating each element
    --  by a given separator, optionally followed by a new line.
 
-   procedure Print_Label_List
-     (State   : in out Printer_State'Class;
-      List_Id : Why_Node_List);
-   --  Print a list of labels, each one with quotes, and separated by space
-
-   ----------------------
-   -- Print_Label_List --
-   ----------------------
-
-   procedure Print_Label_List
-     (State   : in out Printer_State'Class;
-      List_Id : Why_Node_List)
-   is
-      use Node_Lists;
-      L         : constant List := Get_List (List_Id);
-      Position  : Cursor := First (L);
-      pragma Unreferenced (State);
-   begin
-      while Position /= No_Element loop
-         P (O, Get_Symbol (+Element (Position)), As_String => True);
-         Position := Next (Position);
-         P (O, " ");
-      end loop;
-   end Print_Label_List;
-
    ----------------
    -- Print_List --
    ----------------
@@ -311,7 +286,6 @@ package body Why.Atree.Sprint is
       Node  : W_Loop_Annot_Id)
    is
       Invariant : constant W_Pred_OId := Get_Invariant (Node);
-      Variant   : constant W_Wf_Arg_OId := Get_Variant (Node);
    begin
       if Invariant /= Why_Empty then
          P (O, "invariant ");
@@ -323,34 +297,8 @@ package body Why.Atree.Sprint is
          P (O, " }");
       end if;
 
-      if Variant /= Why_Empty then
-         P (O, "variant ");
-         Traverse (State, +Variant);
-         NL (O);
-      end if;
-
       State.Control := Abandon_Children;
    end Loop_Annot_Pre_Op;
-
-   -------------------
-   -- Wf_Arg_Pre_Op --
-   -------------------
-
-   procedure Wf_Arg_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Wf_Arg_Id)
-   is
-      For_Id : constant W_Identifier_OId := Get_For_Id (Node);
-   begin
-      Traverse (State, +Get_Def (Node));
-
-      if For_Id /= Why_Empty then
-         P (O, " for ");
-         Traverse (State, +For_Id);
-      end if;
-
-      State.Control := Abandon_Children;
-   end Wf_Arg_Pre_Op;
 
    --------------------
    -- Handler_Pre_Op --
@@ -392,7 +340,6 @@ package body Why.Atree.Sprint is
       P (O, "(forall ");
       Print_List (State, +Variables, " ");
       P (O, " ");
-      Print_List (State, +Get_Labels (Node), " ");
       P (O, " : ");
       Traverse (State, +Var_Type);
 
@@ -433,7 +380,7 @@ package body Why.Atree.Sprint is
       P (O, "exists ");
       Print_List (State, +Variables, " ");
       P (O, " ");
-      Print_List (State, +Get_Labels (Node), " ");
+      P (O, Get_Labels (Node), As_String => True);
 
       P (O, " : ");
       Traverse (State, +Var_Type);
@@ -1061,15 +1008,14 @@ package body Why.Atree.Sprint is
    is
       use Node_Lists;
 
-      L      : constant List := Get_List (+Get_Labels (Node));
-      Non_Empty : constant Boolean := not (L.Is_Empty);
+      Labels : constant Name_Id_Set := Get_Labels (Node);
    begin
-      if Non_Empty then
+      if not Labels.Is_Empty then
          P (O, "( ");
       end if;
-      Print_Label_List (State, +Get_Labels (Node));
+      P (O, Labels, As_String => True);
       Traverse (State, +Get_Def (Node));
-      if Non_Empty then
+      if not Labels.Is_Empty then
          P (O, " )");
       end if;
       State.Control := Abandon_Children;
@@ -1168,7 +1114,7 @@ package body Why.Atree.Sprint is
             Traverse (State, +Name);
 
             P (O, " ");
-            Print_List (State, +Get_Labels (Node), " ");
+            P (O, Get_Labels (Node), As_String => True);
 
             NL (O);
             Relative_Indent (O, 1);
@@ -1265,7 +1211,7 @@ package body Why.Atree.Sprint is
             Traverse (State, +Name);
 
             P (O, " ");
-            Print_Label_List (State, +Get_Labels (Node));
+            P (O, Get_Labels (Node), As_String => True);
 
             P (O, " (");
             Print_List (State, +Binders, ") (");
@@ -1281,7 +1227,7 @@ package body Why.Atree.Sprint is
             Traverse (State, +Name);
 
             P (O, " ");
-            Print_Label_List (State, +Get_Labels (Node));
+            P (O, Get_Labels (Node), As_String => True);
 
             if not Is_Empty (+Binders) then
                P (O, " (");
@@ -1301,7 +1247,7 @@ package body Why.Atree.Sprint is
             P (O, "let ");
             Traverse (State, +Name);
             P (O, " ");
-            Print_Label_List (State, +Get_Labels (Node));
+            P (O, Get_Labels (Node), As_String => True);
 
             if not Is_Empty (+Binders) then
                P (O, " (");
@@ -1443,7 +1389,7 @@ package body Why.Atree.Sprint is
       Traverse (State, +Get_Name (Node));
 
       P (O, " ");
-      Print_List (State, +Get_Labels (Node), " ");
+      P (O, Get_Labels (Node), As_String => True);
 
       P (O, " : ref ");
       Traverse (State, +Get_Ref_Type (Node));

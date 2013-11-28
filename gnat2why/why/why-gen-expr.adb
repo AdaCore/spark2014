@@ -29,7 +29,6 @@ with Ada.Text_IO;
 with Atree;                 use Atree;
 with Einfo;                 use Einfo;
 with Errout;                use Errout;
-with Namet;                 use Namet;
 with Nlists;                use Nlists;
 with Sem_Eval;              use Sem_Eval;
 with Sem_Util;              use Sem_Util;
@@ -67,28 +66,13 @@ package body Why.Gen.Expr is
    --  to To; a counterexample would be two abstract types whose base
    --  types differ), insert the corresponding conversion.
 
-   Subp_Sloc_Map : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
-
    -------------------
    -- Cur_Subp_Sloc --
    -------------------
 
-   function Cur_Subp_Sloc return W_Identifier_Id is
-      Uniq : constant Entity_Id := Current_Subp;
-      Cur : constant Ada_To_Why.Cursor :=
-        Subp_Sloc_Map.Find (Uniq);
+   function Cur_Subp_Sloc return Name_Id is
    begin
-      if Ada_To_Why.Has_Element (Cur) then
-         return +Ada_To_Why.Element (Cur);
-      else
-         declare
-            Res_Id : constant W_Identifier_Id :=
-              New_Identifier (Name => Subp_Location (Uniq));
-         begin
-            Subp_Sloc_Map.Insert (Uniq, +Res_Id);
-            return Res_Id;
-         end;
-      end if;
+      return NID (Subp_Location (Current_Subp));
    end Cur_Subp_Sloc;
 
    --------------
@@ -197,11 +181,11 @@ package body Why.Gen.Expr is
    -------------------------
 
    function Cur_Subp_Name_Label
-      return W_Identifier_Id is
+      return Name_Id is
    begin
       return
-        New_Identifier
-          (Name => To_String (WNE_Pretty_Ada) & ":" &
+        NID
+          (To_String (WNE_Pretty_Ada) & ":" &
                Subprogram_Full_Source_Name (Current_Subp));
    end Cur_Subp_Name_Label;
 
@@ -436,7 +420,7 @@ package body Why.Gen.Expr is
          --  a dummy node
 
          else
-            T := New_Label (Labels => (1 .. 0 => <>),
+            T := New_Label (Labels => Name_Id_Sets.Empty_Set,
                             Def    => Arr_Expr,
                             Domain => Domain,
                             Typ    => To);
@@ -1391,7 +1375,9 @@ package body Why.Gen.Expr is
    is
    begin
       return
-        New_Label (Labels => (1 => New_Located_Label (Ada_Node, Is_VC)),
+        New_Label (Labels =>
+                     Name_Id_Sets.To_Set
+                       (New_Located_Label (Ada_Node, Is_VC)),
                    Def    => Expr,
                    Domain => Domain);
    end New_Located_Expr;
@@ -1404,7 +1390,7 @@ package body Why.Gen.Expr is
      (N         : Node_Id;
       Is_VC     : Boolean;
       Left_Most : Boolean := False)
-      return W_Identifier_Id
+      return Name_Id
    is
       Slc    : Source_Ptr;
       Buf    : Unbounded_String := Null_Unbounded_String;
@@ -1455,7 +1441,7 @@ package body Why.Gen.Expr is
             Append (Buf, ':');
          end;
       end loop;
-      return New_Identifier (Name => Prefix & To_String (Buf));
+      return NID (Prefix & To_String (Buf));
    end New_Located_Label;
 
    -----------------
@@ -1571,7 +1557,7 @@ package body Why.Gen.Expr is
    -- New_Pretty_Label --
    ----------------------
 
-   function New_Pretty_Label (N : Node_Id) return W_Identifier_Id
+   function New_Pretty_Label (N : Node_Id) return Name_Id
    is
       Used_Node : Node_Id := N;
    begin
@@ -1595,10 +1581,9 @@ package body Why.Gen.Expr is
       begin
          if S /= "" then
             return
-              New_Identifier
-                (Name => To_String (WNE_Pretty_Ada) & ":" & S);
+              NID (To_String (WNE_Pretty_Ada) & ":" & S);
          else
-            return Why_Empty;
+            return No_Name;
          end if;
       end;
    end New_Pretty_Label;
@@ -1729,7 +1714,7 @@ package body Why.Gen.Expr is
    -------------------
 
    function New_VC_Labels (N : Node_Id; Reason : VC_Kind)
-      return W_Identifier_Array
+      return Name_Id_Set
    is
 
       --  A gnatprove label in Why3 has the following form
@@ -1742,16 +1727,16 @@ package body Why.Gen.Expr is
       --  For a node inside an instantiation, we use the location of the
       --  top-level instantiation. This could be refined in the future.
 
+      Set : Name_Id_Set := Name_Id_Sets.Empty_Set;
    begin
-      return
-        (1 => New_Identifier
-           (Name => "GP_Reason:" & VC_Kind'Image (Reason)),
-         2 =>
-           New_Located_Label
-             (N,
-              Is_VC => True,
-              Left_Most => Is_Assertion_Kind (Reason)),
-         3 => To_Ident (WNE_Keep_On_Simp));
+      Set.Include (NID ("GP_Reason:" & VC_Kind'Image (Reason)));
+      Set.Include
+        (New_Located_Label
+           (N,
+            Is_VC => True,
+            Left_Most => Is_Assertion_Kind (Reason)));
+      Set.Include (NID (To_String (WNE_Keep_On_Simp)));
+      return Set;
    end New_VC_Labels;
 
    ------------------

@@ -161,15 +161,6 @@ package Why.Sinfo is
    --  Loop annotations. These belong to the top of the loop, and each loop can
    --  only have one.
    --
-   --  --------------
-   --  -- W_Wf_Arg --
-   --  --------------
-   --
-   --  Def        W_Term_Id
-   --  For_Id     W_Identifier_Id
-   --
-   --  ?? is W_Wf_Arg needed?
-   --
    --  -------------------------
    --  -- W_Field_Association --
    --  -------------------------
@@ -642,7 +633,6 @@ package Why.Sinfo is
       W_Postcondition,
       W_Exn_Condition,
       W_Loop_Annot,
-      W_Wf_Arg,
       W_Handler,
       W_Field_Association,
 

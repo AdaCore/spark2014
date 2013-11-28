@@ -171,19 +171,7 @@ package body Xtree_Sinfo is
 
       New_Field (W_Loop_Annot,
                  "Invariant", "W_Pred", Id_Lone);
-      New_Field (W_Loop_Annot,
-                 "Variant", "W_Wf_Arg", Id_Lone);
       Set_Domain (W_Loop_Annot, EW_Prog);
-
-      --------------
-      -- W_Wf_Arg --
-      --------------
-
-      New_Field (W_Wf_Arg,
-                 "Def", "W_Term", Id_One);
-      New_Field (W_Wf_Arg,
-                 "For_Id", "W_Identifier", Id_Lone);
-      Set_Domain (W_Wf_Arg, EW_Term);
 
       ---------------
       -- W_Handler --
@@ -214,7 +202,7 @@ package body Xtree_Sinfo is
       New_Field (W_Universal_Quantif,
                  "Variables", "W_Identifier", Id_Some);
       New_Field (W_Universal_Quantif,
-                 "Labels", "W_Identifier", Id_Set);
+                 "Labels", "Name_Id_Set");
       New_Field (W_Universal_Quantif,
                  "Var_Type", "W_Type", Id_One);
       New_Field (W_Universal_Quantif,
@@ -229,7 +217,7 @@ package body Xtree_Sinfo is
       New_Field (W_Existential_Quantif,
                  "Variables", "W_Identifier", Id_Some);
       New_Field (W_Existential_Quantif,
-                 "Labels", "W_Identifier", Id_Set);
+                 "Labels", "Name_Id_Set");
       New_Field (W_Existential_Quantif,
                  "Var_Type", "W_Type", Id_One);
       New_Field (W_Existential_Quantif,
@@ -277,7 +265,7 @@ package body Xtree_Sinfo is
       -------------
 
       New_Field (W_Label,
-                 "Labels", "W_Identifier", Id_Set);
+                 "Labels", "Name_Id_Set");
       New_Field (W_Label,
                  "Def", "W_Expr", Id_One);
       New_Field (W_Label,
@@ -540,7 +528,7 @@ package body Xtree_Sinfo is
       New_Field (W_Function_Decl,
                  "Return_Type", "W_Type", Id_One);
       New_Field (W_Function_Decl,
-                 "Labels", "W_Identifier", Id_Set);
+                 "Labels", "Name_Id_Set");
 
       --------------------
       -- W_Function_Def --
@@ -551,7 +539,7 @@ package body Xtree_Sinfo is
       New_Field (W_Function_Def,
                  "Def", "W_Expr", Id_One);
       New_Field (W_Function_Def,
-                 "Labels", "W_Identifier", Id_Set);
+                 "Labels", "Name_Id_Set");
 
       -------------
       -- W_Axiom --
@@ -596,7 +584,7 @@ package body Xtree_Sinfo is
       New_Field (W_Global_Ref_Declaration,
                  "Ref_Type", "W_Type", Id_One);
       New_Field (W_Global_Ref_Declaration,
-                 "Labels", "W_Identifier", Id_Set);
+                 "Labels", "Name_Id_Set");
       Set_Domain (W_Global_Ref_Declaration, EW_Prog);
 
       -----------------------------

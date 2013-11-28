@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Namet;                  use Namet;
 with Types;                  use Types;
 with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 pragma Warnings (Off);
@@ -131,7 +132,7 @@ package Why.Gen.Binders is
       Name        : W_Identifier_Id;
       Binders     : Binder_Array;
       Return_Type : W_Type_Id;
-      Labels      : W_Identifier_Array := (1 .. 0 => <>);
+      Labels      : Name_Id_Set;
       Effects     : W_Effects_Id := New_Effects;
       Pre         : W_Pred_Id := True_Pred;
       Post        : W_Pred_Id := True_Pred)
@@ -144,7 +145,7 @@ package Why.Gen.Binders is
       Binders     : Binder_Array;
       Return_Type : W_Type_OId := Why_Empty;
       Def         : W_Expr_Id;
-      Labels      : W_Identifier_Array := (1 .. 0 => <>);
+      Labels      : Name_Id_Set;
       Pre         : W_Pred_Id := True_Pred;
       Post        : W_Pred_Id := True_Pred)
      return W_Declaration_Id;
@@ -206,7 +207,7 @@ package Why.Gen.Binders is
 
         Pre  : W_Pred_OId := Why_Empty;
 
-        Label : W_Identifier_OId := Why_Empty;
+        Label : Name_Id := No_Name;
 
         Post : W_Pred_OId := Why_Empty;
         --  If no postcondition is given, and if a logic declaration
