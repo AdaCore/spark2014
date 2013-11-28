@@ -526,6 +526,27 @@ precise configuration of the target platform used for compilation
 (size of integers, endianness, \etc), which facilitates performing
 proofs that depend on the target.
 
+\subsection{Related Work on Combined Test and Proof}
+The combination of dynamic and static analysis has received a fair
+amount of attention during the last decade. Some examples include
+combinations of symbolic and concrete execution: DART \cite{DART2005},
+CUTE \cite{CUTE2005} and EXE \cite{EXE2006}, contract and invariant
+inference tools that uses testing: Daikon \cite{ErnstPGMPTX2007} and
+QuickSpec{QuickSpec2010}, and most recently HipSpec \cite{HipSpec2012},
+which uses a combination of automatic inductive theorem proving and
+testing to generates lemmas. It would be interesting to explore some
+of these approaches in the future.
+
+The perhaps most similar work to ours is the verification
+environment Eve \cite{Tschannen:2011} for Eiffel, which also uses a
+modular contract-based approach where postconditions serve as test
+oracles and some modules can be verified by test and some by
+proof. One notable difference is that in Eve the semantics for
+integers is different during test and proof. We will discuss this
+topic further in the next section. Our solution is specific in its
+practical focus a replacement of testing by a mix of testing and proving
+that is sound in \DOC\ terms.
+
 \section{Choosing the Right Semantics for Integers}
 \label{overflowsemantics}
 As already mentioned, there has traditionally been a difference in
@@ -676,6 +697,20 @@ second challenge initially using \oldspark\ as a reference, then
 translated into \newspark, experiencing the benefits of executable
 annotations.
 
+\subsection{How the Solutions Were Produced}
+A solution to challenge~1 and an initial solution to challenge~2 was
+submitted during the VerifyThis conference. In the aftermath, two
+parallell activities were carried out. One activity was to tune and
+develop settings to make automatic verification work better in
+\gnatprove. This is described in sections \ref {automation} and
+\ref{solution2}. The other activity was to generalise the solution to
+challenge~2 to provide a more elegant specification, described in
+Sect. \ref{solution2general}. The general specification was produced
+both in \oldspark and \newspark, partly serving as a useful mini case
+study to compare the new and old versions of the tools during
+development of the new tools. Unfortunately we did not find the time
+to explore a full general version of challenge~2 or challenge~3.
+
 \subsection{Challenge~1: Longest Common Prefix}
 Longest Common Prefix (LCP) is a text query problem that can be
 informally specified as follows:
@@ -822,7 +857,7 @@ If a general specification is not possible with your tool, assume the
 length of array is 8.
 
 \subsection{Solution to Challenge~2: Tree Sum}
-
+\label{solution2}
 We have chosen to implement an iterative version of prefix sum
 instead of a recursive one, which better matches the constraints
 commonly found in critical embedded software where recursion is
@@ -983,7 +1018,8 @@ version of loop invariants and intermediate function where all occurrences of
 the \verb|mod| operator are replaced by an explicit enumeration of the possible
 cases for all indexes, which \gnatprove is able to fully prove automatically.
 
-\subsection{General  Tree Sum}
+\subsection{General Tree Sum}
+\label{solution2general}
 As mentioned, we chose to implement an iterative version of
 \verb|PrefixSum| as a better fit for critical embedded software.
 Though the presented complete solution makes automatic
