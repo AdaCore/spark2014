@@ -64,7 +64,7 @@
 %
 \title{\newspark\ and \gnatprove}
 \subtitle{A Competition Report from Builders of an Industrial-Strength Verifying Compiler}
-\author{Duc Hoang\inst{1} \and Yannick Moy\inst{2} \and Angela Wallenburg\inst{3}
+\author{Duc Hoang\inst{1} \and Yannick Moy\inst{2} \and Angela Wallenburg\inst{3} \and Roderick Chapman\inst{3}
 }                     % Do not remove
 \institute{Ecole Polytechnique F\'ed\'erale de Lausanne, \email{duc.hoang@epfl.ch}
   \and AdaCore, \email{yannick.moy@adacore.com}
@@ -137,7 +137,7 @@ are still many remaining challenges before we can expect verifying
 compilers to be as widely used as testing.
 
 Formal software verification has been successfully used and scaled to
-large industrial projects \cite{Woodcock2009,vcc2009}. While many case
+industrial projects \cite{Woodcock2009,vcc2009}. While many case
 studies have been successful, few formal methods have reached the
 take-up and maturity level where industrial non-experts continue to
 use the method for project after project, and where this formal
@@ -156,8 +156,9 @@ take-up of verifying compiler technology:
 \end{enumerate}
 %
 In this paper we will describe our approach to solving these two
-problems in the design of the \newspark\ language and the associated
-formal verification tool \gnatprove. We will use running examples from
+problems in the design of the \newspark language, a subset of \adatwtw designed
+for formal verification, and the associated
+a verification tool \gnatprove. We will use running examples from
 the VerifyThis 2012 competition and discuss the results of using our
 tools on those problems.
 
@@ -200,7 +201,8 @@ prefix problem) we can for example specify that function \verb|LCP|
 expects arguments within bounds, and that it returns a bounded
 result. Note the use of the new \textit{aspect} syntax in Ada 2012, in
 which the declaration of \verb|LCP| is followed by keyword \verb|with|
-and a list of aspects.
+and a list of aspects, each of which specifies a property of the declared
+entity, such as pre- and post-condition.
 
 \begin{lstlisting}
 function LCP (A : Text; X, Y : Integer) return Natural with
@@ -224,7 +226,7 @@ specifications involving partial functions, like
 Writing specifications is made easier by new expression
 forms in Ada 2012. If-expressions and case-expressions are the
 expression forms which correspond to the usual if-statements and
-case-statements. Note that an if-expression without else-part
+case-statements. An if-expression without else-part
 \verb|(if A then B)| expresses a logical implication of \verb|B| by
 \verb|A|. Quantified expressions \verb|(for all X in A)| and
 \verb|(for some X in A)| correspond to the mathematical universal and
@@ -266,8 +268,7 @@ forget all information about modified variables that has been
 established within the loop. Only the given Boolean expression is
 carried forward. For formal verification in SPARK, checks are
 generated for initialisation and preservation of the loop invariant,
-similarly to the classic approach. The SPARK semantics are easier to
-work with for programmers.
+similarly to the classic approach.
 
 In formal verification, it is very common that loop invariants compare
 the value of a variable at loop entry and at the n$^{th}$ iteration of
@@ -276,7 +277,7 @@ the loop. To enable such specifications, SPARK 2014 introduces the
 variable. We have used that feature in our solution to the binary tree sum
 challenge, see Section \ref{verifythis}.
 
-A loop variant pragma has also been defined in SPARK 2014, to express
+A loop variant pragma has been defined in SPARK 2014, to express
 a quantity varying monotonically at each iteration of the loop. As
 loop invariants, a loop variant can appear anywhere in the main list
 of statements in a loop. For example, here is the loop variant used in
@@ -351,7 +352,8 @@ low-level requirements. Three levels of testing are defined in \DOB:
 hardware/software integration testing, software integration testing,
 and low-level testing -- all based on requirements. The test cases must
 fully cover the code and all exercised code should be traceable to
-requirements. This requires coverage analysis such as MC/DC. Such
+requirements. This requires coverage analysis against specified
+criteria, such as MC/DC. Such
 structural low-level testing, together with robustness testing is
 expensive. For example, a large cost is associated just for collecting
 and verifying output of these tests. Our goal is to reduce this cost,
@@ -367,7 +369,7 @@ are recognised as beneficial, they do not contribute to \DOB\
 certification credit, and their use has had to be justified by other
 means. However, \DOC\ \cite{do178c}, the recently released successor and
 replacement of \DOB, allows some of the prescribed testing
-activities to be replaced by formal methods. From RTCA \cite{do178c}:
+activities to be replaced by formal methods. From \DOC\ \cite{do178c}:
 %
 \begin{quote}
   The use of formal methods is motivated by the expectation that, as
@@ -517,8 +519,9 @@ have implemented these additional verifications in the GNAT compiler through
 dedicated switches that the user can set~\cite{hiliteERTS2012}.
 
 \subsection{Compiler Implementation}
-For \newspark\ we are building the verification tools using the GNAT
-compiler. See \cite{ksd2012} for a description and discussion of this
+For \newspark\ we are building the verification tools based on the
+front-end of the GNAT compiler. See \cite{ksd2012} for a
+description and discussion of this
 architecture. One advantage here is that the compiler inserts these
 additional checks needed to verify at run time assumptions made during
 proof. Another advantage is that formal verification has access to the
@@ -531,10 +534,10 @@ The combination of dynamic and static analysis has received a fair
 amount of attention during the last decade. Some examples include
 combinations of symbolic and concrete execution: DART \cite{DART2005},
 CUTE \cite{CUTE2005} and EXE \cite{EXE2006}, contract and invariant
-inference tools that uses testing: Daikon \cite{ErnstPGMPTX2007} and
-QuickSpec{QuickSpec2010}, and most recently HipSpec \cite{HipSpec2012},
+inference tools that use testing such as Daikon \cite{ErnstPGMPTX2007} and
+QuickSpec \cite{QuickSpec2010}, and finally HipSpec \cite{HipSpec2012},
 which uses a combination of automatic inductive theorem proving and
-testing to generates lemmas. It would be interesting to explore some
+testing to generate lemmas. It would be interesting to explore some
 of these approaches in the future.
 
 The perhaps most similar work to ours is the verification
@@ -585,7 +588,7 @@ have the same semantics for test and proof. This means that the
 compiler needs to implement the ability to execute mathematical integer
 operations. Fortunately, it has been possible to implement a solution
 for this in the GNAT compiler, which we are building our verification
-tools on. Also, the Ada standard supports this approach by not
+tools on. Also, the Ada standard permits this approach by not
 requiring that the program issues an overflow error when an
 intermediate value does not fit into the base type, providing the
 correct result is computed.
@@ -594,7 +597,7 @@ Existing users of \oldspark\ and potential new users of \newspark\
 together cover a wide spectrum of strong preferences regarding this
 issue. Existing users of \oldspark\ who perform formal verification of
 absence of run-time errors for their programs want the traditional
-mathematical integers in assertions and executable semantics for the
+mathematical integers in assertions and the standard Ada semantics for the
 program. Another user wants the same executable semantics in
 assertions and program code, and wants to leave the assertions in the
 shipped code. Many users could not have executed code that uses a
@@ -624,8 +627,8 @@ and regulations.
 \section{Making Automatic Verification Work}
 \label{automation}
 
-As \gnatprove uses the Why3 platform~\cite{why3} to generate VCs and
-call provers, it can target as many output formats and automatic or
+\gnatprove uses the Why3 platform~\cite{why3} to generate VCs and
+call provers. It can target as many output formats and automatic or
 manual provers as the Why3 platform allows (many!), but we focus on
 the automatic proof of VCs through the use of the SMT prover
 Alt-Ergo~\cite{altergo}, which is distributed with \gnatprove. There
@@ -634,11 +637,12 @@ possible, then make it efficient.
 
 The choice of source programming language is essential to make
 automatic verification possible. On the one hand, it should proscribe
-those features which render automatic verification impossible or very
-hard, and on the other hand, it should contain enough features which
+those features which make automatic verification impossible or
+hinder scalability, completeness and efficiency on industrial
+code-bases.  On the other hand, it should contain enough features which
 facilitate the expression of specifications. The former is obtained by
 restricting \newspark to a subset of \adatwtw without pointers,
-exceptions, aliasing, and effects in expressions. The latter is
+exceptions, aliasing, and side-effects in expressions. The latter is
 obtained by the features introduced in \adatwtw and
 \newspark. \adatwtw was specifically designed to include
 preconditions, postconditions, type invariants, \etc so that users can
@@ -700,7 +704,7 @@ annotations.
 \subsection{How the Solutions Were Produced}
 A solution to challenge~1 and an initial solution to challenge~2 was
 submitted during the VerifyThis conference. In the aftermath, two
-parallell activities were carried out. One activity was to tune and
+parallel activities were carried out. One activity was to tune and
 develop settings to make automatic verification work better in
 \gnatprove. This is described in sections \ref {automation} and
 \ref{solution2}. The other activity was to generalise the solution to
@@ -761,7 +765,7 @@ begin
 end LCP;
 \end{lstlisting}
 
-The type \verb|Text| is an array of integers with unknown bounds. The input
+The input
 specification that parameters \verb|X| and \verb|Y| are indices in the array
 parameter \verb|A| can be expressed as a precondition involving the Ada
 attribute \verb|'Range|, and membership tests \verb|X in ...| The output
@@ -861,7 +865,7 @@ length of array is 8.
 We have chosen to implement an iterative version of prefix sum
 instead of a recursive one, which better matches the constraints
 commonly found in critical embedded software where recursion is
-usually not allowed. In order to make automatic proof possible, we fix
+usually not allowed. In order to make automatic proof easier, we fix
 the length of the array to 8. The complete solution is quite long (186
 lines of code, not counting empty lines), so we only show here
 selected parts. The initial solution without annotations is
@@ -948,9 +952,9 @@ the benefit that \gnatprove automatically generates a postcondition for
 checks (overflow checks and index checks here).
 
 \begin{lstlisting}
-function Intermediate_Form (A, B : Input) return Boolean with
-  Pre => All_Elements_In (A, Maximum * 8)
-    and then All_Elements_In (B, Maximum);
+function Intermediate_Form (A, B : Input) return Boolean
+  with Pre => All_Elements_In (A, Maximum * 8)
+         and then All_Elements_In (B, Maximum);
 
 function Intermediate_Form (A, B : Input) return Boolean is
   (for all K in A'Range =>
@@ -1087,14 +1091,9 @@ procedure Upsweep (A : in out Input;
 \end{lstlisting}
 
 The downside is that this improved specification does not yet verify
-with the current version of \gnatprove. This general specification was
-initially developed using \oldspark\ and the existing verification
-tools, as a reference example in our development of \newspark\ and
-\gnatprove. Using the \oldspark\ verification tools, we could add the
-necessary axiom on the summation proof function that the summation of
-two adjacent intervals of the array is equal to the summation of the
-combined interval. Ideally we would add support for the summation
-operation including axioms to \gnatprove\ in the future.
+with the current version of \gnatprove, since the proof requires
+the addition of an axiom for the summation function. We plan
+to add support for such axioms within \gnatprove in the future.
 
 %% Even though we could not currently prove this using \gnatprove, we had
 %% a very rewarding experience in moving the example from \oldspark\ to
@@ -1198,7 +1197,7 @@ annotations. The most useful of these features is certainly the
 ability to execute annotations, which allows annotations to be tested
 and debugged as if they were code. It was used during the competition
 to quickly locate the reason for an unprovable VC on challenge~1: the
-loop test was using a strict comparison operator instead of the
+loop exit test was using a strict comparison operator instead of the
 correct non-strict one. To locate the problem, the participating
 author simply wrote a test exercising \verb|LCP| on an input, compiled
 it with run-time checks, and executed it. The raised run-time error
@@ -1233,7 +1232,7 @@ modify/verify loop during the competition. When a VC is not proved,
 the IDE can also display the corresponding statements in the code, to
 help figure out why some assertions do not hold on some paths.
 
-More generally, these challenges already make use of numerous
+More generally, these challenges make use of numerous
 language features in \adatwtw and \newspark that facilitate the
 expression of specifications: preconditions and postconditions, loop
 invariants and loop variants, special attributes \verb|'Result|,
