@@ -86,13 +86,13 @@ Beaulieu, CS 10806, F-35708 Rennes (France),\\
 \maketitle
 
 \paragraph{Abstract}
-SPARK is a subset of the Ada programming language targeted at safety
-and security critical applications. \newspark is a major evolution of
+SPARK is a subset of the Ada programming language targeted at safety-
+and security-critical applications. \newspark is a major evolution of
 the SPARK language and toolset, that integrates formal program
-verification in the existing development and verification processes,
-in order to decrease the cost of verification for software subject to
-certification constraints. We present industrial case studies in three
-different certification domains that show the benefits of using formal
+verification into existing development processes, in order to decrease
+the cost of software verification, subject to certification
+constraints. We present industrial case studies in three different
+certification domains that show the benefits of using formal
 verification with \newspark.
 
 \paragraph{Keywords}
@@ -106,38 +106,39 @@ associated formal verification toolset with two main objectives: (i)
 being accessible to non-expert users, and (ii) being compatible with
 testing.
 
-In this paper, we describe how \newspark achieves these objectives, based on
-practical use of the language and associated formal verification tool
-\gnatprove on three industrial case studies developed in the context of the
-\hilite\footnote{Part of this work was funded by the French government in the
-  context of the FUI project
+In this paper we describe how \newspark achieves these objectives,
+based on practical use of the language and associated formal
+verification tool \gnatprove, on three industrial case studies
+developed in the context of the \hilite\footnote{Part of this work was
+  funded by the French government in the context of the FUI project
   \hilite\url{http://www.open-do.org/projects/hi-lite/}.} and
 \openetcs\footnote{Part of this work was funded by the DGCIS (Grant
   No. 112930309) in the context of the ITEA2 project \openetcs
-  \url{http://openetcs.org/}.} research projects. The first case study by
-Mitsubishi Electric R\&D Centre Europe evaluates the use of Ada and SPARK on a
-small subset of requirements for the European Train Control Systems. The second
-case study by Astrium Space Transportation is an extensive evaluation of the
-technology over a period of three years, consisting in the re-development of
-various parts of a Flight Control and Vehicle Management software. The third
-case study by Altran compares the benefits of the new technology \wrt previous
-version, on the well-known Tokeneer case study in SPARK.
+  \url{http://openetcs.org/}.} research projects. The first case study
+by Mitsubishi Electric R\&D Centre Europe evaluates the use of Ada and
+SPARK on a small subset of requirements for the European Train Control
+Systems. The second case study by Astrium Space Transportation is an
+extensive evaluation of the technology over a period of three years,
+consisting in the re-development of various parts of a Flight Control
+and Vehicle Management application. The third case study by Altran
+compares the benefits of the new technology \wrt the previous version,
+using the well-known Tokeneer case study in SPARK.
 
 \section{SPARK 2014}
 
 %%\subsection{SPARK: Past and Present}
 
-SPARK is a subset of the Ada programming language targeted at safety
-and security critical applications. SPARK builds on the strengths of
+SPARK is a subset of the Ada programming language targeted at safety-
+and security-critical applications. SPARK builds on the strengths of
 Ada for creating highly reliable and long-lived software. SPARK
 restrictions ensure that the behavior of a SPARK program is
 unambiguously defined, and simple enough that formal verification
-tools can perform an automatic diagnostic of conformance between a
+tools can perform an automatic diagnosis of conformance between a
 program specification and its implementation. The SPARK language and
-toolset for formal verification has been applied for many years in
+toolset for formal verification has been applied over many years to
 on-board aircraft systems, control systems, cryptographic systems, and
-rail systems~\cite{sparkbook2012,oneill2012}. The new version
-\newspark builds on the new specification features added in
+rail systems~\cite{sparkbook2012,oneill2012}. The latest version,
+\newspark, builds on the new specification features added in
 \adatwtw~\cite{ada2012rationale}, so formal specifications are now
 understood by the usual development tools and can be executed.
 
@@ -200,11 +201,11 @@ procedure Swap (A : in out Arr; X, Y : Idx) with
 New expressions make it easier to express contracts. If-expressions
 and case-expressions are the expression forms which correspond to the
 usual if-statements and case-statements. Note that an if-expression
-without else-part \verb|(if A then B)| expresses a logical implication
+without an else-part \verb|(if A then B)| expresses a logical implication
 of \verb|B| by \verb|A|. Quantified expressions
 \verb|(for all X in A)| and \verb|(for some X in A)| correspond to the
 mathematical universal and existential quantifications, only on a
-bounded domain. Expression functions define a function with a single
+bounded domain. Expression functions define a function using a single
 expression, like in functional programming languages. As expression
 functions can be part of the specification of programs (contrary to
 regular function bodies), they provide a powerful way to abstract
@@ -214,7 +215,7 @@ The second most useful feature in \newspark (after contracts) is the
 ability to specify properties of loops. A loop invariant expresses the
 cumulated effect of the loop up to that point. For example, the
 following loop invariant expresses that the array \verb|A| has been
-zeroed out up to the current loop index \verb|J|, and that the rest of
+zeroed-out up to the current loop index \verb|J|, and that the rest of
 the array has not been modified.  Attribute \verb|Loop_Entry| is used
 to refer to values on entry to the loop.
 
@@ -254,7 +255,7 @@ semantics~\cite{tseChalin10}.
 contracts, so users can now execute contracts, debug them like code,
 and test them when formal verification is too difficult to
 achieve. Furthermore, by keeping the annotation language the same as
-the programming language, users don't have to learn one more language.
+the programming language, users don't have to learn another language.
 
 % Except for the Global and Depends contracts,
 All the previously presented contracts and assertion pragmas lead to
@@ -279,7 +280,7 @@ Another key benefit of executable contracts is that they can be used
 by other tools working at the level of code. For example, the
 CodePeer\footnote{\url{http://www.adacore.com/codepeer}} static
 analysis tool uses contracts and assertion pragmas to issue more
-precise messages. Most notably, this allows also combining the results
+precise messages. Most notably, this also allows us to combine the results
 of formal verification and testing, when only part of a program is
 formally analyzed~\cite{hiliteERTS2012}.
 
@@ -305,13 +306,14 @@ known to hold. Otherwise, more work is required from the user to
 understand why the property is not proved.
 
 As proof requires interactions between the user and the tool until the
-specification can be proved automatically, the efficiency and the granularity
-at which the tool can be applied are critical. For efficiency, \gnatprove uses
-a compilation-like model, where only parts that are impacted by a change need
-to be reanalyzed, and a fast generation of formulas~\cite{leino:2005:ipl}.
-For convenient interaction, \gnatprove
-allows focusing on a single unit, a single subprogram inside this unit, or even
-a single line inside this subprogram.
+specification can be proved automatically, the efficiency and the
+granularity at which the tool can be applied are critical. For
+efficiency, \gnatprove uses a compilation-like model, where only those
+parts that are impacted by a change need to be reanalyzed, and a fast
+generation of formulas~\cite{leino:2005:ipl}.  For convenient
+interaction, \gnatprove allows users to focus on a single unit, a single
+subprogram inside a unit, or even a single line inside a
+subprogram.
 
 A very useful feature of \gnatprove to investigate unproved properties
 is its ability to display the paths in the program that lead to
@@ -344,8 +346,8 @@ perform more precise proofs, at the expense of longer analysis time.
 % openETCS case study
 
 
-The \openetcs European project aims at making an open-sourced,
-open-proofs reference model of ETCS (European Train Control
+The \openetcs European project aims at making an open-source,
+open-proof reference model of ETCS (European Train Control
 System). ETCS is a radio-based train control system aiming at unifying
 train signaling and control over all European countries. Organized in
 several levels, ETCS can range from, at Level 0, a simple Automatic
@@ -354,24 +356,23 @@ featured radio-based train control system where trains inform a Radio
 Block Centre about their location and receive Movement Authorities,
 using cab signaling instead of track-side signaling.
 
-We made some experiments with \newspark to see if one could formalize
+We made some experiments with \newspark to see if we could formalize
 the ETCS System Requirement Specification (SRS, ``\emph{ERA UNISIG
-SUBSET-026}''). We should acknowledge that using \newspark for
-formalizing \emph{system} requirements is a bit excessive and out of
-scope for the language. We made nonetheless this formalization attempt
-because we wanted to give a formal semantics to this system
-specification and some of the content of the ETCS specifications is
-quite low-level.
+  SUBSET-026}''). We should acknowledge that using \newspark for
+formalizing \emph{system} requirements is out of scope for the
+language. Nonetheless, we made this formalization attempt because we
+wanted to give a formal semantics to this system specification and
+some of the content of the ETCS specifications is quite low-level.
 
 %\subsection{Description of the Software}
 
 We made several experiments but due to space constraints we will only
-detail one of them. The complete code is available
+present one of them. The complete code is available
 online\footnote{\url{https://github.com/openETCS/model-evaluation/tree/master/model/GNATprove-MERCE}}.
 This example is the coding of step functions, or piecewise constant
 functions, used in the \textit{Speed and distance monitoring} section
 (SRS §3.13). Such functions are used to model for example speed
-restrictions along distance. One of our main goals is to model the
+restrictions against distance. One of our main goals is to model the
 merge of two speed restrictions, taking at each point the most
 restrictive (\ie smaller) one.
 
@@ -419,7 +420,7 @@ For example, we specified that, given a valid (\ie with strictly
 increasing delimiters) step function \verb|SFun| and a point \verb|X|,
 function \verb|Minimum_Until_Point| returns a value of the step
 function~(2) where the step function reaches its minimum on the given
-domain~(1).
+domain~(1):
 
 \begin{lstlisting}
 function Minimum_Until_Point
@@ -514,12 +515,12 @@ of \newspark (records, arrays, enumerations, \etc) were very helpful
 compared to other specification languages like B~Method~\cite{b-book}
 (lacking usable record structures) or ACSL~\cite{acsl} for C programs
 (lacking record with variant part or bounded integers).  We found that
-it lead to quite readable specifications.
+it leads to quite readable specifications.
 
 The second goal was to evaluate the automatic proving capabilities of
 \newspark on some parts of the specification. We were able to prove
 the complete absence of run-time errors, plus the functional contracts of all
-subprograms except the one of \verb|Restrictive_Merge|. In this
+subprograms except the one belonging to \verb|Restrictive_Merge|. In this
 procedure, the postcondition and the loop invariant (added to be able
 to prove the postcondition) could not be automatically proved by
 \altergo. The main reason is that the proof context is too big and
@@ -554,10 +555,9 @@ to achieve automatic proof with \altergo.
 
 A third finding is that contracts that can be automatically proved are
 not always the most natural contracts, \ie contracts a reviewer would
-understand more easily. For example, for \verb|Restrictive_Merge|
-procedure, we would have preferred to write that the resulting
-function is the minimum of both input functions for all possible input
-values:
+understand more easily. For example, for \verb|Restrictive_Merge|, we
+would have preferred to write that the resulting function is the
+minimum of both input functions for all possible input values:
 \begin{lstlisting}
 Post =>
   (for all i in Function_Range =>
@@ -626,7 +626,7 @@ of software is the proof of absence of run-time errors (such as
 division by zero) and the correctness of variable ranges (such as, for
 instance, a velocity shall always be between 0 and 25 km/s).
 
-\newspark has been first experimented on a solar wing management
+\newspark has first been tried on a solar wing management
 software (for a spacecraft such as the ATV -- Automated Transfer
 Vehicle). This piece of code uses a mathematical library whose
 implementation is not in \newspark, implying that it could not be
@@ -704,7 +704,7 @@ ranges of variables.
 The contracts defined on mission and vehicle management code have
 (among others) the objectives of ensuring the permanent consistency of
 the software tables, the permanent consistency between the Mission and
-Vehicle Management function and other functionalities (such as, for
+Vehicle Management function and other functionality (such as, for
 instance, the solar wing management), some functional properties such
 as mutual exclusion between executions of some automated procedures
 are respected and the absence of run-time errors.
@@ -723,7 +723,7 @@ are respected and the absence of run-time errors.
 %%           Get_Status (Other_Id, Events'Old))));
 %%\end{lstlisting}
 
-A majority of the program could be formally analyzed (1505 out of 2054
+A majority of the program was formally analyzed (1505 out of 2054
 subprograms), although some subprograms fell outside the boundary of
 \newspark.  Subprograms that could not be analyzed either used access
 types (\aka ``pointers'') that are outside the language (87
@@ -817,9 +817,9 @@ in seconds (``Time'').
 
 All the contracts have been checked by dynamic testing. This phase is
 quite classical, except for the fact that preconditions and
-postconditions were also tested. Then, \gnatprove has been
-applied. The following table provides for each type of checks, their
-number and the number proved:
+postconditions were also tested. Then, \gnatprove was applied. The
+following table provides the number of each type of check and the
+proportion proved:
 
 %\vspace{2mm}
 
@@ -851,13 +851,13 @@ loop  preservation  & 14     & 14     & 100 \\
 
 %\vspace{2mm}
 
-These results are globally satisfactory, a quite limited number of
+These results are satisfactory overall, a quite limited number of
 checks having not been proved. All unproved checks were analyzed to
 determine why they were not proved, which uncovered a few limitations
 of the tool: some algorithmic functions (\eg trigonometric functions)
 are not completely known to \gnatprove and therefore cannot be used in
-proofs, \gnatprove had some difficulties to take into account
-rounding,
+proofs; \gnatprove had some difficulties to take into account
+rounding;
 %% For example, the second assertion below is not proved:
 %% \begin{lstlisting}
 %% pragma Assert (Y in -11160.002 .. 11160.002);
@@ -865,7 +865,7 @@ rounding,
 %% pragma Assert (Round_Y in -11160.0 .. 11160.0);
 %% \end{lstlisting}
 \gnatprove could not prove non linear equations involving
-floating-point values,
+floating-point values;
 %% For example, the last assertion below is not proved:
 %% \begin{lstlisting}
 %% pragma Assert (X in 0.0 .. 180.0);
@@ -875,7 +875,7 @@ floating-point values,
 %% Result := X + Y * Z;
 %% pragma Assert (Result in 0.0 .. 360.0);
 %% \end{lstlisting}
-\gnatprove could not prove some index checks in discriminated record.
+\gnatprove could not prove some index checks in discriminated records.
 %%, for example:
 %%\begin{lstlisting}
 %%   subtype R is Integer range 1 .. 100;
@@ -891,8 +891,8 @@ floating-point values,
 %%In function ``G'', the index check ``X.A (I)'' is not proved even if ``I'' is
 %%defined in the range of ``X.A''
 %%An improvement of \gnatprove is in progress in order to deal with such case.
-The remaining non proved checks were due to too complex subprograms.
-These subprograms shall be split in several smaller subprograms to be
+The remaining non proved checks were due to the complexity of subprograms.
+These subprograms can be split into several smaller subprograms to be
 proved.
 
 
@@ -911,8 +911,8 @@ automatic proof. Investigating the failed proofs was sometimes very
 difficult. While errors in the code are generally quite easy to find
 (as it is the classical activity of an engineer), missing contracts or
 assertion pragmas were almost always very difficult to detect without
-the help of an expert in \newspark. Moreover, conclusions on a tool
-limitation shall almost always be confirmed by a senior expert on
+the help of an expert in \newspark. Moreover, conclusions on tool
+limitations almost always have to be confirmed by a senior expert on
 \newspark.
 
 The quality of the code has been dramatically improved thanks to both
@@ -921,14 +921,13 @@ testing should become a natural activity of any software
 developer. Understanding why a proof (which may seem sometimes really
 obvious) does not work may require the involvement of a \newspark
 expert. The writing of effective contracts for formal proof requires a
-dedicated training and sometimes the involvement of an expert in
-\newspark.
+dedicated training and sometimes the involvement of an expert.
 
 In order to efficiently use \gnatprove in an industrial context, we
-think following points should be improved: ability to prove generic
-units once (instead of proving each instance like done currently),
-need to use a sound model of floating-points instead of real numbers
-and automatic generation of some loop invariants.
+think the following points should be improved: the ability to prove
+generic units once (instead of proving each instance as done
+currently); the need to use a sound model of floating-points instead
+of real numbers; automatic generation of some loop invariants.
 
 \section{Biometric Access to a Secure Enclave}
 \label{sec:tokeneer}
@@ -971,7 +970,7 @@ by the body of the ghost function.
 The Global aspect has an additional mode \verb|Proof_In| in \newspark
 \wrt \oldspark. This mode is used to specify global variables of a
 subprogram which appear solely within contracts and
-assertions. Therefore, the translation required separating global
+assertions. Therefore, the translation required us to separate global
 variables of mode \verb|in| that were used exclusively inside
 annotations (translated as \verb|Proof_In| global variables), from
 those that were used in code (translated as \verb|Input| global
@@ -980,10 +979,9 @@ variables).
 Parts of the original code were specially annotated to be ignored
 during formal verification, because they contained constructs which
 were outside the Ada subset supported by \oldspark. As \newspark
-supports a bigger subset of Ada than \oldspark, a lot of this code is
-now formally analyzable. The two constructs most often encountered,
-which fall under this category, are string concatenation and array
-slices.
+supports a bigger subset of Ada, a lot of this code is now formally
+analyzable. The two constructs most often encountered in this category
+are string concatenation and array slices.
 
 The information that values of variables respect the constraints of
 their type is available for proofs with the new toolset. This
@@ -1088,12 +1086,12 @@ otherwise \verb|NullOp| is returned.
 %% --#     (R = OverrideLock <->
 %% --#       prf_rolePresent(TheAdmin) = PrivTypes.Guard));
 %% \end{lstlisting}
-The \oldspark postcondition served only as a test case. It ensured
-that if a non null operation was returned and if that operation was
-\verb|OverrideLock| then the administrator was of type
-\verb|Guard|. This annotation was incomplete since it did not specify
-any other kind of valid combinations of administrator types and their
-corresponding operations
+The \oldspark postcondition on \verb|OpIsAvailable| served only as a
+test case. It ensured that if a non null operation was returned and if
+that operation was \verb|OverrideLock| then the administrator was of
+type \verb|Guard|. This annotation was incomplete since it did not
+specify any other kind of valid combinations of administrator types
+and their corresponding operations
 %%  (\eg the administrator being of type
 %% \verb|SecurityOfficer| and the operation being
 %% \verb|UpdateConfigData| or \verb|ShutdownOp|)
@@ -1151,7 +1149,7 @@ required to add intermediate cutpoints. In the Tokeneer case study,
 pragma \verb|Assert| did not have to be provided to facilitate
 proof. However, it is hypothesised that its usage could improve
 readability of the code since it would signify that a certain property
-holds at a given point in the code.
+holds at a given point.
 
 While augmenting package \verb|admin|, it was noticed that formulating
 the functional behavior annotations based on the low level Z
@@ -1215,7 +1213,7 @@ specification and implementation, even when formal methods are
 involved. As stated in Bowen's ninth commandment of formal methods,
 \emph{Thou shalt test, test, and test again}. Executable contracts are
 a key language feature (see Section~\ref{subsec:ExecutableContracts})
-of \newspark as it allows to execute the contracts while testing. They
+of \newspark as they allow the execution of contracts while testing. They
 were found to be beneficial both to increase confidence in annotations
 (Section~\ref{sec:openETCS}) and to improve overall code quality
 (Section~\ref{sec:space}). What is more, the constraint implied by
@@ -1228,9 +1226,9 @@ with this constraint in mind could be discharged
 Another objective of \newspark was to improve the amount of proofs
 that could go through automatically with respect to \oldspark. The
 case study in Section~\ref{sec:tokeneer} shows that obtaining
-automated proofs with \newspark requires smaller loop-invariant, as
+automated proofs with \newspark requires smaller loop-invariants, as
 information about bounds of variables is preserved, less user rules,
-as ghost functions can now have bodies, and less user written
+as ghost functions can now have bodies, and less user-written
 additional assertions.
 
 The case studies also raise some usability issues. \newspark strives
@@ -1242,13 +1240,13 @@ show that both code and contracts must also be adapted for formal
 proof to go through automatically (Sections~\ref{sec:openETCS}
 and~\ref{sec:space}).
 
-Determining why a proof doesn't succeed is a really difficult
+Determining why a proof doesn't succeed is a difficult
 task. Even if specific feedback can be provided by the proof
 environment for a failed proof in the form of an execution trace, the
 results of the case-study show that there is room for improvement in
 that matter. For example, the tool could provide inputs on which the
 annotation is not verified.  What is more, it appears that programmers
-should be trained to debug their proof and annotations
+should be trained to debug their proofs and annotations
 (Sections~\ref{sec:openETCS} and~\ref{sec:space}).
 
 Finally, as stated in Bowen's fourth commandment, \emph{Thou shalt
@@ -1262,11 +1260,11 @@ an expert (Sections~\ref{sec:openETCS} and~\ref{sec:space}).
 % We will summarize the three case studies, and present the planned future
 % evolutions of \newspark.
 
-Railway, space, and security are three domains subject to an important
-certification requirement that implies costly verification
+Railway, space, and security are all domains subject to important
+certification requirements that imply costly verification
 processes. The three case studies show that verification with
 \newspark can bring a solution to this problem thanks to an expressive
-language, executable contracts, and improved provability. Even if
+language, executable contracts, and enhanced provability. Even if
 there is still room for improvement in usability, the current toolset
 already allows integration of formal proofs into the standard
 developer's workflow.
