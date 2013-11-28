@@ -1175,15 +1175,18 @@ requires the development of complex loop invariants, to quickly
 correct erroneous ones. This feature won the prize of user-assistance
 tool feature awarded by the jury of the VerifyThis competition.
 
-Another very useful feature for these challenges was the ability to eliminate
-completely all possibilities of numeric overflow in annotations, as described
-in Section~\ref{overflowsemantics}. While using this feature results in only 10
-more overflow VCs in challenge~1, which are all proved with the current
-annotations, it adds 60 overflow VCs in challenge~2, most of which require
-modifications of annotations, or addition of new annotations, to be
-proved. Note that this feature is compatible with the execution of annotations,
-as compilation also takes into account the overflow mode when compiling
-arithmetic expressions.
+Another very useful feature for these challenges was the ability to
+eliminate completely all possibilities of numeric overflow in
+annotations, as described in Section~\ref{overflowsemantics}. This was
+done by setting the overflow checking mode of GNAT and
+\gnatprove to ``eliminated''. While using the ``strict'' overflow mode
+results in only 10 more overflow VCs in challenge~1, which are all
+proved with the current annotations, it adds 60 overflow VCs in
+challenge~2, most of which require modifications of annotations, or
+addition of new annotations, to be proved. Note that this feature is
+compatible with the execution of annotations, as compilation also
+takes into account the overflow mode when compiling arithmetic
+expressions.
 
 Various features of \gnatprove make it very convenient to use inside
 an Integrated Development Environment (currently GPS, the GNAT
