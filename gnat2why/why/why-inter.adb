@@ -541,7 +541,7 @@ package body Why.Inter is
    begin
       Theory_Declaration_Append_To_Includes
         (T,
-         New_Include_Declaration (File     => Why_Empty,
+         New_Include_Declaration (File     => No_Name,
                                   T_Name   => New_Identifier (Name => T_Name),
                                   Use_Kind => Use_Kind,
                                   Kind     => Th_Type));
@@ -555,8 +555,7 @@ package body Why.Inter is
    begin
       Theory_Declaration_Append_To_Includes
         (T,
-         New_Include_Declaration (File     =>
-                                      New_Identifier (Name => File),
+         New_Include_Declaration (File     => NID (File),
                                   T_Name   => New_Identifier (Name => T_Name),
                                   Use_Kind => Use_Kind,
                                   Kind     => Th_Type));

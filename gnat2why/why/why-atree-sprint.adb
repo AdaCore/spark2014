@@ -1425,14 +1425,14 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Include_Declaration_Id)
    is
-      File : constant W_Identifier_OId := Get_File (Node);
+      File : constant Name_Id := Get_File (Node);
    begin
       P (O, "use ");
       P (O, Get_Use_Kind (Node));
       P (O, " ");
-      if File /= Why_Empty then
+      if File /= No_Name then
          P (O, """");
-         Traverse (State, +File);
+         P (O, File);
          P (O, """.");
       end if;
       Traverse (State, +Get_T_Name (Node));
