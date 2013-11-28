@@ -918,8 +918,6 @@ package body Why.Atree.Sprint is
    begin
       P (O, "let ");
       Traverse (State, +Get_Name (Node));
-      P (O, " ");
-      Print_List (State, +Get_Labels (Node), " ");
       P (O, " = ref (");
       Traverse (State, +Get_Def (Node));
       PL (O, ") in ");
