@@ -89,4 +89,10 @@ package Gnat2Why.Types is
    --  Transform the type entity in argument to an identifier. This function
    --  works with Boolean, but not with things like Universal_Integer.
 
+   procedure Generate_Type_Completion
+     (File       : in out Why_Section;
+      E          : Entity_Id);
+   --  Generate the Why3 completion module fr the type entity in argument.
+   --  Today, this is useful only for user-defined equalities
+
 end Gnat2Why.Types;

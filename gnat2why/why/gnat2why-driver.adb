@@ -435,7 +435,7 @@ package body Gnat2Why.Driver is
             then
                Translate_Type (File, E, New_Theory);
                if New_Theory then
-                  Generate_Empty_Axiom_Theory (File, E);
+                  Generate_Type_Completion (Compl_File, E);
                end if;
             end if;
 

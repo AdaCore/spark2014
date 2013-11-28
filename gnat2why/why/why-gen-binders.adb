@@ -23,11 +23,11 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Conversions;  use Why.Conversions;
-with Why.Gen.Expr;     use Why.Gen.Expr;
-with Why.Gen.Names;    use Why.Gen.Names;
-with Why.Gen.Decl;     use Why.Gen.Decl;
-with Why.Inter;        use Why.Inter;
+with Why.Conversions;     use Why.Conversions;
+with Why.Gen.Expr;        use Why.Gen.Expr;
+with Why.Gen.Names;       use Why.Gen.Names;
+with Why.Gen.Decl;        use Why.Gen.Decl;
+with Why.Inter;           use Why.Inter;
 
 package body Why.Gen.Binders is
 

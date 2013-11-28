@@ -41,7 +41,6 @@ with Uintp;                 use Uintp;
 with SPARK_Util;            use SPARK_Util;
 
 with Why.Atree.Accessors;   use Why.Atree.Accessors;
-with Why.Atree.Builders;    use Why.Atree.Builders;
 with Why.Atree.Tables;      use Why.Atree.Tables;
 with Why.Atree.Modules;     use Why.Atree.Modules;
 with Why.Conversions;       use Why.Conversions;
@@ -1097,6 +1096,84 @@ package body Why.Gen.Expr is
          (Get_Kind (+P) = W_Literal and then
           Get_Value (+P) = EW_True);
    end Is_True_Boolean;
+
+   ----------------------
+   -- New_Ada_Equality --
+   ----------------------
+
+   function New_Ada_Equality
+     (Typ              : Entity_Id;
+      Domain           : EW_Domain;
+      Left, Right      : W_Expr_Id;
+      Force_Predefined : Boolean := False)
+      return W_Expr_Id is
+      Why_Type : constant W_Type_Id := EW_Abstract (Typ);
+      Use_Predef : constant Boolean :=
+        Force_Predefined or else not Present (Has_User_Defined_Eq (Typ));
+      Eq_Str   : constant String :=
+        (if Use_Predef then "bool_eq" else "user_eq");
+      Module   : constant W_Module_Id :=
+        (if Is_Boolean_Type (Typ) then Boolean_Module else E_Module (Typ));
+      Eq_Id    : constant W_Identifier_Id :=
+        New_Identifier (Module => Module,
+                        Name   => Eq_Str,
+                        Typ    => EW_Bool_Type);
+      Is_Pred  : Boolean := False;
+      T        : W_Expr_Id;
+   begin
+      if Is_Scalar_Type (Typ) then
+         declare
+            Left_Int : constant W_Expr_Id :=
+              Insert_Simple_Conversion
+                (Domain => EW_Term,
+                 Expr => Left,
+                 To   => Base_Why_Type (Why_Type));
+            Right_Int : constant W_Expr_Id :=
+              Insert_Simple_Conversion
+                (Domain => EW_Term,
+                 Expr => Right,
+                 To   => Base_Why_Type (Why_Type));
+         begin
+            if Use_Predef then
+               T :=
+                 New_Relation
+                   (Domain  => Domain,
+                    Op      => EW_Eq,
+                    Op_Type => Get_Base_Type (Base_Why_Type (Why_Type)),
+                    Left    => Left_Int,
+                    Right   => Right_Int);
+               Is_Pred := True;
+            else
+               T :=
+                 New_Call
+                   (Name   => Eq_Id,
+                    Domain => EW_Term,
+                    Args   => (1 => Left_Int, 2 => Right_Int),
+                    Typ   => EW_Bool_Type);
+            end if;
+         end;
+      else
+         T :=
+           New_Call
+             (Name   => Eq_Id,
+              Domain => EW_Term,
+              Args   =>
+                (1 => Left,
+                 2 => Right),
+              Typ   => EW_Bool_Type);
+      end if;
+      if Is_Pred then
+         return T;
+      else
+         return
+           New_Relation
+             (Op_Type => EW_Bool,
+              Domain  => Domain,
+              Op      => EW_Eq,
+              Left    => T,
+              Right   => Bool_True (EW_Term));
+      end if;
+   end New_Ada_Equality;
 
    ------------------
    -- New_And_Expr --

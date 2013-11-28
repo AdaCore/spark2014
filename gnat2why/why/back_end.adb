@@ -26,6 +26,7 @@
 --  This is the Why target-dependent version of the Back_End package
 
 with Adabkend;
+with Elists;
 with Namet;
 with Opt;
 with Stringt;
@@ -69,6 +70,7 @@ package body Back_End is
 
          Namet.Unlock;
          Stringt.Unlock;
+         Elists.Unlock;
 
          --  Frontend warnings were suppressed in this mode. Change that to the
          --  expected warning mode for gnat2why.
@@ -82,6 +84,7 @@ package body Back_End is
 
          Namet.Lock;
          Stringt.Lock;
+         Elists.Lock;
       end if;
    end Call_Back_End;
 

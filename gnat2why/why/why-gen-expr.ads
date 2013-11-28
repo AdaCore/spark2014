@@ -26,6 +26,7 @@
 with Namet;               use Namet;
 with Snames;              use Snames;
 with Types;               use Types;
+with Why.Atree.Builders;  use Why.Atree.Builders;
 pragma Warnings (Off);
 --  ??? "Why.Types" is directly visible as "Types", as it has "Why" as a
 --  common ancestor with the current package. So it hides compilation unit
@@ -47,6 +48,11 @@ package Why.Gen.Expr is
 
    function Is_True_Boolean (P : W_Expr_Id) return Boolean;
    --  Check if the given program is the program "true"
+
+   function Bool_True (D : EW_Domain) return W_Expr_Id is
+     (New_Literal (Value => EW_True, Domain => D));
+   function Bool_False (D : EW_Domain) return W_Expr_Id is
+     (New_Literal (Value => EW_False, Domain => D));
 
    function New_And_Expr
       (Left, Right : W_Expr_Id;
@@ -72,6 +78,18 @@ package Why.Gen.Expr is
       Left, Right : W_Expr_Id;
       Domain      : EW_Domain)
       return W_Expr_Id;
+
+   function New_Ada_Equality
+     (Typ              : Entity_Id;
+      Domain           : EW_Domain;
+      Left, Right      : W_Expr_Id;
+      Force_Predefined : Boolean := False)
+      return W_Expr_Id;
+   --  generate a boolean term which expresses the translation of "Left =
+   --  Right" in Ada semantics, where the equality is the one of type Typ.
+   --  If the type has a user-provided primitive equality, use that. If
+   --  Force_Predefined is True, pretend that the type does not have a
+   --  user-provided primitive equality.
 
    function New_Or_Expr
      (Left, Right : W_Expr_Id;

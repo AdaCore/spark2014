@@ -28,6 +28,7 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with String_Utils;          use String_Utils;
 
 with Csets;                 use Csets;
+with Elists;                use Elists;
 with Lib;                   use Lib;
 with Nlists;                use Nlists;
 with Pprint;                use Pprint;
@@ -324,6 +325,29 @@ package body Gnat2Why.Nodes is
       end loop;
       return False;
    end Has_Precondition;
+
+   function Has_User_Defined_Eq (E : Entity_Id) return Entity_Id is
+      Prim : Elmt_Id;
+      Op   : Entity_Id;
+   begin
+
+      Prim := First_Elmt (Collect_Primitive_Operations (E));
+      while Present (Prim) loop
+         Op := Node (Prim);
+
+         if Chars (Op) = Name_Op_Eq
+           and then Etype (Op) = Standard_Boolean
+           and then Etype (First_Formal (Op)) = E
+           and then Etype (Next_Formal (First_Formal (Op))) = E
+         then
+            return Op;
+         end if;
+
+         Next_Elmt (Prim);
+      end loop;
+
+      return Empty;
+   end Has_User_Defined_Eq;
 
    -----------------------
    -- In_Main_Unit_Body --

@@ -30,7 +30,7 @@ module Discrete_Base
     requires { true }
     ensures { to_int(result) = x }
 
-  predicate eq (x : t) (y : t) = ( to_int x = to_int y )
+  function user_eq  (x : t) (y : t) : bool
 
   axiom inversion_axiom "bounded_type" :
     forall x : t [to_int x].
@@ -150,7 +150,7 @@ module Floating_Point_Base
     requires { true }
     ensures  { to_real (result) = x }
 
-  predicate eq  (x : t) (y : t) = (to_real x = to_real y)
+  function user_eq  (x : t) (y : t) : bool
 
   axiom inversion_axiom :
     forall x : t [to_real x].
@@ -314,6 +314,13 @@ module Unconstr_Array
   predicate range_check (f1 l1 : int) =
     I1.range_check f1 l1
 
+  function bool_eq (x : __t) (y : __t) : bool =
+    Array__1.bool_eq
+      x.elts (to_int (I1.first x.rt)) (to_int (I1.last x.rt))
+      y.elts (to_int (I1.first y.rt)) (to_int (I1.last y.rt))
+
+  function user_eq (x : __t) (y : __t) : bool
+
   function dummy : __t
 end
 
@@ -378,6 +385,14 @@ module Unconstr_Array_2
 
   predicate range_check (f1 l1 f2 l2 : int) =
     I1.range_check f1 l1 /\ I2.range_check f2 l2
+
+  function user_eq (x : __t) (y : __t) : bool
+  function bool_eq (x : __t) (y : __t) : bool =
+    Array__2.bool_eq
+      x.elts (to_int (I1.first x.rt)) (to_int (I1.last x.rt))
+             (to_int_2 (I2.first x.rt_2)) (to_int_2 (I2.last x.rt_2))
+      y.elts (to_int (I1.first y.rt)) (to_int (I1.last y.rt))
+             (to_int_2 (I2.first y.rt_2)) (to_int_2 (I2.last y.rt_2))
 
   function dummy : __t
 end
@@ -463,6 +478,17 @@ module Unconstr_Array_3
 
   predicate range_check (f1 l1 f2 l2 f3 l3 : int) =
     I1.range_check f1 l1 /\ I2.range_check f2 l2 /\ I3.range_check f3 l3
+
+  function user_eq (x : __t) (y : __t) : bool
+
+  function bool_eq (x : __t) (y : __t) : bool =
+    Array__3.bool_eq
+      x.elts (to_int (I1.first x.rt))   (to_int (I1.last x.rt))
+             (to_int_2 (I2.first x.rt_2)) (to_int_2 (I2.last x.rt_2))
+             (to_int_3 (I3.first x.rt_3)) (to_int_3 (I3.last x.rt_3))
+      y.elts (to_int (I1.first y.rt))   (to_int (I1.last y.rt))
+             (to_int_2 (I2.first y.rt_2)) (to_int_2 (I2.last y.rt_2))
+             (to_int_3 (I3.first y.rt_3)) (to_int_3 (I3.last y.rt_3))
 
   function dummy : __t
 end
@@ -570,6 +596,19 @@ module Unconstr_Array_4
     I1.range_check f1 l1 /\ I2.range_check f2 l2 /\
     I3.range_check f3 l3 /\ I4.range_check f4 l4
 
+  function user_eq (x : __t) (y : __t) : bool
+
+  function bool_eq (x : __t) (y : __t) : bool =
+    Array__4.bool_eq
+      x.elts (to_int (I1.first x.rt))   (to_int (I1.last x.rt))
+             (to_int_2 (I2.first x.rt_2)) (to_int_2 (I2.last x.rt_2))
+             (to_int_3 (I3.first x.rt_3)) (to_int_3 (I3.last x.rt_3))
+             (to_int_4 (I4.first x.rt_4)) (to_int_4 (I4.last x.rt_4))
+      y.elts (to_int (I1.first y.rt))   (to_int (I1.last y.rt))
+             (to_int_2 (I2.first y.rt_2)) (to_int_2 (I2.last y.rt_2))
+             (to_int_3 (I3.first y.rt_3)) (to_int_3 (I3.last y.rt_3))
+             (to_int_4 (I4.first y.rt_4)) (to_int_4 (I4.last y.rt_4))
+
   function dummy : __t
 end
 
@@ -590,6 +629,10 @@ module Constr_Array
 
   function dummy : __t
 
+  function user_eq (x : __t) (y : __t) : bool
+  function bool_eq (x : __t) (y : __t) : bool =
+    Array__1.bool_eq x first last
+                     y first last
 end
 
 module Constr_Array_2
@@ -611,6 +654,10 @@ module Constr_Array_2
   function of_array  (a : Array__2.map component_type) : __t = a
 
   function dummy : __t
+  function user_eq (x : __t) (y : __t) : bool
+  function bool_eq (x : __t) (y : __t) : bool =
+    Array__2.bool_eq x first last first_2 last_2
+                     y first last first_2 last_2
 end
 
 module Constr_Array_3
@@ -635,6 +682,10 @@ module Constr_Array_3
   function of_array  (a : Array__3.map component_type) : __t = a
 
   function dummy : __t
+  function user_eq (x : __t) (y : __t) : bool
+  function bool_eq (x : __t) (y : __t) : bool =
+    Array__3.bool_eq x first last first_2 last_2 first_3 last_3
+                     y first last first_2 last_2 first_3 last_3
 end
 
 module Constr_Array_4
@@ -662,4 +713,8 @@ module Constr_Array_4
   function of_array  (a : Array__4.map component_type) : __t = a
 
   function dummy : __t
+  function user_eq (x : __t) (y : __t) : bool
+  function bool_eq (x : __t) (y : __t) : bool =
+    Array__4.bool_eq x first last first_2 last_2 first_3 last_3 first_4 last_4
+                     y first last first_2 last_2 first_3 last_3 first_4 last_4
 end

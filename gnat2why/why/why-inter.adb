@@ -868,33 +868,14 @@ package body Why.Inter is
 
    function Dispatch_Entity_Completion (E : Entity_Id)
                                         return Why_Section_Enum is
+      pragma Unreferenced (E);
    begin
-      case Ekind (E) is
-         when Object_Kind =>
-            if not Is_Mutable_In_Why (E) then
 
-               --  Theories which depend on variables are defined in context
-               --  files.
+      --  Completion modules are only used by VC generation modules, so they
+      --  are not needed earlier. The VC generation modules are generated
+      --  later, so the completions will be available at that point.
 
-               if Expression_Depends_On_Variables
-                 (Expression (Parent (Unique_Entity (E))))
-               then
-                  return WF_Context;
-
-               --  Theories which do not depend on variables are defined in
-               --  type files.
-
-               else
-                  return WF_Pure;
-               end if;
-
-            else
-               return Dispatch_Entity (E);
-            end if;
-
-         when others =>
-            return Dispatch_Entity (E);
-      end case;
+      return WF_Main;
    end Dispatch_Entity_Completion;
 
    --------

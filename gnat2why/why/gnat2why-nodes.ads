@@ -107,6 +107,11 @@ package Gnat2Why.Nodes is
    --  Check whether E (which must be the entity for a subprogram) has a
    --  precondition.
 
+   function Has_User_Defined_Eq (E : Entity_Id) return Entity_Id
+     with Pre => Ekind (E) in Type_Kind;
+   --  expects the entity of a type; If the type has a primitive equality,
+   --  return the entity of the function, otherwise return the empty node
+
    function In_Main_Unit_Body (N : Node_Id) return Boolean;
    function In_Main_Unit_Spec (N : Node_Id) return Boolean;
    --  Check whether N is in the Body, respectively in the Spec of the current

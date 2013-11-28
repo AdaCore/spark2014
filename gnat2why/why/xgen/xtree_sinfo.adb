@@ -80,9 +80,6 @@ package body Xtree_Sinfo is
       -- W_Type --
       -----------------
 
-      --  Important note: when Base_Type = EW_Abstract, the Ada node must be
-      --  specified.
-
       New_Field (W_Type,
                  "Base_Type", "EW_Type");
       New_Field (W_Type,

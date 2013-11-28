@@ -25,6 +25,7 @@
 
 --  For debugging, to print info on the output before raising an exception
 with Ada.Text_IO;
+use Ada.Text_IO;
 
 with GNAT.Source_Info;
 
@@ -41,7 +42,10 @@ with SPARK_Util;         use SPARK_Util;
 
 with Why;                use Why;
 with Why.Atree.Builders; use Why.Atree.Builders;
+with Why.Atree.Modules;  use Why.Atree.Modules;
+with Why.Conversions;    use Why.Conversions;
 with Why.Gen.Arrays;     use Why.Gen.Arrays;
+with Why.Gen.Binders;    use Why.Gen.Binders;
 with Why.Gen.Decl;       use Why.Gen.Decl;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Records;    use Why.Gen.Records;
@@ -121,6 +125,78 @@ package body Gnat2Why.Types is
       end if;
       Declare_Ada_Real (Theory, E, First, Last);
    end Declare_Ada_Real_From_Range;
+
+   ------------------------------
+   -- Generate_Type_Completion --
+   ------------------------------
+
+   procedure Generate_Type_Completion
+     (File       : in out Why_Section;
+      E          : Entity_Id)
+   is
+      Name : constant String := Full_Name (E) & Axiom_Theory_Suffix;
+      Eq   : Entity_Id := Has_User_Defined_Eq (E);
+      Ty   : constant W_Type_Id := EW_Abstract (E);
+   begin
+      Open_Theory
+        (File, Name,
+         Comment =>
+           "Module giving axioms for the type entity "
+         & """" & Get_Name_String (Chars (E)) & """"
+         & (if Sloc (E) > 0 then
+              " defined at " & Build_Location_String (Sloc (E))
+           else "")
+         & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+      --  This module only contains an axiom when there is a user-provided
+      --  equality
+
+      if Present (Eq) then
+
+         --  we may need to adjust for renamed subprograms
+
+         if Present (Renamed_Entity (Eq)) then
+            Eq := Renamed_Entity (Eq);
+         end if;
+
+         declare
+            Var_A : constant W_Identifier_Id :=
+              New_Identifier (Ada_Node => E,
+                              Name     => "a",
+                              Typ      => Ty);
+            Var_B : constant W_Identifier_Id :=
+              New_Identifier (Ada_Node => E,
+                              Name     => "b",
+                              Typ      => Ty);
+            Def   : constant W_Expr_Id :=
+              New_Call
+                (Ada_Node => Eq,
+                 Domain   => EW_Pred,
+                 Name     => To_Why_Id (E => Eq,
+                                        Domain => EW_Pred,
+                                        Typ => EW_Bool_Type),
+                 Args     => (1 => +Var_A, 2 => +Var_B),
+                 Typ      => EW_Bool_Type);
+         begin
+            Emit
+              (File.Cur_Theory,
+               New_Defining_Axiom
+                 (Ada_Node    => E,
+                  Binders     =>
+                    (1 => Binder_Type'(B_Name => Var_A, others => <>),
+                     2 => Binder_Type'(B_Name => Var_B, others => <>)),
+                  Name        =>
+                    New_Identifier
+                      (Module => E_Module (E),
+                       Name    => "user_eq"),
+                  Return_Type => EW_Bool,
+                  Def         => +Def));
+         end;
+      end if;
+      Close_Theory (File,
+                    Kind => Axiom_Theory,
+                    Defined_Entity => E);
+   end Generate_Type_Completion;
 
    -----------------------
    -- Ident_Of_Ada_Type --
@@ -282,7 +358,7 @@ package body Gnat2Why.Types is
          then
             Emit
               (File.Cur_Theory,
-               New_Function_Decl
+               Why.Atree.Builders.New_Function_Decl
                  (Domain      => EW_Term,
                   Name        => To_Ident (WNE_Dummy),
                   Binders     => (1 .. 0 => <>),

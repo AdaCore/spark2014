@@ -462,17 +462,21 @@ package body Why.Gen.Records is
             if Is_Not_Hidden_Discriminant (Comp) then
                declare
                   Comparison : constant W_Pred_Id :=
-                    New_Relation
-                      (Op_Type => EW_Abstract,
-                       Left    =>
-                         New_Record_Access
-                           (Name  => +A_Ident,
-                            Field => To_Why_Id (Comp, Local => True)),
-                       Right    =>
-                         New_Record_Access
-                           (Name  => +B_Ident,
-                            Field => To_Why_Id (Comp, Local => True)),
-                       Op      => EW_Eq);
+                    +New_Ada_Equality
+                    (Typ    => Unique_Entity (Etype (Comp)),
+                     Domain => EW_Pred,
+                     Left   =>
+                       New_Record_Access
+                         (Name  => +A_Ident,
+                          Field => To_Why_Id (Comp, Local => True),
+                          Typ   => EW_Abstract (Etype (Comp))),
+                     Right  =>
+                       New_Record_Access
+                         (Name  => +B_Ident,
+                          Field => To_Why_Id (Comp, Local => True),
+                          Typ   => EW_Abstract (Etype (Comp))),
+                     Force_Predefined =>
+                        not Is_Record_Type (Etype (Comp)));
                   Always_Present : constant Boolean :=
                     not (Has_Discriminants (E)) or else
                     Ekind (Comp) = E_Discriminant;
@@ -512,6 +516,17 @@ package body Why.Gen.Records is
                     Condition => +Condition,
                     Then_Part => +True_Term,
                     Else_Part => +False_Term)));
+         Emit
+           (Theory,
+            New_Function_Decl
+              (Domain      => EW_Term,
+               Name        => New_Identifier (Name => "user_eq"),
+               Return_Type => EW_Bool_Type,
+               Binders     => R_Binder &
+                 Binder_Array'(1                   =>
+                                   Binder_Type'(B_Name => B_Ident,
+                                                others => <>)),
+               Labels      => Name_Id_Sets.Empty_Set));
       end Declare_Equality_Function;
 
       ----------------------------------------
