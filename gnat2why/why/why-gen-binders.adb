@@ -123,7 +123,7 @@ package body Why.Gen.Binders is
            Right   => +Def);
       return New_Guarded_Axiom
         (Ada_Node => Ada_Node,
-         Name     => To_Ident (WNE_Def_Axiom),
+         Name     => NID (To_String (WNE_Def_Axiom)),
          Binders  => Binders,
          Triggers => New_Triggers (Triggers =>
                           (1 => New_Trigger (Terms => (1 => +Left)))),
@@ -155,7 +155,7 @@ package body Why.Gen.Binders is
    begin
       return New_Guarded_Axiom
         (Ada_Node => Ada_Node,
-         Name     => To_Ident (WNE_Def_Axiom),
+         Name     => NID (To_String (WNE_Def_Axiom)),
          Binders  => Binders,
          Triggers => New_Triggers (Triggers =>
                           (1 => New_Trigger (Terms => (1 => +Left)))),
@@ -346,7 +346,7 @@ package body Why.Gen.Binders is
 
    function New_Guarded_Axiom
      (Ada_Node : Node_Id := Empty;
-      Name     : W_Identifier_Id;
+      Name     : Name_Id;
       Binders  : Binder_Array;
       Triggers : W_Triggers_OId := Why_Empty;
       Pre      : W_Pred_OId := Why_Empty;
@@ -385,6 +385,7 @@ package body Why.Gen.Binders is
          New_Type_Decl
            (Ada_Node   => Ada_Node,
             Name       => Name,
+            Labels     => Name_Id_Sets.Empty_Set,
             Definition =>
               New_Record_Definition
                 (Fields => New_Binders (EW_Pred, Binders)));

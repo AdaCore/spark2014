@@ -1283,7 +1283,7 @@ package body Why.Atree.Sprint is
    is
    begin
       P (O, "axiom ");
-      Traverse (State, +Get_Name (Node));
+      P (O, Get_Name (Node));
       PL (O, " :");
       Relative_Indent (O, 1);
       Traverse (State, +Get_Def (Node));
@@ -1302,7 +1302,7 @@ package body Why.Atree.Sprint is
    is
    begin
       P (O, "goal ");
-      Traverse (State, +Get_Name (Node));
+      P (O, Get_Name (Node));
       PL (O, " :");
       Relative_Indent (O, 1);
       Traverse (State, +Get_Def (Node));
@@ -1332,7 +1332,7 @@ package body Why.Atree.Sprint is
       Traverse (State, +Name);
 
       P (O, " ");
-      Print_List (State, +Get_Labels (Node), " ");
+      P (O, Get_Labels (Node));
 
       if Nb_Args > 1 then
          P (O, " (");

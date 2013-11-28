@@ -157,7 +157,7 @@ package Why.Gen.Binders is
 
    function New_Guarded_Axiom
      (Ada_Node : Node_Id := Empty;
-      Name     : W_Identifier_Id;
+      Name     : Name_Id;
       Binders  : Binder_Array;
       Triggers : W_Triggers_OId := Why_Empty;
       Pre      : W_Pred_OId := Why_Empty;

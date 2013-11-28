@@ -763,7 +763,10 @@ package body Why.Gen.Records is
       --  Get the empty record case out of the way
 
       if Count_Why_Record_Fields (E) = 0 then
-         Emit (Theory, New_Type_Decl (Name => Ty_Ident));
+         Emit (Theory,
+               New_Type_Decl
+                 (Name => Ty_Ident,
+                  Labels => Name_Id_Sets.Empty_Set));
          return;
       end if;
 

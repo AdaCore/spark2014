@@ -98,7 +98,7 @@ package body Why.Gen.Scalars is
       Emit (Theory,
             New_Type_Decl
               (Name   => Why_Id,
-               Labels => (1 => New_Identifier (Name => """bounded_type"""))));
+               Labels => Name_Id_Sets.To_Set (NID ("""bounded_type"""))));
 
       Define_Scalar_Attributes (Theory    => Theory,
                                 Base_Type => EW_Int,
@@ -170,7 +170,9 @@ package body Why.Gen.Scalars is
           & (if Is_Static then Static_Clone_Subst else (1 .. 0 => <>));
 
    begin
-      Emit (Theory, New_Type_Decl (Name => Why_Name));
+      Emit (Theory,
+            New_Type_Decl (Name => Why_Name,
+                           Labels => Name_Id_Sets.Empty_Set));
       Define_Scalar_Attributes (Theory    => Theory,
                                 Base_Type => EW_Real,
                                 First     => +First,

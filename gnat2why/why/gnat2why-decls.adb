@@ -458,7 +458,8 @@ package body Gnat2Why.Decls is
       Add_With_Clause (File.Cur_Theory, "ref", "Ref", EW_Import, EW_Module);
 
       Emit (File.Cur_Theory,
-            New_Type_Decl (Name => To_Ident (WNE_Type)));
+            New_Type_Decl (Name   => To_Ident (WNE_Type),
+                           Labels => Name_Id_Sets.Empty_Set));
       Emit
         (File.Cur_Theory,
          New_Global_Ref_Declaration

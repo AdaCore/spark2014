@@ -544,7 +544,7 @@ package body Xtree_Sinfo is
       -------------
 
       New_Field (W_Axiom,
-                 "Name", "W_Identifier", Id_One);
+                 "Name", "Name_Id");
       New_Field (W_Axiom,
                  "Def", "W_Pred", Id_One);
       Set_Domain (W_Axiom, EW_Term);
@@ -554,7 +554,7 @@ package body Xtree_Sinfo is
       ------------
 
       New_Field (W_Goal,
-                 "Name", "W_Identifier", Id_One);
+                 "Name", "Name_Id");
       New_Field (W_Goal,
                  "Def", "W_Pred", Id_One);
       Set_Domain (W_Goal, EW_Term);
@@ -568,7 +568,7 @@ package body Xtree_Sinfo is
       New_Field (W_Type_Decl,
                  "Name", "W_Identifier", Id_One);
       New_Field (W_Type_Decl,
-                 "Labels", "W_Identifier", Id_Set);
+                 "Labels", "Name_Id_Set");
       New_Field (W_Type_Decl,
                  "Definition", "W_Type_Definition", Id_Lone);
       Set_Domain (W_Type_Decl, EW_Term);

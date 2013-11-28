@@ -27,6 +27,7 @@ with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Atree.Mutators;  use Why.Atree.Mutators;
 with Why.Gen.Names;       use Why.Gen.Names;
 with Why.Sinfo;           use Why.Sinfo;
+with Why.Types;           use Why.Types;
 
 package body Why.Gen.Decl is
 
@@ -49,7 +50,10 @@ package body Why.Gen.Decl is
 
    function New_Type_Decl (Name : String) return W_Declaration_Id is
    begin
-      return New_Type_Decl (Name => New_Identifier (Name => Name));
+      return
+        New_Type_Decl
+          (Name   => New_Identifier (Name => Name),
+           Labels => Name_Id_Sets.Empty_Set);
    end New_Type_Decl;
 
    function New_Type_Decl
@@ -58,6 +62,7 @@ package body Why.Gen.Decl is
    begin
       return New_Type_Decl
         (Name => Name,
+         Labels => Name_Id_Sets.Empty_Set,
          Definition => New_Transparent_Type_Definition
            (Domain          => EW_Prog,
             Type_Definition => Alias));
