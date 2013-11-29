@@ -171,7 +171,7 @@ package AR is
   procedure TestA08
 	    (A: in out Arr1T; I: in IT1; E: in ET1)
      with Depends => (A =>+ (E, I)),
-          Post    => ( (I < IT1'Last and ( (E > ET1'First and A = A'Old'Update (I => E, I+1 => E-1)) or (E = ET1'First and A = A'Old'Update (I => E, I+1 => ET1'Last)) )) or (I = IT1'Last and ( (E > ET1'First and A = A'Old'Update (I => E, IT1'First => E-1)) or (E = ET1'First and A = A'Old'Update (I => E, IT1'First => ET1'Last)) )) );
+          Post    => ( (I < IT1'Last and then( (E > ET1'First and A = A'Old'Update (I => E, I+1 => E-1)) or (E = ET1'First and A = A'Old'Update (I => E, I+1 => ET1'Last)) )) or (I = IT1'Last and ( (E > ET1'First and A = A'Old'Update (I => E, IT1'First => E-1)) or (E = ET1'First and A = A'Old'Update (I => E, IT1'First => ET1'Last)) )) );
 
   procedure TestA09
 	    (A: in out Arr1T; I: in IT1; E: in ET1)
@@ -181,7 +181,7 @@ package AR is
   procedure TestA10
 	    (A: in out Arr1T; I: in IT1; E: in ET1)
      with Depends => (A =>+ (E, I)),
-          Post    => ( (I < IT1'Last and ( (E > ET1'First and A = A'Old'Update (I => E, I+1 => E-1)) or (E = ET1'First and A = A'Old'Update (I => E, I+1 => ET1'Last)) )) or (I = IT1'Last and ( (E > ET1'First and A = A'Old'Update (I => E, IT1'First => E-1)) or (E = ET1'First and A = A'Old'Update (I => E, IT1'First => ET1'Last)) )) );
+          Post    => ( (I < IT1'Last and then ( (E > ET1'First and A = A'Old'Update (I => E, I+1 => E-1)) or (E = ET1'First and A = A'Old'Update (I => E, I+1 => ET1'Last)) )) or (I = IT1'Last and ( (E > ET1'First and A = A'Old'Update (I => E, IT1'First => E-1)) or (E = ET1'First and A = A'Old'Update (I => E, IT1'First => ET1'Last)) )) );
 
   procedure TestA11
 	    (A: in out Arr1T; I: in IT1; E: in ET1)
@@ -191,7 +191,7 @@ package AR is
   procedure TestA12
 	    (A: in out Arr1T; I: in IT1; E: in ET1)
      with Depends => (A =>+ (E, I)),
-          Post    => ( (I < IT1'Last and ( (E > ET1'First and A = A'Old'Update (I => E, I+1 => E-1)) or (E = ET1'First and A = A'Old'Update (I => E, I+1 => ET1'Last)) )) or (I = IT1'Last and ( (E > ET1'First and A = A'Old'Update (I => E, IT1'First => E-1)) or (E = ET1'First and A = A'Old'Update (I => E, IT1'First => ET1'Last)) )) );
+          Post    => ( (I < IT1'Last and then ( (E > ET1'First and A = A'Old'Update (I => E, I+1 => E-1)) or (E = ET1'First and A = A'Old'Update (I => E, I+1 => ET1'Last)) )) or (I = IT1'Last and ( (E > ET1'First and A = A'Old'Update (I => E, IT1'First => E-1)) or (E = ET1'First and A = A'Old'Update (I => E, IT1'First => ET1'Last)) )) );
 
   procedure TestA13
 	    (A: in out Arr1T; I: in IT1; E: in ET1)
@@ -321,7 +321,7 @@ package AR is
   procedure TestB11
 	    (A: in out Arr2T; I: in IT1; J: in IT2; E: in ET1)
      with Depends => (A =>+ (E, I, J)),
-          Post    => ( (J < IT2'Last and ( (E > ET1'First and A = A'Old'Update (J => A'Old(J)'Update (I => E), J+1 => A'Old(J+1)'Update (I => E-1))) or (E = ET1'First and A = A'Old'Update (J => A'Old(J)'Update (I => E), J+1 => A'Old(J+1)'Update (I => ET1'Last))) )) or (J = IT2'Last and ( (E > ET1'First and A = A'Old'Update (J => A'Old(J)'Update (I => E), IT2'First => A'Old(IT2'First)'Update (I => E-1))) or (E = ET1'First and A = A'Old'Update (J => A'Old(J)'Update (I => E), IT2'First => A'Old(IT2'First)'Update (I => ET1'Last))) )) );
+          Post    => ( (J < IT2'Last and then ( (E > ET1'First and A = A'Old'Update (J => A'Old(J)'Update (I => E), J+1 => A'Old(J+1)'Update (I => E-1))) or (E = ET1'First and A = A'Old'Update (J => A'Old(J)'Update (I => E), J+1 => A'Old(J+1)'Update (I => ET1'Last))) )) or (J = IT2'Last and ( (E > ET1'First and A = A'Old'Update (J => A'Old(J)'Update (I => E), IT2'First => A'Old(IT2'First)'Update (I => E-1))) or (E = ET1'First and A = A'Old'Update (J => A'Old(J)'Update (I => E), IT2'First => A'Old(IT2'First)'Update (I => ET1'Last))) )) );
 
   procedure TestB12
 	    (A: in out Arr2T; I: in IT1; J: in IT2; E: in ET1)
@@ -331,7 +331,7 @@ package AR is
   procedure TestB13
 	    (A: in out Arr2T; I: in IT1; J: in IT2; E: in ET1)
      with Depends => (A =>+ (E, I, J)),
-          Post    => ( (J < IT2'Last and ( (E > ET1'First and A = A'Old'Update (J => A'Old(J)'Update (I => E), J+1 => A'Old(J+1)'Update (I => E-1))) or (E = ET1'First and A = A'Old'Update (J => A'Old(J)'Update (I => E), J+1 => A'Old(J+1)'Update (I => ET1'Last))) )) or (J = IT2'Last and ( (E > ET1'First and A = A'Old'Update (J => A'Old(J)'Update (I => E), IT2'First => A'Old(IT2'First)'Update (I => E-1))) or (E = ET1'First and A = A'Old'Update (J => A'Old(J)'Update (I => E), IT2'First => A'Old(IT2'First)'Update (I => ET1'Last))) )) );
+          Post    => ( (J < IT2'Last and then ( (E > ET1'First and A = A'Old'Update (J => A'Old(J)'Update (I => E), J+1 => A'Old(J+1)'Update (I => E-1))) or (E = ET1'First and A = A'Old'Update (J => A'Old(J)'Update (I => E), J+1 => A'Old(J+1)'Update (I => ET1'Last))) )) or (J = IT2'Last and ( (E > ET1'First and A = A'Old'Update (J => A'Old(J)'Update (I => E), IT2'First => A'Old(IT2'First)'Update (I => E-1))) or (E = ET1'First and A = A'Old'Update (J => A'Old(J)'Update (I => E), IT2'First => A'Old(IT2'First)'Update (I => ET1'Last))) )) );
 
   procedure TestB14
 	    (A: in out Arr2T; I: in IT1; J: in IT2; E: in ET1)
@@ -341,7 +341,7 @@ package AR is
   procedure TestB15
 	    (A: in out Arr2T; I: in IT1; J: in IT2; E: in ET1)
      with Depends => (A =>+ (E, I, J)),
-          Post    => ( (J < IT2'Last and ( (E > ET1'First and A = A'Old'Update (J => A'Old(J)'Update (I => E), J+1 => A'Old(J+1)'Update (I => E-1))) or (E = ET1'First and A = A'Old'Update (J => A'Old(J)'Update (I => E), J+1 => A'Old(J+1)'Update (I => ET1'Last))) )) or (J = IT2'Last and ( (E > ET1'First and A = A'Old'Update (J => A'Old(J)'Update (I => E), IT2'First => A'Old(IT2'First)'Update (I => E-1))) or (E = ET1'First and A = A'Old'Update (J => A'Old(J)'Update (I => E), IT2'First => A'Old(IT2'First)'Update (I => ET1'Last))) )) );
+          Post    => ( (J < IT2'Last and then ( (E > ET1'First and A = A'Old'Update (J => A'Old(J)'Update (I => E), J+1 => A'Old(J+1)'Update (I => E-1))) or (E = ET1'First and A = A'Old'Update (J => A'Old(J)'Update (I => E), J+1 => A'Old(J+1)'Update (I => ET1'Last))) )) or (J = IT2'Last and ( (E > ET1'First and A = A'Old'Update (J => A'Old(J)'Update (I => E), IT2'First => A'Old(IT2'First)'Update (I => E-1))) or (E = ET1'First and A = A'Old'Update (J => A'Old(J)'Update (I => E), IT2'First => A'Old(IT2'First)'Update (I => ET1'Last))) )) );
 
   procedure TestB16
             (A: in out Arr2T; I, J: in IT2; B, C: in Arr1T)
@@ -468,7 +468,7 @@ package AR is
   procedure TestC17
 	    (A: in out Arr3T; I: in IT1; J: in IT2; K: in IT3; E: in ET1)
      with Depends => (A =>+ (E, I, J, K)),
-          Post    => ( (K < IT3'Last and ( (E > ET1'First and A = A'Old'Update (K   => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), K+1 => A'Old(K+1)'Update (J => A'Old(K+1)(J)'Update (I => E-1)))) or (E = ET1'First and A = A'Old'Update (K   => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), K+1 => A'Old(K+1)'Update (J => A'Old(K+1)(J)'Update (I => ET1'Last)))) )) or (K = IT3'Last and ( (E > ET1'First and A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), IT3'First => A'Old(IT3'First)'Update (J => A'Old(IT3'First)(J)'Update (I => E-1)))) or (E = ET1'First and A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), IT3'First => A'Old(IT3'First)'Update (J => A'Old(IT3'First)(J)'Update (I => ET1'Last)))) )) );
+          Post    => ( (K < IT3'Last and then ( (E > ET1'First and A = A'Old'Update (K   => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), K+1 => A'Old(K+1)'Update (J => A'Old(K+1)(J)'Update (I => E-1)))) or (E = ET1'First and A = A'Old'Update (K   => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), K+1 => A'Old(K+1)'Update (J => A'Old(K+1)(J)'Update (I => ET1'Last)))) )) or (K = IT3'Last and ( (E > ET1'First and A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), IT3'First => A'Old(IT3'First)'Update (J => A'Old(IT3'First)(J)'Update (I => E-1)))) or (E = ET1'First and A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), IT3'First => A'Old(IT3'First)'Update (J => A'Old(IT3'First)(J)'Update (I => ET1'Last)))) )) );
 
   procedure TestC18
 	    (A: in out Arr3T; I: in IT1; J: in IT2; K: in IT3; E: in ET1)
@@ -478,7 +478,7 @@ package AR is
   procedure TestC19
 	    (A: in out Arr3T; I: in IT1; J: in IT2; K: in IT3; E: in ET1)
      with Depends => (A =>+ (E, I, J, K)),
-          Post    => ( (K < IT3'Last and ( (E > ET1'First and A = A'Old'Update (K   => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), K+1 => A'Old(K+1)'Update (J => A'Old(K+1)(J)'Update (I => E-1)))) or (E = ET1'First and A = A'Old'Update (K   => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), K+1 => A'Old(K+1)'Update (J => A'Old(K+1)(J)'Update (I => ET1'Last)))) )) or (K = IT3'Last and ( (E > ET1'First and A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), IT3'First => A'Old(IT3'First)'Update (J => A'Old(IT3'First)(J)'Update (I => E-1)))) or (E = ET1'First and A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), IT3'First => A'Old(IT3'First)'Update (J => A'Old(IT3'First)(J)'Update (I => ET1'Last)))) )) );
+          Post    => ( (K < IT3'Last and then ( (E > ET1'First and A = A'Old'Update (K   => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), K+1 => A'Old(K+1)'Update (J => A'Old(K+1)(J)'Update (I => E-1)))) or (E = ET1'First and A = A'Old'Update (K   => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), K+1 => A'Old(K+1)'Update (J => A'Old(K+1)(J)'Update (I => ET1'Last)))) )) or (K = IT3'Last and ( (E > ET1'First and A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), IT3'First => A'Old(IT3'First)'Update (J => A'Old(IT3'First)(J)'Update (I => E-1)))) or (E = ET1'First and A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), IT3'First => A'Old(IT3'First)'Update (J => A'Old(IT3'First)(J)'Update (I => ET1'Last)))) )) );
 
   procedure TestC20
 	    (A: in out Arr3T; I: in IT1; J: in IT2; K: in IT3; E: in ET1)
@@ -488,7 +488,7 @@ package AR is
   procedure TestC21
 	    (A: in out Arr3T; I: in IT1; J: in IT2; K: in IT3; E: in ET1)
      with Depends => (A =>+ (E, I, J, K)),
-          Post    => ( (K < IT3'Last and ( (E > ET1'First and A = A'Old'Update (K   => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), K+1 => A'Old(K+1)'Update (J => A'Old(K+1)(J)'Update (I => E-1)))) or (E = ET1'First and A = A'Old'Update (K   => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), K+1 => A'Old(K+1)'Update (J => A'Old(K+1)(J)'Update (I => ET1'Last)))) )) or (K = IT3'Last and ( (E > ET1'First and A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), IT3'First => A'Old(IT3'First)'Update (J => A'Old(IT3'First)(J)'Update (I => E-1)))) or (E = ET1'First and A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), IT3'First => A'Old(IT3'First)'Update (J => A'Old(IT3'First)(J)'Update (I => ET1'Last)))) )) );
+          Post    => ( (K < IT3'Last and then( (E > ET1'First and A = A'Old'Update (K   => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), K+1 => A'Old(K+1)'Update (J => A'Old(K+1)(J)'Update (I => E-1)))) or (E = ET1'First and A = A'Old'Update (K   => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), K+1 => A'Old(K+1)'Update (J => A'Old(K+1)(J)'Update (I => ET1'Last)))) )) or (K = IT3'Last and ( (E > ET1'First and A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), IT3'First => A'Old(IT3'First)'Update (J => A'Old(IT3'First)(J)'Update (I => E-1)))) or (E = ET1'First and A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), IT3'First => A'Old(IT3'First)'Update (J => A'Old(IT3'First)(J)'Update (I => ET1'Last)))) )) );
 
   procedure TestC22
             (A: in out Arr3T; I, J: in IT3; B, C: in Arr2T)
