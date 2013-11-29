@@ -3,7 +3,7 @@
 
 .. centered:: **Verification Rules**
 
-.. _tu-nt-packages-01:
+.. _tu-packages-01:
 
 1. In |SPARK| the elaboration of a package shall only update, directly or
    indirectly, variables declared immediately within the package.
