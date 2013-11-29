@@ -23,7 +23,7 @@ Overriding Indicators
 
 .. _tu-overriding_indicators-01:
 
-1. Tagged types are not couurently permitted in |SPARK| and therefore
+1. Tagged types are not currently permitted in |SPARK| and therefore
    neither are overriding indicators permitted.
 
 .. _etu-overriding_indicators-01:

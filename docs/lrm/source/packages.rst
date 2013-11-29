@@ -124,7 +124,7 @@ as external properties of an external state abstraction.
 .. _tu-fe-external_state-02:
 
 2. If just the name of the property is given then its value defaults
-   to True [; for instance Async_Readers defaults to Async_Readers =>
+   to True [for instance Async_Readers defaults to Async_Readers =>
    True].
 
 .. _tu-fe-external_state-03:
@@ -2136,7 +2136,7 @@ Type Invariants
 
 .. centered:: **Legality Rules**
 
-.. _tu-nt-type_invariants-01:
+.. _tu-type_invariants-01:
 
 1. The ``aspect_specification`` Type_Invariant is not permitted in |SPARK|.
 
@@ -2196,7 +2196,7 @@ Deferred Constants
 
 .. centered:: **Legality Rules**
 
-.. _tu-nt-deferred_constants-01:
+.. _tu-deferred_constants-01:
 
 1. The view of an entity introduced by a
    ``deferred_constant_declaration`` is in |SPARK|, even if the
@@ -2215,7 +2215,7 @@ Assignment and Finalization
 
 .. centered:: **Legality Rules**
 
-.. _tu-nt-assignment_and_finalization-01:
+.. _tu-assignment_and_finalization-01:
 
 1. Controlled types are not permitted in |SPARK|.
 

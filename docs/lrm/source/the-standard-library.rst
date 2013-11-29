@@ -234,7 +234,7 @@ Wide_Wide_String Handling (A.4.8)
 
 .. _tu-nk-wide-wide-string-handling-01:
 
-1. The types Wide_String_Access and Wide_Character_Mapping_Function
+1. The types Wide_Wide_String_Access and Wide_Wide_Character_Mapping_Function
    are not in |SPARK| nor are the subprograms which have formal
    parameters of these types and cannot be denoted in |SPARK| program
    texts.
