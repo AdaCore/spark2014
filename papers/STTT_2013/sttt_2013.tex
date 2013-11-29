@@ -76,7 +76,7 @@
 \maketitle
 %
 \begin{abstract}
-  Extensive and expensive testing is the method most widely used for
+  Extensive and expensive testing is the meth\-od most widely used for
   gaining confidence in safety-critical software. With a few
   exceptions, such as SPARK, formal verification is rarely used in
   industry due to its high cost and level of skill required. The grand
@@ -165,7 +165,7 @@ tools on those problems.
 This paper is organised as follows: first we describe the key language
 features of \newspark, which is a complete update of the \oldspark\
 language and tools. \newspark has been designed with many lessons
-learned from the programming language and verification community, and
+learn\-ed from the programming language and verification community, and
 naturally from experiences in industrial use of \oldspark. Then in
 Section \ref{hilite} we describe our unique integration of testing and
 proving, which was developed in the collaborative research project
@@ -520,14 +520,13 @@ dedicated switches that the user can set~\cite{hiliteERTS2012}.
 
 \subsection{Compiler Implementation}
 For \newspark\ we are building the verification tools based on the
-front-end of the GNAT compiler. See \cite{ksd2012} for a
-description and discussion of this
-architecture. One advantage here is that the compiler inserts these
-additional checks needed to verify at run time assumptions made during
-proof. Another advantage is that formal verification has access to the
-precise configuration of the target platform used for compilation
-(size of integers, endianness, \etc), which facilitates performing
-proofs that depend on the target.
+front-end of the GNAT compiler. \cite{ksd2012} describes and discusses
+this architecture. One advantage here is that the compiler inserts
+these additional checks needed to verify at run time assumptions made
+during proof. Another advantage is that formal verification has access
+to the precise configuration of the target platform used for
+compilation (size of integers, endianness, \etc), which facilitates
+performing proofs that depend on the target.
 
 \subsection{Related Work on Combined Test and Proof}
 The combination of dynamic and static analysis has received a fair
@@ -538,17 +537,17 @@ inference tools that use testing such as Daikon \cite{ErnstPGMPTX2007} and
 QuickSpec \cite{QuickSpec2010}, and finally HipSpec \cite{HipSpec2012},
 which uses a combination of automatic inductive theorem proving and
 testing to generate lemmas. It would be interesting to explore some
-of these approaches in the future.
+of these approaches in SPARK in the future.
 
-The perhaps most similar work to ours is the verification
-environment Eve \cite{Tschannen:2011} for Eiffel, which also uses a
-modular contract-based approach where postconditions serve as test
-oracles and some modules can be verified by test and some by
-proof. One notable difference is that in Eve the semantics for
+The work perhaps most similar to our combination of test and proof is
+the verification environment Eve \cite{Tschannen:2011} for Eiffel.
+It also uses a modular contract-based approach where postconditions
+serve as test oracles and some modules can be verified by test and
+some by proof. One notable difference is that in Eve the semantics for
 integers is different during test and proof. We will discuss this
-topic further in the next section. Our solution is specific in its
-practical focus a replacement of testing by a mix of testing and proving
-that is sound in \DOC\ terms.
+topic further in the next section. Our solution is unique in that it
+has a practical focus on replacing testing by a mix of testing and
+proving that is sound in \DOC\ terms.
 
 \section{Choosing the Right Semantics for Integers}
 \label{overflowsemantics}
@@ -1271,8 +1270,8 @@ the type. Examples of such types are Boolean represented by a Byte,
 floating point types, or integer types that do not span their entire
 base type. The implicit in-type assumption, required to deduce
 conclusions like $X = True \lor X = False$ where X is a Boolean
-program variable, is therefore not a sound assumption without the
-assumption that X is not uninitialized.
+program variable, is therefore not a sound assumption if X is
+uninitialized.
 
 Good support in the investigation of unproved VCs is key to making
 formal program verification cost-effective in industry. \gnatprove
@@ -1289,7 +1288,7 @@ We have been exploring two promising ways to improve the results of the
 Alt-Ergo SMT prover on the VCs generated in \gnatprove: handling selected
 axiomatisations as decision procedures~\cite{dross:2012:smt}, and incrementally
 selecting axioms~\cite{cgs09:ipo,kuhlwein:2012:ijcar}. More work is needed to
-make these modes the default inside \gnatprove.
+make these modes the default in \gnatprove.
 
 \section{Conclusions}
 \label{conclusions}
