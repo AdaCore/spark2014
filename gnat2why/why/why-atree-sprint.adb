@@ -1497,11 +1497,11 @@ package body Why.Atree.Sprint is
       Kind : constant EW_Theory_Type := Get_Kind (Node);
    begin
       P (O, "(* ");
-      Traverse (State, +Get_Comment (Node));
+      P (O, Get_Comment (Node));
       PL (O, " *)");
       P (O, Kind, False);
       P (O, " ");
-      Traverse (State, +Get_Name (Node));
+      P (O, Get_Name (Node));
       NL (O);
       Relative_Indent (O, 1);
       Print_List (State, +Get_Includes (Node), "", Newline => False);

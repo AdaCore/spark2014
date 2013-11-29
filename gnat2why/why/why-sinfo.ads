@@ -224,6 +224,15 @@ package Why.Sinfo is
    --  Every expression in Why3 can be labeled with strings. This special node
    --  allows this.
    --
+   --  --------------
+   --  -- W_Module --
+   --  --------------
+   --  File        Name_Id
+   --  Name        Name_Id
+   --
+   --  identifies a module. If the module is in the current file, File is set
+   --  to No_Name.
+   --
    --  ------------------
    --  -- W_Identifier --
    --  ------------------
@@ -568,10 +577,10 @@ package Why.Sinfo is
    --  -- W_Theory_Declaration --
    --  --------------------------
    --  Declarations  W_Declaration_List
-   --  Name          W_Identifier_Id
+   --  Name          Name_Id
    --  Kind          EW_Theory_Type
    --  Includes      W_Include_Declaration_List
-   --  Comment       W_Identifier_Id
+   --  Comment       Name_Id
    --
    --  The declaration of a theory or module. Actually, gnat2why only generates
    --  modules. The node contains the list of Declarations, its kind (theory
@@ -712,6 +721,7 @@ package Why.Sinfo is
       -- Input files --
       -----------------
 
+      W_Module,
       W_File
 
       );

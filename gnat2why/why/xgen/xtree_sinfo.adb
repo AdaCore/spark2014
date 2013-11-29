@@ -271,6 +271,13 @@ package body Xtree_Sinfo is
       New_Field (W_Label,
                  "Typ", "W_Type", Id_Lone);
 
+      --------------
+      -- W_Module --
+      --------------
+
+      New_Field (W_Module, "File", "Name_Id");
+      New_Field (W_Module, "Name", "Name_Id");
+
       ------------------
       -- W_Identifier --
       ------------------
@@ -644,13 +651,13 @@ package body Xtree_Sinfo is
       New_Field (W_Theory_Declaration,
                  "Declarations", "W_Declaration", Id_Set);
       New_Field (W_Theory_Declaration,
-                 "Name", "W_Identifier", Id_One);
+                 "Name", "Name_Id");
       New_Field (W_Theory_Declaration,
                  "Kind", "EW_Theory_Type");
       New_Field (W_Theory_Declaration,
                  "Includes", "W_Include_Declaration", Id_Set);
       New_Field (W_Theory_Declaration,
-                 "Comment", "W_Identifier", Id_Lone);
+                 "Comment", "Name_Id");
       Set_Domain (W_Theory_Declaration, EW_Prog);
 
       ---------------------------

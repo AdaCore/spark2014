@@ -1278,9 +1278,9 @@ package body Why.Inter is
       S : constant String := Capitalize_First (Name);
    begin
       P.Cur_Theory :=
-        New_Theory_Declaration (Name    => New_Identifier (Name => S),
+        New_Theory_Declaration (Name    => NID (S),
                                 Kind    => Kind,
-                                Comment => New_Identifier (Name => Comment));
+                                Comment => NID (Comment));
    end Open_Theory;
 
    ---------------
