@@ -23,6 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Why.Ids; use Why.Ids;
+
 package Why.Atree.Modules is
    --  This package helps with Why modules. Today, it is only a list of
    --  predefined modules and Why files.
@@ -36,6 +38,27 @@ package Why.Atree.Modules is
    Ref_File                : Name_Id;
    Gnatprove_Standard_File : Name_Id;
    Ada_Model_File          : Name_Id;
+
+   -----------------------------
+   --  Predefined Why modules --
+   -----------------------------
+
+   --  the Why standard library
+
+   Int_Module              : W_Module_Id;
+   RealInfix               : W_Module_Id;
+
+   --  Modules of file "ada__model.mlw"
+
+   Static_Discrete         : W_Module_Id;
+   Static_Modular          : W_Module_Id;
+   Dynamic_Discrete        : W_Module_Id;
+   Dynamic_Modular         : W_Module_Id;
+   Static_Floating_Point   : W_Module_Id;
+   Dynamic_Floating_Point  : W_Module_Id;
+
+   Constr_Arrays           : W_Module_Array (1 .. 4);
+   Unconstr_Arrays         : W_Module_Array (1 .. 4);
 
    procedure Initialize;
    --  Call this procedure before using any of the entities in this package.

@@ -25,7 +25,6 @@
 
 with Atree;               use Atree;
 with Einfo;               use Einfo;
-with Namet;               use Namet;
 with Sem_Eval;            use Sem_Eval;
 with Sem_Util;            use Sem_Util;
 with Sinfo;               use Sinfo;
@@ -325,8 +324,7 @@ package body Why.Gen.Arrays is
       Subst     : W_Clone_Substitution_Array
         (1 .. Integer (Dimension * 2) + 1);
       Cursor    : Integer := 1;
-      Clone_Id  : constant Name_Id :=
-        Get_Symbol (Append_Num ("Constr_Array", Positive (Dimension)));
+      Clone  : constant W_Module_Id := Constr_Arrays (Positive (Dimension));
 
       procedure Declare_Attribute (Kind : Why_Name_Enum;
                                    Def  : Node_Id;
@@ -406,8 +404,7 @@ package body Why.Gen.Arrays is
             New_Clone_Declaration
               (Theory_Kind   => EW_Module,
                Clone_Kind    => EW_Export,
-               Origin        => New_Module (File => Ada_Model_File,
-                                            Name => Clone_Id),
+               Origin        => Clone,
                Substitutions => Subst));
       Emit (Theory,
             New_Type_Decl
@@ -431,8 +428,8 @@ package body Why.Gen.Arrays is
       Cursor    : Integer := 1;
       Index     : Node_Id := First_Index (Und_Ent);
       Dim_Count : Integer := 1;
-      Clone_Id  : constant Name_Id :=
-        Get_Symbol (Append_Num ("Unconstr_Array", Positive (Dimension)));
+      Clone     : constant W_Module_Id :=
+        Unconstr_Arrays (Positive (Dimension));
    begin
       Subst (Cursor) :=
         New_Clone_Substitution
@@ -482,8 +479,7 @@ package body Why.Gen.Arrays is
             New_Clone_Declaration
               (Theory_Kind   => EW_Module,
                Clone_Kind    => EW_Export,
-               Origin        =>
-                 New_Module (File => Ada_Model_File, Name => Clone_Id),
+               Origin        => Clone,
                Substitutions => Subst));
       Emit (Theory,
             New_Type_Decl

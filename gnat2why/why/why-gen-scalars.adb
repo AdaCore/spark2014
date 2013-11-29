@@ -23,7 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Namet;              use Namet;
 with Snames;             use Snames;
 
 with SPARK_Util;         use SPARK_Util;
@@ -65,12 +64,11 @@ package body Why.Gen.Scalars is
       Is_Mod : constant Boolean := Modulus /= Why_Empty;
       Is_Static : constant Boolean :=
         not Type_Is_Modeled_As_Int_Or_Real (Entity);
-      Static_String : constant String :=
-        (if Is_Static then "Static" else "Dynamic");
-      Mod_String : constant String :=
-        (if Is_Mod then "Modular" else "Discrete");
-      Clone_Id : constant Name_Id :=
-        NID (Static_String & "_" & Mod_String);
+      Clone  : constant W_Module_Id :=
+        (if Is_Static then
+            (if Is_Mod then Static_Modular else Static_Discrete)
+         else
+            (if Is_Mod then Dynamic_Modular else Dynamic_Discrete));
       Default_Clone_Subst : constant W_Clone_Substitution_Array :=
         (1 => New_Clone_Substitution
                 (Kind      => EW_Type_Subst,
@@ -109,10 +107,7 @@ package body Why.Gen.Scalars is
       Emit (Theory,
             New_Clone_Declaration (Theory_Kind   => EW_Module,
                                    Clone_Kind    => EW_Export,
-                                   Origin        =>
-                                     New_Module
-                                       (File => Ada_Model_File,
-                                        Name => Clone_Id),
+                                   Origin        => Clone,
                                    Substitutions => Clone_Subst));
    end Declare_Ada_Abstract_Signed_Int;
 
@@ -129,10 +124,8 @@ package body Why.Gen.Scalars is
       Why_Name : constant W_Identifier_Id := To_Why_Id (Entity, Local => True);
       Is_Static : constant Boolean :=
         not Type_Is_Modeled_As_Int_Or_Real (Entity);
-      Static_String : constant String :=
-        (if Is_Static then "Static" else "Dynamic");
-      Clone_Id : constant Name_Id :=
-        NID (Static_String & "_Floating_Point");
+      Clone         : constant W_Module_Id :=
+        (if Is_Static then Static_Floating_Point else Dynamic_Floating_Point);
       Has_Round_Real : constant Boolean :=
         Is_Single_Precision_Floating_Point_Type (Entity)
           or else
@@ -184,9 +177,7 @@ package body Why.Gen.Scalars is
       Emit (Theory,
             New_Clone_Declaration (Theory_Kind   => EW_Module,
                                    Clone_Kind    => EW_Export,
-                                   Origin        =>
-                                     New_Module (File => Ada_Model_File,
-                                                 Name => Clone_Id),
+                                   Origin        => Clone,
                                    Substitutions => Clone_Subst));
    end Declare_Ada_Real;
 
