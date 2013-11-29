@@ -1022,7 +1022,7 @@ new tools are more sophisticated and preserve more of the context.
 
 \subsection{Formalization of Properties}
 
-The contracts that have been added in the Tokeneer source code consist
+The contracts in the Tokeneer source code consist
 of information flow contracts expressed as Depends aspects and
 functional behavioral contracts expressed as Pre and Post aspects.
 
@@ -1048,10 +1048,9 @@ Loop\_Invariant     & 10 \\
 \hline
 \end{tabular}
 
-The Depends aspects (not presented previously for lack of space)
-facilitate flow analysis of the code. Flow analysis detects improper
-initialization, identifies ineffective assignments and ensures secure
-flow of information.
+The Depends aspects facilitate flow analysis of the code. Flow
+analysis detects improper initialization, identifies ineffective
+assignments and ensures secure flow of information.
 
 The Pre and Post aspects enable the prover to show that the code is
 free from run-time exceptions, such as buffer overflow or
@@ -1100,8 +1099,8 @@ or under which circumstances \verb|NullOp| should be returned.  The
 \oldspark tools proved all properties associated with the
 non-augmented \verb|admin| package but a total of 12 user rules had to
 be provided. The effort associated with proving the completed version
-of this postcondition would have been significant and hence this was
-not attempted.
+of this postcondition would have been significant and hence this had
+not been attempted.
 
 \begin{lstlisting}
 function OpIsAvailable
