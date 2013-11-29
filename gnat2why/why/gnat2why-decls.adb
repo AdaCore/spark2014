@@ -780,8 +780,9 @@ package body Gnat2Why.Decls is
                                "__args""\." & Capitalize_First (Generic_Name)
                              & "__" & Short_Name (Formal) & "\s"),
                            To       => W_Any_Node_Id (New_Identifier
-                             (Name => "use " & Capitalize_First
-                              (Name_Of_Node (Actual)) & ASCII.LF)));
+                             (Name => "use " &
+                                Capitalize_First (Full_Name (Actual))
+                              & ASCII.LF)));
                      end if;
                      Subst_Cur := Subst_Cur + 1;
 
@@ -908,7 +909,7 @@ package body Gnat2Why.Decls is
                              & "__" & Short_Name (Formal) & "\."),
                            To       => W_Any_Node_Id
                              (New_Identifier (Name => Capitalize_First
-                                              (Name_Of_Node (Actual)) & ".")));
+                                              (Full_Name (Actual)) & ".")));
                         Subst_Cur := Subst_Cur + 2;
                      end if;
 
@@ -960,7 +961,7 @@ package body Gnat2Why.Decls is
                           & "__" & Short_Name (Formal) & "\s"),
                         To       => W_Any_Node_Id (New_Identifier
                           (Name => "use " & Capitalize_First
-                           (Name_Of_Node (Actual)) & ASCII.LF)));
+                           (Full_Name (Actual)) & ASCII.LF)));
                      Subst_Cur := Subst_Cur + 1;
 
                      --  Replace: <Generic_Name>__<Formal>.<Formal>

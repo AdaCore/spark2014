@@ -23,6 +23,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Atree;              use Atree;
+with Sinfo;              use Sinfo;
+
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Gen.Names;      use Why.Gen.Names;
 
@@ -41,7 +44,7 @@ package body Why.Atree.Modules is
    begin
       if Has_Element (C) then
          return W_Module_Id (Element (C));
-      else
+      elsif Nkind (E) in N_Entity then
          declare
             M : constant W_Module_Id :=
               New_Module (File => No_Name, Name => NID (Full_Name (E)));
@@ -49,6 +52,8 @@ package body Why.Atree.Modules is
             Entity_Modules.Insert (E, Why_Node_Id (M));
             return M;
          end;
+      else
+         return Why_Empty;
       end if;
    end E_Module;
 
@@ -150,4 +155,12 @@ package body Why.Atree.Modules is
 
    end Initialize;
 
+   -------------------------
+   -- Insert_Extra_Module --
+   -------------------------
+
+   procedure Insert_Extra_Module (N : Node_Id; M : W_Module_Id) is
+   begin
+      Entity_Modules.Insert (N, Why_Node_Id (M));
+   end Insert_Extra_Module;
 end Why.Atree.Modules;

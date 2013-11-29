@@ -73,7 +73,12 @@ package Why.Atree.Modules is
    --  Call this procedure before using any of the entities in this package.
 
    function E_Module (E : Entity_Id) return W_Module_Id;
-   --  this function returns the module where File = No_Name and
-   --  Name = Full_Name (E). Memoization may be used.
+   --  this function returns the module where File = No_Name and Name =
+   --  Full_Name (E). Memoization may be used. Returns empty when it is called
+   --  with a node which is not an entity, and no module is known for this
+   --  entity.
+
+   procedure Insert_Extra_Module (N : Node_Id; M : W_Module_Id);
+   --  After a call to this procedure, E_Module (N) will return M.
 
 end Why.Atree.Modules;

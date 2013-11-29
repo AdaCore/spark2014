@@ -482,27 +482,7 @@ package body Why.Inter is
       Use_Kind        : EW_Clone_Type := EW_Clone_Default;
       With_Completion : Boolean := True)
    is
-      function Import_Type_Of_Entity (E : Entity_Id) return EW_Clone_Type;
-      --  return the import type that is used for such an entity
-
-      ---------------------------
-      -- Import_Type_Of_Entity --
-      ---------------------------
-
-      function Import_Type_Of_Entity (E : Entity_Id) return EW_Clone_Type is
-      begin
-         if Nkind (E) in N_Has_Theory then
-            return EW_Import;
-         end if;
-         return EW_Clone_Default;
-      end Import_Type_Of_Entity;
-
-      Raw_Name    : constant String := Name_Of_Node (N);
-      Theory_Name : constant String := Capitalize_First (Raw_Name);
-      Import      : constant EW_Clone_Type :=
-        (if Use_Kind = EW_Clone_Default then Import_Type_Of_Entity (N)
-         else Use_Kind);
-
+      Module      : constant W_Module_Id := E_Module (N);
    --  Start of Add_Use_For_Entity
 
    begin
@@ -515,10 +495,7 @@ package body Why.Inter is
          return;
       end if;
 
-      Add_With_Clause (P,
-                       New_Module (File => No_Name,
-                                   Name => NID (Theory_Name)),
-                       Import);
+      Add_With_Clause (P, Module, Use_Kind);
 
       if With_Completion then
          if Nkind (N) in N_Entity
@@ -528,8 +505,10 @@ package body Why.Inter is
               (P,
                New_Module
                  (File => No_Name,
-                  Name => NID (Theory_Name & To_String (WNE_Axiom))),
-               Import);
+                  Name =>
+                    NID (Get_Name_String (Get_Name (Module))
+                      & To_String (WNE_Axiom))),
+               Use_Kind);
          end if;
       end if;
    end Add_Use_For_Entity;
@@ -1171,22 +1150,6 @@ package body Why.Inter is
          end if;
       end if;
    end LCA;
-
-   ------------------
-   -- Name_Of_Node --
-   ------------------
-
-   function Name_Of_Node (N : Node_Id) return String is
-   begin
-      if Nkind (N) in N_Has_Theory then
-         return
-           Get_Name_String
-             (Identifier_Get_Symbol
-                (+Ada_Ent_To_Why.Element (Extra_Modules_Map, N).Main.B_Name));
-      else
-         return Full_Name (N);
-      end if;
-   end Name_Of_Node;
 
    ----------------------------
    -- New_Abstract_Base_Type --

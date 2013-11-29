@@ -1807,9 +1807,7 @@ package body Why.Gen.Expr is
          return
            +New_Identifier (Ada_Node => E,
                             Domain  => Domain,
-                            Module  =>
-                              New_Module (File => No_Name,
-                                          Name => NID (Full_Name (E))),
+                            Module  => E_Module (E),
                             Name    => To_String (WNE_Dummy),
                             Typ     => EW_Abstract (E));
       end if;

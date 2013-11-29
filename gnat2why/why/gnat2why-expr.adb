@@ -2224,13 +2224,10 @@ package body Gnat2Why.Expr is
       begin
          --  Store the logic function
 
-         Ada_Ent_To_Why.Insert (Extra_Modules_Map,
-                                Expr,
-                                (Regular,
-                                 Binder_Type'(B_Name   => Func,
-                                              B_Ent    => null,
-                                              Ada_Node => Empty,
-                                              Mutable  => False)));
+         Insert_Extra_Module (Expr,
+                              New_Module
+                                (File => No_Name,
+                                 Name => NID (Name)));
 
          --  Compute the parameters/arguments for the axiom/call
 
@@ -3093,17 +3090,21 @@ package body Gnat2Why.Expr is
       --  If not done already, generate the logic function
 
       declare
-         C : constant Ada_Ent_To_Why.Cursor :=
-           Ada_Ent_To_Why.Find (Extra_Modules_Map, Expr);
+         M : W_Module_Id := E_Module (Expr);
       begin
-         if not Ada_Ent_To_Why.Has_Element (C) then
+         if M = Why_Empty then
             Generate_Logic_Function (Expr, Values, Types);
+            M := E_Module (Expr);
          end if;
          return
            Complete_Translation
              (Params,
               Domain,
-              Ada_Ent_To_Why.Element (Extra_Modules_Map, Expr).Main.B_Name,
+              New_Identifier
+                (Ada_Node => Expr,
+                 Domain   => Domain,
+                 Module   => M,
+                 Symbol   => Get_Name (M)),
               Values,
               Types,
               Index_Values,
@@ -4609,14 +4610,21 @@ package body Gnat2Why.Expr is
 
          when N_String_Literal =>
             declare
-               C : constant Ada_Ent_To_Why.Cursor :=
-                 Ada_Ent_To_Why.Find (Extra_Modules_Map, Expr);
+               M : W_Module_Id := E_Module (Expr);
+               Id : W_Identifier_Id;
             begin
-               if not Ada_Ent_To_Why.Has_Element (C) then
+               if M = Why_Empty then
                   Transform_String_Literal (Local_Params, Expr);
+                  M := E_Module (Expr);
                end if;
-               T :=
-                 +Ada_Ent_To_Why.Element (Extra_Modules_Map, Expr).Main.B_Name;
+               Id :=
+                 New_Identifier
+                   (Ada_Node => Expr,
+                    Domain   => Domain,
+                    Module   => M,
+                    Symbol   => Get_Name (M),
+                    Typ      => New_Abstract_Base_Type (Type_Of_Node (Expr)));
+               T := +Id;
             end;
 
          when N_Identifier | N_Expanded_Name =>
@@ -6446,14 +6454,8 @@ package body Gnat2Why.Expr is
          Decl_File.Cur_Theory := Params.Theory;
       end if;
 
-      Ada_Ent_To_Why.Insert (M => Extra_Modules_Map,
-                             E => N,
-                             W =>
-                               (Regular,
-                                Binder_Type'(B_Name   => Id,
-                                               B_Ent    => null,
-                                               Mutable  => False,
-                                               Ada_Node => Empty)));
+      Insert_Extra_Module (N,
+                           New_Module (File => No_Name, Name => NID (Name)));
    end Transform_String_Literal;
 
    -------------------------------

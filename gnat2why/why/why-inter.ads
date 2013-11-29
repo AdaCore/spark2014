@@ -80,18 +80,12 @@ package Why.Inter is
       N               : Entity_Id;
       Use_Kind        : EW_Clone_Type := EW_Clone_Default;
       With_Completion : Boolean := True);
-   --  For the given entity, add a use clause to the current theory. If
-   --  Use_Kind is set to EW_Clone_Default, the actual use kind for that
-   --  entity is computed from the entity itself. If another value is given for
-   --  Use_Kind, that value is used. With_Completion is True if the completion
-   --  theories for N should be added too.
+   --  For the given entity, add a use clause to the current theory.
+   --  With_Completion is True if the completion theories for N should be
+   --  added too.
 
    procedure Add_Effect_Imports (P : Why_Section;
                                  S : Name_Set.Set);
-
-   Extra_Modules_Map : Ada_Ent_To_Why.Map := Ada_Ent_To_Why.Empty_Map;
-   --  Mappings from Ada nodes to Why logic functions for their translation
-   --  This map is used for string literals and aggregates
 
    procedure Add_With_Clause (T        : W_Theory_Declaration_Id;
                               Module   : W_Module_Id;
@@ -102,10 +96,6 @@ package Why.Inter is
                               Module   : W_Module_Id;
                               Use_Kind : EW_Clone_Type;
                               Th_Type  : EW_Theory_Type := EW_Module);
-
-   function Name_Of_Node (N : Node_Id) return String;
-   --  Return the uncapitalized name which needs to be used to include the
-   --  Why entity for that node (after capitalization).
 
    procedure Add_Effect_Imports (T : W_Theory_Declaration_Id;
                                  S : Name_Set.Set);
