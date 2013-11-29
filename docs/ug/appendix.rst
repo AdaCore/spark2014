@@ -50,8 +50,7 @@ Command-line Options
  gnatprove advanced switches:
  -d, --debug        Debug mode
  --flow-debug       Extra debugging for flow analysis (requires graphviz)
-     --proof=p      Set the proof mode (p=no_split*, then_split, path_wp,
-                    no_wp, all_split)
+     --proof=p      Set the proof mode (p=per_check*, per_path, progressive)
      --RTS=dir      Specify the Ada runtime name/location
      --pedantic     Use a strict interpretation of the Ada standard
      --steps=nnn    Set the maximum number of proof steps to nnn for Alt-Ergo
@@ -61,12 +60,10 @@ Command-line Options
      --prover=s     Use given prover instead of default Alt-Ergo prover
 
  * Proof mode values
-   . no_split   - Generate one formula per check (default)
-   . then_split - Start with one formula per check, then split into
-                  paths when needed
-   . path_wp    - Generate one formula per path for each check
-   . no_wp      - Do not compute checks, do not call prover
-   . all_split  - Compute all checks, save them to file, do not call prover
+   . per_check   - Generate one formula per check (default)
+   . per_path    - Generate one formula per path for each check
+   . progressive - Start with one formula per check, then split into
+                   paths when needed
 
 .. _Alternative_Provers:
 

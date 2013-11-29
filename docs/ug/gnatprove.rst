@@ -62,12 +62,12 @@ depending on the computing power or current load of the machine. The option
 
 The way checks are passed to Alt-Ergo can also be influenced using the option
 ``--proof``. By default, Alt-Ergo is invoked a single time for each check or
-assertion (mode ``no_split``). This can be changed using mode ``path_wp`` to
+assertion (mode ``per_check``). This can be changed using mode ``per_path`` to
 invoke Alt-Ergo for each *path* that leads to the check. This option usually
 takes much longer, because Alt-Ergo is invoked much more often, but may give
-better proof results. Finally, in mode ``then_split``, invoking Alt-Ergo a
+better proof results. Finally, in mode ``progressive``, invoking Alt-Ergo a
 single time on the entire check is tried, and only if the check is not proved,
-the other techniques (splitting conjunctions and trying each path separately)
+then other techniques that progressively consider each path in isolation 
 are tried.
 
 By default, |GNATprove| avoids reanalyzing unchanged files, on a

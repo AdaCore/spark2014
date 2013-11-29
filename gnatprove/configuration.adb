@@ -165,9 +165,7 @@ ASCII.LF &
 ASCII.LF &
 " --flow-debug       Extra debugging for flow analysis (requires graphviz)" &
 ASCII.LF &
-"     --proof=p      Set the proof mode (p=no_split*, then_split, path_wp,"&
-ASCII.LF &
-"                    no_wp, all_split)" &
+"     --proof=p      Set the proof mode (p=per_check*, per_path, progressive)"&
 ASCII.LF &
 "     --RTS=dir      Specify the Ada runtime name/location" &
 ASCII.LF &
@@ -186,17 +184,13 @@ ASCII.LF &
 ASCII.LF &
 " * Proof mode values" &
 ASCII.LF &
-"   . no_split   - Generate one formula per check (default)" &
+"   . per_check   - Generate one formula per check (default)" &
 ASCII.LF &
-"   . then_split - Start with one formula per check, then split into" &
+"   . per_path    - Generate one formula per path for each check" &
 ASCII.LF &
-"                  paths when needed" &
+"   . progressive - Start with one formula per check, then split into" &
 ASCII.LF &
-"   . path_wp    - Generate one formula per path for each check" &
-ASCII.LF &
-"   . no_wp      - Do not compute checks, do not call prover" &
-ASCII.LF &
-"   . all_split  - Compute all checks, save them to file, do not call prover" &
+"                   paths when needed" &
 ASCII.LF;
 
    --------------
@@ -616,25 +610,28 @@ ASCII.LF;
            ("report should be one of (fail | all | statistics)");
       end if;
 
-      if Proof_Input.all = "then_split" then
+      if Proof_Input.all = "progressive" then
          Proof := Then_Split;
+      elsif Proof_Input.all = "per_path" then
+         Proof := Path_WP;
+      elsif Proof_Input.all = "per_check" then
+         Proof := No_Split;
+
+      --  Hidden debugging values
+
       elsif Proof_Input.all = "no_wp" then
          Proof := No_WP;
       elsif Proof_Input.all = "all_split" then
          Proof := All_Split;
-      elsif Proof_Input.all = "path_wp" then
-         Proof := Path_WP;
-      elsif Proof_Input.all = "no_split" then
-         Proof := No_Split;
 
-      --  The default proof mode is no_split
+      --  The default proof mode is per_check
 
       elsif Proof_Input.all = "" then
          Proof := No_Split;
       else
          Abort_With_Help
            ("proof mode should be one of " &
-            "(then_split | no_wp | all_split | path_wp | no_split)");
+            "(per_check | per_path | progressive)");
       end if;
 
       if Flow_Extra_Debug and not Debug then
