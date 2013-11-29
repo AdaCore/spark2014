@@ -280,7 +280,7 @@ package body Gnat2Why.Subprograms is
                  Unique_Entity (Etype (B.Main.Ada_Node));
                Guard : constant W_Pred_Id :=
                  New_Call (Name =>
-                              Prefix (S        => Full_Name (Ty),
+                              Prefix (M        => E_Module (Ty),
                                       W        => WNE_Range_Pred,
                                       Ada_Node => Ty),
                             Args => (1 => +B.Main.B_Name));

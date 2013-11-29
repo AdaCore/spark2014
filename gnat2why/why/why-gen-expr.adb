@@ -43,6 +43,7 @@ with SPARK_Util;            use SPARK_Util;
 with Why.Atree.Accessors;   use Why.Atree.Accessors;
 with Why.Atree.Builders;    use Why.Atree.Builders;
 with Why.Atree.Tables;      use Why.Atree.Tables;
+with Why.Atree.Modules;     use Why.Atree.Modules;
 with Why.Conversions;       use Why.Conversions;
 with Why.Gen.Arrays;        use Why.Gen.Arrays;
 with Why.Gen.Names;         use Why.Gen.Names;
@@ -410,7 +411,7 @@ package body Why.Gen.Expr is
                 (Domain => Domain,
                  Name   =>
                    Prefix (Ada_Node => From_Ent,
-                           S        => Full_Name (From_Ent),
+                           M        => E_Module (From_Ent),
                            W        => WNE_To_Array),
                  Args => (1 => Arr_Expr),
                  Typ  => To);
@@ -436,7 +437,7 @@ package body Why.Gen.Expr is
                 (Domain => Domain,
                  Name   =>
                    Prefix (Ada_Node => To_Ent,
-                           S        => Full_Name (To_Ent),
+                           M        => E_Module (To_Ent),
                            W        => WNE_Of_Array),
                  Args => Args,
                  Typ  => To);
@@ -1232,9 +1233,9 @@ package body Why.Gen.Expr is
          end case;
       else
          declare
-            S : constant String :=
-              (if Is_Standard_Boolean_Type (Ty) then "Boolean"
-               else Full_Name (Ty));
+            M : constant W_Module_Id :=
+              (if Is_Standard_Boolean_Type (Ty) then Boolean_Module
+               else E_Module (Ty));
             T : W_Expr_Id;
             BT : constant W_Type_Id :=
               (if Is_Standard_Boolean_Type (Ty) then
@@ -1242,7 +1243,7 @@ package body Why.Gen.Expr is
                else Base_Why_Type (Ty));
          begin
             T := +Prefix (Ada_Node => Ty,
-                          S        => S,
+                          M        => M,
                           W        => Attr_To_Why_Name (Attr),
                           Typ      => BT);
 

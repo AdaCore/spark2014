@@ -81,7 +81,6 @@ package body Why.Gen.Arrays is
    is
       W_Ty    : constant W_Type_Id := Get_Type (Expr);
       Ty      : constant Entity_Id := Get_Ada_Node (+W_Ty);
-      Ty_Name : constant String := Full_Name (Ty);
    begin
       if Is_Constrained (Ty) or else Get_Base_Type (W_Ty) = EW_Split then
          Args (Arg_Ind) := Expr;
@@ -91,7 +90,7 @@ package body Why.Gen.Arrays is
              (Domain => Domain,
               Name   =>
                 Prefix (Ada_Node => Ty,
-                        S        => Ty_Name,
+                        M        => E_Module (Ty),
                         W        => WNE_To_Array),
               Args => (1 => Expr));
       end if;
@@ -177,7 +176,7 @@ package body Why.Gen.Arrays is
           (Domain => Domain,
            Name   =>
              Prefix (Ada_Node => Ty_Ent,
-                     S        => Full_Name (Ty_Ent),
+                     M        => E_Module (Ty_Ent),
                      W        => WNE_Of_Array),
            Args   => Args,
            Typ    => EW_Abstract (Ty_Ent));
@@ -200,7 +199,7 @@ package body Why.Gen.Arrays is
           (Domain => Domain,
            Name   =>
              Prefix (Ada_Node => Target,
-                     S        => Full_Name (Target),
+                     M        => E_Module (Target),
                      W        => WNE_Of_Array),
            Args   => (1 => Ar, 2 => First_Int, 3 => Last_Int),
            Typ    => EW_Abstract (Target));
@@ -222,7 +221,7 @@ package body Why.Gen.Arrays is
           (Domain => Domain,
            Name   =>
              Prefix (Ada_Node => Ty_Ent,
-                     S        => Full_Name (Ty_Ent),
+                     M        => E_Module (Ty_Ent),
                      W        => WNE_To_Array),
            Args   => (1 => +Ar),
            Typ    => EW_Split (Ty_Ent));
@@ -656,7 +655,7 @@ package body Why.Gen.Arrays is
       Dimension : constant Pos := Number_Dimensions (Ty_Entity);
       Name      : constant W_Identifier_Id :=
         Prefix (Ada_Node => Ty_Entity,
-                S => To_String (Ada_Array_Name (Dimension)),
+                M => Array_Modules (Positive (Dimension)),
                 W => WNE_Array_Access);
       Elts     : W_Expr_Id;
       Ret_Ty   : constant W_Type_Id :=
@@ -694,7 +693,7 @@ package body Why.Gen.Arrays is
       Ty_Entity : constant Entity_Id := Get_Ada_Node (+W_Ty);
       Dimension : constant Pos := Number_Dimensions (Ty_Entity);
       Name      : constant W_Identifier_Id :=
-        Prefix (S => To_String (Ada_Array_Name (Dimension)),
+        Prefix (M => Array_Modules (Positive (Dimension)),
                 W => WNE_Array_Update);
    begin
       if Is_Constrained (Ty_Entity) or else
@@ -714,7 +713,7 @@ package body Why.Gen.Arrays is
                  (Domain => Domain,
                   Name   =>
                     Prefix (Ada_Node => Ty_Entity,
-                            S        => Full_Name (Ty_Entity),
+                            M        => E_Module (Ty_Entity),
                             W        => WNE_To_Array),
                   Args   => (1 => +Ar)))
               & Index & (1 => +Value);
@@ -734,7 +733,7 @@ package body Why.Gen.Arrays is
                           New_Field_Association
                       (Domain => Domain,
                        Field  => Prefix (Ada_Node => Ty_Entity,
-                                         S        => Full_Name (Ty_Entity),
+                                         M        => E_Module (Ty_Entity),
                                          W        => WNE_Array_Elts),
                        Value  => Array_Upd)),
                  Typ     => W_Ty);

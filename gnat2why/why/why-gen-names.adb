@@ -29,6 +29,7 @@ with String_Utils;        use String_Utils;
 with SPARK_Util;          use SPARK_Util;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Builders;  use Why.Atree.Builders;
+with Why.Atree.Modules;   use Why.Atree.Modules;
 with Why.Conversions;     use Why.Conversions;
 with Why.Types;           use Why.Types;
 
@@ -195,11 +196,11 @@ package body Why.Gen.Names is
                      return To_Ident (WNE_Real_Round);
                   elsif From_Kind = EW_Bool and then To_Kind = EW_Int then
                      return Prefix (Ada_Node => Standard_Boolean,
-                                    S        => "Boolean",
+                                    M        => Boolean_Module,
                                     W        => WNE_To_Int);
                   elsif From_Kind = EW_Int and then To_Kind = EW_Bool then
                      return Prefix (Ada_Node => Standard_Boolean,
-                                    S        => "Boolean",
+                                    M        => Boolean_Module,
                                     W        => WNE_Of_Int);
 
                   --  Either the two objects are of the same type
@@ -217,7 +218,7 @@ package body Why.Gen.Names is
                   begin
                      return
                        Prefix (Ada_Node => A,
-                               S        => Full_Name (A),
+                               M        => E_Module (A),
                                W        => Convert_From (From_Kind));
                   end;
             end case;
@@ -233,7 +234,7 @@ package body Why.Gen.Names is
                   begin
                      return
                        Prefix (Ada_Node => A,
-                               S => Full_Name (A),
+                               M        => E_Module (A),
                                W => Convert_To (To_Kind));
                   end;
 
@@ -247,12 +248,12 @@ package body Why.Gen.Names is
                      if Root_Record_Type (From_Node) = From_Node then
                         return
                           Prefix (Ada_Node => To_Node,
-                                  S        => Full_Name (To_Node),
+                                  M        => E_Module (To_Node),
                                   W        => WNE_Of_Base);
                      else
                         return
                           Prefix (Ada_Node => From_Node,
-                                  S        => Full_Name (From_Node),
+                                  M        => E_Module (From_Node),
                                   W        => WNE_To_Base);
                      end if;
                   end;
@@ -319,7 +320,7 @@ package body Why.Gen.Names is
    function Float_Round_Name (Ty : Entity_Id) return W_Identifier_Id is
    begin
       return Prefix (Ada_Node => Ty,
-                     S        => Full_Name (Ty),
+                     M        => E_Module (Ty),
                      W        => WNE_Float_Round);
    end Float_Round_Name;
 
@@ -359,16 +360,16 @@ package body Why.Gen.Names is
          when EW_Ge   => WNE_Bool_Ge,
          when EW_None => WNE_Bool_Eq
         );
-      S : constant String :=
+      M : constant W_Module_Id :=
         (case Kind is
-         when EW_Int  => "Integer",
-         when EW_Real => "Floating",
-         when EW_Bool => "Boolean",
-         when EW_Unit .. EW_Prop | EW_Private => "Main",
-         when EW_Abstract | EW_Split => Full_Name (Get_Ada_Node (+Arg_Types)));
+         when EW_Int  => Integer_Module,
+         when EW_Real => Floating_Module,
+         when EW_Bool => Boolean_Module,
+         when EW_Unit .. EW_Prop | EW_Private => Main_Module,
+         when EW_Abstract | EW_Split => E_Module (Get_Ada_Node (+Arg_Types)));
    begin
       return Prefix (Ada_Node => A,
-                     S        => S,
+                     M        => M,
                      W        => R);
    end New_Bool_Cmp;
 
@@ -658,16 +659,15 @@ package body Why.Gen.Names is
    -- Prefix --
    ------------
 
-   function Prefix (S        : String;
+   function Prefix (M        : W_Module_Id;
                     W        : Why_Name_Enum;
                     Ada_Node : Node_Id := Empty;
                     Typ      : W_Type_Id := Why_Empty) return W_Identifier_Id
    is
    begin
       return New_Identifier
-        (Module =>
-           New_Module (File => No_Name, Name => NID (S)),
-         Name    => To_String (W),
+        (Module   => M,
+         Name     => To_String (W),
          Ada_Node => Ada_Node,
          Typ      => Typ);
    end Prefix;
@@ -712,11 +712,11 @@ package body Why.Gen.Names is
    begin
       if Is_Standard_Boolean_Type (Ty) then
          return Prefix (Ada_Node => Standard_Boolean,
-                        S        => "Boolean",
+                        M        => Boolean_Module,
                         W        => Name);
       else
          return Prefix (Ada_Node => Ty,
-                        S        => Full_Name (Ty),
+                        M        => E_Module (Ty),
                         W        => Name);
       end if;
    end Range_Check_Name;
@@ -730,11 +730,11 @@ package body Why.Gen.Names is
    begin
       if Is_Standard_Boolean_Type (Ty) then
          return Prefix (Ada_Node => Standard_Boolean,
-                        S        => "Boolean",
+                        M        => Boolean_Module,
                         W        => WNE_Range_Pred);
       else
          return Prefix (Ada_Node => Ty,
-                        S        => Full_Name (Ty),
+                        M        => E_Module (Ty),
                         W        => WNE_Range_Pred);
       end if;
    end Range_Pred_Name;

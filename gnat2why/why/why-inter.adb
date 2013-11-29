@@ -1364,7 +1364,9 @@ package body Why.Inter is
       if T = SPARK_Xrefs.Name_Of_Heap_Variable then
          return New_Identifier (Name => "__type_of_heap");
       else
-         return Prefix (T, WNE_Type);
+         return
+           Prefix (New_Module (File => No_Name, Name => NID (T)),
+                   WNE_Type);
       end if;
    end To_Why_Type;
 

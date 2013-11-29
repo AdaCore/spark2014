@@ -1208,7 +1208,7 @@ package body Gnat2Why.Expr is
    begin
       return New_VC_Call (Domain   => EW_Prog,
                           Ada_Node => Ada_Node,
-                          Name     => Prefix (S        => Full_Name (Base),
+                          Name     => Prefix (M        => E_Module (Base),
                                               W        => WNE_Range_Check_Fun,
                                               Ada_Node => Base),
                           Progs    => (1 => +T),
@@ -3161,11 +3161,9 @@ package body Gnat2Why.Expr is
            Name     =>
              Prefix
                (Ada_Node => Etype (Left),
-                S        =>
-                  To_String
-                    (Ada_Array_Name
-                       (Number_Dimensions
-                        (Type_Of_Node (Left)))),
+                M        =>
+                  Array_Modules
+                    (Positive (Number_Dimensions (Type_Of_Node (Left)))),
                 W        => WNE_Bool_Eq),
            Args     => Args,
            Typ      => EW_Bool_Type);
@@ -4679,7 +4677,7 @@ package body Gnat2Why.Expr is
                           Domain   => Subdomain,
                           Name     =>
                             Prefix (Ada_Node => Get_Ada_Node (+BT),
-                                    S        => Full_Name (Get_Ada_Node (+BT)),
+                                    M        => E_Module (Get_Ada_Node (+BT)),
                                     W        => WNE_Bool_Eq),
                           Args     => (1 => Left_Arg,
                                        2 => Right_Arg),
@@ -5479,7 +5477,7 @@ package body Gnat2Why.Expr is
                   Call : constant W_Expr_Id :=
                     New_Call (Domain => Domain,
                               Name =>
-                                Prefix (S        => Full_Name (Ty),
+                                Prefix (M        => E_Module (Ty),
                                         W        => WNE_Range_Pred,
                                         Ada_Node => Ty),
                               Args =>

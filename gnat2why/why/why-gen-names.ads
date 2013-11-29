@@ -283,7 +283,7 @@ package Why.Gen.Names is
                       Ada_Node : Node_Id := Empty)
                       return W_Identifier_Id;
 
-   function Prefix (S        : String;
+   function Prefix (M        : W_Module_Id;
                     W        : Why_Name_Enum;
                     Ada_Node : Node_Id := Empty;
                     Typ      : W_Type_Id := Why.Types.Why_Empty)
