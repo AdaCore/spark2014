@@ -590,7 +590,7 @@ invariant is very useful to help ``debug'' the loop invariant.
 Overall, we think that the programmer should be trained in the proof
 environment, much like a programmer exploits feedback of debuggers and
 tests to debug her program. Moreover, as a complete proof of the
-program can be very costly, a proof methodology must be defined to
+program can be very costly, a workflow must be defined to
 avoid spending too much time on proofs that could be broken by future
 code changes.
 
@@ -927,7 +927,8 @@ In order to efficiently use \gnatprove in an industrial context, we
 think the following points should be improved: the ability to prove
 generic units once (instead of proving each instance as done
 currently); the need to use a sound model of floating-points instead
-of real numbers; automatic generation of some loop invariants.
+of real numbers\footnote{This has been implemented since the case study.}; 
+automatic generation of some loop invariants.
 
 \section{Biometric Access to a Secure Enclave}
 \label{sec:tokeneer}
@@ -1261,7 +1262,7 @@ an expert (Sections~\ref{sec:openETCS} and~\ref{sec:space}).
 % evolutions of \newspark.
 
 Railway, space, and security are all domains subject to important
-certification requirements that imply costly verification
+certification requirements that imply rigorous verification
 processes. The three case studies show that verification with
 \newspark can bring a solution to this problem thanks to an expressive
 language, executable contracts, and enhanced provability. Even if
