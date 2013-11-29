@@ -52,6 +52,10 @@ package body Why.Atree.Sprint is
    --  Print a node list on current output, separating each element
    --  by a given separator, optionally followed by a new line.
 
+   procedure Print_Module_Id
+     (Node      : W_Module_Id;
+      With_File : Boolean := False);
+
    ----------------
    -- Print_List --
    ----------------
@@ -84,6 +88,26 @@ package body Why.Atree.Sprint is
          end if;
       end loop;
    end Print_List;
+
+   ---------------------
+   -- Print_Module_Id --
+   ---------------------
+
+   procedure Print_Module_Id
+     (Node      : W_Module_Id;
+      With_File : Boolean := False)
+   is
+      File : constant Name_Id := Get_File (Node);
+   begin
+      if With_File
+        and then File /= No_Name
+      then
+         P (O, """");
+         P (O, File);
+         P (O, """.");
+      end if;
+      P (O, Get_Name (Node));
+   end Print_Module_Id;
 
    ---------------------
    -- Sprint_Why_Node --
@@ -1425,17 +1449,11 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Include_Declaration_Id)
    is
-      File : constant Name_Id := Get_File (Node);
    begin
       P (O, "use ");
       P (O, Get_Use_Kind (Node));
       P (O, " ");
-      if File /= No_Name then
-         P (O, """");
-         P (O, File);
-         P (O, """.");
-      end if;
-      Traverse (State, +Get_T_Name (Node));
+      Print_Module_Id (Get_Module (Node), With_File => True);
       NL (O);
       State.Control := Abandon_Children;
    end Include_Declaration_Pre_Op;

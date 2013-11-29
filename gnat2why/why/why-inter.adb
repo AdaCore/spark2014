@@ -541,10 +541,12 @@ package body Why.Inter is
    begin
       Theory_Declaration_Append_To_Includes
         (T,
-         New_Include_Declaration (File     => No_Name,
-                                  T_Name   => New_Identifier (Name => T_Name),
-                                  Use_Kind => Use_Kind,
-                                  Kind     => Th_Type));
+         New_Include_Declaration
+           (Module =>
+                New_Module (File => No_Name,
+                            Name => NID (T_Name)),
+            Use_Kind => Use_Kind,
+            Kind     => Th_Type));
    end Add_With_Clause;
 
    procedure Add_With_Clause (T        : W_Theory_Declaration_Id;
@@ -555,10 +557,12 @@ package body Why.Inter is
    begin
       Theory_Declaration_Append_To_Includes
         (T,
-         New_Include_Declaration (File     => NID (File),
-                                  T_Name   => New_Identifier (Name => T_Name),
-                                  Use_Kind => Use_Kind,
-                                  Kind     => Th_Type));
+         New_Include_Declaration
+           (Module   =>
+                New_Module (File     => NID (File),
+                            Name   => NID (T_Name)),
+            Use_Kind => Use_Kind,
+            Kind     => Th_Type));
    end Add_With_Clause;
 
    procedure Add_With_Clause (P        : Why_Section;
