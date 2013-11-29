@@ -1473,7 +1473,7 @@ package body Why.Atree.Sprint is
       P (O, "clone ");
       P (O, Get_Clone_Kind (Node));
       P (O, " ");
-      Traverse (State, +Get_Origin (Node));
+      Print_Module_Id (Get_Origin (Node), With_File => True);
       if As_Name /= Why_Empty then
          P (O, " as ");
          Traverse (State, +As_Name);

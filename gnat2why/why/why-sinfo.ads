@@ -230,7 +230,7 @@ package Why.Sinfo is
    --  File        Name_Id
    --  Name        Name_Id
    --
-   --  identifies a module. If the module is in the current file, File is set
+   --  Identifies a module. If the module is in the current file, File is set
    --  to No_Name.
    --
    --  ------------------
@@ -551,7 +551,7 @@ package Why.Sinfo is
    --  -------------------------
    --  -- W_Clone_Declaration --
    --  -------------------------
-   --  Origin        W_Identifier_Id
+   --  Origin        W_Module_Id
    --  As_Name       W_Identifier_Id
    --  Clone_Kind    EW_Clone_Type
    --  Substitutions W_Clone_Substitution_List

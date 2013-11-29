@@ -23,12 +23,14 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Namet;              use Namet;
 with Snames;             use Snames;
 
 with SPARK_Util;         use SPARK_Util;
 
 with Why.Conversions;    use Why.Conversions;
 with Why.Atree.Builders; use Why.Atree.Builders;
+with Why.Atree.Modules;  use Why.Atree.Modules;
 with Why.Gen.Decl;       use Why.Gen.Decl;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Binders;    use Why.Gen.Binders;
@@ -67,9 +69,8 @@ package body Why.Gen.Scalars is
         (if Is_Static then "Static" else "Dynamic");
       Mod_String : constant String :=
         (if Is_Mod then "Modular" else "Discrete");
-      Clone_Id : constant W_Identifier_Id :=
-        New_Identifier
-          (Name => """ada__model""." & Static_String & "_" & Mod_String);
+      Clone_Id : constant Name_Id :=
+        NID (Static_String & "_" & Mod_String);
       Default_Clone_Subst : constant W_Clone_Substitution_Array :=
         (1 => New_Clone_Substitution
                 (Kind      => EW_Type_Subst,
@@ -108,7 +109,10 @@ package body Why.Gen.Scalars is
       Emit (Theory,
             New_Clone_Declaration (Theory_Kind   => EW_Module,
                                    Clone_Kind    => EW_Export,
-                                   Origin        => Clone_Id,
+                                   Origin        =>
+                                     New_Module
+                                       (File => Ada_Model_File,
+                                        Name => Clone_Id),
                                    Substitutions => Clone_Subst));
    end Declare_Ada_Abstract_Signed_Int;
 
@@ -127,9 +131,8 @@ package body Why.Gen.Scalars is
         not Type_Is_Modeled_As_Int_Or_Real (Entity);
       Static_String : constant String :=
         (if Is_Static then "Static" else "Dynamic");
-      Clone_Id : constant W_Identifier_Id :=
-        New_Identifier
-          (Name => """ada__model""." & Static_String & "_Floating_Point");
+      Clone_Id : constant Name_Id :=
+        NID (Static_String & "_Floating_Point");
       Has_Round_Real : constant Boolean :=
         Is_Single_Precision_Floating_Point_Type (Entity)
           or else
@@ -181,7 +184,9 @@ package body Why.Gen.Scalars is
       Emit (Theory,
             New_Clone_Declaration (Theory_Kind   => EW_Module,
                                    Clone_Kind    => EW_Export,
-                                   Origin        => Clone_Id,
+                                   Origin        =>
+                                     New_Module (File => Ada_Model_File,
+                                                 Name => Clone_Id),
                                    Substitutions => Clone_Subst));
    end Declare_Ada_Real;
 
