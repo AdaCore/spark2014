@@ -121,7 +121,7 @@ package Why.Gen.Names is
      (Ada_Node : Node_Id := Empty;
       Domain   : EW_Domain;
       Name     : String;
-      Context  : Name_Id;
+      Module   : W_Module_Id;
       Typ      : W_Type_Id := Why.Types.Why_Empty) return W_Identifier_Id;
 
    function New_Temp_Identifier
