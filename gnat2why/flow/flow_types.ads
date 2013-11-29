@@ -227,6 +227,9 @@ package Flow_Types is
    with Post => (if Has_Effective_Writes'Result then Has_Async_Writers (F));
    --  Checks if writes to F are always effective.
 
+   function Is_Abstract_State (F : Flow_Id) return Boolean;
+   --  Checks if F is an abstract state.
+
    function Magic_String_Id
      (S       : Entity_Name;
       Variant : Flow_Id_Variant := Normal_Use)

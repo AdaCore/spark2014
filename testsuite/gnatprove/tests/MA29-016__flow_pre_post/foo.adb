@@ -5,6 +5,8 @@ is
    A : Integer;
    B : Integer;
 
+   function Get_A return Integer is (A) with Refined_Global => A;
+
 begin
 
    A := 1;

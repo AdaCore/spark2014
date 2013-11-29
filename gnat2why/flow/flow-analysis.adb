@@ -1122,7 +1122,18 @@ package body Flow.Analysis is
                         Error_Msg_Flow
                           (FA        => FA,
                            Tracefile => Tracefile,
-                           Msg       => "unused initial value of &",
+                           Msg       =>
+                             (if FA.B_Scope.Section /= Body_Part
+                                and then Is_Abstract_State (F)
+                                and then Present (FA.B_Scope)
+                                and then State_Refinement_Is_Visible
+                                (Get_Direct_Mapping_Id (F),
+                                 Body_Scope (FA.B_Scope))
+                              then "non-visible constituents " &
+                                "of & are not used " &
+                                "- consider moving the subprogram to the " &
+                                "package body and adding a Refined_Global"
+                              else "unused initial value of &"),
                            N         => Find_Global (FA.Analyzed_Entity, F),
                            F1        => F,
                            Tag       => "unused_initial_value",

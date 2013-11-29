@@ -87,6 +87,11 @@ package Flow_Refinement is
    with Pre => Present (S);
    --  Returns the private scope for a valid scope.
 
+   function Body_Scope (S : Flow_Scope) return Flow_Scope
+   is (Flow_Scope'(S.Pkg, Body_Part))
+   with Pre => Present (S);
+   --  Returns the private scope for a valid scope.
+
    ---------------------------
    -- Queries and utilities --
    ---------------------------

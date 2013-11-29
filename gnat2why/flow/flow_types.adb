@@ -386,6 +386,22 @@ package body Flow_Types is
       end case;
    end Has_Effective_Writes;
 
+   -----------------------
+   -- Is_Abstract_State --
+   -----------------------
+
+   function Is_Abstract_State (F : Flow_Id) return Boolean is
+   begin
+      case F.Kind is
+         when Direct_Mapping =>
+            return Nkind (F.Node) in N_Entity and then
+              Ekind (F.Node) = E_Abstract_State;
+
+         when others =>
+            return False;
+      end case;
+   end Is_Abstract_State;
+
    ---------------------
    -- Magic_String_Id --
    ---------------------
