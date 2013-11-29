@@ -672,14 +672,13 @@ package body Why.Gen.Names is
          Typ      => Typ);
    end Prefix;
 
-   function Prefix (P        : String;
+   function Prefix (M        : W_Module_Id;
                     N        : String;
                     Ada_Node : Node_Id := Empty) return W_Identifier_Id
    is
    begin
       return New_Identifier
-        (Module =>
-           New_Module (File => No_Name, Name => NID (P)),
+        (Module => M,
          Name     => N,
          Ada_Node => Ada_Node);
    end Prefix;

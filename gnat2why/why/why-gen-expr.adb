@@ -238,7 +238,7 @@ package body Why.Gen.Expr is
          Check :=
            New_Call (Name   =>
                        Prefix (Ada_Node => To_Ent,
-                               P        => Full_Name (To_Ent),
+                               M        => E_Module (To_Ent),
                                N        => "range_check"),
                      Args   => Args,
                      Typ    => EW_Abstract (To_Ent));
@@ -398,7 +398,7 @@ package body Why.Gen.Expr is
                T := New_Call
                  (Domain => Domain,
                   Name   =>
-                    Prefix (P => To_String (Ada_Array_Name (Int (Dim))),
+                    Prefix (M => Array_Modules (Dim),
                             N => "slide"),
                   Args   => Args,
                   Typ    => To);

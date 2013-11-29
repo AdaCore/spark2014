@@ -4026,7 +4026,7 @@ package body Gnat2Why.Expr is
            New_Call
              (Domain => Domain,
               Name   =>
-                Prefix (P => To_String (Ada_Array_Name (1)),
+                Prefix (M => Array_Modules (1),
                         N => "slide"),
               Args   =>
                 (1 => T,

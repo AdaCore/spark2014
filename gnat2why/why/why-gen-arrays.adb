@@ -552,7 +552,6 @@ package body Why.Gen.Arrays is
    is
       W_Ty    : constant W_Type_Id := Get_Type (Expr);
       Ty      : constant Entity_Id := Get_Ada_Node (+W_Ty);
-      Ty_Name : constant String := Full_Name (Ty);
    begin
 
       --  If the type is constrained, just use the type information
@@ -577,7 +576,7 @@ package body Why.Gen.Arrays is
               Name   =>
                 Prefix
                   (Ada_Node => Ty,
-                   P        => Ty_Name,
+                   M        => E_Module (Ty),
                    N        =>
                      Append_Num
                        (To_String
@@ -755,7 +754,7 @@ package body Why.Gen.Arrays is
           (Domain   => Domain,
            Name     =>
              Prefix
-               (P        => To_String (Ada_Array_Name (1)),
+               (M        => Array_Modules (1),
                 N        => "concat"),
            Args     => Args,
            Typ      => Typ);
@@ -807,7 +806,7 @@ package body Why.Gen.Arrays is
           (Domain   => Domain,
            Name     =>
              Prefix
-               (P        => To_String (Ada_Array_Name (1)),
+               (M        => Array_Modules (1),
                 N        => "singleton"),
            Args     => (1 => Elt, 2 => Pos));
    end New_Singleton_Call;
