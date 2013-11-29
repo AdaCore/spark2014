@@ -156,7 +156,6 @@ package Why.Sinfo is
    --  -- W_Loop_Annot --
    --  ------------------
    --  Invariant  W_Pred_Id
-   --  Variant    W_Pred_Id
    --
    --  Loop annotations. These belong to the top of the loop, and each loop can
    --  only have one.
@@ -176,7 +175,7 @@ package Why.Sinfo is
    --  -- W_Existential_Quantif --
    --  ---------------------------
    --  Variables  W_Identifier_List
-   --  Labels     W_Identifier_List
+   --  Labels     Name_Id_Set
    --  Var_Type   W_Type_Id
    --  Triggers   W_Triggers_Id
    --  Pred       W_Pred_Id
@@ -218,7 +217,7 @@ package Why.Sinfo is
    --  -------------
    --  -- W_Label --
    --  -------------
-   --  Labels      W_Identifier_List
+   --  Labels      Name_id_Set
    --  Def         W_Expr_Id
    --  Typ         W_Type_Id
    --
@@ -392,7 +391,6 @@ package Why.Sinfo is
    --  -------------------
    --  Name       W_Identifier_Id
    --  Def        W_Prog_Id
-   --  Labels     W_Identifier_List
    --  Context    W_Prog_Id
    --  Typ        W_Type_Id
    --
@@ -474,7 +472,7 @@ package Why.Sinfo is
    --  Pre         W_Pred_Id
    --  Post        W_Pred_Id
    --  Return_Type W_Type_Id
-   --  Labels      W_Identifier_List
+   --  Labels      Name_Id_Set
    --
    --  A function declaration with possible effects, pre and post.
    --
@@ -483,7 +481,7 @@ package Why.Sinfo is
    --  --------------------
    --  Spec       W_Function_Decl_Id
    --  Def        W_Expr_Id
-   --  Labels     W_Identifier_List
+   --  Labels     Name_Id_Set
    --
    --  A function definition. In addition to everything in a declaration, a
    --  defining expression is also given.
@@ -491,12 +489,12 @@ package Why.Sinfo is
    --  -------------
    --  -- W_Axiom --
    --  -------------
-   --  Name       W_Identifier_Id
+   --  Name       Name_Id
    --  Def        W_Pred_Id
    --  ------------
    --  -- W_Goal --
    --  ------------
-   --  Name       W_Identifier_Id
+   --  Name       Name_Id
    --  Def        W_Pred_Id
    --
    --  axioms and goals have a name and a predicate.
@@ -507,7 +505,7 @@ package Why.Sinfo is
    --  -----------------
    --  Args       W_Identifier_List
    --  Name       W_Identifier_Id
-   --  Labels     W_Identifier_List
+   --  Labels     Name_Id_Set
    --  Definition W_Type_Definition_Id
    --
    --  A type declaration. W_Type_Definition_Id can be one of
@@ -518,7 +516,7 @@ package Why.Sinfo is
    --  ------------------------------
    --  Name       W_Identifier_Id
    --  Ref_Type   W_Type_Id
-   --  Labels     W_Identifier_List
+   --  Labels     Name_Id_Set
    --
    --  Declaration of a global mutable variable. Note that global constants are
    --  simply declared as functions without arguments.
