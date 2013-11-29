@@ -940,11 +940,20 @@ package body Why.Inter is
          if N1 = N2 then
             return True;
          end if;
-         if Get_Context (N1) = Get_Context (N2) then
-            return Get_Symbol (N1) = Get_Symbol (N2);
-         else
-            return False;
-         end if;
+         declare
+            M1 : constant W_Module_Id := Get_Module (N1);
+            M2 : constant W_Module_Id := Get_Module (N2);
+         begin
+            if M1 = M2 or else
+              (M1 /= Why_Empty
+               and then M2 /= Why_Empty
+               and then Get_Name (M1) = Get_Name (M2))
+            then
+               return Get_Symbol (N1) = Get_Symbol (N2);
+            else
+               return False;
+            end if;
+         end;
       end;
    end Eq_Base;
 

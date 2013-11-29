@@ -130,6 +130,9 @@ package body Why.Gen.Names is
                          A     : Attribute_Id;
                          Count : Positive;
                          Typ   : W_Type_Id) return W_Identifier_Id is
+      N : constant Name_Id :=
+        (if Get_Module (Base) = Why_Empty then No_Name
+         else Get_Name (Get_Module (Base)));
    begin
       return
         Attr_Append
@@ -137,7 +140,7 @@ package body Why.Gen.Names is
            A,
            Count,
            Typ,
-           Get_Context (+Base),
+           N,
            Get_Ada_Node (+Base));
    end Attr_Append;
 
@@ -428,10 +431,12 @@ package body Why.Gen.Names is
       Typ      : W_Type_Id := Why_Empty)
      return W_Identifier_Id is
    begin
-      return New_Identifier (Ada_Node => Ada_Node,
-                             Domain   => Domain,
-                             Symbol   => NID (Name),
-                             Typ      => Typ);
+      return
+        New_Identifier
+          (Ada_Node => Ada_Node,
+           Domain   => Domain,
+           Symbol   => NID (Name),
+           Typ      => Typ);
    end New_Identifier;
 
    function New_Identifier
@@ -442,11 +447,15 @@ package body Why.Gen.Names is
       Typ      : W_Type_Id := Why_Empty)
      return W_Identifier_Id is
    begin
-      return New_Identifier (Ada_Node => Ada_Node,
-                             Domain   => Domain,
-                             Symbol   => NID (Name),
-                             Context  => NID (Capitalize_First (Context)),
-                             Typ      => Typ);
+      return
+        New_Identifier (Ada_Node => Ada_Node,
+                        Domain   => Domain,
+                        Symbol   => NID (Name),
+                        Module   =>
+                          New_Module
+                            (File   => No_Name,
+                             Name   => NID (Capitalize_First (Context))),
+                        Typ      => Typ);
    end New_Identifier;
 
    function New_Identifier
@@ -457,25 +466,14 @@ package body Why.Gen.Names is
       Typ      : W_Type_Id := Why_Empty)
      return W_Identifier_Id is
    begin
-      return New_Identifier (Ada_Node => Ada_Node,
-                             Domain   => Domain,
-                             Symbol   => NID (Name),
-                             Context  => Context,
-                             Typ      => Typ);
-   end New_Identifier;
-
-   function New_Identifier
-     (Ada_Node : Node_Id := Empty;
-      Domain   : EW_Domain;
-      Symbol   : Name_Id;
-      Typ      : W_Type_Id := Why_Empty)
-     return W_Identifier_Id is
-   begin
-      return New_Identifier (Ada_Node => Ada_Node,
-                             Domain   => Domain,
-                             Symbol   => Symbol,
-                             Context  => No_Name,
-                             Typ      => Typ);
+      return
+        New_Identifier
+          (Ada_Node => Ada_Node,
+           Domain   => Domain,
+           Symbol   => NID (Name),
+           Module   =>
+             New_Module (File => No_Name, Name => Context),
+           Typ      => Typ);
    end New_Identifier;
 
    ---------
@@ -770,7 +768,9 @@ package body Why.Gen.Names is
       Suffix : constant String := "_";
       N_Id   : constant Name_Id := Get_Symbol (Name);
       Img    : constant String := Get_Name_String (N_Id);
-      Context : constant Name_Id := Get_Context (Name);
+      Context : constant Name_Id :=
+        (if Get_Module (Name) = Why_Empty then No_Name
+         else Get_Name (Get_Module (Name)));
    begin
       return New_Identifier
         (Get_Ada_Node (+Name), EW_Prog, Img & Suffix, Context);

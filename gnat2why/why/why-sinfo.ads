@@ -237,7 +237,7 @@ package Why.Sinfo is
    --  -- W_Identifier --
    --  ------------------
    --  Symbol      Name_Id
-   --  Context     Name_Id
+   --  Module      W_Module_Id
    --  Typ         W_Type
    --
    --  This node is used for all places where a name is used in Why. There are

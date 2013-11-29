@@ -120,13 +120,6 @@ package Why.Gen.Names is
    function New_Identifier
      (Ada_Node : Node_Id := Empty;
       Domain   : EW_Domain;
-      Symbol   : Name_Id;
-      Typ      : W_Type_Id := Why.Types.Why_Empty)
-      return W_Identifier_Id;
-
-   function New_Identifier
-     (Ada_Node : Node_Id := Empty;
-      Domain   : EW_Domain;
       Name     : String;
       Context  : Name_Id;
       Typ      : W_Type_Id := Why.Types.Why_Empty) return W_Identifier_Id;
