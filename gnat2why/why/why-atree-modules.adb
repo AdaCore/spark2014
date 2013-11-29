@@ -26,7 +26,31 @@
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Gen.Names;      use Why.Gen.Names;
 
+with Gnat2Why.Nodes;     use Gnat2Why.Nodes;
+
 package body Why.Atree.Modules is
+
+   Entity_Modules : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   --------------
+   -- E_Module --
+   --------------
+
+   function E_Module (E : Entity_Id) return W_Module_Id is
+      use Ada_To_Why;
+      C : constant Cursor := Entity_Modules.Find (E);
+   begin
+      if Has_Element (C) then
+         return W_Module_Id (Element (C));
+      else
+         declare
+            M : constant W_Module_Id :=
+              New_Module (File => No_Name, Name => NID (Full_Name (E)));
+         begin
+            Entity_Modules.Insert (E, Why_Node_Id (M));
+            return M;
+         end;
+      end if;
+   end E_Module;
 
    ----------------
    -- Initialize --

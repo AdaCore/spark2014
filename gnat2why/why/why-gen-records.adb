@@ -28,7 +28,6 @@ with Ada.Containers.Hashed_Maps;
 with Atree;               use Atree;
 with Einfo;               use Einfo;
 with Elists;              use Elists;
-with Namet;               use Namet;
 with Nlists;              use Nlists;
 with Sem_Util;            use Sem_Util;
 with Sinfo;               use Sinfo;
@@ -41,6 +40,7 @@ with Gnat2Why.Nodes;      use Gnat2Why.Nodes;
 
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Builders;  use Why.Atree.Builders;
+with Why.Atree.Modules;   use Why.Atree.Modules;
 with Why.Conversions;     use Why.Conversions;
 with Why.Gen.Binders;     use Why.Gen.Binders;
 with Why.Gen.Decl;        use Why.Gen.Decl;
@@ -655,8 +655,7 @@ package body Why.Gen.Records is
             return New_Identifier
               (Domain   => EW_Pred,
                Ada_Node => Root,
-               Module  =>
-                 New_Module (File => No_Name, Name => NID (Full_Name (Root))),
+               Module  => E_Module (Root),
                Name     => Name);
          end if;
       end Discriminant_Check_Pred_Name;

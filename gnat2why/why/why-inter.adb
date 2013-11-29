@@ -534,6 +534,10 @@ package body Why.Inter is
       end if;
    end Add_Use_For_Entity;
 
+   ---------------------
+   -- Add_With_Clause --
+   ---------------------
+
    procedure Add_With_Clause (T        : W_Theory_Declaration_Id;
                               Module   : W_Module_Id;
                               Use_Kind : EW_Clone_Type;
@@ -1214,9 +1218,7 @@ package body Why.Inter is
                             New_Identifier
                               (Ada_Node => E,
                                Name     => "__split",
-                               Module   =>
-                                 New_Module (File => No_Name,
-                                             Name => NID (Full_Name (E)))));
+                               Module   => E_Module (E)));
       end if;
    end New_Kind_Base_Type;
 
@@ -1313,8 +1315,7 @@ package body Why.Inter is
                  New_Identifier
                    (Ada_Node => Ada_N,
                     Name     => Field,
-                    Module  => New_Module (File => No_Name,
-                                            Name => NID (Full_Name (Ada_N))),
+                    Module  => E_Module (Ada_N),
                     Typ      => Typ);
             end if;
          end;
@@ -1329,8 +1330,7 @@ package body Why.Inter is
            New_Identifier
              (Ada_Node => E,
               Name     => Suffix,
-              Module   => New_Module (File => No_Name,
-                                      Name => NID (Full_Name (E))),
+              Module   => E_Module (E),
               Typ      => Typ);
       end if;
    end To_Why_Id;

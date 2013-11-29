@@ -72,4 +72,8 @@ package Why.Atree.Modules is
    procedure Initialize;
    --  Call this procedure before using any of the entities in this package.
 
+   function E_Module (E : Entity_Id) return W_Module_Id;
+   --  this function returns the module where File = No_Name and
+   --  Name = Full_Name (E). Memoization may be used.
+
 end Why.Atree.Modules;

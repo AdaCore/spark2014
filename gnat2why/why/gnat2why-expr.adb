@@ -60,6 +60,7 @@ with Why.Unchecked_Ids;      use Why.Unchecked_Ids;
 with Why.Atree.Builders;     use Why.Atree.Builders;
 with Why.Atree.Accessors;    use Why.Atree.Accessors;
 with Why.Atree.Mutators;     use Why.Atree.Mutators;
+with Why.Atree.Modules;      use Why.Atree.Modules;
 with Why.Conversions;        use Why.Conversions;
 with Why.Gen.Arrays;         use Why.Gen.Arrays;
 with Why.Gen.Binders;        use Why.Gen.Binders;
@@ -3686,10 +3687,7 @@ package body Gnat2Why.Expr is
                            Name     =>
                            New_Identifier
                              (Ada_Node => Standard_String,
-                              Module   =>
-                                 New_Module
-                                (File => No_Name,
-                                 Name => NID (Full_Name (Standard_String))),
+                              Module   => E_Module (Standard_String),
                               Name     => "to_string"),
                            Args     => (1 => T),
                            Typ      => EW_Abstract (Standard_String));
@@ -3713,10 +3711,7 @@ package body Gnat2Why.Expr is
                     Name     =>
                       New_Identifier
                         (Ada_Node => Standard_String,
-                         Module   =>
-                           New_Module
-                             (File => No_Name,
-                              Name => NID (Full_Name (Standard_String))),
+                         Module   => E_Module (Standard_String),
                          Name     => "from_string"),
                     Args     => (1 => Arg));
                if Domain = EW_Prog then
