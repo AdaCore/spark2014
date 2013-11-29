@@ -117,30 +117,34 @@ assert statement checking that the actual parameters are correct.
 
 .. code-block:: ada
 
-   -- From the Ada RM for To_Mapping: "To_Mapping produces a
-   -- Character_Mapping such that each element of From maps to the
-   -- corresponding element of To, and each other character maps to
-   -- itself. If From'Length /= To'Length, or if some character is
-   -- repeated in From, then Translation_Error is propagated".
+   --  From the Ada RM for To_Mapping: "To_Mapping produces a
+   --  Character_Mapping such that each element of From maps to the
+   --  corresponding element of To, and each other character maps to
+   --  itself. If From'Length /= To'Length, or if some character is
+   --  repeated in From, then Translation_Error is propagated".
 
-   -- Each call should be preceded with a pragma Assert, checking the actual
-   -- parameters, of the form:
+   --  Each call should be preceded with a pragma Assert, checking the
+   --  actual parameters, of the form:
    pragma Assert (Actual_From'Length = Actual_To'Length and then
-                    (for all I in Actual_From'Range => (for all J in Actual_From'Range =>
-                        if I /= J then Actual_From (I) /= Actual_From (J))));
-   CM := To_Mapping (From => Actual_From, To => Actual_To);
+                    (for all I in Actual_From'Range =>
+                       (for all J in Actual_From'Range =>
+                          (if I /= J then Actual_From (I) /= Actual_From (J)))));
+   CM := To_Mapping (From => Actual_From,
+                     To   => Actual_To);
 
-   -- Alternatively To_Mapping could be wrapped in a user defined subprogram with a
-   -- suitable precondition and used to call To_Mapping indirectly.  For example:
+   --  Alternatively To_Mapping could be wrapped in a user defined
+   --  subprogram with a suitable precondition and used to call
+   --  To_Mapping indirectly.  For example:
    function My_To_Mapping (From, To : in Character_Sequence)
-      return Character_Mapping with
-      Pre => (From'Length = To'Length and then
-                       (for all I in From'Range => (for all J in From'Range =>
-                           if I /= J then From (I) /= From (J))));
-    is
-    begin
-      return (Ada.Strings.Maps.To_Mapping (From, To);
-    end My_To_Mapping;
+                          return Character_Mapping
+     with Pre => (From'Length = To'Length and then
+                    (for all I in From'Range =>
+                       (for all J in From'Range =>
+                          (if I /= J then From (I) /= From (J)))));
+   is
+   begin
+      return Ada.Strings.Maps.To_Mapping (From, To);
+   end My_To_Mapping;
 
 Fixed-Length String Handling (A.4.3)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -157,7 +161,7 @@ All other subprograms may be called but the subprograms Move, Index,
 Count (with a mapping formal parameter), Find_Token, Replace_Slice,
 Insert, Overwrite, Head (with Justify formal parameter), Tail (with
 Justify formal parameter) may raise an exception if they are called
-with inconsistent actual parameters.  Each call of these subprograms
+with inconsistent actual parameters. Each call of these subprograms
 should be preceded with a pragma Assert to check that the actual
 parameters are consistent.
 
@@ -201,8 +205,8 @@ by a pragma Assert of the form:
 
 .. code-block:: ada
 
-  pragma Assert (Actual_Low  <= Length (Actual_Source) and
-                 Actual_High <= Length (Actual_Source));
+   pragma Assert (Actual_Low  <= Length (Actual_Source) and
+                  Actual_High <= Length (Actual_Source));
 
 String-Handling Sets and Mappings (A.4.6)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -269,7 +273,7 @@ Elementary Functions (A.5.1)
 
 Most of the elementarty functions may raise an exception.  The
 functions have no preconditions to guard against an exception being
-raised.  The functions should be treated as tested code and call of an
+raised. The functions should be treated as tested code and call of an
 elementary function should be immediately preceded by a pragma assert
 in lieu of a precondition.
 
@@ -281,7 +285,7 @@ the assert statement:
   pragma Assert (X > 0  and Base > 1);
 
 Even with such a guard certain elementary functions may raise a
-constraint error.  The onus is on the user to ensure this does not
+constraint error. The onus is on the user to ensure this does not
 happen or is handled in non-|SPARK| text in a manner compatible with
 |SPARK|.
 
@@ -327,10 +331,10 @@ No additions or restrictions.
 The Generic Package Direct_IO (A.8.4)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-An instantiation of Direct_IO will ostensibly be in |SPARK| but in
-use it may give rise to flow-errors as the effect of reads and writes
-is not captured in the subprogram contracts. Calls to its subprograms
-may raise IO_Exceptions based on external events.
+An instantiation of Direct_IO will ostensibly be in |SPARK| but in use
+it may give rise to flow-errors as the effect of reads and writes is
+not captured in the subprogram contracts. Calls to its subprograms may
+raise IO_Exceptions based on external events.
 
 
 Direct Input-Output Operations (A.8.5)
@@ -359,9 +363,9 @@ and the functions which return this type. The use Ada.Text_IO may give
 rise to flow-errors as the effect of reads and writes is not captured
 in the subprogram contracts.  The Ada.Text_IO.Get_Line functions
 should not be called as they have a side effect of reading data from a
-file and updating its file pointers.  The subprograms Set_Input,
+file and updating its file pointers. The subprograms Set_Input,
 Set_Output and Set_Error should not be called as they introduce an
-alias to the file passed as a parameter.  Calls to the subprograms of
+alias to the file passed as a parameter. Calls to the subprograms of
 Ada.Text_IO may raise IO_Exceptions based on external events.
 
 Text File Management (A.10.2)
@@ -395,7 +399,8 @@ Input-Output of Characters and Strings (A.10.7)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The functions Ada.Text_IO.Get_Line should not be called from |SPARK|
-program text as the functions have a side effect of reading from a file.
+program text as the functions have a side effect of reading from a
+file.
 
 Input-Output for Integer Types (A.10.8)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -424,10 +429,10 @@ may raise IO_Exceptions based on external events.
 Input-Output of Unbounded Strings (A.10.12)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Ada.Text_IO.Unbounded_IO is ostensibly in |SPARK| but in
-use it may give rise to flow-errors as the effect of reads and writes
-is not captured in the subprogram contracts. Calls to its subprograms
-may raise IO_Exceptions based on external events.
+Ada.Text_IO.Unbounded_IO is ostensibly in |SPARK| but in use it may
+give rise to flow-errors as the effect of reads and writes is not
+captured in the subprogram contracts. Calls to its subprograms may
+raise IO_Exceptions based on external events.
 
 The functions Ada.Text_IO.Unbounded_IO.Get_Line should not be called
 from |SPARK| program text as the functions have a side effect of
@@ -461,22 +466,22 @@ The Package Command_Line (A.15)
 -------------------------------
 
 The package Command_Line is in |SPARK| except that the function
-Argument may propagate Constraint_Error.  To avoid this exception each
+Argument may propagate Constraint_Error. To avoid this exception each
 call to Argument should be immediately preceded by the assertion:
 
 .. code-block:: ada
 
-  pragma Assert (Number <= Argument_Count);
+   pragma Assert (Number <= Argument_Count);
 
 where Number represents the actual parameter to the function Argument.
 
 The Package Directories (A.16)
 ------------------------------
 
-The package Directories is ostensibly in |SPARK| but in
-use it may give rise to flow-errors as the effect of reads and writes
-is not captured in the subprogram contracts. Calls to its subprograms
-may raise IO_Exceptions based on external events.
+The package Directories is ostensibly in |SPARK| but in use it may
+give rise to flow-errors as the effect of reads and writes is not
+captured in the subprogram contracts. Calls to its subprograms may
+raise IO_Exceptions based on external events.
 
 The Package Environment_Variables (A.17)
 ----------------------------------------
@@ -501,11 +506,11 @@ No additions or restrictions.
 Interface to Other Languages
 ----------------------------
 
-This section describes features for mixed-language programming in |SPARK|, covering facilities
-offered by Ada's Annex B.
+This section describes features for mixed-language programming in
+|SPARK|, covering facilities offered by Ada's Annex B.
 
-.. todo:: How much to say here?  S95 supports a subset of Interfaces, and a very small subset of
-   Interfaces.C but that's about it.
+.. todo:: How much to say here? S95 supports a subset of Interfaces,
+   and a very small subset of Interfaces.C but that's about it.
 
 .. todo:: Note that pragma ``Unchecked_Union`` is not supported in release 1.
 
@@ -517,13 +522,14 @@ tbd.
 Real-Time Systems
 -----------------
 
-This section describes features for real-time programming in |SPARK|, covering facilities
-offered by Ada's Annex D.
+This section describes features for real-time programming in |SPARK|,
+covering facilities offered by Ada's Annex D.
 
-.. todo:: RCC: Need to think about Ada.Real_Time.  It's important for all S95 customers, to get
-   at monotonic clock, even if not using RavenSPARK.  It does depend on support for external
-   variables, though, since Ada.Real_Time.Clock is most definitely Volatile. TN [LB07-024]
-   raised to discuss this.
+.. todo:: RCC: Need to think about Ada.Real_Time. It's important for
+   all S95 customers, to get at monotonic clock, even if not using
+   RavenSPARK. It does depend on support for external variables,
+   though, since Ada.Real_Time.Clock is most definitely Volatile. TN
+   [LB07-024] raised to discuss this.
 
 Distributed Systems
 -------------------
@@ -541,8 +547,10 @@ Numerics
 This section describes features for numerical programming in |SPARK|, covering facilities
 offered by Ada's Annex G.
 
-.. todo:: How much here can be supported?  Most S95 customers want Ada.Numerics.Generic_Elementary_Functions
-   plus its predefined instantiation for Float, Long_Float and so on.  How far should we go?
+.. todo:: How much here can be supported? Most S95 customers want
+   Ada.Numerics.Generic_Elementary_Functions plus its predefined
+   instantiation for Float, Long_Float and so on. How far should we
+   go?
 
 High Integrity Systems
 ----------------------

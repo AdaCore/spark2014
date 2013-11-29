@@ -1,7 +1,7 @@
 with HAL;
 use type HAL.Byte_T;
 
-procedure Main
+procedure Main_Hal
   with SPARK_Mode,
        Global  => (Input  => HAL.FIFO_Status,
                    In_Out => (HAL.Serial_In,
@@ -46,5 +46,4 @@ begin
          HAL.Put_Byte (A_Byte);
          end loop;
    end if;
-
-end Main;
+end Main_Hal;

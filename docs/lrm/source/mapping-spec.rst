@@ -13,12 +13,12 @@ SPARK 2005 Features and |SPARK| Alternatives
 Nearly every SPARK 2005 feature has a |SPARK| equivalent or there is
 an alternative way of providing the same feature in |SPARK|.  The only
 SPARK 2005 (not including RavenSPARK) features that are not needed in
-|SPARK| and do not have an alternative are: 
- 
+|SPARK| and do not have an alternative are:
+
   * the 'Always_Valid attribute;
 
   * the ability to add pre and postconditions to an instantiation of a
-    generic subprogram, e.g., Unchecked_Conversion; and  
+    generic subprogram, e.g., Unchecked_Conversion; and
 
   * a precondition on the body of a subprogram refining the one on the
     specification - this is not usually required in |SPARK|, it is
@@ -39,7 +39,7 @@ SPARK 2005        SPARK 2014 Alternative                   2014 RM              
 ================= ======================================== ================================================ ========
 ~ in post         'Old attribute   - see Ada RM 6.1.1                                                       :ref:`A.2.2 <ms-pre_post_return-label>`
 ~ in body         'Loop_Entry attribute                    :ref:`5.5.3 <loop_entry>`                        :ref:`A.7 <ms-value_of_variable_on_entry_to_a_loop-label>`
-<->               =                                        
+<->               =
 A -> B            (if A then B)     - see Ada RM 4.5.7                                                      :ref:`A.2.2 <ms-pre_post_return-label>`
 %                 not needed                                                                                :ref:`A.7 <ms-value_of_variable_on_entry_to_a_loop-label>`
 always_valid      not supported                                                                             :ref:`A.4.1 <ms-proof_assume_contract-label>`
@@ -49,14 +49,14 @@ assume            pragma Assume                            :ref:`5.9 <pragma_ass
 check             pragma Assert     - see Ada RM 11.4.2                                                     :ref:`A.4.1 <ms-check_contract-label>`
 derives on spec   Depends aspect                           :ref:`6.1.5 <depends-aspects>`                   :ref:`A.2.1 <ms-global_derives-label>`
 derives on body   Refined Depends aspect                   :ref:`7.2.5 <refined-depends-aspect>`            :ref:`A.3.2 <ms-asm_abstract_state_refined_in_private_child-label>`
-for all           quantified_expression - see Ada RM 4.5.8                                                  :ref:`A.2.3 <ms-attributes_of_unconstrained_out_parameter_in_precondition-label>` 
+for all           quantified_expression - see Ada RM 4.5.8                                                  :ref:`A.2.3 <ms-attributes_of_unconstrained_out_parameter_in_precondition-label>`
 for some          quantified_expression - See Ada RM 4.5.8                                                  :ref:`A.4.1 <ms-assert_loop_contract-label>`
 global on spec    Global aspect                            :ref:`6.1.4 <global-aspects>`                    :ref:`A.2.1 <ms-global_derives-label>`
 global on body    Refined_Global aspect                    :ref:`7.2.4 <refined-global-aspect>`             :ref:`A.2.4 <ms-nesting_refinement-label>`
-hide              pragma SPARK_Mode - see User Guide       
+hide              pragma SPARK_Mode - see User Guide
 inherit           not needed                                                                                :ref:`A.3.4 <ms-package_inheritance-label>`
 initializes       Initializes aspect                       :ref:`7.1.5 <initializes_aspect>`                :ref:`A.2.4 <ms-nesting_refinement-label>`
-main_program      not needed                               
+main_program      not needed
 object assertions rule declarations are not needed                                                          :ref:`A.5.3 <ms-proof_types_and_proof_functions-label>`
 own on spec       Abstract_State aspect                    :ref:`7.1.4 <abstract-state-aspect>`             :ref:`A.3.2 <ms-asm-label>`
 own on body       Refined_State aspect                     :ref:`7.2.2 <refined_state_aspect>`              :ref:`A.3.2 <ms-asm-label>`
@@ -1644,7 +1644,7 @@ Specification in SPARK 2005:
 
 Specification in |SPARK|
 
-.. literalinclude:: ../../../testsuite/gnatprove/tests/M930-005__flow_update/update_examples.ads
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/update_examples.ads
    :language: ada
    :linenos:
 

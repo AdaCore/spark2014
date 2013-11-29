@@ -153,14 +153,14 @@ is short hand for
 
 .. code-block:: ada
 
- procedure P (...)
-    with Pre  => General_Precondition
-                   and then Exactly_One_Of(A1,A2...An),
-         Post => General_Postcondition
-                   and then (if A1'Old then B1)
-                   and then (if A2'Old then B2)
-                   and then ...
-                   and then (if An'Old then Bn);
+   procedure P (...)
+     with Pre  => General_Precondition
+                    and then Exactly_One_Of (A1, A2, ..., An),
+          Post => General_Postcondition
+                    and then (if A1'Old then B1)
+                    and then (if A2'Old then B2)
+                    and then ...
+                    and then (if An'Old then Bn);
 
 
 where
@@ -270,28 +270,27 @@ where
 .. code-block:: ada
 
    -- This subprogram is specified using a Contract_Cases aspect.
-   -- The prover will chack that the cases are disjoint and
+   -- The prover will check that the cases are disjoint and
    -- cover the domain of X.
    procedure Incr_Threshold (X : in out Integer; Threshold : in Integer)
-      with Contract_Cases => (X < Threshold  => X = X'Old + 1,
-                              X >= Threshold => X = X'Old);
+     with Contract_Cases => (X < Threshold  => X = X'Old + 1,
+                             X >= Threshold => X = X'Old);
 
    -- This is the equivalent specification not using Contract_Cases.
    -- It is noticeably more complex and the prover is not able to check
    -- for disjoint cases or that he domain of X is covered.
    procedure Incr_Threshold_1 (X : in out Integer; Threshold : in Integer)
-      with Pre  => (X < Threshold and not (X = Threshold))
+     with Pre  => (X < Threshold and not (X = Threshold))
                      or else (not (X < Threshold) and X = Threshold),
-           Post => (if X'Old < Threshold then X = X'Old + 1
-                    elsif X'Old = Threshold then X = X'Old);
+          Post => (if X'Old < Threshold then X = X'Old + 1
+                   elsif X'Old = Threshold then X = X'Old);
 
    -- Contract_Cases can be used in conjunction with  pre and postconditions.
    procedure Incr_Threshold_2 (X : in out Integer; Threshold : in Integer)
-      with Pre  => X in 0 .. Threshold,
-           Post => X >= X'Old,
-           Contract_Cases => (X < Threshold => X = X'Old + 1,
-                              X = Threshold => X = X'Old);
-
+     with Pre  => X in 0 .. Threshold,
+          Post => X >= X'Old,
+          Contract_Cases => (X < Threshold => X = X'Old + 1,
+                             X = Threshold => X = X'Old);
 
 
 .. _global-aspects:
@@ -810,23 +809,23 @@ as it is used purely for static analysis purposes and is not executed.
 .. code-block:: ada
 
    procedure P (X, Y, Z in : Integer; Result : out Boolean)
-      with Depends => (Result => (X, Y, Z));
+     with Depends => (Result => (X, Y, Z));
    -- The exit value of Result depends on the entry values of X, Y and Z
 
    procedure Q (X, Y, Z in : Integer; A, B, C, D, E : out Integer)
-      with Depends => ((A, B) => (X, Y),
-                       C      => (X, Z),
-                       D      => Y,
-                       E      => null);
+     with Depends => ((A, B) => (X, Y),
+                      C      => (X, Z),
+                      D      => Y,
+                      E      => null);
    -- The exit values of A and B depend on the entry values of X and Y.
    -- The exit value of C depends on the entry values of X and Z.
    -- The exit value of D depends on the entry value of Y.
    -- The exit value of E does not depend on any input value.
 
    procedure R (X, Y, Z : in Integer; A, B, C, D : in out Integer)
-      with Depends => ((A, B) =>+ (A, X, Y),
-                       C      =>+ Z,
-                       D      =>+ null);
+     with Depends => ((A, B) =>+ (A, X, Y),
+                      C      =>+ Z,
+                      D      =>+ null);
    -- The "+" sign attached to the arrow indicates self-dependency, that is
    -- the exit value of A depends on the entry value of A as well as the
    -- entry values of X and Y.
@@ -836,18 +835,18 @@ as it is used purely for static analysis purposes and is not executed.
    -- The exit value of D depends only on the entry value of D.
 
    procedure S
-      with Global  => (Input  => (X, Y, Z),
-                       In_Out => (A, B, C, D)),
-           Depends => ((A, B) =>+ (A, X, Y, Z),
-                       C      =>+ Y,
-                       D      =>+ null);
+     with Global  => (Input  => (X, Y, Z),
+                      In_Out => (A, B, C, D)),
+          Depends => ((A, B) =>+ (A, X, Y, Z),
+                      C      =>+ Y,
+                      D      =>+ null);
    -- Here globals are used rather than parameters and global items may appear
    -- in the Depends aspect as well as formal parameters.
 
    function F (X, Y : Integer) return Integer
-      with Global  => G,
-           Depends => (F'Result => (G, X),
-                       null     => Y);
+     with Global  => G,
+          Depends => (F'Result => (G, X),
+                      null     => Y);
    -- Depends aspects are only needed for special cases like here where the
    -- parameter Y has no discernible effect on the result of the function.
 
@@ -903,29 +902,13 @@ it.
 
 .. centered:: **Examples**
 
-.. code-block:: ada
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/param_1_illegal.adb
+   :language: ada
+   :linenos:
 
-    -- The following example is acceptable in Ada
-    -- but will raise a flow anomaly in SPARK stating that
-    -- X may not be initialized because an out parameter indicates
-    -- that the entire String is initialized.
-    procedure Param_1 (X : out String)
-    is
-    begin
-       if X'Length > 0 and X'First = 1 then
-	  X (1) := '?';
-       end if;
-    end Param_1;
-
-    -- In SPARK the parameter mode should be in out meaning that the
-    -- entire array is initialized before the call to the subprogram.
-    procedure Param_1 (X : in out String)
-    is
-    begin
-       if X'Length > 0 and X'First = 1 then
-	  X (1) := '?';
-       end if;
-    end Param_1;
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/param_1_legal.adb
+   :language: ada
+   :linenos:
 
 
 Subprogram Bodies
@@ -1038,97 +1021,9 @@ No extra dynamic semantics are associated with anti-aliasing.
 
 .. centered:: **Examples**
 
-.. code-block:: ada
-
-    procedure Anti_Aliasing is
-       type Rec is record
-	  X : Integer;
-	  Y : Integer;
-       end record;
-
-       type Arr is array (1 .. 10) of Integer;
-
-       type Arr_With_Rec is array (1 .. 10) of Rec;
-
-       Local_1, Local_2 : Integer := 0;
-
-       Rec_1 : Rec := (0, 0);
-
-       Arr_1 : arr := (others => 0);
-
-       Arr_Rec : Arr_With_Rec := (others => (0, 0));
-
-       procedure One_In_One_Out (X : in Integer; Y : in out Integer)
-       is
-       begin
-	  Y := X + Y;
-       end One_In_One_Out;
-
-       procedure Two_In_Out (X, Y : in out Integer)
-       is
-	  Temp : Integer;
-       begin
-	  Temp := Y;
-	  Y := X + Y;
-	  X := Temp;
-       end Two_In_Out;
-
-       procedure With_In_Global (I : in out Integer)
-	 with Global => Local_1
-       is
-       begin
-	 I := I + Local_1;
-       end With_In_Global;
-
-       procedure With_In_Out_Global (I : in Integer)
-	 with Global => (In_Out => Local_1)
-       is
-       begin
-	 Local_1 := I + Local_1;
-       end With_In_Out_Global;
-
-       procedure With_Composite_In_Out_Global (I : in Integer)
-	 with Global => (In_Out => Rec_1)
-       is
-       begin
-	 Rec_1.X := I + Rec_1.X;
-       end With_Composite_In_Out_Global;
-
-    begin
-       -- This is ok because parameters are by copy and there
-       -- is only one out parameter
-       One_In_One_Out (Local_1, Local_1);
-
-       -- This is erroneous both parameters are in out and
-       -- the actual parameters overlap
-       Two_In_Out (Local_1, Local_1);
-
-       -- This is ok the variables do not overlap even though
-       -- they are part of the same record.
-       Two_In_Out (Rec_1.X, Rec_1.Y);
-
-       -- This is ok the variables do not overlap they
-       -- can statically determined to be distinct elements
-       Two_In_Out (Arr_1 (1), Arr_1 (2));
-
-       -- This is erroneous because it cannot be determined statically
-       -- whether the elements overlap
-       Two_In_Out (Arr_1 (Local_1), Arr_1 (Local_2));
-
-       -- This is ok the variables do not overlap they
-       -- can statically determined to be distinct components
-       Two_In_Out (Arr_Rec (Local_1).X , Arr_Rec (Local_2).Y);
-
-       -- This erroneous Global and formal in out parameter overlap.
-       With_In_Global (Local_1);
-
-       -- This erroneous Global In_Out and formal parameter overlap.
-       With_In_Out_Global (Local_1);
-
-       -- This erroneous Global In_Out and formal parameter overlap.
-       With_Composite_In_Out_Global (Rec_1.Y);
-
-    end Anti_Aliasing;
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/anti_aliasing.adb
+   :language: ada
+   :linenos:
 
 
 Return Statements
@@ -1390,21 +1285,21 @@ ghosts-have-no-effect-on-program-behavior rule.]
 .. code-block:: ada
 
    function A_Ghost_Expr_Function (Lo, Hi : Natural) return Natural is
-      (if Lo > Integer'Last - Hi then Lo else ((Lo + Hi) / 2))
-      with Pre        => Lo <= Hi,
-           Post       => A_Ghost_Expr_Function'Result in Lo .. Hi,
-           Convention => Ghost;
+     (if Lo > Integer'Last - Hi then Lo else ((Lo + Hi) / 2))
+     with Pre        => Lo <= Hi,
+          Post       => A_Ghost_Expr_Function'Result in Lo .. Hi,
+          Convention => Ghost;
 
    function A_Ghost_Function (Lo, Hi : Natural) return Natural
-      with Pre        => Lo <= Hi,
-           Post       => A_Ghost_Function'Result in Lo .. Hi,
-           Convention => Ghost;
+     with Pre        => Lo <= Hi,
+          Post       => A_Ghost_Function'Result in Lo .. Hi,
+          Convention => Ghost;
    -- The body of the function is declared elsewhere.
 
    function A_Nonexecutable_Ghost_Function (Lo, Hi : Natural) return Natural
-      with Pre        => Lo <= Hi,
-           Post       => A_Nonexecutable_Ghost_Function'Result in Lo .. Hi,
-           Convention => Ghost,
-           Import;
+     with Pre        => Lo <= Hi,
+          Post       => A_Nonexecutable_Ghost_Function'Result in Lo .. Hi,
+          Convention => Ghost,
+          Import;
    -- The body of the function is not declared elsewhere.
 

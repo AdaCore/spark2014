@@ -207,25 +207,13 @@ the value an expression had upon entry to the subprogram.
 
 The following example illustrates some pragmas of this section
 
-.. code-block:: ada
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/loop_var_loop_invar.adb
+   :language: ada
+   :linenos:
 
-   procedure P is
-      type Total is range 1 .. 100;
-      subtype T is Total range 1 .. 10;
-      I : T := 1;
-      R : Total := 100;
-   begin
-      while I < 10 loop
-         pragma Loop_Invariant (R >= 100 - 10 * I);
-         pragma Loop_Variant (Increases => I,
-                              Decreases => R);
-         R := R - I;
-         I := I + 1;
-      end loop;
-   end P;
-
-Note that in this example, the loop variant is unnecessarily complex, stating
-that ``I`` increases is enough to prove termination of this simple loop.
+Note that in this example, the loop variant is unnecessarily complex,
+stating that ``I`` increases is enough to prove termination of this
+simple loop.
 
 .. _loop_entry:
 
@@ -421,32 +409,10 @@ Attribute Loop_Entry
 
 .. centered:: **Examples**
 
-.. code-block:: ada
-
-   type Array_Of_Int is array (1 .. 10) of Integer;
-
-   procedure Reverse_Order (A : in out Array_Of_Int)
-     with Post => (for all J in A'Range => A (J) = A'Old (A'Last - J + 1) and
-                                           A (A'Last - J + 1) = A'Old (J))
-   is
-     Temp : Integer;
-   begin
-      for Index in A'First .. (A'Last + 1) / 2 loop
-         Temp := A (Index);
-         A (Index) := A (A'Last - Index + 1);
-         A (A'Last - Index + 1) := Temp;
-            pragma Loop_Invariant
-               (-- Elements that have been visited so far are swapped
-                (for all J in A'First .. Index =>
-                    A (J) = A'Loop_Entry (A'Last - J + 1) and
-                    A (A'Last - J + 1) = A'Loop_Entry (J))
-                and then
-                -- Elements not yet visited are unchanged
-                (for all J in Index + 1 .. A'Last - Index =>
-                    A (J) = A'Loop_Entry (J)));
-
-      end loop;
-   end Reverse_Order;
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/reverse_ord.adb
+   :language: ada
+   :lines: 4-27
+   :linenos:
 
 Block Statements
 ----------------
@@ -543,87 +509,19 @@ and is used to state axioms.
 
 .. centered:: **Examples**
 
-.. code-block:: ada
 
-   function F (S : String) return Integer
-       with Post => F'Result in 0 .. 999
-   is
-       subtype Control_Chars is Character range '0' .. '3';
-       Control_Char : Control_Chars ;
-       Valid : Boolean;
-    begin
-       if S'Length >= 6 then
-	  Valid :=  S (S'First .. S'First + 3) = "ABCD";
-	  if Valid and then S (S'First + 4) in Control_Chars then
-	     Valid := True;
-	     Control_Char := S (S'First + 4);
-	  else
-	     Valid := False;
-	  end if;
-       else
-	  Valid := False;
-       end if;
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/f.adb
+   :language: ada
+   :linenos:
 
-       pragma Assert_And_Cut (if Valid then Control_Char in Control_Chars);
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/up_timer.ads
+   :language: ada
+   :linenos:
 
-       -- A conditional flow error will be reported when it used in the following
-       -- case as statement flow analysis techniques cannot determine that
-       -- Control_Char is initialized when Valid is True.
-       -- The Assert_And_Cut verifies that Control_Char is initialized if Valid
-       -- is True and the conditional flow which raised the error cannot occur.
-       -- The complicated decision process and the details of the string S are
-       -- not required to prove the postcondition and so the Assert_And_Cut
-       -- cuts out all of the unnecessary complex information gathered from this
-       -- process from the proof tool and the eye of the human viewer.
-
-       if Valid then
-	  case Control_Char is
-	     when '0' => return 0;
-	     when '1' => return 7;
-	     when '2' => return 42;
-	     when '3' => return 99;
-	  end case;
-       else
-	  return 999;
-       end if;
-    end F;
-
-    -- The up-time timer is updated once a second
-    package The_Timer is
-
-       type Time_Register is limited private;
-
-       type Times is range 0 .. 2**63 - 1;
-
-       procedure Inc (Up_Time : in out Time_Register);
-
-       function Get (Up_Time : Time_Register) return Times;
-
-    private
-
-       type Time_Register is record
-	  Time : Times := 0;
-       end record;
-
-    end The_Timer;
-
-    package body Up_Timer  is
-
-       procedure Inc (Up_Time : in out Time_Register) is
-       is
-       begin
-          -- The up timer is incremented every second.
-          -- The system procedures require that the system is rebooted
-          -- at least once every three years - as the Timer_Reg is a 64 bit
-          -- integer it cannot reach Times'Last before a system reboot.
-          pragma Assume ((if Times'Last = 2**63 - 1 then Up_Time.Time < Times'Last));
-
-          -- Without the previous assume statement it would not be possible
-          -- to prove that the following addition would not overflow.
-          Up_Time.Time := Up_Time.Time + 1;
-       end Inc;
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/up_timer.adb
+   :language: ada
+   :linenos:
 
 
-       function Get (Up_Time : Time_Register) return Times is (Up_Time.Time);
 
-    end Up_Timer;
+
