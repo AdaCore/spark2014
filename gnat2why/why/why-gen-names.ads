@@ -142,10 +142,6 @@ package Why.Gen.Names is
 
    type Why_Name_Enum is
      (
-      WNE_Array_1,
-      WNE_Array_2,
-      WNE_Array_3,
-      WNE_Array_4,
       WNE_Array_Access,
       WNE_Array_Elts,
       WNE_Array_First_Field,
@@ -293,16 +289,10 @@ package Why.Gen.Names is
                     N        : String;
                     Ada_Node : Node_Id := Empty) return W_Identifier_Id;
 
-   function Prefix (S        : Why_Name_Enum;
-                    W        : Why_Name_Enum;
-                    Ada_Node : Node_Id := Empty) return W_Identifier_Id;
-
    function Convert_To (Kind : EW_Basic_Type) return Why_Name_Enum
    with Pre => (Kind in EW_Int | EW_Real);
 
    function Convert_From (Kind : EW_Basic_Type) return Why_Name_Enum
    with Pre => (Kind in EW_Int | EW_Real);
-
-   function Ada_Array_Name (Dimension : Pos) return Why_Name_Enum;
 
 end Why.Gen.Names;

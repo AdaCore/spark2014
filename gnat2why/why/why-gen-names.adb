@@ -42,22 +42,6 @@ package body Why.Gen.Names is
      (others => Why_Empty);
    --  This array is used to precompute all fixed idents.
 
-   --------------------
-   -- Ada_Array_Name --
-   --------------------
-
-   function Ada_Array_Name (Dimension : Pos) return Why_Name_Enum
-   is
-   begin
-      case Dimension is
-         when 1 => return WNE_Array_1;
-         when 2 => return WNE_Array_2;
-         when 3 => return WNE_Array_3;
-         when 4 => return WNE_Array_4;
-         when others => raise Program_Error;
-      end case;
-   end Ada_Array_Name;
-
    ----------------------
    -- Append_Num --
    ----------------------
@@ -579,10 +563,6 @@ package body Why.Gen.Names is
          when WNE_Float_Round_Tmp => return "round_real_tmp";
          when WNE_Float_Round_Single => return "Floating.round_single";
          when WNE_Float_Round_Double => return "Floating.round_double";
-         when WNE_Array_1      => return "Array__1";
-         when WNE_Array_2      => return "Array__2";
-         when WNE_Array_3      => return "Array__3";
-         when WNE_Array_4      => return "Array__4";
          when WNE_First_Static => return "first_static";
          when WNE_Last_Static  => return "last_static";
          when WNE_Array_Access => return "get";
@@ -680,18 +660,6 @@ package body Why.Gen.Names is
       return New_Identifier
         (Module => M,
          Name     => N,
-         Ada_Node => Ada_Node);
-   end Prefix;
-
-   function Prefix (S        : Why_Name_Enum;
-                    W        : Why_Name_Enum;
-                    Ada_Node : Node_Id := Empty) return W_Identifier_Id
-   is
-   begin
-      return New_Identifier
-        (Module =>
-           New_Module (File => No_Name, Name => NID (To_String (S))),
-         Name    => To_String (W),
          Ada_Node => Ada_Node);
    end Prefix;
 
