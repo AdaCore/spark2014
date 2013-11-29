@@ -1173,7 +1173,7 @@ package body Why.Gen.Expr is
       else
          return
            New_Call (Domain => Domain,
-                     Name   => To_Ident (WNE_Bitwise_And),
+                     Name   => Integer_Bitwise_And,
                      Args   => (1 => +Left, 2 => +Right),
                      Typ    => EW_Int_Type);
       end if;
@@ -1521,7 +1521,7 @@ package body Why.Gen.Expr is
       else
          return
            New_Call (Domain => Domain,
-                     Name   => To_Ident (WNE_Bitwise_Or),
+                     Name   => Integer_Bitwise_Or,
                      Args   => (1 => +Left, 2 => +Right),
                      Typ    => EW_Int_Type);
       end if;
@@ -1767,9 +1767,8 @@ package body Why.Gen.Expr is
       else
          declare
             Id : constant W_Identifier_Id :=
-              To_Ident
-                (if Base = EW_Bool_Type then WNE_Bool_Xor
-                 else WNE_Bitwise_Xor);
+              (if Base = EW_Bool_Type then To_Ident (WNE_Bool_Xor)
+                 else Integer_Bitwise_Xor);
          begin
             return
               New_Call

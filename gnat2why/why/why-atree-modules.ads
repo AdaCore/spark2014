@@ -69,6 +69,19 @@ package Why.Atree.Modules is
    Constr_Arrays           : W_Module_Array (1 .. 4);
    Unconstr_Arrays         : W_Module_Array (1 .. 4);
 
+   --  Identifiers of the Integer module
+
+   Integer_Bitwise_And     : W_Identifier_Id;
+   Integer_Bitwise_Or      : W_Identifier_Id;
+   Integer_Bitwise_Xor     : W_Identifier_Id;
+   Integer_Div             : W_Identifier_Id;
+   Integer_Rem             : W_Identifier_Id;
+   Integer_Mod             : W_Identifier_Id;
+   Integer_Power           : W_Identifier_Id;
+   Integer_Math_Mod        : W_Identifier_Id;
+   Integer_Max             : W_Identifier_Id;
+   Integer_Min             : W_Identifier_Id;
+
    procedure Initialize;
    --  Call this procedure before using any of the entities in this package.
 

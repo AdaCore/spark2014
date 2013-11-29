@@ -427,7 +427,7 @@ package body Gnat2Why.Expr is
    begin
       if Is_Modular_Integer_Type (E) then
          return
-            New_Call (Name => To_Ident (WNE_Integer_Math_Mod),
+            New_Call (Name => Integer_Math_Mod,
                       Domain => Domain,
                       Args =>
                        (1 => T,
@@ -3657,7 +3657,7 @@ package body Gnat2Why.Expr is
             T :=
               New_Call (Ada_Node => Expr,
                         Domain   => Domain,
-                        Name     => To_Ident (WNE_Integer_Mod),
+                        Name     => Integer_Mod,
                         Args     =>
                           (1 => Transform_Expr (First (Expressions (Expr)),
                                                 EW_Int_Type,
@@ -3802,14 +3802,12 @@ package body Gnat2Why.Expr is
                                  Base,
                                  Domain,
                                  Params);
-               Attr_Name : constant Why_Name_Enum :=
-                 (if Attr_Id = Attribute_Min then
-                    (if Is_Discrete_Type (Ada_Ty) then WNE_Integer_Min
-                     else WNE_Real_Min)
-                  else
-                     (if Is_Discrete_Type (Ada_Ty) then WNE_Integer_Max
-                      else WNE_Real_Max));
-               Func : constant W_Identifier_Id := To_Ident (Attr_Name);
+               Func : constant W_Identifier_Id :=
+                 (if Is_Discrete_Type (Ada_Ty) then
+                      (if Attr_Id = Attribute_Min then Integer_Min
+                       else Integer_Max)
+                  else To_Ident (if Attr_Id = Attribute_Min then WNE_Real_Min
+                        else WNE_Real_Max));
             begin
                T := New_Call (Ada_Node => Expr,
                               Domain   => Domain,
@@ -4836,10 +4834,8 @@ package body Gnat2Why.Expr is
                Base  : constant W_Type_Id := Base_Why_Type (Left, Right);
                Name  : W_Identifier_Id;
             begin
-               Name := (if Nkind (Expr) = N_Op_Rem then
-                          To_Ident (WNE_Integer_Rem)
-                        else
-                          To_Ident (WNE_Integer_Mod));
+               Name := (if Nkind (Expr) = N_Op_Rem then Integer_Rem
+                        else Integer_Mod);
                Name := (if Domain = EW_Prog then
                           To_Program_Space (Name)
                         else

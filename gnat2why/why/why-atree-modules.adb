@@ -153,6 +153,47 @@ package body Why.Atree.Modules is
          4 => New_Module (File => Ada_Model_File,
                           Name => NID ("Unconstr_Array_4")));
 
+      --  identifiers of Integer module
+      Integer_Bitwise_And :=
+        New_Identifier (Module => Integer_Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("bitwise_and"));
+      Integer_Bitwise_Or :=
+        New_Identifier (Module => Integer_Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("bitwise_or"));
+      Integer_Bitwise_Xor :=
+        New_Identifier (Module => Integer_Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("bitwise_xor"));
+      Integer_Div :=
+        New_Identifier (Module => Integer_Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("div"));
+      Integer_Rem :=
+        New_Identifier (Module => Integer_Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("rem"));
+      Integer_Mod :=
+        New_Identifier (Module => Integer_Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("mod"));
+      Integer_Power :=
+        New_Identifier (Module => Integer_Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("power"));
+      Integer_Math_Mod :=
+        New_Identifier (Module => Integer_Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("math_mod"));
+      Integer_Max :=
+        New_Identifier (Module => Integer_Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("int_max"));
+      Integer_Min :=
+        New_Identifier (Module => Integer_Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("int_min"));
    end Initialize;
 
    -------------------------

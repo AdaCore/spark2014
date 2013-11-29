@@ -367,7 +367,7 @@ package body Why.Gen.Names is
          when EW_Real =>
             return To_Ident (WNE_Real_Div);
          when EW_Int =>
-            return To_Ident (WNE_Integer_Div);
+            return Integer_Div;
       end case;
    end New_Division;
 
@@ -381,7 +381,7 @@ package body Why.Gen.Names is
          when EW_Real =>
             return To_Ident (WNE_Real_Exp);
          when EW_Int =>
-            return To_Ident (WNE_Integer_Exp);
+            return Integer_Power;
       end case;
    end New_Exp;
 
@@ -538,16 +538,6 @@ package body Why.Gen.Names is
          when WNE_Bool_Or      => return "orb";
          when WNE_Bool_Xor     => return "xorb";
          when WNE_Bool_Not     => return "notb";
-         when WNE_Bitwise_And  => return "Integer.bitwise_and";
-         when WNE_Bitwise_Or   => return "Integer.bitwise_or";
-         when WNE_Bitwise_Xor  => return "Integer.bitwise_xor";
-         when WNE_Integer_Div  => return "Integer.div";
-         when WNE_Integer_Exp  => return "Integer.power";
-         when WNE_Integer_Rem  => return "Integer.rem";
-         when WNE_Integer_Mod  => return "Integer.mod";
-         when WNE_Integer_Math_Mod => return "Integer.math_mod";
-         when WNE_Integer_Max  => return "Integer.int_max";
-         when WNE_Integer_Min  => return "Integer.int_min";
          when WNE_Real_Div     => return "Floating.div_real";
          when WNE_Integer_Abs  => return "Integer.abs";
          when WNE_Real_Abs     => return "Floating.AbsReal.abs";
