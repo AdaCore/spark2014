@@ -927,7 +927,7 @@ In order to efficiently use \gnatprove in an industrial context, we
 think the following points should be improved: the ability to prove
 generic units once (instead of proving each instance as done
 currently); the need to use a sound model of floating-points instead
-of real numbers\footnote{This has been implemented since the case study.}; 
+of real numbers\footnote{This has been implemented since the case study.};
 automatic generation of some loop invariants.
 
 \section{Biometric Access to a Secure Enclave}
@@ -1213,14 +1213,14 @@ specification and implementation, even when formal methods are
 involved. As stated in Bowen's ninth commandment of formal methods,
 \emph{Thou shalt test, test, and test again}. Executable contracts are
 a key language feature (see Section~\ref{subsec:ExecutableContracts})
-of \newspark as they allow the execution of contracts while testing. They
-were found to be beneficial both to increase confidence in annotations
-(Section~\ref{sec:openETCS}) and to improve overall code quality
-(Section~\ref{sec:space}). What is more, the constraint implied by
-executability of contracts does not seem to be too important as
-additional checks introduced by the verification of absence of
-run-time errors in contracts on a project that had not be annotated
-with this constraint in mind could be discharged
+of \newspark as they allow the execution of contracts while
+testing. They were found to be beneficial both to increase confidence
+in annotations (Section~\ref{sec:openETCS}) and to improve overall
+code quality (Section~\ref{sec:space}). What is more, the constraint
+implied by executability of contracts does not seem to be too
+important as additional checks introduced by the verification of
+absence of run-time errors in contracts on a project that had not been
+annotated with this constraint in mind could be discharged
 (Section~\ref{sec:tokeneer}).
 
 Another objective of \newspark was to improve the amount of proofs
