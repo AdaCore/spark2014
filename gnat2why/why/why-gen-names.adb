@@ -73,7 +73,7 @@ package body Why.Gen.Names is
 
    function Append_Num (S        : String;
                         Count    : Positive;
-                        Context  : Name_Id := No_Name;
+                        Module   : W_Module_Id := Why_Empty;
                         Typ      : W_Type_Id := Why.Types.Why_Empty;
                         Ada_Node : Node_Id := Empty)
                         return W_Identifier_Id is
@@ -81,8 +81,7 @@ package body Why.Gen.Names is
       return New_Identifier
         (Domain => EW_Term,
          Name     => Append_Num (S, Count),
-         Module  =>
-           New_Module (File => No_Name, Name => Context),
+         Module  =>  Module,
          Ada_Node => Ada_Node,
          Typ      => Typ);
    end Append_Num;
@@ -116,14 +115,14 @@ package body Why.Gen.Names is
                          A        : Attribute_Id;
                          Count    : Positive;
                          Typ      : W_Type_Id;
-                         Context  : Name_Id := No_Name;
+                         Module   : W_Module_Id := Why.Types.Why_Empty;
                          Ada_Node : Node_Id := Empty) return W_Identifier_Id is
    begin
       return
         Append_Num (S        => Base & "_" & To_String (Attr_To_Why_Name (A)),
                     Count    => Count,
                     Typ      => Typ,
-                    Context  => Context,
+                    Module  => Module,
                     Ada_Node => Ada_Node);
    end Attr_Append;
 
@@ -131,9 +130,6 @@ package body Why.Gen.Names is
                          A     : Attribute_Id;
                          Count : Positive;
                          Typ   : W_Type_Id) return W_Identifier_Id is
-      N : constant Name_Id :=
-        (if Get_Module (Base) = Why_Empty then No_Name
-         else Get_Name (Get_Module (Base)));
    begin
       return
         Attr_Append
@@ -141,7 +137,7 @@ package body Why.Gen.Names is
            A,
            Count,
            Typ,
-           N,
+           Get_Module (Base),
            Get_Ada_Node (+Base));
    end Attr_Append;
 

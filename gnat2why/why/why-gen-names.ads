@@ -255,7 +255,7 @@ package Why.Gen.Names is
 
    function Append_Num (S        : String;
                         Count    : Positive;
-                        Context  : Name_Id := No_Name;
+                        Module   : W_Module_Id := Why.Types.Why_Empty;
                         Typ      : W_Type_Id := Why.Types.Why_Empty;
                         Ada_Node : Node_Id := Empty)
                         return W_Identifier_Id;
@@ -276,7 +276,7 @@ package Why.Gen.Names is
                          A        : Attribute_Id;
                          Count    : Positive;
                          Typ      : W_Type_Id;
-                         Context  : Name_Id := No_Name;
+                         Module   : W_Module_Id := Why.Types.Why_Empty;
                          Ada_Node : Node_Id := Empty) return W_Identifier_Id;
 
    function Attr_Append (Base  : W_Identifier_Id;
