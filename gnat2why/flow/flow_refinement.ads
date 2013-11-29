@@ -125,8 +125,7 @@ package Flow_Refinement is
                           S    : Flow_Scope)
                           return Node_Sets.Set
      with Pre  => (for all V of Vars => Nkind (V) in N_Entity),
-          Post => (for all V of Down_Project'Result => Nkind (V) in N_Entity)
-                  and (Down_Project'Result.Length >= Vars.Length);
+          Post => (for all V of Down_Project'Result => Nkind (V) in N_Entity);
    --  Given a set of variables and a scope, recursively expand all
    --  abstract state where its refinement is visible in S. This function
    --  only ever expands the set, it never contracts it.

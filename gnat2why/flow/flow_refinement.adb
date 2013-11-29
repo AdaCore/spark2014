@@ -365,7 +365,9 @@ package body Flow_Refinement is
                if State_Refinement_Is_Visible (E, S) then
                   Ptr := First_Elmt (Refinement_Constituents (E));
                   while Present (Ptr) loop
-                     Tmp.Union (Expand (Node (Ptr)));
+                     if Nkind (Node (Ptr)) /= N_Null then
+                        Tmp.Union (Expand (Node (Ptr)));
+                     end if;
                      Ptr := Next_Elmt (Ptr);
                   end loop;
                else
@@ -382,7 +384,7 @@ package body Flow_Refinement is
                   Ptr := Next_Elmt (Ptr);
                end loop;
 
-               if Tmp.Length = 0 or Hs then
+               if Hs then
                   --  We seem to have an abstract state which has no
                   --  refinement, or where we have unexpanded state. Lets
                   --  include the abstract state itself.
