@@ -1214,7 +1214,9 @@ package body Why.Inter is
                             New_Identifier
                               (Ada_Node => E,
                                Name     => "__split",
-                               Context  => Full_Name (E)));
+                               Module   =>
+                                 New_Module (File => No_Name,
+                                             Name => NID (Full_Name (E)))));
       end if;
    end New_Kind_Base_Type;
 
@@ -1307,10 +1309,13 @@ package body Why.Inter is
                                       Name     => Field,
                                       Typ      => Typ);
             else
-               return New_Identifier (Ada_Node => Ada_N,
-                                      Name     => Field,
-                                      Context  => Full_Name (Ada_N),
-                                      Typ      => Typ);
+               return
+                 New_Identifier
+                   (Ada_Node => Ada_N,
+                    Name     => Field,
+                    Module  => New_Module (File => No_Name,
+                                            Name => NID (Full_Name (Ada_N))),
+                    Typ      => Typ);
             end if;
          end;
       elsif Local then
@@ -1321,10 +1326,12 @@ package body Why.Inter is
                                 Typ      => Typ);
       else
          return
-           New_Identifier (Ada_Node => E,
-                           Name     => Suffix,
-                           Context  => Full_Name (E),
-                           Typ      => Typ);
+           New_Identifier
+             (Ada_Node => E,
+              Name     => Suffix,
+              Module   => New_Module (File => No_Name,
+                                      Name => NID (Full_Name (E))),
+              Typ      => Typ);
       end if;
    end To_Why_Id;
 

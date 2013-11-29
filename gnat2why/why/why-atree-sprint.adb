@@ -106,7 +106,7 @@ package body Why.Atree.Sprint is
          P (O, File);
          P (O, """.");
       end if;
-      P (O, Get_Name (Node));
+      P (O, Capitalize_First (Get_Name_String (Get_Name (Node))));
    end Print_Module_Id;
 
    ---------------------

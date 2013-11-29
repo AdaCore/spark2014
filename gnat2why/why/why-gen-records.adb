@@ -28,6 +28,7 @@ with Ada.Containers.Hashed_Maps;
 with Atree;               use Atree;
 with Einfo;               use Einfo;
 with Elists;              use Elists;
+with Namet;               use Namet;
 with Nlists;              use Nlists;
 with Sem_Util;            use Sem_Util;
 with Sinfo;               use Sinfo;
@@ -651,10 +652,12 @@ package body Why.Gen.Records is
          if Is_Root then
             return New_Identifier (Name => Name);
          else
-            return New_Identifier (Domain   => EW_Pred,
-                                   Ada_Node => Root,
-                                   Context  => Full_Name (Root),
-                                   Name     => Name);
+            return New_Identifier
+              (Domain   => EW_Pred,
+               Ada_Node => Root,
+               Module  =>
+                 New_Module (File => No_Name, Name => NID (Full_Name (Root))),
+               Name     => Name);
          end if;
       end Discriminant_Check_Pred_Name;
 

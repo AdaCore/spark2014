@@ -3686,7 +3686,10 @@ package body Gnat2Why.Expr is
                            Name     =>
                            New_Identifier
                              (Ada_Node => Standard_String,
-                              Context  => Full_Name (Standard_String),
+                              Module   =>
+                                 New_Module
+                                (File => No_Name,
+                                 Name => NID (Full_Name (Standard_String))),
                               Name     => "to_string"),
                            Args     => (1 => T),
                            Typ      => EW_Abstract (Standard_String));
@@ -3710,7 +3713,10 @@ package body Gnat2Why.Expr is
                     Name     =>
                       New_Identifier
                         (Ada_Node => Standard_String,
-                         Context  => Full_Name (Standard_String),
+                         Module   =>
+                           New_Module
+                             (File => No_Name,
+                              Name => NID (Full_Name (Standard_String))),
                          Name     => "from_string"),
                     Args     => (1 => Arg));
                if Domain = EW_Prog then

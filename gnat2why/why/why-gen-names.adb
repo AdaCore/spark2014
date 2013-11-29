@@ -414,11 +414,11 @@ package body Why.Gen.Names is
 
    function New_Identifier (Ada_Node : Node_Id := Empty;
                             Name    : String;
-                            Context : String;
+                            Module  : W_Module_Id;
                             Typ      : W_Type_Id := Why_Empty)
                             return W_Identifier_Id is
    begin
-      return New_Identifier (Ada_Node, EW_Term, Name, Context, Typ);
+      return New_Identifier (Ada_Node, EW_Term, Name, Module, Typ);
    end New_Identifier;
 
    function New_Identifier
@@ -434,25 +434,6 @@ package body Why.Gen.Names is
            Domain   => Domain,
            Symbol   => NID (Name),
            Typ      => Typ);
-   end New_Identifier;
-
-   function New_Identifier
-     (Ada_Node : Node_Id := Empty;
-      Domain   : EW_Domain;
-      Name     : String;
-      Context  : String;
-      Typ      : W_Type_Id := Why_Empty)
-     return W_Identifier_Id is
-   begin
-      return
-        New_Identifier (Ada_Node => Ada_Node,
-                        Domain   => Domain,
-                        Symbol   => NID (Name),
-                        Module   =>
-                          New_Module
-                            (File   => No_Name,
-                             Name   => NID (Capitalize_First (Context))),
-                        Typ      => Typ);
    end New_Identifier;
 
    function New_Identifier
@@ -464,12 +445,11 @@ package body Why.Gen.Names is
      return W_Identifier_Id is
    begin
       return
-        New_Identifier
-          (Ada_Node => Ada_Node,
-           Domain   => Domain,
-           Symbol   => NID (Name),
-           Module   => Module,
-           Typ      => Typ);
+        New_Identifier (Ada_Node => Ada_Node,
+                        Domain   => Domain,
+                        Symbol   => NID (Name),
+                        Module   => Module,
+                        Typ      => Typ);
    end New_Identifier;
 
    ---------
@@ -685,7 +665,8 @@ package body Why.Gen.Names is
    is
    begin
       return New_Identifier
-        (Context => S,
+        (Module =>
+           New_Module (File => No_Name, Name => NID (S)),
          Name    => To_String (W),
          Ada_Node => Ada_Node,
          Typ      => Typ);
@@ -697,7 +678,8 @@ package body Why.Gen.Names is
    is
    begin
       return New_Identifier
-        (Context => P,
+        (Module =>
+           New_Module (File => No_Name, Name => NID (P)),
          Name     => N,
          Ada_Node => Ada_Node);
    end Prefix;
@@ -708,7 +690,8 @@ package body Why.Gen.Names is
    is
    begin
       return New_Identifier
-        (Context => To_String (S),
+        (Module =>
+           New_Module (File => No_Name, Name => NID (To_String (S))),
          Name    => To_String (W),
          Ada_Node => Ada_Node);
    end Prefix;

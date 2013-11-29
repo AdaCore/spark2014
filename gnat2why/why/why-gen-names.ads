@@ -98,7 +98,7 @@ package Why.Gen.Names is
 
    function New_Identifier (Ada_Node : Node_Id := Empty;
                             Name     : String;
-                            Context  : String;
+                            Module   : W_Module_Id;
                             Typ      : W_Type_Id := Why.Types.Why_Empty)
        return W_Identifier_Id;
 
@@ -113,16 +113,9 @@ package Why.Gen.Names is
      (Ada_Node : Node_Id := Empty;
       Domain   : EW_Domain;
       Name     : String;
-      Context  : String;
-      Typ      : W_Type_Id := Why.Types.Why_Empty)
-     return W_Identifier_Id;
-
-   function New_Identifier
-     (Ada_Node : Node_Id := Empty;
-      Domain   : EW_Domain;
-      Name     : String;
       Module   : W_Module_Id;
-      Typ      : W_Type_Id := Why.Types.Why_Empty) return W_Identifier_Id;
+      Typ      : W_Type_Id := Why.Types.Why_Empty)
+      return W_Identifier_Id;
 
    function New_Temp_Identifier
      (Ada_Node : Node_Id := Empty;

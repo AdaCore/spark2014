@@ -1803,11 +1803,14 @@ package body Why.Gen.Expr is
       if Is_Standard_Boolean_Type (E) then
          return New_Literal (Domain => Domain, Value => EW_True);
       else
-         return +New_Identifier (Ada_Node => E,
-                                 Domain  => Domain,
-                                 Context => Full_Name (E),
-                                 Name    => To_String (WNE_Dummy),
-                                 Typ     => EW_Abstract (E));
+         return
+           +New_Identifier (Ada_Node => E,
+                            Domain  => Domain,
+                            Module  =>
+                              New_Module (File => No_Name,
+                                          Name => NID (Full_Name (E))),
+                            Name    => To_String (WNE_Dummy),
+                            Typ     => EW_Abstract (E));
       end if;
    end Why_Default_Value;
 

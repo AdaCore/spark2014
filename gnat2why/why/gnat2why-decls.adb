@@ -939,9 +939,12 @@ package body Gnat2Why.Decls is
                         To       => W_Any_Node_Id
                           (New_Identifier
                                (Name => Short_Name (Formal),
-                                Context =>
-                                  Capitalize_First (Instance_Name) & "__"
-                                & Short_Name (Formal))));
+                                Module =>
+                                  New_Module
+                                    (File => No_Name,
+                                     Name =>
+                                       NID (Capitalize_First (Instance_Name) &
+                                           "__" & Short_Name (Formal))))));
                      Subst_Cur := Subst_Cur + 1;
 
                   else
