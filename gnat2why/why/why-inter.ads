@@ -25,6 +25,7 @@
 
 with SPARK_Frame_Conditions;             use SPARK_Frame_Conditions;
 
+with Namet;                              use Namet;
 with Types;                              use Types;
 pragma Warnings (Off);
 --  ??? Why.Sinfo" is directly visible as "Sinfo", as it has "Why" as a
@@ -104,7 +105,7 @@ package Why.Inter is
                               Th_Type  : EW_Theory_Type := EW_Module);
 
    procedure Add_With_Clause (T        : W_Theory_Declaration_Id;
-                              File     : String;
+                              File     : Name_Id;
                               T_Name   : String;
                               Use_Kind : EW_Clone_Type;
                               Th_Type  : EW_Theory_Type := EW_Module);

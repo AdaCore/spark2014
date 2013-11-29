@@ -54,6 +54,7 @@ with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 with SPARK_Util;             use SPARK_Util;
 
 with Why;                    use Why;
+with Why.Atree.Modules;
 with Why.Atree.Sprint;       use Why.Atree.Sprint;
 with Why.Gen.Names;          use Why.Gen.Names;
 with Why.Inter;              use Why.Inter;
@@ -271,6 +272,7 @@ package body Gnat2Why.Driver is
       --  Start the translation to Why
 
       if Gnat2Why_Args.Prove_Mode then
+         Why.Atree.Modules.Initialize;
          Init_Why_Sections (GNAT_Root);
          Translate_Standard_Package;
          Translate_CUnit;

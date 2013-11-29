@@ -46,6 +46,7 @@ with Flow.Utility;
 with Why;                    use Why;
 with Why.Atree.Accessors;    use Why.Atree.Accessors;
 with Why.Atree.Builders;     use Why.Atree.Builders;
+with Why.Atree.Modules;      use Why.Atree.Modules;
 with Why.Atree.Mutators;     use Why.Atree.Mutators;
 with Why.Conversions;        use Why.Conversions;
 with Why.Gen.Binders;        use Why.Gen.Binders;
@@ -1162,7 +1163,7 @@ package body Gnat2Why.Subprograms is
       --  Compute_Contract_Cases_Entry_Checks may make use of the
       --  infix operators.
 
-      Add_With_Clause (File.Cur_Theory, "int", "Int", EW_Import, EW_Theory);
+      Add_With_Clause (File.Cur_Theory, Int_File, "Int", EW_Import, EW_Theory);
 
       declare
          Label_Set : Name_Id_Set := Name_Id_Sets.To_Set (Cur_Subp_Sloc);

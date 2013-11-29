@@ -43,6 +43,7 @@ with Why.Ids;             use Why.Ids;
 with Why.Sinfo;           use Why.Sinfo;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Builders;  use Why.Atree.Builders;
+with Why.Atree.Modules;   use Why.Atree.Modules;
 with Why.Atree.Mutators;  use Why.Atree.Mutators;
 with Why.Gen.Decl;        use Why.Gen.Decl;
 with Why.Gen.Names;       use Why.Gen.Names;
@@ -455,7 +456,11 @@ package body Gnat2Why.Decls is
            "Module declaring the external object """ & E.all &
            ","" created in " & GNAT.Source_Info.Enclosing_Entity);
 
-      Add_With_Clause (File.Cur_Theory, "ref", "Ref", EW_Import, EW_Module);
+      Add_With_Clause (File.Cur_Theory,
+                       Ref_File,
+                       "Ref",
+                       EW_Import,
+                       EW_Module);
 
       Emit (File.Cur_Theory,
             New_Type_Decl (Name   => To_Ident (WNE_Type),

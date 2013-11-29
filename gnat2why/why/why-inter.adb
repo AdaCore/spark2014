@@ -25,7 +25,6 @@
 
 with Atree;               use Atree;
 with Einfo;               use Einfo;
-with Namet;               use Namet;
 with Sem_Util;            use Sem_Util;
 with SPARK_Xrefs;         use SPARK_Xrefs;
 with Sinfo;               use Sinfo;
@@ -41,6 +40,7 @@ with Flow.Utility;
 
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Builders;  use Why.Atree.Builders;
+with Why.Atree.Modules;   use Why.Atree.Modules;
 with Why.Atree.Mutators;  use Why.Atree.Mutators;
 with Why.Atree.Tables;    use Why.Atree.Tables;
 with Why.Atree.Traversal; use Why.Atree.Traversal;
@@ -550,7 +550,7 @@ package body Why.Inter is
    end Add_With_Clause;
 
    procedure Add_With_Clause (T        : W_Theory_Declaration_Id;
-                              File     : String;
+                              File     : Name_Id;
                               T_Name   : String;
                               Use_Kind : EW_Clone_Type;
                               Th_Type  : EW_Theory_Type := EW_Module) is
@@ -559,8 +559,8 @@ package body Why.Inter is
         (T,
          New_Include_Declaration
            (Module   =>
-                New_Module (File     => NID (File),
-                            Name   => NID (T_Name)),
+                New_Module (File => File,
+                            Name => NID (T_Name)),
             Use_Kind => Use_Kind,
             Kind     => Th_Type));
    end Add_With_Clause;
@@ -582,7 +582,8 @@ package body Why.Inter is
       T_Name   : String;
       Use_Kind : EW_Clone_Type) is
    begin
-      Add_With_Clause (P.Cur_Theory, "_gnatprove_standard", T_Name, Use_Kind);
+      Add_With_Clause
+        (P.Cur_Theory, Gnatprove_Standard_File, T_Name, Use_Kind);
    end Add_Standard_With_Clause;
 
    -------------------
@@ -719,13 +720,13 @@ package body Why.Inter is
 
                if Index = SI_Integer then
                   Add_With_Clause (P.Cur_Theory,
-                                   "int",
+                                   Int_File,
                                    "Int",
                                    EW_Import,
                                    EW_Theory);
                elsif Index = SI_Float then
                   Add_With_Clause (P.Cur_Theory,
-                                   "real",
+                                   Real_File,
                                    "RealInfix",
                                    EW_Import,
                                    EW_Theory);
