@@ -45,14 +45,38 @@ package body Why.Atree.Modules is
 
       --  modules of the Why standard library
 
-      Int_Module :=
-        New_Module
-          (File => Int_File,
-           Name => NID ("Int"));
-      RealInfix :=
-        New_Module
-          (File => Real_File,
-           Name => NID ("RealInfix"));
+      Int_Module := New_Module (File => Int_File, Name => NID ("Int"));
+      RealInfix := New_Module (File => Real_File, Name => NID ("RealInfix"));
+      Ref_Module := New_Module (File => Ref_File, Name => NID ("Ref"));
+
+      --  modules of "_gnatprove_standard.mlw" file
+
+      Main_Module :=
+        New_Module (File => Gnatprove_Standard_File, Name => NID ("Main"));
+      Integer_Module :=
+        New_Module (File => Gnatprove_Standard_File, Name => NID ("Integer"));
+      Floating_Module :=
+        New_Module (File => Gnatprove_Standard_File, Name => NID ("Floating"));
+      Boolean_Module :=
+        New_Module (File => Gnatprove_Standard_File, Name => NID ("Boolean"));
+
+      Array_Modules :=
+        (1 =>
+           New_Module
+             (File => Gnatprove_Standard_File,
+              Name => NID ("Array__1")),
+         2 =>
+           New_Module
+             (File => Gnatprove_Standard_File,
+              Name => NID ("Array__2")),
+         3 =>
+           New_Module
+             (File => Gnatprove_Standard_File,
+              Name => NID ("Array__3")),
+         4 =>
+           New_Module
+             (File => Gnatprove_Standard_File,
+              Name => NID ("Array__4")));
 
       --  modules of "ada__model" file
 

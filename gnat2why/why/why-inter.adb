@@ -25,6 +25,7 @@
 
 with Atree;               use Atree;
 with Einfo;               use Einfo;
+with Namet;               use Namet;
 with Sem_Util;            use Sem_Util;
 with SPARK_Xrefs;         use SPARK_Xrefs;
 with Sinfo;               use Sinfo;
@@ -86,11 +87,6 @@ package body Why.Inter is
 
    function Get_EW_Term_Type (N : Node_Id) return EW_Type;
 
-   procedure Add_Standard_With_Clause
-     (P        : Why_Section;
-      T_Name   : String;
-      Use_Kind : EW_Clone_Type);
-
    function EW_Abstract_Shared
      (N    : Node_Id;
       Kind : EW_Type) return W_Type_Id
@@ -124,7 +120,7 @@ package body Why.Inter is
       procedure Set_SI (E : Entity_Id);
       --  Depending on the entity, set a required import
 
-      function To_String (E : Standard_Imports_Enum) return String;
+      function To_Module (E : Standard_Imports_Enum) return W_Module_Id;
 
    end Standard_Imports;
 
@@ -260,18 +256,18 @@ package body Why.Inter is
       -- To_String --
       ---------------
 
-      function To_String (E : Standard_Imports_Enum) return String is
+      function To_Module (E : Standard_Imports_Enum) return W_Module_Id is
       begin
          case E is
-            when SI_Integer => return "Integer";
-            when SI_Float   => return "Floating";
-            when SI_Boolean => return "Boolean";
-            when SI_Array1  => return "Array__1";
-            when SI_Array2  => return "Array__2";
-            when SI_Array3  => return "Array__3";
-            when SI_Array4  => return "Array__4";
+            when SI_Integer => return Integer_Module;
+            when SI_Float   => return Floating_Module;
+            when SI_Boolean => return Boolean_Module;
+            when SI_Array1  => return Array_Modules (1);
+            when SI_Array2  => return Array_Modules (2);
+            when SI_Array3  => return Array_Modules (3);
+            when SI_Array4  => return Array_Modules (4);
          end case;
-      end To_String;
+      end To_Module;
 
    end Standard_Imports;
 
@@ -445,7 +441,7 @@ package body Why.Inter is
                S : constant String := Capitalize_First (Var.all);
             begin
                Add_With_Clause (T,
-                                S,
+                                New_Module (File => No_Name, Name => NID (S)),
                                 EW_Clone_Default);
             end;
          end if;
@@ -519,72 +515,45 @@ package body Why.Inter is
          return;
       end if;
 
-      Add_With_Clause (P, Theory_Name, Import);
+      Add_With_Clause (P,
+                       New_Module (File => No_Name,
+                                   Name => NID (Theory_Name)),
+                       Import);
 
       if With_Completion then
          if Nkind (N) in N_Entity
            and then not Entity_In_External_Axioms (N)
          then
-            Add_With_Clause (P, Theory_Name & To_String (WNE_Axiom), Import);
+            Add_With_Clause
+              (P,
+               New_Module
+                 (File => No_Name,
+                  Name => NID (Theory_Name & To_String (WNE_Axiom))),
+               Import);
          end if;
       end if;
    end Add_Use_For_Entity;
 
-   ---------------------
-   -- Add_With_Clause --
-   ---------------------
-
    procedure Add_With_Clause (T        : W_Theory_Declaration_Id;
-                              T_Name   : String;
+                              Module   : W_Module_Id;
                               Use_Kind : EW_Clone_Type;
                               Th_Type  : EW_Theory_Type := EW_Module) is
    begin
       Theory_Declaration_Append_To_Includes
         (T,
          New_Include_Declaration
-           (Module =>
-                New_Module (File => No_Name,
-                            Name => NID (T_Name)),
-            Use_Kind => Use_Kind,
-            Kind     => Th_Type));
-   end Add_With_Clause;
-
-   procedure Add_With_Clause (T        : W_Theory_Declaration_Id;
-                              File     : Name_Id;
-                              T_Name   : String;
-                              Use_Kind : EW_Clone_Type;
-                              Th_Type  : EW_Theory_Type := EW_Module) is
-   begin
-      Theory_Declaration_Append_To_Includes
-        (T,
-         New_Include_Declaration
-           (Module   =>
-                New_Module (File => File,
-                            Name => NID (T_Name)),
+           (Module   => Module,
             Use_Kind => Use_Kind,
             Kind     => Th_Type));
    end Add_With_Clause;
 
    procedure Add_With_Clause (P        : Why_Section;
-                              T_Name   : String;
+                              Module   : W_Module_Id;
                               Use_Kind : EW_Clone_Type;
                               Th_Type  : EW_Theory_Type := EW_Module) is
    begin
-      Add_With_Clause (P.Cur_Theory, T_Name, Use_Kind, Th_Type);
+      Add_With_Clause (P.Cur_Theory, Module, Use_Kind, Th_Type);
    end Add_With_Clause;
-
-   ------------------------------
-   -- Add_Standard_With_Clause --
-   ------------------------------
-
-   procedure Add_Standard_With_Clause
-     (P        : Why_Section;
-      T_Name   : String;
-      Use_Kind : EW_Clone_Type) is
-   begin
-      Add_With_Clause
-        (P.Cur_Theory, Gnatprove_Standard_File, T_Name, Use_Kind);
-   end Add_Standard_With_Clause;
 
    -------------------
    -- Base_Why_Type --
@@ -709,9 +678,9 @@ package body Why.Inter is
       begin
          for Index in Imports'Range loop
             if Imports (Index) then
-               Add_Standard_With_Clause
+               Add_With_Clause
                  (P,
-                  To_String (Index),
+                  To_Module (Index),
                   EW_Clone_Default);
 
                --  Two special cases for infix symbols; these are the only
@@ -720,14 +689,12 @@ package body Why.Inter is
 
                if Index = SI_Integer then
                   Add_With_Clause (P.Cur_Theory,
-                                   Int_File,
-                                   "Int",
+                                   Int_Module,
                                    EW_Import,
                                    EW_Theory);
                elsif Index = SI_Float then
                   Add_With_Clause (P.Cur_Theory,
-                                   Real_File,
-                                   "RealInfix",
+                                   RealInfix,
                                    EW_Import,
                                    EW_Theory);
                end if;
@@ -775,7 +742,7 @@ package body Why.Inter is
 
    begin
       Standard_Imports.Clear;
-      Add_Standard_With_Clause (P, "Main", EW_Import);
+      Add_With_Clause (P, Main_Module, EW_Import);
 
       case Kind is
          --  case 1: a standalone theory with no imports

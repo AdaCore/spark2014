@@ -25,7 +25,6 @@
 
 with SPARK_Frame_Conditions;             use SPARK_Frame_Conditions;
 
-with Namet;                              use Namet;
 with Types;                              use Types;
 pragma Warnings (Off);
 --  ??? Why.Sinfo" is directly visible as "Sinfo", as it has "Why" as a
@@ -76,11 +75,6 @@ package Why.Inter is
      with Pre => (P.Cur_Theory = Why_Empty);
    --  Open a new theory in the file.
 
-   procedure Add_With_Clause (P        : Why_Section;
-                              T_Name   : String;
-                              Use_Kind : EW_Clone_Type;
-                              Th_Type  : EW_Theory_Type := EW_Module);
-
    procedure Add_Use_For_Entity
      (P               : Why_Section;
       N               : Entity_Id;
@@ -100,16 +94,14 @@ package Why.Inter is
    --  This map is used for string literals and aggregates
 
    procedure Add_With_Clause (T        : W_Theory_Declaration_Id;
-                              T_Name   : String;
+                              Module   : W_Module_Id;
                               Use_Kind : EW_Clone_Type;
                               Th_Type  : EW_Theory_Type := EW_Module);
 
-   procedure Add_With_Clause (T        : W_Theory_Declaration_Id;
-                              File     : Name_Id;
-                              T_Name   : String;
+   procedure Add_With_Clause (P        : Why_Section;
+                              Module   : W_Module_Id;
                               Use_Kind : EW_Clone_Type;
                               Th_Type  : EW_Theory_Type := EW_Module);
-   --  Add a package name to the context of a Why package.
 
    function Name_Of_Node (N : Node_Id) return String;
    --  Return the uncapitalized name which needs to be used to include the

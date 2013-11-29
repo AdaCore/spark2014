@@ -47,6 +47,15 @@ package Why.Atree.Modules is
 
    Int_Module              : W_Module_Id;
    RealInfix               : W_Module_Id;
+   Ref_Module              : W_Module_Id;
+
+   --  Modules of "_gnatprove_standard.mlw"
+
+   Main_Module             : W_Module_Id;
+   Integer_Module          : W_Module_Id;
+   Floating_Module         : W_Module_Id;
+   Boolean_Module          : W_Module_Id;
+   Array_Modules           : W_Module_Array (1 .. 4);
 
    --  Modules of file "ada__model.mlw"
 

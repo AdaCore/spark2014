@@ -456,11 +456,7 @@ package body Gnat2Why.Decls is
            "Module declaring the external object """ & E.all &
            ","" created in " & GNAT.Source_Info.Enclosing_Entity);
 
-      Add_With_Clause (File.Cur_Theory,
-                       Ref_File,
-                       "Ref",
-                       EW_Import,
-                       EW_Module);
+      Add_With_Clause (File.Cur_Theory, Ref_Module, EW_Import, EW_Module);
 
       Emit (File.Cur_Theory,
             New_Type_Decl (Name   => To_Ident (WNE_Type),
