@@ -27,6 +27,7 @@ with Atree;            use Atree;
 with Einfo;            use Einfo;
 with Impunit;          use Impunit;
 with Namet;            use Namet;
+with Sem_Util;         use Sem_Util;
 with Sinfo;            use Sinfo;
 with Snames;           use Snames;
 with Types;            use Types;
@@ -91,6 +92,13 @@ package SPARK_Util is
 
    function Has_Signed_Integer_Type (T : Entity_Id) return Boolean is
      (MUT_Kind (T) in Signed_Integer_Kind);
+
+   function Default_Initialization
+     (Typ : Entity_Id) return Default_Initialization_Kind;
+   --  Determine default initialization kind that applies to a particular
+   --  type. Types defined in axiomatized units (such as formal containers) and
+   --  private types are treated specially, so that they are either considered
+   --  as having full default initialized, or no default initialization.
 
    ---------------
    -- Utilities --

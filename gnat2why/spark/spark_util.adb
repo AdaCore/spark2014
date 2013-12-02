@@ -29,7 +29,6 @@ with Ada.Strings.Unbounded;     use Ada.Strings.Unbounded;
 with Fname;                     use Fname;
 with Lib;                       use Lib;
 with Nlists;                    use Nlists;
-with Sem_Util;                  use Sem_Util;
 with Sinput;                    use Sinput;
 with Stand;                     use Stand;
 with Treepr;                    use Treepr;
@@ -222,6 +221,223 @@ package body SPARK_Util is
 
       return True;
    end Check_Needed_On_Conversion;
+
+   ----------------------------
+   -- Default_Initialization --
+   ----------------------------
+
+   function Default_Initialization
+     (Typ : Entity_Id) return Default_Initialization_Kind
+   is
+      Comp : Entity_Id;
+      Init : Default_Initialization_Kind;
+
+      FDI : Boolean := False;
+      NDI : Boolean := False;
+      --  Two flags used to designate whether a record type has at least one
+      --  fully default initialized component and/or one not fully default
+      --  initialized component.
+
+      procedure Process_Component (Comp : Entity_Id);
+      --  Process component Comp of a record or protected type
+
+      procedure Process_Component (Comp : Entity_Id) is
+      begin
+         --  Do not process internally generated components except for _parent
+         --  which represents the ancestor portion of a derived type.
+
+         if Comes_From_Source (Comp)
+           or else Chars (Comp) = Name_uParent
+         then
+            Init := Default_Initialization (Base_Type (Etype (Comp)));
+
+            --  A component with mixed initialization renders the whole
+            --  record/protected type mixed.
+
+            if Init = Mixed_Initialization then
+               FDI := True;
+               NDI := True;
+
+            --  The component is fully default initialized when its type
+            --  is fully default initialized or when the component has an
+            --  initialization expression. Note that this has precedence
+            --  given that the component type may lack initialization.
+
+            elsif Init = Full_Default_Initialization
+              or else Present (Expression (Parent (Comp)))
+            then
+               FDI := True;
+
+            --  Components with no possible initialization are ignored
+
+            elsif Init = No_Possible_Initialization then
+               null;
+
+            --  The component has no full default initialization
+
+            else
+               NDI := True;
+            end if;
+         end if;
+      end Process_Component;
+
+      Result : Default_Initialization_Kind;
+
+   --  Start of Default_Initialization
+
+   begin
+      --  Access types are always fully default initialized
+
+      if Is_Access_Type (Typ) then
+         Result := Full_Default_Initialization;
+
+      --  An array type subject to aspect/pragma Default_Component_Value is
+      --  fully default initialized. Otherwise its initialization status is
+      --  that of its component type.
+
+      elsif Is_Array_Type (Typ) then
+         if Present (Default_Aspect_Component_Value (Base_Type (Typ))) then
+            Result := Full_Default_Initialization;
+         else
+            Result := Default_Initialization (Component_Type (Typ));
+         end if;
+
+      --  The initialization status of a private type depends on its full view
+
+      elsif Is_Private_Type (Typ) and then Present (Full_View (Typ)) then
+         Result := Default_Initialization (Full_View (Typ));
+
+      --  Record types offer several initialization options depending on their
+      --  components (if any).
+
+      elsif Is_Record_Type (Typ) then
+         Comp := First_Component (Typ);
+
+         --  Inspect all components
+
+         if Present (Comp) then
+            while Present (Comp) loop
+               Process_Component (Comp);
+               Next_Component (Comp);
+            end loop;
+
+            --  Detect a mixed case of initialization
+
+            if FDI and NDI then
+               Result := Mixed_Initialization;
+
+            elsif FDI then
+               Result := Full_Default_Initialization;
+
+            elsif NDI then
+               Result := No_Default_Initialization;
+
+            --  The type either has no components or they are all internally
+            --  generated.
+
+            else
+               Result := No_Possible_Initialization;
+            end if;
+
+         --  The protected type is null, there is nothing to initialize
+
+         else
+            Result := No_Possible_Initialization;
+         end if;
+
+      --  Protected types offer several initialization options depending on
+      --  their components (if any).
+
+      elsif Is_Protected_Type (Typ) then
+         Comp := First_Entity (Typ);
+
+         --  Inspect all components
+
+         if Present (Comp) then
+            while Present (Comp) loop
+               if Ekind (Comp) = E_Component then
+                  Process_Component (Comp);
+               end if;
+               Next_Component (Comp);
+            end loop;
+
+            --  Detect a mixed case of initialization
+
+            if FDI and NDI then
+               Result := Mixed_Initialization;
+
+            elsif FDI then
+               Result := Full_Default_Initialization;
+
+            elsif NDI then
+               Result := No_Default_Initialization;
+
+            --  The type either has no components or they are all internally
+            --  generated.
+
+            else
+               Result := No_Possible_Initialization;
+            end if;
+
+         --  The record type is null, there is nothing to initialize
+
+         else
+            Result := No_Possible_Initialization;
+         end if;
+
+      --  A scalar type subject to aspect/pragma Default_Value is fully default
+      --  initialized.
+
+      elsif Is_Scalar_Type (Typ)
+        and then Is_Scalar_Type (Base_Type (Typ))
+        and then Present (Default_Aspect_Value (Base_Type (Typ)))
+      then
+         Result := Full_Default_Initialization;
+
+      --  A scalar type whose base type is private may still be subject to
+      --  aspect/pragma Default_Value, so it depends on the base type.
+
+      elsif Is_Scalar_Type (Typ)
+        and then Is_Private_Type (Base_Type (Typ))
+      then
+         Result := Default_Initialization (Base_Type (Typ));
+
+      --  Task types are always fully default initialized
+
+      elsif Is_Task_Type (Typ) then
+         Result := Full_Default_Initialization;
+
+      --  The type has no default initialization
+
+      else
+         Result := No_Default_Initialization;
+      end if;
+
+      --  In specific cases, we'd rather consider the type as having no
+      --  default initialization (which is allowed in SPARK) rather than
+      --  mixed initialization (which is not allowed).
+
+      if Result = Mixed_Initialization then
+
+         --  If the type is one for which an external axiomatization
+         --  is provided, it is fine if the implementation uses mixed
+         --  initialization. This is the case for formal containers in
+         --  particular.
+
+         if Type_Based_On_External_Axioms (Typ) then
+            Result := No_Default_Initialization;
+
+         --  If the type is private, it is fine if the implementation uses
+         --  mixed initialization. An error will be issued when analying the
+         --  implementation if it is in a SPARK part of the code.
+
+         elsif Is_Private_Type (Typ) then
+            Result := No_Default_Initialization;
+         end if;
+      end if;
+
+      return Result;
+   end Default_Initialization;
 
    --------------------------------------
    -- Expression_Functions_All_The_Way --

@@ -735,6 +735,14 @@ package body SPARK_Definition is
             Mark_Violation ("type predicate", E);
          end if;
 
+         --  Detect if the type has partial default initialization
+
+         if SPARK_Util.Default_Initialization (E) = Mixed_Initialization then
+            Mark_Violation ("type with partial default initialization",
+                            E,
+                            SRM_Reference => "SPARK RM 3.8(1)");
+         end if;
+
          case Ekind (E) is
          when Array_Kind =>
             declare
