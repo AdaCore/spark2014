@@ -28,7 +28,7 @@ private
    subtype R2 is integer range R1'First + 1 .. R1'Last;
    type Stack is record
       Top : R1 := 0;
-      Content : Intarray (R2);
+      Content : Intarray (R2) := (others => 0);
    end record;
 
    function Top (S : Stack) return Integer is (S.Top);

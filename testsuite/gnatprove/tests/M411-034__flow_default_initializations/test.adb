@@ -11,7 +11,7 @@ is
      with Default_Component_Value => 123;
 
    type Rec is record
-      A : Integer;
+      A : Integer := 0;
       B : Integer := 42;
       --  C : Integer := V;
       D : Def_Int;
