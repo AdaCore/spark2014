@@ -1049,13 +1049,14 @@ Instead, formal containers are annotated with an aspect named Iterable that prov
    type List (Capacity : Count_Type) is private
      with Iterable => (First       => First,
                        Has_Element => Has_Element,
-                       Next        => Next);
+                       Next        => Next,
+                       Element     => Element);
 
-Thanks to this mechanism, use a quantified expression to express that all elements of a formal list of integers are prime:
+Thanks to this mechanism, one can use a quantified expression to express that all elements of a formal list of integers are prime:
 
 .. code-block:: ada
 
-   (for all Cu in My_List =>  Is_Prime (Element (My_List, Cu)))
+   (for all Cu in My_List => Is_Prime (Element (My_List, Cu)))
 
 The compiler will generate code that iterates over ``My_List`` using the functions ``First``, ``Has_Element`` and ``Next`` given in the Iterable aspect, so that the above is equivalent to:
 
