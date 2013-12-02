@@ -81,6 +81,20 @@ package Why.Atree.Modules is
    Integer_Math_Mod        : W_Identifier_Id;
    Integer_Max             : W_Identifier_Id;
    Integer_Min             : W_Identifier_Id;
+   Integer_Abs             : W_Identifier_Id;
+
+   Floating_Div_Real       : W_Identifier_Id;
+   Floating_Abs_Real       : W_Identifier_Id;
+   Floating_Ceil           : W_Identifier_Id;
+   Floating_Floor          : W_Identifier_Id;
+   Floating_Power          : W_Identifier_Id;
+   Floating_Real_Of_Int    : W_Identifier_Id;
+   Floating_Round          : W_Identifier_Id;
+   Floating_Truncate       : W_Identifier_Id;
+   Floating_Max            : W_Identifier_Id;
+   Floating_Min            : W_Identifier_Id;
+   Floating_Round_Single   : W_Identifier_Id;
+   Floating_Round_Double   : W_Identifier_Id;
 
    procedure Initialize;
    --  Call this procedure before using any of the entities in this package.

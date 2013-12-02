@@ -194,6 +194,61 @@ package body Why.Atree.Modules is
         New_Identifier (Module => Integer_Module,
                         Domain => EW_Term,
                         Symbol => NID ("int_min"));
+      Integer_Abs :=
+        New_Identifier (Module => Integer_Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("abs"));
+
+      --  identifiers of the "_gnatprove_standard.Floating" module
+
+      Floating_Div_Real :=
+        New_Identifier (Module => Floating_Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("div_real"));
+      Floating_Abs_Real :=
+        New_Identifier (Module => Floating_Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("AbsReal.abs"));
+      Floating_Ceil :=
+        New_Identifier (Module => Floating_Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("ceil"));
+      Floating_Floor :=
+        New_Identifier (Module => Floating_Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("floor"));
+      Floating_Power :=
+        New_Identifier (Module => Floating_Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("power"));
+      Floating_Real_Of_Int :=
+        New_Identifier (Module => Floating_Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("real_of_int"));
+      Floating_Round :=
+        New_Identifier (Module => Floating_Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("round"));
+      Floating_Truncate :=
+        New_Identifier (Module => Floating_Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("truncate"));
+      Floating_Max :=
+        New_Identifier (Module => Floating_Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("real_max"));
+      Floating_Min :=
+        New_Identifier (Module => Floating_Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("real_min"));
+      Floating_Round_Single :=
+        New_Identifier (Module => Floating_Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("round_single"));
+      Floating_Round_Double :=
+        New_Identifier (Module => Floating_Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("round_double"));
    end Initialize;
 
    -------------------------

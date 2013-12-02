@@ -132,12 +132,11 @@ package body Why.Gen.Scalars is
         Is_Double_Precision_Floating_Point_Type (Entity);
       Round_Id : constant W_Identifier_Id :=
         (if Is_Single_Precision_Floating_Point_Type (Entity) then
-           To_Ident (WNE_Float_Round_Single)
+              Floating_Round_Single
          elsif Is_Double_Precision_Floating_Point_Type (Entity) then
-           To_Ident (WNE_Float_Round_Double)
+              Floating_Round_Double
          else
-           --  not used
-           To_Ident (WNE_Float_Round));
+            Floating_Round);
 
       --  If the type Entity has a rounding operation, use it in the clone
       --  substitution to replace the default one.

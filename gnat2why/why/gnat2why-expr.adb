@@ -3771,15 +3771,14 @@ package body Gnat2Why.Expr is
                                         EW_Real_Type,
                                         Domain,
                                         Params);
-               Attr_Name : constant Why_Name_Enum :=
+               Func : constant W_Identifier_Id :=
                              (if Attr_Id = Attribute_Ceiling then
-                                WNE_Real_Ceil
+                                 Floating_Ceil
                               elsif Attr_Id = Attribute_Floor then
-                                WNE_Real_Floor
+                                 Floating_Floor
                               elsif Attr_Id = Attribute_Rounding then
-                                WNE_Real_Round
-                              else WNE_Real_Truncate);
-               Func : constant W_Identifier_Id := To_Ident (Attr_Name);
+                                Floating_Round
+                              else Floating_Truncate);
             begin
                T := New_Call (Ada_Node => Expr,
                               Domain   => Domain,
@@ -3806,8 +3805,8 @@ package body Gnat2Why.Expr is
                  (if Is_Discrete_Type (Ada_Ty) then
                       (if Attr_Id = Attribute_Min then Integer_Min
                        else Integer_Max)
-                  else To_Ident (if Attr_Id = Attribute_Min then WNE_Real_Min
-                        else WNE_Real_Max));
+                  else (if Attr_Id = Attribute_Min then Floating_Min
+                        else Floating_Max));
             begin
                T := New_Call (Ada_Node => Expr,
                               Domain   => Domain,

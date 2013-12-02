@@ -170,14 +170,14 @@ package body Why.Gen.Names is
                   --  Only certain conversions are OK
 
                   if From_Kind = EW_Int and then To_Kind = EW_Real then
-                     return To_Ident (WNE_Real_Of_Int);
+                     return Floating_Real_Of_Int;
 
                   --  Conversions from real to int in Ada round to the nearest
                   --  integer, and away from zero in case of tie, exactly like
                   --  'Rounding attribute.
 
                   elsif From_Kind = EW_Real and then To_Kind = EW_Int then
-                     return To_Ident (WNE_Real_Round);
+                     return Floating_Round;
                   elsif From_Kind = EW_Bool and then To_Kind = EW_Int then
                      return Prefix (Ada_Node => Standard_Boolean,
                                     M        => Boolean_Module,
@@ -316,9 +316,9 @@ package body Why.Gen.Names is
    begin
       case Kind is
          when EW_Real =>
-            return To_Ident (WNE_Real_Abs);
+            return Floating_Abs_Real;
          when EW_Int =>
-            return To_Ident (WNE_Integer_Abs);
+            return Integer_Abs;
       end case;
    end New_Abs;
 
@@ -365,7 +365,7 @@ package body Why.Gen.Names is
    begin
       case Kind is
          when EW_Real =>
-            return To_Ident (WNE_Real_Div);
+            return Floating_Div_Real;
          when EW_Int =>
             return Integer_Div;
       end case;
@@ -379,7 +379,7 @@ package body Why.Gen.Names is
    begin
       case Kind is
          when EW_Real =>
-            return To_Ident (WNE_Real_Exp);
+            return Floating_Power;
          when EW_Int =>
             return Integer_Power;
       end case;
@@ -538,21 +538,8 @@ package body Why.Gen.Names is
          when WNE_Bool_Or      => return "orb";
          when WNE_Bool_Xor     => return "xorb";
          when WNE_Bool_Not     => return "notb";
-         when WNE_Real_Div     => return "Floating.div_real";
-         when WNE_Integer_Abs  => return "Integer.abs";
-         when WNE_Real_Abs     => return "Floating.AbsReal.abs";
-         when WNE_Real_Ceil    => return "Floating.ceil";
-         when WNE_Real_Exp     => return "Floating.power";
-         when WNE_Real_Floor   => return "Floating.floor";
-         when WNE_Real_Of_Int  => return "Floating.real_of_int";
-         when WNE_Real_Round   => return "Floating.round";
-         when WNE_Real_Truncate => return "Floating.truncate";
-         when WNE_Real_Max  => return "Floating.real_max";
-         when WNE_Real_Min  => return "Floating.real_min";
          when WNE_Float_Round   => return "round_real";
          when WNE_Float_Round_Tmp => return "round_real_tmp";
-         when WNE_Float_Round_Single => return "Floating.round_single";
-         when WNE_Float_Round_Double => return "Floating.round_double";
          when WNE_First_Static => return "first_static";
          when WNE_Last_Static  => return "last_static";
          when WNE_Array_Access => return "get";

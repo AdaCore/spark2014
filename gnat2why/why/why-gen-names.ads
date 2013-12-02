@@ -181,20 +181,13 @@ package Why.Gen.Names is
       --  floating-point type is neither single precision nor double precision.
       WNE_Float_Round,
 
-      --  Name of a the temporary floating-point rounding operation, to replace
-      --  when cloning module Floating.
+      --  Name of the temporary floating point rounding operation, to be
+      --  replaced when cloning module Floating
       WNE_Float_Round_Tmp,
-
-      --  Name of the single precision floating-point rounding operation
-      WNE_Float_Round_Single,
-
-      --  Name of the double precision floating-point rounding operation
-      WNE_Float_Round_Double,
 
       WNE_First_Static,
       WNE_Func,
       WNE_Ignore,
-      WNE_Integer_Abs,
       WNE_Keep_On_Simp,
       WNE_Last_Static,
       WNE_Of_Array,
@@ -209,16 +202,6 @@ package Why.Gen.Names is
       WNE_Range_Field,
       WNE_Range_Pred,
       WNE_Range_Type,
-      WNE_Real_Abs,
-      WNE_Real_Ceil,
-      WNE_Real_Div,
-      WNE_Real_Exp,
-      WNE_Real_Floor,
-      WNE_Real_Of_Int,
-      WNE_Real_Round,
-      WNE_Real_Truncate,
-      WNE_Real_Max,
-      WNE_Real_Min,
       WNE_Result_Exc,
       WNE_Sandbox,
       WNE_String,
