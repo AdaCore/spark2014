@@ -946,9 +946,7 @@ reasonable amount of time.
 Specification of formal containers is in |SPARK|. As a consequence,
 there is no procedure that take a procedure as an argument such that
 ``Update_Element`` or ``Query_Element`` in Ada Standard container
-library. The Ada 2012 iteration mechanism that allows
-the use of ``for all`` and ``for some`` on Ada Standard containers is
-not available yet on formal containers.
+library.
 
 Formal containers are adapted to the specification process. First of all,
 cursors no longer have a reference to underlying container. Indeed, in Ada
@@ -1031,6 +1029,50 @@ they come from.
      Post => Length (L1) = 1 + Length (L1'Old)
                and then First_Element (L1) = E
                and then Strict_Equal (Right (L1, First (L1'Old)), L1'Old);
+
+Quantification over Containers
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Ada 2012 language  provides quantified expressions that can be used to express a property over a standard container.
+For example, that all elements of a list of integers are prime, which can be expressed by iterating over cursors as follows:
+
+.. code-block:: ada
+
+   (for all Cu in My_List => Is_Prime (Element (Cu)))
+
+The general mechanism in Ada 2012 that provides this functionality relies on the use of tagged types (for the container type) and various aspects involving access types, so cannot be applied to the SPARK formal containers.
+
+Instead, formal containers are annotated with an aspect named Iterable that provides the same functionality in a simpler way, leading also to much simpler object code. For example, here is the definition of the type ``List`` for doubly linked lists:
+
+.. code-block:: ada
+
+   type List (Capacity : Count_Type) is private
+     with Iterable => (First       => First,
+                       Has_Element => Has_Element,
+                       Next        => Next);
+
+Thanks to this mechanism, use a quantified expression to express that all elements of a formal list of integers are prime:
+
+.. code-block:: ada
+
+   (for all Cu in My_List =>  Is_Prime (Element (My_List, Cu)))
+
+The compiler will generate code that iterates over ``My_List`` using the functions ``First``, ``Has_Element`` and ``Next`` given in the Iterable aspect, so that the above is equivalent to:
+
+.. code-block:: ada
+   :linenos:
+
+   declare
+     Cu     : Cursor_Type := First (My_List);
+     Result : Boolean := True;
+   begin
+     while Result and then Has_Element (My_List, Cu) loop
+       Result := Is_Prime (Element (My_List, Cu));
+       Cu     := Next (My_List, Cu);
+     end loop;
+   end;
+
+where ``Result`` is the value of the quantified expression.
 
 Mixing |SPARK| Code and Ada Code
 ================================
