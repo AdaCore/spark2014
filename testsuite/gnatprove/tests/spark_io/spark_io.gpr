@@ -1,0 +1,9 @@
+project SPARK_IO is
+
+   for Source_Dirs use ("./**");
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-g", "-O2", "-gnaty");
+   end Compiler;
+
+end SPARK_IO;
