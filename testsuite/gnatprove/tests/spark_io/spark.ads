@@ -31,7 +31,7 @@ package SPARK is
    --  For each operation on a file a file status is recorded in the File_Type.
    --
    --  The identifiers of the File_Status enumeration correspond to the
-   --  Exception idetifiers of IO_Exceptions that may be propagated by the Ada
+   --  Exception identifiers of IO_Exceptions that may be propagated by the Ada
    --  file handling subprograms.
    --
    --  Instead of raising an exception the SPARK file handling subprograms

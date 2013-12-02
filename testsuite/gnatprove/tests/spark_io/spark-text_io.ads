@@ -71,12 +71,11 @@ is
       end case;
    end record;
 
-
    --  Standard_Input, Standard_Output and Standard_Error are variables because
    --  many of the file operations now have an in out parameter for the file.
-   --  The variables cannot be directly altered, copied or compared as they are
-   --  of a limited type and
-   --  so that a client of the package cannot misuse them.
+   --  The variables cannot be directly altered, copied or compared as they
+   --  are of a limited type and so that a client of the package cannot misuse
+   --  them.
 
    Standard_Input,
    Standard_Output,
@@ -86,7 +85,7 @@ is
    --  the function Status declared below.
    function Status (File : File_Type) return File_Status;
 
-   --  There are restrictions on what can be done with the standrd files,
+   --  There are restrictions on what can be done with the standard files,
    --  Standard_Input, Standard_Output and Standard_Error.  For instance
    --  they cannot be opened or closed or reset (this not allowed in Ada).
    function Is_Standard_Input (File : File_Type) return Boolean
@@ -107,18 +106,18 @@ is
           or else Is_Standard_Error (File))
      with Convention => Ghost;
 
-   function  Is_Open (File : in File_Type) return Boolean;
+   function Is_Open (File : in File_Type) return Boolean;
 
-   function  Mode    (File : in File_Type) return File_Mode
+   function Mode (File : in File_Type) return File_Mode
      with Pre => Is_Open (File);
 
    --  The function Name behaves differently in SPARK.Text_IO to Ada.Text_IO.
    --  In SPARK.Text_IO instead of raising an exception when the file is
    --  temporary, name returns a  null string ("").
-   function  Name    (File : in File_Type) return String
+   function Name (File : in File_Type) return String
      with Pre => Is_Open (File);
 
-   function  Form    (File : in File_Type) return String
+   function Form (File : in File_Type) return String
      with Pre => Is_Open (File);
 
    function Is_Readable (File : File_Type) return Boolean is
@@ -129,7 +128,7 @@ is
           (Mode (File) = Out_File or else Mode (File) = Append_File));
 
    --  Cannot be used with Standard Input, Output or Error as these are already
-   --  open.  The precondition guards against this.
+   --  open. The precondition guards against this.
    procedure Create (The_File : in out File_Type;
                      The_Mode : in  File_Mode := Out_File;
                      The_Name : in  String    := "";
@@ -149,10 +148,10 @@ is
 
    --  Cannot be used with Standard Input, Output or Error as these are already
    --  open.  The precondition guards against this.
-   procedure Open   (The_File : in out File_Type;
-                     The_Mode : in  File_Mode;
-                     The_Name : in  String;
-                     The_Form : in  String := "")
+   procedure Open (The_File : in out File_Type;
+                   The_Mode : in  File_Mode;
+                   The_Name : in  String;
+                   The_Form : in  String := "")
      with
        Pre  => not Is_Open (The_File),
        Post => (if Status (The_File) = Success then
@@ -166,7 +165,7 @@ is
                  else
                     not Is_Open (The_File));
 
-   procedure Close  (File : in out File_Type)
+   procedure Close (File : in out File_Type)
      with
        Pre  => Is_Open (File) and not Is_Standard_File (File),
        Post => (if Status (File) = Success then not Is_Open (File));
@@ -176,7 +175,7 @@ is
        Pre  => Is_Open (File) and not Is_Standard_File (File),
        Post => (if Status (File) = Success then not Is_Open (File));
 
-   procedure Reset  (File : in out File_Type; The_Mode : in File_Mode)
+   procedure Reset (File : in out File_Type; The_Mode : in File_Mode)
      with
        Pre  => Is_Open (File) and not Is_Standard_File (File),
        Post => (if Status (File) = Success then
@@ -186,10 +185,10 @@ is
                      Form (File) = Form (File)'Old and
                      not Is_Standard_File (File));
 
-   --  Procedure Reset without a Mode parameter is resricted to operating on
-   --  files of Mode In_File.  For any other file mode the procedure Reset with
+   --  Procedure Reset without a Mode parameter is restricted to operating on
+   --  files of Mode In_File. For any other file mode the procedure Reset with
    --  the Mode parameter must be used.
-   procedure Reset  (File : in out File_Type)
+   procedure Reset (File : in out File_Type)
      with
        Pre  => Is_Open (File) and then not Is_Standard_File (File),
        Post => Is_Open (File) and then
