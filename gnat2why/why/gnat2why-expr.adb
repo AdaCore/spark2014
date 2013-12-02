@@ -2308,7 +2308,7 @@ package body Gnat2Why.Expr is
                                   Binders     => Call_Params,
                                   Return_Type => Ret_Type));
          Emit (Decl_File.Cur_Theory,
-               New_Guarded_Axiom (Name     => NID (To_String (WNE_Def_Axiom)),
+               New_Guarded_Axiom (Name     => NID (Def_Axiom),
                                   Binders  => Call_Params,
                                   Triggers =>
                                     New_Triggers

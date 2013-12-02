@@ -123,7 +123,7 @@ package body Why.Gen.Binders is
            Right   => +Def);
       return New_Guarded_Axiom
         (Ada_Node => Ada_Node,
-         Name     => NID (To_String (WNE_Def_Axiom)),
+         Name     => NID (Def_Axiom),
          Binders  => Binders,
          Triggers => New_Triggers (Triggers =>
                           (1 => New_Trigger (Terms => (1 => +Left)))),
@@ -155,7 +155,7 @@ package body Why.Gen.Binders is
    begin
       return New_Guarded_Axiom
         (Ada_Node => Ada_Node,
-         Name     => NID (To_String (WNE_Def_Axiom)),
+         Name     => NID (Def_Axiom),
          Binders  => Binders,
          Triggers => New_Triggers (Triggers =>
                           (1 => New_Trigger (Terms => (1 => +Left)))),
@@ -542,9 +542,6 @@ package body Why.Gen.Binders is
                         null;
 
                      when EW_Prog =>
-                        if Spec (S).Name = Why_Empty then
-                           Spec (S).Name := To_Ident (WNE_Func);
-                        end if;
 
                         if Spec (S).Pre = Why_Empty then
                            Spec (S).Pre := True_Pred;

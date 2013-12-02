@@ -57,6 +57,8 @@ with Gnat2Why.Util;         use Gnat2Why.Util;
 
 package body Why.Gen.Expr is
 
+   Pretty_Ada_Tag : constant String := "GP_Pretty_Ada";
+
    function Insert_Single_Conversion
      (Ada_Node : Node_Id;
       Domain   : EW_Domain;
@@ -186,7 +188,7 @@ package body Why.Gen.Expr is
    begin
       return
         NID
-          (To_String (WNE_Pretty_Ada) & ":" &
+          (Pretty_Ada_Tag & ":" &
                Subprogram_Full_Source_Name (Current_Subp));
    end Cur_Subp_Name_Label;
 
@@ -1582,7 +1584,7 @@ package body Why.Gen.Expr is
       begin
          if S /= "" then
             return
-              NID (To_String (WNE_Pretty_Ada) & ":" & S);
+              NID (Pretty_Ada_Tag & ":" & S);
          else
             return No_Name;
          end if;

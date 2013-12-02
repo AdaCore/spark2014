@@ -507,7 +507,7 @@ package body Why.Inter is
                  (File => No_Name,
                   Name =>
                     NID (Get_Name_String (Get_Name (Module))
-                      & To_String (WNE_Axiom))),
+                      & Axiom_Theory_Suffix)),
                Use_Kind);
          end if;
       end if;

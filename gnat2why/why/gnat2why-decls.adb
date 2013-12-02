@@ -335,7 +335,7 @@ package body Gnat2Why.Decls is
       E    : Entity_Id)
    is
       Base_Name : constant String := Full_Name (E);
-      Name      : constant String := Base_Name & To_String (WNE_Axiom);
+      Name      : constant String := Base_Name & Axiom_Theory_Suffix;
       Typ    : constant W_Type_Id := EW_Abstract (Etype (E));
       Decl   : constant Node_Id := Parent (E);
       Def    : W_Term_Id;

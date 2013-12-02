@@ -1238,7 +1238,7 @@ package body Gnat2Why.Subprograms is
                              To_Why_Id (E, Domain => EW_Term, Local => False);
 
       Base_Name : constant String := Full_Name (E);
-      Name      : constant String := Base_Name & To_String (WNE_Axiom);
+      Name      : constant String := Base_Name & Axiom_Theory_Suffix;
 
       Params : Transformation_Params;
 

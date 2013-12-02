@@ -140,6 +140,12 @@ package Why.Gen.Names is
    --  Create a new identifier for an entity in program space, given
    --  the name of the corresponding entity in logic space.
 
+   Def_Axiom : constant String := "def_axiom";
+   --  suffix for a definition axiom
+
+   Axiom_Theory_Suffix : constant String := "__axiom";
+   --  suffix for the name of the theory defining the axiom for an entity
+
    type Why_Name_Enum is
      (
       WNE_Array_Access,
@@ -168,14 +174,9 @@ package Why.Gen.Names is
       WNE_Char_Type,
       WNE_Check_Not_First,
       WNE_Check_Not_Last,
-      WNE_Coerce,
       WNE_Def,
-      WNE_Def_Axiom,
       WNE_Dummy,
       WNE_Eq,
-
-      --  suffix for the name of the theory defining the axiom for an entity
-      WNE_Axiom,
 
       --  Name of an unknown floating-point rounding operation, when the
       --  floating-point type is neither single precision nor double precision.
@@ -185,20 +186,15 @@ package Why.Gen.Names is
       --  replaced when cloning module Floating
       WNE_Float_Round_Tmp,
 
-      WNE_First_Static,
-      WNE_Func,
       WNE_Ignore,
       WNE_Keep_On_Simp,
-      WNE_Last_Static,
       WNE_Of_Array,
       WNE_Of_Base,
       WNE_Of_Int,
       WNE_Of_Real,
       WNE_Range_Check_Fun,
       WNE_Pre_Check,
-      WNE_Pretty_Ada,
       WNE_Private,
-      WNE_Range_Axiom,
       WNE_Range_Field,
       WNE_Range_Pred,
       WNE_Range_Type,
@@ -209,8 +205,7 @@ package Why.Gen.Names is
       WNE_To_Base,
       WNE_To_Int,
       WNE_To_Real,
-      WNE_Type,
-      WNE_Unicity
+      WNE_Type
      );
 
    function Attr_To_Why_Name (A : Attribute_Id) return Why_Name_Enum;

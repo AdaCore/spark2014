@@ -401,7 +401,7 @@ package body Gnat2Why.Driver is
         (File : in out Why_Section;
          E    : Entity_Id)
       is
-         Name : constant String := Full_Name (E) & To_String (WNE_Axiom);
+         Name : constant String := Full_Name (E) & Axiom_Theory_Suffix;
       begin
          Open_Theory
            (File, Name,
