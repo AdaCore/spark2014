@@ -27,7 +27,6 @@ with Atree;            use Atree;
 with Einfo;            use Einfo;
 with Impunit;          use Impunit;
 with Namet;            use Namet;
-with Sem_Util;         use Sem_Util;
 with Sinfo;            use Sinfo;
 with Snames;           use Snames;
 with Types;            use Types;
@@ -92,6 +91,35 @@ package SPARK_Util is
 
    function Has_Signed_Integer_Type (T : Entity_Id) return Boolean is
      (MUT_Kind (T) in Signed_Integer_Kind);
+
+   --  The following type lists all possible forms of default initialization
+   --  that may apply to a type.
+
+   type Default_Initialization_Kind is
+     (No_Possible_Initialization,
+      --  This value signifies that a type cannot possibly be initialized
+      --  because it has no content, for example - a null record.
+
+      Full_Default_Initialization,
+      --  This value covers the following combinations of types and content:
+      --    * Access type
+      --    * Array-of-scalars with specified Default_Component_Value
+      --    * Array type with fully default initialized component type
+      --    * Record or protected type with components that either have a
+      --      default expression or their related types are fully default
+      --      initialized.
+      --    * Scalar type with specified Default_Value
+      --    * Task type
+      --    * Type extension of a type with full default initialization where
+      --      the extension components are also fully default initialized.
+
+      Mixed_Initialization,
+      --  This value applies to a type where some of its internals are fully
+      --  default initialized and some are not.
+
+      No_Default_Initialization);
+      --  This value reflects a type where none of its content is fully
+      --  default initialized.
 
    function Default_Initialization
      (Typ : Entity_Id) return Default_Initialization_Kind;

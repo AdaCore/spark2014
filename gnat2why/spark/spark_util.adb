@@ -29,6 +29,7 @@ with Ada.Strings.Unbounded;     use Ada.Strings.Unbounded;
 with Fname;                     use Fname;
 with Lib;                       use Lib;
 with Nlists;                    use Nlists;
+with Sem_Util;                  use Sem_Util;
 with Sinput;                    use Sinput;
 with Stand;                     use Stand;
 with Treepr;                    use Treepr;
