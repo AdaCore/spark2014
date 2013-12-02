@@ -552,11 +552,8 @@ package body Why.Gen.Names is
          when WNE_Def          => return "def";
          when WNE_Pre_Check    => return "pre_check";
          when WNE_Dummy        => return "dummy";
-         when WNE_Sandbox      => return "sandbox";
          when WNE_Range_Field  => return "rt";
          when WNE_Range_Type   => return "range_type";
-         when WNE_String       => return "__string";
-         when WNE_Char_Type    => return "__character";
          when WNE_Private      => return "__private";
          when WNE_Keep_On_Simp => return "keep_on_simp";
          when WNE_Check_Not_First => return "check_not_first";
