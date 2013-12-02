@@ -63,6 +63,9 @@ package SPARK_Definition is
    --  Set of entities defined in actions which require a special translation.
    --  See gnat2why.ads for details.
 
+   Max_Array_Dimensions : constant Positive := 4;
+   --  maximal number of dimensions that are currently supported
+
    procedure Before_Marking (Basename : String);
    --  Create a file to store detailed information about the SPARK status of
    --  toplevel subprograms (spec/body in SPARK or not). Use the argument as

@@ -146,13 +146,12 @@ package Why.Gen.Names is
    Axiom_Theory_Suffix : constant String := "__axiom";
    --  suffix for the name of the theory defining the axiom for an entity
 
+   Keep_On_Simp : constant String := "keep_on_simp";
+
    type Why_Name_Enum is
      (
       WNE_Array_Access,
       WNE_Array_Elts,
-      WNE_Array_First_Field,
-      WNE_Array_Last_Field,
-      WNE_Array_Offset,
       WNE_Array_Update,
       WNE_Attr_First,
       WNE_Attr_Image,
@@ -175,7 +174,6 @@ package Why.Gen.Names is
       WNE_Check_Not_Last,
       WNE_Def,
       WNE_Dummy,
-      WNE_Eq,
 
       --  Name of an unknown floating-point rounding operation, when the
       --  floating-point type is neither single precision nor double precision.
@@ -186,7 +184,6 @@ package Why.Gen.Names is
       WNE_Float_Round_Tmp,
 
       WNE_Ignore,
-      WNE_Keep_On_Simp,
       WNE_Of_Array,
       WNE_Of_Base,
       WNE_Of_Int,
@@ -194,9 +191,7 @@ package Why.Gen.Names is
       WNE_Range_Check_Fun,
       WNE_Pre_Check,
       WNE_Private,
-      WNE_Range_Field,
       WNE_Range_Pred,
-      WNE_Range_Type,
       WNE_Result_Exc,
       WNE_To_Array,
       WNE_To_Base,

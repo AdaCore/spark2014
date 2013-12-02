@@ -23,7 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Ids; use Why.Ids;
+with SPARK_Definition; use SPARK_Definition;
+with Why.Ids;          use Why.Ids;
 
 package Why.Atree.Modules is
    --  This package helps with Why modules. Today, it is only a list of
@@ -55,7 +56,7 @@ package Why.Atree.Modules is
    Integer_Module          : W_Module_Id;
    Floating_Module         : W_Module_Id;
    Boolean_Module          : W_Module_Id;
-   Array_Modules           : W_Module_Array (1 .. 4);
+   Array_Modules           : W_Module_Array (1 .. Max_Array_Dimensions);
 
    --  Modules of file "ada__model.mlw"
 
@@ -66,8 +67,8 @@ package Why.Atree.Modules is
    Static_Floating_Point   : W_Module_Id;
    Dynamic_Floating_Point  : W_Module_Id;
 
-   Constr_Arrays           : W_Module_Array (1 .. 4);
-   Unconstr_Arrays         : W_Module_Array (1 .. 4);
+   Constr_Arrays           : W_Module_Array (1 .. Max_Array_Dimensions);
+   Unconstr_Arrays         : W_Module_Array (1 .. Max_Array_Dimensions);
 
    --  Identifiers of the Integer module
 

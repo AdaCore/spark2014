@@ -530,7 +530,6 @@ package body Why.Gen.Names is
          when WNE_Ignore       => return "___ignore";
          when WNE_Result_Exc   => return "Return__exc";
          when WNE_Range_Check_Fun => return "range_check_";
-         when WNE_Eq           => return "eq";
          when WNE_Bool_And     => return "andb";
          when WNE_Bool_Or      => return "orb";
          when WNE_Bool_Xor     => return "xorb";
@@ -539,9 +538,6 @@ package body Why.Gen.Names is
          when WNE_Float_Round_Tmp => return "round_real_tmp";
          when WNE_Array_Access => return "get";
          when WNE_Array_Elts   => return "elts";
-         when WNE_Array_First_Field => return "first";
-         when WNE_Array_Last_Field => return "last";
-         when WNE_Array_Offset => return "offset";
          when WNE_Array_Update => return "set";
          when WNE_Bool_Eq      => return "bool_eq";
          when WNE_Bool_Ne      => return "bool_ne";
@@ -552,10 +548,7 @@ package body Why.Gen.Names is
          when WNE_Def          => return "def";
          when WNE_Pre_Check    => return "pre_check";
          when WNE_Dummy        => return "dummy";
-         when WNE_Range_Field  => return "rt";
-         when WNE_Range_Type   => return "range_type";
          when WNE_Private      => return "__private";
-         when WNE_Keep_On_Simp => return "keep_on_simp";
          when WNE_Check_Not_First => return "check_not_first";
          when WNE_Check_Not_Last => return "check_not_last";
          when WNE_Attr_First => return "first";

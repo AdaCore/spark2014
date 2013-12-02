@@ -750,9 +750,7 @@ package body SPARK_Definition is
                Index         : Node_Id := First_Index (E);
 
             begin
-               --  Currently, array types of dimension 4 at most are supported
-
-               if Number_Dimensions (E) > 4 then
+               if Positive (Number_Dimensions (E)) > Max_Array_Dimensions then
                   Violation_Detected := True;
                   if SPARK_Pragma_Is (Opt.On) then
                      Error_Msg_Node_1 := E;

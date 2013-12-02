@@ -25,6 +25,7 @@
 
 with Namet;                  use Namet;
 with Types;                  use Types;
+with SPARK_Definition;       use SPARK_Definition;
 with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 pragma Warnings (Off);
 --  ??? Why.Types" is directly visible as "Types", as it has "Why" as a
@@ -64,7 +65,7 @@ package Why.Gen.Binders is
       Last  : W_Identifier_Id;
    end record;
 
-   type Array_Bounds is array (1 .. 4) of Item_Bounds;
+   type Array_Bounds is array (1 .. Max_Array_Dimensions) of Item_Bounds;
 
    type Item_Type (Kind : Item_Enum := Regular) is record
       Main : Binder_Type;

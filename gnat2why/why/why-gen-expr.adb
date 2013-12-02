@@ -1738,7 +1738,7 @@ package body Why.Gen.Expr is
            (N,
             Is_VC => True,
             Left_Most => Is_Assertion_Kind (Reason)));
-      Set.Include (NID (To_String (WNE_Keep_On_Simp)));
+      Set.Include (NID (Keep_On_Simp));
       return Set;
    end New_VC_Labels;
 
