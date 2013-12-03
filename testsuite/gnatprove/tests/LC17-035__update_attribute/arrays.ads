@@ -1,15 +1,5 @@
-package Update is
-
-   pragma SPARK_Mode (On);
-
-   type Index is range 1 .. 8;
-
-   type Array_1D is array (Index) of Integer;
-   type Array_2D is array (Index, Index) of Integer;
-
-   type Array_3D is array (Natural range 1 .. 5,
-                           Natural range 1 .. 5,
-                           Natural range 1 .. 5) of Integer;
+with Types;       use Types;
+package Arrays is
 
    X : Integer;
    An_Arr : Array_1D := Array_1D'(others => 7);
@@ -74,5 +64,4 @@ package Update is
    function Swap_Fun (Arr_In : Array_1D; I, J : Index) return Array_1D
      with Post => (Swap_Fun'Result'Update(I => Swap_Fun'Result(J),
                                           J => Swap_Fun'Result(I)) = Arr_In);
-
-end Update;
+end Arrays;

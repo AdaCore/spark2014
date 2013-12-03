@@ -1,27 +1,27 @@
-update.adb:4:34: info: length check proved
-update.adb:8:26: info: overflow check proved
-update.adb:53:21: info: length check proved
-update.adb:59:21: info: length check proved
-update.adb:60:21: info: range check proved
-update.ads:15:34: info: length check proved
-update.ads:24:19: info: postcondition proved
-update.ads:25:31: info: length check proved
-update.ads:26:51: info: overflow check proved
-update.ads:33:19: info: postcondition proved
-update.ads:41:19: info: postcondition proved
-update.ads:41:36: info: range check proved
-update.ads:45:19: info: postcondition proved
-update.ads:49:19: info: postcondition proved
-update.ads:55:19: info: postcondition proved
-update.ads:59:19: info: postcondition proved
-update.ads:63:19: info: postcondition proved
-update.ads:63:32: info: length check proved
-update.ads:67:19: info: postcondition proved
-update.ads:67:32: info: length check proved
-update.ads:67:53: info: range check proved
-update.ads:71:19: info: postcondition proved
-update.ads:71:37: info: range check proved
-update.ads:71:52: info: range check proved
-update.ads:75:19: info: postcondition proved
-update.ads:75:43: info: range check proved
-update.ads:76:43: info: range check proved
+arrays.adb:4:34: info: length check proved
+arrays.adb:8:26: info: overflow check proved
+arrays.adb:53:21: info: length check proved
+arrays.adb:59:21: info: length check proved
+arrays.adb:60:21: info: range check proved
+arrays.ads:5:34: info: length check proved
+arrays.ads:14:19: info: postcondition proved
+arrays.ads:15:31: info: length check proved
+arrays.ads:16:51: info: overflow check proved
+arrays.ads:23:19: info: postcondition proved
+arrays.ads:31:19: info: postcondition proved
+arrays.ads:31:36: info: range check proved
+arrays.ads:35:19: info: postcondition proved
+arrays.ads:39:19: info: postcondition proved
+arrays.ads:45:19: info: postcondition proved
+arrays.ads:49:19: info: postcondition proved
+arrays.ads:53:19: info: postcondition proved
+arrays.ads:53:32: info: length check proved
+arrays.ads:57:19: info: postcondition proved
+arrays.ads:57:32: info: length check proved
+arrays.ads:57:53: info: range check proved
+arrays.ads:61:19: info: postcondition proved
+arrays.ads:61:37: info: range check proved
+arrays.ads:61:52: info: range check proved
+arrays.ads:65:19: info: postcondition proved
+arrays.ads:65:43: info: range check proved
+arrays.ads:66:43: info: range check proved

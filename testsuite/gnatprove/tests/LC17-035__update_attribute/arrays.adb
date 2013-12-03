@@ -1,4 +1,4 @@
-package body Update is
+package body Arrays is
 
    function F1 (Init_Val : Integer) return Array_1D is
       Arr : Array_1D := Array_1D'(others => An_Arr(5));
@@ -76,4 +76,4 @@ package body Update is
       return Arr;
    end Swap_Fun;
 
-end Update;
+end Arrays;
