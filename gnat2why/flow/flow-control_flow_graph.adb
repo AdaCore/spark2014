@@ -190,22 +190,26 @@ package body Flow.Control_Flow_Graph is
    --------------
 
    type Context is record
-      Current_Loops    : Node_Sets.Set;
+      Current_Loops             : Node_Sets.Set;
       --  The set of loops currently processed. The innermost loop
       --  currently processed is Active_Loop.
 
-      Active_Loop      : Entity_Id;
+      Active_Loop               : Entity_Id;
       --  The currently processed loop. This is always a member of
       --  Current_Loops, unless no loop is currently processed.
 
-      Entry_References : Node_Graphs.Map;
+      Entry_References          : Node_Graphs.Map;
       --  A map from loops -> 'loop_entry references.
+
+      Processing_Nested_Package : Boolean;
+      --  We set this to true when we analyze a nested package.
    end record;
 
    No_Context : constant Context :=
-     Context'(Current_Loops    => Node_Sets.Empty_Set,
-              Active_Loop      => Empty,
-              Entry_References => Node_Graphs.Empty_Map);
+     Context'(Current_Loops             => Node_Sets.Empty_Set,
+              Active_Loop               => Empty,
+              Entry_References          => Node_Graphs.Empty_Map,
+              Processing_Nested_Package => False);
 
    ------------------------------------------------------------
    --  Local declarations
@@ -418,6 +422,17 @@ package body Flow.Control_Flow_Graph is
    --  either generate a null vertex which is then stripped from the
    --  graph or a simple defining vertex.
 
+   procedure Do_Package_Declaration
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
+      with Pre => Nkind (N) = N_Package_Declaration;
+   --  When we find a nested package, we add 'initial and 'final
+   --  vertices for all variables and state_abstractions that it
+   --  introduces and we then draw arrows based on its initializes
+   --  aspect.
+
    procedure Do_Pragma
      (N   : Node_Id;
       FA  : in out Flow_Analysis_Graphs;
@@ -500,7 +515,7 @@ package body Flow.Control_Flow_Graph is
       Ctx : in out Context)
       with Pre => Nkind (N) in
         N_Subprogram_Body | N_Block_Statement | N_Package_Body;
-   --  This is the top level procedure which deals with a subprogam,
+   --  This is the top level procedure which deals with a subprogram,
    --  block or package elaboration statement. The declarations and
    --  sequence of statements is processed and linked.
 
@@ -1655,21 +1670,25 @@ package body Flow.Control_Flow_Graph is
       --  First, we need a 'initial and 'final vertex for this object.
       Create_Initial_And_Final_Vertices (Defining_Identifier (N), False, FA);
 
-      if not Present (Expression (N)) then
+      if not Present (Expression (N))
+        or (Ctx.Processing_Nested_Package and not Constant_Present (N))
+      then
          --  No initializing expression, so we fall back to the
          --  default initialization (if any).
-         for F of Flatten_Variable (Defining_Identifier (N)) loop
-            if Is_Default_Initialized (F) then
-               FA.CFG.Add_Vertex
-                 (Make_Default_Initialization_Attributes
-                    (FA    => FA,
-                     Scope => FA.B_Scope,
-                     F     => F,
-                     Loops => Ctx.Current_Loops),
-                  V);
-               Inits.Append (V);
-            end if;
-         end loop;
+         if not Ctx.Processing_Nested_Package then
+            for F of Flatten_Variable (Defining_Identifier (N)) loop
+               if Is_Default_Initialized (F) then
+                  FA.CFG.Add_Vertex
+                    (Make_Default_Initialization_Attributes
+                       (FA    => FA,
+                        Scope => FA.B_Scope,
+                        F     => F,
+                        Loops => Ctx.Current_Loops),
+                     V);
+                  Inits.Append (V);
+               end if;
+            end loop;
+         end if;
 
          if Inits.Length = 0 then
             --  We did not have anything with a default initial value,
@@ -1709,6 +1728,189 @@ package body Flow.Control_Flow_Graph is
                      Standard_Exits => To_Set (Inits.Last_Element)));
 
    end Do_Object_Declaration;
+
+   ----------------------------
+   -- Do_Package_Declaration --
+   ----------------------------
+
+   procedure Do_Package_Declaration
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
+   is
+      function Find_Node (E : Entity_Id) return Node_Id
+        with Post => Nkind (Find_Node'Result) in
+                       N_Identifier           |
+                       N_Expanded_Name        |
+                       N_Component_Association;
+      --  Looks through the initializes aspect on FA.Analyzed_Entity
+      --  and returns the node which represents the
+      --  initialization_item where E is the LHS.
+      --
+      --  In the case of
+      --     Initializes => (X,
+      --  we return the node for X (N_Identifier | N_Expanded_Name).
+      --
+      --  In the case of
+      --     Initializes => (X => Y
+      --  we return the node for => (N_Component_Association).
+
+      ---------------
+      -- Find_Node --
+      ---------------
+
+      function Find_Node (E : Entity_Id) return Node_Id is
+         Initializes_Contract : constant Node_Id :=
+           Get_Pragma (Defining_Unit_Name (Specification (N)),
+                       Pragma_Initializes);
+         PAA_Expr             : constant Node_Id :=
+           Expression (First
+                         (Pragma_Argument_Associations
+                            (Initializes_Contract)));
+         Search               : Node_Id;
+      begin
+         if Present (Expressions (PAA_Expr)) then
+            Search := First (Expressions (PAA_Expr));
+            while Present (Search) loop
+               if Entity (Search) = E then
+                  return Search;
+               end if;
+
+               Next (Search);
+            end loop;
+         end if;
+
+         if Present (Component_Associations (PAA_Expr)) then
+            declare
+               CA : Node_Id;
+            begin
+               CA := First (Component_Associations (PAA_Expr));
+               while Present (CA) loop
+                  Search := First (Choices (CA));
+                  if Entity (Search) = E then
+                     return CA;
+                  end if;
+
+                  Next (CA);
+               end loop;
+            end;
+         end if;
+
+         --  We should never reach here!
+         raise Program_Error;
+      end Find_Node;
+
+      AS_Pragma : constant Node_Id :=
+        Get_Pragma (Defining_Unit_Name (Specification (N)),
+                    Pragma_Abstract_State);
+
+   begin  --  Do_Package_Declaration
+
+      --  Introduce variables from the abstract state of the nested
+      --  package.
+
+      if Present (AS_Pragma) then
+         declare
+            PAA : Node_Id;
+            AS  : Node_Id;
+         begin
+            PAA := First (Pragma_Argument_Associations (AS_Pragma));
+            AS := First (Expressions (Expression (PAA)));
+            while Present (AS) loop
+               --  Creating 'initial and 'final vertices for every
+               --  state abstraction.
+               if Nkind (AS) = N_Extension_Aggregate then
+                  Create_Initial_And_Final_Vertices
+                    (Entity (Ancestor_Part (AS)),
+                     Is_Param => False,
+                     FA       => FA);
+               else
+                  Create_Initial_And_Final_Vertices
+                    (Entity (AS),
+                     Is_Param => False,
+                     FA       => FA);
+               end if;
+
+               Next (AS);
+            end loop;
+         end;
+      end if;
+
+      --  Traverse visible part of the specs
+      declare
+         Visible_Part : constant List_Id :=
+           Visible_Declarations (Specification (N));
+         Nested_Initializes : constant Node_Id :=
+           Get_Pragma (Defining_Unit_Name (Specification (N)),
+                       Pragma_Initializes);
+
+         Initializes_CM : Graph_Connections;
+
+         Tmp : constant Boolean := Ctx.Processing_Nested_Package;
+      begin
+         Ctx.Processing_Nested_Package := True;
+         Process_Statement_List (Visible_Part, FA, CM, Ctx);
+         Ctx.Processing_Nested_Package := Tmp;
+
+         CM.Include (Union_Id (N), No_Connections);
+         CM (Union_Id (N)).Standard_Entry :=
+           CM (Union_Id (Visible_Part)).Standard_Entry;
+
+         if Present (Nested_Initializes) then
+            declare
+               DM        : Dependency_Maps.Map;
+               The_Out   : Flow_Id;
+               The_Ins   : Flow_Id_Sets.Set;
+               Init_Item : Node_Id;
+               V         : Flow_Graphs.Vertex_Id;
+               Verts     : Union_Lists.List := Union_Lists.Empty_List;
+            begin
+               DM := Parse_Initializes (Nested_Initializes);
+
+               for C in DM.Iterate loop
+                  The_Out   := Dependency_Maps.Key (C);
+                  The_Ins   := Dependency_Maps.Element (C);
+
+                  Init_Item := Find_Node (Get_Direct_Mapping_Id (The_Out));
+                  Verts.Append (Union_Id (Init_Item));
+
+                  FA.CFG.Add_Vertex
+                    (Direct_Mapping_Id (Init_Item),
+                     Make_Basic_Attributes (Var_Def =>
+                                              Flow_Id_Sets.To_Set (The_Out),
+                                            Var_Use => The_Ins,
+                                            Loops   => Ctx.Current_Loops,
+                                            E_Loc   => Init_Item),
+                     V);
+
+                  CM.Include (Union_Id (Init_Item),
+                              Graph_Connections'(Standard_Entry => V,
+                                                 Standard_Exits =>
+                                                   To_Set (V)));
+               end loop;
+
+               Join (CFG   => FA.CFG,
+                     CM    => CM,
+                     Nodes => Verts,
+                     Block => Initializes_CM);
+               CM.Include (Union_Id (Nested_Initializes),
+                           Initializes_CM);
+            end;
+
+            Linkup (FA.CFG,
+                    CM (Union_Id (Visible_Part)).Standard_Exits,
+                    CM (Union_Id (Nested_Initializes)).Standard_Entry);
+
+            CM (Union_Id (N)).Standard_Exits :=
+              CM (Union_Id (Nested_Initializes)).Standard_Exits;
+
+         else
+            CM (Union_Id (N)).Standard_Exits :=
+              CM (Union_Id (Visible_Part)).Standard_Exits;
+         end if;
+      end;
+   end Do_Package_Declaration;
 
    ---------------
    -- Do_Pragma --
@@ -2333,11 +2535,10 @@ package body Flow.Control_Flow_Graph is
               N_Implicit_Label_Declaration      |
               N_Subprogram_Body                 |
               N_Subprogram_Declaration          |
-              N_Package_Declaration             |  -- ??? remove in M314-014
-              N_Package_Body                    |  -- ??? remove in M314-014
               N_Generic_Subprogram_Declaration  |
               N_Generic_Package_Declaration     |
               N_Representation_Clause           |
+              N_Package_Body                    |
               N_Package_Body_Stub               |
               N_Generic_Instantiation           |
               N_Subprogram_Body_Stub            |
@@ -2349,7 +2550,7 @@ package body Flow.Control_Flow_Graph is
               N_Validate_Unchecked_Conversion   |
               N_Package_Renaming_Declaration    |
               N_Private_Type_Declaration        |
-              N_Number_Declaration =>
+              N_Number_Declaration              =>
                --  We completely skip these.
                null;
 
@@ -2400,6 +2601,8 @@ package body Flow.Control_Flow_Graph is
             Do_Null_Or_Raise_Statement (N, FA, CM, Ctx);
          when N_Object_Declaration =>
             Do_Object_Declaration (N, FA, CM, Ctx);
+         when N_Package_Declaration =>
+            Do_Package_Declaration (N, FA, CM, Ctx);
          when N_Pragma =>
             Do_Pragma (N, FA, CM, Ctx);
          when N_Procedure_Call_Statement =>

@@ -1,0 +1,2 @@
+outer.adb:35:14: info: overflow check proved
+outer.adb:53:58: warning: overflow check might fail

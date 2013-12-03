@@ -15,6 +15,7 @@ test.adb:135:07: warning: unused assignment to "Temp"
 test.adb:144:40: warning: unused initial value of "Import"
 test.adb:145:07: warning: initialization has no effect
 test.adb:156:12: warning: unused assignment
+test.adb:167:10: warning: unused variable "Unused", in instantiation at test.adb:176
 test.adb:185:39: warning: unused initial value of "Par2"
 test.adb:185:39: warning: unused variable "Par2"
 test.adb:187:13: warning: unused variable "Z"

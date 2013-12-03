@@ -1,13 +1,14 @@
 package Outer
-with SPARK_Mode, Abstract_State => (A1, A2)
+  with SPARK_Mode,
+       Abstract_State => (A1, A2)
 is
    procedure Init_A1
      with Global => (Output => A1),
-       Depends => (A1 => null);
+          Depends => (A1 => null);
 
    procedure Init_A2
      with Global => (Output => A2),
-       Depends => (A2 => null);
+          Depends => (A2 => null);
 
 private
    -- A variable declared in the private part must have a Part_Of aspect
@@ -30,6 +31,6 @@ private
        -- a constituent of Outer.A2 if the subprogram does
        -- not also refer to Outer.A2.
        with Global => (Output => Hidden_State),
-         Depends => (Hidden_State => null);
+            Depends => (Hidden_State => null);
    end Inner;
 end Outer;

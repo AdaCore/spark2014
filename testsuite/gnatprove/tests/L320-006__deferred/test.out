@@ -1,3 +1,4 @@
+p.adb:8:08: warning: unused variable "X2"
 pack.adb:5:14: info: postcondition proved
 pack.adb:10:14: info: postcondition proved
 pack.ads:10:14: info: postcondition proved

@@ -1,4 +1,6 @@
-procedure Pack is 
+procedure Pack
+  with Global => null
+is
    generic
       type T1 is (<>);
    package Genpack is
