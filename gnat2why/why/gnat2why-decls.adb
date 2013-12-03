@@ -431,7 +431,8 @@ package body Gnat2Why.Decls is
       Emit (File.Cur_Theory, Decl);
 
       if Entity_In_SPARK (MUT (Etype (E))) then
-         Add_Use_For_Entity (File, Normalize_Type (Etype (E)));
+         Add_Use_For_Entity
+           (File, Normalize_Type (Etype (E)), With_Completion => False);
       end if;
 
       --  We generate a global ref

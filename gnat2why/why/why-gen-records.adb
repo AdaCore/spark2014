@@ -786,7 +786,7 @@ package body Why.Gen.Records is
          declare
             Clone : constant Entity_Id := Cloned_Subtype (E);
          begin
-            Add_Use_For_Entity (P, Clone, EW_Export);
+            Add_Use_For_Entity (P, Clone, EW_Export, With_Completion => False);
 
             --  if the copy has the same name as the original, do not redefine
             --  the type name.
