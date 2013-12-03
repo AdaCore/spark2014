@@ -1,9 +1,9 @@
-gnatprove -Pspark_io -f -u hello_world.adb
-gnatprove -Pspark_io -f -u copy.adb
-gnatprove -Pspark_io -f -u echo.adb
-gnatprove -Pspark_io -f -u echo_1.adb
-gnatprove -Pspark_io -f -u use_enum_io.adb
-gnatprove -Pspark_io -f -u use_float_io.adb
-gnatprove -Pspark_io -f -u use_int_io.adb
-gnatprove -Pspark_io -f -u use_int_io_1.adb
-gnatprove -Pspark_io -f -u use_int_io_2.adb
+gnatprove -Pspark_io -f -u -q hello_world.adb
+gnatprove -Pspark_io -f -u -q copy.adb
+gnatprove -Pspark_io -f -u -q echo.adb
+gnatprove -Pspark_io -f -u -q echo_1.adb
+gnatprove -Pspark_io -f -u -q use_enum_io.adb
+gnatprove -Pspark_io -f -u -q use_float_io.adb
+gnatprove -Pspark_io -f -u -q use_int_io.adb
+gnatprove -Pspark_io -f -u -q use_int_io_1.adb
+gnatprove -Pspark_io -f -u -q use_int_io_2.adb
