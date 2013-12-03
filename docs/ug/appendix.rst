@@ -374,6 +374,10 @@ Features Not Yet Implemented in Proof
    valid.  The use of an invalid value invalidates any proofs associated with
    the value.
 
+#. Operators are not allowed as actual parameters of a formal container
+   instance. Instead, a wrapper expression function can be defined that simply
+   calls the operator.
+
 Rules and Restrictions that are Not Yet Checked
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
