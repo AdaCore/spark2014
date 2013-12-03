@@ -409,23 +409,29 @@ package body Flow.Control_Flow_Graph.Utility is
      (FA      : Flow_Analysis_Graphs;
       Scope   : Flow_Scope;
       F       : Flow_Id;
-      Loops   : Node_Sets.Set     := Node_Sets.Empty_Set;
-      E_Loc   : Node_Or_Entity_Id := Empty)
+      Loops   : Node_Sets.Set := Node_Sets.Empty_Set)
       return V_Attributes
    is
-      A : V_Attributes := Null_Attributes;
+      A  : V_Attributes     := Null_Attributes;
+      DI : constant Node_Id := Get_Default_Initialization (F);
    begin
       A.Is_Default_Init   := True;
       A.Loops             := Loops;
-      A.Error_Location    := E_Loc;
+      if Present (DI) then
+         A.Error_Location := DI;
+      else
+         A.Error_Location := Etype (Get_Direct_Mapping_Id (F));
+      end if;
 
-      A.Default_Init_Var  := F;
-      A.Default_Init_Val  := Get_Default_Initialization (F);
+      A.Default_Init_Var := F;
+      A.Default_Init_Val := DI;
 
       A.Variables_Defined := Flow_Id_Sets.To_Set (F);
-      A.Variables_Used    := Get_Variable_Set (A.Default_Init_Val,
+      if Present (DI) then
+         A.Variables_Used := Get_Variable_Set (A.Default_Init_Val,
                                                FA    => FA,
                                                Scope => Scope);
+      end if;
 
       Add_Volatile_Effects (A);
       return A;

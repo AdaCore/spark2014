@@ -316,8 +316,12 @@ package body Flow is
             Rv.Shape := Shape_None;
 
             Sprint_Flow_Id (A.Default_Init_Var);
-            Write_Str ("&nbsp;is by default&nbsp;");
-            Sprint_Node (A.Default_Init_Val);
+            if Present (A.Default_Init_Val) then
+               Write_Str ("&nbsp;is by default&nbsp;");
+               Sprint_Node (A.Default_Init_Val);
+            else
+               Write_Str ("&nbsp;is initialized implicitly");
+            end if;
 
          else
             if A.Is_Precondition then

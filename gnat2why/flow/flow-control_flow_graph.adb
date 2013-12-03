@@ -1564,21 +1564,16 @@ package body Flow.Control_Flow_Graph is
          --  No initializing expression, so we fall back to the
          --  default initialization (if any).
          for F of Flatten_Variable (Defining_Identifier (N)) loop
-            declare
-               DI : constant Node_Id := Get_Default_Initialization (F);
-            begin
-               if Present (DI) then
-                  FA.CFG.Add_Vertex
-                    (Make_Default_Initialization_Attributes
-                       (FA    => FA,
-                        Scope => FA.B_Scope,
-                        F     => F,
-                        Loops => Ctx.Current_Loops,
-                        E_Loc => DI),
-                     V);
-                  Inits.Append (V);
-               end if;
-            end;
+            if Is_Default_Initialized (F) then
+               FA.CFG.Add_Vertex
+                 (Make_Default_Initialization_Attributes
+                    (FA    => FA,
+                     Scope => FA.B_Scope,
+                     F     => F,
+                     Loops => Ctx.Current_Loops),
+                  V);
+               Inits.Append (V);
+            end if;
          end loop;
 
          if Inits.Length = 0 then

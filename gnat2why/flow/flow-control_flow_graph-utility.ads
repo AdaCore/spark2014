@@ -177,12 +177,12 @@ package Flow.Control_Flow_Graph.Utility is
      (FA      : Flow_Analysis_Graphs;
       Scope   : Flow_Scope;
       F       : Flow_Id;
-      Loops   : Node_Sets.Set     := Node_Sets.Empty_Set;
-      E_Loc   : Node_Or_Entity_Id := Empty)
+      Loops   : Node_Sets.Set := Node_Sets.Empty_Set)
       return V_Attributes
-      with Post =>
-        not Make_Default_Initialization_Attributes'Result.Is_Null_Node and
-        Make_Default_Initialization_Attributes'Result.Is_Default_Init;
+    with
+      Pre => Is_Default_Initialized (F),
+      Post => not Make_Default_Initialization_Attributes'Result.Is_Null_Node
+        and Make_Default_Initialization_Attributes'Result.Is_Default_Init;
    --  Create attributes for the default initialization vertices.
 
 end Flow.Control_Flow_Graph.Utility;

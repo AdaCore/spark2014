@@ -36,6 +36,8 @@ with Casing;   use Casing;
 
 with Why;
 
+with SPARK_Util; use SPARK_Util;
+
 package body Flow_Types is
 
    use type Ada.Containers.Count_Type;
@@ -290,6 +292,26 @@ package body Flow_Types is
             raise Why.Unexpected_Node;
       end case;
    end Get_Default_Initialization;
+
+   ----------------------------
+   -- Is_Default_Initialized --
+   ----------------------------
+
+   function Is_Default_Initialized (F : Flow_Id) return Boolean
+   is
+   begin
+      case F.Kind is
+         when Direct_Mapping | Record_Field =>
+            return Default_Initialization (Etype (Get_Direct_Mapping_Id (F)))
+              = Full_Default_Initialization;
+
+         when Magic_String =>
+            return False;
+
+         when Null_Value =>
+            raise Why.Unexpected_Node;
+      end case;
+   end Is_Default_Initialized;
 
    -----------------
    -- Is_Volatile --
