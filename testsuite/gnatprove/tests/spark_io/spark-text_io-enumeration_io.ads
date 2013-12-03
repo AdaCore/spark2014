@@ -40,18 +40,18 @@ package SPARK.Text_IO.Enumeration_IO is
                   Item : out Enum_Result)
      with Global => null,
           Pre  => Is_Readable (File),
-          Post => Is_Readable (File) and then
-                  Name (File) = Name (File)'Old and then
-                  Form (File) = Form (File)'Old and then
+          Post => Is_Readable (File) and
+                  Name (File) = Name (File)'Old and
+                  Form (File) = Form (File)'Old and
                   Is_Standard_File (File) = Is_Standard_File (File)'Old;
 
    procedure Get (Item : out Enum_Result)
      with Global => (In_Out => Standard_Input),
-          Post   => Is_Readable (Standard_Input) and then
+          Post   => Is_Readable (Standard_Input) and
                     Name (Standard_Input) =
-                       Name (Standard_Input)'Old and then
+                       Name (Standard_Input)'Old and
                     Form (Standard_Input) =
-                       Form (Standard_Input)'Old and then
+                       Form (Standard_Input)'Old and
                     Is_Standard_Input (Standard_Input);
 
    procedure Put (File  : in out File_Type;
@@ -60,11 +60,11 @@ package SPARK.Text_IO.Enumeration_IO is
                  Set   : in Type_Set := Default_Setting)
      with Global => null,
           Pre  => Is_Writable (File) and then Status (File) = Success,
-          Post => Is_Writable (File) and then
-                  Name (File) = Name (File)'Old and then
-                  Form (File) = Form (File)'Old and then
-                  Line_Length (File) = Line_Length (File)'Old and then
-                  Page_Length (File) = Page_Length (File)'Old and then
+          Post => Is_Open (File) and Mode (File) = Mode (File)'Old and
+                  Name (File) = Name (File)'Old and
+                  Form (File) = Form (File)'Old and
+                  Line_Length (File) = Line_Length (File)'Old and
+                  Page_Length (File) = Page_Length (File)'Old and
                   Is_Standard_File (File) = Is_Standard_File (File)'Old;
 
    procedure Put (Item  : in Enum;
@@ -72,15 +72,16 @@ package SPARK.Text_IO.Enumeration_IO is
                   Set   : in Type_Set := Default_Setting)
      with Global => (In_Out => Standard_Output),
           Pre    => Status (Standard_Output) = Success,
-          Post   => Is_Writable (Standard_Output) and then
+                    Post   => Is_Open (Standard_Output) and
+                    Mode (Standard_Output) = Out_File and
                     Name (Standard_Output) =
-                       Name (Standard_Output)'Old and then
+                       Name (Standard_Output)'Old and
                     Form (Standard_Output) =
-                       Form (Standard_Output)'Old and then
+                       Form (Standard_Output)'Old and
                     Line_Length (Standard_Output) =
-                       Line_Length (Standard_Output)'Old and then
+                       Line_Length (Standard_Output)'Old and
                     Page_Length (Standard_Output) =
-                       Page_Length (Standard_Output)'Old and then
+                       Page_Length (Standard_Output)'Old and
                     Is_Standard_Output (Standard_Output);
 
    procedure Get (From   : in  String;
