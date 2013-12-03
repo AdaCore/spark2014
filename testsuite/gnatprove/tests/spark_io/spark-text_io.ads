@@ -243,7 +243,7 @@ is
                        Line_Length (Standard_Output)'Old and then
                     Page_Length (Standard_Output) =
                        Page_Length (Standard_Output)'Old and then
-                    Is_Standard_File (Standard_Output);
+                    Is_Standard_Output (Standard_Output);
 
    --  Specification of line and page lengths
 
@@ -266,7 +266,7 @@ is
                 Form (Standard_Output) = Form (Standard_Output)'Old and then
                 Page_Length (Standard_Output) =
                    Page_Length (Standard_Output)'Old and then
-                Is_Standard_File (Standard_Output));
+                Is_Standard_Output (Standard_Output));
 
 
    procedure Set_Page_Length (File : in out File_Type; To : in Count)
@@ -288,7 +288,7 @@ is
                      Form (Standard_Output) = Form (Standard_Output)'Old and
                      Line_Length (Standard_Output) =
                         Line_Length (Standard_Output)'Old and
-                     Is_Standard_File (Standard_Output));
+                     Is_Standard_Output (Standard_Output));
 
    function  Line_Length (File : in File_Type) return Count
      with Global => null,
@@ -328,7 +328,7 @@ is
                        Line_Length (Standard_Output)'Old and then
                     Page_Length (Standard_Output) =
                        Page_Length (Standard_Output)'Old and then
-                    Is_Standard_File (Standard_Output);
+                    Is_Standard_Output (Standard_Output);
 
    procedure Skip_Line  (File    : in out File_Type;
                          Spacing : in Positive_Count := 1)
@@ -346,7 +346,7 @@ is
           Post   => Is_Readable (Standard_Input) and then
                     Name (Standard_Input) = Name (Standard_Input)'Old and then
                     Form (Standard_Input) = Form (Standard_Input)'Old and then
-                    Is_Standard_File (Standard_Input);
+                    Is_Standard_Input (Standard_Input);
 
    function  End_Of_Line (File : in File_Type) return Boolean
      with Global => null,
@@ -376,7 +376,7 @@ is
                        Line_Length (Standard_Output)'Old and then
                     Page_Length (Standard_Output) =
                        Page_Length (Standard_Output)'Old and then
-                    Is_Standard_File (Standard_Output);
+                    Is_Standard_Output (Standard_Output);
 
    procedure Skip_Page  (File : in out File_Type)
      with Global => null,
@@ -393,7 +393,7 @@ is
           Post   => Is_Readable (Standard_Input) and then
                     Name (Standard_Input) = Name (Standard_Input)'Old and then
                     Form (Standard_Input) = Form (Standard_Input)'Old and then
-                    Is_Standard_File (Standard_Input);
+                    Is_Standard_Input (Standard_Input);
 
    function  End_Of_Page (File : in File_Type) return Boolean
      with Global => null,
@@ -433,7 +433,7 @@ is
                      Name (Standard_Output) = Name (Standard_Output)'Old and
                      Form (Standard_Output) = Form (Standard_Output)'Old and
                     (Is_Writable (Standard_Output) and
-                     Is_Standard_File (Standard_Output));
+                     Is_Standard_Output (Standard_Output));
 
    procedure Set_Line (File : in out File_Type; To : in Positive_Count)
      with Global => null,
@@ -459,7 +459,7 @@ is
                   (Is_Writable (Standard_Output) and
                    Name (Standard_Output) = Name (Standard_Output)'Old and
                    Form (Standard_Output) = Form (Standard_Output)'Old and
-                   Is_Standard_File (Standard_Output));
+                   Is_Standard_Output (Standard_Output));
 
    function Col (File : in File_Type) return Count_Result
    with Global => null,
@@ -526,7 +526,7 @@ is
                        Line_Length (Standard_Output)'Old and then
                     Page_Length (Standard_Output) =
                        Page_Length (Standard_Output)'Old and then
-                  Is_Standard_File (Standard_Output);
+                  Is_Standard_Output (Standard_Output);
 
    procedure Look_Ahead (File        : in  out File_Type;
                          Item        : out Character_Result;
@@ -544,7 +544,7 @@ is
           Post   => Is_Readable (Standard_Input) and then
                     Name (Standard_Input) = Name (Standard_Input)'Old and then
                     Form (Standard_Input) = Form (Standard_Input)'Old and then
-                    Is_Standard_File (Standard_Input);
+                    Is_Standard_Input (Standard_Input);
 
    procedure Get_Immediate (File      : in out File_Type;
                             Item      :    out Character_Result)
@@ -562,7 +562,7 @@ is
           Post   => Is_Readable (Standard_Input) and then
                     Name (Standard_Input) = Name (Standard_Input)'Old and then
                     Form (Standard_Input) = Form (Standard_Input)'Old and then
-                    Is_Standard_File (Standard_Input);
+                    Is_Standard_Input (Standard_Input);
 
    procedure Get_Immediate (File      : in out File_Type;
                             Item      :    out Immediate_Result;
@@ -582,7 +582,7 @@ is
           Post   => Is_Readable (Standard_Input) and then
                     Name (Standard_Input) = Name (Standard_Input)'Old and then
                     Form (Standard_Input) = Form (Standard_Input)'Old and then
-                    Is_Standard_File (Standard_Input);
+                    Is_Standard_Input (Standard_Input);
 
    --  String Input-Output
 
@@ -603,7 +603,7 @@ is
           Post   => Is_Readable (Standard_Input) and then
                     Name (Standard_Input) = Name (Standard_Input)'Old and then
                     Form (Standard_Input) = Form (Standard_Input)'Old and then
-                    Is_Standard_File (Standard_Input) and then
+                    Is_Standard_Input (Standard_Input) and then
                     (if Status (Standard_Input) = Success then
                         Item'Length >= 0);
 
@@ -627,7 +627,7 @@ is
                      Line_Length (Standard_Output)'Old and then
                   Page_Length (Standard_Output) =
                      Page_Length (Standard_Output)'Old and then
-                  Is_Standard_File (Standard_Output);
+                  Is_Standard_Output (Standard_Output);
 
    --  Function_Get_Line is not supported as reading the file has an effect
    --  and the file status following a read is updated meaning the file
@@ -654,7 +654,7 @@ is
           Post   => Is_Readable (Standard_Input) and then
                     Name (Standard_Input) = Name (Standard_Input)'Old and then
                     Form (Standard_Input) = Form (Standard_Input)'Old and then
-                    Is_Standard_File (Standard_Input) and then
+                    Is_Standard_Input (Standard_Input) and then
                     (if Status (Standard_Input) = Success then
                         Last >= Item'First - 1 and Last <= Item'Last
                      else
@@ -683,6 +683,6 @@ is
                        Line_Length (Standard_Output)'Old and then
                     Page_Length (Standard_Output) =
                        Page_Length (Standard_Output)'Old and then
-                    Is_Standard_File (Standard_Output);
+                    Is_Standard_Output (Standard_Output);
 
 end SPARK.Text_IO;

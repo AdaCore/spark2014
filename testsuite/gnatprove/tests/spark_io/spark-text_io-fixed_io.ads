@@ -55,7 +55,7 @@ package SPARK.Text_IO.Fixed_IO is
                        Name (Standard_Input)'Old and then
                     Form (Standard_Input) =
                        Form (Standard_Input)'Old and then
-                    Is_Standard_File (Standard_Input);
+                    Is_Standard_Input (Standard_Input);
 
    procedure Put (File : in out File_Type;
                   Item : in Num;
@@ -86,7 +86,7 @@ package SPARK.Text_IO.Fixed_IO is
                        Line_Length (Standard_Output)'Old and then
                     Page_Length (Standard_Output) =
                        Page_Length (Standard_Output)'Old and then
-                    Is_Standard_File (Standard_Output);
+                    Is_Standard_Output (Standard_Output);
 
    procedure Get (From   : in  String;
                   Item   : out Fixed_Result;
