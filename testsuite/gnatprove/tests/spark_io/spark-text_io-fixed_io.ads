@@ -40,7 +40,8 @@ package SPARK.Text_IO.Fixed_IO is
    procedure Get (File  : in out File_Type;
                   Item  : out Fixed_Result;
                   Width : in  Field := 0)
-     with Pre  => Is_Readable (File),
+     with Global => null,
+          Pre  => Is_Readable (File),
           Post => Is_Readable (File) and then
                   Name (File) = Name (File)'Old and then
                   Form (File) = Form (File)'Old and then
@@ -61,7 +62,8 @@ package SPARK.Text_IO.Fixed_IO is
                   Fore : in Field := Default_Fore;
                   Aft  : in Field := Default_Aft;
                   Exp  : in Field := Default_Exp)
-     with Pre  => Is_Writable (File) and then Status (File) = Success,
+     with Global => null,
+          Pre  => Is_Writable (File) and then Status (File) = Success,
           Post => Is_Writable (File) and then
                   Name (File) = Name (File)'Old and then
                   Form (File) = Form (File)'Old and then
@@ -88,12 +90,15 @@ package SPARK.Text_IO.Fixed_IO is
 
    procedure Get (From   : in  String;
                   Item   : out Fixed_Result;
-                  Last   : out Positive);
+                  Last   : out Positive)
+     with Global => null;
+
 
    procedure Put (To     : out String;
                   Item   : in Num;
                   Aft    : in Field := Default_Aft;
                   Exp    : in Field := Default_Exp)
-     with Pre => To'Length >= 3 + Aft + (if Exp > 0 then Exp + 1 else 0) and
+     with Global => null,
+          Pre => To'Length >= 3 + Aft + (if Exp > 0 then Exp + 1 else 0) and
                  To'Length >= Num'Image (Item)'Length;
 end SPARK.Text_IO.Fixed_IO;

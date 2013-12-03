@@ -38,7 +38,8 @@ package SPARK.Text_IO.Enumeration_IO is
 
    procedure Get (File : in out File_Type;
                   Item : out Enum_Result)
-     with Pre  => Is_Readable (File),
+     with Global => null,
+          Pre  => Is_Readable (File),
           Post => Is_Readable (File) and then
                   Name (File) = Name (File)'Old and then
                   Form (File) = Form (File)'Old and then
@@ -57,7 +58,8 @@ package SPARK.Text_IO.Enumeration_IO is
                  Item  : in Enum;
                  Width : in Field    := Default_Width;
                  Set   : in Type_Set := Default_Setting)
-     with Pre  => Is_Writable (File) and then Status (File) = Success,
+     with Global => null,
+          Pre  => Is_Writable (File) and then Status (File) = Success,
           Post => Is_Writable (File) and then
                   Name (File) = Name (File)'Old and then
                   Form (File) = Form (File)'Old and then
@@ -83,10 +85,12 @@ package SPARK.Text_IO.Enumeration_IO is
 
    procedure Get (From   : in  String;
                   Item   : out Enum_Result;
-                  Last   : out Positive);
+                  Last   : out Positive)
+     with Global => null;
 
    procedure Put (To     : out String;
                   Item   : in  Enum;
                   Set    : in  Type_Set := Default_Setting)
-     with Pre => To'Length >= Enum'Image (Item)'Length;
+     with Global => null,
+          Pre    => To'Length >= Enum'Image (Item)'Length;
 end SPARK.Text_IO.Enumeration_IO;

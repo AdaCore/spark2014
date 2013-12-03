@@ -39,7 +39,8 @@ package SPARK.Text_IO.Integer_IO is
    procedure Get (File  : in out File_Type;
                   Item  :    out Integer_Result;
                   Width : in     Field := 0)
-     with Pre  => Is_Readable (File),
+     with Global => null,
+          Pre  => Is_Readable (File),
           Post => Is_Readable (File) and then
                   Name (File) = Name (File)'Old and then
                   Form (File) = Form (File)'Old and then
@@ -59,7 +60,8 @@ package SPARK.Text_IO.Integer_IO is
                   Item  : in Num;
                   Width : in Field := Default_Width;
                   Base  : in Number_Base := Default_Base)
-     with Pre  => Is_Writable (File) and then Status (File) = Success,
+     with Global => null,
+          Pre  => Is_Writable (File) and then Status (File) = Success,
           Post => Is_Writable (File) and then
                   Name (File) = Name (File)'Old and then
                   Form (File) = Form (File)'Old and then
@@ -85,11 +87,13 @@ package SPARK.Text_IO.Integer_IO is
 
    procedure Get (From   : in  String;
                   Item   : out Integer_Result;
-                  Last   : out Positive);
+                  Last   : out Positive)
+     with Global => null;
 
    procedure Put (To     : out String;
                   Item   : in Num;
                   Base   : in Number_Base := Default_Base)
-     with  Pre => To'Length >= Num'Image (Item)'Length;
+     with  Global => null,
+          Pre     => To'Length >= Num'Image (Item)'Length;
 
 end SPARK.Text_IO.Integer_IO;
