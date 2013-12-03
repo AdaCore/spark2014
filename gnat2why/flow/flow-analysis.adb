@@ -2479,16 +2479,16 @@ package body Flow.Analysis is
       end loop;
    end Check_Contracts;
 
-   ----------------------------------
-   --  Check_Initializes_Contract  --
-   ----------------------------------
+   --------------------------------
+   -- Check_Initializes_Contract --
+   --------------------------------
 
    procedure Check_Initializes_Contract (FA : in out Flow_Analysis_Graphs) is
       Tracefile : Unbounded_String;
 
       function Find_Entity (E    : Entity_Id;
                             E_In : Entity_Id := Empty)
-                           return Node_Id;
+                            return Node_Id;
       --  Looks through the initializes aspect on FA.Analyzed_Entity
       --  and returns the node which represents E in the
       --  initializes_item. If E_In is not Empty then we look at the
@@ -2498,13 +2498,13 @@ package body Flow.Analysis is
 
       function Node_Id_Set_To_Flow_Id_Set
         (NS : Node_Sets.Set)
-        return Flow_Id_Sets.Set;
+         return Flow_Id_Sets.Set;
       --  Takes a set of Node_Ids and returns a set of the
       --  corresponding Flow_Ids.
 
       function Flow_Id_Set_To_Vertex_Set
         (FS : Flow_Id_Sets.Set)
-        return Vertex_Sets.Set;
+         return Vertex_Sets.Set;
       --  Takes a set of Flow_Ids and returns a set of PDG Vertices
       --  that correspond to these Flow_Ids after having changed
       --  their variants to Final_Value.
@@ -2517,13 +2517,13 @@ package body Flow.Analysis is
       --  tracefile containing all vertices in between (From
       --  and To excluded).
 
-      -------------------
-      --  Find_Entity  --
-      -------------------
+      -----------------
+      -- Find_Entity --
+      -----------------
 
       function Find_Entity (E    : Entity_Id;
                             E_In : Entity_Id := Empty)
-                           return Node_Id
+                            return Node_Id
       is
          Initializes_Contract : constant Node_Id := FA.Initializes_N;
          Needle               : Node_Id := Empty;
@@ -2584,9 +2584,9 @@ package body Flow.Analysis is
          end if;
       end Find_Entity;
 
-      ----------------------------------
-      --  Node_Id_Set_To_Flow_Id_Set  --
-      ----------------------------------
+      --------------------------------
+      -- Node_Id_Set_To_Flow_Id_Set --
+      --------------------------------
 
       function Node_Id_Set_To_Flow_Id_Set
         (NS : Node_Sets.Set)
@@ -2601,13 +2601,13 @@ package body Flow.Analysis is
          return Tmp;
       end Node_Id_Set_To_Flow_Id_Set;
 
-      ---------------------------------
-      --  Flow_Id_Set_To_Vertex_Set  --
-      ---------------------------------
+      -------------------------------
+      -- Flow_Id_Set_To_Vertex_Set --
+      -------------------------------
 
       function Flow_Id_Set_To_Vertex_Set
         (FS : Flow_Id_Sets.Set)
-        return Vertex_Sets.Set
+         return Vertex_Sets.Set
       is
          Tmp : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
       begin
@@ -2619,9 +2619,9 @@ package body Flow.Analysis is
          return Tmp;
       end Flow_Id_Set_To_Vertex_Set;
 
-      -----------------------
-      --  Write_Tracefile  --
-      -----------------------
+      ---------------------
+      -- Write_Tracefile --
+      ---------------------
 
       procedure Write_Tracefile
         (From : Flow_Graphs.Vertex_Id;
