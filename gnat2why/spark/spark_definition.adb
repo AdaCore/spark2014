@@ -35,6 +35,7 @@ with Nlists;                             use Nlists;
 with Opt;                                use type Opt.SPARK_Mode_Type;
 with Sem_Prag;                           use Sem_Prag;
 with Sem_Util;                           use Sem_Util;
+with Sem_Ch12;                           use Sem_Ch12;
 with Sinfo;                              use Sinfo;
 with Sinput;                             use Sinput;
 with Snames;                             use Snames;
@@ -2339,6 +2340,9 @@ package body SPARK_Definition is
       --  Mark types, subprograms and objects from a package with external
       --  axioms.
 
+      procedure Mark_Generic_Parameters_External_Axioms (Assoc : List_Id);
+      --  Mark actual parameters of a package with external axioms.
+
       ---------------------------------------------
       -- Declare_In_Package_With_External_Axioms --
       ---------------------------------------------
@@ -2407,6 +2411,39 @@ package body SPARK_Definition is
          end loop;
       end Declare_In_Package_With_External_Axioms;
 
+      ---------------------------------------------
+      -- Mark_Generic_Parameters_External_Axioms --
+      ---------------------------------------------
+
+      procedure Mark_Generic_Parameters_External_Axioms (Assoc : List_Id) is
+         Cur_Assoc : Node_Id := First (Assoc);
+      begin
+         while Present (Cur_Assoc) loop
+            declare
+               Actual : constant Node_Id :=
+                 Explicit_Generic_Actual_Parameter (Cur_Assoc);
+            begin
+
+               --  Operators as actual of packages with external axioms are
+               --  not supported yet.
+
+               if Ekind (Entity (Actual)) = E_Operator then
+                  Error_Msg_N
+                    ("operator in instance with external axioms not supported",
+                     Actual);
+                  Error_Msg_N
+                    ("\\ consider using a wrapper instead", Actual);
+               end if;
+
+               --  Mark the entity of the actual
+
+               Mark_Entity (Entity (Actual));
+            end;
+
+            Next (Cur_Assoc);
+         end loop;
+      end Mark_Generic_Parameters_External_Axioms;
+
       Save_SPARK_Pragma : constant Node_Id := Current_SPARK_Pragma;
       Id         : constant Entity_Id := Defining_Entity (N);
       Vis_Decls  : constant List_Id :=
@@ -2425,6 +2462,18 @@ package body SPARK_Definition is
          --  translate into Why3.
 
          Entity_List.Append (Id);
+
+         --  If Id is a package instance, mark its actual parameters
+
+         declare
+            G_Parent : constant Node_Id :=
+              Generic_Parent (Get_Package_Spec (Id));
+         begin
+            if Present (G_Parent) then
+               Mark_Generic_Parameters_External_Axioms
+                 (Generic_Associations (Get_Package_Instantiation_Node (Id)));
+            end if;
+         end;
 
          --  Mark types and subprograms from packages with external axioms as
          --  in SPARK or not.
