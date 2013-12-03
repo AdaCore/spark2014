@@ -1,8 +1,8 @@
 arrays.adb:4:34: info: length check proved
 arrays.adb:8:26: info: overflow check proved
-arrays.adb:53:21: info: length check proved
-arrays.adb:59:21: info: length check proved
-arrays.adb:60:21: info: range check proved
+arrays.adb:62:21: info: length check proved
+arrays.adb:68:21: info: length check proved
+arrays.adb:69:21: info: range check proved
 arrays.ads:5:34: info: length check proved
 arrays.ads:14:19: info: postcondition proved
 arrays.ads:15:31: info: length check proved
@@ -15,13 +15,14 @@ arrays.ads:39:19: info: postcondition proved
 arrays.ads:45:19: info: postcondition proved
 arrays.ads:49:19: info: postcondition proved
 arrays.ads:53:19: info: postcondition proved
-arrays.ads:53:32: info: length check proved
 arrays.ads:57:19: info: postcondition proved
 arrays.ads:57:32: info: length check proved
-arrays.ads:57:53: info: range check proved
 arrays.ads:61:19: info: postcondition proved
-arrays.ads:61:37: info: range check proved
-arrays.ads:61:52: info: range check proved
+arrays.ads:61:32: info: length check proved
+arrays.ads:61:53: info: range check proved
 arrays.ads:65:19: info: postcondition proved
-arrays.ads:65:43: info: range check proved
-arrays.ads:66:43: info: range check proved
+arrays.ads:65:37: info: range check proved
+arrays.ads:65:52: info: range check proved
+arrays.ads:69:19: info: postcondition proved
+arrays.ads:69:43: info: range check proved
+arrays.ads:70:43: info: range check proved

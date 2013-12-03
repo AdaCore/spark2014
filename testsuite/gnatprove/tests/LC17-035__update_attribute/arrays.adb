@@ -48,6 +48,15 @@ package body Arrays is
       return Arr;
    end F5;
 
+   function F6 (Arr_In: Array_1D) return Array_1D is
+      Arr : Array_1D := Arr_In;
+   begin
+      Arr(1) := 2;
+      Arr(2) := 2;
+      Arr(5) := 2;
+      return Arr;
+   end F6;
+
    procedure My_Init_Array (A: out Array_1D) is
    begin
       A := Array_1D'(others => 1);

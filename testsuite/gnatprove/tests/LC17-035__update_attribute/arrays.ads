@@ -48,6 +48,10 @@ package Arrays is
    function F5 (Arr_In : Array_1D) return Array_1D
      with Post => (F5'Result = Arr_In'Update(2 => 1));
 
+   --  multiple choices
+   function F6 (Arr_In : Array_1D) return Array_1D
+     with Post => (F6'Result = Arr_In'Update(1 .. 2 | 5 => 2));
+
    --  prefix is aggregate
    procedure My_Init_Array (A: out Array_1D)
      with Post => A = Array_1D'(others => 1)'Update(3 => 2, 4..5 => 3);
