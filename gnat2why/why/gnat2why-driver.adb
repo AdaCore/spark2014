@@ -66,6 +66,7 @@ with Gnat2Why_Args;
 with Gnat2Why.Subprograms;   use Gnat2Why.Subprograms;
 with Gnat2Why.Types;         use Gnat2Why.Types;
 with Gnat2Why.Util;          use Gnat2Why.Util;
+with Gnat2Why.External_Axioms; use Gnat2Why.External_Axioms;
 
 pragma Warnings (Off, "unit ""Why.Atree.Treepr"" is not referenced");
 with Why.Atree.Treepr;  --  To force the link of debug routines (wpn, wpt)
