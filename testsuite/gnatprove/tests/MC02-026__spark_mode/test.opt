@@ -1,0 +1,1 @@
+ALL XFAIL error issued although SPARK_Mode is Off (MC02-026)
