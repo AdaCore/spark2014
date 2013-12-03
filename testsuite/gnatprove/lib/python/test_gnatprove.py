@@ -10,16 +10,12 @@ from gnatpython.mainloop import (MainLoop, add_mainloop_options,
                                  generate_run_testcase,
                                  setup_result_dir)
 from gnatpython.testdriver import add_run_test_options
-from gnatpython.testdriver import (TestRunner, IS_STATUS_FAILURE)
 from gnatpython.reports import ReportDiff
-from gnatpython.fileutils import (split_file, diff)
-import re
-import logging
-import json
 
 from glob import glob
 
 import os
+
 
 def run_testsuite(test_driver):
     """Run the testsuite
@@ -31,13 +27,13 @@ def run_testsuite(test_driver):
     env = Env()
 
     if options.quick_run:
-      os.environ["quick"] = "true"
+        os.environ["quick"] = "true"
     if options.vc_timeout:
-      os.environ["vc_timeout"] = str(options.vc_timeout)
+        os.environ["vc_timeout"] = str(options.vc_timeout)
     if options.debug:
-      os.environ["debug"] = "true"
+        os.environ["debug"] = "true"
     if options.verbose:
-      os.environ["verbose"] = "true"
+        os.environ["verbose"] = "true"
 
     test_list = [t for t in filter_list('tests/*', options.run_test)
                  if os.path.isdir(t)]
@@ -59,7 +55,9 @@ def run_testsuite(test_driver):
     # Write report
     with open(options.output_dir + '/discs', 'w') as discs_f:
         discs_f.write(" ".join(discs))
-    ReportDiff(options.output_dir, options.old_output_dir).txt_image(options.report_file)
+    ReportDiff(options.output_dir,
+               options.old_output_dir).txt_image(options.report_file)
+
 
 def filter_list(pattern, run_test=""):
     """Compute the list of test matching pattern
@@ -72,10 +70,11 @@ def filter_list(pattern, run_test=""):
     else:
         return [test for test in test_list if run_test in test]
 
+
 def __parse_options():
     """Parse command lines options"""
     m = Main(add_targets_options=False)
-    add_mainloop_options(m,extended_options=True)
+    add_mainloop_options(m, extended_options=True)
     add_run_test_options(m)
     m.add_option("--diffs", dest="view_diffs", action="store_true",
                  default=False, help="show diffs on stdout")

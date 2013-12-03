@@ -7,8 +7,6 @@ import os
 import sys
 import re
 import glob
-import shutil
-import json
 
 max_steps = 200
 default_vc_timeout = 120
@@ -26,20 +24,25 @@ os.chdir(TESTDIR)
 
 from gnatpython.ex import Run
 
+
 def quick_mode():
     return "quick" in os.environ and os.environ["quick"] == "true"
+
 
 def debug_mode():
     return "debug" in os.environ and os.environ["debug"] == "true"
 
+
 def verbose_mode():
     return "verbose" in os.environ and os.environ["verbose"] == "true"
+
 
 def vc_timeout():
     if "vc_timeout" in os.environ:
         return int(os.environ["vc_timeout"])
     else:
         return default_vc_timeout
+
 
 def xfail_test():
     if os.path.exists("test.opt"):
@@ -50,6 +53,7 @@ def xfail_test():
                 if m:
                     return True
     return False
+
 
 def sort_key_for_errors(line):
     """given a line of output, return a key that can be used for sorting
@@ -78,10 +82,12 @@ def sort_key_for_errors(line):
         else:
             return ("zzzzz", 0, 0, line)
 
+
 def print_sorted(strlist):
     strlist.sort(key=sort_key_for_errors)
     for line in strlist:
         print line
+
 
 def cat(filename, force_in_quick_mode=False, sort=False):
     """Dump the content of a file on stdout
@@ -98,6 +104,7 @@ def cat(filename, force_in_quick_mode=False, sort=False):
                 else:
                     print f.read()
 
+
 def ls(directory=None):
     """ls wrapper for the testsuite
 
@@ -110,6 +117,7 @@ def ls(directory=None):
         cmd = ["ls"]
     process = Run(cmd)
     print_sorted(str.splitlines(process.out))
+
 
 def gnat2why(src, opt=None):
     """Invoke gnat2why
@@ -135,6 +143,7 @@ def gnat2why(src, opt=None):
     else:
         print_sorted(str.splitlines(process.out))
 
+
 def altergo(src, timeout=10, opt=None):
     """Invoke alt-ergo with why3-cpulimit wrapper
 
@@ -148,6 +157,7 @@ def altergo(src, timeout=10, opt=None):
     cmd += [src]
     process = Run(cmd)
     print process.out
+
 
 def why(src, opt=None):
     """Invoke why
@@ -163,6 +173,7 @@ def why(src, opt=None):
     if process.status:
         print process.out
 
+
 def gnatprove_(opt=["-P", "test.gpr"]):
     """Invoke gnatprove, and in case of success return list of output lines
 
@@ -177,7 +188,8 @@ def gnatprove_(opt=["-P", "test.gpr"]):
             f_prj.write('project Test is\n')
             f_prj.write('  package Compiler is\n')
             f_prj.write('    for Default_Switches ("Ada") use ("-gnatws");\n')
-            f_prj.write('    for Local_Configuration_Pragmas use "test.adc";\n')
+            f_prj.write('    for Local_Configuration_Pragmas '
+                        + 'use "test.adc";\n')
             f_prj.write('  end Compiler;\n')
             f_prj.write('end Test;\n')
         with open("test.adc", 'w') as f_adc:
@@ -215,6 +227,7 @@ def gnatprove_(opt=["-P", "test.gpr"]):
         strlist = str.splitlines(process.out)
         print_sorted(strlist)
 
+
 def gnatprove(opt=["-P", "test.gpr"]):
     """Invoke gnatprove
 
@@ -223,18 +236,20 @@ def gnatprove(opt=["-P", "test.gpr"]):
     """
     gnatprove_(opt)
 
-def prove(opt=None, steps=max_steps, procs=parallel_procs,\
+
+def prove(opt=None, steps=max_steps, procs=parallel_procs,
           vc_timeout=vc_timeout(), mode="prove"):
     """Call gnatprove with standard options"""
-    fullopt  = ["--report=all", "--warnings=on", "-P", "test.gpr", "--quiet"]
-    fullopt += ["--timeout=%d"%(vc_timeout)]
-    fullopt += ["--steps=%d"%(steps)]
-    fullopt += ["--mode=%s"%(mode)]
-    fullopt += ["-j%d"%(procs)]
+    fullopt = ["--report=all", "--warnings=on", "-P", "test.gpr", "--quiet"]
+    fullopt += ["--timeout=%d" % (vc_timeout)]
+    fullopt += ["--steps=%d" % (steps)]
+    fullopt += ["--mode=%s" % (mode)]
+    fullopt += ["-j%d" % (procs)]
     # Add opt last, so that if may include switch -cargs
     if opt is not None:
         fullopt += opt
     gnatprove(fullopt)
+
 
 def do_flow(opt=None, procs=parallel_procs):
     """Call gnatprove with standard options for flow"""
@@ -243,14 +258,17 @@ def do_flow(opt=None, procs=parallel_procs):
     opt += ["--debug"]
     prove(opt, mode="flow")
 
-def prove_all(opt=None, steps=max_steps, procs=parallel_procs,\
+
+def prove_all(opt=None, steps=max_steps, procs=parallel_procs,
               vc_timeout=vc_timeout()):
     """Call gnatprove with standard options to prove all VCs"""
     prove(opt, steps, procs, vc_timeout, mode="all")
 
+
 def clean():
     """Call gnatprove with standard options to clean proof artifacts"""
     prove(opt=["--clean"])
+
 
 def to_list(arg):
     """Convert to list
@@ -266,6 +284,7 @@ def to_list(arg):
     else:
         return [arg]
 
+
 def grep(regex, strlist, invert=False):
     """Filter a string list by a regex
 
@@ -278,6 +297,7 @@ def grep(regex, strlist, invert=False):
         m = re.match(p, line)
         if (invert and not m) or (not invert and m):
             print line
+
 
 def check_dot_files(opt=None):
     """Call do_flow"""
