@@ -16,6 +16,7 @@ copy.adb:173:32: warning: range check might fail
 copy.adb:180:44: warning: range check might fail
 copy.adb:181:32: warning: range check might fail
 copy.adb:219:43: warning: range check might fail
+copy.adb:268:7: warning: loop invariant might fail after first iteration
 copy.adb:282:34: warning: overflow check might fail
 copy.adb:290:73: warning: range check might fail
 copy.adb:296:16: warning: precondition might fail

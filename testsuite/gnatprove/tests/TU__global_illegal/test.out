@@ -6,7 +6,7 @@ global_illegal.ads:58:22: duplicate global mode (SPARK RM 6.1.4(9))
 global_illegal.ads:59:22: duplicate global mode (SPARK RM 6.1.4(9))
 global_illegal.ads:60:22: duplicate global mode (SPARK RM 6.1.4(9))
 global_illegal.ads:61:22: duplicate global mode (SPARK RM 6.1.4(9))
-global_illegal.ads:61:34: global item cannot reference formal parameter (SPARK RM 6.1.4(6))
+global_illegal.ads:61:34: global item cannot reference parameter of subprogram "P2" (SPARK RM 6.1.4(6))
 global_illegal.ads:69:32: duplicate global item (SPARK RM 6.1.4(11))
 global_illegal.ads:71:32: duplicate global item (SPARK RM 6.1.4(11))
 global_illegal.ads:86:26: cannot mix null and non-null global items
