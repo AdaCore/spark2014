@@ -100,7 +100,8 @@ package Flow.Analysis is
      (FA : in out Flow_Analysis_Graphs);
    --  Finds exports derived from global variables with mode Proof_In.
    --
-   --  Complexity is O(N)
+   --  Complexity is O(N^2) - (due to path search on each element of the
+   --  precomputed dependency map)
 
    procedure Check_Contracts (FA : in out Flow_Analysis_Graphs);
    --  Check the given depends against the reality. If there is no
