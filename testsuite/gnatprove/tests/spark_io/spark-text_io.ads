@@ -428,6 +428,8 @@ is
                    Is_Readable (File)  = Is_Readable (File)'Old and
                    Name (File) = Name (File)'Old and
                    Form (File) = Form (File)'Old and
+                   Line_Length (File) = Line_Length (File)'Old and
+                   Page_Length (File) = Page_Length (File)'Old and
                    Is_Standard_File (File) = Is_Standard_File (File)'Old;
 
    procedure Set_Col (To   : in Positive_Count)
@@ -441,6 +443,10 @@ is
                      Form (Standard_Output) = Form (Standard_Output)'Old and
                      Is_Open (Standard_Output) and
                      Mode (Standard_Output) = Out_File and
+                     Line_Length (Standard_Output) =
+                        Line_Length (Standard_Output)'Old and
+                     Page_Length (Standard_Output) =
+                        Page_Length (Standard_Output)'Old and
                      Is_Standard_Output (Standard_Output);
 
    procedure Set_Line (File : in out File_Type; To : in Positive_Count)
@@ -454,6 +460,8 @@ is
                   (Is_Open (File) and Mode (File) = Mode (File)'Old and
                    Name (File) = Name (File)'Old and
                    Form (File) = Form (File)'Old and
+                   Line_Length (File) = Line_Length (File)'Old and
+                   Page_Length (File) = Page_Length (File)'Old and
                    Is_Standard_File (File) = Is_Standard_File (File)'Old);
 
    procedure Set_Line (To   : in Positive_Count)
@@ -467,6 +475,10 @@ is
                    Mode (Standard_Output) = Out_File and
                    Name (Standard_Output) = Name (Standard_Output)'Old and
                    Form (Standard_Output) = Form (Standard_Output)'Old and
+                     Line_Length (Standard_Output) =
+                        Line_Length (Standard_Output)'Old and
+                     Page_Length (Standard_Output) =
+                        Page_Length (Standard_Output)'Old and
                    Is_Standard_Output (Standard_Output);
 
    function Col (File : in File_Type) return Count_Result
