@@ -2645,29 +2645,27 @@ package body Flow.Control_Flow_Graph is
                --  our states).
 
                The_Out : Flow_Id;
-               Opt_In  : Optional_Flow_Id_Set;
-               ODM     : Optional_Dependency_Maps.Map;
+               The_In  : Flow_Id_Sets.Set;
+               DM      : Dependency_Maps.Map;
             begin
                if Present (FA.Initializes_N) then
-                  ODM := Parse_Initializes (FA.Initializes_N);
-                  for C in ODM.Iterate loop
-                     The_Out := Optional_Dependency_Maps.Key (C);
-                     Opt_In  := Optional_Dependency_Maps.Element (C);
+                  DM := Parse_Initializes (FA.Initializes_N);
+                  for C in DM.Iterate loop
+                     The_Out := Dependency_Maps.Key (C);
+                     The_In  := Dependency_Maps.Element (C);
 
-                     if Opt_In.Exists then
-                        for G of Opt_In.The_Set loop
-                           if not Global_Ins.Contains (G) then
-                              Global_Ins.Include (G);
-                              Create_Initial_And_Final_Vertices
-                                (F             => G,
-                                 Mode          => Mode_In,
-                                 Uninitialized =>
-                                   not Is_Initialized_At_Elaboration
-                                   (Get_Direct_Mapping_Id (G)),
-                                 FA            => FA);
-                           end if;
-                        end loop;
-                     end if;
+                     for G of The_In loop
+                        if not Global_Ins.Contains (G) then
+                           Global_Ins.Include (G);
+                           Create_Initial_And_Final_Vertices
+                             (F             => G,
+                              Mode          => Mode_In,
+                              Uninitialized =>
+                                not Is_Initialized_At_Elaboration
+                                (Get_Direct_Mapping_Id (G)),
+                              FA            => FA);
+                        end if;
+                     end loop;
 
                      if Present (The_Out) then
                         Package_Writes.Include (The_Out);

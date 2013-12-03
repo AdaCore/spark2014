@@ -21,9 +21,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Atree;    use Atree;
-with Sinfo;    use Sinfo;
-with Snames;   use Snames;
 with Nlists;   use Nlists;
 with Sem_Util; use Sem_Util;
 
@@ -35,11 +32,10 @@ with Why;
 
 package body Flow_Dependency_Maps is
 
-   use Optional_Dependency_Maps;
    use Dependency_Maps;
 
    function Parse_Raw_Dependency_Map (N : Node_Id)
-                                      return Optional_Dependency_Maps.Map
+                                      return Dependency_Maps.Map
      with Pre => Nkind (N) = N_Pragma and then
                  Get_Pragma_Id (Chars (Pragma_Identifier (N))) in
                    Pragma_Depends |
@@ -54,7 +50,7 @@ package body Flow_Dependency_Maps is
    ------------------------------
 
    function Parse_Raw_Dependency_Map (N : Node_Id)
-                                      return Optional_Dependency_Maps.Map
+                                      return Dependency_Maps.Map
    is
       use type Ada.Containers.Count_Type;
 
@@ -65,7 +61,7 @@ package body Flow_Dependency_Maps is
         First (Pragma_Argument_Associations (N));
       pragma Assert (Nkind (PAA) = N_Pragma_Argument_Association);
 
-      M : Optional_Dependency_Maps.Map := Optional_Dependency_Maps.Empty_Map;
+      M : Dependency_Maps.Map := Dependency_Maps.Empty_Map;
 
       Row : Node_Id;
       LHS : Node_Id;
@@ -90,7 +86,7 @@ package body Flow_Dependency_Maps is
          when N_Identifier =>
             --  Aspect => Foobar
             M.Include (Direct_Mapping_Id (Expression (PAA)),
-                       (Exists => False));
+                       Flow_Id_Sets.Empty_Set);
             return M;
 
          when others =>
@@ -105,7 +101,7 @@ package body Flow_Dependency_Maps is
       Row := First (Expressions (Expression (PAA)));
       while Present (Row) loop
          M.Include (Direct_Mapping_Id (Unique_Entity (Entity (Row))),
-                    Optional_Flow_Id_Set'(Exists => False));
+                    Flow_Id_Sets.Empty_Set);
 
          Row := Next (Row);
       end loop;
@@ -175,15 +171,15 @@ package body Flow_Dependency_Maps is
          if Outputs.Length = 0 and then Inputs.Length >= 1 then
             --  The insert is on purpose - we want this to fail if we
             --  manage to obtain more than one null derives.
-            M.Insert (Null_Flow_Id, (True, Flow_Id_Sets.Empty_Set));
+            M.Insert (Null_Flow_Id, Flow_Id_Sets.Empty_Set);
             for Input of Inputs loop
-               M (Null_Flow_Id).The_Set.Include (Input);
+               M (Null_Flow_Id).Include (Input);
             end loop;
          else
             for Output of Outputs loop
-               M.Include (Output, (True, Flow_Id_Sets.Empty_Set));
+               M.Include (Output, Flow_Id_Sets.Empty_Set);
                for Input of Inputs loop
-                  M (Output).The_Set.Include (Input);
+                  M (Output).Include (Input);
                end loop;
             end loop;
          end if;
@@ -191,7 +187,7 @@ package body Flow_Dependency_Maps is
          Row := Next (Row);
       end loop;
 
-      --  Print_Optional_Dependency_Map (M);
+      --  Print_Dependency_Map (M);
 
       return M;
    end Parse_Raw_Dependency_Map;
@@ -203,17 +199,8 @@ package body Flow_Dependency_Maps is
    function Parse_Depends (N : Node_Id)
                            return Dependency_Maps.Map
    is
-      M : Dependency_Maps.Map := Dependency_Maps.Empty_Map;
    begin
-      for C in Parse_Raw_Dependency_Map (N).Iterate loop
-         declare
-            A : constant Flow_Id          := Key (C);
-            B : constant Flow_Id_Sets.Set := Element (C).The_Set;
-         begin
-            M.Include (A, B);
-         end;
-      end loop;
-      return M;
+      return Parse_Raw_Dependency_Map (N);
    end Parse_Depends;
 
    -----------------------
@@ -221,7 +208,7 @@ package body Flow_Dependency_Maps is
    -----------------------
 
    function Parse_Initializes (N : Node_Id)
-                               return Optional_Dependency_Maps.Map
+                               return Dependency_Maps.Map
    is
    begin
       return Parse_Raw_Dependency_Map (N);

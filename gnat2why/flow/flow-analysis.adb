@@ -2691,38 +2691,36 @@ package body Flow.Analysis is
       end if;
 
       declare
-         ODM                 : Optional_Dependency_Maps.Map;
+         DM                  : constant Dependency_Maps.Map :=
+           Parse_Initializes (FA.Initializes_N);
+
          The_Out             : Flow_Id;
-         Opt_In              : Optional_Flow_Id_Set;
+         The_Ins             : Flow_Id_Sets.Set;
          All_Contract_Outs   : Flow_Id_Sets.Set;
          All_Contract_Ins    : Flow_Id_Sets.Set;
          All_Actual_Ins      : Flow_Id_Sets.Set;
          Found_Uninitialized : Boolean := False;
       begin
-         ODM := Parse_Initializes (FA.Initializes_N);
-
          --  Check if everything in the RHS of an initialization_item
          --  has been initializes.
-         for C in ODM.Iterate loop
-            The_Out := Optional_Dependency_Maps.Key (C);
-            Opt_In  := Optional_Dependency_Maps.Element (C);
+         for C in DM.Iterate loop
+            The_Out := Dependency_Maps.Key (C);
+            The_Ins := Dependency_Maps.Element (C);
 
-            if Opt_In.Exists then
-               for G of Opt_In.The_Set loop
-                  if not Is_Initialized_At_Elaboration (G) then
-                     Error_Msg_Flow
-                       (FA        => FA,
-                        Tracefile => Tracefile,
-                        Msg       => "# must be initialized at elaboration",
-                        N         => Find_Entity
-                          (E    => Get_Direct_Mapping_Id (The_Out),
-                           E_In => Get_Direct_Mapping_Id (G)),
-                        F1        => G,
-                        Tag       => "uninitialized");
-                     Found_Uninitialized := True;
-                  end if;
-               end loop;
-            end if;
+            for G of The_Ins loop
+               if not Is_Initialized_At_Elaboration (G) then
+                  Error_Msg_Flow
+                    (FA        => FA,
+                     Tracefile => Tracefile,
+                     Msg       => "# must be initialized at elaboration",
+                     N         => Find_Entity
+                       (E    => Get_Direct_Mapping_Id (The_Out),
+                        E_In => Get_Direct_Mapping_Id (G)),
+                     F1        => G,
+                     Tag       => "uninitialized");
+                  Found_Uninitialized := True;
+               end if;
+            end loop;
          end loop;
 
          if Found_Uninitialized then
@@ -2733,9 +2731,10 @@ package body Flow.Analysis is
             return;
          end if;
 
-         for C in ODM.Iterate loop
-            The_Out := Optional_Dependency_Maps.Key (C);
-            Opt_In  := Optional_Dependency_Maps.Element (C);
+         for C in DM.Iterate loop
+            The_Out := Dependency_Maps.Key (C);
+            The_Ins := Dependency_Maps.Element (C);
+
             All_Contract_Outs := Flow_Id_Sets.Empty_Set;
             All_Contract_Ins  := Flow_Id_Sets.Empty_Set;
             All_Actual_Ins    := Flow_Id_Sets.Empty_Set;
@@ -2747,16 +2746,14 @@ package body Flow.Analysis is
                   S    => FA.B_Scope));
 
             --  Down project the RHS of an initialization_item
-            if Opt_In.Exists then
-               for G of Opt_In.The_Set loop
-                  All_Contract_Ins.Union
-                    (Node_Id_Set_To_Flow_Id_Set
-                       (Down_Project
-                          (Vars => Node_Sets.To_Set
-                             (Get_Direct_Mapping_Id (G)),
-                           S    => FA.B_Scope)));
-               end loop;
-            end if;
+            for G of The_Ins loop
+               All_Contract_Ins.Union
+                 (Node_Id_Set_To_Flow_Id_Set
+                    (Down_Project
+                       (Vars => Node_Sets.To_Set
+                          (Get_Direct_Mapping_Id (G)),
+                        S    => FA.B_Scope)));
+            end loop;
 
             --  Populate the All_Actual_Outs and All_Actual_Ins sets
             for O in FA.Dependency_Map.Iterate loop
@@ -2776,9 +2773,7 @@ package body Flow.Analysis is
             --  Raise warnings for actual inputs that are not
             --  mentioned by the Initializes.
             for Actual_In of All_Actual_Ins loop
-               if Opt_In.Exists
-                 and then not All_Contract_Ins.Contains (Actual_In)
-               then
+               if not All_Contract_Ins.Contains (Actual_In) then
                   Error_Msg_Flow
                     (FA        => FA,
                      Tracefile => Tracefile,
