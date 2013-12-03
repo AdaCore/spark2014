@@ -202,9 +202,6 @@ is
                      Form (File) = Form (File)'Old and
                      not Is_Standard_File (File));
 
-   --  Procedure Reset without a Mode parameter is restricted to operating on
-   --  files of Mode In_File. For any other file mode the procedure Reset with
-   --  the Mode parameter must be used.
    procedure Reset (File : in out File_Type)
      with
        Global => null,
