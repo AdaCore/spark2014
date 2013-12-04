@@ -72,6 +72,94 @@ package body Flow.Control_Flow_Graph is
    --  Connection_Maps --
    ----------------------
 
+   --  The flow graph is produced using two datastructures,
+   --  Graph_Connections and a map Union_Id -> Graph_Connections.
+   --
+   --  Any node in the AST may be represented by some vertices in the flow
+   --  graph. For example if N is a N_Subprogram_Body and its
+   --  Handled_Statement_Sequence contains the following statement:
+   --
+   --     if X > 0 then
+   --        X := X - 1;
+   --     else
+   --        X := 0;
+   --     end if;
+   --
+   --  Lets start at the bottom. We recurse down the tree and at some point
+   --  we will call Do_Assignment_Statement for each of the two
+   --  assignments. Every Do_FOOBAR procedure takes a FOOBAR node, and
+   --  fills in the connection map for that node.
+   --
+   --  So, for the first assinment statement (assume this node is Ass_1 in
+   --  the AST) we create a vertex (but no edges!) in the flow graph. We
+   --  also create an entry in the connection map from Ass_1 to a
+   --  connection map with the trivial "unit" connection.
+   --
+   --        GRAPH            CM
+   --    0. [X := X - 1]      Ass_1 -> (0, {0})
+   --
+   --  (Where "0." is the vertex id of the node for "x := x - 1".) Each
+   --  connection map captures a single entry vertex (0 in our example) and
+   --  a set of exit vertices ({0} in our example). Read this as "control
+   --  flow for the node Ass_1 is as follows: control goes into this vertex
+   --  (0) we do one thing and control leaves this node again (0)".
+   --
+   --  Lets process the second assignment statement, our graph and
+   --  connection map now looks like this:
+   --
+   --        GRAPH            CM
+   --    0. [X := X - 1]      Ass_1 -> (0, {0})
+   --    1. [X := 0]          Ass_2 -> (1, {1})
+   --
+   --  We now go up the tree and look at Do_If_Statement. First produce a
+   --  vertex (it will be number "2".) in the graph for the N_If_Statement
+   --  itself. We then assemble the connection map as follows:
+   --
+   --     - The entry point for the if statement is obviously the if
+   --       statement itself (i.e. 2)
+   --
+   --     - We have two ways we can exit from the if statement S: we can
+   --       fall off the end of the if branch (Then_Statements (S)) or the
+   --       else branch (Else_Statements (S)). So the exits for the if
+   --       statement X is the union of all exits of all branches.
+   --
+   --       To determine the exit of one of our branch we simply look into
+   --       the connection map what is recorded for Then_Statements (S) and
+   --       Else_Statements (S). In our case we get Ass_1 and Ass_2, but in
+   --       real life you'd get some kind of List_Id.
+   --
+   --  So now our picture looks like this:
+   --
+   --        GRAPH            CM
+   --    0. [X := X - 1]      Ass_1 -> (0, {0})
+   --    1. [X := 0]          Ass_2 -> (1, {1})
+   --    2. [if X > 0]        S     -> (2, {0, 1})
+   --
+   --  But wait, we still have not added any edges to the flow graph. We
+   --  need to make sure that we have an edge from vertex 2 to entry of the
+   --  Then_Statements (S) and an edge to the Else_Statements (S). The
+   --  Do_If_Statement procedure will also call one of the Linkup
+   --  procedures. These take essentially two argumens: A group of "from"
+   --  points and a single target point and create edges from all "from" to
+   --  the "to".
+   --
+   --  So, we will call:
+   --     Linkup (2, connection_map[then_statements (s)].standard_entry)
+   --     Linkup (2, connection_map[else_statements (s)].standard_entry)
+   --
+   --  And now our graph and connection map looks like this:
+   --
+   --        GRAPH                          CM
+   --            2. [if X > 0]              Ass_1 -> (0, {0})
+   --                /      \               Ass_2 -> (1, {1})
+   --               /        \              S     -> (2, {0, 1})
+   --              /          \
+   --  0. [X := X - 1]     1. [X := 0]
+   --
+   --  Notice how the connection map was not changed by Linkup, but only
+   --  the graph. The connection map for node N can be considered to be a
+   --  "summary for node N and all child nodes".
+
    type Graph_Connections is record
       Standard_Entry : Flow_Graphs.Vertex_Id;
       Standard_Exits : Vertex_Sets.Set;
