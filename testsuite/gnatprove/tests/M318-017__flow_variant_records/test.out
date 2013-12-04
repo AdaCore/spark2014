@@ -1,7 +1,3 @@
-definite.adb:45:07: warning: unused assignment to "G"
-definite.adb:143:09: warning: incorrect dependency "null => X"
-definite.adb:157:23: warning: unused initial value of "X"
-definite.adb:170:04: warning: incorrect dependency "null => X"
 test.adb:40:09: "V.Z" is not initialized
 test.adb:88:32: "X.Reason" is not initialized in "Test_Definite_02"
 test.adb:96:32: warning: "X.Index" might not be initialized in "Test_Definite_03"

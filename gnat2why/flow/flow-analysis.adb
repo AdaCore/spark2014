@@ -1327,6 +1327,13 @@ package body Flow.Analysis is
                         --  confusing.
                         null;
 
+                     elsif Atr.Is_Discriminants_Only_Parameter then
+                        --  These are not there by choice, so the user
+                        --  can't do anything to fix those. If its really
+                        --  unused the non-discriminated part will be
+                        --  ineffective.
+                        null;
+
                      elsif Is_Easily_Printable (Tmp) then
                         Error_Msg_Flow
                           (FA        => FA,

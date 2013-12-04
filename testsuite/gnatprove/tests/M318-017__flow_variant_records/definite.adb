@@ -140,8 +140,7 @@ is
 
    procedure Test_03 (X : out T)
    with Global  => null,
-        Depends => (X => null,
-                    null => X)
+        Depends => (X => null)
    is
    begin
       X := (File_Not_Found, 0);
@@ -154,21 +153,22 @@ is
       X := (File_Not_Found, 0);
    end Test_03_ND;
 
+   pragma Warnings (Off, "unused initial value of ""X""");
    procedure Test_04 (X : in out T;
                       I : in     Integer)
    with Global => null,
-        Depends => (X => I,
+        Depends => (X    => I,
                     null => X)
    is
    begin
       X := (File_Not_Found, I);
    end Test_04;
+   pragma Warnings (On, "unused initial value of ""X""");
 
    procedure Test_05 (X :    out T;
                       I : in     Integer)
    with Global => null,
-   Depends => (X => I,
-               null => X)
+   Depends => (X => I)
    is
    begin
       X := (File_Not_Found, I);
