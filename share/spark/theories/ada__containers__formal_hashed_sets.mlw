@@ -27,6 +27,9 @@ module Ada__containers__formal_hashed_sets__set
   function to_base "inline" (co : set) : set = co
 
   function of_base "inline" (co : set) : set = co
+
+  function bool_eq set set : bool
+  function user_eq set set : bool
 end
 
 module Ada__containers__formal_hashed_sets__length
@@ -71,6 +74,8 @@ module Ada__containers__formal_hashed_sets__cursor
   axiom position_eq2:
     forall co:set, cu:cursor [position co cu].
           position co cu > 0 -> position_inv co (position co cu) = cu
+
+  function bool_eq cursor cursor : bool
 end
 
 module Ada__containers__formal_hashed_sets__no_element

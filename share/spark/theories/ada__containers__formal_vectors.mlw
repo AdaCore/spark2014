@@ -105,6 +105,9 @@ module  Ada__containers__formal_vectors__vector
   function to_base "inline" (co : vector) : vector = co
 
   function of_base "inline" (co : vector) : vector = co
+
+  function bool_eq vector vector : bool
+  function user_eq vector vector : bool
 end
 
 module Ada__containers__formal_vectors__length
@@ -132,6 +135,8 @@ module Ada__containers__formal_vectors__cursor
   use import Ada__containers__formal_vectors__length
 
   type cursor
+
+  function bool_eq cursor cursor : bool
 end
 
 module Ada__containers__formal_vectors__to_index

@@ -26,6 +26,9 @@ module Ada__containers__formal_ordered_maps__map
   function to_base "inline" (co : map) : map = co
 
   function of_base "inline" (co : map) : map = co
+
+  function bool_eq map map : bool
+  function user_eq map map : bool
 end
 
 module Ada__containers__formal_ordered_maps__length
@@ -70,6 +73,8 @@ module Ada__containers__formal_ordered_maps__cursor
   axiom position_eq2:
     forall co:map, cu:cursor [position co cu].
           position co cu > 0 -> position_inv co (position co cu) = cu
+
+  function bool_eq cursor cursor : bool
 end
 
 module Ada__containers__formal_ordered_maps__no_element
