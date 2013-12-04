@@ -1,8 +1,0 @@
-caller_of_liar.ads:4:14: bug: "Add_Three" contains reference to "hidden_liar.secret_var", but no use can be found
-caller_of_liar.ads:4:14: warning: unused global "hidden_liar.secret_var"
-caller_of_liar.ads:4:14: warning: unused initial value of "hidden_liar.secret_var"
-   compilation of caller_of_liar.adb failed
-
-
-gnatprove: error during translation to intermediate language, aborting.
-gprbuild: *** compilation phase failed

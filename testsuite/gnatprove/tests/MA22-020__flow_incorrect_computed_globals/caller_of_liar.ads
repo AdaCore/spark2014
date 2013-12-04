@@ -3,5 +3,6 @@ package Caller_Of_Liar
 is
    procedure Add_Three (X, Y, Z : in     Integer;
                         T       :    out Integer)
-     with Depends => (T => (X, Y, Z));
+     with Global => null,
+          Depends => (T => (X, Y, Z));
 end Caller_Of_Liar;
