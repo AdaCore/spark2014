@@ -81,6 +81,12 @@ package body Flow.Control_Flow_Graph is
      Graph_Connections'(Standard_Entry => Flow_Graphs.Null_Vertex,
                         Standard_Exits => Vertex_Sets.Empty_Set);
 
+   function Trivial_Connection (V : Flow_Graphs.Vertex_Id)
+                               return Graph_Connections
+   is (Graph_Connections'(Standard_Entry => V,
+                          Standard_Exits => Vertex_Sets.To_Set (V)));
+   --  Produce the trivial connection.
+
    function Union_Hash (X : Union_Id) return Ada.Containers.Hash_Type
    is (Ada.Containers.Hash_Type (abs (X)));
 
@@ -773,9 +779,7 @@ package body Flow.Control_Flow_Graph is
 
       --  Control goes in V and of V
       CM.Include (Union_Id (N),
-                  Graph_Connections'
-                    (Standard_Entry => V,
-                     Standard_Exits => Vertex_Sets.To_Set (V)));
+                  Trivial_Connection (V));
    end Do_Assignment_Statement;
 
    -------------------------
@@ -880,9 +884,7 @@ package body Flow.Control_Flow_Graph is
                                    E_Loc   => N),
             V);
          CM.Include (Union_Id (N),
-                     Graph_Connections'
-                       (Standard_Entry => V,
-                        Standard_Exits => Vertex_Sets.To_Set (V)));
+                     Trivial_Connection (V));
 
          CM (Union_Id (L)).Standard_Exits.Include (V);
       end if;
@@ -1486,8 +1488,7 @@ package body Flow.Control_Flow_Graph is
 
             CM.Include
               (Union_Id (Reference),
-               Graph_Connections'(Standard_Entry => V,
-                                  Standard_Exits => Vertex_Sets.To_Set (V)));
+               Trivial_Connection (V));
 
             Augmented_Loop.Append (Union_Id (Reference));
          end loop;
@@ -1970,8 +1971,7 @@ package body Flow.Control_Flow_Graph is
             E_Loc   => N),
          V);
       CM.Include (Union_Id (N),
-                  Graph_Connections'(Standard_Entry => V,
-                                     Standard_Exits => To_Set (V)));
+                  Trivial_Connection (V));
    end Do_Type_Declaration;
 
    ------------------------------------
