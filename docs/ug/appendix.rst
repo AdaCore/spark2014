@@ -378,8 +378,8 @@ Features Not Yet Implemented in Proof
    instance. Instead, a wrapper expression function can be defined that simply
    calls the operator.
 
-Rules and Restrictions that are Not Yet Checked
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Rules and Restrictions Not Yet Checked
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 #. The elaboration order rules described in the |SPARK| Reference
    Manual 7.7 are not currently checked.
