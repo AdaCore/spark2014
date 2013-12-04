@@ -2,7 +2,7 @@ with Types;       use Types;
 
 package Records is
 
-   pragma SPARK_Mode (On);
+   pragma SPARK_Mode (Off);
 
    ----------------------------------------------------------------------------
    -- 'Update Record tests
@@ -37,8 +37,8 @@ package Records is
                                    S3 => R'Old.S3 - 1);
 
    --  aggregate, multiple choices, one association
-   procedure P7(R: in out Rec)
-   with Post => R = Rec'(S1 | S3 => 2, S2 => 3);
+   procedure P7(R: in out Rec);
+--   with Post => R = Rec'(S1 | S3 => 2, S2 => 3);
 
    --  update attribute, multiple choices, one association
    procedure P8(R: in out Rec);

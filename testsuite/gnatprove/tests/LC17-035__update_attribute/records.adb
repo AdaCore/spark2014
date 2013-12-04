@@ -1,5 +1,7 @@
 package body Records is
-
+   
+   pragma SPARK_Mode (Off);
+   
    procedure P1 (R: in out Rec; New_Data: in Integer) is
    begin
       R.S1 := 3;
