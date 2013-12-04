@@ -228,7 +228,9 @@ package body Flow.Control_Flow_Graph.Utility is
            (Ekind (Formal) in E_In_Parameter | E_In_Out_Parameter or else
               Discriminants_Only);
 
-         Tmp_Used := Get_Variable_Set (Actual, FA, Scope => Scope);
+         Tmp_Used := Get_Variable_Set (Actual,
+                                       Scope           => Scope,
+                                       Local_Constants => FA.Local_Constants);
          for F of Tmp_Used loop
             if not Discriminants_Only or else Is_Discriminant (F) then
                A.Variables_Used.Include (F);
@@ -238,11 +240,11 @@ package body Flow.Control_Flow_Graph.Utility is
          pragma Assert
            (Ekind (Formal) in E_Out_Parameter | E_In_Out_Parameter);
          pragma Assert (not Discriminants_Only);
-         Untangle_Assignment_Target (N            => Actual,
-                                     FA           => FA,
-                                     Scope        => Scope,
-                                     Vars_Defined => A.Variables_Defined,
-                                     Vars_Used    => A.Variables_Used);
+         Untangle_Assignment_Target (N               => Actual,
+                                     Scope           => Scope,
+                                     Local_Constants => FA.Local_Constants,
+                                     Vars_Defined    => A.Variables_Defined,
+                                     Vars_Used       => A.Variables_Used);
       end if;
 
       Add_Volatile_Effects (A);
@@ -428,9 +430,10 @@ package body Flow.Control_Flow_Graph.Utility is
 
       A.Variables_Defined := Flow_Id_Sets.To_Set (F);
       if Present (DI) then
-         A.Variables_Used := Get_Variable_Set (A.Default_Init_Val,
-                                               FA    => FA,
-                                               Scope => Scope);
+         A.Variables_Used := Get_Variable_Set
+           (A.Default_Init_Val,
+            Scope           => Scope,
+            Local_Constants => FA.Local_Constants);
       end if;
 
       Add_Volatile_Effects (A);

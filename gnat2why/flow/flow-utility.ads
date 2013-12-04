@@ -78,8 +78,8 @@ package Flow.Utility is
    --  whether user-defined or generated.
 
    function Get_Variable_Set (N                : Node_Id;
-                              FA               : Flow_Analysis_Graphs;
                               Scope            : Flow_Scope;
+                              Local_Constants  : Node_Sets.Set;
                               Reduced          : Boolean := False;
                               Allow_Statements : Boolean := False)
                               return Flow_Id_Sets.Set;
@@ -94,8 +94,8 @@ package Flow.Utility is
    --  parameters may be set to provide a detailed instruction.
 
    function Get_Variable_Set (L                : List_Id;
-                              FA               : Flow_Analysis_Graphs;
                               Scope            : Flow_Scope;
+                              Local_Constants  : Node_Sets.Set;
                               Reduced          : Boolean := False;
                               Allow_Statements : Boolean := False)
                               return Flow_Id_Sets.Set;
@@ -119,11 +119,11 @@ package Flow.Utility is
    --  always returns the full view.
 
    procedure Untangle_Assignment_Target
-     (N            : Node_Id;
-      FA           : Flow_Analysis_Graphs;
-      Scope        : Flow_Scope;
-      Vars_Defined : out Flow_Id_Sets.Set;
-      Vars_Used    : out Flow_Id_Sets.Set)
+     (N               : Node_Id;
+      Scope           : Flow_Scope;
+      Local_Constants : Node_Sets.Set;
+      Vars_Defined    : out Flow_Id_Sets.Set;
+      Vars_Used       : out Flow_Id_Sets.Set)
      with Pre => Nkind (N) in N_Identifier |
                               N_Expanded_Name |
                               N_Selected_Component |

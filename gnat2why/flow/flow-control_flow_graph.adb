@@ -746,14 +746,14 @@ package body Flow.Control_Flow_Graph is
    begin
       --  Work out which variables we use and define.
       V_Used_RHS := Get_Variable_Set (Expression (N),
-                                      FA    => FA,
-                                      Scope => FA.B_Scope);
+                                      Scope           => FA.B_Scope,
+                                      Local_Constants => FA.Local_Constants);
 
-      Untangle_Assignment_Target (N            => Name (N),
-                                  FA           => FA,
-                                  Scope        => FA.B_Scope,
-                                  Vars_Used    => V_Used_LHS,
-                                  Vars_Defined => V_Def_LHS);
+      Untangle_Assignment_Target (N               => Name (N),
+                                  Scope           => FA.B_Scope,
+                                  Local_Constants => FA.Local_Constants,
+                                  Vars_Used       => V_Used_LHS,
+                                  Vars_Defined    => V_Def_LHS);
 
       if Debug_Print_Assignment_Def_Use_Sets_And_Tree then
          Print_Node_Subtree (N);
@@ -796,8 +796,8 @@ package body Flow.Control_Flow_Graph is
         (Direct_Mapping_Id (N),
          Make_Basic_Attributes (Var_Use => Get_Variable_Set
                                   (Expression (N),
-                                   FA    => FA,
-                                   Scope => FA.B_Scope),
+                                   Scope           => FA.B_Scope,
+                                   Local_Constants => FA.Local_Constants),
                                 Loops   => Ctx.Current_Loops,
                                 E_Loc   => N),
          V);
@@ -874,8 +874,8 @@ package body Flow.Control_Flow_Graph is
            (Direct_Mapping_Id (N),
             Make_Basic_Attributes (Var_Use => Get_Variable_Set
                                      (Condition (N),
-                                      FA    => FA,
-                                      Scope => FA.B_Scope),
+                                      Scope           => FA.B_Scope,
+                                      Local_Constants => FA.Local_Constants),
                                    Loops   => Ctx.Current_Loops,
                                    E_Loc   => N),
             V);
@@ -937,9 +937,10 @@ package body Flow.Control_Flow_Graph is
         (Direct_Mapping_Id (Ret_Entity),
          Make_Extended_Return_Attributes
               (Var_Def         => Flatten_Variable (FA.Analyzed_Entity),
-               Var_Use         => Get_Variable_Set (Ret_Object,
-                                                    FA    => FA,
-                                                    Scope => FA.B_Scope),
+               Var_Use         => Get_Variable_Set
+                 (Ret_Object,
+                  Scope           => FA.B_Scope,
+                  Local_Constants => FA.Local_Constants),
                Object_Returned => Ret_Object,
                Loops           => Ctx.Current_Loops,
                E_Loc           => Ret_Entity),
@@ -1018,8 +1019,8 @@ package body Flow.Control_Flow_Graph is
         (Direct_Mapping_Id (N),
          Make_Basic_Attributes (Var_Use => Get_Variable_Set
                                   (Condition (N),
-                                   FA    => FA,
-                                   Scope => FA.B_Scope),
+                                   Scope           => FA.B_Scope,
+                                   Local_Constants => FA.Local_Constants),
                                 Loops   => Ctx.Current_Loops,
                                 E_Loc   => N),
          V);
@@ -1069,12 +1070,13 @@ package body Flow.Control_Flow_Graph is
                --  link to the previous one (V_Prev).
                FA.CFG.Add_Vertex
                  (Direct_Mapping_Id (Elsif_Statement),
-                  Make_Basic_Attributes (Var_Use => Get_Variable_Set
-                                           (Condition (Elsif_Statement),
-                                            FA    => FA,
-                                            Scope => FA.B_Scope),
-                                         Loops   => Ctx.Current_Loops,
-                                         E_Loc   => Elsif_Statement),
+                  Make_Basic_Attributes
+                    (Var_Use => Get_Variable_Set
+                       (Condition (Elsif_Statement),
+                        Scope           => FA.B_Scope,
+                        Local_Constants => FA.Local_Constants),
+                     Loops   => Ctx.Current_Loops,
+                     E_Loc   => Elsif_Statement),
                   V);
                Linkup (FA.CFG, V_Prev, V);
 
@@ -1301,8 +1303,8 @@ package body Flow.Control_Flow_Graph is
            (Direct_Mapping_Id (N),
             Make_Basic_Attributes (Var_Use => Get_Variable_Set
                                      (Condition (Iteration_Scheme (N)),
-                                      FA    => FA,
-                                      Scope => FA.B_Scope),
+                                      Scope           => FA.B_Scope,
+                                      Local_Constants => FA.Local_Constants),
                                    Loops   => Ctx.Current_Loops,
                                    E_Loc   => N),
             V);
@@ -1393,7 +1395,10 @@ package body Flow.Control_Flow_Graph is
               (Direct_Mapping_Id (N),
                Make_Basic_Attributes
                  (Var_Def => Flatten_Variable (LP),
-                  Var_Use => Get_Variable_Set (DSD, FA, Scope => FA.B_Scope),
+                  Var_Use => Get_Variable_Set
+                    (DSD,
+                     Scope           => FA.B_Scope,
+                     Local_Constants => FA.Local_Constants),
                   Loops   => Ctx.Current_Loops,
                   E_Loc   => N),
                V);
@@ -1472,9 +1477,10 @@ package body Flow.Control_Flow_Graph is
             FA.CFG.Add_Vertex
               (Direct_Mapping_Id (Reference),
                Make_Sink_Vertex_Attributes
-                 (Var_Use       => Get_Variable_Set (Prefix (Reference),
-                                                     FA    => FA,
-                                                     Scope => FA.B_Scope),
+                 (Var_Use       => Get_Variable_Set
+                    (Prefix (Reference),
+                     Scope           => FA.B_Scope,
+                     Local_Constants => FA.Local_Constants),
                   Is_Loop_Entry => True),
                V);
 
@@ -1591,9 +1597,10 @@ package body Flow.Control_Flow_Graph is
            (Direct_Mapping_Id (N),
             Make_Basic_Attributes
               (Var_Def => Flatten_Variable (Defining_Identifier (N)),
-               Var_Use => Get_Variable_Set (Expression (N),
-                                            FA    => FA,
-                                            Scope => FA.B_Scope),
+               Var_Use => Get_Variable_Set
+                 (Expression (N),
+                  Scope           => FA.B_Scope,
+                  Local_Constants => FA.Local_Constants),
                Loops   => Ctx.Current_Loops,
                E_Loc   => N),
             V);
@@ -1669,9 +1676,10 @@ package body Flow.Control_Flow_Graph is
          FA.CFG.Add_Vertex
            (Direct_Mapping_Id (N),
             Make_Sink_Vertex_Attributes
-              (Var_Use => Get_Variable_Set (Pragma_Argument_Associations (N),
-                                            FA    => FA,
-                                            Scope => FA.B_Scope),
+              (Var_Use => Get_Variable_Set
+                 (Pragma_Argument_Associations (N),
+                  Scope           => FA.B_Scope,
+                  Local_Constants => FA.Local_Constants),
                E_Loc   => N),
             V);
 
@@ -1754,7 +1762,10 @@ package body Flow.Control_Flow_Graph is
       FA.CFG.Add_Vertex
         (Direct_Mapping_Id (Pre),
          Make_Sink_Vertex_Attributes
-           (Var_Use         => Get_Variable_Set (Pre, FA, Scope => FA.B_Scope),
+           (Var_Use         => Get_Variable_Set
+              (Pre,
+               Scope           => FA.B_Scope,
+               Local_Constants => FA.Local_Constants),
             Is_Precondition => True,
             E_Loc           => Pre),
          V);
@@ -1847,9 +1858,10 @@ package body Flow.Control_Flow_Graph is
            (Direct_Mapping_Id (N),
             Make_Basic_Attributes
               (Var_Def => Flatten_Variable (FA.Analyzed_Entity),
-               Var_Use => Get_Variable_Set (Expression (N),
-                                            FA    => FA,
-                                            Scope => FA.B_Scope),
+               Var_Use => Get_Variable_Set
+                 (Expression (N),
+                  Scope           => FA.B_Scope,
+                  Local_Constants => FA.Local_Constants),
                Loops   => Ctx.Current_Loops,
                E_Loc   => N),
             V);
@@ -1951,7 +1963,10 @@ package body Flow.Control_Flow_Graph is
       FA.CFG.Add_Vertex
         (Direct_Mapping_Id (N),
          Make_Sink_Vertex_Attributes
-           (Var_Use => Get_Variable_Set (N, FA, Scope => FA.B_Scope),
+           (Var_Use => Get_Variable_Set
+              (N,
+               Scope => FA.B_Scope,
+               Local_Constants => FA.Local_Constants),
             E_Loc   => N),
          V);
       CM.Include (Union_Id (N),

@@ -708,8 +708,8 @@ package body Flow.Utility is
    ------------------------
 
    function Get_Variable_Set (N                : Node_Id;
-                              FA               : Flow_Analysis_Graphs;
                               Scope            : Flow_Scope;
+                              Local_Constants  : Node_Sets.Set;
                               Reduced          : Boolean := False;
                               Allow_Statements : Boolean := False)
                               return Flow_Id_Sets.Set
@@ -764,9 +764,9 @@ package body Flow.Utility is
 
          Used_Variables.Union
            (Get_Variable_Set (Parameter_Associations (Callsite),
-                              FA             => FA,
-                              Scope          => Scope,
-                              Reduced        => Reduced));
+                              Scope           => Scope,
+                              Local_Constants => Local_Constants,
+                              Reduced         => Reduced));
 
          for G of Global_Reads loop
             for F of Flatten_Variable (G) loop
@@ -815,7 +815,7 @@ package body Flow.Utility is
                        E_In_Parameter |
                        E_In_Out_Parameter =>
                         if Ekind (Entity (N)) /= E_Constant or else
-                          FA.Local_Constants.Contains (Entity (N))
+                          Local_Constants.Contains (Entity (N))
                         then
                            if Reduced then
                               VS.Include (Direct_Mapping_Id
@@ -838,7 +838,7 @@ package body Flow.Utility is
                     E_In_Parameter |
                     E_In_Out_Parameter =>
                      if Ekind (N) /= E_Constant or else
-                       FA.Local_Constants.Contains (N)
+                       Local_Constants.Contains (N)
                      then
                         if Reduced then
                            VS.Include (Direct_Mapping_Id (Unique_Entity (N)));
@@ -868,11 +868,12 @@ package body Flow.Utility is
                   declare
                      D, U : Flow_Id_Sets.Set;
                   begin
-                     Untangle_Assignment_Target (N            => N,
-                                                 FA           => FA,
-                                                 Scope        => Scope,
-                                                 Vars_Defined => D,
-                                                 Vars_Used    => U);
+                     Untangle_Assignment_Target
+                       (N               => N,
+                        Scope           => Scope,
+                        Local_Constants => Local_Constants,
+                        Vars_Defined    => D,
+                        Vars_Used       => U);
                      VS.Union (D);
                      VS.Union (U);
                   end;
@@ -912,12 +913,12 @@ package body Flow.Utility is
       procedure Traverse is new Traverse_Proc (Process => Proc);
    begin
       Traverse (N);
-      return Filter_Out_Non_Local_Constants (VS, FA.Local_Constants);
+      return Filter_Out_Non_Local_Constants (VS, Local_Constants);
    end Get_Variable_Set;
 
    function Get_Variable_Set (L                : List_Id;
-                              FA               : Flow_Analysis_Graphs;
                               Scope            : Flow_Scope;
+                              Local_Constants  : Node_Sets.Set;
                               Reduced          : Boolean := False;
                               Allow_Statements : Boolean := False)
                               return Flow_Id_Sets.Set
@@ -928,8 +929,8 @@ package body Flow.Utility is
       P := First (L);
       while Present (P) loop
          VS.Union (Get_Variable_Set (P,
-                                     FA               => FA,
                                      Scope            => Scope,
+                                     Local_Constants  => Local_Constants,
                                      Reduced          => Reduced,
                                      Allow_Statements => Allow_Statements));
 
@@ -1038,11 +1039,11 @@ package body Flow.Utility is
    --------------------------------
 
    procedure Untangle_Assignment_Target
-     (N            : Node_Id;
-      FA           : Flow_Analysis_Graphs;
-      Scope        : Flow_Scope;
-      Vars_Defined : out Flow_Id_Sets.Set;
-      Vars_Used    : out Flow_Id_Sets.Set)
+     (N               : Node_Id;
+      Scope           : Flow_Scope;
+      Local_Constants : Node_Sets.Set;
+      Vars_Defined    : out Flow_Id_Sets.Set;
+      Vars_Used       : out Flow_Id_Sets.Set)
    is
       procedure Find_Bottom_Node (N             : Node_Id;
                                   Bottom_Node   : out Node_Id;
@@ -1114,17 +1115,20 @@ package body Flow.Utility is
       begin
          case Nkind (N) is
             when N_Indexed_Component | N_Attribute_Reference =>
-               Vars_Used.Union (Get_Variable_Set (Prefix (N),
-                                                  FA    => FA,
-                                                  Scope => Scope));
-               Vars_Used.Union (Get_Variable_Set (Expressions (N),
-                                                  FA    => FA,
-                                                  Scope => Scope));
+               Vars_Used.Union (Get_Variable_Set
+                                  (Prefix (N),
+                                   Scope           => Scope,
+                                   Local_Constants => Local_Constants));
+               Vars_Used.Union (Get_Variable_Set
+                                  (Expressions (N),
+                                   Scope           => Scope,
+                                   Local_Constants => Local_Constants));
                return OK;
             when N_Slice =>
-               Vars_Used.Union (Get_Variable_Set (Discrete_Range (N),
-                                                  FA    => FA,
-                                                  Scope => Scope));
+               Vars_Used.Union (Get_Variable_Set
+                                  (Discrete_Range (N),
+                                   Scope           => Scope,
+                                   Local_Constants => Local_Constants));
                return OK;
             when others =>
                return OK;
@@ -1149,15 +1153,15 @@ package body Flow.Utility is
       case Nkind (N) is
          when N_Type_Conversion =>
             Untangle_Assignment_Target
-              (N            => Expression (N),
-               FA           => FA,
-               Scope        => Scope,
-               Vars_Defined => Vars_Defined,
-               Vars_Used    => Vars_Used);
+              (N               => Expression (N),
+               Scope           => Scope,
+               Local_Constants => Local_Constants,
+               Vars_Defined    => Vars_Defined,
+               Vars_Used       => Vars_Used);
 
          when N_Identifier | N_Expanded_Name =>
             --  X :=
-            Vars_Defined := Get_Variable_Set (N, FA, Scope => Scope);
+            Vars_Defined := Get_Variable_Set (N, Scope, Local_Constants);
 
          when N_Selected_Component | N_Indexed_Component | N_Slice =>
             --  R.A :=
@@ -1200,9 +1204,10 @@ package body Flow.Utility is
                   case Nkind (Prefix (End_Of_Record)) is
                      when N_Function_Call =>
                         Vars_Defined.Union
-                          (Get_Variable_Set (Prefix (End_Of_Record),
-                                             FA    => FA,
-                                             Scope => Scope));
+                          (Get_Variable_Set
+                             (Prefix (End_Of_Record),
+                              Scope           => Scope,
+                              Local_Constants => Local_Constants));
 
                      when N_Unchecked_Type_Conversion =>
                         --  This is an interesting special case. We
@@ -1213,8 +1218,8 @@ package body Flow.Utility is
                         Vars_Defined.Union
                           (Get_Variable_Set
                              (Expression (Prefix (End_Of_Record)),
-                              FA    => FA,
-                              Scope => Scope));
+                              Scope           => Scope,
+                              Local_Constants => Local_Constants));
 
                         --  Since we are using the defined variable
                         --  only partially, we need to make sure its
@@ -1238,16 +1243,17 @@ package body Flow.Utility is
                when N_Function_Call =>
                   --  Not strictly right, but this will satisfy the
                   --  postcondition.
-                  Vars_Defined.Union (Get_Variable_Set (End_Of_Record,
-                                                        FA    => FA,
-                                                        Scope => Scope));
+                  Vars_Defined.Union (Get_Variable_Set
+                                        (End_Of_Record,
+                                         Scope           => Scope,
+                                         Local_Constants => Local_Constants));
 
                when N_Unchecked_Type_Conversion =>
                   --  See above.
                   Vars_Defined.Union (Get_Variable_Set
                                         (Expression (End_Of_Record),
-                                         FA    => FA,
-                                         Scope => Scope));
+                                         Scope           => Scope,
+                                         Local_Constants => Local_Constants));
 
                when N_Attribute_Reference =>
                   declare

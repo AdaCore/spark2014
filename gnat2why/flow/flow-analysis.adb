@@ -339,8 +339,8 @@ package body Flow.Analysis is
       function Search_Expr (N : Node_Id) return Traverse_Result is
       begin
          if Get_Variable_Set (N,
-                              FA               => FA,
                               Scope            => Scope,
+                              Local_Constants  => FA.Local_Constants,
                               Reduced          => not Precise,
                               Allow_Statements => True).Contains (Var_Tgt)
          then
@@ -562,8 +562,8 @@ package body Flow.Analysis is
                        To_Ordered_Flow_Id_Set
                        (Get_Variable_Set
                           (Expression (N),
-                           FA    => FA,
-                           Scope => Get_Flow_Scope (N)));
+                           Scope           => Get_Flow_Scope (N),
+                           Local_Constants => FA.Local_Constants));
                   begin
                      for F of Deps loop
                         --  ??? consider moving this to spark_definition
@@ -891,17 +891,19 @@ package body Flow.Analysis is
                case FA.Kind is
                   when E_Subprogram_Body =>
                      Vars_Used := To_Entire_Variables
-                       (Get_Variable_Set (Expr,
-                                          FA      => FA,
-                                          Scope   => Get_Flow_Scope (Expr),
-                                          Reduced => True));
+                       (Get_Variable_Set
+                          (Expr,
+                           Scope           => Get_Flow_Scope (Expr),
+                           Local_Constants => FA.Local_Constants,
+                           Reduced         => True));
                   when others =>
                      Vars_Used := To_Entire_Variables
-                       (Get_Variable_Set (Expr,
-                                          FA      => FA,
-                                          Scope   => Private_Scope
-                                            (Get_Flow_Scope (Expr)),
-                                          Reduced => True));
+                       (Get_Variable_Set
+                          (Expr,
+                           Scope           => Private_Scope (Get_Flow_Scope
+                                                               (Expr)),
+                           Local_Constants => FA.Local_Constants,
+                           Reduced         => True));
                end case;
                Vars_Used.Difference (Quantified_Variables (Expr));
 
@@ -1559,9 +1561,10 @@ package body Flow.Analysis is
             Used : Flow_Id_Sets.Set;
          begin
             if Nkind (Key_U.Node) = N_Assignment_Statement then
-               Used := Get_Variable_Set (Expression (Key_U.Node),
-                                         FA    => FA,
-                                         Scope => FA.B_Scope);
+               Used := Get_Variable_Set
+                 (Expression (Key_U.Node),
+                  Scope           => FA.B_Scope,
+                  Local_Constants => FA.Local_Constants);
                return Used.Contains (The_Var);
             end if;
 
