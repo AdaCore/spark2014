@@ -15,7 +15,7 @@ conv.adb:15:07: warning: initialization has no effect
 conv.adb:15:17: info: discriminant check proved
 conv.adb:16:07: warning: initialization has no effect
 conv.adb:17:07: warning: initialization has no effect
-conv.adb:17:17: info: discriminant check proved
+conv.adb:17:17: warning: discriminant check might fail
 conv.adb:19:7: warning: assertion might fail, requires Id (X) = Id (Y)
 special.adb:7:7: warning: assertion might fail, requires V.X = A
 special.adb:8:8: info: discriminant check proved
