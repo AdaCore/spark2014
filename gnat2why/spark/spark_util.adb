@@ -1247,23 +1247,49 @@ package body SPARK_Util is
 
    function Entity_In_External_Axioms (E : Entity_Id) return Boolean is
    begin
-      if Present (E) then
-         if Ekind (E) = E_Package and then
-           Package_Has_External_Axioms (E)
-         then
-            return True;
-         end if;
-         if Entity_In_External_Axioms (Scope (E)) then
-            return True;
-         else
-            return Ekind (E) = E_Package and then
-              Entity_In_External_Axioms
-                (Generic_Parent (Get_Package_Spec (E)));
-         end if;
-      else
+      --  ??? Ideally this should be a precondition of the function, and it
+      --  should only be called on non Empty entities
+
+      if No (E) then
          return False;
       end if;
+
+      return Present (Axiomatized_Package_For_Entity (E));
    end Entity_In_External_Axioms;
+
+   ------------------------------------
+   -- Axiomatized_Package_For_Entity --
+   ------------------------------------
+
+   function Axiomatized_Package_For_Entity (E : Entity_Id) return Entity_Id is
+   begin
+      --  E is the package which is externally axiomatized
+
+      if Ekind (E) = E_Package
+        and then Package_Has_External_Axioms (E)
+      then
+         return E;
+
+      --  E is a package instance, in which case it is axiomatized iff the
+      --  corresponding generic package is Axiomatized.
+
+      elsif Ekind (E) = E_Package
+        and then Present (Generic_Parent (Get_Package_Spec (E)))
+      then
+         return Axiomatized_Package_For_Entity
+                 (Generic_Parent (Get_Package_Spec (E)));
+
+      --  Otherwise, look at E's scope instead if present
+
+      elsif Present (Scope (E)) then
+         return Axiomatized_Package_For_Entity (Scope (E));
+
+      --  Else there is no such axiomatized package
+
+      else
+         return Empty;
+      end if;
+   end Axiomatized_Package_For_Entity;
 
    -----------------------------------------------
    -- Is_Access_To_External_Axioms_Discriminant --

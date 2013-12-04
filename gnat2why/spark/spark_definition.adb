@@ -420,6 +420,7 @@ package body SPARK_Definition is
 
       procedure Mark_Number_Entity     (E : Entity_Id);
       procedure Mark_Object_Entity     (E : Entity_Id);
+      procedure Mark_Package_Entity    (E : Entity_Id);
       procedure Mark_Subprogram_Entity (E : Entity_Id);
       procedure Mark_Type_Entity       (E : Entity_Id);
 
@@ -480,6 +481,159 @@ package body SPARK_Definition is
             Mark (Expr);
          end if;
       end Mark_Object_Entity;
+
+      -------------------------
+      -- Mark_Package_Entity --
+      -------------------------
+
+      procedure Mark_Package_Entity (E : Entity_Id) is
+
+         procedure Declare_In_Package_With_External_Axioms (Decls : List_Id);
+         --  Mark types, subprograms and objects from a package with external
+         --  axioms.
+
+         procedure Mark_Generic_Parameters_External_Axioms (Assoc : List_Id);
+         --  Mark actual parameters of a package with external axioms.
+
+         ---------------------------------------------
+         -- Declare_In_Package_With_External_Axioms --
+         ---------------------------------------------
+
+         procedure Declare_In_Package_With_External_Axioms (Decls : List_Id) is
+            Decl : Node_Id;
+            Id   : Entity_Id;
+         begin
+            Decl := First (Decls);
+
+            --  Mark formals of the generic if any:
+            --  The mapping nodes are all nodes starting from the top of the
+            --  visible declarations upto the first source node (detectable by
+            --  Comes_From_Source (...)).
+
+            while Present (Decl) and then not Comes_From_Source (Decl) loop
+               if Nkind (Decl) in N_Full_Type_Declaration         |
+                                  N_Private_Type_Declaration      |
+                                  N_Private_Extension_Declaration |
+                                  N_Subtype_Declaration           |
+                                  N_Subprogram_Declaration        |
+                                  N_Object_Declaration
+               then
+                  Id := Defining_Entity (Decl);
+                  if Ekind (Id) in Type_Kind then
+                        Mark_Entity (Id);
+                  elsif Ekind (Id) in Object_Kind | Subprogram_Kind then
+                     Entity_Set.Include (Id);
+                     Entities_In_SPARK.Include (Id);
+                  end if;
+               end if;
+               Next (Decl);
+            end loop;
+
+            while Present (Decl) loop
+               if Nkind (Decl) in N_Package_Declaration then
+
+                  --  Mark elements of any sub-package
+
+                  Declare_In_Package_With_External_Axioms
+                    (Visible_Declarations (Specification (Decl)));
+               elsif Nkind (Decl) in N_Full_Type_Declaration         |
+                                  N_Private_Type_Declaration      |
+                                  N_Private_Extension_Declaration |
+                                  N_Subtype_Declaration           |
+                                  N_Subprogram_Declaration        |
+                                  N_Object_Declaration
+               then
+                  Id := Defining_Entity (Decl);
+
+                  if Ekind (Id) in Type_Kind then
+                     if not Is_Hidden (Id) then
+
+                        --  Should only mark types that are public or formals
+                        --  of the generic. Others are simply ignored.
+
+                        Mark_Entity (Id);
+                     end if;
+                  elsif Ekind (Id) in Object_Kind | Subprogram_Kind then
+                     Entity_Set.Include (Id);
+                     Entities_In_SPARK.Include (Id);
+                  end if;
+               end if;
+
+               Next (Decl);
+            end loop;
+         end Declare_In_Package_With_External_Axioms;
+
+         ---------------------------------------------
+         -- Mark_Generic_Parameters_External_Axioms --
+         ---------------------------------------------
+
+         procedure Mark_Generic_Parameters_External_Axioms (Assoc : List_Id) is
+            Cur_Assoc : Node_Id := First (Assoc);
+         begin
+            while Present (Cur_Assoc) loop
+               declare
+                  Actual : constant Node_Id :=
+                    Explicit_Generic_Actual_Parameter (Cur_Assoc);
+               begin
+                  --  Operators as actual of packages with external axioms are
+                  --  not supported yet.
+
+                  if Ekind (Entity (Actual)) = E_Operator then
+                     Error_Msg_N
+                       ("operator cannot be used as a formal parameter",
+                        Actual);
+                     Error_Msg_N
+                       ("\\package is defined with external axiomatization",
+                        Actual);
+                     Error_Msg_N
+                       ("\\consider using a wrapper instead", Actual);
+                  end if;
+
+                  --  Mark the entity of the actual
+
+                  Mark_Entity (Entity (Actual));
+               end;
+
+               Next (Cur_Assoc);
+            end loop;
+         end Mark_Generic_Parameters_External_Axioms;
+
+         Vis_Decls : constant List_Id :=
+           Visible_Declarations (Get_Package_Spec (E));
+
+      --  Start of Mark_Package_Entity
+
+      begin
+         --  Do not analyze specs for instantiations of the formal containers.
+         --  Only mark types in SPARK or not, and mark all subprograms in
+         --  SPARK, but none should be scheduled for translation into Why3.
+
+         if Entity_In_External_Axioms (E) then
+
+            --  If Id is a package instance, mark its actual parameters
+
+            declare
+               G_Parent : constant Node_Id :=
+                 Generic_Parent (Get_Package_Spec (E));
+            begin
+               if Present (G_Parent) then
+                  Mark_Generic_Parameters_External_Axioms
+                    (Generic_Associations
+                       (Get_Package_Instantiation_Node (E)));
+               end if;
+            end;
+
+            --  Explicitly add the package declaration to the entities to
+            --  translate into Why3.
+
+            Entity_List.Append (E);
+
+            --  Mark types and subprograms from packages with external axioms
+            --  as in SPARK or not.
+
+            Declare_In_Package_With_External_Axioms (Vis_Decls);
+         end if;
+      end Mark_Package_Entity;
 
       ---------------------------
       -- Mark_Parameter_Entity --
@@ -721,6 +875,8 @@ package body SPARK_Definition is
          --  packages with external axioms.
 
          if Type_Based_On_External_Axioms (E) then
+            Mark_Entity (Axiomatized_Package_For_Entity
+                          (Underlying_External_Axioms_Type (E)));
             return;
          end if;
 
@@ -965,17 +1121,16 @@ package body SPARK_Definition is
          when E_Loop_Parameter |
               Formal_Kind      => Mark_Parameter_Entity (E);
          when Named_Kind       => Mark_Number_Entity (E);
+         when E_Package        => Mark_Package_Entity (E);
 
          --  The identifier of a loop is used to generate the needed exception
          --  declarations in the translation phase.
 
          when E_Loop           => null;
 
-         --  Mark_Entity is called on all abstract state variables, and on all
-         --  package spec which are fully declared as SPARK_Mode => On.
+         --  Mark_Entity is called on all abstract state variables
 
-         when E_Abstract_State |
-              E_Package        => null;
+         when E_Abstract_State => null;
 
          when others           =>
             Ada.Text_IO.Put_Line ("[Mark_Entity] kind ="
@@ -2335,115 +2490,6 @@ package body SPARK_Definition is
    ------------------------------
 
    procedure Mark_Package_Declaration (N : Node_Id) is
-
-      procedure Declare_In_Package_With_External_Axioms (Decls : List_Id);
-      --  Mark types, subprograms and objects from a package with external
-      --  axioms.
-
-      procedure Mark_Generic_Parameters_External_Axioms (Assoc : List_Id);
-      --  Mark actual parameters of a package with external axioms.
-
-      ---------------------------------------------
-      -- Declare_In_Package_With_External_Axioms --
-      ---------------------------------------------
-
-      procedure Declare_In_Package_With_External_Axioms (Decls : List_Id) is
-         Decl : Node_Id;
-         Id   : Entity_Id;
-      begin
-         Decl := First (Decls);
-
-         --  Mark formals of the generic if any:
-         --  The mapping nodes are all nodes starting from the top of the
-         --  visible declarations upto the first source node (detectable by
-         --  Comes_From_Source (...)).
-
-         while Present (Decl) and then not Comes_From_Source (Decl) loop
-            if Nkind (Decl) in N_Full_Type_Declaration         |
-                               N_Private_Type_Declaration      |
-                               N_Private_Extension_Declaration |
-                               N_Subtype_Declaration           |
-                               N_Subprogram_Declaration        |
-                               N_Object_Declaration
-            then
-               Id := Defining_Entity (Decl);
-               if Ekind (Id) in Type_Kind then
-                     Mark_Entity (Id);
-               elsif Ekind (Id) in Object_Kind | Subprogram_Kind then
-                  Entity_Set.Include (Id);
-                  Entities_In_SPARK.Include (Id);
-               end if;
-            end if;
-            Next (Decl);
-         end loop;
-
-         while Present (Decl) loop
-            if Nkind (Decl) in N_Package_Declaration then
-
-               --  Mark elements of any sub-package
-
-               Declare_In_Package_With_External_Axioms
-                 (Visible_Declarations (Specification (Decl)));
-            elsif Nkind (Decl) in N_Full_Type_Declaration         |
-                               N_Private_Type_Declaration      |
-                               N_Private_Extension_Declaration |
-                               N_Subtype_Declaration           |
-                               N_Subprogram_Declaration        |
-                               N_Object_Declaration
-            then
-               Id := Defining_Entity (Decl);
-
-               if Ekind (Id) in Type_Kind then
-                  if not Is_Hidden (Id) then
-
-                     --  Should only mark types that are public or formals of
-                     --  the generic. Others are simply ignored.
-
-                     Mark_Entity (Id);
-                  end if;
-               elsif Ekind (Id) in Object_Kind | Subprogram_Kind then
-                  Entity_Set.Include (Id);
-                  Entities_In_SPARK.Include (Id);
-               end if;
-            end if;
-
-            Next (Decl);
-         end loop;
-      end Declare_In_Package_With_External_Axioms;
-
-      ---------------------------------------------
-      -- Mark_Generic_Parameters_External_Axioms --
-      ---------------------------------------------
-
-      procedure Mark_Generic_Parameters_External_Axioms (Assoc : List_Id) is
-         Cur_Assoc : Node_Id := First (Assoc);
-      begin
-         while Present (Cur_Assoc) loop
-            declare
-               Actual : constant Node_Id :=
-                 Explicit_Generic_Actual_Parameter (Cur_Assoc);
-            begin
-
-               --  Operators as actual of packages with external axioms are
-               --  not supported yet.
-
-               if Ekind (Entity (Actual)) = E_Operator then
-                  Error_Msg_N
-                    ("operator in instance with external axioms not supported",
-                     Actual);
-                  Error_Msg_N
-                    ("\\ consider using a wrapper instead", Actual);
-               end if;
-
-               --  Mark the entity of the actual
-
-               Mark_Entity (Entity (Actual));
-            end;
-
-            Next (Cur_Assoc);
-         end loop;
-      end Mark_Generic_Parameters_External_Axioms;
-
       Save_SPARK_Pragma : constant Node_Id := Current_SPARK_Pragma;
       Id         : constant Entity_Id := Defining_Entity (N);
       Vis_Decls  : constant List_Id :=
@@ -2452,34 +2498,26 @@ package body SPARK_Definition is
                      Private_Declarations (Specification (N));
 
    begin
-      --  Do not analyze specs for instantiations of the formal containers.
-      --  Only mark types in SPARK or not, and mark all subprograms in SPARK,
-      --  but none should be scheduled for translation into Why3.
+      --  Mark package in SPARK if fully in SPARK_Mode => On (including the
+      --  private part), or if the visible part is in SPARK_Mode => On and
+      --  it has external axiomatization.
+
+      Current_SPARK_Pragma := SPARK_Aux_Pragma (Id);
+
+      if SPARK_Pragma_Is (Opt.On) then
+         Mark_Entity (Id);
+
+      else
+         Current_SPARK_Pragma := SPARK_Pragma (Id);
+
+         if Entity_In_External_Axioms (Id) then
+            Mark_Entity (Id);
+         end if;
+      end if;
+
+      --  Nothing more to do for packages with external axiomatization
 
       if Entity_In_External_Axioms (Id) then
-
-         --  Explicitly add the package declaration to the entities to
-         --  translate into Why3.
-
-         Entity_List.Append (Id);
-
-         --  If Id is a package instance, mark its actual parameters
-
-         declare
-            G_Parent : constant Node_Id :=
-              Generic_Parent (Get_Package_Spec (Id));
-         begin
-            if Present (G_Parent) then
-               Mark_Generic_Parameters_External_Axioms
-                 (Generic_Associations (Get_Package_Instantiation_Node (Id)));
-            end if;
-         end;
-
-         --  Mark types and subprograms from packages with external axioms as
-         --  in SPARK or not.
-
-         Declare_In_Package_With_External_Axioms (Vis_Decls);
-
          return;
       end if;
 
@@ -2514,12 +2552,6 @@ package body SPARK_Definition is
 
       if Present (Priv_Decls) then
          Mark_List (Priv_Decls);
-      end if;
-
-      --  Mark package in SPARK if SPARK_Mode => On
-
-      if SPARK_Pragma_Is (Opt.On) then
-         Mark_Entity (Id);
       end if;
 
       Current_SPARK_Pragma := Save_SPARK_Pragma;

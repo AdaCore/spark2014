@@ -237,6 +237,10 @@ package SPARK_Util is
    --  Return the underlying base type declared in a package with external
    --  axioms, if any
 
+   function Axiomatized_Package_For_Entity (E : Entity_Id) return Entity_Id;
+   --  Returns the package entity with an external axiomatization containing E,
+   --  if any, or Empty if none.
+
    function Is_External_Axioms_Discriminant (E : Entity_Id) return Boolean
    with
      Pre => Ekind (E) = E_Discriminant;
