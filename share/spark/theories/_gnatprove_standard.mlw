@@ -254,6 +254,10 @@ theory Array__1
       (i > a_last ->
         get (concat a a_first a_last b b_first b_last) i = get b (i-a_last + b_first - 1))
 
+   (* Comparison between arrays *)
+
+   function compare (map 'a) int int (map 'a) int int : int
+
    (* a singleton array is the array which is defined only at the given
    position, and yields the given value. *)
 

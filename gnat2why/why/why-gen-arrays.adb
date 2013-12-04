@@ -317,12 +317,12 @@ package body Why.Gen.Arrays is
                                   Why3_Type_Name : W_Identifier_Id;
                                   Und_Ent        : Entity_Id)
    is
-      Dimension : constant Pos := Number_Dimensions (Und_Ent);
-      Int_Type  : constant W_Type_Id := +EW_Int_Type;
-      Index     : Entity_Id := First_Index (Und_Ent);
-      Subst     : W_Clone_Substitution_Array
+      Dimension  : constant Pos := Number_Dimensions (Und_Ent);
+      Int_Type   : constant W_Type_Id := +EW_Int_Type;
+      Index      : Entity_Id := First_Index (Und_Ent);
+      Subst      : W_Clone_Substitution_Array
         (1 .. Integer (Dimension * 2) + 1);
-      Cursor    : Integer := 1;
+      Cursor     : Integer := 1;
       Clone  : constant W_Module_Id := Constr_Arrays (Positive (Dimension));
 
       procedure Declare_Attribute (Kind : Why_Name_Enum;
@@ -399,6 +399,7 @@ package body Why.Gen.Arrays is
             end loop;
          end;
       end if;
+
       Emit (Theory,
             New_Clone_Declaration
               (Theory_Kind   => EW_Module,
@@ -410,6 +411,36 @@ package body Why.Gen.Arrays is
               (Why3_Type_Name,
                Alias =>
                  +New_Named_Type (Name => New_Identifier (Name => "__t"))));
+
+      if Dimension = 1 and then
+        Is_Discrete_Type (Component_Type (Und_Ent))
+      then
+
+         --  For discrete arrays of dimension 1 we need the to_int function on
+         --  component_type to define the comparison functions.
+         --  We clone a specific module Array_Comparison_Axiom which needs an
+         --  additional parameter to_int.
+
+         Emit (Theory,
+               New_Clone_Declaration
+                 (Theory_Kind   => EW_Module,
+                  Clone_Kind    => EW_Export,
+                  Origin        => Array_Comparison_Ax,
+                  Substitutions =>
+                    (1 => New_Clone_Substitution
+                         (Kind      => EW_Type_Subst,
+                          Orig_Name => New_Identifier
+                            (Name => "component_type"),
+                          Image     => Ident_Of_Ada_Type
+                            (Component_Type (Und_Ent))),
+                     2 => New_Clone_Substitution
+                       (Kind      => EW_Function,
+                        Orig_Name => New_Identifier
+                          (Name => "to_int"),
+                        Image     => Conversion_Name
+                          (From => +Type_Of_Node (Component_Type (Und_Ent)),
+                           To   => +Int_Type)))));
+      end if;
    end Declare_Constrained;
 
    ---------------------------
@@ -420,14 +451,14 @@ package body Why.Gen.Arrays is
                                     Why3_Type_Name : W_Identifier_Id;
                                     Und_Ent        : Entity_Id)
    is
-      Dimension : constant Pos := Number_Dimensions (Und_Ent);
-      Int_Type    : constant W_Type_Id := +EW_Int_Type;
-      Subst     : W_Clone_Substitution_Array
+      Dimension  : constant Pos := Number_Dimensions (Und_Ent);
+      Int_Type   : constant W_Type_Id := +EW_Int_Type;
+      Subst      : W_Clone_Substitution_Array
         (1 .. Integer (Dimension * 4) + 1);
-      Cursor    : Integer := 1;
-      Index     : Node_Id := First_Index (Und_Ent);
-      Dim_Count : Integer := 1;
-      Clone     : constant W_Module_Id :=
+      Cursor     : Integer := 1;
+      Index      : Node_Id := First_Index (Und_Ent);
+      Dim_Count  : Integer := 1;
+      Clone      : constant W_Module_Id :=
         Unconstr_Arrays (Positive (Dimension));
    begin
       Subst (Cursor) :=
@@ -523,6 +554,36 @@ package body Why.Gen.Arrays is
                           B_Name   => Dummy_Ident2)),
                      Return_Type => Image_Ty));
          end;
+      end if;
+
+      if Dimension = 1 and then
+        Is_Discrete_Type (Component_Type (Und_Ent))
+      then
+
+         --  For discrete arrays of dimension 1 we need the to_int function on
+         --  component_type to define the comparison functions.
+         --  We clone a specific module Array_Comparison_Axiom which needs an
+         --  additional parameter to_int.
+
+         Emit (Theory,
+               New_Clone_Declaration
+                 (Theory_Kind   => EW_Module,
+                  Clone_Kind    => EW_Export,
+                  Origin        => Array_Comparison_Ax,
+                  Substitutions =>
+                    (1 => New_Clone_Substitution
+                         (Kind      => EW_Type_Subst,
+                          Orig_Name => New_Identifier
+                            (Name => "component_type"),
+                          Image     => Ident_Of_Ada_Type
+                            (Component_Type (Und_Ent))),
+                     2 => New_Clone_Substitution
+                       (Kind      => EW_Function,
+                        Orig_Name => New_Identifier
+                          (Name => "to_int"),
+                        Image     => Conversion_Name
+                          (From => +Type_Of_Node (Component_Type (Und_Ent)),
+                           To   => +Int_Type)))));
       end if;
    end Declare_Unconstrained;
 

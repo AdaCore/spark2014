@@ -69,6 +69,7 @@ package Why.Atree.Modules is
 
    Constr_Arrays           : W_Module_Array (1 .. Max_Array_Dimensions);
    Unconstr_Arrays         : W_Module_Array (1 .. Max_Array_Dimensions);
+   Array_Comparison_Ax     : W_Module_Id;
 
    --  Identifiers of the Integer module
 

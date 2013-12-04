@@ -410,6 +410,12 @@ package body Gnat2Why.Expr is
    --  Translate an equality on arrays into a Why expression, take care of the
    --  different cases (constrained / unconstrained) for each argument
 
+   function Transform_Array_Comparison
+     (Params : Transformation_Params;
+      Expr   : Node_Id;
+      Domain : EW_Domain) return W_Expr_Id;
+   --  Translate a comparison on arrays into a Why expression
+
    function Transform_Raise (Stat : Node_Id) return W_Prog_Id with
      Pre => Nkind (Stat) in N_Raise_xxx_Error | N_Raise_Statement;
    --  Returns the Why program for raise statement Stat
@@ -3113,6 +3119,87 @@ package body Gnat2Why.Expr is
    end Transform_Aggregate;
 
    ------------------------------
+   -- Transform_Array_Comparison --
+   ------------------------------
+
+   function Transform_Array_Comparison
+     (Params : Transformation_Params;
+      Expr   : Node_Id;
+      Domain : EW_Domain) return W_Expr_Id
+   is
+      Left      : constant Node_Id := Left_Opnd (Expr);
+      Right     : constant Node_Id := Right_Opnd (Expr);
+      Left_Ty   : constant Entity_Id := Etype (Left);
+      Dim       : constant Positive := Positive (Number_Dimensions (Left_Ty));
+      Subdomain : constant EW_Domain :=
+        (if Domain = EW_Pred then EW_Term else Domain);
+      Args      : W_Expr_Array (1 .. 4 * Dim + 2);
+      T         : W_Expr_Id;
+      Left_Simp : constant Boolean :=
+        Is_Constrained (Left_Ty) or else
+        Nkind (Left) in N_Identifier | N_Expanded_Name;
+      Right_Simp : constant Boolean :=
+        Is_Constrained (Etype (Right)) or else
+        Nkind (Right) in N_Identifier | N_Expanded_Name;
+      Left_Expr : constant W_Expr_Id :=
+        Transform_Expr (Left, Subdomain, Params);
+      Left_Name : constant W_Expr_Id :=
+        (if Left_Simp then Left_Expr
+         else
+         +New_Temp_Identifier
+           (Ada_Node => Get_Ada_Node (+Left_Expr),
+            Typ => Get_Type (Left_Expr)));
+      Right_Expr : constant W_Expr_Id :=
+        Transform_Expr (Right, Subdomain, Params);
+      Right_Name : constant W_Expr_Id :=
+        (if Right_Simp then Right_Expr
+         else
+         +New_Temp_Identifier
+           (Ada_Node => Get_Ada_Node (+Right_Expr),
+            Typ      => Get_Type (Right_Expr)));
+      Arg_Ind    : Positive := 1;
+   begin
+      Add_Array_Arg (Subdomain, Args, Left_Name, Arg_Ind);
+      Add_Array_Arg (Subdomain, Args, Right_Name, Arg_Ind);
+      T :=
+        New_Call
+          (Ada_Node => Expr,
+           Domain   => Subdomain,
+           Name     =>
+             Prefix
+               (Ada_Node => Etype (Left),
+                M        =>
+                  Array_Modules
+                    (Positive (Number_Dimensions (Type_Of_Node (Left)))),
+                N        => "compare"),
+           Args     => Args,
+           Typ      => EW_Int_Type);
+      if not Left_Simp then
+         T :=
+           New_Typed_Binding
+             (Domain  => Domain,
+              Name    => +Left_Name,
+              Def     => +Left_Expr,
+              Context => T);
+      end if;
+      if not Right_Simp then
+         T :=
+           New_Typed_Binding
+             (Domain  => Domain,
+              Name    => +Right_Name,
+              Def     => +Right_Expr,
+              Context => T);
+      end if;
+      T := New_Comparison
+        (Cmp       => Transform_Compare_Op (Nkind (Expr)),
+         Left      => T,
+         Right     =>
+           New_Integer_Constant (Value  => Uint_0),
+         Domain    => Domain);
+      return T;
+   end Transform_Array_Comparison;
+
+   ------------------------------
    -- Transform_Array_Equality --
    ------------------------------
 
@@ -4653,8 +4740,12 @@ package body Gnat2Why.Expr is
                          EW_Pred,
                          Local_Params),
                     Op     => EW_Equivalent);
+            elsif Is_Array_Type (Etype (Left_Opnd (Expr))) and then
+              Nkind (Expr) = N_Op_Eq
+            then
+               T := Transform_Array_Equality (Local_Params, Expr, Domain);
             elsif Is_Array_Type (Etype (Left_Opnd (Expr))) then
-                  T := Transform_Array_Equality (Local_Params, Expr, Domain);
+               T := Transform_Array_Comparison (Local_Params, Expr, Domain);
             else
                declare
                   Left      : constant Node_Id := Left_Opnd (Expr);

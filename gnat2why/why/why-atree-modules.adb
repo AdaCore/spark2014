@@ -153,6 +153,11 @@ package body Why.Atree.Modules is
          4 => New_Module (File => Ada_Model_File,
                           Name => NID ("Unconstr_Array_4")));
 
+      Array_Comparison_Ax :=
+        New_Module
+          (File => Ada_Model_File,
+           Name => NID ("Array_Comparison_Axiom"));
+
       --  identifiers of Integer module
       Integer_Bitwise_And :=
         New_Identifier (Module => Integer_Module,

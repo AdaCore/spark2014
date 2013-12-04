@@ -273,6 +273,35 @@ module Index_Type
 
 end
 
+module Array_Comparison_Axiom
+  use import int.Int
+  use "_gnatprove_standard".Array__1
+
+  (* These declarations have to be filled in by gnat2why for each
+  discrete 1 dimension array type *)
+  type component_type
+
+   function to_int component_type : int
+
+   axiom compare_def :
+    forall a b : Array__1.map component_type.
+    forall a_first a_last b_first b_last : int [Array__1.compare a a_first a_last b b_first b_last].
+      (Array__1.compare a a_first a_last b b_first b_last = 0 <->
+          Array__1.bool_eq a a_first a_last b b_first b_last = True) /\
+      (Array__1.compare a a_first a_last b b_first b_last < 0 <->
+         exists i j : int. i <= a_last /\ j < b_last /\ 
+             (Array__1.bool_eq a a_first  i b b_first j = True /\
+             (i = a_last \/
+                   i < a_last /\
+                       to_int (Array__1.get a (i + 1)) < to_int (Array__1.get b (j + 1))))) /\
+      (Array__1.compare a a_first a_last b b_first b_last > 0 <->
+         exists i j : int. i <= b_last /\ j < a_last /\ 
+             (Array__1.bool_eq a a_first j b b_first i = True /\
+             (i = b_last \/ i < b_last /\
+                       to_int (Array__1.get a (j + 1)) > to_int (Array__1.get b (i + 1)))))
+
+end
+
 module Unconstr_Array
   (* The module to be cloned for an unconstrained array of dimension 1 *)
 
@@ -323,7 +352,6 @@ module Unconstr_Array
 
   function dummy : __t
 end
-
 
 module Unconstr_Array_2
   (* The module to be cloned for an unconstrained array of dimension 1 *)

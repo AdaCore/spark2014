@@ -2037,12 +2037,7 @@ package body SPARK_Definition is
       case N_Binary_Op'(Nkind (N)) is
          when N_Op_Lt | N_Op_Le | N_Op_Gt | N_Op_Ge =>
             if Is_Array_Type (Left_T) then
-               Violation_Detected := True;
-               if SPARK_Pragma_Is (Opt.On) then
-                  Error_Msg_N
-                    ("ordering operator on array type is not yet supported",
-                     N);
-               end if;
+               null;
             end if;
 
          when N_Op_And | N_Op_Or | N_Op_Xor =>

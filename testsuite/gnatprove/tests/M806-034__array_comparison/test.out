@@ -1,0 +1,4 @@
+array_comparison.adb:8:7: info: assertion proved
+array_comparison.adb:9:7: info: assertion proved
+array_comparison.adb:10:7: info: assertion proved
+array_comparison.adb:11:7: warning: assertion might fail, requires X < Z
