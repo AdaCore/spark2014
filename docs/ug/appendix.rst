@@ -388,7 +388,7 @@ Rules and Restrictions that are Not Yet Checked
    have state denoted as being Part_Of a more visible state
    abstraction are given as constituents in the refinement of the more
    visible state is not checked (|SPARK| Reference Manual rule
-   7.2.6(6).
+   7.2.6(6)).
 
 #. The |SPARK| Reference Manual rules 3.2(3) 3.3.1(2) note that
    constants and subtypes that are not preelaborable (essentially
