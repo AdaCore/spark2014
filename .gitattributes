@@ -1,5 +1,6 @@
 docs/lrm/code/*/*/* no-precommit-check
 docs/lrm/code/*/*/*/* no-precommit-check
+docs/lrm/source/* no-precommit-check
 docs/case_study/* no-precommit-check
 docs/case_study/*/* no-precommit-check
 docs/case_study/*/*/* no-precommit-check
@@ -27,6 +28,7 @@ gnat2why/design/*/*/*/* no-precommit-check
 docs/ug/gnatprove_by_example/examples/* no-precommit-check
 docs/ug/linear_search/*/* no-precommit-check
 docs/ug/lemmas/* no-precommit-check
+docs/ug/* no-precommit-check
 trace_units_script/* no-precommit-check
 slides/*/* no-precommit-check
 slides/*/*/* no-precommit-check
