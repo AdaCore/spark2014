@@ -838,7 +838,7 @@ execution. In particular, evaluating the expressions in an annotation may raise
 a run-time error, in which case |GNATprove| will attempt to prove that this
 error cannot occur, and report a warning otherwise.
 
-Integer overflows are a kind of run-time errors that occurs when the result of
+Integer overflows are a kind of run-time error that occurs when the result of
 an arithmetic computation does not fit in the bounds of the machine type used
 to hold the result. In some cases, it is convenient to express properties in
 annotations as they would be expressed in mathematics, where quantities are
@@ -908,8 +908,13 @@ general expressions outside assertions be evaluated in the usual strict mode,
 and expressions within assertions be evaluated in "eliminate intermediate
 overflows" mode.
 
-For details of the meaning of these modes, please refer to the "Overflow Check
-Handling in GNAT" appendix in the |GNAT Pro| User's Guide.
+Note that these modes apply only to the evaluation of predefined arithmetic,
+membership, and comparison operators for signed integer arithmetic.
+
+For further details of the meaning of these modes, and for further information
+about the treatment of overflows for fixed-point and floating-point arithmetic
+please refer to the "Overflow Check Handling in GNAT" appendix in the |GNAT Pro|
+User's Guide.
 
 |SPARK| Libraries
 =================
