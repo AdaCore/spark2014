@@ -68,7 +68,7 @@ Exception Handling
 No additions or restrictions but exception handlers are not permitted in |SPARK|.
 
 The Package Exceptions
-----------------------
+~~~~~~~~~~~~~~~~~~~~~~
 
 Pragmas Assert and Assertion_Policy
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -77,11 +77,32 @@ Pragmas Assert and Assertion_Policy
 
 .. _tu-pragmas-assert and assertion_policy-01:
 
-#. The pragmas ``Assertion_Policy``, ``Suppress``, and ``Unsuppress`` are
+1. The pragmas ``Assertion_Policy``, ``Suppress``, and ``Unsuppress`` are
    allowed in |SPARK|, but have no effect on the generation of proof
    obligations. [For example, an array index value must be shown to be in
    bounds regardless of whether Index_Check is suppressed at the point
    of the array indexing.]
+
+.. _tu-pragmas-assert and assertion_policy-02:
+
+2. The following |SPARK| defined aspects and pragmas are assertions and
+   their *Boolean_*\ ``expressions`` are assertion expressions:
+
+   * Assert_And_Cut;
+   * Assume;
+   * Contract_Cases;
+   * Initial_Condition;
+   * Loop_Invariant;
+   * Loop_Variant; and
+   * Refined_Post.
+
+   There is an *assertion_*\ ``aspect_mark`` for each of these aspects
+   and pragmas with the same identifier as the corresponding aspect or
+   pragma.
+
+   An implementation may introduce further implementation defined
+   *assertion_*\ ``aspect_marks`` some of which may apply to groups of
+   these assertions.
 
 .. _etu-pragmas-assert and assertion_policy:
 

@@ -834,15 +834,16 @@ be a *Boolean_*\ ``expression``.
 
 .. _tu-fe-pf-initial_condition_aspects-04:
 
-4. An Initial_Condition aspect is a sort of postcondition for the
-   elaboration of both the specification and body of a package. If
-   present on a package, then its *Boolean_*\ ``expression`` defines
-   properties (a predicate) of the state of the package which can be
-   assumed to be true immediately following the elaboration of the
-   package. [The expression of the Initial_Condition cannot denote a
-   state abstraction. This means that to express properties of hidden
-   state, functions declared in the visible part acting on the state
-   abstractions of the package must be used.]
+4. An Initial_Condition aspect is an assertion and behaves as a
+   postcondition for the elaboration of both the specification and
+   body of a package. If present on a package, then its assertion
+   expression defines properties (a predicate) of the state of the
+   package which can be assumed to be true immediately following the
+   elaboration of the package. [The expression of the
+   Initial_Condition cannot denote a state abstraction. This means
+   that to express properties of hidden state, functions declared in
+   the visible part acting on the state abstractions of the package
+   must be used.]
 
 
 .. _etu-initial_condition_aspects-ss:
@@ -1880,8 +1881,9 @@ be a Boolean ``expression``.
 
 .. _tu-cbatu-refined_postcondition_aspects-02:
 
-2. The same legality rules apply to a Refined Postcondition as for
-   a postcondition.
+2. A Refined_Post aspect is an assertion. The same legality rules
+   apply to a Refined_Post aspect as for a postcondition (a Post
+   aspect).
 
 .. _etu-refined_postcondition_aspects-lr:
 

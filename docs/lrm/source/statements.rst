@@ -120,15 +120,17 @@ the value an expression had upon entry to the subprogram.
 
 .. _tu-cbatu-loop_invariants_variants_and_entry_values-03:
 
-3. Loop_Invariant is just like pragma Assert with respect to syntax of its
-   Boolean actual parameter, name resolution, legality rules and dynamic
-   semantics, except for extra legality rules given below.
+3. Loop_Invariant is an assertion just like pragma Assert with respect
+   to syntax of its Boolean actual parameter, name resolution,
+   legality rules and dynamic semantics, except for extra legality
+   rules given below.
 
 .. _tu-cbatu-loop_invariants_variants_and_entry_values-04:
 
-4. Loop_Variant has an expected actual parameter which is a specialization of an
-   Ada expression. Otherwise, it has the same name resolution and legality
-   rules as pragma Assert, except for extra legality rules given below.
+4. Loop_Variant is an assertion and has an expected actual parameter
+   which is a specialization of an Ada expression. Otherwise, it has
+   the same name resolution and legality rules as pragma Assert,
+   except for extra legality rules given below.
 
 .. _tu-cbatu-loop_invariants_variants_and_entry_values-05:
 
@@ -442,8 +444,9 @@ Proof Pragmas
 
 This section discusses the pragmas Assert_And_Cut and Assume.
 
-Two |SPARK| pragmas are defined, Assert_And_Cut and Assume. Each has a
-single Boolean parameter and may be used wherever pragma Assert is allowed.
+Two |SPARK| pragmas are defined, Assert_And_Cut and Assume. Each is an
+assertion and has a single Boolean parameter (an assertion expression)
+and may be used wherever pragma Assert is allowed.
 
 Assert_And_Cut may be used within a subprogram when the given
 expression sums up all the work done so far in the subprogram, so that
@@ -465,18 +468,19 @@ and is used to state axioms.
 
 .. _tu-pr-proof_pragmas-01:
 
-1. Pragma Assert_And_Cut is the same as a pragma Assert except it also acts
-   as a cut point in formal verification. The cut point means that a prover is
-   free to forget all information about modified variables that has been
-   established from the statement list before the cut point. Only the given
-   Boolean expression is carried forward.
+1. Pragma Assert_And_Cut is an assertion the same as a pragma Assert
+   except it also acts as a cut point in formal verification. The cut
+   point means that a prover is free to forget all information about
+   modified variables that has been established from the statement
+   list before the cut point. Only the given Boolean expression is
+   carried forward.
 
 .. _tu-pr-proof_pragmas-02:
 
-2. Pragma Assume is the same as a pragma Assert except that there is no
-   proof obligation to prove the truth of the Boolean expression that is its
-   actual parameter. [Pragma Assume indicates to proof tools that the
-   expression can be assumed to be True.]
+2. Pragma Assume is an assertion the same as a pragma Assert except
+   that there is no proof obligation to prove the truth of the Boolean
+   expression that is its actual parameter. [Pragma Assume indicates
+   to proof tools that the expression can be assumed to be True.]
 
 .. _etu-proof_pragmas-ss:
 
