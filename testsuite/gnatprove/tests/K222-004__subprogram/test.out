@@ -21,5 +21,5 @@ sub.adb:20:13: violation of pragma SPARK_Mode at line 1
    compilation of sub.adb failed
 
 
-gnatprove: error during translation to intermediate language, aborting.
+gnatprove: error during analysis and translation to intermediate language, aborting.
 gprbuild: *** compilation phase failed

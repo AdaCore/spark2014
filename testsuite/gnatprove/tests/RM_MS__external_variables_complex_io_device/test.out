@@ -25,5 +25,5 @@ device.adb:56:13: warning: statement has no effect
    compilation of device.adb failed
 
 
-gnatprove: error during translation to intermediate language, aborting.
+gnatprove: error during analysis and translation to intermediate language, aborting.
 gprbuild: *** compilation phase failed

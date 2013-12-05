@@ -22,5 +22,5 @@ uninitialized.adb:140:09: warning: unused assignment
    compilation of uninitialized.adb failed
 
 
-gnatprove: error during translation to intermediate language, aborting.
+gnatprove: error during analysis and translation to intermediate language, aborting.
 gprbuild: *** compilation phase failed

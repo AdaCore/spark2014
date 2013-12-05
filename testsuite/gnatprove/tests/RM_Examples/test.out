@@ -5,7 +5,7 @@ update_examples.ads:69:43: attribute Update for records is not yet supported
 update_examples.ads:72:43: attribute Update for records is not yet supported
 update_examples.ads:74:43: attribute Update for records is not yet supported
 gprbuild: *** compilation phase failed
-gnatprove: error during translation to intermediate language, aborting.
+gnatprove: error during analysis and translation to intermediate language, aborting.
 loop_var_loop_invar.adb:4:04: warning: initialization has no effect
 loop_var_loop_invar.adb:5:04: warning: initialization has no effect
 loop_var_loop_invar.adb:7:17: warning: statement has no effect

@@ -663,6 +663,8 @@ procedure Gnatprove is
 
    function Text_Of_Step (Step : Gnatprove_Step) return String is
    begin
+      --  These strings have to make sense when preceded by
+      --  "error during ". See the body of procedure Execute_Step.
       case Step is
          when GS_ALI =>
             return "frame condition computation";
@@ -673,8 +675,10 @@ procedure Gnatprove is
                   return "checking of SPARK legality rules";
                when GPM_Flow =>
                   return "analysis of data and information flow";
-               when GPM_Prove | GPM_All =>
+               when GPM_Prove =>
                   return "translation to intermediate language";
+               when GPM_All =>
+                  return "analysis and translation to intermediate language";
             end case;
 
          when GS_Why =>

@@ -37,4 +37,4 @@ global_illegal_3.adb:118:34: export "Y" must not depend on Proof_In "X"
 global_illegal_3.adb:127:34: warning: unused global "X"
 global_illegal_3.adb:138:15: warning: "Arr2" might not be initialized
 gprbuild: *** compilation phase failed
-gnatprove: error during translation to intermediate language, aborting.
+gnatprove: error during analysis and translation to intermediate language, aborting.

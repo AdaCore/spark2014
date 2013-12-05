@@ -3,5 +3,5 @@ p.ads:4:08: violation of aspect SPARK_Mode at line 2
    compilation of p.adb failed
 
 
-gnatprove: error during translation to intermediate language, aborting.
+gnatprove: error during analysis and translation to intermediate language, aborting.
 gprbuild: *** compilation phase failed

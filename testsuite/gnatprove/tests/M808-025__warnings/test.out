@@ -19,7 +19,7 @@ p.adb:16:09: warning: unused assignment
    compilation of p.adb failed
 
 
-gnatprove: error during translation to intermediate language, aborting.
+gnatprove: error during analysis and translation to intermediate language, aborting.
 gprbuild: *** compilation phase failed
 
 Do not issue all compilation warnings, stop at flow warnings treated as errors:
@@ -30,7 +30,7 @@ p.adb:16:09: warning: unused assignment
    compilation of p.adb failed
 
 
-gnatprove: error during translation to intermediate language, aborting.
+gnatprove: error during analysis and translation to intermediate language, aborting.
 gprbuild: *** compilation phase failed
 
 Do not issue any compilation warnings, stop at flow warnings treated as errors:
@@ -40,7 +40,7 @@ p.adb:16:09: warning: unused assignment
    compilation of p.adb failed
 
 
-gnatprove: error during translation to intermediate language, aborting.
+gnatprove: error during analysis and translation to intermediate language, aborting.
 gprbuild: *** compilation phase failed
 
 Issue all compilation warnings, issue flow warnings and continue:
@@ -99,7 +99,7 @@ p.adb:13:04: warning: "X" is not modified, could be declared constant
    compilation of p.adb failed
 
 
-gnatprove: error during translation to intermediate language, aborting.
+gnatprove: error during analysis and translation to intermediate language, aborting.
 gprbuild: *** compilation phase failed
 {"file": "p.adb", "line": 15, "col": 4, "message": "warning: statement has no effect", "rule": "ineffective", "severity": "warning", "entity": {"file": "p.adb", "line": 1, "name": "P"}, "tracefile": "ad3cbae7284b8869adc3287e73224594931a37a7.trace"}
 {"file": "p.adb", "line": 16, "col": 9, "message": "warning: unused assignment", "rule": "ineffective", "severity": "warning", "entity": {"file": "p.adb", "line": 1, "name": "P"}, "tracefile": "87a204c7995ea5fa25cd8e8d3e70d1088813f077.trace"}
@@ -110,7 +110,7 @@ p.adb:2:19: warning: suspicious "mod" value, was ** intended?
    compilation of p.adb failed
 
 
-gnatprove: error during translation to intermediate language, aborting.
+gnatprove: error during analysis and translation to intermediate language, aborting.
 gprbuild: *** compilation phase failed
 {"file": "p.adb", "line": 15, "col": 4, "message": "warning: statement has no effect", "rule": "ineffective", "severity": "warning", "entity": {"file": "p.adb", "line": 1, "name": "P"}, "tracefile": "ad3cbae7284b8869adc3287e73224594931a37a7.trace"}
 {"file": "p.adb", "line": 16, "col": 9, "message": "warning: unused assignment", "rule": "ineffective", "severity": "warning", "entity": {"file": "p.adb", "line": 1, "name": "P"}, "tracefile": "87a204c7995ea5fa25cd8e8d3e70d1088813f077.trace"}
@@ -120,7 +120,7 @@ Do not issue any compilation warnings, stop at flow warnings treated as errors:
    compilation of p.adb failed
 
 
-gnatprove: error during translation to intermediate language, aborting.
+gnatprove: error during analysis and translation to intermediate language, aborting.
 gprbuild: *** compilation phase failed
 {"file": "p.adb", "line": 15, "col": 4, "message": "warning: statement has no effect", "rule": "ineffective", "severity": "warning", "entity": {"file": "p.adb", "line": 1, "name": "P"}, "tracefile": "ad3cbae7284b8869adc3287e73224594931a37a7.trace"}
 {"file": "p.adb", "line": 16, "col": 9, "message": "warning: unused assignment", "rule": "ineffective", "severity": "warning", "entity": {"file": "p.adb", "line": 1, "name": "P"}, "tracefile": "87a204c7995ea5fa25cd8e8d3e70d1088813f077.trace"}

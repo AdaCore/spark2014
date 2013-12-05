@@ -16,7 +16,7 @@ initializes_illegal.ads:7:27: warning: initialization of X does not depend on A
 initializes_illegal.ads:8:27: warning: initialization of Initializes_Illegal.Sa must not depend on A
 initializes_illegal.ads:11:04: warning: initialization has no effect
 gprbuild: *** compilation phase failed
-gnatprove: error during translation to intermediate language, aborting.
+gnatprove: error during analysis and translation to intermediate language, aborting.
 initializes_illegal_2.ads:7:27: warning: initialization of Initializes_Illegal_2.As2 must not depend on X
 initializes_illegal_2.ads:9:27: warning: initialization of Y must not depend on X
 initializes_illegal_2.adb:9:11: warning: overflow check might fail
@@ -25,4 +25,4 @@ initializes_illegal_3.ads:5:35: "Z" is not initialized
 initializes_illegal_3.ads:5:35: Z must be initialized at elaboration
 initializes_illegal_3.ads:8:04: "Z" is not initialized
 gprbuild: *** compilation phase failed
-gnatprove: error during translation to intermediate language, aborting.
+gnatprove: error during analysis and translation to intermediate language, aborting.

@@ -12,4 +12,4 @@ refined_global_illegal.adb:89:14:   constituent "Z" is missing in output list
 refined_global_illegal_2.adb:12:18: "Y" must be listed in the Refined_Global aspect of "P1"
 refined_global_illegal_2.adb:20:18: "Y" must be listed in the Refined_Global aspect of "P2"
 gprbuild: *** compilation phase failed
-gnatprove: error during translation to intermediate language, aborting.
+gnatprove: error during analysis and translation to intermediate language, aborting.
