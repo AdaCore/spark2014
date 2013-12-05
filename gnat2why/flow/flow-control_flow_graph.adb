@@ -2528,7 +2528,7 @@ package body Flow.Control_Flow_Graph is
             Errout.Error_Msg_Name_1 := Pragma_Name (N);
             Errout.Error_Msg_N
               ("?pragma % is not yet supported in flow analysis", N);
-            Errout.Error_Msg_N ("\\ it is currently ignored", N);
+            Errout.Error_Msg_N ("\\it is currently ignored", N);
             return False;
       end case;
 

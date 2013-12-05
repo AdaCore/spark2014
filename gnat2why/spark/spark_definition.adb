@@ -220,9 +220,9 @@ package body SPARK_Definition is
          Error_Msg_Sloc := Sloc (Current_SPARK_Pragma);
 
          if From_Aspect_Specification (Current_SPARK_Pragma) then
-            Error_Msg_F ("\\ violation of aspect SPARK_Mode #", N);
+            Error_Msg_F ("\\violation of aspect SPARK_Mode #", N);
          else
-            Error_Msg_F ("\\ violation of pragma SPARK_Mode #", N);
+            Error_Msg_F ("\\violation of pragma SPARK_Mode #", N);
          end if;
       end if;
    end Mark_Violation;
@@ -243,9 +243,9 @@ package body SPARK_Definition is
          Error_Msg_Sloc := Sloc (Current_SPARK_Pragma);
 
          if From_Aspect_Specification (Current_SPARK_Pragma) then
-            Error_Msg_F ("\\ violation of aspect SPARK_Mode #", N);
+            Error_Msg_F ("\\violation of aspect SPARK_Mode #", N);
          else
-            Error_Msg_F ("\\ violation of pragma SPARK_Mode #", N);
+            Error_Msg_F ("\\violation of pragma SPARK_Mode #", N);
          end if;
       end if;
    end Mark_Violation;
@@ -2180,7 +2180,7 @@ package body SPARK_Definition is
             Error_Msg_NE
               ("?no Global contract available for &", N, E);
             Error_Msg_NE
-              ("\\ assuming & has no effect on global items", N, E);
+              ("\\assuming & has no effect on global items", N, E);
          end if;
       end if;
    end Mark_Call;
@@ -2727,7 +2727,7 @@ package body SPARK_Definition is
          when others =>
             Error_Msg_Name_1 := Pname;
             Error_Msg_N ("?pragma % is not yet supported", N);
-            Error_Msg_N ("\\ it is currently ignored", N);
+            Error_Msg_N ("\\it is currently ignored", N);
       end case;
    end Mark_Pragma;
 
