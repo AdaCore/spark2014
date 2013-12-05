@@ -49,9 +49,11 @@ auditlog.adb:168:28: info: length check proved
 auditlog.adb:169:28: info: length check proved
 auditlog.adb:194:26: info: range check proved
 auditlog.adb:244:43: warning: length check might fail
+auditlog.adb:244:46: warning: range check might fail
 auditlog.adb:246:23: info: length check proved
 auditlog.adb:499:22: info: precondition proved
 auditlog.adb:600:12: warning: length check might fail
+auditlog.adb:600:34: warning: range check might fail
 auditlog.adb:753:47: warning: range check might fail
 auditlog.adb:753:50: info: overflow check proved
 auditlog.adb:753:69: info: overflow check proved
@@ -134,6 +136,7 @@ certificatestore.adb:223:31: warning: range check might fail
 certificatestore.adb:224:26: warning: length check might fail
 certificatestore.adb:224:29: warning: range check might fail
 certificatestore.adb:225:42: warning: length check might fail
+certificatestore.adb:225:45: warning: range check might fail
 certificatestore.adb:353:47: info: range check proved
 certtypes.ads:39:22: info: length check proved
 clock.adb:74:11: info: range check proved
@@ -352,10 +355,7 @@ enclave.ads:621:19: info: precondition proved
 enclave.ads:630:19: info: precondition proved
 enclave.ads:635:24: info: precondition proved
 enclave.ads:652:23: warning: precondition might fail
-floppy.adb:42:33: info: length check proved
 floppy.adb:43:37: info: length check proved
-floppy.adb:44:28: info: length check proved
-floppy.adb:45:28: info: length check proved
 iandatypes.ads:49:22: info: length check proved
 iandatypes.ads:67:38: info: length check proved
 keystore.adb:57:47: info: length check proved

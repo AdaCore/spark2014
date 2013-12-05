@@ -34,10 +34,10 @@ concat_left.adb:27:14: info: length check proved
 concat_right.adb:5:19: warning: range check might fail
 concat_right.adb:7:7: warning: assertion might fail, requires Z'First = Y'first
 concat_right.adb:8:7: warning: assertion might fail, requires Z (Z'First) = Y (Y'first)
-concat_right.adb:8:26: warning: array index check might fail
+concat_right.adb:8:26: info: index check proved
 concat_right.adb:8:40: warning: array index check might fail
 concat_right.adb:9:7: warning: assertion might fail, requires Z (Z'Last) = X
-concat_right.adb:9:26: warning: array index check might fail
+concat_right.adb:9:26: info: index check proved
 concat_right.adb:10:7: warning: assertion might fail, requires Z'Length = Y'Length + 1
 concat_right.adb:14:27: info: length check proved
 concat_right.adb:14:27: info: range check proved

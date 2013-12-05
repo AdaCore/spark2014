@@ -1,4 +1,5 @@
 dyn.adb:3:4: info: range check proved
 dyn.adb:3:04: warning: initialization has no effect
+dyn.adb:3:27: warning: range check might fail
 dyn.adb:3:30: info: overflow check proved
 dyn.adb:3:30: warning: range check might fail

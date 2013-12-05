@@ -7,7 +7,6 @@ p.adb:14:32: info: precondition proved
 p.adb:16:7: info: precondition proved
 p.adb:16:18: warning: unused assignment to "Cu"
 p.adb:17:7: warning: precondition might fail
-p.adb:21:31: info: discriminant check proved
 p.adb:21:31: info: precondition proved
 p.adb:23:7: info: precondition proved
 p.adb:24:7: info: assertion proved

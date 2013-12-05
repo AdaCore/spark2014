@@ -6,7 +6,5 @@ dir.adb:18:07: warning: unused initial value of "Directory"
 dir.adb:18:07: warning: unused variable "Directory"
 dir.adb:23:23: warning: unused initial value of "Name"
 dir.adb:23:23: warning: unused variable "Name"
-dir.adb:31:40: warning: length check might fail
-dir.adb:32:45: info: length check proved
 dir.adb:33:13: info: range check proved
-dir.adb:36:28: info: length check proved
+dir.adb:36:28: warning: range check might fail

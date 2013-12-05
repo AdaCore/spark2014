@@ -1,4 +1,2 @@
-pack.ads:4:27: info: length check proved, in instantiation at user.adb:3
-pack.ads:4:27: info: length check proved, in instantiation at user.adb:4
 user.adb:6:4: info: assertion proved
 user.adb:7:4: info: assertion proved

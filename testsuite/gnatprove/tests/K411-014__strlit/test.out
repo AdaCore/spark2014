@@ -1,9 +1,7 @@
 strlit.adb:4:07: warning: initialization has no effect
 strlit.adb:4:28: info: length check proved
 strlit.adb:5:07: warning: initialization has no effect
-strlit.adb:5:21: info: length check proved
 strlit.adb:6:07: warning: initialization has no effect
-strlit.adb:6:21: info: length check proved
 strlit.adb:7:07: warning: initialization has no effect
 strlit.adb:7:19: info: length check proved
 strlit.ads:5:20: info: postcondition proved

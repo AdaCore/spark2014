@@ -1,7 +1,7 @@
-pack.adb:3:23: info: length check proved
 pack.adb:4:32: info: length check proved
 pack.adb:12:07: warning: initialization has no effect
 pack.adb:12:34: info: length check proved
+pack.adb:12:51: info: index check proved
 pack.adb:13:41: info: length check proved
 pack.adb:14:41: info: length check proved
 pack.adb:16:7: info: assertion proved
