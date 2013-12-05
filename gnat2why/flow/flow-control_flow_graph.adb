@@ -1885,9 +1885,7 @@ package body Flow.Control_Flow_Graph is
                      V);
 
                   CM.Include (Union_Id (Init_Item),
-                              Graph_Connections'(Standard_Entry => V,
-                                                 Standard_Exits =>
-                                                   To_Set (V)));
+                              Trivial_Connection (V));
                end loop;
 
                Join (CFG   => FA.CFG,
