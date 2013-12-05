@@ -47,41 +47,41 @@ anti_aliasing.adb:62:16: writable actual for "X" overlaps with actual for "Y"
 gprbuild: *** compilation phase failed
 gnatprove: error during frame condition computation, aborting.
 multiple_ports.ads:8:20: warning: pragma "Volatile" is not yet supported
-multiple_ports.ads:8:20: warning:  it is currently ignored
+multiple_ports.ads:8:20: warning: it is currently ignored
 multiple_ports.ads:8:20: warning: pragma "Volatile" is not yet supported in proof
-multiple_ports.ads:8:20: warning:  it is currently ignored
+multiple_ports.ads:8:20: warning: it is currently ignored
 multiple_ports.ads:19:11: warning: pragma "Async_Writers" is not yet supported
-multiple_ports.ads:19:11: warning:  it is currently ignored
+multiple_ports.ads:19:11: warning: it is currently ignored
 multiple_ports.ads:19:11: warning: pragma "Async_Writers" is not yet supported in proof
-multiple_ports.ads:19:11: warning:  it is currently ignored
+multiple_ports.ads:19:11: warning: it is currently ignored
 multiple_ports.ads:28:11: warning: pragma "Async_Writers" is not yet supported
-multiple_ports.ads:28:11: warning:  it is currently ignored
+multiple_ports.ads:28:11: warning: it is currently ignored
 multiple_ports.ads:28:11: warning: pragma "Async_Writers" is not yet supported in proof
-multiple_ports.ads:28:11: warning:  it is currently ignored
+multiple_ports.ads:28:11: warning: it is currently ignored
 multiple_ports.ads:29:11: warning: pragma "Effective_Reads" is not yet supported
-multiple_ports.ads:29:11: warning:  it is currently ignored
+multiple_ports.ads:29:11: warning: it is currently ignored
 multiple_ports.ads:29:11: warning: pragma "Effective_Reads" is not yet supported in proof
-multiple_ports.ads:29:11: warning:  it is currently ignored
+multiple_ports.ads:29:11: warning: it is currently ignored
 multiple_ports.ads:37:11: warning: pragma "Async_Readers" is not yet supported
-multiple_ports.ads:37:11: warning:  it is currently ignored
+multiple_ports.ads:37:11: warning: it is currently ignored
 multiple_ports.ads:37:11: warning: pragma "Async_Readers" is not yet supported in proof
-multiple_ports.ads:37:11: warning:  it is currently ignored
+multiple_ports.ads:37:11: warning: it is currently ignored
 multiple_ports.ads:43:11: warning: pragma "Async_Readers" is not yet supported
-multiple_ports.ads:43:11: warning:  it is currently ignored
+multiple_ports.ads:43:11: warning: it is currently ignored
 multiple_ports.ads:43:11: warning: pragma "Async_Readers" is not yet supported in proof
-multiple_ports.ads:43:11: warning:  it is currently ignored
+multiple_ports.ads:43:11: warning: it is currently ignored
 multiple_ports.ads:44:11: warning: pragma "Effective_Writes" is not yet supported
-multiple_ports.ads:44:11: warning:  it is currently ignored
+multiple_ports.ads:44:11: warning: it is currently ignored
 multiple_ports.ads:44:11: warning: pragma "Effective_Writes" is not yet supported in proof
-multiple_ports.ads:44:11: warning:  it is currently ignored
+multiple_ports.ads:44:11: warning: it is currently ignored
 stacks_1.adb:16:11: warning: pragma "Refined_Post" is not yet supported
-stacks_1.adb:16:11: warning:  it is currently ignored
+stacks_1.adb:16:11: warning: it is currently ignored
 stacks_1.adb:16:11: warning: pragma "Refined_Post" is not yet supported in proof
-stacks_1.adb:16:11: warning:  it is currently ignored
+stacks_1.adb:16:11: warning: it is currently ignored
 stacks_1.adb:28:11: warning: pragma "Refined_Post" is not yet supported
-stacks_1.adb:28:11: warning:  it is currently ignored
+stacks_1.adb:28:11: warning: it is currently ignored
 stacks_1.adb:28:11: warning: pragma "Refined_Post" is not yet supported in proof
-stacks_1.adb:28:11: warning:  it is currently ignored
+stacks_1.adb:28:11: warning: it is currently ignored
 stacks_1.adb:23:30: info: range check proved
 stacks_1.adb:24:18: info: index check proved
 stacks_1.adb:34:33: info: range check proved
@@ -89,21 +89,21 @@ stacks_1.adb:38:64: info: index check proved
 stacks_1.ads:14:19: info: postcondition proved
 stacks_1.ads:17:19: info: postcondition proved
 stacks_2.adb:15:11: warning: pragma "Refined_Post" is not yet supported
-stacks_2.adb:15:11: warning:  it is currently ignored
+stacks_2.adb:15:11: warning: it is currently ignored
 stacks_2.adb:15:11: warning: pragma "Refined_Post" is not yet supported in proof
-stacks_2.adb:15:11: warning:  it is currently ignored
+stacks_2.adb:15:11: warning: it is currently ignored
 stacks_2.adb:25:11: warning: pragma "Refined_Post" is not yet supported
-stacks_2.adb:25:11: warning:  it is currently ignored
+stacks_2.adb:25:11: warning: it is currently ignored
 stacks_2.adb:25:11: warning: pragma "Refined_Post" is not yet supported in proof
-stacks_2.adb:25:11: warning:  it is currently ignored
+stacks_2.adb:25:11: warning: it is currently ignored
 stacks_2.adb:34:11: warning: pragma "Refined_Post" is not yet supported
-stacks_2.adb:34:11: warning:  it is currently ignored
+stacks_2.adb:34:11: warning: it is currently ignored
 stacks_2.adb:34:11: warning: pragma "Refined_Post" is not yet supported in proof
-stacks_2.adb:34:11: warning:  it is currently ignored
+stacks_2.adb:34:11: warning: it is currently ignored
 stacks_2.adb:46:11: warning: pragma "Refined_Post" is not yet supported
-stacks_2.adb:46:11: warning:  it is currently ignored
+stacks_2.adb:46:11: warning: it is currently ignored
 stacks_2.adb:46:11: warning: pragma "Refined_Post" is not yet supported in proof
-stacks_2.adb:46:11: warning:  it is currently ignored
+stacks_2.adb:46:11: warning: it is currently ignored
 stacks_2.adb:8:31: info: length check proved
 stacks_2.adb:40:30: warning: range check might fail
 stacks_2.adb:41:17: info: index check proved

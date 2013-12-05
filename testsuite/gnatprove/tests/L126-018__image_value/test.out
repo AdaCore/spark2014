@@ -3,14 +3,14 @@ p.adb:2:14: warning: unused variable "Y"
 p.adb:4:04: warning: initialization has no effect
 p.adb:5:04: warning: initialization has no effect
 p.adb:5:18: info: length check proved
-p.adb:5:18: warning:  assuming "Get_Line" has no effect on global items
+p.adb:5:18: warning: assuming "Get_Line" has no effect on global items
 p.adb:5:18: warning: no Global contract available for "Get_Line"
-p.adb:7:04: warning:  assuming "Put_Line" has no effect on global items
+p.adb:7:04: warning: assuming "Put_Line" has no effect on global items
 p.adb:7:04: warning: no Global contract available for "Put_Line"
 p.adb:7:04: warning: statement has no effect
 p.adb:8:06: warning: unused assignment
 p.adb:8:10: warning: precondition might fail
 p.adb:8:10: warning: range check might fail
-p.adb:9:04: warning:  assuming "Put_Line" has no effect on global items
+p.adb:9:04: warning: assuming "Put_Line" has no effect on global items
 p.adb:9:04: warning: no Global contract available for "Put_Line"
 p.adb:9:04: warning: statement has no effect

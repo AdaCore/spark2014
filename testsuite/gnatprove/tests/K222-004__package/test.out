@@ -1,13 +1,13 @@
-pack.adb:5:11:  violation of aspect SPARK_Mode at line 2
 pack.adb:5:11: access to "Boolean" is not allowed in SPARK
-pack.adb:7:07:  violation of aspect SPARK_Mode at line 2
+pack.adb:5:11: violation of aspect SPARK_Mode at line 2
 pack.adb:7:07: access to "Boolean" is not allowed in SPARK
-pack.adb:7:12:  violation of aspect SPARK_Mode at line 2
+pack.adb:7:07: violation of aspect SPARK_Mode at line 2
 pack.adb:7:12: access to "Boolean" is not allowed in SPARK
-pack.adb:8:07:  violation of aspect SPARK_Mode at line 2
+pack.adb:7:12: violation of aspect SPARK_Mode at line 2
 pack.adb:8:07: explicit dereference is not allowed in SPARK
-pack.adb:9:14:  violation of aspect SPARK_Mode at line 2
+pack.adb:8:07: violation of aspect SPARK_Mode at line 2
 pack.adb:9:14: explicit dereference is not allowed in SPARK
+pack.adb:9:14: violation of aspect SPARK_Mode at line 2
    compilation of pack.adb failed
 
 

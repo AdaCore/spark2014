@@ -1,6 +1,6 @@
-data.ads:7:30: warning:  it is currently ignored
-data.ads:7:30: warning:  it is currently ignored
-data.ads:7:30: warning:  it is currently ignored
+data.ads:7:30: warning: it is currently ignored
+data.ads:7:30: warning: it is currently ignored
+data.ads:7:30: warning: it is currently ignored
 data.ads:7:30: warning: pragma "Volatile" is not yet supported
 data.ads:7:30: warning: pragma "Volatile" is not yet supported in flow analysis
 data.ads:7:30: warning: pragma "Volatile" is not yet supported in proof
