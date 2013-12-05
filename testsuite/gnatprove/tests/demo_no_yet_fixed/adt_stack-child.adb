@@ -1,7 +1,7 @@
 --  mutual recursion
 
 package body ADT_Stack.Child
-is
+is pragma SPARK_Mode (Off);  --  tagged type
    procedure Clear(S : out Child_Stack)
    is
       subtype Index_Range is ADT_Stack.Stack_Range;

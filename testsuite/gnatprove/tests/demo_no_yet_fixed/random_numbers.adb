@@ -1,5 +1,7 @@
 package body Random_Numbers
 is
+   pragma SPARK_Mode (Off);  --  tagged type
+
    Seed     : Integer;
    Seed_Max : constant Integer := 99;
 

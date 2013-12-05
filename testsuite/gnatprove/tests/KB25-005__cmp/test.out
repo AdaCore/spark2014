@@ -1,9 +1,12 @@
-dir.adb:8:13: info: range check proved
-dir.adb:17:7: info: range check proved
-dir.adb:18:7: info: range check proved
-dir.adb:23:13: info: range check proved
-dir.adb:24:13: info: range check proved
-dir.adb:31:13: info: range check proved
-dir.adb:32:13: info: range check proved
+dir.adb:5:07: warning: unused initial value of "Directory"
+dir.adb:5:07: warning: unused variable "Directory"
+dir.adb:6:07: warning: unused initial value of "Resolve_Links"
+dir.adb:6:07: warning: unused variable "Resolve_Links"
+dir.adb:18:07: warning: unused initial value of "Directory"
+dir.adb:18:07: warning: unused variable "Directory"
+dir.adb:23:23: warning: unused initial value of "Name"
+dir.adb:23:23: warning: unused variable "Name"
+dir.adb:31:40: warning: length check might fail
+dir.adb:32:45: info: length check proved
 dir.adb:33:13: info: range check proved
 dir.adb:36:28: info: length check proved

@@ -1,5 +1,5 @@
 package body ADT_Stack
-is
+is pragma SPARK_Mode (Off);  --  tagged type
 
    function Is_Empty(S : Stack) return Boolean
    is

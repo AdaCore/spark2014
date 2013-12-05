@@ -1,1 +1,1 @@
-ALL XFAIL test not implemented yet
+ALL XFAIL failure to prove range on non-linear integer computations (J506-016)

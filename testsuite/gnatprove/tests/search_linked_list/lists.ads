@@ -2,7 +2,7 @@ with Ada.Containers.Formal_Doubly_Linked_Lists; use Ada.Containers;
 
 package Lists is
    function My_Eq (I1, I2 : Integer) return Boolean is (I1 = I2);
-   
+
    package L is new Formal_Doubly_Linked_Lists (Integer, My_Eq);
    use L;
      function Search (L : List) return Cursor with

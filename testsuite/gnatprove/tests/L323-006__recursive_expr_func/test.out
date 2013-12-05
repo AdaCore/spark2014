@@ -1,0 +1,3 @@
+p.ads:12:31: warning: range check might fail
+p.ads:12:36: warning: overflow check might fail
+p.ads:12:41: warning: array index check might fail

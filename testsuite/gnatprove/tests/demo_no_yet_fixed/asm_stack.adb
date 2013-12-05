@@ -1,4 +1,5 @@
 --  Implementation of the subprograms
+with Exc; use Exc;
 
 package body ASM_Stack
 is
@@ -31,6 +32,7 @@ is
 
    procedure Push(X : in Integer)
    is
+      pragma SPARK_Mode (Off);  --  exception
    begin
       if Is_Full  then
          raise Overflow;  -- raise exception
@@ -41,6 +43,7 @@ is
 
    function Pop return Integer
    is
+      pragma SPARK_Mode (Off);  --  exception
    begin
       if Is_Empty then
          raise Underflow;

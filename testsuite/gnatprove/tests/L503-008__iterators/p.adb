@@ -1,4 +1,4 @@
-package body P is 
+package body P is
 
    procedure Iter_Over_Array (A : Ar) is
       Sum : Integer := 0;
@@ -20,7 +20,7 @@ package body P is
        Sum : Integer := 0;
        C   : My_Lists.Cursor;
     begin
-       C := X.First;
+       C := First (X);
        while C /= My_Lists.No_Element loop
           Sum := Sum + My_Lists.Element(X, C);
           My_Lists.Next (X, C);

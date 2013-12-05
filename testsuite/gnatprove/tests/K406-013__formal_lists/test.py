@@ -1,3 +1,4 @@
 from test_support import *
 
-prove_all()
+# flow analysis problem with initialization of formal containers (MA07-042)
+prove()
