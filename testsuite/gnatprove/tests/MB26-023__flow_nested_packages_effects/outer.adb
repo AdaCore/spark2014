@@ -8,12 +8,13 @@ package body Outer
                                    Inner_3.W,
                                    Foo))
 is
-   Foo : Boolean := False;
+   Foo : Integer := 0;
 
    package Inner
      with Abstract_State => (Inner_State,
                              Inner_State_2),
-          Initializes    => (Inner_State => Init.Var,
+          Initializes    => (Inner_State => (Init.Var,
+                                             Foo),
                              X           => Init.Var)
    is
       X : Integer := 0;
@@ -26,7 +27,7 @@ is
      with Refined_State => (Inner_State   => Y,
                             Inner_State_2 => Z)
    is
-      Y : Integer := Init.Var;
+      Y : Integer := Init.Var + Foo;
       Z : Integer;
 
       function Get_Inner_State return Integer is (Y)

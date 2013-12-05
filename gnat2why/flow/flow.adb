@@ -348,6 +348,11 @@ package body Flow is
                            Write_Str ("when ");
                            Sprint_Comma_List (Discrete_Choices (N));
 
+                        when N_Component_Association =>
+                           Sprint_Comma_List (Choices (N));
+                           Write_Str (" <-- ");
+                           Sprint_Node (Expression (N));
+
                         when N_Defining_Identifier =>
                            case Ekind (N) is
                               when E_Return_Statement =>

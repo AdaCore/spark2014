@@ -429,9 +429,53 @@ package body Flow.Control_Flow_Graph is
       Ctx : in out Context)
       with Pre => Nkind (N) = N_Package_Declaration;
    --  When we find a nested package, we add 'initial and 'final
-   --  vertices for all variables and state_abstractions that it
-   --  introduces and we then draw arrows based on its initializes
-   --  aspect.
+   --  vertices for all variables and state_abstractions it
+   --  introduces. We then add one vertex per initialization_item.
+   --
+   --  For example, analysis of the following nested package:
+   --
+   --    package Inner
+   --      with Abstract_State => (AS1, AS2),
+   --           Initializes    => (AS1,
+   --                              X => Foo,
+   --                              Y => (Foo, Bar))
+   --    is
+   --       X : Integer := Foo;
+   --       Y := X + Bar;
+   --    end Inner;
+   --
+   --  would have the following effects:
+   --
+   --    1) Due to the Abstract_State aspect vertices AS1'Initial,
+   --       AS1'Final, AS2'Initial and AS2'Final are created and linked
+   --       to the Start vertex of the enclosing package/subprogram.
+   --
+   --    2) Due to the statements in the visible part of package Inner
+   --       the following two vertices
+   --
+   --                     _|_
+   --                    |_X_|
+   --                     _|_
+   --                    |_Y_|
+   --                      |
+   --
+   --       would be added to the CFG graph of the enclosing
+   --       package/subprogram and vertices X'Initial, X'Final, Y'Initial
+   --       and Y'Final would be created and linked to the Start vertex
+   --       of the enclosing package/subprogram.
+   --
+   --    3) Finally, due to the Initializes aspect the following two
+   --       vertices
+   --
+   --                 _____|_____
+   --                |__X_<-_Foo_|
+   --              ________|________
+   --             |_Y_<-_(Foo,_Bar)_|
+   --                      |
+   --
+   --       would be added to the CFG graph of the enclosing
+   --       package/subprogram (directly following the two vertices that
+   --       were introduced in the previous step).
 
    procedure Do_Pragma
      (N   : Node_Id;
