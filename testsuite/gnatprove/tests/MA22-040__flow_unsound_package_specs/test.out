@@ -2,5 +2,5 @@ foo.ads:10:04: "X" is not initialized in "Foo"
    compilation of foo.ads failed
 
 
-gnatprove: error during translation to intermediate language, aborting.
+gnatprove: error during analysis of data and information flow, aborting.
 gprbuild: *** compilation phase failed

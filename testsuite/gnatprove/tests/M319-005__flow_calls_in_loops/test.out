@@ -3,5 +3,5 @@ broken.adb:22:20: formal parameter "N" and global "I" must not be aliased
    compilation of broken.adb failed
 
 
-gnatprove: error during translation to intermediate language, aborting.
+gnatprove: error during analysis of data and information flow, aborting.
 gprbuild: *** compilation phase failed

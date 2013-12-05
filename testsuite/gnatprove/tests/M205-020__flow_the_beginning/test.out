@@ -8,5 +8,5 @@ foo.adb:15:04: "B" is not initialized
    compilation of foo.adb failed
 
 
-gnatprove: error during translation to intermediate language, aborting.
+gnatprove: error during analysis of data and information flow, aborting.
 gprbuild: *** compilation phase failed

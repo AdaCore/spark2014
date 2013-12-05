@@ -11,5 +11,5 @@ test.adb:47:14: warning: unused initial value of "G"
    compilation of test.adb failed
 
 
-gnatprove: error during translation to intermediate language, aborting.
+gnatprove: error during analysis of data and information flow, aborting.
 gprbuild: *** compilation phase failed

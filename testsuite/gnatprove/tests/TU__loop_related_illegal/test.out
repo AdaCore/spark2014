@@ -18,7 +18,7 @@ loop_related_illegal_2.adb:19:7: warning: assertion might fail, requires Y = 10
 loop_related_illegal_2.adb:31:10: warning: loop variant might fail
 loop_related_illegal_3.adb:17:38: "X" is not initialized
 gprbuild: *** compilation phase failed
-gnatprove: error during translation to intermediate language, aborting.
+gnatprove: error during analysis of data and information flow, aborting.
 
 raised SYSTEM.ASSERTIONS.ASSERT_FAILURE : Loop_Variant failed at loop_related_illegal_2.adb:31
 

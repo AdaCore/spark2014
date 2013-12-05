@@ -22,5 +22,5 @@ test.adb:283:07: warning: unused assignment to "S"
    compilation of test.adb failed
 
 
-gnatprove: error during translation to intermediate language, aborting.
+gnatprove: error during analysis of data and information flow, aborting.
 gprbuild: *** compilation phase failed

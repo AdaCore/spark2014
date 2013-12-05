@@ -3,5 +3,5 @@ foo.adb:55:13: attribute Update for records is not yet supported
    compilation of foo.adb failed
 
 
-gnatprove: error during translation to intermediate language, aborting.
+gnatprove: error during analysis of data and information flow, aborting.
 gprbuild: *** compilation phase failed

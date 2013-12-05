@@ -45,5 +45,5 @@ test.adb:340:15: formal parameters "A" and "B" must not be aliased
    compilation of test.adb failed
 
 
-gnatprove: error during translation to intermediate language, aborting.
+gnatprove: error during analysis of data and information flow, aborting.
 gprbuild: *** compilation phase failed

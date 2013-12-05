@@ -5,5 +5,5 @@ contract_cases.adb:20:33: "Y" is not initialized
    compilation of contract_cases.adb failed
 
 
-gnatprove: error during translation to intermediate language, aborting.
+gnatprove: error during analysis of data and information flow, aborting.
 gprbuild: *** compilation phase failed

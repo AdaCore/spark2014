@@ -9,5 +9,5 @@ test.adb:182:21: warning: missing dependency "R => R"
    compilation of test.adb failed
 
 
-gnatprove: error during translation to intermediate language, aborting.
+gnatprove: error during analysis of data and information flow, aborting.
 gprbuild: *** compilation phase failed
