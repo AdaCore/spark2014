@@ -1,3 +1,3 @@
-outer.adb:30:31: warning: overflow check might fail
-outer.adb:36:14: info: overflow check proved
-outer.adb:54:58: warning: overflow check might fail
+outer.adb:31:31: warning: overflow check might fail
+outer.adb:37:14: info: overflow check proved
+outer.adb:56:58: warning: overflow check might fail
