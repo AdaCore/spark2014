@@ -4741,7 +4741,7 @@ package body Gnat2Why.Expr is
                          Local_Params),
                     Op     => EW_Equivalent);
             elsif Is_Array_Type (Etype (Left_Opnd (Expr))) and then
-              Nkind (Expr) = N_Op_Eq
+              (Nkind (Expr) = N_Op_Eq or else Nkind (Expr) = N_Op_Ne)
             then
                T := Transform_Array_Equality (Local_Params, Expr, Domain);
             elsif Is_Array_Type (Etype (Left_Opnd (Expr))) then
