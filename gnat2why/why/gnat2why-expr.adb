@@ -4740,16 +4740,17 @@ package body Gnat2Why.Expr is
                          EW_Pred,
                          Local_Params),
                     Op     => EW_Equivalent);
-            elsif Is_Array_Type (Etype (Left_Opnd (Expr))) and then
-              (Nkind (Expr) = N_Op_Eq or else Nkind (Expr) = N_Op_Ne)
+
+            elsif Is_Array_Type (Etype (Left_Opnd (Expr)))
+              and then Nkind (Expr) in N_Op_Eq | N_Op_Ne
             then
                T := Transform_Array_Equality (Local_Params, Expr, Domain);
             elsif Is_Array_Type (Etype (Left_Opnd (Expr))) then
                T := Transform_Array_Comparison (Local_Params, Expr, Domain);
             else
                declare
-                  Left      : constant Node_Id := Left_Opnd (Expr);
-                  Right     : constant Node_Id := Right_Opnd (Expr);
+                  Left  : constant Node_Id := Left_Opnd (Expr);
+                  Right : constant Node_Id := Right_Opnd (Expr);
 
                   BT        : constant W_Type_Id :=
                     Base_Why_Type (Left, Right);
@@ -4761,6 +4762,7 @@ package body Gnat2Why.Expr is
                   Right_Arg : constant W_Expr_Id :=
                     Transform_Expr (Right, BT, Subdomain,
                                     Local_Params);
+
                begin
                   if Is_Record_Type (Etype (Left)) then
                      pragma Assert (Root_Record_Type (Etype (Left)) =
@@ -4778,6 +4780,7 @@ package body Gnat2Why.Expr is
                           Args     => (1 => Left_Arg,
                                        2 => Right_Arg),
                           Typ      => EW_Bool_Type);
+
                      if Domain = EW_Pred then
                         T := New_Comparison
                           (Cmp       => Transform_Compare_Op (Nkind (Expr)),
@@ -4785,6 +4788,7 @@ package body Gnat2Why.Expr is
                            Right     => New_Literal (Domain => Subdomain,
                                                      Value  => EW_True),
                            Domain    => Domain);
+
                      elsif Nkind (Expr) = N_Op_Ne then
                         T :=
                           New_Call (Domain => Domain,
@@ -5039,8 +5043,7 @@ package body Gnat2Why.Expr is
 
                function New_Short_Circuit_Expr
                  (Left, Right : W_Expr_Id;
-                  Domain      : EW_Domain) return W_Expr_Id
-               is
+                  Domain      : EW_Domain) return W_Expr_Id is
                begin
                   if Nkind (Expr) = N_And_Then then
                      return New_And_Then_Expr (Left, Right, Domain);
@@ -5207,6 +5210,7 @@ package body Gnat2Why.Expr is
                      Domain   => Domain,
                      Reason   => VC_Precondition,
                      Typ      => Get_Typ (Why_Name));
+
                else
                   T :=
                     New_Call
@@ -5216,6 +5220,7 @@ package body Gnat2Why.Expr is
                        Domain   => Domain,
                        Typ      => Get_Typ (Why_Name));
                end if;
+
                pragma Assert (Nb_Of_Refs = 0,
                               "Only pure functions are in alfa");
             end;
@@ -5228,9 +5233,7 @@ package body Gnat2Why.Expr is
                                    Local_Params);
 
          when N_Attribute_Reference =>
-            T := Transform_Attr (Expr,
-                                 Domain,
-                                 Local_Params);
+            T := Transform_Attr (Expr, Domain, Local_Params);
 
          when N_Case_Expression =>
             T := Case_Expr_Of_Ada_Node
@@ -5375,10 +5378,8 @@ package body Gnat2Why.Expr is
       Domain : EW_Domain;
       Params : Transformation_Params) return W_Expr_Id is
    begin
-      return Transform_Expr (Expr,
-                             Type_Of_Node (Expr),
-                             Domain,
-                             Params);
+      return Transform_Expr
+        (Expr, Type_Of_Node (Expr), Domain, Params);
    end Transform_Expr;
 
    ---------------------------------
@@ -5406,10 +5407,7 @@ package body Gnat2Why.Expr is
                            Params);
 
       if Present (Actions) then
-         T := Transform_Actions (Actions,
-                                 T,
-                                 Domain,
-                                 Params);
+         T := Transform_Actions (Actions, T, Domain, Params);
       end if;
 
       Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
@@ -5422,28 +5420,25 @@ package body Gnat2Why.Expr is
       Domain  : EW_Domain;
       Params  : Transformation_Params) return W_Expr_Id is
    begin
-      return Transform_Expr_With_Actions (Expr,
-                                          Actions,
-                                          Type_Of_Node (Expr),
-                                          Domain,
-                                          Params);
+      return Transform_Expr_With_Actions
+        (Expr, Actions, Type_Of_Node (Expr), Domain, Params);
    end Transform_Expr_With_Actions;
 
    --------------------------
    -- Transform_Identifier --
    --------------------------
 
-   function Transform_Identifier (Params       : Transformation_Params;
-                                  Expr         : Node_Id;
-                                  Ent          : Entity_Id;
-                                  Domain       : EW_Domain)
-                                  return W_Expr_Id
+   function Transform_Identifier
+     (Params : Transformation_Params;
+      Expr   : Node_Id;
+      Ent    : Entity_Id;
+      Domain : EW_Domain) return W_Expr_Id
    is
       C   : constant Ada_Ent_To_Why.Cursor :=
         Ada_Ent_To_Why.Find (Symbol_Table, Ent);
       T   : W_Expr_Id;
-   begin
 
+   begin
       --  The special cases of this function are:
       --  * parameters, whose names are stored in Params.Name_Map (these can
       --    also be refs)
@@ -5594,10 +5589,7 @@ package body Gnat2Why.Expr is
                end;
             end;
          else
-            return Range_Expr (In_Expr,
-                               +Var,
-                               Domain,
-                               Params);
+            return Range_Expr (In_Expr, +Var, Domain, Params);
          end if;
       end Transform_Simple_Membership_Expression;
 
@@ -5619,11 +5611,8 @@ package body Gnat2Why.Expr is
          Base_Type := EW_Int_Type;
       end if;
       Why_Var := New_Temp_Identifier (Typ => Base_Type);
-      Var_Expr :=
-        Transform_Expr (Var,
-                        Base_Type,
-                        Subdomain,
-                        Params);
+      Var_Expr := Transform_Expr (Var, Base_Type, Subdomain, Params);
+
       if Present (Alternatives (Expr)) then
          declare
             Alt : Node_Id;
@@ -5633,14 +5622,10 @@ package body Gnat2Why.Expr is
 
             Prev (Alt);
             while Present (Alt) loop
-               Result :=
-                 New_Or_Else_Expr (Left   =>
-                                     Transform_Alternative
-                                       (Why_Var,
-                                        Alt,
-                                        Base_Type),
-                                   Right  => Result,
-                                   Domain => Domain);
+               Result := New_Or_Else_Expr
+                 (Left   => Transform_Alternative (Why_Var, Alt, Base_Type),
+                  Right  => Result,
+                  Domain => Domain);
                Prev (Alt);
             end loop;
          end;
@@ -5654,14 +5639,15 @@ package body Gnat2Why.Expr is
 
       if Nkind (Expr) = N_Not_In then
          if Domain = EW_Term then
-            Result := New_Call (Ada_Node => Expr,
-                                Domain   => Domain,
-                                Name     => New_Identifier (Name => "notb"),
-                                Args     => (1 => Result),
-                                Typ      => EW_Bool_Type);
+            Result := New_Call
+              (Ada_Node => Expr,
+               Domain   => Domain,
+               Name     => New_Identifier (Name => "notb"),
+               Args     => (1 => Result),
+               Typ      => EW_Bool_Type);
+
          else
-            Result := New_Not (Right  => Result,
-                               Domain => Domain);
+            Result := New_Not (Right  => Result, Domain => Domain);
          end if;
       end if;
 
