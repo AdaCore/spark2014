@@ -668,11 +668,14 @@ procedure Gnatprove is
             return "frame condition computation";
 
          when GS_Gnat2Why =>
-            if MMode = GPM_Check then
-               return "detection of SPARK subprograms";
-            else
-               return "translation to intermediate language";
-            end if;
+            case MMode is
+               when GPM_Check =>
+                  return "checking of SPARK legality rules";
+               when GPM_Flow =>
+                  return "analysis of data and information flow";
+               when GPM_Prove | GPM_All =>
+                  return "translation to intermediate language";
+            end case;
 
          when GS_Why =>
             return "generation and proof of VCs";
