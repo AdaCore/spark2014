@@ -239,7 +239,9 @@ package body Flow_Tree_Utility is
    begin
       case Ekind (E) is
          when E_Abstract_State =>
-            return Find_Node_In_Initializes (E) /= Empty;
+            return Find_Node_In_Initializes (E) /= Empty or else
+              (Present (Encapsulating_State (E)) and then
+                 Is_Initialized_At_Elaboration (Encapsulating_State (E)));
 
          when E_Variable =>
             if Is_Package_State (E) then

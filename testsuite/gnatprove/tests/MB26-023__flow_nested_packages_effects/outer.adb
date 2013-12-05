@@ -13,9 +13,10 @@ is
    package Inner
      with Abstract_State => (Inner_State,
                              Inner_State_2),
-          Initializes    => (Inner_State => (Init.Var,
-                                             Foo),
-                             X           => Init.Var)
+          Initializes    => (Inner_State_2,
+                             Inner_State   => (Init.Var,
+                                               Foo),
+                             X             => Init.Var)
    is
       X : Integer := 0;
 
@@ -34,6 +35,7 @@ is
         with Refined_Global => Y;
    begin
       X := X + Init.Var;
+      Z := 0;
    end Inner;
 
    package Inner_2
