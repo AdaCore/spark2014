@@ -55,12 +55,14 @@ package SPARK.Text_IO.Enumeration_IO is
                     Is_Standard_Input (Standard_Input);
 
    procedure Put (File  : in out File_Type;
-                 Item  : in Enum;
-                 Width : in Field    := Default_Width;
-                 Set   : in Type_Set := Default_Setting)
+                  Item  : in Enum;
+                  Width : in Field    := Default_Width;
+                  Set   : in Type_Set := Default_Setting)
      with Global => null,
           Pre  => Is_Writable (File) and then Status (File) = Success,
-          Post => Is_Open (File) and Mode (File) = Mode (File)'Old and
+          Post => Is_Writable (File) and
+                  Is_Open (File) and
+                  Mode (File) = Mode (File)'Old and
                   Name (File) = Name (File)'Old and
                   Form (File) = Form (File)'Old and
                   Line_Length (File) = Line_Length (File)'Old and

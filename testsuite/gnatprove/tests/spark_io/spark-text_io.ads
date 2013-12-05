@@ -388,18 +388,18 @@ is
    procedure Skip_Page  (File : in out File_Type)
      with Global => null,
           Pre  => Is_Readable (File) and then not End_Of_File (File),
-          Post => Is_Readable (File) and then
-                  Name (File) = Name (File)'Old and then
-                  Form (File) = Form (File)'Old and then
+          Post => Is_Readable (File) and
+                  Name (File) = Name (File)'Old and
+                  Form (File) = Form (File)'Old and
                   Is_Standard_File (File) = Is_Standard_File (File)'Old;
 
    procedure Skip_Page
      with Global => (In_Out => Standard_Input),
           Pre    => Is_Readable (Standard_Input) and then
                     not End_Of_File,
-          Post   => Is_Readable (Standard_Input) and then
-                    Name (Standard_Input) = Name (Standard_Input)'Old and then
-                    Form (Standard_Input) = Form (Standard_Input)'Old and then
+          Post   => Is_Readable (Standard_Input) and
+                    Name (Standard_Input) = Name (Standard_Input)'Old and
+                    Form (Standard_Input) = Form (Standard_Input)'Old and
                     Is_Standard_Input (Standard_Input);
 
    function  End_Of_Page (File : in File_Type) return Boolean
@@ -514,7 +514,7 @@ is
 
    procedure Get (Item : out Character_Result)
      with Global => (In_Out => Standard_Input),
-     Pre    => not End_Of_File or else
+          Pre    => not End_Of_File or else
                       (Is_Readable (Standard_Input) and then
                           not End_Of_File (Standard_Input)),
           Post   => Is_Readable (Standard_Input) and
@@ -528,7 +528,9 @@ is
    procedure Put (File : in out File_Type; Item : in Character)
      with Global => null,
           Pre  => Is_Writable (File) and then Status (File) = Success,
-          Post => Is_Open (File) and Mode (File) = Mode (File)'Old and
+          Post => Is_Writable (File) and
+                  Is_Open (File) and
+                  Mode (File) = Mode (File)'Old and
                   Name (File) = Name (File)'Old and
                   Form (File) = Form (File)'Old and
                   Line_Length (File) = Line_Length (File)'Old and
@@ -538,17 +540,17 @@ is
    procedure Put (Item : in  Character)
      with Global => (In_Out => Standard_Output),
           Pre    => Status (Standard_Output) = Success,
-     Post   => Is_Open (Standard_Output) and
-               Mode (Standard_Output) = Out_File and
-               Name (Standard_Output) =
-                  Name (Standard_Output)'Old and
-               Form (Standard_Output) =
-                  Form (Standard_Output)'Old and
+          Post   => Is_Open (Standard_Output) and
+                    Mode (Standard_Output) = Out_File and
+                    Name (Standard_Output) =
+                      Name (Standard_Output)'Old and
+                    Form (Standard_Output) =
+                      Form (Standard_Output)'Old and
                     Line_Length (Standard_Output) =
                        Line_Length (Standard_Output)'Old and
                     Page_Length (Standard_Output) =
                        Page_Length (Standard_Output)'Old and
-                  Is_Standard_Output (Standard_Output);
+                    Is_Standard_Output (Standard_Output);
 
    procedure Look_Ahead (File        : in  out File_Type;
                          Item        : out Character_Result;
@@ -632,7 +634,9 @@ is
    procedure Put (File : in out File_Type; Item : in String)
      with Global => null,
           Pre  => Is_Writable (File) and then Status (File) = Success,
-          Post => Is_Open (File) and Mode (File) = Mode (File)'Old and
+          Post => Is_Writable (File) and
+                  Is_Open (File) and 
+                  Mode (File) = Mode (File)'Old and
                   Name (File) = Name (File)'Old and
                   Form (File) = Form (File)'Old and
                   Line_Length (File) = Line_Length (File)'Old and
@@ -642,15 +646,15 @@ is
    procedure Put (Item : in  String)
      with Global => (In_Out => Standard_Output),
           Pre    => Status (Standard_Output) = Success,
-          Post => Is_Open (Standard_Output) and
-                  Mode (Standard_Output) = Out_File and
-                  Name (Standard_Output) = Name (Standard_Output)'Old and
-                  Form (Standard_Output) = Form (Standard_Output)'Old and
-                  Line_Length (Standard_Output) =
-                     Line_Length (Standard_Output)'Old and
-                  Page_Length (Standard_Output) =
-                     Page_Length (Standard_Output)'Old and
-                  Is_Standard_Output (Standard_Output);
+          Post   => Is_Open (Standard_Output) and
+                    Mode (Standard_Output) = Out_File and
+                    Name (Standard_Output) = Name (Standard_Output)'Old and
+                    Form (Standard_Output) = Form (Standard_Output)'Old and
+                    Line_Length (Standard_Output) =
+                      Line_Length (Standard_Output)'Old and
+                    Page_Length (Standard_Output) =
+                      Page_Length (Standard_Output)'Old and
+                    Is_Standard_Output (Standard_Output);
 
    --  Function_Get_Line is not supported as reading the file has an effect
    --  and the file status following a read is updated meaning the file
@@ -686,7 +690,9 @@ is
    procedure Put_Line (File : in out File_Type; Item : in String)
      with Global => null,
           Pre  => Is_Writable (File) and then Status (File) = Success,
-          Post => Is_Open (File) and Mode (File) = Mode (File)'Old and
+          Post => Is_Writable (File) and
+                  Is_Open (File) and
+                  Mode (File) = Mode (File)'Old and
                   Name (File) = Name (File)'Old and
                   Form (File) = Form (File)'Old and
                   Line_Length (File) = Line_Length (File)'Old and
