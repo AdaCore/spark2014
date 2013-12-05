@@ -18,7 +18,7 @@ is
      with Post => Max'Result = (if X >= Y then X else Y);
 
    function Divide (X, Y : Integer) return Integer
-     with Pre  => Y /= 0 and X > Integer'First and Y > Integer'First,
+     with Pre  => Y /= 0 and X > Integer'First,
           Post => Divide'Result = X / Y;
 
    procedure Swap_Array_Elements(I, J : Index; A: in out Array_Type)

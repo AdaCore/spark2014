@@ -12,8 +12,8 @@ SPARK 2005 Features and |SPARK| Alternatives
 
 Nearly every SPARK 2005 feature has a |SPARK| equivalent or there is
 an alternative way of providing the same feature in |SPARK|.  The only
-SPARK 2005 (not including RavenSPARK) features that are not needed in
-|SPARK| and do not have an alternative are:
+SPARK 2005 (not including RavenSPARK) features that do not have a direct
+alternative are:
 
   * the 'Always_Valid attribute;
 
@@ -35,7 +35,7 @@ headings 2014 RM is the |SPARK| Reference Manual and Mapping is this
 appendix, the SPARK 2005 to |SPARK| mapping specification.
 
 ================= ======================================== ================================================ ========
-SPARK 2005        SPARK 2014 Alternative                   2014 RM                                          Mapping
+SPARK 2005        SPARK 2014                               2014 RM                                          Mapping
 ================= ======================================== ================================================ ========
 ~ in post         'Old attribute   - see Ada RM 6.1.1                                                       :ref:`A.2.2 <ms-pre_post_return-label>`
 ~ in body         'Loop_Entry attribute                    :ref:`5.5.3 <loop_entry>`                        :ref:`A.7 <ms-value_of_variable_on_entry_to_a_loop-label>`
@@ -48,11 +48,13 @@ assert in loop    pragma Loop_Invariant                    :ref:`5.5.3 <loop_inv
 assume            pragma Assume                            :ref:`5.9 <pragma_assume>`                       :ref:`A.4.1 <ms-proof_assume_contract-label>`
 check             pragma Assert     - see Ada RM 11.4.2                                                     :ref:`A.4.1 <ms-check_contract-label>`
 derives on spec   Depends aspect                           :ref:`6.1.5 <depends-aspects>`                   :ref:`A.2.1 <ms-global_derives-label>`
-derives on body   Refined Depends aspect                   :ref:`7.2.5 <refined-depends-aspect>`            :ref:`A.3.2 <ms-asm_abstract_state_refined_in_private_child-label>`
+derives on body   No separate spec - Depends aspect
+derives on body   Separate spec - Refined_Depends aspect   :ref:`7.2.5 <refined-depends-aspect>`            :ref:`A.3.2 <ms-asm_abstract_state_refined_in_private_child-label>`
 for all           quantified_expression - see Ada RM 4.5.8                                                  :ref:`A.2.3 <ms-attributes_of_unconstrained_out_parameter_in_precondition-label>`
 for some          quantified_expression - See Ada RM 4.5.8                                                  :ref:`A.4.1 <ms-assert_loop_contract-label>`
 global on spec    Global aspect                            :ref:`6.1.4 <global-aspects>`                    :ref:`A.2.1 <ms-global_derives-label>`
-global on body    Refined_Global aspect                    :ref:`7.2.4 <refined-global-aspect>`             :ref:`A.2.4 <ms-nesting_refinement-label>`
+global on body    No separate spec - Global aspect
+global on body    Separate spec - Refined_Global aspect    :ref:`7.2.4 <refined-global-aspect>`             :ref:`A.2.4 <ms-nesting_refinement-label>`
 hide              pragma SPARK_Mode - see User Guide
 inherit           not needed                                                                                :ref:`A.3.4 <ms-package_inheritance-label>`
 initializes       Initializes aspect                       :ref:`7.1.5 <initializes_aspect>`                :ref:`A.2.4 <ms-nesting_refinement-label>`
@@ -61,7 +63,8 @@ object assertions rule declarations are not needed                              
 own on spec       Abstract_State aspect                    :ref:`7.1.4 <abstract-state-aspect>`             :ref:`A.3.2 <ms-asm-label>`
 own on body       Refined_State aspect                     :ref:`7.2.2 <refined_state_aspect>`              :ref:`A.3.2 <ms-asm-label>`
 post on spec      postcondition     - see Ada RM 6.1.1     :ref:`6.1.1 <preconditions-and-postconditions>`  :ref:`A.2.2 <ms-pre_post_return-label>`
-post on body      Refined_Post aspect                      :ref:`7.2.7 <refined-postcondition>`
+post on body      No separate spec - postcondition
+post on body      Separate spec - Refined_Post aspect      :ref:`7.2.7 <refined-postcondition>`
 pre               precondition      - see Ada RM 6.1.1     :ref:`6.1.1 <preconditions-and-postconditions>`
 proof functions   Ghost functions                          :ref:`6.9 <ghost-functions>`                     :ref:`A.5.3 <ms-proof_types_and_proof_functions-label>`
 proof types       Ada types                                                                                 :ref:`A.5.5 <ms-quote_own_variable_in_contract-label>`
@@ -548,7 +551,10 @@ Initialized by declaration
 
 The example that follows presents a way in SPARK 2005 of initializing
 a concrete own variable (a state that is not refined) at the point
-of the declaration of the variables that compose it.
+of the declaration of the variables that compose it.  Generally it
+is not good practice to declare several concrete own variables, 
+data abstraction should be used but here we are doing it for the
+point of illustration.
 
 In |SPARK| the client's view of package state is either visible
 (declared in the visible part of the package) or a state abstraction
@@ -1623,7 +1629,9 @@ Body in |SPARK|:
 Main_Program annotation
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-This annotation isn't needed.
+This annotation isn't needed.  Currently any parameterless procedure
+declared at library-level is considered as a potential main program
+and analyzed as such.
 
 .. _ms-update_expressions-label:
 

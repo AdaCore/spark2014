@@ -7,7 +7,8 @@ package Swap_Add_Max_05 is
    --# post X = Y~ and Y = X~;
 
    function Add (X, Y : Integer) return Integer;
-   --# pre X + Y <= Integer'Last and X + Y >= Integer'First;
+   --# pre ((X >= 0 and Y >= 0) -> (X + Y <= Integer'Last)) and
+   --#     ((X <  0 and Y <  0) -> (X + Y >= Integer'First));
    --# return X + Y;
 
    function Max (X, Y : Integer) return Integer;
@@ -15,7 +16,7 @@ package Swap_Add_Max_05 is
    --#             (Y >  X -> Z = Y);
 
    function Divide (X , Y : Integer) return Integer;
-   --# pre Y /= 0 and X / Y <= Integer'Last;
+   --# pre Y /= 0 and X > Integer'First;
    --# return X / Y;
 
    procedure Swap_Array_Elements(I, J : Index; A: in out Array_Type);
