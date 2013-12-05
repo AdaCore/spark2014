@@ -114,9 +114,9 @@ ASCII.LF &
 "(r=fail*, all, statistics)"
 &
 ASCII.LF &
-" -u                 Unique compilation, only prove the given files" &
+" -u                 Unique analysis. Only analyze the given units" &
 ASCII.LF &
-" -U                 Prove all files of all projects" &
+" -U                 Analyze all units of all projects" &
 
 ASCII.LF &
 " -v, --verbose      Output extra verbose information" &

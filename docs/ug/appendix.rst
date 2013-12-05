@@ -24,8 +24,8 @@ Command-line Options
  -q, --quiet        Be quiet/terse
      --clean        Remove GNATprove intermediate files, and exit
      --report=r     Set the report mode of GNATprove (r=fail*, all, statistics)
- -u                 Unique compilation, only prove the given files
- -U                 Prove all files of all projects
+ -u                 Unique analysis. Only analyze the given units
+ -U                 Analyze all units of all projects
  -v, --verbose      Output extra verbose information
      --version      Output version of the tool and exit
      --warnings=w   Set the warning mode of GNATprove (w=off, on, error*)
