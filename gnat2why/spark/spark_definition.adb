@@ -1268,7 +1268,8 @@ package body SPARK_Definition is
               and then not Is_Special_Multidim_Update_Aggr (N)
             then
                if not Aggregate_Is_Fully_Initialized (N) then
-                  Mark_Violation ("aggregate not fully defined", N, "SRM 4.3");
+                  Mark_Violation ("aggregate not fully defined", N,
+                                  SRM_Reference => "SRARK RM 4.3");
                end if;
                Mark_Most_Underlying_Type_In_SPARK (Etype (N), N);
             end if;
@@ -1312,7 +1313,8 @@ package body SPARK_Definition is
             Mark_List (Choices (N));
 
             if Box_Present (N) then
-               Mark_Violation ("aggregate not full defined", N, "SRM 4.3");
+               Mark_Violation ("aggregate not full defined", N,
+                               SRM_Reference => "SRARK RM 4.3");
             else
                Mark (Expression (N));
             end if;
@@ -1403,7 +1405,8 @@ package body SPARK_Definition is
                   --  if no Iterable aspect is found, raise a violation
                   --  other forms of iteration are not allowed in SPARK
 
-                  Mark_Violation ("iterator specification", N, "SRM 5.5.2");
+                  Mark_Violation ("iterator specification", N,
+                                  SRM_Reference => "SPARK RM 5.5.2");
                end if;
             end;
 
