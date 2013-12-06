@@ -20,7 +20,7 @@ loop_var_loop_invar.adb:11:14: info: range check proved
 loop_var_loop_invar.adb:12:14: info: range check proved
 reverse_ord.adb:7:19: info: postcondition proved
 reverse_ord.adb:16:10: info: loop invariant initialization proved
-reverse_ord.adb:16:10: warning: loop invariant might fail after first iteration
+reverse_ord.adb:16:10: info: loop invariant preservation proved
 reverse_ord.adb:19:19: info: index check proved
 reverse_ord.adb:19:49: info: index check proved
 reverse_ord.adb:20:30: info: index check proved

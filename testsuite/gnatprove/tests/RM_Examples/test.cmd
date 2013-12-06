@@ -1,6 +1,6 @@
 gnatprove -P test.gpr -f -q --warnings=on --report=all -u update_examples.adb
 gnatprove -P test.gpr -f -q --warnings=on --report=all -u loop_var_loop_invar.adb
-gnatprove -P test.gpr -f -q --warnings=on --report=all -u reverse_ord.adb
+gnatprove -P test.gpr -f -q --warnings=on --report=all --steps=10000 -u reverse_ord.adb
 gnatprove -P test.gpr -f -q --warnings=on --report=all -u up_timer.adb
 gnatprove -P test.gpr -f -q --warnings=on --report=all -u f.adb
 gnatprove -P test.gpr -f -q --warnings=on --report=all -u param_1_illegal.adb
