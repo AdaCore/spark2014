@@ -285,17 +285,25 @@ speaking) part of the |SPARK| language. It is used to notionally transform
 programs which would otherwise not be in |SPARK| so that they can
 be viewed (at least in part) as |SPARK| programs.
 
+Note that if you would like to mark all your code in SPARK_Mode, the
+simplest solution is to specify in your project file::
+
+   package Builder is
+      for Global_Configuration_Pragmas use "spark.adc";
+   end Builder;
+
+and provide a file `spark.adc` which contains::
+
+   pragma SPARK_Mode;
+
 .. _GNATprove_Limitations:
 
 |GNATprove| Limitations
 =======================
 
-Using the option ``-gnatec=pragmas.adc`` as Default_Switch in a
-project file is not supported. Instead, use ``for
-Local_Configuration_Pragmas use "pragmas.adc";``.
-
 Defining multiple units in the same file is not supported. Instead,
-define each unit in a separate file.
+define each unit in a separate file. you can use the gnatchop tool to
+automate this.
 
 Features Not Yet Implemented
 ----------------------------
