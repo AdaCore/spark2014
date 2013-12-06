@@ -1,4 +1,5 @@
-procedure Test is 
+pragma SPARK_Mode;
+procedure Test is
 
    type T (D1 : Integer; D2 : Boolean) is record
       X : Integer;
