@@ -3003,9 +3003,7 @@ package body Flow.Control_Flow_Graph is
                            Create_Initial_And_Final_Vertices
                              (F             => G,
                               Mode          => Mode_In,
-                              Uninitialized =>
-                                not Is_Initialized_At_Elaboration
-                                (Get_Direct_Mapping_Id (G)),
+                              Uninitialized => False,
                               FA            => FA);
                         end if;
                      end loop;

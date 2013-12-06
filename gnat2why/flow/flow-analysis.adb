@@ -2695,8 +2695,11 @@ package body Flow.Analysis is
       end Write_Tracefile;
 
    begin  --  Check_Initializes_Contract
-      if not Present (FA.Initializes_N) then
-         --  If there is no Initializes contract then we have nothing to do
+      if not Present (FA.Initializes_N)
+        or else not Is_Library_Level_Entity (FA.Analyzed_Entity)
+      then
+         --  If there is no Initializes contract or if we are not analyzing
+         --  a  library level entity then we have nothing to do.
          return;
       end if;
 

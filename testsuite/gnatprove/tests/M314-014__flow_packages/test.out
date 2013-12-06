@@ -15,8 +15,6 @@ pkg_a.ads:8:04: "X" is not initialized in "Pkg_A"
 pkg_a.ads:10:04: warning: initialization has no effect
 pkg_b.adb:10:14: "Y" must be listed in the Initializes aspect of "Pkg_B"
 pkg_c.adb:15:12: cannot write "X" during elaboration of "Pkg_C" (SPARK RM 7.7.1(5))
-pkg_d.adb:6:06: "X" is not initialized
-pkg_d.ads:4:32: "X" is not initialized
 pkg_d.ads:4:32: X must be initialized at elaboration
 pkg_e.adb:6:03: "X" is not initialized in "Pkg_E"
 pkg_e.adb:14:06: warning: unused assignment
