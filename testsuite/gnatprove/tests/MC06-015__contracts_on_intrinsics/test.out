@@ -1,0 +1,6 @@
+p.adb:9:13: info: precondition proved
+p.adb:16:13: warning: precondition might fail
+p.ads:10:19: warning: postcondition might fail, requires A = A'Old / 4
+p.ads:10:29: info: division check proved
+p.ads:13:19: warning: postcondition might fail, requires A = A'Old / (2 ** 17
+p.ads:13:29: info: division check proved

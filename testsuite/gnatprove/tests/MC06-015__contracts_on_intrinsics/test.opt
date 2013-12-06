@@ -1,0 +1,1 @@
+ALL XFAIL contracts on intrinsics spurious warning and postcondition not respected
