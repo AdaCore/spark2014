@@ -151,7 +151,15 @@ package Why.Gen.Names is
    type Why_Name_Enum is
      (
       WNE_Array_Access,
+      WNE_Array_Base_Range_Pred,
+      WNE_Array_Base_Type,
+      WNE_Array_Compare,
+      WNE_Array_Component_Type,
+      WNE_Array_Concat,
       WNE_Array_Elts,
+      WNE_Array_Singleton,
+      WNE_Array_Slide,
+      WNE_Array_Type,
       WNE_Array_Update,
       WNE_Attr_First,
       WNE_Attr_Image,
@@ -188,15 +196,18 @@ package Why.Gen.Names is
       WNE_Of_Base,
       WNE_Of_Int,
       WNE_Of_Real,
+      WNE_Of_String,
       WNE_Range_Check_Fun,
       WNE_Pre_Check,
       WNE_Private,
       WNE_Range_Pred,
       WNE_Result_Exc,
+      WNE_String_Image,
       WNE_To_Array,
       WNE_To_Base,
       WNE_To_Int,
       WNE_To_Real,
+      WNE_To_String,
       WNE_Type
      );
 

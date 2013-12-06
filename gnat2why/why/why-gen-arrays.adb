@@ -368,7 +368,7 @@ package body Why.Gen.Arrays is
       Subst (Cursor) :=
         New_Clone_Substitution
           (Kind      => EW_Type_Subst,
-           Orig_Name => New_Identifier (Name => "component_type"),
+           Orig_Name => To_Ident (WNE_Array_Component_Type),
            Image     => Ident_Of_Ada_Type (Component_Type (Und_Ent)));
       Cursor := Cursor + 1;
       if Ekind (Und_Ent) in String_Kind then
@@ -409,7 +409,7 @@ package body Why.Gen.Arrays is
             New_Type_Decl
               (Why3_Type_Name,
                Alias =>
-                 +New_Named_Type (Name => New_Identifier (Name => "__t"))));
+                 +New_Named_Type (Name => To_Ident (WNE_Array_Type))));
 
       if Dimension = 1 and then
         Is_Discrete_Type (Component_Type (Und_Ent))
@@ -428,14 +428,12 @@ package body Why.Gen.Arrays is
                   Substitutions =>
                     (1 => New_Clone_Substitution
                          (Kind      => EW_Type_Subst,
-                          Orig_Name => New_Identifier
-                            (Name => "component_type"),
+                          Orig_Name => To_Ident (WNE_Array_Component_Type),
                           Image     => Ident_Of_Ada_Type
                             (Component_Type (Und_Ent))),
                      2 => New_Clone_Substitution
                        (Kind      => EW_Function,
-                        Orig_Name => New_Identifier
-                          (Name => "to_int"),
+                        Orig_Name => To_Ident (WNE_To_Int),
                         Image     => Conversion_Name
                           (From => +Type_Of_Node (Component_Type (Und_Ent)),
                            To   => +Int_Type)))));
@@ -463,7 +461,7 @@ package body Why.Gen.Arrays is
       Subst (Cursor) :=
         New_Clone_Substitution
           (Kind      => EW_Type_Subst,
-           Orig_Name => New_Identifier (Name => "component_type"),
+           Orig_Name => To_Ident (WNE_Array_Component_Type),
            Image     => Ident_Of_Ada_Type (Component_Type (Und_Ent)));
       Cursor := Cursor + 1;
       while Present (Index) loop
@@ -476,26 +474,27 @@ package body Why.Gen.Arrays is
             Subst (Cursor) :=
               New_Clone_Substitution
                 (Kind      => EW_Type_Subst,
-                 Orig_Name => Append_Num ("base_type", Dim_Count),
+                 Orig_Name => Append_Num (WNE_Array_Base_Type, Dim_Count),
                  Image     => Ident_Of_Ada_Type (B_Ty));
             Cursor := Cursor + 1;
             Subst (Cursor) :=
               New_Clone_Substitution
                 (Kind      => EW_Function,
-                 Orig_Name => Append_Num ("to_int", Dim_Count),
+                 Orig_Name => Append_Num (WNE_To_Int, Dim_Count),
                  Image     => Conversion_Name (From => +B_Type,
                                                To => +Int_Type));
             Cursor := Cursor + 1;
             Subst (Cursor) :=
               New_Clone_Substitution
                 (Kind      => EW_Predicate,
-                 Orig_Name => Append_Num ("in_range_base", Dim_Count),
+                 Orig_Name => Append_Num
+                   (WNE_Array_Base_Range_Pred, Dim_Count),
                  Image     => Range_Pred_Name (B_Ty));
             Cursor := Cursor + 1;
             Subst (Cursor) :=
               New_Clone_Substitution
                 (Kind      => EW_Predicate,
-                 Orig_Name => Append_Num ("in_range", Dim_Count),
+                 Orig_Name => Append_Num (WNE_Range_Pred, Dim_Count),
                  Image     =>
                    Range_Pred_Name (Ind_Ty));
             Cursor := Cursor + 1;
@@ -514,11 +513,11 @@ package body Why.Gen.Arrays is
             New_Type_Decl
               (Why3_Type_Name,
                Alias =>
-                 New_Named_Type (Name => New_Identifier (Name => "__t"))));
+                 New_Named_Type (Name => To_Ident (WNE_Array_Type))));
       if Und_Ent = Standard_String then
          declare
             Image_Ty    : constant W_Type_Id :=
-              New_Named_Type (Name => New_Identifier (Name => "__image"));
+              New_Named_Type (Name => To_Ident (WNE_String_Image));
             Dummy_Ident : constant W_Identifier_Id :=
               New_Identifier (Name => "x", Typ => Image_Ty);
             Str_Typ     : constant W_Type_Id :=
@@ -529,7 +528,7 @@ package body Why.Gen.Arrays is
             Emit (Theory,
                   Why.Gen.Binders.New_Function_Decl
                     (Domain      => EW_Term,
-                     Name        => New_Identifier (Name => "to_string"),
+                     Name        => To_Ident (WNE_To_String),
                      Labels      => Name_Id_Sets.Empty_Set,
                      Binders     =>
                        (1 =>
@@ -542,7 +541,7 @@ package body Why.Gen.Arrays is
             Emit (Theory,
                   Why.Gen.Binders.New_Function_Decl
                     (Domain      => EW_Term,
-                     Name        => New_Identifier (Name => "from_string"),
+                     Name        => To_Ident (WNE_Of_String),
                      Labels      => Name_Id_Sets.Empty_Set,
                      Binders     =>
                        (1 =>
@@ -572,14 +571,12 @@ package body Why.Gen.Arrays is
                   Substitutions =>
                     (1 => New_Clone_Substitution
                          (Kind      => EW_Type_Subst,
-                          Orig_Name => New_Identifier
-                            (Name => "component_type"),
+                          Orig_Name => To_Ident (WNE_Array_Component_Type),
                           Image     => Ident_Of_Ada_Type
                             (Component_Type (Und_Ent))),
                      2 => New_Clone_Substitution
                        (Kind      => EW_Function,
-                        Orig_Name => New_Identifier
-                          (Name => "to_int"),
+                        Orig_Name => To_Ident (WNE_To_Int),
                         Image     => Conversion_Name
                           (From => +Type_Of_Node (Component_Type (Und_Ent)),
                            To   => +Int_Type)))));
@@ -815,7 +812,7 @@ package body Why.Gen.Arrays is
            Name     =>
              Prefix
                (M        => Array_Modules (1),
-                N        => "concat"),
+                W        => WNE_Array_Concat),
            Args     => Args,
            Typ      => Typ);
    end New_Concat_Call;
@@ -867,7 +864,7 @@ package body Why.Gen.Arrays is
            Name     =>
              Prefix
                (M        => Array_Modules (1),
-                N        => "singleton"),
+                W        => WNE_Array_Singleton),
            Args     => (1 => Elt, 2 => Pos));
    end New_Singleton_Call;
 

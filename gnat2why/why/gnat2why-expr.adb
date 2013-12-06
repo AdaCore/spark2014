@@ -3131,10 +3131,9 @@ package body Gnat2Why.Expr is
       Left      : constant Node_Id := Left_Opnd (Expr);
       Right     : constant Node_Id := Right_Opnd (Expr);
       Left_Ty   : constant Entity_Id := Etype (Left);
-      Dim       : constant Positive := Positive (Number_Dimensions (Left_Ty));
       Subdomain : constant EW_Domain :=
         (if Domain = EW_Pred then EW_Term else Domain);
-      Args      : W_Expr_Array (1 .. 4 * Dim + 2);
+      Args      : W_Expr_Array (1 .. 6);
       T         : W_Expr_Id;
       Left_Simp : constant Boolean :=
         Is_Constrained (Left_Ty) or else
@@ -3172,7 +3171,7 @@ package body Gnat2Why.Expr is
                 M        =>
                   Array_Modules
                     (Positive (Number_Dimensions (Type_Of_Node (Left)))),
-                N        => "compare"),
+                W        => WNE_Array_Compare),
            Args     => Args,
            Typ      => EW_Int_Type);
       if not Left_Simp then
@@ -3727,10 +3726,10 @@ package body Gnat2Why.Expr is
             T := New_Call (Ada_Node => Expr,
                            Domain   => Domain,
                            Name     =>
-                           New_Identifier
+                           Prefix
                              (Ada_Node => Standard_String,
-                              Module   => E_Module (Standard_String),
-                              Name     => "to_string"),
+                              M        => E_Module (Standard_String),
+                              W        => WNE_To_String),
                            Args     => (1 => T),
                            Typ      => EW_Abstract (Standard_String));
 
@@ -3751,10 +3750,10 @@ package body Gnat2Why.Expr is
                    (Ada_Node => Expr,
                     Domain   => Domain,
                     Name     =>
-                      New_Identifier
+                      Prefix
                         (Ada_Node => Standard_String,
-                         Module   => E_Module (Standard_String),
-                         Name     => "from_string"),
+                         M        => E_Module (Standard_String),
+                         W        => WNE_Of_String),
                     Args     => (1 => Arg));
                if Domain = EW_Prog then
                   T := New_VC_Call
@@ -4070,7 +4069,7 @@ package body Gnat2Why.Expr is
              (Domain => Domain,
               Name   =>
                 Prefix (M => Array_Modules (1),
-                        N => "slide"),
+                        W => WNE_Array_Slide),
               Args   =>
                 (1 => T,
                  2 => Get_Array_Attr (Domain, Left_Name, Attribute_First, 1),
