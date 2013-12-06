@@ -158,6 +158,32 @@ package body Gnat2Why.Expr.Loops is
       Loop_Variants   : out List_Of_Nodes.List;
       Final_Stmts     : out List_Of_Nodes.List)
    is
+      function Is_Last_Invariant_Or_Variant_In_Loop
+        (N : Node_Id) return Boolean;
+      --  Returns whether N is the last (in)variant in the loop
+
+      ------------------------------------------
+      -- Is_Last_Invariant_Or_Variant_In_Loop --
+      ------------------------------------------
+
+      function Is_Last_Invariant_Or_Variant_In_Loop
+        (N : Node_Id) return Boolean
+      is
+         Cur : Node_Id := Next (N);
+      begin
+         while Present (Cur) loop
+            if Is_Pragma_Check (Cur, Name_Loop_Invariant)
+              or else Is_Pragma (Cur, Pragma_Loop_Variant)
+            then
+               return False;
+            end if;
+
+            Next (Cur);
+         end loop;
+
+         return True;
+      end Is_Last_Invariant_Or_Variant_In_Loop;
+
       type State is
         (Before_Selected_Block, In_Selected_Block, Past_Selected_Block);
 
@@ -205,12 +231,23 @@ package body Gnat2Why.Expr.Loops is
                elsif Is_Pragma (N, Pragma_Loop_Variant) then
                   Loop_Variants.Append (N);
 
-               --  Anything else is included in the final list of statements,
-               --  and Cur_State is updated.
+               --  Statements past the last (in)variant are included in the
+               --  final list of statements, and Cur_State is updated.
 
-               else
+               elsif Is_Last_Invariant_Or_Variant_In_Loop (N) then
                   Final_Stmts.Append (N);
                   Cur_State := Past_Selected_Block;
+
+               --  Statements between (in)variants may have been introduced by
+               --  the compiler for removing side-effects. Include these in the
+               --  initial statements. Note that this may result in a failure
+               --  to prove a run-time error in such statements while in fact
+               --  this cannot happen at run time because a previous loop
+               --  (in)variant would fail at run time, which is fine.
+
+               else
+                  pragma Assert (not Comes_From_Source (N));
+                  Initial_Stmts.Append (N);
                end if;
 
             when Past_Selected_Block =>
