@@ -1269,7 +1269,7 @@ package body SPARK_Definition is
             then
                if not Aggregate_Is_Fully_Initialized (N) then
                   Mark_Violation ("aggregate not fully defined", N,
-                                  SRM_Reference => "SRARK RM 4.3");
+                                  SRM_Reference => "SPARK RM 4.3");
                end if;
                Mark_Most_Underlying_Type_In_SPARK (Etype (N), N);
             end if;
@@ -1314,7 +1314,7 @@ package body SPARK_Definition is
 
             if Box_Present (N) then
                Mark_Violation ("aggregate not full defined", N,
-                               SRM_Reference => "SRARK RM 4.3");
+                               SRM_Reference => "SPARK RM 4.3");
             else
                Mark (Expression (N));
             end if;
