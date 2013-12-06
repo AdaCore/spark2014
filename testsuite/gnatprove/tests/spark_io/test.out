@@ -10,6 +10,8 @@ copy.adb:192:22: warning: loop invariant might fail after first iteration
 copy.adb:204:30: warning: range check might fail
 copy.adb:208:34: warning: range check might fail
 copy.adb:219:43: warning: range check might fail
+copy.adb:232:31: warning: precondition might fail
+copy.adb:268:7: warning: loop invariant might fail in first iteration
 copy.adb:268:7: warning: loop invariant might fail after first iteration
 copy.adb:282:34: warning: overflow check might fail
 copy.adb:290:73: warning: range check might fail
@@ -17,4 +19,5 @@ copy.adb:296:16: warning: precondition might fail
 copy.adb:303:55: warning: range check might fail
 copy.adb:304:23: warning: precondition might fail
 copy.adb:309:13: warning: precondition might fail
+copy.adb:345:7: warning: precondition might fail
 use_float_io.adb:38:22: warning: overflow check might fail

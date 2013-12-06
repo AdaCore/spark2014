@@ -1,3 +1,2 @@
 aggr_repeat.adb:4:07: warning: initialization has no effect
-aggr_repeat.adb:4:25: info: length check proved
 aggr_repeat.adb:9:04: warning: statement has no effect

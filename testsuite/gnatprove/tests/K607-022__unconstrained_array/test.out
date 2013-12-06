@@ -16,7 +16,7 @@ my_test.adb:17:10: info: precondition proved
 my_test.adb:17:10: warning: discriminant check might fail
 my_test.adb:18:48: warning: assertion might fail, requires T3.V (I) = 9
 my_test.adb:18:50: info: discriminant check proved
-my_test.adb:18:54: info: index check proved
+my_test.adb:18:54: warning: array index check might fail
 my_test.adb:20:07: warning: unused assignment
 my_test.adb:20:10: warning: discriminant check might fail
 my_test.adb:21:04: warning: statement has no effect
@@ -52,9 +52,10 @@ simple_unc_arrays.adb:32:54: warning: array index check might fail
 simple_unc_arrays.adb:32:75: warning: array index check might fail
 simple_unc_arrays.adb:34:10: warning: precondition might fail
 simple_unc_arrays.adb:34:23: info: discriminant check proved
+simple_unc_arrays.adb:34:23: warning: range check might fail
 simple_unc_arrays.adb:34:32: info: range check proved
-simple_unc_arrays.adb:35:22: info: overflow check proved
-simple_unc_arrays.adb:36:23: info: range check proved
+simple_unc_arrays.adb:35:22: warning: overflow check might fail
+simple_unc_arrays.adb:36:23: warning: range check might fail
 simple_unc_arrays.adb:45:22: info: discriminant check proved
 simple_unc_arrays.adb:45:26: warning: array index check might fail
 simple_unc_arrays.adb:48:10: info: loop invariant initialization proved
@@ -87,7 +88,6 @@ simple_unc_arrays.adb:98:61: info: discriminant check proved
 simple_unc_arrays.adb:98:65: warning: array index check might fail
 simple_unc_arrays.adb:100:14: info: discriminant check proved
 simple_unc_arrays.adb:100:18: warning: array index check might fail
-simple_unc_arrays.adb:115:23: info: discriminant check proved
 simple_unc_arrays.adb:120:19: info: discriminant check proved
 simple_unc_arrays.adb:120:25: info: overflow check proved
 simple_unc_arrays.adb:120:25: warning: array index check might fail
@@ -95,6 +95,7 @@ simple_unc_arrays.adb:120:35: info: discriminant check proved
 simple_unc_arrays.adb:120:39: warning: array index check might fail
 simple_unc_arrays.adb:121:16: warning: precondition might fail
 simple_unc_arrays.adb:121:31: info: discriminant check proved
+simple_unc_arrays.adb:121:31: warning: range check might fail
 simple_unc_arrays.adb:121:39: info: overflow check proved
 simple_unc_arrays.adb:143:35: warning: overflow check might fail
 simple_unc_arrays.adb:143:42: warning: overflow check might fail
@@ -109,6 +110,7 @@ simple_unc_arrays.adb:157:50: warning: array index check might fail
 simple_unc_arrays.adb:158:34: warning: range check might fail
 simple_unc_arrays.adb:163:16: warning: precondition might fail
 simple_unc_arrays.adb:163:29: info: discriminant check proved
+simple_unc_arrays.adb:163:29: warning: range check might fail
 simple_unc_arrays.adb:163:33: warning: range check might fail
 simple_unc_arrays.adb:163:39: warning: range check might fail
 simple_unc_arrays.adb:166:32: warning: overflow check might fail
