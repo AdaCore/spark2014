@@ -1,0 +1,21 @@
+loopvariant.adb:6:06: warning: unused assignment
+loopvariant.adb:7:06: warning: unused assignment
+loopvariant.adb:8:16: warning: statement has no effect
+loopvariant.adb:9:07: warning: statement has no effect
+loopvariant.adb:10:12: warning: unused assignment
+loopvariant.adb:10:17: info: overflow check proved
+loopvariant.adb:12:12: warning: unused assignment
+loopvariant.adb:13:12: warning: unused assignment
+loopvariant.adb:13:17: info: overflow check proved
+loopvariant.adb:15:7: info: loop variant proved
+loopvariant.adb:17:06: warning: unused assignment
+loopvariant.adb:18:06: warning: unused assignment
+loopvariant.adb:19:16: warning: statement has no effect
+loopvariant.adb:20:07: warning: statement has no effect
+loopvariant.adb:21:12: warning: unused assignment
+loopvariant.adb:21:17: info: overflow check proved
+loopvariant.adb:23:12: warning: unused assignment
+loopvariant.adb:24:12: warning: unused assignment
+loopvariant.adb:24:17: info: overflow check proved
+loopvariant.adb:26:7: warning: loop variant might fail
+loopvariant.adb:27:07: warning: statement has no effect

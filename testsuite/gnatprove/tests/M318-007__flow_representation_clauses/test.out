@@ -1,1 +1,6 @@
-some output here
+test.adb:9:09: "Temp" is not initialized
+   compilation of test.adb failed
+
+
+gnatprove: error during analysis and translation to intermediate language, aborting.
+gprbuild: *** compilation phase failed

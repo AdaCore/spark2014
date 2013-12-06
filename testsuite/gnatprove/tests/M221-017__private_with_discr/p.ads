@@ -1,9 +1,10 @@
-package P is 
+package P is
    package Private_Types is
       type T1 (Capacity : Integer) is private;
       type T2 is private;
 
    private
+      pragma SPARK_Mode (Off);
       type Int_Access is access Integer;
       type T1 (Capacity : Integer) is record
          Content : Int_Access;

@@ -1,2 +1,2 @@
-ALL XFAIL currently fails in gnat2why translation (LC17-035)
+ALL XFAIL attribute Update on record not yet supported  (LC17-035)
 

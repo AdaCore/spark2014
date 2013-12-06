@@ -1,1 +1,13 @@
-something
+p.adb:22:08: warning: initialization has no effect
+p.adb:25:10: warning: unused assignment
+p.adb:26:39: warning: statement has no effect
+p.adb:27:15: warning: unused assignment
+p.adb:27:22: warning: overflow check might fail
+p.adb:27:32: warning: precondition might fail
+p.adb:28:19: warning: precondition might fail
+p.adb:28:19: warning: statement has no effect
+p.adb:28:19: warning: unused assignment to "p.my_lists.no_element"
+p.adb:28:29: warning: unused assignment to "C"
+p.ads:18:31: warning: unused initial value of "X"
+p.ads:20:32: warning: unused initial value of "X"
+p.ads:20:32: warning: unused variable "X"

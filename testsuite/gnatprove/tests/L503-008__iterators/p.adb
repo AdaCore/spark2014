@@ -1,6 +1,7 @@
 package body P is
 
    procedure Iter_Over_Array (A : Ar) is
+      pragma SPARK_Mode (Off);  --  loop with iterator
       Sum : Integer := 0;
    begin
       for X of A loop
@@ -9,6 +10,7 @@ package body P is
    end Iter_Over_Array;
 
     procedure Quant_Over_Array(A : in out Ar) is
+       pragma SPARK_Mode (Off);  --  iteration "for of" on array in spec
     begin
        for I in A'Range loop
           pragma Assert (for all J in A'First .. I - 1 => A (J) = 0);
