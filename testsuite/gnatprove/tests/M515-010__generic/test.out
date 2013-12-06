@@ -1,0 +1,2 @@
+broken.adb:6:10: warning: statement has no effect, in instantiation at broken.adb:18
+broken.ads:6:17: warning: postcondition might fail, requires (Found_None), in instantiation at broken.adb:18
