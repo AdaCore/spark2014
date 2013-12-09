@@ -1,3 +1,4 @@
+c41321a.adb:5:36: warning: statement has no effect
 c41321a.adb:7:11: warning: initialization has no effect
 c41321a.adb:7:11: warning: unused variable "Derived_False"
 c41321a.adb:11:06: warning: initialization has no effect

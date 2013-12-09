@@ -344,8 +344,7 @@ package body Flow.Control_Flow_Graph.Utility is
             A.Is_Export := Ekind (Entire_Var) in
               E_In_Out_Parameter |
                  E_Out_Parameter |
-                 E_Function
-              or Is_Initialized_At_Elaboration (Entire_Var);
+                 E_Function;
 
             A.Is_Loop_Parameter := Ekind (Entire_Var) = E_Loop_Parameter;
 

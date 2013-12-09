@@ -349,6 +349,9 @@ package body Flow is
                            Sprint_Comma_List (Discrete_Choices (N));
 
                         when N_Component_Association =>
+                           --  The only occasion where a Flow_Id corresponds
+                           --  to an N_Component_Association is when we are
+                           --  in an Initializes aspect.
                            Sprint_Comma_List (Choices (N));
                            Write_Str (" <-- ");
                            Sprint_Node (Expression (N));

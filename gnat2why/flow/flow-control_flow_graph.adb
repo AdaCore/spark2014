@@ -185,9 +185,9 @@ package body Flow.Control_Flow_Graph is
       Equivalent_Keys => "=",
       "="             => "=");
 
-   --------------
-   --  Context --
-   --------------
+   ---------------
+   --  Context  --
+   ---------------
 
    type Context is record
       Current_Loops             : Node_Sets.Set;
@@ -203,6 +203,10 @@ package body Flow.Control_Flow_Graph is
 
       Processing_Nested_Package : Boolean;
       --  We set this to true when we analyze a nested package.
+      --  Procedure N_Object_Declaration is only ever invoked when
+      --  we process a nested package. This procedure sets
+      --  Processing_Nested_Package to True so as to trigger the
+      --  secondary behavior of procedure N_Object_Declaration.
    end record;
 
    No_Context : constant Context :=
@@ -421,6 +425,17 @@ package body Flow.Control_Flow_Graph is
    --  Deal with declarations (with an optional initialization). We
    --  either generate a null vertex which is then stripped from the
    --  graph or a simple defining vertex.
+   --
+   --  Depending on the context (Ctx) this procedure can have one of
+   --  2 different behaviors:
+   --
+   --     1) If Ctx.Processing_Nested_Package is NOT set, we process the
+   --        entire object declaration, including the optional initialization
+   --        part of it.
+   --
+   --     2) On the contrary, if Ctx.Processing_Nested_Package is set, we
+   --        ignore the initialization part of the object declaration even
+   --        if one is present.
 
    procedure Do_Package_Declaration
      (N   : Node_Id;
@@ -453,25 +468,34 @@ package body Flow.Control_Flow_Graph is
    --    2) Due to the statements in the visible part of package Inner
    --       the following two vertices
    --
-   --                     _|_
-   --                    |_X_|
-   --                     _|_
-   --                    |_Y_|
-   --                      |
+   --                            _|_
+   --                           |_X_|
+   --                            _|_
+   --                           |_Y_|
+   --                             |
    --
    --       would be added to the CFG graph of the enclosing
-   --       package/subprogram and vertices X'Initial, X'Final, Y'Initial
-   --       and Y'Final would be created and linked to the Start vertex
+   --       package/subprogram.
+   --
+   --       Additionally, vertices X'Initial, X'Final, Y'Initial and
+   --       Y'Final would be created and linked to the Start vertex
    --       of the enclosing package/subprogram.
+   --
+   --           X'Initial X'Final Y'Initial Y'Final
+   --                 \       |       |       /
+   --                  \      \       /      /
+   --                   \      \     /      /
+   --                    \      \   /      /
+   --                     \_____start_____/
    --
    --    3) Finally, due to the Initializes aspect the following two
    --       vertices
    --
-   --                 _____|_____
-   --                |__X_<-_Foo_|
-   --              ________|________
-   --             |_Y_<-_(Foo,_Bar)_|
-   --                      |
+   --                        _____|_____
+   --                       |__X_<-_Foo_|
+   --                     ________|________
+   --                    |_Y_<-_(Foo,_Bar)_|
+   --                             |
    --
    --       would be added to the CFG graph of the enclosing
    --       package/subprogram (directly following the two vertices that
@@ -1771,6 +1795,37 @@ package body Flow.Control_Flow_Graph is
                     (Standard_Entry => Inits.First_Element,
                      Standard_Exits => To_Set (Inits.Last_Element)));
 
+      if Ekind (FA.Analyzed_Entity) in E_Package | E_Package_Body then
+         --  If we are analyzing a package body or spec and we just
+         --  introduced 'Initial and 'Final vertices for an entity
+         --  that is mentioned in an initializes aspect, we have
+         --  to set Is_Export on the corresponding 'Final vertices.
+
+         for F of Flatten_Variable (Defining_Identifier (N)) loop
+            declare
+               Final_F_Id : constant Flow_Id :=
+                 Change_Variant (F, Final_Value);
+
+               Final_V_Id : constant Flow_Graphs.Vertex_Id :=
+                 FA.CFG.Get_Vertex (Final_F_Id);
+            begin
+               if Final_V_Id /= Flow_Graphs.Null_Vertex then
+                  declare
+                     Final_Atr  : V_Attributes :=
+                       FA.CFG.Get_Attributes (Final_V_Id);
+
+                     Entire_Var : constant Entity_Id := Final_F_Id.Node;
+                  begin
+                     Final_Atr.Is_Export := Final_Atr.Is_Export
+                       or else Is_Initialized_At_Elaboration (Entire_Var);
+
+                     FA.CFG.Set_Attributes (Final_V_Id, Final_Atr);
+                  end;
+               end if;
+            end;
+         end loop;
+      end if;
+
    end Do_Object_Declaration;
 
    ----------------------------
@@ -1862,19 +1917,45 @@ package body Flow.Control_Flow_Graph is
             PAA := First (Pragma_Argument_Associations (AS_Pragma));
             AS := First (Expressions (Expression (PAA)));
             while Present (AS) loop
-               --  Creating 'initial and 'final vertices for every
-               --  state abstraction.
-               if Nkind (AS) = N_Extension_Aggregate then
+               --  Creating 'Initial and 'Final vertices for every
+               --  state abstraction and setting Is_Export to True
+               --  if the corresponding entity is initialized.
+               declare
+                  New_N : constant Node_Id :=
+                    (if Nkind (AS) = N_Extension_Aggregate then
+                       Entity (Ancestor_Part (AS))
+                     else
+                       Entity (AS));
+               begin
                   Create_Initial_And_Final_Vertices
-                    (Entity (Ancestor_Part (AS)),
+                    (New_N,
                      Is_Param => False,
                      FA       => FA);
-               else
-                  Create_Initial_And_Final_Vertices
-                    (Entity (AS),
-                     Is_Param => False,
-                     FA       => FA);
-               end if;
+
+                  if Ekind (FA.Analyzed_Entity) in
+                    E_Package | E_Package_Body
+                  then
+                     declare
+                        Final_F_Id : constant Flow_Id :=
+                          Change_Variant (Direct_Mapping_Id
+                                            (New_N),
+                                          Final_Value);
+
+                        Final_V_Id : constant Flow_Graphs.Vertex_Id :=
+                          FA.CFG.Get_Vertex (Final_F_Id);
+
+                        Final_Atr  : V_Attributes :=
+                          FA.CFG.Get_Attributes (Final_V_Id);
+
+                        Entire_Var : constant Entity_Id := Final_F_Id.Node;
+                     begin
+                        Final_Atr.Is_Export := Final_Atr.Is_Export
+                          or else Is_Initialized_At_Elaboration (Entire_Var);
+
+                        FA.CFG.Set_Attributes (Final_V_Id, Final_Atr);
+                     end;
+                  end if;
+               end;
 
                Next (AS);
             end loop;
@@ -3067,7 +3148,7 @@ package body Flow.Control_Flow_Graph is
 
       --  If you're now wondering where we deal with locally declared
       --  objects; we deal with them as they are encountered. See
-      --  Do_N_Object_Declaration for enlightenment.
+      --  Do_Object_Declaration for enlightenment.
 
       --  Produce flowgraph for the precondition, if any.
       case FA.Kind is

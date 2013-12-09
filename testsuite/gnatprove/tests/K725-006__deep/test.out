@@ -1,4 +1,6 @@
+pack.adb:7:41: warning: statement has no effect, in instantiation at pack.adb:18
 pack.adb:9:29: info: length check proved, in instantiation at pack.adb:18
+pack.adb:11:44: warning: statement has no effect, in instantiation at pack.adb:18
 pack.adb:13:32: info: length check proved, in instantiation at pack.adb:18
 pack.adb:21:04: warning: statement has no effect
 pack.adb:25:04: warning: statement has no effect
