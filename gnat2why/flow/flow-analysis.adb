@@ -925,8 +925,9 @@ package body Flow.Analysis is
                         F2        => Direct_Mapping_Id (FA.Analyzed_Entity));
                      Sane := False;
 
-                  elsif FA.Kind in E_Package | E_Package_Body and then
-                    not Is_Initialized_At_Elaboration (Var)
+                  elsif FA.Kind in E_Package | E_Package_Body
+                    and then Is_Library_Level_Entity (FA.Analyzed_Entity)
+                    and then not Is_Initialized_At_Elaboration (Var)
                   then
 
                      --  If check an initial_condition aspect, we make sure

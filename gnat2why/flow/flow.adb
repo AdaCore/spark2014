@@ -400,6 +400,12 @@ package body Flow is
                            Write_Str ("call ");
                            Sprint_Node (Name (N));
 
+                        when N_Null_Statement =>
+                           --  This is here in order NOT to print an empty
+                           --  bubble. Sprint usually, but not always,
+                           --  returns "null;" for this node.
+                           Write_Str ("null;");
+
                         when others =>
                            Sprint_Node (N);
                      end case;
