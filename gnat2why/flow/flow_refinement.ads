@@ -42,7 +42,7 @@ package Flow_Refinement is
    -- Flow_Scope --
    ----------------
 
-   --  The scope we care about in flow analysis is restrictured to
+   --  The scope we care about in flow analysis is restricted to
    --  packages, since we only care about refinement of abstracts state and
    --  packages are the only entities which contain abstract state.
    --
@@ -90,7 +90,7 @@ package Flow_Refinement is
    function Body_Scope (S : Flow_Scope) return Flow_Scope
    is (Flow_Scope'(S.Pkg, Body_Part))
    with Pre => Present (S);
-   --  Returns the private scope for a valid scope.
+   --  Returns the body scope for a valid scope.
 
    ---------------------------
    -- Queries and utilities --

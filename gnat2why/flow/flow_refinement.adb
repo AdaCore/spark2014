@@ -21,10 +21,10 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Elists;   use Elists;
-with Nlists;   use Nlists;
-with Snames;   use Snames;
-with Stand;    use Stand;
+with Elists;            use Elists;
+with Nlists;            use Nlists;
+with Snames;            use Snames;
+with Stand;             use Stand;
 
 with SPARK_Definition;  use SPARK_Definition;
 
@@ -345,10 +345,10 @@ package body Flow_Refinement is
                           return Node_Sets.Set
    is
       function Expand (E : Entity_Id) return Node_Sets.Set;
-      --  We return either E if its refinement is not visible, and all
+      --  We return either E if its refinement is not visible, or all
       --  consitituents of E otherwise.
       --
-      --  If E is not abstract state, we also just return V.
+      --  If E is not abstract state, we also just return E.
 
       ------------
       -- Expand --
