@@ -42,6 +42,7 @@ with SPARK_Util;             use SPARK_Util;
 
 with Flow_Types;
 with Flow.Utility;
+with Flow_Tree_Utility;      use Flow_Tree_Utility;
 
 with Why;                    use Why;
 with Why.Atree.Accessors;    use Why.Atree.Accessors;
@@ -138,8 +139,11 @@ package body Gnat2Why.Subprograms is
    --    in_range (x)
    --  and join everything together with a conjunction.
 
-   function Get_Location_For_Postcondition (E : Entity_Id) return Node_Id;
-   --  Return a node with a proper location for the postcondition of E, if any
+   function Get_Location_For_Pre_Post
+     (E    : Entity_Id;
+      Prag : Name_Id) return Node_Id;
+   --  Return a node with a proper location for the pre- or postcondition of E,
+   --  if any
 
    ------------------
    -- Compute_Args --
@@ -982,7 +986,8 @@ package body Gnat2Why.Subprograms is
       Params   : Transformation_Params;
 
       Body_N   : constant Node_Id := SPARK_Util.Get_Subprogram_Body (E);
-      Post_N   : constant Node_Id := Get_Location_For_Postcondition (E);
+      Post_N   : constant Node_Id :=
+        Get_Location_For_Pre_Post (E, Name_Postcondition);
       Assume   : W_Prog_Id;
       Prog     : W_Prog_Id;
       Why_Body : W_Prog_Id;
@@ -993,6 +998,8 @@ package body Gnat2Why.Subprograms is
       Guard_Map      : Ada_To_Why_Ident.Map;
       Contract_Check : W_Prog_Id;
       Post_Check     : W_Prog_Id;
+
+      Precondition   : W_Prog_Id;
 
    begin
       Open_Theory (File, Name & "__subprogram_def",
@@ -1036,6 +1043,27 @@ package body Gnat2Why.Subprograms is
          Assume := New_Void;
       end if;
 
+      --  In the following declare block, we define the variable "Precondition"
+      --  to contain the precondition assumption for this subprogram. In fact,
+      --  if the subprogram is a main, the precondition needs to be *proved*,
+      --  and in this case the assumption is realized using an assertion
+      --  expression.
+
+      declare
+         Pre : constant W_Pred_Id :=
+           +Compute_Spec (Params, E, Name_Precondition, EW_Pred);
+      begin
+         if Might_Be_Main (E) then
+            Precondition :=
+              New_Located_Assert
+                (Ada_Node => Get_Location_For_Pre_Post (E, Name_Precondition),
+                 Pred => Pre,
+                 Reason => VC_Precondition_Main);
+         else
+            Precondition := New_Assume_Statement (Post => Pre);
+         end if;
+      end;
+
       --  If contract cases are present, generate checks for absence of
       --  run-time errors in guards, and check that contract cases are disjoint
       --  and complete. The completeness is checked in a context where the
@@ -1045,8 +1073,7 @@ package body Gnat2Why.Subprograms is
         ((1 => Assume,
           2 => New_Ignore
           (Prog => +Compute_Spec (Params, E, Name_Precondition, EW_Prog)),
-          3 => New_Assume_Statement
-            (Post => +Compute_Spec (Params, E, Name_Precondition, EW_Pred)),
+          3 => Precondition,
           4 => Compute_Contract_Cases_Entry_Checks (Params, E)));
 
       if Present (Body_N) and then Entity_Body_In_SPARK (E) then
@@ -1191,26 +1218,28 @@ package body Gnat2Why.Subprograms is
    -- Get_Location_For_Postcondition --
    ------------------------------------
 
-   function Get_Location_For_Postcondition (E : Entity_Id) return Node_Id is
+   function Get_Location_For_Pre_Post
+     (E    : Entity_Id;
+      Prag : Name_Id) return Node_Id
+   is
       PPC  : Node_Id;
       Post : Node_Id := Empty;
-
    begin
 
       --  In the case of a No_Return Subprogram, there is no real location for
-      --  the postcondition; simply return the subp entity node.
+      --  the assertion; simply return the subp entity node.
 
       if No_Return (E) then
          return E;
       end if;
 
       --  Pre- and postconditions are stored in reverse order in
-      --  Pre_Post_Conditions, hence retrieve the last postcondition in this
+      --  Pre_Post_Conditions, hence retrieve the last assertion in this
       --  list to get the first one in source code.
 
       PPC := Pre_Post_Conditions (Contract (E));
       while Present (PPC) loop
-         if Pragma_Name (PPC) = Name_Postcondition then
+         if Pragma_Name (PPC) = Prag then
             Post := Expression (First (Pragma_Argument_Associations (PPC)));
          end if;
 
@@ -1218,7 +1247,7 @@ package body Gnat2Why.Subprograms is
       end loop;
 
       return Post;
-   end Get_Location_For_Postcondition;
+   end Get_Location_For_Pre_Post;
 
    ----------------------------------------
    -- Translate_Expression_Function_Body --

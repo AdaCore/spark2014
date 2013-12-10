@@ -50,7 +50,8 @@ package VC_Kinds is
       --  Assertions
 
       VC_Initial_Condition,
-      VC_Precondition,
+      VC_Precondition,               --  the precondition of a call
+      VC_Precondition_Main,          --  the precondition of a main program
       VC_Postcondition,
       VC_Contract_Case,
       VC_Disjoint_Contract_Cases,
@@ -65,6 +66,7 @@ package VC_Kinds is
    function Is_Assertion_Kind (V : VC_Kind) return Boolean is
      (V in
         VC_Postcondition |
+        VC_Precondition_Main  |
         VC_Loop_Invariant |
         VC_Assert);
 
