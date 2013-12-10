@@ -245,11 +245,13 @@ package body Flow_Tree_Utility is
 
          when E_Variable =>
             if Is_Package_State (E) then
-               if Present (Encapsulating_State (E)) then
-                  return
-                    Is_Initialized_At_Elaboration (Encapsulating_State (E));
+               if Find_Node_In_Initializes (E) /= Empty then
+                  return True;
+               elsif Present (Encapsulating_State (E)) then
+                  return Is_Initialized_At_Elaboration
+                    (Encapsulating_State (E));
                else
-                  return Find_Node_In_Initializes (E) /= Empty;
+                  return False;
                end if;
             else
                return False;
