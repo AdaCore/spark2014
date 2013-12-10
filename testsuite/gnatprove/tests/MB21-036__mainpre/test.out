@@ -1,5 +1,5 @@
 mainpre.adb:3:23: warning: unused initial value of "Pack.State"
-mainpre.adb:4:20: warning: precondition of main program might fail
+mainpre.adb:4:16: warning: precondition of main program might fail
 mainpre.adb:7:4: info: precondition proved
 mainpre.adb:7:04: warning: statement has no effect
 mainpre.adb:7:04: warning: unused assignment to "Pack.State"
