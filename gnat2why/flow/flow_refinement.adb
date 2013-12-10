@@ -76,7 +76,7 @@ package body Flow_Refinement is
    --
    --  The visibility is the same as before, i.e.
    --     s.section = enclosing_scope(s).section
-   --  Unless S is a privat descendant, in which case it is always "priv".
+   --  Unless S is a private descendant, in which case it is always "priv".
 
    function Is_Visible (N : Node_Id;
                         S : Flow_Scope)
