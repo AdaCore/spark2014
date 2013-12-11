@@ -2,8 +2,8 @@ with System.Storage_Elements;
 
 package body Volatiles_Illegal_1
   with SPARK_Mode,
-       Refined_State => (State => Vol)  --  Aspect Async_Writers is set
-                                        --  for Vol while it is not set
+       Refined_State => (State => Vol)  --  Aspect Async_Readers is not set
+                                        --  for Vol while it is set
                                         --  for State1.
 
 is
