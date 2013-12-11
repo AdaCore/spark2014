@@ -27,7 +27,7 @@ is
    procedure Get_Byte (A_Byte : out Byte_T)
      with Global  => (In_Out => Serial_In),
           Depends => (A_Byte    => Serial_In,
-                      Serial_In => null);
+                      Serial_In => Serial_In);
 
    -- This procedure skips input bytes until
    -- the byte matches the given pattern or the input

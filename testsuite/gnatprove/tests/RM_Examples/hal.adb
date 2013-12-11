@@ -52,7 +52,7 @@ is
    procedure Get_Byte (A_Byte : out Byte_T)
      with Refined_Global  => (In_Out    => Read_FIFO),
           Refined_Depends => (A_Byte    => Read_FIFO,
-                              Read_FIFO => null)
+                              Read_FIFO => Read_FIFO)
    is
    begin
       A_Byte := Read_FIFO;
@@ -75,7 +75,10 @@ is
          Get_FIFO_Status (Current_Status);
          exit when Current_Status = Read_FIFO_Empty;
          Get_Byte (Next_Byte);
-         exit when Next_Byte = Pattern;
+         if Next_Byte = Pattern then
+            Found := True;
+            exit;
+         end if;
       end loop;
    end Skip_To;
 

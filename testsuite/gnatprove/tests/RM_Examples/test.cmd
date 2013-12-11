@@ -11,8 +11,9 @@ gnatprove -P test.gpr -f -q --warnings=on --report=all -u refined_global_example
 gnatprove -P test.gpr -f -q --warnings=on --report=all -u refined_depends_examples.adb
 gnatprove -P test.gpr -f -q --warnings=on --report=all -u stacks_1.adb
 gnatprove -P test.gpr -f -q --warnings=on --report=all -u stacks_2.adb
-gcc -c externals.adb
-gcc -c hal.adb main_hal.adb
+gnatprove -P test.gpr -f -q --warnings=on --report=all --mode=flow -u externals.adb
+gnatprove -P test.gpr -f -q --warnings=on --report=all --mode=flow -u hal.adb
+gcc -c main_hal.adb
 gnatprove -P test.gpr -f -q --warnings=on --report=all -u inter_unit_elaboration_examples.adb
 gnatprove -P test.gpr -f -q --warnings=on --report=all -u intra_unit_elaboration_order_examples.adb
 gnatprove -P test.gpr -f -q --warnings=on --report=all -u initialization_and_elaboration.adb

@@ -39,9 +39,8 @@ is
    procedure Display (D_Main, D_Secondary : in String)
      with Refined_Global  => (Output => (Main_Display.State,
                                          Secondary_Display.State)),
-          Refined_Depends => ((Main_Display.State,
-                               Secondary_Display.State) => (D_Main,
-                                                            D_Secondary))
+          Refined_Depends => (Main_Display.State      => D_Main,
+                              Secondary_Display.State => D_Secondary)
    is
    begin
       Main_Display.Display (D_Main);
