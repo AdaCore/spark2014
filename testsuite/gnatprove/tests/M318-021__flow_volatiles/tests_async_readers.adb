@@ -77,7 +77,7 @@ is
           Depends => (Vol => (X, Y, N),  -- Vol is not an input here
                       Z   => N,          -- It has no asynchronous writers
                       W   => Y,
-                      V   => (X, Y, N))  -- Conservative again
+                      V   => (X, Y))  -- Conservative again
    is
    begin
       Vol := N;
@@ -88,8 +88,8 @@ is
    procedure Calling_P_Again (X, Y, N : in     Integer;
                               Z, W, V :    out Integer)
      with Global  => (Output  => Vol),
-          Depends => (Vol => (X, Y), -- Vol is not an input here
-                      Z   => Y,      -- It has no asynchronous writers
+          Depends => (Vol => (X, Y, N), -- Vol is not an input here
+                      Z   => Y,         -- It has no asynchronous writers
                       W   => N,
                       V   => (X, Y)) -- Conservative
    is
