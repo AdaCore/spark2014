@@ -51,7 +51,7 @@ Types and Subtypes
 
 3. Constants, including those implicitly declared through a
    non-preelaborable subtype declaration shall not be denoted in
-   Global, Depends, Initializes or Refined_State aspects.  [This means
+   Global, Depends, Initializes or Refined_State aspects. [This means
    that non-preelaborable subtypes are not taken into account in
    determining and checking dependency relations.]
 
@@ -70,8 +70,8 @@ Type Declarations
 1. The following type declarations are not permitted in |SPARK|
 
    * ``task_type_declaration``,
-   * ``protected_type_declaration``, 
-   * ``private_extension_declaration``, 
+   * ``protected_type_declaration``,
+   * ``private_extension_declaration``,
    * ``interface_type_definition``, and
    * ``access_type_definition``.
 
@@ -90,15 +90,15 @@ Subtype Declarations
 
 A ``constraint`` in |SPARK| cannot be defined using variable
 expressions except when it is the ``range`` of a
-``loop_parameter_specification``.  Dynamic subtypes are permitted but
+``loop_parameter_specification``. Dynamic subtypes are permitted but
 they must be defined using constants whose values may be derived from
-expressions containing variables.  Note that a formal parameter of a
+expressions containing variables. Note that a formal parameter of a
 subprogram of mode **in** is a constant and may be used in defining a
 constraint. This restriction gives an explicit constant which can be
 referenced in analysis and proof.
 
 An expression with a *variable input* reads a variable or calls a
-function which calls (directly or indirectly) reads a variable.
+function which (directly or indirectly) reads a variable.
 
 .. centered:: **Legality Rules**
 
@@ -109,8 +109,8 @@ function which calls (directly or indirectly) reads a variable.
    expression with a variable input.
 
 .. _etu-subtype_declarations:
- 
- 
+
+
 Classification of Operations
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -229,7 +229,7 @@ The following rules apply to discriminants in |SPARK|.
 
 .. _tu-discriminants-03:
 
-3. The ``default_expression`` of a ``discriminant_specification`` 
+3. The ``default_expression`` of a ``discriminant_specification``
    shall not have a variable input.
 
 .. _etu-discriminants:
