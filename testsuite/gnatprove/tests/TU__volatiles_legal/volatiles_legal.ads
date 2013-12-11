@@ -28,7 +28,7 @@ is
    --  TU: 13. Every explicit update of an external state might affect the next
    --  value read from the external state even if Async_Writers => True.
 
-   --  TU: 14. An external state which has the property Async_Readers => True
+   --  TU: 14. An external state which has the property Async_Writers => True
    --  need not be initialized before being read although explicit
    --  initialization is permitted. [The external state might be
    --  initialized by an external writer.]

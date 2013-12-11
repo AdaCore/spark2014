@@ -207,7 +207,7 @@ as external properties of an external state abstraction.
 
 .. _tu-fa-external_state-14:
 
-14. An external state which has the property Async_Readers => True
+14. An external state which has the property Async_Writers => True
     need not be initialized before being read although explicit
     initialization is permitted. [The external state might be
     initialized by an external writer.]
