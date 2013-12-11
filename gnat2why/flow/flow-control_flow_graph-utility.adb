@@ -49,6 +49,8 @@ package body Flow.Control_Flow_Graph.Utility is
          if Has_Effective_Reads (F) then
             A.Volatiles_Read.Include (F);
          end if;
+      end loop;
+      for F of A.Variables_Defined loop
          if Has_Effective_Writes (F) then
             A.Volatiles_Written.Include (F);
          end if;

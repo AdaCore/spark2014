@@ -349,7 +349,8 @@ package body Flow_Types is
               Present (Get_Pragma (Get_Direct_Mapping_Id (F),
                                    Pragma_Async_Readers));
          when Record_Field =>
-            raise Why.Not_Implemented;
+            --  ??? to be implemented in M318-021
+            return False;
       end case;
    end Has_Async_Readers;
 
@@ -367,7 +368,8 @@ package body Flow_Types is
               Present (Get_Pragma (Get_Direct_Mapping_Id (F),
                                    Pragma_Async_Writers));
          when Record_Field =>
-            raise Why.Not_Implemented;
+            --  ??? to be implemented in M318-021
+            return False;
       end case;
    end Has_Async_Writers;
 
@@ -404,7 +406,8 @@ package body Flow_Types is
               Present (Get_Pragma (Get_Direct_Mapping_Id (F),
                                    Pragma_Effective_Writes));
          when Record_Field =>
-            raise Why.Not_Implemented;
+            --  ??? to be implemented in M318-021
+            return False;
       end case;
    end Has_Effective_Writes;
 

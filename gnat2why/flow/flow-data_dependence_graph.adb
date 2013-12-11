@@ -75,6 +75,15 @@ package body Flow.Data_Dependence_Graph is
                FA.CFG.DFS (Start         => V_D,
                            Include_Start => False,
                            Visitor       => Visitor'Access);
+
+               for Vol of FA.CFG.Get_Attributes (V_D).Volatiles_Written loop
+                  declare
+                     V_Final : constant Flow_Graphs.Vertex_Id :=
+                       FA.CFG.Get_Vertex (Change_Variant (Vol, Final_Value));
+                  begin
+                     FA.DDG.Add_Edge (V_D, V_Final, EC_DDG);
+                  end;
+               end loop;
             end;
          end loop;
       end loop;

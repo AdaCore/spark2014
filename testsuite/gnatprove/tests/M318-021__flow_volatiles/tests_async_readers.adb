@@ -18,7 +18,7 @@ package body Tests_Async_Readers
   with Refined_State => (State_With_Async_Readers => Vol)
 is
    Vol : Integer
-    with Volatile, Async_Readers;
+    with Volatile, Async_Readers, Effective_Writes;
 
    ----------------------------------------------------------------------
    --  The following are "correct" contracts and should not raise any
@@ -101,8 +101,6 @@ is
       V := Vol;
    end Calling_P_Again;
 
-   --  The function and procedure here should behave the same.
-
    procedure R_Proc (Z : out Integer)
      with Global  => (Input => Vol),
           Depends => (Z => Vol)
@@ -110,13 +108,6 @@ is
    begin
       Z := Vol;
    end R_Proc;
-
-   function R_Func return Integer
-     with Global => (Input => Vol)
-   is
-   begin
-      return Vol;
-   end R_Func;
 
    procedure Calling_R (A, B    : in     Integer;
                         X, Y, Z :    out Integer)
@@ -131,7 +122,7 @@ is
                       Z   => B)
    is
    begin
-      X   := R_Func;
+      R_Proc (X);
       Vol := A;
       R_Proc (Y);
       Vol := B;
@@ -149,7 +140,7 @@ is
    begin
       R_Proc (X);
       Vol := A;
-      Y := R_Func;
+      R_Proc (Y);
       Vol := B;
       Z   := Vol;
    end Calling_R_Again;
