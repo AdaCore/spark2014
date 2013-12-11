@@ -68,9 +68,9 @@ package body Flow.Control_Flow_Graph is
    --  Local types
    ------------------------------------------------------------
 
-   ----------------------
-   --  Connection_Maps --
-   ----------------------
+   ---------------------
+   -- Connection_Maps --
+   ---------------------
 
    --  The flow graph is produced using two datastructures,
    --  Graph_Connections and a map Union_Id -> Graph_Connections.
@@ -185,9 +185,9 @@ package body Flow.Control_Flow_Graph is
       Equivalent_Keys => "=",
       "="             => "=");
 
-   ---------------
-   --  Context  --
-   ---------------
+   -------------
+   -- Context --
+   -------------
 
    type Context is record
       Current_Loops             : Node_Sets.Set;

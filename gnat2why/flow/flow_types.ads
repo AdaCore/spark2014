@@ -228,7 +228,7 @@ package Flow_Types is
    --  Checks if reads of F are always effective.
 
    function Has_Effective_Writes (F : Flow_Id) return Boolean
-   with Post => (if Has_Effective_Writes'Result then Has_Async_Writers (F));
+   with Post => (if Has_Effective_Writes'Result then Has_Async_Readers (F));
    --  Checks if writes to F are always effective.
 
    function Is_Abstract_State (F : Flow_Id) return Boolean;
@@ -411,6 +411,7 @@ package Flow_Types is
       --  For producing the DDG.
 
       Volatiles_Read      : Flow_Id_Sets.Set;
+      Volatiles_Written   : Flow_Id_Sets.Set;
       --  Again, for producing the DDG. These are implied updates due
       --  to reads of volatiles where reads are effective.
 
@@ -458,6 +459,7 @@ package Flow_Types is
                    Variables_Defined               => Flow_Id_Sets.Empty_Set,
                    Variables_Used                  => Flow_Id_Sets.Empty_Set,
                    Volatiles_Read                  => Flow_Id_Sets.Empty_Set,
+                   Volatiles_Written               => Flow_Id_Sets.Empty_Set,
                    Loops                           => Node_Sets.Empty_Set,
                    Error_Location                  => Empty,
                    Aux_Node                        => Empty);

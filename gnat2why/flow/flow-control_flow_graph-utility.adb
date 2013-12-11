@@ -31,13 +31,13 @@ with Flow_Tree_Utility; use Flow_Tree_Utility;
 package body Flow.Control_Flow_Graph.Utility is
 
    procedure Add_Volatile_Effects (A : in out V_Attributes);
-   --  This helper procedure inspects the variables used by a
-   --  particular vertex. Any with a volatile property causing reads
-   --  to be effective will be noted in the volatiles_read set.
+   --  This helper procedure inspects the variables used by a particular
+   --  vertex. Any with a volatile property causing reads or writes to be
+   --  effective will be noted in the volatiles_read and volatiles_written
+   --  sets (as appropriate).
    --
    --  This procedure should not be blindly called in all cases; in
-   --  particular for 'inital and 'final vertices it should not be
-   --  used.
+   --  particular for 'inital and 'final vertices it should not be used.
 
    -------------------------
    -- Add_Volatile_Effets --
@@ -48,6 +48,9 @@ package body Flow.Control_Flow_Graph.Utility is
       for F of A.Variables_Used loop
          if Has_Effective_Reads (F) then
             A.Volatiles_Read.Include (F);
+         end if;
+         if Has_Effective_Writes (F) then
+            A.Volatiles_Written.Include (F);
          end if;
       end loop;
    end Add_Volatile_Effects;
