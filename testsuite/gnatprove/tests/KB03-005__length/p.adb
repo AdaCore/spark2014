@@ -12,7 +12,7 @@ procedure P is
       return 1;
    end F;
 
-   A : Vec (F .. 10);
+   A : Vec (F .. 10) := (others => 0);
 begin
    Nothing (A);
 end P;
