@@ -3,37 +3,7 @@ p.adb:23:07: violation of aspect SPARK_Mode at line 2
 p.adb:32:07: "Sync_Raw_S_With_Full_S" is not allowed in SPARK
 p.adb:32:07: violation of aspect SPARK_Mode at line 2
    compilation of p.adb failed
-   compilation of p2.adb failed
 
 
-
-
-
-+==========================================================================+
-+===========================GNAT BUG DETECTED==============================+
-/tmp/tmp-test-MC12-026__overlayed_objects-10545/GNAT-TEMP-000001.TMP
-/tmp/tmp-test-MC12-026__overlayed_objects-10545/GNAT-TEMP-000002.TMP
-/tmp/tmp-test-MC12-026__overlayed_objects-10545/src/p2.adb
-/tmp/tmp-test-MC12-026__overlayed_objects-10545/src/p2.ads
-/tmp/tmp-test-MC12-026__overlayed_objects-10545/src/test.adc
-Consider also -gnatd.n switch (see debug.adb).
-Note that list may not be accurate in some cases,
-Please include these source files with error report
-Raw_S'out (direct)
-be reproduced with the set of files listed.
-compilation abandoned
 gnatprove: error during analysis and translation to intermediate language, aborting.
 gprbuild: *** compilation phase failed
-so please double check that the problem can still
-| (concatenated together with no headers between files).                   |
-| Also include sources listed below in gnatchop format                     |
-| Error detected at p2.adb:1:14                                            |
-| Include the entire contents of this bug box in the report.               |
-| Include the exact gcc or gnatmake command that you entered.              |
-| Please submit a bug report using GNAT Tracker:                           |
-| Pro 7.3.0w (20131211) (SPARK2014) Program_Error flow-interprocedural.adb:106 explicit raise|
-| Use a subject line meaningful to you and us to track the bug.            |
-| Use plain ASCII or MIME attachment.                                      |
-| alternatively submit a bug report by email to report@adacore.com,        |
-| http://www.adacore.com/gnattracker/ section 'send a report'.             |
-| including your customer number #nnn in the subject line.                 |

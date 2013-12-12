@@ -29,8 +29,10 @@ is
 
    procedure Update_R (X : in Integer;
                        Y : in Float)
-     with Global => (In_Out => (Full_S, Raw_S)),
-          Depends => ((Full_S, Raw_S) => +(X, Y));
+     with Global => (In_Out => Full_S,
+                     Output => Raw_S),
+          Depends => (Full_S => +(X, Y),
+                      Raw_S  => (Full_S, X, Y));
    
 end P2;
 
