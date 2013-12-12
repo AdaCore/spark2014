@@ -2242,8 +2242,7 @@ package body Flow.Control_Flow_Graph is
             Prev := V;
          end loop;
 
-         --  Handling of no-return to be enabled by M611-014
-         if False and then No_Return (Called_Procedure) then
+         if No_Return (Called_Procedure) then
             CM.Include
               (Union_Id (N),
                Graph_Connections'
