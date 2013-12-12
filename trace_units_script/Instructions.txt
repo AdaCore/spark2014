@@ -43,3 +43,4 @@
    "-fa-" means this trace unit is tested by flow analysis
    "-fe-" means this trace unit is tested by the front end
    "-pr-" means this trace unit is tested by proof
+   "-sf-" means this trace unit is tested by SPARK filter (spark_definition)
