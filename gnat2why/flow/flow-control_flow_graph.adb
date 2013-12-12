@@ -2242,10 +2242,28 @@ package body Flow.Control_Flow_Graph is
             Prev := V;
          end loop;
 
-         CM.Include
-           (Union_Id (N),
-            Graph_Connections'(Standard_Entry => V,
-                               Standard_Exits => Vertex_Sets.To_Set (Prev)));
+         --  Handling of no-return to be enabled by M611-014
+         if False and then No_Return (Called_Procedure) then
+            CM.Include
+              (Union_Id (N),
+               Graph_Connections'
+                 (Standard_Entry => V,
+                  Standard_Exits => Vertex_Sets.Empty_Set));
+            Linkup (FA.CFG, Prev, FA.End_Vertex);
+            declare
+               Atr : constant V_Attributes :=
+                 FA.CFG.Get_Attributes (Prev)'Update
+                 (No_Return_From_Here => True);
+            begin
+               FA.CFG.Set_Attributes (Prev, Atr);
+            end;
+         else
+            CM.Include
+              (Union_Id (N),
+               Graph_Connections'
+                 (Standard_Entry => V,
+                  Standard_Exits => Vertex_Sets.To_Set (Prev)));
+         end if;
       end;
    end Do_Procedure_Call_Statement;
 

@@ -47,17 +47,16 @@ package body Flow.Data_Dependence_Graph is
                  (V_U : Flow_Graphs.Vertex_Id;
                   TV  : out Flow_Graphs.Simple_Traversal_Instruction)
                is
+                  Atr : constant V_Attributes := FA.CFG.Get_Attributes (V_U);
                begin
-                  if FA.CFG.Get_Attributes
-                    (V_U).Variables_Used.Contains (Var)
-                  then
+                  if Atr.Variables_Used.Contains (Var) then
                      FA.DDG.Add_Edge (V_D, V_U, EC_DDG);
                   end if;
-                  if (FA.CFG.Get_Attributes
-                        (V_U).Variables_Defined.Contains (Var))
-                    or (FA.CFG.Get_Attributes
-                          (V_U).Volatiles_Read.Contains (Var))
+                  if (Atr.Variables_Defined.Contains (Var))
+                    or (Atr.Volatiles_Read.Contains (Var))
                   then
+                     TV := Flow_Graphs.Skip_Children;
+                  elsif Atr.No_Return_From_Here then
                      TV := Flow_Graphs.Skip_Children;
                   else
                      TV := Flow_Graphs.Continue;

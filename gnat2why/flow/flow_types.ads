@@ -387,6 +387,9 @@ package Flow_Types is
       --  True if this vertex models a global for a procedure or
       --  function call.
 
+      No_Return_From_Here : Boolean;
+      --  If true, we do not abort the search for data-dependencies here.
+
       Perform_IPFA        : Boolean;
       --  True if the dependencies for this callsite should be filled
       --  in using interprocedural flow analysis.
@@ -450,6 +453,7 @@ package Flow_Types is
                    Is_Parameter                    => False,
                    Is_Discriminants_Only_Parameter => False,
                    Is_Global_Parameter             => False,
+                   No_Return_From_Here             => False,
                    Perform_IPFA                    => False,
                    Call_Vertex                     => Null_Flow_Id,
                    Parameter_Actual                => Null_Flow_Id,
