@@ -375,6 +375,10 @@ package body Gnat2Why.Expr is
       Assocs              : List_Id;
       Params              : Transformation_Params;
       In_Attribute_Update : Boolean := False) return W_Field_Association_Array;
+   --  Returns a list of updates to be applied to a record value, to
+   --  translate either an aggregate or a reference to attribute Update.
+   --  In_Attribute_Update is True when translating a reference to attribute
+   --  Update.
 
    function Transform_Binop (Op : N_Binary_Op) return EW_Binary_Op;
    --  Convert an Ada binary operator to a Why term symbol
@@ -3783,25 +3787,24 @@ package body Gnat2Why.Expr is
 
             begin
                if Is_Record_Type (Pref_Typ) then
-                  Prefix_Expr :=
-                    +Transform_Expr (Domain       => Domain,
-                                     Expr          => Pref,
-                                     Params        => Params);
-                  T :=
-                    New_Record_Update
-                    (Name     => +Prefix_Expr,
-                     Updates  =>
-                       Transform_Record_Component_Associations
-                       (Domain              => Domain,
-                        Typ                 => Pref_Typ,
-                        Assocs              => Component_Associations (Aggr),
-                        Params              => Params,
-                        In_Attribute_Update => True),
-                     Typ      => EW_Abstract (Pref_Typ));
+                  Prefix_Expr := +Transform_Expr (Domain => Domain,
+                                                  Expr   => Pref,
+                                                  Params => Params);
+                  T := New_Record_Update
+                         (Name     => +Prefix_Expr,
+                          Updates  =>
+                            Transform_Record_Component_Associations
+                              (Domain              => Domain,
+                               Typ                 => Pref_Typ,
+                               Assocs              =>
+                                 Component_Associations (Aggr),
+                               Params              => Params,
+                               In_Attribute_Update => True),
+                          Typ      => EW_Abstract (Pref_Typ));
+
                else
-                  pragma Assert
-                    (Is_Array_Type (Pref_Typ) or else
-                       Is_String_Type (Pref_Typ));
+                  pragma Assert (Is_Array_Type (Pref_Typ));
+
                   if 1 < Number_Dimensions (Pref_Typ) then
                      Ada.Text_IO.Put_Line
                        ("[Transform_Attr] multi-dimensional "
@@ -6078,12 +6081,14 @@ package body Gnat2Why.Expr is
       Params              : Transformation_Params;
       In_Attribute_Update : Boolean := False) return W_Field_Association_Array
    is
-
       function Components_Count (Assocs : List_Id) return Natural;
-      --  This function loops over the associations and their choice lists
-      --  to count the numbers of component selectors
-      function Components_Count (Assocs : List_Id) return Natural
-      is
+      --  Returns the number of component selectors in Assocs
+
+      ----------------------
+      -- Components_Count --
+      ----------------------
+
+      function Components_Count (Assocs : List_Id) return Natural is
          CL          : List_Id;
          Association : Node_Id := Nlists.First (Assocs);
          Associated_Components : Natural := 0;
@@ -6108,27 +6113,22 @@ package body Gnat2Why.Expr is
    --  Start of Transform_Record_Component_Associations
 
    begin
-      --  Normal record aggregates are required to be fully
-      --  initialized, but 'Update aggregates are allowed to be
-      --  partial. The implementation here is general enough for both
-      --  kinds of aggregates so the association list does not
-      --  necessarily cover all the components.
+      --  Normal record aggregates are required to be fully initialized, but
+      --  'Update aggregates are allowed to be partial. The implementation here
+      --  is general enough for both kinds of aggregates so the association
+      --  list does not necessarily cover all the components.
 
-      if not In_Attribute_Update then
-         --  normal, fully defined aggregate
-         pragma Assert (Number_Components (Typ) =
-                          Integer (List_Length (Assocs)));
-      end if;
+      pragma Assert
+        (In_Attribute_Update
+          or else Number_Components (Typ) = Integer (List_Length (Assocs)));
 
       Association := Nlists.First (Assocs);
       pragma Assert (Present (Association));
 
       --  Start with the first component
       CL := Choices (Association);
-      if not In_Attribute_Update then
-         --  normal, fully defined aggregate, has singleton choice lists
-         pragma Assert (List_Length (CL) = 1);
-      end if;
+      --  normal, fully defined aggregate, has singleton choice lists
+      pragma Assert (In_Attribute_Update or else List_Length (CL) = 1);
       Choice := First (CL);
 
       --  Loop over the associations and component choice lists
@@ -6136,15 +6136,10 @@ package body Gnat2Why.Expr is
          declare
             Expr : W_Expr_Id;
          begin
-            --  We must be sure for the call to
-            --  Search_Component_By_Name that the component
-            --  exists. Semantic checks have passed so we are
-            --  expecting the component to exist. We don't expect
-            --  "others" for 'Update aggregates (illegal). For normal
-            --  aggregates occurances of "others" have been removed
-            --  from the AST wich will have an association list is as
-            --  long as the number of components, and with only
-            --  singleton choice lists.
+            --  We don't expect "others" for 'Update aggregates (illegal). For
+            --  normal aggregates occurances of "others" have been removed from
+            --  the AST wich will have an association list is as long as the
+            --  number of components, and with only singleton choice lists.
 
             pragma Assert (Nkind (Choice) /= N_Others_Choice);
 
@@ -6152,34 +6147,33 @@ package body Gnat2Why.Expr is
 
             if not Box_Present (Association) then
                Expr := Transform_Expr
-                 (Expression (Association),
-                  EW_Abstract (Etype (Component)),
-                  Domain, Params);
+                         (Expr          => Expression (Association),
+                          Expected_Type => EW_Abstract (Etype (Component)),
+                          Domain        => Domain,
+                          Params        => Params);
             else
                pragma Assert (Domain = EW_Prog);
-               Expr :=
-                 +New_Simpl_Any_Prog
-                 (T =>
-                    EW_Abstract (Etype (Component)));
+               Expr := +New_Simpl_Any_Prog
+                         (T => EW_Abstract (Etype (Component)));
             end if;
-            Result (J) :=
-              New_Field_Association
-              (Domain => Domain,
-               Field  => To_Why_Id (Component),
-               Value  => Expr);
+
+            Result (J) := New_Field_Association
+                            (Domain => Domain,
+                             Field  => To_Why_Id (Component),
+                             Value  => Expr);
             J := J + 1;
-            --  Getting the next component from the associations'
-            --  component lists
+
+            --  Getting the next component from the associations' component
+            --  lists, which may require selecting the next choice (for
+            --  attribute Update), or selecting the next component association.
+
             Next (Choice);
             if No (Choice) then
                Next (Association);
                if Present (Association) then
                   CL := Choices (Association);
-                  if not In_Attribute_Update then
-                     --  normal, fully defined aggregate,
-                     --  has singleton choice lists
-                     pragma Assert (List_Length (CL) = 1);
-                  end if;
+                  pragma Assert (In_Attribute_Update
+                                  or else List_Length (CL) = 1);
                   Choice := First (CL);
                end if;
             end if;
