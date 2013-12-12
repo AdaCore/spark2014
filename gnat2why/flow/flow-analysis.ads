@@ -65,6 +65,11 @@ package Flow.Analysis is
    --
    --  Complexity is O(N^2)
 
+   procedure Find_Dead_Code (FA : in out Flow_Analysis_Graphs);
+   --  Find all obviously dead code.
+   --
+   --  Complexity is O(N)
+
    procedure Find_Use_Of_Uninitialized_Variables
      (FA : in out Flow_Analysis_Graphs);
    --  Find all instances where uninitialized variables are used. If a

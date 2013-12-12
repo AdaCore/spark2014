@@ -9,7 +9,7 @@ test.adb:77:20: "R" is not initialized
 test.adb:109:27: "X" is not initialized in "For_Test_01"
 test.adb:109:27: warning: unused variable "X"
 test.adb:112:33: warning: statement has no effect
-test.adb:113:12: warning: unused assignment
+test.adb:113:12: dead code
    compilation of test.adb failed
 
 

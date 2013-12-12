@@ -1175,6 +1175,11 @@ package body Flow.Analysis is
                                  return Boolean;
       --  Checks if the given vertex V is a final-use vertex.
 
+      function Is_Dead_End (V : Flow_Graphs.Vertex_Id)
+                            return Boolean;
+      --  Checks if from the given vertex V it is impossible to reach the
+      --  end vertex.
+
       function Find_Masking_Code
         (Ineffective_Statement : Flow_Graphs.Vertex_Id)
          return Vertex_Sets.Set;
@@ -1274,6 +1279,40 @@ package body Flow.Analysis is
          end loop;
       end Skip_Any_Conversions;
 
+      -----------------
+      -- Is_Dead_End --
+      -----------------
+
+      function Is_Dead_End (V : Flow_Graphs.Vertex_Id)
+                            return Boolean
+      is
+         Dead_End : Boolean := True;
+
+         procedure Visitor (V  : Flow_Graphs.Vertex_Id;
+                            TV : out Flow_Graphs.Simple_Traversal_Instruction);
+
+         procedure Visitor (V  : Flow_Graphs.Vertex_Id;
+                            TV : out Flow_Graphs.Simple_Traversal_Instruction)
+         is
+            Atr : constant V_Attributes := FA.CFG.Get_Attributes (V);
+         begin
+            if Atr.No_Return_From_Here then
+               TV := Flow_Graphs.Skip_Children;
+            elsif V = FA.End_Vertex then
+               Dead_End := False;
+               TV := Flow_Graphs.Abort_Traversal;
+            else
+               TV := Flow_Graphs.Continue;
+            end if;
+         end Visitor;
+      begin
+         FA.CFG.DFS (Start         => V,
+                     Include_Start => True,
+                     Visitor       => Visitor'Access);
+         return Dead_End or else
+           not FA.CFG.Non_Trivial_Path_Exists (FA.Start_Vertex, V);
+      end Is_Dead_End;
+
    begin --  Find_Ineffective_Statements
       for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
@@ -1300,6 +1339,9 @@ package body Flow.Analysis is
                  --  Basic check here
                  not FA.PDG.Non_Trivial_Path_Exists
                  (V, Is_Final_Use_Any_Export'Access) and then
+
+                 --  Supression for dead code
+                 not Is_Dead_End (V) and then
 
                  --  Supression for packages without initializes
                  (if FA.Kind in E_Package | E_Package_Body and then
@@ -1399,6 +1441,70 @@ package body Flow.Analysis is
          end;
       end loop;
    end Find_Ineffective_Statements;
+
+   --------------------
+   -- Find_Dead_Code --
+   --------------------
+
+   procedure Find_Dead_Code (FA : in out Flow_Analysis_Graphs)
+   is
+      Dead_Code : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
+
+      procedure Flag_Live (V  : Flow_Graphs.Vertex_Id;
+                           TV : out Flow_Graphs.Simple_Traversal_Instruction);
+      --  Flag the given node as "live" and continue traversal if
+      --  appropriate.
+
+      procedure Flag_Live (V  : Flow_Graphs.Vertex_Id;
+                           TV : out Flow_Graphs.Simple_Traversal_Instruction)
+      is
+         Atr : constant V_Attributes := FA.CFG.Get_Attributes (V);
+      begin
+         Dead_Code.Exclude (V);
+
+         if Atr.No_Return_From_Here then
+            TV := Flow_Graphs.Skip_Children;
+         else
+            TV := Flow_Graphs.Continue;
+         end if;
+      end Flag_Live;
+
+   begin
+      --  Guilty until proven innocent.
+      for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
+         declare
+            Atr : constant V_Attributes := FA.CFG.Get_Attributes (V);
+         begin
+            if Atr.Is_Program_Node or
+              Atr.Is_Parameter or
+              Atr.Is_Global_Parameter
+            then
+               Dead_Code.Include (V);
+            end if;
+         end;
+      end loop;
+
+      --  Discover live code
+      FA.CFG.DFS (Start         => FA.Start_Vertex,
+                  Include_Start => True,
+                  Visitor       => Flag_Live'Access);
+
+      --  Anything remaining is dead
+      for V of Dead_Code loop
+         declare
+            Unused : Unbounded_String;
+         begin
+            Error_Msg_Flow (FA        => FA,
+                            Tracefile => Unused,
+                            Msg       => "dead code",
+                            N         => Get_Direct_Mapping_Id
+                              (FA.CFG.Get_Key (V)),
+                            Tag       => "dead_code",
+                            Warning   => False);
+         end;
+      end loop;
+
+   end Find_Dead_Code;
 
    -----------------------------------------
    -- Find_Use_Of_Uninitialized_Variables --
