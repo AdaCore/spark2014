@@ -5,11 +5,11 @@ is
 
    type Arr_T is array (Arr_Range) of Integer;
 
-   procedure LHS_Uninitialized (Choise  : in     Integer;
+   procedure LHS_Uninitialized (Choice  : in     Integer;
                                 Element :    out Arr_Range;
                                 Arr     : in out Arr_T);
 
-   procedure RHS_Uninitialized (Choise  : in     Integer;
+   procedure RHS_Uninitialized (Choice  : in     Integer;
                                 Element :    out Arr_Range;
                                 Arr     : in out Arr_T);
 end Update_Uninitialized;
