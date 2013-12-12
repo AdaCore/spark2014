@@ -1,4 +1,4 @@
-package body Update_Legal_2
+package body Update_Uninitialized_2
   with SPARK_Mode
 is
    Z : Integer;
@@ -33,4 +33,4 @@ is
                                   Y2 => Nest_Rec.Y2'Update (X => Nest_Rec.Y2.Y,
                                                             Y => Nest_Rec.Y2.X));
    end P2;
-end Update_Legal_2;
+end Update_Uninitialized_2;

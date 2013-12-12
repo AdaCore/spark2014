@@ -1,4 +1,4 @@
-package body Update_Legal_4
+package body Update_Uninitialized_3
   with SPARK_Mode,
        Refined_State => (State => (Rec, A, B))
 is
@@ -14,6 +14,6 @@ is
       (Record_T'(X => 0, Y => 0));
 begin
    Rec := Create_Rec;
-   Rec := Rec'Update (X => A, Y => B);
+   Rec := Rec'Update (X => A, Y => B);  --  error: B is not initialized
    B   := 1;
-end Update_Legal_4;
+end Update_Uninitialized_3;
