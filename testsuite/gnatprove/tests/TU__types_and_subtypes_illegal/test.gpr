@@ -1,0 +1,5 @@
+project Test is
+   package Compiler is
+      for Local_Configuration_Pragmas use "test.adc";
+   end Compiler;
+end Test;

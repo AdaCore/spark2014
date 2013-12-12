@@ -1,0 +1,9 @@
+types_and_subtypes_illegal.ads:10:12: type predicate is not allowed in SPARK
+types_and_subtypes_illegal.ads:10:12: violation of aspect SPARK_Mode at line 2
+types_and_subtypes_illegal.ads:10:12: "One_To_Ten" is not allowed in SPARK
+types_and_subtypes_illegal.ads:10:12: violation of aspect SPARK_Mode at line 2
+gprbuild: *** compilation phase failed
+gnatprove: error during analysis and translation to intermediate language, aborting.
+types_and_subtypes_illegal_2.ads:4:34: initialization item must denote variable or state (SPARK RM 7.1.5(3))
+types_and_subtypes_illegal_2.ads:14:21: global item cannot denote a constant (SPARK RM 6.1.4(7))
+types_and_subtypes_illegal_2.ads:17:30: item must denote parameter, variable or state (SPARK RM 6.1.5(1))

@@ -40,14 +40,14 @@ Types and Subtypes
    |SPARK|, even if the entity declared by the corresponding
    ``full_type_declaration`` is not in |SPARK|.
 
-.. _tu-types_and_subtypes-02:
+.. _tu-sf-types_and_subtypes-02:
 
 2. For a type or subtype to be in |SPARK|, all predicate
    specifications that apply to the (sub)type must be in |SPARK|.
    Notwithstanding any rule to the contrary, a (sub)type is never in
    |SPARK| if its applicable predicate is not in |SPARK|.
 
-.. _tu-types_and_subtypes-03:
+.. _tu-fe-types_and_subtypes-03:
 
 3. Constants, including those implicitly declared through a
    non-preelaborable subtype declaration shall not be denoted in
