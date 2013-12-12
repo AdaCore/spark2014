@@ -1,9 +1,5 @@
-update_examples.ads:23:28: attribute Update for records is not yet supported
 update_examples.ads:38:32: attribute Update for multi-dimensional arrays is not yet supported
-update_examples.ads:54:30: attribute Update for records is not yet supported
-update_examples.ads:69:43: attribute Update for records is not yet supported
-update_examples.ads:72:43: attribute Update for records is not yet supported
-update_examples.ads:74:43: attribute Update for records is not yet supported
+update_examples.ads:71:53: attribute Update for multi-dimensional arrays is not yet supported
 gprbuild: *** compilation phase failed
 gnatprove: error during analysis and translation to intermediate language, aborting.
 loop_var_loop_invar.adb:4:04: warning: initialization has no effect

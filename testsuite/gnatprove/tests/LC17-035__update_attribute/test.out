@@ -26,3 +26,17 @@ arrays.ads:65:52: info: range check proved
 arrays.ads:69:19: info: postcondition proved
 arrays.ads:69:43: info: range check proved
 arrays.ads:70:43: info: range check proved
+records.adb:33:20: warning: overflow check might fail
+records.adb:34:20: warning: range check might fail
+records.adb:39:20: info: overflow check proved
+records.adb:40:20: info: range check proved
+records.ads:13:19: info: postcondition proved
+records.ads:17:19: info: postcondition proved
+records.ads:21:19: info: postcondition proved
+records.ads:25:19: info: postcondition proved
+records.ads:29:19: info: postcondition proved
+records.ads:29:51: info: overflow check proved
+records.ads:36:19: info: postcondition proved
+records.ads:36:51: info: overflow check proved
+records.ads:41:19: info: postcondition proved
+records.ads:45:19: info: postcondition proved

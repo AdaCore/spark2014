@@ -370,10 +370,11 @@ package body Gnat2Why.Expr is
    --  string value corresponding to the string literal.
 
    function Transform_Record_Component_Associations
-     (Domain      : EW_Domain;
-      Typ         : Entity_Id;
-      Assocs      : List_Id;
-      Params      : Transformation_Params) return W_Field_Association_Array;
+     (Domain              : EW_Domain;
+      Typ                 : Entity_Id;
+      Assocs              : List_Id;
+      Params              : Transformation_Params;
+      In_Attribute_Update : Boolean := False) return W_Field_Association_Array;
 
    function Transform_Binop (Op : N_Binary_Op) return EW_Binary_Op;
    --  Convert an Ada binary operator to a Why term symbol
@@ -3778,12 +3779,25 @@ package body Gnat2Why.Expr is
                Pref        : constant Node_Id := Prefix (Expr);
                Pref_Typ    : constant Entity_Id := Etype (Pref);
                Aggr        : constant Node_Id := First (Expressions (Expr));
+               Prefix_Expr : W_Expr_Id;
 
             begin
                if Is_Record_Type (Pref_Typ) then
-                  Ada.Text_IO.Put_Line ("[Transform_Attr] record "
-                                          & Attribute_Id'Image (Attr_Id));
-                  raise Not_Implemented;
+                  Prefix_Expr :=
+                    +Transform_Expr (Domain       => Domain,
+                                     Expr          => Pref,
+                                     Params        => Params);
+                  T :=
+                    New_Record_Update
+                    (Name     => +Prefix_Expr,
+                     Updates  =>
+                       Transform_Record_Component_Associations
+                       (Domain              => Domain,
+                        Typ                 => Pref_Typ,
+                        Assocs              => Component_Associations (Aggr),
+                        Params              => Params,
+                        In_Attribute_Update => True),
+                     Typ      => EW_Abstract (Pref_Typ));
                else
                   pragma Assert
                     (Is_Array_Type (Pref_Typ) or else
@@ -6058,54 +6072,120 @@ package body Gnat2Why.Expr is
    ---------------------------------------------
 
    function Transform_Record_Component_Associations
-     (Domain      : EW_Domain;
-      Typ         : Entity_Id;
-      Assocs      : List_Id;
-      Params      : Transformation_Params) return W_Field_Association_Array
+     (Domain              : EW_Domain;
+      Typ                 : Entity_Id;
+      Assocs              : List_Id;
+      Params              : Transformation_Params;
+      In_Attribute_Update : Boolean := False) return W_Field_Association_Array
    is
-      Component   : Entity_Id := First_Component_Or_Discriminant (Typ);
-      Association : Node_Id := Nlists.First (Assocs);
-      Result      : W_Field_Association_Array (1 .. Number_Components (Typ));
+
+      function Components_Count (Assocs : List_Id) return Natural;
+      --  This function loops over the associations and their choice lists
+      --  to count the numbers of component selectors
+      function Components_Count (Assocs : List_Id) return Natural
+      is
+         CL          : List_Id;
+         Association : Node_Id := Nlists.First (Assocs);
+         Associated_Components : Natural := 0;
+      begin
+         while Present (Association) loop
+            CL := Choices (Association);
+            Associated_Components := Associated_Components +
+              Integer (List_Length (CL));
+            Next (Association);
+         end loop;
+         return Associated_Components;
+      end Components_Count;
+
+      Component   : Entity_Id;
+      Association : Node_Id;
+      Result      :
+        W_Field_Association_Array (1 .. Integer (Components_Count (Assocs)));
       J           : Positive := Result'First;
+      CL          : List_Id;
+      Choice      : Node_Id;
 
    --  Start of Transform_Record_Component_Associations
 
    begin
-      while Component /= Empty loop
+      --  Normal record aggregates are required to be fully
+      --  initialized, but 'Update aggregates are allowed to be
+      --  partial. The implementation here is general enough for both
+      --  kinds of aggregates so the association list does not
+      --  necessarily cover all the components.
+
+      if not In_Attribute_Update then
+         --  normal, fully defined aggregate
+         pragma Assert (Number_Components (Typ) =
+                          Integer (List_Length (Assocs)));
+      end if;
+
+      Association := Nlists.First (Assocs);
+      pragma Assert (Present (Association));
+
+      --  Start with the first component
+      CL := Choices (Association);
+      if not In_Attribute_Update then
+         --  normal, fully defined aggregate, has singleton choice lists
+         pragma Assert (List_Length (CL) = 1);
+      end if;
+      Choice := First (CL);
+
+      --  Loop over the associations and component choice lists
+      while Present (Choice) loop
          declare
             Expr : W_Expr_Id;
          begin
-            if Present (Association)
-              and then Matching_Component_Association (Component, Association)
-            then
-               if not Box_Present (Association) then
-                  Expr := Transform_Expr
-                    (Expression (Association),
-                     EW_Abstract (Etype (Component)),
-                     Domain, Params);
-               else
-                  pragma Assert (Domain = EW_Prog);
-                  Expr :=
-                     +New_Simpl_Any_Prog
-                         (T =>
-                            EW_Abstract (Etype (Component)));
-               end if;
-               Next (Association);
+            --  We must be sure for the call to
+            --  Search_Component_By_Name that the component
+            --  exists. Semantic checks have passed so we are
+            --  expecting the component to exist. We don't expect
+            --  "others" for 'Update aggregates (illegal). For normal
+            --  aggregates occurances of "others" have been removed
+            --  from the AST wich will have an association list is as
+            --  long as the number of components, and with only
+            --  singleton choice lists.
+
+            pragma Assert (Nkind (Choice) /= N_Others_Choice);
+
+            Component := Search_Component_By_Name (Typ, Choice);
+
+            if not Box_Present (Association) then
+               Expr := Transform_Expr
+                 (Expression (Association),
+                  EW_Abstract (Etype (Component)),
+                  Domain, Params);
             else
                pragma Assert (Domain = EW_Prog);
                Expr :=
                  +New_Simpl_Any_Prog
-                   (T => +EW_Abstract (Etype (Component)));
+                 (T =>
+                    EW_Abstract (Etype (Component)));
             end if;
             Result (J) :=
-               New_Field_Association
-                  (Domain => Domain,
-                   Field  => To_Why_Id (Component),
-                   Value  => Expr);
+              New_Field_Association
+              (Domain => Domain,
+               Field  => To_Why_Id (Component),
+               Value  => Expr);
             J := J + 1;
-            Component := Next_Component_Or_Discriminant (Component);
+            --  Getting the next component from the associations'
+            --  component lists
+            Next (Choice);
+            if No (Choice) then
+               Next (Association);
+               if Present (Association) then
+                  CL := Choices (Association);
+                  if not In_Attribute_Update then
+                     --  normal, fully defined aggregate,
+                     --  has singleton choice lists
+                     pragma Assert (List_Length (CL) = 1);
+                  end if;
+                  Choice := First (CL);
+               end if;
+            end if;
          end;
       end loop;
+
       pragma Assert (No (Association));
       return Result;
    end Transform_Record_Component_Associations;

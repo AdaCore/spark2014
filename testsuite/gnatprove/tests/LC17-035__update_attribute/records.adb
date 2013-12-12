@@ -1,15 +1,16 @@
 package body Records is
-   
-   pragma SPARK_Mode (Off);
-   
-   procedure P1 (R: in out Rec; New_Data: in Integer) is
+
+   pragma SPARK_Mode (On);
+
+   procedure P1 (R: in out Rec; New_Data: in Natural) is
    begin
+      R.S4 := R.S1;
       R.S1 := 3;
       R.S2 := New_Data;
       R.S3 := 4;
    end P1;
 
-   procedure P2 (R: in out Rec; New_Data: in Integer) is
+   procedure P2 (R: in out Rec; New_Data: in Natural) is
    begin
       R.S2 := New_Data;
    end P2;
@@ -20,7 +21,7 @@ package body Records is
       R := R'Update(S2 => New_Data, S3 => New_Data_2);
    end P3;
 
-   procedure P4 (R: in out Rec; New_Data: in Integer) is
+   procedure P4 (R: in out Rec; New_Data: in Natural) is
    begin
       R.S1 := 10;
       R.S2 := New_Data;
@@ -30,23 +31,26 @@ package body Records is
    procedure P5(R: in out Rec) is
    begin
       R.S1 := R.S1 + 1;
-      R.S3 := R.S3 + 1;
+      R.S3 := R.S3 - 1;
    end P5;
 
    procedure P6(R: in out Rec) is
    begin
       R.S1 := R.S1 + 1;
-      R.S3 := R.S3 + 1;
+      R.S3 := R.S3 - 1;
    end P6;
 
    procedure P7 (R: in out Rec) is
    begin
-      R.S2 := 5;
+      R.S2 := 2;
+      R.S3 := 3;
+      R.S4 := R.S1;
    end P7;
 
    procedure P8 (R: in out Rec) is
    begin
-      R.S2 := 5;
+      R.S2 := 2;
+      R.S4 := R.S1;
    end P8;
 
 end Records;

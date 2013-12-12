@@ -2,18 +2,18 @@ with Types;       use Types;
 
 package Records is
 
-   pragma SPARK_Mode (Off);
+   pragma SPARK_Mode (On);
 
    ----------------------------------------------------------------------------
    -- 'Update Record tests
    ----------------------------------------------------------------------------
 
    --  aggregate reference test, to compare Why3 models
-   procedure P1 (R: in out Rec; New_Data: in Integer)
-     with Post => R = Rec'(S1 => 3, S2 => New_Data, S3 => 4);
+   procedure P1 (R: in out Rec; New_Data: in Natural)
+     with Post => R = Rec'(S1 => 3, S2 => New_Data, S3 => 4, S4 => R'Old.S1);
 
    --  single record component update
-   procedure P2(R: in out Rec; New_Data: in Integer)
+   procedure P2(R: in out Rec; New_Data: in Natural)
      with Post => R = R'Old'Update(S2 => New_Data);
 
    --  several but not all components update
@@ -21,7 +21,7 @@ package Records is
      with Post => R = R'Old'Update(S2 => New_Data, S3 => New_Data_2);
 
    --  all components update
-   procedure P4 (R: in out Rec; New_Data: in Integer)
+   procedure P4 (R: in out Rec; New_Data: in Natural)
      with Post => R = R'Old'Update(S1 => 10, S2 => New_Data, S3 => 10);
 
    --  inc/decrement components, w/o precondition, overflow checks should fail
@@ -37,11 +37,11 @@ package Records is
                                    S3 => R'Old.S3 - 1);
 
    --  aggregate, multiple choices, one association
-   procedure P7(R: in out Rec);
---   with Post => R = Rec'(S1 | S3 => 2, S2 => 3);
+   procedure P7(R: in out Rec)
+     with Post => R = Rec'(S1 | S4 => R'Old.S1, S2 => 2, S3 => 3);
 
    --  update attribute, multiple choices, one association
-   procedure P8(R: in out Rec);
-   --  with Post => R = R'Old'Update(S1 | S3 => 2);
+   procedure P8(R: in out Rec)
+     with Post => R = R'Old'Update(S1 | S4 => R'Old.S1, S2 => 2);
 
 end Records;

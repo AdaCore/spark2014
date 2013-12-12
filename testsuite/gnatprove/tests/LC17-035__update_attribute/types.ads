@@ -14,6 +14,7 @@ package Types is
       S1 : Integer;
       S2 : Natural;
       S3 : My_Range;
+      S4 : Integer;
    end record;
 
 end Types;

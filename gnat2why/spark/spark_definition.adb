@@ -1986,18 +1986,7 @@ package body SPARK_Definition is
             declare
                Pref_Typ : constant Entity_Id := Etype (P);
             begin
-               if Is_Record_Type (Pref_Typ) then
-                  Violation_Detected := True;
-                  if SPARK_Pragma_Is (Opt.On) then
-                     Error_Msg_N
-                       ("attribute Update for records is not yet supported",
-                        N);
-                  end if;
-                  return;
-
-               else
-                  pragma Assert (Is_Array_Type (Pref_Typ));
-
+               if Is_Array_Type (Pref_Typ) then
                   if Number_Dimensions (Pref_Typ) > 1 then
                      Violation_Detected := True;
                      if SPARK_Pragma_Is (Opt.On) then
