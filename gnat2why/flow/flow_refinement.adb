@@ -26,8 +26,6 @@ with Nlists;            use Nlists;
 with Snames;            use Snames;
 with Stand;             use Stand;
 
-with SPARK_Definition;  use SPARK_Definition;
-
 with Flow_Tree_Utility; use Flow_Tree_Utility;
 
 package body Flow_Refinement is
@@ -314,15 +312,6 @@ package body Flow_Refinement is
            (Body_E, (case C is
                         when Global_Contract => Pragma_Refined_Global,
                         when Depends_Contract => Pragma_Refined_Depends));
-
-         if C = Global_Contract and then
-           No (N) and then
-           not Entity_Body_In_SPARK (E)
-         then
-            --  If we *need* the refiend view, but the body is not in SPARK
-            --  we should fall back to the computed contracts.
-            return Empty;
-         end if;
 
       end if;
 
