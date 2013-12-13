@@ -962,12 +962,13 @@ modular verification in |SPARK|, hence the modification to separate cursors
 from containers. This modification also allows to use the same cursor with
 different containers. In particular, it is useful to link elements associated
 to a list before and after a modification. Formal containers also provide three
-new functions per container type. ``Right (C : Container; Cu : Cursor) returns
-Container`` and ``Left (C : Container; Cu : Cursor) returns Container`` can be
-used to write loop invariant. They return the right (resp. the left) part of
-the container ``C`` starting before (resp. stopping before) the cursor ``Cu``.
+new functions per container type. ``Current_To_Last (C : Container; Cu : Cursor)
+returns Container`` and ``First_To_Previous (C : Container; Cu : Cursor) returns
+Container`` can be used to write loop invariant. They return the trailing
+(resp. the leading) part of the container ``C`` starting before
+(resp. stopping before) the cursor ``Cu``.
 
-For example, in the function ``My_Find`` below, ``Left`` is used in the
+For example, in the function ``My_Find`` below, ``First_To_Previous`` is used in the
 loop invariant to state that the element ``E`` has not been found in
 the part of the list that as been analyzed already.
 
@@ -988,7 +989,7 @@ the part of the list that as been analyzed already.
       Cu : Cursor := First (L);
    begin
       while Has_Element (L, Cu) loop
-         pragma Loop_Invariant (not Contains (Left (L, Cu), E));
+         pragma Loop_Invariant (not Contains (First_To_Previous (L, Cu), E));
          if Element (L, Cu) = E then
             return Cu;
          end if;
@@ -1033,7 +1034,7 @@ they come from.
      Pre  => L1.Capacity > Length (L1),
      Post => Length (L1) = 1 + Length (L1'Old)
                and then First_Element (L1) = E
-               and then Strict_Equal (Right (L1, First (L1'Old)), L1'Old);
+               and then Strict_Equal (Current_To_Last(L1, First (L1'Old)), L1'Old);
 
 Quantification over Containers
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
