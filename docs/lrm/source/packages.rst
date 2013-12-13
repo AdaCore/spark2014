@@ -701,7 +701,7 @@ grammar of ``initialization_spec`` given below.
 
 .. _tu-fe-initializes_aspects-09:
 
-9. An ``initialization_item`` shall have a an ``input_list`` if and
+9. An ``initialization_item`` shall have an ``input_list`` if and
    only if its initialization is dependent on visible variables and
    state anbstractions not declared within the package containing the
    Initializes aspect.  Then the ``names`` in the ``input_list`` shall
