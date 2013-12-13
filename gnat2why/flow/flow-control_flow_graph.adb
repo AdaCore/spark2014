@@ -2812,10 +2812,14 @@ package body Flow.Control_Flow_Graph is
               Pragma_Ada_95                       |
               Pragma_Annotate                     |
               Pragma_Assertion_Policy             |
+              Pragma_Async_Readers                |
+              Pragma_Async_Writers                |
               Pragma_Check_Policy                 |
               Pragma_Contract_Cases               |
               Pragma_Convention                   |
               Pragma_Depends                      |
+              Pragma_Effective_Reads              |
+              Pragma_Effective_Writes             |
               Pragma_Elaborate                    |
               Pragma_Elaborate_All                |
               Pragma_Elaborate_Body               |
@@ -2849,6 +2853,7 @@ package body Flow.Control_Flow_Graph is
               Pragma_SPARK_Mode                   |
               Pragma_Style_Checks                 |
               Pragma_Test_Case                    |
+              Pragma_Volatile                     |
               Pragma_Warnings                     =>
 
             return False;

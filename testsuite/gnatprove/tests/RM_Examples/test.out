@@ -110,24 +110,14 @@ stacks_2.ads:21:16: warning: postcondition might fail, requires not (Is_Full)
 externals.adb:54:04: "Out_Reg" is not initialized in "Externals"
 externals.adb:55:11: warning: pragma "Volatile" is not yet supported
 externals.adb:55:11: warning: it is currently ignored
-externals.adb:55:11: warning: pragma "Volatile" is not yet supported in flow analysis
-externals.adb:55:11: warning: it is currently ignored
 externals.adb:56:11: warning: pragma "Async_Readers" is not yet supported
 externals.adb:56:11: warning: it is currently ignored
-externals.adb:56:11: warning: pragma "Async_Readers" is not yet supported in flow analysis
-externals.adb:56:11: warning: it is currently ignored
 externals.adb:57:11: warning: pragma "Effective_Writes" is not yet supported
-externals.adb:57:11: warning: it is currently ignored
-externals.adb:57:11: warning: pragma "Effective_Writes" is not yet supported in flow analysis
 externals.adb:57:11: warning: it is currently ignored
 externals.adb:60:04: "In_Reg" is not initialized in "Externals"
 externals.adb:61:11: warning: pragma "Volatile" is not yet supported
 externals.adb:61:11: warning: it is currently ignored
-externals.adb:61:11: warning: pragma "Volatile" is not yet supported in flow analysis
-externals.adb:61:11: warning: it is currently ignored
 externals.adb:62:11: warning: pragma "Async_Writers" is not yet supported
-externals.adb:62:11: warning: it is currently ignored
-externals.adb:62:11: warning: pragma "Async_Writers" is not yet supported in flow analysis
 externals.adb:62:11: warning: it is currently ignored
 externals.adb:75:41: warning: unused initial value of "In_Reg"
 externals.adb:76:41: warning: "Out_Reg" might not be initialized
@@ -137,55 +127,29 @@ gprbuild: *** compilation phase failed
 gnatprove: error during analysis of data and information flow, aborting.
 hal.adb:14:11: warning: pragma "VOLATILE" is not yet supported
 hal.adb:14:11: warning: it is currently ignored
-hal.adb:14:11: warning: pragma "VOLATILE" is not yet supported in flow analysis
-hal.adb:14:11: warning: it is currently ignored
 hal.adb:15:11: warning: pragma "ASYNC_WRITERS" is not yet supported
-hal.adb:15:11: warning: it is currently ignored
-hal.adb:15:11: warning: pragma "ASYNC_WRITERS" is not yet supported in flow analysis
 hal.adb:15:11: warning: it is currently ignored
 hal.adb:16:11: warning: pragma "EFFECTIVE_READS" is not yet supported
 hal.adb:16:11: warning: it is currently ignored
-hal.adb:16:11: warning: pragma "EFFECTIVE_READS" is not yet supported in flow analysis
-hal.adb:16:11: warning: it is currently ignored
 hal.adb:22:11: warning: pragma "VOLATILE" is not yet supported
-hal.adb:22:11: warning: it is currently ignored
-hal.adb:22:11: warning: pragma "VOLATILE" is not yet supported in flow analysis
 hal.adb:22:11: warning: it is currently ignored
 hal.adb:23:11: warning: pragma "ASYNC_READERS" is not yet supported
 hal.adb:23:11: warning: it is currently ignored
-hal.adb:23:11: warning: pragma "ASYNC_READERS" is not yet supported in flow analysis
-hal.adb:23:11: warning: it is currently ignored
 hal.adb:24:11: warning: pragma "EFFECTIVE_WRITES" is not yet supported
-hal.adb:24:11: warning: it is currently ignored
-hal.adb:24:11: warning: pragma "EFFECTIVE_WRITES" is not yet supported in flow analysis
 hal.adb:24:11: warning: it is currently ignored
 hal.adb:31:11: warning: pragma "VOLATILE" is not yet supported
 hal.adb:31:11: warning: it is currently ignored
-hal.adb:31:11: warning: pragma "VOLATILE" is not yet supported in flow analysis
-hal.adb:31:11: warning: it is currently ignored
 hal.adb:32:11: warning: pragma "ASYNC_WRITERS" is not yet supported
-hal.adb:32:11: warning: it is currently ignored
-hal.adb:32:11: warning: pragma "ASYNC_WRITERS" is not yet supported in flow analysis
 hal.adb:32:11: warning: it is currently ignored
 hal.adb:39:11: warning: pragma "VOLATILE" is not yet supported
 hal.adb:39:11: warning: it is currently ignored
-hal.adb:39:11: warning: pragma "VOLATILE" is not yet supported in flow analysis
-hal.adb:39:11: warning: it is currently ignored
 hal.adb:40:11: warning: pragma "ASYNC_READERS" is not yet supported
-hal.adb:40:11: warning: it is currently ignored
-hal.adb:40:11: warning: pragma "ASYNC_READERS" is not yet supported in flow analysis
 hal.adb:40:11: warning: it is currently ignored
 hal.adb:47:11: warning: pragma "VOLATILE" is not yet supported
 hal.adb:47:11: warning: it is currently ignored
-hal.adb:47:11: warning: pragma "VOLATILE" is not yet supported in flow analysis
-hal.adb:47:11: warning: it is currently ignored
 hal.adb:48:11: warning: pragma "ASYNC_WRITERS" is not yet supported
 hal.adb:48:11: warning: it is currently ignored
-hal.adb:48:11: warning: pragma "ASYNC_WRITERS" is not yet supported in flow analysis
-hal.adb:48:11: warning: it is currently ignored
 hal.adb:49:11: warning: pragma "ASYNC_READERS" is not yet supported
-hal.adb:49:11: warning: it is currently ignored
-hal.adb:49:11: warning: pragma "ASYNC_READERS" is not yet supported in flow analysis
 hal.adb:49:11: warning: it is currently ignored
 inter_unit_elaboration_examples.adb:11:04: warning: "Y" can be accessed by clients before this initialization
 inter_unit_elaboration_examples.adb:11:04: warning: add Elaborate_Body to spec to ensure "Y" is initialized
