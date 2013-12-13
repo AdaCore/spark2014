@@ -430,6 +430,21 @@ package body Flow is
                when Initial_Value =>
                   Rv.Shape := Shape_None;
                   Write_Str ("'initial");
+                  if Is_Volatile (F) then
+                     Write_Str ("\nvolatile:");
+                     if Has_Async_Readers (F) then
+                        Write_Str ("&nbsp;AR");
+                     end if;
+                     if Has_Async_Writers (F) then
+                        Write_Str ("&nbsp;AW");
+                     end if;
+                     if Has_Effective_Reads (F) then
+                        Write_Str ("&nbsp;ER");
+                     end if;
+                     if Has_Effective_Writes (F) then
+                        Write_Str ("&nbsp;EW");
+                     end if;
+                  end if;
 
                   if not A.Is_Initialized then
                      Rv.Colour := To_Unbounded_String ("red");
