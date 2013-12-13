@@ -1696,7 +1696,10 @@ package body Flow.Control_Flow_Graph is
       --  leaving from the bottom.
       FA.CFG.Add_Vertex
         (Direct_Mapping_Id (N),
-         Make_Aux_Vertex_Attributes (E_Loc => N),
+         Make_Aux_Vertex_Attributes
+           (E_Loc => N,
+            No_Return => Nkind (N) = N_Raise_Statement or
+                         Nkind (N) in N_Raise_xxx_Error),
          V);
       CM.Include (Union_Id (N), No_Connections);
       CM (Union_Id (N)).Standard_Entry := V;
