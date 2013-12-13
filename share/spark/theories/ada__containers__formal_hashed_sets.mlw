@@ -232,7 +232,7 @@ module Ada__containers__formal_hashed_sets__find
      ensures  { result = find co e }
 end
 
-module Ada__containers__formal_hashed_sets__left
+module Ada__containers__formal_hashed_sets__first_to_previous
   use import int.Int
   use import "_gnatprove_standard".Main
   use import Ada__containers__formal_hashed_sets__set
@@ -242,44 +242,44 @@ module Ada__containers__formal_hashed_sets__left
   use import Ada__containers__formal_hashed_sets__element
   use import Ada__containers__formal_hashed_sets__find
 
-  function left set cursor : set
+  function first_to_previous set cursor : set
 
-  axiom left_no_element:
-    forall co:set [left co no_element]. left co no_element = co
+  axiom first_to_previous_no_element:
+    forall co:set [first_to_previous co no_element]. first_to_previous co no_element = co
 
-  axiom left_length_:
-    forall co:set, cu:cursor [left co cu].
-	position co cu > 0 -> length_ (left co cu) = position co cu - 1
+  axiom first_to_previous_length_:
+    forall co:set, cu:cursor [first_to_previous co cu].
+	position co cu > 0 -> length_ (first_to_previous co cu) = position co cu - 1
 
-  axiom left_position_in:
-    forall co:set, cu cun:cursor [position (left co cu) cun | left co cu, position co cun].
-	(position (left co cu) cun > 0 \/ position co cun < position co cu) ->
-	position (left co cu) cun = position co cun
+  axiom first_to_previous_position_in:
+    forall co:set, cu cun:cursor [position (first_to_previous co cu) cun | first_to_previous co cu, position co cun].
+	(position (first_to_previous co cu) cun > 0 \/ position co cun < position co cu) ->
+	position (first_to_previous co cu) cun = position co cun
 
-  axiom left_position_ext:
-    forall co:set, cu cun:cursor [position (left co cu) cun].
+  axiom first_to_previous_position_ext:
+    forall co:set, cu cun:cursor [position (first_to_previous co cu) cun].
 	position co cun >= position co cu > 0 ->
-	position (left co cu) cun = 0
+	position (first_to_previous co cu) cun = 0
 
-  axiom left_element:
-    forall co:set, cu cun:cursor [element (left co cu) cun | left co cu, element co cun].
-	(position (left co cu) cun > 0 \/ 0 < position co cun < position co cu) ->
-	element (left co cu) cun = element co cun
+  axiom first_to_previous_element:
+    forall co:set, cu cun:cursor [element (first_to_previous co cu) cun | first_to_previous co cu, element co cun].
+	(position (first_to_previous co cu) cun > 0 \/ 0 < position co cun < position co cu) ->
+	element (first_to_previous co cu) cun = element co cun
 
-  axiom left_find :
-    forall co:set, cu:cursor, w:real [find_ co w, left co cu|
-     find_ (left co cu) w].
+  axiom first_to_previous_find :
+    forall co:set, cu:cursor, w:real [find_ co w, first_to_previous co cu|
+     find_ (first_to_previous co cu) w].
      ((position co cu > position co (find_ co w) > 0 \/
-      position (left co cu) (find_ (left co cu) w) > 0) ->
-      find_ co w = find_ (left co cu) w) /\
-      (position co (find_ co w) >= position co cu -> find_ (left co cu) w = no_element)
+      position (first_to_previous co cu) (find_ (first_to_previous co cu) w) > 0) ->
+      find_ co w = find_ (first_to_previous co cu) w) /\
+      (position co (find_ co w) >= position co cu -> find_ (first_to_previous co cu) w = no_element)
 
-  val left (co:set) (cu:cursor) : set
+  val first_to_previous (co:set) (cu:cursor) : set
      requires { cu = no_element \/ position co cu > 0 }
-     ensures  { result = left co cu }
+     ensures  { result = first_to_previous co cu }
 end
 
-module Ada__containers__formal_hashed_sets__right
+module Ada__containers__formal_hashed_sets__current_to_last
   use import int.Int
   use import "_gnatprove_standard".Main
   use import Ada__containers__formal_hashed_sets__set
@@ -290,40 +290,40 @@ module Ada__containers__formal_hashed_sets__right
   use import Ada__containers__formal_hashed_sets__element
   use import Ada__containers__formal_hashed_sets__find
 
-  function right set cursor : set
+  function current_to_last set cursor : set
 
-  axiom right_no_element:
-    forall co:set [right co no_element]. right co no_element = empty_set
+  axiom current_to_last_no_element:
+    forall co:set [current_to_last co no_element]. current_to_last co no_element = empty_set
 
-  axiom right_length_:
-    forall co:set, cu:cursor [length_ (right co cu) ].
-	position co cu > 0 -> length_ (right co cu) = (length_ co) - (position co cu) + 1
+  axiom current_to_last_length_:
+    forall co:set, cu:cursor [length_ (current_to_last co cu) ].
+	position co cu > 0 -> length_ (current_to_last co cu) = (length_ co) - (position co cu) + 1
 
-  axiom right_position_in:
-    forall co:set, cu cun:cursor [position (right co cu) cun | right co cu, position co cun].
-	(position (right co cu) cun > 0 \/ position co cun >= position co cu > 0) ->
-	position (right co cu) cun = (position co cun) - (position co cu) + 1
+  axiom current_to_last_position_in:
+    forall co:set, cu cun:cursor [position (current_to_last co cu) cun | current_to_last co cu, position co cun].
+	(position (current_to_last co cu) cun > 0 \/ position co cun >= position co cu > 0) ->
+	position (current_to_last co cu) cun = (position co cun) - (position co cu) + 1
 
-  axiom right_position_ext:
-    forall co:set, cu cun:cursor [position (right co cu) cun].
-	position co cun < position co cu -> position (right co cu) cun = 0
+  axiom current_to_last_position_ext:
+    forall co:set, cu cun:cursor [position (current_to_last co cu) cun].
+	position co cun < position co cu -> position (current_to_last co cu) cun = 0
 
-  axiom right_element:
-    forall co:set, cu cun:cursor [element (right co cu) cun | right co cu, element co cun].
-	(position (right co cu) cun > 0 \/ 0 < position co cu <= position co cun) ->
-	element (right co cu) cun = element co cun
+  axiom current_to_last_element:
+    forall co:set, cu cun:cursor [element (current_to_last co cu) cun | current_to_last co cu, element co cun].
+	(position (current_to_last co cu) cun > 0 \/ 0 < position co cu <= position co cun) ->
+	element (current_to_last co cu) cun = element co cun
 
-  axiom right_find :
-    forall co:set, cu:cursor, w:real [find_ (right co cu) w| right co cu,
+  axiom current_to_last_find :
+    forall co:set, cu:cursor, w:real [find_ (current_to_last co cu) w| current_to_last co cu,
      find_ co w].
      ((0 < position co cu <= position co (find_ co w) \/
-      position (right co cu) (find_ (right co cu) w) > 0) ->
-      find_ co w = find_ (right co cu) w) /\
-      (position co (find_ co w) < position co cu -> find_ (right co cu) w = no_element)
+      position (current_to_last co cu) (find_ (current_to_last co cu) w) > 0) ->
+      find_ co w = find_ (current_to_last co cu) w) /\
+      (position co (find_ co w) < position co cu -> find_ (current_to_last co cu) w = no_element)
 
-  val right (co:set) (cu:cursor) : set
+  val current_to_last (co:set) (cu:cursor) : set
      requires { cu = no_element \/ position co cu > 0 }
-     ensures  { result = right co cu }
+     ensures  { result = current_to_last co cu }
 end
 
 module Ada__containers__formal_hashed_sets__replace

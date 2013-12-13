@@ -9,8 +9,8 @@ sorted_lists.ads:25:8: warning: postcondition might fail
 sorted_lists.ads:26:6: info: precondition proved
 sorted_lists.ads:27:21: info: precondition proved
 sorted_lists.ads:28:21: warning: precondition might fail
-sorted_lists.ads:28:42: info: precondition proved
-sorted_lists.ads:29:23: info: precondition proved
-sorted_lists.ads:29:41: info: precondition proved
-sorted_lists.ads:30:23: warning: precondition might fail
-sorted_lists.ads:30:45: info: precondition proved
+sorted_lists.ads:29:40: info: precondition proved
+sorted_lists.ads:30:23: info: precondition proved
+sorted_lists.ads:30:51: info: precondition proved
+sorted_lists.ads:31:23: warning: precondition might fail
+sorted_lists.ads:32:40: info: precondition proved

@@ -275,7 +275,7 @@ module Ada__containers__formal_doubly_linked_lists__last_element
      ensures  { result = element co (last co) }
 end
 
-module Ada__containers__formal_doubly_linked_lists__left
+module Ada__containers__formal_doubly_linked_lists__first_to_previous
   use import int.Int
   use import "_gnatprove_standard".Main
   use import Ada__containers__formal_doubly_linked_lists__list
@@ -284,36 +284,36 @@ module Ada__containers__formal_doubly_linked_lists__left
   use import Ada__containers__formal_doubly_linked_lists__no_element
   use import Ada__containers__formal_doubly_linked_lists__element
 
-  function left list cursor : list
+  function first_to_previous list cursor : list
 
-  axiom left_no_element:
-    forall co:list [left co no_element]. left co no_element = co
+  axiom first_to_previous_no_element:
+    forall co:list [first_to_previous co no_element]. first_to_previous co no_element = co
 
-  axiom left_length_:
-    forall co:list, cu:cursor [left co cu].
-	position co cu > 0 -> length_ (left co cu) = position co cu - 1
+  axiom first_to_previous_length_:
+    forall co:list, cu:cursor [first_to_previous co cu].
+	position co cu > 0 -> length_ (first_to_previous co cu) = position co cu - 1
 
-  axiom left_position_in:
-    forall co:list, cu cun:cursor [position (left co cu) cun | left co cu, position co cun].
-	(position (left co cu) cun > 0 \/ position co cun < position co cu) ->
-	position (left co cu) cun = position co cun
+  axiom first_to_previous_position_in:
+    forall co:list, cu cun:cursor [position (first_to_previous co cu) cun | first_to_previous co cu, position co cun].
+	(position (first_to_previous co cu) cun > 0 \/ position co cun < position co cu) ->
+	position (first_to_previous co cu) cun = position co cun
 
-  axiom left_position_ext:
-    forall co:list, cu cun:cursor [position (left co cu) cun].
+  axiom first_to_previous_position_ext:
+    forall co:list, cu cun:cursor [position (first_to_previous co cu) cun].
 	position co cun >= position co cu > 0 ->
-	position (left co cu) cun = 0
+	position (first_to_previous co cu) cun = 0
 
-  axiom left_element:
-    forall co:list, cu cun:cursor [element (left co cu) cun | left co cu, element co cun].
-	(position (left co cu) cun > 0 \/ 0 < position co cun < position co cu) ->
-	element (left co cu) cun = element co cun
+  axiom first_to_previous_element:
+    forall co:list, cu cun:cursor [element (first_to_previous co cu) cun | first_to_previous co cu, element co cun].
+	(position (first_to_previous co cu) cun > 0 \/ 0 < position co cun < position co cu) ->
+	element (first_to_previous co cu) cun = element co cun
 
-  val left (co:list) (cu:cursor) : list
+  val first_to_previous (co:list) (cu:cursor) : list
      requires { cu = no_element \/ position co cu > 0 }
-     ensures  { result = left co cu }
+     ensures  { result = first_to_previous co cu }
 end
 
-module Ada__containers__formal_doubly_linked_lists__right
+module Ada__containers__formal_doubly_linked_lists__current_to_last
   use import int.Int
   use import "_gnatprove_standard".Main
   use import Ada__containers__formal_doubly_linked_lists__list
@@ -323,32 +323,32 @@ module Ada__containers__formal_doubly_linked_lists__right
   use import Ada__containers__formal_doubly_linked_lists__no_element
   use import Ada__containers__formal_doubly_linked_lists__element
 
-  function right list cursor : list
+  function current_to_last list cursor : list
 
-  axiom right_no_element:
-    forall co:list [right co no_element]. right co no_element = empty_list
+  axiom current_to_last_no_element:
+    forall co:list [current_to_last co no_element]. current_to_last co no_element = empty_list
 
-  axiom right_length_:
-    forall co:list, cu:cursor [length_ (right co cu) ].
-	position co cu > 0 -> length_ (right co cu) = (length_ co) - (position co cu) + 1
+  axiom current_to_last_length_:
+    forall co:list, cu:cursor [length_ (current_to_last co cu) ].
+	position co cu > 0 -> length_ (current_to_last co cu) = (length_ co) - (position co cu) + 1
 
-  axiom right_position_in:
-    forall co:list, cu cun:cursor [position (right co cu) cun | right co cu, position co cun].
-	(position (right co cu) cun > 0 \/ position co cun >= position co cu > 0) ->
-	position (right co cu) cun = (position co cun) - (position co cu) + 1
+  axiom current_to_last_position_in:
+    forall co:list, cu cun:cursor [position (current_to_last co cu) cun | current_to_last co cu, position co cun].
+	(position (current_to_last co cu) cun > 0 \/ position co cun >= position co cu > 0) ->
+	position (current_to_last co cu) cun = (position co cun) - (position co cu) + 1
 
-  axiom right_position_ext:
-    forall co:list, cu cun:cursor [position (right co cu) cun].
-	position co cun < position co cu -> position (right co cu) cun = 0
+  axiom current_to_last_position_ext:
+    forall co:list, cu cun:cursor [position (current_to_last co cu) cun].
+	position co cun < position co cu -> position (current_to_last co cu) cun = 0
 
-  axiom right_element:
-    forall co:list, cu cun:cursor [element (right co cu) cun | right co cu, element co cun].
-	(position (right co cu) cun > 0 \/ 0 < position co cu <= position co cun) ->
-	element (right co cu) cun = element co cun
+  axiom current_to_last_element:
+    forall co:list, cu cun:cursor [element (current_to_last co cu) cun | current_to_last co cu, element co cun].
+	(position (current_to_last co cu) cun > 0 \/ 0 < position co cu <= position co cun) ->
+	element (current_to_last co cu) cun = element co cun
 
-  val right (co:list) (cu:cursor) : list
+  val current_to_last (co:list) (cu:cursor) : list
      requires { cu = no_element \/ position co cu > 0 }
-     ensures  { result = right co cu }
+     ensures  { result = current_to_last co cu }
 end
 
 module Ada__containers__formal_doubly_linked_lists__find
@@ -361,7 +361,7 @@ module Ada__containers__formal_doubly_linked_lists__find
   use import Ada__containers__formal_doubly_linked_lists__cursor
   use import Ada__containers__formal_doubly_linked_lists__no_element
   use import Ada__containers__formal_doubly_linked_lists__element
-  use import Ada__containers__formal_doubly_linked_lists__right
+  use import Ada__containers__formal_doubly_linked_lists__current_to_last
 
   function findfirst list Ada__containers__formal_doubly_linked_lists__element_type.base_type : cursor
 
@@ -385,14 +385,14 @@ module Ada__containers__formal_doubly_linked_lists__find
 	Ada__containers__formal_doubly_linked_lists__oeq.oeq (Ada__containers__formal_doubly_linked_lists__element_type.to_base (element co (findfirst co e))) e = True
 
   function find (l : list) (e : Ada__containers__formal_doubly_linked_lists__element_type.base_type) (cu : cursor) : cursor =
-    if cu = no_element then (findfirst l e) else (findfirst (right l cu) e)
+    if cu = no_element then (findfirst l e) else (findfirst (current_to_last l cu) e)
 
   val find (co:list) (e:Ada__containers__formal_doubly_linked_lists__element_type.base_type) (cu:cursor) : cursor
      requires { cu = no_element \/ position co cu > 0 }
      ensures  { result = find co e cu }
 end
 
-module Ada__containers__formal_doubly_linked_lists__inleft
+module Ada__containers__formal_doubly_linked_lists__first_to_current
   use import int.Int
   use import "_gnatprove_standard".Main
   use import Ada__containers__formal_doubly_linked_lists__list
@@ -402,29 +402,29 @@ module Ada__containers__formal_doubly_linked_lists__inleft
   use import Ada__containers__formal_doubly_linked_lists__no_element
   use import Ada__containers__formal_doubly_linked_lists__element
 
-  function inleft list cursor : list
+  function first_to_current list cursor : list
 
-  axiom inleft_no_element:
-    forall co:list [inleft co no_element]. inleft co no_element = empty_list
+  axiom first_to_current_no_element:
+    forall co:list [first_to_current co no_element]. first_to_current co no_element = empty_list
 
-  axiom inleft_length_:
-    forall co:list, cu:cursor [inleft co cu].
-	position co cu > 0 -> length_ (inleft co cu) = position co cu
+  axiom first_to_current_length_:
+    forall co:list, cu:cursor [first_to_current co cu].
+	position co cu > 0 -> length_ (first_to_current co cu) = position co cu
 
-  axiom inleft_position_in:
-    forall co:list, cu cun:cursor [position (inleft co cu) cun | inleft co cu, position co cun].
-	(position (inleft co cu) cun > 0 \/ position co cun <= position co cu) ->
-	position (inleft co cu) cun = position co cun
+  axiom first_to_current_position_in:
+    forall co:list, cu cun:cursor [position (first_to_current co cu) cun | first_to_current co cu, position co cun].
+	(position (first_to_current co cu) cun > 0 \/ position co cun <= position co cu) ->
+	position (first_to_current co cu) cun = position co cun
 
-  axiom inleft_position_ext:
-    forall co:list, cu cun:cursor [position (inleft co cu) cun].
+  axiom first_to_current_position_ext:
+    forall co:list, cu cun:cursor [position (first_to_current co cu) cun].
 	position co cun > position co cu > 0 ->
-	position (inleft co cu) cun = 0
+	position (first_to_current co cu) cun = 0
 
-  axiom inleft_element:
-    forall co:list, cu cun:cursor [element (inleft co cu) cun | inleft co cu, element co cun].
-	(position (inleft co cu) cun > 0 \/ 0 < position co cun <= position co cu) ->
-	element (inleft co cu) cun = element co cun
+  axiom first_to_current_element:
+    forall co:list, cu cun:cursor [element (first_to_current co cu) cun | first_to_current co cu, element co cun].
+	(position (first_to_current co cu) cun > 0 \/ 0 < position co cun <= position co cu) ->
+	element (first_to_current co cu) cun = element co cun
 end
 
 module Ada__containers__formal_doubly_linked_lists__reverse_find
@@ -437,7 +437,7 @@ module Ada__containers__formal_doubly_linked_lists__reverse_find
   use import Ada__containers__formal_doubly_linked_lists__cursor
   use import Ada__containers__formal_doubly_linked_lists__no_element
   use import Ada__containers__formal_doubly_linked_lists__element
-  use import Ada__containers__formal_doubly_linked_lists__inleft
+  use import Ada__containers__formal_doubly_linked_lists__first_to_current
 
   function findlast list Ada__containers__formal_doubly_linked_lists__element_type.base_type : cursor
 
@@ -461,7 +461,7 @@ module Ada__containers__formal_doubly_linked_lists__reverse_find
 	Ada__containers__formal_doubly_linked_lists__oeq.oeq (Ada__containers__formal_doubly_linked_lists__element_type.to_base (element co (findlast co e))) e = True
 
   function reverse_find (l : list) (e : Ada__containers__formal_doubly_linked_lists__element_type.base_type) (cu : cursor) : cursor =
-    if cu = no_element then (findlast l e) else (findlast (inleft l cu) e)
+    if cu = no_element then (findlast l e) else (findlast (first_to_current l cu) e)
 
   val reverse_find (co:list) (e:Ada__containers__formal_doubly_linked_lists__element_type.base_type) (cu:cursor) : cursor
      requires { cu = no_element \/ position co cu > 0 }
@@ -1043,9 +1043,9 @@ module Ada__containers__formal_doubly_linked_lists__splice
   use import Ada__containers__formal_doubly_linked_lists__no_element
   use import Ada__containers__formal_doubly_linked_lists__next
   use import Ada__containers__formal_doubly_linked_lists__previous
-  use import Ada__containers__formal_doubly_linked_lists__inleft
-  use import Ada__containers__formal_doubly_linked_lists__right
-  use import Ada__containers__formal_doubly_linked_lists__left
+  use import Ada__containers__formal_doubly_linked_lists__first_to_current
+  use import Ada__containers__formal_doubly_linked_lists__current_to_last
+  use import Ada__containers__formal_doubly_linked_lists__first_to_previous
   use import Ada__containers__formal_doubly_linked_lists__Oeq__2
   use import Ada__containers__formal_doubly_linked_lists__strict_equal
 
@@ -1055,9 +1055,9 @@ module Ada__containers__formal_doubly_linked_lists__splice
      writes     { target, source }
      reads      { target, source }
      ensures {length_ !target = (length_ (old !target)) + (length_ (old !source)) /\
-                         length_ !source = 0 /\ strict_equal (right !target cu) (right (old !target) cu) = True /\
-                         strict_equal (left (old !target) cu) (inleft !target (previous (old !target) cu)) = True /\
-                         oeq__2 (old !source) (right (left !target cu) (next !target (previous (old !target) cu))) = True }
+                         length_ !source = 0 /\ strict_equal (current_to_last !target cu) (current_to_last (old !target) cu) = True /\
+                         strict_equal (first_to_previous (old !target) cu) (first_to_current !target (previous (old !target) cu)) = True /\
+                         oeq__2 (old !source) (current_to_last (first_to_previous !target cu) (next !target (previous (old !target) cu))) = True }
 end
 
 module Ada__containers__formal_doubly_linked_lists__splice__2

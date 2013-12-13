@@ -6,7 +6,7 @@ package body Linked_List is pragma SPARK_Mode (On);
       while Cu /= No_Element loop
          pragma Loop_Invariant
            (Has_Element (L, Cu) and then
-                not Contains (Left (L, Cu), 0));
+                not Contains (First_To_Previous (L, Cu), 0));
 
          if Element (L, Cu) = 0 then
             return Cu;

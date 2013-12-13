@@ -11,13 +11,10 @@ package body Int_List is pragma SPARK_Mode (On);
          pragma Loop_Invariant
            (Has_Element (L'Loop_Entry, C) and then
             Length (L) = Length (L'Loop_Entry) and then
-            Strict_Equal (Right (L, C), Right (L'Loop_Entry, C)));
---         pragma Assert
---           (Strict_Equal (Right (L, C),Right (Copy, C))
---              and then
---            (for all D in Right (L, C).Iterate => Element (L, D) = Element (Copy, D))
---              and then
---           (for all D in Left (L, C).Iterate => Element (L, D) = Element (Copy, C) + 1));
+            Strict_Equal (Current_To_Last (L, C),
+              Current_To_Last (L'Loop_Entry, C)) and then
+              (for all D in First_To_Previous (L, C) =>
+                   Element (L, D) = Element (L'Loop_Entry, D) + 1));
          Replace_Element (L, C, Element (L, C) + 1);
          Next (L, C);
       end loop;

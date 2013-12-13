@@ -24,10 +24,12 @@ package Sorted_Lists is pragma SPARK_Mode (On);
      Post =>
        Has_Element (Container, Position) and then
      Element (Container, Position) = New_Item and then
-     (Strict_Equal (Left (Container, Position),
-                    Left (Container'Old, Next (Container, Position))) and
-        Strict_Equal (Right (Container, Next (Container, Position)),
-                      Right (Container'Old, Next (Container, Position))) and
+     (Strict_Equal (First_To_Previous (Container, Position),
+                    First_To_Previous (Container'Old,
+                                       Next (Container, Position))) and
+        Strict_Equal (Current_To_Last (Container, Next (Container, Position)),
+                      Current_To_Last (Container'Old,
+                                       Next (Container, Position))) and
         (if My_Sort.Is_Sorted (Container'Old) then My_Sort.Is_Sorted (Container)));
 
 end Sorted_Lists;

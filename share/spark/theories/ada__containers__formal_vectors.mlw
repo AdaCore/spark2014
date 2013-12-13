@@ -686,7 +686,7 @@ module Ada__containers__formal_vectors__replace_element__2
      ensures { replace_element (old !co) (to_index_ !co cu) e !co }
 end
 
-module Ada__containers__formal_vectors__left
+module Ada__containers__formal_vectors__first_to_previous
   use import int.Int
   use import "_gnatprove_standard".Main
   use import Ada__containers__formal_vectors__vector
@@ -696,40 +696,40 @@ module Ada__containers__formal_vectors__left
   use import Ada__containers__formal_vectors__no_element
   use import Ada__containers__formal_vectors__element
 
-  function left_ vector int : vector
+  function first_to_previous_ vector int : vector
 
-  axiom left_lgth:
-    forall co:vector, i:int [left_ co i].
-       0 < i <= length_ co + 1 -> length_ (left_ co i) = i - 1
+  axiom first_to_previous_lgth:
+    forall co:vector, i:int [first_to_previous_ co i].
+       0 < i <= length_ co + 1 -> length_ (first_to_previous_ co i) = i - 1
 
-  axiom left_elt:
-    forall co:vector, i j:int [left_ co i, element_ co j|element_ (left_ co i) j].
-       0 < i <= length_ co + 1 -> 0 < j < i -> element_ co j = element_ (left_ co i) j
+  axiom first_to_previous_elt:
+    forall co:vector, i j:int [first_to_previous_ co i, element_ co j|element_ (first_to_previous_ co i) j].
+       0 < i <= length_ co + 1 -> 0 < j < i -> element_ co j = element_ (first_to_previous_ co i) j
 
-  axiom left_curs:
-    forall co:vector, i :int, cu : cursor [left_ co i, real_to_index co cu|real_to_index (left_ co i) cu].
-      0 < i <= length_ co + 1 ->  (to_index_ co cu < i \/ to_index_ (left_ co i) cu > 0) -> to_index_ co cu = to_index_ (left_ co i) cu
+  axiom first_to_previous_curs:
+    forall co:vector, i :int, cu : cursor [first_to_previous_ co i, real_to_index co cu|real_to_index (first_to_previous_ co i) cu].
+      0 < i <= length_ co + 1 ->  (to_index_ co cu < i \/ to_index_ (first_to_previous_ co i) cu > 0) -> to_index_ co cu = to_index_ (first_to_previous_ co i) cu
 
-  axiom left_curs_out:
-    forall co:vector, i :int, cu : cursor [left_ co i, real_to_index co cu|real_to_index (left_ co i) cu].
-       0 < i <= length_ co + 1 -> (to_index_ co cu >= i) -> to_index_ (left_ co i) cu = 0
+  axiom first_to_previous_curs_out:
+    forall co:vector, i :int, cu : cursor [first_to_previous_ co i, real_to_index co cu|real_to_index (first_to_previous_ co i) cu].
+       0 < i <= length_ co + 1 -> (to_index_ co cu >= i) -> to_index_ (first_to_previous_ co i) cu = 0
 
-  axiom left_eq:
-    forall co:vector, i:int [left_ co i].
-      i = length_ co + 1 -> left_ co i = co
+  axiom first_to_previous_eq:
+    forall co:vector, i:int [first_to_previous_ co i].
+      i = length_ co + 1 -> first_to_previous_ co i = co
 
   (* Should be changed to take index as argument rather than cursors *)
-  function left (co:vector) (cu : cursor) : vector =
+  function first_to_previous (co:vector) (cu : cursor) : vector =
      let i = if cu = no_element then length_ co + 1 else to_index_ co cu in
-       left_ co i
+       first_to_previous_ co i
 
-  val left (co:vector) (cu : cursor) : vector
+  val first_to_previous (co:vector) (cu : cursor) : vector
      requires { cu = no_element \/ to_index_ co cu > 0 }
      ensures   { let i = if cu = no_element then length_ co + 1 else to_index_ co cu in
-                            result = left_ co i }
+                            result = first_to_previous_ co i }
 end
 
-module Ada__containers__formal_vectors__right
+module Ada__containers__formal_vectors__current_to_last
   use import int.Int
   use import "_gnatprove_standard".Main
   use import Ada__containers__formal_vectors__vector
@@ -739,28 +739,28 @@ module Ada__containers__formal_vectors__right
   use import Ada__containers__formal_vectors__no_element
   use import Ada__containers__formal_vectors__element
 
-  function right_ vector int : vector
+  function current_to_last_ vector int : vector
 
-  axiom right_lgth:
-    forall co:vector, i:int [right_ co i].
-      0 < i <= length_ co + 1 -> length_ (right_ co i) = length_ co - i + 1
+  axiom current_to_last_lgth:
+    forall co:vector, i:int [current_to_last_ co i].
+      0 < i <= length_ co + 1 -> length_ (current_to_last_ co i) = length_ co - i + 1
 
-  axiom right_elt1:
-    forall co:vector, i j:int [right_ co i, element_ co j].
-      0 < i <= length_ co + 1 ->  i <= j <= length_ co -> element_ co j = element_ (right_ co i) (j - i + 1)
+  axiom current_to_last_elt1:
+    forall co:vector, i j:int [current_to_last_ co i, element_ co j].
+      0 < i <= length_ co + 1 ->  i <= j <= length_ co -> element_ co j = element_ (current_to_last_ co i) (j - i + 1)
 
-  axiom right_elt2:
-    forall co:vector, i j:int [element_ (right_ co i) j].
-      0 < i <= length_ co + 1 ->  0 < j <= length_ co - i + 1 -> element_ co (j + i - 1) = element_ (right_ co i) j
+  axiom current_to_last_elt2:
+    forall co:vector, i j:int [element_ (current_to_last_ co i) j].
+      0 < i <= length_ co + 1 ->  0 < j <= length_ co - i + 1 -> element_ co (j + i - 1) = element_ (current_to_last_ co i) j
 
-  function right (co:vector) (cu : cursor) : vector =
+  function current_to_last (co:vector) (cu : cursor) : vector =
      let i = if cu = no_element then length_ co + 1 else to_index_ co cu in
-       right_ co i
+       current_to_last_ co i
 
-  val right (co:vector) (cu : cursor) : vector
+  val current_to_last (co:vector) (cu : cursor) : vector
      requires { cu = no_element \/ to_index_ co cu > 0 }
      ensures   { let i = if cu = no_element then length_ co + 1 else to_index_ co cu in
-                            result = right_ co i }
+                            result = current_to_last_ co i }
 end
 
 module Ada__containers__formal_vectors__to_vector

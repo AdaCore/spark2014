@@ -263,7 +263,7 @@ element co (find_ co (witness k))
      ensures  { result = element__2 co k }
 end
 
-module Ada__containers__formal_hashed_maps__left
+module Ada__containers__formal_hashed_maps__first_to_previous
   use import int.Int
   use import "_gnatprove_standard".Main
   use import Ada__containers__formal_hashed_maps__map
@@ -274,49 +274,49 @@ module Ada__containers__formal_hashed_maps__left
   use import Ada__containers__formal_hashed_maps__element
   use import Ada__containers__formal_hashed_maps__find
 
-  function left map cursor : map
+  function first_to_previous map cursor : map
 
-  axiom left_no_element:
-    forall co:map [left co no_element]. left co no_element = co
+  axiom first_to_previous_no_element:
+    forall co:map [first_to_previous co no_element]. first_to_previous co no_element = co
 
-  axiom left_length_:
-    forall co:map, cu:cursor [left co cu].
-	position co cu > 0 -> length_ (left co cu) = position co cu - 1
+  axiom first_to_previous_length_:
+    forall co:map, cu:cursor [first_to_previous co cu].
+	position co cu > 0 -> length_ (first_to_previous co cu) = position co cu - 1
 
-  axiom left_position_in:
-    forall co:map, cu cun:cursor [position (left co cu) cun | left co cu, position co cun].
-	(position (left co cu) cun > 0 \/ position co cun < position co cu) ->
-	position (left co cu) cun = position co cun
+  axiom first_to_previous_position_in:
+    forall co:map, cu cun:cursor [position (first_to_previous co cu) cun | first_to_previous co cu, position co cun].
+	(position (first_to_previous co cu) cun > 0 \/ position co cun < position co cu) ->
+	position (first_to_previous co cu) cun = position co cun
 
-  axiom left_position_ext:
-    forall co:map, cu cun:cursor [position (left co cu) cun].
+  axiom first_to_previous_position_ext:
+    forall co:map, cu cun:cursor [position (first_to_previous co cu) cun].
 	position co cun >= position co cu > 0 ->
-	position (left co cu) cun = 0
+	position (first_to_previous co cu) cun = 0
 
-  axiom left_key:
-    forall co:map, cu cun:cursor [key (left co cu) cun | left co cu, key co cun].
-	(position (left co cu) cun > 0 \/ 0 < position co cun < position co cu) ->
-	key (left co cu) cun = key co cun
+  axiom first_to_previous_key:
+    forall co:map, cu cun:cursor [key (first_to_previous co cu) cun | first_to_previous co cu, key co cun].
+	(position (first_to_previous co cu) cun > 0 \/ 0 < position co cun < position co cu) ->
+	key (first_to_previous co cu) cun = key co cun
 
-  axiom left_element:
-    forall co:map, cu cun:cursor [element (left co cu) cun | left co cu, element co cun].
-	(position (left co cu) cun > 0 \/ 0 < position co cun < position co cu) ->
-	element (left co cu) cun = element co cun
+  axiom first_to_previous_element:
+    forall co:map, cu cun:cursor [element (first_to_previous co cu) cun | first_to_previous co cu, element co cun].
+	(position (first_to_previous co cu) cun > 0 \/ 0 < position co cun < position co cu) ->
+	element (first_to_previous co cu) cun = element co cun
 
-  axiom left_find :
-    forall co:map, cu:cursor, w:real [find_ co w, left co cu|
-     find_ (left co cu) w].
+  axiom first_to_previous_find :
+    forall co:map, cu:cursor, w:real [find_ co w, first_to_previous co cu|
+     find_ (first_to_previous co cu) w].
      ((position co cu > position co (find_ co w) > 0 \/
-      position (left co cu) (find_ (left co cu) w) > 0) ->
-      find_ co w = find_ (left co cu) w) /\
-      (position co (find_ co w) >= position co cu -> find_ (left co cu) w = no_element)
+      position (first_to_previous co cu) (find_ (first_to_previous co cu) w) > 0) ->
+      find_ co w = find_ (first_to_previous co cu) w) /\
+      (position co (find_ co w) >= position co cu -> find_ (first_to_previous co cu) w = no_element)
 
-  val left (co:map) (cu:cursor) : map
+  val first_to_previous (co:map) (cu:cursor) : map
      requires { cu = no_element \/ position co cu > 0 }
-     ensures  { result = left co cu }
+     ensures  { result = first_to_previous co cu }
 end
 
-module Ada__containers__formal_hashed_maps__right
+module Ada__containers__formal_hashed_maps__current_to_last
   use import int.Int
   use import "_gnatprove_standard".Main
   use import Ada__containers__formal_hashed_maps__map
@@ -328,45 +328,45 @@ module Ada__containers__formal_hashed_maps__right
   use import Ada__containers__formal_hashed_maps__element
   use import Ada__containers__formal_hashed_maps__find
 
-  function right map cursor : map
+  function current_to_last map cursor : map
 
-  axiom right_no_element:
-    forall co:map [right co no_element]. right co no_element = empty_map
+  axiom current_to_last_no_element:
+    forall co:map [current_to_last co no_element]. current_to_last co no_element = empty_map
 
-  axiom right_length_:
-    forall co:map, cu:cursor [length_ (right co cu) ].
-	position co cu > 0 -> length_ (right co cu) = (length_ co) - (position co cu) + 1
+  axiom current_to_last_length_:
+    forall co:map, cu:cursor [length_ (current_to_last co cu) ].
+	position co cu > 0 -> length_ (current_to_last co cu) = (length_ co) - (position co cu) + 1
 
-  axiom right_position_in:
-    forall co:map, cu cun:cursor [position (right co cu) cun | right co cu, position co cun].
-	(position (right co cu) cun > 0 \/ position co cun >= position co cu > 0) ->
-	position (right co cu) cun = (position co cun) - (position co cu) + 1
+  axiom current_to_last_position_in:
+    forall co:map, cu cun:cursor [position (current_to_last co cu) cun | current_to_last co cu, position co cun].
+	(position (current_to_last co cu) cun > 0 \/ position co cun >= position co cu > 0) ->
+	position (current_to_last co cu) cun = (position co cun) - (position co cu) + 1
 
-  axiom right_position_ext:
-    forall co:map, cu cun:cursor [position (right co cu) cun].
-	position co cun < position co cu -> position (right co cu) cun = 0
+  axiom current_to_last_position_ext:
+    forall co:map, cu cun:cursor [position (current_to_last co cu) cun].
+	position co cun < position co cu -> position (current_to_last co cu) cun = 0
 
-  axiom right_key:
-    forall co:map, cu cun:cursor [key (right co cu) cun | right co cu, key co cun].
-	(position (right co cu) cun > 0 \/ 0 < position co cu <= position co cun) ->
-	key (right co cu) cun = key co cun
+  axiom current_to_last_key:
+    forall co:map, cu cun:cursor [key (current_to_last co cu) cun | current_to_last co cu, key co cun].
+	(position (current_to_last co cu) cun > 0 \/ 0 < position co cu <= position co cun) ->
+	key (current_to_last co cu) cun = key co cun
 
-  axiom right_element:
-    forall co:map, cu cun:cursor [element (right co cu) cun | right co cu, element co cun].
-	(position (right co cu) cun > 0 \/ 0 < position co cu <= position co cun) ->
-	element (right co cu) cun = element co cun
+  axiom current_to_last_element:
+    forall co:map, cu cun:cursor [element (current_to_last co cu) cun | current_to_last co cu, element co cun].
+	(position (current_to_last co cu) cun > 0 \/ 0 < position co cu <= position co cun) ->
+	element (current_to_last co cu) cun = element co cun
 
-  axiom right_find :
-    forall co:map, cu:cursor, w:real [find_ (right co cu) w| right co cu,
+  axiom current_to_last_find :
+    forall co:map, cu:cursor, w:real [find_ (current_to_last co cu) w| current_to_last co cu,
      find_ co w].
      ((0 < position co cu <= position co (find_ co w) \/
-      position (right co cu) (find_ (right co cu) w) > 0) ->
-      find_ co w = find_ (right co cu) w) /\
-      (position co (find_ co w) < position co cu -> find_ (right co cu) w = no_element)
+      position (current_to_last co cu) (find_ (current_to_last co cu) w) > 0) ->
+      find_ co w = find_ (current_to_last co cu) w) /\
+      (position co (find_ co w) < position co cu -> find_ (current_to_last co cu) w = no_element)
 
-  val right (co:map) (cu:cursor) : map
+  val current_to_last (co:map) (cu:cursor) : map
      requires { cu = no_element \/ position co cu > 0 }
-     ensures  { result = right co cu }
+     ensures  { result = current_to_last co cu }
 end
 
 module Ada__containers__formal_hashed_maps__replace

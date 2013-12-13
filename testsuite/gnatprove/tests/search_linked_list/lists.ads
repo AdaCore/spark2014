@@ -9,5 +9,5 @@ package Lists is
      Contract_Cases =>
        ((for all Cu in L => Element (L, Cu) /= 0) => not Has_Element (L, Search'Result),
         (for some Cu in L => Element (L, Cu) = 0) => Element (L, Search'Result) = 0
-          and then (for all Cu in Left (L, Search'Result) => Element (L, Cu) /= 0));
+          and then (for all Cu in First_To_Previous (L, Search'Result) => Element (L, Cu) /= 0));
 end Lists;

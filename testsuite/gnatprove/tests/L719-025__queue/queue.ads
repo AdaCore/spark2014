@@ -17,13 +17,13 @@ package Queue is pragma SPARK_Mode (On);
 
    function Tail (Q : in List) return List with
      Pre  => Length (Q) > 0,
-     Post => Strict_Equal (Tail'Result, Left (Q, Last (Q)));
+     Post => Strict_Equal (Tail'Result, First_To_Previous (Q, Last (Q)));
 
    function Enqueue (Q : in List; V : in Val) return List with
      Pre  => Length (Q) < Q.Capacity,
      Post => Length (Enqueue'Result) > 0 and then
      First_Element (Enqueue'Result) = V and then
-      Strict_Equal (Right (Enqueue'Result,
+      Strict_Equal (Current_To_Last (Enqueue'Result,
                     Next (Enqueue'Result, First (Enqueue'Result))), Q);
 
 end Queue;

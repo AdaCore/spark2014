@@ -12,6 +12,6 @@ package Linked_List is pragma SPARK_Mode (On);
      Post => (Search'Result = No_Element and then  not Contains (L, 0)) or else
      (Has_Element (L, Search'Result) and then
       Element (L, Search'Result) = 0 and then
-          not Contains (Left (L, Search'Result), 0));
+          not Contains (First_To_Previous (L, Search'Result), 0));
 
 end Linked_List;
