@@ -93,4 +93,10 @@ is
       X := 0;
    end Nr_Test_03;
 
+   procedure Nr_Test_04 with No_Return
+   is
+   begin
+      Fail;
+   end Nr_Test_04;
+
 end Foo;
