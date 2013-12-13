@@ -325,13 +325,13 @@ package body Flow_Types is
          when Direct_Mapping =>
             pragma Assert (Nkind (Get_Direct_Mapping_Id (F)) in N_Entity);
             case Ekind (Get_Direct_Mapping_Id (F)) is
-               when E_Variable | E_Constant =>
-                  return Is_Volatile (Get_Direct_Mapping_Id (F));
+               when Object_Kind =>
+                  return Treat_As_Volatile (Get_Direct_Mapping_Id (F));
                when others =>
                   return False;
             end case;
          when Record_Field =>
-            raise Why.Not_Implemented;
+            return Is_Volatile (Entire_Variable (F));
       end case;
    end Is_Volatile;
 
@@ -341,17 +341,9 @@ package body Flow_Types is
 
    function Has_Async_Readers (F : Flow_Id) return Boolean is
    begin
-      case F.Kind is
-         when Null_Value | Magic_String =>
-            return False;
-         when Direct_Mapping =>
-            return Is_Volatile (F) and then
-              Present (Get_Pragma (Get_Direct_Mapping_Id (F),
-                                   Pragma_Async_Readers));
-         when Record_Field =>
-            --  ??? to be implemented in M318-021
-            return False;
-      end case;
+      return Is_Volatile (F) and then
+        Has_Volatile_Aspect (Get_Direct_Mapping_Id (F),
+                             Pragma_Async_Readers);
    end Has_Async_Readers;
 
    -----------------------
@@ -360,17 +352,9 @@ package body Flow_Types is
 
    function Has_Async_Writers (F : Flow_Id) return Boolean is
    begin
-      case F.Kind is
-         when Null_Value | Magic_String =>
-            return False;
-         when Direct_Mapping =>
-            return Is_Volatile (F) and then
-              Present (Get_Pragma (Get_Direct_Mapping_Id (F),
-                                   Pragma_Async_Writers));
-         when Record_Field =>
-            --  ??? to be implemented in M318-021
-            return False;
-      end case;
+      return Is_Volatile (F) and then
+        Has_Volatile_Aspect (Get_Direct_Mapping_Id (F),
+                             Pragma_Async_Writers);
    end Has_Async_Writers;
 
    -------------------------
@@ -379,17 +363,9 @@ package body Flow_Types is
 
    function Has_Effective_Reads (F : Flow_Id) return Boolean is
    begin
-      case F.Kind is
-         when Null_Value | Magic_String =>
-            return False;
-         when Direct_Mapping =>
-            return Is_Volatile (F) and then
-              Present (Get_Pragma (Get_Direct_Mapping_Id (F),
-                                   Pragma_Effective_Reads));
-         when Record_Field =>
-            --  ??? to be implemented in M318-021
-            return False;
-      end case;
+      return Is_Volatile (F) and then
+        Has_Volatile_Aspect (Get_Direct_Mapping_Id (F),
+                             Pragma_Effective_Reads);
    end Has_Effective_Reads;
 
    --------------------------
@@ -398,17 +374,9 @@ package body Flow_Types is
 
    function Has_Effective_Writes (F : Flow_Id) return Boolean is
    begin
-      case F.Kind is
-         when Null_Value | Magic_String =>
-            return False;
-         when Direct_Mapping =>
-            return Is_Volatile (F) and then
-              Present (Get_Pragma (Get_Direct_Mapping_Id (F),
-                                   Pragma_Effective_Writes));
-         when Record_Field =>
-            --  ??? to be implemented in M318-021
-            return False;
-      end case;
+      return Is_Volatile (F) and then
+        Has_Volatile_Aspect (Get_Direct_Mapping_Id (F),
+                             Pragma_Effective_Writes);
    end Has_Effective_Writes;
 
    -----------------------

@@ -23,7 +23,6 @@
 
 with Nlists;     use Nlists;
 with Sem_Util;   use Sem_Util;
-with Snames;     use Snames;
 with Uintp;      use Uintp;
 
 with SPARK_Util; use SPARK_Util;
@@ -342,5 +341,34 @@ package body Flow_Tree_Utility is
       end loop;
       return Ptr;
    end Get_Enclosing;
+
+   -------------------------
+   -- Has_Volatile_Aspect --
+   -------------------------
+
+   function Has_Volatile_Aspect (E : Entity_Id;
+                                 A : Pragma_Id)
+                                 return Boolean
+   is
+      function Has_Specific_Aspect (E : Entity_Id) return Boolean
+      is (Present (Get_Pragma (E, Pragma_Async_Readers)) or else
+            Present (Get_Pragma (E, Pragma_Async_Writers)) or else
+            Present (Get_Pragma (E, Pragma_Effective_Reads)) or else
+            Present (Get_Pragma (E, Pragma_Effective_Writes)));
+   begin
+      case Ekind (E) is
+         when Object_Kind =>
+            if Present (Get_Pragma (E, A)) then
+               return True;
+            elsif Has_Specific_Aspect (E) then
+               return False;
+            else
+               return True;
+            end if;
+
+         when others =>
+            raise Program_Error;
+      end case;
+   end Has_Volatile_Aspect;
 
 end Flow_Tree_Utility;

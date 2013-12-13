@@ -23,10 +23,11 @@
 
 --  This package contains utilities related to the gnat tree.
 
-with Atree; use Atree;
-with Einfo; use Einfo;
-with Sinfo; use Sinfo;
-with Types; use Types;
+with Atree;  use Atree;
+with Einfo;  use Einfo;
+with Sinfo;  use Sinfo;
+with Snames; use Snames;
+with Types;  use Types;
 
 package Flow_Tree_Utility is
 
@@ -74,5 +75,13 @@ package Flow_Tree_Utility is
    function Get_Enclosing (N : Node_Id; K : Node_Kind) return Node_Id
       with Post => Nkind (Get_Enclosing'Result) = K;
    --  Returns the first parent P of N where Nkind (P) = K.
+
+   function Has_Volatile_Aspect (E : Entity_Id;
+                                 A : Pragma_Id)
+                                 return Boolean
+     with Pre => Treat_As_Volatile (E) and
+                 A in Pragma_Async_Readers    | Pragma_Async_Writers |
+                      Pragma_Effective_Writes | Pragma_Effective_Reads;
+   --  Checks if the given entity (or its type) has the specified aspect.
 
 end Flow_Tree_Utility;
