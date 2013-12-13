@@ -1503,8 +1503,75 @@ package body Flow.Analysis is
                             Warning   => False);
          end;
       end loop;
-
    end Find_Dead_Code;
+
+   -----------------------
+   -- Enforce_No_Return --
+   -----------------------
+
+   procedure Enforce_No_Return (FA : in out Flow_Analysis_Graphs)
+   is
+      procedure Search (V   : Flow_Graphs.Vertex_Id;
+                        Ins : out Flow_Graphs.Traversal_Instruction);
+      --  Traverse graph (but don't cross no_return nodes). Stop at end.
+
+      procedure Step (V : Flow_Graphs.Vertex_Id);
+      --  Record the path.
+
+      procedure Search (V   : Flow_Graphs.Vertex_Id;
+                        Ins : out Flow_Graphs.Traversal_Instruction)
+      is
+         Atr : constant V_Attributes := FA.CFG.Get_Attributes (V);
+      begin
+         if V = FA.End_Vertex then
+            Ins := Flow_Graphs.Found_Destination;
+         elsif Atr.No_Return_From_Here then
+            Ins := Flow_Graphs.Skip_Children;
+         else
+            Ins := Flow_Graphs.Continue;
+         end if;
+      end Search;
+
+      The_Path : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
+
+      procedure Step (V : Flow_Graphs.Vertex_Id)
+      is
+      begin
+         The_Path.Include (V);
+      end Step;
+
+      Tracefile : Unbounded_String;
+
+   begin
+      if FA.Kind /= E_Subprogram_Body or else
+        not No_Return (FA.Analyzed_Entity)
+      then
+         --  Nothing to do in this case.
+         return;
+      end if;
+
+      pragma Assert_And_Cut (No_Return (FA.Analyzed_Entity));
+
+      --  If we can find a path from start -> end, then clearly we can
+      --  return...
+
+      FA.CFG.Shortest_Path (Start => FA.Start_Vertex,
+                            Allow_Trivial => True,
+                            Search        => Search'Access,
+                            Step          => Step'Access);
+
+      if The_Path.Length >= 1 then
+         Error_Msg_Flow (FA        => FA,
+                         Tracefile => Tracefile,
+                         Msg       => "no_return subprogram & must not return",
+                         N         => FA.Analyzed_Entity,
+                         F1        => Direct_Mapping_Id (FA.Analyzed_Entity),
+                         Tag       => "no_return");
+         Write_Vertex_Set (G        => FA.CFG,
+                           Set      => The_Path,
+                           Filename => To_String (Tracefile));
+      end if;
+   end Enforce_No_Return;
 
    -----------------------------------------
    -- Find_Use_Of_Uninitialized_Variables --

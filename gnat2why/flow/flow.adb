@@ -813,6 +813,7 @@ package body Flow is
                   Analysis.Find_Exports_Derived_From_Proof_Ins (FA);
                   Analysis.Check_Contracts (FA);
                   Analysis.Analyse_Main (FA);
+                  Analysis.Enforce_No_Return (FA);
 
                when E_Package | E_Package_Body =>
                   Analysis.Find_Ineffective_Statements (FA);

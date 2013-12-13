@@ -65,4 +65,32 @@ is
       return R;
    end Test_05;
 
+   procedure Nr_Test_01 with No_Return
+   is
+   begin
+      null;
+   end Nr_Test_01;
+
+   procedure Nr_Test_02 with No_Return
+   is
+      X : Integer := 55;
+   begin
+      loop
+         X := X + 1;
+         X := X / 2;
+      end loop;
+      X := 0;
+   end Nr_Test_02;
+
+   procedure Nr_Test_03 with No_Return
+   is
+      X : Integer := 55;
+   begin
+      loop
+         X := X + 1;
+         exit when X = 100;
+      end loop;
+      X := 0;
+   end Nr_Test_03;
+
 end Foo;

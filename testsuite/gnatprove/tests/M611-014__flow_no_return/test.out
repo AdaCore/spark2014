@@ -1,2 +1,15 @@
 foo.adb:27:12: dead code
-foo.adb:61:12: dead code
+foo.adb:63:12: dead code
+foo.adb:68:14: no_return subprogram "Nr_Test_01" must not return
+foo.adb:82:09: dead code
+foo.adb:82:09: warning: unused assignment
+foo.adb:85:14: no_return subprogram "Nr_Test_03" must not return
+foo.adb:87:07: warning: initialization has no effect
+foo.adb:90:12: warning: unused assignment
+foo.adb:91:10: warning: statement has no effect
+foo.adb:93:09: warning: unused assignment
+   compilation of foo.adb failed
+
+
+gnatprove: error during analysis of data and information flow, aborting.
+gprbuild: *** compilation phase failed

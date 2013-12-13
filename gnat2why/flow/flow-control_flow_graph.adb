@@ -1447,7 +1447,8 @@ package body Flow.Control_Flow_Graph is
             --  interesting (and unwanted) control dependencies on it.
             FA.CFG.Add_Vertex
               (Direct_Mapping_Id (End_Label (N)),
-               Make_Aux_Vertex_Attributes (E_Loc => N),
+               Make_Aux_Vertex_Attributes (E_Loc     => N,
+                                           No_Return => True),
                Faux_Exit_V);
 
             --  We now thread this at the back of the connection map

@@ -70,6 +70,12 @@ package Flow.Analysis is
    --
    --  Complexity is O(N)
 
+   procedure Enforce_No_Return (FA : in out Flow_Analysis_Graphs);
+   --  If the analysed subprogram is marked No_Return, we check that we
+   --  never return. In all other cases this procedure does nothing.
+   --
+   --  Complexity is O(N).
+
    procedure Find_Use_Of_Uninitialized_Variables
      (FA : in out Flow_Analysis_Graphs);
    --  Find all instances where uninitialized variables are used. If a

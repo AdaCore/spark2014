@@ -1,3 +1,4 @@
+test.adb:3:26: warning: unused initial value of "X"
 test.adb:25:26: warning: unused initial value of "X"
 test.adb:26:26: warning: unused initial value of "Y"
 test.adb:30:12: warning: unused assignment

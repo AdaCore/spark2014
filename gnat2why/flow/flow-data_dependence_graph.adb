@@ -57,8 +57,8 @@ package body Flow.Data_Dependence_Graph is
                   then
                      TV := Flow_Graphs.Skip_Children;
 
-                  --  M611-014 (no_return) may want to skip traversal
-                  --  based on Atr.No_Return_From_Here
+                  elsif Atr.No_Return_From_Here then
+                     TV := Flow_Graphs.Skip_Children;
 
                   else
                      TV := Flow_Graphs.Continue;

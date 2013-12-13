@@ -65,7 +65,8 @@ package Flow.Control_Flow_Graph.Utility is
    --     * pragmas
 
    function Make_Aux_Vertex_Attributes
-     (E_Loc   : Node_Or_Entity_Id := Empty)
+     (E_Loc     : Node_Or_Entity_Id := Empty;
+      No_Return : Boolean           := False)
       return V_Attributes
       with Post => not Make_Aux_Vertex_Attributes'Result.Is_Null_Node and
                    not Make_Aux_Vertex_Attributes'Result.Is_Program_Node;
@@ -74,6 +75,9 @@ package Flow.Control_Flow_Graph.Utility is
    --
    --     * return statements without expression
    --     * when labels in a case statement
+   --     * the faux exit for an infinite loop
+   --
+   --  No_Return flags this node as a dead end in the graph.
 
    function Make_Record_Tree_Attributes
      (Leaf : V_Attributes)
