@@ -43,8 +43,8 @@ test_vdll.adb:66:19: warning: precondition might fail
 test_vdll.adb:66:32: warning: precondition might fail
 test_vdll.adb:69:11: warning: discriminant check might fail
 test_vdll.adb:69:11: warning: precondition might fail
-test_vdll.adb:70:31: warning: precondition might fail
-test_vdll.adb:70:41: warning: precondition might fail
+test_vdll.adb:70:30: warning: precondition might fail
+test_vdll.adb:70:40: warning: precondition might fail
 test_vdll.adb:71:4: warning: assertion might fail, requires Length (L3) = 2
 test_vdll.adb:74:4: info: assertion proved
 test_vdll.adb:74:19: info: precondition proved
@@ -76,7 +76,7 @@ test_vdll.adb:97:35: warning: precondition might fail
 test_vdll.adb:101:11: warning: discriminant check might fail
 test_vdll.adb:101:11: warning: precondition might fail
 test_vdll.adb:101:17: warning: precondition might fail
-test_vdll.adb:101:27: warning: precondition might fail
+test_vdll.adb:101:40: warning: precondition might fail
 test_vdll.adb:102:4: warning: assertion might fail, requires Length (L4) = 1
 test_vdll.adb:105:4: info: assertion proved
 test_vdll.adb:105:19: info: precondition proved
@@ -89,14 +89,14 @@ test_vdll.adb:120:12: warning: precondition might fail
 test_vdll.adb:120:25: warning: precondition might fail
 test_vdll.adb:124:11: warning: discriminant check might fail
 test_vdll.adb:124:11: warning: precondition might fail
-test_vdll.adb:126:4: warning: assertion might fail, requires Strict_Equal (Left (L2, Next (L2, First (L2))), Left (L1, Next (L1, First (L1)
+test_vdll.adb:126:4: warning: assertion might fail, requires Strict_Equal (First_To_Previous (L2, Next (L2, First (L2))), First_To_Previous (L1, Next (L1, First (L1)
 test_vdll.adb:126:33: info: precondition proved
-test_vdll.adb:126:43: info: precondition proved
+test_vdll.adb:126:56: info: precondition proved
 test_vdll.adb:127:26: warning: precondition might fail
-test_vdll.adb:127:36: warning: precondition might fail
+test_vdll.adb:127:49: warning: precondition might fail
 test_vdll.adb:130:11: warning: discriminant check might fail
 test_vdll.adb:130:11: warning: precondition might fail
-test_vdll.adb:130:49: warning: precondition might fail
+test_vdll.adb:130:57: warning: precondition might fail
 test_vdll.adb:131:4: warning: assertion might fail, requires Length (L3) = 2
 test_vdll.adb:134:4: info: assertion proved
 test_vdll.adb:134:19: info: precondition proved
@@ -117,8 +117,8 @@ test_vdll.adb:154:12: warning: precondition might fail
 test_vdll.adb:158:11: warning: discriminant check might fail
 test_vdll.adb:158:11: warning: precondition might fail
 test_vdll.adb:158:17: warning: precondition might fail
-test_vdll.adb:158:28: warning: precondition might fail
 test_vdll.adb:158:38: warning: precondition might fail
+test_vdll.adb:158:48: warning: precondition might fail
 test_vdll.adb:159:4: warning: assertion might fail, requires Length (L4) = 1
 test_vdll.adb:162:4: info: assertion proved
 test_vdll.adb:162:19: info: precondition proved
@@ -131,10 +131,10 @@ test_vdll.adb:177:12: warning: precondition might fail
 test_vdll.adb:177:25: warning: precondition might fail
 test_vdll.adb:181:11: warning: discriminant check might fail
 test_vdll.adb:181:11: warning: precondition might fail
-test_vdll.adb:183:4: warning: assertion might fail, requires Strict_Equal (Right (L2, First (L2)), Right (L1, Next (L1, First (L1)
+test_vdll.adb:183:4: warning: assertion might fail, requires Strict_Equal (Current_To_Last (L2, First (L2)), Current_To_Last (L1, Next (L1, First (L1)
 test_vdll.adb:183:33: info: precondition proved
 test_vdll.adb:184:22: warning: precondition might fail
-test_vdll.adb:184:33: warning: precondition might fail
+test_vdll.adb:184:43: warning: precondition might fail
 test_vdll.adb:189:7: warning: precondition might fail
 test_vdll.adb:192:4: warning: precondition might fail
 test_vdll.adb:198:12: warning: precondition might fail
