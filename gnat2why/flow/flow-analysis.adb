@@ -699,7 +699,8 @@ package body Flow.Analysis is
                           (FA        => FA,
                            Tracefile => Tracefile,
                            Msg       => "cannot write & during " &
-                             "elaboration of & (SPARK RM 7.7.1(5))",
+                             "elaboration of &",
+                           SRM_Ref   => "7.7.1 (5)",
                            N   => Error_Location (FA.PDG, V),
                            F1  => Entire_Variable (Var),
                            F2  => Direct_Mapping_Id (FA.Analyzed_Entity));
@@ -742,7 +743,8 @@ package body Flow.Analysis is
                           (FA        => FA,
                            Tracefile => Tracefile,
                            Msg       => "cannot write & during " &
-                             "elaboration of & (SPARK RM 7.7.1(5))",
+                             "elaboration of &",
+                           SRM_Ref   => "7.7.1 (5)",
                            N         => Error_Location (FA.PDG, V),
                            F1        => Var,
                            F2        => Direct_Mapping_Id

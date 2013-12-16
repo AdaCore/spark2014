@@ -43,6 +43,7 @@ package Flow_Error_Messages is
                              F1        : Flow_Id := Null_Flow_Id;
                              F2        : Flow_Id := Null_Flow_Id;
                              Tag       : String  := "";
+                             SRM_Ref   : String  := "";
                              Warning   : Boolean := False)
    with Pre => (if Present (F2) then Present (F1));
    --  Output a message attached to the given node with a substitution
@@ -50,5 +51,8 @@ package Flow_Error_Messages is
    --  which quote the flow id with or without double quotes
    --  respectively.  It also adds a JSON entry in the "unit.flow"
    --  file.
+   --
+   --  SRM_Ref should be a pointer into the SPARK RM. For example:
+   --     "1.2.3 (4)"
 
 end Flow_Error_Messages;

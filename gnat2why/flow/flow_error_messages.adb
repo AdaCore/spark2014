@@ -66,6 +66,7 @@ package body Flow_Error_Messages is
       F1        : Flow_Id;
       F2        : Flow_Id;
       Tag       : String;
+      SRM_Ref   : String;
       Warning   : Boolean;
       Tracefile : out Unbounded_String;
       E         : Entity_Id)
@@ -190,6 +191,7 @@ package body Flow_Error_Messages is
       F1        : Flow_Id;
       F2        : Flow_Id;
       Tag       : String;
+      SRM_Ref   : String;
       Warning   : Boolean;
       Tracefile : out Unbounded_String;
       E         : Entity_Id)
@@ -414,6 +416,12 @@ package body Flow_Error_Messages is
          M := Substitute (M, F2);
       end if;
 
+      if SRM_Ref'Length > 0 then
+         Append (M, " (SPARK RM ");
+         Append (M, SRM_Ref);
+         Append (M, ")");
+      end if;
+
       if Instantiation_Location (Sloc (N)) /= No_Location then
          --  If we are dealing with an instantiation of a generic we change
          --  the message to point at the implementation of the generic and we
@@ -546,6 +554,7 @@ package body Flow_Error_Messages is
       F1        : Flow_Id := Null_Flow_Id;
       F2        : Flow_Id := Null_Flow_Id;
       Tag       : String  := "";
+      SRM_Ref   : String  := "";
       Warning   : Boolean := False)
    is
       E : Entity_Id;
@@ -564,6 +573,7 @@ package body Flow_Error_Messages is
          F1        => F1,
          F2        => F2,
          Tag       => Tag,
+         SRM_Ref   => SRM_Ref,
          Warning   => Warning,
          Tracefile => Tracefile,
          E         => E);
