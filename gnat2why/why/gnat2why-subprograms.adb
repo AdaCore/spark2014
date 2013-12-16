@@ -84,19 +84,36 @@ package body Gnat2Why.Subprograms is
    --  Return Why binders for the parameters of subprogram E. The array is
    --  a singleton of unit type if E has no parameters.
 
-   function Compute_Contract_Cases_Entry_Checks
-     (Params : Transformation_Params;
-      E      : Entity_Id) return W_Prog_Id;
-   --  Returns the Why program for checking that the guards of the
-   --  Contract_Cases pragma attached to subprogram E (if any) do not raise
-   --  run-time errors, that they are disjoint, and that they cover all cases
-   --  prescribed by the precondition.
+   procedure Compute_Contract_Cases_Guard_Map
+     (E                  : Entity_Id;
+      Guard_Map          : out Ada_To_Why_Ident.Map;
+      Others_Guard_Ident : out W_Identifier_Id;
+      Others_Guard_Expr  : out W_Expr_Id);
+   --  Returns the map from contracts cases nodes attached to subprogram E,
+   --  if any, to Why identifiers for the value of these guards in the Why3
+   --  program. If the contract cases contain an "others" case, return in
+   --  Others_Guard_Ident an identifier for a Boolean value set to true when
+   --  this case is enabled, and in Others_Guard_Expr the Why3 expression
+   --  to define this identifier. If there is no "others" case, return with
+   --  Others_Guard_Ident set to Why_Empty.
 
-   procedure Compute_Contract_Cases_Exit_Checks
-     (Params    : Transformation_Params;
-      E         : Entity_Id;
-      Guard_Map : out Ada_To_Why_Ident.Map;
-      Result    : out W_Prog_Id);
+   function Compute_Contract_Cases_Entry_Checks
+     (E         : Entity_Id;
+      Guard_Map : Ada_To_Why_Ident.Map) return W_Prog_Id;
+   --  Returns the Why program for checking that the guards of the
+   --  Contract_Cases pragma attached to subprogram E (if any) are disjoint,
+   --  and that they cover all cases prescribed by the precondition. The checks
+   --  that evaluating guards do not raise run-time errors are done separately,
+   --  based on the result of Compute_Contract_Cases_Guard_Map. Guard_Map
+   --  stores a mapping from guard AST nodes to temporary Why names, so that
+   --  the caller can compute the Why expression for these in the pre-state,
+   --  and bind them appropriately.
+
+   function Compute_Contract_Cases_Exit_Checks
+     (Params             : Transformation_Params;
+      E                  : Entity_Id;
+      Guard_Map          : Ada_To_Why_Ident.Map;
+      Others_Guard_Ident : W_Identifier_Id) return W_Prog_Id;
    --  Returns in Result the Why program for checking that the consequence of
    --  enabled guard of the Contract_Cases pragma attached to subprogram E (if
    --  any) does not raise a run-time error, and that it holds. Guard_Map
@@ -420,6 +437,88 @@ package body Gnat2Why.Subprograms is
       return Result;
    end Compute_Raw_Binders;
 
+   --------------------------------------
+   -- Compute_Contract_Cases_Guard_Map --
+   --------------------------------------
+
+   --  Pragma/aspect Contract_Cases (Guard1 => Consequence1,
+   --                                Guard2 => Consequence2,
+   --                                  ...
+   --                                GuardN => ConsequenceN
+   --                              [,OTHERS => ConsequenceN+1]);
+
+   --  This helper subprogram stores in Guard_Map a map from guard expressions
+   --  to temporary Why names. The temporary Why name for the OTHERS case
+   --  is stored in Others_Guard_Ident, and the value of this guard in
+   --  Others_Guard_Expr. These results will be used to generate bindings
+   --  such as:
+
+   --    let guard1 = ... in
+   --    let guard2 = ... in
+   --    ...
+   --    let guardN = ... in
+   --    let guardOTHERS = not (guard1 or guard2 ... or guardN) in
+
+   procedure Compute_Contract_Cases_Guard_Map
+     (E                  : Entity_Id;
+      Guard_Map          : out Ada_To_Why_Ident.Map;
+      Others_Guard_Ident : out W_Identifier_Id;
+      Others_Guard_Expr  : out W_Expr_Id)
+   is
+      Prag          : constant Node_Id := Get_Subprogram_Contract_Cases (E);
+      Aggr          : Node_Id;
+      Contract_Case : Node_Id;
+      Case_Guard    : Node_Id;
+
+   begin
+      --  Initial values for outputs related to the "others" guard if any
+
+      Others_Guard_Ident := Why_Empty;
+      Others_Guard_Expr := New_Literal (Domain => EW_Term, Value  => EW_False);
+
+      --  If no Contract_Cases on this subprogram, nothing to do
+
+      if No (Prag) then
+         return;
+      end if;
+
+      --  Process individual contract cases
+
+      Aggr := Expression (First (Pragma_Argument_Associations (Prag)));
+      Contract_Case := First (Component_Associations (Aggr));
+      while Present (Contract_Case) loop
+         declare
+            --  Temporary Why name for the current guard
+            Guard_Ident : constant W_Identifier_Id :=
+              New_Temp_Identifier (Typ => EW_Bool_Type);
+
+            --  Whether the current guard is enabled
+            Enabled     : constant W_Expr_Id := +Guard_Ident;
+
+         begin
+            Case_Guard := First (Choices (Contract_Case));
+
+            --  The OTHERS choice requires special processing
+
+            if Nkind (Case_Guard) = N_Others_Choice then
+               Others_Guard_Ident := Guard_Ident;
+               Others_Guard_Expr := New_Not (Domain => EW_Pred,
+                                             Right  => Others_Guard_Expr);
+
+            --  Regular contract case
+
+            else
+               Guard_Map.Include (Case_Guard, Guard_Ident);
+               Others_Guard_Expr := New_Or_Expr (Left   => Others_Guard_Expr,
+                                                 Right  => Enabled,
+                                                 Domain => EW_Term);
+            end if;
+
+            Next (Contract_Case);
+         end;
+      end loop;
+   end Compute_Contract_Cases_Guard_Map;
+
    -----------------------------------------
    -- Compute_Contract_Cases_Entry_Checks --
    -----------------------------------------
@@ -437,11 +536,6 @@ package body Gnat2Why.Subprograms is
    --  guards), and that at least one guard evaluates to True (only in the case
    --  there is no OTHERS).
 
-   --    let guard1 = ... in
-   --    let guard2 = ... in
-   --    ...
-   --    let guardN = ... in
-
    --  Check that contract cases are disjoint only if there are at least two
    --  non-OTHER guards:
 
@@ -458,16 +552,13 @@ package body Gnat2Why.Subprograms is
    --            (if guardN = True then 1 else 0) >= 1)
 
    function Compute_Contract_Cases_Entry_Checks
-     (Params : Transformation_Params;
-      E      : Entity_Id) return W_Prog_Id
+     (E         : Entity_Id;
+      Guard_Map : Ada_To_Why_Ident.Map) return W_Prog_Id
    is
       Prag          : constant Node_Id := Get_Subprogram_Contract_Cases (E);
       Aggr          : Node_Id;
       Contract_Case : Node_Id;
       Case_Guard    : Node_Id;
-
-      Guard_Map   : Ada_To_Why_Ident.Map;
-      --  Stores a mapping from guard AST nodes to temporary Why names
 
       Has_Others  : Boolean := False;
       --  Set to True if there is an OTHERS guard
@@ -504,7 +595,7 @@ package body Gnat2Why.Subprograms is
          else
             declare
                Guard_Ident : constant W_Identifier_Id :=
-                 New_Temp_Identifier (Typ => EW_Bool_Type);
+                 Guard_Map.Element (Case_Guard);
                --  Temporary Why name for the current guard
 
                --  Whether the current guard is enabled
@@ -523,7 +614,6 @@ package body Gnat2Why.Subprograms is
                     Then_Part   => New_Integer_Constant (Value => Uint_1),
                     Else_Part   => New_Integer_Constant (Value => Uint_0));
             begin
-               Guard_Map.Include (Case_Guard, Guard_Ident);
                Count := New_Binary_Op (Ada_Node => Case_Guard,
                                        Op       => EW_Add,
                                        Op_Type  => EW_Int,
@@ -576,12 +666,6 @@ package body Gnat2Why.Subprograms is
                   EW_Pred)));
       end if;
 
-      --  Bind value of guard expressions
-
-      Result := Bind_From_Mapping_In_Expr (Params => Params,
-                                           Map    => Guard_Map,
-                                           Expr   => Result);
-
       return New_Ignore (Prog => Result);
    end Compute_Contract_Cases_Entry_Checks;
 
@@ -599,36 +683,22 @@ package body Gnat2Why.Subprograms is
    --  the consequence for the guard that was True on entry also evaluates to
    --  True, without run-time errors.
 
-   --  The following do not include run-time checks:
-   --    let guard1 = ... in
-   --    let guard2 = ... in
-   --    ...
-   --    let guardN = ... in
-
-   --  The following do include run-time checks:
    --    assert (if guard1 then consequence1);
    --    assert (if guard2 then consequence2);
    --    ...
    --    assert (if guardN then consequenceN);
    --    assert (if not (guard1 or guard2 ... or guardN) then consequenceN+1);
 
-   procedure Compute_Contract_Cases_Exit_Checks
-     (Params    : Transformation_Params;
-      E         : Entity_Id;
-      Guard_Map : out Ada_To_Why_Ident.Map;
-      Result    : out W_Prog_Id)
+   function Compute_Contract_Cases_Exit_Checks
+     (Params             : Transformation_Params;
+      E                  : Entity_Id;
+      Guard_Map          : Ada_To_Why_Ident.Map;
+      Others_Guard_Ident : W_Identifier_Id) return W_Prog_Id
    is
       Prag          : constant Node_Id := Get_Subprogram_Contract_Cases (E);
       Aggr          : Node_Id;
       Contract_Case : Node_Id;
       Case_Guard    : Node_Id;
-
-      Others_Contract_Case : Node_Id := Empty;
-      --  Contract case for the OTHERS case, if any
-
-      Others_Guard  : W_Expr_Id := New_Literal (Domain => EW_Term,
-                                                Value  => EW_False);
-      --  Guard for the OTHERS case, if any
 
       function Do_One_Contract_Case
         (Contract_Case : Node_Id;
@@ -678,15 +748,15 @@ package body Gnat2Why.Subprograms is
                   EW_Pred)));
       end Do_One_Contract_Case;
 
+      Result : W_Prog_Id := New_Void;
+
    --  Start of Compute_Contract_Cases_Exit_Checks
 
    begin
-      Result := New_Void;
-
       --  If no Contract_Cases on this subprogram, return
 
       if No (Prag) then
-         return;
+         return Result;
       end if;
 
       --  Process individual contract cases
@@ -696,47 +766,26 @@ package body Gnat2Why.Subprograms is
       while Present (Contract_Case) loop
          Case_Guard := First (Choices (Contract_Case));
 
-         --  The OTHERS choice requires special processing
+         declare
+            --  Temporary Why name for the current guard
+            Guard_Ident : constant W_Identifier_Id :=
+              (if Nkind (Case_Guard) = N_Others_Choice then
+                 Others_Guard_Ident
+               else
+                 Guard_Map.Element (Case_Guard));
 
-         if Nkind (Case_Guard) = N_Others_Choice then
-            Others_Contract_Case := Contract_Case;
+            --  Whether the current guard is enabled
+            Enabled     : constant W_Expr_Id := +Guard_Ident;
 
-         --  Regular contract case
-
-         else
-            declare
-               --  Temporary Why name for the current guard
-               Guard_Ident : constant W_Identifier_Id :=
-                 New_Temp_Identifier (Typ => EW_Bool_Type);
-
-               --  Whether the current guard is enabled
-               Enabled     : constant W_Expr_Id := +Guard_Ident;
-
-            begin
-               Guard_Map.Include (Case_Guard, Guard_Ident);
-               Others_Guard := New_Or_Expr (Left   => Others_Guard,
-                                            Right  => Enabled,
-                                            Domain => EW_Term);
-               Result := Sequence
-                 (Result, Do_One_Contract_Case (Contract_Case, Enabled));
-            end;
-         end if;
+         begin
+            Result := Sequence
+              (Result, Do_One_Contract_Case (Contract_Case, Enabled));
+         end;
 
          Next (Contract_Case);
       end loop;
 
-      --  When there is an OTHERS guard, check that the corresponding
-      --  consequence holds when no other guard is enabled.
-
-      if Present (Others_Contract_Case) then
-         declare
-            Enabled : constant W_Expr_Id := New_Not (Domain => EW_Pred,
-                                                     Right  => Others_Guard);
-         begin
-            Result := Sequence
-              (Result, Do_One_Contract_Case (Others_Contract_Case, Enabled));
-         end;
-      end if;
+      return Result;
    end Compute_Contract_Cases_Exit_Checks;
 
    ------------------------------------------
@@ -982,23 +1031,26 @@ package body Gnat2Why.Subprograms is
      (File : in out Why_Section;
       E    : Entity_Id)
    is
-      Name     : constant String := Full_Name (E);
-      Params   : Transformation_Params;
+      Name      : constant String := Full_Name (E);
+      Params    : Transformation_Params;
 
-      Body_N   : constant Node_Id := SPARK_Util.Get_Subprogram_Body (E);
-      Post_N   : constant Node_Id :=
+      Body_N    : constant Node_Id := SPARK_Util.Get_Subprogram_Body (E);
+      Post_N    : constant Node_Id :=
         Get_Location_For_Pre_Post (E, Name_Postcondition);
-      Assume   : W_Prog_Id;
-      Prog     : W_Prog_Id;
-      Why_Body : W_Prog_Id;
-      Post     : W_Pred_Id;
+      Assume    : W_Prog_Id;
+      Init_Prog : W_Prog_Id;
+      Prog      : W_Prog_Id;
+      Why_Body  : W_Prog_Id;
+      Post      : W_Pred_Id;
 
       --  Mapping from guards to temporary names, and Why program to check
       --  contract cases on exit.
-      Guard_Map      : Ada_To_Why_Ident.Map;
+      Guard_Map          : Ada_To_Why_Ident.Map;
+      Others_Guard_Ident : W_Identifier_Id;
+      Others_Guard_Expr  : W_Expr_Id;
+
       Contract_Check : W_Prog_Id;
       Post_Check     : W_Prog_Id;
-
       Precondition   : W_Prog_Id;
 
    begin
@@ -1067,21 +1119,29 @@ package body Gnat2Why.Subprograms is
       --  If contract cases are present, generate checks for absence of
       --  run-time errors in guards, and check that contract cases are disjoint
       --  and complete. The completeness is checked in a context where the
-      --  precondition is assumed.
+      --  precondition is assumed. Init_Prog is set to the program up to the
+      --  precondition assumption, and Prog is set to the program starting
+      --  with the contract case entry checks.
 
-      Prog := Sequence
+      Compute_Contract_Cases_Guard_Map
+        (E                  => E,
+         Guard_Map          => Guard_Map,
+         Others_Guard_Ident => Others_Guard_Ident,
+         Others_Guard_Expr  => Others_Guard_Expr);
+
+      Init_Prog := Sequence
         ((1 => Assume,
           2 => New_Ignore
           (Prog => +Compute_Spec (Params, E, Name_Precondition, EW_Prog)),
-          3 => Precondition,
-          4 => Compute_Contract_Cases_Entry_Checks (Params, E)));
+          3 => Precondition));
+      Prog := Compute_Contract_Cases_Entry_Checks (E, Guard_Map);
 
       if Present (Body_N) and then Entity_Body_In_SPARK (E) then
-         Compute_Contract_Cases_Exit_Checks
-           (Params    => Params,
-            E         => E,
-            Guard_Map => Guard_Map,
-            Result    => Contract_Check);
+         Contract_Check := Compute_Contract_Cases_Exit_Checks
+           (Params             => Params,
+            E                  => E,
+            Guard_Map          => Guard_Map,
+            Others_Guard_Ident => Others_Guard_Ident);
 
          Post_Check :=
            Sequence
@@ -1168,23 +1228,42 @@ package body Gnat2Why.Subprograms is
 
          --  add declarations for 'Old variables
 
-         Why_Body := Bind_From_Mapping_In_Expr (Params, Map_For_Old, Why_Body);
-
-         --  Bind value of guard expressions. We do not generate checks for
-         --  run-time errors here, as they are already generated in
-         --  Compute_Contract_Cases_Entry_Checks.
-
-         Why_Body :=
-           Bind_From_Mapping_In_Expr
-             (Params => Params,
-              Map    => Guard_Map,
-              Expr   => Why_Body,
-              Do_Runtime_Error_Check => False);
+         Why_Body := Bind_From_Mapping_In_Expr
+           (Params                 => Params,
+            Map                    => Map_For_Old,
+            Expr                   => Why_Body,
+            Guard_Map              => Guard_Map,
+            Others_Guard_Ident     => Others_Guard_Ident,
+            Do_Runtime_Error_Check => True,
+            Bind_Value_Of_Old      => True);
 
          Prog := Sequence (Prog, Why_Body);
       else
          Post := True_Pred;
       end if;
+
+      --  Bind value of guard expressions, checking for run-time errors
+
+      Params.Phase := Generate_VCs_For_Contract;
+
+      if Present (Others_Guard_Ident) then
+         Prog := +New_Typed_Binding (Name    => Others_Guard_Ident,
+                                     Domain  => EW_Prog,
+                                     Def     => Others_Guard_Expr,
+                                     Context => +Prog);
+      end if;
+
+      Prog := Bind_From_Mapping_In_Expr
+        (Params                 => Params,
+         Map                    => Guard_Map,
+         Expr                   => Prog,
+         Do_Runtime_Error_Check => True);
+
+      --  Now that identifiers for guard expressions are bound, in the correct
+      --  context assuming precondition, glue together the initial part of the
+      --  program and the rest of it.
+
+      Prog := Sequence (Init_Prog, Prog);
 
       --  We always need to add the int theory as
       --  Compute_Contract_Cases_Entry_Checks may make use of the

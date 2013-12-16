@@ -220,11 +220,20 @@ package Gnat2Why.Expr is
      (Params                 : Transformation_Params;
       Map                    : Ada_To_Why_Ident.Map;
       Expr                   : W_Prog_Id;
-      Do_Runtime_Error_Check : Boolean := True) return W_Prog_Id;
+      Guard_Map              : Ada_To_Why_Ident.Map :=
+        Ada_To_Why_Ident.Empty_Map;
+      Others_Guard_Ident     : W_Identifier_Id := Why_Empty;
+      Do_Runtime_Error_Check : Boolean := True;
+      Bind_Value_Of_Old      : Boolean := False) return W_Prog_Id;
    --  Bind names from Map to their corresponding values, obtained by
-   --  transforming the expression node associated to the name in Map, in Expr.
-   --  Do_Runtime_Error_Check is True if the returned Why program should check
-   --  for absence of run-time errors in the expressions bound.
+   --  transforming the expression node associated to the name in Map, in
+   --  Expr. Do_Runtime_Error_Check is True if the returned Why program
+   --  should check for absence of run-time errors in the expressions bound.
+   --  Bind_Value_Of_Old is True when binding the value of references to Old in
+   --  postcondition and contract-cases, as a special treatment is requested to
+   --  only check absence of run-time error when the corresponding guard of a
+   --  contract-case is enabled. Guard_Map and Others_Guard_Ident are used to
+   --  retrieve the identifier for the corresponding guard in that case.
 
    function Name_For_Loop_Entry
      (Expr    : Node_Id;

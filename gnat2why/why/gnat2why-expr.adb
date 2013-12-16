@@ -714,21 +714,97 @@ package body Gnat2Why.Expr is
      (Params                 : Transformation_Params;
       Map                    : Ada_To_Why_Ident.Map;
       Expr                   : W_Prog_Id;
-      Do_Runtime_Error_Check : Boolean := True) return W_Prog_Id
+      Guard_Map              : Ada_To_Why_Ident.Map :=
+        Ada_To_Why_Ident.Empty_Map;
+      Others_Guard_Ident     : W_Identifier_Id := Why_Empty;
+      Do_Runtime_Error_Check : Boolean := True;
+      Bind_Value_Of_Old      : Boolean := False) return W_Prog_Id
    is
+      function Get_Corresponding_Guard (N : Node_Id) return Node_Id;
+      --  If N is inside the consequence expression of a contract case, returns
+      --  the corresponding guard expression. Otherwise, returns Empty;
+
+      -----------------------------
+      -- Get_Corresponding_Guard --
+      -----------------------------
+
+      function Get_Corresponding_Guard (N : Node_Id) return Node_Id is
+         P         : Node_Id;
+         All_Cases : Node_Id;
+
+      begin
+         --  Retrieve the enclosing pragma, which may be either a postcondition
+         --  or a contract_cases pragma.
+
+         P := Parent (N);
+         while Nkind (P) /= N_Pragma loop
+            P := Parent (P);
+         end loop;
+
+         --  Return Empty for a postcondition pragma
+
+         if Is_Pragma_Check (P, Name_Post)
+              or else
+            Is_Pragma_Check (P, Name_Postcondition)
+              or else
+            Is_Pragma (P, Pragma_Post)
+              or else
+            Is_Pragma (P, Pragma_Postcondition)
+         then
+            return Empty;
+         end if;
+
+         pragma Assert (Is_Pragma (P, Pragma_Contract_Cases));
+
+         --  Retrieve the enclosing contract case component_association
+
+         All_Cases :=
+           Get_Pragma_Arg (First (Pragma_Argument_Associations (P)));
+
+         P := Parent (N);
+         while Parent (P) /= All_Cases loop
+            P := Parent (P);
+         end loop;
+
+         pragma Assert (Nkind (P) = N_Component_Association);
+
+         --  Return the guard of the enclosing contract case
+
+         return First (Choices (P));
+      end Get_Corresponding_Guard;
+
       Result : W_Prog_Id := Expr;
+
+   --  Start of Bind_From_Mapping_In_Expr
+
    begin
       for C in Map.Iterate loop
          declare
-            N    : constant Node_Id := Ada_To_Why_Ident.Key (C);
-            Name : constant W_Identifier_Id := Ada_To_Why_Ident.Element (C);
+            N     : constant Node_Id := Ada_To_Why_Ident.Key (C);
+            Name  : constant W_Identifier_Id := Ada_To_Why_Ident.Element (C);
+            Guard : constant Node_Id :=
+              (if Bind_Value_Of_Old then
+                  Get_Corresponding_Guard (N)
+               else Empty);
 
             --  Generate a program expression to check absence of run-time
-            --  errors.
+            --  errors. When checking for X in X'Old inside a contract case
+            --  (which corresponds to Guard being non Empty), do this checking
+            --  only under a condition that the corresponding case is enabled.
 
             RE_Prog : constant W_Prog_Id :=
               (if Do_Runtime_Error_Check then
-                 New_Ignore (Prog => +Transform_Expr (N, EW_Prog, Params))
+                (if Present (Guard) then
+                  New_Conditional
+                    (Condition =>
+                       +(if Nkind (Guard) = N_Others_Choice then
+                           Others_Guard_Ident
+                         else
+                           Guard_Map.Element (Guard)),
+                     Then_Part => +New_Ignore
+                       (Prog => +Transform_Expr (N, EW_Prog, Params)))
+                 else
+                   New_Ignore (Prog => +Transform_Expr (N, EW_Prog, Params)))
                else
                  New_Void);
 
