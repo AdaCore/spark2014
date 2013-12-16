@@ -630,22 +630,29 @@ package body Flow.Analysis is
 
       pragma Assert_And_Cut (Sane);
 
+      --  Please don't try to simplify/delete Entry_Node here, it is also a
+      --  global in Check_Record_Declarations.
+
       case FA.Kind is
          when E_Subprogram_Body =>
             Entry_Node := SPARK_Util.Get_Subprogram_Body (FA.Analyzed_Entity);
             pragma Assert (Nkind (Entry_Node) = N_Subprogram_Body);
+            Check_Record_Declarations (Entry_Node);
 
          when E_Package =>
             Entry_Node := Get_Enclosing (FA.Analyzed_Entity,
                                          N_Package_Specification);
+            Check_Record_Declarations (Entry_Node);
 
          when E_Package_Body =>
+            Entry_Node := Get_Enclosing (FA.Spec_Node,
+                                         N_Package_Specification);
+            Check_Record_Declarations (Entry_Node);
+
             Entry_Node := Get_Enclosing (FA.Analyzed_Entity,
                                          N_Package_Body);
+            Check_Record_Declarations (Entry_Node);
       end case;
-      --  Please don't try to simplify/delete Entry_Node here, it is also a
-      --  global in Check_Record_Declarations.
-      Check_Record_Declarations (Entry_Node);
 
       if not Sane then
          if Gnat2Why_Args.Flow_Debug_Mode then
