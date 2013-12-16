@@ -318,9 +318,19 @@ package body Flow_Types is
    is
    begin
       case F.Kind is
-         when Direct_Mapping | Record_Field =>
+         when Direct_Mapping =>
             return Default_Initialization (Etype (Get_Direct_Mapping_Id (F)))
               = Full_Default_Initialization;
+
+         when Record_Field =>
+            if Is_Discriminant (F) then
+               return Present (Discriminant_Default_Value
+                                 (F.Component.Last_Element));
+            else
+               return Default_Initialization
+                 (Etype (Get_Direct_Mapping_Id (F)))
+                 = Full_Default_Initialization;
+            end if;
 
          when Magic_String =>
             return False;
