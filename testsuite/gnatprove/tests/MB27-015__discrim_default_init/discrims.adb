@@ -4,12 +4,19 @@ is
    procedure Op (X : in out Integer;
                  Y : in     Natural)
    is
-      --  Default discriminant depends no "in" parameter, which is
+      --  Default discriminant depends on "in" parameter, which is
       --  viewed as a constant, so should be legal.
-      --
-      --  NOTE - Flow analysis should pick up the dependence
-      --  between final value of X and initial value of Y
-      type T2N (DN : Integer := Y) is null record; -- legal
+
+      type T0N (DN : Integer := 0) is null record; -- legal - literal
+
+      type T1N (DN : Integer := C0) is null record; -- legal - constant
+
+      type T2N (DN : Integer := Y) is null record; -- legal - in parameter
+
+      type T3N (DN : Integer := X) is null record; -- illegal - in out parameter is a variable
+
+      type T4N (DN : Integer := V0) is null record; -- illegal - variable
+
       T : T2N;
    begin
       X := X + T.DN;

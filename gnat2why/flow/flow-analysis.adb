@@ -538,24 +538,34 @@ package body Flow.Analysis is
       Tracefile  : Unbounded_String;
       Entry_Node : Node_Id;
 
-      function Proc_Record_Decl (N : Node_Id) return Traverse_Result;
-      --  Check each component declaration for use of non-manifest
-      --  constants.
+      function Check_Expressions_Variable_Free (N : Node_Id)
+                                                return Traverse_Result;
+      --  Check that expressions used in certain contexts are
+      --  free of variables, as per SRM 4.4(2).  This function
+      --  deals witht he following contexts:
+      --     Component Declarations
+      --     Discriminant Specifications
 
-      function Proc_Record_Decl (N : Node_Id) return Traverse_Result
+      function Check_Expressions_Variable_Free (N : Node_Id)
+                                                return Traverse_Result
       is
       begin
          case Nkind (N) is
-            when N_Subprogram_Body | N_Package_Body =>
-               --  We do not want to process declarations any nested
-               --  subprograms or packages.
+            when N_Subprogram_Body |
+                 N_Package_Specification |
+                 N_Package_Body =>
+               --  We do not want to process declarations of any nested
+               --  subprograms or packages.  These will be analysed
+               --  by their own pass of flow analysis.
                if N = Entry_Node then
                   return OK;
                else
                   return Skip;
                end if;
 
-            when N_Component_Declaration =>
+            when N_Component_Declaration |
+                 N_Discriminant_Specification =>
+
                if Present (Expression (N)) then
                   declare
                      Deps : constant Ordered_Flow_Id_Sets.Set :=
@@ -563,18 +573,23 @@ package body Flow.Analysis is
                        (Get_Variable_Set
                           (Expression (N),
                            Scope           => Get_Flow_Scope (N),
-                           Local_Constants => FA.Local_Constants));
+                           Local_Constants => Node_Sets.Empty_Set));
                   begin
                      for F of Deps loop
                         --  ??? consider moving this to spark_definition
-                        Error_Msg_Flow
-                          (FA        => FA,
-                           Tracefile => Tracefile,
-                           Msg       => "default initialization cannot " &
-                             "depend on &",
-                           N         => Expression (N),
-                           F1        => F);
-                        Sane := False;
+                        if F.Kind = Direct_Mapping and then
+                          not Is_Constant_Object (F.Node)
+                        then
+                           Error_Msg_Flow
+                             (FA        => FA,
+                              Tracefile => Tracefile,
+                              Msg       => "default initialization " &
+                                "cannot depend on &",
+                              N         => Expression (N),
+                              F1        => F);
+                           Sane := False;
+                        end if;
+
                      end loop;
                   end;
                end if;
@@ -583,10 +598,10 @@ package body Flow.Analysis is
             when others =>
                return OK;
          end case;
-      end Proc_Record_Decl;
+      end Check_Expressions_Variable_Free;
 
       procedure Check_Record_Declarations is
-        new Traverse_Proc (Proc_Record_Decl);
+        new Traverse_Proc (Check_Expressions_Variable_Free);
 
    begin
       --  Innocent until proven guilty.
