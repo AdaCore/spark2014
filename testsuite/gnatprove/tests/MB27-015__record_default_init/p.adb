@@ -104,4 +104,26 @@ is
       return X.F1;
    end Op2;
 
+
+   --  Shows legality of a "for" loop parameter used as a default initial
+   --  value in a record type component declaration.  Ada LRM says that
+   --  a loop parameter is viewed as "constant" (Ada LRM 3.3(18))
+   procedure Op3 (A : in out Integer;
+                  B : in     Integer)
+   is
+   begin
+      for I in Integer range 1 .. B loop
+         declare
+            type R is record
+               F1 : Integer := I; -- legal?
+               F2 : Integer := 0; -- legal
+               F3 : Integer := I + 1; -- legal?
+            end record;
+            Q : R;
+         begin
+            A := A + Q.F1;
+         end;
+      end loop;
+   end Op3;
+
 end P;

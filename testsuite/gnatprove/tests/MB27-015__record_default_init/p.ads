@@ -37,4 +37,8 @@ is
 
    function Op2 (S : in String) return Positive;
 
+   procedure Op3 (A : in out Integer;
+                  B : in     Integer)
+     with Depends => (A => (A, B));
+
 end P;
