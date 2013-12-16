@@ -16,13 +16,14 @@ package Int_List is pragma SPARK_Mode (On);
      Post =>
        Element (L, First (L)) = I
          and then
-       Length (L) = Length (L'Old) + 1;
---           and then
---         (for all C in L'Old => Element (L, C) = Element (L'Old, C));
+         Length (L) = Length (L'Old) + 1
+     and then
+       (for all C in L'Old => Element (L, C) = Element (L'Old, C));
 
    procedure Incr (L : in out List) with
      Pre  => (for all C in L => Element (L, C) < My_Int'Last),
      Post =>
-       Length (L) = Length (L'Old)         and then
-     (for all C in L => Element (L, C) = Element (L'Old, C) + 1);
+       Length (L) = Length (L'Old) and then
+     (for all C in L => Has_Element (L'Old, C) and then
+          Element (L, C) = Element (L'Old, C) + 1);
 end Int_List;
