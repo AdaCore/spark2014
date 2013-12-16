@@ -23,8 +23,6 @@
 
 with Why;
 
-with Flow.Utility; use Flow.Utility;
-
 package body Flow.Slice is
 
    use type Flow_Id_Sets.Set;

@@ -203,6 +203,10 @@ package Flow_Types is
       with Pre => Present (N) and then Nkind (N) = N_Selected_Component;
    --  Create a Flow_Id for the given record field.
 
+   function Is_Discriminant (F : Flow_Id) return Boolean;
+   --  Returns true if the given flow id is a record field
+   --  representing a discriminant.
+
    function Get_Default_Initialization (F : Flow_Id) return Node_Id;
    --  Get the default initialization expression for the given flow id
    --  (this only really works for record fields and direct mappings;

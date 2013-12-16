@@ -185,6 +185,23 @@ package body Flow_Types is
       return F;
    end Record_Field_Id;
 
+   ---------------------
+   -- Is_Discriminant --
+   ---------------------
+
+   function Is_Discriminant (F : Flow_Id) return Boolean
+   is
+   begin
+      case F.Kind is
+         when Record_Field =>
+            return Ekind (F.Component.Last_Element) = E_Discriminant;
+         when Direct_Mapping | Magic_String =>
+            return False;
+         when Null_Value =>
+            raise Why.Unexpected_Node;
+      end case;
+   end Is_Discriminant;
+
    --------------------------------
    -- Get_Default_Initialization --
    --------------------------------

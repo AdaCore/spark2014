@@ -1387,23 +1387,6 @@ package body Flow.Utility is
       return Chars (Expression (A)) in Name_Pre | Name_Precondition;
    end Is_Precondition_Check;
 
-   ---------------------
-   -- Is_Discriminant --
-   ---------------------
-
-   function Is_Discriminant (F : Flow_Id) return Boolean
-   is
-   begin
-      case F.Kind is
-         when Record_Field =>
-            return Ekind (F.Component.Last_Element) = E_Discriminant;
-         when Direct_Mapping | Magic_String =>
-            return False;
-         when Null_Value =>
-            raise Why.Unexpected_Node;
-      end case;
-   end Is_Discriminant;
-
    -----------------------------------
    -- Is_Initialized_At_Elaboration --
    -----------------------------------
