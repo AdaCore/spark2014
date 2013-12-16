@@ -322,16 +322,19 @@ package body Flow_Types is
       case F.Kind is
          when Null_Value | Magic_String =>
             return False;
-         when Direct_Mapping =>
-            pragma Assert (Nkind (Get_Direct_Mapping_Id (F)) in N_Entity);
-            case Ekind (Get_Direct_Mapping_Id (F)) is
-               when Object_Kind =>
-                  return Treat_As_Volatile (Get_Direct_Mapping_Id (F));
-               when others =>
-                  return False;
-            end case;
-         when Record_Field =>
-            return Is_Volatile (Entire_Variable (F));
+         when Direct_Mapping | Record_Field =>
+            declare
+               E : constant Entity_Id := Get_Direct_Mapping_Id (F);
+               pragma Assert (Nkind (E) in N_Entity);
+            begin
+               case Ekind (E) is
+                  when Object_Kind =>
+                     return Treat_As_Volatile (E) or else
+                       Treat_As_Volatile (Etype (E));
+                  when others =>
+                     return False;
+               end case;
+            end;
       end case;
    end Is_Volatile;
 

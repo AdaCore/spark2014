@@ -79,7 +79,7 @@ package Flow_Tree_Utility is
    function Has_Volatile_Aspect (E : Entity_Id;
                                  A : Pragma_Id)
                                  return Boolean
-     with Pre => Treat_As_Volatile (E) and
+     with Pre => (Treat_As_Volatile (E) or Treat_As_Volatile (Etype (E))) and
                  A in Pragma_Async_Readers    | Pragma_Async_Writers |
                       Pragma_Effective_Writes | Pragma_Effective_Reads;
    --  Checks if the given entity (or its type) has the specified aspect.

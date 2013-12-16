@@ -357,7 +357,30 @@ package body Flow_Tree_Utility is
             Present (Get_Pragma (E, Pragma_Effective_Writes)));
    begin
       case Ekind (E) is
-         when Object_Kind =>
+         when E_In_Parameter =>
+            case A is
+               when Pragma_Async_Writers | Pragma_Effective_Reads =>
+                  return True;
+               when Pragma_Async_Readers | Pragma_Effective_Writes =>
+                  return False;
+               when others =>
+                  raise Program_Error;
+            end case;
+
+         when E_Out_Parameter =>
+            case A is
+               when Pragma_Async_Writers | Pragma_Effective_Reads =>
+                  return False;
+               when Pragma_Async_Readers | Pragma_Effective_Writes =>
+                  return True;
+               when others =>
+                  raise Program_Error;
+            end case;
+
+         when E_In_Out_Parameter =>
+            return True;
+
+         when E_Variable =>
             if Present (Get_Pragma (E, A)) then
                return True;
             elsif Has_Specific_Aspect (E) then
@@ -367,7 +390,7 @@ package body Flow_Tree_Utility is
             end if;
 
          when others =>
-            raise Program_Error;
+            raise Why.Unexpected_Node;
       end case;
    end Has_Volatile_Aspect;
 
