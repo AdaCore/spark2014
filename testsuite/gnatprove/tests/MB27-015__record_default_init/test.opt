@@ -1,0 +1,1 @@
+ALL XFAIL SPARK LRM 4.4(2) for record components not yet fully implemented
