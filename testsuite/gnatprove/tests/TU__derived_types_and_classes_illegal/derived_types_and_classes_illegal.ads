@@ -6,14 +6,14 @@ is
    --  contains an ``interface_list`` or a ``record_part`` these must also
    --  contain entities that are in |SPARK|.
 
-   type Record_T is tagged record  --  Not in SPARK
+   type Record_T is tagged record  --  NOT in SPARK
       A : access Integer;
    end record;
 
    type Extended_Record_T is new Record_T with record
       --  Not in SPARK since ancestor Record_T is NOT in SPARK. The tools do
-      --  not emmit an error message here but this is indirectly be picked up
-      --  since the ancestor is flagged as not in SPARK.
+      --  not emmit an error message here but this is indirectly picked up
+      --  since the ancestor is flagged as BIT in SPARK.
       B : Integer;
    end record;
 
@@ -22,5 +22,5 @@ is
                            --  inheritance. Since tagged types are currently
                            --  NOT in SPARK, neither are interfaces.
 
-   type Bla_Bla is interface and Bla;  --  Also not in SPARK
+   type Bla_Bla is interface and Bla;  --  Also NOT in SPARK
 end Derived_Types_And_Classes_Illegal;
