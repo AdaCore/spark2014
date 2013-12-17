@@ -120,7 +120,7 @@ some of these aspects if they are not present. A tool may synthesize more
 aspects than the minimum required (see :ref:`verific_modes`). An equivalent
 pragma is available for each of the new aspects but these are not covered
 explicitly in the language rules either.  The pragmas used by |SPARK| are
-documented in :ref:`language_defined_pragmas`. 
+documented in :ref:`language_defined_pragmas`.
 
 
 Readers interested in how SPARK 2005 constructs and idioms map into
@@ -257,7 +257,7 @@ might depend on the bounds of the type Standard.Long_Integer or on
 the implementation-dependent bounds chosen for the unconstrained
 base subtype associated with a declaration like "type T is range 1 .. 10;".
 In such cases it must be possible to provide the needed information
-as explicit inputs to the formal verification process. 
+as explicit inputs to the formal verification process.
 The means by which this is accomplished is not specified as part of
 the |SPARK| language definition.
 
@@ -309,7 +309,7 @@ the programmer in a number of ways:
   * contracts can be written and dynamically verified even when the
     contracts or the program are too complex for automatic proof. This
     includes programs that explicitly manipulate pointers, for
-    example.  
+    example.
 
 Executable contracts can be less expressive than pure mathematical
 ones, or more difficult to write in some situations but |SPARK| has
@@ -324,7 +324,7 @@ expression this adds to the complexity of writing contracts and
 specifications using them, for instance, the expression
 
 ::
-   
+
   Post => X = (Y + Z) / 100
 
 might raise a run-time exception if Y is an integer and Y + Z >
@@ -345,7 +345,7 @@ example the checks would not be provable and the postcondition would
 have to be rewritten something like:
 
 ::
-  
+
   Post => X = Integer ((Long_Integer (Y) + Long_Integer (Z)) / 100)
 
 The way in which this operational mode is selected is tool dependent
@@ -407,7 +407,7 @@ compilation or execution of the program may fail.
 Main Program
 ------------
 
-There is no aspect or pragma in |SPARK| indicationg taht a subprogram
+There is no aspect or pragma in |SPARK| indicating that a subprogram
 is a main program.  Instead it is expected that any implementation of
 |SPARK| will have its own mechanism to allow the tools to identify the
 main program (albeit not within the language itself).
@@ -449,7 +449,7 @@ Some are expanded in subsequent sections within this chapter.
 
 - |SPARK| shall support *constructive*, modular development which allows
   contracts to be specified on the declaration of program units and allows
-  analysis and verification to be perfomed based on these contracts as early as
+  analysis and verification to be performed based on these contracts as early as
   possible in the development lifecycle, even before the units are
   implemented. As units are implemented the implementation is verified against
   its specification given in its contract. The contracts are specified using
@@ -497,15 +497,15 @@ Some are expanded in subsequent sections within this chapter.
   implemented until after release 1 of the |SPARK| tools.]
 
 - |SPARK| shall support the analysis of external communication channels, which
-  are typically implemented using volatile variables. 
+  are typically implemented using volatile variables.
   See section :ref:`volatile` for further details.
 
 - The language shall offer an unambiguous semantics. In Ada
-  terminology, this means that all erroneous and unspecified behavior
+  terminology, this means that all erroneous and unspecified behaviour
   shall be eliminated either by direct exclusion or by adding rules
   which indirectly guarantee that some implementation-dependent
   choice, other than the fundamental data types and constants, cannot
-  effect the externally-visible behavior of the program. For example,
+  effect the externally-visible behaviour of the program. For example,
   Ada does not specify the order in which actual parameters are
   evaluated as part of a subprogram call. As a result of the SPARK
   rules which prevent the evaluation of an expression from having side
@@ -646,7 +646,7 @@ There are several sources of conditions that apply to a tested subprogram:
 - A tested subprogram may be flow analyzed if it is in |SPARK| even if
   it is not formally proven.
 
-- A tested subprogram may have properties that are formally proven. 
+- A tested subprogram may have properties that are formally proven.
 
 Flow analysis of a non-proven subprogram
 ########################################
@@ -661,7 +661,7 @@ of significant benefits as the subprogram implementation is
 - checked that there are no uses of initialized variables;
 
 - checked that there are no ineffective statements; and
- 
+
 - checked against its specified Global and Depends aspects if they
   exist or alternatively facilitating their synthesis.  This is
   important because this automatically checks one of the conditions on
@@ -671,13 +671,13 @@ of significant benefits as the subprogram implementation is
 Proving properties of a tested subprogram
 #########################################
 
-A tested subprogram which is in SPARK may have proerties, such as the
+A tested subprogram which is in SPARK may have properties, such as the
 absence of run-time exceptions proven even though the full
 functionality of the subprogram is tested rather than proven.  The
 extent to which proof is performed is controlled using pragma Assume
 (see :ref:`pragma_assume`).
 
-To perform proof of absencce of run-time exceptions but not the
+To perform proof of absence of run-time exceptions but not the
 postcondition of a subprogram a pragma Assume stating the
 postcondition is placed immediately prior to each exit point from the
 subprogram (each return statement or the end of the body).  Parts of
@@ -689,7 +689,7 @@ be used to suppress the proof of a particular check.
 
 Pragma Assume informs the proof system that the assumed expression is
 always True and so the prover does not attempt to prove it.  In
-general pragma Assune should be used with caution but it acts as a
+general pragma Assume should be used with caution but it acts as a
 pragma Assert when the subprogram code is run.  Therefore, in a
 subprogram that is tested it acts as an extra test.
 
@@ -715,7 +715,7 @@ by the called subprogram:
   whether each of the global items are an Input, an Output or is
   In_Out.  The onus is on the user to show that the Global (and
   Depends) aspect is correct as the |SPARK| tools do not check this
-  because the subprogarm is not in |SPARK|;
+  because the subprogram is not in |SPARK|;
 
 - it shall not update any variable or state abstraction known to the
   |SPARK| program, directly or indirectly, apart from through an
@@ -1001,4 +1001,3 @@ variable.  |SPARK| extends this notion to cover updates of a volatile
 variable such that an update of a volatile variable may also have some
 other observable effect.  |SPARK| further extends these principles to
 apply to state abstractions. (see section :ref:`external_state`).
-
