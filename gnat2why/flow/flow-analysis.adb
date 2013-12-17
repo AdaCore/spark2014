@@ -587,7 +587,8 @@ package body Flow.Analysis is
                                 "cannot depend on &",
                               SRM_Ref   => "3.8 (2)",
                               N         => Expression (N),
-                              F1        => F);
+                              F1        => F,
+                              SRM_Ref   => "4.4(2)");
                            Sane := False;
                         end if;
 

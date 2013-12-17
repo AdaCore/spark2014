@@ -34,8 +34,8 @@ package Flow.Analysis is
                            Sane : out Boolean);
    --  Check the following basic properties:
    --     - is aliasing present (using the flag FA.Aliasing_Present)?
-   --     - do we somehow depend on a record with non-manifest constant
-   --       default initializations?
+   --     - absence of variables in default initializations of
+   --       record components and discriminants (SPARK LRM 4.4(2))
    --     - are all global variables used declared as such?
    --     - are we updating a variable we shouldn't (in parameter / global
    --       or package external state in an elaboration)
