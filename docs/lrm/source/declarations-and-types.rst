@@ -65,7 +65,7 @@ Type Declarations
 
 .. centered:: **Legality Rules**
 
-.. _tu-type_declarations-01:
+.. _tu-sf-type_declarations-01:
 
 1. The following type declarations are not permitted in |SPARK|
 
