@@ -115,9 +115,9 @@ is
       for I in Integer range 1 .. B loop
          declare
             type R is record
-               F1 : Integer := I; -- legal?
+               F1 : Integer := I; -- legal
                F2 : Integer := 0; -- legal
-               F3 : Integer := I + 1; -- legal?
+               F3 : Integer := I + 1; -- legal
             end record;
             Q : R;
          begin
