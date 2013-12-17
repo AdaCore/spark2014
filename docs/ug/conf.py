@@ -200,11 +200,19 @@ htmlhelp_basename = 'SPARK2014ToolsetUsersGuidedoc'
 
 # -- Options for LaTeX output --------------------------------------------------
 
+with open('gfdl.tex', 'r') as fd:
+   gfdl = fd.read()
+
+latex_elements = {
 # The paper size ('letter' or 'a4').
 #latex_paper_size = 'letter'
 
 # The font size ('10pt', '11pt' or '12pt').
 #latex_font_size = '10pt'
+
+# Additional stuff for the LaTeX preamble.
+'tableofcontents': gfdl + '\n\n\\tableofcontents\n',
+}
 
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).

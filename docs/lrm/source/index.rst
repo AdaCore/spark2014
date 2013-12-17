@@ -7,7 +7,11 @@
 SPARK 2014 Reference Manual
 ===========================
 
-   Date generated: |today|
+.. Copyright notice for latex is in gfdl.tex. It is included specifically
+   before the table of contents in LaTeX output (see conf.py), to avoid having
+   it appear after the TOC in the generated PDF.
+
+.. only:: html
 
    Copyright (C) 2013, AdaCore and Altran UK Ltd
 
