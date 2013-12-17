@@ -181,7 +181,7 @@ Derived Types and Classes
 
 .. centered:: **Legality Rules**
 
-.. _tu-derived_types_and_classes-01:
+.. _tu-sf-derived_types_and_classes-01:
 
 1. An entity declared by a ``derived_type`` declaration is in |SPARK|
    if its parent type is in |SPARK|, and if the declaration contains
