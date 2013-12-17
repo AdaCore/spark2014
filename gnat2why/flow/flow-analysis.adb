@@ -541,7 +541,7 @@ package body Flow.Analysis is
       function Check_Expressions_Variable_Free (N : Node_Id)
                                                 return Traverse_Result;
       --  Check that expressions used in certain contexts are
-      --  free of variables, as per SRM 4.4(2).  This function
+      --  free of variables, as per SRM 4.4 (2).  This function
       --  deals witht he following contexts:
       --     Component Declarations
       --     Discriminant Specifications
@@ -585,10 +585,9 @@ package body Flow.Analysis is
                               Tracefile => Tracefile,
                               Msg       => "default initialization " &
                                 "cannot depend on &",
-                              SRM_Ref   => "3.8 (2)",
+                              SRM_Ref   => "4.4 (2)",
                               N         => Expression (N),
-                              F1        => F,
-                              SRM_Ref   => "4.4(2)");
+                              F1        => F);
                            Sane := False;
                         end if;
 
