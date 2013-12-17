@@ -865,17 +865,21 @@ package body Flow.Utility is
                   --  dealt with by Do_Pragma and Do_Loop_Statement in
                   --  the CFG construction.
 
+                  --  ??? why do we do this here? can't we skip this?
+
                   declare
-                     D, U : Flow_Id_Sets.Set;
+                     A, B, C : Flow_Id_Sets.Set;
                   begin
                      Untangle_Assignment_Target
-                       (N               => N,
-                        Scope           => Scope,
-                        Local_Constants => Local_Constants,
-                        Vars_Defined    => D,
-                        Vars_Used       => U);
-                     VS.Union (D);
-                     VS.Union (U);
+                       (N                    => N,
+                        Scope                => Scope,
+                        Local_Constants      => Local_Constants,
+                        Vars_Explicitly_Used => A,
+                        Vars_Implicitly_Used => B,
+                        Vars_Defined         => C);
+                     VS.Union (A);
+                     VS.Union (B);
+                     VS.Union (C);
                   end;
                   return Skip;
 
@@ -1039,11 +1043,12 @@ package body Flow.Utility is
    --------------------------------
 
    procedure Untangle_Assignment_Target
-     (N               : Node_Id;
-      Scope           : Flow_Scope;
-      Local_Constants : Node_Sets.Set;
-      Vars_Defined    : out Flow_Id_Sets.Set;
-      Vars_Used       : out Flow_Id_Sets.Set)
+     (N                    : Node_Id;
+      Scope                : Flow_Scope;
+      Local_Constants      : Node_Sets.Set;
+      Vars_Defined         : out Flow_Id_Sets.Set;
+      Vars_Explicitly_Used : out Flow_Id_Sets.Set;
+      Vars_Implicitly_Used : out Flow_Id_Sets.Set)
    is
       procedure Find_Bottom_Node (N             : Node_Id;
                                   Bottom_Node   : out Node_Id;
@@ -1089,7 +1094,8 @@ package body Flow.Utility is
         (N             : Node_Id;
          Bottom_Node   : out Node_Id;
          End_Of_Record : out Node_Id;
-         Partial_Use   : out Boolean) is
+         Partial_Use   : out Boolean)
+      is
       begin
          Bottom_Node   := N;
          End_Of_Record := N;
@@ -1115,20 +1121,23 @@ package body Flow.Utility is
       begin
          case Nkind (N) is
             when N_Indexed_Component | N_Attribute_Reference =>
-               Vars_Used.Union (Get_Variable_Set
-                                  (Prefix (N),
-                                   Scope           => Scope,
-                                   Local_Constants => Local_Constants));
-               Vars_Used.Union (Get_Variable_Set
-                                  (Expressions (N),
-                                   Scope           => Scope,
-                                   Local_Constants => Local_Constants));
+               Vars_Explicitly_Used.Union
+                 (Get_Variable_Set
+                    (Prefix (N),
+                     Scope           => Scope,
+                     Local_Constants => Local_Constants));
+               Vars_Explicitly_Used.Union
+                 (Get_Variable_Set
+                    (Expressions (N),
+                     Scope           => Scope,
+                     Local_Constants => Local_Constants));
                return OK;
             when N_Slice =>
-               Vars_Used.Union (Get_Variable_Set
-                                  (Discrete_Range (N),
-                                   Scope           => Scope,
-                                   Local_Constants => Local_Constants));
+               Vars_Explicitly_Used.Union
+                 (Get_Variable_Set
+                    (Discrete_Range (N),
+                     Scope           => Scope,
+                     Local_Constants => Local_Constants));
                return OK;
             when others =>
                return OK;
@@ -1142,8 +1151,9 @@ package body Flow.Utility is
       Partial_Use   : Boolean;
 
    begin
-      Vars_Used    := Flow_Id_Sets.Empty_Set;
-      Vars_Defined := Flow_Id_Sets.Empty_Set;
+      Vars_Defined         := Flow_Id_Sets.Empty_Set;
+      Vars_Explicitly_Used := Flow_Id_Sets.Empty_Set;
+      Vars_Implicitly_Used := Flow_Id_Sets.Empty_Set;
 
       if Debug_Trace_Untangle then
          Sprint_Node (N);
@@ -1153,11 +1163,12 @@ package body Flow.Utility is
       case Nkind (N) is
          when N_Type_Conversion =>
             Untangle_Assignment_Target
-              (N               => Expression (N),
-               Scope           => Scope,
-               Local_Constants => Local_Constants,
-               Vars_Defined    => Vars_Defined,
-               Vars_Used       => Vars_Used);
+              (N                    => Expression (N),
+               Scope                => Scope,
+               Local_Constants      => Local_Constants,
+               Vars_Defined         => Vars_Defined,
+               Vars_Explicitly_Used => Vars_Explicitly_Used,
+               Vars_Implicitly_Used => Vars_Implicitly_Used);
 
          when N_Identifier | N_Expanded_Name =>
             --  X :=
@@ -1224,14 +1235,14 @@ package body Flow.Utility is
                         --  Since we are using the defined variable
                         --  only partially, we need to make sure its
                         --  also used.
-                        Vars_Used.Union (Vars_Defined);
+                        Vars_Implicitly_Used.Union (Vars_Defined);
 
                      when others =>
                         Vars_Defined.Union
                           (All_Record_Components
                              (Record_Field_Id (End_Of_Record)));
                         if Partial_Use then
-                           Vars_Used.Union
+                           Vars_Implicitly_Used.Union
                              (All_Record_Components
                                 (Record_Field_Id (End_Of_Record)));
                         end if;
@@ -1265,7 +1276,7 @@ package body Flow.Utility is
                      Vars_Defined.Include
                        (Direct_Mapping_Id (Entity (P)));
                      if Partial_Use then
-                        Vars_Used.Include
+                        Vars_Implicitly_Used.Include
                           (Direct_Mapping_Id (Entity (P)));
                      end if;
                   end;
@@ -1274,7 +1285,7 @@ package body Flow.Utility is
                   Vars_Defined.Include
                     (Direct_Mapping_Id (Entity (End_Of_Record)));
                   if Partial_Use then
-                     Vars_Used.Include
+                     Vars_Implicitly_Used.Include
                        (Direct_Mapping_Id (Entity (End_Of_Record)));
                   end if;
             end case;
@@ -1284,7 +1295,8 @@ package body Flow.Utility is
       end case;
 
       if Debug_Trace_Untangle then
-         Print_Node_Set (Vars_Used);
+         Print_Node_Set (Vars_Explicitly_Used);
+         Print_Node_Set (Vars_Implicitly_Used);
          Print_Node_Set (Vars_Defined);
       end if;
    end Untangle_Assignment_Target;

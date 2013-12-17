@@ -910,42 +910,48 @@ package body Flow.Control_Flow_Graph is
    is
       V : Flow_Graphs.Vertex_Id;
 
-      V_Used_RHS  : Flow_Id_Sets.Set;
+      V_Used_RHS : Flow_Id_Sets.Set;
       --  Things used because they appear on the RHS
 
-      V_Used_LHS  : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
-      --  Things used because they appear on the LHS (in A (J), J
-      --  would be used).
+      V_Explicitly_Used_LHS : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+      V_Implicitly_Used_LHS : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+      --  Things used because they appear on the LHS (in A (J), J would be
+      --  used explicitly and A implicitly).
 
-      V_Def_LHS   : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
-      --  Things defined because they appear on the LHS (in A (J), A
-      --  would be used).
+      V_Def_LHS : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+      --  Things defined because they appear on the LHS (in A (J), A would
+      --  be used).
    begin
       --  Work out which variables we use and define.
       V_Used_RHS := Get_Variable_Set (Expression (N),
                                       Scope           => FA.B_Scope,
                                       Local_Constants => FA.Local_Constants);
 
-      Untangle_Assignment_Target (N               => Name (N),
-                                  Scope           => FA.B_Scope,
-                                  Local_Constants => FA.Local_Constants,
-                                  Vars_Used       => V_Used_LHS,
-                                  Vars_Defined    => V_Def_LHS);
+      Untangle_Assignment_Target
+        (N                    => Name (N),
+         Scope                => FA.B_Scope,
+         Local_Constants      => FA.Local_Constants,
+         Vars_Explicitly_Used => V_Explicitly_Used_LHS,
+         Vars_Implicitly_Used => V_Implicitly_Used_LHS,
+         Vars_Defined         => V_Def_LHS);
 
       if Debug_Print_Assignment_Def_Use_Sets_And_Tree then
          Print_Node_Subtree (N);
          Print_Node_Set (V_Def_LHS);
-         Print_Node_Set (V_Used_LHS or V_Used_RHS);
+         Print_Node_Set (V_Explicitly_Used_LHS or
+                           V_Implicitly_Used_LHS or
+                           V_Used_RHS);
       end if;
 
       --  We have a vertex
       FA.CFG.Add_Vertex
         (Direct_Mapping_Id (N),
-         Make_Basic_Attributes (Var_Def => V_Def_LHS,
-                                Var_Use => V_Used_RHS or
-                                  V_Used_LHS,
-                                Loops   => Ctx.Current_Loops,
-                                E_Loc   => N),
+         Make_Basic_Attributes (Var_Def    => V_Def_LHS,
+                                Var_Ex_Use => V_Used_RHS or
+                                  V_Explicitly_Used_LHS,
+                                Var_Im_Use => V_Implicitly_Used_LHS,
+                                Loops      => Ctx.Current_Loops,
+                                E_Loc      => N),
          V);
 
       --  Control goes in V and of V
@@ -969,12 +975,12 @@ package body Flow.Control_Flow_Graph is
       --  We have a vertex V for the case statement itself
       FA.CFG.Add_Vertex
         (Direct_Mapping_Id (N),
-         Make_Basic_Attributes (Var_Use => Get_Variable_Set
+         Make_Basic_Attributes (Var_Ex_Use => Get_Variable_Set
                                   (Expression (N),
                                    Scope           => FA.B_Scope,
                                    Local_Constants => FA.Local_Constants),
-                                Loops   => Ctx.Current_Loops,
-                                E_Loc   => N),
+                                Loops      => Ctx.Current_Loops,
+                                E_Loc      => N),
          V);
       CM.Include (Union_Id (N), No_Connections);
       CM (Union_Id (N)).Standard_Entry := V;
@@ -1047,12 +1053,12 @@ package body Flow.Control_Flow_Graph is
       else
          FA.CFG.Add_Vertex
            (Direct_Mapping_Id (N),
-            Make_Basic_Attributes (Var_Use => Get_Variable_Set
+            Make_Basic_Attributes (Var_Ex_Use => Get_Variable_Set
                                      (Condition (N),
                                       Scope           => FA.B_Scope,
                                       Local_Constants => FA.Local_Constants),
-                                   Loops   => Ctx.Current_Loops,
-                                   E_Loc   => N),
+                                   Loops      => Ctx.Current_Loops,
+                                   E_Loc      => N),
             V);
          CM.Include (Union_Id (N),
                      Trivial_Connection (V));
@@ -1190,12 +1196,12 @@ package body Flow.Control_Flow_Graph is
       --  We have a vertex for the if statement itself.
       FA.CFG.Add_Vertex
         (Direct_Mapping_Id (N),
-         Make_Basic_Attributes (Var_Use => Get_Variable_Set
+         Make_Basic_Attributes (Var_Ex_Use => Get_Variable_Set
                                   (Condition (N),
                                    Scope           => FA.B_Scope,
                                    Local_Constants => FA.Local_Constants),
-                                Loops   => Ctx.Current_Loops,
-                                E_Loc   => N),
+                                Loops      => Ctx.Current_Loops,
+                                E_Loc      => N),
          V);
       CM.Include (Union_Id (N), No_Connections);
       CM (Union_Id (N)).Standard_Entry := V;
@@ -1244,12 +1250,12 @@ package body Flow.Control_Flow_Graph is
                FA.CFG.Add_Vertex
                  (Direct_Mapping_Id (Elsif_Statement),
                   Make_Basic_Attributes
-                    (Var_Use => Get_Variable_Set
+                    (Var_Ex_Use => Get_Variable_Set
                        (Condition (Elsif_Statement),
                         Scope           => FA.B_Scope,
                         Local_Constants => FA.Local_Constants),
-                     Loops   => Ctx.Current_Loops,
-                     E_Loc   => Elsif_Statement),
+                     Loops      => Ctx.Current_Loops,
+                     E_Loc      => Elsif_Statement),
                   V);
                Linkup (FA.CFG, V_Prev, V);
 
@@ -1475,12 +1481,12 @@ package body Flow.Control_Flow_Graph is
       begin
          FA.CFG.Add_Vertex
            (Direct_Mapping_Id (N),
-            Make_Basic_Attributes (Var_Use => Get_Variable_Set
+            Make_Basic_Attributes (Var_Ex_Use => Get_Variable_Set
                                      (Condition (Iteration_Scheme (N)),
                                       Scope           => FA.B_Scope,
                                       Local_Constants => FA.Local_Constants),
-                                   Loops   => Ctx.Current_Loops,
-                                   E_Loc   => N),
+                                   Loops      => Ctx.Current_Loops,
+                                   E_Loc      => N),
             V);
 
          --  Flow for the while loops goes into the condition and then
@@ -1568,13 +1574,13 @@ package body Flow.Control_Flow_Graph is
             FA.CFG.Add_Vertex
               (Direct_Mapping_Id (N),
                Make_Basic_Attributes
-                 (Var_Def => Flatten_Variable (LP),
-                  Var_Use => Get_Variable_Set
+                 (Var_Def    => Flatten_Variable (LP),
+                  Var_Ex_Use => Get_Variable_Set
                     (DSD,
                      Scope           => FA.B_Scope,
                      Local_Constants => FA.Local_Constants),
-                  Loops   => Ctx.Current_Loops,
-                  E_Loc   => N),
+                  Loops      => Ctx.Current_Loops,
+                  E_Loc      => N),
                V);
 
             --  Flow for the conditional for loop is like a while
@@ -1776,13 +1782,13 @@ package body Flow.Control_Flow_Graph is
          FA.CFG.Add_Vertex
            (Direct_Mapping_Id (N),
             Make_Basic_Attributes
-              (Var_Def => Flatten_Variable (Defining_Identifier (N)),
-               Var_Use => Get_Variable_Set
+              (Var_Def    => Flatten_Variable (Defining_Identifier (N)),
+               Var_Ex_Use => Get_Variable_Set
                  (Expression (N),
                   Scope           => FA.B_Scope,
                   Local_Constants => FA.Local_Constants),
-               Loops   => Ctx.Current_Loops,
-               E_Loc   => N),
+               Loops      => Ctx.Current_Loops,
+               E_Loc      => N),
             V);
          Inits.Append (V);
       end if;
@@ -2006,11 +2012,11 @@ package body Flow.Control_Flow_Graph is
 
                   FA.CFG.Add_Vertex
                     (Direct_Mapping_Id (Init_Item),
-                     Make_Basic_Attributes (Var_Def =>
+                     Make_Basic_Attributes (Var_Def    =>
                                               Flow_Id_Sets.To_Set (The_Out),
-                                            Var_Use => The_Ins,
-                                            Loops   => Ctx.Current_Loops,
-                                            E_Loc   => Init_Item),
+                                            Var_Ex_Use => The_Ins,
+                                            Loops      => Ctx.Current_Loops,
+                                            E_Loc      => Init_Item),
                      V);
 
                   CM.Include (Union_Id (Init_Item),
@@ -2292,13 +2298,13 @@ package body Flow.Control_Flow_Graph is
          FA.CFG.Add_Vertex
            (Direct_Mapping_Id (N),
             Make_Basic_Attributes
-              (Var_Def => Flatten_Variable (FA.Analyzed_Entity),
-               Var_Use => Get_Variable_Set
+              (Var_Def    => Flatten_Variable (FA.Analyzed_Entity),
+               Var_Ex_Use => Get_Variable_Set
                  (Expression (N),
                   Scope           => FA.B_Scope,
                   Local_Constants => FA.Local_Constants),
-               Loops   => Ctx.Current_Loops,
-               E_Loc   => N),
+               Loops      => Ctx.Current_Loops,
+               E_Loc      => N),
             V);
       end if;
 

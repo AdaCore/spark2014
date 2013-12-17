@@ -683,6 +683,43 @@ package body Flow.Analysis is
          return;
       end if;
 
+      --  Sanity check all read vertices to see if the read is legal.
+
+      pragma Assert_And_Cut (Sane);
+
+      for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
+         if FA.PDG.Get_Key (V).Variant /= Final_Value then
+            for R of FA.PDG.Get_Attributes (V).Variables_Explicitly_Used loop
+               case R.Kind is
+                  when Direct_Mapping | Record_Field =>
+                     if Ekind (Get_Direct_Mapping_Id (R)) =
+                       E_Out_Parameter and then
+                       Is_Volatile (R)
+                     then
+                        Error_Msg_Flow
+                          (FA        => FA,
+                           Tracefile => Tracefile,
+                           Msg       => "volatile formal out & cannot be read",
+                           SRM_Ref   => "7.1.3(14)",
+                           N   => Error_Location (FA.PDG, V),
+                           F1  => Entire_Variable (R));
+                        Sane := False;
+                     end if;
+
+                  when Magic_String =>
+                     --  Nothing to do in this case.
+                     null;
+
+                  when Null_Value =>
+                     raise Why.Unexpected_Node;
+               end case;
+            end loop;
+         end if;
+      end loop;
+      if not Sane then
+         return;
+      end if;
+
       --  Sanity check all written vertices to see if the write is
       --  legal.
 

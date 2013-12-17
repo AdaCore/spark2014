@@ -119,11 +119,12 @@ package Flow.Utility is
    --  always returns the full view.
 
    procedure Untangle_Assignment_Target
-     (N               : Node_Id;
-      Scope           : Flow_Scope;
-      Local_Constants : Node_Sets.Set;
-      Vars_Defined    : out Flow_Id_Sets.Set;
-      Vars_Used       : out Flow_Id_Sets.Set)
+     (N                    : Node_Id;
+      Scope                : Flow_Scope;
+      Local_Constants      : Node_Sets.Set;
+      Vars_Defined         : out Flow_Id_Sets.Set;
+      Vars_Explicitly_Used : out Flow_Id_Sets.Set;
+      Vars_Implicitly_Used : out Flow_Id_Sets.Set)
      with Pre => Nkind (N) in N_Identifier |
                               N_Expanded_Name |
                               N_Selected_Component |
@@ -131,11 +132,16 @@ package Flow.Utility is
                               N_Slice |
                               N_Unchecked_Type_Conversion |
                               N_Type_Conversion;
-   --  Given the target of an assignment (perhaps the left-hand-side
-   --  of an assignment statement or an out vertex in a procedure
-   --  call), work out which variables are actually set and which
-   --  variables are used to determine what is set (in the case of
-   --  arrays).
+   --  Given the target of an assignment (perhaps the left-hand-side of an
+   --  assignment statement or an out vertex in a procedure call), work out
+   --  which variables are actually set and which variables are used to
+   --  determine what is set (in the case of arrays).
+   --
+   --  Explicitly used variables are used directly. In
+   --     A (X) :=
+   --  We have explicitly used X. The implicitly used variables are "used"
+   --  variables due to a partial update. In the example above A is
+   --  implicitly used.
 
    function Get_Precondition_Expressions
      (E : Entity_Id) return Node_Lists.List

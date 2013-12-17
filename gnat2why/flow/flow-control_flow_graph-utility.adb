@@ -30,6 +30,8 @@ with Flow_Tree_Utility; use Flow_Tree_Utility;
 
 package body Flow.Control_Flow_Graph.Utility is
 
+   use type Flow_Id_Sets.Set;
+
    procedure Add_Volatile_Effects (A : in out V_Attributes);
    --  This helper procedure inspects the variables used by a particular
    --  vertex. Any with a volatile property causing reads or writes to be
@@ -45,7 +47,7 @@ package body Flow.Control_Flow_Graph.Utility is
 
    procedure Add_Volatile_Effects (A : in out V_Attributes) is
    begin
-      for F of A.Variables_Used loop
+      for F of A.Variables_Explicitly_Used loop
          if Has_Effective_Reads (F) then
             A.Volatiles_Read.Include (F);
          end if;
@@ -62,19 +64,21 @@ package body Flow.Control_Flow_Graph.Utility is
    ---------------------------
 
    function Make_Basic_Attributes
-     (Var_Def  : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
-      Var_Use  : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
-      Loops    : Node_Sets.Set     := Node_Sets.Empty_Set;
-      E_Loc    : Node_Or_Entity_Id := Empty)
+     (Var_Def    : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
+      Var_Ex_Use : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
+      Var_Im_Use : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
+      Loops      : Node_Sets.Set     := Node_Sets.Empty_Set;
+      E_Loc      : Node_Or_Entity_Id := Empty)
       return V_Attributes
    is
       A : V_Attributes := Null_Attributes;
    begin
-      A.Is_Program_Node   := True;
-      A.Variables_Defined := Var_Def;
-      A.Variables_Used    := Var_Use;
-      A.Loops             := Loops;
-      A.Error_Location    := E_Loc;
+      A.Is_Program_Node           := True;
+      A.Variables_Defined         := Var_Def;
+      A.Variables_Used            := Var_Ex_Use or Var_Im_Use;
+      A.Variables_Explicitly_Used := Var_Ex_Use;
+      A.Loops                     := Loops;
+      A.Error_Location            := E_Loc;
 
       Add_Volatile_Effects (A);
       return A;
@@ -94,12 +98,13 @@ package body Flow.Control_Flow_Graph.Utility is
    is
       A : V_Attributes := Null_Attributes;
    begin
-      A.Is_Program_Node   := True;
-      A.Variables_Defined := Var_Def;
-      A.Variables_Used    := Var_Use;
-      A.Loops             := Loops;
-      A.Error_Location    := E_Loc;
-      A.Aux_Node          := Object_Returned;
+      A.Is_Program_Node           := True;
+      A.Variables_Defined         := Var_Def;
+      A.Variables_Used            := Var_Use;
+      A.Variables_Explicitly_Used := Var_Use;
+      A.Loops                     := Loops;
+      A.Error_Location            := E_Loc;
+      A.Aux_Node                  := Object_Returned;
 
       Add_Volatile_Effects (A);
       return A;
@@ -118,13 +123,13 @@ package body Flow.Control_Flow_Graph.Utility is
    is
       A : V_Attributes := Null_Attributes;
    begin
-      A.Variables_Used  := Var_Use;
-      A.Is_Precondition := Is_Precondition;
-      A.Is_Loop_Entry   := Is_Loop_Entry;
-      A.Error_Location  := E_Loc;
+      A.Variables_Used            := Var_Use;
+      A.Variables_Explicitly_Used := Var_Use;
+      A.Is_Precondition           := Is_Precondition;
+      A.Is_Loop_Entry             := Is_Loop_Entry;
+      A.Error_Location            := E_Loc;
 
       Add_Volatile_Effects (A);
-      --  ??? volatility correct here?
       return A;
    end Make_Sink_Vertex_Attributes;
 
@@ -154,8 +159,9 @@ package body Flow.Control_Flow_Graph.Utility is
    is
       A : V_Attributes := Leaf;
    begin
-      A.Variables_Used    := Flow_Id_Sets.Empty_Set;
-      A.Variables_Defined := Flow_Id_Sets.Empty_Set;
+      A.Variables_Used            := Flow_Id_Sets.Empty_Set;
+      A.Variables_Explicitly_Used := Flow_Id_Sets.Empty_Set;
+      A.Variables_Defined         := Flow_Id_Sets.Empty_Set;
 
       return A;
    end Make_Record_Tree_Attributes;
@@ -241,17 +247,21 @@ package body Flow.Control_Flow_Graph.Utility is
          for F of Tmp_Used loop
             if not Discriminants_Only or else Is_Discriminant (F) then
                A.Variables_Used.Include (F);
+               A.Variables_Explicitly_Used.Include (F);
             end if;
          end loop;
       else
          pragma Assert
            (Ekind (Formal) in E_Out_Parameter | E_In_Out_Parameter);
          pragma Assert (not Discriminants_Only);
-         Untangle_Assignment_Target (N               => Actual,
-                                     Scope           => Scope,
-                                     Local_Constants => FA.Local_Constants,
-                                     Vars_Defined    => A.Variables_Defined,
-                                     Vars_Used       => A.Variables_Used);
+         Untangle_Assignment_Target
+           (N                    => Actual,
+            Scope                => Scope,
+            Local_Constants      => FA.Local_Constants,
+            Vars_Explicitly_Used => A.Variables_Explicitly_Used,
+            Vars_Implicitly_Used => A.Variables_Used,
+            Vars_Defined         => A.Variables_Defined);
+         A.Variables_Used.Union (A.Variables_Explicitly_Used);
       end if;
 
       Add_Volatile_Effects (A);
@@ -286,6 +296,7 @@ package body Flow.Control_Flow_Graph.Utility is
             loop
                if not Discriminants_Only or else Is_Discriminant (F) then
                   A.Variables_Used.Include (F);
+                  A.Variables_Explicitly_Used.Include (F);
                end if;
             end loop;
 
@@ -357,6 +368,7 @@ package body Flow.Control_Flow_Graph.Utility is
 
             A.Variables_Used := Flow_Id_Sets.To_Set (Change_Variant
                                                        (F_Ent, Normal_Use));
+            A.Variables_Explicitly_Used := A.Variables_Used;
 
          when others =>
             raise Why.Unexpected_Node;
@@ -401,6 +413,7 @@ package body Flow.Control_Flow_Graph.Utility is
             A.Is_Export      := Mode in Exported_Global_Modes;
             A.Variables_Used :=
               Flow_Id_Sets.To_Set (Change_Variant (F, Normal_Use));
+            A.Variables_Explicitly_Used := A.Variables_Used;
 
          when others =>
             raise Program_Error;
@@ -440,6 +453,7 @@ package body Flow.Control_Flow_Graph.Utility is
            (A.Default_Init_Val,
             Scope           => Scope,
             Local_Constants => FA.Local_Constants);
+         A.Variables_Explicitly_Used := A.Variables_Used;
       end if;
 
       Add_Volatile_Effects (A);

@@ -14,7 +14,6 @@ is
 
    type Record_T is record
       X : Integer;
-      Y : Integer;
    end record with Volatile;
 
    B : Illegal_Record_T with Volatile, Async_Writers, Effective_Reads;
@@ -51,5 +50,20 @@ is
    begin
       null;
    end Test_03;
+
+   procedure Test_04 (R : out Record_T;
+                      X : out Integer)
+   is
+   begin
+      X := R.X;  -- illegal
+   end Test_04;
+
+   procedure Test_05 (R : out Record_T;
+                      X : out Integer)
+   is
+   begin
+      R.X := 12;
+      X := R.X;  -- illegal
+   end Test_05;
 
 end Types;
