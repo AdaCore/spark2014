@@ -585,7 +585,7 @@ package body Flow.Analysis is
                               Tracefile => Tracefile,
                               Msg       => "default initialization " &
                                 "cannot depend on &",
-                              SRM_Ref   => "4.4 (2)",
+                              SRM_Ref   => "4.4(2)",
                               N         => Expression (N),
                               F1        => F);
                            Sane := False;
@@ -716,7 +716,7 @@ package body Flow.Analysis is
                            Tracefile => Tracefile,
                            Msg       => "cannot write & during " &
                              "elaboration of &",
-                           SRM_Ref   => "7.7.1 (5)",
+                           SRM_Ref   => "7.7.1(5)",
                            N   => Error_Location (FA.PDG, V),
                            F1  => Entire_Variable (Var),
                            F2  => Direct_Mapping_Id (FA.Analyzed_Entity));
@@ -760,7 +760,7 @@ package body Flow.Analysis is
                            Tracefile => Tracefile,
                            Msg       => "cannot write & during " &
                              "elaboration of &",
-                           SRM_Ref   => "7.7.1 (5)",
+                           SRM_Ref   => "7.7.1(5)",
                            N         => Error_Location (FA.PDG, V),
                            F1        => Var,
                            F2        => Direct_Mapping_Id
@@ -814,8 +814,8 @@ package body Flow.Analysis is
 
             SRM_Ref : constant String :=
               (case FA.Kind is
-                  when E_Subprogram_Body => "6.1.4 (13)",
-                  when others            => "7.1.5 (12)");
+                  when E_Subprogram_Body => "6.1.4(13)",
+                  when others            => "7.1.5(12)");
 
             F : Flow_Id;
          begin
@@ -877,8 +877,8 @@ package body Flow.Analysis is
 
             SRM_Ref : constant String :=
               (case FA.Kind is
-                  when E_Subprogram_Body => "6.1.4 (13)",
-                  when others            => "7.1.5 (12)");
+                  when E_Subprogram_Body => "6.1.4(13)",
+                  when others            => "7.1.5(12)");
 
          begin
             if Refined then
@@ -2426,7 +2426,7 @@ package body Flow.Analysis is
                            Tracefile => Tracefile,
                            Msg       => "export & must not depend " &
                              "on Proof_In &",
-                           SRM_Ref   => "6.1.4 (17)",
+                           SRM_Ref   => "6.1.4(17)",
                            N         => Find_Global (FA.Analyzed_Entity,
                                                      Input),
                            F1        => Output,
@@ -3004,7 +3004,7 @@ package body Flow.Analysis is
                     (FA        => FA,
                      Tracefile => Tracefile,
                      Msg       => "initialization of # must not depend on #",
-                     SRM_Ref   => "7.1.5 (11)",
+                     SRM_Ref   => "7.1.5(11)",
                      N         => Find_Entity
                        (Get_Direct_Mapping_Id (The_Out)),
                      F1        => The_Out,
@@ -3028,7 +3028,7 @@ package body Flow.Analysis is
                     (FA        => FA,
                      Tracefile => Tracefile,
                      Msg       => "initialization of # does not depend on #",
-                     SRM_Ref   => "7.1.5 (11)",
+                     SRM_Ref   => "7.1.5(11)",
                      N         => Find_Entity
                        (Get_Direct_Mapping_Id (The_Out)),
                      F1        => The_Out,
