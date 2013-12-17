@@ -1,5 +1,5 @@
 test.adb:91:14: flow analysis of "Test_06" abandoned due to records with non-manifest initializations
-test.adb:100:25: default initialization cannot depend on "Tmp" (SPARK RM 3.8 (2))
+test.adb:100:25: default initialization cannot depend on "Tmp" (SPARK RM 4.4 (2))
    compilation of test.adb failed
 
 
