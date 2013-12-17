@@ -124,7 +124,7 @@ Static predicates are in |SPARK| but dynamic predicates are not in
 
 .. centered:: **Legality Rules**
 
-.. _tu-subtype_predicates-01:
+.. _tu-sf-subtype_predicates-01:
 
 1. A Dynamic_Predicate aspect shall not occur in an aspect specification.
 
