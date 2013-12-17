@@ -324,38 +324,30 @@ package body Why.Gen.Arrays is
       Cursor     : Integer := 1;
       Clone  : constant W_Module_Id := Constr_Arrays (Positive (Dimension));
 
-      procedure Declare_Attribute (Kind : Why_Name_Enum;
-                                   Def  : Node_Id;
-                                   Dim_Count : Positive);
+      procedure Declare_Attribute
+        (Kind      : Why_Name_Enum;
+         Value     : Uint;
+         Dim_Count : Positive);
 
       -----------------------
       -- Declare_Attribute --
       -----------------------
 
-      procedure Declare_Attribute (Kind : Why_Name_Enum;
-                                   Def  : Node_Id;
-                                   Dim_Count : Positive)
+      procedure Declare_Attribute
+        (Kind      : Why_Name_Enum;
+         Value     : Uint;
+         Dim_Count : Positive)
       is
          Attr_Name : constant W_Identifier_Id := Append_Num (Kind, Dim_Count);
       begin
-         if Present (Def) and then Is_Static_Expression (Def) then
             Emit (Theory,
                   New_Function_Def (Domain      => EW_Term,
                                     Name        => Attr_Name,
                                     Binders     => (1 .. 0 => <>),
                                     Labels      => Name_Id_Sets.Empty_Set,
                                     Return_Type => Int_Type,
-                                    Def         => New_Integer_Constant
-                                      (Value => Expr_Value (Def))));
-         else
-            Emit (Theory,
-                  Why.Atree.Builders.New_Function_Decl
-                    (Domain      => EW_Term,
-                     Name        => Attr_Name,
-                     Binders     => (1 .. 0 => <>),
-                     Labels      => Name_Id_Sets.Empty_Set,
-                     Return_Type => Int_Type));
-         end if;
+                                    Def         =>
+                                      New_Integer_Constant (Value => Value)));
          Subst (Cursor) :=
            New_Clone_Substitution
              (Kind      => EW_Function,
@@ -372,12 +364,15 @@ package body Why.Gen.Arrays is
            Image     => Ident_Of_Ada_Type (Component_Type (Und_Ent)));
       Cursor := Cursor + 1;
       if Ekind (Und_Ent) in String_Kind then
-         Declare_Attribute (WNE_Attr_First,
-                            String_Literal_Low_Bound (Und_Ent),
-                            1);
-         Declare_Attribute (WNE_Attr_Last,
-                            Empty,
-                            1);
+         declare
+            Low : constant Uint :=
+              Expr_Value (String_Literal_Low_Bound (Und_Ent));
+         begin
+            Declare_Attribute (WNE_Attr_First, Low, 1);
+            Declare_Attribute (WNE_Attr_Last,
+                               String_Literal_Length (Und_Ent) - Low + 1,
+                               1);
+         end;
       else
          declare
             Count : Positive := 1;
@@ -387,10 +382,10 @@ package body Why.Gen.Arrays is
                   Rng   : constant Node_Id := Get_Range (Index);
                begin
                   Declare_Attribute (WNE_Attr_First,
-                                     Low_Bound (Rng),
+                                     Expr_Value (Low_Bound (Rng)),
                                      Count);
                   Declare_Attribute (WNE_Attr_Last,
-                                     High_Bound (Rng),
+                                     Expr_Value (High_Bound (Rng)),
                                      Count);
                   Count := Count + 1;
                   Next_Index (Index);
