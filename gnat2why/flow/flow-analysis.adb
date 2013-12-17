@@ -585,6 +585,7 @@ package body Flow.Analysis is
                               Tracefile => Tracefile,
                               Msg       => "default initialization " &
                                 "cannot depend on &",
+                              SRM_Ref   => "3.8 (2)",
                               N         => Expression (N),
                               F1        => F);
                            Sane := False;
@@ -770,6 +771,7 @@ package body Flow.Analysis is
                           (FA        => FA,
                            Tracefile => Tracefile,
                            Msg       => "& must be a global output of &",
+                           SRM_Ref   => "6.1.4",
                            N         => Error_Location (FA.PDG, V),
                            F1        =>
                              (if A.Is_Parameter
@@ -810,6 +812,11 @@ package body Flow.Analysis is
                                              else "Global"),
                   when others            => "Initializes");
 
+            SRM_Ref : constant String :=
+              (case FA.Kind is
+                  when E_Subprogram_Body => "6.1.4 (13)",
+                  when others            => "7.1.5 (12)");
+
             F : Flow_Id;
          begin
             for Var of All_Vars loop
@@ -825,6 +832,7 @@ package body Flow.Analysis is
                            Tracefile => Tracefile,
                            Msg       => "& must be listed in the " &
                              Aspect_To_Fix & " aspect of &",
+                           SRM_Ref   => SRM_Ref,
                            N   => First_Variable_Use (FA      => FA,
                                                       Var     => Var,
                                                       Kind    => Use_Read,
@@ -867,8 +875,12 @@ package body Flow.Analysis is
                                              else "Global"),
                   when others => "Initializes");
 
-         begin
+            SRM_Ref : constant String :=
+              (case FA.Kind is
+                  when E_Subprogram_Body => "6.1.4 (13)",
+                  when others            => "7.1.5 (12)");
 
+         begin
             if Refined then
                Vars_Known := To_Entire_Variables (FA.All_Vars);
             else
@@ -939,6 +951,7 @@ package body Flow.Analysis is
                         Msg       => "& must be listed in the " &
                           Aspect_To_Fix &
                           " aspect of &",
+                        SRM_Ref   => SRM_Ref,
                         N         => First_Variable_Use
                           (N       => Expr,
                            FA      => FA,
@@ -1588,6 +1601,7 @@ package body Flow.Analysis is
          Error_Msg_Flow (FA        => FA,
                          Tracefile => Tracefile,
                          Msg       => "no_return subprogram & must not return",
+                         SRM_Ref   => "6.5.1",
                          N         => FA.Analyzed_Entity,
                          F1        => Direct_Mapping_Id (FA.Analyzed_Entity),
                          Tag       => "no_return");
@@ -1994,7 +2008,7 @@ package body Flow.Analysis is
                                    Error_Location (FA.PDG, FA.Start_Vertex),
                                  F1        => Direct_Mapping_Id
                                    (FA.Analyzed_Entity),
-                                 Tag       => "noreturn");
+                                 Tag       => "missing_return");
                               Mark_Definition_Free_Path
                                 (From => FA.Start_Vertex,
                                  To   => FA.End_Vertex,
@@ -2412,6 +2426,7 @@ package body Flow.Analysis is
                            Tracefile => Tracefile,
                            Msg       => "export & must not depend " &
                              "on Proof_In &",
+                           SRM_Ref   => "6.1.4 (17)",
                            N         => Find_Global (FA.Analyzed_Entity,
                                                      Input),
                            F1        => Output,
@@ -2913,7 +2928,7 @@ package body Flow.Analysis is
          Found_Uninitialized : Boolean := False;
       begin
          --  Check if everything in the RHS of an initialization_item
-         --  has been initializes.
+         --  has been initialized.
          for C in DM.Iterate loop
             The_Out := Dependency_Maps.Key (C);
             The_Ins := Dependency_Maps.Element (C);
@@ -2989,6 +3004,7 @@ package body Flow.Analysis is
                     (FA        => FA,
                      Tracefile => Tracefile,
                      Msg       => "initialization of # must not depend on #",
+                     SRM_Ref   => "7.1.5 (11)",
                      N         => Find_Entity
                        (Get_Direct_Mapping_Id (The_Out)),
                      F1        => The_Out,
@@ -3012,6 +3028,7 @@ package body Flow.Analysis is
                     (FA        => FA,
                      Tracefile => Tracefile,
                      Msg       => "initialization of # does not depend on #",
+                     SRM_Ref   => "7.1.5 (11)",
                      N         => Find_Entity
                        (Get_Direct_Mapping_Id (The_Out)),
                      F1        => The_Out,

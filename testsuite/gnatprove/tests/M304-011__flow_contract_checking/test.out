@@ -4,8 +4,8 @@ test.adb:29:47: warning: "Par2" might not be initialized in "Check_Contract_6"
 test.adb:33:24: warning: missing dependency "X => Par1"
 test.adb:53:07: warning: statement has no effect
 test.adb:54:15: warning: unused assignment
-test.adb:137:22: "Z" must be listed in the Global aspect of "Check_Contract_7"
-test.adb:147:20: "Z" must be listed in the Global aspect of "Check_Contract_8"
+test.adb:137:22: "Z" must be listed in the Global aspect of "Check_Contract_7" (SPARK RM 6.1.4 (13))
+test.adb:147:20: "Z" must be listed in the Global aspect of "Check_Contract_8" (SPARK RM 6.1.4 (13))
    compilation of test.adb failed
 
 

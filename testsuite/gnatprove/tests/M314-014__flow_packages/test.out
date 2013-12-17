@@ -1,19 +1,19 @@
 ic.adb:30:36: "Y" must be initialized at elaboration
-ic.adb:58:43: "Y" must be listed in the Initializes aspect of "Test_04"
-ic.adb:73:34: "X" must be listed in the Initializes aspect of "Test_05"
-ic.adb:73:34: "Y" must be listed in the Initializes aspect of "Test_05"
+ic.adb:58:43: "Y" must be listed in the Initializes aspect of "Test_04" (SPARK RM 7.1.5 (12))
+ic.adb:73:34: "X" must be listed in the Initializes aspect of "Test_05" (SPARK RM 7.1.5 (12))
+ic.adb:73:34: "Y" must be listed in the Initializes aspect of "Test_05" (SPARK RM 7.1.5 (12))
 ic.adb:97:09: warning: it is currently ignored
 ic.adb:97:09: warning: pragma "REFINED_POST" is not yet supported
-ic.adb:97:31: "Y" must be listed in the Refined_Global aspect of "Sanity_Check_5"
-ic.adb:108:35: "Y" must be listed in the Global aspect of "Sanity_Check_1"
-ic.adb:117:41: "Y" must be listed in the Global aspect of "Sanity_Check_2"
+ic.adb:97:31: "Y" must be listed in the Refined_Global aspect of "Sanity_Check_5" (SPARK RM 6.1.4 (13))
+ic.adb:108:35: "Y" must be listed in the Global aspect of "Sanity_Check_1" (SPARK RM 6.1.4 (13))
+ic.adb:117:41: "Y" must be listed in the Global aspect of "Sanity_Check_2" (SPARK RM 6.1.4 (13))
 pkg_a.adb:7:04: "A" is not initialized in "Pkg_A"
 pkg_a.adb:9:04: warning: initialization has no effect
 pkg_a.adb:16:06: "X" is not initialized
 pkg_a.adb:17:06: warning: unused assignment
 pkg_a.ads:8:04: "X" is not initialized in "Pkg_A"
 pkg_a.ads:10:04: warning: initialization has no effect
-pkg_b.adb:10:14: "Y" must be listed in the Initializes aspect of "Pkg_B"
+pkg_b.adb:10:14: "Y" must be listed in the Initializes aspect of "Pkg_B" (SPARK RM 7.1.5 (12))
 pkg_c.adb:15:12: cannot write "X" during elaboration of "Pkg_C" (SPARK RM 7.7.1 (5))
 pkg_d.ads:4:32: X must be initialized at elaboration
 pkg_e.adb:6:03: "X" is not initialized in "Pkg_E"

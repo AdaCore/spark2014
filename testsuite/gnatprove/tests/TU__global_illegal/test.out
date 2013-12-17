@@ -21,9 +21,9 @@ global_illegal_2.adb:42:35: item already appears as input of subprogram "P3"
 global_illegal_2.adb:43:35: global item "Y" cannot have mode In_Out or Output (SPARK RM 6.1.4(12))
 global_illegal_2.adb:43:35: item already appears as input of subprogram "P3"
 global_illegal_2.adb:58:21: global item cannot denote a constant (SPARK RM 6.1.4(7))
-global_illegal_3.adb:35:19: "Y" must be listed in the Global aspect of "P1"
-global_illegal_3.adb:46:09: "X" must be a global output of "P2"
-global_illegal_3.adb:50:14: "X" must be listed in the Global aspect of "P3"
+global_illegal_3.adb:35:19: "Y" must be listed in the Global aspect of "P1" (SPARK RM 6.1.4 (13))
+global_illegal_3.adb:46:09: "X" must be a global output of "P2" (SPARK RM 6.1.4)
+global_illegal_3.adb:50:14: "X" must be listed in the Global aspect of "P3" (SPARK RM 6.1.4 (13))
 global_illegal_3.adb:64:21: warning: unused initial value of "X"
 global_illegal_3.adb:64:21: warning: unused global "X"
 global_illegal_3.adb:82:32: warning: unused initial value of "X"
@@ -32,8 +32,8 @@ global_illegal_3.adb:83:32: "Y" is not initialized
 global_illegal_3.adb:83:32: warning: unused global "Y"
 global_illegal_3.adb:84:32: warning: "Z" is not modified, could be "input"
 global_illegal_3.adb:84:32: warning: unused global "Z"
-global_illegal_3.adb:107:09: "X" must be a global output of "P6"
-global_illegal_3.adb:118:34: export "Y" must not depend on Proof_In "X"
+global_illegal_3.adb:107:09: "X" must be a global output of "P6" (SPARK RM 6.1.4)
+global_illegal_3.adb:118:34: export "Y" must not depend on Proof_In "X" (SPARK RM 6.1.4 (17))
 global_illegal_3.adb:127:34: warning: unused global "X"
 global_illegal_3.adb:138:15: warning: "Arr2" might not be initialized
 gprbuild: *** compilation phase failed

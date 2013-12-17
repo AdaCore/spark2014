@@ -2,7 +2,7 @@ initial_condition_illegal.adb:6:11: aspect "Initial_Condition" must apply to a p
 initial_condition_illegal.ads:20:11: aspect "Initializes" cannot come after aspect "Initial_Condition"
 initial_condition_illegal.ads:31:11: aspect "Abstract_State" cannot come after aspect "Initial_Condition"
 initial_condition_illegal.ads:32:11: aspect "Initializes" cannot come after aspect "Initial_Condition"
-initial_condition_illegal_2.ads:10:32: "Initial_Condition_Illegal_2.State" must be listed in the Initializes aspect of "Initial_Condition_Illegal_2"
+initial_condition_illegal_2.ads:10:32: "Initial_Condition_Illegal_2.State" must be listed in the Initializes aspect of "Initial_Condition_Illegal_2" (SPARK RM 7.1.5 (12))
 gprbuild: *** compilation phase failed
 gnatprove: error during analysis and translation to intermediate language, aborting.
 initial_condition_illegal_3.ads:15:04: warning: initialization has no effect

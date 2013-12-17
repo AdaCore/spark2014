@@ -21,8 +21,8 @@ initializes_illegal_4.adb:9:07: warning: initialization has no effect
 initializes_illegal_4.adb:11:09: warning: unused assignment
 initializes_illegal_4.adb:22:17: warning: unused assignment
 initializes_illegal_4.ads:35:07: warning: initialization has no effect
-initializes_illegal_4.ads:52:32: "G_Var2" must be listed in the Initializes aspect of "Pac3"
-initializes_illegal_4.ads:64:22: "G_Var" must be listed in the Initializes aspect of "Pac4"
+initializes_illegal_4.ads:52:32: "G_Var2" must be listed in the Initializes aspect of "Pac3" (SPARK RM 7.1.5 (12))
+initializes_illegal_4.ads:64:22: "G_Var" must be listed in the Initializes aspect of "Pac4" (SPARK RM 7.1.5 (12))
 gprbuild: *** compilation phase failed
 gnatprove: error during analysis and translation to intermediate language, aborting.
 initializes_illegal_5.ads:1:14: current unit must also be private descendant of "Initializes_Illegal_5"

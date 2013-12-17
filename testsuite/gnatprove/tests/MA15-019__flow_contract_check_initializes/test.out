@@ -6,19 +6,19 @@ init.adb:11:50: warning: overflow check might fail
 init.ads:5:8: info: initial condition proved
 init_2.ads:7:8: warning: initial condition might fail
 init_2.ads:7:31: warning: overflow check might fail
-initializes_legal.ads:6:08: warning: initialization of V must not depend on Init.State
-initializes_legal.ads:6:08: warning: initialization of V must not depend on A
+initializes_legal.ads:6:08: warning: initialization of V must not depend on Init.State (SPARK RM 7.1.5 (11))
+initializes_legal.ads:6:08: warning: initialization of V must not depend on A (SPARK RM 7.1.5 (11))
 initializes_legal.adb:11:55: warning: overflow check might fail
 initializes_illegal.adb:5:04: warning: variable "Y" is read but never assigned
 initializes_illegal.adb:5:04: "Y" is not initialized in "Initializes_Illegal"
-initializes_illegal.ads:6:27: warning: initialization of V must not depend on A
-initializes_illegal.ads:7:27: warning: initialization of X does not depend on A
-initializes_illegal.ads:8:27: warning: initialization of Initializes_Illegal.Sa must not depend on A
+initializes_illegal.ads:6:27: warning: initialization of V must not depend on A (SPARK RM 7.1.5 (11))
+initializes_illegal.ads:7:27: warning: initialization of X does not depend on A (SPARK RM 7.1.5 (11))
+initializes_illegal.ads:8:27: warning: initialization of Initializes_Illegal.Sa must not depend on A (SPARK RM 7.1.5 (11))
 initializes_illegal.ads:11:04: warning: initialization has no effect
 gprbuild: *** compilation phase failed
 gnatprove: error during analysis and translation to intermediate language, aborting.
-initializes_illegal_2.ads:7:27: warning: initialization of Initializes_Illegal_2.As2 must not depend on X
-initializes_illegal_2.ads:9:27: warning: initialization of Y must not depend on X
+initializes_illegal_2.ads:7:27: warning: initialization of Initializes_Illegal_2.As2 must not depend on X (SPARK RM 7.1.5 (11))
+initializes_illegal_2.ads:9:27: warning: initialization of Y must not depend on X (SPARK RM 7.1.5 (11))
 initializes_illegal_2.adb:9:11: warning: overflow check might fail
 initializes_illegal_2.ads:14:28: warning: overflow check might fail
 initializes_illegal_3.ads:5:35: Z must be initialized at elaboration
