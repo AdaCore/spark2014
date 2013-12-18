@@ -73,6 +73,11 @@ package body Gnat2Why.Types is
    --  Same as Declare_Ada_Real but extract range information
    --  from node.
 
+   procedure Declare_Private_Type
+     (Theory : W_Theory_Declaration_Id;
+      E      : Entity_Id);
+   --  Make the necessary declarations for a private type
+
    ------------------------------------------------
    -- Declare_Ada_Abstract_Signed_Int_From_Range --
    ------------------------------------------------
@@ -126,6 +131,56 @@ package body Gnat2Why.Types is
       Declare_Ada_Real (Theory, E, First, Last);
    end Declare_Ada_Real_From_Range;
 
+   --------------------------
+   -- Declare_Private_Type --
+   --------------------------
+
+   procedure Declare_Private_Type
+     (Theory : W_Theory_Declaration_Id;
+      E      : Entity_Id) is
+      Discr    : Entity_Id := First_Discriminant (E);
+      X_Binder : constant Binder_Type :=
+        Binder_Type'(B_Name =>
+                       New_Identifier (Name => "x",
+                                       Typ  => EW_Private_Type),
+                     others => <>);
+      Y_Binder : constant Binder_Type :=
+        Binder_Type'(B_Name =>
+                       New_Identifier (Name => "y",
+                                       Typ  => EW_Private_Type),
+                     others => <>);
+
+   begin
+
+      --  We define a name for this type, as well as accessors for the
+      --  discriminants
+
+      Emit (Theory,
+            New_Type_Decl
+              (New_Identifier (Name => Short_Name (E)),
+               Alias => EW_Private_Type));
+      while Present (Discr) loop
+         Emit
+           (Theory,
+            Why.Gen.Binders.New_Function_Decl
+              (Ada_Node    => E,
+               Domain      => EW_Term,
+               Name        => To_Why_Id (Discr, Local => True),
+               Return_Type => EW_Abstract (Etype (Discr)),
+               Labels      => Name_Id_Sets.Empty_Set,
+               Binders     => (1 => X_Binder)));
+         Next_Discriminant (Discr);
+      end loop;
+      Emit
+        (Theory,
+         Why.Gen.Binders.New_Function_Decl
+           (Domain      => EW_Term,
+            Name        => New_Identifier (Name => "user_eq"),
+            Return_Type => EW_Bool_Type,
+            Binders     => (1 => X_Binder, 2 => Y_Binder),
+            Labels      => Name_Id_Sets.Empty_Set));
+   end Declare_Private_Type;
+
    ------------------------------
    -- Generate_Type_Completion --
    ------------------------------
@@ -151,7 +206,9 @@ package body Gnat2Why.Types is
       --  This module only contains an axiom when there is a user-provided
       --  equality
 
-      if Present (Eq) then
+      if Present (Eq)
+        and then Entity_In_SPARK (Eq)
+      then
 
          --  we may need to adjust for renamed subprograms
 
@@ -311,10 +368,8 @@ package body Gnat2Why.Types is
             when E_Record_Type | E_Record_Subtype =>
                Declare_Ada_Record (File, Theory, E);
 
-            --  No private type or record subtype should be translated
-
             when Private_Kind =>
-               raise Program_Error;
+               Declare_Private_Type (Theory, E);
 
             when others =>
                Ada.Text_IO.Put_Line ("[Translate_Underlying_Type] ekind ="

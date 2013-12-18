@@ -1022,6 +1022,20 @@ package body SPARK_Definition is
                Mark_Violation ("type definition", E);
             end if;
 
+            --  Private types may export discriminants. Discriminants with
+            --  non-SPARK type should be disallowed here
+
+            declare
+               Disc : Entity_Id := First_Discriminant (E);
+            begin
+               while Present (Disc) loop
+                  if not In_SPARK (Etype (Disc)) then
+                     Mark_Violation (E, From => Etype (Disc));
+                  end if;
+                  Next_Discriminant (Disc);
+               end loop;
+            end;
+
          when others =>
             raise Program_Error;
          end case;
@@ -1568,7 +1582,20 @@ package body SPARK_Definition is
             Mark_Simple_Return_Statement (N);
 
          when N_Selected_Component =>
-            Mark_Most_Underlying_Type_In_SPARK (Etype (Prefix (N)), N);
+
+            --  In most cases, it is enough to look at the record type (the
+            --  most underlying one) to see whether the access is in SPARK. An
+            --  exception is the access to discrimants to a private type whose
+            --  full view is not in SPARK.
+
+            if not Is_Private_Type (Etype (Prefix (N)))
+              or else In_SPARK (MUT (Etype (Prefix (N))))
+            then
+               Mark_Most_Underlying_Type_In_SPARK (Etype (Prefix (N)), N);
+            elsif Ekind (Entity (Selector_Name (N))) /= E_Discriminant then
+               Mark_Violation (N, From  => Etype (Prefix (N)));
+            end if;
+
             Mark (Prefix (N));
             Mark (Selector_Name (N));
 

@@ -1,3 +1,5 @@
-some other output expected
-p.ads:24:34: info: postcondition proved
-p.ads:27:34: info: postcondition proved
+p.ads:21:26: warning: unused initial value of "L"
+p.ads:21:26: warning: unused variable "L"
+p.ads:22:17: warning: postcondition might fail, requires My_Capacity'Result = 10
+p.ads:25:17: info: postcondition proved
+p.ads:28:17: info: postcondition proved

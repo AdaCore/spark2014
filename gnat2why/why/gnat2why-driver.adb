@@ -428,10 +428,13 @@ package body Gnat2Why.Driver is
       case Ekind (E) is
          when Type_Kind =>
 
-            --  Private types not translated in Why3
+            --  For a type with partial and full view, both entities will be
+            --  encountered here, but only one should be translated. We pick
+            --  the one with the most information that's still in SPARK.
 
             if Entity_In_SPARK (E)
-              and then Ekind (E) not in Private_Kind
+              and then (Is_Full_View (E)
+                        or else not Entity_In_SPARK (Full_View (E)))
             then
                Translate_Type (File, E, New_Theory);
                if New_Theory then

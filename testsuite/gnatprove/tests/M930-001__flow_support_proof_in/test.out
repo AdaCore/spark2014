@@ -1,5 +1,7 @@
 proof_in_legal.adb:16:7: warning: assertion might fail, requires Var = 0
 proof_in_legal.adb:18:14: warning: overflow check might fail
+gprbuild: *** compilation phase failed
+gnatprove: error during generation and proof of VCs, aborting.
 proof_in_illegal.adb:5:04: warning: variable "Body_Var" is read but never assigned
 proof_in_illegal.adb:8:43: export "Error_Derived_From_Proof_In" must not depend on Proof_In "Body_Var" (SPARK RM 6.1.4(17))
 proof_in_illegal.adb:9:43: export "Error_Derived_From_Proof_In" must not depend on Proof_In "Var" (SPARK RM 6.1.4(17))
