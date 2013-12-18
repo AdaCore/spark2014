@@ -49,6 +49,7 @@ with Ada.Strings.Unbounded;
 with Ada.Text_IO;        use Ada.Text_IO;
 with Call;               use Call;
 with Configuration;      use Configuration;
+with Opt;
 
 with GNAT.OS_Lib;
 
@@ -140,6 +141,8 @@ procedure Gnatprove is
    --  Set the environment variable which passes some options to gnat2why.
    --  Translation_Phase is False for globals generation, and True for
    --  translation to Why.
+
+   function To_String (Warning : Opt.Warning_Mode_Type) return String;
 
    -------------------
    -- Call_Gprbuild --
@@ -305,6 +308,8 @@ procedure Gnatprove is
             Args.Append ("statistics");
 
       end case;
+      Args.Append ("--warnings");
+      Args.Append (To_String (Warning_Mode));
       if Debug then
          Args.Append ("--debug");
       end if;
@@ -687,6 +692,14 @@ procedure Gnatprove is
       end case;
    end Text_Of_Step;
 
+   function To_String (Warning : Opt.Warning_Mode_Type) return String is
+   begin
+      case Warning is
+         when Opt.Suppress       => return "off";
+         when Opt.Treat_As_Error => return "error";
+         when Opt.Normal         => return "on";
+      end case;
+   end To_String;
    ----------------------
    -- Translate_To_Why --
    ----------------------

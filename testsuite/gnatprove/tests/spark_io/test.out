@@ -1,4 +1,6 @@
 hello_world.adb:31:13: warning: precondition of main program might fail
+gprbuild: *** compilation phase failed
+gnatprove: error during generation and proof of VCs, aborting.
 copy.adb:42:14: warning: precondition of main program might fail
 copy.adb:91:51: warning: range check might fail
 copy.adb:92:32: warning: range check might fail
@@ -21,11 +23,27 @@ copy.adb:296:16: warning: precondition might fail
 copy.adb:303:55: warning: range check might fail
 copy.adb:304:23: warning: precondition might fail
 copy.adb:309:13: warning: precondition might fail
+gprbuild: *** compilation phase failed
+gnatprove: error during generation and proof of VCs, aborting.
 echo.adb:32:18: warning: precondition of main program might fail
+gprbuild: *** compilation phase failed
+gnatprove: error during generation and proof of VCs, aborting.
 echo_1.adb:32:18: warning: precondition of main program might fail
+gprbuild: *** compilation phase failed
+gnatprove: error during generation and proof of VCs, aborting.
 use_enum_io.adb:32:18: warning: precondition of main program might fail
+gprbuild: *** compilation phase failed
+gnatprove: error during generation and proof of VCs, aborting.
 use_float_io.adb:32:18: warning: precondition of main program might fail
 use_float_io.adb:38:22: warning: overflow check might fail
+gprbuild: *** compilation phase failed
+gnatprove: error during generation and proof of VCs, aborting.
 use_int_io.adb:32:18: warning: precondition of main program might fail
+gprbuild: *** compilation phase failed
+gnatprove: error during generation and proof of VCs, aborting.
 use_int_io_1.adb:32:18: warning: precondition of main program might fail
+gprbuild: *** compilation phase failed
+gnatprove: error during generation and proof of VCs, aborting.
 use_int_io_2.adb:32:18: warning: precondition of main program might fail
+gprbuild: *** compilation phase failed
+gnatprove: error during generation and proof of VCs, aborting.
