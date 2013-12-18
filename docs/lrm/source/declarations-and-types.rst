@@ -201,9 +201,9 @@ Array Types
 
 .. centered:: **Legality Rules**
 
-.. _tu-array_types-01:
+.. _tu-sf-array_types-01:
 
-1. An entity declared by a ``array_type_definition`` is in |SPARK| if its
+1. An entity declared by an ``array_type_definition`` is in |SPARK| if its
    components are in |SPARK| and default initialization is in |SPARK|.
 
 .. _etu-array_types:
