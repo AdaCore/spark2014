@@ -27,6 +27,12 @@ is
    subtype S7 is Integer range CA .. 10; -- legal
    subtype S8 is Integer range CA .. CB; -- legal
 
+   -- Subtype range - two variables in one expression
+   subtype S9 is Integer range 1 .. (B - A); -- illegal
+
+   -- Derived type with range constraint
+   type T1 is new Integer range A .. B; -- illegal
+
    --  Objects declared with anonymous subtypes, not initialized
    V1 : Integer range 1 .. 10;   -- legal
    V2 : Integer range N1 .. C10; -- legal
@@ -47,7 +53,17 @@ is
    V15 : Integer range CA .. 10 := B;  -- legal
    V16 : Integer range CA .. CB := B;  -- legal
 
-   procedure Op (A : in out Integer)
+   procedure Op1 (A : in out Integer)
      with Depends => (A => A);
+
+   procedure Op2 (A : in     String;
+                  L :    out Natural)
+     with Depends => (L => A);
+
+   procedure Op3 (A : in out String;
+                  L :    out Natural)
+     with Depends => ((L, A) => A);
+
+   function Same_Length (S : String) return String;
 
 end P;
