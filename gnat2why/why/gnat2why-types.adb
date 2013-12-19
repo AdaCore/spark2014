@@ -47,6 +47,7 @@ with Why.Conversions;    use Why.Conversions;
 with Why.Gen.Arrays;     use Why.Gen.Arrays;
 with Why.Gen.Binders;    use Why.Gen.Binders;
 with Why.Gen.Decl;       use Why.Gen.Decl;
+with Why.Gen.Expr;       use Why.Gen.Expr;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Records;    use Why.Gen.Records;
 with Why.Gen.Scalars;    use Why.Gen.Scalars;
@@ -217,6 +218,8 @@ package body Gnat2Why.Types is
          end if;
 
          declare
+            Need_Convert : constant Boolean :=
+              Is_Scalar_Type (E) and then not Is_Boolean_Type (E);
             Var_A : constant W_Identifier_Id :=
               New_Identifier (Ada_Node => E,
                               Name     => "a",
@@ -225,6 +228,20 @@ package body Gnat2Why.Types is
               New_Identifier (Ada_Node => E,
                               Name     => "b",
                               Typ      => Ty);
+            Arg_A : constant W_Expr_Id :=
+              (if Need_Convert then
+                  Insert_Simple_Conversion
+                 (Domain => EW_Term,
+                  Expr   => +Var_A,
+                  To     => Base_Why_Type (Ty))
+               else +Var_A);
+            Arg_B : constant W_Expr_Id :=
+              (if Need_Convert then
+                  Insert_Simple_Conversion
+                 (Domain => EW_Term,
+                  Expr   => +Var_B,
+                  To     => Base_Why_Type (Ty))
+               else +Var_B);
             Def   : constant W_Expr_Id :=
               New_Call
                 (Ada_Node => Eq,
@@ -232,7 +249,7 @@ package body Gnat2Why.Types is
                  Name     => To_Why_Id (E => Eq,
                                         Domain => EW_Pred,
                                         Typ => EW_Bool_Type),
-                 Args     => (1 => +Var_A, 2 => +Var_B),
+                 Args     => (1 => Arg_A, 2 => Arg_B),
                  Typ      => EW_Bool_Type);
          begin
             Emit
