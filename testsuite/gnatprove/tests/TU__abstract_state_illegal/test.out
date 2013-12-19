@@ -3,7 +3,7 @@ abstract_state_illegal.ads:38:30: "S1" conflicts with declaration at line 34
 abstract_state_illegal.ads:40:39: simple option not allowed in state declaration
 abstract_state_illegal.ads:43:51: invalid external state property
 abstract_state_illegal.ads:46:30: malformed abstract state declaration
-abstract_state_illegal.ads:49:52: duplicate external property (SPARK RM 7.1.4(2))
+abstract_state_illegal.ads:49:52: duplicate external property
 abstract_state_illegal.ads:53:30: package "Invalid_Parameters" has non-null abstract state
 abstract_state_illegal.ads:56:14: aspect "Abstract_State" must apply to a package declaration
 abstract_state_illegal.ads:67:07: cannot introduce hidden state "Priv_Var"

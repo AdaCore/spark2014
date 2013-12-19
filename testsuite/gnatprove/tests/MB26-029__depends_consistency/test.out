@@ -1,14 +1,14 @@
-p.ads:9:23: read-only parameter "X" cannot appear as output in dependence relation (SPARK RM 6.1.5(5))
-p.ads:14:23: read-only parameter "X" cannot appear as output in dependence relation (SPARK RM 6.1.5(5))
-p.ads:21:23: read-only global "A" cannot appear as output in dependence relation (SPARK RM 6.1.5(5))
-p.ads:27:23: read-only global "A" cannot appear as output in dependence relation (SPARK RM 6.1.5(5))
-p.ads:32:28: write-only parameter "X" cannot appear as input in dependence relation (SPARK RM 6.1.5(6))
-p.ads:37:23: write-only parameter "X" cannot appear as input in dependence relation (SPARK RM 6.1.5(6))
-p.ads:44:28: write-only global "A" cannot appear as input in dependence relation (SPARK RM 6.1.5(6))
-p.ads:50:23: write-only global "A" cannot appear as input in dependence relation (SPARK RM 6.1.5(6))
-p.ads:55:18: parameter "X" must appear in at least one input dependence list (SPARK RM 6.1.5(8))
-p.ads:60:32: global "A" must appear in at least one input dependence list (SPARK RM 6.1.5(8))
-compilation of p.ads failed
+p.ads:9:23: read-only parameter "X" cannot appear as output in dependence relation
+p.ads:14:23: read-only parameter "X" cannot appear as output in dependence relation
+p.ads:21:23: read-only global "A" cannot appear as output in dependence relation
+p.ads:27:23: read-only global "A" cannot appear as output in dependence relation
+p.ads:32:28: write-only parameter "X" cannot appear as input in dependence relation
+p.ads:37:23: write-only parameter "X" cannot appear as input in dependence relation
+p.ads:44:28: write-only global "A" cannot appear as input in dependence relation
+p.ads:50:23: write-only global "A" cannot appear as input in dependence relation
+p.ads:55:18: parameter "X" must appear in at least one input dependence list
+p.ads:60:32: global "A" must appear in at least one input dependence list
+   compilation of p.ads failed
 
 
 gnatprove: error during frame condition computation, aborting.
