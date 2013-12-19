@@ -138,6 +138,9 @@ package Flow.Control_Flow_Graph.Utility is
    --  Create attributes for globals. Note that variables defined and
    --  used is calculated automatically.
 
+   function Make_Null_Export_Attributes (F : Flow_Id) return V_Attributes;
+   --  Creates the attributes for the synthetic null export.
+
    function Make_Variable_Attributes
      (F_Ent : Flow_Id;
       Mode  : Param_Mode;

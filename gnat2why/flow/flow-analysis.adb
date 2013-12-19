@@ -739,7 +739,7 @@ package body Flow.Analysis is
             for Var of Written_Vars loop
                F := Change_Variant (Var, Normal_Use);
 
-               if not FA.All_Vars.Contains (F) and
+               if not (FA.All_Vars.Contains (F) or Synthetic (F)) and
                  FA.Kind in E_Package | E_Package_Body
                then
 
@@ -859,7 +859,7 @@ package body Flow.Analysis is
             for Var of All_Vars loop
                F := Change_Variant (Var, Normal_Use);
 
-               if not FA.All_Vars.Contains (F) then
+               if not (FA.All_Vars.Contains (F) or Synthetic (F)) then
 
                   --  Here we are dealing with a missing global.
                   case F.Kind is

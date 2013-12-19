@@ -263,6 +263,20 @@ package body Flow is
             Rv.Show  := G.In_Neighbour_Count (V) > 0 or
               G.Out_Neighbour_Count (V) > 0;
 
+         elsif F.Kind = Synthetic_Null_Export then
+            case F.Variant is
+               when Initial_Value =>
+                  Rv.Show := False;
+
+               when Final_Value =>
+                  Rv.Colour := To_Unbounded_String ("chartreuse");
+                  Rv.Shape  := Shape_None;
+                  Write_Str ("null");
+
+               when others =>
+                  raise Program_Error;
+            end case;
+
          elsif A.Is_Parameter then
             Rv.Shape := Shape_None;
 
@@ -413,8 +427,9 @@ package body Flow is
                when Record_Field | Magic_String =>
                   Sprint_Flow_Id (F);
 
-               when others =>
+               when Synthetic_Null_Export | Null_Value =>
                   raise Why.Unexpected_Node;
+
             end case;
 
             case F.Variant is

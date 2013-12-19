@@ -2966,6 +2966,22 @@ package body Flow.Control_Flow_Graph is
       end;
       FA.CFG.Add_Vertex (Null_Attributes, FA.End_Vertex);
 
+      --  Create the magic null export vertices.
+      declare
+         F : constant Flow_Id :=
+           Null_Flow_Id'Update (Kind    => Synthetic_Null_Export,
+                                Variant => Initial_Value);
+      begin
+         FA.CFG.Add_Vertex (F, Make_Null_Export_Attributes (F));
+      end;
+      declare
+         F : constant Flow_Id :=
+           Null_Flow_Id'Update (Kind    => Synthetic_Null_Export,
+                                Variant => Final_Value);
+      begin
+         FA.CFG.Add_Vertex (F, Make_Null_Export_Attributes (F));
+      end;
+
       --  Collect parameters of the analyzed entity and produce
       --  initial and final vertices.
       case FA.Kind is

@@ -314,6 +314,33 @@ package body Flow.Control_Flow_Graph.Utility is
       return A;
    end Make_Global_Attributes;
 
+   ---------------------------------
+   -- Make_Null_Export_Attributes --
+   ---------------------------------
+
+   function Make_Null_Export_Attributes (F : Flow_Id) return V_Attributes is
+      A : V_Attributes := Null_Attributes;
+   begin
+      case F.Variant is
+         when Initial_Value =>
+            A.Variables_Defined :=
+              Flow_Id_Sets.To_Set (Change_Variant (F, Normal_Use));
+
+         when Final_Value =>
+            A.Variables_Used :=
+              Flow_Id_Sets.To_Set (Change_Variant (F, Normal_Use));
+
+            A.Variables_Explicitly_Used := A.Variables_Used;
+
+            A.Is_Export := True;
+
+         when others =>
+            raise Program_Error;
+      end case;
+
+      return A;
+   end Make_Null_Export_Attributes;
+
    ------------------------------
    -- Make_Variable_Attributes --
    ------------------------------

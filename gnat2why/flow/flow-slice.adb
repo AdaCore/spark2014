@@ -185,7 +185,8 @@ package body Flow.Slice is
               FA.PDG.Get_Attributes (V_Final);
          begin
             if F_Final.Variant = Final_Value
-              and then Attr.Is_Export
+              and Attr.Is_Export
+              and not Synthetic (F_Final)
             then
                Out_Vertices.Include (V_Final);
             end if;
@@ -201,7 +202,8 @@ package body Flow.Slice is
               FA.PDG.Get_Attributes (V_Initial);
          begin
             if F_Initial.Variant = Initial_Value
-              and then Attr.Is_Import
+              and Attr.Is_Import
+              and not Synthetic (F_Initial)
             then
                In_Vertices.Include (V_Initial);
                Unused_Inputs.Include (Flow_Equivalent (F_Initial));

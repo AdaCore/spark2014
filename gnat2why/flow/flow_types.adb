@@ -89,7 +89,7 @@ package body Flow_Types is
                   return Name_Equal (Left.Name, Right.Name);
             end case;
 
-         elsif Left.Kind in Null_Value | Synthetic_Null_Export then
+         elsif Left.Kind in Null_Value then
             return True;
 
          else

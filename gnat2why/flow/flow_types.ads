@@ -183,7 +183,11 @@ package Flow_Types is
 
    function Present (F : Flow_Id) return Boolean
    is (F.Kind /= Null_Value);
-   --  Returns true if F is not null.
+   --  Returns true iff F is not null.
+
+   function Synthetic (F : Flow_Id) return Boolean
+   is (F.Kind = Synthetic_Null_Export);
+   --  Returns true iff F is a synthesised Flow_Id.
 
    function Direct_Mapping_Id
      (N       : Node_Or_Entity_Id;
