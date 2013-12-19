@@ -830,8 +830,12 @@ package body Gnat2Why.External_Axioms is
    begin
       while Present (CurAssoc) loop
          declare
-            Actual : constant Entity_Id :=
+            A      : constant Entity_Id :=
               Entity (Explicit_Generic_Actual_Parameter (CurAssoc));
+            Actual : constant Entity_Id :=
+              (if Ekind (A) = E_Function then
+                  Get_Renamed_Entity (A)
+               else A);
             Formal : constant Entity_Id := Defining_Entity (CurLabs);
 
          begin

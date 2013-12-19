@@ -574,11 +574,16 @@ package body SPARK_Definition is
                declare
                   Actual : constant Node_Id :=
                     Explicit_Generic_Actual_Parameter (Cur_Assoc);
+                  EActual : constant Entity_Id :=
+                    (if Ekind (Entity (Actual)) = E_Function then
+                        Get_Renamed_Entity (Entity (Actual))
+                     else Entity (Actual));
+
                begin
                   --  Operators as actual of packages with external axioms are
                   --  not supported yet.
 
-                  if Ekind (Entity (Actual)) = E_Operator then
+                  if Ekind (EActual) = E_Operator then
                      Error_Msg_N
                        ("operator cannot be used as a formal parameter",
                         Actual);
@@ -591,7 +596,7 @@ package body SPARK_Definition is
 
                   --  Mark the entity of the actual
 
-                  Mark_Entity (Entity (Actual));
+                  Mark_Entity (EActual);
                end;
 
                Next (Cur_Assoc);
