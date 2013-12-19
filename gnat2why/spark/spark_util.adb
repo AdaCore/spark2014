@@ -1128,8 +1128,7 @@ package body SPARK_Util is
 
       function Is_In_Current_Unit (E : Entity_Id) return Boolean;
       --  Returns true if E belongs to one of the entities that correspond
-      --  to the files that are to be analyzed. If Analyze_Files is an empty
-      --  list then we return true since we need to analyze everything.
+      --  to the files that are to be analyzed.
 
       function Is_Requested_Subprogram (E : Entity_Id) return Boolean;
       --  Returns true if E is the entity corresponding to the single
@@ -1142,16 +1141,9 @@ package body SPARK_Util is
 
       function Is_In_Current_Unit (E : Entity_Id) return Boolean is
       begin
-         --  If the entity is not in the compilation unit that is
-         --  currently being analyzed then return false.
-         if Cunit (Main_Unit) /= Enclosing_Comp_Unit_Node (E)
-           and then Library_Unit (Cunit (Main_Unit)) /=
-             Enclosing_Comp_Unit_Node (E)
-         then
-            return False;
-         else
-            return True;
-         end if;
+         return Cunit (Main_Unit) = Enclosing_Comp_Unit_Node (E)
+                  or else
+               Library_Unit (Cunit (Main_Unit)) = Enclosing_Comp_Unit_Node (E);
       end Is_In_Current_Unit;
 
       -----------------------------
