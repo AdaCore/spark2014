@@ -1123,11 +1123,6 @@ package body Flow.Utility is
             when N_Indexed_Component | N_Attribute_Reference =>
                Vars_Explicitly_Used.Union
                  (Get_Variable_Set
-                    (Prefix (N),
-                     Scope           => Scope,
-                     Local_Constants => Local_Constants));
-               Vars_Explicitly_Used.Union
-                 (Get_Variable_Set
                     (Expressions (N),
                      Scope           => Scope,
                      Local_Constants => Local_Constants));

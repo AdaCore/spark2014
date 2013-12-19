@@ -1754,8 +1754,6 @@ package body Flow.Analysis is
            Change_Variant (FA.PDG.Get_Key (V_Initial),
                            Normal_Use);
 
-         Key_U : constant Flow_Id := FA.PDG.Get_Key (V_Use);
-
          The_Var_Is_Array : constant Boolean :=
            (The_Var.Kind = Direct_Mapping
               and then Ekind (Etype (The_Var.Node)) in Type_Kind
@@ -1784,12 +1782,6 @@ package body Flow.Analysis is
 
          Is_Defined_In_Other_Path : Boolean := False;
 
-         function The_Var_Is_In_Assignment_RHS return Boolean;
-         --  If V_Use is an assignment statement, then this function
-         --  checks if The_Var appears on its RHS.
-         --
-         --  If V_Use is not an assignment statement we return False.
-
          function Start_To_V_Def_Without_V_Use
            (V_Def : Flow_Graphs.Vertex_Id) return Boolean;
          --  Returns True if there exists a path in the CFG graph from
@@ -1801,24 +1793,6 @@ package body Flow.Analysis is
          --  Checks if V defines the The_Var
          --
          --  Sets Is_Defined_In_Other_Path
-
-         ----------------------------------
-         -- The_Var_Is_In_Assignment_RHS --
-         ----------------------------------
-
-         function The_Var_Is_In_Assignment_RHS return Boolean is
-            Used : Flow_Id_Sets.Set;
-         begin
-            if Nkind (Key_U.Node) = N_Assignment_Statement then
-               Used := Get_Variable_Set
-                 (Expression (Key_U.Node),
-                  Scope           => FA.B_Scope,
-                  Local_Constants => FA.Local_Constants);
-               return Used.Contains (The_Var);
-            end if;
-
-            return False;
-         end The_Var_Is_In_Assignment_RHS;
 
          ----------------------------------
          -- Start_To_V_Def_Without_V_Use --
@@ -1936,7 +1910,8 @@ package body Flow.Analysis is
                when Direct_Mapping | Record_Field =>
                   --  Check if node corresponds to an array.
                   if The_Var_Is_Array
-                    and then not The_Var_Is_In_Assignment_RHS
+                    and then not FA.PDG.Get_Attributes
+                      (V_Use).Variables_Explicitly_Used.Contains (The_Var)
                   then
                      Is_Defined_In_Other_Path := True;
                   end if;
@@ -1944,7 +1919,7 @@ package body Flow.Analysis is
                when Magic_String =>
                   null;
 
-               when others =>
+               when Null_Value =>
                   raise Why.Unexpected_Node;
             end case;
          end if;
