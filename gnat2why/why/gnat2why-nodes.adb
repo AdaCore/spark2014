@@ -27,6 +27,7 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 with String_Utils;          use String_Utils;
 
+with AA_Util;               use AA_Util;
 with Csets;                 use Csets;
 with Elists;                use Elists;
 with Lib;                   use Lib;

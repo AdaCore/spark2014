@@ -28,7 +28,6 @@ with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Containers.Ordered_Sets;
 with Ada.Containers.Hashed_Maps;
 
-with AA_Util;   use AA_Util;
 with Atree;     use Atree;
 with Einfo;     use Einfo;
 with Namet;     use Namet;
@@ -174,12 +173,6 @@ package Gnat2Why.Nodes is
                        (Get_Source_File_Index (Loc))));
    --  This function returns the file name of the source pointer (will return
    --  the file of the generic in case of instances)
-
-   function File_Name_Without_Suffix (Loc : Source_Ptr) return String is
-     (File_Name_Without_Suffix (File_Name (Translate_Location (Loc))));
-   --  This function will return the file name of the source pointer of the
-   --  suffix. Contrary to the File_Name function, this one returns the file
-   --  name of the instance.
 
    function Spec_File_Name (N : Node_Id) return String;
    --  This function will return the file name in which the node appears, with
