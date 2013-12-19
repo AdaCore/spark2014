@@ -647,7 +647,6 @@ procedure Gnatprove is
          Gnat2Why_Args.Check_Mode := MMode = GPM_Check;
          Gnat2Why_Args.Flow_Analysis_Mode := MMode in GPM_Flow | GPM_All;
          Gnat2Why_Args.Prove_Mode := MMode in GPM_Prove | GPM_All;
-         Gnat2Why_Args.Analyze_File := File_List;
          Gnat2Why_Args.Pedantic := Pedantic;
          Gnat2Why_Args.Ide_Mode := IDE_Progress_Bar;
          Gnat2Why_Args.Limit_Subp :=
@@ -722,6 +721,10 @@ procedure Gnatprove is
    begin
       Args.Append ("--subdirs=" & String (Subdir_Name));
       Args.Append ("--restricted-to-languages=ada");
+
+      if Only_Given then
+         Args.Append ("-u");
+      end if;
 
       for File of File_List loop
          Args.Append (File);

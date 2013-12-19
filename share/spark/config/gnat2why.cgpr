@@ -4,7 +4,7 @@ configuration project Gnat2why is
       for Driver ("Ada") use "gnat2why";
       for Object_File_Suffix ("Ada") use ".mlw";
       For Language_Kind ("Ada") use "unit_based";
-      For Dependency_Kind ("Ada") use "ALI_Closure";
+      For Dependency_Kind ("Ada") use "ALI_File";
       for Dependency_Switches ("Ada") use ();
       for Mapping_File_Switches    ("Ada") use ("-gnatem=");
       for Mapping_Spec_Suffix      ("Ada") use "%s";
