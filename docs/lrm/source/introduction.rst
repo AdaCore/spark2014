@@ -216,7 +216,9 @@ In addition, the generation of proof obligations is unaffected by the
 suppression of checks (e.g., via pragma ``Suppress``) or the disabling of
 assertions (e.g., via pragma ``Assertion_Policy``). In other words, suppressing
 or disabling a check does not prevent generation of its associated proof
-obligations.
+obligations. Similarly, the proof obligations generated to ensure the
+absence of numeric overflow for operations of a floating point type T
+are unaffected by the value of T'Machine_Overflows.
 
 All such generated proof obligations must be discharged before the
 formal program verification phase may be considered to be complete.

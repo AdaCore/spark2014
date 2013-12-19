@@ -124,7 +124,7 @@ Attribute                              Allowed in SPARK 2014 Comment
 P'Access			      No		     No access types
 X'Access	    		      No
 X'Address	    		      Warn		     Warning in pedantic mode
-S'Adjacent	    		      No
+S'Adjacent	    		      Yes
 S'Aft				      ?
 S'Alignment	    		      Warn                   Warning in pedantic mode
 X'Alignment	    		      Warn		     Warning in pedantic mode
@@ -195,7 +195,7 @@ X'Overlaps_Storage 		      No
 D'Partition_Id			      Yes
 S'Pos				      Yes
 R.C'Position			      Warn                   Warning in pedantic mode
-S'Pred				      Yes	       	     In short term not for floats
+S'Pred				      Yes
 P'Priority	   		      No		     No tasking
 A'Range				      Yes
 S'Range				      Yes
