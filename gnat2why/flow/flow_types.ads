@@ -111,6 +111,10 @@ package Flow_Types is
                          --  Reference to list of record field(s) as well
                          --  as whole variable entity in the AST
 
+                         Synthetic_Null_Export,
+                         --  The null export (to capture effects, such as
+                         --  timing, outside of SPARK)
+
                          Magic_String
                          --  Entity not in AST, so referred to by a String
                         );
@@ -167,7 +171,7 @@ package Flow_Types is
 
    Null_Flow_Id : constant Flow_Id :=
      Flow_Id'(Kind      => Null_Value,
-              Variant   => Normal_Use,
+              Variant   => Flow_Id_Variant'First,
               Node      => Empty,
               Name      => Null_Entity_Name,
               Component => Entity_Lists.Empty_Vector);

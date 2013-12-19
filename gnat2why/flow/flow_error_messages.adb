@@ -113,34 +113,25 @@ package body Flow_Error_Messages is
          if Do_Sub and then Element (S, Index) in '&' | '#' then
             Quote := Element (S, Index) = '&';
 
+            if Quote then
+               Append (R, """");
+            end if;
+
             case F.Kind is
                when Null_Value =>
-                  Append (R, "NULL");
+                  raise Program_Error;
+
+               when Synthetic_Null_Export =>
+                  Append (R, "null");
 
                when Direct_Mapping | Record_Field =>
-                  if Quote then
-                     Append (R, """");
-                  end if;
-
                   Append (R, Flow_Id_To_String (F));
-
-                  if Quote then
-                     Append (R, """");
-                  end if;
 
                when Magic_String =>
                   --  ??? we may want to use __gnat_decode() here instead
                   if F.Name.all = "__HEAP" then
-                     if Quote then
-                        Append (R, """the heap""");
-                     else
-                        Append (R, "the heap");
-                     end if;
+                     Append (R, "the heap");
                   else
-                     if Quote then
-                        Append (R, """");
-                     end if;
-
                      declare
                         Index : Positive := 1;
                      begin
@@ -164,13 +155,13 @@ package body Flow_Error_Messages is
                            end case;
                         end loop;
                      end;
-
-                     if Quote then
-                        Append (R, """");
-                     end if;
                   end if;
-
             end case;
+
+            if Quote then
+               Append (R, """");
+            end if;
+
             Do_Sub := False;
 
          else

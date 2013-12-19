@@ -261,8 +261,11 @@ package body Flow.Utility is
                   end if;
                end;
 
-            when Magic_String | Null_Value =>
+            when Magic_String | Synthetic_Null_Export =>
                R.Include (F);
+
+            when Null_Value =>
+               raise Program_Error;
          end case;
       end loop;
       return R;
@@ -547,7 +550,7 @@ package body Flow.Utility is
                   when Magic_String =>
                      Reads.Include (F);
 
-                  when Null_Value | Record_Field =>
+                  when Null_Value | Record_Field | Synthetic_Null_Export  =>
                      raise Program_Error;
                end case;
             end loop;
@@ -640,7 +643,7 @@ package body Flow.Utility is
             when Magic_String =>
                Tmp.Insert (F);
 
-            when Record_Field | Null_Value =>
+            when Record_Field | Null_Value | Synthetic_Null_Export =>
                raise Program_Error;
          end case;
          return Tmp;
@@ -1404,7 +1407,7 @@ package body Flow.Utility is
          when Direct_Mapping | Record_Field =>
             return Is_Initialized_At_Elaboration (Get_Direct_Mapping_Id (F));
 
-         when Magic_String =>
+         when Magic_String | Synthetic_Null_Export =>
             return False;
 
          when Null_Value =>

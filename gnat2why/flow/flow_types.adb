@@ -67,7 +67,7 @@ package body Flow_Types is
       if Left.Kind = Right.Kind then
          if Left.Variant = Right.Variant then
             case Left.Kind is
-               when Null_Value =>
+               when Null_Value | Synthetic_Null_Export =>
                   return True;
                when Direct_Mapping =>
                   return Left.Node = Right.Node;
@@ -89,7 +89,7 @@ package body Flow_Types is
                   return Name_Equal (Left.Name, Right.Name);
             end case;
 
-         elsif Left.Kind = Null_Value then
+         elsif Left.Kind in Null_Value | Synthetic_Null_Export then
             return True;
 
          else
@@ -122,6 +122,8 @@ package body Flow_Types is
             --  avoid collisions between the entire variable and each
             --  record field.
             return Ada.Strings.Hash (Unique_Name (N.Node));
+         when Synthetic_Null_Export =>
+            return 0;
          when Magic_String =>
             return Ada.Strings.Hash (N.Name.all);
       end case;
@@ -136,11 +138,9 @@ package body Flow_Types is
       Variant : Flow_Id_Variant := Normal_Use)
       return Flow_Id is
    begin
-      return Flow_Id'(Kind      => Direct_Mapping,
-                      Variant   => Variant,
-                      Node      => N,
-                      Name      => Null_Entity_Name,
-                      Component => Entity_Lists.Empty_Vector);
+      return Null_Flow_Id'Update (Kind    => Direct_Mapping,
+                                  Variant => Variant,
+                                  Node    => N);
    end Direct_Mapping_Id;
 
    ---------------------------
@@ -161,11 +161,8 @@ package body Flow_Types is
       Variant : Flow_Id_Variant := Normal_Use)
       return Flow_Id
    is
-      F : Flow_Id := Flow_Id'(Kind      => Record_Field,
-                              Variant   => Variant,
-                              Node      => Empty,
-                              Name      => Null_Entity_Name,
-                              Component => Entity_Lists.Empty_Vector);
+      F : Flow_Id := Null_Flow_Id'Update (Kind    => Record_Field,
+                                          Variant => Variant);
       P : Node_Id;
    begin
       P := N;
@@ -195,7 +192,7 @@ package body Flow_Types is
       case F.Kind is
          when Record_Field =>
             return Ekind (F.Component.Last_Element) = E_Discriminant;
-         when Direct_Mapping | Magic_String =>
+         when Direct_Mapping | Magic_String | Synthetic_Null_Export =>
             return False;
          when Null_Value =>
             raise Why.Unexpected_Node;
@@ -302,7 +299,7 @@ package body Flow_Types is
             --  initialized.
             return Get_Simple_Default (Etype (F.Component.Last_Element));
 
-         when Magic_String =>
+         when Magic_String | Synthetic_Null_Export =>
             return Empty;
 
          when Null_Value =>
@@ -332,7 +329,7 @@ package body Flow_Types is
                  = Full_Default_Initialization;
             end if;
 
-         when Magic_String =>
+         when Magic_String | Synthetic_Null_Export =>
             return False;
 
          when Null_Value =>
@@ -362,6 +359,9 @@ package body Flow_Types is
                      return False;
                end case;
             end;
+         when Synthetic_Null_Export =>
+            --  The special null export is a volatile (AR, EW).
+            return True;
       end case;
    end Is_Volatile;
 
@@ -482,7 +482,10 @@ package body Flow_Types is
    is
    begin
       case F.Kind is
-         when Null_Value | Direct_Mapping | Magic_String =>
+         when Null_Value |
+              Direct_Mapping |
+              Magic_String |
+              Synthetic_Null_Export =>
             return F;
 
          when Record_Field =>
@@ -528,6 +531,8 @@ package body Flow_Types is
       case F.Kind is
          when Null_Value =>
             null;
+         when Synthetic_Null_Export =>
+            Output.Write_Str (" (synthetic)");
          when Direct_Mapping =>
             Output.Write_Str (" (direct)");
          when Record_Field =>
@@ -564,13 +569,16 @@ package body Flow_Types is
                Append (R, Name_Buffer (1 .. Name_Len));
                Append (R, ".");
             end if;
-         when Null_Value | Magic_String =>
+         when Null_Value | Magic_String | Synthetic_Null_Export =>
             null;
       end case;
 
       case F.Kind is
          when Null_Value =>
-            Append (R, "<null>");
+            Append (R, "<void>");
+
+         when Synthetic_Null_Export =>
+            Append (R, "null");
 
          when Direct_Mapping =>
             Get_Name_String (Chars (F.Node));
@@ -603,7 +611,10 @@ package body Flow_Types is
    is
    begin
       case F.Kind is
-         when Null_Value | Record_Field | Magic_String =>
+         when Null_Value |
+              Record_Field |
+              Magic_String |
+              Synthetic_Null_Export =>
             return True;
 
          when Direct_Mapping =>
@@ -667,7 +678,7 @@ package body Flow_Types is
             when Magic_String =>
                N.Include (X.Name);
 
-            when Null_Value =>
+            when Null_Value | Synthetic_Null_Export =>
                raise Program_Error;
          end case;
       end loop;

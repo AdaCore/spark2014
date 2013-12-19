@@ -755,7 +755,7 @@ package body Flow.Control_Flow_Graph is
             case F.Kind is
                when Null_Value =>
                   raise Program_Error;
-               when Direct_Mapping =>
+               when Direct_Mapping | Magic_String | Synthetic_Null_Export =>
                   null;
                when Record_Field =>
                   declare
@@ -768,8 +768,6 @@ package body Flow.Control_Flow_Graph is
                              FA.CFG.Get_Vertex (P),
                              FA.CFG.Get_Vertex (F));
                   end;
-               when Magic_String =>
-                  null;
             end case;
 
          when Initial_Grouping | Final_Grouping =>
@@ -791,7 +789,7 @@ package body Flow.Control_Flow_Graph is
                                 FA.CFG.Get_Vertex (F));
                      end if;
                   end if;
-               when Magic_String =>
+               when Magic_String | Synthetic_Null_Export =>
                   null;
             end case;
       end case;

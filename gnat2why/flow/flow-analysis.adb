@@ -306,7 +306,7 @@ package body Flow.Analysis is
          when Magic_String =>
             return S;
 
-         when Null_Value =>
+         when Null_Value | Synthetic_Null_Export =>
             raise Why.Unexpected_Node;
       end case;
    end Find_Global;
@@ -710,7 +710,7 @@ package body Flow.Analysis is
                      --  Nothing to do in this case.
                      null;
 
-                  when Null_Value =>
+                  when Null_Value | Synthetic_Null_Export =>
                      raise Why.Unexpected_Node;
                end case;
             end loop;
@@ -1916,7 +1916,7 @@ package body Flow.Analysis is
                      Is_Defined_In_Other_Path := True;
                   end if;
 
-               when Magic_String =>
+               when Magic_String | Synthetic_Null_Export =>
                   null;
 
                when Null_Value =>

@@ -141,14 +141,13 @@ package body Flow.Slice is
       function Flow_Equivalent (F : Flow_Id) return Flow_Id
         with Post => Flow_Equivalent'Result.Variant = Normal_Use;
       --  Given a flow id, return the view the dependency relation
-      --  cares about. For example R.X.Y will yield R, but
-      --  R.Discriminant will yield R.Discriminant.
+      --  cares about.
 
       function Flow_Equivalent (F : Flow_Id) return Flow_Id
       is
       begin
          case F.Kind is
-            when Direct_Mapping | Magic_String =>
+            when Direct_Mapping | Magic_String | Synthetic_Null_Export =>
                return Change_Variant (F, Normal_Use);
 
             when Record_Field =>
