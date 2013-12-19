@@ -1,6 +1,6 @@
 abstract_state_illegal.ads:36:34: malformed abstract state declaration
 abstract_state_illegal.ads:38:30: "S1" conflicts with declaration at line 34
-abstract_state_illegal.ads:40:39: simple option not allowed in state declaration (SPARK RM 7.1.4(3))
+abstract_state_illegal.ads:40:39: simple option not allowed in state declaration
 abstract_state_illegal.ads:43:51: invalid external state property
 abstract_state_illegal.ads:46:30: malformed abstract state declaration
 abstract_state_illegal.ads:49:52: duplicate external property (SPARK RM 7.1.4(2))
