@@ -6,4 +6,4 @@ gprbuild: *** compilation phase failed
 gnatprove: error during analysis and translation to intermediate language, aborting.
 types_and_subtypes_illegal_2.ads:4:34: initialization item must denote variable or state
 types_and_subtypes_illegal_2.ads:14:21: global item cannot denote a constant
-types_and_subtypes_illegal_2.ads:17:30: item must denote parameter, variable or state
+types_and_subtypes_illegal_2.ads:17:30: item must denote parameter, variable, or state
