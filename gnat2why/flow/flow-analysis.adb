@@ -549,6 +549,37 @@ package body Flow.Analysis is
       function Check_Expressions_Variable_Free (N : Node_Id)
                                                 return Traverse_Result
       is
+         ES1 : constant String := "default initialization ";
+         ES2 : constant String := "subtype constraint ";
+         ES3 : constant String := "cannot depend on &";
+
+         procedure Check_Flow_Id_Set (Flow_Ids : Ordered_Flow_Id_Sets.Set;
+                                      Err_Msg  : String;
+                                      Err_Node : Node_Id);
+         --  Iterates over Flow_Ids. An error is issued for any
+         --  member of that set which does NOT denote a constant
+
+         procedure Check_Flow_Id_Set (Flow_Ids : Ordered_Flow_Id_Sets.Set;
+                                      Err_Msg  : String;
+                                      Err_Node : Node_Id)
+         is
+         begin
+            for F of Flow_Ids loop
+               if F.Kind = Direct_Mapping and then
+                 not Is_Constant_Object (F.Node)
+               then
+                  Error_Msg_Flow
+                    (FA        => FA,
+                     Tracefile => Tracefile,
+                     Msg       => Err_Msg,
+                     SRM_Ref   => "4.4(2)",
+                     N         => Err_Node,
+                     F1        => F);
+                  Sane := False;
+               end if;
+            end loop;
+         end Check_Flow_Id_Set;
+
       begin
          case Nkind (N) is
             when N_Subprogram_Body |
@@ -563,6 +594,75 @@ package body Flow.Analysis is
                   return Skip;
                end if;
 
+            when N_Loop_Parameter_Specification =>
+               --  In a loop parameter specification, variables are allowed
+               --  in the range constraint, so the tree walk is pruned here
+               return Skip;
+
+            when N_Object_Renaming_Declaration =>
+               --  Unimplemented.  TBD pending resolution of M611-051
+               return OK;
+
+            when N_Subtype_Indication =>
+
+               declare
+                  C : constant Node_Id := Constraint (N);
+               begin
+                  case Nkind (C) is
+                     when N_Range_Constraint =>
+                        declare
+                           --  Note that fetching the variable set for C
+                           --  returns the union of the sets of the
+                           --  low-bound and the high-bound
+                           Deps : constant Ordered_Flow_Id_Sets.Set :=
+                             To_Ordered_Flow_Id_Set
+                               (Get_Variable_Set
+                                  (N                            => C,
+                                   Scope                        =>
+                                     Get_Flow_Scope (C),
+                                   Local_Constants              =>
+                                     Node_Sets.Empty_Set,
+                                   Expand_Synthesized_Constants =>
+                                     True));
+                        begin
+                           Check_Flow_Id_Set (Flow_Ids => Deps,
+                                              Err_Msg  => ES2 & ES3,
+                                              Err_Node => C);
+                        end;
+
+                        return Skip;
+
+                     when N_Index_Or_Discriminant_Constraint =>
+                        declare
+                           Deps : constant Ordered_Flow_Id_Sets.Set :=
+                             To_Ordered_Flow_Id_Set
+                               (Get_Variable_Set
+                                  (L                            =>
+                                     Constraints (C),
+                                   Scope                        =>
+                                     Get_Flow_Scope (C),
+                                   Local_Constants              =>
+                                     Node_Sets.Empty_Set,
+                                   Expand_Synthesized_Constants =>
+                                     True));
+                        begin
+                           Check_Flow_Id_Set (Flow_Ids => Deps,
+                                              Err_Msg  => ES2 & ES3,
+                                              Err_Node => C);
+                        end;
+
+                        return Skip;
+
+                     when N_Digits_Constraint |
+                       N_Delta_Constraint =>
+                        --  Ada LRM requires these constraints to be static,
+                        --  so no further action required here.
+                        return Skip;
+
+                     when others =>
+                        return OK;
+                  end case;
+               end;
             when N_Component_Declaration |
                  N_Discriminant_Specification =>
 
@@ -571,27 +671,18 @@ package body Flow.Analysis is
                      Deps : constant Ordered_Flow_Id_Sets.Set :=
                        To_Ordered_Flow_Id_Set
                        (Get_Variable_Set
-                          (Expression (N),
-                           Scope           => Get_Flow_Scope (N),
-                           Local_Constants => Node_Sets.Empty_Set));
+                          (N                            =>
+                             Expression (N),
+                           Scope                        =>
+                             Get_Flow_Scope (N),
+                           Local_Constants              =>
+                             Node_Sets.Empty_Set,
+                           Expand_Synthesized_Constants =>
+                             True));
                   begin
-                     for F of Deps loop
-                        --  ??? consider moving this to spark_definition
-                        if F.Kind = Direct_Mapping and then
-                          not Is_Constant_Object (F.Node)
-                        then
-                           Error_Msg_Flow
-                             (FA        => FA,
-                              Tracefile => Tracefile,
-                              Msg       => "default initialization " &
-                                "cannot depend on &",
-                              SRM_Ref   => "4.4(2)",
-                              N         => Expression (N),
-                              F1        => F);
-                           Sane := False;
-                        end if;
-
-                     end loop;
+                     Check_Flow_Id_Set (Flow_Ids => Deps,
+                                        Err_Msg  => ES1 & ES3,
+                                        Err_Node => Expression (N));
                   end;
                end if;
 
@@ -601,7 +692,7 @@ package body Flow.Analysis is
          end case;
       end Check_Expressions_Variable_Free;
 
-      procedure Check_Record_Declarations is
+      procedure Check_Expressions is
         new Traverse_Proc (Check_Expressions_Variable_Free);
 
    begin
@@ -647,27 +738,27 @@ package body Flow.Analysis is
       pragma Assert_And_Cut (Sane);
 
       --  Please don't try to simplify/delete Entry_Node here, it is also a
-      --  global in Check_Record_Declarations.
+      --  global in Check_Expressions.
 
       case FA.Kind is
          when E_Subprogram_Body =>
             Entry_Node := SPARK_Util.Get_Subprogram_Body (FA.Analyzed_Entity);
             pragma Assert (Nkind (Entry_Node) = N_Subprogram_Body);
-            Check_Record_Declarations (Entry_Node);
+            Check_Expressions (Entry_Node);
 
          when E_Package =>
             Entry_Node := Get_Enclosing (FA.Analyzed_Entity,
                                          N_Package_Specification);
-            Check_Record_Declarations (Entry_Node);
+            Check_Expressions (Entry_Node);
 
          when E_Package_Body =>
             Entry_Node := Get_Enclosing (FA.Spec_Node,
                                          N_Package_Specification);
-            Check_Record_Declarations (Entry_Node);
+            Check_Expressions (Entry_Node);
 
             Entry_Node := Get_Enclosing (FA.Analyzed_Entity,
                                          N_Package_Body);
-            Check_Record_Declarations (Entry_Node);
+            Check_Expressions (Entry_Node);
       end case;
 
       if not Sane then
@@ -675,8 +766,8 @@ package body Flow.Analysis is
             Error_Msg_Flow
               (FA        => FA,
                Tracefile => Tracefile,
-               Msg       => "flow analysis of & abandoned due to records " &
-                 "with non-manifest initializations",
+               Msg       => "flow analysis of & abandoned due to " &
+                 "expressions with variable inputs",
                N         => FA.Analyzed_Entity,
                F1        => Direct_Mapping_Id (FA.Analyzed_Entity));
          end if;

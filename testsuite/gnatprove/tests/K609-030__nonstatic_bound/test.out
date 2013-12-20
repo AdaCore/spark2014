@@ -1,1 +1,6 @@
-pack.ads:7:12: info: range check proved
+pack.ads:7:44: subtype constraint cannot depend on "Min" (SPARK RM 4.4(2))
+   compilation of pack.ads failed
+
+
+gnatprove: error during analysis and translation to intermediate language, aborting.
+gprbuild: *** compilation phase failed

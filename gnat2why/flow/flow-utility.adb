@@ -710,11 +710,12 @@ package body Flow.Utility is
    --  Get_Variable_Set  --
    ------------------------
 
-   function Get_Variable_Set (N                : Node_Id;
-                              Scope            : Flow_Scope;
-                              Local_Constants  : Node_Sets.Set;
-                              Reduced          : Boolean := False;
-                              Allow_Statements : Boolean := False)
+   function Get_Variable_Set (N                            : Node_Id;
+                              Scope                        : Flow_Scope;
+                              Local_Constants              : Node_Sets.Set;
+                              Reduced                      : Boolean := False;
+                              Allow_Statements             : Boolean := False;
+                              Expand_Synthesized_Constants : Boolean := False)
                               return Flow_Id_Sets.Set
    is
       VS : Flow_Id_Sets.Set;
@@ -765,11 +766,16 @@ package body Flow.Utility is
                E   => Subprogram);
          end if;
 
+         --  Forming the set of variables for a parameter list never involves
+         --  a statement, so we can recurse with Allow_Statements => False here
          Used_Variables.Union
-           (Get_Variable_Set (Parameter_Associations (Callsite),
-                              Scope           => Scope,
-                              Local_Constants => Local_Constants,
-                              Reduced         => Reduced));
+           (Get_Variable_Set
+              (Parameter_Associations (Callsite),
+               Scope                        => Scope,
+               Local_Constants              => Local_Constants,
+               Reduced                      => Reduced,
+               Allow_Statements             => False,
+               Expand_Synthesized_Constants => Expand_Synthesized_Constants));
 
          for G of Global_Reads loop
             for F of Flatten_Variable (G) loop
@@ -811,21 +817,64 @@ package body Flow.Utility is
             when N_Identifier | N_Expanded_Name =>
                if Present (Entity (N)) then
                   case Ekind (Entity (N)) is
-                     when E_Constant |
-                       E_Variable |
+                     when E_Constant =>
+                        if Expand_Synthesized_Constants and
+                          not Comes_From_Source (Entity (N))
+                        then
+                           --  To expand synthesized constants, we need
+                           --  top find the original expression and
+                           --  find the variable set of that
+                           declare
+                              Obj_Decl : constant Node_Id :=
+                                Parent (Entity (N));
+                              E        : constant Node_Id :=
+                                Expression (Obj_Decl);
+                           begin
+                              pragma Assert
+                                (Nkind (Obj_Decl) =
+                                   N_Object_Declaration,
+                                 "Bad parent of constant entity");
+                              pragma Assert
+                                (Present (E),
+                                 "Constant has no expression");
+                              VS.Union
+                                (Get_Variable_Set
+                                   (N                            => E,
+                                    Scope                        => Scope,
+                                    Local_Constants              =>
+                                      Local_Constants,
+                                    Reduced                      => Reduced,
+                                    Allow_Statements             =>
+                                      Allow_Statements,
+                                    Expand_Synthesized_Constants =>
+                                      Expand_Synthesized_Constants));
+                           end;
+
+                        else
+                           --  If this constant comes from source, and
+                           --  it's in Local_Constants, then add it.
+                           if Local_Constants.Contains (Entity (N)) then
+                              if Reduced then
+                                 VS.Include (Direct_Mapping_Id
+                                             (Unique_Entity (Entity (N))));
+                              else
+                                 VS.Union (Flatten_Variable (Entity (N)));
+                              end if;
+                           end if;
+
+                        end if;
+
+                     when E_Variable |
                        E_Loop_Parameter |
                        E_Out_Parameter |
                        E_In_Parameter |
                        E_In_Out_Parameter =>
-                        if Ekind (Entity (N)) /= E_Constant or else
-                          Local_Constants.Contains (Entity (N))
-                        then
-                           if Reduced then
-                              VS.Include (Direct_Mapping_Id
-                                            (Unique_Entity (Entity (N))));
-                           else
-                              VS.Union (Flatten_Variable (Entity (N)));
-                           end if;
+
+                        if Reduced then
+                           VS.Include (Direct_Mapping_Id
+                                       (Unique_Entity (Entity (N))));
+                        else
+                           VS.Union (Flatten_Variable (Entity (N)));
                         end if;
                      when others =>
                         null;
@@ -923,11 +972,12 @@ package body Flow.Utility is
       return Filter_Out_Non_Local_Constants (VS, Local_Constants);
    end Get_Variable_Set;
 
-   function Get_Variable_Set (L                : List_Id;
-                              Scope            : Flow_Scope;
-                              Local_Constants  : Node_Sets.Set;
-                              Reduced          : Boolean := False;
-                              Allow_Statements : Boolean := False)
+   function Get_Variable_Set (L                            : List_Id;
+                              Scope                        : Flow_Scope;
+                              Local_Constants              : Node_Sets.Set;
+                              Reduced                      : Boolean := False;
+                              Allow_Statements             : Boolean := False;
+                              Expand_Synthesized_Constants : Boolean := False)
                               return Flow_Id_Sets.Set
    is
       VS : Flow_Id_Sets.Set;
@@ -935,11 +985,14 @@ package body Flow.Utility is
    begin
       P := First (L);
       while Present (P) loop
-         VS.Union (Get_Variable_Set (P,
-                                     Scope            => Scope,
-                                     Local_Constants  => Local_Constants,
-                                     Reduced          => Reduced,
-                                     Allow_Statements => Allow_Statements));
+         VS.Union
+           (Get_Variable_Set
+              (N                            => P,
+               Scope                        => Scope,
+               Local_Constants              => Local_Constants,
+               Reduced                      => Reduced,
+               Allow_Statements             => Allow_Statements,
+               Expand_Synthesized_Constants => Expand_Synthesized_Constants));
 
          P := Next (P);
       end loop;

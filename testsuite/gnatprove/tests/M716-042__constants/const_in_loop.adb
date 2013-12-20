@@ -5,7 +5,7 @@ begin
    while True loop
      declare
         X : constant Integer := Z;
-        subtype T is Positive range 1 .. Z;
+        subtype T is Positive range 1 .. X;
      begin
         if Z = 1 then
            V1 := T'Last;

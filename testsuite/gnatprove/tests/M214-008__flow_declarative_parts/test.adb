@@ -97,7 +97,8 @@ is
    with Global => null,
         Depends => (A => null)
    is
-      subtype Tmp is Integer range A .. A;
+      C : constant Integer := A;
+      subtype Tmp is Integer range C .. C;
    begin
       A := Tmp'First;
    end Issue_05;

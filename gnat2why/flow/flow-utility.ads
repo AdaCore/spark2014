@@ -77,11 +77,12 @@ package Flow.Utility is
    --  Returns True if Subprogram has a Global Output or In_Out contract,
    --  whether user-defined or generated.
 
-   function Get_Variable_Set (N                : Node_Id;
-                              Scope            : Flow_Scope;
-                              Local_Constants  : Node_Sets.Set;
-                              Reduced          : Boolean := False;
-                              Allow_Statements : Boolean := False)
+   function Get_Variable_Set (N                            : Node_Id;
+                              Scope                        : Flow_Scope;
+                              Local_Constants              : Node_Sets.Set;
+                              Reduced                      : Boolean := False;
+                              Allow_Statements             : Boolean := False;
+                              Expand_Synthesized_Constants : Boolean := False)
                               return Flow_Id_Sets.Set;
    --  Obtain all variables used in an expression. If reduced is true,
    --  obtain only entire variables.
@@ -89,16 +90,21 @@ package Flow.Utility is
    --  If allow_statements is false, we raise an exception if we
    --  encounter certain statements such as procedure calls.
    --
+   --  If Expand_Synthesized_Constants is True, then constants
+   --  that do not Come_From_Source are expanded out to the
+   --  variable set of their initializing expression.
+   --
    --  We use Scope to determine if called subprograms should provide
    --  their abstract or refined view; or one of the Force_*
    --  parameters may be set to provide a detailed instruction.
 
-   function Get_Variable_Set (L                : List_Id;
-                              Scope            : Flow_Scope;
-                              Local_Constants  : Node_Sets.Set;
-                              Reduced          : Boolean := False;
-                              Allow_Statements : Boolean := False)
-                              return Flow_Id_Sets.Set;
+   function Get_Variable_Set (L                            : List_Id;
+                              Scope                        : Flow_Scope;
+                              Local_Constants              : Node_Sets.Set;
+                              Reduced                      : Boolean := False;
+                              Allow_Statements             : Boolean := False;
+                              Expand_Synthesized_Constants : Boolean := False)
+                             return Flow_Id_Sets.Set;
    --  As above, but operating on a list.
 
    function Quantified_Variables (N : Node_Id) return Flow_Id_Sets.Set;
