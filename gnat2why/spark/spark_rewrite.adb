@@ -117,6 +117,9 @@ package body SPARK_Rewrite is
       function Rewrite_Node (N : Node_Id) return Traverse_Result;
       --  Apply expansion operations on a node
 
+      procedure Rewrite_Nodes is
+        new Traverse_Proc (Rewrite_Node);
+
       ------------------
       -- Rewrite_Node --
       ------------------
@@ -126,14 +129,19 @@ package body SPARK_Rewrite is
          case Nkind (N) is
             when N_Subprogram_Call =>
                Rewrite_Call (N);
+
+            --  Recursively call the tree rewriting procedure on subunits
+
+            when N_Body_Stub =>
+               Rewrite_Nodes (Unit (Library_Unit (N)));
+
             when others =>
                null;
          end case;
          return OK;
       end Rewrite_Node;
 
-      procedure Rewrite_Nodes is
-        new Traverse_Proc (Rewrite_Node);
+   --   Start of Rewrite_Compilation_Unit
 
    begin
       Rewrite_Nodes (N);

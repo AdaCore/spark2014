@@ -756,7 +756,7 @@ package body SPARK_Definition is
          Prag : Node_Id;
          Expr : Node_Id;
 
-         --  Start of Mark_Subprogram_Entity
+      --  Start of Mark_Subprogram_Entity
 
       begin
          Mark_Subprogram_Specification (Get_Subprogram_Spec (E));
