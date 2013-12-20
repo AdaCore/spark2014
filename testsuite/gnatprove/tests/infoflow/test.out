@@ -1,15 +1,15 @@
-infoflow.adb:59:23: warning: "Cache_V1" might not be initialized
 infoflow.adb:60:10: info: loop invariant initialization proved
 infoflow.adb:60:10: info: loop invariant preservation proved
-infoflow.adb:67:23: warning: "Cache_V2" might not be initialized
+infoflow.adb:60:10: warning: "Cache_V1" might not be initialized
 infoflow.adb:68:10: info: loop invariant initialization proved
 infoflow.adb:68:10: info: loop invariant preservation proved
-infoflow.adb:79:25: warning: "Outkeys_V1" might not be initialized
+infoflow.adb:68:10: warning: "Cache_V2" might not be initialized
 infoflow.adb:80:10: info: loop invariant initialization proved
 infoflow.adb:80:10: info: loop invariant preservation proved
-infoflow.adb:87:25: warning: "Outkeys_V2" might not be initialized
+infoflow.adb:80:10: warning: "Outkeys_V1" might not be initialized
 infoflow.adb:88:10: info: loop invariant initialization proved
 infoflow.adb:88:10: info: loop invariant preservation proved
+infoflow.adb:88:10: warning: "Outkeys_V2" might not be initialized
 infoflow.adb:99:28: info: division check proved
 infoflow.adb:101:13: warning: loop invariant might fail after first iteration
 infoflow.adb:101:13: warning: loop invariant might fail in first iteration
@@ -72,7 +72,6 @@ infoflow.adb:172:10: warning: "A_V1" might not be initialized
 infoflow.adb:173:33: info: index check proved
 infoflow.adb:173:44: info: index check proved
 infoflow.adb:174:16: info: index check proved
-infoflow.adb:174:22: warning: "A_V1" might not be initialized
 infoflow.adb:174:31: info: index check proved
 infoflow.adb:177:7: info: assertion proved
 infoflow.adb:177:07: warning: "A_V1" might not be initialized
@@ -102,7 +101,6 @@ infoflow.adb:200:10: warning: "A_V2" might not be initialized
 infoflow.adb:201:33: info: index check proved
 infoflow.adb:201:44: info: index check proved
 infoflow.adb:202:16: info: index check proved
-infoflow.adb:202:22: warning: "A_V2" might not be initialized
 infoflow.adb:202:31: info: index check proved
 infoflow.adb:205:07: warning: "A_V1" might not be initialized
 infoflow.adb:205:07: warning: "A_V2" might not be initialized

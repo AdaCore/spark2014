@@ -1658,29 +1658,34 @@ package body Flow.Analysis is
       Tracefile : Unbounded_String;
 
       procedure Mark_Definition_Free_Path
-        (From : Flow_Graphs.Vertex_Id;
-         To   : Flow_Graphs.Vertex_Id;
-         Var  : Flow_Id);
+        (From      : Flow_Graphs.Vertex_Id;
+         To        : Flow_Graphs.Vertex_Id;
+         Var       : Flow_Id;
+         V_Allowed : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex);
       --  Write a trace file for the error message at E_Loc with the
       --  given Tag. The trace will mark the path From -> To which
-      --  does not define Var.
+      --  does not define Var. If V_Allowed is set, then the path that
+      --  we return is allowed to contain V_Allowed even if V_Allowed
+      --  does set Var.
 
       function Might_Be_Defined_In_Other_Path
         (V_Initial : Flow_Graphs.Vertex_Id;
-         V_Use     : Flow_Graphs.Vertex_Id) return Boolean;
+         V_Use     : Flow_Graphs.Vertex_Id;
+         V_Print   : out Flow_Graphs.Vertex_Id)
+         return Boolean;
       --  Checks if the variable corresponding to V_Initial is defined
-      --  on any of the paths that lead to V_Use.
-      --
-      --  ??? Should V_Initial be a flow_id instead then?
+      --  on any of the paths that lead to V_Use. V_Print is the vertex
+      --  where the message should be emmited.
 
       -------------------------------
       -- Mark_Definition_Free_Path --
       -------------------------------
 
       procedure Mark_Definition_Free_Path
-        (From : Flow_Graphs.Vertex_Id;
-         To   : Flow_Graphs.Vertex_Id;
-         Var  : Flow_Id)
+        (From      : Flow_Graphs.Vertex_Id;
+         To        : Flow_Graphs.Vertex_Id;
+         Var       : Flow_Id;
+         V_Allowed : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex)
       is
          Path_Found : Boolean := False;
          Path       : Vertex_Sets.Set;
@@ -1690,8 +1695,7 @@ package body Flow.Analysis is
             Instruction : out Flow_Graphs.Traversal_Instruction);
          --  Visitor procedure for Shortest_Path.
 
-         procedure Add_Loc
-           (V : Flow_Graphs.Vertex_Id);
+         procedure Add_Loc (V : Flow_Graphs.Vertex_Id);
          --  Step procedure for Shortest_Path.
 
          ----------------------
@@ -1707,7 +1711,9 @@ package body Flow.Analysis is
             if V = To then
                Instruction := Flow_Graphs.Found_Destination;
                Path_Found  := True;
-            elsif A.Variables_Defined.Contains (Var) then
+            elsif V /= V_Allowed
+              and then A.Variables_Defined.Contains (Var)
+            then
                Instruction := Flow_Graphs.Skip_Children;
             else
                Instruction := Flow_Graphs.Continue;
@@ -1718,8 +1724,7 @@ package body Flow.Analysis is
          -- Add_Loc --
          -------------
 
-         procedure Add_Loc
-           (V : Flow_Graphs.Vertex_Id)
+         procedure Add_Loc (V : Flow_Graphs.Vertex_Id)
          is
             F : constant Flow_Id := FA.CFG.Get_Key (V);
          begin
@@ -1748,11 +1753,12 @@ package body Flow.Analysis is
 
       function Might_Be_Defined_In_Other_Path
         (V_Initial : Flow_Graphs.Vertex_Id;
-         V_Use     : Flow_Graphs.Vertex_Id) return Boolean
+         V_Use     : Flow_Graphs.Vertex_Id;
+         V_Print   : out Flow_Graphs.Vertex_Id)
+         return Boolean
       is
          The_Var : constant Flow_Id :=
-           Change_Variant (FA.PDG.Get_Key (V_Initial),
-                           Normal_Use);
+           Change_Variant (FA.PDG.Get_Key (V_Initial), Normal_Use);
 
          The_Var_Is_Array : constant Boolean :=
            (The_Var.Kind = Direct_Mapping
@@ -1782,8 +1788,14 @@ package body Flow.Analysis is
 
          Is_Defined_In_Other_Path : Boolean := False;
 
+         function Find_Explicit_Use_Vertex return Flow_Graphs.Vertex_Id;
+         --  Find a vertex that explicitly uses The_Var and hangs off
+         --  vertex V_Use in the CFG graph. If such a node does NOT
+         --  exist, then Null_Vertex is returned.
+
          function Start_To_V_Def_Without_V_Use
-           (V_Def : Flow_Graphs.Vertex_Id) return Boolean;
+           (V_Def : Flow_Graphs.Vertex_Id)
+            return Boolean;
          --  Returns True if there exists a path in the CFG graph from
          --  Start to V_Def that does not cross V_Use.
 
@@ -1794,12 +1806,59 @@ package body Flow.Analysis is
          --
          --  Sets Is_Defined_In_Other_Path
 
+         ------------------------------
+         -- Find_Explicit_Use_Vertex --
+         ------------------------------
+
+         function Find_Explicit_Use_Vertex return Flow_Graphs.Vertex_Id is
+            V_Exp_Use : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;
+
+            procedure Found_V_Exp_Use
+              (V  : Flow_Graphs.Vertex_Id;
+               TV : out Flow_Graphs.Simple_Traversal_Instruction);
+            --  Stops the DFS search when we reach a vertex that contains
+            --  The_Var in its Variables_Explicitly_Used set.
+
+            procedure Found_V_Exp_Use
+              (V  : Flow_Graphs.Vertex_Id;
+               TV : out Flow_Graphs.Simple_Traversal_Instruction)
+            is
+            begin
+               if V = V_Use then
+                  TV := Flow_Graphs.Skip_Children;
+               elsif V /= Flow_Graphs.Null_Vertex
+                 and then FA.CFG.Get_Attributes
+                            (V).Variables_Defined.Contains (The_Var)
+               then
+                  TV := Flow_Graphs.Skip_Children;
+               elsif V /= Flow_Graphs.Null_Vertex
+                 and then FA.CFG.Get_Key (V).Variant /= Final_Value
+                 and then FA.CFG.Get_Attributes
+                            (V).Variables_Explicitly_Used.Contains (The_Var)
+               then
+                  V_Exp_Use := V;
+                  TV := Flow_Graphs.Abort_Traversal;
+               else
+                  TV := Flow_Graphs.Continue;
+               end if;
+            end Found_V_Exp_Use;
+
+         begin
+            FA.CFG.DFS (Start         => V_Use,
+                        Include_Start => False,
+                        Visitor       => Found_V_Exp_Use'Access,
+                        Reversed      => False);
+
+            return V_Exp_Use;
+         end Find_Explicit_Use_Vertex;
+
          ----------------------------------
          -- Start_To_V_Def_Without_V_Use --
          ----------------------------------
 
          function Start_To_V_Def_Without_V_Use
-           (V_Def : Flow_Graphs.Vertex_Id) return Boolean
+           (V_Def : Flow_Graphs.Vertex_Id)
+            return Boolean
          is
             Path_Exists : Boolean := False;
 
@@ -1886,6 +1945,11 @@ package body Flow.Analysis is
 
       begin --  Might_Be_Defined_In_Other_Path
 
+         --  We initialize V_Print to V_Use and we shall change it
+         --  later on if so required.
+
+         V_Print := V_Use;
+
          --  Check if there might be some path that defines the
          --  variable before we use it.
 
@@ -1897,11 +1961,8 @@ package body Flow.Analysis is
          --  Arrays that are partially defined have an implicit
          --  dependency on themselves. For this check, we cannot
          --  depend on the Variables_Used because they capture this
-         --  implicit dependency. Instead, if we are dealing with an
-         --  array, we recaltulate the variables that appear on the
-         --  right hand side of the assignment statement and if the
-         --  array is not amongst them, we concider the element
-         --  defined without self-reference.
+         --  implicit dependency. Instead, we use
+         --  Variables_Explicitly_Used.
 
          if (not Is_Defined_In_Other_Path)
            and then Use_Vertex_Points_To_Itself
@@ -1913,7 +1974,20 @@ package body Flow.Analysis is
                     and then not FA.PDG.Get_Attributes
                       (V_Use).Variables_Explicitly_Used.Contains (The_Var)
                   then
+                     --  We set Is_Defined_In_Other_Path and we then check if
+                     --  there exists a vertex that explicitly uses The_Var,
+                     --  if so, we set V_Print to that vertex.
+
                      Is_Defined_In_Other_Path := True;
+
+                     declare
+                        Tmp_V : constant Flow_Graphs.Vertex_Id :=
+                          Find_Explicit_Use_Vertex;
+                     begin
+                        if Tmp_V /= Flow_Graphs.Null_Vertex then
+                           V_Print := Tmp_V;
+                        end if;
+                     end;
                   end if;
 
                when Magic_String | Synthetic_Null_Export =>
@@ -1937,8 +2011,8 @@ package body Flow.Analysis is
             Key_I : constant Flow_Id      := FA.PDG.Get_Key (V_Initial);
             Atr_I : constant V_Attributes := FA.PDG.Get_Attributes (V_Initial);
          begin
-            if Key_I.Variant = Initial_Value and then
-              not Atr_I.Is_Initialized
+            if Key_I.Variant = Initial_Value
+              and then not Atr_I.Is_Initialized
             then
 
                --  V_Initial is a vertex of an uninitialized initial value
@@ -1949,12 +2023,14 @@ package body Flow.Analysis is
                --  (these are vertices using (or depending on) this
                --  uninitialized initial value).
 
-               for V_Use of FA.PDG.Get_Collection
-                 (V_Initial, Flow_Graphs.Out_Neighbours) loop
+               for V_Use of FA.PDG.Get_Collection (V_Initial,
+                                                   Flow_Graphs.Out_Neighbours)
+               loop
                   declare
-                     Key_U : constant Flow_Id := FA.PDG.Get_Key (V_Use);
+                     Key_U : constant Flow_Id      := FA.PDG.Get_Key (V_Use);
                      Atr_U : constant V_Attributes :=
                        FA.PDG.Get_Attributes (V_Use);
+                     V_Pr  : Flow_Graphs.Vertex_Id;
                   begin
 
                      --  V_Use is a vertex that depends on V_Initial
@@ -1974,7 +2050,8 @@ package body Flow.Analysis is
 
                         if Atr_U.Is_Global then
                            if Might_Be_Defined_In_Other_Path (V_Initial,
-                                                              V_Use)
+                                                              V_Use,
+                                                              V_Pr)
                            then
                               Error_Msg_Flow
                                 (FA        => FA,
@@ -2008,8 +2085,9 @@ package body Flow.Analysis is
 
                            if not FA.Last_Statement_Is_Raise then
 
-                              --  We only issue this error when the last
-                              --  statement is not a raise statement.
+                              --  We only issue this error when the
+                              --  last statement is not a raise
+                              --  statement.
 
                               Error_Msg_Flow
                                 (FA        => FA,
@@ -2034,15 +2112,15 @@ package body Flow.Analysis is
                            --  with a parameter.
 
                            if Might_Be_Defined_In_Other_Path (V_Initial,
-                                                              V_Use)
+                                                              V_Use,
+                                                              V_Pr)
                            then
                               Error_Msg_Flow
                                 (FA        => FA,
                                  Tracefile => Tracefile,
                                  Msg       => "& might not be " &
                                    "initialized in &",
-                                 N         => Error_Location
-                                   (FA.PDG, V_Use),
+                                 N         => Error_Location (FA.PDG, V_Pr),
                                  F1        => Key_I,
                                  F2        => Direct_Mapping_Id
                                    (FA.Analyzed_Entity),
@@ -2053,16 +2131,17 @@ package body Flow.Analysis is
                                 (FA        => FA,
                                  Tracefile => Tracefile,
                                  Msg       => "& is not initialized in &",
-                                 N         => Error_Location (FA.PDG, V_Use),
+                                 N         => Error_Location (FA.PDG, V_Pr),
                                  F1        => Key_I,
                                  F2        => Direct_Mapping_Id
                                    (FA.Analyzed_Entity),
                                  Tag       => "uninitialized");
                            end if;
                            Mark_Definition_Free_Path
-                             (From => FA.Start_Vertex,
-                              To   => FA.End_Vertex,
-                              Var  => Change_Variant (Key_I, Normal_Use));
+                             (From      => FA.Start_Vertex,
+                              To        => V_Pr,
+                              Var       => Change_Variant (Key_I, Normal_Use),
+                              V_Allowed => V_Use);
 
                         else
 
@@ -2077,33 +2156,31 @@ package body Flow.Analysis is
                         --  V_Use is not a final vertex.
 
                         if Might_Be_Defined_In_Other_Path (V_Initial,
-                                                           V_Use)
+                                                           V_Use,
+                                                           V_Pr)
                         then
                            Error_Msg_Flow
                              (FA        => FA,
                               Tracefile => Tracefile,
                               Msg       => "& might not be initialized",
-                              N         => Error_Location (FA.PDG, V_Use),
+                              N         => Error_Location (FA.PDG, V_Pr),
                               F1        => Key_I,
                               Tag       => "uninitialized",
                               Warning   => True);
-                           Mark_Definition_Free_Path
-                             (From => FA.Start_Vertex,
-                              To   => V_Use,
-                              Var  => Change_Variant (Key_I, Normal_Use));
                         else
                            Error_Msg_Flow
                              (FA        => FA,
                               Tracefile => Tracefile,
                               Msg       => "& is not initialized",
-                              N         => Error_Location (FA.PDG, V_Use),
+                              N         => Error_Location (FA.PDG, V_Pr),
                               F1        => Key_I,
                               Tag       => "uninitialized");
-                           Mark_Definition_Free_Path
-                             (From => FA.Start_Vertex,
-                              To   => V_Use,
-                              Var  => Change_Variant (Key_I, Normal_Use));
                         end if;
+                        Mark_Definition_Free_Path
+                          (From      => FA.Start_Vertex,
+                           To        => V_Pr,
+                           Var       => Change_Variant (Key_I, Normal_Use),
+                           V_Allowed => V_Use);
 
                      end if;
                   end;

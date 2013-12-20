@@ -35,7 +35,6 @@ simple_unc_arrays.adb:13:63: info: discriminant check proved
 simple_unc_arrays.adb:13:67: warning: array index check might fail
 simple_unc_arrays.adb:14:14: info: discriminant check proved
 simple_unc_arrays.adb:14:18: warning: array index check might fail
-simple_unc_arrays.adb:14:21: warning: "C.V" might not be initialized
 simple_unc_arrays.adb:14:25: info: discriminant check proved
 simple_unc_arrays.adb:14:29: warning: array index check might fail
 simple_unc_arrays.adb:14:32: warning: overflow check might fail

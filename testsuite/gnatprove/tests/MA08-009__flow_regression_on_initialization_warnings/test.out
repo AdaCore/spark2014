@@ -1,0 +1,4 @@
+initialization_warnings.adb:7:21: warning: "An_Arr" might not be initialized
+initialization_warnings.adb:17:09: warning: "An_Arr" might not be initialized
+initialization_warnings.adb:23:16: warning: "A" might not be initialized
+initialization_warnings.adb:33:09: warning: "A" might not be initialized
