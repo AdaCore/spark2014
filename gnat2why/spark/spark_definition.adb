@@ -2741,6 +2741,7 @@ package body SPARK_Definition is
               Pragma_Test_Case                    |
               Pragma_Unmodified                   |
               Pragma_Unreferenced                 |
+              Pragma_Validity_Checks              |
               Pragma_Warnings                     =>
             null;
 

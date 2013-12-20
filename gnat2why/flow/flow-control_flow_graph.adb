@@ -2886,6 +2886,7 @@ package body Flow.Control_Flow_Graph is
               Pragma_SPARK_Mode                   |
               Pragma_Style_Checks                 |
               Pragma_Test_Case                    |
+              Pragma_Validity_Checks              |
               Pragma_Volatile                     |
               Pragma_Warnings                     =>
 

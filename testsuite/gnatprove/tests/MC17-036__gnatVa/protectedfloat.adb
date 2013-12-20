@@ -1,5 +1,7 @@
 package body protectedFloat is pragma SPARK_Mode (On);
 
+   pragma Validity_Checks (All_Checks);
+
    function protectedRealDivide( left, right : in Real) return Real
    is
    begin
