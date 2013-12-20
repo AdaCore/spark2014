@@ -87,6 +87,12 @@ package body Flow.Interprocedural is
                      then
                         return V;
                      end if;
+                  when Synthetic_Null_Export =>
+                     if Parameter.Kind = Synthetic_Null_Export and then
+                       A.Parameter_Formal.Variant = Parameter.Variant
+                     then
+                        return V;
+                     end if;
                   when others =>
                      raise Program_Error;
                end case;
@@ -162,6 +168,8 @@ package body Flow.Interprocedural is
                      --  do not add any edges.
                      if Present (Output) then
                         Add_TD_Edge (Input, Output);
+                     else
+                        Add_TD_Edge (Input, Null_Export_Flow_Id);
                      end if;
                   end loop;
                end;

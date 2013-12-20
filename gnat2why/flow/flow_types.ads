@@ -176,6 +176,13 @@ package Flow_Types is
               Name      => Null_Entity_Name,
               Component => Entity_Lists.Empty_Vector);
 
+   Null_Export_Flow_Id : constant Flow_Id :=
+     Flow_Id'(Kind      => Synthetic_Null_Export,
+              Variant   => Normal_Use,
+              Node      => Empty,
+              Name      => Null_Entity_Name,
+              Component => Entity_Lists.Empty_Vector);
+
    function Hash (N : Flow_Id) return Ada.Containers.Hash_Type;
    --  Hash function for flow id's. The idea is that a direct mapping
    --  to node N will return the same hash as a magic string mapping

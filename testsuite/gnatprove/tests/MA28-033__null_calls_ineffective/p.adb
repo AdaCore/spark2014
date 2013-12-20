@@ -162,4 +162,27 @@ package body P is
       end if;
    end Op10;
 
+   procedure Op11 (A : in     Integer;
+                   B : in     Integer;
+                   X :    out Integer)
+     with Global  => null,
+          Depends => (X => A,
+                      null => B)
+   is
+   begin
+      X := A;
+      Logging.Trace1 (B);
+   end Op11;
+
+   procedure Op12 (A : in     Integer;
+                   B : in     Integer;
+                   X :    out Integer)
+     with Global  => null,
+     Depends => (X => A,
+                 null => B)
+   is
+   begin
+      Op11 (A, B, X);
+   end Op12;
+
 end P;

@@ -1014,7 +1014,7 @@ package body Flow.Utility is
       case F.Kind is
          when Direct_Mapping =>
             return Flatten_Variable (Get_Direct_Mapping_Id (F));
-         when Magic_String =>
+         when Magic_String | Synthetic_Null_Export =>
             return Flow_Id_Sets.To_Set (F);
          when others =>
             raise Program_Error;

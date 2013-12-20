@@ -111,7 +111,9 @@ package Flow.Utility is
    --  everything else this is just the variable E.
 
    function Flatten_Variable (F : Flow_Id) return Flow_Id_Sets.Set
-     with Pre => F.Kind in Direct_Mapping | Magic_String;
+     with Pre => F.Kind in Direct_Mapping |
+                           Magic_String |
+                           Synthetic_Null_Export;
    --  As above, but for flow ids.
 
    function Get_Full_Type (E : Entity_Id) return Entity_Id;

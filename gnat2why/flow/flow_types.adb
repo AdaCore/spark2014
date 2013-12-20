@@ -371,9 +371,14 @@ package body Flow_Types is
 
    function Has_Async_Readers (F : Flow_Id) return Boolean is
    begin
-      return Is_Volatile (F) and then
-        Has_Volatile_Aspect (Get_Direct_Mapping_Id (F),
-                             Pragma_Async_Readers);
+      case F.Kind is
+         when Synthetic_Null_Export =>
+            return True;
+         when others =>
+            return Is_Volatile (F) and then
+              Has_Volatile_Aspect (Get_Direct_Mapping_Id (F),
+                                   Pragma_Async_Readers);
+      end case;
    end Has_Async_Readers;
 
    -----------------------
@@ -382,9 +387,14 @@ package body Flow_Types is
 
    function Has_Async_Writers (F : Flow_Id) return Boolean is
    begin
-      return Is_Volatile (F) and then
-        Has_Volatile_Aspect (Get_Direct_Mapping_Id (F),
-                             Pragma_Async_Writers);
+      case F.Kind is
+         when Synthetic_Null_Export =>
+            return False;
+         when others =>
+            return Is_Volatile (F) and then
+              Has_Volatile_Aspect (Get_Direct_Mapping_Id (F),
+                                   Pragma_Async_Writers);
+      end case;
    end Has_Async_Writers;
 
    -------------------------
@@ -393,9 +403,14 @@ package body Flow_Types is
 
    function Has_Effective_Reads (F : Flow_Id) return Boolean is
    begin
-      return Is_Volatile (F) and then
-        Has_Volatile_Aspect (Get_Direct_Mapping_Id (F),
-                             Pragma_Effective_Reads);
+      case F.Kind is
+         when Synthetic_Null_Export =>
+            return False;
+         when others =>
+            return Is_Volatile (F) and then
+              Has_Volatile_Aspect (Get_Direct_Mapping_Id (F),
+                                   Pragma_Effective_Reads);
+      end case;
    end Has_Effective_Reads;
 
    --------------------------
@@ -404,9 +419,14 @@ package body Flow_Types is
 
    function Has_Effective_Writes (F : Flow_Id) return Boolean is
    begin
-      return Is_Volatile (F) and then
-        Has_Volatile_Aspect (Get_Direct_Mapping_Id (F),
-                             Pragma_Effective_Writes);
+      case F.Kind is
+         when Synthetic_Null_Export =>
+            return True;
+         when others =>
+            return Is_Volatile (F) and then
+              Has_Volatile_Aspect (Get_Direct_Mapping_Id (F),
+                                   Pragma_Effective_Writes);
+      end case;
    end Has_Effective_Writes;
 
    -----------------------

@@ -2234,6 +2234,32 @@ package body Flow.Control_Flow_Graph is
                                   In_List, Out_List,
                                   FA, CM, Ctx);
 
+      --  Check if we need a magic null export.
+      if Has_Depends (Called_Procedure) then
+         declare
+            D_Map : Dependency_Maps.Map;
+            V     : Flow_Graphs.Vertex_Id;
+         begin
+            Get_Depends (Subprogram => Called_Procedure,
+                         Scope      => FA.B_Scope,
+                         Depends    => D_Map);
+            if D_Map.Contains (Null_Flow_Id) and then
+              D_Map (Null_Flow_Id).Length >= 1
+            then
+               FA.CFG.Add_Vertex
+                 (Make_Global_Attributes
+                    (Call_Vertex        => N,
+                     Global             => Change_Variant
+                       (Null_Export_Flow_Id, Out_View),
+                     Discriminants_Only => False,
+                     Loops              => Ctx.Current_Loops,
+                     E_Loc              => N),
+                  V);
+               Out_List.Append (V);
+            end if;
+         end;
+      end if;
+
       --  We now build the connection map for this sequence.
       declare
          use Vertex_Vectors;
@@ -2968,16 +2994,14 @@ package body Flow.Control_Flow_Graph is
 
       --  Create the magic null export vertices.
       declare
-         F : constant Flow_Id :=
-           Null_Flow_Id'Update (Kind    => Synthetic_Null_Export,
-                                Variant => Initial_Value);
+         F : constant Flow_Id := Change_Variant (Null_Export_Flow_Id,
+                                                 Initial_Value);
       begin
          FA.CFG.Add_Vertex (F, Make_Null_Export_Attributes (F));
       end;
       declare
-         F : constant Flow_Id :=
-           Null_Flow_Id'Update (Kind    => Synthetic_Null_Export,
-                                Variant => Final_Value);
+         F : constant Flow_Id := Change_Variant (Null_Export_Flow_Id,
+                                                 Final_Value);
       begin
          FA.CFG.Add_Vertex (F, Make_Null_Export_Attributes (F));
       end;
