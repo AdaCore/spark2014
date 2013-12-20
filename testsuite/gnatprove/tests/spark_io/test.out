@@ -2,27 +2,27 @@ hello_world.adb:31:13: warning: precondition of main program might fail
 gprbuild: *** compilation phase failed
 gnatprove: error during generation and proof of VCs, aborting.
 copy.adb:42:14: warning: precondition of main program might fail
-copy.adb:91:51: warning: range check might fail
-copy.adb:92:32: warning: range check might fail
-copy.adb:100:51: warning: range check might fail
-copy.adb:101:32: warning: range check might fail
-copy.adb:132:7: warning: loop invariant might fail after first iteration
-copy.adb:164:32: warning: range check might fail
-copy.adb:173:32: warning: range check might fail
-copy.adb:180:44: warning: range check might fail
-copy.adb:181:32: warning: range check might fail
-copy.adb:192:22: warning: loop invariant might fail after first iteration
-copy.adb:204:30: warning: range check might fail
-copy.adb:208:34: warning: range check might fail
-copy.adb:219:43: warning: range check might fail
-copy.adb:268:7: warning: loop invariant might fail in first iteration
-copy.adb:268:7: warning: loop invariant might fail after first iteration
-copy.adb:282:34: warning: overflow check might fail
-copy.adb:290:73: warning: range check might fail
-copy.adb:296:16: warning: precondition might fail
-copy.adb:303:55: warning: range check might fail
-copy.adb:304:23: warning: precondition might fail
-copy.adb:309:13: warning: precondition might fail
+copy.adb:92:51: warning: range check might fail
+copy.adb:93:32: warning: range check might fail
+copy.adb:101:51: warning: range check might fail
+copy.adb:102:32: warning: range check might fail
+copy.adb:133:7: warning: loop invariant might fail after first iteration
+copy.adb:166:32: warning: range check might fail
+copy.adb:175:32: warning: range check might fail
+copy.adb:182:44: warning: range check might fail
+copy.adb:183:32: warning: range check might fail
+copy.adb:194:22: warning: loop invariant might fail after first iteration
+copy.adb:206:30: warning: range check might fail
+copy.adb:210:34: warning: range check might fail
+copy.adb:221:43: warning: range check might fail
+copy.adb:270:7: warning: loop invariant might fail in first iteration
+copy.adb:270:7: warning: loop invariant might fail after first iteration
+copy.adb:284:34: warning: overflow check might fail
+copy.adb:292:73: warning: range check might fail
+copy.adb:298:16: warning: precondition might fail
+copy.adb:305:55: warning: range check might fail
+copy.adb:306:23: warning: precondition might fail
+copy.adb:311:13: warning: precondition might fail
 gprbuild: *** compilation phase failed
 gnatprove: error during generation and proof of VCs, aborting.
 echo.adb:32:18: warning: precondition of main program might fail

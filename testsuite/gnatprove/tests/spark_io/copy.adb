@@ -78,7 +78,8 @@ begin
         Last <= Response'Last
       then
          declare
-            File_Name : String renames Response (Response'First .. Last);
+            CLast     : constant Natural := Last;
+            File_Name : String renames Response (Response'First .. CLast);
          begin
             Open (The_File => Source,
                   The_Mode => In_File,
@@ -150,7 +151,8 @@ begin
         Last >= Response'First and Last <= Response'Last
       then
          declare
-            File_Name : String renames Response (Response'First .. Last);
+            CLast     : constant Natural := Last;
+            File_Name : String renames Response (Response'First .. CLast);
          begin
             Create (The_File => Destination,
                     The_Mode => Out_File,
