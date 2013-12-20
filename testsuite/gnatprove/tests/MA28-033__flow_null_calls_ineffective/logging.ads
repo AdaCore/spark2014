@@ -5,16 +5,20 @@ is
 
    -- Sends A beyond the SPARK boundary.
    procedure Trace1 (A : in Integer)
-     with Global => null,
+     with Global  => null,
           Depends => (null => A);
+
+   procedure Trace2
+     with Global  => TestPoint,
+          Depends => (null => TestPoint);
 
    -- Sends A, B, C beyond the SPARK boundary.
    procedure Trace3 (A : in Integer;
                      B : in Boolean;
                      C : in Character)
-     with Global => null,
+     with Global  => null,
           Depends => (null => (A, B, C));
-   
+
    -- Sends A to TestPoint and B to null
    procedure Trace_Mixed (A : in Integer;
                           B : in Boolean)
