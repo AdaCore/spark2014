@@ -51,7 +51,7 @@ is
          M : Integer := N;
       end P3;
    begin
-      Y := X;
+      Y := P3.M + X;
    end Test_03;
 
    procedure Test_04
@@ -68,13 +68,18 @@ is
       null;
    end Test_04;
 
-   procedure Test_05 (X : out Integer)
+   procedure Test_05 (Z : out Boolean)
    with
       Global => null
    is
       package P5_Outer
       with Abstract_State => State
       is
+         procedure Init
+           with Global => (Output => State);
+
+         function Wibble return Boolean
+           with Global => State;
       end P5_Outer;
 
       package body P5_Outer
@@ -88,10 +93,54 @@ is
             Y : Boolean;  -- Uninitialized!
          end P5_Inner;
 
+         procedure Init
+           with Refined_Global => (Output => (X,
+                                              P5_Inner.Y))
+         is
+         begin
+            X          := False;
+            P5_Inner.Y := False;
+         end Init;
+
+         function Wibble return Boolean
+           with Refined_Global => X
+         is
+         begin
+            return X;
+         end Wibble;
+
       end P5_Outer;
    begin
-      null;
+      P5_Outer.Init;
+      Z := P5_Outer.Wibble;
    end Test_05;
+
+   procedure Test_06 (Z : out Boolean)
+     with Global => null
+   is
+      package P6_Outer
+      with Abstract_State => State,
+           Initializes    => State
+      is
+      end P6_Outer;
+
+      package body P6_Outer
+        with Refined_State => (State => (X, P6_Inner.Y))
+      is
+         X : Boolean;
+
+         package P6_Inner
+         is
+            Y : Boolean;
+         end P6_Inner;
+
+      begin
+         X          := False;
+         P6_Inner.Y := False;
+      end P6_Outer;
+   begin
+      null;
+   end Test_06;
 
 
 end Flo_Review_Tests;
