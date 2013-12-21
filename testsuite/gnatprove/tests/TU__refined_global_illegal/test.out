@@ -1,4 +1,4 @@
-refined_global_illegal.adb:6:14: useless refinement, subprogram "P1" does not depends on abstract state with visible refinement
+refined_global_illegal.adb:6:14: useless refinement, subprogram "P1" does not depend on abstract state with visible refinement
 refined_global_illegal.adb:20:14: useless refinement, declaration of subprogram "No_Global_Contract" lacks aspect or pragma Global
 refined_global_illegal.adb:33:14: aspect "Refined_Global" cannot apply to a stand alone body
 refined_global_illegal.adb:49:43: cannot mention state "State" in global refinement

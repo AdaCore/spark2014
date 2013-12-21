@@ -1,4 +1,4 @@
-refined_depends_illegal.adb:6:14: useless refinement, subprogram "P1" does not depends on abstract state with visible refinement
+refined_depends_illegal.adb:6:14: useless refinement, subprogram "P1" does not depend on abstract state with visible refinement
 refined_depends_illegal.adb:20:14: useless refinement, declaration of subprogram "No_Depends_Contract" lacks aspect or pragma Depends
 refined_depends_illegal.adb:33:14: aspect "Refined_Depends" cannot apply to a stand alone body
 refined_depends_illegal.adb:50:48: global "X" must appear in exactly one output dependence list
