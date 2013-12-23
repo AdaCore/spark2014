@@ -330,8 +330,8 @@ ar.ads:481:753: info: range check proved
 ar.ads:486:22: info: postcondition proved
 ar.ads:491:22: warning: postcondition might fail, requires K < IT3'Last and then( (E > ET1'First and A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), K+1 => A'Old(K+1)'Update (J => A'Old(K+1)(J)'Update (I => E-1)))) or (E = ET1'First and A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), K+1 => A'Old(K+1)'Update (J => A'Old(K+1)(J)'Update (I => ET1'Last)))) )) or (K = IT3'Last and ( (E > ET1'First and A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), IT3'First => A'Old(IT3'First)'Update (J => A'Old(IT3'First)(J)'Update (I => E-1)))) or (E = ET1'First and A = A'Old'update
 ar.ads:491:85: info: range check proved
-ar.ads:491:109: warning: range check might fail
-ar.ads:491:134: warning: range check might fail
+ar.ads:491:109: info: range check proved
+ar.ads:491:134: info: range check proved
 ar.ads:491:145: info: range check proved
 ar.ads:491:158: info: index check proved
 ar.ads:491:170: info: range check proved

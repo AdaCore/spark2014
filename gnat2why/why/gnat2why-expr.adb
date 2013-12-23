@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2013, AdaCore                   --
+--                       Copyright (C) 2010-2014, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -53,7 +53,7 @@ with SPARK_Util;             use SPARK_Util;
 with VC_Kinds;               use VC_Kinds;
 
 with Flow_Types;
-with Flow.Utility;
+with Flow.Utility;           use Flow.Utility;
 
 with Why;                    use Why;
 with Why.Unchecked_Ids;      use Why.Unchecked_Ids;
@@ -750,6 +750,8 @@ package body Gnat2Why.Expr is
             Is_Pragma (P, Pragma_Post)
               or else
             Is_Pragma (P, Pragma_Postcondition)
+              or else
+            Is_Pragma (P, Pragma_Refined_Post)
          then
             return Empty;
          end if;
@@ -5759,6 +5761,7 @@ package body Gnat2Why.Expr is
               Pragma_Pure_Function                |
               Pragma_Refined_Depends              |
               Pragma_Refined_Global               |
+              Pragma_Refined_Post                 |
               Pragma_Refined_State                |
               Pragma_Reviewable                   |
               Pragma_SPARK_Mode                   |
@@ -6542,7 +6545,8 @@ package body Gnat2Why.Expr is
            New_Located_Abstract
              (Ada_Node => Stmt_Or_Decl,
               Expr     => +Result,
-              Post     => Cut_Assertion);
+              Post     => Cut_Assertion,
+              Reason   => VC_Assert);
       end if;
 
       return Result;
@@ -6626,7 +6630,7 @@ package body Gnat2Why.Expr is
 
    function Why_Subp_Has_Precondition (E : Entity_Id) return Boolean is
    begin
-      return Has_Precondition (E) or else
+      return Has_Contracts (E, Name_Precondition) or else
         Entity_In_External_Axioms (E) or else
         No_Return (E);
    end Why_Subp_Has_Precondition;

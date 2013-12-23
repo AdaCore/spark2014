@@ -6,7 +6,7 @@
 --                                                                          --
 --                                  B o d y                                 --
 --                                                                          --
---                        Copyright (C) 2012-2013, AdaCore                  --
+--                        Copyright (C) 2012-2014, AdaCore                  --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -309,22 +309,9 @@ package body Gnat2Why.Nodes is
       return Defining_Identifier (Decl);
    end Get_Return_Object_Entity;
 
-   ----------------------
-   -- Has_Precondition --
-   ----------------------
-
-   function Has_Precondition (E : Entity_Id) return Boolean is
-      PPC      : Node_Id;
-   begin
-      PPC := Pre_Post_Conditions (Contract (E));
-      while Present (PPC) loop
-         if Pragma_Name (PPC) = Name_Precondition then
-            return True;
-         end if;
-         PPC := Next_Pragma (PPC);
-      end loop;
-      return False;
-   end Has_Precondition;
+   -------------------------
+   -- Has_User_Defined_Eq --
+   -------------------------
 
    function Has_User_Defined_Eq (E : Entity_Id) return Entity_Id is
       Prim : Elmt_Id;

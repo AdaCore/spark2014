@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010-2013, AdaCore                   --
+--                       Copyright (C) 2010-2014, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -78,7 +78,9 @@ package Why.Gen.Progs is
    function New_Located_Abstract
      (Ada_Node : Node_Id;
       Expr     : W_Prog_Id;
-      Post     : W_Pred_Id) return W_Prog_Id;
+      Post     : W_Pred_Id;
+      Reason   : VC_Kind)
+      return W_Prog_Id;
    --  build a located abstract Why3 program expression.
 
    function New_Simpl_Any_Prog

@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010-2013, AdaCore                   --
+--                       Copyright (C) 2010-2014, AdaCore                   --
 --                                                                          --
 -- gnatprove is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -52,7 +52,8 @@ package VC_Kinds is
       VC_Initial_Condition,
       VC_Precondition,               --  the precondition of a call
       VC_Precondition_Main,          --  the precondition of a main program
-      VC_Postcondition,
+      VC_Postcondition,              --  a postcondition
+      VC_Refined_Post,               --  a refined_post
       VC_Contract_Case,
       VC_Disjoint_Contract_Cases,
       VC_Complete_Contract_Cases,

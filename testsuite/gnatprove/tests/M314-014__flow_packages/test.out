@@ -2,8 +2,6 @@ ic.adb:30:36: "Y" must be initialized at elaboration
 ic.adb:58:43: "Y" must be listed in the Initializes aspect of "Test_04" (SPARK RM 7.1.5(12))
 ic.adb:73:34: "X" must be listed in the Initializes aspect of "Test_05" (SPARK RM 7.1.5(12))
 ic.adb:73:34: "Y" must be listed in the Initializes aspect of "Test_05" (SPARK RM 7.1.5(12))
-ic.adb:97:09: warning: it is currently ignored
-ic.adb:97:09: warning: pragma "REFINED_POST" is not yet supported
 ic.adb:97:31: "Y" must be listed in the Refined_Global aspect of "Sanity_Check_5" (SPARK RM 6.1.4(13))
 ic.adb:108:35: "Y" must be listed in the Global aspect of "Sanity_Check_1" (SPARK RM 6.1.4(13))
 ic.adb:117:41: "Y" must be listed in the Global aspect of "Sanity_Check_2" (SPARK RM 6.1.4(13))

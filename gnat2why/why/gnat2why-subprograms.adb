@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2013, AdaCore                   --
+--                       Copyright (C) 2010-2014, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -40,8 +40,8 @@ with SPARK_Definition;       use SPARK_Definition;
 with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 with SPARK_Util;             use SPARK_Util;
 
-with Flow_Types;
-with Flow.Utility;
+with Flow_Types;             use Flow_Types;
+with Flow.Utility;           use Flow.Utility;
 with Flow_Tree_Utility;      use Flow_Tree_Utility;
 
 with Why;                    use Why;
@@ -156,7 +156,7 @@ package body Gnat2Why.Subprograms is
    --    in_range (x)
    --  and join everything together with a conjunction.
 
-   function Get_Location_For_Pre_Post
+   function Get_Location_For_Aspect
      (E    : Entity_Id;
       Prag : Name_Id) return Node_Id;
    --  Return a node with a proper location for the pre- or postcondition of E,
@@ -876,37 +876,30 @@ package body Gnat2Why.Subprograms is
       Domain : EW_Domain) return W_Expr_Id
    is
       Cur_Spec : W_Expr_Id := Why_Empty;
-      PPC      : Node_Id;
+      Nodes    : Node_Lists.List := Find_Contracts (E, Kind);
    begin
-      PPC := Pre_Post_Conditions (Contract (E));
-      while Present (PPC) loop
-         if Pragma_Name (PPC) = Kind then
-            declare
-               Expr : constant Node_Id :=
-                 Expression (First (Pragma_Argument_Associations (PPC)));
-               Why_Expr : constant W_Expr_Id :=
-                 Transform_Expr (Expr, EW_Bool_Type, Domain, Params);
-            begin
-               if Cur_Spec /= Why_Empty then
-                  Cur_Spec :=
-                    New_And_Then_Expr
-                      (Left   => Why_Expr,
-                       Right  => Cur_Spec,
-                       Domain => Domain);
-               else
-                  Cur_Spec := Why_Expr;
-               end if;
-            end;
-         end if;
-
-         PPC := Next_Pragma (PPC);
-      end loop;
-
-      if Cur_Spec /= Why_Empty then
-         return Cur_Spec;
-      else
+      if Nodes.Is_Empty then
          return New_Literal (Value => EW_True, Domain => Domain);
       end if;
+
+      for Node of Nodes loop
+         declare
+            Why_Expr : constant W_Expr_Id :=
+              Transform_Expr (Node, EW_Bool_Type, Domain, Params);
+         begin
+            if Cur_Spec /= Why_Empty then
+               Cur_Spec :=
+                 New_And_Then_Expr
+                   (Left   => Why_Expr,
+                    Right  => Cur_Spec,
+                    Domain => Domain);
+            else
+               Cur_Spec := Why_Expr;
+            end if;
+         end;
+      end loop;
+
+      return Cur_Spec;
    end Compute_Spec;
 
    ------------------------------------------
@@ -1036,7 +1029,7 @@ package body Gnat2Why.Subprograms is
 
       Body_N    : constant Node_Id := SPARK_Util.Get_Subprogram_Body (E);
       Post_N    : constant Node_Id :=
-        Get_Location_For_Pre_Post (E, Name_Postcondition);
+        Get_Location_For_Aspect (E, Name_Postcondition);
       Assume    : W_Prog_Id;
       Init_Prog : W_Prog_Id;
       Prog      : W_Prog_Id;
@@ -1052,6 +1045,8 @@ package body Gnat2Why.Subprograms is
       Contract_Check : W_Prog_Id;
       Post_Check     : W_Prog_Id;
       Precondition   : W_Prog_Id;
+
+      Result_Var : W_Prog_Id;
 
    begin
       Open_Theory (File, Name & "__subprogram_def",
@@ -1072,7 +1067,13 @@ package body Gnat2Why.Subprograms is
       Reset_Map_For_Old;
       Result_Name :=
         New_Identifier
-          (Name => Name & "__result", Typ => EW_Abstract (Etype (E)));
+             (Name => Name & "__result", Typ => EW_Abstract (Etype (E)));
+      Result_Var :=
+        (if Ekind (E) = E_Function then
+              New_Deref
+           (Ada_Node => Body_N,
+            Right    => Result_Name)
+         else New_Void);
 
       Params :=
         (File        => File.File,
@@ -1108,7 +1109,7 @@ package body Gnat2Why.Subprograms is
          if Might_Be_Main (E) then
             Precondition :=
               New_Located_Assert
-                (Ada_Node => Get_Location_For_Pre_Post (E, Name_Precondition),
+                (Ada_Node => Get_Location_For_Aspect (E, Name_Precondition),
                  Pred => Pre,
                  Reason => VC_Precondition_Main);
          else
@@ -1209,12 +1210,6 @@ package body Gnat2Why.Subprograms is
               New_Raise
                 (Ada_Node => Body_N,
                  Name     => To_Ident (WNE_Result_Exc));
-            Result_Var : constant W_Prog_Id :=
-              (if Ekind (E) = E_Function then
-                    New_Deref
-                 (Ada_Node => Body_N,
-                  Right    => Result_Name)
-               else New_Void);
          begin
             Why_Body :=
               New_Try_Block
@@ -1223,8 +1218,32 @@ package body Gnat2Why.Subprograms is
                    (1 =>
                           New_Handler
                       (Name => To_Ident (WNE_Result_Exc),
-                       Def  => Sequence (Post_Check, Result_Var))));
+                       Def  => New_Void)));
+            Why_Body := Sequence (Why_Body, Post_Check);
          end;
+
+         --  Refined_Post
+
+         if Has_Contracts (E, Name_Refined_Post) then
+            Why_Body :=
+              Sequence
+                (Why_Body,
+                 New_Ignore
+                   (Prog => +Compute_Spec
+                      (Params, E, Name_Refined_Post, EW_Prog)));
+            Why_Body :=
+              New_Located_Abstract
+                (Ada_Node => Get_Location_For_Aspect (E, Name_Refined_Post),
+                 Expr => Why_Body,
+                 Reason => VC_Refined_Post,
+                 Post =>
+                     +Compute_Spec (Params, E, Name_Refined_Post, EW_Pred));
+         end if;
+
+         --  return the result variable, so that result = result_var in the
+         --  postcondition
+
+         Why_Body := Sequence (Why_Body, Result_Var);
 
          --  add declarations for 'Old variables
 
@@ -1293,22 +1312,19 @@ package body Gnat2Why.Subprograms is
                     Defined_Entity => E);
    end Generate_VCs_For_Subprogram;
 
-   ------------------------------------
-   -- Get_Location_For_Postcondition --
-   ------------------------------------
+   -----------------------------
+   -- Get_Location_For_Aspect --
+   -----------------------------
 
-   function Get_Location_For_Pre_Post
+   function Get_Location_For_Aspect
      (E    : Entity_Id;
-      Prag : Name_Id) return Node_Id
-   is
-      PPC  : Node_Id;
-      Post : Node_Id := Empty;
+      Prag : Name_Id) return Node_Id is
    begin
 
       --  In the case of a No_Return Subprogram, there is no real location for
-      --  the assertion; simply return the subp entity node.
+      --  the postcondition; simply return the subp entity node.
 
-      if No_Return (E) then
+      if Prag = Name_Postcondition and then No_Return (E) then
          return E;
       end if;
 
@@ -1316,17 +1332,16 @@ package body Gnat2Why.Subprograms is
       --  Pre_Post_Conditions, hence retrieve the last assertion in this
       --  list to get the first one in source code.
 
-      PPC := Pre_Post_Conditions (Contract (E));
-      while Present (PPC) loop
-         if Pragma_Name (PPC) = Prag then
-            Post := Expression (First (Pragma_Argument_Associations (PPC)));
+      declare
+         L : constant Node_Lists.List := Find_Contracts (E, Prag);
+      begin
+         if L.Is_Empty then
+            return Empty;
+         else
+            return L.Last_Element;
          end if;
-
-         PPC := Next_Pragma (PPC);
-      end loop;
-
-      return Post;
-   end Get_Location_For_Pre_Post;
+      end;
+   end Get_Location_For_Aspect;
 
    ----------------------------------------
    -- Translate_Expression_Function_Body --

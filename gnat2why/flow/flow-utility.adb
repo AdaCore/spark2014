@@ -23,7 +23,6 @@
 
 with Elists;                 use Elists;
 with Errout;                 use Errout;
-with Namet;                  use Namet;
 with Nlists;                 use Nlists;
 
 with Output;                 use Output;
@@ -79,13 +78,6 @@ package body Flow.Utility is
    --  record, then we will get the following set:
    --     * p.r.a
    --     * p.r.b
-
-   function Find_Contracts (E    : Entity_Id;
-                            Name : Name_Id)
-                            return Node_Lists.List
-     with Pre => Ekind (E) in Subprogram_Kind | E_Package;
-   --  Walk the Contract node attached to E and return the pragma
-   --  matching Name.
 
    function Filter_Out_Non_Local_Constants (S : Flow_Id_Sets.Set;
                                             C : Node_Sets.Set)

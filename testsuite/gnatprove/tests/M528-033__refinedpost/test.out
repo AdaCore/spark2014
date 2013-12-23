@@ -1,0 +1,4 @@
+refined.adb:4:31: info: refined post proved
+refined.adb:4:39: info: overflow check proved
+refined.adb:7:14: info: overflow check proved
+refined.ads:5:20: info: postcondition proved

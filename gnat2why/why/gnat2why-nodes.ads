@@ -6,7 +6,7 @@
 --                                                                          --
 --                                  S p e c                                 --
 --                                                                          --
---                        Copyright (C) 2012-2013, AdaCore                  --
+--                        Copyright (C) 2012-2014, AdaCore                  --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -101,11 +101,6 @@ package Gnat2Why.Nodes is
       Hash            => Node_Hash,
       Equivalent_Keys => "=",
       "="             => "=");
-
-   function Has_Precondition (E : Entity_Id) return Boolean
-   with Pre => Is_Overloadable (E);
-   --  Check whether E (which must be the entity for a subprogram) has a
-   --  precondition.
 
    function Has_User_Defined_Eq (E : Entity_Id) return Entity_Id
      with Pre => Ekind (E) in Type_Kind;

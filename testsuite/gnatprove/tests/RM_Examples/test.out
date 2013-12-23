@@ -70,39 +70,23 @@ multiple_ports.ads:44:11: warning: pragma "Effective_Writes" is not yet supporte
 multiple_ports.ads:44:11: warning: it is currently ignored
 multiple_ports.ads:44:11: warning: pragma "Effective_Writes" is not yet supported in proof
 multiple_ports.ads:44:11: warning: it is currently ignored
-stacks_1.adb:16:11: warning: pragma "Refined_Post" is not yet supported
-stacks_1.adb:16:11: warning: it is currently ignored
-stacks_1.adb:16:11: warning: pragma "Refined_Post" is not yet supported in proof
-stacks_1.adb:16:11: warning: it is currently ignored
-stacks_1.adb:28:11: warning: pragma "Refined_Post" is not yet supported
-stacks_1.adb:28:11: warning: it is currently ignored
-stacks_1.adb:28:11: warning: pragma "Refined_Post" is not yet supported in proof
-stacks_1.adb:28:11: warning: it is currently ignored
+stacks_1.adb:16:57: info: refined post proved
+stacks_1.adb:17:44: info: range check proved
 stacks_1.adb:23:30: info: range check proved
 stacks_1.adb:24:18: info: index check proved
+stacks_1.adb:28:37: warning: refined postcondition might fail
 stacks_1.adb:34:33: info: range check proved
 stacks_1.adb:38:64: info: index check proved
 stacks_1.ads:14:19: info: postcondition proved
 stacks_1.ads:17:19: info: postcondition proved
-stacks_2.adb:15:11: warning: pragma "Refined_Post" is not yet supported
-stacks_2.adb:15:11: warning: it is currently ignored
-stacks_2.adb:15:11: warning: pragma "Refined_Post" is not yet supported in proof
-stacks_2.adb:15:11: warning: it is currently ignored
-stacks_2.adb:25:11: warning: pragma "Refined_Post" is not yet supported
-stacks_2.adb:25:11: warning: it is currently ignored
-stacks_2.adb:25:11: warning: pragma "Refined_Post" is not yet supported in proof
-stacks_2.adb:25:11: warning: it is currently ignored
-stacks_2.adb:34:11: warning: pragma "Refined_Post" is not yet supported
-stacks_2.adb:34:11: warning: it is currently ignored
-stacks_2.adb:34:11: warning: pragma "Refined_Post" is not yet supported in proof
-stacks_2.adb:34:11: warning: it is currently ignored
-stacks_2.adb:46:11: warning: pragma "Refined_Post" is not yet supported
-stacks_2.adb:46:11: warning: it is currently ignored
-stacks_2.adb:46:11: warning: pragma "Refined_Post" is not yet supported in proof
-stacks_2.adb:46:11: warning: it is currently ignored
 stacks_2.adb:8:31: info: length check proved
+stacks_2.adb:15:45: info: refined post proved
+stacks_2.adb:25:44: info: refined post proved
+stacks_2.adb:34:59: info: refined post proved
+stacks_2.adb:35:61: info: range check proved
 stacks_2.adb:40:30: warning: range check might fail
 stacks_2.adb:41:17: info: index check proved
+stacks_2.adb:46:39: info: refined post proved
 stacks_2.adb:51:30: warning: range check might fail
 stacks_2.adb:54:46: warning: array index check might fail
 stacks_2.ads:17:21: warning: postcondition might fail, requires not (Is_Empty)

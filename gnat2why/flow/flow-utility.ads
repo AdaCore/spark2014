@@ -26,9 +26,10 @@
 
 with Ada.Containers;
 
-with Sem_Util;       use Sem_Util;
-with Snames;         use Snames;
-with Sinfo;          use Sinfo;
+with Namet;    use Namet;
+with Sem_Util; use Sem_Util;
+with Snames;   use Snames;
+with Sinfo;    use Sinfo;
 
 use type Ada.Containers.Count_Type;
 
@@ -187,5 +188,20 @@ package Flow.Utility is
    --
    --  This mirrors Is_Initialized_At_Elaboration from Flow_Tree_Utility,
    --  but works for a Flow_Id instead of an Entity_Id.
+
+   function Find_Contracts (E    : Entity_Id;
+                            Name : Name_Id)
+                            return Node_Lists.List
+     with Pre => Ekind (E) in Subprogram_Kind | E_Package;
+   --  Walk the Contract node attached to E and return the pragma
+   --  matching Name.
+
+   function Has_Contracts (E    : Entity_Id;
+                           Name : Name_Id)
+                           return Boolean
+   is (not Find_Contracts (E, Name).Is_Empty)
+   with Pre => Ekind (E) in Subprogram_Kind | E_Package;
+   --  Return True if the subprogram in argument has the given kind of
+   --  contract, False otherwise.
 
 end Flow.Utility;
