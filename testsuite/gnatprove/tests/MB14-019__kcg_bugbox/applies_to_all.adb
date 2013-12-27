@@ -111,11 +111,11 @@ package body Applies_To_All is
 
    procedure Proc_6 (B : in Boolean; X : out Integer)
                is separate
-                     with Refined_Depends => (X => B);
+                     with Depends => (X => B);
 
    procedure Proc_7 (B : in Boolean; X : out Integer)
                is separate
-                     with Refined_Depends => (X => B);
+                     with Depends => (X => B);
 
    procedure Proc_8 (B : in Boolean; X : out Integer)
       with Depends => (X => B)
