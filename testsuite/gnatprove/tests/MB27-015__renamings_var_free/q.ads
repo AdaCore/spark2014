@@ -1,3 +1,9 @@
+-- MB27-015 - legality of variables in expressions.
+--
+-- This test case shows examples of both legal and illegal
+-- use of variables inside renamings of function calls.
+--
+-- See SPARK LRM 4.4(2) fifth bullet.
 package Q
 is
    type T is range 1 .. 10;
