@@ -20,4 +20,3 @@ is
     Legal_Slice_Rename   : String renames Y (1 .. Named_Constant);
 
 end P;
-
