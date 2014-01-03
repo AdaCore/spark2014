@@ -6,7 +6,7 @@
 --                                                                          --
 --                                S p e c                                   --
 --                                                                          --
---                  Copyright (C) 2013, Altran UK Limited                   --
+--               Copyright (C) 2013-2014, Altran UK Limited                 --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -25,16 +25,12 @@
 --  issues: when to use the abstract view or refined view of a subprogram,
 --  and if the latter which of the possible refined views.
 
-with Ada.Containers;
-
 with Atree;          use Atree;
 with Einfo;          use Einfo;
 with Sinfo;          use Sinfo;
 with Types;          use Types;
 
 with Gnat2Why.Nodes; use Gnat2Why.Nodes;
-
-use type Ada.Containers.Count_Type;
 
 package Flow_Refinement is
 
@@ -142,5 +138,17 @@ package Flow_Refinement is
    --
    --  This is really an internal function, but as its useful for debug and
    --  trace it has been made visible.
+
+   function Is_Initialized_At_Elaboration (E : Entity_Id;
+                                           S : Flow_Scope)
+                                           return Boolean;
+   --  Checks if the given entity E is initialized at elaboration, as seen
+   --  from scope S. For example if you have a nested package where:
+   --
+   --     package Outer (Initialized "State")
+   --        package Inner (X, not initialized, but part of State)
+   --
+   --  Then from the scope of Inner, X is not initialized at elaboration,
+   --  but fromt he scope of Outer, it is.
 
 end Flow_Refinement;

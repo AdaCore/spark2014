@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                  Copyright (C) 2013, Altran UK Limited                   --
+--               Copyright (C) 2013-2014, Altran UK Limited                 --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -178,7 +178,9 @@ package Flow.Utility is
    --  Returns true if the flattened variable for F contains at least
    --  one discriminant.
 
-   function Is_Initialized_At_Elaboration (F : Flow_Id) return Boolean;
+   function Is_Initialized_At_Elaboration (F : Flow_Id;
+                                           S : Flow_Scope)
+                                           return Boolean;
    --  Returns true if F is covered by an initializes aspect. If F is not a
    --  record or direct mapping, we return false. (A magic string by
    --  definition cannot be mentioned in an initializes aspect.)

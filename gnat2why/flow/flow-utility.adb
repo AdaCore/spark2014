@@ -2,11 +2,11 @@
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
---              F L O W . C O N T R O L _ F L O W _ G R A P H               --
+--                         F L O W . U T I L I T Y                          --
 --                                                                          --
---                                 S p e c                                  --
+--                                 B o d y                                  --
 --                                                                          --
---                  Copyright (C) 2013, Altran UK Limited                   --
+--               Copyright (C) 2013-2014, Altran UK Limited                 --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -1454,11 +1454,15 @@ package body Flow.Utility is
    -- Is_Initialized_At_Elaboration --
    -----------------------------------
 
-   function Is_Initialized_At_Elaboration (F : Flow_Id) return Boolean is
+   function Is_Initialized_At_Elaboration (F : Flow_Id;
+                                           S : Flow_Scope)
+                                           return Boolean
+   is
    begin
       case F.Kind is
          when Direct_Mapping | Record_Field =>
-            return Is_Initialized_At_Elaboration (Get_Direct_Mapping_Id (F));
+            return Is_Initialized_At_Elaboration (Get_Direct_Mapping_Id (F),
+                                                  S);
 
          when Magic_String | Synthetic_Null_Export =>
             return False;

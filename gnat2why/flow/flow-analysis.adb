@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                  Copyright (C) 2013, Altran UK Limited                   --
+--               Copyright (C) 2013-2014, Altran UK Limited                 --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -511,7 +511,8 @@ package body Flow.Analysis is
       for R of Reads loop
          --  ??? Fix this for magic strings once M711-031 is implemented
          if not (R.Kind in Direct_Mapping | Record_Field and then
-                   Is_Initialized_At_Elaboration (Get_Direct_Mapping_Id (R)))
+                   Is_Initialized_At_Elaboration (Get_Direct_Mapping_Id (R),
+                                                  FA.B_Scope))
          then
             Error_Msg_Flow
               (FA        => FA,
@@ -1092,7 +1093,8 @@ package body Flow.Analysis is
 
                   elsif FA.Kind in E_Package | E_Package_Body
                     and then Is_Library_Level_Entity (FA.Analyzed_Entity)
-                    and then not Is_Initialized_At_Elaboration (Var)
+                    and then not Is_Initialized_At_Elaboration (Var,
+                                                                FA.B_Scope)
                   then
 
                      --  If check an initial_condition aspect, we make sure
@@ -3114,7 +3116,7 @@ package body Flow.Analysis is
             The_Ins := Dependency_Maps.Element (C);
 
             for G of The_Ins loop
-               if not Is_Initialized_At_Elaboration (G) then
+               if not Is_Initialized_At_Elaboration (G, FA.B_Scope) then
                   Error_Msg_Flow
                     (FA        => FA,
                      Tracefile => Tracefile,

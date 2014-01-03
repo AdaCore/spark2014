@@ -122,6 +122,7 @@ is
       with Abstract_State => State,
            Initializes    => State
       is
+         function Get_State return Boolean with Global => State;
       end P6_Outer;
 
       package body P6_Outer
@@ -134,12 +135,19 @@ is
             Y : Boolean;
          end P6_Inner;
 
+         function Get_State return Boolean
+           with Refined_Global => (X, P6_Inner.Y)
+         is
+         begin
+            return X or P6_Inner.Y;
+         end Get_State;
+
       begin
          X          := False;
          P6_Inner.Y := False;
       end P6_Outer;
    begin
-      null;
+      Z := P6_Outer.Get_State;
    end Test_06;
 
 

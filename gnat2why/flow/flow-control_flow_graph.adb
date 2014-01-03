@@ -4,9 +4,9 @@
 --                                                                          --
 --              F L O W . C O N T R O L _ F L O W _ G R A P H               --
 --                                                                          --
---                                 S p e c                                  --
+--                                 B o d y                                  --
 --                                                                          --
---                  Copyright (C) 2013, Altran UK Limited                   --
+--               Copyright (C) 2013-2014, Altran UK Limited                 --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -1825,7 +1825,8 @@ package body Flow.Control_Flow_Graph is
                      Entire_Var : constant Entity_Id := Final_F_Id.Node;
                   begin
                      Final_Atr.Is_Export := Final_Atr.Is_Export
-                       or else Is_Initialized_At_Elaboration (Entire_Var);
+                       or else Is_Initialized_At_Elaboration (Entire_Var,
+                                                              FA.B_Scope);
 
                      FA.CFG.Set_Attributes (Final_V_Id, Final_Atr);
                   end;
@@ -1958,7 +1959,8 @@ package body Flow.Control_Flow_Graph is
                         Entire_Var : constant Entity_Id := Final_F_Id.Node;
                      begin
                         Final_Atr.Is_Export := Final_Atr.Is_Export
-                          or else Is_Initialized_At_Elaboration (Entire_Var);
+                          or else Is_Initialized_At_Elaboration (Entire_Var,
+                                                                 FA.B_Scope);
 
                         FA.CFG.Set_Attributes (Final_V_Id, Final_Atr);
                      end;

@@ -1,3 +1,9 @@
-outer.adb:60:46: warning: overflow check might fail
-outer.adb:66:14: info: overflow check proved
-outer.adb:85:58: warning: overflow check might fail
+flo_review_tests.adb:49:30: "N" is not initialized
+flo_review_tests.adb:62:27: warning: statement has no effect
+flo_review_tests.adb:65:10: warning: unused variable "N"
+flo_review_tests.adb:93:13: "Y" is not initialized in "P5_Inner"
+   compilation of flo_review_tests.adb failed
+
+
+gnatprove: error during analysis and translation to intermediate language, aborting.
+gprbuild: *** compilation phase failed
