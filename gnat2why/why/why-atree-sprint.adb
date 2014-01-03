@@ -706,6 +706,7 @@ package body Why.Atree.Sprint is
       else
          P (O, Value);
       end if;
+      State.Control := Abandon_Children;
    end Integer_Constant_Pre_Op;
 
    --------------------------
@@ -721,6 +722,7 @@ package body Why.Atree.Sprint is
       P (O, "(");
       P (O, Get_Value (Node));
       P (O, ")");
+      State.Control := Abandon_Children;
    end Real_Constant_Pre_Op;
 
    -----------------
@@ -735,6 +737,7 @@ package body Why.Atree.Sprint is
       pragma Unreferenced (Node);
    begin
       P (O, "()");
+      State.Control := Abandon_Children;
    end Void_Pre_Op;
 
    ----------------------
@@ -1052,25 +1055,12 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Assert_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
       P (O, "assert { ");
-   end Assert_Pre_Op;
-
-   --------------------
-   -- Assert_Post_Op --
-   --------------------
-
-   procedure Assert_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Assert_Id)
-   is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
-   begin
+      Traverse (State, +Get_Pred (Node));
       P (O, " }");
-   end Assert_Post_Op;
+      State.Control := Abandon_Children;
+   end Assert_Pre_Op;
 
    ------------------
    -- Raise_Pre_Op --

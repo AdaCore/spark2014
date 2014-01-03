@@ -206,10 +206,6 @@ private
      (State : in out Printer_State;
       Node  : W_Assert_Id);
 
-   procedure Assert_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Assert_Id);
-
    procedure Raise_Pre_Op
      (State : in out Printer_State;
       Node  : W_Raise_Id);
