@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                        Copyright (C) 2012-2013, AdaCore                  --
+--                        Copyright (C) 2012-2014, AdaCore                  --
 --                                                                          --
 -- gnatmerge is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
