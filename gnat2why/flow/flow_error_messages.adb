@@ -6,7 +6,8 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                  Copyright (C) 2013, Altran UK Limited                   --
+--                  Copyright (C) 2013-2014, Altran UK Limited              --
+--                  Copyright (C) 2013-2014, AdaCore                        --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -443,15 +444,16 @@ package body Flow_Error_Messages is
 
       if Warning then
          Suppr_Reason := Warnings_Suppressed (Sloc (N));
+
          if Suppr_Reason = No_String then
             declare
                Temp : aliased String := To_String (M);
             begin
                Suppr_Reason :=
                  Warning_Specifically_Suppressed
-                   (Sloc (N),
-                    Temp'Unchecked_Access);
+                   (Sloc (N), Temp'Unchecked_Access, Tag => "");
             end;
+
             if Suppr_Reason = No_String
               and then Warning_Disabled_For_Entity
             then
