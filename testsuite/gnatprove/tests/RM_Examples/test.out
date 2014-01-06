@@ -91,20 +91,19 @@ stacks_2.adb:51:30: warning: range check might fail
 stacks_2.adb:54:46: warning: array index check might fail
 stacks_2.ads:17:21: warning: postcondition might fail, requires not (Is_Empty)
 stacks_2.ads:21:16: warning: postcondition might fail, requires not (Is_Full)
-externals.adb:54:04: "Out_Reg" is not initialized in "Externals"
+externals.adb:54:04: "Out_Reg" is not written in "Externals"
 externals.adb:55:11: warning: pragma "Volatile" is not yet supported
 externals.adb:55:11: warning: it is currently ignored
 externals.adb:56:11: warning: pragma "Async_Readers" is not yet supported
 externals.adb:56:11: warning: it is currently ignored
 externals.adb:57:11: warning: pragma "Effective_Writes" is not yet supported
 externals.adb:57:11: warning: it is currently ignored
-externals.adb:60:04: "In_Reg" is not initialized in "Externals"
 externals.adb:61:11: warning: pragma "Volatile" is not yet supported
 externals.adb:61:11: warning: it is currently ignored
 externals.adb:62:11: warning: pragma "Async_Writers" is not yet supported
 externals.adb:62:11: warning: it is currently ignored
 externals.adb:75:41: warning: unused initial value of "In_Reg"
-externals.adb:76:41: warning: "Out_Reg" might not be initialized
+externals.adb:76:41: warning: "Out_Reg" might not be written
 externals.adb:91:20: warning: unused assignment
 externals.adb:94:13: warning: statement has no effect
 gprbuild: *** compilation phase failed

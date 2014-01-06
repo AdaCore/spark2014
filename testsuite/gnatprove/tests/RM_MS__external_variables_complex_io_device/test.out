@@ -1,15 +1,14 @@
-device.adb:12:04: "Statusport" is not initialized in "Device"
 device.adb:13:11: warning: it is currently ignored
 device.adb:13:11: warning: pragma "Volatile" is not yet supported
 device.adb:14:11: warning: it is currently ignored
 device.adb:14:11: warning: pragma "Async_Writers" is not yet supported
-device.adb:17:04: "Register" is not initialized in "Device"
+device.adb:17:04: "Register" is not written in "Device"
 device.adb:18:11: warning: it is currently ignored
 device.adb:18:11: warning: pragma "Volatile" is not yet supported
 device.adb:19:11: warning: it is currently ignored
 device.adb:19:11: warning: pragma "Async_Readers" is not yet supported
 device.adb:41:41: warning: unused initial value of "Statusport"
-device.adb:42:41: warning: "Register" might not be initialized
+device.adb:42:41: warning: "Register" might not be written
 device.adb:55:13: warning: statement has no effect
 device.adb:55:13: warning: unused assignment to "Statusport"
 device.adb:55:22: warning: unused assignment to "Ok"
