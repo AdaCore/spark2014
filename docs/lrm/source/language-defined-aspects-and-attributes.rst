@@ -16,8 +16,8 @@ Alignment (subtype)	      Yes
 All_Calls_Remote	      No
 Asynchronous       	      No
 Atomic          	      Yes
-Atomic_Components  	      ?
-Attach_Handler     	      No
+Atomic_Components  	      Yes
+Attach_Handler     	      No                     No tasking
 Bit_Order		      Yes
 Coding			      Yes
 Component_Size		      Yes
@@ -37,15 +37,15 @@ External_Name		      Yes
 External_Tag		      No		     No tagged types
 Implicit_Dereference	      No		     No access types
 Import             	      Yes
-Independent        	      ?
-Independent_Components 	      ?
+Independent        	      Yes
+Independent_Components 	      Yes
 Inline             	      Yes
 Interrupt_Handler  	      No		     No tasking
 Interrupt_Priority 	      No		     No tasking
 Iterator_Element	      No
 Layout (record)		      Yes
 Link_Name     	      	      Yes
-Machine_Radix		      ?
+Machine_Radix		      Yes
 No_Return          	      Yes
 Output			      No		     No streams
 Pack              	      Yes
@@ -62,7 +62,7 @@ Remote_Types		      No
 Shared_Passive		      No		     No tasking
 Size (object)		      Yes
 Size (subtype)		      Yes
-Small			      ?
+Small			      Yes
 Static_Predicate	      Yes
 Storage_Pool		      No		     No access types
 Storage_Size (access)         No		     No access types
@@ -114,9 +114,7 @@ Language-Defined Attributes
 
 .. _tu-fe-language_defined_attributes-01:
 
-1. The following attributes are in |SPARK| no other Ada language
-   defined attributes are in SPARK:
-
+1. The following attributes are in |SPARK|.
 
 ===================================== ====================== ====================================================
 Attribute                              Allowed in SPARK 2014 Comment
@@ -125,7 +123,7 @@ P'Access			      No		     No access types
 X'Access	    		      No
 X'Address	    		      Warn		     Warning in pedantic mode
 S'Adjacent	    		      Yes
-S'Aft				      ?
+S'Aft				      Yes
 S'Alignment	    		      Warn                   Warning in pedantic mode
 X'Alignment	    		      Warn		     Warning in pedantic mode
 S'Base				      Yes
@@ -138,11 +136,11 @@ S'Class				      No		     No tagged types
 X'Component_Size    		      Warn     		     Warning in pedantic mode
 S'Compose	    		      No
 A'Constrained			      Yes
-S'Copy_Sign	    		      Yes		     Possibly limited at first
+S'Copy_Sign	    		      Yes
 E'Count				      No		     No tasking
 S'Definite	    		      Yes
-S'Delta				      ?
-S'Denorm	    		      Yes		     Not supported at the moment
+S'Delta				      Yes
+S'Denorm	    		      Yes
 S'Digits	    		      Yes
 S'Exponent	    		      No
 S'External_Tag			      No	             No tagged types
@@ -152,12 +150,12 @@ A'First(N)	    		      Yes
 R.C'First_Bit			      Warn		     Warning in Pedantic mode
 S'First_Valid			      Yes
 S'Floor				      Yes
-S'Fore				      ?
+S'Fore				      Yes
 S'Fraction	    		      No
 X'Has_Same_Storage  		      No
-E'Identity	    		      ?
+E'Identity	    		      No
 T'Identity	    		      No		     No tasking
-S'Image				      Y
+S'Image				      Yes
 S'Class'Input			      No		     No tagged types and no streams
 S'Input				      No		     No streams
 A'Last				      Yes
@@ -165,11 +163,11 @@ S'Last				      Yes
 A'Last(N)	    		      Yes
 R.C'Last_Bit			      Warn		     Warning in pedantic mode
 S'Last_Valid			      Yes
-S'Leading_Part			      No		     As 'Exponent is not supported
+S'Leading_Part			      No
 A'Length	    		      Yes
 A'Length(N)	    		      Yes
 X'Loop_Entry        		      Yes
-S'Machine	    		      Yes		     What use is this?
+S'Machine	    		      Yes
 S'Machine_Emax			      Yes
 S'Machine_Emin			      Yes
 S'Machine_Mantissa  		      Yes
@@ -178,15 +176,15 @@ S'Machine_Radix			      Yes
 S'Machine_Rounding  		      Yes
 S'Machine_Rounds    		      Yes
 S'Max				      Yes
-S'Max_Alignment_For_Allocation 	      No	             No access type
-S'Max_Size_In_Storage_Elements 	      No		     No access type
+S'Max_Alignment_For_Allocation 	      No	             No access types
+S'Max_Size_In_Storage_Elements 	      No		     No access types
 S'Min				      Yes
 S'Mod				      Yes
-S'Model				      ???
-S'Model_Emin			      ???
-S'Model_Epsilon			      ???
-S'Model_Mantissa		      ???
-S'Model_Small			      ???
+S'Model				      Yes
+S'Model_Emin			      Yes
+S'Model_Epsilon			      Yes
+S'Model_Mantissa		      Yes
+S'Model_Small			      Yes
 S'Modulus	   		      Yes
 X'Old				      Yes
 S'Class'Output			      No		     No tagged types and no streams
@@ -204,12 +202,12 @@ S'Class'Read			      No		     No tagged types
 S'Read				      No		     No streams
 S'Remainder	   		      Yes
 F'Result	   		      Yes
-S'Round				      ?			     Are we supporting decimal fixed points?
+S'Round				      Yes
 S'Rounding	   		      Yes
-S'Safe_First			      ???
-S'Safe_Last	    		      ???
-S'Scale				      ?	                     Are we supporting decimal fixed points?
-S'Scaling	   		      ?
+S'Safe_First			      Yes
+S'Safe_Last	    		      Yes
+S'Scale				      Yes
+S'Scaling	   		      Yes
 S'Size				      Warn                   Warning in pedantic
 X'Size				      Warn     		     Warning in pedantic
 S'Small				      Yes
@@ -226,7 +224,7 @@ S'Unbiased_Rounding 		      Yes
 X'Unchecked_Access  		      No		     No access types or aliases
 X'Update            		      Yes
 S'Val				      Yes
-X'Valid				      Yes	             First release does not use this in proofs
+X'Valid				      Yes	             Assumed to be True at present
 S'Value				      Yes
 P'Version	  		      Yes
 S'Wide_Image			      Yes
@@ -241,5 +239,3 @@ S'Write				      No		     No streams
 ===================================== ====================== ====================================================
 
 .. _etu-language_defined_attributes:
-
-.. todo:: Complete this section
