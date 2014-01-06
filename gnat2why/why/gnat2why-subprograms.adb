@@ -1219,7 +1219,6 @@ package body Gnat2Why.Subprograms is
                           New_Handler
                       (Name => To_Ident (WNE_Result_Exc),
                        Def  => New_Void)));
-            Why_Body := Sequence (Why_Body, Post_Check);
          end;
 
          --  Refined_Post
@@ -1239,6 +1238,11 @@ package body Gnat2Why.Subprograms is
                  Post =>
                      +Compute_Spec (Params, E, Name_Refined_Post, EW_Pred));
          end if;
+
+         --  check absence of runtime errors in Post and RTE + validity of
+         --  contract cases
+
+         Why_Body := Sequence (Why_Body, Post_Check);
 
          --  return the result variable, so that result = result_var in the
          --  postcondition
