@@ -1,5 +1,4 @@
 package DevTest
 is
-   pragma Elaborate_Body (DevTest);
-   
+   pragma Elaborate_Body;
 end DevTest;

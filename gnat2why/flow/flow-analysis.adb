@@ -2124,6 +2124,10 @@ package body Flow.Analysis is
                      Atr_U : constant V_Attributes :=
                        FA.PDG.Get_Attributes (V_Use);
                      V_Pr  : Flow_Graphs.Vertex_Id;
+
+                     Action : constant String := (if Has_Async_Readers (Key_I)
+                                                  then "written"
+                                                  else "initialized");
                   begin
 
                      --  V_Use is a vertex that depends on V_Initial
@@ -2149,7 +2153,7 @@ package body Flow.Analysis is
                               Error_Msg_Flow
                                 (FA        => FA,
                                  Tracefile => Tracefile,
-                                 Msg       => "& might not be initialized",
+                                 Msg       => "& might not be " & Action,
                                  N         => Find_Global
                                    (FA.Analyzed_Entity, Key_I),
                                  F1        => Key_I,
@@ -2159,7 +2163,7 @@ package body Flow.Analysis is
                               Error_Msg_Flow
                                 (FA        => FA,
                                  Tracefile => Tracefile,
-                                 Msg       => "& is not initialized",
+                                 Msg       => "& is not " & Action,
                                  N         => Find_Global
                                    (FA.Analyzed_Entity, Key_I),
                                  F1        => Key_I,
@@ -2211,8 +2215,8 @@ package body Flow.Analysis is
                               Error_Msg_Flow
                                 (FA        => FA,
                                  Tracefile => Tracefile,
-                                 Msg       => "& might not be " &
-                                   "initialized in &",
+                                 Msg       => "& might not be " & Action &
+                                   " in &",
                                  N         => Error_Location (FA.PDG, V_Pr),
                                  F1        => Key_I,
                                  F2        => Direct_Mapping_Id
@@ -2223,7 +2227,7 @@ package body Flow.Analysis is
                               Error_Msg_Flow
                                 (FA        => FA,
                                  Tracefile => Tracefile,
-                                 Msg       => "& is not initialized in &",
+                                 Msg       => "& is not " & Action & " in &",
                                  N         => Error_Location (FA.PDG, V_Pr),
                                  F1        => Key_I,
                                  F2        => Direct_Mapping_Id
@@ -2255,7 +2259,7 @@ package body Flow.Analysis is
                            Error_Msg_Flow
                              (FA        => FA,
                               Tracefile => Tracefile,
-                              Msg       => "& might not be initialized",
+                              Msg       => "& might not be " & Action,
                               N         => Error_Location (FA.PDG, V_Pr),
                               F1        => Key_I,
                               Tag       => "uninitialized",
@@ -2264,7 +2268,7 @@ package body Flow.Analysis is
                            Error_Msg_Flow
                              (FA        => FA,
                               Tracefile => Tracefile,
-                              Msg       => "& is not initialized",
+                              Msg       => "& is not " & Action,
                               N         => Error_Location (FA.PDG, V_Pr),
                               F1        => Key_I,
                               Tag       => "uninitialized");

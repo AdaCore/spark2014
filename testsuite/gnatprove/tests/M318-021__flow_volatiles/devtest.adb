@@ -1,7 +1,6 @@
 package body DevTest
 is
    
-
    Vol_AW : Integer with Volatile, Async_Writers;
 
    Vol_AW_ER : Integer with Volatile, Async_Writers, Effective_Reads;
@@ -41,7 +40,8 @@ is
                                    Event : in out Integer)
    with Global => (In_Out => Vol_AW_ER),
         Depends => (X         => Vol_AW_ER,
-                    Vol_AW_ER => Vol_AW_ER)
+                    Vol_AW_ER => Vol_AW_ER,
+                    Event     => (Event, Vol_AW_ER))
    is
    begin
       loop

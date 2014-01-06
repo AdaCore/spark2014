@@ -380,6 +380,12 @@ package body Flow.Control_Flow_Graph.Utility is
                end if;
             end if;
 
+            if Has_Async_Writers (F_Ent) then
+               --  SRM 7.1.2(14) states that objects with async_writers are
+               --  always considered to be initialized.
+               A.Is_Initialized := True;
+            end if;
+
             A.Is_Loop_Parameter := Ekind (Entire_Var) = E_Loop_Parameter;
 
             A.Variables_Defined := Flow_Id_Sets.To_Set (Change_Variant
