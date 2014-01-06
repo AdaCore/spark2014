@@ -2069,7 +2069,7 @@ package body SPARK_Definition is
 
          --  These attributes are supported, but generate a warning
          --  in "pedantic" mode, owing to their implemention-
-         --  defined status. These are the attributed marked
+         --  defined status. These are the attributes marked
          --  "Warn" in RM 16.2
          when Attribute_Address     |
            Attribute_Alignment      |
