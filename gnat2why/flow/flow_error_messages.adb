@@ -450,8 +450,9 @@ package body Flow_Error_Messages is
                Temp : aliased String := To_String (M);
             begin
                Suppr_Reason :=
-                 Warning_Specifically_Suppressed
-                   (Sloc (N), Temp'Unchecked_Access, Tag => "");
+                 Warning_Specifically_Suppressed (Loc => Sloc (N),
+                                                  Msg => Temp'Unchecked_Access,
+                                                  Tag => Tag);
             end;
 
             if Suppr_Reason = No_String
