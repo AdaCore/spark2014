@@ -1790,7 +1790,6 @@ package body SPARK_Definition is
               N_Generic_Subprogram_Declaration         |
               N_Implicit_Label_Declaration             |
               N_Incomplete_Type_Declaration            |
-              N_Integer_Literal                        |
               N_Itype_Reference                        |
               N_Label                                  |
               N_Null_Statement                         |
@@ -1799,7 +1798,6 @@ package body SPARK_Definition is
               N_Package_Instantiation                  |
               N_Package_Renaming_Declaration           |
               N_Procedure_Instantiation                |
-              N_Real_Literal                           |
               N_Record_Representation_Clause           |
               N_String_Literal                         |
               N_Subprogram_Renaming_Declaration        |
@@ -1808,6 +1806,19 @@ package body SPARK_Definition is
               N_Use_Type_Clause                        |
               N_Validate_Unchecked_Conversion          =>
             null;
+
+         when N_Real_Literal |
+           N_Integer_Literal =>
+
+            --  If a literal is the result of the front-end
+            --  rewriting a static attribute, then we mark
+            --  the original node.
+            if not Comes_From_Source (N) and then
+              Is_Rewrite_Substitution (N) and then
+              Nkind (Original_Node (N)) = N_Attribute_Reference
+            then
+               Mark_Attribute_Reference (Original_Node (N));
+            end if;
 
          --  Object renamings are rewritten by expansion, but they are kept in
          --  the tree, so just ignore them.
@@ -2523,7 +2534,6 @@ package body SPARK_Definition is
 
    begin
       --  Mark entity
-
       Mark_Entity (E);
    end Mark_Object_Declaration;
 
