@@ -1,0 +1,10 @@
+pedantic.adb:8:15: warning: attribute "Alignment" has an implementation-defined value
+pedantic.adb:14:15: warning: attribute "Alignment" has an implementation-defined value
+pedantic.adb:20:15: warning: attribute "Address" has an implementation-defined value
+pedantic.adb:32:15: warning: attribute "Component_Size" has an implementation-defined value
+pedantic.adb:38:18: warning: attribute "First_Bit" has an implementation-defined value
+pedantic.adb:44:18: warning: attribute "Last_Bit" has an implementation-defined value
+pedantic.adb:50:18: warning: attribute "Position" has an implementation-defined value
+pedantic.adb:56:15: warning: attribute "Size" has an implementation-defined value
+pedantic.adb:62:15: warning: attribute "Size" has an implementation-defined value
+pedantic.ads:12:29: warning: attribute "Alignment" has an implementation-defined value

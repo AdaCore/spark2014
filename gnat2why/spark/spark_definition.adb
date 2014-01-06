@@ -2079,7 +2079,11 @@ package body SPARK_Definition is
            Attribute_Position       |
            Attribute_Size =>
 
-            null; --  TBD
+            if Gnat2Why_Args.Pedantic then
+               Error_Msg_Name_1 := Aname;
+               Error_Msg_N
+                 ("?attribute % has an implementation-defined value", N);
+            end if;
 
          when Attribute_Update =>
             declare
