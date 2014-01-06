@@ -2063,10 +2063,11 @@ package body SPARK_Definition is
            Attribute_Wide_Wide_Image   |
            Attribute_Wide_Wide_Value   |
            Attribute_Wide_Wide_Width   |
-           Attribute_Width =>
+           Attribute_Width
+         =>
             null;
 
-         --  These attributes are suppored, but generate a warning
+         --  These attributes are supported, but generate a warning
          --  in "pedantic" mode, owing to their implemention-
          --  defined status. These are the attributed marked
          --  "Warn" in RM 16.2
@@ -2077,8 +2078,8 @@ package body SPARK_Definition is
            Attribute_First_Bit      |
            Attribute_Last_Bit       |
            Attribute_Position       |
-           Attribute_Size =>
-
+           Attribute_Size
+         =>
             if Gnat2Why_Args.Pedantic then
                Error_Msg_Name_1 := Aname;
                Error_Msg_N
