@@ -8,3 +8,4 @@ pedantic.adb:50:18: warning: attribute "Position" has an implementation-defined 
 pedantic.adb:56:15: warning: attribute "Size" has an implementation-defined value
 pedantic.adb:62:15: warning: attribute "Size" has an implementation-defined value
 pedantic.ads:12:29: warning: attribute "Alignment" has an implementation-defined value
+pedantic.ads:15:30: warning: attribute "Alignment" has an implementation-defined value

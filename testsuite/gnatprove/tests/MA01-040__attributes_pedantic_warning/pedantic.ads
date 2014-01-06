@@ -11,6 +11,9 @@ is
 
    C : constant Natural := R'Alignment;
 
+   type T is range 1 .. 10;
+   C2 : constant Natural := T'Alignment; -- static
+
    function Alignment_Of (X : in R) return Natural;
 
    function Alignment_Of_R return Natural;
