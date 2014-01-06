@@ -1324,7 +1324,9 @@ package body Gnat2Why.Subprograms is
       --  In the case of a No_Return Subprogram, there is no real location for
       --  the postcondition; simply return the subp entity node.
 
-      if Prag = Name_Postcondition and then No_Return (E) then
+      if Prag in Name_Postcondition | Name_Post
+        and then No_Return (E)
+      then
          return E;
       end if;
 
