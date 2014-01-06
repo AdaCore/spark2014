@@ -20,14 +20,15 @@ is
    end Test_01;
 
    --  This is correct and should raise no errors or warnings.
-   --  This should be fixed/enabled once M523-040 is implemented.
+   --  This should be fixed/enabled once MC20-035 is implemented.
+
    --  procedure Test_02 (X :     Integer;
    --                     Y : out Integer)
    --  with
    --     Depends => (Y => X)
    --  is
    --     N : Integer := X;
-
+   --
    --     package P2
    --     with Initializes => (M => N)
    --     is
