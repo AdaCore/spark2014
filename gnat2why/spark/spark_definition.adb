@@ -49,6 +49,9 @@ with SPARK_Util;                         use SPARK_Util;
 
 with Gnat2Why_Args;
 
+--  with Output; use Output;
+--  with Treepr; use Treepr;
+
 package body SPARK_Definition is
 
    -----------------------------------------
@@ -1985,34 +1988,98 @@ package body SPARK_Definition is
       Attr_Id : constant Attribute_Id := Get_Attribute_Id (Aname);
 
    begin
+      --  This case statement must agree with the table specified
+      --  in SPARK RM 16.2 "Language Defined Attributes".
+      --
+      --  See also the analysis in Gnat2Why.Expr.Transform_Attr
+      --  which defines which of these attributes are supported
+      --  in proof.
       case Attr_Id is
+
          --  Support special aspects defined in SPARK
-
-         when Attribute_Loop_Entry |
-
-         --  Support a subset of the aspects defined in Ada RM
-
-           Attribute_Ceiling    |
-           Attribute_Image      |
-           Attribute_First      |
-           Attribute_Floor      |
-           Attribute_Last       |
-           Attribute_Length     |
-           Attribute_Max        |
-           Attribute_Min        |
-           Attribute_Mod        |
-           Attribute_Modulus    |
-           Attribute_Old        |
-           Attribute_Pos        |
-           Attribute_Pred       |
-           Attribute_Range      |
-           Attribute_Result     |
-           Attribute_Rounding   |
-           Attribute_Truncation |
-           Attribute_Succ       |
-           Attribute_Val        |
-           Attribute_Value      =>
+         when Attribute_Loop_Entry =>
             null;
+
+         --  Support a subset of the aspects defined in Ada RM. These
+         --  are the attributes marked "Yes" in RM 16.2
+         when Attribute_Adjacent       |
+           Attribute_Aft               |
+           Attribute_Body_Version      |
+           Attribute_Ceiling           |
+           Attribute_Constrained       |
+           Attribute_Copy_Sign         |
+           Attribute_Definite          |
+           Attribute_Delta             |
+           Attribute_Denorm            |
+           Attribute_Digits            |
+           Attribute_First             |
+           Attribute_First_Valid       |
+           Attribute_Floor             |
+           Attribute_Fore              |
+           Attribute_Image             |
+           Attribute_Last              |
+           Attribute_Last_Valid        |
+           Attribute_Length            |
+           Attribute_Machine           |
+           Attribute_Machine_Emax      |
+           Attribute_Machine_Emin      |
+           Attribute_Machine_Mantissa  |
+           Attribute_Machine_Overflows |
+           Attribute_Machine_Radix     |
+           Attribute_Machine_Rounding  |
+           Attribute_Machine_Rounds    |
+           Attribute_Max               |
+           Attribute_Min               |
+           Attribute_Mod               |
+           Attribute_Model             |
+           Attribute_Model_Emin        |
+           Attribute_Model_Epsilon     |
+           Attribute_Model_Mantissa    |
+           Attribute_Model_Small       |
+           Attribute_Modulus           |
+           Attribute_Old               |
+           Attribute_Partition_ID      |
+           Attribute_Pos               |
+           Attribute_Pred              |
+           Attribute_Range             |
+           Attribute_Remainder         |
+           Attribute_Result            |
+           Attribute_Round             |
+           Attribute_Rounding          |
+           Attribute_Safe_First        |
+           Attribute_Safe_Last         |
+           Attribute_Scale             |
+           Attribute_Scaling           |
+           Attribute_Small             |
+           Attribute_Succ              |
+           Attribute_Truncation        |
+           Attribute_Unbiased_Rounding |
+           Attribute_Val               |
+           Attribute_Value             |
+           Attribute_Version           |
+           Attribute_Wide_Image        |
+           Attribute_Wide_Value        |
+           Attribute_Wide_Width        |
+           Attribute_Wide_Wide_Image   |
+           Attribute_Wide_Wide_Value   |
+           Attribute_Wide_Wide_Width   |
+           Attribute_Width =>
+            null;
+
+         --  These attributes are suppored, but generate a warning
+         --  in "pedantic" mode, owing to their implemention-
+         --  defined status. These are the attributed marked
+         --  "Warn" in RM 16.2
+         when Attribute_Address     |
+           Attribute_Alignment      |
+           Attribute_Bit_Order      |
+           Attribute_Component_Size |
+           Attribute_First_Bit      |
+           Attribute_Last_Bit       |
+           Attribute_Position       |
+           Attribute_Size =>
+
+            null; --  TBD
 
          when Attribute_Update =>
             declare
@@ -2039,7 +2106,7 @@ package body SPARK_Definition is
             Violation_Detected := True;
             if SPARK_Pragma_Is (Opt.On) then
                Error_Msg_Name_1 := Aname;
-               Error_Msg_N ("attribute % is not yet supported", N);
+               Error_Msg_N ("attribute % is not permitted in SPARK", N);
             end if;
             return;
       end case;

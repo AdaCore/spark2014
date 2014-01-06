@@ -3599,6 +3599,10 @@ package body Gnat2Why.Expr is
       Var     : constant Node_Id      := Prefix (Expr);
       T       : W_Expr_Id;
    begin
+      --  The attributes supported here must be a subset
+      --  of those supported by a language as a whole.
+      --  This case statement must therefore maintain that relationship
+      --  with that in SPARK_Definition.Mark_Attribute_Reference
       case Attr_Id is
          when Attribute_Result =>
             if Params.Phase in Generate_VCs | Generate_For_Body then
