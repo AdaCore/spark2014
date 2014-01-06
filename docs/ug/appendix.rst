@@ -386,6 +386,15 @@ Features Not Yet Implemented in Proof
    instance. Instead, a wrapper expression function can be defined that simply
    calls the operator.
 
+#. The following attributes are not yet supported in proof: Address, Adjacent,
+   Aft, Alignment, Bit_Order, Body_Version, Component_Size, Constrained, Copy_Sign,
+   Definite, Denorm, First_Bit, First_Valid, Fore, Last_Bit, Last_Valid, Machine,
+   all Machine_* attributes, Model, all Model_* attributes, Partition_Id,
+   Position, Remainder, Round, Safe_First, Safe_Last, Scale, Scaling,
+   Size, Small, Unbiased_Rounding, Version, Wide_Image, Wide_Value,
+   Wide_Width, Wide_Wide_Image, Wide_Wide_Value, Wide_Wide_Width,
+   Width.
+
 Rules and Restrictions Not Yet Checked
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
