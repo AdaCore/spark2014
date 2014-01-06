@@ -36,23 +36,23 @@ package Flow_Error_Messages is
    --  Creates the "unit.flow" file that will later be populated by
    --  all flow messages that were emitted in JSON format.
 
-   procedure Error_Msg_Flow (FA        : Flow_Analysis_Graphs;
-                             Tracefile : out Unbounded_String;
-                             Msg       : String;
-                             N         : Node_Id;
-                             F1        : Flow_Id := Null_Flow_Id;
-                             F2        : Flow_Id := Null_Flow_Id;
-                             Tag       : String  := "";
-                             SRM_Ref   : String  := "";
-                             Warning   : Boolean := False)
+   procedure Error_Msg_Flow
+     (FA        : Flow_Analysis_Graphs;
+      Tracefile : out Unbounded_String;
+      Msg       : String;
+      N         : Node_Id;
+      F1        : Flow_Id := Null_Flow_Id;
+      F2        : Flow_Id := Null_Flow_Id;
+      Tag       : String  := "";
+      SRM_Ref   : String  := "";
+      Warning   : Boolean := False)
    with Pre => (if Present (F2) then Present (F1));
-   --  Output a message attached to the given node with a substitution
-   --  using F1 and F2. Use & or # as the substitution characters,
-   --  which quote the flow id with or without double quotes
-   --  respectively.  It also adds a JSON entry in the "unit.flow"
-   --  file.
+   --  Output a message attached to the given node with a substitution using F1
+   --  and F2. Use & or # as the substitution characters, which quote the flow
+   --  id with or without double quotes respectively. It also adds a JSON entry
+   --  in the "unit.flow" file.
    --
    --  SRM_Ref should be a pointer into the SPARK RM. For example:
-   --     "1.2.3 (4)"
+   --     "1.2.3(4)"
 
 end Flow_Error_Messages;

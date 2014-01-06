@@ -702,13 +702,13 @@ package body Flow.Utility is
    --  Get_Variable_Set  --
    ------------------------
 
-   function Get_Variable_Set (N                            : Node_Id;
-                              Scope                        : Flow_Scope;
-                              Local_Constants              : Node_Sets.Set;
-                              Reduced                      : Boolean := False;
-                              Allow_Statements             : Boolean := False;
-                              Expand_Synthesized_Constants : Boolean := False)
-                              return Flow_Id_Sets.Set
+   function Get_Variable_Set
+     (N                            : Node_Id;
+      Scope                        : Flow_Scope;
+      Local_Constants              : Node_Sets.Set;
+      Reduced                      : Boolean := False;
+      Allow_Statements             : Boolean := False;
+      Expand_Synthesized_Constants : Boolean := False) return Flow_Id_Sets.Set
    is
       VS : Flow_Id_Sets.Set;
 
@@ -813,9 +813,9 @@ package body Flow.Utility is
                         if Expand_Synthesized_Constants and
                           not Comes_From_Source (Entity (N))
                         then
-                           --  To expand synthesized constants, we need
-                           --  top find the original expression and
-                           --  find the variable set of that
+                           --  To expand synthesized constants, we need to find
+                           --  the original expression and find the variable
+                           --  set of that.
                            declare
                               Obj_Decl : constant Node_Id :=
                                 Parent (Entity (N));
@@ -959,18 +959,21 @@ package body Flow.Utility is
       end Proc;
 
       procedure Traverse is new Traverse_Proc (Process => Proc);
+
+   --  Start of Get_Variable_Set
+
    begin
       Traverse (N);
       return Filter_Out_Non_Local_Constants (VS, Local_Constants);
    end Get_Variable_Set;
 
-   function Get_Variable_Set (L                            : List_Id;
-                              Scope                        : Flow_Scope;
-                              Local_Constants              : Node_Sets.Set;
-                              Reduced                      : Boolean := False;
-                              Allow_Statements             : Boolean := False;
-                              Expand_Synthesized_Constants : Boolean := False)
-                              return Flow_Id_Sets.Set
+   function Get_Variable_Set
+     (L                            : List_Id;
+      Scope                        : Flow_Scope;
+      Local_Constants              : Node_Sets.Set;
+      Reduced                      : Boolean := False;
+      Allow_Statements             : Boolean := False;
+      Expand_Synthesized_Constants : Boolean := False) return Flow_Id_Sets.Set
    is
       VS : Flow_Id_Sets.Set;
       P  : Node_Id;

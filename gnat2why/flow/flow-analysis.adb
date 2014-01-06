@@ -533,41 +533,51 @@ package body Flow.Analysis is
    -- Sanity_Check --
    ------------------
 
-   procedure Sanity_Check (FA   : Flow_Analysis_Graphs;
-                           Sane : out Boolean)
+   procedure Sanity_Check
+     (FA   : Flow_Analysis_Graphs;
+      Sane : out Boolean)
    is
       Tracefile  : Unbounded_String;
       Entry_Node : Node_Id;
 
-      function Check_Expressions_Variable_Free (N : Node_Id)
-                                                return Traverse_Result;
-      --  Check that expressions used in certain contexts are
-      --  free of variables, as per SRM 4.4 (2).  This function
-      --  deals witht he following contexts:
+      function Check_Expressions_Variable_Free
+        (N : Node_Id) return Traverse_Result;
+      --  Check that expressions used in certain contexts are free of
+      --  variables, as per SPARK RM 4.4(2). This function deals with
+      --  the following contexts:
       --     Component Declarations
       --     Discriminant Specifications
 
-      function Check_Expressions_Variable_Free (N : Node_Id)
-                                                return Traverse_Result
+      -------------------------------------
+      -- Check_Expressions_Variable_Free --
+      -------------------------------------
+
+      function Check_Expressions_Variable_Free
+        (N : Node_Id) return Traverse_Result
       is
          ES1 : constant String := "default initialization ";
          ES2 : constant String := "subtype constraint ";
          ES3 : constant String := "cannot depend on &";
 
-         procedure Check_Flow_Id_Set (Flow_Ids : Ordered_Flow_Id_Sets.Set;
-                                      Err_Msg  : String;
-                                      Err_Node : Node_Id);
-         --  Iterates over Flow_Ids. An error is issued for any
-         --  member of that set which does NOT denote a constant
+         procedure Check_Flow_Id_Set
+           (Flow_Ids : Ordered_Flow_Id_Sets.Set;
+            Err_Msg  : String;
+            Err_Node : Node_Id);
+         --  Iterates over Flow_Ids. An error is issued for any member of that
+         --  set which does NOT denote a constant.
 
-         procedure Check_Flow_Id_Set (Flow_Ids : Ordered_Flow_Id_Sets.Set;
-                                      Err_Msg  : String;
-                                      Err_Node : Node_Id)
-         is
+         -----------------------
+         -- Check_Flow_Id_Set --
+         -----------------------
+
+         procedure Check_Flow_Id_Set
+           (Flow_Ids : Ordered_Flow_Id_Sets.Set;
+            Err_Msg  : String;
+            Err_Node : Node_Id) is
          begin
             for F of Flow_Ids loop
-               if F.Kind = Direct_Mapping and then
-                 not Is_Constant_Object (F.Node)
+               if F.Kind = Direct_Mapping
+                 and then not Is_Constant_Object (F.Node)
                then
                   Error_Msg_Flow
                     (FA        => FA,
@@ -581,14 +591,16 @@ package body Flow.Analysis is
             end loop;
          end Check_Flow_Id_Set;
 
+      --  Start of Check_Expressions_Variable_Free
+
       begin
          case Nkind (N) is
             when N_Subprogram_Body |
                  N_Package_Specification |
                  N_Package_Body =>
                --  We do not want to process declarations of any nested
-               --  subprograms or packages.  These will be analysed
-               --  by their own pass of flow analysis.
+               --  subprograms or packages. These will be analyzed by their
+               --  own pass of flow analysis.
                if N = Entry_Node then
                   return OK;
                else
@@ -597,24 +609,24 @@ package body Flow.Analysis is
 
             when N_Loop_Parameter_Specification =>
                --  In a loop parameter specification, variables are allowed
-               --  in the range constraint, so the tree walk is pruned here
+               --  in the range constraint, so the tree walk is pruned here.
                return Skip;
 
             when N_Object_Renaming_Declaration =>
-               --  Unimplemented.  TBD pending resolution of M611-051
+               --  ??? Unimplemented. TBD pending resolution of M611-051
                return OK;
 
             when N_Subtype_Indication =>
 
-               declare
+               Subtype_Indication : declare
                   C : constant Node_Id := Constraint (N);
                begin
                   case Nkind (C) is
                      when N_Range_Constraint =>
                         declare
                            --  Note that fetching the variable set for C
-                           --  returns the union of the sets of the
-                           --  low-bound and the high-bound
+                           --  returns the union of the sets of the low-bound
+                           --  and the high-bound.
                            Deps : constant Ordered_Flow_Id_Sets.Set :=
                              To_Ordered_Flow_Id_Set
                                (Get_Variable_Set
@@ -655,7 +667,7 @@ package body Flow.Analysis is
                         return Skip;
 
                      when N_Digits_Constraint |
-                       N_Delta_Constraint =>
+                          N_Delta_Constraint =>
                         --  Ada LRM requires these constraints to be static,
                         --  so no further action required here.
                         return Skip;
@@ -663,7 +675,8 @@ package body Flow.Analysis is
                      when others =>
                         return OK;
                   end case;
-               end;
+               end Subtype_Indication;
+
             when N_Component_Declaration |
                  N_Discriminant_Specification =>
 
@@ -695,6 +708,8 @@ package body Flow.Analysis is
 
       procedure Check_Expressions is
         new Traverse_Proc (Check_Expressions_Variable_Free);
+
+   --  Start of Sanity_Check
 
    begin
       --  Innocent until proven guilty.
