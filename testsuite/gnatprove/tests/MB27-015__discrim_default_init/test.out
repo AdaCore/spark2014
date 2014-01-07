@@ -1,0 +1,10 @@
+discrims.adb:16:33: default initialization cannot depend on "X" (SPARK RM 4.4(2))
+discrims.adb:18:33: default initialization cannot depend on "V0" (SPARK RM 4.4(2))
+discrims.ads:17:29: default initialization cannot depend on "V0" (SPARK RM 4.4(2))
+discrims.ads:25:30: default initialization cannot depend on "V0" (SPARK RM 4.4(2))
+discrims.ads:39:30: default initialization cannot depend on "V0" (SPARK RM 4.4(2))
+   compilation of discrims.adb failed
+
+
+gnatprove: error during analysis and translation to intermediate language, aborting.
+gprbuild: *** compilation phase failed

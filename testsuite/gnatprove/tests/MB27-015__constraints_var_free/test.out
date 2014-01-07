@@ -1,0 +1,22 @@
+p.adb:7:30: subtype constraint cannot depend on "A" (SPARK RM 4.4(2))
+p.ads:19:26: subtype constraint cannot depend on "B" (SPARK RM 4.4(2))
+p.ads:20:26: subtype constraint cannot depend on "A" (SPARK RM 4.4(2))
+p.ads:21:26: subtype constraint cannot depend on "A" (SPARK RM 4.4(2))
+p.ads:21:26: subtype constraint cannot depend on "B" (SPARK RM 4.4(2))
+p.ads:31:26: subtype constraint cannot depend on "A" (SPARK RM 4.4(2))
+p.ads:31:26: subtype constraint cannot depend on "B" (SPARK RM 4.4(2))
+p.ads:34:27: subtype constraint cannot depend on "A" (SPARK RM 4.4(2))
+p.ads:34:27: subtype constraint cannot depend on "B" (SPARK RM 4.4(2))
+p.ads:39:17: subtype constraint cannot depend on "B" (SPARK RM 4.4(2))
+p.ads:40:17: subtype constraint cannot depend on "A" (SPARK RM 4.4(2))
+p.ads:41:17: subtype constraint cannot depend on "A" (SPARK RM 4.4(2))
+p.ads:41:17: subtype constraint cannot depend on "B" (SPARK RM 4.4(2))
+p.ads:49:18: subtype constraint cannot depend on "B" (SPARK RM 4.4(2))
+p.ads:50:18: subtype constraint cannot depend on "A" (SPARK RM 4.4(2))
+p.ads:51:18: subtype constraint cannot depend on "A" (SPARK RM 4.4(2))
+p.ads:51:18: subtype constraint cannot depend on "B" (SPARK RM 4.4(2))
+   compilation of p.adb failed
+
+
+gnatprove: error during analysis and translation to intermediate language, aborting.
+gprbuild: *** compilation phase failed
