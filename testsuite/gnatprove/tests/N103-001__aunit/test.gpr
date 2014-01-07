@@ -1,0 +1,4 @@
+with "aunit.gpr";
+project Test is
+
+end Test;
