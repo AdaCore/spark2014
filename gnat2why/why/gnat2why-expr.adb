@@ -199,7 +199,6 @@ package body Gnat2Why.Expr is
      (N           : Node_Id;
       Pref        : W_Expr_Id;
       Value       : W_Expr_Id;
-      Prefix_Type : W_Type_Id;
       Domain      : EW_Domain;
       Params      : Transformation_Params) return W_Expr_Id;
    --  same as One_Level_Access, but for updates
@@ -1689,7 +1688,6 @@ package body Gnat2Why.Expr is
                     +One_Level_Update (N,
                                        +Prefix_Expr,
                                        +Expr,
-                                       Prefix_Type,
                                        EW_Prog,
                                        Params => Body_Params);
                   N := Prefix (N);
@@ -1796,7 +1794,6 @@ package body Gnat2Why.Expr is
      (N           : Node_Id;
       Pref        : W_Expr_Id;
       Value       : W_Expr_Id;
-      Prefix_Type : W_Type_Id;
       Domain      : EW_Domain;
       Params      : Transformation_Params) return W_Expr_Id is
    begin
@@ -1859,11 +1856,11 @@ package body Gnat2Why.Expr is
                Dim     : constant Pos :=
                   Number_Dimensions (Type_Of_Node (Prefix (N)));
                Result_Id   : constant W_Identifier_Id :=
-                 New_Result_Ident (Prefix_Type);
+                 New_Result_Ident (Get_Type (Pref));
                Binders     : constant W_Identifier_Array :=
                  New_Temp_Identifiers (Positive (Dim), Typ => EW_Int_Type);
                Ada_Type    : constant Entity_Id :=
-                 Get_Ada_Node (+Prefix_Type);
+                 Get_Ada_Node (+Get_Type (Pref));
                Indexes     : constant W_Expr_Array := To_Exprs (Binders);
                Range_Pred  : constant W_Expr_Id :=
                                Transform_Discrete_Choice
@@ -1907,7 +1904,7 @@ package body Gnat2Why.Expr is
                          Name    => Value_Name,
                          Def     => +Value,
                          Context => +New_Simpl_Any_Prog
-                           (T => Prefix_Type,
+                           (T => Get_Type (Pref),
                             Pred => +Quantif)));
             end;
 
