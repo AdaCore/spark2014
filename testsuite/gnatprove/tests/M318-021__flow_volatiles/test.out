@@ -34,12 +34,6 @@ types.adb:6:46: warning: it is currently ignored
 types.adb:6:46: warning: pragma "Volatile" is not yet supported
 types.adb:17:20: warning: it is currently ignored
 types.adb:17:20: warning: pragma "Volatile" is not yet supported
-types.adb:19:30: warning: it is currently ignored
-types.adb:19:30: warning: pragma "Volatile" is not yet supported
-types.adb:19:40: warning: it is currently ignored
-types.adb:19:40: warning: pragma "Async_Writers" is not yet supported
-types.adb:19:55: warning: it is currently ignored
-types.adb:19:55: warning: pragma "Effective_Reads" is not yet supported
 types.adb:21:30: warning: it is currently ignored
 types.adb:21:30: warning: pragma "Volatile" is not yet supported
 types.adb:21:40: warning: it is currently ignored

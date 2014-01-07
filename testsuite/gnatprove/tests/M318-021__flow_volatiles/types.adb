@@ -1,22 +1,22 @@
 with System.Storage_Elements; use System.Storage_Elements;
 
 package body Types
-   with Refined_State => (State => (A, B, C, D, E))
+   with Refined_State => (State => (A, C, D, E))
 is
    type Volatile_Integer is new Integer with Volatile;
 
    A : Volatile_Integer;
 
-   type Illegal_Record_T is record
-      X : Integer;
-      Y : Volatile_Integer;
-   end record;
+   --  type Illegal_Record_T is record
+   --     X : Integer;
+   --     Y : Volatile_Integer;
+   --  end record;
 
    type Record_T is record
       X : Integer;
    end record with Volatile;
 
-   B : Illegal_Record_T with Volatile, Async_Writers, Effective_Reads;
+   --  B : Illegal_Record_T with Volatile, Async_Writers, Effective_Reads;
 
    C : Volatile_Integer with Volatile, Async_Writers, Effective_Reads;
 
