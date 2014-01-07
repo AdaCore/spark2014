@@ -6,20 +6,20 @@ main.adb:18:14: info: postcondition proved
 main.adb:27:32: info: length check proved
 main.adb:41:04: warning: initialization has no effect
 main.adb:42:04: warning: initialization has no effect
-main.adb:58:32: warning: overflow check might fail
-main.adb:67:10: warning: unused assignment
-main.adb:69:4: info: assertion proved
-main.adb:70:4: info: assertion proved
+main.adb:60:32: warning: overflow check might fail
+main.adb:69:10: warning: unused assignment
 main.adb:71:4: info: assertion proved
 main.adb:72:4: info: assertion proved
 main.adb:73:4: info: assertion proved
 main.adb:74:4: info: assertion proved
-main.adb:76:04: warning: statement has no effect
-main.adb:76:04: warning: unused assignment to "Arr_Obj"
-main.adb:77:04: warning: statement has no effect
-main.adb:77:04: warning: unused assignment to "Arr_Obj"
+main.adb:75:4: info: assertion proved
+main.adb:76:4: info: assertion proved
 main.adb:78:04: warning: statement has no effect
-main.adb:78:04: warning: unused assignment to "Rec_Obj"
-main.adb:83:4: warning: assertion might fail, requires Obj_1.Comp = 9012
-main.adb:84:4: warning: assertion might fail, requires Obj_2.Comp = 9012
-main.adb:85:4: warning: assertion might fail, requires Obj_4 = 5678
+main.adb:78:04: warning: unused assignment to "Arr_Obj"
+main.adb:79:04: warning: statement has no effect
+main.adb:79:04: warning: unused assignment to "Arr_Obj"
+main.adb:80:04: warning: statement has no effect
+main.adb:80:04: warning: unused assignment to "Rec_Obj"
+main.adb:85:4: warning: assertion might fail, requires Obj_1.Comp = 9012
+main.adb:86:4: warning: assertion might fail, requires Obj_2.Comp = 9012
+main.adb:87:4: warning: assertion might fail, requires Obj_4 = 5678
