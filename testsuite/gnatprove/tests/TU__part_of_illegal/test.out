@@ -1,3 +1,4 @@
+part_of_illegal-pr_child-pr_grandchild.ads:3:49: indicator Part_Of must denote an abstract state of "Pr_Child" or public descendant (SPARK RM 7.2.6(3))
 part_of_illegal-pr_child.ads:6:04: "Pr_Child_Vis_1" is declared in the visible part of private child unit "Pr_Child"
 part_of_illegal-pr_child.ads:6:04: "Pr_Child_Vis_1" is declared in the visible part of private child unit "Pr_Child"
 part_of_illegal-pr_child.ads:6:04: indicator Part_Of is required in this context (SPARK RM 7.2.6(3))
