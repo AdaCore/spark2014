@@ -1,0 +1,8 @@
+try_init_1.ads:4:25: initialization item must denote variable or state
+try_init_4.ads:7:25: cannot mix null and non-null initialization items
+   compilation of try_init_1.ads failed
+   compilation of try_init_4.ads failed
+
+
+gnatprove: error during frame condition computation, aborting.
+gprbuild: *** compilation phase failed
