@@ -302,6 +302,86 @@ module Array_Comparison_Axiom
 
 end
 
+module Array_Generic_Op_Axiom
+  use import int.Int
+  use "_gnatprove_standard".Array__1
+
+  type component_type
+
+   function to_bool component_type : bool
+   function array_op (Array__1.map component_type) int int (Array__1.map component_type) int int : Array__1.map component_type
+   function base_op bool bool : bool
+
+   axiom op_def:
+    forall a b : Array__1.map component_type.
+    forall a_first a_last b_first b_last : int.
+    forall i : int [Array__1.get (array_op a a_first a_last b b_first b_last) i].
+      a_first <= i <= a_last ->
+      to_bool (Array__1.get (array_op a a_first a_last b b_first b_last) i) =
+             base_op (to_bool (Array__1.get a i)) (to_bool (Array__1.get b (i - a_first + b_first)))
+end
+
+module Array_Logical_Op_Generic_Axioms
+  use import bool.Bool
+  use import int.Int
+  use "_gnatprove_standard".Array__1
+
+  (* These declarations have to be filled in by gnat2why for each
+       boolean 1 dimension array type *)
+   type component_type
+   function to_bool component_type : bool
+
+   clone Array_Generic_Op_Axiom as Or_Axiom with
+     type component_type = component_type,
+     function to_bool = to_bool,
+     function array_op = Array__1.orb,
+     function base_op = orb
+
+   clone Array_Generic_Op_Axiom as And_Axiom with
+     type component_type = component_type,
+     function to_bool = to_bool,
+     function array_op = Array__1.andb,
+     function base_op = andb
+
+   clone Array_Generic_Op_Axiom as Xor_Axiom with
+     type component_type = component_type,
+     function to_bool = to_bool,
+     function array_op = Array__1.xorb,
+     function base_op = xorb
+
+   axiom notb_def:
+    forall a : Array__1.map component_type.
+    forall a_first a_last : int.
+    forall i : int [Array__1.get (Array__1.notb a a_first a_last) i].
+      a_first <= i <= a_last ->
+      to_bool (Array__1.get (Array__1.notb a a_first a_last) i) =
+             notb (to_bool (Array__1.get a i)) 
+end
+
+module Standard_Array_Logical_Op_Axioms
+  use import bool.Bool
+
+  function bool_id "inline" (b : bool) : bool = b
+
+  clone Array_Logical_Op_Generic_Axioms with
+     type component_type = bool,
+     function to_bool = bool_id
+end
+
+module Subtype_Array_Logical_Op_Axioms
+  use import int.Int
+  use "_gnatprove_standard".Boolean
+
+   type component_type
+   function to_int component_type : int
+
+  function to_bool "inline" (x : component_type) : bool = Boolean.of_int (to_int (x))
+
+  clone Array_Logical_Op_Generic_Axioms with
+     type component_type = component_type,
+     function to_bool = to_bool
+end
+
 module Unconstr_Array
   (* The module to be cloned for an unconstrained array of dimension 1 *)
 

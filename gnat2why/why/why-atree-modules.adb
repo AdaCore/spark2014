@@ -158,6 +158,16 @@ package body Why.Atree.Modules is
           (File => Ada_Model_File,
            Name => NID ("Array_Comparison_Axiom"));
 
+      Standard_Array_Logical_Ax :=
+        New_Module
+          (File => Ada_Model_File,
+           Name => NID ("Standard_Array_Logical_Op_Axioms"));
+
+      Subtype_Array_Logical_Ax :=
+        New_Module
+          (File => Ada_Model_File,
+           Name => NID ("Subtype_Array_Logical_Op_Axioms"));
+
       --  identifiers of Integer module
       Integer_Bitwise_And :=
         New_Identifier (Module => Integer_Module,

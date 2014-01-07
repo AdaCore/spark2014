@@ -420,6 +420,20 @@ package body Gnat2Why.Expr is
       Domain : EW_Domain) return W_Expr_Id;
    --  Translate a comparison on arrays into a Why expression
 
+   function Transform_Array_Logical_Op
+     (Params   : Transformation_Params;
+      Expr     : Node_Id;
+      Domain   : EW_Domain;
+      Do_Check : Boolean) return W_Expr_Id;
+   --  Translate a binary operation on boolean arrays into a Why expression
+
+   function Transform_Array_Negation
+     (Params   : Transformation_Params;
+      Expr     : Node_Id;
+      Domain   : EW_Domain;
+      Do_Check : Boolean) return W_Expr_Id;
+   --  Translate negation on boolean arrays into a Why expression
+
    function Transform_Raise (Stat : Node_Id) return W_Prog_Id with
      Pre => Nkind (Stat) in N_Raise_xxx_Error | N_Raise_Statement;
    --  Returns the Why program for raise statement Stat
@@ -3199,9 +3213,9 @@ package body Gnat2Why.Expr is
       end;
    end Transform_Aggregate;
 
-   ------------------------------
+   --------------------------------
    -- Transform_Array_Comparison --
-   ------------------------------
+   --------------------------------
 
    function Transform_Array_Comparison
      (Params : Transformation_Params;
@@ -3338,6 +3352,277 @@ package body Gnat2Why.Expr is
       end if;
       return T;
    end Transform_Array_Equality;
+
+   --------------------------------
+   -- Transform_Array_Logical_Op --
+   --------------------------------
+
+   function Transform_Array_Logical_Op
+     (Params   : Transformation_Params;
+      Expr     : Node_Id;
+      Domain   : EW_Domain;
+      Do_Check : Boolean) return W_Expr_Id
+   is
+      Left      : constant Node_Id := Left_Opnd (Expr);
+      Right     : constant Node_Id := Right_Opnd (Expr);
+      Left_Ty   : constant Entity_Id := Etype (Left);
+      Subdomain : constant EW_Domain :=
+        (if Domain = EW_Pred then EW_Term else Domain);
+      Args      : W_Expr_Array (1 .. 6);
+      T         : W_Expr_Id;
+      Arg_Ind   : Positive := 1;
+      Left_Simp : constant Boolean :=
+        Is_Constrained (Left_Ty) or else
+        Nkind (Left) in N_Identifier | N_Expanded_Name;
+      Right_Simp : constant Boolean :=
+        Is_Constrained (Etype (Right)) or else
+        Nkind (Right) in N_Identifier | N_Expanded_Name;
+      Left_Expr : constant W_Expr_Id :=
+        Transform_Expr (Left, Subdomain, Params);
+      Left_Name : constant W_Expr_Id :=
+        (if Left_Simp then Left_Expr
+         else
+         +New_Temp_Identifier
+           (Ada_Node => Get_Ada_Node (+Left_Expr),
+            Typ => Get_Type (Left_Expr)));
+      Right_Expr : constant W_Expr_Id :=
+        Transform_Expr (Right, Subdomain, Params);
+      Right_Name : constant W_Expr_Id :=
+        (if Right_Simp then Right_Expr
+         else
+         +New_Temp_Identifier
+           (Ada_Node => Get_Ada_Node (+Right_Expr),
+            Typ      => Get_Type (Right_Expr)));
+      Op         : constant Why_Name_Enum :=
+        (case Nkind (Expr) is
+            when N_Op_And => WNE_Bool_And,
+            when N_Op_Or  => WNE_Bool_Or,
+            when others   => WNE_Bool_Xor);
+
+      Left_Length  : constant W_Expr_Id :=
+        Build_Length_Expr (Domain => EW_Term, Expr => Left_Name, Dim => 1);
+      Right_Length : constant W_Expr_Id :=
+        Build_Length_Expr (Domain => EW_Term, Expr => Right_Name, Dim => 1);
+      Length_Check : constant W_Expr_Id :=
+        New_Relation
+          (Domain  => EW_Pred,
+           Op_Type => EW_Int,
+           Op      => EW_Eq,
+           Left    => +Left_Length,
+           Right   => +Right_Length);
+
+      Range_Check  : constant W_Expr_Id :=
+        New_Conditional
+          (Domain    => EW_Pred,
+           Condition =>
+             New_Relation
+               (Domain  => EW_Pred,
+                Op_Type => EW_Int,
+                Op      => EW_Gt,
+                Left    => +Left_Length,
+                Right   => New_Integer_Constant (Value => Uint_0)),
+           Then_Part => New_Relation
+             (Domain  => EW_Pred,
+              Op_Type => EW_Int,
+              Op      => EW_Lt,
+              Left    =>
+                +Prefix
+                  (M =>
+                       E_Module (Component_Type (Left_Ty)),
+                   W => WNE_Attr_First),
+              Right   =>
+                +Prefix
+                  (M =>
+                       E_Module (Component_Type (Left_Ty)),
+                   W => WNE_Attr_Last)));
+   begin
+      Add_Array_Arg (Subdomain, Args, Left_Name, Arg_Ind);
+      Add_Array_Arg (Subdomain, Args, Right_Name, Arg_Ind);
+
+      --  Call to operator
+
+      T :=
+        New_Call
+          (Ada_Node => Expr,
+           Domain   => Subdomain,
+           Name     =>
+             Prefix
+               (M        =>
+                  Array_Modules (1),
+                W        => Op),
+           Args     => Args);
+
+      if Do_Check then
+
+         --  Length check, Left and Right should have the same length
+
+         T := +Sequence (New_Ignore (Prog => New_Located_Assert (Expr,
+                                     +Length_Check,
+                                     VC_Length_Check)),
+                         +T);
+
+         --  Range check : for all I, Left (I) Op Right (I) should be in range.
+         --  The only way to generate an element not in range using a binary
+         --  operator is to call xor on arrays of a singleton subtype of
+         --  boolean.
+
+         if not Is_Standard_Boolean_Type (Component_Type (Left_Ty)) and then
+           Op = WNE_Bool_Xor
+         then
+            T :=  +Sequence (New_Ignore (Prog => New_Located_Assert (Expr,
+                                         +Range_Check,
+                                         VC_Range_Check)),
+                             +T);
+         end if;
+      end if;
+
+      --  Conversion from base, first and right are attributes of left
+
+      T := Array_Convert_From_Base
+        (Domain => Subdomain,
+         Target => Left_Ty,
+         Ar     => T,
+         First  =>
+           Get_Array_Attr (Domain => Subdomain,
+                           Expr   => Left_Name,
+                           Attr   => Attribute_First,
+                           Dim    => 1),
+         Last   =>
+           Get_Array_Attr (Domain => Subdomain,
+                           Expr   => Left_Name,
+                           Attr   => Attribute_Last,
+                           Dim    => 1));
+
+      if not Left_Simp then
+         T :=
+           New_Typed_Binding
+             (Domain  => Domain,
+              Name    => +Left_Name,
+              Def     => +Left_Expr,
+              Context => T);
+      end if;
+      if not Right_Simp then
+         T :=
+           New_Typed_Binding
+             (Domain  => Domain,
+              Name    => +Right_Name,
+              Def     => +Right_Expr,
+              Context => T);
+      end if;
+      return T;
+   end Transform_Array_Logical_Op;
+
+   ------------------------------
+   -- Transform_Array_Negation --
+   ------------------------------
+
+   function Transform_Array_Negation
+     (Params   : Transformation_Params;
+      Expr     : Node_Id;
+      Domain   : EW_Domain;
+      Do_Check : Boolean) return W_Expr_Id
+   is
+      Right     : constant Node_Id := Right_Opnd (Expr);
+      Right_Ty  : constant Entity_Id := Etype (Expr);
+      Subdomain : constant EW_Domain :=
+        (if Domain = EW_Pred then EW_Term else Domain);
+      Args      : W_Expr_Array (1 .. 3);
+      T         : W_Expr_Id;
+      Arg_Ind   : Positive := 1;
+      Right_Simp : constant Boolean :=
+        Is_Constrained (Etype (Right)) or else
+        Nkind (Right) in N_Identifier | N_Expanded_Name;
+      Right_Expr : constant W_Expr_Id :=
+        Transform_Expr (Right, Subdomain, Params);
+      Right_Name : constant W_Expr_Id :=
+        (if Right_Simp then Right_Expr
+         else
+         +New_Temp_Identifier
+           (Ada_Node => Get_Ada_Node (+Right_Expr),
+            Typ      => Get_Type (Right_Expr)));
+
+      Right_Length : constant W_Expr_Id :=
+        Build_Length_Expr (Domain => EW_Term, Expr => Right_Name, Dim => 1);
+      Range_Check  : constant W_Expr_Id :=
+        New_Conditional
+          (Domain    => EW_Pred,
+           Condition =>
+             New_Relation
+               (Domain  => EW_Pred,
+                Op_Type => EW_Int,
+                Op      => EW_Gt,
+                Left    => +Right_Length,
+                Right   => New_Integer_Constant (Value => Uint_0)),
+           Then_Part => New_Relation
+             (Domain  => EW_Pred,
+              Op_Type => EW_Int,
+              Op      => EW_Lt,
+              Left    =>
+                +Prefix
+                (M =>
+                     E_Module (Component_Type (Right_Ty)),
+                 W => WNE_Attr_First),
+              Right   =>
+                +Prefix
+                (M =>
+                     E_Module (Component_Type (Right_Ty)),
+                 W => WNE_Attr_Last)));
+   begin
+      Add_Array_Arg (Subdomain, Args, Right_Name, Arg_Ind);
+
+      --  Call to operator
+
+      T :=
+        New_Call
+          (Ada_Node => Expr,
+           Domain   => Subdomain,
+           Name     =>
+             Prefix
+               (M => Array_Modules (1),
+                N => "notb"),
+           Args     => Args);
+
+      if Do_Check then
+
+         --  Range check : for all I, Not Right (I) should be in range.
+         --  The only way to generate an element not in range using negation
+         --  is to call it on an array of a singleton subtype of boolean.
+
+         if not Is_Standard_Boolean_Type (Component_Type (Right_Ty)) then
+            T :=  +Sequence (New_Ignore (Prog => New_Located_Assert (Expr,
+                                         +Range_Check,
+                                         VC_Range_Check)),
+                             +T);
+         end if;
+      end if;
+
+      --  Conversion from base
+
+      T := Array_Convert_From_Base
+        (Domain => Subdomain,
+         Target => Right_Ty,
+         Ar     => T,
+         First  =>
+           Get_Array_Attr (Domain => Subdomain,
+                           Expr   => Right_Name,
+                           Attr   => Attribute_First,
+                           Dim    => 1),
+         Last   =>
+           Get_Array_Attr (Domain => Subdomain,
+                           Expr   => Right_Name,
+                           Attr   => Attribute_Last,
+                           Dim    => 1));
+
+      if not Right_Simp then
+         T :=
+           New_Typed_Binding
+             (Domain  => Domain,
+              Name    => +Right_Name,
+              Def     => +Right_Expr,
+              Context => T);
+      end if;
+      return T;
+   end Transform_Array_Negation;
 
    ---------------------
    -- Transform_Slice --
@@ -5016,53 +5301,64 @@ package body Gnat2Why.Expr is
             end;
 
          when N_Op_Not =>
-            if Domain = EW_Term then
-               T :=
-                 New_Call
-                   (Ada_Node => Expr,
-                    Domain   => Domain,
-                    Name     => New_Identifier (Name => "notb"),
-                    Args     =>
-                      (1 => Transform_Expr
-                         (Right_Opnd (Expr),
-                          EW_Bool_Type,
-                          Domain,
-                          Local_Params)),
-                    Typ      => EW_Bool_Type);
+            if Is_Array_Type (Etype (Right_Opnd (Expr))) then
+               T := Transform_Array_Negation (Local_Params, Expr, Domain,
+                                              Do_Check => Domain = EW_Prog);
             else
-               T :=
-                 New_Not
-                   (Right  => Transform_Expr (Right_Opnd (Expr),
-                                              EW_Bool_Type,
-                                              Domain,
-                                              Local_Params),
-                    Domain => Domain);
+               if Domain = EW_Term then
+                  T :=
+                    New_Call
+                      (Ada_Node => Expr,
+                       Domain   => Domain,
+                       Name     => New_Identifier (Name => "notb"),
+                       Args     =>
+                         (1 => Transform_Expr
+                            (Right_Opnd (Expr),
+                             EW_Bool_Type,
+                             Domain,
+                             Local_Params)),
+                       Typ      => EW_Bool_Type);
+               else
+                  T :=
+                    New_Not
+                      (Right  => Transform_Expr (Right_Opnd (Expr),
+                       EW_Bool_Type,
+                       Domain,
+                       Local_Params),
+                       Domain => Domain);
+               end if;
             end if;
 
          when N_Op_And | N_Op_Or | N_Op_Xor =>
-            declare
-               Base  : constant W_Type_Id :=
-                 (if Is_Boolean_Type (Expr_Type) then EW_Bool_Type
-                  else EW_Int_Type);
-               Left  : constant W_Expr_Id :=
-                 Transform_Expr (Left_Opnd (Expr),
-                                 Base,
-                                 Domain,
-                                 Local_Params);
-               Right : constant W_Expr_Id :=
-                 Transform_Expr (Right_Opnd (Expr),
-                                 Base,
-                                 Domain,
-                                 Local_Params);
-            begin
-               if Nkind (Expr) = N_Op_And then
-                  T := New_And_Expr (Left, Right, Domain, Base);
-               elsif Nkind (Expr) = N_Op_Or then
-                  T := New_Or_Expr (Left, Right, Domain, Base);
-               else
-                  T := New_Xor_Expr (Left, Right, Domain, Base);
-               end if;
-            end;
+
+            if Is_Array_Type (Etype (Left_Opnd (Expr))) then
+               T := Transform_Array_Logical_Op (Local_Params, Expr, Domain,
+                                                Do_Check => Domain = EW_Prog);
+            else
+               declare
+                  Base  : constant W_Type_Id :=
+                    (if Is_Boolean_Type (Expr_Type) then EW_Bool_Type
+                     else EW_Int_Type);
+                  Left  : constant W_Expr_Id :=
+                    Transform_Expr (Left_Opnd (Expr),
+                                    Base,
+                                    Domain,
+                                    Local_Params);
+                  Right : constant W_Expr_Id :=
+                    Transform_Expr (Right_Opnd (Expr),
+                                    Base,
+                                    Domain,
+                                    Local_Params);
+               begin
+                  if Nkind (Expr) = N_Op_And then
+                     T := New_And_Expr (Left, Right, Domain, Base);
+                  elsif Nkind (Expr) = N_Op_Or then
+                     T := New_Or_Expr (Left, Right, Domain, Base);
+                  else
+                     T := New_Xor_Expr (Left, Right, Domain, Base);
+                  end if;
+               end;
+            end if;
 
          when N_Short_Circuit =>
             Short_Circuit : declare

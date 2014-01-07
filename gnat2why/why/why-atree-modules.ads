@@ -46,57 +46,59 @@ package Why.Atree.Modules is
 
    --  the Why standard library
 
-   Int_Module              : W_Module_Id;
-   RealInfix               : W_Module_Id;
-   Ref_Module              : W_Module_Id;
+   Int_Module                : W_Module_Id;
+   RealInfix                 : W_Module_Id;
+   Ref_Module                : W_Module_Id;
 
    --  Modules of "_gnatprove_standard.mlw"
 
-   Main_Module             : W_Module_Id;
-   Integer_Module          : W_Module_Id;
-   Floating_Module         : W_Module_Id;
-   Boolean_Module          : W_Module_Id;
-   Array_Modules           : W_Module_Array (1 .. Max_Array_Dimensions);
+   Main_Module               : W_Module_Id;
+   Integer_Module            : W_Module_Id;
+   Floating_Module           : W_Module_Id;
+   Boolean_Module            : W_Module_Id;
+   Array_Modules             : W_Module_Array (1 .. Max_Array_Dimensions);
 
    --  Modules of file "ada__model.mlw"
 
-   Static_Discrete         : W_Module_Id;
-   Static_Modular          : W_Module_Id;
-   Dynamic_Discrete        : W_Module_Id;
-   Dynamic_Modular         : W_Module_Id;
-   Static_Floating_Point   : W_Module_Id;
-   Dynamic_Floating_Point  : W_Module_Id;
+   Static_Discrete           : W_Module_Id;
+   Static_Modular            : W_Module_Id;
+   Dynamic_Discrete          : W_Module_Id;
+   Dynamic_Modular           : W_Module_Id;
+   Static_Floating_Point     : W_Module_Id;
+   Dynamic_Floating_Point    : W_Module_Id;
 
-   Constr_Arrays           : W_Module_Array (1 .. Max_Array_Dimensions);
-   Unconstr_Arrays         : W_Module_Array (1 .. Max_Array_Dimensions);
-   Array_Comparison_Ax     : W_Module_Id;
+   Constr_Arrays             : W_Module_Array (1 .. Max_Array_Dimensions);
+   Unconstr_Arrays           : W_Module_Array (1 .. Max_Array_Dimensions);
+   Array_Comparison_Ax       : W_Module_Id;
+   Standard_Array_Logical_Ax : W_Module_Id;
+   Subtype_Array_Logical_Ax  : W_Module_Id;
 
    --  Identifiers of the Integer module
 
-   Integer_Bitwise_And     : W_Identifier_Id;
-   Integer_Bitwise_Or      : W_Identifier_Id;
-   Integer_Bitwise_Xor     : W_Identifier_Id;
-   Integer_Div             : W_Identifier_Id;
-   Integer_Rem             : W_Identifier_Id;
-   Integer_Mod             : W_Identifier_Id;
-   Integer_Power           : W_Identifier_Id;
-   Integer_Math_Mod        : W_Identifier_Id;
-   Integer_Max             : W_Identifier_Id;
-   Integer_Min             : W_Identifier_Id;
-   Integer_Abs             : W_Identifier_Id;
+   Integer_Bitwise_And       : W_Identifier_Id;
+   Integer_Bitwise_Or        : W_Identifier_Id;
+   Integer_Bitwise_Xor       : W_Identifier_Id;
+   Integer_Div               : W_Identifier_Id;
+   Integer_Rem               : W_Identifier_Id;
+   Integer_Mod               : W_Identifier_Id;
+   Integer_Power             : W_Identifier_Id;
+   Integer_Math_Mod          : W_Identifier_Id;
+   Integer_Max               : W_Identifier_Id;
+   Integer_Min               : W_Identifier_Id;
+   Integer_Abs               : W_Identifier_Id;
 
-   Floating_Div_Real       : W_Identifier_Id;
-   Floating_Abs_Real       : W_Identifier_Id;
-   Floating_Ceil           : W_Identifier_Id;
-   Floating_Floor          : W_Identifier_Id;
-   Floating_Power          : W_Identifier_Id;
-   Floating_Real_Of_Int    : W_Identifier_Id;
-   Floating_Round          : W_Identifier_Id;
-   Floating_Truncate       : W_Identifier_Id;
-   Floating_Max            : W_Identifier_Id;
-   Floating_Min            : W_Identifier_Id;
-   Floating_Round_Single   : W_Identifier_Id;
-   Floating_Round_Double   : W_Identifier_Id;
+   Floating_Div_Real         : W_Identifier_Id;
+   Floating_Abs_Real         : W_Identifier_Id;
+   Floating_Ceil             : W_Identifier_Id;
+   Floating_Floor            : W_Identifier_Id;
+   Floating_Power            : W_Identifier_Id;
+   Floating_Real_Of_Int      : W_Identifier_Id;
+   Floating_Round            : W_Identifier_Id;
+   Floating_Truncate         : W_Identifier_Id;
+   Floating_Max              : W_Identifier_Id;
+   Floating_Min              : W_Identifier_Id;
+   Floating_Round_Single     : W_Identifier_Id;
+   Floating_Round_Double     : W_Identifier_Id;
 
    procedure Initialize;
    --  Call this procedure before using any of the entities in this package.

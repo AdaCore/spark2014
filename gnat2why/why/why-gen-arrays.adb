@@ -44,6 +44,7 @@ with Why.Gen.Names;       use Why.Gen.Names;
 with Why.Gen.Binders;     use Why.Gen.Binders;
 with Why.Inter;           use Why.Inter;
 with Why.Types;           use Why.Types;
+with SPARK_Util; use SPARK_Util;
 
 package body Why.Gen.Arrays is
 
@@ -433,6 +434,45 @@ package body Why.Gen.Arrays is
                           (From => +Type_Of_Node (Component_Type (Und_Ent)),
                            To   => +Int_Type)))));
       end if;
+
+      if Dimension = 1 and then
+        Is_Boolean_Type (Component_Type (Und_Ent))
+      then
+
+         --  For arrays of boolean types of dimension 1 we need to define the
+         --  logical operators.
+
+         if Is_Standard_Boolean_Type (Component_Type (Und_Ent)) then
+
+            --  For Boolean, use the module Standard_Array_Logical_Op_Axioms
+
+            Add_With_Clause (T        => Theory,
+                             Module   => Standard_Array_Logical_Ax,
+                             Use_Kind => EW_Clone_Default);
+         else
+
+            --  We clone a specific module Subtype_Array_Logical_Op_Axioms
+            --  which needs an additional parameter to_int.
+
+            Emit (Theory,
+                  New_Clone_Declaration
+                    (Theory_Kind   => EW_Module,
+                     Clone_Kind    => EW_Export,
+                     Origin        => Subtype_Array_Logical_Ax,
+                     Substitutions =>
+                       (1 => New_Clone_Substitution
+                            (Kind      => EW_Type_Subst,
+                             Orig_Name => To_Ident (WNE_Array_Component_Type),
+                             Image     => Ident_Of_Ada_Type
+                               (Component_Type (Und_Ent))),
+                        2 => New_Clone_Substitution
+                          (Kind      => EW_Function,
+                           Orig_Name => To_Ident (WNE_To_Int),
+                           Image     => Conversion_Name
+                             (From => +Type_Of_Node (Component_Type (Und_Ent)),
+                              To   => +Int_Type)))));
+         end if;
+      end if;
    end Declare_Constrained;
 
    ---------------------------
@@ -575,6 +615,45 @@ package body Why.Gen.Arrays is
                         Image     => Conversion_Name
                           (From => +Type_Of_Node (Component_Type (Und_Ent)),
                            To   => +Int_Type)))));
+      end if;
+
+      if Dimension = 1 and then
+        Is_Boolean_Type (Component_Type (Und_Ent))
+      then
+
+         --  For arrays of boolean types of dimension 1 we need to define the
+         --  logical operators.
+
+         if Is_Standard_Boolean_Type (Component_Type (Und_Ent)) then
+
+            --  For Boolean, use the module Standard_Array_Logical_Op_Axioms
+
+            Add_With_Clause (T        => Theory,
+                             Module   => Standard_Array_Logical_Ax,
+                             Use_Kind => EW_Clone_Default);
+         else
+
+            --  We clone a specific module Subtype_Array_Logical_Op_Axioms
+            --  which needs an additional parameter to_int.
+
+            Emit (Theory,
+                  New_Clone_Declaration
+                    (Theory_Kind   => EW_Module,
+                     Clone_Kind    => EW_Export,
+                     Origin        => Subtype_Array_Logical_Ax,
+                     Substitutions =>
+                       (1 => New_Clone_Substitution
+                            (Kind      => EW_Type_Subst,
+                             Orig_Name => To_Ident (WNE_Array_Component_Type),
+                             Image     => Ident_Of_Ada_Type
+                               (Component_Type (Und_Ent))),
+                        2 => New_Clone_Substitution
+                          (Kind      => EW_Function,
+                           Orig_Name => To_Ident (WNE_To_Int),
+                           Image     => Conversion_Name
+                             (From => +Type_Of_Node (Component_Type (Und_Ent)),
+                              To   => +Int_Type)))));
+         end if;
       end if;
    end Declare_Unconstrained;
 

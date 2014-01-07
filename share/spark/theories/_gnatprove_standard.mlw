@@ -254,9 +254,16 @@ theory Array__1
       (i > a_last ->
         get (concat a a_first a_last b b_first b_last) i = get b (i-a_last + b_first - 1))
 
-   (* Comparison between arrays *)
+   (* Comparison between arrays. Only defined for arrays of discrete.  *)
 
    function compare (map 'a) int int (map 'a) int int : int
+
+   (* Logical operators on arrays. Only defined for arrays of boolean. *)
+
+   function xorb (map 'a) int int (map 'a) int int : map 'a
+   function andb (map 'a) int int (map 'a) int int : map 'a
+   function orb (map 'a) int int (map 'a) int int : map 'a
+   function notb (map 'a) int int : map 'a
 
    (* a singleton array is the array which is defined only at the given
    position, and yields the given value. *)

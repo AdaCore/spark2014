@@ -2138,32 +2138,8 @@ package body SPARK_Definition is
    --------------------
 
    procedure Mark_Binary_Op (N : Node_Id) is
-      Left_T : constant Entity_Id := Etype (Left_Opnd (N));
 
    begin
-      case N_Binary_Op'(Nkind (N)) is
-         when N_Op_Lt | N_Op_Le | N_Op_Gt | N_Op_Ge =>
-            if Is_Array_Type (Left_T) then
-               null;
-            end if;
-
-         when N_Op_And | N_Op_Or | N_Op_Xor =>
-            if Is_Array_Type (Left_T) then
-               Violation_Detected := True;
-               if SPARK_Pragma_Is (Opt.On) then
-                  Error_Msg_N
-                    ("binary operator on array type is not yet supported", N);
-               end if;
-            end if;
-
-         when N_Op_Shift =>
-            null;
-
-         when N_Op_Eq | N_Op_Ne | N_Op_Expon | N_Op_Add | N_Op_Subtract |
-              N_Op_Multiply | N_Op_Divide | N_Op_Mod | N_Op_Rem |
-              N_Op_Concat =>
-            null;
-      end case;
 
       --  In pedantic mode, issue a warning whenever an arithmetic operation
       --  could be reordered by the compiler, like "A + B - C", as a given
@@ -3119,23 +3095,7 @@ package body SPARK_Definition is
    -------------------
 
    procedure Mark_Unary_Op (N : Node_Id) is
-      T : constant Entity_Id := Etype (Right_Opnd (N));
-
    begin
-      case N_Unary_Op'(Nkind (N)) is
-         when N_Op_Not =>
-            if Is_Array_Type (T) then
-               Violation_Detected := True;
-               if SPARK_Pragma_Is (Opt.On) then
-                  Error_Msg_N
-                    ("not operator on array type is not yet supported", N);
-               end if;
-            end if;
-
-         when N_Op_Abs | N_Op_Plus | N_Op_Minus =>
-            null;
-      end case;
-
       Mark (Right_Opnd (N));
    end Mark_Unary_Op;
 
