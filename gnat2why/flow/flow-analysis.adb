@@ -547,6 +547,7 @@ package body Flow.Analysis is
       --  the following contexts:
       --     Component Declarations
       --     Discriminant Specifications
+      --     Object Renaming Declarations
 
       -------------------------------------
       -- Check_Expressions_Variable_Free --
@@ -558,6 +559,8 @@ package body Flow.Analysis is
          ES1 : constant String := "default initialization ";
          ES2 : constant String := "subtype constraint ";
          ES3 : constant String := "cannot depend on &";
+         ES4 : constant String := "renamed index ";
+         ES5 : constant String := "renamed slice ";
 
          procedure Check_Flow_Id_Set
            (Flow_Ids : Ordered_Flow_Id_Sets.Set;
@@ -565,6 +568,10 @@ package body Flow.Analysis is
             Err_Node : Node_Id);
          --  Iterates over Flow_Ids. An error is issued for any member of that
          --  set which does NOT denote a constant.
+
+         function Check_Name (N : Node_Id) return Traverse_Result;
+         --  Checks indexed components and slices which are part
+         --  of a Name subtree.
 
          -----------------------
          -- Check_Flow_Id_Set --
@@ -591,6 +598,64 @@ package body Flow.Analysis is
             end loop;
          end Check_Flow_Id_Set;
 
+         ----------------
+         -- Check_Name --
+         ----------------
+
+         function Check_Name (N : Node_Id) return Traverse_Result is
+         begin
+            case Nkind (N) is
+
+               when N_Indexed_Component =>
+                  declare
+                     Renamed_Indexes : constant List_Id :=
+                       Expressions (N);
+                     Deps : constant Ordered_Flow_Id_Sets.Set :=
+                       To_Ordered_Flow_Id_Set
+                       (Get_Variable_Set
+                          (L                            =>
+                             Renamed_Indexes,
+                           Scope                        =>
+                             Get_Flow_Scope (N),
+                           Local_Constants              =>
+                             Node_Sets.Empty_Set,
+                           Expand_Synthesized_Constants =>
+                             True));
+                  begin
+                     Check_Flow_Id_Set (Flow_Ids => Deps,
+                                        Err_Msg  => ES4 & ES3,
+                                        Err_Node => N);
+                  end;
+               when N_Slice =>
+                  declare
+                     Renamed_Slice : constant Node_Id :=
+                       Discrete_Range (N);
+                     Deps : constant Ordered_Flow_Id_Sets.Set :=
+                       To_Ordered_Flow_Id_Set
+                       (Get_Variable_Set
+                          (N                            =>
+                             Renamed_Slice,
+                           Scope                        =>
+                             Get_Flow_Scope (Renamed_Slice),
+                           Local_Constants              =>
+                             Node_Sets.Empty_Set,
+                           Expand_Synthesized_Constants =>
+                             True));
+                  begin
+                     Check_Flow_Id_Set (Flow_Ids => Deps,
+                                        Err_Msg  => ES5 & ES3,
+                                        Err_Node => Renamed_Slice);
+                  end;
+
+               when others =>
+                  null;
+            end case;
+            return OK; -- Keep searching in case of nested prefixes
+         end Check_Name;
+
+         procedure Check_Name_Indexes_And_Slices is new
+           Traverse_Proc (Check_Name);
+
       --  Start of Check_Expressions_Variable_Free
 
       begin
@@ -613,8 +678,9 @@ package body Flow.Analysis is
                return Skip;
 
             when N_Object_Renaming_Declaration =>
-               --  ??? Unimplemented. TBD pending resolution of M611-051
-               return OK;
+
+               Check_Name_Indexes_And_Slices (Name (N));
+               return Skip;
 
             when N_Subtype_Indication =>
 
