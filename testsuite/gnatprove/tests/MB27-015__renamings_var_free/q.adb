@@ -1,14 +1,11 @@
-package body Q
-is
+package body Q is
 
-   function Get_V return T
-   is
+   function Get_V return T is
    begin
       return V;
    end Get_V;
 
-   function Get_P (I : in T) return T
-   is
+   function Get_P (I : in T) return T is
    begin
       case I is
          when T'Last =>
@@ -18,25 +15,20 @@ is
       end case;
    end Get_P;
 
-
-   function Get_Arr return Arr
-   is
+   function Get_Arr return Arr is
    begin
       return Arr_Obj;
    end Get_Arr;
 
-   function Get_Arr_P1 (X : in Arr) return Arr
-   is
+   function Get_Arr_P1 (X : in Arr) return Arr is
    begin
       return X;
    end Get_Arr_P1;
 
-   function Get_Arr_P2 (X : in Arr; I : in T) return Boolean
-   is
+   function Get_Arr_P2 (X : in Arr; I : in T) return Boolean is
    begin
       return X (I);
    end Get_Arr_P2;
-
 
    -- Direct ref to Arr_Obj, but indexing expression refs a variable
    S1 : Boolean renames Arr_Obj (Get_V);

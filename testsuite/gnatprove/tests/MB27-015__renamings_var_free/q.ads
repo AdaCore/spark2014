@@ -4,8 +4,8 @@
 -- use of variables inside renamings of function calls.
 --
 -- See SPARK LRM 4.4(2) fifth bullet.
-package Q
-is
+package Q is
+
    type T is range 1 .. 10;
 
    type Arr is array (T) of Boolean;
