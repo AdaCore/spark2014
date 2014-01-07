@@ -3372,28 +3372,10 @@ package body Gnat2Why.Expr is
       Args      : W_Expr_Array (1 .. 6);
       T         : W_Expr_Id;
       Arg_Ind   : Positive := 1;
-      Left_Simp : constant Boolean :=
-        Is_Constrained (Left_Ty) or else
-        Nkind (Left) in N_Identifier | N_Expanded_Name;
-      Right_Simp : constant Boolean :=
-        Is_Constrained (Etype (Right)) or else
-        Nkind (Right) in N_Identifier | N_Expanded_Name;
       Left_Expr : constant W_Expr_Id :=
-        Transform_Expr (Left, Subdomain, Params);
-      Left_Name : constant W_Expr_Id :=
-        (if Left_Simp then Left_Expr
-         else
-         +New_Temp_Identifier
-           (Ada_Node => Get_Ada_Node (+Left_Expr),
-            Typ => Get_Type (Left_Expr)));
+        New_Temp_For_Expr (Transform_Expr (Left, Subdomain, Params));
       Right_Expr : constant W_Expr_Id :=
-        Transform_Expr (Right, Subdomain, Params);
-      Right_Name : constant W_Expr_Id :=
-        (if Right_Simp then Right_Expr
-         else
-         +New_Temp_Identifier
-           (Ada_Node => Get_Ada_Node (+Right_Expr),
-            Typ      => Get_Type (Right_Expr)));
+        New_Temp_For_Expr (Transform_Expr (Right, Subdomain, Params));
       Op         : constant Why_Name_Enum :=
         (case Nkind (Expr) is
             when N_Op_And => WNE_Bool_And,
@@ -3401,9 +3383,9 @@ package body Gnat2Why.Expr is
             when others   => WNE_Bool_Xor);
 
       Left_Length  : constant W_Expr_Id :=
-        Build_Length_Expr (Domain => EW_Term, Expr => Left_Name, Dim => 1);
+        Build_Length_Expr (Domain => EW_Term, Expr => Left_Expr, Dim => 1);
       Right_Length : constant W_Expr_Id :=
-        Build_Length_Expr (Domain => EW_Term, Expr => Right_Name, Dim => 1);
+        Build_Length_Expr (Domain => EW_Term, Expr => Right_Expr, Dim => 1);
       Length_Check : constant W_Expr_Id :=
         New_Relation
           (Domain  => EW_Pred,
@@ -3437,8 +3419,8 @@ package body Gnat2Why.Expr is
                        E_Module (Component_Type (Left_Ty)),
                    W => WNE_Attr_Last)));
    begin
-      Add_Array_Arg (Subdomain, Args, Left_Name, Arg_Ind);
-      Add_Array_Arg (Subdomain, Args, Right_Name, Arg_Ind);
+      Add_Array_Arg (Subdomain, Args, Left_Expr, Arg_Ind);
+      Add_Array_Arg (Subdomain, Args, Right_Expr, Arg_Ind);
 
       --  Call to operator
 
@@ -3485,31 +3467,21 @@ package body Gnat2Why.Expr is
          Ar     => T,
          First  =>
            Get_Array_Attr (Domain => Subdomain,
-                           Expr   => Left_Name,
+                           Expr   => Left_Expr,
                            Attr   => Attribute_First,
                            Dim    => 1),
          Last   =>
            Get_Array_Attr (Domain => Subdomain,
-                           Expr   => Left_Name,
+                           Expr   => Left_Expr,
                            Attr   => Attribute_Last,
                            Dim    => 1));
 
-      if not Left_Simp then
-         T :=
-           New_Typed_Binding
-             (Domain  => Domain,
-              Name    => +Left_Name,
-              Def     => +Left_Expr,
-              Context => T);
-      end if;
-      if not Right_Simp then
-         T :=
-           New_Typed_Binding
-             (Domain  => Domain,
-              Name    => +Right_Name,
-              Def     => +Right_Expr,
-              Context => T);
-      end if;
+      T := Binding_For_Temp (Domain  => Domain,
+                             Tmp     => Left_Expr,
+                             Context => T);
+      T := Binding_For_Temp (Domain  => Domain,
+                             Tmp     => Right_Expr,
+                             Context => T);
       return T;
    end Transform_Array_Logical_Op;
 
@@ -3530,20 +3502,11 @@ package body Gnat2Why.Expr is
       Args      : W_Expr_Array (1 .. 3);
       T         : W_Expr_Id;
       Arg_Ind   : Positive := 1;
-      Right_Simp : constant Boolean :=
-        Is_Constrained (Etype (Right)) or else
-        Nkind (Right) in N_Identifier | N_Expanded_Name;
       Right_Expr : constant W_Expr_Id :=
-        Transform_Expr (Right, Subdomain, Params);
-      Right_Name : constant W_Expr_Id :=
-        (if Right_Simp then Right_Expr
-         else
-         +New_Temp_Identifier
-           (Ada_Node => Get_Ada_Node (+Right_Expr),
-            Typ      => Get_Type (Right_Expr)));
+        New_Temp_For_Expr (Transform_Expr (Right, Subdomain, Params));
 
       Right_Length : constant W_Expr_Id :=
-        Build_Length_Expr (Domain => EW_Term, Expr => Right_Name, Dim => 1);
+        Build_Length_Expr (Domain => EW_Term, Expr => Right_Expr, Dim => 1);
       Range_Check  : constant W_Expr_Id :=
         New_Conditional
           (Domain    => EW_Pred,
@@ -3569,7 +3532,7 @@ package body Gnat2Why.Expr is
                      E_Module (Component_Type (Right_Ty)),
                  W => WNE_Attr_Last)));
    begin
-      Add_Array_Arg (Subdomain, Args, Right_Name, Arg_Ind);
+      Add_Array_Arg (Subdomain, Args, Right_Expr, Arg_Ind);
 
       --  Call to operator
 
@@ -3605,23 +3568,18 @@ package body Gnat2Why.Expr is
          Ar     => T,
          First  =>
            Get_Array_Attr (Domain => Subdomain,
-                           Expr   => Right_Name,
+                           Expr   => Right_Expr,
                            Attr   => Attribute_First,
                            Dim    => 1),
          Last   =>
            Get_Array_Attr (Domain => Subdomain,
-                           Expr   => Right_Name,
+                           Expr   => Right_Expr,
                            Attr   => Attribute_Last,
                            Dim    => 1));
 
-      if not Right_Simp then
-         T :=
-           New_Typed_Binding
-             (Domain  => Domain,
-              Name    => +Right_Name,
-              Def     => +Right_Expr,
-              Context => T);
-      end if;
+      T := Binding_For_Temp (Domain  => Domain,
+                             Tmp     => Right_Expr,
+                             Context => T);
       return T;
    end Transform_Array_Negation;
 
