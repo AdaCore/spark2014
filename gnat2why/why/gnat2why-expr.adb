@@ -1865,8 +1865,9 @@ package body Gnat2Why.Expr is
                Prefix_Expr : constant W_Expr_Id :=
                                +Transform_Expr
                                  (Prefix (N),
-                                  EW_Term,
-                                  Params => Params);
+                                  Domain        => EW_Term,
+                                  Expected_Type => Get_Type (Pref),
+                                  Params        => Params);
                Dim     : constant Pos :=
                   Number_Dimensions (Type_Of_Node (Prefix (N)));
                Result_Id   : constant W_Identifier_Id :=
