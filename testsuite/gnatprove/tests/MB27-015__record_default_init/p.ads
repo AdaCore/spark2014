@@ -9,6 +9,8 @@ with FSB;
 package P
   with SPARK_Mode => On
 is
+   -- TU: 2. The ``default_expression`` of a ``component_declaration`` shall not
+   -- have any variable inputs.
 
    -- Case 1 - all literal default expressions. OK
    type R1 is record

@@ -6,6 +6,9 @@
 package Discrims
   with SPARK_Mode => On
 is
+   -- TU: 3. The ``default_expression`` of a ``discriminant_specification``
+   -- shall not have a variable input.
+
    C0 : constant Integer := 0;
 
    V0 : Integer := 0;

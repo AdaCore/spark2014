@@ -6,6 +6,23 @@
 -- See SPARK LRM 4.4(2) fifth bullet.
 package Q is
 
+   -- TU: 2. An expression (or range) in |SPARK| occurring in certain contexts
+   --  (listed below) shall not have a variable input.  This means that
+   --  such an expression shall not read a variable, nor shall it call a
+   --  function which (directly or indirectly) reads a variable.  These
+   --  contexts include:
+   --   * a constraint excluding the range of a loop parameter
+   --     specification where variables may be used in the expressions
+   --     defining the range (see :ref:`subtype_declarations`);
+   --   * the default_expression of a component declaration (see
+   --     :ref:`record_types`);
+   --   * the default_expression of a discriminant_specification
+   --     (see :ref:`discriminants`);
+   --   * a Dynamic_Predicate aspect specification;
+   --   * an indexing expresssion of an indexed_component or the discrete_range
+   --     of a slice in an object renaming declaration which renames
+   --     part of that index or slice.
+
    type T is range 1 .. 10;
 
    type Arr is array (T) of Boolean;
