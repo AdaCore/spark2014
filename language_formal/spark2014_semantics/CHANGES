@@ -1,0 +1,10 @@
+* Fixed typos:
+eample: Vundef has been replaced by Undefined, but some Vundef were
+forgotten in the process.
+
+* Split some files.
+For example we separate typing related definitions and proofs from
+environment definitions. This allows for more flexibility when
+modifying early defintions (no need to reprove everything before
+testing)
+

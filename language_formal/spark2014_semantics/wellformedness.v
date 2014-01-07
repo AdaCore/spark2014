@@ -10,6 +10,7 @@ zhangzhi@ksu.edu
 *)
 
 Require Export environment.
+Require Export typing.
 Require Export semantics.
 
 (** * Well-Formed Program  *)
@@ -911,7 +912,7 @@ Function f_mode_mapping (tb: symtb) (s: store): option mode_map :=
           end
         else 
           None
-    | ((x, (md, Boolean)) :: tb'), ((x', Vundef) :: s') => 
+    | ((x, (md, Boolean)) :: tb'), ((x', Undefined) :: s') => 
         if beq_nat x x' then
           match f_mode_mapping tb' s' with
           | Some m => Some ((x, (Uninit, md)) :: m)
@@ -919,7 +920,7 @@ Function f_mode_mapping (tb: symtb) (s: store): option mode_map :=
           end
         else
           None
-    | ((x, (md, Integer)) :: tb'), ((x', Vundef) :: s') => 
+    | ((x, (md, Integer)) :: tb'), ((x', Undefined) :: s') => 
         if beq_nat x x' then
           match f_mode_mapping tb' s' with
           | Some m => Some ((x, (Uninit, md)) :: m)

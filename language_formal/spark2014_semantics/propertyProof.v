@@ -12,6 +12,7 @@ zhangzhi@ksu.edu
 Require Export util.
 Require Export wellformedness.
 Require Export semantics.
+Require Export typing.
 
 (** * Properties Proof *)
 
