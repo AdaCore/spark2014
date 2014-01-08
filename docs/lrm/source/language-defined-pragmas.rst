@@ -38,7 +38,7 @@ Linker_Options     	      Yes
 List               	      Yes
 Locking_Policy    	      No		     No tasking
 No_Return          	      Yes
-Normalize_Scalars  	      No            	     Why? TBD.
+Normalize_Scalars  	      Yes
 Optimize           	      Yes
 Pack              	      Yes
 Page               	      Yes
