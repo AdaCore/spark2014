@@ -1,0 +1,5 @@
+port.adb:12:16: warning: range check might fail
+port.ads:10:11: warning: it is currently ignored
+port.ads:10:11: warning: it is currently ignored
+port.ads:10:11: warning: pragma "Volatile" is not yet supported
+port.ads:10:11: warning: pragma "Volatile" is not yet supported in proof

@@ -103,6 +103,11 @@ package body SPARK_Rewrite is
                           (Typ  => Etype (Etype (N)),
                            Expr => First (Parameter_Associations (N))));
                Set_Comes_From_Source (N, True);
+
+               --  Reset correct parent of original node, as this may be used
+               --  during the translation to Why.
+
+               Set_Parent (Original_Node (N), Parent (N));
             end if;
          end;
       end if;
