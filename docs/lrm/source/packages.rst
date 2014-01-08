@@ -312,9 +312,9 @@ The new aspects are:
      used as an actual parameter of a procedure whose corresponding
      formal parameter is of mode **out** or **in out**; or
 
-    - Async_Writers - it may only used as an actual parameter of a
-      procedure whose corresponding formal parameter is of mode **in**
-      or **in out**.
+   - Async_Writers - it may only used as an actual parameter of a
+     procedure whose corresponding formal parameter is of mode **in**
+     or **in out**.
 
 .. _tu-fe-external_state_variables-12:
 
