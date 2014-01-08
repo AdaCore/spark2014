@@ -5,9 +5,10 @@ package Try_Init_5
 is
    -- Attempting to initialize this constant with a variable
    -- is currently (but erroneously) not allowed by the RM.
-   -- The work around is to introduce a variable - in this case it
-   -- has to be visible but where the constant is deferred or declared
-   -- in the body the variable could be represented as a state abstraction.
+   -- The work around is to introduce a visible variable as here or
+   -- a state abstraction for a variable declared in the body. In either case
+   -- the variable should be initialized using the variable or state abstraction
+   -- from the other package.
    Not_Used : Integer := P.V;
    C : constant Integer := P.V;
 end Try_Init_5;
