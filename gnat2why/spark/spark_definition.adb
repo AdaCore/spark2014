@@ -2751,7 +2751,65 @@ package body SPARK_Definition is
          --  . they are already taken into account elsewhere (contracts)
          --  . they have no effect on verification
 
-         when Pragma_Abstract_State               |
+         --  Group 1 - RM Table 17.1(1), pragmas marked "Yes"
+         --  Note: pragma Assert is transformed into an
+         --  instance of pragma Check by the front-end.
+         when Pragma_Assertion_Policy             |
+              Pragma_Atomic                       |
+              Pragma_Atomic_Components            |
+              Pragma_Convention                   |
+              Pragma_Elaborate                    |
+              Pragma_Elaborate_All                |
+              Pragma_Elaborate_Body               |
+              Pragma_Export                       |
+              Pragma_Independent                  |
+              Pragma_Independent_Components       |
+              Pragma_Inline                       |
+              Pragma_Inspection_Point             |
+              Pragma_Linker_Options               |
+              Pragma_List                         |
+              Pragma_No_Return                    |
+              Pragma_Normalize_Scalars            |
+              Pragma_Optimize                     |
+              Pragma_Pack                         |
+              Pragma_Page                         |
+              Pragma_Partition_Elaboration_Policy |
+              Pragma_Preelaborable_Initialization |
+              Pragma_Preelaborate                 |
+              Pragma_Profile                      |
+              Pragma_Pure                         |
+              Pragma_Restrictions                 |
+              Pragma_Reviewable                   |
+              Pragma_Suppress                     |
+              Pragma_Unsuppress                   |
+--              Pragma_Volatile                     |
+
+         --  Group 2 - RM Table 17.1(2), pragmas marked "Yes"
+         --  Note: pragmas Assert_And_Cut, Assume, and
+         --  Loop_Invariant are transformed into instances of
+         --  pragma Check by the front-end.
+              Pragma_Abstract_State               |
+              Pragma_Assume_No_Invalid_Values     |
+--              Pragma_Async_Readers                |
+--              Pragma_Async_Writers                |
+              Pragma_Contract_Cases               |
+              Pragma_Depends                      |
+--              Pragma_Effective_Reads              |
+--              Pragma_Effective_Writes             |
+              Pragma_Global                       |
+              Pragma_Initializes                  |
+              Pragma_Initial_Condition            |
+              Pragma_Part_Of                      |
+              Pragma_Postcondition                |
+              Pragma_Precondition                 |
+              Pragma_Refined_Depends              |
+              Pragma_Refined_Global               |
+              Pragma_Refined_Post                 |
+              Pragma_Refined_State                |
+              Pragma_SPARK_Mode                   |
+
+         --  Group 3 - RM Table 17.1(3), pragmas marked "Yes"
+         --  Note: pragma Debug is removed by the front-end.
               Pragma_Ada_83                       |
               Pragma_Ada_95                       |
               Pragma_Ada_05                       |
@@ -2759,43 +2817,10 @@ package body SPARK_Definition is
               Pragma_Ada_12                       |
               Pragma_Ada_2012                     |
               Pragma_Annotate                     |
-              Pragma_Assertion_Policy             |
               Pragma_Check_Policy                 |
-              Pragma_Contract_Cases               |
-              Pragma_Convention                   |
-              Pragma_Depends                      |
-              Pragma_Elaborate                    |
-              Pragma_Elaborate_All                |
-              Pragma_Elaborate_Body               |
-              Pragma_Export                       |
-              Pragma_Global                       |
-              Pragma_Initial_Condition            |
-              Pragma_Initializes                  |
-              Pragma_Inline                       |
               Pragma_Inline_Always                |
-              Pragma_Inspection_Point             |
-              Pragma_Linker_Options               |
-              Pragma_List                         |
-              Pragma_No_Return                    |
-              Pragma_Optimize                     |
-              Pragma_Pack                         |
-              Pragma_Page                         |
-              Pragma_Part_Of                      |
-              Pragma_Postcondition                |
-              Pragma_Precondition                 |
-              Pragma_Preelaborable_Initialization |
-              Pragma_Preelaborate                 |
-              Pragma_Profile                      |
-              Pragma_Pure                         |
               Pragma_Pure_Function                |
-              Pragma_Refined_Depends              |
-              Pragma_Refined_Global               |
-              Pragma_Refined_Post                 |
-              Pragma_Refined_State                |
               Pragma_Restriction_Warnings         |
-              Pragma_Restrictions                 |
-              Pragma_Reviewable                   |
-              Pragma_SPARK_Mode                   |
               Pragma_Style_Checks                 |
               Pragma_Test_Case                    |
               Pragma_Unmodified                   |

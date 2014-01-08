@@ -116,10 +116,14 @@ Check	 		      Yes
 Check_Policy 		      Yes
 Debug			      Yes		     Ignored (replaced by null statement)
 Inline_Always      	      Yes
+Overflow_Mode                 Yes
 Pure_Function      	      Yes
 Restriction_Warnings  	      Yes
 Style_Checks      	      Yes
 Test_Case          	      Yes
+Unmodified                    Yes
+Unreferenced                  Yes
+Validity_Checks               Yes
 Warnings           	      Yes
 ============================= ====================== =================================================
 
