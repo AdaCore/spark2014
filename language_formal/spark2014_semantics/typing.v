@@ -15,20 +15,6 @@ Fixpoint lookup (x : idnum) (tb: symtb) :=
    | nil => None
    end.
 
-(** * Program State *)
-(** Statement evaluation returns one of the following results:
-    - normal state;
-    - run time errors, which are required to be detected at run time,
-      for example, overflow check and division by zero check;
-    - unterminated state caused by infinite loop;
-    - abnormal state, which includes compile time errors
-      (for example, type checks failure and undefined variables), 
-      bounded errors and erroneous execution. 
-      In the future, the abnormal state can be refined into these 
-      more precise categories (1.1.5);
-*)
-
-
 (** * Type Check Stack *)
 
 (** ** Type checker for store *)
