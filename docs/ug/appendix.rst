@@ -321,13 +321,8 @@ Features Not Yet Implemented in Both Flow Analysis and Proof
 
 #. The following aspects are not supported:
 
- - Volatile
- - External
- - Async_Readers
- - Async_Writers
- - Effective_Writes
- - Static_Predicate
- - Predicate
+   - Static_Predicate
+   - Predicate
 
 #. Separate packages and subprograms may not be analyzed, as well as
    the code of their parent following the declaration of the corresponding
@@ -346,15 +341,38 @@ Features Not Yet Implemented in Flow Analysis
    only in the subprogram they have been declared in (they are again
    considered to be static objects in nested subprograms).
 
-#. The mode Proof_In for global contracts is not yet supported.
+#. A variable or state abstraction not declared within a package, V,
+   which is read during the elaboration of the package, P, but is not
+   used in initializing any of the variables or state abstractions P
+   [e.g., it could be used in defining the value of a constant] will
+   cause a flow error:
 
-#. Flow analysis does not support dependency contracts on functions.
+      "V" must be listed in the Initializes aspect of "P" (SPARK RM 7.1.5(12)) 
 
-#. The Part_Of aspect is not supported.
+   To work around this limitation a variable (either visible or hidden
+   and represented by a state abstraction) has to be delared in P and
+   initialized using V.  This may give rise to a suppressible warning
+   that V is not used.
 
-#. Verification of the dependency relationship specified by an
-   Initializes aspect is not supported, although the implicit
-   Global aspect is verified.
+   For example:
+
+   .. code-block:: ada
+
+	pragma SPARK_Mode(On);
+	with Q;
+	package P
+	   with Initializes => (Not_Used => Q.V)
+	is
+	   -- Attempting to initialize this constant with a variable
+	   -- will cause a flow error.
+	   -- The work around is to introduce a visible variable as here or
+	   -- a state abstraction for a variable declared in the body. In either case
+	   -- the variable should be initialized using the variable or state abstraction
+	   -- from the other package.
+	   Not_Used : Integer := Q.V;
+	   C : constant Integer := Q.V;
+	end P;
+
 
 Features Not Yet Implemented in Proof
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
