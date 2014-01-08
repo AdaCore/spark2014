@@ -5,7 +5,7 @@ Language-Defined Pragmas (Annex L)
 
 .. _tu-fe-language_defined_pragmas-01:
 
-1. The following Ada language defined pragmas are supported as follows:
+1. The following Ada language-defined pragmas are supported as follows:
 
 ============================= ====================== ===============================================
 Pragma                        Allowed in SPARK 2014  Comment
@@ -15,21 +15,21 @@ Assert             	      Yes
 Assertion_Policy	      Yes
 Asynchronous       	      No
 Atomic          	      Yes
-Atomic_Components  	      ?
-Attach_Handler     	      No
+Atomic_Components  	      Yes
+Attach_Handler     	      No		     No tasking
 Convention         	      Yes
 CPU             	      No		     No tasking
 Default_Storage_Pool   	      No		     No access types
 Detect_Blocking	  	      No		     No tasking
 Discard_Names 	  	      No
-Dispatching_Domain 	      No
+Dispatching_Domain 	      No		     No tasking
 Elaborate          	      Yes
 Elaborate_All      	      Yes
 Elaborate_Body     	      Yes
 Export             	      Yes
 Import             	      Yes
-Independent        	      ?
-Independent_Components 	      ?
+Independent        	      Yes
+Independent_Components 	      Yes
 Inline             	      Yes
 Inspection_Point   	      Yes
 Interrupt_Handler  	      No		     No tasking
@@ -38,17 +38,17 @@ Linker_Options     	      Yes
 List               	      Yes
 Locking_Policy    	      No		     No tasking
 No_Return          	      Yes
-Normalize_Scalars  	      No            	     No support for invalid values
-Optimise           	      Yes
+Normalize_Scalars  	      No            	     Why? TBD.
+Optimize           	      Yes
 Pack              	      Yes
 Page               	      Yes
-Partition_Elaboration_Policy  ?   		     Partition wide would it appear in a compilation unit?
+Partition_Elaboration_Policy  Yes
 Preelaborable_Initialization  Yes
 Preelaborate       	      Yes
 Priority  	  	      No		     No tasking
 Priority_Specific_Dispatching No  		     No tasking
 Profile            	      Yes
-Pure               	      Y
+Pure               	      Yes
 Queuing_Policy 	 	      No		     No Tasking
 Relative_Deadline  	      No		     No Tasking
 Remote_Call_Interface 	      No		     Distributed systems
@@ -57,10 +57,10 @@ Restrictions 	 	      Yes
 Reviewable         	      Yes
 Shared_Passive     	      No                     Distributed systems
 Storage_Size 	 	      No		     No tasking
-Suppress           	      ?			     Would this also supress the proof check?
+Suppress           	      Yes
 Task_Dispatching_Policy       No		     No tasking
-Unchecked_Union	 	      No    		     I think we ruled this out
-Unsuppress 	  	      ?
+Unchecked_Union	 	      No
+Unsuppress 	  	      Yes
 Volatile           	      Yes
 Volatile_Components 	      No
 ============================= ====================== ===============================================
@@ -68,7 +68,7 @@ Volatile_Components 	      No
 
 .. _tu-fe-language_defined_pragmas-02:
 
-2. The following |SPARK| language pragmas are defined:
+2. The following |SPARK| language-defined pragmas are defined:
 
 ============================= ====================== =================================================
 Pragma                        Allowed in SPARK 2014  Comment
@@ -76,7 +76,7 @@ Pragma                        Allowed in SPARK 2014  Comment
 Abstract_State	 	      Yes
 Assert_And_Cut	 	      Yes
 Assume		 	      Yes
-Assume_No_Invalid_Values      Yes		     With ability to state particular variable or type
+Assume_No_Invalid_Values      Yes
 Async_Readers		      Yes
 Async_Writers		      Yes
 Contract_Cases     	      Yes
@@ -93,27 +93,14 @@ Post		  	      Yes
 Pre		  	      Yes
 Refined_Depends    	      Yes
 Refined_Global	 	      Yes
+Refined_Post 	 	      Yes
 Refined_State 	 	      Yes
 SPARK_Mode         	      Yes                    Language defined but implementation dependent
 ============================= ====================== =================================================
 
 .. _tu-fe-language_defined_pragmas-03:
 
-3. The following pragmas to go in |SPARK| UG?  SPARK 2014
-   Implementation Defined Pragmas:
-
-============================= ====================== =================================================
-Pragma                        Allowed in SPARK 2014  Comment
-============================= ====================== =================================================
-Annotate		      Yes
-Restriction_Warnings  	      Yes
-Test_Case          	      Yes
-Warnings           	      Yes
-============================= ====================== =================================================
-
-.. _tu-fe-language_defined_pragmas-04:
-
-4. Gnat defined pragmas to go in |SPARK| UG.  Gnat specific pragmas:
+3. The following GNAT implementation-defined pragmas are permitted in |SPARK|:
 
 ============================= ====================== =================================================
 Pragma                        Allowed in SPARK 2014  Comment
@@ -124,17 +111,17 @@ Ada_05			      Yes
 Ada_2005		      Yes
 Ada_12             	      Yes
 Ada_2012           	      Yes
-Check	 		      Yes		     Is this used by SPARK in a specific way?
-Check_Policy 		      Yes		     Is this used by SPARK in a specific way?
+Annotate		      Yes
+Check	 		      Yes
+Check_Policy 		      Yes
 Debug			      Yes		     Ignored (replaced by null statement)
 Inline_Always      	      Yes
 Pure_Function      	      Yes
+Restriction_Warnings  	      Yes
 Style_Checks      	      Yes
+Test_Case          	      Yes
+Warnings           	      Yes
 ============================= ====================== =================================================
-
 
 .. _etu-language_defined_pragmas:
 
-..  What about other Gnat specific pragmas?
-
-.. todo:: complete this section
