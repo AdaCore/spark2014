@@ -1,0 +1,20 @@
+package Binary_Fixed is
+   
+   type T is delta 2.0**(-8) range -10.0 .. 10.0;
+   
+   procedure Test_Minus (X : T) with
+     Pre => X in -5.0 .. 5.0;
+     
+   procedure Test_Add (X : T) with
+     Pre => X in -5.0 .. 5.0;
+     
+   procedure Test_Subtract (X : T) with
+     Pre => X in -5.0 .. 5.0;
+     
+   procedure Test_Multiply (X : T) with
+     Pre => X in -5.0 .. 5.0;
+   
+   procedure Test_Divide (X : T) with
+     Pre => X in -5.0 .. 5.0;
+
+end Binary_Fixed;

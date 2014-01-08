@@ -1,0 +1,104 @@
+binary_fixed.adb:7:09: warning: unused assignment
+binary_fixed.adb:7:12: warning: overflow check might fail
+binary_fixed.adb:7:12: warning: range check might fail
+binary_fixed.adb:8:7: warning: assertion might fail
+binary_fixed.adb:9:09: warning: unused assignment
+binary_fixed.adb:10:7: info: assertion proved
+binary_fixed.adb:17:09: warning: unused assignment
+binary_fixed.adb:17:14: warning: overflow check might fail
+binary_fixed.adb:17:14: warning: range check might fail
+binary_fixed.adb:18:7: warning: assertion might fail
+binary_fixed.adb:19:09: warning: unused assignment
+binary_fixed.adb:19:14: warning: overflow check might fail
+binary_fixed.adb:19:14: warning: range check might fail
+binary_fixed.adb:20:7: warning: assertion might fail, requires Z > X
+binary_fixed.adb:21:09: warning: unused assignment
+binary_fixed.adb:22:7: info: assertion proved
+binary_fixed.adb:29:09: warning: unused assignment
+binary_fixed.adb:29:14: warning: overflow check might fail
+binary_fixed.adb:29:14: warning: range check might fail
+binary_fixed.adb:30:7: warning: assertion might fail, requires Z = 
+binary_fixed.adb:31:09: warning: unused assignment
+binary_fixed.adb:31:14: warning: overflow check might fail
+binary_fixed.adb:31:14: warning: range check might fail
+binary_fixed.adb:32:7: warning: assertion might fail, requires Z < X
+binary_fixed.adb:33:09: warning: unused assignment
+binary_fixed.adb:34:7: info: assertion proved
+binary_fixed.adb:41:09: warning: unused assignment
+binary_fixed.adb:41:14: warning: overflow check might fail
+binary_fixed.adb:41:14: warning: range check might fail
+binary_fixed.adb:42:7: info: assertion proved
+binary_fixed.adb:42:28: info: overflow check proved
+binary_fixed.adb:43:09: warning: unused assignment
+binary_fixed.adb:43:14: info: overflow check proved
+binary_fixed.adb:43:14: info: range check proved
+binary_fixed.adb:44:7: info: assertion proved
+binary_fixed.adb:44:28: info: overflow check proved
+binary_fixed.adb:45:09: warning: unused assignment
+binary_fixed.adb:45:14: info: overflow check proved
+binary_fixed.adb:45:14: info: range check proved
+binary_fixed.adb:46:7: info: assertion proved
+binary_fixed.adb:46:28: info: overflow check proved
+binary_fixed.adb:47:09: warning: unused assignment
+binary_fixed.adb:47:14: info: range check proved
+binary_fixed.adb:47:14: warning: overflow check might fail
+binary_fixed.adb:48:7: warning: assertion might fail, requires Z = X + X
+binary_fixed.adb:48:28: warning: overflow check might fail
+binary_fixed.adb:55:07: warning: statement has no effect
+binary_fixed.adb:56:12: warning: unused assignment
+binary_fixed.adb:56:17: info: division check proved
+binary_fixed.adb:56:17: warning: overflow check might fail
+binary_fixed.adb:56:17: warning: range check might fail
+binary_fixed.adb:57:10: warning: assertion might fail, requires Z = 
+binary_fixed.adb:59:09: warning: unused assignment
+binary_fixed.adb:59:14: info: division check proved
+binary_fixed.adb:59:14: warning: overflow check might fail
+binary_fixed.adb:59:14: warning: range check might fail
+binary_fixed.adb:60:7: warning: assertion might fail, requires Z = 2 * X
+binary_fixed.adb:60:28: warning: overflow check might fail
+binary_fixed.adb:61:09: warning: unused assignment
+binary_fixed.adb:61:14: info: division check proved
+binary_fixed.adb:61:14: warning: overflow check might fail
+binary_fixed.adb:61:14: warning: range check might fail
+binary_fixed.adb:62:7: warning: assertion might fail
+binary_fixed.adb:62:29: warning: overflow check might fail
+binary_fixed.adb:62:33: warning: overflow check might fail
+binary_fixed.adb:62:48: warning: overflow check might fail
+binary_fixed.adb:62:52: warning: overflow check might fail
+binary_fixed.adb:63:09: warning: unused assignment
+binary_fixed.adb:64:7: info: assertion proved
+binary_fixed.ads:5:26: warning: unused initial value of "X"
+binary_fixed.ads:8:24: warning: unused initial value of "X"
+binary_fixed.ads:11:29: warning: unused initial value of "X"
+binary_fixed.ads:14:29: warning: unused initial value of "X"
+binary_fixed.ads:17:27: warning: unused initial value of "X"
+test_binary_fixed.adb:5:4: info: precondition proved
+test_binary_fixed.adb:5:04: warning: statement has no effect
+test_binary_fixed.adb:6:4: info: precondition proved
+test_binary_fixed.adb:6:04: warning: statement has no effect
+test_binary_fixed.adb:7:4: info: precondition proved
+test_binary_fixed.adb:7:04: warning: statement has no effect
+test_binary_fixed.adb:9:4: info: precondition proved
+test_binary_fixed.adb:9:04: warning: statement has no effect
+test_binary_fixed.adb:10:4: info: precondition proved
+test_binary_fixed.adb:10:04: warning: statement has no effect
+test_binary_fixed.adb:11:4: info: precondition proved
+test_binary_fixed.adb:11:04: warning: statement has no effect
+test_binary_fixed.adb:13:4: info: precondition proved
+test_binary_fixed.adb:13:04: warning: statement has no effect
+test_binary_fixed.adb:14:4: info: precondition proved
+test_binary_fixed.adb:14:04: warning: statement has no effect
+test_binary_fixed.adb:15:4: info: precondition proved
+test_binary_fixed.adb:15:04: warning: statement has no effect
+test_binary_fixed.adb:17:4: info: precondition proved
+test_binary_fixed.adb:17:04: warning: statement has no effect
+test_binary_fixed.adb:18:4: info: precondition proved
+test_binary_fixed.adb:18:04: warning: statement has no effect
+test_binary_fixed.adb:19:4: info: precondition proved
+test_binary_fixed.adb:19:04: warning: statement has no effect
+test_binary_fixed.adb:21:4: info: precondition proved
+test_binary_fixed.adb:21:04: warning: statement has no effect
+test_binary_fixed.adb:22:4: info: precondition proved
+test_binary_fixed.adb:22:04: warning: statement has no effect
+test_binary_fixed.adb:23:4: info: precondition proved
+test_binary_fixed.adb:23:04: warning: statement has no effect
