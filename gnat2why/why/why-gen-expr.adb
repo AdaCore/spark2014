@@ -581,6 +581,9 @@ package body Why.Gen.Expr is
             --  Do_Overflow_Check is set. (See description of these flags
             --  in sinfo.ads for details.)
 
+            --  We can't rely on check flags for subtype predicates, so force
+            --  check_node in that case
+
             Range_Check_Node : constant Node_Id :=
               (if Domain = EW_Prog and Check_Needed then
                  (if Do_Range_Check (Ada_Node) then
@@ -588,7 +591,11 @@ package body Why.Gen.Expr is
                   elsif Nkind (Parent (Ada_Node)) = N_Type_Conversion
                     and then Do_Overflow_Check (Parent (Ada_Node))
                   then
-                    Ada_Node
+                     Ada_Node
+                  elsif Get_Base_Type (To) = EW_Abstract
+                    and then Has_Predicates (Get_Ada_Node (+To))
+                  then
+                     Ada_Node
                   else Empty)
                else Empty);
 

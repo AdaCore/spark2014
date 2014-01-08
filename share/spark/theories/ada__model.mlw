@@ -62,8 +62,7 @@ module Static_Discrete_Base
     requires { n <> first }
     ensures { result = n }
 
-  predicate in_range "bounded_type" (x : int) =
-    ( first <= x <= last )
+  predicate in_range "bounded_type" (x : int)
 
   val range_check_ (n : int) : int
     requires { in_range n }
@@ -188,8 +187,7 @@ module Static_Floating_Point
   axiom representable_last :
     round_real last = last
 
-  predicate in_range  (x : real) =
-   ( first <=. x <=. last )
+  predicate in_range  (x : real)
 
   val range_check_ (n : real)  :real
     requires { in_range n }

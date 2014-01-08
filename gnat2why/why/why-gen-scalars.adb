@@ -23,22 +23,29 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Sem_Eval;           use Sem_Eval;
-with Sinfo;              use Sinfo;
-with Snames;             use Snames;
+with Atree;               use Atree;
+with Nlists;              use Nlists;
+with Sem_Eval;            use Sem_Eval;
+with Sinfo;               use Sinfo;
+with Snames;              use Snames;
 
-with SPARK_Util;         use SPARK_Util;
+with SPARK_Util;          use SPARK_Util;
 
-with Why.Atree.Builders; use Why.Atree.Builders;
-with Why.Atree.Modules;  use Why.Atree.Modules;
-with Why.Gen.Decl;       use Why.Gen.Decl;
-with Why.Gen.Names;      use Why.Gen.Names;
-with Why.Inter;          use Why.Inter;
-with Why.Sinfo;          use Why.Sinfo;
-with Why.Types;          use Why.Types;
+with Why.Atree.Accessors; use Why.Atree.Accessors;
+with Why.Atree.Builders;  use Why.Atree.Builders;
+with Why.Atree.Modules;   use Why.Atree.Modules;
+with Why.Conversions;     use Why.Conversions;
+with Why.Gen.Decl;        use Why.Gen.Decl;
+with Why.Gen.Expr;        use Why.Gen.Expr;
+with Why.Gen.Names;       use Why.Gen.Names;
+with Why.Gen.Preds;       use Why.Gen.Preds;
+with Why.Gen.Binders;     use Why.Gen.Binders;
+with Why.Inter;           use Why.Inter;
+with Why.Sinfo;           use Why.Sinfo;
+with Why.Types;           use Why.Types;
 
-with Gnat2Why.Nodes;     use Gnat2Why.Nodes;
-with Gnat2Why.Util;      use Gnat2Why.Util;
+with Gnat2Why.Nodes;      use Gnat2Why.Nodes;
+with Gnat2Why.Util;       use Gnat2Why.Util;
 
 package body Why.Gen.Scalars is
 
@@ -49,6 +56,10 @@ package body Why.Gen.Scalars is
       Last       : W_Term_Id;
       Modulus    : W_Term_OId);
    --  Define the attributes first, last, modulus for the given type.
+
+   function Num_Constant (Ty : Entity_Id; N : Node_Id) return W_Term_Id;
+   --  N must be a static expression. This function evaluates N as an Uint (if
+   --  Ty is a discrete type) or as real (if Ty is not discrete)
 
    -------------------------
    -- Declare_Scalar_Type --
@@ -67,6 +78,10 @@ package body Why.Gen.Scalars is
       function Compute_Clone_Subst return W_Clone_Substitution_Array;
       --  generate the substitutions to be passed to the clone
 
+      procedure Generate_Range_Predicate;
+      --  generate the range predicate for the type. In simple cases, this
+      --  predicate simply expresses "first < x < last"
+
       -------------------------
       -- Compute_Clone_Subst --
       -------------------------
@@ -83,11 +98,11 @@ package body Why.Gen.Scalars is
                  Floating_Round_Double
             else
                Floating_Round);
-         Default_Clone_Subst : constant W_Clone_Substitution_Array :=
-           (1 => New_Clone_Substitution
-              (Kind      => EW_Type_Subst,
-               Orig_Name => New_Identifier (Name => "t"),
-               Image     => Why_Name));
+         Default_Clone_Subst : constant W_Clone_Substitution_Id :=
+           New_Clone_Substitution
+             (Kind      => EW_Type_Subst,
+              Orig_Name => New_Identifier (Name => "t"),
+              Image     => Why_Name);
          Round_Clone_Subst : constant W_Clone_Substitution_Array :=
            (if Has_Round_Real then
               (1 => New_Clone_Substitution
@@ -113,6 +128,11 @@ package body Why.Gen.Scalars is
                   Orig_Name => To_Ident (WNE_Attr_Modulus),
                   Image     => To_Ident (WNE_Attr_Modulus)))
             else (1 .. 0 => <>));
+         Range_Clone_Subst : constant W_Clone_Substitution_Id :=
+           New_Clone_Substitution
+             (Kind      => EW_Predicate,
+              Orig_Name => To_Ident (WNE_Range_Pred),
+              Image     => To_Ident (WNE_Range_Pred));
       begin
 
          --  If the type Entity has a rounding operation, use it in the clone
@@ -122,8 +142,80 @@ package body Why.Gen.Scalars is
            Default_Clone_Subst &
            Round_Clone_Subst &
            Static_Clone_Subst &
-           Mod_Clone_Subst;
+           Mod_Clone_Subst &
+           Range_Clone_Subst;
       end Compute_Clone_Subst;
+
+      ------------------------------
+      -- Generate_Range_Predicate --
+      ------------------------------
+
+      procedure Generate_Range_Predicate is
+         Ty  : constant W_Type_Id := Base_Why_Type (E);
+         Var : constant W_Identifier_Id :=
+           New_Identifier (Name => "x", Typ => Ty);
+         Def : W_Pred_Id := Why_Empty;
+      begin
+         if Is_Static then
+            if Has_Predicates (E) then
+               declare
+                  Pred   : Node_Id := First (Static_Predicate (E));
+               begin
+                  Def := False_Pred;
+                  while Present (Pred) loop
+                     declare
+                        Rng   : constant Node_Id := Get_Range (Pred);
+                        First : constant W_Term_Id :=
+                          Num_Constant (E, Low_Bound (Rng));
+                        Last  : constant W_Term_Id :=
+                          Num_Constant (E, High_Bound (Rng));
+                     begin
+                        Def :=
+                          +New_Or_Else_Expr
+                            (Domain => EW_Pred,
+                             Left   => +Def,
+                             Right  =>
+                               New_Range_Expr (Domain => EW_Pred,
+                                                Low    => +First,
+                                                High   => +Last,
+                                               Expr   => +Var));
+                        Next (Pred);
+                     end;
+                  end loop;
+               end;
+
+            else
+               declare
+                  First : constant W_Identifier_Id :=
+                    New_Identifier
+                      (Symbol => Get_Symbol (To_Ident (WNE_Attr_First)),
+                       Domain => EW_Term,
+                       Typ    => Ty);
+                  Last : constant W_Identifier_Id :=
+                    New_Identifier
+                      (Symbol => Get_Symbol (To_Ident (WNE_Attr_Last)),
+                       Domain => EW_Term,
+                       Typ    => Ty);
+               begin
+                  Def :=
+                    +New_Range_Expr (Domain => EW_Pred,
+                                     Low    => +First,
+                                     High   => +Last,
+                                     Expr   => +Var);
+               end;
+            end if;
+         end if;
+
+         Emit (Theory,
+               Why.Gen.Binders.New_Function_Decl
+                 (Domain  => EW_Pred,
+                  Name    => To_Ident (WNE_Range_Pred),
+                  Def     => +Def,
+                  Labels  => Name_Id_Sets.Empty_Set,
+                  Binders =>
+                    (1 => Binder_Type'(B_Name => Var,
+                                       others => <>))));
+      end Generate_Range_Predicate;
 
       ----------------
       -- Pick_Clone --
@@ -154,6 +246,7 @@ package body Why.Gen.Scalars is
 
       First, Last, Modul : W_Term_OId := Why_Empty;
       Rng                : constant Node_Id := Get_Range (E);
+
       --  beginning of processing for Declare_Scalar_Type
 
    begin
@@ -171,22 +264,10 @@ package body Why.Gen.Scalars is
          Modul := New_Integer_Constant (Value => Modulus (E));
       end if;
       if Is_Static_Expression (Low_Bound (Rng)) then
-         if Is_Discrete_Type (E) then
-            First := New_Integer_Constant (Value =>
-                                             Expr_Value (Low_Bound (Rng)));
-         else
-            First := New_Real_Constant (Value =>
-                                          Expr_Value_R (Low_Bound (Rng)));
-         end if;
+         First := Num_Constant (E, Low_Bound (Rng));
       end if;
       if Is_Static_Expression (High_Bound (Rng)) then
-         if Is_Discrete_Type (E) then
-            Last := New_Integer_Constant (Value =>
-                                            Expr_Value (High_Bound (Rng)));
-         else
-            Last := New_Real_Constant (Value =>
-                                         Expr_Value_R (High_Bound (Rng)));
-         end if;
+         Last := Num_Constant (E, High_Bound (Rng));
       end if;
       Define_Scalar_Attributes (Theory    => Theory,
                                 Base_Type =>
@@ -195,6 +276,11 @@ package body Why.Gen.Scalars is
                                 First     => First,
                                 Last      => Last,
                                 Modulus   => Modul);
+
+      Generate_Range_Predicate;
+
+      --  clone the appropriate module
+
       Emit (Theory,
             New_Clone_Declaration (Theory_Kind   => EW_Module,
                                    Clone_Kind    => EW_Export,
@@ -228,7 +314,7 @@ package body Why.Gen.Scalars is
       for J in Attr_Values'Range loop
          if J /= S_Modulus or else Attr_Values (J).Value /= Why_Empty then
             Emit (Theory,
-                  New_Function_Decl
+                  Why.Atree.Builders.New_Function_Decl
                     (Domain      => EW_Term,
                      Name        =>
                        To_Ident (Attr_To_Why_Name (Attr_Values (J).Attr_Id)),
@@ -239,5 +325,18 @@ package body Why.Gen.Scalars is
          end if;
       end loop;
    end Define_Scalar_Attributes;
+
+   ------------------
+   -- Num_Constant --
+   ------------------
+
+   function Num_Constant (Ty : Entity_Id; N : Node_Id) return W_Term_Id is
+   begin
+      if Is_Discrete_Type (Ty) then
+         return New_Integer_Constant (Value => Expr_Value (N));
+      else
+         return New_Real_Constant (Value => Expr_Value_R (N));
+      end if;
+   end Num_Constant;
 
 end Why.Gen.Scalars;

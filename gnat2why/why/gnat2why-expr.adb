@@ -6083,18 +6083,19 @@ package body Gnat2Why.Expr is
       Runtime : out W_Prog_Id;
       Pred    : out W_Pred_Id)
    is
-      Arg1 : constant Node_Id := First (Pragma_Argument_Associations (Stmt));
-      Arg2 : constant Node_Id := Next (Arg1);
-      Expr : constant Node_Id := Expression (Arg2);
+
+      Arg1   : constant Node_Id := First (Pragma_Argument_Associations (Stmt));
+      Arg2   : constant Node_Id := Next (Arg1);
+      Expr   : constant Node_Id := Expression (Arg2);
       Params : Transformation_Params := Assert_Params;
    begin
 
-      --  Pragma Check generated for Pre/Postconditions are
-      --  ignored.
+      --  Pragma Check generated for Pre/Postconditions are ignored.
+      --  ??? Frontend-generated pragma check for static predicate is ignored
+      --  (MC20-028)
 
-      if Chars (Get_Pragma_Arg (Arg1)) = Name_Precondition
-           or else
-         Chars (Get_Pragma_Arg (Arg1)) = Name_Postcondition
+      if Chars (Get_Pragma_Arg (Arg1)) in
+        Name_Precondition | Name_Postcondition | Name_Static_Predicate
       then
          Runtime := New_Void (Stmt);
          Pred := True_Pred;

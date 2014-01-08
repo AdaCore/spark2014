@@ -762,6 +762,7 @@ package body SPARK_Definition is
       --  Start of Mark_Subprogram_Entity
 
       begin
+
          Mark_Subprogram_Specification (Get_Subprogram_Spec (E));
 
          Prag := Pre_Post_Conditions (Contract (E));
@@ -897,7 +898,18 @@ package body SPARK_Definition is
          end if;
 
          if Has_Predicates (E) then
-            Mark_Violation ("type predicate", E);
+            if No (Static_Predicate (E)) then
+               Mark_Violation ("dynamic type predicate", E);
+            else
+               declare
+                  Pred : Node_Id := First (Static_Predicate (E));
+               begin
+                  while Present (Pred) loop
+                     Mark (Pred);
+                     Next (Pred);
+                  end loop;
+               end;
+            end if;
          end if;
 
          --  Detect if the type has partial default initialization
@@ -1058,6 +1070,15 @@ package body SPARK_Definition is
    --  Start of Mark_Entity
 
    begin
+
+      --  ??? predicate_functions ignored for now (MC20-028)
+
+      if Ekind (E) in E_Function | E_Procedure
+        and then Is_Predicate_Function (E)
+      then
+         return;
+      end if;
+
       --  Nothing to do if the entity E was already marked
 
       if Entity_Set.Contains (E) then
@@ -2226,6 +2247,7 @@ package body SPARK_Definition is
       Actuals : constant List_Id := Parameter_Associations (N);
 
    begin
+
       if Present (Actuals) then
          Mark_List (Actuals);
       end if;
@@ -2251,7 +2273,11 @@ package body SPARK_Definition is
             Mark_Violation ("indirect call", N);
          end if;
 
-      elsif not In_SPARK (Entity (Nam)) then
+      --  ??? Ignore calls to predicate functions (MC20-028)
+
+      elsif not In_SPARK (Entity (Nam))
+        and then not Is_Predicate_Function (Entity (Nam))
+      then
          Mark_Violation (N, From => Entity (Nam));
 
       else
