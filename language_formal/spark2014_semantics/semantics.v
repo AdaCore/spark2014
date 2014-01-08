@@ -107,7 +107,7 @@ Inductive eval_expr: store -> expression -> return_val -> Prop :=
         eval_literal l = v ->
         eval_expr s (E_Literal ast_num l) (Val_Normal v)
     | eval_E_Identifier: forall x s v ast_num,
-        fetch x s = Some v ->
+        fetch x s = Some (Value v) ->
         eval_expr s (E_Identifier ast_num x) (Val_Normal v)
     | eval_E_Binary_Operation1: forall s e1 ast_num op e2,
         eval_expr s e1 Val_Run_Time_Error ->
@@ -136,6 +136,8 @@ Inductive eval_expr: store -> expression -> return_val -> Prop :=
         eval_expr s (E_Unary_Operation ast_num op e) (Val_Normal v1).
 
 
+
+
 (** ** Statement semantics *)
 (** 
    in a statement evaluation, whenever a run time error is detected 
@@ -143,6 +145,30 @@ Inductive eval_expr: store -> expression -> return_val -> Prop :=
    evaluation is terminated and return a run time error; otherwise, 
    evaluate the statement into a normal state; 
 *)
+
+
+Function is_mode specname lparamspec: option mode :=
+  match lparamspec with
+    | nil => None
+    | spec :: l =>
+      if beq_nat (spec.(parameter_name)) specname
+      then Some (spec.(parameter_mode))
+      else is_mode specname l
+  end.
+
+Inductive Forall3 {A B C : Type} (R : A -> B -> C -> Prop)
+: list A -> list B -> list C -> Prop :=
+  Forall3_nil : Forall3 R nil nil nil
+| Forall3_cons : forall (x : A) (y : B) (z:C) (l : list A) (l' : list B) (l'' : list C),
+                   R x y z ->
+                   Forall3 R l l' l'' -> Forall3 R (x :: l) (y :: l') (z :: l'').
+
+Definition is_var e:Prop :=
+  match e with
+    |  E_Identifier _ _ => True
+    | _ => False
+  end.
+
 
 Inductive eval_stmt: store -> statement -> state -> Prop := 
     | eval_S_Assignment1: forall s e ast_num x,
@@ -183,7 +209,103 @@ Inductive eval_stmt: store -> statement -> state -> Prop :=
         eval_stmt s (S_While_Loop ast_num b c) s2
     | eval_S_While_Loop_False: forall s b ast_num c,
         eval_expr s b (Val_Normal (Bool false)) ->
-        eval_stmt s (S_While_Loop ast_num b c) (S_Normal s).
+        eval_stmt s (S_While_Loop ast_num b c) (S_Normal s)
+    | eval_S_Proc:
+        forall pbname (pb:procedure_body) lv lexp s ast_num s1 s2 s3 s' s'' slocal assoc_param formal_names prefix,
+          Some (Procedure (pb)) = fetch pbname s ->
+          assoc_param = List.combine (procedure_parameter_profile pb) lexp ->
+          (Forall2
+             (fun (assoc:(parameter_specification * expression)) v =>
+                let (param,exp) := assoc in
+                (param.(parameter_mode) = In
+                 -> exists v', eval_expr s exp (Val_Normal v')
+                               /\ v = Value v')
+                /\ (param.(parameter_mode) = Out -> (v = Undefined) /\ is_var exp))
+             assoc_param
+             lv) ->
+        formal_names = List.map parameter_name (procedure_parameter_profile pb) -> 
+        prefix = List.combine formal_names lv ->
+        s1 = prefix ++ s ->
+        eval_decl s1 (procedure_declarative_part pb) (S_Normal s2) ->
+        eval_stmt s2 (procedure_statements pb) (S_Normal s3) -> 
+        s3 = slocal ++ s' ->
+        List.length s' = List.length s ->
+        s'' 
+        = List.fold_left
+            (fun (acc:store) => fun (assoc:parameter_specification * expression)
+                        => let (prm,e) := assoc in 
+                           match parameter_mode prm with
+                             | Out =>
+                               match e with
+                                 | E_Identifier _ x =>
+                                   match (fetch (parameter_name prm) slocal) with
+                                       Some v =>
+                                       match update acc x v with
+                                           | Some x => x
+                                           | None => acc
+                                       end
+                                     | None => acc
+                                   end
+                                 | _ => acc
+                               end
+                             | _ => acc
+                           end)
+            assoc_param
+            s'
+        -> eval_stmt s (S_ProcCall ast_num pbname lexp) (S_Normal s'')
+
+with eval_decl: store -> declaration -> state -> Prop :=
+| eval_Decl_E: forall e d s,
+                 Some e = d.(initialization_expression) ->
+                 eval_expr s e Val_Run_Time_Error ->
+                 eval_decl s (D_Object_declaration d) S_Run_Time_Error
+| eval_Decl: forall d x e v s,
+                   x = d.(object_name) ->
+                   Some e = d.(initialization_expression) ->
+                   eval_expr s e (Val_Normal v) ->
+                   eval_decl s (D_Object_declaration d) (S_Normal ((x, Value v) :: s))
+| eval_UndefDecl: forall d x s,
+                        x = d.(object_name) ->
+                        None = d.(initialization_expression) ->
+                        eval_decl s (D_Object_declaration d) (S_Normal ((x, Undefined) :: s)).
+
+
+(* EXAMPLE *)
+Definition proc1:procedure_body := (mkprocedure_body
+           1 2 nil nil
+             (D_Object_declaration
+                {|
+                  declaration_astnum := 3;
+                  object_name := 4;
+                  object_nominal_subtype :=  5;
+                  initialization_expression := Some (E_Literal 6 (Integer_Literal(34)))
+                |}
+             )
+             (S_Assignment 12 102 (E_Literal 6 (Integer_Literal(56))))).
+
+Definition s1:store := (101,Procedure proc1) :: (102, Value (Int(77))) :: nil.
+
+Definition s2:store := (101,Procedure proc1) :: (102, Value (Int(56)))  :: nil.
+
+
+Lemma essai: eval_stmt s1 (S_ProcCall 13 101 nil) (S_Normal s2).
+Proof.
+  eapply eval_S_Proc; try now (simpl; eauto).
+  - simpl.
+    econstructor 2.
+    + eauto.
+    + simpl. eauto.
+    + econstructor. eauto.
+  - instantiate (1:= ((4, Value (Int 34))::nil)).
+    unfold s1, s2.
+    simpl.
+    econstructor 2.
+    + econstructor;eauto.
+    + reflexivity.
+  - reflexivity.
+Qed.
+(* END EXAMPLE *)  
+
 
 
 

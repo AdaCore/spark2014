@@ -127,7 +127,8 @@ Inductive statement: Type :=
 	| S_Assignment: astnum -> idnum -> expression -> statement (* 5.2 *)
 	| S_If: astnum -> expression -> statement -> statement (* 5.3 *)
 	| S_While_Loop: astnum -> expression -> statement -> statement (* 5.5 *)
-	| S_Sequence: astnum -> statement -> statement -> statement (* 5.1 *).
+	| S_Sequence: astnum -> statement -> statement -> statement (* 5.1 *)
+        | S_ProcCall: astnum -> procnum -> list expression -> statement.
 
 (* 6.2 *)
 Inductive mode: Type := 
@@ -160,14 +161,38 @@ Record aspect_specification: Type := mkaspect_specification{
 }.
 
 (* 6.3 *)
-Record procedure_body: Type := mkprocedure_body{
-	procedure_astnum: astnum;
-	procedure_name: procnum;
-	procedure_contracts: list aspect_specification;
-	procedure_parameter_profile: list parameter_specification;
-	procedure_declarative_part: list object_declaration;
-	procedure_statements: statement
-}.
+Inductive declaration : Type :=
+| D_Object_declaration: object_declaration -> declaration
+| D_Procedure_declaration: procedure_body -> declaration
+| D_Sequence: declaration -> declaration -> declaration
+
+with procedure_body: Type :=
+  mkprocedure_body
+    (procedure_astnum: astnum)
+    (procedure_name: procnum)
+    (procedure_contracts: list aspect_specification)
+    (procedure_parameter_profile: list parameter_specification)
+    (procedure_declarative_part: declaration)
+    (procedure_statements: statement).
+
+
+Definition procedure_statements pb :=
+match pb with
+  | mkprocedure_body _ _ _ _ _ x => x
+end.
+
+Definition procedure_declarative_part pb :=
+match pb with
+  | mkprocedure_body _ _ _ _ x _ => x
+end.
+
+Definition procedure_parameter_profile pb :=
+match pb with
+  | mkprocedure_body _ _ _ x _ _ => x
+end.
+
+
+(* declarations are of two kinds and can be sequenced *)
 
 (* 6.3 *)
 Record function_body: Type := mkfunction_body{
@@ -176,7 +201,7 @@ Record function_body: Type := mkfunction_body{
 	function_result_subtype: type; (* 6.5 (3/2) *)
 	function_contracts: list aspect_specification;
 	function_parameter_profile: list parameter_specification;
-	function_declarative_part: list object_declaration;
+	function_declarative_part: declaration;
 	function_statements: statement
 }.
 

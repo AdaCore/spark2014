@@ -10,7 +10,6 @@ zhangzhi@ksu.edu
 *)
 
 Require Export environment.
-Require Export typing.
 Require Export semantics.
 
 (** * Well-Formed Program  *)

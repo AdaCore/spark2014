@@ -1,5 +1,3 @@
-Require Import environment.
-
 (** * Symbol Table *)
 
 (** ** Symbol table as a list *)

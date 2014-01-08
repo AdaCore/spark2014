@@ -8,3 +8,36 @@ environment definitions. This allows for more flexibility when
 modifying early defintions (no need to reprove everything before
 testing)
 
+
+* Add a sequence operator for declarations
+The big step semantics of declarations needs to return a final state,
+so we need a seq operator for declaratio, as for statements.
+
+* Add procedures on the store
+To deal with local procedures, we need to store them on the stack, o
+at least a reference to it.
+
+
+
+
+* Questions:
+** About having a "Sequence" operator for statements
+  Is it a good choice? There are several ways of representing the same
+  concrete program with this representation. It would maybe be better
+  to have something like.
+
+Inductive Statement:=
+ Assignment : ...
+| loop: ...
+
+Definition Program:= Statement list.
+
+or (for coq related technical reasons) by two mutual inductive types:
+
+Inductive Statement:=
+ Assignment : ...
+| loop: ...
+with Program:=
+ Skip: Program
+| Seq: Statement -> Program -> Program.
+

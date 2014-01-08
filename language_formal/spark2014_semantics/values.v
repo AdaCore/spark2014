@@ -43,6 +43,7 @@ Inductive value : Type :=
 (** Type of stored values in the store *)
 Inductive val: Type := 
     | Value: value -> val
+    | Procedure (pb: procedure_body)
     | Undefined: val.
 
 (** Expression evaluation returns one of the following results:

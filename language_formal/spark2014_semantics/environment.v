@@ -41,17 +41,28 @@ Function reside (x : idnum) (s : store) :=
     end.
 
 (** fetch the value of x that has already been initialized in store *)
-Function fetch (x : idnum) (s : store): option value := 
+Function fetch (x : idnum) (s : store): option val := 
     match s with 
     | (y, v) :: s' =>
       if beq_nat x y then
         match v with
-        | Value v => Some v
+        | Value _ => Some v
+        | Procedure _ => Some v
         | Undefined => None
         end
       else fetch x s' 
     | nil => None
     end.
+
+(** fetch the value of x that has already been initialized in store *)
+Function cut_to (x : idnum) (s : store): store*store := 
+  match s with 
+    | (y, v) :: s' =>
+      (if beq_nat x y then (nil,s) 
+       else let (l1,l2) := cut_to x s' in
+            (((y, v)::l1) , l2))
+    | nil => (nil, nil)
+  end.
 
 (** update the latest binding for x *)
 Function update (s: store) (x : idnum) (v: val): option store := 
@@ -69,7 +80,7 @@ Function update (s: store) (x : idnum) (v: val): option store :=
 
 (** ** Lemmas about store operations *)
 Lemma fetch_in: forall x s v, 
-    fetch x s = Some v -> List.In (x, Value v) s.
+    fetch x s = Some v -> List.In (x, v) s.
 Proof.
     intros x s.
     functional induction (fetch x s);
@@ -78,6 +89,8 @@ Proof.
     | h: None = Some ?v |- _ => inversion h
     | h: Some ?v1 = Some ?v2 |- _ => inversion h; subst
     end; simpl.
+  - apply beq_nat_true_iff in e0; subst.
+    left;auto.
   - apply beq_nat_true_iff in e0; subst.
     left;auto.
   - right.
@@ -126,6 +139,7 @@ Proof.
 Qed.
 
 
+
 (** * Program State *)
 (** Statement evaluation returns one of the following results:
     - normal state;
@@ -144,3 +158,4 @@ Inductive state: Type :=
     | S_Run_Time_Error: state
     | S_Unterminated: state
     | S_Abnormal: state.
+
