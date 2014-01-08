@@ -1,5 +1,6 @@
 package P
-   with Abstract_State => S
+   with Abstract_State => S,
+        Initializes => (S, V)
 is
-   V : Integer;
+   V : Integer := 0;
 end P;
