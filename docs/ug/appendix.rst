@@ -301,35 +301,21 @@ and provide a file `spark.adc` which contains::
 |GNATprove| Limitations
 =======================
 
-Defining multiple units in the same file is not supported. Instead,
-define each unit in a separate file. you can use the gnatchop tool to
-automate this.
+Tool Limitations
+----------------
 
-Features Not Yet Implemented
-----------------------------
+#. Defining multiple units in the same file is not supported. Instead,
+   define each unit in a separate file. You can use the gnatchop tool to
+   automate this.
 
-This section lists features that are not yet
-implemented in the tools but which we expect to remove in
-future. It is not exhaustive but lists the key limitations.
-Note that in some cases it may be possible to use
-features which are listed below as unsupported, but the
-analysis results relating to those features may be missing
-or incorrect.
+Static Rules Not Checked
+------------------------
 
-Features Not Yet Implemented in Both Flow Analysis and Proof
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+#. The elaboration order rules described in the |SPARK| Reference
+   Manual 7.7 are not currently checked.
 
-#. The following aspects are not supported:
-
-   - Static_Predicate
-   - Predicate
-
-#. Separate packages and subprograms may not be analyzed, as well as
-   the code of their parent following the declaration of the corresponding
-   body stub.
-
-Features Not Yet Implemented in Flow Analysis
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Flow Analysis Limitations
+-------------------------
 
 #. Flow analysis currently treats all constants, types and array bounds as
    static, as the current language does not allow constants and types to
@@ -344,8 +330,8 @@ Features Not Yet Implemented in Flow Analysis
 #. A variable or state abstraction not declared within a package, V,
    which is read during the elaboration of the package, P, but is not
    used in initializing any of the variables or state abstractions P
-   [e.g., it could be used in defining the value of a constant] will
-   cause a flow error:
+   (e.g., it could be used in defining the value of a constant) will
+   cause a flow error::
 
       "V" must be listed in the Initializes aspect of "P" (SPARK RM 7.1.5(12)) 
 
@@ -361,21 +347,22 @@ Features Not Yet Implemented in Flow Analysis
 	pragma SPARK_Mode(On);
 	with Q;
 	package P
-	   with Initializes => (Not_Used => Q.V)
+	  with Initializes => (Not_Used => Q.V)
 	is
 	   -- Attempting to initialize this constant with a variable
 	   -- will cause a flow error.
 	   -- The work around is to introduce a visible variable as here or
-	   -- a state abstraction for a variable declared in the body. In either case
-	   -- the variable should be initialized using the variable or state abstraction
-	   -- from the other package.
+	   -- a state abstraction for a variable declared in the body. In
+           -- either case the variable should be initialized using the variable
+           -- or state abstraction from the other package.
+
 	   Not_Used : Integer := Q.V;
 	   C : constant Integer := Q.V;
 	end P;
 
 
-Features Not Yet Implemented in Proof
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Proof Limitations
+-----------------
 
 #. Postconditions of regular functions called in contracts and assertion
    pragmas are not available, possibly leading to unproved checks. The current
@@ -386,11 +373,9 @@ Features Not Yet Implemented in Proof
    available) are ignored in proof. A ``null`` Global contract is used for
    these subprograms.
 
-#. The model of floats cannot distinguish between +0 and -0.
-
 #. The 'Update notation for specifying updates to arrays and records in proof
-   contracts only supports one-dimensional arrays at present. Multi-dimensional
-   arrays and records are not yet supported.
+   contracts does not support multi-dimensional arrays at present.
+   One-dimensional arrays and records are supported.
 
 #. Attribute 'Valid is currently assumed to always return True.
 
@@ -412,32 +397,6 @@ Features Not Yet Implemented in Proof
    Size, Small, Unbiased_Rounding, Version, Wide_Image, Wide_Value,
    Wide_Width, Wide_Wide_Image, Wide_Wide_Value, Wide_Wide_Width,
    Width.
-
-Rules and Restrictions Not Yet Checked
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-#. The elaboration order rules described in the |SPARK| Reference
-   Manual 7.7 are not currently checked.
-
-#. The rule concerned with asserting that all child packages which
-   have state denoted as being Part_Of a more visible state
-   abstraction are given as constituents in the refinement of the more
-   visible state is not checked (|SPARK| Reference Manual rule
-   7.2.6(6)).
-
-#. The |SPARK| Reference Manual rules 3.2(3) 3.3.1(2) note that
-   constants and subtypes that are not preelaborable (essentially
-   their constraints are not determinable during compilation/analysis)
-   are not taken into account in determining and checking dependency
-   relations.  This means that information-flow analysis for security
-   or safety is incomplete if such subtypes or constants are used.  A
-   user selectable restriction that disallows the use of such
-   constants and subtypes rendering the dependency relations complete
-   is planned but not yet implemented.  The onus is currently on the
-   user to check that nonpreealborable constants and subtypes are not
-   used if complete dependency relations for information-flow analysis
-   are required.
-
 
 Portability Issues
 ==================
