@@ -23,11 +23,12 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Sem_Eval;           use Sem_Eval;
+with Sinfo;              use Sinfo;
 with Snames;             use Snames;
 
 with SPARK_Util;         use SPARK_Util;
 
-with Why.Conversions;    use Why.Conversions;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Atree.Modules;  use Why.Atree.Modules;
 with Why.Gen.Decl;       use Why.Gen.Decl;
@@ -37,7 +38,8 @@ with Why.Inter;          use Why.Inter;
 with Why.Sinfo;          use Why.Sinfo;
 with Why.Types;          use Why.Types;
 
-with Gnat2Why.Util; use Gnat2Why.Util;
+with Gnat2Why.Nodes;     use Gnat2Why.Nodes;
+with Gnat2Why.Util;      use Gnat2Why.Util;
 
 package body Why.Gen.Scalars is
 
@@ -49,136 +51,157 @@ package body Why.Gen.Scalars is
       Modulus    : W_Term_OId);
    --  Define the attributes first, last, modulus for the given type.
 
-   -------------------------------------
-   -- Declare_Ada_Abstract_Signed_Int --
-   -------------------------------------
+   -------------------------
+   -- Declare_Scalar_Type --
+   -------------------------
 
-   procedure Declare_Ada_Abstract_Signed_Int
-     (Theory  : W_Theory_Declaration_Id;
-      Entity  : Entity_Id;
-      First   : W_Integer_Constant_Id;
-      Last    : W_Integer_Constant_Id;
-      Modulus : W_Integer_Constant_Id)
+   procedure Declare_Scalar_Type
+     (Theory : W_Theory_Declaration_Id;
+      E      : Entity_Id)
    is
-      Why_Id : constant W_Identifier_Id := To_Why_Id (Entity, Local => True);
-      Is_Mod : constant Boolean := Modulus /= Why_Empty;
-      Is_Static : constant Boolean :=
-        not Type_Is_Modeled_As_Int_Or_Real (Entity);
-      Clone  : constant W_Module_Id :=
-        (if Is_Static then
-            (if Is_Mod then Static_Modular else Static_Discrete)
+      Why_Name  : constant W_Identifier_Id := To_Why_Id (E, Local => True);
+      Is_Static : constant Boolean := not Type_Is_Modeled_As_Int_Or_Real (E);
+
+      function Pick_Clone return W_Module_Id;
+      --  Choose the correct module to clone
+
+      function Compute_Clone_Subst return W_Clone_Substitution_Array;
+      --  generate the substitutions to be passed to the clone
+
+      -------------------------
+      -- Compute_Clone_Subst --
+      -------------------------
+
+      function Compute_Clone_Subst return W_Clone_Substitution_Array is
+         Has_Round_Real : constant Boolean :=
+           Is_Single_Precision_Floating_Point_Type (E)
+           or else
+             Is_Double_Precision_Floating_Point_Type (E);
+         Round_Id : constant W_Identifier_Id :=
+           (if Is_Single_Precision_Floating_Point_Type (E) then
+                 Floating_Round_Single
+            elsif Is_Double_Precision_Floating_Point_Type (E) then
+                 Floating_Round_Double
+            else
+               Floating_Round);
+         Default_Clone_Subst : constant W_Clone_Substitution_Array :=
+           (1 => New_Clone_Substitution
+              (Kind      => EW_Type_Subst,
+               Orig_Name => New_Identifier (Name => "t"),
+               Image     => Why_Name));
+         Round_Clone_Subst : constant W_Clone_Substitution_Array :=
+           (if Has_Round_Real then
+              (1 => New_Clone_Substitution
+                   (Kind      => EW_Function,
+                    Orig_Name => To_Ident (WNE_Float_Round_Tmp),
+                    Image     => Round_Id))
+            else (1 .. 0 => <>));
+         Static_Clone_Subst : constant W_Clone_Substitution_Array :=
+           (if Is_Static then
+              (1 => New_Clone_Substitution
+                   (Kind      => EW_Function,
+                    Orig_Name => To_Ident (WNE_Attr_First),
+                    Image     => To_Ident (WNE_Attr_First)),
+               2 => New_Clone_Substitution
+                 (Kind      => EW_Function,
+                  Orig_Name => To_Ident (WNE_Attr_Last),
+                  Image     => To_Ident (WNE_Attr_Last)))
+            else (1 .. 0 => <>));
+         Mod_Clone_Subst : constant W_Clone_Substitution_Array :=
+           (if Is_Modular_Integer_Type (E) then
+                (1 => New_Clone_Substitution
+                 (Kind      => EW_Function,
+                  Orig_Name => To_Ident (WNE_Attr_Modulus),
+                  Image     => To_Ident (WNE_Attr_Modulus)))
+            else (1 .. 0 => <>));
+      begin
+
+         --  If the type Entity has a rounding operation, use it in the clone
+         --  substitution to replace the default one.
+
+         return
+           Default_Clone_Subst &
+           Round_Clone_Subst &
+           Static_Clone_Subst &
+           Mod_Clone_Subst;
+      end Compute_Clone_Subst;
+
+      ----------------
+      -- Pick_Clone --
+      ----------------
+
+      function Pick_Clone return W_Module_Id is
+      begin
+         if Is_Discrete_Type (E) then
+            if Is_Static then
+               if Is_Modular_Integer_Type (E) then
+                  return Static_Modular;
+               else
+                  return Static_Discrete;
+               end if;
+            elsif Is_Modular_Integer_Type (E) then
+               return Dynamic_Modular;
+            else
+               return Dynamic_Discrete;
+            end if;
+         elsif Is_Static then
+            return Static_Floating_Point;
          else
-            (if Is_Mod then Dynamic_Modular else Dynamic_Discrete));
-      Default_Clone_Subst : constant W_Clone_Substitution_Array :=
-        (1 => New_Clone_Substitution
-                (Kind      => EW_Type_Subst,
-                 Orig_Name => New_Identifier (Name => "t"),
-                 Image     => Why_Id));
-      Static_Clone_Subst : constant W_Clone_Substitution_Array :=
-        (1 => New_Clone_Substitution
-                (Kind      => EW_Function,
-                 Orig_Name => To_Ident (WNE_Attr_First),
-                 Image     => To_Ident (WNE_Attr_First)),
-         2 => New_Clone_Substitution
-                (Kind      => EW_Function,
-                 Orig_Name => To_Ident (WNE_Attr_Last),
-                 Image     => To_Ident (WNE_Attr_Last)));
-      Mod_Clone_Subst : constant W_Clone_Substitution_Array :=
-        (1 => New_Clone_Substitution
-                (Kind      => EW_Function,
-                 Orig_Name => To_Ident (WNE_Attr_Modulus),
-                 Image     => To_Ident (WNE_Attr_Modulus)));
-      Clone_Subst : constant W_Clone_Substitution_Array :=
-        Default_Clone_Subst
-          & (if Is_Static then Static_Clone_Subst else (1 .. 0 => <>))
-          & (if Is_Mod then Mod_Clone_Subst else (1 .. 0 => <>));
+            return Dynamic_Floating_Point;
+         end if;
+      end Pick_Clone;
+
+      --  Local variables
+
+      First, Last, Modul : W_Term_OId := Why_Empty;
+      Rng                : constant Node_Id := Get_Range (E);
+      --  beginning of processing for Declare_Scalar_Type
 
    begin
+
+      --  declare the abstract type
+
       Emit (Theory,
             New_Type_Decl
-              (Name   => Why_Id,
+              (Name => Why_Name,
                Labels => Name_Id_Sets.To_Set (NID ("""bounded_type"""))));
 
-      Define_Scalar_Attributes (Theory    => Theory,
-                                Base_Type => EW_Int,
-                                First     => +First,
-                                Last      => +Last,
-                                Modulus   => +Modulus);
-      Emit (Theory,
-            New_Clone_Declaration (Theory_Kind   => EW_Module,
-                                   Clone_Kind    => EW_Export,
-                                   Origin        => Clone,
-                                   Substitutions => Clone_Subst));
-   end Declare_Ada_Abstract_Signed_Int;
+      --  retrieve and declare the attributes first, last and modulus
 
-   ----------------------
-   -- Declare_Ada_Real --
-   ----------------------
-
-   procedure Declare_Ada_Real
-     (Theory  : W_Theory_Declaration_Id;
-      Entity  : Entity_Id;
-      First   : W_Real_Constant_Id;
-      Last    : W_Real_Constant_Id)
-   is
-      Why_Name : constant W_Identifier_Id := To_Why_Id (Entity, Local => True);
-      Is_Static : constant Boolean :=
-        not Type_Is_Modeled_As_Int_Or_Real (Entity);
-      Clone         : constant W_Module_Id :=
-        (if Is_Static then Static_Floating_Point else Dynamic_Floating_Point);
-      Has_Round_Real : constant Boolean :=
-        Is_Single_Precision_Floating_Point_Type (Entity)
-          or else
-        Is_Double_Precision_Floating_Point_Type (Entity);
-      Round_Id : constant W_Identifier_Id :=
-        (if Is_Single_Precision_Floating_Point_Type (Entity) then
-              Floating_Round_Single
-         elsif Is_Double_Precision_Floating_Point_Type (Entity) then
-              Floating_Round_Double
+      if Is_Modular_Integer_Type (E) then
+         Modul := New_Integer_Constant (Value => Modulus (E));
+      end if;
+      if Is_Static_Expression (Low_Bound (Rng)) then
+         if Is_Discrete_Type (E) then
+            First := New_Integer_Constant (Value =>
+                                             Expr_Value (Low_Bound (Rng)));
          else
-            Floating_Round);
-
-      --  If the type Entity has a rounding operation, use it in the clone
-      --  substitution to replace the default one.
-      Default_Clone_Subst : constant W_Clone_Substitution_Array :=
-        (1 => New_Clone_Substitution
-                (Kind      => EW_Type_Subst,
-                 Orig_Name => New_Identifier (Name => "t"),
-                 Image     => Why_Name));
-      Round_Clone_Subst : constant W_Clone_Substitution_Array :=
-        (1 => New_Clone_Substitution
-                (Kind      => EW_Function,
-                 Orig_Name => To_Ident (WNE_Float_Round_Tmp),
-                 Image     => Round_Id));
-      Static_Clone_Subst : constant W_Clone_Substitution_Array :=
-        (1 => New_Clone_Substitution
-                (Kind      => EW_Function,
-                 Orig_Name => To_Ident (WNE_Attr_First),
-                 Image     => To_Ident (WNE_Attr_First)),
-         2 => New_Clone_Substitution
-                (Kind      => EW_Function,
-                 Orig_Name => To_Ident (WNE_Attr_Last),
-                 Image     => To_Ident (WNE_Attr_Last)));
-      Clone_Subst : constant W_Clone_Substitution_Array :=
-        Default_Clone_Subst
-          & (if Has_Round_Real then Round_Clone_Subst else (1 .. 0 => <>))
-          & (if Is_Static then Static_Clone_Subst else (1 .. 0 => <>));
-
-   begin
-      Emit (Theory,
-            New_Type_Decl (Name => Why_Name,
-                           Labels => Name_Id_Sets.Empty_Set));
+            First := New_Real_Constant (Value =>
+                                          Expr_Value_R (Low_Bound (Rng)));
+         end if;
+      end if;
+      if Is_Static_Expression (High_Bound (Rng)) then
+         if Is_Discrete_Type (E) then
+            Last := New_Integer_Constant (Value =>
+                                            Expr_Value (High_Bound (Rng)));
+         else
+            Last := New_Real_Constant (Value =>
+                                         Expr_Value_R (High_Bound (Rng)));
+         end if;
+      end if;
       Define_Scalar_Attributes (Theory    => Theory,
-                                Base_Type => EW_Real,
-                                First     => +First,
-                                Last      => +Last,
-                                Modulus   => Why_Empty);
+                                Base_Type =>
+                                  (if Is_Discrete_Type (E) then EW_Int
+                                   else EW_Real),
+                                First     => First,
+                                Last      => Last,
+                                Modulus   => Modul);
       Emit (Theory,
             New_Clone_Declaration (Theory_Kind   => EW_Module,
                                    Clone_Kind    => EW_Export,
-                                   Origin        => Clone,
-                                   Substitutions => Clone_Subst));
-   end Declare_Ada_Real;
+                                   Origin        => Pick_Clone,
+                                   Substitutions => Compute_Clone_Subst));
+   end Declare_Scalar_Type;
 
    ------------------------------
    -- Define_Scalar_Attributes --

@@ -23,35 +23,21 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Types;     use Types;
+with Einfo;   use Einfo;
+with Types;   use Types;
 
-with Why.Ids;   use Why.Ids;
+with Why.Ids; use Why.Ids;
 
 package Why.Gen.Scalars is
-   --  This package provides an interface to generate declarations
-   --  (types, subprograms, axioms) for scalar types.
+   --  This package implements the generation of Why modules for scalar types
+   --  ??? Here is the right place for documentation of the translation of
+   --  scalar types, and how this relates to ada__model.mlw
 
-   procedure Declare_Ada_Abstract_Signed_Int
-     (Theory  : W_Theory_Declaration_Id;
-      Entity  : Entity_Id;
-      First   : W_Integer_Constant_Id;
-      Last    : W_Integer_Constant_Id;
-      Modulus : W_Integer_Constant_Id);
-   --  Declare the whole theory for a signed int of the given size,
-   --  i.e. whose range is First .. Last. This creates an abstract type
-   --  whose name is given in parameter along with a set of axioms and
-   --  subprograms for int conversion.  Is_Base is True if the corresponding
-   --  Ada type is an Ada base type.
-
-   procedure Declare_Ada_Real
-     (Theory  : W_Theory_Declaration_Id;
-      Entity  : Entity_Id;
-      First   : W_Real_Constant_Id;
-      Last    : W_Real_Constant_Id);
-   --  Declare the whole theory for a floating/fixed point type whose range
-   --  is First .. Last.  This creates an abstract type whose name is
-   --  given in parameter along with a set of axioms and subprograms
-   --  for real conversion. Is_Base is True if the corresponding Ada type
-   --  is an Ada base type.
+   procedure Declare_Scalar_Type
+     (Theory : W_Theory_Declaration_Id;
+      E      : Entity_Id)
+     with Pre => Is_Scalar_Type (E);
+   --  Populate the Theory with all the necessary declarations for Entity E
+   --  (which must be a scalar type)
 
 end Why.Gen.Scalars;

@@ -32,7 +32,6 @@ with GNAT.Source_Info;
 with Atree;              use Atree;
 with Einfo;              use Einfo;
 with Namet;              use Namet;
-with Sem_Eval;           use Sem_Eval;
 with Sinfo;              use Sinfo;
 with Sinput;             use Sinput;
 with Stand;              use Stand;
@@ -59,78 +58,10 @@ with Gnat2Why.Nodes;     use Gnat2Why.Nodes;
 
 package body Gnat2Why.Types is
 
-   procedure Declare_Ada_Abstract_Signed_Int_From_Range
-     (Theory  : W_Theory_Declaration_Id;
-      E       : Entity_Id;
-      Rng     : Node_Id;
-      Modulus : W_Integer_Constant_Id := Why_Empty);
-   --  Same as Declare_Ada_Abstract_Signed_Int but extract range information
-   --  from node.
-
-   procedure Declare_Ada_Real_From_Range
-     (Theory  : W_Theory_Declaration_Id;
-      E       : Entity_Id;
-      Rng     : Node_Id);
-   --  Same as Declare_Ada_Real but extract range information
-   --  from node.
-
    procedure Declare_Private_Type
      (Theory : W_Theory_Declaration_Id;
       E      : Entity_Id);
    --  Make the necessary declarations for a private type
-
-   ------------------------------------------------
-   -- Declare_Ada_Abstract_Signed_Int_From_Range --
-   ------------------------------------------------
-
-   procedure Declare_Ada_Abstract_Signed_Int_From_Range
-     (Theory  : W_Theory_Declaration_Id;
-      E       : Entity_Id;
-      Rng     : Node_Id;
-      Modulus : W_Integer_Constant_Id := Why_Empty)
-   is
-      Range_Node : constant Node_Id := Get_Range (Rng);
-      First      : W_Integer_Constant_Id := Why_Empty;
-      Last       : W_Integer_Constant_Id := Why_Empty;
-   begin
-      if Is_Static_Expression (Low_Bound (Range_Node)) then
-         First :=
-           New_Integer_Constant (Value => Expr_Value (Low_Bound (Range_Node)));
-      end if;
-      if Is_Static_Expression (High_Bound (Range_Node)) then
-         Last :=
-           New_Integer_Constant (Value =>
-              Expr_Value (High_Bound (Range_Node)));
-      end if;
-      Declare_Ada_Abstract_Signed_Int
-        (Theory, E, First, Last, Modulus);
-   end Declare_Ada_Abstract_Signed_Int_From_Range;
-
-   ---------------------------------
-   -- Declare_Ada_Real_From_Range --
-   ---------------------------------
-
-   procedure Declare_Ada_Real_From_Range
-     (Theory  : W_Theory_Declaration_Id;
-      E       : Entity_Id;
-      Rng     : Node_Id)
-   is
-      Range_Node : constant Node_Id := Get_Range (Rng);
-      First      : W_Real_Constant_Id := Why_Empty;
-      Last       : W_Real_Constant_Id := Why_Empty;
-   begin
-      if Is_Static_Expression (Low_Bound (Range_Node)) then
-         First :=
-            New_Real_Constant (Value =>
-              Expr_Value_R (Low_Bound (Range_Node)));
-      end if;
-      if Is_Static_Expression (High_Bound (Range_Node)) then
-         Last :=
-            New_Real_Constant (Value =>
-              Expr_Value_R (High_Bound (Range_Node)));
-      end if;
-      Declare_Ada_Real (Theory, E, First, Last);
-   end Declare_Ada_Real_From_Range;
 
    --------------------------
    -- Declare_Private_Type --
@@ -349,35 +280,15 @@ package body Gnat2Why.Types is
          end Declare_Private_Type;
 
       begin
-         if E = Standard_Character           or else
-               E = Standard_Wide_Character      or else
-               E = Standard_Wide_Wide_Character
-         then
-            Declare_Ada_Abstract_Signed_Int_From_Range (Theory, E, E);
-
-         elsif Type_Based_On_External_Axioms (E) and then
+         if Type_Based_On_External_Axioms (E) and then
            Ekind (Underlying_External_Axioms_Type (E)) in Private_Kind
          then
             Declare_Private_Type (Theory, E,
                                   Underlying_External_Axioms_Type (E));
          else
             case Ekind (E) is
-            when E_Signed_Integer_Type    |
-                 E_Signed_Integer_Subtype |
-                 E_Enumeration_Type       |
-                 E_Enumeration_Subtype    =>
-               Declare_Ada_Abstract_Signed_Int_From_Range
-                 (Theory, E, Scalar_Range (E));
-
-            when Modular_Integer_Kind =>
-               Declare_Ada_Abstract_Signed_Int_From_Range
-                 (Theory,
-                  E,
-                  Scalar_Range (E),
-                  New_Integer_Constant (Value => Modulus (E)));
-
-            when Real_Kind =>
-               Declare_Ada_Real_From_Range (Theory, E, Scalar_Range (E));
+            when Scalar_Kind =>
+               Declare_Scalar_Type (Theory, E);
 
             when Array_Kind =>
                Declare_Ada_Array (Theory, E);
