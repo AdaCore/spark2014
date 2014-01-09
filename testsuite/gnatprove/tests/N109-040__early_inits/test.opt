@@ -1,0 +1,1 @@
+ALL XFAIL early use of uninitialized variable not detected.
