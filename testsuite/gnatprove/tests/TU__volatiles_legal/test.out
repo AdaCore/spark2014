@@ -1,0 +1,4 @@
+volatiles_legal.adb:7:22: warning: overflow check might fail
+volatiles_legal.adb:8:22: warning: overflow check might fail
+volatiles_legal.adb:14:7: warning: assertion might fail, requires Tmp1 = Tmp2
+volatiles_legal.adb:27:7: info: assertion proved

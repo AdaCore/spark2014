@@ -1,47 +1,3 @@
-devtest.adb:4:26: warning: it is currently ignored
-devtest.adb:4:26: warning: pragma "Volatile" is not yet supported
-devtest.adb:4:36: warning: it is currently ignored
-devtest.adb:4:36: warning: pragma "Async_Writers" is not yet supported
-devtest.adb:6:29: warning: it is currently ignored
-devtest.adb:6:29: warning: pragma "Volatile" is not yet supported
-devtest.adb:6:39: warning: it is currently ignored
-devtest.adb:6:39: warning: pragma "Async_Writers" is not yet supported
-devtest.adb:6:54: warning: it is currently ignored
-devtest.adb:6:54: warning: pragma "Effective_Reads" is not yet supported
-tests_async_readers.adb:21:10: warning: it is currently ignored
-tests_async_readers.adb:21:10: warning: pragma "Volatile" is not yet supported
-tests_async_readers.adb:21:20: warning: it is currently ignored
-tests_async_readers.adb:21:20: warning: pragma "Async_Readers" is not yet supported
-tests_async_readers.adb:21:35: warning: it is currently ignored
-tests_async_readers.adb:21:35: warning: pragma "Effective_Writes" is not yet supported
-tests_async_writers.adb:18:23: warning: it is currently ignored
-tests_async_writers.adb:18:23: warning: pragma "Volatile" is not yet supported
-tests_async_writers.adb:18:33: warning: it is currently ignored
-tests_async_writers.adb:18:33: warning: pragma "Async_Writers" is not yet supported
-tests_async_writers.adb:18:48: warning: it is currently ignored
-tests_async_writers.adb:18:48: warning: pragma "Effective_Reads" is not yet supported
-tests_async_writers.adb:20:24: warning: it is currently ignored
-tests_async_writers.adb:20:24: warning: pragma "Volatile" is not yet supported
-tests_async_writers.adb:20:34: warning: it is currently ignored
-tests_async_writers.adb:20:34: warning: pragma "Async_Writers" is not yet supported
-tests_async_writers.adb:20:49: warning: it is currently ignored
-tests_async_writers.adb:20:49: warning: pragma "Effective_Reads" is not yet supported
-tests_async_writers.adb:22:24: warning: it is currently ignored
-tests_async_writers.adb:22:24: warning: pragma "Volatile" is not yet supported
-tests_async_writers.adb:22:34: warning: it is currently ignored
-tests_async_writers.adb:22:34: warning: pragma "Async_Writers" is not yet supported
-types.adb:6:46: warning: it is currently ignored
-types.adb:6:46: warning: pragma "Volatile" is not yet supported
-types.adb:17:20: warning: it is currently ignored
-types.adb:17:20: warning: pragma "Volatile" is not yet supported
-types.adb:21:30: warning: it is currently ignored
-types.adb:21:30: warning: pragma "Volatile" is not yet supported
-types.adb:21:40: warning: it is currently ignored
-types.adb:21:40: warning: pragma "Async_Writers" is not yet supported
-types.adb:21:55: warning: it is currently ignored
-types.adb:21:55: warning: pragma "Effective_Reads" is not yet supported
-types.adb:23:21: warning: it is currently ignored
-types.adb:23:21: warning: pragma "Volatile" is not yet supported
 types.adb:36:23: warning: unused initial value of "R"
 types.adb:36:23: warning: unused variable "R"
 types.adb:42:23: "R.X" is not written in "Test_02"
@@ -53,5 +9,5 @@ types.adb:66:09: volatile formal out "R" cannot be read (SPARK RM 7.1.3(14))
    compilation of types.adb failed
 
 
-gnatprove: error during analysis of data and information flow, aborting.
+gnatprove: error during analysis and translation to intermediate language, aborting.
 gprbuild: *** compilation phase failed

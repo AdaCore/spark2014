@@ -23,6 +23,9 @@ module Main
        axiomatization. *)
   predicate __ignore "inline" (x : 'a) = true
 
+  val __havoc (x : ref 'a) : unit
+     writes { x }
+
 end
 
 module Integer

@@ -1,0 +1,6 @@
+foo.adb:24:19: warning: postcondition might fail, requires X = Y
+foo.adb:34:19: warning: postcondition might fail, requires X = Y
+foo.adb:43:19: warning: postcondition might fail, requires X = Y
+foo.adb:60:17: warning: postcondition might fail, requires B = C
+foo.adb:77:17: warning: postcondition might fail, requires B = C
+foo.adb:87:17: warning: postcondition might fail, requires B = C

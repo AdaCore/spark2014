@@ -28,27 +28,30 @@ is
    end P2;
 
 
-   procedure P3 is
-   begin
-      Vol2.X := 5;  --  This statement is ineffective since Async_Readers
-                    --  and Effective_Writes are set to False.
+   --  Enable once N108-024 is fixed.
+   --  procedure P3 is
+   --  begin
+   --     Vol2.X := 5;  --  This statement is ineffective since Async_Readers
+   --                   --  and Effective_Writes are set to False.
 
-      Vol2.X := 6;
-   end P3;
+   --     Vol2.X := 6;
+   --  end P3;
 
 
-   procedure P4 (Par : Integer ; Par2 : out Integer)
-     with Global  => (In_Out => Vol2),
-          Depends => ((Par2,
-                       Vol2) => (Vol2,
-                                 Par))
-   is
-   begin
-      Vol2.X := Par;
-      --  At this point, an external writer might update Vol2.
-      --  This is why Vol2 is an In_Out and why Vol2 depends on itself.
-      Par2 := Vol2.X;
-   end P4;
+   --  Enable once N108-024 is fixed.
+   --  procedure P4 (Par : Integer ; Par2 : out Integer)
+   --    with Global  => (In_Out => Vol2),
+   --         Depends => ((Par2,
+   --                      Vol2) => (Vol2,
+   --                                Par))
+   --  is
+   --  begin
+   --     Vol2.X := Par;
+   --     --  At this point, an external writer might update Vol2.
+   --     --  This is why Vol2 is an In_Out and why Vol2 depends on itself.
+   --     Par2 := Vol2.X;
+   --  end P4;
 begin
-   P2;  --  This should NOT generate any errors (Vol needs not be initialized).
+   Vol := (X => 5);
+   --  This should NOT generate any errors (Vol2 needs not be initialized).
 end Volatiles_Legal;

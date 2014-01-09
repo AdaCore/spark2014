@@ -2782,7 +2782,7 @@ package body SPARK_Definition is
               Pragma_Reviewable                   |
               Pragma_Suppress                     |
               Pragma_Unsuppress                   |
---              Pragma_Volatile                     |
+              Pragma_Volatile                     |
 
          --  Group 2 - RM Table 17.1(2), pragmas marked "Yes"
          --  Note: pragmas Assert_And_Cut, Assume, and
@@ -2790,12 +2790,12 @@ package body SPARK_Definition is
          --  pragma Check by the front-end.
               Pragma_Abstract_State               |
               Pragma_Assume_No_Invalid_Values     |
---              Pragma_Async_Readers                |
---              Pragma_Async_Writers                |
+              Pragma_Async_Readers                |
+              Pragma_Async_Writers                |
               Pragma_Contract_Cases               |
               Pragma_Depends                      |
---              Pragma_Effective_Reads              |
---              Pragma_Effective_Writes             |
+              Pragma_Effective_Reads              |
+              Pragma_Effective_Writes             |
               Pragma_Global                       |
               Pragma_Initializes                  |
               Pragma_Initial_Condition            |

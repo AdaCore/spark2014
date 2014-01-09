@@ -25,6 +25,8 @@ with Nlists;     use Nlists;
 with Sem_Util;   use Sem_Util;
 with Uintp;      use Uintp;
 
+with Treepr;     use Treepr;
+
 with SPARK_Util; use SPARK_Util;
 
 with Why;
@@ -235,7 +237,13 @@ package body Flow_Tree_Utility is
                return True;
             end if;
 
+         when E_Constant =>
+            --  SRM 7.1.3(6): A constant, a discriminant or a loop
+            --  parameter shall not be Volatile.
+            return False;
+
          when others =>
+            Print_Tree_Node (E);
             raise Why.Unexpected_Node;
       end case;
    end Has_Volatile_Aspect;

@@ -42,34 +42,6 @@ param_1_legal.adb:7:10: info: index check proved
 anti_aliasing.adb:62:16: writable actual for "X" overlaps with actual for "Y"
 gprbuild: *** compilation phase failed
 gnatprove: error during frame condition computation, aborting.
-multiple_ports.ads:8:20: warning: pragma "Volatile" is not yet supported
-multiple_ports.ads:8:20: warning: it is currently ignored
-multiple_ports.ads:8:20: warning: pragma "Volatile" is not yet supported in proof
-multiple_ports.ads:8:20: warning: it is currently ignored
-multiple_ports.ads:19:11: warning: pragma "Async_Writers" is not yet supported
-multiple_ports.ads:19:11: warning: it is currently ignored
-multiple_ports.ads:19:11: warning: pragma "Async_Writers" is not yet supported in proof
-multiple_ports.ads:19:11: warning: it is currently ignored
-multiple_ports.ads:28:11: warning: pragma "Async_Writers" is not yet supported
-multiple_ports.ads:28:11: warning: it is currently ignored
-multiple_ports.ads:28:11: warning: pragma "Async_Writers" is not yet supported in proof
-multiple_ports.ads:28:11: warning: it is currently ignored
-multiple_ports.ads:29:11: warning: pragma "Effective_Reads" is not yet supported
-multiple_ports.ads:29:11: warning: it is currently ignored
-multiple_ports.ads:29:11: warning: pragma "Effective_Reads" is not yet supported in proof
-multiple_ports.ads:29:11: warning: it is currently ignored
-multiple_ports.ads:37:11: warning: pragma "Async_Readers" is not yet supported
-multiple_ports.ads:37:11: warning: it is currently ignored
-multiple_ports.ads:37:11: warning: pragma "Async_Readers" is not yet supported in proof
-multiple_ports.ads:37:11: warning: it is currently ignored
-multiple_ports.ads:43:11: warning: pragma "Async_Readers" is not yet supported
-multiple_ports.ads:43:11: warning: it is currently ignored
-multiple_ports.ads:43:11: warning: pragma "Async_Readers" is not yet supported in proof
-multiple_ports.ads:43:11: warning: it is currently ignored
-multiple_ports.ads:44:11: warning: pragma "Effective_Writes" is not yet supported
-multiple_ports.ads:44:11: warning: it is currently ignored
-multiple_ports.ads:44:11: warning: pragma "Effective_Writes" is not yet supported in proof
-multiple_ports.ads:44:11: warning: it is currently ignored
 stacks_1.adb:16:57: info: refined post proved
 stacks_1.adb:17:44: info: range check proved
 stacks_1.adb:23:30: info: range check proved
@@ -92,48 +64,12 @@ stacks_2.adb:54:46: warning: array index check might fail
 stacks_2.ads:17:21: warning: postcondition might fail, requires not (Is_Empty)
 stacks_2.ads:21:16: warning: postcondition might fail, requires not (Is_Full)
 externals.adb:54:04: "Out_Reg" is not written in "Externals"
-externals.adb:55:11: warning: pragma "Volatile" is not yet supported
-externals.adb:55:11: warning: it is currently ignored
-externals.adb:56:11: warning: pragma "Async_Readers" is not yet supported
-externals.adb:56:11: warning: it is currently ignored
-externals.adb:57:11: warning: pragma "Effective_Writes" is not yet supported
-externals.adb:57:11: warning: it is currently ignored
-externals.adb:61:11: warning: pragma "Volatile" is not yet supported
-externals.adb:61:11: warning: it is currently ignored
-externals.adb:62:11: warning: pragma "Async_Writers" is not yet supported
-externals.adb:62:11: warning: it is currently ignored
 externals.adb:75:41: warning: unused initial value of "In_Reg"
 externals.adb:76:41: warning: "Out_Reg" might not be written
 externals.adb:91:20: warning: unused assignment
 externals.adb:94:13: warning: statement has no effect
 gprbuild: *** compilation phase failed
 gnatprove: error during analysis of data and information flow, aborting.
-hal.adb:14:11: warning: pragma "VOLATILE" is not yet supported
-hal.adb:14:11: warning: it is currently ignored
-hal.adb:15:11: warning: pragma "ASYNC_WRITERS" is not yet supported
-hal.adb:15:11: warning: it is currently ignored
-hal.adb:16:11: warning: pragma "EFFECTIVE_READS" is not yet supported
-hal.adb:16:11: warning: it is currently ignored
-hal.adb:22:11: warning: pragma "VOLATILE" is not yet supported
-hal.adb:22:11: warning: it is currently ignored
-hal.adb:23:11: warning: pragma "ASYNC_READERS" is not yet supported
-hal.adb:23:11: warning: it is currently ignored
-hal.adb:24:11: warning: pragma "EFFECTIVE_WRITES" is not yet supported
-hal.adb:24:11: warning: it is currently ignored
-hal.adb:31:11: warning: pragma "VOLATILE" is not yet supported
-hal.adb:31:11: warning: it is currently ignored
-hal.adb:32:11: warning: pragma "ASYNC_WRITERS" is not yet supported
-hal.adb:32:11: warning: it is currently ignored
-hal.adb:39:11: warning: pragma "VOLATILE" is not yet supported
-hal.adb:39:11: warning: it is currently ignored
-hal.adb:40:11: warning: pragma "ASYNC_READERS" is not yet supported
-hal.adb:40:11: warning: it is currently ignored
-hal.adb:47:11: warning: pragma "VOLATILE" is not yet supported
-hal.adb:47:11: warning: it is currently ignored
-hal.adb:48:11: warning: pragma "ASYNC_WRITERS" is not yet supported
-hal.adb:48:11: warning: it is currently ignored
-hal.adb:49:11: warning: pragma "ASYNC_READERS" is not yet supported
-hal.adb:49:11: warning: it is currently ignored
 inter_unit_elaboration_examples.adb:11:04: warning: "Y" can be accessed by clients before this initialization
 inter_unit_elaboration_examples.adb:11:04: warning: add Elaborate_Body to spec to ensure "Y" is initialized
 inter_unit_elaboration_examples.adb:8:14: warning: overflow check might fail

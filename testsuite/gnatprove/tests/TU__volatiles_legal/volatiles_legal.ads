@@ -51,6 +51,7 @@ is
    procedure P2
      with Global => (In_Out => Vol);
 
-   procedure P3
-     with Global => (Output => Vol2);
+   --  Enable once N108-024 is fixed.
+   --  procedure P3
+   --    with Global => (Output => Vol2);
 end Volatiles_Legal;

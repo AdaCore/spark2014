@@ -32,6 +32,7 @@ with Uintp;               use Uintp;
 
 with SPARK_Definition;
 
+with Flow_Types;
 with Flow.Utility;
 
 with Why.Atree.Accessors; use Why.Atree.Accessors;
@@ -428,6 +429,13 @@ package body Gnat2Why.Util is
         and then SPARK_Definition.Loop_Entity_Set.Contains (N)
         and then not SPARK_Definition.Actions_Entity_Set.Contains (N)
       then
+         return True;
+
+      elsif Flow_Types.Has_Async_Writers
+        (Flow_Types.Direct_Mapping_Id (N))
+      then
+         --  We special case any volatile with async writers: they are
+         --  always mutable (even if they are, for example, in parameters).
          return True;
 
       elsif Is_Constant_Object (N) then

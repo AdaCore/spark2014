@@ -1,0 +1,31 @@
+port.adb:7:04: warning: types for unchecked conversion have different sizes
+port.adb:9:04: warning: types for unchecked conversion have different sizes
+port.adb:29:16: warning: range check might fail
+port.adb:39:10: warning: attribute Valid is assumed to return True
+port.adb:54:16: warning: range check might fail
+port.adb:55:10: warning: attribute Valid is assumed to return True
+port.adb:109:10: warning: attribute Valid is assumed to return True
+port.adb:124:10: warning: attribute Valid is assumed to return True
+port.adb:143:7: warning: assertion might fail, requires T1 = T2
+port.adb:160:7: info: assertion proved
+port.ads:16:4: info: assertion proved
+port.ads:68:22: info: postcondition proved
+port.ads:68:22: warning: attribute Valid is assumed to return True
+port.ads:73:22: info: postcondition proved
+port.ads:73:22: warning: attribute Valid is assumed to return True
+port.ads:78:22: info: postcondition proved
+port.ads:78:22: warning: attribute Valid is assumed to return True
+port.ads:83:22: info: postcondition proved
+port.ads:83:22: warning: attribute Valid is assumed to return True
+port.ads:93:22: info: postcondition proved
+port.ads:93:22: warning: attribute Valid is assumed to return True
+port.ads:98:22: info: postcondition proved
+port.ads:98:22: warning: attribute Valid is assumed to return True
+port.ads:107:22: info: postcondition proved
+port.ads:107:22: warning: attribute Valid is assumed to return True
+port.ads:112:22: info: postcondition proved
+port.ads:112:22: warning: attribute Valid is assumed to return True
+port.ads:117:22: info: postcondition proved
+port.ads:117:22: warning: attribute Valid is assumed to return True
+port.ads:122:22: info: postcondition proved
+port.ads:122:22: warning: attribute Valid is assumed to return True

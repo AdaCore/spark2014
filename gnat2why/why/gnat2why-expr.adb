@@ -52,7 +52,7 @@ with SPARK_Util;             use SPARK_Util;
 
 with VC_Kinds;               use VC_Kinds;
 
-with Flow_Types;
+with Flow_Types;             use Flow_Types;
 with Flow.Utility;           use Flow.Utility;
 
 with Why;                    use Why;
@@ -229,6 +229,9 @@ package body Gnat2Why.Expr is
                                   return W_Expr_Id;
    --  Transform an Ada identifier to a Why item (take care of enumeration
    --  literals, boolean values etc)
+   --
+   --  This also deals with volatility, so that an object with a Async_Writers
+   --  is suitably havoc'd before being read.
 
    function Transform_Quantified_Expression
      (Expr   : Node_Id;
@@ -1040,56 +1043,51 @@ package body Gnat2Why.Expr is
          procedure Compute_Arg (Formal, Actual : Node_Id)
          is
          begin
-            case Ekind (Formal) is
-               when E_In_Out_Parameter | E_Out_Parameter =>
+            if Needs_Temporary_Ref (Actual, Formal) then
+               --  We should never use the Formal for the Ada_Node,
+               --  because there is no real dependency here; We only
+               --  use the Formal to get a sensible name.
+               Why_Args (Cnt) :=
+                 +New_Identifier (Ada_Node => Empty,
+                                  Name     => Full_Name (Formal));
+               Nb_Of_Refs := Nb_Of_Refs + 1;
+            else
+               case Ekind (Formal) is
+                  when E_In_Out_Parameter | E_Out_Parameter =>
 
-                  --  Parameters that are "out" are refs;
-                  --  if the actual is a simple identifier and no conversion
-                  --  is needed, it can be translated "as is".
+                     --  Parameters that are "out" are refs;
+                     --  if the actual is a simple identifier and no conversion
+                     --  is needed, it can be translated "as is".
 
-                  if not Needs_Temporary_Ref (Actual, Formal) then
                      Why_Args (Cnt) :=
                        +New_Identifier (Ada_Node => Actual,
                                         Name     => Full_Name (Actual));
 
-                  --  If a conversion or a component indexing is needed,
-                  --  it can only be done for a value. That is to say,
-                  --  something of this sort should be generated:
-                  --
-                  --  let formal = ref to_formal (!actual) in
-                  --   (subprogram_call (formal); actual := !formal)
-                  --
-                  --  The generation of the context is left to the caller;
-                  --  this function only signals the existence of such
-                  --  parameters by incrementing Nb_Of_Refs.
+                     --  If a conversion or a component indexing is needed,
+                     --  it can only be done for a value. That is to say,
+                     --  something of this sort should be generated:
+                     --
+                     --  let formal = ref to_formal (!actual) in
+                     --   (subprogram_call (formal); actual := !formal)
+                     --
+                     --  The generation of the context is left to the caller;
+                     --  this function only signals the existence of such
+                     --  parameters by incrementing Nb_Of_Refs.
 
-                  else
-
-                     --  We should never use the Formal for the Ada_Node,
-                     --  because there is no real dependency here; We only
-                     --  use the Formal to get a sensible name.
-
+                  when others =>
+                     --  When the formal is an "in" scalar, we actually use
+                     --  "int" as a type.
                      Why_Args (Cnt) :=
-                       +New_Identifier (Ada_Node => Empty,
-                                        Name     => Full_Name (Formal));
-                     Nb_Of_Refs := Nb_Of_Refs + 1;
-                  end if;
-
-               when others =>
-
-                  --  When the formal is an "in" scalar, we actually use "int"
-                  --  as a type.
-
-                  Why_Args (Cnt) :=
-                    Transform_Expr (Actual,
-                                    (if Use_Why_Base_Type (Formal) then
-                                        Base_Why_Type
-                                       (Unique_Entity (Etype (Formal)))
-                                     else
-                                        Type_Of_Node (Formal)),
-                                    Domain,
-                                    Params);
-            end case;
+                       Transform_Expr (Actual,
+                                       (if Use_Why_Base_Type (Formal) then
+                                           Base_Why_Type
+                                          (Unique_Entity (Etype (Formal)))
+                                        else
+                                           Type_Of_Node (Formal)),
+                                       Domain,
+                                       Params);
+               end case;
+            end if;
             Cnt := Cnt + 1;
          end Compute_Arg;
 
@@ -1617,9 +1615,15 @@ package body Gnat2Why.Expr is
    begin
       --  Temporary refs are needed for out or in out parameters that
       --  need a conversion or who are not an identifier.
-      return Ekind (Formal) in E_In_Out_Parameter | E_Out_Parameter
-        and then (not Eq (Etype (Actual), Etype (Formal))
-                  or else not (Nkind (Actual) in N_Entity));
+      case Ekind (Formal) is
+         when E_In_Out_Parameter | E_Out_Parameter =>
+            return not Eq (Etype (Actual), Etype (Formal))
+              or else not (Nkind (Actual) in N_Entity);
+         when E_In_Parameter =>
+            return Has_Async_Writers (Direct_Mapping_Id (Formal));
+         when others =>
+            return False;
+      end case;
    end Needs_Temporary_Ref;
 
    --------------------
@@ -5716,6 +5720,7 @@ package body Gnat2Why.Expr is
       C   : constant Ada_Ent_To_Why.Cursor :=
         Ada_Ent_To_Why.Find (Symbol_Table, Ent);
       T   : W_Expr_Id;
+      Havocd : W_Expr_Id;
 
    begin
       --  The special cases of this function are:
@@ -5741,10 +5746,31 @@ package body Gnat2Why.Expr is
          raise Program_Error;
       end if;
 
+      --  If we have an object with Async_Writers, we must havoc it before
+      --  dereferencing it.
+
+      if Has_Async_Writers (Direct_Mapping_Id (Ent)) then
+         pragma Assert (Is_Mutable_In_Why (Ent));
+         pragma Assert (Params.Ref_Allowed);
+         declare
+            Args : constant W_Expr_Array (1 .. 1) := W_Expr_Array'(1 => T);
+         begin
+            Havocd := New_Call
+              (Name     => New_Identifier (Name => "__havoc"),
+               Args     => Args,
+               Domain   => Domain);
+         end;
+      end if;
+
       if Is_Mutable_In_Why (Ent) and then Params.Ref_Allowed then
          T := New_Deref (Ada_Node => Get_Ada_Node (+T),
                          Right    => +T,
                          Typ      => Get_Type (T));
+      end if;
+
+      if Has_Async_Writers (Direct_Mapping_Id (Ent)) then
+         T := +Sequence (Left  => +Havocd,
+                         Right => +T);
       end if;
 
       return T;
@@ -5975,18 +6001,23 @@ package body Gnat2Why.Expr is
               Pragma_Ada_2012                     |
               Pragma_Annotate                     |
               Pragma_Assertion_Policy             |
+              Pragma_Async_Readers                |
+              Pragma_Async_Writers                |
               Pragma_Check_Policy                 |
               Pragma_Contract_Cases               |
               Pragma_Convention                   |
               Pragma_Depends                      |
+              Pragma_Effective_Reads              |
+              Pragma_Effective_Writes             |
               Pragma_Elaborate                    |
               Pragma_Elaborate_All                |
               Pragma_Elaborate_Body               |
               Pragma_Export                       |
+              Pragma_External                     |
               Pragma_Global                       |
               Pragma_Import                       |
-              Pragma_Initializes                  |
               Pragma_Initial_Condition            |
+              Pragma_Initializes                  |
               Pragma_Inline                       |
               Pragma_Inline_Always                |
               Pragma_Inspection_Point             |
@@ -6000,8 +6031,8 @@ package body Gnat2Why.Expr is
               Pragma_Part_Of                      |
               Pragma_Postcondition                |
               Pragma_Precondition                 |
-              Pragma_Preelaborate                 |
               Pragma_Preelaborable_Initialization |
+              Pragma_Preelaborate                 |
               Pragma_Pure                         |
               Pragma_Pure_Function                |
               Pragma_Refined_Depends              |
@@ -6015,6 +6046,7 @@ package body Gnat2Why.Expr is
               Pragma_Unmodified                   |
               Pragma_Unreferenced                 |
               Pragma_Validity_Checks              |
+              Pragma_Volatile                     |
               Pragma_Warnings                     =>
             return New_Void (Prag);
 

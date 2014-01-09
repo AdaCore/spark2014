@@ -19,12 +19,14 @@ is
 
    procedure Read_V1_Bad2 (X : out S1)
    is
+      Tmp : U32;
    begin
       -- User attempts to cheat by reading a 32-bit
       -- modular value, and doing an unchecked conversion
       -- to S1.  No validity check, though, so must also
       -- fail to prove.
-      X := S1 (C (V1Raw)); -- Should not prove
+      Tmp := V1Raw;
+      X := S1 (C (Tmp)); -- Should not prove
    end Read_V1_Bad2;
 
 
@@ -44,10 +46,12 @@ is
    procedure Read_V1_Good2 (X : out S1)
    is
       T : S1;
+      Tmp : U32;
    begin
       -- Read as 32-but modular, then unchecked convert,
       -- then validity check.
-      T := S1 (C (V1Raw));
+      Tmp := V1Raw;
+      T := S1 (C (Tmp));
       if T'Valid then
          X := T; -- Should be OK
       else
@@ -67,10 +71,12 @@ is
 
    procedure Read_VB_Bad2 (X : out Boolean)
    is
+      Tmp : U8;
    begin
       -- Read unsigned 8 bits, then unchecked convert to Boolean
       -- Should NOT prove.
-      X := C2 (VBRaw);
+      Tmp := VBRaw;
+      X := C2 (Tmp);
    end Read_VB_Bad2;
 
 
@@ -86,10 +92,12 @@ is
 
    procedure Read_VE_Bad2 (X : out E)
    is
+      Tmp : U8;
    begin
+      Tmp := VERaw;
       -- Read unsigned 8 bits, then unchecked convert to E
       -- Should NOT prove.
-      X := C3 (VERaw);
+      X := C3 (Tmp);
    end Read_VE_Bad2;
 
    procedure Read_VE_Good1 (X : out E)
@@ -108,9 +116,11 @@ is
    procedure Read_VE_Good2 (X : out E)
    is
       T : E;
+      Tmp : U8;
    begin
       -- Read modular 8 bits, unchecked convert, and valid test
-      T := C3 (VERaw);
+      Tmp := VERaw;
+      T := C3 (Tmp);
       if T'Valid then
          X := T; -- Should be OK
       else

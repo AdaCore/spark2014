@@ -1,11 +1,3 @@
-output_port_14.adb:8:11: warning: it is currently ignored
-output_port_14.adb:8:11: warning: it is currently ignored
-output_port_14.adb:8:11: warning: pragma "Volatile" is not yet supported
-output_port_14.adb:8:11: warning: pragma "Volatile" is not yet supported in proof
-output_port_14.adb:9:11: warning: it is currently ignored
-output_port_14.adb:9:11: warning: it is currently ignored
-output_port_14.adb:9:11: warning: pragma "Async_Readers" is not yet supported
-output_port_14.adb:9:11: warning: pragma "Async_Readers" is not yet supported in proof
 output_port_14.adb:17:22: info: postcondition proved
 output_port_14.adb:32:10: warning: statement has no effect
 output_port_14.adb:32:10: warning: unused assignment to "Output_Port"

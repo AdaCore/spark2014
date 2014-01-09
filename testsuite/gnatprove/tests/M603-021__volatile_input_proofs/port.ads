@@ -93,8 +93,8 @@ is
           Post    => X'Valid and X in Boolean; -- Tautology?
 
    procedure Read_VB_Bad2 (X : out Boolean)
-     with Global => (Input => VB),
-          Depends => (X => VB),
+     with Global => (Input => VBRaw),
+          Depends => (X => VBRaw),
           Post    => X'Valid and X in Boolean; -- Tautology?
 
    -------------------------
