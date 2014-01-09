@@ -431,11 +431,13 @@ package body Gnat2Why.Util is
       then
          return True;
 
+      --  We special case any volatile with async writers: they are always
+      --  mutable (even if they are, for example, in parameters).
+
       elsif Flow_Types.Has_Async_Writers
         (Flow_Types.Direct_Mapping_Id (N))
       then
-         --  We special case any volatile with async writers: they are
-         --  always mutable (even if they are, for example, in parameters).
+
          return True;
 
       elsif Is_Constant_Object (N) then

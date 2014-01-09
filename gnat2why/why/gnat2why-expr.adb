@@ -1044,9 +1044,11 @@ package body Gnat2Why.Expr is
          is
          begin
             if Needs_Temporary_Ref (Actual, Formal) then
+
                --  We should never use the Formal for the Ada_Node,
                --  because there is no real dependency here; We only
                --  use the Formal to get a sensible name.
+
                Why_Args (Cnt) :=
                  +New_Identifier (Ada_Node => Empty,
                                   Name     => Full_Name (Formal));
@@ -1075,8 +1077,10 @@ package body Gnat2Why.Expr is
                      --  parameters by incrementing Nb_Of_Refs.
 
                   when others =>
+
                      --  When the formal is an "in" scalar, we actually use
                      --  "int" as a type.
+
                      Why_Args (Cnt) :=
                        Transform_Expr (Actual,
                                        (if Use_Why_Base_Type (Formal) then
@@ -1103,6 +1107,7 @@ package body Gnat2Why.Expr is
                         Ada_Ent_To_Why.Find (Symbol_Table, Elt);
                   T : W_Expr_Id;
                begin
+
                   --  If the effect parameter is found in the map, use the name
                   --  stored.
 
