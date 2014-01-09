@@ -350,7 +350,7 @@ Features Not Yet Implemented in Flow Analysis
       "V" must be listed in the Initializes aspect of "P" (SPARK RM 7.1.5(12)) 
 
    To work around this limitation a variable (either visible or hidden
-   and represented by a state abstraction) has to be delared in P and
+   and represented by a state abstraction) has to be declared in P and
    initialized using V.  This may give rise to a suppressible warning
    that V is not used.
 
