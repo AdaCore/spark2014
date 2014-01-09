@@ -481,21 +481,12 @@ package Why.Sinfo is
    --  Pre         W_Pred_Id
    --  Post        W_Pred_Id
    --  Return_Type W_Type_Id
+   --  Def         W_Expr_Id
    --  Labels      Name_Id_Set
    --
    --  A function declaration with possible effects, pre and post. Set the
-   --  Domain to EW_Pred to generate a predicate.
-   --
-   --  --------------------
-   --  -- W_Function_Def --
-   --  --------------------
-   --  Spec       W_Function_Decl_Id
-   --  Def        W_Expr_Id
-   --  Labels     Name_Id_Set
-   --
-   --  A function definition. In addition to everything in a declaration, a
-   --  defining expression is also given. Set the Domain to EW_Pred to generate
-   --  a predicate.
+   --  Domain to EW_Pred to generate a predicate, with an empty return type.
+   --  Set Def to empty to build a declaration
    --
    --  -------------
    --  -- W_Axiom --
@@ -706,7 +697,6 @@ package Why.Sinfo is
       ----------------------------
 
       W_Function_Decl,
-      W_Function_Def,
       W_Axiom,
       W_Goal,
       W_Type_Decl,

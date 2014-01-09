@@ -1003,7 +1003,7 @@ package body Gnat2Why.Subprograms is
       begin
          Label_Set.Include (Cur_Subp_Name_Label);
          Emit (File.Cur_Theory,
-               New_Function_Def
+                Why.Gen.Binders.New_Function_Decl
                  (Domain  => EW_Prog,
                   Name    => To_Ident (WNE_Def),
                   Binders => (1 => Unit_Param),
@@ -1299,7 +1299,7 @@ package body Gnat2Why.Subprograms is
       begin
          Label_Set.Include (Cur_Subp_Name_Label);
          Emit (File.Cur_Theory,
-               New_Function_Def
+               Why.Gen.Binders.New_Function_Decl
                  (Domain  => EW_Prog,
                   Name    => To_Ident (WNE_Def),
                   Binders => (1 => Unit_Param),

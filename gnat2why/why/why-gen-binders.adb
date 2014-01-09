@@ -26,7 +26,6 @@
 with Why.Conversions;     use Why.Conversions;
 with Why.Gen.Expr;        use Why.Gen.Expr;
 with Why.Gen.Names;       use Why.Gen.Names;
-with Why.Gen.Decl;        use Why.Gen.Decl;
 with Why.Inter;           use Why.Inter;
 
 package body Why.Gen.Binders is
@@ -40,23 +39,6 @@ package body Why.Gen.Binders is
      (Domain  : EW_Domain;
       Binders : Binder_Array)
      return W_Expr_Array;
-
-   ---------------------------------
-   -- Emit_Top_Level_Declarations --
-   ---------------------------------
-
-   procedure Emit_Top_Level_Declarations
-     (Theory      : W_Theory_Declaration_Id;
-      Ada_Node    : Node_Id := Empty;
-      Binders     : Binder_Array;
-      Return_Type : W_Type_Id;
-      Spec        : Declaration_Spec_Array)
-   is
-      Spec0 : Declaration_Spec_Array := Spec;
-   begin
-      Set_Top_Level_Declarations
-        (Theory, Ada_Node, Binders, Return_Type, Spec0);
-   end Emit_Top_Level_Declarations;
 
    -----------------------
    -- Item_Array_Length --
@@ -282,9 +264,10 @@ package body Why.Gen.Binders is
       Domain      : EW_Domain;
       Name        : W_Identifier_Id;
       Binders     : Binder_Array;
-      Return_Type : W_Type_Id;
+      Return_Type : W_Type_Id := Why_Empty;
       Labels      : Name_Id_Set;
       Effects     : W_Effects_Id := New_Effects;
+      Def         : W_Expr_Id := Why_Empty;
       Pre         : W_Pred_Id := True_Pred;
       Post        : W_Pred_Id := True_Pred)
      return W_Declaration_Id is
@@ -296,49 +279,11 @@ package body Why.Gen.Binders is
          Labels      => Labels,
          Binders     => New_Binders (Domain, Binders),
          Return_Type => +Return_Type,
+         Def         => Def,
          Effects     => Effects,
          Pre         => Pre,
          Post        => Post);
    end New_Function_Decl;
-
-   -----------------------
-   -- New_Function_Def --
-   -----------------------
-
-   function New_Function_Def
-     (Ada_Node    : Node_Id := Empty;
-      Domain      : EW_Domain;
-      Name        : W_Identifier_Id;
-      Binders     : Binder_Array;
-      Return_Type : W_Type_OId := Why_Empty;
-      Def         : W_Expr_Id;
-      Labels      : Name_Id_Set;
-      Pre         : W_Pred_Id := True_Pred;
-      Post        : W_Pred_Id := True_Pred)
-     return W_Declaration_Id
-   is
-      RT : constant W_Type_Id :=
-             (if Return_Type = Why_Empty then
-                (case Domain is
-                   when EW_Pred => +EW_Bool_Type,
-                   when others  => +EW_Unit_Type)
-             else Return_Type);
-   begin
-      return New_Function_Def
-        (Ada_Node  => Ada_Node,
-         Domain    => Domain,
-         Labels    => Labels,
-         Spec      =>
-           +New_Function_Decl
-             (Domain      => Domain,
-              Name        => Name,
-              Binders     => Binders,
-              Labels      => Name_Id_Sets.Empty_Set,
-              Return_Type => RT,
-              Pre         => Pre,
-              Post        => Post),
-         Def       => Def);
-   end New_Function_Def;
 
    -----------------------
    -- New_Guarded_Axiom --
@@ -485,160 +430,6 @@ package body Why.Gen.Binders is
          end;
       end if;
    end New_Universal_Quantif;
-
-   --------------------------------
-   -- Set_Top_Level_Declarations --
-   --------------------------------
-
-   procedure Set_Top_Level_Declarations
-     (Theory      : W_Theory_Declaration_Id;
-      Ada_Node    : Node_Id := Empty;
-      Binders     : Binder_Array;
-      Return_Type : W_Type_Id;
-      Spec        : in out Declaration_Spec_Array)
-   is
-      Logic_Def_Emitted : Boolean := False;
-   begin
-      for S in Spec'Range loop
-         declare
-            Label_Set : Name_Id_Set := Name_Id_Sets.Empty_Set;
-         begin
-            if Spec (S).Label /= No_Name then
-               Label_Set.Include (Spec (S).Label);
-            end if;
-
-            case Spec (S).Kind is
-               when W_Function_Decl =>
-                  case Spec (S).Domain is
-                     when EW_Term =>
-                        pragma Assert (not Logic_Def_Emitted);
-
-                        Emit
-                          (Theory,
-                           New_Function_Decl
-                             (Ada_Node    => Ada_Node,
-                              Domain      => Spec (S).Domain,
-                              Name        => Spec (S).Name,
-                              Labels      => Label_Set,
-                              Binders     => Binders,
-                              Return_Type => Return_Type));
-                        Logic_Def_Emitted := True;
-
-                        if Spec (S).Def /= Why_Empty then
-                           Emit
-                             (Theory,
-                              New_Defining_Axiom
-                                (Ada_Node    => Ada_Node,
-                                 Name        => Spec (S).Name,
-                                 Return_Type => Get_EW_Type (Return_Type),
-                                 Binders     => Binders,
-                                 Pre         => Spec (S).Pre,
-                                 Def         => Spec (S).Def));
-                        end if;
-
-                     when EW_Pred =>
-                        --  Invalid
-                        pragma Assert (False);
-                        null;
-
-                     when EW_Prog =>
-
-                        if Spec (S).Pre = Why_Empty then
-                           Spec (S).Pre := True_Pred;
-                        end if;
-
-                        if Spec (S).Post = Why_Empty then
-                           if Logic_Def_Emitted then
-                              Spec (S).Post :=
-                                New_Relation
-                                  (Op_Type =>
-                                     Get_EW_Type (Return_Type),
-                                   Left    =>
-                                     +New_Call
-                                       (Domain  => EW_Term,
-                                        Name    => Spec (S).Name,
-                                        Binders => Binders),
-                                   Op      => EW_Eq,
-                                   Right   =>
-                                     +New_Result_Ident (Why_Empty));
-                           else
-                              Spec (S).Post := True_Pred;
-                           end if;
-                        end if;
-
-                        Emit
-                          (Theory,
-                           New_Function_Decl
-                           (Ada_Node    => Ada_Node,
-                            Domain      => EW_Prog,
-                            Name        => Spec (S).Name,
-                            Binders     => Binders,
-                            Labels      => Label_Set,
-                            Return_Type => Return_Type,
-                            Pre         => Spec (S).Pre,
-                            Effects     => Spec (S).Effects,
-                            Post        => Spec (S).Post));
-                  end case;
-
-               when W_Function_Def =>
-                  case Spec (S).Domain is
-                     when EW_Term =>
-                        pragma Assert (not Logic_Def_Emitted);
-                        pragma Assert (Spec (S).Term /= Why_Empty);
-
-                        Emit
-                          (Theory,
-                           New_Function_Def
-                             (Ada_Node    => Ada_Node,
-                              Domain      => Spec (S).Domain,
-                              Name        => Spec (S).Name,
-                              Binders     => Binders,
-                              Labels      => Label_Set,
-                              Return_Type => Return_Type,
-                              Def         => +Spec (S).Term));
-                        Logic_Def_Emitted := True;
-
-                     when EW_Pred =>
-
-                        Emit
-                          (Theory,
-                           New_Function_Def
-                             (Ada_Node    => Ada_Node,
-                              Domain      => Spec (S).Domain,
-                              Name        => Spec (S).Name,
-                              Labels      => Label_Set,
-                              Binders     => Binders,
-                              Def         => +Spec (S).Pred));
-
-                     when EW_Prog =>
-                        if Spec (S).Name = Why_Empty then
-                           Spec (S).Name := To_Ident (WNE_Def);
-                        end if;
-
-                        if Spec (S).Pre = Why_Empty then
-                           Spec (S).Pre := True_Pred;
-                        end if;
-
-                        if Spec (S).Post = Why_Empty then
-                           Spec (S).Post := True_Pred;
-                        end if;
-
-                        Emit
-                          (Theory,
-                           New_Function_Def
-                             (Ada_Node    => Ada_Node,
-                              Domain      => Spec (S).Domain,
-                              Name        => Spec (S).Name,
-                              Labels      => Label_Set,
-                              Binders     => Binders,
-                              Pre         => Spec (S).Pre,
-                              Def         => +Spec (S).Prog,
-                              Post        => Spec (S).Post));
-                  end case;
-            end case;
-         end;
-      end loop;
-   end Set_Top_Level_Declarations;
 
    ---------------------
    -- To_Binder_Array --

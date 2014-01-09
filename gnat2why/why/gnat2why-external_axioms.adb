@@ -895,7 +895,7 @@ package body Gnat2Why.External_Axioms is
 
                      Emit
                        (TFile.Cur_Theory,
-                        New_Function_Def
+                        New_Function_Decl
                           (Domain      => EW_Term,
                            Name        => To_Ident (WNE_To_Base),
                            Binders     => R_Binder,
@@ -904,7 +904,7 @@ package body Gnat2Why.External_Axioms is
                            Def         => +A_Ident));
                      Emit
                        (TFile.Cur_Theory,
-                        New_Function_Def
+                        New_Function_Decl
                           (Domain      => EW_Term,
                            Name        => To_Ident (WNE_Of_Base),
                            Binders     => R_Binder,
@@ -1009,7 +1009,7 @@ package body Gnat2Why.External_Axioms is
 
                   Emit
                     (TFile.Cur_Theory,
-                     New_Function_Def
+                     New_Function_Decl
                        (Domain      => EW_Term,
                         Name        =>
                           New_Identifier (Name => Short_Name (Formal)),

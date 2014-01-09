@@ -342,13 +342,14 @@ package body Why.Gen.Arrays is
          Attr_Name : constant W_Identifier_Id := Append_Num (Kind, Dim_Count);
       begin
             Emit (Theory,
-                  New_Function_Def (Domain      => EW_Term,
-                                    Name        => Attr_Name,
-                                    Binders     => (1 .. 0 => <>),
-                                    Labels      => Name_Id_Sets.Empty_Set,
-                                    Return_Type => Int_Type,
-                                    Def         =>
-                                      New_Integer_Constant (Value => Value)));
+                  Why.Atree.Builders.New_Function_Decl
+                    (Domain      => EW_Term,
+                     Name        => Attr_Name,
+                     Binders     => (1 .. 0 => <>),
+                     Labels      => Name_Id_Sets.Empty_Set,
+                     Return_Type => Int_Type,
+                     Def         =>
+                       New_Integer_Constant (Value => Value)));
          Subst (Cursor) :=
            New_Clone_Substitution
              (Kind      => EW_Function,

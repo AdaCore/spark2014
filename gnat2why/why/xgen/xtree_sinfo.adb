@@ -529,19 +529,10 @@ package body Xtree_Sinfo is
       New_Field (W_Function_Decl,
                  "Post", "W_Pred", Id_Lone);
       New_Field (W_Function_Decl,
-                 "Return_Type", "W_Type", Id_One);
+                 "Return_Type", "W_Type", Id_Lone);
       New_Field (W_Function_Decl,
-                 "Labels", "Name_Id_Set");
-
-      --------------------
-      -- W_Function_Def --
-      --------------------
-
-      New_Field (W_Function_Def,
-                 "Spec", "W_Function_Decl", Id_One);
-      New_Field (W_Function_Def,
-                 "Def", "W_Expr", Id_One);
-      New_Field (W_Function_Def,
+                 "Def", "W_Expr", Id_Lone);
+      New_Field (W_Function_Decl,
                  "Labels", "Name_Id_Set");
 
       -------------

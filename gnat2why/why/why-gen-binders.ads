@@ -132,21 +132,10 @@ package Why.Gen.Binders is
       Domain      : EW_Domain;
       Name        : W_Identifier_Id;
       Binders     : Binder_Array;
-      Return_Type : W_Type_Id;
+      Return_Type : W_Type_Id := Why_Empty;
       Labels      : Name_Id_Set;
       Effects     : W_Effects_Id := New_Effects;
-      Pre         : W_Pred_Id := True_Pred;
-      Post        : W_Pred_Id := True_Pred)
-     return W_Declaration_Id;
-
-   function New_Function_Def
-     (Ada_Node    : Node_Id := Empty;
-      Domain      : EW_Domain;
-      Name        : W_Identifier_Id;
-      Binders     : Binder_Array;
-      Return_Type : W_Type_OId := Why_Empty;
-      Def         : W_Expr_Id;
-      Labels      : Name_Id_Set;
+      Def         : W_Expr_Id := Why_Empty;
       Pre         : W_Pred_Id := True_Pred;
       Post        : W_Pred_Id := True_Pred)
      return W_Declaration_Id;
@@ -193,86 +182,6 @@ package Why.Gen.Binders is
      return W_Declaration_Id;
    --  Same as new_defining_axiom, but for functions returning booleans.
    --  (for those, predicates are generated instead of logics).
-
-   subtype W_Binded_Declaration is Why_Node_Kind range
-     W_Function_Decl ..
-     W_Function_Def;
-
-   type Declaration_Spec
-     (Kind   : W_Binded_Declaration := W_Function_Def;
-      Domain : EW_Domain            := EW_Prog) is
-     record
-        Name : W_Identifier_OId := Why_Empty;
-        --  Name of the entity to declare. If not specified, a defaut is
-        --  given following the defaut naming convention.
-
-        Pre  : W_Pred_OId := Why_Empty;
-
-        Label : Name_Id := No_Name;
-
-        Post : W_Pred_OId := Why_Empty;
-        --  If no postcondition is given, and if a logic declaration
-        --  is provided, one will be generated that will use this
-        --  logic declaration. e.g. if Name is "my_func" and Binders is:
-        --
-        --     (x1 : type1) -> (x2 : type2)
-        --
-        --  ...then the logic declaration will be:
-        --
-        --     logic my_func : type1, type2 -> type3
-        --
-        --  ...and the generated program-space declaration, with the
-        --  default postcondition will be:
-        --
-        --     parameter my_func_ :
-        --      x1 : type1 -> x2 : type2 ->
-        --     { pre }
-        --      type3
-        --     { my_func (x1, x2) = result }
-
-        case Kind is
-           when W_Function_Def =>
-              case Domain is
-                 when EW_Prog =>
-                    Prog : W_Prog_Id;
-
-                 when EW_Term =>
-                    Term : W_Term_Id;
-
-                 when EW_Pred =>
-                    Pred : W_Pred_Id;
-              end case;
-
-           when W_Function_Decl =>
-              case Domain is
-                 when EW_Prog =>
-                    Effects   : W_Effects_Id := New_Effects;
-
-                 when EW_Term =>
-                    Def : W_Term_OId := Why_Empty;
-
-                 when EW_Pred =>
-                    null;
-              end case;
-        end case;
-     end record;
-
-   type Declaration_Spec_Array is array (Positive range <>)
-     of Declaration_Spec;
-
-   procedure Set_Top_Level_Declarations
-     (Theory      : W_Theory_Declaration_Id;
-      Ada_Node    : Node_Id := Empty;
-      Binders     : Binder_Array;
-      Return_Type : W_Type_Id;
-      Spec        : in out Declaration_Spec_Array);
-
-   procedure Emit_Top_Level_Declarations
-     (Theory      : W_Theory_Declaration_Id;
-      Ada_Node    : Node_Id := Empty;
-      Binders     : Binder_Array;
-      Return_Type : W_Type_Id;
-      Spec        : Declaration_Spec_Array);
 
    function Unit_Param return Binder_Type;
    --  return a dummy binder for a single argument of type unit

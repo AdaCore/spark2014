@@ -1118,7 +1118,7 @@ package body Why.Atree.Sprint is
       Name        : constant W_Identifier_Id := Get_Name (Node);
       Return_Type : constant W_Type_Id := Get_Return_Type (Node);
       Binders     : constant W_Binder_OList := Get_Binders (Node);
-
+      Def         : constant W_Expr_Id := Get_Def (Node);
    begin
       case Get_Domain (+Node) is
          when EW_Term =>
@@ -1140,13 +1140,24 @@ package body Why.Atree.Sprint is
             P (O, " :");
             Traverse (State, +Return_Type);
 
+            if Def /= Why_Empty then
+               PL (O, " =");
+               Traverse (State, +Def);
+            end if;
+
             Relative_Indent (O, -1);
             NL (O);
 
          when EW_Prog =>
-            P (O, "val ");
+            if Def = Why_Empty then
+               P (O, "val ");
+            else
+               P (O, "let ");
+            end if;
 
             Traverse (State, +Name);
+            P (O, " ");
+            P (O, Get_Labels (Node), As_String => True);
             Relative_Indent (O, 1);
             NL (O);
             declare
@@ -1159,8 +1170,11 @@ package body Why.Atree.Sprint is
                   Print_List (State, +Binders, ") (");
                   P (O, ") ");
                end if;
-               P (O, " :");
-               Traverse (State, +Return_Type);
+
+               if Def = Why_Empty then
+                  P (O, " :");
+                  Traverse (State, +Return_Type);
+               end if;
                NL (O);
                if Pre /= Why_Empty then
                   P (O, "requires { ");
@@ -1177,6 +1191,10 @@ package body Why.Atree.Sprint is
                if Effects /= Why_Empty then
                   Traverse (State, +Effects);
                   NL (O);
+               end if;
+               if Def /= Why_Empty then
+                  PL (O, " =");
+                  Traverse (State, +Def);
                end if;
                Relative_Indent (O, -1);
             end;
@@ -1195,98 +1213,17 @@ package body Why.Atree.Sprint is
                P (O, ") ");
             end if;
 
+            if Def /= Why_Empty then
+               PL (O, " =");
+               Traverse (State, +Def);
+            end if;
+
             Relative_Indent (O, -1);
             NL (O);
       end case;
 
       State.Control := Abandon_Children;
    end Function_Decl_Pre_Op;
-
-   -------------------------
-   -- Function_Def_Pre_Op --
-   -------------------------
-
-   procedure Function_Def_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Function_Def_Id)
-   is
-      Spec        : constant W_Function_Decl_Id := Get_Spec (Node);
-      Def         : constant W_Expr_Id := Get_Def (Node);
-      Name        : constant W_Identifier_Id := Get_Name (Spec);
-      Binders     : constant W_Binder_OList := Get_Binders (Spec);
-      Return_Type : constant W_Type_OId := Get_Return_Type (Spec);
-      Pre         : constant W_Pred_OId := Get_Pre (Spec);
-      Post        : constant W_Pred_OId := Get_Post (Spec);
-   begin
-      case Get_Domain (+Node) is
-         when EW_Pred =>
-            P (O, "predicate ");
-            Traverse (State, +Name);
-
-            P (O, " ");
-            P (O, Get_Labels (Node), As_String => True);
-
-            P (O, " (");
-            Print_List (State, +Binders, ") (");
-            PL (O, ") =");
-
-            Relative_Indent (O, 1);
-            Traverse (State, +Def);
-            Relative_Indent (O, -1);
-            NL (O);
-
-         when EW_Term =>
-            P (O, "function ");
-            Traverse (State, +Name);
-
-            P (O, " ");
-            P (O, Get_Labels (Node), As_String => True);
-
-            if not Is_Empty (+Binders) then
-               P (O, " (");
-               Print_List (State, +Binders, ") (");
-               P (O, ")");
-            end if;
-            P (O, " : ");
-
-            Traverse (State, +Return_Type);
-            PL (O, " =");
-            Relative_Indent (O, 1);
-            Traverse (State, +Def);
-            Relative_Indent (O, -1);
-            NL (O);
-
-         when EW_Prog =>
-            P (O, "let ");
-            Traverse (State, +Name);
-            P (O, " ");
-            P (O, Get_Labels (Node), As_String => True);
-
-            if not Is_Empty (+Binders) then
-               P (O, " (");
-               Print_List (State, +Binders, ") (");
-               PL (O, ") ");
-            end if;
-
-            if Pre /= Why_Empty then
-               P (O, "requires { ");
-               Traverse (State, +Pre);
-               PL (O, " }");
-            end if;
-            if Post /= Why_Empty then
-               P (O, "ensures { ");
-               Traverse (State, +Post);
-               PL (O, " }");
-            end if;
-            PL (O, " = ");
-            Relative_Indent (O, 1);
-            Traverse (State, +Def);
-            Relative_Indent (O, -1);
-            NL (O);
-      end case;
-
-      State.Control := Abandon_Children;
-   end Function_Def_Pre_Op;
 
    ------------------
    -- Axiom_Pre_Op --

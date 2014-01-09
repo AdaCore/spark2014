@@ -33,7 +33,6 @@ with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Atree.Modules;  use Why.Atree.Modules;
 with Why.Gen.Decl;       use Why.Gen.Decl;
 with Why.Gen.Names;      use Why.Gen.Names;
-with Why.Gen.Binders;    use Why.Gen.Binders;
 with Why.Inter;          use Why.Inter;
 with Why.Sinfo;          use Why.Sinfo;
 with Why.Types;          use Why.Types;
@@ -227,34 +226,17 @@ package body Why.Gen.Scalars is
                        S_Modulus => (Attribute_Modulus, Modulus));
    begin
       for J in Attr_Values'Range loop
-         declare
-            Spec      : Declaration_Spec;
-            Emit_Decl : Boolean;
-         begin
-            if Attr_Values (J).Value /= Why_Empty then
-               Spec      := (Kind   => W_Function_Def,
-                             Domain => EW_Term,
-                             Term   => Attr_Values (J).Value,
-                             others => <>);
-               Emit_Decl := True;
-            else
-               Spec      := (Kind   => W_Function_Decl,
-                             Domain => EW_Term,
-                             others => <>);
-               --  We do not emit the declaration for modulus if this
-               --  type does not have a modulus.
-               Emit_Decl := J /= S_Modulus;
-            end if;
-            if Emit_Decl then
-               Spec.Name :=
-                 To_Ident (Attr_To_Why_Name (Attr_Values (J).Attr_Id));
-               Emit_Top_Level_Declarations
-                 (Theory      => Theory,
-                  Binders     => (1 .. 0 => <>),
-                  Return_Type => +Why_Types (Base_Type),
-                  Spec        => (1 => Spec));
-            end if;
-         end;
+         if J /= S_Modulus or else Attr_Values (J).Value /= Why_Empty then
+            Emit (Theory,
+                  New_Function_Decl
+                    (Domain      => EW_Term,
+                     Name        =>
+                       To_Ident (Attr_To_Why_Name (Attr_Values (J).Attr_Id)),
+                     Binders     => (1 .. 0 => <>),
+                     Return_Type => Why_Types (Base_Type),
+                     Labels      => Name_Id_Sets.Empty_Set,
+                     Def         => W_Expr_Id (Attr_Values (J).Value)));
+         end if;
       end loop;
    end Define_Scalar_Attributes;
 

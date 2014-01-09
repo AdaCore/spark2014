@@ -218,10 +218,6 @@ private
      (State : in out Printer_State;
       Node  : W_Function_Decl_Id);
 
-   procedure Function_Def_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Function_Def_Id);
-
    procedure Axiom_Pre_Op
      (State : in out Printer_State;
       Node  : W_Axiom_Id);

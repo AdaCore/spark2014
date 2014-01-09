@@ -425,7 +425,7 @@ package body Why.Gen.Records is
 
          Emit
            (Theory,
-            New_Function_Def
+            New_Function_Decl
               (Domain      => EW_Term,
                Name        => To_Ident (WNE_To_Base),
                Binders     => R_Binder,
@@ -437,7 +437,7 @@ package body Why.Gen.Records is
                    (Associations => To_Root_Aggr)));
          Emit
            (Theory,
-            New_Function_Def
+            New_Function_Decl
               (Domain      => EW_Term,
                Name        => From_Ident,
                Binders     => From_Binder,
@@ -501,7 +501,7 @@ package body Why.Gen.Records is
          end loop;
          Emit
            (Theory,
-            New_Function_Def
+            New_Function_Decl
               (Domain      => EW_Term,
                Name        => To_Ident (WNE_Bool_Eq),
                Binders     =>
@@ -560,7 +560,7 @@ package body Why.Gen.Records is
                            else Compute_Discriminant_Check (Field));
                      begin
                         Emit (Theory,
-                              New_Function_Def
+                              New_Function_Decl
                                 (Domain => EW_Pred,
                                  Name   => Pred_Name,
                                  Binders => R_Binder,
@@ -824,7 +824,7 @@ package body Why.Gen.Records is
             if Root_Record_Type (Clone) = Clone then
                Emit
                  (Theory,
-                  New_Function_Def
+                  New_Function_Decl
                     (Domain      => EW_Term,
                      Name        => To_Ident (WNE_To_Base),
                      Binders     => R_Binder,
@@ -833,7 +833,7 @@ package body Why.Gen.Records is
                      Def         => +A_Ident));
                Emit
                  (Theory,
-                  New_Function_Def
+                  New_Function_Decl
                     (Domain      => EW_Term,
                      Name        => To_Ident (WNE_Of_Base),
                      Binders     => R_Binder,
@@ -930,7 +930,7 @@ package body Why.Gen.Records is
          Next_Discriminant (Discr);
       end loop;
       Emit (Theory,
-            New_Function_Def
+            New_Function_Decl
               (Domain      => EW_Pred,
                Name        => To_Ident (WNE_Range_Pred),
                Labels  => Name_Id_Sets.Empty_Set,
