@@ -903,7 +903,7 @@ checking mode default. Here `?` is one of the digits `1` through `3`:
 #. minimize intermediate overflows (MINIMIZED)
 #. eliminate intermediate overflows (ELIMINATED)
 
-The switch ``-gnato13``, like the ``Overflow_Pragma`` above, specifies that
+The switch ``-gnato13``, like the ``Overflow_Mode`` pragma above, specifies that
 general expressions outside assertions be evaluated in the usual strict mode,
 and expressions within assertions be evaluated in "eliminate intermediate
 overflows" mode.
