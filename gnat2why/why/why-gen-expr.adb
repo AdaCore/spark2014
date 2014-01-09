@@ -84,20 +84,19 @@ package body Why.Gen.Expr is
       use Why_Node_Maps;
       C : Cursor := Temp_Names_Map.Find (+Tmp);
    begin
-      pragma Assert (Has_Element (C));
-      declare
-         E : constant W_Expr_Id := +Element (C);
-      begin
 
-         --  in any case we delete the entry, so that the map doesn't grow too
-         --  much.
+      --  if Tmp is in the map, we really introduced a temp variable and need
+      --  to build a binding now.
 
-         Temp_Names_Map.Delete (C);
+      if Has_Element (C) then
+         declare
+            E : constant W_Expr_Id := +Element (C);
+         begin
 
-         --  if there is a real expression, we really introduced a temp and
-         --  need to build a binding now.
+            --  we delete the entry, so that the map doesn't grow too much.
 
-         if E /= Why_Empty then
+            Temp_Names_Map.Delete (C);
+
             return
               New_Typed_Binding
                 (Ada_Node => Ada_Node,
@@ -105,14 +104,15 @@ package body Why.Gen.Expr is
                  Name     => +Tmp,
                  Def      => E,
                  Context  => Context);
+         end;
+      else
 
-         --  Otherwise, a temp was not actually created, and we just return the
-         --  context.
+         --  Otherwise Tmp is not a temp associated with an expression.
+         --  Presumably, no temp variable was actually created for it during
+         --  a call of New_Temp_For_Expr. We just return the context.
 
-         else
-            return Context;
-         end if;
-      end;
+         return Context;
+      end if;
    end Binding_For_Temp;
 
    -------------------
@@ -1782,17 +1782,17 @@ package body Why.Gen.Expr is
    begin
 
       --  Internally, we use a map to store the expression for which we
-      --  introduce a temporary variable. The map can hold two kinds of
-      --  entries:
+      --  introduce a temporary variable. The map holds entries:
       --    Identifier -> Expr
-      --  This is the regular entry which allows us (in Binding_For_Temp) to
-      --  get the expression for the temp
-      --    Expr -> Empty
-      --  This is a marker which shows that the user indeed tried to obtain a
-      --  temp for Expr, but it was not actually necessary to generate one. The
-      --  second kind of entries allows us to distinguish (in Binding_For_Temp)
+      --  It allows us (in Binding_For_Temp) to get the expression for the temp
+      --
+      --  When it is not actually necessary to generate a temp for Expr, we
+      --  do not introduce any binding in the map. We used to generate a
+      --  binding Expr => Empty to distinguish (in Binding_For_Temp)
       --  between incorrect usage of the API and a value for which no temp was
-      --  necessary.
+      --  necessary. We do not anymore as we could not know how many times
+      --  New_Temp_For_Expr had been called for Expr and so how long we should
+      --  keep Expr => Empty in the table.
 
       if Need_Temp
         and then Get_Kind (+E) not in W_Identifier | W_Deref
@@ -1806,7 +1806,6 @@ package body Why.Gen.Expr is
             return Tmp;
          end;
       else
-         Temp_Names_Map.Insert (+E, Why_Empty);
          return E;
       end if;
    end New_Temp_For_Expr;
