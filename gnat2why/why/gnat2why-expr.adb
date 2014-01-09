@@ -3225,37 +3225,18 @@ package body Gnat2Why.Expr is
    is
       Left      : constant Node_Id := Left_Opnd (Expr);
       Right     : constant Node_Id := Right_Opnd (Expr);
-      Left_Ty   : constant Entity_Id := Etype (Left);
       Subdomain : constant EW_Domain :=
         (if Domain = EW_Pred then EW_Term else Domain);
       Args      : W_Expr_Array (1 .. 6);
       T         : W_Expr_Id;
-      Left_Simp : constant Boolean :=
-        Is_Constrained (Left_Ty) or else
-        Nkind (Left) in N_Identifier | N_Expanded_Name;
-      Right_Simp : constant Boolean :=
-        Is_Constrained (Etype (Right)) or else
-        Nkind (Right) in N_Identifier | N_Expanded_Name;
       Left_Expr : constant W_Expr_Id :=
-        Transform_Expr (Left, Subdomain, Params);
-      Left_Name : constant W_Expr_Id :=
-        (if Left_Simp then Left_Expr
-         else
-         +New_Temp_Identifier
-           (Ada_Node => Get_Ada_Node (+Left_Expr),
-            Typ => Get_Type (Left_Expr)));
+        New_Temp_For_Expr (Transform_Expr (Left, Subdomain, Params));
       Right_Expr : constant W_Expr_Id :=
-        Transform_Expr (Right, Subdomain, Params);
-      Right_Name : constant W_Expr_Id :=
-        (if Right_Simp then Right_Expr
-         else
-         +New_Temp_Identifier
-           (Ada_Node => Get_Ada_Node (+Right_Expr),
-            Typ      => Get_Type (Right_Expr)));
+        New_Temp_For_Expr (Transform_Expr (Right, Subdomain, Params));
       Arg_Ind    : Positive := 1;
    begin
-      Add_Array_Arg (Subdomain, Args, Left_Name, Arg_Ind);
-      Add_Array_Arg (Subdomain, Args, Right_Name, Arg_Ind);
+      Add_Array_Arg (Subdomain, Args, Left_Expr, Arg_Ind);
+      Add_Array_Arg (Subdomain, Args, Right_Expr, Arg_Ind);
       T :=
         New_Call
           (Ada_Node => Expr,
@@ -3269,22 +3250,12 @@ package body Gnat2Why.Expr is
                 W        => WNE_Array_Compare),
            Args     => Args,
            Typ      => EW_Int_Type);
-      if not Left_Simp then
-         T :=
-           New_Typed_Binding
-             (Domain  => Domain,
-              Name    => +Left_Name,
-              Def     => +Left_Expr,
-              Context => T);
-      end if;
-      if not Right_Simp then
-         T :=
-           New_Typed_Binding
-             (Domain  => Domain,
-              Name    => +Right_Name,
-              Def     => +Right_Expr,
-              Context => T);
-      end if;
+      T := Binding_For_Temp (Domain  => Domain,
+                             Tmp     => Left_Expr,
+                             Context => T);
+      T := Binding_For_Temp (Domain  => Domain,
+                             Tmp     => Right_Expr,
+                             Context => T);
       T := New_Comparison
         (Cmp       => Transform_Compare_Op (Nkind (Expr)),
          Left      => T,
@@ -3394,6 +3365,8 @@ package body Gnat2Why.Expr is
            Left    => +Left_Length,
            Right   => +Right_Length);
 
+      --  if Length (Left) > 0 then not (Left'First = Left'Last and
+      --                                 Left'Last  = 1);
       Range_Check  : constant W_Expr_Id :=
         New_Conditional
           (Domain    => EW_Pred,
@@ -3404,20 +3377,36 @@ package body Gnat2Why.Expr is
                 Op      => EW_Gt,
                 Left    => +Left_Length,
                 Right   => New_Integer_Constant (Value => Uint_0)),
-           Then_Part => New_Relation
-             (Domain  => EW_Pred,
-              Op_Type => EW_Int,
-              Op      => EW_Lt,
-              Left    =>
-                +Prefix
-                  (M =>
-                       E_Module (Component_Type (Left_Ty)),
-                   W => WNE_Attr_First),
-              Right   =>
-                +Prefix
-                  (M =>
-                       E_Module (Component_Type (Left_Ty)),
-                   W => WNE_Attr_Last)));
+           Then_Part =>
+             New_Not
+               (Domain   => EW_Pred,
+                Right    =>
+                  New_And_Expr
+                    (Left   => New_Relation
+                       (Domain  => EW_Pred,
+                        Op_Type => EW_Int,
+                        Op      => EW_Eq,
+                        Left    =>
+                          +Prefix
+                          (M =>
+                               E_Module (Component_Type (Left_Ty)),
+                           W => WNE_Attr_First),
+                        Right   =>
+                          +Prefix
+                          (M =>
+                               E_Module (Component_Type (Left_Ty)),
+                           W => WNE_Attr_Last)),
+                     Right  => New_Relation
+                       (Domain  => EW_Pred,
+                        Op_Type => EW_Int,
+                        Op      => EW_Eq,
+                        Left    => New_Integer_Constant (Value => Uint_1),
+                        Right   =>
+                          +Prefix
+                          (M =>
+                               E_Module (Component_Type (Left_Ty)),
+                           W => WNE_Attr_Last)),
+                       Domain => EW_Pred)));
    begin
       Add_Array_Arg (Subdomain, Args, Left_Expr, Arg_Ind);
       Add_Array_Arg (Subdomain, Args, Right_Expr, Arg_Ind);
@@ -3446,7 +3435,7 @@ package body Gnat2Why.Expr is
 
          --  Range check : for all I, Left (I) Op Right (I) should be in range.
          --  The only way to generate an element not in range using a binary
-         --  operator is to call xor on arrays of a singleton subtype of
+         --  operator is to call xor on arrays of the singleton subtype True of
          --  boolean.
 
          if not Is_Standard_Boolean_Type (Component_Type (Left_Ty)) and then
