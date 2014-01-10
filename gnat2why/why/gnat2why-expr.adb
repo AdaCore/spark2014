@@ -5836,53 +5836,71 @@ package body Gnat2Why.Expr is
                             Value  => EW_True));
       begin
 
-         --  First handle the case where there is a subtype mark of a record
-         --  type on the right.
+         --  First handle the simpler case of s subtype mark
 
          if Nkind (In_Expr) in N_Identifier | N_Expanded_Name
            and then Ekind (Entity (In_Expr)) in Type_Kind
-           and then Ekind (Unique_Entity (Entity (In_Expr))) in Record_Kind
          then
             declare
-               Ty   : constant Entity_Id :=
-                 Unique_Entity (Entity (In_Expr));
+               Ty : constant Entity_Id := Unique_Entity (Entity (In_Expr));
             begin
 
-               --  eliminate trivial cases first, the membership test is always
-               --  true here.
+               --  Record subtypes are special
 
-               if Root_Type (Ty) = Ty or else
-                 not Has_Discriminants (Ty) or else
-                 not Is_Constrained (Ty)
-               then
-                  return True_Expr;
-               end if;
+               if Ekind (Ty) in Record_Kind then
 
-               declare
-                  Call : constant W_Expr_Id :=
-                    New_Call (Domain => Domain,
-                              Name =>
-                                Prefix (M        => E_Module (Ty),
-                                        W        => WNE_Range_Pred,
-                                        Ada_Node => Ty),
-                              Args =>
-                                Prepare_Args_For_Subtype_Check (Ty, +Var),
-                              Typ  => EW_Bool_Type);
-               begin
-                  if Domain = EW_Pred then
-                     return Call;
-                  else
-                     return
-                       New_Conditional
-                         (Domain    => Domain,
-                          Condition => Call,
-                          Then_Part => True_Expr,
-                          Else_Part =>
-                            New_Literal (Domain => EW_Term,
-                                         Value => EW_False),
-                          Typ       => EW_Bool_Type);
+                  --  eliminate trivial cases first, the membership test is
+                  --  always true here.
+
+                  if Root_Type (Ty) = Ty or else
+                    not Has_Discriminants (Ty) or else
+                    not Is_Constrained (Ty)
+                  then
+                     return True_Expr;
                   end if;
-               end;
+
+                  declare
+                     Call : constant W_Expr_Id :=
+                       New_Call (Domain => Domain,
+                                 Name =>
+                                   Prefix (M        => E_Module (Ty),
+                                           W        => WNE_Range_Pred,
+                                           Ada_Node => Ty),
+                                 Args =>
+                                   Prepare_Args_For_Subtype_Check (Ty, +Var),
+                                 Typ  => EW_Bool_Type);
+                  begin
+                     if Domain = EW_Pred then
+                        return Call;
+                     else
+                        return
+                          New_Conditional
+                            (Domain    => Domain,
+                             Condition => Call,
+                             Then_Part => True_Expr,
+                             Else_Part =>
+                               New_Literal (Domain => EW_Term,
+                                            Value => EW_False),
+                             Typ       => EW_Bool_Type);
+                     end if;
+                  end;
+               else
+                  pragma Assert (Is_Scalar_Type (Ty));
+                  declare
+                     M : constant W_Module_Id :=
+                       (if Is_Standard_Boolean_Type (Ty) then Boolean_Module
+                        else E_Module (Ty));
+                  begin
+                     return
+                       New_Call (Domain => Domain,
+                                 Name =>
+                                   Prefix (M        => M,
+                                           W        => WNE_Range_Pred,
+                                           Ada_Node => Ty),
+                                 Args => (1 => +Var),
+                                 Typ  => EW_Bool_Type);
+                  end;
+               end if;
             end;
          else
             return Range_Expr (In_Expr, +Var, Domain, Params);
