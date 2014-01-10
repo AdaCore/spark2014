@@ -1424,15 +1424,15 @@ package body SPARK_Definition is
 
                if Present (Iterable_Aspect) then
 
-                  if Of_Present (N) then
-                     Violation_Detected := True;
-                     if SPARK_Pragma_Is (Opt.On) then
-                        Error_Msg_N
-                          ("Of quantification on types with Iterable aspect"
-                           & " is not yet supported",
-                           N);
-                     end if;
-                  end if;
+--                    if Of_Present (N) then
+--                       Violation_Detected := True;
+--                       if SPARK_Pragma_Is (Opt.On) then
+--                          Error_Msg_N
+--                       ("Of quantification on types with Iterable aspect"
+--                             & " is not yet supported",
+--                             N);
+--                       end if;
+--                    end if;
 
                   --  Mark components of the Iterable aggregate
 
