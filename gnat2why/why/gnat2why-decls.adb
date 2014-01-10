@@ -469,6 +469,17 @@ package body Gnat2Why.Decls is
                     Defined_Entity => E);
    end Translate_Variable;
 
+   ----------------------------
+   -- Use_Base_Type_For_Type --
+   ----------------------------
+
+   function Use_Base_Type_For_Type (E : Entity_Id) return Boolean
+   is
+   begin
+      return Is_Scalar_Type (E) and then
+        not Is_Boolean_Type (E);
+   end Use_Base_Type_For_Type;
+
    -----------------------
    -- Use_Why_Base_Type --
    -----------------------
@@ -477,8 +488,7 @@ package body Gnat2Why.Decls is
       Ty : constant Entity_Id := Etype (E);
    begin
       return not Is_Mutable_In_Why (E) and then
-        Is_Scalar_Type (Ty) and then
-        not Is_Boolean_Type (Ty);
+        Use_Base_Type_For_Type (Ty);
    end Use_Why_Base_Type;
 
 end Gnat2Why.Decls;

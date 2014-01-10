@@ -32,6 +32,12 @@ package Gnat2Why.Decls is
    function Use_Why_Base_Type (E : Entity_Id) return Boolean;
    --  Decide whether for function declarations, the Why base type should be
    --  used instead of the Ada type
+   --  This function should be used on entities denoting an object
+
+   function Use_Base_Type_For_Type (E : Entity_Id) return Boolean;
+   --  Decide whether for function declarations, the Why base type should be
+   --  used instead of the Ada type
+   --  This function should be used on entities denoting a type
 
    procedure Translate_Abstract_State
      (File : in out Why_Section;

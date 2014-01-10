@@ -798,8 +798,7 @@ package body Gnat2Why.External_Axioms is
                --  Ty should be used.
 
                if Is_Input and then
-                 Is_Scalar_Type (Actual) and then
-                 not Is_Boolean_Type (Actual)
+                 Use_Base_Type_For_Type (Actual)
                then
                   return Base_Why_Type (Unique_Entity (Actual));
                else
@@ -808,8 +807,7 @@ package body Gnat2Why.External_Axioms is
             end;
          else
             if Is_Input and then
-              Is_Scalar_Type (Ty) and then
-              not Is_Boolean_Type (Ty)
+              Use_Base_Type_For_Type (Ty)
             then
 
                --  If Is_Input is true, checks wether the base_type of

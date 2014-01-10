@@ -551,6 +551,26 @@ package body SPARK_Util is
       return Comp_Id;
    end First_Discriminant;
 
+   ----------------------------------------
+   -- Get_Cursor_Type_In_Iterable_Aspect --
+   ----------------------------------------
+
+   function Get_Cursor_Type_In_Iterable_Aspect
+     (Typ : Entity_Id) return Entity_Id is
+   begin
+      return Etype (Get_Iterable_Type_Primitive (Typ, Name_First));
+   end Get_Cursor_Type_In_Iterable_Aspect;
+
+   -----------------------------------------
+   -- Get_Element_Type_In_Iterable_Aspect --
+   -----------------------------------------
+
+   function Get_Element_Type_In_Iterable_Aspect
+     (Typ : Entity_Id) return Entity_Id is
+   begin
+      return Etype (Get_Iterable_Type_Primitive (Typ, Name_First));
+   end Get_Element_Type_In_Iterable_Aspect;
+
    -------------------------------
    -- Get_Enclosing_Declaration --
    -------------------------------
@@ -784,25 +804,6 @@ package body SPARK_Util is
          raise Why.Unexpected_Node;
       end if;
    end Get_Global_Items;
-
-   -------------------------
-   -- Get_Iterable_Aspect --
-   -------------------------
-
-   function Get_Iterable_Aspect (E : Entity_Id) return Node_Id is
-      Iterable_Aspect : Node_Id := First_Rep_Item (E);
-   begin
-      while Present (Iterable_Aspect) loop
-         if Nkind (Iterable_Aspect) = N_Aspect_Specification
-           and then Get_Attribute_Id (Chars (Identifier (Iterable_Aspect))) =
-           Attribute_Iterable
-         then
-            return Iterable_Aspect;
-         end if;
-         Iterable_Aspect := Next_Rep_Item (Iterable_Aspect);
-      end loop;
-      return Empty;
-   end Get_Iterable_Aspect;
 
    ----------------------
    -- Get_Package_Body --

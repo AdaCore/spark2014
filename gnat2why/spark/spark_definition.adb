@@ -41,6 +41,7 @@ with Sinput;                             use Sinput;
 with Snames;                             use Snames;
 with Stand;                              use Stand;
 with Uintp;                              use Uintp;
+with Aspects;                            use Aspects;
 
 with VC_Kinds;
 
@@ -1417,8 +1418,8 @@ package body SPARK_Definition is
             --  Retrieve Iterable aspect specification if any
 
             declare
-               Iterable_Aspect : constant Node_Id := Get_Iterable_Aspect
-                 (Etype (Name (N)));
+               Iterable_Aspect : constant Node_Id :=
+                 Find_Aspect (Id => Etype (Name (N)), A => Aspect_Iterable);
             begin
 
                if Present (Iterable_Aspect) then

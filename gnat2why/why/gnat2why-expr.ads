@@ -36,10 +36,6 @@ with Gnat2Why.Util;  use Gnat2Why.Util;
 
 package Gnat2Why.Expr is
 
-   function Get_Iterable_Has_Element_Function (E : Entity_Id) return Entity_Id;
-   --  Function returning the corresponding Has_Element function of a type
-   --  with an Iterable aspect.
-
    function Assignment_Of_Obj_Decl (N : Node_Id) return W_Prog_Id;
    --  Generate an assignment from an object declaration
 
@@ -84,14 +80,6 @@ package Gnat2Why.Expr is
    --  T_Type is the base type in which the comparisons take
    --  place (e.g. int, real). If it is not set, it is deduced from
    --  the bounds' type.
-
-   function Has_Element_Expr
-     (Cont   : Node_Id;
-      Cursor : W_Expr_Id;
-      Domain : EW_Domain;
-      Params : Transformation_Params) return W_Expr_Id;
-   --  Return an expression that constrains Cursor to belong to container Cont:
-   --     Has_Element (Cont, Cursor)
 
    function Get_Container_In_Iterator_Specification
      (N : Node_Id) return Node_Id;
