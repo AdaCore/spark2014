@@ -694,44 +694,27 @@ package body Why.Gen.Expr is
    begin
       if Type_Is_Modeled_As_Int_Or_Real (Ty) then
          declare
-            Tmp_Var : constant W_Identifier_Id :=
-              New_Temp_Identifier (Typ => Get_Type (W_Expr));
-            First : constant W_Expr_Id :=
-              New_Attribute_Expr (Ty, Attribute_First);
-            Last : constant W_Expr_Id :=
-              New_Attribute_Expr (Ty, Attribute_Last);
-            Rel_First        : constant W_Pred_Id :=
-              New_Relation
-                (Op_Type  => Get_Base_Type (Get_Type (W_Expr)),
-                 Left     => +First,
-                 Right    => +Tmp_Var,
-                 Op       => EW_Le);
-            Rel_Last         : constant W_Pred_Id :=
-              New_Relation
-                (Op_Type  => Get_Base_Type (Get_Type (W_Expr)),
-                 Left     => +Tmp_Var,
-                 Right    => +Last,
-                 Op       => EW_Le);
-            In_Bounds : constant W_Expr_Id :=
-              New_And_Expr (Domain => EW_Pred,
-                            Left   => +Rel_First,
-                            Right  => +Rel_Last);
-            Check : constant W_Prog_Id :=
-              New_Assert
-                (Pred =>
-                   +New_VC_Expr (Ada_Node => Ada_Node,
-                                 Expr     => In_Bounds,
-                                 Reason   => To_VC_Kind (Check_Kind),
-                                 Domain   => EW_Prog));
-            Do_Check : constant W_Expr_Id :=
-              New_Typed_Binding
-                (Domain  => EW_Prog,
-                 Name    => Tmp_Var,
-                 Def     => +W_Expr,
-                 Context => +Sequence (Check, +Tmp_Var));
-
+            Expr : constant W_Expr_Id := New_Temp_For_Expr (W_Expr);
+            M : constant W_Module_Id :=
+              (if Is_Standard_Boolean_Type (Ty) then Boolean_Module
+               else E_Module (Ty));
+            T : W_Prog_Id;
          begin
-            return +Do_Check;
+            T :=
+              New_Located_Assert
+                (Ada_Node => Ada_Node,
+                 Reason   => To_VC_Kind (Check_Kind),
+                 Pred     =>
+                   New_Call
+                     (Name   =>
+                        Prefix (M        => M,
+                                W        => WNE_Range_Pred,
+                                Ada_Node => Ty),
+                      Args   => (1 => Expr)));
+            return
+              +Binding_For_Temp (Domain => EW_Prog,
+                                 Tmp    => Expr,
+                                 Context => +Sequence (T, +Expr));
          end;
       else
          return +New_VC_Call (Domain   => EW_Prog,
