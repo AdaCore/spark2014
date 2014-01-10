@@ -1,0 +1,27 @@
+refined_post_illegal.adb:17:11: aspect "Refined_Post" cannot apply to a stand alone body
+refined_post_illegal.adb:35:11: aspect "Refined_Post" must apply to the body of a subprogram declared in a package specification
+refined_post_illegal.adb:52:11: incorrect placement of aspect "Refined_Post"
+refined_post_illegal.ads:11:11: incorrect placement of aspect "Refined_Post"
+refined_post_illegal-inv_proc_1.adb:4:08: aspect "Refined_Post" cannot apply to a subunit
+refined_post_illegal_2.adb:5:27: warning: "Par" may be referenced before it has a value
+refined_post_illegal_2.adb:26:27: warning: "Par3" may be referenced before it has a value
+refined_post_illegal_2.adb:18:07: warning: initialization has no effect
+refined_post_illegal_2.adb:5:31: info: refined post proved
+refined_post_illegal_2.adb:20:7: warning: assertion might fail, requires not Temp
+refined_post_illegal_2.adb:26:32: info: refined post proved
+refined_post_illegal_2.adb:33:23: warning: overflow check might fail
+refined_post_illegal_2.adb:35:23: warning: overflow check might fail
+refined_post_illegal_2.ads:10:19: warning: postcondition might fail, requires Par >= 10
+refined_post_illegal_2.ads:28:19: warning: postcondition might fail, requires Par3 > 101
+gcc -c -gnata main.adb
+gcc -c -gnata refined_post_illegal_3.adb
+refined_post_illegal_3.adb:5:27: warning: "Par" may be referenced before it has a value
+gnatbind -x main.ali
+gnatlink main.ali
+
+raised SYSTEM.ASSERTIONS.ASSERT_FAILURE : Refined_Post failed at refined_post_illegal_3.adb:5
+gcc -c -gnata main2.adb
+gnatbind -x main2.ali
+gnatlink main2.ali
+
+raised SYSTEM.ASSERTIONS.ASSERT_FAILURE : failed postcondition from refined_post_illegal_3.ads:18
