@@ -1,0 +1,20 @@
+main.adb:4:04: warning: initialization has no effect
+main.adb:6:04: warning: statement has no effect
+main.adb:6:14: warning: range check might fail
+main.adb:6:14: warning: unused assignment to "V"
+tests.adb:5:7: info: assertion proved
+tests.adb:6:12: warning: range check might fail
+tests.adb:11:7: info: assertion proved
+tests.adb:12:12: warning: range check might fail
+tests.adb:17:7: info: assertion proved
+tests.adb:18:12: warning: range check might fail
+tests.adb:23:7: info: assertion proved
+tests.adb:24:12: warning: range check might fail
+tests.adb:30:15: info: range check proved
+tests.adb:37:15: info: range check proved
+tests.adb:44:15: info: range check proved
+tests.adb:51:15: info: range check proved
+tests.ads:4:20: warning: unused initial value of "V"
+tests.ads:6:27: warning: unused initial value of "V"
+tests.ads:8:24: warning: unused initial value of "V"
+tests.ads:10:27: warning: unused initial value of "V"

@@ -9,7 +9,7 @@ package Subty is
    with Static_Predicate => Positive_But_Not_Ten /= 10;
 
    subtype Positive_With_Hole is Positive
-   with Static_Predicate => Positive_With_Hole < 10 and Positive_With_Hole > 20;
+   with Static_Predicate => Positive_With_Hole < 10 or Positive_With_Hole > 20;
 
    subtype Positive_Not_One is Positive
    with Static_Predicate => Positive_Not_One > 1;

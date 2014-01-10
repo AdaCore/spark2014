@@ -1,6 +1,4 @@
-types_and_subtypes_illegal.ads:10:12: type predicate is not allowed in SPARK
-types_and_subtypes_illegal.ads:10:12: violation of aspect SPARK_Mode at line 2
-types_and_subtypes_illegal.ads:10:12: "One_To_Ten" is not allowed in SPARK
+types_and_subtypes_illegal.ads:10:12: dynamic type predicate is not allowed in SPARK
 types_and_subtypes_illegal.ads:10:12: violation of aspect SPARK_Mode at line 2
 gprbuild: *** compilation phase failed
 gnatprove: error during analysis and translation to intermediate language, aborting.
