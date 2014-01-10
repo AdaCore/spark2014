@@ -138,6 +138,13 @@ Proof.
        * right. right; assumption.
 Qed.
 
+(** [UpdateList lid lv s s'] iff s' is s updated by the values in (combine lid lv). *)
+Inductive UpdateList : list idnum -> list val -> store -> store -> Prop :=
+| UpdateListnil: forall lid lv s, UpdateList lid lv s s
+| UpdateListcons: forall id lid v lv s s' s'',
+                    UpdateList lid lv s s'
+                    -> update s' id v = Some s''
+                    -> UpdateList (id::lid) (v::lv) s  s''.
 
 
 (** * Program State *)

@@ -170,6 +170,27 @@ Definition is_var e:Prop :=
   end.
 
 
+Inductive Copy_out: store -> list mode -> list expression -> store -> store -> Prop :=
+  Copy_out_nil : forall σ, Copy_out nil nil nil σ σ
+| Copy_out_cons_out: forall σ σ' σ'' x v l lmode lexp id astnum,
+                       (update σ' id v) = Some σ''
+                       -> Copy_out l lmode lexp σ σ'
+                       -> Copy_out ((x,v)::l) (Out::lmode) ((E_Identifier astnum id) :: lexp) σ σ''
+| Copy_out_cons_in: forall σ σ'  x v l lmode lexp e,
+                      Copy_out l lmode lexp σ σ'
+                      -> Copy_out ((x,v)::l) (In::lmode) (e :: lexp) σ σ'.
+
+Definition Copy_in s lparams lexp frame :=
+  match List.split frame with
+      (lname,lv) =>
+      Forall3
+        (fun param exp v =>
+           (param.(parameter_mode) = In -> exists v', eval_expr s exp (Val_Normal v') /\ v = Value v')
+           /\ (param.(parameter_mode) = Out -> (v = Undefined) /\ is_var exp))
+        lparams lexp lv
+      /\ lname = List.map parameter_name lparams
+  end.
+
 Inductive eval_stmt: store -> statement -> state -> Prop := 
     | eval_S_Assignment1: forall s e ast_num x,
         eval_expr s e Val_Run_Time_Error ->
@@ -211,48 +232,19 @@ Inductive eval_stmt: store -> statement -> state -> Prop :=
         eval_expr s b (Val_Normal (Bool false)) ->
         eval_stmt s (S_While_Loop ast_num b c) (S_Normal s)
     | eval_S_Proc:
-        forall pbname (pb:procedure_body) lv lexp s ast_num s1 s2 s3 s' s'' slocal assoc_param formal_names prefix,
-          Some (Procedure (pb)) = fetch pbname s ->
-          assoc_param = List.combine (procedure_parameter_profile pb) lexp ->
-          (Forall2
-             (fun (assoc:(parameter_specification * expression)) v =>
-                let (param,exp) := assoc in
-                (param.(parameter_mode) = In
-                 -> exists v', eval_expr s exp (Val_Normal v')
-                               /\ v = Value v')
-                /\ (param.(parameter_mode) = Out -> (v = Undefined) /\ is_var exp))
-             assoc_param
-             lv) ->
-        formal_names = List.map parameter_name (procedure_parameter_profile pb) -> 
-        prefix = List.combine formal_names lv ->
-        s1 = prefix ++ s ->
-        eval_decl s1 (procedure_declarative_part pb) (S_Normal s2) ->
-        eval_stmt s2 (procedure_statements pb) (S_Normal s3) -> 
-        s3 = slocal ++ s' ->
-        List.length s' = List.length s ->
-        s'' 
-        = List.fold_left
-            (fun (acc:store) => fun (assoc:parameter_specification * expression)
-                        => let (prm,e) := assoc in 
-                           match parameter_mode prm with
-                             | Out =>
-                               match e with
-                                 | E_Identifier _ x =>
-                                   match (fetch (parameter_name prm) slocal) with
-                                       Some v =>
-                                       match update acc x v with
-                                           | Some x => x
-                                           | None => acc
-                                       end
-                                     | None => acc
-                                   end
-                                 | _ => acc
-                               end
-                             | _ => acc
-                           end)
-            assoc_param
-            s'
-        -> eval_stmt s (S_ProcCall ast_num pbname lexp) (S_Normal s'')
+        forall pbname (pb:procedure_body) lexp s ast_num s1 s2 s3 s' s'' slocal
+               prefix prefix',
+          fetch pbname s = Some (Procedure pb) ->
+          Copy_in s (procedure_parameter_profile pb) lexp prefix ->
+          s1 = prefix ++ s ->
+          eval_decl s1 (procedure_declarative_part pb) (S_Normal s2) ->
+          eval_stmt s2 (procedure_statements pb) (S_Normal s3) ->
+          s3 = slocal ++ prefix' ++ s' ->
+          List.length s' = List.length s ->
+          List.length prefix = List.length prefix' ->
+          let lmode := List.map parameter_mode (procedure_parameter_profile pb) in
+          Copy_out prefix' lmode lexp s' s''                                                  
+          -> eval_stmt s (S_ProcCall ast_num pbname lexp) (S_Normal s'')
 
 with eval_decl: store -> declaration -> state -> Prop :=
 | eval_Decl_E: forall e d s,
@@ -267,10 +259,31 @@ with eval_decl: store -> declaration -> state -> Prop :=
 | eval_UndefDecl: forall d x s,
                         x = d.(object_name) ->
                         None = d.(initialization_expression) ->
-                        eval_decl s (D_Object_declaration d) (S_Normal ((x, Undefined) :: s)).
+                        eval_decl s (D_Object_declaration d) (S_Normal ((x, Undefined) :: s))
+| eval_decl_Seq: forall dcl1 dcl2 s s' s'',
+                   eval_decl s dcl1 (S_Normal s') ->
+                   eval_decl s' dcl2 (S_Normal s'') ->
+                   eval_decl s (D_Sequence dcl1 dcl2) (S_Normal s'')
+| eval_decl_Seq_err1: forall dcl1 dcl2 s,
+                   eval_decl s dcl1 S_Run_Time_Error ->
+                   eval_decl s (D_Sequence dcl1 dcl2) S_Run_Time_Error
+| eval_decl_Seq_err2: forall dcl1 dcl2 s s',
+                   eval_decl s dcl1 (S_Normal s') ->
+                   eval_decl s' dcl2 S_Run_Time_Error ->
+                   eval_decl s (D_Sequence dcl1 dcl2) S_Run_Time_Error.
 
 
+Module ExampleProcedures.
 (* EXAMPLE *)
+
+
+(* v102 is a variable in the scope.
+procedure P2 () is
+  V4 : TYPE5 := 34;
+begin
+  V102 := 56;
+end 
+*)
 Definition proc1:procedure_body := (mkprocedure_body
            1 2 nil nil
              (D_Object_declaration
@@ -281,7 +294,7 @@ Definition proc1:procedure_body := (mkprocedure_body
                   initialization_expression := Some (E_Literal 6 (Integer_Literal(34)))
                 |}
              )
-             (S_Assignment 12 102 (E_Literal 6 (Integer_Literal(56))))).
+             (S_Assignment 12 102 (E_Literal 8 (Integer_Literal(56))))).
 
 Definition s1:store := (101,Procedure proc1) :: (102, Value (Int(77))) :: nil.
 
@@ -292,21 +305,191 @@ Lemma essai: eval_stmt s1 (S_ProcCall 13 101 nil) (S_Normal s2).
 Proof.
   eapply eval_S_Proc; try now (simpl; eauto).
   - simpl.
-    econstructor 2.
-    + eauto.
-    + simpl. eauto.
-    + econstructor. eauto.
-  - instantiate (1:= ((4, Value (Int 34))::nil)).
-    unfold s1, s2.
+    instantiate (1 := nil).
+    red.
+    simpl.
+    split;simpl;auto.
+    constructor 1.
+  - simpl List.app.
+    instantiate (1:= ((4, Value (Int 34))::s1)).
+    unfold s1, s2, proc1.
     simpl.
     econstructor 2.
     + econstructor;eauto.
     + reflexivity.
+    + constructor.
+      simpl.
+      reflexivity.
+  - instantiate (2:=(4, Value (Int 34))::nil).
+    instantiate (1:=s2).
+    simpl.
+    econstructor.
+    + econstructor.
+      simpl.
+      eauto.
+    + simpl.
+      reflexivity.
   - reflexivity.
+  - simpl.
+    constructor 1.
 Qed.
+
+
+
+(* v102 is a variable in the scope.
+procedure P2 () is
+  V4 : TYPE5 := 34;
+  V5 : TYPE5 := 37;
+begin
+  V5 := V4 + V5;
+  V102 := V5*2;
+end 
+*)
+Definition proc2:procedure_body := (mkprocedure_body
+           1 2 nil nil
+             (D_Sequence
+                (D_Object_declaration
+                   {|
+                     declaration_astnum := 3;
+                     object_name := 4;
+                     object_nominal_subtype :=  5;
+                     initialization_expression := Some (E_Literal 6 (Integer_Literal(34)))
+                   |}
+                )
+                (D_Object_declaration
+                   {|
+                     declaration_astnum := 4;
+                     object_name := 5;
+                     object_nominal_subtype :=  5;
+                     initialization_expression := Some (E_Literal 6 (Integer_Literal(37)))
+                   |}
+                )
+             )
+             (S_Sequence 13
+                (S_Assignment 14 5
+                              (E_Binary_Operation 9 Plus
+                                                  (E_Identifier 10 5)
+                                                  (E_Identifier 10 4)))
+                (S_Assignment
+                   12
+                   102
+                   (E_Binary_Operation 9 Multiply
+                                       (E_Identifier 10 5)
+                                       (E_Literal 8 (Integer_Literal(2))))))).
+
+Definition s3:store := (101,Procedure proc2) :: (102, Value (Int(77))) :: nil.
+
+Definition s4:store := (101,Procedure proc2) :: (102, Value (Int(142)))  :: nil.
+
+
+Lemma essai2: eval_stmt s3 (S_ProcCall 13 101 nil) (S_Normal s4).
+Proof.
+  eapply eval_S_Proc; try now (simpl; eauto).
+  - simpl.
+    instantiate (1 := nil).
+    red.
+    simpl.
+    split;simpl;auto.
+    constructor 1.
+  - simpl List.app.
+    instantiate (1:= ((5, Value (Int 37))::(4, Value (Int 34))::s3)).
+    unfold s3, s4, proc1.
+    simpl.
+    econstructor 4;simpl.
+    + econstructor 2;simpl.
+      * econstructor;eauto.
+      * reflexivity.
+      * constructor.
+        simpl.
+        reflexivity.
+    + econstructor 2;simpl.
+      * econstructor;eauto.
+      * reflexivity.
+      * constructor.
+        simpl.
+        reflexivity.
+  - instantiate (2:=(5, Value (Int 71)) :: (4, Value (Int 34)) :: nil).
+    instantiate (1:=s4).
+    simpl.
+    + { econstructor.
+        - instantiate (1:=(5, Value (Int 71)) :: (4, Value (Int 34)) :: s3).
+          econstructor.
+          + econstructor.
+            * econstructor.
+              simpl.
+              eauto.
+            * constructor.
+              simpl.
+              eauto.
+            * constructor.
+              vm_compute.
+              reflexivity.
+            * econstructor.
+              simpl.
+              eauto.
+          + simpl.
+            reflexivity.
+        - econstructor.
+          + econstructor.
+            * econstructor.
+              simpl.
+              eauto.
+            * econstructor.
+              simpl.
+              eauto.
+            * econstructor.
+              vm_compute.
+              reflexivity.
+            * econstructor.
+            simpl.
+            eauto.
+        + simpl.
+          reflexivity. }
+  - reflexivity.
+  - simpl.
+    constructor 1.
+Qed.
+
+
+End ExampleProcedures.
 (* END EXAMPLE *)  
 
+TO BE CONTINUED
 
+Definition fold_left2 := 
+fun (A B C : Type) (f : A -> B -> C -> A) =>
+fix fold_left (l : list B)(l' : list C) (a0 : A) {struct l} : A :=
+  match l,l' with
+  | nil,nil => a0
+  | b :: t, b' :: t' => fold_left t t' (f a0 b b')
+  | _ , _ => a0
+  end.
+
+
+(* 
+Definition copy_out pb lexp s' :=
+  List.fold_left2
+    (fun (acc:store) prm e =>
+       match prm.(parameter_mode) with
+         | Out =>
+           match e with
+             | E_Identifier _ x =>
+               match (fetch (prm.(parameter_name)) prefix') with
+                   Some v =>
+                   match update acc x v with
+                     | Some x => x
+                     | None => acc
+                   end
+                 | None => acc
+               end
+             | _ => acc
+           end
+         | _ => acc
+       end)
+    (procedure_parameter_profile pb)
+    lexp
+    s'.
+ *)
 
 
 (** * Functional Semantics *)

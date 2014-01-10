@@ -161,6 +161,7 @@ Record aspect_specification: Type := mkaspect_specification{
 }.
 
 (* 6.3 *)
+(* Mutual records/inductives are not allowed in coq, so we build a record by hand. *)
 Inductive declaration : Type :=
 | D_Object_declaration: object_declaration -> declaration
 | D_Procedure_declaration: procedure_body -> declaration
@@ -175,7 +176,7 @@ with procedure_body: Type :=
     (procedure_declarative_part: declaration)
     (procedure_statements: statement).
 
-
+(* We define projection functions by hand too. *)
 Definition procedure_statements pb :=
 match pb with
   | mkprocedure_body _ _ _ _ _ x => x
@@ -192,7 +193,7 @@ match pb with
 end.
 
 
-(* declarations are of two kinds and can be sequenced *)
+(* Declarations are of two kinds and can be sequenced *)
 
 (* 6.3 *)
 Record function_body: Type := mkfunction_body{
