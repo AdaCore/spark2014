@@ -1,3 +1,6 @@
+Require Import values.
+Require Import environment.
+
 (** * Symbol Table *)
 
 (** ** Symbol table as a list *)
@@ -103,7 +106,7 @@ Qed.
 *)
 Lemma typed_value: forall tb s x v,
     type_check_store tb s ->
-    fetch x s = Some v ->
+    fetch x s = Some (Value v) ->
     (exists t, value_of_type v t /\ ( exists m, lookup x tb = Some (m, t))).
 Proof.
     intros tb s x v h1 h2.
@@ -176,7 +179,7 @@ Lemma typed_value': forall tb s x m t,
     type_check_store tb s ->
     lookup x tb = Some (m, t) -> 
     reside x s = true /\ 
-    (forall v, (Some v = fetch x s) -> value_of_type v t).
+    (forall v, (Some (Value v) = fetch x s) -> value_of_type v t).
 Proof.
     intros tb s x m t h1 h2.
     induction h1;
