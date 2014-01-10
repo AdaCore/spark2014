@@ -2,7 +2,7 @@ package body Refined_Post_Illegal_2
   with SPARK_Mode
 is
    procedure P1 (Par : out Integer)
-     with Refined_Post => Par > 10
+     with Refined_Post => Par > 0
      --  Refined_Post should imply abstract Post but in this
      --  case it does not.
    is

@@ -7,7 +7,7 @@ is
      --  declaration not to have a postcondition (which in its absence
      --  defaults to True) but for the body or body stub to have a
      --  Refined Postcondition.
-     with Post => Par >= 0;
+     with Post => Par >= 10;
 
 
    function F1 return Boolean;
