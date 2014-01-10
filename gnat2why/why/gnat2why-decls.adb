@@ -473,8 +473,7 @@ package body Gnat2Why.Decls is
    -- Use_Why_Base_Type --
    -----------------------
 
-   function Use_Why_Base_Type (E : Entity_Id) return Boolean
-   is
+   function Use_Why_Base_Type (E : Entity_Id) return Boolean is
       Ty : constant Entity_Id := Etype (E);
    begin
       return not Is_Mutable_In_Why (E) and then

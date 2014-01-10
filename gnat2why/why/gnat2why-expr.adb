@@ -1040,8 +1040,7 @@ package body Gnat2Why.Expr is
          -- Compute_Arg --
          -----------------
 
-         procedure Compute_Arg (Formal, Actual : Node_Id)
-         is
+         procedure Compute_Arg (Formal, Actual : Node_Id) is
          begin
             if Needs_Temporary_Ref (Actual, Formal) then
 
@@ -1164,8 +1163,7 @@ package body Gnat2Why.Expr is
    -- Expected_Type_Of_Prefix --
    -----------------------------
 
-   function Expected_Type_Of_Prefix (N : Node_Id) return W_Type_Id
-   is
+   function Expected_Type_Of_Prefix (N : Node_Id) return W_Type_Id is
    begin
       case Nkind (N) is
          when N_Identifier | N_Expanded_Name =>
@@ -1207,7 +1205,8 @@ package body Gnat2Why.Expr is
    ---------------------------------------
 
    function Get_Iterable_Has_Element_Function
-     (E : Entity_Id) return Entity_Id is
+     (E : Entity_Id) return Entity_Id
+   is
       Iterable_Aspect : constant Node_Id := Get_Iterable_Aspect (E);
    begin
       pragma Assert (Present (Iterable_Aspect));
@@ -1329,8 +1328,7 @@ package body Gnat2Why.Expr is
      (Params     : Transformation_Params;
       Ada_Call   : Node_Id;
       Why_Call   : W_Prog_Id;
-      Nb_Of_Refs : Positive)
-     return W_Prog_Id
+      Nb_Of_Refs : Positive) return W_Prog_Id
    is
       --  This goes recursively through the out/"in out" parameters
       --  to be converted; and collects, for each of them:
@@ -1497,8 +1495,7 @@ package body Gnat2Why.Expr is
    -- Is_Pretty_Node --
    --------------------
 
-   function Is_Pretty_Node (N : Node_Id) return Boolean
-   is
+   function Is_Pretty_Node (N : Node_Id) return Boolean is
    begin
       case Nkind (N) is
          when N_Quantified_Expression | N_And_Then |
@@ -1577,8 +1574,7 @@ package body Gnat2Why.Expr is
    -- Name_For_Old --
    ------------------
 
-   function Name_For_Old (N : Node_Id) return W_Identifier_Id
-   is
+   function Name_For_Old (N : Node_Id) return W_Identifier_Id is
       Typ : W_Type_Id;
       Nd  : Node_Id := Empty;
    begin
@@ -1615,8 +1611,7 @@ package body Gnat2Why.Expr is
 
    function Needs_Temporary_Ref
      (Actual : Node_Id;
-      Formal : Node_Id)
-     return Boolean is
+      Formal : Node_Id) return Boolean is
    begin
       --  Temporary refs are needed for out or in out parameters that
       --  need a conversion or who are not an identifier.
@@ -1640,7 +1635,6 @@ package body Gnat2Why.Expr is
       Lvalue   : Node_Id;
       Expr     : W_Prog_Id) return W_Prog_Id
    is
-
       --  Here, we deal with assignment statements. In SPARK, the general form
       --  of an assignment is
       --
@@ -1682,8 +1676,7 @@ package body Gnat2Why.Expr is
 
       procedure Shift_Rvalue
         (N         : in out Node_Id;
-         Expr      : in out W_Prog_Id)
-      is
+         Expr      : in out W_Prog_Id) is
       begin
          case Nkind (N) is
             when N_Identifier | N_Expanded_Name =>
@@ -1746,8 +1739,7 @@ package body Gnat2Why.Expr is
      (N            : Node_Id;
       Expr         : W_Expr_Id;
       Domain       : EW_Domain;
-      Params       : Transformation_Params) return W_Expr_Id
-   is
+      Params       : Transformation_Params) return W_Expr_Id is
    begin
       case Nkind (N) is
          when N_Selected_Component =>
@@ -1975,14 +1967,8 @@ package body Gnat2Why.Expr is
 
       R := New_Range_Expr
           (Domain    => Domain,
-           Low       => +Transform_Expr (Low,
-                                         Base_Type,
-                                         Subdomain,
-                                         Params),
-           High      => +Transform_Expr (High,
-                                         Base_Type,
-                                         Subdomain,
-                                         Params),
+           Low       => +Transform_Expr (Low, Base_Type, Subdomain, Params),
+           High      => +Transform_Expr (High, Base_Type, Subdomain, Params),
            Expr      => T);
 
       --  In programs, we generate a check that the range_constraint of a
