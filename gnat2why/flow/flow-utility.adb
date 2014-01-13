@@ -442,7 +442,7 @@ package body Flow.Utility is
             end if;
 
             ---------------------------------------------------------------
-            --  Step 2: Expand any abstract state that might be too refiend
+            --  Step 2: Expand any abstract state that might be too refined
             --  for our given scope.
             ---------------------------------------------------------------
 
