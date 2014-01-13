@@ -1,0 +1,163 @@
+with "aunit.gpr";
+
+project Thumper is
+
+   for Source_Dirs use (".", "tests");
+   for Object_Dir use "build";
+   for Main use ("thumper_server.adb", "thumper_test.adb");
+   type Runtime_Type is
+      ("cert", "default", "full", "hi", "kernel", "kernel-sjlj", "kernel-smp", "pthread", "ravenscar", "ravenscar-apex", "ravenscar-full", "ravenscar-cert", "ravenscar-cert-rtp", "ravenscar-sfp", "rtp", "rtp-smp", "soft-float", "xenomai", "zcx", "zfp");
+   Runtime : Runtime_Type := external ("RUNTIME", "full");
+
+   package Builder is
+      for Default_Switches ("ada") use ("-g", "-gnata", "-gnato", "-fstack-check", "-gnatQ");
+   end Builder;
+
+   package Compiler is
+      for Default_Switches ("c") use ("");
+      for Default_Switches ("c++") use ("");
+      -- for Local_Configuration_Pragmas use "config.gnat";
+
+      case Runtime is
+
+         when "cert" =>
+            for Default_Switches ("ada") use ("-g", "-gnata", "-gnato", "-fstack-check", "-gnatQ");
+
+         when "default" =>
+            for Default_Switches ("ada") use ("-g", "-gnata", "-gnato", "-fstack-check", "-gnatQ");
+
+         when "full" =>
+            for Default_Switches ("ada") use ("-g", "-gnata", "-gnato", "-fstack-check", "-gnatQ");
+            for Driver ("metafile") use "";
+
+         when "hi" =>
+            for Default_Switches ("ada") use ("-g", "-gnata", "-gnato", "-fstack-check", "-gnatQ");
+
+         when "kernel" =>
+            for Default_Switches ("ada") use ("-g", "-gnata", "-gnato", "-fstack-check", "-gnatQ");
+
+         when "kernel-sjlj" =>
+            for Default_Switches ("ada") use ("-g", "-gnata", "-gnato", "-fstack-check", "-gnatQ");
+
+         when "kernel-smp" =>
+            for Default_Switches ("ada") use ("-g", "-gnata", "-gnato", "-fstack-check", "-gnatQ");
+
+         when "pthread" =>
+            for Default_Switches ("ada") use ("-g", "-gnata", "-gnato", "-fstack-check", "-gnatQ");
+
+         when "ravenscar" =>
+            for Default_Switches ("ada") use ("-g", "-gnata", "-gnato", "-fstack-check", "-gnatQ");
+
+         when "ravenscar-apex" =>
+            for Default_Switches ("ada") use ("-g", "-gnata", "-gnato", "-fstack-check", "-gnatQ");
+
+         when "ravenscar-full" =>
+            for Default_Switches ("ada") use ("-g", "-gnata", "-gnato", "-fstack-check", "-gnatQ");
+
+         when "ravenscar-cert" =>
+            for Default_Switches ("ada") use ("-g", "-gnata", "-gnato", "-fstack-check", "-gnatQ");
+
+         when "ravenscar-cert-rtp" =>
+            for Default_Switches ("ada") use ("-g", "-gnata", "-gnato", "-fstack-check", "-gnatQ");
+
+         when "ravenscar-sfp" =>
+            for Default_Switches ("ada") use ("-g", "-gnata", "-gnato", "-fstack-check", "-gnatQ");
+
+         when "rtp" =>
+            for Default_Switches ("ada") use ("-g", "-gnata", "-gnato", "-fstack-check", "-gnatQ");
+
+         when "rtp-smp" =>
+            for Default_Switches ("ada") use ("-g", "-gnata", "-gnato", "-fstack-check", "-gnatQ");
+
+         when "soft-float" =>
+            for Default_Switches ("ada") use ("-g", "-gnata", "-gnato", "-fstack-check", "-gnatQ");
+
+         when "xenomai" =>
+            for Default_Switches ("ada") use ("-g", "-gnata", "-gnato", "-fstack-check", "-gnatQ");
+
+         when "zcx" =>
+            for Default_Switches ("ada") use ("-g", "-gnata", "-gnato", "-fstack-check", "-gnatQ");
+
+         when "zfp" =>
+            for Default_Switches ("ada") use ("-g", "-gnata", "-gnato", "-fstack-check", "-gnatQ");
+      end case;
+   end Compiler;
+
+   package Binder is
+      for Default_Switches ("ada") use ("-static");
+   end Binder;
+
+   package Linker is
+      for Default_Switches ("ada") use ("-g");
+   end Linker;
+
+   -- package Pretty_Printer is
+   --    for Default_Switches ("Ada") use ("");
+   -- end Pretty_Printer;
+
+   case Runtime is
+
+      when "cert" =>
+         for Languages use ("Ada");
+
+      when "default" =>
+         for Languages use ("Ada");
+
+      when "full" =>
+         for Languages use ("Ada");
+
+      when "hi" =>
+         for Languages use ("Ada");
+
+      when "kernel" =>
+         for Languages use ("Ada");
+
+      when "kernel-sjlj" =>
+         for Languages use ("Ada");
+
+      when "kernel-smp" =>
+         for Languages use ("Ada");
+
+      when "pthread" =>
+         for Languages use ("Ada");
+
+      when "ravenscar" =>
+         for Languages use ("Ada");
+
+      when "ravenscar-apex" =>
+         for Languages use ("Ada");
+
+      when "ravenscar-full" =>
+         for Languages use ("Ada");
+
+      when "ravenscar-cert" =>
+         for Languages use ("Ada");
+
+      when "ravenscar-cert-rtp" =>
+         for Languages use ("Ada");
+
+      when "ravenscar-sfp" =>
+         for Languages use ("Ada");
+
+      when "rtp" =>
+         for Languages use ("Ada");
+
+      when "rtp-smp" =>
+         for Languages use ("Ada");
+
+      when "soft-float" =>
+         for Languages use ("Ada");
+
+      when "xenomai" =>
+         for Languages use ("Ada");
+
+      when "zcx" =>
+         for Languages use ("Ada");
+
+      when "zfp" =>
+         for Languages use ("Ada");
+
+   end case;
+
+end Thumper;
+
