@@ -19,24 +19,21 @@ is
       Y := P1.M;
    end Test_01;
 
-   --  This is correct and should raise no errors or warnings.
-   --  This should be fixed/enabled once MC20-035 is implemented.
+   procedure Test_02 (X :     Integer;
+                      Y : out Integer)
+   with
+      Depends => (Y => X)
+   is
+      N : Integer := X;
 
-   --  procedure Test_02 (X :     Integer;
-   --                     Y : out Integer)
-   --  with
-   --     Depends => (Y => X)
-   --  is
-   --     N : Integer := X;
-   --
-   --     package P2
-   --     with Initializes => (M => N)
-   --     is
-   --        M : Integer := N;
-   --     end P2;
-   --  begin
-   --     Y := P2.M;
-   --  end Test_02;
+      package P2
+      with Initializes => (M => N)
+      is
+         M : Integer := N;
+      end P2;
+   begin
+      Y := P2.M;
+   end Test_02;
 
    procedure Test_03 (X :     Integer;
                       Y : out Integer)
