@@ -1,1 +1,1 @@
-user.adb:9:4: assertion might fail
+user.adb:9:4: warning: assertion might fail, requires X = Y

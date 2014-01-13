@@ -628,6 +628,13 @@ package body Flow.Utility is
                         Ptr := Next_Elmt (Ptr);
                      end loop;
 
+                     if Tmp.Is_Empty then
+                        --  If we can't refine this state (maybe the body
+                        --  is not in SPARK, or simply not implemented)
+                        --  then we use the abstract state itself.
+                        Tmp.Insert (F);
+                     end if;
+
                   when others =>
                      Tmp.Insert (F);
                end case;
