@@ -552,7 +552,7 @@ Initialized by declaration
 The example that follows presents a way in SPARK 2005 of initializing
 a concrete own variable (a state that is not refined) at the point
 of the declaration of the variables that compose it.  Generally it
-is not good practice to declare several concrete own variables, 
+is not good practice to declare several concrete own variables,
 data abstraction should be used but here we are doing it for the
 point of illustration.
 
@@ -769,7 +769,7 @@ Initial condition
 This example introduces a new |SPARK| feature that did not exist in
 SPARK 2005. On top of declaring an abstract state and promising to
 initialize it, we also illustrate certain conditions that will be
-valid after initialization. There is a proof obligation to show that
+valid after initialization. There is a verification condition to show that
 immediately after the elaboration of the package that the specified
 Initial_Condition is True. Checks will be generated that have to be
 proven (or executed at run-time) to show that the initial condition is

@@ -15,7 +15,7 @@ Exception Handlers
 
 .. _tu-exception_handlers-01:
 
-1. Exception handlers are not permitted in |SPARK|. 
+1. Exception handlers are not permitted in |SPARK|.
 
 .. _etu-exception_handlers:
 
@@ -29,10 +29,10 @@ provably never executed.]
 
 .. _tu-raise_statements-01:
 
-1.  for a ``raise_statement`` to be in |SPARK|, it must be 
+1.  for a ``raise_statement`` to be in |SPARK|, it must be
 
    * immediately enclosed by an if statement which encloses no other
-     statement; or 
+     statement; or
 
    * be the last statement of a subprogram.
 
@@ -47,11 +47,11 @@ provably never executed.]
 .. _tu-raise_statements-03:
 
 3. A ``raise_statement`` introduces an obligation to prove that the statement
-   will not be executed, much like the proof obligation associated with
+   will not be executed, much like the verification condition associated with
 
        ``pragma Assert (False);``
 
-   [In other words, the proof obligations introduced for a raise
+   [In other words, the verification conditions introduced for a raise
    statement are the same as those introduced for a runtime check
    which fails unconditionally.]
 
@@ -78,8 +78,8 @@ Pragmas Assert and Assertion_Policy
 .. _tu-pragmas-assert and assertion_policy-01:
 
 1. The pragmas ``Assertion_Policy``, ``Suppress``, and ``Unsuppress`` are
-   allowed in |SPARK|, but have no effect on the generation of proof
-   obligations. [For example, an array index value must be shown to be in
+   allowed in |SPARK|, but have no effect on the generation of verification
+   conditions. [For example, an array index value must be shown to be in
    bounds regardless of whether Index_Check is suppressed at the point
    of the array indexing.]
 

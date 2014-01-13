@@ -1048,11 +1048,11 @@ Nonreturning Procedures
 .. _tu-nonreturning_procedures-02:
 
 2. A call to a nonreturning procedure introduces an obligation to prove that the statement
-   will not be executed, much like the proof obligation associated with
+   will not be executed, much like the verification condition associated with
 
        ``pragma Assert (False);``
 
-   [In other words, the proof obligations introduced for a call to a nonreturning procedure
+   [In other words, the verification conditions introduced for a call to a nonreturning procedure
    are the same as those introduced for a runtime check which fails
    unconditionally. See also section :ref:`exceptions`, where a similar restriction is
    imposed on ``raise_statements``.]
@@ -1096,7 +1096,7 @@ Expression Functions
 Ghost Functions
 ---------------
 
-Ghost functions are intended for use in discharging proof obligations and in
+Ghost functions are intended for use in discharging verification conditions and in
 making it easier to express assertions about a program. The essential property
 of ghost functions is that they have no effect on the dynamic behavior of a
 valid SPARK program other than, depending on the assertion policy, the execution
@@ -1104,7 +1104,7 @@ of known to be true assertion expressions. More specifically, if one were to
 take a valid SPARK program and remove all ghost function declarations from it
 and all assertions containing references to those functions, then the resulting
 program might no longer be a valid SPARK program (e.g., it might no longer be
-possible to discharge all the program's proof obligations) but its dynamic
+possible to discharge all the program's verification conditions) but its dynamic
 semantics (when viewed as an Ada program) should be unaffected by this
 transformation other than evaluating fewer known to be true assertion
 expressions.
@@ -1244,7 +1244,7 @@ ghosts-have-no-effect-on-program-behavior rule.]
 
     [If it is intended that a ghost entity should not have any runtime
     representation (e.g., if the entity is used only in discharging
-    proof obligations and is not referenced (directly or indirectly)
+    verification conditions and is not referenced (directly or indirectly)
     in any enabled (e.g., via an Assertion_Policy pragma) assertions),
     then the Import aspect of the entity may be specified to be True.]
 

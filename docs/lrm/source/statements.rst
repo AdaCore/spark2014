@@ -478,7 +478,7 @@ and is used to state axioms.
 .. _tu-pr-proof_pragmas-02:
 
 2. Pragma Assume is an assertion the same as a pragma Assert except
-   that there is no proof obligation to prove the truth of the Boolean
+   that there is no verification condition to prove the truth of the Boolean
    expression that is its actual parameter. [Pragma Assume indicates
    to proof tools that the expression can be assumed to be True.]
 
@@ -503,8 +503,8 @@ and is used to state axioms.
 4. The verification rules for pragma Assume are significantly different to those
    of pragma Assert. [It would be difficult to overstate the importance of the
    difference.] Even though the dynamic semantics of pragma Assume and pragma
-   Assert are identical, pragma Assume does not introduce a corresponding proof
-   obligation. Instead the prover is given permission to assume the truth of the
+   Assert are identical, pragma Assume does not introduce a corresponding verification
+   condition. Instead the prover is given permission to assume the truth of the
    assertion, even though this has not been proven. [A single incorrect Assume
    pragma can invalidate an arbitrarily large number of proofs - the
    responsibility for ensuring correctness rests entirely upon the user.]

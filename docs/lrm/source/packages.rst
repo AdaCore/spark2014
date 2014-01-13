@@ -869,7 +869,7 @@ be a *Boolean_*\ ``expression``.
 
 .. _tu-pr-initial_condition_aspects-06:
 
-6. [The Initial_Condition aspect gives a proof obligation to show that the
+6. [The Initial_Condition aspect gives a verification condition to show that the
    implementation of the ``package_specification`` and its body satisfy the
    predicate given in the Initial_Condition aspect.]
 
@@ -2232,7 +2232,7 @@ Elaboration Issues
 call to a subprogram cannot occur before the body of the
 subprogram has been elaborated. The success of the runtime
 elaboration check associated with a call is guaranteed by
-these restrictions and so the proof obligation associated with
+these restrictions and so the verification condition associated with
 such a check is trivially discharged. Similar restrictions
 are imposed to prevent the reading of uninitialized library-level
 variables during library unit elaboration, and to prevent

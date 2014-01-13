@@ -3,8 +3,8 @@ Generic Units
 
 Any generic unit is in |SPARK|, regardless of whether it contains
 constructs that are not normally in |SPARK|.  [Analysis is not
-performed on a generic unit; a generic unit generates no proof
-obligations].
+performed on a generic unit; a generic unit generates no verification
+conditions].
 
 Generic Declarations
 --------------------
