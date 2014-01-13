@@ -6021,8 +6021,17 @@ package body Gnat2Why.Expr is
       --  ??? Frontend-generated pragma check for static predicate is ignored
       --  (MC20-028)
 
-      if Chars (Get_Pragma_Arg (Arg1)) in
-        Name_Precondition | Name_Postcondition | Name_Static_Predicate
+      if Is_Pragma_Check (Stmt, Name_Precondition)
+        or else
+          Is_Pragma_Check (Stmt, Name_Pre)
+        or else
+          Is_Pragma_Check (Stmt, Name_Postcondition)
+        or else
+          Is_Pragma_Check (Stmt, Name_Post)
+        or else
+          Is_Pragma_Check (Stmt, Name_Static_Predicate)
+        or else
+          Is_Pragma_Check (Stmt, Name_Predicate)
       then
          Runtime := New_Void (Stmt);
          Pred := True_Pred;
@@ -6056,7 +6065,7 @@ package body Gnat2Why.Expr is
       T : W_Prog_Id;
    begin
 
-      --  pre and post are not handled here
+      --  pre / post / predicate are not handled here
 
       if Is_Pragma_Check (Prag, Name_Precondition)
         or else
@@ -6065,6 +6074,10 @@ package body Gnat2Why.Expr is
           Is_Pragma_Check (Prag, Name_Postcondition)
         or else
           Is_Pragma_Check (Prag, Name_Post)
+        or else
+          Is_Pragma_Check (Prag, Name_Static_Predicate)
+        or else
+          Is_Pragma_Check (Prag, Name_Predicate)
       then
          return New_Void (Prag);
       end if;
