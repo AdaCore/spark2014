@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010-2013, AdaCore                   --
+--                       Copyright (C) 2010-2014, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -102,12 +102,16 @@ package Gnat2Why_Args is
 
    --  Limit analysis to this subprogram
 
-   Limit_Subp   : Unbounded_String := Null_Unbounded_String;
+   Limit_Subp : Unbounded_String := Null_Unbounded_String;
 
    --  IDE mode. Error messages may be formatted differently in this mode (e.g.
    --  JSON dict)
 
    Ide_Mode : Boolean := False;
+
+   --  The user specifically asked to prove this file, gnatprove option "-u"
+
+   Single_File : Boolean := False;
 
    --------------------------------
    -- Procedures of this package --

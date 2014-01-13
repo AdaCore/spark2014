@@ -8,3 +8,9 @@ gen2.adb:5:7: warning: assertion might fail, requires T'Last = X, in instantiati
 gen2.adb:5:7: warning: assertion might fail, requires T'Last = X, in instantiation at gen.adb:5, in instantiation at main.adb:6
 gen2.ads:4:17: warning: unused initial value of "X", in instantiation at gen.adb:5, in instantiation at main.adb:5
 gen2.ads:4:17: warning: unused initial value of "X", in instantiation at gen.adb:5, in instantiation at main.adb:6
+gen2.adb:1:14: Generic unit is not analyzed
+   compilation of gen2.adb failed
+
+
+gnatprove: error during analysis and translation to intermediate language, aborting.
+gprbuild: *** compilation phase failed

@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2013, AdaCore                   --
+--                       Copyright (C) 2010-2014, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -54,6 +54,7 @@ package body Gnat2Why_Args is
    Limit_Subp_Name          : constant String := "limit_subp";
    Pedantic_Name            : constant String := "pedantic";
    Ide_Mode_Name            : constant String := "ide_mode";
+   Single_File_Name         : constant String := "single_file";
 
    procedure Interpret_Token (Token : String);
    --  This procedure should be called on an individual token in the
@@ -103,6 +104,9 @@ package body Gnat2Why_Args is
 
       elsif Token = Ide_Mode_Name then
          Ide_Mode := True;
+
+      elsif Token = Single_File_Name then
+         Single_File := True;
 
       elsif Starts_With (Token, Warning_Mode_Name) and then
         Token (Token'First + Warning_Mode_Name'Length) = '='
@@ -205,6 +209,10 @@ package body Gnat2Why_Args is
 
       if Ide_Mode then
          Write_Line (Ide_Mode_Name);
+      end if;
+
+      if Single_File then
+         Write_Line (Single_File_Name);
       end if;
 
       if Limit_Subp /= Null_Unbounded_String then

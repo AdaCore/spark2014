@@ -221,12 +221,16 @@ package body Gnat2Why.Driver is
       --  We do nothing for generic units currently. If this get revised at
       --  some point to provide proof of generics, then the special SPARK
       --  expansion in the frontend should be applied to generic units as well.
-
       --  We still need to create the Why files to indicate that everything
-      --  went OK.
+      --  went OK. We also print a warning that nothing has been done, if the
+      --  user has specifically requested analysis of this file.
 
       if Is_Generic_Unit (Unique_Defining_Entity (N)) then
          Touch_Main_File (Base_Name);
+         if Gnat2Why_Args.Single_File then
+            Error_Msg_N (N   => GNAT_Root,
+                         Msg => "!Generic unit is not analyzed");
+         end if;
          return;
       end if;
 
