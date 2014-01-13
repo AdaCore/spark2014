@@ -118,9 +118,9 @@ with Report_Database;         use Report_Database;
 
 procedure SPARK_Report is
 
-   procedure Handle_SPARK_File
-     (Fn               : String;
-      No_Analysis_Done : out Boolean);
+   No_Analysis_Done : Boolean := True;
+
+   procedure Handle_SPARK_File (Fn : String);
    --  Parse and extract all information from a single SPARK file.
    --  No_Analysis_Done is set to true if no subprogram or package was
    --  analyzed in this unit.
@@ -218,10 +218,7 @@ procedure SPARK_Report is
    -- Handle_SPARK_File --
    -----------------------
 
-   procedure Handle_SPARK_File
-     (Fn               : String;
-      No_Analysis_Done : out Boolean)
-   is
+   procedure Handle_SPARK_File (Fn : String) is
       use GNATCOLL.JSON;
       Dict : constant JSON_Value := Read (Read_File_Into_String (Fn), Fn);
       Basename : constant String := Ada.Directories.Base_Name (Fn);
@@ -250,8 +247,6 @@ procedure SPARK_Report is
          else No_Analysis);
 
    begin
-      No_Analysis_Done := True;
-
       declare
          Entries : constant JSON_Array := Get (Dict);
       begin
@@ -284,9 +279,6 @@ procedure SPARK_Report is
    -----------------------
 
    procedure Handle_Source_Dir (Dir : String) is
-
-      No_Analysis_Done : Boolean := True;
-      --  Set to True if no analysis was performed at all
 
       procedure Local_Handle_SPARK_File
         (Item    : String;
@@ -343,12 +335,10 @@ procedure SPARK_Report is
          Index   : Positive;
          Quit    : in out Boolean)
       is
-         Local_No_Analysis_Done : Boolean;
       begin
          pragma Unreferenced (Index);
          pragma Unreferenced (Quit);
-         Handle_SPARK_File (Item, Local_No_Analysis_Done);
-         No_Analysis_Done := No_Analysis_Done and Local_No_Analysis_Done;
+         Handle_SPARK_File (Item);
       end Local_Handle_SPARK_File;
 
       procedure Iterate_SPARK is new
@@ -371,12 +361,8 @@ procedure SPARK_Report is
       Ada.Directories.Set_Directory (Dir);
       Iterate_SPARK (Path => "*." & VC_Kinds.SPARK_Suffix);
 
-      if No_Analysis_Done then
-         Reset_All_Results;
-      else
-         Iterate_Flow (Path => "*." & VC_Kinds.Flow_Suffix);
-         Iterate_Proof (Path => "*." & VC_Kinds.Proof_Suffix);
-      end if;
+      Iterate_Flow (Path => "*." & VC_Kinds.Flow_Suffix);
+      Iterate_Proof (Path => "*." & VC_Kinds.Proof_Suffix);
 
       Ada.Directories.Set_Directory (Save_Dir);
    exception
@@ -497,6 +483,10 @@ begin
    end if;
    Source_Directories_File := new String'(Ada.Command_Line.Argument (1));
    Iterate_Source_Dirs (Source_Directories_File.all);
+   if No_Analysis_Done then
+      Reset_All_Results;
+   end if;
+
    Create (Handle,
            Out_File,
            Configuration.SPARK_Report_File
