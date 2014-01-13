@@ -320,16 +320,6 @@ Static Rules Not Checked
    visible state is not checked (|SPARK| Reference Manual rule
    7.2.6(6)).
 
-#. The |SPARK| Reference Manual rules 3.2(3) 3.3.1(2) note that
-   constants and subtypes that are not preelaborable (essentially
-   their constraints are not determinable during compilation/analysis)
-   are not taken into account in determining and checking dependency
-   relations.  This means that information-flow analysis for security
-   or safety is incomplete if such subtypes or constants are used.
-   The onus is currently on the user to check that nonpreelaborable constants
-   and subtypes are not used if complete dependency relations for
-   information-flow analysis are required.
-
 Flow Analysis Limitations
 -------------------------
 
