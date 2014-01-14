@@ -636,15 +636,15 @@ package body Gnat2Why.Subprograms is
            (Result,
             New_Assert
               (Pred => +New_VC_Expr
-                 (Prag,
-                  New_Relation (Domain   => EW_Pred,
-                                Op_Type  => EW_Int,
-                                Left     => +Count,
-                                Op       => EW_Le,
-                                Right    =>
-                                  New_Integer_Constant (Value => Uint_1)),
-                  VC_Disjoint_Contract_Cases,
-                  EW_Pred)));
+                   (Prag,
+                    New_Relation (Domain   => EW_Pred,
+                                  Op_Type  => EW_Int,
+                                  Left     => +Count,
+                                  Op       => EW_Le,
+                                  Right    =>
+                                    New_Integer_Constant (Value => Uint_1)),
+                    VC_Disjoint_Contract_Cases,
+                    EW_Pred)));
       end if;
 
       --  A check that contract cases are complete is generated only when there

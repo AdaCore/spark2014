@@ -709,6 +709,27 @@ package body Why.Atree.Sprint is
       State.Control := Abandon_Children;
    end Integer_Constant_Pre_Op;
 
+   ---------------------------
+   -- Fixed_Constant_Pre_Op --
+   ---------------------------
+
+   procedure Fixed_Constant_Pre_Op
+     (State : in out Printer_State;
+      Node  : W_Fixed_Constant_Id)
+   is
+      pragma Unreferenced (State);
+      Value : constant Uint := Get_Value (Node);
+   begin
+      if Value < Uint_0 then
+         P (O, "( ");
+         P (O, Value);
+         P (O, " )");
+      else
+         P (O, Value);
+      end if;
+      State.Control := Abandon_Children;
+   end Fixed_Constant_Pre_Op;
+
    --------------------------
    -- Real_Constant_Pre_Op --
    --------------------------

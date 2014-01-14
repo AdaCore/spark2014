@@ -50,7 +50,7 @@ package Constant_Tree is
      with Pre => (not Is_Frozen);
    --  Freeze the package; the tree will then be unmodifiable
 
-   function  LCA (Left, Right : Node_Type) return Node_Type
+   function LCA (Left, Right : Node_Type) return Node_Type
      with Pre => (Is_Frozen);
    --  Return the lowest common ancestor for the given nodes
 

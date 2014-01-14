@@ -242,8 +242,7 @@ package Why.Gen.Expr is
       To          : W_Type_Id;
       Round_Func  : W_Identifier_Id := Why_Empty;
       Range_Check : Node_Id := Empty) return W_Expr_Id;
-   --  We expect Expr to be of the type that corresponds to the type "From".
-   --  We insert a conversion so that its type corresponds to "To".
+   --  We insert a conversion on Expr so that its type corresponds to "To".
    --  When Round_Func is set, a call to the rounding function is inserted
    --  into the conversion, on the argument of type "real".
    --  When Range_Check is set, a range check is inserted into the conversion,
@@ -276,9 +275,17 @@ package Why.Gen.Expr is
       return W_Expr_Id;
    --  same as New_Binding, but adds type information coming from Context
 
+   subtype Supported_Attribute_Id is Attribute_Id with
+     Static_Predicate => Supported_Attribute_Id in Attribute_First
+                                                 | Attribute_Last
+                                                 | Attribute_Length
+                                                 | Attribute_Modulus
+                                                 | Attribute_Image
+                                                 | Attribute_Value;
+
    function New_Attribute_Expr
      (Ty   : Entity_Id;
-      Attr : Attribute_Id) return W_Expr_Id;
+      Attr : Supported_Attribute_Id) return W_Expr_Id;
 
    function Get_Type (E : W_Expr_Id) return W_Type_Id;
    --  extract the type of a given expression

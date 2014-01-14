@@ -42,6 +42,7 @@ with Snames;                             use Snames;
 with Stand;                              use Stand;
 with Uintp;                              use Uintp;
 with Aspects;                            use Aspects;
+with Urealp;                             use Urealp;
 
 with VC_Kinds;
 
@@ -959,10 +960,61 @@ package body SPARK_Definition is
                end if;
             end;
 
-            --  Scalar types are always in SPARK
+         --  Discrete and floating-point types are always in SPARK
 
-         when Integer_Kind | Real_Kind | Enumeration_Kind =>
+         when Integer_Kind | Float_Kind | Enumeration_Kind =>
             null;
+
+         when Fixed_Point_Kind =>
+            declare
+               function Only_Factor_Is
+                 (Num    : Uint;
+                  Factor : Uint) return Boolean
+               with Pre => UI_Gt (Num, Uint_0)
+                 and then UI_Gt (Factor, Uint_0);
+               --  Returns True if Num is a power of Factor
+
+               --------------------
+               -- Only_Factor_Is --
+               --------------------
+
+               function Only_Factor_Is
+                 (Num    : Uint;
+                  Factor : Uint) return Boolean
+               is
+                  N : Uint := Num;
+               begin
+                  while N /= Uint_1 loop
+                     if UI_Rem (N, Factor) /= Uint_0 then
+                        return False;
+                     end if;
+                     N := UI_Div (N, Factor);
+                  end loop;
+
+                  return True;
+               end Only_Factor_Is;
+
+               Inv_Small : constant Ureal := UR_Div (Uint_1, Small_Value (E));
+               Inv_Small_Num : constant Uint := Norm_Num (Inv_Small);
+            begin
+               if Norm_Den (Inv_Small) = Uint_1
+                    and then
+                  Inv_Small_Num /= Uint_1
+                    and then
+                  (Only_Factor_Is (Inv_Small_Num, Uint_2)
+                     or else
+                   Only_Factor_Is (Inv_Small_Num, Uint_10))
+               then
+                  null;
+               else
+                  Violation_Detected := True;
+                  if SPARK_Pragma_Is (Opt.On) then
+                     Error_Msg_N
+                       ("fixed-point type whose small is not a negative power "
+                        & "of 2 or 10 is not yet supported", E);
+                  end if;
+               end if;
+            end;
 
          when E_Record_Type | E_Record_Subtype =>
 
@@ -1712,13 +1764,51 @@ package body SPARK_Definition is
                            & "different element types is not yet supported",
                            N);
                      end if;
-                  else
-                     Mark (Expression (N));
                   end if;
                end;
-            else
-               Mark (Expression (N));
+
+            elsif Has_Fixed_Point_Type (Etype (N))
+                    and then
+                  Has_Fixed_Point_Type (Etype (Expression (N)))
+            then
+               declare
+                  Target_Base_Type : constant Entity_Id :=
+                    Base_Type (Etype (N));
+                  Expr : constant Node_Id := Expression (N);
+
+                  --  The multiplication and division operations on fixed-point
+                  --  types have a return type of universal_fixed (with no
+                  --  bounds), which is used as an overload resolution trick to
+                  --  allow free conversion between certain real types on the
+                  --  result of multiplication or division. Use the fixed-point
+                  --  type of one of the operands as the source type for the
+                  --  conversion.
+
+                  Expr_Type : constant Entity_Id :=
+                    (if Nkind_In (Expr, N_Op_Multiply, N_Op_Divide)
+                       and then Etype (Expr) = Universal_Fixed
+                     then
+                       (if Has_Fixed_Point_Type (Etype (Left_Opnd (Expr))) then
+                          Etype (Left_Opnd (Expr))
+                        else
+                          Etype (Right_Opnd (Expr)))
+                     else
+                        Etype (Expr));
+                  Source_Base_Type : constant Entity_Id :=
+                    Base_Type (Expr_Type);
+               begin
+                  if Target_Base_Type /= Source_Base_Type then
+                     Violation_Detected := True;
+                     if SPARK_Pragma_Is (Opt.On) then
+                        Error_Msg_N
+                          ("conversion between different fixed-point types "
+                           & "is not yet supported", N);
+                     end if;
+                  end if;
+               end;
             end if;
+
+            Mark (Expression (N));
 
          when N_Unary_Op =>
             Mark_Unary_Op (N);
@@ -2170,8 +2260,69 @@ package body SPARK_Definition is
    --------------------
 
    procedure Mark_Binary_Op (N : Node_Id) is
-
    begin
+      --  Only support for now multiplication and division operations on
+      --  fixed-point types if both arguments and the result have the same
+      --  base type, or one of the arguments is an integer type.
+
+      if Nkind (N) in N_Op_Multiply | N_Op_Divide then
+         declare
+            L_Type : constant Entity_Id := Base_Type (Etype (Left_Opnd (N)));
+            R_Type : constant Entity_Id := Base_Type (Etype (Right_Opnd (N)));
+
+            --  The multiplication and division operations on fixed-point
+            --  types have a return type of universal_fixed (with no
+            --  bounds), which is used as an overload resolution trick to
+            --  allow free conversion between certain real types on the
+            --  result of multiplication or division. Use the fixed-point
+            --  type of one of the operands as the source type for the
+            --  conversion.
+
+            Expr_Type : constant Entity_Id :=
+              (if Etype (N) = Universal_Fixed then
+                 Etype (Parent (N))
+               else
+                  Etype (N));
+            E_Type : constant Entity_Id := Base_Type (Expr_Type);
+         begin
+            if Is_Fixed_Point_Type (L_Type)
+                 and then
+               Is_Fixed_Point_Type (R_Type)
+                 and then
+               L_Type /= R_Type
+            then
+               Violation_Detected := True;
+               if SPARK_Pragma_Is (Opt.On) then
+                  Error_Msg_N ("operation between different fixed-point types"
+                               & " is not yet supported", N);
+               end if;
+
+            elsif (Is_Fixed_Point_Type (L_Type)
+                     and then
+                   Is_Floating_Point_Type (R_Type))
+                     or else
+                  (Is_Fixed_Point_Type (R_Type)
+                     and then
+                   Is_Floating_Point_Type (L_Type))
+            then
+               Violation_Detected := True;
+               if SPARK_Pragma_Is (Opt.On) then
+                  Error_Msg_N ("operation between fixed-point type and"
+                               & " universal real is not yet supported", N);
+               end if;
+
+            elsif (Is_Fixed_Point_Type (L_Type) and then L_Type /= E_Type)
+                     or else
+                  (Is_Fixed_Point_Type (R_Type) and then R_Type /= E_Type)
+            then
+               Violation_Detected := True;
+               if SPARK_Pragma_Is (Opt.On) then
+                  Error_Msg_N ("operation on fixed-point type with different"
+                               & " result type is not yet supported", N);
+               end if;
+            end if;
+         end;
+      end if;
 
       --  In pedantic mode, issue a warning whenever an arithmetic operation
       --  could be reordered by the compiler, like "A + B - C", as a given

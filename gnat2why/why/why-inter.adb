@@ -178,10 +178,10 @@ package body Why.Inter is
                Imports (SI_Integer) := True;
             else
                case Ekind (UE) is
-               when Discrete_Kind | E_Named_Integer =>
+               when Discrete_Kind | Fixed_Point_Kind | E_Named_Integer =>
                   Imports (SI_Integer) := True;
 
-               when Float_Kind | Fixed_Point_Kind | E_Named_Real =>
+               when Float_Kind | E_Named_Real =>
                   Imports (SI_Float) := True;
 
                when Array_Kind =>
@@ -1040,7 +1040,10 @@ package body Why.Inter is
       end if;
 
       case Ekind (Ty) is
-         when Real_Kind =>
+         when Fixed_Point_Kind =>
+            return EW_Fixed;
+
+         when Float_Kind =>
             return EW_Real;
 
          when Discrete_Kind =>

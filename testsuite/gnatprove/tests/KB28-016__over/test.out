@@ -1,5 +1,7 @@
-c45532o.adb:10:06: warning: initialization has no effect
-c45532o.adb:11:06: warning: initialization has no effect
-c45532o.adb:12:06: warning: initialization has no effect
-c45532o.adb:14:19: warning: unused assignment
-c45532o.adb:14:33: warning: overflow check might fail
+c45532o.adb:6:11: fixed-point type whose small is not a negative power of 2 or 10 is not yet supported
+c45532o.adb:7:11: fixed-point type whose small is not a negative power of 2 or 10 is not yet supported
+   compilation of c45532o.adb failed
+
+
+gnatprove: error during analysis and translation to intermediate language, aborting.
+gprbuild: *** compilation phase failed

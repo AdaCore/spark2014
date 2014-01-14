@@ -115,13 +115,12 @@ package body Gnat2Why.Expr is
    -----------------------
 
    function Apply_Modulus_Or_Rounding
-      (E                     : Entity_Id;
-       T                     : W_Expr_Id;
-       Domain                : EW_Domain)
-       return W_Expr_Id;
-   --  If E is a modular type, apply a modulus on T. If E is a single or
-   --  double precision floating-point type, apply the corresponding
-   --  rounding operation. If E is neither, return T unchanged.
+     (E      : Entity_Id;
+      T      : W_Expr_Id;
+      Domain : EW_Domain) return W_Expr_Id;
+   --  If E is a modular type, apply a modulus on T. If E is a floating-point
+   --  type, apply the corresponding rounding operation. If E is neither,
+   --  return T unchanged.
 
    function Insert_Overflow_Check
      (Ada_Node : Node_Id;
@@ -446,11 +445,9 @@ package body Gnat2Why.Expr is
    -------------------
 
    function Apply_Modulus_Or_Rounding
-      (E                     : Entity_Id;
-       T                     : W_Expr_Id;
-       Domain                : EW_Domain)
-      return W_Expr_Id
-   is
+     (E      : Entity_Id;
+      T      : W_Expr_Id;
+      Domain : EW_Domain) return W_Expr_Id is
    begin
       if Is_Modular_Integer_Type (E) then
          return
@@ -462,15 +459,7 @@ package body Gnat2Why.Expr is
                           (Value => Modulus (E))),
                       Typ  => EW_Int_Type);
 
-      --  Currently apply rounding on both floating-point and fixed-point
-      --  types. The rounding on fixed-point types is an uninterpreted and
-      --  unaxiomatized function, which models soundly (if not accurately)
-      --  the semantics of fixed-point numbers.
-
-      elsif Is_Floating_Point_Type (E)
-              or else
-            Is_Fixed_Point_Type (E)
-      then
+      elsif Is_Floating_Point_Type (E) then
          return New_Call (Domain   => Domain,
                           Name     => Float_Round_Name (E),
                           Args     => (1 => T),
@@ -3821,9 +3810,8 @@ package body Gnat2Why.Expr is
                                Ureal_0));
 
                   when Fixed_Point_Kind =>
-                     W_Type := EW_Real;
-                     Offset :=
-                       New_Real_Constant (Value => Small_Value (A_Type));
+                     W_Type := EW_Fixed;
+                     Offset := New_Fixed_Constant (Value => Uint_1);
 
                   when others =>
                      --  All possible cases should have been handled
@@ -4798,7 +4786,6 @@ package body Gnat2Why.Expr is
       Domain        : EW_Domain;
       Params        : Transformation_Params) return W_Expr_Id
    is
-
       --  The multiplication and division operations on fixed-point types have
       --  a return type of universal_fixed (with no bounds), which is used as
       --  an overload resolution trick to allow free conversion between certain
@@ -4907,23 +4894,36 @@ package body Gnat2Why.Expr is
                 (Ada_Node => Expr,
                  Value    => Intval (Expr));
 
-         --  Note: although the original node for a real literal might be
-         --  closer to the source code expression of the value, this original
-         --  node should not be used for transforming the node into Why.
-         --  Indeed, a source float literal in Ada might not be representable
-         --  in machine, in which case the frontend rewrites the value into a
-         --  machine representable value (respecting the Ada RM rules, so
-         --  getting the closest representable floating-point value).
-
-         --  The procedure printing this node in Why takes care of putting the
-         --  value in a suitable form for provers. In particular, we want to
-         --  avoid printing divisions between real numbers, which provers don't
-         --  handle well, even when the division can be expressed exactly as a
-         --  decimal number.
-
          when N_Real_Literal =>
-            T := New_Real_Constant (Ada_Node => Expr,
-                                    Value    => Realval (Expr));
+
+            --  Literals of fixed-point type are directly translated into the
+            --  integer that represents them in the corresponding fixed-point
+            --  type.
+
+            if Is_Fixed_Point_Type (Etype (Expr)) then
+               T := New_Fixed_Constant
+                      (Ada_Node => Expr,
+                       Value    => Corresponding_Integer_Value (Expr));
+
+            --  Note: although the original node for a real literal might
+            --  be closer to the source code expression of the value, this
+            --  original node should not be used for transforming the node
+            --  into Why. Indeed, a source float literal in Ada might not be
+            --  representable in machine, in which case the frontend rewrites
+            --  the value into a machine representable value (respecting
+            --  the Ada RM rules, so getting the closest representable
+            --  floating-point value).
+
+            --  The procedure printing this node in Why takes care of putting
+            --  the value in a suitable form for provers. In particular, we
+            --  want to avoid printing divisions between real numbers, which
+            --  provers don't handle well, even when the division can be
+            --  expressed exactly as a decimal number.
+
+            else
+               T := New_Real_Constant (Ada_Node => Expr,
+                                       Value    => Realval (Expr));
+            end if;
 
          when N_Character_Literal =>
 
@@ -5103,7 +5103,7 @@ package body Gnat2Why.Expr is
                     Typ     => Typ);
             end;
 
-         when N_Op_Add | N_Op_Multiply | N_Op_Subtract =>
+         when N_Op_Add | N_Op_Subtract =>
             --  The arguments of arithmetic functions have to be of base
             --  scalar types
             declare
@@ -5127,25 +5127,135 @@ package body Gnat2Why.Expr is
                T := Apply_Modulus_Or_Rounding (Expr_Type, T, Domain);
             end;
 
-         when N_Op_Divide =>
+         when N_Op_Multiply =>
+            --  The arguments of arithmetic functions have to be of base
+            --  scalar types
             declare
-               Left  : constant Node_Id := Left_Opnd (Expr);
-               Right : constant Node_Id := Right_Opnd (Expr);
-               Base  : constant W_Type_Id := Base_Why_Type (Left, Right);
-               Name  : W_Identifier_Id;
+               Left  : Node_Id := Left_Opnd (Expr);
+               Right : Node_Id := Right_Opnd (Expr);
+               Base, L_Type, R_Type : W_Type_Id;
                L_Why, R_Why : W_Expr_Id;
+               Oper : Why_Name_Enum;
             begin
+               if Has_Fixed_Point_Type (Etype (Left))
+                 and then Has_Fixed_Point_Type (Etype (Right))
+               then
+                  Base := EW_Fixed_Type;
+                  L_Type := EW_Fixed_Type;
+                  R_Type := EW_Fixed_Type;
+                  Oper := WNE_Fixed_Point_Mult;
+
+               elsif Has_Fixed_Point_Type (Etype (Left)) then
+                  Base := EW_Fixed_Type;
+                  L_Type := EW_Fixed_Type;
+                  R_Type := EW_Int_Type;
+                  Oper := WNE_Fixed_Point_Mult_Int;
+
+               --  If multiplying an integer and a fixed-point, swap arguments
+               --  so that Left is the fixed-point one.
+
+               elsif Has_Fixed_Point_Type (Etype (Right)) then
+                  declare
+                     Tmp : constant Node_Id := Left;
+                  begin
+                     Left := Right;
+                     Right := Tmp;
+                     Base := EW_Fixed_Type;
+                     L_Type := EW_Fixed_Type;
+                     R_Type := EW_Int_Type;
+                     Oper := WNE_Fixed_Point_Mult_Int;
+                  end;
+
+               else
+                  Base := Base_Why_Type (Left, Right);
+                  L_Type := Base;
+                  R_Type := Base;
+               end if;
+
                L_Why :=
                  Transform_Expr (Left,
-                                 Base,
+                                 L_Type,
                                  Domain,
                                  Local_Params);
                R_Why :=
                  Transform_Expr (Right,
-                                 Base,
+                                 R_Type,
                                  Domain,
                                  Local_Params);
-               Name := New_Division (Get_Base_Type (Base));
+
+               if Is_Fixed_Point_Type (Expr_Type) then
+                  declare
+                     Name : constant W_Identifier_Id :=
+                       Prefix (Ada_Node => Expr_Type,
+                               M        => E_Module (Expr_Type),
+                               W        => Oper);
+                  begin
+                     T := New_Call (Ada_Node => Expr,
+                                    Domain   => Domain,
+                                    Name     => Name,
+                                    Args     => (1 => L_Why, 2 => R_Why),
+                                    Typ      => Base);
+                  end;
+               else
+                  T := New_Binary_Op
+                         (Ada_Node => Expr,
+                          Left     => L_Why,
+                          Right    => R_Why,
+                          Op       => Transform_Binop (Nkind (Expr)),
+                          Op_Type  => Get_Base_Type (Base));
+               end if;
+
+               T := Apply_Modulus_Or_Rounding (Expr_Type, T, Domain);
+            end;
+
+         when N_Op_Divide =>
+            declare
+               Left  : constant Node_Id := Left_Opnd (Expr);
+               Right : constant Node_Id := Right_Opnd (Expr);
+               Base, L_Type, R_Type : W_Type_Id;
+               L_Why, R_Why : W_Expr_Id;
+               Oper : Why_Name_Enum;
+               Name : W_Identifier_Id;
+            begin
+               if Has_Fixed_Point_Type (Etype (Left))
+                 and then Has_Fixed_Point_Type (Etype (Right))
+               then
+                  Base := EW_Fixed_Type;
+                  L_Type := EW_Fixed_Type;
+                  R_Type := EW_Fixed_Type;
+                  Oper := WNE_Fixed_Point_Div;
+
+               elsif Has_Fixed_Point_Type (Etype (Left)) then
+                  Base := EW_Fixed_Type;
+                  L_Type := EW_Fixed_Type;
+                  R_Type := EW_Int_Type;
+                  Oper := WNE_Fixed_Point_Div_Int;
+
+               else
+                  Base := Base_Why_Type (Left, Right);
+                  L_Type := Base;
+                  R_Type := Base;
+               end if;
+
+               L_Why :=
+                 Transform_Expr (Left,
+                                 L_Type,
+                                 Domain,
+                                 Local_Params);
+               R_Why :=
+                 Transform_Expr (Right,
+                                 R_Type,
+                                 Domain,
+                                 Local_Params);
+
+               Name :=
+                 (if Is_Fixed_Point_Type (Expr_Type) then
+                    Prefix (Ada_Node => Expr_Type,
+                            M        => E_Module (Expr_Type),
+                            W        => Oper)
+                  else
+                    New_Division (Get_Base_Type (Base)));
+
                if Domain = EW_Prog and then Do_Division_Check (Expr) then
                   T :=
                     New_VC_Call
@@ -5396,19 +5506,21 @@ package body Gnat2Why.Expr is
             --  type. Necessary checks and conversions will be introduced at
             --  the end of Transform_Expr below.
 
-            if Domain /= EW_Prog and Ekind (Expr_Type) in Discrete_Kind then
+            if Domain /= EW_Prog
+              and then Ekind (Expr_Type) in Discrete_Kind
+              and then Has_Discrete_Type (Etype (Expression (Expr)))
+            then
                T := Transform_Expr (Expression (Expr),
                                     Expected_Type,
                                     Domain,
                                     Local_Params);
 
             --  In other cases, require that the converted expression
-            --  is translated into a value of the type of the conversion
-            --  Current_Type.
+            --  is translated into a value of the type of the conversion.
 
-            --  When converting to a flating-point or fixed-point type,
-            --  this ensures that a rounding operation can be applied on
-            --  the intermediate real value.
+            --  When converting to a flating-point type, this ensures that
+            --  a rounding operation can be applied on the intermediate real
+            --  value.
 
             --  When converting to a discriminant record or an array, this
             --  ensures that the proper target type can be retrieved from

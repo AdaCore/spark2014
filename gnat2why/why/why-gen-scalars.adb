@@ -28,6 +28,8 @@ with Nlists;              use Nlists;
 with Sem_Eval;            use Sem_Eval;
 with Sinfo;               use Sinfo;
 with Snames;              use Snames;
+with Uintp;               use Uintp;
+with Urealp;              use Urealp;
 
 with SPARK_Util;          use SPARK_Util;
 
@@ -54,12 +56,14 @@ package body Why.Gen.Scalars is
       Base_Type  : EW_Scalar;
       First      : W_Term_Id;
       Last       : W_Term_Id;
-      Modulus    : W_Term_OId);
-   --  Define the attributes first, last, modulus for the given type.
+      Modulus    : W_Term_OId;
+      Small      : W_Term_OId);
+   --  Define the attributes first, last, modulus, small for the given type.
 
    function Num_Constant (Ty : Entity_Id; N : Node_Id) return W_Term_Id;
    --  N must be a static expression. This function evaluates N as an Uint (if
-   --  Ty is a discrete type) or as real (if Ty is not discrete)
+   --  Ty is a discrete type or a fixed-point type) or as real (if Ty is not
+   --  discrete)
 
    -------------------------
    -- Declare_Scalar_Type --
@@ -89,8 +93,8 @@ package body Why.Gen.Scalars is
       function Compute_Clone_Subst return W_Clone_Substitution_Array is
          Has_Round_Real : constant Boolean :=
            Is_Single_Precision_Floating_Point_Type (E)
-           or else
-             Is_Double_Precision_Floating_Point_Type (E);
+             or else
+           Is_Double_Precision_Floating_Point_Type (E);
          Round_Id : constant W_Identifier_Id :=
            (if Is_Single_Precision_Floating_Point_Type (E) then
                  Floating_Round_Single
@@ -128,11 +132,20 @@ package body Why.Gen.Scalars is
                   Orig_Name => To_Ident (WNE_Attr_Modulus),
                   Image     => To_Ident (WNE_Attr_Modulus)))
             else (1 .. 0 => <>));
-         Range_Clone_Subst : constant W_Clone_Substitution_Id :=
-           New_Clone_Substitution
-             (Kind      => EW_Predicate,
-              Orig_Name => To_Ident (WNE_Range_Pred),
-              Image     => To_Ident (WNE_Range_Pred));
+         Range_Clone_Subst : constant W_Clone_Substitution_Array :=
+           (if Is_Static or else not Is_Fixed_Point_Type (E) then
+              (1 => New_Clone_Substitution
+               (Kind      => EW_Predicate,
+                Orig_Name => To_Ident (WNE_Range_Pred),
+                Image     => To_Ident (WNE_Range_Pred)))
+            else (1 .. 0 => <>));
+         Fixed_Clone_Subst : constant W_Clone_Substitution_Array :=
+           (if Is_Fixed_Point_Type (E) then
+                (1 => New_Clone_Substitution
+                 (Kind      => EW_Function,
+                  Orig_Name => To_Ident (WNE_Attr_Small),
+                  Image     => To_Ident (WNE_Attr_Small)))
+            else (1 .. 0 => <>));
       begin
 
          --  If the type Entity has a rounding operation, use it in the clone
@@ -143,7 +156,8 @@ package body Why.Gen.Scalars is
            Round_Clone_Subst &
            Static_Clone_Subst &
            Mod_Clone_Subst &
-           Range_Clone_Subst;
+           Range_Clone_Subst &
+           Fixed_Clone_Subst;
       end Compute_Clone_Subst;
 
       ------------------------------
@@ -223,34 +237,39 @@ package body Why.Gen.Scalars is
 
       function Pick_Clone return W_Module_Id is
       begin
-         if Is_Discrete_Type (E) then
-            if Is_Static then
-               if Is_Modular_Integer_Type (E) then
-                  return Static_Modular;
-               else
-                  return Static_Discrete;
-               end if;
-            elsif Is_Modular_Integer_Type (E) then
-               return Dynamic_Modular;
+         if Is_Static then
+            if Is_Modular_Integer_Type (E) then
+               return Static_Modular;
+            elsif Is_Discrete_Type (E) then
+               return Static_Discrete;
+            elsif Is_Fixed_Point_Type (E) then
+               return Static_Fixed_Point;
             else
-               return Dynamic_Discrete;
+               pragma Assert (Is_Floating_Point_Type (E));
+               return Static_Floating_Point;
             end if;
-         elsif Is_Static then
-            return Static_Floating_Point;
          else
-            return Dynamic_Floating_Point;
+            if Is_Modular_Integer_Type (E) then
+               return Dynamic_Modular;
+            elsif Is_Discrete_Type (E) then
+               return Dynamic_Discrete;
+            elsif Is_Fixed_Point_Type (E) then
+               return Dynamic_Fixed_Point;
+            else
+               pragma Assert (Is_Floating_Point_Type (E));
+               return Dynamic_Floating_Point;
+            end if;
          end if;
       end Pick_Clone;
 
       --  Local variables
 
-      First, Last, Modul : W_Term_OId := Why_Empty;
-      Rng                : constant Node_Id := Get_Range (E);
+      First, Last, Modul, Small : W_Term_OId := Why_Empty;
+      Rng                       : constant Node_Id := Get_Range (E);
 
-      --  beginning of processing for Declare_Scalar_Type
+   --  Start of Declare_Scalar_Type
 
    begin
-
       --  declare the abstract type
 
       Emit (Theory,
@@ -263,19 +282,30 @@ package body Why.Gen.Scalars is
       if Is_Modular_Integer_Type (E) then
          Modul := New_Integer_Constant (Value => Modulus (E));
       end if;
+
+      if Is_Fixed_Point_Type (E) then
+         declare
+            Inv_Small : constant Ureal := UR_Div (Uint_1, Small_Value (E));
+         begin
+            pragma Assert (Norm_Den (Inv_Small) = Uint_1);
+            Small := New_Integer_Constant (Value => Norm_Num (Inv_Small));
+         end;
+      end if;
+
       if Is_Static_Expression (Low_Bound (Rng)) then
          First := Num_Constant (E, Low_Bound (Rng));
       end if;
       if Is_Static_Expression (High_Bound (Rng)) then
          Last := Num_Constant (E, High_Bound (Rng));
       end if;
-      Define_Scalar_Attributes (Theory    => Theory,
-                                Base_Type =>
-                                  (if Is_Discrete_Type (E) then EW_Int
-                                   else EW_Real),
-                                First     => First,
-                                Last      => Last,
-                                Modulus   => Modul);
+
+      Define_Scalar_Attributes
+        (Theory    => Theory,
+         Base_Type => Get_Base_Type (Base_Why_Type (E)),
+         First     => First,
+         Last      => Last,
+         Modulus   => Modul,
+         Small     => Small);
 
       Generate_Range_Predicate;
 
@@ -297,9 +327,10 @@ package body Why.Gen.Scalars is
       Base_Type  : EW_Scalar;
       First      : W_Term_Id;
       Last       : W_Term_Id;
-      Modulus    : W_Term_OId)
+      Modulus    : W_Term_OId;
+      Small      : W_Term_OId)
    is
-      type Scalar_Attr is (S_First, S_Last, S_Modulus);
+      type Scalar_Attr is (S_First, S_Last, S_Modulus, S_Small);
 
       type Attr_Info is record
          Attr_Id : Attribute_Id;
@@ -309,7 +340,8 @@ package body Why.Gen.Scalars is
       Attr_Values : constant array (Scalar_Attr) of Attr_Info :=
                       (S_First   => (Attribute_First, First),
                        S_Last    => (Attribute_Last, Last),
-                       S_Modulus => (Attribute_Modulus, Modulus));
+                       S_Modulus => (Attribute_Modulus, Modulus),
+                       S_Small   => (Attribute_Small, Small));
    begin
       for J in Attr_Values'Range loop
          if J /= S_Modulus or else Attr_Values (J).Value /= Why_Empty then
@@ -334,6 +366,8 @@ package body Why.Gen.Scalars is
    begin
       if Is_Discrete_Type (Ty) then
          return New_Integer_Constant (Value => Expr_Value (N));
+      elsif Is_Fixed_Point_Type (Ty) then
+         return New_Fixed_Constant (Value => Expr_Value (N));
       else
          return New_Real_Constant (Value => Expr_Value_R (N));
       end if;

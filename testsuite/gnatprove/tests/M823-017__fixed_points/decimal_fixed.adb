@@ -1,4 +1,4 @@
-package body Binary_Fixed is
+package body Decimal_Fixed is
 
    procedure Test_Minus (X : T) is
       Y : constant T := 5.0;
@@ -122,4 +122,4 @@ package body Binary_Fixed is
       end if;
    end Test_Compare;
 
-end Binary_Fixed;
+end Decimal_Fixed;

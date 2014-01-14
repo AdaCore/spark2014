@@ -68,6 +68,17 @@ package body Why.Gen.Expr is
    --  to To; a counterexample would be two abstract types whose base
    --  types differ), insert the corresponding conversion.
 
+   function Insert_Single_Conversion
+     (Ada_Node : Node_Id;
+      Domain   : EW_Domain;
+      From     : W_Type_Id;
+      To       : W_Type_Id;
+      Expr     : W_Expr_Id) return W_Expr_Id;
+   --  Same as above, except the From type is explicitly given. This is useful
+   --  for conversions with fixed-point types, as the base type EW_Fixed does
+   --  not allow retrieving the name of the appropriate conversion function,
+   --  only the abstract fixed-point type allows it.
+
    Temp_Names_Map : Why_Node_Maps.Map := Why_Node_Maps.Empty_Map;
 
    ----------------------
@@ -133,6 +144,9 @@ package body Why.Gen.Expr is
       case Get_Kind (+E) is
          when W_Integer_Constant =>
             return EW_Int_Type;
+
+         when W_Fixed_Constant =>
+            return EW_Fixed_Type;
 
          when W_Real_Constant =>
             return EW_Real_Type;
@@ -609,14 +623,14 @@ package body Why.Gen.Expr is
                   else Empty)
                else Empty);
 
-            --  When converting to a floating-point or fixed-point type, from
-            --  either a discrete type or another real type, rounding should
-            --  be applied on the value of type real. Round_Func is the
-            --  appropriate rounding function for the type.
+            --  When converting to a floating-point, from either a discrete
+            --  type or another real type, rounding should be applied on the
+            --  value of type real. Round_Func is the appropriate rounding
+            --  function for the type.
 
             Round_Func : constant W_Identifier_Id :=
               (if Nkind (Ada_Node) = N_Type_Conversion
-                 and then Ekind (Ada_Type) in Real_Kind
+                 and then Ekind (Ada_Type) in Float_Kind
                then
                   Float_Round_Name (Ada_Type)
                else Why_Empty);
@@ -1010,6 +1024,7 @@ package body Why.Gen.Expr is
       end Insert_Range_Check;
 
       From : constant W_Type_Id := Get_Type (Expr);
+
       --  Current result expression
       Result : W_Expr_Id := Expr;
 
@@ -1047,7 +1062,8 @@ package body Why.Gen.Expr is
       --  type (real for a range check of a floating point type, int for a
       --  range check of a discrete type).
 
-      --  1. If From is an abstract type, convert it to type int or real
+      --  1. If From is an abstract type, convert it to type int, __fixed or
+      --     real.
 
       if Get_Base_Type (From) = EW_Abstract then
          Cur := Base_Why_Type (From);
@@ -1069,19 +1085,58 @@ package body Why.Gen.Expr is
          Result := Insert_Range_Check (Range_Check, Result);
       end if;
 
-      --  3. If From and To do not share the same base type (bool, int or
-      --     real), convert from one to the other.
+      --  3. If From and To do not share the same base type (bool, int, __fixed
+      --     or real), convert from one to the other.
 
       if Base_Why_Type (From) /= Base_Why_Type (To) then
-         Cur := Base_Why_Type (To);
-         Result := Insert_Single_Conversion (Ada_Node => Ada_Node,
-                                             Domain   => Domain,
-                                             To       => Cur,
-                                             Expr     => Result);
+         declare
+            Shadow_From : W_Type_Id := Cur;
+            Shadow_To   : W_Type_Id := Base_Why_Type (To);
+            Fixed_Type  : Entity_Id;
+
+         begin
+            --  3.1. If From is a fixed-point type, retrieve the corresponding
+            --       abstract type, for which conversion to int/real is
+            --       defined.
+
+            if Get_Base_Type (Base_Why_Type (From)) = EW_Fixed then
+               Fixed_Type :=
+                 (if Nkind (Ada_Node) in N_Type_Conversion
+                                       | N_Qualified_Expression
+                  then
+                     Etype (Expression (Ada_Node))
+                  else
+                     Etype (Ada_Node));
+               Shadow_From := EW_Abstract (Fixed_Type);
+               pragma Assert (Get_Base_Type (Shadow_From) = EW_Abstract);
+
+            --  3.2. If To is a fixed-point type, retrieve the corresponding
+            --       abstract type, for which conversion from int/real is
+            --       defined.
+
+            elsif Get_Base_Type (Base_Why_Type (To)) = EW_Fixed then
+               Fixed_Type :=
+                 (if Nkind (Parent (Ada_Node)) in N_Type_Conversion
+                                                | N_Qualified_Expression
+                  then
+                    Etype (Parent (Ada_Node))
+                  else
+                    Etype (Ada_Node));
+               Shadow_To := EW_Abstract (Fixed_Type);
+               pragma Assert (Get_Base_Type (Shadow_To) = EW_Abstract);
+            end if;
+
+            Cur := Base_Why_Type (To);
+            Result := Insert_Single_Conversion (Ada_Node => Ada_Node,
+                                                Domain   => Domain,
+                                                From     => Shadow_From,
+                                                To       => Shadow_To,
+                                                Expr     => Result);
+         end;
       end if;
 
-      --  4. When converting to a floating-point or fixed-point type, always
-      --     perform a rounding operation.
+      --  4. When converting to a floating-point type, always perform
+      --     a rounding operation.
 
       if Present (Round_Func) then
          pragma Assert (Get_Base_Type (Cur) = EW_Real);
@@ -1102,11 +1157,12 @@ package body Why.Gen.Expr is
          Result := Insert_Range_Check (Range_Check, Result);
       end if;
 
-      --  6. If To is an abstract type, convert from int or real to it
+      --  6. If To is an abstract type, convert from int, __fixed or real to it
 
       if Get_Base_Type (To) = EW_Abstract then
          Result := Insert_Single_Conversion (Ada_Node => Ada_Node,
                                              Domain   => Domain,
+                                             From     => Cur,
                                              To       => To,
                                              Expr     => Result);
       end if;
@@ -1162,7 +1218,21 @@ package body Why.Gen.Expr is
       To       : W_Type_Id;
       Expr     : W_Expr_Id) return W_Expr_Id
    is
-      From     : constant W_Type_Id := Get_Type (Expr);
+      From : constant W_Type_Id := Get_Type (Expr);
+   begin
+      return Insert_Single_Conversion (Ada_Node => Ada_Node,
+                                       Domain   => Domain,
+                                       From     => From,
+                                       To       => To,
+                                       Expr     => Expr);
+   end Insert_Single_Conversion;
+
+   function Insert_Single_Conversion
+     (Ada_Node : Node_Id;
+      Domain   : EW_Domain;
+      From     : W_Type_Id;
+      To       : W_Type_Id;
+      Expr     : W_Expr_Id) return W_Expr_Id is
    begin
       if Eq_Base (From, To) then
          return Expr;
@@ -1391,8 +1461,9 @@ package body Why.Gen.Expr is
    -- New_Attribute_Expr --
    ------------------------
 
-   function New_Attribute_Expr (Ty : Entity_Id; Attr : Attribute_Id)
-     return W_Expr_Id is
+   function New_Attribute_Expr
+     (Ty   : Entity_Id;
+      Attr : Supported_Attribute_Id) return W_Expr_Id is
    begin
       if Attr in Attribute_First | Attribute_Last | Attribute_Length and then
         Ekind (Ty) = E_String_Literal_Subtype
@@ -1420,9 +1491,19 @@ package body Why.Gen.Expr is
                else E_Module (Ty));
             T : W_Expr_Id;
             BT : constant W_Type_Id :=
-              (if Is_Standard_Boolean_Type (Ty) then
-                    EW_Int_Type
-               else Base_Why_Type (Ty));
+              (case Attr is
+                  when Attribute_First
+                     | Attribute_Last
+                     | Attribute_Modulus
+                     | Attribute_Value
+                     =>
+                     (if Is_Standard_Boolean_Type (Ty) then
+                        EW_Int_Type
+                      else Base_Why_Type (Ty)),
+                  when Attribute_Length =>
+                     EW_Int_Type,
+                  when Attribute_Image =>
+                     New_Named_Type (Name => To_Ident (WNE_String_Image)));
          begin
             T := +Prefix (Ada_Node => Ty,
                           M        => M,

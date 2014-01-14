@@ -2,18 +2,18 @@ deceleration_curve.adb:37:10: info: assertion proved
 deceleration_curve.adb:39:10: warning: assertion might fail
 deceleration_curve.adb:40:10: warning: assertion might fail
 deceleration_curve.adb:40:34: info: division check proved
-deceleration_curve.adb:40:34: warning: overflow check might fail
+deceleration_curve.adb:40:34: info: overflow check proved
 deceleration_curve.adb:40:48: info: division check proved
-deceleration_curve.adb:40:48: warning: overflow check might fail
+deceleration_curve.adb:40:48: info: overflow check proved
 deceleration_curve.adb:41:10: warning: assertion might fail, requires Speed_t(Minimum_Valid_Acceleration) / Minimum_Valid_Speed) <= Speed_t(Acceleration) / speed
 deceleration_curve.adb:43:38: info: division check proved
 deceleration_curve.adb:43:38: warning: overflow check might fail
 deceleration_curve.adb:44:10: warning: assertion might fail, requires Speed_t(Minimum_Valid_Acceleration) / Minimum_Valid_Speed) * Speed_t(Distance_Resolution) <= (Speed_t(Acceleration) / speed) * Distance_Resolution
 deceleration_curve.adb:47:39: info: division check proved
-deceleration_curve.adb:47:39: warning: overflow check might fail
+deceleration_curve.adb:47:39: info: overflow check proved
 deceleration_curve.adb:47:48: warning: overflow check might fail
 deceleration_curve.adb:49:48: info: division check proved
-deceleration_curve.adb:49:48: warning: overflow check might fail
+deceleration_curve.adb:49:48: info: overflow check proved
 deceleration_curve.adb:50:12: warning: overflow check might fail
 deceleration_curve.adb:52:10: warning: assertion might fail
 deceleration_curve.adb:58:25: warning: overflow check might fail
@@ -62,14 +62,14 @@ sec_3_13_2_monitoring_inputs.ads:200:24: info: precondition proved
 sec_3_13_2_monitoring_inputs.ads:243:46: info: precondition proved
 sec_3_13_6_deceleration.adb:26:37: info: precondition proved
 sec_3_13_6_deceleration.adb:26:37: warning: range check might fail
-sec_3_13_6_deceleration.ads:39:6: info: postcondition proved
+sec_3_13_6_deceleration.ads:39:6: warning: postcondition might fail, requires A_brake_emergency'Result = (Step_Function.get_value (A_brake_emergency_model, V))
 sec_3_13_6_deceleration.ads:40:37: info: range check proved
 sec_3_13_6_deceleration.ads:40:37: warning: precondition might fail
 sec_3_13_6_deceleration.ads:45:23: warning: precondition might fail
 sec_3_13_6_deceleration.ads:46:23: warning: overflow check might fail
 sec_3_13_6_deceleration.ads:46:26: warning: precondition might fail
 sec_3_13_6_deceleration.ads:46:38: warning: overflow check might fail
-sec_3_13_6_deceleration.ads:46:50: warning: overflow check might fail
+sec_3_13_6_deceleration.ads:46:50: info: overflow check proved
 sec_3_13_6_deceleration.ads:46:57: warning: overflow check might fail
 sec_3_13_6_deceleration.ads:46:59: warning: precondition might fail
 sec_3_13_6_deceleration.ads:47:22: warning: overflow check might fail
@@ -189,9 +189,9 @@ step_function_test.adb:66:4: warning: assertion might fail, requires Minimum_Unt
 step_function_test.adb:66:19: info: precondition proved
 step_function_test.adb:67:4: warning: assertion might fail, requires Minimum_Until_Point(sfun_merge, 11) = 
 step_function_test.adb:67:19: info: precondition proved
-units.adb:24:29: warning: overflow check might fail
+units.adb:24:29: info: overflow check proved
 units.adb:24:39: info: division check proved
-units.adb:24:39: warning: overflow check might fail
+units.adb:24:39: info: overflow check proved
 units.adb:29:38: warning: overflow check might fail
 units.adb:29:48: info: division check proved
 units.adb:29:48: warning: overflow check might fail

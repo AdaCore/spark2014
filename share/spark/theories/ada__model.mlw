@@ -125,6 +125,297 @@ module Dynamic_Modular
       to_int (of_int x) = Integer.math_mod x attr__ATTRIBUTE_MODULUS
 end
 
+module Fixed_Point_Base
+  (* The module that is used as basis for all fixed-point types.
+     We only support currently a subset of all Ada fixed-point types and
+     fixed-point operations:
+     1. fixed-point types must have a small that is a negative power of 2 or 10
+     2. multiplication and division between different fixed-point types and
+        universal real are rejected
+
+    (restriction 1 allows to have a simple axiomatization of mult/div of fixed
+    point types, using the integral inverse of the small. restriction 2 avoids
+    introducing a new uninterpreted operation for every triple of argument and
+    result type)
+
+    These restrictions enforce in particular that the result of all
+    multiplication and division operations on fixed-pints (with both fixed-point
+    arguments, or an integer argument) is in the "perfect result set" as defined
+    in Ada RM G.2.3: the result is either exact, or one of the two representable
+    values that are closest to the exact result. This property is axiomatized
+    below.
+
+    We use a type "__fixed" that is an alias of "int", to avoid confusion, for
+    the internal integer representation of a fixed-point value. This type is
+    used for performing all operations. In particular, addition, subtraction,
+    comparisons, Succ and Pred are directly operating on this type. Literals
+    are also expressed in this type. Multiplication and division are axiomatized
+    to reflect the constraints of Ada RM G.2.3.
+  *)
+
+  use import int.Int
+  use import real.RealInfix
+  use import "_gnatprove_standard".Main
+  use import "_gnatprove_standard_th".Integer_Func
+
+  type t
+
+  function dummy : t
+
+  function attr__ATTRIBUTE_IMAGE __fixed : __image
+
+  predicate attr__ATTRIBUTE_VALUE__pre_check (x : __image)
+
+  function attr__ATTRIBUTE_VALUE __image : __fixed
+
+  val attr__ATTRIBUTE_VALUE_ (x : __image) : __fixed
+    requires { attr__ATTRIBUTE_VALUE__pre_check x }
+    ensures { true }
+
+  (* A fixed-point type is represented internally as an integer. *)
+
+  function to_fixed t : __fixed
+
+  function of_fixed __fixed : t
+
+  val of_fixed (x : __fixed) : t
+    requires { true }
+    ensures { to_fixed(result) = x }
+
+  (* Inverse of the "small" value of the corresponding fixed-point type.
+     This is guaranteed to be a positive whole number, because we restrict
+     gnatprove analysis to fixed-point types with a "small" that is a negative
+     power of 2 or 10.
+
+     The real value of a fixed-point number can be obtained by dividing its
+     integer representation by inv_small.
+   *)
+  function inv_small : __fixed
+
+  function user_eq  (x : t) (y : t) : bool
+
+  axiom inversion_axiom :
+    forall x : t [to_fixed x].
+    of_fixed (to_fixed (x)) = x
+
+  (* multiplication between two fixed-point values *)
+
+  function fxp_mult (x : __fixed) (y : __fixed) : __fixed
+
+  axiom fxp_mult_def :
+    forall x : __fixed. forall y : __fixed [fxp_mult x y].
+      let exact = div (x * y) inv_small in
+      (* case 1: special case for zero *)
+      if x = 0 \/ y = 0 then
+        fxp_mult x y = 0
+      (* case 2: RM G.2.3(9,13) if the result is exact, that's it *)
+      else if x * y = exact * inv_small then
+        fxp_mult x y = exact
+      (* case 3: RM G.2.3(10,14/3) if the result is not exact, that's one of
+         the closest integers. *)
+      (* case 3.1: If both arguments are of the same sign, then the mathematical
+         result is between exact and exact+1, which are the possible results.
+
+         for example, with inv_small = 4:
+              x =  5, y =  3, exact = 3, math = 3.75, result in { 3, 4 }
+              x = -5, y = -3, exact = 3, math = 3.75, result in { 3, 4 }
+       *)
+      else if (x > 0 /\ y > 0) \/ (x < 0 /\ y < 0) then
+         exact <= fxp_mult x y <= exact + 1
+      (* case 3.2: If arguments are of opposite signs, then the mathematical
+         result is between exact-1 and exact, which are the possible results.
+
+         for example, with inv_small = 4:
+              x =  5, y = -3, exact = -3, math = -3.75, result in { -4, -3 }
+              x = -5, y =  3, exact = -3, math = -3.75, result in { -4, -3 }
+       *)
+      else if (x > 0 /\ y < 0) \/ (x < 0 /\ y > 0) then
+        exact - 1 <= fxp_mult x y <= exact
+      (* impossible case *)
+      else
+        false
+
+  (* division between two fixed-point values *)
+
+  function fxp_div (x : __fixed) (y : __fixed) : __fixed
+
+  val fxp_div_ (x : __fixed) (y : __fixed) : __fixed
+     requires { y<>0 }
+     ensures { result = fxp_div x y }
+
+  axiom fxp_div_def :
+    forall x : __fixed. forall y : __fixed [fxp_div x y].
+      let exact = div (x * inv_small) y in
+      (* case 1: special case for zero *)
+      if x = 0 then
+        fxp_div x y = 0
+      (* case 2: RM G.2.3(9,13) if the result is exact, that's it *)
+      else if x * inv_small = exact * y then
+        fxp_div x y = exact
+      (* case 3: RM G.2.3(10,14/3) if the result is not exact, that's one of
+         the closest integers. *)
+      (* case 3.1: If both arguments are of the same sign, then the mathematical
+         result is between exact and exact+1, which are the possible results.
+
+         for example, with inv_small = 4:
+              x =  5, y =  3, exact = 6, math = 6.666.., result in { 6, 7 }
+              x = -5, y = -3, exact = 6, math = 6.666.., result in { 6, 7 }
+       *)
+      else if (x > 0 /\ y > 0) \/ (x < 0 /\ y < 0) then
+        exact <= fxp_div x y <= exact + 1
+      (* case 3.2: If arguments are of opposite signs, then the mathematical
+         result is between exact-1 and exact, which are the possible results.
+
+         for example, with inv_small = 4:
+              x = -5, y =  3, exact = -6, math = -6.666.., result in { -7, -6 }
+              x =  5, y = -3, exact = -6, math = -6.666.., result in { -7, -6 }
+       *)
+      else if (x > 0 /\ y < 0) \/ (x < 0 /\ y > 0) then
+        exact - 1 <= fxp_div x y <= exact
+      (* impossible case *)
+      else
+        false
+
+  (* multiplication between a fixed-point value and an integer *)
+
+  function fxp_mult_int (x : __fixed) (y : int) : __fixed = x * y
+
+  (* division between a fixed-point value and an integer *)
+
+  function fxp_div_int (x : __fixed) (y : int) : __fixed
+
+  val fxp_div_int_ (x : __fixed) (y : int) : __fixed
+     requires { y<>0 }
+     ensures { result = fxp_div_int x y }
+
+  axiom fxp_div_int_def :
+    forall x : __fixed. forall y : int [fxp_div_int x y].
+      let exact = div x y in
+      (* case 1: special case for zero *)
+      if x = 0 then
+        fxp_div_int x y = 0
+      (* case 2: RM G.2.3(9,13) if the result is exact, that's it *)
+      else if x = exact * y then
+        fxp_div_int x y = exact
+      (* case 3: RM G.2.3(10,14/3) if the result is not exact, that's one of
+         the closest integers. *)
+      (* case 3.1: If both arguments are of the same sign, then the mathematical
+         result is between exact and exact+1, which are the possible results.
+
+         for example:
+              x =  5, y =  3, exact = 1, math = 1.666.., result in { 1, 2 }
+              x = -5, y = -3, exact = 1, math = 1.666.., result in { 1, 2 }
+       *)
+      else if (x > 0 /\ y > 0) \/ (x < 0 /\ y < 0) then
+        exact <= fxp_div_int x y <= exact + 1
+      (* case 3.2: If arguments are of opposite signs, then the mathematical
+         result is between exact-1 and exact, which are the possible results.
+
+         for example:
+              x = -5, y =  3, exact = -1, math = -1.666.., result in { -2, -1 }
+              x =  5, y = -3, exact = -1, math = -1.666.., result in { -2, -1 }
+       *)
+      else if (x > 0 /\ y < 0) \/ (x < 0 /\ y > 0) then
+        exact - 1 <= fxp_div_int x y <= exact
+      (* impossible case *)
+      else
+        false
+
+  (* conversion functions from/to int *)
+
+  function to_int (x : __fixed) : int
+
+  function of_int (x : int) : __fixed = x * inv_small
+
+  axiom to_int_def :
+    forall x : __fixed [to_int x].
+      let exact = div x inv_small in
+      (* case 1: special case for zero *)
+      if x = 0 then
+        to_int x = 0
+      (* case 2: RM G.2.3(9,13) if the result is exact, that's it *)
+      else if x = exact * inv_small then
+        to_int x = exact
+      (* case 3: RM G.2.3(10,14/3) if the result is not exact, that's one of
+         the closest integers. *)
+      (* case 3.1: If the argument is positive, then the mathematical
+         result is between exact and exact+1, which are the possible results.
+
+         for example, with inv_small = 4:
+              x = 5, exact = 1, math = 1.25, result in { 1, 2 }
+       *)
+      else if x > 0 then
+         exact <= to_int x <= exact + 1
+      (* case 3.2: If the argument is negative, then the mathematical
+         result is between exact-1 and exact, which are the possible results.
+
+         for example, with inv_small = 4:
+              x = -5, exact = -1, math = -1.25, result in { -2, -1 }
+       *)
+      else if x < 0 then
+        exact - 1 <= to_int x <= exact
+      (* impossible case *)
+      else
+        false
+
+  (* conversion functions from/to real *)
+
+  function to_real __fixed : real
+
+  function of_real real : __fixed
+
+end
+
+module Static_Fixed_Point
+  (* The module that is used as basis for all "static" fixed-point types.
+     "Static" here means that Why only sees a static version of the type,
+     with constants for the bounds, even though this might correspond to
+     dynamic types in Ada. *)
+
+  use import "_gnatprove_standard".Main
+  use import int.Int
+
+  clone export Fixed_Point_Base
+
+  function first : __fixed
+
+  function last : __fixed
+
+  val check_not_last (n : __fixed) : __fixed
+    requires { n <> last }
+    ensures { result = n }
+
+  val check_not_first (n : __fixed) : __fixed
+    requires { n <> first }
+    ensures { result = n }
+
+  predicate in_range (x : __fixed)
+
+  val range_check_ (n : __fixed) : __fixed
+    requires { in_range n }
+    ensures { result = n }
+
+  axiom range_axiom :
+    forall x : t. in_range (to_fixed x)
+end
+
+module Dynamic_Fixed_Point
+  (* The module that is used as basis for all "dynamic" fixed-point types.
+     "Dynamic" here means that Why sees a dynamic version of the type, with
+     references for the bounds, which correspond to some cases of dynamic
+     types in Ada. *)
+
+  use import "_gnatprove_standard".Main
+  use import int.Int
+  use import ref.Ref
+
+  clone export Fixed_Point_Base
+
+  val first : ref __fixed
+
+  val last : ref __fixed
+end
+
 module Floating_Point_Base
   (* The module that is used as basis for all floating-point types. *)
 
@@ -215,7 +506,7 @@ end
 module Unconstrained_Private_Type
   (* The module that is used as basis for unconstrained subtypes or derived types
  of  a private type from a module with External_Axiomatization. *)
-  
+
    type t
 
    function to_base "inline" (x : t) : t = x
@@ -225,7 +516,7 @@ module Unconstrained_Private_Type
 module Constrained_Private_Type
   (* The module that is used as basis for constrained subtypes or derived types
  of  a private type from a module with External_Axiomatization. *)
-  
+
    type t
    type base_type
 
@@ -311,13 +602,13 @@ module Array_Comparison_Axiom
       (Array__1.compare a a_first a_last b b_first b_last = 0 <->
           Array__1.bool_eq a a_first a_last b b_first b_last = True) /\
       (Array__1.compare a a_first a_last b b_first b_last < 0 <->
-         exists i j : int. i <= a_last /\ j < b_last /\ 
+         exists i j : int. i <= a_last /\ j < b_last /\
              (Array__1.bool_eq a a_first  i b b_first j = True /\
              (i = a_last \/
                    i < a_last /\
                        to_int (Array__1.get a (i + 1)) < to_int (Array__1.get b (j + 1))))) /\
       (Array__1.compare a a_first a_last b b_first b_last > 0 <->
-         exists i j : int. i <= b_last /\ j < a_last /\ 
+         exists i j : int. i <= b_last /\ j < a_last /\
              (Array__1.bool_eq a a_first j b b_first i = True /\
              (i = b_last \/ i < b_last /\
                        to_int (Array__1.get a (j + 1)) > to_int (Array__1.get b (i + 1)))))
@@ -377,7 +668,7 @@ module Array_Logical_Op_Generic_Axioms
     forall i : int [Array__1.get (Array__1.notb a a_first a_last) i].
       a_first <= i <= a_last ->
       to_bool (Array__1.get (Array__1.notb a a_first a_last) i) =
-             notb (to_bool (Array__1.get a i)) 
+             notb (to_bool (Array__1.get a i))
 end
 
 module Standard_Array_Logical_Op_Axioms

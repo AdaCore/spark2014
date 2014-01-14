@@ -373,8 +373,8 @@ package body Gnat2Why.Expr.Loops is
       Variant_Update  : W_Prog_Id := New_Void;
       Variant_Tmps    : Node_Lists.List;
 
-      Loop_Param_Ent         : Entity_Id := Empty;
-      Loop_Index             : W_Identifier_Id;
+      Loop_Param_Ent  : Entity_Id := Empty;
+      Loop_Index      : W_Identifier_Id;
       --  These two variables hold the loop parameter in Ada and Why, if any
 
    begin

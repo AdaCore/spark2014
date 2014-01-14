@@ -92,6 +92,9 @@ package SPARK_Util is
    function Has_Signed_Integer_Type (T : Entity_Id) return Boolean is
      (MUT_Kind (T) in Signed_Integer_Kind);
 
+   function Has_Fixed_Point_Type (T : Entity_Id) return Boolean is
+     (MUT_Kind (T) in Fixed_Point_Kind);
+
    --  The following type lists all possible forms of default initialization
    --  that may apply to a type.
 

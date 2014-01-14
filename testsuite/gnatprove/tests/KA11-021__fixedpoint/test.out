@@ -1,9 +1,8 @@
-pack.adb:6:25: warning: overflow check might fail
-pack.adb:6:25: warning: range check might fail
-pack.adb:7:27: warning: overflow check might fail
+pack.adb:6:25: info: overflow check proved
+pack.adb:6:25: info: range check proved
+pack.adb:7:27: info: overflow check proved
 pack.adb:7:27: warning: range check might fail
-pack.ads:7:12: warning: range check might fail
-pack.ads:11:48: warning: range check might fail
-pack.ads:18:19: warning: postcondition might fail, requires Stash + Pocket = Stash'Old + Pocket'old
-pack.ads:18:26: warning: overflow check might fail
-pack.ads:18:47: warning: overflow check might fail
+pack.ads:7:12: info: range check proved
+pack.ads:18:19: info: postcondition proved
+pack.ads:18:26: info: overflow check proved
+pack.ads:18:47: info: overflow check proved

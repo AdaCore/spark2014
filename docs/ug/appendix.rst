@@ -308,6 +308,18 @@ Tool Limitations
    define each unit in a separate file. You can use the gnatchop tool to
    automate this.
 
+#. A subset of all Ada fixed-point types and fixed-point operations is
+   supported:
+
+   * fixed-point types must have a small that is a negative power of 2 or 10
+   * multiplication and division between different fixed-point types and
+     universal real are rejected
+   * multiplication and division whose result type is not the same fixed-point
+     type as its fixed-point argument(s) are rejected
+
+   These restrictions ensure that the result of fixed-point operations always
+   belongs to the *perfect result set* as defined in Ada RM G.2.3.
+
 Static Rules Not Checked
 ------------------------
 
@@ -339,7 +351,7 @@ Flow Analysis Limitations
    (e.g., it could be used in defining the value of a constant) will
    cause a flow error::
 
-      "V" must be listed in the Initializes aspect of "P" (SPARK RM 7.1.5(12)) 
+      "V" must be listed in the Initializes aspect of "P" (SPARK RM 7.1.5(12))
 
    To work around this limitation a variable (either visible or hidden
    and represented by a state abstraction) has to be declared in P and

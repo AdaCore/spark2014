@@ -130,6 +130,7 @@ package Why.Inter is
 
    function EW_Bool_Type return W_Type_Id;
    function EW_Int_Type return W_Type_Id;
+   function EW_Fixed_Type return W_Type_Id;
    function EW_Real_Type return W_Type_Id;
    function EW_Private_Type return W_Type_Id;
    function EW_Unit_Type return W_Type_Id;
@@ -184,8 +185,8 @@ package Why.Inter is
    --  Same as unary Up, except that it stops when To is reached;
    --  i.e. if From = To then To is returned.
 
-   function  LCA (Left, Right : W_Type_Id;
-                  Force : Boolean := False) return W_Type_Id;
+   function LCA (Left, Right : W_Type_Id;
+                 Force : Boolean := False) return W_Type_Id;
    --  Return the lowest common ancestor in base type hierarchy,
    --  i.e. the smallest base type B such that Left <= B and right <= B.
    --  If Force = True, we also force B to be different from Left or Right,
@@ -209,6 +210,7 @@ private
 
    function EW_Bool_Type return W_Type_Id is (Why_Types (EW_Bool));
    function EW_Int_Type return W_Type_Id is (Why_Types (EW_Int));
+   function EW_Fixed_Type return W_Type_Id is (Why_Types (EW_Fixed));
    function EW_Private_Type return W_Type_Id is (Why_Types (EW_Private));
    function EW_Prop_Type return W_Type_Id is (Why_Types (EW_Prop));
    function EW_Real_Type return W_Type_Id is (Why_Types (EW_Real));

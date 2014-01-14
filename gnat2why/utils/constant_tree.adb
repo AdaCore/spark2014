@@ -79,7 +79,7 @@ package body Constant_Tree is
    -- LCA --
    ---------
 
-   function  LCA (Left, Right : Node_Type) return Node_Type is
+   function LCA (Left, Right : Node_Type) return Node_Type is
 
       function LCA_Subtree
         (From  : Node_Type;
@@ -101,15 +101,18 @@ package body Constant_Tree is
       begin
          if Left = Right then
             return Left;
-         end if;
 
-         if Left = From or else Right = From then
+         elsif Left = From or else Right = From then
             return From;
-         end if;
 
-         if T (From).Is_Ancestor_Of (Left)
-           and then T (From).Is_Ancestor_Of (Right)
+         --  Left and Right cannot be reached from this node; cut this branch
+
+         elsif not T (From).Is_Ancestor_Of (Left)
+           or else not T (From).Is_Ancestor_Of (Right)
          then
+            return Root;
+
+         else
             for Child in Node_Type'Range loop
                if T (From).Is_Parent_Of (Child) then
                   declare
@@ -126,11 +129,6 @@ package body Constant_Tree is
             --  No child is ancestor for both nodes; so we have reached the
             --  the LCA.
             return From;
-
-         else
-            --  Left and Right cannot be reached from this node; cut this
-            --  branch.
-            return Root;
          end if;
       end LCA_Subtree;
 

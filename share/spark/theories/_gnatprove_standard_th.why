@@ -6,6 +6,9 @@ theory Main_Main
   (* special private type *)
   type __private
 
+  (* special type for representation of fixed_point types *)
+  type __fixed = int
+
 end
 
 theory Integer_Func

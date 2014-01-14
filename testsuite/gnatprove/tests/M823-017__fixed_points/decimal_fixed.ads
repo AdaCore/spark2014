@@ -1,6 +1,6 @@
-package Binary_Fixed is
+package Decimal_Fixed is
 
-   type T is delta 2.0**(-8) range -10.0 .. 10.0;
+   type T is delta 0.1 range -10.0 .. 10.0;
 
    procedure Test_Minus (X : T) with
      Pre => X in -5.0 .. 5.0;
@@ -23,4 +23,4 @@ package Binary_Fixed is
    procedure Test_Compare (X : T) with
      Pre => X in -5.0 .. 5.0;
 
-end Binary_Fixed;
+end Decimal_Fixed;

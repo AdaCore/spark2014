@@ -23,14 +23,15 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Atree;   use Atree;
-with Einfo;   use Einfo;
-with Namet;   use Namet;
-with Nlists;  use Nlists;
-with Sem_Aux; use Sem_Aux;
-with Sinfo;   use Sinfo;
-with Snames;  use Snames;
-with Tbuild;  use Tbuild;
+with Atree;    use Atree;
+with Einfo;    use Einfo;
+with Namet;    use Namet;
+with Nlists;   use Nlists;
+with Sem_Aux;  use Sem_Aux;
+with Sem_Eval; use Sem_Eval;
+with Sinfo;    use Sinfo;
+with Snames;   use Snames;
+with Tbuild;   use Tbuild;
 
 package body SPARK_Rewrite is
 
@@ -40,6 +41,10 @@ package body SPARK_Rewrite is
    --
    --  Replace instantiations of unchecked conversions with
    --  N_Unchecked_Type_Conversion nodes.
+
+   procedure Rewrite_Identifier (N : Node_Id);
+   --  Replace identifiers by their compile-time known constant value when
+   --  possible.
 
    ------------------
    -- Rewrite_Call --
@@ -113,6 +118,38 @@ package body SPARK_Rewrite is
       end if;
    end Rewrite_Call;
 
+   ------------------------
+   -- Rewrite_Identifier --
+   ------------------------
+
+   --  The frontend performs only some constant folding, for example it does
+   --  not constant-fold real literals inside non-constant expressions. Perform
+   --  it here, to avoid generating unprovable VCs due to the translation of
+   --  constants, for example constants of fixed-point types.
+
+   procedure Rewrite_Identifier (N : Node_Id) is
+   begin
+      if Present (Entity (N))
+        and then Ekind (Entity (N)) = E_Constant
+      then
+         declare
+            Const_Expr : constant Node_Id := Constant_Value (Entity (N));
+         begin
+            if Present (Const_Expr)
+              and then Compile_Time_Known_Value (Const_Expr)
+            then
+               if Is_Integer_Type (Etype (N)) then
+                  Fold_Uint (N, Expr_Value (Const_Expr),
+                             Is_Static_Expression (N));
+               elsif Is_Real_Type (Etype (N)) then
+                  Fold_Ureal (N, Expr_Value_R (Const_Expr),
+                              Is_Static_Expression (N));
+               end if;
+            end if;
+         end;
+      end if;
+   end Rewrite_Identifier;
+
    ------------------------------
    -- Rewrite_Compilation_Unit --
    ------------------------------
@@ -132,6 +169,9 @@ package body SPARK_Rewrite is
       function Rewrite_Node (N : Node_Id) return Traverse_Result is
       begin
          case Nkind (N) is
+            when N_Identifier | N_Expanded_Name =>
+               Rewrite_Identifier (N);
+
             when N_Subprogram_Call =>
                Rewrite_Call (N);
 

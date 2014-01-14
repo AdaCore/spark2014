@@ -165,6 +165,10 @@ package Why.Gen.Names is
       WNE_Attr_Last,
       WNE_Attr_Length,
       WNE_Attr_Modulus,
+
+      --  Integer value of the inverse of the "small" of a fixed-point type
+      WNE_Attr_Small,
+
       WNE_Attr_Value,
       WNE_Attr_Value_Pre_Check,
       WNE_Base_Type,
@@ -183,6 +187,14 @@ package Why.Gen.Names is
       WNE_Def,
       WNE_Dummy,
 
+      --  Division operator for a fixed-point type
+      WNE_Fixed_Point_Div,
+      WNE_Fixed_Point_Div_Int,
+
+      --  Multiplication operators for a fixed-point type
+      WNE_Fixed_Point_Mult,
+      WNE_Fixed_Point_Mult_Int,
+
       --  Name of an unknown floating-point rounding operation, when the
       --  floating-point type is neither single precision nor double precision.
       WNE_Float_Round,
@@ -195,6 +207,7 @@ package Why.Gen.Names is
       WNE_Of_Array,
       WNE_Of_Base,
       WNE_Of_Int,
+      WNE_Of_Fixed,
       WNE_Of_Real,
       WNE_Of_String,
       WNE_Range_Check_Fun,
@@ -206,6 +219,7 @@ package Why.Gen.Names is
       WNE_To_Array,
       WNE_To_Base,
       WNE_To_Int,
+      WNE_To_Fixed,
       WNE_To_Real,
       WNE_To_String,
       WNE_Type
@@ -260,10 +274,8 @@ package Why.Gen.Names is
                     N        : String;
                     Ada_Node : Node_Id := Empty) return W_Identifier_Id;
 
-   function Convert_To (Kind : EW_Basic_Type) return Why_Name_Enum
-   with Pre => (Kind in EW_Int | EW_Real);
+   function Convert_To (Kind : EW_Numeric) return Why_Name_Enum;
 
-   function Convert_From (Kind : EW_Basic_Type) return Why_Name_Enum
-   with Pre => (Kind in EW_Int | EW_Real);
+   function Convert_From (Kind : EW_Numeric) return Why_Name_Enum;
 
 end Why.Gen.Names;

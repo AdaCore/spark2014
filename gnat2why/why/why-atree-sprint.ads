@@ -134,6 +134,10 @@ private
      (State : in out Printer_State;
       Node  : W_Integer_Constant_Id);
 
+   procedure Fixed_Constant_Pre_Op
+     (State : in out Printer_State;
+      Node  : W_Fixed_Constant_Id);
+
    procedure Real_Constant_Pre_Op
      (State : in out Printer_State;
       Node  : W_Real_Constant_Id);

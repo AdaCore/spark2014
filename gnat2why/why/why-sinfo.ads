@@ -311,6 +311,13 @@ package Why.Sinfo is
    --
    --  The node for integer literals.
    --
+   --  ----------------------
+   --  -- W_Fixed_Constant --
+   --  ----------------------
+   --  Value       Uint
+   --
+   --  The node for fixed-point literals.
+   --
    --  ---------------------
    --  -- W_Real_Constant --
    --  ---------------------
@@ -669,6 +676,7 @@ package Why.Sinfo is
       -------------------------
 
       W_Integer_Constant,
+      W_Fixed_Constant,
       W_Real_Constant,
       W_Void,
       W_Binary_Op,
@@ -734,6 +742,7 @@ package Why.Sinfo is
       EW_Prop,
       EW_Bool,
       EW_Int,
+      EW_Fixed,
       EW_Real,
 
       --  This is the set of all private types whose most underlying type is
@@ -750,6 +759,7 @@ package Why.Sinfo is
        EW_Prop ..
    --  EW_Bool
    --  EW_Int
+   --  EW_Fixed
    --  EW_Real
    --  EW_Private
        EW_Abstract;
@@ -757,6 +767,7 @@ package Why.Sinfo is
    subtype EW_Term_Type is EW_Not_Null_Type range
        EW_Bool ..
    --  EW_Int
+   --  EW_Fixed,
    --  EW_Real
    --  EW_Private
        EW_Abstract;
@@ -766,6 +777,7 @@ package Why.Sinfo is
    --  EW_Prop
    --  EW_Bool
    --  EW_Int
+   --  EW_Fixed
        EW_Real;
 
    subtype EW_Basic_Type is EW_Type range
@@ -773,16 +785,19 @@ package Why.Sinfo is
    --  EW_Prop
    --  EW_Bool
    --  EW_Int
+   --  EW_Fixed
    --  EW_Real
        EW_Private;
 
    subtype EW_Scalar is EW_Base_Type range
        EW_Bool ..
    --  EW_Int
+   --  EW_Fixed
        EW_Real;
 
    subtype EW_Numeric is EW_Base_Type range
        EW_Int ..
+   --  EW_Fixed
        EW_Real;
 
    type EW_Literal is

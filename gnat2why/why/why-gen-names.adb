@@ -140,6 +140,7 @@ package body Why.Gen.Names is
          when Attribute_Modulus => return WNE_Attr_Modulus;
          when Attribute_Length  => return WNE_Attr_Length;
          when Attribute_Value   => return WNE_Attr_Value;
+         when Attribute_Small   => return WNE_Attr_Small;
          when others =>
             raise Program_Error;
       end case;
@@ -253,14 +254,12 @@ package body Why.Gen.Names is
    -- Convert_From --
    ------------------
 
-   function Convert_From (Kind : EW_Basic_Type) return Why_Name_Enum
-   is
+   function Convert_From (Kind : EW_Numeric) return Why_Name_Enum is
    begin
       case Kind is
-         when EW_Int => return WNE_Of_Int;
-         when EW_Real => return WNE_Of_Real;
-         when others =>
-            raise Program_Error;
+         when EW_Int   => return WNE_Of_Int;
+         when EW_Fixed => return WNE_Of_Fixed;
+         when EW_Real  => return WNE_Of_Real;
       end case;
    end Convert_From;
 
@@ -268,14 +267,12 @@ package body Why.Gen.Names is
    -- Convert_To --
    ----------------
 
-   function Convert_To (Kind : EW_Basic_Type) return Why_Name_Enum
-   is
+   function Convert_To (Kind : EW_Numeric) return Why_Name_Enum is
    begin
       case Kind is
-         when EW_Int => return WNE_To_Int;
-         when EW_Real => return WNE_To_Real;
-         when others =>
-            raise Program_Error;
+         when EW_Int   => return WNE_To_Int;
+         when EW_Fixed => return WNE_To_Fixed;
+         when EW_Real  => return WNE_To_Real;
       end case;
    end Convert_To;
 
@@ -294,6 +291,8 @@ package body Why.Gen.Names is
             return "real";
          when EW_Int =>
             return "int";
+         when EW_Fixed =>
+            return "** special ""fixed"" type **";
          when EW_Bool =>
             return "bool";
          when EW_Private =>
@@ -321,7 +320,7 @@ package body Why.Gen.Names is
       case Kind is
          when EW_Real =>
             return Floating_Abs_Real;
-         when EW_Int =>
+         when EW_Int | EW_Fixed =>
             return Integer_Abs;
       end case;
    end New_Abs;
@@ -350,7 +349,7 @@ package body Why.Gen.Names is
         );
       M : constant W_Module_Id :=
         (case Kind is
-         when EW_Int  => Integer_Module,
+         when EW_Int | EW_Fixed => Integer_Module,
          when EW_Real => Floating_Module,
          when EW_Bool => Boolean_Module,
          when EW_Unit .. EW_Prop | EW_Private => Main_Module,
@@ -372,6 +371,8 @@ package body Why.Gen.Names is
             return Floating_Div_Real;
          when EW_Int =>
             return Integer_Div;
+         when EW_Fixed =>
+            raise Program_Error;
       end case;
    end New_Division;
 
@@ -386,6 +387,8 @@ package body Why.Gen.Names is
             return Floating_Power;
          when EW_Int =>
             return Integer_Power;
+         when EW_Fixed =>
+            raise Program_Error;
       end case;
    end New_Exp;
 
@@ -524,6 +527,8 @@ package body Why.Gen.Names is
          when WNE_Range_Pred   => return "in_range";
          when WNE_To_Int       => return "to_int";
          when WNE_Of_Int       => return "of_int";
+         when WNE_To_Fixed     => return "to_fixed";
+         when WNE_Of_Fixed     => return "of_fixed";
          when WNE_To_Real      => return "to_real";
          when WNE_Of_Real      => return "of_real";
          when WNE_To_Array     => return "to_array";
@@ -538,6 +543,10 @@ package body Why.Gen.Names is
          when WNE_Bool_Or      => return "orb";
          when WNE_Bool_Xor     => return "xorb";
          when WNE_Bool_Not     => return "notb";
+         when WNE_Fixed_Point_Div => return "fxp_div";
+         when WNE_Fixed_Point_Mult => return "fxp_mult";
+         when WNE_Fixed_Point_Div_Int => return "fxp_div_int";
+         when WNE_Fixed_Point_Mult_Int => return "fxp_mult_int";
          when WNE_Float_Round   => return "round_real";
          when WNE_Float_Round_Tmp => return "round_real_tmp";
          when WNE_Array_Access => return "get";
@@ -573,6 +582,7 @@ package body Why.Gen.Names is
             return "attr__" & Attribute_Id'Image (Attribute_Image);
          when WNE_Attr_Modulus =>
             return "attr__" & Attribute_Id'Image (Attribute_Modulus);
+         when WNE_Attr_Small    => return "inv_small";
          when WNE_Attr_Value   =>
             return "attr__" & Attribute_Id'Image (Attribute_Value);
          when WNE_Attr_Value_Pre_Check =>
@@ -725,6 +735,8 @@ package body Why.Gen.Names is
             return "int";
          when EW_Real =>
             return "real";
+         when EW_Fixed =>
+            return "** special ""fixed"" type **";
       end case;
    end Why_Scalar_Type_Name;
 

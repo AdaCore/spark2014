@@ -769,7 +769,7 @@ package body Gnat2Why.Nodes is
       if Is_Standard_Boolean_Type (E) then
          return Why_Scalar_Type_Name (EW_Bool);
       elsif E = Universal_Fixed then
-         return Why_Scalar_Type_Name (EW_Real);
+         return Why_Scalar_Type_Name (EW_Fixed);
       else
          return Full_Name (E);
       end if;
