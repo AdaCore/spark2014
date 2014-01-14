@@ -959,7 +959,10 @@ package body Why.Gen.Records is
       Check_Ty : Entity_Id;
       Expr     : W_Prog_Id) return W_Prog_Id
    is
-      Root : constant Entity_Id := Root_Record_Type (Check_Ty);
+      Root : constant Entity_Id :=
+        (if Type_Based_On_External_Axioms (Check_Ty) then
+              Underlying_External_Axioms_Type (Check_Ty)
+         else Root_Record_Type (Check_Ty));
    begin
       --  We make a last verification here to see whether a discriminant check
       --  is actually necessary.

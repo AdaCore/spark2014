@@ -549,12 +549,22 @@ package body Why.Gen.Expr is
       T : W_Expr_Id := Expr;
 
    begin
-      --  Conversion between record types need to go through their common root
-      --  record type. A discriminant check may be needed. Currently perform it
-      --  on all discriminant record types, as the flag Do_Discriminant_Check
-      --  is not set appropriately by the frontend on type conversions.
 
-      if Is_Record_Conversion (From, To) then
+      if Is_Ext_Axioms_Conversion (From, To) then
+
+         T := Insert_Private_Conversion (Domain     => Domain,
+                                         Ada_Node   => Ada_Node,
+                                         Expr       => T,
+                                         To         => To,
+                                         Need_Check => Check_Needed);
+
+      elsif Is_Record_Conversion (From, To) then
+         --  Conversion between record types need to go through their common
+         --  root record type. A discriminant check may be needed. Currently
+         --  perform it on all discriminant record types, as the flag
+         --  Do_Discriminant_Check is not set appropriately by the frontend on
+         --  type conversions.
+
          T := Insert_Record_Conversion (Domain     => Domain,
                                         Ada_Node   => Ada_Node,
                                         Expr       => T,
@@ -624,6 +634,68 @@ package body Why.Gen.Expr is
       return T;
    end Insert_Checked_Conversion;
 
+   -------------------------------
+   -- Insert_Private_Conversion --
+   -------------------------------
+
+   function Insert_Private_Conversion
+     (Ada_Node   : Node_Id;
+      Domain     : EW_Domain;
+      Expr       : W_Expr_Id;
+      To         : W_Type_Id;
+      Need_Check : Boolean := False) return W_Expr_Id
+   is
+      From       : constant W_Type_Id := Get_Type (Expr);
+      --  Current result expression
+      Result : W_Expr_Id := Expr;
+
+      L : constant Node_Id := Get_Ada_Node (+From);
+      R : constant Node_Id := Get_Ada_Node (+To);
+      pragma Assert (Root_Record_Type (L) = Root_Record_Type (R));
+
+      --  Record in units with external axiomatization may have a root type not
+      --  in SPARK. We use the private type declared in the package with
+      --  external axioms as the common type.
+
+      Base : constant W_Type_Id :=
+        EW_Abstract (Underlying_External_Axioms_Type (L));
+
+   begin
+      --  When From = To and no check needs to be inserted, do nothing
+
+      if Eq_Base (To, From) and not Need_Check then
+         return Expr;
+      end if;
+
+      --  1. Convert From -> Base
+
+      Result := Insert_Single_Conversion (Domain   => Domain,
+                                          Ada_Node => Ada_Node,
+                                          To       => Base,
+                                          Expr     => Result);
+
+      --  2. Possibly perform the discriminant check
+
+      if Domain = EW_Prog and Need_Check then
+         declare
+            Check_Entity : constant Entity_Id := Get_Ada_Node (+To);
+         begin
+            Result := +Insert_Subtype_Discriminant_Check (Ada_Node,
+                                                          Check_Entity,
+                                                          +Result);
+         end;
+      end if;
+
+      --  3. Convert Base -> To
+
+      Result := Insert_Single_Conversion (Domain   => Domain,
+                                          Ada_Node => Ada_Node,
+                                          To       => To,
+                                          Expr     => Result);
+
+      return Result;
+   end Insert_Private_Conversion;
+
    ------------------------------
    -- Insert_Record_Conversion --
    ------------------------------
@@ -643,15 +715,7 @@ package body Why.Gen.Expr is
       R : constant Node_Id := Get_Ada_Node (+To);
       pragma Assert (Root_Record_Type (L) = Root_Record_Type (R));
 
-      --  Record in units with external axiomatization may have a root type not
-      --  in SPARK. Conversions between these record types is expected to be
-      --  noop, and so we use type L as common type.
-
-      Base : constant W_Type_Id :=
-        (if Entity_In_External_Axioms (Root_Record_Type (L)) then
-           EW_Abstract (L)
-         else
-           EW_Abstract (Root_Record_Type (L)));
+      Base : constant W_Type_Id := EW_Abstract (Root_Record_Type (L));
 
    begin
       --  When From = To and no check needs to be inserted, do nothing

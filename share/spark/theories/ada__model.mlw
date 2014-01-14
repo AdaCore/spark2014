@@ -212,6 +212,30 @@ module Dynamic_Floating_Point
   val last  : ref real
 end
 
+module Unconstrained_Private_Type
+  (* The module that is used as basis for unconstrained subtypes or derived types
+ of  a private type from a module with External_Axiomatization. *)
+  
+   type t
+
+   function to_base "inline" (x : t) : t = x
+   function of_base "inline" (x : t) : t = x
+ end
+
+module Constrained_Private_Type
+  (* The module that is used as basis for constrained subtypes or derived types
+ of  a private type from a module with External_Axiomatization. *)
+  
+   type t
+   type base_type
+
+   function to_base t : base_type
+   function of_base base_type : t
+
+   axiom inversion_axiom:
+      forall x : t [of_base (to_base x)]. of_base (to_base x) = x
+ end
+
 (* The following modules are templates for unconstrained and constrained array
 types. Only the one for one dimension is commented, the others are very similar *)
 

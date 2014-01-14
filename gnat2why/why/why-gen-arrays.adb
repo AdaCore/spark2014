@@ -510,7 +510,7 @@ package body Why.Gen.Arrays is
             Subst (Cursor) :=
               New_Clone_Substitution
                 (Kind      => EW_Type_Subst,
-                 Orig_Name => Append_Num (WNE_Array_Base_Type, Dim_Count),
+                 Orig_Name => Append_Num (WNE_Base_Type, Dim_Count),
                  Image     => Ident_Of_Ada_Type (B_Ty));
             Cursor := Cursor + 1;
             Subst (Cursor) :=

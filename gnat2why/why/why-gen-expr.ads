@@ -258,6 +258,15 @@ package Why.Gen.Expr is
    --  when Discr_Check is set, a discriminant check is inserted into the
    --  conversion, and the node is used to determine the subtype for the check.
 
+   function Insert_Private_Conversion
+     (Ada_Node   : Node_Id;
+      Domain     : EW_Domain;
+      Expr       : W_Expr_Id;
+      To         : W_Type_Id;
+      Need_Check : Boolean := False) return W_Expr_Id;
+   --  when Need_Check is set, a discriminant check is inserted into the
+   --  conversion, and the node is used to determine the subtype for the check.
+
    function New_Typed_Binding
      (Ada_Node : Node_Id := Empty;
       Domain   : EW_Domain;

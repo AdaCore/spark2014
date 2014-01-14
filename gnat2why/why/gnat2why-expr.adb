@@ -1681,7 +1681,16 @@ package body Gnat2Why.Expr is
                     New_Call (Ada_Node => N,
                               Domain   => Domain,
                               Name     => Id,
-                              Args     => (1 => Expr),
+                              Args     =>
+                                (1 => Insert_Simple_Conversion
+                                     (Ada_Node => N,
+                                      Domain   => Domain,
+                                      Expr     => Expr,
+                                      To       =>
+                                        EW_Abstract
+                                          (Underlying_External_Axioms_Type
+                                             (Unique_Entity
+                                                (Scope (Sel_Ent)))))),
                               Typ      => Type_Of_Node (N));
                else
                   return

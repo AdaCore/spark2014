@@ -228,8 +228,12 @@ package body Why.Gen.Names is
                   declare
                      From_Node : constant Node_Id := Get_Ada_Node (+From);
                      To_Node   : constant Node_Id := Get_Ada_Node (+To);
+                     From_Base : constant Node_Id :=
+                       (if Type_Based_On_External_Axioms (From_Node) then
+                             Underlying_External_Axioms_Type (From_Node)
+                        else Root_Record_Type (From_Node));
                   begin
-                     if Root_Record_Type (From_Node) = From_Node then
+                     if From_Base = From_Node then
                         return
                           Prefix (Ada_Node => To_Node,
                                   M        => E_Module (To_Node),
@@ -537,7 +541,7 @@ package body Why.Gen.Names is
          when WNE_Float_Round   => return "round_real";
          when WNE_Float_Round_Tmp => return "round_real_tmp";
          when WNE_Array_Access => return "get";
-         when WNE_Array_Base_Type => return "base_type";
+         when WNE_Base_Type    => return "base_type";
          when WNE_Array_Elts   => return "elts";
          when WNE_Array_Base_Range_Pred => return "in_range_base";
          when WNE_Array_Update => return "set";

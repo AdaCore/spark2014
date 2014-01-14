@@ -152,7 +152,6 @@ package Why.Gen.Names is
      (
       WNE_Array_Access,
       WNE_Array_Base_Range_Pred,
-      WNE_Array_Base_Type,
       WNE_Array_Compare,
       WNE_Array_Component_Type,
       WNE_Array_Concat,
@@ -168,6 +167,7 @@ package Why.Gen.Names is
       WNE_Attr_Modulus,
       WNE_Attr_Value,
       WNE_Attr_Value_Pre_Check,
+      WNE_Base_Type,
       WNE_Bool_And,
       WNE_Bool_Eq,
       WNE_Bool_Ge,

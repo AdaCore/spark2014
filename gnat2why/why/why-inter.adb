@@ -1077,16 +1077,6 @@ package body Why.Inter is
       end case;
    end Get_EW_Term_Type;
 
-   --------------------------
-   -- Is_Record_Conversion --
-   --------------------------
-
-   function Is_Record_Conversion (Left, Right : W_Type_Id) return Boolean
-   is (Get_Base_Type (Base_Why_Type (Left)) in EW_Abstract | EW_Split and then
-       Get_Base_Type (Base_Why_Type (Right)) in EW_Abstract | EW_Split and then
-       Has_Record_Type (Get_Ada_Node (+Left)) and then
-       Has_Record_Type (Get_Ada_Node (+Right)));
-
    -------------------------
    -- Is_Array_Conversion --
    -------------------------
@@ -1096,6 +1086,41 @@ package body Why.Inter is
        Get_Base_Type (Base_Why_Type (Right)) in EW_Abstract | EW_Split and then
        Has_Array_Type (Get_Ada_Node (+Left)) and then
        Has_Array_Type (Get_Ada_Node (+Right)));
+
+   ------------------------------
+   -- Is_Ext_Axioms_Conversion --
+   ------------------------------
+
+   function Is_Ext_Axioms_Conversion (Left, Right : W_Type_Id) return Boolean
+   is
+   begin
+      if Get_Base_Type (Base_Why_Type (Left)) in EW_Abstract | EW_Split
+        and then
+        Get_Base_Type (Base_Why_Type (Right)) in EW_Abstract | EW_Split
+      then
+         declare
+            Uleft  : constant Entity_Id :=
+              Underlying_External_Axioms_Type (Get_Ada_Node (+Left));
+            Uright : constant Entity_Id :=
+              Underlying_External_Axioms_Type (Get_Ada_Node (+Right));
+         begin
+            return
+              Present (Uleft) and then Is_Private_Type (Uleft) and then
+              Present (Uright) and then Is_Private_Type (Uright);
+         end;
+      end if;
+      return False;
+   end Is_Ext_Axioms_Conversion;
+
+   --------------------------
+   -- Is_Record_Conversion --
+   --------------------------
+
+   function Is_Record_Conversion (Left, Right : W_Type_Id) return Boolean
+   is (Get_Base_Type (Base_Why_Type (Left)) in EW_Abstract | EW_Split and then
+       Get_Base_Type (Base_Why_Type (Right)) in EW_Abstract | EW_Split and then
+       Has_Record_Type (Get_Ada_Node (+Left)) and then
+       Has_Record_Type (Get_Ada_Node (+Right)));
 
    ---------
    -- LCA --
@@ -1248,7 +1273,11 @@ package body Why.Inter is
             Field : constant String :=
               "rec__" & Get_Name_String (Chars (E));
             Ada_N : constant Node_Id :=
-              (if Rec = Empty then Unique_Entity (Scope (E)) else Rec);
+              (if Rec = Empty then
+                 (if Type_Based_On_External_Axioms (Unique_Entity (Scope (E)))
+                  then Underlying_External_Axioms_Type
+                    (Unique_Entity (Scope (E)))
+                  else Unique_Entity (Scope (E))) else Rec);
          begin
             if Local then
                return New_Identifier (Ada_Node => Ada_N,
