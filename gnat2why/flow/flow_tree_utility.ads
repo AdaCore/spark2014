@@ -68,10 +68,14 @@ package Flow_Tree_Utility is
       with Post => Nkind (Get_Enclosing'Result) = K;
    --  Returns the first parent P of N where Nkind (P) = K.
 
+   function Has_Volatile (E : Entity_Id) return Boolean
+     with Pre => Nkind (E) in N_Entity;
+   --  Checks if the given entity is volatile.
+
    function Has_Volatile_Aspect (E : Entity_Id;
                                  A : Pragma_Id)
                                  return Boolean
-     with Pre => (Treat_As_Volatile (E) or Treat_As_Volatile (Etype (E))) and
+     with Pre => Has_Volatile (E) and
                  A in Pragma_Async_Readers    | Pragma_Async_Writers |
                       Pragma_Effective_Writes | Pragma_Effective_Reads;
    --  Checks if the given entity (or its type) has the specified aspect.

@@ -190,6 +190,20 @@ package body Flow_Tree_Utility is
       return Ptr;
    end Get_Enclosing;
 
+   ------------------
+   -- Has_Volatile --
+   ------------------
+
+   function Has_Volatile (E : Entity_Id) return Boolean is
+   begin
+      case Ekind (E) is
+         when Type_Kind =>
+            return Is_Volatile (E);
+         when others =>
+            return Is_Volatile (E) or else Has_Volatile (Etype (E));
+      end case;
+   end Has_Volatile;
+
    -------------------------
    -- Has_Volatile_Aspect --
    -------------------------

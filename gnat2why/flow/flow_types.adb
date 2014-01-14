@@ -353,8 +353,8 @@ package body Flow_Types is
             begin
                case Ekind (E) is
                   when Object_Kind =>
-                     return Treat_As_Volatile (E) or else
-                       Treat_As_Volatile (Etype (E));
+                     return Is_Volatile (E) or else
+                       Is_Volatile (Etype (E));
                   when others =>
                      return False;
                end case;
