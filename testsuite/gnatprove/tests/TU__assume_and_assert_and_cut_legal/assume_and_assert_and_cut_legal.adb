@@ -2,8 +2,8 @@ package body Assume_And_Assert_And_Cut_Legal is
    procedure Assume_Creates_No_Proof_Obligation (Par  : in     Integer;
                                                  Par2 :    out Integer)
      --  TU: 2. Pragma Assume is an assertion the same as a pragma Assert
-     --  except that there is no proof obligation to prove the truth of the
-     --  Boolean expression that is its actual parameter. [Pragma Assume
+     --  except that there is no verification condition to prove the truth of
+     --  the Boolean expression that is its actual parameter. [Pragma Assume
      --  indicates to proof tools that the expression can be assumed to be
      --  True.]
      with Post => (Par2 >= 10)

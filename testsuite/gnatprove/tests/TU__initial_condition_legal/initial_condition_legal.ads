@@ -10,9 +10,9 @@ package Initial_Condition_Legal
   --  point where it is evaluated [, at which point everything that it
   --  might freeze has already been frozen].
 
-  --  TU: 6. [The Initial_Condition aspect gives a proof obligation to show
-  --  that the implementation of the ``package_specification`` and its body
-  --  satisfy the predicate given in the Initial_Condition aspect.]
+  --  TU: 6. [The Initial_Condition aspect gives a verification condition to
+  --  show that the implementation of the ``package_specification`` and its
+  --  body satisfy the predicate given in the Initial_Condition aspect.]
   with SPARK_Mode,
        Abstract_State    => State,
        Initializes       => (State, Var),
