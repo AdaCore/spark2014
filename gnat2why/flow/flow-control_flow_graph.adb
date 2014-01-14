@@ -2705,7 +2705,8 @@ package body Flow.Control_Flow_Graph is
       P := First (L);
       while Present (P) loop
          case Nkind (P) is
-            when N_Freeze_Generic_Entity        |
+            when N_Freeze_Entity                |
+              N_Freeze_Generic_Entity           |
               N_Generic_Instantiation           |
               N_Generic_Package_Declaration     |
               N_Generic_Subprogram_Declaration  |
@@ -2726,8 +2727,7 @@ package body Flow.Control_Flow_Graph is
               N_Subprogram_Renaming_Declaration |
               N_Use_Package_Clause              |
               N_Use_Type_Clause                 |
-              N_Validate_Unchecked_Conversion   |
-              N_Freeze_Entity                   =>
+              N_Validate_Unchecked_Conversion   =>
                --  We completely skip these.
                null;
 
