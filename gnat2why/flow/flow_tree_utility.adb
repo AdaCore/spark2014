@@ -173,8 +173,6 @@ package body Flow_Tree_Utility is
         and then Present (Corresponding_Stub (Parent (N)))
       then
          return Corresponding_Stub (Parent (N));
-      elsif Nkind (Parent (Parent (N))) in N_Body_Stub then
-         return Parent (Parent (N));
       else
          return N;
       end if;
