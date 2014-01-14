@@ -32,6 +32,7 @@ with Flow.Debug;             use Flow.Debug;
 
 with Why;
 with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
+with SPARK_Definition;       use SPARK_Definition;
 
 with Flow_Tree_Utility;      use Flow_Tree_Utility;
 
@@ -651,7 +652,8 @@ package body Flow.Utility is
    begin
       Get_Globals
         (Subprogram             => Subprogram,
-         Scope                  => (if Present (Body_E)
+         Scope                  => (if Present (Body_E) and then
+                                      Entity_Body_In_SPARK (Subprogram)
                                     then Get_Flow_Scope (Body_E)
                                     else Get_Flow_Scope (Subprogram)),
          Proof_Ins              => Proof_Ins,

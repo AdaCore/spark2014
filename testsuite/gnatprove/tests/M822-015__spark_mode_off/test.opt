@@ -1,1 +1,0 @@
-ALL XFAIL wrong effects lead to use-before-def in Why (MC12-024)
