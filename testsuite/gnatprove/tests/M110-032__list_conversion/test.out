@@ -1,0 +1,7 @@
+my_lists.adb:6:23: info: discriminant check proved
+my_lists.adb:20:7: info: assertion proved
+my_lists.adb:21:7: info: assertion proved
+my_lists.adb:22:7: info: assertion proved
+my_lists.adb:23:7: info: assertion proved
+my_lists.adb:24:7: info: assertion proved
+my_lists.adb:25:7: info: assertion proved
