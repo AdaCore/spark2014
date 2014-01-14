@@ -2705,28 +2705,29 @@ package body Flow.Control_Flow_Graph is
       P := First (L);
       while Present (P) loop
          case Nkind (P) is
-            when N_Freeze_Entity                |
-              N_Freeze_Generic_Entity           |
-              N_Label                           |
-              N_Implicit_Label_Declaration      |
-              N_Subprogram_Body                 |
-              N_Subprogram_Declaration          |
-              N_Generic_Subprogram_Declaration  |
+            when N_Freeze_Generic_Entity        |
+              N_Generic_Instantiation           |
               N_Generic_Package_Declaration     |
-              N_Representation_Clause           |
+              N_Generic_Subprogram_Declaration  |
+              N_Implicit_Label_Declaration      |
+              N_Incomplete_Type_Declaration     |
+              N_Itype_Reference                 |
+              N_Label                           |
+              N_Number_Declaration              |
+              N_Object_Renaming_Declaration     |
               N_Package_Body                    |
               N_Package_Body_Stub               |
-              N_Generic_Instantiation           |
-              N_Subprogram_Body_Stub            |
-              N_Incomplete_Type_Declaration     |
-              N_Use_Package_Clause              |
-              N_Use_Type_Clause                 |
-              N_Object_Renaming_Declaration     |
-              N_Subprogram_Renaming_Declaration |
-              N_Validate_Unchecked_Conversion   |
               N_Package_Renaming_Declaration    |
               N_Private_Type_Declaration        |
-              N_Number_Declaration              =>
+              N_Representation_Clause           |
+              N_Subprogram_Body                 |
+              N_Subprogram_Body_Stub            |
+              N_Subprogram_Declaration          |
+              N_Subprogram_Renaming_Declaration |
+              N_Use_Package_Clause              |
+              N_Use_Type_Clause                 |
+              N_Validate_Unchecked_Conversion   |
+              N_Freeze_Entity                   =>
                --  We completely skip these.
                null;
 
