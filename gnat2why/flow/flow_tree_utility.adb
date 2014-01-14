@@ -163,6 +163,23 @@ package body Flow_Tree_Utility is
       end case;
    end Get_Body;
 
+   ----------------------
+   -- Get_Body_Or_Stub --
+   ----------------------
+
+   function Get_Body_Or_Stub (N : Node_Id) return Node_Id is
+   begin
+      if Nkind (Parent (N)) = N_Subunit
+        and then Present (Corresponding_Stub (Parent (N)))
+      then
+         return Corresponding_Stub (Parent (N));
+      elsif Nkind (Parent (Parent (N))) in N_Body_Stub then
+         return Parent (Parent (N));
+      else
+         return N;
+      end if;
+   end Get_Body_Or_Stub;
+
    -----------------------------
    -- Last_Statement_Is_Raise --
    -----------------------------

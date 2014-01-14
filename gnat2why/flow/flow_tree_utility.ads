@@ -40,12 +40,12 @@ package Flow_Tree_Utility is
    --  Check for 'Loop_Entry in the given tree.
 
    function Get_Procedure_Specification (E : Entity_Id) return Node_Id
-      with Pre  => Ekind (E) = E_Procedure,
-           Post => Nkind (Get_Procedure_Specification'Result) =
-             N_Procedure_Specification;
+     with Pre  => Ekind (E) = E_Procedure,
+          Post => Nkind (Get_Procedure_Specification'Result) =
+            N_Procedure_Specification;
 
    function Might_Be_Main (E : Entity_Id) return Boolean
-      with Pre => Ekind (E) in Subprogram_Kind;
+     with Pre => Ekind (E) in Subprogram_Kind;
    --  Returns True if E is a library level subprogram without formal
    --  parameters (E is allowed to have global parameters).
 
@@ -54,18 +54,21 @@ package Flow_Tree_Utility is
    --  returns true for any abstract state.
 
    function Get_Body (E : Entity_Id) return Entity_Id
-      with Pre  => Ekind (E) in E_Function | E_Procedure,
-           Post => (not Present (Get_Body'Result))
-                      or else Ekind (Get_Body'Result) = E_Subprogram_Body;
+     with Pre  => Ekind (E) in E_Function | E_Procedure,
+          Post => (not Present (Get_Body'Result))
+                     or else Ekind (Get_Body'Result) = E_Subprogram_Body;
    --  Fetches the body entity for a subprogram with a spec and a body.
 
+   function Get_Body_Or_Stub (N : Node_Id) return Node_Id;
+   --  If a corresponding stub exists, then we return that instead of N.
+
    function Last_Statement_Is_Raise (E : Entity_Id) return Boolean
-      with Pre => Ekind (E) in Subprogram_Kind;
+     with Pre => Ekind (E) in Subprogram_Kind;
    --  Returns True if the last statement in the Handled_Sequence_Of_Statements
    --  of subprogram E is an N_Raise_Statement.
 
    function Get_Enclosing (N : Node_Id; K : Node_Kind) return Node_Id
-      with Post => Nkind (Get_Enclosing'Result) = K;
+     with Post => Nkind (Get_Enclosing'Result) = K;
    --  Returns the first parent P of N where Nkind (P) = K.
 
    function Has_Volatile (E : Entity_Id) return Boolean

@@ -228,7 +228,7 @@ package body Flow_Refinement is
       P : Node_Id;
       V : Section_T;
    begin
-      P := N;
+      P := Get_Body_Or_Stub (N);
       while Present (P) loop
          case Nkind (P) is
             when N_Package_Body =>
@@ -241,7 +241,9 @@ package body Flow_Refinement is
                exit;
 
             when N_Package_Specification =>
-               if Tree_Contains (Private_Declarations (P), N) then
+               if Tree_Contains (Private_Declarations (P),
+                                 Get_Body_Or_Stub (N))
+               then
                   V := Private_Part;
                else
                   V := Spec_Part;
@@ -288,7 +290,7 @@ package body Flow_Refinement is
       end if;
       pragma Assert_And_Cut (Present (Body_E));
 
-      return Is_Visible (Body_E, S);
+      return Is_Visible (Get_Body_Or_Stub (Body_E), S);
    end Subprogram_Refinement_Is_Visible;
 
    ---------------------------------
@@ -325,17 +327,18 @@ package body Flow_Refinement is
          pragma Assert (Present (Body_E));
 
          N := Get_Pragma
-           (Body_E, (case C is
-                        when Global_Contract => Pragma_Refined_Global,
-                        when Depends_Contract => Pragma_Refined_Depends));
-
+           (Get_Body_Or_Stub (Body_E),
+            (case C is
+               when Global_Contract  => Pragma_Refined_Global,
+               when Depends_Contract => Pragma_Refined_Depends));
       end if;
 
       if No (N) then
          N := Get_Pragma
-           (E, (case C is
-                   when Global_Contract => Pragma_Global,
-                   when Depends_Contract => Pragma_Depends));
+           (E,
+            (case C is
+               when Global_Contract  => Pragma_Global,
+               when Depends_Contract => Pragma_Depends));
       end if;
 
       return N;
