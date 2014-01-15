@@ -10,6 +10,6 @@ unconstr.adb:51:24: warning: statement has no effect
 unconstr.adb:52:13: info: index check proved
 unconstr.adb:52:16: warning: unused assignment
 unconstr.adb:56:30: warning: unused initial value of "X"
-unconstr.adb:57:20: warning: postcondition might fail
+unconstr.adb:57:20: info: postcondition proved
 unconstr.adb:61:7: info: range check proved
-unconstr.adb:61:30: warning: range check might fail
+unconstr.adb:61:30: info: range check proved

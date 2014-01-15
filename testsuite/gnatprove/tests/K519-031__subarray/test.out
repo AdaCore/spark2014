@@ -18,7 +18,7 @@ subar.adb:34:10: warning: "Ae" might not be initialized
 subar.adb:38:7: warning: range check might fail
 subar.adb:41:9: warning: length check might fail
 subar.adb:41:09: warning: unused assignment
-subar.adb:41:26: warning: range check might fail
+subar.adb:41:26: info: range check proved
 subar.adb:42:10: info: index check proved
 subar.adb:42:13: warning: unused assignment
 subar.adb:48:07: warning: initialization has no effect

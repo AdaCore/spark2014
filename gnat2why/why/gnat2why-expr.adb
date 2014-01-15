@@ -2178,6 +2178,52 @@ package body Gnat2Why.Expr is
             end loop;
          end if;
 
+         --  if the aggregate has known bounds, we use this information if it
+         --  is not contained in the type
+
+         if Domain = EW_Prog
+           and then Present (Aggregate_Bounds (Expr))
+           and then not Is_Static_Array_Type (Etype (Expr))
+         then
+            declare
+               Temp : constant W_Expr_Id := New_Temp_For_Expr (R, True);
+               A1, A2 : W_Prog_Id;
+            begin
+               A1 :=
+                 New_Assume_Statement
+                   (Post =>
+                      New_Relation
+                        (Op_Type => EW_Int,
+                         Op      => EW_Eq,
+                         Left    =>
+                           Get_Array_Attr (EW_Term, Temp, Attribute_First, 1),
+                            Right   =>
+                           Transform_Expr
+                             (Low_Bound (Aggregate_Bounds (Expr)),
+                              EW_Int_Type,
+                              EW_Term,
+                              Params)));
+               A2 :=
+                 New_Assume_Statement
+                   (Post =>
+                      New_Relation
+                        (Op      => EW_Eq,
+                         Op_Type => EW_Int,
+                         Left    =>
+                           Get_Array_Attr (EW_Term, Temp, Attribute_Last, 1),
+                         Right   =>
+                           Transform_Expr
+                             (High_Bound (Aggregate_Bounds (Expr)),
+                              EW_Int_Type,
+                              EW_Term,
+                              Params)));
+               R := +Sequence (A2, +Temp);
+               R := +Sequence (A1, +R);
+               R := Binding_For_Temp (Expr, EW_Prog, Temp, R);
+            end;
+
+         end if;
+
          return R;
       end Complete_Translation;
 

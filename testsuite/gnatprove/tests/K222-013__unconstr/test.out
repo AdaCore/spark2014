@@ -1,4 +1,4 @@
-unconstr.adb:5:9: warning: length check might fail
+unconstr.adb:5:9: info: length check proved
 unconstr.adb:11:7: info: precondition proved
 unconstr.adb:11:07: warning: statement has no effect
 unconstr.adb:11:10: warning: unused assignment to "A"

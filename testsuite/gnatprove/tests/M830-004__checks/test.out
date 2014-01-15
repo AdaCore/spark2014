@@ -24,8 +24,8 @@ do_checks.adb:147:25: info: range check proved
 do_checks.adb:147:57: warning: overflow check might fail
 do_checks.adb:159:39: warning: length check might fail
 do_checks.adb:159:39: warning: range check might fail
+do_checks.adb:165:38: info: length check proved
 do_checks.adb:165:38: info: range check proved
-do_checks.adb:165:38: warning: length check might fail
 do_checks.adb:165:67: warning: overflow check might fail
 do_checks.adb:234:24: warning: length check might fail
 do_checks.adb:236:35: info: length check proved

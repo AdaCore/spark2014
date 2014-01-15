@@ -1,4 +1,4 @@
-p.adb:7:9: warning: length check might fail
+p.adb:7:9: info: length check proved
 p.adb:15:4: info: range check proved
 p.adb:17:04: warning: statement has no effect
 p.adb:17:10: warning: unused assignment to "A"
