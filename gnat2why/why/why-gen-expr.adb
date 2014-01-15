@@ -388,9 +388,7 @@ package body Why.Gen.Expr is
          return False;
       end Needs_Slide;
 
-      Needs_Tmp   : Boolean := False;
       Sliding     : constant Boolean := Needs_Slide (From_Ent, To_Ent);
-      Tmp_Var     : W_Identifier_Id;
       Arr_Expr    : W_Expr_Id;
       T           : W_Expr_Id;
       Arg_Ind     : Positive := 1;
@@ -426,20 +424,10 @@ package body Why.Gen.Expr is
          end if;
       end if;
 
-      --  We need a temp whenever there is a sliding, or when the "from" is
-      --  unconstrained, and only when the expression is not a variable already
-
-      Needs_Tmp :=
-        Get_Kind (+Expr) not in W_Identifier | W_Deref
-        and then (Sliding or else
-                    not Is_Static_Array_Type (From_Ent));
-
-      if Needs_Tmp then
-         Tmp_Var := New_Temp_Identifier (Typ => From);
-         Arr_Expr := +Tmp_Var;
-      else
-         Arr_Expr := Expr;
-      end if;
+      Arr_Expr :=
+        New_Temp_For_Expr
+          (Expr,
+           Need_Temp => Sliding or else not Is_Static_Array_Type (From_Ent));
 
       --  ??? do not forget range checks
 
@@ -524,14 +512,9 @@ package body Why.Gen.Expr is
          end;
       end if;
 
-      if Needs_Tmp then
-         T :=
-           New_Typed_Binding
-             (Domain  => Domain,
-              Name    => Tmp_Var,
-              Def     => +Expr,
-              Context => T);
-      end if;
+      T := Binding_For_Temp (Domain  => Domain,
+                             Tmp     => Arr_Expr,
+                             Context => T);
       return T;
    end Insert_Array_Conversion;
 
