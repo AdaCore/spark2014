@@ -261,7 +261,9 @@ package body Why.Gen.Expr is
       Ada_Node   : Node_Id := Empty;
       Expr       : W_Expr_Id;
       To         : W_Type_Id;
-      Need_Check : Boolean := False) return W_Expr_Id
+      Need_Check : Boolean := False;
+      Force_No_Slide : Boolean := False)
+      return W_Expr_Id
    is
       From      : constant W_Type_Id := Get_Type (Expr);
       To_Ent    : constant Entity_Id := Get_Ada_Node (+To);
@@ -388,7 +390,8 @@ package body Why.Gen.Expr is
          return False;
       end Needs_Slide;
 
-      Sliding     : constant Boolean := Needs_Slide (From_Ent, To_Ent);
+      Sliding     : constant Boolean :=
+        not Force_No_Slide and then Needs_Slide (From_Ent, To_Ent);
       Arr_Expr    : W_Expr_Id;
       T           : W_Expr_Id;
       Arg_Ind     : Positive := 1;
@@ -428,8 +431,6 @@ package body Why.Gen.Expr is
         New_Temp_For_Expr
           (Expr,
            Need_Temp => Sliding or else not Is_Static_Array_Type (From_Ent));
-
-      --  ??? do not forget range checks
 
       if Is_Static_Array_Type (To_Ent) or else
         Get_Base_Type (To) = EW_Split

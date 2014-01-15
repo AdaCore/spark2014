@@ -3575,9 +3575,10 @@ package body Gnat2Why.Expr is
 
          T :=
            Insert_Array_Conversion
-             (Domain => Domain,
-              Expr   => Pref_Expr,
-              To     => Target_Ty);
+             (Domain         => Domain,
+              Expr           => Pref_Expr,
+              To             => Target_Ty,
+              Force_No_Slide => True);
 
       --  when the slice bounds are not static, we produce a compound object
       --  contents + bounds.

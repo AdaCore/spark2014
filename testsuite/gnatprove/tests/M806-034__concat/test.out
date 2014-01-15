@@ -1,10 +1,10 @@
 concat.adb:4:28: info: length check proved
 concat.adb:4:28: info: range check proved
-concat.adb:6:7: warning: assertion might fail, requires D (1) = A (6)
+concat.adb:6:7: info: assertion proved
 concat.adb:7:7: info: assertion proved
 concat.adb:11:29: info: length check proved
 concat.adb:11:29: info: range check proved
-concat.adb:13:7: warning: assertion might fail, requires D (1) = A (6)
+concat.adb:13:7: info: assertion proved
 concat.adb:14:7: info: assertion proved
 concat.adb:20:14: warning: overflow check might fail
 concat.adb:20:24: warning: overflow check might fail

@@ -208,11 +208,13 @@ package Why.Gen.Expr is
    --  type Ty.
 
    function Insert_Array_Conversion
-     (Domain     : EW_Domain;
-      Ada_Node   : Node_Id := Empty;
-      Expr       : W_Expr_Id;
-      To         : W_Type_Id;
-      Need_Check : Boolean := False) return W_Expr_Id;
+     (Domain         : EW_Domain;
+      Ada_Node       : Node_Id := Empty;
+      Expr           : W_Expr_Id;
+      To             : W_Type_Id;
+      Need_Check     : Boolean := False;
+      Force_No_Slide : Boolean := False)
+      return W_Expr_Id;
    --  Generate a conversion between two Ada array types. If Range check
    --  is set, add a length or range check to the expression. Which
    --  kind of check, and against which type, is determined by calling
