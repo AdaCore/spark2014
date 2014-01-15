@@ -4354,6 +4354,54 @@ package body Gnat2Why.Expr is
          end;
       end if;
 
+      --  If the Left operand is a null array then concatenate returns Right
+
+      if not Is_Component_Left_Opnd (Expr) then
+         declare
+            Right_First : constant W_Expr_Id :=
+              (if Is_Component_Right_Opnd (Expr) then
+                    New_Attribute_Expr
+                 (Nth_Index_Type (Etype (Expr), 1), Attribute_First)
+               else Get_Array_Attr (Domain, Right, Attribute_First, 1));
+            Right_Last : constant W_Expr_Id :=
+              (if Is_Component_Right_Opnd (Expr) then Right_First
+               else Get_Array_Attr (Domain, Right, Attribute_Last, 1));
+            Right_Op    : W_Expr_Id :=
+              (if Is_Component_Right_Opnd (Expr) then
+                    New_Singleton_Call (Domain,
+                 Insert_Simple_Conversion (Domain => Domain,
+                                           Expr   => Right,
+                                           To     => Comp_Type),
+                 Right_First)
+               elsif Is_Static_Array_Type (Etype (Right_Opnd (Expr))) then
+                    Right else Array_Convert_To_Base (Domain => Domain,
+                                                      Ar     => Right));
+            Condition   : constant W_Expr_Id :=
+              New_Relation
+                (Domain   => EW_Pred,
+                 Op_Type  => EW_Int,
+                 Left     =>
+                   Get_Array_Attr (Domain, Left, Attribute_Length, 1),
+                 Op       => EW_Eq,
+                 Right    => New_Integer_Constant (Value => Uint_0));
+         begin
+            if not Is_Static_Array_Type (Etype (Expr)) then
+               Right_Op := Array_Convert_From_Base (Domain => Domain,
+                                                    Target => Exp_Type,
+                                                    Ar     => Right_Op,
+                                                    First  => Right_First,
+                                                    Last   => Right_Last);
+            end if;
+
+            T := New_Conditional
+              (Domain      => Domain,
+               Condition   => Condition,
+               Then_Part   => Right_Op,
+               Else_Part   => T,
+               Typ         => Get_Type (T));
+         end;
+      end if;
+
       --  Step 3: bind the introduced names if any, and return
 
       T := Binding_For_Temp (Domain  => Domain,

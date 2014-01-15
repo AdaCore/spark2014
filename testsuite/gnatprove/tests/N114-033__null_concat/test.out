@@ -1,0 +1,12 @@
+null_concat.adb:7:37: info: range check proved
+null_concat.adb:8:37: info: range check proved
+null_concat.adb:10:7: info: assertion proved
+null_concat.adb:11:7: info: assertion proved
+null_concat.adb:11:26: info: index check proved
+null_concat.adb:12:7: info: assertion proved
+null_concat.adb:13:7: info: assertion proved
+null_concat.adb:13:28: info: index check proved
+null_concat.adb:19:37: info: range check proved
+null_concat.adb:21:7: info: assertion proved
+null_concat.adb:22:7: warning: assertion might fail, requires A3 (1) = 2
+null_concat.adb:22:26: info: index check proved

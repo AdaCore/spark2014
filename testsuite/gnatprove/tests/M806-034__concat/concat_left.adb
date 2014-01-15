@@ -1,6 +1,10 @@
 with Concat; use Concat;
 
 package body Concat_Left is
+   procedure One (X : Integer; Y : UC) with
+     Pre => Y'Last < Integer'Last or else
+     Y'First > Integer'First;
+
    procedure One (X : Integer; Y : UC) is
       Z : UC := X & Y;
    begin

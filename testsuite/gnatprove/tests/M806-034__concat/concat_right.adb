@@ -1,6 +1,9 @@
 with Concat; use Concat;
 
 package body Concat_Right is
+   procedure One (X : Integer; Y : UC) with
+     Pre => Y'Last < Integer'Last and then Y'Last >= Y'First;
+
    procedure One (X : Integer; Y : UC) is
       Z : UC := Y & X;
    begin
@@ -13,14 +16,14 @@ package body Concat_Right is
    procedure Two (X : Integer; Y : C) is
       Z : C := Y (1 .. 9) & X;
    begin
-      pragma Assert (Z (Z'First) = Y'First);
+      pragma Assert (Z (Z'First) = Y (Y'First));
       pragma Assert (Z (Z'Last) = X);
    end Two;
 
    procedure Three (X : Integer; Y : CB) is
       Z : CB := Y (1 .. 9) & X;
    begin
-      pragma Assert (Z (Z'First) = Y'First);
+      pragma Assert (Z (Z'First) = Y (Y'First));
       pragma Assert (Z (Z'Last) = X);
    end Three;
 

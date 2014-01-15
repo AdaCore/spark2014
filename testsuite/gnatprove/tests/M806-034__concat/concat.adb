@@ -14,12 +14,17 @@ package body Concat is
       pragma Assert (D (6) = B (1));
    end Two;
 
+   procedure Three (A, B : UC) with
+   Pre => A'Last >= A'First and then
+     B'Last >= B'First and then
+     A'Last  + (B'Last - B'First) < Integer'Last;
+
    procedure Three (A, B : UC) is
       D : UC := A & B;
    begin
       pragma Assert (D'First = A'First);
       pragma Assert (D'Length = A'Length + B'Length);
-      pragma Assert (D'Last = A'First + A'Last + 1 + (B'Last - B'First));
+      pragma Assert (D'Last = A'Last + 1 + (B'Last - B'First));
    end Three;
 
    X : C := (others => 2);
