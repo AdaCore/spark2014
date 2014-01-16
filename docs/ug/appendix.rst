@@ -416,6 +416,42 @@ Proof Limitations
    Wide_Width, Wide_Wide_Image, Wide_Wide_Value, Wide_Wide_Width,
    Width.
 
+#. The difference between the floating-point values +0 and -0 (as defined in
+   IEEE-754 standard) is ignored in proof. This is correct for all programs that
+   do not exploit the difference in bit-pattern between +0 and -0. For example,
+   the following specially crafted program is proved by |GNATprove| but fails at
+   run time due to a division by zero, because function ``Magic`` exploits the
+   difference of bit-pattern between +0 and -0 by using ``Unchecked_Conversion``
+   to return a different integer value for arguments +0 and -0.
+
+   .. code-block:: ada
+
+      pragma SPARK_Mode;
+
+      with Ada.Unchecked_Conversion;
+
+      procedure Zero_And_Unchecked is
+         procedure Crash (A, B : Float) is
+            function Magic is new Ada.Unchecked_Conversion (Float, Integer);
+            X : Integer;
+         begin
+            if A = B then
+               if Magic (B) /= 0 then
+                  X := 100 / Magic (A);
+               end if;
+            end if;
+         end Crash;
+
+         type UInt32 is mod 2 ** 32;
+         function Convert is new Ada.Unchecked_Conversion (UInt32, Float);
+
+         Zero_Plus : constant Float := Convert (16#0000_0000#);
+         Zero_Neg  : constant Float := Convert (16#8000_0000#);
+      begin
+         Crash (Zero_Plus, Zero_Neg);
+      end Zero_And_Unchecked;
+
+
 Portability Issues
 ==================
 
@@ -502,7 +538,7 @@ Semantics of Floating Point Operations
 ======================================
 
 SPARK assumes that floating point operations are carried out in single
-precision (binary32) or double precision (binary64) as defined in the IEEE 754
+precision (binary32) or double precision (binary64) as defined in the IEEE-754
 standard for floating point arithmetic. You should make sure that this is the
 case on your platform. For example, on x86 platforms, by default some
 intermediate computations may be carried out in extended precision, leading to

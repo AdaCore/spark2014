@@ -444,7 +444,7 @@ module Floating_Point_Base
 
   axiom inversion_axiom :
     forall x : t [to_real x].
-      of_real ( to_real(x) ) = x
+      of_real (to_real(x)) = x
 
   function attr__ATTRIBUTE_IMAGE real : __image
 
@@ -456,7 +456,7 @@ module Floating_Point_Base
     requires { attr__ATTRIBUTE_VALUE__pre_check x }
     ensures { true }
 
- function dummy :t
+  function dummy :t
 end
 
 module Static_Floating_Point
@@ -485,11 +485,7 @@ module Static_Floating_Point
     ensures { result = n }
 
   axiom range_axiom :
-    forall x  : t.  in_range (to_real x)
-
-  axiom coerce_axiom :
-    forall x  : real [to_real (of_real x) | in_range x, of_real x].
-      in_range x -> to_real (of_real x) = x
+    forall x : t. in_range (to_real x)
 end
 
 module Dynamic_Floating_Point

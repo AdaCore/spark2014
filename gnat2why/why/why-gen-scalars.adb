@@ -133,7 +133,7 @@ package body Why.Gen.Scalars is
                   Image     => To_Ident (WNE_Attr_Modulus)))
             else (1 .. 0 => <>));
          Range_Clone_Subst : constant W_Clone_Substitution_Array :=
-           (if Is_Static or else not Is_Fixed_Point_Type (E) then
+           (if Is_Static or else Is_Discrete_Type (E) then
               (1 => New_Clone_Substitution
                (Kind      => EW_Predicate,
                 Orig_Name => To_Ident (WNE_Range_Pred),
