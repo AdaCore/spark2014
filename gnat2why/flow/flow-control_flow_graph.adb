@@ -1736,9 +1736,7 @@ package body Flow.Control_Flow_Graph is
             FA.CFG.Add_Vertex (Direct_Mapping_Id (N),
                                Null_Node_Attributes,
                                V);
-            CM.Include (Union_Id (N), No_Connections);
-            CM (Union_Id (N)).Standard_Entry := V;
-            CM (Union_Id (N)).Standard_Exits := To_Set (V);
+            CM.Include (Union_Id (N), Trivial_Connection (V));
             return;
          end if;
       end if;
