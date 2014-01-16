@@ -549,6 +549,8 @@ package body Why.Gen.Expr is
    begin
 
       if Is_Ext_Axioms_Conversion (From, To) then
+         --  Conversion between private types need to go through their common
+         --  root private type. A discriminant check may be needed.
 
          T := Insert_Private_Conversion (Domain     => Domain,
                                          Ada_Node   => Ada_Node,
@@ -1172,7 +1174,13 @@ package body Why.Gen.Expr is
          return Expr;
       end if;
 
-      if Is_Record_Conversion (To, From) then
+      if Is_Ext_Axioms_Conversion (To, From) then
+         return Insert_Private_Conversion (Domain     => Domain,
+                                           Ada_Node   => Ada_Node,
+                                           Expr       => Expr,
+                                           To         => To);
+
+      elsif Is_Record_Conversion (To, From) then
          return Insert_Record_Conversion (Domain   => Domain,
                                           Ada_Node => Ada_Node,
                                           Expr     => Expr,

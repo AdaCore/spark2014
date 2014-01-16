@@ -11,6 +11,7 @@ package List is
 
    function Reverse_List (L : List) return List with
      Post => (for all I in First_Index (L) .. Last_Index (L) =>
-                  Element (L, I) = Element (Reverse_List'Result, Last_Index (L) - I + 1));
+                  Element (L, I) = Element (Reverse_List'Result,
+                  Last_Index (L) - I + First_Index (L)));
 
 end List;

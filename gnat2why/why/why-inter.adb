@@ -569,9 +569,9 @@ package body Why.Inter is
             --  expected to be noop, so the base type is taken to be the same
             --  as the type in that case.
 
-            if Has_Record_Type (Typ)
-              and then not Entity_In_External_Axioms (Typ)
-            then
+            if Type_Based_On_External_Axioms (Typ) then
+               return EW_Abstract (Underlying_External_Axioms_Type (Typ));
+            elsif Has_Record_Type (Typ) then
                return EW_Abstract (Root_Record_Type (Typ));
             else
                return EW_Abstract (Typ);
@@ -954,7 +954,7 @@ package body Why.Inter is
       elsif Ekind (N) in Private_Kind
         or else Has_Private_Declaration (N)
       then
-         if Entity_In_External_Axioms (N) then
+         if Type_Based_On_External_Axioms (N) then
             return New_Kind_Base_Type (N, Kind);
          elsif Entity_In_SPARK (MUT (N)) then
             if MUT (N) = N then
@@ -1067,7 +1067,7 @@ package body Why.Inter is
             end if;
 
          when Private_Kind =>
-            if Entity_In_External_Axioms (Ty) then
+            if Type_Based_On_External_Axioms (Ty) then
                return EW_Abstract;
             elsif Entity_In_SPARK (MUT (Ty)) then
                return Get_EW_Term_Type (MUT (Ty));
@@ -1277,9 +1277,10 @@ package body Why.Inter is
               "rec__" & Get_Name_String (Chars (E));
             Ada_N : constant Node_Id :=
               (if Rec = Empty then
-                 (if Type_Based_On_External_Axioms (Unique_Entity (Scope (E)))
+                 (if Type_Based_On_External_Axioms
+                      (Etype (Unique_Entity (Scope (E))))
                   then Underlying_External_Axioms_Type
-                    (Unique_Entity (Scope (E)))
+                    (Etype (Unique_Entity (Scope (E))))
                   else Unique_Entity (Scope (E))) else Rec);
          begin
             if Local then

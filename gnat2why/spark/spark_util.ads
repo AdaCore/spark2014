@@ -230,15 +230,16 @@ package SPARK_Util is
    --  Return whether E is a package with External Axioms
 
    function Type_Based_On_External_Axioms (E : Entity_Id) return Boolean;
-   --  Return whether a type E is defined in a package with external axioms, or
-   --  it is a subtype or derived type ultimately based on such a type.
+   --  Return whether a private type E is defined in the private part of a
+   --  package with external axioms, or it is a subtype or derived type
+   --  ultimately based on such a type.
 
    function Entity_In_External_Axioms (E : Entity_Id) return Boolean;
    --  Return whether an entity E is declared in a package with external axioms
 
    function Underlying_External_Axioms_Type (E : Entity_Id) return Entity_Id;
-   --  Return the underlying base type declared in a package with external
-   --  axioms, if any
+   --  Return the underlying (private) base type declared in a package with
+   --  external axioms of a private type E, if any
 
    function Axiomatized_Package_For_Entity (E : Entity_Id) return Entity_Id;
    --  Returns the package entity with an external axiomatization containing E,

@@ -1678,8 +1678,9 @@ package body Gnat2Why.Expr is
                                       To       =>
                                         EW_Abstract
                                           (Underlying_External_Axioms_Type
-                                             (Unique_Entity
-                                                (Scope (Sel_Ent)))))),
+                                             (Unique_Defining_Entity
+                                                (Get_Enclosing_Declaration
+                                                     (Sel_Ent)))))),
                               Typ      => Type_Of_Node (N));
                else
                   return

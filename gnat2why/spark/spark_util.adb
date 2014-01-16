@@ -1280,10 +1280,9 @@ package body SPARK_Util is
 
    function Is_External_Axioms_Discriminant (E : Entity_Id) return Boolean is
       Typ : constant Entity_Id :=
-        MUT
-          (Unique_Defining_Entity (Get_Enclosing_Declaration (E)));
+        Unique_Defining_Entity (Get_Enclosing_Declaration (E));
    begin
-      return Entity_In_External_Axioms (Typ);
+      return Type_Based_On_External_Axioms (Etype (Typ));
    end Is_External_Axioms_Discriminant;
 
    ----------------------
@@ -1603,20 +1602,19 @@ package body SPARK_Util is
 
    function Underlying_External_Axioms_Type (E : Entity_Id) return Entity_Id
    is
-      Typ : Entity_Id := E;
+      Typ : Entity_Id := Etype (E);
    begin
       loop
-         if Entity_In_External_Axioms (Typ) then
-            return Typ;
-         elsif Ekind (Typ) in Private_Kind then
-            Typ := Underlying_Type (Typ);
-         elsif Ekind (Typ) in Record_Kind then
-            if Typ = Etype (Typ) or else
-              Underlying_Type (Etype (Typ)) = Typ
-            then
-               return Empty;
-            end if;
+
+         --  Go through Etype to the most underlying private declaration
+         while Etype (Typ) /= Typ and Ekind (Typ) in Private_Kind loop
             Typ := Etype (Typ);
+         end loop;
+
+         if Ekind (Typ) in Private_Kind and then
+           Entity_In_External_Axioms (Typ)
+         then
+            return Typ;
          else
             return Empty;
          end if;
