@@ -2,10 +2,10 @@ test.adb:40:09: "V.Z" is not initialized
 test.adb:88:32: "X.Reason" is not initialized in "Test_Definite_02"
 test.adb:96:32: warning: "X.Index" might not be initialized in "Test_Definite_03"
 test.adb:96:32: warning: "X.Reason" might not be initialized in "Test_Definite_03"
-test.adb:131:09: warning: "R.Reason" might not be initialized
-test.adb:148:09: warning: incorrect dependency "null => X"
-test.adb:182:09: warning: incorrect dependency "null => R"
-test.adb:182:21: warning: missing dependency "R => R"
+test.adb:132:09: warning: "R.Reason" might not be initialized
+test.adb:149:09: warning: incorrect dependency "null => X"
+test.adb:183:09: warning: incorrect dependency "null => R"
+test.adb:183:21: warning: missing dependency "R => R"
    compilation of test.adb failed
 
 

@@ -144,9 +144,9 @@ package body Flow.Analysis.Sanity is
             Unused : Unbounded_String;
          begin
             for F of Flow_Ids loop
-               --  ??? FS: what about other f.kinds?
-               if F.Kind = Direct_Mapping
-                 and then not Is_Constant_Object (F.Node)
+               if (if F.Kind in Direct_Mapping | Record_Field
+                   then not Is_Constant_Object
+                     (Get_Direct_Mapping_Id (F)))
                then
                   Error_Msg_Flow
                     (FA        => FA,
@@ -214,6 +214,15 @@ package body Flow.Analysis.Sanity is
            Traverse_Proc (Check_Name);
 
       begin  --  Start of Check_Expressions_Variable_Free
+
+         --  We do not sanity check any node which does not come from
+         --  source. This way we ignore a number of issues related to
+         --  compiler-generated types. See N116-011 for an example.
+
+         if not Comes_From_Source (N) then
+            return Skip;
+         end if;
+
          case Nkind (N) is
             when N_Subprogram_Body |
                  N_Package_Specification |

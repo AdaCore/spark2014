@@ -35,7 +35,8 @@ package body Logger is
          return Log_Array'(1 .. 0 => Make_Entry (0, 0, 0, 0.0, False));
       else
          declare
-            Result : Log_Array (0 .. Log_Index (Log_Size - 1));
+            Tmp : constant Log_Index := Log_Index (Log_Size - 1);
+            Result : Log_Array (0 .. Tmp);
          begin
             if Event_Log.First <= Event_Log.Last then
                Result := Event_Log.Data (Event_Log.First .. Event_Log.Last);

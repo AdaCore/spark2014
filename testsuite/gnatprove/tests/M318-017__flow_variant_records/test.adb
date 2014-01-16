@@ -119,7 +119,8 @@ is
 
    procedure Test_Definite_05 (X : out Search_Result)
    is
-      R : Search_Result (X.Found);
+      Tmp : constant Boolean := X.Found;
+      R   : Search_Result (Tmp);
    begin
       --  Technically, OK, but will raise a flow error again
       case R.Found is

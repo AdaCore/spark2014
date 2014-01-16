@@ -820,7 +820,7 @@ package body Flow.Utility is
                if Present (Entity (N)) then
                   case Ekind (Entity (N)) is
                      when E_Constant =>
-                        if Expand_Synthesized_Constants and
+                        if Expand_Synthesized_Constants and then
                           not Comes_From_Source (Entity (N))
                         then
                            --  To expand synthesized constants, we need to find
@@ -984,7 +984,8 @@ package body Flow.Utility is
       Local_Constants              : Node_Sets.Set;
       Reduced                      : Boolean := False;
       Allow_Statements             : Boolean := False;
-      Expand_Synthesized_Constants : Boolean := False) return Flow_Id_Sets.Set
+      Expand_Synthesized_Constants : Boolean := False)
+      return Flow_Id_Sets.Set
    is
       VS : Flow_Id_Sets.Set;
       P  : Node_Id;
