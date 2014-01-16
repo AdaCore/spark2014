@@ -127,4 +127,47 @@ package Flow.Analysis is
    --
    --  Complexity is O(N^2)
 
+private
+
+   type Var_Use_Kind is (Use_Read, Use_Write, Use_Any);
+
+   function Error_Location (G : Flow_Graphs.T'Class;
+                            V : Flow_Graphs.Vertex_Id)
+                            return Node_Or_Entity_Id;
+   --  Find a good place to raise an error for vertex V.
+
+   procedure Global_Required
+     (FA  : Flow_Analysis_Graphs;
+      Var : Flow_Id)
+   with Pre  => Var.Kind = Magic_String;
+   --  Emit an error message that (the first call) introducing the
+   --  global Var requires a global annotation.
+
+   function First_Variable_Use (N       : Node_Id;
+                                FA      : Flow_Analysis_Graphs;
+                                Scope   : Flow_Scope;
+                                Var     : Flow_Id;
+                                Precise : Boolean)
+                                return Node_Id;
+   --  Given a node N, we traverse the tree to find the most deeply
+   --  nested node which still uses Var. If Precise is True look only
+   --  for Var (for example R.Y), otherwise we also look for the
+   --  entire variable represented by Var (in our example we'd also
+   --  look for R).
+   --
+   --  If we cannot find any suitable node we return N itself.
+
+   function First_Variable_Use (FA      : Flow_Analysis_Graphs;
+                                Var     : Flow_Id;
+                                Kind    : Var_Use_Kind;
+                                Precise : Boolean)
+                                return Node_Id;
+   --  Find a suitable node in the tree which uses the given
+   --  variable. If Precise is True look only for Var (for example
+   --  R.Y), otherwise we also look for the entire variable
+   --  represented by Var (in our example we'd also look for R).
+   --
+   --  If no suitable node can be found we return FA.Analyzed_Entity
+   --  as a fallback.
+
 end Flow.Analysis;

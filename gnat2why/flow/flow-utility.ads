@@ -84,7 +84,8 @@ package Flow.Utility is
       Local_Constants              : Node_Sets.Set;
       Reduced                      : Boolean := False;
       Allow_Statements             : Boolean := False;
-      Expand_Synthesized_Constants : Boolean := False) return Flow_Id_Sets.Set;
+      Expand_Synthesized_Constants : Boolean := False)
+      return Flow_Id_Sets.Set;
    --  Obtain all variables used in an expression. If Reduced is True, obtain
    --  only entire variables.
    --
@@ -105,7 +106,8 @@ package Flow.Utility is
       Local_Constants              : Node_Sets.Set;
       Reduced                      : Boolean := False;
       Allow_Statements             : Boolean := False;
-      Expand_Synthesized_Constants : Boolean := False) return Flow_Id_Sets.Set;
+      Expand_Synthesized_Constants : Boolean := False)
+      return Flow_Id_Sets.Set;
    --  As above, but operating on a list.
 
    function Quantified_Variables (N : Node_Id) return Flow_Id_Sets.Set;

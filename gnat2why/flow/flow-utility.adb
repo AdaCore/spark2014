@@ -717,7 +717,8 @@ package body Flow.Utility is
       Local_Constants              : Node_Sets.Set;
       Reduced                      : Boolean := False;
       Allow_Statements             : Boolean := False;
-      Expand_Synthesized_Constants : Boolean := False) return Flow_Id_Sets.Set
+      Expand_Synthesized_Constants : Boolean := False)
+      return Flow_Id_Sets.Set
    is
       VS : Flow_Id_Sets.Set;
 
@@ -918,7 +919,8 @@ package body Flow.Utility is
                   --  dealt with by Do_Pragma and Do_Loop_Statement in
                   --  the CFG construction.
 
-                  --  ??? why do we do this here? can't we skip this?
+                  --  We use Untangle here because that takes care of
+                  --  individual record fields.
 
                   declare
                      A, B, C : Flow_Id_Sets.Set;
