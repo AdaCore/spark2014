@@ -6126,6 +6126,22 @@ package body Gnat2Why.Expr is
       Pname   : constant Name_Id   := Pragma_Name (Prag);
       Prag_Id : constant Pragma_Id := Get_Pragma_Id (Pname);
 
+      procedure tip;
+      --  A dummy procedure called when pragma Inspection_Point is processed.
+      --  This is just to help debugging Why generation. If a pragma
+      --  Inspection_Point is added to a source program, then breaking on
+      --  tip will get you to tat point in the program.
+
+      ---------
+      -- tip --
+      ---------
+
+      procedure tip is
+      begin
+         null;
+      end tip;
+
+      --  beginning of processing for Transform_Pragma
    begin
       case Prag_Id is
 
@@ -6172,7 +6188,6 @@ package body Gnat2Why.Expr is
               Pragma_Initializes                  |
               Pragma_Inline                       |
               Pragma_Inline_Always                |
-              Pragma_Inspection_Point             |
               Pragma_Linker_Options               |
               Pragma_List                         |
               Pragma_Loop_Variant                 |
@@ -6200,6 +6215,13 @@ package body Gnat2Why.Expr is
               Pragma_Validity_Checks              |
               Pragma_Volatile                     |
               Pragma_Warnings                     =>
+            return New_Void (Prag);
+
+         --  Pragma Inspection_Point is also ignored, but we insert a call to a
+         --  dummy procedure, to allow to break on it during debugging.
+
+         when Pragma_Inspection_Point =>
+            tip;
             return New_Void (Prag);
 
          --  Pragmas which should not reach here
