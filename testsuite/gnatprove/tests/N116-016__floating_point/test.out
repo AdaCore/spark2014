@@ -1,0 +1,24 @@
+precise.adb:2:04: warning: initialization has no effect
+precise.adb:3:04: warning: initialization has no effect
+precise.adb:6:06: warning: unused assignment
+precise.adb:6:11: info: overflow check proved
+precise.adb:7:4: info: assertion proved
+precise.adb:8:06: warning: unused assignment
+precise.adb:8:11: info: overflow check proved
+precise.adb:9:4: info: assertion proved
+precise.adb:10:06: warning: unused assignment
+precise.adb:10:11: info: overflow check proved
+precise.adb:11:4: info: assertion proved
+precise.adb:12:06: warning: unused assignment
+precise.adb:12:11: info: division check proved
+precise.adb:12:11: info: overflow check proved
+precise.adb:13:4: info: assertion proved
+test_18.adb:4:16: warning: postcondition might fail, requires Z >= X
+test_18.adb:7:12: info: overflow check proved
+test_18.adb:7:19: info: overflow check proved
+test_float.adb:8:14: info: postcondition proved
+test_float.adb:8:24: info: overflow check proved
+test_float.adb:11:14: info: overflow check proved
+test_float.adb:11:14: info: range check proved
+test_float.adb:16:4: info: precondition proved
+test_float.adb:17:4: info: assertion proved

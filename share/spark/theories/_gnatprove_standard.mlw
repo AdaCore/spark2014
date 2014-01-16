@@ -77,6 +77,36 @@ module Floating
 
   function round_double (x : real) : real = Double.round Rounding.NearestTiesToEven x
 
+  (* The rounding error on a floating-point operation can be bounded, see page 7 of
+     paper "The pitfalls of verifying floating-point computations" by David Monniaux:
+     http://arxiv.org/abs/cs/0701192
+
+     "As a result, for any floating-point type with a bounded number of bits,
+      there exist two positive reals εrel and εabs such that
+        |x − r(x)| ≤ max(εrel.|x|, εabs)
+      The following, coarser, property may be easier to use in some contexts:
+        |x − r(x)| ≤ εrel.|x| + εabs"
+
+     The first part is the error made when rounding to a normal number (which is
+     proportional to the absolute value of the exact mathematical result), and the
+     second part is the error made when rounding to a subnormal number. In the case
+     of round-to-even, we have:
+
+     εrel = 2 ** (-p) where p is the number of bits of the mantissa
+     εabs = 2 ** (Emin - p) where Emin is the minimal value of the exponent
+
+     with for single precision: p = 24, Emin = -126
+          for double precision: p = 53, Emin = -1022
+  *)
+
+  axiom round_single_bound :
+    forall x : real [round_single x].
+      x -. 0x1p-24 *. AbsReal.abs(x) -. 0x1p-150 <=. round_single x <=. x +. 0x1p-24 *. AbsReal.abs(x) +. 0x1p-150
+
+  axiom round_double_bound :
+    forall x : real [round_double x].
+      x -. 0x1p-53 *. AbsReal.abs(x) -. 0x1p-1075 <=. round_single x <=. x +. 0x1p-53 *. AbsReal.abs(x) +. 0x1p-1075
+
   use export _gnatprove_standard_th.Floating_Func
 
   function real_of_int (x : int) : real = FromInt.from_int x

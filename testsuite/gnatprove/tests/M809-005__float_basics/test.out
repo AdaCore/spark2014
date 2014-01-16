@@ -16,8 +16,8 @@ generic_float_tests.adb:66:7: warning: assertion might fail, requires false, in 
 generic_float_tests.adb:66:7: warning: assertion might fail, requires false, in instantiation at foo.ads:9
 generic_float_tests.adb:72:19: info: postcondition proved, in instantiation at foo.ads:14
 generic_float_tests.adb:72:19: info: postcondition proved, in instantiation at foo.ads:9
-generic_float_tests.adb:72:41: info: overflow check proved, in instantiation at foo.ads:14
-generic_float_tests.adb:72:41: info: overflow check proved, in instantiation at foo.ads:9
+generic_float_tests.adb:72:41: warning: overflow check might fail, in instantiation at foo.ads:14
+generic_float_tests.adb:72:41: warning: overflow check might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:75:18: info: overflow check proved, in instantiation at foo.ads:14
 generic_float_tests.adb:75:18: info: overflow check proved, in instantiation at foo.ads:9
 generic_float_tests.adb:80:19: warning: postcondition might fail, requires Underflow_1'Result > , in instantiation at foo.ads:14
@@ -383,7 +383,7 @@ generic_interval_tests.adb:184:18: info: overflow check proved, in instantiation
 generic_interval_tests.adb:184:22: info: overflow check proved, in instantiation at bar.ads:11
 generic_interval_tests.adb:184:22: info: overflow check proved, in instantiation at bar.ads:7
 homothetical.adb:8:14: warning: postcondition might fail
-homothetical.adb:12:10: info: overflow check proved
+homothetical.adb:12:10: warning: overflow check might fail
 homothetical.adb:12:21: warning: overflow check might fail
 homothetical.adb:12:24: info: division check proved
 homothetical.adb:12:24: warning: overflow check might fail
@@ -414,5 +414,5 @@ homothetical.adb:60:79: warning: overflow check might fail
 homothetical.adb:64:33: warning: overflow check might fail
 homothetical.adb:65:33: warning: overflow check might fail
 homothetical.ads:24:14: warning: postcondition might fail
-reduced_01.ads:7:32: info: overflow check proved
+reduced_01.ads:7:32: warning: overflow check might fail
 reduced_02.ads:9:15: info: range check proved
