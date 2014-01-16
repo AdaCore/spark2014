@@ -185,7 +185,7 @@ that denotes an object of a nonlimited record type or record extension
      X'Update ( record_component_association_list )
 
 is defined and yields a value of type ``T`` and is a *record update
-expression*..
+expression*.
 
 For a prefix ``X`` that denotes an object of a nonlimited one
 dimensional array type ``T``, the attribute
