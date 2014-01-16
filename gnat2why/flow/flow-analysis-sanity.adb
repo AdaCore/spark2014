@@ -43,8 +43,9 @@ package body Flow.Analysis.Sanity is
    -- Check_Function_Side_Effects --
    ---------------------------------
 
-   procedure Check_Function_Side_Effects (FA   : Flow_Analysis_Graphs;
-                                          Sane : out Boolean)
+   procedure Check_Function_Side_Effects
+     (FA   : Flow_Analysis_Graphs;
+      Sane : out Boolean)
    is
       Unused : Unbounded_String;
    begin
@@ -62,6 +63,7 @@ package body Flow.Analysis.Sanity is
                N         => FA.Analyzed_Entity,
                F1        => Direct_Mapping_Id (FA.Analyzed_Entity));
          end if;
+
          Sane := False;
       end if;
    end Check_Function_Side_Effects;
@@ -70,8 +72,9 @@ package body Flow.Analysis.Sanity is
    -- Check_Aliasing --
    --------------------
 
-   procedure Check_Aliasing (FA   : Flow_Analysis_Graphs;
-                             Sane : out Boolean)
+   procedure Check_Aliasing
+     (FA   : Flow_Analysis_Graphs;
+      Sane : out Boolean)
    is
       Unused : Unbounded_String;
    begin
@@ -86,6 +89,7 @@ package body Flow.Analysis.Sanity is
                N         => FA.Analyzed_Entity,
                F1        => Direct_Mapping_Id (FA.Analyzed_Entity));
          end if;
+
          Sane := False;
       end if;
    end Check_Aliasing;
@@ -94,13 +98,14 @@ package body Flow.Analysis.Sanity is
    -- Check_Variable_Free_Expressions --
    -------------------------------------
 
-   procedure Check_Variable_Free_Expressions (FA   : Flow_Analysis_Graphs;
-                                              Sane : out Boolean)
+   procedure Check_Variable_Free_Expressions
+     (FA   : Flow_Analysis_Graphs;
+      Sane : out Boolean)
    is
       Entry_Node : Node_Id;
 
-      function Check_Expressions_Variable_Free (N : Node_Id)
-                                                return Traverse_Result;
+      function Check_Expressions_Variable_Free
+        (N : Node_Id) return Traverse_Result;
       --  Check that expressions used in certain contexts are free of
       --  variables, as per SPARK RM 4.4(2). This function deals with
       --  the following contexts:
@@ -112,8 +117,8 @@ package body Flow.Analysis.Sanity is
       -- Check_Expressions_Variable_Free --
       -------------------------------------
 
-      function Check_Expressions_Variable_Free (N : Node_Id)
-                                                return Traverse_Result
+      function Check_Expressions_Variable_Free
+        (N : Node_Id) return Traverse_Result
       is
          ES1 : constant String := "default initialization ";
          ES2 : constant String := "subtype constraint ";
@@ -175,9 +180,8 @@ package body Flow.Analysis.Sanity is
                        To_Ordered_Flow_Id_Set
                          (Get_Variable_Set
                            (Renamed_Indexes,
-                            Scope                        => FA.B_Scope,
-                            Local_Constants              =>
-                              Node_Sets.Empty_Set,
+                            Scope           => FA.B_Scope,
+                            Local_Constants => Node_Sets.Empty_Set,
                             Expand_Synthesized_Constants => True));
                   begin
                      Check_Flow_Id_Set (Flow_Ids => Deps,
@@ -193,9 +197,8 @@ package body Flow.Analysis.Sanity is
                        To_Ordered_Flow_Id_Set
                          (Get_Variable_Set
                            (Renamed_Slice,
-                            Scope                        => FA.B_Scope,
-                            Local_Constants              =>
-                              Node_Sets.Empty_Set,
+                            Scope           => FA.B_Scope,
+                            Local_Constants => Node_Sets.Empty_Set,
                             Expand_Synthesized_Constants => True));
                   begin
                      Check_Flow_Id_Set (Flow_Ids => Deps,
@@ -265,11 +268,9 @@ package body Flow.Analysis.Sanity is
                              To_Ordered_Flow_Id_Set
                                (Get_Variable_Set
                                  (C,
-                                  Scope                        => FA.B_Scope,
-                                  Local_Constants              =>
-                                    Node_Sets.Empty_Set,
-                                  Expand_Synthesized_Constants =>
-                                    True));
+                                  Scope           => FA.B_Scope,
+                                  Local_Constants => Node_Sets.Empty_Set,
+                                  Expand_Synthesized_Constants => True));
                         begin
                            Check_Flow_Id_Set (Flow_Ids => Deps,
                                               Err_Msg  => ES2 & ES3,
@@ -284,11 +285,9 @@ package body Flow.Analysis.Sanity is
                              To_Ordered_Flow_Id_Set
                                (Get_Variable_Set
                                   (Constraints (C),
-                                   Scope                        => FA.B_Scope,
-                                   Local_Constants              =>
-                                     Node_Sets.Empty_Set,
-                                   Expand_Synthesized_Constants =>
-                                     True));
+                                   Scope           => FA.B_Scope,
+                                   Local_Constants => Node_Sets.Empty_Set,
+                                   Expand_Synthesized_Constants => True));
                         begin
                            Check_Flow_Id_Set (Flow_Ids => Deps,
                                               Err_Msg  => ES2 & ES3,
@@ -319,9 +318,8 @@ package body Flow.Analysis.Sanity is
                        To_Ordered_Flow_Id_Set
                          (Get_Variable_Set
                            (Expression (N),
-                            Scope                        => FA.B_Scope,
-                            Local_Constants              =>
-                              Node_Sets.Empty_Set,
+                            Scope           => FA.B_Scope,
+                            Local_Constants => Node_Sets.Empty_Set,
                             Expand_Synthesized_Constants => True));
                   begin
                      Check_Flow_Id_Set (Flow_Ids => Deps,
@@ -355,17 +353,16 @@ package body Flow.Analysis.Sanity is
             Check_Expressions (Entry_Node);
 
          when E_Package =>
-            Entry_Node := Get_Enclosing (FA.Analyzed_Entity,
-                                         N_Package_Specification);
+            Entry_Node := Get_Enclosing
+              (FA.Analyzed_Entity, N_Package_Specification);
             Check_Expressions (Entry_Node);
 
          when E_Package_Body =>
-            Entry_Node := Get_Enclosing (FA.Spec_Node,
-                                         N_Package_Specification);
+            Entry_Node := Get_Enclosing
+              (FA.Spec_Node, N_Package_Specification);
             Check_Expressions (Entry_Node);
 
-            Entry_Node := Get_Enclosing (FA.Analyzed_Entity,
-                                         N_Package_Body);
+            Entry_Node := Get_Enclosing (FA.Analyzed_Entity, N_Package_Body);
             Check_Expressions (Entry_Node);
       end case;
 
@@ -386,8 +383,9 @@ package body Flow.Analysis.Sanity is
    -- Check_Illegal_Reads --
    -------------------------
 
-   procedure Check_Illegal_Reads (FA   : Flow_Analysis_Graphs;
-                                  Sane : out Boolean)
+   procedure Check_Illegal_Reads
+     (FA   : Flow_Analysis_Graphs;
+      Sane : out Boolean)
    is
       Unused : Unbounded_String;
    begin
@@ -428,8 +426,9 @@ package body Flow.Analysis.Sanity is
    -- Check_Illegal_Writes --
    --------------------------
 
-   procedure Check_Illegal_Writes (FA   : Flow_Analysis_Graphs;
-                                   Sane : out Boolean)
+   procedure Check_Illegal_Writes
+     (FA   : Flow_Analysis_Graphs;
+      Sane : out Boolean)
    is
       Unused : Unbounded_String;
    begin
@@ -496,11 +495,10 @@ package body Flow.Analysis.Sanity is
                                    Flow_Graphs.Null_Vertex);
                   Final_Atr := FA.PDG.Get_Attributes (Corresp_Final_Vertex);
 
-                  if Final_Atr.Is_Global and
-                    Final_Atr.Is_Constant and
-                    not Final_Atr.Is_Loop_Parameter
+                  if Final_Atr.Is_Global
+                    and Final_Atr.Is_Constant
+                    and not Final_Atr.Is_Loop_Parameter
                   then
-
                      if FA.Kind in E_Package | E_Package_Body then
                         Error_Msg_Flow
                           (FA        => FA,
@@ -527,6 +525,7 @@ package body Flow.Analysis.Sanity is
                            F2        => Direct_Mapping_Id (FA.Analyzed_Entity),
                            Tag       => "illegal_update");
                      end if;
+
                      Sane := False;
                   end if;
                end if;
@@ -535,8 +534,9 @@ package body Flow.Analysis.Sanity is
       end loop;
    end Check_Illegal_Writes;
 
-   procedure Check_All_Variables_Known (FA   : Flow_Analysis_Graphs;
-                                        Sane : out Boolean)
+   procedure Check_All_Variables_Known
+     (FA   : Flow_Analysis_Graphs;
+      Sane : out Boolean)
    is
       Unused : Unbounded_String;
    begin
@@ -568,7 +568,8 @@ package body Flow.Analysis.Sanity is
 
                if not (FA.All_Vars.Contains (F) or Synthetic (F)) then
 
-                  --  Here we are dealing with a missing global.
+                  --  Here we are dealing with a missing global
+
                   case F.Kind is
                      when Direct_Mapping | Record_Field =>
                         Error_Msg_Flow
@@ -590,6 +591,7 @@ package body Flow.Analysis.Sanity is
                      when others =>
                         raise Why.Unexpected_Node;
                   end case;
+
                   Sane := False;
                end if;
             end loop;
