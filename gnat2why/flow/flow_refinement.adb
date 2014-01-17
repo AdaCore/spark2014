@@ -22,20 +22,20 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Vectors;
-with Ada.Containers;    use Ada.Containers;
+with Ada.Containers;         use Ada.Containers;
 
-with Elists;            use Elists;
-with Nlists;            use Nlists;
-with Snames;            use Snames;
-with Stand;             use Stand;
-with Sem_Util;          use Sem_Util;
+with Elists;                 use Elists;
+with Nlists;                 use Nlists;
+with Sem_Util;               use Sem_Util;
+with Snames;                 use Snames;
+with Stand;                  use Stand;
 
-with Treepr;            use Treepr;
-with Output;            use Output;
-with Sprint;            use Sprint;
-with Flow.Debug;        use Flow.Debug;
+with Output;                 use Output;
+with Sprint;                 use Sprint;
+with Treepr;                 use Treepr;
 
-with Flow_Tree_Utility; use Flow_Tree_Utility;
+with Flow_Debug;             use Flow_Debug;
+with Flow_Tree_Utility;      use Flow_Tree_Utility;
 
 with Why;
 

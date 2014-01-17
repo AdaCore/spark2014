@@ -2,7 +2,7 @@
 --                                                                          --
 --                           GNAT2WHY COMPONENTS                            --
 --                                                                          --
---                           F L O W . D E B U G                            --
+--                           F L O W _ D E B U G                            --
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
@@ -21,10 +21,13 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Atree;  use Atree;
+with Types;  use Types;
+
 with Output; use Output;
 with Sprint; use Sprint;
 
-package body Flow.Debug is
+package body Flow_Debug is
 
    --------------------
    -- Print_Node_Set --
@@ -115,4 +118,4 @@ package body Flow.Debug is
       Write_Eol;
    end pfs;
 
-end Flow.Debug;
+end Flow_Debug;

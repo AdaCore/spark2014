@@ -28,12 +28,12 @@ with Nlists;                 use Nlists;
 with Output;                 use Output;
 with Sprint;                 use Sprint;
 with Treepr;                 use Treepr;
-with Flow.Debug;             use Flow.Debug;
 
 with Why;
 with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 with SPARK_Definition;       use SPARK_Definition;
 
+with Flow_Debug;             use Flow_Debug;
 with Flow_Tree_Utility;      use Flow_Tree_Utility;
 
 package body Flow_Utility is

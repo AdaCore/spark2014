@@ -2,7 +2,7 @@
 --                                                                          --
 --                           GNAT2WHY COMPONENTS                            --
 --                                                                          --
---                           F L O W . D E B U G                            --
+--                           F L O W _ D E B U G                            --
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
@@ -25,7 +25,11 @@
 --  datastructures used by flow analysis in a vaguely human-readable
 --  form.
 
-package Flow.Debug is
+with Flow_Dependency_Maps; use Flow_Dependency_Maps;
+with Flow_Refinement;      use Flow_Refinement;
+with Flow_Types;           use Flow_Types;
+
+package Flow_Debug is
 
    procedure Print_Node_Set (S : Flow_Id_Sets.Set);
    --  Print a mostly human-readable form the given node set.
@@ -43,4 +47,4 @@ package Flow.Debug is
    pragma Export (Ada, pfs);
    --  Function for use in GDB. Prints the given flow scope.
 
-end Flow.Debug;
+end Flow_Debug;

@@ -50,8 +50,8 @@ with Flow.Data_Dependence_Graph;
 with Flow.Interprocedural;
 with Flow.Program_Dependence_Graph;
 
-with Flow.Debug;                    use Flow.Debug;
 with Flow.Slice;                    use Flow.Slice;
+with Flow_Debug;                    use Flow_Debug;
 with Flow_Error_Messages;           use Flow_Error_Messages;
 with Flow_Tree_Utility;             use Flow_Tree_Utility;
 
