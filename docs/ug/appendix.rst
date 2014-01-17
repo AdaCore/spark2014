@@ -305,7 +305,7 @@ Tool Limitations
 ----------------
 
 #. The Global contracts generated automatically by |GNATprove| for subprograms
-   without an explicit one does not take into account indirect calls (through
+   without an explicit one do not take into account indirect calls (through
    access-to-subprogram and dynamic binding) and indirect reads/writes to
    global variables (through access variables).
 
