@@ -274,9 +274,9 @@ dynamic_fixed.adb:7:10: warning: initialization has no effect
 dynamic_fixed.adb:7:19: warning: range check might fail
 dynamic_fixed.adb:9:10: warning: assertion might fail, requires Integer (T'Last) = I
 dynamic_fixed.adb:10:10: info: assertion proved
-unsupported.adb:2:09: fixed-point type whose small is not a negative power of 2 or 10 is not yet supported
-unsupported.adb:5:09: fixed-point type whose small is not a negative power of 2 or 10 is not yet supported
-unsupported.adb:8:09: fixed-point type whose small is not a negative power of 2 or 10 is not yet supported
+unsupported.adb:2:04: fixed-point type whose small is not a negative power of 2 or 10 is not yet supported
+unsupported.adb:5:04: fixed-point type whose small is not a negative power of 2 or 10 is not yet supported
+unsupported.adb:8:04: fixed-point type whose small is not a negative power of 2 or 10 is not yet supported
 unsupported.adb:18:13: operation on fixed-point type with different result type is not yet supported
 unsupported.adb:19:13: operation between different fixed-point types is not yet supported
 unsupported.adb:20:13: operation between fixed-point type and universal real is not yet supported
