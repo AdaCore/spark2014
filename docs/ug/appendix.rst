@@ -304,6 +304,11 @@ and provide a file `spark.adc` which contains::
 Tool Limitations
 ----------------
 
+#. The Global contracts generated automatically by |GNATprove| for subprograms
+   without an explicit one does not take into account indirect calls (through
+   access-to-subprogram and dynamic binding) and indirect reads/writes to
+   global variables (through access variables).
+
 #. Defining multiple units in the same file is not supported. Instead,
    define each unit in a separate file. You can use the gnatchop tool to
    automate this.
@@ -386,10 +391,6 @@ Proof Limitations
    pragmas are not available, possibly leading to unproved checks. The current
    workaround is to use expression functions instead for those functions called
    in contracts and assertion pragmas.
-
-#. Global contracts for subprograms that are only declared (no body is
-   available) are ignored in proof. A ``null`` Global contract is used for
-   these subprograms.
 
 #. The 'Update notation for specifying updates to arrays and records in proof
    contracts does not support multi-dimensional arrays at present.
