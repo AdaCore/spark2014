@@ -64,41 +64,60 @@ package body Flow_Types is
 
    function "=" (Left, Right : Flow_Id) return Boolean is
    begin
-      if Left.Kind = Right.Kind then
-         if Left.Variant = Right.Variant then
-            case Left.Kind is
-               when Null_Value | Synthetic_Null_Export =>
-                  return True;
-               when Direct_Mapping =>
-                  return Left.Node = Right.Node;
-               when Record_Field =>
-                  if Left.Node = Right.Node
-                    and then Left.Component.Length = Right.Component.Length
-                  then
-                     for I in Natural
-                       range 1 .. Natural (Left.Component.Length) loop
-                        if Left.Component (I) /= Right.Component (I) then
-                           return False;
-                        end if;
-                     end loop;
-                     return True;
-                  else
-                     return False;
-                  end if;
-               when Magic_String =>
-                  return Name_Equal (Left.Name, Right.Name);
-            end case;
+      if Left.Kind /= Right.Kind then
+         return False;
+      end if;
 
-         elsif Left.Kind in Null_Value then
+      pragma Assert_And_Cut (Left.Kind = Right.Kind);
+
+      case Left.Kind is
+         when Null_Value =>
             return True;
 
-         else
+         when others =>
+            if Left.Variant /= Right.Variant then
+               return False;
+            end if;
+      end case;
+
+      pragma Assert_And_Cut (Left.Kind = Right.Kind and then
+                             Left.Kind in Direct_Mapping |
+                                          Record_Field |
+                                          Synthetic_Null_Export |
+                                          Magic_String and then
+                             Left.Variant = Right.Variant);
+
+      case Left.Kind is
+      when Null_Value =>
+         raise Program_Error;
+
+      when Direct_Mapping | Record_Field =>
+         if Left.Node /= Right.Node then
             return False;
          end if;
 
-      else
-         return False;
-      end if;
+         if Left.Kind = Record_Field then
+            if Left.Component.Length = Right.Component.Length then
+               for I in Natural
+               range 1 .. Natural (Left.Component.Length) loop
+                  if Left.Component (I) /= Right.Component (I) then
+                     return False;
+                  end if;
+               end loop;
+               return True;
+            else
+               return False;
+            end if;
+         end if;
+
+         return True;
+
+      when Magic_String =>
+         return Name_Equal (Left.Name, Right.Name);
+
+      when Synthetic_Null_Export =>
+         return True;
+      end case;
    end "=";
 
    function "<" (Left, Right : Flow_Id) return Boolean is
@@ -138,9 +157,9 @@ package body Flow_Types is
       Variant : Flow_Id_Variant := Normal_Use)
       return Flow_Id is
    begin
-      return Null_Flow_Id'Update (Kind    => Direct_Mapping,
-                                  Variant => Variant,
-                                  Node    => N);
+      return (Kind    => Direct_Mapping,
+              Variant => Variant,
+              Node    => N);
    end Direct_Mapping_Id;
 
    ---------------------------
@@ -161,8 +180,10 @@ package body Flow_Types is
       Variant : Flow_Id_Variant := Normal_Use)
       return Flow_Id
    is
-      F : Flow_Id := Null_Flow_Id'Update (Kind    => Record_Field,
-                                          Variant => Variant);
+      F : Flow_Id := (Kind      => Record_Field,
+                      Variant   => Variant,
+                      Node      => Empty,
+                      Component => Entity_Lists.Empty_Vector);
       P : Node_Id;
    begin
       P := N;
@@ -454,11 +475,9 @@ package body Flow_Types is
       Variant : Flow_Id_Variant := Normal_Use)
       return Flow_Id is
    begin
-      return Flow_Id'(Kind      => Magic_String,
-                      Variant   => Variant,
-                      Node      => Empty,
-                      Name      => S,
-                      Component => Entity_Lists.Empty_Vector);
+      return (Kind    => Magic_String,
+              Variant => Variant,
+              Name    => S);
    end Magic_String_Id;
 
    --------------------
@@ -489,7 +508,9 @@ package body Flow_Types is
       return R : Flow_Id := F do
          R.Component.Delete_Last;
          if R.Component.Length = 0 then
-            R.Kind := Direct_Mapping;
+            R := (Kind    => Direct_Mapping,
+                  Variant => F.Variant,
+                  Node    => F.Node);
          end if;
       end return;
    end Parent_Record;
@@ -509,9 +530,10 @@ package body Flow_Types is
             return F;
 
          when Record_Field =>
-            return R : Flow_Id := F do
-               R.Kind := Direct_Mapping;
-               R.Component.Clear;
+            return R : Flow_Id do
+               R := (Kind    => Direct_Mapping,
+                     Variant => F.Variant,
+                     Node    => F.Node);
             end return;
       end case;
    end Entire_Variable;

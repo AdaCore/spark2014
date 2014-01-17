@@ -149,18 +149,25 @@ package Flow_Types is
      (Initial_Value => Initial_Grouping,
       Final_Value   => Final_Grouping);
 
-   type Flow_Id is record
-      Kind      : Flow_Id_Kind;
-      Variant   : Flow_Id_Variant;
+   type Flow_Id (Kind : Flow_Id_Kind := Null_Value) is record
+      Variant : Flow_Id_Variant;
+      case Kind is
+         when Direct_Mapping | Record_Field =>
+            Node : Node_Or_Entity_Id;
 
-      Node      : Node_Or_Entity_Id;
-      --  For Kind = Direct_Mapping | Record_Field
+            case Kind is
+               when Record_Field =>
+                  Component : Entity_Lists.Vector;
+               when others =>
+                  null;
+            end case;
 
-      Name      : Entity_Name;
-      --  For Kind = Magic_String
+         when Magic_String =>
+            Name : Entity_Name;
 
-      Component : Entity_Lists.Vector;
-      --  For Kind = Record_Field
+         when others =>
+            null;
+      end case;
    end record;
 
    function "=" (Left, Right : Flow_Id) return Boolean;
@@ -170,18 +177,12 @@ package Flow_Types is
    --  Ordering for flow id.
 
    Null_Flow_Id : constant Flow_Id :=
-     Flow_Id'(Kind      => Null_Value,
-              Variant   => Flow_Id_Variant'First,
-              Node      => Empty,
-              Name      => Null_Entity_Name,
-              Component => Entity_Lists.Empty_Vector);
+     Flow_Id'(Kind    => Null_Value,
+              Variant => Normal_Use);
 
    Null_Export_Flow_Id : constant Flow_Id :=
-     Flow_Id'(Kind      => Synthetic_Null_Export,
-              Variant   => Normal_Use,
-              Node      => Empty,
-              Name      => Null_Entity_Name,
-              Component => Entity_Lists.Empty_Vector);
+     Flow_Id'(Kind    => Synthetic_Null_Export,
+              Variant => Normal_Use);
 
    function Hash (N : Flow_Id) return Ada.Containers.Hash_Type;
    --  Hash function for flow id's. The idea is that a direct mapping

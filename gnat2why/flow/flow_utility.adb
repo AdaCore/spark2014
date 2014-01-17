@@ -118,16 +118,23 @@ package body Flow_Utility is
 
       procedure Possibly_Include (F : Flow_Id)
       is
+         Comp_F : constant Entity_Lists.Vector :=
+           (if F.Kind = Record_Field
+            then F.Component
+            else Entity_Lists.Empty_Vector);
+
+         Comp_RF : constant Entity_Lists.Vector :=
+           (if The_Record_Field.Kind = Record_Field
+            then The_Record_Field.Component
+            else Entity_Lists.Empty_Vector);
       begin
          --  ??? Direct access into flow_id, should be removed somehow.
-         if F.Component.Length < The_Record_Field.Component.Length then
+         if Comp_F.Length < Comp_RF.Length then
             return;
          end if;
 
-         for I in Natural
-           range 1 .. Natural (The_Record_Field.Component.Length)
-         loop
-            if The_Record_Field.Component (I) /= F.Component (I) then
+         for I in Natural range 1 .. Natural (Comp_RF.Length) loop
+            if Comp_RF (I) /= Comp_F (I) then
                return;
             end if;
          end loop;
@@ -155,11 +162,10 @@ package body Flow_Utility is
                      Process_Record (Get_Full_Type (C), Tmp);
 
                   when others =>
-                     F := Flow_Id'(Kind      => Record_Field,
-                                   Variant   => Normal_Use,
-                                   Node      => Entire_Var,
-                                   Name      => Null_Entity_Name,
-                                   Component => Tmp);
+                     F := (Kind      => Record_Field,
+                           Variant   => Normal_Use,
+                           Node      => Entire_Var,
+                           Component => Tmp);
                      Possibly_Include (F);
                end case;
             end;
