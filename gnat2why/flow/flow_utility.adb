@@ -2,7 +2,7 @@
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
---                         F L O W . U T I L I T Y                          --
+--                         F L O W _ U T I L I T Y                          --
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
