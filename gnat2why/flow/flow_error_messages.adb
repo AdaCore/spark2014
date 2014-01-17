@@ -472,7 +472,6 @@ package body Flow_Error_Messages is
 
       if not Warning
         or else (Opt.Warning_Mode = Treat_As_Error
-                   and then not Warning_Disabled_For_Entity
                    and then Suppr_Reason = No_String)
       then
          Found_Flow_Error := True;
