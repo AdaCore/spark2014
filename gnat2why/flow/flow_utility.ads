@@ -26,14 +26,22 @@
 
 with Ada.Containers;
 
-with Namet;    use Namet;
-with Sem_Util; use Sem_Util;
-with Snames;   use Snames;
-with Sinfo;    use Sinfo;
+with Types;           use Types;
+with Einfo;           use Einfo;
+with Namet;           use Namet;
+with Sem_Util;        use Sem_Util;
+with Snames;          use Snames;
+with Sinfo;           use Sinfo;
+with Atree;           use Atree;
+
+with Gnat2Why.Nodes;  use Gnat2Why.Nodes;
+
+with Flow_Types;      use Flow_Types;
+with Flow_Refinement; use Flow_Refinement;
 
 use type Ada.Containers.Count_Type;
 
-package Flow.Utility is
+package Flow_Utility is
 
    procedure Get_Globals (Subprogram             : Entity_Id;
                           Scope                  : Flow_Scope;
@@ -206,4 +214,4 @@ package Flow.Utility is
    --  Return True if the subprogram in argument has the given kind of
    --  contract, False otherwise.
 
-end Flow.Utility;
+end Flow_Utility;

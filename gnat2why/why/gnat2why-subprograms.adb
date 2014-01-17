@@ -40,9 +40,9 @@ with SPARK_Definition;       use SPARK_Definition;
 with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 with SPARK_Util;             use SPARK_Util;
 
-with Flow_Types;             use Flow_Types;
-with Flow.Utility;           use Flow.Utility;
 with Flow_Tree_Utility;      use Flow_Tree_Utility;
+with Flow_Types;             use Flow_Types;
+with Flow_Utility;           use Flow_Utility;
 
 with Why;                    use Why;
 with Why.Atree.Accessors;    use Why.Atree.Accessors;
@@ -178,7 +178,7 @@ package body Gnat2Why.Subprograms is
 
    begin
       if Arg_Length = 0
-        and then not Flow.Utility.Has_Proof_Global_Reads (E)
+        and then not Flow_Utility.Has_Proof_Global_Reads (E)
       then
          return W_Expr_Array'(1 => New_Void);
       end if;
@@ -236,7 +236,7 @@ package body Gnat2Why.Subprograms is
    begin
       --  Collect global variables potentially read and written
 
-      Flow.Utility.Get_Proof_Globals (Subprogram => E,
+      Flow_Utility.Get_Proof_Globals (Subprogram => E,
                                       Reads      => Read_Ids,
                                       Writes     => Write_Ids);
       Read_Names  := Flow_Types.To_Name_Set (Read_Ids);
@@ -333,7 +333,7 @@ package body Gnat2Why.Subprograms is
    begin
       --  Collect global variables potentially read
 
-      Flow.Utility.Get_Proof_Globals (Subprogram => E,
+      Flow_Utility.Get_Proof_Globals (Subprogram => E,
                                       Reads      => Read_Ids,
                                       Writes     => Write_Ids);
       Read_Names := Flow_Types.To_Name_Set (Read_Ids);
@@ -1378,7 +1378,7 @@ package body Gnat2Why.Subprograms is
    begin
       --  Collect global variables potentially read
 
-      Flow.Utility.Get_Proof_Globals (Subprogram => E,
+      Flow_Utility.Get_Proof_Globals (Subprogram => E,
                                       Reads      => Read_Ids,
                                       Writes     => Write_Ids);
       Read_Names := Flow_Types.To_Name_Set (Read_Ids);

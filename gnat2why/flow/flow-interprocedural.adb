@@ -21,12 +21,12 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Sem_Util; use Sem_Util;
-with Sinfo;    use Sinfo;
+with Sem_Util;     use Sem_Util;
+with Sinfo;        use Sinfo;
 
 with Why;
 
-with Flow.Utility; use Flow.Utility;
+with Flow_Utility; use Flow_Utility;
 
 package body Flow.Interprocedural is
 

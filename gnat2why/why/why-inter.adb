@@ -37,7 +37,7 @@ with Constant_Tree;
 with SPARK_Definition;    use SPARK_Definition;
 with SPARK_Util;          use SPARK_Util;
 
-with Flow.Utility;
+with Flow_Utility;
 
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Builders;  use Why.Atree.Builders;
@@ -820,8 +820,8 @@ package body Why.Inter is
                --  containers).
 
                if Ekind (E) = E_Function
-                 and then not Flow.Utility.Has_Proof_Global_Reads (Decl_E)
-                 and then not Flow.Utility.Has_Proof_Global_Writes (Decl_E)
+                 and then not Flow_Utility.Has_Proof_Global_Reads (Decl_E)
+                 and then not Flow_Utility.Has_Proof_Global_Writes (Decl_E)
                then
                   return WF_Pure;
                else

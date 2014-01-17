@@ -36,7 +36,7 @@ with SPARK_Definition;       use SPARK_Definition;
 
 with Flow_Tree_Utility;      use Flow_Tree_Utility;
 
-package body Flow.Utility is
+package body Flow_Utility is
 
    use type Flow_Id_Sets.Set;
 
@@ -1479,4 +1479,4 @@ package body Flow.Utility is
       end case;
    end Is_Initialized_At_Elaboration;
 
-end Flow.Utility;
+end Flow_Utility;

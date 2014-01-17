@@ -21,17 +21,17 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Errout;   use Errout;
-with Nlists;   use Nlists;
-with Sem_Eval; use Sem_Eval;
-with Sem_Util; use Sem_Util;
+with Errout;       use Errout;
+with Nlists;       use Nlists;
+with Sem_Eval;     use Sem_Eval;
+with Sem_Util;     use Sem_Util;
 
-with Output; use Output;
-with Sprint; use Sprint;
+with Output;       use Output;
+with Sprint;       use Sprint;
 
 with Why;
 
-with Flow.Utility; use Flow.Utility;
+with Flow_Utility; use Flow_Utility;
 
 package body Flow.Antialiasing is
 

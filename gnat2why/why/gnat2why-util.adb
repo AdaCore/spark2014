@@ -33,7 +33,7 @@ with Uintp;               use Uintp;
 with SPARK_Definition;
 
 with Flow_Types;
-with Flow.Utility;
+with Flow_Utility;
 
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Builders;  use Why.Atree.Builders;
@@ -279,7 +279,7 @@ package body Gnat2Why.Util is
              (case Ekind (Entity (N)) is
                  when Object_Kind     => Is_Mutable_In_Why (Entity (N)),
                  when Subprogram_Kind =>
-                    Flow.Utility.Has_Proof_Global_Reads (Entity (N)),
+                    Flow_Utility.Has_Proof_Global_Reads (Entity (N)),
                  when others          => False)
          then
             Variable_Reference_Seen := True;

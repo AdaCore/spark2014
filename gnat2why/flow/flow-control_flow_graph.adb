@@ -37,9 +37,9 @@ pragma Unreferenced (Flow.Debug);
 
 with Flow.Antialiasing;               use Flow.Antialiasing;
 with Flow.Control_Flow_Graph.Utility; use Flow.Control_Flow_Graph.Utility;
-with Flow.Utility;                    use Flow.Utility;
 with Flow_Error_Messages;             use Flow_Error_Messages;
 with Flow_Tree_Utility;               use Flow_Tree_Utility;
+with Flow_Utility;                    use Flow_Utility;
 
 with Why;
 

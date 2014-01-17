@@ -53,7 +53,7 @@ with SPARK_Util;             use SPARK_Util;
 with VC_Kinds;               use VC_Kinds;
 
 with Flow_Types;             use Flow_Types;
-with Flow.Utility;           use Flow.Utility;
+with Flow_Utility;           use Flow_Utility;
 
 with Why;                    use Why;
 with Why.Unchecked_Ids;      use Why.Unchecked_Ids;
@@ -1002,7 +1002,7 @@ package body Gnat2Why.Expr is
    begin
       --  Collect global variables potentially read
 
-      Flow.Utility.Get_Proof_Globals (Subprogram => Subp,
+      Flow_Utility.Get_Proof_Globals (Subprogram => Subp,
                                       Reads      => Read_Ids,
                                       Writes     => Write_Ids);
       Read_Names := Flow_Types.To_Name_Set (Read_Ids);
