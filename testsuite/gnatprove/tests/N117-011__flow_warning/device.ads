@@ -6,7 +6,7 @@ package Device
 is
    procedure Write (X : in Integer)
      with Global  => (In_Out => State),
-         Depends => (State =>+ X);
+         Depends  => (State =>+ X);
 
    procedure ReadAck (OK : out Boolean)
      with Global  => (Input => State),

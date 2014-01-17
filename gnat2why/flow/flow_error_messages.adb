@@ -226,9 +226,9 @@ package body Flow_Error_Messages is
       --
       --  If Quote_Val is not set, the quotes around value are omitted.
 
-      ---------------------------------------
-      -- Warning_Disabled_For_Local_Entity --
-      ---------------------------------------
+      ---------------------------------
+      -- Warning_Disabled_For_Entity --
+      ---------------------------------
 
       function Warning_Disabled_For_Entity return Boolean is
 
@@ -265,10 +265,10 @@ package body Flow_Error_Messages is
       ----------------
 
       function Json_Entry (Reason : String_Id) return Unbounded_String is
-         JSON_M     : Unbounded_String;
+         JSON_M    : Unbounded_String;
          Escaped_M : Unbounded_String := Null_Unbounded_String;
-         Ent_Dict : Unbounded_String := To_Unbounded_String ("{");
-         Subs     : GNAT.String_Split.Slice_Set;
+         Ent_Dict  : Unbounded_String := To_Unbounded_String ("{");
+         Subs      : GNAT.String_Split.Slice_Set;
          use type GNAT.String_Split.Slice_Number;
       begin
 
@@ -467,9 +467,14 @@ package body Flow_Error_Messages is
 
       --  Signal we have found an error if:
       --     * we are not dealing with a warning or
-      --     * the Warning_Mode is Treat_As_Error.
+      --     * the Warning_Mode is Treat_As_Error and the warning is not
+      --       suppressed.
 
-      if not Warning or Opt.Warning_Mode = Treat_As_Error then
+      if not Warning
+        or else (Opt.Warning_Mode = Treat_As_Error
+                   and then not Warning_Disabled_For_Entity
+                   and then Suppr_Reason = No_String)
+      then
          Found_Flow_Error := True;
       end if;
 
