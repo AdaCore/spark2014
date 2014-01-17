@@ -39,6 +39,9 @@ Definition min_signed : Z := Z.opp half_modulus.
 Inductive value : Type :=
     | Int (n : Z)
     | Bool (b : bool).
+(* | Array (t: list value)*)
+(* | Record (r: list (id_label*value)) *)
+
 
 (** Type of stored values in the store *)
 Inductive val: Type := 

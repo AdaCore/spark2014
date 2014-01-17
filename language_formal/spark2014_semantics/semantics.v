@@ -163,34 +163,69 @@ Inductive Forall3 {A B C : Type} (R : A -> B -> C -> Prop)
                    R x y z ->
                    Forall3 R l l' l'' -> Forall3 R (x :: l) (y :: l') (z :: l'').
 
-Definition is_var e:Prop :=
+Definition Is_var e:Prop :=
   match e with
     |  E_Identifier _ _ => True
     | _ => False
   end.
 
+Definition is_var e:bool :=
+  match e with
+    |  E_Identifier _ _ => true
+    | _ => false
+  end.
 
-Inductive Copy_out: store -> list mode -> list expression -> store -> store -> Prop :=
-  Copy_out_nil : forall σ, Copy_out nil nil nil σ σ
-| Copy_out_cons_out: forall σ σ' σ'' x v l lmode lexp id astnum,
-                       (update σ' id v) = Some σ''
-                       -> Copy_out l lmode lexp σ σ'
-                       -> Copy_out ((x,v)::l) (Out::lmode) ((E_Identifier astnum id) :: lexp) σ σ''
-| Copy_out_cons_in: forall σ σ'  x v l lmode lexp e,
-                      Copy_out l lmode lexp σ σ'
-                      -> Copy_out ((x,v)::l) (In::lmode) (e :: lexp) σ σ'.
+Lemma is_var_Is_var : forall e, is_var e = true <-> Is_var e.
+Proof.
+  intros e.
+  destruct e;simpl; split;intro h;auto;try contradiction; discriminate h. 
+Qed.
 
+Inductive Copy_out: store -> list parameter_specification
+                    -> list expression -> store -> store -> Prop :=
+  Copy_out_nil : forall prf σ, Copy_out prf nil nil σ σ
+| Copy_out_cons_out:
+    forall σ σ' σ'' id v prf prm lprm lexp idorig astnum,
+      prm.(parameter_mode) = Out
+      -> id = prm.(parameter_name)
+      -> fetch id prf = Some v
+      -> update σ idorig v = Some σ'
+      -> Copy_out prf lprm lexp σ' σ''
+      -> Copy_out prf (prm::lprm) ((E_Identifier astnum idorig) :: lexp) σ σ''
+| Copy_out_cons_in:
+    forall σ σ'  prf prm lprm lexp e,
+      prm.(parameter_mode) = In
+      -> Copy_out prf lprm lexp σ σ'
+      -> Copy_out prf (prm::lprm) (e :: lexp) σ σ'.
+
+Inductive Copy_in: store -> list parameter_specification
+                   -> list expression -> store -> Prop :=
+  Copy_in_nil : forall σ, Copy_in σ nil nil nil 
+| Copy_in_cons_out:
+    forall σ lparam lexp frame prm idv ast_num,
+      Copy_in σ lparam lexp frame
+      -> prm.(parameter_mode) = Out
+      -> Copy_in σ (prm::lparam) (E_Identifier ast_num idv::lexp)
+                 ((prm.(parameter_name),Undefined)::frame)
+| Copy_in_cons_in:
+    forall σ lparam lexp frame prm e v,
+      Copy_in σ lparam lexp frame
+      -> prm.(parameter_mode) = In
+      -> eval_expr σ e (Val_Normal v)
+      -> Copy_in σ (prm::lparam) (e::lexp) ((prm.(parameter_name),Value v)::frame).
+(* This formulation is less easy to work with
 Definition Copy_in s lparams lexp frame :=
   match List.split frame with
       (lname,lv) =>
       Forall3
         (fun param exp v =>
-           (param.(parameter_mode) = In -> exists v', eval_expr s exp (Val_Normal v') /\ v = Value v')
-           /\ (param.(parameter_mode) = Out -> (v = Undefined) /\ is_var exp))
+           (param.(parameter_mode) = In -> exists v',
+              eval_expr s exp (Val_Normal v') /\ v = Value v')
+           /\ (param.(parameter_mode) = Out -> (v = Undefined) /\ Is_var exp))
         lparams lexp lv
       /\ lname = List.map parameter_name lparams
   end.
-
+*)
 Inductive eval_stmt: store -> statement -> state -> Prop := 
     | eval_S_Assignment1: forall s e ast_num x,
         eval_expr s e Val_Run_Time_Error ->
@@ -242,8 +277,7 @@ Inductive eval_stmt: store -> statement -> state -> Prop :=
           s3 = slocal ++ prefix' ++ s' ->
           List.length s' = List.length s ->
           List.length prefix = List.length prefix' ->
-          let lmode := List.map parameter_mode (procedure_parameter_profile pb) in
-          Copy_out prefix' lmode lexp s' s''                                                  
+          Copy_out prefix' (procedure_parameter_profile pb) lexp s' s''
           -> eval_stmt s (S_ProcCall ast_num pbname lexp) (S_Normal s'')
 
 with eval_decl: store -> declaration -> state -> Prop :=
@@ -306,10 +340,7 @@ Proof.
   eapply eval_S_Proc; try now (simpl; eauto).
   - simpl.
     instantiate (1 := nil).
-    red.
-    simpl.
-    split;simpl;auto.
-    constructor 1.
+    constructor.
   - simpl List.app.
     instantiate (1:= ((4, Value (Int 34))::s1)).
     unfold s1, s2, proc1.
@@ -386,11 +417,7 @@ Lemma essai2: eval_stmt s3 (S_ProcCall 13 101 nil) (S_Normal s4).
 Proof.
   eapply eval_S_Proc; try now (simpl; eauto).
   - simpl.
-    instantiate (1 := nil).
-    red.
-    simpl.
-    split;simpl;auto.
-    constructor 1.
+    constructor.
   - simpl List.app.
     instantiate (1:= ((5, Value (Int 37))::(4, Value (Int 34))::s3)).
     unfold s3, s4, proc1.
@@ -454,10 +481,9 @@ Qed.
 End ExampleProcedures.
 (* END EXAMPLE *)  
 
-TO BE CONTINUED
 
 Definition fold_left2 := 
-fun (A B C : Type) (f : A -> B -> C -> A) =>
+fun {A B C : Type} (f : A -> B -> C -> A) =>
 fix fold_left (l : list B)(l' : list C) (a0 : A) {struct l} : A :=
   match l,l' with
   | nil,nil => a0
@@ -466,30 +492,34 @@ fix fold_left (l : list B)(l' : list C) (a0 : A) {struct l} : A :=
   end.
 
 
-(* 
-Definition copy_out pb lexp s' :=
-  List.fold_left2
-    (fun (acc:store) prm e =>
-       match prm.(parameter_mode) with
+(* copy_out prefx params lexp s'
+  returns s' updated in the following way: for each param in params
+  that is Out, pick the correponding variable name in lexp and update
+  s' with the value of the param that is stored in prefix. *)
+Function copy_out (prefx:store) (params: list parameter_specification)
+         (lexp:list expression) (s: store) {struct params}:  state :=
+  match params, lexp with
+    | nil , nil => S_Normal s
+    | (prm::params') , (e::lexp') =>
+      match prm.(parameter_mode) with
          | Out =>
            match e with
              | E_Identifier _ x =>
-               match (fetch (prm.(parameter_name)) prefix') with
+               match (fetch (prm.(parameter_name)) prefx) with
                    Some v =>
-                   match update acc x v with
-                     | Some x => x
-                     | None => acc
+                   match update s x v with
+                     | Some s' => copy_out prefx params' lexp' s'
+                     | None => S_Abnormal
                    end
-                 | None => acc
+                 | None => S_Abnormal
                end
-             | _ => acc
+             | _ => S_Abnormal
            end
-         | _ => acc
-       end)
-    (procedure_parameter_profile pb)
-    lexp
-    s'.
- *)
+         | In => copy_out prefx params' lexp' s
+         | _ => S_Abnormal
+       end
+    | _ , _ => S_Abnormal
+  end.
 
 
 (** * Functional Semantics *)
@@ -554,8 +584,8 @@ Function f_eval_expr (s: store) (e: expression): return_val :=
     | E_Literal _ v => Val_Normal (eval_literal v)
     | E_Identifier _ x =>
         match (fetch x s) with
-        | Some v => Val_Normal v
-        | None => Val_Abnormal
+        | Some (Value v) => Val_Normal v
+        | _ => Val_Abnormal (* None or procedure *)
         end
     | E_Binary_Operation _ op e1 e2 =>
         match f_eval_expr s e1 with
@@ -589,6 +619,82 @@ Function f_eval_expr (s: store) (e: expression): return_val :=
    or an abnormal state; run time checks (for example, division by 
    zero check) are encoded inside the functional semantics;
 *)
+
+(* This should be a regular Definition but it makes Function bug
+   later, this is a bug of Function that will be hopefukly fixed in
+   next versions. *)
+Fixpoint split2 {A} n m (l:list A) {struct n} :=
+    let ll := List.skipn n l in
+    let l3 := List.skipn m ll in
+    ((List.firstn n l) , ((List.firstn m ll), l3)).
+
+  
+(*Definition Copy_in s lparams lexp frame :=
+  match List.split frame with
+      (lname,lv) =>
+      Forall3
+        (fun param exp v =>
+           (param.(parameter_mode) = In -> exists v', eval_expr s exp (Val_Normal v') /\ v = Value v')
+           /\ (param.(parameter_mode) = Out -> (v = Undefined) /\ is_var exp))
+        lparams lexp lv
+      /\ lname = List.map parameter_name lparams
+  end.
+*)
+
+Fixpoint map3 {A B C D: Type} (f : A -> B -> C -> D) l1 l2 l3 : list D :=
+  match l1,l2,l3 with
+  | a :: l1' , b :: l2' , c :: l3' => f a b c :: map3 f l1' l2' l3'
+  | _ , _ , _ => nil
+  end.
+
+
+Function copy_in (s:store) lparams lexp: state :=
+  match lparams,lexp with
+  | (prm :: lparams') , (exp:: lexp') =>
+    match prm.(parameter_mode) with
+      | Out => if is_var exp
+               then match copy_in s lparams' lexp' with
+                      | S_Normal res => S_Normal ((prm.(parameter_name), Undefined) :: res)
+                      | res => res
+                    end
+               else S_Abnormal
+      | In =>
+        let v := f_eval_expr s exp in
+        match v with
+          | Val_Normal v' =>
+            match copy_in s lparams' lexp' with
+              | S_Normal res => S_Normal ((prm.(parameter_name), Value v') :: res)
+              | res => res
+            end
+          | Val_Run_Time_Error => S_Run_Time_Error
+          | Val_Abnormal => S_Abnormal
+        end
+      | In_Out => S_Abnormal (* not yet implemented *)
+    end
+  | nil , nil => S_Normal nil
+  | _ , _ => S_Abnormal
+  end.
+
+Function f_eval_decl (s: store) (c: declaration) {struct c}: state :=
+  match c with
+    | D_Object_declaration d =>
+      match d.(initialization_expression) with
+        | Some e =>
+          match f_eval_expr s e with
+            | Val_Run_Time_Error => S_Run_Time_Error
+            | Val_Normal v =>
+              (S_Normal ((d.(object_name), Value v) :: s))
+            | Val_Abnormal => S_Abnormal
+          end
+        | None => (S_Normal ((d.(object_name), Undefined) :: s))
+      end
+    | D_Sequence dcl1 dcl2 =>
+      match f_eval_decl s dcl1 with
+        | S_Normal s' => f_eval_decl s' dcl2
+        | err => err
+      end
+    | _ => S_Normal s(* TODO *)
+  end.
 
 Function f_eval_stmt k (s: store) (c: statement) {struct k}: state := 
   match k with
@@ -632,13 +738,39 @@ Function f_eval_stmt k (s: store) (c: statement) {struct k}: state :=
         | Val_Run_Time_Error => S_Run_Time_Error
         | _ => S_Abnormal
         end
+    | S_ProcCall ast_num pbname lexp =>
+      match fetch pbname s with
+        | Some (Procedure pb) => 
+          match copy_in s (procedure_parameter_profile pb) lexp with
+            | S_Normal prefx => 
+              match f_eval_decl (prefx ++ s) (procedure_declarative_part pb) with
+                | S_Normal s2 =>
+                  match f_eval_stmt k' s2 (procedure_statements pb) with
+                    | S_Normal s3 =>
+                      match split2 (List.length s3 - List.length s2)
+                                   (List.length s2 - List.length s) s3 with
+                        | (slocal,p) =>
+                          match p with
+                            | (prefx',s') =>
+(*                               S_Normal (copy_out prefx (procedure_parameter_profile pb) lexp s3) *)
+                              (copy_out prefx' (procedure_parameter_profile pb) lexp s')
+                          end
+                      end
+                    | S_Run_Time_Error => S_Run_Time_Error
+                    | _ => S_Abnormal
+                  end
+                | S_Run_Time_Error => S_Run_Time_Error
+                | _ => S_Abnormal
+              end
+            | err => err
+          end
+        | _ => (* None or non-procedure *) S_Abnormal
+      end
     end
   end.
 
 
-
 (** basic lemmas *)
-
 (** for any expression e, if it can be evaluated to v1 and v2 in the
     same state s, then v1 and v2 should be the same; 
 *)
@@ -904,6 +1036,11 @@ Ltac apply_inv :=
     | H:update _ _ (Value _) = _ |- _ => rewrite H
     | H:f_eval_stmt _ _ _ = _ |- _ => rewrite H
     | H:f_eval_expr _ _ = _ |- _ => rewrite H
+    | H:f_eval_decl _ _ = _ |- _ => rewrite H
+    | H:copy_out _ _ _ _ = _ |- _ => rewrite H
+    | H:copy_in _ _ _ = _ |- _ => rewrite H
+    | H:fetch _ _ = _ |- _ => rewrite H
+    | H:split2 _ _ _ = _ |- _ => rewrite H
   end;subst;simpl;auto.
 
 Ltac invle := match goal with
@@ -932,6 +1069,15 @@ Proof.
   - invle; repeat apply_inv.
   - invle; repeat apply_inv. rewrite (IHs0 _ e2); auto with arith.
   - invle; repeat apply_inv.
+  - invle; repeat apply_inv.
+    + rewrite (IHs0 _ e4).
+      repeat apply_inv.
+      auto with arith.
+  - invle.
+    + rewrite H in *.
+      contradiction.
+    + rewrite H in *.
+      contradiction.
 Qed.
 
 (** another help lemma to prove the theorem: 'f_eval_stmt_complete' *)
@@ -965,6 +1111,15 @@ Proof.
     rewrite (IHs0 e2); auto with arith.    
   - invle; 
     repeat apply_inv.   
+  - invle; repeat apply_inv.
+    rewrite (f_eval_stmt_fixpoint _ _ _ _ e4); auto with arith.
+    rewrite e5.
+    assumption.
+  - invle; repeat apply_inv.
+    rewrite  (IHs0 e4 m);auto with arith.
+  - clear H.
+    invle; repeat apply_inv.
+  - invle; repeat apply_inv.
 Qed.
 
 
@@ -1001,8 +1156,131 @@ Ltac rm_f_eval_expr :=
 *)
     end; auto.
 
+Lemma copy_in_correct:
+  forall s prm lexp prefx,
+    copy_in s prm lexp = S_Normal prefx <->  Copy_in s prm lexp prefx.
+Proof.
+  intros s prm lexp.
+  functional induction copy_in s prm lexp;intros;split;simpl in *;intro heq
+  ; try (inversion heq;subst;clear heq)
+  ; try (now repeat progress
+           match goal with
+             | HH: ?x = In , HH': ?x = Out |- _ =>
+               rewrite HH in HH'; inversion HH'
+             | HH: ?x = In , HH': ?x = In_Out |- _ =>
+               rewrite HH in HH' ; inversion HH'
+             | HH: ?x = In_Out , HH': ?x = Out |- _ =>
+               rewrite HH in HH'; inversion HH'
+             | H: copy_in _ _ _ = S_Normal ?res , H': forall _, _ <-> _ |- _ =>
+               rewrite <- H' in *
+             | H: Copy_in _ _ _ _ , H': forall _, _ <-> _ |- _ =>
+               rewrite <- H' in *
+             | HH: copy_in ?x ?y ?z = _ , HH': context C [copy_in ?x ?y ?z = _] |- _ =>
+               (rewrite HH in HH'; inversion HH' ; subst)
+             | HH: copy_in ?x ?y ?z = _ , H': forall _, _ <-> _  |- _  =>
+               rewrite HH in *; contradiction
+             | H1: f_eval_expr ?s ?exp = Val_Abnormal,
+                   H2: eval_expr ?s ?exp (Val_Normal _) |- _ =>
+               apply f_eval_expr_complete in H2
+             ; rewrite H2 in H1
+             ; inversion H1
+             | H1: f_eval_expr ?s ?exp = (Val_Normal _),
+                   H2: eval_expr ?s ?exp (Val_Normal _) |- _ =>
+               apply f_eval_expr_complete in H2;
+             rewrite H2 in H1;
+             inversion H1
+             | H1: f_eval_expr ?s ?exp = Val_Run_Time_Error,
+                   H2: eval_expr ?s ?exp (Val_Normal _) |- _ =>
+               apply f_eval_expr_complete in H2;
+             rewrite H2 in H1;
+             inversion H1
+           end ; auto).
+
+  - rewrite is_var_Is_var in e2.
+    destruct exp;simpl in e2; try contradiction.
+    econstructor 2.
+    + apply IHs0;auto.
+    + assumption.
+  - constructor 3.
+    + apply IHs0.
+      assumption.
+    + assumption.
+    + apply f_eval_expr_correct1.
+      assumption.
+  - constructor 1.
+Qed.
+
+
+Lemma copy_out_correct:
+  forall prefx s (prm:list parameter_specification) lexp x,
+    copy_out prefx prm lexp s = S_Normal x <-> Copy_out prefx prm lexp s x.
+Proof.
+  intros prefx s prm lexp.
+  Opaque fetch.
+  functional induction copy_out prefx prm lexp s;intros;split;simpl in *;intro heq
+  ; try (now (inversion heq;subst;clear heq);auto;try now (econstructor;eauto)).
+  - apply Copy_out_cons_out with (σ':=s') (v:=v)(id:=parameter_name prm);auto.
+    apply IHs0.
+    assumption.
+  - inversion heq;subst.
+    + rewrite e4 in *.
+      inversion H9;clear H9.
+      subst.
+      apply IHs0.
+      rewrite H10 in *.
+      inversion e5. clear e5. subst.
+      assumption.
+    + rewrite e2 in *.
+      discriminate.
+  - inversion heq;clear heq;subst.
+    + rewrite e4 in *.
+      inversion H9;clear H9.
+      subst.
+      rewrite H10 in *.
+      inversion e5.
+    + rewrite e2 in *.
+      discriminate.
+  - inversion heq;clear heq;subst.
+    + rewrite e4 in *.
+      inversion H9.
+    + rewrite e2 in *.
+      discriminate.
+  - inversion heq;subst;try contradiction.
+    rewrite e2 in *.
+    discriminate.
+  - constructor 3;auto.
+    apply IHs0.
+    assumption.
+  - inversion heq;subst;try contradiction.
+    + rewrite e2 in *.
+      discriminate.
+    + apply IHs0.
+      assumption.
+  - inversion heq;subst;try contradiction.
+    + rewrite H3 in *;contradiction.
+    + rewrite H6 in *;contradiction.
+Qed.
+
+
+Lemma f_eval_decl_correct :
+  forall s d s',
+    f_eval_decl s d = S_Normal s' ->
+    eval_decl s d (S_Normal s').
+Proof.
+  intros s d.
+  functional induction f_eval_decl s d;simpl;intros;try discriminate;
+  try match goal with
+        | H: S_Normal _ = S_Normal _ |- _ =>
+          inversion H;subst;clear H
+      end;try now( (econstructor;eauto);try apply f_eval_expr_correct1;auto).
+
+  - destruct (f_eval_decl s dcl1);try contradiction; discriminate.
+  - admit.  
+Qed.
 
 (** ** Bisimulation between f_eval_stmt and eval_stmt for statement semantics *)
+
+
 
 (** a help lemma to prove the theorem: 'f_eval_stmt_complete' *)
 Lemma f_eval_stmt_correct1 : forall k s p s',
@@ -1011,7 +1289,7 @@ Lemma f_eval_stmt_correct1 : forall k s p s',
 Proof.
     intros k s p.
     functional induction (f_eval_stmt k s p);
-    intros s' H; try inversion H; subst.
+    intros; try inversion H; subst.
   - (* S_Assignment *)
     econstructor.
     rm_f_eval_expr.
@@ -1041,7 +1319,25 @@ Proof.
   - (* S_While_Loop_False *)
     eapply eval_S_While_Loop_False.
     rm_f_eval_expr.
+  - (* S_ProcCall *)
+    clear H.
+    rewrite H1.
+    eapply eval_S_Proc with (s':=s') (prefix':=prefx')(prefix:=prefx)(slocal:=slocal);eauto.
+    + eapply copy_in_correct.
+      apply e2.
+    + apply f_eval_decl_correct.
+      eassumption.
+    + admit. (* TODO *)
+    + admit. (*todo.*)
+    + admit. (*todo.*)
+    + apply copy_out_correct.
+      assumption.
+  - clear H.
+    rewrite H1 in*;try contradiction.
 Qed.
+
+TO BE CONTINUED (+ shoudl add procedure declaration semantics)
+
 
 Ltac rm_f_eval_stmt :=
     match goal with 
