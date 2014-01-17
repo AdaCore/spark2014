@@ -62,7 +62,7 @@ binary_fixed.adb:67:14: info: division check proved
 binary_fixed.adb:67:14: info: overflow check proved
 binary_fixed.adb:67:14: info: range check proved
 binary_fixed.adb:68:7: warning: assertion might fail, requires Z = Inv_Y * X
-binary_fixed.adb:68:32: info: overflow check proved
+binary_fixed.adb:68:32: warning: overflow check might fail
 binary_fixed.adb:69:09: warning: unused assignment
 binary_fixed.adb:69:14: info: division check proved
 binary_fixed.adb:69:14: warning: overflow check might fail
@@ -190,14 +190,14 @@ decimal_fixed.adb:63:07: warning: statement has no effect
 decimal_fixed.adb:64:12: warning: unused assignment
 decimal_fixed.adb:64:17: info: division check proved
 decimal_fixed.adb:64:17: info: overflow check proved
-decimal_fixed.adb:64:17: warning: range check might fail
+decimal_fixed.adb:64:17: info: range check proved
 decimal_fixed.adb:65:10: warning: assertion might fail, requires Z = 
 decimal_fixed.adb:67:09: warning: unused assignment
 decimal_fixed.adb:67:14: info: division check proved
 decimal_fixed.adb:67:14: info: overflow check proved
 decimal_fixed.adb:67:14: info: range check proved
 decimal_fixed.adb:68:7: warning: assertion might fail, requires Z = Inv_Y * X
-decimal_fixed.adb:68:32: info: overflow check proved
+decimal_fixed.adb:68:32: warning: overflow check might fail
 decimal_fixed.adb:69:09: warning: unused assignment
 decimal_fixed.adb:69:14: info: division check proved
 decimal_fixed.adb:69:14: warning: overflow check might fail

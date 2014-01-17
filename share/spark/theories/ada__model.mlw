@@ -198,44 +198,77 @@ module Fixed_Point_Base
     forall x : t [to_fixed x].
     of_fixed (to_fixed (x)) = x
 
-  (* multiplication between two fixed-point values *)
+  (* Helper predicate to define the result of operations on fixed-points.
+     It is used with non-negative values for [num] and positive values for [den].
+     It expresses that [res] is either the result of the integer division
+     num/den when exact, or one of the two closest integers.
+  *)
+
+  predicate pos_div_relation (res : int) (num : int) (den : int) =
+    let exact = div num den in
+    (* case 1: special case for zero *)
+    if num = 0 then
+      res = 0
+    (* case 2: RM G.2.3(9,13) if the result is exact, that's it *)
+    else if num = exact * den then
+      res = exact
+    (* case 3: RM G.2.3(10,14/3) if the result is not exact, that's one of
+       the closest integers. *)
+    else
+      exact <= res <= exact + 1
+
+  (* multiplication between two fixed-point values
+     case 1:
+         If any argument is zero, the result is zero
+     case 2:
+         If both arguments are of the same sign, then the mathematical
+         result is either exact, or between exact and exact+1, which are the
+         possible results.
+
+         for example, with inv_small = 4:
+              x =  5, y =  3, exact = 3, math = 3.75, result in { 3, 4 }
+              x = -5, y = -3, exact = 3, math = 3.75, result in { 3, 4 }
+     case 3:
+         If arguments are of opposite signs, then the mathematical
+         result is either exact, or between exact-1 and exact, which are the
+         possible results.
+
+         for example, with inv_small = 4:
+              x =  5, y = -3, exact = -3, math = -3.75, result in { -4, -3 }
+              x = -5, y =  3, exact = -3, math = -3.75, result in { -4, -3 }
+  *)
 
   function fxp_mult (x : __fixed) (y : __fixed) : __fixed
 
   axiom fxp_mult_def :
     forall x : __fixed. forall y : __fixed [fxp_mult x y].
-      let exact = div (x * y) inv_small in
-      (* case 1: special case for zero *)
       if x = 0 \/ y = 0 then
         fxp_mult x y = 0
-      (* case 2: RM G.2.3(9,13) if the result is exact, that's it *)
-      else if x * y = exact * inv_small then
-        fxp_mult x y = exact
-      (* case 3: RM G.2.3(10,14/3) if the result is not exact, that's one of
-         the closest integers. *)
-      (* case 3.1: If both arguments are of the same sign, then the mathematical
-         result is between exact and exact+1, which are the possible results.
-
-         for example, with inv_small = 4:
-              x =  5, y =  3, exact = 3, math = 3.75, result in { 3, 4 }
-              x = -5, y = -3, exact = 3, math = 3.75, result in { 3, 4 }
-       *)
       else if (x > 0 /\ y > 0) \/ (x < 0 /\ y < 0) then
-         exact <= fxp_mult x y <= exact + 1
-      (* case 3.2: If arguments are of opposite signs, then the mathematical
-         result is between exact-1 and exact, which are the possible results.
+        pos_div_relation (fxp_mult x y) (x * y) inv_small
+      else (* (x < 0 /\ y > 0) \/ (x > 0 /\ y < 0) *)
+        pos_div_relation (- (fxp_mult x y)) (- (x * y)) inv_small
+
+  (* division between two fixed-point values
+     case 1:
+         If the dividand is zero, then the result is zero.
+     case 2:
+         If both arguments are of the same sign, then the mathematical
+         result is either exact, or between exact and exact+1, which are the
+         possible results.
 
          for example, with inv_small = 4:
-              x =  5, y = -3, exact = -3, math = -3.75, result in { -4, -3 }
-              x = -5, y =  3, exact = -3, math = -3.75, result in { -4, -3 }
-       *)
-      else if (x > 0 /\ y < 0) \/ (x < 0 /\ y > 0) then
-        exact - 1 <= fxp_mult x y <= exact
-      (* impossible case *)
-      else
-        false
+              x =  5, y =  3, exact = 6, math = 6.666.., result in { 6, 7 }
+              x = -5, y = -3, exact = 6, math = 6.666.., result in { 6, 7 }
+     case 3:
+         If arguments are of opposite signs, then the mathematical
+         result is either exact, or between exact-1 and exact, which are the
+         possible results.
 
-  (* division between two fixed-point values *)
+         for example, with inv_small = 4:
+              x = -5, y =  3, exact = -6, math = -6.666.., result in { -7, -6 }
+              x =  5, y = -3, exact = -6, math = -6.666.., result in { -7, -6 }
+  *)
 
   function fxp_div (x : __fixed) (y : __fixed) : __fixed
 
@@ -245,42 +278,43 @@ module Fixed_Point_Base
 
   axiom fxp_div_def :
     forall x : __fixed. forall y : __fixed [fxp_div x y].
-      let exact = div (x * inv_small) y in
-      (* case 1: special case for zero *)
       if x = 0 then
         fxp_div x y = 0
-      (* case 2: RM G.2.3(9,13) if the result is exact, that's it *)
-      else if x * inv_small = exact * y then
-        fxp_div x y = exact
-      (* case 3: RM G.2.3(10,14/3) if the result is not exact, that's one of
-         the closest integers. *)
-      (* case 3.1: If both arguments are of the same sign, then the mathematical
-         result is between exact and exact+1, which are the possible results.
-
-         for example, with inv_small = 4:
-              x =  5, y =  3, exact = 6, math = 6.666.., result in { 6, 7 }
-              x = -5, y = -3, exact = 6, math = 6.666.., result in { 6, 7 }
-       *)
-      else if (x > 0 /\ y > 0) \/ (x < 0 /\ y < 0) then
-        exact <= fxp_div x y <= exact + 1
-      (* case 3.2: If arguments are of opposite signs, then the mathematical
-         result is between exact-1 and exact, which are the possible results.
-
-         for example, with inv_small = 4:
-              x = -5, y =  3, exact = -6, math = -6.666.., result in { -7, -6 }
-              x =  5, y = -3, exact = -6, math = -6.666.., result in { -7, -6 }
-       *)
-      else if (x > 0 /\ y < 0) \/ (x < 0 /\ y > 0) then
-        exact - 1 <= fxp_div x y <= exact
-      (* impossible case *)
-      else
-        false
+      else if x > 0 /\ y > 0 then
+        pos_div_relation (fxp_div x y) (x * inv_small) y
+      else if x < 0 /\ y < 0 then
+        pos_div_relation (fxp_div x y) (-x * inv_small) (-y)
+      else if x < 0 /\ y > 0 then
+        pos_div_relation (- (fxp_div x y)) (-x * inv_small) y
+      else if x > 0 /\ y < 0 then
+        pos_div_relation (- (fxp_div x y)) (x * inv_small) (-y)
+      else (* y = 0 *)
+        true
 
   (* multiplication between a fixed-point value and an integer *)
 
   function fxp_mult_int (x : __fixed) (y : int) : __fixed = x * y
 
-  (* division between a fixed-point value and an integer *)
+  (* division between a fixed-point value and an integer
+     case 1:
+         If the dividant is zero, then the result is zero.
+     case 2:
+         If both arguments are of the same sign, then the mathematical
+         result is either exact, or between exact and exact+1, which are the
+         possible results.
+
+         for example:
+              x =  5, y =  3, exact = 1, math = 1.666.., result in { 1, 2 }
+              x = -5, y = -3, exact = 1, math = 1.666.., result in { 1, 2 }
+     case 3:
+         If arguments are of opposite signs, then the mathematical
+         result is either exact, or between exact-1 and exact, which are the
+         possible results.
+
+         for example:
+              x = -5, y =  3, exact = -1, math = -1.666.., result in { -2, -1 }
+              x =  5, y = -3, exact = -1, math = -1.666.., result in { -2, -1 }
+  *)
 
   function fxp_div_int (x : __fixed) (y : int) : __fixed
 
@@ -290,38 +324,35 @@ module Fixed_Point_Base
 
   axiom fxp_div_int_def :
     forall x : __fixed. forall y : int [fxp_div_int x y].
-      let exact = div x y in
-      (* case 1: special case for zero *)
       if x = 0 then
         fxp_div_int x y = 0
-      (* case 2: RM G.2.3(9,13) if the result is exact, that's it *)
-      else if x = exact * y then
-        fxp_div_int x y = exact
-      (* case 3: RM G.2.3(10,14/3) if the result is not exact, that's one of
-         the closest integers. *)
-      (* case 3.1: If both arguments are of the same sign, then the mathematical
-         result is between exact and exact+1, which are the possible results.
+      else if x > 0 /\ y > 0 then
+        pos_div_relation (fxp_div_int x y) x y
+      else if x < 0 /\ y < 0 then
+        pos_div_relation (fxp_div_int x y) (-x) (-y)
+      else if x < 0 /\ y > 0 then
+        pos_div_relation (- (fxp_div_int x y)) (-x) y
+      else if x > 0 /\ y < 0 then
+        pos_div_relation (- (fxp_div_int x y)) x (-y)
+      else (* y = 0 *)
+        true
 
-         for example:
-              x =  5, y =  3, exact = 1, math = 1.666.., result in { 1, 2 }
-              x = -5, y = -3, exact = 1, math = 1.666.., result in { 1, 2 }
-       *)
-      else if (x > 0 /\ y > 0) \/ (x < 0 /\ y < 0) then
-        exact <= fxp_div_int x y <= exact + 1
-      (* case 3.2: If arguments are of opposite signs, then the mathematical
-         result is between exact-1 and exact, which are the possible results.
+  (* conversion functions to/from int. 3 cases for the conversion to int:
+     case 1:
+         If the argument is zero, then the result is zero.
+     case 2:
+         If the argument is positive, then the mathematical result is either
+         exact, or between exact and exact+1, which are the possible results.
 
-         for example:
-              x = -5, y =  3, exact = -1, math = -1.666.., result in { -2, -1 }
-              x =  5, y = -3, exact = -1, math = -1.666.., result in { -2, -1 }
-       *)
-      else if (x > 0 /\ y < 0) \/ (x < 0 /\ y > 0) then
-        exact - 1 <= fxp_div_int x y <= exact
-      (* impossible case *)
-      else
-        false
+         for example, with inv_small = 4:
+              x = 5, exact = 1, math = 1.25, result in { 1, 2 }
+     case 3:
+         If the argument is negative, then the mathematical result is either
+         exact, or between exact-1 and exact, which are the possible results.
 
-  (* conversion functions from/to int *)
+         for example, with inv_small = 4:
+              x = -5, exact = -1, math = -1.25, result in { -2, -1 }
+  *)
 
   function to_int (x : __fixed) : int
 
@@ -329,34 +360,12 @@ module Fixed_Point_Base
 
   axiom to_int_def :
     forall x : __fixed [to_int x].
-      let exact = div x inv_small in
-      (* case 1: special case for zero *)
       if x = 0 then
         to_int x = 0
-      (* case 2: RM G.2.3(9,13) if the result is exact, that's it *)
-      else if x = exact * inv_small then
-        to_int x = exact
-      (* case 3: RM G.2.3(10,14/3) if the result is not exact, that's one of
-         the closest integers. *)
-      (* case 3.1: If the argument is positive, then the mathematical
-         result is between exact and exact+1, which are the possible results.
-
-         for example, with inv_small = 4:
-              x = 5, exact = 1, math = 1.25, result in { 1, 2 }
-       *)
       else if x > 0 then
-         exact <= to_int x <= exact + 1
-      (* case 3.2: If the argument is negative, then the mathematical
-         result is between exact-1 and exact, which are the possible results.
-
-         for example, with inv_small = 4:
-              x = -5, exact = -1, math = -1.25, result in { -2, -1 }
-       *)
-      else if x < 0 then
-        exact - 1 <= to_int x <= exact
-      (* impossible case *)
-      else
-        false
+        pos_div_relation (to_int x) x inv_small
+      else (* x < 0 *)
+        pos_div_relation (- (to_int x)) (-x) inv_small
 
   (* conversion functions from/to real *)
 
