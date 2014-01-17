@@ -20,5 +20,8 @@ test_float.adb:8:14: info: postcondition proved
 test_float.adb:8:24: info: overflow check proved
 test_float.adb:11:14: info: overflow check proved
 test_float.adb:11:14: info: range check proved
+test_float.adb:14:04: warning: initialization has no effect
 test_float.adb:16:4: info: precondition proved
+test_float.adb:16:04: warning: statement has no effect
+test_float.adb:16:16: warning: unused assignment to "X"
 test_float.adb:17:4: info: assertion proved

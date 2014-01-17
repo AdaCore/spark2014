@@ -1,7 +1,7 @@
 pack.adb:5:17: info: overflow check proved
 pack.adb:10:14: warning: precondition might fail
 pack.adb:10:19: info: precondition proved
-pack.adb:10:42: warning: precondition might fail
+pack.adb:10:42: info: precondition proved
 pack.adb:10:52: info: precondition proved
 pack.ads:15:19: info: postcondition proved
 pack.ads:15:37: info: overflow check proved
