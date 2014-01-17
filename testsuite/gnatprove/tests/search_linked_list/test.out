@@ -14,5 +14,5 @@ lists.ads:11:54: info: precondition proved
 lists.ads:12:35: info: precondition proved
 lists.ads:12:75: info: precondition proved
 lists.ads:15:16: info: postcondition proved
-lists.ads:15:20: info: precondition proved
+lists.ads:16:9: info: precondition proved
 lists.ads:16:22: info: precondition proved

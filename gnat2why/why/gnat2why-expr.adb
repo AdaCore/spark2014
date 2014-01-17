@@ -6386,7 +6386,8 @@ package body Gnat2Why.Expr is
       --  Return the set over which the quantification is performed
 
       function Make_Constraint_For_Iterable
-        (Container  : Node_Id;
+        (Ada_Node   : Node_Id;
+         Container  : Node_Id;
          Quant_Var  : W_Expr_Id;
          Quant_Type : Entity_Id;
          Domain     : EW_Domain;
@@ -6396,7 +6397,8 @@ package body Gnat2Why.Expr is
       --  Returns Has_Element (Container, Quant_Var)
 
       function Make_Binding_For_Iterable
-        (Container  : Node_Id;
+        (Ada_Node   : Node_Id;
+         Container  : Node_Id;
          Quant_Var  : W_Expr_Id;
          Quant_Type : Entity_Id;
          Domain     : EW_Domain;
@@ -6445,34 +6447,41 @@ package body Gnat2Why.Expr is
       ---------------------
 
       function Make_Constraint_For_Iterable
-        (Container  : Node_Id;
+        (Ada_Node   : Node_Id;
+         Container  : Node_Id;
          Quant_Var  : W_Expr_Id;
          Quant_Type : Entity_Id;
          Domain     : EW_Domain;
          Params     : Transformation_Params) return W_Expr_Id
       is
-         Subdomain  : constant EW_Domain :=
+         Subdomain   : constant EW_Domain :=
            (if Domain = EW_Pred then EW_Term else Domain);
          Has_Element : constant Entity_Id := Get_Iterable_Type_Primitive
            (Etype (Container), Name_Has_Element);
-         T : W_Expr_Id;
-      begin
-         T :=
-           New_Call
+         T           : W_Expr_Id;
+         Cont_Expr   : constant W_Expr_Id :=
+           Insert_Simple_Conversion
              (Domain   => Subdomain,
-              Name     =>
-                To_Why_Id (Has_Element),
-              Args     =>
-                (1 => Transform_Expr (Container, Subdomain, Params),
-                 2 => +Insert_Simple_Conversion
-                   (Ada_Node => Empty,
-                    Domain   => Subdomain,
-                    Expr     => +Quant_Var,
-                    To       =>
-                      (if Use_Base_Type_For_Type (Quant_Type) then
-                            Base_Why_Type (Get_Type (+Quant_Var))
-                       else Get_Type (+Quant_Var)))),
-                  Typ       => Type_Of_Node (Etype (Has_Element)));
+              Expr     => Transform_Expr (Container, Subdomain, Params),
+              To       => Type_Of_Node (Etype (First_Entity (Has_Element))));
+         Curs_Expr  : constant W_Expr_Id :=
+           Insert_Simple_Conversion
+             (Ada_Node => Empty,
+              Domain   => Subdomain,
+              Expr     => +Quant_Var,
+              To       =>
+                (if Use_Base_Type_For_Type (Quant_Type) then
+                      Base_Why_Type (Get_Type (+Quant_Var))
+                 else Get_Type (+Quant_Var)));
+      begin
+         T := New_VC_Call
+           (Ada_Node => Ada_Node,
+            Name     => To_Why_Id (Has_Element),
+            Progs    => (1 => Cont_Expr,
+                         2 => Curs_Expr),
+            Reason   => VC_Precondition,
+            Domain   => Subdomain,
+            Typ      => Type_Of_Node (Etype (Has_Element)));
 
          if Domain = EW_Pred then
             T := New_Relation
@@ -6491,7 +6500,8 @@ package body Gnat2Why.Expr is
       ------------------
 
       function Make_Binding_For_Iterable
-        (Container  : Node_Id;
+        (Ada_Node   : Node_Id;
+         Container  : Node_Id;
          Quant_Var  : W_Expr_Id;
          Quant_Type : Entity_Id;
          Domain     : EW_Domain;
@@ -6500,24 +6510,31 @@ package body Gnat2Why.Expr is
       is
          Subdomain  : constant EW_Domain :=
            (if Domain = EW_Pred then EW_Term else Domain);
-         Element_E : constant Entity_Id := Get_Iterable_Type_Primitive
+         Element_E  : constant Entity_Id := Get_Iterable_Type_Primitive
            (Etype (Container), Name_Element);
+         Cont_Expr  : constant W_Expr_Id :=
+           Insert_Simple_Conversion
+             (Domain   => Subdomain,
+              Expr     => Transform_Expr (Container, Subdomain, Params),
+              To       => Type_Of_Node (Etype (First_Entity (Element_E))));
+         Curs_Expr  : constant W_Expr_Id :=
+           Insert_Simple_Conversion
+             (Ada_Node => Empty,
+              Domain   => Subdomain,
+              Expr     => +Quant_Var,
+              To       =>
+                (if Use_Base_Type_For_Type (Quant_Type) then
+                      Base_Why_Type (Get_Type (+Quant_Var))
+                 else Get_Type (+Quant_Var)));
       begin
-         return
-           New_Call (Domain   => Subdomain,
-                     Name     =>
-                       To_Why_Id (Element_E),
-                     Args     =>
-                       (1 => Transform_Expr (Container, Subdomain, Params),
-                        2 => +Insert_Simple_Conversion
-                          (Ada_Node => Empty,
-                           Domain   => Subdomain,
-                           Expr     => +Quant_Var,
-                           To       =>
-                             (if Use_Base_Type_For_Type (Quant_Type) then
-                                   Base_Why_Type (Get_Type (+Quant_Var))
-                              else Get_Type (+Quant_Var)))),
-                     Typ => Element_T);
+         return New_VC_Call
+           (Ada_Node => Ada_Node,
+            Name     => To_Why_Id (Element_E),
+            Progs    => (1 => Cont_Expr,
+                         2 => Curs_Expr),
+            Reason   => VC_Precondition,
+            Domain   => Subdomain,
+            Typ      => Element_T);
       end Make_Binding_For_Iterable;
 
       Over_Range : constant Boolean :=
@@ -6592,7 +6609,7 @@ package body Gnat2Why.Expr is
            (Domain   => Domain,
             Name     => Why_Id,
             Def      =>
-              Make_Binding_For_Iterable (Range_E, +Quant_Var, Quant_Type,
+              Make_Binding_For_Iterable (Expr, Range_E, +Quant_Var, Quant_Type,
                 Domain, Index_Base, Params),
             Context  => Cond_Expr);
       end if;
@@ -6607,7 +6624,7 @@ package body Gnat2Why.Expr is
                +Range_Expr (Range_E, +Quant_Var, EW_Pred, Params)
                else
                +Make_Constraint_For_Iterable
-                 (Range_E, +Quant_Var, Quant_Type, EW_Pred, Params));
+                 (Expr, Range_E, +Quant_Var, Quant_Type, EW_Pred, Params));
             Connector  : constant EW_Connector :=
               (if All_Present (Expr) then EW_Imply else EW_And);
             Quant_Body : constant W_Pred_Id :=
@@ -6656,7 +6673,7 @@ package body Gnat2Why.Expr is
                +Range_Expr (Range_E, +Why_Id, EW_Prog, Params)
                else
                +Make_Constraint_For_Iterable
-                 (Range_E, +Quant_Var, Quant_Type, EW_Prog, Params));
+                 (Expr, Range_E, +Quant_Var, Quant_Type, EW_Prog, Params));
          begin
             return
               +Sequence
