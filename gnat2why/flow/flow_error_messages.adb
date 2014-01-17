@@ -23,25 +23,25 @@
 ------------------------------------------------------------------------------
 
 with Ada.Directories;
-with Ada.Text_IO;    use Ada.Text_IO;
+with Ada.Text_IO;       use Ada.Text_IO;
 
 with GNAT.String_Split;
 with GNAT.SHA1;
 
-with Atree;          use Atree;
-with Einfo;          use Einfo;
-with Errout;         use Errout;
-with Erroutc;        use Erroutc;
-with Opt;            use Opt;
-with Sem_Util;       use Sem_Util;
-with Sinfo;          use Sinfo;
-with Sinput;         use Sinput;
-with Stringt;        use Stringt;
-with String_Utils;   use String_Utils;
+with Atree;             use Atree;
+with Einfo;             use Einfo;
+with Errout;            use Errout;
+with Erroutc;           use Erroutc;
+with Opt;               use Opt;
+with Sem_Util;          use Sem_Util;
+with Sinfo;             use Sinfo;
+with Sinput;            use Sinput;
+with Stringt;           use Stringt;
+with String_Utils;      use String_Utils;
 with VC_Kinds;
 
-with Gnat2Why.Nodes; use Gnat2Why.Nodes;
-with Gnat2Why_Args;  use Gnat2Why_Args;
+with Gnat2Why.Nodes;    use Gnat2Why.Nodes;
+with Gnat2Why_Args;     use Gnat2Why_Args;
 
 package body Flow_Error_Messages is
 

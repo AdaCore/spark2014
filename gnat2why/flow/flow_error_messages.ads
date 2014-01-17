@@ -21,14 +21,14 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
---  This package provides mechanisms for emiting errors and warnings.
+--  This package provides mechanisms for emitting errors and warnings.
 
-with Ada.Strings.Unbounded;              use Ada.Strings.Unbounded;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
-with Types;                              use Types;
+with Types;                 use Types;
 
-with Flow;                               use Flow;
-with Flow_Types;                         use Flow_Types;
+with Flow;                  use Flow;
+with Flow_Types;            use Flow_Types;
 
 package Flow_Error_Messages is
 
