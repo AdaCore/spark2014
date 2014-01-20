@@ -44,9 +44,9 @@ is
       N : Integer;
 
       package P3
-      with Initializes => (M => N)  -- error
+      with Initializes => (M => N)
       is
-         M : Integer := N;
+         M : Integer := N;  -- error
       end P3;
    begin
       Y := P3.M + X;
@@ -57,9 +57,9 @@ is
       Global => null
    is
       package P4
-      with Initializes => M  -- unhelpful error here
+      with Initializes => M
       is
-         M : Integer := 0;   -- unused (but no error)
+         M : Integer := 0;   -- unused
          N : Integer;        -- unused
       end P4;
    begin

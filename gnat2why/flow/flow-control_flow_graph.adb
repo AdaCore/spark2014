@@ -185,6 +185,12 @@ package body Flow.Control_Flow_Graph is
       Equivalent_Keys => "=",
       "="             => "=");
 
+   procedure Copy_Connections (CM  : in out Connection_Maps.Map;
+                               Dst : Union_Id;
+                               Src : Union_Id);
+   --  Creats the connection map for Dst and copies all fields from Src to
+   --  it.
+
    -------------
    -- Context --
    -------------
@@ -445,7 +451,7 @@ package body Flow.Control_Flow_Graph is
       with Pre => Nkind (N) = N_Package_Declaration;
    --  When we find a nested package, we add 'initial and 'final
    --  vertices for all variables and state_abstractions it
-   --  introduces. We then add one vertex per initialization_item.
+   --  introduces.
    --
    --  For example, analysis of the following nested package:
    --
@@ -453,53 +459,78 @@ package body Flow.Control_Flow_Graph is
    --      with Abstract_State => (AS1, AS2),
    --           Initializes    => (AS1,
    --                              X => Foo,
-   --                              Y => (Foo, Bar))
+   --                              Y => (Foo, Bar),
+   --                              Z => Foo)
    --    is
    --       X : Integer := Foo;
-   --       Y := X + Bar;
+   --       Y : Integer := X;
    --    end Inner;
    --
    --  would have the following effects:
    --
    --    1) Due to the Abstract_State aspect vertices AS1'Initial,
-   --       AS1'Final, AS2'Initial and AS2'Final are created and linked
-   --       to the Start vertex of the enclosing package/subprogram.
+   --       AS1'Final, AS2'Initial and AS2'Final are created.
    --
-   --    2) Due to the statements in the visible part of package Inner
-   --       the following two vertices
+   --    2) The visible part of package inner is analyzed as if it were
+   --       part of the enclosing package. This means initial and final
+   --       vertices for x, y, and z are introduced and two vertices for
+   --       the two declarations.
    --
-   --                            _|_
-   --                           |_X_|
-   --                            _|_
-   --                           |_Y_|
-   --                             |
+   --  Note that the initializes aspect is *not* considered yet, as it only
+   --  holds once the package body has been elaborated. See
+   --  Do_Package_Body_Or_Stub below for more information.
+
+   procedure Do_Package_Body_Or_Stub
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
+      with Pre => Nkind (N) in N_Package_Body | N_Package_Body_Stub;
+   --  When we find a nested package body, we bring its initializes clause
+   --  to bear.
    --
-   --       would be added to the CFG graph of the enclosing
-   --       package/subprogram.
+   --  Lets remind ourselves of the example from Do_Package_Body:
    --
-   --       Additionally, vertices X'Initial, X'Final, Y'Initial and
-   --       Y'Final would be created and linked to the Start vertex
-   --       of the enclosing package/subprogram.
+   --    package Inner
+   --      with Abstract_State => (AS1, AS2),
+   --           Initializes    => (AS1,
+   --                              X => Foo,
+   --                              Y => (Foo, Bar),
+   --                              Z => Foo)
+   --    is
+   --       X : Integer := Foo;
+   --       Y : Integer := X;
+   --    end Inner;
    --
-   --           X'Initial X'Final Y'Initial Y'Final
-   --                 \       |       |       /
-   --                  \      \       /      /
-   --                   \      \     /      /
-   --                    \      \   /      /
-   --                     \_____start_____/
+   --  Once we encounter the package body for Inner (or its stub), we know
+   --  that the initializes contract has been fulfilled. We produce a
+   --  vertex for each part of the initializes clause which models these
+   --  dependencies. For the above example we have:
    --
-   --    3) Finally, due to the Initializes aspect the following two
-   --       vertices
+   --    (AS1) | defines      : AS1
+   --          | expl_depends : -
+   --          | impl_depends : -
    --
-   --                        _____|_____
-   --                       |__X_<-_Foo_|
-   --                     ________|________
-   --                    |_Y_<-_(Foo,_Bar)_|
-   --                             |
+   --    (X from Foo) | defines      : X
+   --                 | expl_depends : Foo
+   --                 | impl_depends : X
    --
-   --       would be added to the CFG graph of the enclosing
-   --       package/subprogram (directly following the two vertices that
-   --       were introduced in the previous step).
+   --  Note the implicit self-dependency on X here. We do this to make sure
+   --  that the vertex for [x : integer := foo] is not ineffective.
+   --
+   --    (Y from Foo, Bar) | defines      : Y
+   --                      | expl_depends : Foo, Bar
+   --                      | impl_depends : Y
+   --
+   --    (Z from Foo) | defines      : Z
+   --                 | expl_depends : Foo
+   --                 | impl_depends : -
+   --
+   --  Note we do not have this self-dependency here, because Z is *not*
+   --  initialized at specification.
+   --
+   --  Finally note that we never actually look into the nested package
+   --  body (unlike its spec).
 
    procedure Do_Pragma
      (N   : Node_Id;
@@ -666,6 +697,19 @@ package body Flow.Control_Flow_Graph is
    ------------------------------------------------------------
    --  Local procedures and functions
    ------------------------------------------------------------
+
+   ----------------------
+   -- Copy_Connections --
+   ----------------------
+
+   procedure Copy_Connections (CM  : in out Connection_Maps.Map;
+                               Dst : Union_Id;
+                               Src : Union_Id)
+   is
+      C : constant Graph_Connections := CM (Src);
+   begin
+      CM.Include (Dst, C);
+   end Copy_Connections;
 
    --------------
    --  Linkup  --
@@ -1172,7 +1216,9 @@ package body Flow.Control_Flow_Graph is
       Stmts : constant List_Id := Statements (N);
    begin
       Process_Statement_List (Stmts, FA, CM, Ctx);
-      CM.Include (Union_Id (N), CM.Element (Union_Id (Stmts)));
+      Copy_Connections (CM,
+                        Dst => Union_Id (N),
+                        Src => Union_Id (Stmts));
    end Do_Handled_Sequence_Of_Statements;
 
    -----------------------
@@ -1705,9 +1751,7 @@ package body Flow.Control_Flow_Graph is
             No_Return => Nkind (N) = N_Raise_Statement or
                          Nkind (N) in N_Raise_xxx_Error),
          V);
-      CM.Include (Union_Id (N), No_Connections);
-      CM (Union_Id (N)).Standard_Entry := V;
-      CM (Union_Id (N)).Standard_Exits := To_Set (V);
+      CM.Include (Union_Id (N), Trivial_Connection (V));
    end Do_Null_Or_Raise_Statement;
 
    -----------------------------
@@ -1845,6 +1889,89 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    is
+      AS_Pragma : constant Node_Id :=
+        Get_Pragma (Defining_Unit_Name (Specification (N)),
+                    Pragma_Abstract_State);
+   begin
+
+      --  Introduce variables from the abstract state of the nested
+      --  package.
+
+      if Present (AS_Pragma) then
+         declare
+            PAA : Node_Id;
+            AS  : Node_Id;
+         begin
+            PAA := First (Pragma_Argument_Associations (AS_Pragma));
+            AS := First (Expressions (Expression (PAA)));
+            while Present (AS) loop
+               --  Creating 'Initial and 'Final vertices for every
+               --  state abstraction and setting Is_Export to True
+               --  if the corresponding entity is initialized.
+               declare
+                  New_E : constant Entity_Id :=
+                    (if Nkind (AS) = N_Extension_Aggregate then
+                       Entity (Ancestor_Part (AS))
+                     else
+                       Entity (AS));
+               begin
+                  Create_Initial_And_Final_Vertices
+                    (New_E,
+                     Is_Param => False,
+                     FA       => FA);
+
+                  if Ekind (FA.Analyzed_Entity) in
+                    E_Package | E_Package_Body
+                  then
+                     declare
+                        Final_F_Id : constant Flow_Id :=
+                          Change_Variant (Direct_Mapping_Id (New_E),
+                                          Final_Value);
+
+                        Final_V_Id : constant Flow_Graphs.Vertex_Id :=
+                          FA.CFG.Get_Vertex (Final_F_Id);
+
+                        Final_Atr  : V_Attributes :=
+                          FA.CFG.Get_Attributes (Final_V_Id);
+                     begin
+                        Final_Atr.Is_Export := Final_Atr.Is_Export
+                          or else Is_Initialized_At_Elaboration (New_E,
+                                                                 FA.B_Scope);
+
+                        FA.CFG.Set_Attributes (Final_V_Id, Final_Atr);
+                     end;
+                  end if;
+               end;
+
+               Next (AS);
+            end loop;
+         end;
+      end if;
+
+      --  Traverse visible part of the specs.
+
+      declare
+         Visible_Part : constant List_Id :=
+           Visible_Declarations (Specification (N));
+      begin
+         Process_Statement_List (Visible_Part, FA, CM, Ctx);
+
+         Copy_Connections (CM,
+                           Dst => Union_Id (N),
+                           Src => Union_Id (Visible_Part));
+      end;
+   end Do_Package_Declaration;
+
+   -----------------------------
+   -- Do_Package_Body_Or_Stub --
+   -----------------------------
+
+   procedure Do_Package_Body_Or_Stub
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
+   is
       function Find_Node (E : Entity_Id) return Node_Id
         with Post => Nkind (Find_Node'Result) in
                        N_Identifier           |
@@ -1862,19 +1989,28 @@ package body Flow.Control_Flow_Graph is
       --     Initializes => (X => Y
       --  we return the node for => (N_Component_Association).
 
+      Package_Spec : constant Entity_Id :=
+        (case Nkind (N) is
+            when N_Package_Body =>
+               Corresponding_Spec (N),
+            when N_Package_Body_Stub =>
+               Corresponding_Spec_Of_Stub (N),
+            when others =>
+               raise Program_Error);
+
+      Initializes_Aspect : constant Node_Id := Get_Pragma (Package_Spec,
+                                                           Pragma_Initializes);
+
       ---------------
       -- Find_Node --
       ---------------
 
       function Find_Node (E : Entity_Id) return Node_Id is
-         Initializes_Contract : constant Node_Id :=
-           Get_Pragma (Defining_Unit_Name (Specification (N)),
-                       Pragma_Initializes);
-         PAA_Expr             : constant Node_Id :=
+         PAA_Expr : constant Node_Id :=
            Expression (First
                          (Pragma_Argument_Associations
-                            (Initializes_Contract)));
-         Search               : Node_Id;
+                            (Initializes_Aspect)));
+         Search : Node_Id;
       begin
          if Present (Expressions (PAA_Expr)) then
             Search := First (Expressions (PAA_Expr));
@@ -1907,141 +2043,73 @@ package body Flow.Control_Flow_Graph is
          raise Program_Error;
       end Find_Node;
 
-      AS_Pragma : constant Node_Id :=
-        Get_Pragma (Defining_Unit_Name (Specification (N)),
-                    Pragma_Abstract_State);
+      DM : constant Dependency_Maps.Map :=
+        (if Present (Initializes_Aspect)
+         then Parse_Initializes (Initializes_Aspect)
+         else Dependency_Maps.Empty_Map);
 
-   begin  --  Do_Package_Declaration
+      V : Flow_Graphs.Vertex_Id;
 
-      --  Introduce variables from the abstract state of the nested
-      --  package.
+   begin
 
-      if Present (AS_Pragma) then
-         declare
-            PAA : Node_Id;
-            AS  : Node_Id;
-         begin
-            PAA := First (Pragma_Argument_Associations (AS_Pragma));
-            AS := First (Expressions (Expression (PAA)));
-            while Present (AS) loop
-               --  Creating 'Initial and 'Final vertices for every
-               --  state abstraction and setting Is_Export to True
-               --  if the corresponding entity is initialized.
-               declare
-                  New_N : constant Node_Id :=
-                    (if Nkind (AS) = N_Extension_Aggregate then
-                       Entity (Ancestor_Part (AS))
-                     else
-                       Entity (AS));
-               begin
-                  Create_Initial_And_Final_Vertices
-                    (New_N,
-                     Is_Param => False,
-                     FA       => FA);
+      --  If we have no initialize aspect, then the package elaboration
+      --  will have no observable effect in the enclosing package.
 
-                  if Ekind (FA.Analyzed_Entity) in
-                    E_Package | E_Package_Body
-                  then
-                     declare
-                        Final_F_Id : constant Flow_Id :=
-                          Change_Variant (Direct_Mapping_Id
-                                            (New_N),
-                                          Final_Value);
-
-                        Final_V_Id : constant Flow_Graphs.Vertex_Id :=
-                          FA.CFG.Get_Vertex (Final_F_Id);
-
-                        Final_Atr  : V_Attributes :=
-                          FA.CFG.Get_Attributes (Final_V_Id);
-
-                        Entire_Var : constant Entity_Id := Final_F_Id.Node;
-                     begin
-                        Final_Atr.Is_Export := Final_Atr.Is_Export
-                          or else Is_Initialized_At_Elaboration (Entire_Var,
-                                                                 FA.B_Scope);
-
-                        FA.CFG.Set_Attributes (Final_V_Id, Final_Atr);
-                     end;
-                  end if;
-               end;
-
-               Next (AS);
-            end loop;
-         end;
+      if No (Initializes_Aspect) then
+         FA.CFG.Add_Vertex (Direct_Mapping_Id (N), Null_Node_Attributes, V);
+         CM.Include (Union_Id (N), Trivial_Connection (V));
+         return;
       end if;
 
-      --  Traverse visible part of the specs
+      pragma Assert_And_Cut (Present (Initializes_Aspect));
+
+      --  When we encounter the package body (or its stub), we know that
+      --  the package as been elaborated. We need to apply the initializes
+      --  aspect aspect at this point.
+
       declare
-         Visible_Part : constant List_Id :=
-           Visible_Declarations (Specification (N));
-         Nested_Initializes : constant Node_Id :=
-           Get_Pragma (Defining_Unit_Name (Specification (N)),
-                       Pragma_Initializes);
-
+         Verts          : Union_Lists.List := Union_Lists.Empty_List;
          Initializes_CM : Graph_Connections;
-
-         Tmp : constant Boolean := Ctx.Processing_Nested_Package;
       begin
-         Ctx.Processing_Nested_Package := True;
-         Process_Statement_List (Visible_Part, FA, CM, Ctx);
-         Ctx.Processing_Nested_Package := Tmp;
-
-         CM.Include (Union_Id (N), No_Connections);
-         CM (Union_Id (N)).Standard_Entry :=
-           CM (Union_Id (Visible_Part)).Standard_Entry;
-
-         if Present (Nested_Initializes) then
+         for C in DM.Iterate loop
             declare
-               DM        : Dependency_Maps.Map;
-               The_Out   : Flow_Id;
-               The_Ins   : Flow_Id_Sets.Set;
-               Init_Item : Node_Id;
-               V         : Flow_Graphs.Vertex_Id;
-               Verts     : Union_Lists.List := Union_Lists.Empty_List;
+               The_Out : constant Flow_Id := Dependency_Maps.Key (C);
+               The_Ins : constant Flow_Id_Sets.Set :=
+                 Dependency_Maps.Element (C);
+
+               Init_Item : constant Node_Id :=
+                 Find_Node (Get_Direct_Mapping_Id (The_Out));
             begin
-               DM := Parse_Initializes (Nested_Initializes);
+               Verts.Append (Union_Id (Init_Item));
 
-               for C in DM.Iterate loop
-                  The_Out   := Dependency_Maps.Key (C);
-                  The_Ins   := Dependency_Maps.Element (C);
-
-                  Init_Item := Find_Node (Get_Direct_Mapping_Id (The_Out));
-                  Verts.Append (Union_Id (Init_Item));
-
-                  FA.CFG.Add_Vertex
-                    (Direct_Mapping_Id (Init_Item),
-                     Make_Basic_Attributes (Var_Def    =>
-                                              Flow_Id_Sets.To_Set (The_Out),
-                                            Var_Ex_Use => The_Ins,
-                                            Loops      => Ctx.Current_Loops,
-                                            E_Loc      => Init_Item),
-                     V);
-
-                  CM.Include (Union_Id (Init_Item),
-                              Trivial_Connection (V));
-               end loop;
-
-               Join (CFG   => FA.CFG,
-                     CM    => CM,
-                     Nodes => Verts,
-                     Block => Initializes_CM);
-               CM.Include (Union_Id (Nested_Initializes),
-                           Initializes_CM);
+               FA.CFG.Add_Vertex
+                 (Direct_Mapping_Id (Init_Item),
+                  Make_Basic_Attributes
+                    (Var_Def    => Flow_Id_Sets.To_Set (The_Out),
+                     Var_Ex_Use => The_Ins,
+                     Var_Im_Use => (if Is_Initialized_At_Elaboration
+                                      (The_Out, FA.B_Scope)
+                                      and then Is_Initialized_In_Specification
+                                      (The_Out, FA.B_Scope)
+                                    then Flow_Id_Sets.To_Set (The_Out)
+                                    else Flow_Id_Sets.Empty_Set),
+                     Loops      => Ctx.Current_Loops,
+                     E_Loc      => Init_Item),
+                  V);
+               Set_Initializes_Pretty_Print (FA.CFG, V);
+               CM.Include (Union_Id (Init_Item),
+                           Trivial_Connection (V));
             end;
+         end loop;
 
-            Linkup (FA.CFG,
-                    CM (Union_Id (Visible_Part)).Standard_Exits,
-                    CM (Union_Id (Nested_Initializes)).Standard_Entry);
-
-            CM (Union_Id (N)).Standard_Exits :=
-              CM (Union_Id (Nested_Initializes)).Standard_Exits;
-
-         else
-            CM (Union_Id (N)).Standard_Exits :=
-              CM (Union_Id (Visible_Part)).Standard_Exits;
-         end if;
+         Join (CFG   => FA.CFG,
+               CM    => CM,
+               Nodes => Verts,
+               Block => Initializes_CM);
+         CM.Include (Union_Id (N), Initializes_CM);
       end;
-   end Do_Package_Declaration;
+
+   end Do_Package_Body_Or_Stub;
 
    ---------------
    -- Do_Pragma --
@@ -2151,9 +2219,7 @@ package body Flow.Control_Flow_Graph is
                             V);
       end if;
 
-      CM.Include (Union_Id (N), No_Connections);
-      CM (Union_Id (N)).Standard_Entry := V;
-      CM (Union_Id (N)).Standard_Exits := To_Set (V);
+      CM.Include (Union_Id (N), Trivial_Connection (V));
 
       --  We make a note of 'Loop_Entry uses.
       case Get_Pragma_Id (N) is
@@ -2192,9 +2258,7 @@ package body Flow.Control_Flow_Graph is
             E_Loc           => Pre),
          V);
 
-      CM.Include (Union_Id (Pre), No_Connections);
-      CM (Union_Id (Pre)).Standard_Entry := V;
-      CM (Union_Id (Pre)).Standard_Exits := To_Set (V);
+      CM.Include (Union_Id (Pre), Trivial_Connection (V));
    end Do_Precondition;
 
    -----------------------------------
@@ -2403,9 +2467,7 @@ package body Flow.Control_Flow_Graph is
               (Direct_Mapping_Id (N),
                Make_Aux_Vertex_Attributes (E_Loc => N),
                V);
-            CM.Include (Union_Id (N), No_Connections);
-            CM (Union_Id (N)).Standard_Entry := V;
-            CM (Union_Id (N)).Standard_Exits.Insert (V);
+            CM.Include (Union_Id (N), Trivial_Connection (V));
          end;
       end if;
 
@@ -2434,8 +2496,7 @@ package body Flow.Control_Flow_Graph is
                Local_Constants => FA.Local_Constants),
             E_Loc   => N),
          V);
-      CM.Include (Union_Id (N),
-                  Trivial_Connection (V));
+      CM.Include (Union_Id (N), Trivial_Connection (V));
    end Do_Type_Declaration;
 
    ------------------------------------
@@ -2714,8 +2775,6 @@ package body Flow.Control_Flow_Graph is
               N_Label                           |
               N_Number_Declaration              |
               N_Object_Renaming_Declaration     |
-              N_Package_Body                    |
-              N_Package_Body_Stub               |
               N_Package_Renaming_Declaration    |
               N_Private_Type_Declaration        |
               N_Representation_Clause           |
@@ -2778,6 +2837,8 @@ package body Flow.Control_Flow_Graph is
             Do_Object_Declaration (N, FA, CM, Ctx);
          when N_Package_Declaration =>
             Do_Package_Declaration (N, FA, CM, Ctx);
+         when N_Package_Body | N_Package_Body_Stub =>
+            Do_Package_Body_Or_Stub (N, FA, CM, Ctx);
          when N_Pragma =>
             Do_Pragma (N, FA, CM, Ctx);
          when N_Procedure_Call_Statement =>

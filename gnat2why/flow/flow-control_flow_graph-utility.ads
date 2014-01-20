@@ -193,4 +193,10 @@ package Flow.Control_Flow_Graph.Utility is
         and Make_Default_Initialization_Attributes'Result.Is_Default_Init;
    --  Create attributes for the default initialization vertices.
 
+   procedure Set_Initializes_Pretty_Print
+     (G : in out Flow_Graphs.T;
+      V : Flow_Graphs.Vertex_Id);
+   --  Sets up pretty printing information for an initializes aspect
+   --  fragment.
+
 end Flow.Control_Flow_Graph.Utility;

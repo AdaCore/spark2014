@@ -199,6 +199,14 @@ package Flow_Utility is
    --  This mirrors Is_Initialized_At_Elaboration from Flow_Tree_Utility,
    --  but works for a Flow_Id instead of an Entity_Id.
 
+   function Is_Initialized_In_Specification (F : Flow_Id;
+                                             S : Flow_Scope)
+                                             return Boolean
+     with Pre => Is_Initialized_At_Elaboration (F, S);
+   --  Returns true for an entity which is initialized at elaboration *and*
+   --  the initialization occurs in the specification of the enclosing
+   --  package of F.
+
    function Find_Contracts (E    : Entity_Id;
                             Name : Name_Id)
                             return Node_Lists.List

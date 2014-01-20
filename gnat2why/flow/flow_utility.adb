@@ -1485,4 +1485,26 @@ package body Flow_Utility is
       end case;
    end Is_Initialized_At_Elaboration;
 
+   -------------------------------------
+   -- Is_Initialized_In_Specification --
+   -------------------------------------
+
+   function Is_Initialized_In_Specification (F : Flow_Id;
+                                             S : Flow_Scope)
+                                             return Boolean
+   is
+      pragma Assert (F.Kind in Direct_Mapping | Record_Field);
+      E : constant Entity_Id := Get_Direct_Mapping_Id (F);
+   begin
+      case Ekind (E) is
+         when E_Abstract_State =>
+            return False;
+
+         when others =>
+            pragma Assert (Nkind (Parent (E)) = N_Object_Declaration);
+            return Present (Expression (Parent (E)));
+
+      end case;
+   end Is_Initialized_In_Specification;
+
 end Flow_Utility;

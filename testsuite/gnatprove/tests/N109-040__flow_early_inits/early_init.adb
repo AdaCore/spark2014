@@ -18,7 +18,8 @@ is
    is
       V3 : Positive;
    end Inner_3;
-       package Inner_4
+
+   package Inner_4
    with Initializes => (V4 => Inner_3.V3)
    is
       V4 : Positive := Inner_3.V3;

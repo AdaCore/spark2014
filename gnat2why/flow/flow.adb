@@ -337,7 +337,10 @@ package body Flow is
             end if;
 
          else
-            if A.Is_Precondition then
+            if A.Pretty_Print_Kind = Pretty_Print_Initializes_Aspect then
+               Rv.Shape := Shape_None;
+               Write_Str ("initializes ");
+            elsif A.Is_Precondition then
                Rv.Shape := Shape_None;
                Write_Str ("precondition ");
             elsif A.Is_Loop_Entry then
@@ -365,8 +368,10 @@ package body Flow is
                            --  The only occasion where a Flow_Id corresponds
                            --  to an N_Component_Association is when we are
                            --  in an Initializes aspect.
+                           pragma Assert (A.Pretty_Print_Kind =
+                                            Pretty_Print_Initializes_Aspect);
                            Sprint_Comma_List (Choices (N));
-                           Write_Str (" <-- ");
+                           Write_Str (" from ");
                            Sprint_Node (Expression (N));
 
                         when N_Defining_Identifier =>

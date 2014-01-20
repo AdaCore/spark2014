@@ -334,6 +334,9 @@ package Flow_Types is
    --  V_Attributes
    ----------------------------------------------------------------------
 
+   type Pretty_Print_Kind_T is (Pretty_Print_Null,
+                                Pretty_Print_Initializes_Aspect);
+
    type V_Attributes is record
       Is_Null_Node        : Boolean;
       --  Set for auxiliary nodes which can be removed, such as early
@@ -455,6 +458,10 @@ package Flow_Types is
       --
       --     * E_Return_Statement: for the implicit extended return
       --       returns this keeps track of the actual variable we return.
+
+      Pretty_Print_Kind   : Pretty_Print_Kind_T;
+      --  Some extra information which we use when deciding how to pretty
+      --  print the vertex in --flow-debug mode.
    end record;
    pragma Pack (V_Attributes);
 
@@ -491,7 +498,8 @@ package Flow_Types is
                    Volatiles_Written               => Flow_Id_Sets.Empty_Set,
                    Loops                           => Node_Sets.Empty_Set,
                    Error_Location                  => Empty,
-                   Aux_Node                        => Empty);
+                   Aux_Node                        => Empty,
+                   Pretty_Print_Kind               => Pretty_Print_Null);
 
    Null_Node_Attributes : constant V_Attributes :=
      Null_Attributes'Update (Is_Null_Node    => True,
