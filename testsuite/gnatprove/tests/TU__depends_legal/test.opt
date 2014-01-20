@@ -1,1 +1,0 @@
-all XFAIL depends_legal_2: IFA assumes all discriminated records are Inputs.
