@@ -46,8 +46,6 @@ is
      with Async_Writers,
           Address => System.Storage_Elements.To_Address (16#BABE5#);
 
-   procedure P1 (Par : in out Vol_Rec_T);
-
    procedure P2
      with Global => (In_Out => Vol);
 

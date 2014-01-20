@@ -51,19 +51,19 @@ is
       null;
    end Test_03;
 
-   procedure Test_04 (R : out Record_T;
-                      X : out Integer)
-   is
-   begin
-      X := R.X;  -- illegal
-   end Test_04;
+   --  procedure Test_04 (R : out Record_T;
+   --                     X : out Integer)
+   --  is
+   --  begin
+   --     X := R.X;  -- illegal
+   --  end Test_04;
 
-   procedure Test_05 (R : out Record_T;
-                      X : out Integer)
-   is
-   begin
-      R.X := 12;
-      X := R.X;  -- illegal
-   end Test_05;
+   --  procedure Test_05 (R : out Record_T;
+   --                     X : out Integer)
+   --  is
+   --  begin
+   --     R.X := 12;
+   --     X := R.X;  -- illegal
+   --  end Test_05;
 
 end Types;

@@ -29,23 +29,23 @@ is
       V := 88;
    end Test_01;
 
-   procedure Test_02 (N    : in out Volatile_Int;
-                      X, Y :    out Integer)
-     with Post => X = Y -- not provable
-   is
-   begin
-      X := Integer (N);
-      Y := Integer (N);
-   end Test_02;
+   --  procedure Test_02 (N    : in out Volatile_Int;
+   --                     X, Y :    out Integer)
+   --    with Post => X = Y -- not provable
+   --  is
+   --  begin
+   --     X := Integer (N);
+   --     Y := Integer (N);
+   --  end Test_02;
 
-   procedure Test_03 (N    : in     Volatile_Int;
-                      X, Y :    out Integer)
-     with Post => X = Y -- not provable
-   is
-   begin
-      X := Integer (N);
-      Y := Integer (N);
-   end Test_03;
+   --  procedure Test_03 (N    : in     Volatile_Int;
+   --                     X, Y :    out Integer)
+   --    with Post => X = Y -- not provable
+   --  is
+   --  begin
+   --     X := Integer (N);
+   --     Y := Integer (N);
+   --  end Test_03;
 
    procedure Read_Vol_IO (A : in out Volatile_Rec_T;
                           B :    out Integer)
@@ -69,7 +69,7 @@ is
    is
       Tmp : Rec_T := Rec_T (A);
    begin
-      B := A.X;
+      B := Tmp.X;
    end Read_Vol_I;
 
    procedure Use_Read_Vol_I (B :    out Integer;

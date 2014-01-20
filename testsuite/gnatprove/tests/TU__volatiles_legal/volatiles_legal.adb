@@ -1,18 +1,21 @@
 package body Volatiles_Legal
   with SPARK_Mode
 is
-   procedure P1 (Par : in out Vol_Rec_T) is
-      Tmp1, Tmp2 : Integer;
-   begin
-      Par.X := Par.X + 1;  --  No flow error should be issued
-      Par.X := Par.X + 1;  --  since all updates are effective.
 
-      Tmp1 := Par.X;
-      Tmp2 := Par.X;  --  Since Async_Writers => True for Par,
-                      --  Tmp2 might NOT have the same value as Tmp1.
+   --  Requires volatile parameters (not implemented yet).
 
-      pragma Assert (Tmp1 = Tmp2);  --  This should NOT be provable.
-   end P1;
+   --  procedure P1 (Par : in out Vol_Rec_T) is
+   --     Tmp1, Tmp2 : Integer;
+   --  begin
+   --     Par.X := Par.X + 1;  --  No flow error should be issued
+   --     Par.X := Par.X + 1;  --  since all updates are effective.
+
+   --     Tmp1 := Par.X;
+   --     Tmp2 := Par.X;  --  Since Async_Writers => True for Par,
+   --                     --  Tmp2 might NOT have the same value as Tmp1.
+
+   --     pragma Assert (Tmp1 = Tmp2);  --  This should NOT be provable.
+   --  end P1;
 
 
    procedure P2 is
