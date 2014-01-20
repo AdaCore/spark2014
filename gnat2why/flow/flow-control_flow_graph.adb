@@ -206,20 +206,12 @@ package body Flow.Control_Flow_Graph is
 
       Entry_References          : Node_Graphs.Map;
       --  A map from loops -> 'loop_entry references.
-
-      Processing_Nested_Package : Boolean;
-      --  We set this to true when we analyze a nested package.
-      --  Procedure N_Object_Declaration is only ever invoked when
-      --  we process a nested package. This procedure sets
-      --  Processing_Nested_Package to True so as to trigger the
-      --  secondary behavior of procedure N_Object_Declaration.
    end record;
 
    No_Context : constant Context :=
      Context'(Current_Loops             => Node_Sets.Empty_Set,
               Active_Loop               => Empty,
-              Entry_References          => Node_Graphs.Empty_Map,
-              Processing_Nested_Package => False);
+              Entry_References          => Node_Graphs.Empty_Map);
 
    ------------------------------------------------------------
    --  Local declarations
@@ -431,17 +423,6 @@ package body Flow.Control_Flow_Graph is
    --  Deal with declarations (with an optional initialization). We
    --  either generate a null vertex which is then stripped from the
    --  graph or a simple defining vertex.
-   --
-   --  Depending on the context (Ctx) this procedure can have one of
-   --  2 different behaviors:
-   --
-   --     1) If Ctx.Processing_Nested_Package is NOT set, we process the
-   --        entire object declaration, including the optional initialization
-   --        part of it.
-   --
-   --     2) On the contrary, if Ctx.Processing_Nested_Package is set, we
-   --        ignore the initialization part of the object declaration even
-   --        if one is present.
 
    procedure Do_Package_Declaration
      (N   : Node_Id;
@@ -1788,25 +1769,21 @@ package body Flow.Control_Flow_Graph is
       --  First, we need a 'initial and 'final vertex for this object.
       Create_Initial_And_Final_Vertices (Defining_Identifier (N), False, FA);
 
-      if not Present (Expression (N))
-        or (Ctx.Processing_Nested_Package and not Constant_Present (N))
-      then
+      if not Present (Expression (N)) then
          --  No initializing expression, so we fall back to the
          --  default initialization (if any).
-         if not Ctx.Processing_Nested_Package then
-            for F of Flatten_Variable (Defining_Identifier (N)) loop
-               if Is_Default_Initialized (F) then
-                  FA.CFG.Add_Vertex
-                    (Make_Default_Initialization_Attributes
-                       (FA    => FA,
-                        Scope => FA.B_Scope,
-                        F     => F,
-                        Loops => Ctx.Current_Loops),
-                     V);
-                  Inits.Append (V);
-               end if;
-            end loop;
-         end if;
+         for F of Flatten_Variable (Defining_Identifier (N)) loop
+            if Is_Default_Initialized (F) then
+               FA.CFG.Add_Vertex
+                 (Make_Default_Initialization_Attributes
+                    (FA    => FA,
+                     Scope => FA.B_Scope,
+                     F     => F,
+                     Loops => Ctx.Current_Loops),
+                  V);
+               Inits.Append (V);
+            end if;
+         end loop;
 
          if Inits.Length = 0 then
             --  We did not have anything with a default initial value,
