@@ -98,8 +98,7 @@ package body Flow_Types is
 
          if Left.Kind = Record_Field then
             if Left.Component.Length = Right.Component.Length then
-               for I in Natural
-               range 1 .. Natural (Left.Component.Length) loop
+               for I in Natural range 1 .. Natural (Left.Component.Length) loop
                   if Left.Component (I) /= Right.Component (I) then
                      return False;
                   end if;
