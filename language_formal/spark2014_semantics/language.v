@@ -191,6 +191,10 @@ Definition procedure_parameter_profile pb :=
 match pb with
   | mkprocedure_body _ _ _ x _ _ => x
 end.
+Definition procedure_name pb :=
+match pb with
+  | mkprocedure_body _ x _ _ _ _ => x
+end.
 
 
 (* Declarations are of two kinds and can be sequenced *)
@@ -219,3 +223,28 @@ Inductive library_unit_declaration: Type :=
 (* 10.1.1 *)
 Inductive compilation_unit: Type := 
 	| Library_Unit: astnum -> library_unit_declaration -> type_table -> compilation_unit.
+
+(** Some useful definition, related to language structures *)
+
+(** [Is_var e] means that expression [e] is a variable *)
+Definition Is_var e:Prop :=
+  match e with
+    |  E_Identifier _ _ => True
+    | _ => False
+  end.
+
+(** functional version of Is_var above *)
+Definition is_var e:bool :=
+  match e with
+    |  E_Identifier _ _ => true
+    | _ => false
+  end.
+
+(** correctness of is_var. *)
+Lemma is_var_Is_var : forall e, is_var e = true <-> Is_var e.
+Proof.
+  intros e.
+  destruct e;simpl; split;intro h;auto;try contradiction; discriminate h. 
+Qed.
+
+

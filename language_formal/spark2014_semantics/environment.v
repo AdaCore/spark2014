@@ -138,6 +138,16 @@ Proof.
        * right. right; assumption.
 Qed.
 
+
+Lemma update_length:
+  forall s x v s', update s x v = Some s' -> List.length s = List.length s'.
+Proof.
+  intros s x v.
+  functional induction update s x v;simpl
+  ; intros updateds heq; inversion heq;clear heq
+  ; subst;simpl;auto.
+Qed.
+
 (** [UpdateList lid lv s s'] iff s' is s updated by the values in (combine lid lv). *)
 Inductive UpdateList : list idnum -> list val -> store -> store -> Prop :=
 | UpdateListnil: forall lid lv s, UpdateList lid lv s s

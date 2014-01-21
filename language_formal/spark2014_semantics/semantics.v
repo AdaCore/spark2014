@@ -138,49 +138,25 @@ Inductive eval_expr: store -> expression -> return_val -> Prop :=
 
 
 
-(** ** Statement semantics *)
-(** 
-   in a statement evaluation, whenever a run time error is detected 
-   in the evaluation of its sub-statements or sub-component, the 
-   evaluation is terminated and return a run time error; otherwise, 
-   evaluate the statement into a normal state; 
-*)
+(** * Statement semantics *)
 
+(** ** Stack manipulation for procedure calls and return *)
 
-Function is_mode specname lparamspec: option mode :=
-  match lparamspec with
-    | nil => None
-    | spec :: l =>
-      if beq_nat (spec.(parameter_name)) specname
-      then Some (spec.(parameter_mode))
-      else is_mode specname l
-  end.
-
-Inductive Forall3 {A B C : Type} (R : A -> B -> C -> Prop)
-: list A -> list B -> list C -> Prop :=
-  Forall3_nil : Forall3 R nil nil nil
-| Forall3_cons : forall (x : A) (y : B) (z:C) (l : list A) (l' : list B) (l'' : list C),
-                   R x y z ->
-                   Forall3 R l l' l'' -> Forall3 R (x :: l) (y :: l') (z :: l'').
-
-Definition Is_var e:Prop :=
-  match e with
-    |  E_Identifier _ _ => True
-    | _ => False
-  end.
-
-Definition is_var e:bool :=
-  match e with
-    |  E_Identifier _ _ => true
-    | _ => false
-  end.
-
-Lemma is_var_Is_var : forall e, is_var e = true <-> Is_var e.
-Proof.
-  intros e.
-  destruct e;simpl; split;intro h;auto;try contradiction; discriminate h. 
-Qed.
-
+(** [Copy_out prefix lparams lexp s s'] means that s' is the result of
+    copying Out params of the currently finished procedure of prefix
+    into there output variables. More precisely:
+  - [prefix] is the portion of the stack where parameters and local
+    variables are stored
+  - [lparams] is the static specification of the parameters of the
+    procedure;
+  - [lexp] is the original expression given as parameter of the
+    procedure (this is where one can find the variables into
+    performing the "out" operation;
+  - [s] is the portion of the stack which needs to be updated and
+    retruned, that is without local variables and parameters), more
+    precisely, [prefix::s] is the state returned by the evaluation of
+    the body of the procedure;
+  - [s'] is the resulting state. *)
 Inductive Copy_out: store -> list parameter_specification
                     -> list expression -> store -> store -> Prop :=
   Copy_out_nil : forall prf σ, Copy_out prf nil nil σ σ
@@ -198,6 +174,12 @@ Inductive Copy_out: store -> list parameter_specification
       -> Copy_out prf lprm lexp σ σ'
       -> Copy_out prf (prm::lprm) (e :: lexp) σ σ'.
 
+(** [Copy_in s lparams lexp frame] means the frame is the portion of
+    the stack to push on the stack to start evaluating the procedure.
+    More precisely, [frame] contains the value of the formal
+    parameters described by [lpamrams]. these values are computed from
+    the list of arguments [lexp]. Only "In" parameters are evaluated,
+    "Out" parameters are set to [Undefined]. *)
 Inductive Copy_in: store -> list parameter_specification
                    -> list expression -> store -> Prop :=
   Copy_in_nil : forall σ, Copy_in σ nil nil nil 
@@ -213,19 +195,54 @@ Inductive Copy_in: store -> list parameter_specification
       -> prm.(parameter_mode) = In
       -> eval_expr σ e (Val_Normal v)
       -> Copy_in σ (prm::lparam) (e::lexp) ((prm.(parameter_name),Value v)::frame).
-(* This formulation is less easy to work with
-Definition Copy_in s lparams lexp frame :=
-  match List.split frame with
-      (lname,lv) =>
-      Forall3
-        (fun param exp v =>
-           (param.(parameter_mode) = In -> exists v',
-              eval_expr s exp (Val_Normal v') /\ v = Value v')
-           /\ (param.(parameter_mode) = Out -> (v = Undefined) /\ Is_var exp))
-        lparams lexp lv
-      /\ lname = List.map parameter_name lparams
-  end.
-*)
+
+
+(** *** Inductive semantic of declarations *)
+Inductive eval_decl: store -> declaration -> state -> Prop :=
+| eval_Decl_E:
+    forall e d s,
+      Some e = d.(initialization_expression) ->
+      eval_expr s e Val_Run_Time_Error ->
+      eval_decl s (D_Object_declaration d) S_Run_Time_Error
+| eval_Decl:
+    forall d x e v s,
+      x = d.(object_name) ->
+      Some e = d.(initialization_expression) ->
+      eval_expr s e (Val_Normal v) ->
+      eval_decl s (D_Object_declaration d) (S_Normal ((x, Value v) :: s))
+| eval_UndefDecl:
+    forall d x s,
+      x = d.(object_name) ->
+      None = d.(initialization_expression) ->
+      eval_decl s (D_Object_declaration d) (S_Normal ((x, Undefined) :: s))
+| eval_decl_Seq:
+    forall dcl1 dcl2 s s' s'',
+      eval_decl s dcl1 (S_Normal s') ->
+      eval_decl s' dcl2 (S_Normal s'') ->
+      eval_decl s (D_Sequence dcl1 dcl2) (S_Normal s'')
+| eval_decl_Seq_err1:
+    forall dcl1 dcl2 s,
+      eval_decl s dcl1 S_Run_Time_Error ->
+      eval_decl s (D_Sequence dcl1 dcl2) S_Run_Time_Error
+| eval_decl_Seq_err2:
+    forall dcl1 dcl2 s s',
+      eval_decl s dcl1 (S_Normal s') ->
+      eval_decl s' dcl2 S_Run_Time_Error ->
+      eval_decl s (D_Sequence dcl1 dcl2) S_Run_Time_Error
+| eval_decl_proc:
+    forall s pbody,
+      eval_decl s (D_Procedure_declaration pbody)
+                (S_Normal ((procedure_name pbody,Procedure pbody)::s)).
+
+(** ** Inductive semantic of statement and declaration
+
+   in a statement evaluation, whenever a run time error is detected in
+   the evaluation of its sub-statements or sub-component, the
+   evaluation is terminated and return a run time error; otherwise,
+   evaluate the statement into a normal state.
+
+ *)
+
 Inductive eval_stmt: store -> statement -> state -> Prop := 
     | eval_S_Assignment1: forall s e ast_num x,
         eval_expr s e Val_Run_Time_Error ->
@@ -278,45 +295,20 @@ Inductive eval_stmt: store -> statement -> state -> Prop :=
           List.length s' = List.length s ->
           List.length prefix = List.length prefix' ->
           Copy_out prefix' (procedure_parameter_profile pb) lexp s' s''
-          -> eval_stmt s (S_ProcCall ast_num pbname lexp) (S_Normal s'')
+          -> eval_stmt s (S_ProcCall ast_num pbname lexp) (S_Normal s'').
 
-with eval_decl: store -> declaration -> state -> Prop :=
-| eval_Decl_E: forall e d s,
-                 Some e = d.(initialization_expression) ->
-                 eval_expr s e Val_Run_Time_Error ->
-                 eval_decl s (D_Object_declaration d) S_Run_Time_Error
-| eval_Decl: forall d x e v s,
-                   x = d.(object_name) ->
-                   Some e = d.(initialization_expression) ->
-                   eval_expr s e (Val_Normal v) ->
-                   eval_decl s (D_Object_declaration d) (S_Normal ((x, Value v) :: s))
-| eval_UndefDecl: forall d x s,
-                        x = d.(object_name) ->
-                        None = d.(initialization_expression) ->
-                        eval_decl s (D_Object_declaration d) (S_Normal ((x, Undefined) :: s))
-| eval_decl_Seq: forall dcl1 dcl2 s s' s'',
-                   eval_decl s dcl1 (S_Normal s') ->
-                   eval_decl s' dcl2 (S_Normal s'') ->
-                   eval_decl s (D_Sequence dcl1 dcl2) (S_Normal s'')
-| eval_decl_Seq_err1: forall dcl1 dcl2 s,
-                   eval_decl s dcl1 S_Run_Time_Error ->
-                   eval_decl s (D_Sequence dcl1 dcl2) S_Run_Time_Error
-| eval_decl_Seq_err2: forall dcl1 dcl2 s s',
-                   eval_decl s dcl1 (S_Normal s') ->
-                   eval_decl s' dcl2 S_Run_Time_Error ->
-                   eval_decl s (D_Sequence dcl1 dcl2) S_Run_Time_Error.
 
+(** ** examples *)
 
 Module ExampleProcedures.
-(* EXAMPLE *)
-
-
-(* v102 is a variable in the scope.
+(* EXAMPLE 1, v102 is a variable in the scope.
+------------------------
 procedure P2 () is
   V4 : TYPE5 := 34;
 begin
   V102 := 56;
 end 
+-----------------------
 *)
 Definition proc1:procedure_body := (mkprocedure_body
            1 2 nil nil
@@ -481,48 +473,7 @@ Qed.
 End ExampleProcedures.
 (* END EXAMPLE *)  
 
-
-Definition fold_left2 := 
-fun {A B C : Type} (f : A -> B -> C -> A) =>
-fix fold_left (l : list B)(l' : list C) (a0 : A) {struct l} : A :=
-  match l,l' with
-  | nil,nil => a0
-  | b :: t, b' :: t' => fold_left t t' (f a0 b b')
-  | _ , _ => a0
-  end.
-
-
-(* copy_out prefx params lexp s'
-  returns s' updated in the following way: for each param in params
-  that is Out, pick the correponding variable name in lexp and update
-  s' with the value of the param that is stored in prefix. *)
-Function copy_out (prefx:store) (params: list parameter_specification)
-         (lexp:list expression) (s: store) {struct params}:  state :=
-  match params, lexp with
-    | nil , nil => S_Normal s
-    | (prm::params') , (e::lexp') =>
-      match prm.(parameter_mode) with
-         | Out =>
-           match e with
-             | E_Identifier _ x =>
-               match (fetch (prm.(parameter_name)) prefx) with
-                   Some v =>
-                   match update s x v with
-                     | Some s' => copy_out prefx params' lexp' s'
-                     | None => S_Abnormal
-                   end
-                 | None => S_Abnormal
-               end
-             | _ => S_Abnormal
-           end
-         | In => copy_out prefx params' lexp' s
-         | _ => S_Abnormal
-       end
-    | _ , _ => S_Abnormal
-  end.
-
-
-(** * Functional Semantics *)
+(** ** Functional Semantics of expressions *)
 
 (** for relational semantics of expression and statement, we also 
     provide its corresponding version of functional semantics, and 
@@ -544,6 +495,8 @@ Function copy_out (prefx:store) (params: list parameter_specification)
 
     - f_eval_stmt <-> eval_stmt;
 *)
+
+(** *** semantic of operators *)
 
 (** interpret the binary operation for each binary operator *)
 Definition f_eval_bin_expr (op: binary_operator) (v1: value) (v2: value): return_val :=
@@ -568,17 +521,12 @@ Definition f_eval_unary_expr (op: unary_operator) (v: value): return_val :=
     | Not => Val.not v
     end.
 
-(** ** Expression semantics *)
+(** *** Expression semantics *)
 
-(**
-    in functional semantics for expression, it returns either a 
+(** in functional semantics for expression, it returns either a
     normal value or a run time error or go abnormal, the run time 
     checks (for example, division by zero check) are encoded inside 
-    the semantics;
-*)
-(* here use 'Function' instead of 'Fixpoint' in order to use 
-   tactic 'functional induction (f_eval_expr _ _)' in proofs;
-*)
+    the semantics; *)
 Function f_eval_expr (s: store) (e: expression): return_val :=
     match e with
     | E_Literal _ v => Val_Normal (eval_literal v)
@@ -611,43 +559,47 @@ Function f_eval_expr (s: store) (e: expression): return_val :=
         end
     end.
 
-(** ** Statement semantics *)
-(** 
-   in the functional semantics for statement, 'k' denotes the execution 
-   steps, whenever it reaches 0, an untermination state is returned;
-   otherwise, it returns either a normal state, or a run time error 
-   or an abnormal state; run time checks (for example, division by 
-   zero check) are encoded inside the functional semantics;
-*)
+(** ** Functional Statement semantics *)
 
-(* This should be a regular Definition but it makes Function bug
-   later, this is a bug of Function that will be hopefukly fixed in
-   next versions. *)
-Fixpoint split2 {A} n m (l:list A) {struct n} :=
-    let ll := List.skipn n l in
-    let l3 := List.skipn m ll in
-    ((List.firstn n l) , ((List.firstn m ll), l3)).
 
-  
-(*Definition Copy_in s lparams lexp frame :=
-  match List.split frame with
-      (lname,lv) =>
-      Forall3
-        (fun param exp v =>
-           (param.(parameter_mode) = In -> exists v', eval_expr s exp (Val_Normal v') /\ v = Value v')
-           /\ (param.(parameter_mode) = Out -> (v = Undefined) /\ is_var exp))
-        lparams lexp lv
-      /\ lname = List.map parameter_name lparams
+(** *** Functional manipulation of the stack for procedure call and
+    retrun *)
+
+(** functional version of Copy_out
+  [copy_out prefx params lexp s'] returns s' updated in the following
+  way: for each param in params that is Out, pick the correponding
+  variable name in lexp and update s' with the value of the param that
+  is stored in prefix. *)
+Function copy_out (prefx:store) (params: list parameter_specification)
+         (lexp:list expression) (s: store) {struct params}:  state :=
+  match params, lexp with
+    | nil , nil => S_Normal s
+    | (prm::params') , (e::lexp') =>
+      match prm.(parameter_mode) with
+         | Out =>
+           match e with
+             | E_Identifier _ x =>
+               match (fetch (prm.(parameter_name)) prefx) with
+                   Some v =>
+                   match update s x v with
+                     | Some s' => copy_out prefx params' lexp' s'
+                     | None => S_Abnormal
+                   end
+                 | None => S_Abnormal
+               end
+             | _ => S_Abnormal
+           end
+         | In => copy_out prefx params' lexp' s
+         | _ => S_Abnormal
+       end
+    | _ , _ => S_Abnormal
   end.
-*)
 
-Fixpoint map3 {A B C D: Type} (f : A -> B -> C -> D) l1 l2 l3 : list D :=
-  match l1,l2,l3 with
-  | a :: l1' , b :: l2' , c :: l3' => f a b c :: map3 f l1' l2' l3'
-  | _ , _ , _ => nil
-  end.
-
-
+(** Functional version of Copy_in.
+   [copy_in s lparams lexp] returns the prefix to push on the stack
+   before evaluationg procedure body (i.e. declaration block +
+   statement). "Out" parameters values are copied into there output
+   variables (stored in lexp). *)
 Function copy_in (s:store) lparams lexp: state :=
   match lparams,lexp with
   | (prm :: lparams') , (exp:: lexp') =>
@@ -675,6 +627,8 @@ Function copy_in (s:store) lparams lexp: state :=
   | _ , _ => S_Abnormal
   end.
 
+(** *** functional semantic of declarations *)
+
 Function f_eval_decl (s: store) (c: declaration) {struct c}: state :=
   match c with
     | D_Object_declaration d =>
@@ -693,9 +647,19 @@ Function f_eval_decl (s: store) (c: declaration) {struct c}: state :=
         | S_Normal s' => f_eval_decl s' dcl2
         | err => err
       end
-    | _ => S_Normal s(* TODO *)
+    | D_Procedure_declaration pbody =>
+      S_Normal((procedure_name pbody,Procedure pbody)::s)
   end.
 
+(** *** functional semantic of statements *)
+
+(** 
+   in the functional semantics for statement, 'k' denotes the execution 
+   steps, whenever it reaches 0, an untermination state is returned;
+   otherwise, it returns either a normal state, or a run time error 
+   or an abnormal state; run time checks (for example, division by 
+   zero check) are encoded inside the functional semantics;
+*)
 Function f_eval_stmt k (s: store) (c: statement) {struct k}: state := 
   match k with
   | 0 => S_Unterminated
@@ -747,14 +711,15 @@ Function f_eval_stmt k (s: store) (c: statement) {struct k}: state :=
                 | S_Normal s2 =>
                   match f_eval_stmt k' s2 (procedure_statements pb) with
                     | S_Normal s3 =>
-                      match split2 (List.length s3 - List.length s2)
-                                   (List.length s2 - List.length s) s3 with
-                        | (slocal,p) =>
+                      match split2 (List.length s3 - List.length (prefx ++ s))
+                                   (List.length prefx) s3 with
+                        | Some (slocal,p) =>
                           match p with
                             | (prefx',s') =>
 (*                               S_Normal (copy_out prefx (procedure_parameter_profile pb) lexp s3) *)
                               (copy_out prefx' (procedure_parameter_profile pb) lexp s')
                           end
+                        | None => S_Abnormal (* erronous stack size *)
                       end
                     | S_Run_Time_Error => S_Run_Time_Error
                     | _ => S_Abnormal
@@ -771,9 +736,7 @@ Function f_eval_stmt k (s: store) (c: statement) {struct k}: state :=
 
 
 (** basic lemmas *)
-(** for any expression e, if it can be evaluated to v1 and v2 in the
-    same state s, then v1 and v2 should be the same; 
-*)
+(** expression semantic is deterministic. *)
 Lemma eval_expr_unique: forall s e v1 v2,
     eval_expr s e (Val_Normal v1) ->
     eval_expr s e (Val_Normal v2) ->
@@ -810,7 +773,8 @@ Proof.
     intros s e v h.
     induction h;
     try match goal with
-    | [ |- (exists v, Val_Normal ?v1 = Val_Normal v) \/ _ ] => left; exists v1; reflexivity
+    | [ |- (exists v, Val_Normal ?v1 = Val_Normal v) \/ _ ]
+      => left; exists v1; reflexivity
     | [ |- context [ _ \/ ?A = ?A ] ] => right; reflexivity
     end; auto.
 Qed.
@@ -1132,29 +1096,30 @@ Ltac destrIH :=
                    end).
 
 Ltac kgreater :=
-  repeat match goal with
-           | h:f_eval_stmt ?k ?s ?p = S_Normal ?s' |- context [f_eval_stmt (?k + _) ?s ?p] =>
-             rewrite (@f_eval_stmt_fixpoint _ _ _ _ h);auto with arith
-           | h:f_eval_stmt ?k ?s ?p = S_Normal ?s' |- context [f_eval_stmt (_ + ?k) ?s ?p] =>
-             rewrite (@f_eval_stmt_fixpoint _ _ _ _ h);auto with arith
-           | h:f_eval_stmt ?k ?s ?p = S_Run_Time_Error |- context [f_eval_stmt (?k + _) ?s ?p] =>
-             rewrite (@f_eval_stmt_fixpoint_E _ _ _ h);auto with arith
-           | h:f_eval_stmt ?k ?s ?p = S_Run_Time_Error |- context [f_eval_stmt (_ + ?k) ?s ?p] =>
-             rewrite (@f_eval_stmt_fixpoint_E _ _ _ h);auto with arith
+  repeat
+    match goal with
+      | h:f_eval_stmt ?k ?s ?p = S_Normal ?s' |- context [f_eval_stmt (?k + _) ?s ?p] =>
+        rewrite (@f_eval_stmt_fixpoint _ _ _ _ h);auto with arith
+      | h:f_eval_stmt ?k ?s ?p = S_Normal ?s' |- context [f_eval_stmt (_ + ?k) ?s ?p] =>
+        rewrite (@f_eval_stmt_fixpoint _ _ _ _ h);auto with arith
+      | h:f_eval_stmt ?k ?s ?p = S_Run_Time_Error |- context [f_eval_stmt (?k + _) ?s ?p] =>
+        rewrite (@f_eval_stmt_fixpoint_E _ _ _ h);auto with arith
+      | h:f_eval_stmt ?k ?s ?p = S_Run_Time_Error |- context [f_eval_stmt (_ + ?k) ?s ?p] =>
+        rewrite (@f_eval_stmt_fixpoint_E _ _ _ h);auto with arith
          end.
 
 
 Ltac rm_f_eval_expr :=
-    match goal with 
+  match goal with 
     | [ h: f_eval_expr ?s ?b = Val_Run_Time_Error |- _ ] => 
-        specialize (f_eval_expr_correct2 _ _ h); intros hz1
+      specialize (f_eval_expr_correct2 _ _ h); intros hz1
     | [ h: f_eval_expr ?s ?b = Val_Normal ?v |- _ ] => 
-        specialize (f_eval_expr_correct1 _ _ _ h); intros hz1   
-(*
+      specialize (f_eval_expr_correct1 _ _ _ h); intros hz1   
+  (*
     | [ h: f_eval_stmt ?k ?s ?c = S_Run_Time_Error |- _ ] => specialize (f_eval_stmt_correct1 _ _ _ _ h); intros hz1
     | [ h: f_eval_stmt ?k ?s ?c = S_Normal ?s1 |- _ ] => specialize (f_eval_stmt_correct1 _ _ _ _ h); intros hz1
-*)
-    end; auto.
+   *)
+  end; auto.
 
 Lemma copy_in_correct:
   forall s prm lexp prefx,
@@ -1211,6 +1176,18 @@ Proof.
 Qed.
 
 
+Lemma Copy_out_length :
+  forall prefx prm lexp s s',
+    Copy_out prefx prm lexp s s'
+    -> List.length s = List.length s'.
+Proof.
+  intros prefx prm lexp s s' H.
+  induction H;auto.
+  transitivity (List.length σ');auto.
+  apply update_length in H2.
+  assumption.
+Qed.
+
 Lemma copy_out_correct:
   forall prefx s (prm:list parameter_specification) lexp x,
     copy_out prefx prm lexp s = S_Normal x <-> Copy_out prefx prm lexp s x.
@@ -1262,6 +1239,57 @@ Proof.
 Qed.
 
 
+
+
+Lemma eval_decl_store_length:
+  forall s s' decl,
+    eval_decl s decl s'
+    -> forall st, s' = S_Normal st
+                  -> exists prfx, st = prfx ++ s.
+Proof.
+  intros s s' decl h.
+  induction h;intros st heq;inversion heq;clear heq;subst.
+  - exists ((object_name d, Value v)::nil).
+    simpl.
+    reflexivity.
+  - exists ((object_name d, Undefined)::nil);simpl.
+    reflexivity.
+  - destruct (IHh2 st).
+    { reflexivity. }
+    destruct (IHh1 s').
+    { reflexivity. }
+    subst.
+    exists (x ++ x0).
+    apply app_assoc.
+  - exists ((procedure_name pbody, Procedure pbody)::nil);simpl.
+    reflexivity.
+Qed.
+
+
+Lemma eval_stmt_store_length:
+  forall s s' stm,    
+    eval_stmt s stm s'
+    -> forall st, s' = S_Normal st
+                  -> List.length s = List.length st.
+Proof.
+  intros s s' stm H.
+  induction H;intros st heq;inversion heq;clear heq; subst;auto.
+  - apply update_length in H0.
+    assumption.
+  - transitivity (List.length s1).
+    + apply IHeval_stmt1;auto.
+    + apply IHeval_stmt2;auto.
+  - transitivity (List.length s1).
+    + apply IHeval_stmt1;auto.
+    + apply IHeval_stmt2;auto.
+  - apply eval_decl_store_length with (st:=s2) in H2.
+    + transitivity (List.length s').
+      * symmetry;assumption.
+      * apply Copy_out_length in H7.
+        assumption.
+    + reflexivity.
+Qed.
+
 Lemma f_eval_decl_correct :
   forall s d s',
     f_eval_decl s d = S_Normal s' ->
@@ -1275,7 +1303,6 @@ Proof.
       end;try now( (econstructor;eauto);try apply f_eval_expr_correct1;auto).
 
   - destruct (f_eval_decl s dcl1);try contradiction; discriminate.
-  - admit.  
 Qed.
 
 (** ** Bisimulation between f_eval_stmt and eval_stmt for statement semantics *)
@@ -1321,22 +1348,31 @@ Proof.
     rm_f_eval_expr.
   - (* S_ProcCall *)
     clear H.
+    apply split2_correct in e5.
+    decompose [and] e5 ; clear e5.
     rewrite H1.
     eapply eval_S_Proc with (s':=s') (prefix':=prefx')(prefix:=prefx)(slocal:=slocal);eauto.
     + eapply copy_in_correct.
       apply e2.
     + apply f_eval_decl_correct.
       eassumption.
-    + admit. (* TODO *)
-    + admit. (*todo.*)
-    + admit. (*todo.*)
-    + apply copy_out_correct.
+    + apply f_eval_decl_correct in e3.
+      destruct (eval_decl_store_length (prefx ++ s) (S_Normal s2) (procedure_declarative_part pb) e3 s2).
+      { reflexivity. }
+      specialize (IHs0 s3 e4).
+      generalize (eval_stmt_store_length _ _ _ IHs0 s3 refl_equal);intros .
+      subst.
+
+      repeat setoid_rewrite app_length in H2.
+      repeat setoid_rewrite app_length in H4.
+      omega.
+    + rewrite <- copy_out_correct.
       assumption.
-  - clear H.
-    rewrite H1 in*;try contradiction.
+  - rewrite H in y.
+    contradiction.            
 Qed.
 
-TO BE CONTINUED (+ shoudl add procedure declaration semantics)
+TO BE CONTINUED (+ should add procedure declaration semantics)
 
 
 Ltac rm_f_eval_stmt :=
