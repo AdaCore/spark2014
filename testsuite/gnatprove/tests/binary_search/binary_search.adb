@@ -14,7 +14,7 @@ package body Binary_Search is
          return 0;
       end if;
 
-      while Left < Right loop
+      while Left <= Right loop
          pragma Loop_Invariant
            ((for all Index in A'First .. Left - 1 => A (Index) < I)
               and then
