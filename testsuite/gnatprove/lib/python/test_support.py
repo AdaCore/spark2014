@@ -285,18 +285,28 @@ def to_list(arg):
         return [arg]
 
 
+def matches(comp_reg, s, invert):
+    """decide whether string s matches the compiled regex comp_reg
+
+    PARAMETERS
+    comp_reg: a compiled regex
+    s: a string to be matched
+    invert: if false, negate the result
+    """
+    m = re.match(comp_reg, s)
+    return (invert and not m) or (not invert and m)
+
+
 def grep(regex, strlist, invert=False):
     """Filter a string list by a regex
 
     PARAMETERS
     regex: a string encoding a regular expression, using python regex syntax
     strlist: a list of strings
+    invert: if false, select strings that do *not* match
     """
     p = re.compile(regex)
-    for line in strlist:
-        m = re.match(p, line)
-        if (invert and not m) or (not invert and m):
-            print line
+    return [ line for line in strlist if matches(p,line,invert) ]
 
 
 def check_dot_files(opt=None):
