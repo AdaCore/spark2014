@@ -20,7 +20,7 @@ package body Binary_Search is
          return No_Index;
       end if;
       
-      while Left < Right loop
+      while Left <= Right loop
          pragma Loop_Invariant (Left in A'Range and Right in A'Range);
          pragma Loop_Invariant
            (for all Index in A'First .. Left - 1 => A (Index) < I);

@@ -2,8 +2,8 @@ pragma SPARK_Mode (On);
 
 package Binary_Search is
 
-   type T is range 0 .. 10000;
-   subtype U is T range 1 .. 10000;
+   type T is range 0 .. 10;
+   subtype U is T range 1 .. 10;
 
    type Ar is array (U) of Integer;
 
