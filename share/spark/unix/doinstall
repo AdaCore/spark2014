@@ -1,6 +1,6 @@
 #!/bin/sh
 prefix=`type gps 2>/dev/null | cut -d' ' -f3 | sed 's%/bin.*$%%'`
-if [ "$prefix" = "" ]; then
+if [ "$prefix" = "" -o "$prefix" = "found" ]; then
   prefix="/opt/spark2014"
 fi
 
@@ -32,6 +32,7 @@ case $confirm in
   [yY])
     echo "
     installing package..."
+    mkdir -p $prefix
     tar cf - bin lib libexec share | (cd $prefix && tar xf -)
     echo "    installation completed.
     To use SPARK 2014, users must put $prefix/bin
