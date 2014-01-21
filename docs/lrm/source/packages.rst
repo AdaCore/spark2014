@@ -666,8 +666,9 @@ grammar of ``initialization_spec`` given below.
 
 .. _tu-fe-initializes_aspects-04:
 
-4. Each ``name`` in the ``input_list`` shall denote an entire variable or a state
-   abstraction but shall not denote an entity declared in the package with the
+4. Each ``name`` in the ``input_list`` shall denote an entire variable,
+   a formal parameter, or a state abstraction but shall not denote
+   an entity declared in the package with the
    ``aspect_specification`` containing the Initializes aspect.
 
 .. _tu-fe-initializes_aspects-05:

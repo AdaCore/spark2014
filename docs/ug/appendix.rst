@@ -325,8 +325,8 @@ Tool Limitations
    These restrictions ensure that the result of fixed-point operations always
    belongs to the *perfect result set* as defined in Ada RM G.2.3.
 
-Static Rules Not Checked
-------------------------
+Legality Rules
+--------------
 
 #. The elaboration order rules described in the |SPARK| Reference
    Manual 7.7 are not currently checked.
@@ -336,6 +336,11 @@ Static Rules Not Checked
    abstraction are given as constituents in the refinement of the more
    visible state is not checked (|SPARK| Reference Manual rule
    7.2.6(6)).
+
+#. |GNATprove| does not permit formal parameters to be mentioned
+   in the ``input_list`` of an Initializes Aspect, contrary
+   to |SPARK| Reference Manual 7.1.5(4). This limitation is only
+   relevant for packages that are nested inside subprograms.
 
 Flow Analysis Limitations
 -------------------------
