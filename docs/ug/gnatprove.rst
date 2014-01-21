@@ -72,7 +72,7 @@ invoke Alt-Ergo for each *path* that leads to the check. This option usually
 takes much longer, because Alt-Ergo is invoked much more often, but may give
 better proof results. Finally, in mode ``progressive``, invoking Alt-Ergo a
 single time on the entire check is tried, and only if the check is not proved,
-then other techniques that progressively consider each path in isolation 
+then other techniques that progressively consider each path in isolation
 are tried.
 
 By default, |GNATprove| avoids reanalyzing unchanged files, on a
@@ -435,105 +435,139 @@ other unclassified messages are warnings about questionable code constructs.
 
 .. _how to write loop invariants:
 
-..
-   How to Write Loop Invariants
-   ============================
+How to Write Loop Invariants
+============================
 
-   .. todo:: Edit. Add example.
+Proving loops is often the most challenging part of the proof
+activity, both for automatic provers and for users guiding the proof
+tool.
 
-   Proving loops is often the most challenging part of the proof
-   activity, both for automatic provers and for users guiding the proof
-   tool. It is not uncommon that a proof attempt of a valid loop property
-   fails.
+When proving loops, failed proof attempts may need to be "debugged",
+see :ref:`investigate`. In this section we provide a systematic approach
+to the development of loop invariants. We will see how failed proof attempts
+can give valuable insights, the loop invariant can be corrected,
+and proof attempted again.
 
-   When proving loops, failed proof attempts may need to be "debugged",
-   see :ref:`investigate`. In this section we provide a systematic guide
-   on proving loops. We will see how failed proof attempts give valuable
-   insights, the loop invariant can be mended, and proof attempted again.
+Loop Invariants
+---------------
 
-   Loop Invariants
-   ---------------
-   Loop invariants are a powerful way to guide an automatic proof tool to
-   successful proof. Though the loop invariant is a rather simple
-   concept, the use of it can be quite complicated. Let us start with an
-   important observation to make it easier.
+Impact of the Loop Invariant
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Consider a simple loop statement that forms the entire body
+of a subprogram that has a precondition P, postcondition Q,
+and a candidate loop invariant I:
 
-   Impact of the Loop Invariant
-   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-   * Observation: The choice of loop invariant greatly influences the
-     proof (attempt) because it is instantiated at 4 occasions in 3
-     branches of the proof. 1) Establish loop invariant, 2) Preserve loop
-     invariant (two instances), and 3) Use loop invariant (to establish
-     postcondition).
+.. code-block:: ada
 
-   * The trick in successful loop invariant writing is to use this
-     observation early in the process and benefit from working out the
-     summary of all constraints implied by each branch as early as
-     possible.
+   begin
+      loop
+         pragma Loop_Invariant (I);
+         exit when E;
+         S;
+      end loop;
+   end;
 
-   Guiding Loop Proofs
-   -------------------
+This subprogram generates three VCs for functional correctness:
 
-   We now go through the most important guiding choices for loop proof,
-   the choice of 1) the loop variable and 2) the loop invariant.
+* One VC that establishes that I is true on first entry to the loop,
+  assuming the precondition P is true.  We call this the *initial* VC.
 
-   Loop Variable
-   ^^^^^^^^^^^^^
-   * It is important to identify the loop variable to get the loop invariant right.
+* One VC that establishes that I is preserved as the loop iterates,
+  assuming that the exit condition E is false.  In this VC, the
+  invariant I is used *twice* - once in forming the hypotheses
+  of the VC, and once in forming the conclusion of the VC given
+  whatever effects statements S has had on the variables. We
+  call this the *preservation* VC.
 
-   * This is often trivial; for example for for-loops, or when there is
-     only one variable.
+* One VC that establishes the postcondition Q is true, assuming
+  that the invariant I and the loop exit condition E are both
+  true. We call this the *final* VC.
 
-   * Trick: look at the terminating condition of the loop. The loop
-     variable should of course also be updated in the loop.
+All three VCs must be considered when deriving a loop
+invariant.
 
-   * Make a note of how the loop variable is updated in every iteration
-     of the loop.
+Guiding Loop Proofs
+-------------------
 
-   * The loop variable is also used to write a loop variant for proving
-     termination of the loop, but this is not mandatory.
+Program Structure
+^^^^^^^^^^^^^^^^^
 
-   Loop Invariant
-   ^^^^^^^^^^^^^^
+Reasoning about loops is often simplified if the code
+both before and after the loop is as simple as possible.
+It is also useful if the path from the loop invariant to
+the exit statement that controls loop termination is a "null"
+statement (i.e. they are next to each other). This makes
+it easier to think about the relationship between the
+loop invariant and the postcondition that follows the loop.
 
-   * The loop invariant represents what we really want to prove with the
-     induction. This formula depends on the loop variable.
+In a "for" loop, this can mean it is easier to place
+the Loop_Invariant pragma at the *end* of the loop body,
+where it precedes the (implicit) exit statement.
 
-   * To create the loop invariant, start with your proof obligation. What
-     property do you need to have proved after the loop? Then edit this
-     formula so that your loop variable appears in the right place (clues
-     here).
+Finally, in a large subprogram, consider factoring out
+loops into local subprograms so that the subprogram's
+pre- and post-condition can be treated as the
+pre- and post-condition of the loop in question.
 
-   * Analyse the failed proof attempt if any. Consider for which proof
-     obligations the proof fails.  Is it in the establishment,
-     preservation, or use of the loop invariant that proof fails?
+Identifying Loop Variables
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-   * First: If the use case proof obligation fails (corresponding to the loop
-     having terminated, i.e. false loop condition), look at this first,
-     since this is the hardest constraint.
+Loop variables are those variables within a loop that appear
+in the loop termination condition(s) of the loop, and are also
+modified in the body of the loop. Identifying loop variables is often trivial;
+for example, a "for" loop always has exactly one loop variable,
+assuming it has no other exit statements.
 
-   * If the preservation of the loop invariant fails to prove, consider
-     generalisation of the loop invariant. Many times we can work around
-     our loop proof problem by proving a stronger than is actually needed
-     and then prove that if the stronger property holds, the original
-     proof obligation also holds. This is called generalisation since the
-     new, stronger loop invariant is a generalisation of the original
-     invariant we were trying to prove.
+Make a note of how each loop variable is updated in every iteration
+of the loop.
 
-   * Next: Is it the establishment of the loop invariant that fails?  If
-     the rest of the loop proof has succeded, the reason for this failure
-     is external to the loop. Consider if the precondition of your loop
-     is strong enough? Maybe you need some more initialization code
-     before your loop? Or a pre-condition to the subprogram? Lastly,
-     consider if your loop invariant is too strong? Is it contradictory?
+The loop variables are also used to write a loop variant for proving
+termination of the loop, but this is not mandatory.
 
-   As mentioned earlier, any change to the loop invariant propagates to
-   several branches of the proof. In particular a generalisation of the
-   loop invariant both introduces more assumptions and - simultaneously
-   and in different branches of the tree - increases the proof
-   burden. Therefore a patch to the loop invariant based on the
-   information from one failed proof branch is likely to cause another
-   branch to fail. The suggested order of consideration given above is a heuristic that has shown to work well in practise.
+Finding a Loop Invariant
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+The following steps have proven useful in finding
+a candidate loop invariant:
+
+* A loop invariant represents a relationship between
+  variables that *does not change* with each iteration
+  of the loop, even though the invidual variables do change
+  as the loop iterates.
+
+* Additionally, the loop invariant should also be
+  sufficient to prove the postcondition when the loop does terminate.
+
+* To create the loop invariant, start with the postcondition Q. What
+  property do you need to have proved after the loop? The loop
+  invariant I will often resemble the postcondition Q, but with
+  the relationship between loop variables introduced.
+
+* Check that the candidate invariant I *AND* the loop exit
+  condition E are sufficient to prove the postcondition Q.
+
+* Analyse any failed proofs attempts:
+
+  #. First, if the *final* VC fails (corresponding to the loop
+     having terminated), look at this first.  Is the combination
+     of the invariant and the exit condition too weak to
+     imply the postcondition?
+
+  #. If the proof of the *initial* VC fails, then
+     consider strengthening the precondition of the enclosing
+     subprogram, or modify the initialization of variables
+     that precede the loop. The proof of the initial VC
+     will also fail if the invariant I is too strong - i.e.
+     it could be false for some values of the variables.
+
+  #. Finally, if the *preservation* VC fails to prove, consider
+     strengthening the loop invariant.
+
+As mentioned earlier, any change to the loop invariant propagates to
+several VCs.  Therefore a change to the loop invariant based on the
+information from one failed VC might cause another
+VC to fail. The suggested order of consideration given above
+is a heuristic that has shown to work well in practice.
 
 .. _investigate:
 
