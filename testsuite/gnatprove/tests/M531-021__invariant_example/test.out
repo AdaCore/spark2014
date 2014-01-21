@@ -1,0 +1,10 @@
+p2.adb:18:10: info: loop invariant initialization proved
+p2.adb:18:10: info: loop invariant preservation proved
+p2.adb:19:19: info: overflow check proved
+p2.adb:20:41: info: overflow check proved
+p2.adb:25:37: info: division check proved
+p2.adb:27:21: info: overflow check proved
+p2.ads:4:4: info: assertion proved
+p2.ads:11:19: info: postcondition proved
+p2.ads:11:32: info: overflow check proved
+p2.ads:12:37: info: overflow check proved
