@@ -2041,8 +2041,8 @@ package body Flow.Control_Flow_Graph is
       pragma Assert_And_Cut (Present (Initializes_Aspect));
 
       --  When we encounter the package body (or its stub), we know that
-      --  the package as been elaborated. We need to apply the initializes
-      --  aspect aspect at this point.
+      --  the package has been elaborated. We need to apply the initializes
+      --  aspect at this point.
 
       declare
          Verts          : Union_Lists.List := Union_Lists.Empty_List;

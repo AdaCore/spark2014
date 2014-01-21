@@ -493,6 +493,10 @@ package body Flow.Control_Flow_Graph.Utility is
       return A;
    end Make_Default_Initialization_Attributes;
 
+   ----------------------------------
+   -- Set_Initializes_Pretty_Print --
+   ----------------------------------
+
    procedure Set_Initializes_Pretty_Print
      (G : in out Flow_Graphs.T;
       V : Flow_Graphs.Vertex_Id)
