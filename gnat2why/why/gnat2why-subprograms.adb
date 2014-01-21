@@ -360,9 +360,9 @@ package body Gnat2Why.Subprograms is
             Count := Binders'Length + 1;
             for R of Read_Names loop
                declare
-                  Entity : constant Entity_Id := Find_Object_Entity (R);
+                  Entity : constant Entity_Id := Find_Entity (R);
                begin
-                  if Present (Entity) then
+                  if Present (Entity) and Entity_In_SPARK (Entity) then
                      Result (Count) :=
                        (Regular,
                         (Ada_Node => Entity,

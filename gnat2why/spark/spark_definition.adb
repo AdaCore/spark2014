@@ -24,35 +24,32 @@
 ------------------------------------------------------------------------------
 
 with Ada.Directories;
-with Ada.Text_IO;                        use Ada.Text_IO;
+with Ada.Text_IO;            use Ada.Text_IO;
 
-with Atree;                              use Atree;
-with Einfo;                              use Einfo;
-with Elists;                             use Elists;
-with Errout;                             use Errout;
-with Namet;                              use Namet;
-with Nlists;                             use Nlists;
-with Opt;                                use Opt;
-with Sem_Prag;                           use Sem_Prag;
-with Sem_Util;                           use Sem_Util;
-with Sem_Ch12;                           use Sem_Ch12;
-with Sinfo;                              use Sinfo;
-with Sinput;                             use Sinput;
-with Snames;                             use Snames;
-with Stand;                              use Stand;
-with Uintp;                              use Uintp;
-with Aspects;                            use Aspects;
-with Urealp;                             use Urealp;
+with Atree;                  use Atree;
+with Aspects;                use Aspects;
+with Einfo;                  use Einfo;
+with Elists;                 use Elists;
+with Errout;                 use Errout;
+with Namet;                  use Namet;
+with Nlists;                 use Nlists;
+with Opt;                    use Opt;
+with Sem_Ch12;               use Sem_Ch12;
+with Sem_Prag;               use Sem_Prag;
+with Sem_Util;               use Sem_Util;
+with Sinfo;                  use Sinfo;
+with Sinput;                 use Sinput;
+with Snames;                 use Snames;
+with Stand;                  use Stand;
+with Uintp;                  use Uintp;
+with Urealp;                 use Urealp;
 
 with VC_Kinds;
 
-with SPARK_Frame_Conditions;             use SPARK_Frame_Conditions;
-with SPARK_Util;                         use SPARK_Util;
+with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
+with SPARK_Util;             use SPARK_Util;
 
 with Gnat2Why_Args;
-
---  with Output; use Output;
---  with Treepr; use Treepr;
 
 package body SPARK_Definition is
 
@@ -459,11 +456,6 @@ package body SPARK_Definition is
          Sub  : constant Entity_Id := Actual_Subtype (E);
 
       begin
-         --  all objects should be registered in the object map of
-         --  SPARK_Frame_Conditions. See the documentation there.
-
-         Register_Object_Entity (E);
-
          --  The object is in SPARK if-and-only-if its type is in SPARK, it
          --  is not aliased, and its initialization expression, if any, is
          --  in SPARK.
@@ -659,11 +651,6 @@ package body SPARK_Definition is
            (if Is_Formal (E) then Actual_Subtype (E) else Empty);
 
       begin
-         --  all objects should be registered in the object map of
-         --  SPARK_Frame_Conditions. See the documentation there.
-
-         Register_Object_Entity (E);
-
          if not In_SPARK (T) then
             Mark_Violation (E, From => T);
          end if;

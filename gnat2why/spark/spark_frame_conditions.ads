@@ -127,19 +127,19 @@ package SPARK_Frame_Conditions is
    --  The following two procedures are used to fill in and query a map that
    --  stores the entity (if present) for a given entity_name. Basically, if
    --  the entity name is present somewhere in the closure of the with'ed specs
-   --  of the current unit, then Find_Object_Entity will return it.
+   --  of the current unit, then Find_Entity will return it.
 
-   procedure Register_Object_Entity (E : Entity_Id);
-   --  Register the object entity
+   procedure Register_Entity (E : Entity_Id);
+   --  Register the entity
 
-   function Find_Object_Entity (E : Entity_Name) return Entity_Id;
+   function Find_Entity (E : Entity_Name) return Entity_Id;
    --  Find the entity that belongs to the given Entity_Name. If no such entity
-   --  could be found (i.e. when the object is defined in the body of a with'ed
+   --  could be found (i.e. when the entity is defined in the body of a with'ed
    --  unit), the empty node is returned.
 
    procedure For_All_External_Objects
      (Process : not null access procedure (E : Entity_Name));
-   --  invoke the callback for all object entity_names that do not correspond
+   --  Invoke the callback for all object entity_names that do not correspond
    --  to an entity in the tree (i.e. are defined in some other unit body).
 
 end SPARK_Frame_Conditions;

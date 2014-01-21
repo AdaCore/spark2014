@@ -248,12 +248,12 @@ package body Gnat2Why.Driver is
       Atree.Unlock;
       Nlists.Unlock;
 
-      Compute_Global_Effects;
-
       --  Before any analysis takes place, perform some rewritings of the tree
       --  that facilitates analysis.
 
       Rewrite_All_Compilation_Units;
+
+      Compute_Global_Effects;
 
       --  Mark all compilation units with "in SPARK / not in SPARK" marks, in
       --  the same order that they were processed by the frontend. Bodies

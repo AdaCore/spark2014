@@ -91,7 +91,7 @@ package body Gnat2Why.Util is
                            C);
          else
             declare
-               Ent : constant Entity_Id := Find_Object_Entity (E);
+               Ent : constant Entity_Id := Find_Entity (E);
             begin
                if Present (Ent) then
                   return Find (M, Ent);

@@ -23,15 +23,17 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Atree;    use Atree;
-with Einfo;    use Einfo;
-with Namet;    use Namet;
-with Nlists;   use Nlists;
-with Sem_Aux;  use Sem_Aux;
-with Sem_Eval; use Sem_Eval;
-with Sinfo;    use Sinfo;
-with Snames;   use Snames;
-with Tbuild;   use Tbuild;
+with Atree;                  use Atree;
+with Einfo;                  use Einfo;
+with Namet;                  use Namet;
+with Nlists;                 use Nlists;
+with Sem_Aux;                use Sem_Aux;
+with Sem_Eval;               use Sem_Eval;
+with Sinfo;                  use Sinfo;
+with Snames;                 use Snames;
+with Tbuild;                 use Tbuild;
+
+with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 
 package body SPARK_Rewrite is
 
@@ -168,6 +170,49 @@ package body SPARK_Rewrite is
 
       function Rewrite_Node (N : Node_Id) return Traverse_Result is
       begin
+         --  Register any object/subprogram coming from an object/subprogram
+         --  declaration.
+         if Nkind (N) in N_Has_Entity
+           and then Nkind (Entity (N)) in N_Entity
+         then
+            declare
+               E : constant Entity_Id := Entity (N);
+            begin
+               case Ekind (E) is
+                  when Subprogram_Kind =>
+                     begin
+                        case Nkind (Parent (Parent (E))) is
+                           when N_Subprogram_Declaration =>
+                              Register_Entity (E);
+
+                           when others =>
+                              null;
+                        end case;
+                     end;
+
+                  when E_Constant |
+                       E_Variable =>
+                     begin
+                        case Nkind (Parent (E)) is
+                           when N_Object_Declaration     |
+                                N_Iterator_Specification =>
+                              Register_Entity (E);
+
+                           when others =>
+                              null;
+                        end case;
+                     end;
+
+                  when E_Loop_Parameter |
+                       Formal_Kind      =>
+                     Register_Entity (E);
+
+                  when others =>
+                     null;
+               end case;
+            end;
+         end if;
+
          case Nkind (N) is
             when N_Identifier | N_Expanded_Name =>
                Rewrite_Identifier (N);

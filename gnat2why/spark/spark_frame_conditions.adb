@@ -34,8 +34,12 @@ with Lib;
 with Osint;
 with Sem_Aux;                use Sem_Aux;
 with Sem_Util;               use Sem_Util;
+with Snames;                 use Snames;
 with SPARK_Xrefs;            use SPARK_Xrefs;
 with Uname;
+
+with Flow_Types;             use Flow_Types;
+with Flow_Utility;           use Flow_Utility;
 
 package body SPARK_Frame_Conditions is
 
@@ -165,6 +169,9 @@ package body SPARK_Frame_Conditions is
 
    function To_Names (Ids : Id_Set.Set) return Name_Set.Set;
    --  Convert set of identities to set of names
+
+   function To_Ids (Names : Name_Set.Set) return Id_Set.Set;
+   --  Convert set of names to set of ids
 
    ----------------
    -- Add_To_Map --
@@ -496,11 +503,11 @@ package body SPARK_Frame_Conditions is
       return File_Defines.Element (E);
    end File_Of_Entity;
 
-   ------------------------
-   -- Find_Object_Entity --
-   ------------------------
+   -----------------
+   -- Find_Entity --
+   -----------------
 
-   function Find_Object_Entity (E : Entity_Name) return Entity_Id is
+   function Find_Entity (E : Entity_Name) return Entity_Id is
       use Name_To_Entity_Map;
       C : constant Name_To_Entity_Map.Cursor := Name_To_Entity.Find (E);
    begin
@@ -509,7 +516,7 @@ package body SPARK_Frame_Conditions is
       else
          return Empty;
       end if;
-   end Find_Object_Entity;
+   end Find_Entity;
 
    ------------------------------
    -- For_All_External_Objects --
@@ -1065,8 +1072,34 @@ package body SPARK_Frame_Conditions is
       --  Start of processing for Propagate_On_Call
 
       begin
-         Prop_Reads  := Reads.Element (Callee) - Defines.Element (Callee);
-         Prop_Writes := Writes.Element (Callee) - Defines.Element (Callee);
+         declare
+            E : constant Entity_Id :=
+              Find_Entity (Entity_Names.Element (Callee));
+         begin
+            --  If Callee has a user-provided Global contract then we use
+            --  Get_Proof_Global to work out the Globals from that. Otherwise,
+            --  we use the Globals that we gathered from the ALI files.
+
+            if Present (E)
+              and then Present (Get_Pragma (E, Pragma_Global))
+            then
+               declare
+                  Read_Ids  : Flow_Types.Flow_Id_Sets.Set;
+                  Write_Ids : Flow_Types.Flow_Id_Sets.Set;
+               begin
+                  Get_Proof_Globals (Subprogram => E,
+                                     Reads      => Read_Ids,
+                                     Writes     => Write_Ids);
+                  Prop_Reads  := To_Ids (Flow_Types.To_Name_Set (Read_Ids));
+                  Prop_Writes := To_Ids (Flow_Types.To_Name_Set (Write_Ids));
+               end;
+            else
+               Prop_Reads  :=
+                 Reads.Element (Callee) - Defines.Element (Callee);
+               Prop_Writes :=
+                 Writes.Element (Callee) - Defines.Element (Callee);
+            end if;
+         end;
 
          Reads.Update_Element
            (Reads.Find (Caller), Union_With_Reads'Access);
@@ -1195,15 +1228,15 @@ package body SPARK_Frame_Conditions is
       end;
    end Propagate_Through_Call_Graph;
 
-   ----------------------------
-   -- Register_Object_Entity --
-   ----------------------------
+   ---------------------
+   -- Register_Entity --
+   ---------------------
 
-   procedure Register_Object_Entity (E : Entity_Id) is
+   procedure Register_Entity (E : Entity_Id) is
       E_Name : constant Entity_Name := new String'(Unique_Name (E));
    begin
       Name_To_Entity.Include (E_Name, E);
-   end Register_Object_Entity;
+   end Register_Entity;
 
    --------------------------
    -- Set_Default_To_Empty --
@@ -1258,5 +1291,21 @@ package body SPARK_Frame_Conditions is
       end loop;
       return Names;
    end To_Names;
+
+   ------------
+   -- To_Ids --
+   ------------
+
+   function To_Ids (Names : Name_Set.Set) return Id_Set.Set is
+      Ids : Id_Set.Set;
+      C : Name_Set.Cursor;
+   begin
+      C := Names.First;
+      while C /= Name_Set.No_Element loop
+         Ids.Include (Id_Of_Entity (Element (C)));
+         Next (C);
+      end loop;
+      return Ids;
+   end To_Ids;
 
 end SPARK_Frame_Conditions;

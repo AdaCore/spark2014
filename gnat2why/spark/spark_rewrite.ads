@@ -30,6 +30,8 @@ with Types; use Types;
 package SPARK_Rewrite is
 
    procedure Rewrite_Compilation_Unit (N : Node_Id);
-   --  Perform rewritings of a single compilation unit
+   --  Perform rewritings of a single compilation unit. This procedure also
+   --  calls Register_Entity on Object and Subprogram entities that come from
+   --  object and subprogram declarations.
 
 end SPARK_Rewrite;

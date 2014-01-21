@@ -24,7 +24,6 @@
 with Elists;                 use Elists;
 with Errout;                 use Errout;
 with Nlists;                 use Nlists;
-
 with Output;                 use Output;
 with Sprint;                 use Sprint;
 with Treepr;                 use Treepr;
@@ -502,7 +501,7 @@ package body Flow_Utility is
               (Name : Entity_Name;
                View : Parameter_Variant)
                return Flow_Id is
-               E : constant Entity_Id := Find_Object_Entity (Name);
+               E : constant Entity_Id := Find_Entity (Name);
             begin
                if Present (E) then
                   return Direct_Mapping_Id (E, View);
@@ -617,34 +616,38 @@ package body Flow_Utility is
       begin
          case F.Kind is
             when Direct_Mapping =>
-               case Ekind (Get_Direct_Mapping_Id (F)) is
-                  when E_Abstract_State =>
-                     Ptr := First_Elmt (Refinement_Constituents
-                                          (Get_Direct_Mapping_Id (F)));
-                     while Present (Ptr) loop
-                        Tmp.Union (Expand (Direct_Mapping_Id (Node (Ptr),
-                                                              F.Variant)));
-                        Ptr := Next_Elmt (Ptr);
-                     end loop;
+               if Nkind (Get_Direct_Mapping_Id (F)) in N_Entity then
+                  --  Filter out Flow_Id corresponding to null refinement
 
-                     Ptr := First_Elmt (Part_Of_Constituents
-                                          (Get_Direct_Mapping_Id (F)));
-                     while Present (Ptr) loop
-                        Tmp.Union (Expand (Direct_Mapping_Id (Node (Ptr),
-                                                              F.Variant)));
-                        Ptr := Next_Elmt (Ptr);
-                     end loop;
+                  case Ekind (Get_Direct_Mapping_Id (F)) is
+                     when E_Abstract_State =>
+                        Ptr := First_Elmt (Refinement_Constituents
+                                             (Get_Direct_Mapping_Id (F)));
+                        while Present (Ptr) loop
+                           Tmp.Union (Expand (Direct_Mapping_Id (Node (Ptr),
+                                                                 F.Variant)));
+                           Ptr := Next_Elmt (Ptr);
+                        end loop;
 
-                     if Tmp.Is_Empty then
-                        --  If we can't refine this state (maybe the body
-                        --  is not in SPARK, or simply not implemented)
-                        --  then we use the abstract state itself.
+                        Ptr := First_Elmt (Part_Of_Constituents
+                                             (Get_Direct_Mapping_Id (F)));
+                        while Present (Ptr) loop
+                           Tmp.Union (Expand (Direct_Mapping_Id (Node (Ptr),
+                                                                 F.Variant)));
+                           Ptr := Next_Elmt (Ptr);
+                        end loop;
+
+                        if Tmp.Is_Empty then
+                           --  If we can't refine this state (maybe the body
+                           --  is not in SPARK, or simply not implemented)
+                           --  then we use the abstract state itself.
+                           Tmp.Insert (F);
+                        end if;
+
+                     when others =>
                         Tmp.Insert (F);
-                     end if;
-
-                  when others =>
-                     Tmp.Insert (F);
-               end case;
+                  end case;
+               end if;
 
             when Magic_String =>
                Tmp.Insert (F);
