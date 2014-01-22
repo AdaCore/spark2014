@@ -509,8 +509,8 @@ Interface to Other Languages (Annex B)
 This section describes features for mixed-language programming in
 |SPARK|, covering facilities offered by Ada's Annex B.
 
-Packages ``Interfaces`` can be used in |SPARK|, including its
-intrinsic Shift and Rotate functions.
+Package ``Interfaces`` can be used in |SPARK|, including its
+intrinsic "Shift" and "Rotate" functions.
 
 Other packages are not directly supported.
 
@@ -529,7 +529,7 @@ Pragma Discard_Names (C.5)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Pragma Discard_Names is not permitted in |SPARK|, since its
-use can lead to undefined behaviour at run-time.
+use can lead to implementation defined behaviour at run time.
 
 Shared Variable Control (C.6)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -592,11 +592,11 @@ and objects in |SPARK|:
 Real-Time Systems (Annex D)
 ---------------------------
 
-This annex deals almost exclisively with tasking, and so is
-naturally not supported in |SPARK|.
+This annex deals almost exclusively with tasking, and so is
+naturally not yet supported in the Release 1 of |SPARK|.
 
-The package Ada.Real_Time may be used, although the
-function Ada.Real_Time.Clock is not seen as accessing
+The package ``Ada.Real_Time`` may be used, although the
+function ``Ada.Real_Time.Clock`` is not seen as accessing
 a volatile state.
 
 Distributed Systems (Annex E)
@@ -610,7 +610,7 @@ Information Systems (Annex F)
 The ``Machine_Radix`` aspect and attribute are permitted in |SPARK|.
 
 The package ``Ada.Decimal`` may be used, although it declares
-constants whose values are implementation-defined.
+constants whose values are implementation defined.
 
 The packages ``Ada.Text_IO.Editing`` and its "Wide" variants are
 not directly supported in |SPARK|.
@@ -622,7 +622,7 @@ This section describes features for numerical programming in |SPARK|,
 covering facilities offered by Ada's Annex G.
 
 Packages declared in this Annex are usable in |SPARK|, although
-many details are implementation-defined.
+many details are implementation defined.
 
 Implementations (both compilers and verification tools) should
 document how both *strict mode* and *relaxed mode* are implemented
@@ -632,7 +632,3 @@ High Integrity Systems (Annex H)
 --------------------------------
 
 |SPARK| fully supports the requirements of Ada's Annex H.
-
-
-
-
