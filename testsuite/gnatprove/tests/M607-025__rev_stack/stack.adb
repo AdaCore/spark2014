@@ -28,12 +28,13 @@ package body Stack is
    begin
       S.Top := S.Top - 1;
    end Pop;
-   
+
    function Empty_Stack return Stack
    is
       E : Stack;
    begin
       E.Top := 0;
+      E.Content := Intarray'(R2 => 0);
       return E;
    end Empty_Stack;
 

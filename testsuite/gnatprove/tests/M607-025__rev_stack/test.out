@@ -1,44 +1,59 @@
-list.adb:18:10: warning: precondition might fail
-list.adb:18:19: info: precondition proved
-list.adb:18:31: info: range check proved
-list.adb:19:10: warning: loop invariant might fail in first iteration
-list.adb:19:10: warning: loop invariant might fail after first iteration
-list.adb:21:35: info: overflow check proved
-list.adb:21:43: info: overflow check proved
-list.adb:23:56: info: index check proved
-list.adb:23:61: info: precondition proved
-list.adb:23:73: info: range check proved
-list.adb:27:10: info: range check proved
-list.adb:27:10: warning: precondition might fail
-list.adb:27:23: warning: precondition might fail
-list.adb:28:10: warning: precondition might fail
-list.adb:29:10: warning: loop invariant might fail in first iteration
-list.adb:29:10: warning: loop invariant might fail after first iteration
-list.adb:31:40: info: overflow check proved
-list.adb:31:48: info: overflow check proved
-list.adb:33:38: info: overflow check proved
-list.adb:35:43: info: overflow check proved
-list.adb:36:34: info: index check proved
-list.adb:36:63: info: index check proved
-list.adb:39:20: info: precondition proved
-list.adb:39:34: info: range check proved
-list.adb:39:39: info: precondition proved
-list.adb:39:66: info: overflow check proved
-list.adb:39:70: info: overflow check proved
-list.adb:39:70: info: range check proved
-list.ads:13:14: info: postcondition proved
-list.ads:14:19: info: precondition proved
-list.ads:14:31: info: range check proved
-list.ads:14:36: info: precondition proved
-list.ads:14:81: info: overflow check proved
-list.ads:14:85: info: overflow check proved
-list.ads:14:85: info: range check proved
-stack.adb:4:47: warning: range check might fail
-stack.adb:5:55: warning: range check might fail
-stack.adb:20:22: info: range check proved
-stack.adb:21:19: info: index check proved
-stack.adb:32:22: info: range check proved
-stack.ads:20:14: info: precondition proved
-stack.ads:20:14: warning: postcondition might fail
-stack.ads:24:14: warning: postcondition might fail, requires To_But_Top (S'old) = To (S)
-stack.ads:35:60: info: index check proved
+list.adb:22:10: warning: precondition might fail
+list.adb:22:19: info: precondition proved
+list.adb:22:31: warning: range check might fail
+list.adb:23:10: warning: loop invariant might fail after first iteration
+list.adb:23:10: warning: loop invariant might fail in first iteration
+list.adb:25:35: warning: overflow check might fail
+list.adb:25:43: info: overflow check proved
+list.adb:28:35: warning: overflow check might fail
+list.adb:28:43: warning: array index check might fail
+list.adb:28:43: warning: overflow check might fail
+list.adb:28:67: info: precondition proved
+list.adb:28:79: warning: range check might fail
+list.adb:32:10: info: loop invariant initialization proved
+list.adb:32:10: warning: loop invariant might fail after first iteration
+list.adb:34:40: warning: overflow check might fail
+list.adb:36:38: warning: overflow check might fail
+list.adb:36:42: info: overflow check proved
+list.adb:38:56: warning: overflow check might fail
+list.adb:38:60: info: overflow check proved
+list.adb:39:34: warning: array index check might fail
+list.adb:40:19: warning: overflow check might fail
+list.adb:40:40: warning: array index check might fail
+list.adb:40:40: warning: overflow check might fail
+list.adb:42:40: warning: overflow check might fail
+list.adb:43:20: info: precondition proved
+list.adb:43:34: warning: range check might fail
+list.adb:43:39: info: precondition proved
+list.adb:43:56: warning: overflow check might fail
+list.adb:43:60: warning: overflow check might fail
+list.adb:43:60: warning: range check might fail
+list.adb:44:10: info: range check proved
+list.adb:44:10: warning: precondition might fail
+list.adb:44:23: info: precondition proved
+list.adb:45:10: info: precondition proved
+list.ads:14:19: warning: postcondition might fail, requires Element (L, I) = Element (Reverse_List'Result, Last_Index (L) - I + First_Index (L)
+list.ads:14:19: warning: precondition might fail
+list.ads:14:31: warning: range check might fail
+list.ads:14:36: warning: precondition might fail
+list.ads:15:34: warning: overflow check might fail
+list.ads:15:38: warning: overflow check might fail
+list.ads:15:38: warning: range check might fail
+stack.adb:5:47: info: range check proved
+stack.adb:17:22: info: range check proved
+stack.adb:18:19: info: index check proved
+stack.adb:29:22: info: range check proved
+stack.adb:37:28: info: length check proved
+stack.ads:15:23: warning: unused initial value of "S"
+stack.ads:15:23: warning: unused variable "S"
+stack.ads:16:19: info: overflow check proved
+stack.ads:16:34: info: overflow check proved
+stack.ads:17:23: warning: unused initial value of "S"
+stack.ads:17:23: warning: unused variable "S"
+stack.ads:21:14: warning: postcondition might fail, requires Is_Empty (Empty_Stack'result)
+stack.ads:28:14: warning: postcondition might fail, requires To (S) = To (S'Old) & X
+stack.ads:28:34: warning: range check might fail
+stack.ads:32:14: warning: postcondition might fail, requires To (S) = (To (S'old)) ((To (S'old))'first..(To (S'old))'last - 1)
+stack.ads:32:23: info: range check proved
+stack.ads:32:71: info: overflow check proved
+stack.ads:43:60: info: index check proved

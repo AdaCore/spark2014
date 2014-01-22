@@ -1,9 +1,10 @@
-with List; use List;
+with List;    use List;
 with Text_IO; use Text_IO;
-procedure Main is 
 
+procedure Main
+  with SPARK_Mode => Off
+is
    L : List.List;
-
 begin
    for I in 1 .. 10 loop
       Append (L, I);
@@ -14,4 +15,4 @@ begin
    for I in 1 .. 10 loop
       Put_Line (Element (L, I)'img);
    end loop;
- end main;
+end Main;

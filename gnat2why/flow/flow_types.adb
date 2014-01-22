@@ -26,6 +26,7 @@ with Ada.Strings.Hash;
 
 with Aspects;  use Aspects;
 with Einfo;    use Einfo;
+with Lib;      use Lib;
 with Namet;    use Namet;
 with Nlists;   use Nlists;
 with Sem_Util; use Sem_Util;
@@ -333,20 +334,42 @@ package body Flow_Types is
 
    function Is_Default_Initialized (F : Flow_Id) return Boolean
    is
+      function Is_Initialized_By_Formal_Container return Boolean
+        with Pre => F.Kind in Direct_Mapping | Record_Field;
+      --  Returns true if the type of the corresponding entity appears within
+      --  the source text of a predefined unit (i.e. within Ada, Interfaces,
+      --  System or within one of the descendent packages of one of these three
+      --  packages) and is considered to be default initialized because it is
+      --  declared in a formal container.
+      --
+      --  This will be removed after release 1 (once N122-014 is implemented).
+
+      ----------------------------------------
+      -- Is_Initialized_By_Formal_Container --
+      ----------------------------------------
+
+      function Is_Initialized_By_Formal_Container return Boolean
+      is (In_Predefined_Unit (Root_Type (Etype (Get_Direct_Mapping_Id (F))))
+            and then Type_Based_On_External_Axioms
+            (Etype (Get_Direct_Mapping_Id (F))));
+
    begin
       case F.Kind is
          when Direct_Mapping =>
             return Default_Initialization (Etype (Get_Direct_Mapping_Id (F)))
-              = Full_Default_Initialization;
+              = Full_Default_Initialization or else
+              Is_Initialized_By_Formal_Container;
 
          when Record_Field =>
             if Is_Discriminant (F) then
                return Present (Discriminant_Default_Value
-                                 (F.Component.Last_Element));
+                                 (F.Component.Last_Element)) or else
+                 Is_Initialized_By_Formal_Container;
             else
                return Default_Initialization
                  (Etype (Get_Direct_Mapping_Id (F)))
-                 = Full_Default_Initialization;
+                 = Full_Default_Initialization or else
+                 Is_Initialized_By_Formal_Container;
             end if;
 
          when Magic_String | Synthetic_Null_Export =>
