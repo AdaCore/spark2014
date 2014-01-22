@@ -1,2 +1,2 @@
 kmp.adb:6:29: info: range check proved
-kmp.ads:9:17: info: postcondition proved
+kmp.ads:9:17: warning: postcondition might fail, requires Init_Next'Result'Length = P'length

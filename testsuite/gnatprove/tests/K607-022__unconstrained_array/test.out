@@ -158,8 +158,8 @@ simple_unc_arrays.ads:84:17: warning: postcondition might fail
 simple_unc_arrays.ads:85:34: info: discriminant check proved
 simple_unc_arrays.ads:85:38: warning: array index check might fail
 simple_unc_arrays.ads:85:62: info: discriminant check proved
-simple_unc_arrays.ads:85:67: info: overflow check proved
 simple_unc_arrays.ads:85:67: warning: array index check might fail
+simple_unc_arrays.ads:85:67: warning: overflow check might fail
 simple_unc_arrays.ads:88:22: info: discriminant check proved
 simple_unc_arrays.ads:88:26: warning: array index check might fail
 simple_unc_arrays.ads:88:49: info: discriminant check proved

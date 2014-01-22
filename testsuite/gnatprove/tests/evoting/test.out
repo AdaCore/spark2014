@@ -54,11 +54,11 @@ evoting.adb:183:16: warning: no Global contract available for "Put"
 evoting.adb:185:16: warning: assuming "Put_Line" has no effect on global items
 evoting.adb:185:16: warning: no Global contract available for "Put_Line"
 evoting.adb:211:10: info: loop invariant initialization proved
-evoting.adb:211:10: info: loop invariant preservation proved
 evoting.adb:215:24: info: range check proved
 evoting.adb:218:64: info: index check proved
 evoting.adb:220:24: info: range check proved
 evoting.adb:222:30: info: index check proved
+evoting.adb:223:19: warning: loop invariant might fail after first iteration, requires Counters(Latest_Highest_Score) = Counters(J)
 evoting.adb:223:61: info: index check proved
 evoting.adb:225:61: info: index check proved
 evoting.adb:228:16: info: loop invariant initialization proved

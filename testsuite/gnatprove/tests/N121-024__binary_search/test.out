@@ -17,6 +17,6 @@ binary_search.ads:10:20: warning: unused initial value of "A"
 binary_search.ads:10:20: warning: unused variable "A"
 binary_search.ads:12:66: info: index check proved
 binary_search.ads:12:76: info: index check proved
-binary_search.ads:16:14: postcondition might fail
+binary_search.ads:16:14: warning: postcondition might fail
 binary_search.ads:16:57: info: index check proved
 binary_search.ads:17:52: info: index check proved

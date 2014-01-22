@@ -1,5 +1,5 @@
 p.adb:6:8: info: assertion proved
-p.ads:3:15: info: postcondition proved
+p.ads:3:15: warning: postcondition might fail, requires Id'Result = (if N = 0 then 0 else (Id (N - 1)) + 1
 p.ads:3:53: info: range check proved
 p.ads:3:56: warning: overflow check might fail
 p.ads:7:36: info: postcondition proved

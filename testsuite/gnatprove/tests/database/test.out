@@ -1,6 +1,6 @@
 database.adb:32:35: info: length check proved
 database.adb:45:17: info: postcondition proved
-database.adb:53:17: info: postcondition proved
+database.adb:53:17: warning: postcondition might fail
 database.adb:98:52: info: length check proved
 database.adb:102:46: info: length check proved
 database.adb:113:21: info: range check proved

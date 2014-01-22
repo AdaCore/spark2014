@@ -157,7 +157,7 @@ prefixsum_expanded.ads:43:14: warning: postcondition might fail
 prefixsum_expanded.ads:45:17: info: precondition proved
 prefixsum_expanded.ads:48:07: warning: unused initial value of "Ghost"
 prefixsum_expanded.ads:53:17: info: precondition proved
-prefixsum_expanded.ads:55:8: info: postcondition proved
+prefixsum_expanded.ads:55:8: warning: postcondition might fail
 prefixsum_general.adb:12:10: warning: loop invariant might fail after first iteration
 prefixsum_general.adb:12:10: warning: loop invariant might fail in first iteration
 prefixsum_general.adb:13:22: info: division check proved

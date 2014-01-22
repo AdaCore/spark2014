@@ -3,4 +3,4 @@ sm_using_case_expression.adb:54:18: warning: assertion might fail, requires My_S
 sm_using_case_expression.ads:17:17: info: postcondition proved
 sm_using_case_expression.ads:39:63: info: length check proved
 sm_using_case_expression.ads:58:21: info: postcondition proved
-sm_using_case_expression.ads:96:21: info: postcondition proved
+sm_using_case_expression.ads:96:21: warning: postcondition might fail, requires Get_State = My_SM(Get_State'old, Trigger)

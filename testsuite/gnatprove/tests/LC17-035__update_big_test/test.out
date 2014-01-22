@@ -467,10 +467,10 @@ ar.ads:884:22: info: postcondition proved
 ar.ads:889:22: info: postcondition proved
 ar.ads:894:22: info: postcondition proved
 ar.ads:899:22: info: postcondition proved
-ar.ads:904:22: info: postcondition proved
+ar.ads:904:22: warning: postcondition might fail, requires R = R'Old'update
 ar.ads:909:22: info: postcondition proved
 ar.ads:914:22: info: postcondition proved
-ar.ads:919:22: info: postcondition proved
+ar.ads:919:22: warning: postcondition might fail, requires R = Rec3TRec3T'((F3 => Rec2T'((F2 => F), (G2 => Rec1T'(F1 => E), (G1 => ...............)), ...)), ...)
 ar.ads:925:22: warning: postcondition might fail, requires R = R'Old'update
 ar.ads:931:22: info: postcondition proved
 ar.ads:937:22: warning: postcondition might fail, requires R = R'Old'update
@@ -593,7 +593,7 @@ ar.ads:1470:22: info: postcondition proved
 ar.ads:1470:46: info: range check proved
 ar.ads:1475:22: info: postcondition proved
 ar.ads:1481:22: info: postcondition proved
-ar.ads:1487:22: info: postcondition proved
+ar.ads:1487:22: warning: postcondition might fail, requires R = R'Old'update
 ar.ads:1487:63: info: range check proved
 ar.ads:1487:71: info: range check proved
 ar.ads:1493:22: info: postcondition proved
@@ -712,13 +712,13 @@ ar.ads:1758:78: info: range check proved
 ar.ads:1758:114: info: range check proved
 ar.ads:1758:142: info: range check proved
 ar.ads:1766:22: info: postcondition proved
-ar.ads:1771:22: info: postcondition proved
+ar.ads:1771:22: warning: postcondition might fail
 ar.ads:1776:22: warning: postcondition might fail, requires R = R'Old'update
 ar.ads:1776:63: info: range check proved
 ar.ads:1781:22: warning: postcondition might fail, requires R = RofAofR1RofAofR1'(A1 => R'old.A1'update), (B1 => R'old.B1), (C1 => R'old.C1)
 ar.ads:1781:59: info: range check proved
 ar.ads:1786:22: warning: postcondition might fail
-ar.ads:1791:22: info: postcondition proved
+ar.ads:1791:22: warning: postcondition might fail
 ar.ads:1796:22: warning: postcondition might fail, requires R = R'Old'update
 ar.ads:1796:63: info: range check proved
 ar.ads:1801:22: warning: postcondition might fail, requires R = RofAofR1RofAofR1'(A1 => R'old.A1'update), (B1 => true), (C1 => R'old.C1)

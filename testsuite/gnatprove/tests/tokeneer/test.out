@@ -63,13 +63,13 @@ auditlog.adb:758:50: warning: overflow check might fail
 auditlog.adb:758:69: warning: overflow check might fail
 auditlog.adb:808:13: info: postcondition proved
 auditlog.adb:821:75: info: range check proved
-auditlog.adb:868:13: info: postcondition proved
+auditlog.adb:868:13: warning: postcondition might fail
 auditlog.adb:881:16: info: assertion proved
 auditlog.adb:899:53: info: range check proved
 auditlog.adb:924:10: info: precondition proved
 auditlog.adb:933:10: info: assertion proved
 auditlog.adb:935:10: info: precondition proved
-auditlog.adb:942:44: info: range check proved
+auditlog.adb:942:44: warning: range check might fail
 auditlog.adb:984:47: info: overflow check proved
 auditlog.adb:986:10: info: postcondition proved
 auditlog.adb:988:47: info: overflow check proved
@@ -262,7 +262,7 @@ display.adb:128:11: info: range check proved
 display.adb:137:30: info: index check proved
 display.adb:138:30: info: index check proved
 display.adb:139:30: info: index check proved
-display.adb:140:32: info: range check proved
+display.adb:140:32: warning: range check might fail
 display.adb:143:11: info: range check proved
 display.adb:148:33: warning: array index check might fail
 display.adb:148:33: warning: overflow check might fail
@@ -274,7 +274,7 @@ door.ads:215:8: warning: postcondition might fail
 door.ads:270:8: warning: postcondition might fail
 enclave.adb:109:18: info: precondition proved
 enclave.adb:207:29: info: postcondition proved
-enclave.adb:276:10: info: postcondition proved
+enclave.adb:276:10: warning: postcondition might fail, requires Status = EnclaveQuiescent and then KeyStore.PrivateKeyPresent) or else (Status = WaitingEndEnrol and then not KeyStore(KeyStore.privatekeypresent)
 enclave.adb:288:16: info: precondition proved
 enclave.adb:362:29: info: postcondition proved
 enclave.adb:441:29: info: postcondition proved
@@ -289,7 +289,7 @@ enclave.adb:829:15: info: precondition proved
 enclave.adb:837:19: info: precondition proved
 enclave.adb:842:24: info: precondition proved
 enclave.adb:846:10: warning: postcondition might fail
-enclave.adb:856:19: info: precondition proved
+enclave.adb:856:19: warning: precondition might fail
 enclave.adb:867:19: info: precondition proved
 enclave.adb:872:24: info: precondition proved
 enclave.adb:924:13: info: postcondition proved
@@ -299,30 +299,30 @@ enclave.adb:1055:10: info: precondition proved
 enclave.adb:1057:10: info: precondition proved
 enclave.adb:1138:15: info: precondition proved
 enclave.adb:1140:10: warning: postcondition might fail
-enclave.adb:1148:19: info: precondition proved
+enclave.adb:1148:19: warning: precondition might fail
 enclave.adb:1189:15: info: precondition proved
 enclave.adb:1302:15: info: precondition proved
 enclave.adb:1311:19: info: precondition proved
 enclave.adb:1316:24: info: precondition proved
 enclave.adb:1320:10: warning: postcondition might fail
-enclave.adb:1344:19: info: precondition proved
-enclave.adb:1349:24: info: precondition proved
+enclave.adb:1344:19: warning: precondition might fail
+enclave.adb:1349:24: warning: precondition might fail
 enclave.adb:1354:22: info: precondition proved
 enclave.adb:1368:12: warning: precondition might fail
 enclave.adb:1508:15: info: precondition proved
 enclave.adb:1523:24: info: precondition proved
 enclave.adb:1527:10: warning: postcondition might fail
 enclave.adb:1537:17: warning: precondition might fail
-enclave.adb:1545:19: info: precondition proved
-enclave.adb:1568:19: info: precondition proved
-enclave.adb:1573:24: info: precondition proved
+enclave.adb:1545:19: warning: precondition might fail
+enclave.adb:1568:19: warning: precondition might fail
+enclave.adb:1573:24: warning: precondition might fail
 enclave.adb:1800:19: info: precondition proved
 enclave.adb:1818:19: info: precondition proved
 enclave.adb:1823:24: info: precondition proved
 enclave.adb:1827:11: warning: postcondition might fail
-enclave.adb:1850:19: info: precondition proved
-enclave.adb:1873:19: info: precondition proved
-enclave.adb:1878:24: info: precondition proved
+enclave.adb:1850:19: warning: precondition might fail
+enclave.adb:1873:19: warning: precondition might fail
+enclave.adb:1878:24: warning: precondition might fail
 enclave.adb:1883:22: info: precondition proved
 enclave.adb:1885:17: info: precondition proved
 enclave.adb:1887:13: info: precondition proved
@@ -351,9 +351,9 @@ enclave.ads:576:19: info: precondition proved
 enclave.ads:585:19: info: precondition proved
 enclave.ads:590:24: info: precondition proved
 enclave.ads:594:7: warning: postcondition might fail
-enclave.ads:621:19: info: precondition proved
-enclave.ads:630:19: info: precondition proved
-enclave.ads:635:24: info: precondition proved
+enclave.ads:621:19: warning: precondition might fail
+enclave.ads:630:19: warning: precondition might fail
+enclave.ads:635:24: warning: precondition might fail
 enclave.ads:652:23: warning: precondition might fail
 floppy.adb:43:37: info: length check proved
 iandatypes.ads:49:22: info: length check proved
@@ -377,7 +377,7 @@ keystore.ads:275:26: warning: postcondition might fail, requires not (PrivateKey
 latch.ads:107:7: warning: postcondition might fail
 latch.ads:142:8: warning: postcondition might fail, requires IsLocked = LatchisLocked or SystemFault
 latch.ads:162:26: warning: postcondition might fail, requires Latch_Timeout = Time
-poll.ads:132:11: info: postcondition proved
+poll.ads:132:11: warning: postcondition might fail
 screen.adb:122:6: info: length check proved
 screen.adb:122:7: info: length check proved
 screen.adb:123:7: info: length check proved
@@ -412,8 +412,8 @@ tokenreader.adb:153:44: info: range check proved
 tokenreader.adb:314:17: info: range check proved
 tokenreader.adb:315:48: info: range check proved
 tokenreader.adb:755:43: info: range check proved
-updates.ads:96:12: info: postcondition proved
-updates.ads:188:11: info: postcondition proved
+updates.ads:96:12: warning: postcondition might fail
+updates.ads:188:11: warning: postcondition might fail
 userentry.adb:685:19: info: precondition proved
 userentry.adb:919:12: warning: postcondition might fail, requires Latch.IsLocked and then Door.TheCurrentDoor = Door.Open and then Clock.GreaterThanOrEqual(Clock.TheCurrentTime, Door.alarm_Timeout) ) = (Door.TheDoorAlarm = AlarmTypes.alarming
 userentry.adb:1301:13: info: precondition proved

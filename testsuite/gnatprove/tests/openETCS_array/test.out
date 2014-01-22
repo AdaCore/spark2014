@@ -148,15 +148,15 @@ step_function.ads:78:26: info: index check proved
 step_function.ads:80:53: info: index check proved
 step_function.ads:86:6: info: postcondition proved
 step_function.ads:101:4: warning: postcondition might fail
-step_function.ads:106:30: info: index check proved
+step_function.ads:106:30: warning: array index check might fail
 step_function.ads:106:56: info: index check proved
-step_function.ads:111:30: info: index check proved
+step_function.ads:111:30: warning: array index check might fail
 step_function.ads:111:56: info: index check proved
-step_function.ads:114:25: info: index check proved
+step_function.ads:114:25: warning: array index check might fail
 step_function.ads:114:40: info: precondition proved
-step_function.ads:115:61: info: index check proved
+step_function.ads:115:61: warning: array index check might fail
 step_function.ads:116:40: info: precondition proved
-step_function.ads:117:61: info: index check proved
+step_function.ads:117:61: warning: array index check might fail
 step_function_test.adb:7:15: info: length check proved
 step_function_test.adb:14:15: info: length check proved
 step_function_test.adb:21:15: info: length check proved

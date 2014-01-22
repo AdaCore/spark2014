@@ -12,7 +12,7 @@ sorters_not_global.adb:64:11: info: range check proved
 sorters_not_global.adb:65:22: info: precondition proved
 sorters_not_global.adb:69:13: info: precondition proved
 sorters_not_global.adb:74:10: info: loop invariant initialization proved
-sorters_not_global.adb:74:10: info: loop invariant preservation proved
+sorters_not_global.adb:74:10: warning: loop invariant might fail after first iteration
 sorters_not_global.adb:75:22: info: range check proved
 sorters_not_global.adb:76:24: info: index check proved
 sorters_not_global.adb:76:40: info: index check proved
