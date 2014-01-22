@@ -1,0 +1,2 @@
+ALL XFAIL Ada.Real_Time.Clock is not seen as volatile, so proof wrong
+
