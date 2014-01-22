@@ -4,17 +4,28 @@ binary_search.adb:17:30: info: index check proved
 binary_search.adb:19:16: info: index check proved
 binary_search.adb:19:32: info: index check proved
 binary_search.adb:24:10: info: loop invariant initialization proved
-binary_search.adb:24:10: warning: loop invariant might fail after first iteration
+binary_search.adb:24:10: info: loop invariant preservation proved
 binary_search.adb:26:56: info: index check proved
 binary_search.adb:28:72: info: index check proved
 binary_search.adb:29:10: info: loop variant proved
 binary_search.adb:31:22: info: overflow check proved
 binary_search.adb:31:22: info: range check proved
 binary_search.adb:31:39: info: division check proved
-binary_search.adb:33:16: info: index check proved
-binary_search.adb:34:25: info: overflow check proved
-binary_search.adb:35:19: info: index check proved
-binary_search.adb:36:26: info: range check proved
+binary_search.adb:33:10: info: assertion proved
+binary_search.adb:35:49: info: index check proved
+binary_search.adb:35:59: info: index check proved
+binary_search.adb:37:16: info: index check proved
+binary_search.adb:38:25: info: overflow check proved
+binary_search.adb:38:25: info: range check proved
+binary_search.adb:39:13: info: assertion proved
+binary_search.adb:39:63: info: index check proved
+binary_search.adb:39:73: info: index check proved
+binary_search.adb:40:19: info: index check proved
+binary_search.adb:41:26: info: range check proved
+binary_search.adb:42:13: info: assertion proved
+binary_search.adb:43:13: info: assertion proved
+binary_search.adb:43:62: info: index check proved
+binary_search.adb:43:73: info: index check proved
 binary_search.ads:10:20: warning: unused initial value of "A"
 binary_search.ads:10:20: warning: unused variable "A"
 binary_search.ads:12:66: info: index check proved

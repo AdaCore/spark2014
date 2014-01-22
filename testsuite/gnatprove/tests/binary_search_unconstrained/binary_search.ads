@@ -3,7 +3,7 @@ pragma SPARK_Mode (On);
 package Binary_Search is
 
    type Opt_Index is new Natural;
-   subtype Index is Opt_Index range 1 .. Opt_Index'Last;
+   subtype Index is Opt_Index range 1 .. Opt_Index'Last - 1;
    No_Index : constant Opt_Index := 0;
    type Ar is array (Index range <>) of Integer;
    

@@ -29,11 +29,18 @@ package body Binary_Search is
          pragma Loop_Variant (Decreases => Right - Left);
 
          Med := Left + (Right - Left) / 2;
+         
+         pragma Assert 
+           (for all I1 in A'Range => 
+              (for all I2 in I1 .. A'Last => A (I1) <= A (I2)));
 
          if A (Med) < I then
             Left := Med + 1;
+            pragma Assert (for all I1 in A'First .. Med => A (I1) <= A (Med));
          elsif A (Med) > I then
             Right := Med - 1;
+            pragma Assert (Med in A'Range);
+            pragma Assert (for all I2 in Med .. A'Last => A (Med) <= A (I2));
          else
             return Med;
          end if;
