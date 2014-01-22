@@ -31,9 +31,7 @@ begin
    --    declaration; or
    --  * as an actual parameter in a call to an instance of
    --    Unchecked_Conversion whose result is renamed [in an object renaming
-   --    declaration]; or
-   --  * as an actual parameter in a procedure call of which the corresponding
-   --    formal parameter is of a non-scalar Volatile type.
+   --    declaration].
    if Vol + 5 > 0 then  --  Cannot have Vol appear here because expressions
                         --  cannot have side effects.
       A := 0;

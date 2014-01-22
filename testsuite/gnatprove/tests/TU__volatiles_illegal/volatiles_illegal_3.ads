@@ -26,5 +26,6 @@ is
    --  TU: 9. A Volatile object shall not be a ``global_item`` of a function.
 
    function F2 (Par : Vol_T) return Boolean;
-   --  TU: 10. A function shall not have a formal parameter of a Volatile type.
+   --  RTU: 10. A function shall not have a formal parameter of a Volatile
+   --  type.
 end Volatiles_Illegal_3;

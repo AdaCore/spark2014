@@ -300,7 +300,7 @@ The new aspects are:
 
 9. A Volatile object shall not be a ``global_item`` of a function.
 
-.. _tu-fe-external_state_variables-10:
+.. _tu-fe-nt-external_state_variables-10:
 
 10. Rule removed.
 
@@ -322,7 +322,7 @@ The new aspects are:
      procedure whose corresponding formal parameter is of mode **in**
      or **in out**.
 
-.. _tu-fe-external_state_variables-12:
+.. _tu-fe-nt-external_state_variables-12:
 
 12. Rule removed.
 
@@ -351,16 +351,16 @@ The new aspects are:
    * as the expression of an initialization expression of an object declaration; or
 
    * as an actual parameter in a call to an instance of Unchecked_Conversion
-     whose result is renamed [in an object renaming declaration]; or
+     whose result is renamed [in an object renaming declaration].
+
+.. _etu-external_state_variables-lr:
 
 ..
    volatile_types_trace
    The original rule appears below - this should be re-instated
    when volatile types are re-introduced.
-      * as an actual parameter in a procedure call of which the corresponding
+      * or as an actual parameter in a procedure call of which the corresponding
         formal parameter is of a non-scalar Volatile type.
-
-.. _etu-external_state_variables-lr:
 
 .. centered:: **Static Semantics**
 
@@ -372,7 +372,7 @@ There are no dynamic semantics associated with these aspects.
 
 .. centered:: **Verification Rules**
 
-.. _tu-fe-fa-external_state_variables-14:
+.. _tu-nt-external_state_variables-14:
 
 14. Rule removed.
 

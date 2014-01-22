@@ -8,9 +8,9 @@ package Initializes_Illegal_3
   --  part of the package.
 
   --  TU: 4. Each ``name`` in the ``input_list`` shall denote an entire
-  --  variable or a state abstraction but shall not denote an entity declared
-  --  in the package with the ``aspect_specification`` containing the
-  --  Initializes aspect.
+  --  variable, a formal parameter, or a state abstraction but shall not denote
+  --  an entity declared in the package with the ``aspect_specification``
+  --  containing the Initializes aspect.
 
   --  TU: 5. Each entity in a single ``input_list`` shall be distinct.
 

@@ -1,7 +1,7 @@
 with System.Storage_Elements;
 
 package Volatiles_Illegal_4
-  --  TU: 14. As formal subprogram parameters of a Volatile type cannot have
+  --  RTU: 14. As formal subprogram parameters of a Volatile type cannot have
   --  these aspects specified assumptions have to be made in the body of
   --  the subprogram of the properties that the formal parameter of a
   --  given mode may have as follows:
