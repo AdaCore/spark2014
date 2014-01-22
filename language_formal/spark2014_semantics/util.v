@@ -123,10 +123,7 @@ Function split1 A n (l:list A) {struct n} :=
     | nil, S _ => None
   end.
 
-(* This should be a regular Definition but it makes Function bug
-   later, this is a bug of Function that will be hopefukly fixed in
-   next versions. *)
-Definition split2 {A} n m (l:list A) :=
+Function split2 {A} n m (l:list A) :=
   match split1 A n l with
     | None => None
     | Some (l1,l2') =>
@@ -135,6 +132,63 @@ Definition split2 {A} n m (l:list A) :=
         | Some (l2,l3) => Some (l1,(l2,l3))
       end
   end.
+
+Lemma split2_equation1 :
+  forall A n m e (l l1 l2 l3: list A),
+  split2 n m l = Some (l1,(l2,l3))
+  -> split2 (S n) m (e::l) = Some (e::l1 , (l2, l3)).
+Proof.
+  intros A n m e l l1 l2 l3 H.
+  unfold split2.
+  simpl.
+  functional induction (split2 n m l);try discriminate.
+  inversion H.
+  rewrite e0.
+  rewrite e1.
+  subst.
+  reflexivity.
+Qed.
+
+Lemma split2_equation2 :
+  forall A m e (l l1 l2 l3: list A),
+  split2 0 m l = Some (l1,(l2,l3))
+  -> split2 0 (S m) (e::l) = Some (nil , (e::l2, l3)).
+Proof.
+  intros A m e l l1 l2 l3 H.
+  unfold split2.
+  simpl.
+  unfold split2 in H.
+  simpl in *.
+  destruct l.
+  - destruct (split1 A m nil).
+    + destruct p.
+      inversion H.
+      reflexivity.
+    + inversion H.
+  - destruct (split1 A m (a :: l)).
+    + destruct p.
+      inversion H.
+      reflexivity.
+    + inversion H.
+Qed.
+
+Lemma split2_equation3 :
+  forall A n m e (l l1 l2 l3: list A),
+  split2 n m l = None
+  -> split2 (S n) m (e::l) = None.
+Proof.
+  intros A n m e l l1 l2 l3 H.
+  unfold split2.
+  simpl.
+  unfold split2 in H.
+  destruct (split1 A n l).
+  - destruct p.
+    destruct (split1 A m l4).
+    + destruct p.
+      inversion H.
+    + reflexivity.
+  - reflexivity.
+Qed.
 
 
 Lemma split1_correct :
@@ -244,7 +298,106 @@ Proof.
   - inversion H.
 Qed.
 
+Require Import Omega.
 
+Lemma split2_length_ok :
+  forall A (l:list A) n m,
+  List.length l >= n+m
+ -> split2 n m l <> None.
+Proof.
+  intros A l.
+  induction l;simpl;intros n m h.
+  - assert (n=0) by omega.
+    assert (m=0) by omega.
+    subst.
+    unfold split2.
+    simpl.
+    discriminate.
+  - destruct n.
+    + destruct m.
+      * unfold split2.
+        simpl.
+        discriminate.
+      * intro abs.
+        assert (h':length l >= 0 + m) by omega.
+        generalize (IHl 0 m h').
+        intro IHl'.
+        unfold split2 in abs,IHl'.
+        simpl in *.
+        { destruct l;simpl in *.
+          -destruct (split1 A m nil);simpl in *.
+           + destruct p.
+             inversion abs.
+           + contradiction. 
+          - destruct (split1 A m (a0 :: l));simpl in *.
+            + destruct p.
+              inversion abs.
+            + contradiction. }
+    + assert (h':length l >= n + m) by omega.
+      generalize (IHl n m h').
+      intro IHl'.
+      unfold split2 in IHl'.
+      unfold split2.
+      simpl in *.
+      destruct (split1 A n l);simpl in *.
+      * destruct p.
+        { destruct (split1 A m l1).
+          - destruct p.
+            discriminate.
+          - assumption. }
+      * assumption.
+Qed.
 
+Lemma app_same_length_eq :
+  forall A (l l' m m': list A),
+    length l = length l'
+    -> l++m = l'++m' -> l = l'/\ m=m'.
+Proof.
+  intros A l.
+  induction l;simpl in *;intros.
+  - symmetry in H.
+    apply length_invnil in H.
+    subst.
+    split;auto.
+  - destruct l'.
+    + simpl in H.
+      inversion H.
+    + specialize (IHl l' m m').
+      simpl in *.
+      inversion H0.
+      inversion H.
+      specialize (IHl H4 H3).
+      destruct IHl.
+      subst.
+      split;auto.
+Qed.
 
+Lemma split2_complete :
+  forall A n m (l l1 l2 l3:list A),
+    l = l1 ++ l2 ++ l3
+    -> List.length l1 = n
+    -> List.length l2 = m
+    -> split2 n m l = Some (l1,(l2,l3)).
+Proof.
+  intros A n m l l1 l2 l3 H H0 H1.
+  destruct (split2 n m l) eqn:heq.
+  - destruct p.
+    destruct p.
+    apply split2_correct in heq.
+    decompose [and] heq.
+    clear heq.
+    subst.
+    symmetry in H4.
+    destruct (app_same_length_eq _ _ _ _ _ H4 H2).
+    subst.
+    symmetry in H5.
+    destruct (app_same_length_eq _ _ _ _ _ H5 H0).
+    subst.
+    reflexivity.
+  - destruct (split2_length_ok _ l n m).
+    + rewrite H.
+      repeat rewrite app_length.
+      omega.
+    + assumption.
+Qed.
 

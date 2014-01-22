@@ -213,8 +213,8 @@ Record function_body: Type := mkfunction_body{
 (** ** Compilation unit: subprogram *)
 (* 6.1 *)
 Inductive subprogram: Type := 
-	| Procedure: astnum -> procedure_body -> subprogram
-(*	| Function: astnum -> function_body -> subprogram *).
+	| Global_Procedure: astnum -> procedure_body -> subprogram
+(*	| Global_Function: astnum -> function_body -> subprogram *).
 
 (* 10.1.1 *)
 Inductive library_unit_declaration: Type := 

@@ -181,20 +181,37 @@ Inductive Copy_out: store -> list parameter_specification
     the list of arguments [lexp]. Only "In" parameters are evaluated,
     "Out" parameters are set to [Undefined]. *)
 Inductive Copy_in: store -> list parameter_specification
-                   -> list expression -> store -> Prop :=
-  Copy_in_nil : forall σ, Copy_in σ nil nil nil 
+                   -> list expression -> state -> Prop :=
+  Copy_in_nil : forall σ, Copy_in σ nil nil (S_Normal nil) 
 | Copy_in_cons_out:
     forall σ lparam lexp frame prm idv ast_num,
-      Copy_in σ lparam lexp frame
+      Copy_in σ lparam lexp (S_Normal frame)
       -> prm.(parameter_mode) = Out
       -> Copy_in σ (prm::lparam) (E_Identifier ast_num idv::lexp)
-                 ((prm.(parameter_name),Undefined)::frame)
+                 (S_Normal ((prm.(parameter_name),Undefined)::frame))
+| Copy_in_cons_out_rte:
+    forall σ lparam lexp prm idv ast_num,
+      Copy_in σ lparam lexp S_Run_Time_Error
+      -> prm.(parameter_mode) = Out
+      -> Copy_in σ (prm::lparam) (E_Identifier ast_num idv::lexp) S_Run_Time_Error
+| Copy_in_cons_in_rte1:
+    forall σ lparam lexp prm e,
+      prm.(parameter_mode) = In
+      -> eval_expr σ e Val_Run_Time_Error
+      -> Copy_in σ (prm::lparam) (e::lexp) S_Run_Time_Error
+| Copy_in_cons_in_rte2:
+    forall σ lparam lexp prm e v,
+      Copy_in σ lparam lexp S_Run_Time_Error
+      -> eval_expr σ e (Val_Normal v)
+      -> prm.(parameter_mode) = In
+      -> Copy_in σ (prm::lparam) (e::lexp) S_Run_Time_Error
 | Copy_in_cons_in:
     forall σ lparam lexp frame prm e v,
-      Copy_in σ lparam lexp frame
+      Copy_in σ lparam lexp (S_Normal frame)
       -> prm.(parameter_mode) = In
       -> eval_expr σ e (Val_Normal v)
-      -> Copy_in σ (prm::lparam) (e::lexp) ((prm.(parameter_name),Value v)::frame).
+      -> Copy_in σ (prm::lparam) (e::lexp)
+                 (S_Normal ((prm.(parameter_name),Value v)::frame)).
 
 
 (** *** Inductive semantic of declarations *)
@@ -283,19 +300,42 @@ Inductive eval_stmt: store -> statement -> state -> Prop :=
     | eval_S_While_Loop_False: forall s b ast_num c,
         eval_expr s b (Val_Normal (Bool false)) ->
         eval_stmt s (S_While_Loop ast_num b c) (S_Normal s)
+    | eval_S_Proc_rteargs:
+        forall pbname (pb:procedure_body) lexp s ast_num,
+          fetch pbname s = Some (Procedure pb) ->
+          Copy_in s (procedure_parameter_profile pb) lexp S_Run_Time_Error ->
+          eval_stmt s (S_ProcCall ast_num pbname lexp) S_Run_Time_Error
+    | eval_S_Proc_rtedecl:
+        forall pbname (pb:procedure_body) lexp s ast_num s1
+               prefix,
+          fetch pbname s = Some (Procedure pb) ->
+          Copy_in s (procedure_parameter_profile pb) lexp (S_Normal prefix) ->
+          s1 = prefix ++ s ->
+          eval_decl s1 (procedure_declarative_part pb) S_Run_Time_Error ->
+          eval_stmt s (S_ProcCall ast_num pbname lexp) S_Run_Time_Error
+    | eval_S_Proc_rtebody:
+        forall pbname (pb:procedure_body) lexp s ast_num s1 s2 
+               prefix,
+          fetch pbname s = Some (Procedure pb) ->
+          Copy_in s (procedure_parameter_profile pb) lexp (S_Normal prefix) ->
+          s1 = prefix ++ s ->
+          eval_decl s1 (procedure_declarative_part pb) (S_Normal s2) ->
+          eval_stmt s2 (procedure_statements pb) S_Run_Time_Error ->
+          eval_stmt s (S_ProcCall ast_num pbname lexp) S_Run_Time_Error
     | eval_S_Proc:
         forall pbname (pb:procedure_body) lexp s ast_num s1 s2 s3 s' s'' slocal
                prefix prefix',
           fetch pbname s = Some (Procedure pb) ->
-          Copy_in s (procedure_parameter_profile pb) lexp prefix ->
+          Copy_in s (procedure_parameter_profile pb) lexp (S_Normal prefix) ->
           s1 = prefix ++ s ->
           eval_decl s1 (procedure_declarative_part pb) (S_Normal s2) ->
           eval_stmt s2 (procedure_statements pb) (S_Normal s3) ->
           s3 = slocal ++ prefix' ++ s' ->
           List.length s' = List.length s ->
           List.length prefix = List.length prefix' ->
-          Copy_out prefix' (procedure_parameter_profile pb) lexp s' s''
-          -> eval_stmt s (S_ProcCall ast_num pbname lexp) (S_Normal s'').
+          Copy_out prefix' (procedure_parameter_profile pb) lexp s' s'' ->
+          eval_stmt s (S_ProcCall ast_num pbname lexp) (S_Normal s'')
+.
 
 
 (** ** examples *)
@@ -1123,7 +1163,7 @@ Ltac rm_f_eval_expr :=
 
 Lemma copy_in_correct:
   forall s prm lexp prefx,
-    copy_in s prm lexp = S_Normal prefx <->  Copy_in s prm lexp prefx.
+    copy_in s prm lexp = (S_Normal prefx) <->  Copy_in s prm lexp (S_Normal prefx).
 Proof.
   intros s prm lexp.
   functional induction copy_in s prm lexp;intros;split;simpl in *;intro heq
@@ -1159,20 +1199,101 @@ Proof.
                apply f_eval_expr_complete in H2;
              rewrite H2 in H1;
              inversion H1
-           end ; auto).
+           end ; auto);
+  try match goal with
+    | H: is_var ?e = true |- _ =>
+      rewrite is_var_Is_var in H
+      ; destruct e;simpl in H; try contradiction;subst
+  end.
 
-  - rewrite is_var_Is_var in e2.
-    destruct exp;simpl in e2; try contradiction.
-    econstructor 2.
+  - econstructor 2.
     + apply IHs0;auto.
     + assumption.
-  - constructor 3.
+
+  - apply Copy_in_cons_in.
     + apply IHs0.
       assumption.
     + assumption.
     + apply f_eval_expr_correct1.
       assumption.
   - constructor 1.
+Qed.
+
+Lemma copy_in_correct2:
+  forall s prm lexp,
+    copy_in s prm lexp = S_Run_Time_Error <->  Copy_in s prm lexp S_Run_Time_Error.
+Proof.
+  intros s prm lexp.
+  functional induction copy_in s prm lexp;intros;split;simpl in *;intro heq
+  ; try (inversion heq;subst;clear heq)
+  ; try (now repeat progress
+           match goal with
+             | HH: ?x = In , HH': ?x = Out |- _ =>
+               rewrite HH in HH'; inversion HH'
+             | HH: ?x = In , HH': ?x = In_Out |- _ =>
+               rewrite HH in HH' ; inversion HH'
+             | HH: ?x = In_Out , HH': ?x = Out |- _ =>
+               rewrite HH in HH'; inversion HH'
+             | H: copy_in _ _ _ = S_Normal ?res , H': forall _, _ <-> _ |- _ =>
+               rewrite <- H' in *
+             | H: Copy_in _ _ _ _ , H': forall _, _ <-> _ |- _ =>
+               rewrite <- H' in *
+             | HH: copy_in ?x ?y ?z = _ , HH': context C [copy_in ?x ?y ?z = _] |- _ =>
+               (rewrite HH in HH'; inversion HH' ; subst)
+             | HH: copy_in ?x ?y ?z = _ , H': forall _, _ <-> _  |- _  =>
+               rewrite HH in *; contradiction
+             | H1: f_eval_expr ?s ?exp = Val_Abnormal,
+                   H2: eval_expr ?s ?exp (Val_Normal _) |- _ =>
+               apply f_eval_expr_complete in H2
+             ; rewrite H2 in H1
+             ; inversion H1
+             | H1: f_eval_expr ?s ?exp = (Val_Normal _),
+                   H2: eval_expr ?s ?exp (Val_Normal _) |- _ =>
+               apply f_eval_expr_complete in H2;
+             rewrite H2 in H1;
+             inversion H1
+             | H1: f_eval_expr ?s ?exp = Val_Run_Time_Error,
+                   H2: eval_expr ?s ?exp (Val_Normal _) |- _ =>
+               apply f_eval_expr_complete in H2;
+             rewrite H2 in H1;
+             inversion H1
+           end ; auto);
+  try match goal with
+    | H: is_var ?e = true |- _ =>
+      rewrite is_var_Is_var in H
+      ; destruct e;simpl in H; try contradiction;subst
+  end.
+  - rewrite <- IHs0 in H3.
+    rewrite e3 in H3.
+    discriminate.
+  - rewrite H0.
+    econstructor;auto.
+    rewrite <- IHs0.
+    assumption.
+  - apply IHs0.
+    assumption.
+  - rewrite (f_eval_expr_complete s exp _ H5) in e2.
+    discriminate.
+  - rewrite <- IHs0 in H4.
+    rewrite e3 in H4.
+    discriminate.
+
+  - rewrite H0.
+    apply Copy_in_cons_in_rte2 with (v:=v');auto.
+    + rewrite <- IHs0.
+      assumption.
+    + apply (f_eval_expr_correct1).
+      assumption.
+
+  - rewrite (f_eval_expr_complete s exp _ H5) in e2.
+    discriminate.
+  - apply IHs0.
+    assumption.
+  - apply Copy_in_cons_in_rte1;auto.
+    apply f_eval_expr_correct2.
+    assumption.
+  - rewrite (f_eval_expr_complete _ _ _ H5) in e2.
+    discriminate.
 Qed.
 
 
@@ -1187,6 +1308,15 @@ Proof.
   apply update_length in H2.
   assumption.
 Qed.
+
+Lemma copy_out_no_rte:
+  forall prefx lprm lexp s,
+    ~ copy_out prefx lprm lexp s = S_Run_Time_Error.
+Proof.
+  intros prefx lprm lexp s.
+  functional induction copy_out prefx lprm lexp s;try assumption;try discriminate.
+Qed.
+
 
 Lemma copy_out_correct:
   forall prefx s (prm:list parameter_specification) lexp x,
@@ -1237,6 +1367,7 @@ Proof.
     + rewrite H3 in *;contradiction.
     + rewrite H6 in *;contradiction.
 Qed.
+
 
 
 
@@ -1305,6 +1436,83 @@ Proof.
   - destruct (f_eval_decl s dcl1);try contradiction; discriminate.
 Qed.
 
+Lemma f_eval_decl_correct2 :
+  forall s d,
+    f_eval_decl s d = S_Run_Time_Error ->
+    eval_decl s d S_Run_Time_Error.
+Proof.
+  intros s d.
+  functional induction f_eval_decl s d;simpl;intros;try discriminate;
+  try match goal with
+        | H: S_Normal _ = S_Run_Time_Error |- _ =>
+          inversion H;subst;clear H
+      end;try now( (econstructor;eauto);try apply f_eval_expr_correct2;auto).
+  
+  eapply eval_decl_Seq_err2 with s';auto.
+  apply f_eval_decl_correct.
+  assumption.
+Qed.
+
+Ltac invclear H := inversion H; clear H; subst.
+
+Ltac use_determinism :=
+  match goal with
+    | H : ?X = ?X |- _ => clear H
+    | H: None = ?y, H': ?y = Some ?z |- _ => rewrite H' in H; invclear H
+    | H: Some ?z = ?y, H': ?y = None |- _ => rewrite H' in H; invclear H
+    | H: Some ?x = ?y, H': ?y = Some ?z |- _ => rewrite H' in H; inversion H;clear H;subst
+    | H : eval_expr ?s ?e ?X,
+          H': f_eval_expr ?s ?e = ?Y |- _
+      => rewrite (f_eval_expr_complete s e X H) in H'
+    | H:  eval_expr ?s ?e ?X,
+          H': eval_expr ?s ?e ?Y |- _
+      => apply (f_eval_expr_complete s e X) in H
+         ;apply (f_eval_expr_complete s e) in H'
+    | H : f_eval_expr ?s ?e = ?X,
+          H': f_eval_expr ?s ?e = ?Y |- _
+      => rewrite H in H'; invclear H'
+    | H : (Val_Normal ?v) = (Val_Normal ?v') |- _
+      => invclear H
+  end.
+
+Ltac crush := repeat progress use_determinism;try reflexivity;try discriminate.
+
+Lemma f_eval_decl_complete :
+  forall d s s',
+    eval_decl s d s' ->
+    f_eval_decl s d = s'.
+Proof.
+  intros d s.
+  functional induction f_eval_decl s d;simpl;intros;try discriminate;crush;
+  try now (invclear H;crush).
+  - invclear H.
+    + apply IHs0 in H3.
+      rewrite e0 in H3.
+      inversion H3.
+      subst.
+      apply IHs1 in H5.
+      assumption.
+    + apply IHs0 in H4.
+      rewrite e0 in H4.
+      inversion H4.
+    + apply IHs0 in H3.
+      rewrite e0 in H3.
+      inversion H3.
+      subst.
+      apply IHs1 in H5.
+      assumption.
+  - invclear H.
+    + apply IHs0 in H3.
+      rewrite H3 in y.
+      contradiction.
+    + apply IHs0 in H4.
+      assumption.
+    + apply IHs0 in H3.
+      rewrite H3 in y.
+      contradiction.
+Qed.
+
+
 (** ** Bisimulation between f_eval_stmt and eval_stmt for statement semantics *)
 
 
@@ -1372,8 +1580,6 @@ Proof.
     contradiction.            
 Qed.
 
-TO BE CONTINUED (+ should add procedure declaration semantics)
-
 
 Ltac rm_f_eval_stmt :=
     match goal with 
@@ -1388,7 +1594,7 @@ Lemma f_eval_stmt_correct2 : forall k s p,
 Proof.
     intros k s p.
     functional induction (f_eval_stmt k s p);
-    intros H; try inversion H; subst.
+      intros H ; try inversion H;  subst.
   - (* S_Assignment *)
     econstructor.
     rm_f_eval_expr.
@@ -1421,7 +1627,27 @@ Proof.
     specialize (IHs0 e2); assumption.    
   - econstructor.
     rm_f_eval_expr.
+
+
+
+  - elim (copy_out_no_rte _ _ _ _ H1).
+  - eapply eval_S_Proc_rtebody with (prefix:=prefx);eauto.
+    + apply copy_in_correct.
+      assumption.
+    + eapply f_eval_decl_correct.
+      assumption.
+  - eapply eval_S_Proc_rtedecl with (prefix:=prefx);eauto.
+    + apply copy_in_correct.
+      assumption.
+    + eapply f_eval_decl_correct2.
+      assumption.
+  - rewrite H.
+    eapply eval_S_Proc_rteargs with pb;auto.
+    apply copy_in_correct2.
+    assumption.
 Qed.
+    
+    
 
 Ltac rm_f_eval :=
     match goal with 
@@ -1467,6 +1693,10 @@ Ltac apply_rewrite :=
     | h: update _ _ _ = _ |- _ => rewrite h
     | h: f_eval_stmt _ _ _ = _ |- _ => rewrite h
     | h: f_eval_expr _ _ = _ |- _ => rewrite h
+    | h: fetch _ _ = _ |- _ => rewrite h
+    | h: copy_in _ _ _ = _ |- _ => rewrite h
+    | h: Copy_in _ _ _ S_Run_Time_Error |- _ => rewrite <- copy_in_correct2 in h;rewrite h
+    | h: Copy_in _ _ _ (S_Normal _) |- _ => rewrite <- copy_in_correct in h;rewrite h
     end; auto.
 
 Theorem f_eval_stmt_complete : forall s c s',
@@ -1513,6 +1743,45 @@ Proof.
     kgreater.
   - exists 1%nat; simpl.
     apply_rewrite.
+  - exists 1%nat; simpl.
+    repeat progress apply_rewrite.
+  - exists 1%nat; simpl.
+    subst.
+    repeat apply_rewrite.
+    apply f_eval_decl_complete in H2.
+    rewrite H2.
+    reflexivity.
+  - destruct IHeval_stmt as [k IH].
+    exists (S k).
+    simpl.
+    subst.
+    apply f_eval_decl_complete in H2.
+    repeat apply_rewrite.
+    rewrite H2.
+    apply_rewrite.
+  - destruct IHeval_stmt as [k IH].
+    exists (S k).
+    simpl.
+    subst.
+    repeat apply_rewrite.
+    apply f_eval_decl_complete in H2.
+    rewrite H2.
+    repeat apply_rewrite.
+    repeat setoid_rewrite app_length.
+    assert ((Datatypes.length slocal +
+             (Datatypes.length prefix' + Datatypes.length s') -
+             (Datatypes.length prefix + Datatypes.length s))
+            = (Datatypes.length slocal)).
+    {  omega. }
+    rewrite H1.
+    rewrite H6.
+    
+    rewrite (split2_complete _ _ _ (slocal ++ prefix' ++ s') slocal prefix' s').
+    + apply copy_out_correct.
+      assumption.
+    + reflexivity.
+    + reflexivity.
+    + reflexivity.
 Qed.
 
 (**********************************************************************)
@@ -1534,60 +1803,6 @@ Qed.
 (** relational (eval_decl) and functional (f_eval_decl) semantics for 
     variable declaration;
 *)
-Inductive eval_decl: store -> object_declaration -> state -> Prop :=
-    | eval_Decl_E: forall e d s,
-        Some e = d.(initialization_expression) ->
-        eval_expr s e Val_Run_Time_Error ->
-        eval_decl s d S_Run_Time_Error
-    | eval_Decl: forall d x e v s,
-        x = d.(object_name) ->
-        Some e = d.(initialization_expression) ->
-        eval_expr s e (Val_Normal v) ->
-        eval_decl s d (S_Normal ((x, Value v) :: s))
-    | eval_UndefDecl: forall d x s,
-        x = d.(object_name) ->
-        None = d.(initialization_expression) ->
-        eval_decl s d (S_Normal ((x, Undefined) :: s)).
-
-Function f_eval_decl (s: store) (d: object_declaration): state :=
-    let x := d.(object_name) in
-    let e := d.(initialization_expression) in
-    match e with
-    | Some e' => 
-        match f_eval_expr s e' with
-        | Val_Normal v => 
-            S_Normal ((x, Value v) :: s)
-        | Val_Run_Time_Error =>
-            S_Run_Time_Error      
-        | Val_Abnormal => S_Abnormal 
-        end
-    | None => S_Normal ((x, Undefined) :: s)
-    end.
-
-(** relational (eval_decls) and functional (f_eval_decls) semantics 
-    for a sequence of object declarations;
-*)
-Inductive eval_decls: store -> (list object_declaration) -> state -> Prop :=
-    | eval_EmptyDecls: forall s,
-        eval_decls s nil (S_Normal s)
-    | eval_Decls_E: forall d tl s,
-        eval_decl s d S_Run_Time_Error ->
-        eval_decls s (d::tl) S_Run_Time_Error
-    | eval_Decls: forall d tl s1 s2 s3,
-        eval_decl s1 d (S_Normal s2) ->
-        eval_decls s2 tl s3 ->
-        eval_decls s1 (d::tl) s3.
-
-Function f_eval_decls (s: store) (d: list object_declaration): state :=
-    match d with
-    | d' :: tl => 
-        match f_eval_decl s d' with
-        | S_Normal s' => f_eval_decls s' tl 
-        | S_Run_Time_Error => S_Run_Time_Error
-        | _ => S_Abnormal
-        end
-    | nil => S_Normal s
-    end.
 
 (** for any initial state s, after executing the declaration d, 
     it either returns a normal state s' or a run time error;
@@ -1608,24 +1823,6 @@ Proof.
     end; auto.
 Qed.
 
-Lemma eval_decls_state : forall tl s d s',
-        eval_decls s (d :: tl) s' -> (* s' is either a normal state or a run time error *)
-            (exists v, s' = S_Normal v) \/ s' = S_Run_Time_Error.
-Proof.
-    induction tl;
-    intros s d s' h1.
-  - inversion h1; subst.
-    right; auto.
-    left; exists s2.
-    inversion H4; subst; auto.
-  - inversion h1; subst.
-    right; auto.
-    specialize (IHtl _ _ _ H4).
-    destruct IHtl as [IH1 | IH1].
-    destruct IH1 as [v IH1].
-    left; exists v; auto.
-    right; auto.
-Qed.
 
 (** f_eval_decl completeness and correctness proofs *)
 
@@ -1634,117 +1831,35 @@ Qed.
     - f_eval_decl_complete
 *)
 
-Lemma f_eval_decl_correct: forall d s s',
+Lemma f_eval_decl_correct_: forall d s s',
     (f_eval_decl s d = (S_Normal s') -> eval_decl s d (S_Normal s')) /\
     (f_eval_decl s d = S_Run_Time_Error -> eval_decl s d S_Run_Time_Error).
 Proof.
     intros d s.
-    functional induction (f_eval_decl s d);
-    intros; split; intros;
-    inversion H; subst.
-  - econstructor; auto.
-    symmetry in e0; apply e0.
-    eapply f_eval_expr_correct1; assumption.
-  - econstructor.
-    symmetry in e0; apply e0.
-    eapply f_eval_expr_correct2; assumption.
-  - econstructor; auto.
+    intros s'.
+    split;intro h.
+    - apply f_eval_decl_correct.
+      assumption.
+    - apply f_eval_decl_correct2.
+      assumption.
 Qed.
 
-Lemma f_eval_decl_complete: forall d s s',
-    eval_decl s d s' ->
-    f_eval_decl s d = s'.
-Proof.
-    intros d s s' h.
-    induction h;
-    unfold f_eval_decl.
-  - rewrite <- H.
-    apply f_eval_expr_complete in H0.
-    rewrite H0;
-    reflexivity.
-  - rewrite <- H0.
-    apply f_eval_expr_complete in H1.
-    rewrite H1.
-    rewrite <- H. 
-    reflexivity.
-  - rewrite <- H0.
-    rewrite <- H.
-    reflexivity.
-Qed.
-
-(** f_eval_decls completeness and correctness proofs *)
-
-(** bisimulation proof between f_eval_decls and eval_decls: 
-    - f_eval_decls_correct
-    - f_eval_decls_complete
-*)
-
-Lemma f_eval_decls_correct: forall d s s',
-    (f_eval_decls s d = (S_Normal s') -> 
-        eval_decls s d (S_Normal s')) /\
-    (f_eval_decls s d = S_Run_Time_Error -> 
-        eval_decls s d S_Run_Time_Error).
-Proof.
-    induction d;
-    intros; 
-    split; intros.
-  - inversion H; subst.
-    constructor.
-  - inversion H.
-  - simpl in H.
-    remember (f_eval_decl s a) as b. 
-    symmetry in Heqb.
-    destruct b; inversion H; subst.
-    specialize (IHd s0 s'). destruct IHd as [IH0 IH1].
-    specialize (IH0 H).
-    econstructor.
-    apply f_eval_decl_correct in Heqb.
-    apply Heqb.
-    rewrite H. assumption.
-  - simpl in H.
-    remember (f_eval_decl s a) as b;
-    symmetry in Heqb.
-    destruct b; inversion H; subst.    
-    specialize (IHd s0 s0). destruct IHd as [IH0 IH1].
-    specialize (IH1 H).
-    apply f_eval_decl_correct in Heqb.
-    econstructor.
-    apply Heqb.
-    rewrite H; assumption.
-    constructor. 
-    apply f_eval_decl_correct in Heqb; auto. 
-Qed.
-
-Lemma f_eval_decls_complete: forall d s s',
-    eval_decls s d s' ->
-    f_eval_decls s d = s'.
-Proof.
-    intros d s s' h.
-    induction h.
-  - constructor.
-  - apply f_eval_decl_complete in H.
-    unfold f_eval_decls.
-    rewrite H; auto.
-  - apply f_eval_decl_complete in H.
-    unfold f_eval_decls.
-    rewrite H; auto.
-Qed.
 
 (* = = = = = = Subprogram Body = = = = = =  *)
 (** relational and functional semantics for procedure body; *)
-
+(* Is this still needed for global procedures? probably not. *)
 Inductive eval_proc: store -> procedure_body -> state -> Prop :=
     | eval_Proc_E: forall f s,
-        eval_decls s f.(procedure_declarative_part) S_Run_Time_Error ->
+        eval_decl s (procedure_declarative_part f) S_Run_Time_Error ->
         eval_proc s f S_Run_Time_Error
     | eval_Proc: forall f s1 s2 s3,
-        eval_decls s1 f.(procedure_declarative_part) (S_Normal s2) ->
-        eval_stmt s2 f.(procedure_statements) s3 ->
+        eval_decl s1 (procedure_declarative_part f) (S_Normal s2) ->
+        eval_stmt s2 (procedure_statements f) s3 ->
         eval_proc s1 f s3.
 
 Function f_eval_proc k (s: store) (f: procedure_body): state :=
-    match (f_eval_decls s f.(procedure_declarative_part)) with
-    | S_Normal s' => f_eval_stmt k s' f.(procedure_statements)
+    match (f_eval_decl s (procedure_declarative_part f)) with
+    | S_Normal s' => f_eval_stmt k s' (procedure_statements f)
     | S_Run_Time_Error => S_Run_Time_Error
     | _ => S_Abnormal
     end.
@@ -1757,11 +1872,11 @@ Function f_eval_proc k (s: store) (f: procedure_body): state :=
 Inductive eval_subprogram: store -> subprogram -> state -> Prop :=
     | eval_Procedure: forall s s' ast_num f,
         eval_proc s f s' ->
-        eval_subprogram s (Procedure ast_num f) s'.
+        eval_subprogram s (Global_Procedure ast_num f) s'.
 
 Function f_eval_subprogram k (s: store) (f: subprogram): state := 
     match f with 
-    | Procedure ast_num f' => f_eval_proc k s f'
+    | Global_Procedure ast_num f' => f_eval_proc k s f'
     end.
 
 (** ** Bisimulation Between Relational And Functional Semantics For Main Procedure *)
@@ -1779,24 +1894,24 @@ Proof.
     simpl in H;
     constructor;
     unfold f_eval_proc in H;
-    remember (f_eval_decls s (procedure_declarative_part p)) as x;
+    remember (f_eval_decl s (procedure_declarative_part p)) as x;
     symmetry in Heqx.
   - (* normal state *)
     destruct x; inversion H; subst.
     econstructor.
-    + apply f_eval_decls_correct in Heqx.
+    + apply f_eval_decl_correct in Heqx.
        apply Heqx.
     + apply f_eval_stmt_correct in H.
        rewrite H1; auto.
   - (* run time error *)
     destruct x; inversion H; subst.
     + econstructor.
-       * apply f_eval_decls_correct in Heqx.
+       * apply f_eval_decl_correct in Heqx.
          apply Heqx.
        * rewrite H.
          apply f_eval_stmt_correct in H; auto.
     + econstructor.
-       apply f_eval_decls_correct in Heqx; auto.
+      apply f_eval_decl_correct2 in Heqx; auto.
 Qed.
 
 (** *** f_eval_subprogram_complete *)
@@ -1809,10 +1924,10 @@ Proof.
     unfold f_eval_proc.
     inversion h; subst.
     inversion H; subst.
-  - apply f_eval_decls_complete in H0.
+  - apply f_eval_decl_complete in H0.
     rewrite H0. 
     exists 0; auto.
-  - apply f_eval_decls_complete in H0.
+  - apply f_eval_decl_complete in H0.
     rewrite H0.
     apply f_eval_stmt_complete in H1.
     auto.
