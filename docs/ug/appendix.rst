@@ -341,6 +341,8 @@ Legality Rules
    in the ``input_list`` of an Initializes Aspect, contrary
    to |SPARK| Reference Manual 7.1.5(4). This limitation is only
    relevant for packages that are nested inside subprograms.
+   This limitation is corrected in versions of the toolset based
+   on GNAT Pro 7.2.2, GPL 2014, or later.
 
 Flow Analysis Limitations
 -------------------------
