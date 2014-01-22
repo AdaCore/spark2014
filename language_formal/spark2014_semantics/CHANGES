@@ -11,11 +11,15 @@ testing)
 
 * Add a sequence operator for declarations
 The big step semantics of declarations needs to return a final state,
-so we need a seq operator for declaratio, as for statements.
+so we need a seq operator for declarations, as for statements.
+Therefore no more ...decls... needed. This is maybe not the best way
+to do this, we can backtrack.
 
 * Add procedures on the store
-To deal with local procedures, we need to store them on the stack, o
-at least a reference to it.
+To deal with local procedures, we need to store them on the stack.
+
+* Renamed Procedure into Global_Procedure in language.v to avoid clash
+with Procedure in values.
 
 
 
