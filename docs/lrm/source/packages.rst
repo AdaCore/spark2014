@@ -302,7 +302,13 @@ The new aspects are:
 
 .. _tu-fe-external_state_variables-10:
 
-10. A function shall not have a formal parameter of a Volatile type.
+10. Rule removed.
+
+..
+   volatile_types_trace
+   The original rule appears below - this should be re-instated
+   when volatile types are re-introduced.
+   10. A function shall not have a formal parameter of a Volatile type.
 
 .. _tu-fe-external_state_variables-11:
 
@@ -318,10 +324,16 @@ The new aspects are:
 
 .. _tu-fe-external_state_variables-12:
 
-12. A Volatile object shall only occur as an actual parameter of a
-    subprogram if the corresponding formal parameter is of a
-    non-scalar Volatile type or as an actual parameter in a call to an
-    instance of Unchecked_Conversion.
+12. Rule removed.
+
+..
+   volatile_types_trace
+   The original rule appears below - this should be re-instated
+   when volatile types are re-introduced.
+   12. A Volatile object shall only occur as an actual parameter of a
+       subprogram if the corresponding formal parameter is of a
+       non-scalar Volatile type or as an actual parameter in a call to an
+       instance of Unchecked_Conversion.
 
 .. _tu-fe-external_state_variables-13:
 
@@ -341,8 +353,12 @@ The new aspects are:
    * as an actual parameter in a call to an instance of Unchecked_Conversion
      whose result is renamed [in an object renaming declaration]; or
 
-   * as an actual parameter in a procedure call of which the corresponding
-     formal parameter is of a non-scalar Volatile type.
+..
+   volatile_types_trace
+   The original rule appears below - this should be re-instated
+   when volatile types are re-introduced.
+      * as an actual parameter in a procedure call of which the corresponding
+        formal parameter is of a non-scalar Volatile type.
 
 .. _etu-external_state_variables-lr:
 
@@ -358,33 +374,39 @@ There are no dynamic semantics associated with these aspects.
 
 .. _tu-fe-fa-external_state_variables-14:
 
-14. As formal subprogram parameters of a Volatile type cannot have
-    these aspects specified assumptions have to be made in the body of
-    the subprogram of the properties that the formal parameter of a
-    given mode may have as follows:
+14. Rule removed.
 
-    * mode **in**: the formal parameter cannot be updated by the
-      subprogram and is considered to have the properties
-      Async_Writers => True and Effective_Reads => False. The actual
-      parameter in a call must be Volatile and have these properties
-      but may also have the properties Async_Readers and
-      Effective_Writes set to True.
+..
+   volatile_types_trace
+   The original rule appears below - this should be re-instated
+   when volatile types are re-introduced.
+   14. As formal subprogram parameters of a Volatile type cannot have
+       these aspects specified assumptions have to be made in the body of
+       the subprogram of the properties that the formal parameter of a
+       given mode may have as follows:
 
-    * mode **out**: the formal parameter cannot be read by the
-      subprogram as it is unknown whether a read will have an external
-      effect. The formal parameter is considered to have the
-      properties Async_Readers => True and/or Effective_Writes =>
-      True. The actual parameter in a call to the subprogram must be
-      Volatile and have either or both of these properties True but
-      may also have Async_Writers and Effective_Reads set to True. If
-      the subprogram attempts a read of the formal parameter a flow
-      anomaly will be reported.
+       * mode **in**: the formal parameter cannot be updated by the
+         subprogram and is considered to have the properties
+         Async_Writers => True and Effective_Reads => False. The actual
+         parameter in a call must be Volatile and have these properties
+         but may also have the properties Async_Readers and
+         Effective_Writes set to True.
 
-    * mode **in out**: the formal parameter is considered to have all
-      properties; Async_Readers => True, Async_Writers => True,
-      Effective_Reads => True, Effective_Writes => True. The actual
-      parameter in a subprogram call must be Volatile and have all of
-      these properties set to True.
+       * mode **out**: the formal parameter cannot be read by the
+         subprogram as it is unknown whether a read will have an external
+         effect. The formal parameter is considered to have the
+         properties Async_Readers => True and/or Effective_Writes =>
+         True. The actual parameter in a call to the subprogram must be
+         Volatile and have either or both of these properties True but
+         may also have Async_Writers and Effective_Reads set to True. If
+         the subprogram attempts a read of the formal parameter a flow
+         anomaly will be reported.
+
+       * mode **in out**: the formal parameter is considered to have all
+         properties; Async_Readers => True, Async_Writers => True,
+         Effective_Reads => True, Effective_Writes => True. The actual
+         parameter in a subprogram call must be Volatile and have all of
+         these properties set to True.
 
 .. _etu-external_state_variables-vr:
 
@@ -398,9 +420,13 @@ There are no dynamic semantics associated with these aspects.
    :language: ada
    :linenos:
 
-.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/multiple_ports.ads
-   :language: ada
-   :linenos:
+..
+   volatile_types_trace
+   The original example appears below - this should be re-instated
+   when volatile types are re-introduced.
+   .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/multiple_ports.ads
+      :language: ada
+      :linenos:
 
 
 .. _abstract-state-aspect:
