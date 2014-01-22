@@ -460,7 +460,7 @@ cannot be handled in |SPARK| program text.
 File Sharing (A.14)
 -------------------
 
-File sharing is not permitted in |SPARK|, it introduces an alias.
+File sharing is not permitted in |SPARK|, since it may introduce an alias.
 
 The Package Command_Line (A.15)
 -------------------------------
@@ -496,7 +496,11 @@ The procedure Iterate is not in |SPARK|.
 Containers (A.18)
 -----------------
 
-Work in progress.
+The standard Ada container libraries are not supported in |SPARK|.
+
+An implementation may choose to provide alternative container
+libraries whose specifications are in |SPARK| and are intended to
+support formal verification.
 
 The Package Locales (A.19)
 --------------------------
