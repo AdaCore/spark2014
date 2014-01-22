@@ -503,57 +503,133 @@ The Package Locales (A.19)
 
 No additions or restrictions.
 
-Interface to Other Languages
-----------------------------
+Interface to Other Languages (Annex B)
+--------------------------------------
 
 This section describes features for mixed-language programming in
 |SPARK|, covering facilities offered by Ada's Annex B.
 
-.. todo:: How much to say here? S95 supports a subset of Interfaces,
-   and a very small subset of Interfaces.C but that's about it.
+Packages ``Interfaces`` can be used in |SPARK|, including its
+intrinsic Shift and Rotate functions.
 
-.. todo:: Note that pragma ``Unchecked_Union`` is not supported in release 1.
+Other packages are not directly supported.
 
-Systems Programming
--------------------
+The pragma ``Unchecked_Union`` is not permitted in |SPARK|.
 
-tbd.
+Systems Programming (Annex C)
+-----------------------------
 
-Real-Time Systems
------------------
+This section describes features for systems programming in
+|SPARK|, covering facilities offered by Ada's Annex C.
 
-This section describes features for real-time programming in |SPARK|,
-covering facilities offered by Ada's Annex D.
+Almost all of the facilities offered by this Annex are
+out of scope for |SPARK| and so are not supported.
 
-.. todo:: RCC: Need to think about Ada.Real_Time. It's important for
-   all S95 customers, to get at monotonic clock, even if not using
-   RavenSPARK. It does depend on support for external variables,
-   though, since Ada.Real_Time.Clock is most definitely Volatile. TN
-   [LB07-024] raised to discuss this.
+Pragma Discard_Names (C.5)
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Distributed Systems
--------------------
+Pragma Discard_Names is not permitted in |SPARK|, since its
+use can lead to undefined behaviour at run-time.
+
+Shared Variable Control (C.6)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The following restrictions are applied to the declaration of volatile types
+and objects in |SPARK|:
+
+.. centered:: **Legality Rules**
+
+.. _tu-shared_variable_control-01:
+
+1. A volatile representation aspect may only be applied to an
+   ``object_declaration``. Volatile types are not permitted in |SPARK|.
+
+..
+   volatile_types_trace
+   The original rule appears below - this should be re-instated
+   when volatile types are re-introduced.
+   1. A volatile representation aspect may only be applied to an
+      ``object_declaration`` or a ``full_type_declaration``.
+
+.. _tu-shared_variable_control-02:
+
+2. A component of a non-volatile type declaration shall not be volatile.
+
+.. todo:: This may require determining whether a private type is volatile.
+
+.. todo:: The above two rules may be relaxed in a future version.
+
+.. _tu-shared_variable_control-03:
+
+3. A discriminant shall not be volatile.
+
+.. _tu-shared_variable_control-04:
+
+4. An object of a discriminated type shall not be volatile.
+
+..
+   volatile_types_trace
+   The original rule appears below - this should be re-instated
+   when volatile types are re-introduced.
+   4. Neither a discriminated type nor an object of such a type shall be volatile.
+
+.. _tu-shared_variable_control-05:
+
+5. An object of a tagged type shall not be volatile.
+
+..
+   volatile_types_trace
+   The original rule appears below - this should be re-instated
+   when volatile types are re-introduced.
+   5. Neither a tagged type nor an object of such a type shall be volatile.
+
+.. _tu-shared_variable_control-06:
+
+6. A volatile variable shall only be declared at library-level.
+
+.. _etu-shared_variable_control:
+
+Real-Time Systems (Annex D)
+---------------------------
+
+This annex deals almost exclisively with tasking, and so is
+naturally not supported in |SPARK|.
+
+The package Ada.Real_Time may be used, although the
+function Ada.Real_Time.Clock is not seen as accessing
+a volatile state.
+
+Distributed Systems (Annex E)
+-----------------------------
 
 |SPARK| does not support the distributed systems annex.
 
-Information Systems
--------------------
+Information Systems (Annex F)
+-----------------------------
 
-TBD.
+The ``Machine_Radix`` aspect and attribute are permitted in |SPARK|.
 
-Numerics
---------
+The package ``Ada.Decimal`` may be used, although it declares
+constants whose values are implementation-defined.
 
-This section describes features for numerical programming in |SPARK|, covering facilities
-offered by Ada's Annex G.
+The packages ``Ada.Text_IO.Editing`` and its "Wide" variants are
+not directly supported in |SPARK|.
 
-.. todo:: How much here can be supported? Most S95 customers want
-   Ada.Numerics.Generic_Elementary_Functions plus its predefined
-   instantiation for Float, Long_Float and so on. How far should we
-   go?
+Numerics (Annex G)
+------------------
 
-High Integrity Systems
-----------------------
+This section describes features for numerical programming in |SPARK|,
+covering facilities offered by Ada's Annex G.
+
+Packages declared in this Annex are usable in |SPARK|, although
+many details are implementation-defined.
+
+Implementations (both compilers and verification tools) should
+document how both *strict mode* and *relaxed mode* are implemented
+and their effect on verification and performance.
+
+High Integrity Systems (Annex H)
+--------------------------------
 
 |SPARK| fully supports the requirements of Ada's Annex H.
 

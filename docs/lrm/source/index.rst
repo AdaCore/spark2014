@@ -41,7 +41,6 @@ SPARK 2014 Reference Manual
    generic-units
    representation-issues
    the-standard-library
-   shared-variable-control
    language-defined-aspects-and-attributes
    language-defined-pragmas
    glossary
