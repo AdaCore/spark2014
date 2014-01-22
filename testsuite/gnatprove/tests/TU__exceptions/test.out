@@ -1,0 +1,15 @@
+excep.adb:17:07: handler is not allowed in SPARK
+excep.adb:17:07: violation of aspect SPARK_Mode at line 2
+excep.adb:25:10: raise statement is not allowed in SPARK
+excep.adb:25:10: violation of aspect SPARK_Mode at line 2
+excep.adb:33:07: raise statement is not allowed in SPARK
+excep.adb:33:07: violation of aspect SPARK_Mode at line 2
+excep.adb:40:07: raise statement with string expression is not allowed in SPARK
+excep.adb:40:07: violation of aspect SPARK_Mode at line 2
+excep.ads:5:11: exception is not allowed in SPARK
+excep.ads:5:11: violation of aspect SPARK_Mode at line 2
+   compilation of excep.adb failed
+
+
+gnatprove: error during analysis and translation to intermediate language, aborting.
+gprbuild: *** compilation phase failed

@@ -1619,49 +1619,67 @@ package body SPARK_Definition is
          when N_Raise_Statement |
               N_Raise_xxx_Error =>
 
-            --  A "raise statement" is only allowed when it is:
-            --
-            --    1. the only statement within an "if statement" that has no
-            --       elsif/else parts.
-            --
-            --    2. the very last statement directly within a subprogram.
+            declare
+               RS    : constant String := "raise statement";
+               RSWSE : constant String := RS & " with string expression";
+            begin
+               --  A "raise statement" is only allowed when it is:
+               --
+               --    1. the only statement within an "if statement" that has no
+               --       elsif/else parts.
+               --
+               --    2. the very last statement directly within a subprogram.
 
-            if Present (Parent (N))
-              and then Nkind (Parent (N)) = N_If_Statement
-              and then Elsif_Parts (Parent (N)) = No_List
-              and then Else_Statements (Parent (N)) = No_List
-              and then List_Length (Then_Statements (Parent (N))) = 1
-            then
-               null;
+               if Present (Parent (N))
+                 and then Nkind (Parent (N)) = N_If_Statement
+                 and then Elsif_Parts (Parent (N)) = No_List
+                 and then Else_Statements (Parent (N)) = No_List
+                 and then List_Length (Then_Statements (Parent (N))) = 1
+               then
+                  --  If the raise statement has a String Expression,
+                  --  then it's illegal, otherwise OK.
+                  if Nkind (N) = N_Raise_Statement and then
+                    Present (Expression (N))
+                  then
+                     Mark_Violation (RSWSE, N);
+                  end if;
 
-            elsif Present (Parent (N))
-              and then Nkind (Parent (N)) = N_Handled_Sequence_Of_Statements
-              and then Present (Parent (Parent (N)))
-              and then Nkind (Parent (Parent (N))) = N_Subprogram_Body
-              and then Last (Statements
-                               (Handled_Statement_Sequence
-                                  (Parent (Parent (N))))) = N
-            then
-               null;
+               elsif Present (Parent (N))
+                 and then Nkind (Parent (N)) = N_Handled_Sequence_Of_Statements
+                 and then Present (Parent (Parent (N)))
+                 and then Nkind (Parent (Parent (N))) = N_Subprogram_Body
+                 and then Last (Statements
+                                  (Handled_Statement_Sequence
+                                     (Parent (Parent (N))))) = N
+               then
+                  --  If the raise statement has a String Expression,
+                  --  then it's illegal, otherwise OK.
+                  if Nkind (N) = N_Raise_Statement and then
+                    Present (Expression (N))
+                  then
+                     Mark_Violation (RSWSE, N);
+                  end if;
 
-            --  The frontend inserts explicit checks during semantic analysis
-            --  in some cases, for which gnatprove issues a corresponding
-            --  check. Currently, this is only used for discriminant checks
-            --  introduced when converting a discriminant type into another
-            --  discriminant type, in which multiple source discriminants are
-            --  mapped to the same target discriminant (RM 4.6(43)).
+                  --  The frontend inserts explicit checks during semantic
+                  --  analysis in some cases, for which gnatprove issues a
+                  --  corresponding check. Currently, this is only used for
+                  --  discriminant checks introduced when converting a
+                  --  discriminant type into another discriminant type, in
+                  --  which multiple source discriminants are mapped to the
+                  --  same target discriminant (RM 4.6(43)).
 
-            elsif Nkind (N) in N_Raise_xxx_Error then
-               case RT_Exception_Code'Val (UI_To_Int (Reason (N))) is
-                  when CE_Discriminant_Check_Failed =>
-                     null;
-                  when others =>
-                     Mark_Violation ("raise statement", N);
-               end case;
+               elsif Nkind (N) in N_Raise_xxx_Error then
+                  case RT_Exception_Code'Val (UI_To_Int (Reason (N))) is
+                     when CE_Discriminant_Check_Failed =>
+                        null;
+                     when others =>
+                        Mark_Violation (RS, N);
+                  end case;
 
-            else
-               Mark_Violation ("raise statement", N);
-            end if;
+               else
+                  Mark_Violation (RS, N);
+               end if;
+            end;
 
          when N_Raise_Expression =>
             Mark_Violation ("raise expression", N);
