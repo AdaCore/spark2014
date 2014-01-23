@@ -26,9 +26,12 @@
 --  This is the Why target-dependent version of the Back_End package
 
 with Adabkend;
+with Csets; use Csets;
 with Elists;
-with Namet;
+with Namet; use Namet;
+with Nmake; use Nmake;
 with Opt;
+with Restrict; use Restrict;
 with Stringt;
 with System;
 
@@ -158,5 +161,44 @@ package body Back_End is
          Opt.Disable_ALI_File := True;
       end if;
    end Scan_Compiler_Arguments;
+
+   -------------
+   -- Make_Id --
+   -------------
+
+   function Make_Id (Str : Text_Buffer) return Node_Id is
+   begin
+      Name_Len := 0;
+
+      for J in Str'Range loop
+         Name_Len := Name_Len + 1;
+         Name_Buffer (Name_Len) := Fold_Lower (Str (J));
+      end loop;
+
+      return
+        Make_Identifier (System_Location,
+          Chars => Name_Find);
+   end Make_Id;
+
+   -------------
+   -- Make_SC --
+   -------------
+
+   function  Make_SC (Pre, Sel : Node_Id) return Node_Id is
+   begin
+      return
+        Make_Selected_Component (System_Location,
+          Prefix        => Pre,
+          Selector_Name => Sel);
+   end Make_SC;
+
+   -------------
+   -- Set_RND --
+   -------------
+
+   procedure Set_RND (Unit : Node_Id) is
+   begin
+      Restrict.Set_Restriction_No_Dependence (Unit, Warn => False);
+   end Set_RND;
 
 end Back_End;
