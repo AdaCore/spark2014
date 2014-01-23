@@ -42,6 +42,9 @@ param_1_legal.adb:7:10: info: index check proved
 anti_aliasing.adb:62:16: writable actual for "X" overlaps with actual for "Y"
 gprbuild: *** compilation phase failed
 gnatprove: error during frame condition computation, aborting.
+multiple_ports.ads:6:09: volatile type not allowed
+gprbuild: *** compilation phase failed
+gnatprove: error during frame condition computation, aborting.
 stacks_1.adb:16:57: info: refined post proved
 stacks_1.adb:17:44: info: range check proved
 stacks_1.adb:23:30: info: range check proved
