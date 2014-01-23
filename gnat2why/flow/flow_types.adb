@@ -24,20 +24,20 @@
 with Ada.Strings;
 with Ada.Strings.Hash;
 
-with Aspects;  use Aspects;
-with Einfo;    use Einfo;
-with Lib;      use Lib;
-with Namet;    use Namet;
-with Nlists;   use Nlists;
-with Sem_Util; use Sem_Util;
-with Snames;   use Snames;
+with Aspects;          use Aspects;
+with Einfo;            use Einfo;
+with Lib;              use Lib;
+with Namet;            use Namet;
+with Nlists;           use Nlists;
+with Sem_Util;         use Sem_Util;
+with Snames;           use Snames;
 
-with Output;   use Output;
-with Casing;   use Casing;
+with Output;           use Output;
+with Casing;           use Casing;
 
 with Why;
 
-with SPARK_Util; use SPARK_Util;
+with SPARK_Util;       use SPARK_Util;
 
 package body Flow_Types is
 
@@ -349,9 +349,18 @@ package body Flow_Types is
       ----------------------------------------
 
       function Is_Initialized_By_Formal_Container return Boolean
-      is (In_Predefined_Unit (Root_Type (Etype (Get_Direct_Mapping_Id (F))))
-            and then Type_Based_On_External_Axioms
-            (Etype (Get_Direct_Mapping_Id (F))));
+      is
+         E : Entity_Id := Etype (Get_Direct_Mapping_Id (F));
+      begin
+         --  If the Parent is an N_Private_Type_Declaration, then we need
+         --  to use the Full_View.
+         if Nkind (Parent (E)) = N_Private_Type_Declaration then
+            E := Full_View (E);
+         end if;
+
+         return In_Predefined_Unit (Root_Type (E)) and then
+           Type_Based_On_External_Axioms (E);
+      end Is_Initialized_By_Formal_Container;
 
    begin
       case F.Kind is
