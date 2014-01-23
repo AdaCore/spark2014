@@ -35,15 +35,18 @@ is
 
    type Vol_Rec_T is record
       X : Integer;
-   end record with Volatile;
+   end record;
+--   end record with Volatile;
 
    Vol : Vol_Rec_T
-     with Async_Readers,
+     with Volatile,
+          Async_Readers,
           Async_Writers => False,
           Address => System.Storage_Elements.To_Address (16#BA12#);
 
    Vol2 : Vol_Rec_T
-     with Async_Writers,
+     with Volatile,
+          Async_Writers,
           Address => System.Storage_Elements.To_Address (16#BABE5#);
 
    procedure P2
