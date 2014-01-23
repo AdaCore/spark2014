@@ -1,5 +1,7 @@
-discr.adb:5:09: discriminant renaming is not allowed in SPARK
-discr.adb:5:09: violation of pragma SPARK_Mode at test.adc:1
+discr.adb:4:13: access type is not allowed in SPARK
+discr.adb:4:13: violation of pragma SPARK_Mode at /tmp/tmp-test-M923-035__discr-4345/src/test.adc:1
+discr.adb:16:09: discriminant renaming is not allowed in SPARK
+discr.adb:16:09: violation of pragma SPARK_Mode at /tmp/tmp-test-M923-035__discr-4345/src/test.adc:1
    compilation of discr.adb failed
 
 
