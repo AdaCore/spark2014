@@ -1306,10 +1306,10 @@ its declarative region. Hence, in |SPARK| two package bodies that
 depend on each other's specification may be legal, as is calling a user
 defined suprogram.
 
-Instead of the restrictions of SPARK 2005 a set of rules is applied in
-|SPARK| which determines when a pragma Elaborate_Body, Elaborate_All
-or Elaborate is required for a package.  These rules avoid elaboration
-order dependencies.
+Instead of the elaboration restrictions of SPARK 2005 a set of rules
+is applied in |SPARK| which determines when elaboration order control
+pragmas such as Elaborate_Body or Elaborate_All are required.  These
+rules ensure the absence of elaboration order dependencies.
 
 Examples of the features of |SPARK| elaboration order rules are given
 below. In the example described below the partial elaboration order
@@ -1318,7 +1318,7 @@ body because of the Elaborate_All on the specification of R_14
 specification and the body of Q_14, then the elaboration of Q_14 body
 or the specification of R_14 and the body of R_14 after the
 elaboration of Q_14. Elaboration order dependencies are avoided by
-checking the dependencies of the various sorts of Elaborate pragmas.
+the (required) use of elaboration control pragmas.
 
 Package Specifications in |SPARK|:
 

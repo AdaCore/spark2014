@@ -2302,6 +2302,23 @@ global variables discussed later in this section.
    the enclosing library unit and is subject to certain restrictions described
    below.]
 
+   For a given library unit L1 and a given distinct library unit's
+   spec or body L2, the elaboration of the body of L1 is said to be
+   *known to precede* the elaboration of L2 if either:
+
+   a. L2 references L1 in an Elaborate_All pragma; or
+
+   b. L1's Elaborate_Body aspect is True; or
+
+   c. L1 does not require a body (the terminology is a little odd in this
+      case because L1 has no body); or
+
+   d. L1 is preelaborable and L2's library unit is not.
+
+   [If Elaborate pragmas were in |SPARK| then this list would also include the
+   case where L2 references L1 in an Elaborate pragma, but they aren't so it
+   doesn't - see below.]
+     
 .. _etu-elaboration_issues-ss:
 
 .. centered:: **Legality Rules**
@@ -2443,9 +2460,9 @@ global variables discussed later in this section.
 
 .. _tu-nt-elaboration_issues-09:
 
-9. For purposes of defining the early call region, the specification and body of a
-   library unit package which has an Elaborate_Body pragma are treated as if
-   they both belonged to some enclosing declaration list with the body
+9. For purposes of defining the early call region, the specification and body
+   of a library unit package whose Elaborate_Body aspect is True are treated as
+   if they both belonged to some enclosing declaration list with the body
    immediately following the specification. This means that the early call
    region in which a call is permitted can span the specification/body boundary.
 
@@ -2458,13 +2475,9 @@ global variables discussed later in this section.
 
     a. If a unit has elaboration code that can directly or indirectly
        make a call to a subprogram in a with'd unit, or instantiate a
-       generic package in a with'd unit, then if the with'd unit does
+       generic unit in a with'd unit, then if the with'd unit does
        not have pragma Pure or Preelaborate, then the client should
-       have a pragma Elaborate_All for the with'd unit. For generic
-       subprogram instantiations, the rule can be relaxed to require
-       only a pragma Elaborate. [This rule is the same as the GNAT
-       static elaboration order rule as given in the GNAT Pro User's
-       Guide.]
+       have a pragma Elaborate_All for the with'd unit.
 
     b. For each call that is executable during elaboration for a given
        library unit package spec or body, there are two cases: it is
@@ -2478,6 +2491,17 @@ global variables discussed later in this section.
 11. For an instantiation of a generic which does not occur in the same
     compilation unit as the generic body, the rules are as described
     in the GNAT Pro User's Guide passage quoted above.
+
+.. _tu-nt-elaboration_issues-12:
+
+12. Elaborate pragmas are not in |SPARK|.
+    [This rule is needed only because of a detail of GNAT's static
+    elaboration model described in section C.7 of the GNAT Pro
+    User's Guide. GNAT allows using a Elaborate pragma instead of
+    an Elaborate_All pragma at some points where the latter is needed
+    to ensure the absence of access-before-elaboration problems; this is
+    too permissive for |SPARK|, so Elaborate pragmas are disallowed.
+    This rule may be relaxed at some point in the future.]
 
 .. _etu-elaboration_issues-lr:
 
@@ -2540,17 +2564,19 @@ are imposed in |SPARK| which have the following consequences:
 .. _tu-cbatu-use_of_initial_condition_and_initializes_aspects-01:
 
 1. During the elaboration of a library unit package (spec or body),
-   library-level variables declared outside of that package cannot be
-   modified and library-level variables declared outside of that
+   library-level variables declared outside of that package cannot
+   be modified and library-level variables declared outside of that
    package can only be read if
 
    a. the variable (or its state abstraction) is mentioned in the
       Initializes aspect of its enclosing package (from
       :ref:`initializes_aspect`); and
 
-   b. an Elaborate (not necessarily an Elaborate_All) pragma ensures
-      that the body of that package has been elaborated (from
-      :ref:`elaboration_issues`).
+   b. either the variable is declared and initialized during the
+      elaboration of the specification of its enclosing library unit package
+      or the elaboration of the body of that library unit is
+      known to precede the elaboration of the spec or body which reads
+      the variable.
 
 .. _tu-cbatu-use_of_initial_condition_and_initializes_aspects-02:
 
@@ -2566,11 +2592,12 @@ are imposed in |SPARK| which have the following consequences:
    (because none of the inputs used in computing the condition can
    change during this interval).  This means that a package's initial
    condition can be assumed to be true both upon entry to the main
-   subprogram itself and during elaboration of any other unit which
-   applies an Elaborate pragma to the library unit in question (note:
-   an Initial_Condition which depends on no variable inputs can also
-   be assumed to be true throughout the execution of the main
-   subprogram).
+   subprogram itself and during elaboration of any other unit (spec or body)
+   whose elaboration is known to follow that of the body of the package
+   (see preceding definition of "known to precede"; *known to follow*
+   is, by definition, the inverse relationship). An Initial_Condition which
+   depends on no variable inputs can also be assumed to be true throughout
+   the execution of the main subprogram.
 
 .. _tu-cbatu-use_of_initial_condition_and_initializes_aspects-03:
 
@@ -2595,12 +2622,29 @@ are imposed in |SPARK| which have the following consequences:
 4. If a read of a variable (or state abstraction, in the case of a
    call to a subprogram which takes an abstraction as an input) declared in
    another library unit is executable during elaboration (as defined above),
-   then the compilation unit containing the read shall apply an Elaborate (not
-   necessarily Elaborate_All) pragma to the unit declaring the variable or state
-   abstraction. The variable or state abstraction shall be specified as being
-   initialized in the Initializes aspect of the declaring package. [This is
-   needed to ensure that the variable has been initialized at the time of the
-   read.]
+   then either
+
+   * the entity being read shall be a variable (i.e., not a state abstraction)
+     and shall be initialized (perhaps by default) during the elaboration of
+     its enclosing library unit specification; or
+
+   * the elaboration of the compilation unit which performs the read
+     shall be known to follow that of the body of the unit declaring
+     the variable or state abstraction.
+
+   In either case, the variable or state abstraction shall be specified
+   as being initialized in the Initializes aspect of the declaring package.
+   [This is needed to ensure that the variable has been initialized at the
+   time of the read.]
+
+5. If a variable is declared (immediately or not) within a library unit
+   package specification, and if that variable is initialized (perhaps
+   by default) during the elaboration of that specification, and if any
+   part of that variable is also assigned to during the elaboration of
+   the corresponding library unit package body, then that library unit's
+   Elaborate_Body aspect shall be True. [This is needed to ensure that
+   the variable remains unread between the elaboration of the
+   specification and of the body of its enclosing library unit.]
 
 .. _tu-nt-use_of_initial_condition_and_initializes_aspects-05:
 
@@ -2621,7 +2665,8 @@ are imposed in |SPARK| which have the following consequences:
 
 .. _tu-nt-use_of_initial_condition_and_initializes_aspects-06:
 
-6. A package body shall include Elaborate pragmas for all of the other
+6. The elaboration of a package body shall be known to follow the
+   elaboration of the body of each of the
    library units [(typically private children)] which provide
    constituents for a state abstraction denoted in the Initializes
    aspect of the given package.
