@@ -8,6 +8,8 @@ package Types is
                            Natural range 1 .. 5,
                            Natural range 1 .. 5) of Integer;
 
+   type Array_U is array (Index range <>) of Integer;
+
    type My_Range is range 1 .. 10;
 
    type Rec is record

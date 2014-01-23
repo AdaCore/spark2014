@@ -68,4 +68,15 @@ package Arrays is
    function Swap_Fun (Arr_In : Array_1D; I, J : Index) return Array_1D
      with Post => (Swap_Fun'Result'Update(I => Swap_Fun'Result(J),
                                           J => Swap_Fun'Result(I)) = Arr_In);
+
+   --  array update, prefix is 'unconstrained array
+   procedure P1 (A, B: in out Array_U; I : in Index; New_Val : in Integer)
+     with Pre  => I in B'Range,
+          Post => A = B'Update (I => New_Val);
+
+   --  array update, prefix is 'Old of unconstrained array
+   procedure P2 (A: in out Array_U; I : in Index; New_Val : in Integer)
+     with Pre  => I in A'Range,
+          Post => A = A'Old'Update (I => New_Val);
+
 end Arrays;
