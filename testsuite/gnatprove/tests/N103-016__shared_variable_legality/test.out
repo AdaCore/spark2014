@@ -1,5 +1,5 @@
 p.ads:17:07: component "F2" of non-volatile record type "R" cannot be volatile
-p.ads:17:25: argument of aspect "Volatile" must denote a full type or object declaration
+p.ads:17:25: entity for aspect "Volatile" must denote a full type or object declaration
 p.ads:23:07: component "F2" of non-volatile record type "R2" cannot be volatile
 p.ads:26:13: discriminant cannot be volatile
 p.ads:30:09: discriminated type "R4" cannot be volatile
