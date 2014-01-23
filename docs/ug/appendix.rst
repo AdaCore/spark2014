@@ -315,7 +315,8 @@ Tool Limitations
 
 #. |GNATprove| automatically re-analyzes source files when they have changed,
    or when compilation options have changed. However, |GNATprove| does not
-   detect changes in configuration files. Use option ``-f`` in that case.
+   detect changes in target configuration files and pragma configuration
+   files. Use option ``-f`` in that case.
 
 #. A subset of all Ada fixed-point types and fixed-point operations is
    supported:
