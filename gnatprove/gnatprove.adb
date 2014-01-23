@@ -163,6 +163,8 @@ procedure Gnatprove is
          Args.Prepend ("-ws");
       end if;
 
+      Args.Prepend ("-s");
+
       if Parallel > 1 then
          Args.Prepend ("-j" & Int_Image (Parallel));
       end if;
