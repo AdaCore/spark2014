@@ -890,7 +890,7 @@ package body SPARK_Definition is
                Entity_In_SPARK (Etype (E)) and then
                  not Entity_In_SPARK (Underlying_Type (Etype (E))))
             then
-               Entity_Set.Insert (Underlying_Type (E));
+               Entity_Set.Include (Underlying_Type (E));
             else
                Mark_Entity (Underlying_Type (E));
             end if;
