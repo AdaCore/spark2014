@@ -1,9 +1,9 @@
-types.adb:36:23: warning: unused initial value of "R"
-types.adb:36:23: warning: unused variable "R"
-types.adb:42:23: "R.X" is not written in "Test_02"
-types.adb:42:23: warning: unused variable "R"
-types.adb:48:23: warning: "R.X" is not modified, could be "in"
-types.adb:48:23: warning: unused variable "R"
+types.adb:40:23: warning: unused initial value of "R"
+types.adb:40:23: warning: unused variable "R"
+types.adb:46:23: "R.X" is not initialized in "Test_02"
+types.adb:46:23: warning: unused variable "R"
+types.adb:52:23: warning: "R.X" is not modified, could be "in"
+types.adb:52:23: warning: unused variable "R"
    compilation of types.adb failed
 
 

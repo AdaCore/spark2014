@@ -3,7 +3,9 @@ with System.Storage_Elements; use System.Storage_Elements;
 package body Types
    with Refined_State => (State => (A, C, D, E))
 is
-   type Volatile_Integer is new Integer with Volatile;
+--  Restore this when Volatile types are re-introduced
+--   type Volatile_Integer is new Integer with Volatile;
+   type Volatile_Integer is new Integer;
 
    A : Volatile_Integer;
 
@@ -14,7 +16,9 @@ is
 
    type Record_T is record
       X : Integer;
-   end record with Volatile;
+   end record;
+--  Restore this when Volatile types are re-introduced
+--   end record with Volatile;
 
    --  B : Illegal_Record_T with Volatile, Async_Writers, Effective_Reads;
 
