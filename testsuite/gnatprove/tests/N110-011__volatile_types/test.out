@@ -1,3 +1,5 @@
+p.ads:12:09: volatile type not allowed
+p.ads:16:09: volatile type not allowed
 p.ads:26:09: volatile type not allowed
 p.ads:32:09: volatile type not allowed
    compilation of p.ads failed
