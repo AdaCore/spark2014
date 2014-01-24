@@ -1,0 +1,10 @@
+foo.adb:28:07: "A" must be listed in the Global aspect of "Verify_Gen_1_2" (SPARK RM 6.1.4(13))
+foo.adb:54:07: "A" must be listed in the Global aspect of "Verify_Gen_2_2" (SPARK RM 6.1.4(13))
+foo.adb:64:07: "A" must be listed in the Global aspect of "Liar" (SPARK RM 6.1.4(13))
+foo.adb:88:07: "B" must be listed in the Global aspect of "Verify_Gen_3_2" (SPARK RM 6.1.4(13))
+foo.adb:114:07: "B" must be listed in the Global aspect of "Verify_Gen_4_2" (SPARK RM 6.1.4(13))
+   compilation of foo.adb failed
+
+
+gnatprove: error during analysis of data and information flow, aborting.
+gprbuild: *** compilation phase failed
