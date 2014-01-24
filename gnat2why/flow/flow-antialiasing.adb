@@ -54,14 +54,12 @@ package body Flow.Antialiasing is
    with Pre => Present (Formal_A);
    --  Returns if A and B alias.
 
-   function Requires_Alias_Check (F : Node_Id) return Boolean
+   function Cannot_Alias (F : Node_Id) return Boolean
    with Pre => Present (F) and then
                Nkind (F) in N_Entity and then
                Ekind (F) in Formal_Kind;
-   --  Check if the given formal parameter might alias with others (and
-   --  this requires checking).
-   --
-   --  In particular we return False for scalar in parameters.
+   --  Check if the given formal parameter cannot possibly alias with
+   --  others: it is a scalar in parameter.
 
    procedure Check_Node_Against_Node
      (A, B                : Node_Or_Entity_Id;
@@ -329,15 +327,13 @@ package body Flow.Antialiasing is
          return No_Aliasing;
       end if;
 
-      if not Requires_Alias_Check (Formal_A) then
+      if Cannot_Alias (Formal_A) then
          if Trace_Antialiasing then
             Write_Str ("   -> A does not require aa checking");
             Write_Eol;
          end if;
          return No_Aliasing;
-      elsif Present (Formal_B) and then
-        not Requires_Alias_Check (Formal_B)
-      then
+      elsif Present (Formal_B) and then Cannot_Alias (Formal_B) then
          if Trace_Antialiasing then
             Write_Str ("   -> B does not require aa checking");
             Write_Eol;
@@ -569,24 +565,24 @@ package body Flow.Antialiasing is
       end if;
    end Aliasing;
 
-   --------------------------
-   -- Requires_Alias_Check --
-   --------------------------
+   ------------------
+   -- Cannot_Alias --
+   ------------------
 
-   function Requires_Alias_Check (F : Node_Id) return Boolean
+   function Cannot_Alias (F : Node_Id) return Boolean
    is
    begin
       case Ekind (F) is
          when E_In_Parameter =>
-            return not Is_Elementary_Type (Etype (F));
+            return Is_Elementary_Type (Etype (F));
 
          when E_In_Out_Parameter | E_Out_Parameter =>
-            return True;
+            return False;
 
          when others =>
             raise Program_Error;
       end case;
-   end Requires_Alias_Check;
+   end Cannot_Alias;
 
    -----------------------------
    -- Check_Node_Against_Node --
