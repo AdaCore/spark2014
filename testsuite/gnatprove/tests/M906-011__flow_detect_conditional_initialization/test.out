@@ -9,7 +9,7 @@ uninitialized.adb:90:17: "A_Rec.Boo" is not initialized
 uninitialized.adb:93:24: "A_Rec.Arr" is not initialized
 uninitialized.adb:103:13: "Another_Rec.Arr" is not initialized
 uninitialized.adb:110:18: warning: "An_Arr" might not be initialized
-uninitialized.adb:118:15: formal parameters "X" and "Y" might be aliased
+uninitialized.adb:118:15: warning: "An_Arr" might not be initialized
 uninitialized.adb:127:30: warning: statement has no effect
 uninitialized.adb:128:15: "A" is not initialized
 uninitialized.adb:128:15: warning: "A" might not be initialized

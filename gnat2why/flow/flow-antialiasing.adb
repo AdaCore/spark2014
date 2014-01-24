@@ -48,8 +48,20 @@ package body Flow.Antialiasing is
                          return Aliasing_Check_Result;
    --  Checks two ranges for potential overlap.
 
-   function Aliasing (A, B : Node_Id) return Aliasing_Check_Result;
+   function Aliasing (A,        B        : Node_Id;
+                      Formal_A, Formal_B : Node_Id)
+                      return Aliasing_Check_Result
+   with Pre => Present (Formal_A);
    --  Returns if A and B alias.
+
+   function Requires_Alias_Check (F : Node_Id) return Boolean
+   with Pre => Present (F) and then
+               Nkind (F) in N_Entity and then
+               Ekind (F) in Formal_Kind;
+   --  Check if the given formal parameter might alias with others (and
+   --  this requires checking).
+   --
+   --  In particular we return False for scalar in parameters.
 
    procedure Check_Node_Against_Node
      (A, B                : Node_Or_Entity_Id;
@@ -146,7 +158,9 @@ package body Flow.Antialiasing is
    -- Aliasing --
    --------------
 
-   function Aliasing (A, B : Node_Id) return Aliasing_Check_Result
+   function Aliasing (A,        B        : Node_Id;
+                      Formal_A, Formal_B : Node_Id)
+                      return Aliasing_Check_Result
    is
       --  Expressions are not interesting. Names are, but only some:
       Is_Interesting : constant array (Node_Kind) of Boolean :=
@@ -310,6 +324,22 @@ package body Flow.Antialiasing is
       elsif not Is_Interesting (Nkind (B)) then
          if Trace_Antialiasing then
             Write_Str ("   -> B is not interesting");
+            Write_Eol;
+         end if;
+         return No_Aliasing;
+      end if;
+
+      if not Requires_Alias_Check (Formal_A) then
+         if Trace_Antialiasing then
+            Write_Str ("   -> A does not require aa checking");
+            Write_Eol;
+         end if;
+         return No_Aliasing;
+      elsif Present (Formal_B) and then
+        not Requires_Alias_Check (Formal_B)
+      then
+         if Trace_Antialiasing then
+            Write_Str ("   -> B does not require aa checking");
             Write_Eol;
          end if;
          return No_Aliasing;
@@ -539,6 +569,25 @@ package body Flow.Antialiasing is
       end if;
    end Aliasing;
 
+   --------------------------
+   -- Requires_Alias_Check --
+   --------------------------
+
+   function Requires_Alias_Check (F : Node_Id) return Boolean
+   is
+   begin
+      case Ekind (F) is
+         when E_In_Parameter =>
+            return not Is_Elementary_Type (Etype (F));
+
+         when E_In_Out_Parameter | E_Out_Parameter =>
+            return True;
+
+         when others =>
+            raise Program_Error;
+      end case;
+   end Requires_Alias_Check;
+
    -----------------------------
    -- Check_Node_Against_Node --
    -----------------------------
@@ -550,7 +599,10 @@ package body Flow.Antialiasing is
       Introduces_Aliasing : in out Boolean)
    is
       Msg : Unbounded_String               := Null_Unbounded_String;
-      Tmp : constant Aliasing_Check_Result := Aliasing (A, B);
+      Tmp : constant Aliasing_Check_Result := Aliasing (A,
+                                                        B,
+                                                        A_Formal,
+                                                        B_Formal);
    begin
       if Tmp = No_Aliasing then
          --  Nothing to do here.

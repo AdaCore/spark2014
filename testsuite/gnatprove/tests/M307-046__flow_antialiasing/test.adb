@@ -100,7 +100,7 @@ is
    end Op_String_IO_I;
 
    procedure Op_String_Char (X : in out String;
-                             Y : Character)
+                             Y : in out Character)
    is
    begin
       X (X'First) := Y;
@@ -246,11 +246,12 @@ is
 
    procedure Slice_07 (A : in out String)
    is
+      Tmp : Character := 'x';
    begin
       Op_String_Char (A (3 .. 12), A (2));   --  OK (but requires proof)
       Op_String_Char (A (3 .. 12), A (5));   --  illegal
       Op_String_Char (A (3 .. 12), A (20));  --  OK (but requires proof)
-      Op_String_Char (A (3 .. 12), 'x');     --  OK (ditto)
+      Op_String_Char (A (3 .. 12), Tmp);     --  OK (ditto)
 
       Op_String_Char (A (3 .. 12) (8 .. 10), A (5));   --  OK (ditto)
    end Slice_07;

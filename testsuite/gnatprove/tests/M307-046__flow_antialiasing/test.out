@@ -1,3 +1,4 @@
+test.adb:103:30: warning: "Y" is not modified, could be "in"
 test.adb:113:14: flow analysis of "Test_01" abandoned due to aliasing
 test.adb:116:14: formal parameters "X" and "Y" must not be aliased
 test.adb:125:14: flow analysis of "Test_03" abandoned due to aliasing
@@ -28,20 +29,16 @@ test.adb:238:23: formal parameters "X" and "Y" might be aliased
 test.adb:241:14: flow analysis of "Slice_06" abandoned due to aliasing
 test.adb:244:23: formal parameters "X" and "Y" must not be aliased
 test.adb:247:14: flow analysis of "Slice_07" abandoned due to aliasing
-test.adb:250:23: formal parameters "X" and "Y" might be aliased
 test.adb:251:23: formal parameters "X" and "Y" might be aliased
 test.adb:252:23: formal parameters "X" and "Y" might be aliased
-test.adb:255:23: formal parameters "X" and "Y" might be aliased
-test.adb:258:14: flow analysis of "Slice_08" abandoned due to aliasing
-test.adb:262:23: formal parameters "X" and "Y" might be aliased
-test.adb:269:14: flow analysis of "Ucc_01" abandoned due to aliasing
-test.adb:272:14: formal parameters "X" and "Y" must not be aliased
-test.adb:275:14: flow analysis of "Ucc_02" abandoned due to aliasing
-test.adb:278:15: formal parameters "X" and "Y" must not be aliased
-test.adb:331:14: flow analysis of "Test_Tc_1" abandoned due to aliasing
-test.adb:334:15: formal parameters "A" and "B" must not be aliased
-test.adb:337:14: flow analysis of "Test_Tc_2" abandoned due to aliasing
-test.adb:340:15: formal parameters "A" and "B" must not be aliased
+test.adb:253:23: formal parameters "X" and "Y" might be aliased
+test.adb:256:23: formal parameters "X" and "Y" might be aliased
+test.adb:259:14: flow analysis of "Slice_08" abandoned due to aliasing
+test.adb:263:23: formal parameters "X" and "Y" might be aliased
+test.adb:270:14: flow analysis of "Ucc_01" abandoned due to aliasing
+test.adb:273:14: formal parameters "X" and "Y" must not be aliased
+test.adb:276:14: flow analysis of "Ucc_02" abandoned due to aliasing
+test.adb:279:15: formal parameters "X" and "Y" must not be aliased
    compilation of test.adb failed
 
 
