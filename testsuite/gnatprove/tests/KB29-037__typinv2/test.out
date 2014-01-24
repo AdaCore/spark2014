@@ -1,21 +1,21 @@
 p.adb:4:07: "T" is not allowed in SPARK
-p.adb:4:07: violation of pragma SPARK_Mode at /tmp/tmp-test-KB29-037__typinv2-23766/src/test.adc:1
+p.adb:4:07: violation of pragma SPARK_Mode at test.adc:1
 p.adb:4:25: "T" is not allowed in SPARK
-p.adb:4:25: violation of pragma SPARK_Mode at /tmp/tmp-test-KB29-037__typinv2-23766/src/test.adc:1
+p.adb:4:25: violation of pragma SPARK_Mode at test.adc:1
 p.adb:5:07: "T" is not allowed in SPARK
-p.adb:5:07: violation of pragma SPARK_Mode at /tmp/tmp-test-KB29-037__typinv2-23766/src/test.adc:1
+p.adb:5:07: violation of pragma SPARK_Mode at test.adc:1
 p.ads:5:09: dynamic type predicate is not allowed in SPARK
 p.ads:5:09: dynamic type predicate is not allowed in SPARK
-p.ads:5:09: violation of pragma SPARK_Mode at /tmp/tmp-test-KB29-037__typinv2-23766/src/test.adc:1
-p.ads:5:09: violation of pragma SPARK_Mode at /tmp/tmp-test-KB29-037__typinv2-23766/src/test.adc:1
+p.ads:5:09: violation of pragma SPARK_Mode at test.adc:1
+p.ads:5:09: violation of pragma SPARK_Mode at test.adc:1
 p.ads:9:20: "T" is not allowed in SPARK
 p.ads:9:20: "T" is not allowed in SPARK
-p.ads:9:20: violation of pragma SPARK_Mode at /tmp/tmp-test-KB29-037__typinv2-23766/src/test.adc:1
-p.ads:9:20: violation of pragma SPARK_Mode at /tmp/tmp-test-KB29-037__typinv2-23766/src/test.adc:1
+p.ads:9:20: violation of pragma SPARK_Mode at test.adc:1
+p.ads:9:20: violation of pragma SPARK_Mode at test.adc:1
 p.ads:9:32: "T" is not allowed in SPARK
 p.ads:9:32: "T" is not allowed in SPARK
-p.ads:9:32: violation of pragma SPARK_Mode at /tmp/tmp-test-KB29-037__typinv2-23766/src/test.adc:1
-p.ads:9:32: violation of pragma SPARK_Mode at /tmp/tmp-test-KB29-037__typinv2-23766/src/test.adc:1
+p.ads:9:32: violation of pragma SPARK_Mode at test.adc:1
+p.ads:9:32: violation of pragma SPARK_Mode at test.adc:1
    compilation of main.adb failed
    compilation of p.adb failed
 
