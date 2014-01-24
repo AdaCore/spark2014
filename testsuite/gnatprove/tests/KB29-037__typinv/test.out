@@ -1,1 +1,28 @@
-dummy output
+typeinv.ads:2:09: "T" is not allowed in SPARK
+typeinv.ads:2:09: "T" is not allowed in SPARK
+typeinv.ads:2:09: type invariant is not allowed in SPARK
+typeinv.ads:2:09: type invariant is not allowed in SPARK
+typeinv.ads:2:09: violation of pragma SPARK_Mode at /tmp/tmp-test-KB29-037__typinv-3792/src/test.adc:1
+typeinv.ads:2:09: violation of pragma SPARK_Mode at /tmp/tmp-test-KB29-037__typinv-3792/src/test.adc:1
+typeinv.ads:2:09: violation of pragma SPARK_Mode at /tmp/tmp-test-KB29-037__typinv-3792/src/test.adc:1
+typeinv.ads:2:09: violation of pragma SPARK_Mode at /tmp/tmp-test-KB29-037__typinv-3792/src/test.adc:1
+typeinv.ads:3:12: warning: it is currently ignored
+typeinv.ads:3:12: warning: pragma "Invariant" is not yet supported
+typeinv.ads:5:13: "T" is not allowed in SPARK
+typeinv.ads:5:13: "T" is not allowed in SPARK
+typeinv.ads:5:13: violation of pragma SPARK_Mode at /tmp/tmp-test-KB29-037__typinv-3792/src/test.adc:1
+typeinv.ads:5:13: violation of pragma SPARK_Mode at /tmp/tmp-test-KB29-037__typinv-3792/src/test.adc:1
+typeinv.ads:9:14: "T" is not allowed in SPARK
+typeinv.ads:9:14: "T" is not allowed in SPARK
+typeinv.ads:9:14: violation of pragma SPARK_Mode at /tmp/tmp-test-KB29-037__typinv-3792/src/test.adc:1
+typeinv.ads:9:14: violation of pragma SPARK_Mode at /tmp/tmp-test-KB29-037__typinv-3792/src/test.adc:1
+typeinv.ads:12:09: type invariant is not allowed in SPARK
+typeinv.ads:12:09: type invariant is not allowed in SPARK
+typeinv.ads:12:09: violation of pragma SPARK_Mode at /tmp/tmp-test-KB29-037__typinv-3792/src/test.adc:1
+typeinv.ads:12:09: violation of pragma SPARK_Mode at /tmp/tmp-test-KB29-037__typinv-3792/src/test.adc:1
+   compilation of main.adb failed
+   compilation of typeinv.adb failed
+
+
+gnatprove: error during analysis and translation to intermediate language, aborting.
+gprbuild: *** compilation phase failed

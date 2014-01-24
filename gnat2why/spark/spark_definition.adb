@@ -909,7 +909,9 @@ package body SPARK_Definition is
          end if;
 
          if Has_Predicates (E) then
-            if No (Static_Predicate (E)) then
+            if not Is_Discrete_Type (E)
+              or else No (Static_Predicate (E))
+            then
                Mark_Violation ("dynamic type predicate", E);
             else
                declare
