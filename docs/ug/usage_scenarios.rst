@@ -95,6 +95,14 @@ main options for the conversion process:
    packages must be in |SPARK|. Note that the latest version of the SPARK 2005
    toolset facilitates this migration by ignoring |SPARK| pragmas.
 
+Note that some users may wish to take advantage of the new |SPARK| contracts
+and tools whilst retaining the more restrictive nature of SPARK 2005. (Many
+of the restrictions from SPARK 2005 have been lifted in |SPARK| because
+improvements in the tools mean that sound analysis can be performed without
+them, but some projects may need to operate in a more constrained environment.)
+This can be achieved using ``pragma Restrictions (SPARK_05)``. For further details
+of this restriction please see the GNAT Reference Manual.
+
 .. _analyze legacy Ada software:
 
 Analyze legacy Ada software
