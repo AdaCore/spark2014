@@ -77,6 +77,10 @@ package Flow is
       Null_Key          => Null_Flow_Id,
       Test_Key          => "=");
 
+   procedure Print_Graph_Vertex (G : Flow_Graphs.T;
+                                 V : Flow_Graphs.Vertex_Id);
+   --  Print a human-readable representation for the given vertex.
+
    ----------------------------------------------------------------------
    --  Utility packages
    ----------------------------------------------------------------------

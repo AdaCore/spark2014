@@ -104,6 +104,105 @@ package body Flow is
          Trim (To_Unbounded_String (S), Whitespace, Whitespace));
    end Add_To_Temp_String;
 
+   ------------------------
+   -- Print_Graph_Vertex --
+   ------------------------
+
+   procedure Print_Graph_Vertex (G : Flow_Graphs.T;
+                                 V : Flow_Graphs.Vertex_Id)
+   is
+      F : constant Flow_Id      := G.Get_Key (V);
+      A : constant V_Attributes := G.Get_Attributes (V);
+
+      procedure Format_Item (K, V : String);
+
+      function Flow_Id_Image (F : Flow_Id) return String;
+
+      procedure Format_Item (K, V : String)
+      is
+      begin
+         Write_Str (K);
+         Write_Str (": ");
+         Write_Str (V);
+         Write_Eol;
+      end Format_Item;
+
+      function Flow_Id_Image (F : Flow_Id) return String
+      is
+         R : Unbounded_String;
+      begin
+         case F.Kind is
+            when Direct_Mapping =>
+               if Nkind (F.Node) in N_Entity then
+                  Append (R, Flow_Id_To_String (F));
+               else
+                  Append (R, Node_Or_Entity_Id'Image (F.Node));
+               end if;
+            when others =>
+               Append (R, Flow_Id_To_String (F));
+         end case;
+
+         Append (R, "|");
+
+         Append (R, Flow_Id_Variant'Image (F.Variant));
+
+         return To_String (R);
+      end Flow_Id_Image;
+
+   begin
+      Write_Str ("Graph vertex [" &
+                   Natural'Image (G.Vertex_To_Natural (V)) &
+                   "] (" &
+                   Flow_Id_Image (F) &
+                   "):");
+      Write_Eol;
+
+      Indent;
+
+      Format_Item ("Is_Null_Node", Boolean'Image (A.Is_Null_Node));
+      Format_Item ("Is_Prorgam_Node", Boolean'Image (A.Is_Program_Node));
+      Format_Item ("Is_Precondition", Boolean'Image (A.Is_Precondition));
+      Format_Item ("Is_Default_Init", Boolean'Image (A.Is_Default_Init));
+      Format_Item ("Is_Loop_Entry", Boolean'Image (A.Is_Loop_Entry));
+      Format_Item ("Is_Initialized", Boolean'Image (A.Is_Initialized));
+      Format_Item ("Is_Function_Return", Boolean'Image (A.Is_Function_Return));
+      Format_Item ("Is_Global", Boolean'Image (A.Is_Global));
+      Format_Item ("Is_Loop_Parameter", Boolean'Image (A.Is_Loop_Parameter));
+      Format_Item ("Is_Import", Boolean'Image (A.Is_Import));
+      Format_Item ("Is_Export", Boolean'Image (A.Is_Export));
+      Format_Item ("Mode", Param_Mode'Image (A.Mode));
+      Format_Item ("Is_Package_State", Boolean'Image (A.Is_Package_State));
+      Format_Item ("Is_Constant", Boolean'Image (A.Is_Constant));
+      Format_Item ("Is_Callsite", Boolean'Image (A.Is_Callsite));
+      Format_Item ("Is_Parameter", Boolean'Image (A.Is_Parameter));
+      Format_Item ("Is_Discriminants_Only_Parameter",
+                   Boolean'Image (A.Is_Discriminants_Only_Parameter));
+      Format_Item ("Is_Global_Parameter",
+                   Boolean'Image (A.Is_Global_Parameter));
+      Format_Item ("Execution", Execution_Kind_T'Image (A.Execution));
+      Format_Item ("Perform_IPFA", Boolean'Image (A.Perform_IPFA));
+
+      Format_Item ("Call_Vertex", Flow_Id_Image (A.Call_Vertex));
+
+      if A.Is_Parameter then
+         Format_Item ("Parameter_Actual", Flow_Id_Image (A.Parameter_Actual));
+      end if;
+      if A.Is_Parameter or A.Is_Global_Parameter then
+         Format_Item ("Parameter_Formal", Flow_Id_Image (A.Parameter_Actual));
+      end if;
+
+      Write_Str ("Variables_Defined: ");
+      Print_Node_Set (A.Variables_Defined);
+
+      Write_Str ("Variables_Used: ");
+      Print_Node_Set (A.Variables_Used);
+
+      Write_Str ("Variables_Explicitly_Used: ");
+      Print_Node_Set (A.Variables_Explicitly_Used);
+
+      Outdent;
+   end Print_Graph_Vertex;
+
    --------------
    -- Is_Valid --
    --------------
@@ -252,13 +351,13 @@ package body Flow is
             Rv.Show := False;
 
          elsif V = Start_Vertex then
-            Rv.Label := To_Unbounded_String ("start");
+            Write_Str ("start");
             Rv.Shape := Shape_None;
             Rv.Show  := G.In_Neighbour_Count (V) > 0 or
               G.Out_Neighbour_Count (V) > 0;
 
          elsif V = End_Vertex then
-            Rv.Label := To_Unbounded_String ("end");
+            Write_Str ("end");
             Rv.Shape := Shape_None;
             Rv.Show  := G.In_Neighbour_Count (V) > 0 or
               G.Out_Neighbour_Count (V) > 0;
@@ -502,6 +601,8 @@ package body Flow is
                Write_Str ("\n(global)");
             end if;
          end if;
+
+         Write_Str ("\n<VId:" & Natural'Image (G.Vertex_To_Natural (V)) & ">");
 
          Write_Eol;
          Cancel_Special_Output;

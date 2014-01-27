@@ -7,12 +7,12 @@ gprbuild: *** compilation phase failed
 // package_body_uninitialized_cfg
 digraph G {
    graph [splines=True];
-    1 [label="start",shape="plaintext"];
-    2 [label="end",shape="plaintext"];
-    4 [label="null",shape="plaintext",fontcolor="chartreuse"];
-    5 [label="a'initial",shape="plaintext",fontcolor="red"];
-    6 [label="a'final",shape="plaintext"];
-    10 [label="null;"];
+    1 [label="start\n<VId: 1>",shape="plaintext"];
+    2 [label="end\n<VId: 2>",shape="plaintext"];
+    4 [label="null\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
+    5 [label="a'initial\n<VId: 5>",shape="plaintext",fontcolor="red"];
+    6 [label="a'final\n<VId: 6>",shape="plaintext"];
+    10 [label="null;\n<VId: 10>"];
 
     1 ->  10 [arrowType="normal"];
     2 ->  6 [arrowType="normal"];
@@ -23,11 +23,11 @@ digraph G {
 // package_body_uninitialized_pdg
 digraph G {
    graph [splines=True];
-    1 [label="start",shape="plaintext"];
-    4 [label="null",shape="plaintext",fontcolor="chartreuse"];
-    5 [label="a'initial",shape="plaintext",fontcolor="red"];
-    6 [label="a'final",shape="plaintext"];
-    10 [label="null;"];
+    1 [label="start\n<VId: 1>",shape="plaintext"];
+    4 [label="null\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
+    5 [label="a'initial\n<VId: 5>",shape="plaintext",fontcolor="red"];
+    6 [label="a'final\n<VId: 6>",shape="plaintext"];
+    10 [label="null;\n<VId: 10>"];
 
     1 ->  10 [arrowType="normal"];
     5 ->  6 [arrowType="normal",color="red"];
@@ -36,18 +36,18 @@ digraph G {
 // package_body_vehicle_cfg
 digraph G {
    graph [splines=True];
-    1 [label="start",shape="plaintext"];
-    2 [label="end",shape="plaintext"];
-    4 [label="null",shape="plaintext",fontcolor="chartreuse"];
-    5 [label="type state_type is (still, forward, backward);"];
-    6 [label="type input is (no_input, nothing, accelerate, brake);"];
-    7 [label="subtype valid_input is input range nothing .. brake;"];
-    8 [label="type speed_type is range -max_speed<<<100>>><<<-100>>> .. max_speed<<<100>>>;"];
-    9 [label="speed'initial",shape="plaintext",fontcolor="red"];
-    10 [label="speed'final",shape="plaintext"];
-    12 [label="state'initial",shape="plaintext",fontcolor="red"];
-    13 [label="state'final",shape="plaintext"];
-    20 [label="null;"];
+    1 [label="start\n<VId: 1>",shape="plaintext"];
+    2 [label="end\n<VId: 2>",shape="plaintext"];
+    4 [label="null\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
+    5 [label="type state_type is (still, forward, backward);\n<VId: 5>"];
+    6 [label="type input is (no_input, nothing, accelerate, brake);\n<VId: 6>"];
+    7 [label="subtype valid_input is input range nothing .. brake;\n<VId: 7>"];
+    8 [label="type speed_type is range -max_speed<<<100>>><<<-100>>> .. max_speed<<<100>>>;\n<VId: 8>"];
+    9 [label="speed'initial\n<VId: 9>",shape="plaintext",fontcolor="red"];
+    10 [label="speed'final\n<VId: 10>",shape="plaintext"];
+    12 [label="state'initial\n<VId: 12>",shape="plaintext",fontcolor="red"];
+    13 [label="state'final\n<VId: 13>",shape="plaintext"];
+    20 [label="null;\n<VId: 20>"];
 
     1 ->  5 [arrowType="normal"];
     2 ->  10 [arrowType="normal"];
@@ -64,17 +64,17 @@ digraph G {
 // package_body_vehicle_pdg
 digraph G {
    graph [splines=True];
-    1 [label="start",shape="plaintext"];
-    4 [label="null",shape="plaintext",fontcolor="chartreuse"];
-    5 [label="type state_type is (still, forward, backward);"];
-    6 [label="type input is (no_input, nothing, accelerate, brake);"];
-    7 [label="subtype valid_input is input range nothing .. brake;"];
-    8 [label="type speed_type is range -max_speed<<<100>>><<<-100>>> .. max_speed<<<100>>>;"];
-    9 [label="speed'initial",shape="plaintext",fontcolor="red"];
-    10 [label="speed'final",shape="plaintext"];
-    12 [label="state'initial",shape="plaintext",fontcolor="red"];
-    13 [label="state'final",shape="plaintext"];
-    20 [label="null;"];
+    1 [label="start\n<VId: 1>",shape="plaintext"];
+    4 [label="null\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
+    5 [label="type state_type is (still, forward, backward);\n<VId: 5>"];
+    6 [label="type input is (no_input, nothing, accelerate, brake);\n<VId: 6>"];
+    7 [label="subtype valid_input is input range nothing .. brake;\n<VId: 7>"];
+    8 [label="type speed_type is range -max_speed<<<100>>><<<-100>>> .. max_speed<<<100>>>;\n<VId: 8>"];
+    9 [label="speed'initial\n<VId: 9>",shape="plaintext",fontcolor="red"];
+    10 [label="speed'final\n<VId: 10>",shape="plaintext"];
+    12 [label="state'initial\n<VId: 12>",shape="plaintext",fontcolor="red"];
+    13 [label="state'final\n<VId: 13>",shape="plaintext"];
+    20 [label="null;\n<VId: 20>"];
 
     1 ->  5 [arrowType="normal"];
     1 ->  6 [arrowType="normal"];
@@ -88,15 +88,15 @@ digraph G {
 // subprogram_compare_cfg
 digraph G {
    graph [splines=True];
-    1 [label="start",shape="plaintext"];
-    2 [label="end",shape="plaintext"];
-    4 [label="null",shape="plaintext",fontcolor="chartreuse"];
-    5 [label="a'initial\n(global)",shape="plaintext",fontcolor="red"];
-    6 [label="a'final\n(global)",shape="plaintext",fontcolor="blue"];
-    8 [label="b'initial",shape="plaintext",fontcolor="red"];
-    9 [label="b'final",shape="plaintext"];
-    11 [label="a := 100;"];
-    12 [label="pragma assert (a > b);<<<pragma check (assert, a > b);>>>"];
+    1 [label="start\n<VId: 1>",shape="plaintext"];
+    2 [label="end\n<VId: 2>",shape="plaintext"];
+    4 [label="null\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
+    5 [label="a'initial\n(global)\n<VId: 5>",shape="plaintext",fontcolor="red"];
+    6 [label="a'final\n(global)\n<VId: 6>",shape="plaintext",fontcolor="blue"];
+    8 [label="b'initial\n<VId: 8>",shape="plaintext",fontcolor="red"];
+    9 [label="b'final\n<VId: 9>",shape="plaintext"];
+    11 [label="a := 100;\n<VId: 11>"];
+    12 [label="pragma assert (a > b);<<<pragma check (assert, a > b);>>>\n<VId: 12>"];
 
     1 ->  11 [arrowType="normal"];
     2 ->  6 [arrowType="normal"];
@@ -110,14 +110,14 @@ digraph G {
 // subprogram_compare_pdg
 digraph G {
    graph [splines=True];
-    1 [label="start",shape="plaintext"];
-    4 [label="null",shape="plaintext",fontcolor="chartreuse"];
-    5 [label="a'initial\n(global)",shape="plaintext",fontcolor="red"];
-    6 [label="a'final\n(global)",shape="plaintext",fontcolor="blue"];
-    8 [label="b'initial",shape="plaintext",fontcolor="red"];
-    9 [label="b'final",shape="plaintext"];
-    11 [label="a := 100;"];
-    12 [label="pragma assert (a > b);<<<pragma check (assert, a > b);>>>"];
+    1 [label="start\n<VId: 1>",shape="plaintext"];
+    4 [label="null\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
+    5 [label="a'initial\n(global)\n<VId: 5>",shape="plaintext",fontcolor="red"];
+    6 [label="a'final\n(global)\n<VId: 6>",shape="plaintext",fontcolor="blue"];
+    8 [label="b'initial\n<VId: 8>",shape="plaintext",fontcolor="red"];
+    9 [label="b'final\n<VId: 9>",shape="plaintext"];
+    11 [label="a := 100;\n<VId: 11>"];
+    12 [label="pragma assert (a > b);<<<pragma check (assert, a > b);>>>\n<VId: 12>"];
 
     1 ->  11 [arrowType="normal"];
     1 ->  12 [arrowType="normal"];
@@ -130,29 +130,29 @@ digraph G {
 // subprogram_halt_cfg
 digraph G {
    graph [splines=True];
-    1 [label="start",shape="plaintext"];
-    2 [label="end",shape="plaintext"];
-    4 [label="null",shape="plaintext",fontcolor="chartreuse"];
-    5 [label="state'initial\n(global)",shape="plaintext"];
-    6 [label="state'final\n(global)",shape="plaintext",fontcolor="blue"];
-    7 [label="speed'initial\n(global)",shape="plaintext"];
-    8 [label="speed'final\n(global)",shape="plaintext",fontcolor="blue"];
-    9 [label="precondition speed_is_valid",shape="plaintext"];
-    11 [label="pragma loop_invariant (speed_is_valid);<<<pragma check (loop_invariant, speed_is_valid);>>>"];
-    12 [label="if speed > 0\nLoops:&nbsp;L_1",shape="diamond"];
-    13 [label="call state_update\nLoops:&nbsp;L_1",shape="box"];
-    14 [label="i'in&nbsp;:=&nbsp;brake",shape="plaintext"];
-    15 [label="global&nbsp;State'in",shape="plaintext"];
-    16 [label="global&nbsp;Speed'in",shape="plaintext"];
-    17 [label="global&nbsp;State'out",shape="plaintext"];
-    18 [label="global&nbsp;Speed'out",shape="plaintext"];
-    19 [label="call state_update\nLoops:&nbsp;L_1",shape="box"];
-    20 [label="i'in&nbsp;:=&nbsp;accelerate",shape="plaintext"];
-    21 [label="global&nbsp;State'in",shape="plaintext"];
-    22 [label="global&nbsp;Speed'in",shape="plaintext"];
-    23 [label="global&nbsp;State'out",shape="plaintext"];
-    24 [label="global&nbsp;Speed'out",shape="plaintext"];
-    25 [label="while state /= still",shape="diamond"];
+    1 [label="start\n<VId: 1>",shape="plaintext"];
+    2 [label="end\n<VId: 2>",shape="plaintext"];
+    4 [label="null\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
+    5 [label="state'initial\n(global)\n<VId: 5>",shape="plaintext"];
+    6 [label="state'final\n(global)\n<VId: 6>",shape="plaintext",fontcolor="blue"];
+    7 [label="speed'initial\n(global)\n<VId: 7>",shape="plaintext"];
+    8 [label="speed'final\n(global)\n<VId: 8>",shape="plaintext",fontcolor="blue"];
+    9 [label="precondition speed_is_valid\n<VId: 9>",shape="plaintext"];
+    11 [label="pragma loop_invariant (speed_is_valid);<<<pragma check (loop_invariant, speed_is_valid);>>>\n<VId: 11>"];
+    12 [label="if speed > 0\nLoops:&nbsp;L_1\n<VId: 12>",shape="diamond"];
+    13 [label="call state_update\nLoops:&nbsp;L_1\n<VId: 13>",shape="box"];
+    14 [label="i'in&nbsp;:=&nbsp;brake\n<VId: 14>",shape="plaintext"];
+    15 [label="global&nbsp;State'in\n<VId: 15>",shape="plaintext"];
+    16 [label="global&nbsp;Speed'in\n<VId: 16>",shape="plaintext"];
+    17 [label="global&nbsp;State'out\n<VId: 17>",shape="plaintext"];
+    18 [label="global&nbsp;Speed'out\n<VId: 18>",shape="plaintext"];
+    19 [label="call state_update\nLoops:&nbsp;L_1\n<VId: 19>",shape="box"];
+    20 [label="i'in&nbsp;:=&nbsp;accelerate\n<VId: 20>",shape="plaintext"];
+    21 [label="global&nbsp;State'in\n<VId: 21>",shape="plaintext"];
+    22 [label="global&nbsp;Speed'in\n<VId: 22>",shape="plaintext"];
+    23 [label="global&nbsp;State'out\n<VId: 23>",shape="plaintext"];
+    24 [label="global&nbsp;Speed'out\n<VId: 24>",shape="plaintext"];
+    25 [label="while state /= still\n<VId: 25>",shape="diamond"];
 
     1 ->  9 [arrowType="normal"];
     2 ->  6 [arrowType="normal"];
@@ -182,28 +182,28 @@ digraph G {
 // subprogram_halt_pdg
 digraph G {
    graph [splines=True];
-    1 [label="start",shape="plaintext"];
-    4 [label="null",shape="plaintext",fontcolor="chartreuse"];
-    5 [label="state'initial\n(global)",shape="plaintext"];
-    6 [label="state'final\n(global)",shape="plaintext",fontcolor="blue"];
-    7 [label="speed'initial\n(global)",shape="plaintext"];
-    8 [label="speed'final\n(global)",shape="plaintext",fontcolor="blue"];
-    9 [label="precondition speed_is_valid",shape="plaintext"];
-    11 [label="pragma loop_invariant (speed_is_valid);<<<pragma check (loop_invariant, speed_is_valid);>>>"];
-    12 [label="if speed > 0\nLoops:&nbsp;L_1",shape="diamond"];
-    13 [label="call state_update\nLoops:&nbsp;L_1",shape="box"];
-    14 [label="i'in&nbsp;:=&nbsp;brake",shape="plaintext"];
-    15 [label="global&nbsp;State'in",shape="plaintext"];
-    16 [label="global&nbsp;Speed'in",shape="plaintext"];
-    17 [label="global&nbsp;State'out",shape="plaintext"];
-    18 [label="global&nbsp;Speed'out",shape="plaintext"];
-    19 [label="call state_update\nLoops:&nbsp;L_1",shape="box"];
-    20 [label="i'in&nbsp;:=&nbsp;accelerate",shape="plaintext"];
-    21 [label="global&nbsp;State'in",shape="plaintext"];
-    22 [label="global&nbsp;Speed'in",shape="plaintext"];
-    23 [label="global&nbsp;State'out",shape="plaintext"];
-    24 [label="global&nbsp;Speed'out",shape="plaintext"];
-    25 [label="while state /= still",shape="diamond"];
+    1 [label="start\n<VId: 1>",shape="plaintext"];
+    4 [label="null\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
+    5 [label="state'initial\n(global)\n<VId: 5>",shape="plaintext"];
+    6 [label="state'final\n(global)\n<VId: 6>",shape="plaintext",fontcolor="blue"];
+    7 [label="speed'initial\n(global)\n<VId: 7>",shape="plaintext"];
+    8 [label="speed'final\n(global)\n<VId: 8>",shape="plaintext",fontcolor="blue"];
+    9 [label="precondition speed_is_valid\n<VId: 9>",shape="plaintext"];
+    11 [label="pragma loop_invariant (speed_is_valid);<<<pragma check (loop_invariant, speed_is_valid);>>>\n<VId: 11>"];
+    12 [label="if speed > 0\nLoops:&nbsp;L_1\n<VId: 12>",shape="diamond"];
+    13 [label="call state_update\nLoops:&nbsp;L_1\n<VId: 13>",shape="box"];
+    14 [label="i'in&nbsp;:=&nbsp;brake\n<VId: 14>",shape="plaintext"];
+    15 [label="global&nbsp;State'in\n<VId: 15>",shape="plaintext"];
+    16 [label="global&nbsp;Speed'in\n<VId: 16>",shape="plaintext"];
+    17 [label="global&nbsp;State'out\n<VId: 17>",shape="plaintext"];
+    18 [label="global&nbsp;Speed'out\n<VId: 18>",shape="plaintext"];
+    19 [label="call state_update\nLoops:&nbsp;L_1\n<VId: 19>",shape="box"];
+    20 [label="i'in&nbsp;:=&nbsp;accelerate\n<VId: 20>",shape="plaintext"];
+    21 [label="global&nbsp;State'in\n<VId: 21>",shape="plaintext"];
+    22 [label="global&nbsp;Speed'in\n<VId: 22>",shape="plaintext"];
+    23 [label="global&nbsp;State'out\n<VId: 23>",shape="plaintext"];
+    24 [label="global&nbsp;Speed'out\n<VId: 24>",shape="plaintext"];
+    25 [label="while state /= still\n<VId: 25>",shape="diamond"];
 
     1 ->  9 [arrowType="normal"];
     1 ->  25 [arrowType="normal"];
@@ -271,16 +271,16 @@ digraph G {
 // subprogram_speed_is_valid_cfg
 digraph G {
    graph [splines=True];
-    1 [label="start",shape="plaintext"];
-    2 [label="end",shape="plaintext"];
-    4 [label="null",shape="plaintext",fontcolor="chartreuse"];
-    5 [label="state'initial\n(global)",shape="plaintext"];
-    6 [label="state'final\n(global)",shape="plaintext",fontcolor="red"];
-    7 [label="speed'initial\n(global)",shape="plaintext"];
-    8 [label="speed'final\n(global)",shape="plaintext",fontcolor="red"];
-    9 [label="speed_is_valid'initial",shape="plaintext",fontcolor="red"];
-    10 [label="speed_is_valid'final",shape="plaintext",fontcolor="blue"];
-    13 [label="return (case state is when still => speed = 0, when forward => speed >0, when backward => speed < 0);"];
+    1 [label="start\n<VId: 1>",shape="plaintext"];
+    2 [label="end\n<VId: 2>",shape="plaintext"];
+    4 [label="null\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
+    5 [label="state'initial\n(global)\n<VId: 5>",shape="plaintext"];
+    6 [label="state'final\n(global)\n<VId: 6>",shape="plaintext",fontcolor="red"];
+    7 [label="speed'initial\n(global)\n<VId: 7>",shape="plaintext"];
+    8 [label="speed'final\n(global)\n<VId: 8>",shape="plaintext",fontcolor="red"];
+    9 [label="speed_is_valid'initial\n<VId: 9>",shape="plaintext",fontcolor="red"];
+    10 [label="speed_is_valid'final\n<VId: 10>",shape="plaintext",fontcolor="blue"];
+    13 [label="return (case state is when still => speed = 0, when forward => speed >0, when backward => speed < 0);\n<VId: 13>"];
 
     1 ->  13 [arrowType="normal"];
     2 ->  6 [arrowType="normal"];
@@ -295,15 +295,15 @@ digraph G {
 // subprogram_speed_is_valid_pdg
 digraph G {
    graph [splines=True];
-    1 [label="start",shape="plaintext"];
-    4 [label="null",shape="plaintext",fontcolor="chartreuse"];
-    5 [label="state'initial\n(global)",shape="plaintext"];
-    6 [label="state'final\n(global)",shape="plaintext",fontcolor="red"];
-    7 [label="speed'initial\n(global)",shape="plaintext"];
-    8 [label="speed'final\n(global)",shape="plaintext",fontcolor="red"];
-    9 [label="speed_is_valid'initial",shape="plaintext",fontcolor="red"];
-    10 [label="speed_is_valid'final",shape="plaintext",fontcolor="blue"];
-    13 [label="return (case state is when still => speed = 0, when forward => speed >0, when backward => speed < 0);"];
+    1 [label="start\n<VId: 1>",shape="plaintext"];
+    4 [label="null\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
+    5 [label="state'initial\n(global)\n<VId: 5>",shape="plaintext"];
+    6 [label="state'final\n(global)\n<VId: 6>",shape="plaintext",fontcolor="red"];
+    7 [label="speed'initial\n(global)\n<VId: 7>",shape="plaintext"];
+    8 [label="speed'final\n(global)\n<VId: 8>",shape="plaintext",fontcolor="red"];
+    9 [label="speed_is_valid'initial\n<VId: 9>",shape="plaintext",fontcolor="red"];
+    10 [label="speed_is_valid'final\n<VId: 10>",shape="plaintext",fontcolor="blue"];
+    13 [label="return (case state is when still => speed = 0, when forward => speed >0, when backward => speed < 0);\n<VId: 13>"];
 
     1 ->  13 [arrowType="normal"];
     5 ->  6 [arrowType="normal",color="red"];
@@ -316,28 +316,28 @@ digraph G {
 // subprogram_state_update_cfg
 digraph G {
    graph [splines=True];
-    1 [label="start",shape="plaintext"];
-    2 [label="end",shape="plaintext"];
-    4 [label="null",shape="plaintext",fontcolor="chartreuse"];
-    5 [label="i'initial",shape="plaintext"];
-    6 [label="i'final",shape="plaintext",fontcolor="red"];
-    7 [label="state'initial\n(global)",shape="plaintext"];
-    8 [label="state'final\n(global)",shape="plaintext",fontcolor="blue"];
-    9 [label="speed'initial\n(global)",shape="plaintext"];
-    10 [label="speed'final\n(global)",shape="plaintext",fontcolor="blue"];
-    11 [label="precondition speed_is_valid",shape="plaintext"];
-    13 [label="if i = accelerate",shape="diamond"];
-    14 [label="if speed < speed_type'last<<<100>>>",shape="diamond"];
-    15 [label="speed := {speed + 1};"];
-    16 [label="elsif i = brake",shape="diamond"];
-    17 [label="if speed > speed_type'first<<<-100>>>",shape="diamond"];
-    18 [label="speed := {speed - 1};"];
-    19 [label="if speed = 0",shape="diamond"];
-    20 [label="state := still;"];
-    21 [label="elsif speed = 1 and then i = accelerate",shape="diamond"];
-    22 [label="state := forward;"];
-    23 [label="elsif speed = -1<<<-1>>> and then i = accelerate",shape="diamond"];
-    24 [label="state := backward;"];
+    1 [label="start\n<VId: 1>",shape="plaintext"];
+    2 [label="end\n<VId: 2>",shape="plaintext"];
+    4 [label="null\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
+    5 [label="i'initial\n<VId: 5>",shape="plaintext"];
+    6 [label="i'final\n<VId: 6>",shape="plaintext",fontcolor="red"];
+    7 [label="state'initial\n(global)\n<VId: 7>",shape="plaintext"];
+    8 [label="state'final\n(global)\n<VId: 8>",shape="plaintext",fontcolor="blue"];
+    9 [label="speed'initial\n(global)\n<VId: 9>",shape="plaintext"];
+    10 [label="speed'final\n(global)\n<VId: 10>",shape="plaintext",fontcolor="blue"];
+    11 [label="precondition speed_is_valid\n<VId: 11>",shape="plaintext"];
+    13 [label="if i = accelerate\n<VId: 13>",shape="diamond"];
+    14 [label="if speed < speed_type'last<<<100>>>\n<VId: 14>",shape="diamond"];
+    15 [label="speed := {speed + 1};\n<VId: 15>"];
+    16 [label="elsif i = brake\n<VId: 16>",shape="diamond"];
+    17 [label="if speed > speed_type'first<<<-100>>>\n<VId: 17>",shape="diamond"];
+    18 [label="speed := {speed - 1};\n<VId: 18>"];
+    19 [label="if speed = 0\n<VId: 19>",shape="diamond"];
+    20 [label="state := still;\n<VId: 20>"];
+    21 [label="elsif speed = 1 and then i = accelerate\n<VId: 21>",shape="diamond"];
+    22 [label="state := forward;\n<VId: 22>"];
+    23 [label="elsif speed = -1<<<-1>>> and then i = accelerate\n<VId: 23>",shape="diamond"];
+    24 [label="state := backward;\n<VId: 24>"];
 
     1 ->  11 [arrowType="normal"];
     2 ->  6 [arrowType="normal"];
@@ -371,27 +371,27 @@ digraph G {
 // subprogram_state_update_pdg
 digraph G {
    graph [splines=True];
-    1 [label="start",shape="plaintext"];
-    4 [label="null",shape="plaintext",fontcolor="chartreuse"];
-    5 [label="i'initial",shape="plaintext"];
-    6 [label="i'final",shape="plaintext",fontcolor="red"];
-    7 [label="state'initial\n(global)",shape="plaintext"];
-    8 [label="state'final\n(global)",shape="plaintext",fontcolor="blue"];
-    9 [label="speed'initial\n(global)",shape="plaintext"];
-    10 [label="speed'final\n(global)",shape="plaintext",fontcolor="blue"];
-    11 [label="precondition speed_is_valid",shape="plaintext"];
-    13 [label="if i = accelerate",shape="diamond"];
-    14 [label="if speed < speed_type'last<<<100>>>",shape="diamond"];
-    15 [label="speed := {speed + 1};"];
-    16 [label="elsif i = brake",shape="diamond"];
-    17 [label="if speed > speed_type'first<<<-100>>>",shape="diamond"];
-    18 [label="speed := {speed - 1};"];
-    19 [label="if speed = 0",shape="diamond"];
-    20 [label="state := still;"];
-    21 [label="elsif speed = 1 and then i = accelerate",shape="diamond"];
-    22 [label="state := forward;"];
-    23 [label="elsif speed = -1<<<-1>>> and then i = accelerate",shape="diamond"];
-    24 [label="state := backward;"];
+    1 [label="start\n<VId: 1>",shape="plaintext"];
+    4 [label="null\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
+    5 [label="i'initial\n<VId: 5>",shape="plaintext"];
+    6 [label="i'final\n<VId: 6>",shape="plaintext",fontcolor="red"];
+    7 [label="state'initial\n(global)\n<VId: 7>",shape="plaintext"];
+    8 [label="state'final\n(global)\n<VId: 8>",shape="plaintext",fontcolor="blue"];
+    9 [label="speed'initial\n(global)\n<VId: 9>",shape="plaintext"];
+    10 [label="speed'final\n(global)\n<VId: 10>",shape="plaintext",fontcolor="blue"];
+    11 [label="precondition speed_is_valid\n<VId: 11>",shape="plaintext"];
+    13 [label="if i = accelerate\n<VId: 13>",shape="diamond"];
+    14 [label="if speed < speed_type'last<<<100>>>\n<VId: 14>",shape="diamond"];
+    15 [label="speed := {speed + 1};\n<VId: 15>"];
+    16 [label="elsif i = brake\n<VId: 16>",shape="diamond"];
+    17 [label="if speed > speed_type'first<<<-100>>>\n<VId: 17>",shape="diamond"];
+    18 [label="speed := {speed - 1};\n<VId: 18>"];
+    19 [label="if speed = 0\n<VId: 19>",shape="diamond"];
+    20 [label="state := still;\n<VId: 20>"];
+    21 [label="elsif speed = 1 and then i = accelerate\n<VId: 21>",shape="diamond"];
+    22 [label="state := forward;\n<VId: 22>"];
+    23 [label="elsif speed = -1<<<-1>>> and then i = accelerate\n<VId: 23>",shape="diamond"];
+    24 [label="state := backward;\n<VId: 24>"];
 
     1 ->  11 [arrowType="normal"];
     1 ->  13 [arrowType="normal"];

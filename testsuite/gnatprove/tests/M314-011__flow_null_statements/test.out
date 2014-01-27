@@ -1,10 +1,10 @@
 // package_body_test_cfg
 digraph G {
    graph [splines=True];
-    1 [label="start",shape="plaintext"];
-    2 [label="end",shape="plaintext"];
-    4 [label="null",shape="plaintext",fontcolor="chartreuse"];
-    7 [label="null;"];
+    1 [label="start\n<VId: 1>",shape="plaintext"];
+    2 [label="end\n<VId: 2>",shape="plaintext"];
+    4 [label="null\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
+    7 [label="null;\n<VId: 7>"];
 
     1 ->  7 [arrowType="normal"];
     7 ->  2 [arrowType="normal"];
@@ -13,9 +13,9 @@ digraph G {
 // package_body_test_pdg
 digraph G {
    graph [splines=True];
-    1 [label="start",shape="plaintext"];
-    4 [label="null",shape="plaintext",fontcolor="chartreuse"];
-    7 [label="null;"];
+    1 [label="start\n<VId: 1>",shape="plaintext"];
+    4 [label="null\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
+    7 [label="null;\n<VId: 7>"];
 
     1 ->  7 [arrowType="normal"];
 }
@@ -23,10 +23,10 @@ digraph G {
 // subprogram_null_statement_cfg
 digraph G {
    graph [splines=True];
-    1 [label="start",shape="plaintext"];
-    2 [label="end",shape="plaintext"];
-    4 [label="null",shape="plaintext",fontcolor="chartreuse"];
-    7 [label="null;"];
+    1 [label="start\n<VId: 1>",shape="plaintext"];
+    2 [label="end\n<VId: 2>",shape="plaintext"];
+    4 [label="null\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
+    7 [label="null;\n<VId: 7>"];
 
     1 ->  7 [arrowType="normal"];
     7 ->  2 [arrowType="normal"];
@@ -35,9 +35,9 @@ digraph G {
 // subprogram_null_statement_pdg
 digraph G {
    graph [splines=True];
-    1 [label="start",shape="plaintext"];
-    4 [label="null",shape="plaintext",fontcolor="chartreuse"];
-    7 [label="null;"];
+    1 [label="start\n<VId: 1>",shape="plaintext"];
+    4 [label="null\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
+    7 [label="null;\n<VId: 7>"];
 
     1 ->  7 [arrowType="normal"];
 }

@@ -334,6 +334,9 @@ package Flow_Types is
    --  V_Attributes
    ----------------------------------------------------------------------
 
+   --  If you change this type, please also update Print_Graph_Vertex in
+   --  Flow.
+
    type Pretty_Print_Kind_T is (Pretty_Print_Null,
                                 Pretty_Print_Initializes_Aspect);
 
@@ -430,9 +433,9 @@ package Flow_Types is
 
       Parameter_Actual    : Flow_Id;
       Parameter_Formal    : Flow_Id;
-      --  For nodes where Is_Parameter is true, this keeps track of
-      --  which parameter this is. This is also quite useful for
-      --  pretty-printing.
+      --  For nodes where Is_Parameter is true, this keeps track of which
+      --  parameter this is. This is also quite useful for pretty-printing.
+      --  For nodes with Is_Global_Parameter only Parameter_Formal is set.
 
       Default_Init_Var    : Flow_Id;
       Default_Init_Val    : Node_Id;
