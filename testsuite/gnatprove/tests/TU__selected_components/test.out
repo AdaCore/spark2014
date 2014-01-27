@@ -1,0 +1,9 @@
+p.adb:6:15: "Constraint_Error" would have been raised at run time
+p.adb:6:15: component not present in type "RT" defined at p.ads:19
+p.adb:22:15: "Constraint_Error" would have been raised at run time
+p.adb:22:15: component not present in type "RF" defined at p.ads:20
+   compilation of p.adb failed
+
+
+gnatprove: error during frame condition computation, aborting.
+gprbuild: *** compilation phase failed

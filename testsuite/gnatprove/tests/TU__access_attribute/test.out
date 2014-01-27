@@ -1,0 +1,13 @@
+taa.ads:8:09: access type is not allowed in SPARK
+taa.ads:8:09: violation of aspect SPARK_Mode at line 2
+taa.ads:10:04: "aliased" is not allowed in SPARK
+taa.ads:10:04: violation of aspect SPARK_Mode at line 2
+taa.ads:14:04: access type is not allowed in SPARK
+taa.ads:14:04: violation of aspect SPARK_Mode at line 2
+taa.ads:14:14: access to "INTEGER" is not allowed in SPARK
+taa.ads:14:14: violation of aspect SPARK_Mode at line 2
+   compilation of taa.ads failed
+
+
+gnatprove: error during analysis and translation to intermediate language, aborting.
+gprbuild: *** compilation phase failed

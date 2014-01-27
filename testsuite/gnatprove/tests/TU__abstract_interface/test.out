@@ -1,0 +1,28 @@
+queue.ads:4:09: tagged type is not allowed in SPARK
+queue.ads:4:09: violation of aspect SPARK_Mode at line 2
+queue.ads:6:54: abstract subprogram is not allowed in SPARK
+queue.ads:6:54: violation of aspect SPARK_Mode at line 2
+queue.ads:9:47: abstract subprogram is not allowed in SPARK
+queue.ads:9:47: violation of aspect SPARK_Mode at line 2
+queue.ads:11:51: abstract subprogram is not allowed in SPARK
+queue.ads:11:51: violation of aspect SPARK_Mode at line 2
+queue.ads:13:51: abstract subprogram is not allowed in SPARK
+queue.ads:13:51: violation of aspect SPARK_Mode at line 2
+sets.ads:6:09: tagged type is not allowed in SPARK
+sets.ads:6:09: violation of aspect SPARK_Mode at line 2
+sets.ads:8:33: abstract subprogram is not allowed in SPARK
+sets.ads:8:33: violation of aspect SPARK_Mode at line 2
+sets.ads:10:53: abstract subprogram is not allowed in SPARK
+sets.ads:10:53: violation of aspect SPARK_Mode at line 2
+sets.ads:12:60: abstract subprogram is not allowed in SPARK
+sets.ads:12:60: violation of aspect SPARK_Mode at line 2
+sets.ads:14:60: abstract subprogram is not allowed in SPARK
+sets.ads:14:60: violation of aspect SPARK_Mode at line 2
+sets.ads:17:44: abstract subprogram is not allowed in SPARK
+sets.ads:17:44: violation of aspect SPARK_Mode at line 2
+   compilation of queue.ads failed
+   compilation of sets.ads failed
+
+
+gnatprove: error during analysis and translation to intermediate language, aborting.
+gprbuild: *** compilation phase failed
