@@ -6,6 +6,9 @@ analysis mode on a number of examples to illustrate the various flow
 errors and warnings that might be raised. Note the use of
 ``pragma SPARK_Mode`` to identify each example as SPARK.
 
+The Global and Depends contract
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 Here is the specification of a swap subprogram along with flow
 analysis contracts. The ``Global`` aspect is ``null``, specifying
 that this subprogram does not reference any global variables and,
@@ -48,6 +51,9 @@ error.
    :language: none
    :linenos:
 
+Common messages: Ineffective statements and unused variables
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 This implementation contains an ineffective statement (the
 initialization of ``Old_X`` at declaration) and an unused variable.
 
@@ -74,3 +80,49 @@ This results in the following flow errors being reported by |GNATprove|.
 .. literalinclude:: gnatprove_by_example/results/swap_incorrect_d.flow
    :language: none
    :linenos:
+
+Analysis of non-returning subprograms
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+It is possible to mark subprograms in SPARK 2014 as non-returning, using
+the Ada 2014 No_Return aspect. In SPARK 2014 contracts are always specified
+with respect to the condition that the subprogram terminates, and the flow
+contracts are no exception.
+
+Consider the following example:
+
+.. literalinclude:: gnatprove_by_example/examples/no_return_a.adb
+   :language: ada
+   :linenos:
+
+Flow analysis does, by default, not know that Halt does not actually
+return, so the following error messages are produced (it helps to imagine
+that the call to Halt is a null statement):
+
+.. literalinclude:: gnatprove_by_example/results/no_return_a.flow
+   :language: none
+   :linenos:
+
+To resolve this, it is possible to mark a subprogram as non-returning, as
+shown in the revised example below:
+
+.. literalinclude:: gnatprove_by_example/examples/no_return_b.adb
+   :language: ada
+   :linenos:
+
+The analysis of the corrected program yields no errors or warnings, and
+flow analysis also checks that any subprogram marked with No_Return either
+always throws an exception or always loops forever.
+
+A special case are subprograms which implement the main control loop:
+infinite loops in subprograms with outputs (globals or parameters of mode
+out or in out) are treated differently. Consider the following example:
+
+.. literalinclude:: gnatprove_by_example/examples/main3.adb
+   :language: ada
+   :linenos:
+
+Here, we have implemented the main control loop in the subprogram Control,
+but although the subprogram is marked to not return flow analysis does take
+the overall effects into account which results in "as expected" dependency
+relations.
