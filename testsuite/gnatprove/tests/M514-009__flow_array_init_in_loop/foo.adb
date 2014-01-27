@@ -1,0 +1,199 @@
+package body Foo
+is
+
+   type Index_T is range 1 .. 10;
+
+   type Array_T is array (Index_T) of Integer;
+   type U_Array_T is array (Index_T range <>) of Integer;
+
+   type Record_T is record
+      A : Array_T;
+      B : Boolean;
+   end record;
+
+   type M_Array_T is array (Index_T, Index_T) of Integer;
+
+   procedure Test_01_Ok (A : out Array_T)
+   is
+   begin
+      for I in Index_T loop
+         A (I) := Integer (I);
+      end loop;
+   end Test_01_Ok;
+
+   procedure Test_02_Ok (A : out U_Array_T)
+   is
+   begin
+      for I in A'Range loop
+         A (I) := Integer (I);
+      end loop;
+   end Test_02_Ok;
+
+   procedure Test_03_E (A : out Array_T)
+   is
+   begin
+      for I in Index_T loop
+         A (I) := A (I);
+      end loop;
+   end Test_03_E;
+
+   procedure Test_04_E (A : out Array_T)
+   is
+   begin
+      for I in Index_T loop
+         if I > 5 then
+            A (I) := 0;
+         end if;
+      end loop;
+   end Test_04_E;
+
+   procedure Test_05_Ok (A : out Array_T)
+   is
+   begin
+      for I in Index_T loop
+         if I > 5 then
+            A (I) := 0;
+         else
+            A (I) := 1;
+         end if;
+      end loop;
+   end Test_05_Ok;
+
+   procedure Test_06_E (A : out Array_T)
+   is
+   begin
+      for I in Index_T loop
+         if A (I) > 5 then
+            A (I) := 0;
+         else
+            A (I) := 1;
+         end if;
+      end loop;
+   end Test_06_E;
+
+   procedure Test_07_E (A :    out Array_T;
+                        B : in     Array_T;
+                        C : in out Boolean)
+   is
+   begin
+      for I in Index_T loop
+         A (I) := 0;
+         if A = B then
+            C := True;
+         end if;
+      end loop;
+   end Test_07_E;
+
+   procedure Test_07_Ok (A : out Array_T)
+   is
+   begin
+      for I in Index_T loop
+         A (I) := 5;
+         pragma Loop_Invariant (for all N in Index_T range Index_T'First .. I
+                                  => A (N) > 0);
+      end loop;
+   end Test_07_Ok;
+
+   procedure Test_08_E (A : out Array_T)
+   is
+   begin
+      for I in Index_T loop
+         A (I) := 0;
+         A (I) := A (I + 1);
+      end loop;
+   end Test_08_E;
+
+   procedure Test_09_E (A : out Array_T)
+   is
+   begin
+      for I in Index_T loop
+         A (I) := 0;
+         if I > 5 then
+            return;
+         end if;
+      end loop;
+   end Test_09_E;
+
+   procedure Test_10_Ok (A : out M_Array_T)
+   is
+   begin
+      for I in Index_T loop
+         for J in Index_T loop
+            A (I, J) := Integer (I) + Integer (J);
+         end loop;
+      end loop;
+   end Test_10_Ok;
+
+   procedure Test_11_Maybe (A : out M_Array_T)
+   is
+   begin
+      --  Dubious if we want to support this?
+      for J in Index_T loop
+         for I in Index_T loop
+            A (I, J) := Integer (I) + Integer (J);
+         end loop;
+      end loop;
+   end Test_11_Maybe;
+
+   procedure Test_12_E (A : out M_Array_T)
+   is
+   begin
+      for I in Index_T loop
+         A (I, I) := Integer (I);
+      end loop;
+   end Test_12_E;
+
+   procedure Test_13_E (A : out M_Array_T)
+   is
+   begin
+      for I in Index_T loop
+         A (I, 1) := Integer (I);
+      end loop;
+   end Test_13_E;
+
+   procedure Test_14_E (A : out Array_T;
+                        B : out Integer)
+   is
+   begin
+      for I in Index_T loop
+         A (I) := 0;
+         B     := A (I + 1);
+      end loop;
+   end Test_14_E;
+
+   procedure Test_15_Maybe (A : out Array_T;
+                            B : out Integer)
+   is
+   begin
+      for I in Index_T loop
+         A (I) := 0;
+         B     := A (I);
+      end loop;
+   end Test_15_Maybe;
+
+   procedure Test_15_E (A : out Array_T)
+   is
+   begin
+      for I in Index_T range 2 .. Index_T'Last loop
+         A (I) := 0;
+      end loop;
+   end Test_15_E;
+
+   procedure Test_16_E (A : out Array_T;
+                        N :     Index_T)
+   is
+   begin
+      for I in Index_T range Index_T'First .. N loop
+         A (I) := 0;
+      end loop;
+   end Test_16_E;
+
+   procedure Test_17_Maybe (A : out Array_T)
+   is
+   begin
+      for I in 1 .. 10 loop
+         A (Index_T (I)) := 0;
+      end loop;
+   end Test_17_Maybe;
+
+end Foo;
