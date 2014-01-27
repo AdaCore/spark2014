@@ -203,6 +203,10 @@ package Why.Gen.Names is
       --  replaced when cloning module Floating
       WNE_Float_Round_Tmp,
 
+      --  Predecessor and successor functions for a floating-point type
+      WNE_Float_Pred,
+      WNE_Float_Succ,
+
       WNE_Ignore,
       WNE_Of_Array,
       WNE_Of_Base,

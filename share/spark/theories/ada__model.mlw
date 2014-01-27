@@ -455,6 +455,19 @@ module Floating_Point_Base
     forall x : t [to_real x].
       of_real (to_real(x)) = x
 
+  (* Next and previous representable reals. The functions return respectively
+     the representable real greater than or lower than the argument x, which
+     may or not be representable. *)
+
+  function next_representable (x : real) : real
+  function prev_representable (x : real) : real
+
+  axiom next_representable_def :
+    forall x : real [next_representable x]. next_representable x >. x
+
+  axiom prev_representable_def :
+    forall x : real [prev_representable x]. prev_representable x <. x
+
   function attr__ATTRIBUTE_IMAGE real : __image
 
   predicate attr__ATTRIBUTE_VALUE__pre_check (x : __image)

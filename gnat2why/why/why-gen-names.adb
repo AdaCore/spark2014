@@ -549,6 +549,8 @@ package body Why.Gen.Names is
          when WNE_Fixed_Point_Mult_Int => return "fxp_mult_int";
          when WNE_Float_Round   => return "round_real";
          when WNE_Float_Round_Tmp => return "round_real_tmp";
+         when WNE_Float_Pred   => return "prev_representable";
+         when WNE_Float_Succ   => return "next_representable";
          when WNE_Array_Access => return "get";
          when WNE_Base_Type    => return "base_type";
          when WNE_Array_Elts   => return "elts";

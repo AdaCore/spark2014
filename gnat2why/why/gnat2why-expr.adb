@@ -33,7 +33,6 @@ with Ada.Containers;         use Ada.Containers;
 with Atree;                  use Atree;
 with Einfo;                  use Einfo;
 with Errout;                 use Errout;
-with Eval_Fat;
 with Namet;                  use Namet;
 with Nlists;                 use Nlists;
 with Opt;
@@ -3817,19 +3816,56 @@ package body Gnat2Why.Expr is
             T := Transform_Attribute_Old (Var, Domain, Params);
 
          when Attribute_Pred | Attribute_Succ =>
-            declare
-               Op     : constant EW_Binary_Op :=
-                          (if Attr_Id = Attribute_Succ then
-                             EW_Add
-                           else
-                             EW_Substract);
-               Old    : W_Expr_Id;
-               Offset : W_Expr_Id;
-               A_Type : constant Entity_Id := Etype (Var);
-               W_Type : EW_Scalar;
-            begin
-               case Ekind (Etype (Var)) is
-                  when Discrete_Kind =>
+
+            --  'Succ and 'Pred on floating-point types are modelled as calls
+            --  to logic functions next_representable and prev_representable
+            --  for the corresponding type. The value of these functions should
+            --  only be specified for values of the argument that do not lead
+            --  to an overflow, so that a possible overflow check failure
+            --  may be detected when computing Float'Succ(Float'Last) or
+            --  Float'Pred(Float'First).
+
+            if Ekind (Etype (Var)) in Float_Kind then
+               declare
+                  Oper : constant Why_Name_Enum :=
+                    (if Attr_Id = Attribute_Pred then
+                       WNE_Float_Pred
+                     else
+                       WNE_Float_Succ);
+                  Name : constant W_Identifier_Id :=
+                    Prefix (M        => E_Module (Etype (Var)),
+                            W        => Oper,
+                            Ada_Node => Expr);
+                  Arg : constant W_Expr_Id :=
+                    Transform_Expr (First (Expressions (Expr)),
+                                    EW_Real_Type,
+                                    Domain,
+                                    Params);
+               begin
+                  T := New_Call (Ada_Node => Expr,
+                                 Domain   => Domain,
+                                 Name     => Name,
+                                 Args     => (1 => Arg),
+                                 Typ      => EW_Real_Type);
+               end;
+
+            --  For all discrete and fixed-point types, 'Succ is modelled as
+            --  adding 1 to the representation value, and 'Pred is modelled
+            --  as subtracting 1 to the representation value.
+
+            else
+               declare
+                  Op     : constant EW_Binary_Op :=
+                    (if Attr_Id = Attribute_Succ then
+                        EW_Add
+                     else
+                        EW_Substract);
+                  Old    : W_Expr_Id;
+                  Offset : W_Expr_Id;
+                  A_Type : constant Entity_Id := Etype (Var);
+                  W_Type : EW_Scalar;
+               begin
+                  if Ekind (Etype (Var)) in Discrete_Kind then
                      if Is_Standard_Boolean_Type (A_Type) then
                         W_Type := EW_Bool;
                         Ada.Text_IO.Put_Line
@@ -3841,48 +3877,24 @@ package body Gnat2Why.Expr is
                         Offset := New_Integer_Constant (Value => Uint_1);
                      end if;
 
-                  when Float_Kind =>
-                     W_Type := EW_Real;
-
-                     --  ??? This is not strictly correct; F'Succ (A) is
-                     --  usually different from A + F'Succ (0.0). But the
-                     --  correct computation will be much more complicated;
-                     --  and, as we map floating points to reals, our model
-                     --  is quite loose anyway.
-
-                     Offset :=
-                       New_Real_Constant
-                         (Value =>
-                            Eval_Fat.Succ
-                              (Root_Type (A_Type),
-                               Ureal_0));
-
-                  when Fixed_Point_Kind =>
+                  else
+                     pragma Assert (Ekind (Etype (Var)) in Fixed_Point_Kind);
                      W_Type := EW_Fixed;
                      Offset := New_Fixed_Constant (Value => Uint_1);
+                  end if;
 
-                  when others =>
-                     --  All possible cases should have been handled
-                     --  before this point.
-                     pragma Assert (False);
-                     null;
-               end case;
+                  Old := Transform_Expr (First (Expressions (Expr)),
+                                         Why_Types (W_Type),
+                                         Domain,
+                                         Params);
 
-               Old :=
-                 Transform_Expr
-                   (First (Expressions (Expr)),
-                    Why_Types (W_Type),
-                    Domain,
-                    Params);
-
-               T :=
-                 New_Binary_Op
-                   (Ada_Node => Expr,
-                    Left     => Old,
-                    Right    => Offset,
-                    Op       => Op,
-                    Op_Type  => W_Type);
-            end;
+                  T := New_Binary_Op (Ada_Node => Expr,
+                                      Left     => Old,
+                                      Right    => Offset,
+                                      Op       => Op,
+                                      Op_Type  => W_Type);
+               end;
+            end if;
 
          when Attribute_Pos =>
             T := Transform_Expr (First (Expressions (Expr)),
@@ -3986,11 +3998,11 @@ package body Gnat2Why.Expr is
                         Name     => Integer_Mod,
                         Args     =>
                           (1 => Transform_Expr (First (Expressions (Expr)),
-                                                EW_Int_Type,
-                                                Domain,
-                                                Params),
+                           EW_Int_Type,
+                           Domain,
+                           Params),
                            2 =>
-                           New_Attribute_Expr
+                              New_Attribute_Expr
                              (Etype (Var), Attribute_Modulus)),
                         Typ   => EW_Int_Type);
 
