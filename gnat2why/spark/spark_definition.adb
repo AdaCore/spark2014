@@ -1173,7 +1173,6 @@ package body SPARK_Definition is
                and then Is_Itype (E) then
                     Associated_Node_For_Itype (E) else Parent (E));
          begin
-            pragma Assert (Present (Parent (Decl)));
             if In_Private_Declarations (Decl) then
                declare
                   Pack_Decl : constant Node_Id := Parent (Parent (Decl));
