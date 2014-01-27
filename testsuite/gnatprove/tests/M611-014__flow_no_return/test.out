@@ -8,7 +8,9 @@ foo.adb:87:07: warning: initialization has no effect
 foo.adb:90:12: warning: unused assignment
 foo.adb:91:10: warning: statement has no effect
 foo.adb:93:09: warning: unused assignment
+main4.adb:47:04: dead code
    compilation of foo.adb failed
+   compilation of main4.adb failed
 
 
 gnatprove: error during analysis of data and information flow, aborting.

@@ -1192,12 +1192,12 @@ package body Flow.Analysis is
       for V of Dead_Code loop
          declare
             Unused : Unbounded_String;
+            A      : constant V_Attributes := FA.CFG.Get_Attributes (V);
          begin
             Error_Msg_Flow (FA        => FA,
                             Tracefile => Unused,
                             Msg       => "dead code",
-                            N         => Get_Direct_Mapping_Id
-                              (FA.CFG.Get_Key (V)),
+                            N         => A.Error_Location,
                             Tag       => "dead_code",
                             Warning   => False);
          end;
