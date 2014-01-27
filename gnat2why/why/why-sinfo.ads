@@ -251,7 +251,8 @@ package Why.Sinfo is
    --  Def         W_Expr_Id
    --  Typ         W_Type_Id
    --
-   --  This node is used to put a label on a term. An example is (old t).
+   --  This node is used to put a label on a term. An example is (at init t).
+   --  The tag "old" has the special syntax (old t).
    --
    --  ------------
    --  -- W_Call --

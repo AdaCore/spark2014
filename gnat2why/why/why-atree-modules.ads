@@ -102,6 +102,10 @@ package Why.Atree.Modules is
    Floating_Round_Single     : W_Identifier_Id;
    Floating_Round_Double     : W_Identifier_Id;
 
+   --  Other identifiers
+
+   Old_Tag                   : Name_Id;
+
    procedure Initialize;
    --  Call this procedure before using any of the entities in this package.
 

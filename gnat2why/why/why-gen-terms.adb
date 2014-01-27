@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Why.Atree.Accessors; use Why.Atree.Accessors;
+with Why.Atree.Modules;   use Why.Atree.Modules;
 with Why.Atree.Tables;    use Why.Atree.Tables;
 with Why.Atree.Traversal; use Why.Atree.Traversal;
 with Why.Conversions;     use Why.Conversions;
@@ -130,7 +131,7 @@ package body Why.Gen.Terms is
    begin
       return New_Tagged (Ada_Node => Get_Ada_Node (+Expr),
                          Def      => Expr,
-                         Tag      => NID (""),
+                         Tag      => Old_Tag,
                          Domain   => Domain,
                          Typ      => Get_Type (Expr));
    end New_Old;

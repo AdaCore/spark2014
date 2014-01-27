@@ -31,10 +31,12 @@ with String_Utils;        use String_Utils;
 with Uintp;               use Uintp;
 
 with Gnat2Why.Nodes;      use Gnat2Why.Nodes;
+with Why.Atree.Accessors; use Why.Atree.Accessors;
+with Why.Atree.Modules;   use Why.Atree.Modules;
 with Why.Ids;             use Why.Ids;
 with Why.Images;          use Why.Images;
 with Why.Conversions;     use Why.Conversions;
-with Why.Atree.Accessors; use Why.Atree.Accessors;
+
 with Ada.Directories;
 with Ada.Direct_IO;
 with GNAT.Regpat;
@@ -1432,16 +1434,15 @@ package body Why.Atree.Sprint is
    begin
       if Tag = No_Name then
          Print_Node (+Get_Def (Node));
-
-      elsif Get_Name_String (Tag) /= "" then
+      elsif Tag = Old_Tag then
+         P (O, "(old ");
+         Print_Node (+Get_Def (Node));
+         P (O, " )");
+      else
          P (O, "(at ");
          Print_Node (+Get_Def (Node));
          P (O, " '");
          P (O, Tag);
-         P (O, " )");
-      else
-         P (O, "(old ");
-         Print_Node (+Get_Def (Node));
          P (O, " )");
       end if;
    end Print_Tagged;

@@ -272,6 +272,10 @@ package body Why.Atree.Modules is
         New_Identifier (Module => Floating_Module,
                         Domain => EW_Term,
                         Symbol => NID ("round_double"));
+
+      --  Other identifiers
+
+      Old_Tag := NID ("old");
    end Initialize;
 
    -------------------------
