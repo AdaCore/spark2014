@@ -1479,7 +1479,7 @@ package body Flow.Control_Flow_Graph is
             FA.CFG.Add_Vertex
               (Direct_Mapping_Id (End_Label (N)),
                Make_Aux_Vertex_Attributes (E_Loc     => N,
-                                           No_Return => True),
+                                           Execution => Infinite_Loop),
                Faux_Exit_V);
 
             --  We now thread this at the back of the connection map
@@ -1728,9 +1728,11 @@ package body Flow.Control_Flow_Graph is
       FA.CFG.Add_Vertex
         (Direct_Mapping_Id (N),
          Make_Aux_Vertex_Attributes
-           (E_Loc => N,
-            No_Return => Nkind (N) = N_Raise_Statement or
-                         Nkind (N) in N_Raise_xxx_Error),
+           (E_Loc     => N,
+            Execution => (if Nkind (N) = N_Raise_Statement or
+                             Nkind (N) in N_Raise_xxx_Error
+                          then Abnormal_Termination
+                          else Normal_Execution)),
          V);
       CM.Include (Union_Id (N), Trivial_Connection (V));
    end Do_Null_Or_Raise_Statement;
@@ -2250,10 +2252,50 @@ package body Flow.Control_Flow_Graph is
    is
       Called_Procedure : constant Entity_Id := Entity (Name (N));
 
-      V        : Flow_Graphs.Vertex_Id;
-
       In_List  : Vertex_Vectors.Vector := Vertex_Vectors.Empty_Vector;
       Out_List : Vertex_Vectors.Vector := Vertex_Vectors.Empty_Vector;
+
+      function Get_Abend_Kind return Execution_Kind_T;
+      --  Infer how the Called_Procedure abnormally ends. If a subprogram
+      --  has an output, we assume that it contains an infinite loop. If it
+      --  does not, we assume its a thinly veiled wrapper around an
+      --  exception raising program.
+      --
+      --  Certainly, if you have a procedure that never returns due to an
+      --  exception, and it is implemented in SPARK, then you will run into
+      --  trouble unless there is nothing of interest going on in it.
+      --
+      --  If we get this wrong, its not the end of the world, as failure is
+      --  safe:
+      --
+      --  A) If the procedure throws an exception, but we think it loops
+      --     forever (because it has outputs), then you might get *extra*
+      --     data dependencies.
+      --
+      --  B) If the procedure loops forever, and:
+      --     i) it has no outputs, its indistinguishable from an exception
+      --     ii) it has outputs we classify it correctly
+      --
+      --  C) If the procedure loops forever but is not in SPARK and we have
+      --     lied about contracts (as in, stated it has no outputs), then
+      --     this is not a "new" failure.
+
+      --------------------
+      -- Get_Abend_Kind --
+      --------------------
+
+      function Get_Abend_Kind return Execution_Kind_T
+      is
+      begin
+         if Out_List.Length > 0 then
+            return Infinite_Loop;
+         else
+            return Abnormal_Termination;
+         end if;
+      end Get_Abend_Kind;
+
+      V        : Flow_Graphs.Vertex_Id;
+
    begin
       --  A vertex for the actual call.
       FA.CFG.Add_Vertex
@@ -2325,11 +2367,10 @@ package body Flow.Control_Flow_Graph is
                   Standard_Exits => Vertex_Sets.Empty_Set));
             Linkup (FA.CFG, Prev, FA.End_Vertex);
             declare
-               Atr : constant V_Attributes :=
-                 FA.CFG.Get_Attributes (Prev)'Update
-                 (No_Return_From_Here => True);
+               Atr : constant V_Attributes := FA.CFG.Get_Attributes (Prev);
             begin
-               FA.CFG.Set_Attributes (Prev, Atr);
+               FA.CFG.Set_Attributes (Prev, Atr'Update
+                                        (Execution => Get_Abend_Kind));
             end;
          else
             CM.Include

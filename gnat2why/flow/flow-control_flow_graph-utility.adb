@@ -139,13 +139,13 @@ package body Flow.Control_Flow_Graph.Utility is
 
    function Make_Aux_Vertex_Attributes
      (E_Loc     : Node_Or_Entity_Id := Empty;
-      No_Return : Boolean           := False)
+      Execution : Execution_Kind_T  := Normal_Execution)
       return V_Attributes
    is
       A : V_Attributes := Null_Attributes;
    begin
-      A.Error_Location      := E_Loc;
-      A.No_Return_From_Here := No_Return;
+      A.Error_Location := E_Loc;
+      A.Execution      := Execution;
 
       return A;
    end Make_Aux_Vertex_Attributes;

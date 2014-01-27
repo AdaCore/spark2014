@@ -995,7 +995,7 @@ package body Flow.Analysis is
          is
             Atr : constant V_Attributes := FA.CFG.Get_Attributes (V);
          begin
-            if Atr.No_Return_From_Here then
+            if Atr.Execution /= Normal_Execution then
                TV := Flow_Graphs.Skip_Children;
             elsif V = FA.End_Vertex then
                Dead_End := False;
@@ -1161,7 +1161,7 @@ package body Flow.Analysis is
       begin
          Dead_Code.Exclude (V);
 
-         if Atr.No_Return_From_Here then
+         if Atr.Execution /= Normal_Execution then
             TV := Flow_Graphs.Skip_Children;
          else
             TV := Flow_Graphs.Continue;
@@ -1224,7 +1224,7 @@ package body Flow.Analysis is
       begin
          if V = FA.End_Vertex then
             Ins := Flow_Graphs.Found_Destination;
-         elsif Atr.No_Return_From_Here then
+         elsif Atr.Execution /= Normal_Execution then
             Ins := Flow_Graphs.Skip_Children;
          else
             Ins := Flow_Graphs.Continue;

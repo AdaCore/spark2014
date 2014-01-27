@@ -57,7 +57,7 @@ package body Flow.Data_Dependence_Graph is
                   then
                      TV := Flow_Graphs.Skip_Children;
 
-                  elsif Atr.No_Return_From_Here then
+                  elsif Atr.Execution = Abnormal_Termination then
                      TV := Flow_Graphs.Skip_Children;
 
                   else

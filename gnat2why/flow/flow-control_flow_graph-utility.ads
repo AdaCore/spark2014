@@ -67,7 +67,7 @@ package Flow.Control_Flow_Graph.Utility is
 
    function Make_Aux_Vertex_Attributes
      (E_Loc     : Node_Or_Entity_Id := Empty;
-      No_Return : Boolean           := False)
+      Execution : Execution_Kind_T  := Normal_Execution)
       return V_Attributes
       with Post => not Make_Aux_Vertex_Attributes'Result.Is_Null_Node and
                    not Make_Aux_Vertex_Attributes'Result.Is_Program_Node;

@@ -337,6 +337,13 @@ package Flow_Types is
    type Pretty_Print_Kind_T is (Pretty_Print_Null,
                                 Pretty_Print_Initializes_Aspect);
 
+   type Execution_Kind_T is (Normal_Execution,
+                             Abnormal_Termination,
+                             Infinite_Loop);
+   --  Please be *exceptionally* alert when adding elements to this type,
+   --  as many checks simlpy check for one of the options (and do not
+   --  explicitly make sure all cases are considered).
+
    type V_Attributes is record
       Is_Null_Node        : Boolean;
       --  Set for auxiliary nodes which can be removed, such as early
@@ -410,8 +417,9 @@ package Flow_Types is
       --  True if this vertex models a global for a procedure or
       --  function call.
 
-      No_Return_From_Here : Boolean;
-      --  If true, we do not abort the search for data-dependencies here.
+      Execution           : Execution_Kind_T;
+      --  Determines how we should treat edges from this vertex. Most nodes
+      --  will have Normal_Execution set here.
 
       Perform_IPFA        : Boolean;
       --  True if the dependencies for this callsite should be filled
@@ -484,7 +492,7 @@ package Flow_Types is
                    Is_Parameter                    => False,
                    Is_Discriminants_Only_Parameter => False,
                    Is_Global_Parameter             => False,
-                   No_Return_From_Here             => False,
+                   Execution                       => Normal_Execution,
                    Perform_IPFA                    => False,
                    Call_Vertex                     => Null_Flow_Id,
                    Parameter_Actual                => Null_Flow_Id,
