@@ -80,7 +80,7 @@ The form of an aspect SPARK_Mode is as follows:
 
 .. code-block:: ada
 
-   [ On | Off ]
+   with SPARK_Mode => [ On | Off ]
 
 For example:
 
@@ -108,18 +108,22 @@ or
       with SPARK_Mode  --  On is implicit here
    is
 
+We say that a package or a subprogram is library-level if it is either top-level
+or defined in a library-level package.
 The SPARK_Mode pragma can be used in the following places:
 
 * As a configuration pragma, in which case it sets the default mode for
   all units compiled with this pragma.
 
-* Immediately following a library-level subprogram spec
+* Immediately within or before a library-level package spec
 
 * Immediately within a library-level package body
 
 * Immediately following the ``private`` keyword of a library-level package spec
 
 * Immediately following the ``begin`` keyword of a library-level package body
+
+* Immediately following a library-level subprogram spec
 
 * Immediately within a library-level subprogram body
 
