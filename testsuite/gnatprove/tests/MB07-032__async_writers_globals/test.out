@@ -1,0 +1,7 @@
+async_globals.adb:14:07: warning: statement has no effect
+async_globals.adb:14:07: warning: unused assignment to "G"
+async_globals.adb:14:12: warning: unused assignment to "X"
+async_globals.adb:15:07: warning: statement has no effect
+async_globals.adb:15:07: warning: unused assignment to "G"
+async_globals.adb:15:12: warning: unused assignment to "Y"
+async_globals.adb:16:7: warning: assertion might fail, requires X = Y
