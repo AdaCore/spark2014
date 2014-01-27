@@ -182,7 +182,8 @@ package body SPARK_Rewrite is
                   when Subprogram_Kind =>
                      begin
                         case Nkind (Parent (Parent (E))) is
-                           when N_Subprogram_Declaration =>
+                           when N_Subprogram_Body        |
+                                N_Subprogram_Declaration =>
                               Register_Entity (E);
 
                            when others =>
