@@ -726,6 +726,10 @@ package body SPARK_Definition is
             if Present (Formals) then
                Param_Spec := First (Formals);
                while Present (Param_Spec) loop
+                  if Aliased_Present (Param_Spec) then
+                     Mark_Violation ("aliased formal parameter", Param_Spec);
+                  end if;
+
                   Formal := Defining_Identifier (Param_Spec);
                   if not In_SPARK (Etype (Formal)) then
                      Mark_Violation (E, From => Etype (Formal));

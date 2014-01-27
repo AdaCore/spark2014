@@ -15,4 +15,12 @@ is
    with Depends => (C => (A, B, C),
                     D => (A, B, C),
                     E => (A, B, C, E));
+
+   function F (A : aliased        Integer; -- error
+               B : aliased in     Integer; -- error
+               C : aliased in out Integer; -- error
+               D : aliased    out Integer; -- error
+               E :         in     Integer) -- OK
+     return Boolean;
+
 end AP;
