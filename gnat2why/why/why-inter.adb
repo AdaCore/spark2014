@@ -201,7 +201,9 @@ package body Why.Inter is
                   end case;
 
                when Private_Kind =>
-                  if Entity_In_SPARK (MUT (UE)) then
+                  if not Fullview_Not_In_SPARK (UE) or else
+                    Type_Based_On_External_Axioms (UE)
+                  then
                      Set_SI_Internal (MUT (UE));
                   end if;
 
@@ -956,7 +958,7 @@ package body Why.Inter is
       then
          if Type_Based_On_External_Axioms (N) then
             return New_Kind_Base_Type (N, Kind);
-         elsif Entity_In_SPARK (MUT (N)) then
+         elsif Entity_In_SPARK (N) and then not Fullview_Not_In_SPARK (N) then
             if MUT (N) = N then
                return New_Kind_Base_Type (N, Kind);
             else
@@ -1069,7 +1071,7 @@ package body Why.Inter is
          when Private_Kind =>
             if Type_Based_On_External_Axioms (Ty) then
                return EW_Abstract;
-            elsif Entity_In_SPARK (MUT (Ty)) then
+            elsif not Fullview_Not_In_SPARK (Ty) then
                return Get_EW_Term_Type (MUT (Ty));
             else
                return EW_Private;

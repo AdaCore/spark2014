@@ -213,7 +213,9 @@ package body Gnat2Why.Types is
    begin
       if Is_Standard_Boolean_Type (E) then
          return New_Identifier (Name => "bool");
-      elsif not Entity_In_SPARK (MUT (E)) then
+      elsif Fullview_Not_In_SPARK (E) and then
+        not Type_Based_On_External_Axioms (E)
+      then
          return New_Identifier (Name => To_String (WNE_Private));
       else
          return To_Why_Id (E);

@@ -755,7 +755,7 @@ package body Gnat2Why.Nodes is
       --  special private type in all other cases, represented in the AST by
       --  its type.
 
-      if Entity_In_SPARK (MUT (T)) then
+      if not Fullview_Not_In_SPARK (T) then
          return MUT (T);
       else
          return T;

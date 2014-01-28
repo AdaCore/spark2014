@@ -438,7 +438,8 @@ package body Gnat2Why.Driver is
 
             if Entity_In_SPARK (E)
               and then (Is_Full_View (E)
-                        or else not Entity_In_SPARK (Full_View (E)))
+                        or else No (Full_View (E))
+                        or else Fullview_Not_In_SPARK (E))
             then
                Translate_Type (File, E, New_Theory);
                if New_Theory then

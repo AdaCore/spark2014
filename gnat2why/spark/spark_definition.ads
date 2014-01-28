@@ -92,4 +92,10 @@ package SPARK_Definition is
    function Entity_Body_In_SPARK (E : Entity_Id) return Boolean;
    --  Returns True if the body of subprogram or package E was marked in SPARK
 
+   function Fullview_Not_In_SPARK (E : Entity_Id) return Boolean;
+   --  Returns true if the underlying type of the type E is not in SPARK,
+   --  declared in a private part with SPARK_Mode => Off or in a private part
+   --  of a package with external axioms. It is also true if E is a subtype or
+   --  derived type of such an entity.
+
 end SPARK_Definition;
