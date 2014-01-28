@@ -193,7 +193,7 @@ package Gnat2Why.Util is
 
    Why_File_Name : String_Access;
 
-   procedure Init_Why_Sections (Unit : Node_Id);
+   procedure Init_Why_Sections;
    --  Call this procedure to initialize the predefined sections of the Why
    --  file. The Unit node is used to initialize the above Why_File_Name
    --  variable.
