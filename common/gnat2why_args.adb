@@ -23,8 +23,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Text_IO;               use Ada.Text_IO;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
-with GNAT.OS_Lib;               use GNAT.OS_Lib;
+with GNAT.SHA1;
 
 with Call;                      use Call;
 with Output;                    use Output;
@@ -81,7 +82,10 @@ package body Gnat2Why_Args is
 
    procedure Interpret_Token (Token : String) is
    begin
-      if Token = Global_Gen_Mode_Name then
+      if Token'Length = 0 then
+         null;
+
+      elsif Token = Global_Gen_Mode_Name then
          Global_Gen_Mode := True;
 
       elsif Token = Check_Mode_Name then
@@ -144,90 +148,99 @@ package body Gnat2Why_Args is
 
    function Set (Obj_Dir : String) return String is
       Cur_Dir : constant String := Get_Current_Dir;
-      FD      : File_Descriptor;
-      Name    : GNAT.OS_Lib.String_Access;
+      Content : Unbounded_String := Null_Unbounded_String;
 
-      procedure Write_Line (S : String);
+      procedure Add_Line (S : String);
       --  Write S to FD, and add a newline
 
-      ----------------
-      -- Write_Line --
-      ----------------
+      function Write_To_File return String;
+      --  Write the Content string to a file and return the filename
 
-      procedure Write_Line (S : String) is
-         N : Integer;
-         pragma Unreferenced (N);
+      --------------
+      -- Add_Line --
+      --------------
+
+      procedure Add_Line (S : String) is
       begin
-         N := Write (FD, S'Address, S'Length);
-         N := Write (FD, ASCII.LF'Address, 1);
-      end Write_Line;
+         Append (Content, S);
+         Append (Content, ASCII.LF);
+      end Add_Line;
+
+      -------------------
+      -- Write_To_File --
+      -------------------
+
+      function Write_To_File return String is
+         Write_Cont : constant String := To_String (Content);
+         File_Name  : constant String (1 .. 12) :=
+           GNAT.SHA1.Digest (Write_Cont) (1 .. 8) & ".tmp";
+         FT         : File_Type;
+      begin
+         Change_Dir (Obj_Dir);
+         Create (FT, Name => File_Name);
+         Put (FT, Write_Cont);
+
+         Close (FT);
+         Change_Dir (Cur_Dir);
+
+         return Obj_Dir & Dir_Separator & File_Name;
+      end Write_To_File;
 
       --  beginning of processing for Set
 
    begin
-      --  We need to switch to the given Obj_Dir so that the temp file is
-      --  created there
-
-      Change_Dir (Obj_Dir);
-      Create_Temp_Output_File (FD, Name);
-
       --  Warning_Mode is only relevant when Global_Mode = False, so ignore its
       --  value if Global_Mode = True.
 
       if not Global_Gen_Mode then
-         Write_Line (Warning_Mode_Name & "=" &
+         Add_Line (Warning_Mode_Name & "=" &
                        Opt.Warning_Mode_Type'Image (Warning_Mode));
       end if;
 
       if Global_Gen_Mode then
-         Write_Line (Global_Gen_Mode_Name);
+         Add_Line (Global_Gen_Mode_Name);
       end if;
 
       if Check_Mode then
-         Write_Line (Check_Mode_Name);
+         Add_Line (Check_Mode_Name);
       end if;
 
       if Flow_Analysis_Mode then
-         Write_Line (Flow_Analysis_Mode_Name);
+         Add_Line (Flow_Analysis_Mode_Name);
       end if;
 
       if Prove_Mode then
-         Write_Line (Prove_Mode_Name);
+         Add_Line (Prove_Mode_Name);
       end if;
 
       if Flow_Debug_Mode then
-         Write_Line (Flow_Debug_Mode_Name);
+         Add_Line (Flow_Debug_Mode_Name);
       end if;
 
       if Flow_Advanced_Debug then
-         Write_Line (Flow_Advanced_Debug_Name);
+         Add_Line (Flow_Advanced_Debug_Name);
       end if;
 
       if Pedantic then
-         Write_Line (Pedantic_Name);
+         Add_Line (Pedantic_Name);
       end if;
 
       if Ide_Mode then
-         Write_Line (Ide_Mode_Name);
+         Add_Line (Ide_Mode_Name);
       end if;
 
       if Single_File then
-         Write_Line (Single_File_Name);
+         Add_Line (Single_File_Name);
       end if;
 
       if Limit_Subp /= Null_Unbounded_String then
-         Write_Line (Limit_Subp_Name & "=" & To_String (Limit_Subp));
+         Add_Line (Limit_Subp_Name & "=" & To_String (Limit_Subp));
       end if;
 
-      Close (FD);
-      Change_Dir (Cur_Dir);
+      --  We need to switch to the given Obj_Dir so that the temp file is
+      --  created there
 
-      declare
-         S : constant String := Name.all;
-      begin
-         Free (Name);
-         return Obj_Dir & Dir_Separator & S;
-      end;
+      return Write_To_File;
    end Set;
 
 end Gnat2Why_Args;

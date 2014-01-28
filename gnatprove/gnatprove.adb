@@ -24,7 +24,7 @@
 ------------------------------------------------------------------------------
 
 --  This program (gnatprove) is the command line interface of the SPARK 2014
---  tools. It works in three steps:
+--  tools. It works in four steps:
 --
 --  1) Compute ALI information
 --     This step generates, for all relevant units, the ALI files, which
@@ -42,6 +42,30 @@
 --  4) Call SPARK_Report. The previous steps have generated extra information,
 --     which is read in by the spark_report tool, and aggregated to a report.
 --     See the documentation of spark_report.adb for the details.
+
+--  ------------------------
+--  - Incremental Analysis -
+--  ------------------------
+
+--  Gnatprove wants to achieve minimal work when rerun after a few changes to
+--  the project, while keeping the analysis correct. Two different mechanisms
+--  are used to achieve this:
+--    - gprbuild facilities for incremental compilation
+--    - Why3 session mechanism
+
+--  Gprbuild is capable of only recompiling files that actually need
+--  recompiling. As we use gprbuild, and as gnat2why acts as a compiler, there
+--  is nothing special to do to benefit from this, except that its dependency
+--  model is slightly different. This is taken into account by specifying the
+--  mode "ALI_Closure" as Dependency_Kind in the first phase of gnatprove.
+--  We also use gprbuild with the "-s" switch to take into account changes of
+--  compilation options. Note that this switch is only relevant in phase 2,
+--  because in phase 1 these options are mostly irrelevant (and also option -s
+--  wouldn't work because we also pass --no-object-check), and in phase 3 we
+--  run gnatwhy3 unconditionally and use the session mechanism.
+
+--  Why3 stores information about which VCs have already be given to a prover,
+--  and will not try to rerun the prover when nothing has changed. We benefit
 
 with Ada.Directories;    use Ada.Directories;
 with Ada.Environment_Variables;
@@ -162,8 +186,6 @@ procedure Gnatprove is
          Args.Prepend ("-q");
          Args.Prepend ("-ws");
       end if;
-
-      Args.Prepend ("-s");
 
       if Parallel > 1 then
          Args.Prepend ("-j" & Int_Image (Parallel));
@@ -724,6 +746,7 @@ procedure Gnatprove is
    begin
       Args.Append ("--subdirs=" & String (Subdir_Name));
       Args.Append ("--restricted-to-languages=ada");
+      Args.Append ("-s");
 
       if Only_Given then
          Args.Append ("-u");
