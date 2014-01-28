@@ -2104,6 +2104,25 @@ package body Flow.Control_Flow_Graph is
       --  Adds N to the appropriate entry references of the current
       --  context, if N is a loop_entry reference.
 
+      procedure tip;
+      --  A dummy procedure called when pragma Inspection_Point is
+      --  processed. This is just to help debugging Why generation. If a
+      --  pragma Inspection_Point is added to a source program, then
+      --  breaking on tip will get you to that point in the program.
+
+      ---------
+      -- tip --
+      ---------
+
+      procedure tip is
+      begin
+         null;
+      end tip;
+
+      ----------
+      -- Proc --
+      ----------
+
       function Proc (N : Node_Id) return Traverse_Result
       is
          Loop_Name : Node_Id;
@@ -2196,6 +2215,15 @@ package body Flow.Control_Flow_Graph is
          --  Otherwise we produce a null vertex.
          FA.CFG.Add_Vertex (Null_Node_Attributes,
                             V);
+
+         --  Pragma Inspection_Point is also ignored, but we insert a call
+         --  to a dummy procedure, to allow to break on it during
+         --  debugging.
+
+         if Get_Pragma_Id (N) = Pragma_Inspection_Point then
+            tip;
+         end if;
+
       end if;
 
       CM.Include (Union_Id (N), Trivial_Connection (V));

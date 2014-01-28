@@ -6143,7 +6143,7 @@ package body Gnat2Why.Expr is
       --  A dummy procedure called when pragma Inspection_Point is processed.
       --  This is just to help debugging Why generation. If a pragma
       --  Inspection_Point is added to a source program, then breaking on
-      --  tip will get you to tat point in the program.
+      --  tip will get you to that point in the program.
 
       ---------
       -- tip --
