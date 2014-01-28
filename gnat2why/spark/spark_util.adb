@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Strings;               use Ada.Strings;
+with Ada.Strings.Equal_Case_Insensitive;
 with Ada.Strings.Unbounded;     use Ada.Strings.Unbounded;
 
 with Fname;                     use Fname;
@@ -1146,6 +1147,7 @@ package body SPARK_Util is
       begin
          --  If the entity is not in the compilation unit that is
          --  currently being analyzed then return false.
+
          if Cunit (Main_Unit) /= Enclosing_Comp_Unit_Node (E)
            and then Library_Unit (Cunit (Main_Unit)) /=
              Enclosing_Comp_Unit_Node (E)
@@ -1168,7 +1170,9 @@ package body SPARK_Util is
                declare
                   Filename : constant String := File_Name (A_File);
                begin
-                  if Filename = Body_Prefix or Filename = Spec_Prefix then
+                  if Equal_Case_Insensitive (Filename, Body_Prefix)
+                    or else Equal_Case_Insensitive (Filename, Spec_Prefix)
+                  then
                      return True;
                   end if;
                end;

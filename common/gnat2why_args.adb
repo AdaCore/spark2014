@@ -244,7 +244,7 @@ package body Gnat2Why_Args is
       end if;
 
       for File of Analyze_File loop
-         Write_Line (Analyze_File_Name & "=" & File);
+         Add_Line (Analyze_File_Name & "=" & File);
       end loop;
 
       if Limit_Subp /= Null_Unbounded_String then

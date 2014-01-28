@@ -35,6 +35,7 @@ with Debug;                  use Debug;
 with Einfo;                  use Einfo;
 with Errout;                 use Errout;
 with Flow;                   use Flow;
+with Lib;                    use Lib;
 with Namet;                  use Namet;
 with Nlists;                 use Nlists;
 with Osint.C;                use Osint.C;
@@ -204,7 +205,9 @@ package body Gnat2Why.Driver is
 
    procedure GNAT_To_Why (GNAT_Root : Node_Id) is
       N         : constant Node_Id := Unit (GNAT_Root);
-      Base_Name : constant String := Body_File_Name_Without_Suffix (N);
+      Base_Name : constant String :=
+          File_Name_Without_Suffix
+            (Get_Name_String (Unit_File_Name (Main_Unit)));
 
       --  Note that this use of Sem.Walk_Library_Items to see units in an order
       --  which avoids forward references has caused problems in the past with
@@ -225,7 +228,9 @@ package body Gnat2Why.Driver is
       --  went OK. We also print a warning that nothing has been done, if the
       --  user has specifically requested analysis of this file.
 
-      if Is_Generic_Unit (Unique_Defining_Entity (N)) then
+      if Is_Generic_Unit (Unique_Defining_Entity (N))
+        and then Analysis_Requested (N)
+      then
          Touch_Main_File (Base_Name);
          if Gnat2Why_Args.Single_File then
             Error_Msg_N (N   => GNAT_Root,
@@ -278,7 +283,7 @@ package body Gnat2Why.Driver is
 
       if Gnat2Why_Args.Prove_Mode then
          Why.Atree.Modules.Initialize;
-         Init_Why_Sections (GNAT_Root);
+         Init_Why_Sections;
          Translate_Standard_Package;
          Translate_CUnit;
       end if;
