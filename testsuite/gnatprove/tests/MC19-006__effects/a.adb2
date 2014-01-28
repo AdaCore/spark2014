@@ -1,0 +1,8 @@
+package body A is
+
+   procedure P is
+   begin
+      A := A + 1;
+   end P;
+
+end A;
