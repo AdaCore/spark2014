@@ -118,7 +118,7 @@ package body SPARK_Frame_Conditions is
    --  By default, propagate an error if a scope is missing, unless set to
    --  False for a degraded mode of operation in which such errors are ignored.
 
-   Entity_Ids : Name_To_Id_Map.Map;    --  Map name to id
+   Entity_Ids   : Name_To_Id_Map.Map;  --  Map name to id
    Entity_Names : Id_To_Name_Map.Map;  --  Map id to name
 
    Scopes       : Id_Set.Set;  --  All scope entities
@@ -584,12 +584,12 @@ package body SPARK_Frame_Conditions is
      (E                 : Entity_Id;
       Include_Constants : Boolean) return Name_Set.Set
    is
-      E_Alias : constant Entity_Id :=
+      E_Alias  : constant Entity_Id :=
         (if Present (Alias (E)) then Ultimate_Alias (E) else E);
-      Name    : aliased constant String := Unique_Name (E_Alias);
-      E_Name  : constant Entity_Name    :=
+      Name     : aliased constant String := Unique_Name (E_Alias);
+      E_Name   : constant Entity_Name    :=
         Make_Entity_Name (Name'Unrestricted_Access);
-      E_Id    : Id;
+      E_Id     : Id;
       Read_Ids : Id_Set.Set := Id_Set.Empty_Set;
 
    begin
@@ -623,12 +623,12 @@ package body SPARK_Frame_Conditions is
    --------------------------
 
    function Get_Generated_Writes (E : Entity_Id) return Name_Set.Set is
-      E_Alias : constant Entity_Id :=
+      E_Alias   : constant Entity_Id :=
         (if Present (Alias (E)) then Ultimate_Alias (E) else E);
-      Name    : aliased constant String := Unique_Name (E_Alias);
-      E_Name  : constant Entity_Name    :=
+      Name      : aliased constant String := Unique_Name (E_Alias);
+      E_Name    : constant Entity_Name    :=
         Make_Entity_Name (Name'Unrestricted_Access);
-      E_Id    : Id;
+      E_Id      : Id;
       Write_Ids : Id_Set.Set := Id_Set.Empty_Set;
 
    begin
@@ -639,8 +639,25 @@ package body SPARK_Frame_Conditions is
          return Name_Set.Empty_Set;
       end if;
 
+      --  Go through the reads and check if the entities corresponding to
+      --  variables (not constants) have pragma Effective_Reads set. If so,
+      --  then these entities are also writes.
+
+      for E_N of Get_Generated_Reads (E, False) loop
+         declare
+            E : constant Entity_Id := Find_Entity (E_N);
+         begin
+            if Present (E)
+              and then Ekind (E) = E_Variable
+              and then Present (Get_Pragma (E, Pragma_Effective_Reads))
+            then
+               Write_Ids.Insert (Entity_Ids.Element (E_N));
+            end if;
+         end;
+      end loop;
+
       E_Id := Entity_Ids.Element (E_Name);
-      Write_Ids := Writes.Element (E_Id);
+      Write_Ids := Write_Ids or Writes.Element (E_Id);
 
       return To_Names (Write_Ids - Defines.Element (E_Id));
    exception
