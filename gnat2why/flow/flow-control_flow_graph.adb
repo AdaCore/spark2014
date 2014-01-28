@@ -2111,7 +2111,7 @@ package body Flow.Control_Flow_Graph is
       --  breaking on tip will get you to that point in the program.
 
       ---------
-      -- tip --
+      -- fip --
       ---------
 
       procedure fip is

@@ -72,7 +72,7 @@ package body Flow.Data_Dependence_Graph is
                   FA.DDG.Add_Edge (V_D, V_D, EC_DDG);
                end if;
 
-               --  Flag all def-used chains rooted a V_D.
+               --  Flag all def-used chains rooted at V_D.
                FA.CFG.DFS (Start         => V_D,
                            Include_Start => False,
                            Visitor       => Visitor'Access);
