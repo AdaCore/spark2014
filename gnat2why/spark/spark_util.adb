@@ -37,6 +37,8 @@ with Uintp;                     use Uintp;
 
 with Gnat2Why_Args;
 
+with GNAT.Directory_Operations; use GNAT.Directory_Operations;
+
 package body SPARK_Util is
 
    ------------------
@@ -1127,7 +1129,7 @@ package body SPARK_Util is
       -- Local Subprograms --
       -----------------------
 
-      function Is_In_Current_Unit (E : Entity_Id) return Boolean;
+      function Is_In_Analyzed_Files (E : Entity_Id) return Boolean;
       --  Returns true if E belongs to one of the entities that correspond
       --  to the files that are to be analyzed.
 
@@ -1140,12 +1142,40 @@ package body SPARK_Util is
       -- Is_In_Analyzed_Files --
       --------------------------
 
-      function Is_In_Current_Unit (E : Entity_Id) return Boolean is
+      function Is_In_Analyzed_Files (E : Entity_Id) return Boolean is
       begin
-         return Cunit (Main_Unit) = Enclosing_Comp_Unit_Node (E)
-                  or else
-               Library_Unit (Cunit (Main_Unit)) = Enclosing_Comp_Unit_Node (E);
-      end Is_In_Current_Unit;
+         --  If the entity is not in the compilation unit that is
+         --  currently being analyzed then return false.
+         if Cunit (Main_Unit) /= Enclosing_Comp_Unit_Node (E)
+           and then Library_Unit (Cunit (Main_Unit)) /=
+             Enclosing_Comp_Unit_Node (E)
+         then
+            return False;
+         end if;
+
+         --  If an empty files list has been provided then all entities that
+         --  are in the compilation unit that is currently being analyzed must
+         --  be analyzed.
+         if Gnat2Why_Args.Analyze_File.Is_Empty then
+            return True;
+         end if;
+
+         declare
+            Spec_Prefix : constant String := Spec_File_Name (E);
+            Body_Prefix : constant String := Body_File_Name (E);
+         begin
+            for A_File of Gnat2Why_Args.Analyze_File loop
+               declare
+                  Filename : constant String := File_Name (A_File);
+               begin
+                  if Filename = Body_Prefix or Filename = Spec_Prefix then
+                     return True;
+                  end if;
+               end;
+            end loop;
+            return False;
+         end;
+      end Is_In_Analyzed_Files;
 
       -----------------------------
       -- Is_Requested_Subprogram --
@@ -1170,7 +1200,7 @@ package body SPARK_Util is
    --  Start of Analysis_Requested
 
    begin
-      return Is_In_Current_Unit (E)
+      return Is_In_Analyzed_Files (E)
         and then Is_Requested_Subprogram (E);
    end Analysis_Requested;
 

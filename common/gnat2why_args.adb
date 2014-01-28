@@ -29,7 +29,6 @@ with GNAT.SHA1;
 
 with Call;                      use Call;
 with Output;                    use Output;
-with String_Utils;              use String_Utils;
 with Types;                     use Types;
 
 package body Gnat2Why_Args is
@@ -52,6 +51,7 @@ package body Gnat2Why_Args is
    Prove_Mode_Name          : constant String := "prove_mode";
    Flow_Debug_Mode_Name     : constant String := "flow_debug";
    Flow_Advanced_Debug_Name : constant String := "flow_advanced_debug";
+   Analyze_File_Name        : constant String := "analyze_file";
    Limit_Subp_Name          : constant String := "limit_subp";
    Pedantic_Name            : constant String := "pedantic";
    Ide_Mode_Name            : constant String := "ide_mode";
@@ -121,6 +121,16 @@ package body Gnat2Why_Args is
          begin
             Warning_Mode :=
               Opt.Warning_Mode_Type'Value (Token (Start .. Token'Last));
+         end;
+
+      elsif Starts_With (Token, Analyze_File_Name) and then
+        Token (Token'First + Analyze_File_Name'Length) = '='
+      then
+         declare
+            Start : constant Integer :=
+              Token'First + Analyze_File_Name'Length + 1;
+         begin
+            Analyze_File.Append (Token (Start .. Token'Last));
          end;
 
       elsif Starts_With (Token, Limit_Subp_Name) and then
@@ -232,6 +242,10 @@ package body Gnat2Why_Args is
       if Single_File then
          Add_Line (Single_File_Name);
       end if;
+
+      for File of Analyze_File loop
+         Write_Line (Analyze_File_Name & "=" & File);
+      end loop;
 
       if Limit_Subp /= Null_Unbounded_String then
          Add_Line (Limit_Subp_Name & "=" & To_String (Limit_Subp));

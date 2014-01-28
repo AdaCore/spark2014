@@ -26,6 +26,7 @@
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 with Opt;
+with String_Utils;          use String_Utils;
 
 package Gnat2Why_Args is
 
@@ -99,6 +100,10 @@ package Gnat2Why_Args is
    --    A + (B + C)
 
    Pedantic : Boolean := False;
+
+   --  If this list is non-empty, only units of this list should be analyzed.
+
+   Analyze_File : String_Lists.List := String_Lists.Empty_List;
 
    --  Limit analysis to this subprogram
 
