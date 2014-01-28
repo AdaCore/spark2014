@@ -645,11 +645,11 @@ package body SPARK_Frame_Conditions is
 
       for E_N of Get_Generated_Reads (E, False) loop
          declare
-            E : constant Entity_Id := Find_Entity (E_N);
+            Read : constant Entity_Id := Find_Entity (E_N);
          begin
-            if Present (E)
-              and then Ekind (E) = E_Variable
-              and then Present (Get_Pragma (E, Pragma_Effective_Reads))
+            if Present (Read)
+              and then Ekind (Read) = E_Variable
+              and then Present (Get_Pragma (Read, Pragma_Effective_Reads))
             then
                Write_Ids.Insert (Entity_Ids.Element (E_N));
             end if;
