@@ -2104,7 +2104,7 @@ package body Flow.Control_Flow_Graph is
       --  Adds N to the appropriate entry references of the current
       --  context, if N is a loop_entry reference.
 
-      procedure tip;
+      procedure fip;
       --  A dummy procedure called when pragma Inspection_Point is
       --  processed. This is just to help debugging Why generation. If a
       --  pragma Inspection_Point is added to a source program, then
@@ -2114,10 +2114,10 @@ package body Flow.Control_Flow_Graph is
       -- tip --
       ---------
 
-      procedure tip is
+      procedure fip is
       begin
          null;
-      end tip;
+      end fip;
 
       ----------
       -- Proc --
@@ -2221,7 +2221,7 @@ package body Flow.Control_Flow_Graph is
          --  debugging.
 
          if Get_Pragma_Id (N) = Pragma_Inspection_Point then
-            tip;
+            fip;
          end if;
 
       end if;
