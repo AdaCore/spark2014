@@ -15,7 +15,7 @@ if len(argv) == 1:
 
 #Initialize lists to empty.
 test_case_files = []
-rst_files = []
+rst_files       = []
 
 for i in range(1, len(argv)):
     if path.isdir(argv[i]):
@@ -52,8 +52,8 @@ for i in range(1, len(argv)):
         continue
 
 
-test_case_files = list(set(test_case_files)) #Remove duplicates.
-test_case_trace_units = [] #Initialize list to empty.
+test_case_files       = list(set(test_case_files)) #Remove duplicates.
+test_case_trace_units = []                         #Initialize to empty.
 for i in range(len(test_case_files)):
     #Go through files in the list and extract TUs.
     lines = []
@@ -87,22 +87,22 @@ for i in range(len(test_case_files)):
 
 #Remove duplicates.
 test_case_trace_units = list(set(test_case_trace_units))
-rst_files = list(set(rst_files))
+rst_files             = list(set(rst_files))
 
 #Initialize lists to empty.
-rst_trace_units = []
-proof_checked_trace_units = []
-front_end_checked_trace_units = []
+rst_trace_units                   = []
+proof_checked_trace_units         = []
+front_end_checked_trace_units     = []
 flow_analysis_checked_trace_units = []
-spark_filter_checked_trace_units = []
-covered_by_another_trace_units = []
-not_tested_trace_units = []
-uncategorised_trace_units = []
+spark_filter_checked_trace_units  = []
+covered_by_another_trace_units    = []
+not_tested_trace_units            = []
+uncategorised_trace_units         = []
 for i in range(len(rst_files)):
     #Go through files in the list and extract TUs.
     lines = []
     fd = open(rst_files[i], "rU")  #Open file descriptor.
-    lines = fd.read().splitlines() #Read lines.
+    lines = fd.read().splitlines() #Read all lines.
     fd.close()                     #Close file descriptor.
 
     for line in range(len(lines)):
