@@ -2953,6 +2953,7 @@ package body SPARK_Definition is
             --     2. and is marked as In-SPARK
             --     3. and no global aspect has been specified
             --     4. and the subprogram is not Pure
+            --     5. and the subprogram is not Intrinsic
             --  then we warn that null global effect was assumed.
             declare
                Argument_Associations : constant List_Id :=
@@ -2967,6 +2968,7 @@ package body SPARK_Definition is
                  and then No (Get_Pragma
                                 (Associated_Subprogram, Pragma_Global))
                  and then not Is_Pure (Associated_Subprogram)
+                 and then not Is_Intrinsic_Subprogram (Associated_Subprogram)
                then
                   Error_Msg_N ("?null global effect assumed on imported"
                                  & " subprogram", Associated_Subprogram);
