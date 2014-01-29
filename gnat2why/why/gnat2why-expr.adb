@@ -6202,6 +6202,7 @@ package body Gnat2Why.Expr is
               Pragma_Inline                       |
               Pragma_Inline_Always                |
               Pragma_Linker_Options               |
+              Pragma_Linker_Section               |
               Pragma_List                         |
               Pragma_Loop_Variant                 |
               Pragma_No_Return                    |

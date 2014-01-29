@@ -3049,6 +3049,7 @@ package body SPARK_Definition is
               Pragma_Annotate                     |
               Pragma_Check_Policy                 |
               Pragma_Inline_Always                |
+              Pragma_Linker_Section               |
               Pragma_Pure_Function                |
               Pragma_Restriction_Warnings         |
               Pragma_Style_Checks                 |

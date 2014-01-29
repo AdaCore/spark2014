@@ -2973,6 +2973,7 @@ package body Flow.Control_Flow_Graph is
               Pragma_Inline_Always                |
               Pragma_Inspection_Point             |
               Pragma_Linker_Options               |
+              Pragma_Linker_Section               |
               Pragma_List                         |
               Pragma_No_Return                    |
               Pragma_Optimize                     |
