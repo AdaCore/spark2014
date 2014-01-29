@@ -3060,6 +3060,9 @@ package body SPARK_Definition is
               Pragma_Warnings                     =>
             null;
 
+         when Pragma_Volatile_Components =>
+            Mark_Violation ("volatile type", N);
+
          when Unknown_Pragma =>
             Error_Msg_Name_1 := Pname;
             Mark_Violation ("unknown pragma %", N);

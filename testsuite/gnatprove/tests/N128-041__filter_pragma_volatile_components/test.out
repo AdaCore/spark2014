@@ -1,0 +1,9 @@
+foo.adb:5:04: violation of pragma SPARK_Mode at /tmp/tmp-test-N128-041__filter_pragma_volatile_components-30584/src/test.adc:1
+foo.adb:5:04: volatile type is not allowed in SPARK
+foo.adb:7:53: violation of pragma SPARK_Mode at /tmp/tmp-test-N128-041__filter_pragma_volatile_components-30584/src/test.adc:1
+foo.adb:7:53: volatile type is not allowed in SPARK
+   compilation of foo.adb failed
+
+
+gnatprove: error during analysis and translation to intermediate language, aborting.
+gprbuild: *** compilation phase failed
