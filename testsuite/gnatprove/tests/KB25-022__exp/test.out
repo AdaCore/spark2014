@@ -7,3 +7,4 @@ gp_exp.adb:6:06: warning: unused assignment
 gp_exp.adb:6:11: warning: overflow check might fail
 gp_exp.adb:7:06: warning: unused assignment
 gp_exp.adb:7:11: warning: overflow check might fail
+gp_exp.adb:7:11: warning: range check might fail

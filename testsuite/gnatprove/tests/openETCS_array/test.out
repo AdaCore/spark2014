@@ -15,8 +15,10 @@ deceleration_curve.adb:47:48: warning: overflow check might fail
 deceleration_curve.adb:49:48: info: division check proved
 deceleration_curve.adb:49:48: info: overflow check proved
 deceleration_curve.adb:50:12: warning: overflow check might fail
+deceleration_curve.adb:50:12: warning: range check might fail
 deceleration_curve.adb:52:10: warning: assertion might fail
 deceleration_curve.adb:58:25: warning: overflow check might fail
+deceleration_curve.adb:58:25: warning: range check might fail
 deceleration_curve.adb:60:31: warning: overflow check might fail
 deceleration_curve.adb:69:36: info: division check proved
 deceleration_curve.adb:69:36: info: range check proved
@@ -26,10 +28,12 @@ deceleration_curve.adb:89:21: warning: assuming "Sqrt" has no effect on global i
 deceleration_curve.adb:89:21: warning: no Global contract available for "Sqrt"
 deceleration_curve.adb:89:32: warning: overflow check might fail
 deceleration_curve.adb:90:13: warning: overflow check might fail
+deceleration_curve.adb:90:13: warning: range check might fail
 deceleration_curve.adb:90:29: warning: overflow check might fail
 deceleration_curve.adb:91:13: warning: overflow check might fail
 deceleration_curve.adb:91:46: info: division check proved
 deceleration_curve.adb:91:46: warning: overflow check might fail
+deceleration_curve.adb:91:46: warning: range check might fail
 deceleration_curve.adb:96:36: warning: overflow check might fail
 deceleration_curve.adb:96:36: warning: range check might fail
 deceleration_curve.adb:106:9: warning: precondition might fail
@@ -192,7 +196,9 @@ step_function_test.adb:67:19: info: precondition proved
 units.adb:24:29: warning: overflow check might fail
 units.adb:24:39: info: division check proved
 units.adb:24:39: warning: overflow check might fail
+units.adb:24:39: warning: range check might fail
 units.adb:29:38: warning: overflow check might fail
 units.adb:29:48: info: division check proved
 units.adb:29:48: warning: overflow check might fail
+units.adb:29:48: warning: range check might fail
 units.ads:51:20: info: precondition proved

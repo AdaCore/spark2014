@@ -500,6 +500,14 @@ module Static_Floating_Point
   axiom representable_last :
     round_real last = last
 
+  val check_not_last (n : real) : real
+    requires { n <> last }
+    ensures { result = n }
+
+  val check_not_first (n : real) : real
+    requires { n <> first }
+    ensures { result = n }
+
   predicate in_range  (x : real)
 
   val range_check_ (n : real)  :real

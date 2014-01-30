@@ -4,5 +4,6 @@ nonlinear.adb:1:28: warning: unused initial value of "Z"
 nonlinear.adb:9:20: info: overflow check proved
 nonlinear.adb:10:11: warning: unused assignment
 nonlinear.adb:10:16: info: overflow check proved
+nonlinear.adb:10:16: info: range check proved
 nonlinear.adb:10:20: info: overflow check proved
 nonlinear.adb:11:4: warning: assertion might fail

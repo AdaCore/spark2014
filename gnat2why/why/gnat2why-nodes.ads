@@ -252,18 +252,22 @@ package Gnat2Why.Nodes is
       RCK_Range,
       RCK_Length,
       RCK_Index,
-      RCK_Not_First,
-      RCK_Not_Last);
+      RCK_Range_Not_First,
+      RCK_Range_Not_Last,
+      RCK_Overflow_Not_First,
+      RCK_Overflow_Not_Last);
 
    function To_VC_Kind (R : Range_Check_Kind) return VC_Kind
    is
      (case R is
-         when RCK_Overflow  => VC_Overflow_Check,
-         when RCK_Range     => VC_Range_Check,
-         when RCK_Length    => VC_Length_Check,
-         when RCK_Index     => VC_Index_Check,
-         when RCK_Not_First => VC_Range_Check,
-         when RCK_Not_Last  => VC_Range_Check);
+         when RCK_Overflow           => VC_Overflow_Check,
+         when RCK_Range              => VC_Range_Check,
+         when RCK_Length             => VC_Length_Check,
+         when RCK_Index              => VC_Index_Check,
+         when RCK_Range_Not_First    => VC_Range_Check,
+         when RCK_Range_Not_Last     => VC_Range_Check,
+         when RCK_Overflow_Not_First => VC_Overflow_Check,
+         when RCK_Overflow_Not_Last  => VC_Overflow_Check);
    --  to convert a Range_Check_Kind to a VC_Kind
 
    generic

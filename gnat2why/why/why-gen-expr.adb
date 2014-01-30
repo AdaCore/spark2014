@@ -966,17 +966,28 @@ package body Why.Gen.Expr is
          then
             Check_Kind := RCK_Length;
 
-         --  For 'Pred and 'Succ, it's also a range check, but the range is a
-         --  bit different. We use a different Check_Kind here.
+         --  For attributes Pred and Succ, the check is a range check for
+         --  enumeration types, and an overflow check otherwise. We use special
+         --  values of Check_Kind to account for the different range checked in
+         --  these cases.
 
          elsif Nkind (Par) = N_Attribute_Reference and then
            Get_Attribute_Id (Attribute_Name (Par)) = Attribute_Pred
          then
-            Check_Kind := RCK_Not_First;
+            if Is_Enumeration_Type (Check_Type) then
+               Check_Kind := RCK_Range_Not_First;
+            else
+               Check_Kind := RCK_Overflow_Not_First;
+            end if;
+
          elsif Nkind (Par) = N_Attribute_Reference and then
            Get_Attribute_Id (Attribute_Name (Par)) = Attribute_Succ
          then
-            Check_Kind := RCK_Not_Last;
+            if Is_Enumeration_Type (Check_Type) then
+               Check_Kind := RCK_Range_Not_Last;
+            else
+               Check_Kind := RCK_Overflow_Not_Last;
+            end if;
 
          --  Otherwise, this is a range check
 

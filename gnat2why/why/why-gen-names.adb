@@ -658,8 +658,10 @@ package body Why.Gen.Names is
    is
       Name : constant Why_Name_Enum :=
         (case R is
-            when RCK_Not_First => WNE_Check_Not_First,
-            when RCK_Not_Last  => WNE_Check_Not_Last,
+            when RCK_Range_Not_First | RCK_Overflow_Not_First =>
+               WNE_Check_Not_First,
+            when RCK_Range_Not_Last | RCK_Overflow_Not_Last =>
+               WNE_Check_Not_Last,
             when others        => WNE_Range_Check_Fun);
    begin
       if Is_Standard_Boolean_Type (Ty) then

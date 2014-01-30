@@ -2,21 +2,35 @@ succ_floats.adb:1:24: warning: unused initial value of "A"
 succ_floats.adb:1:27: warning: unused initial value of "B"
 succ_floats.adb:4:06: warning: unused assignment
 succ_floats.adb:5:4: info: assertion proved
+succ_floats.adb:5:31: info: range check proved
 succ_floats.adb:6:4: warning: assertion might fail, requires Float'Succ (X) < 
+succ_floats.adb:6:31: info: range check proved
 succ_floats.adb:7:4: info: assertion proved
+succ_floats.adb:7:31: info: range check proved
 succ_floats.adb:8:4: warning: assertion might fail, requires Float'Pred (X) > -
+succ_floats.adb:8:31: info: range check proved
 succ_floats.adb:10:06: warning: unused assignment
 succ_floats.adb:11:4: info: assertion proved
+succ_floats.adb:11:31: info: range check proved
 succ_floats.adb:12:4: warning: assertion might fail, requires Float'Succ (X) < 
+succ_floats.adb:12:31: info: range check proved
 succ_floats.adb:13:4: info: assertion proved
+succ_floats.adb:13:31: info: range check proved
 succ_floats.adb:14:4: warning: assertion might fail, requires Float'Pred (X) > 
+succ_floats.adb:14:31: info: range check proved
 succ_floats.adb:16:06: warning: unused assignment
 succ_floats.adb:17:04: warning: statement has no effect
 succ_floats.adb:18:09: warning: unused assignment
+succ_floats.adb:18:24: warning: range check might fail
 succ_floats.adb:20:4: info: assertion proved
+succ_floats.adb:20:31: info: range check proved
 succ_floats.adb:21:4: warning: assertion might fail, requires Float'Pred (X) > 
+succ_floats.adb:21:31: info: range check proved
 succ_floats.adb:23:06: warning: unused assignment
 succ_floats.adb:24:04: warning: statement has no effect
 succ_floats.adb:25:09: warning: unused assignment
+succ_floats.adb:25:24: warning: range check might fail
 succ_floats.adb:27:4: info: assertion proved
+succ_floats.adb:27:31: info: range check proved
 succ_floats.adb:28:4: warning: assertion might fail, requires Float'Succ (X) < 
+succ_floats.adb:28:31: info: range check proved
