@@ -5,14 +5,15 @@ private package Fruit.Priv_Child
        Initializes    => Price_Related_Stuff
 is
    procedure Increase_Price_Of_Apple
-     with Global => (In_Out => Fruits);
+     with Global => (Input  => Price_Related_Stuff,
+                     In_Out => Price_Of_Apple);
 
    procedure Increase_Price_Of_Orange
      with Global => (Input  => Price_Related_Stuff,
                      In_Out => Price_Of_Orange);
 
    function Get_Price_Of_Apple return Natural is (Price_Of_Apple)
-     with Global => Fruits;
+     with Global => Price_Of_Apple;
 
    function Get_Price_Of_Orange return Natural is (Price_Of_Orange)
      with Global => Price_Of_Orange;

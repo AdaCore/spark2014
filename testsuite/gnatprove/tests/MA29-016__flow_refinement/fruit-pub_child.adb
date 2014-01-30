@@ -1,4 +1,4 @@
-with Fruit.Priv_Child;
+with Fruit.Priv_Child; use Fruit.Priv_Child;
 
 package body Fruit.Pub_Child
   with Refined_State => (Fruit_Salad => (Apples_In_Fruit_Salad,
@@ -29,14 +29,10 @@ is
    end Make_All_Fruit_Salads;
 
    function Price_Of_Fruit_Salad return Natural is
-     (if Fruit.Priv_Child.Get_Price_Of_Apple >=
-        Fruit.Priv_Child.Get_Price_Of_Orange
-      then
-         Fruit.Priv_Child.Get_Price_Of_Apple *
-           (Apples_In_Fruit_Salad + Oranges_In_Fruit_Salad)
-      else
-         Fruit.Priv_Child.Get_Price_Of_Orange *
-           (Apples_In_Fruit_Salad + Oranges_In_Fruit_Salad))
+     (if Get_Price_Of_Apple >= Get_Price_Of_Orange
+      then Get_Price_Of_Apple * (Apples_In_Fruit_Salad + Oranges_In_Fruit_Salad)
+      else Get_Price_Of_Orange * (Apples_In_Fruit_Salad +
+                                    Oranges_In_Fruit_Salad))
      with Refined_Global => (Fruits,
                              Apples_In_Fruit_Salad,
                              Oranges_In_Fruit_Salad);

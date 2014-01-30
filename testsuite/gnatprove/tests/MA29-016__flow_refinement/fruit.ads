@@ -34,13 +34,13 @@ is
      with Global  => (In_Out => Fruits),
           Depends => (Fruits => Fruits);
 private
-   Apples  : Natural := 0
+   Apples : Natural := 0
      with Part_Of => Fruits;
 
    Oranges : Natural := 0
      with Part_Of => Fruits;
 
-   Price_Of_Apple  : Natural := 1
+   Price_Of_Apple : Natural := 1
      with Part_Of => Fruits;
 
    Price_Of_Orange : Natural := 1

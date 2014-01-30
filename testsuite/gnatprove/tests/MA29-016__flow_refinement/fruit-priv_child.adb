@@ -2,6 +2,8 @@ package body Fruit.Priv_Child
   with Refined_State => (Price_Related_Stuff => Extra_Cost)
 is
    procedure Increase_Price_Of_Apple
+     with Refined_Global => (Input  => Extra_Cost,
+                             In_Out => Price_Of_Apple)
    is
    begin
       if Price_Of_Apple <= Natural'Last - Extra_Cost then

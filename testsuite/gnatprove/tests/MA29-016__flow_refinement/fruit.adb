@@ -1,16 +1,12 @@
-with Fruit.Priv_Child;
+with Fruit.Priv_Child; use Fruit.Priv_Child;
 
 package body Fruit
-  with Refined_State => (Fruits => (X,
-                                    Apples,
+  with Refined_State => (Fruits => (Apples,
                                     Oranges,
                                     Price_Of_Apple,
                                     Price_Of_Orange,
-                                    Fruit.Priv_Child.Price_Related_Stuff))
+                                    Price_Related_Stuff))
 is
-
-   X : Integer;
-
    function Number_Of_Apples return Natural is (Apples)
      with Refined_Global => Apples;
 
@@ -60,12 +56,12 @@ is
    procedure Increase_Prices
      with Refined_Global  => (In_Out => (Price_Of_Apple,
                                          Price_Of_Orange),
-                              Input  => Fruit.Priv_Child.Price_Related_Stuff),
+                              Input  =>  Price_Related_Stuff),
           Refined_Depends => ((Price_Of_Apple,
-                               Price_Of_Orange) =>+ Fruit.Priv_Child.Price_Related_Stuff)
+                               Price_Of_Orange) =>+ Price_Related_Stuff)
    is
    begin
-      Fruit.Priv_Child.Increase_Price_Of_Apple;
-      Fruit.Priv_Child.Increase_Price_Of_Orange;
+      Increase_Price_Of_Apple;
+      Increase_Price_Of_Orange;
    end Increase_Prices;
 end Fruit;
