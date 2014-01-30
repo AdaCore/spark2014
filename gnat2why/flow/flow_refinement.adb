@@ -97,6 +97,9 @@ package body Flow_Refinement is
                 or else Entity (Find_Node_In_Initializes'Result) = E;
    --  Returns the node representing E in an initializes aspect or Empty.
 
+   function Get_Body_Or_Stub (N : Node_Id) return Node_Id;
+   --  If a corresponding stub exists, then we return that instead of N.
+
    -------------------
    -- Tree_Contains --
    -------------------
@@ -223,8 +226,7 @@ package body Flow_Refinement is
    -- Get_Flow_Scope --
    --------------------
 
-   function Get_Flow_Scope (N : Node_Id) return Flow_Scope
-   is
+   function Get_Flow_Scope (N : Node_Id) return Flow_Scope is
       P : Node_Id;
       V : Section_T;
    begin
@@ -535,6 +537,21 @@ package body Flow_Refinement is
 
       return Empty;
    end Find_Node_In_Initializes;
+
+   ----------------------
+   -- Get_Body_Or_Stub --
+   ----------------------
+
+   function Get_Body_Or_Stub (N : Node_Id) return Node_Id is
+   begin
+      if Nkind (Parent (N)) = N_Subunit
+        and then Present (Corresponding_Stub (Parent (N)))
+      then
+         return Corresponding_Stub (Parent (N));
+      else
+         return N;
+      end if;
+   end Get_Body_Or_Stub;
 
    -----------------------------------
    -- Is_Initialized_At_Elaboration --

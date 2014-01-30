@@ -59,9 +59,6 @@ package Flow_Tree_Utility is
                      or else Ekind (Get_Body'Result) = E_Subprogram_Body;
    --  Fetches the body entity for a subprogram with a spec and a body.
 
-   function Get_Body_Or_Stub (N : Node_Id) return Node_Id;
-   --  If a corresponding stub exists, then we return that instead of N.
-
    function Last_Statement_Is_Raise (E : Entity_Id) return Boolean
      with Pre => Ekind (E) in Subprogram_Kind;
    --  Returns True if the last statement in the Handled_Sequence_Of_Statements

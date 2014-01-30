@@ -1,7 +1,6 @@
 separate (Pack)
 package body Inner
-  with SPARK_Mode,
-       Refined_State => (Inner_State => Inner_Body_Var)
+  with Refined_State => (Inner_State => Inner_Body_Var)
 is
    Inner_Body_Var : Integer;
 

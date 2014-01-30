@@ -1,15 +1,16 @@
 package body Pack
-  with SPARK_Mode,
-       Refined_State => (State1 => (A, B),
+  with Refined_State => (State1 => (A, B),
                          State2 => (Inner.Inner_Var, Inner.Inner_State))
 is
    A, B : Integer;
 
    procedure Initialize_State is separate
-     with Refined_Global => (Output => (A, B));
+     with Refined_Global => (Output => (A, B)),
+          Refined_Depends => ((A, B) => null);
 
    procedure Double_B is separate
-     with Global => (In_Out => B);
+     with Global => (In_Out => B),
+          Depends => (B => B);
 
    package Inner
      with Abstract_State => Inner_State,

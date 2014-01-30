@@ -1,6 +1,5 @@
 separate (Pack)
 procedure Initialize_State
-  with SPARK_Mode
 is
 begin
    A := 0;
