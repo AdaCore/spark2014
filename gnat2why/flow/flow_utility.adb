@@ -616,38 +616,40 @@ package body Flow_Utility is
       begin
          case F.Kind is
             when Direct_Mapping =>
-               if Nkind (Get_Direct_Mapping_Id (F)) in N_Entity then
-                  --  Filter out Flow_Id corresponding to null refinement
-
-                  case Ekind (Get_Direct_Mapping_Id (F)) is
-                     when E_Abstract_State =>
-                        Ptr := First_Elmt (Refinement_Constituents
-                                             (Get_Direct_Mapping_Id (F)));
-                        while Present (Ptr) loop
+               case Ekind (Get_Direct_Mapping_Id (F)) is
+                  when E_Abstract_State =>
+                     Ptr := First_Elmt (Refinement_Constituents
+                                          (Get_Direct_Mapping_Id (F)));
+                     while Present (Ptr) loop
+                        --  We simply ignore the null refinement, it is
+                        --  treated as if it was not present.
+                        if Nkind (Node (Ptr)) /= N_Null then
                            Tmp.Union (Expand (Direct_Mapping_Id (Node (Ptr),
                                                                  F.Variant)));
-                           Ptr := Next_Elmt (Ptr);
-                        end loop;
-
-                        Ptr := First_Elmt (Part_Of_Constituents
-                                             (Get_Direct_Mapping_Id (F)));
-                        while Present (Ptr) loop
-                           Tmp.Union (Expand (Direct_Mapping_Id (Node (Ptr),
-                                                                 F.Variant)));
-                           Ptr := Next_Elmt (Ptr);
-                        end loop;
-
-                        if Tmp.Is_Empty then
-                           --  If we can't refine this state (maybe the body
-                           --  is not in SPARK, or simply not implemented)
-                           --  then we use the abstract state itself.
-                           Tmp.Insert (F);
                         end if;
+                        Ptr := Next_Elmt (Ptr);
+                     end loop;
 
-                     when others =>
+                     Ptr := First_Elmt (Part_Of_Constituents
+                                          (Get_Direct_Mapping_Id (F)));
+                     while Present (Ptr) loop
+                        --  Part_of cannot include a null refinement.
+                        Tmp.Union (Expand (Direct_Mapping_Id (Node (Ptr),
+                                                              F.Variant)));
+                        Ptr := Next_Elmt (Ptr);
+                     end loop;
+
+                     if Tmp.Is_Empty then
+                        --  If we can't refine this state (maybe the body
+                        --  is not in SPARK, or simply not implemented or
+                        --  there is a null refinement) then we use the
+                        --  abstract state itself.
                         Tmp.Insert (F);
-                  end case;
-               end if;
+                     end if;
+
+                  when others =>
+                     Tmp.Insert (F);
+               end case;
 
             when Magic_String =>
                Tmp.Insert (F);
