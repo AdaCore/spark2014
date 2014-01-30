@@ -67,7 +67,7 @@ package body Flow.Control_Dependence_Graph is
                      null;
 
                   elsif FA.CDG.Non_Trivial_Path_Exists (P, CV) then
-                     --  THe call vertex is ultimately control
+                     --  The call vertex is ultimately control
                      --  dependent on the in neighbour we are
                      --  eliminating from our parameter vertex, so we
                      --  don't really lose anything.

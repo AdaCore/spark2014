@@ -1,3 +1,4 @@
+caller.adb:19:09: warning: unused assignment to "Tmp"
 types.adb:40:23: warning: unused initial value of "R"
 types.adb:40:23: warning: unused variable "R"
 types.adb:46:23: "R.X" is not initialized in "Test_02"

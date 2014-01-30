@@ -404,6 +404,8 @@ package body Flow_Types is
                pragma Assert (Nkind (E) in N_Entity);
             begin
                case Ekind (E) is
+                  when E_Abstract_State =>
+                     return Is_External_State (E);
                   when Object_Kind =>
                      return Is_Volatile (E) or else
                        Is_Volatile (Etype (E));

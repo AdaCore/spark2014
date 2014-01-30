@@ -197,6 +197,8 @@ package body Flow_Tree_Utility is
    function Has_Volatile (E : Entity_Id) return Boolean is
    begin
       case Ekind (E) is
+         when E_Abstract_State =>
+            return Is_External_State (E);
          when Type_Kind =>
             return Is_Volatile (E);
          when others =>
@@ -219,6 +221,20 @@ package body Flow_Tree_Utility is
             Present (Get_Pragma (E, Pragma_Effective_Writes)));
    begin
       case Ekind (E) is
+         when E_Abstract_State =>
+            case A is
+               when Pragma_Async_Writers =>
+                  return Async_Writers_Enabled (E);
+               when Pragma_Effective_Reads =>
+                  return Effective_Reads_Enabled (E);
+               when Pragma_Async_Readers =>
+                  return Async_Readers_Enabled (E);
+               when Pragma_Effective_Writes =>
+                  return Effective_Writes_Enabled (E);
+               when others =>
+                  raise Program_Error;
+            end case;
+
          when E_In_Parameter =>
             case A is
                when Pragma_Async_Writers | Pragma_Effective_Reads =>

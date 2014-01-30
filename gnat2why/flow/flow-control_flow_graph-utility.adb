@@ -32,21 +32,39 @@ package body Flow.Control_Flow_Graph.Utility is
 
    use type Flow_Id_Sets.Set;
 
-   procedure Add_Volatile_Effects (A : in out V_Attributes);
+   procedure Add_Volatile_Effects
+     (A      : in out V_Attributes;
+      Global : Flow_Id := Null_Flow_Id);
    --  This helper procedure inspects the variables used by a particular
    --  vertex. Any with a volatile property causing reads or writes to be
    --  effective will be noted in the volatiles_read and volatiles_written
    --  sets (as appropriate).
    --
+   --  When Global is Present, specifically add its volatile effects.
+   --  This is used to add the effects of external abstract states and
+   --  is only ever called from Make_Global_Attributes.
+   --
    --  This procedure should not be blindly called in all cases; in
    --  particular for 'inital and 'final vertices it should not be used.
 
-   -------------------------
-   -- Add_Volatile_Effets --
-   -------------------------
+   --------------------------
+   -- Add_Volatile_Effects --
+   --------------------------
 
-   procedure Add_Volatile_Effects (A : in out V_Attributes) is
+   procedure Add_Volatile_Effects
+     (A      : in out V_Attributes;
+      Global : Flow_Id := Null_Flow_Id)
+   is
    begin
+      if Present (Global) then
+         if Has_Effective_Reads (Global) then
+            A.Volatiles_Read.Include (Global);
+         end if;
+         if Has_Effective_Writes (Global) then
+            A.Volatiles_Written.Include (Global);
+         end if;
+      end if;
+
       for F of A.Variables_Explicitly_Used loop
          if Has_Effective_Reads (F) then
             A.Volatiles_Read.Include (F);
@@ -310,7 +328,7 @@ package body Flow.Control_Flow_Graph.Utility is
             raise Program_Error;
       end case;
 
-      Add_Volatile_Effects (A);
+      Add_Volatile_Effects (A, Global);
       return A;
    end Make_Global_Attributes;
 
