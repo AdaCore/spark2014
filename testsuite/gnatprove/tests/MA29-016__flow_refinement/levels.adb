@@ -2,8 +2,6 @@ package body Levels
 with Refined_State => (Abs_0 => (X0, Y0, Nested_1.Abs_1))
 is
 
-   pragma Warnings (Off, "pragma * is not yet supported");
-
    X0 : Integer;
    Y0 : Integer;
 
@@ -14,6 +12,12 @@ is
       return X0;
    end Read_Partial_0;
 
+   --  Should not raise errors, because the post actually uses the proof
+   --  ins. Raised TN N130-012 to fix this. Once implemented, please remove
+   --  the pragma Warnings.
+   pragma Warnings (Off, "unused global ""X0""");
+   pragma Warnings (Off, "unused global ""Y0""");
+   pragma Warnings (Off, "unused global ""Nested_1.Abs_1""");
    procedure Post_Test_01
    with Refined_Global => (Proof_In => (X0, Y0, Nested_1.Abs_1)),
         Refined_Post   => Wibble_0 > Read_Partial_0
@@ -21,16 +25,19 @@ is
    begin
       null;
    end Post_Test_01;
+   pragma Warnings (On);
 
-   pragma Warnings (Off, "unused *");
+   --  Slightly related to the above. We should suggest that the Input
+   --  should be a Proof_In.
+   pragma Warnings (Off, "unused initial value of ""X0""");
    procedure Post_Test_02
    with Refined_Global => X0,
-     Refined_Post   => Read_Partial_0 + 1 > X0
+        Refined_Post   => Read_Partial_0 + 1 > X0
    is
    begin
       null;
    end Post_Test_02;
-   pragma Warnings (On, "unused *");
+   pragma Warnings (On);
 
    procedure Test_01 (A : out Integer)
    with Global => X0
