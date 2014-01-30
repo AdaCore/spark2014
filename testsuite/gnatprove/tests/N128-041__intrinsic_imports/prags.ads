@@ -28,7 +28,7 @@ is
 
    -- Same as above, but no Global aspect.
    -- For Intrinsic functions, Global => null is assumed,
-   -- so no warning.
+   -- so warning is issued.
    function Rotate_Right (Value  : M1;
                           Amount : Natural) return M1
      with Import,
@@ -36,8 +36,8 @@ is
 
    -- Intrinsic operator for mixed types
    --
-   -- Also assumed to have Global => null, so no
-   -- explicit Global is needed, and no warning.
+   -- Also assumed to have Global => null, so a
+   -- warning is issued.
    function "+" (Left : Int1; Right : Int2) return Int1
      with Import,
           Convention => Intrinsic;
