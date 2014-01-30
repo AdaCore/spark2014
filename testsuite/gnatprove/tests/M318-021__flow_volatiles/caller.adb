@@ -6,7 +6,17 @@ procedure Caller (A, B, C, D, E : out Integer)
                              State_AR,
                              State_AR_EW,
                              State_AW,
-                             State_AW_ER))
+                             State_AW_ER)),
+       Depends => (State       => State,
+                   State_AR    => (State, State_AR),
+                   State_AR_EW => State_AR_EW,
+                   State_AW    => State_AW,
+                   State_AW_ER => State_AW_ER,
+                   A => State,
+                   B => State_AR,
+                   C => State_Ar_Ew,
+                   D => State_Aw,
+                   E => State_Aw_Er)
 is
    Tmp : Integer;
 begin
