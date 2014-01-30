@@ -67,7 +67,6 @@ stacks_2.adb:54:46: warning: array index check might fail
 stacks_2.ads:17:21: warning: postcondition might fail, requires not (Is_Empty)
 stacks_2.ads:21:16: warning: postcondition might fail, requires not (Is_Full)
 externals.adb:54:04: "Out_Reg" is not written in "Externals"
-externals.adb:75:41: warning: unused initial value of "In_Reg"
 externals.adb:76:41: warning: "Out_Reg" might not be written
 externals.adb:91:20: warning: unused assignment
 externals.adb:94:13: warning: statement has no effect
