@@ -333,6 +333,9 @@ Tool Limitations
 Legality Rules
 --------------
 
+#. |SPARK| Reference Manual rule 4.3(1), concerning use of the box
+   symbol "<>" in aggregates, is not currently checked.
+   
 #. The elaboration order rules described in the |SPARK| Reference
    Manual 7.7 are not currently checked.
 
