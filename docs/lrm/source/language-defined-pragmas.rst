@@ -116,6 +116,7 @@ Check	 		      Yes
 Check_Policy 		      Yes
 Debug			      Yes		     Ignored (replaced by null statement)
 Inline_Always      	      Yes
+Linker_Section      	      Yes
 Overflow_Mode                 Yes
 Pure_Function      	      Yes
 Restriction_Warnings  	      Yes

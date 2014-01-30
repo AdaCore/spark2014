@@ -2981,7 +2981,7 @@ package body SPARK_Definition is
          --  . they are already taken into account elsewhere (contracts)
          --  . they have no effect on verification
 
-         --  Group 1 - RM Table 17.1(1), pragmas marked "Yes"
+         --  Group 1 - RM Table 16.1(1), pragmas marked "Yes"
          --  Note: pragma Assert is transformed into an
          --  instance of pragma Check by the front-end.
          when Pragma_Assertion_Policy             |
@@ -3014,7 +3014,7 @@ package body SPARK_Definition is
               Pragma_Unsuppress                   |
               Pragma_Volatile                     |
 
-         --  Group 2 - RM Table 17.1(2), pragmas marked "Yes"
+         --  Group 2 - RM Table 16.1(2), pragmas marked "Yes"
          --  Note: pragmas Assert_And_Cut, Assume, and
          --  Loop_Invariant are transformed into instances of
          --  pragma Check by the front-end.
@@ -3038,7 +3038,7 @@ package body SPARK_Definition is
               Pragma_Refined_State                |
               Pragma_SPARK_Mode                   |
 
-         --  Group 3 - RM Table 17.1(3), pragmas marked "Yes"
+         --  Group 3 - RM Table 16.1(3), pragmas marked "Yes"
          --  Note: pragma Debug is removed by the front-end.
               Pragma_Ada_83                       |
               Pragma_Ada_95                       |
