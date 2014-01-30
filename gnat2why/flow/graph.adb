@@ -46,6 +46,12 @@ package body Graph is
    --  Basic operations
    ----------------------------------------------------------------------
 
+   ---------------
+   -- Is_Frozen --
+   ---------------
+
+   function Is_Frozen (G : T'Class) return Boolean is (G.Frozen);
+
    ------------
    -- Create --
    ------------
@@ -53,7 +59,8 @@ package body Graph is
    function Create (Colour : Edge_Colours := Edge_Colours'First) return T is
    begin
       return T'(Vertices       => VL.Empty_Vector,
-                Default_Colour => Colour);
+                Default_Colour => Colour,
+                Frozen         => False);
    end Create;
 
    function Create (G : T'Class) return T is
@@ -66,6 +73,8 @@ package body Graph is
                     In_Neighbours  => VIS.Empty_Set,
                     Out_Neighbours => EAM.Empty_Map));
       end loop;
+
+      R.Frozen := True;
 
       return R;
    end Create;

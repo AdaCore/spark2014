@@ -125,12 +125,17 @@ package Graph is
    --  Basic operations
    ----------------------------------------------------------------------
 
-   function Create (Colour : Edge_Colours := Edge_Colours'First)
-                    return T;
+   function Is_Frozen (G : T'Class) return Boolean;
+   --  Returns true if the graph is frozen, i.e. no more new vertices may
+   --  be added. Edges may still be added or removed however.
+
+   function Create (Colour : Edge_Colours := Edge_Colours'First) return T;
    --  Creates a new, empty graph.
 
-   function Create (G : T'Class) return T;
-   --  Creates a new graph with all the vertices from G, but no edges.
+   function Create (G : T'Class) return T
+     with Post => Create'Result.Is_Frozen;
+   --  Creates a new graph with all the vertices from G, but no edges. Both
+   --  graphs are frozen by this operation.
 
    ----------------------------------------------------------------------
    --  Vertex operations
@@ -145,7 +150,8 @@ package Graph is
 
    function Get_Vertex
      (G : T'Class;
-      V : Vertex_Key) return Vertex_Id;
+      V : Vertex_Key)
+      return Vertex_Id;
    --  Search the vertex group for the given vertex and return its
    --  Id. If not found, a value outside the range of Valid_Vertex_Id
    --  is returned.
@@ -156,7 +162,7 @@ package Graph is
      (G : T'Class;
       V : Vertex_Id)
       return Vertex_Key
-      with Pre => V /= Null_Vertex;
+   with Pre => V /= Null_Vertex;
    --  Obtain the key for the given vertex.
    --
    --  Complexity is O(1).
@@ -164,7 +170,7 @@ package Graph is
    function Get_Attributes
      (G : T'Class;
       V : Vertex_Id) return Vertex_Attributes
-      with Pre => V /= Null_Vertex;
+   with Pre => V /= Null_Vertex;
    --  Obtain the user-defined attributes of the given vertex.
    --
    --  Complexity is O(1).
@@ -173,7 +179,8 @@ package Graph is
      (G : in out T'Class;
       V : Vertex_Id;
       A : Vertex_Attributes)
-      with Pre => V /= Null_Vertex;
+   with Pre => not G.Is_Frozen and
+               V /= Null_Vertex;
    --  Set the user-defined attributes of the given vertex.
    --
    --  Complexity is O(1).
@@ -182,7 +189,8 @@ package Graph is
      (G : in out T'Class;
       V : Vertex_Key;
       A : Vertex_Attributes)
-      with Pre => G.Get_Vertex (V) = Null_Vertex;
+   with Pre => not G.Is_Frozen and
+               G.Get_Vertex (V) = Null_Vertex;
    --  Add a new vertex to the graph, with no edges attached.
    --
    --  Complexity is O(1) in the general case, but presumably can be
@@ -193,15 +201,17 @@ package Graph is
       V  : Vertex_Key;
       A  : Vertex_Attributes;
       Id : out Vertex_Id)
-      with Pre  => G.Get_Vertex (V) = Null_Vertex,
-           Post => Id /= Null_Vertex;
+   with Pre  => not G.Is_Frozen and
+                G.Get_Vertex (V) = Null_Vertex,
+        Post => Id /= Null_Vertex;
    --  As above but also return the new vertex id.
 
    procedure Add_Vertex
      (G  : in out T'Class;
       A  : Vertex_Attributes;
       Id : out Vertex_Id)
-      with Post => Id /= Null_Vertex;
+   with Pre  => not G.Is_Frozen,
+        Post => Id /= Null_Vertex;
    --  As above, but adds an unkeyed vertex. You must never lose the
    --  returned Id, otherwise you lose the vertex!
 
@@ -603,6 +613,7 @@ private
    type T is tagged record
       Vertices       : Vertex_List;
       Default_Colour : Edge_Colours;
+      Frozen         : Boolean;
    end record;
 
    ----------------------------------------------------------------------
