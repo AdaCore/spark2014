@@ -537,6 +537,7 @@ package body Why.Gen.Names is
          when WNE_Of_Base      => return "of_base";
          when WNE_Type         => return "t";
          when WNE_Ignore       => return "___ignore";
+         when WNE_Havoc        => return "__havoc";
          when WNE_Result_Exc   => return "Return__exc";
          when WNE_Range_Check_Fun => return "range_check_";
          when WNE_Bool_And     => return "andb";

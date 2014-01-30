@@ -208,6 +208,11 @@ package Why.Gen.Names is
       WNE_Float_Succ,
 
       WNE_Ignore,
+
+      --  Polymorphic __havoc procedure sets the value of its parameter to any
+      --  possible value allowed by its type.
+      WNE_Havoc,
+
       WNE_Of_Array,
       WNE_Of_Base,
       WNE_Of_Int,

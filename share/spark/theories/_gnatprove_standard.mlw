@@ -23,6 +23,8 @@ module Main
        axiomatization. *)
   predicate __ignore "inline" (x : 'a) = true
 
+  (* Program function that sets the value of its parameter to any possible
+     value allowed by its type. *)
   val __havoc (x : ref 'a) : unit
      writes { x }
 

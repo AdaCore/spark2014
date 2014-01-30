@@ -5867,7 +5867,6 @@ package body Gnat2Why.Expr is
       C   : constant Ada_Ent_To_Why.Cursor :=
         Ada_Ent_To_Why.Find (Symbol_Table, Ent);
       T   : W_Expr_Id;
-      Havocd : W_Expr_Id;
 
    begin
       --  The special cases of this function are:
@@ -5894,30 +5893,23 @@ package body Gnat2Why.Expr is
       end if;
 
       --  If we have an object with Async_Writers, we must havoc it before
-      --  dereferencing it.
+      --  dereferencing it. Given a ref term t, this produces the sequence:
+      --     (__havoc(t); !t)
 
       if Has_Async_Writers (Direct_Mapping_Id (Ent)) then
          pragma Assert (Is_Mutable_In_Why (Ent));
          pragma Assert (Params.Ref_Allowed);
-         declare
-            Args : constant W_Expr_Array (1 .. 1) := W_Expr_Array'(1 => T);
-         begin
-            Havocd := New_Call
-              (Name     => New_Identifier (Name => "__havoc"),
-               Args     => Args,
-               Domain   => Domain);
-         end;
-      end if;
+         pragma Assert (Domain = EW_Prog);
+         T := +Sequence (Left  => New_Call (Name => To_Ident (WNE_Havoc),
+                                            Args => (1 => T)),
+                         Right => New_Deref (Ada_Node => Get_Ada_Node (+T),
+                                             Right    => +T,
+                                             Typ      => Get_Type (T)));
 
-      if Is_Mutable_In_Why (Ent) and then Params.Ref_Allowed then
+      elsif Is_Mutable_In_Why (Ent) and then Params.Ref_Allowed then
          T := New_Deref (Ada_Node => Get_Ada_Node (+T),
                          Right    => +T,
                          Typ      => Get_Type (T));
-      end if;
-
-      if Has_Async_Writers (Direct_Mapping_Id (Ent)) then
-         T := +Sequence (Left  => +Havocd,
-                         Right => +T);
       end if;
 
       return T;
