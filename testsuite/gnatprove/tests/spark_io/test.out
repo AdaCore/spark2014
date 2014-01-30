@@ -42,6 +42,7 @@ gprbuild: *** compilation phase failed
 gnatprove: error during generation and proof of VCs, aborting.
 use_float_io.adb:32:18: warning: precondition of main program might fail
 use_float_io.adb:38:22: warning: overflow check might fail
+use_float_io.adb:38:22: warning: range check might fail
 gprbuild: *** compilation phase failed
 gnatprove: error during generation and proof of VCs, aborting.
 use_int_io.adb:32:18: warning: precondition of main program might fail
