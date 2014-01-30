@@ -746,10 +746,35 @@ package body Flow.Analysis is
             FA.PDG.Get_Attributes (V).Is_Export);
       --  Checks if the given vertex V is a final-use vertex.
 
-      Effective_Ids : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
-      Entire_Ids    : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
-      Tracefile     : Unbounded_String;
+      Effective_Ids  : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
+      Entire_Ids     : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
+      Tracefile      : Unbounded_String;
+      Suppressed_Ids : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
    begin
+
+      --  We look at the null depends (if one exists). For any variables
+      --  mentioned there, we supress this warning.
+
+      if FA.Kind = E_Subprogram_Body and then
+        Has_Depends (FA.Analyzed_Entity)
+      then
+         declare
+            D : Dependency_Maps.Map;
+         begin
+            Get_Depends (Subprogram => FA.Analyzed_Entity,
+                         Scope      => FA.B_Scope,
+                         Depends    => D);
+            if D.Contains (Null_Flow_Id) then
+               Suppressed_Ids := D (Null_Flow_Id);
+            end if;
+         end;
+      end if;
+
+      pragma Assert_And_Cut (True);
+
+      --  We now detect all imports that are ineffective (do not contribute
+      --  to at least one export).
+
       for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
             Key : constant Flow_Id      := FA.PDG.Get_Key (V);
@@ -797,8 +822,10 @@ package body Flow.Analysis is
          end;
       end loop;
 
-      --  Now that we can issue error messages. We can't do it inline
-      --  because we need to pay special attention to records.
+      --  Now that we can issue error messages. We can't do it inline (i.e.
+      --  on detection) because we need to pay special attention to
+      --  records.
+
       for V of Entire_Ids loop
          declare
             F : constant Flow_Id      := FA.PDG.Get_Key (V);
@@ -815,7 +842,11 @@ package body Flow.Analysis is
                      --  Discriminants are never ineffective imports.
                      null;
                   elsif A.Mode = Mode_Proof then
-                     --  Proof_Ins are never ineffective imports.
+                     --  Proof_Ins are never ineffective imports, for now.
+                     null;
+                  elsif Suppressed_Ids.Contains
+                    (Change_Variant (F, Normal_Use))
+                  then
                      null;
                   elsif A.Is_Global then
                      if FA.Kind = E_Subprogram_Body and then

@@ -5,9 +5,7 @@ test.adb:7:23: warning: missing dependency "Y => Y"
 test.adb:26:33: "G" is not initialized
 test.adb:26:33: warning: unused global "G"
 test.adb:37:32: warning: unused global "G"
-test.adb:37:32: warning: unused initial value of "G"
 test.adb:47:14: warning: unused global "G"
-test.adb:47:14: warning: unused initial value of "G"
    compilation of test.adb failed
 
 

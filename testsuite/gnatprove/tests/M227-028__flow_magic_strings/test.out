@@ -7,7 +7,6 @@ test.adb:31:14: warning: unused global "Z"
 test.adb:31:14: warning: unused initial value of "Z"
 test.adb:32:11: warning: missing dependency "null => Z"
 test.adb:38:14: warning: unused global "Z"
-test.adb:38:14: warning: unused initial value of "Z"
 test.adb:53:14: warning: unused initial value of "Z"
 test.adb:54:11: warning: missing dependency "null => Z"
 test.adb:57:17: called subprogram "Get_X" requires "global" aspect to make state visible
