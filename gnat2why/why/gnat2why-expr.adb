@@ -6220,6 +6220,7 @@ package body Gnat2Why.Expr is
               Pragma_Unreferenced                 |
               Pragma_Validity_Checks              |
               Pragma_Volatile                     |
+              Pragma_Volatile_Components          |
               Pragma_Warnings                     =>
             return New_Void (Prag);
 

@@ -1,9 +1,6 @@
-foo.adb:5:04: violation of pragma SPARK_Mode at test.adc:1
-foo.adb:5:04: volatile type is not allowed in SPARK
-foo.adb:7:53: violation of pragma SPARK_Mode at test.adc:1
-foo.adb:7:53: volatile type is not allowed in SPARK
-   compilation of foo.adb failed
-
-
-gnatprove: error during analysis and translation to intermediate language, aborting.
-gprbuild: *** compilation phase failed
+foo.adb:10:25: warning: overflow check might fail
+foo.ads:4:04: warning: it is currently ignored
+foo.ads:4:04: warning: pragma "Volatile_Components" is not yet supported in flow analysis or proof
+foo.ads:6:53: warning: it is currently ignored
+foo.ads:6:53: warning: pragma "Volatile_Components" is not yet supported in flow analysis or proof
+foo.ads:14:21: warning: postcondition might fail, requires Sum'Result <= 100

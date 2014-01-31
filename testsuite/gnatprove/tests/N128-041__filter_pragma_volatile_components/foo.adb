@@ -1,11 +1,15 @@
 package body Foo
 is
 
-   type Array_T is array (1 .. 10) of Integer;
-   pragma Volatile_Components (Array_T);
-
-   type Array_T2 is array (1 .. 10) of Integer with Volatile_Components;
-
-   type Array_T3 is array (1 .. 10) of Integer;
+   function Sum (A : in Array_T) return Integer
+   is
+      Total : Integer;
+   begin
+      Total := 0;
+      for I in A'Range loop
+         Total := Total + A (I);
+      end loop;
+      return Total;
+   end Sum;
 
 end Foo;
