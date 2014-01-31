@@ -66,6 +66,7 @@
 
 --  Why3 stores information about which VCs have already be given to a prover,
 --  and will not try to rerun the prover when nothing has changed. We benefit
+--  from that directly, and run gnatwhy3 unconditionally.
 
 with Ada.Directories;    use Ada.Directories;
 with Ada.Environment_Variables;
@@ -76,13 +77,14 @@ with Configuration;      use Configuration;
 with Opt;
 
 with GNAT.OS_Lib;
+with GNAT.Strings;       use GNAT.Strings;
 
 with GNATCOLL.Projects;  use GNATCOLL.Projects;
 with GNATCOLL.VFS;       use GNATCOLL.VFS;
 with GNATCOLL.Utils;     use GNATCOLL.Utils;
 
 with String_Utils;       use String_Utils;
-with GNAT.Strings;       use GNAT.Strings;
+with System.Multiprocessors;
 
 with Gnat2Why_Args;
 
@@ -347,10 +349,18 @@ procedure Gnatprove is
       if IDE_Progress_Bar then
          Args.Append ("--ide-progress-bar");
       end if;
-      if Parallel > 1 then
-         Args.Append ("-j");
+      Args.Append ("-j");
+
+      --  It's easier to know the number of cores in Ada than in OCaml, so we
+      --  pass that info here when required
+
+      if Parallel = 0 then
+         Args.Append
+           (Int_Image (Integer (System.Multiprocessors.Number_Of_CPUs)));
+      else
          Args.Append (Int_Image (Parallel));
       end if;
+
       if Limit_Line /= null and then Limit_Line.all /= "" then
          Args.Append ("--limit-line");
          Args.Append (Limit_Line.all);
