@@ -85,15 +85,9 @@ package body Arrays is
       return Arr;
    end Swap_Fun;
 
-   procedure P1 (A, B: in out Array_U; I : in Index; New_Val : in Integer) is
+   procedure P1 (A: in out Array_U; I : in Index; New_Val : in Integer) is
    begin
-      A := B;
       A (I) := New_Val;
    end P1;
-
-   procedure P2 (A: in out Array_U; I : in Index; New_Val : in Integer) is
-   begin
-      A (I) := New_Val;
-   end P2;
 
 end Arrays;

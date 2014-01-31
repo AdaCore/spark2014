@@ -67,7 +67,7 @@ package body Why.Gen.Arrays is
                             Dim    : Positive) return W_Expr_Id;
 
    function Get_Entity_Of_Variable (E : W_Expr_Id) return Entity_Id
-     with Pre => Get_Kind (+E) in W_Identifier | W_Deref;
+     with Pre => Get_Kind (+E) in W_Identifier | W_Deref | W_Tagged;
    --  should return an object of type EW_Int_Type
 
    -----------------

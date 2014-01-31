@@ -3,6 +3,7 @@ arrays.adb:8:26: info: overflow check proved
 arrays.adb:62:21: info: length check proved
 arrays.adb:68:21: info: length check proved
 arrays.adb:69:21: info: range check proved
+arrays.adb:90:10: info: index check proved
 arrays.ads:5:34: info: length check proved
 arrays.ads:14:19: info: postcondition proved
 arrays.ads:15:31: info: length check proved
@@ -26,6 +27,8 @@ arrays.ads:65:52: info: range check proved
 arrays.ads:69:19: info: postcondition proved
 arrays.ads:69:43: info: range check proved
 arrays.ads:70:43: info: range check proved
+arrays.ads:75:19: warning: postcondition might fail, requires A = A'Old'update
+arrays.ads:75:37: info: range check proved
 records.adb:33:20: warning: overflow check might fail
 records.adb:34:20: warning: range check might fail
 records.adb:39:20: info: overflow check proved
