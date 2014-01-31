@@ -51,7 +51,7 @@ package body Flow.Control_Dependence_Graph is
 
       for V of FA.CDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
-            A  : constant V_Attributes := FA.CDG.Get_Attributes (V);
+            A  : constant V_Attributes := FA.Atr (V);
             CV : constant Flow_Graphs.Vertex_Id :=
               FA.CDG.Get_Vertex (A.Call_Vertex);
          begin
@@ -91,7 +91,7 @@ package body Flow.Control_Dependence_Graph is
 
                   elsif S = CV
                     or else CV = FA.CDG.Get_Vertex
-                    (FA.CDG.Get_Attributes (S).Call_Vertex)
+                    (FA.Atr.Element (S).Call_Vertex)
                   then
                      --  This can happen if we have infinite loops.
                      null;

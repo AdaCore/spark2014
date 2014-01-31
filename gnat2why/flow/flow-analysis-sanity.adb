@@ -393,7 +393,7 @@ package body Flow.Analysis.Sanity is
 
       for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          if FA.PDG.Get_Key (V).Variant /= Final_Value then
-            for R of FA.PDG.Get_Attributes (V).Variables_Explicitly_Used loop
+            for R of FA.Atr.Element (V).Variables_Explicitly_Used loop
                case R.Kind is
                   when Direct_Mapping | Record_Field =>
                      if Ekind (Get_Direct_Mapping_Id (R)) =
@@ -405,7 +405,7 @@ package body Flow.Analysis.Sanity is
                            Tracefile => Unused,
                            Msg       => "volatile formal out & cannot be read",
                            SRM_Ref   => "7.1.3(14)",
-                           N         => Error_Location (FA.PDG, V),
+                           N         => Error_Location (FA.PDG, FA.Atr, V),
                            F1        => Entire_Variable (R));
                         Sane := False;
                      end if;
@@ -436,7 +436,7 @@ package body Flow.Analysis.Sanity is
 
       for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
-            A : constant V_Attributes := FA.PDG.Get_Attributes (V);
+            A : constant V_Attributes := FA.Atr.Element (V);
 
             Written_Vars : constant Ordered_Flow_Id_Sets.Set :=
               To_Ordered_Flow_Id_Set (A.Variables_Defined);
@@ -463,7 +463,7 @@ package body Flow.Analysis.Sanity is
                            Msg       => "cannot write & during " &
                              "elaboration of &",
                            SRM_Ref   => "7.7.1(5)",
-                           N   => Error_Location (FA.PDG, V),
+                           N   => Error_Location (FA.PDG, FA.Atr, V),
                            F1  => Entire_Variable (Var),
                            F2  => Direct_Mapping_Id (FA.Analyzed_Entity));
 
@@ -493,7 +493,7 @@ package body Flow.Analysis.Sanity is
                     FA.PDG.Get_Vertex (Change_Variant (Var, Final_Value));
                   pragma Assert (Corresp_Final_Vertex /=
                                    Flow_Graphs.Null_Vertex);
-                  Final_Atr := FA.PDG.Get_Attributes (Corresp_Final_Vertex);
+                  Final_Atr := FA.Atr.Element (Corresp_Final_Vertex);
 
                   if Final_Atr.Is_Global
                     and Final_Atr.Is_Constant
@@ -506,7 +506,7 @@ package body Flow.Analysis.Sanity is
                            Msg       => "cannot write & during " &
                              "elaboration of &",
                            SRM_Ref   => "7.7.1(5)",
-                           N         => Error_Location (FA.PDG, V),
+                           N         => Error_Location (FA.PDG, FA.Atr, V),
                            F1        => Var,
                            F2        => Direct_Mapping_Id
                              (FA.Analyzed_Entity));
@@ -517,7 +517,7 @@ package body Flow.Analysis.Sanity is
                            Tracefile => Unused,
                            Msg       => "& must be a global output of &",
                            SRM_Ref   => "6.1.4",
-                           N         => Error_Location (FA.PDG, V),
+                           N         => Error_Location (FA.PDG, FA.Atr, V),
                            F1        =>
                              (if A.Is_Parameter
                               then A.Parameter_Formal
@@ -544,7 +544,7 @@ package body Flow.Analysis.Sanity is
 
       for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
-            A : constant V_Attributes := FA.CFG.Get_Attributes (V);
+            A : constant V_Attributes := FA.Atr.Element (V);
 
             All_Vars : constant Ordered_Flow_Id_Sets.Set :=
               To_Ordered_Flow_Id_Set (A.Variables_Used or A.Variables_Defined);

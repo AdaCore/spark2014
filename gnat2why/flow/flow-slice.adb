@@ -181,8 +181,7 @@ package body Flow.Slice is
       for V_Final of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
             F_Final : constant Flow_Id      := FA.PDG.Get_Key (V_Final);
-            Attr    : constant V_Attributes :=
-              FA.PDG.Get_Attributes (V_Final);
+            Attr    : constant V_Attributes := FA.Atr (V_Final);
          begin
             if F_Final.Variant = Final_Value
               and Attr.Is_Export
@@ -198,8 +197,7 @@ package body Flow.Slice is
       for V_Initial of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
             F_Initial : constant Flow_Id      := FA.PDG.Get_Key (V_Initial);
-            Attr      : constant V_Attributes :=
-              FA.PDG.Get_Attributes (V_Initial);
+            Attr      : constant V_Attributes := FA.Atr (V_Initial);
          begin
             if F_Initial.Variant = Initial_Value
               and Attr.Is_Import

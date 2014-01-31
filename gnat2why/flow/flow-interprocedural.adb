@@ -38,21 +38,23 @@ package body Flow.Interprocedural is
    --  Add dependencies for a simple procedure call where we cannot
    --  perform IPFA.
 
-   function Find_Parameter_Vertex (CDG       : Flow_Graphs.T;
+   function Find_Parameter_Vertex (FA        : Flow_Analysis_Graphs;
                                    Callsite  : Flow_Graphs.Vertex_Id;
                                    Parameter : Flow_Id)
                                    return Flow_Graphs.Vertex_Id;
    --  Search for the relevant parameter vertex for a given call.
 
-   function Find_Parameter_Vertex (CDG       : Flow_Graphs.T;
+   function Find_Parameter_Vertex (FA        : Flow_Analysis_Graphs;
                                    Callsite  : Flow_Graphs.Vertex_Id;
                                    Parameter : Flow_Id)
                                    return Flow_Graphs.Vertex_Id is
    begin
-      for V of CDG.Get_Collection (Callsite, Flow_Graphs.Out_Neighbours) loop
+      for V of FA.CDG.Get_Collection (Callsite,
+                                      Flow_Graphs.Out_Neighbours)
+      loop
          declare
-            F : constant Flow_Id      := CDG.Get_Key (V);
-            A : constant V_Attributes := CDG.Get_Attributes (V);
+            F : constant Flow_Id      := FA.CDG.Get_Key (V);
+            A : constant V_Attributes := FA.Atr (V);
          begin
             if A.Is_Parameter then
                --  Parameters *must* be using direct mapping for both
@@ -119,7 +121,7 @@ package body Flow.Interprocedural is
       N : constant Node_Id := Get_Direct_Mapping_Id (FA.CFG.Get_Key (V));
       pragma Assert (Nkind (N) = N_Procedure_Call_Statement);
 
-      A : constant V_Attributes := FA.CFG.Get_Attributes (V);
+      A : constant V_Attributes := FA.Atr (V);
       pragma Assert (A.Is_Callsite);
       pragma Assert (not A.Perform_IPFA);
 
@@ -133,12 +135,12 @@ package body Flow.Interprocedural is
          V_A, V_B : Flow_Graphs.Vertex_Id;
       begin
          V_A := Find_Parameter_Vertex
-           (FA.CDG,
+           (FA,
             V,
             Change_Variant (A, In_View));
 
          V_B := Find_Parameter_Vertex
-           (FA.CDG,
+           (FA,
             V,
             Change_Variant (B, Out_View));
 
@@ -226,8 +228,8 @@ package body Flow.Interprocedural is
             --  Each output depends on all inputs.
             for Input of Inputs loop
                for Output of Outputs loop
-                  FA.TDG.Add_Edge (Find_Parameter_Vertex (FA.CDG, V, Input),
-                                   Find_Parameter_Vertex (FA.CDG, V, Output),
+                  FA.TDG.Add_Edge (Find_Parameter_Vertex (FA, V, Input),
+                                   Find_Parameter_Vertex (FA, V, Output),
                                    EC_TDG);
                end loop;
             end loop;
@@ -243,7 +245,7 @@ package body Flow.Interprocedural is
       --  in the dependencies.
       for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
-            A : constant V_Attributes := FA.CFG.Get_Attributes (V);
+            A : constant V_Attributes := FA.Atr (V);
          begin
             if A.Is_Callsite and not A.Perform_IPFA then
                Add_Simple_Procedure_Dependency (FA, V);

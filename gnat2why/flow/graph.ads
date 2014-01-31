@@ -83,7 +83,6 @@ with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
 
 generic
    type Vertex_Key is private;
-   type Vertex_Attributes is private;
    type Edge_Colours is (<>);
    Null_Key : Vertex_Key;
    with function Test_Key (A, B : Vertex_Key) return Boolean;
@@ -167,30 +166,13 @@ package Graph is
    --
    --  Complexity is O(1).
 
-   function Get_Attributes
-     (G : T'Class;
-      V : Vertex_Id) return Vertex_Attributes
-   with Pre => V /= Null_Vertex;
-   --  Obtain the user-defined attributes of the given vertex.
-   --
-   --  Complexity is O(1).
-
-   procedure Set_Attributes
-     (G : in out T'Class;
-      V : Vertex_Id;
-      A : Vertex_Attributes)
-   with Pre => not G.Is_Frozen and
-               V /= Null_Vertex;
-   --  Set the user-defined attributes of the given vertex.
-   --
-   --  Complexity is O(1).
-
    procedure Add_Vertex
-     (G : in out T'Class;
-      V : Vertex_Key;
-      A : Vertex_Attributes)
-   with Pre => not G.Is_Frozen and
-               G.Get_Vertex (V) = Null_Vertex;
+     (G  : in out T'Class;
+      V  : Vertex_Key;
+      Id : out Vertex_Id)
+   with Pre  => not G.Is_Frozen and
+                G.Get_Vertex (V) = Null_Vertex,
+        Post => Id /= Null_Vertex;
    --  Add a new vertex to the graph, with no edges attached.
    --
    --  Complexity is O(1) in the general case, but presumably can be
@@ -198,17 +180,6 @@ package Graph is
 
    procedure Add_Vertex
      (G  : in out T'Class;
-      V  : Vertex_Key;
-      A  : Vertex_Attributes;
-      Id : out Vertex_Id)
-   with Pre  => not G.Is_Frozen and
-                G.Get_Vertex (V) = Null_Vertex,
-        Post => Id /= Null_Vertex;
-   --  As above but also return the new vertex id.
-
-   procedure Add_Vertex
-     (G  : in out T'Class;
-      A  : Vertex_Attributes;
       Id : out Vertex_Id)
    with Pre  => not G.Is_Frozen,
         Post => Id /= Null_Vertex;
@@ -599,7 +570,6 @@ private
 
    type Vertex is record
       Key            : Vertex_Key;
-      Attributes     : Vertex_Attributes;
       In_Neighbours  : Vertex_Index_Set;
       Out_Neighbours : Edge_Attribute_Map;
    end record;

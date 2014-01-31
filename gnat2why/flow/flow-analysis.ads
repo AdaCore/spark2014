@@ -26,7 +26,7 @@
 
 package Flow.Analysis is
 
-   procedure Analyse_Main (FA : in out Flow_Analysis_Graphs);
+   procedure Analyse_Main (FA : Flow_Analysis_Graphs);
    --  If FA corresponds to a main program, we ensure that
    --  all globals it references are initialized.
 
@@ -50,34 +50,33 @@ package Flow.Analysis is
    --
    --  Complexity is O(N)
 
-   procedure Find_Unwritten_Exports (FA : in out Flow_Analysis_Graphs);
+   procedure Find_Unwritten_Exports (FA : Flow_Analysis_Graphs);
    --  Find outputs which are never written to.
    --
    --  Complexity is O(N)
 
-   procedure Find_Ineffective_Imports (FA : in out Flow_Analysis_Graphs);
+   procedure Find_Ineffective_Imports (FA : Flow_Analysis_Graphs);
    --  Find all ineffective initial values.
    --
    --  Complexity is O(N^2)
 
-   procedure Find_Ineffective_Statements (FA : in out Flow_Analysis_Graphs);
+   procedure Find_Ineffective_Statements (FA : Flow_Analysis_Graphs);
    --  Find all ineffective statements.
    --
    --  Complexity is O(N^2)
 
-   procedure Find_Dead_Code (FA : in out Flow_Analysis_Graphs);
+   procedure Find_Dead_Code (FA : Flow_Analysis_Graphs);
    --  Find all obviously dead code.
    --
    --  Complexity is O(N)
 
-   procedure Enforce_No_Return (FA : in out Flow_Analysis_Graphs);
+   procedure Enforce_No_Return (FA : Flow_Analysis_Graphs);
    --  If the analysed subprogram is marked No_Return, we check that we
    --  never return. In all other cases this procedure does nothing.
    --
    --  Complexity is O(N).
 
-   procedure Find_Use_Of_Uninitialized_Variables
-     (FA : in out Flow_Analysis_Graphs);
+   procedure Find_Use_Of_Uninitialized_Variables (FA : Flow_Analysis_Graphs);
    --  Find all instances where uninitialized variables are used. If a
    --  variable is always uninitialized then raise an Error, otherwise
    --  raise a Warning.
@@ -97,30 +96,29 @@ package Flow.Analysis is
    --
    --  Complexity is O(N^2)
 
-   procedure Find_Stable_Elements (FA : in out Flow_Analysis_Graphs);
+   procedure Find_Stable_Elements (FA : Flow_Analysis_Graphs);
    --  Find stable loop statements.
    --
    --  Complexity is O(N^2)
 
-   procedure Find_Unused_Objects (FA : in out Flow_Analysis_Graphs);
+   procedure Find_Unused_Objects (FA : Flow_Analysis_Graphs);
    --  Find unused objects.
    --
    --  Complexity is O(N)
 
-   procedure Find_Exports_Derived_From_Proof_Ins
-     (FA : in out Flow_Analysis_Graphs);
+   procedure Find_Exports_Derived_From_Proof_Ins (FA : Flow_Analysis_Graphs);
    --  Finds exports derived from global variables with mode Proof_In.
    --
    --  Complexity is O(N^2) - (due to path search on each element of the
    --  precomputed dependency map)
 
-   procedure Check_Contracts (FA : in out Flow_Analysis_Graphs);
+   procedure Check_Contracts (FA : Flow_Analysis_Graphs);
    --  Check the given depends against the reality. If there is no
    --  depends aspect this procedure does nothing.
    --
    --  Complexity is O(N^2)
 
-   procedure Check_Initializes_Contract (FA : in out Flow_Analysis_Graphs)
+   procedure Check_Initializes_Contract (FA : Flow_Analysis_Graphs)
    with Pre => FA.Kind in E_Package | E_Package_Body;
    --  Checks if the Initializes contract has extra dependencies or missing
    --  dependencies.
@@ -132,6 +130,7 @@ private
    type Var_Use_Kind is (Use_Read, Use_Write, Use_Any);
 
    function Error_Location (G : Flow_Graphs.T'Class;
+                            M : Attribute_Maps.Map;
                             V : Flow_Graphs.Vertex_Id)
                             return Node_Or_Entity_Id;
    --  Find a good place to raise an error for vertex V.

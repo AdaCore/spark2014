@@ -109,10 +109,11 @@ package body Flow is
    ------------------------
 
    procedure Print_Graph_Vertex (G : Flow_Graphs.T;
+                                 M : Attribute_Maps.Map;
                                  V : Flow_Graphs.Vertex_Id)
    is
       F : constant Flow_Id      := G.Get_Key (V);
-      A : constant V_Attributes := G.Get_Attributes (V);
+      A : constant V_Attributes := M (V);
 
       procedure Format_Item (K, V : String);
 
@@ -311,6 +312,7 @@ package body Flow is
    procedure Print_Graph
      (Filename     : String;
       G            : T;
+      M            : Attribute_Maps.Map;
       Start_Vertex : Vertex_Id := Null_Vertex;
       End_Vertex   : Vertex_Id := Null_Vertex) is
 
@@ -342,7 +344,7 @@ package body Flow is
             Label  => Null_Unbounded_String);
 
          F : constant Flow_Id      := G.Get_Key (V);
-         A : constant V_Attributes := G.Get_Attributes (V);
+         A : constant V_Attributes := M (V);
       begin
          Temp_String := Null_Unbounded_String;
          Set_Special_Output (Add_To_Temp_String'Access);
@@ -685,6 +687,7 @@ package body Flow is
                CDG               => Create,
                TDG               => Create,
                PDG               => Create,
+               Atr               => Attribute_Maps.Empty_Map,
                Local_Constants   => Node_Sets.Empty_Set,
                All_Vars          => Flow_Id_Sets.Empty_Set,
                Unmodified_Vars   => Node_Sets.Empty_Set,
@@ -719,6 +722,7 @@ package body Flow is
                CDG               => Create,
                TDG               => Create,
                PDG               => Create,
+               Atr               => Attribute_Maps.Empty_Map,
                Local_Constants   => Node_Sets.Empty_Set,
                All_Vars          => Flow_Id_Sets.Empty_Set,
                Unmodified_Vars   => Node_Sets.Empty_Set,
@@ -744,6 +748,7 @@ package body Flow is
                CDG               => Create,
                TDG               => Create,
                PDG               => Create,
+               Atr               => Attribute_Maps.Empty_Map,
                Local_Constants   => Node_Sets.Empty_Set,
                All_Vars          => Flow_Id_Sets.Empty_Set,
                Unmodified_Vars   => Node_Sets.Empty_Set,
@@ -810,6 +815,7 @@ package body Flow is
       if Debug_Print_CFG then
          Print_Graph (Filename     => To_String (FA.Base_Filename) & "_cfg",
                       G            => FA.CFG,
+                      M            => FA.Atr,
                       Start_Vertex => FA.Start_Vertex,
                       End_Vertex   => FA.End_Vertex);
       end if;
@@ -819,6 +825,7 @@ package body Flow is
       if Debug_Print_Intermediates then
          Print_Graph (Filename     => To_String (FA.Base_Filename) & "_cdg",
                       G            => FA.CDG,
+                      M            => FA.Atr,
                       Start_Vertex => FA.Start_Vertex,
                       End_Vertex   => FA.End_Vertex);
       end if;
@@ -830,6 +837,7 @@ package body Flow is
       if Debug_Print_Intermediates then
          Print_Graph (Filename     => To_String (FA.Base_Filename) & "_ddg",
                       G            => FA.DDG,
+                      M            => FA.Atr,
                       Start_Vertex => FA.Start_Vertex,
                       End_Vertex   => FA.End_Vertex);
       end if;
@@ -837,6 +845,7 @@ package body Flow is
       if Debug_Print_PDG then
          Print_Graph (Filename     => To_String (FA.Base_Filename) & "_pdg",
                       G            => FA.PDG,
+                      M            => FA.Atr,
                       Start_Vertex => FA.Start_Vertex,
                       End_Vertex   => FA.End_Vertex);
       end if;
@@ -855,7 +864,6 @@ package body Flow is
    procedure Flow_Analyse_CUnit (GNAT_Root : Node_Id) is
       FA_Graphs : Analysis_Maps.Map;
       Success   : Boolean;
-
    begin
       --  Process entities and construct graphs if necessary
       for E of Entity_Set loop
@@ -958,6 +966,9 @@ package body Flow is
             end case;
          end if;
 
+         --  Not really necessary, but it forces N131-017 to occur
+         --  immediately, instead of when this procedure ends.
+         FA.Atr.Clear;
       end loop;
 
       --  Create the "unit.flow" file that contains all emitted flow messages.

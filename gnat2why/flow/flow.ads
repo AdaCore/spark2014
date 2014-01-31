@@ -72,12 +72,18 @@ package Flow is
 
    package Flow_Graphs is new Graph
      (Vertex_Key        => Flow_Id,
-      Vertex_Attributes => V_Attributes,
       Edge_Colours      => Edge_Colours,
       Null_Key          => Null_Flow_Id,
       Test_Key          => "=");
 
+   package Attribute_Maps is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Flow_Graphs.Vertex_Id,
+      Element_Type    => V_Attributes,
+      Hash            => Flow_Graphs.Vertex_Hash,
+      Equivalent_Keys => Flow_Graphs."=");
+
    procedure Print_Graph_Vertex (G : Flow_Graphs.T;
+                                 M : Attribute_Maps.Map;
                                  V : Flow_Graphs.Vertex_Id);
    --  Print a human-readable representation for the given vertex.
 
@@ -136,6 +142,9 @@ package Flow is
       TDG               : Flow_Graphs.T;
       PDG               : Flow_Graphs.T;
       --  The graphs.
+
+      Atr               : Attribute_Maps.Map;
+      --  The vertex attributes for the above graphs.
 
       Local_Constants   : Node_Sets.Set;
       --  All constants that have been locally declared. This is used as a
@@ -265,6 +274,7 @@ package Flow is
    procedure Print_Graph
      (Filename     : String;
       G            : Flow_Graphs.T;
+      M            : Attribute_Maps.Map;
       Start_Vertex : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;
       End_Vertex   : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex);
    --  Write a dot and pdf file for the given graph.

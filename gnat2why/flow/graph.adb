@@ -69,7 +69,6 @@ package body Graph is
       for V of G.Vertices loop
          R.Vertices.Append
            (Vertex'(Key            => V.Key,
-                    Attributes     => V.Attributes,
                     In_Neighbours  => VIS.Empty_Set,
                     Out_Neighbours => EAM.Empty_Map));
       end loop;
@@ -107,65 +106,28 @@ package body Graph is
       return G.Vertices (V).Key;
    end Get_Key;
 
-   --------------------
-   -- Get_Attributes --
-   --------------------
-
-   function Get_Attributes
-     (G : T'Class;
-      V : Vertex_Id) return Vertex_Attributes is
-   begin
-      return G.Vertices (V).Attributes;
-   end Get_Attributes;
-
-   --------------------
-   -- Set_Attributes --
-   --------------------
-
-   procedure Set_Attributes
-     (G : in out T'Class;
-      V : Vertex_Id;
-      A : Vertex_Attributes) is
-   begin
-      G.Vertices (V).Attributes := A;
-   end Set_Attributes;
-
    ----------------
    -- Add_Vertex --
    ----------------
 
    procedure Add_Vertex
-     (G : in out T'Class;
-      V : Vertex_Key;
-      A : Vertex_Attributes) is
-   begin
-      G.Vertices.Append
-        (Vertex'(Key            => V,
-                 Attributes     => A,
-                 In_Neighbours  => VIS.Empty_Set,
-                 Out_Neighbours => EAM.Empty_Map));
-   end Add_Vertex;
-
-   procedure Add_Vertex
      (G  : in out T'Class;
       V  : Vertex_Key;
-      A  : Vertex_Attributes;
       Id : out Vertex_Id) is
    begin
-      G.Add_Vertex (V, A);
+      G.Vertices.Append ((Key            => V,
+                          In_Neighbours  => VIS.Empty_Set,
+                          Out_Neighbours => EAM.Empty_Map));
       Id := G.Vertices.Last_Index;
    end Add_Vertex;
 
    procedure Add_Vertex
      (G  : in out T'Class;
-      A  : Vertex_Attributes;
       Id : out Vertex_Id) is
    begin
-      G.Vertices.Append
-        (Vertex'(Key            => Null_Key,
-                 Attributes     => A,
-                 In_Neighbours  => VIS.Empty_Set,
-                 Out_Neighbours => EAM.Empty_Map));
+      G.Vertices.Append ((Key            => Null_Key,
+                          In_Neighbours  => VIS.Empty_Set,
+                          Out_Neighbours => EAM.Empty_Map));
       Id := G.Vertices.Last_Index;
    end Add_Vertex;
 

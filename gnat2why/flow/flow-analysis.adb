@@ -43,6 +43,14 @@ with Flow_Utility;         use Flow_Utility;
 --  with Output;               use Output;
 --  with Treepr;               use Treepr;
 
+-----------------------------------------------------------------------------
+--
+--  !!! Important: Please make sure to always use FA.Atr.Element (V)
+--      instead of the implicit reference FA.Atr (V), due to finalization
+--      issues. See N131-017 for further information.
+--
+-----------------------------------------------------------------------------
+
 package body Flow.Analysis is
 
    Debug_Trace_Depends : constant Boolean := False;
@@ -54,13 +62,14 @@ package body Flow.Analysis is
    use type Flow_Id_Sets.Set;
 
    function Get_Line (G   : Flow_Graphs.T'Class;
+                      M   : Attribute_Maps.Map;
                       V   : Flow_Graphs.Vertex_Id;
                       Sep : Character := ':')
                       return String;
    --  Obtain the location for the given vertex as in "foo.adb:12".
 
    procedure Write_Vertex_Set
-     (G        : Flow_Graphs.T;
+     (FA       : Flow_Analysis_Graphs;
       Set      : Vertex_Sets.Set;
       Filename : String);
    --  Write a trace file for GPS.
@@ -78,11 +87,12 @@ package body Flow.Analysis is
    --------------------
 
    function Error_Location (G : Flow_Graphs.T'Class;
+                            M : Attribute_Maps.Map;
                             V : Flow_Graphs.Vertex_Id)
                             return Node_Or_Entity_Id
    is
       K : constant Flow_Id      := G.Get_Key (V);
-      A : constant V_Attributes := G.Get_Attributes (V);
+      A : constant V_Attributes := M.Element (V);
    begin
       if Present (A.Error_Location) then
          return A.Error_Location;
@@ -103,11 +113,12 @@ package body Flow.Analysis is
    --------------
 
    function Get_Line (G   : Flow_Graphs.T'Class;
+                      M   : Attribute_Maps.Map;
                       V   : Flow_Graphs.Vertex_Id;
                       Sep : Character := ':')
                       return String
    is
-      N       : constant Node_Or_Entity_Id := Error_Location (G, V);
+      N       : constant Node_Or_Entity_Id := Error_Location (G, M, V);
       SI      : constant Source_File_Index := Get_Source_File_Index (Sloc (N));
       Line_No : constant String :=
         Logical_Line_Number'Image (Get_Logical_Line_Number (Sloc (N)));
@@ -121,7 +132,7 @@ package body Flow.Analysis is
    ----------------------
 
    procedure Write_Vertex_Set
-     (G        : Flow_Graphs.T;
+     (FA       : Flow_Analysis_Graphs;
       Set      : Vertex_Sets.Set;
       Filename : String)
    is
@@ -133,10 +144,10 @@ package body Flow.Analysis is
 
          for V of Set loop
             declare
-               F : constant Flow_Id := G.Get_Key (V);
+               F : constant Flow_Id := FA.PDG.Get_Key (V);
             begin
                if F.Kind = Direct_Mapping then
-                  Ada.Text_IO.Put (FD, Get_Line (G, V));
+                  Ada.Text_IO.Put (FD, Get_Line (FA.PDG, FA.Atr, V));
                   Ada.Text_IO.New_Line (FD);
                end if;
             end;
@@ -348,7 +359,7 @@ package body Flow.Analysis is
       is
          pragma Unreferenced (Origin, Depth);
 
-         Atr         : constant V_Attributes := FA.CFG.Get_Attributes (V);
+         Atr         : constant V_Attributes := FA.Atr.Element (V);
          Check_Read  : constant Boolean      := Kind in Use_Read | Use_Any;
          Check_Write : constant Boolean      := Kind in Use_Write | Use_Any;
          Of_Interest : Boolean               := False;
@@ -443,7 +454,7 @@ package body Flow.Analysis is
    -- Analyse_Main --
    ------------------
 
-   procedure Analyse_Main (FA : in out Flow_Analysis_Graphs) is
+   procedure Analyse_Main (FA : Flow_Analysis_Graphs) is
       Proof_Reads : Flow_Id_Sets.Set;
       Reads       : Flow_Id_Sets.Set;
       Unused      : Flow_Id_Sets.Set;
@@ -658,7 +669,7 @@ package body Flow.Analysis is
    -- Find_Unwritten_Exports --
    ----------------------------
 
-   procedure Find_Unwritten_Exports (FA : in out Flow_Analysis_Graphs) is
+   procedure Find_Unwritten_Exports (FA : Flow_Analysis_Graphs) is
       F_Final   : Flow_Id;
       A_Final   : V_Attributes;
       F_Initial : Flow_Id;
@@ -671,7 +682,7 @@ package body Flow.Analysis is
    begin
       for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          F_Final := FA.PDG.Get_Key (V);
-         A_Final := FA.PDG.Get_Attributes (V);
+         A_Final := FA.Atr.Element (V);
          if F_Final.Variant = Final_Value and then
            A_Final.Is_Export
          then
@@ -684,7 +695,7 @@ package body Flow.Analysis is
             Unwritten := False;
             if FA.PDG.In_Neighbour_Count (V) = 1 then
                F_Initial := FA.PDG.Get_Key (FA.PDG.Parent (V));
-               A_Initial := FA.PDG.Get_Attributes (FA.PDG.Parent (V));
+               A_Initial := FA.Atr.Element (FA.PDG.Parent (V));
                if F_Initial.Variant = Initial_Value and then
                  A_Initial.Is_Import and then
                  Change_Variant (F_Initial, Final_Value) = F_Final
@@ -703,7 +714,7 @@ package body Flow.Analysis is
 
       for V of Unwritten_Vars loop
          F_Final := FA.PDG.Get_Key (V);
-         A_Final := FA.PDG.Get_Attributes (V);
+         A_Final := FA.Atr.Element (V);
 
          if not Written_Entire_Vars.Contains (Entire_Variable (F_Final)) then
 
@@ -726,7 +737,7 @@ package body Flow.Analysis is
                     (FA        => FA,
                      Tracefile => Tracefile,
                      Msg       => "& is not modified, could be IN",
-                     N         => Error_Location (FA.PDG, V),
+                     N         => Error_Location (FA.PDG, FA.Atr, V),
                      F1        => F_Final,
                      Tag       => "inout_only_read",
                      Warning   => True);
@@ -740,14 +751,15 @@ package body Flow.Analysis is
    -- Find_Ineffective_Imports --
    ------------------------------
 
-   procedure Find_Ineffective_Imports (FA : in out Flow_Analysis_Graphs) is
+   procedure Find_Ineffective_Imports (FA : Flow_Analysis_Graphs) is
+
       function Is_Final_Use (V : Flow_Graphs.Vertex_Id) return Boolean
       is (FA.PDG.Get_Key (V).Variant = Final_Value and then
-            FA.PDG.Get_Attributes (V).Is_Export);
+            FA.Atr.Element (V).Is_Export);
       --  Checks if the given vertex V is a final-use vertex.
 
-      Effective_Ids  : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
-      Entire_Ids     : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
+      Effective_Ids  : Vertex_Sets.Set  := Vertex_Sets.Empty_Set;
+      Entire_Ids     : Vertex_Sets.Set  := Vertex_Sets.Empty_Set;
       Tracefile      : Unbounded_String;
       Suppressed_Ids : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
    begin
@@ -778,7 +790,7 @@ package body Flow.Analysis is
       for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
             Key : constant Flow_Id      := FA.PDG.Get_Key (V);
-            Atr : constant V_Attributes := FA.PDG.Get_Attributes (V);
+            Atr : constant V_Attributes := FA.Atr.Element (V);
          begin
             if Key.Variant = Initial_Value
               and then Atr.Is_Initialized
@@ -828,8 +840,8 @@ package body Flow.Analysis is
 
       for V of Entire_Ids loop
          declare
-            F : constant Flow_Id      := FA.PDG.Get_Key (V);
-            A : constant V_Attributes := FA.PDG.Get_Attributes (V);
+            F   : constant Flow_Id      := FA.PDG.Get_Key (V);
+            Atr : constant V_Attributes := FA.Atr.Element (V);
          begin
             if not Effective_Ids.Contains (V) then
 
@@ -841,14 +853,14 @@ package body Flow.Analysis is
                   if Is_Discriminant (F) then
                      --  Discriminants are never ineffective imports.
                      null;
-                  elsif A.Mode = Mode_Proof then
+                  elsif Atr.Mode = Mode_Proof then
                      --  Proof_Ins are never ineffective imports, for now.
                      null;
                   elsif Suppressed_Ids.Contains
                     (Change_Variant (F, Normal_Use))
                   then
                      null;
-                  elsif A.Is_Global then
+                  elsif Atr.Is_Global then
                      if FA.Kind = E_Subprogram_Body and then
                        not FA.Is_Generative
                      then
@@ -878,7 +890,7 @@ package body Flow.Analysis is
                         Tracefile => Tracefile,
                         Msg       => "unused initial value of &",
                         --  ??? find_import
-                        N         => Error_Location (FA.PDG, V),
+                        N         => Error_Location (FA.PDG, FA.Atr, V),
                         F1        => F,
                         Tag       => "unused_initial_value",
                         Warning   => True);
@@ -893,7 +905,7 @@ package body Flow.Analysis is
    -- Find_Ineffective_Statements --
    ---------------------------------
 
-   procedure Find_Ineffective_Statements (FA : in out Flow_Analysis_Graphs) is
+   procedure Find_Ineffective_Statements (FA : Flow_Analysis_Graphs) is
       Tracefile : Unbounded_String;
 
       function Is_Final_Use_Any_Export (V : Flow_Graphs.Vertex_Id)
@@ -933,7 +945,7 @@ package body Flow.Analysis is
                                         return Boolean is
       begin
          return FA.PDG.Get_Key (V).Variant = Final_Value and then
-           FA.PDG.Get_Attributes (V).Is_Export;
+           FA.Atr.Element (V).Is_Export;
       end Is_Final_Use_Any_Export;
 
       ----------------------
@@ -956,7 +968,7 @@ package body Flow.Analysis is
       is
          Mask         : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
          Vars_Defined : constant Flow_Id_Sets.Set :=
-           FA.CFG.Get_Attributes (Ineffective_Statement).Variables_Defined;
+           FA.Atr.Element (Ineffective_Statement).Variables_Defined;
 
          procedure Visitor
            (V  : Flow_Graphs.Vertex_Id;
@@ -969,8 +981,8 @@ package body Flow.Analysis is
          is
             Intersection : constant Flow_Id_Sets.Set :=
               Vars_Defined and
-              (FA.CFG.Get_Attributes (V).Variables_Defined -
-                 FA.CFG.Get_Attributes (V).Variables_Used);
+              (FA.Atr.Element (V).Variables_Defined -
+                 FA.Atr.Element (V).Variables_Used);
          begin
             if V /= Ineffective_Statement and then
               Intersection.Length >= 1
@@ -1024,7 +1036,7 @@ package body Flow.Analysis is
          procedure Visitor (V  : Flow_Graphs.Vertex_Id;
                             TV : out Flow_Graphs.Simple_Traversal_Instruction)
          is
-            Atr : constant V_Attributes := FA.CFG.Get_Attributes (V);
+            Atr : constant V_Attributes := FA.Atr.Element (V);
          begin
             if Atr.Execution /= Normal_Execution then
                TV := Flow_Graphs.Skip_Children;
@@ -1048,7 +1060,7 @@ package body Flow.Analysis is
          declare
             N    : Node_Id;
             Key  : constant Flow_Id      := FA.PDG.Get_Key (V);
-            Atr  : constant V_Attributes := FA.PDG.Get_Attributes (V);
+            Atr  : constant V_Attributes := FA.Atr.Element (V);
             Mask : Vertex_Sets.Set;
             Tag  : constant String := "ineffective";
             Tmp  : Flow_Id;
@@ -1114,7 +1126,7 @@ package body Flow.Analysis is
                           (FA        => FA,
                            Tracefile => Tracefile,
                            Msg       => "unused assignment to &",
-                           N         => Error_Location (FA.PDG, V),
+                           N         => Error_Location (FA.PDG, FA.Atr, V),
                            F1        => Tmp,
                            Tag       => Tag,
                            Warning   => True);
@@ -1124,7 +1136,7 @@ package body Flow.Analysis is
                           (FA        => FA,
                            Tracefile => Tracefile,
                            Msg       => "unused assignment",
-                           N         => Error_Location (FA.PDG, V),
+                           N         => Error_Location (FA.PDG, FA.Atr, V),
                            Tag       => Tag,
                            Warning   => True);
                      end if;
@@ -1134,7 +1146,7 @@ package body Flow.Analysis is
                        (FA        => FA,
                         Tracefile => Tracefile,
                         Msg       => "unused assignment",
-                        N         => Error_Location (FA.PDG, V),
+                        N         => Error_Location (FA.PDG, FA.Atr, V),
                         Tag       => Tag,
                         Warning   => True);
 
@@ -1144,7 +1156,7 @@ package body Flow.Analysis is
                           (FA        => FA,
                            Tracefile => Tracefile,
                            Msg       => "initialization has no effect",
-                           N         => Error_Location (FA.PDG, V),
+                           N         => Error_Location (FA.PDG, FA.Atr, V),
                            Tag       => Tag,
                            Warning   => True);
                      end if;
@@ -1155,14 +1167,14 @@ package body Flow.Analysis is
                        (FA        => FA,
                         Tracefile => Tracefile,
                         Msg       => "statement has no effect",
-                        N         => Error_Location (FA.PDG, V),
+                        N         => Error_Location (FA.PDG, FA.Atr, V),
                         Tag       => Tag,
                         Warning   => True);
 
                   end if;
                   if Mask.Length >= 1 then
                      Write_Vertex_Set
-                       (G        => FA.PDG,
+                       (FA       => FA,
                         Set      => Mask,
                         Filename => To_String (Tracefile));
                   end if;
@@ -1176,7 +1188,7 @@ package body Flow.Analysis is
    -- Find_Dead_Code --
    --------------------
 
-   procedure Find_Dead_Code (FA : in out Flow_Analysis_Graphs)
+   procedure Find_Dead_Code (FA : Flow_Analysis_Graphs)
    is
       Dead_Code : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
 
@@ -1188,7 +1200,7 @@ package body Flow.Analysis is
       procedure Flag_Live (V  : Flow_Graphs.Vertex_Id;
                            TV : out Flow_Graphs.Simple_Traversal_Instruction)
       is
-         Atr : constant V_Attributes := FA.CFG.Get_Attributes (V);
+         Atr : constant V_Attributes := FA.Atr.Element (V);
       begin
          Dead_Code.Exclude (V);
 
@@ -1203,7 +1215,7 @@ package body Flow.Analysis is
       --  Guilty until proven innocent.
       for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
-            Atr : constant V_Attributes := FA.CFG.Get_Attributes (V);
+            Atr : constant V_Attributes := FA.Atr.Element (V);
          begin
             if Atr.Is_Program_Node or
               Atr.Is_Parameter or
@@ -1223,7 +1235,7 @@ package body Flow.Analysis is
       for V of Dead_Code loop
          declare
             Unused : Unbounded_String;
-            A      : constant V_Attributes := FA.CFG.Get_Attributes (V);
+            A      : constant V_Attributes := FA.Atr.Element (V);
          begin
             Error_Msg_Flow (FA        => FA,
                             Tracefile => Unused,
@@ -1239,7 +1251,7 @@ package body Flow.Analysis is
    -- Enforce_No_Return --
    -----------------------
 
-   procedure Enforce_No_Return (FA : in out Flow_Analysis_Graphs)
+   procedure Enforce_No_Return (FA : Flow_Analysis_Graphs)
    is
       procedure Search (V   : Flow_Graphs.Vertex_Id;
                         Ins : out Flow_Graphs.Traversal_Instruction);
@@ -1251,7 +1263,7 @@ package body Flow.Analysis is
       procedure Search (V   : Flow_Graphs.Vertex_Id;
                         Ins : out Flow_Graphs.Traversal_Instruction)
       is
-         Atr : constant V_Attributes := FA.CFG.Get_Attributes (V);
+         Atr : constant V_Attributes := FA.Atr.Element (V);
       begin
          if V = FA.End_Vertex then
             Ins := Flow_Graphs.Found_Destination;
@@ -1298,7 +1310,7 @@ package body Flow.Analysis is
                          N         => FA.Analyzed_Entity,
                          F1        => Direct_Mapping_Id (FA.Analyzed_Entity),
                          Tag       => "no_return");
-         Write_Vertex_Set (G        => FA.CFG,
+         Write_Vertex_Set (FA       => FA,
                            Set      => The_Path,
                            Filename => To_String (Tracefile));
       end if;
@@ -1308,8 +1320,7 @@ package body Flow.Analysis is
    -- Find_Use_Of_Uninitialized_Variables --
    -----------------------------------------
 
-   procedure Find_Use_Of_Uninitialized_Variables
-     (FA : in out Flow_Analysis_Graphs)
+   procedure Find_Use_Of_Uninitialized_Variables (FA : Flow_Analysis_Graphs)
    is
       Tracefile : Unbounded_String;
 
@@ -1362,7 +1373,7 @@ package body Flow.Analysis is
            (V           : Flow_Graphs.Vertex_Id;
             Instruction : out Flow_Graphs.Traversal_Instruction)
          is
-            A : constant V_Attributes := FA.CFG.Get_Attributes (V);
+            A : constant V_Attributes := FA.Atr.Element (V);
          begin
             if V = To then
                Instruction := Flow_Graphs.Found_Destination;
@@ -1398,7 +1409,7 @@ package body Flow.Analysis is
          --  A little sanity check can't hurt.
          pragma Assert (Path_Found);
 
-         Write_Vertex_Set (G        => FA.CFG,
+         Write_Vertex_Set (FA       => FA,
                            Set      => Path,
                            Filename => To_String (Tracefile));
       end Mark_Definition_Free_Path;
@@ -1481,14 +1492,14 @@ package body Flow.Analysis is
                if V = V_Use then
                   TV := Flow_Graphs.Skip_Children;
                elsif V /= Flow_Graphs.Null_Vertex
-                 and then FA.CFG.Get_Attributes
-                            (V).Variables_Defined.Contains (The_Var)
+                 and then FA.Atr.Element (V).Variables_Defined.Contains
+                 (The_Var)
                then
                   TV := Flow_Graphs.Skip_Children;
                elsif V /= Flow_Graphs.Null_Vertex
                  and then FA.CFG.Get_Key (V).Variant /= Final_Value
-                 and then FA.CFG.Get_Attributes
-                            (V).Variables_Explicitly_Used.Contains (The_Var)
+                 and then FA.Atr.Element (V).Variables_Explicitly_Used.Contains
+                   (The_Var)
                then
                   V_Exp_Use := V;
                   TV := Flow_Graphs.Abort_Traversal;
@@ -1567,9 +1578,7 @@ package body Flow.Analysis is
             else
 
                TV := Flow_Graphs.Continue;
-               if FA.CFG.Get_Attributes (V).Variables_Defined.Contains
-                 (The_Var)
-               then
+               if FA.Atr.Element (V).Variables_Defined.Contains (The_Var) then
 
                   --  OK, so this vertex V does define The_Var. There
                   --  are a few cases where we can possibly issue a
@@ -1624,7 +1633,7 @@ package body Flow.Analysis is
                when Direct_Mapping | Record_Field =>
                   --  Check if node corresponds to an array.
                   if The_Var_Is_Array
-                    and then not FA.PDG.Get_Attributes
+                    and then not FA.Atr.Element
                       (V_Use).Variables_Explicitly_Used.Contains (The_Var)
                   then
                      --  We set Found and we then check if
@@ -1660,7 +1669,7 @@ package body Flow.Analysis is
 
          declare
             Key_I : constant Flow_Id      := FA.PDG.Get_Key (V_Initial);
-            Atr_I : constant V_Attributes := FA.PDG.Get_Attributes (V_Initial);
+            Atr_I : constant V_Attributes := FA.Atr.Element (V_Initial);
          begin
             if Key_I.Variant = Initial_Value
               and then not Atr_I.Is_Initialized
@@ -1679,8 +1688,7 @@ package body Flow.Analysis is
                loop
                   declare
                      Key_U : constant Flow_Id      := FA.PDG.Get_Key (V_Use);
-                     Atr_U : constant V_Attributes :=
-                       FA.PDG.Get_Attributes (V_Use);
+                     Atr_U : constant V_Attributes := FA.Atr.Element (V_Use);
 
                      Action : constant String := (if Has_Async_Readers (Key_I)
                                                   then "written"
@@ -1755,7 +1763,9 @@ package body Flow.Analysis is
                                  Msg       =>
                                    "possibly missing return statement in &",
                                  N         =>
-                                   Error_Location (FA.PDG, FA.Start_Vertex),
+                                   Error_Location (FA.PDG,
+                                                   FA.Atr,
+                                                   FA.Start_Vertex),
                                  F1        => Direct_Mapping_Id
                                    (FA.Analyzed_Entity),
                                  Tag       => "missing_return");
@@ -1777,7 +1787,9 @@ package body Flow.Analysis is
                                  Tracefile => Tracefile,
                                  Msg       => "& might not be " & Action &
                                    " in &",
-                                 N         => Error_Location (FA.PDG, V_Error),
+                                 N         => Error_Location (FA.PDG,
+                                                              FA.Atr,
+                                                              V_Error),
                                  F1        => Key_I,
                                  F2        => Direct_Mapping_Id
                                    (FA.Analyzed_Entity),
@@ -1788,7 +1800,9 @@ package body Flow.Analysis is
                                 (FA        => FA,
                                  Tracefile => Tracefile,
                                  Msg       => "& is not " & Action & " in &",
-                                 N         => Error_Location (FA.PDG, V_Error),
+                                 N         => Error_Location (FA.PDG,
+                                                              FA.Atr,
+                                                              V_Error),
                                  F1        => Key_I,
                                  F2        => Direct_Mapping_Id
                                    (FA.Analyzed_Entity),
@@ -1817,7 +1831,9 @@ package body Flow.Analysis is
                              (FA        => FA,
                               Tracefile => Tracefile,
                               Msg       => "& might not be " & Action,
-                              N         => Error_Location (FA.PDG, V_Error),
+                              N         => Error_Location (FA.PDG,
+                                                           FA.Atr,
+                                                           V_Error),
                               F1        => Key_I,
                               Tag       => "uninitialized",
                               Warning   => True);
@@ -1826,7 +1842,9 @@ package body Flow.Analysis is
                              (FA        => FA,
                               Tracefile => Tracefile,
                               Msg       => "& is not " & Action,
-                              N         => Error_Location (FA.PDG, V_Error),
+                              N         => Error_Location (FA.PDG,
+                                                           FA.Atr,
+                                                           V_Error),
                               F1        => Key_I,
                               Tag       => "uninitialized");
                         end if;
@@ -1848,9 +1866,9 @@ package body Flow.Analysis is
    -- Find_Stable_Elements --
    --------------------------
 
-   procedure Find_Stable_Elements (FA : in out Flow_Analysis_Graphs) is
-      Done      : Boolean       := False;
-      Tmp       : Flow_Graphs.T := FA.DDG.Create;
+   procedure Find_Stable_Elements (FA : Flow_Analysis_Graphs) is
+      Done      : Boolean            := False;
+      M         : Attribute_Maps.Map := FA.Atr;
       Is_Stable : Boolean;
       Tracefile : Unbounded_String;
    begin
@@ -1860,7 +1878,7 @@ package body Flow.Analysis is
             Done := True;
             for N_Loop of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
                declare
-                  Atr : V_Attributes := Tmp.Get_Attributes (N_Loop);
+                  Atr : V_Attributes := M (N_Loop);
                begin
                   if Atr.Loops.Contains (Loop_Id) then
                      --  For all nodes in the loop, do:
@@ -1879,10 +1897,9 @@ package body Flow.Analysis is
                      --  in-neighbour from "outside" the loop.
                      if Is_Stable then
                         for V of FA.PDG.Get_Collection
-                          (N_Loop, Flow_Graphs.In_Neighbours) loop
-                           if Tmp.Get_Attributes (V).Loops.Contains
-                             (Loop_Id)
-                           then
+                          (N_Loop, Flow_Graphs.In_Neighbours)
+                        loop
+                           if M (V).Loops.Contains (Loop_Id) then
                               Is_Stable := False;
                               exit;
                            end if;
@@ -1892,14 +1909,16 @@ package body Flow.Analysis is
                      if Is_Stable then
                         --  Remove from the loop
                         Atr.Loops.Delete (Loop_Id);
-                        Tmp.Set_Attributes (N_Loop, Atr);
+                        M (N_Loop) := Atr;
 
                         --  Complain
                         Error_Msg_Flow
                           (FA        => FA,
                            Tracefile => Tracefile,
                            Msg       => "stable",
-                           N         => Error_Location (FA.PDG, N_Loop),
+                           N         => Error_Location (FA.PDG,
+                                                        FA.Atr,
+                                                        N_Loop),
                            Tag       => "stable",
                            Warning   => True);
 
@@ -1917,7 +1936,7 @@ package body Flow.Analysis is
    -- Find_Unused_Objects --
    -------------------------
 
-   procedure Find_Unused_Objects (FA : in out Flow_Analysis_Graphs) is
+   procedure Find_Unused_Objects (FA : Flow_Analysis_Graphs) is
       Used_Ids   : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
       Entire_Ids : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
       Tracefile  : Unbounded_String;
@@ -1985,7 +2004,7 @@ package body Flow.Analysis is
          if not Used_Ids.Contains (V) then
             declare
                F : constant Flow_Id      := FA.PDG.Get_Key (V);
-               A : constant V_Attributes := FA.PDG.Get_Attributes (V);
+               A : constant V_Attributes := FA.Atr.Element (V);
             begin
                if Is_Discriminant (F) then
                   --  Discriminants can never not be used.
@@ -2012,7 +2031,9 @@ package body Flow.Analysis is
                     (FA        => FA,
                      Tracefile => Tracefile,
                      Msg       => "unused variable &",
-                     N         => Error_Location (FA.PDG, V),
+                     N         => Error_Location (FA.PDG,
+                                                  FA.Atr,
+                                                  V),
                      F1        => F,
                      Tag       => "unused",
                      Warning   => True);
@@ -2026,8 +2047,7 @@ package body Flow.Analysis is
    --  Find_Exports_Derived_From_Proof_Ins  --
    -------------------------------------------
 
-   procedure Find_Exports_Derived_From_Proof_Ins
-     (FA : in out Flow_Analysis_Graphs)
+   procedure Find_Exports_Derived_From_Proof_Ins (FA : Flow_Analysis_Graphs)
    is
       function Path_Leading_To_Proof_In_Dependency
         (From : Flow_Graphs.Vertex_Id;
@@ -2162,7 +2182,7 @@ package body Flow.Analysis is
                      Vertices_Trail : Vertex_Sets.Set;
                   begin
                      if V /= Flow_Graphs.Null_Vertex
-                       and then FA.PDG.Get_Attributes (V).Mode = Mode_Proof
+                       and then FA.Atr.Element (V).Mode = Mode_Proof
                      then
                         Error_Msg_Flow
                           (FA        => FA,
@@ -2183,7 +2203,7 @@ package body Flow.Analysis is
                                                          Final_Value)));
 
                         Write_Vertex_Set
-                          (G        => FA.PDG,
+                          (FA       => FA,
                            Set      => Vertices_Trail,
                            Filename => To_String (Tracefile));
                      end if;
@@ -2199,7 +2219,7 @@ package body Flow.Analysis is
    -- Check_Contracts --
    ---------------------
 
-   procedure Check_Contracts (FA : in out Flow_Analysis_Graphs) is
+   procedure Check_Contracts (FA : Flow_Analysis_Graphs) is
       Tracefile : Unbounded_String;
 
       function Find_Export (E : Entity_Id) return Node_Id;
@@ -2380,7 +2400,7 @@ package body Flow.Analysis is
                                                           Initial_Value));
                   begin
                      if V /= Flow_Graphs.Null_Vertex
-                       and then FA.PDG.Get_Attributes (V).Mode = Mode_Proof
+                       and then FA.Atr.Element (V).Mode = Mode_Proof
                      then
                         null;
                      else
@@ -2449,7 +2469,8 @@ package body Flow.Analysis is
    -- Check_Initializes_Contract --
    --------------------------------
 
-   procedure Check_Initializes_Contract (FA : in out Flow_Analysis_Graphs) is
+   procedure Check_Initializes_Contract (FA : Flow_Analysis_Graphs)
+   is
       Tracefile : Unbounded_String;
 
       function Find_Entity (E    : Entity_Id;
@@ -2645,7 +2666,7 @@ package body Flow.Analysis is
          --  A little sanity check can't hurt.
          pragma Assert (Path_Found);
 
-         Write_Vertex_Set (G        => FA.PDG,
+         Write_Vertex_Set (FA       => FA,
                            Set      => Path,
                            Filename => To_String (Tracefile));
       end Write_Tracefile;

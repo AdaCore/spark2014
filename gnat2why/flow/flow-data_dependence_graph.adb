@@ -32,8 +32,8 @@ package body Flow.Data_Dependence_Graph is
 
       for V_D of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
          Combined_Defined :=
-           FA.CFG.Get_Attributes (V_D).Variables_Defined or
-           FA.CFG.Get_Attributes (V_D).Volatiles_Read;
+           FA.Atr.Element (V_D).Variables_Defined or
+           FA.Atr.Element (V_D).Volatiles_Read;
          for Var of Combined_Defined loop
             declare
                procedure Visitor
@@ -47,7 +47,7 @@ package body Flow.Data_Dependence_Graph is
                  (V_U : Flow_Graphs.Vertex_Id;
                   TV  : out Flow_Graphs.Simple_Traversal_Instruction)
                is
-                  Atr : constant V_Attributes := FA.CFG.Get_Attributes (V_U);
+                  Atr : constant V_Attributes := FA.Atr (V_U);
                begin
                   if Atr.Variables_Used.Contains (Var) then
                      FA.DDG.Add_Edge (V_D, V_U, EC_DDG);
@@ -66,9 +66,7 @@ package body Flow.Data_Dependence_Graph is
                end Visitor;
             begin
                --  Check for self-dependency (i.e. X := X + 1).
-               if FA.CFG.Get_Attributes
-                 (V_D).Variables_Used.Contains (Var)
-               then
+               if FA.Atr.Element (V_D).Variables_Used.Contains (Var) then
                   FA.DDG.Add_Edge (V_D, V_D, EC_DDG);
                end if;
 
@@ -77,7 +75,7 @@ package body Flow.Data_Dependence_Graph is
                            Include_Start => False,
                            Visitor       => Visitor'Access);
 
-               for Vol of FA.CFG.Get_Attributes (V_D).Volatiles_Written loop
+               for Vol of FA.Atr.Element (V_D).Volatiles_Written loop
                   declare
                      V_Final : constant Flow_Graphs.Vertex_Id :=
                        FA.CFG.Get_Vertex (Change_Variant (Vol, Final_Value));

@@ -217,6 +217,24 @@ package body Flow.Control_Flow_Graph is
    --  Local declarations
    ------------------------------------------------------------
 
+   procedure Add_Vertex (FA : in out Flow_Analysis_Graphs;
+                         F  : Flow_Id;
+                         A  : V_Attributes);
+   --  Helper function to add a vertex (with attributes) to the graph.
+
+   procedure Add_Vertex (FA : in out Flow_Analysis_Graphs;
+                         F  : Flow_Id;
+                         A  : V_Attributes;
+                         V  : out Flow_Graphs.Vertex_Id);
+   --  Helper function to add a vertex (with attributes) to the graph,
+   --  returning the Id of the newly added vertex.
+
+   procedure Add_Vertex (FA : in out Flow_Analysis_Graphs;
+                         A  : V_Attributes;
+                         V  : out Flow_Graphs.Vertex_Id);
+   --  Helper function to add an unkeyed vertex (with attributes) to the
+   --  graph, returning its Id.
+
    procedure Linkup
      (CFG   : in out Flow_Graphs.T;
       Froms : Vertex_Sets.Set;
@@ -233,7 +251,7 @@ package body Flow.Control_Flow_Graph is
    --  Link the From to the To vertex in the given graph.
 
    procedure Join
-     (CFG   : in out Flow_Graphs.T;
+     (FA    : in out Flow_Analysis_Graphs;
       CM    : in out Connection_Maps.Map;
       Nodes : Union_Lists.List;
       Block : out Graph_Connections);
@@ -667,9 +685,8 @@ package body Flow.Control_Flow_Graph is
    --  Process an arbitrary statement (this is basically a big case
    --  block which calls the various Do_XYZ procedures).
 
-   procedure Simplify
-     (G : in out Flow_Graphs.T'Class);
-   --  Remove all null vertices from the graph.
+   procedure Simplify_CFG (FA : in out Flow_Analysis_Graphs);
+   --  Remove all null vertices from the control flow graph.
 
    function Pragma_Relevant_To_Flow (N : Node_Id) return Boolean
      with Pre => Nkind (N) = N_Pragma;
@@ -691,6 +708,39 @@ package body Flow.Control_Flow_Graph is
    begin
       CM.Include (Dst, C);
    end Copy_Connections;
+
+   ----------------
+   -- Add_Vertex --
+   ----------------
+
+   procedure Add_Vertex (FA : in out Flow_Analysis_Graphs;
+                         F  : Flow_Id;
+                         A  : V_Attributes)
+   is
+      V : Flow_Graphs.Vertex_Id;
+   begin
+      FA.CFG.Add_Vertex (F, V);
+      FA.Atr.Insert (V, A);
+   end Add_Vertex;
+
+   procedure Add_Vertex (FA : in out Flow_Analysis_Graphs;
+                         F  : Flow_Id;
+                         A  : V_Attributes;
+                         V  : out Flow_Graphs.Vertex_Id)
+   is
+   begin
+      FA.CFG.Add_Vertex (F, V);
+      FA.Atr.Insert (V, A);
+   end Add_Vertex;
+
+   procedure Add_Vertex (FA : in out Flow_Analysis_Graphs;
+                         A  : V_Attributes;
+                         V  : out Flow_Graphs.Vertex_Id)
+   is
+   begin
+      FA.CFG.Add_Vertex (V);
+      FA.Atr.Insert (V, A);
+   end Add_Vertex;
 
    --------------
    --  Linkup  --
@@ -719,7 +769,7 @@ package body Flow.Control_Flow_Graph is
    ----------
 
    procedure Join
-     (CFG   : in out Flow_Graphs.T;
+     (FA    : in out Flow_Analysis_Graphs;
       CM    : in out Connection_Maps.Map;
       Nodes : Union_Lists.List;
       Block : out Graph_Connections)
@@ -733,7 +783,7 @@ package body Flow.Control_Flow_Graph is
       for P of Nodes loop
          if Present (Node_Id (Prev)) then
             --  Connect this statement to the previous one.
-            Linkup (CFG,
+            Linkup (FA.CFG,
                     CM (Prev).Standard_Exits,
                     CM (P).Standard_Entry);
          else
@@ -751,8 +801,7 @@ package body Flow.Control_Flow_Graph is
          Block.Standard_Exits := CM (Prev).Standard_Exits;
       else
          --  We had a null sequence so we need to produce a null node.
-         CFG.Add_Vertex (Null_Node_Attributes,
-                         V);
+         Add_Vertex (FA, Null_Node_Attributes, V);
          Block.Standard_Entry := V;
          Block.Standard_Exits := To_Set (V);
       end if;
@@ -803,8 +852,9 @@ package body Flow.Control_Flow_Graph is
                   --  Only proceed if we don't have this vertex yet.
                   if FA.CFG.Get_Vertex (F) = Flow_Graphs.Null_Vertex then
                      --  Create vertex.
-                     FA.CFG.Add_Vertex
-                       (F,
+                     Add_Vertex
+                       (FA,
+                        F,
                         Make_Record_Tree_Attributes (Leaf_Atr));
 
                      if F.Kind = Record_Field then
@@ -858,8 +908,9 @@ package body Flow.Control_Flow_Graph is
                                           (F, Initial_Value),
                                         Mode  => M,
                                         E_Loc => E);
-         FA.CFG.Add_Vertex
-           (Change_Variant (F, Initial_Value),
+         Add_Vertex
+           (FA,
+            Change_Variant (F, Initial_Value),
             A,
             V);
          Linkup (FA.CFG, V, FA.Start_Vertex);
@@ -869,8 +920,9 @@ package body Flow.Control_Flow_Graph is
                              FA);
 
          --  Setup the n'final vertex.
-         FA.CFG.Add_Vertex
-           (Change_Variant (F, Final_Value),
+         Add_Vertex
+           (FA,
+            Change_Variant (F, Final_Value),
             Make_Variable_Attributes (F_Ent => Change_Variant
                                         (F, Final_Value),
                                       Mode  => M,
@@ -898,8 +950,9 @@ package body Flow.Control_Flow_Graph is
            (F      => Change_Variant (F_Part, Initial_Value),
             Mode   => Mode,
             Uninit => Uninitialized);
-         FA.CFG.Add_Vertex
-           (Change_Variant (F_Part, Initial_Value),
+         Add_Vertex
+           (FA,
+            Change_Variant (F_Part, Initial_Value),
             A,
             V);
          Linkup (FA.CFG, V, FA.Start_Vertex);
@@ -909,8 +962,9 @@ package body Flow.Control_Flow_Graph is
                              FA);
 
          --  Setup the n'final vertex.
-         FA.CFG.Add_Vertex
-           (Change_Variant (F_Part, Final_Value),
+         Add_Vertex
+           (FA,
+            Change_Variant (F_Part, Final_Value),
             Make_Global_Variable_Attributes
               (F    => Change_Variant (F_Part, Final_Value),
                Mode => Mode),
@@ -967,8 +1021,9 @@ package body Flow.Control_Flow_Graph is
       end if;
 
       --  We have a vertex
-      FA.CFG.Add_Vertex
-        (Direct_Mapping_Id (N),
+      Add_Vertex
+        (FA,
+         Direct_Mapping_Id (N),
          Make_Basic_Attributes (Var_Def    => V_Def_LHS,
                                 Var_Ex_Use => V_Used_RHS or
                                   V_Explicitly_Used_LHS,
@@ -996,8 +1051,9 @@ package body Flow.Control_Flow_Graph is
       Alternative : Node_Id;
    begin
       --  We have a vertex V for the case statement itself
-      FA.CFG.Add_Vertex
-        (Direct_Mapping_Id (N),
+      Add_Vertex
+        (FA,
+         Direct_Mapping_Id (N),
          Make_Basic_Attributes (Var_Ex_Use => Get_Variable_Set
                                   (Expression (N),
                                    Scope           => FA.B_Scope,
@@ -1013,8 +1069,9 @@ package body Flow.Control_Flow_Graph is
       while Present (Alternative) loop
          --  We introduce a vertex V_Alter for each
          --  Case_Statement_Alternative and we link that to V.
-         FA.CFG.Add_Vertex
-           (Direct_Mapping_Id (Alternative),
+         Add_Vertex
+           (FA,
+            Direct_Mapping_Id (Alternative),
             Make_Aux_Vertex_Attributes (E_Loc => Alternative),
             V_Alter);
          Linkup (FA.CFG, V, V_Alter);
@@ -1063,9 +1120,10 @@ package body Flow.Control_Flow_Graph is
       --  Conditional and unconditional exits are different. One
       --  requires an extra vertex, the other does not.
       if not Present (Condition (N)) then
-         FA.CFG.Add_Vertex (Direct_Mapping_Id (N),
-                            Null_Node_Attributes,
-                            V);
+         Add_Vertex (FA,
+                     Direct_Mapping_Id (N),
+                     Null_Node_Attributes,
+                     V);
          CM.Include (Union_Id (N),
                      Graph_Connections'
                        (Standard_Entry => V,
@@ -1074,8 +1132,9 @@ package body Flow.Control_Flow_Graph is
          CM (Union_Id (L)).Standard_Exits.Include (V);
 
       else
-         FA.CFG.Add_Vertex
-           (Direct_Mapping_Id (N),
+         Add_Vertex
+           (FA,
+            Direct_Mapping_Id (N),
             Make_Basic_Attributes (Var_Ex_Use => Get_Variable_Set
                                      (Condition (N),
                                       Scope           => FA.B_Scope,
@@ -1106,8 +1165,9 @@ package body Flow.Control_Flow_Graph is
       Ret_Object   : Node_Id;
    begin
       --  We create a null vertex for the extended return statement
-      FA.CFG.Add_Vertex
-        (Direct_Mapping_Id (N),
+      Add_Vertex
+        (FA,
+         Direct_Mapping_Id (N),
          Null_Node_Attributes,
          V);
       --  Control flows in, but we do not flow out again.
@@ -1135,8 +1195,9 @@ package body Flow.Control_Flow_Graph is
               CM (Union_Id (Ret_Object_L)).Standard_Entry);
 
       --  We create a vertex for the Return_Statement_Entity
-      FA.CFG.Add_Vertex
-        (Direct_Mapping_Id (Ret_Entity),
+      Add_Vertex
+        (FA,
+         Direct_Mapping_Id (Ret_Entity),
          Make_Extended_Return_Attributes
               (Var_Def         => Flatten_Variable (FA.Analyzed_Entity),
                Var_Use         => Get_Variable_Set
@@ -1219,8 +1280,9 @@ package body Flow.Control_Flow_Graph is
       Elsif_Statement : Node_Id;
    begin
       --  We have a vertex for the if statement itself.
-      FA.CFG.Add_Vertex
-        (Direct_Mapping_Id (N),
+      Add_Vertex
+        (FA,
+         Direct_Mapping_Id (N),
          Make_Basic_Attributes (Var_Ex_Use => Get_Variable_Set
                                   (Condition (N),
                                    Scope           => FA.B_Scope,
@@ -1272,8 +1334,9 @@ package body Flow.Control_Flow_Graph is
             begin
                --  We have a vertex V for each elsif statement, which we
                --  link to the previous one (V_Prev).
-               FA.CFG.Add_Vertex
-                 (Direct_Mapping_Id (Elsif_Statement),
+               Add_Vertex
+                 (FA,
+                  Direct_Mapping_Id (Elsif_Statement),
                   Make_Basic_Attributes
                     (Var_Ex_Use => Get_Variable_Set
                        (Condition (Elsif_Statement),
@@ -1450,9 +1513,10 @@ package body Flow.Control_Flow_Graph is
 
          --  We have a null vertex for the loop, as we have no
          --  condition.
-         FA.CFG.Add_Vertex (Direct_Mapping_Id (N),
-                            Null_Node_Attributes,
-                            V);
+         Add_Vertex (FA,
+                     Direct_Mapping_Id (N),
+                     Null_Node_Attributes,
+                     V);
 
          --  Entry point for the loop is V.
          CM (Union_Id (N)).Standard_Entry := V;
@@ -1476,8 +1540,9 @@ package body Flow.Control_Flow_Graph is
             --  node. We cannot just add a fake exit to the very last
             --  vertex in the loop body, as this introduces
             --  interesting (and unwanted) control dependencies on it.
-            FA.CFG.Add_Vertex
-              (Direct_Mapping_Id (End_Label (N)),
+            Add_Vertex
+              (FA,
+               Direct_Mapping_Id (End_Label (N)),
                Make_Aux_Vertex_Attributes (E_Loc     => N,
                                            Execution => Infinite_Loop),
                Faux_Exit_V);
@@ -1504,8 +1569,9 @@ package body Flow.Control_Flow_Graph is
       is
          V : Flow_Graphs.Vertex_Id;
       begin
-         FA.CFG.Add_Vertex
-           (Direct_Mapping_Id (N),
+         Add_Vertex
+           (FA,
+            Direct_Mapping_Id (N),
             Make_Basic_Attributes (Var_Ex_Use => Get_Variable_Set
                                      (Condition (Iteration_Scheme (N)),
                                       Scope           => FA.B_Scope,
@@ -1561,8 +1627,9 @@ package body Flow.Control_Flow_Graph is
          --  unknown) we have...
          if Is_Null_Range (Low_Bound (R), High_Bound (R)) then
             --  We have an empty range. We should complain!
-            FA.CFG.Add_Vertex
-              (Direct_Mapping_Id (N),
+            Add_Vertex
+              (FA,
+               Direct_Mapping_Id (N),
                Make_Basic_Attributes
                  (Var_Def => Flatten_Variable (LP),
                   Loops   => Ctx.Current_Loops,
@@ -1577,8 +1644,9 @@ package body Flow.Control_Flow_Graph is
          elsif Not_Null_Range (Low_Bound (R), High_Bound (R)) then
             --  We need to make sure the loop is executed at least once.
 
-            FA.CFG.Add_Vertex
-              (Direct_Mapping_Id (N),
+            Add_Vertex
+              (FA,
+               Direct_Mapping_Id (N),
                Make_Basic_Attributes
                  (Var_Def => Flatten_Variable (LP),
                   Loops   => Ctx.Current_Loops,
@@ -1596,8 +1664,9 @@ package body Flow.Control_Flow_Graph is
 
          else
             --  We don't know if the loop will be executed or not.
-            FA.CFG.Add_Vertex
-              (Direct_Mapping_Id (N),
+            Add_Vertex
+              (FA,
+               Direct_Mapping_Id (N),
                Make_Basic_Attributes
                  (Var_Def    => Flatten_Variable (LP),
                   Var_Ex_Use => Get_Variable_Set
@@ -1679,8 +1748,9 @@ package body Flow.Control_Flow_Graph is
       begin
          --  We stick all loop entry references on a list of nodes.
          for Reference of Ctx.Entry_References (Entity (Identifier (N))) loop
-            FA.CFG.Add_Vertex
-              (Direct_Mapping_Id (Reference),
+            Add_Vertex
+              (FA,
+               Direct_Mapping_Id (Reference),
                Make_Sink_Vertex_Attributes
                  (Var_Use       => Get_Variable_Set
                     (Prefix (Reference),
@@ -1701,7 +1771,7 @@ package body Flow.Control_Flow_Graph is
 
          --  And connect up the dots, and finally replacing the
          --  connection map we have for N with the new augmented one.
-         Join (CFG   => FA.CFG,
+         Join (FA    => FA,
                CM    => CM,
                Nodes => Augmented_Loop,
                Block => Block);
@@ -1725,8 +1795,9 @@ package body Flow.Control_Flow_Graph is
    begin
       --  We introduce a vertex V which has control entering from the top and
       --  leaving from the bottom.
-      FA.CFG.Add_Vertex
-        (Direct_Mapping_Id (N),
+      Add_Vertex
+        (FA,
+         Direct_Mapping_Id (N),
          Make_Aux_Vertex_Attributes
            (E_Loc     => N,
             Execution => (if Nkind (N) = N_Raise_Statement or
@@ -1760,9 +1831,10 @@ package body Flow.Control_Flow_Graph is
             --  with it once we get to the actual constant.
             --
             --  ??? What should we do if the private part is not in SPARK?
-            FA.CFG.Add_Vertex (Direct_Mapping_Id (N),
-                               Null_Node_Attributes,
-                               V);
+            Add_Vertex (FA,
+                        Direct_Mapping_Id (N),
+                        Null_Node_Attributes,
+                        V);
             CM.Include (Union_Id (N), Trivial_Connection (V));
             return;
          end if;
@@ -1776,8 +1848,9 @@ package body Flow.Control_Flow_Graph is
          --  default initialization (if any).
          for F of Flatten_Variable (Defining_Identifier (N)) loop
             if Is_Default_Initialized (F) then
-               FA.CFG.Add_Vertex
-                 (Make_Default_Initialization_Attributes
+               Add_Vertex
+                 (FA,
+                  Make_Default_Initialization_Attributes
                     (FA    => FA,
                      Scope => FA.B_Scope,
                      F     => F,
@@ -1790,16 +1863,18 @@ package body Flow.Control_Flow_Graph is
          if Inits.Length = 0 then
             --  We did not have anything with a default initial value,
             --  so we just create a null vertex here.
-            FA.CFG.Add_Vertex (Direct_Mapping_Id (N),
-                               Null_Node_Attributes,
-                               V);
+            Add_Vertex (FA,
+                        Direct_Mapping_Id (N),
+                        Null_Node_Attributes,
+                        V);
             Inits.Append (V);
          end if;
 
       else
          --  We have a variable declaration with an initialization.
-         FA.CFG.Add_Vertex
-           (Direct_Mapping_Id (N),
+         Add_Vertex
+           (FA,
+            Direct_Mapping_Id (N),
             Make_Basic_Attributes
               (Var_Def    => Flatten_Variable (Defining_Identifier (N)),
                Var_Ex_Use => Get_Variable_Set
@@ -1840,8 +1915,7 @@ package body Flow.Control_Flow_Graph is
             begin
                if Final_V_Id /= Flow_Graphs.Null_Vertex then
                   declare
-                     Final_Atr  : V_Attributes :=
-                       FA.CFG.Get_Attributes (Final_V_Id);
+                     Final_Atr : V_Attributes := FA.Atr (Final_V_Id);
 
                      Entire_Var : constant Entity_Id := Final_F_Id.Node;
                   begin
@@ -1849,7 +1923,7 @@ package body Flow.Control_Flow_Graph is
                        or else Is_Initialized_At_Elaboration (Entire_Var,
                                                               FA.B_Scope);
 
-                     FA.CFG.Set_Attributes (Final_V_Id, Final_Atr);
+                     FA.Atr (Final_V_Id) := Final_Atr;
                   end;
                end if;
             end;
@@ -1910,14 +1984,13 @@ package body Flow.Control_Flow_Graph is
                         Final_V_Id : constant Flow_Graphs.Vertex_Id :=
                           FA.CFG.Get_Vertex (Final_F_Id);
 
-                        Final_Atr  : V_Attributes :=
-                          FA.CFG.Get_Attributes (Final_V_Id);
+                        Final_Atr  : V_Attributes := FA.Atr (Final_V_Id);
                      begin
                         Final_Atr.Is_Export := Final_Atr.Is_Export
                           or else Is_Initialized_At_Elaboration (New_E,
                                                                  FA.B_Scope);
 
-                        FA.CFG.Set_Attributes (Final_V_Id, Final_Atr);
+                        FA.Atr (Final_V_Id) := Final_Atr;
                      end;
                   end if;
                end;
@@ -2035,7 +2108,7 @@ package body Flow.Control_Flow_Graph is
       --  will have no observable effect in the enclosing package.
 
       if No (Initializes_Aspect) then
-         FA.CFG.Add_Vertex (Direct_Mapping_Id (N), Null_Node_Attributes, V);
+         Add_Vertex (FA, Direct_Mapping_Id (N), Null_Node_Attributes, V);
          CM.Include (Union_Id (N), Trivial_Connection (V));
          return;
       end if;
@@ -2061,8 +2134,9 @@ package body Flow.Control_Flow_Graph is
             begin
                Verts.Append (Union_Id (Init_Item));
 
-               FA.CFG.Add_Vertex
-                 (Direct_Mapping_Id (Init_Item),
+               Add_Vertex
+                 (FA,
+                  Direct_Mapping_Id (Init_Item),
                   Make_Basic_Attributes
                     (Var_Def    => Flow_Id_Sets.To_Set (The_Out),
                      Var_Ex_Use => The_Ins,
@@ -2075,13 +2149,13 @@ package body Flow.Control_Flow_Graph is
                      Loops      => Ctx.Current_Loops,
                      E_Loc      => Init_Item),
                   V);
-               Set_Initializes_Pretty_Print (FA.CFG, V);
+               FA.Atr (V).Pretty_Print_Kind := Pretty_Print_Initializes_Aspect;
                CM.Include (Union_Id (Init_Item),
                            Trivial_Connection (V));
             end;
          end loop;
 
-         Join (CFG   => FA.CFG,
+         Join (FA    => FA,
                CM    => CM,
                Nodes => Verts,
                Block => Initializes_CM);
@@ -2161,8 +2235,9 @@ package body Flow.Control_Flow_Graph is
       if Pragma_Relevant_To_Flow (N) then
          --  If we care, we create a sink vertex to check for
          --  uninitialized variables.
-         FA.CFG.Add_Vertex
-           (Direct_Mapping_Id (N),
+         Add_Vertex
+           (FA,
+            Direct_Mapping_Id (N),
             Make_Sink_Vertex_Attributes
               (Var_Use => Get_Variable_Set
                  (Pragma_Argument_Associations (N),
@@ -2213,8 +2288,7 @@ package body Flow.Control_Flow_Graph is
 
       else
          --  Otherwise we produce a null vertex.
-         FA.CFG.Add_Vertex (Null_Node_Attributes,
-                            V);
+         Add_Vertex (FA, Null_Node_Attributes, V);
 
          --  Pragma Inspection_Point is also ignored, but we insert a call
          --  to a dummy procedure, to allow to break on it during
@@ -2254,8 +2328,9 @@ package body Flow.Control_Flow_Graph is
       V : Flow_Graphs.Vertex_Id;
    begin
       --  We just need to check for uninitialized variables.
-      FA.CFG.Add_Vertex
-        (Direct_Mapping_Id (Pre),
+      Add_Vertex
+        (FA,
+         Direct_Mapping_Id (Pre),
          Make_Sink_Vertex_Attributes
            (Var_Use         => Get_Variable_Set
               (Pre,
@@ -2326,8 +2401,9 @@ package body Flow.Control_Flow_Graph is
 
    begin
       --  A vertex for the actual call.
-      FA.CFG.Add_Vertex
-        (Direct_Mapping_Id (N),
+      Add_Vertex
+        (FA,
+         Direct_Mapping_Id (N),
          Make_Call_Attributes (Callsite     => N,
                                Loops        => Ctx.Current_Loops,
                                E_Loc        => N),
@@ -2357,8 +2433,9 @@ package body Flow.Control_Flow_Graph is
             if D_Map.Contains (Null_Flow_Id) and then
               D_Map (Null_Flow_Id).Length >= 1
             then
-               FA.CFG.Add_Vertex
-                 (Make_Global_Attributes
+               Add_Vertex
+                 (FA,
+                  Make_Global_Attributes
                     (Call_Vertex        => N,
                      Global             => Change_Variant
                        (Null_Export_Flow_Id, Out_View),
@@ -2394,12 +2471,7 @@ package body Flow.Control_Flow_Graph is
                  (Standard_Entry => V,
                   Standard_Exits => Vertex_Sets.Empty_Set));
             Linkup (FA.CFG, Prev, FA.End_Vertex);
-            declare
-               Atr : constant V_Attributes := FA.CFG.Get_Attributes (Prev);
-            begin
-               FA.CFG.Set_Attributes (Prev, Atr'Update
-                                        (Execution => Get_Abend_Kind));
-            end;
+            FA.Atr (Prev).Execution := Get_Abend_Kind;
          else
             CM.Include
               (Union_Id (N),
@@ -2424,13 +2496,15 @@ package body Flow.Control_Flow_Graph is
    begin
       if not Present (Expression (N)) then
          --  We have a return for a procedure.
-         FA.CFG.Add_Vertex (Direct_Mapping_Id (N),
-                            Make_Aux_Vertex_Attributes (E_Loc => N),
-                            V);
+         Add_Vertex (FA,
+                     Direct_Mapping_Id (N),
+                     Make_Aux_Vertex_Attributes (E_Loc => N),
+                     V);
       else
          --  We have a function return.
-         FA.CFG.Add_Vertex
-           (Direct_Mapping_Id (N),
+         Add_Vertex
+           (FA,
+            Direct_Mapping_Id (N),
             Make_Basic_Attributes
               (Var_Def    => Flatten_Variable (FA.Analyzed_Entity),
                Var_Ex_Use => Get_Variable_Set
@@ -2509,8 +2583,9 @@ package body Flow.Control_Flow_Graph is
          declare
             V : Flow_Graphs.Vertex_Id;
          begin
-            FA.CFG.Add_Vertex
-              (Direct_Mapping_Id (N),
+            Add_Vertex
+              (FA,
+               Direct_Mapping_Id (N),
                Make_Aux_Vertex_Attributes (E_Loc => N),
                V);
             CM.Include (Union_Id (N), Trivial_Connection (V));
@@ -2533,8 +2608,9 @@ package body Flow.Control_Flow_Graph is
 
       V : Flow_Graphs.Vertex_Id;
    begin
-      FA.CFG.Add_Vertex
-        (Direct_Mapping_Id (N),
+      Add_Vertex
+        (FA,
+         Direct_Mapping_Id (N),
          Make_Sink_Vertex_Attributes
            (Var_Use => Get_Variable_Set
               (N,
@@ -2655,13 +2731,14 @@ package body Flow.Control_Flow_Graph is
       Reads.Union (Proof_Reads);
 
       for R of Reads loop
-         FA.CFG.Add_Vertex (Make_Global_Attributes
-                              (Call_Vertex        => Callsite,
-                               Global             => R,
-                               Discriminants_Only => False,
-                               Loops              => Ctx.Current_Loops,
-                               E_Loc              => Callsite),
-                            V);
+         Add_Vertex (FA,
+                     Make_Global_Attributes
+                       (Call_Vertex        => Callsite,
+                        Global             => R,
+                        Discriminants_Only => False,
+                        Loops              => Ctx.Current_Loops,
+                        E_Loc              => Callsite),
+                     V);
          In_List.Append (V);
       end loop;
 
@@ -2674,17 +2751,18 @@ package body Flow.Control_Flow_Graph is
                Loops              => Ctx.Current_Loops,
                E_Loc              => Callsite);
             if Atr.Variables_Used.Length >= 1 then
-               FA.CFG.Add_Vertex (Atr, V);
+               Add_Vertex (FA, Atr, V);
                In_List.Append (V);
             end if;
          end if;
-         FA.CFG.Add_Vertex (Make_Global_Attributes
-                              (Call_Vertex        => Callsite,
-                               Global             => W,
-                               Discriminants_Only => False,
-                               Loops              => Ctx.Current_Loops,
-                               E_Loc              => Callsite),
-                            V);
+         Add_Vertex (FA,
+                     Make_Global_Attributes
+                       (Call_Vertex        => Callsite,
+                        Global             => W,
+                        Discriminants_Only => False,
+                        Loops              => Ctx.Current_Loops,
+                        E_Loc              => Callsite),
+                     V);
          Out_List.Append (V);
       end loop;
 
@@ -2739,8 +2817,9 @@ package body Flow.Control_Flow_Graph is
          if Ekind (Formal) = E_In_Parameter or
            Ekind (Formal) = E_In_Out_Parameter
          then
-            FA.CFG.Add_Vertex
-              (Direct_Mapping_Id (P, In_View),
+            Add_Vertex
+              (FA,
+               Direct_Mapping_Id (P, In_View),
                Make_Parameter_Attributes
                  (FA                 => FA,
                   Call_Vertex        => Parent (L),
@@ -2763,8 +2842,7 @@ package body Flow.Control_Flow_Graph is
                Loops              => Ctx.Current_Loops,
                E_Loc              => P);
             if Atr.Variables_Used.Length >= 1 then
-               FA.CFG.Add_Vertex
-                 (Direct_Mapping_Id (P, In_View), Atr, V);
+               Add_Vertex (FA, Direct_Mapping_Id (P, In_View), Atr, V);
                In_List.Append (V);
             end if;
          end if;
@@ -2773,8 +2851,9 @@ package body Flow.Control_Flow_Graph is
          if Ekind (Formal) = E_In_Out_Parameter or
            Ekind (Formal) = E_Out_Parameter
          then
-            FA.CFG.Add_Vertex
-              (Direct_Mapping_Id (P, Out_View),
+            Add_Vertex
+              (FA,
+               Direct_Mapping_Id (P, Out_View),
                Make_Parameter_Attributes
                  (FA                 => FA,
                   Call_Vertex        => Parent (L),
@@ -2843,7 +2922,7 @@ package body Flow.Control_Flow_Graph is
       end loop;
 
       --  Produce the joined up list.
-      Join (CFG   => FA.CFG,
+      Join (FA    => FA,
             CM    => CM,
             Nodes => Statement_List,
             Block => Block);
@@ -2909,32 +2988,31 @@ package body Flow.Control_Flow_Graph is
       end case;
    end Process_Statement;
 
-   ----------------
-   --  Simplify  --
-   ----------------
+   ------------------
+   -- Simplify_CFG --
+   ------------------
 
-   procedure Simplify (G : in out Flow_Graphs.T'Class) is
-      A : V_Attributes;
+   procedure Simplify_CFG (FA : in out Flow_Analysis_Graphs) is
    begin
-      for V of G.Get_Collection (Flow_Graphs.All_Vertices) loop
-         if G.Get_Attributes (V).Is_Null_Node then
+      for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
+         if FA.Atr (V).Is_Null_Node then
             --  Close the subgraph indicated by V's neighbours.
-            for A of G.Get_Collection (V, Flow_Graphs.In_Neighbours) loop
-               for B of G.Get_Collection (V, Flow_Graphs.Out_Neighbours) loop
-                  G.Add_Edge (A, B, EC_Default);
+            for A of FA.CFG.Get_Collection (V, Flow_Graphs.In_Neighbours) loop
+               for B of FA.CFG.Get_Collection (V,
+                                               Flow_Graphs.Out_Neighbours)
+               loop
+                  FA.CFG.Add_Edge (A, B, EC_Default);
                end loop;
             end loop;
 
             --  Remove all edges from the vertex.
-            G.Clear_Vertex (V);
+            FA.CFG.Clear_Vertex (V);
 
             --  Clear the Is_Program_Node flag.
-            A := G.Get_Attributes (V);
-            A.Is_Program_Node := False;
-            G.Set_Attributes (V, A);
+            FA.Atr (V).Is_Program_Node := False;
          end if;
       end loop;
-   end Simplify;
+   end Simplify_CFG;
 
    -----------------------------
    -- Pragma_Relevant_To_Flow --
@@ -3099,22 +3177,22 @@ package body Flow.Control_Flow_Graph is
          --  as it gives us a convenient way to generate error
          --  messages applying to the whole subprogram/package/body.
          Start_Atr.Error_Location := Body_N;
-         FA.CFG.Add_Vertex (Start_Atr, FA.Start_Vertex);
+         Add_Vertex (FA, Start_Atr, FA.Start_Vertex);
       end;
-      FA.CFG.Add_Vertex (Null_Attributes, FA.End_Vertex);
+      Add_Vertex (FA, Null_Attributes, FA.End_Vertex);
 
       --  Create the magic null export vertices.
       declare
          F : constant Flow_Id := Change_Variant (Null_Export_Flow_Id,
                                                  Initial_Value);
       begin
-         FA.CFG.Add_Vertex (F, Make_Null_Export_Attributes (F));
+         Add_Vertex (FA, F, Make_Null_Export_Attributes (F));
       end;
       declare
          F : constant Flow_Id := Change_Variant (Null_Export_Flow_Id,
                                                  Final_Value);
       begin
-         FA.CFG.Add_Vertex (F, Make_Null_Export_Attributes (F));
+         Add_Vertex (FA, F, Make_Null_Export_Attributes (F));
       end;
 
       --  Collect parameters of the analyzed entity and produce
@@ -3344,7 +3422,7 @@ package body Flow.Control_Flow_Graph is
                                    The_Context);
                   NL.Append (Union_Id (Precondition));
                end loop;
-               Join (CFG   => FA.CFG,
+               Join (FA    => FA,
                      CM    => Connection_Map,
                      Nodes => NL,
                      Block => Precon_Block);
@@ -3422,7 +3500,7 @@ package body Flow.Control_Flow_Graph is
       end case;
 
       --  Simplify graph by removing all null vertices.
-      Simplify (FA.CFG);
+      Simplify_CFG (FA);
    end Create;
 
 end Flow.Control_Flow_Graph;
