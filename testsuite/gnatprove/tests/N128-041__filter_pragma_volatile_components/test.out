@@ -3,4 +3,4 @@ foo.ads:4:04: warning: it is currently ignored
 foo.ads:4:04: warning: pragma "Volatile_Components" is not yet supported in flow analysis or proof
 foo.ads:6:53: warning: it is currently ignored
 foo.ads:6:53: warning: pragma "Volatile_Components" is not yet supported in flow analysis or proof
-foo.ads:14:21: warning: postcondition might fail, requires Sum'Result <= 100
+foo.ads:26:21: warning: postcondition might fail, requires Sum'Result <= 100
