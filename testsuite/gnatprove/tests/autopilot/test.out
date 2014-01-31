@@ -1,0 +1,66 @@
+ap-altitude-pitch-rate.adb:13:51: info: length check proved
+ap-altitude-pitch-rate.adb:22:10: info: loop invariant initialization proved
+ap-altitude-pitch-rate.adb:22:10: info: loop invariant preservation proved
+ap-altitude-pitch-rate.adb:23:23: info: overflow check proved
+ap-altitude-pitch-rate.adb:24:29: info: overflow check proved
+ap-altitude-pitch-rate.adb:25:21: info: overflow check proved
+ap-altitude-pitch-rate.adb:29:45: info: division check proved
+ap-altitude-pitch-rate.adb:29:45: info: overflow check proved
+ap-altitude-pitch-rate.adb:29:45: warning: range check might fail
+ap-altitude-pitch-rate.adb:40:24: info: index check proved
+ap-altitude-pitch-rate.adb:63:43: info: overflow check proved
+ap-altitude-pitch-rate.adb:64:14: info: division check proved
+ap-altitude-pitch-rate.adb:64:14: info: range check proved
+ap-altitude-pitch-rate.adb:68:43: info: overflow check proved
+ap-altitude-pitch-rate.adb:70:14: info: division check proved
+ap-altitude-pitch-rate.adb:70:14: info: range check proved
+ap-altitude-pitch-rate.adb:75:55: info: division check proved
+ap-altitude-pitch.adb:28:69: info: division check proved
+ap-altitude-pitch.adb:28:69: info: range check proved
+ap-altitude-pitch.adb:34:14: info: range check proved
+ap-altitude-pitch.adb:51:30: info: range check proved
+ap-altitude-pitch.adb:53:7: info: assertion proved
+ap-altitude-pitch.adb:55:71: info: division check proved
+ap-altitude-pitch.adb:71:28: info: precondition proved
+ap-altitude-pitch.adb:73:54: info: division check proved
+ap-altitude-pitch.adb:74:53: info: division check proved
+ap-altitude.adb:15:49: warning: "Surfaces.Elevators" might not be written
+ap-heading-roll.adb:33:42: info: range check proved
+ap-heading-roll.adb:35:46: info: range check proved
+ap-heading-roll.adb:49:53: info: division check proved
+ap-heading-roll.adb:66:28: info: precondition proved
+ap-heading-roll.adb:68:49: info: division check proved
+ap-heading-roll.adb:69:48: info: division check proved
+ap-heading-yaw.adb:25:28: info: precondition proved
+ap-heading-yaw.adb:27:53: info: division check proved
+ap-heading.adb:13:50: warning: "Surfaces.Ailerons" might not be written
+ap-heading.adb:14:50: warning: "Surfaces.Rudder" might not be written
+main.adb:4:42: warning: "Instruments.Altitude" might not be initialized after elaboration of main program "Main"
+main.adb:5:42: warning: "Instruments.Bank" might not be initialized after elaboration of main program "Main"
+main.adb:6:42: warning: "Instruments.Heading" might not be initialized after elaboration of main program "Main"
+main.adb:7:42: warning: "Instruments.Heading_Bug" might not be initialized after elaboration of main program "Main"
+main.adb:8:42: warning: "Instruments.Mach" might not be initialized after elaboration of main program "Main"
+main.adb:9:42: warning: "Instruments.Pitch" might not be initialized after elaboration of main program "Main"
+main.adb:10:42: warning: "Instruments.Rate_Of_Climb" might not be initialized after elaboration of main program "Main"
+main.adb:11:42: warning: "Instruments.Slip" might not be initialized after elaboration of main program "Main"
+scale.adb:19:20: info: overflow check proved
+scale.adb:19:32: info: division check proved
+scale.adb:19:32: info: overflow check proved
+scale.adb:19:44: info: overflow check proved
+scale.adb:20:15: warning: range check might fail
+scale.adb:48:10: info: assertion proved
+scale.adb:53:16: info: precondition proved
+scale.adb:54:16: info: precondition proved
+scale.adb:54:25: info: range check proved
+scale.adb:55:19: info: overflow check proved
+scale.adb:55:25: info: overflow check proved
+scale.adb:57:10: info: assertion proved
+scale.adb:58:64: info: overflow check proved
+scale.adb:58:70: info: division check proved
+scale.adb:58:70: warning: overflow check might fail
+scale.adb:58:70: warning: range check might fail
+scale.adb:74:7: info: assertion proved
+scale.adb:76:17: info: overflow check proved
+scale.adb:78:7: info: assertion proved
+scale.adb:79:38: info: range check proved
+scale.ads:16:19: warning: postcondition might fail
