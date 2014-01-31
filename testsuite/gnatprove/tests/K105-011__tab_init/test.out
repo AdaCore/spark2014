@@ -1,7 +1,7 @@
 tab_init.adb:5:19: warning: overflow check might fail
 tab_init.adb:6:10: info: loop invariant initialization proved
+tab_init.adb:6:10: info: loop invariant preservation proved
 tab_init.adb:6:10: warning: "T" might not be initialized
-tab_init.adb:7:38: warning: loop invariant might fail after first iteration, requires T(J) = A*J
 tab_init.adb:7:41: info: index check proved
 tab_init.adb:7:47: info: overflow check proved
 tab_init.adb:8:10: info: assertion proved

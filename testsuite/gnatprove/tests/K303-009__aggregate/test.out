@@ -34,7 +34,7 @@ arr_aggregate.ads:9:18: warning: unused initial value of "A"
 arr_aggregate.ads:11:14: info: postcondition proved
 arr_aggregate.ads:11:43: info: index check proved
 arr_aggregate.ads:14:18: warning: unused initial value of "A"
-arr_aggregate.ads:16:14: warning: postcondition might fail
+arr_aggregate.ads:16:14: info: postcondition proved
 arr_aggregate.ads:16:41: info: index check proved
 arr_aggregate.ads:19:38: info: index check proved
 arr_aggregate.ads:20:43: info: index check proved

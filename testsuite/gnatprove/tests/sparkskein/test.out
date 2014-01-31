@@ -42,7 +42,7 @@ skein.adb:851:22: warning: postcondition might fail
 skein.adb:860:22: warning: postcondition might fail, requires Local_Ctx.H.Hash_Bit_Len > 0
 skein.adb:865:14: info: range check proved
 skein.adb:869:13: info: loop invariant initialization proved
-skein.adb:869:13: warning: loop invariant might fail after first iteration
+skein.adb:869:13: info: loop invariant preservation proved
 skein.adb:883:43: warning: range check might fail
 skein.adb:884:61: warning: range check might fail
 skein.adb:885:61: warning: range check might fail

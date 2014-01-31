@@ -110,7 +110,7 @@ fib.adb:158:16: warning: "A2" might not be initialized
 fib.adb:158:24: info: index check proved
 fib.adb:158:24: info: overflow check proved
 fib.ads:14:14: warning: postcondition might fail, requires l1 = l2
-fib.ads:25:14: warning: postcondition might fail, requires p1 = p2
+fib.ads:25:14: info: postcondition proved
 fib.ads:33:14: warning: postcondition might fail, requires p1 = p2
 fib.ads:36:41: warning: "A1" might not be initialized in "Arraypartitionedtransfersc"
 fib.ads:36:45: warning: "A2" might not be initialized in "Arraypartitionedtransfersc"

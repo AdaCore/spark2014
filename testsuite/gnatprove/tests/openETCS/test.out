@@ -61,9 +61,9 @@ sec_3_13_2_monitoring_inputs.adb:37:27: info: precondition proved
 sec_3_13_2_monitoring_inputs.ads:70:15: info: length check proved
 sec_3_13_2_monitoring_inputs.ads:164:15: info: length check proved
 sec_3_13_2_monitoring_inputs.ads:169:15: info: length check proved
-sec_3_13_2_monitoring_inputs.ads:183:8: warning: postcondition might fail, requires Kdry_rst'Result = Step_Function.Get_Value(SFun => Kdry_rst_model, X => V)
+sec_3_13_2_monitoring_inputs.ads:183:8: info: postcondition proved
 sec_3_13_2_monitoring_inputs.ads:184:24: info: precondition proved
-sec_3_13_2_monitoring_inputs.ads:199:8: warning: postcondition might fail, requires Kwet_rst'Result = Step_Function.Get_Value(SFun => Kwet_rst_model, X => V)
+sec_3_13_2_monitoring_inputs.ads:199:8: info: postcondition proved
 sec_3_13_2_monitoring_inputs.ads:200:24: info: precondition proved
 sec_3_13_2_monitoring_inputs.ads:243:46: info: precondition proved
 sec_3_13_6_deceleration.adb:26:37: warning: precondition might fail
@@ -155,7 +155,7 @@ step_function.ads:80:53: warning: array index check might fail
 step_function.ads:86:6: info: postcondition proved
 step_function.ads:101:4: warning: postcondition might fail
 step_function.ads:106:30: warning: array index check might fail
-step_function.ads:106:56: warning: array index check might fail
+step_function.ads:106:56: info: index check proved
 step_function.ads:111:30: warning: array index check might fail
 step_function.ads:111:56: info: index check proved
 step_function.ads:114:25: warning: array index check might fail

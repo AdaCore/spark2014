@@ -1,5 +1,5 @@
 unconstr.adb:9:20: info: postcondition proved
-unconstr.adb:18:20: warning: postcondition might fail, requires Constr_Call'Result = true
+unconstr.adb:18:20: info: postcondition proved
 unconstr.adb:22:31: info: length check proved
 unconstr.adb:23:33: info: length check proved
 unconstr.adb:30:20: info: postcondition proved

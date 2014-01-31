@@ -69,7 +69,7 @@ auditlog.adb:899:53: info: range check proved
 auditlog.adb:924:10: info: precondition proved
 auditlog.adb:933:10: info: assertion proved
 auditlog.adb:935:10: info: precondition proved
-auditlog.adb:942:44: warning: range check might fail
+auditlog.adb:942:44: info: range check proved
 auditlog.adb:984:47: info: overflow check proved
 auditlog.adb:986:10: info: postcondition proved
 auditlog.adb:988:47: info: overflow check proved
