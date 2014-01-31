@@ -140,4 +140,21 @@ is
             Idx := Arr'First;
          end loop Outer;
    end Does_Not_Apply_To_Innermost;
+
+
+   procedure Not_Together (A : in out Integer) is
+   -- TU: 8. Two Loop_Invariant or Loop_Variant pragmas which apply to
+   --        the same loop shall occur in the same ``sequence_of_statements``,
+   --        separated only by [zero or more] other Loop_Invariant or
+   --        Loop_Variant pragmas.
+   begin
+      for I in Integer range 1 .. 100 loop
+         A := A + 1;
+         pragma Loop_Invariant (A > 10);
+         A := A * 2;
+         pragma Loop_Invariant (A > 20); -- illegal
+         A := A - 3;
+      end loop;
+   end Not_Together;
+
 end Loop_Related_Illegal;
