@@ -84,7 +84,6 @@ with GNATCOLL.VFS;       use GNATCOLL.VFS;
 with GNATCOLL.Utils;     use GNATCOLL.Utils;
 
 with String_Utils;       use String_Utils;
-with System.Multiprocessors;
 
 with Gnat2Why_Args;
 
@@ -349,17 +348,9 @@ procedure Gnatprove is
       if IDE_Progress_Bar then
          Args.Append ("--ide-progress-bar");
       end if;
+
       Args.Append ("-j");
-
-      --  It's easier to know the number of cores in Ada than in OCaml, so we
-      --  pass that info here when required
-
-      if Parallel = 0 then
-         Args.Append
-           (Int_Image (Integer (System.Multiprocessors.Number_Of_CPUs)));
-      else
-         Args.Append (Int_Image (Parallel));
-      end if;
+      Args.Append (Int_Image (Parallel));
 
       if Limit_Line /= null and then Limit_Line.all /= "" then
          Args.Append ("--limit-line");

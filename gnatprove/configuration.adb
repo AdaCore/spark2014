@@ -443,7 +443,7 @@ ASCII.LF;
       Define_Switch
          (Config, Parallel'Access,
           Long_Switch => "-j:",
-          Initial => -1);
+          Initial => 1);
 
       Define_Switch
          (Config,
