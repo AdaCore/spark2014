@@ -1,9 +1,0 @@
-gnatprove -Pspark_io -f -u -q --steps=2000 --timeout=120 hello_world.adb
-gnatprove -Pspark_io -f -u -q --steps=2000 --timeout=120 copy.adb
-gnatprove -Pspark_io -f -u -q --steps=2000 --timeout=120 echo.adb
-gnatprove -Pspark_io -f -u -q --steps=2000 --timeout=120 echo_1.adb
-gnatprove -Pspark_io -f -u -q --steps=2000 --timeout=120 use_enum_io.adb
-gnatprove -Pspark_io -f -u -q --steps=2000 --timeout=120 use_float_io.adb
-gnatprove -Pspark_io -f -u -q --steps=2000 --timeout=120 use_int_io.adb
-gnatprove -Pspark_io -f -u -q --steps=2000 --timeout=120 use_int_io_1.adb
-gnatprove -Pspark_io -f -u -q --steps=2000 --timeout=120 use_int_io_2.adb

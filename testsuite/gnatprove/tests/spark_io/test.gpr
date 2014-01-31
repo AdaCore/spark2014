@@ -1,4 +1,4 @@
-project SPARK_IO is
+project Test is
 
    for Source_Dirs use ("./**");
 
@@ -6,4 +6,4 @@ project SPARK_IO is
       for Default_Switches ("ada") use ("-g", "-O2", "-gnaty");
    end Compiler;
 
-end SPARK_IO;
+end Test;
