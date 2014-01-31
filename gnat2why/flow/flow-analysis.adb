@@ -45,9 +45,9 @@ with Flow_Utility;         use Flow_Utility;
 
 -----------------------------------------------------------------------------
 --
---  !!! Important: Please make sure to always use FA.Atr.Element (V)
---      instead of the implicit reference FA.Atr (V), due to finalization
---      issues. See N131-017 for further information.
+--  ??? Important: Please make sure to always use FA.Atr.Element (V)
+--  instead of the implicit reference FA.Atr (V), due to finalization
+--  issues. See N131-017 for further information.
 --
 -----------------------------------------------------------------------------
 
@@ -61,11 +61,11 @@ package body Flow.Analysis is
    use type Node_Sets.Set;
    use type Flow_Id_Sets.Set;
 
-   function Get_Line (G   : Flow_Graphs.T'Class;
-                      M   : Attribute_Maps.Map;
-                      V   : Flow_Graphs.Vertex_Id;
-                      Sep : Character := ':')
-                      return String;
+   function Get_Line
+     (G   : Flow_Graphs.T'Class;
+      M   : Attribute_Maps.Map;
+      V   : Flow_Graphs.Vertex_Id;
+      Sep : Character := ':') return String;
    --  Obtain the location for the given vertex as in "foo.adb:12".
 
    procedure Write_Vertex_Set
@@ -74,9 +74,9 @@ package body Flow.Analysis is
       Filename : String);
    --  Write a trace file for GPS.
 
-   function Find_Global (S : Entity_Id;
-                         F : Flow_Id)
-                         return Node_Id;
+   function Find_Global
+     (S : Entity_Id;
+      F : Flow_Id) return Node_Id;
    --  Find the given global F in the subprogram declaration of S (or
    --  in the initializes clause of S). If we can't find it (perhaps
    --  because of computed globals) we just return S which is a useful
@@ -86,22 +86,20 @@ package body Flow.Analysis is
    -- Error_Location --
    --------------------
 
-   function Error_Location (G : Flow_Graphs.T'Class;
-                            M : Attribute_Maps.Map;
-                            V : Flow_Graphs.Vertex_Id)
-                            return Node_Or_Entity_Id
+   function Error_Location
+     (G : Flow_Graphs.T'Class;
+      M : Attribute_Maps.Map;
+      V : Flow_Graphs.Vertex_Id) return Node_Or_Entity_Id
    is
       K : constant Flow_Id      := G.Get_Key (V);
       A : constant V_Attributes := M.Element (V);
    begin
       if Present (A.Error_Location) then
          return A.Error_Location;
-
       else
          case K.Kind is
             when Direct_Mapping | Record_Field =>
                return Get_Direct_Mapping_Id (K);
-
             when others =>
                raise Why.Unexpected_Node;
          end case;
@@ -112,11 +110,11 @@ package body Flow.Analysis is
    -- Get_Line --
    --------------
 
-   function Get_Line (G   : Flow_Graphs.T'Class;
-                      M   : Attribute_Maps.Map;
-                      V   : Flow_Graphs.Vertex_Id;
-                      Sep : Character := ':')
-                      return String
+   function Get_Line
+     (G   : Flow_Graphs.T'Class;
+      M   : Attribute_Maps.Map;
+      V   : Flow_Graphs.Vertex_Id;
+      Sep : Character := ':') return String
    is
       N       : constant Node_Or_Entity_Id := Error_Location (G, M, V);
       SI      : constant Source_File_Index := Get_Source_File_Index (Sloc (N));
@@ -139,7 +137,6 @@ package body Flow.Analysis is
       FD       : Ada.Text_IO.File_Type;
    begin
       if not Set.Is_Empty then
-
          Ada.Text_IO.Create (FD, Ada.Text_IO.Out_File, Filename);
 
          for V of Set loop
@@ -154,7 +151,6 @@ package body Flow.Analysis is
          end loop;
 
          Ada.Text_IO.Close (FD);
-
       end if;
    end Write_Vertex_Set;
 
@@ -169,11 +165,11 @@ package body Flow.Analysis is
       First_Use : Node_Id;
       Tracefile : Unbounded_String;
    begin
-
-      First_Use := First_Variable_Use (FA      => FA,
-                                       Var     => Var,
-                                       Kind    => Use_Any,
-                                       Precise => True);
+      First_Use := First_Variable_Use
+        (FA      => FA,
+         Var     => Var,
+         Kind    => Use_Any,
+         Precise => True);
 
       if First_Use = FA.Analyzed_Entity then
          --  Ok, we did not actually find a node which make use of
@@ -200,16 +196,15 @@ package body Flow.Analysis is
             N         => First_Use,
             F1        => Direct_Mapping_Id (Entity (Name (First_Use))));
       end if;
-
    end Global_Required;
 
    -----------------
    -- Find_Global --
    -----------------
 
-   function Find_Global (S : Entity_Id;
-                         F : Flow_Id)
-                         return Node_Id
+   function Find_Global
+     (S : Entity_Id;
+      F : Flow_Id) return Node_Id
    is
       Needle     : Entity_Id;
       Haystack_A : Node_Id;
@@ -285,12 +280,12 @@ package body Flow.Analysis is
    -- First_Variable_Use --
    ------------------------
 
-   function First_Variable_Use (N       : Node_Id;
-                                FA      : Flow_Analysis_Graphs;
-                                Scope   : Flow_Scope;
-                                Var     : Flow_Id;
-                                Precise : Boolean)
-                                return Node_Id
+   function First_Variable_Use
+     (N       : Node_Id;
+      FA      : Flow_Analysis_Graphs;
+      Scope   : Flow_Scope;
+      Var     : Flow_Id;
+      Precise : Boolean) return Node_Id
    is
       First_Use : Node_Id := N;
       Var_Tgt   : constant Flow_Id :=
@@ -330,21 +325,22 @@ package body Flow.Analysis is
       return First_Use;
    end First_Variable_Use;
 
-   function First_Variable_Use (FA      : Flow_Analysis_Graphs;
-                                Var     : Flow_Id;
-                                Kind    : Var_Use_Kind;
-                                Precise : Boolean)
-                                return Node_Id
+   function First_Variable_Use
+     (FA      : Flow_Analysis_Graphs;
+      Var     : Flow_Id;
+      Kind    : Var_Use_Kind;
+      Precise : Boolean) return Node_Id
    is
       Var_Normal   : constant Flow_Id := Change_Variant (Var, Normal_Use);
       E_Var_Normal : constant Flow_Id := Entire_Variable (Var_Normal);
 
       First_Use : Node_Id := FA.Analyzed_Entity;
 
-      procedure Proc (V      : Flow_Graphs.Vertex_Id;
-                      Origin : Flow_Graphs.Vertex_Id;
-                      Depth  : Natural;
-                      T_Ins  : out Flow_Graphs.Simple_Traversal_Instruction);
+      procedure Proc
+        (V      : Flow_Graphs.Vertex_Id;
+         Origin : Flow_Graphs.Vertex_Id;
+         Depth  : Natural;
+         T_Ins  : out Flow_Graphs.Simple_Traversal_Instruction);
       --  Checks if vertex V contains a reference to Var. If so, we
       --  set First_Use and abort the search.
 
@@ -352,10 +348,11 @@ package body Flow.Analysis is
       -- Proc --
       ----------
 
-      procedure Proc (V      : Flow_Graphs.Vertex_Id;
-                      Origin : Flow_Graphs.Vertex_Id;
-                      Depth  : Natural;
-                      T_Ins  : out Flow_Graphs.Simple_Traversal_Instruction)
+      procedure Proc
+        (V      : Flow_Graphs.Vertex_Id;
+         Origin : Flow_Graphs.Vertex_Id;
+         Depth  : Natural;
+         T_Ins  : out Flow_Graphs.Simple_Traversal_Instruction)
       is
          pragma Unreferenced (Origin, Depth);
 
@@ -2047,12 +2044,10 @@ package body Flow.Analysis is
    --  Find_Exports_Derived_From_Proof_Ins  --
    -------------------------------------------
 
-   procedure Find_Exports_Derived_From_Proof_Ins (FA : Flow_Analysis_Graphs)
-   is
+   procedure Find_Exports_Derived_From_Proof_Ins (FA : Flow_Analysis_Graphs) is
       function Path_Leading_To_Proof_In_Dependency
         (From : Flow_Graphs.Vertex_Id;
-         To   : Flow_Graphs.Vertex_Id)
-        return Vertex_Sets.Set;
+         To   : Flow_Graphs.Vertex_Id) return Vertex_Sets.Set;
       --  Returns a set of vertices that highlight the path in the CFG
       --  where the export depends on a Proof_In.
 
@@ -2062,14 +2057,12 @@ package body Flow.Analysis is
 
       function Path_Leading_To_Proof_In_Dependency
         (From : Flow_Graphs.Vertex_Id;
-         To   : Flow_Graphs.Vertex_Id)
-        return Vertex_Sets.Set
+         To   : Flow_Graphs.Vertex_Id) return Vertex_Sets.Set
       is
          function Vertices_Between_From_And_To
            (From      : Flow_Graphs.Vertex_Id;
             To        : Flow_Graphs.Vertex_Id;
-            CFG_Graph : Boolean := False)
-           return Vertex_Sets.Set;
+            CFG_Graph : Boolean := False) return Vertex_Sets.Set;
          --  Returns the smallest set of vertices that make up a path
          --  from "From" to "To" (excluding vertices "From" and "To").
          --  By default it operates on the PDG graph. If CFG_Graph is
@@ -2082,8 +2075,7 @@ package body Flow.Analysis is
          function Vertices_Between_From_And_To
            (From      : Flow_Graphs.Vertex_Id;
             To        : Flow_Graphs.Vertex_Id;
-            CFG_Graph : Boolean := False)
-           return Vertex_Sets.Set
+            CFG_Graph : Boolean := False) return Vertex_Sets.Set
          is
             Vertices : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
 
@@ -2232,8 +2224,7 @@ package body Flow.Analysis is
       -- Find_Export --
       -----------------
 
-      function Find_Export (E : Entity_Id) return Node_Id
-      is
+      function Find_Export (E : Entity_Id) return Node_Id is
          Depends_Contract : Node_Id;
          Needle           : Node_Id := Empty;
 
@@ -2469,13 +2460,12 @@ package body Flow.Analysis is
    -- Check_Initializes_Contract --
    --------------------------------
 
-   procedure Check_Initializes_Contract (FA : Flow_Analysis_Graphs)
-   is
+   procedure Check_Initializes_Contract (FA : Flow_Analysis_Graphs) is
       Tracefile : Unbounded_String;
 
-      function Find_Entity (E    : Entity_Id;
-                            E_In : Entity_Id := Empty)
-                            return Node_Id;
+      function Find_Entity
+        (E    : Entity_Id;
+         E_In : Entity_Id := Empty) return Node_Id;
       --  Looks through the initializes aspect on FA.Analyzed_Entity
       --  and returns the node which represents E in the
       --  initializes_item. If E_In is not Empty then we look at the
@@ -2508,9 +2498,9 @@ package body Flow.Analysis is
       -- Find_Entity --
       -----------------
 
-      function Find_Entity (E    : Entity_Id;
-                            E_In : Entity_Id := Empty)
-                            return Node_Id
+      function Find_Entity
+        (E    : Entity_Id;
+         E_In : Entity_Id := Empty) return Node_Id
       is
          Initializes_Contract : constant Node_Id := FA.Initializes_N;
          Needle               : Node_Id := Empty;
@@ -2525,6 +2515,7 @@ package body Flow.Analysis is
             case Nkind (N) is
                when N_Component_Association =>
                   Tmp := First (Choices (N));
+
                   while Present (Tmp) loop
                      if Entity (Tmp) = E then
                         if not Present (E_In) then
@@ -2532,16 +2523,20 @@ package body Flow.Analysis is
                            return Abandon;
                         else
                            Tmp := Expression (N);
+
                            case Nkind (Tmp) is
                               when N_Aggregate =>
                                  Tmp := First (Expressions (Tmp));
+
                                  while Present (Tmp) loop
                                     if Entity (Tmp) = E_In then
                                        Needle := Tmp;
                                        return Abandon;
                                     end if;
+
                                     Tmp := Next (Tmp);
                                  end loop;
+
                                  return Skip;
 
                               when others =>
@@ -2550,13 +2545,16 @@ package body Flow.Analysis is
                            end case;
                         end if;
                      end if;
+
                      Tmp := Next (Tmp);
                   end loop;
+
                   return Skip;
 
                when others =>
                   null;
             end case;
+
             return OK;
          end Proc;
 
@@ -2658,17 +2656,19 @@ package body Flow.Analysis is
          end Add_Loc;
 
       begin --  Write_Tracefile
-         FA.PDG.Shortest_Path (Start         => From,
-                               Allow_Trivial => False,
-                               Search        => Are_We_There_Yet'Access,
-                               Step          => Add_Loc'Access);
+         FA.PDG.Shortest_Path
+           (Start         => From,
+            Allow_Trivial => False,
+            Search        => Are_We_There_Yet'Access,
+            Step          => Add_Loc'Access);
 
          --  A little sanity check can't hurt.
          pragma Assert (Path_Found);
 
-         Write_Vertex_Set (FA       => FA,
-                           Set      => Path,
-                           Filename => To_String (Tracefile));
+         Write_Vertex_Set
+           (FA       => FA,
+            Set      => Path,
+            Filename => To_String (Tracefile));
       end Write_Tracefile;
 
    begin  --  Check_Initializes_Contract
@@ -2801,7 +2801,6 @@ package body Flow.Analysis is
                      Warning   => True);
                end if;
             end loop;
-
          end loop;
       end;
    end Check_Initializes_Contract;
