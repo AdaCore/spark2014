@@ -1,6 +1,8 @@
 package body Pack
   with SPARK_Mode => On
 is
+   -- TU: 1. The use of allocators is not permitted.
+
    function F return Boolean is
       B : access Boolean;
    begin
