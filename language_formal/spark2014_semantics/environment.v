@@ -157,6 +157,143 @@ Inductive UpdateList : list idnum -> list val -> store -> store -> Prop :=
                     -> UpdateList (id::lid) (v::lv) s  s''.
 
 
+(* The global stack is a stack of stores. One store per procedure
+   currently running. *)
+Definition stack := list store.
+
+Function fetchG (x : idnum) (s : stack) := 
+    match s with 
+    | sto :: s' =>
+      match fetch x sto with
+          Some x => Some x
+        | None => fetchG x s'
+      end
+    | nil => None
+    end.
+
+Function updateG (s : stack) (x : idnum) (v:val): option stack := 
+  match s with 
+    | sto :: s' =>
+      match update sto x v with
+          Some x => Some (x::s')
+        | None => match (updateG s' x v) with
+                      Some y => Some (sto::y)
+                    | None  => None
+                  end
+      end
+    | nil => None
+  end.
+
+
+Inductive InG: idnum -> val -> stack -> Prop := 
+  InG1: forall x v (sto:store) (s:stack),
+          List.In (x,v) sto -> InG x v (sto::s)
+| InG2: forall x v (sto:store) (s:stack),
+          InG x v s -> InG x v (sto::s).
+
+(** ** Lemmas about stack operations *)
+Lemma fetchG_in:
+  forall x s v, 
+    fetchG x s = Some v -> InG x v s.
+Proof.
+  intros x s.
+  functional induction (fetchG x s);
+    intros v1 H;
+    try match goal with
+          | h: None = Some ?v |- _ => inversion h
+          | h: Some ?v1 = Some ?v2 |- _ => inversion h; subst
+        end; simpl.
+  - apply fetch_in in e0.
+    constructor 1.
+    assumption.
+  - constructor 2.
+    apply IHo.
+    assumption.
+Qed.
+
+Inductive stack_eq_length : stack -> stack -> Prop :=
+  eqnil: stack_eq_length nil nil
+| eqncons: 
+    forall l l' e e',
+      stack_eq_length l l'
+      -> List.length e = List.length e'
+      -> stack_eq_length (e::l) (e'::l').
+
+
+Lemma stack_eq_length_refl: forall s s', s = s' -> stack_eq_length s s'.
+Proof.
+  intros s.
+  induction s;intros s' heq.
+  - subst.
+    constructor.
+  - subst.
+    constructor.
+    + apply IHs.
+      reflexivity.
+    + reflexivity.
+Qed.
+
+Lemma stack_eq_length_sym: forall s s', stack_eq_length s s' -> stack_eq_length s' s.
+Proof.
+  intros s.
+  induction s;intros s' heq.
+  - inversion heq.
+    constructor.
+  - inversion heq.
+    constructor.
+    + apply IHs.
+      assumption.
+    + symmetry.
+      assumption.
+Qed.
+
+Lemma stack_eq_length_trans:
+  forall s' s s'',
+    stack_eq_length s s'
+    -> stack_eq_length s' s''
+    -> stack_eq_length s s''.
+Proof.
+  intros s'.
+  induction s';intros s s'' heq1 heq2
+  ; try now (inversion heq1; inversion heq2;subst;constructor).
+  inversion heq1.
+  inversion heq2.
+  subst.
+  constructor.
+  + apply IHs' ;assumption.
+  + transitivity (List.length a);auto.
+Qed.
+
+
+Lemma updateG_stack_eq_length:
+  forall s x v s', updateG s x v = Some s' -> stack_eq_length s s'.
+Proof.
+  intros s x v.
+  functional induction updateG s x v;simpl
+  ; intros updateds heq; inversion heq;clear heq
+  ; subst;simpl;auto.
+  - constructor.
+    + apply stack_eq_length_refl;auto.
+    + eapply update_length;eauto.
+  - constructor.
+    + apply IHo.
+      assumption.
+    + reflexivity.
+Qed.
+
+
+Lemma updateG_length:
+  forall s x v s', updateG s x v = Some s' -> List.length s = List.length s'.
+Proof.
+  intros s x v.
+  functional induction updateG s x v;simpl
+  ; intros updateds heq; inversion heq;clear heq
+  ; subst;simpl;auto.
+Qed.
+
+
+
+
 (** * Program State *)
 (** Statement evaluation returns one of the following results:
     - normal state;
@@ -170,9 +307,4 @@ Inductive UpdateList : list idnum -> list val -> store -> store -> Prop :=
       more precise categories (1.1.5);
 *)
 
-Inductive state: Type :=
-    | S_Normal: store -> state
-    | S_Run_Time_Error: state
-    | S_Unterminated: state
-    | S_Abnormal: state.
 

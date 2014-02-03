@@ -81,10 +81,10 @@ Inductive literal: Type :=
 
 (** unary and binary operators *)
 Inductive unary_operator: Type := 
-        | Not: unary_operator.
-(*     
-        | Unary_Plus: unary_operator
-	| Unary_Minus: unary_operator. *)
+        | Not: unary_operator
+     
+        | Unary_Plus: unary_operator.
+(*	| Unary_Minus: unary_operator. *)
 
 Inductive binary_operator: Type := 
 	| Equal: binary_operator 
@@ -246,5 +246,25 @@ Proof.
   intros e.
   destruct e;simpl; split;intro h;auto;try contradiction; discriminate h. 
 Qed.
+
+(* this is an equivalent of inversion  *)
+Ltac inversion_is_var H :=
+  match (type of H) with
+    | is_var ?e = true =>
+      rewrite is_var_Is_var in H; destruct e;simpl in H; try contradiction;subst
+    | is_var ?e = false =>
+      rewrite is_var_Is_var in H; destruct e;simpl in H; try contradiction;subst
+  end.
+
+(* this is an equivalent of inversion  *)
+Ltac inversion_is_var_auto :=
+  try match goal with
+        | H: is_var ?e = true |- _ =>
+          rewrite is_var_Is_var in H
+          ; destruct e;simpl in H; try contradiction;subst
+        | H: is_var ?e = false |- _ =>
+          rewrite is_var_Is_var in H
+          ; destruct e;simpl in H; try contradiction;subst
+      end.
 
 

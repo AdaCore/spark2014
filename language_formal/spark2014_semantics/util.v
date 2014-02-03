@@ -9,6 +9,19 @@ zhangzhi@ksu.edu
 >>
 *)
 
+
+Inductive Return (A:Type): Type :=
+    | Normal: A -> Return A
+    | Run_Time_Error: Return A
+    | Unterminated: Return A
+    | Abnormal: Return A.
+(* TODO: add stuff in error states *)
+Arguments Normal [A] a.
+Arguments Run_Time_Error {A}.
+Arguments Unterminated {A}.
+Arguments Abnormal {A}.
+
+
 (** * Customized Tactics *)
 
 Ltac simpl_unop unfunc := 

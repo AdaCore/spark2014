@@ -10,6 +10,7 @@ zhangzhi@ksu.edu
 *)
 
 Require Export language.
+Require Export util.
 
 (** * Value Types *) 
 
@@ -59,10 +60,11 @@ Inductive val: Type :=
       if it's necessary, we would refine the abnormal value into 
       these more precise categories (1.1.5);
 *)
+(*
 Inductive return_val: Type :=
     | Val_Normal: value -> return_val
     | Val_Run_Time_Error: return_val
-    | Val_Abnormal: return_val. 
+    | Val_Abnormal: return_val. *)
 
 Inductive value_of_type: value -> type -> Prop :=
     | VT_Int: forall n, value_of_type (Int n) Integer
@@ -83,23 +85,29 @@ Notation "n <= m" := (Z.leb n m) (at level 70, no associativity).
 
 (** ** Arithmetic operations *)
 
-Definition add (v1 v2: value): return_val := 
+Definition unary_add (v: value): Return value := 
+    match v with
+    | Int v1' => Normal v
+    | _ => Abnormal
+    end.
+
+Definition add (v1 v2: value): Return value := 
     match v1, v2 with
     | Int v1', Int v2' => 
-        Val_Normal (Int (v1' + v2'))
-    | _, _ => Val_Abnormal
+        Normal (Int (v1' + v2'))
+    | _, _ => Abnormal
     end.
 
-Definition sub (v1 v2: value): return_val := 
+Definition sub (v1 v2: value): Return value := 
     match v1, v2 with
-    | Int v1', Int v2' => Val_Normal (Int (v1' - v2'))
-    | _, _ => Val_Abnormal
+    | Int v1', Int v2' => Normal (Int (v1' - v2'))
+    | _, _ => Abnormal
     end.
 
-Definition mul (v1 v2: value): return_val :=
+Definition mul (v1 v2: value): Return value :=
     match v1, v2 with
-    | Int v1', Int v2' => Val_Normal (Int (v1' * v2'))
-    | _, _ => Val_Abnormal
+    | Int v1', Int v2' => Normal (Int (v1' * v2'))
+    | _, _ => Abnormal
     end.
 
 
@@ -112,80 +120,80 @@ Definition mul (v1 v2: value): return_val :=
        - if y > 0 then EuclideanDivision.mod x y else EuclideanDivision.mod x y + y)
 *)
 
-Definition div (v1 v2: value): return_val := 
+Definition div (v1 v2: value): Return value := 
     match v1, v2 with
-    | Int v1', Int v2' => Val_Normal (Int (Z.quot v1' v2'))
-    | _, _ => Val_Abnormal
+    | Int v1', Int v2' => Normal (Int (Z.quot v1' v2'))
+    | _, _ => Abnormal
     end.
 
-Definition rem (v1 v2: value): return_val := 
+Definition rem (v1 v2: value): Return value := 
     match v1, v2 with
-    | Int v1', Int v2' => Val_Normal (Int (Z.rem v1' v2'))
-    | _, _ => Val_Abnormal
+    | Int v1', Int v2' => Normal (Int (Z.rem v1' v2'))
+    | _, _ => Abnormal
     end.
 
 (* the keyword "mod" cannot redefined here, so we use "mod'" *)
-Definition mod' (v1 v2: value): return_val := 
+Definition mod' (v1 v2: value): Return value := 
     match v1, v2 with
-    | Int v1', Int v2' => Val_Normal (Int (Z.modulo v1' v2'))
-    | _, _ => Val_Abnormal
+    | Int v1', Int v2' => Normal (Int (Z.modulo v1' v2'))
+    | _, _ => Abnormal
     end.
 
 (** ** Logic operations  *)
-Definition and (v1 v2: value): return_val :=
+Definition and (v1 v2: value): Return value :=
     match v1, v2 with
-    | Bool v1', Bool v2' => Val_Normal (Bool (andb v1' v2'))
-    | _, _ => Val_Abnormal
+    | Bool v1', Bool v2' => Normal (Bool (andb v1' v2'))
+    | _, _ => Abnormal
     end.
 
-Definition or (v1 v2: value): return_val :=
+Definition or (v1 v2: value): Return value :=
     match v1, v2 with
-    | Bool v1', Bool v2' => Val_Normal (Bool (orb v1' v2'))
-    | _, _ => Val_Abnormal
+    | Bool v1', Bool v2' => Normal (Bool (orb v1' v2'))
+    | _, _ => Abnormal
     end.
 
 (** ** Relational operations *)
-Definition eq (v1 v2: value): return_val :=
+Definition eq (v1 v2: value): Return value :=
     match v1, v2 with
-    | Int v1', Int v2' => Val_Normal (Bool (Zeq_bool v1' v2'))
-    | _, _ => Val_Abnormal
+    | Int v1', Int v2' => Normal (Bool (Zeq_bool v1' v2'))
+    | _, _ => Abnormal
     end.
 
-Definition ne (v1 v2: value): return_val :=
+Definition ne (v1 v2: value): Return value :=
     match v1, v2 with
-    | Int v1', Int v2' => Val_Normal (Bool (Zneq_bool v1' v2'))
-    | _, _ => Val_Abnormal
+    | Int v1', Int v2' => Normal (Bool (Zneq_bool v1' v2'))
+    | _, _ => Abnormal
     end.
 
-Definition gt (v1 v2: value): return_val :=
+Definition gt (v1 v2: value): Return value :=
     match v1, v2 with
-    | Int v1', Int v2' => Val_Normal (Bool (Zgt_bool v1' v2'))
-    | _, _ => Val_Abnormal
+    | Int v1', Int v2' => Normal (Bool (Zgt_bool v1' v2'))
+    | _, _ => Abnormal
     end.
 
-Definition ge (v1 v2: value): return_val :=
+Definition ge (v1 v2: value): Return value :=
     match v1, v2 with
-    | Int v1', Int v2' => Val_Normal (Bool (Zge_bool v1' v2'))
-    | _, _ => Val_Abnormal
+    | Int v1', Int v2' => Normal (Bool (Zge_bool v1' v2'))
+    | _, _ => Abnormal
     end.
 
-Definition lt (v1 v2: value): return_val :=
+Definition lt (v1 v2: value): Return value :=
     match v1, v2 with
-    | Int v1', Int v2' => Val_Normal (Bool (Zlt_bool v1' v2'))
-    | _, _ => Val_Abnormal
+    | Int v1', Int v2' => Normal (Bool (Zlt_bool v1' v2'))
+    | _, _ => Abnormal
     end.
 
-Definition le (v1 v2: value): return_val :=
+Definition le (v1 v2: value): Return value :=
     match v1, v2 with
-    | Int v1', Int v2' => Val_Normal (Bool (Zle_bool v1' v2'))
-    | _, _ => Val_Abnormal
+    | Int v1', Int v2' => Normal (Bool (Zle_bool v1' v2'))
+    | _, _ => Abnormal
     end.
 
 (** ** Unary operations *)
-Definition not (v: value): return_val :=
+Definition not (v: value): Return value :=
     match v with
-    | Bool v' => Val_Normal (Bool (negb v'))
-    | _ => Val_Abnormal
+    | Bool v' => Normal (Bool (negb v'))
+    | _ => Abnormal
     end.
 End Val. 
 

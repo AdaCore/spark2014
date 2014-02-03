@@ -1,5 +1,14 @@
+* Feb 3, 2014. The stack is now a stack of frames.
+
+* Feb 3, 2014. Plus_Unary has been added as a second unary operator,
+  for technical reason, it was better to have more than one
+  constructors in this inductive (Coq bug?).
+
+* Feb 3, 2014. Cleaned some scripts with cleaning tactics.
+
+
 * Fixed typos:
-eample: Vundef has been replaced by Undefined, but some Vundef were
+example: Vundef has been replaced by Undefined, but some Vundef were
 forgotten in the process.
 
 * Split some files.

@@ -194,6 +194,10 @@ printenv:
 	@echo COQLIBINSTALL =	$(COQLIBINSTALL)
 	@echo COQDOCINSTALL =	$(COQDOCINSTALL)
 
+sem: util.vo values.vo checks.vo language.vo semantics.vo 
+	mkdir -p html
+	coqdoc -html -d html util.v values.v checks.v environment.v language.v semantics.v 
+
 ###################
 #                 #
 # Implicit rules. #
@@ -212,8 +216,8 @@ printenv:
 %.tex: %.v
 	$(COQDOC) $(COQDOCFLAGS) -latex $< -o $@
 
-%.html: %.v %.glob
-	$(COQDOC) $(COQDOCFLAGS) -html $< -o $@
+html/%.html: %.v %.glob
+	$(COQDOC) $(COQDOCFLAGS) -html -d html $< -o $@
 
 %.g.tex: %.v
 	$(COQDOC) $(COQDOCFLAGS) -latex -g $< -o $@
