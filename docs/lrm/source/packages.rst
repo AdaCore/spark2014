@@ -3,7 +3,7 @@
 
 .. centered:: **Verification Rules**
 
-.. _tu-packages-01:
+.. _tu-fa-packages-01:
 
 1. In |SPARK| the elaboration of a package shall only update, directly or
    indirectly, variables declared immediately within the package.
@@ -2318,7 +2318,7 @@ global variables discussed later in this section.
    [If Elaborate pragmas were in |SPARK| then this list would also include the
    case where L2 references L1 in an Elaborate pragma, but they aren't so it
    doesn't - see below.]
-     
+
 .. _etu-elaboration_issues-ss:
 
 .. centered:: **Legality Rules**
