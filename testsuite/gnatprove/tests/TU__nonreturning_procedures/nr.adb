@@ -1,12 +1,12 @@
 package body NR
 is
-   -- TU: 2. A call to a nonreturning procedure introduces an obligation to prove that the statement
-   --     will not be executed, much like the verification condition associated with
+   -- TU : 2. A call to a nonreturning procedure introduces an obligation to prove that the statement
+   --      will not be executed, much like the verification condition associated with
    --       ``pragma Assert (False);``
-   --     [In other words, the verification conditions introduced for a call to a nonreturning procedure
-   --     are the same as those introduced for a runtime check which fails
-   --     unconditionally. See also section :ref:`exceptions`, where a similar restriction is
-   ---    imposed on ``raise_statements``.]
+   --      [In other words, the verification conditions introduced for a call to a nonreturning procedure
+   --      are the same as those introduced for a runtime check which fails
+   --      unconditionally. See also section :ref:`exceptions`, where a similar restriction is
+   --      imposed on ``raise_statements``.]
 
    procedure Op1
    is
