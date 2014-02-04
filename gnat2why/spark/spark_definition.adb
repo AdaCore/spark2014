@@ -132,21 +132,10 @@ package body SPARK_Definition is
    --  Those entities are stored in Actions_Entity_Set.
 
    procedure Initialize;
-   procedure Initialize is
-   begin
-      Current_SPARK_Pragma := Empty;
-      Violation_Detected := False;
-      Inside_Loop := False;
-      Inside_Actions := False;
-   end Initialize;
 
    function SPARK_Pragma_Is (Mode : Opt.SPARK_Mode_Type) return Boolean;
    --  Returns whether Current_SPARK_Pragma is not Empty, and corresponds to
    --  the given Mode.
-
-   function SPARK_Pragma_Is (Mode : Opt.SPARK_Mode_Type) return Boolean is
-     (Present (Current_SPARK_Pragma)
-       and then Get_SPARK_Mode_From_Pragma (Current_SPARK_Pragma) = Mode);
 
    --  There are two possibilities when marking an entity, depending on whether
    --  this is in the context of a toplevel subprogram body or not. In the
@@ -205,26 +194,6 @@ package body SPARK_Definition is
    --  Returns True if N is the last statement at the outermost level
    --  of the sequence of statements in its enclosing subprogram body.
 
-   function Is_Enclosed_By_Simple_If_Statement (N : Node_Id) return Boolean is
-   begin
-      return Present (Parent (N))
-        and then Nkind (Parent (N)) = N_If_Statement
-        and then Elsif_Parts (Parent (N)) = No_List
-        and then Else_Statements (Parent (N)) = No_List
-        and then List_Length (Then_Statements (Parent (N))) = 1;
-   end Is_Enclosed_By_Simple_If_Statement;
-
-   function Is_Last_Statement_Of_Subprogram (N : Node_Id) return Boolean is
-   begin
-      return Present (Parent (N))
-        and then Nkind (Parent (N)) = N_Handled_Sequence_Of_Statements
-        and then Present (Parent (Parent (N)))
-        and then Nkind (Parent (Parent (N))) = N_Subprogram_Body
-        and then Last (Statements
-                         (Handled_Statement_Sequence
-                            (Parent (Parent (N))))) = N;
-   end Is_Last_Statement_Of_Subprogram;
-
    ----------------------
    -- SPARK Violations --
    ----------------------
@@ -243,63 +212,6 @@ package body SPARK_Definition is
       From : Entity_Id);
    --  Mark node N as a violation of SPARK, due to the use of entity From which
    --  is not in SPARK. An error message is issued if current SPARK_Mode is On.
-
-   --------------------
-   -- Mark_Violation --
-   --------------------
-
-   procedure Mark_Violation
-     (Msg           : String;
-      N             : Node_Id;
-      SRM_Reference : String := "") is
-   begin
-      --  Flag the violation, so that the current entity is marked accordingly
-
-      Violation_Detected := True;
-
-      --  If SPARK_Mode is On, raise an error
-
-      if SPARK_Pragma_Is (Opt.On) then
-
-         if SRM_Reference /= "" then
-            Error_Msg_F
-              (Msg & " is not allowed in SPARK (" & SRM_Reference & ")", N);
-         else
-            Error_Msg_F (Msg & " is not allowed in SPARK", N);
-         end if;
-
-         Error_Msg_Sloc := Sloc (Current_SPARK_Pragma);
-
-         if From_Aspect_Specification (Current_SPARK_Pragma) then
-            Error_Msg_F ("\\violation of aspect SPARK_Mode #", N);
-         else
-            Error_Msg_F ("\\violation of pragma SPARK_Mode #", N);
-         end if;
-      end if;
-   end Mark_Violation;
-
-   procedure Mark_Violation
-     (N    : Node_Id;
-      From : Entity_Id)
-   is
-   begin
-      --  Flag the violation, so that the current entity is marked accordingly
-
-      Violation_Detected := True;
-
-      --  If SPARK_Mode is On, raise an error
-
-      if SPARK_Pragma_Is (Opt.On) then
-         Error_Msg_FE ("& is not allowed in SPARK", N, From);
-         Error_Msg_Sloc := Sloc (Current_SPARK_Pragma);
-
-         if From_Aspect_Specification (Current_SPARK_Pragma) then
-            Error_Msg_F ("\\violation of aspect SPARK_Mode #", N);
-         else
-            Error_Msg_F ("\\violation of pragma SPARK_Mode #", N);
-         end if;
-      end if;
-   end Mark_Violation;
 
    ------------------------------
    -- Output SPARK Information --
@@ -327,65 +239,6 @@ package body SPARK_Definition is
    First_Entry : Boolean := True;
    --  Global variable used to decide whether a separator needs to be printed
    --  between records in the JSON output
-
-   -------------------
-   -- After_Marking --
-   -------------------
-
-   procedure After_Marking is
-   begin
-      Put_Line (Output_File, "]");
-      Close (Output_File);
-   end After_Marking;
-
-   --------------------
-   -- Before_Marking --
-   --------------------
-
-   procedure Before_Marking (Basename : String) is
-   begin
-      Create (Output_File, Out_File,
-              Ada.Directories.Compose (Name      => Basename,
-                                       Extension => VC_Kinds.SPARK_Suffix));
-      Put_Line (Output_File, "[");
-   end Before_Marking;
-
-   ----------------------------------
-   -- Generate_Output_In_Out_SPARK --
-   ----------------------------------
-
-   procedure Generate_Output_In_Out_SPARK (Id : Entity_Id) is
-      SPARK_Status : constant String :=
-        (if Entity_Body_In_SPARK (Id) then "all"
-         elsif Entity_Spec_In_SPARK (Id) then
-             (if Ekind (Id) = E_Package
-                   and then
-                 No (Get_Package_Body (Id))
-              then "all" else "spec")
-         else "no");
-      Line_Num     : constant String :=
-        Get_Logical_Line_Number (Sloc (Id))'Img;
-
-   begin
-      --  Only add infomation for Id if analysis is requested for that
-      --  subprogram or package. Then, absence of errors in flow and warnings
-      --  in proof for that subprogram/package can be interpreted as correct
-      --  flow analysis or proof of that entity.
-
-      if Analysis_Requested (Id) then
-         if First_Entry then
-            First_Entry := False;
-         else
-            Put (Output_File, ", ");
-         end if;
-         Put_Line
-           (Output_File,
-            "{ ""name"" : """ & Subprogram_Full_Source_Name (Id) & """, " &
-              """file"" :""" & File_Name (Sloc (Id)) & """, " &
-              """line"" : " & Line_Num & ", " &
-              """spark"" : """ & SPARK_Status & """ }");
-      end if;
-   end Generate_Output_In_Out_SPARK;
 
    ----------------------------------
    -- Recursive Marking of the AST --
@@ -446,6 +299,77 @@ package body SPARK_Definition is
    --  The most underlying type for type Id should be in SPARK, otherwise mark
    --  node N as not in SPARK.
 
+   -------------------
+   -- After_Marking --
+   -------------------
+
+   procedure After_Marking is
+   begin
+      Put_Line (Output_File, "]");
+      Close (Output_File);
+   end After_Marking;
+
+   --------------------
+   -- Before_Marking --
+   --------------------
+
+   procedure Before_Marking (Basename : String) is
+   begin
+      Create (Output_File, Out_File,
+              Ada.Directories.Compose (Name      => Basename,
+                                       Extension => VC_Kinds.SPARK_Suffix));
+      Put_Line (Output_File, "[");
+   end Before_Marking;
+
+   ----------------------------------
+   -- Generate_Output_In_Out_SPARK --
+   ----------------------------------
+
+   procedure Generate_Output_In_Out_SPARK (Id : Entity_Id) is
+      SPARK_Status : constant String :=
+        (if Entity_Body_In_SPARK (Id) then "all"
+         elsif Entity_Spec_In_SPARK (Id) then
+             (if Ekind (Id) = E_Package
+              and then
+              No (Get_Package_Body (Id))
+              then "all" else "spec")
+         else "no");
+      Line_Num     : constant String :=
+        Get_Logical_Line_Number (Sloc (Id))'Img;
+
+   begin
+      --  Only add infomation for Id if analysis is requested for that
+      --  subprogram or package. Then, absence of errors in flow and warnings
+      --  in proof for that subprogram/package can be interpreted as correct
+      --  flow analysis or proof of that entity.
+
+      if Analysis_Requested (Id) then
+         if First_Entry then
+            First_Entry := False;
+         else
+            Put (Output_File, ", ");
+         end if;
+         Put_Line
+           (Output_File,
+            "{ ""name"" : """ & Subprogram_Full_Source_Name (Id) & """, " &
+              """file"" :""" & File_Name (Sloc (Id)) & """, " &
+              """line"" : " & Line_Num & ", " &
+              """spark"" : """ & SPARK_Status & """ }");
+      end if;
+   end Generate_Output_In_Out_SPARK;
+
+   ----------------
+   -- Initialize --
+   ----------------
+
+   procedure Initialize is
+   begin
+      Current_SPARK_Pragma := Empty;
+      Violation_Detected := False;
+      Inside_Loop := False;
+      Inside_Actions := False;
+   end Initialize;
+
    --------------
    -- In_SPARK --
    --------------
@@ -456,872 +380,33 @@ package body SPARK_Definition is
       return Entities_In_SPARK.Contains (E);
    end In_SPARK;
 
-   -----------------
-   -- Mark_Entity --
-   -----------------
-
-   procedure Mark_Entity (E : Entity_Id) is
-
-      --  Subprograms for marking specific entities. These are defined locally
-      --  so that they cannot be called from other marking subprograms, which
-      --  should call Mark_Entity instead.
-
-      procedure Mark_Parameter_Entity (E : Entity_Id);
-      --  E is a subprogram or a loop parameter
-
-      procedure Mark_Number_Entity     (E : Entity_Id);
-      procedure Mark_Object_Entity     (E : Entity_Id);
-      procedure Mark_Package_Entity    (E : Entity_Id);
-      procedure Mark_Subprogram_Entity (E : Entity_Id);
-      procedure Mark_Type_Entity       (E : Entity_Id);
-
-      ------------------------
-      -- Mark_Number_Entity --
-      ------------------------
-
-      procedure Mark_Number_Entity (E : Entity_Id) is
-         N    : constant Node_Id   := Parent (E);
-         Expr : constant Node_Id   := Expression (N);
-         T    : constant Entity_Id := Etype (E);
-      begin
-         if not In_SPARK (T) then
-            Mark_Violation (N, From => T);
-         end if;
-
-         if Present (Expr) then
-            Mark (Expr);
-         end if;
-      end Mark_Number_Entity;
-
-      ------------------------
-      -- Mark_Object_Entity --
-      ------------------------
-
-      procedure Mark_Object_Entity (E : Entity_Id) is
-         N    : constant Node_Id   := Parent (E);
-         Def  : constant Node_Id   := Object_Definition (N);
-         Expr : constant Node_Id   := Expression (N);
-         T    : constant Entity_Id := Etype (E);
-         Sub  : constant Entity_Id := Actual_Subtype (E);
-
-      begin
-         --  The object is in SPARK if-and-only-if its type is in SPARK, it
-         --  is not aliased, and its initialization expression, if any, is
-         --  in SPARK.
-
-         if not In_SPARK (T) then
-            Mark_Violation (Def, From => T);
-         end if;
-
-         if Present (Sub)
-           and then not In_SPARK (Sub)
-         then
-            Mark_Violation (Def, From => Sub);
-         end if;
-
-         if Aliased_Present (N) then
-            Mark_Violation ("ALIASED", N);
-         end if;
-
-         if Present (Expr) then
-            Mark (Expr);
-         end if;
-      end Mark_Object_Entity;
-
-      -------------------------
-      -- Mark_Package_Entity --
-      -------------------------
-
-      procedure Mark_Package_Entity (E : Entity_Id) is
-
-         procedure Declare_In_Package_With_External_Axioms (Decls : List_Id);
-         --  Mark types, subprograms and objects from a package with external
-         --  axioms.
-
-         procedure Mark_Generic_Parameters_External_Axioms (Assoc : List_Id);
-         --  Mark actual parameters of a package with external axioms.
-
-         ---------------------------------------------
-         -- Declare_In_Package_With_External_Axioms --
-         ---------------------------------------------
-
-         procedure Declare_In_Package_With_External_Axioms (Decls : List_Id) is
-            Decl : Node_Id;
-            Id   : Entity_Id;
-         begin
-            Decl := First (Decls);
-
-            --  Mark formals of the generic if any:
-            --  The mapping nodes are all nodes starting from the top of the
-            --  visible declarations upto the first source node (detectable by
-            --  Comes_From_Source (...)).
-
-            while Present (Decl) and then not Comes_From_Source (Decl) loop
-               if Nkind (Decl) in N_Full_Type_Declaration         |
-                                  N_Private_Type_Declaration      |
-                                  N_Private_Extension_Declaration |
-                                  N_Subtype_Declaration           |
-                                  N_Subprogram_Declaration        |
-                                  N_Object_Declaration
-               then
-                  Id := Defining_Entity (Decl);
-                  if Ekind (Id) in Type_Kind then
-                        Mark_Entity (Id);
-                  elsif Ekind (Id) in Object_Kind | Subprogram_Kind then
-                     Entity_Set.Include (Id);
-                     Entities_In_SPARK.Include (Id);
-                  end if;
-               end if;
-               Next (Decl);
-            end loop;
-
-            while Present (Decl) loop
-               if Nkind (Decl) in N_Package_Declaration then
-
-                  --  Mark elements of any sub-package
-
-                  Declare_In_Package_With_External_Axioms
-                    (Visible_Declarations (Specification (Decl)));
-               elsif Nkind (Decl) in N_Full_Type_Declaration         |
-                                  N_Private_Type_Declaration      |
-                                  N_Private_Extension_Declaration |
-                                  N_Subtype_Declaration           |
-                                  N_Subprogram_Declaration        |
-                                  N_Object_Declaration
-               then
-                  Id := Defining_Entity (Decl);
-
-                  if Ekind (Id) in Type_Kind then
-                     if not Is_Hidden (Id) then
-
-                        --  Should only mark types that are public or formals
-                        --  of the generic. Others are simply ignored.
-
-                        Mark_Entity (Id);
-                     end if;
-                  elsif Ekind (Id) in Object_Kind | Subprogram_Kind then
-                     Entity_Set.Include (Id);
-                     Entities_In_SPARK.Include (Id);
-                  end if;
-               end if;
-
-               Next (Decl);
-            end loop;
-         end Declare_In_Package_With_External_Axioms;
-
-         ---------------------------------------------
-         -- Mark_Generic_Parameters_External_Axioms --
-         ---------------------------------------------
-
-         procedure Mark_Generic_Parameters_External_Axioms (Assoc : List_Id) is
-            Cur_Assoc : Node_Id := First (Assoc);
-         begin
-            while Present (Cur_Assoc) loop
-               declare
-                  Actual : constant Node_Id :=
-                    Explicit_Generic_Actual_Parameter (Cur_Assoc);
-                  EActual : constant Entity_Id :=
-                    (if Ekind (Entity (Actual)) = E_Function then
-                        Get_Renamed_Entity (Entity (Actual))
-                     else Entity (Actual));
-
-               begin
-                  --  Operators as actual of packages with external axioms are
-                  --  not supported yet.
-
-                  if Ekind (EActual) = E_Operator then
-                     Error_Msg_N
-                       ("operator cannot be used as a formal parameter",
-                        Actual);
-                     Error_Msg_N
-                       ("\\package is defined with external axiomatization",
-                        Actual);
-                     Error_Msg_N
-                       ("\\consider using a wrapper instead", Actual);
-                  end if;
-
-                  --  Mark the entity of the actual
-
-                  Mark_Entity (EActual);
-               end;
-
-               Next (Cur_Assoc);
-            end loop;
-         end Mark_Generic_Parameters_External_Axioms;
-
-         Vis_Decls : constant List_Id :=
-           Visible_Declarations (Get_Package_Spec (E));
-
-      --  Start of Mark_Package_Entity
-
-      begin
-         --  Do not analyze specs for instantiations of the formal containers.
-         --  Only mark types in SPARK or not, and mark all subprograms in
-         --  SPARK, but none should be scheduled for translation into Why3.
-
-         if Entity_In_External_Axioms (E) then
-
-            --  If Id is a package instance, mark its actual parameters
-
-            declare
-               G_Parent : constant Node_Id :=
-                 Generic_Parent (Get_Package_Spec (E));
-            begin
-               if Present (G_Parent) then
-                  Mark_Generic_Parameters_External_Axioms
-                    (Generic_Associations
-                       (Get_Package_Instantiation_Node (E)));
-               end if;
-            end;
-
-            --  Explicitly add the package declaration to the entities to
-            --  translate into Why3.
-
-            Entity_List.Append (E);
-
-            --  Mark types and subprograms from packages with external axioms
-            --  as in SPARK or not.
-
-            Declare_In_Package_With_External_Axioms (Vis_Decls);
-         end if;
-      end Mark_Package_Entity;
-
-      ---------------------------
-      -- Mark_Parameter_Entity --
-      ---------------------------
-
-      procedure Mark_Parameter_Entity (E : Entity_Id) is
-         T   : constant Entity_Id := Etype (E);
-
-         --  Actual_Subtype is only defined for subprogram parameters, not on
-         --  loop parameters.
-
-         Sub : constant Entity_Id :=
-           (if Is_Formal (E) then Actual_Subtype (E) else Empty);
-
-      begin
-         if not In_SPARK (T) then
-            Mark_Violation (E, From => T);
-         end if;
-
-         if Present (Sub)
-           and then not In_SPARK (Sub)
-         then
-            Mark_Violation (E, From => Sub);
-         end if;
-      end Mark_Parameter_Entity;
-
-      ----------------------------
-      -- Mark_Subprogram_Entity --
-      ----------------------------
-
-      procedure Mark_Subprogram_Entity (E : Entity_Id) is
-
-         procedure Mark_Function_Specification (N : Node_Id);
-         --  Mark violations related to impure functions
-
-         procedure Mark_Subprogram_Specification (N : Node_Id);
-         --  Mark violations related to parameters, result and contract
-
-         ---------------------------------
-         -- Mark_Function_Specification --
-         ---------------------------------
-
-         procedure Mark_Function_Specification (N : Node_Id) is
-            Id       : constant Entity_Id := Defining_Entity (N);
-            Params   : constant List_Id   := Parameter_Specifications (N);
-            Param    : Node_Id;
-            Param_Id : Entity_Id;
-
-         begin
-            if Is_Non_Empty_List (Params) then
-               Param := First (Params);
-               while Present (Param) loop
-                  Param_Id := Defining_Identifier (Param);
-
-                  case Ekind (Param_Id) is
-                     when E_Out_Parameter =>
-                        Mark_Violation ("function with OUT parameter", Id);
-                        return;
-
-                     when E_In_Out_Parameter =>
-                        Mark_Violation ("function with IN OUT parameter", Id);
-                        return;
-
-                     when others =>
-                        null;
-                  end case;
-
-                  Next (Param);
-               end loop;
-            end if;
-         end Mark_Function_Specification;
-
-         -----------------------------------
-         -- Mark_Subprogram_Specification --
-         -----------------------------------
-
-         procedure Mark_Subprogram_Specification (N : Node_Id) is
-            Id         : constant Entity_Id := Defining_Entity (N);
-            Formals    : constant List_Id   := Parameter_Specifications (N);
-            Param_Spec : Node_Id;
-            Formal     : Entity_Id;
-
-         begin
-            if Ekind (Id) = E_Function then
-               Mark_Function_Specification (N);
-            end if;
-
-            if Present (Formals) then
-               Param_Spec := First (Formals);
-               while Present (Param_Spec) loop
-                  if Aliased_Present (Param_Spec) then
-                     Mark_Violation ("aliased formal parameter", Param_Spec);
-                  end if;
-
-                  Formal := Defining_Identifier (Param_Spec);
-                  if not In_SPARK (Etype (Formal)) then
-                     Mark_Violation (E, From => Etype (Formal));
-                  end if;
-                  Mark_Entity (Formal);
-                  Next (Param_Spec);
-               end loop;
-            end if;
-
-            --  If the result type of a subprogram is not in SPARK, then the
-            --  subprogram is not in SPARK.
-
-            if Nkind (N) = N_Function_Specification
-              and then not In_SPARK (Etype (Id))
-            then
-               Mark_Violation (Result_Definition (N), From => Etype (Id));
-            end if;
-         end Mark_Subprogram_Specification;
-
-         Prag : Node_Id;
-         Expr : Node_Id;
-
-      --  Start of Mark_Subprogram_Entity
-
-      begin
-
-         Mark_Subprogram_Specification (Get_Subprogram_Spec (E));
-
-         Prag := Pre_Post_Conditions (Contract (E));
-         while Present (Prag) loop
-            Expr :=
-              Get_Pragma_Arg (First (Pragma_Argument_Associations (Prag)));
-            Mark (Expr);
-            Prag := Next_Pragma (Prag);
-         end loop;
-
-         Prag := Get_Subprogram_Contract_Cases (E);
-         if Present (Prag) then
-            declare
-               Aggr           : constant Node_Id :=
-                 Expression (First (Pragma_Argument_Associations (Prag)));
-               Case_Guard     : Node_Id;
-               Conseq         : Node_Id;
-               Contract_Case  : Node_Id;
-            begin
-               Contract_Case := First (Component_Associations (Aggr));
-               while Present (Contract_Case) loop
-                  Case_Guard := First (Choices (Contract_Case));
-                  Conseq     := Expression (Contract_Case);
-
-                  Mark (Case_Guard);
-                  Mark (Conseq);
-
-                  Next (Contract_Case);
-               end loop;
-            end;
-         end if;
-      end Mark_Subprogram_Entity;
-
-      ----------------------
-      -- Mark_Type_Entity --
-      ----------------------
-
-      procedure Mark_Type_Entity (E : Entity_Id) is
-
-         function Is_Private_Entity_Mode_Off (E : Entity_Id) return Boolean;
-         --  return True if E is declared in a private part with
-         --  SPARK_Mode => Off;
-
-         function Is_Private_Entity_Mode_Off (E : Entity_Id) return Boolean
-         is
-            Decl : constant Node_Id :=
-              (if No (Parent (Parent (E)))
-               and then Is_Itype (E) then
-                    Associated_Node_For_Itype (E)
-               else Parent (E));
-            Pack_Decl : constant Node_Id := Parent (Parent (Decl));
-         begin
-            pragma Assert
-              (Nkind (Pack_Decl) = N_Package_Declaration);
-
-            return
-              Present (SPARK_Aux_Pragma (Defining_Entity (Pack_Decl)))
-              and then Get_SPARK_Mode_From_Pragma
-                (SPARK_Aux_Pragma (Defining_Entity (Pack_Decl))) = Off;
-         end Is_Private_Entity_Mode_Off;
-
-      begin
-
-         --  For types in external axioms, mark the package entity.
-
-         if Entity_In_External_Axioms (E) then
-            Mark_Entity (Axiomatized_Package_For_Entity (E));
-         end if;
-
-         --  The base type or original type should be marked before the current
-         --  type. We also protect ourselves against the case where the Etype
-         --  of a full view points to the partial view.
-
-         if Etype (E) /= E and then
-           (Underlying_Type (Etype (E)) /= E)
-         then
-            Mark_Entity (Etype (E));
-         end if;
-
-         --  Type declarations may refer to private types whose full view has
-         --  not been declared yet. However, it is this full view which may
-         --  define the type in Why3, if it happens to be in SPARK. Hence the
-         --  need to define it now, so that it is available for the current
-         --  type definition. So we start here with marking all needed types
-         --  if not already marked.
-
-         case Ekind (E) is
-         when Array_Kind =>
-            declare
-               Component_Typ : constant Node_Id := Component_Type (E);
-               Index         : Node_Id := First_Index (E);
-            begin
-               if Present (Component_Typ) then
-                  Mark_Entity (Component_Typ);
-               end if;
-
-               while Present (Index) loop
-                  Mark_Entity (Etype (Index));
-                  Next_Index (Index);
-               end loop;
-            end;
-
-         --  Itypes may be generated by the frontend for component types.
-         --  Mark them here, to avoid multiple definitions of the same type
-         --  in multiple client packages.
-
-         when E_Record_Type | E_Record_Subtype =>
-            declare
-               Field : Node_Id := First_Entity (E);
-            begin
-               while Present (Field) loop
-                  if Ekind (Field) in Object_Kind then
-                     Mark_Entity (Etype (Field));
-                  end if;
-                  Next_Entity (Field);
-               end loop;
-            end;
-
-         --  In the case of a package instantiation of a generic, the full view
-         --  of a private type may not have a corresponding declaration. It is
-         --  marked here.
-
-         when Private_Kind =>
-
-            --  When a private type is defined in a package with external
-            --  axioms or in a private part with SPARK_Mode => Off, we do not
-            --  need to mark its underlying type. Indeed, either it is
-            --  shared with an ancestor of E and was already handled or it will
-            --  not be used.
-            --  The same is true for a subtype or a derived type of such a
-            --  type or of types whose fullview is not in SPARK.
-
-            if (Etype (E) = E and then
-                  (Entity_In_External_Axioms (E) or else
-                   Is_Private_Entity_Mode_Off (E))) or else
-              (Etype (E) /= E and then
-               Fullview_Not_In_SPARK (Etype (E)))
-            then
-               Entities_Fullview_Not_In_SPARK.Insert (E);
-               Entity_Set.Include (Underlying_Type (E));
-            else
-               Mark_Entity (Underlying_Type (E));
-               if not Entity_In_SPARK (Underlying_Type (E)) then
-                  Entities_Fullview_Not_In_SPARK.Insert (E);
-               end if;
-            end if;
-         when others =>
-            null;
-         end case;
-
-         --  Now mark the type itself
-
-         if Is_Tagged_Type (E) then
-            Mark_Violation ("tagged type", E);
-         end if;
-
-         if Has_Invariants (E) then
-            Mark_Violation ("type invariant", E);
-         end if;
-
-         if Has_Predicates (E) then
-            if not Is_Discrete_Type (E)
-              or else No (Static_Predicate (E))
-            then
-               Mark_Violation ("dynamic type predicate", E);
-            else
-               declare
-                  Pred : Node_Id := First (Static_Predicate (E));
-               begin
-                  while Present (Pred) loop
-                     Mark (Pred);
-                     Next (Pred);
-                  end loop;
-               end;
-            end if;
-         end if;
-
-         --  Detect if the type has partial default initialization
-
-         if SPARK_Util.Default_Initialization (E) = Mixed_Initialization then
-            Mark_Violation ("type with partial default initialization",
-                            E,
-                            SRM_Reference => "SPARK RM 3.8(1)");
-         end if;
-
-         case Ekind (E) is
-         when Array_Kind =>
-            declare
-               Component_Typ : constant Node_Id := Component_Type (E);
-               Index         : Node_Id := First_Index (E);
-
-            begin
-               if Positive (Number_Dimensions (E)) > Max_Array_Dimensions then
-                  Violation_Detected := True;
-                  if SPARK_Pragma_Is (Opt.On) then
-                     Error_Msg_Node_1 := E;
-                     Error_Msg_Uint_1 := UI_From_Int (Number_Dimensions (E));
-                     Error_Msg_N ("} of dimension ^ is not yet supported", E);
-                  end if;
-               end if;
-
-               --  Check that all index types are in SPARK
-
-               while Present (Index) loop
-                  if not In_SPARK (Etype (Index)) then
-                     Mark_Violation (E, From => Etype (Index));
-                  end if;
-                  Next_Index (Index);
-               end loop;
-
-               --  Access definition for component type is not in SPARK
-
-               if No (Component_Typ) then
-                  Mark_Violation ("access type", E);
-               end if;
-
-               --  Check that component type is in SPARK.
-
-               if not In_SPARK (Component_Typ) then
-                  Mark_Violation (E, From => Component_Typ);
-               end if;
-            end;
-
-         --  Discrete and floating-point types are always in SPARK
-
-         when Integer_Kind | Float_Kind | Enumeration_Kind =>
-            null;
-
-         when Fixed_Point_Kind =>
-            declare
-               function Only_Factor_Is
-                 (Num    : Uint;
-                  Factor : Uint) return Boolean
-               with Pre => UI_Gt (Num, Uint_0)
-                 and then UI_Gt (Factor, Uint_0);
-               --  Returns True if Num is a power of Factor
-
-               --------------------
-               -- Only_Factor_Is --
-               --------------------
-
-               function Only_Factor_Is
-                 (Num    : Uint;
-                  Factor : Uint) return Boolean
-               is
-                  N : Uint := Num;
-               begin
-                  while N /= Uint_1 loop
-                     if UI_Rem (N, Factor) /= Uint_0 then
-                        return False;
-                     end if;
-                     N := UI_Div (N, Factor);
-                  end loop;
-
-                  return True;
-               end Only_Factor_Is;
-
-               Inv_Small : constant Ureal := UR_Div (Uint_1, Small_Value (E));
-               Inv_Small_Num : constant Uint := Norm_Num (Inv_Small);
-            begin
-               if Norm_Den (Inv_Small) = Uint_1
-                    and then
-                  Inv_Small_Num /= Uint_1
-                    and then
-                  (Only_Factor_Is (Inv_Small_Num, Uint_2)
-                     or else
-                   Only_Factor_Is (Inv_Small_Num, Uint_10))
-               then
-                  null;
-               else
-                  Violation_Detected := True;
-                  if SPARK_Pragma_Is (Opt.On) then
-                     Error_Msg_N
-                       ("fixed-point type whose small is not a negative power "
-                        & "of 2 or 10 is not yet supported", E);
-                  end if;
-               end if;
-            end;
-
-         when E_Record_Type | E_Record_Subtype =>
-
-            if Ekind (E) = E_Record_Subtype
-              and then not In_SPARK (Base_Type (E))
-            then
-               Mark_Violation (E, From => Base_Type (E));
-            end if;
-
-            if Is_Interface (E) then
-               Mark_Violation ("interface", E);
-
-            else
-               declare
-                  Field : Node_Id := First_Component_Or_Discriminant (E);
-                  Typ   : Entity_Id;
-
-               begin
-                  while Present (Field) loop
-                     Typ := Etype (Field);
-
-                     if Is_Tag (Field) then
-                        Mark_Violation ("tagged type", E);
-                     elsif Is_Aliased (Field) then
-                        Mark_Violation ("ALIASED", Field);
-                     end if;
-
-                     if Ekind (Field) in Object_Kind
-                       and then not In_SPARK (Typ)
-                     then
-                        Mark_Violation (Typ, From => Typ);
-                     end if;
-
-                     Next_Component_Or_Discriminant (Field);
-                  end loop;
-               end;
-            end if;
-
-            --  Discriminant renamings are not in SPARK, this is checked here
-
-            declare
-               Disc  : Entity_Id := First_Discriminant (E);
-               Found : Boolean := False;
-            begin
-               while Present (Disc) loop
-                  if Present (Corresponding_Discriminant (Disc))
-                    and then
-                      Chars (Disc) /= Chars (Corresponding_Discriminant (Disc))
-                  then
-                     Found := True;
-                  end if;
-                  exit when Found;
-                  Next_Discriminant (Disc);
-               end loop;
-               if Found then
-                  Mark_Violation ("discriminant renaming", E);
-               end if;
-            end;
-
-         when E_Class_Wide_Type    |
-              E_Class_Wide_Subtype =>
-            Mark_Violation ("type definition", E);
-
-         when Access_Kind =>
-            Mark_Violation ("access type", E);
-
-         when Concurrent_Kind =>
-            Mark_Violation ("tasking", E);
-
-         when Private_Kind =>
-
-            --  Private types that are not a record type or subtype are in
-            --  SPARK.
-
-            if Ekind_In (E, E_Record_Type_With_Private,
-                         E_Record_Subtype_With_Private)
-            then
-               Mark_Violation ("type definition", E);
-            end if;
-
-            --  Private types may export discriminants. Discriminants with
-            --  non-SPARK type should be disallowed here
-
-            declare
-               Disc : Entity_Id := First_Discriminant (E);
-            begin
-               while Present (Disc) loop
-                  if not In_SPARK (Etype (Disc)) then
-                     Mark_Violation (E, From => Etype (Disc));
-                  end if;
-                  Next_Discriminant (Disc);
-               end loop;
-            end;
-
-         when others =>
-            raise Program_Error;
-         end case;
-      end Mark_Type_Entity;
-
-      --  Save whether a violation was previously detected, to restore after
-      --  marking this entity.
-
-      Save_Violation_Detected : constant Boolean := Violation_Detected;
-      Save_SPARK_Pragma : constant Node_Id := Current_SPARK_Pragma;
-
-   --  Start of Mark_Entity
-
+   ----------------------------------------
+   -- Is_Enclosed_By_Simple_If_Statement --
+   ----------------------------------------
+
+   function Is_Enclosed_By_Simple_If_Statement (N : Node_Id) return Boolean is
    begin
+      return Present (Parent (N))
+        and then Nkind (Parent (N)) = N_If_Statement
+        and then Elsif_Parts (Parent (N)) = No_List
+        and then Else_Statements (Parent (N)) = No_List
+        and then List_Length (Then_Statements (Parent (N))) = 1;
+   end Is_Enclosed_By_Simple_If_Statement;
 
-      --  ??? predicate_functions ignored for now (MC20-028)
+   -------------------------------------
+   -- Is_Last_Statement_Of_Subprogram --
+   -------------------------------------
 
-      if Ekind (E) in E_Function | E_Procedure
-        and then Is_Predicate_Function (E)
-      then
-         return;
-      end if;
-
-      --  Nothing to do if the entity E was already marked
-
-      if Entity_Set.Contains (E) then
-         return;
-      end if;
-
-      --  Store entities defines in loops in Loop_Entity_Set
-
-      if Inside_Loop then
-         Loop_Entity_Set.Insert (E);
-      end if;
-
-      --  Store entities defines in actions in Actions_Entity_Set
-
-      if Inside_Actions then
-         Actions_Entity_Set.Insert (E);
-      end if;
-
-      --  Types may be marked out of order, because completions of private
-      --  types need to be marked at the point of their partial view
-      --  declaration, to avoid out-of-order declarations in Why.
-      --  Retrieve the appropriate SPARK_Mode pragma before marking.
-
-      if Ekind (E) in Type_Kind then
-         declare
-            Decl : constant Node_Id :=
-              (if No (Parent (Parent (E)))
-               and then Is_Itype (E) then
-                    Associated_Node_For_Itype (E) else Parent (E));
-         begin
-            if In_Private_Declarations (Decl) then
-               declare
-                  Pack_Decl : constant Node_Id := Parent (Parent (Decl));
-               begin
-                  pragma Assert
-                    (Nkind (Pack_Decl) = N_Package_Declaration);
-
-                  Current_SPARK_Pragma :=
-                    SPARK_Aux_Pragma (Defining_Entity (Pack_Decl));
-               end;
-
-            else
-               null;
-            end if;
-         end;
-      end if;
-
-      --  Include entity E in the set of entities marked
-
-      Entity_Set.Insert (E);
-
-      --  If the entity is declared in the scope of SPARK_Mode => Off, then do
-      --  not consider whether it could be in SPARK or not.
-
-      if SPARK_Pragma_Is (Opt.Off) then
-         return;
-      end if;
-
-      --  For recursive references, start with marking the entity in SPARK
-
-      Entities_In_SPARK.Include (E);
-
-      --  Start with no violation being detected
-
-      Violation_Detected := False;
-
-      --  Mark differently each kind of entity
-
-      case Ekind (E) is
-         when Type_Kind        => Mark_Type_Entity (E);
-         when Subprogram_Kind  => Mark_Subprogram_Entity (E);
-         when E_Constant       |
-              E_Variable       =>
-            begin
-               case Nkind (Parent (E)) is
-                  when N_Object_Declaration     => Mark_Object_Entity (E);
-                  when N_Iterator_Specification => Mark_Parameter_Entity (E);
-                  when others                   => raise Program_Error;
-               end case;
-            end;
-         when E_Loop_Parameter |
-              Formal_Kind      => Mark_Parameter_Entity (E);
-         when Named_Kind       => Mark_Number_Entity (E);
-         when E_Package        => Mark_Package_Entity (E);
-
-         --  The identifier of a loop is used to generate the needed exception
-         --  declarations in the translation phase.
-
-         when E_Loop           => null;
-
-         --  Mark_Entity is called on all abstract state variables
-
-         when E_Abstract_State => null;
-
-         when others           =>
-            Ada.Text_IO.Put_Line ("[Mark_Entity] kind ="
-                                  & Entity_Kind'Image (Ekind (E)));
-            raise Program_Error;
-      end case;
-
-      --  If a violation was detected, remove E from the set of SPARK entities
-
-      if Violation_Detected then
-         Entities_In_SPARK.Delete (E);
-      end if;
-
-      --  Add entity to appropriate list. Type from packages with external
-      --  axioms are handled by a specific mechanism and thus should not be
-      --  translated.
-
-      if not Entity_In_External_Axioms (E) then
-         Entity_List.Append (E);
-      end if;
-
-      --  Update the information that a violation was detected
-
-      Violation_Detected := Save_Violation_Detected;
-
-      --  Restore SPARK_Mode pragma
-
-      Current_SPARK_Pragma := Save_SPARK_Pragma;
-   end Mark_Entity;
+   function Is_Last_Statement_Of_Subprogram (N : Node_Id) return Boolean is
+   begin
+      return Present (Parent (N))
+        and then Nkind (Parent (N)) = N_Handled_Sequence_Of_Statements
+        and then Present (Parent (Parent (N)))
+        and then Nkind (Parent (Parent (N))) = N_Subprogram_Body
+        and then Last (Statements
+                       (Handled_Statement_Sequence
+                          (Parent (Parent (N))))) = N;
+   end Is_Last_Statement_Of_Subprogram;
 
    ----------
    -- Mark --
@@ -1688,8 +773,8 @@ package body SPARK_Definition is
                --
                --    2. the very last statement directly within a subprogram.
 
-               if Is_Enclosed_By_Simple_If_Statement (N) or else
-                 Is_Last_Statement_Of_Subprogram (N)
+               if Is_Enclosed_By_Simple_If_Statement (N)
+                 or else Is_Last_Statement_Of_Subprogram (N)
                then
                   --  If the raise statement has a String Expression,
                   --  then it's illegal, otherwise OK.
@@ -2471,18 +1556,20 @@ package body SPARK_Definition is
 
       --  Check for calls for No_Return procedures
 
-      if Nkind (N) = N_Procedure_Call_Statement and then
-        Is_Entity_Name (Nam) and then
-        No_Return (Entity (Nam))
+      if Nkind (N) = N_Procedure_Call_Statement
+        and then Is_Entity_Name (Nam)
+        and then No_Return (Entity (Nam))
       then
+
          --  SPARK RM 6.5.1 (1) says that a call to a No_Return
          --  procedure is only legal if it is directly nested
          --  inside an if statement that has no else or elsif
          --  parts, and the call is the only statement in the then part,
          --   OR
          --  if the call is the last statement of a subprogram body
-         if Is_Enclosed_By_Simple_If_Statement (N) or else
-           Is_Last_Statement_Of_Subprogram (N)
+
+         if Is_Enclosed_By_Simple_If_Statement (N)
+           or else Is_Last_Statement_Of_Subprogram (N)
          then
             null;
          else
@@ -2588,6 +1675,873 @@ package body SPARK_Definition is
          Mark_Subtype_Indication (Subtype_Indication (Def));
       end if;
    end Mark_Component_Declaration;
+
+   -----------------
+   -- Mark_Entity --
+   -----------------
+
+   procedure Mark_Entity (E : Entity_Id) is
+
+      --  Subprograms for marking specific entities. These are defined locally
+      --  so that they cannot be called from other marking subprograms, which
+      --  should call Mark_Entity instead.
+
+      procedure Mark_Parameter_Entity (E : Entity_Id);
+      --  E is a subprogram or a loop parameter
+
+      procedure Mark_Number_Entity     (E : Entity_Id);
+      procedure Mark_Object_Entity     (E : Entity_Id);
+      procedure Mark_Package_Entity    (E : Entity_Id);
+      procedure Mark_Subprogram_Entity (E : Entity_Id);
+      procedure Mark_Type_Entity       (E : Entity_Id);
+
+      ------------------------
+      -- Mark_Number_Entity --
+      ------------------------
+
+      procedure Mark_Number_Entity (E : Entity_Id) is
+         N    : constant Node_Id   := Parent (E);
+         Expr : constant Node_Id   := Expression (N);
+         T    : constant Entity_Id := Etype (E);
+      begin
+         if not In_SPARK (T) then
+            Mark_Violation (N, From => T);
+         end if;
+
+         if Present (Expr) then
+            Mark (Expr);
+         end if;
+      end Mark_Number_Entity;
+
+      ------------------------
+      -- Mark_Object_Entity --
+      ------------------------
+
+      procedure Mark_Object_Entity (E : Entity_Id) is
+         N    : constant Node_Id   := Parent (E);
+         Def  : constant Node_Id   := Object_Definition (N);
+         Expr : constant Node_Id   := Expression (N);
+         T    : constant Entity_Id := Etype (E);
+         Sub  : constant Entity_Id := Actual_Subtype (E);
+
+      begin
+         --  The object is in SPARK if-and-only-if its type is in SPARK, it
+         --  is not aliased, and its initialization expression, if any, is
+         --  in SPARK.
+
+         if not In_SPARK (T) then
+            Mark_Violation (Def, From => T);
+         end if;
+
+         if Present (Sub)
+           and then not In_SPARK (Sub)
+         then
+            Mark_Violation (Def, From => Sub);
+         end if;
+
+         if Aliased_Present (N) then
+            Mark_Violation ("ALIASED", N);
+         end if;
+
+         if Present (Expr) then
+            Mark (Expr);
+         end if;
+      end Mark_Object_Entity;
+
+      -------------------------
+      -- Mark_Package_Entity --
+      -------------------------
+
+      procedure Mark_Package_Entity (E : Entity_Id) is
+
+         procedure Declare_In_Package_With_External_Axioms (Decls : List_Id);
+         --  Mark types, subprograms and objects from a package with external
+         --  axioms.
+
+         procedure Mark_Generic_Parameters_External_Axioms (Assoc : List_Id);
+         --  Mark actual parameters of a package with external axioms.
+
+         ---------------------------------------------
+         -- Declare_In_Package_With_External_Axioms --
+         ---------------------------------------------
+
+         procedure Declare_In_Package_With_External_Axioms (Decls : List_Id) is
+            Decl : Node_Id;
+            Id   : Entity_Id;
+         begin
+            Decl := First (Decls);
+
+            --  Mark formals of the generic if any:
+            --  The mapping nodes are all nodes starting from the top of the
+            --  visible declarations upto the first source node (detectable by
+            --  Comes_From_Source (...)).
+
+            while Present (Decl) and then not Comes_From_Source (Decl) loop
+               if Nkind (Decl) in N_Full_Type_Declaration         |
+               N_Private_Type_Declaration      |
+               N_Private_Extension_Declaration |
+               N_Subtype_Declaration           |
+               N_Subprogram_Declaration        |
+               N_Object_Declaration
+               then
+                  Id := Defining_Entity (Decl);
+                  if Ekind (Id) in Type_Kind then
+                     Mark_Entity (Id);
+                  elsif Ekind (Id) in Object_Kind | Subprogram_Kind then
+                     Entity_Set.Include (Id);
+                     Entities_In_SPARK.Include (Id);
+                  end if;
+               end if;
+               Next (Decl);
+            end loop;
+
+            while Present (Decl) loop
+               if Nkind (Decl) in N_Package_Declaration then
+
+                  --  Mark elements of any sub-package
+
+                  Declare_In_Package_With_External_Axioms
+                    (Visible_Declarations (Specification (Decl)));
+               elsif Nkind (Decl) in N_Full_Type_Declaration         |
+               N_Private_Type_Declaration      |
+               N_Private_Extension_Declaration |
+               N_Subtype_Declaration           |
+               N_Subprogram_Declaration        |
+               N_Object_Declaration
+               then
+                  Id := Defining_Entity (Decl);
+
+                  if Ekind (Id) in Type_Kind then
+                     if not Is_Hidden (Id) then
+
+                        --  Should only mark types that are public or formals
+                        --  of the generic. Others are simply ignored.
+
+                        Mark_Entity (Id);
+                     end if;
+                  elsif Ekind (Id) in Object_Kind | Subprogram_Kind then
+                     Entity_Set.Include (Id);
+                     Entities_In_SPARK.Include (Id);
+                  end if;
+               end if;
+
+               Next (Decl);
+            end loop;
+         end Declare_In_Package_With_External_Axioms;
+
+         ---------------------------------------------
+         -- Mark_Generic_Parameters_External_Axioms --
+         ---------------------------------------------
+
+         procedure Mark_Generic_Parameters_External_Axioms (Assoc : List_Id) is
+            Cur_Assoc : Node_Id := First (Assoc);
+         begin
+            while Present (Cur_Assoc) loop
+               declare
+                  Actual : constant Node_Id :=
+                    Explicit_Generic_Actual_Parameter (Cur_Assoc);
+                  EActual : constant Entity_Id :=
+                    (if Ekind (Entity (Actual)) = E_Function then
+                        Get_Renamed_Entity (Entity (Actual))
+                     else Entity (Actual));
+
+               begin
+                  --  Operators as actual of packages with external axioms are
+                  --  not supported yet.
+
+                  if Ekind (EActual) = E_Operator then
+                     Error_Msg_N
+                       ("operator cannot be used as a formal parameter",
+                        Actual);
+                     Error_Msg_N
+                       ("\\package is defined with external axiomatization",
+                        Actual);
+                     Error_Msg_N
+                       ("\\consider using a wrapper instead", Actual);
+                  end if;
+
+                  --  Mark the entity of the actual
+
+                  Mark_Entity (EActual);
+               end;
+
+               Next (Cur_Assoc);
+            end loop;
+         end Mark_Generic_Parameters_External_Axioms;
+
+         Vis_Decls : constant List_Id :=
+           Visible_Declarations (Get_Package_Spec (E));
+
+         --  Start of Mark_Package_Entity
+
+      begin
+         --  Do not analyze specs for instantiations of the formal containers.
+         --  Only mark types in SPARK or not, and mark all subprograms in
+         --  SPARK, but none should be scheduled for translation into Why3.
+
+         if Entity_In_External_Axioms (E) then
+
+            --  If Id is a package instance, mark its actual parameters
+
+            declare
+               G_Parent : constant Node_Id :=
+                 Generic_Parent (Get_Package_Spec (E));
+            begin
+               if Present (G_Parent) then
+                  Mark_Generic_Parameters_External_Axioms
+                    (Generic_Associations
+                       (Get_Package_Instantiation_Node (E)));
+               end if;
+            end;
+
+            --  Explicitly add the package declaration to the entities to
+            --  translate into Why3.
+
+            Entity_List.Append (E);
+
+            --  Mark types and subprograms from packages with external axioms
+            --  as in SPARK or not.
+
+            Declare_In_Package_With_External_Axioms (Vis_Decls);
+         end if;
+      end Mark_Package_Entity;
+
+      ---------------------------
+      -- Mark_Parameter_Entity --
+      ---------------------------
+
+      procedure Mark_Parameter_Entity (E : Entity_Id) is
+         T   : constant Entity_Id := Etype (E);
+
+         --  Actual_Subtype is only defined for subprogram parameters, not on
+         --  loop parameters.
+
+         Sub : constant Entity_Id :=
+           (if Is_Formal (E) then Actual_Subtype (E) else Empty);
+
+      begin
+         if not In_SPARK (T) then
+            Mark_Violation (E, From => T);
+         end if;
+
+         if Present (Sub)
+           and then not In_SPARK (Sub)
+         then
+            Mark_Violation (E, From => Sub);
+         end if;
+      end Mark_Parameter_Entity;
+
+      ----------------------------
+      -- Mark_Subprogram_Entity --
+      ----------------------------
+
+      procedure Mark_Subprogram_Entity (E : Entity_Id) is
+
+         procedure Mark_Function_Specification (N : Node_Id);
+         --  Mark violations related to impure functions
+
+         procedure Mark_Subprogram_Specification (N : Node_Id);
+         --  Mark violations related to parameters, result and contract
+
+         ---------------------------------
+         -- Mark_Function_Specification --
+         ---------------------------------
+
+         procedure Mark_Function_Specification (N : Node_Id) is
+            Id       : constant Entity_Id := Defining_Entity (N);
+            Params   : constant List_Id   := Parameter_Specifications (N);
+            Param    : Node_Id;
+            Param_Id : Entity_Id;
+
+         begin
+            if Is_Non_Empty_List (Params) then
+               Param := First (Params);
+               while Present (Param) loop
+                  Param_Id := Defining_Identifier (Param);
+
+                  case Ekind (Param_Id) is
+                     when E_Out_Parameter =>
+                        Mark_Violation ("function with OUT parameter", Id);
+                        return;
+
+                     when E_In_Out_Parameter =>
+                        Mark_Violation ("function with IN OUT parameter", Id);
+                        return;
+
+                     when others =>
+                        null;
+                  end case;
+
+                  Next (Param);
+               end loop;
+            end if;
+         end Mark_Function_Specification;
+
+         -----------------------------------
+         -- Mark_Subprogram_Specification --
+         -----------------------------------
+
+         procedure Mark_Subprogram_Specification (N : Node_Id) is
+            Id         : constant Entity_Id := Defining_Entity (N);
+            Formals    : constant List_Id   := Parameter_Specifications (N);
+            Param_Spec : Node_Id;
+            Formal     : Entity_Id;
+
+         begin
+            if Ekind (Id) = E_Function then
+               Mark_Function_Specification (N);
+            end if;
+
+            if Present (Formals) then
+               Param_Spec := First (Formals);
+               while Present (Param_Spec) loop
+                  if Aliased_Present (Param_Spec) then
+                     Mark_Violation ("aliased formal parameter", Param_Spec);
+                  end if;
+
+                  Formal := Defining_Identifier (Param_Spec);
+                  if not In_SPARK (Etype (Formal)) then
+                     Mark_Violation (E, From => Etype (Formal));
+                  end if;
+                  Mark_Entity (Formal);
+                  Next (Param_Spec);
+               end loop;
+            end if;
+
+            --  If the result type of a subprogram is not in SPARK, then the
+            --  subprogram is not in SPARK.
+
+            if Nkind (N) = N_Function_Specification
+              and then not In_SPARK (Etype (Id))
+            then
+               Mark_Violation (Result_Definition (N), From => Etype (Id));
+            end if;
+         end Mark_Subprogram_Specification;
+
+         Prag : Node_Id;
+         Expr : Node_Id;
+
+         --  Start of Mark_Subprogram_Entity
+
+      begin
+
+         Mark_Subprogram_Specification (Get_Subprogram_Spec (E));
+
+         Prag := Pre_Post_Conditions (Contract (E));
+         while Present (Prag) loop
+            Expr :=
+              Get_Pragma_Arg (First (Pragma_Argument_Associations (Prag)));
+            Mark (Expr);
+            Prag := Next_Pragma (Prag);
+         end loop;
+
+         Prag := Get_Subprogram_Contract_Cases (E);
+         if Present (Prag) then
+            declare
+               Aggr           : constant Node_Id :=
+                 Expression (First (Pragma_Argument_Associations (Prag)));
+               Case_Guard     : Node_Id;
+               Conseq         : Node_Id;
+               Contract_Case  : Node_Id;
+            begin
+               Contract_Case := First (Component_Associations (Aggr));
+               while Present (Contract_Case) loop
+                  Case_Guard := First (Choices (Contract_Case));
+                  Conseq     := Expression (Contract_Case);
+
+                  Mark (Case_Guard);
+                  Mark (Conseq);
+
+                  Next (Contract_Case);
+               end loop;
+            end;
+         end if;
+      end Mark_Subprogram_Entity;
+
+      ----------------------
+      -- Mark_Type_Entity --
+      ----------------------
+
+      procedure Mark_Type_Entity (E : Entity_Id) is
+
+         function Is_Private_Entity_Mode_Off (E : Entity_Id) return Boolean;
+         --  return True if E is declared in a private part with
+         --  SPARK_Mode => Off;
+
+         function Is_Private_Entity_Mode_Off (E : Entity_Id) return Boolean
+         is
+            Decl : constant Node_Id :=
+              (if No (Parent (Parent (E)))
+               and then Is_Itype (E) then
+                    Associated_Node_For_Itype (E)
+               else Parent (E));
+            Pack_Decl : constant Node_Id := Parent (Parent (Decl));
+         begin
+            pragma Assert
+              (Nkind (Pack_Decl) = N_Package_Declaration);
+
+            return
+              Present (SPARK_Aux_Pragma (Defining_Entity (Pack_Decl)))
+              and then Get_SPARK_Mode_From_Pragma
+                (SPARK_Aux_Pragma (Defining_Entity (Pack_Decl))) = Off;
+         end Is_Private_Entity_Mode_Off;
+
+      begin
+
+         --  For types in external axioms, mark the package entity.
+
+         if Entity_In_External_Axioms (E) then
+            Mark_Entity (Axiomatized_Package_For_Entity (E));
+         end if;
+
+         --  The base type or original type should be marked before the current
+         --  type. We also protect ourselves against the case where the Etype
+         --  of a full view points to the partial view.
+
+         if Etype (E) /= E and then
+           (Underlying_Type (Etype (E)) /= E)
+         then
+            Mark_Entity (Etype (E));
+         end if;
+
+         --  Type declarations may refer to private types whose full view has
+         --  not been declared yet. However, it is this full view which may
+         --  define the type in Why3, if it happens to be in SPARK. Hence the
+         --  need to define it now, so that it is available for the current
+         --  type definition. So we start here with marking all needed types
+         --  if not already marked.
+
+         case Ekind (E) is
+         when Array_Kind =>
+            declare
+               Component_Typ : constant Node_Id := Component_Type (E);
+               Index         : Node_Id := First_Index (E);
+            begin
+               if Present (Component_Typ) then
+                  Mark_Entity (Component_Typ);
+               end if;
+
+               while Present (Index) loop
+                  Mark_Entity (Etype (Index));
+                  Next_Index (Index);
+               end loop;
+            end;
+
+         --  Itypes may be generated by the frontend for component types.
+         --  Mark them here, to avoid multiple definitions of the same type
+         --  in multiple client packages.
+
+         when E_Record_Type | E_Record_Subtype =>
+            declare
+               Field : Node_Id := First_Entity (E);
+            begin
+               while Present (Field) loop
+                  if Ekind (Field) in Object_Kind then
+                     Mark_Entity (Etype (Field));
+                  end if;
+                  Next_Entity (Field);
+               end loop;
+            end;
+
+         --  In the case of a package instantiation of a generic, the full view
+         --  of a private type may not have a corresponding declaration. It is
+         --  marked here.
+
+         when Private_Kind =>
+
+            --  When a private type is defined in a package with external
+            --  axioms or in a private part with SPARK_Mode => Off, we do not
+            --  need to mark its underlying type. Indeed, either it is
+            --  shared with an ancestor of E and was already handled or it will
+            --  not be used.
+            --  The same is true for a subtype or a derived type of such a
+            --  type or of types whose fullview is not in SPARK.
+
+            if (Etype (E) = E and then
+                  (Entity_In_External_Axioms (E) or else
+                   Is_Private_Entity_Mode_Off (E))) or else
+              (Etype (E) /= E and then
+               Fullview_Not_In_SPARK (Etype (E)))
+            then
+               Entities_Fullview_Not_In_SPARK.Insert (E);
+               Entity_Set.Include (Underlying_Type (E));
+            else
+               Mark_Entity (Underlying_Type (E));
+               if not Entity_In_SPARK (Underlying_Type (E)) then
+                  Entities_Fullview_Not_In_SPARK.Insert (E);
+               end if;
+            end if;
+         when others =>
+            null;
+         end case;
+
+         --  Now mark the type itself
+
+         if Is_Tagged_Type (E) then
+            Mark_Violation ("tagged type", E);
+         end if;
+
+         if Has_Invariants (E) then
+            Mark_Violation ("type invariant", E);
+         end if;
+
+         if Has_Predicates (E) then
+            if not Is_Discrete_Type (E)
+              or else No (Static_Predicate (E))
+            then
+               Mark_Violation ("dynamic type predicate", E);
+            else
+               declare
+                  Pred : Node_Id := First (Static_Predicate (E));
+               begin
+                  while Present (Pred) loop
+                     Mark (Pred);
+                     Next (Pred);
+                  end loop;
+               end;
+            end if;
+         end if;
+
+         --  Detect if the type has partial default initialization
+
+         if SPARK_Util.Default_Initialization (E) = Mixed_Initialization then
+            Mark_Violation ("type with partial default initialization",
+                            E,
+                            SRM_Reference => "SPARK RM 3.8(1)");
+         end if;
+
+         case Ekind (E) is
+         when Array_Kind =>
+            declare
+               Component_Typ : constant Node_Id := Component_Type (E);
+               Index         : Node_Id := First_Index (E);
+
+            begin
+               if Positive (Number_Dimensions (E)) > Max_Array_Dimensions then
+                  Violation_Detected := True;
+                  if SPARK_Pragma_Is (Opt.On) then
+                     Error_Msg_Node_1 := E;
+                     Error_Msg_Uint_1 := UI_From_Int (Number_Dimensions (E));
+                     Error_Msg_N ("} of dimension ^ is not yet supported", E);
+                  end if;
+               end if;
+
+               --  Check that all index types are in SPARK
+
+               while Present (Index) loop
+                  if not In_SPARK (Etype (Index)) then
+                     Mark_Violation (E, From => Etype (Index));
+                  end if;
+                  Next_Index (Index);
+               end loop;
+
+               --  Access definition for component type is not in SPARK
+
+               if No (Component_Typ) then
+                  Mark_Violation ("access type", E);
+               end if;
+
+               --  Check that component type is in SPARK.
+
+               if not In_SPARK (Component_Typ) then
+                  Mark_Violation (E, From => Component_Typ);
+               end if;
+            end;
+
+         --  Discrete and floating-point types are always in SPARK
+
+         when Integer_Kind | Float_Kind | Enumeration_Kind =>
+            null;
+
+         when Fixed_Point_Kind =>
+            declare
+               function Only_Factor_Is
+                 (Num    : Uint;
+                  Factor : Uint) return Boolean
+                 with Pre => UI_Gt (Num, Uint_0)
+                 and then UI_Gt (Factor, Uint_0);
+               --  Returns True if Num is a power of Factor
+
+               --------------------
+               -- Only_Factor_Is --
+               --------------------
+
+               function Only_Factor_Is
+                 (Num    : Uint;
+                  Factor : Uint) return Boolean
+               is
+                  N : Uint := Num;
+               begin
+                  while N /= Uint_1 loop
+                     if UI_Rem (N, Factor) /= Uint_0 then
+                        return False;
+                     end if;
+                     N := UI_Div (N, Factor);
+                  end loop;
+
+                  return True;
+               end Only_Factor_Is;
+
+               Inv_Small : constant Ureal := UR_Div (Uint_1, Small_Value (E));
+               Inv_Small_Num : constant Uint := Norm_Num (Inv_Small);
+            begin
+               if Norm_Den (Inv_Small) = Uint_1
+                 and then
+                   Inv_Small_Num /= Uint_1
+                   and then
+                     (Only_Factor_Is (Inv_Small_Num, Uint_2)
+                      or else
+                      Only_Factor_Is (Inv_Small_Num, Uint_10))
+               then
+                  null;
+               else
+                  Violation_Detected := True;
+                  if SPARK_Pragma_Is (Opt.On) then
+                     Error_Msg_N
+                       ("fixed-point type whose small is not a negative power "
+                        & "of 2 or 10 is not yet supported", E);
+                  end if;
+               end if;
+            end;
+
+         when E_Record_Type | E_Record_Subtype =>
+
+            if Ekind (E) = E_Record_Subtype
+              and then not In_SPARK (Base_Type (E))
+            then
+               Mark_Violation (E, From => Base_Type (E));
+            end if;
+
+            if Is_Interface (E) then
+               Mark_Violation ("interface", E);
+
+            else
+               declare
+                  Field : Node_Id := First_Component_Or_Discriminant (E);
+                  Typ   : Entity_Id;
+
+               begin
+                  while Present (Field) loop
+                     Typ := Etype (Field);
+
+                     if Is_Tag (Field) then
+                        Mark_Violation ("tagged type", E);
+                     elsif Is_Aliased (Field) then
+                        Mark_Violation ("ALIASED", Field);
+                     end if;
+
+                     if Ekind (Field) in Object_Kind
+                       and then not In_SPARK (Typ)
+                     then
+                        Mark_Violation (Typ, From => Typ);
+                     end if;
+
+                     Next_Component_Or_Discriminant (Field);
+                  end loop;
+               end;
+            end if;
+
+            --  Discriminant renamings are not in SPARK, this is checked here
+
+            declare
+               Disc  : Entity_Id := First_Discriminant (E);
+               Found : Boolean := False;
+            begin
+               while Present (Disc) loop
+                  if Present (Corresponding_Discriminant (Disc))
+                    and then
+                      Chars (Disc) /= Chars (Corresponding_Discriminant (Disc))
+                  then
+                     Found := True;
+                  end if;
+                  exit when Found;
+                  Next_Discriminant (Disc);
+               end loop;
+               if Found then
+                  Mark_Violation ("discriminant renaming", E);
+               end if;
+            end;
+
+         when E_Class_Wide_Type    |
+              E_Class_Wide_Subtype =>
+            Mark_Violation ("type definition", E);
+
+         when Access_Kind =>
+            Mark_Violation ("access type", E);
+
+         when Concurrent_Kind =>
+            Mark_Violation ("tasking", E);
+
+         when Private_Kind =>
+
+            --  Private types that are not a record type or subtype are in
+            --  SPARK.
+
+            if Ekind_In (E, E_Record_Type_With_Private,
+                         E_Record_Subtype_With_Private)
+            then
+               Mark_Violation ("type definition", E);
+            end if;
+
+            --  Private types may export discriminants. Discriminants with
+            --  non-SPARK type should be disallowed here
+
+            declare
+               Disc : Entity_Id := First_Discriminant (E);
+            begin
+               while Present (Disc) loop
+                  if not In_SPARK (Etype (Disc)) then
+                     Mark_Violation (E, From => Etype (Disc));
+                  end if;
+                  Next_Discriminant (Disc);
+               end loop;
+            end;
+
+         when others =>
+            raise Program_Error;
+         end case;
+      end Mark_Type_Entity;
+
+      --  Save whether a violation was previously detected, to restore after
+      --  marking this entity.
+
+      Save_Violation_Detected : constant Boolean := Violation_Detected;
+      Save_SPARK_Pragma : constant Node_Id := Current_SPARK_Pragma;
+
+      --  Start of Mark_Entity
+
+   begin
+
+      --  ??? predicate_functions ignored for now (MC20-028)
+
+      if Ekind (E) in E_Function | E_Procedure
+        and then Is_Predicate_Function (E)
+      then
+         return;
+      end if;
+
+      --  Nothing to do if the entity E was already marked
+
+      if Entity_Set.Contains (E) then
+         return;
+      end if;
+
+      --  Store entities defines in loops in Loop_Entity_Set
+
+      if Inside_Loop then
+         Loop_Entity_Set.Insert (E);
+      end if;
+
+      --  Store entities defines in actions in Actions_Entity_Set
+
+      if Inside_Actions then
+         Actions_Entity_Set.Insert (E);
+      end if;
+
+      --  Types may be marked out of order, because completions of private
+      --  types need to be marked at the point of their partial view
+      --  declaration, to avoid out-of-order declarations in Why.
+      --  Retrieve the appropriate SPARK_Mode pragma before marking.
+
+      if Ekind (E) in Type_Kind then
+         declare
+            Decl : constant Node_Id :=
+              (if No (Parent (Parent (E)))
+               and then Is_Itype (E) then
+                    Associated_Node_For_Itype (E) else Parent (E));
+         begin
+            if In_Private_Declarations (Decl) then
+               declare
+                  Pack_Decl : constant Node_Id := Parent (Parent (Decl));
+               begin
+                  pragma Assert
+                    (Nkind (Pack_Decl) = N_Package_Declaration);
+
+                  Current_SPARK_Pragma :=
+                    SPARK_Aux_Pragma (Defining_Entity (Pack_Decl));
+               end;
+
+            else
+               null;
+            end if;
+         end;
+      end if;
+
+      --  Include entity E in the set of entities marked
+
+      Entity_Set.Insert (E);
+
+      --  If the entity is declared in the scope of SPARK_Mode => Off, then do
+      --  not consider whether it could be in SPARK or not.
+
+      if SPARK_Pragma_Is (Opt.Off) then
+         return;
+      end if;
+
+      --  For recursive references, start with marking the entity in SPARK
+
+      Entities_In_SPARK.Include (E);
+
+      --  Start with no violation being detected
+
+      Violation_Detected := False;
+
+      --  Mark differently each kind of entity
+
+      case Ekind (E) is
+         when Type_Kind        => Mark_Type_Entity (E);
+         when Subprogram_Kind  => Mark_Subprogram_Entity (E);
+         when E_Constant       |
+              E_Variable       =>
+            begin
+               case Nkind (Parent (E)) is
+                  when N_Object_Declaration     => Mark_Object_Entity (E);
+                  when N_Iterator_Specification => Mark_Parameter_Entity (E);
+                  when others                   => raise Program_Error;
+               end case;
+            end;
+         when E_Loop_Parameter |
+              Formal_Kind      => Mark_Parameter_Entity (E);
+         when Named_Kind       => Mark_Number_Entity (E);
+         when E_Package        => Mark_Package_Entity (E);
+
+         --  The identifier of a loop is used to generate the needed
+         --  exception declarations in the translation phase.
+
+         when E_Loop           => null;
+
+         --  Mark_Entity is called on all abstract state variables
+
+         when E_Abstract_State => null;
+
+         when others           =>
+            Ada.Text_IO.Put_Line ("[Mark_Entity] kind ="
+                                  & Entity_Kind'Image (Ekind (E)));
+            raise Program_Error;
+      end case;
+
+      --  If a violation was detected, remove E from the set of SPARK entities
+
+      if Violation_Detected then
+         Entities_In_SPARK.Delete (E);
+      end if;
+
+      --  Add entity to appropriate list. Type from packages with external
+      --  axioms are handled by a specific mechanism and thus should not be
+      --  translated.
+
+      if not Entity_In_External_Axioms (E) then
+         Entity_List.Append (E);
+      end if;
+
+      --  Update the information that a violation was detected
+
+      Violation_Detected := Save_Violation_Detected;
+
+      --  Restore SPARK_Mode pragma
+
+      Current_SPARK_Pragma := Save_SPARK_Pragma;
+   end Mark_Entity;
 
    -----------------------------
    -- Mark_Handled_Statements --
@@ -3589,6 +3543,63 @@ package body SPARK_Definition is
       Mark (Right_Opnd (N));
    end Mark_Unary_Op;
 
+   --------------------
+   -- Mark_Violation --
+   --------------------
+
+   procedure Mark_Violation
+     (Msg           : String;
+      N             : Node_Id;
+      SRM_Reference : String := "") is
+   begin
+      --  Flag the violation, so that the current entity is marked accordingly
+
+      Violation_Detected := True;
+
+      --  If SPARK_Mode is On, raise an error
+
+      if SPARK_Pragma_Is (Opt.On) then
+
+         if SRM_Reference /= "" then
+            Error_Msg_F
+              (Msg & " is not allowed in SPARK (" & SRM_Reference & ")", N);
+         else
+            Error_Msg_F (Msg & " is not allowed in SPARK", N);
+         end if;
+
+         Error_Msg_Sloc := Sloc (Current_SPARK_Pragma);
+
+         if From_Aspect_Specification (Current_SPARK_Pragma) then
+            Error_Msg_F ("\\violation of aspect SPARK_Mode #", N);
+         else
+            Error_Msg_F ("\\violation of pragma SPARK_Mode #", N);
+         end if;
+      end if;
+   end Mark_Violation;
+
+   procedure Mark_Violation
+     (N    : Node_Id;
+      From : Entity_Id)
+   is
+   begin
+      --  Flag the violation, so that the current entity is marked accordingly
+
+      Violation_Detected := True;
+
+      --  If SPARK_Mode is On, raise an error
+
+      if SPARK_Pragma_Is (Opt.On) then
+         Error_Msg_FE ("& is not allowed in SPARK", N, From);
+         Error_Msg_Sloc := Sloc (Current_SPARK_Pragma);
+
+         if From_Aspect_Specification (Current_SPARK_Pragma) then
+            Error_Msg_F ("\\violation of aspect SPARK_Mode #", N);
+         else
+            Error_Msg_F ("\\violation of pragma SPARK_Mode #", N);
+         end if;
+      end if;
+   end Mark_Violation;
+
    ----------------------------------
    -- Most_Underlying_Type_In_SPARK --
    ----------------------------------
@@ -3601,5 +3612,13 @@ package body SPARK_Definition is
          Mark_Violation (N, From => Typ);
       end if;
    end Mark_Most_Underlying_Type_In_SPARK;
+
+   ---------------------
+   -- SPARK_Pragma_Is --
+   ---------------------
+
+   function SPARK_Pragma_Is (Mode : Opt.SPARK_Mode_Type) return Boolean is
+     (Present (Current_SPARK_Pragma)
+      and then Get_SPARK_Mode_From_Pragma (Current_SPARK_Pragma) = Mode);
 
 end SPARK_Definition;
