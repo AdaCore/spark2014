@@ -1,23 +1,29 @@
-actuator.ads:13:19: info: postcondition proved
-actuator.ads:21:19: info: postcondition proved
-advancebutton.adb:83:34: info: range check proved
-clock.ads:11:18: info: postcondition proved
-display.ads:13:19: info: postcondition proved
-heatingsystem_dfa.adb:54:21: info: division check proved
-heatingsystem_dfa.adb:55:24: info: division check proved
-heatingsystem_dfa.adb:55:43: info: division check proved
-heatingsystem_dfa.adb:57:39: info: length check proved
-heatingsystem_dfa.adb:57:45: info: division check proved
-heatingsystem_dfa.adb:58:45: info: division check proved
-heatingsystem_dfa.adb:59:47: info: division check proved
-heatingsystem_dfa.adb:60:47: info: division check proved
-heatingsystem_dfa.adb:80:47: info: division check proved
-heatingsystem_dfa.adb:91:55: info: division check proved
-heatingsystem_dfa.adb:108:31: info: division check proved
-heatingsystem_dfa.adb:137:33: info: index check proved
-heatingsystem_dfa.adb:139:24: info: index check proved
-heatingsystem_dfa.adb:246:30: info: length check proved
-indicator.ads:8:19: info: postcondition proved
-indicator.ads:16:19: info: postcondition proved
-modeswitch.ads:9:19: info: postcondition proved
-thermostat.ads:20:21: info: postcondition proved
+actuator.ads:15:22: info: postcondition proved
+actuator.ads:21:22: info: postcondition proved
+advancebutton.adb:90:34: info: range check proved
+clock.ads:14:21: info: postcondition proved
+display.ads:15:22: info: postcondition proved
+heatingsystem_dfa.adb:12:40: warning: "Thermostat.Inputs" might not be initialized after elaboration of main program "Heatingsystem_Dfa"
+heatingsystem_dfa.adb:13:40: warning: "Modeswitch.Inputs" might not be initialized after elaboration of main program "Heatingsystem_Dfa"
+heatingsystem_dfa.adb:14:43: warning: "Programswitch.Inputs" might not be initialized after elaboration of main program "Heatingsystem_Dfa"
+heatingsystem_dfa.adb:15:35: warning: "Clock.Ticks" might not be initialized after elaboration of main program "Heatingsystem_Dfa"
+heatingsystem_dfa.adb:44:20: info: division check proved
+heatingsystem_dfa.adb:45:23: info: division check proved
+heatingsystem_dfa.adb:45:42: info: division check proved
+heatingsystem_dfa.adb:47:38: info: length check proved
+heatingsystem_dfa.adb:47:44: info: division check proved
+heatingsystem_dfa.adb:48:44: info: division check proved
+heatingsystem_dfa.adb:49:46: info: division check proved
+heatingsystem_dfa.adb:50:46: info: division check proved
+heatingsystem_dfa.adb:70:49: info: division check proved
+heatingsystem_dfa.adb:81:54: info: division check proved
+heatingsystem_dfa.adb:98:30: info: division check proved
+heatingsystem_dfa.adb:127:32: info: index check proved
+heatingsystem_dfa.adb:129:23: info: index check proved
+heatingsystem_dfa.adb:151:43: warning: "Actuator.Outputs" might not be written
+heatingsystem_dfa.adb:162:43: warning: "Actuator.Outputs" might not be written
+heatingsystem_dfa.adb:229:28: info: length check proved
+indicator.ads:11:22: info: postcondition proved
+indicator.ads:17:22: info: postcondition proved
+modeswitch.ads:13:22: info: postcondition proved
+thermostat.ads:25:22: info: postcondition proved

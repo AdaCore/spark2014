@@ -1,13 +1,12 @@
 package ProgramSwitch
---# own in Inputs;
-is pragma SPARK_Mode (On);
-
+  with Abstract_State => (Inputs with External => Async_Writers)
+is
    type Positions is (auto, clock, on1, off1, on2, off2);
 
-   procedure Read( Value : out Positions);
-   --# global  in Inputs;
-   --# derives Value from Inputs;
-   --
+   procedure Read (Value : out Positions)
+     with Global  => (In_Out => Inputs),
+          Depends => ((Inputs,
+                       Value) => Inputs);
    -- Reads the position of the program switch.
 
 end ProgramSwitch;

@@ -1,30 +1,45 @@
 with System.Storage_Elements;
 
-package body Actuator is  
-   -- We don't know anything about how type Settings is implemented but we do need a type
-   -- declaration for it so that we can declarae proof functions that use it.  The following
-   -- proof type declaration does what we need.
+package body Actuator
+  with Refined_State => (Outputs => (Outputs_C,
+                                     Output_Ext))
+is
+   -- We don't know anything about how type Settings is implemented but we do
+   -- need a type declaration for it so that we can declarae proof functions
+   -- that use it. The following proof type declaration does what we need.
    --# type Settings is abstract;
 
    type Settings is new Boolean;
-   Outputs : Settings;
+   Outputs_C : Settings;
 
-   Output_Ext : Settings;
-   for Output_Ext'Address use System.Storage_Elements.To_Address (16#FFFF_FFFF#);
+   Output_Ext : Settings
+     with Volatile,
+          Async_Readers,
+          Address => System.Storage_Elements.To_Address (16#FFFF_FFFF#);
 
    -- and allows us to define this proof function
-   function IsOn return Boolean is
-      (Outputs = True);
+   function IsOn return Boolean is (Outputs_C = True)
+     with Refined_Global => Outputs_C;
 
-   procedure TurnOn is
+   procedure TurnOn
+     with Refined_Global  => (Output => (Outputs_C,
+                                         Output_Ext)),
+          Refined_Depends => ((Outputs_C,
+                               Output_Ext) => null)
+   is
    begin
-      Outputs    := True;
+      Outputs_C  := True;
       Output_Ext := True;
    end TurnOn;
 
-   procedure TurnOff is
+   procedure TurnOff
+     with Refined_Global  => (Output => (Outputs_C,
+                                         Output_Ext)),
+          Refined_Depends => ((Outputs_C,
+                               Output_Ext) => null)
+   is
    begin
-      Outputs    := False;
+      Outputs_C  := False;
       Output_Ext := False;
    end TurnOff;
 

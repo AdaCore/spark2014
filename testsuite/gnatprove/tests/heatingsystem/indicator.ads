@@ -1,23 +1,20 @@
 package Indicator
---# own out Outputs : Settings;
-is pragma SPARK_Mode (On);
+  with Abstract_State => (Outputs with External => Async_Readers)
+is
    --# type Settings is abstract;
-   function IsOn return Boolean;
+   function IsOn return Boolean
+     with Global => Outputs;
 
    procedure TurnOn
-     with Post => (IsOn);
-   --# global  out Outputs;
-   --# derives Outputs from ;
-   --# post IsOn (Outputs);
-   --
+     with Global  => (Output  => Outputs),
+          Depends => (Outputs => null),
+          Post    => IsOn;
    -- Turns the indicator on.
 
    procedure TurnOff
-     with Post => (not IsOn);
-   --# global  out Outputs;
-   --# derives Outputs from ;
-   --# post not IsOn (Outputs);
-   --
+     with Global  => (Output  => Outputs),
+          Depends => (Outputs => null),
+          Post    => not IsOn;
    -- Turns the indicator off.
 
 end Indicator;

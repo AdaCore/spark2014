@@ -1,20 +1,29 @@
--- Control Panel Boundary Packages
-
 with System.Storage_Elements;
 
-package body Display is  
+-- Control Panel Boundary Packages
+package body Display
+  with Refined_State => (Outputs => (Outputs_C,
+                                     Output_Ext))
+is
 
-   Outputs : Displays;
+   Outputs_C : Displays;
 
-   Output_Ext : Displays;
-   for Output_Ext'Address use System.Storage_Elements.To_Address (16#FFFF_FFFF#);
+   Output_Ext : Displays
+     with Volatile,
+          Async_Readers,
+          Address => System.Storage_Elements.To_Address (16#FFFF_FFFF#);
 
-   function PF_Write return Displays is
-      (Outputs);
+   function PF_Write return Displays is (Outputs_C)
+     with Refined_Global => Outputs_C;
 
-   procedure Write (Content : in Displays) is
+   procedure Write (Content : in Displays)
+     with Refined_Global  => (Output => (Output_Ext,
+                                         Outputs_C)),
+          Refined_Depends => ((Outputs_C,
+                               Output_Ext) => Content)
+   is
    begin
-      Outputs    := Content;
+      Outputs_C  := Content;
       Output_Ext := Content;
    end Write;
 

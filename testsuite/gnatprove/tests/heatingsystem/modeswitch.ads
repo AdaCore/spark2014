@@ -1,16 +1,16 @@
 package ModeSwitch
---# own in Inputs : Modes;
-is pragma SPARK_Mode (On);
+  with Abstract_State => (Inputs with External => Async_Writers)
+is
    type Modes is (off, cont, timed);
 
-   function PF_Read return Modes;
+   function PF_Read return Modes
+     with Global => Inputs;
 
-   procedure Read( Value : out Modes)
-     with Post => (Value = PF_Read);
-   --# global  in Inputs;
-   --# derives Value from Inputs;
-   --# post (Value = Inputs~); -- simplified postcondition valid for single reads
-   --
+   procedure Read (Value : out Modes)
+     with Global  => (In_Out => Inputs),
+          Depends => ((Inputs,
+                       Value) => Inputs),
+          Post    => Value = PF_Read;
    -- Reads the position of the mode switch.
 
 end ModeSwitch;

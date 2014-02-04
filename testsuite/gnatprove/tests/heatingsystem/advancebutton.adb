@@ -1,46 +1,48 @@
 -- Abstract Advance Button Implementation
 with AdvanceButton.Raw;
+
 package body AdvanceButton
---# own State is in AdvanceButton.Raw.Inputs,
---#                 AdvanceMode,
---#                 AdvPressed,
---#                 AdvTimer;
+  with Refined_State => (State => (AdvanceButton.Raw.Inputs,
+                                   AdvanceMode,
+                                   AdvPressed,
+                                   AdvTimer))
 is
    AdvanceMode : AdvanceModes := Slow;
    AdvPressed  : Boolean      := False;
    AdvTimer    : Clock.Times  := 0;
 
-   function CurrentMode return AdvanceModes
-   --# global AdvanceMode;
-   is
-   begin
-      return AdvanceMode;
-   end CurrentMode;
+   function CurrentMode return AdvanceModes is (AdvanceMode)
+     with Refined_Global => AdvanceMode;
 
    procedure SetSlowMode
-   --# global out AdvanceMode;
-   --# derives AdvanceMode from ;
+     with Refined_Global  => (Output => AdvanceMode),
+          Refined_Depends => (AdvanceMode => null)
    is
    begin
       AdvanceMode := Slow;
    end SetSlowMode;
 
    procedure SetFastMode
-   --# global out AdvanceMode;
-   --# derives AdvanceMode from ;
+     with Refined_Global  => (Output => AdvanceMode),
+          Refined_Depends => (AdvanceMode => null)
    is
    begin
       AdvanceMode := Fast;
    end SetFastMode;
 
    procedure JustPressed (Result :    out Boolean)
-   --# global in     Raw.Inputs;
-   --#        in out AdvPressed,
-   --#               AdvTimer;
-   --#        in     Clock.Ticks;
-   --# derives Result,
-   --#         AdvPressed  from AdvPressed, Raw.Inputs                 &
-   --#         AdvTimer    from *, Raw.Inputs, AdvPressed, Clock.Ticks;
+     with Refined_Global  => (In_Out => (Raw.Inputs,
+                                         Clock.Ticks,
+                                         AdvPressed,
+                                         AdvTimer)),
+          Refined_Depends => ((Result,
+                               AdvPressed) => (AdvPressed,
+                                               Raw.Inputs),
+                              AdvTimer     =>+ (Raw.Inputs,
+                                                AdvPressed,
+                                                Clock.Ticks),
+                              Clock.Ticks  => Clock.Ticks,
+                              Raw.Inputs   => Raw.Inputs)
    is
       PressedBefore : Boolean;
       PressedNow    : Boolean;
@@ -53,8 +55,8 @@ is
 
       if PressedNow and not PressedBefore then
          AdvPressed := True;
-         AdvTimer := TimePressed;
-         Result := True;
+         AdvTimer   := TimePressed;
+         Result     := True;
       else
          Result := False;
       end if;
@@ -63,16 +65,21 @@ is
 
    procedure PressedFor (Period : in     Clock.Times;
                          Result :    out Boolean)
-   --# global  in     Raw.Inputs, Clock.Ticks;
-   --#         in out AdvTimer;
-   --#            out AdvPressed;
-   --# derives Result,
-   --#         AdvTimer     from Raw.Inputs, AdvTimer, Period, Clock.Ticks &
-   --#         AdvPressed   from Raw.Inputs;
+     with Refined_Global  => (In_Out => (Raw.Inputs,
+                                         Clock.Ticks,
+                                         AdvTimer),
+                              Output => AdvPressed),
+          Refined_Depends => ((Result,
+                               AdvTimer)  => (Raw.Inputs,
+                                              AdvTimer,
+                                              Period,
+                                              Clock.Ticks),
+                              AdvPressed  => Raw.Inputs,
+                              Clock.Ticks => Clock.Ticks,
+                              Raw.Inputs  => Raw.Inputs)
    is
       StillPressed : Boolean;
       TimeNow      : Clock.Times;
-
    begin
       Clock.Read (TimeNow);
       Raw.Read (StillPressed);
@@ -91,10 +98,11 @@ is
    end PressedFor;
 
    procedure NotPressed (Result :    out Boolean)
-   --# global in     Raw.Inputs;
-   --#           out AdvPressed;
-   --# derives Result,
-   --#         AdvPressed from Raw.Inputs;
+     with Refined_Global  => (In_Out => Raw.Inputs,
+                              Output => AdvPressed),
+          Refined_Depends => ((Result,
+                               AdvPressed,
+                               Raw.Inputs) => Raw.Inputs)
    is
       Pressed : Boolean;
    begin

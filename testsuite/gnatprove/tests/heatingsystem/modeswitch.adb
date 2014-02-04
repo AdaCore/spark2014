@@ -1,19 +1,28 @@
 with System.Storage_Elements;
 
-package body ModeSwitch is  
+package body ModeSwitch
+  with Refined_State => (Inputs => (Inputs_C,
+                                    Input_Ext))
+is
+   Inputs_C : Modes;
 
-   Inputs : Modes;
+   Input_Ext : Modes
+     with Volatile,
+          Async_Writers,
+          Address => System.Storage_Elements.To_Address (16#FFFF_FFFF#);
 
-   Input_Ext : Modes;
-   for Input_Ext'Address use System.Storage_Elements.To_Address (16#FFFF_FFFF#);
+   function PF_Read return Modes is (Inputs_C)
+     with Refined_Global => Inputs_C;
 
-   function PF_Read return Modes is
-      (Inputs);
-
-   procedure Read( Value : out Modes) is
+   procedure Read (Value : out Modes)
+     with Refined_Global  => (Input  => Input_Ext,
+                              Output => Inputs_C),
+          Refined_Depends => ((Inputs_C,
+                               Value) => Input_Ext)
+   is
    begin
-      Inputs := Input_Ext;
-      Value  := Inputs;
+      Inputs_C := Input_Ext;
+      Value    := Inputs_C;
    end Read;
 
 end ModeSwitch;
