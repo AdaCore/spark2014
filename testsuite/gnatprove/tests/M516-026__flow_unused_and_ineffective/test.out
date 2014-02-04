@@ -1,7 +1,2 @@
-test.adb:16:23: ineffective import "X"
-test.adb:20:16: unused assignment to "X"
-test.adb:24:20: global "Z" is not used
-test.adb:24:20: ineffective global import "Z"
-test.adb:33:20: ineffective global import "Z"
-test.adb:6:23: "X" is not used
-test.adb:6:23: ineffective import "X"
+test.adb:6:23: warning: unused variable "X"
+test.adb:24:20: warning: unused global "Z"

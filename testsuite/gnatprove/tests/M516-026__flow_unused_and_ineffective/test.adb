@@ -13,7 +13,7 @@ is
       Y := 0;
    end Test_01;
 
-   procedure Test_02 (X : Integer; -- Ineffective
+   procedure Test_02 (X : Integer;
                       Y : out Integer)
    is
    begin
@@ -30,7 +30,7 @@ is
    end Test_03;
 
    procedure Test_04 (Y : out Integer)
-   with Global  => Z -- ineffective
+   with Global  => Z
    is
    begin
       Test_03 (Y);
