@@ -1036,7 +1036,7 @@ Nonreturning Procedures
 
 .. centered:: **Legality Rules**
 
-.. _tu-nonreturning_procedures-01:
+.. _tu-sf-nonreturning_procedures-01:
 
 1. For a call to a nonreturning procedure to be in |SPARK|, it must be either
 

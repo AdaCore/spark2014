@@ -7,9 +7,11 @@ is
    --
    --  Illegal cases
 
-   -- TU: 1. For a call to a nonreturning procedure to be in |SPARK|,
-   --        it must be immediately enclosed by an if statement which
-   --        encloses no other statement.
+   -- TU: 1. For a call to a nonreturning procedure to be in |SPARK|, it must
+   -- be either
+   --  * immediately enclosed by an if statement which encloses no other
+   --    statement; or
+   --  * the last statement of a subprogram.
 
    procedure Aborting is
    begin
