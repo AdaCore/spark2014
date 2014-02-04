@@ -5,9 +5,8 @@ private package AdvanceButton.Raw
                                       Part_Of  => AdvanceButton.State)
 is
    procedure Read (Pressed : out Boolean)
-     with Global  => (In_Out => Inputs),
-          Depends => ((Pressed,
-                       Inputs) => Inputs);
+     with Global  => Inputs,
+          Depends => (Pressed => Inputs);
    -- Pressed is True if the advance button is down.
 
 end AdvanceButton.Raw;

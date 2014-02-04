@@ -13,14 +13,7 @@
 package Thermostat
   with Abstract_State => (Inputs with External => Async_Writers)
 is
-   -- proof function. Provides a better name and some abstraction to read of
-   -- the room thermostat
-   function RoomTooWarm return Boolean
-     with Global => Inputs;
-
    procedure AboveTemp (Result : out Boolean)
-     with Global  => (In_Out => Inputs),
-          Depends => ((Inputs,
-                       Result) => Inputs),
-          Post    => Result = RoomTooWarm;
+     with Global  => Inputs,
+          Depends => (Result => Inputs);
 end Thermostat;

@@ -13,29 +13,18 @@
 with System.Storage_Elements;
 
 package body Thermostat
-  with Refined_State => (Inputs => (Inputs_C,
-                                    Input_Ext))
+  with Refined_State => (Inputs => Input_Ext)
 is
-   Inputs_C : Boolean;
-
    Input_Ext : Boolean
      with Volatile,
           Async_Writers,
           Address => System.Storage_Elements.To_Address (16#FFFF_FFFF#);
 
-   -- proof function. Provides a better name and some abstraction to read of
-   -- the room thermostat
-   function RoomTooWarm return Boolean is (Inputs_C)
-     with Refined_Global => Inputs_C;
-
    procedure AboveTemp (Result : out Boolean)
-     with Refined_Global  => (Input  => Input_Ext,
-                              Output => Inputs_C),
-          Refined_Depends => ((Inputs_C,
-                               Result) => Input_Ext)
+     with Refined_Global  => Input_Ext,
+          Refined_Depends => (Result => Input_Ext)
    is
    begin
-      Inputs_C := Input_Ext;
-      Result   := Inputs_C;
+      Result := Input_Ext;
    end AboveTemp;
 end Thermostat;

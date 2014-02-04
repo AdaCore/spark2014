@@ -6,13 +6,9 @@ is
    subtype DigitPositions is Integer range 0..3;
    type Displays is array (DigitPositions) of DisplayDigits;
 
-   function PF_Write return Displays
-     with Global => Outputs;
-
    procedure Write (Content : in Displays)
      with Global  => (Output => Outputs),
-          Depends => (Outputs => Content),
-          Post    => PF_Write = Content;
+          Depends => (Outputs => Content);
    -- Put the value of the parameter Content on the Display.
    -- Content(0) is the leftmost digit.
 

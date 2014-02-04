@@ -34,22 +34,20 @@ is
           Depends => (State => State);
 
    procedure JustPressed (Result :    out Boolean)
-     with Global  => (In_Out => (Clock.Ticks,
-                                 State)),
-          Depends => (Clock.Ticks => Clock.Ticks,
-                      Result      => State,
-                      State       =>+ Clock.Ticks);
+     with Global  => (Input  => Clock.Ticks,
+                      In_Out => State),
+          Depends => (Result => State,
+                      State  =>+ Clock.Ticks);
    -- return True if button pressed now and not pressed before
 
    procedure PressedFor (Period : in     Clock.Times;
                          Result :    out Boolean)
-     with Global  => (In_Out => (Clock.Ticks,
-                                 State)),
+     with Global  => (Input  => Clock.Ticks,
+                      In_Out => State),
           Depends => ((Result,
-                       State)     => (Period,
-                                      State,
-                                      Clock.Ticks),
-                      Clock.Ticks => Clock.Ticks);
+                       State)  => (Period,
+                                   State,
+                                   Clock.Ticks));
    -- return True if button was pressed before, is still pressed and Period has
    -- elapsed since it last returned true
 

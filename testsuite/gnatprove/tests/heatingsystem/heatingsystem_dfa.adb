@@ -9,14 +9,34 @@ with Thermostat,
      AdvanceButton;
 
 procedure HeatingSystem_DFA
-  with Global => (In_Out => (Thermostat.Inputs,
-                             ModeSwitch.Inputs,
-                             ProgramSwitch.Inputs,
-                             Clock.Ticks,
-                             AdvanceButton.State),
-                  Output => (Actuator.Outputs,
-                             Display.Outputs,
-                             Indicator.Outputs))
+  with Global  => (Input  => (Thermostat.Inputs,
+                              ModeSwitch.Inputs,
+                              ProgramSwitch.Inputs,
+                              Clock.Ticks),
+                   Output => (Actuator.Outputs,
+                              Display.Outputs,
+                              Indicator.Outputs),
+                   In_Out => AdvanceButton.State),
+
+       Depends => (Actuator.Outputs    => (Thermostat.Inputs,
+                                           Clock.Ticks,
+                                           ProgramSwitch.Inputs,
+                                           ModeSwitch.Inputs,
+                                           AdvanceButton.State),
+                   -- Actuator depends on all inputs
+                   Indicator.Outputs   => (Clock.Ticks,
+                                           ProgramSwitch.Inputs,
+                                           ModeSwitch.Inputs,
+                                           AdvanceButton.State),
+                   -- Indicator light independent of Thermostat
+                   Display.Outputs     => (Clock.Ticks,
+                                           ProgramSwitch.Inputs,
+                                           AdvanceButton.State),
+                   -- Digits display not affected by ModeSwitch
+                   AdvanceButton.State => (Clock.Ticks,
+                                           ProgramSwitch.Inputs,
+                                           AdvanceButton.State))
+                   -- "less interesting" dependencies
 is
    HoursInDay      : constant Clock.Times := 24;
    MinutesInHour   : constant Clock.Times := 60;
@@ -32,7 +52,8 @@ is
    HeatingIsOn     : Boolean;      -- current system setting
 
    procedure UpdateDisplay (Time : in     Clock.Times)
-     with Global => (Output => Display.Outputs)
+     with Global  => (Output => Display.Outputs),
+          Depends => (Display.Outputs => Time)
    is
       subtype Hours   is Clock.Times range 0 .. HoursInDay - 1;
       subtype Minutes is Clock.Times range 0 .. MinutesInHour - 1;
@@ -54,8 +75,13 @@ is
    -----------------------------------------------------------------------------
 
    procedure CheckAdvanceButton (Time : in out Clock.Times)
-     with Global => (In_Out => (Clock.Ticks,
-                                AdvanceButton.State))
+     with Global  => (Input  => Clock.Ticks,
+                      In_Out => AdvanceButton.State),
+          Depends => (Time                => (Time,
+                                              Clock.Ticks,
+                                              AdvanceButton.State),
+                      AdvanceButton.State => (Clock.Ticks,
+                                              AdvanceButton.State))
    is
       SlowAdvance      : Boolean;
       FastAdvance      : Boolean;
@@ -92,7 +118,10 @@ is
 
    -- from Z function AddTime (page 7)
    procedure AddOffset(T : in out Clock.Times)
-     with Global => ClockOffset
+     with Global  => ClockOffset,
+          Depends => (T => (T,
+                            ClockOffset)),
+          Post    => T = (T'Old + ClockOffset) mod (60 * 60 * 24)
    is
    begin
       T := (T + ClockOffset) mod 86400;
@@ -101,12 +130,22 @@ is
    -----------------------------------------------------------------------------
 
    procedure CheckProgramSwitch
-     with Global => (In_Out => (Clock.Ticks,
-                                ProgramSwitch.Inputs,
-                                OnOffTime,
-                                ClockOffset,
-                                AdvanceButton.State),
-                     Output => Display.Outputs)
+     with Global  => (Input  => (Clock.Ticks,
+                                 ProgramSwitch.Inputs),
+                      Output => Display.Outputs,
+                      In_Out => (OnOffTime,
+                                 ClockOffset,
+                                 AdvanceButton.State)),
+          Depends => (Display.Outputs       => (AdvanceButton.State,
+                                                Clock.Ticks,
+                                                ClockOffset,
+                                                ProgramSwitch.Inputs,
+                                                OnOffTime),
+                      (AdvanceButton.State,
+                       OnOffTime,
+                       ClockOffset)         =>+ (AdvanceButton.State,
+                                                 Clock.Ticks,
+                                                 ProgramSwitch.Inputs))
    is
       SwitchPosition : ProgramSwitch.Positions;
       Timer          : Clock.Times;
@@ -133,14 +172,25 @@ is
    end CheckProgramSwitch;
 
    procedure CheckModeSwitch
-     with Global => (Input  => (OnOffTime,
-                                ClockOffset),
-                     In_Out => (Thermostat.Inputs,
-                                Clock.Ticks,
-                                ModeSwitch.Inputs,
-                                HeatingIsOn),
-                     Output => (Indicator.Outputs,
-                                Actuator.Outputs))
+     with Global  => (Input  => (Thermostat.Inputs,
+                                 Clock.Ticks,
+                                 ModeSwitch.Inputs,
+                                 OnOffTime,
+                                 ClockOffset),
+                      Output => (Indicator.Outputs,
+                                 Actuator.Outputs),
+                      In_Out => HeatingIsOn),
+          Depends => ((Actuator.Outputs,
+                       HeatingIsOn)      => (Thermostat.Inputs,
+                                             Clock.Ticks,
+                                             ModeSwitch.Inputs,
+                                             OnOffTime,
+                                             ClockOffset,
+                                             HeatingIsOn),
+                      Indicator.Outputs  => (Clock.Ticks,
+                                             ModeSwitch.Inputs,
+                                             OnOffTime,
+                                             ClockOffset))
    is
       MayOperate,
       AboveTemp   : Boolean;
@@ -148,8 +198,10 @@ is
       ModeSetting : ModeSwitch.Modes;
 
       procedure TurnOn -- idempotent operation
-        with Global => (Output => Actuator.Outputs,
-                        In_Out => HeatingIsOn)
+        with Global  => (Output => Actuator.Outputs,
+                         In_Out => HeatingIsOn),
+             Depends => ((Actuator.Outputs,
+                          HeatingIsOn)      => HeatingIsOn)
       is
       begin
          if not HeatingIsOn then
@@ -159,8 +211,10 @@ is
       end TurnOn;
 
       procedure TurnOff -- idempotent operation
-        with Global => (Output => Actuator.Outputs,
-                        In_Out => HeatingIsOn)
+        with Global  => (Output => Actuator.Outputs,
+                         In_Out => HeatingIsOn),
+             Depends => ((Actuator.Outputs,
+                          HeatingIsOn)      => HeatingIsOn)
       is
       begin
          if HeatingIsOn then
@@ -178,11 +232,16 @@ is
 
 
       procedure OperateIfNeeded
-        with Global => (Input  => (MayOperate,
-                                   AboveTemp),
-                        Output => (Actuator.Outputs,
-                                   Indicator.Outputs),
-                        In_Out => HeatingIsOn)
+        with Global  => (Input  => (MayOperate,
+                                    AboveTemp),
+                         Output => (Actuator.Outputs,
+                                    Indicator.Outputs),
+                         In_Out => HeatingIsOn),
+             Depends => (Indicator.Outputs  => MayOperate,
+                         (Actuator.Outputs,
+                          HeatingIsOn)      => (HeatingIsOn,
+                                                MayOperate,
+                                                AboveTemp))
       is
       begin -- OperateIfNeeded
          if MayOperate then
