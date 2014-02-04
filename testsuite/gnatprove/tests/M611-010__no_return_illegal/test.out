@@ -1,9 +1,9 @@
 no_return_illegal.adb:27:10: Call to No_Return procedure in this context is not allowed in SPARK
-no_return_illegal.adb:27:10: violation of pragma SPARK_Mode at /tmp/tmp-test-M611-010__no_return_illegal-17390/src/test.adc:1
+no_return_illegal.adb:27:10: violation of pragma SPARK_Mode at test.adc:1
 no_return_illegal.adb:35:10: Call to No_Return procedure in this context is not allowed in SPARK
-no_return_illegal.adb:35:10: violation of pragma SPARK_Mode at /tmp/tmp-test-M611-010__no_return_illegal-17390/src/test.adc:1
+no_return_illegal.adb:35:10: violation of pragma SPARK_Mode at test.adc:1
 no_return_illegal.adb:44:10: Call to No_Return procedure in this context is not allowed in SPARK
-no_return_illegal.adb:44:10: violation of pragma SPARK_Mode at /tmp/tmp-test-M611-010__no_return_illegal-17390/src/test.adc:1
+no_return_illegal.adb:44:10: violation of pragma SPARK_Mode at test.adc:1
    compilation of no_return_illegal.adb failed
 
 
