@@ -27,4 +27,50 @@ is
       P (B);
    end Test_02_Ok;
 
+   procedure Test_03_Ok (A : in out String;
+                         B : out Natural)
+   with Depends => ((A, B) => A)
+   is
+   begin
+      A (A'First) := ' ';
+      B := A'Length;
+   end Test_03_Ok;
+
+   procedure Test_04_Ok (A : out String;
+                         B : out Natural)
+   with Depends => (A => null,
+                    B => A)
+   is
+   begin
+      A := (others => ' ');
+      B := A'Length;
+   end Test_04_Ok;
+
+   --  The customer testcase below.
+
+   type Octet is mod 2**8;
+   type Octet_Array is array(Natural range <>) of Octet;
+
+   procedure To_Octet_Array (Text        : String;
+                             Data        : out Octet_Array;
+                             Octet_Count : out Natural)
+   with Depends => (Data        => Text,
+                    Octet_Count => (Text, Data));
+
+   procedure To_Octet_Array (Text        : String;
+                             Data        : out Octet_Array;
+                             Octet_Count : out Natural)
+   is
+   begin
+      Data := (others => 0);
+      Octet_Count := Text'Length;
+      if Data'Length < Octet_Count then
+         Octet_Count := Data'Length;
+      end if;
+
+      for I in Natural range 1 .. Octet_Count loop
+         Data(Data'First + I - 1) := Character'Pos(Text(Text'First + I - 1));
+      end loop;
+   end To_Octet_Array;
+
 end Foo;

@@ -164,6 +164,7 @@ package body Flow_Utility is
                      F := (Kind      => Record_Field,
                            Variant   => Normal_Use,
                            Node      => Entire_Var,
+                           Bound     => Null_Bound,
                            Component => Tmp);
                      Possibly_Include (F);
                end case;

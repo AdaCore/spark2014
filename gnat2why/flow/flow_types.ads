@@ -149,11 +149,29 @@ package Flow_Types is
      (Initial_Value => Initial_Grouping,
       Final_Value   => Final_Grouping);
 
+   type Bound_Kind_T is (No_Bound,
+                         Some_Bound);
+   --  We are using an enum + record here because that way its easy to
+   --  extend to support tracking different bounds separately.
+
+   type Bound_Info_T (Kind : Bound_Kind_T := No_Bound) is record
+      case Kind is
+         when No_Bound | Some_Bound =>
+            null;
+      end case;
+   end record;
+
+   Null_Bound : constant Bound_Info_T := (Kind => No_Bound);
+
    type Flow_Id (Kind : Flow_Id_Kind := Null_Value) is record
       Variant : Flow_Id_Variant;
       case Kind is
          when Direct_Mapping | Record_Field =>
-            Node : Node_Or_Entity_Id;
+            Node  : Node_Or_Entity_Id;
+
+            Bound : Bound_Info_T;
+            --  If is set, this Flow_Id represents the bounds of an object,
+            --  instead of the object itself.
 
             case Kind is
                when Record_Field =>
@@ -199,7 +217,8 @@ package Flow_Types is
 
    function Direct_Mapping_Id
      (N       : Node_Or_Entity_Id;
-      Variant : Flow_Id_Variant := Normal_Use)
+      Variant : Flow_Id_Variant := Normal_Use;
+      Bound   : Bound_Info_T    := Null_Bound)
       return Flow_Id
       with Pre => Present (N);
    --  Create a Flow_Id for the given node or entity.
@@ -222,6 +241,13 @@ package Flow_Types is
    function Is_Discriminant (F : Flow_Id) return Boolean;
    --  Returns true if the given flow id is a record field
    --  representing a discriminant.
+
+   function Has_Bounds (F : Flow_Id) return Boolean
+     with Pre => (if F.Kind in Direct_Mapping | Record_Field
+                  then F.Bound = Null_Bound and
+                       Nkind (F.Node) in N_Entity);
+   --  Returns true if a flow id needs separate representation for its
+   --  bounds.
 
    function Get_Default_Initialization (F : Flow_Id) return Node_Id;
    --  Get the default initialization expression for the given flow id

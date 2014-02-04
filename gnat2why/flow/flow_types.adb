@@ -97,6 +97,15 @@ package body Flow_Types is
             return False;
          end if;
 
+         if Left.Bound.Kind /= Right.Bound.Kind then
+            return False;
+         else
+            case Left.Bound.Kind is
+               when No_Bound | Some_Bound =>
+                  null;
+            end case;
+         end if;
+
          if Left.Kind = Record_Field then
             if Left.Component.Length = Right.Component.Length then
                for I in Natural range 1 .. Natural (Left.Component.Length) loop
@@ -104,7 +113,6 @@ package body Flow_Types is
                      return False;
                   end if;
                end loop;
-               return True;
             else
                return False;
             end if;
@@ -154,12 +162,14 @@ package body Flow_Types is
 
    function Direct_Mapping_Id
      (N       : Node_Or_Entity_Id;
-      Variant : Flow_Id_Variant := Normal_Use)
+      Variant : Flow_Id_Variant := Normal_Use;
+      Bound   : Bound_Info_T    := Null_Bound)
       return Flow_Id is
    begin
       return (Kind    => Direct_Mapping,
               Variant => Variant,
-              Node    => N);
+              Node    => N,
+              Bound   => Bound);
    end Direct_Mapping_Id;
 
    ---------------------------
@@ -183,6 +193,7 @@ package body Flow_Types is
       F : Flow_Id := (Kind      => Record_Field,
                       Variant   => Variant,
                       Node      => Empty,
+                      Bound     => Null_Bound,
                       Component => Entity_Lists.Empty_Vector);
       P : Node_Id;
    begin
@@ -207,8 +218,7 @@ package body Flow_Types is
    -- Is_Discriminant --
    ---------------------
 
-   function Is_Discriminant (F : Flow_Id) return Boolean
-   is
+   function Is_Discriminant (F : Flow_Id) return Boolean is
    begin
       case F.Kind is
          when Record_Field =>
@@ -219,6 +229,24 @@ package body Flow_Types is
             raise Why.Unexpected_Node;
       end case;
    end Is_Discriminant;
+
+   ----------------
+   -- Has_Bounds --
+   ----------------
+
+   function Has_Bounds (F : Flow_Id) return Boolean is
+   begin
+      case F.Kind is
+         when Null_Value | Synthetic_Null_Export | Magic_String =>
+            return False;
+
+         when Direct_Mapping =>
+            return not Is_Constrained (Etype (F.Node));
+
+         when Record_Field =>
+            return not Is_Constrained (Etype (F.Component.Last_Element));
+      end case;
+   end Has_Bounds;
 
    --------------------------------
    -- Get_Default_Initialization --
@@ -543,6 +571,7 @@ package body Flow_Types is
          if R.Component.Length = 0 then
             R := (Kind    => Direct_Mapping,
                   Variant => F.Variant,
+                  Bound   => F.Bound,
                   Node    => F.Node);
          end if;
       end return;
@@ -557,15 +586,15 @@ package body Flow_Types is
    begin
       case F.Kind is
          when Null_Value |
-              Direct_Mapping |
               Magic_String |
               Synthetic_Null_Export =>
             return F;
 
-         when Record_Field =>
+         when Direct_Mapping | Record_Field =>
             return R : Flow_Id do
                R := (Kind    => Direct_Mapping,
                      Variant => F.Variant,
+                     Bound   => Null_Bound,
                      Node    => F.Node);
             end return;
       end case;
@@ -587,6 +616,17 @@ package body Flow_Types is
    procedure Print_Flow_Id (F : Flow_Id) is
    begin
       Sprint_Flow_Id (F);
+      case F.Kind is
+         when Direct_Mapping | Record_Field =>
+            case F.Bound.Kind is
+               when No_Bound =>
+                  null;
+               when Some_Bound =>
+                  Output.Write_Str ("'bounds");
+            end case;
+         when others =>
+            null;
+      end case;
       case F.Variant is
          when Normal_Use =>
             null;
