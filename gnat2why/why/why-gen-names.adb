@@ -352,8 +352,9 @@ package body Why.Gen.Names is
          when EW_Int | EW_Fixed => Integer_Module,
          when EW_Real => Floating_Module,
          when EW_Bool => Boolean_Module,
-         when EW_Unit .. EW_Prop | EW_Private => Main_Module,
-         when EW_Abstract | EW_Split => E_Module (Get_Ada_Node (+Arg_Types)));
+         when EW_Unit .. EW_Prop => Main_Module,
+         when EW_Abstract | EW_Split | EW_Private =>
+               E_Module (Get_Ada_Node (+Arg_Types)));
    begin
       return Prefix (Ada_Node => A,
                      M        => M,

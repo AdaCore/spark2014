@@ -108,6 +108,14 @@ package body Gnat2Why.Types is
         (Theory,
          Why.Gen.Binders.New_Function_Decl
            (Domain      => EW_Term,
+            Name        => To_Ident (W => WNE_Bool_Eq),
+            Return_Type => EW_Bool_Type,
+            Binders     => (1 => X_Binder, 2 => Y_Binder),
+            Labels      => Name_Id_Sets.Empty_Set));
+      Emit
+        (Theory,
+         Why.Gen.Binders.New_Function_Decl
+           (Domain      => EW_Term,
             Name        => New_Identifier (Name => "user_eq"),
             Return_Type => EW_Bool_Type,
             Binders     => (1 => X_Binder, 2 => Y_Binder),

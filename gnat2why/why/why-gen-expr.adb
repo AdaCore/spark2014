@@ -1291,9 +1291,10 @@ package body Why.Gen.Expr is
       Module   : constant W_Module_Id :=
         (if Is_Boolean_Type (Typ) then Boolean_Module else E_Module (Typ));
       Eq_Id    : constant W_Identifier_Id :=
-        New_Identifier (Module => Module,
-                        Name   => Eq_Str,
-                        Typ    => EW_Bool_Type);
+        New_Identifier (Module   => Module,
+                        Name     => Eq_Str,
+                        Typ      => EW_Bool_Type,
+                        Ada_Node => Typ);
       Is_Pred  : Boolean := False;
       T        : W_Expr_Id;
    begin
