@@ -183,6 +183,48 @@ package body SPARK_Definition is
    function Fullview_Not_In_SPARK (E : Entity_Id) return Boolean is
      (Entities_Fullview_Not_In_SPARK.Contains (E));
 
+   -----------------------
+   -- Syntactic queries --
+   -----------------------
+
+   function Is_Enclosed_By_Simple_If_Statement (N : Node_Id) return Boolean
+     with Pre => Nkind (N) = N_Procedure_Call_Statement or
+                 Nkind (N) = N_Raise_Statement or
+                 Nkind (N) in N_Raise_xxx_Error;
+   --  Return True if N is enclosed by an if statement that has no
+   --  else or elsif parts and if N is the only statement in the then
+   --  part.  e.g. the call to S in:
+   --    if A then
+   --       S;
+   --    end if;
+
+   function Is_Last_Statement_Of_Subprogram (N : Node_Id) return Boolean
+     with Pre => Nkind (N) = N_Procedure_Call_Statement or
+                 Nkind (N) = N_Raise_Statement or
+                 Nkind (N) in N_Raise_xxx_Error;
+   --  Returns True if N is the last statement at the outermost level
+   --  of the sequence of statements in its enclosing subprogram body.
+
+   function Is_Enclosed_By_Simple_If_Statement (N : Node_Id) return Boolean is
+   begin
+      return Present (Parent (N))
+        and then Nkind (Parent (N)) = N_If_Statement
+        and then Elsif_Parts (Parent (N)) = No_List
+        and then Else_Statements (Parent (N)) = No_List
+        and then List_Length (Then_Statements (Parent (N))) = 1;
+   end Is_Enclosed_By_Simple_If_Statement;
+
+   function Is_Last_Statement_Of_Subprogram (N : Node_Id) return Boolean is
+   begin
+      return Present (Parent (N))
+        and then Nkind (Parent (N)) = N_Handled_Sequence_Of_Statements
+        and then Present (Parent (Parent (N)))
+        and then Nkind (Parent (Parent (N))) = N_Subprogram_Body
+        and then Last (Statements
+                         (Handled_Statement_Sequence
+                            (Parent (Parent (N))))) = N;
+   end Is_Last_Statement_Of_Subprogram;
+
    ----------------------
    -- SPARK Violations --
    ----------------------
@@ -1646,27 +1688,8 @@ package body SPARK_Definition is
                --
                --    2. the very last statement directly within a subprogram.
 
-               if Present (Parent (N))
-                 and then Nkind (Parent (N)) = N_If_Statement
-                 and then Elsif_Parts (Parent (N)) = No_List
-                 and then Else_Statements (Parent (N)) = No_List
-                 and then List_Length (Then_Statements (Parent (N))) = 1
-               then
-                  --  If the raise statement has a String Expression,
-                  --  then it's illegal, otherwise OK.
-                  if Nkind (N) = N_Raise_Statement and then
-                    Present (Expression (N))
-                  then
-                     Mark_Violation (RSWSE, N);
-                  end if;
-
-               elsif Present (Parent (N))
-                 and then Nkind (Parent (N)) = N_Handled_Sequence_Of_Statements
-                 and then Present (Parent (Parent (N)))
-                 and then Nkind (Parent (Parent (N))) = N_Subprogram_Body
-                 and then Last (Statements
-                                  (Handled_Statement_Sequence
-                                     (Parent (Parent (N))))) = N
+               if Is_Enclosed_By_Simple_If_Statement (N) or else
+                 Is_Last_Statement_Of_Subprogram (N)
                then
                   --  If the raise statement has a String Expression,
                   --  then it's illegal, otherwise OK.
@@ -2444,6 +2467,27 @@ package body SPARK_Definition is
 
       if Present (Actuals) then
          Mark_List (Actuals);
+      end if;
+
+      --  Check for calls for No_Return procedures
+
+      if Nkind (N) = N_Procedure_Call_Statement and then
+        Is_Entity_Name (Nam) and then
+        No_Return (Entity (Nam))
+      then
+         --  SPARK RM 6.5.1 (1) says that a call to a No_Return
+         --  procedure is only legal if it is directly nested
+         --  inside an if statement that has no else or elsif
+         --  parts, and the call is the only statement in the then part,
+         --   OR
+         --  if the call is the last statement of a subprogram body
+         if Is_Enclosed_By_Simple_If_Statement (N) or else
+           Is_Last_Statement_Of_Subprogram (N)
+         then
+            null;
+         else
+            Mark_Violation ("Call to No_Return procedure in this context", N);
+         end if;
       end if;
 
       --  If this is an indirect call or the subprogram called is not in SPARK,

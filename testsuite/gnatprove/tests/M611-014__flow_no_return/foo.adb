@@ -9,34 +9,20 @@ is
                       X : out Integer)
    is
    begin
-      if Y >= 0 then
-         X := 0;
-      else
+      if Y < 0 then
          Fail;
       end if;
+      X := 0;
    end Test_01;
-
-   procedure Test_02 (Y :    Integer;
-                      X : out Integer)
-   is
-   begin
-      if Y >= 0 then
-         X := 0;
-      else
-         Fail;
-         X := Y;  --  dead code
-      end if;
-   end Test_02;
 
    --  ok
    function Test_03 (Y : Integer) return Integer
    is
    begin
-      if Y >= 0 then
-         return 0;
-      else
+      if Y < 0 then
          Fail;
       end if;
+      return 0;
    end Test_03;
 
    --  ok
@@ -44,26 +30,12 @@ is
    is
       R : Integer;
    begin
-      if Y >= 0 then
-         R := 0;
-      else
+      if Y < 0 then
          Fail;
       end if;
+      R := 0;
       return R;
    end Test_04;
-
-   function Test_05 (Y : Integer) return Integer
-   is
-      R : Integer;
-   begin
-      if Y >= 0 then
-         R := 0;
-      else
-         Fail;
-         R := -1; -- dead code
-      end if;
-      return R;
-   end Test_05;
 
    procedure Nr_Test_01 with No_Return
    is

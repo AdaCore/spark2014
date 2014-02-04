@@ -1,8 +1,8 @@
-package No_Return is 
-
-   procedure P;
+package No_Return is
 
    procedure Aborting
       with No_Return;
+
+   procedure P;
 
 end No_Return;

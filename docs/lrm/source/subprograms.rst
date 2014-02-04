@@ -1038,8 +1038,12 @@ Nonreturning Procedures
 
 .. _tu-nonreturning_procedures-01:
 
-1. For a call to a nonreturning procedure to be in |SPARK|, it must be immediately
-   enclosed by an if statement which encloses no other statement.
+1. For a call to a nonreturning procedure to be in |SPARK|, it must be either
+
+   * immediately enclosed by an if statement which encloses no other
+     statement; or
+
+   * the last statement of a subprogram.
 
 .. _etu-nonreturning_procedures-lr:
 

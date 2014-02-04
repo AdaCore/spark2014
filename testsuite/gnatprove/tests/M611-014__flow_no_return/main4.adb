@@ -15,9 +15,6 @@ is
      Depends => (Lights.State =>+ Sensor.State),
      No_Return;
 
-   procedure Shutdown
-   with Global => (Output => Lights.State);
-
    procedure Control
    is
       Old : Boolean := False;
@@ -32,18 +29,10 @@ is
       end loop;
    end Control;
 
-   procedure Shutdown
-   is
-   begin
-      Lights.Explode;
-   end Shutdown;
-
 begin
 
    Lights.Init;
 
    Control;
-
-   Shutdown;
 
 end Main4;

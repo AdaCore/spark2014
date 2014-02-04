@@ -1,0 +1,11 @@
+no_return_illegal.adb:25:10: Call to No_Return procedure in this context is not allowed in SPARK
+no_return_illegal.adb:25:10: violation of pragma SPARK_Mode at /tmp/tmp-test-M611-010__no_return_illegal-12205/src/test.adc:1
+no_return_illegal.adb:33:10: Call to No_Return procedure in this context is not allowed in SPARK
+no_return_illegal.adb:33:10: violation of pragma SPARK_Mode at /tmp/tmp-test-M611-010__no_return_illegal-12205/src/test.adc:1
+no_return_illegal.adb:42:10: Call to No_Return procedure in this context is not allowed in SPARK
+no_return_illegal.adb:42:10: violation of pragma SPARK_Mode at /tmp/tmp-test-M611-010__no_return_illegal-12205/src/test.adc:1
+   compilation of no_return_illegal.adb failed
+
+
+gnatprove: error during analysis and translation to intermediate language, aborting.
+gprbuild: *** compilation phase failed
