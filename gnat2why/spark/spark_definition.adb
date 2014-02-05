@@ -1106,6 +1106,7 @@ package body SPARK_Definition is
          --  The following nodes are never generated in GNATprove mode
 
          when N_Expression_With_Actions |
+              N_Compound_Statement |
               N_Unchecked_Expression    =>
             raise Program_Error;
 
