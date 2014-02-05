@@ -12,6 +12,33 @@ zhangzhi@ksu.edu
 Require Export language.
 Require Export util.
 
+(** * Return values/states *)
+(** Statement and expressions evaluation returns one of the following results:
+    - normal result;
+    - run time errors, which are required to be detected at run time,
+      for example, overflow check and division by zero check;
+    - unterminated state caused by infinite loop (only for functional semantics);
+    - abnormal state, which includes compile time errors
+      (for example, type checks failure and undefined variables), 
+      bounded errors and erroneous execution. 
+      In the future, the abnormal state can be refined into these 
+      more precise categories (1.1.5);
+*)
+
+Inductive Return (A:Type): Type :=
+    | Normal: A -> Return A
+    | Run_Time_Error: Return A
+    | Unterminated: Return A
+    | Abnormal: Return A.
+(* TODO: add stuff in error states *)
+Arguments Normal [A] a.
+Arguments Run_Time_Error {A}.
+Arguments Unterminated {A}.
+Arguments Abnormal {A}.
+
+
+
+
 (** * Value Types *) 
 
 (** the range of 32-bit (singed/unsigned) integer type: 

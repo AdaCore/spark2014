@@ -161,6 +161,10 @@ Inductive UpdateList : list idnum -> list val -> store -> store -> Prop :=
    currently running. *)
 Definition stack := list store.
 
+
+
+
+
 Function fetchG (x : idnum) (s : stack) := 
     match s with 
     | sto :: s' =>
@@ -233,6 +237,18 @@ Proof.
     + reflexivity.
 Qed.
 
+
+Require Import Setoid.
+Require Import Morphisms.
+
+Lemma stack_eq_length_refl2: reflexive _ stack_eq_length.
+Proof.
+  hnf.
+  intros x.
+  apply stack_eq_length_refl.
+  reflexivity.
+Qed.
+
 Lemma stack_eq_length_sym: forall s s', stack_eq_length s s' -> stack_eq_length s' s.
 Proof.
   intros s.
@@ -264,6 +280,35 @@ Proof.
   + transitivity (List.length a);auto.
 Qed.
 
+Lemma stack_eq_length_trans2: transitive _ stack_eq_length.
+Proof.
+  hnf.
+  intros x y z H H0.
+  apply stack_eq_length_trans with (s':= y);auto.
+Qed.
+  
+
+
+
+Add Parametric Relation: stack stack_eq_length
+    reflexivity proved by stack_eq_length_refl2
+    symmetry proved by stack_eq_length_sym
+    transitivity proved by stack_eq_length_trans2
+      as stack_eq_length_equiv_rel.
+
+Add Parametric Morphism: (@List.app store)
+    with signature stack_eq_length ==> stack_eq_length ==> stack_eq_length
+      as app_morph_stack_eq_length.
+Proof.
+  intros x y H.
+  induction H;simpl;intros.
+  - assumption.
+  - constructor 2.
+    + apply IHstack_eq_length.
+      assumption.
+    + assumption.
+Qed.
+
 
 Lemma updateG_stack_eq_length:
   forall s x v s', updateG s x v = Some s' -> stack_eq_length s s'.
@@ -292,19 +337,107 @@ Proof.
 Qed.
 
 
+Inductive Cut_until: stack -> procnum -> stack -> stack -> Prop :=
+  Cut_until1: forall pname e s,
+    reside pname e = true -> (* TODO: define an inductive here *)
+    Cut_until (e::s) pname nil (e::s)
+| Cut_until2: forall pname e s1 s2 s3,
+    reside pname e = false -> (* TODO: define an inductive here *)
+    Cut_until s1 pname s2 s3 -> 
+    Cut_until (e::s1) pname (e::s2) s3.
 
 
-(** * Program State *)
-(** Statement evaluation returns one of the following results:
-    - normal state;
-    - run time errors, which are required to be detected at run time,
-      for example, overflow check and division by zero check;
-    - unterminated state caused by infinite loop;
-    - abnormal state, which includes compile time errors
-      (for example, type checks failure and undefined variables), 
-      bounded errors and erroneous execution. 
-      In the future, the abnormal state can be refined into these 
-      more precise categories (1.1.5);
-*)
+Function cut_until s pbname :=
+  match s with
+    | nil => None
+    | e::s' =>
+      if reside pbname e then Some (nil,s)
+      else
+        match cut_until s' pbname with
+          | None => None
+          | Some (forget,called) => Some (e::forget , called)
+        end
+  end.
+
+
+Lemma cut_until_correct : forall s pbname s' s'',
+                            Cut_until s pbname s' s'' -> cut_until s pbname = Some (s',s'').
+Proof.
+  intros s pbname s' s'' H.
+  induction H;simpl.
+  - rewrite H.
+    reflexivity.
+  - rewrite H.
+    rewrite IHCut_until.
+    reflexivity.
+Qed.
+
+
+Lemma cut_until_complete1 : forall s pbname s' s'',
+                            cut_until s pbname = Some (s',s'')
+                            -> Cut_until s pbname s' s''.
+Proof.
+  intros s pbname.
+  functional induction cut_until s pbname;simpl;intros s1 s2 H;try discriminate.
+  - injection H.
+    clear H.
+    intros;subst.
+    constructor 1.
+    assumption.
+  - injection H. clear H. intros ; subst.
+    constructor 2.
+    + assumption.
+    + auto.
+Qed.
+
+Lemma cut_until_complete2 : forall s pbname s' s'',
+                            cut_until s pbname = None
+                            -> ~ Cut_until s pbname s' s''.
+Proof.
+  intros s pbname s' s'' H.
+  intro abs.
+  apply cut_until_correct in abs.
+  rewrite abs in H.
+  discriminate.
+Qed.
+
+Lemma Cut_until_def : forall s pbname s1 s2, Cut_until s pbname s1 s2 -> s = s1++s2.
+Proof.
+  intros s pbname s1 s2 H.
+  induction H.
+  - reflexivity.
+  - rewrite IHCut_until.
+    reflexivity.
+Qed.
+
+
+Lemma Cut_until_def2 : forall s pbname s1 s2,
+                         Cut_until s pbname s1 s2
+                         -> (forall e, List.In e s1 -> reside pbname e = false).
+Proof.
+  intros s pbname s1 s2 H.
+  induction H;intros.
+  - inversion H0.
+  - inversion H1; clear H1; subst.
+    + assumption.
+    + auto.
+Qed.
+
+Lemma Cut_until_def3 : forall s pbname s1 s2 e s2',
+                         Cut_until s pbname s1 s2
+                         -> s2 = e::s2'
+                         -> reside pbname e = true.
+Proof.
+  intros s pbname s1 s2 e s2' H.
+  revert e s2'.
+  induction H;intros.
+  - injection H0. clear H0; intros ; subst.
+    assumption.
+  - subst.
+    apply IHCut_until with s2'.
+    reflexivity.
+Qed.
+
+
 
 

@@ -1,3 +1,5 @@
+* Feb 5, 2014. The cutting semantic is now defined for procedures.
+
 * Feb 3, 2014. The stack is now a stack of frames.
 
 * Feb 3, 2014. Plus_Unary has been added as a second unary operator,

@@ -9,6 +9,7 @@ zhangzhi@ksu.edu
 >>
 *)
 
+Require Import LibTactics.
 Require Export values.
 Require Export environment.
 Require Export util.
@@ -266,6 +267,7 @@ Inductive eval_decl: stack -> store -> declaration -> Return store -> Prop :=
 
  *)
 
+
 Inductive eval_stmt: stack -> statement -> Return stack -> Prop := 
     | eval_S_Assignment1: forall s e ast_num x,
         eval_expr s e Run_Time_Error ->
@@ -312,29 +314,32 @@ Inductive eval_stmt: stack -> statement -> Return stack -> Prop :=
           Copy_in s (procedure_parameter_profile pb) lexp Run_Time_Error ->
           eval_stmt s (S_ProcCall ast_num pbname lexp) Run_Time_Error
     | eval_S_Proc_rtedecl:
-        forall pbname (pb:procedure_body) lexp s ast_num prefix,
-          fetchG pbname s = Some (Procedure pb) ->
-          Copy_in s (procedure_parameter_profile pb) lexp (Normal prefix) ->
+        forall pbname (pb:procedure_body) lexp s_caller s_forget s ast_num prefix,
+          fetchG pbname s_caller = Some (Procedure pb) ->
+          Copy_in s_caller (procedure_parameter_profile pb) lexp (Normal prefix) ->
+          Cut_until s_caller pbname s_forget s -> (* s_caller = s_forget++s *)
           eval_decl s prefix (procedure_declarative_part pb) Run_Time_Error ->
-          eval_stmt s (S_ProcCall ast_num pbname lexp) Run_Time_Error
+          eval_stmt s_caller (S_ProcCall ast_num pbname lexp) Run_Time_Error
     | eval_S_Proc_rtebody:
-        forall pbname (pb:procedure_body) lexp s ast_num s2 prefix,
-          fetchG pbname s = Some (Procedure pb) ->
-          Copy_in s (procedure_parameter_profile pb) lexp (Normal prefix) ->
+        forall pbname (pb:procedure_body) lexp s_caller s_forget s ast_num s2 prefix,
+          fetchG pbname s_caller = Some (Procedure pb) ->
+          Copy_in s_caller (procedure_parameter_profile pb) lexp (Normal prefix) ->
+          Cut_until s_caller pbname s_forget s -> (* s_caller = s_forget++s *)
           eval_decl s prefix (procedure_declarative_part pb) (Normal s2) ->
           eval_stmt (s2::s) (procedure_statements pb) Run_Time_Error ->
-          eval_stmt s (S_ProcCall ast_num pbname lexp) Run_Time_Error
+          eval_stmt s_caller (S_ProcCall ast_num pbname lexp) Run_Time_Error
     | eval_S_Proc:
-        forall pbname (pb:procedure_body) lexp s ast_num s2 s3 s' s'' slocal
-               prefix prefix',
-          fetchG pbname s = Some (Procedure pb) ->
-          Copy_in s (procedure_parameter_profile pb) lexp (Normal prefix) ->
-          eval_decl s prefix (procedure_declarative_part pb) (Normal s2) ->
+        forall pbname (pb:procedure_body) lexp s_caller s_forget s ast_num
+               s2 s3 s' s'' slocal prefix prefix',
+          fetchG pbname s_caller = Some (Procedure pb) ->
+          Copy_in s_caller (procedure_parameter_profile pb) lexp (Normal prefix) ->
+          Cut_until s_caller pbname s_forget s -> (* s_caller = s_forget++s *)
+          eval_decl s prefix (procedure_declarative_part pb) (Normal s2) ->          
           eval_stmt (s2::s) (procedure_statements pb) (Normal s3) ->
           s3 = (slocal ++ prefix') :: s' -> (* extract parameters from local frame *)
           List.length prefix = List.length prefix' ->
-          Copy_out prefix' (procedure_parameter_profile pb) lexp s' s'' ->
-          eval_stmt s (S_ProcCall ast_num pbname lexp) (Normal s'')
+          Copy_out prefix' (procedure_parameter_profile pb) lexp (s_forget++s') s'' ->
+          eval_stmt s_caller (S_ProcCall ast_num pbname lexp) (Normal s'')
 .
 
 
@@ -351,7 +356,7 @@ end
 -----------------------
 *)
 Definition proc1:procedure_body := (mkprocedure_body
-           1 2 nil nil
+           1 101 nil nil
              (D_Object_declaration
                 {|
                   declaration_astnum := 3;
@@ -373,6 +378,9 @@ Proof.
   - simpl.
     instantiate (1 := nil).
     constructor.
+  - constructor 1.
+    reflexivity.
+    
   - econstructor 2.
     + reflexivity.
     + simpl.
@@ -404,7 +412,7 @@ begin
 end 
 *)
 Definition proc2:procedure_body := (mkprocedure_body
-           1 2 nil nil
+           1 101 nil nil
              (D_Sequence
                 (D_Object_declaration
                    {|
@@ -446,6 +454,8 @@ Proof.
   eapply eval_S_Proc; try now (simpl; eauto).
   - simpl.
     constructor.
+  - constructor 1.
+    reflexivity.
   - 
 (*     instantiate (1:= ((5, Value (Int 37))::(4, Value (Int 34))::s3)). *)
     unfold sto3, sto4, proc1.
@@ -699,6 +709,11 @@ Function f_eval_decl (s: stack) (sto:store) (c: declaration) {struct c}: Return 
    or an abnormal state; run time checks (for example, division by 
    zero check) are encoded inside the functional semantics;
 *)
+
+
+
+
+
 Function f_eval_stmt k (s: stack) (c: statement) {struct k}: Return stack := 
   match k with
   | 0 => Unterminated
@@ -749,20 +764,24 @@ Function f_eval_stmt k (s: stack) (c: statement) {struct k}: Return stack :=
         | Some (Procedure pb) => 
           match copy_in s (procedure_parameter_profile pb) lexp with
             | Normal prefx => 
-              match f_eval_decl s prefx (procedure_declarative_part pb) with
-                | Normal s2 =>
-                  match f_eval_stmt k' (s2::s) (procedure_statements pb) with
-                    | Normal (frame::s') =>
-                      match split1 _ (List.length frame - List.length prefx) frame with
-                        | Some (slocal,prefx') =>
-                          (copy_out prefx' (procedure_parameter_profile pb) lexp s')
-                        | None => Abnormal (* erronous store size *)
+              match cut_until s pbname with
+                | Some (s_forget, s_called) =>
+                  match f_eval_decl s_called prefx (procedure_declarative_part pb) with
+                    | Normal s2 =>
+                      match f_eval_stmt k' (s2::s_called) (procedure_statements pb) with
+                        | Normal (frame::s') =>
+                          match split1 _ (List.length frame - List.length prefx) frame with
+                            | Some (slocal,prefx') =>
+                              (copy_out prefx' (procedure_parameter_profile pb) lexp (s_forget++s'))
+                            | None => Abnormal (* erronous store size *)
+                          end
+                        | Run_Time_Error => Run_Time_Error
+                        | _ => Abnormal (* erronous stack size or abnormal result *)
                       end
                     | Run_Time_Error => Run_Time_Error
-                    | _ => Abnormal (* erronous stack size or abnormal result *)
+                    | _ => Abnormal
                   end
-                | Run_Time_Error => Run_Time_Error
-                | _ => Abnormal
+                | None => Abnormal (* procedure doesn't exist *)
               end
             (* left and right are not of the same type (return_state
                store) and (return_state stack) *)
@@ -1113,6 +1132,7 @@ Ltac apply_inv :=
     | H:fetchG _ _ = _ |- _ => rewrite H
     | H:split2 _ _ _ = _ |- _ => rewrite H
     | H:split1 _ _ _ = _ |- _ => rewrite H
+    | H:cut_until _ _ = _ |- _ => rewrite H
   end;subst;simpl;auto.
 
 Ltac invle := match goal with
@@ -1142,7 +1162,7 @@ Proof.
   - invle; repeat apply_inv. rewrite (IHr _ e2); auto with arith.
   - invle; repeat apply_inv.
   - invle; repeat apply_inv.
-    + rewrite (IHr _ e4).
+    + rewrite (IHr _ e5).
       repeat apply_inv.
       auto with arith.
 Qed.
@@ -1179,11 +1199,11 @@ Proof.
   - invle; 
     repeat apply_inv.   
   - invle; repeat apply_inv.
-    rewrite (f_eval_stmt_fixpoint _ _ _ _ e4); auto with arith.
-    rewrite e5.
+    rewrite (f_eval_stmt_fixpoint _ _ _ _ e5); auto with arith.
+    rewrite e6.
     assumption.
   - invle; repeat apply_inv.
-    rewrite  (IHr e4 m);auto with arith.
+    rewrite  (IHr e5 m);auto with arith.
   - clear H.
     invle; repeat apply_inv.
   - invle; repeat apply_inv.
@@ -1442,15 +1462,19 @@ Proof.
       reflexivity.
   - apply stack_eq_length_refl.
     reflexivity.
-  - 
+  -  
+    generalize (Cut_until_def _ _ _ _ H1).
+    intros hcutin.
+    subst.
     specialize (IHeval_stmt ((slocal ++ prefix') :: s') eq_refl).
     inversion IHeval_stmt.
     clear IHeval_stmt.
     subst.
-    apply stack_eq_length_trans with s'.
-    + assumption.
-    + apply Copy_out_stack_eq_length in H5.
-      assumption.
+    apply Copy_out_stack_eq_length in H6.
+    transitivity (s_forget ++ s').
+    rewrite H9.
+    reflexivity.
+    assumption.
 Qed.
 
 Lemma f_eval_decl_correct :
@@ -1606,23 +1630,25 @@ Proof.
   - (* S_ProcCall *)
     clear H.
     (* cleaning by going to inductive defs *)
-    apply split1_correct in e5.
-    destruct e5 as [hsplit1 hsplit2].
+    apply split1_correct in e6.
+    destruct e6 as [hsplit1 hsplit2].
     rewrite H1.
     subst.
-    apply f_eval_decl_correct in e3.    
-    apply IHr in e4.
+    apply f_eval_decl_correct in e4.    
+    apply IHr in e5.
     apply copy_in_correct in e2.
     apply copy_out_correct in H1.
     (* ******* *)
     eapply eval_S_Proc with (s':=s') (prefix':=prefx')(prefix:=prefx)(slocal:=slocal);eauto.
-    eapply eval_decl_store_length with (st:=s2) in e3;auto.
-    destruct e3 as [slocal' ?]. subst.
-    apply eval_stmt_store_length with (st:=((slocal ++ prefx') :: s')) in e4;auto.
-    inversion e4. clear e4. subst.
-    rewrite <- H5 in hsplit1.
-    setoid_rewrite app_length in H5.
-    setoid_rewrite app_length in hsplit1.
+    + apply cut_until_complete1.
+      assumption.
+    + eapply eval_decl_store_length with (st:=s2) in e4;auto.
+      destruct e4 as [slocal' ?]. subst.
+      apply eval_stmt_store_length with (st:=((slocal ++ prefx') :: s')) in e5;auto.
+      inversion e5. clear e5. subst.
+      rewrite <- H5 in hsplit1.
+      setoid_rewrite app_length in H5.
+      setoid_rewrite app_length in hsplit1.
     omega.
 Qed.
 
@@ -1674,13 +1700,24 @@ Proof.
   - econstructor.
     rm_f_eval_expr.
   - elim (copy_out_no_rte _ _ _ _ H1).
-  - apply eval_S_Proc_rtebody with (prefix:=prefx) (s2:=s2) (pb:=pb);auto. 
+  - apply eval_S_Proc_rtebody with 
+    (prefix:=prefx)
+      (s2:=s2)
+      (s:=s_called)
+      (s_forget:=s_forget)
+      (pb:=pb);auto. 
     + apply copy_in_correct.
+      assumption.
+    + apply cut_until_complete1.
       assumption.
     + apply f_eval_decl_correct.
       assumption.
-  - eapply eval_S_Proc_rtedecl with (prefix:=prefx);eauto.
+  - apply eval_S_Proc_rtedecl
+    with (prefix:=prefx) (pb:=pb) (s_forget:=s_forget) (s:=s_called)
+    ;eauto.
     + apply copy_in_correct.
+      assumption.
+    + apply cut_until_complete1.
       assumption.
     + eapply f_eval_decl_correct2.
       assumption.
@@ -1741,6 +1778,9 @@ Ltac apply_rewrite :=
     | h: copy_in _ _ _ = _ |- _ => rewrite h
     | h: Copy_in _ _ _ Run_Time_Error |- _ => rewrite <- copy_in_correct2 in h;rewrite h
     | h: Copy_in _ _ _ (Normal _) |- _ => rewrite <- copy_in_correct in h;rewrite h
+    | h: cut_until _ _ = Some(_, _) |- _ => rewrite h
+    | h: cut_until _ _ = None |- _ => rewrite h
+    | h: Cut_until _ _ _ _ |- _ => apply cut_until_correct in h;rewrite h
     end; auto.
 
 Theorem f_eval_stmt_complete : forall s c s',
@@ -1792,27 +1832,26 @@ Proof.
   - exists 1%nat; simpl.
     subst.
     repeat apply_rewrite.
-    apply f_eval_decl_complete in H1.
-    rewrite H1.
+    apply f_eval_decl_complete in H2.
+    rewrite H2.
     reflexivity.
   - destruct IHeval_stmt as [k IH].
     exists (S k).
     simpl.
-    subst.
-    apply f_eval_decl_complete in H1.
     repeat apply_rewrite.
-    rewrite H1.
+    apply f_eval_decl_complete in H2.
+    rewrite H2.
     apply_rewrite.
   - destruct IHeval_stmt as [k IH].
     exists (S k).
     simpl.
     subst.
     repeat apply_rewrite.
-    apply f_eval_decl_complete in H1.
-    rewrite H1.
+    apply f_eval_decl_complete in H2.
+    rewrite H2.
     repeat apply_rewrite.
     repeat setoid_rewrite app_length.
-    rewrite H4.
+    rewrite H5.
     assert (heq:Datatypes.length slocal + Datatypes.length prefix' -
         Datatypes.length prefix' = Datatypes.length slocal) by omega.
     rewrite heq.
