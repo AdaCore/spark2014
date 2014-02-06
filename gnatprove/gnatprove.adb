@@ -726,6 +726,7 @@ procedure Gnatprove is
          when Opt.Normal         => return "on";
       end case;
    end To_String;
+
    ----------------------
    -- Translate_To_Why --
    ----------------------
