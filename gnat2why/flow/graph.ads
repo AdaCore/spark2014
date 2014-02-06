@@ -512,8 +512,8 @@ package Graph is
                                    Marked : Boolean;
                                    Colour : Edge_Colours)
                                    return Edge_Display_Info);
-   --  Write the graph G in dot format to Filename, using the PP
-   --  function to pretty-print each vertex.
+   --  Write the graph G in dot format to Filename, using supplied
+   --  functions Node_Info and Edge_Info to pretty-print each vertex.
 
    procedure Write_Pdf_File
      (G         : T'Class;
