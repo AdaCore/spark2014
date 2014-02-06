@@ -1,6 +1,15 @@
 package body Foo
 is
 
+   type Dt (Found : Boolean) is record
+      case Found is
+         when True =>
+            Index : Positive;
+         when others =>
+            null;
+      end case;
+   end record;
+
    procedure Test_01_Ok (A : in String;
                          B : out Natural)
    with Depends => (B => A)
@@ -53,6 +62,31 @@ is
       A := (others => ' ');
       A (A'First) := 'x';
    end Test_05_Ok;
+
+   procedure Test_06_Ok (A : out String)
+   with Depends => (A => A)
+   is
+   begin
+      Test_05_Ok (A);
+   end Test_06_Ok;
+
+   procedure Test_07_Ok (A : out DT)
+   with Depends => (A => A)
+   is
+   begin
+      case A.Found is
+         when True => A := (Found => True,
+                            Index => 1);
+         when False => A := (Found => False);
+      end case;
+   end Test_07_Ok;
+
+   procedure Test_08_Ok (A : out DT)
+   with Depends => (A => A)
+   is
+   begin
+      Test_07_Ok (A);
+   end Test_08_Ok;
 
    --  The customer testcase below.
 
