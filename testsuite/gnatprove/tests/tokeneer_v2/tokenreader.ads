@@ -27,7 +27,7 @@ package TokenReader
   with SPARK_Mode,
        Abstract_State => (State,
                           (Status with External => Async_Writers),
-                          (Input with External => Async_Writers),
+                          (Input  with External => Async_Writers),
                           (Output with External => Async_Readers)),
        Initializes    => Status
 is
@@ -56,12 +56,12 @@ is
                       In_Out => (AuditLog.FileState,
                                  AuditLog.State)),
           Depends => ((AuditLog.FileState,
-                       AuditLog.State) => (AuditLog.FileState,
-                                           AuditLog.State,
-                                           Clock.Now,
-                                           ConfigData.State,
-                                           Status),
-                      State => Status);
+                       AuditLog.State)     => (AuditLog.FileState,
+                                               AuditLog.State,
+                                               Clock.Now,
+                                               ConfigData.State,
+                                               Status),
+                      State                => Status);
 
    ------------------------------------------------------------------
    -- Poll
@@ -83,16 +83,16 @@ is
                                  AuditLog.State,
                                  State)),
           Depends => ((AuditLog.FileState,
-                       AuditLog.State) => (AuditLog.FileState,
-                                           AuditLog.State,
-                                           Clock.Now,
-                                           ConfigData.State,
-                                           Reader,
-                                           State,
-                                           Status),
-                      State =>+ (Input,
-                                 Reader,
-                                 Status));
+                       AuditLog.State)     => (AuditLog.FileState,
+                                               AuditLog.State,
+                                               Clock.Now,
+                                               ConfigData.State,
+                                               Reader,
+                                               State,
+                                               Status),
+                      State                =>+ (Input,
+                                                Reader,
+                                                Status));
 
    ------------------------------------------------------------------
    -- TheTokenPresence
@@ -104,7 +104,7 @@ is
    ------------------------------------------------------------------
 
    function TheTokenPresence (Reader : ReaderT) return BasicTypes.PresenceT
-     with Global  => State;
+     with Global => State;
 
    ------------------------------------------------------------------
    -- TheTokenID
@@ -115,8 +115,8 @@ is
    -- traceunit : C.TokenReader.TheTokenID
    ------------------------------------------------------------------
 
-   function TheTokenID (Reader : ReaderT) return  TokenTypes.TokenIDT
-     with Global  => State;
+   function TheTokenID (Reader : ReaderT) return TokenTypes.TokenIDT
+     with Global => State;
 
    ------------------------------------------------------------------
    -- TheTokenTry
@@ -127,8 +127,8 @@ is
    -- traceunit : C.TokenReader.TheTokenTry
    ------------------------------------------------------------------
 
-   function TheTokenTry (Reader : ReaderT) return  TokenTypes.TryT
-     with Global  => State;
+   function TheTokenTry (Reader : ReaderT) return TokenTypes.TryT
+     with Global => State;
 
    ------------------------------------------------------------------
    -- GetCertificate
@@ -148,10 +148,10 @@ is
      with Global  => (Input  => (Input,
                                  State,
                                  Status)),
-          Depends => (Found => (CertType,
-                                Reader,
-                                State,
-                                Status),
+          Depends => (Found   => (CertType,
+                                  Reader,
+                                  State,
+                                  Status),
                       RawCert => (CertType,
                                   Input,
                                   Reader,
@@ -174,9 +174,9 @@ is
      with Global  => (Input  => (State,
                                  Status),
                       Output => Output),
-          Depends => (Output => (RawCert,
-                                 State,
-                                 Status),
+          Depends => (Output  => (RawCert,
+                                  State,
+                                  Status),
                       Success => (State,
                                   Status));
 

@@ -54,8 +54,8 @@ is
                       Output => State,
                       In_Out => FileState),
           Depends => (FileState =>+ null,
-                      State => (ConfigData.State,
-                                FileState)),
+                      State     => (ConfigData.State,
+                                    FileState)),
           Post    => Valid_NumberLogEntries;
 
    ------------------------------------------------------------------
@@ -80,14 +80,14 @@ is
                       In_Out => (FileState,
                                  State)),
           Depends => ((FileState,
-                       State) => (Clock.Now,
-                                  ConfigData.State,
-                                  Description,
-                                  ElementID,
-                                  FileState,
-                                  Severity,
-                                  State,
-                                  User)),
+                       State)     => (Clock.Now,
+                                      ConfigData.State,
+                                      Description,
+                                      ElementID,
+                                      FileState,
+                                      Severity,
+                                      State,
+                                      User)),
           Pre     => Valid_NumberLogEntries and Description'First = 1,
           Post    => Valid_NumberLogEntries;
 
@@ -107,14 +107,14 @@ is
                                  ConfigData.State),
                       In_Out => (FileState,
                                  State)),
-          Depends => (Archive => (FileState,
-                                  State),
+          Depends => (Archive     => (FileState,
+                                      State),
                       (FileState,
-                       State) => (Clock.Now,
-                                  ConfigData.State,
-                                  FileState,
-                                  State,
-                                  User)),
+                       State)     => (Clock.Now,
+                                      ConfigData.State,
+                                      FileState,
+                                      State,
+                                      User)),
           Pre     => Valid_NumberLogEntries,
           Post    => Valid_NumberLogEntries;
 
@@ -134,11 +134,11 @@ is
                       In_Out => (FileState,
                                  State)),
           Depends => ((FileState,
-                       State) => (Clock.Now,
-                                  ConfigData.State,
-                                  FileState,
-                                  State,
-                                  User)),
+                       State)     => (Clock.Now,
+                                      ConfigData.State,
+                                      FileState,
+                                      State,
+                                      User)),
           Pre     => Valid_NumberLogEntries,
           Post    => Valid_NumberLogEntries;
 
@@ -165,7 +165,7 @@ is
    -- traceto   : FD.AuditLog.State
    ------------------------------------------------------------------
    function TheAuditAlarm return AlarmTypes.StatusT
-     with Global  => State;
+     with Global => State;
 
    ------------------------------------------------------------------
    -- SystemFaultOccurred
@@ -177,6 +177,6 @@ is
    -- traceunit : C.AuditLog.SystemFaultOccurred
    ------------------------------------------------------------------
    function SystemFaultOccurred return Boolean
-     with Global  => State;
+     with Global => State;
 
 end AuditLog;

@@ -38,7 +38,6 @@ package DoorAPI is
    --    comms, then Error is returned.
    --
    ------------------------------------------------------------------
-
    function GetDoorState return DoorStateT
      with Global => null;
 

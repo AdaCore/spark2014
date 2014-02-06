@@ -109,13 +109,14 @@ package CertProcessing is
    -- Traceunit : C.CertProcessing.ExtractIDCertData
    -- Traceto   : FD.Types.Certificates
    ------------------------------------------------------------------
-
    procedure ExtractIDCertData(
                    RawIDCert      : in     CertTypes.RawCertificateT;
                    IDCert         :    out IDCertDataT;
                    ExtractSuccess :    out Boolean
                    )
-     with Depends => ((ExtractSuccess, IDCert) => RawIDCert);
+     with Global  => null,
+          Depends => ((ExtractSuccess,
+                       IDCert)         => RawIDCert);
 
    ------------------------------------------------------------------
    -- ExtractPrivCertData
@@ -133,7 +134,9 @@ package CertProcessing is
                    PrivCert       :    out PrivCertDataT;
                    ExtractSuccess :    out Boolean
                    )
-     with Depends => ((ExtractSuccess, PrivCert) => RawPrivCert);
+     with Global  => null,
+          Depends => ((ExtractSuccess,
+                       PrivCert)       => RawPrivCert);
 
 
    ------------------------------------------------------------------
@@ -152,7 +155,9 @@ package CertProcessing is
                    IACert         :    out IACertDataT;
                    ExtractSuccess :    out Boolean
                    )
-     with Depends => ((ExtractSuccess, IACert) => RawIACert);
+     with Global  => null,
+          Depends => ((ExtractSuccess,
+                       IACert)         => RawIACert);
 
 
    ------------------------------------------------------------------
@@ -171,7 +176,9 @@ package CertProcessing is
                    AuthCert       :    out AuthCertDataT;
                    ExtractSuccess :    out Boolean
                    )
-     with Depends => ((AuthCert, ExtractSuccess) => RawAuthCert);
+     with Global  => null,
+          Depends => ((AuthCert,
+                       ExtractSuccess) => RawAuthCert);
 
 
    ------------------------------------------------------------------
@@ -189,7 +196,9 @@ package CertProcessing is
                    RawData       :    out CertTypes.RawDataT;
                    ObtainSuccess :    out Boolean
                    )
-     with Depends => ((ObtainSuccess, RawData) => RawCert);
+     with Global  => null,
+          Depends => ((ObtainSuccess,
+                       RawData)       => RawCert);
 
 
    ------------------------------------------------------------------
@@ -207,7 +216,9 @@ package CertProcessing is
                    SignatureData :    out CertTypes.SignatureT;
                    ObtainSuccess :    out Boolean
                    )
-     with Depends => ((ObtainSuccess, SignatureData) => RawCert);
+     with Global  => null,
+          Depends => ((ObtainSuccess,
+                       SignatureData) => RawCert);
 
 
    ------------------------------------------------------------------
@@ -226,7 +237,7 @@ package CertProcessing is
                    AuthCert            : in     AuthCertDataT;
                    UnsignedRawAuthCert :    out CertTypes.RawCertificateT
                    )
-     with Global => null,
+     with Global  => null,
           Depends => (UnsignedRawAuthCert => AuthCert);
 
 
@@ -245,6 +256,8 @@ package CertProcessing is
                    UnsignedRawAuthCert : in     CertTypes.RawCertificateT;
                    SignatureData       : in     CertTypes.SignatureT;
                    SignedRawAuthCert   :    out CertTypes.RawCertificateT)
-     with Depends => (SignedRawAuthCert => (SignatureData, UnsignedRawAuthCert));
+     with Global  => null,
+          Depends => (SignedRawAuthCert => (SignatureData,
+                                            UnsignedRawAuthCert));
 
 end CertProcessing;

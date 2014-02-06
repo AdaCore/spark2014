@@ -250,10 +250,10 @@ is
       LocalDigest      : Crypto.DigestT;
       LocalReturnValue : Crypto.ReturnValueT;
    begin
-      LocalDigest := ( DigestID     => Digest.DigestID,
-                       SignReturn   => GetCryptoReturn(Digest.SignReturn),
-                       VerifyReturn => GetCryptoReturn(Digest.VerifyReturn),
-                       Pad          => (others => 0));
+      LocalDigest := (DigestID     => Digest.DigestID,
+                      SignReturn   => GetCryptoReturn(Digest.SignReturn),
+                      VerifyReturn => GetCryptoReturn(Digest.VerifyReturn),
+                      Pad          => (others => 0));
 
       Crypto.Sign(Mechanism   => Mechanism,
                   KeyHandle   => KeyHandle,
@@ -280,10 +280,10 @@ is
       LocalDigest      : Crypto.DigestT;
       LocalReturnValue : Crypto.ReturnValueT;
    begin
-      LocalDigest := ( DigestID     => Digest.DigestID,
-                       SignReturn   => GetCryptoReturn(Digest.SignReturn),
-                       VerifyReturn => GetCryptoReturn(Digest.VerifyReturn),
-                       Pad          => (others => 0));
+      LocalDigest := (DigestID     => Digest.DigestID,
+                      SignReturn   => GetCryptoReturn(Digest.SignReturn),
+                      VerifyReturn => GetCryptoReturn(Digest.VerifyReturn),
+                      Pad          => (others => 0));
 
       Crypto.Verify(Mechanism   => Mechanism,
                     KeyHandle   => KeyHandle,

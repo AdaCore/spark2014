@@ -26,7 +26,6 @@ package AlarmAPI is
    --    Activates the alarm.
    --
    ------------------------------------------------------------------
-
    procedure Activate;
 
    ------------------------------------------------------------------
@@ -36,7 +35,6 @@ package AlarmAPI is
    --    Deactivates the alarm.
    --
    ------------------------------------------------------------------
-
    procedure Deactivate;
 
 

@@ -32,7 +32,6 @@ is
    --    This has no function as the intialisation is done for all
    --    tokens in the user token interface.
    ------------------------------------------------------------------
-
    procedure Init is
    begin
       null;
@@ -44,7 +43,6 @@ is
    -- Implementation Notes:
    --    None.
    ------------------------------------------------------------------
-
    procedure Poll is
    begin
       TokenReader.Poll(Reader => TokenReader.Admin);
@@ -56,7 +54,6 @@ is
    -- Implementation Notes:
    --    None.
    ------------------------------------------------------------------
-
    function TheTokenPresence return BasicTypes.PresenceT is
      (TokenReader.TheTokenPresence(Reader => TokenReader.Admin));
 
@@ -66,7 +63,6 @@ is
    -- Implementation Notes:
    --    None.
    ------------------------------------------------------------------
-
    function TheTokenID return TokenTypes.TokenIDT is
      (TokenReader.TheTokenID(Reader => TokenReader.Admin));
 
@@ -76,7 +72,6 @@ is
    -- Implementation Notes:
    --    None.
    ------------------------------------------------------------------
-
    function TheTokenTry return  TokenTypes.TryT is
      (TokenReader.TheTokenTry(Reader => TokenReader.Admin));
 
@@ -86,7 +81,6 @@ is
    -- Implementation Notes:
    --    None.
    ------------------------------------------------------------------
-
    procedure GetCertificate
      (CertType  : in     CertTypes.CertificateT;
       RawCert   :    out CertTypes.RawCertificateT;

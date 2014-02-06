@@ -46,7 +46,8 @@ is
    --
    ------------------------------------------------------------------
    function AddDuration (T : Clock.TimeT ; D : Clock.DurationT)
-                         return Clock.TimeT;
+                        return Clock.TimeT
+     with Global => null;
 
    ------------------------------------------------------------------
    -- IsValidTime
@@ -55,6 +56,7 @@ is
    --    Uses system calls to check that the supplied time is valid.
    --
    ------------------------------------------------------------------
-   function IsValidTime (T : Clock.TimeT) return Boolean;
+   function IsValidTime (T : Clock.TimeT) return Boolean
+     with Global => null;
 
 end Clock.Interfac;

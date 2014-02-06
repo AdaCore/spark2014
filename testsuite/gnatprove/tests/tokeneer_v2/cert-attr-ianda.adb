@@ -98,10 +98,10 @@ package body Cert.Attr.IandA is
    --  Converts the extended type to the original one.
    function Cert_Attr_Ianda_To_Cert (Contents : in ContentsT)
                                     return Cert.ContentsT is
-      (Cert.ContentsT'(ID        => Contents.ID,
-                       NotBefore => Contents.NotBefore,
-                       NotAfter  => Contents.NotAfter,
-                       Mechanism => Contents.Mechanism));
+     (Cert.ContentsT'(ID        => Contents.ID,
+                      NotBefore => Contents.NotBefore,
+                      NotAfter  => Contents.NotAfter,
+                      Mechanism => Contents.Mechanism));
 
    --  Converts the extended type to the original one.
    function Cert_Attr_Ianda_To_Cert_Attr (Contents : in ContentsT)

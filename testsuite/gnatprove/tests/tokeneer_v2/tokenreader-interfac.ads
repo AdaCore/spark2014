@@ -23,8 +23,8 @@ with TokenTypes;
 
 private package TokenReader.Interfac
   with SPARK_Mode,
-       Abstract_State => ((ReaderInput with External => Async_Writers,
-                                            Part_Of  => TokenReader.Input),
+       Abstract_State => ((ReaderInput  with External => Async_Writers,
+                                             Part_Of  => TokenReader.Input),
                           (ReaderStatus with External => Async_Writers,
                                              Part_Of  => TokenReader.Status),
                           (ReaderOutput with External => Async_Readers,
@@ -46,65 +46,65 @@ is
 
 
    type ResponseCodeT is
-      (Success, -- No error.
-       InvalidHandle, -- Supplied handle is invalid.
-       InvalidValue, -- Parameter Value(s) could not be
-                            -- properly interpreted.
-       Cancelled, -- Action was cancelled by the
-                            -- application.
-       NoMemory, -- Not enough memory to complete
-                            -- command.
+      (Success,            -- No error.
+       InvalidHandle,      -- Supplied handle is invalid.
+       InvalidValue,       -- Parameter Value(s) could not be
+                           -- properly interpreted.
+       Cancelled,          -- Action was cancelled by the
+                           -- application.
+       NoMemory,           -- Not enough memory to complete
+                           -- command.
        InsufficientBuffer, -- Data buffer to receive returned
-                            -- data is too small.
-       UnknownReader, -- Reader name is not recognized.
-       Timedout, -- Timeout has expired.
-       SharingViolation, -- ICC cannot be accessed -
-                            -- outstanding connections.
-       NoSmartcard, -- Required ICC not in device.
-       UnknownCard, -- Specified name is not recognized.
-       ProtoMismatch, -- Requested protocols incompatible
-                            -- with protocol currently in use
-                            -- with the ICC.
-       NotReady, -- Device or card not ready for
-                            -- commands.
-       SystemCancelled, -- Action cancelled by system.
-       ReaderUnavailable, -- Device not currently available
-                            -- for use.
-       UnsupportedCard, -- Reader cannot communicate, due to
-                            -- ATR conflicts.
-       UnresponsiveCard, -- Card not responding to a reset.
-       UnpoweredCard, -- Power has been removed from the
-                            -- card.
-       ResetCard, -- Card has been reset, so any
-                            -- shared state info is invalid.
-       RemovedCard, -- ICC has been removed.
+                           -- data is too small.
+       UnknownReader,      -- Reader name is not recognized.
+       Timedout,           -- Timeout has expired.
+       SharingViolation,   -- ICC cannot be accessed -
+                           -- outstanding connections.
+       NoSmartcard,        -- Required ICC not in device.
+       UnknownCard,        -- Specified name is not recognized.
+       ProtoMismatch,      -- Requested protocols incompatible
+                           -- with protocol currently in use
+                           -- with the ICC.
+       NotReady,           -- Device or card not ready for
+                           -- commands.
+       SystemCancelled,    -- Action cancelled by system.
+       ReaderUnavailable,  -- Device not currently available
+                           -- for use.
+       UnsupportedCard,    -- Reader cannot communicate, due to
+                           -- ATR conflicts.
+       UnresponsiveCard,   -- Card not responding to a reset.
+       UnpoweredCard,      -- Power has been removed from the
+                           -- card.
+       ResetCard,          -- Card has been reset, so any
+                           -- shared state info is invalid.
+       RemovedCard,        -- ICC has been removed.
        InvalidResponseCode);
 
 
 
    type CardStateT is
       (InvalidCardState,
-       Absent, -- No card in the reader.
-       Present, -- Card in the reader, but not in position
-                    -- for use.
-       Swallowed, -- Card in reader, in position for use.Card
-                    -- is not powered.
-       Powered, -- Power is being provided to the card, but
-                    -- reader driver is unaware of the mode of
-                    -- the card.
+       Absent,     -- No card in the reader.
+       Present,    -- Card in the reader, but not in position
+                   -- for use.
+       Swallowed,  -- Card in reader, in position for use.Card
+                   -- is not powered.
+       Powered,    -- Power is being provided to the card, but
+                   -- reader driver is unaware of the mode of
+                   -- the card.
        Negotiable, -- Card has been reset and is awaiting PTS
-                    -- negotiation.
-       Specific     -- Card has been reset and specific
-                    -- protocols have been established.
+                   -- negotiation.
+       Specific    -- Card has been reset and specific
+                   -- protocols have been established.
        );
 
 
    type ReaderStateT is
       (InvalidReaderState,
-       Unaware, -- State is unknown by the application
-       Ignore, -- Reader should be ignored
+       Unaware,     -- State is unknown by the application
+       Ignore,      -- Reader should be ignored
        Unavailable, -- Reader is not available for use
-       Empty, -- No card in the reader
+       Empty,       -- No card in the reader
        CardPresent, -- A card is present in the reader
        Mute         -- An unresponsive card is in the reader
        );
@@ -119,7 +119,6 @@ is
    --    a list of strings used to interface with visible token readers.
    --
    ------------------------------------------------------------------
-
    procedure ListReaders (List         :    out ReaderNameArrayT;
                           Number       : in out BasicTypes.Unsigned32T;
                           ResponseCode :    out BasicTypes.Unsigned32T)
@@ -137,16 +136,15 @@ is
    --    a card is present.
    --
    ------------------------------------------------------------------
-
    procedure GetStatusChange (Timeout      : in     BasicTypes.Unsigned32T;
                               Reader       : in     ReaderNameT;
                               CurrentState : in     ReaderStateT;
                               NewState     :    out BasicTypes.Unsigned32T;
                               ResponseCode :    out BasicTypes.Unsigned32T)
-     with Global  => (Input  => ReaderStatus),
-          Depends => (NewState => (Reader,
-                                   ReaderStatus,
-                                   Timeout),
+     with Global  => ReaderStatus,
+          Depends => (NewState     => (Reader,
+                                       ReaderStatus,
+                                       Timeout),
                       ResponseCode => (CurrentState,
                                        Reader,
                                        ReaderStatus,
@@ -161,12 +159,10 @@ is
    --    card in the reader.
    --
    ------------------------------------------------------------------
-
    procedure Connect (Reader       : in     ReaderNameT;
                       CardHandle   :    out CardHandleT;
                       ResponseCode :    out BasicTypes.Unsigned32T)
-
-     with Global  => (Input  => ReaderStatus),
+     with Global  => ReaderStatus,
           Depends => ((CardHandle,
                        ResponseCode) => (Reader,
                                          ReaderStatus));
@@ -182,17 +178,15 @@ is
    --    should be ignored when the card is in any other state.
    --
    ------------------------------------------------------------------
-
    procedure Status (CardHandle   : in     CardHandleT;
                      CState       :    out BasicTypes.Unsigned32T;
                      ATR          :    out TokenTypes.TokenIDT;
                      ResponseCode :    out BasicTypes.Unsigned32T)
-
-     with Global  => (Input  => (ReaderInput,
-                                 ReaderStatus)),
-          Depends => (ATR => (CardHandle,
-                              ReaderInput,
-                              ReaderStatus),
+     with Global  => (ReaderInput,
+                      ReaderStatus),
+          Depends => (ATR            => (CardHandle,
+                                         ReaderInput,
+                                         ReaderStatus),
                       (CState,
                        ResponseCode) => (CardHandle,
                                          ReaderStatus));
@@ -205,11 +199,9 @@ is
    --    card.
    --
    ------------------------------------------------------------------
-
    procedure Disconnect (CardHandle   : in     CardHandleT;
                          ResponseCode :    out BasicTypes.Unsigned32T)
-
-     with Global  => (Input  => ReaderStatus),
+     with Global  => ReaderStatus,
           Depends => (ResponseCode => (CardHandle,
                                        ReaderStatus));
 
@@ -222,20 +214,18 @@ is
    --    StatusOK reports whether card communications were OK or not.
    --
    ------------------------------------------------------------------
-
    procedure GetIDCert (CardHandle   : in     CardHandleT;
                         RawIDCert    :    out CertTypes.RawCertificateT;
                         StatusOK     :    out Boolean;
                         ResponseCode :    out BasicTypes.Unsigned32T)
-
-     with Global  => (Input  => (ReaderInput,
-                                 ReaderStatus)),
-          Depends => (RawIDCert => (CardHandle,
-                                    ReaderInput,
-                                    ReaderStatus),
+     with Global  => (ReaderInput,
+                      ReaderStatus),
+          Depends => (RawIDCert      => (CardHandle,
+                                         ReaderInput,
+                                         ReaderStatus),
                       (ResponseCode,
-                       StatusOK) => (CardHandle,
-                                     ReaderStatus));
+                       StatusOK)     => (CardHandle,
+                                         ReaderStatus));
 
    ------------------------------------------------------------------
    -- GetPrivCert
@@ -246,20 +236,19 @@ is
    --    StatusOK reports whether card communications were OK or not.
    --
    ------------------------------------------------------------------
-
    procedure GetPrivCert (CardHandle   : in     CardHandleT;
                           RawPrivCert  :    out CertTypes.RawCertificateT;
                           StatusOK     :    out Boolean;
                           ResponseCode :    out BasicTypes.Unsigned32T)
 
-     with Global  => (Input  => (ReaderInput,
-                                 ReaderStatus)),
-          Depends => (RawPrivCert => (CardHandle,
-                                      ReaderInput,
-                                      ReaderStatus),
+     with Global  => (ReaderInput,
+                      ReaderStatus),
+          Depends => (RawPrivCert    => (CardHandle,
+                                         ReaderInput,
+                                         ReaderStatus),
                       (ResponseCode,
-                       StatusOK) => (CardHandle,
-                                     ReaderStatus));
+                       StatusOK)     => (CardHandle,
+                                         ReaderStatus));
 
    ------------------------------------------------------------------
    -- GetIACert
@@ -270,13 +259,12 @@ is
    --    StatusOK reports whether card communications were OK or not.
    --
    ------------------------------------------------------------------
-
    procedure GetIACert (CardHandle   : in     CardHandleT;
                         RawIACert    :    out CertTypes.RawCertificateT;
                         StatusOK     :    out Boolean;
                         ResponseCode :    out BasicTypes.Unsigned32T)
-     with Global  => (Input  => (ReaderInput,
-                                 ReaderStatus)),
+     with Global  => (ReaderInput,
+                      ReaderStatus),
           Depends => (RawIACert => (CardHandle,
                                     ReaderInput,
                                     ReaderStatus),
@@ -294,22 +282,20 @@ is
    --    StatusOK reports whether card communications were OK or not.
    --
    ------------------------------------------------------------------
-
    procedure GetAuthCert (CardHandle   : in     CardHandleT;
                           RawAuthCert  :    out CertTypes.RawCertificateT;
                           Exists       :    out Boolean;
                           StatusOK     :    out Boolean;
                           ResponseCode :    out BasicTypes.Unsigned32T)
-
-     with Global  => (Input  => (ReaderInput,
-                                 ReaderStatus)),
+     with Global  => (ReaderInput,
+                      ReaderStatus),
           Depends => ((Exists,
                        ResponseCode,
-                       StatusOK) => (CardHandle,
-                                     ReaderStatus),
-                      RawAuthCert => (CardHandle,
-                                      ReaderInput,
-                                      ReaderStatus));
+                       StatusOK)     => (CardHandle,
+                                         ReaderStatus),
+                      RawAuthCert    => (CardHandle,
+                                         ReaderInput,
+                                         ReaderStatus));
 
    ------------------------------------------------------------------
    -- UpdateAuthCert
@@ -327,17 +313,16 @@ is
                              ResponseCode :    out BasicTypes.Unsigned32T)
      with Global  => (Input  => ReaderStatus,
                       Output => ReaderOutput),
-          Depends => (ReaderOutput => (CardHandle,
-                                       RawAuthCert,
-                                       ReaderStatus),
+          Depends => (ReaderOutput   => (CardHandle,
+                                         RawAuthCert,
+                                         ReaderStatus),
                       (ResponseCode,
-                       StatusOK) => (CardHandle,
-                                     ReaderStatus));
+                       StatusOK)     => (CardHandle,
+                                         ReaderStatus));
 
 private
-
    type CardHandleT is range 0..2**32 - 1;
    for CardHandleT'Size use 32;
-   NullHandle : constant CardHandleT := 0;
 
+   NullHandle : constant CardHandleT := 0;
 end TokenReader.Interfac;

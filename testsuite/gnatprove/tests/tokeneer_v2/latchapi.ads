@@ -29,7 +29,6 @@ package LatchAPI is
    --    Failed is returned if the operation was not successful.
    --
    ------------------------------------------------------------------
-
    procedure Unlock(Failed : out Boolean);
 
    ------------------------------------------------------------------
@@ -40,7 +39,6 @@ package LatchAPI is
    --    Failed is returned if the operation was not successful.
    --
    ------------------------------------------------------------------
-
    procedure Lock(Failed : out Boolean);
 
 end LatchAPI;

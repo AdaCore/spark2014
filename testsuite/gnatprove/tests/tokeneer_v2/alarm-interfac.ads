@@ -35,7 +35,8 @@ is
    -- visible outside the alarm package body).           --
    -- The function is true if Alarm.Activate is called.  --
    --------------------------------------------------------
-   function IsAlarming return Boolean;
+   function IsAlarming return Boolean
+     with Global => null;
 
    ------------------------------------------------------------------
    -- Activate
@@ -44,7 +45,6 @@ is
    --    Sets the alarm to Alarming
    --
    ------------------------------------------------------------------
-
    procedure Activate
      with Global  => (Output => Output),
           Depends => (Output => null),
@@ -57,7 +57,6 @@ is
    --    Silences the alarm
    --
    ------------------------------------------------------------------
-
    procedure Deactivate
      with Global  => (Output => Output),
           Depends => (Output => null),

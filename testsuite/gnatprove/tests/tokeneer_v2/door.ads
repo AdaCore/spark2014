@@ -22,7 +22,8 @@ with ConfigData;
 with Latch;       use Latch;
 
 package Door
-  with Abstract_State => (State, (Input with External => Async_Writers))
+  with Abstract_State => (State,
+                          (Input with External => Async_Writers))
 is
 
    ------------------------------------------------------------------
@@ -43,7 +44,8 @@ is
    -- To do this, need to define an abstract type for     --
    -- Door.State.                                         --
    ---------------------------------------------------------
-   function Alarm_Timeout return Clock.TimeT;
+   function Alarm_Timeout return Clock.TimeT
+     with Global => State;
 
    ------------------------------------------------------------------
    -- TheCurrentDoor
@@ -54,9 +56,8 @@ is
    -- Traceunit : C.Door.TheCurrentDoor
    -- Traceto   : FD.RealWorld.State
    ------------------------------------------------------------------
-
    function TheCurrentDoor return T
-     with Global  => State;
+     with Global => State;
 
    ------------------------------------------------------------------
    -- TheDoorAlarm
@@ -67,9 +68,8 @@ is
    -- Traceunit : C.Door.TheDoorAlarm
    -- Traceto   : FD.RealWorld.State
    ------------------------------------------------------------------
-
    function TheDoorAlarm return AlarmTypes.StatusT
-     with Global  => State;
+     with Global => State;
 
    ------------------------------------------------------------------
    -- Poll
@@ -83,7 +83,6 @@ is
    --          FD.Interfac.TISPoll
    --
    ------------------------------------------------------------------
-
    procedure Poll(SystemFault :    out Boolean)
      with Global  => (Input  => (Clock.CurrentTime,
                                  Clock.Now,
@@ -94,19 +93,19 @@ is
                                  Latch.State,
                                  State)),
           Depends => ((AuditLog.FileState,
-                       AuditLog.State) => (AuditLog.FileState,
-                                           AuditLog.State,
-                                           Clock.CurrentTime,
-                                           Clock.Now,
-                                           ConfigData.State,
-                                           Input,
-                                           Latch.State,
-                                           State),
-                      Latch.State =>+ Clock.CurrentTime,
-                      State =>+ (Clock.CurrentTime,
-                                 Input,
-                                 Latch.State),
-                      SystemFault => Input),
+                       AuditLog.State)     => (AuditLog.FileState,
+                                               AuditLog.State,
+                                               Clock.CurrentTime,
+                                               Clock.Now,
+                                               ConfigData.State,
+                                               Input,
+                                               Latch.State,
+                                               State),
+                      Latch.State          =>+ Clock.CurrentTime,
+                      State                =>+ (Clock.CurrentTime,
+                                                Input,
+                                                Latch.State),
+                      SystemFault          => Input),
           --------------------------------------------------------
           -- PROOF ANNOTATIONS FOR SECURITY PROPERTY 3          --
           --====================================================--
@@ -140,7 +139,6 @@ is
    -- traceunit : C.Door.UnlockDoor
    -- traceto   : FD.Door.UnlockDoor
    ------------------------------------------------------------------
-
    procedure UnlockDoor
      with Global  => (Input  => (Clock.CurrentTime,
                                  Clock.Now,
@@ -150,33 +148,31 @@ is
                                  Latch.State,
                                  State)),
           Depends => ((AuditLog.FileState,
-                       AuditLog.State) => (AuditLog.FileState,
-                                           AuditLog.State,
-                                           Clock.CurrentTime,
-                                           Clock.Now,
-                                           ConfigData.State,
-                                           Latch.State,
-                                           State),
+                       AuditLog.State)     => (AuditLog.FileState,
+                                               AuditLog.State,
+                                               Clock.CurrentTime,
+                                               Clock.Now,
+                                               ConfigData.State,
+                                               Latch.State,
+                                               State),
                       (Latch.State,
-                       State) =>+ (Clock.CurrentTime,
-                                   ConfigData.State,
-                                   Latch.State)),
+                       State)              =>+ (Clock.CurrentTime,
+                                                ConfigData.State,
+                                                Latch.State)),
           --------------------------------------------------------
           -- PROOF ANNOTATIONS FOR SECURITY PROPERTY 3          --
           --====================================================--
           -- After each call to UnlockDoor, the security        --
           -- property holds.                                    --
           --------------------------------------------------------
-          Post    => (Latch.IsLocked and then
-                      TheCurrentDoor = Open and then
+          Post    => (Latch.IsLocked and
+                      TheCurrentDoor = Open and
                       Clock.GreaterThanOrEqual(Clock.TheCurrentTime,
                                                Alarm_Timeout)) =
-                        (TheDoorAlarm = AlarmTypes.Alarming) and then
+                        (TheDoorAlarm = AlarmTypes.Alarming) and
                      Latch.IsLocked =
                        Clock.GreaterThanOrEqual(Clock.TheCurrentTime,
                                                 Latch.Latch_Timeout);
-
-
 
    ------------------------------------------------------------------
    -- LockDoor
@@ -188,7 +184,6 @@ is
    -- traceunit : C.Door.LockDoor
    -- traceto   : FD.Door.LockDoor
    ------------------------------------------------------------------
-
    procedure LockDoor
      with Global  => (Input  => (Clock.CurrentTime,
                                  Clock.Now,
@@ -198,29 +193,28 @@ is
                                  Latch.State,
                                  State)),
           Depends => ((AuditLog.FileState,
-                       AuditLog.State) => (AuditLog.FileState,
-                                           AuditLog.State,
-                                           Clock.CurrentTime,
-                                           Clock.Now,
-                                           ConfigData.State,
-                                           Latch.State,
-                                           State),
+                       AuditLog.State)     => (AuditLog.FileState,
+                                               AuditLog.State,
+                                               Clock.CurrentTime,
+                                               Clock.Now,
+                                               ConfigData.State,
+                                               Latch.State,
+                                               State),
                       (Latch.State,
-                       State) =>+ (Clock.CurrentTime,
-                                   Latch.State)),
+                       State)              =>+ (Clock.CurrentTime,
+                                                Latch.State)),
           --------------------------------------------------------
           -- PROOF ANNOTATIONS FOR SECURITY PROPERTY 3          --
           --====================================================--
           -- After each call to LockDoor, the security property --
           -- holds.                                             --
           --------------------------------------------------------
-          Post    => (Latch.IsLocked and then
-                      TheCurrentDoor = Open and then
+          Post    => (Latch.IsLocked and
+                      TheCurrentDoor = Open and
                       Clock.GreaterThanOrEqual(Clock.TheCurrentTime,
                                                Alarm_Timeout)) =
-                        (TheDoorAlarm = AlarmTypes.Alarming) and then
+                        (TheDoorAlarm = AlarmTypes.Alarming) and
                         Latch.IsLocked;
-
 
    ------------------------------------------------------------------
    -- Init
@@ -233,7 +227,6 @@ is
    -- Traceto   : FD.TIS.InitIDStation
    --             FD.TIS.TISStartUp
    ------------------------------------------------------------------
-
    procedure Init
      with Global  => (Output => State),
           Depends => (State => null);

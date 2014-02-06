@@ -34,7 +34,6 @@ package body Cert.ID is
    --      None
    --
    ------------------------------------------------------------------
-
    function TheSubject (Contents : ContentsT) return CryptoTypes.IssuerT is
      (Contents.Subject);
 
@@ -45,7 +44,6 @@ package body Cert.ID is
    --      None
    --
    ------------------------------------------------------------------
-
    function ThePublicKey (Contents : ContentsT) return CryptoTypes.KeyPartT is
      (Contents.SubjectPublicKey);
 
@@ -66,8 +64,8 @@ package body Cert.ID is
       NotBeforeOk,
       NotAfterOk    : Boolean;
    begin
-      CertProcessing.ExtractIDCertData(RawIDCert    => RawCert,
-                                       IDCert       => LocalContents,
+      CertProcessing.ExtractIDCertData(RawIDCert      => RawCert,
+                                       IDCert         => LocalContents,
                                        ExtractSuccess => Extracted);
 
       Contents.ID.Issuer        := LocalContents.Issuer;
@@ -83,10 +81,10 @@ package body Cert.ID is
       if LocalContents.SubjectPublicKeyInfo.KeyLength >=
         BasicTypes.Unsigned32T(CryptoTypes.KeyLengthT'First)
         and LocalContents.SubjectPublicKeyInfo.KeyLength <=
-        BasicTypes.Unsigned32T(CryptoTypes.KeyLengthT'Last) then
-         Contents.SubjectPublicKey.KeyLength :=
-           CryptoTypes.KeyLengthT
-               (LocalContents.SubjectPublicKeyInfo.KeyLength);
+        BasicTypes.Unsigned32T(CryptoTypes.KeyLengthT'Last)
+      then
+         Contents.SubjectPublicKey.KeyLength := CryptoTypes.KeyLengthT
+           (LocalContents.SubjectPublicKeyInfo.KeyLength);
          KeyLengthOK := True;
       else
          Contents.SubjectPublicKey.KeyLength :=
@@ -134,8 +132,8 @@ package body Cert.ID is
 
    --  Converts the extended type to the original one.
    function Cert_Id_To_Cert (Contents : in ContentsT) return Cert.ContentsT is
-      (Cert.ContentsT'(ID        => Contents.ID,
-                       NotBefore => Contents.NotBefore,
-                       NotAfter  => Contents.NotAfter,
-                       Mechanism => Contents.Mechanism));
+     (Cert.ContentsT'(ID        => Contents.ID,
+                      NotBefore => Contents.NotBefore,
+                      NotAfter  => Contents.NotAfter,
+                      Mechanism => Contents.Mechanism));
 end Cert.ID;

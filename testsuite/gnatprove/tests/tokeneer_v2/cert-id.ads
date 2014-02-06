@@ -51,7 +51,6 @@ package Cert.ID is
    -- Traceunit : C.IDCert.TheSubject
    -- Traceto   : FD.Types.Certificates
    ------------------------------------------------------------------
-
    function TheSubject (Contents : ContentsT) return CryptoTypes.IssuerT;
 
    ------------------------------------------------------------------
@@ -63,7 +62,6 @@ package Cert.ID is
    -- Traceunit : C.IDCert.ThePublicKey
    -- Traceto   : FD.Types.Certificates
    ------------------------------------------------------------------
-
    function ThePublicKey (Contents : ContentsT) return CryptoTypes.KeyPartT;
 
    ------------------------------------------------------------------
@@ -90,28 +88,28 @@ package Cert.ID is
    --
    ------------------------------------------------------------------
    procedure Clear (Contents :    out ContentsT)
-     with Depends => (Contents => null);
+     with Global  => null,
+          Depends => (Contents => null);
 
    --  Converts the extended type to the original one.
    function Cert_Id_To_Cert (Contents : in ContentsT) return Cert.ContentsT;
 
-   private
-      type ContentsT is
-         record
-            ID               : CertTypes.IDT;
-            NotBefore        : Clock.TimeT;
-            NotAfter         : Clock.TimeT;
-            Mechanism        : CryptoTypes.AlgorithmT;
-            Subject          : CryptoTypes.IssuerT;
-            SubjectPublicKey : CryptoTypes.KeyPartT;
-         end record;
+private
+   type ContentsT is record
+      ID               : CertTypes.IDT;
+      NotBefore        : Clock.TimeT;
+      NotAfter         : Clock.TimeT;
+      Mechanism        : CryptoTypes.AlgorithmT;
+      Subject          : CryptoTypes.IssuerT;
+      SubjectPublicKey : CryptoTypes.KeyPartT;
+   end record;
 
-     NullContents : constant ContentsT :=
-       ContentsT'(ID               => CertTypes.NullID,
-                  NotBefore        => Clock.ZeroTime,
-                  NotAfter         => Clock.ZeroTime,
-                  Mechanism        => CryptoTypes.AlgorithmT'First,
-                  Subject          => CryptoTypes.NullIssuer,
-                  SubjectPublicKey => CryptoTypes.NullKeyPart);
+   NullContents : constant ContentsT :=
+     ContentsT'(ID               => CertTypes.NullID,
+                NotBefore        => Clock.ZeroTime,
+                NotAfter         => Clock.ZeroTime,
+                Mechanism        => CryptoTypes.AlgorithmT'First,
+                Subject          => CryptoTypes.NullIssuer,
+                SubjectPublicKey => CryptoTypes.NullKeyPart);
 
 end Cert.ID;

@@ -58,15 +58,14 @@ is
    -- Implementation Notes:
    --   None.
    ------------------------------------------------------------------
-   procedure Read
-     (DataPresence :    out BasicTypes.PresenceT;
-      Data         :    out DataT)
+   procedure Read (DataPresence :    out BasicTypes.PresenceT;
+                   Data         :    out DataT)
      with Refined_Global  => (Input  => Interfac.Inputs),
-          Refined_Depends => ((Data, DataPresence) => Interfac.Inputs)
+          Refined_Depends => ((Data,
+                               DataPresence) => Interfac.Inputs)
    is
-      LocalData : DataTextT;
+      LocalData  : DataTextT;
       LocalLength : DataLengthT;
-
    begin
 
       Interfac.ReadKeyboardData(KeyedDataPresence => DataPresence,

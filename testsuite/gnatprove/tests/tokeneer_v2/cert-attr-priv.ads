@@ -50,7 +50,6 @@ package Cert.Attr.Priv is
    -- Traceunit : C.PrivCert.TheRole
    -- Traceto   : FD.Types.Certificates
    ------------------------------------------------------------------
-
    function TheRole (Contents : ContentsT) return PrivTypes.PrivilegeT;
 
    ------------------------------------------------------------------
@@ -62,7 +61,6 @@ package Cert.Attr.Priv is
    -- Traceunit : C.PrivCert.TheClearance
    -- Traceto   : FD.Types.Certificates
    ------------------------------------------------------------------
-
    function TheClearance (Contents : ContentsT) return PrivTypes.ClearanceT;
 
    ------------------------------------------------------------------
@@ -77,7 +75,8 @@ package Cert.Attr.Priv is
    procedure Extract (RawCert  : in     CertTypes.RawCertificateT;
                       Contents :    out ContentsT;
                       Success  :    out Boolean)
-     with Depends => ((Contents, Success) => RawCert);
+     with Depends => ((Contents,
+                       Success)  => RawCert);
 
    ------------------------------------------------------------------
    -- Clear
@@ -92,32 +91,31 @@ package Cert.Attr.Priv is
      with Depends => (Contents => null);
 
    --  Converts the extended type to the original one.
-   function Cert_Attr_Priv_To_Cert
-     (Contents : in ContentsT) return Cert.ContentsT;
+   function Cert_Attr_Priv_To_Cert (Contents : in ContentsT)
+                                   return Cert.ContentsT;
 
-   function Cert_Attr_Priv_To_Cert_Attr
-     (Contents : in ContentsT) return Cert.Attr.ContentsT;
+   function Cert_Attr_Priv_To_Cert_Attr (Contents : in ContentsT)
+                                        return Cert.Attr.ContentsT;
 
-   private
-      type ContentsT is
-         record
-            ID         : CertTypes.IDT;
-            NotBefore  : Clock.TimeT;
-            NotAfter   : Clock.TimeT;
-            Mechanism  : CryptoTypes.AlgorithmT;
-            BaseCertID : CertTypes.IDT;
-            Role       : PrivTypes.PrivilegeT;
-            Clearance  : PrivTypes.ClearanceT;
-         end record;
+private
+   type ContentsT is record
+      ID         : CertTypes.IDT;
+      NotBefore  : Clock.TimeT;
+      NotAfter   : Clock.TimeT;
+      Mechanism  : CryptoTypes.AlgorithmT;
+      BaseCertID : CertTypes.IDT;
+      Role       : PrivTypes.PrivilegeT;
+      Clearance  : PrivTypes.ClearanceT;
+   end record;
 
-     NullContents : constant ContentsT :=
-       ContentsT'(ID         => CertTypes.NullID,
-                   NotBefore  => Clock.ZeroTime,
-                   NotAfter   => Clock.ZeroTime,
-                   Mechanism  => CryptoTypes.AlgorithmT'First,
-                   BaseCertID => CertTypes.NullID,
-                   Role       => PrivTypes.PrivilegeT'First,
-                   Clearance  => PrivTypes.ClearanceT'
-                                   (Class => PrivTypes.ClassT'First));
+   NullContents : constant ContentsT :=
+     ContentsT'(ID         => CertTypes.NullID,
+                NotBefore  => Clock.ZeroTime,
+                NotAfter   => Clock.ZeroTime,
+                Mechanism  => CryptoTypes.AlgorithmT'First,
+                BaseCertID => CertTypes.NullID,
+                Role       => PrivTypes.PrivilegeT'First,
+                Clearance  => PrivTypes.ClearanceT'
+                  (Class => PrivTypes.ClassT'First));
 
 end Cert.Attr.Priv;

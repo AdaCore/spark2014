@@ -113,12 +113,12 @@ package TokenAPI is
                     -- protocols have been established.
 
    for CardStateT use
-      (Absent           => 1,
-       Present          => 2,
-       Swallowed        => 3,
-       Powered          => 4,
-       Negotiable       => 5,
-       Specific         => 6);
+      (Absent     => 1,
+       Present    => 2,
+       Swallowed  => 3,
+       Powered    => 4,
+       Negotiable => 5,
+       Specific   => 6);
 
    for CardStateT'Size use 32;
 
@@ -132,12 +132,12 @@ package TokenAPI is
        Present,     -- A card is present in the reader
        Mute);       -- An unresponsive card is in the reader
 
-   for ReaderStateT use (Unaware            => 1,
-                         Ignore             => 2,
-                         Unavailable        => 3,
-                         Empty              => 4,
-                         Present            => 5,
-                         Mute               => 6);
+   for ReaderStateT use (Unaware     => 1,
+                         Ignore      => 2,
+                         Unavailable => 3,
+                         Empty       => 4,
+                         Present     => 5,
+                         Mute        => 6);
 
    for ReaderStateT'Size use 32;
 
@@ -168,8 +168,8 @@ package TokenAPI is
    subtype GenericCertArray is String(1..4096);
 
    type GenericRawCertT is record
-      CertData: GenericCertArray;
-      CertLength: CommonTypes.Unsigned32T;
+      CertData   : GenericCertArray;
+      CertLength : CommonTypes.Unsigned32T;
    end record;
 
    NullGenericRawCert : constant GenericRawCertT := ((others => ' '),
@@ -183,7 +183,6 @@ package TokenAPI is
    --    a list of strings used to interface with visible token readers.
    --
    ------------------------------------------------------------------
-
    procedure ListReaders (List         :    out CommonTypes.String8ArrayT;
                           Number       : in out CommonTypes.Unsigned32T;
                           ResponseCode :    out CommonTypes.Unsigned32T);
@@ -197,13 +196,11 @@ package TokenAPI is
    --    a card is present.
    --
    ------------------------------------------------------------------
-
    procedure GetStatusChange (Timeout      : in     CommonTypes.Unsigned32T;
                               Reader       : in     CommonTypes.String8T;
                               CurrentState : in     ReaderStateT;
                               NewState     :    out CommonTypes.Unsigned32T;
                               ResponseCode :    out CommonTypes.Unsigned32T);
-
 
    ------------------------------------------------------------------
    -- Connect
@@ -214,11 +211,9 @@ package TokenAPI is
    --    card in the reader.
    --
    ------------------------------------------------------------------
-
    procedure Connect (Reader       : in     CommonTypes.String8T;
                       CardHandle   :    out CommonTypes.Unsigned32T;
                       ResponseCode :    out CommonTypes.Unsigned32T);
-
 
    ------------------------------------------------------------------
    -- Status
@@ -231,12 +226,10 @@ package TokenAPI is
    --    should be ignored when the card is in any other state.
    --
    ------------------------------------------------------------------
-
    procedure Status (CardHandle   : in     CommonTypes.Unsigned32T;
                      CState       :    out CommonTypes.Unsigned32T;
                      ATR          :    out AnswerToResetT;
                      ResponseCode :    out CommonTypes.Unsigned32T);
-
 
    ------------------------------------------------------------------
    -- Disconnect
@@ -246,10 +239,8 @@ package TokenAPI is
    --    card.
    --
    ------------------------------------------------------------------
-
    procedure Disconnect (CardHandle   : in     CommonTypes.Unsigned32T;
                          ResponseCode :    out CommonTypes.Unsigned32T);
-
 
 
    ------------------------------------------------------------------
@@ -261,12 +252,10 @@ package TokenAPI is
    --    StatusOK reports whether card communications were OK or not.
    --
    ------------------------------------------------------------------
-
    procedure GetIDCert (CardHandle   : in     CommonTypes.Unsigned32T;
                         RawIDCert    :    out GenericRawCertT;
                         StatusOK     :    out Boolean;
                         ResponseCode :    out CommonTypes.Unsigned32T);
-
 
    ------------------------------------------------------------------
    -- GetPrivCert
@@ -277,12 +266,10 @@ package TokenAPI is
    --    StatusOK reports whether card communications were OK or not.
    --
    ------------------------------------------------------------------
-
    procedure GetPrivCert (CardHandle   : in     CommonTypes.Unsigned32T;
                           RawPrivCert  :    out GenericRawCertT;
                           StatusOK     :    out Boolean;
                           ResponseCode :    out CommonTypes.Unsigned32T);
-
 
    ------------------------------------------------------------------
    -- GetIACert
@@ -293,12 +280,10 @@ package TokenAPI is
    --    StatusOK reports whether card communications were OK or not.
    --
    ------------------------------------------------------------------
-
    procedure GetIACert (CardHandle   : in     CommonTypes.Unsigned32T;
                         RawIACert    :    out GenericRawCertT;
                         StatusOK     :    out Boolean;
                         ResponseCode :    out CommonTypes.Unsigned32T);
-
 
    ------------------------------------------------------------------
    -- GetAuthCert
@@ -310,13 +295,11 @@ package TokenAPI is
    --    StatusOK reports whether card communications were OK or not.
    --
    ------------------------------------------------------------------
-
    procedure GetAuthCert (CardHandle   : in     CommonTypes.Unsigned32T;
                           RawAuthCert  :    out GenericRawCertT;
                           Exists       :    out Boolean;
                           StatusOK     :    out Boolean;
                           ResponseCode :    out CommonTypes.Unsigned32T);
-
 
    ------------------------------------------------------------------
    -- UpdateAuthCert
@@ -327,7 +310,6 @@ package TokenAPI is
    --    StatusOK reports whether card communications were OK or not.
    --
    ------------------------------------------------------------------
-
    procedure UpdateAuthCert (CardHandle   : in     CommonTypes.Unsigned32T;
                              RawAuthCert  : in     GenericRawCertT;
                              StatusOK     :    out Boolean;

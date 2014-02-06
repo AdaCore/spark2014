@@ -50,7 +50,6 @@ is
    -- Traceunit : C.Latch.Init
    -- Traceto   : FD.TIS.InitIDStation
    ------------------------------------------------------------------
-
    procedure Init
      with Global  => (Output => State),
           Depends => (State => null);
@@ -66,7 +65,7 @@ is
    -- Traceto   : FD.RealWorld.State
    ------------------------------------------------------------------
    function IsLocked return Boolean
-     with Global  => State;
+     with Global => State;
 
    ------------------------------------------------------------------
    -- UpdateInternalLatch
@@ -78,7 +77,6 @@ is
    -- Traceunit : C.Latch.UpdateInternalLatch
    -- Traceto   : FD.Latch.UpdateInternalLatch
    ------------------------------------------------------------------
-
    procedure UpdateInternalLatch
      with Global  => (Input  => (Clock.CurrentTime,
                                  Clock.Now,
@@ -86,16 +84,15 @@ is
                       In_Out => (AuditLog.FileState,
                                  AuditLog.State, State)),
           Depends => ((AuditLog.FileState,
-                       AuditLog.State) => (AuditLog.FileState,
-                                           AuditLog.State,
-                                           Clock.CurrentTime,
-                                           Clock.Now,
-                                           ConfigData.State,
-                                           State),
-                      State =>+ Clock.CurrentTime),
-          Post    => (IsLocked =
-                        Clock.GreaterThanOrEqual(Clock.TheCurrentTime,
-                                                 Latch_Timeout)) and
+                       AuditLog.State)     => (AuditLog.FileState,
+                                               AuditLog.State,
+                                               Clock.CurrentTime,
+                                               Clock.Now,
+                                               ConfigData.State,
+                                               State),
+                      State                =>+ Clock.CurrentTime),
+          Post    => IsLocked = Clock.GreaterThanOrEqual(Clock.TheCurrentTime,
+                                                         Latch_Timeout) and
                      Latch_Timeout = Latch_Timeout'Old;
 
    ------------------------------------------------------------------

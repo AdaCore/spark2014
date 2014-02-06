@@ -26,7 +26,9 @@ with Door.Interfac,
 use type AlarmTypes.StatusT;
 
 package body Door
-  with Refined_State => (State => (CurrentDoor, AlarmTimeout, DoorAlarm),
+  with Refined_State => (State => (CurrentDoor,
+                                   AlarmTimeout,
+                                   DoorAlarm),
                          Input => Door.Interfac.Input)
 is
 
@@ -37,8 +39,8 @@ is
    DoorAlarm    : AlarmTypes.StatusT;
    AlarmTimeout : Clock.TimeT;
 
-   function Alarm_Timeout return Clock.TimeT is
-     (AlarmTimeout);
+   function Alarm_Timeout return Clock.TimeT is (AlarmTimeout)
+     with Refined_Global => AlarmTimeout;
 
    ------------------------------------------------------------------
    -- UpdateDoorAlarm
@@ -53,7 +55,6 @@ is
    -- Traceunit : C.Door.UpdateDoorAlarm
    -- Traceto   : FD.Latch.UpdateInternalAlarm
    ------------------------------------------------------------------
-
    procedure UpdateDoorAlarm
      with Global  => (Input  => (AlarmTimeout,
                                  Clock.CurrentTime,
@@ -65,33 +66,32 @@ is
                                  AuditLog.State,
                                  DoorAlarm)),
           Depends => ((AuditLog.FileState,
-                       AuditLog.State) => (AlarmTimeout,
-                                           AuditLog.FileState,
-                                           AuditLog.State,
-                                           Clock.CurrentTime,
-                                           Clock.Now,
-                                           ConfigData.State,
-                                           CurrentDoor,
-                                           DoorAlarm,
-                                           Latch.State),
-                      DoorAlarm => (AlarmTimeout,
-                                    Clock.CurrentTime,
-                                    CurrentDoor,
-                                    Latch.State)),
+                       AuditLog.State)     => (AlarmTimeout,
+                                               AuditLog.FileState,
+                                               AuditLog.State,
+                                               Clock.CurrentTime,
+                                               Clock.Now,
+                                               ConfigData.State,
+                                               CurrentDoor,
+                                               DoorAlarm,
+                                               Latch.State),
+                      DoorAlarm            => (AlarmTimeout,
+                                               Clock.CurrentTime,
+                                               CurrentDoor,
+                                               Latch.State)),
           --------------------------------------------------------
           -- PROOF ANNOTATIONS FOR SECURITY PROPERTY 3          --
           --====================================================--
           -- After each call to UpdateDoorAlarm, the security   --
           -- property holds.                                    --
           --------------------------------------------------------
-          Post    => (CurrentDoor = Open and then
-                      Latch.IsLocked and then
-                      Clock.GreaterThanOrEqual(Clock.TheCurrentTime,
-                                               AlarmTimeout)) =
-                        (DoorAlarm = AlarmTypes.Alarming)
+          Post    => CurrentDoor = Open and
+                     Latch.IsLocked and
+                     Clock.GreaterThanOrEqual(Clock.TheCurrentTime,
+                                              AlarmTimeout) =
+                       (DoorAlarm = AlarmTypes.Alarming)
 
    is
-
       LocalAlarm : AlarmTypes.StatusT;
       Severity   : AuditTypes.SeverityT;
       ID         : AuditTypes.ElementT;
@@ -101,17 +101,13 @@ is
         Clock.GreaterThanOrEqual(Left  => Clock.TheCurrentTime,
                                  Right => AlarmTimeout)
       then
-
          LocalAlarm := AlarmTypes.Alarming;
          Severity   := AuditTypes.Critical;
          ID         := AuditTypes.AlarmRaised;
-
       else
-
          LocalAlarm := AlarmTypes.Silent;
          Severity   := AuditTypes.Information;
          ID         := AuditTypes.AlarmSilenced;
-
       end if;
 
       if DoorAlarm /= LocalAlarm then
@@ -127,7 +123,6 @@ is
 
    end UpdateDoorAlarm;
 
-
    ------------------------------------------------------------------
    -- Poll
    --
@@ -135,7 +130,6 @@ is
    --    Clock must be polled before this is called.
    --
    ------------------------------------------------------------------
-
    procedure Poll(SystemFault :    out Boolean)
      with Refined_Global  => (Input  => (AlarmTimeout,
                                          Clock.CurrentTime,
@@ -148,24 +142,24 @@ is
                                          DoorAlarm,
                                          Latch.State)),
           Refined_Depends => ((AuditLog.FileState,
-                               AuditLog.State) => (AlarmTimeout,
-                                                   AuditLog.FileState,
-                                                   AuditLog.State,
-                                                   Clock.CurrentTime,
-                                                   Clock.Now,
-                                                   ConfigData.State,
-                                                   CurrentDoor,
-                                                   DoorAlarm,
-                                                   Interfac.Input,
-                                                   Latch.State),
-                              CurrentDoor =>+ Interfac.Input,
-                              DoorAlarm => (AlarmTimeout,
-                                            Clock.CurrentTime,
-                                            CurrentDoor,
-                                            Interfac.Input,
-                                            Latch.State),
-                              Latch.State =>+ Clock.CurrentTime,
-                              SystemFault => Interfac.Input),
+                               AuditLog.State)     => (AlarmTimeout,
+                                                       AuditLog.FileState,
+                                                       AuditLog.State,
+                                                       Clock.CurrentTime,
+                                                       Clock.Now,
+                                                       ConfigData.State,
+                                                       CurrentDoor,
+                                                       DoorAlarm,
+                                                       Interfac.Input,
+                                                       Latch.State),
+                              CurrentDoor          =>+ Interfac.Input,
+                              DoorAlarm            => (AlarmTimeout,
+                                                       Clock.CurrentTime,
+                                                       CurrentDoor,
+                                                       Interfac.Input,
+                                                       Latch.State),
+                              Latch.State          =>+ Clock.CurrentTime,
+                              SystemFault          => Interfac.Input),
           --------------------------------------------------------
           -- PROOF ANNOTATIONS FOR SECURITY PROPERTY 3          --
           --====================================================--
@@ -176,20 +170,24 @@ is
                                Latch.IsLocked and
                                Clock.GreaterThanOrEqual(Clock.TheCurrentTime,
                                                         AlarmTimeout)) =
-                                 (DoorAlarm = AlarmTypes.Alarming)) and
+                                 (DoorAlarm = AlarmTypes.Alarming))
+
+                              and
 
                               (Latch.IsLocked =
                                  Clock.GreaterThanOrEqual(Clock.TheCurrentTime,
-                                                          Latch.Latch_Timeout)) and
+                                                          Latch.Latch_Timeout))
+
+                              and
 
                               (Latch.IsLocked'Old <
-                                 (Latch.Current_Latch = Latch.Current_Latch'Old and
-                                  Latch.Latch_Timeout = Latch.Latch_Timeout'Old and
-                                  Latch.IsLocked)) and
+                                 (Latch.Current_Latch = Latch.Current_Latch'Old
+                                    and Latch.Latch_Timeout =
+                                    Latch.Latch_Timeout'Old and
+                                    Latch.IsLocked))
 
-                              Latch.Latch_Timeout = Latch.Latch_Timeout'Old
+                              and Latch.Latch_Timeout = Latch.Latch_Timeout'Old
    is
-
       NewDoor : T;
       ID      : AuditTypes.ElementT;
    begin
@@ -243,7 +241,6 @@ is
    --    None
    --
    ------------------------------------------------------------------
-
    procedure UnlockDoor
      with Refined_Global  => (Input  => (Clock.CurrentTime,
                                          Clock.Now,
@@ -254,41 +251,42 @@ is
                                          AuditLog.State,
                                          DoorAlarm,
                                          Latch.State)),
-          Refined_Depends => (AlarmTimeout => (Clock.CurrentTime,
-                                               ConfigData.State),
+          Refined_Depends => (AlarmTimeout         => (Clock.CurrentTime,
+                                                       ConfigData.State),
                               (AuditLog.FileState,
-                               AuditLog.State) => (AuditLog.FileState,
-                                                   AuditLog.State,
-                                                   Clock.CurrentTime,
-                                                   Clock.Now,
-                                                   ConfigData.State,
-                                                   CurrentDoor,
-                                                   DoorAlarm,
-                                                   Latch.State),
-                              DoorAlarm => (Clock.CurrentTime,
-                                            ConfigData.State,
-                                            CurrentDoor,
-                                            Latch.State),
-                              Latch.State =>+ (Clock.CurrentTime,
-                                               ConfigData.State)),
+                               AuditLog.State)     => (AuditLog.FileState,
+                                                       AuditLog.State,
+                                                       Clock.CurrentTime,
+                                                       Clock.Now,
+                                                       ConfigData.State,
+                                                       CurrentDoor,
+                                                       DoorAlarm,
+                                                       Latch.State),
+                              DoorAlarm            => (Clock.CurrentTime,
+                                                       ConfigData.State,
+                                                       CurrentDoor,
+                                                       Latch.State),
+                              Latch.State          =>+ (Clock.CurrentTime,
+                                                        ConfigData.State)),
           --------------------------------------------------------
           -- PROOF ANNOTATIONS FOR SECURITY PROPERTY 3          --
           --====================================================--
           -- After each call to UnlockDoor, the security        --
           -- property holds.                                    --
           --------------------------------------------------------
-          Refined_Post    => ((CurrentDoor = Open and then
-                               Latch.IsLocked and then
+          Refined_Post    => ((CurrentDoor = Open and
+                               Latch.IsLocked and
                                Clock.GreaterThanOrEqual(Clock.TheCurrentTime,
                                                         AlarmTimeout)) =
-                                (DoorAlarm = AlarmTypes.Alarming)) and then
+                                (DoorAlarm = AlarmTypes.Alarming))
+
+                             and
 
                              (Latch.IsLocked =
                                 Clock.GreaterThanOrEqual(Clock.TheCurrentTime,
                                                          Latch.Latch_Timeout))
 
    is
-
       LatchTimeout : Clock.TimeT;
    begin
 
@@ -316,7 +314,6 @@ is
    --    None
    --
    ------------------------------------------------------------------
-
    procedure LockDoor
      with Refined_Global  => (Input  => (Clock.CurrentTime,
                                          Clock.Now,
@@ -329,31 +326,30 @@ is
                                          Latch.State)),
           Refined_Depends => (AlarmTimeout => Clock.CurrentTime,
                               (AuditLog.FileState,
-                               AuditLog.State) => (AuditLog.FileState,
-                                                   AuditLog.State,
-                                                   Clock.CurrentTime,
-                                                   Clock.Now,
-                                                   ConfigData.State,
-                                                   CurrentDoor,
-                                                   DoorAlarm,
-                                                   Latch.State),
-                              DoorAlarm => (Clock.CurrentTime,
-                                            CurrentDoor,
-                                            Latch.State),
-                              Latch.State =>+ Clock.CurrentTime),
+                               AuditLog.State)     => (AuditLog.FileState,
+                                                       AuditLog.State,
+                                                       Clock.CurrentTime,
+                                                       Clock.Now,
+                                                       ConfigData.State,
+                                                       CurrentDoor,
+                                                       DoorAlarm,
+                                                       Latch.State),
+                              DoorAlarm            => (Clock.CurrentTime,
+                                                       CurrentDoor,
+                                                       Latch.State),
+                              Latch.State          =>+ Clock.CurrentTime),
           --------------------------------------------------------
           -- PROOF ANNOTATIONS FOR SECURITY PROPERTY 3          --
           --====================================================--
           -- After each call to LockDoor, the security property --
           -- holds.                                             --
           --------------------------------------------------------
-          Refined_Post    => ((CurrentDoor = Open and then
-                               Latch.IsLocked and then
+          Refined_Post    => ((CurrentDoor = Open and
+                               Latch.IsLocked and
                                Clock.GreaterThanOrEqual(Clock.TheCurrentTime,
                                                         AlarmTimeout)) =
-                                 (DoorAlarm = AlarmTypes.Alarming)) and then
+                                 (DoorAlarm = AlarmTypes.Alarming)) and
                              Latch.IsLocked
-
    is
    begin
 
@@ -372,14 +368,13 @@ is
    --    None
    --
    ------------------------------------------------------------------
-
    procedure Init
      with Refined_Global  => (Output => (AlarmTimeout,
                                          CurrentDoor,
                                          DoorAlarm)),
           Refined_Depends => ((AlarmTimeout,
                                CurrentDoor,
-                               DoorAlarm) => null)
+                               DoorAlarm)    => null)
    is
    begin
       CurrentDoor  := Closed;
@@ -394,10 +389,8 @@ is
    --    None
    --
    ------------------------------------------------------------------
-
-   function TheCurrentDoor return T is
-     (CurrentDoor)
-     with Refined_Global  => CurrentDoor;
+   function TheCurrentDoor return T is (CurrentDoor)
+     with Refined_Global => CurrentDoor;
 
    ------------------------------------------------------------------
    -- TheDoorAlarm
@@ -406,10 +399,8 @@ is
    --    None
    --
    ------------------------------------------------------------------
-
-   function TheDoorAlarm return AlarmTypes.StatusT is
-      (DoorAlarm)
-      with Refined_Global  => DoorAlarm;
+   function TheDoorAlarm return AlarmTypes.StatusT is (DoorAlarm)
+     with Refined_Global => DoorAlarm;
 
    ------------------------------------------------------------------
    -- Failure
@@ -418,7 +409,6 @@ is
    --    None
    --
    ------------------------------------------------------------------
-
    procedure Failure
      with Refined_Global  => (Output => (AlarmTimeout,
                                          CurrentDoor,
@@ -427,7 +417,7 @@ is
           Refined_Depends => ((AlarmTimeout,
                                CurrentDoor,
                                DoorAlarm,
-                               Latch.State) => null)
+                               Latch.State)  => null)
    is
    begin
       CurrentDoor  := Open;

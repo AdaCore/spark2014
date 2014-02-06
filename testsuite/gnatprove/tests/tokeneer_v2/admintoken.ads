@@ -55,14 +55,13 @@ is
    -- Traceunit: C.AdminToken.Init
    -- Traceto:  FD.TIS.TISStartup
    ------------------------------------------------------------------
-
    procedure Init
      with Global  => (Output => State,
                       In_Out => Status),
           Depends => ((State,
                        Status) => Status),
-          Post    => (not IsGood) and then
-                     (not AuthCertValid) and then
+          Post    => not IsGood and then
+                     not AuthCertValid and then
                      not (TheAuthCertRole in PrivTypes.AdminPrivilegeT);
 
    ------------------------------------------------------------------
@@ -87,19 +86,19 @@ is
                                  State,
                                  Status)),
           Depends => ((AuditLog.FileState,
-                       AuditLog.State) => (AuditLog.FileState,
-                                           AuditLog.State,
-                                           Clock.Now,
-                                           ConfigData.State,
-                                           State,
-                                           Status),
-                      State =>+ (Input,
-                                 Status),
-                      Status =>+ null),
-          Post    => (IsGood'Old = IsGood) and then
-                     (AuthCertValid'Old = AuthCertValid) and then
-                     ((TheAuthCertRole'Old = PrivTypes.Guard) =
-                        (TheAuthCertRole = PrivTypes.Guard));
+                       AuditLog.State)     => (AuditLog.FileState,
+                                               AuditLog.State,
+                                               Clock.Now,
+                                               ConfigData.State,
+                                               State,
+                                               Status),
+                      State                =>+ (Input,
+                                                Status),
+                      Status               =>+ null),
+          Post    => IsGood'Old = IsGood and then
+                     AuthCertValid'Old = AuthCertValid and then
+                     (TheAuthCertRole'Old = PrivTypes.Guard) =
+                        (TheAuthCertRole = PrivTypes.Guard);
 
    ------------------------------------------------------------------
    -- ReadandCheck
@@ -126,23 +125,23 @@ is
                                  State,
                                  Status)),
           Depends => ((AuditLog.FileState,
-                       AuditLog.State) => (AuditLog.FileState,
-                                           AuditLog.State,
-                                           Clock.Now,
-                                           ConfigData.State,
-                                           Input,
-                                           KeyStore.Store,
-                                           State,
-                                           Status),
+                       AuditLog.State)     => (AuditLog.FileState,
+                                               AuditLog.State,
+                                               Clock.Now,
+                                               ConfigData.State,
+                                               Input,
+                                               KeyStore.Store,
+                                               State,
+                                               Status),
                       (Description,
                        State,
-                       TokenOK) => (Clock.CurrentTime,
-                                    Input,
-                                    KeyStore.State,
-                                    KeyStore.Store,
-                                    State,
-                                    Status),
-                      Status =>+ State),
+                       TokenOK)            => (Clock.CurrentTime,
+                                               Input,
+                                               KeyStore.State,
+                                               KeyStore.Store,
+                                               State,
+                                               Status),
+                      Status               =>+ State),
           Post    => TokenOk = (IsGood and then
                                 AuthCertValid and then
                                 TheAuthCertRole in PrivTypes.AdminPrivilegeT);
@@ -157,7 +156,7 @@ is
    -- Traceto :  FD.RealWorld.State
    ------------------------------------------------------------------
    function IsPresent return Boolean
-     with Global  => State;
+     with Global => State;
 
    ------------------------------------------------------------------
    -- IsCurrent
@@ -169,7 +168,7 @@ is
    -- Traceto :  FD.AdminToken.Current
    ------------------------------------------------------------------
    function IsCurrent return Boolean
-     with Global  => (Clock.CurrentTime, State);
+     with Global => (Clock.CurrentTime, State);
 
    ------------------------------------------------------------------
    -- ExtractUser
@@ -181,7 +180,7 @@ is
    -- Traceto :  FD.AuditLog.ExtractUser
    ------------------------------------------------------------------
    function ExtractUser return AuditTypes.UserTextT
-     with Global  => State;
+     with Global => State;
 
    ------------------------------------------------------------------
    -- GetRole
@@ -194,10 +193,10 @@ is
    -- Traceto :  FD.Enclave.ValidateAdminTokenOK
    ------------------------------------------------------------------
    function GetRole return PrivTypes.AdminPrivilegeT
-     with Global  => State,
-          Pre     => IsGood and then
-                     AuthCertValid and then
-                     TheAuthCertRole in PrivTypes.AdminPrivilegeT;
+     with Global => State,
+          Pre    => IsGood and then
+                    AuthCertValid and then
+                    TheAuthCertRole in PrivTypes.AdminPrivilegeT;
 
    ------------------------------------------------------------------
    -- Clear
@@ -211,8 +210,8 @@ is
    procedure Clear
      with Global  => (In_Out => State),
           Depends => (State =>+ null),
-          Post    => (not IsGood) and then
-                     (not AuthCertValid) and then
-                     (not (TheAuthCertRole in PrivTypes.AdminPrivilegeT));
+          Post    => not IsGood and then
+                     not AuthCertValid and then
+                     not (TheAuthCertRole in PrivTypes.AdminPrivilegeT);
 
 end AdminToken;

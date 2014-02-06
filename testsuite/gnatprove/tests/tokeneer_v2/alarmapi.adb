@@ -28,26 +28,22 @@ package body AlarmAPI is
    --    Don't check whether alarm is activated or not.
    --
    ------------------------------------------------------------------
-
    procedure Activate
    is
-      InMsg       : TcpIp.MessageT;
-      OutMsg      : constant TcpIp.MessageT :=
-                       (Data   => Ada.Strings.Fixed.Overwrite(
-                                     Source   => TcpIp.NullMsg.Data, 
-                                     Position => 1, 
-                                     New_Item => "alarm.activate()"), 
-                        Length => 16);
+      InMsg     : TcpIp.MessageT;
+      OutMsg    : constant TcpIp.MessageT :=
+        (Data   =>
+           Ada.Strings.Fixed.Overwrite(Source   => TcpIp.NullMsg.Data,
+                                       Position => 1,
+                                       New_Item => "alarm.activate()"),
+         Length => 16);
       CommsIsOK : Boolean;
-
    begin
-      TcpIp.SendAndReceive (IsAdmin  => True, 
-                            Outgoing => OutMsg, 
-                            Incoming => InMsg, 
+      TcpIp.SendAndReceive (IsAdmin  => True,
+                            Outgoing => OutMsg,
+                            Incoming => InMsg,
                             Success  => CommsIsOk);
    end Activate;
-
-
 
    ------------------------------------------------------------------
    -- Deactivate
@@ -56,22 +52,20 @@ package body AlarmAPI is
    --    Don't check whether alarm is deactivated or not.
    --
    ------------------------------------------------------------------
-
    procedure Deactivate
    is
-      InMsg      : TcpIp.MessageT;
-      OutMsg     : constant TcpIp.MessageT :=
-                       (Data   => Ada.Strings.Fixed.Overwrite(
-                                      Source   => TcpIp.NullMsg.Data, 
-                                      Position => 1, 
-                                      New_Item => "alarm.deactivate()"), 
-                        Length => 18);
-      CommsIsOK  : Boolean;
-
+      InMsg     : TcpIp.MessageT;
+      OutMsg    : constant TcpIp.MessageT :=
+        (Data   =>
+           Ada.Strings.Fixed.Overwrite(Source   => TcpIp.NullMsg.Data,
+                                       Position => 1,
+                                       New_Item => "alarm.deactivate()"),
+         Length => 18);
+      CommsIsOK : Boolean;
    begin
-      TcpIp.SendAndReceive (IsAdmin  => True, 
-                            Outgoing => OutMsg, 
-                            Incoming => InMsg, 
+      TcpIp.SendAndReceive (IsAdmin  => True,
+                            Outgoing => OutMsg,
+                            Incoming => InMsg,
                             Success  => CommsIsOk);
    end Deactivate;
 

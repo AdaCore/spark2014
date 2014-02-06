@@ -20,16 +20,9 @@ with AlarmAPI;
 package body Alarm.Interfac
   with SPARK_Mode => Off
 is
-
    Is_Alarming : Boolean;
 
    function IsAlarming return Boolean is (Is_Alarming);
-
-   ------------------------------------------------------------------
-   -- Types
-   --
-   ------------------------------------------------------------------
-
 
    ------------------------------------------------------------------
    -- Activate
@@ -38,13 +31,11 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-
    procedure Activate is
    begin
       AlarmAPI.Activate;
       Is_Alarming := True;
    end Activate;
-
 
    ------------------------------------------------------------------
    -- Deactivate
@@ -53,7 +44,6 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-
    procedure Deactivate is
    begin
       AlarmAPI.Deactivate;

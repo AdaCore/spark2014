@@ -48,12 +48,12 @@ is
    --
    ------------------------------------------------------------------
    type ValidAuthCertT is record
-      Valid : Boolean;
+      Valid    : Boolean;
       Contents : Cert.Attr.Auth.ContentsT;
    end record;
 
    type ValidIDCertT is record
-      Valid : Boolean;
+      Valid    : Boolean;
       Contents : Cert.ID.ContentsT;
    end record;
 
@@ -91,7 +91,6 @@ is
    -- Implementation Notes:
    --    None.
    ------------------------------------------------------------------
-
    procedure Init
      with Refined_Global  => (Output => (AuthCert,
                                          IDCert,
@@ -104,7 +103,7 @@ is
                                IDCert,
                                TokenID,
                                TokenPresence,
-                               TokenTry) => null,
+                               TokenTry)        => null,
                               (Interfac.State,
                                Interfac.Status) => Interfac.Status)
    is
@@ -122,26 +121,28 @@ is
    procedure Poll
      with Refined_Global  => (Input    => (Clock.Now,
                                            ConfigData.State,
-                                           Interfac.Input),
+                                           Interfac.Input,
+                                           AuthCert,
+                                           IDCert),
                               Output   => TokenPresence,
                               In_Out   => (AuditLog.FileState,
                                            AuditLog.State,
                                            Interfac.State,
-                                           Interfac.Status),
-                              Proof_In => (AuthCert,
-                                           IDCert)),
+                                           Interfac.Status)),
           Refined_Depends => ((AuditLog.FileState,
-                               AuditLog.State) => (AuditLog.FileState,
-                                                   AuditLog.State,
-                                                   Clock.Now,
-                                                   ConfigData.State,
-                                                   Interfac.State,
-                                                   Interfac.Status),
+                               AuditLog.State)     => (AuditLog.FileState,
+                                                       AuditLog.State,
+                                                       Clock.Now,
+                                                       ConfigData.State,
+                                                       Interfac.State,
+                                                       Interfac.Status),
                               (Interfac.State,
-                               TokenPresence) => (Interfac.Input,
-                                                  Interfac.State,
-                                                  Interfac.Status),
-                              Interfac.Status =>+ null)
+                               TokenPresence)      => (Interfac.Input,
+                                                       Interfac.State,
+                                                       Interfac.Status),
+                              Interfac.Status      =>+ null,
+                              null                 => (AuthCert,
+                                                       IDCert))
    is
    begin
       Interfac.Poll;
@@ -157,57 +158,55 @@ is
    procedure ReadAndCheck
      (Description : out AuditTypes.DescriptionT;
       TokenOK     : out Boolean)
-     with Refined_Global =>
-            (Input  => (Clock.CurrentTime,
-                        Clock.Now,
-                        ConfigData.State,
-                        Interfac.Input,
-                        Interfac.State,
-                        KeyStore.State,
-                        KeyStore.Store),
-             Output => (AuthCert,
-                        IDCert,
-                        TokenTry),
-             In_Out => (AuditLog.FileState,
-                        AuditLog.State,
-                        Interfac.Status,
-                        TokenID)),
+     with Refined_Global => (Input  => (Clock.CurrentTime,
+                                        Clock.Now,
+                                        ConfigData.State,
+                                        Interfac.Input,
+                                        Interfac.State,
+                                        KeyStore.State,
+                                        KeyStore.Store),
+                             Output => (AuthCert,
+                                        IDCert,
+                                        TokenTry),
+                             In_Out => (AuditLog.FileState,
+                                        AuditLog.State,
+                                        Interfac.Status,
+                                        TokenID)),
 
-          Refined_Depends =>
-            ((AuditLog.FileState, AuditLog.State)
-              => (AuditLog.FileState,
-                  AuditLog.State,
-                  Clock.Now,
-                  ConfigData.State,
-                  Interfac.Input,
-                  Interfac.State,
-                  Interfac.Status,
-                  KeyStore.Store),
-            (AuthCert, Description, TokenOK)
-              => (Clock.CurrentTime,
-                  Interfac.Input,
-                  Interfac.State,
-                  Interfac.Status,
-                  KeyStore.State,
-                  KeyStore.Store),
-            IDCert => (Interfac.Input,
-                       Interfac.State,
-                       Interfac.Status,
-                       KeyStore.Store),
-            (Interfac.Status, TokenID)
-              =>+ Interfac.State,
-            TokenTry => Interfac.State),
+          Refined_Depends => ((AuditLog.FileState,
+                               AuditLog.State)        => (AuditLog.FileState,
+                                                          AuditLog.State,
+                                                          Clock.Now,
+                                                          ConfigData.State,
+                                                          Interfac.Input,
+                                                          Interfac.State,
+                                                          Interfac.Status,
+                                                          KeyStore.Store),
+                              (AuthCert, Description,
+                               TokenOK)               => (Clock.CurrentTime,
+                                                          Interfac.Input,
+                                                          Interfac.State,
+                                                          Interfac.Status,
+                                                          KeyStore.State,
+                                                          KeyStore.Store),
+                              IDCert                  => (Interfac.Input,
+                                                          Interfac.State,
+                                                          Interfac.Status,
+                                                          KeyStore.Store),
+                              (Interfac.Status,
+                               TokenID)               =>+ Interfac.State,
+                              TokenTry                => Interfac.State),
 
-          Refined_Post =>
-            TokenOk = (IDCert.Valid
-                       and then AuthCert.Valid
-                       and then Cert.Attr.Auth.TheRole (AuthCert.Contents)
-                         in PrivTypes.AdminPrivilegeT)
+          Refined_Post    => TokenOk = (IDCert.Valid and then
+                                        AuthCert.Valid and then
+                                        Cert.Attr.Auth.TheRole
+                                          (AuthCert.Contents) in
+                                          PrivTypes.AdminPrivilegeT)
    is
       AuthValid, IDValid, RoleOK : Boolean;
 
       AuthCertContents : Cert.Attr.Auth.ContentsT;
-      IDCertContents : Cert.ID.ContentsT;
+      IDCertContents   : Cert.ID.ContentsT;
 
       ------------------------------------------------------------------
       -- MakeDescription
@@ -255,32 +254,29 @@ is
                                     IDCertContents,
                                     Interfac.Status)),
              Depends => ((AuditLog.FileState,
-                          AuditLog.State) => (AuditLog.FileState,
-                                              AuditLog.State,
-                                              Clock.Now,
-                                              ConfigData.State,
-                                              Interfac.Input,
-                                              Interfac.State,
-                                              Interfac.Status,
-                                              KeyStore.Store),
+                          AuditLog.State)     => (AuditLog.FileState,
+                                                  AuditLog.State,
+                                                  Clock.Now,
+                                                  ConfigData.State,
+                                                  Interfac.Input,
+                                                  Interfac.State,
+                                                  Interfac.Status,
+                                                  KeyStore.Store),
                          (Description,
-                          IDValid) => (Interfac.Input,
-                                       Interfac.State,
-                                       Interfac.Status,
-                                       KeyStore.Store,
-                                       TokenID),
-                         IDCertContents =>+ (Interfac.Input,
-                                             Interfac.State,
-                                             Interfac.Status),
-                         Interfac.Status =>+ null)
+                          IDValid)            => (Interfac.Input,
+                                                  Interfac.State,
+                                                  Interfac.Status,
+                                                  KeyStore.Store,
+                                                  TokenID),
+                         IDCertContents       =>+ (Interfac.Input,
+                                                   Interfac.State,
+                                                   Interfac.Status),
+                         Interfac.Status      =>+ null)
       is
          RawCert   : CertTypes.RawCertificateT;
 
          CertFound : Boolean;
-         ExtractOK,
-         Verified,
-         TokenIDMatches : Boolean := False;
-
+         ExtractOK, Verified, TokenIDMatches : Boolean := False;
       begin
 
          Interfac.GetCertificate
@@ -298,13 +294,14 @@ is
             if ExtractOK then
 
                TokenIDMatches :=
-                 (TokenID =
-                    TokenTypes.TokenIDT(Cert.TheID (Contents => Cert.Id.Cert_Id_To_Cert
-                                                      (Contents => IDCertContents)).SerialNumber));
+                 (TokenID = TokenTypes.TokenIDT
+                    (Cert.TheID (Contents => Cert.Id.Cert_Id_To_Cert
+                                   (Contents => IDCertContents)).SerialNumber));
 
                Cert.IsOK
                  (RawCert => RawCert,
-                  Contents => Cert.Id.Cert_Id_To_Cert (Contents => IDCertContents),
+                  Contents => Cert.Id.Cert_Id_To_Cert
+                    (Contents => IDCertContents),
                   IsVerified => Verified);
 
             end if;
@@ -349,41 +346,37 @@ is
                                     Description,
                                     Interfac.Status)),
              Depends => ((AuditLog.FileState,
-                          AuditLog.State) => (AuditLog.FileState,
-                                              AuditLog.State,
-                                              Clock.Now,
-                                              ConfigData.State,
-                                              Interfac.Input,
-                                              Interfac.State,
-                                              Interfac.Status,
-                                              KeyStore.Store),
-                         AuthCertContents =>+ (Interfac.Input,
-                                               Interfac.State,
-                                               Interfac.Status),
-                         AuthValid => (Clock.CurrentTime,
-                                       IDCertContents,
-                                       Interfac.Input,
-                                       Interfac.State,
-                                       Interfac.Status,
-                                       KeyStore.State,
-                                       KeyStore.Store),
-                         Description =>+ (Clock.CurrentTime,
-                                          IDCertContents,
-                                          Interfac.Input,
-                                          Interfac.State,
-                                          Interfac.Status,
-                                          KeyStore.State,
-                                          KeyStore.Store),
-                         Interfac.Status =>+ null)
+                          AuditLog.State)     => (AuditLog.FileState,
+                                                  AuditLog.State,
+                                                  Clock.Now,
+                                                  ConfigData.State,
+                                                  Interfac.Input,
+                                                  Interfac.State,
+                                                  Interfac.Status,
+                                                  KeyStore.Store),
+                         AuthCertContents     =>+ (Interfac.Input,
+                                                   Interfac.State,
+                                                   Interfac.Status),
+                         AuthValid            => (Clock.CurrentTime,
+                                                  IDCertContents,
+                                                  Interfac.Input,
+                                                  Interfac.State,
+                                                  Interfac.Status,
+                                                  KeyStore.State,
+                                                  KeyStore.Store),
+                         Description          =>+ (Clock.CurrentTime,
+                                                   IDCertContents,
+                                                   Interfac.Input,
+                                                   Interfac.State,
+                                                   Interfac.Status,
+                                                   KeyStore.State,
+                                                   KeyStore.Store),
+                         Interfac.Status      =>+ null)
       is
          RawCert : CertTypes.RawCertificateT;
 
          CertFound : Boolean;
-         ExtractOK,
-           Verified,
-           Current,
-           BaseIDMatches : Boolean := False;
-
+         ExtractOK, Verified, Current, BaseIDMatches : Boolean := False;
       begin
          Interfac.GetCertificate
            (RawCert  => RawCert,
@@ -399,9 +392,11 @@ is
             if ExtractOK then
 
                BaseIDMatches :=
-                 (Cert.TheID(Contents => Cert.ID.Cert_Id_To_Cert (Contents => IDCertContents)) =
+                 (Cert.TheID(Contents => Cert.ID.Cert_Id_To_Cert
+                               (Contents => IDCertContents)) =
                   Cert.Attr.TheBaseCert
-                   (Contents =>  Cert.Attr.Auth.Cert_Attr_Auth_To_Cert_Attr (AuthCertContents)));
+                    (Contents =>  Cert.Attr.Auth.Cert_Attr_Auth_To_Cert_Attr
+                       (AuthCertContents)));
 
                Cert.Attr.Auth.IsOK
                  (RawCert => RawCert,
@@ -409,18 +404,24 @@ is
                    IsVerified => Verified);
 
                Current := Cert.IsCurrent
-                 (Contents => Cert.Attr.Auth.Cert_Attr_Auth_To_Cert (Contents => AuthCertContents));
+                 (Contents => Cert.Attr.Auth.Cert_Attr_Auth_To_Cert
+                    (Contents => AuthCertContents));
 
             end if;
 
          end if;
 
-         AuthValid := CertFound and ExtractOK
-                        and BaseIDMatches and Verified and Current;
+         AuthValid := CertFound
+                        and ExtractOK
+                        and BaseIDMatches
+                        and Verified
+                        and Current;
 
          if Description = AuditTypes.NoDescription then
-            if not CertFound or not ExtractOK
-              or not BaseIDMatches then
+            if not CertFound
+              or not ExtractOK
+              or not BaseIDMatches
+            then
                Description := MakeDescription ("Authorisation Certificate Bad");
             elsif not Verified then
                Description :=
@@ -440,11 +441,11 @@ is
 
       TokenTry := Interfac.TheTokenTry;
 
-      Cert.Attr.Auth.Clear(Contents => AuthCertContents);
-      Cert.ID.Clear(Contents => IDCertContents);
+      Cert.Attr.Auth.Clear (Contents => AuthCertContents);
+      Cert.ID.Clear (Contents => IDCertContents);
 
       if TokenTry = TokenTypes.GoodToken then
-         TokenID  := Interfac.TheTokenID;
+         TokenID := Interfac.TheTokenID;
 
          CheckIDCertOK;
 
@@ -491,7 +492,7 @@ is
    ------------------------------------------------------------------
    function IsPresent return Boolean is
      (TokenPresence = BasicTypes.Present)
-     with Refined_Global  => TokenPresence;
+     with Refined_Global => TokenPresence;
 
    ------------------------------------------------------------------
    -- IsCurrent
@@ -500,8 +501,9 @@ is
    --    None.
    ------------------------------------------------------------------
    function IsCurrent return Boolean is
-     (Cert.IsCurrent(Contents => Cert_Attr_Auth_To_Cert (Contents => AuthCert.Contents)))
-     with Refined_Global  => (AuthCert, Clock.CurrentTime);
+     (Cert.IsCurrent (Contents => Cert_Attr_Auth_To_Cert
+                        (Contents => AuthCert.Contents)))
+     with Refined_Global => (AuthCert, Clock.CurrentTime);
 
    ------------------------------------------------------------------
    -- ExtractUser
@@ -510,15 +512,17 @@ is
    --    None.
    ------------------------------------------------------------------
    function ExtractUser return AuditTypes.UserTextT
-     with Refined_Global  => (AuthCert, IDCert, TokenTry)
+     with Refined_Global => (AuthCert, IDCert, TokenTry)
    is
       Result : AuditTypes.UserTextT;
    begin
       if TokenTry = TokenTypes.GoodToken then
          if IDCert.Valid then
-            Result := Cert.ExtractUser(Cert.ID.Cert_Id_To_Cert (Contents => IDCert.Contents));
+            Result := Cert.ExtractUser (Cert.ID.Cert_Id_To_Cert
+                                          (Contents => IDCert.Contents));
          elsif AuthCert.Valid then
-            Result := Cert.ExtractUser(Cert.Attr.Auth.Cert_Attr_Auth_To_Cert (Contents => AuthCert.Contents));
+            Result := Cert.ExtractUser (Cert.Attr.Auth.Cert_Attr_Auth_To_Cert
+                                          (Contents => AuthCert.Contents));
          else
             Result := AuditTypes.NoUser;
          end if;
@@ -538,8 +542,9 @@ is
    -- Traceto :
    ------------------------------------------------------------------
    function GetRole return PrivTypes.AdminPrivilegeT is
-     (Cert.Attr.Auth.TheRole(Contents => AuthCert.Contents))
-     with Refined_Global  => AuthCert;
+     (Cert.Attr.Auth.TheRole (Contents => AuthCert.Contents))
+     with Refined_Global  => (AuthCert,
+                              IDCert);
 
    ------------------------------------------------------------------
    -- Clear
@@ -548,23 +553,19 @@ is
    --    None.
    ------------------------------------------------------------------
    procedure Clear
-     with Refined_Global  => (In_Out => AdminToken.Interfac.State,
-                              Output => (AuthCert,
+     with Refined_Global  => (Output => (AuthCert,
                                          IDCert,
                                          TokenID,
                                          TokenPresence,
                                          TokenTry)),
-          Refined_Depends => (AdminToken.Interfac.State => AdminToken.Interfac.State,
-                              (AuthCert,
+          Refined_Depends => ((AuthCert,
                                IDCert,
                                TokenID,
                                TokenPresence,
-                               TokenTry) => null)
+                               TokenTry)      => null)
    is
-
       AuthCertContents : Cert.Attr.Auth.ContentsT;
-      IDCertContents    : Cert.ID.ContentsT;
-
+      IDCertContents   : Cert.ID.ContentsT;
    begin
       TokenPresence := BasicTypes.Absent;
       TokenTry      := TokenTypes.NoToken;

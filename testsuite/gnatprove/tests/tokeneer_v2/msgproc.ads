@@ -78,7 +78,6 @@ package MsgProc is
    --    Extracts the dictionary corresponding to the Key, from Dic.
    --
    ------------------------------------------------------------------
-
    function GetDictionaryByKey (Dic : DictionaryT;
                                 Key : String) return DictionaryT;
 

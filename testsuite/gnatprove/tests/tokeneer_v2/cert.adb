@@ -38,7 +38,6 @@ package body Cert is
    -- Implementation Notes:
    --     None.
    ------------------------------------------------------------------
-
    function TheIssuer (Contents : ContentsT) return CryptoTypes.IssuerT is
      (Contents.ID.Issuer);
 
@@ -48,7 +47,6 @@ package body Cert is
    -- Implementation Notes:
    --     None.
    ------------------------------------------------------------------
-
    function TheID (Contents : ContentsT) return CertTypes.IDT is (Contents.ID);
 
    ------------------------------------------------------------------
@@ -57,7 +55,6 @@ package body Cert is
    -- Implementation Notes:
    --     Prints the Issuer ID& SerialNumber.
    ------------------------------------------------------------------
-
    function ExtractUser (Contents : ContentsT) return AuditTypes.UserTextT is
       LocalUser : AuditTypes.UserTextT := AuditTypes.NoUser;
       FullString : String := "Issuer: "
@@ -77,14 +74,12 @@ package body Cert is
       return LocalUser;
    end ExtractUser;
 
-
    ------------------------------------------------------------------
    -- TheMechanism
    --
    -- Implementation Notes:
    --     None.
    ------------------------------------------------------------------
-
    function TheMechanism (Contents : ContentsT) return CryptoTypes.AlgorithmT
    is
      (Contents.Mechanism);
@@ -95,7 +90,6 @@ package body Cert is
    -- Implementation Notes:
    --     None.
    ------------------------------------------------------------------
-
    function IsCurrent (Contents : ContentsT) return Boolean is
      (Clock.GreaterThanOrEqual(Clock.TheCurrentTime, Contents.NotBefore) and
       Clock.LessThanOrEqual(Clock.TheCurrentTime, Contents.NotAfter));
@@ -106,18 +100,17 @@ package body Cert is
    -- Implementation Notes:
    --    Deletes the Signature data from RawCert
    ------------------------------------------------------------------
-
    function GetData (RawCert : CertTypes.RawCertificateT)
                     return CertTypes.RawDataT
    is
       LocalRawData : CertTypes.RawDataT;
       Ignored      : Boolean;
    begin
-      --# accept F, 10, Ignored, "Ineffective assignment expected here"& F, 33, Ignored, "Ineffective assignment expected here";
-      CertProcessing.ObtainRawData(RawCert => RawCert,
-                                   RawData => LocalRawData,
+      pragma Warnings (Off);
+      CertProcessing.ObtainRawData(RawCert       => RawCert,
+                                   RawData       => LocalRawData,
                                    ObtainSuccess => Ignored);
-
+      pragma Warnings (On);
       return LocalRawData;
    end GetData;
 
@@ -127,18 +120,17 @@ package body Cert is
    -- Implementation Notes:
    --     None.
    ------------------------------------------------------------------
-
    function GetSignature (RawCert : CertTypes.RawCertificateT)
          return CertTypes.SignatureT
    is
       LocalSig : CertTypes.SignatureT;
       Ignored  : Boolean;
    begin
-      --# accept F, 10, Ignored, "Ineffective assignment expected here"& F, 33, Ignored, "Ineffective assignment expected here";
-      CertProcessing.ObtainSignatureData(RawCert => RawCert,
+      pragma Warnings (Off);
+      CertProcessing.ObtainSignatureData(RawCert       => RawCert,
                                          SignatureData => LocalSig,
                                          ObtainSuccess => Ignored);
-
+      pragma Warnings (On);
       return LocalSig;
    end GetSignature;
 
@@ -148,9 +140,8 @@ package body Cert is
    -- Implementation Notes:
    --     None
    ------------------------------------------------------------------
-
    procedure IssuerKnown (Contents : in     ContentsT;
-                          IsKnown   :    out Boolean)
+                          IsKnown  :    out Boolean)
    is
    begin
 
@@ -166,7 +157,6 @@ package body Cert is
    -- Implementation Notes:
    --     None.
    ------------------------------------------------------------------
-
    procedure IsOK (RawCert    : in     CertTypes.RawCertificateT;
                    Contents   : in     ContentsT;
                    IsVerified :    out Boolean)

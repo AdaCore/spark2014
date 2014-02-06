@@ -51,7 +51,6 @@ package Cert.Attr.IandA is
    -- Traceunit : C.IandACert.TheTemplate
    -- Traceto   : FD.Types.Certificates
    ------------------------------------------------------------------
-
    function TheTemplate (Contents : ContentsT) return IandATypes.TemplateT;
 
    ------------------------------------------------------------------
@@ -81,28 +80,29 @@ package Cert.Attr.IandA is
      with Depends => (Contents => null);
 
    --  Converts the extended type to the original one.
-   function Cert_Attr_Ianda_To_Cert (Contents : in ContentsT) return Cert.ContentsT;
+   function Cert_Attr_Ianda_To_Cert (Contents : in ContentsT)
+                                    return Cert.ContentsT;
 
    --  Converts the extended type to the original one.
-   function Cert_Attr_Ianda_To_Cert_Attr (Contents : in ContentsT) return Cert.Attr.ContentsT;
+   function Cert_Attr_Ianda_To_Cert_Attr (Contents : in ContentsT)
+                                         return Cert.Attr.ContentsT;
 
-   private
-      type ContentsT is
-         record
-            ID         : CertTypes.IDT;
-            NotBefore  : Clock.TimeT;
-            NotAfter   : Clock.TimeT;
-            Mechanism  : CryptoTypes.AlgorithmT;
-            BaseCertID : CertTypes.IDT;
-            Template   : IandATypes.TemplateT;
-         end record;
+private
+   type ContentsT is record
+      ID         : CertTypes.IDT;
+      NotBefore  : Clock.TimeT;
+      NotAfter   : Clock.TimeT;
+      Mechanism  : CryptoTypes.AlgorithmT;
+      BaseCertID : CertTypes.IDT;
+      Template   : IandATypes.TemplateT;
+   end record;
 
-     NullContents : constant ContentsT :=
-       ContentsT'(ID         => CertTypes.NullID,
-                   NotBefore  => Clock.ZeroTime,
-                   NotAfter   => Clock.ZeroTime,
-                   Mechanism  => CryptoTypes.AlgorithmT'First,
-                   BaseCertID => CertTypes.NullID,
-                   Template   => IandATypes.NullTemplate);
+   NullContents : constant ContentsT :=
+     ContentsT'(ID         => CertTypes.NullID,
+                NotBefore  => Clock.ZeroTime,
+                NotAfter   => Clock.ZeroTime,
+                Mechanism  => CryptoTypes.AlgorithmT'First,
+                BaseCertID => CertTypes.NullID,
+                Template   => IandATypes.NullTemplate);
 
 end Cert.Attr.IandA;

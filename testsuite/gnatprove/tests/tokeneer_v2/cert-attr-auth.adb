@@ -229,10 +229,10 @@ package body Cert.Attr.Auth is
    --  Converts the extended type to the original one.
    function Cert_Attr_Auth_To_Cert_Attr (Contents : in ContentsT)
                                         return Cert.Attr.ContentsT is
-      (Cert.Attr.ContentsT'(ID         => Contents.ID,
-                            NotBefore  => Contents.NotBefore,
-                            NotAfter   => Contents.NotAfter,
-                            Mechanism  => Contents.Mechanism,
-                            BaseCertID => Contents.BaseCertID));
+     (Cert.Attr.ContentsT'(ID         => Contents.ID,
+                           NotBefore  => Contents.NotBefore,
+                           NotAfter   => Contents.NotAfter,
+                           Mechanism  => Contents.Mechanism,
+                           BaseCertID => Contents.BaseCertID));
 
 end Cert.Attr.Auth;

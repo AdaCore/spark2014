@@ -76,8 +76,8 @@ is
    --     If the addition causes an overflow then the duration is not added.
    --
    ------------------------------------------------------------------
-   function AddDuration
-     (T : Clock.TimeT ; D : Clock.DurationT) return Clock.TimeT
+   function AddDuration (T : Clock.TimeT ; D : Clock.DurationT)
+                        return Clock.TimeT
    is
       LocalTime : Ada.Calendar.Time;
    begin

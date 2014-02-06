@@ -16,10 +16,10 @@ package Spark_IO
        Initializes    => (State, Inputs, Outputs)
 is
 
-  type File_Type is private; --718 removed limited
-  type File_Mode is (In_File, Out_File, Append_File);
+  type File_Type   is private; --718 removed limited
+  type File_Mode   is (In_File, Out_File, Append_File);
   type File_Status is (Ok, Status_Error, Mode_Error, Name_Error, Use_Error,
-                       Device_Error, End_Error,  Data_Error, Layout_Error,
+                       Device_Error, End_Error, Data_Error, Layout_Error,
                        Storage_Error, Program_Error);
 
   subtype Number_Base is Integer range 2 .. 16;

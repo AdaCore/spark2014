@@ -34,7 +34,6 @@ package body LatchAPI is
    --    None
    --
    ------------------------------------------------------------------
-
    procedure ReadBack
      (IsLocked : out Boolean;
       Success  : out Boolean);

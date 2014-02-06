@@ -51,12 +51,12 @@ is
                       In_Out => (AuditLog.FileState,
                                  AuditLog.State)),
           Depends => ((AuditLog.FileState,
-                       AuditLog.State)    => (AuditLog.FileState,
-                                              AuditLog.State,
-                                              Clock.Now,
-                                              ConfigData.State,
-                                              Store),
-                      State => Store);
+                       AuditLog.State)     => (AuditLog.FileState,
+                                               AuditLog.State,
+                                               Clock.Now,
+                                               ConfigData.State,
+                                               Store),
+                      State                => Store);
 
    ------------------------------------------------------------------
    -- KeyMatchingIssuerPresent
@@ -84,8 +84,8 @@ is
                                                ConfigData.State,
                                                Issuer,
                                                Store),
-                      IsPresent => (Issuer,
-                                    Store));
+                      IsPresent            => (Issuer,
+                                               Store));
 
    ------------------------------------------------------------------
    -- PrivateKeyPresent
@@ -98,7 +98,7 @@ is
    -- Traceto   : FD.Certificate.AuthCertSignedOk
    ------------------------------------------------------------------
    function PrivateKeyPresent return Boolean
-     with Global  => State;
+     with Global => State;
 
    ------------------------------------------------------------------
    -- IssuerIsThisTIS
@@ -110,7 +110,7 @@ is
    -- Traceto   : FD.Certificate.AuthCertSignedOk
    ------------------------------------------------------------------
    function IssuerIsThisTIS(Issuer : CryptoTypes.IssuerT) return Boolean
-     with Global  => State;
+     with Global => State;
 
    ------------------------------------------------------------------
    -- ThisTIS
@@ -122,7 +122,7 @@ is
    -- Traceto   : FD.KeyStore.State
    ------------------------------------------------------------------
    function ThisTIS return CryptoTypes.IssuerT
-     with Global  => State;
+     with Global => State;
 
    ------------------------------------------------------------------
    -- IsVerifiedBy
@@ -184,8 +184,8 @@ is
                                                RawCertData,
                                                Store),
                       (Signature,
-                       Signed)    => (RawCertData,
-                                      Store));
+                       Signed)             => (RawCertData,
+                                               Store));
 
    ------------------------------------------------------------------
    -- AddKey
@@ -220,10 +220,10 @@ is
                                                Store,
                                                TheKey,
                                                TheOwner),
-                      State =>+ (IsPublic,
-                                 Store,
-                                 TheKey,
-                                 TheOwner)),
+                      State                =>+ (IsPublic,
+                                                Store,
+                                                TheKey,
+                                                TheOwner)),
           Post    => (Added and (not IsPublic) and PrivateKeyPresent) xor
                      (not (Added and not IsPublic) and
                         (PrivateKeyPresent = PrivateKeyPresent'Old));

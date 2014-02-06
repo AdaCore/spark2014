@@ -27,8 +27,6 @@ use type CommonTypes.Unsigned32T;
 package body TokenAPI
   with SPARK_Mode => Off
 is
-
-
    PraxisCards : Boolean := False;
 
    ------------------------------------------------------------------
@@ -55,7 +53,6 @@ is
    function CodeTo32 is new
       Unchecked_Conversion (Source => ResponseCodeT,
                             Target => CommonTypes.Unsigned32T);
-
 
    ------------------------------------------------------------------
    -- GetStringHandle
@@ -173,8 +170,8 @@ is
                               NewState     :    out CommonTypes.Unsigned32T;
                               ResponseCode :    out CommonTypes.Unsigned32T)
    is
-      InMsg     : TcpIp.MessageT;
-      CommsIsOK : Boolean;
+      InMsg      : TcpIp.MessageT;
+      CommsIsOK  : Boolean;
       TrimReader : String := Ada.Strings.Fixed.Trim(Reader, Ada.Strings.Both);
 
       OutMsg : constant TcpIp.MessageT :=
@@ -218,7 +215,7 @@ is
 
       else
          -- Comms Fail - reader unavailable.
-         NewState := ReaderTo32(Unavailable);
+         NewState     := ReaderTo32(Unavailable);
          ResponseCode := CodeTo32(ReaderUnavailable);
       end if;
 
@@ -227,7 +224,7 @@ is
       when E : others =>
 
          -- Exception - function cancelled, NewState set to an invalid value
-         NewState := 0;
+         NewState     := 0;
          ResponseCode := CodeTo32(Cancelled);
 
    end GetStatusChange;
@@ -244,8 +241,8 @@ is
                       CardHandle   :    out CommonTypes.Unsigned32T;
                       ResponseCode :    out CommonTypes.Unsigned32T)
    is
-      InMsg     : TcpIp.MessageT;
-      CommsIsOK : Boolean;
+      InMsg      : TcpIp.MessageT;
+      CommsIsOK  : Boolean;
       TrimReader : String := Ada.Strings.Fixed.Trim(Reader, Ada.Strings.Both);
 
       OutMsg : constant TcpIp.MessageT :=
@@ -298,7 +295,6 @@ is
 
    end Connect;
 
-
    ------------------------------------------------------------------
    -- Status
    --
@@ -306,7 +302,6 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-
    procedure Status (CardHandle   : in     CommonTypes.Unsigned32T;
                      CState       :    out CommonTypes.Unsigned32T;
                      ATR          :    out AnswerToResetT;
@@ -376,7 +371,6 @@ is
 
    end Status;
 
-
    ------------------------------------------------------------------
    -- Disconnect
    --
@@ -384,23 +378,20 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-
    procedure Disconnect (CardHandle   : in     CommonTypes.Unsigned32T;
                          ResponseCode :    out CommonTypes.Unsigned32T)
    is
-      InMsg     : TcpIp.MessageT;
-      CommsIsOK : Boolean;
+      InMsg        : TcpIp.MessageT;
+      CommsIsOK    : Boolean;
       StringHandle : String := GetStringHandle(CardHandle);
-
-      OutMsg : TcpIp.MessageT;
-
+      OutMsg       : TcpIp.MessageT;
    begin
       OutMsg := (Data   => Ada.Strings.Fixed.Overwrite(
                                   Source   => TcpIp.NullMsg.Data,
                                   Position => 1,
                                   New_Item => "tokenReader.disconnect('" &
                                               StringHandle & "',)"),
-                  Length => 27 + StringHandle'Length);
+                 Length => 27 + StringHandle'Length);
 
       TcpIp.SendAndReceive (IsAdmin  => False,
                             Outgoing => OutMsg,
@@ -432,14 +423,13 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-
    procedure GetIDCert (CardHandle   : in     CommonTypes.Unsigned32T;
                         RawIDCert    :    out GenericRawCertT;
                         StatusOK     :    out Boolean;
                         ResponseCode :    out CommonTypes.Unsigned32T)
    is
-      InMsg     : TcpIp.MessageT;
-      CommsIsOK : Boolean;
+      InMsg        : TcpIp.MessageT;
+      CommsIsOK    : Boolean;
       StringHandle : String := GetStringHandle(CardHandle);
 
       OutMsg : TcpIp.MessageT;
@@ -450,7 +440,7 @@ is
                                   Position => 1,
                                   New_Item => "tokenReader.getIDCert('" &
                                               StringHandle & "',)"),
-                  Length => 26 + StringHandle'Length);
+                 Length => 26 + StringHandle'Length);
 
       RawIDCert := NullGenericRawCert;
 
@@ -488,7 +478,7 @@ is
 
       else
          -- Comms Fail - reader unavailable.
-         StatusOK := False;
+         StatusOK     := False;
          ResponseCode := CodeTo32(ReaderUnavailable);
       end if;
    exception
@@ -496,11 +486,10 @@ is
       when E : others =>
 
          -- Exception - function cancelled
-         StatusOK := False;
+         StatusOK     := False;
          ResponseCode := CodeTo32(Cancelled);
 
    end GetIDCert;
-
 
    ------------------------------------------------------------------
    -- GetPrivCert
@@ -509,18 +498,15 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-
    procedure GetPrivCert (CardHandle   : in     CommonTypes.Unsigned32T;
                           RawPrivCert  :    out GenericRawCertT;
                           StatusOK     :    out Boolean;
                           ResponseCode :    out CommonTypes.Unsigned32T)
    is
-      InMsg     : TcpIp.MessageT;
-      CommsIsOK : Boolean;
+      InMsg        : TcpIp.MessageT;
+      CommsIsOK    : Boolean;
       StringHandle : String := GetStringHandle(CardHandle);
-
-      OutMsg : TcpIp.MessageT;
-
+      OutMsg       : TcpIp.MessageT;
    begin
       OutMsg := (Data   => Ada.Strings.Fixed.Overwrite(
                                   Source   => TcpIp.NullMsg.Data,
@@ -565,7 +551,7 @@ is
          end;
       else
          -- Comms Fail - reader unavailable.
-         StatusOK := False;
+         StatusOK     := False;
          ResponseCode := CodeTo32(ReaderUnavailable);
       end if;
    exception
@@ -573,11 +559,10 @@ is
       when E : others =>
 
          -- Exception - function cancelled
-         StatusOK := False;
+         StatusOK     := False;
          ResponseCode := CodeTo32(Cancelled);
 
    end GetPrivCert;
-
 
    ------------------------------------------------------------------
    -- GetIACert
@@ -586,25 +571,22 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-
    procedure GetIACert (CardHandle   : in     CommonTypes.Unsigned32T;
                         RawIACert    :    out GenericRawCertT;
                         StatusOK     :    out Boolean;
                         ResponseCode :    out CommonTypes.Unsigned32T)
    is
-      InMsg     : TcpIp.MessageT;
-      CommsIsOK : Boolean;
+      InMsg        : TcpIp.MessageT;
+      CommsIsOK    : Boolean;
       StringHandle : String := GetStringHandle(CardHandle);
-
-      OutMsg : TcpIp.MessageT;
-
+      OutMsg       : TcpIp.MessageT;
    begin
       OutMsg := (Data   => Ada.Strings.Fixed.Overwrite(
                                   Source   => TcpIp.NullMsg.Data,
                                   Position => 1,
                                   New_Item => "tokenReader.getIACert('" &
                                               StringHandle & "',)"),
-                  Length => 26 + StringHandle'Length);
+                 Length => 26 + StringHandle'Length);
 
       RawIACert := NullGenericRawCert;
 
@@ -651,11 +633,10 @@ is
       when E : others =>
 
          -- Exception - function cancelled
-         StatusOK := False;
+         StatusOK     := False;
          ResponseCode := CodeTo32(Cancelled);
 
    end GetIACert;
-
 
    ------------------------------------------------------------------
    -- GetAuthCert
@@ -664,18 +645,16 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-
    procedure GetAuthCert (CardHandle   : in     CommonTypes.Unsigned32T;
                           RawAuthCert  :    out GenericRawCertT;
                           Exists       :    out Boolean;
                           StatusOK     :    out Boolean;
                           ResponseCode :    out CommonTypes.Unsigned32T)
    is
-      InMsg     : TcpIp.MessageT;
-      CommsIsOK : Boolean;
+      InMsg        : TcpIp.MessageT;
+      CommsIsOK    : Boolean;
       StringHandle : String := GetStringHandle(CardHandle);
-      OutMsg : TcpIp.MessageT;
-
+      OutMsg       : TcpIp.MessageT;
    begin
       OutMsg := (Data   => Ada.Strings.Fixed.Overwrite(
                                   Source   => TcpIp.NullMsg.Data,
@@ -732,12 +711,11 @@ is
       when E : others =>
 
          -- Exception - function cancelled
-         StatusOK := False;
-         Exists   := False;
+         StatusOK     := False;
+         Exists       := False;
          ResponseCode := CodeTo32(Cancelled);
 
    end GetAuthCert;
-
 
    ------------------------------------------------------------------
    -- UpdateAuthCert
@@ -746,7 +724,6 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-
    procedure UpdateAuthCert (CardHandle   : in     CommonTypes.Unsigned32T;
                              RawAuthCert  : in     GenericRawCertT;
                              StatusOK     :    out Boolean;
@@ -759,7 +736,6 @@ is
 
       procedure ConstructUpdateMessage(Success : out Boolean)
       is
-
          StringHandle : String := GetStringHandle(CardHandle);
          StringData   : String := RawAuthCert.CertData(
                                      1..Integer(RawAuthCert.CertLength));
@@ -832,7 +808,7 @@ is
       when E : others =>
 
          -- Exception - function cancelled
-         StatusOK := False;
+         StatusOK     := False;
          ResponseCode := CodeTo32(Cancelled);
 
    end UpdateAuthCert;

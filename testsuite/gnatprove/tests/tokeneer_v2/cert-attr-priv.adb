@@ -26,7 +26,6 @@ package body Cert.Attr.Priv is
    -- Implementation Notes:
    --     None
    ------------------------------------------------------------------
-
    function TheRole (Contents : ContentsT) return PrivTypes.PrivilegeT is
      (Contents.Role);
 
@@ -36,7 +35,6 @@ package body Cert.Attr.Priv is
    -- Implementation Notes:
    --     None
    ------------------------------------------------------------------
-
    function TheClearance (Contents : ContentsT) return PrivTypes.ClearanceT is
      (Contents.Clearance);
 

@@ -43,7 +43,6 @@ is
    --    None
    --
    ------------------------------------------------------------------
-
    procedure Init
      with Refined_Global  => (Output => (CurrentLatch,
                                          LatchTimeout)),
@@ -62,9 +61,8 @@ is
    --    None
    --
    ------------------------------------------------------------------
-   function IsLocked return Boolean is
-     (CurrentLatch = Locked)
-     with Refined_Global  => CurrentLatch;
+   function IsLocked return Boolean is (CurrentLatch = Locked)
+     with Refined_Global => CurrentLatch;
 
    ------------------------------------------------------------------
    -- UpdateInternalLatch
@@ -73,7 +71,6 @@ is
    --    None
    --
    ------------------------------------------------------------------
-
    procedure UpdateInternalLatch
      with Refined_Global  => (Input  => (Clock.CurrentTime,
                                          Clock.Now,
@@ -83,22 +80,21 @@ is
                                          AuditLog.State,
                                          CurrentLatch)),
           Refined_Depends => ((AuditLog.FileState,
-                               AuditLog.State) => (AuditLog.FileState,
-                                                   AuditLog.State,
-                                                   Clock.CurrentTime,
-                                                   Clock.Now,
-                                                   ConfigData.State,
-                                                   CurrentLatch,
-                                                   LatchTimeout),
-                              CurrentLatch => (Clock.CurrentTime,
-                                               LatchTimeout)),
-          Refined_Post    => (IsLocked =
-                                Clock.GreaterThanOrEqual(Clock.TheCurrentTime,
-                                                         LatchTimeout))
+                               AuditLog.State)     => (AuditLog.FileState,
+                                                       AuditLog.State,
+                                                       Clock.CurrentTime,
+                                                       Clock.Now,
+                                                       ConfigData.State,
+                                                       CurrentLatch,
+                                                       LatchTimeout),
+                              CurrentLatch         => (Clock.CurrentTime,
+                                                       LatchTimeout)),
+          Refined_Post    => IsLocked = Clock.GreaterThanOrEqual
+                                          (Clock.TheCurrentTime,
+                                           LatchTimeout)
    is
       LocalLatch : T;
       ID         : AuditTypes.ElementT;
-
    begin
       if Clock.GreaterThanOrEqual(Left  => Clock.TheCurrentTime,
                                   Right => LatchTimeout) then
@@ -111,10 +107,10 @@ is
 
       if CurrentLatch /= LocalLatch then
          AuditLog.AddElementToLog(
-                ElementID    => ID,
-                Severity     => AuditTypes.Information,
-                User         => AuditTypes.NoUser,
-                Description  => AuditTypes.NoDescription
+                ElementID   => ID,
+                Severity    => AuditTypes.Information,
+                User        => AuditTypes.NoUser,
+                Description => AuditTypes.NoDescription
                 );
       end if;
 
@@ -129,7 +125,6 @@ is
    --    None
    --
    ------------------------------------------------------------------
-
    procedure UpdateDevice(SystemFault :    out Boolean)
      with Refined_Global  => (Input  => (Clock.Now,
                                          ConfigData.State,
@@ -138,16 +133,14 @@ is
                               In_Out => (AuditLog.FileState,
                                          AuditLog.State)),
           Refined_Depends => ((AuditLog.FileState,
-                               AuditLog.State) => (AuditLog.FileState,
-                                                   AuditLog.State,
-                                                   Clock.Now,
-                                                   ConfigData.State,
-                                                   CurrentLatch),
+                               AuditLog.State)     => (AuditLog.FileState,
+                                                       AuditLog.State,
+                                                       Clock.Now,
+                                                       ConfigData.State,
+                                                       CurrentLatch),
                               (Interfac.Output,
-                               SystemFault) => CurrentLatch),
-          Refined_Post    => (IsLocked =
-                                Interfac.isLocked) or
-                             SystemFault
+                               SystemFault)        => CurrentLatch),
+          Refined_Post    => IsLocked = Interfac.isLocked or SystemFault
    is
    begin
       if CurrentLatch = Locked then
@@ -159,10 +152,10 @@ is
       if SystemFault then
          -- Door is in error state - raise a critical system fault
          AuditLog.AddElementToLog(
-                ElementID    => AuditTypes.SystemFault,
-                Severity     => AuditTypes.Critical,
-                User         => AuditTypes.NoUser,
-                Description  => "LATCH STATE CANNOT BE DETERMINED."
+                ElementID   => AuditTypes.SystemFault,
+                Severity    => AuditTypes.Critical,
+                User        => AuditTypes.NoUser,
+                Description => "LATCH STATE CANNOT BE DETERMINED."
                 );
       end if;
 
@@ -175,7 +168,6 @@ is
    --    None
    --
    ------------------------------------------------------------------
-
    procedure SetTimeout(Time : Clock.TimeT)
      with Refined_Global  => (Output => LatchTimeout),
           Refined_Depends => (LatchTimeout => Time),

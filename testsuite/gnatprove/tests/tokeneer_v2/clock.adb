@@ -106,8 +106,7 @@ is
    --
    ------------------------------------------------------------------
 
-   function TheCurrentTime return TimeT is
-     (CurrentTimeVar)
+   function TheCurrentTime return TimeT is (CurrentTimeVar)
      with Refined_Global => CurrentTimeVar;
 
    ------------------------------------------------------------------
@@ -117,9 +116,7 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-
-   function GetNow return TimeT is
-     (Interfac.TheTime)
+   function GetNow return TimeT is (Interfac.TheTime)
      with Refined_Global => Interfac.Now;
 
    ------------------------------------------------------------------
@@ -129,7 +126,6 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-
    function GreaterThan (Left, Right : TimeT) return Boolean is
      (Left.Year > Right.Year
         or (Left.Year = Right.Year
@@ -149,7 +145,6 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-
    function LessThan (Left, Right : TimeT) return Boolean is
      (Left.Year < Right.Year
         or (Left.Year = Right.Year
@@ -169,7 +164,6 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-
    function GreaterThanOrEqual (Left, Right : TimeT) return Boolean is
      (GreaterThan (Left, Right) or Left = Right);
 
@@ -180,7 +174,6 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-
    function LessThanOrEqual (Left, Right : TimeT) return Boolean is
      (LessThan (Left, Right) or Left = Right);
 
@@ -400,9 +393,8 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   function AddDuration
-     (TheTime : TimeT; TheDuration : DurationT) return TimeT
-   is
+   function AddDuration (TheTime : TimeT; TheDuration : DurationT)
+                        return TimeT is
      (Interfac.AddDuration(TheTime, TheDuration));
 
 end Clock;

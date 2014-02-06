@@ -21,7 +21,6 @@ with CertProc;
 package body CertProcessing
   with SPARK_Mode => Off
 is
-
    ------------------------------------------------------------------
    -- Exported Subprograms
    ------------------------------------------------------------------
@@ -32,7 +31,6 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-
    procedure ExtractIDCertData(
                    RawIDCert      : in     CertTypes.RawCertificateT;
                    IDCert         :    out IDCertDataT;
@@ -69,7 +67,6 @@ is
                      KeyLength   => LocalData.SubjectPublicKeyInfo.KeyLength));
    end ExtractIDCertData;
 
-
    ------------------------------------------------------------------
    -- ExtractPrivCertData
    --
@@ -77,7 +74,6 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-
    procedure ExtractPrivCertData(
                    RawPrivCert    : in     CertTypes.RawCertificateT;
                    PrivCert       :    out PrivCertDataT;
@@ -113,7 +109,6 @@ is
                        Class => LocalData.Privilege.Class));
    end ExtractPrivCertData;
 
-
    ------------------------------------------------------------------
    -- ExtractIACertData
    --
@@ -121,7 +116,6 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-
    procedure ExtractIACertData(
                    RawIACert      : in     CertTypes.RawCertificateT;
                    IACert         :    out IACertDataT;
@@ -155,7 +149,6 @@ is
                  Template     => LocalData.Template);
    end ExtractIACertData;
 
-
    ------------------------------------------------------------------
    -- ExtractAuthCertData
    --
@@ -163,7 +156,6 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-
    procedure ExtractAuthCertData(
                    RawAuthCert    : in     CertTypes.RawCertificateT;
                    AuthCert       :    out AuthCertDataT;
@@ -199,8 +191,6 @@ is
                        Class => LocalData.Privilege.Class));
    end ExtractAuthCertData;
 
-
-
    ------------------------------------------------------------------
    -- ObtainRawData
    --
@@ -208,7 +198,6 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-
    procedure ObtainRawData(
                    RawCert       : in     CertTypes.RawCertificateT;
                    RawData       :    out CertTypes.RawDataT;
@@ -223,7 +212,6 @@ is
                    );
    end ObtainRawData;
 
-
    ------------------------------------------------------------------
    -- ObtainSignatureData
    --
@@ -231,7 +219,6 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-
    procedure ObtainSignatureData(
                    RawCert       : in     CertTypes.RawCertificateT;
                    SignatureData :    out CertTypes.SignatureT;
@@ -247,7 +234,6 @@ is
    end ObtainSignatureData;
 
 
-
    ------------------------------------------------------------------
    -- ConstructAuthCert
    --
@@ -255,7 +241,6 @@ is
    --    Adds the fictional Crypto dictionary (copied from the Priv Cert)
    --
    ------------------------------------------------------------------
-
    procedure ConstructAuthCert(
                    AuthCert            : in     AuthCertDataT;
                    UnsignedRawAuthCert :    out CertTypes.RawCertificateT
@@ -289,8 +274,6 @@ is
                                  UnsignedRawAuthCert => UnsignedRawAuthCert);
    end ConstructAuthCert;
 
-
-
    ------------------------------------------------------------------
    -- AddAuthSignature
    --
@@ -301,11 +284,11 @@ is
    --    DigestID in the fictional Crypto dictionary.
    --
    ------------------------------------------------------------------
-
    procedure AddAuthSignature(
                    UnsignedRawAuthCert : in     CertTypes.RawCertificateT;
                    SignatureData       : in     CertTypes.SignatureT;
-                   SignedRawAuthCert   :    out CertTypes.RawCertificateT)
+                   SignedRawAuthCert   :    out CertTypes.RawCertificateT
+                   )
    is
    begin
       CertProc.AddAuthSignature(UnsignedRawAuthCert => UnsignedRawAuthCert,

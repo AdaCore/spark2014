@@ -36,9 +36,8 @@ is
    function GetStringByPos(Msg : String;
                            Arg : Positive) return String
    is
-      ValStart,ValFin : Natural;
-      LocalMsg : String := Msg;
-
+      ValStart, ValFin : Natural;
+      LocalMsg         : String := Msg;
    begin
 
       -- Now loop through the list of arguments, deleting each
@@ -79,7 +78,7 @@ is
       PrimaryCount,
       SecondaryCount : Natural := 0;
       PrimaryOpen    : Boolean := False;
-      LocalReturn : String := Msg;
+      LocalReturn    : String := Msg;
 
    begin
       -- Search for the required dictionary, given by Arg.
@@ -137,10 +136,10 @@ is
      (Dic : DictionaryT;
       Key : String) return String
    is
-      ValStart,ValFin,
-      KeyStart         : TcpIp.MessageLengthT := 0;
-      LocalMsg : String := String(Dic);
-
+      ValStart,
+      ValFin,
+      KeyStart  : TcpIp.MessageLengthT := 0;
+      LocalMsg  : String := String(Dic);
    begin
       loop
          KeyStart := Ada.Strings.Fixed.Index(Source  => LocalMsg,
@@ -206,11 +205,10 @@ is
 
    function GetDictionaryByKey (Dic : DictionaryT;
                                 Key : String)
-                    return DictionaryT is
-
+                               return DictionaryT
+   is
       KeyStart : TcpIp.MessageLengthT := 0;
       LocalMsg : String := String(Dic);
-
    begin
 
       loop
@@ -267,9 +265,8 @@ is
    ------------------------------------------------------------------
    function GetResponseFromMsg(Msg : in     TcpIp.MessageT) return String
    is
-      CodeStart,CodeFin : Natural;
-      LocalMsg : String := Msg.Data(1..Msg.Length);
-
+      CodeStart, CodeFin : Natural;
+      LocalMsg           : String := Msg.Data(1..Msg.Length);
    begin
 
       -- Locally remove the SPRE response code...

@@ -22,10 +22,10 @@ with BasicTypes,
 
 private package AdminToken.Interfac
   with SPARK_Mode,
-       Abstract_State => ((State with Part_Of => AdminToken.State),
-                          (Status with Part_Of => AdminToken.Status),
-                          (Input with External => Async_Writers,
-                                      Part_Of  => AdminToken.Input)),
+       Abstract_State => ((State  with Part_Of  => AdminToken.State),
+                          (Status with Part_Of  => AdminToken.Status),
+                          (Input  with External => Async_Writers,
+                                       Part_Of  => AdminToken.Input)),
        Initializes    => Status
 is
 
@@ -42,7 +42,6 @@ is
    --    Initialises the token reader.
    --
    ------------------------------------------------------------------
-
    procedure Init
      with Global  => (Output => State,
                       In_Out => Status),
@@ -57,7 +56,6 @@ is
    --    of the reader - determines whether a token is present.
    --
    ------------------------------------------------------------------
-
    procedure Poll
      with Global  => (Input  => (Clock.Now,
                                  ConfigData.State,
@@ -67,15 +65,15 @@ is
                                  State,
                                  Status)),
           Depends => ((AuditLog.FileState,
-                       AuditLog.State) => (AuditLog.FileState,
-                                           AuditLog.State,
-                                           Clock.Now,
-                                           ConfigData.State,
-                                           State,
-                                           Status),
-                      State =>+ (Input,
-                                 Status),
-                      Status =>+ null);
+                       AuditLog.State)     => (AuditLog.FileState,
+                                               AuditLog.State,
+                                               Clock.Now,
+                                               ConfigData.State,
+                                               State,
+                                               Status),
+                      State                =>+ (Input,
+                                                Status),
+                      Status               =>+ null);
 
    ------------------------------------------------------------------
    -- TheTokenPresence
@@ -84,9 +82,8 @@ is
    --    Returns whether an admin token is present.
    --
    ------------------------------------------------------------------
-
    function TheTokenPresence return BasicTypes.PresenceT
-     with Global  => State;
+     with Global => State;
 
    ------------------------------------------------------------------
    -- TheTokenID
@@ -95,9 +92,8 @@ is
    --    Returns the token ID of a present admin token.
    --
    ------------------------------------------------------------------
-
    function TheTokenID return TokenTypes.TokenIDT
-     with Global  => State;
+     with Global => State;
 
    ------------------------------------------------------------------
    -- TheTokenTry
@@ -107,9 +103,8 @@ is
    --    bad or good.
    --
    ------------------------------------------------------------------
-
-   function TheTokenTry return  TokenTypes.TryT
-     with Global  => State;
+   function TheTokenTry return TokenTypes.TryT
+     with Global => State;
 
    ------------------------------------------------------------------
    -- GetCertificate
@@ -120,7 +115,6 @@ is
    --    certificate will cause Found to be set false.
    --
    ------------------------------------------------------------------
-
    procedure GetCertificate
      (CertType  : in     CertTypes.CertificateT;
       RawCert   :    out CertTypes.RawCertificateT;
@@ -128,13 +122,13 @@ is
      with Global  => (Input  => (Input,
                                  State),
                       In_Out => Status),
-          Depends => (Found => (CertType,
-                                State,
-                                Status),
+          Depends => (Found   => (CertType,
+                                  State,
+                                  Status),
                       RawCert => (CertType,
                                   Input,
                                   State,
                                   Status),
-                      Status =>+ null);
+                      Status  =>+ null);
 
 end AdminToken.Interfac;

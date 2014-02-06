@@ -33,11 +33,9 @@ is
    -- Implementation Notes:
    --     None.
    ------------------------------------------------------------------
-   function ConvertToTISRawCert
-     (Cert : TokenAPI.GenericRawCertT) return CertTypes.RawCertificateT is
-   begin
-       return Cert.CertData;
-   end ConvertToTISRawCert;
+   function ConvertToTISRawCert (Cert : TokenAPI.GenericRawCertT)
+                                return CertTypes.RawCertificateT is
+     (Cert.CertData);
 
    ------------------------------------------------------------------
    -- ConvertFromTISRawCert
@@ -48,8 +46,8 @@ is
    -- Implementation Notes:
    --     None.
    ------------------------------------------------------------------
-   function ConvertFromTISRawCert
-     (Cert : CertTypes.RawCertificateT) return TokenAPI.GenericRawCertT
+   function ConvertFromTISRawCert (Cert : CertTypes.RawCertificateT)
+                                  return TokenAPI.GenericRawCertT
    is
       TrimmedCert : constant String :=
         Ada.Strings.Fixed.Trim (Source => Cert,
@@ -63,22 +61,20 @@ is
           CertLength => TrimmedCert'Length);
    end ConvertFromTISRawCert;
 
-
-
    ------------------------------------------------------------------
    -- ListReaders
    --
    -- Implementation Notes:
    --     None.
    ------------------------------------------------------------------
-
    procedure ListReaders (List         :    out ReaderNameArrayT;
                           Number       : in out BasicTypes.Unsigned32T;
                           ResponseCode :    out BasicTypes.Unsigned32T)
    is
       LocalResponseCode : CommonTypes.Unsigned32T;
-      LocalNumber : CommonTypes.Unsigned32T := CommonTypes.Unsigned32T (Number);
-      LocalList : CommonTypes.String8ArrayT;
+      LocalNumber       : CommonTypes.Unsigned32T :=
+        CommonTypes.Unsigned32T (Number);
+      LocalList         : CommonTypes.String8ArrayT;
    begin
       TokenAPI.ListReaders (List         => LocalList,
                             Number       => LocalNumber,
@@ -88,7 +84,7 @@ is
          List (J) := LocalList(J);
       end loop;
 
-      Number := BasicTypes.Unsigned32T (LocalNumber);
+      Number       := BasicTypes.Unsigned32T (LocalNumber);
       ResponseCode := BasicTypes.Unsigned32T (LocalResponseCode);
    end ListReaders;
 
@@ -98,7 +94,6 @@ is
    -- Implementation Notes:
    --     None.
    ------------------------------------------------------------------
-
    procedure GetStatusChange (Timeout      : in     BasicTypes.Unsigned32T;
                               Reader       : in     ReaderNameT;
                               CurrentState : in     ReaderStateT;
@@ -107,20 +102,19 @@ is
    is
       LocalResponseCode : CommonTypes.Unsigned32T;
       LocalCurrentState : TokenAPI.ReaderStateT;
-      LocalNewState : CommonTypes.Unsigned32T;
-
+      LocalNewState     : CommonTypes.Unsigned32T;
    begin
       LocalCurrentState := TokenAPI.ReaderStateT'Val
           (TokenAPI.ReaderStateT'Pos(TokenAPI.Unaware) +
            ReaderStateT'Pos(CurrentState) - ReaderStateT'Pos(Unaware));
       TokenAPI.GetStatusChange
-        (Timeout =>  CommonTypes.Unsigned32T(Timeout),
-          Reader  =>  Reader,
+        (Timeout       =>  CommonTypes.Unsigned32T(Timeout),
+          Reader       =>  Reader,
           CurrentState => LocalCurrentState,
-          NewState => LocalNewState,
+          NewState     => LocalNewState,
           ResponseCode => LocalResponseCode);
 
-      NewState := BasicTypes.Unsigned32T(LocalNewState);
+      NewState     := BasicTypes.Unsigned32T(LocalNewState);
       ResponseCode := BasicTypes.Unsigned32T(LocalResponseCode);
    end GetStatusChange;
 
@@ -130,20 +124,19 @@ is
    -- Implementation Notes:
    --     None.
    ------------------------------------------------------------------
-
    procedure Connect (Reader       : in     ReaderNameT;
                       CardHandle   :    out CardHandleT;
                       ResponseCode :    out BasicTypes.Unsigned32T)
    is
       LocalResponseCode : CommonTypes.Unsigned32T;
-      LocalCardHandle : CommonTypes.Unsigned32T;
+      LocalCardHandle   : CommonTypes.Unsigned32T;
    begin
       TokenAPI.Connect
         (Reader       => Reader,
          CardHandle   => LocalCardHandle,
          ResponseCode => LocalResponseCode);
 
-      CardHandle := CardHandleT(LocalCardHandle);
+      CardHandle   := CardHandleT(LocalCardHandle);
       ResponseCode := BasicTypes.Unsigned32T(LocalResponseCode);
    end Connect;
 
@@ -153,15 +146,14 @@ is
    -- Implementation Notes:
    --     None.
    ------------------------------------------------------------------
-
    procedure Status (CardHandle   : in     CardHandleT;
                      CState       :    out BasicTypes.Unsigned32T;
                      ATR          :    out TokenTypes.TokenIDT;
                      ResponseCode :    out BasicTypes.Unsigned32T)
    is
       LocalResponseCode : CommonTypes.Unsigned32T;
-      LocalCState :  CommonTypes.Unsigned32T;
-      LocalATR : TokenAPI.AnswerToResetT;
+      LocalCState       :  CommonTypes.Unsigned32T;
+      LocalATR          : TokenAPI.AnswerToResetT;
    begin
       TokenAPI.Status
         (CardHandle   => CommonTypes.Unsigned32T(CardHandle),
@@ -169,8 +161,8 @@ is
          ATR          => LocalATR,
          ResponseCode => LocalResponseCode);
 
-      ATR := TokenTypes.TokenIDT(LocalATR.TokenID);
-      CState := BasicTypes.Unsigned32T(LocalCState);
+      ATR          := TokenTypes.TokenIDT(LocalATR.TokenID);
+      CState       := BasicTypes.Unsigned32T(LocalCState);
       ResponseCode := BasicTypes.Unsigned32T(LocalResponseCode);
    end Status;
 
@@ -180,7 +172,6 @@ is
    -- Implementation Notes:
    --     None.
    ------------------------------------------------------------------
-
    procedure Disconnect (CardHandle   : in     CardHandleT;
                          ResponseCode :    out BasicTypes.Unsigned32T)
    is
@@ -199,22 +190,21 @@ is
    -- Implementation Notes:
    --     None.
    ------------------------------------------------------------------
-
    procedure GetIDCert (CardHandle   : in     CardHandleT;
                         RawIDCert    :    out CertTypes.RawCertificateT;
                         StatusOK     :    out Boolean;
                         ResponseCode :    out BasicTypes.Unsigned32T)
    is
       LocalResponseCode : CommonTypes.Unsigned32T;
-      LocalRawCert : TokenAPI.GenericRawCertT;
+      LocalRawCert      : TokenAPI.GenericRawCertT;
    begin
       TokenAPI.GetIDCert
         (CardHandle   => CommonTypes.Unsigned32T(CardHandle),
-         RawIDCert  => LocalRawCert,
+         RawIDCert    => LocalRawCert,
          StatusOK     => StatusOK,
          ResponseCode => LocalResponseCode);
 
-      RawIDCert := ConvertToTISRawCert(LocalRawCert);
+      RawIDCert    := ConvertToTISRawCert(LocalRawCert);
       ResponseCode := BasicTypes.Unsigned32T(LocalResponseCode);
    end GetIDCert;
 
@@ -224,14 +214,13 @@ is
    -- Implementation Notes:
    --     None.
    ------------------------------------------------------------------
-
    procedure GetPrivCert (CardHandle   : in     CardHandleT;
                           RawPrivCert  :    out CertTypes.RawCertificateT;
                           StatusOK     :    out Boolean;
                           ResponseCode :    out BasicTypes.Unsigned32T)
    is
       LocalResponseCode : CommonTypes.Unsigned32T;
-      LocalRawCert : TokenAPI.GenericRawCertT;
+      LocalRawCert      : TokenAPI.GenericRawCertT;
    begin
       TokenAPI.GetPrivCert
         (CardHandle   => CommonTypes.Unsigned32T(CardHandle),
@@ -239,7 +228,7 @@ is
          StatusOK     => StatusOK,
          ResponseCode => LocalResponseCode);
 
-      RawPrivCert := ConvertToTISRawCert(LocalRawCert);
+      RawPrivCert  := ConvertToTISRawCert(LocalRawCert);
       ResponseCode := BasicTypes.Unsigned32T(LocalResponseCode);
    end GetPrivCert;
 
@@ -249,14 +238,13 @@ is
    -- Implementation Notes:
    --     None.
    ------------------------------------------------------------------
-
    procedure GetIACert (CardHandle   : in     CardHandleT;
                         RawIACert    :    out CertTypes.RawCertificateT;
                         StatusOK     :    out Boolean;
                         ResponseCode :    out BasicTypes.Unsigned32T)
    is
       LocalResponseCode : CommonTypes.Unsigned32T;
-      LocalRawCert : TokenAPI.GenericRawCertT;
+      LocalRawCert      : TokenAPI.GenericRawCertT;
    begin
       TokenAPI.GetIACert
         (CardHandle   => CommonTypes.Unsigned32T(CardHandle),
@@ -264,7 +252,7 @@ is
          StatusOK     => StatusOK,
          ResponseCode => LocalResponseCode);
 
-      RawIACert := ConvertToTISRawCert(LocalRawCert);
+      RawIACert    := ConvertToTISRawCert(LocalRawCert);
       ResponseCode := BasicTypes.Unsigned32T(LocalResponseCode);
    end GetIACert;
 
@@ -274,7 +262,6 @@ is
    -- Implementation Notes:
    --     None.
    ------------------------------------------------------------------
-
    procedure GetAuthCert (CardHandle   : in     CardHandleT;
                           RawAuthCert  :    out CertTypes.RawCertificateT;
                           Exists       :    out Boolean;
@@ -282,7 +269,7 @@ is
                           ResponseCode :    out BasicTypes.Unsigned32T)
    is
       LocalResponseCode : CommonTypes.Unsigned32T;
-      LocalRawCert : TokenAPI.GenericRawCertT;
+      LocalRawCert      : TokenAPI.GenericRawCertT;
    begin
       TokenAPI.GetAuthCert
         (CardHandle   => CommonTypes.Unsigned32T(CardHandle),
@@ -291,7 +278,7 @@ is
          StatusOK     => StatusOK,
          ResponseCode => LocalResponseCode);
 
-      RawAuthCert := ConvertToTISRawCert(LocalRawCert);
+      RawAuthCert  := ConvertToTISRawCert(LocalRawCert);
       ResponseCode := BasicTypes.Unsigned32T(LocalResponseCode);
    end GetAuthCert;
 
@@ -301,7 +288,6 @@ is
    -- Implementation Notes:
    --     None.
    ------------------------------------------------------------------
-
    procedure UpdateAuthCert (CardHandle   : in     CardHandleT;
                              RawAuthCert  : in     CertTypes.RawCertificateT;
                              StatusOK     :    out Boolean;

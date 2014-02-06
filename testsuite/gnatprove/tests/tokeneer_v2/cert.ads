@@ -55,7 +55,6 @@ package Cert is
    -- Traceunit : C.Cert.TheIssuer
    -- Traceto   : FD.Types.Certificates
    ------------------------------------------------------------------
-
    function TheIssuer (Contents : ContentsT) return CryptoTypes.IssuerT;
 
    ------------------------------------------------------------------
@@ -67,7 +66,6 @@ package Cert is
    -- Traceunit : C.Cert.TheID
    -- Traceto   : FD.Types.Certificates
    ------------------------------------------------------------------
-
    function TheID (Contents : ContentsT) return CertTypes.IDT;
 
    ------------------------------------------------------------------
@@ -79,7 +77,6 @@ package Cert is
    -- Traceunit : C.Cert.ExtractUser
    -- Traceto   : FD.AuditLog.ExtractUser
    ------------------------------------------------------------------
-
    function ExtractUser (Contents : ContentsT) return AuditTypes.UserTextT;
 
    ------------------------------------------------------------------
@@ -91,7 +88,6 @@ package Cert is
    -- Traceunit : C.Cert.TheMechanism
    -- Traceto   : FD.Types.Certificates
    ------------------------------------------------------------------
-
    function TheMechanism (Contents : ContentsT) return CryptoTypes.AlgorithmT;
 
    ------------------------------------------------------------------
@@ -103,9 +99,8 @@ package Cert is
    -- Traceunit : C.Cert.IsCurrent
    -- Traceto   : FD.Certificate.IsCurrent
    ------------------------------------------------------------------
-
    function IsCurrent (Contents : ContentsT) return Boolean
-     with Global  => Clock.CurrentTime;
+     with Global => Clock.CurrentTime;
 
    ------------------------------------------------------------------
    -- GetData
@@ -116,7 +111,6 @@ package Cert is
    -- Traceunit : C.Cert.GetData
    -- Traceto   : FD.Types.Certificates
    ------------------------------------------------------------------
-
    function GetData (RawCert : CertTypes.RawCertificateT)
                     return CertTypes.RawDataT;
 
@@ -129,7 +123,6 @@ package Cert is
    -- Traceunit : C.Cert.GetSignature
    -- Traceto   : FD.Types.Certificates
    ------------------------------------------------------------------
-
    function GetSignature (RawCert : CertTypes.RawCertificateT)
                          return CertTypes.SignatureT;
 
@@ -143,7 +136,6 @@ package Cert is
    -- Traceunit : C.Cert.IssuerKnown
    -- Traceto   : FD.Certificate.SignedOK
    ------------------------------------------------------------------
-
    procedure IssuerKnown (Contents : in     ContentsT;
                          IsKnown   :    out Boolean)
      with Global  => (Input  => (Clock.Now,
@@ -152,14 +144,14 @@ package Cert is
                       In_Out => (AuditLog.FileState,
                                  AuditLog.State)),
           Depends => ((AuditLog.FileState,
-                       AuditLog.State)    => (AuditLog.FileState,
-                                              AuditLog.State,
-                                              Clock.Now,
-                                              ConfigData.State,
-                                              Contents,
-                                              KeyStore.Store),
-                      IsKnown => (Contents,
-                                  KeyStore.Store));
+                       AuditLog.State)     => (AuditLog.FileState,
+                                               AuditLog.State,
+                                               Clock.Now,
+                                               ConfigData.State,
+                                               Contents,
+                                               KeyStore.Store),
+                      IsKnown              => (Contents,
+                                               KeyStore.Store));
 
    ------------------------------------------------------------------
    -- IsOK
@@ -171,7 +163,6 @@ package Cert is
    -- Traceunit : C.Cert.IsOK
    -- Traceto   : FD.Certificate.SignedOK
    ------------------------------------------------------------------
-
    procedure IsOK (RawCert    : in     CertTypes.RawCertificateT;
                    Contents   : in     ContentsT;
                    IsVerified :    out Boolean)
@@ -181,32 +172,30 @@ package Cert is
                       In_Out => (AuditLog.FileState,
                                  AuditLog.State)),
           Depends => ((AuditLog.FileState,
-                       AuditLog.State) => (AuditLog.FileState,
-                                           AuditLog.State,
-                                           Clock.Now,
-                                           ConfigData.State,
-                                           Contents,
-                                           KeyStore.Store,
-                                           RawCert),
-                      IsVerified => (Contents,
-                                     KeyStore.Store,
-                                     RawCert));
+                       AuditLog.State)     => (AuditLog.FileState,
+                                               AuditLog.State,
+                                               Clock.Now,
+                                               ConfigData.State,
+                                               Contents,
+                                               KeyStore.Store,
+                                               RawCert),
+                      IsVerified           => (Contents,
+                                               KeyStore.Store,
+                                               RawCert));
 
-   private
+private
+   type ContentsT is record
+      ID        : CertTypes.IDT;
+      NotBefore : Clock.TimeT;
+      NotAfter  : Clock.TimeT;
+      Mechanism : CryptoTypes.AlgorithmT;
+   end record;
 
-      type ContentsT is
-         record
-            ID        : CertTypes.IDT;
-            NotBefore : Clock.TimeT;
-            NotAfter  : Clock.TimeT;
-            Mechanism : CryptoTypes.AlgorithmT;
-         end record;
-
-     NullContents : constant ContentsT :=
-       ContentsT'(ID        => CertTypes.NullID,
-                   NotBefore => Clock.ZeroTime,
-                   NotAfter  => Clock.ZeroTime,
-                   Mechanism => CryptoTypes.AlgorithmT'First);
+   NullContents : constant ContentsT :=
+     ContentsT'(ID        => CertTypes.NullID,
+                NotBefore => Clock.ZeroTime,
+                NotAfter  => Clock.ZeroTime,
+                Mechanism => CryptoTypes.AlgorithmT'First);
 
 --# accept W, 394, ContentsT, "Child packages supply constructors for ContentsT";
 end Cert;

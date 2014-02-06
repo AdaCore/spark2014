@@ -28,9 +28,9 @@ with BasicTypes;
 use type BasicTypes.Unsigned32T;
 
 package body TokenReader
-  with Refined_State => (State => ReaderStatus,
+  with Refined_State => (State  => ReaderStatus,
                          Status => TokenReader.Interfac.ReaderStatus,
-                         Input => TokenReader.Interfac.ReaderInput,
+                         Input  => TokenReader.Interfac.ReaderInput,
                          Output => TokenReader.Interfac.ReaderOutput)
 is
    ------------------------------------------------------------------
@@ -58,14 +58,14 @@ is
 
    type ReaderInfoArrayT is array (ReaderT) of ReaderInfoT;
 
-   NoReaders : constant ReaderInfoArrayT
-     := ReaderInfoArrayT'(others => NoReaderInfo);
+   NoReaders : constant ReaderInfoArrayT :=
+     ReaderInfoArrayT'(others => NoReaderInfo);
 
    type ReaderNameArrayT is array (ReaderT) of Interfac.ReaderNameT;
 
-   ExpectedReaderNames : constant ReaderNameArrayT
-     := ReaderNameArrayT'(User  => "EXTREAD ",
-                          Admin => "INTREAD ");
+   ExpectedReaderNames : constant ReaderNameArrayT :=
+     ReaderNameArrayT'(User  => "EXTREAD ",
+                       Admin => "INTREAD ");
 
 
    ------------------------------------------------------------------
@@ -88,21 +88,14 @@ is
    -- Implementation Notes:
    --    None
    ------------------------------------------------------------------
-   function GetResponseCode (ResponseCode : BasicTypes.Unsigned32T) return
-     Interfac.ResponseCodeT
-   is
-      Result : Interfac.ResponseCodeT;
-   begin
-      if ResponseCode >=
-        Interfac.ResponseCodeT'Pos(Interfac.ResponseCodeT'First)
-        and ResponseCode <=
-        Interfac.ResponseCodeT'Pos(Interfac.ResponseCodeT'Last) then
-         Result := Interfac.ResponseCodeT'Val(ResponseCode);
-      else
-         Result := Interfac.InvalidResponseCode;
-      end if;
-      return Result;
-   end GetResponseCode;
+   function GetResponseCode (ResponseCode : BasicTypes.Unsigned32T)
+                            return Interfac.ResponseCodeT
+   is (if ResponseCode >=
+         Interfac.ResponseCodeT'Pos(Interfac.ResponseCodeT'First)
+         and ResponseCode <=
+         Interfac.ResponseCodeT'Pos(Interfac.ResponseCodeT'Last)
+       then Interfac.ResponseCodeT'Val(ResponseCode)
+       else Interfac.InvalidResponseCode);
 
    ------------------------------------------------------------------
    -- GetReaderState
@@ -114,21 +107,14 @@ is
    -- Implementation Notes:
    --    None
    ------------------------------------------------------------------
-   function GetReaderState (ReaderState : BasicTypes.Unsigned32T) return
-     Interfac.ReaderStateT
-   is
-      Result : Interfac.ReaderStateT;
-   begin
-      if ReaderState >=
-        Interfac.ReaderStateT'Pos(Interfac.ReaderStateT'First)
-        and ReaderState <=
-        Interfac.ReaderStateT'Pos(Interfac.ReaderStateT'Last) then
-         Result := Interfac.ReaderStateT'Val(ReaderState);
-      else
-         Result := Interfac.InvalidReaderState;
-      end if;
-      return Result;
-   end GetReaderState;
+   function GetReaderState (ReaderState : BasicTypes.Unsigned32T)
+                           return Interfac.ReaderStateT
+   is (if ReaderState >=
+         Interfac.ReaderStateT'Pos(Interfac.ReaderStateT'First)
+         and ReaderState <=
+         Interfac.ReaderStateT'Pos(Interfac.ReaderStateT'Last)
+       then Interfac.ReaderStateT'Val(ReaderState)
+       else Interfac.InvalidReaderState);
 
    ------------------------------------------------------------------
    -- GetCardState
@@ -140,21 +126,14 @@ is
    -- Implementation Notes:
    --    None
    ------------------------------------------------------------------
-   function GetCardState (CardState : BasicTypes.Unsigned32T) return
-     Interfac.CardStateT
-   is
-      Result : Interfac.CardStateT;
-   begin
-      if CardState >=
-        Interfac.CardStateT'Pos(Interfac.CardStateT'First)
-        and CardState <=
-        Interfac.CardStateT'Pos(Interfac.CardStateT'Last) then
-         Result := Interfac.CardStateT'Val(CardState);
-      else
-         Result := Interfac.InvalidCardState;
-      end if;
-      return Result;
-   end GetCardState;
+   function GetCardState (CardState : BasicTypes.Unsigned32T)
+                         return Interfac.CardStateT
+   is (if CardState >=
+         Interfac.CardStateT'Pos(Interfac.CardStateT'First)
+         and CardState <=
+         Interfac.CardStateT'Pos(Interfac.CardStateT'Last)
+       then Interfac.CardStateT'Val(CardState)
+       else Interfac.InvalidCardState);
 
    ------------------------------------------------------------------
    -- MakeDescription
@@ -221,7 +200,6 @@ is
    --    This routine gets a list of the available readers
    --    it raises an error if the required readers are not present.
    ------------------------------------------------------------------
-
    procedure Init
      with Refined_Global  => (Input  => (Clock.Now,
                                          ConfigData.State,
@@ -250,11 +228,11 @@ is
       -- Implementation Notes:
       --    Presented as a subroutine to aid VCG.
       ------------------------------------------------------------------
-       procedure SetReaderName (TheReader : in ReaderT;
+      procedure SetReaderName (TheReader : in ReaderT;
                                TheName   : in Interfac.ReaderNameT)
-         with Global  => (In_Out => ReaderStatus),
-              Depends => (ReaderStatus =>+ (TheName,
-                                            TheReader))
+        with Global  => (In_Out => ReaderStatus),
+             Depends => (ReaderStatus =>+ (TheName,
+                                           TheReader))
       is
       begin
          ReaderStatus(TheReader).Name := TheName;
@@ -287,8 +265,8 @@ is
       -- We are looking for 2 readers.
       NumberReaders := 2;
       Interfac.ListReaders(List         => Readers,
-                            Number       => NumberReaders,
-                            ResponseCode => ResponseCode);
+                           Number       => NumberReaders,
+                           ResponseCode => ResponseCode);
 
       if ResponseCode = Interfac.ResponseCodeT'Pos(Interfac.Success) then
 
@@ -298,7 +276,8 @@ is
            BasicTypes.Unsigned32T(Interfac.ReaderArrayI'Last)
          then
             for I in Interfac.ReaderArrayI
-              range 1..Interfac.ReaderArrayI(NumberReaders) loop
+              range 1..Interfac.ReaderArrayI(NumberReaders)
+            loop
                pragma Loop_Invariant
                  (I <= Interfac.ReaderArrayI(NumberReaders) and
                   NumberReaders = NumberReaders'Loop_Entry);
@@ -369,7 +348,6 @@ is
    --    This logs a system fault of we can't obtain a sensible
    --    reader status.
    ------------------------------------------------------------------
-
    procedure Poll (Reader : in ReaderT)
      with Refined_Global  => (Input  => (Clock.Now,
                                          ConfigData.State,
@@ -379,16 +357,16 @@ is
                                          AuditLog.State,
                                          ReaderStatus)),
           Refined_Depends => ((AuditLog.FileState,
-                               AuditLog.State) => (AuditLog.FileState,
-                                                   AuditLog.State,
-                                                   Clock.Now,
-                                                   ConfigData.State,
-                                                   Interfac.ReaderStatus,
-                                                   Reader,
-                                                   ReaderStatus),
-                              ReaderStatus =>+ (Interfac.ReaderInput,
-                                                Interfac.ReaderStatus,
-                                                Reader))
+                               AuditLog.State)     => (AuditLog.FileState,
+                                                       AuditLog.State,
+                                                       Clock.Now,
+                                                       ConfigData.State,
+                                                       Interfac.ReaderStatus,
+                                                       Reader,
+                                                       ReaderStatus),
+                              ReaderStatus         =>+ (Interfac.ReaderInput,
+                                                        Interfac.ReaderStatus,
+                                                        Reader))
    is
       ResponseCode  : BasicTypes.Unsigned32T;
       RawNewState   : BasicTypes.Unsigned32T;
@@ -415,12 +393,13 @@ is
       is
         UnusedResponseCode : BasicTypes.Unsigned32T;
       begin
-         --# accept F, 10, UnusedResponseCode, "Ineffective assignment expected here"& F, 33, UnusedResponseCode, "Ineffective assignment expected here";
+         pragma Warnings (Off);
          if ReaderStatus(Reader).TokenConnected then
             Interfac.Disconnect
               (CardHandle   => ReaderStatus(Reader).TokenHandle,
                ResponseCode => UnusedResponseCode);
          end if;
+         pragma Warnings (On);
       end DisconnectToken;
 
       ------------------------------------------------------------------
@@ -437,7 +416,7 @@ is
                                     Reader),
                          In_Out => ReaderStatus),
              Depends => (ReaderStatus =>+ Reader,
-                         null => Interfac.ReaderStatus)
+                         null         => Interfac.ReaderStatus)
       is
       begin
          DisconnectToken;
@@ -462,7 +441,7 @@ is
                                     Reader),
                          In_Out => ReaderStatus),
              Depends => (ReaderStatus =>+ Reader,
-                         null => Interfac.ReaderStatus)
+                         null         => Interfac.ReaderStatus)
       is
       begin
          DisconnectToken;
@@ -533,11 +512,13 @@ is
                      CardHandle   => TheCardHandle,
                      ResponseCode => ResponseCode);
 
-                    if ResponseCode = Interfac.ResponseCodeT'Pos(Interfac.Success) then
-                       MarkTokenConnected;
-                    else
-                       MarkTokenBad;
-                    end if;
+                  if ResponseCode = Interfac.ResponseCodeT'Pos
+                    (Interfac.Success)
+                  then
+                     MarkTokenConnected;
+                  else
+                     MarkTokenBad;
+                  end if;
                end if;
 
             when Interfac.Mute =>
@@ -568,10 +549,10 @@ is
                                            Interfac.ReaderStatus,
                                            Reader))
       is
-        RawCardState        : BasicTypes.Unsigned32T;
-        CardState           : Interfac.CardStateT;
-        ResponseCode        : BasicTypes.Unsigned32T;
-        TheATR              : TokenTypes.TokenIDT;
+        RawCardState : BasicTypes.Unsigned32T;
+        CardState    : Interfac.CardStateT;
+        ResponseCode : BasicTypes.Unsigned32T;
+        TheATR       : TokenTypes.TokenIDT;
 
         ------------------------------------------------------------------
         -- MarkTokenGood
@@ -591,9 +572,8 @@ is
                                              TheATR))
         is
         begin
-           ReaderStatus(Reader).TokenTry       := TokenTypes.GoodToken;
-           ReaderStatus(Reader).TokenID        := TheATR;
-
+           ReaderStatus(Reader).TokenTry := TokenTypes.GoodToken;
+           ReaderStatus(Reader).TokenID  := TheATR;
         end MarkTokenGood;
 
         -----------------------------------------------------------------
@@ -605,7 +585,6 @@ is
             CState       => RawCardState,
             ATR          => TheATR,
             ResponseCode => ResponseCode);
-
 
          if ResponseCode = Interfac.ResponseCodeT'Pos(Interfac.Success) then
 
@@ -619,7 +598,6 @@ is
                   -- keep waiting
                when Interfac.Negotiable..Interfac.Specific =>
                   MarkTokenGood;
-
                when Interfac.InvalidCardState =>
                   MarkTokenBad;
             end case;
@@ -720,7 +698,8 @@ is
       end if;
 
       if ReaderStatus(Reader).CurrentStatus = Interfac.CardPresent and
-        ReaderStatus(Reader).TokenConnected then
+        ReaderStatus(Reader).TokenConnected
+      then
          CheckCardState;
       end if;
 
@@ -735,7 +714,7 @@ is
 
    function TheTokenTry (Reader : ReaderT) return TokenTypes.TryT is
      (ReaderStatus(Reader).TokenTry)
-     with Refined_Global  => ReaderStatus;
+     with Refined_Global => ReaderStatus;
 
    ------------------------------------------------------------------
    -- TheTokenPresence
@@ -745,7 +724,7 @@ is
    ------------------------------------------------------------------
 
    function TheTokenPresence (Reader  :  ReaderT) return BasicTypes.PresenceT
-     with Refined_Global  => ReaderStatus
+     with Refined_Global => ReaderStatus
    is
       Result : BasicTypes.PresenceT;
    begin
@@ -766,7 +745,7 @@ is
 
    function TheTokenID (Reader : ReaderT) return  TokenTypes.TokenIDT is
      (ReaderStatus(Reader).TokenID)
-     with Refined_Global  => ReaderStatus;
+     with Refined_Global => ReaderStatus;
 
    ------------------------------------------------------------------
    -- GetCertificate
@@ -782,10 +761,10 @@ is
      with Refined_Global  => (Input  => (Interfac.ReaderInput,
                                          Interfac.ReaderStatus,
                                          ReaderStatus)),
-          Refined_Depends => (Found => (CertType,
-                                        Interfac.ReaderStatus,
-                                        Reader,
-                                        ReaderStatus),
+          Refined_Depends => (Found   => (CertType,
+                                          Interfac.ReaderStatus,
+                                          Reader,
+                                          ReaderStatus),
                               RawCert => (CertType,
                                           Interfac.ReaderInput,
                                           Interfac.ReaderStatus,
@@ -843,7 +822,6 @@ is
    -- Implementation Notes:
    --     None.
    ------------------------------------------------------------------
-
    procedure WriteAuthCertificate
      (RawCert   : in     CertTypes.RawCertificateT;
       Success   :    out Boolean)
@@ -853,8 +831,8 @@ is
           Refined_Depends => (Interfac.ReaderOutput => (Interfac.ReaderStatus,
                                                         RawCert,
                                                         ReaderStatus),
-                              Success => (Interfac.ReaderStatus,
-                                          ReaderStatus))
+                              Success               => (Interfac.ReaderStatus,
+                                                        ReaderStatus))
 
    is
       StatusOK     : Boolean;

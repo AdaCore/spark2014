@@ -26,18 +26,17 @@ package body DoorAPI is
    --  Same as GetDoorState, compatible with SPARK (no exception handler)
 
    function GetDoorStateRaw return DoorStateT is
-      InMsg       : TcpIp.MessageT;
-      OutMsg      : constant TcpIp.MessageT :=
-                       (Data   => Ada.Strings.Fixed.Overwrite(
-                                      Source   => TcpIp.NullMsg.Data,
-                                      Position => 1,
-                                      New_Item => "door.getState()"),
-                        Length => 15);
-      DoorState   : DoorStateT := Error;
+      InMsg     : TcpIp.MessageT;
+      OutMsg    : constant TcpIp.MessageT :=
+        (Data   =>
+           Ada.Strings.Fixed.Overwrite(Source   => TcpIp.NullMsg.Data,
+                                       Position => 1,
+                                       New_Item => "door.getState()"),
+         Length => 15);
+      DoorState : DoorStateT := Error;
       IsOp,
       IsClosed,
-      CommsIsOK   : Boolean;
-
+      CommsIsOK : Boolean;
    begin
       TcpIp.SendAndReceive
         (IsAdmin  => False,
@@ -47,7 +46,7 @@ package body DoorAPI is
 
       if CommsIsOK then
          declare
-            Msg : String := MsgProc.GetResponseFromMsg (InMsg);
+            Msg       : String := MsgProc.GetResponseFromMsg (InMsg);
             StateDict : MsgProc.DictionaryT :=
                MsgProc.GetDictionary (Msg => Msg, Arg => 1);
          begin
@@ -77,7 +76,6 @@ package body DoorAPI is
    --    Set return value to Error if door state cannot be determined.
    --
    ------------------------------------------------------------------
-
    function GetDoorState return DoorStateT
      with SPARK_Mode => Off
    is

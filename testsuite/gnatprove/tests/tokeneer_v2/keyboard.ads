@@ -30,11 +30,10 @@ is
    subtype DataI is Positive range 1..MaxDataLength;
    subtype DataTextT is String(DataI);
 
-   type DataT is
-      record
-         Length : DataLengthT;
-         Text   : DataTextT;
-      end record;
+   type DataT is record
+      Length : DataLengthT;
+      Text   : DataTextT;
+   end record;
 
    ------------------------------------------------------------------
    -- Init
@@ -74,9 +73,8 @@ is
    -- Traceto: FD.Enclave.ValidateOpRequestOK
    -- Traceto: FD.Enclave.ValidateOpRequestFail
    ------------------------------------------------------------------
-   procedure Read
-     (DataPresence :    out BasicTypes.PresenceT;
-      Data         :    out DataT)
+   procedure Read (DataPresence :    out BasicTypes.PresenceT;
+                   Data         :    out DataT)
      with Global  => (Input  => Inputs),
           Depends => ((Data, DataPresence) => Inputs);
 

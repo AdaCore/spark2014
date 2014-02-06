@@ -40,9 +40,8 @@ package PrivTypes is
       Topsecret
       );
 
-   type ClearanceT is
-      record
-         Class : ClassT;
-      end record;
+   type ClearanceT is record
+      Class : ClassT;
+   end record;
 
 end PrivTypes;

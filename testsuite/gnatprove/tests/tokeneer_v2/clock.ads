@@ -93,7 +93,6 @@ is
    -- Traceunit: C.Clock.Poll
    -- Traceto: FD.Interfac.PollTime
    ------------------------------------------------------------------
-
    procedure Poll
      with Global  => (Input  => Now,
                       Output => CurrentTime),
@@ -256,7 +255,7 @@ is
    -- Traceunit: C.Clock.AddDuration
    --
    ------------------------------------------------------------------
-   function AddDuration
-     (TheTime : TimeT; TheDuration : DurationT) return TimeT;
+   function AddDuration (TheTime : TimeT; TheDuration : DurationT)
+                        return TimeT;
 
 end Clock;
