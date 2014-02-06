@@ -962,7 +962,34 @@ package body Flow_Utility is
                     Attribute_Last |
                     Attribute_Length |
                     Attribute_Range =>
-                     --  Ignore anything to do with ranges.
+                     declare
+                        Prefix_Vars : constant Flow_Id_Sets.Set :=
+                          Get_Variable_Set
+                          (Prefix (N),
+                           Scope                        => Scope,
+                           Local_Constants              => Local_Constants,
+                           Reduced                      => Reduced,
+                           Allow_Statements             => Allow_Statements,
+                           Expand_Synthesized_Constants =>
+                             Expand_Synthesized_Constants);
+                     begin
+                        for F of Prefix_Vars loop
+                           if F.Kind in Direct_Mapping | Record_Field and then
+                             F.Bound.Kind = No_Bound and then
+                             Has_Bounds (F)
+                           then
+                              --  This is not a bound variable, but it
+                              --  requires bounds tracking. We make it a
+                              --  bound variable.
+                              VS.Include
+                                (F'Update (Bound => (Kind => Some_Bound)));
+
+                           else
+                              --  This is something else. We just copy it.
+                              VS.Include (F);
+                           end if;
+                        end loop;
+                     end;
                      return Skip;
 
                   when Attribute_Loop_Entry =>

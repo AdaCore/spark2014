@@ -960,11 +960,10 @@ package body Flow is
             case FA.Kind is
                when E_Subprogram_Body =>
                   Analysis.Find_Unwritten_Exports (FA);
-                  Analysis.Find_Ineffective_Imports (FA);
+                  Analysis.Find_Ineffective_Imports_And_Unused_Objects (FA);
                   Analysis.Find_Ineffective_Statements (FA);
                   Analysis.Find_Dead_Code (FA);
                   Analysis.Find_Use_Of_Uninitialized_Variables (FA);
-                  Analysis.Find_Unused_Objects (FA);
                   Analysis.Find_Exports_Derived_From_Proof_Ins (FA);
                   Analysis.Check_Contracts (FA);
                   Analysis.Analyse_Main (FA);

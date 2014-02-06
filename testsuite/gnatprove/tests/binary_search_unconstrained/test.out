@@ -26,8 +26,6 @@ binary_search.adb:42:13: info: assertion proved
 binary_search.adb:43:13: info: assertion proved
 binary_search.adb:43:62: info: index check proved
 binary_search.adb:43:73: info: index check proved
-binary_search.ads:10:20: warning: unused initial value of "A"
-binary_search.ads:10:20: warning: unused variable "A"
 binary_search.ads:12:66: info: index check proved
 binary_search.ads:12:76: info: index check proved
 binary_search.ads:16:14: info: postcondition proved

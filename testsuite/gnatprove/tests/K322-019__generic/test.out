@@ -1,2 +1,1 @@
-gen.ads:4:18: warning: unused initial value of "Z", in instantiation at isnew.ads:3
 gen.ads:4:18: warning: unused variable "Z", in instantiation at isnew.ads:3

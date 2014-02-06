@@ -1,11 +1,7 @@
-dynamic_in_post.adb:3:26: warning: unused initial value of "S"
-dynamic_in_post.adb:3:26: warning: unused variable "S"
 dynamic_in_post.adb:3:57: info: range check proved
 dynamic_in_post.adb:4:07: warning: initialization has no effect
 dynamic_in_post.adb:5:07: warning: initialization has no effect
 dynamic_in_post.adb:7:7: warning: assertion might fail, requires Get_Last (X) = Get_Last (Y)
-dynamic_in_post.adb:11:26: warning: unused initial value of "S"
-dynamic_in_post.adb:11:26: warning: unused variable "S"
 dynamic_in_post.adb:12:22: info: postcondition proved
 dynamic_in_post.adb:12:40: info: range check proved
 dynamic_in_post.adb:17:07: warning: initialization has no effect

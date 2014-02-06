@@ -64,5 +64,4 @@ rec_aggregate.ads:39:14: warning: postcondition might fail
 rec_aggregate.ads:39:47: info: overflow check proved
 rec_aggregate.ads:45:18: warning: unused initial value of "R"
 rec_aggregate.ads:47:14: warning: postcondition might fail
-rec_aggregate.ads:53:21: warning: unused initial value of "R"
 rec_aggregate.ads:53:21: warning: unused variable "R"

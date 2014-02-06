@@ -174,12 +174,6 @@ simple_unc_arrays.ads:98:47: info: discriminant check proved
 simple_unc_arrays.ads:98:55: warning: array index check might fail
 simple_unc_arrays.ads:98:61: info: discriminant check proved
 simple_unc_arrays.ads:98:65: warning: array index check might fail
-simple_unc_arrays.ads:105:20: warning: unused initial value of "A"
-simple_unc_arrays.ads:105:20: warning: unused variable "A"
-simple_unc_arrays.ads:106:25: warning: unused initial value of "A"
-simple_unc_arrays.ads:106:25: warning: unused variable "A"
-simple_unc_arrays.ads:106:28: warning: unused initial value of "B"
-simple_unc_arrays.ads:106:28: warning: unused variable "B"
 simple_unc_arrays.ads:112:57: info: discriminant check proved
 simple_unc_arrays.ads:112:61: warning: array index check might fail
 simple_unc_arrays.ads:116:18: info: postcondition proved

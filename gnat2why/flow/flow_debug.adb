@@ -78,8 +78,7 @@ package body Flow_Debug is
             Write_Eol;
             Indent;
             for B of D loop
-               Sprint_Flow_Id (B);
-               Write_Eol;
+               Print_Flow_Id (B);
             end loop;
             Outdent;
          end;

@@ -1,4 +1,3 @@
-message_tests.adb:40:33: warning: unused initial value of "C"
 message_tests.adb:40:33: warning: unused variable "C"
 message_tests.adb:48:32: "C.Flags.A" is not initialized in "Not_All_Used_Out"
 message_tests.adb:48:32: "C.Flags.B" is not initialized in "Not_All_Used_Out"

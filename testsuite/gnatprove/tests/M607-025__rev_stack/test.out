@@ -44,12 +44,8 @@ stack.adb:17:22: info: range check proved
 stack.adb:18:19: info: index check proved
 stack.adb:29:22: info: range check proved
 stack.adb:37:28: info: length check proved
-stack.ads:15:23: warning: unused initial value of "S"
-stack.ads:15:23: warning: unused variable "S"
 stack.ads:16:19: info: overflow check proved
 stack.ads:16:34: info: overflow check proved
-stack.ads:17:23: warning: unused initial value of "S"
-stack.ads:17:23: warning: unused variable "S"
 stack.ads:21:14: warning: postcondition might fail, requires Is_Empty (Empty_Stack'result)
 stack.ads:28:14: warning: postcondition might fail, requires To (S) = To (S'Old) & X
 stack.ads:28:34: warning: range check might fail

@@ -55,10 +55,11 @@ package Flow.Analysis is
    --
    --  Complexity is O(N)
 
-   procedure Find_Ineffective_Imports (FA : Flow_Analysis_Graphs);
-   --  Find all ineffective initial values.
+   procedure Find_Ineffective_Imports_And_Unused_Objects
+     (FA : Flow_Analysis_Graphs);
+   --  Find all ineffective initial values and all unused objects.
    --
-   --  Complexity is O(N^2)
+   --  Complexity is O(N^2) and O(N) respectively.
 
    procedure Find_Ineffective_Statements (FA : Flow_Analysis_Graphs);
    --  Find all ineffective statements.
@@ -100,11 +101,6 @@ package Flow.Analysis is
    --  Find stable loop statements.
    --
    --  Complexity is O(N^2)
-
-   procedure Find_Unused_Objects (FA : Flow_Analysis_Graphs);
-   --  Find unused objects.
-   --
-   --  Complexity is O(N)
 
    procedure Find_Exports_Derived_From_Proof_Ins (FA : Flow_Analysis_Graphs);
    --  Finds exports derived from global variables with mode Proof_In.

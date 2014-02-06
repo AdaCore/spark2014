@@ -316,13 +316,30 @@ package body Graph is
    function Parent
      (G : T'Class;
       V : Vertex_Id)
-      return Vertex_Id is
+      return Vertex_Id
+   is
    begin
       for P of G.Vertices (V).In_Neighbours loop
          return P;
       end loop;
       return Null_Vertex;
    end Parent;
+
+   -----------
+   -- Child --
+   -----------
+
+   function Child
+     (G : T'Class;
+      V : Vertex_Id)
+      return Vertex_Id
+   is
+   begin
+      for C in G.Vertices (V).Out_Neighbours.Iterate loop
+         return Key (C);
+      end loop;
+      return Null_Vertex;
+   end Child;
 
    ----------------------------------------------------------------------
    --  Iterators

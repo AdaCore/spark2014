@@ -1,5 +1,4 @@
 check_file.adb:3:23: warning: unused initial value of "Contents"
 check_file.adb:3:23: warning: unused variable "Contents"
 check_file.adb:5:04: warning: initialization has no effect
-check_file.adb:7:33: warning: unused initial value of "Expect_End_Of_Page"
 check_file.adb:7:33: warning: unused variable "Expect_End_Of_Page"

@@ -128,6 +128,15 @@ package body Flow_Error_Messages is
                when Direct_Mapping | Record_Field =>
                   Append (R, Flow_Id_To_String (F));
 
+                  case F.Bound.Kind is
+                     when No_Bound =>
+                        null;
+
+                     when Some_Bound =>
+                        Append (R, "'Some_Bound");
+                        --  raise Program_Error;
+                  end case;
+
                when Magic_String =>
                   --  ??? we may want to use __gnat_decode() here instead
                   if F.Name.all = "__HEAP" then

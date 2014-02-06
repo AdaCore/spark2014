@@ -1,6 +1,5 @@
 dir.adb:5:07: warning: unused initial value of "Directory"
 dir.adb:5:07: warning: unused variable "Directory"
-dir.adb:6:07: warning: unused initial value of "Resolve_Links"
 dir.adb:6:07: warning: unused variable "Resolve_Links"
 dir.adb:18:07: warning: unused initial value of "Directory"
 dir.adb:18:07: warning: unused variable "Directory"

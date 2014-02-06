@@ -283,6 +283,16 @@ package Graph is
    --
    --  Complexity is O(1).
 
+   function Child
+     (G : T'Class;
+      V : Vertex_Id)
+      return Vertex_Id
+      with Pre => G.Out_Neighbour_Count (V) <= 1;
+   --  Return the sole out neighbour of the vertex, if it exists, and
+   --  Null_Vertex otherwise.
+   --
+   --  Complexity is O(1).
+
    ----------------------------------------------------------------------
    --  Iterators
    ----------------------------------------------------------------------

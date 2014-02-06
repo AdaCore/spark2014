@@ -4,4 +4,3 @@ main.adb:12:12: warning: unused assignment
 main2.adb:4:32: warning: "X" might not be initialized after elaboration of main program "Main2"
 main2.adb:4:48: warning: "Some_Package.State" might not be initialized after elaboration of main program "Main2"
 main2.adb:4:48: warning: unused global "Some_Package.State"
-main2.adb:4:48: warning: unused initial value of "Some_Package.State"

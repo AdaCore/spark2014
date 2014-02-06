@@ -3,4 +3,3 @@ p.adb:5:12: warning: discriminant check might fail
 p.adb:5:24: warning: unused assignment
 p.ads:18:16: warning: "V.Field" is not modified, could be "in"
 p.ads:18:16: warning: "V.Z" is not modified, could be "in"
-p.ads:18:16: warning: unused variable "V"

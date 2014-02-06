@@ -1,22 +1,12 @@
 opers.adb:5:16: warning: overflow check might fail, in instantiation at opers.adb:10
 opers.adb:5:16: warning: overflow check might fail, in instantiation at opers.adb:8
-opers.ads:5:18: warning: unused initial value of "X"
 opers.ads:5:18: warning: unused variable "X"
-opers.ads:5:21: warning: unused initial value of "Y"
 opers.ads:5:21: warning: unused variable "Y"
-opers.ads:6:18: warning: unused initial value of "X"
 opers.ads:6:18: warning: unused variable "X"
-opers.ads:6:21: warning: unused initial value of "Y"
 opers.ads:6:21: warning: unused variable "Y"
-opers.ads:7:18: warning: unused initial value of "X"
 opers.ads:7:18: warning: unused variable "X"
-opers.ads:7:21: warning: unused initial value of "Y"
 opers.ads:7:21: warning: unused variable "Y"
-opers.ads:17:32: warning: unused initial value of "X", in instantiation at opers.adb:21
-opers.ads:17:32: warning: unused initial value of "X", in instantiation at opers.adb:23
 opers.ads:17:32: warning: unused variable "X", in instantiation at opers.adb:21
 opers.ads:17:32: warning: unused variable "X", in instantiation at opers.adb:23
-opers.ads:22:30: warning: unused initial value of "X", in instantiation at opers.adb:34
-opers.ads:22:30: warning: unused initial value of "X", in instantiation at opers.adb:36
 opers.ads:22:30: warning: unused variable "X", in instantiation at opers.adb:34
 opers.ads:22:30: warning: unused variable "X", in instantiation at opers.adb:36

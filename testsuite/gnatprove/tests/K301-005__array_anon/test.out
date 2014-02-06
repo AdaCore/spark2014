@@ -1,3 +1,2 @@
-named.ads:4:16: warning: unused initial value of "X"
 named.ads:4:16: warning: unused variable "X"
 named.ads:5:20: info: postcondition proved

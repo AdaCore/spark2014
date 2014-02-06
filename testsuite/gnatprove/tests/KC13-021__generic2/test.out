@@ -6,5 +6,4 @@ p.adb:9:7: warning: precondition might fail, in instantiation at q.adb:13
 p.adb:9:7: warning: precondition might fail, in instantiation at q.ads:8
 q.adb:10:14: info: overflow check proved
 q.adb:21:18: warning: overflow check might fail
-q.ads:4:18: warning: unused initial value of "J"
 q.ads:4:18: warning: unused variable "J"

@@ -46,6 +46,14 @@ is
       B := A'Length;
    end Test_04_Ok;
 
+   procedure Test_05_Ok (A : out String)
+   with Depends => (A => A)
+   is
+   begin
+      A := (others => ' ');
+      A (A'First) := 'x';
+   end Test_05_Ok;
+
    --  The customer testcase below.
 
    type Octet is mod 2**8;
@@ -55,11 +63,7 @@ is
                              Data        : out Octet_Array;
                              Octet_Count : out Natural)
    with Depends => (Data        => Text,
-                    Octet_Count => (Text, Data));
-
-   procedure To_Octet_Array (Text        : String;
-                             Data        : out Octet_Array;
-                             Octet_Count : out Natural)
+                    Octet_Count => (Text, Data))
    is
    begin
       Data := (others => 0);

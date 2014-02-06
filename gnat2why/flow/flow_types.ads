@@ -249,6 +249,12 @@ package Flow_Types is
    --  Returns true if a flow id needs separate representation for its
    --  bounds.
 
+   function Is_Bound (F : Flow_Id) return Boolean
+   is (if F.Kind in Direct_Mapping | Record_Field
+       then F.Bound.Kind /= No_Bound
+       else False);
+   --  Returns true if the given flow id represents a bound.
+
    function Get_Default_Initialization (F : Flow_Id) return Node_Id;
    --  Get the default initialization expression for the given flow id
    --  (this only really works for record fields and direct mappings;

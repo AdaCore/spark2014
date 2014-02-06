@@ -1,6 +1,4 @@
-funcs.adb:21:17: warning: unused initial value of "X"
 funcs.adb:21:17: warning: unused variable "X"
-funcs.adb:23:17: warning: unused initial value of "X"
 funcs.adb:23:17: warning: unused variable "X"
 funcs.adb:53:58: info: postcondition proved
 funcs.adb:64:7: info: assertion proved
@@ -61,11 +59,8 @@ funcs.adb:106:20: info: assertion proved
 funcs.adb:107:7: info: assertion proved
 funcs.adb:108:09: warning: unused assignment
 funcs.adb:108:20: info: assertion proved
-funcs.ads:8:17: warning: unused initial value of "X"
 funcs.ads:8:17: warning: unused variable "X"
-funcs.ads:9:17: warning: unused initial value of "X"
 funcs.ads:9:17: warning: unused variable "X"
-funcs.ads:10:17: warning: unused initial value of "X"
 funcs.ads:10:17: warning: unused variable "X"
 funcs.ads:19:58: info: postcondition proved
 funcs.ads:20:58: info: postcondition proved

@@ -147,10 +147,10 @@ package body Flow.Slice is
       is
       begin
          case F.Kind is
-            when Direct_Mapping | Magic_String | Synthetic_Null_Export =>
-               return Change_Variant (F, Normal_Use);
-
-            when Record_Field =>
+            when Direct_Mapping        |
+                 Magic_String          |
+                 Synthetic_Null_Export |
+                 Record_Field          =>
                return Change_Variant (Entire_Variable (F), Normal_Use);
 
             when Null_Value =>
@@ -164,11 +164,11 @@ package body Flow.Slice is
       Unused_Inputs : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
 
       Out_Discrim   : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
-      --  We need to keep track of discriminated out parameters, as
-      --  the implicit input (the discriminant) is never unused. So if
-      --  it unused after all we silently take it out the
-      --  unused_inputs set, so that we don't produce a flow error
-      --  about a missing null dependency.
+      --  We need to keep track of discriminated or unconstrained out
+      --  parameters, as the implicit input (the discriminant) is never
+      --  unused. So if it unused after all we silently take it out the
+      --  unused_inputs set, so that we don't produce a flow error about a
+      --  missing null dependency.
 
       DM            : Dependency_Maps.Map := Dependency_Maps.Empty_Map;
 
@@ -206,12 +206,11 @@ package body Flow.Slice is
                In_Vertices.Include (V_Initial);
                Unused_Inputs.Include (Flow_Equivalent (F_Initial));
 
-               if Is_Discriminant (F_Initial) and then
-                 Attr.Mode = Mode_Out
+               if (Is_Discriminant (F_Initial) or Is_Bound (F_Initial))
+                 and then Attr.Mode = Mode_Out
                then
-                  --  See above about supressing "null => foo"
-                  --  dependency error messages for out parameters and
-                  --  globals.
+                  --  See above about supressing "null => foo" dependency
+                  --  error messages for out parameters and globals.
                   Out_Discrim.Include
                     (Change_Variant (Entire_Variable (F_Initial),
                                      Normal_Use));

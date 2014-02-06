@@ -879,28 +879,19 @@ package body Flow.Control_Flow_Graph is
       Is_Param : Boolean;
       FA       : in out Flow_Analysis_Graphs)
    is
-      V : Flow_Graphs.Vertex_Id;
-      A : V_Attributes;
       M : Param_Mode;
-   begin
-      if Ekind (E) = E_Constant and not FA.Local_Constants.Contains (E) then
-         --  We ignore non-local constants (for now).
-         return;
-      end if;
 
-      if Is_Param then
-         case Ekind (E) is
-            when E_Out_Parameter    => M := Mode_Out;
-            when E_In_Out_Parameter => M := Mode_In_Out;
-            when E_In_Parameter     => M := Mode_In;
-            when others =>
-               raise Program_Error;
-         end case;
-      else
-         M := Mode_Invalid;
-      end if;
+      procedure Process (F : Flow_Id);
 
-      for F of Flatten_Variable (E) loop
+      -------------
+      -- Process --
+      -------------
+
+      procedure Process (F : Flow_Id)
+      is
+         V : Flow_Graphs.Vertex_Id;
+         A : V_Attributes;
+      begin
          --  Setup the n'initial vertex. Note that initialization for
          --  variables is detected (and set) when building the flow graph
          --  for declarative parts.
@@ -931,6 +922,31 @@ package body Flow.Control_Flow_Graph is
          Linkup (FA.CFG, FA.End_Vertex, V);
 
          FA.All_Vars.Include (F);
+      end Process;
+
+   begin
+      if Ekind (E) = E_Constant and not FA.Local_Constants.Contains (E) then
+         --  We ignore non-local constants (for now).
+         return;
+      end if;
+
+      if Is_Param then
+         case Ekind (E) is
+            when E_Out_Parameter    => M := Mode_Out;
+            when E_In_Out_Parameter => M := Mode_In_Out;
+            when E_In_Parameter     => M := Mode_In;
+            when others =>
+               raise Program_Error;
+         end case;
+      else
+         M := Mode_Invalid;
+      end if;
+
+      for Tmp of Flatten_Variable (E) loop
+         Process (Tmp);
+         if Has_Bounds (Tmp) then
+            Process (Tmp'Update (Bound => (Kind => Some_Bound)));
+         end if;
       end loop;
    end Create_Initial_And_Final_Vertices;
 
@@ -940,38 +956,53 @@ package body Flow.Control_Flow_Graph is
       Uninitialized : Boolean;
       FA            : in out Flow_Analysis_Graphs)
    is
-      V : Flow_Graphs.Vertex_Id;
-      A : V_Attributes;
-   begin
-      for F_Part of Flatten_Variable (F) loop
+      procedure Process (F : Flow_Id);
+
+      -------------
+      -- Process --
+      -------------
+
+      procedure Process (F : Flow_Id)
+      is
+         A : V_Attributes;
+         V : Flow_Graphs.Vertex_Id;
+      begin
          --  Setup the n'initial vertex. Initialization is deduced from
          --  the mode.
          A := Make_Global_Variable_Attributes
-           (F      => Change_Variant (F_Part, Initial_Value),
+           (F      => Change_Variant (F, Initial_Value),
             Mode   => Mode,
             Uninit => Uninitialized);
          Add_Vertex
            (FA,
-            Change_Variant (F_Part, Initial_Value),
+            Change_Variant (F, Initial_Value),
             A,
             V);
          Linkup (FA.CFG, V, FA.Start_Vertex);
 
-         Create_Record_Tree (Change_Variant (F_Part, Initial_Value),
+         Create_Record_Tree (Change_Variant (F, Initial_Value),
                              A,
                              FA);
 
          --  Setup the n'final vertex.
          Add_Vertex
            (FA,
-            Change_Variant (F_Part, Final_Value),
+            Change_Variant (F, Final_Value),
             Make_Global_Variable_Attributes
-              (F    => Change_Variant (F_Part, Final_Value),
+              (F    => Change_Variant (F, Final_Value),
                Mode => Mode),
             V);
          Linkup (FA.CFG, FA.End_Vertex, V);
 
-         FA.All_Vars.Include (F_Part);
+         FA.All_Vars.Include (F);
+      end Process;
+
+   begin
+      for Tmp of Flatten_Variable (F) loop
+         Process (Tmp);
+         if Has_Bounds (Tmp) then
+            Process (Tmp'Update (Bound => (Kind => Some_Bound)));
+         end if;
       end loop;
    end Create_Initial_And_Final_Vertices;
 

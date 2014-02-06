@@ -235,16 +235,25 @@ package body Flow_Types is
    ----------------
 
    function Has_Bounds (F : Flow_Id) return Boolean is
+      T : Entity_Id;
    begin
       case F.Kind is
          when Null_Value | Synthetic_Null_Export | Magic_String =>
             return False;
 
          when Direct_Mapping =>
-            return not Is_Constrained (Etype (F.Node));
+            T := Etype (F.Node);
 
          when Record_Field =>
-            return not Is_Constrained (Etype (F.Component.Last_Element));
+            T := Etype (F.Component.Last_Element);
+      end case;
+
+      case Ekind (T) is
+         when Array_Kind =>
+            return not Is_Constrained (T);
+
+         when others =>
+            return False;
       end case;
    end Has_Bounds;
 

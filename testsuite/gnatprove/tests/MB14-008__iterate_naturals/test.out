@@ -1,10 +1,4 @@
-test_iterable.ads:13:23: warning: unused initial value of "Cont"
-test_iterable.ads:13:23: warning: unused variable "Cont"
-test_iterable.ads:15:29: warning: unused initial value of "Cont"
-test_iterable.ads:15:29: warning: unused variable "Cont"
 test_iterable.ads:16:16: info: discriminant check proved
-test_iterable.ads:17:22: warning: unused initial value of "Cont"
-test_iterable.ads:17:22: warning: unused variable "Cont"
 test_iterable.ads:18:52: info: overflow check proved
 test_iterable.ads:20:7: info: precondition proved
 test_iterable.ads:20:32: info: discriminant check proved

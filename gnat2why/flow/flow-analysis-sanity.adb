@@ -150,8 +150,9 @@ package body Flow.Analysis.Sanity is
          begin
             for F of Flow_Ids loop
                if (if F.Kind in Direct_Mapping | Record_Field
-                   then not Is_Constant_Object
-                     (Get_Direct_Mapping_Id (F)))
+                   then not
+                     (Is_Constant_Object (Get_Direct_Mapping_Id (F)) or
+                        Is_Bound (F)))
                then
                   Error_Msg_Flow
                     (FA        => FA,
