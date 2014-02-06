@@ -1,3 +1,2 @@
 test.adb:3:24: warning: unused initial value of "X"
-test.adb:3:24: warning: unused variable "X"
 test.adb:10:05: warning: statement has no effect
