@@ -9,10 +9,8 @@ is
       end loop;
    end Halt;
 begin
-   if X > 0 then
-      Y := X;
-   else
+   if X <= 0 then
       Halt;
    end if;
-   Y := Y / 2;
+   Y := X / 2;
 end No_Return_B;
