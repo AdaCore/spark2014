@@ -616,6 +616,40 @@ package body Flow is
             end if;
          end if;
 
+         if A.Variables_Used.Length > 0 then
+            Write_Str ("\nVU: {");
+            declare
+               First : Boolean := True;
+            begin
+               for F of A.Variables_Used loop
+                  if First then
+                     First := False;
+                  else
+                     Write_Str (", ");
+                  end if;
+                  Sprint_Flow_Id (F);
+               end loop;
+            end;
+            Write_Str ("}");
+         end if;
+
+         if A.Variables_Defined.Length > 0 then
+            Write_Str ("\nVD: {");
+            declare
+               First : Boolean := True;
+            begin
+               for F of A.Variables_Defined loop
+                  if First then
+                     First := False;
+                  else
+                     Write_Str (", ");
+                  end if;
+                  Sprint_Flow_Id (F);
+               end loop;
+            end;
+            Write_Str ("}");
+         end if;
+
          Write_Str ("\n<VId:" & Natural'Image (G.Vertex_To_Natural (V)) & ">");
 
          Write_Eol;

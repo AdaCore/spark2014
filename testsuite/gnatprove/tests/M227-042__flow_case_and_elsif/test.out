@@ -3,7 +3,7 @@ digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="end\n<VId: 2>",shape="plaintext"];
-    4 [label="null\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
+    4 [label="null\nVU: {null}\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
     7 [label="null;\n<VId: 7>"];
 
     1 ->  7 [arrowType="normal"];
@@ -14,7 +14,7 @@ digraph G {
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
-    4 [label="null\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
+    4 [label="null\nVU: {null}\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
     7 [label="null;\n<VId: 7>"];
 
     1 ->  7 [arrowType="normal"];
@@ -25,20 +25,20 @@ digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="end\n<VId: 2>",shape="plaintext"];
-    4 [label="null\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
-    5 [label="par1'initial\n<VId: 5>",shape="plaintext"];
-    6 [label="par1'final\n<VId: 6>",shape="plaintext",fontcolor="red"];
-    7 [label="par2'initial\n<VId: 7>",shape="plaintext",fontcolor="red"];
-    8 [label="par2'final\n<VId: 8>",shape="plaintext",fontcolor="blue"];
-    11 [label="case par1\n<VId: 11>",shape="diamond"];
+    4 [label="null\nVU: {null}\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
+    5 [label="par1'initial\nVD: {Par1}\n<VId: 5>",shape="plaintext"];
+    6 [label="par1'final\nVU: {Par1}\n<VId: 6>",shape="plaintext",fontcolor="red"];
+    7 [label="par2'initial\nVD: {Par2}\n<VId: 7>",shape="plaintext",fontcolor="red"];
+    8 [label="par2'final\nVU: {Par2}\n<VId: 8>",shape="plaintext",fontcolor="blue"];
+    11 [label="case par1\nVU: {Par1}\n<VId: 11>",shape="diamond"];
     12 [label="when 1\n<VId: 12>",shape="plaintext"];
-    13 [label="par2 := 1;\n<VId: 13>"];
+    13 [label="par2 := 1;\nVD: {Par2}\n<VId: 13>"];
     14 [label="when 2, 3\n<VId: 14>",shape="plaintext"];
-    15 [label="par2 := 2;\n<VId: 15>"];
+    15 [label="par2 := 2;\nVD: {Par2}\n<VId: 15>"];
     16 [label="when 4 .. 10\n<VId: 16>",shape="plaintext"];
-    17 [label="par2 := 3;\n<VId: 17>"];
+    17 [label="par2 := 3;\nVD: {Par2}\n<VId: 17>"];
     18 [label="when others\n<VId: 18>",shape="plaintext"];
-    19 [label="par2 := 4;\n<VId: 19>"];
+    19 [label="par2 := 4;\nVD: {Par2}\n<VId: 19>"];
 
     1 ->  11 [arrowType="normal"];
     2 ->  6 [arrowType="normal"];
@@ -63,20 +63,20 @@ digraph G {
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
-    4 [label="null\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
-    5 [label="par1'initial\n<VId: 5>",shape="plaintext"];
-    6 [label="par1'final\n<VId: 6>",shape="plaintext",fontcolor="red"];
-    7 [label="par2'initial\n<VId: 7>",shape="plaintext",fontcolor="red"];
-    8 [label="par2'final\n<VId: 8>",shape="plaintext",fontcolor="blue"];
-    11 [label="case par1\n<VId: 11>",shape="diamond"];
+    4 [label="null\nVU: {null}\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
+    5 [label="par1'initial\nVD: {Par1}\n<VId: 5>",shape="plaintext"];
+    6 [label="par1'final\nVU: {Par1}\n<VId: 6>",shape="plaintext",fontcolor="red"];
+    7 [label="par2'initial\nVD: {Par2}\n<VId: 7>",shape="plaintext",fontcolor="red"];
+    8 [label="par2'final\nVU: {Par2}\n<VId: 8>",shape="plaintext",fontcolor="blue"];
+    11 [label="case par1\nVU: {Par1}\n<VId: 11>",shape="diamond"];
     12 [label="when 1\n<VId: 12>",shape="plaintext"];
-    13 [label="par2 := 1;\n<VId: 13>"];
+    13 [label="par2 := 1;\nVD: {Par2}\n<VId: 13>"];
     14 [label="when 2, 3\n<VId: 14>",shape="plaintext"];
-    15 [label="par2 := 2;\n<VId: 15>"];
+    15 [label="par2 := 2;\nVD: {Par2}\n<VId: 15>"];
     16 [label="when 4 .. 10\n<VId: 16>",shape="plaintext"];
-    17 [label="par2 := 3;\n<VId: 17>"];
+    17 [label="par2 := 3;\nVD: {Par2}\n<VId: 17>"];
     18 [label="when others\n<VId: 18>",shape="plaintext"];
-    19 [label="par2 := 4;\n<VId: 19>"];
+    19 [label="par2 := 4;\nVD: {Par2}\n<VId: 19>"];
 
     1 ->  11 [arrowType="normal"];
     5 ->  6 [arrowType="normal",color="red"];
@@ -100,16 +100,16 @@ digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="end\n<VId: 2>",shape="plaintext"];
-    4 [label="null\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
-    5 [label="par1'initial\n<VId: 5>",shape="plaintext"];
-    6 [label="par1'final\n<VId: 6>",shape="plaintext",fontcolor="blue"];
-    9 [label="if par1 > 1000\n<VId: 9>",shape="diamond"];
-    10 [label="par1 := 999;\n<VId: 10>"];
-    11 [label="elsif par1 > 100\n<VId: 11>",shape="diamond"];
-    12 [label="par1 := 99;\n<VId: 12>"];
-    13 [label="elsif par1 > 10\n<VId: 13>",shape="diamond"];
-    14 [label="par1 := 9;\n<VId: 14>"];
-    15 [label="par1 := 0;\n<VId: 15>"];
+    4 [label="null\nVU: {null}\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
+    5 [label="par1'initial\nVD: {Par1}\n<VId: 5>",shape="plaintext"];
+    6 [label="par1'final\nVU: {Par1}\n<VId: 6>",shape="plaintext",fontcolor="blue"];
+    9 [label="if par1 > 1000\nVU: {Par1}\n<VId: 9>",shape="diamond"];
+    10 [label="par1 := 999;\nVD: {Par1}\n<VId: 10>"];
+    11 [label="elsif par1 > 100\nVU: {Par1}\n<VId: 11>",shape="diamond"];
+    12 [label="par1 := 99;\nVD: {Par1}\n<VId: 12>"];
+    13 [label="elsif par1 > 10\nVU: {Par1}\n<VId: 13>",shape="diamond"];
+    14 [label="par1 := 9;\nVD: {Par1}\n<VId: 14>"];
+    15 [label="par1 := 0;\nVD: {Par1}\n<VId: 15>"];
 
     1 ->  9 [arrowType="normal"];
     2 ->  6 [arrowType="normal"];
@@ -130,16 +130,16 @@ digraph G {
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
-    4 [label="null\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
-    5 [label="par1'initial\n<VId: 5>",shape="plaintext"];
-    6 [label="par1'final\n<VId: 6>",shape="plaintext",fontcolor="blue"];
-    9 [label="if par1 > 1000\n<VId: 9>",shape="diamond"];
-    10 [label="par1 := 999;\n<VId: 10>"];
-    11 [label="elsif par1 > 100\n<VId: 11>",shape="diamond"];
-    12 [label="par1 := 99;\n<VId: 12>"];
-    13 [label="elsif par1 > 10\n<VId: 13>",shape="diamond"];
-    14 [label="par1 := 9;\n<VId: 14>"];
-    15 [label="par1 := 0;\n<VId: 15>"];
+    4 [label="null\nVU: {null}\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
+    5 [label="par1'initial\nVD: {Par1}\n<VId: 5>",shape="plaintext"];
+    6 [label="par1'final\nVU: {Par1}\n<VId: 6>",shape="plaintext",fontcolor="blue"];
+    9 [label="if par1 > 1000\nVU: {Par1}\n<VId: 9>",shape="diamond"];
+    10 [label="par1 := 999;\nVD: {Par1}\n<VId: 10>"];
+    11 [label="elsif par1 > 100\nVU: {Par1}\n<VId: 11>",shape="diamond"];
+    12 [label="par1 := 99;\nVD: {Par1}\n<VId: 12>"];
+    13 [label="elsif par1 > 10\nVU: {Par1}\n<VId: 13>",shape="diamond"];
+    14 [label="par1 := 9;\nVD: {Par1}\n<VId: 14>"];
+    15 [label="par1 := 0;\nVD: {Par1}\n<VId: 15>"];
 
     1 ->  9 [arrowType="normal"];
     5 ->  9 [arrowType="normal",color="red"];
@@ -162,13 +162,13 @@ digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="end\n<VId: 2>",shape="plaintext"];
-    4 [label="null\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
-    5 [label="par1'initial\n<VId: 5>",shape="plaintext"];
-    6 [label="par1'final\n<VId: 6>",shape="plaintext",fontcolor="blue"];
-    9 [label="if par1 > 1000\n<VId: 9>",shape="diamond"];
-    10 [label="par1 := 999;\n<VId: 10>"];
-    11 [label="elsif par1 > 100\n<VId: 11>",shape="diamond"];
-    12 [label="par1 := 99;\n<VId: 12>"];
+    4 [label="null\nVU: {null}\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
+    5 [label="par1'initial\nVD: {Par1}\n<VId: 5>",shape="plaintext"];
+    6 [label="par1'final\nVU: {Par1}\n<VId: 6>",shape="plaintext",fontcolor="blue"];
+    9 [label="if par1 > 1000\nVU: {Par1}\n<VId: 9>",shape="diamond"];
+    10 [label="par1 := 999;\nVD: {Par1}\n<VId: 10>"];
+    11 [label="elsif par1 > 100\nVU: {Par1}\n<VId: 11>",shape="diamond"];
+    12 [label="par1 := 99;\nVD: {Par1}\n<VId: 12>"];
 
     1 ->  9 [arrowType="normal"];
     2 ->  6 [arrowType="normal"];
@@ -185,13 +185,13 @@ digraph G {
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
-    4 [label="null\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
-    5 [label="par1'initial\n<VId: 5>",shape="plaintext"];
-    6 [label="par1'final\n<VId: 6>",shape="plaintext",fontcolor="blue"];
-    9 [label="if par1 > 1000\n<VId: 9>",shape="diamond"];
-    10 [label="par1 := 999;\n<VId: 10>"];
-    11 [label="elsif par1 > 100\n<VId: 11>",shape="diamond"];
-    12 [label="par1 := 99;\n<VId: 12>"];
+    4 [label="null\nVU: {null}\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
+    5 [label="par1'initial\nVD: {Par1}\n<VId: 5>",shape="plaintext"];
+    6 [label="par1'final\nVU: {Par1}\n<VId: 6>",shape="plaintext",fontcolor="blue"];
+    9 [label="if par1 > 1000\nVU: {Par1}\n<VId: 9>",shape="diamond"];
+    10 [label="par1 := 999;\nVD: {Par1}\n<VId: 10>"];
+    11 [label="elsif par1 > 100\nVU: {Par1}\n<VId: 11>",shape="diamond"];
+    12 [label="par1 := 99;\nVD: {Par1}\n<VId: 12>"];
 
     1 ->  9 [arrowType="normal"];
     5 ->  6 [arrowType="normal",color="red"];
@@ -209,12 +209,12 @@ digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="end\n<VId: 2>",shape="plaintext"];
-    4 [label="null\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
-    5 [label="par1'initial\n<VId: 5>",shape="plaintext"];
-    6 [label="par1'final\n<VId: 6>",shape="plaintext",fontcolor="blue"];
-    9 [label="if par1 > 1000\n<VId: 9>",shape="diamond"];
-    10 [label="par1 := 999;\n<VId: 10>"];
-    11 [label="par1 := 0;\n<VId: 11>"];
+    4 [label="null\nVU: {null}\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
+    5 [label="par1'initial\nVD: {Par1}\n<VId: 5>",shape="plaintext"];
+    6 [label="par1'final\nVU: {Par1}\n<VId: 6>",shape="plaintext",fontcolor="blue"];
+    9 [label="if par1 > 1000\nVU: {Par1}\n<VId: 9>",shape="diamond"];
+    10 [label="par1 := 999;\nVD: {Par1}\n<VId: 10>"];
+    11 [label="par1 := 0;\nVD: {Par1}\n<VId: 11>"];
 
     1 ->  9 [arrowType="normal"];
     2 ->  6 [arrowType="normal"];
@@ -229,12 +229,12 @@ digraph G {
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
-    4 [label="null\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
-    5 [label="par1'initial\n<VId: 5>",shape="plaintext"];
-    6 [label="par1'final\n<VId: 6>",shape="plaintext",fontcolor="blue"];
-    9 [label="if par1 > 1000\n<VId: 9>",shape="diamond"];
-    10 [label="par1 := 999;\n<VId: 10>"];
-    11 [label="par1 := 0;\n<VId: 11>"];
+    4 [label="null\nVU: {null}\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
+    5 [label="par1'initial\nVD: {Par1}\n<VId: 5>",shape="plaintext"];
+    6 [label="par1'final\nVU: {Par1}\n<VId: 6>",shape="plaintext",fontcolor="blue"];
+    9 [label="if par1 > 1000\nVU: {Par1}\n<VId: 9>",shape="diamond"];
+    10 [label="par1 := 999;\nVD: {Par1}\n<VId: 10>"];
+    11 [label="par1 := 0;\nVD: {Par1}\n<VId: 11>"];
 
     1 ->  9 [arrowType="normal"];
     5 ->  9 [arrowType="normal",color="red"];
@@ -249,11 +249,11 @@ digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="end\n<VId: 2>",shape="plaintext"];
-    4 [label="null\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
-    5 [label="par1'initial\n<VId: 5>",shape="plaintext"];
-    6 [label="par1'final\n<VId: 6>",shape="plaintext",fontcolor="blue"];
-    9 [label="if par1 > 1000\n<VId: 9>",shape="diamond"];
-    10 [label="par1 := 999;\n<VId: 10>"];
+    4 [label="null\nVU: {null}\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
+    5 [label="par1'initial\nVD: {Par1}\n<VId: 5>",shape="plaintext"];
+    6 [label="par1'final\nVU: {Par1}\n<VId: 6>",shape="plaintext",fontcolor="blue"];
+    9 [label="if par1 > 1000\nVU: {Par1}\n<VId: 9>",shape="diamond"];
+    10 [label="par1 := 999;\nVD: {Par1}\n<VId: 10>"];
 
     1 ->  9 [arrowType="normal"];
     2 ->  6 [arrowType="normal"];
@@ -267,11 +267,11 @@ digraph G {
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
-    4 [label="null\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
-    5 [label="par1'initial\n<VId: 5>",shape="plaintext"];
-    6 [label="par1'final\n<VId: 6>",shape="plaintext",fontcolor="blue"];
-    9 [label="if par1 > 1000\n<VId: 9>",shape="diamond"];
-    10 [label="par1 := 999;\n<VId: 10>"];
+    4 [label="null\nVU: {null}\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
+    5 [label="par1'initial\nVD: {Par1}\n<VId: 5>",shape="plaintext"];
+    6 [label="par1'final\nVU: {Par1}\n<VId: 6>",shape="plaintext",fontcolor="blue"];
+    9 [label="if par1 > 1000\nVU: {Par1}\n<VId: 9>",shape="diamond"];
+    10 [label="par1 := 999;\nVD: {Par1}\n<VId: 10>"];
 
     1 ->  9 [arrowType="normal"];
     5 ->  6 [arrowType="normal",color="red"];
