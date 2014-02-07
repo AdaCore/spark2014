@@ -34,8 +34,6 @@ with GNAT.Directory_Operations;
 with GNAT.Strings;              use GNAT.Strings;
 with GNAT.OS_Lib;
 
-with Call;                      use Call;
-
 package body Configuration is
 
    MMode_Input  : aliased GNAT.Strings.String_Access;
@@ -299,25 +297,32 @@ ASCII.LF;
    procedure Read_Command_Line (Tree : out Project_Tree) is
       Config : Command_Line_Configuration;
 
-      procedure Abort_With_Help (Msg : String)
+      procedure Abort_Msg (Msg : String; With_Help : Boolean)
          with No_Return;
-      --  Stop the program, output the message and the help message, then exit
+      --  Stop the program, output the message and the help message when
+      --  requested, then exit
 
       function Init return Project_Tree;
       --  Load the project file; This function requires the project file to be
       --  present.
 
-      ---------------------
-      -- Abort_With_Help --
-      ---------------------
+      ---------------
+      -- Abort_Msg --
+      ---------------
 
-      procedure Abort_With_Help (Msg : String) is
+      procedure Abort_Msg (Msg : String; With_Help : Boolean) is
       begin
-         Ada.Text_IO.Put_Line (Ada.Text_IO.Standard_Error, Msg);
-         Ada.Text_IO.New_Line;
-         Display_Help (Config);
+         if Msg /= "" then
+            Ada.Text_IO.Put_Line (Ada.Text_IO.Standard_Error, Msg);
+         end if;
+         if With_Help then
+            Display_Help (Config);
+         else
+            Ada.Text_IO.Put_Line
+              ("Try `gnatprove --help` for more information.");
+         end if;
          GNAT.OS_Lib.OS_Exit (1);
-      end Abort_With_Help;
+      end Abort_Msg;
 
       ----------
       -- Init --
@@ -337,7 +342,7 @@ ASCII.LF;
                                           Is_List => True);
          begin
             if S /= "" then
-               Abort_With_Help (S);
+               Abort_Msg (S, With_Help => False);
             end if;
          end;
          if Project_File.all /= "" then
@@ -345,7 +350,7 @@ ASCII.LF;
               (GNATCOLL.VFS.Create (Filesystem_String (Project_File.all)),
                Proj_Env);
          else
-            Abort_With_Help ("No project file is given, aborting");
+            Abort_Msg ("No project file is given", With_Help => False);
          end if;
 
          return Tree;
@@ -356,6 +361,22 @@ ASCII.LF;
         (1 .. Ada.Command_Line.Argument_Count => <>);
 
    begin
+
+      Set_Usage
+        (First_Config,
+         Usage     => Usage_Message,
+         Help_Msg  => Help_Message);
+
+      Set_Usage
+        (Config,
+         Usage     => Usage_Message,
+         Help_Msg  => Help_Message);
+
+      --  if no arguments have been given, print help message and exit
+
+      if Com_Lin'Length = 0 then
+         Abort_Msg ("", With_Help => True);
+      end if;
 
       --  We parse the command line *twice*. The reason is that before parsing
       --  the commandline, we need to load the project (e.g. because the
@@ -375,11 +396,6 @@ ASCII.LF;
          Com_Lin (Index) :=
            new String'(Ada.Command_Line.Argument (Index));
       end loop;
-
-      Set_Usage
-        (First_Config,
-         Usage     => Usage_Message,
-         Help_Msg  => Help_Message);
 
       Define_Switch
         (First_Config, Project_File'Access,
@@ -415,11 +431,6 @@ ASCII.LF;
       end if;
 
       --  The second parsing needs the info for all switches
-
-      Set_Usage
-        (Config,
-         Usage     => Usage_Message,
-         Help_Msg  => Help_Message);
 
       Define_Switch
          (Config,
@@ -585,8 +596,8 @@ ASCII.LF;
       elsif MMode_Input.all = "all" or else MMode_Input.all = "" then
          MMode := GPM_All;
       else
-         Abort_With_Help ("mode should be one of " &
-                            "(check | prove | flow | all)");
+         Abort_Msg ("mode should be one of (check | prove | flow | all)",
+                    With_Help => False);
       end if;
 
       if Warning_Input.all = "off" then
@@ -596,7 +607,8 @@ ASCII.LF;
       elsif Warning_Input.all = "error" or else Warning_Input.all = "" then
          Warning_Mode := Opt.Treat_As_Error;
       else
-         Abort_With_Help ("warnings should be one of (off | on | error)");
+         Abort_Msg ("warnings should be one of (off | on | error)",
+                    With_Help => False);
       end if;
 
       if Report_Input.all = "fail" or else Report_Input.all = "" then
@@ -606,8 +618,8 @@ ASCII.LF;
       elsif Report_Input.all = "statistics" then
          Report := GPR_Statistics;
       else
-         Abort_With_Help
-           ("report should be one of (fail | all | statistics)");
+         Abort_Msg ("report should be one of (fail | all | statistics)",
+                    With_Help => False);
       end if;
 
       if Proof_Input.all = "progressive" then
@@ -629,13 +641,14 @@ ASCII.LF;
       elsif Proof_Input.all = "" then
          Proof := No_Split;
       else
-         Abort_With_Help
-           ("proof mode should be one of " &
-            "(per_check | per_path | progressive)");
+         Abort_Msg
+           ("proof mode should be one of (per_check | per_path | progressive)",
+            With_Help => False);
       end if;
 
       if Flow_Extra_Debug and not Debug then
-         Abort_With_Help ("extra debugging for flow analysis requires -d");
+         Abort_Msg ("extra debugging for flow analysis requires -d",
+                    With_Help => False);
       end if;
 
       declare
@@ -663,8 +676,10 @@ ASCII.LF;
                   Index := Index - 1;
                end loop;
                if Index = Limit_String.all'First then
-                  Abort_With_Message
-                    ("limit-line: incorrect line specification - missing ':'");
+                  Abort_Msg
+                    ("limit-line: incorrect line specification" &
+                       " - missing ':'",
+                     With_Help => False);
                end if;
                File_List.Append
                  (Limit_String.all (Limit_String.all'First .. Index - 1));
@@ -679,7 +694,8 @@ ASCII.LF;
       when Invalid_Switch | Exit_From_Command_Line =>
          GNAT.OS_Lib.OS_Exit (1);
       when Invalid_Parameter =>
-         Abort_With_Help ("No parameter given to switch -" & Full_Switch);
+         Abort_Msg ("No parameter given to switch -" & Full_Switch,
+                    With_Help => False);
    end Read_Command_Line;
 
    ------------------------
