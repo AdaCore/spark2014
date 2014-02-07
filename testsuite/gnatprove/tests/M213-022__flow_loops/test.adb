@@ -1,4 +1,4 @@
-package body Test is 
+package body Test is
 
    procedure Basic_Loop (X : in out Integer)
    is
@@ -134,5 +134,17 @@ package body Test is
          X := X - 1;
       end loop;
    end Basic_With_Exit;
+
+   function Loop_Stability return Integer
+   is
+      function Return_5 return Integer is (5);
+      A: Integer;
+   begin
+      loop
+         A := Return_5;
+         exit when A > 1000;
+      end loop;
+      return A;
+   end Loop_Stability;
 
 end Test;
