@@ -25,19 +25,19 @@ with AuditTypes;
 use type AuditTypes.FileSizeT;
 
 package body ConfigData
-  with Refined_State => (State => (LatchUnlockDuration,
-                                   AlarmSilentDuration,
-                                   FingerWaitDuration,
-                                   TokenRemovalDuration,
-                                   EnclaveClearance,
-                                   WorkingHoursStart,
-                                   WorkingHoursEnd,
-                                   MaxAuthDuration,
-                                   AccessPolicy,
-                                   MinEntryClass,
-                                   MinPreservedLogSize,
-                                   AlarmThresholdSize,
-                                   SystemMaxFar),
+  with Refined_State => (State     => (LatchUnlockDuration,
+                                       AlarmSilentDuration,
+                                       FingerWaitDuration,
+                                       TokenRemovalDuration,
+                                       EnclaveClearance,
+                                       WorkingHoursStart,
+                                       WorkingHoursEnd,
+                                       MaxAuthDuration,
+                                       AccessPolicy,
+                                       MinEntryClass,
+                                       MinPreservedLogSize,
+                                       AlarmThresholdSize,
+                                       SystemMaxFar),
                          FileState => ConfigFile)
 is
 

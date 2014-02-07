@@ -23,16 +23,16 @@ package TcpIp is
 
    MaxMessageLength : constant := 4096;
 
-   subtype MessageLengthT is Integer range 0 .. MaxMessageLength;
-   subtype MessageIndexT is MessageLengthT range 1 .. MessageLengthT'Last;
+   subtype MessageLengthT is Integer        range 0 .. MaxMessageLength;
+   subtype MessageIndexT  is MessageLengthT range 1 .. MessageLengthT'Last;
 
    type MessageT is record
       Data   : String(MessageIndexT) := (others => ASCII.Nul);
       Length : MessageLengthT := 0;
    end record;
 
-   NullMsg  : constant MessageT := (Data   => (others => ASCII.Nul),
-                                    Length => 0);
+   NullMsg : constant MessageT := (Data   => (others => ASCII.Nul),
+                                   Length => 0);
 
    --------------------------------------------------------------------
    -- ConnectToSPRE
@@ -41,9 +41,9 @@ package TcpIp is
    --    Makes a TCP/IP connection to either the Portal port or the Admin port.
    --
    --------------------------------------------------------------------
-
-   procedure ConnectToSPRE ( IsAdmin : in     Boolean;
-                             Success :    out Boolean);
+   procedure ConnectToSPRE (IsAdmin : in     Boolean;
+                            Success :    out Boolean)
+     with Global => null;
 
    --------------------------------------------------------------------
    -- DisconnectFromSPRE
@@ -52,9 +52,9 @@ package TcpIp is
    --    Closes the TCP/IP connection with either the Portal port or the Admin port.
    --
    --------------------------------------------------------------------
-
    procedure DisconnectFromSPRE (IsAdmin : in     Boolean;
-                                  Success :    out Boolean);
+                                 Success :    out Boolean)
+     with Global => null;
 
    --------------------------------------------------------------------
    -- OpenAll
@@ -63,8 +63,8 @@ package TcpIp is
    --    Opens TCP/IP connections to both the Portal and Admin ports.
    --
    --------------------------------------------------------------------
-
-   procedure OpenAll(Success : out Boolean);
+   procedure OpenAll(Success : out Boolean)
+     with Global => null;
 
    --------------------------------------------------------------------
    -- CloseAll
@@ -73,8 +73,8 @@ package TcpIp is
    --    Closes the TCP/IP connection with both the Portal and Admin ports.
    --
    --------------------------------------------------------------------
-
-   procedure CloseAll;
+   procedure CloseAll
+     with Global => null;
 
    --------------------------------------------------------------------
    -- SendAndReceive
@@ -88,11 +88,11 @@ package TcpIp is
    --    removes it from the Incoming string.
    --
    --------------------------------------------------------------------
-
-   procedure SendAndReceive ( IsAdmin  : in     Boolean;
-                              Outgoing : in     MessageT;
-                              Incoming :    out MessageT;
-                              Success  :    out Boolean);
+   procedure SendAndReceive (IsAdmin  : in     Boolean;
+                             Outgoing : in     MessageT;
+                             Incoming :    out MessageT;
+                             Success  :    out Boolean)
+     with Global => null;
 
    --------------------------------------------------------------------
    -- Init
@@ -102,7 +102,7 @@ package TcpIp is
    --    default machine name and ports for the Test Devices.
    --
    --------------------------------------------------------------------
-
-   procedure Init ( Success  :    out Boolean);
+   procedure Init (Success  :    out Boolean)
+     with Global => null;
 
 end TcpIp;

@@ -23,12 +23,12 @@ is
    --
    -- Current SPRE information...
    --
-   PortalPort  : GNAT.Sockets.Port_Type := 12001;
-   AdminPort   : GNAT.Sockets.Port_Type := 12000;
+   PortalPort : GNAT.Sockets.Port_Type := 12001;
+   AdminPort  : GNAT.Sockets.Port_Type := 12000;
 
    type SPREMachineT is
    record
-     Data : String(1 .. 30);
+     Data   : String(1 .. 30);
      Length : Natural range 0 .. 30;
    end record;
 
@@ -56,11 +56,11 @@ is
    end record;
 
    type ConnectStateT is array (ServerT) of PortInfoT;
-   PortTo : ConnectStateT := ( others  =>
-                                 ( State   => NotConnected,
-                                   Socket  => GNAT.Sockets.No_Socket,
-                                   Channel => GNAT.Sockets.Stream(
-                                                  GNAT.Sockets.No_Socket) ));
+   PortTo : ConnectStateT := (others  =>
+                                 (State   => NotConnected,
+                                  Socket  => GNAT.Sockets.No_Socket,
+                                  Channel => GNAT.Sockets.Stream(
+                                                 GNAT.Sockets.No_Socket) ));
 
    -- Has the socket library been initialized?
    type WinSockStateT is (Uninitialized, Initialized);
@@ -141,7 +141,6 @@ is
    --    Adds socket to ReadSet, so shouldn't really be a function...
    --
    --------------------------------------------------------------------
-
    function MsgToRead ( Server : in ServerT ) return Boolean is
 
       LocalReturn : Boolean := False;
@@ -187,7 +186,6 @@ is
    --    we next attempt to SendMsg.
    --
    --------------------------------------------------------------------
-
    procedure ReadMsg ( Server  : in     ServerT;
                        Msg     :    out MessageT;
                        Success :    out Boolean ) is
@@ -235,7 +233,6 @@ is
    --    until an exception is raised (to clear the channel).
    --
    --------------------------------------------------------------------
-
    procedure SendMsg ( Server  : in     ServerT;
                        Msg     : in     MessageT;
                        Success :    out Boolean ) is
@@ -316,7 +313,6 @@ is
    --    Find the first quote, and check the value of the next two characters.
    --
    ------------------------------------------------------------------
-
    function CommsIsOK (Msg : MessageT) return Boolean
    is
       CodeStart : MessageLengthT;
@@ -325,7 +321,6 @@ is
                                            Pattern => "'") + 1;
       return Msg.Data(CodeStart..CodeStart+1) = "OK";
    end CommsIsOk;
-
 
    --------------------------------------------------------------------
    --
@@ -339,7 +334,6 @@ is
    --    Initializes the socket library.
    --
    --------------------------------------------------------------------
-
    procedure ConnectToSPRE ( IsAdmin : in     Boolean;
                              Success :    out Boolean) is
 
@@ -440,7 +434,6 @@ is
    --    Finalizes the socket library if both ports are disconnected.
    --
    --------------------------------------------------------------------
-
    procedure DisconnectFromSPRE (IsAdmin : in     Boolean;
                                  Success :    out Boolean) is
 
@@ -474,7 +467,8 @@ is
             GNAT.Sockets.Close_Socket ( PortTo(Server).Socket );
 
             PortTo(Server).Socket  := GNAT.Sockets.No_Socket;
-            PortTo(Server).Channel := GNAT.Sockets.Stream (GNAT.Sockets.No_Socket);
+            PortTo(Server).Channel :=
+              GNAT.Sockets.Stream (GNAT.Sockets.No_Socket);
             PortTo(Server).State   := NotConnected;
 
          end if;
@@ -484,7 +478,7 @@ is
 
             GNAT.Sockets.Close_Selector ( Selector => Selector );
             pragma Warnings (Off);
-            --  The following call is no longer needed with latst GNAT version
+            --  The following call is no longer needed with latest GNAT version
             GNAT.Sockets.Finalize;
             pragma Warnings (On);
             WinSockState := Uninitialized;
@@ -518,7 +512,6 @@ is
 
    end DisconnectFromSPRE;
 
-
    --------------------------------------------------------------------
    -- OpenAll
    --
@@ -527,7 +520,7 @@ is
    --    communicate with peripherals.
    --
    --------------------------------------------------------------------
-   procedure OpenAll(Success : out Boolean)
+   procedure OpenAll (Success : out Boolean)
    is
       ConnectOK : Boolean;
    begin
@@ -540,7 +533,6 @@ is
       Success := Success and ConnectOK;
 
    end OpenAll;
-
 
    --------------------------------------------------------------------
    -- CloseAll
@@ -560,7 +552,6 @@ is
 
    end CloseAll;
 
-
    --------------------------------------------------------------------
    -- SendAndReceive
    --
@@ -568,16 +559,15 @@ is
    --    None.
    --
    --------------------------------------------------------------------
+   procedure SendAndReceive (IsAdmin  : in     Boolean;
+                             Outgoing : in     MessageT;
+                             Incoming :    out MessageT;
+                             Success  :    out Boolean) is
 
-   procedure SendAndReceive ( IsAdmin  : in     Boolean;
-                              Outgoing : in     MessageT;
-                              Incoming :    out MessageT;
-                              Success  :    out Boolean) is
-
-      Address      : GNAT.Sockets.Sock_Addr_Type := GNAT.Sockets.No_Sock_Addr;
-      Server       : ServerT;
-      SendOK       : Boolean := False;
-      ReadOK       : Boolean := False;
+      Address : GNAT.Sockets.Sock_Addr_Type := GNAT.Sockets.No_Sock_Addr;
+      Server  : ServerT;
+      SendOK  : Boolean := False;
+      ReadOK  : Boolean := False;
 
    begin
 
@@ -685,15 +675,17 @@ is
                if Ada.Command_Line.Argument(1)'Last > SPREMachine.Data'Last then
                   raise InvalidArgument;
                else
-                  SPREMachine.Data
-                    (1 .. Ada.Command_Line.Argument(1)'Last) := Ada.Command_Line.Argument(1);
+                  SPREMachine.Data (1 .. Ada.Command_Line.Argument(1)'Last) :=
+                    Ada.Command_Line.Argument(1);
                   SPREMachine.Length := Ada.Command_Line.Argument(1)'Last;
                end if;
                if Arg_Count >= 2 then
-                  AdminPort := GNAT.Sockets.Port_Type'Value(Ada.Command_Line.Argument(2));
+                  AdminPort :=
+                    GNAT.Sockets.Port_Type'Value(Ada.Command_Line.Argument(2));
                end if;
                if Arg_Count >= 3 then
-                  PortalPort := GNAT.Sockets.Port_Type'Value(Ada.Command_Line.Argument(3));
+                  PortalPort :=
+                    GNAT.Sockets.Port_Type'Value(Ada.Command_Line.Argument(3));
                end if;
             end if;
          when others =>

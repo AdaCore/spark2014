@@ -126,7 +126,8 @@ package CertProc is
    procedure ExtractIDCertData
      (RawIDCert      : in     CertTypes.RawCertificateT;
       IDCert         :    out IDCertDataT;
-      ExtractSuccess :    out Boolean);
+      ExtractSuccess :    out Boolean)
+     with Global => null;
 
    ------------------------------------------------------------------
    -- ExtractPrivCertData
@@ -139,7 +140,8 @@ package CertProc is
    procedure ExtractPrivCertData
      (RawPrivCert    : in     CertTypes.RawCertificateT;
       PrivCert       :    out PrivCertDataT;
-      ExtractSuccess :    out Boolean);
+      ExtractSuccess :    out Boolean)
+     with Global => null;
 
    ------------------------------------------------------------------
    -- ExtractIACertData
@@ -152,8 +154,8 @@ package CertProc is
    procedure ExtractIACertData
      (RawIACert      : in     CertTypes.RawCertificateT;
       IACert         :    out IACertDataT;
-      ExtractSuccess :    out Boolean);
-
+      ExtractSuccess :    out Boolean)
+     with Global => null;
 
    ------------------------------------------------------------------
    -- ExtractAuthCertData
@@ -166,7 +168,8 @@ package CertProc is
    procedure ExtractAuthCertData
      (RawAuthCert    : in     CertTypes.RawCertificateT;
       AuthCert       :    out AuthCertDataT;
-      ExtractSuccess :    out Boolean);
+      ExtractSuccess :    out Boolean)
+     with Global => null;
 
    ------------------------------------------------------------------
    -- ObtainRawData
@@ -179,7 +182,8 @@ package CertProc is
    procedure ObtainRawData
      (RawCert       : in     CertTypes.RawCertificateT;
       RawData       :    out CertTypes.RawDataT;
-      ObtainSuccess :    out Boolean);
+      ObtainSuccess :    out Boolean)
+     with Global => null;
 
    ------------------------------------------------------------------
    -- ObtainSignatureData
@@ -193,7 +197,8 @@ package CertProc is
    procedure ObtainSignatureData
      (RawCert       : in     CertTypes.RawCertificateT;
       SignatureData :    out CertTypes.SignatureT;
-      ObtainSuccess :    out Boolean);
+      ObtainSuccess :    out Boolean)
+     with Global => null;
 
    ------------------------------------------------------------------
    -- ConstructAuthCert
@@ -204,7 +209,8 @@ package CertProc is
    ------------------------------------------------------------------
    procedure ConstructAuthCert
      (AuthCert            : in     AuthCertDataT;
-      UnsignedRawAuthCert :    out CertTypes.RawCertificateT);
+      UnsignedRawAuthCert :    out CertTypes.RawCertificateT)
+     with Global => null;
 
    ------------------------------------------------------------------
    -- AddAuthSignature
@@ -217,6 +223,7 @@ package CertProc is
    procedure AddAuthSignature
      (UnsignedRawAuthCert : in     CertTypes.RawCertificateT;
       SignatureData       : in     CertTypes.SignatureT;
-      SignedRawAuthCert   :    out CertTypes.RawCertificateT);
+      SignedRawAuthCert   :    out CertTypes.RawCertificateT)
+     with Global => null;
 
 end CertProc;

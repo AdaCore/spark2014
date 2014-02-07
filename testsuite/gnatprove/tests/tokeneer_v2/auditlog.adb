@@ -581,6 +581,8 @@ is
       ------------------------------------------------------------------
       function NameOfType (E : AuditTypes.ElementT) return ElementTextT
       is
+         pragma Unreferenced (E);
+
          ElementText : ElementTextT := NoElement;
       begin
          ElementText(1..AuditTypes.ElementT'Image(ElementID)'Last) :=
@@ -1188,7 +1190,7 @@ is
      ------------------------------------------------------------------
      begin
 
-        --# accept F, 23, LogFilesStatus, "Array initialization is total in loop"& F, 23, LogFileEntries, "Array initialization is total in loop"& F, 23, FileAges, "Array initialization is total in loop";
+        pragma Warnings (Off);
         for I in LogFileIndexT loop
            GetFileDetails(I);
            LogFilesStatus(I) := Status;
@@ -1196,8 +1198,7 @@ is
            FileAges(I)       := FirstTime;
            LogFileEntries(I) := NumberEntries;
         end loop;
-
-        --# accept F, 602, LogFilesStatus, LogFilesStatus, "Array initialization is total in loop"& F, 602, LogFileEntries, LogFileEntries, "Array initialization is total in loop"& F, 602, FileAges, FileAges, "Array initialization is total in loop";
+        pragma Warnings (On);
      end SetFileDetails;
 
    ------------------------------------------------------------------
@@ -1616,9 +1617,9 @@ is
          User        => User,
          Description => AuditTypes.NoDescription);
 
-      pragma Warnings (Off, "statement has no effect [ineffective]");
+      pragma Warnings (Off);
       DeleteArchiveFile;
-      pragma Warnings (On, "statement has no effect [ineffective]");
+      pragma Warnings (On);
 
    end ClearLogEntries;
 
@@ -1639,9 +1640,9 @@ is
          end if;
       end loop;
 
-      pragma Warnings (Off, "statement has no effect [ineffective]");
+      pragma Warnings (Off);
       DeleteArchiveFile;
-      pragma Warnings (On, "statement has no effect [ineffective]");
+      pragma Warnings (On);
 
    end CancelArchive;
 

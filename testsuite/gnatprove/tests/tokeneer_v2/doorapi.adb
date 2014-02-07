@@ -22,7 +22,8 @@ with MsgProc;
 
 package body DoorAPI is
 
-   function GetDoorStateRaw return DoorStateT;
+   function GetDoorStateRaw return DoorStateT
+     with Global => null;
    --  Same as GetDoorState, compatible with SPARK (no exception handler)
 
    function GetDoorStateRaw return DoorStateT is

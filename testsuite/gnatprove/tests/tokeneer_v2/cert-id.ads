@@ -76,7 +76,9 @@ package Cert.ID is
    procedure Extract (RawCert  : in     CertTypes.RawCertificateT;
                       Contents :    out ContentsT;
                       Success  :    out Boolean)
-     with Depends => ((Contents, Success) => RawCert);
+     with Global  => null,
+          Depends => ((Contents,
+                       Success)  => RawCert);
 
    ------------------------------------------------------------------
    -- Clear

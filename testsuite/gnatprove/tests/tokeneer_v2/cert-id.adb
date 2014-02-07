@@ -116,7 +116,6 @@ package body Cert.ID is
       Success := Extracted and NotBeforeOK and NotAfterOK and KeyLengthOK;
    end Extract;
 
-
    ------------------------------------------------------------------
    -- Clear
    --
