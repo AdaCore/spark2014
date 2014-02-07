@@ -1,9 +1,8 @@
 package body T1Q2
+  with SPARK_Mode
 is
-   pragma SPARK_Mode;
 
-   procedure Increment2 (X, Y : in out Integer)
-   is
+   procedure Increment2 (X, Y : in out Integer) is
       X_Old : constant Integer := X;
       Y_Old : constant Integer := Y;
    begin

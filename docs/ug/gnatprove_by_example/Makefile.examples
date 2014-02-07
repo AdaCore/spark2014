@@ -11,12 +11,12 @@ gnatprove: flow prove
 
 flow:
 	cp examples/intro.gpr flow
-	-cd flow && gnatprove -k -q -P intro.gpr --report=all --warnings=on --mode=flow \
+	-cd flow && gnatprove -f -k -q -P intro.gpr --report=all --warnings=on --mode=flow \
 	  > flow.results
 
 prove:
 	cp examples/intro.gpr prove
-	cd prove && gnatprove -q -P intro.gpr --report=all --warnings=on --mode=prove \
+	cd prove && gnatprove -f -q -P intro.gpr --report=all --warnings=on --mode=prove \
 	  --timeout=5 > prove.results
 
 results: $(ALL_FLOW_MSG) $(ALL_PROVE_MSG)

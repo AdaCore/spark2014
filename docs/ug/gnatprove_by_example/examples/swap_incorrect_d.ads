@@ -1,6 +1,6 @@
 package Swap_Incorrect_D
+  with SPARK_Mode
 is
-   pragma SPARK_Mode;
 
    procedure Swap (X : in out Integer;
                    Y : in out Integer)

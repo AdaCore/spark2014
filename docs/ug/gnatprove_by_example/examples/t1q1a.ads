@@ -1,7 +1,7 @@
 package T1Q1A
+  with SPARK_Mode
 is
-   pragma SPARK_Mode;
 
-   procedure Increment (X: in out Integer);
+   procedure Increment (X : in out Integer);
 
 end T1Q1A;

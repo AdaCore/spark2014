@@ -1,8 +1,8 @@
 package T1Q1E
+  with SPARK_Mode
 is
-   pragma SPARK_Mode;
 
-   procedure Increment (X: in out Integer)
+   procedure Increment (X : in out Integer)
      with Pre => X < Integer'Last,
           Post => X = X'Old + 1;
 

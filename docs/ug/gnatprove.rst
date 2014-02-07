@@ -753,6 +753,8 @@ of annotations. This section aims at providing a deeper insight into how
 |GNATprove| flow analysis and formal verification works, through a
 step-by-step exploration of simple code examples.
 
+For simplicity, all the examples in this section use explicit ``SPARK_Mode`` aspects where needed.
+
 This section is structured into the following subsections:
 
 .. contents::

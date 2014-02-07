@@ -1,5 +1,7 @@
 with System.Storage_Elements;
-package body Volatile_Example_A with SPARK_Mode is
+package body Volatile_Example_A
+  with SPARK_Mode
+is
    type Pair is record
       X, Y : Integer;
    end record;
@@ -12,9 +14,10 @@ package body Volatile_Example_A with SPARK_Mode is
      with Volatile,
           Address => System.Storage_Elements.To_Address (16#00C0_FFEE#);
 
-   procedure Do_Stuff with
-      Global => (In_Out => (V, W))
-   is
+   procedure Do_Stuff
+     with Global => (In_Out => (V, W));
+
+   procedure Do_Stuff is
       Tmp : Pair;
    begin
       Tmp := W;  --  composite volatiles must be read and assigned whole

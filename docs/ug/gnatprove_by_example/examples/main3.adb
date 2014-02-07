@@ -1,20 +1,20 @@
-pragma SPARK_Mode;
-
 with Lights;
 with Sensor;
 
-procedure Main3 with
-   Global => (Input => Sensor.State,
-              Output => Lights.State),
-   Depends => (Lights.State => Sensor.State)
+procedure Main3
+  with SPARK_Mode,
+       Global => (Input => Sensor.State,
+                  Output => Lights.State),
+       Depends => (Lights.State => Sensor.State)
 is
 
    procedure Control with
+      No_Return,
       Global => (Input  => Sensor.State,
                  In_Out => Lights.State),
-      Depends => (Lights.State =>+ Sensor.State),
-      No_Return
-   is
+      Depends => (Lights.State => +Sensor.State);
+
+   procedure Control is
       Old : Boolean := False;
       V   : Boolean;
    begin

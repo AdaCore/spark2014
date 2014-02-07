@@ -1,1 +1,1 @@
-volatile_example_a.adb:24:10: warning: assertion might fail, requires Tmp.X = Tmp.Y
+volatile_example_a.adb:27:10: warning: assertion might fail, requires Tmp.X = Tmp.Y

@@ -1,3 +1,3 @@
 no_return_b.adb:5:14: info: postcondition proved
-no_return_b.adb:13:7: warning: precondition might fail
-no_return_b.adb:15:11: info: division check proved
+no_return_b.adb:15:7: warning: precondition might fail
+no_return_b.adb:17:11: info: division check proved

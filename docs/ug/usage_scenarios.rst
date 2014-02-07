@@ -34,10 +34,15 @@ A typical development process for this scenario might be:
    postconditions can be added to specify high-level properties such
    as safety requirements that must be satisfied.
 
-#. Identify the |SPARK| packages by adding pragma SPARK_Mode to them. At this
+#. Identify the |SPARK| packages with the ``SPARK_Mode`` aspect. At this
    stage the high-level package structure can be analyzed with the tools (using
    the 'Examine' command in GPS/GNATbench) before any executable code is
    implemented.
+
+#. Alternatively, if the majority of packages are to be |SPARK|, then a
+   project should use ``SPARK_Mode`` as a configuration pragma, and only
+   apply ``SPARK_Mode => Off`` selectively for those few units that are
+   not |SPARK|.
 
 #. Begin implementing the package bodies. One typical method of doing this
    is to use a process of top-down decomposition, starting with a top-level

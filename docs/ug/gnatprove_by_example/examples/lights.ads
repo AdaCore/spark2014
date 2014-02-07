@@ -1,5 +1,6 @@
 package Lights
-  with Abstract_State => (State with External)
+  with SPARK_Mode,
+       Abstract_State => (State with External)
 is
 
    procedure Init

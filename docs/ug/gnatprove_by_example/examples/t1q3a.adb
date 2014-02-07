@@ -1,8 +1,8 @@
 package body T1Q3A
+  with SPARK_Mode
 is
-   pragma SPARK_Mode;
 
-   procedure Swap (X, Y: in out Integer)
+   procedure Swap (X, Y : in out Integer)
    is
       Temp : Integer;
    begin

@@ -1,7 +1,9 @@
-pragma SPARK_Mode;
 procedure No_Return_A (X : in     Integer;
                        Y :    out Integer)
+  with SPARK_Mode
 is
+   procedure Halt;
+
    procedure Halt is
    begin
       loop

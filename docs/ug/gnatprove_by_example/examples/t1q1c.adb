@@ -1,6 +1,6 @@
 package body T1Q1C
+  with SPARK_Mode
 is
-   pragma SPARK_Mode;
 
    procedure Increment (X : in out Integer)
    is

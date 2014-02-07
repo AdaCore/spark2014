@@ -1,6 +1,6 @@
 package T1Q3A
+  with SPARK_Mode
 is
-   pragma SPARK_Mode;
 
    procedure Swap (X, Y : in out Integer)
      with Post => (X = Y'Old)

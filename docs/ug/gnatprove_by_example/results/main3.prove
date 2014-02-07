@@ -1,2 +1,2 @@
-main3.adb:12:14: info: postcondition proved
+main3.adb:11:14: info: postcondition proved
 main3.adb:33:4: warning: precondition might fail

@@ -1,2 +1,2 @@
-no_return_a.adb:12:04: warning: statement has no effect
-no_return_a.adb:13:07: warning: statement has no effect
+no_return_a.adb:14:04: warning: statement has no effect
+no_return_a.adb:15:07: warning: statement has no effect
