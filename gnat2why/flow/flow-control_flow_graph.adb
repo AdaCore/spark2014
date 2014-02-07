@@ -1903,18 +1903,28 @@ package body Flow.Control_Flow_Graph is
 
       else
          --  We have a variable declaration with an initialization.
-         Add_Vertex
-           (FA,
-            Direct_Mapping_Id (N),
-            Make_Basic_Attributes
-              (Var_Def    => Flatten_Variable (Defining_Identifier (N)),
-               Var_Ex_Use => Get_Variable_Set
-                 (Expression (N),
-                  Scope           => FA.B_Scope,
-                  Local_Constants => FA.Local_Constants),
-               Loops      => Ctx.Current_Loops,
-               E_Loc      => N),
-            V);
+         declare
+            Var_Def : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+         begin
+            for F of Flatten_Variable (Defining_Identifier (N)) loop
+               Var_Def.Include (F);
+               if Has_Bounds (F) then
+                  Var_Def.Include (F'Update (Bound => (Kind => Some_Bound)));
+               end if;
+            end loop;
+            Add_Vertex
+              (FA,
+               Direct_Mapping_Id (N),
+               Make_Basic_Attributes
+                 (Var_Def    => Var_Def,
+                    Var_Ex_Use => Get_Variable_Set
+                    (Expression (N),
+                     Scope           => FA.B_Scope,
+                     Local_Constants => FA.Local_Constants),
+                  Loops      => Ctx.Current_Loops,
+                  E_Loc      => N),
+               V);
+         end;
          Inits.Append (V);
       end if;
 
