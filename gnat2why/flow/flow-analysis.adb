@@ -774,7 +774,8 @@ package body Flow.Analysis is
                      N         => Find_Global (FA.Analyzed_Entity, F_Final),
                      F1        => F_Final,
                      Tag       => "inout_only_read",
-                     Warning   => True);
+                     Warning   => True,
+                     Vertex    => V);
                else
                   Error_Msg_Flow
                     (FA        => FA,
@@ -783,7 +784,8 @@ package body Flow.Analysis is
                      N         => Error_Location (FA.PDG, FA.Atr, V),
                      F1        => F_Final,
                      Tag       => "inout_only_read",
-                     Warning   => True);
+                     Warning   => True,
+                     Vertex    => V);
                end if;
             end if;
          end if;
@@ -1274,7 +1276,8 @@ package body Flow.Analysis is
                            N         => Error_Location (FA.PDG, FA.Atr, V),
                            F1        => Tmp,
                            Tag       => Tag,
-                           Warning   => True);
+                           Warning   => True,
+                           Vertex    => V);
 
                      else
                         Error_Msg_Flow
@@ -1283,7 +1286,8 @@ package body Flow.Analysis is
                            Msg       => "unused assignment",
                            N         => Error_Location (FA.PDG, FA.Atr, V),
                            Tag       => Tag,
-                           Warning   => True);
+                           Warning   => True,
+                           Vertex    => V);
                      end if;
 
                   elsif Nkind (N) = N_Assignment_Statement then
@@ -1293,7 +1297,8 @@ package body Flow.Analysis is
                         Msg       => "unused assignment",
                         N         => Error_Location (FA.PDG, FA.Atr, V),
                         Tag       => Tag,
-                        Warning   => True);
+                        Warning   => True,
+                        Vertex    => V);
 
                   elsif Nkind (N) = N_Object_Declaration then
                      if not Constant_Present (N) then
@@ -1303,7 +1308,8 @@ package body Flow.Analysis is
                            Msg       => "initialization has no effect",
                            N         => Error_Location (FA.PDG, FA.Atr, V),
                            Tag       => Tag,
-                           Warning   => True);
+                           Warning   => True,
+                           Vertex    => V);
                      end if;
                      --  This warning is ignored for local constants.
 
@@ -1314,7 +1320,8 @@ package body Flow.Analysis is
                         Msg       => "statement has no effect",
                         N         => Error_Location (FA.PDG, FA.Atr, V),
                         Tag       => Tag,
-                        Warning   => True);
+                        Warning   => True,
+                        Vertex    => V);
 
                   end if;
                   if Mask.Length >= 1 then
@@ -1387,7 +1394,8 @@ package body Flow.Analysis is
                             Msg       => "dead code",
                             N         => A.Error_Location,
                             Tag       => "dead_code",
-                            Warning   => False);
+                            Warning   => False,
+                            Vertex    => V);
          end;
       end loop;
    end Find_Dead_Code;
@@ -1442,7 +1450,7 @@ package body Flow.Analysis is
       --  If we can find a path from start -> end, then clearly we can
       --  return...
 
-      FA.CFG.Shortest_Path (Start => FA.Start_Vertex,
+      FA.CFG.Shortest_Path (Start         => FA.Start_Vertex,
                             Allow_Trivial => True,
                             Search        => Search'Access,
                             Step          => Step'Access);
@@ -1874,7 +1882,8 @@ package body Flow.Analysis is
                                    (FA.Analyzed_Entity, Key_I),
                                  F1        => Key_I,
                                  Tag       => "uninitialized",
-                                 Warning   => True);
+                                 Warning   => True,
+                                 Vertex    => V_Use);
                            else
                               Error_Msg_Flow
                                 (FA        => FA,
@@ -1883,7 +1892,8 @@ package body Flow.Analysis is
                                  N         => Find_Global
                                    (FA.Analyzed_Entity, Key_I),
                                  F1        => Key_I,
-                                 Tag       => "uninitialized");
+                                 Tag       => "uninitialized",
+                                 Vertex    => V_Use);
                            end if;
                            Mark_Definition_Free_Path
                              (From => FA.Start_Vertex,
@@ -1913,7 +1923,8 @@ package body Flow.Analysis is
                                                    FA.Start_Vertex),
                                  F1        => Direct_Mapping_Id
                                    (FA.Analyzed_Entity),
-                                 Tag       => "missing_return");
+                                 Tag       => "missing_return",
+                                 Vertex    => V_Use);
                               Mark_Definition_Free_Path
                                 (From => FA.Start_Vertex,
                                  To   => FA.End_Vertex,
@@ -1939,7 +1950,8 @@ package body Flow.Analysis is
                                  F2        => Direct_Mapping_Id
                                    (FA.Analyzed_Entity),
                                  Tag       => "uninitialized",
-                                 Warning   => True);
+                                 Warning   => True,
+                                 Vertex    => V_Use);
                            else
                               Error_Msg_Flow
                                 (FA        => FA,
@@ -1951,7 +1963,8 @@ package body Flow.Analysis is
                                  F1        => Key_I,
                                  F2        => Direct_Mapping_Id
                                    (FA.Analyzed_Entity),
-                                 Tag       => "uninitialized");
+                                 Tag       => "uninitialized",
+                                 Vertex    => V_Use);
                            end if;
                            Mark_Definition_Free_Path
                              (From      => FA.Start_Vertex,
@@ -1981,7 +1994,8 @@ package body Flow.Analysis is
                                                            V_Error),
                               F1        => Key_I,
                               Tag       => "uninitialized",
-                              Warning   => True);
+                              Warning   => True,
+                              Vertex    => V_Use);
                         else
                            Error_Msg_Flow
                              (FA        => FA,
@@ -1991,7 +2005,8 @@ package body Flow.Analysis is
                                                            FA.Atr,
                                                            V_Error),
                               F1        => Key_I,
-                              Tag       => "uninitialized");
+                              Tag       => "uninitialized",
+                              Vertex    => V_Use);
                         end if;
                         Mark_Definition_Free_Path
                           (From      => FA.Start_Vertex,
@@ -2065,7 +2080,8 @@ package body Flow.Analysis is
                                                         FA.Atr,
                                                         N_Loop),
                            Tag       => "stable",
-                           Warning   => True);
+                           Warning   => True,
+                           Vertex    => N_Loop);
 
                         --  There might be other stable elements now.
                         Done := False;

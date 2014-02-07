@@ -560,13 +560,20 @@ package body Flow_Error_Messages is
       Tracefile : out Unbounded_String;
       Msg       : String;
       N         : Node_Id;
-      F1        : Flow_Id := Null_Flow_Id;
-      F2        : Flow_Id := Null_Flow_Id;
-      Tag       : String  := "";
-      SRM_Ref   : String  := "";
-      Warning   : Boolean := False)
+      F1        : Flow_Id               := Null_Flow_Id;
+      F2        : Flow_Id               := Null_Flow_Id;
+      Tag       : String                := "";
+      SRM_Ref   : String                := "";
+      Warning   : Boolean               := False;
+      Vertex    : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex)
    is
-      E : Entity_Id;
+      E   : Entity_Id;
+      Img : constant String := Natural'Image
+        (FA.CFG.Vertex_To_Natural (Vertex));
+      Tmp : constant String := (if Gnat2Why_Args.Flow_Advanced_Debug and then
+                                  Vertex /= Flow_Graphs.Null_Vertex
+                                then Msg & " <" & Img (2 .. Img'Last) & ">"
+                                else Msg);
    begin
 
       case FA.Kind is
@@ -577,7 +584,7 @@ package body Flow_Error_Messages is
       end case;
 
       Print_JSON_Or_Normal_Msg
-        (Msg       => Msg,
+        (Msg       => Tmp,
          N         => N,
          F1        => F1,
          F2        => F2,

@@ -41,11 +41,12 @@ package Flow_Error_Messages is
       Tracefile : out Unbounded_String;
       Msg       : String;
       N         : Node_Id;
-      F1        : Flow_Id := Null_Flow_Id;
-      F2        : Flow_Id := Null_Flow_Id;
-      Tag       : String  := "";
-      SRM_Ref   : String  := "";
-      Warning   : Boolean := False)
+      F1        : Flow_Id               := Null_Flow_Id;
+      F2        : Flow_Id               := Null_Flow_Id;
+      Tag       : String                := "";
+      SRM_Ref   : String                := "";
+      Warning   : Boolean               := False;
+      Vertex    : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex)
    with Pre => (if Present (F2) then Present (F1));
    --  Output a message attached to the given node with a substitution using F1
    --  and F2. Use & or # as the substitution characters, which quote the flow
@@ -54,5 +55,8 @@ package Flow_Error_Messages is
    --
    --  SRM_Ref should be a pointer into the SPARK RM. For example:
    --     "1.2.3(4)"
+   --
+   --  Finally, for debug purposes, Vertex should be set to the vertex
+   --  where the error was detected. This is printed in debug mode.
 
 end Flow_Error_Messages;
