@@ -151,8 +151,10 @@ package body Flow.Interprocedural is
       if Has_Depends (Called_Procedure) then
          --  We have a dependency aspect, so we should use it.
 
-         --  ??? M318-017 (variant records) will need to change this
-         --  to deal with the hidden ins in out parameters.
+         --  The implicit in parameter for out parameters of unconstrained
+         --  arrays and and discriminated types is dealt with transparently
+         --  here. Such an input can easily be found in the graph as a
+         --  Discr_Or_Bounds parameter.
          declare
             Deps : Dependency_Maps.Map;
          begin
@@ -186,6 +188,8 @@ package body Flow.Interprocedural is
             Inputs    : Flow_Id_Sets.Set;
             Outputs   : Flow_Id_Sets.Set;
             E         : Entity_Id;
+            The_In    : Flow_Id;
+            The_Out   : Flow_Id;
          begin
             --  Collect all the globals first.
             Get_Globals (Subprogram             => Called_Procedure,
@@ -198,26 +202,26 @@ package body Flow.Interprocedural is
             --  Add parameters.
             E := First_Formal (Called_Procedure);
             while Present (E) loop
+               The_In  := Direct_Mapping_Id (Unique_Entity (E), In_View);
+               The_Out := Direct_Mapping_Id (Unique_Entity (E), Out_View);
                case Ekind (E) is
                   when E_In_Parameter =>
-                     Inputs.Insert (Direct_Mapping_Id (Unique_Entity (E),
-                                                       In_View));
+                     Inputs.Insert (The_In);
 
                   when E_In_Out_Parameter =>
-                     Inputs.Insert (Direct_Mapping_Id (Unique_Entity (E),
-                                                       In_View));
-                     Outputs.Insert (Direct_Mapping_Id (Unique_Entity (E),
-                                                        Out_View));
+                     Inputs.Insert (The_In);
+                     Outputs.Insert (The_Out);
 
                   when E_Out_Parameter =>
-                     if Contains_Discriminants
-                       (Direct_Mapping_Id (Unique_Entity (E), In_View))
+                     if Contains_Discriminants (The_In) or
+                       Has_Bounds (The_In)
                      then
-                        Inputs.Insert (Direct_Mapping_Id (Unique_Entity (E),
-                                                          In_View));
+                        --  Discriminated out parameters or out parameters
+                        --  for which we need to keep track of the bounds
+                        --  also appear as an input.
+                        Inputs.Insert (The_In);
                      end if;
-                     Outputs.Insert (Direct_Mapping_Id (Unique_Entity (E),
-                                                        Out_View));
+                     Outputs.Insert (The_Out);
 
                   when others =>
                      raise Why.Unexpected_Node;

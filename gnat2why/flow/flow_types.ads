@@ -445,8 +445,9 @@ package Flow_Types is
       Is_Parameter        : Boolean;
       --  True if this vertex models an argument to a procedure call.
 
-      Is_Discriminants_Only_Parameter : Boolean;
-      --  If true this only captures the discriminants.
+      Is_Discr_Or_Bounds_Parameter : Boolean;
+      --  If true this only captures the discriminants or bounds of a
+      --  parameter.
 
       Is_Global_Parameter : Boolean;
       --  True if this vertex models a global for a procedure or
@@ -525,7 +526,7 @@ package Flow_Types is
                    Is_Constant                     => False,
                    Is_Callsite                     => False,
                    Is_Parameter                    => False,
-                   Is_Discriminants_Only_Parameter => False,
+                   Is_Discr_Or_Bounds_Parameter    => False,
                    Is_Global_Parameter             => False,
                    Execution                       => Normal_Execution,
                    Perform_IPFA                    => False,

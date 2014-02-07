@@ -176,8 +176,8 @@ package body Flow is
       Format_Item ("Is_Constant", Boolean'Image (A.Is_Constant));
       Format_Item ("Is_Callsite", Boolean'Image (A.Is_Callsite));
       Format_Item ("Is_Parameter", Boolean'Image (A.Is_Parameter));
-      Format_Item ("Is_Discriminants_Only_Parameter",
-                   Boolean'Image (A.Is_Discriminants_Only_Parameter));
+      Format_Item ("Is_Discr_Or_Bounds_Parameter",
+                   Boolean'Image (A.Is_Discr_Or_Bounds_Parameter));
       Format_Item ("Is_Global_Parameter",
                    Boolean'Image (A.Is_Global_Parameter));
       Format_Item ("Execution", Execution_Kind_T'Image (A.Execution));
@@ -389,14 +389,14 @@ package body Flow is
                   Write_Str ("'in");
                   Write_Str ("&nbsp;:=&nbsp;");
                   Sprint_Node (A.Parameter_Actual.Node);
-                  if A.Is_Discriminants_Only_Parameter then
-                     Write_Str ("'discriminants");
+                  if A.Is_Discr_Or_Bounds_Parameter then
+                     Write_Str ("'discr_or_bounds");
                   end if;
 
                when Out_View =>
                   pragma Assert (A.Parameter_Formal.Kind = Direct_Mapping);
                   pragma Assert (A.Parameter_Actual.Kind = Direct_Mapping);
-                  pragma Assert (not A.Is_Discriminants_Only_Parameter);
+                  pragma Assert (not A.Is_Discr_Or_Bounds_Parameter);
                   Sprint_Node (A.Parameter_Actual.Node);
                   Write_Str ("&nbsp;:=&nbsp;");
                   Sprint_Node (A.Parameter_Formal.Node);
@@ -413,13 +413,13 @@ package body Flow is
             Sprint_Flow_Id (A.Parameter_Formal);
             case A.Parameter_Formal.Variant is
                when In_View =>
-                  if A.Is_Discriminants_Only_Parameter then
-                     Write_Str ("'discriminants");
+                  if A.Is_Discr_Or_Bounds_Parameter then
+                     Write_Str ("'discr_or_bounds");
                   end if;
                   Write_Str ("'in");
 
                when Out_View =>
-                  pragma Assert (not A.Is_Discriminants_Only_Parameter);
+                  pragma Assert (not A.Is_Discr_Or_Bounds_Parameter);
                   Write_Str ("'out");
 
                when others =>

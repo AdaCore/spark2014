@@ -1259,7 +1259,7 @@ package body Flow.Analysis is
                         --  confusing.
                         null;
 
-                     elsif Atr.Is_Discriminants_Only_Parameter or
+                     elsif Atr.Is_Discr_Or_Bounds_Parameter or
                        Is_Bound (Key)
                      then
                         --  These are not there by choice, so the user

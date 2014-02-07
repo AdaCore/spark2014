@@ -100,23 +100,23 @@ package Flow.Control_Flow_Graph.Utility is
    --     * Is_Callsite
 
    function Make_Parameter_Attributes
-     (FA                 : Flow_Analysis_Graphs;
-      Call_Vertex        : Node_Id;
-      Actual             : Node_Id;
-      Formal             : Node_Id;
-      In_Vertex          : Boolean;
-      Discriminants_Only : Boolean;
-      Loops              : Node_Sets.Set;
-      E_Loc              : Node_Or_Entity_Id := Empty)
+     (FA                           : Flow_Analysis_Graphs;
+      Call_Vertex                  : Node_Id;
+      Actual                       : Node_Id;
+      Formal                       : Node_Id;
+      In_Vertex                    : Boolean;
+      Discriminants_Or_Bounds_Only : Boolean;
+      Loops                        : Node_Sets.Set;
+      E_Loc                        : Node_Or_Entity_Id := Empty)
       return V_Attributes
-      with Pre  => (if Discriminants_Only then In_Vertex),
-           Post =>
-             not Make_Parameter_Attributes'Result.Is_Null_Node and
-             not Make_Parameter_Attributes'Result.Is_Program_Node and
-             not Make_Parameter_Attributes'Result.Is_Global_Parameter and
-             Make_Parameter_Attributes'Result.Is_Parameter and
-             Make_Parameter_Attributes'Result.Is_Discriminants_Only_Parameter =
-               Discriminants_Only;
+   with Pre  => (if Discriminants_Or_Bounds_Only then In_Vertex),
+        Post =>
+          not Make_Parameter_Attributes'Result.Is_Null_Node and
+          not Make_Parameter_Attributes'Result.Is_Program_Node and
+          not Make_Parameter_Attributes'Result.Is_Global_Parameter and
+          Make_Parameter_Attributes'Result.Is_Parameter and
+          Make_Parameter_Attributes'Result.Is_Discr_Or_Bounds_Parameter =
+            Discriminants_Or_Bounds_Only;
    --  Create attributes for parameters for subprogram calls. If
    --  In_Vertex is true, create the attributes for the in version of
    --  a parameter; if In_Vertex is false we create the attributes for
@@ -124,17 +124,18 @@ package Flow.Control_Flow_Graph.Utility is
    --  calculated automatically.
 
    function Make_Global_Attributes
-     (Call_Vertex        : Node_Id;
-      Global             : Flow_Id;
-      Discriminants_Only : Boolean;
-      Loops              : Node_Sets.Set;
-      E_Loc              : Node_Or_Entity_Id := Empty)
+     (Call_Vertex                  : Node_Id;
+      Global                       : Flow_Id;
+      Discriminants_Or_Bounds_Only : Boolean;
+      Loops                        : Node_Sets.Set;
+      E_Loc                        : Node_Or_Entity_Id := Empty)
       return V_Attributes
-      with Pre  => (if Discriminants_Only then Global.Variant = In_View),
-           Post => not Make_Global_Attributes'Result.Is_Null_Node and
-                   not Make_Global_Attributes'Result.Is_Program_Node and
-                   not Make_Global_Attributes'Result.Is_Parameter and
-                   Make_Global_Attributes'Result.Is_Global_Parameter;
+   with Pre  => (if Discriminants_Or_Bounds_Only
+                 then Global.Variant = In_View),
+        Post => not Make_Global_Attributes'Result.Is_Null_Node and
+                not Make_Global_Attributes'Result.Is_Program_Node and
+                not Make_Global_Attributes'Result.Is_Parameter and
+                Make_Global_Attributes'Result.Is_Global_Parameter;
    --  Create attributes for globals. Note that variables defined and
    --  used is calculated automatically.
 

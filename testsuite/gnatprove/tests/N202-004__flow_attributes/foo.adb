@@ -88,6 +88,37 @@ is
       Test_07_Ok (A);
    end Test_08_Ok;
 
+   procedure Test_09_Ok (A : out String)
+   is
+   begin
+      A := (others => ' ');
+      A (A'First) := 'x';
+   end Test_09_Ok;
+
+   procedure Test_10_Ok (A : out String)
+   with Depends => (A => A)
+   is
+   begin
+      Test_09_Ok (A);
+   end Test_10_Ok;
+
+   procedure Test_11_Ok (A : out DT)
+   is
+   begin
+      case A.Found is
+         when True => A := (Found => True,
+                            Index => 1);
+         when False => A := (Found => False);
+      end case;
+   end Test_11_Ok;
+
+   procedure Test_12_Ok (A : out DT)
+   with Depends => (A => A)
+   is
+   begin
+      Test_11_Ok (A);
+   end Test_12_Ok;
+
    --  The customer testcase below.
 
    type Octet is mod 2**8;
@@ -96,7 +127,7 @@ is
    procedure To_Octet_Array (Text        : String;
                              Data        : out Octet_Array;
                              Octet_Count : out Natural)
-   with Depends => (Data        => Text,
+   with Depends => (Data        => (Text, Data),
                     Octet_Count => (Text, Data))
    is
    begin

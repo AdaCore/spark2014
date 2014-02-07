@@ -232,22 +232,22 @@ package body Flow.Control_Flow_Graph.Utility is
    -------------------------------
 
    function Make_Parameter_Attributes
-     (FA                 : Flow_Analysis_Graphs;
-      Call_Vertex        : Node_Id;
-      Actual             : Node_Id;
-      Formal             : Node_Id;
-      In_Vertex          : Boolean;
-      Discriminants_Only : Boolean;
-      Loops              : Node_Sets.Set;
-      E_Loc              : Node_Or_Entity_Id := Empty)
+     (FA                           : Flow_Analysis_Graphs;
+      Call_Vertex                  : Node_Id;
+      Actual                       : Node_Id;
+      Formal                       : Node_Id;
+      In_Vertex                    : Boolean;
+      Discriminants_Or_Bounds_Only : Boolean;
+      Loops                        : Node_Sets.Set;
+      E_Loc                        : Node_Or_Entity_Id := Empty)
       return V_Attributes
    is
       A        : V_Attributes        := Null_Attributes;
       Tmp_Used : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
       Scope    : constant Flow_Scope := Get_Flow_Scope (Call_Vertex);
    begin
-      A.Is_Parameter                    := True;
-      A.Is_Discriminants_Only_Parameter := Discriminants_Only;
+      A.Is_Parameter                  := True;
+      A.Is_Discr_Or_Bounds_Parameter  := Discriminants_Or_Bounds_Only;
       A.Call_Vertex      := Direct_Mapping_Id (Call_Vertex);
       A.Parameter_Actual := Direct_Mapping_Id (Actual);
       A.Parameter_Formal := Direct_Mapping_Id (Formal);
@@ -257,21 +257,29 @@ package body Flow.Control_Flow_Graph.Utility is
       if In_Vertex then
          pragma Assert
            (Ekind (Formal) in E_In_Parameter | E_In_Out_Parameter or else
-              Discriminants_Only);
+              Discriminants_Or_Bounds_Only);
 
          Tmp_Used := Get_Variable_Set (Actual,
                                        Scope           => Scope,
                                        Local_Constants => FA.Local_Constants);
          for F of Tmp_Used loop
-            if not Discriminants_Only or else Is_Discriminant (F) then
+            if (if Discriminants_Or_Bounds_Only
+                then Is_Discriminant (F))
+            then
                A.Variables_Used.Include (F);
                A.Variables_Explicitly_Used.Include (F);
+            end if;
+            if not Is_Bound (F) and then Has_Bounds (F) then
+               A.Variables_Used.Include
+                 (F'Update (Bound => (Kind => Some_Bound)));
+               A.Variables_Explicitly_Used.Include
+                 (F'Update (Bound => (Kind => Some_Bound)));
             end if;
          end loop;
       else
          pragma Assert
            (Ekind (Formal) in E_Out_Parameter | E_In_Out_Parameter);
-         pragma Assert (not Discriminants_Only);
+         pragma Assert (not Discriminants_Or_Bounds_Only);
          Untangle_Assignment_Target
            (N                    => Actual,
             Scope                => Scope,
@@ -291,17 +299,17 @@ package body Flow.Control_Flow_Graph.Utility is
    ----------------------------
 
    function Make_Global_Attributes
-     (Call_Vertex        : Node_Id;
-      Global             : Flow_Id;
-      Discriminants_Only : Boolean;
-      Loops              : Node_Sets.Set;
-      E_Loc              : Node_Or_Entity_Id := Empty)
+     (Call_Vertex                  : Node_Id;
+      Global                       : Flow_Id;
+      Discriminants_Or_Bounds_Only : Boolean;
+      Loops                        : Node_Sets.Set;
+      E_Loc                        : Node_Or_Entity_Id := Empty)
       return V_Attributes
    is
       A : V_Attributes := Null_Attributes;
    begin
       A.Is_Global_Parameter             := True;
-      A.Is_Discriminants_Only_Parameter := Discriminants_Only;
+      A.Is_Discr_Or_Bounds_Parameter    := Discriminants_Or_Bounds_Only;
       A.Call_Vertex         := Direct_Mapping_Id (Call_Vertex);
       A.Parameter_Formal    := Global;
       A.Loops               := Loops;
@@ -312,9 +320,18 @@ package body Flow.Control_Flow_Graph.Utility is
             for F of Flatten_Variable
               (Change_Variant (Global, Normal_Use))
             loop
-               if not Discriminants_Only or else Is_Discriminant (F) then
+               if not Discriminants_Or_Bounds_Only or else
+                 Is_Discriminant (F)
+               then
                   A.Variables_Used.Include (F);
                   A.Variables_Explicitly_Used.Include (F);
+               end if;
+
+               if not Is_Bound (F) and then Has_Bounds (F) then
+                  A.Variables_Used.Include
+                    (F'Update (Bound => (Kind => Some_Bound)));
+                  A.Variables_Explicitly_Used.Include
+                    (F'Update (Bound => (Kind => Some_Bound)));
                end if;
             end loop;
 
