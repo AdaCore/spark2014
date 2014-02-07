@@ -1,6 +1,24 @@
-pragma SPARK_Mode (On);
+package body Segway
+  with SPARK_Mode
+is
+   ----------------------------------------------------
+   --         SPARK 2014 - Segway Example            --
+   --                                                --
+   -- This example illustrates the use of an Ada2012 --
+   -- expression function to specify an invariant    --
+   -- that must be maintained in a state-machine     --
+   -- package                                        --
+   ----------------------------------------------------
 
-package body Segway is
+   ----------------
+   -- Initialize --
+   ----------------
+
+   procedure Initialize is
+   begin
+      State := Still;
+      Speed := 0;
+   end Initialize;
 
    ------------------
    -- State_Update --
