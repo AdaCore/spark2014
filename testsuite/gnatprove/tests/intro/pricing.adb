@@ -1,6 +1,12 @@
-pragma SPARK_Mode (On);
-
-package body Pricing is
+package body Pricing
+  with SPARK_Mode
+is
+   ----------------------------------------------------
+   --         SPARK 2014 - Pricing Example           --
+   --                                                --
+   -- This example illustrates the use of Ada2012's  --
+   -- quantifiers in contracts and loop invariants   --
+   ----------------------------------------------------
 
    function Price_Of_Item (It : Item) return Sat.My_Int is
       (Sat.Mult (It.Price, It.Number));

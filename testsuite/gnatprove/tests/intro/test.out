@@ -1,25 +1,25 @@
-pricing.adb:11:11: info: range check proved
-pricing.adb:12:10: info: loop invariant initialization proved
-pricing.adb:12:10: info: loop invariant preservation proved
-pricing.adb:13:21: info: range check proved
-pricing.adb:13:56: info: overflow check proved
-pricing.adb:14:44: info: index check proved
-pricing.ads:13:14: info: postcondition proved
-pricing.ads:18:14: info: postcondition proved
-pricing.ads:18:23: info: range check proved
-pricing.ads:19:62: info: index check proved
-sat.adb:7:12: info: range check proved
-sat.adb:12:12: info: overflow check proved
-sat.adb:13:12: info: overflow check proved
-sat.adb:13:12: info: range check proved
-sat.ads:8:6: info: complete contract cases proved
-sat.ads:8:6: info: disjoint contract cases proved
-sat.ads:8:41: info: contract case proved
-sat.ads:9:41: info: contract case proved
-sat.ads:12:6: info: complete contract cases proved
-sat.ads:12:6: info: disjoint contract cases proved
-sat.ads:12:27: info: overflow check proved
-sat.ads:12:41: info: contract case proved
-sat.ads:12:60: info: overflow check proved
-sat.ads:13:27: info: overflow check proved
-sat.ads:13:41: info: contract case proved
+pricing.adb:17:11: info: range check proved
+pricing.adb:18:10: info: loop invariant initialization proved
+pricing.adb:18:10: info: loop invariant preservation proved
+pricing.adb:19:21: info: range check proved
+pricing.adb:19:56: info: overflow check proved
+pricing.adb:20:44: info: index check proved
+pricing.ads:20:14: info: postcondition proved
+pricing.ads:28:14: info: postcondition proved
+pricing.ads:28:23: info: range check proved
+pricing.ads:29:62: info: index check proved
+sat.adb:14:12: info: range check proved
+sat.adb:19:12: info: overflow check proved
+sat.adb:20:12: info: overflow check proved
+sat.adb:20:12: info: range check proved
+sat.ads:15:6: info: complete contract cases proved
+sat.ads:15:6: info: disjoint contract cases proved
+sat.ads:15:41: info: contract case proved
+sat.ads:16:41: info: contract case proved
+sat.ads:19:6: info: complete contract cases proved
+sat.ads:19:6: info: disjoint contract cases proved
+sat.ads:19:27: info: overflow check proved
+sat.ads:19:41: info: contract case proved
+sat.ads:19:60: info: overflow check proved
+sat.ads:20:27: info: overflow check proved
+sat.ads:20:41: info: contract case proved
