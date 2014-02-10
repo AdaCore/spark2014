@@ -1,8 +1,15 @@
-pragma SPARK_Mode (On);
+package body Binary_Search
+  with SPARK_Mode
+is
+   ----------------------------------------------------
+   --     SPARK 2014 - Binary_Search Example         --
+   --                                                --
+   -- This example illustrates the use of loop       --
+   -- invariants and variants in the proof of a      --
+   -- binary search algorithm.                       --
+   ----------------------------------------------------
 
-package body Binary_Search is
-
-   function Search (A : Ar ; I : Integer) return T is
+   function Search (A : Ar; I : Integer) return T is
       Left  : U;
       Right : U;
       Med   : U;
