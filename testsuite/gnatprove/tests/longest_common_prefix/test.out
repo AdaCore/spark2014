@@ -1,23 +1,23 @@
-lcp.adb:8:12: info: overflow check proved
-lcp.adb:9:17: info: overflow check proved
-lcp.adb:10:20: info: index check proved
-lcp.adb:10:20: info: overflow check proved
-lcp.adb:10:32: info: index check proved
-lcp.adb:10:32: info: overflow check proved
-lcp.adb:12:7: info: loop invariant initialization proved
-lcp.adb:12:7: info: loop invariant preservation proved
-lcp.adb:12:62: info: index check proved
-lcp.adb:12:74: info: index check proved
-lcp.adb:13:7: info: loop variant proved
-lcp.adb:15:14: info: overflow check proved
-lcp.ads:6:5: info: postcondition proved
-lcp.ads:6:47: info: index check proved
-lcp.ads:6:59: info: index check proved
-lcp.ads:9:32: info: index check proved
-lcp.ads:9:54: info: index check proved
-lcp.ads:10:3: info: disjoint contract cases proved
-lcp.ads:11:10: info: index check proved
-lcp.ads:11:19: info: index check proved
-lcp.ads:11:22: info: contract case proved
-lcp.ads:12:22: info: contract case proved
-lcp.ads:13:22: info: contract case proved
+lcp.adb:17:12: info: overflow check proved
+lcp.adb:18:17: info: overflow check proved
+lcp.adb:19:20: info: index check proved
+lcp.adb:19:20: info: overflow check proved
+lcp.adb:19:32: info: index check proved
+lcp.adb:19:32: info: overflow check proved
+lcp.adb:21:7: info: loop invariant initialization proved
+lcp.adb:21:7: info: loop invariant preservation proved
+lcp.adb:21:62: info: index check proved
+lcp.adb:21:74: info: index check proved
+lcp.adb:22:7: info: loop variant proved
+lcp.adb:24:14: info: overflow check proved
+lcp.ads:14:5: info: postcondition proved
+lcp.ads:14:47: info: index check proved
+lcp.ads:14:59: info: index check proved
+lcp.ads:17:32: info: index check proved
+lcp.ads:17:54: info: index check proved
+lcp.ads:18:3: info: disjoint contract cases proved
+lcp.ads:19:10: info: index check proved
+lcp.ads:19:19: info: index check proved
+lcp.ads:19:22: info: contract case proved
+lcp.ads:20:22: info: contract case proved
+lcp.ads:21:22: info: contract case proved
