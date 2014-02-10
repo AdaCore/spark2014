@@ -75,7 +75,8 @@ package Cert.Attr.Priv is
    procedure Extract (RawCert  : in     CertTypes.RawCertificateT;
                       Contents :    out ContentsT;
                       Success  :    out Boolean)
-     with Depends => ((Contents,
+     with Global  => null,
+          Depends => ((Contents,
                        Success)  => RawCert);
 
    ------------------------------------------------------------------
@@ -88,7 +89,8 @@ package Cert.Attr.Priv is
    --
    ------------------------------------------------------------------
    procedure Clear (Contents :    out ContentsT)
-     with Depends => (Contents => null);
+     with Global  => null,
+          Depends => (Contents => null);
 
    --  Converts the extended type to the original one.
    function Cert_Attr_Priv_To_Cert (Contents : in ContentsT)

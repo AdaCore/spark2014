@@ -40,7 +40,8 @@ package Admin is
 
    --  Returns the role of TheAdmin.
    function RolePresent (TheAdmin : T) return PrivTypes.PrivilegeT
-     with Convention => Ghost;
+     with Global => null,
+          Convention => Ghost;
 
    ------------------------------------------------------------------
    -- IsDoingOp
@@ -51,8 +52,8 @@ package Admin is
    -- traceunit : C.Admin.IsDoingOp
    -- traceto   : FD.Admin.AdminIsDoingOp
    ------------------------------------------------------------------
-
-   function IsDoingOp (TheAdmin : T) return Boolean;
+   function IsDoingOp (TheAdmin : T) return Boolean
+     with Global => null;
 
    ------------------------------------------------------------------
    -- TheCurrentOp
@@ -63,9 +64,9 @@ package Admin is
    -- traceunit : C.Admin.TheCurrentOp
    -- traceto   : C.Admin.State
    ------------------------------------------------------------------
-
    function TheCurrentOp (TheAdmin : T) return OpT
-     with Pre => IsDoingOp (TheAdmin);
+     with Global => null,
+          Pre    => IsDoingOp (TheAdmin);
 
    ------------------------------------------------------------------
    -- Str_Comp
@@ -73,10 +74,10 @@ package Admin is
    -- Description:
    --    Returns true if the KeyedOp matches the current Operation
    ------------------------------------------------------------------
-
    function Str_Comp
      (KeyedOp : Keyboard.DataT;
-      Op      : OpT) return Boolean;
+      Op      : OpT) return Boolean
+     with Global => null;
 
    --------------------------------------------------------------------
    -- AllowedOp
@@ -84,11 +85,11 @@ package Admin is
    -- Description:
    --    Returns true if Op is allowed for the current Admin
    --------------------------------------------------------------------
-
    function AllowedOp
      (TheAdmin : T;
       Op       : OpT) return Boolean
-     with Pre => IsPresent (TheAdmin);
+     with Global => null,
+          Pre    => IsPresent (TheAdmin);
 
    ------------------------------------------------------------------
    -- IsPresent
@@ -99,8 +100,8 @@ package Admin is
    -- traceunit : C.Admin.IsPresent
    -- traceto   : FD.Admin.AdminIsPresent
    ------------------------------------------------------------------
-
-   function IsPresent (TheAdmin : T) return Boolean;
+   function IsPresent (TheAdmin : T) return Boolean
+     with Global => null;
 
    ------------------------------------------------------------------
    -- Init
@@ -111,9 +112,9 @@ package Admin is
    -- traceunit : C.Admin.Init
    -- traceto   : FD.TIS.InitIDStation
    ------------------------------------------------------------------
-
    procedure Init (TheAdmin :    out T)
-     with Depends => (TheAdmin => null),
+     with Global  => null,
+          Depends => (TheAdmin => null),
           Post    => not IsPresent(TheAdmin)
                        and then not IsDoingOp(TheAdmin);
 
@@ -128,14 +129,14 @@ package Admin is
    -- traceunit : C.Admin.OpIsAvailable
    -- traceto   : FD.AdminOpIsAvailable
    ------------------------------------------------------------------
-
    function OpIsAvailable (TheAdmin : T;
                            KeyedOp  : Keyboard.DataT) return OpAndNullT
-     with Pre  => IsPresent (TheAdmin),
-          Post => (for some Op in Opt => Str_Comp (KeyedOp, Op)
-                                           and AllowedOp (TheAdmin, Op)
-                                           and OpIsAvailable'Result = Op)
-                  xor OpIsAvailable'Result = NullOp;
+     with Global => null,
+          Pre    => IsPresent (TheAdmin),
+          Post   => (for some Op in Opt => Str_Comp (KeyedOp, Op)
+                       and AllowedOp (TheAdmin, Op)
+                       and OpIsAvailable'Result = Op)
+                    xor OpIsAvailable'Result = NullOp;
 
    ------------------------------------------------------------------
    -- Logon
@@ -149,7 +150,8 @@ package Admin is
 
    procedure Logon (TheAdmin :    out T;
                     Role     : in     PrivTypes.AdminPrivilegeT)
-     with Depends => (TheAdmin => Role),
+     with Global  => null,
+          Depends => (TheAdmin => Role),
           Post    => RolePresent (TheAdmin) = Role
                        and then not IsDoingOp (TheAdmin)
                        and then IsPresent (TheAdmin);
@@ -163,10 +165,10 @@ package Admin is
    -- traceunit : C.Admin.Logout
    -- traceto   : FD.Admin.AdminLogout
    ------------------------------------------------------------------
-
    procedure Logout (TheAdmin :    out T)
-     with Post => not IsPresent (TheAdmin)
-                    and then not IsDoingOp (TheAdmin);
+     with Global => null,
+          Post   => not IsPresent (TheAdmin)
+                      and then not IsDoingOp (TheAdmin);
 
    ------------------------------------------------------------------
    -- StartOp
@@ -177,10 +179,10 @@ package Admin is
    -- traceunit : C.Admin.StartOp
    -- traceto   : FD.Admin.AdminStartOp
    ------------------------------------------------------------------
-
    procedure StartOp (TheAdmin : in out T;
                       Op       : in     OpT)
-     with Depends => (TheAdmin => (TheAdmin, Op)),
+     with Global  => null,
+          Depends => (TheAdmin => (TheAdmin, Op)),
           Pre     => IsPresent (TheAdmin)
                        and then not IsDoingOp (TheAdmin),
           Post    => RolePresent (TheAdmin) = RolePresent (TheAdmin'Old)
@@ -197,9 +199,9 @@ package Admin is
    -- traceunit : C.Admin.FinishOp
    -- traceto   : FD.Admin.AdminFinishOp
    ------------------------------------------------------------------
-
    procedure FinishOp (TheAdmin : in out T)
-     with Depends => (TheAdmin => TheAdmin),
+     with Global  => null,
+          Depends => (TheAdmin => TheAdmin),
           Pre     => IsPresent (TheAdmin) and then IsDoingOp (TheAdmin),
           Post    => not IsDoingOp (TheAdmin)
                        and then RolePresent (TheAdmin)
@@ -215,8 +217,8 @@ package Admin is
    -- traceunit : C.Admin.SecurityOfficerIsPresent
    -- traceto   : FD.Interfac.UpdateScreen
    ------------------------------------------------------------------
-
-   function SecurityOfficerIsPresent (TheAdmin : T) return Boolean;
+   function SecurityOfficerIsPresent (TheAdmin : T) return Boolean
+     with Global => null;
 
 private
    type T is record

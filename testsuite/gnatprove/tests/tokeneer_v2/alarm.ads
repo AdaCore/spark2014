@@ -38,7 +38,8 @@ is
    -- The Interfac.prf_isAlarming proof function is       --
    -- effectively a refinement of this proof function.    --
    ---------------------------------------------------------
-   function IsAlarming return Boolean;
+   function IsAlarming return Boolean
+     with Global => null;
 
    ------------------------------------------------------------------
    -- UpdateDevice
@@ -50,22 +51,21 @@ is
    -- Traceunit : C.Alarm.UpdateDevice
    -- Traceto   : FD.Interfac.UpdateAlarm
    ------------------------------------------------------------------
-
    procedure UpdateDevice
      with Global  => (Input  => (AuditLog.State,
                                  Door.State),
                       Output => Output),
           Depends => (Output => (AuditLog.State,
                                  Door.State)),
+          --------------------------------------------------------
+          -- PROOF ANNOTATIONS FOR SECURITY PROPERTY 3          --
+          --====================================================--
+          -- After each call to UpdateDevice, the Alarm is      --
+          -- alarming if the conditions of the security         --
+          -- property hold.Note that from the Door package      --
+          -- annotation, Door.TheDoorAlarm = Alarming is        --
+          -- equivalent to the security property conditions     --
+          --------------------------------------------------------
           Post    => (Door.TheDoorAlarm = AlarmTypes.Alarming) <= IsAlarming;
-   --------------------------------------------------------
-   -- PROOF ANNOTATIONS FOR SECURITY PROPERTY 3          --
-   --====================================================--
-   -- After each call to UpdateDevice, the Alarm is      --
-   -- alarming if the conditions of the security         --
-   -- property hold.Note that from the Door package      --
-   -- annotation, Door.TheDoorAlarm = Alarming is        --
-   -- equivalent to the security property conditions     --
-   --------------------------------------------------------
 
 end Alarm;

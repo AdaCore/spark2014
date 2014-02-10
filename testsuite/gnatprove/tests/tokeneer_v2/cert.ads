@@ -112,7 +112,8 @@ package Cert is
    -- Traceto   : FD.Types.Certificates
    ------------------------------------------------------------------
    function GetData (RawCert : CertTypes.RawCertificateT)
-                    return CertTypes.RawDataT;
+                    return CertTypes.RawDataT
+     with Global  => null;
 
    ------------------------------------------------------------------
    -- GetSignature

@@ -65,7 +65,8 @@ package Cert.Attr.IandA is
    procedure Extract (RawCert  : in     CertTypes.RawCertificateT;
                       Contents :    out ContentsT;
                       Success  :    out Boolean)
-     with Depends => ((Contents, Success) => RawCert);
+     with Global  => null,
+          Depends => ((Contents, Success) => RawCert);
 
    ------------------------------------------------------------------
    -- Clear
@@ -77,7 +78,8 @@ package Cert.Attr.IandA is
    --
    ------------------------------------------------------------------
    procedure Clear (Contents :    out ContentsT)
-     with Depends => (Contents => null);
+     with Global  => null,
+          Depends => (Contents => null);
 
    --  Converts the extended type to the original one.
    function Cert_Attr_Ianda_To_Cert (Contents : in ContentsT)

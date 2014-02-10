@@ -76,7 +76,8 @@ package Cert.Attr.Auth is
    procedure Extract (RawCert  : in     CertTypes.RawCertificateT;
                       Contents :    out ContentsT;
                       Success  :    out Boolean)
-     with Depends => ((Contents,
+     with Global  => null,
+          Depends => ((Contents,
                        Success)  => RawCert);
 
    ------------------------------------------------------------------

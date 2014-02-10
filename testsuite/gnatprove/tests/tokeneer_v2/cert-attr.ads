@@ -52,7 +52,6 @@ package Cert.Attr is
    -- Traceunit : C.Cert.ExtractUser
    -- Traceto   : FD.AuditLog.ExtractUser
    ------------------------------------------------------------------
-
    function ExtractUser (Contents : ContentsT) return AuditTypes.UserTextT;
 
    ------------------------------------------------------------------
@@ -64,7 +63,6 @@ package Cert.Attr is
    -- Traceunit : C.AttrCert.TheBaseCert
    -- Traceto   : FD.Types.Certificates
    ------------------------------------------------------------------
-
    function TheBaseCert (Contents : ContentsT) return CertTypes.IDT;
 
    private
