@@ -2655,7 +2655,7 @@ package body Flow.Control_Flow_Graph is
          Make_Sink_Vertex_Attributes
            (Var_Use => Get_Variable_Set
               (N,
-               Scope => FA.B_Scope,
+               Scope           => FA.B_Scope,
                Local_Constants => FA.Local_Constants),
             E_Loc   => N),
          V);
