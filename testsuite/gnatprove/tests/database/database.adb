@@ -1,9 +1,17 @@
-pragma SPARK_Mode (On);
-
 with Identity;
 use type Identity.Id;
 
-package body Database is
+package body Database
+  with SPARK_Mode
+is
+   ----------------------------------------------------
+   --        SPARK 2014 - Database Example           --
+   --                                                --
+   -- This example illustrates the use of Pre, Post, --
+   -- and Test_Case aspects in SPARK2014.  This code --
+   -- also demonstrates the proof of code that does  --
+   -- not have Global and Depends contracts.         --
+   ----------------------------------------------------
 
    --------------------
    -- Local Packages --
@@ -108,6 +116,8 @@ package body Database is
 
    package body Availability is
 
+      procedure Initialize_Links;
+
       procedure Reserve_First_Available (Account : out Account_Num) is
       begin
          Account := First_Available;
@@ -140,7 +150,7 @@ package body Database is
          Count : Natural := 0;
       begin
          for I in Account_Num loop
-            pragma Loop_Invariant (Count < Natural(I));
+            pragma Loop_Invariant (Count < Natural (I));
             if Is_Available (I) then
                Count := Count + 1;
             end if;
