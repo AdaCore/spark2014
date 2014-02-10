@@ -10,6 +10,7 @@ package body Segway.Execute is
    procedure Execute (Read : Reader) is
       I : Input;
    begin
+      Initialize;
       loop
          I := Read.all;
          exit when I = No_Input;

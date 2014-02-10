@@ -1,9 +1,10 @@
-segway.adb:34:31: info: range check proved
-segway.adb:38:31: info: range check proved
-segway.adb:57:10: info: loop invariant initialization proved
-segway.adb:57:10: info: loop invariant preservation proved
-segway.adb:59:13: info: precondition proved
-segway.adb:61:13: info: precondition proved
-segway.ads:31:22: info: postcondition proved
-segway.ads:37:22: info: postcondition proved
-segway.ads:43:22: info: postcondition proved
+segway.adb:40:45: info: refined post proved
+segway.adb:62:31: info: range check proved
+segway.adb:66:31: info: range check proved
+segway.adb:89:10: info: loop invariant initialization proved
+segway.adb:89:10: info: loop invariant preservation proved
+segway.adb:91:13: info: precondition proved
+segway.adb:93:13: info: precondition proved
+segway.ads:35:22: info: postcondition proved
+segway.ads:42:22: info: postcondition proved
+segway.ads:48:22: info: postcondition proved
