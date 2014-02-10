@@ -64,9 +64,9 @@ copyright = u'2013, AdaCore and Altran UK Ltd'
 # built documents.
 #
 # The short X.Y version.
-version = '0.9 Draft'
+version = '2.0'
 # The full version, including alpha/beta/rc tags.
-release = '0.9 Draft'
+release = '2.0'
 
 # Substitution for the new SPARK name
 rst_prolog = """.. |SPARK| replace:: SPARK 2014
