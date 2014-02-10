@@ -1,0 +1,9 @@
+p1.adb:60:13: "X" is not initialized
+p1.ads:28:17: "X" is not initialized in "D"
+p2.adb:27:10: "L" is not initialized
+   compilation of p1.adb failed
+   compilation of p2.adb failed
+
+
+gnatprove: error during analysis and translation to intermediate language, aborting.
+gprbuild: *** compilation phase failed
