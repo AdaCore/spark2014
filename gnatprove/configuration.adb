@@ -319,7 +319,7 @@ ASCII.LF;
             Display_Help (Config);
          else
             Ada.Text_IO.Put_Line
-              ("Try `gnatprove --help` for more information.");
+              ("Try ""gnatprove --help"" for more information.");
          end if;
          GNAT.OS_Lib.OS_Exit (1);
       end Abort_Msg;
