@@ -1,38 +1,38 @@
-database.adb:32:35: info: length check proved
-database.adb:45:17: info: postcondition proved
-database.adb:53:17: warning: postcondition might fail
-database.adb:98:52: info: length check proved
-database.adb:102:46: info: length check proved
-database.adb:113:21: info: range check proved
-database.adb:114:17: info: index check proved
-database.adb:115:36: info: index check proved
-database.adb:123:35: info: index check proved
-database.adb:126:35: info: index check proved
-database.adb:132:44: info: index check proved
-database.adb:143:13: info: loop invariant initialization proved
-database.adb:143:13: info: loop invariant preservation proved
-database.adb:145:31: info: overflow check proved
-database.adb:164:30: info: range check proved
-database.adb:242:19: info: precondition proved
-database.adb:263:10: info: precondition proved
-database.adb:274:22: info: precondition proved
-database.adb:287:17: info: precondition proved
-database.adb:293:42: info: precondition proved
-database.adb:305:27: info: precondition proved
-database.adb:311:42: info: precondition proved
-database.ads:53:14: info: postcondition proved
-database.ads:55:41: info: precondition proved
-database.ads:76:41: info: precondition proved
-database.ads:95:14: info: precondition proved
-database.ads:96:14: info: postcondition proved
-database.ads:96:14: info: precondition proved
-database.ads:96:34: info: precondition proved
-database.ads:96:56: info: precondition proved
-database.ads:113:25: info: precondition proved
-database.ads:114:14: info: postcondition proved
-database.ads:114:14: info: precondition proved
-database.ads:114:34: info: precondition proved
-database.ads:114:56: info: precondition proved
+database.adb:40:35: info: length check proved
+database.adb:53:17: info: postcondition proved
+database.adb:61:17: warning: postcondition might fail
+database.adb:106:52: info: length check proved
+database.adb:110:46: info: length check proved
+database.adb:123:21: info: range check proved
+database.adb:124:17: info: index check proved
+database.adb:125:36: info: index check proved
+database.adb:133:35: info: index check proved
+database.adb:136:35: info: index check proved
+database.adb:142:44: info: index check proved
+database.adb:153:13: info: loop invariant initialization proved
+database.adb:153:13: info: loop invariant preservation proved
+database.adb:155:31: info: overflow check proved
+database.adb:174:30: info: range check proved
+database.adb:252:19: info: precondition proved
+database.adb:273:10: info: precondition proved
+database.adb:284:22: info: precondition proved
+database.adb:297:17: info: precondition proved
+database.adb:303:42: info: precondition proved
+database.adb:315:27: info: precondition proved
+database.adb:321:42: info: precondition proved
+database.ads:65:14: info: postcondition proved
+database.ads:67:41: info: precondition proved
+database.ads:88:41: info: precondition proved
+database.ads:107:14: info: precondition proved
+database.ads:108:14: info: postcondition proved
+database.ads:108:14: info: precondition proved
+database.ads:108:34: info: precondition proved
+database.ads:108:56: info: precondition proved
+database.ads:125:25: info: precondition proved
+database.ads:126:14: info: postcondition proved
+database.ads:126:14: info: precondition proved
+database.ads:126:34: info: precondition proved
+database.ads:126:56: info: precondition proved
 identity.ads:10:36: info: length check proved
 identity.ads:19:30: info: length check proved
 money.adb:6:33: info: range check proved

@@ -1,9 +1,21 @@
-pragma SPARK_Mode (On);
-
 with Identity;
 with Money; use Money;
 
-package Database is
+package Database
+  with SPARK_Mode
+is
+   ----------------------------------------------------
+   --        SPARK 2014 - Database Example           --
+   --                                                --
+   -- This example illustrates the use of Pre, Post, --
+   -- and Test_Case aspects in SPARK2014.  This code --
+   -- also demonstrates the proof of code that does  --
+   -- not have Global and Depends contracts.         --
+   ----------------------------------------------------
+
+   --  The "database" is a set of accounts, each of which
+   --  is associated with the Identity of its owner, and
+   --  a balance in a particular currency.
 
    --  Accounts are numbered from 0 (invalid account) to Max_Account_Num.
    --  Valid accounts start at 1. Not all account numbers correspond to valid
