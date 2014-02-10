@@ -138,6 +138,12 @@ package body Flow_Dependency_Maps is
                --  null => ...
                null;
 
+            when N_Attribute_Reference =>
+               --  foo'result => ...
+               pragma Assert (Present (Entity (Prefix (LHS))));
+               Outputs.Include
+                 (Direct_Mapping_Id (Unique_Entity (Entity (Prefix (LHS)))));
+
             when others =>
                Print_Node_Subtree (LHS);
                raise Why.Unexpected_Node;
