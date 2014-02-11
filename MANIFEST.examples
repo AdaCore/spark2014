@@ -1,3 +1,19 @@
+-- Comments in this file must appear at the start of a line
+-- and begin with "--".  See Makefile for how this is processed.
+--
+-- This file contains an alphabetically sorted list of test cases
+-- from testsuite/gnatprove/tests/
+--
+-- Each line is treated as the name of a directory which is copied
+-- into the SPARK 2014 distribution.
+--
+-- If this file is updated, then updates to the following should
+-- also be considered:
+--   1. The SPARK 2014 Toolset User Guide
+--   2. spark2014.py plug-in in GPS.  This controls which of these
+--      examples are directly accessible to users from the GPS
+--      Help/SPARK/Examples menu.
+--
 arrays
 binary_search
 binary_search_unconstrained
