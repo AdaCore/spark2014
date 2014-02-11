@@ -1,2 +1,12 @@
 project Test is
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-gnatws");
+   end Compiler;
+
+   package Prove is
+      for Switches use ("--steps=40000");
+   end Prove;
+
 end Test;
+
