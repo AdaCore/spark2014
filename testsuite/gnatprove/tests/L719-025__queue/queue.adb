@@ -1,4 +1,6 @@
-package body Queue is pragma SPARK_Mode (On);
+package body Queue
+  with SPARK_Mode
+is
 
    function Tail (Q : List) return List is
       R : List := Copy (Q);
