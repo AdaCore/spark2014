@@ -388,6 +388,10 @@ package SPARK_Util is
    function Analysis_Requested (E : Entity_Id) return Boolean;
    --  Returns true if entity E has to be analyzed.
 
+   function Is_In_Analyzed_Files (E : Entity_Id) return Boolean;
+   --  Returns true if E belongs to one of the entities that correspond
+   --  to the files that are to be analyzed.
+
    function Get_Cursor_Type_In_Iterable_Aspect
      (Typ : Entity_Id) return Entity_Id;
    --  Returns the cursor type implied by an Iterable aspect over the type Typ

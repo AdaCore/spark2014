@@ -5,5 +5,5 @@ p.adb:22:15: component not present in type "RF" defined at p.ads:20
    compilation of p.adb failed
 
 
-gnatprove: error during frame condition computation, aborting.
+gnatprove: error during generation of Global contracts, aborting.
 gprbuild: *** compilation phase failed

@@ -12,7 +12,7 @@ pack.ads:15:30: violation of pragma SPARK_Mode at line 2
    compilation of pack.adb failed
 
 
-gnatprove: error during analysis and translation to intermediate language, aborting.
+gnatprove: error during flow analysis and proof, aborting.
 gprbuild: *** compilation phase failed
 [
 { "name" : "Pack.P0.P3", "file" :"pack.adb", "line" :  4, "spark" : "all" }

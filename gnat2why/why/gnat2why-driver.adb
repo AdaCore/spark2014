@@ -25,12 +25,14 @@
 
 with GNAT.Source_Info;
 
+with Ada.Directories;
 with Ada.Strings.Unbounded;  use Ada.Strings.Unbounded;
 with AA_Util;                use AA_Util;
 with ALI.Util;               use ALI.Util;
 with ALI;                    use ALI;
 with Atree;                  use Atree;
 with Binderr;
+with Call;
 with Debug;                  use Debug;
 with Einfo;                  use Einfo;
 with Errout;                 use Errout;
@@ -73,6 +75,7 @@ with Gnat2Why.External_Axioms; use Gnat2Why.External_Axioms;
 pragma Warnings (Off, "unit ""Why.Atree.Treepr"" is not referenced");
 with Why.Atree.Treepr;  --  To force the link of debug routines (wpn, wpt)
 pragma Warnings (On,  "unit ""Why.Atree.Treepr"" is not referenced");
+with Ada.Text_IO;
 
 package body Gnat2Why.Driver is
 
@@ -103,6 +106,9 @@ package body Gnat2Why.Driver is
    --  This procedure is used when there is nothing to do, but it should be
    --  signalled that everything went fine. This is done by creating the main
    --  output file of gnat2why, the main Why file.
+
+   procedure Run_Gnatwhy3;
+   --  After generating the Why file, run the proof tool
 
    ----------------------------
    -- Compute_Global_Effects --
@@ -295,11 +301,12 @@ package body Gnat2Why.Driver is
 
       --  Start the translation to Why
 
-      if Gnat2Why_Args.Prove_Mode then
+      if Gnat2Why_Args.Prove_Mode and then Is_In_Analyzed_Files (N) then
          Why.Atree.Modules.Initialize;
          Init_Why_Sections;
          Translate_Standard_Package;
          Translate_CUnit;
+         Run_Gnatwhy3;
       end if;
    end GNAT_To_Why;
 
@@ -344,6 +351,33 @@ package body Gnat2Why.Driver is
       end loop;
       Close_Current_File;
    end Print_Why_File;
+
+   ------------------
+   -- Run_Gnatwhy3 --
+   ------------------
+
+   procedure Run_Gnatwhy3 is
+      use Ada.Directories;
+      Status : Integer;
+      pragma Unreferenced (Status);
+      Fn     : constant String :=
+        Compose (Current_Directory, Why_File_Name.all);
+   begin
+      Set_Directory (To_String (Gnat2Why_Args.Why3_Dir));
+      Gnat2Why_Args.Why3_Args.Append (Fn);
+      if Gnat2Why_Args.Debug_Mode then
+         Ada.Text_IO.Put ("gnatwhy3 ");
+         for Elt of Gnat2Why_Args.Why3_Args loop
+            Ada.Text_IO.Put (Elt);
+            Ada.Text_IO.Put (" ");
+         end loop;
+         Ada.Text_IO.New_Line;
+      end if;
+      Call.Call_With_Status ("gnatwhy3",
+                             Gnat2Why_Args.Why3_Args,
+                             Verbose => False,
+                             Status  => Status);
+   end Run_Gnatwhy3;
 
    ---------------------
    -- Touch_Main_File --

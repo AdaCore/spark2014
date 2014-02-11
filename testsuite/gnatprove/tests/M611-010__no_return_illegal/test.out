@@ -7,5 +7,5 @@ no_return_illegal.adb:44:10: violation of pragma SPARK_Mode at test.adc:1
    compilation of no_return_illegal.adb failed
 
 
-gnatprove: error during analysis and translation to intermediate language, aborting.
+gnatprove: error during flow analysis and proof, aborting.
 gprbuild: *** compilation phase failed

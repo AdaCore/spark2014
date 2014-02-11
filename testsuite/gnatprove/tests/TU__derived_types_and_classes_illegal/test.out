@@ -7,5 +7,5 @@ derived_types_and_classes_illegal.ads:20:09: violation of aspect SPARK_Mode at l
    compilation of derived_types_and_classes_illegal.ads failed
 
 
-gnatprove: error during analysis and translation to intermediate language, aborting.
+gnatprove: error during flow analysis and proof, aborting.
 gprbuild: *** compilation phase failed

@@ -25,5 +25,5 @@ vc.ads:87:11: aspect "ASYNC_READERS" must apply to a volatile object
    compilation of vc.ads failed
 
 
-gnatprove: error during frame condition computation, aborting.
+gnatprove: error during generation of Global contracts, aborting.
 gprbuild: *** compilation phase failed

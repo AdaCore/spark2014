@@ -5,5 +5,5 @@ port2.ads:17:04: constant cannot be volatile
    compilation of port2.adb failed
 
 
-gnatprove: error during frame condition computation, aborting.
+gnatprove: error during generation of Global contracts, aborting.
 gprbuild: *** compilation phase failed

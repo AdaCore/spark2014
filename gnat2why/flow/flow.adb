@@ -688,7 +688,7 @@ package body Flow is
          return Rv;
       end EDI;
    begin
-      if Gnat2Why_Args.Flow_Debug_Mode then
+      if Gnat2Why_Args.Debug_Mode then
          if Gnat2Why_Args.Flow_Advanced_Debug then
             G.Write_Pdf_File
               (Filename  => Filename,
