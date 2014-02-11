@@ -33,6 +33,7 @@ with Elists;                use Elists;
 with Lib;                   use Lib;
 with Nlists;                use Nlists;
 with Pprint;                use Pprint;
+with Sem_Eval;              use Sem_Eval;
 with Snames;                use Snames;
 with Stringt;               use Stringt;
 with Urealp;                use Urealp;
@@ -460,6 +461,10 @@ package body Gnat2Why.Nodes is
         In_Main_Unit_Body (Real_Node);
    end Is_In_Current_Unit;
 
+   ------------------------------
+   -- Is_Pragma_Assert_And_Cut --
+   ------------------------------
+
    function Is_Pragma_Assert_And_Cut (N : Node_Id) return Boolean
    is
       Orig : constant Node_Id := Original_Node (N);
@@ -631,6 +636,30 @@ package body Gnat2Why.Nodes is
 
    function Spec_File_Name_Without_Suffix (N : Node_Id) return String is
       (File_Name_Without_Suffix (Spec_File_Name (N)));
+
+   -------------------------
+   -- Static_Array_Length --
+   -------------------------
+
+   function Static_Array_Length (E : Entity_Id; Dim : Positive) return Uint is
+      F_Index : constant Entity_Id := Nth_Index_Type (E, Dim);
+   begin
+      if Ekind (F_Index) = E_String_Literal_Subtype then
+         return String_Literal_Length (F_Index);
+      else
+         declare
+            Rng   : constant Node_Id := Get_Range (F_Index);
+            First : constant Uint := Expr_Value (Low_Bound (Rng));
+            Last  : constant Uint := Expr_Value (High_Bound (Rng));
+         begin
+            if Last >= First then
+               return Last - First + Uint_1;
+            else
+               return Uint_0;
+            end if;
+         end;
+      end if;
+   end Static_Array_Length;
 
    --------------------
    -- String_Of_Node --
