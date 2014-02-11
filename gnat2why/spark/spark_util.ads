@@ -33,7 +33,7 @@ with Types;            use Types;
 
 with Why.Atree.Tables; use Why.Atree.Tables;
 
-with Gnat2Why.Nodes;   use Gnat2Why.Nodes;
+with Common_Containers; use Common_Containers;
 
 package SPARK_Util is
 

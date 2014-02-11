@@ -30,7 +30,7 @@ with Einfo;          use Einfo;
 with Sinfo;          use Sinfo;
 with Types;          use Types;
 
-with Gnat2Why.Nodes; use Gnat2Why.Nodes;
+with Common_Containers; use Common_Containers;
 
 package Flow_Refinement is
 

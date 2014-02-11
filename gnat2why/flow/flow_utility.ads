@@ -26,18 +26,18 @@
 
 with Ada.Containers;
 
-with Types;           use Types;
-with Einfo;           use Einfo;
-with Namet;           use Namet;
-with Sem_Util;        use Sem_Util;
-with Snames;          use Snames;
-with Sinfo;           use Sinfo;
-with Atree;           use Atree;
+with Types;             use Types;
+with Einfo;             use Einfo;
+with Namet;             use Namet;
+with Sem_Util;          use Sem_Util;
+with Snames;            use Snames;
+with Sinfo;             use Sinfo;
+with Atree;             use Atree;
 
-with Gnat2Why.Nodes;  use Gnat2Why.Nodes;
+with Common_Containers; use Common_Containers;
 
-with Flow_Types;      use Flow_Types;
-with Flow_Refinement; use Flow_Refinement;
+with Flow_Types;        use Flow_Types;
+with Flow_Refinement;   use Flow_Refinement;
 
 use type Ada.Containers.Count_Type;
 

@@ -24,8 +24,6 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers;
-with Ada.Containers.Doubly_Linked_Lists;
-with Ada.Containers.Ordered_Sets;
 with Ada.Containers.Hashed_Maps;
 
 with Atree;     use Atree;
@@ -42,43 +40,11 @@ with VC_Kinds;  use VC_Kinds;
 
 with Why.Types; use Why.Types;
 
+with Common_Containers; use Common_Containers;
+
 package Gnat2Why.Nodes is
    --  This package contains data structures and facilities to deal with the
    --  GNAT tree.
-
-   package List_Of_Nodes is new Ada.Containers.Doubly_Linked_Lists (Node_Id);
-   --  Standard list of nodes. It is often more convenient to use these,
-   --  compared to List_Id in the GNAT frontend as a Node_Id can be in
-   --  any number of these lists, while it can be only in one List_Id.
-
-   function Node_Hash (X : Node_Id) return Ada.Containers.Hash_Type
-   is (Ada.Containers.Hash_Type (X));
-   --  Compute the hash of a node
-
-   package Node_Sets is new Ada.Containers.Ordered_Sets
-     (Element_Type => Node_Id,
-      "<"          => "<",
-      "="          => "=");
-   --  Sets of ordered nodes. We prefer ordered nodes instead of hashed nodes,
-   --  as the order in these sets influence the generation of Why code, which
-   --  we intend to be as predictable as possible on all machines, to get the
-   --  same proof results on all machines when possible.
-
-   package Node_Maps is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Node_Id,
-      Element_Type    => Node_Id,
-      Hash            => Node_Hash,
-      Equivalent_Keys => "=",
-      "="             => "=");
-   --  Maps of nodes
-
-   package Node_Graphs is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Node_Id,
-      Element_Type    => Node_Sets.Set,
-      Hash            => Node_Hash,
-      Equivalent_Keys => "=",
-      "="             => Node_Sets."=");
-   --  Maps of nodes to sets of nodes
 
    procedure Add_To_Graph (Map : in out Node_Graphs.Map; From, To : Node_Id);
    --  Add the relation From -> To in the given graph

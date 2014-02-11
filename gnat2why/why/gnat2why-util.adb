@@ -38,6 +38,7 @@ with SPARK_Definition;
 with Flow_Types;
 with Flow_Utility;
 
+with Gnat2Why.Nodes;      use Gnat2Why.Nodes;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Builders;  use Why.Atree.Builders;
 

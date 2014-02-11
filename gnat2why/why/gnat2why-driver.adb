@@ -61,6 +61,7 @@ with Why.Gen.Names;          use Why.Gen.Names;
 with Why.Inter;              use Why.Inter;
 with Why.Types;              use Why.Types;
 
+with Common_Containers;      use Common_Containers;
 with Gnat2Why.Decls;         use Gnat2Why.Decls;
 with Gnat2Why.Nodes;         use Gnat2Why.Nodes;
 with Gnat2Why_Args;

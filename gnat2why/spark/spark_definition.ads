@@ -39,9 +39,9 @@
 --  in SPARK, and listed for translation, or not listed for translation if a
 --  violation was detected in the body.
 
-with Types;          use Types;
+with Types;             use Types;
 
-with Gnat2Why.Nodes; use Gnat2Why.Nodes;
+with Common_Containers; use Common_Containers;
 
 package SPARK_Definition is
 

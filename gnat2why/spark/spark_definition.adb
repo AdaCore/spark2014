@@ -50,6 +50,7 @@ with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 with SPARK_Util;             use SPARK_Util;
 
 with Gnat2Why_Args;
+with Gnat2Why.Nodes;         use Gnat2Why.Nodes;
 
 package body SPARK_Definition is
 

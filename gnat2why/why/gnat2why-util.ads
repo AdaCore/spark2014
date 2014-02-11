@@ -35,7 +35,7 @@ with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 with Why.Atree.Tables;       use Why.Atree.Tables;
 with Why.Ids;                use Why.Ids;
 
-with Gnat2Why.Nodes;         use Gnat2Why.Nodes;
+with Common_Containers;      use Common_Containers;
 with Why.Gen.Binders;        use Why.Gen.Binders;
 with Why.Types;
 

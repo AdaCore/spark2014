@@ -26,7 +26,7 @@
 with Why.Ids;            use Why.Ids;
 with Why.Types;          use Why.Types;
 with Why.Sinfo;          use Why.Sinfo;
-with Gnat2Why.Nodes;     use Gnat2Why.Nodes;
+with Common_Containers;  use Common_Containers;
 with Why.Atree.Builders; use Why.Atree.Builders;
 
 package Why.Gen.Terms is

@@ -35,6 +35,8 @@ with Sinfo;               use Sinfo;
 with SPARK_Util;          use SPARK_Util;
 with VC_Kinds;            use VC_Kinds;
 
+with Common_Containers;   use Common_Containers;
+
 with Gnat2Why.Expr;       use Gnat2Why.Expr;
 with Gnat2Why.Nodes;      use Gnat2Why.Nodes;
 

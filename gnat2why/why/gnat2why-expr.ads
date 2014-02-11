@@ -31,8 +31,8 @@ with Why.Types;      use Why.Types;
 with Why.Ids;        use Why.Ids;
 with Why.Sinfo;      use Why.Sinfo;
 
-with Gnat2Why.Nodes; use Gnat2Why.Nodes;
-with Gnat2Why.Util;  use Gnat2Why.Util;
+with Common_Containers; use Common_Containers;
+with Gnat2Why.Util;     use Gnat2Why.Util;
 
 package Gnat2Why.Expr is
 

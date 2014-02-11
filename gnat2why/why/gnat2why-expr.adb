@@ -74,6 +74,7 @@ with Why.Inter;              use Why.Inter;
 
 with Gnat2Why.Decls;         use Gnat2Why.Decls;
 with Gnat2Why.Expr.Loops;    use Gnat2Why.Expr.Loops;
+with Gnat2Why.Nodes;         use Gnat2Why.Nodes;
 with Gnat2Why.Subprograms;   use Gnat2Why.Subprograms;
 
 package body Gnat2Why.Expr is

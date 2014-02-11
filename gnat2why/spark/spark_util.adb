@@ -37,6 +37,7 @@ with Treepr;                    use Treepr;
 with Uintp;                     use Uintp;
 
 with Gnat2Why_Args;
+with Gnat2Why.Nodes;            use Gnat2Why.Nodes;
 
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 

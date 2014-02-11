@@ -35,7 +35,7 @@ with Why.Sinfo;                          use Why.Sinfo;
 pragma Warnings (On);
 with Why.Ids;                            use Why.Ids;
 with Why.Types;                          use Why.Types;
-with Gnat2Why.Nodes;                     use Gnat2Why.Nodes;
+with Common_Containers;                  use Common_Containers;
 with Gnat2Why.Util;                      use Gnat2Why.Util;
 
 package Why.Inter is

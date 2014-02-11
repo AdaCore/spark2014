@@ -31,8 +31,7 @@ with Atree; use Atree;
 with Einfo; use Einfo;
 with Types; use Types;
 
-with Gnat2Why.Nodes;         use Gnat2Why.Nodes;
---  Node_Sets and Node_Hash
+with Common_Containers;    use Common_Containers;
 
 with Graph;
 with Flow_Types;           use Flow_Types;

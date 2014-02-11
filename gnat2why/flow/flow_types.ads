@@ -35,8 +35,7 @@ with Atree;                              use Atree;
 with Sinfo;                              use Sinfo;
 with Types;                              use Types;
 
-with Gnat2Why.Nodes;                     use Gnat2Why.Nodes;
---  Node_Sets and Node_Hash
+with Common_Containers;                  use Common_Containers;
 
 with SPARK_Frame_Conditions;             use SPARK_Frame_Conditions;
 --  Entity_Name
