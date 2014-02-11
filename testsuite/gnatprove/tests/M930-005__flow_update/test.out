@@ -11,12 +11,12 @@ update_uninitialized_2.adb:28:04: warning: analyzing unreferenced procedure "P2"
    compilation of update_uninitialized_2.adb failed
 
 
-gnatprove: error during analysis and translation to intermediate language, aborting.
+gnatprove: error during flow analysis and proof, aborting.
 gprbuild: *** compilation phase failed
 update_uninitialized_3.adb:16:08: warning: statement has no effect
 update_uninitialized_3.adb:17:08: "B" is not initialized
    compilation of update_uninitialized_3.adb failed
 
 
-gnatprove: error during analysis and translation to intermediate language, aborting.
+gnatprove: error during flow analysis and proof, aborting.
 gprbuild: *** compilation phase failed

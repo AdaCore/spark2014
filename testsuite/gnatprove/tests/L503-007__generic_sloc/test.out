@@ -15,5 +15,5 @@ gen2.adb:1:14: Generic unit is not analyzed
    compilation of gen2.adb failed
 
 
-gnatprove: error during analysis and translation to intermediate language, aborting.
+gnatprove: error during flow analysis and proof, aborting.
 gprbuild: *** compilation phase failed

@@ -78,10 +78,10 @@ package Gnat2Why_Args is
 
    Prove_Mode : Boolean := False;
 
-   --  Enable basic debugging for flow analysis. This will dump the
-   --  CFG and PDG is dot format.
+   --  Enable basic debugging for gnat2why. This will dump the
+   --  CFG and PDG is dot format, and print the gnatwhy3 command line.
 
-   Flow_Debug_Mode : Boolean := False;
+   Debug_Mode : Boolean := False;
 
    --  This will enable additional tracing output and will call
    --  graphviz on each dumped graph.
@@ -109,6 +109,10 @@ package Gnat2Why_Args is
 
    Limit_Subp : Unbounded_String := Null_Unbounded_String;
 
+   --  The Why3 command will be run in this directory
+
+   Why3_Dir : Unbounded_String := Null_Unbounded_String;
+
    --  IDE mode. Error messages may be formatted differently in this mode (e.g.
    --  JSON dict)
 
@@ -117,6 +121,10 @@ package Gnat2Why_Args is
    --  The user specifically asked to prove this file, gnatprove option "-u"
 
    Single_File : Boolean := False;
+
+   --  The cmd line args to be passed to gnatwhy3
+
+   Why3_Args : String_Lists.List := String_Lists.Empty_List;
 
    --------------------------------
    -- Procedures of this package --

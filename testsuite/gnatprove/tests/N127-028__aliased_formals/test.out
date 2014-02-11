@@ -19,5 +19,5 @@ ap.ads:22:16: violation of aspect SPARK_Mode at line 2
    compilation of ap.ads failed
 
 
-gnatprove: error during analysis and translation to intermediate language, aborting.
+gnatprove: error during flow analysis and proof, aborting.
 gprbuild: *** compilation phase failed

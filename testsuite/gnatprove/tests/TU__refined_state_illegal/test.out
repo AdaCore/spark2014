@@ -16,5 +16,5 @@ refined_state_illegal.ads:124:34: abstract state "S2" must be refined
    compilation of refined_state_illegal.adb failed
 
 
-gnatprove: error during frame condition computation, aborting.
+gnatprove: error during generation of Global contracts, aborting.
 gprbuild: *** compilation phase failed

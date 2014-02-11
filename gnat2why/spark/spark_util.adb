@@ -184,59 +184,10 @@ package body SPARK_Util is
 
    function Analysis_Requested (E : Entity_Id) return Boolean is
 
-      function Is_In_Analyzed_Files (E : Entity_Id) return Boolean;
-      --  Returns true if E belongs to one of the entities that correspond
-      --  to the files that are to be analyzed.
-
       function Is_Requested_Subprogram (E : Entity_Id) return Boolean;
       --  Returns true if E is the entity corresponding to the single
       --  subprogram that needs to be analyzed, or if Gnat2Why_Args.Limit_Subp
       --  is the Null_Unbounded_String.
-
-      --------------------------
-      -- Is_In_Analyzed_Files --
-      --------------------------
-
-      function Is_In_Analyzed_Files (E : Entity_Id) return Boolean is
-      begin
-         --  If the entity is not in the compilation unit that is
-         --  currently being analyzed then return false.
-
-         if Cunit (Main_Unit) /= Enclosing_Comp_Unit_Node (E)
-           and then Library_Unit (Cunit (Main_Unit)) /=
-             Enclosing_Comp_Unit_Node (E)
-         then
-            return False;
-         end if;
-
-         --  If an empty files list has been provided then all entities that
-         --  are in the compilation unit that is currently being analyzed must
-         --  be analyzed.
-
-         if not Gnat2Why_Args.Single_File or else
-           Gnat2Why_Args.Analyze_File.Is_Empty
-         then
-            return True;
-         end if;
-
-         declare
-            Spec_Prefix : constant String := Spec_File_Name (E);
-            Body_Prefix : constant String := Body_File_Name (E);
-         begin
-            for A_File of Gnat2Why_Args.Analyze_File loop
-               declare
-                  Filename : constant String := File_Name (A_File);
-               begin
-                  if Equal_Case_Insensitive (Filename, Body_Prefix)
-                    or else Equal_Case_Insensitive (Filename, Spec_Prefix)
-                  then
-                     return True;
-                  end if;
-               end;
-            end loop;
-            return False;
-         end;
-      end Is_In_Analyzed_Files;
 
       -----------------------------
       -- Is_Requested_Subprogram --
@@ -538,6 +489,51 @@ package body SPARK_Util is
 
       return Result;
    end Default_Initialization;
+
+   --------------------------
+   -- Is_In_Analyzed_Files --
+   --------------------------
+
+   function Is_In_Analyzed_Files (E : Entity_Id) return Boolean is
+   begin
+      --  If the entity is not in the compilation unit that is
+      --  currently being analyzed then return false.
+
+      if Cunit (Main_Unit) /= Enclosing_Comp_Unit_Node (E)
+        and then Library_Unit (Cunit (Main_Unit)) /=
+          Enclosing_Comp_Unit_Node (E)
+      then
+         return False;
+      end if;
+
+      --  If option -u was not present, or an empty files list has been
+      --  provided then all entities that are in the compilation unit that
+      --  is currently being analyzed must be analyzed.
+
+      if not Gnat2Why_Args.Single_File or else
+        Gnat2Why_Args.Analyze_File.Is_Empty
+      then
+         return True;
+      end if;
+
+      declare
+         Spec_Prefix : constant String := Spec_File_Name (E);
+         Body_Prefix : constant String := Body_File_Name (E);
+      begin
+         for A_File of Gnat2Why_Args.Analyze_File loop
+            declare
+               Filename : constant String := File_Name (A_File);
+            begin
+               if Equal_Case_Insensitive (Filename, Body_Prefix)
+                 or else Equal_Case_Insensitive (Filename, Spec_Prefix)
+               then
+                  return True;
+               end if;
+            end;
+         end loop;
+         return False;
+      end;
+   end Is_In_Analyzed_Files;
 
    ----------------------------------------
    -- Is_Initialized_By_Formal_Container --

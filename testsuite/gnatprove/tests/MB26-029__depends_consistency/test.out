@@ -11,5 +11,5 @@ p.ads:60:32: global "A" must appear in at least one input dependence list
    compilation of p.ads failed
 
 
-gnatprove: error during frame condition computation, aborting.
+gnatprove: error during generation of Global contracts, aborting.
 gprbuild: *** compilation phase failed

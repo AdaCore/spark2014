@@ -16,5 +16,5 @@ r.ads:24:25: renamed index cannot depend on "V" (SPARK RM 4.4(2))
    compilation of r.ads failed
 
 
-gnatprove: error during analysis and translation to intermediate language, aborting.
+gnatprove: error during flow analysis and proof, aborting.
 gprbuild: *** compilation phase failed

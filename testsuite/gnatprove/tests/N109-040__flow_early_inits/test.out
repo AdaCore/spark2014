@@ -3,5 +3,5 @@ early_init.ads:16:07: "V1" is not initialized
    compilation of early_init.adb failed
 
 
-gnatprove: error during analysis and translation to intermediate language, aborting.
+gnatprove: error during flow analysis and proof, aborting.
 gprbuild: *** compilation phase failed

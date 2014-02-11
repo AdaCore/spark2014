@@ -14,5 +14,5 @@ refined_global_illegal_2.adb:20:18: "Y" must be listed in the Refined_Global asp
    compilation of refined_global_illegal_2.adb failed
 
 
-gnatprove: error during analysis and translation to intermediate language, aborting.
+gnatprove: error during flow analysis and proof, aborting.
 gprbuild: *** compilation phase failed

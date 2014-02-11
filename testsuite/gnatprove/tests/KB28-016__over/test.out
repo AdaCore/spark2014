@@ -4,5 +4,5 @@ c45532o.adb:14:33: operation between different fixed-point types is not yet supp
    compilation of c45532o.adb failed
 
 
-gnatprove: error during analysis and translation to intermediate language, aborting.
+gnatprove: error during flow analysis and proof, aborting.
 gprbuild: *** compilation phase failed

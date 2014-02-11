@@ -20,8 +20,8 @@ calls.ads:17:12: tagged type is not allowed in SPARK
 calls.ads:17:12: violation of pragma SPARK_Mode at line 1
 calls.ads:18:17: "R'Class" is not allowed in SPARK
 calls.ads:18:17: violation of pragma SPARK_Mode at line 1
-compilation of calls.adb failed
+   compilation of calls.adb failed
 
 
-gnatprove: error during analysis and translation to intermediate language, aborting.
+gnatprove: error during flow analysis and proof, aborting.
 gprbuild: *** compilation phase failed

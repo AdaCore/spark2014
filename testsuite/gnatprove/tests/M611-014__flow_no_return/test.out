@@ -7,5 +7,5 @@ foo.adb:65:09: procedure "Nr_Test_03" is marked as No_Return
    compilation of foo.adb failed
 
 
-gnatprove: error during frame condition computation, aborting.
+gnatprove: error during generation of Global contracts, aborting.
 gprbuild: *** compilation phase failed

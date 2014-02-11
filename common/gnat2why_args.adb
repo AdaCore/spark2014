@@ -49,13 +49,15 @@ package body Gnat2Why_Args is
    Check_Mode_Name          : constant String := "check_mode";
    Flow_Analysis_Mode_Name  : constant String := "flow_analysis_mode";
    Prove_Mode_Name          : constant String := "prove_mode";
-   Flow_Debug_Mode_Name     : constant String := "flow_debug";
+   Debug_Mode_Name          : constant String := "debug";
    Flow_Advanced_Debug_Name : constant String := "flow_advanced_debug";
    Analyze_File_Name        : constant String := "analyze_file";
    Limit_Subp_Name          : constant String := "limit_subp";
    Pedantic_Name            : constant String := "pedantic";
    Ide_Mode_Name            : constant String := "ide_mode";
    Single_File_Name         : constant String := "single_file";
+   Why3_Args_Name           : constant String := "why3_args";
+   Why3_Dir_Name            : constant String := "why3_dir";
 
    procedure Interpret_Token (Token : String);
    --  This procedure should be called on an individual token in the
@@ -97,8 +99,8 @@ package body Gnat2Why_Args is
       elsif Token = Prove_Mode_Name then
          Prove_Mode := True;
 
-      elsif Token = Flow_Debug_Mode_Name then
-         Flow_Debug_Mode := True;
+      elsif Token = Debug_Mode_Name then
+         Debug_Mode := True;
 
       elsif Token = Flow_Advanced_Debug_Name then
          Flow_Advanced_Debug := True;
@@ -142,6 +144,25 @@ package body Gnat2Why_Args is
          begin
             Limit_Subp := To_Unbounded_String (Token (Start .. Token'Last));
          end;
+      elsif Starts_With (Token, Why3_Args_Name) and then
+        Token (Token'First + Why3_Args_Name'Length) = '='
+      then
+         declare
+            Start : constant Integer :=
+              Token'First + Why3_Args_Name'Length + 1;
+         begin
+            Why3_Args.Append (Token (Start .. Token'Last));
+         end;
+      elsif Starts_With (Token, Why3_Dir_Name) and then
+        Token (Token'First + Why3_Dir_Name'Length) = '='
+      then
+         declare
+            Start : constant Integer :=
+              Token'First + Why3_Dir_Name'Length + 1;
+         begin
+            Why3_Dir := To_Unbounded_String (Token (Start .. Token'Last));
+         end;
+
       else
 
          --  We play it safe and quit if there is an unrecognized option
@@ -223,8 +244,8 @@ package body Gnat2Why_Args is
          Add_Line (Prove_Mode_Name);
       end if;
 
-      if Flow_Debug_Mode then
-         Add_Line (Flow_Debug_Mode_Name);
+      if Debug_Mode then
+         Add_Line (Debug_Mode_Name);
       end if;
 
       if Flow_Advanced_Debug then
@@ -250,6 +271,14 @@ package body Gnat2Why_Args is
       if Limit_Subp /= Null_Unbounded_String then
          Add_Line (Limit_Subp_Name & "=" & To_String (Limit_Subp));
       end if;
+
+      if Why3_Dir /= Null_Unbounded_String then
+         Add_Line (Why3_Dir_Name & "=" & To_String (Why3_Dir));
+      end if;
+
+      for File of Why3_Args loop
+         Add_Line (Why3_Args_Name & "=" & File);
+      end loop;
 
       --  We need to switch to the given Obj_Dir so that the temp file is
       --  created there

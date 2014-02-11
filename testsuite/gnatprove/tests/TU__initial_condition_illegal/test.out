@@ -6,7 +6,7 @@ initial_condition_illegal_2.ads:10:32: "Initial_Condition_Illegal_2.State" must 
    compilation of initial_condition_illegal_2.adb failed
 
 
-gnatprove: error during analysis and translation to intermediate language, aborting.
+gnatprove: error during flow analysis and proof, aborting.
 gprbuild: *** compilation phase failed
 initial_condition_illegal_3.ads:13:8: warning: initial condition might fail
 initial_condition_illegal_3.ads:15:04: warning: initialization has no effect
@@ -15,5 +15,5 @@ initial_condition_illegal_4.ads:11:14: warning: subprogram "P1" has no effect
    compilation of initial_condition_illegal_4.adb failed
 
 
-gnatprove: error during analysis and translation to intermediate language, aborting.
+gnatprove: error during flow analysis and proof, aborting.
 gprbuild: *** compilation phase failed

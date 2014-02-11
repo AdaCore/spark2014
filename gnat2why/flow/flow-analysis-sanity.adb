@@ -54,7 +54,7 @@ package body Flow.Analysis.Sanity is
       if Ekind (FA.Analyzed_Entity) = E_Function
         and then FA.Function_Side_Effects_Present
       then
-         if Gnat2Why_Args.Flow_Debug_Mode then
+         if Gnat2Why_Args.Debug_Mode then
             Error_Msg_Flow
               (FA        => FA,
                Tracefile => Unused,
@@ -81,7 +81,7 @@ package body Flow.Analysis.Sanity is
       Sane := True;
 
       if FA.Aliasing_Present then
-         if Gnat2Why_Args.Flow_Debug_Mode then
+         if Gnat2Why_Args.Debug_Mode then
             Error_Msg_Flow
               (FA        => FA,
                Tracefile => Unused,
@@ -370,7 +370,7 @@ package body Flow.Analysis.Sanity is
       end case;
 
       if not Sane then
-         if Gnat2Why_Args.Flow_Debug_Mode then
+         if Gnat2Why_Args.Debug_Mode then
             Error_Msg_Flow
               (FA        => FA,
                Tracefile => Unused,

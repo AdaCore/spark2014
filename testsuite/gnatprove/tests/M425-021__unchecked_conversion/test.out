@@ -3,5 +3,5 @@ test.adb:38:14: formal parameters "X" and "Y" must not be aliased
    compilation of test.adb failed
 
 
-gnatprove: error during analysis and translation to intermediate language, aborting.
+gnatprove: error during flow analysis and proof, aborting.
 gprbuild: *** compilation phase failed
