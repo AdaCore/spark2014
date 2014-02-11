@@ -19,7 +19,9 @@ with TcpIp;
 with MsgProc;
 with Ada.Strings.Fixed;
 
-package body AlarmAPI is
+package body AlarmAPI
+  with SPARK_Mode => Off
+is
 
    ------------------------------------------------------------------
    -- Activate

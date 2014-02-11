@@ -20,7 +20,6 @@ with Clock,
 
 package body Cert.Attr.IandA is
 
-
    ------------------------------------------------------------------
    -- TheTemplate
    --
@@ -28,7 +27,6 @@ package body Cert.Attr.IandA is
    --    None.
    --
    ------------------------------------------------------------------
-
    function TheTemplate (Contents : ContentsT) return IandATypes.TemplateT is
      (Contents.Template);
 

@@ -21,6 +21,7 @@ with SPARK_IO,
      BasicTypes,
      CryptoTypes,
      MsgProc;
+
 use type SPARK_IO.File_Status;
 use type CryptoTypes.IssuerIDT;
 use type BasicTypes.Unsigned32T;
@@ -63,15 +64,15 @@ is
    end record;
 
    NullKeyTemplate : constant KeyTemplateT :=
-     (AttrMask => 15,
-      Owner => CryptoTypes.IssuerT'
-        (ID => 0,
+     (AttrMask  => 15,
+      Owner     => CryptoTypes.IssuerT'
+        (ID         => 0,
          NameLength => 0,
-         Name => CryptoTypes.NameT'(others => ' ')),
-      KeyID => 0,
+         Name       => CryptoTypes.NameT'(others => ' ')),
+      KeyID     => 0,
       KeyLength => 0,
-      IsPublic => True,
-      Padding => KeyPaddingT'(others => 0));
+      IsPublic  => True,
+      Padding   => KeyPaddingT'(others => 0));
 
    NullFindState : constant FindStateT :=
      (Initialized  => False,
@@ -168,8 +169,8 @@ is
       Created := (Status = SPARK_IO.OK);
    end Create;
 
-   procedure OpenForAppending(FileHandle :    out SPARK_IO.File_Type;
-                              Open       :    out Boolean)
+   procedure OpenForAppending (FileHandle :    out SPARK_IO.File_Type;
+                               Open       :    out Boolean)
    is
       Status : SPARK_IO.File_Status;
    begin
@@ -181,8 +182,8 @@ is
       Open := (Status = SPARK_IO.OK);
    end OpenForAppending;
 
-   procedure OpenForReading(FileHandle :    out SPARK_IO.File_Type;
-                            Open       :    out Boolean)
+   procedure OpenForReading (FileHandle :    out SPARK_IO.File_Type;
+                             Open       :    out Boolean)
    is
       Status : SPARK_IO.File_Status;
    begin
@@ -194,8 +195,8 @@ is
       Open := (Status = SPARK_IO.OK);
    end OpenForReading;
 
-   procedure Close(FileHandle : in     SPARK_IO.File_Type;
-                   Closed     :    out Boolean)
+   procedure Close (FileHandle : in     SPARK_IO.File_Type;
+                    Closed     :    out Boolean)
    is
       Status : SPARK_IO.File_Status;
    begin
@@ -203,7 +204,6 @@ is
                      Status => Status);
       Closed := (Status = SPARK_IO.OK);
    end Close;
-
 
    ------------------------------------------------------------------
    -- ToString
@@ -232,7 +232,6 @@ is
    --    creates a new one. Fills in the local KeyStore state.
    --
    ------------------------------------------------------------------
-
    procedure Initialize(ReturnValue : out ReturnValueT) is
       Keys         : SPARK_IO.File_Type;
       Open, Closed : Boolean;
@@ -272,7 +271,6 @@ is
             IDString : String (1 .. 20) := (others => ' ');
             IDLength : Natural;
             Index    : Integer;
-
          begin
             -- Find the start of the next Key.
             while not SPARK_IO.End_Of_File (File => Keys) loop
@@ -484,7 +482,6 @@ is
          IsInit := False;
    end Initialize;
 
-
    ------------------------------------------------------------------
    -- Finalize
    --
@@ -493,13 +490,11 @@ is
    --    after reading or appending.
    --
    ------------------------------------------------------------------
-
    procedure Finalize (ReturnValue : out ReturnValueT) is
    begin
       ReturnValue := Ok;
       IsInit := False;
    end Finalize;
-
 
    ------------------------------------------------------------------
    -- CreateObject
@@ -508,7 +503,6 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-
    procedure CreateObject (Template     : in     KeyTemplateT;
                            ObjectHandle :    out BasicTypes.Unsigned32T;
                            ReturnValue  :    out ReturnValueT)
@@ -631,7 +625,6 @@ is
       end if;
    end CreateObject;
 
-
    ------------------------------------------------------------------
    -- FindObjectsInit
    --
@@ -639,7 +632,6 @@ is
    --    Updates FindState
    --
    ------------------------------------------------------------------
-
    procedure FindObjectsInit
      (Template    : in     KeyTemplateT;
       ReturnValue :    out ReturnValueT) is
@@ -657,7 +649,6 @@ is
 
    end FindObjectsInit;
 
-
    ------------------------------------------------------------------
    -- FindObjects
    --
@@ -665,10 +656,9 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-
-   procedure FindObjects(HandleCount   : in out BasicTypes.Unsigned32T;
-                         ObjectHandles :    out HandleArrayT;
-                         ReturnValue   :    out ReturnValueT)
+   procedure FindObjects (HandleCount   : in out BasicTypes.Unsigned32T;
+                          ObjectHandles :    out HandleArrayT;
+                          ReturnValue   :    out ReturnValueT)
    is
       MatchCount : HandleCountT := 0;
 
@@ -683,7 +673,7 @@ is
       --    None.
       --
       ------------------------------------------------------------------
-      function OwnerMatch(Idx : HandleT) return Boolean
+      function OwnerMatch (Idx : HandleT) return Boolean
       is
       begin
         return (OwnerMask and
@@ -691,7 +681,7 @@ is
            KeyStore(Idx).Owner.Id = FindState.FindTemplate.Owner.Id;
       end OwnerMatch;
 
-      function KeyIDMatch(Idx : HandleT) return Boolean
+      function KeyIDMatch (Idx : HandleT) return Boolean
       is
       begin
         return (KeyIDMask and
@@ -699,7 +689,7 @@ is
            KeyStore(Idx).KeyId = FindState.FindTemplate.KeyId;
       end KeyIDMatch;
 
-      function KeyLengthMatch(Idx : HandleT) return Boolean
+      function KeyLengthMatch (Idx : HandleT) return Boolean
       is
       begin
         return (KeyLengthMask and
@@ -707,7 +697,7 @@ is
            KeyStore(Idx).KeyLength = FindState.FindTemplate.KeyLength;
       end KeyLengthMatch;
 
-      function IsPublicMatch(Idx : HandleT) return Boolean
+      function IsPublicMatch (Idx : HandleT) return Boolean
       is
       begin
         return (IsPublicMask and
@@ -755,7 +745,6 @@ is
       end if;
    end FindObjects;
 
-
    ------------------------------------------------------------------
    -- FindObjectsFinal
    --
@@ -763,8 +752,7 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-
-   procedure FindObjectsFinal(ReturnValue : out ReturnValueT)
+   procedure FindObjectsFinal (ReturnValue : out ReturnValueT)
    is
    begin
      if not IsInit then
@@ -778,7 +766,6 @@ is
      FindState := NullFindState;
    end FindObjectsFinal;
 
-
    ------------------------------------------------------------------
    -- DigestInit
    --
@@ -786,9 +773,8 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-
-   procedure DigestInit(Mechanism   : in     CryptoTypes.AlgorithmT;
-                        ReturnValue :    out ReturnValueT)
+   procedure DigestInit (Mechanism   : in     CryptoTypes.AlgorithmT;
+                         ReturnValue :    out ReturnValueT)
    is
    begin
       if not IsInit then
@@ -805,7 +791,6 @@ is
       end if;
    end DigestInit;
 
-
    ------------------------------------------------------------------
    -- DigestUpdate
    --
@@ -813,10 +798,9 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-
-   procedure DigestUpdate(DataBlock   : in     HundredByteArrayT;
-                          ByteCount   : in     BasicTypes.Unsigned32T;
-                          ReturnValue :    out ReturnValueT)
+   procedure DigestUpdate (DataBlock   : in     HundredByteArrayT;
+                           ByteCount   : in     BasicTypes.Unsigned32T;
+                           ReturnValue :    out ReturnValueT)
    is
 
       ------------------------------------------------------------------
@@ -895,12 +879,12 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-
-   procedure DigestFinal(Digest       : out DigestT;
-                         DigestLength : out BasicTypes.Unsigned32T;
-                         ReturnValue  : out ReturnValueT)
+   procedure DigestFinal (Digest       : out DigestT;
+                          DigestLength : out BasicTypes.Unsigned32T;
+                          ReturnValue  : out ReturnValueT)
    is
-      CertDict  : MsgProc.DictionaryT := MsgProc.DictionaryT(DigestState.RawCert);
+      CertDict  : MsgProc.DictionaryT :=
+        MsgProc.DictionaryT(DigestState.RawCert);
 
       ------------------------------------------------------------------
       -- CalcDigest
@@ -956,7 +940,6 @@ is
                       Pad          => (others => 0));
       end CalcDigest;
 
-
       ------------------------------------------------------------------
       -- CalcDigestLength
       --
@@ -981,7 +964,6 @@ is
          when E : others =>
             return BasicTypes.Unsigned32T'Last;
       end CalcDigestLength;
-
 
       ------------------------------------------------------------------
       -- CalcDigestFinalReturn
@@ -1024,7 +1006,6 @@ is
      DigestState  := NullDigestState;
    end DigestFinal;
 
-
    ------------------------------------------------------------------
    -- Sign
    --
@@ -1032,21 +1013,19 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-
-   procedure Sign(Mechanism    : in     CryptoTypes.AlgorithmT;
-                  KeyHandle    : in     BasicTypes.Unsigned32T;
-                  Digest       : in     DigestT;
-                  Signature    :    out CertTypes.SignatureT;
-                  ReturnValue  :    out ReturnValueT)
+   procedure Sign (Mechanism    : in     CryptoTypes.AlgorithmT;
+                   KeyHandle    : in     BasicTypes.Unsigned32T;
+                   Digest       : in     DigestT;
+                   Signature    :    out CertTypes.SignatureT;
+                   ReturnValue  :    out ReturnValueT)
    is
 
-      function CreateSignatureFrom(
-               AlgorithmID : CryptoTypes.AlgorithmT;
-               Siglength   : BasicTypes.Unsigned32T;
-               KeyID       : BasicTypes.Unsigned32T;
-               DigestID    : BasicTypes.Unsigned32T
-               )
-               return CertTypes.SignatureT
+      function CreateSignatureFrom
+        (AlgorithmID : CryptoTypes.AlgorithmT;
+         Siglength   : BasicTypes.Unsigned32T;
+         KeyID       : BasicTypes.Unsigned32T;
+         DigestID    : BasicTypes.Unsigned32T)
+        return CertTypes.SignatureT
       is
          TrimKeyID : String := Ada.Strings.Fixed.Trim(
                                   MsgProc.StringFrom32(KeyID),
@@ -1106,7 +1085,6 @@ is
       end if;
    end Sign;
 
-
    ------------------------------------------------------------------
    -- Verify
    --
@@ -1114,17 +1092,15 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-
-   procedure Verify(Mechanism    : in     CryptoTypes.AlgorithmT;
-                    KeyHandle    : in     BasicTypes.Unsigned32T;
-                    Digest       : in     DigestT;
-                    Signature    : in     CertTypes.SignatureT;
-                    ReturnValue  :    out ReturnValueT)
+   procedure Verify (Mechanism    : in     CryptoTypes.AlgorithmT;
+                     KeyHandle    : in     BasicTypes.Unsigned32T;
+                     Digest       : in     DigestT;
+                     Signature    : in     CertTypes.SignatureT;
+                     ReturnValue  :    out ReturnValueT)
    is
 
-
-      function TheKeyID(Signature : CertTypes.SignatureT)
-            return BasicTypes.Unsigned32T
+      function TheKeyID (Signature : CertTypes.SignatureT)
+                        return BasicTypes.Unsigned32T
       is
       begin
          return BasicTypes.Unsigned32T'Value(
@@ -1182,7 +1158,6 @@ is
       end if;
    end Verify;
 
-
    ------------------------------------------------------------------
    -- GetAttributeValue
    --
@@ -1190,10 +1165,9 @@ is
    --    Extracts attribute data from the object pointed to by KeyHandle.
    --
    ------------------------------------------------------------------
-
-   procedure GetAttributeValue(KeyHandle   : in     BasicTypes.Unsigned32T;
-                               Template    : in out KeyTemplateT;
-                               ReturnValue :    out ReturnValueT)
+   procedure GetAttributeValue (KeyHandle   : in     BasicTypes.Unsigned32T;
+                                Template    : in out KeyTemplateT;
+                                ReturnValue :    out ReturnValueT)
    is
    begin
 
@@ -1228,7 +1202,6 @@ is
          ReturnValue := ObjectHandleInvalid;
 
    end GetAttributeValue;
-
 
    ------------------------------------------------------------------
    -- ClearStore

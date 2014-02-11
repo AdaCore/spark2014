@@ -33,8 +33,9 @@ is
    --    Will not work any responses include additional single quotes.
    --
    ------------------------------------------------------------------
-   function GetStringByPos(Msg : String;
-                           Arg : Positive) return String
+   function GetStringByPos (Msg : String;
+                            Arg : Positive)
+                           return String
    is
       ValStart, ValFin : Natural;
       LocalMsg         : String := Msg;
@@ -72,14 +73,15 @@ is
    --    Performed by searching for open and close braces.
    --
    ------------------------------------------------------------------
-   function GetDictionary (Msg : String; Arg : Positive) return DictionaryT is
+   function GetDictionary (Msg : String;
+                           Arg : Positive)
+                          return DictionaryT is
       DicStart,
       DicFin,
       PrimaryCount,
       SecondaryCount : Natural := 0;
       PrimaryOpen    : Boolean := False;
       LocalReturn    : String := Msg;
-
    begin
       -- Search for the required dictionary, given by Arg.
       for i in 1 .. Msg'Length loop
@@ -131,10 +133,9 @@ is
    --    'Key' : 'Value' or 'Key' : {Dic}.
    --
    ------------------------------------------------------------------
-
-   function GetStringByKey
-     (Dic : DictionaryT;
-      Key : String) return String
+   function GetStringByKey (Dic : DictionaryT;
+                            Key : String)
+                           return String
    is
       ValStart,
       ValFin,
@@ -202,7 +203,6 @@ is
    --    'Key' : 'Value' or 'Key' : {Dic}.
    --
    ------------------------------------------------------------------
-
    function GetDictionaryByKey (Dic : DictionaryT;
                                 Key : String)
                                return DictionaryT
@@ -263,7 +263,7 @@ is
    --    SPREs response code is the first 'string'.
    --
    ------------------------------------------------------------------
-   function GetResponseFromMsg(Msg : in     TcpIp.MessageT) return String
+   function GetResponseFromMsg (Msg : in     TcpIp.MessageT) return String
    is
       CodeStart, CodeFin : Natural;
       LocalMsg           : String := Msg.Data(1..Msg.Length);

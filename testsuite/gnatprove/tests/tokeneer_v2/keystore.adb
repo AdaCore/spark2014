@@ -103,7 +103,8 @@ is
 
    function ConvertRetValToText
      (RetVal : Interfac.ReturnValueT;
-      Op     : String) return AuditTypes.DescriptionT
+      Op     : String)
+     return AuditTypes.DescriptionT
    is
       Result    : AuditTypes.DescriptionT := AuditTypes.NoDescription;
       TheString : constant String :=
@@ -130,10 +131,10 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   procedure Digest(Mechanism   : in     CryptoTypes.AlgorithmT;
-                    RawCertData : in     CertTypes.RawDataT;
-                    TheDigest   :    out Interfac.DigestT;
-                    Success     :    out Boolean)
+   procedure Digest (Mechanism   : in     CryptoTypes.AlgorithmT;
+                     RawCertData : in     CertTypes.RawDataT;
+                     TheDigest   :    out Interfac.DigestT;
+                     Success     :    out Boolean)
      with Global  => (Input  => (Clock.Now,
                                  ConfigData.State,
                                  Interfac.Store),
@@ -148,9 +149,9 @@ is
                                                Mechanism,
                                                RawCertData),
                       (Success,
-                       TheDigest) => (Interfac.Store,
-                                      Mechanism,
-                                      RawCertData))
+                       TheDigest)          => (Interfac.Store,
+                                               Mechanism,
+                                               RawCertData))
    is
       RetValIni : Interfac.ReturnValueT;
       -- Initialize the update and final returns to Ok, so a
@@ -178,14 +179,15 @@ is
       function GetBlock
         (Data      : CertTypes.RawCertificateT;
          BlockNo   : Positive;
-         BlockSize : BasicTypes.Unsigned32T) return Interfac.HundredByteArrayT
+         BlockSize : BasicTypes.Unsigned32T)
+        return Interfac.HundredByteArrayT
         with Pre => BlockNo in 1 .. 41
                       and then BlockSize in 1 .. 100
                       and then Positive (BlockSize) + (BlockNo - 1) * 100
                         <= CertTypes.RawCertificateI'Last
       is
          Result : Interfac.HundredByteArrayT :=
-                     Interfac.HundredByteArrayT'(others => ' ');
+           Interfac.HundredByteArrayT'(others => ' ');
       begin
          for J in CertTypes.RawCertificateI range 1 .. 100 loop
             pragma Loop_Invariant
@@ -375,8 +377,8 @@ is
    --    first handle is returned, and the TIS is allowed to continue.
    --
    ------------------------------------------------------------------
-   procedure KeyMatchingIssuer(Issuer    : in     CryptoTypes.IssuerT;
-                               IssuerKey :    out BasicTypes.Unsigned32T)
+   procedure KeyMatchingIssuer (Issuer    : in     CryptoTypes.IssuerT;
+                                IssuerKey :    out BasicTypes.Unsigned32T)
      with Global  => (Input  => (Clock.Now,
                                  ConfigData.State,
                                  Interfac.Store),
@@ -389,8 +391,8 @@ is
                                                ConfigData.State,
                                                Interfac.Store,
                                                Issuer),
-                      IssuerKey => (Interfac.Store,
-                                    Issuer))
+                      IssuerKey            => (Interfac.Store,
+                                               Issuer))
    is
       IssuerTemplate : Interfac.KeyTemplateT;
       Handles : Interfac.HandleArrayT;
@@ -443,7 +445,7 @@ is
    --    first handle is returned, and the TIS is allowed to continue.
    --
    ------------------------------------------------------------------
-   procedure PrivateKey(PrivateKeyHandle :    out BasicTypes.Unsigned32T)
+   procedure PrivateKey (PrivateKeyHandle :    out BasicTypes.Unsigned32T)
      with Global  => (Input  => (Clock.Now,
                                   ConfigData.State,
                                   Interfac.Store),
@@ -455,7 +457,7 @@ is
                                                Clock.Now,
                                                ConfigData.State,
                                                Interfac.Store),
-                      PrivateKeyHandle => Interfac.Store)
+                      PrivateKeyHandle     => Interfac.Store)
    is
       PrivateTemplate : Interfac.KeyTemplateT;
       Handles : Interfac.HandleArrayT;
@@ -517,7 +519,7 @@ is
                                                        Clock.Now,
                                                        ConfigData.State,
                                                        Interfac.Store),
-                              ThisTISInfo => Interfac.Store)
+                              ThisTISInfo          => Interfac.Store)
    is
       RetVal : Interfac.ReturnValueT;
       ThePrivateKeyH : BasicTypes.Unsigned32T;
@@ -581,8 +583,8 @@ is
                                                        ConfigData.State,
                                                        Interfac.Store,
                                                        Issuer),
-                              IsPresent => (Interfac.Store,
-                                            Issuer))
+                              IsPresent            => (Interfac.Store,
+                                                       Issuer))
    is
       TheIssuerKey : BasicTypes.Unsigned32T;
    begin
@@ -600,10 +602,8 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   function PrivateKeyPresent return Boolean is
-     (ThisTISInfo.IsPresent)
+   function PrivateKeyPresent return Boolean is (ThisTISInfo.IsPresent)
      with Refined_Global  => ThisTISInfo;
-
 
    ------------------------------------------------------------------
    -- IssuerIsThisTIS
@@ -612,8 +612,8 @@ is
    --    None
    --
    ------------------------------------------------------------------
-   function IssuerIsThisTIS(Issuer : in     CryptoTypes.IssuerT)
-                           return  Boolean
+   function IssuerIsThisTIS (Issuer : in     CryptoTypes.IssuerT)
+                            return  Boolean
    is
      (if PrivateKeyPresent then
          Issuer = ThisTISInfo.Owner
@@ -628,8 +628,7 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   function ThisTIS return CryptoTypes.IssuerT is
-     (ThisTISInfo.Owner)
+   function ThisTIS return CryptoTypes.IssuerT is (ThisTISInfo.Owner)
      with Refined_Global  => ThisTISInfo;
 
    ------------------------------------------------------------------
@@ -639,7 +638,7 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   procedure  IsVerifiedBy(Mechanism   : in     CryptoTypes.AlgorithmT;
+   procedure IsVerifiedBy (Mechanism   : in     CryptoTypes.AlgorithmT;
                            RawCertData : in     CertTypes.RawDataT;
                            Signature   : in     CertTypes.SignatureT;
                            TheIssuer   : in     CryptoTypes.IssuerT;
@@ -659,11 +658,11 @@ is
                                                        RawCertData,
                                                        Signature,
                                                        TheIssuer),
-                              Verified => (Interfac.Store,
-                                           Mechanism,
-                                           RawCertData,
-                                           Signature,
-                                           TheIssuer))
+                              Verified             => (Interfac.Store,
+                                                       Mechanism,
+                                                       RawCertData,
+                                                       Signature,
+                                                       TheIssuer))
    is
       TheDigest    : Interfac.DigestT;
       Digested     : Boolean;
@@ -712,7 +711,7 @@ is
    --    None
    --
    ------------------------------------------------------------------
-   procedure  Sign(RawCertData : in     CertTypes.RawDataT;
+   procedure Sign (RawCertData : in     CertTypes.RawDataT;
                    Signature   :    out CertTypes.SignatureT;
                    Signed      :    out Boolean)
      with Refined_Global  => (Input  => (Clock.Now,
@@ -728,8 +727,8 @@ is
                                                        Interfac.Store,
                                                        RawCertData),
                               (Signature,
-                               Signed)    => (Interfac.Store,
-                                              RawCertData))
+                               Signed)             => (Interfac.Store,
+                                                       RawCertData))
    is
       -- This TIS always uses RSA with SHA-1
       Mechanism : constant CryptoTypes.AlgorithmT := CryptoTypes.SHA1_RSA;
@@ -784,10 +783,10 @@ is
    --    None
    --
    ------------------------------------------------------------------
-   procedure AddKey(TheOwner : in     CryptoTypes.IssuerT;
-                    TheKey   : in     CryptoTypes.KeyPartT;
-                    IsPublic : in     Boolean;
-                    Added    :    out Boolean)
+   procedure AddKey (TheOwner : in     CryptoTypes.IssuerT;
+                     TheKey   : in     CryptoTypes.KeyPartT;
+                     IsPublic : in     Boolean;
+                     Added    :    out Boolean)
      with Refined_Global  => (Input  => (Clock.Now,
                                          ConfigData.State),
                               In_Out => (AuditLog.FileState,
@@ -795,10 +794,10 @@ is
                                          Interfac.Store,
                                          ThisTISInfo)),
           Refined_Depends => ((Added,
-                               Interfac.Store) => (Interfac.Store,
-                                                   IsPublic,
-                                                   TheKey,
-                                                   TheOwner),
+                               Interfac.Store)     => (Interfac.Store,
+                                                       IsPublic,
+                                                       TheKey,
+                                                       TheOwner),
                               (AuditLog.FileState,
                                AuditLog.State)     => (AuditLog.FileState,
                                                        AuditLog.State,
@@ -808,24 +807,26 @@ is
                                                        IsPublic,
                                                        TheKey,
                                                        TheOwner),
-                              ThisTISInfo =>+ (Interfac.Store,
-                                               IsPublic,
-                                               TheKey,
-                                               TheOwner))
+                              ThisTISInfo          =>+ (Interfac.Store,
+                                                        IsPublic,
+                                                        TheKey,
+                                                        TheOwner))
    is
       TheKeyTemplate : Interfac.KeyTemplateT;
-      RetVal : Interfac.ReturnValueT;
+      RetVal         : Interfac.ReturnValueT;
    begin
       -- Create a crypto template.
-      TheKeyTemplate := Interfac.KeyTemplateT'(
-                           AttrMask  => Interfac.FullKeyMask,
-                           Owner     => TheOwner,
-                           KeyID     => BasicTypes.Unsigned32T(TheKey.KeyID),
-                           KeyLength => BasicTypes.Unsigned32T(TheKey.KeyLength),
-                           IsPublic  => IsPublic);
+      TheKeyTemplate :=
+        Interfac.KeyTemplateT'(AttrMask  => Interfac.FullKeyMask,
+                               Owner     => TheOwner,
+                               KeyID     =>
+                                 BasicTypes.Unsigned32T(TheKey.KeyID),
+                               KeyLength =>
+                                 BasicTypes.Unsigned32T(TheKey.KeyLength),
+                               IsPublic  => IsPublic);
 
       Interfac.CreateObject(Template     => TheKeyTemplate,
-                             ReturnValue  => RetVal);
+                             ReturnValue => RetVal);
 
       Added := (RetVal = Interfac.Ok);
 
@@ -862,7 +863,7 @@ is
      with Refined_Global  => (Output => ThisTISInfo,
                               In_Out => Interfac.Store),
           Refined_Depends => (Interfac.Store =>+ null,
-                              ThisTISInfo => null)
+                              ThisTISInfo    => null)
    is
    begin
       Interfac.Delete;

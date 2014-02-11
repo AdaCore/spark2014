@@ -99,9 +99,9 @@ is
    ------------------------------------------------------------------
    -- State
    ------------------------------------------------------------------
-   CurrentDisplay : MsgT;
+   CurrentDisplay     : MsgT;
    CurrentlyDisplayed : MsgT;
-   Sizes : SizesT;
+   Sizes              : SizesT;
 
 
    ------------------------------------------------------------------
@@ -117,11 +117,11 @@ is
    --    None
    --
    ------------------------------------------------------------------
-   function CombineLines(TheMsg : MsgStrT) return ScrollStrT
+   function CombineLines (TheMsg : MsgStrT) return ScrollStrT
    is
       Result : ScrollStrT :=
-                  ScrollStrT'(Text => ScrollTextT'(others => ' '),
-                              Len  => 0);
+        ScrollStrT'(Text => ScrollTextT'(others => ' '),
+                    Len  => 0);
    begin
 
       -- Add the top text...
@@ -163,7 +163,7 @@ is
    --    None
    --
    ------------------------------------------------------------------
-   procedure SetValue(Msg : in     MsgT)
+   procedure SetValue (Msg : in     MsgT)
      with Refined_Global  => (Input  => (Clock.Now,
                                          ConfigData.State),
                               In_Out => (AuditLog.FileState,
@@ -199,7 +199,7 @@ is
    --    None
    --
    ------------------------------------------------------------------
-   procedure ChangeDoorUnlockedMsg(Msg : in     MsgT)
+   procedure ChangeDoorUnlockedMsg (Msg : in     MsgT)
      with Refined_Global  => (Input  => (Clock.Now,
                                          ConfigData.State),
                               In_Out => (AuditLog.FileState,
@@ -215,11 +215,9 @@ is
                               CurrentDisplay       =>+ Msg)
    is
    begin
-
       if CurrentDisplay = DoorUnlocked then
          SetValue( Msg => Msg);
       end if;
-
    end ChangeDoorUnlockedMsg;
 
    ------------------------------------------------------------------
@@ -305,7 +303,7 @@ is
    --    Determine the size of the display lines
    --
    ------------------------------------------------------------------
-   procedure Init(IsEnrolled : in     Boolean)
+   procedure Init (IsEnrolled : in     Boolean)
      with Refined_Global  => (Output => (CurrentDisplay,
                                          CurrentlyDisplayed,
                                          Sizes)),

@@ -88,7 +88,6 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-
    procedure Poll
      with Refined_Global  => (Input  => Interfac.Now,
                               Output => CurrentTimeVar),
@@ -105,7 +104,6 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-
    function TheCurrentTime return TimeT is (CurrentTimeVar)
      with Refined_Global => CurrentTimeVar;
 

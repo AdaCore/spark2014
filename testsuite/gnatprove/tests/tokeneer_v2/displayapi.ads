@@ -51,8 +51,8 @@ package DisplayAPI is
    --    Writes the supplied text to the top line of the display.
    --
    ------------------------------------------------------------------
-   procedure SetTopText(TopText : in     String;
-                        Written :    out Boolean)
+   procedure SetTopText (TopText : in     String;
+                         Written :    out Boolean)
      with Global => null;
 
    ------------------------------------------------------------------
@@ -62,8 +62,8 @@ package DisplayAPI is
    --    Writes the supplied text to the bottom line of the display.
    --
    ------------------------------------------------------------------
-   procedure SetBottomText(BottomText : in     String;
-                           Written    :    out Boolean)
+   procedure SetBottomText (BottomText : in     String;
+                            Written    :    out Boolean)
      with Global => null;
 
    ------------------------------------------------------------------
@@ -75,8 +75,8 @@ package DisplayAPI is
    --    top line.
    --
    ------------------------------------------------------------------
-   procedure SetTopTextScrollable(ScrollText : in     String;
-                                  Written    :    out Boolean)
+   procedure SetTopTextScrollable (ScrollText : in     String;
+                                   Written    :    out Boolean)
      with Global => null;
 
    ------------------------------------------------------------------
@@ -86,7 +86,7 @@ package DisplayAPI is
    --    Clears the display.
    --
    ------------------------------------------------------------------
-   procedure Reset(Success :    out Boolean)
+   procedure Reset (Success :    out Boolean)
      with Global => null;
 
 

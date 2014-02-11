@@ -95,7 +95,7 @@ package body Configuration is
       is
 
          LocalText : AuditTypes.DescriptionT := AuditTypes.NoDescription;
-         Str : String :=
+         Str       : String :=
            Clock.DurationT'Image(TheAlarmSilentDuration / 10) & "; "
            & Clock.DurationT'Image(TheLatchUnlockDuration / 10) & "; "
            & Clock.DurationT'Image(TheTokenRemovalDuration / 10) & "; "
@@ -108,7 +108,7 @@ package body Configuration is
            & PrivTypes.ClassT'Image(TheMinEntryClass) & "; "
            & AuditTypes.FileSizeT'Image(TheMinPreservedLogSize / 1024) & "; "
            & AuditTypes.FileSizeT'Image(TheAlarmThresholdSize / 1024) & "; "
-           & IandATypes.FarT'Image(TheSystemMaxFar) ;
+           & IandATypes.FarT'Image(TheSystemMaxFar);
 
       begin
 
@@ -139,7 +139,7 @@ package body Configuration is
          TheMinEntryClass        => TheMinEntryClass,
          TheMinPreservedLogSize  => TheMinPreservedLogSize,
          TheAlarmThresholdSize   => TheAlarmThresholdSize,
-         TheSystemMaxFar         => TheSystemMaxFar );
+         TheSystemMaxFar         => TheSystemMaxFar);
 
       if DataValid then
 
@@ -156,14 +156,13 @@ package body Configuration is
             TheMinEntryClass        => TheMinEntryClass,
             TheMinPreservedLogSize  => TheMinPreservedLogSize,
             TheAlarmThresholdSize   => TheAlarmThresholdSize,
-            TheSystemMaxFar         => TheSystemMaxFar );
+            TheSystemMaxFar         => TheSystemMaxFar);
 
          AuditLog.AddElementToLog
            (ElementID   => AuditTypes.UpdatedConfigData,
             Severity    => AuditTypes.Information,
             User        => AdminToken.ExtractUser,
-            Description => MakeDescription
-            );
+            Description => MakeDescription);
 
          ConfigData.WriteFile
            (Success                 => Success,
@@ -179,30 +178,23 @@ package body Configuration is
             TheMinEntryClass        => TheMinEntryClass,
             TheMinPreservedLogSize  => TheMinPreservedLogSize,
             TheAlarmThresholdSize   => TheAlarmThresholdSize,
-            TheSystemMaxFar         => TheSystemMaxFar );
+            TheSystemMaxFar         => TheSystemMaxFar);
 
          if not Success then
-
             -- Warn that config data will not be preserved through powerdown.
-
             AuditLog.AddElementToLog
               (ElementID   => AuditTypes.SystemFault,
                Severity    => AuditTypes.Warning,
                User        => AuditTypes.NoUser,
-               Description => "Error Writing New Config Data to file"
-               );
-
+               Description => "Error Writing New Config Data to file");
          end if;
 
       else
-
          AuditLog.AddElementToLog
            (ElementID   => AuditTypes.InvalidConfigData,
             Severity    => AuditTypes.Warning,
             User        => AdminToken.ExtractUser,
-            Description => AuditTypes.NoDescription
-            );
-
+            Description => AuditTypes.NoDescription);
       end if;
 
    end UpdateData;

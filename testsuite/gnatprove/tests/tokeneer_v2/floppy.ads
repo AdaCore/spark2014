@@ -50,7 +50,7 @@ is
    -- Traceunit: C.Floppy.Write
    -- Traceto : FD.Interfac.UpdateToken
    ------------------------------------------------------------------
-   procedure Write(TheFile : in File.T)
+   procedure Write (TheFile : in File.T)
      with Global  => (Output => (Output,
                                  WrittenState),
                       In_Out => State),

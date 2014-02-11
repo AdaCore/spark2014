@@ -173,7 +173,7 @@ is
          Pre     => Mode (File) = Out_File or else
                       Mode (File) = Append_File;
 
-  function In_File_Col(File : File_Type) return Positive
+  function In_File_Col (File : File_Type) return Positive
     with Global => Inputs,
          Pre    => Mode (File) = In_File;
 

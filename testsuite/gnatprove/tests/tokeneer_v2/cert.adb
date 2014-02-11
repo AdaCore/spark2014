@@ -55,7 +55,9 @@ package body Cert is
    -- Implementation Notes:
    --     Prints the Issuer ID& SerialNumber.
    ------------------------------------------------------------------
-   function ExtractUser (Contents : ContentsT) return AuditTypes.UserTextT is
+   function ExtractUser (Contents : ContentsT) return AuditTypes.UserTextT
+     with SPARK_Mode => Off
+   is
       LocalUser : AuditTypes.UserTextT := AuditTypes.NoUser;
       FullString : String := "Issuer: "
         & CryptoTypes.IssuerIdT'Image (Contents.ID.Issuer.ID)
@@ -121,7 +123,7 @@ package body Cert is
    --     None.
    ------------------------------------------------------------------
    function GetSignature (RawCert : CertTypes.RawCertificateT)
-         return CertTypes.SignatureT
+                         return CertTypes.SignatureT
    is
       LocalSig : CertTypes.SignatureT;
       Ignored  : Boolean;
@@ -144,11 +146,9 @@ package body Cert is
                           IsKnown  :    out Boolean)
    is
    begin
-
       KeyStore.KeyMatchingIssuerPresent
         (Issuer    => Contents.ID.Issuer,
-          IsPresent => IsKnown);
-
+         IsPresent => IsKnown);
    end IssuerKnown;
 
    ------------------------------------------------------------------
@@ -170,15 +170,14 @@ package body Cert is
        if IsKnown then
           KeyStore.IsVerifiedBy
             (Mechanism   => Contents.Mechanism,
-              RawCertData => GetData(RawCert),
-              Signature   => GetSignature(RawCert),
-              TheIssuer   => Contents.ID.Issuer,
-              Verified    => IsVerified);
+             RawCertData => GetData(RawCert),
+             Signature   => GetSignature(RawCert),
+             TheIssuer   => Contents.ID.Issuer,
+             Verified    => IsVerified);
 
        else
           IsVerified := False;
        end if;
-
    end IsOK;
 
 end Cert;

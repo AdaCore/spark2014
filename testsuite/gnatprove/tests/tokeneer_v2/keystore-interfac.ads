@@ -105,11 +105,10 @@ is
    end record;
 
    NullDigest : constant DigestT :=
-                            DigestT'(
-                               DigestID     => BasicTypes.Unsigned32T'First,
-                               SignReturn   => FunctionFailed,
-                               VerifyReturn => FunctionFailed,
-                               Pad          => DigestPadT'(others => 0));
+     DigestT'(DigestID     => BasicTypes.Unsigned32T'First,
+              SignReturn   => FunctionFailed,
+              VerifyReturn => FunctionFailed,
+              Pad          => DigestPadT'(others => 0));
 
 
    ------------------------------------------------------------------
@@ -119,8 +118,8 @@ is
    --    Used to initialize the crypto library at TIS startup.
    --
    ------------------------------------------------------------------
-   procedure Initialize(ReturnValue : out ReturnValueT)
-     with Global  => (Input  => Store),
+   procedure Initialize (ReturnValue : out ReturnValueT)
+     with Global  => Store,
           Depends => (ReturnValue => Store);
 
    ------------------------------------------------------------------
@@ -130,8 +129,8 @@ is
    --    Used to finalize the crypto library.
    --
    ------------------------------------------------------------------
-   procedure Finalize(ReturnValue : out ReturnValueT)
-     with Global  => (Input  => Store),
+   procedure Finalize (ReturnValue : out ReturnValueT)
+     with Global  => Store,
           Depends => (ReturnValue => Store);
 
    ------------------------------------------------------------------
@@ -141,10 +140,12 @@ is
    --    Can be used to store keys in the crypto database.
    --
    ------------------------------------------------------------------
-   procedure CreateObject(Template     : in     KeyTemplateT;
-                          ReturnValue  :    out ReturnValueT)
+   procedure CreateObject (Template     : in     KeyTemplateT;
+                           ReturnValue  :    out ReturnValueT)
      with Global  => (In_Out => Store),
-          Depends => ((ReturnValue, Store) => (Store, Template));
+          Depends => ((ReturnValue,
+                       Store)       => (Store,
+                                        Template));
 
    ------------------------------------------------------------------
    -- FindObjectsInit
@@ -154,10 +155,11 @@ is
    --    library for an object matching a given template, obtained here.
    --
    ------------------------------------------------------------------
-   procedure FindObjectsInit(Template    : in     KeyTemplateT;
-                             ReturnValue :    out ReturnValueT)
-     with Global  => (Input  => Store),
-          Depends => (ReturnValue => (Store, Template));
+   procedure FindObjectsInit (Template    : in     KeyTemplateT;
+                              ReturnValue :    out ReturnValueT)
+     with Global  => Store,
+          Depends => (ReturnValue => (Store,
+                                      Template));
 
    ------------------------------------------------------------------
    -- FindObjects
@@ -167,10 +169,10 @@ is
    --    found matches.
    --
    ------------------------------------------------------------------
-   procedure FindObjects(HandleCount   : in out BasicTypes.Unsigned32T;
-                         ObjectHandles :    out HandleArrayT;
-                         ReturnValue   :    out ReturnValueT)
-     with Global  => (Input  => Store),
+   procedure FindObjects (HandleCount   : in out BasicTypes.Unsigned32T;
+                          ObjectHandles :    out HandleArrayT;
+                          ReturnValue   :    out ReturnValueT)
+     with Global  => Store,
           Depends => ((HandleCount,
                        ObjectHandles,
                        ReturnValue)   => (HandleCount,
@@ -183,8 +185,8 @@ is
    --    Finalizes the find operation.
    --
    ------------------------------------------------------------------
-   procedure FindObjectsFinal(ReturnValue : out ReturnValueT)
-     with Global  => (Input  => Store),
+   procedure FindObjectsFinal (ReturnValue : out ReturnValueT)
+     with Global  => Store,
           Depends => (ReturnValue => Store);
 
    ------------------------------------------------------------------
@@ -197,9 +199,9 @@ is
    --    which TIS can determine the type of digest to produce.
    --
    ------------------------------------------------------------------
-   procedure DigestInit(Mechanism   : in     CryptoTypes.AlgorithmT;
-                        ReturnValue :    out ReturnValueT)
-     with Global  => (Input  => Store),
+   procedure DigestInit (Mechanism   : in     CryptoTypes.AlgorithmT;
+                         ReturnValue :    out ReturnValueT)
+     with Global  => Store,
           Depends => (ReturnValue => (Mechanism, Store));
 
 
@@ -213,11 +215,13 @@ is
    --    Performs the digest.
    --
    ------------------------------------------------------------------
-   procedure DigestUpdate(DataBlock   : in     HundredByteArrayT;
-                          ByteCount   : in     BasicTypes.Unsigned32T;
-                          ReturnValue :    out ReturnValueT)
-     with Global  => (Input  => Store),
-          Depends => (ReturnValue => (ByteCount, DataBlock, Store));
+   procedure DigestUpdate (DataBlock   : in     HundredByteArrayT;
+                           ByteCount   : in     BasicTypes.Unsigned32T;
+                           ReturnValue :    out ReturnValueT)
+     with Global  => Store,
+          Depends => (ReturnValue => (ByteCount,
+                                      DataBlock,
+                                      Store));
 
    ------------------------------------------------------------------
    -- DigestFinal
@@ -227,10 +231,11 @@ is
    --    digest operation, returning the produced digest.
    --
    ------------------------------------------------------------------
-   procedure DigestFinal(Digest       : out DigestT;
-                         ReturnValue  : out ReturnValueT)
-     with Global  => (Input  => Store),
-          Depends => ((Digest, ReturnValue) => Store);
+   procedure DigestFinal (Digest       : out DigestT;
+                          ReturnValue  : out ReturnValueT)
+     with Global  => Store,
+          Depends => ((Digest,
+                       ReturnValue) => Store);
 
    ------------------------------------------------------------------
    -- Sign
@@ -239,12 +244,12 @@ is
    --    Signs the TIS created Auth Cert.
    --
    ------------------------------------------------------------------
-   procedure Sign(Mechanism    : in     CryptoTypes.AlgorithmT;
-                  KeyHandle    : in     BasicTypes.Unsigned32T;
-                  Digest       : in     DigestT;
-                  Signature    :    out CertTypes.SignatureT;
-                  ReturnValue  :    out ReturnValueT)
-     with Global  => (Input  => Store),
+   procedure Sign (Mechanism    : in     CryptoTypes.AlgorithmT;
+                   KeyHandle    : in     BasicTypes.Unsigned32T;
+                   Digest       : in     DigestT;
+                   Signature    :    out CertTypes.SignatureT;
+                   ReturnValue  :    out ReturnValueT)
+     with Global  => Store,
           Depends => ((ReturnValue,
                        Signature) => (Digest,
                                       KeyHandle,
@@ -259,12 +264,12 @@ is
    --    against the digest of the certificate.
    --
    ------------------------------------------------------------------
-   procedure Verify(Mechanism    : in     CryptoTypes.AlgorithmT;
-                    KeyHandle    : in     BasicTypes.Unsigned32T;
-                    Digest       : in     DigestT;
-                    Signature    : in     CertTypes.SignatureT;
-                    ReturnValue  :    out ReturnValueT)
-     with Global  => (Input  => Store),
+   procedure Verify (Mechanism    : in     CryptoTypes.AlgorithmT;
+                     KeyHandle    : in     BasicTypes.Unsigned32T;
+                     Digest       : in     DigestT;
+                     Signature    : in     CertTypes.SignatureT;
+                     ReturnValue  :    out ReturnValueT)
+     with Global  => Store,
           Depends => (ReturnValue => (Digest,
                                       KeyHandle,
                                       Mechanism,
@@ -278,10 +283,10 @@ is
    --    Extracts attribute data from the object pointed to by KeyHandle.
    --
    ------------------------------------------------------------------
-   procedure GetAttributeValue(KeyHandle   : in     BasicTypes.Unsigned32T;
-                               Template    : in out KeyTemplateT;
-                               ReturnValue :    out ReturnValueT)
-     with Global  => (Input  => Store),
+   procedure GetAttributeValue (KeyHandle   : in     BasicTypes.Unsigned32T;
+                                Template    : in out KeyTemplateT;
+                                ReturnValue :    out ReturnValueT)
+     with Global  => Store,
           Depends => ((ReturnValue,
                        Template) => (KeyHandle,
                                      Store,

@@ -121,9 +121,7 @@ is
    procedure Poll
      with Refined_Global  => (Input    => (Clock.Now,
                                            ConfigData.State,
-                                           Interfac.Input,
-                                           AuthCert,
-                                           IDCert),
+                                           Interfac.Input),
                               Output   => TokenPresence,
                               In_Out   => (AuditLog.FileState,
                                            AuditLog.State,
@@ -140,9 +138,7 @@ is
                                TokenPresence)      => (Interfac.Input,
                                                        Interfac.State,
                                                        Interfac.Status),
-                              Interfac.Status      =>+ null,
-                              null                 => (AuthCert,
-                                                       IDCert))
+                              Interfac.Status      =>+ null)
    is
    begin
       Interfac.Poll;
@@ -172,7 +168,6 @@ is
                                         AuditLog.State,
                                         Interfac.Status,
                                         TokenID)),
-
           Refined_Depends => ((AuditLog.FileState,
                                AuditLog.State)        => (AuditLog.FileState,
                                                           AuditLog.State,
@@ -216,8 +211,8 @@ is
       --    truncating if required.
       --
       ------------------------------------------------------------------
-      function MakeDescription
-        (Text : in String) return AuditTypes.DescriptionT
+      function MakeDescription (Text : in String)
+                               return AuditTypes.DescriptionT
         with Pre => Text'First = 1
       is
          Result : AuditTypes.DescriptionT := AuditTypes.NoDescription;
@@ -399,9 +394,9 @@ is
                        (AuthCertContents)));
 
                Cert.Attr.Auth.IsOK
-                 (RawCert => RawCert,
-                   Contents => AuthCertContents,
-                   IsVerified => Verified);
+                 (RawCert    => RawCert,
+                  Contents   => AuthCertContents,
+                  IsVerified => Verified);
 
                Current := Cert.IsCurrent
                  (Contents => Cert.Attr.Auth.Cert_Attr_Auth_To_Cert
@@ -512,7 +507,9 @@ is
    --    None.
    ------------------------------------------------------------------
    function ExtractUser return AuditTypes.UserTextT
-     with Refined_Global => (AuthCert, IDCert, TokenTry)
+     with Refined_Global => (AuthCert,
+                             IDCert,
+                             TokenTry)
    is
       Result : AuditTypes.UserTextT;
    begin

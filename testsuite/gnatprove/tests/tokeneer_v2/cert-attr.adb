@@ -30,7 +30,9 @@ package body Cert.Attr is
    --     Prints the Issuer ID& SerialNumber.
    ------------------------------------------------------------------
 
-   function ExtractUser (Contents : ContentsT) return AuditTypes.UserTextT is
+   function ExtractUser (Contents : ContentsT) return AuditTypes.UserTextT
+     with SPARK_Mode => Off
+   is
       LocalUser : AuditTypes.UserTextT := AuditTypes.NoUser;
       FullString : String := "Issuer: "
         & CryptoTypes.IssuerIdT'Image (Contents.BaseCertID.Issuer.ID)

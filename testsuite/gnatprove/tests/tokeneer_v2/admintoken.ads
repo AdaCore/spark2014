@@ -25,26 +25,29 @@ with PrivTypes;
 use PrivTypes;
 
 package AdminToken
-  with SPARK_Mode,
-       Abstract_State => (State,
+  with Abstract_State => (State,
                           Status,
                           (Input with External => Async_Writers)),
        Initializes    => Status
 is
 
-
    ------------------------------------------------------------------
    -- Types
    --
    ------------------------------------------------------------------
+
+   --  Proof functions
    function TheAuthCertRole return PrivTypes.PrivilegeT
-     with Global => State;
+     with Global     => State,
+          Convention => Ghost;
 
    function IsGood return Boolean
-     with Global => State;
+     with Global     => State,
+          Convention => Ghost;
 
    function AuthCertValid return Boolean
-     with Global => State;
+     with Global     => State,
+          Convention => Ghost;
 
    ------------------------------------------------------------------
    -- Init
@@ -168,7 +171,8 @@ is
    -- Traceto :  FD.AdminToken.Current
    ------------------------------------------------------------------
    function IsCurrent return Boolean
-     with Global => (Clock.CurrentTime, State);
+     with Global => (Clock.CurrentTime,
+                     State);
 
    ------------------------------------------------------------------
    -- ExtractUser

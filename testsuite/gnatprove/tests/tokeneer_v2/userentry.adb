@@ -74,13 +74,10 @@ is
    -- Traceunit : C.UserEntry.UserHasDeparted
    -- Traceto : FD.UserEntry.UserHasDeparted
    ------------------------------------------------------------------
-   function UserHasDeparted return Boolean
+   function UserHasDeparted return Boolean is
+     (Status > Quiescent and not UserToken.IsPresent)
      with Global  => (Status,
-                      UserToken.State)
-   is
-   begin
-      return Status > Quiescent and not UserToken.IsPresent;
-   end UserHasDeparted;
+                      UserToken.State);
 
    ------------------------------------------------------------------
    -- UserTokenTorn
@@ -167,40 +164,40 @@ is
                                  UserToken.State,
                                  UserToken.Status)),
           Depends => ((AuditLog.FileState,
-                       AuditLog.State)   => (AuditLog.FileState,
-                                             AuditLog.State,
-                                             Clock.CurrentTime,
-                                             Clock.Now,
-                                             ConfigData.State,
-                                             Display.State,
-                                             KeyStore.State,
-                                             KeyStore.Store,
-                                             UserToken.Input,
-                                             UserToken.State,
-                                             UserToken.Status),
+                       AuditLog.State)     => (AuditLog.FileState,
+                                               AuditLog.State,
+                                               Clock.CurrentTime,
+                                               Clock.Now,
+                                               ConfigData.State,
+                                               Display.State,
+                                               KeyStore.State,
+                                               KeyStore.Store,
+                                               UserToken.Input,
+                                               UserToken.State,
+                                               UserToken.Status),
                       (Display.State,
                        UserToken.State,
-                       UserToken.Status) =>+ (Clock.CurrentTime,
-                                              KeyStore.State,
-                                              KeyStore.Store,
-                                              UserToken.Input,
-                                              UserToken.State,
-                                              UserToken.Status),
-                      FingerTimeout      =>+ (Clock.CurrentTime,
-                                              ConfigData.State,
-                                              KeyStore.State,
-                                              KeyStore.Store,
-                                              UserToken.Input,
-                                              UserToken.State,
-                                              UserToken.Status),
-                      Status             => (Clock.CurrentTime,
-                                             KeyStore.State,
-                                             KeyStore.Store,
-                                             UserToken.Input,
-                                             UserToken.State,
-                                             UserToken.Status),
-                      TheStats           =>+ UserToken.State,
-                      null               => Bio.Input)
+                       UserToken.Status)   =>+ (Clock.CurrentTime,
+                                                KeyStore.State,
+                                                KeyStore.Store,
+                                                UserToken.Input,
+                                                UserToken.State,
+                                                UserToken.Status),
+                      FingerTimeout        =>+ (Clock.CurrentTime,
+                                                ConfigData.State,
+                                                KeyStore.State,
+                                                KeyStore.Store,
+                                                UserToken.Input,
+                                                UserToken.State,
+                                                UserToken.Status),
+                      Status               => (Clock.CurrentTime,
+                                               KeyStore.State,
+                                               KeyStore.Store,
+                                               UserToken.Input,
+                                               UserToken.State,
+                                               UserToken.Status),
+                      TheStats             =>+ UserToken.State,
+                      null                 => Bio.Input)
    is
      AuthCertOK  : Boolean;
      TokenOK     : Boolean;
@@ -816,27 +813,27 @@ is
                                  Status,
                                  UserToken.State)),
           Depends => ((AuditLog.FileState,
-                       AuditLog.State) => (AuditLog.FileState,
-                                           AuditLog.State,
-                                           Clock.CurrentTime,
-                                           Clock.Now,
-                                           ConfigData.State,
-                                           Display.State,
-                                           Door.State,
-                                           Latch.State,
-                                           TokenRemovalTimeout,
-                                           UserToken.State),
+                       AuditLog.State)     => (AuditLog.FileState,
+                                               AuditLog.State,
+                                               Clock.CurrentTime,
+                                               Clock.Now,
+                                               ConfigData.State,
+                                               Display.State,
+                                               Door.State,
+                                               Latch.State,
+                                               TokenRemovalTimeout,
+                                               UserToken.State),
                       (Display.State,
-                       Status)          =>+ (Clock.CurrentTime,
-                                             TokenRemovalTimeout,
-                                             UserToken.State),
+                       Status)             =>+ (Clock.CurrentTime,
+                                                TokenRemovalTimeout,
+                                                UserToken.State),
                       (Door.State,
-                       Latch.State)     =>+ (Clock.CurrentTime,
-                                             ConfigData.State,
-                                             Latch.State,
-                                             UserToken.State),
+                       Latch.State)        =>+ (Clock.CurrentTime,
+                                                ConfigData.State,
+                                                Latch.State,
+                                                UserToken.State),
                       (TheStats,
-                       UserToken.State) =>+ UserToken.State),
+                       UserToken.State)    =>+ UserToken.State),
           --------------------------------------------------------
           -- PROOF ANNOTATIONS FOR SECURITY PROPERTY 3          --
           --====================================================--
@@ -855,11 +852,11 @@ is
           -- After each call to UnlockDoor, the security        --
           -- property holds.                                    --
           --------------------------------------------------------
-         Post    => ((Latch.IsLocked and then
+          Post    => (Latch.IsLocked and then
                         Door.TheCurrentDoor = Door.Open and then
                         Clock.GreaterThanOrEqual(Clock.TheCurrentTime,
                                                  Door.alarm_Timeout)) =
-                       (Door.TheDoorAlarm = AlarmTypes.Alarming))
+                       (Door.TheDoorAlarm = AlarmTypes.Alarming)
    is
    begin
 
@@ -881,11 +878,11 @@ is
             -- TokenRemovalTimeoutC actions
 
             AuditLog.AddElementToLog
-              ( ElementID   => AuditTypes.EntryTimeout,
-                Severity    => AuditTypes.Warning,
-                User        => UserToken.ExtractUser,
-                Description => AuditTypes.NoDescription
-                );
+              (ElementID   => AuditTypes.EntryTimeout,
+               Severity    => AuditTypes.Warning,
+               User        => UserToken.ExtractUser,
+               Description => AuditTypes.NoDescription
+               );
 
             Display.SetValue (Msg => Display.RemoveToken);
             Status := WaitingRemoveTokenFail;
@@ -975,7 +972,8 @@ is
    ------------------------------------------------------------------
    function CurrentActivityPossible return Boolean is
      (InProgress or UserHasDeparted)
-     with Refined_Global  => (Status, UserToken.State);
+     with Refined_Global => (Status,
+                             UserToken.State);
 
    ------------------------------------------------------------------
    -- CanStart
@@ -985,8 +983,8 @@ is
    ------------------------------------------------------------------
    function CanStart return Boolean is
      (Status = Quiescent and UserToken.IsPresent)
-     with Refined_Global  => (Status,
-                              UserToken.State);
+     with Refined_Global => (Status,
+                             UserToken.State);
 
    ------------------------------------------------------------------
    -- DisplayPollUpdate
@@ -1176,12 +1174,12 @@ is
           -- After each call to Progress, the security property --
           -- holds.                                             --
           --------------------------------------------------------
-          Refined_Post    =>  ((Latch.IsLocked and then
-                                  Door.TheCurrentDoor = Door.Open and then
-                                  Clock.GreaterThanOrEqual
-                                    (Clock.TheCurrentTime,
-                                     Door.alarm_Timeout)) =
-                                 (Door.TheDoorAlarm = AlarmTypes.Alarming))
+          Refined_Post    => (Latch.IsLocked and then
+                                Door.TheCurrentDoor = Door.Open and then
+                                Clock.GreaterThanOrEqual
+                                  (Clock.TheCurrentTime,
+                                   Door.alarm_Timeout)) =
+                               (Door.TheDoorAlarm = AlarmTypes.Alarming)
    is
       subtype ActiveStatusT is StatusT
         range GotUserToken .. WaitingRemoveTokenFail;

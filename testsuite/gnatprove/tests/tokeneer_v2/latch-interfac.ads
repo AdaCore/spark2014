@@ -27,8 +27,11 @@ is
    -- Types
    --
    ------------------------------------------------------------------
+
+   --  Proof function
    function isLocked return Boolean
-     with Global => null;
+     with Global     => null,
+          Convention => Ghost;
 
    ------------------------------------------------------------------
    -- Lock
@@ -37,7 +40,7 @@ is
    --    Locks the latch
    --
    ------------------------------------------------------------------
-   procedure Lock(Fault :    out Boolean)
+   procedure Lock (Fault :    out Boolean)
      with Global  => (Output => Output),
           Depends => ((Fault,
                        Output) => null),
@@ -50,7 +53,7 @@ is
    --    Unlocks the latch
    --
    ------------------------------------------------------------------
-   procedure Unlock(Fault :    out Boolean)
+   procedure Unlock (Fault :    out Boolean)
      with Global  => (Output => Output),
           Depends => ((Fault,
                        Output) => null),

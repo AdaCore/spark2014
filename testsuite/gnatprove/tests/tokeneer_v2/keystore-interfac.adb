@@ -32,14 +32,10 @@ is
    --    None
    --
    ------------------------------------------------------------------
-   function GetKeystoreReturn(CryptoRet : Crypto.ReturnValueT)
-      return ReturnValueT
+   function GetKeystoreReturn (CryptoRet : Crypto.ReturnValueT)
+                              return ReturnValueT
    is
-   begin
-      return ReturnValueT'Val(
-                Crypto.ReturnValueT'Pos(
-                   CryptoRet));
-   end GetKeystoreReturn;
+     (ReturnValueT'Val(Crypto.ReturnValueT'Pos(CryptoRet)));
 
    ------------------------------------------------------------------
    -- GetCryptoReturn
@@ -52,11 +48,9 @@ is
    --    None
    --
    ------------------------------------------------------------------
-   function GetCryptoReturn
-     (StoreRet : ReturnValueT) return Crypto.ReturnValueT is
-   begin
-      return Crypto.ReturnValueT'Val (ReturnValueT'Pos (StoreRet));
-   end GetCryptoReturn;
+   function GetCryptoReturn (StoreRet : ReturnValueT)
+                             return Crypto.ReturnValueT is
+     (Crypto.ReturnValueT'Val (ReturnValueT'Pos (StoreRet)));
 
    ------------------------------------------------------------------
    -- Initialize
@@ -97,13 +91,13 @@ is
      (Template     : in     KeyTemplateT;
       ReturnValue  :    out ReturnValueT)
    is
-      LocalTemplate    : Crypto.KeyTemplateT :=
-          (AttrMask  => Crypto.MaskT(Template.AttrMask),
-           Owner     => Template.Owner,
-           KeyID     => Template.KeyID,
-           KeyLength => Template.KeyLength,
-           IsPublic  => Template.IsPublic,
-           Padding   => (others => 0));
+      LocalTemplate     : Crypto.KeyTemplateT :=
+        (AttrMask  => Crypto.MaskT(Template.AttrMask),
+         Owner     => Template.Owner,
+         KeyID     => Template.KeyID,
+         KeyLength => Template.KeyLength,
+         IsPublic  => Template.IsPublic,
+         Padding   => (others => 0));
 
       LocalReturnValue   : Crypto.ReturnValueT;
       UnusedObjectHandle : BasicTypes.Unsigned32T;
@@ -121,20 +115,20 @@ is
    --    None
    --
    ------------------------------------------------------------------
-   procedure FindObjectsInit(Template    : in     KeyTemplateT;
-                             ReturnValue :    out ReturnValueT)
+   procedure FindObjectsInit (Template    : in     KeyTemplateT;
+                              ReturnValue :    out ReturnValueT)
    is
       LocalTemplate    : Crypto.KeyTemplateT :=
-          (AttrMask  => Crypto.MaskT(Template.AttrMask),
-           Owner     => Template.Owner,
-           KeyID     => Template.KeyID,
-           KeyLength => Template.KeyLength,
-           IsPublic  => Template.IsPublic,
-           Padding   => (others => 0));
+        (AttrMask  => Crypto.MaskT(Template.AttrMask),
+         Owner     => Template.Owner,
+         KeyID     => Template.KeyID,
+         KeyLength => Template.KeyLength,
+         IsPublic  => Template.IsPublic,
+         Padding   => (others => 0));
       LocalReturnValue : Crypto.ReturnValueT;
    begin
-      Crypto.FindObjectsInit(Template     => LocalTemplate,
-                             ReturnValue  => LocalReturnValue);
+      Crypto.FindObjectsInit(Template    => LocalTemplate,
+                             ReturnValue => LocalReturnValue);
       ReturnValue := GetKeystoreReturn(LocalReturnValue);
    end FindObjectsInit;
 
@@ -145,9 +139,9 @@ is
    --    None
    --
    ------------------------------------------------------------------
-   procedure FindObjects(HandleCount   : in out BasicTypes.Unsigned32T;
-                         ObjectHandles :    out HandleArrayT;
-                         ReturnValue   :    out ReturnValueT)
+   procedure FindObjects (HandleCount   : in out BasicTypes.Unsigned32T;
+                          ObjectHandles :    out HandleArrayT;
+                          ReturnValue   :    out ReturnValueT)
    is
       LocalReturnValue : Crypto.ReturnValueT;
    begin
@@ -164,7 +158,7 @@ is
    --    None
    --
    ------------------------------------------------------------------
-   procedure FindObjectsFinal(ReturnValue : out ReturnValueT)
+   procedure FindObjectsFinal (ReturnValue : out ReturnValueT)
    is
       LocalReturnValue : Crypto.ReturnValueT;
    begin
@@ -179,8 +173,8 @@ is
    --    None
    --
    ------------------------------------------------------------------
-   procedure DigestInit(Mechanism   : in     CryptoTypes.AlgorithmT;
-                        ReturnValue :    out ReturnValueT)
+   procedure DigestInit (Mechanism   : in     CryptoTypes.AlgorithmT;
+                         ReturnValue :    out ReturnValueT)
    is
       LocalReturnValue : Crypto.ReturnValueT;
    begin
@@ -196,9 +190,9 @@ is
    --    None
    --
    ------------------------------------------------------------------
-   procedure DigestUpdate(DataBlock   : in     HundredByteArrayT;
-                          ByteCount   : in     BasicTypes.Unsigned32T;
-                          ReturnValue :    out ReturnValueT)
+   procedure DigestUpdate (DataBlock   : in     HundredByteArrayT;
+                           ByteCount   : in     BasicTypes.Unsigned32T;
+                           ReturnValue :    out ReturnValueT)
    is
       LocalReturnValue : Crypto.ReturnValueT;
    begin
@@ -215,8 +209,8 @@ is
    --    None
    --
    ------------------------------------------------------------------
-   procedure DigestFinal(Digest      : out DigestT;
-                         ReturnValue : out ReturnValueT)
+   procedure DigestFinal (Digest      : out DigestT;
+                          ReturnValue : out ReturnValueT)
    is
       LocalDigest      : Crypto.DigestT;
       LocalReturnValue : Crypto.ReturnValueT;
@@ -226,10 +220,10 @@ is
                          DigestLength => UnusedLength,
                          ReturnValue  => LocalReturnValue);
 
-      Digest := ( DigestID     => LocalDigest.DigestID,
-                  SignReturn   => GetKeystoreReturn(LocalDigest.SignReturn),
-                  VerifyReturn => GetKeystoreReturn(LocalDigest.VerifyReturn),
-                  Pad          => (others => 0));
+      Digest := (DigestID     => LocalDigest.DigestID,
+                 SignReturn   => GetKeystoreReturn(LocalDigest.SignReturn),
+                 VerifyReturn => GetKeystoreReturn(LocalDigest.VerifyReturn),
+                 Pad          => (others => 0));
 
       ReturnValue := GetKeystoreReturn(LocalReturnValue);
    end DigestFinal;
@@ -241,11 +235,11 @@ is
    --    None
    --
    ------------------------------------------------------------------
-   procedure Sign(Mechanism   : in     CryptoTypes.AlgorithmT;
-                  KeyHandle   : in     BasicTypes.Unsigned32T;
-                  Digest      : in     DigestT;
-                  Signature   :    out CertTypes.SignatureT;
-                  ReturnValue :    out ReturnValueT)
+   procedure Sign (Mechanism   : in     CryptoTypes.AlgorithmT;
+                   KeyHandle   : in     BasicTypes.Unsigned32T;
+                   Digest      : in     DigestT;
+                   Signature   :    out CertTypes.SignatureT;
+                   ReturnValue :    out ReturnValueT)
    is
       LocalDigest      : Crypto.DigestT;
       LocalReturnValue : Crypto.ReturnValueT;
@@ -271,11 +265,11 @@ is
    --    None
    --
    ------------------------------------------------------------------
-   procedure Verify(Mechanism   : in     CryptoTypes.AlgorithmT;
-                    KeyHandle   : in     BasicTypes.Unsigned32T;
-                    Digest      : in     DigestT;
-                    Signature   : in     CertTypes.SignatureT;
-                    ReturnValue :    out ReturnValueT)
+   procedure Verify (Mechanism   : in     CryptoTypes.AlgorithmT;
+                     KeyHandle   : in     BasicTypes.Unsigned32T;
+                     Digest      : in     DigestT;
+                     Signature   : in     CertTypes.SignatureT;
+                     ReturnValue :    out ReturnValueT)
    is
       LocalDigest      : Crypto.DigestT;
       LocalReturnValue : Crypto.ReturnValueT;
@@ -300,9 +294,9 @@ is
    --    None
    --
    ------------------------------------------------------------------
-   procedure GetAttributeValue(KeyHandle   : in     BasicTypes.Unsigned32T;
-                               Template    : in out KeyTemplateT;
-                               ReturnValue :    out ReturnValueT)
+   procedure GetAttributeValue (KeyHandle   : in     BasicTypes.Unsigned32T;
+                                Template    : in out KeyTemplateT;
+                                ReturnValue :    out ReturnValueT)
    is
       LocalTemplate    : Crypto.KeyTemplateT :=
           (AttrMask  => Crypto.MaskT(Template.AttrMask),

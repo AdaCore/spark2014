@@ -70,8 +70,8 @@ is
    -- Traceto   : FD.Certificate.SignedOK
    --             FD.KeyStore.State
    ------------------------------------------------------------------
-   procedure KeyMatchingIssuerPresent(Issuer    : in     CryptoTypes.IssuerT;
-                                      IsPresent :    out Boolean)
+   procedure KeyMatchingIssuerPresent (Issuer    : in     CryptoTypes.IssuerT;
+                                       IsPresent :    out Boolean)
      with Global  => (Input  => (Clock.Now,
                                  ConfigData.State,
                                  Store),
@@ -109,7 +109,7 @@ is
    -- Traceunit : C.KeyStore.IssuerIsThisTIS
    -- Traceto   : FD.Certificate.AuthCertSignedOk
    ------------------------------------------------------------------
-   function IssuerIsThisTIS(Issuer : CryptoTypes.IssuerT) return Boolean
+   function IssuerIsThisTIS (Issuer : CryptoTypes.IssuerT) return Boolean
      with Global => State;
 
    ------------------------------------------------------------------
@@ -133,7 +133,7 @@ is
    -- Traceunit : C.KeyStore.IsVerifiedBy
    -- Traceto   : FD.KeyTypes.Keys
    ------------------------------------------------------------------
-   procedure  IsVerifiedBy(Mechanism   : in     CryptoTypes.AlgorithmT;
+   procedure IsVerifiedBy (Mechanism   : in     CryptoTypes.AlgorithmT;
                            RawCertData : in     CertTypes.RawDataT;
                            Signature   : in     CertTypes.SignatureT;
                            TheIssuer   : in     CryptoTypes.IssuerT;
@@ -144,20 +144,20 @@ is
                       In_Out => (AuditLog.FileState,
                                  AuditLog.State)),
           Depends => ((AuditLog.FileState,
-                       AuditLog.State) => (AuditLog.FileState,
-                                           AuditLog.State,
-                                           Clock.Now,
-                                           ConfigData.State,
-                                           Mechanism,
-                                           RawCertData,
-                                           Signature,
-                                           Store,
-                                           TheIssuer),
-                      Verified => (Mechanism,
-                                   RawCertData,
-                                   Signature,
-                                   Store,
-                                   TheIssuer));
+                       AuditLog.State)     => (AuditLog.FileState,
+                                               AuditLog.State,
+                                               Clock.Now,
+                                               ConfigData.State,
+                                               Mechanism,
+                                               RawCertData,
+                                               Signature,
+                                               Store,
+                                               TheIssuer),
+                      Verified             => (Mechanism,
+                                               RawCertData,
+                                               Signature,
+                                               Store,
+                                               TheIssuer));
 
    ------------------------------------------------------------------
    -- Sign
@@ -168,7 +168,7 @@ is
    -- Traceunit : C.KeyStore.Sign
    -- Traceto   : FD.KeyTypes.Keys
    ------------------------------------------------------------------
-   procedure  Sign(RawCertData : in     CertTypes.RawDataT;
+   procedure Sign (RawCertData : in     CertTypes.RawDataT;
                    Signature   :    out CertTypes.SignatureT;
                    Signed      :    out Boolean)
      with Global  => (Input  => (Clock.Now,
@@ -196,10 +196,10 @@ is
    -- Traceunit : C.KeyStore.AddKey
    -- Traceto   : FD.KeyTypes.UpdateKeyStore
    ------------------------------------------------------------------
-   procedure AddKey(TheOwner : in     CryptoTypes.IssuerT;
-                    TheKey   : in     CryptoTypes.KeyPartT;
-                    IsPublic : in     Boolean;
-                    Added    :    out Boolean)
+   procedure AddKey (TheOwner : in     CryptoTypes.IssuerT;
+                     TheKey   : in     CryptoTypes.KeyPartT;
+                     IsPublic : in     Boolean;
+                     Added    :    out Boolean)
      with Global  => (Input  => (Clock.Now,
                                  ConfigData.State),
                       In_Out => (AuditLog.FileState,
@@ -207,10 +207,10 @@ is
                                  State,
                                  Store)),
           Depends => ((Added,
-                       Store) => (IsPublic,
-                                  Store,
-                                  TheKey,
-                                  TheOwner),
+                       Store)              => (IsPublic,
+                                               Store,
+                                               TheKey,
+                                               TheOwner),
                       (AuditLog.FileState,
                        AuditLog.State)     => (AuditLog.FileState,
                                                AuditLog.State,

@@ -39,11 +39,10 @@ package CertTypes is
    --
    -- RAWDATA has the same string size as a (signed) raw certificate,
    -- but includes a length field.
-   type RawDataT is
-      record
-         RawData    : RawCertificateT;
-         DataLength : RawCertificateI;
-      end record;
+   type RawDataT is record
+      RawData    : RawCertificateT;
+      DataLength : RawCertificateI;
+   end record;
 
    -- The different types of certificates handled by TIS
    type CertificateT is (IDCert, AuthCert, PrivCert, IandACert);
@@ -53,20 +52,18 @@ package CertTypes is
    MaxSigDataLength : constant Positive := 4096;
    subtype SigDataI is Positive range 1..MaxSigDataLength;
    subtype SigDataT is String(SigDataI);
-   type SignatureT is
-      record
-         SigData   : SigDataT;
-         SigLength : SigDataI;
-      end record;
+   type SignatureT  is record
+      SigData   : SigDataT;
+      SigLength : SigDataI;
+   end record;
 
    type SerialNumberT is range 0..2**32 - 1;
 
    -- Certificate ID
-   type IDT is
-      record
-         Issuer       : CryptoTypes.IssuerT;
-         SerialNumber : SerialNumberT;
-      end record;
+   type IDT is record
+      Issuer       : CryptoTypes.IssuerT;
+      SerialNumber : SerialNumberT;
+   end record;
 
    NullID : constant IDT := IDT'(Issuer       => CryptoTypes.NullIssuer,
                                  SerialNumber => SerialNumberT'First);

@@ -33,14 +33,18 @@ is
    ------------------------------------------------------------------
    type T is (Locked, Unlocked);
 
+   --  Proof functions
    function Current_Latch return T
-     with Global => State;
+     with Global     => State,
+          Convention => Ghost;
 
    function Latch_Timeout return Clock.TimeT
-     with Global => State;
+     with Global     => State,
+          Convention => Ghost;
 
    function LatchIsLocked return Boolean
-     with Global => null;
+     with Global     => null,
+          Convention => Ghost;
 
    ------------------------------------------------------------------
    -- Init
@@ -83,7 +87,8 @@ is
                                  Clock.Now,
                                  ConfigData.State),
                       In_Out => (AuditLog.FileState,
-                                 AuditLog.State, State)),
+                                 AuditLog.State,
+                                 State)),
           Depends => ((AuditLog.FileState,
                        AuditLog.State)     => (AuditLog.FileState,
                                                AuditLog.State,
@@ -106,8 +111,7 @@ is
    -- Traceunit : C.Latch.UpdateDevice
    -- Traceto   : FD.Interfac.UpdateLatch
    ------------------------------------------------------------------
-
-   procedure UpdateDevice(SystemFault :    out Boolean)
+   procedure UpdateDevice (SystemFault :    out Boolean)
      with Global  => (Input  => (Clock.Now,
                                  ConfigData.State,
                                  State),
@@ -115,15 +119,14 @@ is
                       In_Out => (AuditLog.FileState,
                                  AuditLog.State)),
           Depends => ((AuditLog.FileState,
-                       AuditLog.State) => (AuditLog.FileState,
-                                           AuditLog.State,
-                                           Clock.Now,
-                                           ConfigData.State,
-                                           State),
+                       AuditLog.State)     => (AuditLog.FileState,
+                                               AuditLog.State,
+                                               Clock.Now,
+                                               ConfigData.State,
+                                               State),
                       (Output,
-                       SystemFault) => State),
-          Post    => IsLocked = LatchisLocked or
-                     SystemFault;
+                       SystemFault)        => State),
+          Post    => IsLocked = LatchisLocked or SystemFault;
 
    ------------------------------------------------------------------
    -- SetTimeout
@@ -135,8 +138,7 @@ is
    -- Traceto   : FD.Door.UnlockDoor
    --             FD.Door.LockDoor
    ------------------------------------------------------------------
-
-   procedure SetTimeout(Time : Clock.TimeT)
+   procedure SetTimeout (Time : Clock.TimeT)
      with Global  => (In_Out => State),
           Depends => (State =>+ Time),
           Post    => Latch_Timeout = Time;

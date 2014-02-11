@@ -21,8 +21,7 @@ with BasicTypes,
      TokenTypes;
 
 private package AdminToken.Interfac
-  with SPARK_Mode,
-       Abstract_State => ((State  with Part_Of  => AdminToken.State),
+  with Abstract_State => ((State  with Part_Of  => AdminToken.State),
                           (Status with Part_Of  => AdminToken.Status),
                           (Input  with External => Async_Writers,
                                        Part_Of  => AdminToken.Input)),

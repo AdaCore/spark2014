@@ -40,12 +40,8 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   function GetMaxTextSizeTop return BasicTypes.Unsigned32T
-   is
-   begin
-      return BasicTypes.Unsigned32T(DisplayAPI.GetMaxTextSizeTop);
-   end GetMaxTextSizeTop;
-
+   function GetMaxTextSizeTop return BasicTypes.Unsigned32T is
+     (BasicTypes.Unsigned32T(DisplayAPI.GetMaxTextSizeTop));
 
    ------------------------------------------------------------------
    -- GetMaxTextSizeBottom
@@ -54,12 +50,8 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   function GetMaxTextSizeBottom return BasicTypes.Unsigned32T
-   is
-   begin
-      return BasicTypes.Unsigned32T(DisplayAPI.GetMaxTextSizeBottom);
-   end GetMaxTextSizeBottom;
-
+   function GetMaxTextSizeBottom return BasicTypes.Unsigned32T is
+     (BasicTypes.Unsigned32T(DisplayAPI.GetMaxTextSizeBottom));
 
    ------------------------------------------------------------------
    -- SetTopText
@@ -77,7 +69,6 @@ is
                     Written => Written);
    end SetTopText;
 
-
    ------------------------------------------------------------------
    -- SetBottomText
    --
@@ -93,7 +84,6 @@ is
                     BottomText => BottomText.Text(1..BottomText.Len),
                     Written    => Written);
    end SetBottomText;
-
 
    ------------------------------------------------------------------
    -- SetTopTextScrollable
@@ -111,7 +101,6 @@ is
                     Written    => Written);
    end SetTopTextScrollable;
 
-
    ------------------------------------------------------------------
    -- Reset
    --
@@ -126,6 +115,5 @@ is
    begin
       DisplayAPI.Reset(Success => UnusedSuccess);
    end Reset;
-
 
 end Display.Interfac;

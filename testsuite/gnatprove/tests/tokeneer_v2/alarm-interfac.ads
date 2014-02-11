@@ -18,8 +18,7 @@
 ------------------------------------------------------------------
 
 private package Alarm.Interfac
-  with SPARK_Mode,
-       Abstract_State => (Output with External => Async_Readers,
+  with Abstract_State => (Output with External => Async_Readers,
                                       Part_Of  => Alarm.Output)
 is
 
@@ -36,7 +35,8 @@ is
    -- The function is true if Alarm.Activate is called.  --
    --------------------------------------------------------
    function IsAlarming return Boolean
-     with Global => null;
+     with Global     => null,
+          Convention => Ghost;
 
    ------------------------------------------------------------------
    -- Activate

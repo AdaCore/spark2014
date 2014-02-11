@@ -46,8 +46,9 @@ package MsgProc is
    --    If a preceding parameter is a 'list', then each element of that
    --    list should be considered seperately when calculating Arg.
    ------------------------------------------------------------------
-   function GetStringByPos(Msg : String;
-                           Arg : Positive) return String;
+   function GetStringByPos (Msg : String;
+                            Arg : Positive)
+                           return String;
 
    ------------------------------------------------------------------
    -- GetDictionary
@@ -57,8 +58,9 @@ package MsgProc is
    --    string does not include the enclosing braces.
    --
    ------------------------------------------------------------------
-   function GetDictionary(Msg : String;
-                          Arg : Positive) return DictionaryT;
+   function GetDictionary (Msg : String;
+                           Arg : Positive)
+                          return DictionaryT;
 
    ------------------------------------------------------------------
    -- GetStringByKey
@@ -69,7 +71,8 @@ package MsgProc is
    --
    ------------------------------------------------------------------
    function GetStringByKey (Dic : DictionaryT;
-                            Key : String) return String;
+                            Key : String)
+                           return String;
 
    ------------------------------------------------------------------
    -- GetDictionaryByKey
@@ -79,7 +82,8 @@ package MsgProc is
    --
    ------------------------------------------------------------------
    function GetDictionaryByKey (Dic : DictionaryT;
-                                Key : String) return DictionaryT;
+                                Key : String)
+                               return DictionaryT;
 
    ------------------------------------------------------------------
    -- GetResponseFromMsg
@@ -89,7 +93,7 @@ package MsgProc is
    --    String.
    --
    ------------------------------------------------------------------
-   function GetResponseFromMsg(Msg : in     TcpIp.MessageT) return String;
+   function GetResponseFromMsg (Msg : in     TcpIp.MessageT) return String;
 
    ------------------------------------------------------------------
    -- StringFrom32
@@ -98,7 +102,7 @@ package MsgProc is
    --    Converts an unsigned 32-bit number into a string.
    --
    ------------------------------------------------------------------
-   function StringFrom32(Num : in     BasicTypes.Unsigned32T) return String;
+   function StringFrom32 (Num : in     BasicTypes.Unsigned32T) return String;
 
    ------------------------------------------------------------------
    -- StringFromInt
@@ -107,6 +111,6 @@ package MsgProc is
    --    Converts an integer into a string.
    --
    ------------------------------------------------------------------
-   function StringFromInt(Int : in     Integer) return String;
+   function StringFromInt (Int : in     Integer) return String;
 
 end MsgProc;

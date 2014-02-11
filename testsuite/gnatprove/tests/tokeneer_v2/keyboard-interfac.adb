@@ -46,8 +46,8 @@ is
       --    Adds Keyed Data to the Store.
       --
       ---------------------------------------------------------------------
-      procedure SetData(KeyedData : in Keyboard.DataTextT;
-                        Length    : in Natural);
+      procedure SetData (KeyedData : in Keyboard.DataTextT;
+                         Length    : in Natural);
 
       ----------------------------------------------------------------------
       -- GetData
@@ -57,9 +57,9 @@ is
       --    held Keyed Data so it is not read twice.
       --
       ---------------------------------------------------------------------
-      procedure GetData(KeyedData : out Keyboard.DataTextT;
-                        Length    : out Keyboard.DataLengthT;
-                        Presence  : out BasicTypes.PresenceT);
+      procedure GetData (KeyedData : out Keyboard.DataTextT;
+                         Length    : out Keyboard.DataLengthT;
+                         Presence  : out BasicTypes.PresenceT);
 
       ----------------------------------------------------------------------
       -- Refresh
@@ -71,11 +71,10 @@ is
       procedure Refresh;
 
    private
-      TheData : Keyboard.DataTextT := (others => ' ');
-      TheLength : Keyboard.DataLengthT := 0;
+      TheData     : Keyboard.DataTextT := (others => ' ');
+      TheLength   : Keyboard.DataLengthT := 0;
       ThePresence : BasicTypes.PresenceT := BasicTypes.Absent;
-      IsFresh : Boolean := False;
-
+      IsFresh     : Boolean := False;
    end KeyedDataStore;
 
    ----------------------------------------------------------------------
@@ -95,8 +94,8 @@ is
       --    A blank line with no characters other than <Return>
       --    will not count at present data.
       ---------------------------------------------------------------------
-      procedure SetData(KeyedData : in Keyboard.DataTextT;
-                        Length    : in Natural)
+      procedure SetData (KeyedData : in Keyboard.DataTextT;
+                         Length    : in Natural)
       is
       begin
          TheData := KeyedData;
@@ -125,9 +124,9 @@ is
       --    None.
       --
       ---------------------------------------------------------------------
-      procedure GetData(KeyedData : out Keyboard.DataTextT;
-                        Length    : out Keyboard.DataLengthT;
-                        Presence  : out BasicTypes.PresenceT) is
+      procedure GetData (KeyedData : out Keyboard.DataTextT;
+                         Length    : out Keyboard.DataLengthT;
+                         Presence  : out BasicTypes.PresenceT) is
       begin
          KeyedData := TheData;
          Length := TheLength;
@@ -210,9 +209,9 @@ is
    --    None.
    ---------------------------------------------------------------------
    task body Reader is
-       ReadData : Keyboard.DataTextT;
-       DataLength : Natural;
-       ReadOK : Boolean;
+      ReadData   : Keyboard.DataTextT;
+      DataLength : Natural;
+      ReadOK     : Boolean;
    begin
       select
          accept Start;

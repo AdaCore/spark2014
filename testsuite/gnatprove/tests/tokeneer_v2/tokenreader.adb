@@ -711,7 +711,6 @@ is
    -- Implementation Notes:
    --    None.
    ------------------------------------------------------------------
-
    function TheTokenTry (Reader : ReaderT) return TokenTypes.TryT is
      (ReaderStatus(Reader).TokenTry)
      with Refined_Global => ReaderStatus;
@@ -722,19 +721,13 @@ is
    -- Implementation Notes:
    --    None.
    ------------------------------------------------------------------
-
-   function TheTokenPresence (Reader  :  ReaderT) return BasicTypes.PresenceT
-     with Refined_Global => ReaderStatus
+   function TheTokenPresence (Reader :  ReaderT) return BasicTypes.PresenceT
    is
-      Result : BasicTypes.PresenceT;
-   begin
-      if ReaderStatus(Reader).TokenTry = TokenTypes.NoToken then
-         Result := BasicTypes.Absent;
+     (if ReaderStatus(Reader).TokenTry = TokenTypes.NoToken then
+         BasicTypes.Absent
       else
-         Result := BasicTypes.Present;
-      end if;
-      return Result;
-   end TheTokenPresence;
+         BasicTypes.Present)
+     with Refined_Global => ReaderStatus;
 
    ------------------------------------------------------------------
    -- TheTokenID
@@ -742,7 +735,6 @@ is
    -- Implementation Notes:
    --    None.
    ------------------------------------------------------------------
-
    function TheTokenID (Reader : ReaderT) return  TokenTypes.TokenIDT is
      (ReaderStatus(Reader).TokenID)
      with Refined_Global => ReaderStatus;
@@ -753,11 +745,10 @@ is
    -- Implementation Notes:
    --    None.
    ------------------------------------------------------------------
-
-   procedure GetCertificate (Reader    : in     ReaderT;
-                             CertType  : in     CertTypes.CertificateT;
-                             RawCert   :    out CertTypes.RawCertificateT;
-                             Found     :    out Boolean)
+   procedure GetCertificate (Reader   : in     ReaderT;
+                             CertType : in     CertTypes.CertificateT;
+                             RawCert  :    out CertTypes.RawCertificateT;
+                             Found    :    out Boolean)
      with Refined_Global  => (Input  => (Interfac.ReaderInput,
                                          Interfac.ReaderStatus,
                                          ReaderStatus)),
@@ -823,8 +814,8 @@ is
    --     None.
    ------------------------------------------------------------------
    procedure WriteAuthCertificate
-     (RawCert   : in     CertTypes.RawCertificateT;
-      Success   :    out Boolean)
+     (RawCert : in     CertTypes.RawCertificateT;
+      Success :    out Boolean)
      with Refined_Global  => (Input  => (Interfac.ReaderStatus,
                                          ReaderStatus),
                               Output => Interfac.ReaderOutput),

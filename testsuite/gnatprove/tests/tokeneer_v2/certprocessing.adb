@@ -31,17 +31,15 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   procedure ExtractIDCertData(
-                   RawIDCert      : in     CertTypes.RawCertificateT;
-                   IDCert         :    out IDCertDataT;
-                   ExtractSuccess :    out Boolean
-                   )
+   procedure ExtractIDCertData
+     (RawIDCert      : in     CertTypes.RawCertificateT;
+      IDCert         :    out IDCertDataT;
+      ExtractSuccess :    out Boolean)
    is
       LocalData : CertProc.IDCertDataT;
-
    begin
-      CertProc.ExtractIDCertData(RawIDCert => RawIDCert,
-                                 IDCert    => LocalData,
+      CertProc.ExtractIDCertData(RawIDCert      => RawIDCert,
+                                 IDCert         => LocalData,
                                  ExtractSuccess => ExtractSuccess);
 
       IDCert := (SerialNumber => LocalData.SerialNumber,
@@ -74,17 +72,15 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   procedure ExtractPrivCertData(
-                   RawPrivCert    : in     CertTypes.RawCertificateT;
-                   PrivCert       :    out PrivCertDataT;
-                   ExtractSuccess :    out Boolean
-                   )
+   procedure ExtractPrivCertData
+     (RawPrivCert    : in     CertTypes.RawCertificateT;
+      PrivCert       :    out PrivCertDataT;
+      ExtractSuccess :    out Boolean)
    is
       LocalData : CertProc.PrivCertDataT;
-
    begin
-      CertProc.ExtractPrivCertData(RawPrivCert => RawPrivCert,
-                                   PrivCert    => LocalData,
+      CertProc.ExtractPrivCertData(RawPrivCert    => RawPrivCert,
+                                   PrivCert       => LocalData,
                                    ExtractSuccess => ExtractSuccess);
 
       PrivCert := (Holder       => LocalData.Holder,
@@ -116,23 +112,21 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   procedure ExtractIACertData(
-                   RawIACert      : in     CertTypes.RawCertificateT;
-                   IACert         :    out IACertDataT;
-                   ExtractSuccess :    out Boolean
-                   )
+   procedure ExtractIACertData
+     (RawIACert      : in     CertTypes.RawCertificateT;
+      IACert         :    out IACertDataT;
+      ExtractSuccess :    out Boolean)
    is
       LocalData : CertProc.IACertDataT;
-
    begin
-      CertProc.ExtractIACertData(RawIACert => RawIACert,
-                                 IACert    => LocalData,
+      CertProc.ExtractIACertData(RawIACert      => RawIACert,
+                                 IACert         => LocalData,
                                  ExtractSuccess => ExtractSuccess);
 
-      IACert := (Holder       => LocalData.Holder,
-                 Issuer       => LocalData.Issuer,
-                 SigAlgId     => LocalData.SigAlgID,
-                 SerialNumber => LocalData.SerialNumber,
+      IACert := (Holder          => LocalData.Holder,
+                 Issuer          => LocalData.Issuer,
+                 SigAlgId        => LocalData.SigAlgID,
+                 SerialNumber    => LocalData.SerialNumber,
                  AttCertValidity =>
                     (NotBefore =>
                        (Minute => LocalData.AttCertValidity.NotBefore.Minute,
@@ -140,13 +134,13 @@ is
                         Day    => LocalData.AttCertValidity.NotBefore.Day,
                         Month  => LocalData.AttCertValidity.NotBefore.Month,
                         Year   => LocalData.AttCertValidity.NotBefore.Year),
-                     NotAfter =>
+                     NotAfter  =>
                        (Minute => LocalData.AttCertValidity.NotAfter.Minute,
                         Hour   => LocalData.AttCertValidity.NotAfter.Hour,
                         Day    => LocalData.AttCertValidity.NotAfter.Day,
                         Month  => LocalData.AttCertValidity.NotAfter.Month,
                         Year   => LocalData.AttCertValidity.NotAfter.Year)),
-                 Template     => LocalData.Template);
+                 Template        => LocalData.Template);
    end ExtractIACertData;
 
    ------------------------------------------------------------------
@@ -156,14 +150,12 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   procedure ExtractAuthCertData(
-                   RawAuthCert    : in     CertTypes.RawCertificateT;
-                   AuthCert       :    out AuthCertDataT;
-                   ExtractSuccess :    out Boolean
-                   )
+   procedure ExtractAuthCertData
+     (RawAuthCert    : in     CertTypes.RawCertificateT;
+      AuthCert       :    out AuthCertDataT;
+      ExtractSuccess :    out Boolean)
    is
       LocalData : CertProc.AuthCertDataT;
-
    begin
       CertProc.ExtractAuthCertData(RawAuthCert => RawAuthCert,
                                    AuthCert    => LocalData,
@@ -198,18 +190,15 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   procedure ObtainRawData(
-                   RawCert       : in     CertTypes.RawCertificateT;
-                   RawData       :    out CertTypes.RawDataT;
-                   ObtainSuccess :    out Boolean
-                   )
+   procedure ObtainRawData
+     (RawCert       : in     CertTypes.RawCertificateT;
+      RawData       :    out CertTypes.RawDataT;
+      ObtainSuccess :    out Boolean)
    is
    begin
-      CertProc.ObtainRawData(
-                   RawCert       => RawCert,
-                   RawData       => RawData,
-                   ObtainSuccess => ObtainSuccess
-                   );
+      CertProc.ObtainRawData(RawCert       => RawCert,
+                             RawData       => RawData,
+                             ObtainSuccess => ObtainSuccess);
    end ObtainRawData;
 
    ------------------------------------------------------------------
@@ -219,20 +208,16 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   procedure ObtainSignatureData(
-                   RawCert       : in     CertTypes.RawCertificateT;
-                   SignatureData :    out CertTypes.SignatureT;
-                   ObtainSuccess :    out Boolean
-                   )
+   procedure ObtainSignatureData
+     (RawCert       : in     CertTypes.RawCertificateT;
+      SignatureData :    out CertTypes.SignatureT;
+      ObtainSuccess :    out Boolean)
    is
    begin
-      CertProc.ObtainSignatureData(
-                   RawCert       => RawCert,
-                   SignatureData => SignatureData,
-                   ObtainSuccess => ObtainSuccess
-                   );
+      CertProc.ObtainSignatureData(RawCert       => RawCert,
+                                   SignatureData => SignatureData,
+                                   ObtainSuccess => ObtainSuccess);
    end ObtainSignatureData;
-
 
    ------------------------------------------------------------------
    -- ConstructAuthCert
@@ -241,17 +226,16 @@ is
    --    Adds the fictional Crypto dictionary (copied from the Priv Cert)
    --
    ------------------------------------------------------------------
-   procedure ConstructAuthCert(
-                   AuthCert            : in     AuthCertDataT;
-                   UnsignedRawAuthCert :    out CertTypes.RawCertificateT
-                   )
+   procedure ConstructAuthCert
+     (AuthCert            : in     AuthCertDataT;
+      UnsignedRawAuthCert :    out CertTypes.RawCertificateT)
    is
       LocalCert : CertProc.AuthCertDataT :=
-                  (CertType     => CertProc.AuthCertType,
-                   Holder       => AuthCert.Holder,
-                   Issuer       => AuthCert.Issuer,
-                   SigAlgId     => AuthCert.SigAlgID,
-                   SerialNumber => AuthCert.SerialNumber,
+                  (CertType        => CertProc.AuthCertType,
+                   Holder          => AuthCert.Holder,
+                   Issuer          => AuthCert.Issuer,
+                   SigAlgId        => AuthCert.SigAlgID,
+                   SerialNumber    => AuthCert.SerialNumber,
                    AttCertValidity =>
                       (NotBefore =>
                          (Minute => AuthCert.AttCertValidity.NotBefore.Minute,
@@ -259,18 +243,18 @@ is
                           Day    => AuthCert.AttCertValidity.NotBefore.Day,
                           Month  => AuthCert.AttCertValidity.NotBefore.Month,
                           Year   => AuthCert.AttCertValidity.NotBefore.Year),
-                       NotAfter =>
+                       NotAfter  =>
                          (Minute => AuthCert.AttCertValidity.NotAfter.Minute,
                           Hour   => AuthCert.AttCertValidity.NotAfter.Hour,
                           Day    => AuthCert.AttCertValidity.NotAfter.Day,
                           Month  => AuthCert.AttCertValidity.NotAfter.Month,
                           Year   => AuthCert.AttCertValidity.NotAfter.Year)),
-                   Privilege    =>
+                   Privilege       =>
                       (Role  => AuthCert.Privilege.Role,
                        Class => AuthCert.Privilege.Class));
 
    begin
-      CertProc.ConstructAuthCert(AuthCert => LocalCert,
+      CertProc.ConstructAuthCert(AuthCert            => LocalCert,
                                  UnsignedRawAuthCert => UnsignedRawAuthCert);
    end ConstructAuthCert;
 
@@ -284,11 +268,10 @@ is
    --    DigestID in the fictional Crypto dictionary.
    --
    ------------------------------------------------------------------
-   procedure AddAuthSignature(
-                   UnsignedRawAuthCert : in     CertTypes.RawCertificateT;
-                   SignatureData       : in     CertTypes.SignatureT;
-                   SignedRawAuthCert   :    out CertTypes.RawCertificateT
-                   )
+   procedure AddAuthSignature
+     (UnsignedRawAuthCert : in     CertTypes.RawCertificateT;
+      SignatureData       : in     CertTypes.SignatureT;
+      SignedRawAuthCert   :    out CertTypes.RawCertificateT)
    is
    begin
       CertProc.AddAuthSignature(UnsignedRawAuthCert => UnsignedRawAuthCert,

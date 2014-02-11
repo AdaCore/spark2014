@@ -35,7 +35,6 @@ is
    --    Polls the physical door.
    --
    ------------------------------------------------------------------
-
    procedure GetDoorState (DoorState  :    out Door.T;
                            Fault      :    out Boolean)
      with Global  => (Input  => Input),

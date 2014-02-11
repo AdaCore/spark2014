@@ -197,6 +197,4 @@ private
                 NotBefore => Clock.ZeroTime,
                 NotAfter  => Clock.ZeroTime,
                 Mechanism => CryptoTypes.AlgorithmT'First);
-
---# accept W, 394, ContentsT, "Child packages supply constructors for ContentsT";
 end Cert;

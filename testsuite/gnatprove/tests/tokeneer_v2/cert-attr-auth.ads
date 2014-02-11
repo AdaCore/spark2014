@@ -51,7 +51,8 @@ package Cert.Attr.Auth is
    -- Traceunit : C.Cert.Attr.Auth.TheRole
    -- Traceto   : FD.Types.Certificates
    ------------------------------------------------------------------
-   function TheRole (Contents : ContentsT) return PrivTypes.PrivilegeT;
+   function TheRole (Contents : ContentsT) return PrivTypes.PrivilegeT
+     with Global => null;
 
    ------------------------------------------------------------------
    -- TheClearance
@@ -62,7 +63,8 @@ package Cert.Attr.Auth is
    -- Traceunit : C.Cert.Attr.Auth.TheClearance
    -- Traceto   : FD.Types.Certificates
    ------------------------------------------------------------------
-   function TheClearance (Contents : ContentsT) return PrivTypes.ClearanceT;
+   function TheClearance (Contents : ContentsT) return PrivTypes.ClearanceT
+     with Global => null;
 
    ------------------------------------------------------------------
    -- Extract

@@ -85,10 +85,10 @@ is
           -- After each call to UpdateDoorAlarm, the security   --
           -- property holds.                                    --
           --------------------------------------------------------
-          Post    => CurrentDoor = Open and
-                     Latch.IsLocked and
-                     Clock.GreaterThanOrEqual(Clock.TheCurrentTime,
-                                              AlarmTimeout) =
+          Post    => (CurrentDoor = Open and
+                      Latch.IsLocked and
+                      Clock.GreaterThanOrEqual(Clock.TheCurrentTime,
+                                              AlarmTimeout)) =
                        (DoorAlarm = AlarmTypes.Alarming)
 
    is
@@ -130,7 +130,7 @@ is
    --    Clock must be polled before this is called.
    --
    ------------------------------------------------------------------
-   procedure Poll(SystemFault :    out Boolean)
+   procedure Poll (SystemFault :    out Boolean)
      with Refined_Global  => (Input  => (AlarmTimeout,
                                          Clock.CurrentTime,
                                          Clock.Now,
@@ -324,7 +324,7 @@ is
                                          AuditLog.State,
                                          DoorAlarm,
                                          Latch.State)),
-          Refined_Depends => (AlarmTimeout => Clock.CurrentTime,
+          Refined_Depends => (AlarmTimeout         => Clock.CurrentTime,
                               (AuditLog.FileState,
                                AuditLog.State)     => (AuditLog.FileState,
                                                        AuditLog.State,

@@ -37,7 +37,6 @@ is
    --    None
    --
    ------------------------------------------------------------------
-
    procedure Lock (Fault : out Boolean) is
    begin
       LatchAPI.Lock (Failed => Fault);
@@ -53,7 +52,6 @@ is
    --    None
    --
    ------------------------------------------------------------------
-
    procedure Unlock (Fault : out Boolean) is
    begin
       LatchAPI.Unlock (Failed => Fault);

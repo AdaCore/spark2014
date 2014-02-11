@@ -21,8 +21,8 @@ with Latch.Interfac,
      AuditTypes;
 
 package body Latch
-  with Refined_State => (State => (CurrentLatch,
-                                   LatchTimeout),
+  with Refined_State => (State  => (CurrentLatch,
+                                    LatchTimeout),
                          Output => Latch.Interfac.Output)
 is
    CurrentLatch : T;
@@ -125,7 +125,7 @@ is
    --    None
    --
    ------------------------------------------------------------------
-   procedure UpdateDevice(SystemFault :    out Boolean)
+   procedure UpdateDevice (SystemFault :    out Boolean)
      with Refined_Global  => (Input  => (Clock.Now,
                                          ConfigData.State,
                                          CurrentLatch),
@@ -168,7 +168,7 @@ is
    --    None
    --
    ------------------------------------------------------------------
-   procedure SetTimeout(Time : Clock.TimeT)
+   procedure SetTimeout (Time : Clock.TimeT)
      with Refined_Global  => (Output => LatchTimeout),
           Refined_Depends => (LatchTimeout => Time),
           Refined_Post    => LatchTimeout = Time

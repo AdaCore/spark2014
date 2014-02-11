@@ -102,7 +102,6 @@ is
    --
    -- traceunit : C.TokenReader.TheTokenPresence
    ------------------------------------------------------------------
-
    function TheTokenPresence (Reader : ReaderT) return BasicTypes.PresenceT
      with Global => State;
 
@@ -114,7 +113,6 @@ is
    --
    -- traceunit : C.TokenReader.TheTokenID
    ------------------------------------------------------------------
-
    function TheTokenID (Reader : ReaderT) return TokenTypes.TokenIDT
      with Global => State;
 
@@ -126,7 +124,6 @@ is
    --
    -- traceunit : C.TokenReader.TheTokenTry
    ------------------------------------------------------------------
-
    function TheTokenTry (Reader : ReaderT) return TokenTypes.TryT
      with Global => State;
 
@@ -140,11 +137,10 @@ is
    --
    -- traceunit : C.TokenReader.GetCertificate
    ------------------------------------------------------------------
-
-   procedure GetCertificate (Reader    : in     ReaderT;
-                             CertType  : in     CertTypes.CertificateT;
-                             RawCert   :    out CertTypes.RawCertificateT;
-                             Found     :    out Boolean)
+   procedure GetCertificate (Reader   : in     ReaderT;
+                             CertType : in     CertTypes.CertificateT;
+                             RawCert  :    out CertTypes.RawCertificateT;
+                             Found    :    out Boolean)
      with Global  => (Input  => (Input,
                                  State,
                                  Status)),
@@ -167,10 +163,9 @@ is
    --
    -- traceunit : C.TokenReader.GetCertificate
    ------------------------------------------------------------------
-
    procedure WriteAuthCertificate
-     (RawCert   : in     CertTypes.RawCertificateT;
-      Success   :    out Boolean)
+     (RawCert : in     CertTypes.RawCertificateT;
+      Success :    out Boolean)
      with Global  => (Input  => (State,
                                  Status),
                       Output => Output),

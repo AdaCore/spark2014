@@ -64,7 +64,7 @@ is
           Refined_Depends => ((Data,
                                DataPresence) => Interfac.Inputs)
    is
-      LocalData  : DataTextT;
+      LocalData   : DataTextT;
       LocalLength : DataLengthT;
    begin
 

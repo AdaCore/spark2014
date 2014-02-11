@@ -38,7 +38,7 @@ is
    -- Traceto   : FD.Interfac.TISPoll
    ------------------------------------------------------------------
    procedure Poll (FingerPresent :    out BasicTypes.PresenceT)
-     with Global  => (Input  => Input),
+     with Global  => Input,
           Depends => (FingerPresent => Input);
 
    ------------------------------------------------------------------
@@ -83,7 +83,7 @@ is
    -- Traceto   : FD.Interfac.FlushFingerData
    ------------------------------------------------------------------
    procedure Flush
-     with Global  => (Input  => Input),
+     with Global  => Input,
           Depends => (null => Input);
 
 end Bio;

@@ -79,7 +79,7 @@ is
    -- Implementation Notes:
    --    None.
    ------------------------------------------------------------------
-   procedure Write(TheFile : in File.T)
+   procedure Write (TheFile : in File.T)
    is
    begin
       null;

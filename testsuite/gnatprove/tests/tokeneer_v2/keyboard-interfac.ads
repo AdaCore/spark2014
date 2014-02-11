@@ -20,7 +20,7 @@ with Keyboard;
 
 private package Keyboard.Interfac
   with Abstract_State => (Inputs with External => Async_Writers,
-                                      Part_Of => Keyboard.Inputs)
+                                      Part_Of  => Keyboard.Inputs)
 is
 
    ------------------------------------------------------------------

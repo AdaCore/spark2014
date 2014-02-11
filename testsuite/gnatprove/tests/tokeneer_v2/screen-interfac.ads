@@ -26,10 +26,10 @@ is
    ----------------------------------------------------------------------
    type Colours is (BrightWhite, White, Red, Green, Black);
 
-   type ScreenWidthT is range 0..80;
+   type ScreenWidthT  is range 0..80;
    type ScreenHeightT is range 0..30;
 
-   subtype ScreenXCoordT is ScreenWidthT range 0 .. ScreenWidthT'Last - 1;
+   subtype ScreenXCoordT is ScreenWidthT  range 0 .. ScreenWidthT'Last - 1;
    subtype ScreenYCoordT is ScreenHeightT range 0 .. ScreenHeightT'Last - 1;
    type XYCoordT is record
       X : ScreenXCoordT;
@@ -46,10 +46,10 @@ is
    --    Write to the Win32 Console.
    --
    ---------------------------------------------------------------------
-   procedure Write(Buffer   : in     String;
-                   Colour   : in     Colours;
-                   Coord    : in     XYCoordT;
-                   OK       :    out Boolean)
+   procedure Write (Buffer : in     String;
+                    Colour : in     Colours;
+                    Coord  : in     XYCoordT;
+                    OK     :    out Boolean)
      with Global  => (Output => Output),
           Depends => ((OK,
                        Output) => (Buffer,
@@ -63,12 +63,11 @@ is
    --    Clears a region of the Console.
    --
    ---------------------------------------------------------------------
-   procedure ClearRegion
-     (Left    : in     ScreenXCoordT;
-      Top     : in     ScreenYCoordT;
-      Right   : in     ScreenXCoordT;
-      Bottom  : in     ScreenYCoordT;
-      OK      :    out Boolean)
+   procedure ClearRegion (Left   : in     ScreenXCoordT;
+                          Top    : in     ScreenYCoordT;
+                          Right  : in     ScreenXCoordT;
+                          Bottom : in     ScreenYCoordT;
+                          OK     :    out Boolean)
      with Global  => (Output => Output),
           Depends => ((OK,
                        Output) => (Bottom,
@@ -83,7 +82,7 @@ is
    --    Initialises the Win32 Console.
    --
    ---------------------------------------------------------------------
-   procedure Init(OK : out Boolean)
+   procedure Init (OK : out Boolean)
      with Global  => (Output => Output),
           Depends => ((OK,
                        Output) => null);

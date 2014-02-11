@@ -45,7 +45,8 @@ is
    -- Door.State.                                         --
    ---------------------------------------------------------
    function Alarm_Timeout return Clock.TimeT
-     with Global => State;
+     with Global     => State,
+          Convention => Ghost;
 
    ------------------------------------------------------------------
    -- TheCurrentDoor
@@ -83,7 +84,7 @@ is
    --          FD.Interfac.TISPoll
    --
    ------------------------------------------------------------------
-   procedure Poll(SystemFault :    out Boolean)
+   procedure Poll (SystemFault :    out Boolean)
      with Global  => (Input  => (Clock.CurrentTime,
                                  Clock.Now,
                                  ConfigData.State,

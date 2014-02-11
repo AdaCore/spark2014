@@ -94,8 +94,7 @@ is
    -- Traceunit : C.Display.SetValue
    -- Traceto   : FD.AuditLog.LogChange
    ------------------------------------------------------------------
-
-   procedure SetValue(Msg : in     MsgT)
+   procedure SetValue (Msg : in     MsgT)
      with Global  => (Input  => (Clock.Now,
                                  ConfigData.State),
                       In_Out => (AuditLog.FileState,
@@ -120,7 +119,7 @@ is
    -- Traceunit : C.Display.ChangeDoorUnlockedMsg
    -- TraceTo   : FD.Interfac.DisplayPollUpdate
    ------------------------------------------------------------------
-   procedure ChangeDoorUnlockedMsg(Msg : in     MsgT)
+   procedure ChangeDoorUnlockedMsg (Msg : in     MsgT)
      with Global  => (Input  => (Clock.Now,
                                  ConfigData.State),
                       In_Out => (AuditLog.FileState,
@@ -170,7 +169,7 @@ is
    -- Traceunit : C.Display.Init
    -- Traceto   : FD.TIS.TISStartup
    ------------------------------------------------------------------
-   procedure Init(IsEnrolled : in Boolean)
+   procedure Init (IsEnrolled : in Boolean)
      with Global  => (Output => State),
           Depends => (State => IsEnrolled);
 

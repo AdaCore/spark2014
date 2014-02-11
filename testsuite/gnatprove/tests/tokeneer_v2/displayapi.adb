@@ -34,11 +34,11 @@ is
    is
       InMsg       : TcpIp.MessageT;
       OutMsg      : constant TcpIp.MessageT :=
-                       (Data   => Ada.Strings.Fixed.Overwrite(
-                                     Source   => TcpIp.NullMsg.Data,
-                                     Position => 1,
-                                     New_Item => "display.getMaxTextSizeTop()"),
-                        Length => 27);
+        (Data   => Ada.Strings.Fixed.Overwrite
+           (Source   => TcpIp.NullMsg.Data,
+            Position => 1,
+            New_Item => "display.getMaxTextSizeTop()"),
+         Length => 27);
       -- Default return value. Won't raise system fault here, just
       -- set to minimum value.
       LocalReturn : CommonTypes.Unsigned32T := 20;
@@ -80,15 +80,14 @@ is
    --    None
    --
    ------------------------------------------------------------------
-   function GetMaxTextSizeBottom return CommonTypes.Unsigned32T
-   is
+   function GetMaxTextSizeBottom return CommonTypes.Unsigned32T is
       InMsg       : TcpIp.MessageT;
       OutMsg      : constant TcpIp.MessageT :=
-                       (Data   => Ada.Strings.Fixed.Overwrite(
-                                     Source   => TcpIp.NullMsg.Data,
-                                     Position => 1,
-                                     New_Item => "display.getMaxTextSizeBottom()"),
-                        Length => 30);
+        (Data   => Ada.Strings.Fixed.Overwrite
+           (Source   => TcpIp.NullMsg.Data,
+            Position => 1,
+            New_Item => "display.getMaxTextSizeBottom()"),
+         Length => 30);
       -- Default return value. Won't raise system fault here, just set
       -- to minimum value.
       LocalReturn : CommonTypes.Unsigned32T := 20;
@@ -130,17 +129,15 @@ is
    --    None
    --
    ------------------------------------------------------------------
-   procedure SetTopText(TopText : in     String;
-                        Written :    out Boolean)
+   procedure SetTopText (TopText : in     String;
+                         Written :    out Boolean)
    is
       OutMsg      : constant TcpIp.MessageT :=
-                       (Data   => Ada.Strings.Fixed.Overwrite(
-                                     Source   => TcpIp.NullMsg.Data,
-                                     Position => 1,
-                                     New_Item => "display.setTopText('" &
-                                                 TopText &
-                                                 "',)"),
-                        Length => 23 + TopText'Length);
+        (Data   => Ada.Strings.Fixed.Overwrite
+           (Source   => TcpIp.NullMsg.Data,
+            Position => 1,
+            New_Item => "display.setTopText('" & TopText & "',)"),
+         Length => 23 + TopText'Length);
       InMsg       : TcpIp.MessageT;
       CommsIsOK   : Boolean;
 
@@ -180,8 +177,8 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   procedure SetBottomText(BottomText : in     String;
-                           Written    :    out Boolean)
+   procedure SetBottomText (BottomText : in     String;
+                            Written    :    out Boolean)
    is
       OutMsg      : constant TcpIp.MessageT :=
                      (Data   => Ada.Strings.Fixed.Overwrite(
@@ -230,17 +227,16 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   procedure SetTopTextScrollable(ScrollText : in     String;
-                                  Written    :    out Boolean)
+   procedure SetTopTextScrollable (ScrollText : in     String;
+                                   Written    :    out Boolean)
    is
       OutMsg    : constant TcpIp.MessageT :=
-                    (Data   => Ada.Strings.Fixed.Overwrite(
-                                  Source   => TcpIp.NullMsg.Data,
-                                  Position => 1,
-                                  New_Item => "display.setTopTextScrollable('"
-                                              & ScrollText &
-                                              "',)"),
-                     Length => 33 + ScrollText'Length);
+        (Data   => Ada.Strings.Fixed.Overwrite
+           (Source   => TcpIp.NullMsg.Data,
+            Position => 1,
+            New_Item => "display.setTopTextScrollable('"
+              & ScrollText & "',)"),
+         Length => 33 + ScrollText'Length);
       InMsg     : TcpIp.MessageT;
       CommsIsOK : Boolean;
 
@@ -279,14 +275,14 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   procedure Reset(Success :    out Boolean)
+   procedure Reset (Success :    out Boolean)
    is
       OutMsg   : constant TcpIp.MessageT :=
-                    (Data   => Ada.Strings.Fixed.Overwrite(
-                                  Source   => TcpIp.NullMsg.Data,
-                                  Position => 1,
-                                  New_Item => "display.reset()"),
-                     Length => 15);
+        (Data   => Ada.Strings.Fixed.Overwrite
+           (Source   => TcpIp.NullMsg.Data,
+            Position => 1,
+            New_Item => "display.reset()"),
+         Length => 15);
 
       DontCareInMsg : TcpIp.MessageT;
    begin

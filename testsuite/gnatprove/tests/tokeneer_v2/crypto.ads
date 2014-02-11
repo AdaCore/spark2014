@@ -20,13 +20,12 @@
 --
 ------------------------------------------------------------------
 
-with BasicTypes;
-with CertTypes;
-with CryptoTypes;
-with SPARK_IO;
+with BasicTypes,
+     CertTypes,
+     CryptoTypes,
+     SPARK_IO;
 
-package Crypto
-is
+package Crypto is
 
    -- As this library will only be storing key objects we are only
    -- interested in Key templates. Key data in this system is
@@ -67,8 +66,8 @@ is
    subtype HandleArrayI is HandleCountT range 1..HandleCountT'Last;
    type HandleArrayT is array(HandleArrayI) of BasicTypes.Unsigned32T;
 
-   type ReturnValueT is (
-      Ok,
+   type ReturnValueT is
+     (Ok,
       HostMemory,
       GeneralError,
       FunctionFailed,
@@ -96,8 +95,7 @@ is
       TemplateInconsistent,
       BufferTooSmall,
       CryptokiNotInitialized,
-      CryptokiAlreadyInitialized
-      );
+      CryptokiAlreadyInitialized);
 
    -- DigestT represents the digest information contained in a
    -- certificate. Padded for realistic size.
@@ -119,9 +117,7 @@ is
    --    Used to initialize the crypto library at TIS startup.
    --
    ------------------------------------------------------------------
-
-   procedure Initialize(ReturnValue : out Crypto.ReturnValueT);
-
+   procedure Initialize (ReturnValue : out Crypto.ReturnValueT);
 
    ------------------------------------------------------------------
    -- Finalize
@@ -130,9 +126,7 @@ is
    --    Used to finalize the crypto library.
    --
    ------------------------------------------------------------------
-
-   procedure Finalize(ReturnValue : out Crypto.ReturnValueT);
-
+   procedure Finalize (ReturnValue : out Crypto.ReturnValueT);
 
    ------------------------------------------------------------------
    -- CreateObject
@@ -141,10 +135,9 @@ is
    --    Can be used to store keys in the crypto database.
    --
    ------------------------------------------------------------------
-
-   procedure CreateObject(Template     : in     KeyTemplateT;
-                          ObjectHandle :    out BasicTypes.Unsigned32T;
-                          ReturnValue  :    out Crypto.ReturnValueT);
+   procedure CreateObject (Template     : in     KeyTemplateT;
+                           ObjectHandle :    out BasicTypes.Unsigned32T;
+                           ReturnValue  :    out Crypto.ReturnValueT);
 
    ------------------------------------------------------------------
    -- FindObjectsInit
@@ -154,11 +147,8 @@ is
    --    library for an object matching a given template, obtained here.
    --
    ------------------------------------------------------------------
-
-   procedure FindObjectsInit(Template    : in     KeyTemplateT;
-                             ReturnValue :    out Crypto.ReturnValueT);
-
-
+   procedure FindObjectsInit (Template    : in     KeyTemplateT;
+                              ReturnValue :    out Crypto.ReturnValueT);
 
    ------------------------------------------------------------------
    -- FindObjects
@@ -168,11 +158,9 @@ is
    --    found matches.
    --
    ------------------------------------------------------------------
-
-   procedure FindObjects(HandleCount   : in out BasicTypes.Unsigned32T;
-                         ObjectHandles :    out HandleArrayT;
-                         ReturnValue   :    out Crypto.ReturnValueT);
-
+   procedure FindObjects (HandleCount   : in out BasicTypes.Unsigned32T;
+                          ObjectHandles :    out HandleArrayT;
+                          ReturnValue   :    out Crypto.ReturnValueT);
 
    ------------------------------------------------------------------
    -- FindObjectsFinal
@@ -181,9 +169,7 @@ is
    --    Finalizes the find operation.
    --
    ------------------------------------------------------------------
-
-   procedure FindObjectsFinal(ReturnValue : out Crypto.ReturnValueT);
-
+   procedure FindObjectsFinal (ReturnValue : out Crypto.ReturnValueT);
 
    ------------------------------------------------------------------
    -- DigestInit
@@ -195,11 +181,8 @@ is
    --    which TIS can determine the type of digest to produce.
    --
    ------------------------------------------------------------------
-
-   procedure DigestInit(Mechanism   : in     CryptoTypes.AlgorithmT;
-                        ReturnValue :    out Crypto.ReturnValueT);
-
-
+   procedure DigestInit (Mechanism   : in     CryptoTypes.AlgorithmT;
+                         ReturnValue :    out Crypto.ReturnValueT);
 
    ------------------------------------------------------------------
    -- DigestUpdate
@@ -211,11 +194,9 @@ is
    --    Performs the digest.
    --
    ------------------------------------------------------------------
-
-   procedure DigestUpdate(DataBlock   : in     HundredByteArrayT;
-                          ByteCount   : in     BasicTypes.Unsigned32T;
-                          ReturnValue :    out Crypto.ReturnValueT);
-
+   procedure DigestUpdate (DataBlock   : in     HundredByteArrayT;
+                           ByteCount   : in     BasicTypes.Unsigned32T;
+                           ReturnValue :    out Crypto.ReturnValueT);
 
    ------------------------------------------------------------------
    -- DigestFinal
@@ -225,11 +206,9 @@ is
    --    digest operation, returning the produced digest.
    --
    ------------------------------------------------------------------
-
-   procedure DigestFinal(Digest       : out DigestT;
-                         DigestLength : out BasicTypes.Unsigned32T;
-                         ReturnValue  : out Crypto.ReturnValueT);
-
+   procedure DigestFinal (Digest       : out DigestT;
+                          DigestLength : out BasicTypes.Unsigned32T;
+                          ReturnValue  : out Crypto.ReturnValueT);
 
    ------------------------------------------------------------------
    -- Sign
@@ -238,13 +217,11 @@ is
    --    Signs the TIS created Auth Cert.
    --
    ------------------------------------------------------------------
-
-   procedure Sign(Mechanism    : in     CryptoTypes.AlgorithmT;
-                  KeyHandle    : in     BasicTypes.Unsigned32T;
-                  Digest       : in     DigestT;
-                  Signature    :    out CertTypes.SignatureT;
-                  ReturnValue  :    out Crypto.ReturnValueT);
-
+   procedure Sign (Mechanism    : in     CryptoTypes.AlgorithmT;
+                   KeyHandle    : in     BasicTypes.Unsigned32T;
+                   Digest       : in     DigestT;
+                   Signature    :    out CertTypes.SignatureT;
+                   ReturnValue  :    out Crypto.ReturnValueT);
 
    ------------------------------------------------------------------
    -- Verify
@@ -254,13 +231,11 @@ is
    --    against the digest of the certificate.
    --
    ------------------------------------------------------------------
-
-   procedure Verify(Mechanism    : in     CryptoTypes.AlgorithmT;
-                    KeyHandle    : in     BasicTypes.Unsigned32T;
-                    Digest       : in     DigestT;
-                    Signature    : in     CertTypes.SignatureT;
-                    ReturnValue  :    out Crypto.ReturnValueT);
-
+   procedure Verify (Mechanism    : in     CryptoTypes.AlgorithmT;
+                     KeyHandle    : in     BasicTypes.Unsigned32T;
+                     Digest       : in     DigestT;
+                     Signature    : in     CertTypes.SignatureT;
+                     ReturnValue  :    out Crypto.ReturnValueT);
 
    ------------------------------------------------------------------
    -- GetAttributeValue
@@ -269,11 +244,9 @@ is
    --    Extracts attribute data from the object pointed to by KeyHandle.
    --
    ------------------------------------------------------------------
-
-   procedure GetAttributeValue(KeyHandle   : in     BasicTypes.Unsigned32T;
-                               Template    : in out KeyTemplateT;
-                               ReturnValue :    out Crypto.ReturnValueT);
-
+   procedure GetAttributeValue (KeyHandle   : in     BasicTypes.Unsigned32T;
+                                Template    : in out KeyTemplateT;
+                                ReturnValue :    out Crypto.ReturnValueT);
 
    ------------------------------------------------------------------
    -- ClearStore
@@ -283,6 +256,5 @@ is
    --
    ------------------------------------------------------------------
    procedure ClearStore;
-
 
 end Crypto;

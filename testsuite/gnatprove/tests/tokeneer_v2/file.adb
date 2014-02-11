@@ -41,7 +41,7 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   function IsOpen( File : T) return Boolean is
+   function IsOpen (File : T) return Boolean is
      (File.Handle /= null
         and then Ada.Streams.Stream_IO.Is_Open (File.Handle.all));
 
@@ -55,7 +55,7 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   function IsIn( File : T) return Boolean is
+   function IsIn (File : T) return Boolean is
      (IsOpen (File)
         and then Ada.Streams.Stream_IO.Mode(File.Handle.all) =
                    Ada.Streams.Stream_IO.In_File);
@@ -70,7 +70,7 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   function IsOut( File : T) return Boolean is
+   function IsOut (File : T) return Boolean is
      (IsOpen (File)
         and then (Ada.Streams.Stream_IO.Mode(File.Handle.all) =
                     Ada.Streams.Stream_IO.Out_File or
@@ -151,8 +151,8 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   procedure OpenAppend ( TheFile : in out T ;
-                          Success :    out Boolean )
+   procedure OpenAppend (TheFile : in out T;
+                         Success :    out Boolean)
    is
    begin
       TheFile.Handle := new Ada.Streams.Stream_IO.File_Type;
@@ -175,8 +175,8 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   procedure OpenWrite ( TheFile : in out T ;
-                         Success :    out Boolean )
+   procedure OpenWrite (TheFile : in out T;
+                        Success :    out Boolean)
    is
    begin
       TheFile.Handle := new Ada.Streams.Stream_IO.File_Type;
@@ -226,8 +226,8 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   procedure PutChar ( TheFile : in out T;
-                       Item    : in     Character)
+   procedure PutChar (TheFile : in out T;
+                      Item    : in     Character)
    is
       Strm : Ada.Streams.Stream_IO.Stream_Access;
    begin
@@ -249,8 +249,8 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   procedure Close ( TheFile : in out T ;
-                     Success :    out Boolean )
+   procedure Close (TheFile : in out T;
+                    Success :    out Boolean)
    is
    begin
 
@@ -269,11 +269,11 @@ is
    --    A file exists if it is open or can be opened.
    --
    ------------------------------------------------------------------
-   function Exists ( TheFile : T ) return Boolean
+   function Exists (TheFile : T) return Boolean
    is
       CloseOK : Boolean;
-      Result : Boolean;
-      TempF : T := TheFile;
+      Result  : Boolean;
+      TempF   : T := TheFile;
    begin
 
       if IsOpen(TheFile) then
@@ -299,14 +299,13 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   procedure PutString ( TheFile : in out T;
-                          Text   : in     String;
-                          Stop   : in     Natural)
+   procedure PutString (TheFile : in out T;
+                        Text    : in     String;
+                        Stop    : in     Natural)
    is
-
-      Strm : Ada.Streams.Stream_IO.Stream_Access;
+      Strm     : Ada.Streams.Stream_IO.Stream_Access;
       FinalStr : Positive;
-      Final : Positive;
+      Final    : Positive;
    begin
 
       if IsOut(TheFile) then
@@ -342,9 +341,9 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   procedure GetString ( TheFile : in out T;
-                         Text    :    out String;
-                         Stop    :    out Natural)
+   procedure GetString (TheFile : in out T;
+                        Text    :    out String;
+                        Stop    :    out Natural)
    is
       Strm : Ada.Streams.Stream_IO.Stream_Access;
    begin
@@ -369,8 +368,8 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   procedure GetChar ( TheFile : in out T;
-                       Item    :    out Character)
+   procedure GetChar (TheFile : in out T;
+                      Item    :    out Character)
    is
       Strm : Ada.Streams.Stream_IO.Stream_Access;
    begin
@@ -393,9 +392,9 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   procedure PutInteger ( TheFile : in out T;
-                          Item    : in Integer;
-                          Width   : in Natural)
+   procedure PutInteger (TheFile : in out T;
+                         Item    : in Integer;
+                         Width   : in Natural)
    is
       Str : String := Integer'Image(Item);
       PaddingCount : Integer := Width - Str'Length;
@@ -421,20 +420,20 @@ is
    --    If the Width is not 0 then only character preceeding integer
    --    is ' ' (No new lines).
    ------------------------------------------------------------------
-   procedure GetInteger ( TheFile : in out T;
-                          Item    :    out Integer;
-                          Width   : in     Natural;
-                          Success :    out Boolean)
+   procedure GetInteger (TheFile : in out T;
+                         Item    :    out Integer;
+                         Width   : in     Natural;
+                         Success :    out Boolean)
    is
-      Ch : Character;
-      FileIndex : Ada.Streams.Stream_IO.Positive_Count;
-      Count : Natural := Width;
+      Ch           : Character;
+      FileIndex    : Ada.Streams.Stream_IO.Positive_Count;
+      Count        : Natural := Width;
       LastStrIndex : Positive := Integer'Image(Integer'First)'Last;
-      StrIndex : Positive := 1;
-      IntStr : String (1 .. LastStrIndex) := (others => ' ');
+      StrIndex     : Positive := 1;
+      IntStr       : String (1 .. LastStrIndex) := (others => ' ');
    begin
       Success := True;
-      Item := 0;
+      Item    := 0;
       if Width = 0 then
          loop
             if EndOfFile(TheFile) then
@@ -534,8 +533,8 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   procedure NewLine ( TheFile : in out T;
-                       Spacing : in     Natural)
+   procedure NewLine (TheFile : in out T;
+                      Spacing : in     Natural)
    is
    begin
       if IsOut (TheFile) then
@@ -553,8 +552,8 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   procedure SkipLine ( TheFile  : in out T;
-                        Spacing  : in     Positive)
+   procedure SkipLine (TheFile  : in out T;
+                       Spacing  : in     Positive)
    is
       procedure SkipOneLine
       is
@@ -567,7 +566,7 @@ is
       end SkipOneLine;
 
    begin
-      if IsIn ( TheFile) then
+      if IsIn (TheFile) then
 
          for I in Positive range 1 .. Spacing loop
             SkipOneLine;
@@ -584,9 +583,9 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   procedure GetLine ( TheFile  : in out T;
-                       Item     :    out String;
-                       Stop     :    out Natural)
+   procedure GetLine (TheFile  : in out T;
+                      Item     :    out String;
+                      Stop     :    out Natural)
    is
       Strm : Ada.Streams.Stream_IO.Stream_Access;
    begin
@@ -614,7 +613,7 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   function EndOfFile ( TheFile : T ) return Boolean
+   function EndOfFile (TheFile : T) return Boolean
    is
       EOF : Boolean;
    begin
@@ -633,7 +632,7 @@ is
    --    EOL is either CF.LF or just LF.
    --
    ------------------------------------------------------------------
-   function EndOfLine ( TheFile : T ) return Boolean
+   function EndOfLine (TheFile : T) return Boolean
    is
       EOLChar : Character;
       FileIndex : Ada.Streams.Stream_IO.Positive_Count;
@@ -670,8 +669,8 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   procedure Create ( TheFile : in out T;
-                      Success :    out Boolean)
+   procedure Create (TheFile : in out T;
+                     Success :    out Boolean)
    is
    begin
 
@@ -713,11 +712,11 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   procedure Compare ( FileA        : in out T;
-                       FileB        : in out T;
-                       FilesTheSame :    out Boolean )
+   procedure Compare (FileA        : in out T;
+                      FileB        : in out T;
+                      FilesTheSame :    out Boolean)
    is
-      Success : Boolean;
+      Success      : Boolean;
       CharA, CharB : Character;
    begin
       if FileA.Name = FileB.Name then
@@ -737,8 +736,9 @@ is
                   if EndOfFile(FileA) and EndOfFile(FileB) then
                      exit;
                   end if;
-                  if (EndOfFile(FileA) and not EndOfFile(FileB)) or else
-                    (not EndOfFile(FileA) and EndOfFile(FileB)) then
+                  if (EndOfFile(FileA) and not EndOfFile(FileB))
+                    or else (not EndOfFile(FileA) and EndOfFile(FileB))
+                  then
                      Success := False;
                      exit;
                   end if;
@@ -759,11 +759,10 @@ is
       FilesTheSame := Success;
 
       Close(TheFile => FileA,
-               Success => Success);
+            Success => Success);
 
       Close(TheFile => FileB,
-               Success => Success);
-
+            Success => Success);
    end Compare;
 
    ------------------------------------------------------------------
@@ -772,9 +771,9 @@ is
    -- Implementation Notes:
    --    None.
    ------------------------------------------------------------------
-   procedure Copy ( FileA        : in out T;
-                    FileB        : in out T;
-                    Success      :    out Boolean)
+   procedure Copy (FileA        : in out T;
+                   FileB        : in out T;
+                   Success      :    out Boolean)
 
    is
       CharA : Character;
@@ -808,7 +807,6 @@ is
 
       Close(TheFile => FileB,
             Success => Success);
-
    end Copy;
 
    ------------------------------------------------------------------
@@ -817,9 +815,8 @@ is
    -- Implementation Notes:
    --    None.
    ------------------------------------------------------------------
-   procedure CreateDirectory ( DirName : in String;
-                               Success : out Boolean)
-
+   procedure CreateDirectory (DirName : in String;
+                              Success : out Boolean)
    is
     begin
        Success := True;

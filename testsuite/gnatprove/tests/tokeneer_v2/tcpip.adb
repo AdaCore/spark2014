@@ -141,10 +141,8 @@ is
    --    Adds socket to ReadSet, so shouldn't really be a function...
    --
    --------------------------------------------------------------------
-   function MsgToRead ( Server : in ServerT ) return Boolean is
-
+   function MsgToRead (Server : in ServerT) return Boolean is
       LocalReturn : Boolean := False;
-
    begin
 
       -- Add socket to the ReadSet, and check for a message
@@ -186,12 +184,11 @@ is
    --    we next attempt to SendMsg.
    --
    --------------------------------------------------------------------
-   procedure ReadMsg ( Server  : in     ServerT;
-                       Msg     :    out MessageT;
-                       Success :    out Boolean ) is
-
+   procedure ReadMsg (Server  : in     ServerT;
+                      Msg     :    out MessageT;
+                      Success :    out Boolean)
+   is
    begin
-
       Success := True;
 
       for i in MessageIndexT'Range loop
@@ -213,12 +210,10 @@ is
       -- For debugging...
       DebugOutput("Rcvd: " & Msg.Data(1..Msg.Length));
 
-
    exception
       when E : others =>
          Success := False;
          DebugOutput("Read Error.");
-
    end ReadMsg;
 
    --------------------------------------------------------------------
@@ -233,12 +228,11 @@ is
    --    until an exception is raised (to clear the channel).
    --
    --------------------------------------------------------------------
-   procedure SendMsg ( Server  : in     ServerT;
-                       Msg     : in     MessageT;
-                       Success :    out Boolean ) is
-
+   procedure SendMsg (Server  : in     ServerT;
+                      Msg     : in     MessageT;
+                      Success :    out Boolean)
+   is
    begin
-
       Success := False;
 
       GNAT.Sockets.Set ( Item   => WriteSet,
@@ -295,11 +289,9 @@ is
       -- For debugging...
       DebugOutput("Sent: " & Msg.Data(1..Msg.Length));
 
-
    exception
       when E : others =>
          DebugOutput("Send Error.");
-
    end SendMsg;
 
    ------------------------------------------------------------------
@@ -313,8 +305,7 @@ is
    --    Find the first quote, and check the value of the next two characters.
    --
    ------------------------------------------------------------------
-   function CommsIsOK (Msg : MessageT) return Boolean
-   is
+   function CommsIsOK (Msg : MessageT) return Boolean is
       CodeStart : MessageLengthT;
    begin
       CodeStart := Ada.Strings.Fixed.Index(Source  => Msg.Data(1..Msg.Length),
@@ -334,16 +325,14 @@ is
    --    Initializes the socket library.
    --
    --------------------------------------------------------------------
-   procedure ConnectToSPRE ( IsAdmin : in     Boolean;
-                             Success :    out Boolean) is
-
+   procedure ConnectToSPRE (IsAdmin : in     Boolean;
+                            Success :    out Boolean)
+   is
       Address      : GNAT.Sockets.Sock_Addr_Type := GNAT.Sockets.No_Sock_Addr;
       Server       : ServerT;
       DummyMessage : MessageT;
       ReadOK       : Boolean := False;
-
    begin
-
       -- First ensure that socket library is available.
       if WinSockState = Uninitialized then
 
@@ -405,7 +394,6 @@ is
       Success := ReadOK;
 
    exception
-
       when E : others =>
 
          if IsAdmin then
@@ -424,7 +412,6 @@ is
             GNAT.Sockets.Close_Socket (PortTo(Server).Socket);
          end if;
          Success := False;
-
    end ConnectToSPRE;
 
    --------------------------------------------------------------------
@@ -435,13 +422,12 @@ is
    --
    --------------------------------------------------------------------
    procedure DisconnectFromSPRE (IsAdmin : in     Boolean;
-                                 Success :    out Boolean) is
-
+                                 Success :    out Boolean)
+   is
       Address      : GNAT.Sockets.Sock_Addr_Type := GNAT.Sockets.No_Sock_Addr;
       Server       : ServerT;
       OtherDevice  : ServerT;
       SendOK       : Boolean  := False;
-
    begin
 
       if WinSockState = Initialized then
@@ -490,7 +476,6 @@ is
       Success := True;
 
    exception
-
       when E : others =>
 
          if IsAdmin then
@@ -509,7 +494,6 @@ is
             GNAT.Sockets.Close_Socket (PortTo(Server).Socket);
          end if;
          Success := False;
-
    end DisconnectFromSPRE;
 
    --------------------------------------------------------------------
@@ -562,13 +546,12 @@ is
    procedure SendAndReceive (IsAdmin  : in     Boolean;
                              Outgoing : in     MessageT;
                              Incoming :    out MessageT;
-                             Success  :    out Boolean) is
-
+                             Success  :    out Boolean)
+   is
       Address : GNAT.Sockets.Sock_Addr_Type := GNAT.Sockets.No_Sock_Addr;
       Server  : ServerT;
       SendOK  : Boolean := False;
       ReadOK  : Boolean := False;
-
    begin
 
       if WinSockState = Initialized then
@@ -609,12 +592,10 @@ is
       Success := SendOK and ReadOK and CommsIsOK(Msg => InComing);
 
    exception
-
       when E : others =>
 
          DebugOutput( "Error communicating with server. " );
          Success := False;
-
    end SendAndReceive;
 
    --------------------------------------------------------------------
@@ -624,7 +605,7 @@ is
    --    None.
    --
    --------------------------------------------------------------------
-   procedure Init (Success  :    out Boolean)
+   procedure Init (Success :    out Boolean)
    is
       Arg_Count : constant Natural := Ada.Command_Line.Argument_Count;
 

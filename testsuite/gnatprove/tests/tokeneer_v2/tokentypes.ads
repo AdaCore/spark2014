@@ -18,9 +18,7 @@
 with BasicTypes,
      CryptoTypes;
 
-package TokenTypes
-  with SPARK_Mode
-is
+package TokenTypes is
 
    ------------------------------------------------------------------
    -- Types

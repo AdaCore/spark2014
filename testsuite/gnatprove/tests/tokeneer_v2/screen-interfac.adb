@@ -4,11 +4,10 @@ is
    -----------
    -- Write --
    -----------
-   procedure Write
-     (Buffer   : in     String;
-      Colour   : in     Colours;
-      Coord    : in     XYCoordT;
-      OK       :    out Boolean)
+   procedure Write (Buffer : in     String;
+                    Colour : in     Colours;
+                    Coord  : in     XYCoordT;
+                    OK     :    out Boolean)
    is
    begin
       --  Generated stub: replace with real body!
@@ -18,12 +17,11 @@ is
    -----------------
    -- ClearRegion --
    -----------------
-   procedure ClearRegion
-     (Left    : in     ScreenXCoordT;
-      Top     : in     ScreenYCoordT;
-      Right   : in     ScreenXCoordT;
-      Bottom  : in     ScreenYCoordT;
-      OK      :    out Boolean)
+   procedure ClearRegion (Left   : in     ScreenXCoordT;
+                          Top    : in     ScreenYCoordT;
+                          Right  : in     ScreenXCoordT;
+                          Bottom : in     ScreenYCoordT;
+                          OK     :    out Boolean)
    is
    begin
       --  Generated stub: replace with real body!

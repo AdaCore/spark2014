@@ -57,11 +57,8 @@ is
    -- Implementation Notes:
    --    None.
    ------------------------------------------------------------------
-   function TheTokenPresence return BasicTypes.PresenceT
-   is
-   begin
-      return TokenReader.TheTokenPresence(Reader => TokenReader.User);
-   end TheTokenPresence;
+   function TheTokenPresence return BasicTypes.PresenceT is
+     (TokenReader.TheTokenPresence(Reader => TokenReader.User));
 
    ------------------------------------------------------------------
    -- TheTokenID
@@ -69,11 +66,8 @@ is
    -- Implementation Notes:
    --    None.
    ------------------------------------------------------------------
-   function TheTokenID return TokenTypes.TokenIDT
-   is
-   begin
-      return TokenReader.TheTokenID(Reader => TokenReader.User);
-   end TheTokenID;
+   function TheTokenID return TokenTypes.TokenIDT is
+     (TokenReader.TheTokenID(Reader => TokenReader.User));
 
    ------------------------------------------------------------------
    -- TheTokenTry
@@ -81,11 +75,8 @@ is
    -- Implementation Notes:
    --    None.
    ------------------------------------------------------------------
-   function TheTokenTry return  TokenTypes.TryT
-   is
-   begin
-      return TokenReader.TheTokenTry(Reader => TokenReader.User);
-   end TheTokenTry;
+   function TheTokenTry return TokenTypes.TryT is
+     (TokenReader.TheTokenTry(Reader => TokenReader.User));
 
    ------------------------------------------------------------------
    -- GetCertificate
@@ -94,9 +85,9 @@ is
    --    None.
    ------------------------------------------------------------------
    procedure GetCertificate
-     (CertType  : in     CertTypes.CertificateT;
-      RawCert   :    out CertTypes.RawCertificateT;
-      Found     :    out Boolean)
+     (CertType : in     CertTypes.CertificateT;
+      RawCert  :    out CertTypes.RawCertificateT;
+      Found    :    out Boolean)
    is
    begin
       TokenReader.GetCertificate
@@ -113,8 +104,8 @@ is
    --    None.
    ------------------------------------------------------------------
    procedure WriteAuthCertificate
-     (RawCert   : in     CertTypes.RawCertificateT;
-      Success   :    out Boolean)
+     (RawCert : in     CertTypes.RawCertificateT;
+      Success :    out Boolean)
    is
    begin
       TokenReader.WriteAuthCertificate

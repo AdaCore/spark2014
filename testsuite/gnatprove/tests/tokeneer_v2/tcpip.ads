@@ -63,7 +63,7 @@ package TcpIp is
    --    Opens TCP/IP connections to both the Portal and Admin ports.
    --
    --------------------------------------------------------------------
-   procedure OpenAll(Success : out Boolean)
+   procedure OpenAll (Success : out Boolean)
      with Global => null;
 
    --------------------------------------------------------------------

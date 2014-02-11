@@ -29,20 +29,19 @@ package CryptoTypes is
 
    type IssuerIDT is range 0..2**32 - 1;
 
-   type IssuerT is
-      record
-         ID         : IssuerIDT;
-         NameLength : NameCountT;
-         Name       : NameT;
-      end record;
+   type IssuerT is record
+      ID         : IssuerIDT;
+      NameLength : NameCountT;
+      Name       : NameT;
+   end record;
 
-   NullIssuer : constant IssuerT
-     := IssuerT'(ID         => IssuerIDT'First,
-                 NameLength => NameCountT'First,
-                 Name       => BlankName);
+   NullIssuer : constant IssuerT :=
+     IssuerT'(ID         => IssuerIDT'First,
+              NameLength => NameCountT'First,
+              Name       => BlankName);
 
-   type AlgorithmT is (
-      -- signing/verifying
+   type AlgorithmT is
+     (-- signing/verifying
       RSA,
       -- digesting
       MD2,
@@ -55,8 +54,7 @@ package CryptoTypes is
       MD5_RSA,
       SHA1_RSA,
       RIPEMD128_RSA,
-      RIPEMD160_RSA
-      );
+      RIPEMD160_RSA);
 
 
    -- KeyType
@@ -69,12 +67,11 @@ package CryptoTypes is
    type KeyLengthT is range 0..128;
 
    -- KEYPART
-   type KeyPartT is
-      record
-         AlgorithmID : AlgorithmT;
-         KeyID       : KeyIDT;
-         KeyLength   : KeyLengthT;
-      end record;
+   type KeyPartT is record
+      AlgorithmID : AlgorithmT;
+      KeyID       : KeyIDT;
+      KeyLength   : KeyLengthT;
+   end record;
 
    NullKeyPart : constant KeyPartT :=
      KeyPartT'(AlgorithmID => AlgorithmT'First,

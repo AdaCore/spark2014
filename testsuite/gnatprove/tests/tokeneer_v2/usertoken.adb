@@ -28,20 +28,20 @@ use type CertTypes.IDT;
 with PrivTypes;
 use type PrivTypes.ClassT;
 
-with AuditLog;
-with Cert;
-with Cert.ID;
-with Cert.Attr;
-with Cert.Attr.Priv;
-with Cert.Attr.Auth;
-with Cert.Attr.IandA;
-with CertProcessing;
-with UserToken.Interfac;
-with CryptoTypes;
-with Clock;
-with ConfigData;
-with KeyStore;
-with CertificateStore;
+with AuditLog,
+     Cert,
+     Cert.ID,
+     Cert.Attr,
+     Cert.Attr.Priv,
+     Cert.Attr.Auth,
+     Cert.Attr.IandA,
+     CertProcessing,
+     CertificateStore,
+     Clock,
+     ConfigData,
+     CryptoTypes,
+     KeyStore,
+     UserToken.Interfac;
 
 package body UserToken
   with Refined_State => (State  => (TokenPresence,
@@ -356,8 +356,7 @@ is
    -- Implementation Notes:
    --    None.
    ------------------------------------------------------------------
-   function IsPresent return Boolean is
-     (TokenPresence = BasicTypes.Present)
+   function IsPresent return Boolean is (TokenPresence = BasicTypes.Present)
      with Refined_Global => TokenPresence;
 
    ------------------------------------------------------------------
@@ -366,7 +365,7 @@ is
    -- Implementation Notes:
    --    None.
    ------------------------------------------------------------------
-   procedure ReadAndCheckAuthCert(AuthCertOK :    out Boolean)
+   procedure ReadAndCheckAuthCert (AuthCertOK :    out Boolean)
      with Refined_Global  => (Input  => (Clock.CurrentTime,
                                          Clock.Now,
                                          ConfigData.State,
@@ -964,7 +963,6 @@ is
          end if;
       end CheckIandACert;
 
-
    -----------------------------------------------------------------
    -- begin ReadAndCheck
    -----------------------------------------------------------------
@@ -1005,7 +1003,7 @@ is
    -- Implementation Notes:
    --    None.
    ------------------------------------------------------------------
-   procedure AddAuthCert( Success : out Boolean)
+   procedure AddAuthCert (Success : out Boolean)
      with Refined_Global  => (Input  => (CertificateStore.State,
                                          Clock.CurrentTime,
                                          Clock.Now,

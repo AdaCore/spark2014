@@ -39,7 +39,8 @@ is
    -- effectively a refinement of this proof function.    --
    ---------------------------------------------------------
    function IsAlarming return Boolean
-     with Global => null;
+     with Global     => null,
+          Convention => Ghost;
 
    ------------------------------------------------------------------
    -- UpdateDevice

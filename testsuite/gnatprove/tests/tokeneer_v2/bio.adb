@@ -139,13 +139,15 @@ is
    ------------------------------------------------------------------
    function MakeDescription
      (Text        : String;
-      ReturnValue : BasicTypes.Unsigned32T) return AuditTypes.DescriptionT
+      ReturnValue : BasicTypes.Unsigned32T)
+     return AuditTypes.DescriptionT
      with Global => null;
 
    function MakeDescription
      (Text        : String;
-      ReturnValue : BasicTypes.Unsigned32T) return AuditTypes.DescriptionT
-     with SPARK_Mode => Off  --  concatenation
+      ReturnValue : BasicTypes.Unsigned32T)
+     return AuditTypes.DescriptionT
+     with SPARK_Mode => Off
    is
       Result      : AuditTypes.DescriptionT := AuditTypes.NoDescription;
       TheCodeName : ReturnT;

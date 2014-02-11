@@ -109,7 +109,7 @@ is
      := "MINPRESERVEDLOGSIZE ";
    AlarmThresholdTitle      : constant AlarmThresholdTextT
      := "ALARMTHRESHOLDSIZE ";
-   SystemMaxFarTitle      : constant SystemMaxFarTextT
+   SystemMaxFarTitle        : constant SystemMaxFarTextT
      := "SYSTEMMAXFAR ";
 
    subtype ClassTextI is Positive range 1..12;
@@ -190,8 +190,7 @@ is
       TheMinEntryClass        :    out PrivTypes.ClassT;
       TheMinPreservedLogSize  :    out AuditTypes.FileSizeT;
       TheAlarmThresholdSize   :    out AuditTypes.FileSizeT;
-      TheSystemMaxFar         :    out IandATypes.FarT
-      )
+      TheSystemMaxFar         :    out IandATypes.FarT)
    is
       OK : Boolean;
 
@@ -208,7 +207,9 @@ is
       procedure ReadDuration(Value : out DurationT)
         with Global  => (In_Out => TheFile,
                          Output => Success),
-             Depends => ((TheFile, Value, Success) => TheFile)
+             Depends => ((TheFile,
+                          Value,
+                          Success) => TheFile)
       is
          RawDuration : Integer;
       begin
@@ -255,7 +256,9 @@ is
       procedure ReadFileSize( Value : out AuditTypes.FileSizeT)
         with Global  => (In_Out => TheFile,
                          Output => Success),
-             Depends => ((TheFile, Value, Success) => TheFile)
+             Depends => ((TheFile,
+                          Value,
+                          Success) => TheFile)
       is
          RawSize : Integer;
       begin
@@ -290,7 +293,9 @@ is
       procedure ReadClass( Value : out PrivTypes.ClassT)
         with Global  => (In_Out => TheFile,
                          Output => Success),
-             Depends => ((TheFile, Value, Success) => TheFile)
+             Depends => ((TheFile,
+                          Value,
+                          Success) => TheFile)
       is
          RawClass : ClassTextT;
          Stop     : Natural;
@@ -307,8 +312,7 @@ is
                Matched := True;
                for I in ClassTextI range 1 .. Stop loop
 
-                  pragma Loop_Invariant (Stop = Stop'Loop_Entry and
-                                         I <= Stop);
+                  pragma Loop_Invariant (Stop = Stop'Loop_Entry and I <= Stop);
 
                   if ClassStringLookUp(C).Text(I) /= RawClass(I) then
                      Matched := False;
@@ -338,7 +342,9 @@ is
       procedure ReadWorkingHours(TheDuration : out Clock.DurationT)
         with Global  => (In_Out => TheFile,
                          Output => Success),
-             Depends => ((TheFile, Success, TheDuration) => TheFile)
+             Depends => ((TheFile,
+                          Success,
+                          TheDuration) => TheFile)
       is
          RawHours   : Integer;
          RawMinutes : Integer;
@@ -380,7 +386,9 @@ is
       procedure ReadFar( Value : out IandATypes.FarT)
         with Global  => (In_Out => TheFile,
                          Output => Success),
-             Depends => ((TheFile, Value, Success) => TheFile)
+             Depends => ((TheFile,
+                          Value,
+                          Success) => TheFile)
       is
          RawFar : Integer;
       begin
@@ -413,8 +421,11 @@ is
       ------------------------------------------------------------------
       procedure ReadAlarmSilent
         with Global  => (In_Out => TheFile,
-                         Output => (Success, TheAlarmSilentDuration)),
-             Depends => ((TheFile, Success, TheAlarmSilentDuration) => TheFile)
+                         Output => (Success,
+                                    TheAlarmSilentDuration)),
+             Depends => ((TheFile,
+                          Success,
+                          TheAlarmSilentDuration) => TheFile)
       is
          TheTitle : AlarmSilentTextT;
          Stop     : Natural;
@@ -442,8 +453,11 @@ is
       ------------------------------------------------------------------
       procedure ReadLatchUnlock
         with Global  => (In_Out => TheFile,
-                         Output => (Success, TheLatchUnlockDuration)),
-             Depends => ((TheFile, Success, TheLatchUnlockDuration) => TheFile)
+                         Output => (Success,
+                                    TheLatchUnlockDuration)),
+             Depends => ((TheFile,
+                          Success,
+                          TheLatchUnlockDuration) => TheFile)
       is
          TheTitle : LatchUnlockTextT;
          Stop     : Natural;
@@ -471,8 +485,11 @@ is
       ------------------------------------------------------------------
       procedure ReadFingerWait
         with Global  => (In_Out => TheFile,
-                         Output => (Success, TheFingerWaitDuration)),
-             Depends => ((TheFile, Success, TheFingerWaitDuration) => TheFile)
+                         Output => (Success,
+                                    TheFingerWaitDuration)),
+             Depends => ((TheFile,
+                          Success,
+                          TheFingerWaitDuration) => TheFile)
       is
          TheTitle : FingerWaitTextT;
          Stop     : Natural;
@@ -499,8 +516,11 @@ is
       ------------------------------------------------------------------
       procedure ReadTokenRemoval
         with Global  => (In_Out => TheFile,
-                         Output => (Success, TheTokenRemovalDuration)),
-             Depends => ((TheFile, Success, TheTokenRemovalDuration) => TheFile)
+                         Output => (Success,
+                                    TheTokenRemovalDuration)),
+             Depends => ((TheFile,
+                          Success,
+                          TheTokenRemovalDuration) => TheFile)
       is
          TheTitle : TokenRemovalTextT;
          Stop     : Natural;
@@ -509,7 +529,8 @@ is
          TheTokenRemovalDuration := DurationT'First;
          File.GetString(TheFile, TheTitle, Stop);
          if Stop = TheTitle'Last and then
-           TheTitle = TokenRemovalTitle then
+           TheTitle = TokenRemovalTitle
+         then
             ReadDuration(TheTokenRemovalDuration);
          else
             Success := False;
@@ -528,8 +549,11 @@ is
       ------------------------------------------------------------------
       procedure ReadClearance
         with Global  => (In_Out => TheFile,
-                         Output => (Success, TheEnclaveClearance)),
-             Depends => ((TheFile, Success, TheEnclaveClearance) => TheFile)
+                         Output => (Success,
+                                    TheEnclaveClearance)),
+             Depends => ((TheFile,
+                          Success,
+                          TheEnclaveClearance) => TheFile)
       is
          TheTitle : ClearanceTextT;
          Stop     : Natural;
@@ -557,8 +581,11 @@ is
       ------------------------------------------------------------------
       procedure ReadWorkingStart
         with Global  => (In_Out => TheFile,
-                         Output => (Success, TheWorkingHoursStart)),
-             Depends => ((TheFile, Success, TheWorkingHoursStart) => TheFile)
+                         Output => (Success,
+                                    TheWorkingHoursStart)),
+             Depends => ((TheFile,
+                          Success,
+                          TheWorkingHoursStart) => TheFile)
       is
          TheTitle : WorkingStartTextT;
          Stop     : Natural;
@@ -566,7 +593,8 @@ is
          TheWorkingHoursStart := Clock.DurationT'First;
          File.GetString(TheFile, TheTitle, Stop);
          if Stop = TheTitle'Last and then
-           TheTitle = WorkingStartTitle then
+           TheTitle = WorkingStartTitle
+         then
             ReadWorkingHours(TheWorkingHoursStart);
          else
             Success := False;
@@ -585,8 +613,11 @@ is
       ------------------------------------------------------------------
       procedure ReadWorkingEnd
         with Global  => (In_Out => TheFile,
-                         Output => (Success, TheWorkingHoursEnd)),
-             Depends => ((TheFile, Success, TheWorkingHoursEnd) => TheFile)
+                         Output => (Success,
+                                    TheWorkingHoursEnd)),
+             Depends => ((TheFile,
+                          Success,
+                          TheWorkingHoursEnd) => TheFile)
       is
          TheTitle : WorkingEndTextT;
          Stop     : Natural;
@@ -614,8 +645,11 @@ is
       ------------------------------------------------------------------
       procedure ReadAuthDuration
         with Global  => (In_Out => TheFile,
-                         Output => (Success, TheMaxAuthDuration)),
-             Depends => ((TheFile, Success, TheMaxAuthDuration) => TheFile)
+                         Output => (Success,
+                                    TheMaxAuthDuration)),
+             Depends => ((TheFile,
+                          Success,
+                          TheMaxAuthDuration) => TheFile)
       is
          TheTitle : MaxAuthDurationTextT;
          Stop     : Natural;
@@ -643,8 +677,11 @@ is
       ------------------------------------------------------------------
       procedure ReadAccessPolicy
         with Global  => (In_Out => TheFile,
-                         Output => (Success, TheAccessPolicy)),
-             Depends => ((TheFile, Success, TheAccessPolicy) => TheFile)
+                         Output => (Success,
+                                    TheAccessPolicy)),
+             Depends => ((TheFile,
+                          Success,
+                          TheAccessPolicy) => TheFile)
       is
          TheTitle        : AccessPolicyTextT;
          RawAccessPolicy : AccessTextT;
@@ -666,7 +703,9 @@ is
                   for I in AccessTextI range 1 .. Stop loop
                      pragma Loop_Invariant (Stop = Stop'Loop_Entry and
                                             I <= Stop);
-                     if AccessStringLookUp(AP).Text(I) /= RawAccessPolicy(I) then
+                     if AccessStringLookUp(AP).Text(I) /=
+                       RawAccessPolicy(I)
+                     then
                         Matched := False;
                         exit;
                      end if;
@@ -697,8 +736,11 @@ is
       ------------------------------------------------------------------
       procedure ReadMinEntryClass
         with Global  => (In_Out => TheFile,
-                         Output => (Success, TheMinEntryClass)),
-             Depends => ((TheFile, Success, TheMinEntryClass) => TheFile)
+                         Output => (Success,
+                                    TheMinEntryClass)),
+             Depends => ((TheFile,
+                          Success,
+                          TheMinEntryClass) => TheFile)
       is
          TheTitle : MinEntryClassTextT;
          Stop     : Natural;
@@ -727,8 +769,11 @@ is
       ------------------------------------------------------------------
       procedure ReadMinPreservedLog
         with Global  => (In_Out => TheFile,
-                         Output => (Success, TheMinPreservedLogSize)),
-             Depends => ((TheFile, Success, TheMinPreservedLogSize) => TheFile)
+                         Output => (Success,
+                                    TheMinPreservedLogSize)),
+             Depends => ((TheFile,
+                          Success,
+                          TheMinPreservedLogSize) => TheFile)
       is
          TheTitle : MinPreservedLogSizeTextT;
          Stop     : Natural;
@@ -930,8 +975,7 @@ is
       TheMinEntryClass        : in     PrivTypes.ClassT;
       TheMinPreservedLogSize  : in     AuditTypes.FileSizeT;
       TheAlarmThresholdSize   : in     AuditTypes.FileSizeT;
-      TheSystemMaxFar         : in     IandATypes.FarT
-      )
+      TheSystemMaxFar         : in     IandATypes.FarT)
      with Refined_Global  => (In_Out => ConfigFile),
           Refined_Depends => ((Success,
                                Configfile) => (ConfigFile,
@@ -1001,9 +1045,9 @@ is
                         Stop    => 0);
          File.PutInteger(TheFile => ConfigFile,
                          Item    => Integer(TheAlarmSilentDuration) / 10,
-                         Width    => 0);
-         File.NewLine(TheFile   => ConfigFile,
-                      Spacing   => 1);
+                         Width   => 0);
+         File.NewLine(TheFile => ConfigFile,
+                      Spacing => 1);
 
          -- write LatchUnlockDuration (convert from 1/10s to secs)
          File.PutString(TheFile => ConfigFile,
@@ -1011,9 +1055,9 @@ is
                         Stop    => 0);
          File.PutInteger(TheFile => ConfigFile,
                          Item    => Integer(TheLatchUnlockDuration) / 10,
-                         Width    => 0);
-         File.NewLine(TheFile   => ConfigFile,
-                      Spacing   => 1);
+                         Width   => 0);
+         File.NewLine(TheFile => ConfigFile,
+                      Spacing => 1);
 
          -- write TokenRemovalDuration (convert from 1/10s to secs)
          File.PutString(TheFile => ConfigFile,
@@ -1021,9 +1065,9 @@ is
                         Stop    => 0);
          File.PutInteger(TheFile => ConfigFile,
                          Item    => Integer(TheTokenRemovalDuration) / 10,
-                         Width    => 0);
-         File.NewLine(TheFile   => ConfigFile,
-                      Spacing   => 1);
+                         Width   => 0);
+         File.NewLine(TheFile => ConfigFile,
+                      Spacing => 1);
 
          -- write FingerWaitDuration (convert from 1/10s to secs)
          File.PutString(TheFile => ConfigFile,
@@ -1031,9 +1075,9 @@ is
                         Stop    => 0);
          File.PutInteger(TheFile => ConfigFile,
                          Item    => Integer(TheFingerWaitDuration) / 10,
-                         Width    => 0);
-         File.NewLine(TheFile   => ConfigFile,
-                      Spacing   => 1);
+                         Width   => 0);
+         File.NewLine(TheFile => ConfigFile,
+                      Spacing => 1);
 
          -- write Clearance
          File.PutString(TheFile => ConfigFile,
@@ -1041,9 +1085,10 @@ is
                         Stop    => 0);
          File.PutString(TheFile => ConfigFile,
                         Text    => ClassStringLookup(TheEnclaveClearance).Text,
-                        Stop    => ClassStringLookup(TheEnclaveClearance).Length);
-         File.NewLine(TheFile   => ConfigFile,
-                      Spacing   => 1);
+                        Stop    =>
+                          ClassStringLookup(TheEnclaveClearance).Length);
+         File.NewLine(TheFile => ConfigFile,
+                      Spacing => 1);
 
          -- write WorkingStart (convert from 1/10 sec to HH:MM)
          File.PutString(TheFile => ConfigFile,
@@ -1052,8 +1097,8 @@ is
          File.PutString(TheFile => ConfigFile,
                         Text    => WorkingHoursText(TheWorkingHoursStart),
                         Stop    => 0);
-         File.NewLine(TheFile   => ConfigFile,
-                      Spacing   => 1);
+         File.NewLine(TheFile => ConfigFile,
+                      Spacing => 1);
 
          -- write WorkingEnd (convert from 1/10 sec to HH:MM)
          File.PutString(TheFile => ConfigFile,
@@ -1062,8 +1107,8 @@ is
          File.PutString(TheFile => ConfigFile,
                         Text    => WorkingHoursText(TheWorkingHoursEnd),
                         Stop    => 0);
-         File.NewLine(TheFile   => ConfigFile,
-                      Spacing   => 1);
+         File.NewLine(TheFile => ConfigFile,
+                      Spacing => 1);
 
          -- write MaxAuthDuration (convert from 1/10 sec to HH:MM)
          File.PutString(TheFile => ConfigFile,
@@ -1072,8 +1117,8 @@ is
          File.PutString(TheFile => ConfigFile,
                         Text    => WorkingHoursText(TheMaxAuthDuration),
                         Stop    => 0);
-         File.NewLine(TheFile   => ConfigFile,
-                      Spacing   => 1);
+         File.NewLine(TheFile => ConfigFile,
+                      Spacing => 1);
 
          -- write AccessPolicy
          File.PutString(TheFile => ConfigFile,
@@ -1082,8 +1127,8 @@ is
          File.PutString(TheFile => ConfigFile,
                         Text    => AccessStringLookup(TheAccessPolicy).Text,
                         Stop    => AccessStringLookup(TheAccessPolicy).Length);
-         File.NewLine(TheFile   => ConfigFile,
-                      Spacing   => 1);
+         File.NewLine(TheFile => ConfigFile,
+                      Spacing => 1);
 
          -- write MinEntryClass
          File.PutString(TheFile => ConfigFile,
@@ -1092,8 +1137,8 @@ is
          File.PutString(TheFile => ConfigFile,
                         Text    => ClassStringLookup(TheMinEntryClass).Text,
                         Stop    => ClassStringLookup(TheMinEntryClass).Length);
-         File.NewLine(TheFile   => ConfigFile,
-                      Spacing   => 1);
+         File.NewLine(TheFile => ConfigFile,
+                      Spacing => 1);
 
          -- write MinPreservedLogSize (convert from Bytes to KBytes)
          File.PutString(TheFile => ConfigFile,
@@ -1101,9 +1146,9 @@ is
                         Stop    => 0);
          File.PutInteger(TheFile => ConfigFile,
                          Item    => Integer(TheMinPreservedLogSize) / 2**10,
-                         Width    => 0);
-         File.NewLine(TheFile   => ConfigFile,
-                      Spacing   => 1);
+                         Width   => 0);
+         File.NewLine(TheFile => ConfigFile,
+                      Spacing => 1);
 
          -- write AlarmThreshold (convert from Bytes to KBytes)
          File.PutString(TheFile => ConfigFile,
@@ -1111,9 +1156,9 @@ is
                         Stop    => 0);
          File.PutInteger(TheFile => ConfigFile,
                          Item    => Integer(TheAlarmThresholdSize) / 2**10,
-                         Width    => 0);
-         File.NewLine(TheFile   => ConfigFile,
-                      Spacing   => 1);
+                         Width   => 0);
+         File.NewLine(TheFile => ConfigFile,
+                      Spacing => 1);
 
 
          -- write SystemMaxFar
@@ -1122,9 +1167,9 @@ is
                         Stop    => 0);
          File.PutInteger(TheFile => ConfigFile,
                          Item    => Integer(TheSystemMaxFar),
-                         Width    => 0);
-         File.NewLine(TheFile   => ConfigFile,
-                      Spacing   => 1);
+                         Width   => 0);
+         File.NewLine(TheFile => ConfigFile,
+                      Spacing => 1);
 
       end if;
 
@@ -1223,7 +1268,7 @@ is
                           MinEntryClass,
                           MinPreservedLogSize,
                           AlarmThresholdSize,
-                          SystemMaxFar) => null)
+                          SystemMaxFar)         => null)
       is
       begin
 
@@ -1324,8 +1369,7 @@ is
       TheMinEntryClass        : in     PrivTypes.ClassT;
       TheMinPreservedLogSize  : in     AuditTypes.FileSizeT;
       TheAlarmThresholdSize   : in     AuditTypes.FileSizeT;
-      TheSystemMaxFar         : in     IandATypes.FarT
-      )
+      TheSystemMaxFar         : in     IandATypes.FarT)
      with Refined_Global  => (Output =>  (LatchUnlockDuration,
                                           AlarmSilentDuration,
                                           FingerWaitDuration,
@@ -1389,8 +1433,7 @@ is
       TheMinEntryClass        : out PrivTypes.ClassT;
       TheMinPreservedLogSize  : out AuditTypes.FileSizeT;
       TheAlarmThresholdSize   : out AuditTypes.FileSizeT;
-      TheSystemMaxFar         : out IandATypes.FarT
-      )
+      TheSystemMaxFar         : out IandATypes.FarT)
      with Refined_Global  => (LatchUnlockDuration,
                               AlarmSilentDuration,
                               FingerWaitDuration,
@@ -1517,7 +1560,8 @@ is
    ------------------------------------------------------------------
    function IsInEntryPeriod
      (Class   : PrivTypes.ClassT;
-      TheTime : Clock.TimeT) return Boolean
+      TheTime : Clock.TimeT)
+     return Boolean
      with Refined_Global => (WorkingHoursStart,
                              WorkingHoursEnd,
                              AccessPolicy,
@@ -1537,7 +1581,8 @@ is
                   Clock.AddDuration(DayStart, WorkingHoursStart))
               or Clock.GreaterThan
                  (TheTime,
-                  Clock.AddDuration(DayStart, WorkingHoursEnd)) then
+                  Clock.AddDuration(DayStart, WorkingHoursEnd))
+            then
                Result := False;
             else
                Result := True;

@@ -109,11 +109,10 @@ package CertProcessing is
    -- Traceunit : C.CertProcessing.ExtractIDCertData
    -- Traceto   : FD.Types.Certificates
    ------------------------------------------------------------------
-   procedure ExtractIDCertData(
-                   RawIDCert      : in     CertTypes.RawCertificateT;
-                   IDCert         :    out IDCertDataT;
-                   ExtractSuccess :    out Boolean
-                   )
+   procedure ExtractIDCertData
+     (RawIDCert      : in     CertTypes.RawCertificateT;
+      IDCert         :    out IDCertDataT;
+      ExtractSuccess :    out Boolean)
      with Global  => null,
           Depends => ((ExtractSuccess,
                        IDCert)         => RawIDCert);
@@ -128,16 +127,13 @@ package CertProcessing is
    -- Traceunit : C.CertProcessing.ExtractPrivCertData
    -- Traceto   : FD.Types.Certificates
    ------------------------------------------------------------------
-
-   procedure ExtractPrivCertData(
-                   RawPrivCert    : in     CertTypes.RawCertificateT;
-                   PrivCert       :    out PrivCertDataT;
-                   ExtractSuccess :    out Boolean
-                   )
+   procedure ExtractPrivCertData
+     (RawPrivCert    : in     CertTypes.RawCertificateT;
+      PrivCert       :    out PrivCertDataT;
+      ExtractSuccess :    out Boolean)
      with Global  => null,
           Depends => ((ExtractSuccess,
                        PrivCert)       => RawPrivCert);
-
 
    ------------------------------------------------------------------
    -- ExtractIACertData
@@ -149,16 +145,13 @@ package CertProcessing is
    -- Traceunit : C.CertProcessing.ExtractIACertData
    -- Traceto   : FD.Types.Certificates
    ------------------------------------------------------------------
-
-   procedure ExtractIACertData(
-                   RawIACert      : in     CertTypes.RawCertificateT;
-                   IACert         :    out IACertDataT;
-                   ExtractSuccess :    out Boolean
-                   )
+   procedure ExtractIACertData
+     (RawIACert      : in     CertTypes.RawCertificateT;
+      IACert         :    out IACertDataT;
+      ExtractSuccess :    out Boolean)
      with Global  => null,
           Depends => ((ExtractSuccess,
                        IACert)         => RawIACert);
-
 
    ------------------------------------------------------------------
    -- ExtractAuthCertData
@@ -170,16 +163,13 @@ package CertProcessing is
    -- Traceunit : C.CertProcessing.ExtractAuthCertData
    -- Traceto   : FD.Types.Certificates
    ------------------------------------------------------------------
-
-   procedure ExtractAuthCertData(
-                   RawAuthCert    : in     CertTypes.RawCertificateT;
-                   AuthCert       :    out AuthCertDataT;
-                   ExtractSuccess :    out Boolean
-                   )
+   procedure ExtractAuthCertData
+     (RawAuthCert    : in     CertTypes.RawCertificateT;
+      AuthCert       :    out AuthCertDataT;
+      ExtractSuccess :    out Boolean)
      with Global  => null,
           Depends => ((AuthCert,
                        ExtractSuccess) => RawAuthCert);
-
 
    ------------------------------------------------------------------
    -- ObtainRawData
@@ -190,7 +180,6 @@ package CertProcessing is
    -- Traceunit : C.CertProcessing.ObtainRawData
    -- Traceto   : FD.Types.Certificates
    ------------------------------------------------------------------
-
    procedure ObtainRawData(
                    RawCert       : in     CertTypes.RawCertificateT;
                    RawData       :    out CertTypes.RawDataT;
@@ -199,7 +188,6 @@ package CertProcessing is
      with Global  => null,
           Depends => ((ObtainSuccess,
                        RawData)       => RawCert);
-
 
    ------------------------------------------------------------------
    -- ObtainSignatureData
@@ -210,7 +198,6 @@ package CertProcessing is
    -- Traceunit : C.CertProcessing.ObtainSignatureData
    -- Traceto   : FD.Types.Certificates
    ------------------------------------------------------------------
-
    procedure ObtainSignatureData(
                    RawCert       : in     CertTypes.RawCertificateT;
                    SignatureData :    out CertTypes.SignatureT;
@@ -219,7 +206,6 @@ package CertProcessing is
      with Global  => null,
           Depends => ((ObtainSuccess,
                        SignatureData) => RawCert);
-
 
    ------------------------------------------------------------------
    -- ConstructAuthCert
@@ -232,14 +218,11 @@ package CertProcessing is
    -- Traceto   : FD.Types.Certificates
    --             FD.Certificate.NewAuthCert
    ------------------------------------------------------------------
-
-   procedure ConstructAuthCert(
-                   AuthCert            : in     AuthCertDataT;
-                   UnsignedRawAuthCert :    out CertTypes.RawCertificateT
-                   )
+   procedure ConstructAuthCert
+     (AuthCert            : in     AuthCertDataT;
+      UnsignedRawAuthCert :    out CertTypes.RawCertificateT)
      with Global  => null,
           Depends => (UnsignedRawAuthCert => AuthCert);
-
 
    ------------------------------------------------------------------
    -- AddAuthSignature
@@ -251,11 +234,10 @@ package CertProcessing is
    -- Traceunit : C.CertProcessing.AddAuthSignature
    -- Traceto   : FD.Certificate.NewAuthCert
    ------------------------------------------------------------------
-
-   procedure AddAuthSignature(
-                   UnsignedRawAuthCert : in     CertTypes.RawCertificateT;
-                   SignatureData       : in     CertTypes.SignatureT;
-                   SignedRawAuthCert   :    out CertTypes.RawCertificateT)
+   procedure AddAuthSignature
+     (UnsignedRawAuthCert : in     CertTypes.RawCertificateT;
+      SignatureData       : in     CertTypes.SignatureT;
+      SignedRawAuthCert   :    out CertTypes.RawCertificateT)
      with Global  => null,
           Depends => (SignedRawAuthCert => (SignatureData,
                                             UnsignedRawAuthCert));

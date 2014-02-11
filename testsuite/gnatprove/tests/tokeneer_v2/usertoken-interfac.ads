@@ -130,9 +130,9 @@ is
    --
    ------------------------------------------------------------------
    procedure GetCertificate
-     (CertType  : in     CertTypes.CertificateT;
-      RawCert   :    out CertTypes.RawCertificateT;
-      Found     :    out Boolean)
+     (CertType : in     CertTypes.CertificateT;
+      RawCert  :    out CertTypes.RawCertificateT;
+      Found    :    out Boolean)
      with Global  => (Input  => (Input,
                                  State),
                       In_Out => Status),
@@ -154,8 +154,8 @@ is
    --
    ------------------------------------------------------------------
    procedure WriteAuthCertificate
-     (RawCert   : in     CertTypes.RawCertificateT;
-      Success   :    out Boolean)
+     (RawCert : in     CertTypes.RawCertificateT;
+      Success :    out Boolean)
      with Global  => (Input  => State,
                       Output => Output,
                       In_Out => Status),

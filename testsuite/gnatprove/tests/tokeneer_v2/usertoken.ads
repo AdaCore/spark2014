@@ -31,9 +31,11 @@ with AuditLog,
      ConfigData,
      CryptoTypes,
      IandATypes,
+     KeyStore,
      PrivTypes,
      TokenTypes;
-with KeyStore; use KeyStore;
+
+use KeyStore;
 
 package UserToken
   with Abstract_State => (State,
@@ -56,7 +58,6 @@ is
    -- Traceunit: C.UserToken.Init
    -- Traceto: FD.TIS.TISStartup
    ------------------------------------------------------------------
-
    procedure Init
      with Global  => (Input  => (Clock.Now,
                                  ConfigData.State),
@@ -175,7 +176,7 @@ is
    -- Traceunit : C.UserToken.ReadAndCheckAuthCert
    -- Traceto : FD.UserToken.UserTokenWithOKAuthCert
    ------------------------------------------------------------------
-   procedure ReadAndCheckAuthCert(AuthCertOK :    out Boolean)
+   procedure ReadAndCheckAuthCert (AuthCertOK :    out Boolean)
      with Global  => (Input  => (Clock.CurrentTime,
                                  Clock.Now,
                                  ConfigData.State,
@@ -259,7 +260,7 @@ is
    -- Traceunit : C.UserToken.AddAuthCert
    -- Traceto   : FD.UserToken.AddAuthCertToUserToken
    ------------------------------------------------------------------
-   procedure AddAuthCert( Success : out Boolean)
+   procedure AddAuthCert (Success : out Boolean)
      with Global  => (Input  => (CertificateStore.State,
                                  Clock.CurrentTime,
                                  Clock.Now,

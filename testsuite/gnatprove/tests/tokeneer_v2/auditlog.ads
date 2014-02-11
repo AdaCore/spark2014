@@ -31,7 +31,8 @@ is
    --  to refer to types and variables that are declared in the body
    --  and are not visible here and it acts as an invariant.
    function Valid_NumberLogEntries return Boolean
-     with Global => State;
+     with Global     => State,
+          Convention => Ghost;
 
    ------------------------------------------------------------------
    -- Types

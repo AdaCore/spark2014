@@ -249,7 +249,7 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   procedure ClearConfigData(OK : out Boolean)
+   procedure ClearConfigData (OK : out Boolean)
      with Global  => (Output => Interfac.Output),
           Depends => ((Interfac.Output,
                        OK)              => null)
@@ -273,7 +273,7 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   procedure WriteConfigLabels(OK : out Boolean)
+   procedure WriteConfigLabels (OK : out Boolean)
      with Global  => (Output => Interfac.Output),
           Depends => ((Interfac.Output,
                        OK)              => null)
@@ -686,7 +686,7 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   procedure ClearStats(OK : out Boolean)
+   procedure ClearStats (OK : out Boolean)
      with Global  => (Output => Interfac.Output),
           Depends => ((Interfac.Output,
                        OK)              => null)
@@ -709,7 +709,7 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   procedure WriteStatsLabels(OK : out Boolean)
+   procedure WriteStatsLabels (OK : out Boolean)
      with Global  => (Output => Interfac.Output),
           Depends => ((Interfac.Output,
                        OK)              => null)
@@ -751,8 +751,8 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   procedure WriteStatsData(TheStats : in     Stats.T;
-                            OK       :    out Boolean)
+   procedure WriteStatsData (TheStats : in     Stats.T;
+                             OK       :    out Boolean)
      with Global  => (Input  => CurrentStats,
                       Output => Interfac.Output),
           Depends => ((Interfac.Output,
@@ -776,7 +776,7 @@ is
       --
       ------------------------------------------------------------------
       function StatsCountString (Value : Stats.StatsCount)
-                                 return StatsCountStringT
+                                return StatsCountStringT
       is
          Data : String := Stats.StatsCount'Image(Value);
          Result : StatsCountStringT := (others => ' ');
@@ -842,7 +842,7 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   procedure WriteCurrentTime(OK : out Boolean)
+   procedure WriteCurrentTime (OK : out Boolean)
      with Global  => (Input  => Clock.Now,
                       Output => Interfac.Output),
           Depends => ((Interfac.Output,
@@ -879,7 +879,8 @@ is
                                                        AuditLog.State,
                                                        Clock.Now,
                                                        ConfigData.State,
-                                                       Msg, TheMsg),
+                                                       Msg,
+                                                       TheMsg),
                               TheMsg               => Msg)
    is
    begin

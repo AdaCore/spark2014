@@ -35,7 +35,6 @@ is
    --    None
    --
    ------------------------------------------------------------------
-
    procedure GetDoorState
      (DoorState : out Door.T;
       Fault     : out Boolean)
