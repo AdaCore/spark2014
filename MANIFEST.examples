@@ -20,6 +20,7 @@ binary_search_unconstrained
 contract_cases
 database
 evoting
+formal_queue
 hello_world
 intro
 invert_injection
