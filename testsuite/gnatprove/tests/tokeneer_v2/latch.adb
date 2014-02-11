@@ -28,6 +28,7 @@ is
    CurrentLatch : T;
    LatchTimeout : Clock.TimeT;
 
+   --  Proof functions (ghost functions)
    function Current_Latch return T is (CurrentLatch)
      with Refined_Global => CurrentLatch;
 
@@ -35,6 +36,9 @@ is
      with Refined_Global => LatchTimeout;
 
    function LatchIsLocked return Boolean is (Latch.Interfac.IsLocked);
+
+   --  Dodgy function that retrieves Output
+   function Interfac_IsLocked return Boolean is (Latch.Interfac.isLocked);
 
    ------------------------------------------------------------------
    -- Init

@@ -63,8 +63,8 @@ is
                       In_Out => Status),
           Depends => ((State,
                        Status) => Status),
-          Post    => not IsGood and then
-                     not AuthCertValid and then
+          Post    => not IsGood and
+                     not AuthCertValid and
                      not (TheAuthCertRole in PrivTypes.AdminPrivilegeT);
 
    ------------------------------------------------------------------

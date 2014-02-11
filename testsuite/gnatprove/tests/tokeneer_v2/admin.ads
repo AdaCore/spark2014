@@ -18,6 +18,7 @@
 ------------------------------------------------------------------
 with PrivTypes,
      Keyboard;
+
 use PrivTypes;
 
 package Admin is
@@ -26,13 +27,12 @@ package Admin is
    -- Types
    --
    ------------------------------------------------------------------
-   type OpAndNullT is (
-      NullOp,
+   type OpAndNullT is
+     (NullOp,
       ArchiveLog,
       UpdateConfigData,
       OverrideLock,
-      ShutdownOp
-      );
+      ShutdownOp);
 
    subtype OpT is OpAndNullT range ArchiveLog .. ShutdownOp;
 
@@ -74,9 +74,9 @@ package Admin is
    -- Description:
    --    Returns true if the KeyedOp matches the current Operation
    ------------------------------------------------------------------
-   function Str_Comp
-     (KeyedOp : Keyboard.DataT;
-      Op      : OpT) return Boolean
+   function Str_Comp (KeyedOp : Keyboard.DataT;
+                      Op      : OpT)
+                     return Boolean
      with Global => null;
 
    --------------------------------------------------------------------
@@ -85,9 +85,9 @@ package Admin is
    -- Description:
    --    Returns true if Op is allowed for the current Admin
    --------------------------------------------------------------------
-   function AllowedOp
-     (TheAdmin : T;
-      Op       : OpT) return Boolean
+   function AllowedOp (TheAdmin : T;
+                       Op       : OpT)
+                      return Boolean
      with Global => null,
           Pre    => IsPresent (TheAdmin);
 
@@ -116,7 +116,7 @@ package Admin is
      with Global  => null,
           Depends => (TheAdmin => null),
           Post    => not IsPresent(TheAdmin)
-                       and then not IsDoingOp(TheAdmin);
+                       and not IsDoingOp(TheAdmin);
 
    ------------------------------------------------------------------
    -- OpIsAvailable
@@ -130,7 +130,8 @@ package Admin is
    -- traceto   : FD.AdminOpIsAvailable
    ------------------------------------------------------------------
    function OpIsAvailable (TheAdmin : T;
-                           KeyedOp  : Keyboard.DataT) return OpAndNullT
+                           KeyedOp  : Keyboard.DataT)
+                          return OpAndNullT
      with Global => null,
           Pre    => IsPresent (TheAdmin),
           Post   => (for some Op in Opt => Str_Comp (KeyedOp, Op)
@@ -147,14 +148,13 @@ package Admin is
    -- traceunit : C.Admin.Logon
    -- traceto   : FD.Admin.AdminLogon
    ------------------------------------------------------------------
-
    procedure Logon (TheAdmin :    out T;
                     Role     : in     PrivTypes.AdminPrivilegeT)
      with Global  => null,
           Depends => (TheAdmin => Role),
           Post    => RolePresent (TheAdmin) = Role
-                       and then not IsDoingOp (TheAdmin)
-                       and then IsPresent (TheAdmin);
+                       and not IsDoingOp (TheAdmin)
+                       and IsPresent (TheAdmin);
 
    ------------------------------------------------------------------
    -- Logout
@@ -168,7 +168,7 @@ package Admin is
    procedure Logout (TheAdmin :    out T)
      with Global => null,
           Post   => not IsPresent (TheAdmin)
-                      and then not IsDoingOp (TheAdmin);
+                      and not IsDoingOp (TheAdmin);
 
    ------------------------------------------------------------------
    -- StartOp
@@ -184,11 +184,11 @@ package Admin is
      with Global  => null,
           Depends => (TheAdmin => (TheAdmin, Op)),
           Pre     => IsPresent (TheAdmin)
-                       and then not IsDoingOp (TheAdmin),
+                       and not IsDoingOp (TheAdmin),
           Post    => RolePresent (TheAdmin) = RolePresent (TheAdmin'Old)
-                       and then IsPresent (TheAdmin)
-                       and then IsDoingOp (TheAdmin)
-                       and then TheCurrentOp (TheAdmin) = Op;
+                       and IsPresent (TheAdmin)
+                       and IsDoingOp (TheAdmin)
+                       and TheCurrentOp (TheAdmin) = Op;
 
    ------------------------------------------------------------------
    -- FinishOp
@@ -202,11 +202,10 @@ package Admin is
    procedure FinishOp (TheAdmin : in out T)
      with Global  => null,
           Depends => (TheAdmin => TheAdmin),
-          Pre     => IsPresent (TheAdmin) and then IsDoingOp (TheAdmin),
+          Pre     => IsPresent (TheAdmin) and IsDoingOp (TheAdmin),
           Post    => not IsDoingOp (TheAdmin)
-                       and then RolePresent (TheAdmin)
-                                  = RolePresent (TheAdmin'Old)
-                       and then IsPresent (TheAdmin);
+                       and RolePresent (TheAdmin) = RolePresent (TheAdmin'Old)
+                       and IsPresent (TheAdmin);
 
    ------------------------------------------------------------------
    -- SecurityOfficerIsPresent
@@ -231,14 +230,12 @@ private
 
    IsAvailable : constant PrivToAvailOpsT :=
      PrivToAvailOpsT'
-       (PrivTypes.Guard           =>
-          AvailOpsT'(OverrideLock => True, others => False),
-
-        PrivTypes.AuditManager    =>
-          AvailOpsT'(ArchiveLog => True, others => False),
-
-        PrivTypes.SecurityOfficer =>
-          AvailOpsT'
-            (UpdateConfigData => True, ShutdownOp => True, others => False));
+       (PrivTypes.Guard           => AvailOpsT'(OverrideLock => True,
+                                                others       => False),
+        PrivTypes.AuditManager    => AvailOpsT'(ArchiveLog => True,
+                                                others     => False),
+        PrivTypes.SecurityOfficer => AvailOpsT'(UpdateConfigData => True,
+                                                ShutdownOp       => True,
+                                                others           => False));
 
 end Admin;

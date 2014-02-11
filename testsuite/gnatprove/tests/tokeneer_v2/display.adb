@@ -277,19 +277,17 @@ is
          else
 
             -- Top or Bottom text doesn't fit --> Scroll Top+Bottom
-            Interfac.SetTopTextScrollable(
-                                          ScrollText => CombineLines(TheMsg),
+            Interfac.SetTopTextScrollable(ScrollText => CombineLines(TheMsg),
                                           Written    => Written);
 
          end if;
 
          if not Written then
-            AuditLog.AddElementToLog(
-                                     ElementID   => AuditTypes.SystemFault,
-                                     Severity    => AuditTypes.Warning,
-                                     User        => AuditTypes.NoUser,
-                                     Description => "Could not update Display"
-                                    );
+            AuditLog.AddElementToLog
+              (ElementID   => AuditTypes.SystemFault,
+               Severity    => AuditTypes.Warning,
+               User        => AuditTypes.NoUser,
+               Description => "Could not update Display");
          end if;
 
       end if;

@@ -48,8 +48,7 @@ is
                  Wait,
                  RemoveToken,
                  TokenUpdateFailed,
-                 DoorUnlocked
-                 );
+                 DoorUnlocked);
 
 
    -- MsgLineT represents a line of the message text
@@ -62,9 +61,9 @@ is
       Len  : MsgTextCount;
    end record;
 
-   BlankLine : constant MsgLineT := MsgLineT'(
-                                       Text => "                       ",
-                                       Len  => 0);
+   BlankLine : constant MsgLineT :=
+     MsgLineT'(Text => "                       ",
+               Len  => 0);
 
    -- MsgStrT represents the whole of a message, written over two lines
    type MsgStrT is record

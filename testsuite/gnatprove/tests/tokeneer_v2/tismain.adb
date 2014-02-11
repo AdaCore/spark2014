@@ -206,25 +206,24 @@ is
                       UserToken.State => UserToken.Status,
 
                       null => Keyboard.Inputs),
-            Post    =>
-     (not Enclave.EnrolmentIsInProgress =
-        KeyStore.PrivateKeyPresent) and then
+          Post    => ((not Enclave.EnrolmentIsInProgress) =
+                        KeyStore.PrivateKeyPresent) and
 
-       (Enclave.EnrolmentIsInProgress or else
-          Enclave.statusIsEnclaveQuiescent) and then
+                     (Enclave.EnrolmentIsInProgress or
+                        Enclave.statusIsEnclaveQuiescent) and
 
-       not Admin.IsPresent(TheAdmin) and then
-       not Admin.IsDoingOp(TheAdmin) and then
+                     not Admin.IsPresent(TheAdmin) and
+                     not Admin.IsDoingOp(TheAdmin) and
 
-       Admin.RolePresent(TheAdmin) /= PrivTypes.Guard and then
+                     Admin.RolePresent(TheAdmin) /= PrivTypes.Guard and
 
-       not Enclave.statusIsWaitingStartAdminOp and then
-       not Enclave.statusIsWaitingFinishAdminOp and then
-       not Enclave.statusIsShutdown  and then
+                     not Enclave.statusIsWaitingStartAdminOp and
+                     not Enclave.statusIsWaitingFinishAdminOp and
+                     not Enclave.statusIsShutdown and
 
-       not AdminToken.isGood and then
-       not AdminToken.authCertValid and then
-       AdminToken.TheAuthCertRole /= PrivTypes.Guard
+                     not AdminToken.isGood and
+                     not AdminToken.authCertValid and
+                     AdminToken.TheAuthCertRole /= PrivTypes.Guard
    is
    begin
       Stats.Init(TheStats);
@@ -248,16 +247,14 @@ is
            (ElementID   => AuditTypes.StartEnrolledTIS,
             Severity    => AuditTypes.Information,
             User        => AuditTypes.NoUser,
-            Description => AuditTypes.NoDescription
-            );
+            Description => AuditTypes.NoDescription);
 
       else
          AuditLog.AddElementToLog
            (ElementID   => AuditTypes.StartUnenrolledTIS,
             Severity    => AuditTypes.Information,
             User        => AuditTypes.NoUser,
-            Description => AuditTypes.NoDescription
-            );
+            Description => AuditTypes.NoDescription);
 
       end if;
    end Init;
@@ -535,62 +532,65 @@ is
                                             UserEntry.State,
                                             UserToken.Input,
                                             UserToken.State)),
+          Pre     =>
+     ((not Enclave.EnrolmentIsInProgress) =
+        KeyStore.PrivateKeyPresent) and
           --------------------------------------------------------
           -- PROOF ANNOTATIONS FOR SECURITY PROPERTY 3          --
           --====================================================--
           -- Before each call to Processing, the security       --
           -- property holds.                                    --
           --------------------------------------------------------
-          Pre     =>
-     ((not Enclave.EnrolmentIsInProgress) =
-        KeyStore.PrivateKeyPresent) and then
-
-       ((Latch.IsLocked and then
-           Door.TheCurrentDoor = Door.Open and then
+       ((Latch.IsLocked and
+           Door.TheCurrentDoor = Door.Open and
            Clock.GreaterThanOrEqual(Clock.TheCurrentTime,
                                     Door.alarm_Timeout)) =
-          (Door.TheDoorAlarm = AlarmTypes.Alarming)) and then
+          (Door.TheDoorAlarm = AlarmTypes.Alarming)) and
 
-       ((Admin.rolePresent(TheAdmin) = PrivTypes.Guard) <=
-          (AdminToken.isGood and then
-             AdminToken.authCertValid and then
-             AdminToken.TheAuthCertRole = PrivTypes.Guard)) and then
+       (if Admin.RolePresent(TheAdmin) = PrivTypes.Guard then
+           (AdminToken.isGood and
+              AdminToken.authCertValid and
+              AdminToken.TheAuthCertRole = PrivTypes.Guard)) and
 
-       ((Admin.IsDoingOp(TheAdmin) and then
-           Admin.TheCurrentOp(TheAdmin) = Admin.OverrideLock) <=
-          (Admin.rolePresent(TheAdmin) = PrivTypes.Guard)) and then
+       (if (Admin.IsDoingOp(TheAdmin) and
+              Admin.TheCurrentOp(TheAdmin) = Admin.OverrideLock)
+        then
+           Admin.RolePresent(TheAdmin) = PrivTypes.Guard) and
 
-       ((Admin.rolePresent(TheAdmin) = PrivTypes.Guard) <=
-          ((Admin.IsDoingOp(TheAdmin) and then
-              Admin.TheCurrentOp(TheAdmin) = Admin.OverrideLock) or else
-             not Admin.IsDoingOp(TheAdmin))) and then
+       (if Admin.RolePresent(TheAdmin) = PrivTypes.Guard then
+           ((Admin.IsDoingOp(TheAdmin) and
+               Admin.TheCurrentOp(TheAdmin) = Admin.OverrideLock) or
+              not Admin.IsDoingOp(TheAdmin))) and
 
-       ((not Admin.IsPresent(TheAdmin)) <=
-          (not Admin.IsDoingOp(TheAdmin))) and then
+       (if not Admin.IsPresent(TheAdmin) then
+           not Admin.IsDoingOp(TheAdmin)) and
 
-       ((Admin.IsDoingOp(TheAdmin) and then
-           Admin.TheCurrentOp(TheAdmin) = Admin.ShutdownOp) <=
-          Enclave.statusIsWaitingStartAdminOp) and then
+       (if (Admin.IsDoingOp(TheAdmin) and
+              Admin.TheCurrentOp(TheAdmin) = Admin.ShutdownOp)
+        then
+           Enclave.statusIsWaitingStartAdminOp) and
 
-       ((Enclave.statusIsGotAdminToken or else
-           Enclave.statusIsWaitingRemoveAdminTokenFail) <=
-          not Admin.IsPresent(TheAdmin)) and then
+       (if (Enclave.statusIsGotAdminToken or
+              Enclave.statusIsWaitingRemoveAdminTokenFail)
+        then
+           not Admin.IsPresent(TheAdmin)) and
 
-       ((Enclave.statusIsWaitingStartAdminOp or else
-           Enclave.statusIsWaitingFinishAdminOp) <=
-          (Admin.IsPresent(TheAdmin) and then
-             Admin.IsDoingOp(TheAdmin))) and then
+       (if (Enclave.statusIsWaitingStartAdminOp or
+              Enclave.statusIsWaitingFinishAdminOp)
+        then
+           (Admin.IsPresent(TheAdmin) and
+              Admin.IsDoingOp(TheAdmin))) and
 
-       (Enclave.statusIsEnclaveQuiescent <=
-          not Admin.IsDoingOp(TheAdmin)) and then
+       (if Enclave.statusIsEnclaveQuiescent then
+           not Admin.IsDoingOp(TheAdmin)) and
 
-       (Enclave.statusIsShutdown <=
-          (not Admin.IsDoingOp(TheAdmin) and then
-             Admin.rolePresent(TheAdmin) = PrivTypes.UserOnly)) and then
+       (if Enclave.statusIsShutdown then
+           (not Admin.IsDoingOp(TheAdmin) and
+              Admin.RolePresent(TheAdmin) = PrivTypes.UserOnly)) and
 
-       (Enclave.EnrolmentIsInProgress <=
-          (not Admin.IsPresent(TheAdmin) and then
-             not Admin.IsDoingOp(TheAdmin))),
+       (if Enclave.EnrolmentIsInProgress then
+           (not Admin.IsPresent(TheAdmin) and
+              not Admin.IsDoingOp(TheAdmin))),
 
           --------------------------------------------------------
           -- PROOF ANNOTATIONS FOR SECURITY PROPERTY 3          --
@@ -602,56 +602,59 @@ is
        ((not Enclave.EnrolmentIsInProgress) =
           KeyStore.PrivateKeyPresent) and
 
-         ((Latch.IsLocked and then
-             Door.TheCurrentDoor = Door.Open and then
+         ((Latch.IsLocked and
+             Door.TheCurrentDoor = Door.Open and
              Clock.GreaterThanOrEqual(Clock.TheCurrentTime,
                                       Door.alarm_Timeout)) =
             (Door.TheDoorAlarm = AlarmTypes.Alarming)) and
 
-         ((Admin.rolePresent(TheAdmin) = PrivTypes.Guard) <=
-            (AdminToken.isGood and then
-               AdminToken.authCertValid and then
-               AdminToken.TheAuthCertRole = PrivTypes.Guard)) and
+         (if (Admin.rolePresent(TheAdmin) = PrivTypes.Guard) then
+             (AdminToken.isGood and
+                AdminToken.authCertValid and
+                AdminToken.TheAuthCertRole = PrivTypes.Guard)) and
 
-         ((Admin.IsDoingOp(TheAdmin) and then
-             Admin.TheCurrentOp(TheAdmin) = Admin.OverrideLock) <=
-            (Admin.rolePresent(TheAdmin) = PrivTypes.Guard)) and
+         (if (Admin.IsDoingOp(TheAdmin) and
+                Admin.TheCurrentOp(TheAdmin) = Admin.OverrideLock)
+          then
+             (Admin.rolePresent(TheAdmin) = PrivTypes.Guard)) and
 
-         ((Admin.rolePresent(TheAdmin) = PrivTypes.Guard) <=
-            ((Admin.IsDoingOp(TheAdmin) and then
-                Admin.TheCurrentOp(TheAdmin) = Admin.OverrideLock) or else
-               not Admin.IsDoingOp(TheAdmin))) and
+         (if (Admin.rolePresent(TheAdmin) = PrivTypes.Guard) then
+             ((Admin.IsDoingOp(TheAdmin) and
+                 Admin.TheCurrentOp(TheAdmin) = Admin.OverrideLock) or
+                not Admin.IsDoingOp(TheAdmin))) and
 
-         ((not Admin.IsPresent(TheAdmin)) <=
+         (if (not Admin.IsPresent(TheAdmin)) then
             (not Admin.IsDoingOp(TheAdmin))) and
 
-         ((Admin.IsDoingOp(TheAdmin) and then
-             Admin.TheCurrentOp(TheAdmin) = Admin.ShutdownOp) <=
-            Enclave.statusIsWaitingStartAdminOp) and
+         (if (Admin.IsDoingOp(TheAdmin) and
+                Admin.TheCurrentOp(TheAdmin) = Admin.ShutdownOp)
+          then
+             Enclave.statusIsWaitingStartAdminOp) and
 
-         ((Enclave.statusIsGotAdminToken or else
-             Enclave.statusIsWaitingRemoveAdminTokenFail) <=
-            not Admin.IsPresent(TheAdmin)) and
+         (if (Enclave.statusIsGotAdminToken or
+                Enclave.statusIsWaitingRemoveAdminTokenFail)
+          then
+             not Admin.IsPresent(TheAdmin)) and
 
-         ((Enclave.statusIsWaitingStartAdminOp or else
-             Enclave.statusIsWaitingFinishAdminOp) <=
+         (if (Enclave.statusIsWaitingStartAdminOp or
+                Enclave.statusIsWaitingFinishAdminOp)
+          then
             (Admin.IsDoingOp(TheAdmin) and
                Admin.IsPresent(TheAdmin) and
                Admin.rolePresent(TheAdmin) =
-               Admin.rolePresent(TheAdmin)'Old)) and
+               Admin.rolePresent(TheAdmin'Old))) and
 
-         (Enclave.statusIsEnclaveQuiescent <=
-            (not Admin.IsDoingOp(TheAdmin))) and
+         (if Enclave.statusIsEnclaveQuiescent then
+             (not Admin.IsDoingOp(TheAdmin))) and
 
-         (Enclave.statusIsShutdown <=
-            (not Admin.IsDoingOp(TheAdmin) and then
-               Admin.rolePresent(TheAdmin) = PrivTypes.UserOnly)) and
+         (if Enclave.statusIsShutdown then
+             (not Admin.IsDoingOp(TheAdmin) and
+                Admin.rolePresent(TheAdmin) = PrivTypes.UserOnly)) and
 
-         (Enclave.EnrolmentIsInProgress <=
-            (not Admin.IsPresent(TheAdmin) and then
-               not Admin.IsDoingOp(TheAdmin)))
+         (if Enclave.EnrolmentIsInProgress then
+             (not Admin.IsPresent(TheAdmin) and
+                not Admin.IsDoingOp(TheAdmin)))
    is
-
 
       ------------------------------------------------------------------
       -- ResetScreenMessage
@@ -686,7 +689,7 @@ is
                          Screen.State =>+ (Enclave.State,
                                            TheAdmin,
                                            UserEntry.State))
-   is
+      is
       begin
          if UserEntry.InProgress then
             Screen.SetMessage(Msg => Screen.Busy);
@@ -699,23 +702,23 @@ is
       if Enclave.EnrolmentIsInProgress then
          Enclave.EnrolOp;
 
-      elsif Enclave.AdminMustLogout( TheAdmin => TheAdmin) then
-         Enclave.AdminLogout( TheAdmin => TheAdmin);
+      elsif Enclave.AdminMustLogout(TheAdmin => TheAdmin) then
+         Enclave.AdminLogout(TheAdmin => TheAdmin);
          ResetScreenMessage;
 
       elsif UserEntry.CurrentActivityPossible then
-         UserEntry.Progress( TheStats => TheStats);
+         UserEntry.Progress(TheStats => TheStats);
          ResetScreenMessage;
 
       elsif Enclave.CurrentAdminActivityPossible then
-         Enclave.ProgressAdminActivity( TheAdmin => TheAdmin);
+         Enclave.ProgressAdminActivity(TheAdmin => TheAdmin);
 
       elsif UserEntry.CanStart then
          UserEntry.StartEntry;
          ResetScreenMessage;
 
       else
-         Enclave.StartAdminActivity( TheAdmin => TheAdmin);
+         Enclave.StartAdminActivity(TheAdmin => TheAdmin);
       end if;
    end Processing;
 
@@ -1058,11 +1061,142 @@ is
                                            TheAdmin,
                                            UserEntry.State,
                                            UserToken.Input,
-                                           UserToken.Status))
+                                           UserToken.Status)),
+
+          Pre     =>
+            (not Enclave.EnrolmentIsInProgress =
+                KeyStore.PrivateKeyPresent) and
+
+            (Latch.IsLocked = Latch.Interfac_IsLocked) and
+
+            (if Admin.RolePresent (TheAdmin) = PrivTypes.Guard then
+                (AdminToken.isGood and
+                   AdminToken.authCertValid and
+                   AdminToken.TheAuthCertRole = PrivTypes.Guard)) and
+
+            (if (Admin.IsDoingOp (TheAdmin) and
+                   Admin.TheCurrentOp (TheAdmin) = Admin.OverrideLock)
+             then
+                Admin.RolePresent (TheAdmin) = PrivTypes.Guard) and
+
+            (if Admin.RolePresent (TheAdmin) = PrivTypes.Guard then
+                ((Admin.IsDoingOp (TheAdmin) and
+                    Admin.TheCurrentOp (TheAdmin) = Admin.OverrideLock) or
+                   not Admin.IsDoingOp (TheAdmin))) and
+
+            (if not Admin.IsPresent (TheAdmin) then
+                not Admin.IsDoingOp (TheAdmin)) and
+
+            (if (Admin.IsDoingOp (TheAdmin) and
+                   Admin.TheCurrentOp (TheAdmin) = Admin.ShutdownOp)
+             then
+                Enclave.statusIsWaitingStartAdminOp) and
+
+            (if (Enclave.statusIsGotAdminToken or
+                   Enclave.StatusIsWaitingRemoveAdminTokenFail)
+             then
+                not Admin.IsPresent (TheAdmin)) and
+
+            (if (Enclave.statusIsWaitingStartAdminOp or
+                   Enclave.statusIsWaitingFinishAdminOp)
+             then
+                (Admin.IsPresent (TheAdmin) and
+                   Admin.IsDoingOp (TheAdmin))) and
+
+            (if Enclave.statusIsEnclaveQuiescent then
+                not Admin.IsDoingOp (TheAdmin)) and
+
+            (if Enclave.statusIsShutdown then
+                (not Admin.IsDoingOp (TheAdmin) and
+                   Admin.RolePresent (TheAdmin) = PrivTypes.UserOnly)) and
+
+            (if Enclave.EnrolmentIsInProgress then
+                (not Admin.IsPresent (TheAdmin) and
+                   not Admin.IsDoingOp (TheAdmin))),
+
+          Post    =>
+            (not Enclave.EnrolmentIsInProgress =
+               KeyStore.PrivateKeyPresent) and
+
+            (Latch.IsLocked = Latch.Interfac_IsLocked
+               or SystemFault) and
+
+            -------------------------------------------------------
+            -- PROOF ANNOTATIONS FOR SECURITY PROPERTY 3         --
+            --===================================================--
+            -- After each call to MainLoopBody, either the       --
+            -- security property holds, or a critical system     --
+            -- fault has occurred, in which case the TIS will be --
+            -- shutdown                                          --
+            -------------------------------------------------------
+            (if (Latch.IsLocked and
+                   Door.TheCurrentDoor = Door.Open and
+                   Clock.GreaterThanOrEqual (Clock.TheCurrentTime,
+                                             Door.Alarm_Timeout))
+             then
+                (Alarm.isAlarming or SystemFault)) and
+
+            (not (Latch.Interfac_IsLocked'Old and
+                    not Latch.Interfac_IsLocked and
+                    not Latch.IsLocked and
+                    Latch.IsLocked'Old = Latch.Interfac_IsLocked'Old)
+             or
+               ((Latch.IsLocked'Old or not Latch.IsLocked) or
+                  (AdminToken.isGood and
+                     AdminToken.authCertValid and
+                     AdminToken.TheAuthCertRole = PrivTypes.Guard) or
+                  SystemFault)) and
+
+            (if Admin.RolePresent (TheAdmin) = PrivTypes.Guard then
+                (AdminToken.isGood and
+                   AdminToken.authCertValid and
+                   AdminToken.TheAuthCertRole = PrivTypes.Guard)) and
+
+            (if (Admin.IsDoingOp (TheAdmin) and
+                   Admin.TheCurrentOp (TheAdmin) = Admin.OverrideLock)
+             then
+                Admin.RolePresent (TheAdmin) = PrivTypes.Guard) and
+
+            (if Admin.RolePresent (TheAdmin) = PrivTypes.Guard then
+                ((Admin.IsDoingOp (TheAdmin) and
+                    Admin.TheCurrentOp (TheAdmin) = Admin.OverrideLock) or
+                   not Admin.IsDoingOp (TheAdmin))) and
+
+            (if not Admin.IsPresent (TheAdmin) then
+                not Admin.IsDoingOp (TheAdmin)) and
+
+            (if (Admin.IsDoingOp (TheAdmin) and
+                   Admin.TheCurrentOp (TheAdmin) = Admin.ShutdownOp)
+             then
+                Enclave.statusIsWaitingStartAdminOp) and
+
+            (if (Enclave.statusIsGotAdminToken or
+                   Enclave.statusIsWaitingRemoveAdminTokenFail)
+             then
+                not Admin.IsPresent (TheAdmin)) and
+
+            (if (Enclave.statusIsWaitingStartAdminOp or
+                   Enclave.statusIsWaitingFinishAdminOp)
+             then
+                (Admin.IsDoingOp (TheAdmin) and
+                   Admin.IsPresent (TheAdmin) and
+                   Admin.RolePresent (TheAdmin) =
+                     Admin.RolePresent (TheAdmin'Old))) and
+
+            (if Enclave.statusIsEnclaveQuiescent then
+                not Admin.IsDoingOp (TheAdmin)) and
+
+            (if Enclave.statusIsShutdown then
+                (not Admin.IsDoingOp (TheAdmin) and
+                   Admin.RolePresent (TheAdmin) = PrivTypes.UserOnly)) and
+
+            (if Enclave.EnrolmentIsInProgress then
+                (not Admin.IsPresent (TheAdmin) and
+                   not Admin.IsDoingOp (TheAdmin)))
    is
-      --------------------------------------------------------------
-      -- begin MainLoopBody
-      --------------------------------------------------------------
+   --------------------------------------------------------------
+   -- begin MainLoopBody
+   --------------------------------------------------------------
    begin
       Poll.Activity(SystemFault => SystemFault);
 
@@ -1126,9 +1260,7 @@ is
                        Latch.State,
                        TheAdmin) => null)
    is
-
       UnusedFault : Boolean;
-
    begin
       Door.Failure;
       Admin.Logout(TheAdmin => TheAdmin);
@@ -1211,21 +1343,141 @@ begin
 
    loop
 
+      pragma Loop_Invariant
+        (((not Enclave.EnrolmentIsInProgress) = KeyStore.PrivateKeyPresent) and
+
+         --  Latch.LatchIsLocked = Latch.LatchIsLocked'Loop_Entry and
+         --  Latch.Interfac_IsLocked = Latch.Interfac_IsLocked'Loop_Entry and
+         Latch.IsLocked = Latch.Interfac_IsLocked and
+
+         (if Admin.RolePresent (TheAdmin) = PrivTypes.Guard then
+             (AdminToken.IsGood and
+                AdminToken.AuthCertValid and
+                AdminToken.TheAuthCertRole = PrivTypes.Guard)) and
+
+         (if (Admin.IsDoingOp (TheAdmin) and
+                Admin.TheCurrentOp (TheAdmin) = Admin.OverrideLock)
+          then
+             Admin.RolePresent (TheAdmin) = PrivTypes.Guard) and
+
+         (if Admin.RolePresent (TheAdmin) = PrivTypes.Guard then
+             ((Admin.IsDoingOp (TheAdmin) and
+                 Admin.TheCurrentOp (TheAdmin) = Admin.OverrideLock) or
+                not Admin.IsDoingOp (TheAdmin))) and
+
+         (if not Admin.IsPresent (TheAdmin) then
+             not Admin.IsDoingOp (TheAdmin)) and
+
+         (if (Admin.IsDoingOp (TheAdmin) and
+                Admin.TheCurrentOp (TheAdmin) = Admin.ShutdownOp)
+          then
+             Enclave.statusIsWaitingStartAdminOp) and
+
+         (if (Enclave.statusIsGotAdminToken or
+                Enclave.statusIsWaitingRemoveAdminTokenFail)
+          then
+             not Admin.IsPresent (TheAdmin)) and
+
+         (if (Enclave.statusIsWaitingStartAdminOp or
+             Enclave.statusIsWaitingFinishAdminOp)
+          then
+             (Admin.IsPresent (TheAdmin) and Admin.IsDoingOp (TheAdmin))) and
+
+         (if Enclave.statusIsEnclaveQuiescent then
+             not Admin.IsDoingOp (TheAdmin)) and
+
+         (if Enclave.statusIsShutdown then
+             (not Admin.IsDoingOp (TheAdmin) and
+                Admin.RolePresent (TheAdmin) = PrivTypes.UserOnly)) and
+
+         (if Enclave.EnrolmentIsInProgress then
+             (not Admin.IsPresent (TheAdmin) and
+                not Admin.IsDoingOp (TheAdmin))));
+
       MainLoopBody;
 
       ShutdownCompleted := Enclave.HasShutdown;
 
       exit when ShutdownCompleted;
 
-      -------------------------------------------------------
-      -- PROOF ANNOTATIONS FOR SECURITY PROPERTY 3         --
-      --===================================================--
-      -- After each cycle of the TIS main loop, either the --
-      -- security property holds, or a critical system     --
-      -- fault has occurred, in which case the TIS will be --
-      -- shutdown                                          --
-      -------------------------------------------------------
+      pragma Assert_And_Cut
+        (not ShutdownCompleted and
+         ((not Enclave.EnrolmentIsInProgress) = KeyStore.PrivateKeyPresent) and
 
+         -------------------------------------------------------
+         -- PROOF ANNOTATIONS FOR SECURITY PROPERTY 3         --
+         --===================================================--
+         -- After each cycle of the TIS main loop, either the --
+         -- security property holds, or a critical system     --
+         -- fault has occurred, in which case the TIS will be --
+         -- shutdown                                          --
+         -------------------------------------------------------
+
+         (if (Latch.IsLocked and
+                Door.TheCurrentDoor = Door.Open and
+                Clock.GreaterThanOrEqual (Clock.TheCurrentTime,
+                                          Door.Alarm_Timeout))
+          then
+             (Alarm.IsAlarming or SystemFault)) and
+
+         --   ((if (Latch.prf_isLocked (prf_preLatchOutput) and
+         --           not Latch.prf_isLocked (Latch.Output) and
+         --           Latch.IsLocked (prf_preLatchState) =
+         --             Latch.prf_isLocked (prf_preLatchOutput))
+         --     then
+         --        (UserEntry.prf_UserEntryUnlockDoor or
+         --           (AdminToken.prf_isGood (AdminToken.State) and
+         --              AdminToken.prf_authCertValid (AdminToken.State) and
+         --              AdminToken.TheAuthCertRole (AdminToken.State) =
+         --                PrivTypes.Guard)))
+         --  or SystemFault) and
+
+         (Latch.IsLocked = Latch.Interfac_IsLocked or SystemFault) and
+
+         (if Admin.RolePresent (TheAdmin) = PrivTypes.Guard then
+             (AdminToken.IsGood and
+                AdminToken.AuthCertValid and
+                AdminToken.TheAuthCertRole = PrivTypes.Guard)) and
+
+         (if (Admin.IsDoingOp (TheAdmin) and
+                Admin.TheCurrentOp (TheAdmin) = Admin.OverrideLock)
+          then
+            Admin.RolePresent (TheAdmin) = PrivTypes.Guard) and
+
+         (if Admin.RolePresent (TheAdmin) = PrivTypes.Guard then
+             ((Admin.IsDoingOp (TheAdmin) and
+                 Admin.TheCurrentOp (TheAdmin) = Admin.OverrideLock) or
+                not Admin.IsDoingOp (TheAdmin))) and
+
+         (if not Admin.IsPresent (TheAdmin) then
+             not Admin.IsDoingOp (TheAdmin)) and
+
+         (if (Admin.IsDoingOp (TheAdmin) and
+                Admin.TheCurrentOp (TheAdmin) = Admin.ShutdownOp)
+          then
+             Enclave.statusIsWaitingStartAdminOp) and
+
+         (if (Enclave.statusIsGotAdminToken or
+                Enclave.statusIsWaitingRemoveAdminTokenFail)
+          then
+             not Admin.IsPresent (TheAdmin)) and
+
+         (if (Enclave.statusIsWaitingStartAdminOp or
+                Enclave.statusIsWaitingFinishAdminOp)
+          then
+             (Admin.IsDoingOp (TheAdmin) and
+                Admin.IsPresent (TheAdmin))) and
+
+         (if Enclave.statusIsEnclaveQuiescent then
+             (not Admin.IsDoingOp (TheAdmin))) and
+
+         (if Enclave.statusIsShutdown then
+             (not Admin.IsDoingOp (TheAdmin) and
+                Admin.RolePresent (TheAdmin) = PrivTypes.UserOnly)) and
+
+         (if Enclave.EnrolmentIsInProgress then
+             (not Admin.IsPresent (TheAdmin) and
+                not Admin.IsDoingOp (TheAdmin))));
 
       if SystemFault then
          pragma Warnings (Off);
@@ -1241,14 +1493,84 @@ begin
          exit;
       end if;
 
-      -------------------------------------------------------
-      -- PROOF ANNOTATIONS FOR SECURITY PROPERTY 3         --
-      --===================================================--
-      -- After each cycle of the TIS main loop, either the --
-      -- security property holds, or a critical system     --
-      -- fault has occurred, in which case the TIS will be --
-      -- shutdown                                          --
-      -------------------------------------------------------
+      pragma Assert_And_Cut
+        (not ShutdownCompleted and not SystemFault and
+
+         ((not Enclave.EnrolmentIsInProgress) = KeyStore.PrivateKeyPresent) and
+
+         -------------------------------------------------------
+         -- PROOF ANNOTATIONS FOR SECURITY PROPERTY 3         --
+         --===================================================--
+         -- After each cycle of the TIS main loop, either the --
+         -- security property holds, or a critical system     --
+         -- fault has occurred, in which case the TIS will be --
+         -- shutdown                                          --
+         -------------------------------------------------------
+
+         (if (Latch.IsLocked and
+                Door.TheCurrentDoor = Door.Open and
+                Clock.GreaterThanOrEqual (Clock.TheCurrentTime,
+                                          Door.Alarm_Timeout))
+          then
+             (Alarm.isAlarming or SystemFault)) and
+
+         --  (if (Latch.prf_isLocked (prf_preLatchOutput) and
+         --         not Latch.prf_isLocked (Latch.Output) and
+         --         Latch.IsLocked (prf_preLatchState) =
+         --           Latch.prf_isLocked (prf_preLatchOutput))
+         --   then
+         --      (UserEntry.prf_UserEntryUnlockDoor or
+         --         (AdminToken.prf_isGood (AdminToken.State) and
+         --            AdminToken.prf_authCertValid (AdminToken.State) and
+         --            AdminToken.TheAuthCertRole (AdminToken.State) =
+         --              PrivTypes.Guard))) and
+
+         (Latch.IsLocked = Latch.Interfac_isLocked or SystemFault) and
+
+         (if Admin.RolePresent (TheAdmin) = PrivTypes.Guard then
+             (AdminToken.IsGood and
+                AdminToken.AuthCertValid and
+                AdminToken.TheAuthCertRole = PrivTypes.Guard)) and
+
+         (if (Admin.IsDoingOp (TheAdmin) and
+                Admin.TheCurrentOp (TheAdmin) = Admin.OverrideLock)
+          then
+             Admin.RolePresent (TheAdmin) = PrivTypes.Guard) and
+
+         (if Admin.RolePresent (TheAdmin) = PrivTypes.Guard then
+             ((Admin.IsDoingOp (TheAdmin) and
+                 Admin.TheCurrentOp (TheAdmin) = Admin.OverrideLock) or
+                not Admin.IsDoingOp (TheAdmin))) and
+
+         (if not Admin.IsPresent (TheAdmin) then
+             not Admin.IsDoingOp (TheAdmin)) and
+
+         (if (Admin.IsDoingOp (TheAdmin) and
+                Admin.TheCurrentOp (TheAdmin) = Admin.ShutdownOp)
+          then
+             Enclave.statusIsWaitingStartAdminOp) and
+
+         (if (Enclave.statusIsGotAdminToken or
+                Enclave.statusIsWaitingRemoveAdminTokenFail)
+          then
+             not Admin.IsPresent (TheAdmin)) and
+
+         (if (Enclave.statusIsWaitingStartAdminOp or
+                Enclave.statusIsWaitingFinishAdminOp)
+          then
+             (Admin.IsDoingOp (TheAdmin) and
+                Admin.IsPresent (TheAdmin))) and
+
+         (if Enclave.statusIsEnclaveQuiescent then
+             (not Admin.IsDoingOp (TheAdmin))) and
+
+         (if Enclave.statusIsShutdown then
+             (not Admin.IsDoingOp (TheAdmin) and
+                Admin.RolePresent (TheAdmin) = PrivTypes.UserOnly)) and
+
+         (if Enclave.EnrolmentIsInProgress then
+             (not Admin.IsPresent (TheAdmin) and
+                not Admin.IsDoingOp (TheAdmin))));
 
    end loop;
 

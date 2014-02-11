@@ -19,6 +19,7 @@
 with AuditLog,
      ConfigData,
      Clock;
+
 use Clock;
 
 package Latch
@@ -33,7 +34,7 @@ is
    ------------------------------------------------------------------
    type T is (Locked, Unlocked);
 
-   --  Proof functions
+   --  Proof functions (ghost functions)
    function Current_Latch return T
      with Global     => State,
           Convention => Ghost;
@@ -43,6 +44,11 @@ is
           Convention => Ghost;
 
    function LatchIsLocked return Boolean
+     with Global     => null,
+          Convention => Ghost;
+
+   --  Dodgy function that retrieves Output
+   function Interfac_IsLocked return Boolean
      with Global     => null,
           Convention => Ghost;
 

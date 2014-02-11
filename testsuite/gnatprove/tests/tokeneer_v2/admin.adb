@@ -26,32 +26,26 @@ is
    subtype DataI is Positive range 1..MaxDataLength;
    subtype DataTextT is String(DataI);
 
-   type DataT is
-      record
-         Length : DataLengthT;
-         MinMatchLength : DataI;
-         Text   : DataTextT;
-      end record;
+   type DataT is record
+      Length         : DataLengthT;
+      MinMatchLength : DataI;
+      Text           : DataTextT;
+   end record;
 
    type OpToKeyedT is array(OpT) of DataT;
    OpToKeyed : constant OpToKeyedT := OpToKeyedT'
-     (ArchiveLog       =>
-        DataT'(Length         => 11,
-               MinMatchLength => 7,
-               Text           => "ARCHIVE LOG       "),
-      UpdateConfigData =>
-        DataT'(Length         => 18,
-               MinMatchLength => 6,
-               Text           => "UPDATE CONFIG DATA"),
-      OverrideLock     =>
-        DataT'(Length         => 13,
-               MinMatchLength => 8,
-               Text           =>"OVERRIDE LOCK     "),
-      ShutdownOp       =>
-        DataT'(Length         => 8,
-               MinMatchLength => 8,
-               Text           => "SHUTDOWN          "));
-
+     (ArchiveLog       => DataT'(Length         => 11,
+                                 MinMatchLength => 7,
+                                 Text           => "ARCHIVE LOG       "),
+      UpdateConfigData => DataT'(Length         => 18,
+                                 MinMatchLength => 6,
+                                 Text           => "UPDATE CONFIG DATA"),
+      OverrideLock     => DataT'(Length         => 13,
+                                 MinMatchLength => 8,
+                                 Text           =>"OVERRIDE LOCK     "),
+      ShutdownOp       => DataT'(Length         => 8,
+                                 MinMatchLength => 8,
+                                 Text           => "SHUTDOWN          "));
 
    function RolePresent (TheAdmin : T) return PrivTypes.PrivilegeT is
      (TheAdmin.RolePresent);
@@ -63,14 +57,14 @@ is
    --    Returns True if the KeyedOp matches the current Operation
    --    and False otherwise
    ------------------------------------------------------------------
-
    function Str_Comp (KeyedOp : Keyboard.DataT;
-                      Op      : OpT) return Boolean is
+                      Op      : OpT)
+                     return Boolean
+   is
      (KeyedOp.Length >= OpToKeyed(Op).MinMatchLength and then
       KeyedOp.Length <= OpToKeyed(Op).Length and then
       (for all I in 1 .. KeyedOp.Length =>
          OpToKeyed(Op).Text(I) = KeyedOp.Text(I)));
-
 
    --------------------------------------------------------------------
    -- AllowedOp
@@ -78,9 +72,10 @@ is
    -- Description:
    --    Returns the Operation that is allowed for the current Admin
    --------------------------------------------------------------------
-
    function AllowedOp (TheAdmin : T;
-                       Op       : OpT) return Boolean is
+                       Op       : OpT)
+                      return Boolean
+   is
      (IsAvailable(TheAdmin.RolePresent)(Op));
 
    ------------------------------------------------------------------
@@ -90,7 +85,6 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-
    procedure Init (TheAdmin :    out T)
    is
    begin
@@ -105,9 +99,8 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-
    function IsPresent (TheAdmin : T) return Boolean is
-     (TheAdmin.RolePresent /= PrivTypes.UserOnly);
+     (TheAdmin.RolePresent in PrivTypes.AdminPrivilegeT);
 
    ------------------------------------------------------------------
    -- OpIsAvailable
@@ -116,11 +109,11 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-
    function OpIsAvailable (TheAdmin : T;
-                           KeyedOp  : Keyboard.DataT) return OpAndNullT
+                           KeyedOp  : Keyboard.DataT)
+                          return OpAndNullT
    is
-      TheOp   : OpAndNullT := NullOp;
+      TheOp : OpAndNullT := NullOp;
    begin
       for Op in OpT loop
          pragma Loop_Invariant (TheOp = NullOp);
@@ -145,9 +138,8 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-
    function IsDoingOp (TheAdmin : T) return Boolean is
-     (TheAdmin.CurrentOp /= NullOp);
+      (TheAdmin.CurrentOp in OpT);
 
    ------------------------------------------------------------------
    -- Logon
@@ -156,7 +148,6 @@ is
    --    None
    --
    ------------------------------------------------------------------
-
    procedure Logon (TheAdmin :    out T;
                     Role     : in     PrivTypes.AdminPrivilegeT)
    is
@@ -172,7 +163,6 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-
    procedure Logout (TheAdmin :    out T)
    is
    begin
@@ -186,7 +176,6 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-
    procedure StartOp (TheAdmin : in out T;
                       Op       : in     OpT)
    is
@@ -201,7 +190,6 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-
    procedure FinishOp (TheAdmin : in out T)
    is
    begin
@@ -215,9 +203,7 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-
-   function TheCurrentOp (TheAdmin : T) return OpT is
-     (TheAdmin.CurrentOp);
+   function TheCurrentOp (TheAdmin : T) return OpT is (TheAdmin.CurrentOp);
 
    ------------------------------------------------------------------
    -- SecurityOfficerIsPresent
@@ -228,7 +214,6 @@ is
    -- traceunit : C.Admin.SecurityOfficerIsPresent
    -- traceto   : FD.Interfac.UpdateScreen
    ------------------------------------------------------------------
-
    function SecurityOfficerIsPresent (TheAdmin : T) return Boolean is
      (TheAdmin.RolePresent = PrivTypes.SecurityOfficer);
 

@@ -834,29 +834,36 @@ is
                                                 UserToken.State),
                       (TheStats,
                        UserToken.State)    =>+ UserToken.State),
-          --------------------------------------------------------
-          -- PROOF ANNOTATIONS FOR SECURITY PROPERTY 3          --
-          --====================================================--
-          -- Before each call to UnlockDoor, the security       --
-          -- property holds.                                    --
-          --------------------------------------------------------
-          Pre     => Status = WaitingRemoveTokenSuccess and then
-                     ((Latch.IsLocked and then
-                         Door.TheCurrentDoor = Door.Open and then
-                         Clock.GreaterThanOrEqual(Clock.TheCurrentTime,
-                                                  Door.alarm_Timeout)) =
-                        (Door.TheDoorAlarm = AlarmTypes.Alarming)),
-          --------------------------------------------------------
-          -- PROOF ANNOTATIONS FOR SECURITY PROPERTY 3          --
-          --====================================================--
-          -- After each call to UnlockDoor, the security        --
-          -- property holds.                                    --
-          --------------------------------------------------------
-          Post    => (Latch.IsLocked and then
-                        Door.TheCurrentDoor = Door.Open and then
-                        Clock.GreaterThanOrEqual(Clock.TheCurrentTime,
-                                                 Door.alarm_Timeout)) =
-                       (Door.TheDoorAlarm = AlarmTypes.Alarming)
+
+          Pre     =>
+            Status = WaitingRemoveTokenSuccess and
+            --------------------------------------------------------
+            -- PROOF ANNOTATIONS FOR SECURITY PROPERTY 3          --
+            --====================================================--
+            -- Before each call to UnlockDoor, the security       --
+            -- property holds.                                    --
+            --------------------------------------------------------
+            ((Latch.IsLocked and
+                Door.TheCurrentDoor = Door.Open and
+                Clock.GreaterThanOrEqual(Clock.TheCurrentTime,
+                                         Door.Alarm_Timeout)) =
+               (Door.TheDoorAlarm = AlarmTypes.Alarming)),
+
+          Post    =>
+            --------------------------------------------------------
+            -- PROOF ANNOTATIONS FOR SECURITY PROPERTY 3          --
+            --====================================================--
+            -- After each call to UnlockDoor, the security        --
+            -- property holds.                                    --
+            --------------------------------------------------------
+            ((Latch.IsLocked and
+                Door.TheCurrentDoor = Door.Open and
+                Clock.GreaterThanOrEqual(Clock.TheCurrentTime,
+                                         Door.alarm_Timeout)) =
+               (Door.TheDoorAlarm = AlarmTypes.Alarming)) and
+
+            (Latch.IsLocked'Old and
+               not Latch.IsLocked)
    is
    begin
 
@@ -881,8 +888,7 @@ is
               (ElementID   => AuditTypes.EntryTimeout,
                Severity    => AuditTypes.Warning,
                User        => UserToken.ExtractUser,
-               Description => AuditTypes.NoDescription
-               );
+               Description => AuditTypes.NoDescription);
 
             Display.SetValue (Msg => Display.RemoveToken);
             Status := WaitingRemoveTokenFail;
@@ -936,8 +942,7 @@ is
         (ElementID   => AuditTypes.UserTokenRemoved,
          Severity    => AuditTypes.Information,
          User        => UserToken.ExtractUser,
-         Description => AuditTypes.NoDescription
-         );
+         Description => AuditTypes.NoDescription);
 
       Display.SetValue (Msg => Display.Welcome);
       Status := Quiescent;
@@ -1174,12 +1179,15 @@ is
           -- After each call to Progress, the security property --
           -- holds.                                             --
           --------------------------------------------------------
-          Refined_Post    => (Latch.IsLocked and then
-                                Door.TheCurrentDoor = Door.Open and then
-                                Clock.GreaterThanOrEqual
-                                  (Clock.TheCurrentTime,
-                                   Door.alarm_Timeout)) =
-                               (Door.TheDoorAlarm = AlarmTypes.Alarming)
+          Refined_Post    =>
+            ((Latch.IsLocked and
+                Door.TheCurrentDoor = Door.Open and
+                Clock.GreaterThanOrEqual (Clock.TheCurrentTime,
+                                          Door.alarm_Timeout)) =
+               (Door.TheDoorAlarm = AlarmTypes.Alarming)) and
+
+            (Latch.IsLocked'Old and
+               not Latch.IsLocked)
    is
       subtype ActiveStatusT is StatusT
         range GotUserToken .. WaitingRemoveTokenFail;

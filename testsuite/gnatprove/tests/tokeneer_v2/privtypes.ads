@@ -22,23 +22,21 @@ package PrivTypes is
    -- Types
    --
    ------------------------------------------------------------------
-   type PrivilegeT is (
-      UserOnly,
+   type PrivilegeT is
+     (UserOnly,
       Guard,
       AuditManager,
-      SecurityOfficer
-      );
+      SecurityOfficer);
 
    subtype AdminPrivilegeT is PrivilegeT range Guard..SecurityOfficer;
 
-   type ClassT is (
-      Unmarked,
+   type ClassT is
+     (Unmarked,
       Unclassified,
       Restricted,
       Confidential,
       Secret,
-      Topsecret
-      );
+      Topsecret);
 
    type ClearanceT is record
       Class : ClassT;

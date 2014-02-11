@@ -91,9 +91,9 @@ is
    function GetResponseCode (ResponseCode : BasicTypes.Unsigned32T)
                             return Interfac.ResponseCodeT
    is (if ResponseCode >=
-         Interfac.ResponseCodeT'Pos(Interfac.ResponseCodeT'First)
+            Interfac.ResponseCodeT'Pos(Interfac.ResponseCodeT'First)
          and ResponseCode <=
-         Interfac.ResponseCodeT'Pos(Interfac.ResponseCodeT'Last)
+               Interfac.ResponseCodeT'Pos(Interfac.ResponseCodeT'Last)
        then Interfac.ResponseCodeT'Val(ResponseCode)
        else Interfac.InvalidResponseCode);
 
@@ -110,9 +110,9 @@ is
    function GetReaderState (ReaderState : BasicTypes.Unsigned32T)
                            return Interfac.ReaderStateT
    is (if ReaderState >=
-         Interfac.ReaderStateT'Pos(Interfac.ReaderStateT'First)
+            Interfac.ReaderStateT'Pos(Interfac.ReaderStateT'First)
          and ReaderState <=
-         Interfac.ReaderStateT'Pos(Interfac.ReaderStateT'Last)
+               Interfac.ReaderStateT'Pos(Interfac.ReaderStateT'Last)
        then Interfac.ReaderStateT'Val(ReaderState)
        else Interfac.InvalidReaderState);
 
@@ -129,9 +129,9 @@ is
    function GetCardState (CardState : BasicTypes.Unsigned32T)
                          return Interfac.CardStateT
    is (if CardState >=
-         Interfac.CardStateT'Pos(Interfac.CardStateT'First)
+            Interfac.CardStateT'Pos(Interfac.CardStateT'First)
          and CardState <=
-         Interfac.CardStateT'Pos(Interfac.CardStateT'Last)
+               Interfac.CardStateT'Pos(Interfac.CardStateT'Last)
        then Interfac.CardStateT'Val(CardState)
        else Interfac.InvalidCardState);
 
@@ -271,9 +271,9 @@ is
       if ResponseCode = Interfac.ResponseCodeT'Pos(Interfac.Success) then
 
          if NumberReaders >=
-           BasicTypes.Unsigned32T(Interfac.ReaderArrayI'First) and
+              BasicTypes.Unsigned32T(Interfac.ReaderArrayI'First) and
            NumberReaders <=
-           BasicTypes.Unsigned32T(Interfac.ReaderArrayI'Last)
+             BasicTypes.Unsigned32T(Interfac.ReaderArrayI'Last)
          then
             for I in Interfac.ReaderArrayI
               range 1..Interfac.ReaderArrayI(NumberReaders)

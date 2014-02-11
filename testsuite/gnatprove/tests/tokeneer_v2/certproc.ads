@@ -18,11 +18,11 @@
 --
 ------------------------------------------------------------------
 
-with BasicTypes;
-with IandATypes;
-with CertTypes;
-with PrivTypes;
-with CryptoTypes;
+with BasicTypes,
+     CertTypes,
+     CryptoTypes,
+     IandATypes,
+     PrivTypes;
 
 package CertProc is
 

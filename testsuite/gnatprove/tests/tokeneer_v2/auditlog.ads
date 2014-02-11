@@ -71,11 +71,10 @@ is
    -- Traceunit : C.AuditLog.AddElementToLog
    -- Traceto   : FD.AuditLog.AddElementToLog
    ------------------------------------------------------------------
-   procedure AddElementToLog (
-                ElementID   : in     AuditTypes.ElementT;
-                Severity    : in     AuditTypes.SeverityT;
-                User        : in     AuditTypes.UserTextT;
-                Description : in     String)
+   procedure AddElementToLog (ElementID   : in     AuditTypes.ElementT;
+                              Severity    : in     AuditTypes.SeverityT;
+                              User        : in     AuditTypes.UserTextT;
+                              Description : in     String)
      with Global  => (Input  => (Clock.Now,
                                  ConfigData.State),
                       In_Out => (FileState,

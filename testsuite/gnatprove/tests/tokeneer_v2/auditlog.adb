@@ -720,13 +720,18 @@ is
                        LogEntryCountT(UsedLogFiles.Length - 1) *
                        MaxLogFileEntries + LogFileEntries(CurrentLogFile) and
                      NumberLogEntries = NumberLogEntries'Old + 1 and
-                     ((LogFileEntries(CurrentLogFile)'Old = MaxLogFileEntries) <=
-                       (LogFileEntries(CurrentLogFile) = 1 and
-                        UsedLogFiles.Length = UsedLogFiles'Old.Length + 1)) and
-                     ((LogFileEntries(CurrentLogFile)'Old < MaxLogFileEntries) <=
-                       (LogFileEntries(CurrentLogFile) =
-                          LogFileEntries(CurrentLogFile)'Old + 1 and
-                          UsedLogFiles.Length = UsedLogFiles'Old.Length))
+                     (if LogFileEntries(CurrentLogFile'Old) =
+                        MaxLogFileEntries
+                      then
+                         LogFileEntries(CurrentLogFile) = 1 and
+                         UsedLogFiles.Length = UsedLogFiles'Old.Length + 1)
+                     and
+                     (if LogFileEntries(CurrentLogFile'Old) <
+                        MaxLogFileEntries
+                      then
+                          LogFileEntries(CurrentLogFile) =
+                            LogFileEntries(CurrentLogFile'Old) + 1 and
+                          UsedLogFiles.Length = UsedLogFiles'Old.Length)
    is
       ------------------------------------------------------------------
       -- AddElementToCurrentFile

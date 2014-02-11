@@ -31,6 +31,9 @@ with AlarmTypes,
      Stats,
      UserToken;
 
+use AlarmTypes,
+    Door;
+
 package UserEntry
   with Abstract_State => State,
        Initializes    => State
@@ -53,6 +56,10 @@ is
       -- present, or a user entry operation is in progress.  --
       ---------------------------------------------------------
    --# function prf_UserEntryUnlockDoor return Boolean;
+
+   -- The previous proof function, in SPARK 2014, translates into:
+   --   (Latch.IsLocked'Old and
+   --      not Latch.IsLocked);
 
    ------------------------------------------------------------------
    -- CurrentActivityPossible
@@ -229,13 +236,44 @@ is
                                              State,
                                              UserToken.Input,
                                              UserToken.State,
-                                             UserToken.Status));
+                                             UserToken.Status)),
 
-   ---------------------------------------------------------
-   -- PROOF ANNOTATIONS FOR SECURITY PROPERTY 1           --
-   --=====================================================--
-   -- Holding place for the user entry part of property 1 --
-   ---------------------------------------------------------
+
+          Pre     =>
+            CurrentActivityPossible and
+            KeyStore.PrivateKeyPresent and
+
+            --------------------------------------------------------
+            -- PROOF ANNOTATIONS FOR SECURITY PROPERTY 3          --
+            --====================================================--
+            -- Before each call to Progress, the security         --
+            -- property holds.                                    --
+            --------------------------------------------------------
+            (((Latch.IsLocked and
+                 Door.TheCurrentDoor = Door.Open and
+                 Clock.GreaterThanOrEqual (Clock.TheCurrentTime,
+                                           Door.Alarm_TimeOut)))
+             = (Door.TheDoorAlarm = AlarmTypes.Alarming)),
+          Post    =>
+            --------------------------------------------------------
+            -- PROOF ANNOTATIONS FOR SECURITY PROPERTY 3          --
+            --====================================================--
+            -- After each call to Progress, the security property --
+            -- holds.                                             --
+            --------------------------------------------------------
+            (((Latch.IsLocked and
+                 Door.TheCurrentDoor = Door.Open and
+                 Clock.GreaterThanOrEqual (Clock.TheCurrentTime,
+                                           Door.Alarm_Timeout)))
+             = (Door.TheDoorAlarm = AlarmTypes.Alarming)) and
+
+            ---------------------------------------------------------
+            -- PROOF ANNOTATIONS FOR SECURITY PROPERTY 1           --
+            --=====================================================--
+            -- Holding place for the user entry part of property 1 --
+            ---------------------------------------------------------
+            (Latch.IsLocked'Old and
+               not Latch.IsLocked);
 
    ------------------------------------------------------------------
    -- StartEntry

@@ -224,9 +224,9 @@ is
                                                 Store,
                                                 TheKey,
                                                 TheOwner)),
-          Post    => (Added and (not IsPublic) and PrivateKeyPresent) xor
-                     (not (Added and not IsPublic) and
-                        (PrivateKeyPresent = PrivateKeyPresent'Old));
+          Post    => (Added and (not IsPublic) and PrivateKeyPresent)
+                       xor (not (Added and not IsPublic)
+                              and (PrivateKeyPresent = PrivateKeyPresent'Old));
 
    ------------------------------------------------------------------
    -- Delete

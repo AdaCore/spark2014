@@ -38,7 +38,8 @@ package TcpIp is
    -- ConnectToSPRE
    --
    -- Description:
-   --    Makes a TCP/IP connection to either the Portal port or the Admin port.
+   --    Makes a TCP/IP connection to either the Portal port or the Admin
+   --    port.
    --
    --------------------------------------------------------------------
    procedure ConnectToSPRE (IsAdmin : in     Boolean;
@@ -49,7 +50,8 @@ package TcpIp is
    -- DisconnectFromSPRE
    --
    -- Description:
-   --    Closes the TCP/IP connection with either the Portal port or the Admin port.
+   --    Closes the TCP/IP connection with either the Portal port or the Admin
+   --    port.
    --
    --------------------------------------------------------------------
    procedure DisconnectFromSPRE (IsAdmin : in     Boolean;

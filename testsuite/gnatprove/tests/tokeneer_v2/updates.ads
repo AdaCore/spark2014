@@ -76,9 +76,9 @@ package Updates is
           -- Door.TheDoorAlarm = Alarming is equivalent to the  --
           -- security property conditions                       --
           --------------------------------------------------------
-          Post    => ((Door.TheDoorAlarm = AlarmTypes.Alarming) <=
-                        Alarm.isAlarming) and then
-                     ((Latch.IsLocked = Latch.LatchIsLocked) or else
+          Post    => (if Door.TheDoorAlarm = AlarmTypes.Alarming then
+                         Alarm.isAlarming) and
+                     ((Latch.IsLocked = Latch.LatchIsLocked) or
                         SystemFault);
 
    ------------------------------------------------------------------
@@ -140,9 +140,9 @@ package Updates is
           -- Door.TheDoorAlarm = Alarming is equivalent to the  --
           -- security property conditions                       --
           --------------------------------------------------------
-          Post    => ((Door.TheDoorAlarm = AlarmTypes.Alarming)  <=
-                        Alarm.isAlarming) and then
-                     ((Latch.IsLocked = Latch.LatchisLocked) or else
+          Post    => (if Door.TheDoorAlarm = AlarmTypes.Alarming then
+                         Alarm.isAlarming) and
+                     ((Latch.IsLocked = Latch.LatchisLocked) or
                         SystemFault);
 
 end Updates;

@@ -41,26 +41,25 @@ package IandATypes is
    type TemplatePadI is range 1..452;
    type TemplatePadT is array(TemplatePadI) of BasicTypes.ByteT;
 
-   NullTemplatePad : constant TemplatePadT
-     := TemplatePadT'(others => BasicTypes.ByteT'First);
+   NullTemplatePad : constant TemplatePadT :=
+     TemplatePadT'(others => BasicTypes.ByteT'First);
 
    subtype TemplateLengthT is BasicTypes.Unsigned32T;
 
    subtype TemplateIDI is Positive range 1..40;
    subtype TemplateIDT is String(TemplateIDI);
 
-   type TemplateT is
-      record
-         Length         : TemplateLengthT;
-         RequiredMaxFAR : FarT;
-         ID             : TemplateIDT;
-         Pad            : TemplatePadT;
-      end record;
+   type TemplateT is record
+      Length         : TemplateLengthT;
+      RequiredMaxFAR : FarT;
+      ID             : TemplateIDT;
+      Pad            : TemplatePadT;
+   end record;
 
-   NullTemplate : constant TemplateT := TemplateT'
-     (Length         => TemplateLengthT'First,
-       RequiredMaxFAR => FarT'First,
-       ID             => TemplateIDT'(others => ' '),
-       Pad            => NullTemplatePad);
+   NullTemplate : constant TemplateT :=
+     TemplateT'(Length         => TemplateLengthT'First,
+                RequiredMaxFAR => FarT'First,
+                ID             => TemplateIDT'(others => ' '),
+                Pad            => NullTemplatePad);
 
 end IandATypes;

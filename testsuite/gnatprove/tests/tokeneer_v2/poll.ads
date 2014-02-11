@@ -110,26 +110,21 @@ package Poll is
           -- holds.                                             --
           --------------------------------------------------------
           Post    =>
-     ((Latch.IsLocked and then
-         Door.TheCurrentDoor = Door.Open and then
-         Clock.GreaterThanOrEqual(Clock.TheCurrentTime,
-                                  Door.Alarm_Timeout)) =
-        (Door.TheDoorAlarm = AlarmTypes.Alarming)) and
-
-       (AdminToken.IsGood'Old =
-          AdminToken.IsGood ) and
-       (AdminToken.AuthCertValid'Old =
-          AdminToken.AuthCertValid) and
-       ((AdminToken.TheAuthCertRole'Old = PrivTypes.Guard) =
-          (AdminToken.TheAuthCertRole = PrivTypes.Guard)) and
-
-       (Latch.IsLocked =
-          Clock.GreaterThanOrEqual(Clock.TheCurrentTime,
-                                   Latch.Latch_Timeout)) and
-       (Latch.IsLocked'Old <=
-          (Latch.Current_Latch = Latch.Current_Latch'Old and
-             Latch.Latch_Timeout = Latch.Latch_Timeout'Old
-             and Latch.IsLocked)) and
-       Latch.Latch_Timeout = Latch.Latch_Timeout'Old;
+            ((Latch.IsLocked and
+              Door.TheCurrentDoor = Door.Open and
+              Clock.GreaterThanOrEqual(Clock.TheCurrentTime,
+                                       Door.Alarm_Timeout)) =
+               (Door.TheDoorAlarm = AlarmTypes.Alarming)) and
+            AdminToken.IsGood'Old = AdminToken.IsGood and
+            AdminToken.AuthCertValid'Old = AdminToken.AuthCertValid and
+            ((AdminToken.TheAuthCertRole'Old = PrivTypes.Guard) =
+               (AdminToken.TheAuthCertRole = PrivTypes.Guard)) and
+            (Latch.IsLocked = Clock.GreaterThanOrEqual(Clock.TheCurrentTime,
+                                                       Latch.Latch_Timeout)) and
+            ((not Latch.IsLocked'Old) or
+                (Latch.Current_Latch = Latch.Current_Latch'Old and
+                 Latch.Latch_Timeout = Latch.Latch_Timeout'Old and
+                 Latch.IsLocked)) and
+            Latch.Latch_Timeout = Latch.Latch_Timeout'Old;
 
 end Poll;

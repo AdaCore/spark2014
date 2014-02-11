@@ -24,6 +24,7 @@ with Text_IO;
 with TcpIP;
 
 procedure TIS
+  with SPARK_Mode => Off
 is
 
   OK : Boolean;
@@ -70,9 +71,9 @@ is
       TCPIP.CloseAll;
    end FinaliseTestDevices;
 
-   --------------------------------------------------------------
-   -- begin TIS
-   --------------------------------------------------------------
+--------------------------------------------------------------
+-- begin TIS
+--------------------------------------------------------------
 begin
 
    InitTestDevices(Success => OK);
