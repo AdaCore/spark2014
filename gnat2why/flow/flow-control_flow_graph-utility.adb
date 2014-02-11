@@ -261,7 +261,8 @@ package body Flow.Control_Flow_Graph.Utility is
 
          Tmp_Used := Get_Variable_Set (Actual,
                                        Scope           => Scope,
-                                       Local_Constants => FA.Local_Constants);
+                                       Local_Constants => FA.Local_Constants,
+                                       Fold_Functions  => True);
          for F of Tmp_Used loop
             if (if Discriminants_Or_Bounds_Only
                 then Is_Discriminant (F))
@@ -533,7 +534,8 @@ package body Flow.Control_Flow_Graph.Utility is
          A.Variables_Used := Get_Variable_Set
            (A.Default_Init_Val,
             Scope           => Scope,
-            Local_Constants => FA.Local_Constants);
+            Local_Constants => FA.Local_Constants,
+            Fold_Functions  => False);
          A.Variables_Explicitly_Used := A.Variables_Used;
       end if;
 

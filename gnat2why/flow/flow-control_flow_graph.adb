@@ -1033,7 +1033,8 @@ package body Flow.Control_Flow_Graph is
       --  Work out which variables we use and define.
       V_Used_RHS := Get_Variable_Set (Expression (N),
                                       Scope           => FA.B_Scope,
-                                      Local_Constants => FA.Local_Constants);
+                                      Local_Constants => FA.Local_Constants,
+                                      Fold_Functions  => True);
 
       Untangle_Assignment_Target
         (N                    => Name (N),
@@ -1088,7 +1089,8 @@ package body Flow.Control_Flow_Graph is
          Make_Basic_Attributes (Var_Ex_Use => Get_Variable_Set
                                   (Expression (N),
                                    Scope           => FA.B_Scope,
-                                   Local_Constants => FA.Local_Constants),
+                                   Local_Constants => FA.Local_Constants,
+                                   Fold_Functions  => True),
                                 Loops      => Ctx.Current_Loops,
                                 E_Loc      => N),
          V);
@@ -1169,7 +1171,8 @@ package body Flow.Control_Flow_Graph is
             Make_Basic_Attributes (Var_Ex_Use => Get_Variable_Set
                                      (Condition (N),
                                       Scope           => FA.B_Scope,
-                                      Local_Constants => FA.Local_Constants),
+                                      Local_Constants => FA.Local_Constants,
+                                      Fold_Functions  => True),
                                    Loops      => Ctx.Current_Loops,
                                    E_Loc      => N),
             V);
@@ -1234,7 +1237,8 @@ package body Flow.Control_Flow_Graph is
                Var_Use         => Get_Variable_Set
                  (Ret_Object,
                   Scope           => FA.B_Scope,
-                  Local_Constants => FA.Local_Constants),
+                  Local_Constants => FA.Local_Constants,
+                  Fold_Functions  => True),
                Object_Returned => Ret_Object,
                Loops           => Ctx.Current_Loops,
                E_Loc           => Ret_Entity),
@@ -1317,7 +1321,8 @@ package body Flow.Control_Flow_Graph is
          Make_Basic_Attributes (Var_Ex_Use => Get_Variable_Set
                                   (Condition (N),
                                    Scope           => FA.B_Scope,
-                                   Local_Constants => FA.Local_Constants),
+                                   Local_Constants => FA.Local_Constants,
+                                   Fold_Functions  => True),
                                 Loops      => Ctx.Current_Loops,
                                 E_Loc      => N),
          V);
@@ -1372,7 +1377,8 @@ package body Flow.Control_Flow_Graph is
                     (Var_Ex_Use => Get_Variable_Set
                        (Condition (Elsif_Statement),
                         Scope           => FA.B_Scope,
-                        Local_Constants => FA.Local_Constants),
+                        Local_Constants => FA.Local_Constants,
+                        Fold_Functions  => True),
                      Loops      => Ctx.Current_Loops,
                      E_Loc      => Elsif_Statement),
                   V);
@@ -1606,7 +1612,8 @@ package body Flow.Control_Flow_Graph is
             Make_Basic_Attributes (Var_Ex_Use => Get_Variable_Set
                                      (Condition (Iteration_Scheme (N)),
                                       Scope           => FA.B_Scope,
-                                      Local_Constants => FA.Local_Constants),
+                                      Local_Constants => FA.Local_Constants,
+                                      Fold_Functions  => True),
                                    Loops      => Ctx.Current_Loops,
                                    E_Loc      => N),
             V);
@@ -1703,7 +1710,8 @@ package body Flow.Control_Flow_Graph is
                   Var_Ex_Use => Get_Variable_Set
                     (DSD,
                      Scope           => FA.B_Scope,
-                     Local_Constants => FA.Local_Constants),
+                     Local_Constants => FA.Local_Constants,
+                     Fold_Functions  => True),
                   Loops      => Ctx.Current_Loops,
                   E_Loc      => N),
                V);
@@ -1786,7 +1794,8 @@ package body Flow.Control_Flow_Graph is
                  (Var_Use       => Get_Variable_Set
                     (Prefix (Reference),
                      Scope           => FA.B_Scope,
-                     Local_Constants => FA.Local_Constants),
+                     Local_Constants => FA.Local_Constants,
+                     Fold_Functions  => False),
                   Is_Loop_Entry => True),
                V);
 
@@ -1920,7 +1929,8 @@ package body Flow.Control_Flow_Graph is
                     Var_Ex_Use => Get_Variable_Set
                     (Expression (N),
                      Scope           => FA.B_Scope,
-                     Local_Constants => FA.Local_Constants),
+                     Local_Constants => FA.Local_Constants,
+                     Fold_Functions  => True),
                   Loops      => Ctx.Current_Loops,
                   E_Loc      => N),
                V);
@@ -2283,7 +2293,8 @@ package body Flow.Control_Flow_Graph is
               (Var_Use => Get_Variable_Set
                  (Pragma_Argument_Associations (N),
                   Scope           => FA.B_Scope,
-                  Local_Constants => FA.Local_Constants),
+                  Local_Constants => FA.Local_Constants,
+                  Fold_Functions  => False),
                E_Loc   => N),
             V);
 
@@ -2376,7 +2387,8 @@ package body Flow.Control_Flow_Graph is
            (Var_Use         => Get_Variable_Set
               (Pre,
                Scope           => FA.B_Scope,
-               Local_Constants => FA.Local_Constants),
+               Local_Constants => FA.Local_Constants,
+               Fold_Functions  => False),
             Is_Precondition => True,
             E_Loc           => Pre),
          V);
@@ -2551,7 +2563,8 @@ package body Flow.Control_Flow_Graph is
                Var_Ex_Use => Get_Variable_Set
                  (Expression (N),
                   Scope           => FA.B_Scope,
-                  Local_Constants => FA.Local_Constants),
+                  Local_Constants => FA.Local_Constants,
+                  Fold_Functions  => True),
                Loops      => Ctx.Current_Loops,
                E_Loc      => N),
             V);
@@ -2656,7 +2669,8 @@ package body Flow.Control_Flow_Graph is
            (Var_Use => Get_Variable_Set
               (N,
                Scope           => FA.B_Scope,
-               Local_Constants => FA.Local_Constants),
+               Local_Constants => FA.Local_Constants,
+               Fold_Functions  => False),
             E_Loc   => N),
          V);
       CM.Include (Union_Id (N), Trivial_Connection (V));

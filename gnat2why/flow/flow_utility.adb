@@ -727,6 +727,7 @@ package body Flow_Utility is
      (N                            : Node_Id;
       Scope                        : Flow_Scope;
       Local_Constants              : Node_Sets.Set;
+      Fold_Functions               : Boolean;
       Reduced                      : Boolean := False;
       Allow_Statements             : Boolean := False;
       Expand_Synthesized_Constants : Boolean := False)
@@ -757,13 +758,17 @@ package body Flow_Utility is
         (Callsite       : Node_Id;
          Used_Variables : in out Flow_Id_Sets.Set)
       is
-
          Subprogram    : constant Entity_Id := Entity (Name (Callsite));
 
          Proof_Reads   : Flow_Id_Sets.Set;
          Global_Reads  : Flow_Id_Sets.Set;
          Global_Writes : Flow_Id_Sets.Set;
       begin
+
+         --  !!! We need to respect Fold_Functions here, but we can't until
+         --      the refactoring of N211-005 is done (as we can't call
+         --      Get_Depends here without circular dependencies).
+
          Get_Globals (Subprogram   => Subprogram,
                       Scope        => Scope,
                       Proof_Ins    => Proof_Reads,
@@ -775,26 +780,34 @@ package body Flow_Utility is
            Flow_Id_Sets.Length (Global_Writes) > 0
          then
             Error_Msg_NE
-              (Msg => "side-effects of function & are not modelled in SPARK",
+              (Msg =>
+                 "side-effects of function & are not modelled in SPARK",
                N   => Callsite,
                E   => Subprogram);
          end if;
 
-         --  Forming the set of variables for a parameter list never involves
-         --  a statement, so we can recurse with Allow_Statements => False here
+         --  Forming the set of variables for a parameter list never
+         --  involves a statement, so we can recurse with
+         --  Allow_Statements => False here
          Used_Variables.Union
            (Get_Variable_Set
               (Parameter_Associations (Callsite),
                Scope                        => Scope,
                Local_Constants              => Local_Constants,
+               Fold_Functions               => Fold_Functions,
                Reduced                      => Reduced,
                Allow_Statements             => False,
-               Expand_Synthesized_Constants => Expand_Synthesized_Constants));
+               Expand_Synthesized_Constants =>
+                 Expand_Synthesized_Constants));
 
          for G of Global_Reads loop
-            for F of Flatten_Variable (G) loop
-               Used_Variables.Include (Change_Variant (F, Normal_Use));
-            end loop;
+            if Reduced then
+               Used_Variables.Include (Change_Variant (G, Normal_Use));
+            else
+               for F of Flatten_Variable (G) loop
+                  Used_Variables.Include (Change_Variant (F, Normal_Use));
+               end loop;
+            end if;
          end loop;
       end Process_Subprogram_Call;
 
@@ -857,6 +870,8 @@ package body Flow_Utility is
                                     Scope                        => Scope,
                                     Local_Constants              =>
                                       Local_Constants,
+                                    Fold_Functions               =>
+                                      Fold_Functions,
                                     Reduced                      => Reduced,
                                     Allow_Statements             =>
                                       Allow_Statements,
@@ -968,6 +983,7 @@ package body Flow_Utility is
                           (Prefix (N),
                            Scope                        => Scope,
                            Local_Constants              => Local_Constants,
+                           Fold_Functions               => Fold_Functions,
                            Reduced                      => Reduced,
                            Allow_Statements             => Allow_Statements,
                            Expand_Synthesized_Constants =>
@@ -1014,13 +1030,30 @@ package body Flow_Utility is
 
    begin
       Traverse (N);
-      return Filter_Out_Non_Local_Constants (VS, Local_Constants);
+      VS := Filter_Out_Non_Local_Constants (VS, Local_Constants);
+      --  This should be a postcondition, but see N131-017
+      declare
+         Ok : Boolean := True;
+      begin
+         if Reduced then
+            for F of VS loop
+               if F.Kind = Record_Field then
+                  Ok := False;
+                  Print_Flow_Id (F);
+                  exit;
+               end if;
+            end loop;
+            pragma Assert (Ok);
+         end if;
+      end;
+      return VS;
    end Get_Variable_Set;
 
    function Get_Variable_Set
      (L                            : List_Id;
       Scope                        : Flow_Scope;
       Local_Constants              : Node_Sets.Set;
+      Fold_Functions               : Boolean;
       Reduced                      : Boolean := False;
       Allow_Statements             : Boolean := False;
       Expand_Synthesized_Constants : Boolean := False)
@@ -1036,6 +1069,7 @@ package body Flow_Utility is
               (N                            => P,
                Scope                        => Scope,
                Local_Constants              => Local_Constants,
+               Fold_Functions               => Fold_Functions,
                Reduced                      => Reduced,
                Allow_Statements             => Allow_Statements,
                Expand_Synthesized_Constants => Expand_Synthesized_Constants));
@@ -1152,6 +1186,11 @@ package body Flow_Utility is
       Vars_Explicitly_Used : out Flow_Id_Sets.Set;
       Vars_Implicitly_Used : out Flow_Id_Sets.Set)
    is
+      --  Fold_Functions (a parameter for Get_Variable_Set) is specified as
+      --  `false' here because Untangle should only ever be called where we
+      --  assign something to something. And you can't assign to function
+      --  results (yet).
+
       procedure Find_Bottom_Node (N             : Node_Id;
                                   Bottom_Node   : out Node_Id;
                                   End_Of_Record : out Node_Id;
@@ -1227,14 +1266,16 @@ package body Flow_Utility is
                  (Get_Variable_Set
                     (Expressions (N),
                      Scope           => Scope,
-                     Local_Constants => Local_Constants));
+                     Local_Constants => Local_Constants,
+                     Fold_Functions  => False));
                return OK;
             when N_Slice =>
                Vars_Explicitly_Used.Union
                  (Get_Variable_Set
                     (Discrete_Range (N),
                      Scope           => Scope,
-                     Local_Constants => Local_Constants));
+                     Local_Constants => Local_Constants,
+                     Fold_Functions  => False));
                return OK;
             when others =>
                return OK;
@@ -1269,7 +1310,11 @@ package body Flow_Utility is
 
          when N_Identifier | N_Expanded_Name =>
             --  X :=
-            Vars_Defined := Get_Variable_Set (N, Scope, Local_Constants);
+            Vars_Defined := Get_Variable_Set
+              (N,
+               Scope           => Scope,
+               Local_Constants => Local_Constants,
+               Fold_Functions  => False);
 
          when N_Selected_Component | N_Indexed_Component | N_Slice =>
             --  R.A :=
@@ -1315,7 +1360,8 @@ package body Flow_Utility is
                           (Get_Variable_Set
                              (Prefix (End_Of_Record),
                               Scope           => Scope,
-                              Local_Constants => Local_Constants));
+                              Local_Constants => Local_Constants,
+                              Fold_Functions  => False));
 
                      when N_Unchecked_Type_Conversion =>
                         --  This is an interesting special case. We
@@ -1327,7 +1373,8 @@ package body Flow_Utility is
                           (Get_Variable_Set
                              (Expression (Prefix (End_Of_Record)),
                               Scope           => Scope,
-                              Local_Constants => Local_Constants));
+                              Local_Constants => Local_Constants,
+                              Fold_Functions  => False));
 
                         --  Since we are using the defined variable
                         --  only partially, we need to make sure its
@@ -1354,14 +1401,16 @@ package body Flow_Utility is
                   Vars_Defined.Union (Get_Variable_Set
                                         (End_Of_Record,
                                          Scope           => Scope,
-                                         Local_Constants => Local_Constants));
+                                         Local_Constants => Local_Constants,
+                                         Fold_Functions  => False));
 
                when N_Unchecked_Type_Conversion =>
                   --  See above.
                   Vars_Defined.Union (Get_Variable_Set
                                         (Expression (End_Of_Record),
                                          Scope           => Scope,
-                                         Local_Constants => Local_Constants));
+                                         Local_Constants => Local_Constants,
+                                         Fold_Functions  => False));
 
                when N_Attribute_Reference =>
                   declare

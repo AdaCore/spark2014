@@ -113,6 +113,33 @@ package body Flow.Analysis.Sanity is
       --     Discriminant Specifications
       --     Object Renaming Declarations
 
+      function Simple_Variable_Set
+        (N : Node_Id)
+         return Ordered_Flow_Id_Sets.Set
+      is
+        (To_Ordered_Flow_Id_Set
+           (Get_Variable_Set (N,
+                              Scope                        => FA.B_Scope,
+                              Local_Constants              =>
+                                Node_Sets.Empty_Set,
+                              Fold_Functions               => False,
+                              Expand_Synthesized_Constants => True)));
+      --  A helpful wrapper around Get_Variable_Set as it is used in this
+      --  sanity checking procedure.
+
+      function Simple_Variable_Set
+        (L : List_Id)
+         return Ordered_Flow_Id_Sets.Set
+      is
+        (To_Ordered_Flow_Id_Set
+           (Get_Variable_Set (L,
+                              Scope                        => FA.B_Scope,
+                              Local_Constants              =>
+                                Node_Sets.Empty_Set,
+                              Fold_Functions               => False,
+                              Expand_Synthesized_Constants => True)));
+      --  As above.
+
       -------------------------------------
       -- Check_Expressions_Variable_Free --
       -------------------------------------
@@ -178,12 +205,7 @@ package body Flow.Analysis.Sanity is
                      Renamed_Indexes : constant List_Id :=
                        Expressions (N);
                      Deps : constant Ordered_Flow_Id_Sets.Set :=
-                       To_Ordered_Flow_Id_Set
-                         (Get_Variable_Set
-                           (Renamed_Indexes,
-                            Scope           => FA.B_Scope,
-                            Local_Constants => Node_Sets.Empty_Set,
-                            Expand_Synthesized_Constants => True));
+                       Simple_Variable_Set (Renamed_Indexes);
                   begin
                      Check_Flow_Id_Set (Flow_Ids => Deps,
                                         Err_Msg  => ES4 & ES3,
@@ -195,12 +217,7 @@ package body Flow.Analysis.Sanity is
                      Renamed_Slice : constant Node_Id :=
                        Discrete_Range (N);
                      Deps : constant Ordered_Flow_Id_Sets.Set :=
-                       To_Ordered_Flow_Id_Set
-                         (Get_Variable_Set
-                           (Renamed_Slice,
-                            Scope           => FA.B_Scope,
-                            Local_Constants => Node_Sets.Empty_Set,
-                            Expand_Synthesized_Constants => True));
+                       Simple_Variable_Set (Renamed_Slice);
                   begin
                      Check_Flow_Id_Set (Flow_Ids => Deps,
                                         Err_Msg  => ES5 & ES3,
@@ -266,12 +283,7 @@ package body Flow.Analysis.Sanity is
                            --  low-bound and the high-bound.
 
                            Deps : constant Ordered_Flow_Id_Sets.Set :=
-                             To_Ordered_Flow_Id_Set
-                               (Get_Variable_Set
-                                 (C,
-                                  Scope           => FA.B_Scope,
-                                  Local_Constants => Node_Sets.Empty_Set,
-                                  Expand_Synthesized_Constants => True));
+                             Simple_Variable_Set (C);
                         begin
                            Check_Flow_Id_Set (Flow_Ids => Deps,
                                               Err_Msg  => ES2 & ES3,
@@ -283,12 +295,7 @@ package body Flow.Analysis.Sanity is
                      when N_Index_Or_Discriminant_Constraint =>
                         declare
                            Deps : constant Ordered_Flow_Id_Sets.Set :=
-                             To_Ordered_Flow_Id_Set
-                               (Get_Variable_Set
-                                  (Constraints (C),
-                                   Scope           => FA.B_Scope,
-                                   Local_Constants => Node_Sets.Empty_Set,
-                                   Expand_Synthesized_Constants => True));
+                             Simple_Variable_Set (Constraints (C));
                         begin
                            Check_Flow_Id_Set (Flow_Ids => Deps,
                                               Err_Msg  => ES2 & ES3,
@@ -316,12 +323,7 @@ package body Flow.Analysis.Sanity is
                if Present (Expression (N)) then
                   declare
                      Deps : constant Ordered_Flow_Id_Sets.Set :=
-                       To_Ordered_Flow_Id_Set
-                         (Get_Variable_Set
-                           (Expression (N),
-                            Scope           => FA.B_Scope,
-                            Local_Constants => Node_Sets.Empty_Set,
-                            Expand_Synthesized_Constants => True));
+                       Simple_Variable_Set (Expression (N));
                   begin
                      Check_Flow_Id_Set (Flow_Ids => Deps,
                                         Err_Msg  => ES1 & ES3,

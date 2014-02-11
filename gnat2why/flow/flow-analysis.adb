@@ -353,7 +353,8 @@ package body Flow.Analysis is
                               Scope            => Scope,
                               Local_Constants  => FA.Local_Constants,
                               Reduced          => not Precise,
-                              Allow_Statements => True).Contains (Var_Tgt)
+                              Allow_Statements => True,
+                              Fold_Functions   => False).Contains (Var_Tgt)
          then
             First_Use := N;
             return OK;
@@ -646,6 +647,7 @@ package body Flow.Analysis is
                           (Expr,
                            Scope           => Get_Flow_Scope (Expr),
                            Local_Constants => FA.Local_Constants,
+                           Fold_Functions  => False,
                            Reduced         => True));
                   when others =>
                      Vars_Used := To_Entire_Variables
@@ -654,6 +656,7 @@ package body Flow.Analysis is
                            Scope           => Private_Scope (Get_Flow_Scope
                                                                (Expr)),
                            Local_Constants => FA.Local_Constants,
+                           Fold_Functions  => False,
                            Reduced         => True));
                end case;
                Vars_Used.Difference (Quantified_Variables (Expr));

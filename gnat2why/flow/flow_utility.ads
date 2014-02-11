@@ -90,28 +90,45 @@ package Flow_Utility is
      (N                            : Node_Id;
       Scope                        : Flow_Scope;
       Local_Constants              : Node_Sets.Set;
+      Fold_Functions               : Boolean;
       Reduced                      : Boolean := False;
       Allow_Statements             : Boolean := False;
       Expand_Synthesized_Constants : Boolean := False)
-      return Flow_Id_Sets.Set;
-   --  Obtain all variables used in an expression. If Reduced is True, obtain
-   --  only entire variables.
+      return Flow_Id_Sets.Set
+     with Pre => (if Fold_Functions then not Allow_Statements);
+   --  Obtain all variables used in an expression. We use Scope to
+   --  determine if called subprograms should provide their abstract or
+   --  refined view.
    --
-   --  If Allow_Statements is False, we raise an exception if we encounter
-   --  certain statements such as procedure calls.
+   --  Local_Constants describes a set of constants (which should all come
+   --  from source) which are treated as if they were variables; this means
+   --  they are potentially returned by this function.
    --
-   --  If Expand_Synthesized_Constants is True, then constants that do
-   --  not come from source are expanded out to the variable set of
-   --  their initializing expression.
+   --  If Fold_Functions is true, we exclude variables that a function does
+   --  not use to derive its result from. For example, given the following
+   --  dependency relation on a function:
+   --     Depends => (Foo'Result => A,
+   --                 null       => B)
+   --  Then we return only {A} instead of {A, B} if Fold_Functions is true.
    --
-   --  We use Scope to determine if called subprograms should provide their
-   --  abstract or refined view; or one of the Force_* parameters may be set
-   --  to provide a detailed instruction. ??? There are no such parameters?
+   --  The following other options all have default parameters as they are
+   --  only useful in certain usage scenarios. In the majority of flow
+   --  analysis one does not have to think about them. They are:
+   --
+   --     * Reduced: if True, obtain only entire variables.
+   --
+   --     * Allow_Statements: if False, we raise an exception if we
+   --       encounter certain statements such as procedure calls.
+   --
+   --     * Expand_Synthesized_Constants: if True, then constants that do
+   --       not come from source are expanded out to the variable set of
+   --       their initializing expression.
 
    function Get_Variable_Set
      (L                            : List_Id;
       Scope                        : Flow_Scope;
       Local_Constants              : Node_Sets.Set;
+      Fold_Functions               : Boolean;
       Reduced                      : Boolean := False;
       Allow_Statements             : Boolean := False;
       Expand_Synthesized_Constants : Boolean := False)
