@@ -124,7 +124,7 @@ install-gnatmerge:
 
 install-examples:
 	mkdir -p $(EXAMPLESDIR)
-	for dir in `cat MANIFEST.examples` ; do \
+	for dir in `grep -v "^--" MANIFEST.examples` ; do \
 	   $(CP) testsuite/gnatprove/tests/$$dir $(EXAMPLESDIR); \
 	done
 
