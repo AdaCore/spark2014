@@ -253,8 +253,7 @@ package Why.Gen.Arrays is
    --  for unconstrained arrays this is translated to a field access.
 
    function Get_Array_Attr
-     (Domain : EW_Domain;
-      Ty     : Entity_Id;
+     (Ty     : Entity_Id;
       Attr   : Attribute_Id;
       Dim    : Positive) return W_Expr_Id;
    --  Same as Get_Array_Attr, can be used when the type is already known

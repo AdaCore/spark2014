@@ -14,4 +14,3 @@ purecat.adb:2:29: info: length check proved
 purecat.adb:9:6: info: assertion proved
 purecat.adb:11:6: info: assertion proved
 purecat.adb:14:3: info: precondition proved
-purecat.adb:14:9: info: range check proved

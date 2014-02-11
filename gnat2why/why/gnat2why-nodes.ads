@@ -200,6 +200,9 @@ package Gnat2Why.Nodes is
    --  Get the range of a range constraint or subtype definition.
    --  The return node is of kind N_Range
 
+   function Static_Array_Length (E : Entity_Id; Dim : Positive) return Uint
+     with Pre => Is_Static_Array_Type (E);
+
    function Nth_Index_Type (E : Entity_Id; Dim : Positive) return Node_Id
    with Pre => Is_Array_Type (E);
 
