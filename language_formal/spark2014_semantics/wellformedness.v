@@ -11,6 +11,7 @@ zhangzhi@ksu.edu
 
 Require Export environment.
 Require Export semantics.
+Require Import typing.
 
 (** * Well-Formed Program  *)
 (**
@@ -49,12 +50,17 @@ Definition binop_type (op: binary_operator) (t1 t2: type): option type :=
     end.
 
 Definition unop_type (op: unary_operator) (t: type): option type := 
-    match op with 
+  match op with 
     | Not => match t with
-             | Boolean => Some Boolean
-             | _ => None
+               | Boolean => Some Boolean
+               | _ => None
              end
-    end.
+    | Unary_Plus =>
+      match t with
+        | Integer => Some Integer
+        | _ => None
+      end
+  end.
 
 (** * Well-Typed *)
 (** ** Well-typed expressions *)
@@ -113,18 +119,35 @@ Inductive type_map: typenum -> type -> Prop :=
     | T2: type_map 2 Boolean.
 
 (** type check for varialbe declaration; *)
-Inductive well_typed_decl: symtb -> object_declaration -> symtb -> Prop :=
-    | WT_Decl0: forall d x t tb,
+Inductive well_typed_objdecl: symtb -> object_declaration -> symtb -> Prop :=
+    | WT_ODecl0: forall d x t tb,
         x = d.(object_name) ->
         type_map d.(object_nominal_subtype) t ->
         None = d.(initialization_expression) ->
-        well_typed_decl tb d ((x, (In_Out, t)) :: tb) (* the declared variables have in/out mode *)
-    | WT_Decl1: forall d x t i tb,
+        well_typed_objdecl tb d ((x, (In_Out, t)) :: tb) (* the declared variables have in/out mode *)
+    | WT_ODecl1: forall d x t i tb,
         x = d.(object_name) ->
         type_map d.(object_nominal_subtype) t ->
         Some i = d.(initialization_expression) -> 
         well_typed_expr tb i t -> (* the type of the initialization value should be consistent with the declared variable's type *)
-        well_typed_decl tb d ((x, (In_Out, t)) :: tb).
+        well_typed_objdecl tb d ((x, (In_Out, t)) :: tb)
+.
+
+Inductive well_typed_procdecl: symtb -> procedure_body -> symtb -> Prop :=
+| WT_Proc_body:
+    
+    well_typed_procdecl tb pb ((pname,())::pb)
+  
+
+with well_typed_decl: symtb -> declaration -> symtb -> Prop :=
+  | WT_Decl_Obj: forall objdecl tb tb',
+      well_typed_objdecl tb objdecl tb'-> 
+      well_typed_decl tb (D_Object_declaration objdecl) tb'
+  | WT_Decl_Proc: forall procdecl tb tb',
+      well_typed_procdecl tb procdecl tb'-> 
+      well_typed_decl tb (D_Procedure_declaration procdecl) tb'
+.
+
 
 Inductive well_typed_decls: symtb -> list object_declaration -> symtb -> Prop :=
     | WT_Decls_Empty: forall tb,
@@ -137,8 +160,8 @@ Inductive well_typed_decls: symtb -> list object_declaration -> symtb -> Prop :=
 (** type check for procedure body; *)
 Inductive well_typed_proc_body: symtb -> procedure_body -> Prop :=
     | WT_Proc_Body: forall tb f tb',
-        well_typed_decls tb f.(procedure_declarative_part) tb' ->
-        well_typed_stmt tb' f.(procedure_statements) ->
+        well_typed_decl tb (procedure_declarative_part f) tb' ->
+        well_typed_stmt tb' (procedure_statements f) ->
         well_typed_proc_body tb f.
 
 (** type check for subproram, which can be either procedure or function,

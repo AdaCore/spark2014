@@ -9,11 +9,22 @@ zhangzhi@ksu.edu
 >>
 *)
 
+Require Import util.
 Require Import LibTactics.
+Require Import more_list.
 Require Export values.
 Require Export environment.
 Require Export util.
 Require Export checks.
+
+Module Entry_val <: Entry.
+
+  Definition T := val.
+
+End Entry_val.
+
+Module STACK := ENV(Entry_val).
+Import STACK.
 
 (** * Relational Semantics (big-step) *)
 (** interpret the literal expressions *)
@@ -148,17 +159,16 @@ Inductive eval_expr: stack -> expression -> Return value -> Prop :=
 (** [Copy_out prefix lparams lexp s s'] means that s' is the result of
     copying Out params of the currently finished procedure of prefix
     into there output variables. More precisely:
-  - [prefix] is the portion of the stack where parameters and local
-    variables are stored
+  - [prefix] is a portion of stack where only the parameters of the
+    procedure are stored;
   - [lparams] is the static specification of the parameters of the
     procedure;
-  - [lexp] is the original expression given as parameter of the
-    procedure (this is where one can find the variables into
-    performing the "out" operation;
+  - [lexp] is the list of original expressions given as parameter of
+    the procedure (this is where one can find in which variables "out"
+    parameters must be copied);
   - [s] is the portion of the stack which needs to be updated and
-    retruned, that is without local variables and parameters), more
-    precisely, [prefix::s] is the state returned by the evaluation of
-    the body of the procedure;
+    returned by the procedure, more precisely: it contains the global
+    parameters + the local environment of the colling procedure;
   - [s'] is the resulting state. *)
 Inductive Copy_out: store -> list parameter_specification
                     -> list expression -> stack -> stack -> Prop :=
@@ -178,11 +188,12 @@ Inductive Copy_out: store -> list parameter_specification
       -> Copy_out prf (prm::lprm) (e :: lexp) σ σ'.
 
 (** [Copy_in s lparams lexp frame] means the frame is the portion of
-    the stack to push on the stack to start evaluating the procedure.
-    More precisely, [frame] contains the value of the formal
-    parameters described by [lpamrams]. these values are computed from
-    the list of arguments [lexp]. Only "In" parameters are evaluated,
-    "Out" parameters are set to [Undefined]. *)
+    stack to push on the stack to start evaluating the procedure
+    having [lparams] as parameters spcification. More precisely,
+    [frame] contains the value of the formal parameters described by
+    [lpamrams]. These values are computed from the list of arguments
+    [lexp]. Only "In" parameters are evaluated, "Out" parameters are
+    set to [Undefined]. *)
 Inductive Copy_in: stack -> list parameter_specification
                    -> list expression -> Return store -> Prop :=
   Copy_in_nil : forall σ, Copy_in σ nil nil (Normal nil) 
@@ -795,6 +806,33 @@ Function f_eval_stmt k (s: stack) (c: statement) {struct k}: Return stack :=
   end.
 
 
+
+Ltac rename_and_idify H hname :=
+  let th := type of H in
+  rename H into hname;
+  change (id th) in hname;
+  rename_norm;
+  change th in hname
+
+with rename_norm :=
+  match reverse goal with
+    | H: (do_check _ _ _ _) |- _ =>
+      let s := fresh "hdo_check" in
+      rename_and_idify H s
+    | H: (eval_expr _ _ _) |- _ =>
+      let s := fresh "heval_expr" in
+      rename_and_idify H s
+    | H: (eval_bin_expr _ _ _ _) |- _ =>
+      let s := fresh "heval_bin_expr" in
+      rename_and_idify H s
+    | H: (eval_unary_expr _ _ _) |- _ =>
+      let s := fresh "heval_unary_expr" in
+      rename_and_idify H s
+    | _ => idtac
+  end.
+
+Ltac inv h := inverts h as;intros; rename_norm.
+
 (** basic lemmas *)
 (** expression semantic is deterministic. *)
 
@@ -803,69 +841,61 @@ Lemma eval_expr_unique: forall s e v1 v2,
     eval_expr s e v2 ->
     v1 = v2.
 Proof.
-  intros s e v1 v2 H.
+  intros s e v1 v2 hv1.
   revert v2.
-  induction H;intros v' h;try now (inversion h;clear h;subst;try auto).
-  - (inversion h;clear h;subst;try auto).
-    rewrite H in H4.
-    injection H4.
-    intros H0.
-    subst.
-    auto.
-
-  - (inversion h;clear h;subst;try auto).
-    apply IHeval_expr in H5.
+  induction hv1;intros v' h.
+  - subst.
+    inv h.
+    reflexivity.
+  - inv h.
+    Rinversion fetchG.    
+  - inv h;auto.
+    apply IHhv1 in heval_expr0.
     discriminate.
-    
-  - (inversion h;clear h;subst;try auto).
-    apply IHeval_expr2 in H8.
+  - inv h; auto.
+    apply IHhv1_2 in heval_expr2.
     discriminate.
-
-  - (inversion h;clear h;subst;try auto).
-    apply f_do_check_complete in H10.
-    apply f_do_check_complete in H1.
-    apply IHeval_expr2 in H9.
-    apply IHeval_expr1 in H7.
-    injection H7.
-    injection H9.
+  - inv h;auto.
+    apply f_do_check_complete in hdo_check.
+    apply f_do_check_complete in hdo_check0.
+    apply IHhv1_2 in heval_expr2.
+    apply IHhv1_1 in heval_expr1.
+    injection heval_expr1.
+    injection heval_expr2.
     intros; subst.
-    rewrite H10 in H1.
+    rewrite hdo_check in hdo_check0.
     discriminate.
-
-  - (inversion h;clear h;subst;try auto).
-    + apply IHeval_expr1 in H9.
+  - inv h.
+    + apply IHhv1_1 in heval_expr1.
       discriminate.
-    + apply IHeval_expr2 in H10.
+    + apply IHhv1_2 in heval_expr2.
       discriminate.
-
-    + apply f_do_check_complete in H11.
-      apply f_do_check_complete in H1.
-      apply IHeval_expr1 in H9.
-      apply IHeval_expr2 in H10.
-      injection H9.
-      injection H10.
+    + apply f_do_check_complete in hdo_check0.
+      apply f_do_check_complete in hdo_check.
+      apply IHhv1_1 in heval_expr1.
+      apply IHhv1_2 in heval_expr2.
+      injection heval_expr1.
+      injection heval_expr2.
       intros; subst.
-      rewrite H11 in H1.
+      rewrite hdo_check in hdo_check0.
       discriminate.
-
-    + apply IHeval_expr1 in H8.
-      apply IHeval_expr2 in H10.
-      injection H8.
-      injection H10.
+    + apply IHhv1_1 in heval_expr1.
+      apply IHhv1_2 in heval_expr2.
+      injection heval_expr1.
+      injection heval_expr2.
       intros ;subst.
-      rewrite (eval_bin_unique _ _ _ _ _ H12 H2) .
+      rewrite (eval_bin_unique _ _ _ _ _ heval_bin_expr heval_bin_expr0) .
       reflexivity.
-    
-  - (inversion h;clear h;subst;try auto).
-    apply IHeval_expr in H5.
+  - inv h;auto.
+    apply IHhv1 in heval_expr0.
     discriminate.
-  - (inversion h;clear h;subst;try auto).
-    + apply IHeval_expr in H6.
+  - inv h.
+    + apply IHhv1 in heval_expr0.
       discriminate.
-    + apply IHeval_expr in H6.
-      injection H6.
+    + apply IHhv1 in heval_expr0.
+      injection heval_expr0.
       intros ;subst.
-      rewrite (eval_unary_unique _ _ _ _ H7 H0) .
+      rewrite (eval_unary_unique _ _ _ _ heval_unary_expr0 heval_unary_expr) .
       reflexivity.
 Qed.    
 
@@ -976,17 +1006,16 @@ Lemma f_eval_expr_correct1 : forall s e v,
                         f_eval_expr s e = Normal v ->
                             eval_expr s e (Normal v).
 Proof.
-    intros s e.
-    functional induction (f_eval_expr s e);
-    intros v0 h1;
-    try inversion h1; subst.
+  intros s e.
+  functional induction (f_eval_expr s e) ; intros v0 h1; try inverts h1 as; subst.
   - constructor;
     reflexivity.
   - constructor;
     assumption.
   - specialize (IHr _ e3).
     specialize (IHr0 _ e4).
-    rewrite H0.
+    introv h.
+    rewrite h.
     econstructor.
     exact IHr. exact IHr0.
     + apply f_do_check_correct.
@@ -994,15 +1023,16 @@ Proof.
     + apply f_eval_bin_expr_correct; 
       auto.
   - specialize (IHr _ e2).
-    rewrite h1.
+    introv h.
+    rewrite h.
     econstructor. 
     exact IHr.
     destruct op. 
-    + simpl in h1. 
-      destruct v; inversion h1; subst.
+    + simpl in h. 
+      destruct v; inversion h; subst.
       constructor; auto.
-    + simpl in h1. 
-      destruct v; inversion h1; subst.
+    + simpl in h. 
+      destruct v; inversion h; subst.
       constructor; auto.
 Qed.
 
@@ -1102,23 +1132,11 @@ Qed.
 
 
 
-Ltac discriminate2 :=
-  let rewd HH HH' y z :=
-      match y with 
-        | z => fail 
-        | _ => rewrite HH in HH';discriminate
-  end in
-    match goal with
-      | HH: ?x = ?y , HH': ?x = ?z |- _ => rewd HH HH' y z
-      | HH: ?x = ?y , HH': ?z = ?x |- _ => rewd HH HH' y z 
-      | HH: ?y = ?x , HH': ?x = ?z |- _ => symmetry in HH; rewd HH HH' y z
-      | HH: ?y = ?x , HH': ?z = ?x |- _ => symmetry in HH; rewd HH HH' y z
-    end.
 
 
 
 Ltac apply_inv :=
-  try discriminate; try discriminate2;
+  try discriminate; try Rdiscriminate;
   match goal with
     | H:Normal _ = Normal _ |- _ => inversion H;clear H;subst 
     | H:update _ _ (Value _) = _ |- _ => rewrite H
@@ -1210,27 +1228,6 @@ Proof.
 Qed.
 
 
-Ltac destrIH :=
-  repeat progress (match goal with
-                     | h: ex _ |- _  =>
-                       let k := fresh "k" in
-                       let hk1 := fresh "hk" in
-                       destruct (h) as [k hk1];try assumption
-                   end).
-
-Ltac kgreater :=
-  repeat
-    match goal with
-      | h:f_eval_stmt ?k ?s ?p = Normal ?s' |- context [f_eval_stmt (?k + _) ?s ?p] =>
-        rewrite (@f_eval_stmt_fixpoint _ _ _ _ h);auto with arith
-      | h:f_eval_stmt ?k ?s ?p = Normal ?s' |- context [f_eval_stmt (_ + ?k) ?s ?p] =>
-        rewrite (@f_eval_stmt_fixpoint _ _ _ _ h);auto with arith
-      | h:f_eval_stmt ?k ?s ?p = Run_Time_Error |- context [f_eval_stmt (?k + _) ?s ?p] =>
-        rewrite (@f_eval_stmt_fixpoint_E _ _ _ h);auto with arith
-      | h:f_eval_stmt ?k ?s ?p = Run_Time_Error |- context [f_eval_stmt (_ + ?k) ?s ?p] =>
-        rewrite (@f_eval_stmt_fixpoint_E _ _ _ h);auto with arith
-         end.
-
 
 Ltac rm_eval_expr :=
   match goal with 
@@ -1238,31 +1235,6 @@ Ltac rm_eval_expr :=
     | [ h: eval_expr ?s ?b ?X, h': ?X = f_eval_expr ?s ?b |- _ ] => clear h; symmetry in h'
     | [ h: eval_expr ?s ?b ?X |- _ ] => apply f_eval_expr_complete in h
   end; auto.
-
-
-Ltac rewinv h h' := rewrite h in h'; inversion h'; try clear h' ; subst.
-
-(* This tactic is a generalization of inversion. We first rewrite with
-   some equality about function f first, and then do inversion on the
-   rewritten hypothesis. The tactic removes the inversed hypothesis at
-   the end so this *should* never loop. *)
-Ltac inversion2 f :=
-  match goal with
-    | H: f ?X = _ , H': context [f ?X] |- _ => rewinv H H'
-    | H: f ?X ?Y = _ , H': context [ f ?X ?Y ] |- _ => rewinv H H'
-    | H: f ?X ?Y ?Z = _ , H': context [ f ?X ?Y ?Z ] |- _ => rewinv H H'
-    | H: f ?X ?Y ?Z ?U = _ , H': context [ f ?X ?Y ?Z ?U ] |- _ => rewinv H H'
-    | H: f ?X ?Y ?Z ?U ?V = _ , H': context [ f ?X ?Y ?Z ?U ?V ] |- _ => rewinv H H'
-    | H: f ?X ?Y ?Z ?U ?V ?W = _ , H': context [ f ?X ?Y ?Z ?U ?V ?W ] |- _ => rewinv H H'
-    (* Same with a left to right equality *)
-    | H: _ = f ?X , H': context [f ?X] |- _ => rewinv H H'
-    | H: _ = f ?X ?Y , H': context [ f ?X ?Y ] |- _ => rewinv H H'
-    | H: _ = f ?X ?Y ?Z , H': context [ f ?X ?Y ?Z ] |- _ => rewinv H H'
-    | H: _ = f ?X ?Y ?Z ?U , H': context [ f ?X ?Y ?Z ?U ] |- _ => rewinv H H'
-    | H: _ = f ?X ?Y ?Z ?U ?V , H': context [ f ?X ?Y ?Z ?U ?V ] |- _ => rewinv H H'
-    | H: _ = f ?X ?Y ?Z ?U ?V ?W , H': context [ f ?X ?Y ?Z ?U ?V ?W ] |- _ => rewinv H H'
-  end ; auto.
-
 
 
 Lemma copy_in_correct:
@@ -1278,9 +1250,9 @@ Proof.
                             rewrite <- H in *
                         end
   ; try (now repeat progress
-             first [ discriminate2
-                   | inversion2 copy_in;auto
-                   | inversion2 f_eval_expr;auto ]).
+             first [ Rdiscriminate
+                   | Rinversion copy_in;auto
+                   | Rinversion f_eval_expr;auto ]).
   - inversion_is_var e2.
     econstructor 2.
     + apply IHr;auto.
@@ -1311,9 +1283,9 @@ Proof.
             rewrite <- H in *
         end
   ; try (now repeat progress
-             first [ discriminate2
-                   | inversion2 copy_in;auto
-                   | inversion2 f_eval_expr;auto ]).
+             first [ Rdiscriminate
+                   | Rinversion copy_in;auto
+                   | Rinversion f_eval_expr;auto ]).
   - inversion_is_var e2.
     rewrite H0.
     econstructor;auto.
@@ -1377,19 +1349,19 @@ Proof.
     apply IHr.
     assumption.
   - inversion heq;subst.
-    + inversion2 fetch.
+    + Rinversion fetch.
       apply IHr.
-      inversion2 updateG.
+      Rinversion updateG.
     + rewrite e2 in *.
       discriminate.
   - inversion heq;clear heq;subst.
-    + inversion2 fetch.
+    + Rinversion fetch.
       rewrite H10 in *.
       discriminate e5.
     + rewrite e2 in *.
       discriminate.
   - inversion heq;clear heq;subst.
-    + inversion2 fetch.
+    + Rinversion fetch.
     + rewrite e2 in *.
       discriminate.
   - inversion heq;subst;try contradiction.
@@ -1783,6 +1755,22 @@ Ltac apply_rewrite :=
     | h: Cut_until _ _ _ _ |- _ => apply cut_until_correct in h;rewrite h
     end; auto.
 
+
+Ltac kgreater :=
+  repeat
+    match goal with
+      | h:f_eval_stmt ?k ?s ?p = Normal ?s' |- context [f_eval_stmt (?k + _) ?s ?p] =>
+        rewrite (@f_eval_stmt_fixpoint _ _ _ _ h);auto with arith
+      | h:f_eval_stmt ?k ?s ?p = Normal ?s' |- context [f_eval_stmt (_ + ?k) ?s ?p] =>
+        rewrite (@f_eval_stmt_fixpoint _ _ _ _ h);auto with arith
+      | h:f_eval_stmt ?k ?s ?p = Run_Time_Error |- context [f_eval_stmt (?k + _) ?s ?p] =>
+        rewrite (@f_eval_stmt_fixpoint_E _ _ _ h);auto with arith
+      | h:f_eval_stmt ?k ?s ?p = Run_Time_Error |- context [f_eval_stmt (_ + ?k) ?s ?p] =>
+        rewrite (@f_eval_stmt_fixpoint_E _ _ _ h);auto with arith
+         end.
+
+
+
 Theorem f_eval_stmt_complete : forall s c s',
         eval_stmt s c s' -> (* s' is either a normal state or a run time error *)
             exists k, f_eval_stmt k s c = s'.
@@ -1799,26 +1787,26 @@ Proof.
   - exists 1%nat; simpl.
     repeat apply_rewrite.
   (* 2. S_Sequence *)
-  - destrIH.
+  - destrEx.
     exists (S k); simpl.
     apply_rewrite.
-  - destrIH.
+  - destrEx.
     exists (S (k0+k)); simpl.
     kgreater.
     specialize (eval_stmt_state _ _ _ H0); intros hz1.
     destruct hz1 as [hz2 | hz2]; try rm_exists; subst;
     kgreater.
   (* 3. S_If *)
-  - destrIH.
+  - destrEx.
     exists (S k); simpl.
     apply_rewrite.
   - exists 1%nat; simpl.
     apply_rewrite.
   (* 4. S_While_Loop *)
-  - destrIH.
+  - destrEx.
     exists (S k); simpl.
     repeat apply_rewrite.
-  - destrIH.
+  - destrEx.
     exists (S (k0+k)); simpl.
     apply_rewrite.
     kgreater.

@@ -80,7 +80,8 @@ endif
 #                    #
 ######################
 
-VFILES:=checks.v\
+VFILES:=more_list.v\
+  checks.v\
   environment.v\
   language.v\
   propertyProof.v\

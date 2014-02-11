@@ -73,9 +73,9 @@ Inductive value : Type :=
 
 (** Type of stored values in the store *)
 Inductive val: Type := 
-    | Value: value -> val
+    | Value (v:value)
     | Procedure (pb: procedure_body)
-    | Undefined: val.
+    | Undefined.
 
 (** Expression evaluation returns one of the following results:
     - normal values;
@@ -87,15 +87,7 @@ Inductive val: Type :=
       if it's necessary, we would refine the abnormal value into 
       these more precise categories (1.1.5);
 *)
-(*
-Inductive return_val: Type :=
-    | Val_Normal: value -> return_val
-    | Val_Run_Time_Error: return_val
-    | Val_Abnormal: return_val. *)
 
-Inductive value_of_type: value -> type -> Prop :=
-    | VT_Int: forall n, value_of_type (Int n) Integer
-    | VT_Bool: forall b, value_of_type (Bool b) Boolean.
 
 
 (** * Value Operations *)

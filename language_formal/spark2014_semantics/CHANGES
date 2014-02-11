@@ -1,3 +1,15 @@
+TODO: replace procedure_body with procedure_declaration.
+
+* typing.v has been adapted to stack of frames, some rephrasing of lemmas has been done +
+cleanng tactics.
+
+* Everywhere: trying to have a good set of tactics which smart
+  hypothesis naming. Not perfect.
+
+* renamed type_of_value with value_of_type, and added a more
+  convenient compatible_type_of_value which deals with undefined
+  values.
+
 * Feb 5, 2014. The cutting semantic is now defined for procedures.
 
 * Feb 3, 2014. The stack is now a stack of frames.

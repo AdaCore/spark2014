@@ -26,7 +26,16 @@ Require Export values.
 (** it's a map from a variable, represented with natural number,
     to its value;
 *)
-Definition store : Type := list (idnum * val).
+
+Module Type Entry.
+  Parameter T:Type.
+End Entry.
+
+Module ENV(V:Entry).
+
+Notation V:=V.T.
+
+Definition store : Type := list (idnum * V).
 
 (** ** Store operations *)
 (** check whether variable x has already been declared *)
@@ -41,15 +50,10 @@ Function reside (x : idnum) (s : store) :=
     end.
 
 (** fetch the value of x that has already been initialized in store *)
-Function fetch (x : idnum) (s : store): option val := 
+Function fetch (x : idnum) (s : store): option V := 
     match s with 
     | (y, v) :: s' =>
-      if beq_nat x y then
-        match v with
-        | Value _ => Some v
-        | Procedure _ => Some v
-        | Undefined => None
-        end
+      if beq_nat x y then Some v
       else fetch x s' 
     | nil => None
     end.
@@ -65,7 +69,7 @@ Function cut_to (x : idnum) (s : store): store*store :=
   end.
 
 (** update the latest binding for x *)
-Function update (s: store) (x : idnum) (v: val): option store := 
+Function update (s: store) (x : idnum) (v: V): option store := 
     match s with 
     | (y, v') :: s' => 
       if beq_nat x y then 
@@ -89,8 +93,6 @@ Proof.
     | h: None = Some ?v |- _ => inversion h
     | h: Some ?v1 = Some ?v2 |- _ => inversion h; subst
     end; simpl.
-  - apply beq_nat_true_iff in e0; subst.
-    left;auto.
   - apply beq_nat_true_iff in e0; subst.
     left;auto.
   - right.
@@ -149,7 +151,7 @@ Proof.
 Qed.
 
 (** [UpdateList lid lv s s'] iff s' is s updated by the values in (combine lid lv). *)
-Inductive UpdateList : list idnum -> list val -> store -> store -> Prop :=
+Inductive UpdateList : list idnum -> list V -> store -> store -> Prop :=
 | UpdateListnil: forall lid lv s, UpdateList lid lv s s
 | UpdateListcons: forall id lid v lv s s' s'',
                     UpdateList lid lv s s'
@@ -161,10 +163,6 @@ Inductive UpdateList : list idnum -> list val -> store -> store -> Prop :=
    currently running. *)
 Definition stack := list store.
 
-
-
-
-
 Function fetchG (x : idnum) (s : stack) := 
     match s with 
     | sto :: s' =>
@@ -175,7 +173,7 @@ Function fetchG (x : idnum) (s : stack) :=
     | nil => None
     end.
 
-Function updateG (s : stack) (x : idnum) (v:val): option stack := 
+Function updateG (s : stack) (x : idnum) (v:V): option stack := 
   match s with 
     | sto :: s' =>
       match update sto x v with
@@ -188,8 +186,18 @@ Function updateG (s : stack) (x : idnum) (v:val): option stack :=
     | nil => None
   end.
 
+Function resideG (x : idnum) (s : stack) := 
+    match s with 
+    | sto :: s' =>
+      if reside x sto then
+        true
+      else 
+        resideG x s' 
+    | nil => false
+    end.
 
-Inductive InG: idnum -> val -> stack -> Prop := 
+
+Inductive InG: idnum -> V -> stack -> Prop := 
   InG1: forall x v (sto:store) (s:stack),
           List.In (x,v) sto -> InG x v (sto::s)
 | InG2: forall x v (sto:store) (s:stack),
@@ -439,5 +447,5 @@ Proof.
 Qed.
 
 
-
+End ENV.
 
