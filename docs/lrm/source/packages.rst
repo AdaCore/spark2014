@@ -985,8 +985,7 @@ the grammar of ``refinement_list`` given below.
 
 ::
 
-  refinement_list   ::= refinement_clause
-                      | ( refinement_clause { , refinement_clause } )
+  refinement_list   ::= ( refinement_clause { , refinement_clause } )
   refinement_clause ::= state_name => constituent_list
   constituent_list  ::= null
                       | constituent
