@@ -45,6 +45,9 @@ with Gnat2Why_Args;     use Gnat2Why_Args;
 
 package body Flow_Error_Messages is
 
+   JSON_Msgs_List : Unbounded_String_Lists.List;
+   --  This will holds all of the emitted flow messages in JSON format
+
    use type Ada.Containers.Count_Type;
    use type Flow_Graphs.Vertex_Id;
    use type Flow_Id_Sets.Set;

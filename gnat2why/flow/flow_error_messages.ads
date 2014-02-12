@@ -32,6 +32,10 @@ with Flow_Types;            use Flow_Types;
 
 package Flow_Error_Messages is
 
+   Found_Flow_Error : Boolean := False;
+   --  This boolean becomes True if we find a flow error or if we find a
+   --  flow warning while Warning_Mode = Treat_As_Error.
+
    procedure Create_Flow_Msgs_File (GNAT_Root : Node_Id);
    --  Creates the "unit.flow" file that will later be populated by
    --  all flow messages that were emitted in JSON format.

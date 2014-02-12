@@ -55,17 +55,6 @@ package Flow is
    ----------------------------------------------------------------------
 
    ----------------------------------------------------------------------
-   --  Global variables
-   ----------------------------------------------------------------------
-
-   JSON_Msgs_List   : Unbounded_String_Lists.List;
-   --  This will holds all of the emitted flow messages in JSON format
-
-   Found_Flow_Error : Boolean := False;
-   --  This boolean becomes True if we find a flow error or if we find a
-   --  flow warning while Warning_Mode = Treat_As_Error.
-
-   ----------------------------------------------------------------------
    --  Flow_Graphs
    ----------------------------------------------------------------------
 
