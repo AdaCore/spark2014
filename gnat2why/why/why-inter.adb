@@ -23,19 +23,21 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Atree;               use Atree;
-with Einfo;               use Einfo;
-with Namet;               use Namet;
-with Sem_Util;            use Sem_Util;
-with SPARK_Xrefs;         use SPARK_Xrefs;
-with Sinfo;               use Sinfo;
-with Snames;              use Snames;
-with Stand;               use Stand;
-with String_Utils;        use String_Utils;
+with Atree;         use Atree;
+with Einfo;         use Einfo;
+with Namet;         use Namet;
+with SPARK_Xrefs;   use SPARK_Xrefs;
+with Sem_Util;      use Sem_Util;
+with Sinfo;         use Sinfo;
+with Snames;        use Snames;
+with Stand;         use Stand;
+with String_Utils;  use String_Utils;
+
 with Constant_Tree;
 
-with SPARK_Definition;    use SPARK_Definition;
-with SPARK_Util;          use SPARK_Util;
+with SPARK_Definition;       use SPARK_Definition;
+with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
+with SPARK_Util;             use SPARK_Util;
 
 with Flow_Utility;
 

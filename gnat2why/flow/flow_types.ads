@@ -37,9 +37,6 @@ with Types;                              use Types;
 
 with Common_Containers;                  use Common_Containers;
 
-with SPARK_Frame_Conditions;             use SPARK_Frame_Conditions;
---  Entity_Name
-
 with Flow_Tree_Utility;                  use Flow_Tree_Utility;
 
 package Flow_Types is

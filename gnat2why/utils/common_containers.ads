@@ -25,7 +25,9 @@
 with Ada.Containers;
 with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Containers.Hashed_Maps;
+with Ada.Containers.Hashed_Sets;
 with Ada.Containers.Ordered_Sets;
+with Ada.Strings.Hash;
 
 with Types; use Types;
 
@@ -68,5 +70,29 @@ package Common_Containers is
       Equivalent_Keys => "=",
       "="             => Node_Sets."=");
    --  Maps of nodes to sets of nodes
+
+   type Entity_Name is new String_Ptr;
+   --  Unique name representing an entity
+
+   function Name_Equal (Left, Right : Entity_Name) return Boolean is
+      (Left.all = Right.all);
+
+   Null_Entity_Name : constant Entity_Name := null;
+
+   function Name_Hash (E : Entity_Name) return Ada.Containers.Hash_Type is
+      (Ada.Strings.Hash (E.all));
+
+   package Name_Set is new Ada.Containers.Hashed_Sets
+     (Element_Type        => Entity_Name,
+      Hash                => Name_Hash,
+      Equivalent_Elements => Name_Equal,
+      "="                 => Name_Equal);
+
+   package Name_Map is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Entity_Name,
+      Element_Type    => Entity_Name,
+      Hash            => Name_Hash,
+      Equivalent_Keys => Name_Equal,
+      "="             => Name_Equal);
 
 end Common_Containers;

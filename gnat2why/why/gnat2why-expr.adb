@@ -46,7 +46,6 @@ with Stand;                  use Stand;
 with Uintp;                  use Uintp;
 with Urealp;                 use Urealp;
 
-with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 with SPARK_Util;             use SPARK_Util;
 
 with VC_Kinds;               use VC_Kinds;

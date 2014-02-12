@@ -23,8 +23,10 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Text_IO;            use Ada.Text_IO;
+with Ada.Containers.Hashed_Maps;
 with Unchecked_Deallocation;
+
+with Ada.Text_IO;            use Ada.Text_IO;
 
 with Atree;                  use Atree;
 with Einfo;                  use Einfo;

@@ -23,8 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with SPARK_Frame_Conditions;             use SPARK_Frame_Conditions;
-
 with Types;                              use Types;
 pragma Warnings (Off);
 --  ??? Why.Sinfo" is directly visible as "Sinfo", as it has "Why" as a

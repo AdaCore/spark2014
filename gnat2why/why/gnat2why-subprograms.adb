@@ -36,6 +36,8 @@ with Snames;                 use Snames;
 with Uintp;                  use Uintp;
 with VC_Kinds;               use VC_Kinds;
 
+with Common_Containers;      use Common_Containers;
+
 with SPARK_Definition;       use SPARK_Definition;
 with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 with SPARK_Util;             use SPARK_Util;

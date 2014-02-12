@@ -23,24 +23,25 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with AA_Util;             use AA_Util;
-with Atree;               use Atree;
-with Einfo;               use Einfo;
-with Lib;                 use Lib;
-with Namet;               use Namet;
-with Sem_Eval;            use Sem_Eval;
-with Sem_Util;            use Sem_Util;
-with Sinfo;               use Sinfo;
-with Uintp;               use Uintp;
+with AA_Util;                use AA_Util;
+with Atree;                  use Atree;
+with Einfo;                  use Einfo;
+with Lib;                    use Lib;
+with Namet;                  use Namet;
+with Sem_Eval;               use Sem_Eval;
+with Sem_Util;               use Sem_Util;
+with Sinfo;                  use Sinfo;
+with Uintp;                  use Uintp;
 
 with SPARK_Definition;
+with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 
 with Flow_Types;
 with Flow_Utility;
 
-with Gnat2Why.Nodes;      use Gnat2Why.Nodes;
-with Why.Atree.Accessors; use Why.Atree.Accessors;
-with Why.Atree.Builders;  use Why.Atree.Builders;
+with Gnat2Why.Nodes;         use Gnat2Why.Nodes;
+with Why.Atree.Accessors;    use Why.Atree.Accessors;
+with Why.Atree.Builders;     use Why.Atree.Builders;
 
 package body Gnat2Why.Util is
 

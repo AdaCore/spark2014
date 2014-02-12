@@ -32,39 +32,15 @@
 --  hashing of strings in computations over sets/maps of entities.
 
 with Ada.Containers;             use Ada.Containers;
-with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Hashed_Sets;
-with Ada.Strings.Hash;
 
+with Common_Containers;          use Common_Containers;
 with Namet;                      use Namet;
 with Types;                      use Types;
 
 package SPARK_Frame_Conditions is
 
-   type Entity_Name is new String_Ptr;
-   --  Unique name representing an entity
-
-   function Name_Equal (Left, Right : Entity_Name) return Boolean is
-      (Left.all = Right.all);
-
-   Null_Entity_Name : constant Entity_Name := null;
-
-   function Name_Hash (E : Entity_Name) return Hash_Type is
-      (Ada.Strings.Hash (E.all));
-
-   package Name_Set is new Hashed_Sets
-     (Element_Type        => Entity_Name,
-      Hash                => Name_Hash,
-      Equivalent_Elements => Name_Equal,
-      "="                 => Name_Equal);
    use Name_Set;
-
-   package Name_Map is new Hashed_Maps
-     (Key_Type        => Entity_Name,
-      Element_Type    => Entity_Name,
-      Hash            => Name_Hash,
-      Equivalent_Keys => Name_Equal,
-      "="             => Name_Equal);
    use Name_Map;
 
    Translated_Object_Entities : Name_Set.Set := Name_Set.Empty_Set;

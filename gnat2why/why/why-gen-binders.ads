@@ -25,8 +25,11 @@
 
 with Namet;                  use Namet;
 with Types;                  use Types;
+
+with Common_Containers;      use Common_Containers;
+
 with SPARK_Definition;       use SPARK_Definition;
-with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
+
 pragma Warnings (Off);
 --  ??? Why.Types" is directly visible as "Types", as it has "Why" as a
 --  common ancestor with the current package. So it hides compilation unit

@@ -31,7 +31,6 @@ with Ada.Strings.Unbounded;              use Ada.Strings.Unbounded;
 
 with Types;                  use Types;
 
-with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 with Why.Atree.Tables;       use Why.Atree.Tables;
 with Why.Ids;                use Why.Ids;
 
