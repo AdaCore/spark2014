@@ -1,7 +1,0 @@
-To-Do Summary
-=============
-
-.. todolist::
-
-
-
