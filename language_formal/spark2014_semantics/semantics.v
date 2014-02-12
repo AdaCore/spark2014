@@ -805,36 +805,31 @@ Function f_eval_stmt k (s: stack) (c: statement) {struct k}: Return stack :=
     end
   end.
 
-
-
-Ltac rename_and_idify H hname :=
-  let th := type of H in
-  rename H into hname;
-  change (id th) in hname;
-  rename_norm;
-  change th in hname
-
-with rename_norm :=
-  match reverse goal with
-    | H: (do_check _ _ _ _) |- _ =>
-      let s := fresh "hdo_check" in
-      rename_and_idify H s
-    | H: (eval_expr _ _ _) |- _ =>
-      let s := fresh "heval_expr" in
-      rename_and_idify H s
-    | H: (eval_bin_expr _ _ _ _) |- _ =>
-      let s := fresh "heval_bin_expr" in
-      rename_and_idify H s
-    | H: (eval_unary_expr _ _ _) |- _ =>
-      let s := fresh "heval_unary_expr" in
-      rename_and_idify H s
-    | _ => idtac
+(* My renaming heuristic. Not perfect. *)
+Ltac my_rename_hyp h :=
+  match type of h with
+    | (do_check _ _ _ _) => fresh "hdo_check"
+    | (eval_expr _ _ _) => fresh "heval_expr"
+    | (eval_decl _ _ _ _) => fresh "heval_decl"
+    | (eval_stmt _ _ _) => fresh "heval_stmt"
+    | (eval_bin_expr _ _ _ _) => fresh "heval_bin_expr"
+    | (eval_unary_expr _ _ _) => fresh "heval_unary_expr"
+    | (eval_literal _ = _) => fresh "heqeval_literal"
+    | (updateG _ _ _ = _) => fresh "hupdateG"
+    | (update _ _ _ = _) => fresh "hupdate"
+    | (fetchG _ _ = _) => fresh "heqfetchG"
+    | (fetch _ _ = _) => fresh "heqfetch"
+    | (Copy_in _ _ _ _) => fresh "hCopy_in"
+    | (Cut_until _ _ _ _) => fresh "hCut_until"
+    | (f_eval_expr _ _ = _) => fresh "heqeval_expr"
+    | (f_eval_decl _ _ _ = _) => fresh "heqeval_decl"
+    | (f_eval_stmt _ _ _ = _ ) => fresh "heqeval_stmt"
+    | (f_eval_bin_expr _ _ _ = _) => fresh "heqeval_bin_expr"
+    | (f_do_check _ _ _ = _) => fresh "heqdo_check"
+    | (stack_eq_length _ _) => fresh "hstack_eq_length"
+    | _ => default_rename_hyp h
   end.
-
-Ltac inv h := inverts h as;intros; rename_norm.
-
-(** basic lemmas *)
-(** expression semantic is deterministic. *)
+Ltac rename_hyp ::= my_rename_hyp.
 
 Lemma eval_expr_unique: forall s e v1 v2,
     eval_expr s e v1 ->
@@ -843,57 +838,57 @@ Lemma eval_expr_unique: forall s e v1 v2,
 Proof.
   intros s e v1 v2 hv1.
   revert v2.
-  induction hv1;intros v' h.
+  !induction hv1;!intros.
   - subst.
-    inv h.
+    !inversion heval_expr.
     reflexivity.
-  - inv h.
+  - !inversion heval_expr; !intros.
     Rinversion fetchG.    
-  - inv h;auto.
+  - !inversion heval_expr;auto;!intros.
     apply IHhv1 in heval_expr0.
     discriminate.
-  - inv h; auto.
-    apply IHhv1_2 in heval_expr2.
+  - !inversion heval_expr1; !intros ; auto.
+    apply IHhv1_2 in heval_expr1.
     discriminate.
-  - inv h;auto.
+  - !inversion heval_expr1;auto;!intros.
     apply f_do_check_complete in hdo_check.
     apply f_do_check_complete in hdo_check0.
-    apply IHhv1_2 in heval_expr2.
-    apply IHhv1_1 in heval_expr1.
+    apply IHhv1_2 in heval_expr1.
+    apply IHhv1_1 in heval_expr2.
     injection heval_expr1.
     injection heval_expr2.
     intros; subst.
     rewrite hdo_check in hdo_check0.
     discriminate.
-  - inv h.
+  - !inversion heval_expr1;!intros.
     + apply IHhv1_1 in heval_expr1.
       discriminate.
-    + apply IHhv1_2 in heval_expr2.
+    + apply IHhv1_2 in heval_expr1.
       discriminate.
     + apply f_do_check_complete in hdo_check0.
       apply f_do_check_complete in hdo_check.
-      apply IHhv1_1 in heval_expr1.
-      apply IHhv1_2 in heval_expr2.
+      apply IHhv1_1 in heval_expr2.
+      apply IHhv1_2 in heval_expr1.
       injection heval_expr1.
       injection heval_expr2.
-      intros; subst.
+      intros ; subst.
       rewrite hdo_check in hdo_check0.
       discriminate.
-    + apply IHhv1_1 in heval_expr1.
-      apply IHhv1_2 in heval_expr2.
+    + apply IHhv1_1 in heval_expr2.
+      apply IHhv1_2 in heval_expr1.
       injection heval_expr1.
       injection heval_expr2.
       intros ;subst.
       rewrite (eval_bin_unique _ _ _ _ _ heval_bin_expr heval_bin_expr0) .
       reflexivity.
-  - inv h;auto.
-    apply IHhv1 in heval_expr0.
+  - !inversion heval_expr;auto;!intros.
+    apply IHhv1 in heval_expr.
     discriminate.
-  - inv h.
-    + apply IHhv1 in heval_expr0.
+  - !inversion heval_expr;!intros.
+    + apply IHhv1 in heval_expr.
       discriminate.
-    + apply IHhv1 in heval_expr0.
-      injection heval_expr0.
+    + apply IHhv1 in heval_expr.
+      injection heval_expr.
       intros ;subst.
       rewrite (eval_unary_unique _ _ _ _ heval_unary_expr0 heval_unary_expr) .
       reflexivity.
@@ -981,15 +976,15 @@ Lemma f_eval_unary_expr_correct: forall op v v',
     f_eval_unary_expr op v = Normal v' ->
     eval_unary_expr op v v'.
 Proof.
-    intros.
-    destruct op; simpl in H.
-    - destruct v; inversion H; subst.
-      constructor; auto.
-    - destruct v;destruct v';simpl in *;try discriminate.
-      injection H.
-      intro.
-      subst.
-      constructor 2.      
+  intros op v v' heq.
+  !destruct op ; simpl in heq.
+  - destruct v; inversion heq; subst.
+    constructor; auto.
+  - destruct v;destruct v';simpl in *;try discriminate.
+    injection heq.
+    intro.
+    subst.
+    constructor 2.      
 Qed.
 
 Lemma f_eval_unary_expr_complete: forall op v v',
@@ -1007,34 +1002,36 @@ Lemma f_eval_expr_correct1 : forall s e v,
                             eval_expr s e (Normal v).
 Proof.
   intros s e.
-  functional induction (f_eval_expr s e) ; intros v0 h1; try inverts h1 as; subst.
+  !!(functional induction (f_eval_expr s e); intros v0 h1; try inverts h1 as; subst).
   - constructor;
     reflexivity.
   - constructor;
     assumption.
-  - specialize (IHr _ e3).
-    specialize (IHr0 _ e4).
+  - specialize (IHr _ heqeval_expr0).
+    specialize (IHr0 _ heqeval_expr).
     introv h.
     rewrite h.
     econstructor.
-    exact IHr. exact IHr0.
+    + exact IHr.
+    + exact IHr0.
     + apply f_do_check_correct.
       auto.
     + apply f_eval_bin_expr_correct; 
       auto.
-  - specialize (IHr _ e2).
+  - specialize (IHr _ heqeval_expr).
     introv h.
     rewrite h.
     econstructor. 
-    exact IHr.
-    destruct op. 
-    + simpl in h. 
-      destruct v; inversion h; subst.
-      constructor; auto.
-    + simpl in h. 
-      destruct v; inversion h; subst.
-      constructor; auto.
+    + exact IHr.
+    + destruct op. 
+      * simpl in h. 
+        destruct v; inversion h; subst.
+        constructor; auto.
+      * simpl in h. 
+        destruct v; inversion h; subst.
+        constructor; auto.
 Qed.
+
 
 (** another help lemma to prove the theorem: f_eval_expr_correct *)
 Lemma f_eval_expr_correct2 : forall s e,
@@ -1042,24 +1039,21 @@ Lemma f_eval_expr_correct2 : forall s e,
                             eval_expr s e Run_Time_Error.
 Proof.
     intros s e.
-    functional induction (f_eval_expr s e);
-    intros h; try inversion h.
-  - destruct op, v1, v2;
-    simpl in h; inversion h.
-  - specialize (f_eval_expr_correct1 _ _ _ e3); intros hz1.
-    specialize (f_eval_expr_correct1 _ _ _ e4); intros hz2.
+    (!! functional induction (f_eval_expr s e)); intro h;inversion h;simpl. 
+  - destruct op, v1, v2; simpl in h; inversion h.
+  - specialize (f_eval_expr_correct1 _ _ _ heqeval_expr0); intros hz1.
+    specialize (f_eval_expr_correct1 _ _ _ heqeval_expr); intros hz2.
     eapply eval_E_Binary_Operation3.
     apply hz1. apply hz2.
     apply f_do_check_correct; auto.
-  - specialize (f_eval_expr_correct1 _ _ _ e3); intros hz1.
-    specialize (IHr0 e4).
-    eapply eval_E_Binary_Operation2; auto.
-    exact hz1.
-  - specialize (IHr e3).
+  - specialize (f_eval_expr_correct1 _ _ _ heqeval_expr0); intros hz1.
+    specialize (IHr0 heqeval_expr).
+    eapply eval_E_Binary_Operation2 with v1; auto.
+  - specialize (IHr heqeval_expr).
     constructor; assumption.
   - destruct op;
     destruct v; inversion h. 
-  - specialize (IHr e2).
+  - specialize (IHr heqeval_expr).
     constructor; assumption.
 Qed.
 
@@ -1095,38 +1089,40 @@ Theorem f_eval_expr_complete : forall e s v,
                             (f_eval_expr e s) = v.
 Proof.
     intros e s v h.
-    induction h; simpl; intros;
+    !induction h; simpl; !intros;
     repeat match goal with
     | h: fetchG _ _ = _  |- _ => progress rewrite h
     | h: f_eval_expr _ _ = _ |- _ => progress rewrite h
     end;auto.
-  - rewrite H; reflexivity.
-  - specialize (f_do_check_complete _ _ _ _ H); intros hz1.
+  - rewrite heqeval_literal; reflexivity.
+  - specialize (f_do_check_complete _ _ _ _ hdo_check); intros hz1.
     rewrite hz1.
     reflexivity.
-  - destruct v1; destruct v2;
-    destruct op;
-    inversion H0; subst; simpl; auto.
+  - !destruct v1; !destruct v2;
+    !destruct op;
+    !inversion heval_bin_expr; subst; simpl; auto.
     + (* overflow check for Plus *)
-      inversion H; subst.
-      rewrite H3; auto.
-      unfold not in H2; intuition.
+      !inversion hdo_check; !intros; subst.
+      * rewrite heq; auto.
+      * rm_false_hyp.
     + (* overflow check for Minus *)
-      inversion H; subst.
-      rewrite H3; auto.
-      unfold not in H2; intuition.
+      !inversion hdo_check;!intros; subst.
+      * rewrite heq; auto.
+      * rm_false_hyp.
     + (* overflow check for Multiply *)
-      inversion H; subst.
-      rewrite H3; auto.
-      unfold not in H2; intuition.
+      !inversion hdo_check;!intros; subst.
+      * inversion heq; subst.
+        rewrite H0; auto.
+      * rm_false_hyp.
     + (* both division by zero check and overflow check *)
-      inversion H; subst.
-      rewrite H3; auto.
-      rm_false_hyp.
+      !inversion hdo_check;!intros; subst.
+      * inversion heq; subst.
+        rewrite H0; auto.
+      * rm_false_hyp.
   - destruct op.
-    + inversion H; subst.
+    + inversion heval_unary_expr; subst.
       auto.
-    + inversion H; subst.
+    + inversion heval_unary_expr; subst.
       auto.
 Qed.
 
@@ -1169,20 +1165,20 @@ Lemma f_eval_stmt_fixpoint: forall k s c s',
             f_eval_stmt k' s c = Normal s'.
 Proof.
     intros k s c.
-    functional induction (f_eval_stmt k s c); simpl; intros; subst; simpl; auto;
-    repeat progress apply_inv.
+    rename_after (fun _ => functional induction (f_eval_stmt k s c); simpl; intros; subst; simpl; auto;
+    repeat progress apply_inv) c.
   - invle; repeat apply_inv.
   - invle.
     + repeat apply_inv.
-    + rewrite (IHr _ e1);auto with arith.
-  - invle; repeat apply_inv. rewrite (IHr _ H);auto with arith.
+    + rewrite (IHr _ heqeval_stmt0);auto with arith.
+  - invle; repeat apply_inv. rewrite (IHr _ heqeval_stmt);auto with arith.
   - invle; repeat apply_inv.
-  - invle; repeat apply_inv. rewrite (IHr _ e2); auto with arith.
+  - invle; repeat apply_inv. rewrite (IHr _ heqeval_stmt0); auto with arith.
   - invle; repeat apply_inv.
   - invle; repeat apply_inv.
-    + rewrite (IHr _ e5).
-      repeat apply_inv.
-      auto with arith.
+    rewrite (IHr _ heqeval_stmt).
+    repeat apply_inv.
+    auto with arith.
 Qed.
 
 (** another help lemma to prove the theorem: 'f_eval_stmt_complete' *)
@@ -1192,16 +1188,17 @@ Lemma f_eval_stmt_fixpoint_E: forall k s p,
             f_eval_stmt k' s p = Run_Time_Error.
 Proof.
     intros k s p.
-    functional induction (f_eval_stmt k s p); simpl; intros; subst; simpl; auto;
-    repeat progress apply_inv. 
+    rename_after (fun _ => functional induction (f_eval_stmt k s p)
+                  ; simpl; intros; subst; simpl; auto;
+                  repeat progress apply_inv) p.
   - invle;
     apply_inv.
   - invle;
     repeat apply_inv.
-    rewrite (f_eval_stmt_fixpoint _ _ _ _ e1); auto with arith.
+    rewrite (f_eval_stmt_fixpoint _ _ _ _ heqeval_stmt0); auto with arith.
   - invle;
     repeat apply_inv.
-    specialize (IHr e1). 
+    specialize (IHr heqeval_stmt). 
     rewrite IHr; auto with arith. 
   - invle; 
     repeat apply_inv.
@@ -1210,20 +1207,19 @@ Proof.
     repeat apply_inv.
   - invle; 
     repeat apply_inv. 
-    rewrite (f_eval_stmt_fixpoint _ _ _ _ e2); auto with arith.
+    rewrite (f_eval_stmt_fixpoint _ _ _ _ heqeval_stmt0); auto with arith.
   - invle; 
     repeat apply_inv.
-    rewrite (IHr e2); auto with arith.    
+    rewrite (IHr heqeval_stmt); auto with arith.    
   - invle; 
     repeat apply_inv.   
   - invle; repeat apply_inv.
-    rewrite (f_eval_stmt_fixpoint _ _ _ _ e5); auto with arith.
-    rewrite e6.
+    rewrite (f_eval_stmt_fixpoint _ _ _ _ heqeval_stmt); auto with arith.
+    rewrite heq0.
     assumption.
   - invle; repeat apply_inv.
-    rewrite  (IHr e5 m);auto with arith.
-  - clear H.
-    invle; repeat apply_inv.
+    rewrite  (IHr heqeval_stmt m);auto with arith.
+  - invle; repeat apply_inv.
   - invle; repeat apply_inv.
 Qed.
 
@@ -1242,18 +1238,20 @@ Lemma copy_in_correct:
     copy_in s prm lexp = (Normal prefx) <->  Copy_in s prm lexp (Normal prefx).
 Proof.
   intros s prm lexp.
-  functional induction copy_in s prm lexp;intros;split;simpl in *;intro heq
-  ; try (inversion heq;subst;clear heq)
-  ; repeat rm_eval_expr
-  ; try repeat progress match goal with (* Rewrite induction hyp if you can *)
-                          | H: (forall _, ?X = _ <-> _)  |- _ =>
-                            rewrite <- H in *
-                        end
-  ; try (now repeat progress
-             first [ Rdiscriminate
-                   | Rinversion copy_in;auto
-                   | Rinversion f_eval_expr;auto ]).
-  - inversion_is_var e2.
+  rename_after
+    (fun _ =>
+       functional induction copy_in s prm lexp;intros;split;simpl in *;intro heq
+     ; try (inversion heq;subst;clear heq)
+     ; repeat rm_eval_expr
+     ; try repeat progress match goal with (* Rewrite induction hyp if you can *)
+                             | H: (forall _, ?X = _ <-> _)  |- _ =>
+                               rewrite <- H in *
+                           end
+     ; try (now repeat progress
+                first [ Rdiscriminate
+                      | Rinversion copy_in;auto
+                      | Rinversion f_eval_expr;auto ])) lexp.
+  - inversion_is_var heq0.
     econstructor 2.
     + apply IHr;auto.
     + assumption.
@@ -1274,24 +1272,25 @@ Lemma copy_in_correct2:
     copy_in s prm lexp = Run_Time_Error <->  Copy_in s prm lexp Run_Time_Error.
 Proof.
   intros s prm lexp.
-  functional induction copy_in s prm lexp;intros;split;simpl in *;intro heq
-  ; try (inversion heq;subst;clear heq)
-  ; repeat try rm_eval_expr
-  ; try repeat progress (* Rewrite with induction hyp as much as we can *)
-        match goal with
-          | H: (?X = _ <-> _)  |- _ =>
-            rewrite <- H in *
-        end
-  ; try (now repeat progress
-             first [ Rdiscriminate
-                   | Rinversion copy_in;auto
-                   | Rinversion f_eval_expr;auto ]).
-  - inversion_is_var e2.
-    rewrite H0.
+  rename_after
+    (fun _ => functional induction copy_in s prm lexp;intros;split;simpl in *;intro heq
+     ; try (inversion heq;subst;clear heq)
+     ; repeat try rm_eval_expr
+     ; try repeat progress (* Rewrite with induction hyp as much as we can *)
+           match goal with
+             | H: (?X = _ <-> _)  |- _ =>
+               rewrite <- H in *
+           end
+     ; try (now repeat progress
+                first [ Rdiscriminate
+                      | Rinversion copy_in;auto
+                      | Rinversion f_eval_expr;auto ])) lexp.
+  - inversion_is_var heq0.
+    rewrite heq.
     econstructor;auto.
     rewrite <- IHr.
     assumption.
-  - rewrite H0.
+  - rewrite heq.
     apply Copy_in_cons_in_rte2 with (v:=v');auto.
     + rewrite <- IHr.
       assumption.
@@ -1311,8 +1310,9 @@ Proof.
   induction H;auto.
   - apply stack_eq_length_refl.
     reflexivity.
-  - apply updateG_stack_eq_length in H2.
-    apply stack_eq_length_trans with σ';auto.
+  - transitivity  σ'.
+    + eapply updateG_stack_eq_length;eauto.
+    + assumption.
 Qed.
 
 Lemma Copy_out_length :
@@ -1323,8 +1323,7 @@ Proof.
   intros prefx prm lexp s s' H.
   induction H;auto.
   transitivity (List.length σ');auto.
-  apply updateG_length in H2.
-  assumption.
+  eapply updateG_length;eauto.
 Qed.
 
 
@@ -1343,41 +1342,40 @@ Lemma copy_out_correct:
     copy_out prefx prm lexp s = Normal x <-> Copy_out prefx prm lexp s x.
 Proof.
   intros prefx s prm lexp.
-  functional induction copy_out prefx prm lexp s;intros;split;simpl in *;intro heq
-  ; try (now (inversion heq;subst;clear heq);auto;try now (econstructor;eauto)).
+  rename_after
+    (fun _ =>
+       functional induction copy_out prefx prm lexp s;intros;split;simpl in *;intro heq
+     ; try (now (inversion heq;subst;clear heq);auto;try now (econstructor;eauto))) lexp.
   - apply Copy_out_cons_out with (σ':=s') (v:=v)(id:=parameter_name prm);auto.
     apply IHr.
     assumption.
-  - inversion heq;subst.
+  - !inversion heq;!intros.
     + Rinversion fetch.
-      apply IHr.
-      Rinversion updateG.
-    + rewrite e2 in *.
-      discriminate.
-  - inversion heq;clear heq;subst.
+      Rinversion updateG. 
+      apply IHr;assumption.
+    + Rdiscriminate.
+  - !inversion heq;!intros.
     + Rinversion fetch.
-      rewrite H10 in *.
-      discriminate e5.
-    + rewrite e2 in *.
-      discriminate.
-  - inversion heq;clear heq;subst.
-    + Rinversion fetch.
-    + rewrite e2 in *.
-      discriminate.
-  - inversion heq;subst;try contradiction.
-    rewrite e2 in *.
-    discriminate.
+      Rdiscriminate.
+    + Rdiscriminate.
+  - !inversion heq; !intros.
+    + Rdiscriminate.
+    + Rdiscriminate.
+  - !inversion heq; !intros.
+    + contradiction.
+    + Rdiscriminate.
   - constructor 3;auto.
     apply IHr.
     assumption.
-  - inversion heq;subst;try contradiction.
-    + rewrite e2 in *.
-      discriminate.
+  - !inversion heq;!intros.
+    + Rdiscriminate.
     + apply IHr.
       assumption.
-  - inversion heq;subst;try contradiction.
-    + rewrite H3 in *;contradiction.
-    + rewrite H6 in *;contradiction.
+  - !inversion heq;!intros.
+    + rewrite heq in y.
+      contradiction.
+    + rewrite heq in y.
+      contradiction.
 Qed.
 
 
@@ -1391,7 +1389,7 @@ Lemma eval_decl_store_length:
                   -> exists prfx, st = prfx ++ sto.
 Proof.
   intros s sto s' decl h.
-  induction h;intros st heq;inversion heq;clear heq;subst.
+  !induction h;intros st heq';!inversion heq';subst.
   - exists ((object_name d, Value v)::nil).
     simpl.
     reflexivity.
@@ -1409,7 +1407,6 @@ Proof.
 Qed.
 
 
-
 Lemma eval_stmt_store_length:
   forall s s' stm,    
     eval_stmt s stm s'
@@ -1417,8 +1414,10 @@ Lemma eval_stmt_store_length:
                   -> stack_eq_length s st.
 Proof.
   intros s s' stm H.
-  induction H;intros st heq;inversion heq;clear heq; subst;auto.
-  - apply updateG_stack_eq_length in H0.
+  (*    !! (induction H;intros st heq';inversion heq';clear heq'; subst;auto). *)
+  Print Grammar tactic.
+  (!!induction H; intros st heq'; inversion heq';clear heq'; subst;auto).
+  - apply updateG_stack_eq_length in hupdateG.
     assumption.
   - apply stack_eq_length_trans with s1.
     + apply IHeval_stmt1.
@@ -1434,19 +1433,13 @@ Proof.
       reflexivity.
   - apply stack_eq_length_refl.
     reflexivity.
-  -  
-    generalize (Cut_until_def _ _ _ _ H1).
+  - generalize (Cut_until_def _ _ _ _ hCut_until).
     intros hcutin.
     subst.
     specialize (IHeval_stmt ((slocal ++ prefix') :: s') eq_refl).
-    inversion IHeval_stmt.
-    clear IHeval_stmt.
-    subst.
-    apply Copy_out_stack_eq_length in H6.
-    transitivity (s_forget ++ s').
-    rewrite H9.
-    reflexivity.
-    assumption.
+    !inversion IHeval_stmt;!intros.
+    rewrite hstack_eq_length.
+    eapply Copy_out_stack_eq_length;eauto.
 Qed.
 
 Lemma f_eval_decl_correct :
@@ -1481,25 +1474,24 @@ Proof.
   assumption.
 Qed.
 
-Ltac invclear H := inversion H; clear H; subst.
-
 Ltac use_determinism :=
   match goal with
     | H : ?X = ?X |- _ => clear H
-    | H: None = ?y, H': ?y = Some ?z |- _ => rewrite H' in H; invclear H
-    | H: Some ?z = ?y, H': ?y = None |- _ => rewrite H' in H; invclear H
-    | H: Some ?x = ?y, H': ?y = Some ?z |- _ => rewrite H' in H; inversion H;clear H;subst
+    | H: None = ?y, H': ?y = Some ?z |- _ => rewrite H' in H; !invclear H
+    | H: Some ?z = ?y, H': ?y = None |- _ => rewrite H' in H; !invclear H
+    | H: Some ?x = ?y, H': ?y = Some ?z |- _ => rewrite H' in H; !invclear H
     | H : eval_expr ?s ?e ?X,
           H': f_eval_expr ?s ?e = ?Y |- _ => rewrite (f_eval_expr_complete s e X H) in H'
     | H:  eval_expr ?s ?e ?X,
           H': eval_expr ?s ?e ?Y |- _ => apply (f_eval_expr_complete s e X) in H
          ;apply (f_eval_expr_complete s e) in H'
     | H : f_eval_expr ?s ?e = ?X,
-          H': f_eval_expr ?s ?e = ?Y |- _ => rewrite H in H'; invclear H'
-    | H : (Normal ?v) = (Normal ?v') |- _ => invclear H
+          H': f_eval_expr ?s ?e = ?Y |- _ => rewrite H in H'; !invclear H'
+    | H : (Normal ?v) = (Normal ?v') |- _ => !invclear H
   end.
 
 Ltac crush := repeat progress use_determinism;try reflexivity;try discriminate.
+
 
 Lemma f_eval_decl_complete :
   forall d sto s s',
@@ -1507,44 +1499,22 @@ Lemma f_eval_decl_complete :
     f_eval_decl s sto d = s'.
 Proof.
   intros d sto s.
-  functional induction f_eval_decl s sto d;simpl;intros;try discriminate;crush;
-  try now (invclear H;crush).
-  - invclear H
-    ; try match goal with
-            | H: eval_decl _ _ dcl1 _ |- _ => rename H into hed1
-          end
-    ; try match goal with
-            | H: eval_decl _ _ dcl2 _ |- _ => rename H into hed2
-          end. 
-    + apply IHr in hed1.
-      rewrite e0 in hed1.
-      inversion hed1.
-      subst.
-      apply IHr0 in hed2.
+  (!!functional induction f_eval_decl s sto d);simpl;!intros;try discriminate;crush;
+  try now (!inversion heval_decl;!intros;crush).
+  - !inversion heval_decl;!intros.
+    + apply IHr in heval_decl0.
+      Rinversion f_eval_decl.
+    + apply IHr in heval_decl.
+      Rinversion f_eval_decl.
+    + apply IHr in heval_decl0.
+      Rinversion f_eval_decl.
+  - !inversion heval_decl;!intros.
+    + apply IHr in heval_decl0.
+      Rinversion f_eval_decl.
+    + apply IHr in heval_decl.
       assumption.
-    + apply IHr in hed1.
-      rewrite e0 in hed1.
-      inversion hed1.
-    + apply IHr in hed1.
-      rewrite e0 in hed1.
-      inversion hed1.
-      subst.
-      apply IHr0 in hed2.
-      assumption.
-  - invclear H
-    ; try match goal with
-            | H: eval_decl _ _ dcl1 _ |- _ => rename H into hed1
-          end
-    ; try match goal with
-            | H: eval_decl _ _ dcl2 _ |- _ => rename H into hed2
-          end.
-    + apply IHr in hed1.
-      rewrite hed1 in y.
-      contradiction.
-    + apply IHr in hed1.
-      assumption.
-    + apply IHr in hed1.
-      rewrite hed1 in y.
+    + apply IHr in heval_decl0.
+      rewrite heval_decl0 in y.
       contradiction.
 Qed.
 
@@ -1555,9 +1525,11 @@ Qed.
 Ltac rm_f_eval_expr :=
   match goal with 
     | [ h: f_eval_expr ?s ?b = Run_Time_Error |- _ ] => 
-      specialize (f_eval_expr_correct2 _ _ h); intros hz1
+      specialize (f_eval_expr_correct2 _ _ h);
+        !intros
     | [ h: f_eval_expr ?s ?b = Normal ?v |- _ ] => 
-      specialize (f_eval_expr_correct1 _ _ _ h); intros hz1   
+      specialize (f_eval_expr_correct1 _ _ _ h);
+        !intros
   end; auto.
 
 
@@ -1568,21 +1540,21 @@ Lemma f_eval_stmt_correct1 : forall k s p s',
           eval_stmt s p (Normal s').
 Proof.
     intros k s p.
-    functional induction (f_eval_stmt k s p);
-    intros; try inversion H; subst.
+    !!(functional induction (f_eval_stmt k s p);
+       intros; try inversion H; subst).
   - (* S_Assignment *)
     econstructor.
     rm_f_eval_expr.
-    apply hz1.
+    apply heval_expr.
     assumption.
   - (* S_Sequence *)
-    specialize (IHr _ e1).
-    specialize (IHr0 _ H).
+    specialize (IHr _ heqeval_stmt1).
+    specialize (IHr0 _ heqeval_stmt).
     econstructor.
     apply IHr.
     apply_inv.
   - (* S_If_True *)
-    specialize (IHr _ H).
+    specialize (IHr _ heqeval_stmt).
     econstructor.
     rm_f_eval_expr. 
     apply_inv.
@@ -1590,8 +1562,8 @@ Proof.
     eapply eval_S_If_False.
     rm_f_eval_expr.
   - (* S_While_Loop_True *)
-    specialize (IHr _ e2).
-    specialize (IHr0 _ H).
+    specialize (IHr _ heqeval_stmt1).
+    specialize (IHr0 _ heqeval_stmt).
     econstructor.
     rm_f_eval_expr.
     apply IHr. 
@@ -1600,35 +1572,37 @@ Proof.
     eapply eval_S_While_Loop_False.
     rm_f_eval_expr.
   - (* S_ProcCall *)
-    clear H.
+    clear heq0.
     (* cleaning by going to inductive defs *)
-    apply split1_correct in e6.
-    destruct e6 as [hsplit1 hsplit2].
-    rewrite H1.
+    apply split1_correct in heq1.
+    destruct heq1 as [hsplit1 hsplit2].
+    rewrite heq.
     subst.
-    apply f_eval_decl_correct in e4.    
-    apply IHr in e5.
-    apply copy_in_correct in e2.
-    apply copy_out_correct in H1.
+    apply f_eval_decl_correct in heqeval_decl.    
+    apply IHr in heqeval_stmt.
+    apply copy_in_correct in heq3.
+    apply copy_out_correct in heq.
     (* ******* *)
     eapply eval_S_Proc with (s':=s') (prefix':=prefx')(prefix:=prefx)(slocal:=slocal);eauto.
     + apply cut_until_complete1.
       assumption.
-    + eapply eval_decl_store_length with (st:=s2) in e4;auto.
-      destruct e4 as [slocal' ?]. subst.
-      apply eval_stmt_store_length with (st:=((slocal ++ prefx') :: s')) in e5;auto.
-      inversion e5. clear e5. subst.
-      rewrite <- H5 in hsplit1.
-      setoid_rewrite app_length in H5.
+    + eapply eval_decl_store_length with (st:=s2) in heqeval_decl;auto.
+      destruct heqeval_decl as [slocal' ?].
+      subst.
+      apply eval_stmt_store_length with (st:=((slocal ++ prefx') :: s')) in heqeval_stmt;auto.
+      !invclear heqeval_stmt.
+      rewrite <- heq0 in hsplit1.
+      setoid_rewrite app_length in heq0.
       setoid_rewrite app_length in hsplit1.
-    omega.
+      omega.
 Qed.
 
 
 Ltac rm_f_eval_stmt :=
     match goal with 
     | [ h: f_eval_stmt ?k ?s ?c = Normal ?s1 |- _ ] => 
-        specialize (f_eval_stmt_correct1 _ _ _ _ h); intros hz1
+        specialize (f_eval_stmt_correct1 _ _ _ _ h);
+        !intros
     end; auto.
 
 (** a help lemma to prove the theorem: 'f_eval_stmt_complete' *)
@@ -1637,41 +1611,42 @@ Lemma f_eval_stmt_correct2 : forall k s p,
           eval_stmt s p Run_Time_Error.
 Proof.
     intros k s p.
-    functional induction (f_eval_stmt k s p);
-      intros H ; try inversion H;  subst.
+    !!(functional induction (f_eval_stmt k s p);intros;try discriminate).
+(*     !!(functional induction (f_eval_stmt k s p)); intros H ; try inversion H; subst. *)
   - (* S_Assignment *)
     econstructor.
     rm_f_eval_expr.
   - (* S_Sequence*)
-    specialize (IHr0 H).
-    econstructor.
-    rm_f_eval_stmt.
-    apply hz1.
-    apply_inv.
-  - specialize (IHr e1).
+    eapply eval_S_Sequence2.
+    + rm_f_eval_stmt.
+      eauto.
+    + apply IHr0.
+      assumption.
+  - specialize (IHr heqeval_stmt).
     econstructor.
     assumption.    
   - (* C_If *)
-    specialize (IHr H).
-    econstructor.
+    specialize (IHr heqeval_stmt).
+    eapply eval_S_If_True.
     rm_f_eval_expr.
-    apply_inv.
-  - econstructor.
-    specialize (f_eval_expr_correct2 _ _ e1); intros hz1. 
     assumption.
+  - eapply eval_S_If .
+    rm_f_eval_expr.
+  (* S_While_Loop *)
+  - eapply eval_S_While_Loop_True2.
+    + apply f_eval_expr_correct1.
+      assumption.
+    + rm_f_eval_stmt.
+      eauto.
+    + apply IHr0.
+      assumption.
+  - eapply eval_S_While_Loop_True1;auto.
+    rm_f_eval_expr.
+
   - (* S_While_Loop *)
-    specialize (IHr0 H).
-    econstructor.
+    apply eval_S_While_Loop.
     rm_f_eval_expr.
-    rm_f_eval_stmt.
-    apply hz1.
-    apply_inv.
-  - constructor 9.
-    rm_f_eval_expr.
-    specialize (IHr e2); assumption.    
-  - econstructor.
-    rm_f_eval_expr.
-  - elim (copy_out_no_rte _ _ _ _ H1).
+  - elim (copy_out_no_rte _ _ _ _ heq).
   - apply eval_S_Proc_rtebody with 
     (prefix:=prefx)
       (s2:=s2)
@@ -1775,8 +1750,8 @@ Theorem f_eval_stmt_complete : forall s c s',
         eval_stmt s c s' -> (* s' is either a normal state or a run time error *)
             exists k, f_eval_stmt k s c = s'.
 Proof. 
-  intros s c s' H;
-  induction H;
+  !intros.
+  !induction heval_stmt;
   try match goal with
   [ h: eval_expr ?s ?e Run_Time_Error |- exists k, _ = Run_Time_Error] => 
           exists 1%nat; simpl;
@@ -1793,7 +1768,7 @@ Proof.
   - destrEx.
     exists (S (k0+k)); simpl.
     kgreater.
-    specialize (eval_stmt_state _ _ _ H0); intros hz1.
+    specialize (eval_stmt_state _ _ _ heval_stmt); intros hz1.
     destruct hz1 as [hz2 | hz2]; try rm_exists; subst;
     kgreater.
   (* 3. S_If *)
@@ -1810,7 +1785,7 @@ Proof.
     exists (S (k0+k)); simpl.
     apply_rewrite.
     kgreater.
-    specialize (eval_stmt_state _ _ _ H1); intros hz1.
+    specialize (eval_stmt_state _ _ _ heval_stmt); intros hz1.
     destruct hz1 as [hz2 | hz2]; try rm_exists; subst;
     kgreater.
   - exists 1%nat; simpl.
@@ -1820,29 +1795,29 @@ Proof.
   - exists 1%nat; simpl.
     subst.
     repeat apply_rewrite.
-    apply f_eval_decl_complete in H2.
-    rewrite H2.
+    apply f_eval_decl_complete in heval_decl.
+    rewrite heval_decl.
     reflexivity.
-  - destruct IHeval_stmt as [k IH].
+  - destruct IHheval_stmt as [k IH].
     exists (S k).
     simpl.
     repeat apply_rewrite.
-    apply f_eval_decl_complete in H2.
-    rewrite H2.
+    apply f_eval_decl_complete in heval_decl.
+    rewrite heval_decl.
     apply_rewrite.
-  - destruct IHeval_stmt as [k IH].
+  - destruct IHheval_stmt as [k IH].
     exists (S k).
     simpl.
     subst.
     repeat apply_rewrite.
-    apply f_eval_decl_complete in H2.
-    rewrite H2.
+    apply f_eval_decl_complete in heval_decl.
+    rewrite heval_decl.
     repeat apply_rewrite.
     repeat setoid_rewrite app_length.
-    rewrite H5.
-    assert (heq:Datatypes.length slocal + Datatypes.length prefix' -
-        Datatypes.length prefix' = Datatypes.length slocal) by omega.
     rewrite heq.
+    assert (heq':Datatypes.length slocal + Datatypes.length prefix' -
+        Datatypes.length prefix' = Datatypes.length slocal) by omega.
+    rewrite heq'.
     rewrite split1_complete with (l2:=prefix') (l1:=slocal).
     + apply copy_out_correct.
       assumption.
@@ -1957,30 +1932,30 @@ Theorem f_eval_subprogram_correct: forall k s f s',
     (f_eval_subprogram k s f = Run_Time_Error -> 
         eval_subprogram s f Run_Time_Error).
 Proof.
-    intros; 
-    split; intros;
-    destruct f;
-    simpl in H;
-    constructor;
-    unfold f_eval_proc in H;
-    remember (f_eval_decl s nil (procedure_declarative_part p)) as x;
-    symmetry in Heqx.
+    intros.
+    !! (split; intros;
+        destruct f;
+        simpl in H;
+        constructor;
+        unfold f_eval_proc in H ;
+        remember (f_eval_decl s nil (procedure_declarative_part p)) as x;
+        symmetry in Heqx).
   - (* normal state *)
-    destruct x; inversion H; subst.
+    destruct x; !invclear heq.
     econstructor.
-    + apply f_eval_decl_correct in Heqx.
-       apply Heqx.
-    + apply f_eval_stmt_correct in H.
-       rewrite H1; auto.
+    + apply f_eval_decl_correct.
+      apply heqeval_decl.
+    + rewrite heqeval_stmt.
+      apply f_eval_stmt_correct in heqeval_stmt;assumption.
   - (* run time error *)
-    destruct x; inversion H; subst.
+    destruct x; !invclear heq; subst.
     + econstructor.
-       * apply f_eval_decl_correct in Heqx.
-         apply Heqx.
-       * rewrite H.
-         apply f_eval_stmt_correct in H; auto.
+       * apply f_eval_decl_correct in heqeval_decl.
+         apply heqeval_decl.
+       * rewrite heqeval_stmt.
+         apply f_eval_stmt_correct in heqeval_stmt; assumption.
     + econstructor.
-      apply f_eval_decl_correct2 in Heqx; auto.
+      apply f_eval_decl_correct2 in heqeval_decl; assumption.
 Qed.
 
 (** *** f_eval_subprogram_complete *)
@@ -1988,18 +1963,19 @@ Theorem f_eval_subprogram_complete: forall s f s',
     eval_subprogram s f s' ->
     exists k, f_eval_subprogram k s f = s'.
 Proof.
-    intros s f s' h.
-    unfold f_eval_subprogram.
-    unfold f_eval_proc.
-    inversion h; subst.
-    inversion H; subst.
-  - apply f_eval_decl_complete in H0.
-    rewrite H0. 
-    exists 0; auto.
-  - apply f_eval_decl_complete in H0.
-    rewrite H0.
-    apply f_eval_stmt_complete in H1.
-    auto.
+  intros s f s' h.
+  unfold f_eval_subprogram.
+  unfold f_eval_proc.
+  !invclear h.
+  !invclear H;simpl.
+  - exists 0.
+    apply f_eval_decl_complete in heval_decl.
+    rewrite heval_decl.
+    reflexivity.
+  - apply f_eval_decl_complete in heval_decl.
+    rewrite heval_decl.
+    apply f_eval_stmt_complete in heval_stmt.
+    assumption.
 Qed.
 
 (** * Replaying examples using the correctness of functional semantics *)
@@ -2095,4 +2071,4 @@ Qed.
 
 
 End ExampleProcedures2.
-(* END EXAMPLE *)  
+(* END EXAMPLE *)

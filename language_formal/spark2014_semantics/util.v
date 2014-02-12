@@ -9,7 +9,7 @@ zhangzhi@ksu.edu
 >>
 *)
 
-
+Require Import LibTactics.
 
 (** * Customized Tactics *)
 
@@ -138,3 +138,77 @@ Ltac Rinversion f :=
     | H: _ = f ?X ?Y ?Z ?U ?V , H': context [ f ?X ?Y ?Z ?U ?V ] |- _ => rewinv H H'
     | H: _ = f ?X ?Y ?Z ?U ?V ?W , H': context [ f ?X ?Y ?Z ?U ?V ?W ] |- _ => rewinv H H'
   end ; auto.
+
+Ltac default_rename_hyp h :=
+  match type of h with
+    | _ = _ => fresh "heq"
+  end.
+
+(* This tactic be redefined in each module, it should return a fresh
+   name build from the type of (hypothesis) h. *)
+Ltac rename_hyp := default_rename_hyp.
+
+(* "marks" hypothesis h of the current goal by putting id(..) on top
+   of there types. *)
+Ltac id_ify h := let th := type of h in change (id th) in h.
+
+(* Unmarking one hyp. *)
+Ltac unid H :=
+  match type of H with
+    | id ?th => change th in H
+  end.
+
+(* Unmarking all hyps *)
+Ltac unidall :=
+  repeat match goal with
+    | H: id ?th |- _ => change th in H
+  end.
+
+(* Renames all hypothesis using the current rename_hyp. It does not
+   rename hypothesis already marked (i.e. of type (id _)). *)
+Ltac rename_norm :=
+  repeat match goal with
+           | H:_ |- _ =>
+             match type of H with
+               | id _ => fail 1
+               | ?th => let newname := rename_hyp H in
+                        rename H into newname;
+                        change (id th) in newname
+             end
+         end.
+
+
+
+(* Mark all current hypothesis of the goal to prevent re-renaming hyps
+   when calling renaming tactics multiple times. Typical use: mark all
+   hyps but the one we want to destruct (say h), destruct h; rename
+   all unmarked hyps except h.
+
+   idall ; unid h; inversion h; try id_ify h; rename_norm; unidall.
+ *)
+Ltac idall :=
+  repeat match goal with
+           | H:_ |- _ =>
+             match type of H with
+               | id _ => fail 1
+               | ?th => change (id th) in H
+             end
+         end.
+
+
+(* hyp(h)? *)
+Tactic Notation "rename_after" tactic(T) constr(h) := idall; unid h; T h ; try id_ify h; rename_norm ; unidall.
+Tactic Notation "!!" tactic(T) := idall; T ; rename_norm ; unidall.
+
+(* decompose takes a special list of constr as argument *)
+(* Tactic Notation "decomp" hyp(h) := idall; unid h; decompose [and ex or] h ; clear h; rename_norm ; unidall. *)
+Tactic Notation "decomp" hyp(h) := rename_after (fun x => decompose [and ex or] x) h.
+
+Tactic Notation "!induction" constr(h) := rename_after (fun x => induction x) h.
+Tactic Notation "!functional induction" constr(h) :=
+  rename_after (fun x => functional induction x) h.
+Tactic Notation "!destruct" constr(h) := rename_after (fun x => destruct x) h.
+Tactic Notation "!inversion" hyp(h) := rename_after (fun x => inverts x as) h.
+Tactic Notation "!intros" := idall;intros;rename_norm;unidall.
+Tactic Notation "!invclear" hyp(h) := rename_after (fun x => inverts x as;intros) h.
+

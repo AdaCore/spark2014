@@ -454,36 +454,10 @@ with rename_norm :=
     | _ => idtac
   end.
 
-Ltac idall :=
-  repeat match goal with
-           | H:_ |- _ =>
-             match type of H with
-               | id _ => fail 1
-               | ?th => change (id th) in H
-             end
-         end.
-
-Ltac unidall :=
-  repeat match goal with
-    | H: id ?th |- _ => change th in H
-  end.
-
-Ltac unid H :=
-  match type of H with
-    | id ?th => change th in H
-  end.
 
 
 
-(* Ltac rename_new tac := *)
-(*   idify_all ltac:(fun x => tac;rename_norm). *)
-Tactic Notation "hhh" tactic(T) := idall; T ; rename_norm ; unidall.
-Tactic Notation "hhh" tactic(T) hyp(h) := idall; unid h; T h ; rename_norm ; unidall.
 
-Tactic Notation "decomp" hyp(h) := idall; unid h; decompose [and ex or] h ; clear h; rename_norm ; unidall.
-
-
-Ltac inv h := idall; unid h; inverts h as;intros; rename_norm;unidall.
 
 (** ** Some lemmas *)
 (** For any variable x in a type checked store, it should has some
