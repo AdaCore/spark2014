@@ -275,6 +275,64 @@ package body Flow_Utility is
    ----------------------------------------------------------------------
 
    -----------------
+   -- Has_Depends --
+   -----------------
+
+   function Has_Depends (Subprogram : Entity_Id) return Boolean is
+   begin
+      return Present (Get_Pragma (Subprogram, Pragma_Depends));
+   end Has_Depends;
+
+   -----------------
+   -- Get_Depends --
+   -----------------
+
+   procedure Get_Depends (Subprogram : Entity_Id;
+                          Scope      : Flow_Scope;
+                          Depends    : out Dependency_Maps.Map)
+   is
+      Tmp : Dependency_Maps.Map;
+   begin
+
+      ----------------------------------------------------------------------
+      --  Step 1: parse the appropriate dependency relation.
+      ----------------------------------------------------------------------
+
+      Tmp := Parse_Depends (Get_Contract_Node (Subprogram,
+                                               Scope,
+                                               Depends_Contract));
+
+      ----------------------------------------------------------------------
+      --  Step 2: expand out any abstract state for which the refinement is
+      --  visible, similar to what we do for globals.
+      ----------------------------------------------------------------------
+
+      Depends := Dependency_Maps.Empty_Map;
+      for C in Tmp.Iterate loop
+         declare
+            D_In  : constant Flow_Id_Sets.Set :=
+              (if Present (Dependency_Maps.Key (C))
+               then To_Flow_Id_Set (Down_Project
+                                      (Node_Sets.To_Set
+                                         (Get_Direct_Mapping_Id
+                                            (Dependency_Maps.Key (C))),
+                                       Scope))
+               else Flow_Id_Sets.To_Set (Dependency_Maps.Key (C)));
+
+            D_Out : constant Flow_Id_Sets.Set :=
+              To_Flow_Id_Set (Down_Project
+                                (To_Node_Set (Dependency_Maps.Element (C)),
+                                 Scope));
+         begin
+            for I of D_In loop
+               Depends.Include (I, D_Out);
+            end loop;
+         end;
+      end loop;
+
+   end Get_Depends;
+
+   -----------------
    -- Get_Globals --
    -----------------
 

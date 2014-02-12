@@ -24,7 +24,7 @@
 with Nlists;   use Nlists;
 with Sem_Util; use Sem_Util;
 
-with Treepr; use Treepr;
+with Treepr;   use Treepr;
 
 with Why;
 

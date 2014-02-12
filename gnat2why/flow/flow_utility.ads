@@ -36,12 +36,45 @@ with Atree;             use Atree;
 
 with Common_Containers; use Common_Containers;
 
-with Flow_Types;        use Flow_Types;
-with Flow_Refinement;   use Flow_Refinement;
+with Flow_Types;           use Flow_Types;
+with Flow_Refinement;      use Flow_Refinement;
+with Flow_Dependency_Maps; use Flow_Dependency_Maps;
 
 use type Ada.Containers.Count_Type;
 
 package Flow_Utility is
+
+   function Has_Depends (Subprogram : Entity_Id) return Boolean
+     with Pre => Ekind (Subprogram) in Subprogram_Kind;
+   --  Return true if the given subprogram has been annotated with a
+   --  dependency relation.
+
+   procedure Get_Depends (Subprogram : Entity_Id;
+                          Scope      : Flow_Scope;
+                          Depends    : out Dependency_Maps.Map)
+   with Pre  => Ekind (Subprogram) in Subprogram_Kind and
+                Has_Depends (Subprogram),
+        Post => (for all C in Depends.Iterate =>
+                   (for all D of Dependency_Maps.Element (C) =>
+                      Present (D)));
+   --  Return the dependency relation of the given Subprogram, as viewed
+   --  from the given Scope. The dependency relation is represented as a
+   --  map from entities to sets of entities.
+   --
+   --  For example (X, Y) =>+ Z would be represented as:
+   --     x -> {x, z}
+   --     y -> {y, z}
+   --
+   --  This procedure can deal with all forms the depends
+   --  annotation. For each item in the dependency annotation, the LHS
+   --  and RHS can be any of the following:
+   --     * (x, y, z)     (an aggregate)
+   --     * x             (a variable)
+   --     * null          (keyword null)
+   --  One final form which is supported is the null dependency.
+   --
+   --  The + shorthand to mean "itself" is expanded away by the
+   --  front-end and this procedure does not have to deal with it.
 
    procedure Get_Globals (Subprogram             : Entity_Id;
                           Scope                  : Flow_Scope;

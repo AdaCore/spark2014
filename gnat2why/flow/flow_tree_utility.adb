@@ -21,15 +21,13 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Nlists;     use Nlists;
 with Sem_Util;   use Sem_Util;
 with Uintp;      use Uintp;
 
 with Treepr;     use Treepr;
 
-with SPARK_Util; use SPARK_Util;
-
 with Why;
+--  For the exceptions
 
 package body Flow_Tree_Utility is
 
@@ -162,19 +160,6 @@ package body Flow_Tree_Utility is
             raise Why.Unexpected_Node;
       end case;
    end Get_Body;
-
-   -----------------------------
-   -- Last_Statement_Is_Raise --
-   -----------------------------
-
-   function Last_Statement_Is_Raise (E : Entity_Id) return Boolean is
-      The_Body       : constant Node_Id := SPARK_Util.Get_Subprogram_Body (E);
-      Last_Statement : constant Node_Id :=
-        Last (Statements (Handled_Statement_Sequence (The_Body)));
-   begin
-      return (Nkind (Last_Statement) = N_Raise_Statement
-                or else Nkind (Last_Statement) in N_Raise_xxx_Error);
-   end Last_Statement_Is_Raise;
 
    -------------------
    -- Get_Enclosing --

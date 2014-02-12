@@ -251,15 +251,6 @@ package Flow_Types is
        else False);
    --  Returns true if the given flow id represents a bound.
 
-   function Get_Default_Initialization (F : Flow_Id) return Node_Id;
-   --  Get the default initialization expression for the given flow id
-   --  (this only really works for record fields and direct mappings;
-   --  magic strings are assumed to not be default initialized)
-
-   function Is_Default_Initialized (F : Flow_Id) return Boolean;
-   --  As above, but can also return true if we can't actually get a node
-   --  which is the default-initialized expression.
-
    function Is_Volatile (F : Flow_Id) return Boolean;
    --  Returns true if the given flow id is volatile in any way.
 
