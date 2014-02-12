@@ -1030,23 +1030,7 @@ package body Flow_Utility is
 
    begin
       Traverse (N);
-      VS := Filter_Out_Non_Local_Constants (VS, Local_Constants);
-      --  This should be a postcondition, but see N131-017
-      declare
-         Ok : Boolean := True;
-      begin
-         if Reduced then
-            for F of VS loop
-               if F.Kind = Record_Field then
-                  Ok := False;
-                  Print_Flow_Id (F);
-                  exit;
-               end if;
-            end loop;
-            pragma Assert (Ok);
-         end if;
-      end;
-      return VS;
+      return Filter_Out_Non_Local_Constants (VS, Local_Constants);
    end Get_Variable_Set;
 
    function Get_Variable_Set

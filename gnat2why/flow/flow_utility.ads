@@ -95,7 +95,10 @@ package Flow_Utility is
       Allow_Statements             : Boolean := False;
       Expand_Synthesized_Constants : Boolean := False)
       return Flow_Id_Sets.Set
-     with Pre => (if Fold_Functions then not Allow_Statements);
+     with Pre => (if Fold_Functions then not Allow_Statements),
+          Post => (if Reduced
+                   then (for all F of Get_Variable_Set'Result
+                           => F.Kind /= Record_Field));
    --  Obtain all variables used in an expression. We use Scope to
    --  determine if called subprograms should provide their abstract or
    --  refined view.
