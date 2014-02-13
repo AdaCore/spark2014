@@ -267,6 +267,10 @@ procedure Gnatprove is
          Args.Append ("-k");
       end if;
 
+      if Minimal_Compile then
+         Args.Append ("-m");
+      end if;
+
       for File of File_List loop
          Args.Append (File);
       end loop;
@@ -750,6 +754,10 @@ procedure Gnatprove is
       Args.Append ("--subdirs=" & String (Subdir_Name));
       Args.Append ("--restricted-to-languages=ada");
       Args.Append ("-s");
+
+      if Minimal_Compile then
+         Args.Append ("-m");
+      end if;
 
       for File of File_List loop
          Args.Append (File);

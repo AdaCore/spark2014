@@ -102,6 +102,8 @@ ASCII.LF &
 ASCII.LF &
 " -k                 Do not stop analysis at the first error" &
 ASCII.LF &
+"     -m             Minimal reanalysis" &
+ASCII.LF &
 "     --mode=m       Set the mode of GNATprove (m=check, flow, prove, all*)"
 & ASCII.LF &
 " -q, --quiet        Be quiet/terse" &
@@ -465,6 +467,11 @@ ASCII.LF;
         (Config,
          MMode_Input'Access,
          Long_Switch => "--mode=");
+
+      Define_Switch
+        (Config,
+         Minimal_Compile'Access,
+         "-m");
 
       Define_Switch
         (Config,

@@ -51,6 +51,8 @@ package Configuration is
    --  True if -q is present. Do not print on standard output.
    Debug             : aliased Boolean;
    --  True if -d is present. Do not remove temporary files.
+   Minimal_Compile   : aliased Boolean;
+   --  True if -m is present. Do not remove temporary files.
    Flow_Extra_Debug  : aliased Boolean;
    --  Enable some extra debugging for flow analysis.
    Continue_On_Error : aliased Boolean;

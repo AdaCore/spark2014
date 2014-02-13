@@ -20,6 +20,7 @@ Command-line Options
  -f                 Force recompilation/analysis of all units
  -jnnn              Use nnn parallel processes (default: 1)
  -k                 Do not stop analysis at the first error
+ -m                 Minimal reanalysis
      --mode=m       Set the mode of GNATprove (m=check, flow, prove, all*)
  -q, --quiet        Be quiet/terse
      --clean        Remove GNATprove intermediate files, and exit
