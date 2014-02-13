@@ -5964,7 +5964,7 @@ package body Gnat2Why.Expr is
    is
 
       function Transform_Alternative
-        (Var       : W_Identifier_Id;
+        (Var       : W_Expr_Id;
          Alt       : Node_Id;
          Base_Type : W_Type_Id)
          return W_Expr_Id;
@@ -5973,7 +5973,7 @@ package body Gnat2Why.Expr is
       --  test "Var = Alt".
 
       function Transform_Simple_Membership_Expression
-        (Var       : W_Identifier_Id;
+        (Var       : W_Expr_Id;
          In_Expr   : Node_Id) return W_Expr_Id;
 
       ---------------------------
@@ -5981,7 +5981,7 @@ package body Gnat2Why.Expr is
       ---------------------------
 
       function Transform_Alternative
-        (Var       : W_Identifier_Id;
+        (Var       : W_Expr_Id;
          Alt       : Node_Id;
          Base_Type : W_Type_Id)
          return W_Expr_Id
@@ -5996,7 +5996,7 @@ package body Gnat2Why.Expr is
          else
             Result := New_Comparison
               (Cmp       => EW_Eq,
-               Left      => +Var,
+               Left      => Var,
                Right     => Transform_Expr (Expr          => Alt,
                                             Expected_Type => Base_Type,
                                             Domain        => EW_Term,
@@ -6012,7 +6012,7 @@ package body Gnat2Why.Expr is
       --------------------------------------------
 
       function Transform_Simple_Membership_Expression
-        (Var       : W_Identifier_Id;
+        (Var       : W_Expr_Id;
          In_Expr   : Node_Id) return W_Expr_Id
       is
          True_Expr  : constant W_Expr_Id :=
@@ -6053,7 +6053,7 @@ package body Gnat2Why.Expr is
                                            W        => WNE_Range_Pred,
                                            Ada_Node => Ty),
                                  Args =>
-                                   Prepare_Args_For_Subtype_Check (Ty, +Var),
+                                   Prepare_Args_For_Subtype_Check (Ty, Var),
                                  Typ  => EW_Bool_Type);
                   begin
                      if Domain = EW_Pred then
@@ -6083,19 +6083,18 @@ package body Gnat2Why.Expr is
                                    Prefix (M        => M,
                                            W        => WNE_Range_Pred,
                                            Ada_Node => Ty),
-                                 Args => (1 => +Var),
+                                 Args => (1 => Var),
                                  Typ  => EW_Bool_Type);
                   end;
                end if;
             end;
          else
-            return Range_Expr (In_Expr, +Var, Domain, Params);
+            return Range_Expr (In_Expr, Var, Domain, Params);
          end if;
       end Transform_Simple_Membership_Expression;
 
       Var       : constant Node_Id := Left_Opnd (Expr);
       Result    : W_Expr_Id;
-      Why_Var   : W_Identifier_Id;
       Base_Type : W_Type_Id := Base_Why_Type (Var);
       Subdomain : constant EW_Domain :=
         (if Domain = EW_Pred then EW_Term else Domain);
@@ -6110,29 +6109,32 @@ package body Gnat2Why.Expr is
       if Base_Type = EW_Bool_Type then
          Base_Type := EW_Int_Type;
       end if;
-      Why_Var := New_Temp_Identifier (Typ => Base_Type);
       Var_Expr := Transform_Expr (Var, Base_Type, Subdomain, Params);
 
       if Present (Alternatives (Expr)) then
          declare
             Alt : Node_Id;
          begin
+            Var_Expr := New_Temp_For_Expr (Var_Expr, True);
             Alt := Last (Alternatives (Expr));
-            Result := Transform_Alternative (Why_Var, Alt, Base_Type);
+            Result := Transform_Alternative (Var_Expr, Alt, Base_Type);
 
             Prev (Alt);
             while Present (Alt) loop
                Result := New_Or_Else_Expr
-                 (Left   => Transform_Alternative (Why_Var, Alt, Base_Type),
+                 (Left   => Transform_Alternative (Var_Expr, Alt, Base_Type),
                   Right  => Result,
                   Domain => Domain);
                Prev (Alt);
             end loop;
+            Result := Binding_For_Temp (Domain  => Domain,
+                                        Tmp     => Var_Expr,
+                                        Context => Result);
          end;
-
       else
          Result :=
-           Transform_Simple_Membership_Expression (Why_Var, Right_Opnd (Expr));
+           Transform_Simple_Membership_Expression
+             (Var_Expr, Right_Opnd (Expr));
       end if;
 
       --  Inverse the result if the operator is NOT IN
@@ -6150,13 +6152,6 @@ package body Gnat2Why.Expr is
             Result := New_Not (Right  => Result, Domain => Domain);
          end if;
       end if;
-
-      Result :=
-        New_Typed_Binding
-          (Domain => Domain,
-           Name   => Why_Var,
-           Def    => +Var_Expr,
-           Context => Result);
 
       return Result;
    end Transform_Membership_Expression;
