@@ -780,3 +780,14 @@ This section is structured into the following subsections:
 .. .. _advanced_examples:
 
 .. .. include:: gnatprove_by_example/advanced.rst
+
+|SPARK| Examples in the Toolset Distribution
+============================================
+
+Further examples of |SPARK| are distributed with the |SPARK| toolset.
+These are contained in the ``share/examples/spark`` directory
+below the directory where the toolset is installed.
+
+A subset of these examples can be accessed from the IDE (either
+GPS or GNATBench) via the :menuselection:`Help --> SPARK --> Examples` menu
+item.
