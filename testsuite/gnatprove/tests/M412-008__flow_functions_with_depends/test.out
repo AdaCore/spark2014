@@ -1,4 +1,9 @@
-foo.adb:43:07: "B" is not initialized
+foo.adb:20:24: warning: unused variable "Y"
+foo.adb:49:10: "B" is not initialized
+foo.adb:124:09: "A" is not initialized
+foo.adb:124:09: "G1" is not initialized
+foo.adb:124:12: "B" is not initialized
+foo.adb:124:12: "G2" is not initialized
    compilation of foo.adb failed
 
 

@@ -793,10 +793,10 @@ package body Flow_Utility is
    is
       VS : Flow_Id_Sets.Set;
 
-      procedure Process_Subprogram_Call
-        (Callsite       : Node_Id;
-         Used_Variables : in out Flow_Id_Sets.Set)
-         with Pre => Nkind (Callsite) in N_Subprogram_Call;
+      function Process_Subprogram_Call
+        (Callsite : Node_Id)
+         return Flow_Id_Sets.Set
+        with Pre => Nkind (Callsite) in N_Subprogram_Call;
       --  Work out which variables (including globals) are used in the
       --  function call and add them to the given set.
 
@@ -812,27 +812,53 @@ package body Flow_Utility is
       -- Process_Function_Call --
       ---------------------------
 
-      procedure Process_Subprogram_Call
-        (Callsite       : Node_Id;
-         Used_Variables : in out Flow_Id_Sets.Set)
+      function Process_Subprogram_Call
+        (Callsite : Node_Id)
+         return Flow_Id_Sets.Set
       is
          Subprogram    : constant Entity_Id := Entity (Name (Callsite));
 
-         Proof_Reads   : Flow_Id_Sets.Set;
          Global_Reads  : Flow_Id_Sets.Set;
          Global_Writes : Flow_Id_Sets.Set;
+
+         Folding       : constant Boolean :=
+           Fold_Functions
+           and then Ekind (Subprogram) = E_Function
+           and then Has_Depends (Subprogram);
+
+         Used_Reads    : Flow_Id_Sets.Set;
+
+         V             : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
       begin
 
-         --  !!! We need to respect Fold_Functions here, but we can't until
-         --      the refactoring of N211-005 is done (as we can't call
-         --      Get_Depends here without circular dependencies).
+         --  Determine the global effects of the called program.
 
-         Get_Globals (Subprogram   => Subprogram,
-                      Scope        => Scope,
-                      Proof_Ins    => Proof_Reads,
-                      Reads        => Global_Reads,
-                      Writes       => Global_Writes);
-         Global_Reads.Union (Proof_Reads);
+         declare
+            Proof_Reads : Flow_Id_Sets.Set;
+         begin
+            Get_Globals (Subprogram   => Subprogram,
+                         Scope        => Scope,
+                         Proof_Ins    => Proof_Reads,
+                         Reads        => Global_Reads,
+                         Writes       => Global_Writes);
+            Global_Reads.Union (Proof_Reads);
+         end;
+
+         --  If we fold functions we need to obtain the used inputs.
+
+         if Folding then
+            declare
+               Depends : Dependency_Maps.Map;
+            begin
+               Get_Depends (Subprogram => Subprogram,
+                            Scope      => Scope,
+                            Depends    => Depends);
+               pragma Assert (Depends.Length in 1 .. 2);
+               Used_Reads := Depends (Direct_Mapping_Id (Subprogram));
+            end;
+         end if;
+
+         --  Apply sanity check for functions.
 
          if Nkind (Callsite) = N_Function_Call and then
            Flow_Id_Sets.Length (Global_Writes) > 0
@@ -844,29 +870,72 @@ package body Flow_Utility is
                E   => Subprogram);
          end if;
 
-         --  Forming the set of variables for a parameter list never
-         --  involves a statement, so we can recurse with
-         --  Allow_Statements => False here
-         Used_Variables.Union
-           (Get_Variable_Set
-              (Parameter_Associations (Callsite),
-               Scope                        => Scope,
-               Local_Constants              => Local_Constants,
-               Fold_Functions               => Fold_Functions,
-               Reduced                      => Reduced,
-               Allow_Statements             => False,
-               Expand_Synthesized_Constants =>
-                 Expand_Synthesized_Constants));
+         --  Merge globals into the variables used.
 
          for G of Global_Reads loop
-            if Reduced then
-               Used_Variables.Include (Change_Variant (G, Normal_Use));
-            else
-               for F of Flatten_Variable (G) loop
-                  Used_Variables.Include (Change_Variant (F, Normal_Use));
-               end loop;
+            if (if Folding
+                then Used_Reads.Contains (Change_Variant (G, Normal_Use)))
+            then
+               V.Include (Change_Variant (G, Normal_Use));
             end if;
          end loop;
+         for G of Global_Writes loop
+            V.Include (Change_Variant (G, Normal_Use));
+         end loop;
+
+         --  Merge the actuals into the set of variables used.
+
+         declare
+            Actual : Node_Id;
+            Formal : Entity_Id;
+            Call   : Node_Id;
+            Ptr    : Node_Id;
+         begin
+            Ptr := First (Parameter_Associations (Callsite));
+            while Present (Ptr) loop
+               case Nkind (Ptr) is
+                  when N_Parameter_Association =>
+                     Actual := Explicit_Actual_Parameter (Ptr);
+                  when others =>
+                     Actual := Ptr;
+               end case;
+
+               Find_Actual (N      => Actual,
+                            Formal => Formal,
+                            Call   => Call);
+               pragma Assert (Call = Callsite);
+
+               if (if Folding
+                   then Used_Reads.Contains (Direct_Mapping_Id (Formal)))
+               then
+                  V.Union
+                    (Get_Variable_Set
+                       (Actual,
+                        Scope                        => Scope,
+                        Local_Constants              => Local_Constants,
+                        Fold_Functions               => Fold_Functions,
+                        Reduced                      => Reduced,
+                        Allow_Statements             => False,
+                        Expand_Synthesized_Constants =>
+                          Expand_Synthesized_Constants));
+               end if;
+
+               Next (Ptr);
+            end loop;
+         end;
+
+         --  Finally, we expand the collected set (if necessary).
+
+         return R : Flow_Id_Sets.Set do
+            R := Flow_Id_Sets.Empty_Set;
+            for Tmp of V loop
+               if Reduced or Tmp.Kind = Record_Field then
+                  R.Include (Tmp);
+               else
+                  R.Union (Flatten_Variable (Tmp));
+               end if;
+            end loop;
+         end return;
       end Process_Subprogram_Call;
 
       ----------
@@ -884,8 +953,7 @@ package body Flow_Utility is
                   raise Program_Error;
 
                else
-                  Process_Subprogram_Call (Callsite       => N,
-                                           Used_Variables => VS);
+                  VS.Union (Process_Subprogram_Call (N));
                   return Skip;
                end if;
 
@@ -895,8 +963,7 @@ package body Flow_Utility is
                return Skip;
 
             when N_Function_Call =>
-               Process_Subprogram_Call (Callsite       => N,
-                                        Used_Variables => VS);
+               VS.Union (Process_Subprogram_Call (N));
                return Skip;
 
             when N_Identifier | N_Expanded_Name =>

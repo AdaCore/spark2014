@@ -321,6 +321,10 @@ package body Flow is
                   raise Program_Error;
             end case;
 
+         elsif A.Pretty_Print_Kind = Pretty_Print_Folded_Function_Check then
+            Write_Str ("ff check for: ");
+            Sprint_Node (A.Error_Location);
+
          elsif A.Is_Parameter then
             Rv.Shape := Shape_None;
 

@@ -58,6 +58,7 @@ package Flow.Control_Flow_Graph.Utility is
      (Var_Use         : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
       Is_Precondition : Boolean           := False;
       Is_Loop_Entry   : Boolean           := False;
+      Is_Fold_Check   : Boolean           := False;
       E_Loc           : Node_Or_Entity_Id := Empty)
       return V_Attributes
       with Post => not Make_Sink_Vertex_Attributes'Result.Is_Null_Node and
@@ -66,6 +67,7 @@ package Flow.Control_Flow_Graph.Utility is
    --  constructs:
    --
    --     * pragmas
+   --     * aux checks for expressions containing folded functions
 
    function Make_Aux_Vertex_Attributes
      (E_Loc     : Node_Or_Entity_Id := Empty;

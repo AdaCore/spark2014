@@ -197,23 +197,74 @@ package body Flow.Control_Flow_Graph is
    -- Context --
    -------------
 
+   --  The context is a bag of extra state that is passed around through
+   --  each Do_* procedure.
+   --
+   --  Perhaps the most important aspect of the Context it is the
+   --  Folded_Function_Checks map, which is used to keep track of functions
+   --  with dependency relations. The only reason to put a dependency
+   --  relation on a function is to note that not all parameters have been
+   --  used. For example:
+   --
+   --     function Multiply_After_Delay (A, B : Integer;
+   --                                    W    : Float)
+   --                                    return Integer
+   --     with Depends => (Multiply_After_Delay'Result => (A, B),
+   --                      null                        => W);
+   --
+   --  If such a function is used, we do not want W to flow into the final
+   --  result of whatever it is doing, however this is difficult as
+   --  functions are not really processed separately. Instead we are just
+   --  interested in the "set of variables" present in an expression. So
+   --  instead we have a parameter in Get_Variable_Set (Fold_Functions)
+   --  which, if specified, will return simply the set {A, B} instead of
+   --  {A, B, W} for expressions involving calls to Multiply_After_Delay.
+   --
+   --  However, we need to make sure that all variables are initialized
+   --  when we call our function; but the generated vertex for an
+   --  expression involving it no longer features W.
+   --
+   --  Hence, in all places where we call Get_Variable_Set and fold
+   --  functions, we also remember the node_id of the expression. For
+   --  example, if we have an if statement:
+   --
+   --     if Multiply_After_Delay (X, Y, Z) then
+   --        ...
+   --
+   --  Lets assume the node_id for the statement is 42, and the node_id for
+   --  Condition (42) is 88. When we process Get_Variable_Set (88), we
+   --  place the following into the Folded_Function_Checks map:
+   --
+   --     42 -> {88}
+   --
+   --  At the end of Process_Statement we then re-check each of these
+   --  expression and emit a sink vertex in front of the original vertex to
+   --  check only the "unused" variables.
+   --
+   --  Inspect the graphs generated for test M412-008 for more information.
+
    type Context is record
-      Current_Loops             : Node_Sets.Set;
+      Current_Loops          : Node_Sets.Set;
       --  The set of loops currently processed. The innermost loop
       --  currently processed is Active_Loop.
 
-      Active_Loop               : Entity_Id;
+      Active_Loop            : Entity_Id;
       --  The currently processed loop. This is always a member of
       --  Current_Loops, unless no loop is currently processed.
 
-      Entry_References          : Node_Graphs.Map;
+      Entry_References       : Node_Graphs.Map;
       --  A map from loops -> 'loop_entry references.
+
+      Folded_Function_Checks : Node_Graphs.Map;
+      --  A set of nodes we need to separately check for uninitialized
+      --  variables due to function folding.
    end record;
 
    No_Context : constant Context :=
-     Context'(Current_Loops             => Node_Sets.Empty_Set,
-              Active_Loop               => Empty,
-              Entry_References          => Node_Graphs.Empty_Map);
+     Context'(Current_Loops          => Node_Sets.Empty_Set,
+              Active_Loop            => Empty,
+              Entry_References       => Node_Graphs.Empty_Map,
+              Folded_Function_Checks => Node_Graphs.Empty_Map);
 
    ------------------------------------------------------------
    --  Local declarations
@@ -646,25 +697,24 @@ package body Flow.Control_Flow_Graph is
    --  As above but operates on a single node.
 
    procedure Process_Subprogram_Globals
-     (Callsite          : Node_Id;
-      In_List           : in out Vertex_Vectors.Vector;
-      Out_List          : in out Vertex_Vectors.Vector;
-      FA                : in out Flow_Analysis_Graphs;
-      CM                : in out Connection_Maps.Map;
-      Ctx               : in out Context);
+     (Callsite : Node_Id;
+      In_List  : in out Vertex_Vectors.Vector;
+      Out_List : in out Vertex_Vectors.Vector;
+      FA       : in out Flow_Analysis_Graphs;
+      CM       : in out Connection_Maps.Map;
+      Ctx      : in out Context);
    --  This procedures creates the in and out vertices for a
    --  subprogram's globals. They are not connected to anything,
    --  instead the vertices are added to the given in_list and
    --  out_list.
 
    procedure Process_Parameter_Associations
-     (L                 : List_Id;
-      Called_Subprogram : Entity_Id;
-      In_List           : in out Vertex_Vectors.Vector;
-      Out_List          : in out Vertex_Vectors.Vector;
-      FA                : in out Flow_Analysis_Graphs;
-      CM                : in out Connection_Maps.Map;
-      Ctx               : in out Context);
+     (Callsite : Node_Id;
+      In_List  : in out Vertex_Vectors.Vector;
+      Out_List : in out Vertex_Vectors.Vector;
+      FA       : in out Flow_Analysis_Graphs;
+      CM       : in out Connection_Maps.Map;
+      Ctx      : in out Context);
    --  Similar to the above procedure, this deals with the actuals
    --  provided in a subprogram call. The vertices are created but not
    --  linked up; as above they are added to in_list and out_list.
@@ -683,7 +733,9 @@ package body Flow.Control_Flow_Graph is
      (N   : Node_Id;
       FA  : in out Flow_Analysis_Graphs;
       CM  : in out Connection_Maps.Map;
-      Ctx : in out Context);
+      Ctx : in out Context)
+   with Post => Ctx'Old.Folded_Function_Checks.Length =
+                Ctx.Folded_Function_Checks.Length;
    --  Process an arbitrary statement (this is basically a big case
    --  block which calls the various Do_XYZ procedures).
 
@@ -1037,6 +1089,7 @@ package body Flow.Control_Flow_Graph is
                                       Scope           => FA.B_Scope,
                                       Local_Constants => FA.Local_Constants,
                                       Fold_Functions  => True);
+      Ctx.Folded_Function_Checks (N).Insert (Expression (N));
 
       Untangle_Assignment_Target
         (N                    => Name (N),
@@ -1096,6 +1149,7 @@ package body Flow.Control_Flow_Graph is
                                 Loops      => Ctx.Current_Loops,
                                 E_Loc      => N),
          V);
+      Ctx.Folded_Function_Checks (N).Insert (Expression (N));
       CM.Include (Union_Id (N), No_Connections);
       CM (Union_Id (N)).Standard_Entry := V;
 
@@ -1178,6 +1232,7 @@ package body Flow.Control_Flow_Graph is
                                    Loops      => Ctx.Current_Loops,
                                    E_Loc      => N),
             V);
+         Ctx.Folded_Function_Checks (N).Insert (Condition (N));
          CM.Include (Union_Id (N),
                      Trivial_Connection (V));
 
@@ -1245,6 +1300,7 @@ package body Flow.Control_Flow_Graph is
                Loops           => Ctx.Current_Loops,
                E_Loc           => Ret_Entity),
          V);
+      Ctx.Folded_Function_Checks (N).Insert (Ret_Object);
       CM.Include (Union_Id (Ret_Entity), No_Connections);
       CM (Union_Id (Ret_Entity)).Standard_Entry := V;
 
@@ -1328,6 +1384,7 @@ package body Flow.Control_Flow_Graph is
                                 Loops      => Ctx.Current_Loops,
                                 E_Loc      => N),
          V);
+      Ctx.Folded_Function_Checks (N).Insert (Condition (N));
       CM.Include (Union_Id (N), No_Connections);
       CM (Union_Id (N)).Standard_Entry := V;
 
@@ -1384,6 +1441,8 @@ package body Flow.Control_Flow_Graph is
                      Loops      => Ctx.Current_Loops,
                      E_Loc      => Elsif_Statement),
                   V);
+               Ctx.Folded_Function_Checks (N).Insert
+                 (Condition (Elsif_Statement));
                Linkup (FA.CFG, V_Prev, V);
 
                Process_Statement_List (Elsif_Body, FA, CM, Ctx);
@@ -1619,6 +1678,8 @@ package body Flow.Control_Flow_Graph is
                                    Loops      => Ctx.Current_Loops,
                                    E_Loc      => N),
             V);
+         Ctx.Folded_Function_Checks (N).Insert
+           (Condition (Iteration_Scheme (N)));
 
          --  Flow for the while loops goes into the condition and then
          --  out again.
@@ -1717,6 +1778,7 @@ package body Flow.Control_Flow_Graph is
                   Loops      => Ctx.Current_Loops,
                   E_Loc      => N),
                V);
+            Ctx.Folded_Function_Checks (N).Insert (DSD);
 
             --  Flow for the conditional for loop is like a while
             --  loop.
@@ -1800,6 +1862,7 @@ package body Flow.Control_Flow_Graph is
                      Fold_Functions  => False),
                   Is_Loop_Entry => True),
                V);
+            Ctx.Folded_Function_Checks (N).Insert (Prefix (Reference));
 
             CM.Include
               (Union_Id (Reference),
@@ -1936,6 +1999,7 @@ package body Flow.Control_Flow_Graph is
                   Loops      => Ctx.Current_Loops,
                   E_Loc      => N),
                V);
+            Ctx.Folded_Function_Checks (N).Insert (Expression (N));
          end;
          Inits.Append (V);
       end if;
@@ -2465,8 +2529,7 @@ package body Flow.Control_Flow_Graph is
          V);
 
       --  Deal with the procedures parameters.
-      Process_Parameter_Associations (Parameter_Associations (N),
-                                      Called_Procedure,
+      Process_Parameter_Associations (N,
                                       In_List,
                                       Out_List,
                                       FA, CM, Ctx);
@@ -2570,6 +2633,7 @@ package body Flow.Control_Flow_Graph is
                Loops      => Ctx.Current_Loops,
                E_Loc      => N),
             V);
+         Ctx.Folded_Function_Checks (N).Insert (Expression (N));
       end if;
 
       --  Control flows in, but we do not flow out again.
@@ -2597,8 +2661,7 @@ package body Flow.Control_Flow_Graph is
       end if;
 
       if Present (Handled_Statement_Sequence (N)) then
-         Do_Handled_Sequence_Of_Statements
-           (Handled_Statement_Sequence (N), FA, CM, Ctx);
+         Process_Statement (Handled_Statement_Sequence (N), FA, CM, Ctx);
       end if;
 
       if Present (Declarations (N)) and
@@ -2763,12 +2826,12 @@ package body Flow.Control_Flow_Graph is
    --------------------------------
 
    procedure Process_Subprogram_Globals
-     (Callsite          : Node_Id;
-      In_List           : in out Vertex_Vectors.Vector;
-      Out_List          : in out Vertex_Vectors.Vector;
-      FA                : in out Flow_Analysis_Graphs;
-      CM                : in out Connection_Maps.Map;
-      Ctx               : in out Context)
+     (Callsite : Node_Id;
+      In_List  : in out Vertex_Vectors.Vector;
+      Out_List : in out Vertex_Vectors.Vector;
+      FA       : in out Flow_Analysis_Graphs;
+      CM       : in out Connection_Maps.Map;
+      Ctx      : in out Context)
    is
       pragma Unreferenced (CM);
 
@@ -2829,40 +2892,39 @@ package body Flow.Control_Flow_Graph is
    --------------------------------------
 
    procedure Process_Parameter_Associations
-     (L                 : List_Id;
-      Called_Subprogram : Entity_Id;
-      In_List           : in out Vertex_Vectors.Vector;
-      Out_List          : in out Vertex_Vectors.Vector;
-      FA                : in out Flow_Analysis_Graphs;
-      CM                : in out Connection_Maps.Map;
-      Ctx               : in out Context)
+     (Callsite : Node_Id;
+      In_List  : in out Vertex_Vectors.Vector;
+      Out_List : in out Vertex_Vectors.Vector;
+      FA       : in out Flow_Analysis_Graphs;
+      CM       : in out Connection_Maps.Map;
+      Ctx      : in out Context)
    is
       pragma Unreferenced (CM);
 
-      P      : Node_Id;
+      Called_Subprogram : constant Entity_Id := Entity (Name (Callsite));
 
-      V      : Flow_Graphs.Vertex_Id;
+      P                 : Node_Id;
 
-      Actual : Node_Id;
-      Formal : Node_Id;
-      Call   : Node_Id;
+      V                 : Flow_Graphs.Vertex_Id;
+
+      Actual            : Node_Id;
+      Formal            : Node_Id;
+      Call              : Node_Id;
    begin
       --  Create initial nodes for the statements.
-      P := First (L);
+      P := First (Parameter_Associations (Callsite));
       while Present (P) loop
          case Nkind (P) is
             when N_Parameter_Association =>
                --  F (A => B)
                Actual := Explicit_Actual_Parameter (P);
-               Find_Actual (Actual, Formal, Call);
-               pragma Assert (Entity (Name (Call)) = Called_Subprogram);
-
             when others =>
                --  F (B)
                Actual := P;
-               Find_Actual (Actual, Formal, Call);
-               pragma Assert (Entity (Name (Call)) = Called_Subprogram);
          end case;
+
+         Find_Actual (Actual, Formal, Call);
+         pragma Assert (Entity (Name (Call)) = Called_Subprogram);
 
          pragma Assert (Ekind (Formal) = E_In_Parameter or
                           Ekind (Formal) = E_In_Out_Parameter or
@@ -2874,7 +2936,7 @@ package body Flow.Control_Flow_Graph is
             Direct_Mapping_Id (P, In_View),
             Make_Parameter_Attributes
               (FA                           => FA,
-               Call_Vertex                  => Parent (L),
+               Call_Vertex                  => Callsite,
                Actual                       => Actual,
                Formal                       => Formal,
                In_Vertex                    => True,
@@ -2883,6 +2945,7 @@ package body Flow.Control_Flow_Graph is
                Loops                        => Ctx.Current_Loops,
                E_Loc                        => P),
             V);
+         Ctx.Folded_Function_Checks (Callsite).Insert (Actual);
          In_List.Append (V);
 
          --  Build an out vertex.
@@ -2894,7 +2957,7 @@ package body Flow.Control_Flow_Graph is
                Direct_Mapping_Id (P, Out_View),
                Make_Parameter_Attributes
                  (FA                           => FA,
-                  Call_Vertex                  => Parent (L),
+                  Call_Vertex                  => Callsite,
                   Actual                       => Actual,
                   Formal                       => Formal,
                   In_Vertex                    => False,
@@ -2978,7 +3041,13 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    is
+      L : Vertex_Vectors.Vector := Vertex_Vectors.Empty_Vector;
    begin
+
+      --  Initialize the set of expressions we need to double check.
+      Ctx.Folded_Function_Checks.Insert (N, Node_Sets.Empty_Set);
+
+      --  Deal with the statement.
       case Nkind (N) is
          when N_Assignment_Statement =>
             Do_Assignment_Statement (N, FA, CM, Ctx);
@@ -2990,6 +3059,8 @@ package body Flow.Control_Flow_Graph is
             Do_Exit_Statement (N, FA, CM, Ctx);
          when N_Extended_Return_Statement =>
             Do_Extended_Return_Statement (N, FA, CM, Ctx);
+         when N_Handled_Sequence_Of_Statements =>
+            Do_Handled_Sequence_Of_Statements (N, FA, CM, Ctx);
          when N_If_Statement =>
             Do_If_Statement (N, FA, CM, Ctx);
          when N_Loop_Statement =>
@@ -3024,6 +3095,63 @@ package body Flow.Control_Flow_Graph is
             --  exception.
             raise Why.Not_Implemented;
       end case;
+
+      --  We chain the folded function checks in front of the actual vertex
+      --  for this statement, if necessary. First we create a vertex for
+      --  each expression we need to check.
+
+      for Expr of Ctx.Folded_Function_Checks (N) loop
+         declare
+            Unchecked : constant Flow_Id_Sets.Set :=
+              Get_Variable_Set (Expr,
+                                Scope           => FA.B_Scope,
+                                Local_Constants => FA.Local_Constants,
+                                Fold_Functions  => False) -
+              Get_Variable_Set (Expr,
+                                Scope           => FA.B_Scope,
+                                Local_Constants => FA.Local_Constants,
+                                Fold_Functions  => True);
+            V : Flow_Graphs.Vertex_Id;
+         begin
+            if Unchecked.Length > 0 then
+               Add_Vertex
+                 (FA,
+                  Make_Sink_Vertex_Attributes (Var_Use       => Unchecked,
+                                               Is_Fold_Check => True,
+                                               E_Loc         => Expr),
+                  V);
+               L.Append (V);
+            end if;
+         end;
+      end loop;
+
+      --  Then, if we created any new vertices we need to link them in
+      --  front of the vertex created for N. We then re-adjust the standard
+      --  entry for N.
+
+      if L.Length >= 1 then
+         L.Append (CM (Union_Id (N)).Standard_Entry);
+
+         declare
+            Prev : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;
+         begin
+            for V of L loop
+               if Prev /= Flow_Graphs.Null_Vertex then
+                  Linkup (FA.CFG, Prev, V);
+               end if;
+               Prev := V;
+            end loop;
+         end;
+
+         CM (Union_Id (N)).Standard_Entry := L.First_Element;
+      end if;
+
+      --  Finally, we remove the set, so we can do a final sanity check to
+      --  make sure all of these have been processed. This sanity check is
+      --  in the postcondition of Process_Statement and again at the end of
+      --  Create.
+
+      Ctx.Folded_Function_Checks.Delete (N);
    end Process_Statement;
 
    ------------------
@@ -3539,6 +3667,10 @@ package body Flow.Control_Flow_Graph is
 
       --  Simplify graph by removing all null vertices.
       Simplify_CFG (FA);
+
+      --  Finally, we need to make sure that all extra checks for folded
+      --  functions have been processed.
+      pragma Assert (The_Context.Folded_Function_Checks.Length = 0);
    end Create;
 
 end Flow.Control_Flow_Graph;

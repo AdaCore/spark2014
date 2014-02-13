@@ -136,6 +136,7 @@ package body Flow.Control_Flow_Graph.Utility is
      (Var_Use         : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
       Is_Precondition : Boolean           := False;
       Is_Loop_Entry   : Boolean           := False;
+      Is_Fold_Check   : Boolean           := False;
       E_Loc           : Node_Or_Entity_Id := Empty)
       return V_Attributes
    is
@@ -146,6 +147,10 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Is_Precondition           := Is_Precondition;
       A.Is_Loop_Entry             := Is_Loop_Entry;
       A.Error_Location            := E_Loc;
+
+      if Is_Fold_Check then
+         A.Pretty_Print_Kind := Pretty_Print_Folded_Function_Check;
+      end if;
 
       Add_Volatile_Effects (A);
       return A;
