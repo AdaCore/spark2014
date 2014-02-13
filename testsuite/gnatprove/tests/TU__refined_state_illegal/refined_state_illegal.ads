@@ -3,8 +3,7 @@ package Refined_State_Illegal
 is
    package Pac1
      --  TU: ::
-     --    refinement_list   ::= refinement_clause
-     --                        | ( refinement_clause { , refinement_clause } )
+     --    refinement_list   ::= ( refinement_clause { , refinement_clause } )
      --    refinement_clause ::= state_name => constituent_list
      --    constituent_list  ::= null
      --                        | constituent
