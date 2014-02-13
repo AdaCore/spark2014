@@ -814,7 +814,7 @@ package body Flow.Analysis is
       EV_Considered_Imports : Flow_Id_Sets.Set;
       EV_Considered_Objects : Flow_Id_Sets.Set;
       --  Sets of entire variables marking all objects considered for each
-      --  of the two analysis.
+      --  of the two analyses.
 
       EV_Used               : Flow_Id_Sets.Set;
       --  For variables we have at least used once somewhere (even if its
@@ -833,7 +833,7 @@ package body Flow.Analysis is
    begin
 
       --  We look at the null depends (if one exists). For any variables
-      --  mentioned there, we supress the ineffective import warning.
+      --  mentioned there, we suppress the ineffective import warning.
 
       Suppressed_Entire_Ids := Flow_Id_Sets.Empty_Set;
       if FA.Kind = E_Subprogram_Body and then Present (FA.Depends_N) then
