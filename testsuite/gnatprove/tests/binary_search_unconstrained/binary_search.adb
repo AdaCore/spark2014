@@ -1,6 +1,6 @@
-pragma SPARK_Mode (On);
-
-package body Binary_Search is
+package body Binary_Search
+  with SPARK_Mode
+is
 
    function Search (A : Ar; I : Integer) return Opt_Index is
       Left  : Index;
@@ -19,19 +19,20 @@ package body Binary_Search is
       elsif A (Left) > I or A (Right) < I then
          return No_Index;
       end if;
-      
+
       while Left <= Right loop
          pragma Loop_Invariant (Left in A'Range and Right in A'Range);
          pragma Loop_Invariant
            (for all Index in A'First .. Left - 1 => A (Index) < I);
          pragma Loop_Invariant
-            (for all Index in A'Range => (if Index > Right then I < A (Index)));
+           (for all Index in A'Range =>
+              (if Index > Right then I < A (Index)));
          pragma Loop_Variant (Decreases => Right - Left);
 
          Med := Left + (Right - Left) / 2;
-         
-         pragma Assert 
-           (for all I1 in A'Range => 
+
+         pragma Assert
+           (for all I1 in A'Range =>
               (for all I2 in I1 .. A'Last => A (I1) <= A (I2)));
 
          if A (Med) < I then
@@ -45,7 +46,7 @@ package body Binary_Search is
             return Med;
          end if;
       end loop;
-      
+
       return No_Index;
    end Search;
 
