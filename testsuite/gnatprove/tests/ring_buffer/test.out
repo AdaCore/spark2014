@@ -27,11 +27,12 @@ harness.adb:15:04: warning: statement has no effect
 harness.adb:15:09: warning: unused assignment to "R"
 harness.adb:15:12: warning: unused assignment to "H"
 harness.adb:16:4: warning: assertion might fail, requires H = Z
-ring_buf.adb:7:29: info: length check proved
-ring_buf.adb:13:36: info: division check proved
-ring_buf.adb:14:28: info: range check proved
-ring_buf.adb:21:32: info: division check proved
-ring_buf.adb:22:28: info: range check proved
-ring_buf.ads:47:20: info: postcondition proved
-ring_buf.ads:55:19: info: postcondition proved
-ring_buf.ads:60:15: info: postcondition proved
+ring_buf.adb:9:29: info: length check proved
+ring_buf.adb:15:36: info: division check proved
+ring_buf.adb:16:28: info: range check proved
+ring_buf.adb:23:32: info: division check proved
+ring_buf.adb:24:28: info: range check proved
+ring_buf.ads:40:19: info: postcondition proved
+ring_buf.ads:47:19: info: postcondition proved
+ring_buf.ads:52:15: info: postcondition proved
+ring_buf.ads:52:52: info: precondition proved
