@@ -1,18 +1,26 @@
+lists.adb:3:21: info: precondition proved
+lists.adb:5:13: info: precondition proved
 lists.adb:6:10: info: loop invariant initialization proved
 lists.adb:6:10: info: loop invariant preservation proved
+lists.adb:7:13: info: precondition proved
 lists.adb:7:27: info: precondition proved
 lists.adb:7:55: info: precondition proved
 lists.adb:8:13: info: precondition proved
 lists.adb:11:10: info: precondition proved
 lists.ads:9:6: info: complete contract cases proved
 lists.ads:9:6: info: disjoint contract cases proved
+lists.ads:10:10: info: precondition proved
 lists.ads:10:29: info: precondition proved
 lists.ads:10:51: info: contract case proved
+lists.ads:10:58: info: precondition proved
+lists.ads:11:10: info: precondition proved
 lists.ads:11:30: info: precondition proved
 lists.ads:11:51: warning: contract case might fail
 lists.ads:11:54: info: precondition proved
+lists.ads:12:21: info: precondition proved
 lists.ads:12:35: info: precondition proved
 lists.ads:12:75: info: precondition proved
 lists.ads:15:16: info: postcondition proved
+lists.ads:15:20: info: precondition proved
 lists.ads:16:9: info: precondition proved
 lists.ads:16:22: info: precondition proved

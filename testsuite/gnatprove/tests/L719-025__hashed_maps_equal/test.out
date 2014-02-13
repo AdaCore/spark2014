@@ -3,10 +3,21 @@ p.adb:6:7: info: precondition proved
 p.adb:10:27: info: precondition proved
 p.adb:12:7: info: precondition proved
 p.adb:13:7: info: precondition proved
+p.adb:18:10: info: precondition proved
 p.adb:19:10: info: precondition proved
 p.adb:21:10: info: precondition proved
+p.ads:21:13: info: precondition proved
+p.ads:21:32: info: precondition proved
+p.ads:22:14: info: precondition proved
 p.ads:22:14: warning: postcondition might fail
 p.ads:22:34: info: precondition proved
+p.ads:25:13: info: precondition proved
+p.ads:25:45: info: precondition proved
+p.ads:26:14: info: precondition proved
 p.ads:26:14: warning: postcondition might fail, requires Strict_Equal (L, L'old)
 p.ads:29:13: info: precondition proved
 p.ads:30:14: warning: postcondition might fail
+p.ads:30:16: info: precondition proved
+p.ads:31:10: info: precondition proved
+p.ads:31:24: info: precondition proved
+p.ads:31:45: info: precondition proved

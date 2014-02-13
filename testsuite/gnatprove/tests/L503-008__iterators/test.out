@@ -1,5 +1,6 @@
 p.adb:22:08: warning: initialization has no effect
 p.adb:25:10: warning: unused assignment
+p.adb:25:13: info: precondition proved
 p.adb:26:39: warning: statement has no effect
 p.adb:27:15: warning: unused assignment
 p.adb:27:22: warning: overflow check might fail

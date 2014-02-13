@@ -1,3 +1,6 @@
+list.adb:16:35: info: precondition proved
+list.adb:17:35: info: precondition proved
+list.adb:19:7: info: precondition proved
 list.adb:22:10: warning: precondition might fail
 list.adb:22:19: info: precondition proved
 list.adb:22:31: warning: range check might fail
@@ -12,6 +15,7 @@ list.adb:28:67: info: precondition proved
 list.adb:28:79: warning: range check might fail
 list.adb:32:10: info: loop invariant initialization proved
 list.adb:32:10: warning: loop invariant might fail after first iteration
+list.adb:34:22: info: precondition proved
 list.adb:34:40: warning: overflow check might fail
 list.adb:36:38: warning: overflow check might fail
 list.adb:36:42: info: overflow check proved
@@ -32,13 +36,17 @@ list.adb:44:10: info: range check proved
 list.adb:44:10: warning: precondition might fail
 list.adb:44:23: info: precondition proved
 list.adb:45:10: info: precondition proved
+list.ads:13:28: info: precondition proved
+list.ads:13:47: info: precondition proved
 list.ads:14:19: warning: postcondition might fail, requires Element (L, I) = Element (Reverse_List'Result, Last_Index (L) - I + First_Index (L)
 list.ads:14:19: warning: precondition might fail
 list.ads:14:31: warning: range check might fail
 list.ads:14:36: warning: precondition might fail
+list.ads:15:19: info: precondition proved
 list.ads:15:34: warning: overflow check might fail
 list.ads:15:38: warning: overflow check might fail
 list.ads:15:38: warning: range check might fail
+list.ads:15:40: info: precondition proved
 stack.adb:5:47: info: range check proved
 stack.adb:17:22: info: range check proved
 stack.adb:18:19: info: index check proved

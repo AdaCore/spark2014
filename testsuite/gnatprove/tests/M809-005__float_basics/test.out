@@ -284,8 +284,8 @@ generic_float_tests.adb:388:34: warning: contract case might fail, in instantiat
 generic_float_tests.adb:388:34: warning: contract case might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:389:34: warning: contract case might fail, in instantiation at foo.ads:14
 generic_float_tests.adb:389:34: warning: contract case might fail, in instantiation at foo.ads:9
-generic_float_tests.adb:398:19: warning: postcondition might fail, in instantiation at foo.ads:14
-generic_float_tests.adb:398:19: warning: postcondition might fail, in instantiation at foo.ads:9
+generic_float_tests.adb:398:19: warning: postcondition might fail, requires Y in X - 0.5 .. X + , in instantiation at foo.ads:14
+generic_float_tests.adb:398:19: warning: postcondition might fail, requires Y in X - 0.5 .. X + , in instantiation at foo.ads:9
 generic_float_tests.adb:398:26: warning: overflow check might fail, in instantiation at foo.ads:14
 generic_float_tests.adb:398:26: warning: overflow check might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:398:37: warning: overflow check might fail, in instantiation at foo.ads:14
@@ -318,32 +318,32 @@ generic_float_tests.adb:443:34: warning: contract case might fail, in instantiat
 generic_float_tests.adb:443:34: warning: contract case might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:444:34: warning: contract case might fail, in instantiation at foo.ads:14
 generic_float_tests.adb:444:34: warning: contract case might fail, in instantiation at foo.ads:9
-generic_interval_tests.adb:8:19: warning: postcondition might fail, in instantiation at bar.ads:11
-generic_interval_tests.adb:8:19: warning: postcondition might fail, in instantiation at bar.ads:7
+generic_interval_tests.adb:8:19: warning: postcondition might fail, requires Z in 5.0 .. , in instantiation at bar.ads:11
+generic_interval_tests.adb:8:19: warning: postcondition might fail, requires Z in 5.0 .. , in instantiation at bar.ads:7
 generic_interval_tests.adb:11:14: info: overflow check proved, in instantiation at bar.ads:11
 generic_interval_tests.adb:11:14: info: overflow check proved, in instantiation at bar.ads:7
 generic_interval_tests.adb:11:14: info: range check proved, in instantiation at bar.ads:11
 generic_interval_tests.adb:11:14: info: range check proved, in instantiation at bar.ads:7
-generic_interval_tests.adb:18:19: warning: postcondition might fail, in instantiation at bar.ads:11
-generic_interval_tests.adb:18:19: warning: postcondition might fail, in instantiation at bar.ads:7
+generic_interval_tests.adb:18:19: warning: postcondition might fail, requires Z in 10.0 .. , in instantiation at bar.ads:11
+generic_interval_tests.adb:18:19: warning: postcondition might fail, requires Z in 10.0 .. , in instantiation at bar.ads:7
 generic_interval_tests.adb:21:14: info: overflow check proved, in instantiation at bar.ads:11
 generic_interval_tests.adb:21:14: info: overflow check proved, in instantiation at bar.ads:7
 generic_interval_tests.adb:21:14: info: range check proved, in instantiation at bar.ads:11
 generic_interval_tests.adb:21:14: info: range check proved, in instantiation at bar.ads:7
 generic_interval_tests.adb:25:21: warning: overflow check might fail, in instantiation at bar.ads:11
 generic_interval_tests.adb:25:21: warning: overflow check might fail, in instantiation at bar.ads:7
-generic_interval_tests.adb:26:19: warning: postcondition might fail, in instantiation at bar.ads:11
-generic_interval_tests.adb:26:19: warning: postcondition might fail, in instantiation at bar.ads:7
-generic_interval_tests.adb:34:19: warning: postcondition might fail, in instantiation at bar.ads:11
-generic_interval_tests.adb:34:19: warning: postcondition might fail, in instantiation at bar.ads:7
+generic_interval_tests.adb:26:19: warning: postcondition might fail, requires X in 0.0 .. , in instantiation at bar.ads:11
+generic_interval_tests.adb:26:19: warning: postcondition might fail, requires X in 0.0 .. , in instantiation at bar.ads:7
+generic_interval_tests.adb:34:19: warning: postcondition might fail, requires X * X in 0.0 .. , in instantiation at bar.ads:11
+generic_interval_tests.adb:34:19: warning: postcondition might fail, requires X * X in 0.0 .. , in instantiation at bar.ads:7
 generic_interval_tests.adb:34:21: info: overflow check proved, in instantiation at bar.ads:11
 generic_interval_tests.adb:34:21: info: overflow check proved, in instantiation at bar.ads:7
 generic_interval_tests.adb:41:21: warning: overflow check might fail, in instantiation at bar.ads:11
 generic_interval_tests.adb:41:21: warning: overflow check might fail, in instantiation at bar.ads:7
 generic_interval_tests.adb:41:23: info: overflow check proved, in instantiation at bar.ads:11
 generic_interval_tests.adb:41:23: info: overflow check proved, in instantiation at bar.ads:7
-generic_interval_tests.adb:42:19: warning: postcondition might fail, in instantiation at bar.ads:11
-generic_interval_tests.adb:42:19: warning: postcondition might fail, in instantiation at bar.ads:7
+generic_interval_tests.adb:42:19: warning: postcondition might fail, requires X in 0.0 .. , in instantiation at bar.ads:11
+generic_interval_tests.adb:42:19: warning: postcondition might fail, requires X in 0.0 .. , in instantiation at bar.ads:7
 generic_interval_tests.adb:50:19: warning: postcondition might fail, requires X * Y >= X, in instantiation at bar.ads:11
 generic_interval_tests.adb:50:19: warning: postcondition might fail, requires X * Y >= X, in instantiation at bar.ads:7
 generic_interval_tests.adb:50:21: warning: overflow check might fail, in instantiation at bar.ads:11
@@ -380,8 +380,8 @@ generic_interval_tests.adb:132:14: info: overflow check proved, in instantiation
 generic_interval_tests.adb:132:14: info: overflow check proved, in instantiation at bar.ads:7
 generic_interval_tests.adb:132:14: info: range check proved, in instantiation at bar.ads:11
 generic_interval_tests.adb:132:14: info: range check proved, in instantiation at bar.ads:7
-generic_interval_tests.adb:138:19: warning: postcondition might fail, in instantiation at bar.ads:11
-generic_interval_tests.adb:138:19: warning: postcondition might fail, in instantiation at bar.ads:7
+generic_interval_tests.adb:138:19: warning: postcondition might fail, requires Z in 10.0 .. , in instantiation at bar.ads:11
+generic_interval_tests.adb:138:19: warning: postcondition might fail, requires Z in 10.0 .. , in instantiation at bar.ads:7
 generic_interval_tests.adb:141:14: info: overflow check proved, in instantiation at bar.ads:11
 generic_interval_tests.adb:141:14: info: overflow check proved, in instantiation at bar.ads:7
 generic_interval_tests.adb:141:14: info: range check proved, in instantiation at bar.ads:11
@@ -462,4 +462,3 @@ homothetical.ads:24:14: warning: postcondition might fail
 reduced_01.ads:7:32: warning: overflow check might fail
 reduced_01.ads:7:32: warning: range check might fail
 reduced_02.ads:9:15: info: range check proved
-

@@ -1,25 +1,33 @@
 test_vdll.adb:21:8: warning: precondition might fail
 test_vdll.adb:25:4: warning: assertion might fail, requires not Has_Element (L1, First (L1)
+test_vdll.adb:25:23: info: precondition proved
+test_vdll.adb:25:40: info: precondition proved
 test_vdll.adb:28:4: info: precondition proved
 test_vdll.adb:28:04: warning: statement has no effect
 test_vdll.adb:28:12: warning: unused assignment to "L1"
 test_vdll.adb:31:4: info: assertion proved
 test_vdll.adb:31:19: info: precondition proved
+test_vdll.adb:31:36: info: precondition proved
 test_vdll.adb:34:07: warning: unused assignment
 test_vdll.adb:34:11: info: discriminant check proved
 test_vdll.adb:34:11: warning: precondition might fail
 test_vdll.adb:35:4: warning: assertion might fail, requires Has_Element (L2, First (L1)
 test_vdll.adb:35:19: info: precondition proved
+test_vdll.adb:35:36: info: precondition proved
 test_vdll.adb:38:4: warning: precondition might fail
 test_vdll.adb:38:04: warning: statement has no effect
 test_vdll.adb:38:12: warning: unused assignment to "L2"
 test_vdll.adb:40:4: warning: assertion might fail, requires Has_Element (L2, Next (L2, First (L1)
 test_vdll.adb:40:19: info: precondition proved
 test_vdll.adb:40:36: warning: precondition might fail
+test_vdll.adb:40:46: info: precondition proved
 test_vdll.adb:41:4: warning: assertion might fail, requires Test_Element (L2, Next (L2, First (L1)), 2)
 test_vdll.adb:41:37: warning: precondition might fail
+test_vdll.adb:41:47: info: precondition proved
 test_vdll.adb:44:4: warning: assertion might fail, requires not Has_Element (L1, Next (L2, First (L1)
+test_vdll.adb:44:23: info: precondition proved
 test_vdll.adb:44:40: warning: precondition might fail
+test_vdll.adb:44:50: info: precondition proved
 test_vdll.adb:47:4: warning: precondition might fail
 test_vdll.adb:47:04: warning: statement has no effect
 test_vdll.adb:47:12: warning: unused assignment to "L2"
@@ -28,142 +36,201 @@ test_vdll.adb:48:11: info: precondition proved
 test_vdll.adb:48:11: warning: discriminant check might fail
 test_vdll.adb:49:06: warning: unused assignment
 test_vdll.adb:49:10: info: precondition proved
+test_vdll.adb:49:20: info: precondition proved
 test_vdll.adb:50:4: warning: precondition might fail
 test_vdll.adb:50:04: warning: statement has no effect
 test_vdll.adb:50:12: warning: unused assignment to "L2"
 test_vdll.adb:50:29: warning: unused assignment to "C"
 test_vdll.adb:51:4: warning: assertion might fail, requires not Has_Element (L2, Next (L1, First (L1)
+test_vdll.adb:51:23: info: precondition proved
 test_vdll.adb:51:40: info: precondition proved
+test_vdll.adb:51:50: info: precondition proved
 test_vdll.adb:54:07: warning: unused assignment
 test_vdll.adb:54:11: warning: discriminant check might fail
 test_vdll.adb:54:11: warning: precondition might fail
 test_vdll.adb:55:4: warning: assertion might fail, requires Has_Element (L1, Next (L2, First (L2)
 test_vdll.adb:55:19: info: precondition proved
 test_vdll.adb:55:36: info: precondition proved
+test_vdll.adb:55:46: info: precondition proved
 test_vdll.adb:56:4: warning: assertion might fail, requires Test_Element (L1, Next (L2, First (L2)), 3)
 test_vdll.adb:56:37: warning: precondition might fail
+test_vdll.adb:56:47: info: precondition proved
 test_vdll.adb:58:4: warning: precondition might fail
 test_vdll.adb:58:04: warning: statement has no effect
 test_vdll.adb:58:12: warning: unused assignment to "L1"
 test_vdll.adb:61:4: warning: assertion might fail, requires Find (L1, 3, No_Element) = Next (L1, First (L1)
 test_vdll.adb:61:19: info: precondition proved
 test_vdll.adb:61:47: info: precondition proved
+test_vdll.adb:61:57: info: precondition proved
 test_vdll.adb:62:4: warning: assertion might fail, requires Find (L1, 4, No_Element) = Last (L1)
 test_vdll.adb:62:19: info: precondition proved
+test_vdll.adb:62:47: info: precondition proved
 test_vdll.adb:63:4: warning: assertion might fail, requires Find (L1, 3, No_Element) = Previous (L1, Last (L1)
 test_vdll.adb:63:19: info: precondition proved
 test_vdll.adb:63:47: info: precondition proved
+test_vdll.adb:63:61: info: precondition proved
 test_vdll.adb:66:4: warning: assertion might fail, requires Find (L1, 1, Next (L1, First (L1))) = No_Element
 test_vdll.adb:66:19: warning: precondition might fail
 test_vdll.adb:66:32: warning: precondition might fail
+test_vdll.adb:66:42: info: precondition proved
 test_vdll.adb:69:07: warning: unused assignment
 test_vdll.adb:69:11: warning: discriminant check might fail
 test_vdll.adb:69:11: warning: precondition might fail
 test_vdll.adb:70:30: warning: precondition might fail
 test_vdll.adb:70:40: warning: precondition might fail
+test_vdll.adb:70:50: info: precondition proved
 test_vdll.adb:71:4: warning: assertion might fail, requires Length (L3) = 2
+test_vdll.adb:71:19: info: precondition proved
 test_vdll.adb:74:4: info: assertion proved
 test_vdll.adb:74:19: info: precondition proved
+test_vdll.adb:74:36: info: precondition proved
 test_vdll.adb:75:4: warning: assertion might fail, requires Test_Element (L3, First (L3), 1)
+test_vdll.adb:75:37: info: precondition proved
 test_vdll.adb:76:4: warning: assertion might fail, requires Has_Element (L3, Next (L3, First (L3)
 test_vdll.adb:76:19: info: precondition proved
 test_vdll.adb:76:36: warning: precondition might fail
+test_vdll.adb:76:46: info: precondition proved
 test_vdll.adb:77:4: warning: assertion might fail, requires Test_Element (L3, Next (L3, First (L3)), 3)
 test_vdll.adb:77:37: warning: precondition might fail
+test_vdll.adb:77:47: info: precondition proved
 test_vdll.adb:80:4: warning: assertion might fail, requires not Has_Element (L3, Next (L1, Next (L3, First (L3)
+test_vdll.adb:80:23: info: precondition proved
 test_vdll.adb:80:40: warning: precondition might fail
 test_vdll.adb:80:50: warning: precondition might fail
+test_vdll.adb:80:60: info: precondition proved
 test_vdll.adb:83:4: warning: assertion might fail, requires Find (L3, 3, No_Element) = Next (L3, First (L3)
 test_vdll.adb:83:19: info: precondition proved
 test_vdll.adb:83:47: warning: precondition might fail
+test_vdll.adb:83:57: info: precondition proved
 test_vdll.adb:84:4: warning: assertion might fail, requires Find (L3, 3, No_Element) = Last (L3)
 test_vdll.adb:84:19: info: precondition proved
+test_vdll.adb:84:46: info: precondition proved
 test_vdll.adb:85:4: warning: assertion might fail, requires Find (L3, 1, No_Element) = First (L3)
 test_vdll.adb:85:19: info: precondition proved
+test_vdll.adb:85:47: info: precondition proved
 test_vdll.adb:86:4: warning: assertion might fail, requires Find (L3, 1, No_Element) = Previous (L3, Last (L3)
 test_vdll.adb:86:19: info: precondition proved
 test_vdll.adb:86:46: info: precondition proved
+test_vdll.adb:86:60: info: precondition proved
 test_vdll.adb:89:4: warning: assertion might fail, requires Find (L3, 1, Next (L3, First (L3))) = No_Element
 test_vdll.adb:89:19: info: precondition proved
 test_vdll.adb:89:32: warning: precondition might fail
+test_vdll.adb:89:42: info: precondition proved
 test_vdll.adb:97:09: warning: unused assignment
 test_vdll.adb:97:12: warning: precondition might fail
 test_vdll.adb:97:25: info: precondition proved
 test_vdll.adb:97:35: warning: precondition might fail
+test_vdll.adb:97:45: info: precondition proved
 test_vdll.adb:101:07: warning: unused assignment
 test_vdll.adb:101:11: warning: discriminant check might fail
 test_vdll.adb:101:11: warning: precondition might fail
 test_vdll.adb:101:17: warning: precondition might fail
 test_vdll.adb:101:40: warning: precondition might fail
+test_vdll.adb:101:50: info: precondition proved
 test_vdll.adb:102:4: warning: assertion might fail, requires Length (L4) = 1
+test_vdll.adb:102:19: info: precondition proved
 test_vdll.adb:105:4: info: assertion proved
 test_vdll.adb:105:19: info: precondition proved
+test_vdll.adb:105:36: info: precondition proved
 test_vdll.adb:106:4: warning: assertion might fail, requires Test_Element (L4, First (L4), 1)
+test_vdll.adb:106:37: info: precondition proved
 test_vdll.adb:109:4: warning: assertion might fail, requires not Has_Element (L4, Next (L1, First (L4)
+test_vdll.adb:109:23: info: precondition proved
 test_vdll.adb:109:40: warning: precondition might fail
+test_vdll.adb:109:50: info: precondition proved
 test_vdll.adb:112:4: warning: assertion might fail, requires Find (L4, 1, No_Element) = First (L4)
 test_vdll.adb:112:19: info: precondition proved
+test_vdll.adb:112:47: info: precondition proved
 test_vdll.adb:120:09: warning: unused assignment
 test_vdll.adb:120:12: warning: precondition might fail
 test_vdll.adb:120:25: warning: precondition might fail
+test_vdll.adb:120:35: info: precondition proved
 test_vdll.adb:124:07: warning: unused assignment
 test_vdll.adb:124:11: warning: discriminant check might fail
 test_vdll.adb:124:11: warning: precondition might fail
+test_vdll.adb:125:4: info: precondition proved
 test_vdll.adb:125:04: warning: statement has no effect
 test_vdll.adb:125:17: warning: unused assignment to "L2"
 test_vdll.adb:126:4: warning: assertion might fail, requires Strict_Equal (First_To_Previous (L2, Next (L2, First (L2))), First_To_Previous (L1, Next (L1, First (L1)
+test_vdll.adb:126:19: info: precondition proved
 test_vdll.adb:126:33: info: precondition proved
 test_vdll.adb:126:56: info: precondition proved
+test_vdll.adb:126:66: info: precondition proved
 test_vdll.adb:127:26: warning: precondition might fail
 test_vdll.adb:127:49: warning: precondition might fail
+test_vdll.adb:127:59: info: precondition proved
 test_vdll.adb:130:07: warning: unused assignment
 test_vdll.adb:130:11: warning: discriminant check might fail
 test_vdll.adb:130:11: warning: precondition might fail
 test_vdll.adb:130:57: warning: precondition might fail
+test_vdll.adb:130:67: info: precondition proved
 test_vdll.adb:131:4: warning: assertion might fail, requires Length (L3) = 2
+test_vdll.adb:131:19: info: precondition proved
 test_vdll.adb:134:4: info: assertion proved
 test_vdll.adb:134:19: info: precondition proved
+test_vdll.adb:134:36: info: precondition proved
 test_vdll.adb:135:4: warning: assertion might fail, requires Test_Element (L3, First (L3), 3)
+test_vdll.adb:135:37: info: precondition proved
 test_vdll.adb:136:4: warning: assertion might fail, requires Has_Element (L3, Next (L3, First (L3)
 test_vdll.adb:136:19: info: precondition proved
 test_vdll.adb:136:36: warning: precondition might fail
+test_vdll.adb:136:46: info: precondition proved
 test_vdll.adb:137:4: warning: assertion might fail, requires Test_Element (L3, Next (L3, First (L3)), 4)
 test_vdll.adb:137:37: warning: precondition might fail
+test_vdll.adb:137:47: info: precondition proved
 test_vdll.adb:140:4: warning: assertion might fail, requires not Has_Element (L3, First (L1)
+test_vdll.adb:140:23: info: precondition proved
+test_vdll.adb:140:40: info: precondition proved
 test_vdll.adb:143:4: warning: assertion might fail, requires Find (L3, 4, No_Element) = Next (L3, First (L3)
 test_vdll.adb:143:19: info: precondition proved
 test_vdll.adb:143:47: warning: precondition might fail
+test_vdll.adb:143:57: info: precondition proved
 test_vdll.adb:146:4: warning: assertion might fail, requires Find (L3, 3, Next (L3, First (L3))) = No_Element
 test_vdll.adb:146:19: warning: precondition might fail
 test_vdll.adb:146:32: warning: precondition might fail
+test_vdll.adb:146:42: info: precondition proved
 test_vdll.adb:154:09: warning: unused assignment
 test_vdll.adb:154:12: warning: precondition might fail
+test_vdll.adb:154:25: info: precondition proved
 test_vdll.adb:158:07: warning: unused assignment
 test_vdll.adb:158:11: warning: discriminant check might fail
 test_vdll.adb:158:11: warning: precondition might fail
 test_vdll.adb:158:17: warning: precondition might fail
 test_vdll.adb:158:38: warning: precondition might fail
 test_vdll.adb:158:48: warning: precondition might fail
+test_vdll.adb:158:58: info: precondition proved
 test_vdll.adb:159:4: warning: assertion might fail, requires Length (L4) = 1
+test_vdll.adb:159:19: info: precondition proved
 test_vdll.adb:162:4: info: assertion proved
 test_vdll.adb:162:19: info: precondition proved
+test_vdll.adb:162:36: info: precondition proved
 test_vdll.adb:163:4: warning: assertion might fail, requires Test_Element (L4, First (L4), 4)
+test_vdll.adb:163:37: info: precondition proved
 test_vdll.adb:166:4: warning: assertion might fail, requires not Has_Element (L4, Next (L1, First (L1)
+test_vdll.adb:166:23: info: precondition proved
 test_vdll.adb:166:40: warning: precondition might fail
+test_vdll.adb:166:50: info: precondition proved
 test_vdll.adb:169:4: warning: assertion might fail, requires Find (L4, 4, No_Element) = First (L4)
 test_vdll.adb:169:19: info: precondition proved
+test_vdll.adb:169:47: info: precondition proved
 test_vdll.adb:177:09: warning: unused assignment
 test_vdll.adb:177:12: warning: precondition might fail
 test_vdll.adb:177:25: warning: precondition might fail
+test_vdll.adb:177:39: info: precondition proved
 test_vdll.adb:181:07: warning: unused assignment
 test_vdll.adb:181:11: info: discriminant check proved
 test_vdll.adb:181:11: warning: precondition might fail
+test_vdll.adb:182:4: info: precondition proved
 test_vdll.adb:182:04: warning: statement has no effect
 test_vdll.adb:182:18: warning: unused assignment to "L2"
 test_vdll.adb:183:4: warning: assertion might fail, requires Strict_Equal (Current_To_Last (L2, First (L2)), Current_To_Last (L1, Next (L1, First (L1)
+test_vdll.adb:183:19: info: precondition proved
 test_vdll.adb:183:33: info: precondition proved
+test_vdll.adb:183:54: info: precondition proved
 test_vdll.adb:184:22: warning: precondition might fail
 test_vdll.adb:184:43: warning: precondition might fail
+test_vdll.adb:184:53: info: precondition proved
+test_vdll.adb:186:4: info: precondition proved
 test_vdll.adb:186:04: warning: statement has no effect
 test_vdll.adb:186:11: warning: unused assignment to "L1"
 test_vdll.adb:188:20: warning: statement has no effect

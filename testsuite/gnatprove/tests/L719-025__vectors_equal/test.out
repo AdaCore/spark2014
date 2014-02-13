@@ -9,6 +9,18 @@ p.adb:20:7: warning: assertion might fail, requires Element (L, I1) = Element (L
 p.adb:20:22: info: precondition proved
 p.adb:20:40: warning: precondition might fail
 p.adb:21:7: info: precondition proved
+p.ads:17:13: info: precondition proved
+p.ads:18:6: info: precondition proved
+p.ads:18:36: info: precondition proved
 p.ads:19:14: warning: postcondition might fail, requires L = L'old
+p.ads:19:16: info: precondition proved
+p.ads:22:13: info: precondition proved
+p.ads:22:43: info: precondition proved
 p.ads:23:14: warning: postcondition might fail, requires L = L'old
+p.ads:23:16: info: precondition proved
+p.ads:26:13: info: precondition proved
+p.ads:26:45: info: precondition proved
+p.ads:27:9: info: precondition proved
+p.ads:27:41: info: precondition proved
 p.ads:28:14: info: postcondition proved
+p.ads:28:16: info: precondition proved

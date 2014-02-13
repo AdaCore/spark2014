@@ -1,21 +1,39 @@
 int_list.adb:4:7: info: precondition proved
+int_list.adb:8:24: info: precondition proved
+int_list.adb:10:13: info: precondition proved
 int_list.adb:11:10: info: loop invariant initialization proved
 int_list.adb:11:10: warning: loop invariant might fail after first iteration
+int_list.adb:12:13: info: precondition proved
+int_list.adb:13:13: info: precondition proved
+int_list.adb:13:26: info: precondition proved
+int_list.adb:14:13: info: precondition proved
 int_list.adb:14:27: info: precondition proved
 int_list.adb:15:15: info: precondition proved
+int_list.adb:16:16: info: precondition proved
 int_list.adb:16:29: info: precondition proved
+int_list.adb:17:20: info: precondition proved
 int_list.adb:18:20: info: precondition proved
 int_list.adb:18:37: info: precondition proved
 int_list.adb:19:10: info: precondition proved
 int_list.adb:19:33: info: precondition proved
 int_list.adb:19:48: info: range check proved
 int_list.adb:20:10: info: precondition proved
+int_list.ads:15:14: info: precondition proved
 int_list.ads:17:8: info: postcondition proved
 int_list.ads:17:8: info: precondition proved
+int_list.ads:17:20: info: precondition proved
+int_list.ads:19:10: info: precondition proved
+int_list.ads:19:23: info: precondition proved
 int_list.ads:19:38: info: overflow check proved
+int_list.ads:21:9: info: precondition proved
 int_list.ads:21:31: info: precondition proved
 int_list.ads:21:48: info: precondition proved
+int_list.ads:24:15: info: precondition proved
 int_list.ads:24:33: info: precondition proved
+int_list.ads:26:8: info: precondition proved
 int_list.ads:26:8: warning: postcondition might fail
+int_list.ads:26:21: info: precondition proved
+int_list.ads:27:7: info: precondition proved
+int_list.ads:27:25: info: precondition proved
 int_list.ads:28:11: info: precondition proved
 int_list.ads:28:28: info: precondition proved
