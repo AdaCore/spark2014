@@ -1,4 +1,5 @@
 package body Natural_Set
+  with SPARK_Mode
 is
 
    procedure Create (S : out T)
@@ -11,11 +12,11 @@ is
    procedure Insert (S     : in out T;
                      Value : in     Natural)
    is
-      Old_Length : constant Integer := S.Len;
    begin
       if not Contains (S, Value) then
          S.Len       := S.Len + 1;
          S.M (S.Len) := Value;
+         pragma Assert (Contains (S, Value));
       end if;
    end Insert;
 
