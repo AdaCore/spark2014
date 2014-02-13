@@ -1,4 +1,6 @@
-package body Ring_Buf is
+package body Ring_Buf
+  with SPARK_Mode
+is
 
    procedure Clear (R : out Ring_Buffer) is
    begin
