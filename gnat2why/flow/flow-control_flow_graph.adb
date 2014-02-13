@@ -200,7 +200,7 @@ package body Flow.Control_Flow_Graph is
    --  The context is a bag of extra state that is passed around through
    --  each Do_* procedure.
    --
-   --  Perhaps the most important aspect of the Context it is the
+   --  Perhaps the most important aspect of the Context is the
    --  Folded_Function_Checks map, which is used to keep track of functions
    --  with dependency relations. The only reason to put a dependency
    --  relation on a function is to note that not all parameters have been
