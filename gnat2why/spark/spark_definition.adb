@@ -3112,7 +3112,6 @@ package body SPARK_Definition is
            Pragma_Compile_Time_Error |
            Pragma_Compile_Time_Warning |
            Pragma_Compiler_Unit |
-           Pragma_Compiler_Unit_Warning |
            Pragma_Complete_Representation |
            Pragma_Complex_Representation |
            Pragma_Component_Alignment |
@@ -3194,7 +3193,6 @@ package body SPARK_Definition is
            Pragma_Priority_Specific_Dispatching |
            Pragma_Profile_Warnings |
            Pragma_Propagate_Exceptions |
-           Pragma_Provide_Shift_Operators |
            Pragma_Psect_Object |
            Pragma_Rational |
            Pragma_Ravenscar |
@@ -3233,7 +3231,6 @@ package body SPARK_Definition is
            Pragma_Unreferenced_Objects |
            Pragma_Unreserve_All_Interrupts |
            Pragma_Use_VADS_Size |
-           Pragma_Warning_As_Error |
            Pragma_Weak_External |
            Pragma_Wide_Character_Encoding |
 
@@ -3251,7 +3248,11 @@ package body SPARK_Definition is
            Pragma_Interrupt_Priority |
            Pragma_Lock_Free |
            Pragma_Priority |
-           Pragma_Storage_Size =>
+           Pragma_Storage_Size |
+           Pragma_Preelaborate_05 |
+           Pragma_Pure_05 |
+           Pragma_Pure_12
+            =>
 
             Error_Msg_Name_1 := Pname;
             Error_Msg_N ("?pragma % is not yet supported", N);

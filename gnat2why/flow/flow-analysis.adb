@@ -1387,6 +1387,7 @@ package body Flow.Analysis is
       for V of Dead_Code loop
          declare
             Unused : Unbounded_String;
+            pragma Unreferenced (Unused);
             A      : constant V_Attributes := FA.Atr.Element (V);
          begin
             Error_Msg_Flow (FA        => FA,
