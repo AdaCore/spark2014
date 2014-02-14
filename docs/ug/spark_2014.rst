@@ -963,7 +963,7 @@ Standard container library, cursors contain a pointer to their underlying
 container. As a consequence, if a container is modified, then so are all
 cursors attached to this container, which is contrary to the philosophy of
 modular verification in |SPARK|, hence the modification to separate cursors
-from containers. This modification also allows to use the same cursor with
+from containers. This modification also allows you to use the same cursor with
 different containers. In particular, it is useful to link elements associated
 to a list before and after a modification. Formal containers also provide three
 new functions per container type. ``Current_To_Last (C : Container; Cu : Cursor)
