@@ -1,6 +1,8 @@
 with Ring_Buf; use Ring_Buf;
 
-procedure Harness (X, Y, Z : Integer) is
+procedure Harness (X, Y, Z : Integer)
+  with SPARK_Mode
+is
    R : Ring_Buffer;
    H : Integer;
 begin

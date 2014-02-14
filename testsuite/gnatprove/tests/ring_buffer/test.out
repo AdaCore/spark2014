@@ -1,32 +1,32 @@
 harness.adb:3:20: warning: unused initial value of "X"
 harness.adb:3:23: warning: unused initial value of "Y"
 harness.adb:3:26: warning: unused initial value of "Z"
-harness.adb:7:04: warning: statement has no effect
-harness.adb:7:11: warning: unused assignment to "R"
-harness.adb:8:4: info: precondition proved
-harness.adb:8:04: warning: statement has no effect
-harness.adb:8:10: warning: unused assignment to "R"
-harness.adb:9:4: info: precondition proved
 harness.adb:9:04: warning: statement has no effect
-harness.adb:9:10: warning: unused assignment to "R"
+harness.adb:9:11: warning: unused assignment to "R"
 harness.adb:10:4: info: precondition proved
 harness.adb:10:04: warning: statement has no effect
-harness.adb:10:09: warning: unused assignment to "R"
-harness.adb:10:12: warning: unused assignment to "H"
-harness.adb:11:4: warning: assertion might fail, requires H = X
+harness.adb:10:10: warning: unused assignment to "R"
+harness.adb:11:4: info: precondition proved
+harness.adb:11:04: warning: statement has no effect
+harness.adb:11:10: warning: unused assignment to "R"
 harness.adb:12:4: info: precondition proved
 harness.adb:12:04: warning: statement has no effect
-harness.adb:12:10: warning: unused assignment to "R"
-harness.adb:13:4: info: precondition proved
-harness.adb:13:04: warning: statement has no effect
-harness.adb:13:09: warning: unused assignment to "R"
-harness.adb:13:12: warning: unused assignment to "H"
-harness.adb:14:4: warning: assertion might fail, requires H = Y
+harness.adb:12:09: warning: unused assignment to "R"
+harness.adb:12:12: warning: unused assignment to "H"
+harness.adb:13:4: warning: assertion might fail, requires H = X
+harness.adb:14:4: info: precondition proved
+harness.adb:14:04: warning: statement has no effect
+harness.adb:14:10: warning: unused assignment to "R"
 harness.adb:15:4: info: precondition proved
 harness.adb:15:04: warning: statement has no effect
 harness.adb:15:09: warning: unused assignment to "R"
 harness.adb:15:12: warning: unused assignment to "H"
-harness.adb:16:4: warning: assertion might fail, requires H = Z
+harness.adb:16:4: warning: assertion might fail, requires H = Y
+harness.adb:17:4: info: precondition proved
+harness.adb:17:04: warning: statement has no effect
+harness.adb:17:09: warning: unused assignment to "R"
+harness.adb:17:12: warning: unused assignment to "H"
+harness.adb:18:4: warning: assertion might fail, requires H = Z
 ring_buf.adb:9:29: info: length check proved
 ring_buf.adb:15:36: info: division check proved
 ring_buf.adb:16:28: info: range check proved

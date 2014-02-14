@@ -1,4 +1,6 @@
-package P is
+package P
+  with SPARK_Mode
+is
 
    Threshold : Integer := 1000;
 
