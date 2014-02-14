@@ -4870,7 +4870,7 @@ package body Gnat2Why.Expr is
       --  all other enumeration literals are expressed by integers
 
       return New_Integer_Constant
-               (Ada_Node => Expr,
+               (Ada_Node => Etype (Expr),
                 Value    => Enumeration_Pos (Enum));
    end Transform_Enum_Literal;
 
@@ -4953,8 +4953,7 @@ package body Gnat2Why.Expr is
          --  known, use the static value.
 
          T :=
-           New_Integer_Constant (Ada_Node => Expr,
-                                 Value    => Expr_Value (Expr));
+           New_Integer_Constant (Value => Expr_Value (Expr));
       else
          case Nkind (Expr) is
          when N_Aggregate =>

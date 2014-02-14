@@ -221,7 +221,7 @@ package body Why.Inter is
                   end;
 
                when Object_Kind =>
-                  Set_SI (Etype (UE));
+                  Set_SI_Internal (Etype (UE));
 
                when Subprogram_Kind =>
                   declare
