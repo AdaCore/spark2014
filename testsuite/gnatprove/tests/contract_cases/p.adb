@@ -1,4 +1,6 @@
-package body P is  
+package body P
+  with SPARK_Mode
+is
 
    procedure Incr_Threshold1 (X : in out Integer) is
    begin
