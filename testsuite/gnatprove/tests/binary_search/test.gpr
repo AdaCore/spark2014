@@ -1,2 +1,8 @@
 project Test is
+
+   package Prove is
+      for Switches use ("--steps=10000");
+   end Prove;
+
 end Test;
+
