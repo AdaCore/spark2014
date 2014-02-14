@@ -1,5 +1,5 @@
-maxandsum.adb:9:10: info: loop invariant initialization proved
-maxandsum.adb:9:10: info: loop invariant preservation proved
-maxandsum.adb:10:21: info: overflow check proved
-maxandsum.adb:14:10: info: assertion proved
-maxandsum.ads:8:17: info: postcondition proved
+maxandsum.adb:11:10: info: loop invariant initialization proved
+maxandsum.adb:11:10: info: loop invariant preservation proved
+maxandsum.adb:12:21: info: overflow check proved
+maxandsum.adb:16:10: info: assertion proved
+maxandsum.ads:12:19: info: postcondition proved
