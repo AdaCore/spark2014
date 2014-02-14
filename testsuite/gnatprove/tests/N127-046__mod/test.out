@@ -1,0 +1,4 @@
+mod_bound.ads:5:23: warning: unused initial value of "X"
+mod_bound.ads:6:20: info: postcondition proved
+mod_bound.ads:8:25: warning: unused initial value of "X"
+mod_bound.ads:9:20: warning: postcondition might fail, requires X = T'First + 1
