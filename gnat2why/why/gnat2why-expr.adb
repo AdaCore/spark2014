@@ -1160,7 +1160,7 @@ package body Gnat2Why.Expr is
                        (Symbol_Table, Entity (N)).Main.B_Name);
 
          when N_Slice =>
-            return Type_Of_Node (Unique_Entity (Etype (Prefix (N))));
+            return Type_Of_Node (Unique_Entity (Etype (N)));
 
          when N_Indexed_Component =>
             return Type_Of_Node
@@ -1784,16 +1784,16 @@ package body Gnat2Why.Expr is
 
          when N_Slice =>
             declare
-               Prefix_Name : constant W_Identifier_Id :=
-                 New_Temp_Identifier (Typ => Get_Type (Pref));
-               Value_Name  : constant W_Identifier_Id :=
-                 New_Temp_Identifier (Typ => Get_Type (Value));
                Prefix_Expr : constant W_Expr_Id :=
-                               +Transform_Expr
-                                 (Prefix (N),
-                                  Domain        => EW_Term,
-                                  Expected_Type => Get_Type (Pref),
-                                  Params        => Params);
+                 +Transform_Expr
+                 (Prefix (N),
+                  Domain        => EW_Term,
+                  Expected_Type => Get_Type (Pref),
+                  Params        => Params);
+               Prefix_Name : constant W_Expr_Id :=
+                 New_Temp_For_Expr (Prefix_Expr, True);
+               Value_Name  : constant W_Expr_Id :=
+                 New_Temp_For_Expr (Value, True);
                Dim     : constant Pos :=
                   Number_Dimensions (Type_Of_Node (Prefix (N)));
                Result_Id   : constant W_Identifier_Id :=
@@ -1814,12 +1814,12 @@ package body Gnat2Why.Expr is
                In_Slice_Eq : constant W_Pred_Id :=
                                New_Element_Equality
                                  (Left_Arr   => +Result_Id,
-                                  Right_Arr  => +Value_Name,
+                                  Right_Arr  => Value_Name,
                                   Index      => Indexes);
                Unchanged   : constant W_Pred_Id :=
                                New_Element_Equality
                                  (Left_Arr   => +Result_Id,
-                                  Right_Arr  => +Prefix_Name,
+                                  Right_Arr  => Prefix_Name,
                                   Index      => Indexes);
 
                Def         : constant W_Pred_Id :=
@@ -1833,20 +1833,17 @@ package body Gnat2Why.Expr is
                                   Var_Type  => +EW_Int_Type,
                                   Labels      => Name_Id_Sets.Empty_Set,
                                   Pred      => Def);
+               Result      : W_Expr_Id :=
+                 +New_Simpl_Any_Prog (T    => Get_Type (Pref),
+                                      Pred => +Quantif);
             begin
-               return
-                 New_Typed_Binding
-                   (Domain => EW_Prog,
-                    Name   => Prefix_Name,
-                    Def    => Prefix_Expr,
-                    Context =>
-                      New_Typed_Binding
-                        (Domain  => EW_Prog,
-                         Name    => Value_Name,
-                         Def     => +Value,
-                         Context => +New_Simpl_Any_Prog
-                           (T => Get_Type (Pref),
-                            Pred => +Quantif)));
+               Result := Binding_For_Temp (Domain  => EW_Prog,
+                                           Tmp     => Value_Name,
+                                           Context => Result);
+               Result := Binding_For_Temp (Domain  => EW_Prog,
+                                           Tmp     => Prefix_Name,
+                                           Context => Result);
+               return Result;
             end;
 
          when others =>
