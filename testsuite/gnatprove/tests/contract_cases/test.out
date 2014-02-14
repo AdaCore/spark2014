@@ -2,18 +2,18 @@ p.adb:6:17: info: overflow check proved
 p.adb:13:17: info: overflow check proved
 p.adb:20:17: info: overflow check proved
 p.adb:27:17: info: overflow check proved
-p.ads:7:14: warning: postcondition might fail, requires X = Integer'min
-p.ads:7:37: warning: overflow check might fail
-p.ads:10:6: info: complete contract cases proved
-p.ads:10:6: info: disjoint contract cases proved
-p.ads:10:40: info: contract case proved
-p.ads:10:53: info: overflow check proved
-p.ads:11:40: info: contract case proved
-p.ads:15:14: info: postcondition proved
-p.ads:16:6: info: complete contract cases proved
-p.ads:16:6: info: disjoint contract cases proved
-p.ads:16:40: info: contract case proved
-p.ads:16:53: info: overflow check proved
-p.ads:17:40: info: contract case proved
-p.ads:22:14: info: postcondition proved
-p.ads:22:55: info: overflow check proved
+p.ads:10:14: warning: postcondition might fail, requires X = Integer'min
+p.ads:10:37: warning: overflow check might fail
+p.ads:13:6: info: complete contract cases proved
+p.ads:13:6: info: disjoint contract cases proved
+p.ads:13:40: info: contract case proved
+p.ads:13:53: info: overflow check proved
+p.ads:14:40: info: contract case proved
+p.ads:18:14: info: postcondition proved
+p.ads:19:6: info: complete contract cases proved
+p.ads:19:6: info: disjoint contract cases proved
+p.ads:19:40: info: contract case proved
+p.ads:19:53: info: overflow check proved
+p.ads:20:40: info: contract case proved
+p.ads:25:14: info: postcondition proved
+p.ads:25:55: info: overflow check proved
