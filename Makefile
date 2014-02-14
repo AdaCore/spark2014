@@ -127,6 +127,8 @@ install-examples:
 	for dir in `grep -v "^--" MANIFEST.examples` ; do \
 	   $(CP) testsuite/gnatprove/tests/$$dir $(EXAMPLESDIR); \
 	done
+	find $(EXAMPLESDIR) -name test.py -exec rm -f {} \;
+	find $(EXAMPLESDIR) -name test.out -exec rm -f {} \;
 
 clean:
 	$(MAKE) -C gnat2why/why/xgen clean
