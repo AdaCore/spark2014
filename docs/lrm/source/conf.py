@@ -57,7 +57,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'spark2014_rm'
-copyright = u'2013, AdaCore and Altran UK Ltd'
+copyright = u'2013-2014, AdaCore and Altran UK Ltd'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
