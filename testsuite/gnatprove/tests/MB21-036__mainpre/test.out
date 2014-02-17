@@ -2,7 +2,6 @@ mainpre.adb:3:23: warning: unused initial value of "Pack.State"
 mainpre.adb:4:16: warning: precondition of main program might fail
 mainpre.adb:7:4: info: precondition proved
 mainpre.adb:7:04: warning: statement has no effect
-mainpre.adb:7:04: warning: unused assignment to "Pack.State"
 pack.adb:4:04: warning: initialization has no effect
 pack.adb:10:30: warning: unused initial value of "X"
 pack.ads:4:9: info: initial condition proved

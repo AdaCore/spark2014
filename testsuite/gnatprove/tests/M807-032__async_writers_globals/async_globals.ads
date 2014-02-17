@@ -1,7 +1,5 @@
 package Async_Globals is
 
-   procedure Get (X : out Integer);
-
-   procedure Test;
+   pragma Elaborate_Body;
 
 end Async_Globals;

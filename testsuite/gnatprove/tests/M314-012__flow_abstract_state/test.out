@@ -1,10 +1,8 @@
 nested_pkg.adb:29:25: warning: unused initial value of "Z.State"
 nested_pkg.adb:44:25: warning: unused initial value of "Z.State"
 nested_pkg.adb:51:10: warning: statement has no effect
-nested_pkg.adb:51:10: warning: unused assignment to "Z.State"
 nested_pkg.adb:57:22: warning: unused initial value of "Z.State"
 nested_pkg.adb:64:08: warning: statement has no effect
-nested_pkg.adb:64:08: warning: unused assignment to "Z.State"
 stack_asm.adb:38:40: "The_Stack" is not initialized
 stack_asm.adb:38:40: warning: unused global "The_Stack"
 test.adb:21:41: "Stack_Asm.State" is not initialized

@@ -7,9 +7,9 @@ package body Async_Globals is
       X := G;
    end Get;
 
-   procedure Test is
-      X : Integer;
-      Y : Integer;
+   procedure Test (X : out Integer;
+                   Y : out Integer)
+   is
    begin
       Get (X);
       Get (Y);

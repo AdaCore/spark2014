@@ -120,7 +120,6 @@ auditlog.adb:1012:56: info: range check proved
 auditlog.adb:1012:61: info: overflow check proved
 auditlog.adb:1013:39: info: overflow check proved
 auditlog.adb:1021:10: info: precondition proved
-auditlog.adb:1021:10: warning: unused assignment to "Currentlogfile"
 auditlog.adb:1023:10: info: precondition proved
 auditlog.adb:1031:7: info: precondition proved
 auditlog.adb:1070:55: info: refined post proved

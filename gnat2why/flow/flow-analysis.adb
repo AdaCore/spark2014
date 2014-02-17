@@ -1208,7 +1208,7 @@ package body Flow.Analysis is
             Key  : constant Flow_Id      := FA.PDG.Get_Key (V);
             Atr  : constant V_Attributes := FA.Atr.Element (V);
             Mask : Vertex_Sets.Set;
-            Tag  : constant String := "ineffective";
+            Tag  : constant String       := "ineffective";
             Tmp  : Flow_Id;
          begin
             if Atr.Is_Program_Node or
@@ -1254,10 +1254,16 @@ package body Flow.Analysis is
                         Tmp := Atr.Parameter_Formal;
                      end if;
 
-                     if Key.Variant = In_View then
+                     if Atr.Is_Parameter and then Key.Variant = In_View then
                         --  For in parameters we do not emit the
                         --  ineffective assignment error as its a bit
                         --  confusing.
+                        null;
+
+                     elsif Atr.Is_Global_Parameter and then
+                       Atr.Parameter_Formal.Variant = In_View
+                     then
+                        --  Ditto for globals in views.
                         null;
 
                      elsif Atr.Is_Discr_Or_Bounds_Parameter or
