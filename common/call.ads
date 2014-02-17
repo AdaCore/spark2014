@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010-2013, AdaCore                   --
+--                       Copyright (C) 2010-2014, AdaCore                   --
 --                                                                          --
 -- gnatprove is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -31,6 +31,13 @@ package Call is
    procedure Abort_With_Message (Msg : String) with
      No_Return;
    --  Print the Msg to Standard Error and Exit with Error code 1.
+
+   function Argument_List_Of_String_List (S : String_Lists.List)
+      return Argument_List;
+   --  Convert a String List into an Argument List
+
+   procedure Free_Argument_List (L : Argument_List);
+   --  free all strings in an argument list
 
    procedure Call_Exit_On_Failure
      (Command   : String;
@@ -57,6 +64,10 @@ package Call is
       Arguments : String_Lists.List;
       Status    : out Integer;
       Verbose   : Boolean := False);
+
+   function Get_Process_Id return Integer;
+   --  Return the process ID of the current process
+   pragma Import (C, Get_Process_Id, "getpid");
 
    generic
       with procedure Handle_Line (Line : String);

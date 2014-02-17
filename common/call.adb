@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2013, AdaCore                   --
+--                       Copyright (C) 2010-2014, AdaCore                   --
 --                                                                          --
 -- gnatprove is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -29,13 +29,6 @@ with Ada.Text_IO;
 with GNAT.Directory_Operations;
 
 package body Call is
-
-   function Argument_List_Of_String_List (S : String_Lists.List)
-      return Argument_List;
-   --  Convert a String List into an Argument List
-
-   procedure Free_Argument_List (L : Argument_List);
-   --  free all strings in an argument list
 
    procedure Print_Command_Line
       (Command : String;
@@ -71,27 +64,6 @@ package body Call is
       end loop;
       return Arguments;
    end Argument_List_Of_String_List;
-
-   ------------------------
-   -- Print_Command_Line --
-   ------------------------
-
-   procedure Print_Command_Line
-      (Command : String;
-       Arguments : Argument_List)
-   is
-   begin
-      Ada.Text_IO.Put (Command);
-
-      for Index in Arguments'Range loop
-         declare
-            S : constant String_Access := Arguments (Index);
-         begin
-            Ada.Text_IO.Put (" ");
-            Ada.Text_IO.Put (S.all);
-         end;
-      end loop;
-   end Print_Command_Line;
 
    ----------------------
    -- Call_With_Status --
@@ -269,6 +241,27 @@ package body Call is
          end;
       end loop;
    end Free_Argument_List;
+
+   ------------------------
+   -- Print_Command_Line --
+   ------------------------
+
+   procedure Print_Command_Line
+      (Command : String;
+       Arguments : Argument_List)
+   is
+   begin
+      Ada.Text_IO.Put (Command);
+
+      for Index in Arguments'Range loop
+         declare
+            S : constant String_Access := Arguments (Index);
+         begin
+            Ada.Text_IO.Put (" ");
+            Ada.Text_IO.Put (S.all);
+         end;
+      end loop;
+   end Print_Command_Line;
 
    ---------------------------
    -- Read_File_Into_String --

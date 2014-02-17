@@ -32,6 +32,7 @@ with GNATCOLL.Utils;    use GNATCOLL.Utils;
 with GNATCOLL.VFS;      use GNATCOLL.VFS;
 with String_Utils;      use String_Utils;
 with Opt;
+with Call;              use Call;
 
 package Configuration is
 
@@ -148,6 +149,8 @@ package Configuration is
    Theories_Dir     : constant String := Compose (Gnatprove_Dir, "theories");
    Gpr_Cnf_Dir      : constant String := Compose (Gnatprove_Dir, "config");
    Why3_Drivers_Dir : constant String := Compose (Why3_Dir, "drivers");
+   Socket_Name      : constant String :=
+     "why3server" & String_Utils.Int_Image (Get_Process_Id) & ".sock";
 
    --  The exact places for the three configuration files used by gnatprove
    Gpr_Translation_Cnf_File : constant String :=

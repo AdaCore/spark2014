@@ -76,6 +76,7 @@ with Call;               use Call;
 with Configuration;      use Configuration;
 with Opt;
 
+with GNAT.Expect;        use GNAT.Expect;
 with GNAT.OS_Lib;
 with GNAT.Strings;       use GNAT.Strings;
 
@@ -102,7 +103,6 @@ procedure Gnatprove is
    procedure Call_Gprbuild
       (Project_File : String;
        Config_File  : String;
-       Parallel     : Integer;
        RTS_Dir      : String;
        Args         : in out String_Lists.List;
        Status       : out Integer);
@@ -153,6 +153,9 @@ procedure Gnatprove is
        Status           : out Integer);
    --  Translate all source units to Why, using gnat2why, driven by gprbuild.
 
+   function Spawn_VC_Server return Process_Descriptor;
+   --  Spawn the VC server of Why3
+
    function Text_Of_Step (Step : Gnatprove_Step) return String;
 
    procedure Set_Environment;
@@ -167,6 +170,14 @@ procedure Gnatprove is
    --  Translation_Phase is False for globals generation, and True for
    --  translation to Why.
 
+   function Non_Blocking_Spawn
+     (Command   : String;
+      Arguments : String_Lists.List) return Process_Descriptor;
+   --  spawn a process in a non-blocking way
+
+   procedure Kill (P : in out Process_Descriptor);
+   --  kill the process
+
    function To_String (Warning : Opt.Warning_Mode_Type) return String;
 
    -------------------
@@ -176,7 +187,6 @@ procedure Gnatprove is
    procedure Call_Gprbuild
       (Project_File : String;
        Config_File  : String;
-       Parallel     : Integer;
        RTS_Dir      : String;
        Args         : in out String_Lists.List;
        Status       : out Integer) is
@@ -281,7 +291,6 @@ procedure Gnatprove is
       Args.Append ("-gnates=" & Opt_File);
       Call_Gprbuild (Project_File,
                      Gpr_Frames_Cnf_File,
-                     Parallel,
                      RTS_Dir.all,
                      Args,
                      Status);
@@ -337,6 +346,8 @@ procedure Gnatprove is
             Args.Append ("statistics");
 
       end case;
+      Args.Append ("--socket");
+      Args.Append (Socket_Name);
       Args.Append ("--warnings");
       Args.Append (To_String (Warning_Mode));
       if Debug then
@@ -392,7 +403,6 @@ procedure Gnatprove is
       Set ("TMPDIR", Obj_Dir);
       Call_Gprbuild (Why_Proj_File,
                      Gpr_Why_Cnf_File,
-                     Parallel => 1,
                      RTS_Dir  => RTS_Dir.all,
                      Args     => Args,
                      Status   => Status);
@@ -614,8 +624,7 @@ procedure Gnatprove is
       Put_Keyval ("running_provers_max", 2);
       Start_Section ("prover");
       declare
-         Altergo_Command : constant String :=
-           "why3-cpulimit %t %m -s alt-ergo-gp -max-split 5 %f";
+         Altergo_Command : constant String := "alt-ergo-gp -max-split 5 %f";
       begin
          if Steps /= 0 then
             Put_Keyval ("command",
@@ -657,6 +666,40 @@ procedure Gnatprove is
            Libgnat & Path_Separator & Sharegpr & Path_Separator & Gpr_Val);
    end Set_Environment;
 
+   ----------
+   -- Kill --
+   ----------
+
+   procedure Kill (P : in out Process_Descriptor) is
+   begin
+      Close (P);
+   end Kill;
+
+   ------------------------
+   -- Non_Blocking_Spawn --
+   ------------------------
+
+   function Non_Blocking_Spawn
+     (Command   : String;
+      Arguments : String_Lists.List) return Process_Descriptor is
+      Executable : constant String_Access :=
+        GNAT.OS_Lib.Locate_Exec_On_Path (Command);
+      Args       : constant GNAT.OS_Lib.Argument_List :=
+        Argument_List_Of_String_List (Arguments);
+      Proc       : Process_Descriptor;
+   begin
+      if Executable = null then
+         Ada.Text_IO.Put_Line ("Could not find executable " & Command);
+         GNAT.OS_Lib.OS_Exit (1);
+      end if;
+      Non_Blocking_Spawn
+        (Proc,
+         Executable.all,
+         Args,
+         Err_To_Out => True);
+      return Proc;
+   end Non_Blocking_Spawn;
+
    ------------------------------------
    -- Pass_Extra_Options_To_Gnat2why --
    ------------------------------------
@@ -691,6 +734,20 @@ procedure Gnatprove is
 
       return Gnat2Why_Args.Set (Obj_Dir);
    end Pass_Extra_Options_To_Gnat2why;
+
+   ---------------------
+   -- Spawn_VC_Server --
+   ---------------------
+
+   function Spawn_VC_Server return Process_Descriptor is
+      Args    : String_Lists.List := String_Lists.Empty_List;
+   begin
+      Args.Append ("-j");
+      Args.Append (Int_Image (Parallel));
+      Args.Append ("--socket");
+      Args.Append (Socket_Name);
+      return Non_Blocking_Spawn ("why3server", Args);
+   end Spawn_VC_Server;
 
    ------------------
    -- Text_Of_Step --
@@ -775,7 +832,6 @@ procedure Gnatprove is
 
       Call_Gprbuild (Project_File,
                      Gpr_Translation_Cnf_File,
-                     Parallel,
                      RTS_Dir.all,
                      Args,
                      Status);
@@ -790,6 +846,8 @@ procedure Gnatprove is
    Proj_Type : Project_Type;
    --  GNAT project
 
+   Id        : Process_Descriptor;
+
 --  Start processing for Gnatprove
 
 begin
@@ -799,12 +857,14 @@ begin
 
    Execute_Step (GS_ALI, Project_File.all, Tree);
    Execute_Step (GS_Gnat2Why, Project_File.all, Tree);
-
    Ada.Directories.Set_Directory (Proj_Type.Object_Dir.Display_Full_Name);
+   Id := Spawn_VC_Server;
 
    if MMode in GPM_Prove | GPM_All then
       Execute_Step (GS_Why, Project_File.all, Tree);
    end if;
+
+   Kill (Id);
 
    declare
       Obj_Path : constant File_Array :=
