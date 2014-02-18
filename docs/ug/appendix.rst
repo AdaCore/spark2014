@@ -398,6 +398,9 @@ Flow Analysis Limitations
 	   C : constant Integer := Q.V;
 	end P;
 
+#. Flow analysis does not yet support calling functions with dependency
+   relations. It is possible to annotate a function with a dependency
+   relation, but they currently do not have any effect on analysis.
 
 Proof Limitations
 -----------------

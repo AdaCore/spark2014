@@ -833,9 +833,7 @@ package body Flow.Analysis is
       --  mentioned there, we supress the ineffective imort warning.
 
       Suppressed_Entire_Ids := Flow_Id_Sets.Empty_Set;
-      if FA.Kind = E_Subprogram_Body and then
-        Has_Depends (FA.Analyzed_Entity)
-      then
+      if FA.Kind = E_Subprogram_Body and then Present (FA.Depends_N) then
          declare
             D : Dependency_Maps.Map;
          begin
@@ -2285,12 +2283,23 @@ package body Flow.Analysis is
 
          function Proc (N : Node_Id) return Traverse_Result is
             Tmp : Node_Id;
+            O   : Entity_Id;
          begin
             case Nkind (N) is
                when N_Component_Association =>
                   Tmp := First (Choices (N));
                   while Present (Tmp) loop
-                     if Entity (Tmp) = E then
+                     case Nkind (Tmp) is
+                        when N_Attribute_Reference =>
+                           O := Entity (Prefix (Tmp));
+                        when N_Identifier | N_Expanded_Name =>
+                           O := Entity (Tmp);
+                        when N_Null | N_Aggregate =>
+                           O := Empty;
+                        when others =>
+                           raise Program_Error;
+                     end case;
+                     if O = E then
                         Needle := Tmp;
                         return Abandon;
                      end if;
@@ -2456,6 +2465,20 @@ package body Flow.Analysis is
                               F1        => Missing_Var,
                               Tag       => "depends_null",
                               Warning   => True);
+                        elsif F_Out = Direct_Mapping_Id
+                          (FA.Analyzed_Entity)
+                        then
+                           Error_Msg_Flow
+                             (FA        => FA,
+                              Tracefile => Tracefile,
+                              Msg       =>
+                                "missing dependency ""#'Result => #""",
+                              N         => Find_Export
+                                (Get_Direct_Mapping_Id (F_Out)),
+                              F1        => F_Out,
+                              F2        => Missing_Var,
+                              Tag       => "depends_missing",
+                              Warning   => True);
                         else
                            Error_Msg_Flow
                              (FA        => FA,
@@ -2486,6 +2509,19 @@ package body Flow.Analysis is
                         Tag       => "depends_wrong",
                         Warning   => True);
                      --  ??? show a path?
+                  elsif F_Out = Direct_Mapping_Id
+                    (FA.Analyzed_Entity)
+                  then
+                     Error_Msg_Flow
+                       (FA        => FA,
+                        Tracefile => Tracefile,
+                        Msg       => "incorrect dependency ""#'Result => #""",
+                        N         => Find_Export
+                          (Get_Direct_Mapping_Id (F_Out)),
+                        F1        => F_Out,
+                        F2        => Wrong_Var,
+                        Tag       => "depends_wrong",
+                        Warning   => True);
                   else
                      Error_Msg_Flow
                        (FA        => FA,

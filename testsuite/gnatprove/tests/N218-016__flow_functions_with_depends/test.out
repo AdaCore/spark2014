@@ -1,0 +1,31 @@
+foo.adb:20:24: warning: unused variable "Y"
+foo.adb:29:09: warning: incorrect dependency "null => B"
+foo.adb:29:09: warning: incorrect dependency "null => G2"
+foo.adb:29:21: warning: missing dependency "R => B"
+foo.adb:29:21: warning: missing dependency "R => G2"
+foo.adb:44:09: warning: incorrect dependency "null => G2"
+foo.adb:44:21: warning: missing dependency "R => G2"
+foo.adb:49:07: "B" is not initialized
+foo.adb:62:09: warning: incorrect dependency "null => B"
+foo.adb:62:09: warning: incorrect dependency "null => C"
+foo.adb:62:21: warning: missing dependency "R => B"
+foo.adb:62:21: warning: missing dependency "R => C"
+foo.adb:80:09: warning: incorrect dependency "null => B"
+foo.adb:80:09: warning: incorrect dependency "null => C"
+foo.adb:80:21: warning: missing dependency "R => B"
+foo.adb:80:21: warning: missing dependency "R => C"
+foo.adb:92:09: warning: incorrect dependency "null => B"
+foo.adb:92:21: warning: missing dependency "R => B"
+foo.adb:108:09: warning: incorrect dependency "null => B"
+foo.adb:108:09: warning: incorrect dependency "null => G2"
+foo.adb:108:21: warning: missing dependency "R => B"
+foo.adb:108:21: warning: missing dependency "R => G2"
+foo.adb:124:09: "A" is not initialized
+foo.adb:124:09: "B" is not initialized
+foo.adb:124:09: "G1" is not initialized
+foo.adb:124:09: "G2" is not initialized
+   compilation of foo.adb failed
+
+
+gnatprove: error during analysis of data and information flow, aborting.
+gprbuild: *** compilation phase failed
