@@ -793,6 +793,19 @@ package body Flow_Utility is
    is
       VS : Flow_Id_Sets.Set;
 
+      function Recurse_On (N : Node_Id) return Flow_Id_Sets.Set
+      is (Get_Variable_Set (N,
+                            Scope                        => Scope,
+                            Local_Constants              => Local_Constants,
+                            Fold_Functions               => Fold_Functions,
+                            Reduced                      => Reduced,
+                            Allow_Statements             => False,
+                            Expand_Synthesized_Constants =>
+                              Expand_Synthesized_Constants));
+      --  Recuse on N. Please note that Allow_Statements is always false;
+      --  this is intentional as we should only ever recurse on something
+      --  inside expressions.
+
       function Process_Subprogram_Call
         (Callsite : Node_Id)
          return Flow_Id_Sets.Set
@@ -908,16 +921,7 @@ package body Flow_Utility is
                if (if Folding
                    then Used_Reads.Contains (Direct_Mapping_Id (Formal)))
                then
-                  V.Union
-                    (Get_Variable_Set
-                       (Actual,
-                        Scope                        => Scope,
-                        Local_Constants              => Local_Constants,
-                        Fold_Functions               => Fold_Functions,
-                        Reduced                      => Reduced,
-                        Allow_Statements             => False,
-                        Expand_Synthesized_Constants =>
-                          Expand_Synthesized_Constants));
+                  V.Union (Recurse_On (Actual));
                end if;
 
                Next (Ptr);
@@ -989,19 +993,7 @@ package body Flow_Utility is
                               pragma Assert
                                 (Present (E),
                                  "Constant has no expression");
-                              VS.Union
-                                (Get_Variable_Set
-                                   (N                            => E,
-                                    Scope                        => Scope,
-                                    Local_Constants              =>
-                                      Local_Constants,
-                                    Fold_Functions               =>
-                                      Fold_Functions,
-                                    Reduced                      => Reduced,
-                                    Allow_Statements             =>
-                                      Allow_Statements,
-                                    Expand_Synthesized_Constants =>
-                                      Expand_Synthesized_Constants));
+                              VS.Union (Recurse_On (E));
                            end;
 
                         else
@@ -1056,6 +1048,9 @@ package body Flow_Utility is
                      null;
                end case;
 
+            when N_Aggregate =>
+               VS.Union (Recurse_On (Aggregate_Bounds (N)));
+
             when N_Selected_Component | N_Indexed_Component =>
 
                if Reduced then
@@ -1102,35 +1097,22 @@ package body Flow_Utility is
                     Attribute_Last |
                     Attribute_Length |
                     Attribute_Range =>
-                     declare
-                        Prefix_Vars : constant Flow_Id_Sets.Set :=
-                          Get_Variable_Set
-                          (Prefix (N),
-                           Scope                        => Scope,
-                           Local_Constants              => Local_Constants,
-                           Fold_Functions               => Fold_Functions,
-                           Reduced                      => Reduced,
-                           Allow_Statements             => Allow_Statements,
-                           Expand_Synthesized_Constants =>
-                             Expand_Synthesized_Constants);
-                     begin
-                        for F of Prefix_Vars loop
-                           if F.Kind in Direct_Mapping | Record_Field and then
-                             F.Bound.Kind = No_Bound and then
-                             Has_Bounds (F)
-                           then
-                              --  This is not a bound variable, but it
-                              --  requires bounds tracking. We make it a
-                              --  bound variable.
-                              VS.Include
-                                (F'Update (Bound => (Kind => Some_Bound)));
+                     for F of Recurse_On (Prefix (N)) loop
+                        if F.Kind in Direct_Mapping | Record_Field and then
+                          F.Bound.Kind = No_Bound and then
+                          Has_Bounds (F)
+                        then
+                           --  This is not a bound variable, but it
+                           --  requires bounds tracking. We make it a
+                           --  bound variable.
+                           VS.Include
+                             (F'Update (Bound => (Kind => Some_Bound)));
 
-                           else
-                              --  This is something else. We just copy it.
-                              VS.Include (F);
-                           end if;
-                        end loop;
-                     end;
+                        else
+                           --  This is something else. We just copy it.
+                           VS.Include (F);
+                        end if;
+                     end loop;
                      return Skip;
 
                   when Attribute_Loop_Entry =>
@@ -1151,9 +1133,7 @@ package body Flow_Utility is
 
       procedure Traverse is new Traverse_Proc (Process => Proc);
 
-   --  Start of Get_Variable_Set
-
-   begin
+   begin --  Get_Variable_Set
       Traverse (N);
       return Filter_Out_Non_Local_Constants (VS, Local_Constants);
    end Get_Variable_Set;

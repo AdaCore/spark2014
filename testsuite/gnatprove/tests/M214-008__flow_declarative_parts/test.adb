@@ -111,7 +111,7 @@ is
    procedure Issue_06 (A : out String;
                        B : out Integer)
    with Global => null,
-        Depends => (A => null,
+        Depends => (A => A,
                     B => A)
    is
    begin
@@ -122,7 +122,7 @@ is
    procedure Issue_07 (A : in out String;
                        B : out Integer)
    with Global => null,
-        Depends => (A => null,
+        Depends => (A => A,
                     B => A)
    is
    begin
@@ -133,7 +133,7 @@ is
    procedure Issue_08 (A : in out String;
                        B : out Integer)
    with Global => null,
-        Depends => (A => null,
+        Depends => (A => A,
                     B => A)
    is
    begin

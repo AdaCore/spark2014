@@ -47,7 +47,7 @@ is
 
    procedure Test_04_Ok (A : out String;
                          B : out Natural)
-   with Depends => (A => null,
+   with Depends => (A => A,
                     B => A)
    is
    begin

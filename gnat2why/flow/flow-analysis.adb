@@ -866,6 +866,7 @@ package body Flow.Analysis is
 
             E              : Flow_Id;
             Disuse_Not_Bad : Boolean;
+            Skip_This      : Boolean;
          begin
             if Key.Variant = Initial_Value and
               Key.Kind /= Synthetic_Null_Export
@@ -881,53 +882,67 @@ package body Flow.Analysis is
 
                Disuse_Not_Bad := Is_Bound (Key) or Is_Discriminant (Key);
 
+               --  Generally we allow a discriminant or bound to mark the
+               --  entire variable as used (if its used) and notherwise
+               --  have no effect (not using it is not flagging the entire
+               --  variable as unused). However this is only valid for out
+               --  parameters; for in out parameters the value of the
+               --  entire variable itself has to be used and the bounds are
+               --  completely optional.
+
+               Skip_This := (if Disuse_Not_Bad
+                             then Atr.Mode = Mode_In_Out
+                             else False);
+
                --  Determine ineffective imports.
 
-               if Atr.Is_Initialized and Atr.Is_Import
-               --  and then (not Atr.Is_Loop_Parameter)
-               then
-                  if not Disuse_Not_Bad then
-                     EV_Considered_Imports.Include (E);
-                  end if;
+               if not Skip_This then
 
-                  --  Check if we're ineffective or not. If not, we note that
-                  --  we at least partially have used the entire variable.
-
-                  if FA.PDG.Non_Trivial_Path_Exists (V,
-                                                     Is_Final_Use'Access)
-                  then
-                     if Disuse_Not_Bad then
+                  if Atr.Is_Initialized and Atr.Is_Import then
+                     if not Disuse_Not_Bad then
                         EV_Considered_Imports.Include (E);
                      end if;
-                     EV_Effective.Include (E);
-                  end if;
-               end if;
 
-               --  Determine unused objects.
+                     --  Check if we're ineffective or not. If not, we note
+                     --  that we at least partially have used the entire
+                     --  variable.
 
-               if not Disuse_Not_Bad then
-                  EV_Considered_Objects.Include (E);
-               end if;
-
-               if FA.PDG.Out_Neighbour_Count (V) = 1 then
-                  declare
-                     Final_V : constant Flow_Graphs.Vertex_Id :=
-                       FA.PDG.Child (V);
-                  begin
-                     if FA.PDG.Get_Key (Final_V).Variant /= Final_Value or
-                       FA.PDG.In_Neighbour_Count (Final_V) > 1
+                     if FA.PDG.Non_Trivial_Path_Exists (V,
+                                                        Is_Final_Use'Access)
                      then
                         if Disuse_Not_Bad then
-                           EV_Considered_Objects.Include (E);
+                           EV_Considered_Imports.Include (E);
                         end if;
-                        EV_Used.Include (E);
+                        EV_Effective.Include (E);
                      end if;
-                  end;
-               else
-                  if Disuse_Not_Bad then
+                  end if;
+
+                  --  Determine unused objects.
+
+                  if not Disuse_Not_Bad then
                      EV_Considered_Objects.Include (E);
                   end if;
-                  EV_Used.Include (E);
+
+                  if FA.PDG.Out_Neighbour_Count (V) = 1 then
+                     declare
+                        Final_V : constant Flow_Graphs.Vertex_Id :=
+                          FA.PDG.Child (V);
+                     begin
+                        if FA.PDG.Get_Key (Final_V).Variant /= Final_Value or
+                          FA.PDG.In_Neighbour_Count (Final_V) > 1
+                        then
+                           if Disuse_Not_Bad then
+                              EV_Considered_Objects.Include (E);
+                           end if;
+                           EV_Used.Include (E);
+                        end if;
+                     end;
+                  else
+                     if Disuse_Not_Bad then
+                        EV_Considered_Objects.Include (E);
+                     end if;
+                     EV_Used.Include (E);
+                  end if;
                end if;
             end if;
          end;
