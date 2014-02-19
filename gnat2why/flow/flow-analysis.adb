@@ -876,7 +876,7 @@ package body Flow.Analysis is
 
                E := Change_Variant (Entire_Variable (Key), Normal_Use);
 
-               --  If this is a bound varible or discriminant, we only
+               --  If this is a bound variable or discriminant, we only
                --  consider it if its actually used. Its not an error to
                --  not explicitly use it.
 
