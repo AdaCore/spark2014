@@ -12,15 +12,15 @@ test.adb:104:12: warning: unused assignment
 test.adb:106:12: warning: unused assignment
 test.adb:135:07: warning: statement has no effect
 test.adb:135:07: warning: unused assignment to "Temp"
+test.adb:144:14: warning: subprogram "Ineffective_Statements_4" has no effect
 test.adb:144:40: warning: unused initial value of "Import"
-test.adb:145:07: warning: initialization has no effect
-test.adb:156:12: warning: unused assignment
+test.adb:163:14: warning: subprogram "Unused_Variables_1" has no effect
 test.adb:167:10: warning: unused variable "Unused", in instantiation at test.adb:176
 test.adb:185:39: warning: unused variable "Par2"
 test.adb:187:13: warning: unused variable "Z"
 test.adb:190:29: warning: unused global "Y"
+test.adb:208:14: warning: subprogram "Unreachable_Code_1" has no effect
 test.adb:208:34: warning: unused initial value of "Condition"
-test.adb:211:07: warning: statement has no effect
 test.adb:213:12: dead code
 test.adb:217:15: dead code
    compilation of test.adb failed

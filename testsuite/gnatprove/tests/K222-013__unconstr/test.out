@@ -1,11 +1,9 @@
 unconstr.adb:5:9: info: length check proved
+unconstr.adb:8:14: warning: subprogram "Q" has no effect
 unconstr.adb:11:7: info: precondition proved
-unconstr.adb:11:07: warning: statement has no effect
-unconstr.adb:11:10: warning: unused assignment to "A"
 unconstr.adb:12:7: warning: assertion might fail, requires A (0) = 1
+unconstr.adb:15:14: warning: subprogram "R" has no effect
 unconstr.adb:18:7: info: precondition proved
-unconstr.adb:18:07: warning: statement has no effect
-unconstr.adb:18:10: warning: unused assignment to "A"
 unconstr.adb:18:15: info: range check proved
 unconstr.adb:19:7: warning: assertion might fail, requires A (0) = 1
 unconstr.ads:9:20: info: postcondition proved

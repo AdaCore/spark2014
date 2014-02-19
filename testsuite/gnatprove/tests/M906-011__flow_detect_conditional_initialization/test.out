@@ -10,11 +10,9 @@ uninitialized.adb:93:24: "A_Rec.Arr" is not initialized
 uninitialized.adb:103:13: "Another_Rec.Arr" is not initialized
 uninitialized.adb:110:18: warning: "An_Arr" might not be initialized
 uninitialized.adb:118:15: warning: "An_Arr" might not be initialized
-uninitialized.adb:127:30: warning: statement has no effect
+uninitialized.adb:123:14: warning: subprogram "Tab" has no effect
 uninitialized.adb:128:15: "A" is not initialized
 uninitialized.adb:128:15: warning: "A" might not be initialized
-uninitialized.adb:128:15: warning: unused assignment
-uninitialized.adb:129:15: warning: unused assignment
 uninitialized.adb:137:07: warning: statement has no effect
 uninitialized.adb:138:12: warning: unused assignment
 uninitialized.adb:140:09: warning: "X" might not be initialized

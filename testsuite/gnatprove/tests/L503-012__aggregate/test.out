@@ -1,3 +1,4 @@
+r.adb:1:11: warning: subprogram "R" has no effect
 r.adb:23:12: info: length check proved
 r.adb:23:29: info: length check proved
 r.adb:23:51: info: index check proved

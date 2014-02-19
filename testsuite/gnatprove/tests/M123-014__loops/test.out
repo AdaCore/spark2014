@@ -1,7 +1,4 @@
-loops.adb:4:20: warning: statement has no effect
-loops.adb:5:13: warning: unused assignment
-loops.adb:6:23: warning: statement has no effect
-loops.adb:7:16: warning: unused assignment
+loops.adb:1:11: warning: subprogram "Loops" has no effect
 loops.adb:7:25: info: overflow check proved
 loops.adb:8:10: info: loop invariant initialization proved
 loops.adb:8:10: info: loop invariant preservation proved

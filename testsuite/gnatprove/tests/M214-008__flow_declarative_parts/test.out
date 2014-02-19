@@ -1,4 +1,6 @@
+test.adb:10:14: warning: subprogram "Tons_Of_Types" has no effect
 test.adb:10:29: warning: unused initial value of "N"
+test.adb:30:17: warning: subprogram "Nested" has no effect
 test.adb:66:24: warning: unused initial value of "A"
 test.adb:69:09: warning: missing dependency "null => A"
 test.adb:69:21: warning: incorrect dependency "B => A"

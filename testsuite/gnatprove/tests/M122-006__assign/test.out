@@ -1,4 +1,2 @@
-p.adb:6:07: warning: initialization has no effect
-p.adb:8:09: warning: unused assignment
-p.adb:12:07: warning: initialization has no effect
-p.adb:14:09: warning: unused assignment
+p.ads:3:14: warning: subprogram "Bad" has no effect
+p.ads:5:14: warning: subprogram "Good" has no effect

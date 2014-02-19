@@ -1,8 +1,5 @@
-c86004c01-c86004c1.adb:4:06: warning: statement has no effect
-c86004c01-c86004c1.adb:8:06: warning: statement has no effect
+c86004c01.adb:3:11: warning: subprogram "C86004c01" has no effect
 c86004c01.adb:3:21: warning: unused initial value of "Intgr"
-c86004c01.adb:6:06: warning: initialization has no effect
 c86004c01.adb:6:25: warning: range check might fail
-c86004c01.adb:7:06: warning: initialization has no effect
 c86004c01.adb:7:25: warning: range check might fail
-c86004c01.adb:12:06: warning: statement has no effect
+c86004c01.adb:9:16: warning: subprogram "C86004c1" has no effect

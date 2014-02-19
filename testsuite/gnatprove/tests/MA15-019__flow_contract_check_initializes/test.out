@@ -15,6 +15,7 @@ initializes_illegal.ads:6:27: warning: initialization of V must not depend on A 
 initializes_illegal.ads:7:27: warning: initialization of X does not depend on A (SPARK RM 7.1.5(11))
 initializes_illegal.ads:8:27: warning: initialization of Initializes_Illegal.Sa must not depend on A (SPARK RM 7.1.5(11))
 initializes_illegal.ads:11:04: warning: initialization has no effect
+initializes_illegal.ads:14:14: warning: subprogram "Does_Nothing" has no effect
 gprbuild: *** compilation phase failed
 gnatprove: error during analysis and translation to intermediate language, aborting.
 initializes_illegal_2.ads:7:27: warning: initialization of Initializes_Illegal_2.As2 must not depend on X (SPARK RM 7.1.5(11))

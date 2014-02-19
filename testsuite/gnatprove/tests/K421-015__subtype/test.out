@@ -1,12 +1,8 @@
+p.adb:1:11: warning: subprogram "P" has no effect
+p.adb:2:14: warning: subprogram "Proc" has no effect
 p.adb:2:20: warning: unused initial value of "W"
 p.adb:2:23: warning: unused initial value of "X"
 p.adb:2:26: warning: unused initial value of "Y"
 p.adb:2:29: warning: unused initial value of "Z"
 p.adb:3:15: info: range check proved
 p.adb:4:15: warning: range check might fail
-p.adb:9:04: warning: statement has no effect
-p.adb:10:04: warning: statement has no effect
-p.adb:11:04: warning: statement has no effect
-p.adb:12:04: warning: statement has no effect
-p.adb:13:04: warning: statement has no effect
-p.adb:14:04: warning: statement has no effect

@@ -1,17 +1,11 @@
 s.adb:6:10: info: loop invariant initialization proved
 s.adb:6:10: info: loop invariant preservation proved
 s.adb:7:34: info: index check proved
-s.adb:18:07: warning: initialization has no effect
-s.adb:20:28: warning: statement has no effect
 s.adb:21:10: info: loop invariant initialization proved
 s.adb:21:10: info: loop invariant preservation proved
-s.adb:22:12: warning: unused assignment
 s.adb:24:7: info: assertion proved
-s.adb:25:09: warning: unused assignment
-s.adb:26:36: warning: statement has no effect
 s.adb:27:10: info: loop invariant initialization proved
 s.adb:27:10: info: loop invariant preservation proved
-s.adb:28:12: warning: unused assignment
 s.adb:30:7: info: assertion proved
 s.adb:39:10: info: loop invariant initialization proved
 s.adb:39:10: info: loop invariant preservation proved
@@ -28,5 +22,6 @@ s.adb:53:63: info: index check proved
 s.adb:55:43: info: index check proved
 s.adb:55:64: info: index check proved
 s.ads:8:14: info: postcondition proved
+s.ads:11:14: warning: subprogram "Test_Index" has no effect
 s.ads:14:14: info: postcondition proved
 s.ads:17:14: info: postcondition proved

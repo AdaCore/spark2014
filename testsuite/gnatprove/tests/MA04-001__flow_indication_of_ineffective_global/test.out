@@ -1,6 +1,5 @@
+foo.adb:9:14: warning: subprogram "Test_01_E" has no effect
 foo.adb:16:07: "My_A" is not initialized
-foo.adb:16:07: warning: statement has no effect
-foo.adb:16:07: warning: unused assignment to "My_A"
 foo.adb:26:07: "My_A" is not initialized
 foo.adb:44:19: warning: unused assignment to "A"
 foo.adb:56:07: warning: unused assignment to "B"

@@ -1,5 +1,5 @@
 b.adb:3:11: warning: "A" might not be initialized after elaboration of main program "Main"
-b.adb:6:05: warning: statement has no effect
+b.adb:3:11: warning: subprogram "Main" has no effect
 b.adb:7:4: info: assertion proved
 b.adb:3:11: warning: "A" might not be initialized after elaboration of main program "Main"
 b.adb:7:4: warning: assertion might fail, requires Tmp = A.a

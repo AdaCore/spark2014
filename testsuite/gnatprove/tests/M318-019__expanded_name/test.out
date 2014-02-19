@@ -1,6 +1,6 @@
+p.adb:2:11: warning: subprogram "P" has no effect
 p.adb:2:14: warning: unused initial value of "A"
 p.adb:2:17: warning: unused initial value of "B"
-p.adb:6:04: warning: initialization has no effect
 p.adb:6:15: warning: range check might fail
 p.adb:8:42: warning: assertion might fail, requires X(J) = A
 p.adb:8:44: info: index check proved

@@ -1,1 +1,2 @@
-a.adb:5:04: warning: statement has no effect
+a.adb:3:11: warning: subprogram "A" has no effect
+b.ads:3:14: warning: subprogram "Simple_Call" has no effect

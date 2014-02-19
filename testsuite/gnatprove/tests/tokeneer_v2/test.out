@@ -182,6 +182,7 @@ audittypes.ads:106:6: info: length check proved
 bio.adb:119:10: info: loop invariant initialization proved
 bio.adb:119:10: info: loop invariant preservation proved
 bio.adb:244:18: warning: precondition might fail
+bio.ads:85:14: warning: subprogram "Flush" has no effect
 cert-id.adb:87:47: info: range check proved
 certificatestore.adb:38:42: info: length check proved
 certificatestore.adb:221:31: warning: range check might fail
@@ -523,6 +524,9 @@ enrolment.adb:238:30: warning: overflow check might fail
 enrolment.ads:78:22: warning: postcondition might fail, requires DataOK = KeyStore(KeyStore.privatekeypresent)
 iandatypes.ads:45:19: info: length check proved
 iandatypes.ads:62:47: info: length check proved
+keyboard.ads:47:14: warning: subprogram "Init" has no effect
+keyboard.ads:60:14: warning: subprogram "Finalise" has no effect
+keyboard.ads:90:14: warning: subprogram "Poll" has no effect
 keystore.adb:58:6: info: length check proved
 keystore.adb:111:35: warning: range check might fail
 keystore.adb:111:39: warning: range check might fail
@@ -754,6 +758,7 @@ tokenreader.adb:299:24: warning: precondition might fail
 tokenreader.adb:310:24: warning: precondition might fail
 tokenreader.adb:321:21: warning: precondition might fail
 tokenreader.adb:332:18: warning: precondition might fail
+tokenreader.adb:386:17: warning: subprogram "Disconnecttoken" has no effect
 tokenreader.adb:668:43: info: range check proved
 tokenreader.adb:688:21: warning: precondition might fail
 updates.ads:79:22: info: postcondition proved

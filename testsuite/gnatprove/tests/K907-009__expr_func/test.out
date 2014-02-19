@@ -1,13 +1,17 @@
+p.adb:13:14: warning: subprogram "P1" has no effect
+p.adb:21:14: warning: subprogram "P2" has no effect
+p.adb:29:14: warning: subprogram "P3" has no effect
+p.adb:37:14: warning: subprogram "P4" has no effect
 Analyzed 1 units
 in unit p, 13 subprograms and packages out of 13 analyzed
   P.CF1 at p.adb:8 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
   P.CF2 at p.adb:9 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
   P.CF3 at p.adb:10 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
   P.CF4 at p.adb:11 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
-  P.P1 at p.adb:13 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
-  P.P2 at p.adb:21 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
-  P.P3 at p.adb:29 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
-  P.P4 at p.adb:37 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
+  P.P1 at p.adb:13 flow analyzed (0 errors and 1 warnings) and proved (0 checks)
+  P.P2 at p.adb:21 flow analyzed (0 errors and 1 warnings) and proved (0 checks)
+  P.P3 at p.adb:29 flow analyzed (0 errors and 1 warnings) and proved (0 checks)
+  P.P4 at p.adb:37 flow analyzed (0 errors and 1 warnings) and proved (0 checks)
   P at p.ads:1 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
   P.F1 at p.ads:2 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
   P.F2 at p.ads:3 flow analyzed (0 errors and 0 warnings) and proved (0 checks)

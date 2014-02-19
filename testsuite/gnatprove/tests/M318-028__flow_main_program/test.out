@@ -1,6 +1,7 @@
-main.adb:9:04: warning: initialization has no effect
-main.adb:11:27: warning: statement has no effect
-main.adb:12:12: warning: unused assignment
+main.adb:1:11: warning: subprogram "Main" has no effect
 main2.adb:4:32: warning: "X" might not be initialized after elaboration of main program "Main2"
 main2.adb:4:48: warning: "Some_Package.State" might not be initialized after elaboration of main program "Main2"
 main2.adb:4:48: warning: unused global "Some_Package.State"
+main3.ads:3:11: warning: subprogram "Main3" has no effect
+not_main.adb:27:17: warning: subprogram "Do_Nothing" has no effect
+not_main2.ads:4:14: warning: subprogram "Not_Main_Generic_Instantiationr" has no effect

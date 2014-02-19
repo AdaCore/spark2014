@@ -1,27 +1,21 @@
+p.adb:4:14: warning: subprogram "Proc" has no effect
 p.adb:4:20: warning: unused initial value of "X"
 p.adb:4:23: warning: unused initial value of "Y"
 p.adb:8:15: info: range check proved
+p.adb:11:17: warning: subprogram "Proc_Loop" has no effect
 p.adb:11:28: warning: unused initial value of "X"
 p.adb:11:31: warning: unused initial value of "Y"
-p.adb:14:16: warning: unused assignment
 p.adb:16:14: warning: range check might fail
 p.adb:16:34: warning: overflow check might fail
-p.adb:16:38: warning: statement has no effect
-p.adb:17:19: warning: unused assignment
 p.adb:17:28: warning: overflow check might fail
-p.adb:21:13: warning: unused assignment
 p.adb:21:16: info: range check proved
 p.adb:23:11: warning: range check might fail
 p.adb:23:37: warning: overflow check might fail
-p.adb:23:41: warning: statement has no effect
-p.adb:24:16: warning: unused assignment
 p.adb:24:25: warning: overflow check might fail
 p.adb:24:25: warning: range check might fail
+p.adb:28:14: warning: subprogram "Proc_Loop" has no effect
 p.adb:28:25: warning: unused initial value of "X"
 p.adb:28:28: warning: unused initial value of "Y"
-p.adb:31:13: warning: unused assignment
 p.adb:33:11: warning: range check might fail
 p.adb:33:37: warning: overflow check might fail
-p.adb:33:41: warning: statement has no effect
-p.adb:34:16: warning: unused assignment
 p.adb:34:25: warning: overflow check might fail

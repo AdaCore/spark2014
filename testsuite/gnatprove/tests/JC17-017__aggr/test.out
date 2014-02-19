@@ -1,19 +1,19 @@
-p.adb:6:09: warning: unused assignment
 p.adb:6:12: info: length check proved
-p.adb:12:09: warning: unused assignment
+p.adb:9:14: warning: subprogram "Proc2" has no effect
 p.adb:12:14: info: length check proved
-p.adb:18:09: warning: unused assignment
+p.adb:15:14: warning: subprogram "Proc3" has no effect
 p.adb:18:14: info: length check proved
-p.adb:24:09: warning: unused assignment
+p.adb:21:14: warning: subprogram "Proc4" has no effect
 p.adb:24:12: info: length check proved
-p.adb:30:09: warning: unused assignment
+p.adb:27:14: warning: subprogram "Proc5" has no effect
 p.adb:30:12: info: length check proved
-p.adb:36:09: warning: unused assignment
+p.adb:33:14: warning: subprogram "Proc6" has no effect
 p.adb:36:12: info: length check proved
-p.adb:43:09: warning: unused assignment
+p.adb:39:14: warning: subprogram "Proc7" has no effect
 p.adb:43:12: info: length check proved
-p.adb:50:09: warning: unused assignment
+p.adb:46:14: warning: subprogram "Proc8" has no effect
 p.adb:50:12: info: length check proved
+p.ads:2:14: warning: subprogram "Proc" has no effect
 [
 { "name" : "P.Proc", "file" :"p.ads", "line" :  2, "spark" : "all" }
 , { "name" : "P.Proc2", "file" :"p.adb", "line" :  9, "spark" : "all" }

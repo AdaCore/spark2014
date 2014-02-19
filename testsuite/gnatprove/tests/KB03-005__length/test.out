@@ -1,6 +1,6 @@
+p.adb:1:11: warning: subprogram "P" has no effect
+p.adb:5:14: warning: subprogram "Nothing" has no effect
 p.adb:5:24: warning: unused variable "X"
 p.adb:15:4: info: range check proved
-p.adb:15:04: warning: initialization has no effect
 p.adb:15:25: info: range check proved
-p.adb:17:04: warning: statement has no effect
 p.adb:17:13: warning: length check might fail

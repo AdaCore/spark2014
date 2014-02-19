@@ -1,15 +1,8 @@
+main.adb:1:11: warning: subprogram "Main" has no effect
 main.adb:5:19: info: postcondition proved
 main.adb:13:19: info: postcondition proved
 main.adb:21:22: info: postcondition proved
-main.adb:26:04: warning: statement has no effect
-main.adb:26:10: warning: unused assignment to "B"
 main.adb:27:4: info: assertion proved
-main.adb:28:04: warning: statement has no effect
-main.adb:28:09: warning: unused assignment to "B"
 main.adb:29:4: info: assertion proved
-main.adb:30:04: warning: statement has no effect
-main.adb:30:10: warning: unused assignment to "B"
 main.adb:31:4: warning: assertion might fail, requires not B
-main.adb:32:05: warning: statement has no effect
-main.adb:32:12: warning: unused assignment to "B"
 main.adb:33:4: info: assertion proved

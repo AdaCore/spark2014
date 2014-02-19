@@ -1,8 +1,7 @@
+client.adb:3:11: warning: subprogram "Client" has no effect
 client.adb:3:19: warning: unused initial value of "B1"
 client.adb:3:23: warning: unused initial value of "B2"
-client.adb:5:04: warning: statement has no effect
 client.adb:6:7: info: assertion proved
-client.adb:7:04: warning: statement has no effect
 client.adb:8:7: info: assertion proved
 client.adb:10:7: info: assertion proved
 const.ads:3:45: info: postcondition proved

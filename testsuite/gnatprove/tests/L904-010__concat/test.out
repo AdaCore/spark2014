@@ -1,5 +1,4 @@
-concat.adb:4:05: warning: initialization has no effect
+concat.adb:1:11: warning: subprogram "Concat" has no effect
 concat.adb:4:14: info: length check proved
-concat.adb:5:05: warning: initialization has no effect
 concat.adb:5:26: info: length check proved
 concat.adb:5:26: info: range check proved

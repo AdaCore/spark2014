@@ -1,2 +1,2 @@
-p_body.adb:6:06: warning: initialization has no effect
-t.adb:5:05: warning: statement has no effect
+p.ads:2:14: warning: subprogram "Proc" has no effect
+t.adb:3:11: warning: subprogram "T" has no effect

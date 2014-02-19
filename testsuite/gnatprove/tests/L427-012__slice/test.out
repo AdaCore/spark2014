@@ -1,9 +1,5 @@
-p.adb:2:04: warning: initialization has no effect
+p.adb:1:11: warning: subprogram "P" has no effect
 p.adb:2:33: info: length check proved
-p.adb:3:04: warning: initialization has no effect
 p.adb:3:33: info: length check proved
-p.adb:4:04: warning: initialization has no effect
 p.adb:6:10: info: range check proved
-p.adb:6:40: warning: statement has no effect
-p.adb:7:11: warning: unused assignment
 p.adb:7:18: info: overflow check proved

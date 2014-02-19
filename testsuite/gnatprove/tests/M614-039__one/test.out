@@ -4,11 +4,10 @@ unconstr.adb:22:31: info: length check proved
 unconstr.adb:23:33: info: length check proved
 unconstr.adb:30:20: info: postcondition proved
 unconstr.adb:44:14: info: length check proved
+unconstr.adb:47:14: warning: subprogram "Constr_Return_Call" has no effect
 unconstr.adb:47:34: warning: unused initial value of "X"
-unconstr.adb:49:07: warning: initialization has no effect
-unconstr.adb:51:24: warning: statement has no effect
 unconstr.adb:52:13: info: index check proved
-unconstr.adb:52:16: warning: unused assignment
 unconstr.adb:57:20: info: postcondition proved
 unconstr.adb:61:7: info: range check proved
 unconstr.adb:61:30: info: range check proved
+unconstr.ads:3:14: warning: subprogram "P" has no effect

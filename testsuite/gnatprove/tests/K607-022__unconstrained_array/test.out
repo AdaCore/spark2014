@@ -1,26 +1,16 @@
-my_test.adb:5:04: warning: initialization has no effect
+my_test.adb:3:11: warning: subprogram "My_Test" has no effect
 my_test.adb:5:23: info: length check proved
 my_test.adb:6:04: warning: "T2" is not modified, could be declared constant
-my_test.adb:6:04: warning: initialization has no effect
 my_test.adb:6:23: info: length check proved
-my_test.adb:11:04: warning: statement has no effect
 my_test.adb:11:22: info: precondition proved
-my_test.adb:12:04: warning: statement has no effect
 my_test.adb:12:22: info: precondition proved
-my_test.adb:13:04: warning: statement has no effect
 my_test.adb:13:26: info: precondition proved
-my_test.adb:14:04: warning: statement has no effect
-my_test.adb:15:04: warning: statement has no effect
-my_test.adb:17:07: warning: unused assignment
 my_test.adb:17:10: info: precondition proved
 my_test.adb:17:10: warning: discriminant check might fail
 my_test.adb:18:48: warning: assertion might fail, requires T3.V (I) = 9
 my_test.adb:18:50: info: discriminant check proved
 my_test.adb:18:54: warning: array index check might fail
-my_test.adb:20:07: warning: unused assignment
 my_test.adb:20:10: warning: discriminant check might fail
-my_test.adb:21:04: warning: statement has no effect
-my_test.adb:21:16: warning: unused assignment to "T1"
 my_test.adb:22:4: warning: assertion might fail, requires T1 = T3
 simple_unc_arrays.adb:10:07: warning: "C.V" might not be initialized
 simple_unc_arrays.adb:12:13: info: loop invariant initialization proved

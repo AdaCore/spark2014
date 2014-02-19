@@ -1,6 +1,3 @@
+foo.adb:1:11: warning: subprogram "Foo" has no effect
 foo.adb:10:12: warning: divide by zero might fail, in instantiation at foo.adb:19
 foo.adb:10:12: warning: overflow check might fail, in instantiation at foo.adb:19
-foo.adb:17:04: warning: initialization has no effect
-foo.adb:21:04: warning: statement has no effect
-foo.adb:21:09: warning: unused assignment to "X"
-foo.adb:21:12: warning: unused assignment to "Y"

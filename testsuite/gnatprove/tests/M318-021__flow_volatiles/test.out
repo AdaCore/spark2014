@@ -1,4 +1,5 @@
 caller.adb:29:09: warning: unused assignment to "Tmp"
+types.adb:40:14: warning: subprogram "Test_01" has no effect
 types.adb:40:23: warning: unused variable "R"
 types.adb:46:23: "R.X" is not initialized in "Test_02"
 types.adb:46:23: warning: unused variable "R"

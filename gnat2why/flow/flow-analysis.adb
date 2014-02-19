@@ -1093,6 +1093,10 @@ package body Flow.Analysis is
       --  of that set (and do not use it), render the vertex
       --  ineffective.
 
+      function Is_Subprogram_And_Has_No_Output return Boolean;
+      --  Returns True if analyzed entity is a subprogram and has no
+      --  global or formal output.
+
       function Skip_Any_Conversions (N : Node_Or_Entity_Id)
                                      return Node_Or_Entity_Id;
       --  Skips any conversions (unchecked or otherwise) and jumps to
@@ -1162,6 +1166,26 @@ package body Flow.Analysis is
          return Mask;
       end Find_Masking_Code;
 
+      -------------------------------------
+      -- Is_Subprogram_And_Has_No_Output --
+      -------------------------------------
+
+      function Is_Subprogram_And_Has_No_Output return Boolean is
+      begin
+         if not (FA.Kind = E_Subprogram_Body) then
+            return False;
+         end if;
+
+         for F of FA.All_Vars loop
+            if Is_Final_Use_Any_Export (Get_Final_Vertex (FA.PDG,
+                                                          F))
+            then
+               return False;
+            end if;
+         end loop;
+         return True;
+      end Is_Subprogram_And_Has_No_Output;
+
       --------------------------
       -- Skip_Any_Conversions --
       --------------------------
@@ -1217,6 +1241,20 @@ package body Flow.Analysis is
       end Is_Dead_End;
 
    begin --  Find_Ineffective_Statements
+      --  For subprograms that have no formal or global outputs, do not
+      --  check for ineffective statements.
+      if Is_Subprogram_And_Has_No_Output then
+         Error_Msg_Flow
+           (FA        => FA,
+            Tracefile => Tracefile,
+            Msg       => "subprogram & has no effect",
+            N         => FA.Analyzed_Entity,
+            F1        => Direct_Mapping_Id (FA.Analyzed_Entity),
+            Tag       => "ineffective",
+            Warning   => True);
+         return;
+      end if;
+
       for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
             N    : Node_Id;

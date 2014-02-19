@@ -72,5 +72,7 @@ skein.ads:138:21: warning: length check might fail
 skein.ads:155:19: warning: postcondition might fail
 skein.ads:168:20: warning: postcondition might fail
 skein.ads:178:47: info: division check proved
+skein.ads:191:14: warning: subprogram "Set_Debug_Flags" has no effect
+skein.ads:196:14: warning: subprogram "Show_Msg_8" has no effect
 skein.ads:347:52: warning: length check might fail
 skein.ads:348:52: warning: length check might fail

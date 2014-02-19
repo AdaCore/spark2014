@@ -1,6 +1,4 @@
-pack.adb:19:07: warning: initialization has no effect
-pack.adb:21:07: warning: statement has no effect
-pack.adb:21:11: warning: unused assignment to "X"
 pack.ads:8:19: warning: postcondition might fail, requires X = X'old
 pack.ads:11:19: warning: postcondition might fail, requires X = X'old
+pack.ads:13:14: warning: subprogram "P3" has no effect
 pack.ads:16:19: warning: postcondition might fail, requires X = X'old

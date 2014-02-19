@@ -1,5 +1,5 @@
+p.adb:3:11: warning: subprogram "P" has no effect
 pack.adb:4:32: info: length check proved
-pack.adb:12:07: warning: initialization has no effect
 pack.adb:12:34: info: length check proved
 pack.adb:12:51: info: index check proved
 pack.adb:13:41: info: length check proved
@@ -7,43 +7,40 @@ pack.adb:14:41: info: length check proved
 pack.adb:16:7: info: assertion proved
 pack.adb:17:7: info: assertion proved
 pack.adb:18:7: warning: assertion might fail, requires My_B /= (1..4 => 42)
-pack.adb:23:07: warning: initialization has no effect
 pack.adb:23:34: info: length check proved
 pack.adb:24:41: info: length check proved
 pack.adb:25:41: info: length check proved
 pack.adb:27:7: info: assertion proved
 pack.adb:28:7: info: assertion proved
 pack.adb:29:7: warning: assertion might fail, requires My_S2 (1 .. 3) /= Glob (1..3)
-pack.adb:34:07: warning: initialization has no effect
+pack.adb:33:14: warning: subprogram "An21" has no effect
 pack.adb:34:34: info: length check proved
 pack.adb:35:41: info: length check proved
 pack.adb:36:41: info: length check proved
 pack.adb:38:7: info: assertion proved
 pack.adb:39:7: warning: assertion might fail, requires My_S2 (1 .. 3) /= Glob (1..3)
-pack.adb:44:07: warning: initialization has no effect
+pack.adb:43:14: warning: subprogram "An22" has no effect
 pack.adb:44:34: info: length check proved
 pack.adb:45:41: info: length check proved
 pack.adb:46:41: info: length check proved
 pack.adb:48:7: info: assertion proved
 pack.adb:49:7: warning: assertion might fail, requires My_S2 (1 .. 3) /= Glob (1..3)
-pack.adb:54:07: warning: initialization has no effect
+pack.adb:53:14: warning: subprogram "A3" has no effect
 pack.adb:54:34: info: length check proved
-pack.adb:60:07: warning: initialization has no effect
+pack.adb:59:14: warning: subprogram "A4" has no effect
 pack.adb:60:34: info: length check proved
-pack.adb:63:22: warning: unused assignment
 pack.adb:63:25: info: length check proved
 pack.adb:64:7: info: assertion proved
 pack.adb:65:7: warning: assertion might fail, requires My_S4 (2) /= G (2)
-pack.adb:66:22: warning: unused assignment
 pack.adb:66:25: info: length check proved
-pack.adb:70:07: warning: initialization has no effect
+pack.adb:69:14: warning: subprogram "A11" has no effect
 pack.adb:70:36: info: length check proved
-pack.adb:71:07: warning: initialization has no effect
 pack.adb:71:36: info: length check proved
 pack.adb:77:19: info: postcondition proved
 pack.adb:77:47: info: index check proved
 pack.adb:81:9: info: length check proved
-pack.adb:87:07: warning: statement has no effect
-pack.adb:87:13: warning: unused assignment to "A"
+pack.adb:84:14: warning: subprogram "P" has no effect
 pack.adb:88:7: warning: assertion might fail, requires A (8) = 1
 pack.adb:89:7: warning: assertion might fail, requires A (9) = 2
+pack.ads:3:14: warning: subprogram "A1" has no effect
+pack.ads:5:14: warning: subprogram "A2" has no effect

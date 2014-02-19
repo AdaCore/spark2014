@@ -1,72 +1,42 @@
+p.adb:1:11: warning: subprogram "P" has no effect
 p.adb:1:14: warning: unused initial value of "A"
 p.adb:1:17: warning: unused initial value of "B"
-p.adb:8:06: warning: unused assignment
-p.adb:9:17: warning: statement has no effect
 p.adb:10:12: warning: array index check might fail
 p.adb:10:15: warning: "Tab" might not be initialized
-p.adb:10:15: warning: unused assignment
-p.adb:11:09: warning: unused assignment
 p.adb:11:14: warning: overflow check might fail
 p.adb:12:7: warning: loop variant might fail
-p.adb:17:06: warning: unused assignment
-p.adb:18:06: warning: unused assignment
 p.adb:19:12: warning: overflow check might fail
-p.adb:19:21: warning: statement has no effect
 p.adb:20:14: warning: array index check might fail
 p.adb:20:14: warning: overflow check might fail
 p.adb:20:19: warning: "Tab" might not be initialized
-p.adb:20:19: warning: unused assignment
-p.adb:21:07: warning: statement has no effect
-p.adb:22:12: warning: unused assignment
 p.adb:22:17: warning: overflow check might fail
-p.adb:24:12: warning: unused assignment
 p.adb:24:17: warning: overflow check might fail
 p.adb:26:7: warning: loop variant might fail
-p.adb:32:06: warning: unused assignment
-p.adb:33:06: warning: unused assignment
-p.adb:34:17: warning: statement has no effect
 p.adb:35:12: warning: array index check might fail
 p.adb:35:15: warning: "Tab" might not be initialized
-p.adb:35:15: warning: unused assignment
-p.adb:36:09: warning: unused assignment
 p.adb:36:14: warning: overflow check might fail
-p.adb:37:09: warning: unused assignment
 p.adb:37:14: warning: overflow check might fail
 p.adb:38:7: warning: loop variant might fail
 p.adb:39:7: warning: loop variant might fail
-p.adb:44:06: warning: unused assignment
-p.adb:45:17: warning: statement has no effect
 p.adb:46:12: warning: array index check might fail
 p.adb:46:15: warning: "Tab" might not be initialized
-p.adb:46:15: warning: unused assignment
-p.adb:47:09: warning: unused assignment
 p.adb:47:14: warning: overflow check might fail
 p.adb:48:7: warning: loop variant might fail
 p.adb:49:50: warning: overflow check might fail
 p.adb:49:57: warning: loop invariant might fail after first iteration, requires Tab (L) = L
 p.adb:49:57: warning: loop invariant might fail in first iteration, requires Tab (L) = L
 p.adb:49:62: warning: array index check might fail
-p.adb:54:06: warning: unused assignment
-p.adb:55:17: warning: statement has no effect
 p.adb:56:12: warning: array index check might fail
 p.adb:56:15: warning: "Tab" might not be initialized
-p.adb:56:15: warning: unused assignment
-p.adb:57:09: warning: unused assignment
 p.adb:57:14: warning: overflow check might fail
 p.adb:58:50: warning: overflow check might fail
 p.adb:58:57: warning: loop invariant might fail after first iteration, requires Tab (L) = L
 p.adb:58:57: warning: loop invariant might fail in first iteration, requires Tab (L) = L
 p.adb:58:62: warning: array index check might fail
 p.adb:59:7: warning: loop variant might fail
-p.adb:64:06: warning: unused assignment
-p.adb:65:06: warning: unused assignment
-p.adb:66:17: warning: statement has no effect
 p.adb:67:12: warning: array index check might fail
 p.adb:67:15: warning: "Tab" might not be initialized
-p.adb:67:15: warning: unused assignment
-p.adb:68:09: warning: unused assignment
 p.adb:68:14: warning: overflow check might fail
-p.adb:69:09: warning: unused assignment
 p.adb:69:14: warning: overflow check might fail
 p.adb:70:7: warning: loop invariant might fail after first iteration
 p.adb:70:7: warning: loop invariant might fail in first iteration
@@ -78,15 +48,9 @@ p.adb:73:7: warning: loop variant might fail
 p.adb:74:50: warning: overflow check might fail
 p.adb:74:54: warning: overflow check might fail
 p.adb:74:66: warning: array index check might fail
-p.adb:77:06: warning: unused assignment
-p.adb:78:06: warning: unused assignment
-p.adb:79:17: warning: statement has no effect
 p.adb:80:12: warning: array index check might fail
 p.adb:80:15: warning: "Tab" might not be initialized
-p.adb:80:15: warning: unused assignment
-p.adb:81:09: warning: unused assignment
 p.adb:81:14: warning: overflow check might fail
-p.adb:82:09: warning: unused assignment
 p.adb:82:14: warning: overflow check might fail
 p.adb:83:7: warning: loop invariant might fail after first iteration
 p.adb:83:7: warning: loop invariant might fail in first iteration
@@ -98,15 +62,9 @@ p.adb:86:7: warning: loop variant might fail
 p.adb:87:50: warning: overflow check might fail
 p.adb:87:54: warning: overflow check might fail
 p.adb:87:66: warning: array index check might fail
-p.adb:90:06: warning: unused assignment
-p.adb:91:06: warning: unused assignment
-p.adb:92:17: warning: statement has no effect
 p.adb:93:12: warning: array index check might fail
 p.adb:93:15: warning: "Tab" might not be initialized
-p.adb:93:15: warning: unused assignment
-p.adb:94:09: warning: unused assignment
 p.adb:94:14: warning: overflow check might fail
-p.adb:95:09: warning: unused assignment
 p.adb:95:14: warning: overflow check might fail
 p.adb:96:7: warning: loop variant might fail
 p.adb:97:7: warning: loop invariant might fail after first iteration

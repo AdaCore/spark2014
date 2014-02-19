@@ -1,1 +1,2 @@
+q.ads:4:14: warning: subprogram "Proc" has no effect
 q.ads:4:20: warning: unused variable "X"

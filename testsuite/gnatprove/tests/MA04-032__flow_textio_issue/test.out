@@ -1,4 +1,3 @@
+foo.adb:3:11: warning: subprogram "Foo" has no effect
 foo.adb:8:04: warning: assuming "Open" has no effect on global items
 foo.adb:8:04: warning: no Global contract available for "Open"
-foo.adb:8:04: warning: statement has no effect
-foo.adb:8:10: warning: unused assignment to "F"

@@ -3,8 +3,7 @@ linear_div.adb:20:7: info: loop invariant initialization proved
 linear_div.adb:20:7: info: loop invariant preservation proved
 linear_div.adb:24:28: info: overflow check proved
 linear_div.adb:25:30: info: overflow check proved
-main.adb:6:04: warning: statement has no effect
-main.adb:6:20: warning: unused assignment to "Res"
+main.adb:3:11: warning: subprogram "Main" has no effect
 random_testing.adb:10:16: warning: postcondition might fail, requires Result
 random_testing.adb:15:4: info: precondition proved
 random_testing.adb:16:4: info: precondition proved

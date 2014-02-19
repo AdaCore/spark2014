@@ -1,14 +1,11 @@
-const.adb:5:05: warning: statement has no effect
-const.adb:6:09: warning: unused assignment
 const.adb:6:13: info: discriminant check proved
 const.adb:6:19: warning: array index check might fail
 const.adb:12:6: info: discriminant check proved
 const.adb:22:09: warning: unused assignment
 const.adb:22:13: info: discriminant check proved
 const.adb:22:19: warning: array index check might fail
+const.ads:12:13: warning: subprogram "Simple" has no effect
 const.ads:12:21: warning: unused initial value of "X"
-mutable.adb:5:05: warning: statement has no effect
-mutable.adb:6:09: warning: unused assignment
 mutable.adb:6:13: info: discriminant check proved
 mutable.adb:6:19: warning: array index check might fail
 mutable.adb:10:21: warning: unused initial value of "X"
@@ -16,4 +13,5 @@ mutable.adb:12:19: info: length check proved
 mutable.adb:23:07: warning: unused assignment
 mutable.adb:23:11: info: discriminant check proved
 mutable.adb:23:17: warning: array index check might fail
+mutable.ads:12:13: warning: subprogram "Simple" has no effect
 mutable.ads:12:21: warning: unused initial value of "X"

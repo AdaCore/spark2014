@@ -1,1 +1,2 @@
+gen.ads:4:14: warning: subprogram "X" has no effect, in instantiation at isnew.ads:3
 gen.ads:4:18: warning: unused variable "Z", in instantiation at isnew.ads:3

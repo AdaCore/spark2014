@@ -1,4 +1,5 @@
 exprfun.ads:3:55: warning: divide by zero might fail
 exprfun.ads:3:55: warning: overflow check might fail
+exprfun.ads:5:14: warning: subprogram "P" has no effect
 exprfun.ads:5:17: warning: unused initial value of "X"
 exprfun.ads:5:20: warning: unused initial value of "Y"

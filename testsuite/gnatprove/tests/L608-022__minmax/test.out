@@ -1,9 +1,4 @@
-minmax.adb:2:04: warning: initialization has no effect
-minmax.adb:3:04: warning: initialization has no effect
-minmax.adb:11:04: warning: initialization has no effect
-minmax.adb:12:04: warning: initialization has no effect
-minmax.adb:17:04: warning: initialization has no effect
-minmax.adb:18:04: warning: initialization has no effect
+minmax.adb:1:11: warning: subprogram "Minmax" has no effect
 minmax.adb:29:7: info: assertion proved
 minmax.adb:30:7: info: assertion proved
 minmax.adb:39:11: warning: unused assignment
@@ -28,20 +23,8 @@ minmax.adb:67:31: info: overflow check proved
 minmax.adb:78:7: info: assertion proved
 minmax.adb:79:7: info: assertion proved
 minmax.adb:83:4: info: precondition proved
-minmax.adb:83:04: warning: statement has no effect
-minmax.adb:83:04: warning: unused assignment to "Max"
-minmax.adb:83:04: warning: unused assignment to "Min"
 minmax.adb:84:4: info: precondition proved
-minmax.adb:84:04: warning: statement has no effect
-minmax.adb:84:04: warning: unused assignment to "Max"
-minmax.adb:84:04: warning: unused assignment to "Min"
 minmax.adb:84:9: info: range check proved
 minmax.adb:84:12: info: range check proved
 minmax.adb:85:4: info: precondition proved
-minmax.adb:85:04: warning: statement has no effect
-minmax.adb:85:04: warning: unused assignment to "Maxt"
-minmax.adb:85:04: warning: unused assignment to "Mint"
 minmax.adb:86:4: info: precondition proved
-minmax.adb:86:04: warning: statement has no effect
-minmax.adb:86:04: warning: unused assignment to "Maxe"
-minmax.adb:86:04: warning: unused assignment to "Mine"

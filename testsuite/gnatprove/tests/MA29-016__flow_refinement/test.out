@@ -1,3 +1,5 @@
 fruit-pub_child.adb:36:30: warning: unused global "Fruit.Fruits"
 fruit-pub_child.ads:13:13: warning: unused global "Apples"
 fruit-pub_child.ads:13:13: warning: unused global "Oranges"
+levels.ads:14:14: warning: subprogram "Post_Test_01" has no effect
+levels.ads:18:14: warning: subprogram "Post_Test_02" has no effect

@@ -1,7 +1,8 @@
+mainpre.adb:2:11: warning: subprogram "Main_Pre" has no effect
 mainpre.adb:3:23: warning: unused initial value of "Pack.State"
 mainpre.adb:4:16: warning: precondition of main program might fail
 mainpre.adb:7:4: info: precondition proved
-mainpre.adb:7:04: warning: statement has no effect
 pack.adb:4:04: warning: initialization has no effect
 pack.adb:10:30: warning: unused initial value of "X"
 pack.ads:4:9: info: initial condition proved
+pack.ads:10:14: warning: subprogram "P" has no effect

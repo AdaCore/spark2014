@@ -1,7 +1,4 @@
-unconstr_call.adb:6:07: warning: statement has no effect
-unconstr_call.adb:7:12: warning: unused assignment
 unconstr_call.adb:7:19: info: index check proved
-unconstr_call.adb:9:12: warning: unused assignment
 unconstr_call.adb:17:21: info: index check proved
 unconstr_call.adb:18:14: info: index check proved
 unconstr_call.adb:18:29: info: index check proved
@@ -9,4 +6,5 @@ unconstr_call.adb:19:14: info: index check proved
 unconstr_call.adb:23:22: warning: "Z" is not modified, could be "in"
 unconstr_call.adb:25:07: warning: statement has no effect
 unconstr_call.adb:32:7: info: assertion proved
+unconstr_call.ads:5:14: warning: subprogram "P" has no effect
 unconstr_call.ads:5:17: warning: unused initial value of "X"

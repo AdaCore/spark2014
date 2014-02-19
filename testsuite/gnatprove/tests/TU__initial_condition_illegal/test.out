@@ -10,5 +10,6 @@ initial_condition_illegal_3.ads:13:8: warning: initial condition might fail
 initial_condition_illegal_4.adb:6:04: warning: "Var" can be accessed by clients before this initialization
 initial_condition_illegal_4.adb:6:04: warning: add Elaborate_Body to spec to ensure "Var" is initialized
 initial_condition_illegal_4.ads:8:29: "Var" must be initialized at elaboration
+initial_condition_illegal_4.ads:11:14: warning: subprogram "P1" has no effect
 gprbuild: *** compilation phase failed
 gnatprove: error during analysis and translation to intermediate language, aborting.

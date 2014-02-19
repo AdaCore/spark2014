@@ -1,18 +1,8 @@
+p.adb:3:11: warning: subprogram "P" has no effect
 p.adb:3:14: warning: unused initial value of "Havok_A"
 p.adb:3:23: warning: unused initial value of "Havok_B"
-p.adb:10:04: warning: initialization has no effect
-p.adb:11:04: warning: initialization has no effect
 p.adb:11:18: info: range check proved
-p.adb:12:04: warning: initialization has no effect
 p.adb:12:18: info: range check proved
-p.adb:14:08: warning: statement has no effect
-p.adb:14:16: warning: unused assignment to "A"
-p.adb:14:19: warning: unused assignment to "B"
-p.adb:14:22: warning: unused assignment to "C"
-p.adb:15:08: warning: statement has no effect
-p.adb:15:16: warning: unused assignment to "A"
-p.adb:15:19: warning: unused assignment to "B"
-p.adb:15:22: warning: unused assignment to "C"
 pack.ads:4:21: warning: "A" is not modified, could be "in"
 pack.ads:4:21: warning: unused variable "A"
 pack.ads:4:24: warning: "B" is not modified, could be "in"

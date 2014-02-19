@@ -1,0 +1,2 @@
+pack.adb:1:11: warning: subprogram "Pack" has no effect
+pack.adb:13:14: warning: subprogram "P1r" has no effect

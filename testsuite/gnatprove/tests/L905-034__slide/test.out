@@ -1,3 +1,4 @@
+p.adb:2:11: warning: subprogram "P" has no effect
 p.adb:3:34: info: length check proved
 p.adb:7:5: info: assertion proved
 p.adb:7:24: info: length check proved

@@ -1,15 +1,19 @@
+p.ads:3:14: warning: subprogram "Not_Guarded" has no effect
 p.ads:3:27: warning: unused initial value of "X"
 p.ads:3:30: warning: unused initial value of "Y"
 p.ads:4:15: warning: divide by zero might fail
 p.ads:4:15: warning: overflow check might fail
+p.ads:6:14: warning: subprogram "Guarded_And_Then" has no effect
 p.ads:6:32: warning: unused initial value of "X"
 p.ads:6:35: warning: unused initial value of "Y"
 p.ads:7:31: info: division check proved
 p.ads:7:31: warning: overflow check might fail
+p.ads:9:14: warning: subprogram "Guarded_If_Then" has no effect
 p.ads:9:31: warning: unused initial value of "X"
 p.ads:9:34: warning: unused initial value of "Y"
 p.ads:10:31: info: division check proved
 p.ads:10:31: warning: overflow check might fail
+p.ads:12:14: warning: subprogram "No_Need_For_Guard" has no effect
 p.ads:12:33: warning: unused initial value of "X"
 p.ads:12:36: warning: unused initial value of "Y"
 p.ads:13:15: info: division check proved

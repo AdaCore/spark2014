@@ -1,20 +1,11 @@
+dynamic_in_post.adb:1:11: warning: subprogram "Dynamic_In_Post" has no effect
+dynamic_in_post.adb:2:14: warning: subprogram "Test_1" has no effect
 dynamic_in_post.adb:3:57: info: range check proved
-dynamic_in_post.adb:4:07: warning: initialization has no effect
-dynamic_in_post.adb:5:07: warning: initialization has no effect
 dynamic_in_post.adb:7:7: warning: assertion might fail, requires Get_Last (X) = Get_Last (Y)
+dynamic_in_post.adb:10:14: warning: subprogram "Test_2" has no effect
 dynamic_in_post.adb:12:22: info: postcondition proved
 dynamic_in_post.adb:12:40: info: range check proved
-dynamic_in_post.adb:17:07: warning: initialization has no effect
-dynamic_in_post.adb:18:07: warning: initialization has no effect
-dynamic_in_post.adb:19:07: warning: initialization has no effect
-dynamic_in_post.adb:20:07: warning: initialization has no effect
 dynamic_in_post.adb:22:7: warning: assertion might fail, requires A = B
-dynamic_in_post.adb:26:07: warning: initialization has no effect
-dynamic_in_post.adb:27:07: warning: initialization has no effect
+dynamic_in_post.adb:25:14: warning: subprogram "Test_3" has no effect
 dynamic_in_post.adb:29:13: info: range check proved
-dynamic_in_post.adb:29:38: warning: statement has no effect
 dynamic_in_post.adb:30:10: warning: assertion might fail, requires X = 1
-dynamic_in_post.adb:31:12: warning: unused assignment
-dynamic_in_post.adb:35:04: warning: statement has no effect
-dynamic_in_post.adb:36:04: warning: statement has no effect
-dynamic_in_post.adb:37:04: warning: statement has no effect

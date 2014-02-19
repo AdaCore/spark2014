@@ -1,11 +1,10 @@
 foo.adb:40:14: no_return subprogram "Nr_Test_01" must not return (SPARK RM 6.5.1)
+foo.adb:40:14: warning: subprogram "Nr_Test_01" has no effect
+foo.adb:46:14: warning: subprogram "Nr_Test_02" has no effect
 foo.adb:54:09: dead code
-foo.adb:54:09: warning: unused assignment
 foo.adb:57:14: no_return subprogram "Nr_Test_03" must not return (SPARK RM 6.5.1)
-foo.adb:59:07: warning: initialization has no effect
-foo.adb:62:12: warning: unused assignment
-foo.adb:63:10: warning: statement has no effect
-foo.adb:65:09: warning: unused assignment
+foo.adb:57:14: warning: subprogram "Nr_Test_03" has no effect
+foo.adb:68:14: warning: subprogram "Nr_Test_04" has no effect
    compilation of foo.adb failed
 
 
