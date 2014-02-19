@@ -883,7 +883,7 @@ package body Flow.Analysis is
                Disuse_Not_Bad := Is_Bound (Key) or Is_Discriminant (Key);
 
                --  Generally we allow a discriminant or bound to mark the
-               --  entire variable as used (if its used) and notherwise
+               --  entire variable as used (if its used) and otherwise
                --  have no effect (not using it is not flagging the entire
                --  variable as unused). However this is only valid for out
                --  parameters; for in out parameters the value of the
