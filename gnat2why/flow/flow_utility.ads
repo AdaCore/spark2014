@@ -186,10 +186,6 @@ package Flow_Utility is
                            Synthetic_Null_Export;
    --  As above, but for flow ids.
 
-   function Get_Full_Type (E : Entity_Id) return Entity_Id;
-   --  Get the type of the given entity. Ignores private types and
-   --  always returns the full view.
-
    procedure Untangle_Assignment_Target
      (N                    : Node_Id;
       Scope                : Flow_Scope;

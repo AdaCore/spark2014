@@ -54,6 +54,10 @@ package body Flow_Utility is
    --  Local
    ----------------------------------------------------------------------
 
+   function Get_Full_Type (E : Entity_Id) return Entity_Id;
+   --  Get the type of the given entity. Ignores private types and
+   --  always returns the full view.
+
    function All_Record_Components
      (Entire_Var : Entity_Id)
       return Flow_Id_Sets.Set
