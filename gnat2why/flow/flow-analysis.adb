@@ -1234,7 +1234,7 @@ package body Flow.Analysis is
                --  PDG to *any* final use vertex that is also an
                --  export.
                --
-               --  If we analyse a package, we supress this message if
+               --  If we analyse a package, we suppress this message if
                --  we don't have a initializes clause *and* the the
                --  given vertex has an effect on any final use (export
                --  or otherwise).
@@ -1243,10 +1243,10 @@ package body Flow.Analysis is
                  not FA.PDG.Non_Trivial_Path_Exists
                  (V, Is_Final_Use_Any_Export'Access) and then
 
-                 --  Supression for dead code
+                 --  Suppression for dead code
                  not Is_Dead_End (V) and then
 
-                 --  Supression for packages without initializes
+                 --  Suppression for packages without initializes
                  (if FA.Kind in E_Package | E_Package_Body and then
                     not Present (FA.Initializes_N)
                   then
