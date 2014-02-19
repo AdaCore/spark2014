@@ -131,6 +131,11 @@ package body Flow_Utility is
             then The_Record_Field.Component
             else Entity_Lists.Empty_Vector);
       begin
+         if Debug_Trace_Untangle then
+            Write_Str ("Possibly include: ");
+            Print_Flow_Id (F);
+         end if;
+
          --  ??? Direct access into flow_id, should be removed somehow.
          if Comp_F.Length < Comp_RF.Length then
             return;
@@ -158,10 +163,10 @@ package body Flow_Utility is
             declare
                Tmp : Entity_Lists.Vector := Comp;
             begin
-               Tmp.Append (C);
+               Tmp.Append (Original_Record_Component (C));
 
                case Ekind (Get_Full_Type (C)) is
-                  when E_Record_Type =>
+                  when Record_Kind =>
                      Process_Record (Get_Full_Type (C), Tmp);
 
                   when others =>
@@ -179,6 +184,10 @@ package body Flow_Utility is
       end Process_Record;
 
    begin
+      if Debug_Trace_Untangle then
+         Write_Str ("The_record_Field: ");
+         Print_Flow_Id (The_Record_Field);
+      end if;
       Process_Record (Get_Full_Type (Entire_Var),
                       Entity_Lists.Empty_Vector);
       return All_Comp;
@@ -1428,6 +1437,12 @@ package body Flow_Utility is
             --  about.
 
             Find_Bottom_Node (N, Bottom_Node, End_Of_Record, Partial_Use);
+            if Debug_Trace_Untangle then
+               Write_Str ("Bottom_Node: ");
+               Print_Node_Briefly (Bottom_Node);
+               Write_Str ("End_Of_Record: ");
+               Print_Node_Briefly (End_Of_Record);
+            end if;
 
             --  We may be dealing with some record field. For example:
             --
@@ -1475,14 +1490,25 @@ package body Flow_Utility is
                         Vars_Implicitly_Used.Union (Vars_Defined);
 
                      when others =>
-                        Vars_Defined.Union
-                          (All_Record_Components
-                             (Record_Field_Id (End_Of_Record)));
-                        if Partial_Use then
-                           Vars_Implicitly_Used.Union
-                             (All_Record_Components
-                                (Record_Field_Id (End_Of_Record)));
-                        end if;
+                        declare
+                           F : constant Flow_Id :=
+                             Record_Field_Id (End_Of_Record);
+                           S : constant Flow_Id_Sets.Set :=
+                             All_Record_Components
+                             (Record_Field_Id (End_Of_Record));
+                        begin
+                           if Debug_Trace_Untangle then
+                              Write_Str ("Field to split: ");
+                              Print_Flow_Id (F);
+                              Write_Str ("To merge: ");
+                              Print_Node_Set (S);
+                           end if;
+
+                           Vars_Defined.Union (S);
+                           if Partial_Use then
+                              Vars_Implicitly_Used.Union (S);
+                           end if;
+                        end;
                   end case;
 
                when N_Indexed_Component | N_Slice =>
