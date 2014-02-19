@@ -199,7 +199,8 @@ package body Flow_Types is
    begin
       P := N;
       while Nkind (P) = N_Selected_Component loop
-         F.Component.Append (Entity (Selector_Name (P)));
+         F.Component.Append
+           (Original_Record_Component (Entity (Selector_Name (P))));
          P := Prefix (P);
       end loop;
       pragma Assert (Nkind (P) in N_Identifier | N_Expanded_Name |
