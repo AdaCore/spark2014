@@ -358,7 +358,8 @@ package Flow_Types is
 
    type Pretty_Print_Kind_T is (Pretty_Print_Null,
                                 Pretty_Print_Initializes_Aspect,
-                                Pretty_Print_Folded_Function_Check);
+                                Pretty_Print_Folded_Function_Check,
+                                Pretty_Print_Loop_Init);
 
    type Execution_Kind_T is (Normal_Execution,
                              Abnormal_Termination,

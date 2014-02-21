@@ -325,6 +325,10 @@ package body Flow is
             Write_Str ("ff check for: ");
             Sprint_Node (A.Error_Location);
 
+         elsif A.Pretty_Print_Kind = Pretty_Print_Loop_Init then
+            Write_Str ("initialization in loop ");
+            Sprint_Node (A.Error_Location);
+
          elsif A.Is_Parameter then
             Rv.Shape := Shape_None;
 

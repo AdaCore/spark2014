@@ -548,4 +548,22 @@ package body Flow.Control_Flow_Graph.Utility is
       return A;
    end Make_Default_Initialization_Attributes;
 
+   -----------------------------------------
+   -- Make_Potential_Loop_Init_Attributes --
+   -----------------------------------------
+
+   function Make_Potential_Loop_Init_Attributes
+     (Loops : Node_Sets.Set     := Node_Sets.Empty_Set;
+      E_Loc : Node_Or_Entity_Id := Empty)
+      return V_Attributes
+   is
+      A : V_Attributes := Null_Attributes;
+   begin
+      A.Pretty_Print_Kind := Pretty_Print_Loop_Init;
+      A.Loops             := Loops;
+      A.Error_Location    := E_Loc;
+
+      return A;
+   end Make_Potential_Loop_Init_Attributes;
+
 end Flow.Control_Flow_Graph.Utility;

@@ -59,6 +59,12 @@ package body Flow.Control_Flow_Graph is
      (Element_Type => Union_Id,
       "="          => "=");
 
+   package Entity_Vertex_Maps is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Entity_Id,
+      Element_Type    => Flow_Graphs.Vertex_Id,
+      Hash            => Node_Hash,
+      Equivalent_Keys => "=");
+
    ------------------------------------------------------------
    --  Debug
    ------------------------------------------------------------
@@ -258,13 +264,18 @@ package body Flow.Control_Flow_Graph is
       Folded_Function_Checks : Node_Graphs.Map;
       --  A set of nodes we need to separately check for uninitialized
       --  variables due to function folding.
+
+      Loop_Initialization    : Entity_Vertex_Maps.Map;
+      --  A map from loops -> helper vertices to record variables
+      --  initialized by a loop.
    end record;
 
    No_Context : constant Context :=
      Context'(Current_Loops          => Node_Sets.Empty_Set,
               Active_Loop            => Empty,
               Entry_References       => Node_Graphs.Empty_Map,
-              Folded_Function_Checks => Node_Graphs.Empty_Map);
+              Folded_Function_Checks => Node_Graphs.Empty_Map,
+              Loop_Initialization    => Entity_Vertex_Maps.Empty_Map);
 
    ------------------------------------------------------------
    --  Local declarations
@@ -1522,7 +1533,7 @@ package body Flow.Control_Flow_Graph is
       --   |   |       |
       --   \---/       v
 
-      procedure Do_For_Loop;
+      procedure Do_For_Loop (Might_Fully_Initialize_Something : out Boolean);
       --  Helper procedure to deal with for loops.
       --
       --  We must distinguish between three kinds of for loops,
@@ -1691,7 +1702,7 @@ package body Flow.Control_Flow_Graph is
          Linkup (FA.CFG, CM (Union_Id (Statements (N))).Standard_Exits, V);
       end Do_While_Loop;
 
-      procedure Do_For_Loop
+      procedure Do_For_Loop (Might_Fully_Initialize_Something : out Boolean)
       is
          LPS : constant Node_Id :=
            Loop_Parameter_Specification (Iteration_Scheme (N));
@@ -1742,6 +1753,8 @@ package body Flow.Control_Flow_Graph is
             CM (Union_Id (N)).Standard_Entry := V;
             CM (Union_Id (N)).Standard_Exits.Include (V);
 
+            Might_Fully_Initialize_Something := False;
+
          elsif Not_Null_Range (Low_Bound (R), High_Bound (R)) then
             --  We need to make sure the loop is executed at least once.
 
@@ -1762,6 +1775,8 @@ package body Flow.Control_Flow_Graph is
             --  Loop the loop: V -> body -> V
             Linkup (FA.CFG, V, CM (Union_Id (Statements (N))).Standard_Entry);
             Linkup (FA.CFG, CM (Union_Id (Statements (N))).Standard_Exits, V);
+
+            Might_Fully_Initialize_Something := True;
 
          else
             --  We don't know if the loop will be executed or not.
@@ -1788,10 +1803,14 @@ package body Flow.Control_Flow_Graph is
             --  Loop the loop: V -> body -> V
             Linkup (FA.CFG, V, CM (Union_Id (Statements (N))).Standard_Entry);
             Linkup (FA.CFG, CM (Union_Id (Statements (N))).Standard_Exits, V);
+
+            Might_Fully_Initialize_Something := False;
+
          end if;
       end Do_For_Loop;
 
-      Previous_Loop  : constant Entity_Id := Ctx.Active_Loop;
+      Previous_Loop     : constant Entity_Id := Ctx.Active_Loop;
+      Needs_Init_Vertex :          Boolean   := False;
 
    begin
       --  Start with a blank slate for the loops entry and exit.
@@ -1838,8 +1857,27 @@ package body Flow.Control_Flow_Graph is
             pragma Assert (Present (Loop_Parameter_Specification (
                              Iteration_Scheme (N))));
 
-            Do_For_Loop;
+            Do_For_Loop (Needs_Init_Vertex);
          end if;
+      end if;
+
+      --  If we need an init vertex, we add it before the loop itself.
+      if Needs_Init_Vertex then
+         declare
+            V : Flow_Graphs.Vertex_Id;
+         begin
+            Add_Vertex
+              (FA,
+               Make_Potential_Loop_Init_Attributes
+                 (Loops => Ctx.Current_Loops,
+                  E_Loc => Entity (Identifier (N))),
+               V);
+
+            Linkup (FA.CFG, V, CM (Union_Id (N)).Standard_Entry);
+            CM (Union_Id (N)).Standard_Entry := V;
+
+            Ctx.Loop_Initialization.Insert (Entity (Identifier (N)), V);
+         end;
       end if;
 
       --  Now we need to glue the 'loop_entry checks to the front of
