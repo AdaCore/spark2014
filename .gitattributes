@@ -26,6 +26,7 @@ gnat2why/design/*/* no-precommit-check
 gnat2why/design/*/*/* no-precommit-check
 gnat2why/design/*/*/*/* no-precommit-check
 docs/ug/gnatprove_by_example/examples/* no-precommit-check
+docs/ug/examples/*/* no-precommit-check
 docs/ug/linear_search/*/* no-precommit-check
 docs/ug/lemmas/* no-precommit-check
 docs/ug/* no-precommit-check
