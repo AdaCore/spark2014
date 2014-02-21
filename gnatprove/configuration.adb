@@ -165,8 +165,8 @@ ASCII.LF &
 ASCII.LF &
 " --flow-debug       Extra debugging for flow analysis (requires graphviz)" &
 ASCII.LF &
-"     --proof=p      Set the proof mode (p=per_check*, per_path, progressive)"&
-ASCII.LF &
+"     --proof=p      Set the proof mode (p=per_check*, per_path, progressive)"
+& ASCII.LF &
 "     --RTS=dir      Specify the Ada runtime name/location" &
 ASCII.LF &
 "     --pedantic     Use a strict interpretation of the Ada standard" &
