@@ -1,0 +1,1 @@
+binary_search.adb:36:50: warning: assertion might fail, requires A (Index) /= I

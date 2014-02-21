@@ -438,138 +438,220 @@ other unclassified messages are warnings about questionable code constructs.
 How to Write Loop Invariants
 ============================
 
-Proving loops is often the most challenging part of the proof
-activity, both for automatic provers and for users guiding the proof
-tool.
+As described in :ref:`loop invariants`, the user should annotate loops with loop
+invariants in order for |GNATprove| to prove formally the properties of
+interest on subprograms with loops. In this section, we provide a systematic
+approach for writing loop invariants.
 
-When proving loops, failed proof attempts may need to be "debugged",
-see :ref:`investigate`. In this section we provide a systematic approach
-to the development of loop invariants. We will see how failed proof attempts
-can give valuable insights, the loop invariant can be corrected,
-and proof attempted again.
+The Four Properties of a Good Loop Invariant
+--------------------------------------------
 
-Loop Invariants
----------------
+A loop invariant can describe more or less precisely the behavior of a
+loop. What matters is that the loop invariant allows proving absence of
+run-time errors in the subprogram, that the subprogram respects its contract,
+and that the loop invariant itself holds at each iteration of the loop. There
+are four properties that a good loop invariant should fulfill:
 
-Impact of the Loop Invariant
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Consider a simple loop statement that forms the entire body
-of a subprogram that has a precondition P, postcondition Q,
-and a candidate loop invariant I:
+#. [INIT] It should be provable in the first iteration of the loop.
 
-.. code-block:: ada
+#. [INSIDE] It should allow proving absence of run-time errors and local
+   assertions inside the loop.
 
-   begin
-      loop
-         pragma Loop_Invariant (I);
-         exit when E;
-         S;
-      end loop;
-   end;
+#. [AFTER] It should allow proving absence of run-time errors and the
+   subprogram postcondition after the loop.
 
-This subprogram generates three VCs for functional correctness:
+#. [PRESERVE] It should be provable after the first iteration of the loop.
 
-* One VC that establishes that I is true on first entry to the loop,
-  assuming the precondition P is true.  We call this the *initial* VC.
+We will demonstrate techniques to complete a loop invariant so that it
+fulfills all four properties [INIT], [INSIDE], [AFTER] and [PRESERVE], on a
+simple algorithm searching in an ordered collection of elements. Like the naive
+search algorithm described in :ref:`spark tutorial`, this algorithm returns
+whether the collection contains the desired value, and if so, at which
+index. The collection is also implemented as an array.
 
-* One VC that establishes that I is preserved as the loop iterates,
-  assuming that the exit condition E is false.  In this VC, the
-  invariant I is used *twice* - once in forming the hypotheses
-  of the VC, and once in forming the conclusion of the VC given
-  whatever effects statements S has had on the variables. We
-  call this the *preservation* VC.
+The specification of this ``Binary_Search`` is given in file ``binary_search.ads``:
 
-* One VC that establishes the postcondition Q is true, assuming
-  that the invariant I and the loop exit condition E are both
-  true. We call this the *final* VC.
+.. literalinclude:: examples/binary_search_no_loopinv/binary_search.ads
+   :language: ada
+   :linenos:
 
-All three VCs must be considered when deriving a loop
-invariant.
+The implementation of ``Binary_Search`` is given in file ``binary_search.adb``:
 
-Guiding Loop Proofs
--------------------
+.. literalinclude:: examples/binary_search_no_loopinv/binary_search.adb
+   :language: ada
+   :linenos:
 
-Program Structure
-^^^^^^^^^^^^^^^^^
+Note that, although function ``Search`` has a loop, we have not given an
+explicit loop invariant yet, so the default loop invariant of ``True`` will be
+used by |GNATprove|.
 
-Reasoning about loops is often simplified if the code
-both before and after the loop is as simple as possible.
-It is also useful if the path from the loop invariant to
-the exit statement that controls loop termination is a "null"
-statement (i.e. they are next to each other). This makes
-it easier to think about the relationship between the
-loop invariant and the postcondition that follows the loop.
+Proving a Loop Invariant in the First Iteration
+-----------------------------------------------
 
-In a "for" loop, this can mean it is easier to place
-the Loop_Invariant pragma at the *end* of the loop body,
-where it precedes the (implicit) exit statement.
+Property [INIT] is the easiest one to prove. This is equivalent to proving a
+pragma Assert in the sequence of statements obtained by unrolling the loop
+once. In particular, if the loop invariant is at the start of the loop, this is
+equivalent to proving a pragma Assert just before the loop. Therefore, the
+usual techniques for investigating unproved checks apply, see :ref:`how to
+investigate unproved checks`.
 
-Finally, in a large subprogram, consider factoring out
-loops into local subprograms so that the subprogram's
-pre- and post-condition can be treated as the
-pre- and post-condition of the loop in question.
+Completing a Loop Invariant to Prove Checks Inside the Loop
+-----------------------------------------------------------
 
-Identifying Loop Variables
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+Let's start by running |GNATprove| on program ``Binary_Search`` without loop
+invariant. It generates five warnings, four of which correspond to possible
+run-time check failures, and a last one corresponding to a possible failure of
+the postcondition:
 
-Loop variables are those variables within a loop that appear
-in the loop termination condition(s) of the loop, and are also
-modified in the body of the loop. Identifying loop variables is often trivial;
-for example, a "for" loop always has exactly one loop variable,
-assuming it has no other exit statements.
+.. literalinclude:: examples/results/binary_search_no_loopinv.prove
+   :language: none
 
-Make a note of how each loop variable is updated in every iteration
-of the loop.
+We will focus here on the four warnings inside the loop, which correspond to
+property [INSIDE]. The problem is that variable ``Med`` varies in the loop, so
+|GNATprove| only knows that its value is in the range of its type ``Index`` at
+the start of an iteration (line 23), and that it is then assigned the value of
+``Left + (Right - Left) / 2`` (line 24) before being used as an index into
+array ``A`` (lines 26 and 28) and inside expressions assigned to ``Left`` and
+``Right`` (lines 27 and 29).
 
-The loop variables are also used to write a loop variant for proving
-termination of the loop, but this is not mandatory.
+As ``Left`` and ``Right`` also vary in the loop, |GNATprove| cannot use the
+assignment on line 24 to compute a more precise range for variable ``Med``,
+hence the four warnings on index checks and range checks.
 
-Finding a Loop Invariant
-^^^^^^^^^^^^^^^^^^^^^^^^
+What is needed here is a loop invariant that states that the values of ``Left``
+and ``Right`` stay within the bounds of ``A`` inside the loop:
 
-The following steps have proven useful in finding
-a candidate loop invariant:
+.. literalinclude:: examples/binary_search_range/binary_search.adb
+   :language: ada
+   :lines: 23-26
 
-* A loop invariant represents a relationship between
-  variables that *does not change* with each iteration
-  of the loop, even though the invidual variables do change
-  as the loop iterates.
+With this simple loop invariant, |GNATprove| now proves that the four checks
+previously reported as possible failures cannot fail. In particular,
+|GNATprove| computes that the value assigned to ``Med`` in the loop is also
+within the bounds of ``A``.
 
-* Additionally, the loop invariant should also be
-  sufficient to prove the postcondition when the loop does terminate.
+Completing a Loop Invariant to Prove Checks After the Loop
+----------------------------------------------------------
 
-* To create the loop invariant, start with the postcondition Q. What
-  property do you need to have proved after the loop? The loop
-  invariant I will often resemble the postcondition Q, but with
-  the relationship between loop variables introduced.
+With the simple loop invariant given before, |GNATprove| still reports that the
+postcondition of ``Search`` may fail, which corresponds to property [AFTER]. By
+instructing |GNATprove| to prove checks incrementally, as seens in
+:ref:`proving spark programs`, we even get a precise warning pointing to the
+part of the postcondition that could not be proved:
 
-* Check that the candidate invariant I *AND* the loop exit
-  condition E are sufficient to prove the postcondition Q.
+.. literalinclude:: examples/results/binary_search_range.prove
+   :language: none
 
-* Analyse any failed proofs attempts:
+Here, the warning shows that the second line of the postcondition could not be
+proved. This line expresses that, in the case where ``Search`` returns
+``No_Index`` after the loop, the array ``A`` should not contain the value
+searched ``I``. 
 
-  #. First, if the *final* VC fails (corresponding to the loop
-     having terminated), look at this first.  Is the combination
-     of the invariant and the exit condition too weak to
-     imply the postcondition?
+One can very easily check that, if |GNATprove| can prove this property, it can
+also prove the postcondition. Simply insert a pragma Assert after the loop
+stating this property:
 
-  #. If the proof of the *initial* VC fails, then
-     consider strengthening the precondition of the enclosing
-     subprogram, or modify the initialization of variables
-     that precede the loop. The proof of the initial VC
-     will also fail if the invariant I is too strong - i.e.
-     it could be false for some values of the variables.
+.. literalinclude:: examples/binary_search_post_assert/binary_search.adb
+   :language: ada
+   :lines: 35-38
 
-  #. Finally, if the *preservation* VC fails to prove, consider
-     strengthening the loop invariant.
+|GNATprove| now succeeds in proving the postcondition, but it fails to prove
+the assertion:
 
-As mentioned earlier, any change to the loop invariant propagates to
-several VCs.  Therefore a change to the loop invariant based on the
-information from one failed VC might cause another
-VC to fail. The suggested order of consideration given above
-is a heuristic that has shown to work well in practice.
+.. literalinclude:: examples/results/binary_search_post_assert.prove
+   :language: none
 
-.. _investigate:
+The problem is that |GNATprove| only knows what the user specified about ``A``
+in the precondition, namely that it is sorted in ascending order. Nowhere it is
+said that ``A`` does not contain the value ``I``. 
+
+What is needed here is a loop invariant stating that, if ``A`` contains the
+value ``I``, it must be at an index in the range ``Left..Right``, so when the
+loop exits because ``Left > Right`` (so the loop test becomes false), ``A``
+cannot contain the value ``I``.
+
+A simple way to express this property is to state that the value of ``A`` at
+index ``Left - 1`` is less than ``I``, while the value of ``A`` at index
+``Right + 1`` is greater than ``I``. Taking into account the possibility that
+there are no such indexes in ``A`` if either ``Left`` or ``Right`` are at the
+boundaries of the array, we can express it as follows:
+
+.. literalinclude:: examples/binary_search_naive/binary_search.adb
+   :language: ada
+   :lines: 23-28
+
+|GNATprove| manages to prove these additional loop invariants, but it still
+cannot prove the assertion after the loop. The reason is both simple and
+far-reaching. Although the above loop invariant together with the property that
+the array is sorted imply the property we want to express, it still requires
+additional work for the prover to reach the same conclusion, which may prevent
+automatic proof in the allocated time. In that case, it is better to express
+the equivalent but more verbose property directly, as follows:
+
+.. literalinclude:: examples/binary_search_precise/binary_search.adb
+   :language: ada
+   :lines: 23-31
+
+|GNATprove| now proves the assertion after the loop. In general, it is simpler
+to understand the relationship between the loop invariant and the checks that
+follow the loop when the loop invariant is directly followed by the exit
+statement that controls loop termination. In a "for" or "while" loop, this can
+mean it is easier to place the Loop_Invariant pragmas at the *end* of the loop
+body, where they precede the (implicit) exit statement.  In such cases, the loop
+invariant is more likely to resemble the postcondition.
+
+Proving a Loop Invariant After the First Iteration
+--------------------------------------------------
+
+With the loop invariant given before, |GNATprove| now reports that the loop
+invariant of ``Search`` may fail after the first iteration, which corresponds
+to property [PRESERVE]. By instructing |GNATprove| to prove checks
+incrementally, as seen in :ref:`proving spark programs`, we even get a precise
+warning pointing to the part of the loop invariant that could not be proved:
+
+.. literalinclude:: examples/results/binary_search_precise.prove
+   :language: none
+
+In general, the problem at this point is that the loop invariant is not precise
+enough. The only information that |GNATprove| knows about the value of
+variables that are modified in the loop, at each loop iteration, is the
+information provided in the loop invariant. If the loop invariant is missing
+some crucial information about these variables, which is needed to prove the
+loop invariant after N iterations, |GNATprove| won't be able to prove that the
+loop invariant holds at each iteration.
+
+In loops that modify variables of composite types (records and arrays), it is
+usually necessary at this stage to add in the loop invariant some information
+about those parts of the modified variables which are not modified by the loop,
+or which are not modified in the first N iterations of the loop. Otherwise,
+|GNATprove| assumes that these parts may also be modified, which can prevent it
+from proving the preservation of the loop invariant. See :ref:`loop invariants`
+for an example where this is needed.
+
+Here, there is nothing fundamental blocking |GNATprove| from proving that the
+loop invariant holds after the first iteration. In those cases, it may be
+necessary to guide the prover with intermediate assertions. A rule of thumb for
+deciding which properties to assert, and where to assert them, is to try to
+locate at which program point the prover does not success in proving the
+property of interest, and to restate other properties that are useful for the
+proof. Here, both kinds of assertions are needed by |GNATprove|. Here is the
+implementation of ``Search`` with intermediate assertions:
+
+.. literalinclude:: examples/binary_search_final/binary_search.adb
+   :language: ada
+   :linenos:
+
+|GNATprove| proves all checks on this code. As this example shows, it can be
+difficult to come up with a good loop invariant that allows proving
+automatically all checks in a subprogram. Although this example is small, the
+difficulty comes here from the complex properties stated by the user, which
+involve multiple quantifiers. In cases where the difficulty is related to the
+size of the loop rather than the complexity of the properties, it may be useful
+to factor the loop into into local subprograms so that the subprograms'
+preconditions and postconditions provide the intermediate assertions that are
+needed to prove the loop invariant.
+
+.. _how to investigate unproved checks:
 
 How to Investigate Unproved Checks
 ==================================

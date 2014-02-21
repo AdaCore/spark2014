@@ -1,0 +1,1 @@
+binary_search.ads:21:49: warning: postcondition might fail, requires A (Index) /= I

@@ -1,0 +1,18 @@
+DUMMY:=$(shell mkdir -p prove)
+
+.PHONY: gnatprove prove results clean force
+
+RESULTS=$(PWD)/results
+ALL=$(wildcard */search.gpr)
+ALL_PROVE_MSG=$(patsubst %/search.gpr,$(RESULTS)/%.prove,$(ALL))
+
+gnatprove: $(ALL_PROVE_MSG)
+
+$(RESULTS)/%.prove: force
+	cd prove && \
+        cp -rf ../$* . && \
+        cd $* && \
+        gnatprove -f -q -P search.gpr --warnings=on > $@
+
+clean:
+	rm -rf prove

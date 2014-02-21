@@ -1,6 +1,6 @@
 DUMMY:=$(shell mkdir -p flow prove)
 
-.PHONY: codepeer flow prove results clean force
+.PHONY: gnatprove flow prove results clean force
 
 RESULTS=$(PWD)/results
 ALL=$(wildcard examples/*.adb)
