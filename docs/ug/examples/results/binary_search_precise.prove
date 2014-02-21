@@ -1,0 +1,1 @@
+binary_search.adb:26:53: warning: loop invariant might fail after first iteration, requires A (Index) < I

@@ -664,6 +664,8 @@ mentioned above.
 The |SPARK| tools verify that ghost functions cannot influence any non-ghost
 entities in the program.
 
+.. _loop invariants:
+
 Loop Invariants
 ---------------
 
@@ -673,17 +675,14 @@ invariants. A loop invariant gives information on the state at entry to the
 loop at each iteration. Loop invariants in |SPARK| are expressed with the
 ``Loop_Invariant`` pragma, which may appear anywhere in the main list of
 statements in a loop body, or directly in a chain of nested block statements in
-this main list of statements. Only the first ``Loop_Invariant`` pragmas are
-used by |GNATprove| as a loop invariant during proof (they should be next to
-each other, or separated only by ``Loop_Variant`` pragmas).
+this main list of statements.
 
 Internally, |GNATprove| forms a "virtual loop" around these loop
 invariants to prove the subprogram. The virtual loop is formed by "unrolling"
 the statements preceding the first ``Loop_Invariant`` pragma until it is at
 the top of the loop body.
 
-Other ``Loop_Invariant`` pragmas are proved like regular
-assertions. Loop invariants may have to be precise enough to prove the property
+Loop invariants may have to be precise enough to prove the property
 of interest. For example, in order to prove the postcondition of function
 ``Contains`` below, one has to write a precise loop invariant such as the one
 given below:

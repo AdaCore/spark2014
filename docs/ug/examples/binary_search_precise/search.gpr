@@ -1,0 +1,5 @@
+project Search is
+   package Prove is
+      for Switches use ("--steps=30000", "--proof=progressive");
+   end Prove;
+end Search;

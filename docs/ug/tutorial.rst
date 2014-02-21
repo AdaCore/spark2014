@@ -38,7 +38,7 @@ we specify that the spec is in |SPARK| by using pragma ``SPARK_Mode``.
    :language: ada
    :linenos:
 
-The implementation of ``Search`` given in file ``search.adb``, where we specify
+The implementation of ``Search`` is given in file ``search.adb``, where we specify
 that the body is in |SPARK| by using pragma ``SPARK_Mode``.  It is as obvious
 as its specification, using a loop to go through the array parameter ``A`` and
 looking for the first index at which ``Val`` is found, if there is such an
