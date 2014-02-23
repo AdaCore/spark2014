@@ -11,5 +11,3 @@ swap_add_max_14.ads:22:19: info: postcondition proved
 swap_add_max_14.ads:22:37: info: division check proved
 swap_add_max_14.ads:22:37: info: overflow check proved
 swap_add_max_14.ads:25:19: info: postcondition proved
-swap_add_max_14.ads:25:37: info: range check proved
-swap_add_max_14.ads:26:37: info: range check proved

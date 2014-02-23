@@ -2149,13 +2149,17 @@ package body Gnat2Why.Expr is
                         Args     => Args,
                         Typ      => EW_Abstract (Etype (Expr)));
 
+         --  Special case for choices of normal aggregate:
          --  In programs, we generate a check that all the choices are
          --  compatible with their index subtype:
          --  . a non-static value of choice must belong to the index subtype
          --  . the range_constraint of a subtype_indication must be compatible
          --    with the given subtype.
+         --  For 'Update aggregates, choices are passed as parameters and
+         --  checks inserted in Transform_Expr when arguments for the
+         --  function call are computed, above.
 
-         if Domain = EW_Prog then
+         if not In_Attribute_Update and then Domain = EW_Prog then
             Value := Index_Values.First;
             Typ   := Index_Types.First;
 

@@ -4,63 +4,51 @@ ar.adb:81:14: info: range check proved
 ar.adb:86:14: info: range check proved
 ar.adb:98:07: warning: unused assignment
 ar.adb:100:5: info: assertion proved
-ar.adb:100:42: info: range check proved
 ar.adb:104:14: info: range check proved
 ar.adb:109:14: info: range check proved
 ar.adb:121:07: warning: unused assignment
 ar.adb:123:5: info: assertion proved
-ar.adb:123:42: info: range check proved
 ar.adb:127:14: info: range check proved
 ar.adb:132:14: info: range check proved
 ar.adb:144:07: warning: unused assignment
 ar.adb:149:14: info: range check proved
 ar.adb:151:5: info: assertion proved
-ar.adb:151:42: info: range check proved
 ar.adb:155:14: info: range check proved
 ar.adb:167:07: warning: unused assignment
 ar.adb:172:14: info: range check proved
 ar.adb:174:5: info: assertion proved
-ar.adb:174:42: info: range check proved
 ar.adb:178:14: info: range check proved
 ar.adb:237:18: info: range check proved
-ar.adb:241:18: warning: range check might fail
-ar.adb:243:18: warning: range check might fail
+ar.adb:241:18: info: range check proved
+ar.adb:243:18: info: range check proved
 ar.adb:256:18: info: range check proved
-ar.adb:260:18: warning: range check might fail
-ar.adb:262:18: warning: range check might fail
+ar.adb:260:18: info: range check proved
+ar.adb:262:18: info: range check proved
 ar.adb:275:18: info: range check proved
-ar.adb:279:18: warning: range check might fail
-ar.adb:281:18: warning: range check might fail
+ar.adb:279:18: info: range check proved
+ar.adb:281:18: info: range check proved
 ar.adb:294:18: info: range check proved
-ar.adb:298:18: warning: range check might fail
-ar.adb:300:18: warning: range check might fail
+ar.adb:298:18: info: range check proved
+ar.adb:300:18: info: range check proved
 ar.adb:451:19: info: range check proved
 ar.adb:456:14: info: range check proved
 ar.adb:471:19: info: range check proved
 ar.adb:476:14: info: range check proved
 ar.adb:488:07: warning: unused assignment
 ar.adb:490:5: warning: assertion might fail, requires A = T'update
-ar.adb:490:42: info: range check proved
-ar.adb:490:60: info: range check proved
 ar.adb:494:19: info: range check proved
 ar.adb:499:14: info: range check proved
 ar.adb:511:07: warning: unused assignment
 ar.adb:513:5: warning: assertion might fail, requires A = T'update
-ar.adb:513:42: info: range check proved
-ar.adb:513:60: info: range check proved
 ar.adb:517:19: info: range check proved
 ar.adb:522:14: info: range check proved
 ar.adb:534:07: warning: unused assignment
 ar.adb:539:19: info: range check proved
 ar.adb:541:5: warning: assertion might fail
-ar.adb:541:42: info: range check proved
-ar.adb:541:60: info: range check proved
 ar.adb:545:14: info: range check proved
 ar.adb:557:07: warning: unused assignment
 ar.adb:562:19: info: range check proved
 ar.adb:564:5: warning: assertion might fail
-ar.adb:564:42: info: range check proved
-ar.adb:564:60: info: range check proved
 ar.adb:568:14: info: range check proved
 ar.adb:751:19: info: range check proved
 ar.adb:756:14: info: range check proved
@@ -68,31 +56,19 @@ ar.adb:771:19: info: range check proved
 ar.adb:776:14: info: range check proved
 ar.adb:788:07: warning: unused assignment
 ar.adb:790:5: warning: assertion might fail, requires A = T'update
-ar.adb:790:42: info: range check proved
-ar.adb:790:60: info: range check proved
-ar.adb:790:81: info: range check proved
 ar.adb:794:19: info: range check proved
 ar.adb:799:14: info: range check proved
 ar.adb:811:07: warning: unused assignment
 ar.adb:813:5: warning: assertion might fail, requires A = T'update
-ar.adb:813:42: info: range check proved
-ar.adb:813:60: info: range check proved
-ar.adb:813:81: info: range check proved
 ar.adb:817:19: info: range check proved
 ar.adb:822:14: info: range check proved
 ar.adb:834:07: warning: unused assignment
 ar.adb:839:19: info: range check proved
 ar.adb:841:5: warning: assertion might fail
-ar.adb:841:42: info: range check proved
-ar.adb:841:60: info: range check proved
-ar.adb:841:81: info: range check proved
 ar.adb:845:14: info: range check proved
 ar.adb:857:07: warning: unused assignment
 ar.adb:862:19: info: range check proved
 ar.adb:864:5: warning: assertion might fail
-ar.adb:864:42: info: range check proved
-ar.adb:864:60: info: range check proved
-ar.adb:864:81: info: range check proved
 ar.adb:868:14: info: range check proved
 ar.adb:1218:14: info: range check proved
 ar.adb:1228:14: info: range check proved
@@ -116,128 +92,65 @@ ar.adb:1811:20: info: range check proved
 ar.ads:137:22: info: postcondition proved
 ar.ads:142:22: info: postcondition proved
 ar.ads:147:22: info: postcondition proved
-ar.ads:147:40: info: range check proved
 ar.ads:152:22: info: postcondition proved
 ar.ads:158:22: info: postcondition proved
 ar.ads:164:22: info: postcondition proved
-ar.ads:164:40: info: range check proved
-ar.ads:164:48: info: range check proved
 ar.ads:169:22: info: postcondition proved
 ar.ads:174:22: warning: postcondition might fail, requires I < IT1'Last and then( (E > ET1'First and A = A'Old'Update (I => E, I+1 => E-1)) or (E = ET1'First and A = A'Old'Update (I => E, I+1 => ET1'Last)) )) or (I = IT1'Last and ( (E > ET1'First and A = A'Old'Update (I => E, IT1'First => E-1)) or (E = ET1'First and A = A'Old'update
-ar.ads:174:85: info: range check proved
 ar.ads:174:94: info: range check proved
-ar.ads:174:146: info: range check proved
 ar.ads:174:155: info: range check proved
-ar.ads:174:235: info: range check proved
-ar.ads:174:302: info: range check proved
 ar.ads:179:22: info: postcondition proved
 ar.ads:184:22: warning: postcondition might fail, requires I < IT1'Last and then ( (E > ET1'First and A = A'Old'Update (I => E, I+1 => E-1)) or (E = ET1'First and A = A'Old'Update (I => E, I+1 => ET1'Last)) )) or (I = IT1'Last and ( (E > ET1'First and A = A'Old'Update (I => E, IT1'First => E-1)) or (E = ET1'First and A = A'Old'update
-ar.ads:184:86: info: range check proved
 ar.ads:184:95: info: range check proved
-ar.ads:184:147: info: range check proved
 ar.ads:184:156: info: range check proved
-ar.ads:184:236: info: range check proved
-ar.ads:184:303: info: range check proved
 ar.ads:189:22: info: postcondition proved
 ar.ads:194:22: warning: postcondition might fail, requires I < IT1'Last and then ( (E > ET1'First and A = A'Old'Update (I => E, I+1 => E-1)) or (E = ET1'First and A = A'Old'Update (I => E, I+1 => ET1'Last)) )) or (I = IT1'Last and ( (E > ET1'First and A = A'Old'Update (I => E, IT1'First => E-1)) or (E = ET1'First and A = A'Old'update
-ar.ads:194:86: info: range check proved
 ar.ads:194:95: info: range check proved
-ar.ads:194:147: info: range check proved
 ar.ads:194:156: info: range check proved
-ar.ads:194:236: info: range check proved
-ar.ads:194:303: info: range check proved
-ar.ads:199:22: warning: postcondition might fail
+ar.ads:199:22: info: postcondition proved
 ar.ads:204:22: info: postcondition proved
-ar.ads:209:22: warning: postcondition might fail
+ar.ads:209:22: info: postcondition proved
 ar.ads:214:22: info: postcondition proved
 ar.ads:219:22: info: postcondition proved
-ar.ads:224:22: warning: postcondition might fail
+ar.ads:224:22: info: postcondition proved
 ar.ads:229:22: info: postcondition proved
-ar.ads:234:43: warning: postcondition might fail, requires A(N) = 0
-ar.ads:239:22: warning: postcondition might fail
-ar.ads:244:22: warning: postcondition might fail
+ar.ads:234:22: info: postcondition proved
+ar.ads:239:22: info: postcondition proved
+ar.ads:244:22: info: postcondition proved
 ar.ads:249:22: info: postcondition proved
-ar.ads:254:43: warning: postcondition might fail, requires A(N) = B(11-N)
-ar.ads:259:22: warning: postcondition might fail
-ar.ads:264:22: warning: postcondition might fail
+ar.ads:254:22: info: postcondition proved
+ar.ads:259:22: info: postcondition proved
+ar.ads:264:22: info: postcondition proved
 ar.ads:272:22: info: postcondition proved
 ar.ads:277:22: info: postcondition proved
 ar.ads:282:22: warning: postcondition might fail, requires A = A'Old'update
-ar.ads:282:40: info: range check proved
-ar.ads:282:64: info: range check proved
 ar.ads:287:22: info: postcondition proved
 ar.ads:293:22: info: postcondition proved
 ar.ads:299:22: warning: postcondition might fail
-ar.ads:299:58: info: range check proved
-ar.ads:299:84: info: range check proved
-ar.ads:299:94: info: range check proved
-ar.ads:299:120: info: range check proved
-ar.ads:299:170: info: range check proved
-ar.ads:299:196: info: range check proved
-ar.ads:299:205: info: range check proved
 ar.ads:304:22: info: postcondition proved
 ar.ads:309:22: info: postcondition proved
 ar.ads:314:22: info: postcondition proved
-ar.ads:314:40: info: range check proved
 ar.ads:319:22: info: postcondition proved
 ar.ads:324:22: warning: postcondition might fail, requires J < IT2'Last and then ( (E > ET1'First and A = A'Old'Update (J => A'Old(J)'Update (I => E), J+1 => A'Old(J+1)'Update (I => E-1))) or (E = ET1'First and A = A'Old'Update (J => A'Old(J)'Update (I => E), J+1 => A'Old(J+1)'Update (I => ET1'Last))) )) or (J = IT2'Last and ( (E > ET1'First and A = A'Old'Update (J => A'Old(J)'Update (I => E), IT2'First => A'Old(IT2'First)'Update (I => E-1))) or (E = ET1'First and A = A'Old'update
-ar.ads:324:86: info: range check proved
-ar.ads:324:108: info: range check proved
 ar.ads:324:118: info: range check proved
 ar.ads:324:131: info: index check proved
-ar.ads:324:143: info: range check proved
-ar.ads:324:195: info: range check proved
-ar.ads:324:217: info: range check proved
 ar.ads:324:227: info: range check proved
 ar.ads:324:240: info: index check proved
-ar.ads:324:252: info: range check proved
-ar.ads:324:332: info: range check proved
-ar.ads:324:354: info: range check proved
-ar.ads:324:401: info: range check proved
-ar.ads:324:453: info: range check proved
-ar.ads:324:475: info: range check proved
-ar.ads:324:522: info: range check proved
 ar.ads:329:22: info: postcondition proved
 ar.ads:334:22: warning: postcondition might fail, requires J < IT2'Last and then ( (E > ET1'First and A = A'Old'Update (J => A'Old(J)'Update (I => E), J+1 => A'Old(J+1)'Update (I => E-1))) or (E = ET1'First and A = A'Old'Update (J => A'Old(J)'Update (I => E), J+1 => A'Old(J+1)'Update (I => ET1'Last))) )) or (J = IT2'Last and ( (E > ET1'First and A = A'Old'Update (J => A'Old(J)'Update (I => E), IT2'First => A'Old(IT2'First)'Update (I => E-1))) or (E = ET1'First and A = A'Old'update
-ar.ads:334:86: info: range check proved
-ar.ads:334:108: info: range check proved
 ar.ads:334:118: info: range check proved
 ar.ads:334:131: info: index check proved
-ar.ads:334:143: info: range check proved
-ar.ads:334:195: info: range check proved
-ar.ads:334:217: info: range check proved
 ar.ads:334:227: info: range check proved
 ar.ads:334:240: info: index check proved
-ar.ads:334:252: info: range check proved
-ar.ads:334:332: info: range check proved
-ar.ads:334:354: info: range check proved
-ar.ads:334:401: info: range check proved
-ar.ads:334:453: info: range check proved
-ar.ads:334:475: info: range check proved
-ar.ads:334:522: info: range check proved
 ar.ads:339:22: info: postcondition proved
 ar.ads:344:22: warning: postcondition might fail, requires J < IT2'Last and then ( (E > ET1'First and A = A'Old'Update (J => A'Old(J)'Update (I => E), J+1 => A'Old(J+1)'Update (I => E-1))) or (E = ET1'First and A = A'Old'Update (J => A'Old(J)'Update (I => E), J+1 => A'Old(J+1)'Update (I => ET1'Last))) )) or (J = IT2'Last and ( (E > ET1'First and A = A'Old'Update (J => A'Old(J)'Update (I => E), IT2'First => A'Old(IT2'First)'Update (I => E-1))) or (E = ET1'First and A = A'Old'update
-ar.ads:344:86: info: range check proved
-ar.ads:344:108: info: range check proved
 ar.ads:344:118: info: range check proved
 ar.ads:344:131: info: index check proved
-ar.ads:344:143: info: range check proved
-ar.ads:344:195: info: range check proved
-ar.ads:344:217: info: range check proved
 ar.ads:344:227: info: range check proved
 ar.ads:344:240: info: index check proved
-ar.ads:344:252: info: range check proved
-ar.ads:344:332: info: range check proved
-ar.ads:344:354: info: range check proved
-ar.ads:344:401: info: range check proved
-ar.ads:344:453: info: range check proved
-ar.ads:344:475: info: range check proved
-ar.ads:344:522: info: range check proved
 ar.ads:349:22: info: postcondition proved
 ar.ads:355:22: info: postcondition proved
 ar.ads:361:22: info: postcondition proved
-ar.ads:361:40: info: range check proved
-ar.ads:361:48: info: range check proved
 ar.ads:366:22: info: postcondition proved
 ar.ads:371:22: info: postcondition proved
 ar.ads:376:22: info: postcondition proved
@@ -245,189 +158,77 @@ ar.ads:381:22: info: postcondition proved
 ar.ads:389:22: info: postcondition proved
 ar.ads:394:22: info: postcondition proved
 ar.ads:399:22: warning: postcondition might fail, requires A = A'Old'update
-ar.ads:399:40: info: range check proved
-ar.ads:399:64: info: range check proved
-ar.ads:399:92: info: range check proved
 ar.ads:404:22: info: postcondition proved
-ar.ads:410:22: warning: postcondition might fail
+ar.ads:410:22: info: postcondition proved
 ar.ads:416:22: warning: postcondition might fail, requires A = A'Old'update
-ar.ads:416:40: info: range check proved
-ar.ads:416:64: info: range check proved
-ar.ads:416:92: info: range check proved
-ar.ads:416:103: info: range check proved
-ar.ads:416:127: info: range check proved
-ar.ads:416:155: info: range check proved
 ar.ads:421:22: info: postcondition proved
 ar.ads:426:22: info: postcondition proved
 ar.ads:431:22: info: postcondition proved
-ar.ads:431:40: info: range check proved
 ar.ads:436:22: info: postcondition proved
 ar.ads:441:22: info: postcondition proved
 ar.ads:446:22: warning: postcondition might fail, requires A = A'Old'update
-ar.ads:446:40: info: range check proved
-ar.ads:446:62: info: range check proved
 ar.ads:451:16: info: postcondition proved
 ar.ads:456:22: info: postcondition proved
 ar.ads:461:22: warning: postcondition might fail, requires A = A'Old'update
-ar.ads:461:40: info: range check proved
-ar.ads:461:55: info: range check proved
 ar.ads:466:22: info: postcondition proved
 ar.ads:471:22: warning: postcondition might fail, requires K < IT3'Last and then ( (E > ET1'First and A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), K+1 => A'Old(K+1)'Update (J => A'Old(K+1)(J)'Update (I => E-1)))) or (E = ET1'First and A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), K+1 => A'Old(K+1)'Update (J => A'Old(K+1)(J)'Update (I => ET1'Last)))) )) or (K = IT3'Last and ( (E > ET1'First and A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), IT3'First => A'Old(IT3'First)'Update (J => A'Old(IT3'First)(J)'Update (I => E-1)))) or (E = ET1'First and A = A'Old'update
-ar.ads:471:86: info: range check proved
-ar.ads:471:110: info: range check proved
-ar.ads:471:135: info: range check proved
 ar.ads:471:146: info: range check proved
 ar.ads:471:159: info: index check proved
-ar.ads:471:171: info: range check proved
 ar.ads:471:183: info: index check proved
-ar.ads:471:198: info: range check proved
-ar.ads:471:251: info: range check proved
-ar.ads:471:275: info: range check proved
-ar.ads:471:300: info: range check proved
 ar.ads:471:311: info: range check proved
 ar.ads:471:324: info: index check proved
-ar.ads:471:336: info: range check proved
 ar.ads:471:348: info: index check proved
-ar.ads:471:363: info: range check proved
-ar.ads:471:444: info: range check proved
-ar.ads:471:466: info: range check proved
-ar.ads:471:491: info: range check proved
-ar.ads:471:539: info: range check proved
-ar.ads:471:572: info: range check proved
-ar.ads:471:625: info: range check proved
-ar.ads:471:647: info: range check proved
-ar.ads:471:672: info: range check proved
-ar.ads:471:720: info: range check proved
-ar.ads:471:753: info: range check proved
 ar.ads:476:22: info: postcondition proved
 ar.ads:481:22: warning: postcondition might fail, requires K < IT3'Last and then ( (E > ET1'First and A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), K+1 => A'Old(K+1)'Update (J => A'Old(K+1)(J)'Update (I => E-1)))) or (E = ET1'First and A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), K+1 => A'Old(K+1)'Update (J => A'Old(K+1)(J)'Update (I => ET1'Last)))) )) or (K = IT3'Last and ( (E > ET1'First and A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), IT3'First => A'Old(IT3'First)'Update (J => A'Old(IT3'First)(J)'Update (I => E-1)))) or (E = ET1'First and A = A'Old'update
-ar.ads:481:86: info: range check proved
-ar.ads:481:110: info: range check proved
-ar.ads:481:135: info: range check proved
 ar.ads:481:146: info: range check proved
 ar.ads:481:159: info: index check proved
-ar.ads:481:171: info: range check proved
 ar.ads:481:183: info: index check proved
-ar.ads:481:198: info: range check proved
-ar.ads:481:251: info: range check proved
-ar.ads:481:275: info: range check proved
-ar.ads:481:300: info: range check proved
 ar.ads:481:311: info: range check proved
 ar.ads:481:324: info: index check proved
-ar.ads:481:336: info: range check proved
 ar.ads:481:348: info: index check proved
-ar.ads:481:363: info: range check proved
-ar.ads:481:444: info: range check proved
-ar.ads:481:466: info: range check proved
-ar.ads:481:491: info: range check proved
-ar.ads:481:539: info: range check proved
-ar.ads:481:572: info: range check proved
-ar.ads:481:625: info: range check proved
-ar.ads:481:647: info: range check proved
-ar.ads:481:672: info: range check proved
-ar.ads:481:720: info: range check proved
-ar.ads:481:753: info: range check proved
 ar.ads:486:22: info: postcondition proved
 ar.ads:491:22: warning: postcondition might fail, requires K < IT3'Last and then( (E > ET1'First and A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), K+1 => A'Old(K+1)'Update (J => A'Old(K+1)(J)'Update (I => E-1)))) or (E = ET1'First and A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), K+1 => A'Old(K+1)'Update (J => A'Old(K+1)(J)'Update (I => ET1'Last)))) )) or (K = IT3'Last and ( (E > ET1'First and A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), IT3'First => A'Old(IT3'First)'Update (J => A'Old(IT3'First)(J)'Update (I => E-1)))) or (E = ET1'First and A = A'Old'update
-ar.ads:491:85: info: range check proved
-ar.ads:491:109: info: range check proved
-ar.ads:491:134: info: range check proved
 ar.ads:491:145: info: range check proved
 ar.ads:491:158: info: index check proved
-ar.ads:491:170: info: range check proved
 ar.ads:491:182: info: index check proved
-ar.ads:491:197: info: range check proved
-ar.ads:491:250: info: range check proved
-ar.ads:491:274: info: range check proved
-ar.ads:491:299: info: range check proved
 ar.ads:491:310: info: range check proved
 ar.ads:491:323: info: index check proved
-ar.ads:491:335: info: range check proved
 ar.ads:491:347: info: index check proved
-ar.ads:491:362: info: range check proved
-ar.ads:491:443: info: range check proved
-ar.ads:491:465: info: range check proved
-ar.ads:491:490: info: range check proved
-ar.ads:491:538: info: range check proved
-ar.ads:491:571: info: range check proved
-ar.ads:491:624: info: range check proved
-ar.ads:491:646: info: range check proved
-ar.ads:491:671: info: range check proved
-ar.ads:491:719: info: range check proved
-ar.ads:491:752: info: range check proved
 ar.ads:496:22: info: postcondition proved
 ar.ads:502:22: info: postcondition proved
 ar.ads:508:22: info: postcondition proved
-ar.ads:508:40: info: range check proved
-ar.ads:508:48: info: range check proved
 ar.ads:513:22: info: postcondition proved
 ar.ads:518:22: info: postcondition proved
 ar.ads:523:22: info: postcondition proved
 ar.ads:528:22: warning: postcondition might fail, requires A = A'Old'update
-ar.ads:528:40: info: range check proved
-ar.ads:528:55: info: range check proved
 ar.ads:533:22: info: postcondition proved
 ar.ads:538:22: info: postcondition proved
-ar.ads:544:22: warning: postcondition might fail
+ar.ads:544:22: info: postcondition proved
 ar.ads:550:22: warning: postcondition might fail
-ar.ads:550:58: info: range check proved
-ar.ads:550:84: info: range check proved
-ar.ads:550:94: info: range check proved
-ar.ads:550:120: info: range check proved
-ar.ads:550:170: info: range check proved
-ar.ads:550:196: info: range check proved
-ar.ads:550:205: info: range check proved
 ar.ads:555:22: info: postcondition proved
 ar.ads:560:22: info: postcondition proved
 ar.ads:566:22: info: postcondition proved
 ar.ads:574:22: info: postcondition proved
 ar.ads:579:22: info: postcondition proved
 ar.ads:584:22: warning: postcondition might fail, requires A = A'Old'update
-ar.ads:584:40: info: range check proved
-ar.ads:584:64: info: range check proved
-ar.ads:584:92: info: range check proved
-ar.ads:584:124: info: range check proved
 ar.ads:590:22: info: postcondition proved
 ar.ads:597:22: warning: postcondition might fail
 ar.ads:604:22: warning: postcondition might fail, requires A = A'Old'update
-ar.ads:604:40: info: range check proved
-ar.ads:604:64: info: range check proved
-ar.ads:604:92: info: range check proved
-ar.ads:604:124: info: range check proved
-ar.ads:604:136: info: range check proved
-ar.ads:604:160: info: range check proved
-ar.ads:604:188: info: range check proved
-ar.ads:604:220: info: range check proved
 ar.ads:609:22: info: postcondition proved
 ar.ads:614:22: info: postcondition proved
 ar.ads:619:22: info: postcondition proved
-ar.ads:619:40: info: range check proved
 ar.ads:625:22: warning: postcondition might fail, requires A = A'Old'update
-ar.ads:625:40: info: range check proved
-ar.ads:625:55: info: range check proved
-ar.ads:625:70: info: range check proved
 ar.ads:630:22: info: postcondition proved
 ar.ads:636:22: info: postcondition proved
 ar.ads:642:22: info: postcondition proved
-ar.ads:642:40: info: range check proved
-ar.ads:642:48: info: range check proved
 ar.ads:647:22: info: postcondition proved
 ar.ads:653:22: info: postcondition proved
 ar.ads:659:22: info: postcondition proved
 ar.ads:665:22: warning: postcondition might fail, requires A = A'Old'update
-ar.ads:665:40: info: range check proved
-ar.ads:665:55: info: range check proved
-ar.ads:665:70: info: range check proved
 ar.ads:671:22: info: postcondition proved
 ar.ads:676:22: info: postcondition proved
-ar.ads:682:22: warning: postcondition might fail
+ar.ads:682:22: info: postcondition proved
 ar.ads:688:22: warning: postcondition might fail, requires A = A'Old'update
-ar.ads:688:40: info: range check proved
-ar.ads:688:64: info: range check proved
-ar.ads:688:92: info: range check proved
-ar.ads:688:103: info: range check proved
-ar.ads:688:127: info: range check proved
-ar.ads:688:155: info: range check proved
 ar.ads:693:22: info: postcondition proved
 ar.ads:701:22: info: postcondition proved
 ar.ads:706:22: info: postcondition proved
@@ -467,14 +268,14 @@ ar.ads:884:22: info: postcondition proved
 ar.ads:889:22: info: postcondition proved
 ar.ads:894:22: info: postcondition proved
 ar.ads:899:22: info: postcondition proved
-ar.ads:904:22: warning: postcondition might fail, requires R = R'Old'update
+ar.ads:904:22: info: postcondition proved
 ar.ads:909:22: info: postcondition proved
 ar.ads:914:22: info: postcondition proved
-ar.ads:919:22: warning: postcondition might fail, requires R = Rec3TRec3T'((F3 => Rec2T'((F2 => F), (G2 => Rec1T'(F1 => E), (G1 => ...............)), ...)), ...)
-ar.ads:925:22: warning: postcondition might fail, requires R = R'Old'update
+ar.ads:919:22: info: postcondition proved
+ar.ads:925:22: info: postcondition proved
 ar.ads:931:22: info: postcondition proved
-ar.ads:937:22: warning: postcondition might fail, requires R = R'Old'update
-ar.ads:943:22: warning: postcondition might fail, requires R = Rec3TRec3T'((F3 => Rec2T'((F2 => R'old.F3.F2), (G2 => Rec1T'((F1 => .......), ...)), ...)), ...)
+ar.ads:937:22: info: postcondition proved
+ar.ads:943:22: info: postcondition proved
 ar.ads:948:22: info: postcondition proved
 ar.ads:953:22: info: postcondition proved
 ar.ads:958:22: info: postcondition proved
@@ -489,266 +290,162 @@ ar.ads:998:22: info: postcondition proved
 ar.ads:1003:22: info: postcondition proved
 ar.ads:1008:22: info: postcondition proved
 ar.ads:1013:22: info: postcondition proved
-ar.ads:1021:22: warning: postcondition might fail, requires R = R'Old'update
-ar.ads:1026:22: warning: postcondition might fail
+ar.ads:1021:22: info: postcondition proved
+ar.ads:1026:22: info: postcondition proved
 ar.ads:1031:22: info: postcondition proved
-ar.ads:1036:22: warning: postcondition might fail, requires R = Rec4TRec4T'((F4 => Rec3T'((F3 => Rec2T'((F2 => R'old.F4.F3.F2), (... => ...), ...)), ...)), ...)
-ar.ads:1041:22: warning: postcondition might fail, requires R = R'Old'update
-ar.ads:1046:22: warning: postcondition might fail
+ar.ads:1036:22: info: postcondition proved
+ar.ads:1041:22: info: postcondition proved
+ar.ads:1046:22: info: postcondition proved
 ar.ads:1051:22: info: postcondition proved
-ar.ads:1056:22: warning: postcondition might fail, requires R = Rec4TRec4T'((F4 => Rec3T'((F3 => Rec2T'((F2 => R'old.F4.F3.F2), (... => ...), ...)), ...)), ...)
-ar.ads:1062:22: warning: postcondition might fail, requires R = R'Old'update
+ar.ads:1056:22: info: postcondition proved
+ar.ads:1062:22: info: postcondition proved
 ar.ads:1068:22: info: postcondition proved
-ar.ads:1074:22: warning: postcondition might fail, requires R = R'Old'update
-ar.ads:1080:22: warning: postcondition might fail, requires R = Rec4TRec4T'((F4 => Rec3T'((F3 => Rec2T'((F2 => R'old.F4.F3.F2), (... => ...), ...)), ...)), ...)
-ar.ads:1086:22: warning: postcondition might fail, requires R = R'Old'update
+ar.ads:1074:22: info: postcondition proved
+ar.ads:1080:22: info: postcondition proved
+ar.ads:1086:22: info: postcondition proved
 ar.ads:1092:22: info: postcondition proved
-ar.ads:1098:22: warning: postcondition might fail, requires R = R'Old'update
-ar.ads:1104:22: warning: postcondition might fail, requires R = Rec4TRec4T'((F4 => Rec3T'((F3 => Rec2T'((F2 => R'old.F4.F3.F2), (... => ...), ...)), ...)), ...)
-ar.ads:1109:22: warning: postcondition might fail, requires R = R'Old'update
+ar.ads:1098:22: info: postcondition proved
+ar.ads:1104:22: info: postcondition proved
+ar.ads:1109:22: info: postcondition proved
 ar.ads:1114:22: info: postcondition proved
-ar.ads:1119:22: warning: postcondition might fail, requires R = R'Old'update
-ar.ads:1124:22: warning: postcondition might fail, requires R = Rec4TRec4T'((F4 => Rec3T'((F3 => Rec2T'((F2 => B.F2), (G2 => Rec1T'((... => ...), ...)), ...)), ...)), ...)
-ar.ads:1132:22: warning: postcondition might fail, requires R = R'Old'update
+ar.ads:1119:22: info: postcondition proved
+ar.ads:1124:22: info: postcondition proved
+ar.ads:1132:22: info: postcondition proved
 ar.ads:1137:22: info: postcondition proved
-ar.ads:1142:22: warning: postcondition might fail, requires R = R'Old'update
-ar.ads:1147:22: warning: postcondition might fail, requires R = Rec5TRec5T'((F5 => Rec2T'(F2 => R'old.F5.F2), (G2 => A), (H2 => ...'old........)), ..., ...)
-ar.ads:1152:22: warning: postcondition might fail, requires R = R'Old'update
+ar.ads:1142:22: info: postcondition proved
+ar.ads:1147:22: info: postcondition proved
+ar.ads:1152:22: info: postcondition proved
 ar.ads:1157:22: info: postcondition proved
-ar.ads:1162:22: warning: postcondition might fail, requires R = R'Old'update
-ar.ads:1167:22: warning: postcondition might fail, requires R = Rec5TRec5T'((F5 => Rec2T'(F2 => R'old.F5.F2), (G2 => R'old.H5), (H2 => ...)), ..., ...)
-ar.ads:1172:22: warning: postcondition might fail, requires R = R'Old'update
+ar.ads:1162:22: info: postcondition proved
+ar.ads:1167:22: info: postcondition proved
+ar.ads:1172:22: info: postcondition proved
 ar.ads:1177:22: info: postcondition proved
-ar.ads:1182:22: warning: postcondition might fail, requires R = R'Old'update
-ar.ads:1187:22: warning: postcondition might fail, requires R = Rec5TRec5T'((F5 => Rec2T'(F2 => R'old.F5.F2), (G2 => R'old.H5), (H2 => ...)), ..., ...)
+ar.ads:1182:22: info: postcondition proved
+ar.ads:1187:22: info: postcondition proved
 ar.ads:1195:22: info: postcondition proved
 ar.ads:1200:22: info: postcondition proved
 ar.ads:1205:22: info: postcondition proved
-ar.ads:1205:40: info: range check proved
 ar.ads:1210:22: info: postcondition proved
 ar.ads:1216:22: info: postcondition proved
-ar.ads:1222:22: warning: postcondition might fail
+ar.ads:1222:22: info: postcondition proved
 ar.ads:1228:22: info: postcondition proved
-ar.ads:1228:40: info: range check proved
-ar.ads:1228:72: info: range check proved
 ar.ads:1234:22: info: postcondition proved
 ar.ads:1239:22: info: postcondition proved
-ar.ads:1244:22: warning: postcondition might fail
+ar.ads:1244:22: info: postcondition proved
 ar.ads:1249:22: warning: postcondition might fail
-ar.ads:1249:40: info: range check proved
-ar.ads:1249:86: info: range check proved
 ar.ads:1254:22: info: postcondition proved
 ar.ads:1259:22: info: postcondition proved
 ar.ads:1264:22: info: postcondition proved
 ar.ads:1269:22: info: postcondition proved
-ar.ads:1269:40: info: range check proved
 ar.ads:1274:22: info: postcondition proved
 ar.ads:1279:22: info: postcondition proved
 ar.ads:1284:22: info: postcondition proved
 ar.ads:1289:22: info: postcondition proved
-ar.ads:1289:40: info: range check proved
 ar.ads:1294:22: info: postcondition proved
 ar.ads:1302:22: info: postcondition proved
-ar.ads:1307:22: warning: postcondition might fail
+ar.ads:1307:22: info: postcondition proved
 ar.ads:1312:22: info: postcondition proved
-ar.ads:1312:40: info: range check proved
 ar.ads:1317:22: info: postcondition proved
 ar.ads:1322:22: info: postcondition proved
-ar.ads:1327:22: warning: postcondition might fail
-ar.ads:1332:22: warning: postcondition might fail, requires A = A'Old'update
-ar.ads:1332:40: info: range check proved
-ar.ads:1337:22: warning: postcondition might fail
-ar.ads:1345:22: warning: postcondition might fail
-ar.ads:1350:22: warning: postcondition might fail
+ar.ads:1327:22: info: postcondition proved
+ar.ads:1332:22: info: postcondition proved
+ar.ads:1337:22: info: postcondition proved
+ar.ads:1345:22: info: postcondition proved
+ar.ads:1350:22: info: postcondition proved
 ar.ads:1355:22: info: postcondition proved
-ar.ads:1355:40: info: range check proved
 ar.ads:1360:22: info: postcondition proved
-ar.ads:1366:22: warning: postcondition might fail
-ar.ads:1372:22: warning: postcondition might fail
-ar.ads:1378:22: warning: postcondition might fail, requires A = A'Old'update
-ar.ads:1378:40: info: range check proved
-ar.ads:1384:22: warning: postcondition might fail
-ar.ads:1392:22: warning: postcondition might fail
-ar.ads:1397:22: warning: postcondition might fail
-ar.ads:1402:22: warning: postcondition might fail, requires A = A'Old'update
-ar.ads:1402:40: info: range check proved
-ar.ads:1407:22: warning: postcondition might fail
+ar.ads:1366:22: info: postcondition proved
+ar.ads:1372:22: info: postcondition proved
+ar.ads:1378:22: info: postcondition proved
+ar.ads:1384:22: info: postcondition proved
+ar.ads:1392:22: info: postcondition proved
+ar.ads:1397:22: info: postcondition proved
+ar.ads:1402:22: info: postcondition proved
+ar.ads:1407:22: info: postcondition proved
 ar.ads:1415:22: info: postcondition proved
 ar.ads:1420:22: info: postcondition proved
 ar.ads:1425:22: info: postcondition proved
-ar.ads:1425:63: info: range check proved
 ar.ads:1430:22: info: postcondition proved
-ar.ads:1430:46: info: range check proved
 ar.ads:1435:22: info: postcondition proved
 ar.ads:1440:22: info: postcondition proved
 ar.ads:1445:22: info: postcondition proved
-ar.ads:1445:63: info: range check proved
 ar.ads:1450:22: info: postcondition proved
-ar.ads:1450:46: info: range check proved
 ar.ads:1455:22: info: postcondition proved
 ar.ads:1460:22: info: postcondition proved
 ar.ads:1465:22: info: postcondition proved
-ar.ads:1465:63: info: range check proved
 ar.ads:1470:22: info: postcondition proved
-ar.ads:1470:46: info: range check proved
 ar.ads:1475:22: info: postcondition proved
 ar.ads:1481:22: info: postcondition proved
 ar.ads:1487:22: warning: postcondition might fail, requires R = R'Old'update
-ar.ads:1487:63: info: range check proved
-ar.ads:1487:71: info: range check proved
 ar.ads:1493:22: info: postcondition proved
-ar.ads:1493:46: info: range check proved
-ar.ads:1493:54: info: range check proved
 ar.ads:1498:22: info: postcondition proved
 ar.ads:1503:22: info: postcondition proved
 ar.ads:1508:22: info: postcondition proved
 ar.ads:1516:22: info: postcondition proved
 ar.ads:1521:22: info: postcondition proved
 ar.ads:1526:22: warning: postcondition might fail, requires R = R'Old'update
-ar.ads:1526:63: info: range check proved
-ar.ads:1526:88: info: range check proved
 ar.ads:1531:22: warning: postcondition might fail
-ar.ads:1531:46: info: range check proved
-ar.ads:1531:71: info: range check proved
 ar.ads:1536:22: info: postcondition proved
-ar.ads:1542:22: warning: postcondition might fail
+ar.ads:1542:22: info: postcondition proved
 ar.ads:1548:22: warning: postcondition might fail
-ar.ads:1548:81: info: range check proved
-ar.ads:1548:110: info: range check proved
-ar.ads:1548:120: info: range check proved
-ar.ads:1548:149: info: range check proved
-ar.ads:1548:223: info: range check proved
-ar.ads:1548:252: info: range check proved
-ar.ads:1548:261: info: range check proved
 ar.ads:1553:22: info: postcondition proved
-ar.ads:1558:22: warning: postcondition might fail
+ar.ads:1558:22: info: postcondition proved
 ar.ads:1563:22: warning: postcondition might fail, requires R = R'Old'update
-ar.ads:1563:63: info: range check proved
-ar.ads:1563:73: info: range check proved
 ar.ads:1571:22: info: postcondition proved
 ar.ads:1576:22: info: postcondition proved
 ar.ads:1581:22: warning: postcondition might fail, requires R = R'Old'update
-ar.ads:1581:63: info: range check proved
-ar.ads:1581:88: info: range check proved
-ar.ads:1581:116: info: range check proved
 ar.ads:1586:22: warning: postcondition might fail
-ar.ads:1586:46: info: range check proved
-ar.ads:1586:71: info: range check proved
-ar.ads:1586:99: info: range check proved
-ar.ads:1592:22: warning: postcondition might fail
-ar.ads:1598:22: warning: postcondition might fail
+ar.ads:1592:22: info: postcondition proved
+ar.ads:1598:22: info: postcondition proved
 ar.ads:1604:22: warning: postcondition might fail, requires R = R'Old'update
-ar.ads:1604:56: info: range check proved
-ar.ads:1604:71: info: range check proved
-ar.ads:1604:86: info: range check proved
 ar.ads:1610:22: warning: postcondition might fail
-ar.ads:1610:59: info: range check proved
-ar.ads:1610:74: info: range check proved
-ar.ads:1610:89: info: range check proved
 ar.ads:1618:22: info: postcondition proved
 ar.ads:1623:22: info: postcondition proved
 ar.ads:1628:22: warning: postcondition might fail, requires R = R'Old'update
-ar.ads:1628:63: info: range check proved
-ar.ads:1628:95: info: range check proved
-ar.ads:1628:120: info: range check proved
 ar.ads:1633:22: warning: postcondition might fail
-ar.ads:1633:46: info: range check proved
-ar.ads:1633:82: info: range check proved
-ar.ads:1633:107: info: range check proved
 ar.ads:1641:22: info: postcondition proved
 ar.ads:1646:22: info: postcondition proved
 ar.ads:1651:22: warning: postcondition might fail, requires A = A'Old'update
-ar.ads:1651:40: info: range check proved
-ar.ads:1651:88: info: range check proved
 ar.ads:1656:22: warning: postcondition might fail, requires A = A'Old'update
-ar.ads:1656:40: info: range check proved
-ar.ads:1656:78: info: range check proved
 ar.ads:1661:22: info: postcondition proved
-ar.ads:1667:22: warning: postcondition might fail
+ar.ads:1667:22: info: postcondition proved
 ar.ads:1673:22: warning: postcondition might fail, requires A = A'Old'update
-ar.ads:1673:40: info: range check proved
-ar.ads:1673:88: info: range check proved
-ar.ads:1673:98: info: range check proved
 ar.ads:1679:22: warning: postcondition might fail, requires A = A'Old'update
-ar.ads:1679:40: info: range check proved
-ar.ads:1679:78: info: range check proved
-ar.ads:1679:107: info: range check proved
 ar.ads:1685:22: warning: postcondition might fail, requires A = A'Old'update
-ar.ads:1685:40: info: range check proved
-ar.ads:1685:48: info: range check proved
-ar.ads:1685:96: info: range check proved
 ar.ads:1691:22: warning: postcondition might fail, requires A = A'Old'update
-ar.ads:1691:40: info: range check proved
-ar.ads:1691:48: info: range check proved
-ar.ads:1691:86: info: range check proved
 ar.ads:1697:22: info: postcondition proved
-ar.ads:1703:22: warning: postcondition might fail
+ar.ads:1703:22: info: postcondition proved
 ar.ads:1709:22: warning: postcondition might fail, requires A = B'update
-ar.ads:1709:36: info: range check proved
-ar.ads:1709:67: info: range check proved
 ar.ads:1715:22: warning: postcondition might fail, requires A = B'update
-ar.ads:1715:36: info: range check proved
-ar.ads:1715:64: info: range check proved
 ar.ads:1723:22: info: postcondition proved
 ar.ads:1728:22: info: postcondition proved
 ar.ads:1733:22: warning: postcondition might fail, requires A = A'Old'update
-ar.ads:1733:40: info: range check proved
-ar.ads:1733:88: info: range check proved
-ar.ads:1733:116: info: range check proved
 ar.ads:1738:22: warning: postcondition might fail, requires A = A'Old'update
-ar.ads:1738:40: info: range check proved
-ar.ads:1738:98: info: range check proved
-ar.ads:1738:126: info: range check proved
 ar.ads:1743:22: info: postcondition proved
-ar.ads:1748:22: warning: postcondition might fail
+ar.ads:1748:22: info: postcondition proved
 ar.ads:1753:22: warning: postcondition might fail, requires A = A'Old'update
-ar.ads:1753:40: info: range check proved
-ar.ads:1753:88: info: range check proved
-ar.ads:1753:116: info: range check proved
-ar.ads:1753:152: info: range check proved
 ar.ads:1758:22: warning: postcondition might fail, requires A = A'Old'update
-ar.ads:1758:40: info: range check proved
-ar.ads:1758:78: info: range check proved
-ar.ads:1758:114: info: range check proved
-ar.ads:1758:142: info: range check proved
 ar.ads:1766:22: info: postcondition proved
-ar.ads:1771:22: warning: postcondition might fail
+ar.ads:1771:22: info: postcondition proved
 ar.ads:1776:22: warning: postcondition might fail, requires R = R'Old'update
-ar.ads:1776:63: info: range check proved
 ar.ads:1781:22: warning: postcondition might fail, requires R = RofAofR1RofAofR1'(A1 => R'old.A1'update), (B1 => R'old.B1), (C1 => R'old.C1)
-ar.ads:1781:59: info: range check proved
-ar.ads:1786:22: warning: postcondition might fail
-ar.ads:1791:22: warning: postcondition might fail
+ar.ads:1786:22: info: postcondition proved
+ar.ads:1791:22: info: postcondition proved
 ar.ads:1796:22: warning: postcondition might fail, requires R = R'Old'update
-ar.ads:1796:63: info: range check proved
 ar.ads:1801:22: warning: postcondition might fail, requires R = RofAofR1RofAofR1'(A1 => R'old.A1'update), (B1 => true), (C1 => R'old.C1)
-ar.ads:1801:59: info: range check proved
-ar.ads:1809:22: warning: postcondition might fail
-ar.ads:1814:22: warning: postcondition might fail
+ar.ads:1809:22: info: postcondition proved
+ar.ads:1814:22: info: postcondition proved
 ar.ads:1819:22: warning: postcondition might fail, requires R = R'Old'update
-ar.ads:1819:63: info: range check proved
 ar.ads:1824:22: warning: postcondition might fail, requires R = RofAofR2RofAofR2'(A2 => R'old.A2), (B2 => R'old.B2'update)
-ar.ads:1824:76: info: range check proved
-ar.ads:1829:22: warning: postcondition might fail
-ar.ads:1835:22: warning: postcondition might fail
+ar.ads:1829:22: info: postcondition proved
+ar.ads:1835:22: info: postcondition proved
 ar.ads:1841:22: warning: postcondition might fail, requires R = R'Old'update
-ar.ads:1841:72: info: range check proved
-ar.ads:1841:179: info: range check proved
 ar.ads:1847:22: warning: postcondition might fail, requires R = RofAofR2RofAofR2'(A2 => I), (B2 => R'old.B2'update)
-ar.ads:1847:69: info: range check proved
-ar.ads:1847:298: info: range check proved
-ar.ads:1855:22: warning: postcondition might fail
-ar.ads:1860:22: warning: postcondition might fail
+ar.ads:1855:22: info: postcondition proved
+ar.ads:1860:22: info: postcondition proved
 ar.ads:1865:22: warning: postcondition might fail, requires A = A'Old'update
-ar.ads:1865:40: info: range check proved
-ar.ads:1865:88: info: range check proved
-ar.ads:1870:22: warning: postcondition might fail, requires A(I) = RofAofR1RofAofR1'(A1 => A'old (I).A1'update), (B1 => A'old (I).B1), (C1 => ... (...)....)
-ar.ads:1870:65: info: range check proved
+ar.ads:1870:22: info: postcondition proved
 ar.ads:1878:22: info: postcondition proved
 ar.ads:1883:22: info: postcondition proved
 ar.ads:1888:22: warning: postcondition might fail, requires R = R'Old'update
-ar.ads:1888:63: info: range check proved
-ar.ads:1888:117: info: range check proved
 ar.ads:1893:22: warning: postcondition might fail, requires R = RofAofRofARofAofRofA'(D1 => R'old.D1'update), (E1 => R'old.E1)
-ar.ads:1893:61: info: range check proved
-ar.ads:1893:102: info: range check proved

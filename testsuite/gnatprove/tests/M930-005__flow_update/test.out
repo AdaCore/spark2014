@@ -1,7 +1,6 @@
 update_legal.adb:13:7: info: assertion proved
 update_uninitialized.adb:15:11: warning: "Element" might not be initialized
 update_uninitialized.adb:30:11: warning: "Element" might not be initialized
-update_uninitialized.adb:15:26: info: range check proved
 update_uninitialized_2.adb:16:32: warning: "Z" might not be initialized
 update_uninitialized_2.adb:19:07: "Z" is not initialized
 gprbuild: *** compilation phase failed
