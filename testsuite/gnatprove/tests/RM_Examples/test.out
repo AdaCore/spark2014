@@ -2,11 +2,7 @@ update_examples.ads:38:32: attribute Update for multi-dimensional arrays is not 
 update_examples.ads:71:53: attribute Update for multi-dimensional arrays is not yet supported
 gprbuild: *** compilation phase failed
 gnatprove: error during analysis and translation to intermediate language, aborting.
-loop_var_loop_invar.adb:4:04: warning: initialization has no effect
-loop_var_loop_invar.adb:5:04: warning: initialization has no effect
-loop_var_loop_invar.adb:7:17: warning: statement has no effect
-loop_var_loop_invar.adb:11:09: warning: unused assignment
-loop_var_loop_invar.adb:12:09: warning: unused assignment
+loop_var_loop_invar.adb:4:04: warning: subprogram "Loop_Var_Loop_Invar" has no effect
 loop_var_loop_invar.adb:8:7: info: loop invariant initialization proved
 loop_var_loop_invar.adb:8:7: info: loop invariant preservation proved
 loop_var_loop_invar.adb:8:39: info: overflow check proved
