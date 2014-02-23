@@ -17,13 +17,3 @@ pupils.ads:109:39: info: length check proved
 pupils.ads:112:39: info: length check proved
 pupils.ads:116:38: warning: array index check might fail
 pupils.ads:122:68: info: index check proved
-pupils.ads:125:28: info: range check proved
-pupils.ads:125:53: info: range check proved
-pupils.ads:126:28: info: range check proved
-pupils.ads:126:53: info: range check proved
-pupils.ads:127:28: info: range check proved
-pupils.ads:127:53: info: range check proved
-pupils.ads:128:28: info: range check proved
-pupils.ads:128:53: info: range check proved
-pupils.ads:129:28: info: range check proved
-pupils.ads:129:53: info: range check proved

@@ -943,6 +943,51 @@ package body Why.Gen.Expr is
 
             Check_Type := Standard_Natural;
 
+         when N_Component_Association =>
+
+            declare
+               Pref       : Node_Id;
+               Array_Type : Entity_Id;
+
+            begin
+
+               --  Expr is a choice of a 'Update aggregate, and needs a
+               --  range check towards the corresponding index type of the
+               --  prefix to the 'Update aggregate.
+
+               --  ??? one dimensional arrays here only, extend this
+               --  for multidim case, LC17-035
+
+               pragma Assert
+                 (Nkind (Parent (Par)) = N_Aggregate
+                    and then Nkind (Parent (Parent (Par))) =
+                      N_Attribute_Reference
+                    and then
+                      Get_Attribute_Id
+                        (Attribute_Name (Parent (Parent (Par)))) =
+                          Attribute_Update);
+
+               Pref := Prefix (Parent (Parent (Par)));
+
+               --  When present, the Actual_Subtype of the entity should be
+               --  used instead of the Etype of the prefix.
+
+               if Is_Entity_Name (Pref)
+                 and then Present (Actual_Subtype (Entity (Pref)))
+               then
+                  Array_Type := Actual_Subtype (Entity (Pref));
+               else
+                  Array_Type := Etype (Pref);
+               end if;
+
+               Check_Type := Etype (First_Index (Unique_Entity (Array_Type)));
+
+            end;
+
+         when N_Range =>
+
+            Check_Type := Etype (Par);
+
          when others =>
             Ada.Text_IO.Put_Line ("[Get_Range_Check_Info] kind ="
                                   & Node_Kind'Image (Nkind (Par)));
