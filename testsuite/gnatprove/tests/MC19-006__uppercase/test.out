@@ -1,3 +1,2 @@
-base.adb:3:04: warning: initialization has no effect
+base.adb:1:11: warning: subprogram "Base" has no effect
 base.adb:5:50: warning: overflow check might fail
-base.adb:7:06: warning: unused assignment
