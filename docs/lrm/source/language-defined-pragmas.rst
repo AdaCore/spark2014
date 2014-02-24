@@ -114,8 +114,8 @@ Ada_2012           	      Yes
 Annotate		      Yes
 Check	 		      Yes
 Check_Policy 		      Yes
-Default_Scalar_Storage_Order  Yes
 Debug			      Yes		     Ignored (replaced by null statement)
+Default_Scalar_Storage_Order  Yes
 Inline_Always      	      Yes
 Linker_Section      	      Yes
 Overflow_Mode                 Yes
