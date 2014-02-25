@@ -1,4 +1,4 @@
-package Binary_Search
+package Linear_Search 
   with SPARK_Mode
 is
    type Opt_Index is new Natural;
@@ -9,15 +9,8 @@ is
 
    type Ar is array (Index range <>) of Integer;
 
-   function Empty (A : Ar) return Boolean is (A'First > A'Last);
-
-   function Sorted (A : Ar) return Boolean is
-      (for all I1 in A'Range =>
-         (for all I2 in I1 .. A'Last => A (I1) <= A (I2)));
-
    function Search (A : Ar; I : Integer) return Opt_Index with
-     Pre  => Sorted (A),
      Post => (if Search'Result in A'Range then A (Search'Result) = I
               else (for all K in A'Range => A (K) /= I));
 
-end Binary_Search;
+end Linear_Search;

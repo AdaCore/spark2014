@@ -12,7 +12,7 @@ $(RESULTS)/%.prove: force
 	cd prove && \
         cp -rf ../$* . && \
         cd $* && \
-        gnatprove -f -q -P search.gpr --warnings=on > $@
+        gnatprove -f -q -P search.gpr --warnings=on --timeout=60 > $@
 
 clean:
 	rm -rf prove

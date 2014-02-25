@@ -457,17 +457,82 @@ are four properties that a good loop invariant should fulfill:
 #. [INSIDE] It should allow proving absence of run-time errors and local
    assertions inside the loop.
 
-#. [AFTER] It should allow proving absence of run-time errors and the
-   subprogram postcondition after the loop.
+#. [AFTER] It should allow proving absence of run-time errors, local assertions
+   and the subprogram postcondition after the loop.
 
 #. [PRESERVE] It should be provable after the first iteration of the loop.
 
-We will demonstrate techniques to complete a loop invariant so that it
+As a first example, here is a variant of the search algorithm described in
+:ref:`spark tutorial`, which returns whether a collection contains a desired
+value, and if so, at which index. The collection is implemented as an array.
+
+The specification of ``Linear_Search`` is given in file ``linear_search.ads``.
+The postcondition of ``Search`` expresses that, either the search returns a
+result within the array bounds, in which case it is the desired index,
+otherwise the array does not contain the value searched.
+
+.. literalinclude:: examples/linear_search_final/linear_search.ads
+   :language: ada
+   :linenos:
+
+The implementation of ``Linear_Search`` is given in file ``linear_search.adb``.
+The loop invariant of ``Search`` expresses that, at the end of each iteration,
+if the loop has not been exited before, then the value searched is not in the
+range of indexes between the start of the array ``A'First`` and the current
+index ``Pos``.
+
+.. literalinclude:: examples/linear_search_final/linear_search.adb
+   :language: ada
+   :linenos:
+
+With this loop invariant, |GNATprove| is able to prove all checks in
+``Linear_Search``, both those related to absence of run-time errors and those
+related to verification of contracts:
+
+.. literalinclude:: examples/results/linear_search_final.prove
+   :language: none
+   :linenos:
+
+In particular, the loop invariant fulfills all four properties that we listed
+above:
+
+#. [INIT] It is proved in the first iteration (message on line 2).
+#. [INSIDE] It allows proving absence of run-time errors inside the loop
+   (messages on lines 1 and 4).
+#. [AFTER] It allows proving absence of run-time errors after the loop
+   (messages on lines 6 and 7) and the subprogram postcondition (message on
+   line 5).
+#. [PRESERVE] It is proved after the first iteration (message on line 3).
+
+Note that the loop invariant resembles closely the second line in the
+postcondition of the subprogram, except with a different range of values in the
+quantification: instead of stating a property for all indexes in the array
+``A``, the loop invariant states the same property for all indexes up to the
+current loop index ``Pos``. In fact, if we equal ``Pos`` to ``A'Last`` for the
+last iteration of the loop, the two properties are equal. This explains here
+how the loop invariant allows proving the subprogram postcondition when the
+value searched is not found.
+
+Note also that we chose to put the loop invariant at the end of the loop. We
+could as easily put it at the start of the loop. In that case, the range of
+values in the quantification should be modified to state that, at the start of
+each iteration, if the loop has not been exited before, then the value searched
+is not in the range of indexes between the start of the array ``A'First`` and
+the current index ``Pos`` *excluded*:
+
+.. code-block:: ada
+
+         pragma Loop_Invariant (for all K in A'First .. Pos - 1 => A (K) /= I);
+
+Indeed, the test for the value at index ``Pos`` is done after the loop
+invariant in that case.
+
+We will now demonstrate techniques to complete a loop invariant so that it
 fulfills all four properties [INIT], [INSIDE], [AFTER] and [PRESERVE], on a
-simple algorithm searching in an ordered collection of elements. Like the naive
-search algorithm described in :ref:`spark tutorial`, this algorithm returns
-whether the collection contains the desired value, and if so, at which
-index. The collection is also implemented as an array.
+more complex algorithm searching in an ordered collection of elements. Like the
+naive search algorithm just described, this algorithm returns whether the
+collection contains the desired value, and if so, at which index. The
+collection is also implemented as an array.
 
 The specification of this ``Binary_Search`` is given in file ``binary_search.ads``:
 
@@ -483,7 +548,9 @@ The implementation of ``Binary_Search`` is given in file ``binary_search.adb``:
 
 Note that, although function ``Search`` has a loop, we have not given an
 explicit loop invariant yet, so the default loop invariant of ``True`` will be
-used by |GNATprove|.
+used by |GNATprove|. We are running |GNATprove| with a prover timeout of 1 mn
+(switch ``--timeout=60``) to get the results presented in the rest of this
+section.
 
 Proving a Loop Invariant in the First Iteration
 -----------------------------------------------
@@ -563,14 +630,16 @@ the assertion:
 
 The problem is that |GNATprove| only knows what the user specified about ``A``
 in the precondition, namely that it is sorted in ascending order. Nowhere it is
-said that ``A`` does not contain the value ``I``. 
+said that ``A`` does not contain the value ``I``. Note that adding this
+assertion is not compulsory. It simply helps identifying what is needed to
+achieve property [AFTER], but it can be removed afterwards.
 
 What is needed here is a loop invariant stating that, if ``A`` contains the
 value ``I``, it must be at an index in the range ``Left..Right``, so when the
 loop exits because ``Left > Right`` (so the loop test becomes false), ``A``
 cannot contain the value ``I``.
 
-A simple way to express this property is to state that the value of ``A`` at
+One way to express this property is to state that the value of ``A`` at
 index ``Left - 1`` is less than ``I``, while the value of ``A`` at index
 ``Right + 1`` is greater than ``I``. Taking into account the possibility that
 there are no such indexes in ``A`` if either ``Left`` or ``Right`` are at the
@@ -586,7 +655,7 @@ far-reaching. Although the above loop invariant together with the property that
 the array is sorted imply the property we want to express, it still requires
 additional work for the prover to reach the same conclusion, which may prevent
 automatic proof in the allocated time. In that case, it is better to express
-the equivalent but more verbose property directly, as follows:
+the equivalent but more explicit property directly, as follows:
 
 .. literalinclude:: examples/binary_search_precise/binary_search.adb
    :language: ada

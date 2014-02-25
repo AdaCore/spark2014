@@ -27,7 +27,6 @@ is
          pragma Loop_Invariant
            (for all Index in A'Range =>
               (if Index > Right then I < A (Index)));
-         pragma Loop_Variant (Decreases => Right - Left);
 
          Med := Left + (Right - Left) / 2;
 
@@ -46,7 +45,6 @@ is
             return Med;
          end if;
       end loop;
-      pragma Assert (for all Index in A'Range => A (Index) /= I);
 
       return No_Index;
    end Search;
