@@ -1,7 +1,8 @@
-update_examples.ads:38:32: attribute Update for multi-dimensional arrays is not yet supported
-update_examples.ads:71:53: attribute Update for multi-dimensional arrays is not yet supported
-gprbuild: *** compilation phase failed
-gnatprove: error during analysis and translation to intermediate language, aborting.
+update_examples.ads:23:19: info: postcondition proved
+update_examples.ads:30:19: info: postcondition proved
+update_examples.ads:38:19: warning: postcondition might fail, requires A2D = A2D'Old'update
+update_examples.ads:54:19: info: postcondition proved
+update_examples.ads:69:8: warning: postcondition might fail, requires NA = NA'Old'update
 loop_var_loop_invar.adb:1:11: warning: subprogram "Loop_Var_Loop_Invar" has no effect
 loop_var_loop_invar.adb:8:7: info: loop invariant initialization proved
 loop_var_loop_invar.adb:8:7: info: loop invariant preservation proved

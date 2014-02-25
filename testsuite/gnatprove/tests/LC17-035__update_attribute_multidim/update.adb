@@ -12,4 +12,10 @@ package body Update is
      A(I, I, I) := New_Val;
    end Basic_Array_Update2;
 
+   procedure Basic_Array_Update3
+     (A: in out Array_3D; I: in Index; New_Val: Integer) is
+   begin
+     A(I, I, I) := New_Val;
+   end Basic_Array_Update3;
+
 end Update;
