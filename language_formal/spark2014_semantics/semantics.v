@@ -806,9 +806,10 @@ Function f_eval_stmt k (s: stack) (c: statement) {struct k}: Return stack :=
   end.
 
 (* My renaming heuristic. Not perfect. *)
-Ltac my_rename_hyp h :=
-  match type of h with
+Ltac semantic_rename_hyp th :=
+  match th with
     | (do_check _ _ _ _) => fresh "hdo_check"
+    | (eval_expr _ _ Run_Time_Error) => fresh "heval_expr_rte"
     | (eval_expr _ _ _) => fresh "heval_expr"
     | (eval_decl _ _ _ _) => fresh "heval_decl"
     | (eval_stmt _ _ _) => fresh "heval_stmt"
@@ -821,15 +822,16 @@ Ltac my_rename_hyp h :=
     | (fetch _ _ = _) => fresh "heqfetch"
     | (Copy_in _ _ _ _) => fresh "hCopy_in"
     | (Cut_until _ _ _ _) => fresh "hCut_until"
+    | (f_eval_expr _ _ = Run_Time_Error) => fresh "heqeval_expr_rte"
     | (f_eval_expr _ _ = _) => fresh "heqeval_expr"
     | (f_eval_decl _ _ _ = _) => fresh "heqeval_decl"
     | (f_eval_stmt _ _ _ = _ ) => fresh "heqeval_stmt"
     | (f_eval_bin_expr _ _ _ = _) => fresh "heqeval_bin_expr"
     | (f_do_check _ _ _ = _) => fresh "heqdo_check"
     | (stack_eq_length _ _) => fresh "hstack_eq_length"
-    | _ => default_rename_hyp h
+    | _ => default_rename_hyp th
   end.
-Ltac rename_hyp ::= my_rename_hyp.
+Ltac rename_hyp ::= semantic_rename_hyp.
 
 Lemma eval_expr_unique: forall s e v1 v2,
     eval_expr s e v1 ->
@@ -845,50 +847,50 @@ Proof.
   - !inversion heval_expr; !intros.
     Rinversion fetchG.    
   - !inversion heval_expr;auto;!intros.
-    apply IHhv1 in heval_expr0.
+    apply IHhv1 in heval_expr1.
     discriminate.
-  - !inversion heval_expr1; !intros ; auto.
+  - !inversion heval_expr0; !intros ; auto.
     apply IHhv1_2 in heval_expr1.
     discriminate.
   - !inversion heval_expr1;auto;!intros.
     apply f_do_check_complete in hdo_check.
     apply f_do_check_complete in hdo_check0.
-    apply IHhv1_2 in heval_expr1.
-    apply IHhv1_1 in heval_expr2.
-    injection heval_expr1.
+    apply IHhv1_2 in heval_expr2.
+    apply IHhv1_1 in heval_expr3.
     injection heval_expr2.
+    injection heval_expr3.
     intros; subst.
     rewrite hdo_check in hdo_check0.
     discriminate.
   - !inversion heval_expr1;!intros.
-    + apply IHhv1_1 in heval_expr1.
+    + apply IHhv1_1 in heval_expr_rte.
       discriminate.
-    + apply IHhv1_2 in heval_expr1.
+    + apply IHhv1_2 in heval_expr_rte.
       discriminate.
     + apply f_do_check_complete in hdo_check0.
       apply f_do_check_complete in hdo_check.
-      apply IHhv1_1 in heval_expr2.
-      apply IHhv1_2 in heval_expr1.
-      injection heval_expr1.
+      apply IHhv1_1 in heval_expr3.
+      apply IHhv1_2 in heval_expr2.
+      injection heval_expr3.
       injection heval_expr2.
       intros ; subst.
       rewrite hdo_check in hdo_check0.
       discriminate.
-    + apply IHhv1_1 in heval_expr2.
-      apply IHhv1_2 in heval_expr1.
-      injection heval_expr1.
+    + apply IHhv1_1 in heval_expr3.
+      apply IHhv1_2 in heval_expr2.
+      injection heval_expr3.
       injection heval_expr2.
       intros ;subst.
       rewrite (eval_bin_unique _ _ _ _ _ heval_bin_expr heval_bin_expr0) .
       reflexivity.
   - !inversion heval_expr;auto;!intros.
-    apply IHhv1 in heval_expr.
+    apply IHhv1 in heval_expr0.
     discriminate.
   - !inversion heval_expr;!intros.
-    + apply IHhv1 in heval_expr.
+    + apply IHhv1 in heval_expr_rte.
       discriminate.
-    + apply IHhv1 in heval_expr.
-      injection heval_expr.
+    + apply IHhv1 in heval_expr0.
+      injection heval_expr0.
       intros ;subst.
       rewrite (eval_unary_unique _ _ _ _ heval_unary_expr0 heval_unary_expr) .
       reflexivity.
@@ -1046,14 +1048,14 @@ Proof.
     eapply eval_E_Binary_Operation3.
     apply hz1. apply hz2.
     apply f_do_check_correct; auto.
-  - specialize (f_eval_expr_correct1 _ _ _ heqeval_expr0); intros hz1.
-    specialize (IHr0 heqeval_expr).
+  - specialize (f_eval_expr_correct1 _ _ _ heqeval_expr); intros hz1.
+    specialize (IHr0 heqeval_expr_rte).
     eapply eval_E_Binary_Operation2 with v1; auto.
-  - specialize (IHr heqeval_expr).
+  - specialize (IHr heqeval_expr_rte).
     constructor; assumption.
   - destruct op;
     destruct v; inversion h. 
-  - specialize (IHr heqeval_expr).
+  - specialize (IHr heqeval_expr_rte).
     constructor; assumption.
 Qed.
 
@@ -1120,9 +1122,9 @@ Proof.
         rewrite H0; auto.
       * rm_false_hyp.
   - destruct op.
-    + inversion heval_unary_expr; subst.
+    + !inversion heval_unary_expr.
       auto.
-    + inversion heval_unary_expr; subst.
+    + !inversion heval_unary_expr.
       auto.
 Qed.
 
@@ -1372,9 +1374,9 @@ Proof.
     + apply IHr.
       assumption.
   - !inversion heq;!intros.
-    + rewrite heq in y.
+    + rewrite heq0 in y.
       contradiction.
-    + rewrite heq in y.
+    + rewrite heq0 in y.
       contradiction.
 Qed.
 
@@ -1415,7 +1417,6 @@ Lemma eval_stmt_store_length:
 Proof.
   intros s s' stm H.
   (*    !! (induction H;intros st heq';inversion heq';clear heq'; subst;auto). *)
-  Print Grammar tactic.
   (!!induction H; intros st heq'; inversion heq';clear heq'; subst;auto).
   - apply updateG_stack_eq_length in hupdateG.
     assumption.
@@ -1502,19 +1503,19 @@ Proof.
   (!!functional induction f_eval_decl s sto d);simpl;!intros;try discriminate;crush;
   try now (!inversion heval_decl;!intros;crush).
   - !inversion heval_decl;!intros.
-    + apply IHr in heval_decl0.
-      Rinversion f_eval_decl.
-    + apply IHr in heval_decl.
+    + apply IHr in heval_decl1.
       Rinversion f_eval_decl.
     + apply IHr in heval_decl0.
+      Rinversion f_eval_decl.
+    + apply IHr in heval_decl1.
       Rinversion f_eval_decl.
   - !inversion heval_decl;!intros.
-    + apply IHr in heval_decl0.
+    + apply IHr in heval_decl1.
       Rinversion f_eval_decl.
-    + apply IHr in heval_decl.
-      assumption.
     + apply IHr in heval_decl0.
-      rewrite heval_decl0 in y.
+      assumption.
+    + apply IHr in heval_decl1.
+      rewrite heval_decl1 in y.
       contradiction.
 Qed.
 

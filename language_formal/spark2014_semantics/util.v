@@ -139,8 +139,8 @@ Ltac Rinversion f :=
     | H: _ = f ?X ?Y ?Z ?U ?V ?W , H': context [ f ?X ?Y ?Z ?U ?V ?W ] |- _ => rewinv H H'
   end ; auto.
 
-Ltac default_rename_hyp h :=
-  match type of h with
+Ltac default_rename_hyp th :=
+  match th with
     | _ = _ => fresh "heq"
   end.
 
@@ -171,7 +171,7 @@ Ltac rename_norm :=
            | H:_ |- _ =>
              match type of H with
                | id _ => fail 1
-               | ?th => let newname := rename_hyp H in
+               | ?th => let newname := rename_hyp th in
                         rename H into newname;
                         change (id th) in newname
              end
@@ -197,7 +197,8 @@ Ltac idall :=
 
 
 (* hyp(h)? *)
-Tactic Notation "rename_after" tactic(T) constr(h) := idall; unid h; T h ; try id_ify h; rename_norm ; unidall.
+Tactic Notation "rename_after" tactic(T) constr(h) :=
+  idall; unid h; (T h) ; try id_ify h; rename_norm ; unidall.
 Tactic Notation "!!" tactic(T) := idall; T ; rename_norm ; unidall.
 
 (* decompose takes a special list of constr as argument *)
@@ -205,10 +206,34 @@ Tactic Notation "!!" tactic(T) := idall; T ; rename_norm ; unidall.
 Tactic Notation "decomp" hyp(h) := rename_after (fun x => decompose [and ex or] x) h.
 
 Tactic Notation "!induction" constr(h) := rename_after (fun x => induction x) h.
-Tactic Notation "!functional induction" constr(h) :=
-  rename_after (fun x => functional induction x) h.
+Tactic Notation "!functional" "induction" constr(h) :=
+   !! (functional induction h).
+(*   rename_after (fun x => functional induction x) h. *)
+Tactic Notation "!functional" "inversion" constr(h) :=
+  rename_after (fun x => functional inversion x) h.
 Tactic Notation "!destruct" constr(h) := rename_after (fun x => destruct x) h.
-Tactic Notation "!inversion" hyp(h) := rename_after (fun x => inverts x as) h.
 Tactic Notation "!intros" := idall;intros;rename_norm;unidall.
-Tactic Notation "!invclear" hyp(h) := rename_after (fun x => inverts x as;intros) h.
+(* Tactic Notation "!inversion" hyp(h) := rename_after (fun x => inverts x as) h. *)
+Tactic Notation "!inversion" hyp(h) := rename_after (fun x => inversion x;subst) h.
+(* Tactic Notation "!invclear" hyp(h) := rename_after (fun x => inverts x as;intros) h. *)
+Tactic Notation "!invclear" hyp(h) := rename_after (fun x => inversion x;clear x;subst) h.
 
+
+
+(*
+Ltac r := fun T => (fun h => idall; unid h; (T h) ; try id_ify h; rename_norm ; unidall).
+Tactic Notation "!!!" tactic(T) := (fun _ => idall; T ; rename_norm ; unidall).
+
+Ltac xxxx h := induction h.
+Ltac yyy T h := idall; unid h; (T h) ; try id_ify h; rename_norm ; unidall.
+
+Tactic Notation "rrr" tactic(T) constr(h) :=
+  idall; unid h; ((fun x => T x) h) ; try id_ify h; rename_norm ; unidall.
+
+
+Lemma foo: forall x y z:nat, x =y -> y=z -> x=z.
+Proof.
+  intros x y z H H0.
+  yyy xxxx H.
+Qed.
+ *)

@@ -288,7 +288,7 @@ Proof.
         assumption.
       * assumption.
     + intros h.
-      inv h.
+      !invclear h.
       constructor.
       transitivity y0;auto.
   - subst.
@@ -418,42 +418,22 @@ Qed.
    everywhere.
  *)
 
-Ltac rename_and_idify H hname :=
-  let th := type of H in
-  rename H into hname;
-  change (id th) in hname;
-  rename_norm;
-  change th in hname
 
-with rename_norm :=
-  match reverse goal with
-    | H: (type_check_store _ _) |- _ =>
-      let s := fresh "htype_check_store" in
-      rename_and_idify H s
-    | H: (beq_nat _ _ = _) |- _ =>
-      let s := fresh "hbeq" in
-      rename_and_idify H s
-    | H: (compatible_type_of_value _ _) |- _ =>
-      let s := fresh "hcompat_t_v" in
-      rename_and_idify H s
-    | H: STACK.fetch _ _ = _ |- _ =>
-      let s := fresh "heqfetch" in
-      rename_and_idify H s
-    | H: STACK.fetchG _ _ = _ |- _ =>
-      let s := fresh "heqfetchG" in
-      rename_and_idify H s
-    | H: fetchG _ _ = _ |- _ =>
-      let s := fresh "heqTfetchG" in
-      rename_and_idify H s
-    | H: fetch _ _ = _ |- _ =>
-      let s := fresh "heqTfetch" in
-      rename_and_idify H s
-    | H: ?f _ _ = _ |- _ =>
-      let s := fresh "heq" f in
-      rename_and_idify H s
-    | _ => idtac
-  end.
+Ltac typing_rename_hyp th :=
+    match th with
+      | (type_check_store _ _) => fresh "htype_check_store"
+      | (beq_nat _ _ = _) => fresh "hbeq"
+      | (compatible_type_of_value _ _) => fresh "hcompat_t_v"
+      | STACK.fetch _ _ = _=> fresh "heqfetch"
+      | STACK.fetchG _ _ = _=> fresh "heqfetchG"
+      | fetchG _ _ = _=> fresh "heqTfetchG"
+      | fetch _ _ = _=> fresh "heqTfetch"
+      | f_type_check_store _ _ = _=> fresh "heqtype_check_store"
+      | type_check_store _ _ => fresh "htype_check_store"
+      | _ => semantic_rename_hyp th
+    end.
 
+Ltac rename_hyp ::= typing_rename_hyp.
 
 
 
@@ -472,7 +452,7 @@ Lemma type_check_store_spec1:
        /\ exists m, TSTACK.fetch x tb = Some (m, t)).
 Proof.
   intros tb s x v h1 h2.
-  induction h1;functional inversion h2;subst;rename_norm;simpl;try rewrite hbeq;eauto.
+  !induction h1; !functional inversion h2;subst;simpl;try rewrite hbeq;eauto.
   - exists (BasicType Boolean);split;try constructor;eauto.
   - exists (BasicType Integer);split;try constructor;eauto.
   - exists (BasicType Boolean);split;try constructor;eauto.
@@ -510,7 +490,7 @@ Lemma type_check_store_spec2_none: forall tb s x,
 Proof.
   intros tb s x h1 h2.
   induction h1;functional inversion h2;subst;rename_norm
-    ; simpl;try rewrite hbeq;auto; split;auto;intros v' h;inv h.
+    ; simpl;try rewrite hbeq;auto; split;auto;intros v' h;!invclear h.
 Qed.
 
 Lemma type_check_store_spec1_none:
@@ -563,6 +543,16 @@ Function f_type_check_stack (tb: TSTACK.stack) (s: STACK.stack): bool :=
     | _ , _  => false
     end.
 
+(* Extending naming strategy. *)
+Ltac typing_rename_hyp_tc th :=
+    match th with
+      | f_type_check_stack _ _ = _=> fresh "heqtype_check_stack"
+      | type_check_stack _ _ => fresh "htype_check_stack"
+      | _ => typing_rename_hyp th
+    end.
+
+Ltac rename_hyp ::= typing_rename_hyp_tc.
+
 (** Bisimulation proof between f_type_check_store and type_check_store: 
     - f_type_check_store_correct
     - f_type_check_store_complete
@@ -572,7 +562,7 @@ Lemma f_type_check_stack_correct: forall tb s,
         type_check_stack tb s.
 Proof.
     intros tb s.
-    functional induction (f_type_check_stack tb s);intros; try discriminate;rename_norm.
+    !functional induction (f_type_check_stack tb s);!intros; try discriminate.
     - constructor.
     - constructor;auto.
       apply f_type_check_store_correct.
@@ -599,11 +589,11 @@ Lemma type_check_stack_spec1:
 Proof.
   intros tb s x v h1.
   revert x v.
-  induction h1;intros x v h2.
+  !induction h1;intros x v h2.
   - functional inversion h2.
-  - functional inversion h2;subst;rename_norm.
+  - !functional inversion h2 ;subst.
     + apply (type_check_store_spec1 sto1 sto2 x v) in htype_check_store.
-      * decomp htype_check_store;rename_norm;rename_norm.
+      * decomp htype_check_store.
         exists x0.
         split;auto.
         exists x1.
@@ -612,7 +602,7 @@ Proof.
         reflexivity.
       * assumption.      
     + eapply type_check_store_spec1_none with sto1 sto2 x in htype_check_store;auto.
-      specialize (IHh1 _ _ heqfetchG0).
+      specialize (IHh1 _ _ heqfetchG).
       decomp IHh1.
       exists x0.
       split;auto.
@@ -622,6 +612,8 @@ Proof.
       rewrite htype_check_store.
       reflexivity.
 Qed.
+
+
 
 (** typed_value' means: for any type checked store s with respect to 
     the symbol table tb, if tb includes a variable x of type t, then 
@@ -634,8 +626,8 @@ Lemma type_check_stack_spec2: forall tb s x m t,
     (exists v,  STACK.fetchG x s = Some v /\ compatible_type_of_value v t).
 Proof.
     intros tb s x m t h1 h2.
-    induction h1;functional inversion h2;subst;rename_norm.
-    - functional inversion heqTfetchG;subst; clear heqTfetchG;rename_norm;rename_norm.
+    !induction h1; !functional inversion h2;subst.
+    - !functional inversion h2;subst.
       + generalize (type_check_store_spec2 _ _ _ _ _ htype_check_store heqTfetch0).
         intro hh.
         decomp hh.
@@ -643,7 +635,7 @@ Proof.
         rewrite heqfetch.
         auto.
       + Rinversion fetch.
-    - specialize (IHh1 heqTfetchG0).
+    - specialize (IHh1 heqTfetchG).
       decomp IHh1.
       exists x0.
       simpl.
@@ -651,4 +643,4 @@ Proof.
       intros hhh.
       rewrite hhh.
       auto.
-Qed.       
+Qed.

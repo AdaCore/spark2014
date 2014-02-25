@@ -1,3 +1,6 @@
+TOOD: add a store/qstack for type definitions, even if only containing
+bool and integer, because procedure profiles are made of typnum.
+
 TODO: replace procedure_body with procedure_declaration.
 
 * typing.v has been adapted to stack of frames, some rephrasing of lemmas has been done +
