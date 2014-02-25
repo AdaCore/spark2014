@@ -1,5 +1,2 @@
 project Search is
-   package Prove is
-      for Switches use ("--steps=30000");
-   end Prove;
 end Search;
