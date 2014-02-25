@@ -1337,6 +1337,7 @@ package body SPARK_Definition is
            Attribute_Succ              |
            Attribute_Truncation        |
            Attribute_Unbiased_Rounding |
+           Attribute_Update            |
            Attribute_Val               |
            Attribute_Value             |
            Attribute_Version           |
@@ -1368,24 +1369,6 @@ package body SPARK_Definition is
                Error_Msg_N
                  ("?attribute % has an implementation-defined value", N);
             end if;
-
-         when Attribute_Update =>
-            declare
-               Pref_Typ : constant Entity_Id := Etype (P);
-            begin
-               if Is_Array_Type (Pref_Typ) then
-                  if Number_Dimensions (Pref_Typ) > 1 then
-                     Violation_Detected := True;
-                     if SPARK_Pragma_Is (Opt.On) then
-                        Error_Msg_N
-                          ("attribute Update for multi-dimensional arrays is "
-                             & "not yet supported",
-                           N);
-                     end if;
-                     return;
-                  end if;
-               end if;
-            end;
 
          when Attribute_Valid =>
             Error_Msg_F ("?attribute Valid is assumed to return True", N);

@@ -955,9 +955,6 @@ package body Why.Gen.Expr is
                --  range check towards the corresponding index type of the
                --  prefix to the 'Update aggregate.
 
-               --  ??? one dimensional arrays here only, extend this
-               --  for multidim case, LC17-035
-
                pragma Assert
                  (Nkind (Parent (Par)) = N_Aggregate
                     and then Nkind (Parent (Parent (Par))) =
@@ -987,6 +984,70 @@ package body Why.Gen.Expr is
          when N_Range =>
 
             Check_Type := Etype (Par);
+
+         when N_Aggregate =>
+
+            --  This parent is a special choice, the LHS of an association
+            --  of a 'Update of a multi-dimensional array, for example:
+            --  (I, J, K) of 'Update((I, J, K) => New_Val)
+
+            pragma Assert (Nkind (Parent (Par)) = N_Component_Association);
+
+            Aggregate : declare
+
+               Aggr : constant Node_Id := Parent (Parent (Par));
+
+               pragma Assert (Nkind (Aggr) = N_Aggregate
+                  and then Nkind (Parent (Aggr)) = N_Attribute_Reference
+                  and then Get_Attribute_Id
+                    (Attribute_Name (Parent (Aggr))) = Attribute_Update);
+
+               Pref        : constant Node_Id := Prefix (Parent (Aggr));
+               Num_Dim     : constant Pos :=
+                 Number_Dimensions (Type_Of_Node (Pref));
+               Multi_Exprs : constant List_Id := Expressions (Par);
+
+               Dim_Expr      : Node_Id;
+               Array_Type    : Entity_Id;
+               Current_Index : Node_Id;
+               Found         : Boolean;
+
+               pragma Assert (1 < Num_Dim
+                                and then No (Component_Associations (Par))
+                                and then List_Length (Multi_Exprs) = Num_Dim);
+
+            begin
+
+               --  When present, the Actual_Subtype of the entity should be
+               --  used instead of the Etype of the prefix.
+
+               if Is_Entity_Name (Pref)
+                 and then Present (Actual_Subtype (Entity (Pref)))
+               then
+                  Array_Type := Actual_Subtype (Entity (Pref));
+               else
+                  Array_Type := Etype (Pref);
+               end if;
+
+               --  Find the index type for this expression's dimension.
+
+               Dim_Expr      := Nlists.First (Multi_Exprs);
+               Current_Index := First_Index (Unique_Entity (Array_Type));
+               Found         := False;
+
+               while Present (Dim_Expr) loop
+                  if Expr = Dim_Expr then
+                     Check_Type := Etype (Current_Index);
+                     Found := True;
+                     exit;
+                  end if;
+                  Next (Dim_Expr);
+                  Next_Index (Current_Index);
+               end loop;
+
+               pragma Assert (Found);
+
+            end Aggregate;
 
          when others =>
             Ada.Text_IO.Put_Line ("[Get_Range_Check_Info] kind ="

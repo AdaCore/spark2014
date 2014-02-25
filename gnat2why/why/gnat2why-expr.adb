@@ -2065,9 +2065,9 @@ package body Gnat2Why.Expr is
       --  (possibly multi-dimensional) aggregate.
       --  For a 'Update aggregate, the choice indexes are
       --  collected in Values in addition to the elements.
-      --  Each element of Index_Values is a component_association whose
-      --  choices need to be checked against the
-      --  type at the same position in Index_Types.
+      --  For a normal aggregate, each element of Index_Values is a
+      --  component_association whose choices need to be checked against
+      --  the type at the same position in Index_Types.
 
       procedure Generate_Logic_Function
         (Expr   : Node_Id;
@@ -2434,7 +2434,7 @@ package body Gnat2Why.Expr is
 
          procedure Traverse_Value_At_Index
            (Dim                 : Pos;
-            Index               : Node_Id;
+            Index               : Node_Id;  --  Index type
             Expr_Or_Association : Node_Id)
          is
             Expr   : Node_Id;
@@ -2443,7 +2443,13 @@ package body Gnat2Why.Expr is
             Rng    : Node_Id;
 
          begin
-            --  Fill together the arrays Index_Values and Index_Types
+
+            --  If Expr_Or_Association is a component association, first we
+            --  go through the component association and collect the
+            --  choices to be used later for:
+            --  * Index checks, in the case of normal aggregates.
+            --  * Parameters to the logic function, in the case of 'Update
+            --  aggregates.
 
             if Nkind (Expr_Or_Association) = N_Component_Association
               and then not Is_Others_Choice (Choices (Expr_Or_Association))
@@ -2456,34 +2462,72 @@ package body Gnat2Why.Expr is
 
                if In_Attribute_Update then
 
-                  --  Collect the choices as parameters as well.
+                  --  Collect the choices as parameters.
                   --  We cannot use Index_Values directly since they store
                   --  the whole associations. Instead, populate Values with
                   --  the parameters needed.
 
                   Choice := First (Choices (Expr_Or_Association));
                   while Present (Choice) loop
-                     if Nkind (Choice) = N_Range then
+                     case Nkind (Choice) is
+                        when N_Range =>
 
-                        --  The high and low bounds of a range both needs to
-                        --  be parameters.
+                           --  The high and low bounds of a range both
+                           --  need to be parameters.
 
-                        Rng := Get_Range (Choice);
-                        Values.Append (Low_Bound (Rng));
-                        Types.Append (Etype (Index));
-                        Values.Append (High_Bound (Rng));
-                        Types.Append (Etype (Index));
-                     else
-                        Values.Append (Choice);
-                        Types.Append (Etype (Index));
-                     end if;
+                           Rng := Get_Range (Choice);
+                           Values.Append (Low_Bound (Rng));
+                           Types.Append (Etype (Index));
+                           Values.Append (High_Bound (Rng));
+                           Types.Append (Etype (Index));
+
+                        when N_Aggregate =>
+
+                           --  This is a special choice, the LHS of an
+                           --  association of a 'Update of a
+                           --  multi-dimensional array,
+                           --  for example: (I, J, K) of
+                           --  'Update((I, J, K) => New_Val)
+
+                           pragma Assert
+                             (Dim < Num_Dim and then Dim = 1
+                                and then No (Component_Associations (Choice)));
+                           declare
+                              Multi_Exprs : constant List_Id :=
+                                Expressions (Choice);
+                              Multi_Expression : Node_Id :=
+                                Nlists.First (Multi_Exprs);
+
+                              Current_Index : Node_Id := Index;
+                              --  Dim = 1 so Index is still first index here
+
+                           begin
+                              pragma Assert (List_Length (Multi_Exprs) =
+                                               Num_Dim);
+
+                              while Present (Multi_Expression) loop
+                                 Values.Append (Multi_Expression);
+                                 Types.Append (Etype (Current_Index));
+                                 Next (Multi_Expression);
+                                 Next_Index (Current_Index);
+                              end loop;
+                              pragma Assert (No (Current_Index));
+                           end;
+
+                        when others =>
+                           Values.Append (Choice);
+                           Types.Append (Etype (Index));
+                     end case;
                      Next (Choice);
                   end loop;
                end if;
             end if;
 
-            --  Fill the component expression as well to the arrays
-            --  Values and Types.
+            --  Next, for both positional and named associations, and for
+            --  both normal and for 'Update aggregates, we fill the
+            --  component expressions to the arrays Values and Types, to
+            --  later be used as parameters.
+
             if Nkind (Expr_Or_Association) = N_Component_Association
               and then Box_Present (Expr_Or_Association)
             then
@@ -2497,13 +2541,39 @@ package body Gnat2Why.Expr is
                   else
                     Expr_Or_Association);
 
-               if Dim < Num_Dim then
+               if Dim < Num_Dim and then not In_Attribute_Update then
+
+                  --  Normal, multidimensional aggregate, for example:
+                  --  Array_2D'(1      => (2 => Expr_1, others => Expr_2),
+                  --            others => (others => Expr_3))
+                  --
+                  --  The components are aggregates as long as Dim < Num_Dim.
+                  --  Keep recursively peeling the aggregates off.
+
                   pragma Assert (Nkind (Expr) = N_Aggregate);
                   Traverse_Rec_Aggregate (Dim + 1, Next_Index (Index), Expr);
                else
+
+                  --  Two cases here:
+                  --
+                  --  1) A single dimensional aggregate, normal or 'Update,
+                  --  (for example an innermost of a multidimensional
+                  --  aggregate), or
+                  --
+                  --  2) A multidimensional 'Update aggregate of the form
+                  --  'Update((I, J, K) => New_Val)
+                  --
+                  --  in both cases there are no more aggregates to peel off.
+
+                  pragma Assert (Dim = Num_Dim or else
+                                   (In_Attribute_Update and then Dim = 1));
                   declare
                      Exp_Type  : constant Node_Id := Component_Type (Typ);
                   begin
+
+                     --  Collecting component expression for later use as
+                     --  parameter.
+
                      Values.Append (Expr);
                      Types.Append (Exp_Type);
                   end;
@@ -2526,6 +2596,15 @@ package body Gnat2Why.Expr is
             Association : Node_Id := Nlists.First (Assocs);
 
          begin
+
+            --  Positional association is not allowed in 'Update aggregate
+            --  (except in an inner aggregate that is the choice in a
+            --  component association of a multidimensional 'Update
+            --  aggregate, but never on the outer level we are at here).
+
+            pragma Assert (if Present (Expression) then
+                             not In_Attribute_Update);
+
             while Present (Expression) loop
                Traverse_Value_At_Index (Dim, Index, Expression);
                Next (Expression);
@@ -2660,10 +2739,17 @@ package body Gnat2Why.Expr is
                   else
                      Expr_Or_Association);
 
-               if Dim < Num_Dim then
+               if Dim < Num_Dim and then not In_Attribute_Update then
                   pragma Assert (Nkind (Expr) = N_Aggregate);
                   return Callback (Dim + 1, Expr);
                else
+
+                  --  For single dimensional aggregates (normal or
+                  --  'Update), and for multidimensional 'Update aggregates
+                  --  there will be no more nested aggregates, so no
+                  --  recursive callback, go ahead and create array
+                  --  access and comparison.
+
                   declare
                      Arg_Val : constant W_Expr_Id :=
                        +Ada_Ent_To_Why.Element (Args, Expr).Main.B_Name;
@@ -2811,50 +2897,105 @@ package body Gnat2Why.Expr is
             Result     : W_Expr_Id := +False_Pred;
             Choice     : Node_Id := First (L);
             Rng_Expr   : W_Expr_Id;
-            Low        : Node_Id;
-            High       : Node_Id;
-            Arg_Low    : W_Expr_Id;
-            Arg_High   : W_Expr_Id;
             Arg_Choice : W_Expr_Id;
          begin
             while Present (Choice) loop
                if In_Attribute_Update then
-                  if Nkind (Choice) = N_Range then
-                     Low        := Low_Bound (Get_Range (Choice));
-                     High       := High_Bound (Get_Range (Choice));
+                  case Nkind (Choice) is
+                     when N_Range =>
+                        declare
+                           Low  : constant Node_Id :=
+                             Low_Bound (Get_Range (Choice));
+                           High : constant Node_Id :=
+                             High_Bound (Get_Range (Choice));
+                           Arg_Low  : W_Expr_Id;
+                           Arg_High : W_Expr_Id;
+                        begin
+                           Arg_Low :=
+                             +Ada_Ent_To_Why.Element (Args, Low).Main.B_Name;
+                           Arg_Low :=
+                             Insert_Simple_Conversion (Domain => EW_Term,
+                                                       Expr   => Arg_Low,
+                                                       To     => EW_Int_Type);
+                           Arg_High :=
+                             +Ada_Ent_To_Why.Element (Args, High).Main.B_Name;
 
-                     Arg_Low :=
-                       +Ada_Ent_To_Why.Element (Args, Low).Main.B_Name;
-                     Arg_Low :=
-                       Insert_Simple_Conversion (Domain => EW_Term,
-                                                 Expr   => Arg_Low,
-                                                 To     => EW_Int_Type);
-                     Arg_High :=
-                       +Ada_Ent_To_Why.Element (Args, High).Main.B_Name;
+                           Arg_High :=
+                             Insert_Simple_Conversion (Domain => EW_Term,
+                                                       Expr   => Arg_High,
+                                                       To     => EW_Int_Type);
+                           Rng_Expr :=
+                             New_Range_Expr (Domain => EW_Pred,
+                                             Low    => Arg_Low,
+                                             High   => Arg_High,
+                                             Expr   => Indexes (Integer (Dim))
+                                            );
+                        end;
+                     when N_Aggregate =>
+                        pragma Assert (Dim < Num_Dim and then Dim = 1);
 
-                     Arg_High :=
-                       Insert_Simple_Conversion (Domain => EW_Term,
-                                                 Expr   => Arg_High,
-                                                 To     => EW_Int_Type);
-                     Rng_Expr :=
-                       New_Range_Expr (Domain    => EW_Pred,
-                                       Low       => Arg_Low,
-                                       High      => Arg_High,
-                                       Expr      => Indexes (Integer (Dim)));
-                  else
-                     Arg_Choice :=
-                       +Ada_Ent_To_Why.Element (Args, Choice).Main.B_Name;
-                     Arg_Choice :=
-                       Insert_Simple_Conversion (Domain => EW_Term,
-                                                 Expr   => Arg_Choice,
-                                                 To     => EW_Int_Type);
-                     Rng_Expr :=
-                       New_Comparison (Cmp    => EW_Eq,
-                                       Left   => Indexes (Integer (Dim)),
-                                       Right  => Arg_Choice,
-                                       Domain => EW_Pred);
+                        --  This is a choice of a multidimensional 'Update,
+                        --  for example (I, J, K) of
+                        --  'Update((I, J, K) => New_Val).
+                        --  Create a conjunction of comparisons, one for
+                        --  each dimension.
 
-                  end if;
+                        declare
+                           Conjunct     : W_Expr_Id := +True_Pred;
+                           Arg_Index    : W_Expr_Id;
+                           Multi_Exprs : constant List_Id :=
+                             Expressions (Choice);
+                           Multi_Assocs : constant List_Id :=
+                             Component_Associations (Choice);
+                           Multi_Expression : Node_Id :=
+                             Nlists.First (Multi_Exprs);
+
+                           --  Start with first dimension, Dim = 1 always
+                           --  here.
+
+                           Current_Dim  : Positive := 1;
+                        begin
+                           pragma Assert (No (Multi_Assocs)
+                              and then List_Length (Multi_Exprs) = Num_Dim);
+
+                           while Present (Multi_Expression) loop
+                              Arg_Index :=
+                                +Ada_Ent_To_Why.Element
+                                (Args, Multi_Expression).Main.B_Name;
+                              Arg_Index :=
+                                Insert_Simple_Conversion
+                                (Domain => EW_Term,
+                                 Expr   => Arg_Index,
+                                 To     => EW_Int_Type);
+                              Rng_Expr :=
+                                New_Comparison
+                                (Cmp    => EW_Eq,
+                                 Left   => Indexes (Integer (Current_Dim)),
+                                 Right  => Arg_Index,
+                                 Domain => EW_Pred);
+                              Conjunct := New_And_Expr (Left   => Conjunct,
+                                                        Right  => Rng_Expr,
+                                                        Domain => EW_Pred);
+                              Next (Multi_Expression);
+                              Current_Dim := Current_Dim + 1;
+                           end loop;
+                           pragma Assert (Integer (Current_Dim - 1) =
+                                            Integer (Num_Dim));
+                           Rng_Expr := Conjunct;
+                        end;
+                     when others =>
+                        Arg_Choice :=
+                          +Ada_Ent_To_Why.Element (Args, Choice).Main.B_Name;
+                        Arg_Choice :=
+                          Insert_Simple_Conversion (Domain => EW_Term,
+                                                    Expr   => Arg_Choice,
+                                                    To     => EW_Int_Type);
+                        Rng_Expr :=
+                          New_Comparison (Cmp    => EW_Eq,
+                                          Left   => Indexes (Integer (Dim)),
+                                          Right  => Arg_Choice,
+                                          Domain => EW_Pred);
+                  end case;
                else
                   --  The choices are not arguments, proceed with standard
                   --  transformation of discrete choice
@@ -4099,19 +4240,11 @@ package body Gnat2Why.Expr is
 
                else
                   pragma Assert (Is_Array_Type (Pref_Typ));
-
-                  if 1 < Number_Dimensions (Pref_Typ) then
-                     Ada.Text_IO.Put_Line
-                       ("[Transform_Attr] multi-dimensional "
-                          & Attribute_Id'Image (Attr_Id));
-                     raise Not_Implemented;
-                  else
-                     T := Transform_Aggregate
-                            (Params              => Params,
-                             Domain              => Domain,
-                             Expr                => Aggr,
-                             In_Attribute_Update => True);
-                  end if;
+                  T := Transform_Aggregate
+                    (Params              => Params,
+                     Domain              => Domain,
+                     Expr                => Aggr,
+                     In_Attribute_Update => True);
                end if;
             end;
 

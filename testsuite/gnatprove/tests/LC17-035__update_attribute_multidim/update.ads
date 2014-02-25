@@ -23,10 +23,18 @@ package Update is
                            else A(J, K, L) = New_Val))));
 
    --  same basic array test using 'Update, one dynamic choice,
-   --  prefix is in/out parameter
+   --  prefix is in/out parameter. Valid postcondition.
+
    procedure Basic_Array_Update2 (A: in out Array_3D;
                                   I: in Index;
                                   New_Val: in Integer)
      with Post => A = A'Old'Update((I, I, I) => New_Val);
+
+   --  same as above. Falsifiable postcondition.
+
+   procedure Basic_Array_Update3 (A: in out Array_3D;
+                                  I: in Index;
+                                  New_Val: in Integer)
+     with Post => A = A'Old'Update((I, I, 5) => New_Val);
 
 end Update;
