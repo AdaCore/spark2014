@@ -438,10 +438,10 @@ other unclassified messages are warnings about questionable code constructs.
 How to Write Loop Invariants
 ============================
 
-As described in :ref:`loop invariants`, the user should annotate loops with loop
-invariants in order for |GNATprove| to prove formally the properties of
-interest on subprograms with loops. In this section, we provide a systematic
-approach for writing loop invariants.
+As described in :ref:`loop invariants`, proving properties of subprograms
+that contain loops may require the addition of explicit loop
+invariant contracts. This section describes a systematic approach
+for writing loop invariants.
 
 The Four Properties of a Good Loop Invariant
 --------------------------------------------
@@ -504,7 +504,7 @@ above:
    line 5).
 #. [PRESERVE] It is proved after the first iteration (message on line 3).
 
-Note that the loop invariant resembles closely the second line in the
+Note that the loop invariant closely resembles the second line in the
 postcondition of the subprogram, except with a different range of values in the
 quantification: instead of stating a property for all indexes in the array
 ``A``, the loop invariant states the same property for all indexes up to the
@@ -548,7 +548,7 @@ The implementation of ``Binary_Search`` is given in file ``binary_search.adb``:
 
 Note that, although function ``Search`` has a loop, we have not given an
 explicit loop invariant yet, so the default loop invariant of ``True`` will be
-used by |GNATprove|. We are running |GNATprove| with a prover timeout of 1 mn
+used by |GNATprove|. We are running |GNATprove| with a prover timeout of 60 seconds
 (switch ``--timeout=60``) to get the results presented in the rest of this
 section.
 
@@ -592,8 +592,8 @@ and ``Right`` stay within the bounds of ``A`` inside the loop:
    :language: ada
    :lines: 23-26
 
-With this simple loop invariant, |GNATprove| now proves that the four checks
-previously reported as possible failures cannot fail. In particular,
+With this simple loop invariant, |GNATprove| now reports that the
+four checks on lines 26 through 29 are now proved. In particular,
 |GNATprove| computes that the value assigned to ``Med`` in the loop is also
 within the bounds of ``A``.
 
@@ -602,7 +602,7 @@ Completing a Loop Invariant to Prove Checks After the Loop
 
 With the simple loop invariant given before, |GNATprove| still reports that the
 postcondition of ``Search`` may fail, which corresponds to property [AFTER]. By
-instructing |GNATprove| to prove checks incrementally, as seens in
+instructing |GNATprove| to prove checks progressively, as seens in
 :ref:`proving spark programs`, we even get a precise warning pointing to the
 part of the postcondition that could not be proved:
 
@@ -612,7 +612,7 @@ part of the postcondition that could not be proved:
 Here, the warning shows that the second line of the postcondition could not be
 proved. This line expresses that, in the case where ``Search`` returns
 ``No_Index`` after the loop, the array ``A`` should not contain the value
-searched ``I``. 
+searched ``I``.
 
 One can very easily check that, if |GNATprove| can prove this property, it can
 also prove the postcondition. Simply insert a pragma Assert after the loop
@@ -675,7 +675,7 @@ Proving a Loop Invariant After the First Iteration
 With the loop invariant given before, |GNATprove| now reports that the loop
 invariant of ``Search`` may fail after the first iteration, which corresponds
 to property [PRESERVE]. By instructing |GNATprove| to prove checks
-incrementally, as seen in :ref:`proving spark programs`, we even get a precise
+progressively, as seen in :ref:`proving spark programs`, we even get a precise
 warning pointing to the part of the loop invariant that could not be proved:
 
 .. literalinclude:: examples/results/binary_search_precise.prove

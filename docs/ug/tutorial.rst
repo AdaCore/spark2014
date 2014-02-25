@@ -441,7 +441,7 @@ available on line 35:
 
 .. image:: static/search_prove_line.png
 
-We select the ``check first, then path`` value for choice ``One proof by`` in
+We select the ``Progressively split`` value for choice ``Proof strategy`` in
 the window raised, in order to maximize proof precision, and click on
 :menuselection:`Execute`:
 
