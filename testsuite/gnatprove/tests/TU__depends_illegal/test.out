@@ -2,10 +2,10 @@ depends_illegal.ads:17:42: parameter "Par2" must appear in at least one input de
 depends_illegal.ads:31:33: global "Comp" must appear in exactly one output dependence list
 depends_illegal.ads:32:33: item must denote parameter, variable, or state
 depends_illegal.ads:33:27: item must denote parameter, variable, or state
-depends_illegal.ads:34:23: global "X" cannot appear in dependence relation
 depends_illegal.ads:34:23: "X" is not part of the input or output set of subprogram "P1"
-depends_illegal.ads:34:33: global "Y" cannot appear in dependence relation
+depends_illegal.ads:34:23: global "X" cannot appear in dependence relation
 depends_illegal.ads:34:33: "Y" is not part of the input or output set of subprogram "P1"
+depends_illegal.ads:34:33: global "Y" cannot appear in dependence relation
 depends_illegal.ads:39:18: parameter "Par1" must appear in at least one input dependence list
 depends_illegal.ads:39:24: parameter "Par3" must appear in at least one input dependence list
 depends_illegal.ads:39:41: parameter "Par2" must appear in exactly one output dependence list
@@ -28,13 +28,12 @@ depends_illegal.ads:160:23: useless dependence, null depends on itself
 depends_illegal.ads:165:39: cannot mix null and non-null dependency items
 depends_illegal.ads:172:31: null dependency clause cannot have a null input list
 depends_illegal_2.adb:12:11: aspect specification must appear in subprogram declaration
-depends_illegal_2.adb:30:11: output state "A" must be replaced by all its constituents in global refinement
 depends_illegal_2.adb:30:11: constituent "Y" is missing in output list
+depends_illegal_2.adb:30:11: output state "A" must be replaced by all its constituents in global refinement
 depends_illegal_2.adb:42:22: reference to "A" not allowed
 depends_illegal_2.adb:42:22: refinement of "A" is visible at line 3
 depends_illegal_2.adb:43:36: reference to "A" not allowed
 depends_illegal_2.adb:43:36: refinement of "A" is visible at line 3
-depends_illegal_3.adb:23:24: warning: formal parameter "Par2" is read but never assigned
 depends_illegal_3.adb:13:33: warning: unused initial value of "X"
 depends_illegal_3.adb:15:11: warning: missing dependency "null => X"
 depends_illegal_3.adb:15:24: warning: incorrect dependency "X => X"
@@ -53,8 +52,8 @@ depends_illegal_3.adb:44:11: warning: incorrect dependency "null => Y"
 depends_illegal_3.adb:44:24: warning: missing dependency "Par2 => Par2"
 depends_illegal_3.adb:44:30: warning: missing dependency "Y => Y"
 depends_illegal_3.adb:52:14: warning: unused initial value of "X"
-depends_illegal_3.adb:57:11: warning: missing dependency "null => X"
 depends_illegal_3.adb:57:11: warning: expected to see "X" on the left-hand-side of a dependency relation
+depends_illegal_3.adb:57:11: warning: missing dependency "null => X"
 depends_illegal_3.adb:75:23: warning: missing dependency "P2 => G_Var1"
 depends_illegal_3.adb:75:23: warning: missing dependency "P2 => G_Var3"
 depends_illegal_3.adb:75:23: warning: missing dependency "P2 => P3"
@@ -69,15 +68,22 @@ depends_illegal_3.adb:78:23: warning: missing dependency "G_Var3 => P1"
 depends_illegal_3.adb:78:23: warning: missing dependency "G_Var3 => P3"
 depends_illegal_3.adb:98:11: warning: incorrect dependency "null => Par1"
 depends_illegal_3.adb:98:25: warning: missing dependency "F1'Result => Par1"
-gprbuild: *** compilation phase failed
+   compilation of depends_illegal_3.adb failed
+
+
 gnatprove: error during analysis and translation to intermediate language, aborting.
+gprbuild: *** compilation phase failed
 depends_illegal_4.adb:15:11: warning: missing dependency "null => Y"
 depends_illegal_4.adb:15:23: warning: missing dependency "Par2 => Y"
 depends_illegal_4.adb:16:23: warning: incorrect dependency "Par3 => Y"
+depends_illegal_4.adb:20:20: warning: overflow check might fail
+depends_illegal_4.adb:20:24: warning: overflow check might fail
+depends_illegal_4.adb:21:20: warning: overflow check might fail
 depends_illegal_4.adb:25:14: warning: unused initial value of "X"
-depends_illegal_4.adb:28:11: warning: missing dependency "null => X"
 depends_illegal_4.adb:28:11: warning: expected to see "X" on the left-hand-side of a dependency relation
+depends_illegal_4.adb:28:11: warning: missing dependency "null => X"
 depends_illegal_4.adb:39:23: warning: missing dependency "Par1 => Par2"
 depends_illegal_4.adb:40:23: warning: missing dependency "Par2 => Y"
-gprbuild: *** compilation phase failed
-gnatprove: error during analysis and translation to intermediate language, aborting.
+depends_illegal_4.adb:43:17: warning: overflow check might fail
+depends_illegal_4.adb:43:24: warning: overflow check might fail
+depends_illegal_4.adb:44:17: warning: overflow check might fail

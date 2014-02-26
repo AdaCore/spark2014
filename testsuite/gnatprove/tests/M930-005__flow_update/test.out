@@ -1,14 +1,20 @@
+gcc -c -gnata main.adb
+gcc -c -gnata update_legal.adb
+gnatbind -x main.ali
+gnatlink main.ali
 update_legal.adb:13:7: info: assertion proved
 update_uninitialized.adb:15:11: warning: "Element" might not be initialized
 update_uninitialized.adb:30:11: warning: "Element" might not be initialized
 update_uninitialized_2.adb:16:32: warning: "Z" might not be initialized
 update_uninitialized_2.adb:19:07: "Z" is not initialized
-gprbuild: *** compilation phase failed
+   compilation of update_uninitialized_2.adb failed
+
+
 gnatprove: error during analysis and translation to intermediate language, aborting.
+gprbuild: *** compilation phase failed
 update_uninitialized_3.adb:17:08: "B" is not initialized
-gprbuild: *** compilation phase failed
+   compilation of update_uninitialized_3.adb failed
+
+
 gnatprove: error during analysis and translation to intermediate language, aborting.
-gcc -c -gnata main.adb
-gcc -c -gnata update_legal.adb
-gnatbind -x main.ali
-gnatlink main.ali
+gprbuild: *** compilation phase failed

@@ -1,3 +1,7 @@
+
+raised SYSTEM.ASSERTIONS.ASSERT_FAILURE : Loop_Variant failed at loop_related_illegal_2.adb:31
+
+raised SYSTEM.ASSERTIONS.ASSERT_FAILURE : Loop_Invariant failed at main2.adb:13
 loop_related_illegal.adb:17:07: pragma "Loop_Invariant" must appear immediately within the statements of a loop
 loop_related_illegal.adb:36:13: pragma "Loop_Invariant" must appear immediately within the statements of a loop
 loop_related_illegal.adb:51:44: expected a discrete type
@@ -7,15 +11,21 @@ loop_related_illegal.adb:88:16: attribute "Loop_Entry" must appear within approp
 loop_related_illegal.adb:113:36: prefix of attribute "Loop_Entry" cannot reference local entities
 loop_related_illegal.adb:133:37: prefix of attribute "Loop_Entry" that applies to outer loop must denote an entity
 loop_related_illegal.adb:155:10: pragma "Loop_Invariant" must appear next to pragma at line 153
+loop_related_illegal_2.adb:15:10: info: loop invariant initialization proved
+loop_related_illegal_2.adb:15:10: info: loop invariant preservation proved
+loop_related_illegal_2.adb:16:17: info: overflow check proved
+loop_related_illegal_2.adb:19:7: warning: assertion might fail, requires Y = 10
+loop_related_illegal_2.adb:30:10: info: loop invariant initialization proved
+loop_related_illegal_2.adb:30:10: info: loop invariant preservation proved
+loop_related_illegal_2.adb:30:51: info: overflow check proved
+loop_related_illegal_2.adb:31:10: warning: loop variant might fail
+loop_related_illegal_2.adb:33:17: info: overflow check proved
 loop_related_illegal_2.ads:4:14: warning: subprogram "Loop_Invariant_Acts_As_Cut_Point" has no effect
 loop_related_illegal_2.ads:5:14: warning: subprogram "Expression_Remains_The_Same" has no effect
 loop_related_illegal_2.ads:5:43: warning: unused initial value of "Par"
-loop_related_illegal_2.adb:19:7: warning: assertion might fail, requires Y = 10
-loop_related_illegal_2.adb:31:10: warning: loop variant might fail
 loop_related_illegal_3.adb:17:38: "X" is not initialized
+   compilation of loop_related_illegal_3.adb failed
+
+
+gnatprove: error during analysis and translation to intermediate language, aborting.
 gprbuild: *** compilation phase failed
-gnatprove: error during analysis of data and information flow, aborting.
-
-raised SYSTEM.ASSERTIONS.ASSERT_FAILURE : Loop_Variant failed at loop_related_illegal_2.adb:31
-
-raised SYSTEM.ASSERTIONS.ASSERT_FAILURE : Loop_Invariant failed at main2.adb:13

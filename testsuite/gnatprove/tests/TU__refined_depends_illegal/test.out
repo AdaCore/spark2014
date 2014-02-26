@@ -8,6 +8,6 @@ refined_depends_illegal.adb:70:39: unmatched or extra clause in dependence refin
 refined_depends_illegal.adb:79:48: duplicate use of item "W"
 refined_depends_illegal.adb:87:48: cannot mix null and non-null dependency items
 refined_depends_illegal_2.adb:8:31: warning: missing dependency "Par => Y"
-refined_depends_illegal_2.adb:18:31: warning: missing dependency "Y => Par"
 refined_depends_illegal_2.adb:11:16: warning: overflow check might fail
+refined_depends_illegal_2.adb:18:31: warning: missing dependency "Y => Par"
 refined_depends_illegal_2.adb:22:14: warning: overflow check might fail

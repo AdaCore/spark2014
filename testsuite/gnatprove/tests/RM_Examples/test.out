@@ -1,6 +1,6 @@
 update_examples.ads:23:19: info: postcondition proved
 update_examples.ads:30:19: info: postcondition proved
-update_examples.ads:38:19: warning: postcondition might fail, requires A2D = A2D'Old'update
+update_examples.ads:38:19: info: postcondition proved
 update_examples.ads:54:19: info: postcondition proved
 update_examples.ads:69:8: warning: postcondition might fail, requires NA = NA'Old'update
 loop_var_loop_invar.adb:1:11: warning: subprogram "Loop_Var_Loop_Invar" has no effect
@@ -21,28 +21,30 @@ reverse_ord.adb:20:51: info: index check proved
 reverse_ord.adb:24:21: info: index check proved
 reverse_ord.adb:24:40: info: index check proved
 up_timer.adb:14:36: info: overflow check proved
-f.adb:21:04: warning: "Control_Char" might not be initialized
-f.adb:34:07: warning: "Control_Char" might not be initialized
 f.adb:3:16: info: postcondition proved
 f.adb:10:16: info: range check proved
 f.adb:10:38: info: overflow check proved
 f.adb:11:36: info: index check proved
 f.adb:11:36: info: overflow check proved
 f.adb:13:26: info: range check proved
-f.adb:13:37: info: index check proved
-f.adb:13:37: info: overflow check proved
+f.adb:13:37: warning: array index check might fail
+f.adb:13:37: warning: overflow check might fail
 f.adb:21:4: info: assertion proved
+f.adb:21:04: warning: "Control_Char" might not be initialized
+f.adb:34:07: warning: "Control_Char" might not be initialized
 param_1_illegal.adb:5:28: warning: "X" might not be initialized in "Param_1_Illegal"
-param_1_illegal.adb:9:13: warning: "X" might not be initialized
 param_1_illegal.adb:9:10: info: index check proved
+param_1_illegal.adb:9:13: warning: "X" might not be initialized
 param_1_legal.adb:7:10: info: index check proved
 anti_aliasing.adb:62:16: writable actual for "X" overlaps with actual for "Y"
+   compilation of anti_aliasing.adb failed
+
+
+gnatprove: error during frame condition computation, aborting.
 gprbuild: *** compilation phase failed
 gnatprove: error during frame condition computation, aborting.
-multiple_ports.ads:6:09: volatile type not allowed
-gprbuild: *** compilation phase failed
-gnatprove: error during frame condition computation, aborting.
-stacks_1.adb:16:57: info: refined post proved
+gprbuild: "multiple_porst.adb" is not a source of any project
+stacks_1.adb:16:57: warning: refined postcondition might fail
 stacks_1.adb:17:44: info: range check proved
 stacks_1.adb:23:30: info: range check proved
 stacks_1.adb:24:18: info: index check proved
@@ -67,10 +69,11 @@ externals.adb:54:04: "Out_Reg" is not written in "Externals"
 externals.adb:76:41: warning: "Out_Reg" might not be written
 externals.adb:91:20: warning: unused assignment
 externals.adb:94:13: warning: statement has no effect
+   compilation of externals.adb failed
+
+
+gnatprove: error during analysis and translation to intermediate language, aborting.
 gprbuild: *** compilation phase failed
-gnatprove: error during analysis of data and information flow, aborting.
-inter_unit_elaboration_examples.adb:11:04: warning: "Y" can be accessed by clients before this initialization
-inter_unit_elaboration_examples.adb:11:04: warning: add Elaborate_Body to spec to ensure "Y" is initialized
 inter_unit_elaboration_examples.adb:8:14: warning: overflow check might fail
 intra_unit_elaboration_order_examples.adb:3:50: warning: overflow check might fail
 intra_unit_elaboration_order_examples.adb:20:17: info: overflow check proved

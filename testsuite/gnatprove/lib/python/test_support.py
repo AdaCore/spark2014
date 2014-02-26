@@ -119,6 +119,20 @@ def ls(directory=None):
     print_sorted(str.splitlines(process.out))
 
 
+def gcc(src, opt=["-c"]):
+    """gcc wrapper for the testsuite
+
+    PARAMETERS
+       src: source file to process
+       opt: additional options to pass to gcc
+    """
+    cmd = ["gcc"]
+    cmd += to_list(opt)
+    cmd += [src]
+    process = Run(cmd)
+    print_sorted(str.splitlines(process.out))
+
+
 def gnat2why(src, opt=None):
     """Invoke gnat2why
 
