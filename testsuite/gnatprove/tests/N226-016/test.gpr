@@ -1,0 +1,14 @@
+project Test is
+
+   for Languages use ("Ada");
+   for Source_Dirs use (".");
+
+   for Object_Dir use "obj";
+
+   for Main use ("main");
+
+   package Builder is
+      for Global_Configuration_Pragmas use "restrictions.adc";
+   end Builder;
+
+end Test;

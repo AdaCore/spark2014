@@ -1,0 +1,4 @@
+pragma Warnings (Off, "pragma ""Async_Readers"" is not yet supported");
+pragma Warnings (Off, "pragma ""Effective_Writes"" is not yet supported");
+pragma Warnings (Off, "pragma ""Volatile"" is not yet supported");
+pragma SPARK_Mode;
