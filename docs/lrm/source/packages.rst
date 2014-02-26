@@ -1404,7 +1404,7 @@ shall follow the grammar of ``dependency_relation`` in :ref:`depends-aspects`.
         ``input_list`` of a ``null_dependency_clause``; or
 
       - the state abstraction is both an ``input`` and an ``output``
-        and not every ``constituent`` the state abstraction is an
+        and not every ``constituent`` of the state abstraction is an
         ``output`` of the Refined_Depends aspect. [This rule does not
         exclude denoting a ``constituent`` of such a state abstraction
         in an ``input_list``.]
