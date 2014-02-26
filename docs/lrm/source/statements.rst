@@ -68,35 +68,35 @@ User-Defined Iterator Types
 Generalized Loop Iteration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. centered:: **Static Semantics **
+.. centered:: **Static Semantics**
 
 .. _tu-generalozed_loop_iteration-01:
 
-   Ada's generalized loop iteration is supported in |SPARK|,
-   but only in a modified form. Ada's existing generalized
-   loop iteration is defined in terms of other constructs
-   which are not in |SPARK| (e.g., access discriminants,
-   interface types).
+Ada's generalized loop iteration is supported in |SPARK|,
+but only in a modified form. Ada's existing generalized
+loop iteration is defined in terms of other constructs
+which are not in |SPARK| (e.g., access discriminants,
+interface types).
 
-   Instead, |SPARK| provides a new mechanism for defining
-   an iterable container type (see Ada RM 5.5.1). Iteration
-   over the elements of an object of such a type is then
-   allowed as for any iterable container type (see Ada RM 5.5.2),
-   although with dynamic semantics as described below.
-   Other forms of generalized loop iteration are not in |SPARK|.
+Instead, |SPARK| provides a new mechanism for defining
+an iterable container type (see Ada RM 5.5.1). Iteration
+over the elements of an object of such a type is then
+allowed as for any iterable container type (see Ada RM 5.5.2),
+although with dynamic semantics as described below.
+Other forms of generalized loop iteration are not in |SPARK|.
 
-   The type-related operational representation aspect Iterable
-   may be specified for any non-array type.
-   If the aspect Iterable is visibly specified for a type,
-   the (view of the) type is defined to be an iterable container type (view).
-   [The visibility of an aspect specification is defined in Ada RM 8.8].
-   [Because other iterable container types as defined in Ada RM 5.5.1
-   are necessarily not in |SPARK|, this effectively replaces, rather than
-   extends, that definition].
+The type-related operational representation aspect Iterable
+may be specified for any non-array type.
+If the aspect Iterable is visibly specified for a type,
+the (view of the) type is defined to be an iterable container type (view).
+[The visibility of an aspect specification is defined in Ada RM 8.8].
+[Because other iterable container types as defined in Ada RM 5.5.1
+are necessarily not in |SPARK|, this effectively replaces, rather than
+extends, that definition].
 
-   The ``aspect_definition`` for an Iterable aspect specification for
-   a subtype of a type T shall follow the following grammar for
-   ``iterable_Specification``
+The ``aspect_definition`` for an Iterable aspect specification for
+a subtype of a type T shall follow the following grammar for
+``iterable_Specification``
 
 ::
 
@@ -108,39 +108,37 @@ Generalized Loop Iteration
 
 .. centered:: **Legality Rules**
 
-   Each of the four names shall denote a primitive function of the
-   type, referred to respectively as the First, Next, Has_Element,
-   ane Element functions of the type. All parameters of all
-   four subprograms shall be of mode In.
-   
-   The First function of the type shall take a single parameter,
-   which shall be of type T. The "cursor type" of T
-   is defined to be result type of the First function. The name of the
-   First function shall be resolvable from these rules alone. [This means
-   the the cursor type of T can be determined without examining the
-   other three subprogram names]. The cursor type of T shall not be limited.
-   The "cursor subtype" of T is defined to be the result subtype of the
-   First function. The cursor subtype of T shall be definite.
+Each of the four names shall denote a primitive function of the
+type, referred to respectively as the First, Next, Has_Element,
+ane Element functions of the type. All parameters of all
+four subprograms shall be of mode In.
 
-   The Next function of the type shall have two parameters, the first
-   of type T and the second of the cursor type of T; the result type
-   of the function shall be the cursor type of T.
+The First function of the type shall take a single parameter,
+which shall be of type T. The "cursor type" of T
+is defined to be result type of the First function. The name of the
+First function shall be resolvable from these rules alone. [This means
+the the cursor type of T can be determined without examining the
+other three subprogram names]. The cursor type of T shall not be limited.
+The "cursor subtype" of T is defined to be the result subtype of the
+First function. The cursor subtype of T shall be definite.
 
-   The Has_Element function of the type shall have two parameters, the first
-   of type T and the second of the cursor type of T; the result type
-   of the function shall be Boolean.
+The Next function of the type shall have two parameters, the first
+of type T and the second of the cursor type of T; the result type
+of the function shall be the cursor type of T.
 
-   The Element function of the type shall have two parameters, the first
-   of type T and the second of the cursor type of T; the default element
-   subtype of T is then defined to be the result subtype of the Element
-   function.
+The Has_Element function of the type shall have two parameters, the first
+of type T and the second of the cursor type of T; the result type
+of the function shall be Boolean.
 
-   Reverse container element iterators are not in |SPARK|.
-   The loop parameter of a container element iterator is a constant object.
+The Element function of the type shall have two parameters, the first
+of type T and the second of the cursor type of T; the default element
+subtype of T is then defined to be the result subtype of the Element
+function.
 
-   TBD - positional notation in an Iterable aspect spec ok?
+Reverse container element iterators are not in |SPARK|.
+The loop parameter of a container element iterator is a constant object.
 
-   TBD - quantified expressions only, or loop statements too.
+.. todo: positional notation in an Iterable aspect spec ok?
 
 .. centered:: **Dynamic Semantics**
 
