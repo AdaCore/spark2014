@@ -70,7 +70,7 @@ Generalized Loop Iteration
 
 .. centered:: **Static Semantics**
 
-.. _tu-generalozed_loop_iteration-01:
+.. _tu-generalized_loop_iteration-01:
 
 Ada's generalized loop iteration is supported in |SPARK|,
 but only in a modified form. Ada's existing generalized
@@ -151,7 +151,7 @@ container and the cursor; the result object is the loop parameter for that
 iteration of the loop. At the end of the iteration, Next is called (passing
 in the container and the cursor) and the result is assigned to the cursor.
 
-.. _etu-generalozed_loop_iteration:
+.. _etu-generalized_loop_iteration:
 
 .. _loop_invariants:
 
