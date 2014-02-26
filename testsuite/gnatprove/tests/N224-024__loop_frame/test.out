@@ -7,5 +7,5 @@ frame.adb:19:10: info: loop invariant initialization proved
 frame.adb:20:36: warning: loop invariant might fail after first iteration, requires A(K).C1 = A'Loop_Entry(K).C2
 frame.adb:20:38: info: index check proved
 frame.adb:20:59: info: index check proved
-frame.ads:11:14: info: postcondition proved
+frame.ads:11:37: warning: postcondition might fail, requires A(J) = (if A'old (J) > 10 then 10 else A'old (J)
 frame.ads:15:14: info: postcondition proved
