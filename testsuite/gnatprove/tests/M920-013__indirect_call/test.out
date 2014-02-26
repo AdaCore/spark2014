@@ -10,7 +10,7 @@ calls.adb:29:07: tasking is not allowed in SPARK
 calls.adb:29:07: violation of pragma SPARK_Mode at line 1
 calls.ads:7:07: access type is not allowed in SPARK
 calls.ads:7:07: violation of pragma SPARK_Mode at line 1
-calls.ads:7:13: access to subprogram is not allowed in SPARK
+calls.ads:7:13: access to subprogram with profile "T2s" is not allowed in SPARK
 calls.ads:7:13: violation of pragma SPARK_Mode at line 1
 calls.ads:9:12: tasking is not allowed in SPARK
 calls.ads:9:12: violation of pragma SPARK_Mode at line 1
@@ -20,7 +20,7 @@ calls.ads:17:12: tagged type is not allowed in SPARK
 calls.ads:17:12: violation of pragma SPARK_Mode at line 1
 calls.ads:18:17: "R'Class" is not allowed in SPARK
 calls.ads:18:17: violation of pragma SPARK_Mode at line 1
-compilation of calls.adb failed
+   compilation of calls.adb failed
 
 
 gnatprove: error during analysis and translation to intermediate language, aborting.

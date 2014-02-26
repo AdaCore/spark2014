@@ -1,26 +1,26 @@
 global_illegal.ads:29:11: incorrect placement of aspect "Global"
 global_illegal.ads:40:26: global item must denote variable or state (SPARK RM 6.1.4(4))
 global_illegal.ads:43:22: "Non_Existant" is undefined
-global_illegal.ads:57:22: duplicate global mode (SPARK RM 6.1.4(9))
-global_illegal.ads:58:22: duplicate global mode (SPARK RM 6.1.4(9))
-global_illegal.ads:59:22: duplicate global mode (SPARK RM 6.1.4(9))
-global_illegal.ads:60:22: duplicate global mode (SPARK RM 6.1.4(9))
-global_illegal.ads:61:22: duplicate global mode (SPARK RM 6.1.4(9))
-global_illegal.ads:61:34: global item cannot reference parameter of subprogram (SPARK RM 6.1.4(6))
-global_illegal.ads:69:32: duplicate global item (SPARK RM 6.1.4(11))
-global_illegal.ads:71:32: duplicate global item (SPARK RM 6.1.4(11))
+global_illegal.ads:57:22: duplicate global mode
+global_illegal.ads:58:22: duplicate global mode
+global_illegal.ads:59:22: duplicate global mode
+global_illegal.ads:60:22: duplicate global mode
+global_illegal.ads:61:22: duplicate global mode
+global_illegal.ads:61:34: global item cannot reference parameter of subprogram "P2" (SPARK RM 6.1.4(6))
+global_illegal.ads:69:32: duplicate global item
+global_illegal.ads:71:32: duplicate global item
 global_illegal.ads:86:26: cannot mix null and non-null global items
 global_illegal.ads:91:21: global item must denote variable or state (SPARK RM 6.1.4(4))
 global_illegal.ads:97:22: global mode "Output" is not applicable to functions (SPARK RM 6.1.4(10))
 global_illegal.ads:98:22: global mode "In_Out" is not applicable to functions (SPARK RM 6.1.4(10))
 global_illegal_2.adb:12:11: aspect specification must appear in subprogram declaration
-global_illegal_2.adb:24:31: reference to "A" not allowed (SPARK RM 6.1.4(8))
+global_illegal_2.adb:24:31: reference to "A" not allowed
 global_illegal_2.adb:24:31: refinement of "A" is visible at line 3
 global_illegal_2.adb:42:35: global item "X" cannot have mode In_Out or Output (SPARK RM 6.1.4(12))
 global_illegal_2.adb:42:35: item already appears as input of subprogram "P3"
 global_illegal_2.adb:43:35: global item "Y" cannot have mode In_Out or Output (SPARK RM 6.1.4(12))
 global_illegal_2.adb:43:35: item already appears as input of subprogram "P3"
-global_illegal_2.adb:58:21: global item cannot denote a constant (SPARK RM 6.1.4(7))
+global_illegal_2.adb:58:21: global item cannot denote a constant
 global_illegal_3.adb:35:19: "Y" must be listed in the Global aspect of "P1" (SPARK RM 6.1.4(13))
 global_illegal_3.adb:46:09: "X" must be a global output of "P2" (SPARK RM 6.1.4)
 global_illegal_3.adb:50:14: "X" must be listed in the Global aspect of "P3" (SPARK RM 6.1.4(13))

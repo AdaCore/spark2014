@@ -10,8 +10,8 @@ initializes_illegal_3.ads:30:34: input item "Rec" cannot denote a visible variab
 initializes_illegal_3.ads:30:39: input item "S2" cannot denote a visible variable or state of package "Initializes_Illegal_3" (SPARK RM 7.1.5(4))
 initializes_illegal_3.ads:30:46: input item "SS" cannot denote a visible variable or state of package "Initializes_Illegal_3" (SPARK RM 7.1.5(4))
 initializes_illegal_3.ads:30:54: input item "XX" cannot denote a visible variable or state of package "Initializes_Illegal_3" (SPARK RM 7.1.5(4))
-initializes_illegal_3.ads:34:45: duplicate input item (SPARK RM 7.1.5(5))
-initializes_illegal_3.ads:34:49: duplicate input item (SPARK RM 7.1.5(5))
+initializes_illegal_3.ads:34:45: duplicate input item
+initializes_illegal_3.ads:34:49: duplicate input item
 initializes_illegal_3.ads:49:04: indicator Part_Of is required in this context (SPARK RM 7.2.6(2))
 initializes_illegal_3.ads:49:04: "PrivVar" is declared in the private part of package "Initializes_Illegal_3"
 initializes_illegal_3_helper.ads:5:67: "S2" not declared in "Initializes_Illegal_3"
