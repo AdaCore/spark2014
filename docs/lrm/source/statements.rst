@@ -68,11 +68,90 @@ User-Defined Iterator Types
 Generalized Loop Iteration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. centered:: **Legality Rules**
+.. centered:: **Static Semantics **
 
 .. _tu-generalozed_loop_iteration-01:
 
-1. Generalized forms of loop iteration are not currently supported.
+   Ada's generalized loop iteration is supported in |SPARK|,
+   but only in a modified form. Ada's existing generalized
+   loop iteration is defined in terms of other constructs
+   which are not in |SPARK| (e.g., access discriminants,
+   interface types).
+
+   Instead, |SPARK| provides a new mechanism for defining
+   an iterable container type (see Ada RM 5.5.1). Iteration
+   over the elements of an object of such a type is then
+   allowed as for any iterable container type (see Ada RM 5.5.2),
+   although with dynamic semantics as described below.
+   Other forms of generalized loop iteration are not in |SPARK|.
+
+   The type-related operational representation aspect Iterable
+   may be specified for any non-array type.
+   If the aspect Iterable is visibly specified for a type,
+   the (view of the) type is defined to be an iterable container type (view).
+   [The visibility of an aspect specification is defined in Ada RM 8.8].
+   [Because other iterable container types as defined in Ada RM 5.5.1
+   are necessarily not in |SPARK|, this effectively replaces, rather than
+   extends, that definition].
+
+   The ``aspect_definition`` for an Iterable aspect specification for
+   a subtype of a type T shall follow the following grammar for
+   ``iterable_Specification``
+
+::
+
+   iterable_specification ::= 
+     (First       => name,
+      Next        => name,
+      Has_Element => name,
+      Element     => name)
+
+.. centered:: **Legality Rules**
+
+   Each of the four names shall denote a primitive function of the
+   type, referred to respectively as the First, Next, Has_Element,
+   ane Element functions of the type. All parameters of all
+   four subprograms shall be of mode In.
+   
+   The First function of the type shall take a single parameter,
+   which shall be of type T. The "cursor type" of T
+   is defined to be result type of the First function. The name of the
+   First function shall be resolvable from these rules alone. [This means
+   the the cursor type of T can be determined without examining the
+   other three subprogram names]. The cursor type of T shall not be limited.
+   The "cursor subtype" of T is defined to be the result subtype of the
+   First function. The cursor subtype of T shall be definite.
+
+   The Next function of the type shall have two parameters, the first
+   of type T and the second of the cursor type of T; the result type
+   of the function shall be the cursor type of T.
+
+   The Has_Element function of the type shall have two parameters, the first
+   of type T and the second of the cursor type of T; the result type
+   of the function shall be Boolean.
+
+   The Element function of the type shall have two parameters, the first
+   of type T and the second of the cursor type of T; the default element
+   subtype of T is then defined to be the result subtype of the Element
+   function.
+
+   Reverse container element iterators are not in |SPARK|.
+   The loop parameter of a container element iterator is a constant object.
+
+   TBD - positional notation in an Iterable aspect spec ok?
+
+   TBD - quantified expressions only, or loop statements too.
+
+.. centered:: **Dynamic Semantics**
+
+An object of the cursor type of T (hereafter called "the cursor") is created
+and is initialized to the result of calling First, passing in the given
+container object. Each iteration begins by calling Has_Element, passing
+in the container and the cursor. If False is returned, execution of the
+loop is completed. If True is returned, Element is called, passing in the
+container and the cursor; the result object is the loop parameter for that
+iteration of the loop. At the end of the iteration, Next is called (passing
+in the container and the cursor) and the result is assigned to the cursor.
 
 .. _etu-generalozed_loop_iteration:
 
