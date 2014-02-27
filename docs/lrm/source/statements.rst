@@ -136,11 +136,15 @@ Generalized Loop Iteration
 10. Reverse container element iterators are not in |SPARK|.
     The loop parameter of a container element iterator is a constant object.
 
+11. A container element iterator shall only occur as the
+    loop_parameter_specification of a quantified_expression[, and not as
+    the iteration_scheme of a loop statement]. 
+
 .. todo: positional notation in an Iterable aspect spec ok?
 
 .. centered:: **Dynamic Semantics**
 
-11. An object of the cursor type of T (hereafter called "the cursor") is created
+12. An object of the cursor type of T (hereafter called "the cursor") is created
     and is initialized to the result of calling First, passing in the given
     container object. Each iteration begins by calling Has_Element, passing
     in the container and the cursor. If False is returned, execution of the
