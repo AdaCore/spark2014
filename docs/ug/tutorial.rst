@@ -20,7 +20,7 @@ these errors.
 
 We start with creating a GNAT project file in ``search.gpr``:
 
-.. literalinclude:: linear_search/linear_search_ada/search.gpr
+.. literalinclude:: examples/linear_search_ada/search.gpr
    :language: ada
    :linenos:
 
@@ -31,20 +31,22 @@ for in-depth documentation of this technology, consult the |GNAT Pro|
 User's Guide. Documentation and examples for the |SPARK| language and tools are
 also available via the :menuselection:`Help --> SPARK` menu in GPS.
 
-The obvious specification of ``Search`` is given in file ``search.ads``, where
-we specify that the spec is in |SPARK| by using pragma ``SPARK_Mode``.
+The obvious specification of ``Linear_Search`` is given
+in file ``linear_search.ads``, where
+we specify that the spec is in |SPARK| by using aspect ``SPARK_Mode``.
 
-.. literalinclude:: linear_search/linear_search_ada/linear_search.ads
+.. literalinclude:: examples/linear_search_ada/linear_search.ads
    :language: ada
    :linenos:
 
-The implementation of ``Search`` is given in file ``search.adb``, where we specify
-that the body is in |SPARK| by using pragma ``SPARK_Mode``.  It is as obvious
+The implementation of ``Linear_Search`` is given in
+file ``linear_search.adb``, where we specify
+that the body is in |SPARK| by using aspect ``SPARK_Mode``.  It is as obvious
 as its specification, using a loop to go through the array parameter ``A`` and
 looking for the first index at which ``Val`` is found, if there is such an
 index.
 
-.. literalinclude:: linear_search/linear_search_ada/linear_search.adb
+.. literalinclude:: examples/linear_search_ada/linear_search.adb
    :language: ada
    :linenos:
 
@@ -59,7 +61,7 @@ Examine File` menu, so that it issues errors on |SPARK| code that violates
 
 .. image:: static/search_examine.png
 
-It detects here that function ``Linear_Search`` is not in |SPARK|, because it has
+It detects here that function ``Search`` is not in |SPARK|, because it has
 an ``out`` parameter:
 
 .. image:: static/search_not_spark.png
@@ -72,15 +74,15 @@ order of evaluation of the expression.
 
 We correct this problem by defining a record type ``Search_Result`` holding
 both the Boolean result and the index for cases when the value is found, and
-making ``Linear_Search`` return this type:
+making ``Search`` return this type:
 
-.. literalinclude:: linear_search/linear_search_spark/linear_search.ads
+.. literalinclude:: examples/linear_search_spark/linear_search.ads
    :language: ada
    :linenos:
 
-The implementation of ``Linear_Search`` is modified to use this type:
+The implementation of ``Search`` is modified to use this type:
 
-.. literalinclude:: linear_search/linear_search_spark/linear_search.adb
+.. literalinclude:: examples/linear_search_spark/linear_search.adb
    :language: ada
    :linenos:
 
@@ -94,23 +96,23 @@ modularly on each subprogram, independently of the implementation of other
 subprograms. The precondition constrains the value of input parameters, while
 the postcondition states desired properties of the result of the function. See
 :ref:`Preconditions and Postconditions` for more details. Here, we can require
-in the precondition that callers of ``Linear_Search`` always pass a
+in the precondition that callers of ``Search`` always pass a
 non-negative value for parameter ``Val``, and we can state that, when the
 search succeeds, the index returned points to the desired value in the array:
 
-.. literalinclude:: linear_search/linear_search_contract/linear_search.ads
+.. literalinclude:: examples/linear_search_contract/linear_search.ads
    :language: ada
    :linenos:
    :lines: 21-27
 
 Notice the use of an if-expression in the postcondition to express an
 implication: if the search succeeds it implies that the value at the returned index
-is the value that was being searched for. Note also the use of ``Linear_Search'Result``
+is the value that was being searched for. Note also the use of ``Search'Result``
 to denote the value returned by the function.
 
 This contract is still not very strong. Many faulty implementations of the
 search would pass this contract, for example one that always fails (thus
-returning with ``Linear_Search'Result.Found = False``). We could reinforce the
+returning with ``Search'Result.Found = False``). We could reinforce the
 postcondition, but we choose here to do it through a contract by cases, which
 adds further constraints to the usual contract by precondition and
 postcondition. We want to consider here three cases:
@@ -125,7 +127,7 @@ state that the search fails. We use a helper function ``Value_Found_In_Range``
 to express that a value ``Val`` is found in an array ``A`` within given bounds
 ``Low`` and ``Up``:
 
-.. literalinclude:: linear_search/linear_search_contract/linear_search.ads
+.. literalinclude:: examples/linear_search_contract/linear_search.ads
    :language: ada
    :linenos:
    :lines: 15-34
@@ -143,7 +145,7 @@ range are such that ...).
 Each contract case consists of a guard (on the left of the arrow symbol)
 evaluated on subprogram entry, and a consequence (on the right of the arrow
 symbol) evaluated on subprogram exit. The special expression
-``Linear_Search'Result`` may be used in consequence expressions. The three
+``Search'Result`` may be used in consequence expressions. The three
 guards here should cover all possible cases, and be disjoint. When a contract
 case is activated (meaning its guard holds on entry), its consequence should
 hold on exit.
@@ -158,11 +160,11 @@ We can compile the above program, and test it on a set of selected inputs. The
 following test program exercises the case where the searched value is present in
 the array and the case where it is not:
 
-.. literalinclude:: linear_search/linear_search_contract/test_search.adb
+.. literalinclude:: examples/linear_search_contract/test_search.adb
    :language: ada
    :linenos:
 
-We can check that the implementation of ``Search`` passes this test by
+We can check that the implementation of ``Linear_Search`` passes this test by
 compiling and running the test program:
 
 .. code-block:: bash
@@ -196,7 +198,7 @@ run-time checks, an error is reported when running the test program:
    $ test_search
    > raised SYSTEM.ASSERTIONS.ASSERT_FAILURE : contract cases overlap for subprogram linear_search
 
-It appears that two contract cases for ``Linear_Search`` are activated at the
+It appears that two contract cases for ``Search`` are activated at the
 same time! More information can be generated at run time if the code is
 compiler with the switch ``-gnateE``:
 
@@ -205,24 +207,24 @@ compiler with the switch ``-gnateE``:
    $ gnatmake -gnata -gnateE -f test_search.adb
    $ test_search
    > raised SYSTEM.ASSERTIONS.ASSERT_FAILURE : contract cases overlap for subprogram linear_search
-   >   case guard at search.ads:29 evaluates to True
-   >   case guard at search.ads:31 evaluates to True
+   >   case guard at linear_search.ads:29 evaluates to True
+   >   case guard at linear_search.ads:31 evaluates to True
 
 It shows here that the guards of the first and second contract cases hold at
 the same time. This failure in annotations can be debugged with ``gdb`` like a
 failure in the code (provided the program was compiled with appropriate
 switches, like ``-g -O0``). The stack trace inside GPS shows that the error
-occurs on the first call to ``Linear_Search`` in the test program:
+occurs on the first call to ``Search`` in the test program:
 
 .. image:: static/search_gdb.png
 
 Indeed, the value 1 is present twice in the array, at indexes 1 and 8, which
 makes the two guards ``A(1) = Val`` and ``Value_Found_In_Range (A, Val, 2, 10``
-evaluate to ``True``. We correct the contract of ``Linear_Search`` by
+evaluate to ``True``. We correct the contract of ``Search`` by
 strengthening the guard of the second contract case, so that it only applies
 when the value is not found at index 1:
 
-.. literalinclude:: linear_search/linear_search_flow/linear_search.ads
+.. literalinclude:: examples/linear_search_flow/linear_search.ads
    :language: ada
    :linenos:
    :lines: 28-34
@@ -279,7 +281,7 @@ independently, so the more cores are available the faster it completes.
    more or less time to complete a proof depending on the platform and machine
    used.
 
-We start with the flow analysis of ``Search``, using mode ``flow`` of
+We start with the flow analysis of ``Linear_Search``, using mode ``flow`` of
 |GNATprove| reached through the :menuselection:`SPARK --> Examine File` menu:
 
 .. image:: static/search_flow.png
@@ -289,7 +291,7 @@ Here, it issues an error message:
 .. image:: static/search_flow_error.png
 
 Inside the GPS editor, we can click on the path icon, either on the left of the
-message, or on line 23 in file ``search.adb``, to show the path on which
+message, or on line 23 in file ``linear_search.adb``, to show the path on which
 ``Res.At_Index`` is not initialized:
 
 .. image:: static/search_flow_error_path.png
@@ -313,15 +315,15 @@ we could give a dummy value to component ``At_Index`` when the search fails, we
 choose to turn the type ``Search_Result`` into a discriminant record, so that
 the component ``At_Index`` is only usable when the search succeeds:
 
-.. literalinclude:: linear_search/linear_search_prove/linear_search.ads
+.. literalinclude:: examples/linear_search_prove/linear_search.ads
    :language: ada
    :linenos:
    :lines: 10-17
 
-Then, in the implementation of ``Linear_Search``, we change the value of the
+Then, in the implementation of ``Search``, we change the value of the
 discriminant depending on the success of the search:
 
-.. literalinclude:: linear_search/linear_search_prove/linear_search.adb
+.. literalinclude:: examples/linear_search_prove/linear_search.adb
    :language: ada
    :linenos:
    :lines: 5-24
@@ -340,24 +342,24 @@ in a few seconds, with a message stating that a check could not be proved:
 
 .. image:: static/search_not_proved.png
 
-Note that there is no such message on the postcondition of ``Linear_Search``,
+Note that there is no such message on the postcondition of ``Search``,
 which means that it was proved. Likewise, there are no such messages on the
-body of ``Linear_Search``, which means that no run-time errors can be raised
+body of ``Search``, which means that no run-time errors can be raised
 when executing the function.
 
-The message corresponds to a check done when exiting from ``Linear_Search``. It
+The message corresponds to a check done when exiting from ``Search``. It
 is expected that not much can be proved at this point, given that the body of
-``Linear_Search`` has a loop but no loop invariant, so the formulas generated
+``Search`` has a loop but no loop invariant, so the formulas generated
 for these checks assume the worst about locations modified in the loop. A loop
 invariant is a special pragma ``Loop_Invariant`` stating an assertion in a
 loop, which can be both executed at run-time like a regular pragma ``Assert``,
 and used by |GNATprove| to summarize the effect of successive iterations of the
 loop. We need to add a loop invariant stating enough properties about the
 cumulative effect of loop iterations, so that the contract cases of
-``Linear_Search`` become provable. Here, it should state that the value
+``Search`` become provable. Here, it should state that the value
 searched was not previously found:
 
-.. literalinclude:: linear_search/linear_search_loopinv/linear_search.adb
+.. literalinclude:: examples/linear_search_loopinv/linear_search.adb
    :language: ada
    :lines: 19-20
 
@@ -392,13 +394,13 @@ We solve this issue by setting the type of ``Pos`` to the base type of
 ``Index``, which ranges past the last value of ``Index``. (This may not be the
 simplest solution, but we use it here for the dynamics of this tutorial.)
 
-.. literalinclude:: linear_search/linear_search_loopinv_ok/linear_search.adb
+.. literalinclude:: examples/linear_search_loopinv_ok/linear_search.adb
    :language: ada
    :lines: 9
 
 And we add the range information for ``Pos`` to the loop invariant:
 
-.. literalinclude:: linear_search/linear_search_loopinv_ok/linear_search.adb
+.. literalinclude:: examples/linear_search_loopinv_ok/linear_search.adb
    :language: ada
    :lines: 19-22
 
@@ -450,7 +452,7 @@ the window raised, in order to maximize proof precision, and click on
 This runs |GNATprove| only on the checks that originate from line 35, in a
 special mode which considers separately individual execution paths if
 needed. The check is still not proved, but GPS now displays an icon, either on
-the left of the message, or on line 35 in file ``search.ads``, to show the path
+the left of the message, or on line 35 in file ``linear_search.ads``, to show the path
 on which the contract case is not proved:
 
 .. image:: static/search_path_info.png
@@ -464,14 +466,14 @@ on which the contract case is not proved:
    raised. The menu :menuselection:`Prove --> Show Path` displayed when
    right-clicking in the code panel should not be used.
 
-This corresponds to a case where the implementation of ``Loop_Search`` does not
+This corresponds to a case where the implementation of ``Search`` does not
 find the searched value, but the guard of the second contract case holds,
 meaning that the value is present in the range 2 to 10. Looking more closely at
 the path highlighted, we can see that the loop exits when ``Pos = A'Last``, so
 the value 10 is never considered! We correct this bug by changing the loop test
 from a strict to a non-strict comparison operation:
 
-.. literalinclude:: linear_search/linear_search_no_variant/linear_search.adb
+.. literalinclude:: examples/linear_search_no_variant/linear_search.adb
    :language: ada
    :lines: 12
 
@@ -484,35 +486,35 @@ was proved this time:
 
 As usual after code changes, we rerun the test program, which shows no
 errors. Rerunning |GNATprove| on the complete file shows no more unproved
-checks. The ``Search`` unit has been fully proved. To see all the checks that
+checks. The ``Linear_Search`` unit has been fully proved. To see all the checks that
 were proved, we can rerun the tool with box ``Report checks proved`` checked,
 which displays the results previously computed:
 
 .. image:: static/search_all_proved.png
 
-Note that one thing that was not proved is that ``Linear_Search``
+Note that one thing that was not proved is that ``Search``
 terminates. As it contains a while-loop, it could loop forever. To prove that
 it is not the case, we add a loop variant, which specifies a quantity varying
 monotonically with each iteration. Since this quantity is bounded by its type,
-and we have proved absence of run-time errors in ``Linear_Search``, proving
+and we have proved absence of run-time errors in ``Search``, proving
 this monotonicity property also shows that there cannot be an infinite number
-of iterations of the loop. The natural loop invariant for ``Linear_Search`` is
+of iterations of the loop. The natural loop invariant for ``Search`` is
 the index ``Pos``, which increases at each loop iteration:
 
-.. literalinclude:: linear_search/linear_search_final/linear_search.adb
+.. literalinclude:: examples/linear_search_final_cases/linear_search.adb
    :language: ada
    :lines: 23
 
 With this last modification, the test program still runs without errors (it
 checks dynamically that the loop variant is respected), and the program is
-still fully proved. Here is the final version of ``Search``, with the complete
+still fully proved. Here is the final version of ``Linear_Search``, with the complete
 annotations:
 
-.. literalinclude:: linear_search/linear_search_final_cases/linear_search.ads
+.. literalinclude:: examples/linear_search_final_cases/linear_search.ads
    :language: ada
    :linenos:
 
-.. literalinclude:: linear_search/linear_search_final_cases/linear_search.adb
+.. literalinclude:: examples/linear_search_final_cases/linear_search.adb
    :language: ada
    :linenos:
 
