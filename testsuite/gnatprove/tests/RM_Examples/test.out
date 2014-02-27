@@ -72,8 +72,9 @@ externals.adb:91:20: warning: unused assignment
 externals.adb:94:13: warning: statement has no effect
 gprbuild: *** compilation phase failed
 gnatprove: error during analysis of data and information flow, aborting.
-inter_unit_elaboration_examples.adb:11:04: warning: "Y" can be accessed by clients before this initialization
-inter_unit_elaboration_examples.adb:11:04: warning: add Elaborate_Body to spec to ensure "Y" is initialized
+inter_unit_elaboration_examples.adb:11:04: warning: elaboration code may access "Y" before it is initialized
+inter_unit_elaboration_examples.adb:11:04: warning: suggest adding pragma Elaborate_Body to spec of "Inter_Unit_Elaboration_Examples"
+inter_unit_elaboration_examples.adb:11:04: warning: or an explicit initialization could be added at inter_unit_elaboration_examples.ads:8
 inter_unit_elaboration_examples.adb:8:14: warning: overflow check might fail
 intra_unit_elaboration_order_examples.adb:3:50: warning: overflow check might fail
 intra_unit_elaboration_order_examples.adb:20:17: info: overflow check proved
