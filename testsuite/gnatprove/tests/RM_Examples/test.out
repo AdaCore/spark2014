@@ -32,7 +32,7 @@ f.adb:10:38: info: overflow check proved
 f.adb:11:36: info: index check proved
 f.adb:11:36: info: overflow check proved
 f.adb:13:26: info: range check proved
-f.adb:13:37: info: index check proved
+f.adb:13:37: warning: array index check might fail
 f.adb:13:37: info: overflow check proved
 f.adb:21:4: info: assertion proved
 param_1_illegal.adb:5:28: warning: "X" might not be initialized in "Param_1_Illegal"
