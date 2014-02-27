@@ -1,0 +1,2 @@
+linear_search.adb:22:21: warning: range check might fail
+linear_search.ads:35:67: warning: contract case might fail

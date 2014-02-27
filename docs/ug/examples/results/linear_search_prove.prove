@@ -1,0 +1,3 @@
+linear_search.ads:33:20: warning: contract case might fail
+linear_search.ads:34:24: warning: discriminant check might fail
+linear_search.ads:35:67: warning: contract case might fail

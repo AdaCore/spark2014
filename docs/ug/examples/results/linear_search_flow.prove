@@ -1,0 +1,2 @@
+linear_search.ads:29:20: warning: contract case might fail
+linear_search.ads:31:67: warning: contract case might fail
