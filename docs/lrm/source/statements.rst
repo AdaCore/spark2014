@@ -83,20 +83,16 @@ Generalized Loop Iteration
    over the elements of an object of such a type is then
    allowed as for any iterable container type (see Ada RM 5.5.2),
    although with dynamic semantics as described below.
+   Similarly, |SPARK| provides a new mechanism for defining
+   an iterator type (see Ada RM 5.5.1), which then allows
+   generalized iterators as for any iterator type (see Ada RM 5.5.2).
    Other forms of generalized loop iteration are not in |SPARK|.
 
 3. The type-related operational representation aspect Iterable
    may be specified for any non-array type.
-   If the aspect Iterable is visibly specified for a type,
-   the (view of the) type is defined to be an iterable container type (view).
-   [The visibility of an aspect specification is defined in Ada RM 8.8].
-   [Because other iterable container types as defined in Ada RM 5.5.1
-   are necessarily not in |SPARK|, this effectively replaces, rather than
-   extends, that definition].
-
-4. The ``aspect_definition`` for an Iterable aspect specification for
+   The ``aspect_definition`` for an Iterable aspect specification for
    a subtype of a type T shall follow the following grammar for
-   ``iterable_Specification``::
+   ``iterable_specification``::
 
      iterable_specification ::= 
        (First       => name,
@@ -104,34 +100,45 @@ Generalized Loop Iteration
         Has_Element => name[,
         Element     => name])
 
+4. If the aspect Iterable is visibly specified for a type,
+   the (view of the) type is defined to be an iterator type (view).
+   If the aspect Iterable is visibly specified for a type and the
+   specification includes an Element argument then
+   the (view of the) type is defined to be an iterable container type (view).
+   [The visibility of an aspect specification is defined in Ada RM 8.8].
+   [Because other iterator types and iterable container types as defined in
+   Ada RM 5.5.1 are necessarily not in |SPARK|, this effectively replaces,
+   rather than extends, those definitions].
+
 .. centered:: **Legality Rules**
 
-5. Each of the four names shall denote a primitive function of the
+5. Each of the four (or three, if the optional argument is omitted)
+   names shall denote an explicitly declared primitive function of the
    type, referred to respectively as the First, Next, Has_Element,
-   ane Element functions of the type. All parameters of all
+   and Element functions of the type. All parameters of all
    four subprograms shall be of mode In.
 
 6. The First function of the type shall take a single parameter,
-   which shall be of type T. The "cursor type" of T
-   is defined to be result type of the First function. The name of the
-   First function shall be resolvable from these rules alone. [This means
-   the the cursor type of T can be determined without examining the
-   other three subprogram names]. The cursor type of T shall not be limited.
-   The "cursor subtype" of T is defined to be the result subtype of the
-   First function. The cursor subtype of T shall be definite.
+   which shall be of type T. The "iteration cursor subtype" of T
+   is defined to be result subtype of the First function. The
+   First function's name shall be resolvable from these rules alone.
+   [This means the the iteration cursor subtype of T can be determined
+   without examining the other subprogram names].
+   The iteration cursor subtype of T shall be definite and shall not be
+   limited.
 
 7. The Next function of the type shall have two parameters, the first
-   of type T and the second of the cursor type of T; the result type
-   of the function shall be the cursor type of T.
+   of type T and the second of the cursor subtype of T; the result subtype
+   of the function shall be the cursor subtype of T.
 
 8. The Has_Element function of the type shall have two parameters, the first
-   of type T and the second of the cursor type of T; the result type
+   of type T and the second of the cursor subtype of T; the result subtype
    of the function shall be Boolean.
 
-9. The Element function of the type shall have two parameters, the first
-   of type T and the second of the cursor type of T; the default element
-   subtype of T is then defined to be the result subtype of the Element
-   function.
+9. The Element function of the type, if one is specified, shall have two
+   parameters, the first of type T and the second of the cursor subtype of T;
+   the default element subtype of T is then defined to be the result subtype
+   of the Element function.
 
 10. Reverse container element iterators are not in |SPARK|.
     The loop parameter of a container element iterator is a constant object.
@@ -144,14 +151,19 @@ Generalized Loop Iteration
 
 .. centered:: **Dynamic Semantics**
 
-12. An object of the cursor type of T (hereafter called "the cursor") is created
+12. Iteration associated with a generalized iterator or a container element
+    iterator procedes as follows. An object of the iteration cursor subtype
+    of T (hereafter called "the cursor") is created
     and is initialized to the result of calling First, passing in the given
     container object. Each iteration begins by calling Has_Element, passing
     in the container and the cursor. If False is returned, execution of the
-    loop is completed. If True is returned, Element is called, passing in the
-    container and the cursor; the result object is the loop parameter for that
-    iteration of the loop. At the end of the iteration, Next is called (passing
-    in the container and the cursor) and the result is assigned to the cursor.
+    associated loop is completed. If True is returned then iteration
+    continues and the loop parameter for the next iteration of the loop
+    is either (in the case of a generalized iterator) the cursor or
+    (in the case of a container element iterator) the result of calling the
+    Element function, passing in the container and the cursor. At the end of
+    the iteration, Next is called (passing in the container and the cursor)
+    and the result is assigned to the cursor.
 
 .. _etu-generalized_loop_iteration:
 
