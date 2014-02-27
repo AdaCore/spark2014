@@ -66,7 +66,7 @@ is
       --     introduce more than one ``output`` in the partially refined
       --     dependency relation. Each of these ``outputs`` has an
       --     ``input_list`` that has zero or more of the ``inputs`` from the
-      --     ``input_list`` of the original ``output``.  The union of these
+      --     ``input_list`` of the original ``output``. The union of these
       --     ``inputs`` and the original state abstraction, if it is an
       --     ``input`` in the ``input_list``, shall denote the same ``inputs``
       --     that appear in the ``input_list`` of the original ``output``.
@@ -91,7 +91,7 @@ is
       --     - at least one of its ``constituents`` shall be denoted in the
       --       ``input_list`` of a ``null_dependency_clause``; or
       --     - the state abstraction is both an ``input`` and an ``output``
-      --       and not every ``constituent`` the state abstraction is an
+      --       and not every ``constituent`` of the state abstraction is an
       --       ``output`` of the Refined_Depends aspect. [This rule does not
       --       exclude denoting a ``constituent`` of such a state abstraction
       --       in an ``input_list``.]
