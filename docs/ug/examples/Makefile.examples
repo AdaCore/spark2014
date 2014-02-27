@@ -9,7 +9,7 @@ ALL_PROVE_MSG=$(patsubst %/search.gpr,$(RESULTS)/%.prove,$(ALL))
 gnatprove: $(ALL_PROVE_MSG)
 
 $(RESULTS)/%.prove: force
-	cd prove && \
+	-cd prove && \
         cp -rf ../$* . && \
         cd $* && \
         gnatprove -f -q -P search.gpr --warnings=on --timeout=60 > $@
