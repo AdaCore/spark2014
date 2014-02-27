@@ -20,7 +20,7 @@ these errors.
 
 We start with creating a GNAT project file in ``search.gpr``:
 
-.. literalinclude:: linear_search/search_ada/search.gpr
+.. literalinclude:: linear_search/linear_search_ada/search.gpr
    :language: ada
    :linenos:
 
@@ -34,7 +34,7 @@ also available via the :menuselection:`Help --> SPARK` menu in GPS.
 The obvious specification of ``Search`` is given in file ``search.ads``, where
 we specify that the spec is in |SPARK| by using pragma ``SPARK_Mode``.
 
-.. literalinclude:: linear_search/search_ada/search.ads
+.. literalinclude:: linear_search/linear_search_ada/linear_search.ads
    :language: ada
    :linenos:
 
@@ -44,7 +44,7 @@ as its specification, using a loop to go through the array parameter ``A`` and
 looking for the first index at which ``Val`` is found, if there is such an
 index.
 
-.. literalinclude:: linear_search/search_ada/search.adb
+.. literalinclude:: linear_search/linear_search_ada/linear_search.adb
    :language: ada
    :linenos:
 
@@ -74,13 +74,13 @@ We correct this problem by defining a record type ``Search_Result`` holding
 both the Boolean result and the index for cases when the value is found, and
 making ``Linear_Search`` return this type:
 
-.. literalinclude:: linear_search/search_spark/search.ads
+.. literalinclude:: linear_search/linear_search_spark/linear_search.ads
    :language: ada
    :linenos:
 
 The implementation of ``Linear_Search`` is modified to use this type:
 
-.. literalinclude:: linear_search/search_spark/search.adb
+.. literalinclude:: linear_search/linear_search_spark/linear_search.adb
    :language: ada
    :linenos:
 
@@ -98,7 +98,7 @@ in the precondition that callers of ``Linear_Search`` always pass a
 non-negative value for parameter ``Val``, and we can state that, when the
 search succeeds, the index returned points to the desired value in the array:
 
-.. literalinclude:: linear_search/search_contract/search.ads
+.. literalinclude:: linear_search/linear_search_contract/linear_search.ads
    :language: ada
    :linenos:
    :lines: 21-27
@@ -125,7 +125,7 @@ state that the search fails. We use a helper function ``Value_Found_In_Range``
 to express that a value ``Val`` is found in an array ``A`` within given bounds
 ``Low`` and ``Up``:
 
-.. literalinclude:: linear_search/search_contract/search.ads
+.. literalinclude:: linear_search/linear_search_contract/linear_search.ads
    :language: ada
    :linenos:
    :lines: 15-34
@@ -158,7 +158,7 @@ We can compile the above program, and test it on a set of selected inputs. The
 following test program exercises the case where the searched value is present in
 the array and the case where it is not:
 
-.. literalinclude:: linear_search/search_contract/test_search.adb
+.. literalinclude:: linear_search/linear_search_contract/test_search.adb
    :language: ada
    :linenos:
 
@@ -222,7 +222,7 @@ evaluate to ``True``. We correct the contract of ``Linear_Search`` by
 strengthening the guard of the second contract case, so that it only applies
 when the value is not found at index 1:
 
-.. literalinclude:: linear_search/search_flow/search.ads
+.. literalinclude:: linear_search/linear_search_flow/linear_search.ads
    :language: ada
    :linenos:
    :lines: 28-34
@@ -313,7 +313,7 @@ we could give a dummy value to component ``At_Index`` when the search fails, we
 choose to turn the type ``Search_Result`` into a discriminant record, so that
 the component ``At_Index`` is only usable when the search succeeds:
 
-.. literalinclude:: linear_search/search_prove/search.ads
+.. literalinclude:: linear_search/linear_search_prove/linear_search.ads
    :language: ada
    :linenos:
    :lines: 10-17
@@ -321,7 +321,7 @@ the component ``At_Index`` is only usable when the search succeeds:
 Then, in the implementation of ``Linear_Search``, we change the value of the
 discriminant depending on the success of the search:
 
-.. literalinclude:: linear_search/search_prove/search.adb
+.. literalinclude:: linear_search/linear_search_prove/linear_search.adb
    :language: ada
    :linenos:
    :lines: 5-24
@@ -357,7 +357,7 @@ cumulative effect of loop iterations, so that the contract cases of
 ``Linear_Search`` become provable. Here, it should state that the value
 searched was not previously found:
 
-.. literalinclude:: linear_search/search_loopinv/search.adb
+.. literalinclude:: linear_search/linear_search_loopinv/linear_search.adb
    :language: ada
    :lines: 19-20
 
@@ -392,13 +392,13 @@ We solve this issue by setting the type of ``Pos`` to the base type of
 ``Index``, which ranges past the last value of ``Index``. (This may not be the
 simplest solution, but we use it here for the dynamics of this tutorial.)
 
-.. literalinclude:: linear_search/search_loopinv_ok/search.adb
+.. literalinclude:: linear_search/linear_search_loopinv_ok/linear_search.adb
    :language: ada
    :lines: 9
 
 And we add the range information for ``Pos`` to the loop invariant:
 
-.. literalinclude:: linear_search/search_loopinv_ok/search.adb
+.. literalinclude:: linear_search/linear_search_loopinv_ok/linear_search.adb
    :language: ada
    :lines: 19-22
 
@@ -471,7 +471,7 @@ the path highlighted, we can see that the loop exits when ``Pos = A'Last``, so
 the value 10 is never considered! We correct this bug by changing the loop test
 from a strict to a non-strict comparison operation:
 
-.. literalinclude:: linear_search/search_no_variant/search.adb
+.. literalinclude:: linear_search/linear_search_no_variant/linear_search.adb
    :language: ada
    :lines: 12
 
@@ -499,7 +499,7 @@ this monotonicity property also shows that there cannot be an infinite number
 of iterations of the loop. The natural loop invariant for ``Linear_Search`` is
 the index ``Pos``, which increases at each loop iteration:
 
-.. literalinclude:: linear_search/search_final/search.adb
+.. literalinclude:: linear_search/linear_search_final/linear_search.adb
    :language: ada
    :lines: 23
 
@@ -508,11 +508,11 @@ checks dynamically that the loop variant is respected), and the program is
 still fully proved. Here is the final version of ``Search``, with the complete
 annotations:
 
-.. literalinclude:: linear_search/search_final/search.ads
+.. literalinclude:: linear_search/linear_search_final_cases/linear_search.ads
    :language: ada
    :linenos:
 
-.. literalinclude:: linear_search/search_final/search.adb
+.. literalinclude:: linear_search/linear_search_final_cases/linear_search.adb
    :language: ada
    :linenos:
 
