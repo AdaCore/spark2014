@@ -1083,6 +1083,8 @@ package body Flow.Control_Flow_Graph is
       V_Def_LHS : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
       --  Things defined because they appear on the LHS (in A (J), A would
       --  be used).
+
+      V_Need_Checking_LHS : Flow_Id_Sets.Set;
    begin
       --  Work out which variables we use and define.
       V_Used_RHS := Get_Variable_Set (Expression (N),
@@ -1097,7 +1099,11 @@ package body Flow.Control_Flow_Graph is
          Local_Constants      => FA.Local_Constants,
          Vars_Explicitly_Used => V_Explicitly_Used_LHS,
          Vars_Implicitly_Used => V_Implicitly_Used_LHS,
-         Vars_Defined         => V_Def_LHS);
+         Vars_Defined         => V_Def_LHS,
+         Vars_Semi_Used       => V_Need_Checking_LHS);
+      if not V_Need_Checking_LHS.Is_Empty then
+         Ctx.Folded_Function_Checks (N).Insert (Name (N));
+      end if;
 
       if Debug_Print_Assignment_Def_Use_Sets_And_Tree then
          Print_Node_Subtree (N);

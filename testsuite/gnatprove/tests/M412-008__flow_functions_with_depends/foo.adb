@@ -4,6 +4,8 @@ is
    G1 : Integer := 0;
    G2 : Integer := 0;
 
+   type Boolean_Map is array (Boolean) of Boolean;
+
    function Wibble (X, Y : Integer) return Boolean
      with Global => (Input    => G1,
                      Proof_In => G2),
@@ -130,5 +132,26 @@ is
       G1 := 0;
       G2 := 0;
    end Test_07_E;
+
+   procedure Test_07_Ok (A : Integer;
+                         B : Integer;
+                         M : in out Boolean_Map)
+   with Global => null,
+        Depends => (M => (A, M),
+                    null => B)
+   is
+   begin
+      M (Wobble (A, B)) := False;
+   end Test_07_Ok;
+
+   procedure Test_08_E (A : Integer;
+                        M : in out Boolean_Map)
+   with Global => null,
+        Depends => (M => (A, M))
+   is
+      B : Integer;
+   begin
+      M (Wobble (A, B)) := False;
+   end Test_08_E;
 
 end Foo;

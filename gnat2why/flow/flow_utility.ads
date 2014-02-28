@@ -192,7 +192,8 @@ package Flow_Utility is
       Local_Constants      : Node_Sets.Set;
       Vars_Defined         : out Flow_Id_Sets.Set;
       Vars_Explicitly_Used : out Flow_Id_Sets.Set;
-      Vars_Implicitly_Used : out Flow_Id_Sets.Set)
+      Vars_Implicitly_Used : out Flow_Id_Sets.Set;
+      Vars_Semi_Used       : out Flow_Id_Sets.Set)
      with Pre => Nkind (N) in N_Identifier |
                               N_Expanded_Name |
                               N_Selected_Component |

@@ -252,6 +252,7 @@ package body Flow.Control_Flow_Graph.Utility is
       A        : V_Attributes        := Null_Attributes;
       Tmp_Used : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
       Scope    : constant Flow_Scope := Get_Flow_Scope (Call_Vertex);
+      Unused   : Flow_Id_Sets.Set;
    begin
       A.Is_Parameter                  := True;
       A.Is_Discr_Or_Bounds_Parameter  := Discriminants_Or_Bounds_Only;
@@ -294,7 +295,10 @@ package body Flow.Control_Flow_Graph.Utility is
             Local_Constants      => FA.Local_Constants,
             Vars_Explicitly_Used => A.Variables_Explicitly_Used,
             Vars_Implicitly_Used => A.Variables_Used,
-            Vars_Defined         => A.Variables_Defined);
+            Vars_Defined         => A.Variables_Defined,
+            Vars_Semi_Used       => Unused);
+         --  We can ignore Vars_Semi_Used here as we have an unconditional
+         --  addition to folded_function_checks for each actual anyway.
          A.Variables_Used.Union (A.Variables_Explicitly_Used);
       end if;
 

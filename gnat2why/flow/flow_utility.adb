@@ -1079,7 +1079,7 @@ package body Flow_Utility is
                   --  individual record fields.
 
                   declare
-                     A, B, C : Flow_Id_Sets.Set;
+                     A, B, C, D : Flow_Id_Sets.Set;
                   begin
                      Untangle_Assignment_Target
                        (N                    => N,
@@ -1087,10 +1087,14 @@ package body Flow_Utility is
                         Local_Constants      => Local_Constants,
                         Vars_Explicitly_Used => A,
                         Vars_Implicitly_Used => B,
-                        Vars_Defined         => C);
+                        Vars_Defined         => C,
+                        Vars_Semi_Used       => D);
                      VS.Union (A);
                      VS.Union (B);
                      VS.Union (C);
+                     if not Fold_Functions then
+                        VS.Union (D);
+                     end if;
                   end;
                   return Skip;
 
@@ -1282,7 +1286,8 @@ package body Flow_Utility is
       Local_Constants      : Node_Sets.Set;
       Vars_Defined         : out Flow_Id_Sets.Set;
       Vars_Explicitly_Used : out Flow_Id_Sets.Set;
-      Vars_Implicitly_Used : out Flow_Id_Sets.Set)
+      Vars_Implicitly_Used : out Flow_Id_Sets.Set;
+      Vars_Semi_Used       : out Flow_Id_Sets.Set)
    is
       --  Fold_Functions (a parameter for Get_Variable_Set) is specified as
       --  `false' here because Untangle should only ever be called where we
@@ -1357,27 +1362,39 @@ package body Flow_Utility is
       ----------
 
       function Proc (N : Node_Id) return Traverse_Result is
+         Used_All    : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+         Used_Folded : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
       begin
          case Nkind (N) is
             when N_Indexed_Component | N_Attribute_Reference =>
-               Vars_Explicitly_Used.Union
-                 (Get_Variable_Set
-                    (Expressions (N),
-                     Scope           => Scope,
-                     Local_Constants => Local_Constants,
-                     Fold_Functions  => False));
-               return OK;
+               Used_All := Get_Variable_Set
+                 (Expressions (N),
+                  Scope           => Scope,
+                  Local_Constants => Local_Constants,
+                  Fold_Functions  => False);
+               Used_Folded := Get_Variable_Set
+                 (Expressions (N),
+                  Scope           => Scope,
+                  Local_Constants => Local_Constants,
+                  Fold_Functions  => True);
             when N_Slice =>
-               Vars_Explicitly_Used.Union
-                 (Get_Variable_Set
-                    (Discrete_Range (N),
-                     Scope           => Scope,
-                     Local_Constants => Local_Constants,
-                     Fold_Functions  => False));
-               return OK;
+               Used_All := Get_Variable_Set
+                 (Discrete_Range (N),
+                  Scope           => Scope,
+                  Local_Constants => Local_Constants,
+                  Fold_Functions  => False);
+               Used_Folded := Get_Variable_Set
+                 (Discrete_Range (N),
+                  Scope           => Scope,
+                  Local_Constants => Local_Constants,
+                  Fold_Functions  => True);
             when others =>
                return OK;
          end case;
+
+         Vars_Explicitly_Used.Union (Used_Folded);
+         Vars_Semi_Used.Union (Used_All - Used_Folded);
+         return OK;
       end Proc;
 
       procedure Merge_Array_Expressions is new Traverse_Proc (Proc);
@@ -1390,6 +1407,7 @@ package body Flow_Utility is
       Vars_Defined         := Flow_Id_Sets.Empty_Set;
       Vars_Explicitly_Used := Flow_Id_Sets.Empty_Set;
       Vars_Implicitly_Used := Flow_Id_Sets.Empty_Set;
+      Vars_Semi_Used       := Flow_Id_Sets.Empty_Set;
 
       if Debug_Trace_Untangle then
          Sprint_Node (N);
@@ -1404,7 +1422,8 @@ package body Flow_Utility is
                Local_Constants      => Local_Constants,
                Vars_Defined         => Vars_Defined,
                Vars_Explicitly_Used => Vars_Explicitly_Used,
-               Vars_Implicitly_Used => Vars_Implicitly_Used);
+               Vars_Implicitly_Used => Vars_Implicitly_Used,
+               Vars_Semi_Used       => Vars_Semi_Used);
 
          when N_Identifier | N_Expanded_Name =>
             --  X :=
