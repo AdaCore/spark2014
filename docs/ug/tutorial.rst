@@ -170,7 +170,7 @@ compiling and running the test program:
 .. code-block:: bash
 
    $ gnatmake test_search.adb
-   $ test_search
+   $ ./test_search
    > OK: Found existing value at first index
    > OK: Did not find non-existing value
 
@@ -195,8 +195,8 @@ run-time checks, an error is reported when running the test program:
 .. code-block:: bash
 
    $ gnatmake -gnata -f test_search.adb
-   $ test_search
-   > raised SYSTEM.ASSERTIONS.ASSERT_FAILURE : contract cases overlap for subprogram linear_search
+   $ ./test_search
+   > raised SYSTEM.ASSERTIONS.ASSERT_FAILURE : contract cases overlap for subprogram search
 
 It appears that two contract cases for ``Search`` are activated at the
 same time! More information can be generated at run time if the code is
@@ -205,8 +205,8 @@ compiler with the switch ``-gnateE``:
 .. code-block:: bash
 
    $ gnatmake -gnata -gnateE -f test_search.adb
-   $ test_search
-   > raised SYSTEM.ASSERTIONS.ASSERT_FAILURE : contract cases overlap for subprogram linear_search
+   $ ./test_search
+   > raised SYSTEM.ASSERTIONS.ASSERT_FAILURE : contract cases overlap for subprogram search
    >   case guard at linear_search.ads:29 evaluates to True
    >   case guard at linear_search.ads:31 evaluates to True
 
