@@ -25,6 +25,10 @@ manipulate GPS into the state you want when the shot is done.
   Which tab in the bottom pane (Messages, Location, or ?)
   Do you need paths and/or error messages highlighted?
 
+  The screenshots in the UG are 1178 pixels wide. This seems
+  to give a reasonable balance of size and quality when
+  typeset in PDF and HTML.
+
 5) Click "Snap" in the GIMP Screenshot Window
 
 6) Select the GPS Window and make any other
