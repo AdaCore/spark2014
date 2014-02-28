@@ -19,7 +19,7 @@ is
          Pos := Pos + 1;
       end loop;
 
-      Res := Search_Result'(False, Index'First);
+      Res.Found := False;
       return Res;
    end Search;
 
