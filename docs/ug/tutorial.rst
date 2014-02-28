@@ -258,7 +258,7 @@ Formal verification of |SPARK| programs is a two-step process:
 
 Step 1 is implemented as a static analysis pass in the tool |GNATprove|, in
 ``flow`` mode. Step 2 is implemented as a deductive verification pass
-in the tool |GNATprove|, in the default ``prove`` mode.
+in the tool |GNATprove|, in the default ``all`` mode.
 
 The difference between these two steps should be emphasized. Static analysis in
 step 1 is a terminating algorithm, which typically takes 2 to 10 times as long
@@ -332,13 +332,13 @@ discriminant depending on the success of the search:
 there are no reads of uninitialized data.
 
 We continue with the proof of contracts and absence of run-time errors, using
-the main mode ``prove`` of |GNATprove| reached through the
+the main mode ``all`` of |GNATprove| reached through the
 :menuselection:`SPARK --> Prove File` menu.
 
 .. image:: static/search_prove_file.png
 
 We use the default settings and click on :menuselection:`Execute`. It completes
-in a few seconds, with a message stating that a check could not be proved:
+in a few seconds, with a message stating that some checks could not be proved:
 
 .. image:: static/search_not_proved.png
 
@@ -347,7 +347,7 @@ which means that it was proved. Likewise, there are no such messages on the
 body of ``Search``, which means that no run-time errors can be raised
 when executing the function.
 
-The message corresponds to a check done when exiting from ``Search``. It
+These messages correspond to checks done when exiting from ``Search``. It
 is expected that not much can be proved at this point, given that the body of
 ``Search`` has a loop but no loop invariant, so the formulas generated
 for these checks assume the worst about locations modified in the loop. A loop
@@ -365,8 +365,8 @@ searched was not previously found:
 
 As stated above, this invariant holds exactly between the two statements in the
 loop (after the if-statement, before the increment of the index). Thus, it
-should be inserted at this place. With this loop invariant, the check
-previously not proved is now proved, and two checks previously proved become
+should be inserted at this place. With this loop invariant, two checks
+previously not proved are now proved, and a check previously proved becomes
 unproved:
 
 .. image:: static/search_loopinv.png
