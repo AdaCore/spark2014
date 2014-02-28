@@ -1,10 +1,8 @@
 uninitialized.adb:29:09: warning: "X" might not be initialized
 uninitialized.adb:40:14: "Var" is not initialized
 uninitialized.adb:46:32: warning: "Var" might not be initialized
-uninitialized.adb:58:21: warning: "An_Arr" might not be initialized
 uninitialized.adb:68:18: "Arr" is not initialized
 uninitialized.adb:80:15: warning: "Rec.Boo" might not be initialized
-uninitialized.adb:83:22: warning: "Rec.Arr" might not be initialized
 uninitialized.adb:90:17: "A_Rec.Boo" is not initialized
 uninitialized.adb:93:24: "A_Rec.Arr" is not initialized
 uninitialized.adb:103:13: "Another_Rec.Arr" is not initialized

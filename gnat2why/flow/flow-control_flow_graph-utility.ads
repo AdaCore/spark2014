@@ -28,11 +28,12 @@ with Flow_Utility.Initialization; use Flow_Utility.Initialization;
 package Flow.Control_Flow_Graph.Utility is
 
    function Make_Basic_Attributes
-     (Var_Def    : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
-      Var_Ex_Use : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
-      Var_Im_Use : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
-      Loops      : Node_Sets.Set     := Node_Sets.Empty_Set;
-      E_Loc      : Node_Or_Entity_Id := Empty)
+     (Var_Def    : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
+      Var_Ex_Use : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
+      Var_Im_Use : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
+      Loops      : Node_Sets.Set       := Node_Sets.Empty_Set;
+      E_Loc      : Node_Or_Entity_Id   := Empty;
+      Print_Hint : Pretty_Print_Kind_T := Pretty_Print_Null)
       return V_Attributes
       with Post => not Make_Basic_Attributes'Result.Is_Null_Node and
                    Make_Basic_Attributes'Result.Is_Program_Node;
@@ -197,12 +198,5 @@ package Flow.Control_Flow_Graph.Utility is
       Post => not Make_Default_Initialization_Attributes'Result.Is_Null_Node
         and Make_Default_Initialization_Attributes'Result.Is_Default_Init;
    --  Create attributes for the default initialization vertices.
-
-   function Make_Potential_Loop_Init_Attributes
-     (Loops : Node_Sets.Set     := Node_Sets.Empty_Set;
-      E_Loc : Node_Or_Entity_Id := Empty)
-      return V_Attributes;
-   --  Create attributes for vertices which simply define and use some
-   --  variables.
 
 end Flow.Control_Flow_Graph.Utility;

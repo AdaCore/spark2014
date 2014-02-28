@@ -1,3 +1,2 @@
 init.adb:2:11: warning: subprogram "Init" has no effect
 init.adb:15:23: warning: range check might fail, in instantiation at init.adb:20
-init.adb:17:10: warning: "A" might not be initialized, in instantiation at init.adb:20

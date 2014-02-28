@@ -13,21 +13,22 @@ is
 
    type M_Array_T is array (Index_T, Index_T) of Integer;
 
-   procedure Test_01_Ok (A : out Array_T)
+   procedure Test_01_Ok (R : out Record_T)
    is
    begin
       for I in Index_T loop
-         A (I) := Integer (I);
+         R.A (I) := Integer (I);
       end loop;
+      R.B := False;
    end Test_01_Ok;
 
-   procedure Test_02_Ok (A : out U_Array_T)
+   procedure Test_02_Ok_Hard (A : out U_Array_T)
    is
    begin
       for I in A'Range loop
          A (I) := Integer (I);
       end loop;
-   end Test_02_Ok;
+   end Test_02_Ok_Hard;
 
    procedure Test_03_E (A : out Array_T)
    is
@@ -84,7 +85,7 @@ is
       end loop;
    end Test_07_E;
 
-   procedure Test_07_Ok (A : out Array_T)
+   procedure Test_07_Ok_Hard (A : out Array_T)
    is
    begin
       for I in Index_T loop
@@ -92,7 +93,7 @@ is
          pragma Loop_Invariant (for all N in Index_T range Index_T'First .. I
                                   => A (N) > 0);
       end loop;
-   end Test_07_Ok;
+   end Test_07_Ok_Hard;
 
    procedure Test_08_E (A : out Array_T)
    is
@@ -124,16 +125,19 @@ is
       end loop;
    end Test_10_Ok;
 
-   procedure Test_11_Maybe (A : out M_Array_T)
+   procedure Test_11_Ok (A : out M_Array_T)
    is
    begin
-      --  Dubious if we want to support this?
       for J in Index_T loop
          for I in Index_T loop
-            A (I, J) := Integer (I) + Integer (J);
+            if I < 5 then
+               A (I, J) := Integer (I) + Integer (J);
+            else
+               A (I, J) := 0;
+            end if;
          end loop;
       end loop;
-   end Test_11_Maybe;
+   end Test_11_Ok;
 
    procedure Test_12_E (A : out M_Array_T)
    is
@@ -161,15 +165,15 @@ is
       end loop;
    end Test_14_E;
 
-   procedure Test_15_Maybe (A : out Array_T;
-                            B : out Integer)
+   procedure Test_15_Ok_Hard (A : out Array_T;
+                              B : out Integer)
    is
    begin
       for I in Index_T loop
          A (I) := 0;
          B     := A (I);
       end loop;
-   end Test_15_Maybe;
+   end Test_15_Ok_Hard;
 
    procedure Test_15_E (A : out Array_T)
    is
@@ -195,5 +199,30 @@ is
          A (Index_T (I)) := 0;
       end loop;
    end Test_17_Maybe;
+
+   procedure Test_18_E (A : out M_Array_T)
+   is
+   begin
+      for J in Index_T loop
+         for I in Index_T loop
+            A (I, J) := Integer (I) + Integer (J);
+            exit when I = 5;
+         end loop;
+      end loop;
+   end Test_18_E;
+
+   procedure Test_19_Ok (A : out M_Array_T)
+   is
+   begin
+      for J in Index_T loop
+         for I in Index_T loop
+            if I < 5 then
+               A (I, J) := 0;
+            else
+               A (J, I) := 0;
+            end if;
+         end loop;
+      end loop;
+   end Test_19_Ok;
 
 end Foo;

@@ -152,7 +152,7 @@ digraph G {
     22 [label="global&nbsp;Speed'in\nVU: {Speed}\n<VId: 22>",shape="plaintext"];
     23 [label="global&nbsp;State'out\nVD: {State}\n<VId: 23>",shape="plaintext"];
     24 [label="global&nbsp;Speed'out\nVD: {Speed}\n<VId: 24>",shape="plaintext"];
-    25 [label="while state /= still\nVU: {State}\n<VId: 25>",shape="diamond"];
+    25 [label="while state /= still\nLoops:&nbsp;L_1\nVU: {State}\n<VId: 25>",shape="diamond"];
 
     1 ->  9 [arrowType="normal"];
     2 ->  6 [arrowType="normal"];
@@ -203,7 +203,7 @@ digraph G {
     22 [label="global&nbsp;Speed'in\nVU: {Speed}\n<VId: 22>",shape="plaintext"];
     23 [label="global&nbsp;State'out\nVD: {State}\n<VId: 23>",shape="plaintext"];
     24 [label="global&nbsp;Speed'out\nVD: {Speed}\n<VId: 24>",shape="plaintext"];
-    25 [label="while state /= still\nVU: {State}\n<VId: 25>",shape="diamond"];
+    25 [label="while state /= still\nLoops:&nbsp;L_1\nVU: {State}\n<VId: 25>",shape="diamond"];
 
     1 ->  9 [arrowType="normal"];
     1 ->  25 [arrowType="normal"];

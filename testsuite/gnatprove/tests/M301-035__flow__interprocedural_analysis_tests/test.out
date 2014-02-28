@@ -154,7 +154,7 @@ digraph G {
     19 [label="return false;\nLoops:&nbsp;L_1\nVD: {Coprime}\n<VId: 19>"];
     20 [label="i'initial\nVD: {I}\n<VId: 20>",shape="plaintext"];
     21 [label="i'final\nVU: {I}\n<VId: 21>",shape="plaintext",fontcolor="red"];
-    22 [label="for i in 2 .. R4b\nVU: {R4b}\nVD: {I}\n<VId: 22>",shape="diamond"];
+    22 [label="for i in 2 .. R4b\nLoops:&nbsp;L_1\nVU: {R4b}\nVD: {I}\n<VId: 22>",shape="diamond"];
     23 [label="return true;\nVD: {Coprime}\n<VId: 23>"];
 
     1 ->  13 [arrowType="normal"];
@@ -200,7 +200,7 @@ digraph G {
     19 [label="return false;\nLoops:&nbsp;L_1\nVD: {Coprime}\n<VId: 19>"];
     20 [label="i'initial\nVD: {I}\n<VId: 20>",shape="plaintext"];
     21 [label="i'final\nVU: {I}\n<VId: 21>",shape="plaintext",fontcolor="red"];
-    22 [label="for i in 2 .. R4b\nVU: {R4b}\nVD: {I}\n<VId: 22>",shape="diamond"];
+    22 [label="for i in 2 .. R4b\nLoops:&nbsp;L_1\nVU: {R4b}\nVD: {I}\n<VId: 22>",shape="diamond"];
     23 [label="return true;\nVD: {Coprime}\n<VId: 23>"];
 
     1 ->  13 [arrowType="normal"];
@@ -740,7 +740,7 @@ digraph G {
     12 [label="return false;\nLoops:&nbsp;L_1\nVD: {Prime}\n<VId: 12>"];
     13 [label="i'initial\nVD: {I}\n<VId: 13>",shape="plaintext"];
     14 [label="i'final\nVU: {I}\n<VId: 14>",shape="plaintext",fontcolor="red"];
-    15 [label="for i in 2 .. x / 2\nVU: {X}\nVD: {I}\n<VId: 15>",shape="diamond"];
+    15 [label="for i in 2 .. x / 2\nLoops:&nbsp;L_1\nVU: {X}\nVD: {I}\n<VId: 15>",shape="diamond"];
     16 [label="return true;\nVD: {Prime}\n<VId: 16>"];
 
     1 ->  15 [arrowType="normal"];
@@ -771,7 +771,7 @@ digraph G {
     12 [label="return false;\nLoops:&nbsp;L_1\nVD: {Prime}\n<VId: 12>"];
     13 [label="i'initial\nVD: {I}\n<VId: 13>",shape="plaintext"];
     14 [label="i'final\nVU: {I}\n<VId: 14>",shape="plaintext",fontcolor="red"];
-    15 [label="for i in 2 .. x / 2\nVU: {X}\nVD: {I}\n<VId: 15>",shape="diamond"];
+    15 [label="for i in 2 .. x / 2\nLoops:&nbsp;L_1\nVU: {X}\nVD: {I}\n<VId: 15>",shape="diamond"];
     16 [label="return true;\nVD: {Prime}\n<VId: 16>"];
 
     1 ->  15 [arrowType="normal"];

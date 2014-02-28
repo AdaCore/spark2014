@@ -55,7 +55,7 @@ is
    procedure Init_Arr_Warn (An_Arr : out Array_T) is
    begin
       for I in 1 .. 10 loop
-         An_Arr (I) := I;  --  This should be a warning.
+         An_Arr (I) := I;  --  This should be ok.
       end loop;
    end Init_Arr_Warn;
 
@@ -80,7 +80,7 @@ is
       Rec.Boo := not Rec.Boo;  --  This should be a warning.
 
       for I in 1 .. 10 loop
-         Rec.Arr (I) := I;  --  This should be a warning.
+         Rec.Arr (I) := I;  --  This should be ok.
       end loop;
    end Init_Record_Warn;
 

@@ -271,4 +271,8 @@ package Flow_Utility is
    --  Return True if the subprogram in argument has the given kind of
    --  contract, False otherwise.
 
+   function Get_Full_Type (E : Entity_Id) return Entity_Id;
+   --  Get the type of the given entity. Ignores private types and
+   --  always returns the full view.
+
 end Flow_Utility;

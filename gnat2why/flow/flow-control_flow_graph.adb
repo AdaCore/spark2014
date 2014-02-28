@@ -59,12 +59,6 @@ package body Flow.Control_Flow_Graph is
      (Element_Type => Union_Id,
       "="          => "=");
 
-   package Entity_Vertex_Maps is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Entity_Id,
-      Element_Type    => Flow_Graphs.Vertex_Id,
-      Hash            => Node_Hash,
-      Equivalent_Keys => "=");
-
    ------------------------------------------------------------
    --  Debug
    ------------------------------------------------------------
@@ -264,18 +258,13 @@ package body Flow.Control_Flow_Graph is
       Folded_Function_Checks : Node_Graphs.Map;
       --  A set of nodes we need to separately check for uninitialized
       --  variables due to function folding.
-
-      Loop_Initialization    : Entity_Vertex_Maps.Map;
-      --  A map from loops -> helper vertices to record variables
-      --  initialized by a loop.
    end record;
 
    No_Context : constant Context :=
      Context'(Current_Loops          => Node_Sets.Empty_Set,
               Active_Loop            => Empty,
               Entry_References       => Node_Graphs.Empty_Map,
-              Folded_Function_Checks => Node_Graphs.Empty_Map,
-              Loop_Initialization    => Entity_Vertex_Maps.Empty_Map);
+              Folded_Function_Checks => Node_Graphs.Empty_Map);
 
    ------------------------------------------------------------
    --  Local declarations
@@ -1492,6 +1481,30 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    is
+      function Is_For_Loop (N : Node_Id) return Boolean
+      is (Nkind (N) = N_Loop_Statement
+            and then Present (Iteration_Scheme (N))
+            and then Present (Loop_Parameter_Specification
+                                (Iteration_Scheme (N))));
+      --  Check if the given loop is a simlpe for loop.
+
+      function Get_Loop_Variable (N : Node_Id) return Entity_Id
+      is (Defining_Identifier
+            (Loop_Parameter_Specification (Iteration_Scheme (N))))
+      with Pre => Is_For_Loop (N);
+      --  Obtain the entity of a for loops loop parameter.
+
+      function Get_Loop_Name (N : Node_Id) return Entity_Id
+      is (Entity (Identifier (N)));
+      --  Obtain the entity of loop's label.
+
+      function Get_Loop_Range (N : Node_Id) return Node_Id
+      with Pre => Is_For_Loop (N);
+      --  Return the range given for loop.
+
+      function Loop_Might_Exit_Early (N : Node_Id) return Boolean;
+      --  Return true if the loop contains an exit or return statement.
+
       procedure Do_Loop;
       --  Helper procedure to deal with normal loops.
       --
@@ -1533,7 +1546,7 @@ package body Flow.Control_Flow_Graph is
       --   |   |       |
       --   \---/       v
 
-      procedure Do_For_Loop (Might_Fully_Initialize_Something : out Boolean);
+      procedure Do_For_Loop (Fully_Initialized : out Flow_Id_Sets.Set);
       --  Helper procedure to deal with for loops.
       --
       --  We must distinguish between three kinds of for loops,
@@ -1591,6 +1604,45 @@ package body Flow.Control_Flow_Graph is
       --  We distinguish this case (non-empty range) from the previous
       --  one (unknown range) as subsequent code may rely on any
       --  initializations in the loop body.
+
+      function Variables_Initialized_By_Loop (N : Node_Id)
+                                              return Flow_Id_Sets.Set;
+      --  A conservative heuristic to determine the set of possible
+      --  variables fully initialized by the given statement list.
+
+      --------------------
+      -- Get_Loop_Range --
+      --------------------
+
+      function Get_Loop_Range (N : Node_Id) return Node_Id
+      is
+         DSD : constant Node_Id := Discrete_Subtype_Definition
+           (Loop_Parameter_Specification (Iteration_Scheme (N)));
+
+         R : Node_Id;
+      begin
+         case Nkind (DSD) is
+            when N_Subtype_Indication =>
+               case Nkind (Constraint (DSD)) is
+                  when N_Range_Constraint =>
+                     R := Range_Expression (Constraint (DSD));
+                  when others =>
+                     raise Why.Unexpected_Node;
+               end case;
+            when N_Identifier | N_Expanded_Name =>
+               R := Get_Range (Entity (DSD));
+            when N_Range =>
+               R := DSD;
+            when others =>
+               Print_Node_Subtree (DSD);
+               raise Why.Unexpected_Node;
+         end case;
+         return R;
+      end Get_Loop_Range;
+
+      -------------
+      -- Do_Loop --
+      -------------
 
       procedure Do_Loop is
          Contains_Return : Boolean := False;
@@ -1674,6 +1726,10 @@ package body Flow.Control_Flow_Graph is
          Linkup (FA.CFG, CM (Union_Id (Statements (N))).Standard_Exits, V);
       end Do_Loop;
 
+      -------------------
+      -- Do_While_Loop --
+      -------------------
+
       procedure Do_While_Loop
       is
          V : Flow_Graphs.Vertex_Id;
@@ -1702,7 +1758,11 @@ package body Flow.Control_Flow_Graph is
          Linkup (FA.CFG, CM (Union_Id (Statements (N))).Standard_Exits, V);
       end Do_While_Loop;
 
-      procedure Do_For_Loop (Might_Fully_Initialize_Something : out Boolean)
+      -----------------
+      -- Do_For_Loop --
+      -----------------
+
+      procedure Do_For_Loop (Fully_Initialized : out Flow_Id_Sets.Set)
       is
          LPS : constant Node_Id :=
            Loop_Parameter_Specification (Iteration_Scheme (N));
@@ -1711,26 +1771,9 @@ package body Flow.Control_Flow_Graph is
 
          DSD : constant Node_Id := Discrete_Subtype_Definition (LPS);
 
-         R : Node_Id;
+         R : constant Node_Id := Get_Loop_Range (N);
          V : Flow_Graphs.Vertex_Id;
       begin
-         case Nkind (DSD) is
-            when N_Subtype_Indication =>
-               case Nkind (Constraint (DSD)) is
-                  when N_Range_Constraint =>
-                     R := Range_Expression (Constraint (DSD));
-                  when others =>
-                     raise Why.Unexpected_Node;
-               end case;
-            when N_Identifier | N_Expanded_Name =>
-               R := Get_Range (Entity (DSD));
-            when N_Range =>
-               R := DSD;
-            when others =>
-               Print_Node_Subtree (DSD);
-               raise Why.Unexpected_Node;
-         end case;
-
          --  We have a new variable here which we have not picked up
          --  in Create, so we should set it up.
          Create_Initial_And_Final_Vertices (LP, False, FA);
@@ -1753,7 +1796,7 @@ package body Flow.Control_Flow_Graph is
             CM (Union_Id (N)).Standard_Entry := V;
             CM (Union_Id (N)).Standard_Exits.Include (V);
 
-            Might_Fully_Initialize_Something := False;
+            Fully_Initialized := Flow_Id_Sets.Empty_Set;
 
          elsif Not_Null_Range (Low_Bound (R), High_Bound (R)) then
             --  We need to make sure the loop is executed at least once.
@@ -1776,7 +1819,7 @@ package body Flow.Control_Flow_Graph is
             Linkup (FA.CFG, V, CM (Union_Id (Statements (N))).Standard_Entry);
             Linkup (FA.CFG, CM (Union_Id (Statements (N))).Standard_Exits, V);
 
-            Might_Fully_Initialize_Something := True;
+            Fully_Initialized := Variables_Initialized_By_Loop (N);
 
          else
             --  We don't know if the loop will be executed or not.
@@ -1804,13 +1847,391 @@ package body Flow.Control_Flow_Graph is
             Linkup (FA.CFG, V, CM (Union_Id (Statements (N))).Standard_Entry);
             Linkup (FA.CFG, CM (Union_Id (Statements (N))).Standard_Exits, V);
 
-            Might_Fully_Initialize_Something := False;
-
+            Fully_Initialized := Flow_Id_Sets.Empty_Set;
          end if;
       end Do_For_Loop;
 
-      Previous_Loop     : constant Entity_Id := Ctx.Active_Loop;
-      Needs_Init_Vertex :          Boolean   := False;
+      ---------------------------
+      -- Loop_Might_Exit_Early --
+      ---------------------------
+
+      function Loop_Might_Exit_Early (N : Node_Id) return Boolean
+      is
+         Contains_Abort : Boolean := False;
+
+         function Proc_Search (N : Node_Id) return Traverse_Result;
+
+         function Proc_Search (N : Node_Id) return Traverse_Result
+         is
+         begin
+            case Nkind (N) is
+               when N_Simple_Return_Statement   |
+                    N_Extended_Return_Statement |
+                    N_Exit_Statement            =>
+                  Contains_Abort := True;
+                  return Abandon;
+               when others =>
+                  return OK;
+            end case;
+         end Proc_Search;
+
+         procedure Do_Search is new Traverse_Proc (Proc_Search);
+      begin
+         Do_Search (N);
+         return Contains_Abort;
+      end Loop_Might_Exit_Early;
+
+      -----------------------------------
+      -- Variables_Initialized_By_Loop --
+      -----------------------------------
+
+      function Variables_Initialized_By_Loop (N : Node_Id)
+                                              return Flow_Id_Sets.Set
+      is
+         Fully_Initialized : Flow_Id_Sets.Set :=
+           Flow_Id_Sets.Empty_Set;
+
+         type Target (Valid : Boolean := False)
+            is record
+               case Valid is
+                  when True =>
+                     Var : Flow_Id;
+                     D   : Entity_Lists.Vector;
+                  when False =>
+                     null;
+               end case;
+            end record;
+         Null_Target : constant Target := (Valid => False);
+
+         function "=" (A, B : Target) return Boolean;
+
+         function "=" (A, B : Target) return Boolean
+         is
+         begin
+            if A.Valid /= B.Valid then
+               return False;
+            end if;
+
+            if A.Valid then
+               if not (A.Var = B.Var) then
+                  return False;
+               end if;
+
+               if A.D.Length /= B.D.Length then
+                  return False;
+               end if;
+
+               for I in Natural range 1 .. Natural (A.D.Length) loop
+                  if A.D (I) /= B.D (I) then
+                     return False;
+                  end if;
+               end loop;
+            end if;
+
+            return True;
+         end "=";
+
+         Current_Loop      : Node_Id         := Empty;
+         Active_Loops      : Node_Sets.Set   := Node_Sets.Empty_Set;
+         All_Loop_Vertices : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
+
+         Lc : constant Graph_Connections := CM (Union_Id (N));
+
+         function Get_Array_Index (N : Node_Id) return Target;
+         --  Convert the target of an assignment to an array into a flow id
+         --  and a list of indices.
+
+         function Fully_Defined_In_Original_Loop (T : Target) return Boolean
+         with Pre => T.Valid;
+         --  Performs a mini-flow analysis on the current loop fragment to
+         --  see if T is defined on all paths (but not explicitly used).
+
+         function Proc_Search (N : Node_Id) return Traverse_Result;
+         --  In the traversal of the loop body, this finds suitable targets
+         --  and checks if they are fully initialized.
+
+         procedure Rec (N : Node_Id);
+         --  Wrapper around the traversal, so that Proc_Search can call
+         --  itself.
+
+         ---------------------
+         -- Get_Array_Index --
+         ---------------------
+
+         function Get_Array_Index (N : Node_Id) return Target
+         is
+            F : Flow_Id;
+            T : Entity_Id;
+            L : Entity_Lists.Vector;
+         begin
+            --  First, is this really an array access?
+            if Nkind (N) /= N_Indexed_Component then
+               return Null_Target;
+            end if;
+
+            --  Does the Prefix chain only contain record fields?
+            declare
+               Ptr : Node_Id := Prefix (N);
+            begin
+               loop
+                  case Nkind (Ptr) is
+                     when N_Identifier | N_Expanded_Name =>
+                        exit;
+                     when N_Selected_Component =>
+                        Ptr := Prefix (Ptr);
+                     when others =>
+                        return Null_Target;
+                  end case;
+               end loop;
+            end;
+
+            --  Construct the variable we're possibly fully defining.
+            case Nkind (Prefix (N)) is
+               when N_Identifier | N_Expanded_Name =>
+                  F := Direct_Mapping_Id
+                    (Unique_Entity (Entity (Prefix (N))));
+                  T := Get_Full_Type (Entity (Prefix (N)));
+
+               when N_Selected_Component =>
+                  F := Record_Field_Id (Prefix (N));
+                  T := Get_Full_Type (Etype (Prefix (N)));
+
+               when others =>
+                  raise Program_Error;
+            end case;
+
+            --  Extract indices (and make sure they are simple and
+            --  distinct).
+            L := Entity_Lists.Empty_Vector;
+            declare
+               Ptr         : Node_Id := First (Expressions (N));
+               Index_Ptr   : Node_Id := First_Index (T);
+               Param_Range : Node_Id;
+               Index_Range : Node_Id;
+            begin
+               while Present (Ptr) loop
+                  case Nkind (Ptr) is
+                     when N_Identifier | N_Expanded_Name =>
+                        if L.Contains (Entity (Ptr)) then
+                           --  Non-distinct entry, just abort. For
+                           --  example:
+                           --
+                           --  for I in Idx loop
+                           --     A (I, I) := 0;
+                           --  end loop;
+                           return Null_Target;
+                        end if;
+
+                        if not Active_Loops.Contains (Entity (Ptr)) then
+                           --  Not a loop variable we care about, again
+                           --  we just abort. For example:
+                           --
+                           --  for I in Idx loop
+                           --     A (J) := 0;
+                           --  end loop;
+                           return Null_Target;
+                        end if;
+
+                        Param_Range := Get_Range (Entity (Ptr));
+                        Index_Range := Get_Range (Index_Ptr);
+
+                        --  ??? Do we need to do something here for
+                        --      static_predicate?
+                        if not
+                          (Compile_Time_Compare (Low_Bound (Param_Range),
+                                                 Low_Bound (Index_Range),
+                                                 True) = EQ and then
+                             Compile_Time_Compare (High_Bound (Param_Range),
+                                                   High_Bound (Index_Range),
+                                                   True) = EQ)
+                        then
+                           --  The loop parameter type does not fully
+                           --  cover this index type.
+                           return Null_Target;
+                        end if;
+
+                        L.Append (Entity (Ptr));
+
+                     when others =>
+                        --  This is not a simple entity, so just abort.
+                        --  For example:
+                        --
+                        --  for I in Idx loop
+                        --     A (I + 1) := 0;
+                        --  end loop;
+                        return Null_Target;
+                  end case;
+
+                  Next (Ptr);
+                  Next_Index (Index_Ptr);
+               end loop;
+            end;
+
+            return (Valid => True,
+                    Var   => F,
+                    D     => L);
+         end Get_Array_Index;
+
+         ------------------------------------
+         -- Fully_Defined_In_Original_Loop --
+         ------------------------------------
+
+         function Fully_Defined_In_Original_Loop (T : Target) return Boolean
+         is
+            Fully_Defined : Boolean         := True;
+            Touched       : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
+
+            procedure Check_Defined
+              (V  : Flow_Graphs.Vertex_Id;
+               Tv : out Flow_Graphs.Simple_Traversal_Instruction);
+            --  Visitor to ensure all paths define T (and do not use it).
+
+            procedure Check_Unused
+              (V  : Flow_Graphs.Vertex_Id;
+               Tv : out Flow_Graphs.Simple_Traversal_Instruction);
+            --  Visitor to ensure all paths following a definition of T do
+            --  not use it.
+
+            procedure Check_Defined
+              (V  : Flow_Graphs.Vertex_Id;
+               Tv : out Flow_Graphs.Simple_Traversal_Instruction)
+            is
+               F : constant Flow_Id      := FA.CFG.Get_Key (V);
+               A : constant V_Attributes := FA.Atr (V);
+            begin
+               Touched.Include (V);
+
+               if A.Variables_Explicitly_Used.Contains (T.Var) then
+                  Fully_Defined := False;
+                  Tv            := Flow_Graphs.Abort_Traversal;
+
+               elsif A.Variables_Defined.Contains (T.Var) and then
+                 F.Kind = Direct_Mapping and then
+                 Present (F.Node) and then
+                 Nkind (F.Node) = N_Assignment_Statement and then
+                 Get_Array_Index (Name (F.Node)) = T
+               then
+                  FA.CFG.DFS (Start         => V,
+                              Include_Start => False,
+                              Visitor       => Check_Unused'Access);
+                  if Fully_Defined then
+                     Tv := Flow_Graphs.Skip_Children;
+                  else
+                     Tv := Flow_Graphs.Abort_Traversal;
+                  end if;
+
+               elsif Lc.Standard_Exits.Contains (V) then
+                  Fully_Defined := False;
+                  Tv            := Flow_Graphs.Abort_Traversal;
+
+               else
+                  Tv := Flow_Graphs.Continue;
+               end if;
+            end Check_Defined;
+
+            procedure Check_Unused
+              (V  : Flow_Graphs.Vertex_Id;
+               Tv : out Flow_Graphs.Simple_Traversal_Instruction)
+            is
+               --  F : constant Flow_Id      := FA.CFG.Get_Key (V);
+               A : constant V_Attributes := FA.Atr (V);
+            begin
+               if Touched.Contains (V) then
+                  Tv := Flow_Graphs.Skip_Children;
+               elsif A.Variables_Explicitly_Used.Contains (T.Var) then
+                  Fully_Defined := False;
+                  Tv            := Flow_Graphs.Abort_Traversal;
+               else
+                  Tv := Flow_Graphs.Continue;
+               end if;
+            end Check_Unused;
+
+         begin
+            FA.CFG.DFS (Start         => Lc.Standard_Entry,
+                        Include_Start => True,
+                        Visitor       => Check_Defined'Access);
+
+            return Fully_Defined;
+         end Fully_Defined_In_Original_Loop;
+
+         -----------------
+         -- Proc_Search --
+         -----------------
+
+         function Proc_Search (N : Node_Id) return Traverse_Result is
+         begin
+            case Nkind (N) is
+               when N_Loop_Statement =>
+                  declare
+                     Old_Loop : constant Node_Id := Current_Loop;
+                  begin
+                     if N = Current_Loop then
+                        return OK;
+
+                     elsif Is_For_Loop (N) then
+                        Current_Loop := N;
+                        Active_Loops.Insert (Get_Loop_Variable (N));
+
+                        Rec (N);
+
+                        Current_Loop := Old_Loop;
+                        Active_Loops.Delete (Get_Loop_Variable (N));
+
+                        return Skip;
+                     end if;
+                  end;
+
+               when N_Assignment_Statement =>
+                  declare
+                     T : constant Target := Get_Array_Index (Name (N));
+                  begin
+                     if T.Valid
+                       and then Fully_Defined_In_Original_Loop (T)
+                     then
+                        Fully_Initialized.Include (T.Var);
+                     end if;
+                  end;
+
+               when N_Procedure_Call_Statement =>
+                  --  ??? not done yet, we can implement this on demand
+
+                  --  all out parameters (globals not relevant here)
+                  null;
+
+               when others =>
+                  null;
+            end case;
+            return OK;
+         end Proc_Search;
+         procedure Rec_Inner is new Traverse_Proc (Proc_Search);
+
+         ---------
+         -- Rec --
+         ---------
+
+         procedure Rec (N : Node_Id)
+         is
+         begin
+            Rec_Inner (N);
+         end Rec;
+
+      begin
+         if Loop_Might_Exit_Early (N) then
+            return Flow_Id_Sets.Empty_Set;
+         end if;
+
+         for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
+            if FA.Atr (V).Loops.Contains (Get_Loop_Name (N)) then
+               All_Loop_Vertices.Insert (V);
+            end if;
+         end loop;
+
+         Rec (N);
+         return Fully_Initialized;
+      end Variables_Initialized_By_Loop;
+
+      Loop_Id           : constant Entity_Id := Entity (Identifier (N));
+      Fully_Initialized : Flow_Id_Sets.Set   := Flow_Id_Sets.Empty_Set;
 
    begin
       --  Start with a blank slate for the loops entry and exit.
@@ -1824,15 +2245,18 @@ package body Flow.Control_Flow_Graph is
       --  loop. Please note that we don't flag the loop statement
       --  itself as part of the loop, hence the corresponding delete
       --  is here as well.
-      FA.Loops.Insert (Entity (Identifier (N)));
-      Ctx.Current_Loops.Insert (Entity (Identifier (N)));
-      Ctx.Active_Loop := Entity (Identifier (N));
-      Ctx.Entry_References.Include (Ctx.Active_Loop, Node_Sets.Empty_Set);
+      FA.Loops.Insert (Loop_Id);
+      Ctx.Current_Loops.Insert (Loop_Id);
+      Ctx.Entry_References.Include (Loop_Id, Node_Sets.Empty_Set);
 
-      Process_Statement_List (Statements (N), FA, CM, Ctx);
-
-      Ctx.Current_Loops.Delete (Entity (Identifier (N)));
-      Ctx.Active_Loop := Previous_Loop;
+      declare
+         Tmp : constant Entity_Id := Ctx.Active_Loop;
+      begin
+         --  We can't use 'Update here as we may modify Ctx.
+         Ctx.Active_Loop := Loop_Id;
+         Process_Statement_List (Statements (N), FA, CM, Ctx);
+         Ctx.Active_Loop := Tmp;
+      end;
 
       if not Present (Iteration_Scheme (N)) then
          --  We have a loop.
@@ -1857,26 +2281,27 @@ package body Flow.Control_Flow_Graph is
             pragma Assert (Present (Loop_Parameter_Specification (
                              Iteration_Scheme (N))));
 
-            Do_For_Loop (Needs_Init_Vertex);
+            Do_For_Loop (Fully_Initialized);
          end if;
       end if;
 
       --  If we need an init vertex, we add it before the loop itself.
-      if Needs_Init_Vertex then
+      if not Fully_Initialized.Is_Empty then
          declare
             V : Flow_Graphs.Vertex_Id;
          begin
             Add_Vertex
               (FA,
-               Make_Potential_Loop_Init_Attributes
-                 (Loops => Ctx.Current_Loops,
-                  E_Loc => Entity (Identifier (N))),
+               Make_Basic_Attributes
+                 (Var_Def    => Fully_Initialized,
+                  Loops      => Ctx.Current_Loops,
+                  E_Loc      => Loop_Id,
+                  Print_Hint => Pretty_Print_Loop_Init)'
+                 Update (Is_Program_Node => False),
                V);
 
             Linkup (FA.CFG, V, CM (Union_Id (N)).Standard_Entry);
             CM (Union_Id (N)).Standard_Entry := V;
-
-            Ctx.Loop_Initialization.Insert (Entity (Identifier (N)), V);
          end;
       end if;
 
@@ -1888,7 +2313,7 @@ package body Flow.Control_Flow_Graph is
          Block          : Graph_Connections;
       begin
          --  We stick all loop entry references on a list of nodes.
-         for Reference of Ctx.Entry_References (Entity (Identifier (N))) loop
+         for Reference of Ctx.Entry_References (Loop_Id) loop
             Add_Vertex
               (FA,
                Direct_Mapping_Id (Reference),
@@ -1920,6 +2345,8 @@ package body Flow.Control_Flow_Graph is
                Block => Block);
          CM (Union_Id (N)) := Block;
       end;
+
+      Ctx.Current_Loops.Delete (Loop_Id);
 
    end Do_Loop_Statement;
 
