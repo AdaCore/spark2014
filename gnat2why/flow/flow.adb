@@ -288,6 +288,19 @@ package body Flow is
 
          F : constant Flow_Id      := G.Get_Key (V);
          A : constant V_Attributes := M (V);
+
+         procedure Print_Node (N : Node_Id);
+
+         ----------------
+         -- Print_Node --
+         ----------------
+
+         procedure Print_Node (N : Node_Id)
+         is
+         begin
+            pg (Union_Id (N));
+         end Print_Node;
+
       begin
          Temp_String := Null_Unbounded_String;
          Set_Special_Output (Add_To_Temp_String'Access);
@@ -323,11 +336,11 @@ package body Flow is
 
          elsif A.Pretty_Print_Kind = Pretty_Print_Folded_Function_Check then
             Write_Str ("ff check for: ");
-            Sprint_Node (A.Error_Location);
+            Print_Node (A.Error_Location);
 
          elsif A.Pretty_Print_Kind = Pretty_Print_Loop_Init then
             Write_Str ("initialization in loop ");
-            Sprint_Node (A.Error_Location);
+            Print_Node (A.Error_Location);
 
          elsif A.Is_Parameter then
             Rv.Shape := Shape_None;
@@ -336,10 +349,10 @@ package body Flow is
                when In_View =>
                   pragma Assert (A.Parameter_Formal.Kind = Direct_Mapping);
                   pragma Assert (A.Parameter_Actual.Kind = Direct_Mapping);
-                  Sprint_Node (A.Parameter_Formal.Node);
+                  Print_Node (A.Parameter_Formal.Node);
                   Write_Str ("'in");
                   Write_Str ("&nbsp;:=&nbsp;");
-                  Sprint_Node (A.Parameter_Actual.Node);
+                  Print_Node (A.Parameter_Actual.Node);
                   if A.Is_Discr_Or_Bounds_Parameter then
                      Write_Str ("'discr_or_bounds");
                   end if;
@@ -348,9 +361,9 @@ package body Flow is
                   pragma Assert (A.Parameter_Formal.Kind = Direct_Mapping);
                   pragma Assert (A.Parameter_Actual.Kind = Direct_Mapping);
                   pragma Assert (not A.Is_Discr_Or_Bounds_Parameter);
-                  Sprint_Node (A.Parameter_Actual.Node);
+                  Print_Node (A.Parameter_Actual.Node);
                   Write_Str ("&nbsp;:=&nbsp;");
-                  Sprint_Node (A.Parameter_Formal.Node);
+                  Print_Node (A.Parameter_Formal.Node);
                   Write_Str ("'out");
 
                when others =>
@@ -383,7 +396,7 @@ package body Flow is
             Sprint_Flow_Id (A.Default_Init_Var);
             if Present (A.Default_Init_Val) then
                Write_Str ("&nbsp;is by default&nbsp;");
-               Sprint_Node (A.Default_Init_Val);
+               Print_Node (A.Default_Init_Val);
             else
                Write_Str ("&nbsp;is initialized implicitly");
             end if;
@@ -409,7 +422,7 @@ package body Flow is
                         when N_Case_Statement =>
                            Rv.Shape := Shape_Diamond;
                            Write_Str ("case ");
-                           Sprint_Node (Expression (N));
+                           Print_Node (Expression (N));
 
                         when N_Case_Statement_Alternative =>
                            Rv.Shape := Shape_None;
@@ -424,27 +437,27 @@ package body Flow is
                                             Pretty_Print_Initializes_Aspect);
                            Sprint_Comma_List (Choices (N));
                            Write_Str (" from ");
-                           Sprint_Node (Expression (N));
+                           Print_Node (Expression (N));
 
                         when N_Defining_Identifier =>
                            case Ekind (N) is
                               when E_Return_Statement =>
                                  Write_Str ("return ");
-                                 Sprint_Node (A.Aux_Node);
+                                 Print_Node (A.Aux_Node);
 
                               when others =>
-                                 Sprint_Node (N);
+                                 Print_Node (N);
                            end case;
 
                         when N_Elsif_Part =>
                            Rv.Shape := Shape_Diamond;
                            Write_Str ("elsif ");
-                           Sprint_Node (Condition (N));
+                           Print_Node (Condition (N));
 
                         when N_If_Statement =>
                            Rv.Shape := Shape_Diamond;
                            Write_Str ("if ");
-                           Sprint_Node (Condition (N));
+                           Print_Node (Condition (N));
 
                         when N_Loop_Statement =>
                            Rv.Shape := Shape_Diamond;
@@ -458,17 +471,17 @@ package body Flow is
                            then
                               --  While loop.
                               Write_Str ("while ");
-                              Sprint_Node
+                              Print_Node
                                 (Condition (Iteration_Scheme (N)));
                            else
-                              Sprint_Node
+                              Print_Node
                                 (Iteration_Scheme (N));
                            end if;
 
                         when N_Procedure_Call_Statement =>
                            Rv.Shape := Shape_Box;
                            Write_Str ("call ");
-                           Sprint_Node (Name (N));
+                           Print_Node (Name (N));
 
                         when N_Null_Statement =>
                            --  This is here in order NOT to print an empty
@@ -477,7 +490,7 @@ package body Flow is
                            Write_Str ("null;");
 
                         when others =>
-                           Sprint_Node (N);
+                           Print_Node (N);
                      end case;
                   end;
 
@@ -554,7 +567,7 @@ package body Flow is
                Write_Str ("\nLoops:");
                for Loop_Identifier of A.Loops loop
                   Write_Str ("&nbsp;");
-                  Sprint_Node (Loop_Identifier);
+                  Print_Node (Loop_Identifier);
                end loop;
             end if;
 

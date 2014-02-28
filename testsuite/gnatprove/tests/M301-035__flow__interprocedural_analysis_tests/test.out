@@ -149,12 +149,12 @@ digraph G {
     14 [label="return true;\nVD: {Coprime}\n<VId: 14>"];
     15 [label="R4b'initial\nVD: {R4b}\n<VId: 15>",shape="plaintext",fontcolor="red"];
     16 [label="R4b'final\nVU: {R4b}\n<VId: 16>",shape="plaintext"];
-    17 [label="<<<R4b : constant natural := min (x, y);>>>\nVU: {X, Y}\nVD: {R4b}\n<VId: 17>"];
+    17 [label="R4b : constant natural := min (x, y);\nVU: {X, Y}\nVD: {R4b}\n<VId: 17>"];
     18 [label="if (x mod i) = 0 and then (y mod i) = 0\nLoops:&nbsp;L_1\nVU: {I, X, Y}\n<VId: 18>",shape="diamond"];
     19 [label="return false;\nLoops:&nbsp;L_1\nVD: {Coprime}\n<VId: 19>"];
     20 [label="i'initial\nVD: {I}\n<VId: 20>",shape="plaintext"];
     21 [label="i'final\nVU: {I}\n<VId: 21>",shape="plaintext",fontcolor="red"];
-    22 [label="for i in 2 .. min (x, y)<<<R4b>>> \nVU: {R4b}\nVD: {I}\n<VId: 22>",shape="diamond"];
+    22 [label="for i in 2 .. R4b\nVU: {R4b}\nVD: {I}\n<VId: 22>",shape="diamond"];
     23 [label="return true;\nVD: {Coprime}\n<VId: 23>"];
 
     1 ->  13 [arrowType="normal"];
@@ -195,12 +195,12 @@ digraph G {
     14 [label="return true;\nVD: {Coprime}\n<VId: 14>"];
     15 [label="R4b'initial\nVD: {R4b}\n<VId: 15>",shape="plaintext",fontcolor="red"];
     16 [label="R4b'final\nVU: {R4b}\n<VId: 16>",shape="plaintext"];
-    17 [label="<<<R4b : constant natural := min (x, y);>>>\nVU: {X, Y}\nVD: {R4b}\n<VId: 17>"];
+    17 [label="R4b : constant natural := min (x, y);\nVU: {X, Y}\nVD: {R4b}\n<VId: 17>"];
     18 [label="if (x mod i) = 0 and then (y mod i) = 0\nLoops:&nbsp;L_1\nVU: {I, X, Y}\n<VId: 18>",shape="diamond"];
     19 [label="return false;\nLoops:&nbsp;L_1\nVD: {Coprime}\n<VId: 19>"];
     20 [label="i'initial\nVD: {I}\n<VId: 20>",shape="plaintext"];
     21 [label="i'final\nVU: {I}\n<VId: 21>",shape="plaintext",fontcolor="red"];
-    22 [label="for i in 2 .. min (x, y)<<<R4b>>> \nVU: {R4b}\nVD: {I}\n<VId: 22>",shape="diamond"];
+    22 [label="for i in 2 .. R4b\nVU: {R4b}\nVD: {I}\n<VId: 22>",shape="diamond"];
     23 [label="return true;\nVD: {Coprime}\n<VId: 23>"];
 
     1 ->  13 [arrowType="normal"];
@@ -740,7 +740,7 @@ digraph G {
     12 [label="return false;\nLoops:&nbsp;L_1\nVD: {Prime}\n<VId: 12>"];
     13 [label="i'initial\nVD: {I}\n<VId: 13>",shape="plaintext"];
     14 [label="i'final\nVU: {I}\n<VId: 14>",shape="plaintext",fontcolor="red"];
-    15 [label="for i in 2 .. x / 2 \nVU: {X}\nVD: {I}\n<VId: 15>",shape="diamond"];
+    15 [label="for i in 2 .. x / 2\nVU: {X}\nVD: {I}\n<VId: 15>",shape="diamond"];
     16 [label="return true;\nVD: {Prime}\n<VId: 16>"];
 
     1 ->  15 [arrowType="normal"];
@@ -771,7 +771,7 @@ digraph G {
     12 [label="return false;\nLoops:&nbsp;L_1\nVD: {Prime}\n<VId: 12>"];
     13 [label="i'initial\nVD: {I}\n<VId: 13>",shape="plaintext"];
     14 [label="i'final\nVU: {I}\n<VId: 14>",shape="plaintext",fontcolor="red"];
-    15 [label="for i in 2 .. x / 2 \nVU: {X}\nVD: {I}\n<VId: 15>",shape="diamond"];
+    15 [label="for i in 2 .. x / 2\nVU: {X}\nVD: {I}\n<VId: 15>",shape="diamond"];
     16 [label="return true;\nVD: {Prime}\n<VId: 16>"];
 
     1 ->  15 [arrowType="normal"];
