@@ -391,6 +391,7 @@ ar.ads:1548:22: warning: postcondition might fail
 ar.ads:1553:22: info: postcondition proved
 ar.ads:1558:22: warning: postcondition might fail
 ar.ads:1563:22: warning: postcondition might fail, requires R = R'Old'update
+ar.ads:1563:73: info: range check proved
 ar.ads:1571:22: info: postcondition proved
 ar.ads:1576:22: info: postcondition proved
 ar.ads:1581:22: warning: postcondition might fail, requires R = R'Old'update
