@@ -128,11 +128,11 @@ package body Why.Atree.Sprint is
 
    procedure Print_Abstract_Expr (Node : W_Abstract_Expr_Id) is
    begin
-      P (O, "abstract ");
-      Print_Node (+Get_Expr (Node));
-      P (O, " ensures {");
+      P (O, "abstract ensures {");
       Print_Node (+Get_Post (Node));
       P (O, "}");
+      Print_Node (+Get_Expr (Node));
+      P (O, " end ");
    end Print_Abstract_Expr;
 
    ---------------------
