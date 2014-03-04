@@ -312,6 +312,16 @@ package body Flow.Control_Flow_Graph is
    --  nodes. Block contains the combined standard entry and exits of
    --  the joined up sequence.
 
+   function Vars_Used_By_Comp
+     (N      : Node_Id;
+      Search : Node_Id;
+      F_Comp : Flow_Id;
+      FA     : Flow_Analysis_Graphs;
+      Ctx    : in out Context)
+      return Flow_Id_Sets.Set;
+   --  This function looks under Search and returns a set of Flow_Ids
+   --  that corresponds to all variables used by component F_Comp.
+
    procedure Create_Record_Tree
      (F        : Flow_Id;
       Leaf_Atr : V_Attributes;
@@ -861,6 +871,363 @@ package body Flow.Control_Flow_Graph is
       end if;
    end Join;
 
+   -------------------------
+   --  Vars_Used_By_Comp  --
+   -------------------------
+
+   function Vars_Used_By_Comp
+     (N      : Node_Id;
+      Search : Node_Id;
+      F_Comp : Flow_Id;
+      FA     : Flow_Analysis_Graphs;
+      Ctx    : in out Context)
+      return Flow_Id_Sets.Set
+   is
+      function Compare_Components
+        (F1 : Flow_Id;
+         F2 : Flow_Id)
+         return Flow_Id;
+      --  For all record components of F1, checks if the components of F2 are
+      --  a subset of the F1 component and returns the matching F1 component.
+
+      function Null_Or_Constant (F : Flow_Id) return Flow_Id_Sets.Set;
+      --  Returns the empty Flow_Id set if F is either a Null_Flow_Id or
+      --  a constant that is not contained in the Local_Constants.
+      --  Otherwise, it returns a singleton set containing F.
+
+      ------------------------
+      --  Null_Or_Constant  --
+      ------------------------
+      function Null_Or_Constant (F : Flow_Id) return Flow_Id_Sets.Set is
+        (if F = Null_Flow_Id
+           or else (Ekind (F.Node) = E_Constant
+                      and then not FA.Local_Constants.Contains (F.Node))
+         then Flow_Id_Sets.Empty_Set
+         else Flow_Id_Sets.To_Set (F));
+
+      --------------------------
+      --  Compare_Components  --
+      --------------------------
+
+      function Compare_Components
+        (F1 : Flow_Id;
+         F2 : Flow_Id)
+         return Flow_Id
+      is
+         Min_Length    : Natural;
+         Equal_Lengths : Boolean;
+         Found         : Boolean;
+         F_Min         : Flow_Id;
+         F_Max         : Flow_Id;
+      begin
+         if not (F2.Kind = Record_Field) then
+            for F of All_Record_Components (F1) loop
+               if Original_Record_Component
+                 (F.Component (Natural (F.Component.Length))) = F2.Node
+               then
+                  return F;
+               end if;
+            end loop;
+
+            return Null_Flow_Id;
+         end if;
+
+         for F of All_Record_Components (F1) loop
+            Equal_Lengths := Natural (F.Component.Length) =
+              Natural (F2.Component.Length);
+
+            F_Min := (if Natural (F.Component.Length) <
+                           Natural (F2.Component.Length)
+                      then F
+                      else F2);
+
+            F_Max := (if F_Min = F
+                      then F2
+                      else F);
+
+            Min_Length := Natural (F_Min.Component.Length);
+
+            Found := True;  --  Innocent until proven guilty
+
+            for I in reverse Natural range 1 .. Min_Length loop
+               if Original_Record_Component
+                 (F.Component (Natural (F.Component.Length) - I + 1)) /=
+                 Original_Record_Component
+                 (F2.Component (Natural (F2.Component.Length) - I + 1))
+               then
+                  Found := False;
+                  exit;
+               end if;
+            end loop;
+
+            if not Equal_Lengths
+              and then Etype (F_Max.Component
+                                (Natural (F_Max.Component.Length) -
+                                   Min_Length)) /=
+                         Etype (F_Min.Node)
+            then
+               Found := False;
+            end if;
+
+            if Found then
+               return F;
+            end if;
+         end loop;
+
+         return Null_Flow_Id;
+      end Compare_Components;
+   begin
+      case Nkind (Search) is
+         when N_Identifier =>
+            --  A := B;
+            declare
+               F : constant Flow_Id :=
+                 Compare_Components (Direct_Mapping_Id (Entity (Search)),
+                                     F_Comp);
+            begin
+               return Null_Or_Constant (F);
+            end;
+
+         when N_Selected_Component =>
+            --  A := B.X;
+            declare
+               P : Node_Id;
+               F : Flow_Id;
+
+               Vars_Used_In_Update : Flow_Id_Sets.Set :=
+                 Flow_Id_Sets.Empty_Set;
+            begin
+               P := Search;
+               while Present (P) loop
+                  case Nkind (P) is
+                     when N_Selected_Component =>
+                        --  A := B.Y.X;
+                        P := Prefix (P);
+
+                     when N_Identifier =>
+                        exit;
+
+                     when N_Attribute_Reference =>
+                        --  A := B'Update (Y => bar, X => foo).X;
+                        Ctx.Folded_Function_Checks (N).Include (P);
+
+                        Vars_Used_In_Update :=
+                          Get_Variable_Set
+                          (P,
+                           Scope           => FA.B_Scope,
+                           Local_Constants => FA.Local_Constants,
+                           Fold_Functions  => True);
+                        exit;
+
+                     when others =>
+                        raise Why.Unexpected_Node;
+                  end case;
+               end loop;
+
+               F := Compare_Components (Direct_Mapping_Id (Entity (P)),
+                                        F_Comp);
+
+               if F = Null_Flow_Id
+                 or else (Ekind (F.Node) = E_Constant
+                            and then not FA.Local_Constants.Contains (F.Node))
+               then
+                  return Vars_Used_In_Update;
+               else
+                  return Flow_Id_Sets.To_Set (F) or Vars_Used_In_Update;
+               end if;
+            end;
+
+         when N_Attribute_Reference =>
+            --  A := B'Update (X => foo);
+            declare
+               Comp_Assoc : Node_Id;
+               Choice     : Node_Id;
+            begin
+               Comp_Assoc := First
+                 (Component_Associations
+                    (First (Expressions (Search))));
+
+               while Present (Comp_Assoc) loop
+                  Choice := First (Choices (Comp_Assoc));
+
+                  while Present (Choice) loop
+                     if Is_Record_Type (Get_Full_View (Entity (Choice))) then
+                        for F of All_Record_Components (Entity (Choice)) loop
+                           declare
+                              F1, F2 : Flow_Id;
+                           begin
+                              F1 := Compare_Components
+                                (Direct_Mapping_Id (Entity (Prefix (Search))),
+                                 F);
+
+                              if F1 /= Null_Flow_Id then
+                                 F2 := Compare_Components (F1, F_Comp);
+
+                                 if F2 /= Null_Flow_Id then
+                                    Ctx.Folded_Function_Checks (N).Include
+                                      (Expression (Comp_Assoc));
+
+                                    return Get_Variable_Set
+                                      (Expression (Comp_Assoc),
+                                       Scope           => FA.B_Scope,
+                                       Local_Constants => FA.Local_Constants,
+                                       Fold_Functions  => True);
+                                 end if;
+                              end if;
+                           end;
+                        end loop;
+                     else
+                        declare
+                           F1 : constant Flow_Id := Compare_Components
+                             (Direct_Mapping_Id (Entity (Prefix (Search))),
+                              Direct_Mapping_Id (Entity (Choice)));
+                        begin
+                           if F1 /= Null_Flow_Id then
+                              if Entity_Lists."=" (F1.Component,
+                                                   F_Comp.Component)
+                              then
+                                 Ctx.Folded_Function_Checks (N).Include
+                                   (Expression (Comp_Assoc));
+
+                                 return Get_Variable_Set
+                                   (Expression (Comp_Assoc),
+                                    Scope           => FA.B_Scope,
+                                    Local_Constants => FA.Local_Constants,
+                                    Fold_Functions  => True);
+                              end if;
+                           end if;
+                        end;
+                     end if;
+                     Next (Choice);
+                  end loop;
+
+                  Next (Comp_Assoc);
+               end loop;
+            end;
+
+            --  If we reached this point, then the 'Update did not actually
+            --  update the component that is currently being processed.
+            declare
+               F : constant Flow_Id := Compare_Components
+                 (Direct_Mapping_Id (Entity (Prefix (Search))),
+                  F_Comp);
+            begin
+               return Null_Or_Constant (F);
+            end;
+
+         when N_Aggregate            |
+              N_Qualified_Expression =>
+            --  A := (X => foo, Y => bar);
+            --  A := A'(X => foo, Y => bar);
+            declare
+               N_Comp : constant Node_Id :=
+                 F_Comp.Component (F_Comp.Component.Last);
+
+               Comp_Assoc : Node_Id;
+               Choice     : Node_Id;
+            begin
+               Comp_Assoc := (case Nkind (Search) is
+                                when N_Aggregate =>
+                                   First (Component_Associations (Search)),
+                                when N_Qualified_Expression =>
+                                   First (Component_Associations
+                                            (Expression (Search))),
+                                when others =>
+                                   raise Why.Unexpected_Node);
+
+               while Present (Comp_Assoc) loop
+                  Choice := First (Choices (Comp_Assoc));
+                  while Present (Choice) loop
+                     if Is_Record_Type (Get_Full_Type (Entity (Choice))) then
+                        --  Choice is a record.
+                        declare
+                           F1, F2 : Flow_Id;
+                        begin
+                           F1 := Compare_Components
+                             (Direct_Mapping_Id (Entity (Choice)),
+                              F_Comp);
+
+                           if F1 /= Null_Flow_Id then
+                              case Nkind (Expression (Comp_Assoc)) is
+                                 when N_Identifier =>
+                                    if Direct_Mapping_Id
+                                         (Entity
+                                            (Expression (Comp_Assoc))).Kind in
+                                      Direct_Mapping | Record_Field
+                                    then
+                                       F2 := Compare_Components
+                                         (Direct_Mapping_Id
+                                            (Entity (Expression (Comp_Assoc))),
+                                          F1);
+
+                                       return Null_Or_Constant (F2);
+                                    else
+                                       Ctx.Folded_Function_Checks (N).Include
+                                         (Expression (Comp_Assoc));
+
+                                       return Get_Variable_Set
+                                         (Expression (Comp_Assoc),
+                                          Scope           => FA.B_Scope,
+                                          Local_Constants =>
+                                            FA.Local_Constants,
+                                          Fold_Functions  => True);
+                                    end if;
+
+                                 when others =>
+                                    Ctx.Folded_Function_Checks (N).Include
+                                      (Expression (Comp_Assoc));
+
+                                    return Get_Variable_Set
+                                      (Expression (Comp_Assoc),
+                                       Scope           => FA.B_Scope,
+                                       Local_Constants => FA.Local_Constants,
+                                       Fold_Functions  => True);
+                              end case;
+                           end if;
+                        end;
+                     else
+                        --  Choice is not a record.
+                        if Entity (Choice) = N_Comp then
+                           Ctx.Folded_Function_Checks (N).Include
+                             (Expression (Comp_Assoc));
+
+                           return Get_Variable_Set
+                             (Expression (Comp_Assoc),
+                              Scope           => FA.B_Scope,
+                              Local_Constants => FA.Local_Constants,
+                              Fold_Functions  => True);
+                        end if;
+                     end if;
+                     Next (Choice);
+                  end loop;
+                  Next (Comp_Assoc);
+               end loop;
+            end;
+
+            --  If nothing was found then return the empty set.
+            return Flow_Id_Sets.Empty_Set;
+
+         when N_Expanded_Name     |
+              N_Function_Call     |
+              N_Indexed_Component =>
+            --  This covers the following 3 cases:
+            --    * A := 0;
+            --    * A := function(X);
+            --    * A := Array(X);
+            Ctx.Folded_Function_Checks (N).Include (Search);
+
+            return Get_Variable_Set
+              (Search,
+               Scope           => FA.B_Scope,
+               Local_Constants => FA.Local_Constants,
+               Fold_Functions  => True);
+
+         when others =>
+            raise Why.Unexpected_Node;
+      end case;
+
+   end Vars_Used_By_Comp;
+
    ------------------------
    -- Create_Record_Tree --
    ------------------------
@@ -1113,21 +1480,64 @@ package body Flow.Control_Flow_Graph is
                            V_Used_RHS);
       end if;
 
-      --  We have a vertex
-      Add_Vertex
-        (FA,
-         Direct_Mapping_Id (N),
-         Make_Basic_Attributes (Var_Def    => V_Def_LHS,
-                                Var_Ex_Use => V_Used_RHS or
-                                  V_Explicitly_Used_LHS,
-                                Var_Im_Use => V_Implicitly_Used_LHS,
-                                Loops      => Ctx.Current_Loops,
-                                E_Loc      => N),
-         V);
+      if V_Def_LHS.Length > 1 then
+         --  If the LHS defines more than 1 variables, then we are dealing
+         --  with a record.
+         declare
+            Assigned_Fields : Vertex_Vectors.Vector :=
+              Vertex_Vectors.Empty_Vector;
+         begin
+            for F of V_Def_LHS loop
+               Add_Vertex
+                 (FA,
+                  Make_Basic_Attributes_With_Pretty_Print
+                    (Var_Def    => Flow_Id_Sets.To_Set (F),
+                     Var_Ex_Use => Vars_Used_By_Comp (N,
+                                                      Expression (N),
+                                                      F,
+                                                      FA,
+                                                      Ctx) or
+                                     V_Explicitly_Used_LHS,
+                     Loops      => Ctx.Current_Loops,
+                     E_Loc      => N,
+                     PPK        => Pretty_Print_Record_Field),
+                  V);
 
-      --  Control goes in V and of V
-      CM.Include (Union_Id (N),
-                  Trivial_Connection (V));
+               Assigned_Fields.Append (V);
+            end loop;
+
+            Assigned_Fields.Reverse_Elements;
+            V := Flow_Graphs.Null_Vertex;
+            for W of Assigned_Fields loop
+               if V /= Flow_Graphs.Null_Vertex then
+                  Linkup (FA.CFG, V, W);
+               end if;
+               V := W;
+            end loop;
+            CM.Include (Union_Id (N),
+                        Graph_Connections'
+                          (Standard_Entry => Assigned_Fields.First_Element,
+                           Standard_Exits => To_Set
+                             (Assigned_Fields.Last_Element)));
+         end;
+      else
+         --  We have a vertex
+         Add_Vertex
+           (FA,
+            Direct_Mapping_Id (N),
+            Make_Basic_Attributes (Var_Def    => V_Def_LHS,
+                                   Var_Ex_Use => V_Used_RHS or
+                                     V_Explicitly_Used_LHS,
+                                   Var_Im_Use => V_Implicitly_Used_LHS,
+                                   Loops      => Ctx.Current_Loops,
+                                   E_Loc      => N),
+            V);
+
+         --  Control goes in V and out of V
+         CM.Include (Union_Id (N),
+                     Trivial_Connection (V));
+      end if;
+
    end Do_Assignment_Statement;
 
    -------------------------
@@ -2394,8 +2804,8 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    is
-      V     : Flow_Graphs.Vertex_Id;
-      Inits : Vertex_Vectors.Vector := Vertex_Vectors.Empty_Vector;
+      V      : Flow_Graphs.Vertex_Id;
+      Inits  : Vertex_Vectors.Vector := Vertex_Vectors.Empty_Vector;
    begin
       --  We are dealing with a local constant. These constants are *not*
       --  ignored.
@@ -2449,30 +2859,55 @@ package body Flow.Control_Flow_Graph is
       else
          --  We have a variable declaration with an initialization.
          declare
-            Var_Def : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+            Var_Def       : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+            Var_Is_Record : Boolean          := False;
          begin
             for F of Flatten_Variable (Defining_Identifier (N)) loop
                Var_Def.Include (F);
                if Has_Bounds (F) then
                   Var_Def.Include (F'Update (Bound => (Kind => Some_Bound)));
                end if;
+               if F.Kind = Record_Field then
+                  Var_Is_Record := True;
+               end if;
             end loop;
-            Add_Vertex
-              (FA,
-               Direct_Mapping_Id (N),
-               Make_Basic_Attributes
-                 (Var_Def    => Var_Def,
-                    Var_Ex_Use => Get_Variable_Set
-                    (Expression (N),
-                     Scope           => FA.B_Scope,
-                     Local_Constants => FA.Local_Constants,
-                     Fold_Functions  => True),
-                  Loops      => Ctx.Current_Loops,
-                  E_Loc      => N),
-               V);
-            Ctx.Folded_Function_Checks (N).Insert (Expression (N));
+
+            if Var_Is_Record then
+               for F of Var_Def loop
+                  Add_Vertex
+                    (FA,
+                     Make_Basic_Attributes_With_Pretty_Print
+                       (Var_Def    => Flow_Id_Sets.To_Set (F),
+                        Var_Ex_Use => Vars_Used_By_Comp (N,
+                                                         Expression (N),
+                                                         F,
+                                                         FA,
+                                                         Ctx),
+                        Loops      => Ctx.Current_Loops,
+                        E_Loc      => N,
+                        PPK        => Pretty_Print_Record_Field),
+                     V);
+
+                  Inits.Append (V);
+               end loop;
+            else
+               Add_Vertex
+                 (FA,
+                  Direct_Mapping_Id (N),
+                  Make_Basic_Attributes
+                    (Var_Def    => Var_Def,
+                     Var_Ex_Use => Get_Variable_Set
+                       (Expression (N),
+                        Scope           => FA.B_Scope,
+                        Local_Constants => FA.Local_Constants,
+                        Fold_Functions  => True),
+                     Loops      => Ctx.Current_Loops,
+                     E_Loc      => N),
+                  V);
+               Inits.Append (V);
+            end if;
+            Ctx.Folded_Function_Checks (N).Include (Expression (N));
          end;
-         Inits.Append (V);
       end if;
 
       V := Flow_Graphs.Null_Vertex;

@@ -1,6 +1,1 @@
-foo.adb:22:21: warning: missing dependency "D => B"
-foo.adb:22:21: warning: missing dependency "D => C"
-foo.adb:23:21: warning: missing dependency "E => A"
-foo.adb:23:21: warning: missing dependency "E => C"
-foo.adb:24:21: warning: missing dependency "F => A"
-foo.adb:24:21: warning: missing dependency "F => B"
+foo.adb:26:07: warning: statement has no effect

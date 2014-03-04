@@ -14,6 +14,7 @@ skein.adb:99:72: warning: range check might fail
 skein.adb:100:72: warning: range check might fail
 skein.adb:101:72: warning: range check might fail
 skein.adb:102:72: warning: range check might fail
+skein.adb:106:17: warning: statement has no effect
 skein.adb:107:12: warning: length check might fail
 skein.adb:115:52: info: division check proved
 skein.adb:115:52: warning: range check might fail
@@ -34,5 +35,5 @@ in unit skein, 7 subprograms and packages out of 7 analyzed
   Skein.Skein_Start_New_Type at skein.adb:42 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
   Skein.Zero_Pad at skein.adb:60 flow analyzed (0 errors and 0 warnings) and proved (1 checks)
   Skein at skein.ads:6 flow analyzed (0 errors and 0 warnings) and not proved, 0 checks out of 6 proved
-  Skein.Skein_512_Final at skein.ads:131 flow analyzed (0 errors and 0 warnings) and not proved, 2 checks out of 6 proved
+  Skein.Skein_512_Final at skein.ads:131 flow analyzed (0 errors and 1 warnings) and not proved, 2 checks out of 6 proved
 

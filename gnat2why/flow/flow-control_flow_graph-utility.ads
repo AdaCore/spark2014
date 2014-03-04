@@ -40,6 +40,20 @@ package Flow.Control_Flow_Graph.Utility is
    --  Create attributes for vertices which simply define and use some
    --  variables.
 
+   function Make_Basic_Attributes_With_Pretty_Print
+     (Var_Def    : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
+      Var_Ex_Use : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
+      Var_Im_Use : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
+      Loops      : Node_Sets.Set       := Node_Sets.Empty_Set;
+      E_Loc      : Node_Or_Entity_Id   := Empty;
+      PPK        : Pretty_Print_Kind_T := Pretty_Print_Null)
+      return V_Attributes
+      with Post =>
+        not Make_Basic_Attributes_With_Pretty_Print'Result.Is_Null_Node and
+        Make_Basic_Attributes_With_Pretty_Print'Result.Is_Program_Node;
+   --  Same as Make_Basic_Attributes but it also sets field
+   --  Pretty_Print_Kind.
+
    function Make_Extended_Return_Attributes
      (Var_Def         : Flow_Id_Sets.Set;
       Var_Use         : Flow_Id_Sets.Set;

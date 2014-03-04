@@ -342,6 +342,38 @@ package body Flow is
             Write_Str ("initialization in loop ");
             Print_Node (A.Error_Location);
 
+         elsif A.Pretty_Print_Kind = Pretty_Print_Record_Field then
+            --  Sanity check that we only have one defined variable
+            pragma Assert (A.Variables_Defined.Length = 1);
+
+            declare
+               Var_Def : Flow_Id;
+            begin
+               Var_Def := A.Variables_Defined (A.Variables_Defined.First);
+
+               Write_Str (Flow_Id_To_String (Var_Def));
+               Write_Str (" => ");
+            end;
+
+            declare
+               Commas_Remaining : Integer :=
+                 Integer (A.Variables_Explicitly_Used.Length) - 1;
+            begin
+               if Commas_Remaining < 0 then
+                  Write_Str ("null");
+               end if;
+
+               for Var_Used of A.Variables_Explicitly_Used loop
+                  Write_Str (Flow_Id_To_String (Var_Used));
+
+                  if Commas_Remaining > 0 then
+                     Write_Str (", ");
+                  end if;
+
+                  Commas_Remaining := Commas_Remaining - 1;
+               end loop;
+            end;
+
          elsif A.Is_Parameter then
             Rv.Shape := Shape_None;
 

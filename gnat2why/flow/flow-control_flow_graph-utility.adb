@@ -104,6 +104,29 @@ package body Flow.Control_Flow_Graph.Utility is
       return A;
    end Make_Basic_Attributes;
 
+   ---------------------------------------------
+   -- Make_Basic_Attributes_With_Pretty_Print --
+   ---------------------------------------------
+
+   function Make_Basic_Attributes_With_Pretty_Print
+     (Var_Def    : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
+      Var_Ex_Use : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
+      Var_Im_Use : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
+      Loops      : Node_Sets.Set       := Node_Sets.Empty_Set;
+      E_Loc      : Node_Or_Entity_Id   := Empty;
+      PPK        : Pretty_Print_Kind_T := Pretty_Print_Null)
+      return V_Attributes
+   is
+      A : V_Attributes := Make_Basic_Attributes (Var_Def,
+                                                 Var_Ex_Use,
+                                                 Var_Im_Use,
+                                                 Loops,
+                                                 E_Loc);
+   begin
+      A.Pretty_Print_Kind := PPK;
+      return A;
+   end Make_Basic_Attributes_With_Pretty_Print;
+
    ------------------------------------
    -- Make_Extened_Return_Attributes --
    ------------------------------------

@@ -26,15 +26,15 @@
 
 with Ada.Containers;
 
-with Types;             use Types;
-with Einfo;             use Einfo;
-with Namet;             use Namet;
-with Sem_Util;          use Sem_Util;
-with Snames;            use Snames;
-with Sinfo;             use Sinfo;
-with Atree;             use Atree;
+with Types;                use Types;
+with Einfo;                use Einfo;
+with Namet;                use Namet;
+with Sem_Util;             use Sem_Util;
+with Snames;               use Snames;
+with Sinfo;                use Sinfo;
+with Atree;                use Atree;
 
-with Common_Containers; use Common_Containers;
+with Common_Containers;    use Common_Containers;
 
 with Flow_Types;           use Flow_Types;
 with Flow_Refinement;      use Flow_Refinement;
@@ -44,6 +44,35 @@ use type Ada.Containers.Count_Type;
 
 package Flow_Utility is
 
+   function Get_Full_Type (E : Entity_Id) return Entity_Id;
+   --  Get the type of the given entity. Ignores private types and
+   --  always returns the full view.
+
+   function All_Record_Components
+     (Entire_Var : Entity_Id)
+      return Flow_Id_Sets.Set
+      with Pre => Ekind (Get_Full_Type (Entire_Var)) in
+        E_Record_Type | E_Record_Subtype;
+   --  Given the record Entire_Var, return a set with all components.
+   --  So, for example we might return:
+   --     * p.x
+   --     * p.r.a
+   --     * p.r.b
+
+   function All_Record_Components
+     (The_Record_Field : Flow_Id)
+      return Flow_Id_Sets.Set
+      with Pre => The_Record_Field.Kind in Direct_Mapping | Record_Field
+                  and then Ekind (Get_Full_Type
+                                    (Get_Direct_Mapping_Id
+                                       (The_Record_Field))) in
+                                     E_Record_Type | E_Record_Subtype;
+   --  As above but only include fields that are equal to Record_Field or are
+   --  nested under it. For example if Record_Field = p.r for the above
+   --  record, then we will get the following set:
+   --     * p.r.a
+   --     * p.r.b
+
    function Has_Depends (Subprogram : Entity_Id) return Boolean
      with Pre => Ekind (Subprogram) in Subprogram_Kind;
    --  Return true if the given subprogram has been annotated with a
@@ -52,11 +81,11 @@ package Flow_Utility is
    procedure Get_Depends (Subprogram : Entity_Id;
                           Scope      : Flow_Scope;
                           Depends    : out Dependency_Maps.Map)
-   with Pre  => Ekind (Subprogram) in Subprogram_Kind and
-                Has_Depends (Subprogram),
-        Post => (for all C in Depends.Iterate =>
-                   (for all D of Dependency_Maps.Element (C) =>
-                      Present (D)));
+     with Pre  => Ekind (Subprogram) in Subprogram_Kind and
+                  Has_Depends (Subprogram),
+          Post => (for all C in Depends.Iterate =>
+                     (for all D of Dependency_Maps.Element (C) =>
+                        Present (D)));
    --  Return the dependency relation of the given Subprogram, as viewed
    --  from the given Scope. The dependency relation is represented as a
    --  map from entities to sets of entities.
@@ -83,10 +112,10 @@ package Flow_Utility is
                           Writes                 : out Flow_Id_Sets.Set;
                           Consider_Discriminants : Boolean := False;
                           Globals_For_Proof      : Boolean := False)
-   with Pre  => Ekind (Subprogram) in E_Procedure | E_Function,
-     Post => (for all G of Proof_Ins => G.Variant = In_View) and
-             (for all G of Reads     => G.Variant = In_View) and
-             (for all G of Writes    => G.Variant = Out_View);
+     with Pre  => Ekind (Subprogram) in E_Procedure | E_Function,
+          Post => (for all G of Proof_Ins => G.Variant = In_View) and
+                  (for all G of Reads     => G.Variant = In_View) and
+                  (for all G of Writes    => G.Variant = Out_View);
    --  Given a subprogram call, work out globals from the appropriate
    --  aspect (relative to Scope) or the computed globals, if no global
    --  contract is given. The sets returned will contain Flow_Id with the
@@ -102,9 +131,9 @@ package Flow_Utility is
    procedure Get_Proof_Globals (Subprogram : Entity_Id;
                                 Reads      : out Flow_Id_Sets.Set;
                                 Writes     : out Flow_Id_Sets.Set)
-   with Pre  => Ekind (Subprogram) in E_Procedure | E_Function,
-        Post => (for all G of Reads  => G.Variant = In_View) and
-                (for all G of Writes => G.Variant = Out_View);
+     with Pre  => Ekind (Subprogram) in E_Procedure | E_Function,
+          Post => (for all G of Reads  => G.Variant = In_View) and
+                  (for all G of Writes => G.Variant = Out_View);
    --  Same as above but Reads consists of both the Reads and Proof_Ins,
    --  discriminants receive no special handling and globals are proof
    --  globals, and we always return the most refined view possible.
@@ -128,7 +157,7 @@ package Flow_Utility is
       Allow_Statements             : Boolean := False;
       Expand_Synthesized_Constants : Boolean := False)
       return Flow_Id_Sets.Set
-     with Pre => (if Fold_Functions then not Allow_Statements),
+     with Pre  => (if Fold_Functions then not Allow_Statements),
           Post => (if Reduced
                    then (for all F of Get_Variable_Set'Result
                            => F.Kind /= Record_Field));
@@ -212,8 +241,7 @@ package Flow_Utility is
    --  variables due to a partial update. In the example above A is
    --  implicitly used.
 
-   function Get_Precondition_Expressions
-     (E : Entity_Id) return Node_Lists.List
+   function Get_Precondition_Expressions (E : Entity_Id) return Node_Lists.List
      with Pre => Ekind (E) in Subprogram_Kind;
    --  Given the entity for a subprogram, return the expression(s) for
    --  its precondition and the condition(s) of its Contract_Cases (or
@@ -233,8 +261,8 @@ package Flow_Utility is
                  Get_Pragma_Id (N) = Pragma_Check;
    --  Given a check pragma, return if this is a precondition check.
 
-   function Contains_Discriminants (F : Flow_Id) return Boolean
-     is (for some X of Flatten_Variable (F) => Is_Discriminant (X))
+   function Contains_Discriminants (F : Flow_Id) return Boolean is
+     (for some X of Flatten_Variable (F) => Is_Discriminant (X))
      with Pre => F.Kind in Direct_Mapping | Magic_String;
    --  Returns true if the flattened variable for F contains at least
    --  one discriminant.
@@ -267,13 +295,10 @@ package Flow_Utility is
    function Has_Contracts (E    : Entity_Id;
                            Name : Name_Id)
                            return Boolean
-   is (not Find_Contracts (E, Name).Is_Empty)
-   with Pre => Ekind (E) in Subprogram_Kind | E_Package;
+   is
+     (not Find_Contracts (E, Name).Is_Empty)
+     with Pre => Ekind (E) in Subprogram_Kind | E_Package;
    --  Return True if the subprogram in argument has the given kind of
    --  contract, False otherwise.
-
-   function Get_Full_Type (E : Entity_Id) return Entity_Id;
-   --  Get the type of the given entity. Ignores private types and
-   --  always returns the full view.
 
 end Flow_Utility;

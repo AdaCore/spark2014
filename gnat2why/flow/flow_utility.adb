@@ -54,31 +54,6 @@ package body Flow_Utility is
    --  Local
    ----------------------------------------------------------------------
 
-   function All_Record_Components
-     (Entire_Var : Entity_Id)
-      return Flow_Id_Sets.Set
-      with Pre => Ekind (Get_Full_Type (Entire_Var)) in
-        E_Record_Type | E_Record_Subtype;
-   --  Given the record Entire_Var, return a set with all components.
-   --  So, for example we might return:
-   --     * p.x
-   --     * p.r.a
-   --     * p.r.b
-
-   function All_Record_Components
-     (The_Record_Field : Flow_Id)
-      return Flow_Id_Sets.Set
-      with Pre => The_Record_Field.Kind in Direct_Mapping | Record_Field
-                  and then Ekind (Get_Full_Type
-                                    (Get_Direct_Mapping_Id
-                                       (The_Record_Field))) in
-                                     E_Record_Type | E_Record_Subtype;
-   --  As above but only include fields that are equal to Record_Field or are
-   --  nested under it. For example if Record_Field = p.r for the above
-   --  record, then we will get the following set:
-   --     * p.r.a
-   --     * p.r.b
-
    function Filter_Out_Non_Local_Constants (S : Flow_Id_Sets.Set;
                                             C : Node_Sets.Set)
                                             return Flow_Id_Sets.Set;
@@ -1585,8 +1560,7 @@ package body Flow_Utility is
    -- Get_Precondition_Expressions --
    ----------------------------------
 
-   function Get_Precondition_Expressions (E : Entity_Id)
-                                          return Node_Lists.List
+   function Get_Precondition_Expressions (E : Entity_Id) return Node_Lists.List
    is
       Precondition_Expressions : Node_Lists.List :=
         Find_Contracts (E, Name_Precondition);

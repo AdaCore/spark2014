@@ -41,6 +41,7 @@ admintoken.ads:148:22: info: postcondition proved
 admintoken.ads:217:22: warning: postcondition might fail
 alarm.adb:46:72: info: refined post proved
 alarm.ads:70:22: info: postcondition proved
+auditlog.adb:77:04: warning: statement has no effect
 auditlog.adb:79:32: info: length check proved
 auditlog.adb:88:45: info: length check proved
 auditlog.adb:93:53: info: length check proved
@@ -353,6 +354,7 @@ display.adb:76:43: info: length check proved
 display.adb:79:43: info: length check proved
 display.adb:84:43: info: length check proved
 display.adb:89:43: info: length check proved
+display.adb:122:07: warning: statement has no effect
 display.adb:123:41: info: length check proved
 display.adb:128:11: info: range check proved
 display.adb:129:10: info: loop invariant initialization proved
@@ -519,6 +521,7 @@ enrolment.adb:71:40: warning: length check might fail
 enrolment.adb:71:43: warning: range check might fail
 enrolment.adb:73:23: info: length check proved
 enrolment.adb:123:25: warning: postcondition might fail
+enrolment.adb:156:23: warning: statement has no effect
 enrolment.adb:228:27: info: overflow check proved
 enrolment.adb:238:30: warning: overflow check might fail
 enrolment.ads:78:22: warning: postcondition might fail, requires DataOK = KeyStore(KeyStore.privatekeypresent)
@@ -561,6 +564,7 @@ keystore.adb:359:18: warning: precondition might fail
 keystore.adb:421:18: warning: precondition might fail
 keystore.adb:485:18: warning: precondition might fail
 keystore.adb:538:18: warning: precondition might fail
+keystore.adb:552:37: warning: unused assignment to "Theprivatekey"
 keystore.adb:690:21: warning: precondition might fail
 keystore.adb:758:21: warning: precondition might fail
 keystore.adb:773:47: info: length check proved
@@ -730,6 +734,7 @@ tismain.adb:1496:7: warning: assertion might fail
 tismain.adb:1536:22: warning: precondition might fail
 tismain.adb:1542:23: warning: precondition might fail
 tismain.adb:1549:22: warning: precondition might fail
+tokenreader.adb:50:04: warning: statement has no effect
 tokenreader.adb:51:37: info: length check proved
 tokenreader.adb:62:23: info: length check proved
 tokenreader.adb:67:23: info: length check proved
