@@ -1,6 +1,6 @@
 DUMMY:=$(shell mkdir -p prove)
 
-.PHONY: gnatprove prove results clean force
+.PHONY: gnatprove prove results result clean force
 
 RESULTS=$(PWD)/results
 ALL=$(wildcard */search.gpr)
@@ -8,11 +8,24 @@ ALL_PROVE_MSG=$(patsubst %/search.gpr,$(RESULTS)/%.prove,$(ALL))
 
 gnatprove: $(ALL_PROVE_MSG)
 
+# expected errors from gnatprove:
+
+$(RESULTS)/linear_search_ada.prove: force
+	-$(MAKE) -s -f Makefile.examples EXAMPLE=linear_search_ada result > $@
+
+$(RESULTS)/linear_search_flow.prove: force
+	-$(MAKE) -s -f Makefile.examples EXAMPLE=linear_search_flow result > $@
+
+# success expected for all other examples
+
 $(RESULTS)/%.prove: force
-	-cd prove && \
-        cp -rf ../$* . && \
-        cd $* && \
-        gnatprove -f -q -P search.gpr --warnings=on --timeout=60 > $@
+	$(MAKE) -s -f Makefile.examples EXAMPLE=$* result > $@
+
+result: 
+	cd prove && \
+        cp -rf ../$(EXAMPLE) . && \
+        cd $(EXAMPLE) && \
+        gnatprove -f -q -P search.gpr --warnings=on --timeout=60
 
 clean:
 	rm -rf prove
