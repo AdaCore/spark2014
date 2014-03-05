@@ -664,6 +664,134 @@ mentioned above.
 The |SPARK| tools verify that ghost functions cannot influence any non-ghost
 entities in the program.
 
+.. _attribute old:
+
+Attribute Old
+-------------
+
+Inside Postcondition
+^^^^^^^^^^^^^^^^^^^^
+
+Ada 2012 defines attribute Old to refer, inside the postcondition, to the
+values that expressions had at subprogram entry. For example, the postcondition
+of procedure ``Increment`` might specify that the value of parameter ``X`` upon
+returning from the procedure has been incremented:
+
+.. code-block:: ada
+
+   procedure Increment (X : in out Integer) with 
+     Post => X = X'Old + 1;
+
+By using ``X'Old`` in the postcondition, we instruct the compiler to create a
+copy of ``X`` at subprogram entry, that can be dynamically tested when exiting
+the subprogram to check that the postcondition holds.
+
+Strictly speaking, attribute Old must apply to a *name* in Ada syntax, for
+example a variable, a component selection, a call, but not an addition like
+``X + Y``. For expressions that are not *names*, attribute Old can be applied
+to their qualified version, for example:
+
+.. code-block:: ada
+
+   procedure Increment_One_Of (X, Y : in out Integer) with 
+     Post => X + Y = Integer'(X + Y)'Old + 1;
+
+Because the compiler unconditionnally creates a copy of the expression to which
+attribute Old is applied at subprogram entry, there is a risk that this feature
+might confuse users in more complex postconditions. Take the example of a
+procedure ``Extract``, which copies the value of array ``A`` at index ``J`` in
+parameter ``V``, and zeroes out this value in the array, but only if ``J`` is
+in the bounds of ``A``:
+
+.. code-block:: ada
+
+   procedure Extract (A : in out My_Array; J : Integer; V : out Value) with
+     Post => (if J in A'Range then V = A(J)'Old);  --  INCORRECT
+
+Clearly, the value of ``A(J)`` at subprogram entry is only meaningful if ``J``
+is in the bounds of ``A``. If the code above was allowed, then a copy of
+``A(J)`` would be made on entry to subprogram ``Extract``, even when ``J`` is
+out of bounds, which would raise a run-time error. To avoid this common
+pitfall, use of attribute Old in expressions that are potentially unevaluated
+(like the then-part in an if-expression, or the right argument of a shortcut
+boolean expression) is restricted in Ada to plain variables: ``A`` is allowed,
+but not ``A(J)``. The GNAT compiler issues the following error on the code
+above::
+
+   prefix of attribute "Old" that is potentially unevaluated must denote an entity
+
+The correct way to specify the postcondition in the case above is to apply
+attribute Old to the entity prefix ``A``:
+
+.. code-block:: ada
+
+   procedure Extract (A : in out My_Array; J : Integer; V : out Value) with
+     Post => (if J in A'Range then V = A'Old(J));
+
+In some cases, the above rewriting is not possible, but it is correct to
+evaluate the expression on subprogram entry, for example:
+
+.. code-block:: ada
+
+   procedure Extract (A : in out My_Array; J : Integer; V : out Value) with
+     Post => (if J in A'Range then V = Get_If_In_Range(A,J)'Old);
+
+where function ``Get_If_In_Range`` returns the value ``A(J)`` when ``J`` is in
+the bounds of ``A``, and a default value otherwise.
+
+In that case, the solution is to rewrite the postcondition using non-shortcut
+boolean operators, so that the expression is not *potentially evaluated*
+anymore, for example:
+
+.. code-block:: ada
+
+   procedure Extract (A : in out My_Array; J : Integer; V : out Value) with
+     Post => J not in A'Range or V = Get_If_In_Range(A,J)'Old;
+
+Inside Contract Cases
+^^^^^^^^^^^^^^^^^^^^^
+
+The rule for attribute Old inside contract cases (see :ref:`Contract Cases`) is
+more permissive than inside postconditions. Take for example the same contract
+as above for procedure ``Extract``, expressed with contract cases:
+
+.. code-block:: ada
+
+   procedure Extract (A : in out My_Array; J : Integer; V : out Value) with
+     Contract_Cases => ((J in A'Range) => V = A(J)'Old,
+                        others         => True);
+
+Only the expressions used as prefixes of attribute Old in the *currently
+enabled case* are copied on entry to the subprogram. So if ``Extract`` is
+called with ``J`` out of the range of ``A``, then the second case is enabled,
+so ``A(J)`` is not copied when entering procedure ``Extract``. So the above is
+allowed.
+
+It may still be the case that some complex contracts require referring to the
+value of complex objects at subprogram entry, in particular when getter
+functions are involved.  For example, the contract of procedure ``Extract`` may
+specify that, when ``J`` in is in the range of ``A``, then for all values ``K``
+in some range, then either a condition holds or the value of ``V`` is equal to
+some expression involving attribute Old applied to a call to a getter function
+(using here a shortcut boolean expression):
+
+.. code-block:: ada
+
+   procedure Extract (A : in out My_Array; J : Integer; V : out Value) with
+     Contract_Cases => ((J in A'Range) =>
+                          (for all K in 1 .. J =>
+                             (Condition(A(K)) or else V = Get(A)'Old(K))),
+                        others         => True);
+
+In such a case, the GNAT compiler does not issue an error (contrary to what it
+does in postconditions), instead it issues a warning::
+
+   warning: prefix of attribute "Old" is always evaluated when related consequence is selected
+
+It is then up to the user to decide if this warning uncovers a potential
+problem. If not, the user can silence the compiler with a suitable pragma
+Warnings Off.
+
 .. _loop invariants:
 
 Loop Invariants
