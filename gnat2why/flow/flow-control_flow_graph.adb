@@ -1017,6 +1017,8 @@ package body Flow.Control_Flow_Graph is
                            Scope           => FA.B_Scope,
                            Local_Constants => FA.Local_Constants,
                            Fold_Functions  => True);
+
+                        P := Prefix (P);
                         exit;
 
                      when others =>
@@ -1081,11 +1083,13 @@ package body Flow.Control_Flow_Graph is
                            F1 : constant Flow_Id := Compare_Components
                              (Direct_Mapping_Id (Entity (Prefix (Search))),
                               Direct_Mapping_Id (Entity (Choice)));
+
+                           F2 : Flow_Id;
                         begin
                            if F1 /= Null_Flow_Id then
-                              if Entity_Lists."=" (F1.Component,
-                                                   F_Comp.Component)
-                              then
+                              F2 := Compare_Components (F_Comp, F1);
+
+                              if F2 /= Null_Flow_Id then
                                  Ctx.Folded_Function_Checks (N).Include
                                    (Expression (Comp_Assoc));
 

@@ -7,6 +7,11 @@ is
       Z : Integer;
    end record;
 
+   type Double_Coordinate_T is record
+      C1 : Coordinate_T;
+      C2 : Coordinate_T;
+   end record;
+
    --  We get some extra dependencies here
 
    procedure Test_01 (A, B, C : in     Integer;
@@ -61,8 +66,8 @@ is
       F := Tmp.Z;
    end Test_03;
 
-   procedure Test_04 (A, B, C    : in     Integer;
-                      D, E, F    :    out Integer)
+   procedure Test_04 (A, B, C : in     Integer;
+                      D, E, F :    out Integer)
      with Global  => null,
           Depends => (D => A,
                       E => B,
@@ -76,4 +81,40 @@ is
       E := Tmp.Y;
       F := Tmp'Update (X => 0, Y => 0, Z => C).Z;
    end Test_04;
+
+   procedure Test_05 (Input  : in     Integer;
+                      Output : in out Coordinate_T)
+     with Global  => null,
+          Depends => (Output =>+ Input)
+   is
+   begin
+      Output := Output'Update (X => Output.X, Y => Output.Y, Z => Input);
+   end Test_05;
+
+   procedure Test_06 (Input  : in     Double_Coordinate_T;
+                      Output :    out Coordinate_T)
+     with Global  => null,
+          Depends => (Output => Input)
+   is
+      Tmp : Coordinate_T := Coordinate_T'(X      => 0,
+                                          Y      => 0,
+                                          others => 0);
+   begin
+      Output := Input'Update (C1 => Tmp).C2;
+   end Test_06;
+
+   procedure Test_07 (Input  : in     Coordinate_T;
+                      Output :    out Double_Coordinate_T)
+     with Global  => null,
+          Depends => (Output => Input)
+   is
+   begin
+      Output.C1 := Input'Update (X => 0,
+                                 Y => 0,
+                                 Z => 0);
+
+      Output.C2 := Input'Update (X => Input.X,
+                                 Y => Input.Y,
+                                 Z => Input.Z);
+   end Test_07;
 end Aggregates;
