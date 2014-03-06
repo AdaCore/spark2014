@@ -30,6 +30,7 @@ with Types;          use Types;
 with Why.Types;      use Why.Types;
 with Why.Ids;        use Why.Ids;
 with Why.Sinfo;      use Why.Sinfo;
+with Sinfo;          use Sinfo;
 
 with Common_Containers; use Common_Containers;
 with Gnat2Why.Util;     use Gnat2Why.Util;
@@ -173,6 +174,18 @@ package Gnat2Why.Expr is
    function Transform_Declarations_From_Source (L : List_Id) return W_Prog_Id;
    --  Transform the declarations in the list, but excluding the leading
    --  declarations that do not come from source.
+
+   function New_Op_Expr
+     (Op          : N_Op;
+      Left        : W_Expr_Id := Why_Empty;
+      Right       : W_Expr_Id;
+      Left_Type   : Entity_Id := Empty;
+      Right_Type  : Entity_Id;
+      Return_Type : Entity_Id;
+      Domain      : EW_Domain;
+      Ada_Node    : Node_Id := Empty) return W_Expr_Id;
+   --  Generates Left Op Right depending on the value of Op and the Ada types
+   --  Return_Type, Left_Type, and Right_Type
 
    ----------------------------------------
    -- Attributes Old, Loop_Entry, Result --

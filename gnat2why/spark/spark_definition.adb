@@ -1831,23 +1831,13 @@ package body SPARK_Definition is
                      else Entity (Actual));
 
                begin
-                  --  Operators as actual of packages with external axioms are
-                  --  not supported yet.
 
-                  if Ekind (EActual) = E_Operator then
-                     Error_Msg_N
-                       ("operator cannot be used as a formal parameter",
-                        Actual);
-                     Error_Msg_N
-                       ("\\package is defined with external axiomatization",
-                        Actual);
-                     Error_Msg_N
-                       ("\\consider using a wrapper instead", Actual);
+                  if Ekind (EActual) /= E_Operator then
+
+                     --  Mark the entity of the actual
+
+                     Mark_Entity (EActual);
                   end if;
-
-                  --  Mark the entity of the actual
-
-                  Mark_Entity (EActual);
                end;
 
                Next (Cur_Assoc);

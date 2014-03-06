@@ -31,6 +31,7 @@ with Namet;               use Namet;
 with Nlists;              use Nlists;
 with Sem_Ch12;            use Sem_Ch12;
 with Sem_Util;            use Sem_Util;
+with Sem_Aux;             use Sem_Aux;
 with Sinfo;               use Sinfo;
 with Sinput;              use Sinput;
 with String_Utils;        use String_Utils;
@@ -41,6 +42,8 @@ with Why.Ids;             use Why.Ids;
 with Why.Sinfo;           use Why.Sinfo;
 with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Atree.Mutators;  use Why.Atree.Mutators;
+with Why.Atree.Modules;   use Why.Atree.Modules;
+with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Gen.Decl;        use Why.Gen.Decl;
 with Why.Gen.Names;       use Why.Gen.Names;
 with Why.Gen.Binders;     use Why.Gen.Binders;
@@ -52,6 +55,7 @@ with Why.Conversions;     use Why.Conversions;
 with Gnat2Why.Nodes;      use Gnat2Why.Nodes;
 with Gnat2Why.Util;       use Gnat2Why.Util;
 with Gnat2Why.Decls;      use Gnat2Why.Decls;
+with Gnat2Why.Expr;       use Gnat2Why.Expr;
 
 with Ada.Containers.Doubly_Linked_Lists;
 
@@ -152,7 +156,7 @@ package body Gnat2Why.External_Axioms is
                   Actual : constant Entity_Id :=
                     Entity (Explicit_Generic_Actual_Parameter (CurAssoc));
                begin
-                  if Ekind (Actual) not in Type_Kind then
+                  if Ekind (Actual) = E_Function then
                      List_Of_Entity.Append (Compl, Actual);
                   end if;
                end;
@@ -491,7 +495,8 @@ package body Gnat2Why.External_Axioms is
                        & "__" & Short_Name (Formal) & "\s"),
                      To       => W_Any_Node_Id (New_Identifier
                        (Name => "use " & Capitalize_First (Instance_Name)
-                        & "__" & Short_Name (Formal) & ASCII.LF)));
+                        & "__" & Get_Name_String (Chars (Formal)) &
+                          ASCII.LF)));
                   Subst_Cur := Subst_Cur + 1;
 
                   --  Replace: <Generic_Name>__<Formal>.<Formal>
@@ -510,7 +515,8 @@ package body Gnat2Why.External_Axioms is
                                  (File => No_Name,
                                   Name =>
                                     NID (Capitalize_First (Instance_Name) &
-                                        "__" & Short_Name (Formal))))));
+                                        "__" &
+                                        Get_Name_String (Chars (Formal)))))));
                   Subst_Cur := Subst_Cur + 1;
 
                else
@@ -732,18 +738,20 @@ package body Gnat2Why.External_Axioms is
       Labs  : constant List_Id :=  Get_Label_List (Package_Entity);
       Instance_Name : constant String := Get_Instance_Name (Package_Entity);
 
-      function Why_Logic_Type_Of_Ada_Generic_Type
+      function Get_Logic_Type_Of_Ada_Type
         (Ty       : Node_Id;
          Is_Input : Boolean) return W_Type_Id;
       --  Take an Ada Node and transform it into a Why logic type. The Ada
       --  Node is expected to be a Defining_Identifier for a type.
-      --  Return the associated actual if Ty is a generic formal parameter.
       --  If Is_Input is True then returns the base_type if base_type should
       --  be used.
 
-      function Why_Logic_Type_Of_Ada_Generic_Type
-        (Ty         : Node_Id;
-         Is_Input   : Boolean) return W_Type_Id is
+      function Get_Actual_Type_Of_Ada_Generic_Type
+        (Ty       : Node_Id) return Entity_Id;
+      --  Return the associated actual if Ty is a generic formal parameter.
+
+      function Get_Actual_Type_Of_Ada_Generic_Type
+        (Ty         : Node_Id) return Entity_Id is
 
          --  Goes through a list of parameters to find actual that is
          --  associated with the formal Ty
@@ -794,31 +802,29 @@ package body Gnat2Why.External_Axioms is
 
                pragma Assert (Present (Actual));
 
-               --  If Is_Input is true, checks wether the base_type of
-               --  Ty should be used.
-
-               if Is_Input and then
-                 Use_Base_Type_For_Type (Actual)
-               then
-                  return Base_Why_Type (Unique_Entity (Actual));
-               else
-                  return EW_Abstract (Actual);
-               end if;
+               return Actual;
             end;
          else
-            if Is_Input and then
-              Use_Base_Type_For_Type (Ty)
-            then
-
-               --  If Is_Input is true, checks wether the base_type of
-               --  Ty should be used.
-
-               return Base_Why_Type (Unique_Entity (Ty));
-            else
-               return EW_Abstract (Ty);
-            end if;
+            return Ty;
          end if;
-      end Why_Logic_Type_Of_Ada_Generic_Type;
+      end Get_Actual_Type_Of_Ada_Generic_Type;
+
+      function Get_Logic_Type_Of_Ada_Type
+        (Ty       : Node_Id;
+         Is_Input : Boolean) return W_Type_Id is
+      begin
+         if Is_Input and then
+           Use_Base_Type_For_Type (Ty)
+         then
+
+            --  If Is_Input is true, checks wether the base_type of
+            --  Ty should be used.
+
+            return Base_Why_Type (Unique_Entity (Ty));
+         else
+            return EW_Abstract (Ty);
+         end if;
+      end Get_Logic_Type_Of_Ada_Type;
 
       TFile     : Why_Section :=
         Why_Sections (Dispatch_Entity (Package_Entity));
@@ -916,9 +922,9 @@ package body Gnat2Why.External_Axioms is
                Close_Theory (TFile,
                              Kind => Definition_Theory);
 
-            elsif Ekind (Formal) = E_Function then
-
-               pragma Assert (Ekind (Actual) = E_Function);
+            elsif Ekind (Formal) = E_Function
+              and then Ekind (Actual) = E_Function
+            then
 
                --  For function parameters, generate a new function
                --  that introduced the needed conversions:
@@ -929,7 +935,7 @@ package body Gnat2Why.External_Axioms is
 
                Open_Theory
                  (TFile, Capitalize_First (Instance_Name) & "__"
-                  & Short_Name (Formal),
+                  & Get_Name_String (Chars (Formal)),
                   Comment =>
                     "Module for declaring a logic function for the formal "
                   & """" & Get_Name_String (Chars (Formal)) & """"
@@ -951,8 +957,9 @@ package body Gnat2Why.External_Axioms is
                       (Get_Subprogram_Spec (Formal));
                   F_Param : Node_Id := First (F_Params);
                   F_Type : constant W_Type_Id :=
-                    Why_Logic_Type_Of_Ada_Generic_Type
-                      (Etype (Formal), False);
+                    Get_Logic_Type_Of_Ada_Type
+                      (Get_Actual_Type_Of_Ada_Generic_Type (Etype (Formal)),
+                       False);
                   A_Params : constant List_Id :=
                     Parameter_Specifications
                       (Get_Subprogram_Spec (Actual));
@@ -980,8 +987,9 @@ package body Gnat2Why.External_Axioms is
                         F_Id   : constant Node_Id :=
                           Defining_Identifier (F_Param);
                         F_Type : constant W_Type_Id :=
-                          Why_Logic_Type_Of_Ada_Generic_Type
-                            (Etype (F_Id), True);
+                          Get_Logic_Type_Of_Ada_Type
+                            (Get_Actual_Type_Of_Ada_Generic_Type
+                               (Etype (F_Id)), True);
                         Name : constant W_Identifier_Id :=
                           New_Identifier
                             (Ada_Node => Empty,
@@ -1031,6 +1039,124 @@ package body Gnat2Why.External_Axioms is
                Close_Theory (TFile,
                              Kind => Definition_Theory);
 
+            else
+               pragma Assert (Ekind (Formal) = E_Function
+                              and then Ekind (Actual) = E_Operator);
+
+               --  For function parameters, generate a new function
+               --  that introduced the needed conversions:
+               --  function <formal> "inline" (x1 : ty_formal_1,
+               --                              x2 : ty_formal_2)
+               --                        : ty_formal =
+               --  <ty_actual__to__ty_formal> (
+               --      (<ty_formal1__to__ty_actual1> (x1)) <actual>
+               --      (<ty_formal2__to__ty_actual2> (x2)))
+
+               Open_Theory
+                 (TFile, Capitalize_First (Instance_Name) & "__"
+                  & Get_Name_String (Chars (Formal)),
+                  Comment =>
+                    "Module for declaring a logic function for the formal "
+                  & """" & Get_Name_String (Chars (Formal)) & """"
+                  & (if Sloc (Formal) > 0 then
+                       " defined at " &
+                       Build_Location_String (Sloc (Formal))
+                    else "")
+                  & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+               declare
+                  F_Params : constant List_Id :=
+                    Parameter_Specifications
+                      (Get_Subprogram_Spec (Formal));
+                  F_Param  : Node_Id := First (F_Params);
+                  F_Type   : constant Entity_Id :=
+                    Get_Actual_Type_Of_Ada_Generic_Type (Etype (Formal));
+                  F_W_Type : constant W_Type_Id :=
+                    Get_Logic_Type_Of_Ada_Type (F_Type, False);
+                  Binders  : Binder_Array
+                    (1 .. Integer (List_Length (F_Params)));
+                  Left     : W_Expr_Id := Why_Empty;
+                  Right    : W_Expr_Id;
+                  Left_Ty  : Entity_Id := Empty;
+                  Right_Ty : Entity_Id;
+                  Count    : Integer := 1;
+                  Op       : constant N_Op :=
+                    (if List_Length (F_Params) = 1 then
+                          Get_Unary_Nkind (Actual)
+                     else Get_Binary_Nkind (Actual));
+               begin
+
+                  while Present (F_Param) loop
+                     declare
+                        F_Id   : constant Node_Id :=
+                          Defining_Identifier (F_Param);
+                        F_Type   : constant Entity_Id :=
+                          Get_Actual_Type_Of_Ada_Generic_Type (Etype (F_Id));
+                        F_W_Type : constant W_Type_Id :=
+                          Get_Logic_Type_Of_Ada_Type (F_Type, True);
+                        Name : constant W_Identifier_Id :=
+                          New_Identifier
+                            (Ada_Node => Empty,
+                             Name => Full_Name (F_Id),
+                             Typ  => F_W_Type);
+                        M : constant W_Module_Id :=
+                          (case Get_Base_Type (F_W_Type) is
+                              when EW_Int | EW_Fixed => Integer_Module,
+                              when EW_Real => Floating_Module,
+                              when EW_Bool => Boolean_Module,
+                              when EW_Unit .. EW_Prop => Main_Module,
+                              when EW_Abstract | EW_Split | EW_Private =>
+                                 E_Module (Get_Ada_Node (+F_W_Type)));
+                     begin
+                        Add_With_Clause (TFile.Cur_Theory,
+                                         M,
+                                         EW_Clone_Default);
+                        Binders (Count) :=
+                          (Ada_Node => F_Id,
+                           B_Name   => Name,
+                           B_Ent    => null,
+                           Mutable  => False);
+
+                        if Count = Integer (List_Length (F_Params)) then
+                           Right := +Name;
+                           Right_Ty := F_Type;
+                        else
+                           Left := +Name;
+                           Left_Ty := F_Type;
+                        end if;
+
+                        Next (F_Param);
+                        Count := Count + 1;
+                     end;
+                  end loop;
+
+                  Emit
+                    (TFile.Cur_Theory,
+                     New_Function_Decl
+                       (Domain      => EW_Term,
+                        Name        =>
+                          New_Identifier (Name => Short_Name (Formal)),
+                        Binders     => Binders,
+                        Return_Type => F_W_Type,
+                        Labels      =>
+                          Name_Id_Sets.To_Set (NID ("inline")),
+                        Def         =>
+                          Insert_Simple_Conversion
+                            (Domain   => EW_Term,
+                             Expr     =>
+                               New_Op_Expr
+                                 (Op          => Op,
+                                  Left        => Left,
+                                  Right       => Right,
+                                  Left_Type   => Left_Ty,
+                                  Right_Type  => Right_Ty,
+                                  Return_Type => F_Type,
+                                  Domain      => EW_Term),
+                             To       => F_W_Type)));
+
+                  Close_Theory (TFile,
+                                Kind => Definition_Theory);
+               end;
             end if;
          end;
          Next (CurAssoc);
