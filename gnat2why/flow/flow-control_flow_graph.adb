@@ -871,9 +871,9 @@ package body Flow.Control_Flow_Graph is
       end if;
    end Join;
 
-   -------------------------
-   --  Vars_Used_By_Comp  --
-   -------------------------
+   -----------------------
+   -- Vars_Used_By_Comp --
+   -----------------------
 
    function Vars_Used_By_Comp
      (N      : Node_Id;
@@ -896,18 +896,8 @@ package body Flow.Control_Flow_Graph is
       --  Otherwise, it returns a singleton set containing F.
 
       ------------------------
-      --  Null_Or_Constant  --
+      -- Compare_Components --
       ------------------------
-      function Null_Or_Constant (F : Flow_Id) return Flow_Id_Sets.Set is
-        (if F = Null_Flow_Id
-           or else (Ekind (F.Node) = E_Constant
-                      and then not FA.Local_Constants.Contains (F.Node))
-         then Flow_Id_Sets.Empty_Set
-         else Flow_Id_Sets.To_Set (F));
-
-      --------------------------
-      --  Compare_Components  --
-      --------------------------
 
       function Compare_Components
         (F1 : Flow_Id;
@@ -934,7 +924,7 @@ package body Flow.Control_Flow_Graph is
 
          for F of All_Record_Components (F1) loop
             Equal_Lengths := Natural (F.Component.Length) =
-              Natural (F2.Component.Length);
+                               Natural (F2.Component.Length);
 
             F_Min := (if Natural (F.Component.Length) <
                            Natural (F2.Component.Length)
@@ -951,9 +941,9 @@ package body Flow.Control_Flow_Graph is
 
             for I in reverse Natural range 1 .. Min_Length loop
                if Original_Record_Component
-                 (F.Component (Natural (F.Component.Length) - I + 1)) /=
+                    (F.Component (Natural (F.Component.Length) - I + 1)) /=
                  Original_Record_Component
-                 (F2.Component (Natural (F2.Component.Length) - I + 1))
+                   (F2.Component (Natural (F2.Component.Length) - I + 1))
                then
                   Found := False;
                   exit;
@@ -976,6 +966,17 @@ package body Flow.Control_Flow_Graph is
 
          return Null_Flow_Id;
       end Compare_Components;
+
+      ----------------------
+      -- Null_Or_Constant --
+      ----------------------
+      function Null_Or_Constant (F : Flow_Id) return Flow_Id_Sets.Set is
+        (if F = Null_Flow_Id
+           or else (Ekind (F.Node) = E_Constant
+                      and then not FA.Local_Constants.Contains (F.Node))
+         then Flow_Id_Sets.Empty_Set
+         else Flow_Id_Sets.To_Set (F));
+
    begin
       case Nkind (Search) is
          when N_Identifier =>
@@ -1080,12 +1081,12 @@ package body Flow.Control_Flow_Graph is
                         end loop;
                      else
                         declare
-                           F1 : constant Flow_Id := Compare_Components
+                           F1, F2 : Flow_Id;
+                        begin
+                           F1 := Compare_Components
                              (Direct_Mapping_Id (Entity (Prefix (Search))),
                               Direct_Mapping_Id (Entity (Choice)));
 
-                           F2 : Flow_Id;
-                        begin
                            if F1 /= Null_Flow_Id then
                               F2 := Compare_Components (F_Comp, F1);
 
