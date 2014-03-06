@@ -24,6 +24,7 @@
 package body Flow.Data_Dependence_Graph is
 
    use type Flow_Id_Sets.Set;
+   use type Flow_Graphs.Vertex_Id;
 
    procedure Create (FA : in out Flow_Analysis_Graphs) is
       Combined_Defined : Flow_Id_Sets.Set;
@@ -80,7 +81,15 @@ package body Flow.Data_Dependence_Graph is
                      V_Final : constant Flow_Graphs.Vertex_Id :=
                        FA.CFG.Get_Vertex (Change_Variant (Vol, Final_Value));
                   begin
-                     FA.DDG.Add_Edge (V_D, V_Final, EC_DDG);
+                     if V_Final /= Flow_Graphs.Null_Vertex then
+                        --  If V_Final is null, then we're doing
+                        --  something involving a variable that has
+                        --  been missed out of the global
+                        --  annotation. We just ignore the connection
+                        --  in that case, and flow analysis sanity
+                        --  check will pick up the pieces later.
+                        FA.DDG.Add_Edge (V_D, V_Final, EC_DDG);
+                     end if;
                   end;
                end loop;
             end;
