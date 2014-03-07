@@ -672,18 +672,18 @@ Attribute Old
 Inside Postcondition
 ^^^^^^^^^^^^^^^^^^^^
 
-Ada 2012 defines attribute Old to refer, inside the postcondition, to the
+Inside a postcondition, Ada 2012 defines attribute Old to refer to the
 values that expressions had at subprogram entry. For example, the postcondition
 of procedure ``Increment`` might specify that the value of parameter ``X`` upon
 returning from the procedure has been incremented:
 
 .. code-block:: ada
 
-   procedure Increment (X : in out Integer) with 
+   procedure Increment (X : in out Integer) with
      Post => X = X'Old + 1;
 
 By using ``X'Old`` in the postcondition, we instruct the compiler to create a
-copy of ``X`` at subprogram entry, that can be dynamically tested when exiting
+copy of ``X`` at subprogram entry that can be dynamically tested when exiting
 the subprogram to check that the postcondition holds.
 
 Strictly speaking, attribute Old must apply to a *name* in Ada syntax, for
@@ -693,13 +693,13 @@ to their qualified version, for example:
 
 .. code-block:: ada
 
-   procedure Increment_One_Of (X, Y : in out Integer) with 
+   procedure Increment_One_Of (X, Y : in out Integer) with
      Post => X + Y = Integer'(X + Y)'Old + 1;
 
 Because the compiler unconditionnally creates a copy of the expression to which
 attribute Old is applied at subprogram entry, there is a risk that this feature
 might confuse users in more complex postconditions. Take the example of a
-procedure ``Extract``, which copies the value of array ``A`` at index ``J`` in
+procedure ``Extract``, which copies the value of array ``A`` at index ``J`` into
 parameter ``V``, and zeroes out this value in the array, but only if ``J`` is
 in the bounds of ``A``:
 
@@ -714,9 +714,9 @@ is in the bounds of ``A``. If the code above was allowed, then a copy of
 out of bounds, which would raise a run-time error. To avoid this common
 pitfall, use of attribute Old in expressions that are potentially unevaluated
 (like the then-part in an if-expression, or the right argument of a shortcut
-boolean expression) is restricted in Ada to plain variables: ``A`` is allowed,
-but not ``A(J)``. The GNAT compiler issues the following error on the code
-above::
+boolean expression - See Ada RM 6.1.1) is restricted to
+plain variables: ``A`` is allowed, but not ``A(J)``. The GNAT compiler
+issues the following error on the code above::
 
    prefix of attribute "Old" that is potentially unevaluated must denote an entity
 
@@ -728,8 +728,8 @@ attribute Old to the entity prefix ``A``:
    procedure Extract (A : in out My_Array; J : Integer; V : out Value) with
      Post => (if J in A'Range then V = A'Old(J));
 
-In some cases, the above rewriting is not possible, but it is correct to
-evaluate the expression on subprogram entry, for example:
+In some cases, though, this transformation is not possible but it is
+still correct to evaluate the expression on subprogram entry, for example:
 
 .. code-block:: ada
 
@@ -752,7 +752,7 @@ Inside Contract Cases
 ^^^^^^^^^^^^^^^^^^^^^
 
 The rule for attribute Old inside contract cases (see :ref:`Contract Cases`) is
-more permissive than inside postconditions. Take for example the same contract
+more permissive. Take for example the same contract
 as above for procedure ``Extract``, expressed with contract cases:
 
 .. code-block:: ada
