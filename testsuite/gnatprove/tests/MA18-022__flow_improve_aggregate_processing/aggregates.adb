@@ -117,4 +117,13 @@ is
                                  Y => Input.Y,
                                  Z => Input.Z);
    end Test_07;
+
+   procedure Test_08 (Input  : in     Coordinate_T;
+                      Output :    out Double_Coordinate_T)
+     with Global  => null,
+          Depends => (Output => Input)
+   is
+   begin
+      Output := (Input, C2 => (X => 0, Y => 0, Z => 0));
+   end Test_08;
 end Aggregates;

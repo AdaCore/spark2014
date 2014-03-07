@@ -950,13 +950,39 @@ package body Flow.Control_Flow_Graph is
                end if;
             end loop;
 
-            if not Equal_Lengths
-              and then Etype (F_Max.Component
-                                (Natural (F_Max.Component.Length) -
-                                   Min_Length)) /=
-                         Etype (F_Min.Node)
-            then
-               Found := False;
+            if not Equal_Lengths then
+               declare
+                  E       : Entity_Id;
+                  Has_ORC : Boolean;
+               begin
+                  if Ekind (F_Min.Node) in E_Void         |
+                                           E_Component    |
+                                           E_Discriminant
+                  then
+                     E := Original_Record_Component (F_Min.Node);
+                     Has_ORC := True;
+                  else
+                     E := Get_Full_Type (F_Min.Node);
+                     Has_ORC := False;
+                  end if;
+
+                  if Has_ORC
+                   and then Original_Record_Component
+                              (F_Max.Component
+                                 (Natural (F_Max.Component.Length) -
+                                    Min_Length)) /= E
+                  then
+                     Found := False;
+                  elsif (not Has_ORC)
+                    and then Get_Full_Type
+                               (Original_Record_Component
+                                  (F_Max.Component
+                                     (Natural (F_Max.Component.Length) -
+                                        Min_Length))) /= E
+                  then
+                     Found := False;
+                  end if;
+               end;
             end if;
 
             if Found then
