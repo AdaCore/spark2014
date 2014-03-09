@@ -3,9 +3,12 @@
 Language-Defined Pragmas (Annex L)
 ==================================
 
+Ada Language-Defined Pragmas
+----------------------------
+
 .. _tu-fe-language_defined_pragmas-01:
 
-1. The following Ada language-defined pragmas are supported as follows:
+The following Ada language-defined pragmas are supported as follows:
 
 ============================= ====================== ===============================================
 Pragma                        Allowed in SPARK 2014  Comment
@@ -66,9 +69,12 @@ Volatile_Components 	      Warning
 ============================= ====================== ===============================================
 
 
+|SPARK| Language-Defined Pragmas
+--------------------------------
+
 .. _tu-fe-language_defined_pragmas-02:
 
-2. The following |SPARK| language-defined pragmas are defined:
+The following |SPARK| language-defined pragmas are defined:
 
 ============================= ====================== =================================================
 Pragma                        Allowed in SPARK 2014  Comment
@@ -98,9 +104,12 @@ Refined_State 	 	      Yes
 SPARK_Mode         	      Yes                    Language defined but implementation dependent
 ============================= ====================== =================================================
 
+GNAT Implementation-Defined Pragmas
+-----------------------------------
+
 .. _tu-fe-language_defined_pragmas-03:
 
-3. The following GNAT implementation-defined pragmas are permitted in |SPARK|:
+The following GNAT implementation-defined pragmas are permitted in |SPARK|:
 
 ============================= ====================== =================================================
 Pragma                        Allowed in SPARK 2014  Comment
@@ -128,6 +137,4 @@ Unreferenced                  Yes
 Validity_Checks               Yes
 Warnings           	      Yes
 ============================= ====================== =================================================
-
-.. _etu-language_defined_pragmas:
 
