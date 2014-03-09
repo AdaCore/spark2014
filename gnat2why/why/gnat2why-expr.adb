@@ -584,7 +584,7 @@ package body Gnat2Why.Expr is
       --  the subtype declaration is valid; otherwise, the frontend has
       --  done it for us already
 
-      if Is_Static_Range (Get_Range (N)) then
+      if Is_OK_Static_Range (Get_Range (N)) then
          return New_Void;
       else
          declare
@@ -5155,19 +5155,19 @@ package body Gnat2Why.Expr is
       -- Get_Base_Type --
       -------------------
 
-      function Get_Base_Type (N : Node_Id) return Entity_Id
-      is
+      function Get_Base_Type (N : Node_Id) return Entity_Id is
          Ent : constant Entity_Id := Defining_Identifier (N);
       begin
-
          --  Full type declarations can only require checks when they are
          --  scalar types, and then only when the range is non-static.
+
          if Nkind (N) = N_Full_Type_Declaration then
             if Ekind (Ent) in Scalar_Kind then
-               if Is_Static_Range (Get_Range (Ent)) then
+               if Is_OK_Static_Range (Get_Range (Ent)) then
                   return Empty;
                end if;
             end if;
+
             declare
                T_Def : constant Node_Id := Type_Definition (N);
             begin
@@ -5188,7 +5188,6 @@ package body Gnat2Why.Expr is
 
                   when others =>
                      return Empty;
-
                end case;
             end;
          else

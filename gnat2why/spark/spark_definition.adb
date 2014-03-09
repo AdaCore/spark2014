@@ -2162,12 +2162,12 @@ package body SPARK_Definition is
 
          if Has_Predicates (E) then
             if not Is_Discrete_Type (E)
-              or else No (Static_Predicate (E))
+              or else No (Static_Discrete_Predicate (E))
             then
                Mark_Violation ("dynamic type predicate", E);
             else
                declare
-                  Pred : Node_Id := First (Static_Predicate (E));
+                  Pred : Node_Id := First (Static_Discrete_Predicate (E));
                begin
                   while Present (Pred) loop
                      Mark (Pred);
@@ -2977,7 +2977,8 @@ package body SPARK_Definition is
          --  . they are already taken into account elsewhere (contracts)
          --  . they have no effect on verification
 
-         --  Group 1a - RM Table 16.1(1), pragmas marked "Yes"
+         --  Group 1a - RM Table 16(1), Ada language-defined pragmas marked
+         --  "Yes".
          --  Note: pragma Assert is transformed into an
          --  instance of pragma Check by the front-end.
          when Pragma_Assertion_Policy             |
@@ -3010,7 +3011,8 @@ package body SPARK_Definition is
               Pragma_Unsuppress                   |
               Pragma_Volatile                     |
 
-         --  Group 1b - RM Table 16.1(2), pragmas marked "Yes"
+         --  Group 1b - RM Table 16(2), SPARK language-defined pragmas marked
+         --  "Yes".
          --  Note: pragmas Assert_And_Cut, Assume, and
          --  Loop_Invariant are transformed into instances of
          --  pragma Check by the front-end.
@@ -3033,8 +3035,10 @@ package body SPARK_Definition is
               Pragma_Refined_Post                 |
               Pragma_Refined_State                |
               Pragma_SPARK_Mode                   |
+              Pragma_Unevaluated_Use_Of_Old       |
 
-         --  Group 1c - RM Table 16.1(3), pragmas marked "Yes"
+         --  Group 1c - RM Table 16(3), GNAT implementation-defined pragmas
+         --  marked "Yes".
          --  Note: pragma Debug is removed by the front-end.
               Pragma_Ada_83                       |
               Pragma_Ada_95                       |

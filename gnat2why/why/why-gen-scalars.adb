@@ -173,7 +173,7 @@ package body Why.Gen.Scalars is
          if Is_Static then
             if Has_Predicates (E) then
                declare
-                  Pred   : Node_Id := First (Static_Predicate (E));
+                  Pred   : Node_Id := First (Static_Discrete_Predicate (E));
                begin
                   Def := False_Pred;
                   while Present (Pred) loop
