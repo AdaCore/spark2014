@@ -264,7 +264,7 @@ package body Gnat2Why.Subprograms is
                if Ekind_In (Id, E_Out_Parameter, E_In_Out_Parameter) then
                   Effects_Append_To_Writes
                     (Eff,
-                     New_Identifier (Name => Full_Name (Id)));
+                     New_Identifier (Name => Short_Name (Id)));
                end if;
 
                Next (Arg);
@@ -422,7 +422,7 @@ package body Gnat2Why.Subprograms is
                   else EW_Abstract (Etype (Id)));
             Name : constant W_Identifier_Id :=
               New_Identifier (Ada_Node => Empty,
-                              Name     => Full_Name (Id),
+                              Name     => Short_Name (Id),
                               Typ      => Typ);
          begin
             Result (Count) :=

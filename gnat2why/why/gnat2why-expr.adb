@@ -6970,7 +6970,7 @@ package body Gnat2Why.Expr is
          else EW_Abstract (Index_Type));
       Cond_Expr  : W_Expr_Id;
       Why_Id     : constant W_Identifier_Id :=
-        New_Identifier (Name => Full_Name (Index_Ent),
+        New_Identifier (Name => Short_Name (Index_Ent),
                         Typ  => Index_Base);
       Quant_Type : constant Entity_Id :=
         (if not Over_Range and then Of_Present (Iterator_Specification (Expr))
@@ -6981,8 +6981,8 @@ package body Gnat2Why.Expr is
       Quant_Var  : constant W_Identifier_Id :=
         (if not Over_Range and then Of_Present (Iterator_Specification (Expr))
          then New_Temp_Identifier (Typ => Quant_Base) else Why_Id);
-         --  Start of Transform_Quantified_Expression
 
+         --  Start of Transform_Quantified_Expression
    begin
 
       if Domain = EW_Term then
