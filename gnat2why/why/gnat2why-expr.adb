@@ -4181,137 +4181,6 @@ package body Gnat2Why.Expr is
       return T;
    end Transform_Array_Negation;
 
-   ---------------------
-   -- Transform_Slice --
-   ---------------------
-
-   function Transform_Slice
-     (Params       : Transformation_Params;
-      Domain       : EW_Domain;
-      Expr         : Node_Id) return W_Expr_Id
-   is
-
-      Prefx     : constant Node_Id := Sinfo.Prefix (Expr);
-      Target_Ty : constant W_Type_Id := EW_Abstract (Etype (Expr));
-      Rng       : constant Node_Id := Get_Range (Discrete_Range (Expr));
-      Pref_Expr : W_Expr_Id;
-      T         : W_Expr_Id;
-      Low_Expr  : constant W_Expr_Id :=
-        New_Temp_For_Expr
-          (Transform_Expr (Low_Bound (Rng), EW_Int_Type, Domain, Params));
-      High_Expr  : constant W_Expr_Id :=
-        New_Temp_For_Expr
-          (Transform_Expr (High_Bound (Rng), EW_Int_Type, Domain, Params));
-   begin
-
-      --  We start by translating the prefix itself.
-
-      Pref_Expr :=
-        Transform_Expr (Prefx, Domain, Params);
-
-      --  in the case where the slice indices are static, we can simply deal
-      --  with the array contents, and bounds will be derived from the type
-
-      if Is_Static_Array_Type (Etype (Expr)) then
-
-         --  a conversion may be needed to the target type
-
-         T :=
-           Insert_Array_Conversion
-             (Domain         => Domain,
-              Expr           => Pref_Expr,
-              To             => Target_Ty,
-              Force_No_Slide => True);
-
-      --  when the slice bounds are not static, we produce a compound object
-      --  contents + bounds.
-
-      else
-         Pref_Expr := New_Temp_For_Expr (Pref_Expr);
-         T := Pref_Expr;
-
-         if not Is_Static_Array_Type (Get_Ada_Node (+Get_Type (Pref_Expr)))
-           and then Get_Base_Type (Get_Type (Pref_Expr)) /= EW_Split
-         then
-            T := Array_Convert_To_Base (Domain, Pref_Expr);
-         end if;
-
-         if Domain = EW_Prog then
-            declare
-               Ar_Low   : constant W_Expr_Id :=
-                 Get_Array_Attr (Domain => EW_Pred,
-                                 Expr   => Pref_Expr,
-                                 Attr   => Attribute_First,
-                                 Dim    => 1);
-               Ar_High  : constant W_Expr_Id :=
-                 Get_Array_Attr (Domain => EW_Pred,
-                                 Expr   => Pref_Expr,
-                                 Attr   => Attribute_Last,
-                                 Dim    => 1);
-               Check    : constant W_Pred_Id :=
-                 New_Connection
-                   (Op     => EW_Imply,
-                    Left   =>
-                      New_Relation (Domain  => EW_Pred,
-                                    Op_Type => EW_Int,
-                                    Op      => EW_Le,
-                                    Left    => Low_Expr,
-                                    Right   => High_Expr),
-                    Right  =>
-                      New_And_Then_Expr
-                        (Domain => EW_Pred,
-                         Left   =>
-                           New_Relation
-                             (Domain  => EW_Pred,
-                              Op_Type => EW_Int,
-                              Op      => EW_Le,
-                              Left    => +Ar_Low,
-                              Right   => Low_Expr,
-                              Op2     => EW_Le,
-                              Right2  => +Ar_High),
-                         Right =>
-                           New_Relation
-                             (Domain  => EW_Pred,
-                              Op_Type => EW_Int,
-                              Op      => EW_Le,
-                              Left    => +Ar_Low,
-                              Right   => +High_Expr,
-                              Op2     => EW_Le,
-                              Right2  => +Ar_High)));
-            begin
-               T :=
-                 +Sequence
-                 (New_Located_Assert (Expr, Check, VC_Range_Check), +T);
-            end;
-         end if;
-
-         T :=
-           Binding_For_Temp
-             (Domain  => Domain,
-              Tmp     => Pref_Expr,
-              Context => T);
-         T :=
-           Array_Convert_From_Base
-             (Domain => Domain,
-              Ar     => T,
-              Target => Get_Ada_Node (+Target_Ty),
-              First  => Low_Expr,
-              Last   => High_Expr);
-         T :=
-           Binding_For_Temp
-             (Domain  => Domain,
-              Tmp     => Low_Expr,
-              Context => T);
-         T :=
-           Binding_For_Temp
-             (Domain  => Domain,
-              Tmp     => High_Expr,
-              Context => T);
-      end if;
-
-      return T;
-   end Transform_Slice;
-
    ------------------------------------
    -- Transform_Assignment_Statement --
    ------------------------------------
@@ -7407,6 +7276,137 @@ package body Gnat2Why.Expr is
       pragma Assert (No (Association));
       return Result;
    end Transform_Record_Component_Associations;
+
+   ---------------------
+   -- Transform_Slice --
+   ---------------------
+
+   function Transform_Slice
+     (Params       : Transformation_Params;
+      Domain       : EW_Domain;
+      Expr         : Node_Id) return W_Expr_Id
+   is
+
+      Prefx     : constant Node_Id := Sinfo.Prefix (Expr);
+      Target_Ty : constant W_Type_Id := EW_Abstract (Etype (Expr));
+      Rng       : constant Node_Id := Get_Range (Discrete_Range (Expr));
+      Pref_Expr : W_Expr_Id;
+      T         : W_Expr_Id;
+      Low_Expr  : constant W_Expr_Id :=
+        New_Temp_For_Expr
+          (Transform_Expr (Low_Bound (Rng), EW_Int_Type, Domain, Params));
+      High_Expr  : constant W_Expr_Id :=
+        New_Temp_For_Expr
+          (Transform_Expr (High_Bound (Rng), EW_Int_Type, Domain, Params));
+   begin
+
+      --  We start by translating the prefix itself.
+
+      Pref_Expr :=
+        Transform_Expr (Prefx, Domain, Params);
+
+      --  in the case where the slice indices are static, we can simply deal
+      --  with the array contents, and bounds will be derived from the type
+
+      if Is_Static_Array_Type (Etype (Expr)) then
+
+         --  a conversion may be needed to the target type
+
+         T :=
+           Insert_Array_Conversion
+             (Domain         => Domain,
+              Expr           => Pref_Expr,
+              To             => Target_Ty,
+              Force_No_Slide => True);
+
+         --  when the slice bounds are not static, we produce a compound object
+         --  contents + bounds.
+
+      else
+         Pref_Expr := New_Temp_For_Expr (Pref_Expr);
+         T := Pref_Expr;
+
+         if not Is_Static_Array_Type (Get_Ada_Node (+Get_Type (Pref_Expr)))
+           and then Get_Base_Type (Get_Type (Pref_Expr)) /= EW_Split
+         then
+            T := Array_Convert_To_Base (Domain, Pref_Expr);
+         end if;
+
+         if Domain = EW_Prog then
+            declare
+               Ar_Low   : constant W_Expr_Id :=
+                 Get_Array_Attr (Domain => EW_Pred,
+                                 Expr   => Pref_Expr,
+                                 Attr   => Attribute_First,
+                                 Dim    => 1);
+               Ar_High  : constant W_Expr_Id :=
+                 Get_Array_Attr (Domain => EW_Pred,
+                                 Expr   => Pref_Expr,
+                                 Attr   => Attribute_Last,
+                                 Dim    => 1);
+               Check    : constant W_Pred_Id :=
+                 New_Connection
+                   (Op     => EW_Imply,
+                    Left   =>
+                      New_Relation (Domain  => EW_Pred,
+                                    Op_Type => EW_Int,
+                                    Op      => EW_Le,
+                                    Left    => Low_Expr,
+                                    Right   => High_Expr),
+                    Right  =>
+                      New_And_Then_Expr
+                        (Domain => EW_Pred,
+                         Left   =>
+                           New_Relation
+                             (Domain  => EW_Pred,
+                              Op_Type => EW_Int,
+                              Op      => EW_Le,
+                              Left    => +Ar_Low,
+                              Right   => Low_Expr,
+                              Op2     => EW_Le,
+                              Right2  => +Ar_High),
+                         Right =>
+                           New_Relation
+                             (Domain  => EW_Pred,
+                              Op_Type => EW_Int,
+                              Op      => EW_Le,
+                              Left    => +Ar_Low,
+                              Right   => +High_Expr,
+                              Op2     => EW_Le,
+                              Right2  => +Ar_High)));
+            begin
+               T :=
+                 +Sequence
+                 (New_Located_Assert (Expr, Check, VC_Range_Check), +T);
+            end;
+         end if;
+
+         T :=
+           Binding_For_Temp
+             (Domain  => Domain,
+              Tmp     => Pref_Expr,
+              Context => T);
+         T :=
+           Array_Convert_From_Base
+             (Domain => Domain,
+              Ar     => T,
+              Target => Get_Ada_Node (+Target_Ty),
+              First  => Low_Expr,
+              Last   => High_Expr);
+         T :=
+           Binding_For_Temp
+             (Domain  => Domain,
+              Tmp     => Low_Expr,
+              Context => T);
+         T :=
+           Binding_For_Temp
+             (Domain  => Domain,
+              Tmp     => High_Expr,
+              Context => T);
+      end if;
+
+      return T;
+   end Transform_Slice;
 
    ----------------------------------------
    -- Transform_Statement_Or_Declaration --
