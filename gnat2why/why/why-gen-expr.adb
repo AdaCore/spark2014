@@ -1150,11 +1150,17 @@ package body Why.Gen.Expr is
    --  Start of Insert_Scalar_Conversion
 
    begin
-      --  When From = To and no check nor rounding needs to be inserted, do
-      --  nothing.
+      --  Do nothing when
+      --  1. From = To, and
+      --  2. no rounding needed, and
+      --  3. a) no check needed, _or_
+      --     b) check is flagged but the base type is the one reserved for
+      --        Standard.Boolean, so check does not need to be inserted.
+      --        (Other boolean types in Ada have a base type of EW_Int.)
 
       if Eq_Base (To, From)
-        and then No (Range_Check)
+        and then (No (Range_Check)
+                    or else  Get_Base_Type (To) = EW_Bool)
         and then No (Round_Func)
       then
          return Expr;
