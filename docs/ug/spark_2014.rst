@@ -734,7 +734,7 @@ still correct to evaluate the expression on subprogram entry, for example:
 .. code-block:: ada
 
    procedure Extract (A : in out My_Array; J : Integer; V : out Value) with
-     Post => (if J in A'Range then V = Get_If_In_Range(A,J)'Old);
+     Post => (if J in A'Range then V = Get_If_In_Range(A,J)'Old);  --  ERROR
 
 where function ``Get_If_In_Range`` returns the value ``A(J)`` when ``J`` is in
 the bounds of ``A``, and a default value otherwise.
@@ -747,6 +747,16 @@ anymore, for example:
 
    procedure Extract (A : in out My_Array; J : Integer; V : out Value) with
      Post => J not in A'Range or V = Get_If_In_Range(A,J)'Old;
+
+or to use the GNAT pragma Unevaluated_Use_Of_Old to allow such uses of
+attribute Old in potentially unevaluated expressions:
+
+.. code-block:: ada
+
+   pragma Unevaluated_Use_Of_Old (Allow);
+
+   procedure Extract (A : in out My_Array; J : Integer; V : out Value) with
+     Post => (if J in A'Range then V = Get_If_In_Range(A,J)'Old);
 
 Inside Contract Cases
 ^^^^^^^^^^^^^^^^^^^^^
