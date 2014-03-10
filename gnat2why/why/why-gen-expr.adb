@@ -950,10 +950,12 @@ package body Why.Gen.Expr is
                Array_Type : Entity_Id;
 
             begin
-
-               --  Expr is a choice of a 'Update aggregate, and needs a
+               --  Expr is either
+               --  1) a choice of a 'Update aggregate, and needs a
                --  range check towards the corresponding index type of the
-               --  prefix to the 'Update aggregate.
+               --  prefix to the 'Update aggregate, or
+               --  2) a component expression of a 'Update aggregate, and
+               --  needs a range check towards the component type.
 
                pragma Assert
                  (Nkind (Parent (Par)) = N_Aggregate
@@ -977,8 +979,12 @@ package body Why.Gen.Expr is
                   Array_Type := Etype (Pref);
                end if;
 
-               Check_Type := Etype (First_Index (Unique_Entity (Array_Type)));
-
+               if Expression (Par) = Expr then
+                  Check_Type := Component_Type (Unique_Entity (Array_Type));
+               else
+                  Check_Type :=
+                    Etype (First_Index (Unique_Entity (Array_Type)));
+               end if;
             end;
 
          when N_Range =>

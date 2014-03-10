@@ -126,17 +126,23 @@ ar.ads:152:22: info: postcondition proved
 ar.ads:158:22: info: postcondition proved
 ar.ads:164:22: info: postcondition proved
 ar.ads:169:22: info: postcondition proved
-ar.ads:174:22: warning: postcondition might fail, requires I < IT1'Last and then( (E > ET1'First and A = A'Old'Update (I => E, I+1 => E-1)) or (E = ET1'First and A = A'Old'Update (I => E, I+1 => ET1'Last)) )) or (I = IT1'Last and ( (E > ET1'First and A = A'Old'Update (I => E, IT1'First => E-1)) or (E = ET1'First and A = A'Old'update
-ar.ads:174:94: info: range check proved
-ar.ads:174:155: info: range check proved
+ar.ads:174:22: warning: postcondition might fail, requires I < IT1'Last and then( (E > ET1'First and then A = A'Old'Update (I => E, I+1 => E-1)) or else (E = ET1'First and then A = A'Old'Update (I => E, I+1 => ET1'Last)) )) or else (I = IT1'Last and then ( (E > ET1'First and then A = A'Old'Update (I => E, IT1'First => E-1)) or else (E = ET1'First and then A = A'Old'update
+ar.ads:174:99: info: range check proved
+ar.ads:174:106: info: range check proved
+ar.ads:174:170: info: range check proved
+ar.ads:174:287: info: range check proved
 ar.ads:179:22: info: postcondition proved
-ar.ads:184:22: warning: postcondition might fail, requires I < IT1'Last and then ( (E > ET1'First and A = A'Old'Update (I => E, I+1 => E-1)) or (E = ET1'First and A = A'Old'Update (I => E, I+1 => ET1'Last)) )) or (I = IT1'Last and ( (E > ET1'First and A = A'Old'Update (I => E, IT1'First => E-1)) or (E = ET1'First and A = A'Old'update
-ar.ads:184:95: info: range check proved
-ar.ads:184:156: info: range check proved
+ar.ads:184:22: warning: postcondition might fail, requires I < IT1'Last and then ( (E > ET1'First and then A = A'Old'Update (I => E, I+1 => E-1)) or else (E = ET1'First and then A = A'Old'Update (I => E, I+1 => ET1'Last)) )) or else (I = IT1'Last and then ( (E > ET1'First and then A = A'Old'Update (I => E, IT1'First => E-1)) or else (E = ET1'First and then A = A'Old'update
+ar.ads:184:100: info: range check proved
+ar.ads:184:107: info: range check proved
+ar.ads:184:171: info: range check proved
+ar.ads:184:288: info: range check proved
 ar.ads:189:22: info: postcondition proved
-ar.ads:194:22: warning: postcondition might fail, requires I < IT1'Last and then ( (E > ET1'First and A = A'Old'Update (I => E, I+1 => E-1)) or (E = ET1'First and A = A'Old'Update (I => E, I+1 => ET1'Last)) )) or (I = IT1'Last and ( (E > ET1'First and A = A'Old'Update (I => E, IT1'First => E-1)) or (E = ET1'First and A = A'Old'update
-ar.ads:194:95: info: range check proved
-ar.ads:194:156: info: range check proved
+ar.ads:194:22: warning: postcondition might fail, requires I < IT1'Last and then ( (E > ET1'First and then A = A'Old'Update (I => E, I+1 => E-1)) or else (E = ET1'First and then A = A'Old'Update (I => E, I+1 => ET1'Last)) )) or else (I = IT1'Last and then ( (E > ET1'First and then A = A'Old'Update (I => E, IT1'First => E-1)) or else (E = ET1'First and then A = A'Old'update
+ar.ads:194:100: info: range check proved
+ar.ads:194:107: info: range check proved
+ar.ads:194:171: info: range check proved
+ar.ads:194:288: info: range check proved
 ar.ads:199:22: warning: postcondition might fail
 ar.ads:204:22: info: postcondition proved
 ar.ads:209:22: warning: postcondition might fail
@@ -161,23 +167,29 @@ ar.ads:304:22: info: postcondition proved
 ar.ads:309:22: info: postcondition proved
 ar.ads:314:22: info: postcondition proved
 ar.ads:319:22: info: postcondition proved
-ar.ads:324:22: warning: postcondition might fail, requires J < IT2'Last and then ( (E > ET1'First and A = A'Old'Update (J => A'Old(J)'Update (I => E), J+1 => A'Old(J+1)'Update (I => E-1))) or (E = ET1'First and A = A'Old'Update (J => A'Old(J)'Update (I => E), J+1 => A'Old(J+1)'Update (I => ET1'Last))) )) or (J = IT2'Last and ( (E > ET1'First and A = A'Old'Update (J => A'Old(J)'Update (I => E), IT2'First => A'Old(IT2'First)'Update (I => E-1))) or (E = ET1'First and A = A'Old'update
-ar.ads:324:118: info: range check proved
-ar.ads:324:131: info: index check proved
-ar.ads:324:227: info: range check proved
-ar.ads:324:240: info: index check proved
+ar.ads:324:22: warning: postcondition might fail, requires J < IT2'Last and then ( (E > ET1'First and then A = A'Old'Update (J => A'Old(J)'Update (I => E), J+1 => A'Old(J+1)'Update (I => E-1))) or else (E = ET1'First and then A = A'Old'Update (J => A'Old(J)'Update (I => E), J+1 => A'Old(J+1)'Update (I => ET1'Last))) )) or else (J = IT2'Last and then ( (E > ET1'First and then A = A'Old'Update (J => A'Old(J)'Update (I => E), IT2'First => A'Old(IT2'First)'Update (I => E-1))) or else (E = ET1'First and then A = A'Old'update
+ar.ads:324:123: info: range check proved
+ar.ads:324:136: info: index check proved
+ar.ads:324:154: info: range check proved
+ar.ads:324:242: info: range check proved
+ar.ads:324:255: info: index check proved
+ar.ads:324:437: info: range check proved
 ar.ads:329:22: info: postcondition proved
-ar.ads:334:22: warning: postcondition might fail, requires J < IT2'Last and then ( (E > ET1'First and A = A'Old'Update (J => A'Old(J)'Update (I => E), J+1 => A'Old(J+1)'Update (I => E-1))) or (E = ET1'First and A = A'Old'Update (J => A'Old(J)'Update (I => E), J+1 => A'Old(J+1)'Update (I => ET1'Last))) )) or (J = IT2'Last and ( (E > ET1'First and A = A'Old'Update (J => A'Old(J)'Update (I => E), IT2'First => A'Old(IT2'First)'Update (I => E-1))) or (E = ET1'First and A = A'Old'update
-ar.ads:334:118: info: range check proved
-ar.ads:334:131: info: index check proved
-ar.ads:334:227: info: range check proved
-ar.ads:334:240: info: index check proved
+ar.ads:334:22: warning: postcondition might fail, requires J < IT2'Last and then ( (E > ET1'First and then A = A'Old'Update (J => A'Old(J)'Update (I => E), J+1 => A'Old(J+1)'Update (I => E-1))) or else (E = ET1'First and then A = A'Old'Update (J => A'Old(J)'Update (I => E), J+1 => A'Old(J+1)'Update (I => ET1'Last))) )) or else (J = IT2'Last and then ( (E > ET1'First and then A = A'Old'Update (J => A'Old(J)'Update (I => E), IT2'First => A'Old(IT2'First)'Update (I => E-1))) or else (E = ET1'First and then A = A'Old'update
+ar.ads:334:123: info: range check proved
+ar.ads:334:136: info: index check proved
+ar.ads:334:154: info: range check proved
+ar.ads:334:242: info: range check proved
+ar.ads:334:255: info: index check proved
+ar.ads:334:437: info: range check proved
 ar.ads:339:22: info: postcondition proved
-ar.ads:344:22: warning: postcondition might fail, requires J < IT2'Last and then ( (E > ET1'First and A = A'Old'Update (J => A'Old(J)'Update (I => E), J+1 => A'Old(J+1)'Update (I => E-1))) or (E = ET1'First and A = A'Old'Update (J => A'Old(J)'Update (I => E), J+1 => A'Old(J+1)'Update (I => ET1'Last))) )) or (J = IT2'Last and ( (E > ET1'First and A = A'Old'Update (J => A'Old(J)'Update (I => E), IT2'First => A'Old(IT2'First)'Update (I => E-1))) or (E = ET1'First and A = A'Old'update
-ar.ads:344:118: info: range check proved
-ar.ads:344:131: info: index check proved
-ar.ads:344:227: info: range check proved
-ar.ads:344:240: info: index check proved
+ar.ads:344:22: warning: postcondition might fail, requires J < IT2'Last and then ( (E > ET1'First and then A = A'Old'Update (J => A'Old(J)'Update (I => E), J+1 => A'Old(J+1)'Update (I => E-1))) or else (E = ET1'First and then A = A'Old'Update (J => A'Old(J)'Update (I => E), J+1 => A'Old(J+1)'Update (I => ET1'Last))) )) or else (J = IT2'Last and then ( (E > ET1'First and then A = A'Old'Update (J => A'Old(J)'Update (I => E), IT2'First => A'Old(IT2'First)'Update (I => E-1))) or else (E = ET1'First and then A = A'Old'update
+ar.ads:344:123: info: range check proved
+ar.ads:344:136: info: index check proved
+ar.ads:344:154: info: range check proved
+ar.ads:344:242: info: range check proved
+ar.ads:344:255: info: index check proved
+ar.ads:344:437: info: range check proved
 ar.ads:349:22: info: postcondition proved
 ar.ads:355:22: info: postcondition proved
 ar.ads:361:22: info: postcondition proved
@@ -201,29 +213,35 @@ ar.ads:451:16: info: postcondition proved
 ar.ads:456:22: info: postcondition proved
 ar.ads:461:22: warning: postcondition might fail, requires A = A'Old'update
 ar.ads:466:22: info: postcondition proved
-ar.ads:471:22: warning: postcondition might fail, requires K < IT3'Last and then ( (E > ET1'First and A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), K+1 => A'Old(K+1)'Update (J => A'Old(K+1)(J)'Update (I => E-1)))) or (E = ET1'First and A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), K+1 => A'Old(K+1)'Update (J => A'Old(K+1)(J)'Update (I => ET1'Last)))) )) or (K = IT3'Last and ( (E > ET1'First and A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), IT3'First => A'Old(IT3'First)'Update (J => A'Old(IT3'First)(J)'Update (I => E-1)))) or (E = ET1'First and A = A'Old'update
-ar.ads:471:146: info: range check proved
-ar.ads:471:159: info: index check proved
-ar.ads:471:183: info: index check proved
-ar.ads:471:311: info: range check proved
-ar.ads:471:324: info: index check proved
-ar.ads:471:348: info: index check proved
+ar.ads:471:22: warning: postcondition might fail, requires K < IT3'Last and then ( (E > ET1'First and then A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), K+1 => A'Old(K+1)'Update (J => A'Old(K+1)(J)'Update (I => E-1)))) or else (E = ET1'First and then A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), K+1 => A'Old(K+1)'Update (J => A'Old(K+1)(J)'Update (I => ET1'Last)))) )) or else (K = IT3'Last and then ( (E > ET1'First and then A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), IT3'First => A'Old(IT3'First)'Update (J => A'Old(IT3'First)(J)'Update (I => E-1)))) or else (E = ET1'First and then A = A'Old'update
+ar.ads:471:151: info: range check proved
+ar.ads:471:164: info: index check proved
+ar.ads:471:188: info: index check proved
+ar.ads:471:209: info: range check proved
+ar.ads:471:326: info: range check proved
+ar.ads:471:339: info: index check proved
+ar.ads:471:363: info: index check proved
+ar.ads:471:608: info: range check proved
 ar.ads:476:22: info: postcondition proved
-ar.ads:481:22: warning: postcondition might fail, requires K < IT3'Last and then ( (E > ET1'First and A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), K+1 => A'Old(K+1)'Update (J => A'Old(K+1)(J)'Update (I => E-1)))) or (E = ET1'First and A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), K+1 => A'Old(K+1)'Update (J => A'Old(K+1)(J)'Update (I => ET1'Last)))) )) or (K = IT3'Last and ( (E > ET1'First and A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), IT3'First => A'Old(IT3'First)'Update (J => A'Old(IT3'First)(J)'Update (I => E-1)))) or (E = ET1'First and A = A'Old'update
-ar.ads:481:146: info: range check proved
-ar.ads:481:159: info: index check proved
-ar.ads:481:183: info: index check proved
-ar.ads:481:311: info: range check proved
-ar.ads:481:324: info: index check proved
-ar.ads:481:348: info: index check proved
+ar.ads:481:22: warning: postcondition might fail, requires K < IT3'Last and then ( (E > ET1'First and then A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), K+1 => A'Old(K+1)'Update (J => A'Old(K+1)(J)'Update (I => E-1)))) or else (E = ET1'First and then A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), K+1 => A'Old(K+1)'Update (J => A'Old(K+1)(J)'Update (I => ET1'Last)))) )) or else (K = IT3'Last and then ( (E > ET1'First and then A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), IT3'First => A'Old(IT3'First)'Update (J => A'Old(IT3'First)(J)'Update (I => E-1)))) or else (E = ET1'First and then A = A'Old'update
+ar.ads:481:151: info: range check proved
+ar.ads:481:164: info: index check proved
+ar.ads:481:188: info: index check proved
+ar.ads:481:209: info: range check proved
+ar.ads:481:326: info: range check proved
+ar.ads:481:339: info: index check proved
+ar.ads:481:363: info: index check proved
+ar.ads:481:608: info: range check proved
 ar.ads:486:22: info: postcondition proved
-ar.ads:491:22: warning: postcondition might fail, requires K < IT3'Last and then( (E > ET1'First and A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), K+1 => A'Old(K+1)'Update (J => A'Old(K+1)(J)'Update (I => E-1)))) or (E = ET1'First and A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), K+1 => A'Old(K+1)'Update (J => A'Old(K+1)(J)'Update (I => ET1'Last)))) )) or (K = IT3'Last and ( (E > ET1'First and A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), IT3'First => A'Old(IT3'First)'Update (J => A'Old(IT3'First)(J)'Update (I => E-1)))) or (E = ET1'First and A = A'Old'update
-ar.ads:491:145: info: range check proved
-ar.ads:491:158: info: index check proved
-ar.ads:491:182: info: index check proved
-ar.ads:491:310: info: range check proved
-ar.ads:491:323: info: index check proved
-ar.ads:491:347: info: index check proved
+ar.ads:491:22: warning: postcondition might fail, requires K < IT3'Last and then( (E > ET1'First and then A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), K+1 => A'Old(K+1)'Update (J => A'Old(K+1)(J)'Update (I => E-1)))) or else (E = ET1'First and then A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), K+1 => A'Old(K+1)'Update (J => A'Old(K+1)(J)'Update (I => ET1'Last)))) )) or else (K = IT3'Last and then ( (E > ET1'First and then A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), IT3'First => A'Old(IT3'First)'Update (J => A'Old(IT3'First)(J)'Update (I => E-1)))) or else (E = ET1'First and then A = A'Old'update
+ar.ads:491:150: info: range check proved
+ar.ads:491:163: info: index check proved
+ar.ads:491:187: info: index check proved
+ar.ads:491:208: info: range check proved
+ar.ads:491:325: info: range check proved
+ar.ads:491:338: info: index check proved
+ar.ads:491:362: info: index check proved
+ar.ads:491:607: info: range check proved
 ar.ads:496:22: info: postcondition proved
 ar.ads:502:22: info: postcondition proved
 ar.ads:508:22: info: postcondition proved

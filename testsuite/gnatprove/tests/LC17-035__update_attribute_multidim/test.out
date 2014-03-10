@@ -87,9 +87,11 @@ update_checks.ads:26:44: info: range check proved
 update_checks.ads:27:30: info: range check proved
 update_checks.ads:27:38: info: range check proved
 update_checks.ads:27:46: info: range check proved
+update_checks.ads:27:64: info: range check proved
 update_checks.ads:28:28: info: range check proved
 update_checks.ads:28:36: info: range check proved
 update_checks.ads:28:44: info: range check proved
+update_checks.ads:28:64: info: range check proved
 update_logic_fn.ads:12:33: info: length check proved
 update_logic_fn.ads:13:33: info: length check proved
 update_logic_fn.ads:29:14: info: postcondition proved
