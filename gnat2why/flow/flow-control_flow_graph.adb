@@ -1521,7 +1521,7 @@ package body Flow.Control_Flow_Graph is
             for F of V_Def_LHS loop
                Add_Vertex
                  (FA,
-                  Make_Basic_Attributes_With_Pretty_Print
+                  Make_Basic_Attributes
                     (Var_Def    => Flow_Id_Sets.To_Set (F),
                      Var_Ex_Use => Vars_Used_By_Comp (N,
                                                       Expression (N),
@@ -1531,7 +1531,7 @@ package body Flow.Control_Flow_Graph is
                                      V_Explicitly_Used_LHS,
                      Loops      => Ctx.Current_Loops,
                      E_Loc      => N,
-                     PPK        => Pretty_Print_Record_Field),
+                     Print_Hint => Pretty_Print_Record_Field),
                   V);
 
                Assigned_Fields.Append (V);
@@ -2907,7 +2907,7 @@ package body Flow.Control_Flow_Graph is
                for F of Var_Def loop
                   Add_Vertex
                     (FA,
-                     Make_Basic_Attributes_With_Pretty_Print
+                     Make_Basic_Attributes
                        (Var_Def    => Flow_Id_Sets.To_Set (F),
                         Var_Ex_Use => Vars_Used_By_Comp (N,
                                                          Expression (N),
@@ -2916,7 +2916,7 @@ package body Flow.Control_Flow_Graph is
                                                          Ctx),
                         Loops      => Ctx.Current_Loops,
                         E_Loc      => N,
-                        PPK        => Pretty_Print_Record_Field),
+                        Print_Hint => Pretty_Print_Record_Field),
                      V);
 
                   Inits.Append (V);
