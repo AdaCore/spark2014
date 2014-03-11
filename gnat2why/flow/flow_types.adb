@@ -198,15 +198,21 @@ package body Flow_Types is
            (Original_Record_Component (Entity (Selector_Name (P))));
          P := Prefix (P);
       end loop;
-      pragma Assert (Nkind (P) in N_Identifier | N_Expanded_Name |
-                       N_Attribute_Reference);
-      if Nkind (P) in N_Identifier | N_Expanded_Name then
-         F.Node := Unique_Entity (Entity (P));
-         F.Component.Reverse_Elements;
-      elsif Nkind (P) = N_Attribute_Reference then
-         F.Node := Entity (Prefix (P));
-         F.Component.Reverse_Elements;
-      end if;
+      F.Component.Reverse_Elements;
+
+      case Nkind (P) is
+         when N_Identifier | N_Expanded_Name =>
+            --  X .Y.Z
+            F.Node := Unique_Entity (Entity (P));
+
+         when N_Attribute_Reference =>
+            --  X'Old .Y.Z
+            F.Node := Entity (Prefix (P));
+
+         when others =>
+            raise Program_Error;
+      end case;
+
       return F;
    end Record_Field_Id;
 

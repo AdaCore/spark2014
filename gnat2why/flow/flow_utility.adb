@@ -1434,6 +1434,23 @@ package body Flow_Utility is
                Print_Node_Briefly (End_Of_Record);
             end if;
 
+            case Nkind (Bottom_Node) is
+               when N_Identifier | N_Expanded_Name =>
+                  null;
+
+               when N_Attribute_Reference =>
+                  null;
+
+               when others =>
+                  Vars_Explicitly_Used.Union
+                    (Get_Variable_Set
+                       (Bottom_Node,
+                        Scope           => Scope,
+                        Local_Constants => Local_Constants,
+                        Fold_Functions  => False));
+                  goto Fin;
+            end case;
+
             --  We may be dealing with some record field. For example:
             --
             --     R.A
@@ -1549,6 +1566,7 @@ package body Flow_Utility is
             raise Why.Unexpected_Node;
       end case;
 
+   <<Fin>>
       if Debug_Trace_Untangle then
          Print_Node_Set (Vars_Explicitly_Used);
          Print_Node_Set (Vars_Implicitly_Used);
