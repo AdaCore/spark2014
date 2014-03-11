@@ -410,10 +410,6 @@ Proof Limitations
    workaround is to use expression functions instead for those functions called
    in contracts and assertion pragmas.
 
-#. The 'Update notation for specifying updates to arrays and records in proof
-   contracts does not support multi-dimensional arrays at present.
-   One-dimensional arrays and records are supported.
-
 #. Attribute 'Valid is currently assumed to always return True.
 
 #. Values read from an external source are assumed to be valid values.
