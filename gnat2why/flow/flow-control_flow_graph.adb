@@ -312,14 +312,14 @@ package body Flow.Control_Flow_Graph is
    --  nodes. Block contains the combined standard entry and exits of
    --  the joined up sequence.
 
-   function Vars_Used_By_Comp
-     (N      : Node_Id;
-      Search : Node_Id;
-      F_Comp : Flow_Id;
-      FA     : Flow_Analysis_Graphs;
-      Ctx    : in out Context)
-      return Flow_Id_Sets.Set;
-   --  This function looks under Search and returns a set of Flow_Ids
+   procedure Calculate_Variables_Used_By_Component
+     (N         : Node_Id;
+      Search    : Node_Id;
+      F_Comp    : Flow_Id;
+      FA        : Flow_Analysis_Graphs;
+      Ctx       : in out Context;
+      Vars_Used : out Flow_Id_Sets.Set);
+   --  This procedure looks under Search and gathers a set of Flow_Ids
    --  that corresponds to all variables used by component F_Comp.
 
    procedure Create_Record_Tree
@@ -871,17 +871,17 @@ package body Flow.Control_Flow_Graph is
       end if;
    end Join;
 
-   -----------------------
-   -- Vars_Used_By_Comp --
-   -----------------------
+   -------------------------------------------
+   -- Calculate_Variables_Used_By_Component --
+   -------------------------------------------
 
-   function Vars_Used_By_Comp
-     (N      : Node_Id;
-      Search : Node_Id;
-      F_Comp : Flow_Id;
-      FA     : Flow_Analysis_Graphs;
-      Ctx    : in out Context)
-      return Flow_Id_Sets.Set
+   procedure Calculate_Variables_Used_By_Component
+     (N         : Node_Id;
+      Search    : Node_Id;
+      F_Comp    : Flow_Id;
+      FA        : Flow_Analysis_Graphs;
+      Ctx       : in out Context;
+      Vars_Used : out Flow_Id_Sets.Set)
    is
       function Compare_Components
         (F1 : Flow_Id;
@@ -996,6 +996,7 @@ package body Flow.Control_Flow_Graph is
       ----------------------
       -- Null_Or_Constant --
       ----------------------
+
       function Null_Or_Constant (F : Flow_Id) return Flow_Id_Sets.Set is
         (if F = Null_Flow_Id
            or else (Ekind (F.Node) = E_Constant
@@ -1012,57 +1013,76 @@ package body Flow.Control_Flow_Graph is
                  Compare_Components (Direct_Mapping_Id (Entity (Search)),
                                      F_Comp);
             begin
-               return Null_Or_Constant (F);
+               Vars_Used := Null_Or_Constant (F);
             end;
 
          when N_Selected_Component =>
             --  A := B.X;
             declare
-               P : Node_Id;
-               F : Flow_Id;
+               Pref : Node_Id;
+               Expr : Node_Id;
+               F    : Flow_Id;
 
-               Vars_Used_In_Update : Flow_Id_Sets.Set :=
+               Vars_Used_By_Nested_Expr : Flow_Id_Sets.Set :=
                  Flow_Id_Sets.Empty_Set;
             begin
-               P := Search;
-               while Present (P) loop
-                  case Nkind (P) is
+               Pref := Search;
+               while Present (Pref) loop
+                  case Nkind (Pref) is
                      when N_Selected_Component =>
                         --  A := B.Y.X;
-                        P := Prefix (P);
+                        Pref := Prefix (Pref);
 
                      when N_Identifier =>
                         exit;
 
-                     when N_Attribute_Reference =>
+                     when N_Attribute_Reference  |
+                          N_Qualified_Expression =>
                         --  A := B'Update (Y => bar, X => foo).X;
-                        Ctx.Folded_Function_Checks (N).Include (P);
+                        --  A := Type'(Y => bar, X => foo).X;
+                        Expr := (case Nkind (Pref) is
+                                    when N_Attribute_Reference =>
+                                       Pref,
+                                    when N_Qualified_Expression =>
+                                       Expression (Pref),
+                                    when others =>
+                                       raise Why.Unexpected_Node);
 
-                        Vars_Used_In_Update :=
+                        Ctx.Folded_Function_Checks (N).Include (Expr);
+
+                        Vars_Used_By_Nested_Expr := Vars_Used_By_Nested_Expr or
                           Get_Variable_Set
-                          (P,
-                           Scope           => FA.B_Scope,
-                           Local_Constants => FA.Local_Constants,
-                           Fold_Functions  => True);
+                            (Expr,
+                             Scope           => FA.B_Scope,
+                             Local_Constants => FA.Local_Constants,
+                             Fold_Functions  => True);
 
-                        P := Prefix (P);
-                        exit;
+                        case Nkind (Pref) is
+                           when N_Attribute_Reference =>
+                              Pref := Prefix (Pref);
+                           when N_Qualified_Expression =>
+                              Vars_Used := Vars_Used_By_Nested_Expr;
+                              return;
+                           when others =>
+                              raise Why.Unexpected_Node;
+                        end case;
 
                      when others =>
                         raise Why.Unexpected_Node;
                   end case;
                end loop;
 
-               F := Compare_Components (Direct_Mapping_Id (Entity (P)),
+               F := Compare_Components (Direct_Mapping_Id (Entity (Pref)),
                                         F_Comp);
 
                if F = Null_Flow_Id
                  or else (Ekind (F.Node) = E_Constant
                             and then not FA.Local_Constants.Contains (F.Node))
                then
-                  return Vars_Used_In_Update;
+                  Vars_Used := Vars_Used_By_Nested_Expr;
                else
-                  return Flow_Id_Sets.To_Set (F) or Vars_Used_In_Update;
+                  Vars_Used := Flow_Id_Sets.To_Set (F) or
+                    Vars_Used_By_Nested_Expr;
                end if;
             end;
 
@@ -1096,11 +1116,13 @@ package body Flow.Control_Flow_Graph is
                                     Ctx.Folded_Function_Checks (N).Include
                                       (Expression (Comp_Assoc));
 
-                                    return Get_Variable_Set
+                                    Vars_Used := Get_Variable_Set
                                       (Expression (Comp_Assoc),
                                        Scope           => FA.B_Scope,
                                        Local_Constants => FA.Local_Constants,
                                        Fold_Functions  => True);
+
+                                    return;
                                  end if;
                               end if;
                            end;
@@ -1120,11 +1142,13 @@ package body Flow.Control_Flow_Graph is
                                  Ctx.Folded_Function_Checks (N).Include
                                    (Expression (Comp_Assoc));
 
-                                 return Get_Variable_Set
+                                 Vars_Used := Get_Variable_Set
                                    (Expression (Comp_Assoc),
                                     Scope           => FA.B_Scope,
                                     Local_Constants => FA.Local_Constants,
                                     Fold_Functions  => True);
+
+                                 return;
                               end if;
                            end if;
                         end;
@@ -1143,7 +1167,7 @@ package body Flow.Control_Flow_Graph is
                  (Direct_Mapping_Id (Entity (Prefix (Search))),
                   F_Comp);
             begin
-               return Null_Or_Constant (F);
+               Vars_Used := Null_Or_Constant (F);
             end;
 
          when N_Aggregate            |
@@ -1191,12 +1215,12 @@ package body Flow.Control_Flow_Graph is
                                             (Entity (Expression (Comp_Assoc))),
                                           F1);
 
-                                       return Null_Or_Constant (F2);
+                                       Vars_Used := Null_Or_Constant (F2);
                                     else
                                        Ctx.Folded_Function_Checks (N).Include
                                          (Expression (Comp_Assoc));
 
-                                       return Get_Variable_Set
+                                       Vars_Used := Get_Variable_Set
                                          (Expression (Comp_Assoc),
                                           Scope           => FA.B_Scope,
                                           Local_Constants =>
@@ -1204,15 +1228,19 @@ package body Flow.Control_Flow_Graph is
                                           Fold_Functions  => True);
                                     end if;
 
+                                    return;
+
                                  when others =>
                                     Ctx.Folded_Function_Checks (N).Include
                                       (Expression (Comp_Assoc));
 
-                                    return Get_Variable_Set
+                                    Vars_Used := Get_Variable_Set
                                       (Expression (Comp_Assoc),
                                        Scope           => FA.B_Scope,
                                        Local_Constants => FA.Local_Constants,
                                        Fold_Functions  => True);
+
+                                    return;
                               end case;
                            end if;
                         end;
@@ -1222,11 +1250,13 @@ package body Flow.Control_Flow_Graph is
                            Ctx.Folded_Function_Checks (N).Include
                              (Expression (Comp_Assoc));
 
-                           return Get_Variable_Set
+                           Vars_Used := Get_Variable_Set
                              (Expression (Comp_Assoc),
                               Scope           => FA.B_Scope,
                               Local_Constants => FA.Local_Constants,
                               Fold_Functions  => True);
+
+                           return;
                         end if;
                      end if;
                      Next (Choice);
@@ -1236,18 +1266,18 @@ package body Flow.Control_Flow_Graph is
             end;
 
             --  If nothing was found then return the empty set.
-            return Flow_Id_Sets.Empty_Set;
+            Vars_Used := Flow_Id_Sets.Empty_Set;
 
          when N_Expanded_Name     |
               N_Function_Call     |
               N_Indexed_Component =>
             --  This covers the following 3 cases:
-            --    * A := 0;
-            --    * A := function(X);
-            --    * A := Array(X);
+            --    A := 0;
+            --    A := function(X);
+            --    A := Array(X);
             Ctx.Folded_Function_Checks (N).Include (Search);
 
-            return Get_Variable_Set
+            Vars_Used := Get_Variable_Set
               (Search,
                Scope           => FA.B_Scope,
                Local_Constants => FA.Local_Constants,
@@ -1257,7 +1287,7 @@ package body Flow.Control_Flow_Graph is
             raise Why.Unexpected_Node;
       end case;
 
-   end Vars_Used_By_Comp;
+   end Calculate_Variables_Used_By_Component;
 
    ------------------------
    -- Create_Record_Tree --
@@ -1517,17 +1547,24 @@ package body Flow.Control_Flow_Graph is
          declare
             Assigned_Fields : Vertex_Vectors.Vector :=
               Vertex_Vectors.Empty_Vector;
+
+            Vars_Used       : Flow_Id_Sets.Set;
          begin
             for F of V_Def_LHS loop
+               Vars_Used := Flow_Id_Sets.Empty_Set;
+
+               Calculate_Variables_Used_By_Component (N,
+                                                      Expression (N),
+                                                      F,
+                                                      FA,
+                                                      Ctx,
+                                                      Vars_Used);
+
                Add_Vertex
                  (FA,
                   Make_Basic_Attributes
                     (Var_Def    => Flow_Id_Sets.To_Set (F),
-                     Var_Ex_Use => Vars_Used_By_Comp (N,
-                                                      Expression (N),
-                                                      F,
-                                                      FA,
-                                                      Ctx) or
+                     Var_Ex_Use => Vars_Used or
                                      V_Explicitly_Used_LHS,
                      Loops      => Ctx.Current_Loops,
                      E_Loc      => N,
@@ -2892,6 +2929,7 @@ package body Flow.Control_Flow_Graph is
          declare
             Var_Def       : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
             Var_Is_Record : Boolean          := False;
+            Vars_Used     : Flow_Id_Sets.Set;
          begin
             for F of Flatten_Variable (Defining_Identifier (N)) loop
                Var_Def.Include (F);
@@ -2905,15 +2943,20 @@ package body Flow.Control_Flow_Graph is
 
             if Var_Is_Record then
                for F of Var_Def loop
+                  Vars_Used := Flow_Id_Sets.Empty_Set;
+
+                  Calculate_Variables_Used_By_Component (N,
+                                                         Expression (N),
+                                                         F,
+                                                         FA,
+                                                         Ctx,
+                                                         Vars_Used);
+
                   Add_Vertex
                     (FA,
                      Make_Basic_Attributes
                        (Var_Def    => Flow_Id_Sets.To_Set (F),
-                        Var_Ex_Use => Vars_Used_By_Comp (N,
-                                                         Expression (N),
-                                                         F,
-                                                         FA,
-                                                         Ctx),
+                        Var_Ex_Use => Vars_Used,
                         Loops      => Ctx.Current_Loops,
                         E_Loc      => N,
                         Print_Hint => Pretty_Print_Record_Field),

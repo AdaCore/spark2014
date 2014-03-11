@@ -126,4 +126,24 @@ is
    begin
       Output := (Input, C2 => (X => 0, Y => 0, Z => 0));
    end Test_08;
+
+   procedure Test_09 (Input  : in     Coordinate_T;
+                      Output :    out Coordinate_T)
+     with Global  => null,
+          Depends => (Output => Input)
+   is
+   begin
+      Output := Double_Coordinate_T'(C1 => Input,
+                                     C2 => (X => 0, Y => 0, Z => 0)).C1;
+   end Test_09;
+
+   procedure Test_10 (Input  : in     Coordinate_T;
+                      Output :    out Double_Coordinate_T)
+     with Global  => null,
+          Depends => (Output => Input)
+   is
+   begin
+      Output := (C1 => Input,
+                 C2 => (X => Input.X, Y => Input.Y, Z => Input.Z));
+   end Test_10;
 end Aggregates;
