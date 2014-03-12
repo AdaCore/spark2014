@@ -112,6 +112,39 @@ Inductive type: Type :=
     | Boolean: type (* 3.5.3 *)
     | Integer: type (* 3.5.4 *).
 
+Scheme Equality for type.
+
+Lemma type_beq_complete : forall t t', t = t' -> type_beq t t' = true.
+Proof.
+  intros t t' heq.
+  subst.
+  destruct t';simpl;auto.
+Qed.
+
+Lemma type_beq_correct : forall t t', type_beq t t' = true -> t = t'.
+Proof.
+  intros t t'.
+  destruct t; destruct t';simpl;auto;intro abs; discriminate abs.
+Qed.
+
+Lemma type_beq_iff: forall t t', type_beq t t' = true <-> t = t'.
+Proof.
+  intros t t'.
+  split;intros.
+  - apply type_beq_correct. assumption.
+  - apply type_beq_complete. assumption.
+Qed.
+
+Hint Rewrite type_beq_iff: rewtype.
+Hint Rewrite type_beq_iff: rewtype_rev.
+
+Lemma type_beq_refl : forall t, type_beq t t = true.
+Proof.
+  intros t.
+  destruct t;simpl;reflexivity.
+Qed.
+
+
 (** ** Expressions *)
 (* Chapter 4 *)
 Inductive expression: Type := 
@@ -164,11 +197,11 @@ Record aspect_specification: Type := mkaspect_specification{
 (* Mutual records/inductives are not allowed in coq, so we build a record by hand. *)
 Inductive declaration : Type :=
 | D_Object_declaration: object_declaration -> declaration
-| D_Procedure_declaration: procedure_body -> declaration
+| D_Procedure_declaration: procedure_declaration -> declaration
 | D_Sequence: declaration -> declaration -> declaration
 
-with procedure_body: Type :=
-  mkprocedure_body
+with procedure_declaration: Type :=
+  mkprocedure_declaration
     (procedure_astnum: astnum)
     (procedure_name: procnum)
     (procedure_contracts: list aspect_specification)
@@ -179,21 +212,21 @@ with procedure_body: Type :=
 (* We define projection functions by hand too. *)
 Definition procedure_statements pb :=
 match pb with
-  | mkprocedure_body _ _ _ _ _ x => x
+  | mkprocedure_declaration _ _ _ _ _ x => x
 end.
 
 Definition procedure_declarative_part pb :=
 match pb with
-  | mkprocedure_body _ _ _ _ x _ => x
+  | mkprocedure_declaration _ _ _ _ x _ => x
 end.
 
 Definition procedure_parameter_profile pb :=
 match pb with
-  | mkprocedure_body _ _ _ x _ _ => x
+  | mkprocedure_declaration _ _ _ x _ _ => x
 end.
 Definition procedure_name pb :=
 match pb with
-  | mkprocedure_body _ x _ _ _ _ => x
+  | mkprocedure_declaration _ x _ _ _ _ => x
 end.
 
 
@@ -213,7 +246,7 @@ Record function_body: Type := mkfunction_body{
 (** ** Compilation unit: subprogram *)
 (* 6.1 *)
 Inductive subprogram: Type := 
-	| Global_Procedure: astnum -> procedure_body -> subprogram
+	| Global_Procedure: astnum -> procedure_declaration -> subprogram
 (*	| Global_Function: astnum -> function_body -> subprogram *).
 
 (* 10.1.1 *)

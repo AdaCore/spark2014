@@ -17,6 +17,7 @@ Proof.
   reflexivity.
 Qed.
 
+
 Function split1 A n (l:list A) {struct n} :=
   match l,n with
     | _,O => Some(nil,l)

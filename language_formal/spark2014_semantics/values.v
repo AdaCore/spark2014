@@ -71,10 +71,12 @@ Inductive value : Type :=
 (* | Record (r: list (id_label*value)) *)
 
 
-(** Type of stored values in the store *)
+(** Type of stored values in the store.
+TODO: rename into value_stored, for uniformity with type_stored. *)
 Inductive val: Type := 
     | Value (v:value)
-    | Procedure (pb: procedure_body)
+    | Procedure (pb: procedure_declaration)
+    | TypeDef (typ: type)
     | Undefined.
 
 (** Expression evaluation returns one of the following results:

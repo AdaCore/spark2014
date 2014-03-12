@@ -37,28 +37,56 @@ Notation V:=V.T.
 
 Definition store : Type := list (idnum * V).
 
+Inductive FirstOcc {A B} : A -> B -> list (A*B) -> Prop :=
+  FO_Here: forall l a b, FirstOcc a b ((a,b)::l)
+| FO_Later: forall l a b a' b', a<>a' -> FirstOcc a b l -> FirstOcc a b ((a',b')::l).
+
+Ltac wellf_rename_hyp th :=
+    match th with
+      | FirstOcc _ _ _ => fresh "h_firstocc"
+      | _ => default_rename_hyp
+    end.
+
+Ltac rename_hyp ::= wellf_rename_hyp.
+
+Lemma FirstOcc_det : forall A B l (a:A) (b b':B), 
+                       FirstOcc a b l -> 
+                       FirstOcc a b' l -> 
+                       b = b'.
+Proof.
+  intros A B l a b b' h.  
+  revert b'.
+  !induction h;!intros.
+  - !inversion h_firstocc.
+    + reflexivity.
+    + destruct H3. reflexivity.
+  - apply IHh.
+    !inversion h_firstocc.
+    + destruct H. reflexivity.
+    + assumption.
+Qed.
+
 (** ** Store operations *)
 (** check whether variable x has already been declared *)
 Function reside (x : idnum) (s : store) := 
-    match s with 
+  match s with 
     | (y, v) :: s' =>
-      if beq_nat x y then
-        true
-      else 
-        reside x s' 
+      if beq_nat x y then true else reside x s' 
     | nil => false
-    end.
+  end.
 
 (** fetch the value of x that has already been initialized in store *)
 Function fetch (x : idnum) (s : store): option V := 
-    match s with 
+  match s with 
     | (y, v) :: s' =>
       if beq_nat x y then Some v
       else fetch x s' 
     | nil => None
-    end.
+  end.
 
-(** fetch the value of x that has already been initialized in store *)
+(** [cut_to x s] return the pair (s',s'') where s = s' ++ s'' and s''
+    starts with the first occurrence of [x] in [s]. If no occurrence
+    of [x] exists in [s] then (nil,nil) is returned. *)
 Function cut_to (x : idnum) (s : store): store*store := 
   match s with 
     | (y, v) :: s' =>
@@ -84,7 +112,7 @@ Function update (s: store) (x : idnum) (v: V): option store :=
 
 (** ** Lemmas about store operations *)
 Lemma fetch_in: forall x s v, 
-    fetch x s = Some v -> List.In (x, v) s.
+    fetch x s = Some v -> FirstOcc x v s.
 Proof.
     intros x s.
     functional induction (fetch x s);
@@ -96,12 +124,37 @@ Proof.
   - apply beq_nat_true_iff in e0; subst.
     left;auto.
   - right.
+    apply beq_nat_false_iff in e0.
+    assumption.
     apply IHo.
     assumption.
 Qed.
 
+(** ** Lemmas about store operations *)
+Lemma in_fetch: forall x s v, 
+                  FirstOcc x v s -> fetch x s = Some v.
+Proof.
+  intros x s.
+  functional induction (fetch x s);
+    intros v1 H;
+    try match goal with
+    | h: None = Some ?v |- _ => inversion h
+    | h: Some ?v1 = Some ?v2 |- _ => inversion h; subst
+        end; simpl.
+  - apply beq_nat_true_iff in e0; subst.
+    !inversion H.
+    + reflexivity.
+    + destruct H4;auto.
+  - apply IHo.
+    !inversion H.
+    + rewrite <- beq_nat_refl in e0.
+      !inversion e0.
+    + assumption. 
+  - inversion H.
+Qed.
+
 Lemma update_in: forall s x v' s', 
-    update s x v' = Some s' -> (exists v, List.In (x, v) s).
+    update s x v' = Some s' -> (exists v, FirstOcc x v s).
 Proof.
     intros s x v'.
     functional induction (update s x v');
@@ -115,29 +168,35 @@ Proof.
     left; auto.
   - specialize (IHo s'' e1).
     inversion IHo.
-    exists x0. simpl. 
-    right; assumption.
+    exists x0. simpl.
+    right. 
+    + apply beq_nat_false_iff in e0.
+      assumption.
+    + assumption.
 Qed.
     
 Lemma in_update: forall s x v' y v s',
                    update s x v' = Some s' ->
-                   List.In (y, v) s'
-                   -> ((y=x /\ v=v') \/ List.In (y,v) s).
+                   FirstOcc y v s'
+                   -> ((y=x /\ v=v') \/ FirstOcc y v s).
 Proof.
     intros s x v'.
     functional induction (update s x v'); simpl; intros y0 v0 s0 h h'; subst;
     (inversion h; clear h); subst.
-    apply beq_nat_true_iff in e0; subst.
-  - destruct h'.
-    + left. inversion H; auto.
-    + right. right; assumption.
+
+  - apply beq_nat_true_iff in e0; subst.
+    !inversion h'.
+    + left. auto.
+    + right.
+      right;auto.
   - specialize (IHo y0 v0 s'' e1).
-    destruct h'.
-    + right. left. assumption.
-    + specialize (IHo H). 
-       destruct IHo as [h | h'].
-       *  left; assumption.
-       * right. right; assumption.
+    !inversion h'.
+    + right. left.
+    + specialize (IHo h_firstocc). 
+       destruct IHo as [h | h'']. subst.
+      * left;auto.
+      * right.
+        right;auto.
 Qed.
 
 
@@ -163,6 +222,35 @@ Inductive UpdateList : list idnum -> list V -> store -> store -> Prop :=
    currently running. *)
 Definition stack := list store.
 
+(** ** Stack properties *)
+(* TODO: rename this into MapsToG, and have InG of type idnum -> stack
+   -> Prop + lamms between the two. *)
+Inductive InG: idnum -> V -> stack -> Prop := 
+  InG1: forall x v (sto:store) (s:stack),
+          FirstOcc x v sto -> InG x v (sto::s)
+| InG2: forall x v (sto:store) (s:stack),
+          (forall e, ~FirstOcc x e sto) -> InG x v s -> InG x v (sto::s).
+
+
+(* TODO: verifiy that x is not already bound in s? *)
+Definition addG x v (s:stack) :=
+  match s with
+    | nil => None
+    | sto :: s' => Some (((x,v)::sto)::s')
+  end.
+
+(* TODO: verifiy that x is not already bound in s? *)
+Inductive AddG : idnum -> V -> stack -> stack -> Prop :=
+AddG1: forall id v sto st, AddG id v (sto::st) (((id,v)::sto)::st).
+
+Lemma addg_AddG : forall id v st st', addG id v st = Some st' <-> AddG id v st st'.
+Proof.
+  intros id v st.
+  !induction st; intros st'; simpl;split;intro h; try discriminate h;try now inversion h.
+Qed.
+
+
+(** ** Stack operations *)
 Function fetchG (x : idnum) (s : stack) := 
     match s with 
     | sto :: s' =>
@@ -196,12 +284,44 @@ Function resideG (x : idnum) (s : stack) :=
     | nil => false
     end.
 
+Lemma fetch_in_none:
+  forall x s, 
+    fetch x s = None -> forall v, ~FirstOcc x v s.
+Proof.
+  intros x s.
+  functional induction fetch x s.
+  - inversion 1.
+  - apply beq_nat_false_iff in e0; subst.
+    intros H v0.
+    specialize (IHo H).
+    intro abs.
+    !inversion abs; clear abs.
+    + destruct e0;auto.
+    + destruct (IHo _ h_firstocc).
+  - intros H v.
+    intro abs.
+    inversion abs.
+Qed.
 
-Inductive InG: idnum -> V -> stack -> Prop := 
-  InG1: forall x v (sto:store) (s:stack),
-          List.In (x,v) sto -> InG x v (sto::s)
-| InG2: forall x v (sto:store) (s:stack),
-          InG x v s -> InG x v (sto::s).
+Lemma fetchG_in_none:
+  forall x s, 
+    fetchG x s = None -> forall v, ~InG x v s.
+Proof.
+  intros x s.
+  functional induction fetchG x s.
+  - inversion 1.
+  - intros H v.
+    intro abs.
+    !inversion  abs.
+    + pose (xxx:= fetch_in_none _ _ e0 v).
+      clearbody xxx.
+      contradiction.
+    + specialize (IHo H v).
+      contradiction.
+  - intros H v.
+    intro abs.
+    inversion abs.
+Qed.
 
 (** ** Lemmas about stack operations *)
 Lemma fetchG_in:
@@ -219,9 +339,34 @@ Proof.
     constructor 1.
     assumption.
   - constructor 2.
-    apply IHo.
-    assumption.
+    + apply fetch_in_none.
+      auto.
+    + apply IHo.
+      assumption.
 Qed.
+
+Lemma inG_fetchG:
+  forall x s v, 
+    InG x v s -> fetchG x s = Some v.
+Proof.
+  intros x s.
+  functional induction (fetchG x s);
+    intros v1 H;
+    try match goal with
+          | h: None = Some ?v |- _ => inversion h
+          | h: Some ?v1 = Some ?v2 |- _ => inversion h; subst
+        end; simpl.
+  - apply fetch_in in e0.
+    !inversion H;clear H.
+    + rewrite (FirstOcc_det _ _ sto x x0 v1);auto.
+    + destruct (H4 _ e0).
+  - apply IHo.
+    !inversion H.
+    + pose (fetch_in_none _ _ e0 v1). contradiction.
+    + assumption.
+  - inversion H.
+Qed.
+
 
 Inductive stack_eq_length : stack -> stack -> Prop :=
   eqnil: stack_eq_length nil nil

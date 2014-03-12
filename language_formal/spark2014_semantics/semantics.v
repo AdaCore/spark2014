@@ -320,19 +320,19 @@ Inductive eval_stmt: stack -> statement -> Return stack -> Prop :=
         eval_expr s b (Normal (Bool false)) ->
         eval_stmt s (S_While_Loop ast_num b c) (Normal s)
     | eval_S_Proc_rteargs:
-        forall pbname (pb:procedure_body) lexp s ast_num,
+        forall pbname (pb:procedure_declaration) lexp s ast_num,
           fetchG pbname s = Some (Procedure pb) ->
           Copy_in s (procedure_parameter_profile pb) lexp Run_Time_Error ->
           eval_stmt s (S_ProcCall ast_num pbname lexp) Run_Time_Error
     | eval_S_Proc_rtedecl:
-        forall pbname (pb:procedure_body) lexp s_caller s_forget s ast_num prefix,
+        forall pbname (pb:procedure_declaration) lexp s_caller s_forget s ast_num prefix,
           fetchG pbname s_caller = Some (Procedure pb) ->
           Copy_in s_caller (procedure_parameter_profile pb) lexp (Normal prefix) ->
           Cut_until s_caller pbname s_forget s -> (* s_caller = s_forget++s *)
           eval_decl s prefix (procedure_declarative_part pb) Run_Time_Error ->
           eval_stmt s_caller (S_ProcCall ast_num pbname lexp) Run_Time_Error
     | eval_S_Proc_rtebody:
-        forall pbname (pb:procedure_body) lexp s_caller s_forget s ast_num s2 prefix,
+        forall pbname (pb:procedure_declaration) lexp s_caller s_forget s ast_num s2 prefix,
           fetchG pbname s_caller = Some (Procedure pb) ->
           Copy_in s_caller (procedure_parameter_profile pb) lexp (Normal prefix) ->
           Cut_until s_caller pbname s_forget s -> (* s_caller = s_forget++s *)
@@ -340,7 +340,7 @@ Inductive eval_stmt: stack -> statement -> Return stack -> Prop :=
           eval_stmt (s2::s) (procedure_statements pb) Run_Time_Error ->
           eval_stmt s_caller (S_ProcCall ast_num pbname lexp) Run_Time_Error
     | eval_S_Proc:
-        forall pbname (pb:procedure_body) lexp s_caller s_forget s ast_num
+        forall pbname (pb:procedure_declaration) lexp s_caller s_forget s ast_num
                s2 s3 s' s'' slocal prefix prefix',
           fetchG pbname s_caller = Some (Procedure pb) ->
           Copy_in s_caller (procedure_parameter_profile pb) lexp (Normal prefix) ->
@@ -366,7 +366,7 @@ begin
 end 
 -----------------------
 *)
-Definition proc1:procedure_body := (mkprocedure_body
+Definition proc1:procedure_declaration := (mkprocedure_declaration
            1 101 nil nil
              (D_Object_declaration
                 {|
@@ -422,7 +422,7 @@ begin
   V102 := V5*2;
 end 
 *)
-Definition proc2:procedure_body := (mkprocedure_body
+Definition proc2:procedure_declaration := (mkprocedure_declaration
            1 101 nil nil
              (D_Sequence
                 (D_Object_declaration
@@ -588,7 +588,7 @@ Function f_eval_expr (s: stack) (e: expression): Return value :=
     | E_Identifier _ x =>
         match (fetchG x s) with
         | Some (Value v) => Normal v
-        | _ => Abnormal (* None or procedure *)
+        | _ => Abnormal (* None or not a value *)
         end
     | E_Binary_Operation _ op e1 e2 =>
         match f_eval_expr s e1 with
@@ -1892,7 +1892,7 @@ Qed.
 (* Is this still needed for global procedures? probably not. *)
 (* main procedure has no argument, so we give the nil store as
    parameter store *)
-Inductive eval_proc: stack -> procedure_body -> Return stack -> Prop :=
+Inductive eval_proc: stack -> procedure_declaration -> Return stack -> Prop :=
     | eval_Proc_E: forall f s,
         eval_decl s nil (procedure_declarative_part f) Run_Time_Error ->
         eval_proc s f Run_Time_Error
@@ -1901,7 +1901,7 @@ Inductive eval_proc: stack -> procedure_body -> Return stack -> Prop :=
         eval_stmt (s2::s1) (procedure_statements f) s3 ->
         eval_proc s1 f s3.
 
-Function f_eval_proc k (s: stack) (f: procedure_body): Return stack :=
+Function f_eval_proc k (s: stack) (f: procedure_declaration): Return stack :=
     match (f_eval_decl s nil (procedure_declarative_part f)) with
     | Normal s' => f_eval_stmt k (s'::s) (procedure_statements f)
     | Run_Time_Error => Run_Time_Error
@@ -1990,7 +1990,7 @@ begin
 end 
 -----------------------
 *)
-Definition proc1:procedure_body := (mkprocedure_body
+Definition proc1:procedure_declaration := (mkprocedure_declaration
            1 2 nil nil
              (D_Object_declaration
                 {|
@@ -2026,7 +2026,7 @@ begin
   V102 := V5*2;
 end 
 *)
-Definition proc2:procedure_body := (mkprocedure_body
+Definition proc2:procedure_declaration := (mkprocedure_declaration
            1 2 nil nil
              (D_Sequence
                 (D_Object_declaration

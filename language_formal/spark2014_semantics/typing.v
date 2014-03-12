@@ -1,19 +1,24 @@
 Require Import LibTactics.
 Require Import semantics.
+Require Import Relations.
 Require Import Setoid.
 Require Import Morphisms.
 Require Import values.
 Require Import environment.
+
+
+Scheme Equality for type.
 
 (** * Symbol Table *)
 
 Module Entry_type <: Entry.
 
 Inductive type_stored : Type :=
-| BasicType: type -> type_stored
-| ProcType: list parameter_specification -> type_stored.
+| BasicType: mode -> type -> type_stored
+| ProcType: list parameter_specification -> type_stored
+| DefinedType: type -> type_stored.
 
-Definition T:= (mode*type_stored)%type.
+Definition T:= type_stored.
 
 End Entry_type.
 
@@ -21,10 +26,11 @@ Module Import TSTACK := ENV(Entry_type).
 Import Entry_type.
 
 
-Inductive type_of_value: val -> type_stored -> Prop :=
-| TV_Int: forall n, type_of_value (Value (Int n)) (BasicType Integer)
-| TV_Bool: forall b, type_of_value (Value (Bool b)) (BasicType Boolean)
-| TV_Proc: forall pb, type_of_value (Procedure pb) (ProcType (procedure_parameter_profile pb)).
+Inductive type_of_value_stored: val -> type_stored -> Prop :=
+| TV_Int: forall n, type_of_value_stored (Value (Int n)) (BasicType In Integer)
+| TV_Bool: forall b, type_of_value_stored (Value (Bool b)) (BasicType In Boolean)
+| TV_Proc: forall pb, type_of_value_stored (Procedure pb) (ProcType (procedure_parameter_profile pb))
+| TV_TD: forall typ, type_of_value_stored (TypeDef typ) (DefinedType typ).
 
 
 Scheme Equality for mode.
@@ -126,15 +132,6 @@ Proof.
 Qed.
 
 
-Inductive compatible_type_of_value: val -> type_stored -> Prop :=
-| CTV_Int: forall n, compatible_type_of_value (Value (Int n)) (BasicType Integer)
-| CTV_Bool: forall b, compatible_type_of_value (Value (Bool b)) (BasicType Boolean)
-| CTV_Undef: forall t, compatible_type_of_value (Undefined) (BasicType t)
-| CTV_Proc: forall pb prf,
-              eq_parameter_specification_list prf (procedure_parameter_profile pb) ->
-              compatible_type_of_value (Procedure pb) (ProcType prf).
-
-
 Lemma eq_parameter_specification_refl : reflexive _ eq_parameter_specification.
 Proof.
   hnf.
@@ -172,6 +169,7 @@ Add Parametric Relation: parameter_specification eq_parameter_specification
     symmetry proved by eq_parameter_specification_sym
     transitivity proved by eq_parameter_specification_trans
       as eq_parameter_specification_equiv_rel.
+
 
 Lemma eq_parameter_specification_list_refl : reflexive _ eq_parameter_specification_list.
 Proof.
@@ -222,18 +220,23 @@ Inductive type_stored_eq : type_stored -> type_stored -> Prop :=
 | TS_eq1: forall x y,
             eq_parameter_specification_list x y
             -> type_stored_eq (ProcType x) (ProcType y)
-| TS_eq2: forall x y,
+| TS_eq2: forall x y m1 m2,
+            x = y -> m1 = m2
+            -> type_stored_eq (BasicType m1 x) (BasicType m2 y)
+| TS_eq3: forall x y,
             x = y
-            -> type_stored_eq (BasicType x) (BasicType y).
+            -> type_stored_eq (DefinedType x) (DefinedType y).
 
 
 Lemma type_stored_eq_refl : reflexive _ type_stored_eq.
 Proof.
   hnf.
   destruct x.
-  - constructor.
+  - constructor;
     reflexivity.
-  - constructor.
+  - constructor;
+    reflexivity.
+  - constructor;
     reflexivity.
 Qed.
 
@@ -245,9 +248,8 @@ Proof.
   - constructor.
     symmetry.
     assumption.
-  - constructor.
-    symmetry.
-    assumption.
+  - constructor; symmetry; assumption.
+  - constructor; symmetry; assumption.
 Qed.
 
 Lemma type_stored_eq_trans : transitive _ type_stored_eq.
@@ -261,6 +263,8 @@ Proof.
     transitivity y;auto.
   - inversion h';subst.
     assumption.
+  - inversion h';subst.
+    assumption.
 Qed.
 
 Add Parametric Relation: type_stored type_stored_eq
@@ -269,12 +273,22 @@ Add Parametric Relation: type_stored type_stored_eq
     transitivity proved by type_stored_eq_trans
       as type_stored_eq_equiv_rel.
 
+Inductive compatible_value_stored: val -> type_stored -> Prop :=
+| CTV_Int: forall m n, compatible_value_stored (Value (Int n)) (BasicType m Integer)
+| CTV_Bool: forall m b, compatible_value_stored (Value (Bool b)) (BasicType m Boolean)
+| CTV_Undef: forall m t, compatible_value_stored (Undefined) (BasicType m t)
+| CTV_Proc: forall pb prf,
+              eq_parameter_specification_list prf (procedure_parameter_profile pb) ->
+              compatible_value_stored (Procedure pb) (ProcType prf)
+| CTV_TypDef: forall typ typ',
+              eq typ typ' ->
+              compatible_value_stored (TypeDef typ) (DefinedType typ').
 
 
 Add Parametric Morphism: 
-  compatible_type_of_value
+  compatible_value_stored
     with signature eq ==> type_stored_eq ==> iff
-    as compatible_type_of_value_morph.
+    as compatible_value_stored_morph.
 Proof.
   intros y x y0 H.
   destruct H.
@@ -291,6 +305,8 @@ Proof.
       !invclear h.
       constructor.
       transitivity y0;auto.
+  - subst.
+    reflexivity.
   - subst.
     reflexivity.
 Qed.
@@ -331,20 +347,23 @@ Inductive type_check_store: TSTACK.store -> STACK.store -> Prop :=
     | TCS_Empty: type_check_store nil nil
     | TCS_Bool: forall tb s x m b,
           type_check_store tb s ->
-          type_check_store ((x, (m, BasicType Boolean)) :: tb) ((x, (Value (Bool b))) :: s)
+          type_check_store ((x, (BasicType m Boolean)) :: tb) ((x, (Value (Bool b))) :: s)
     | TCS_Int: forall tb s x m v,
           type_check_store tb s ->
-          type_check_store ((x, (m, BasicType Integer)) :: tb) ((x, (Value (Int v))) :: s)
+          type_check_store ((x, (BasicType m Integer)) :: tb) ((x, (Value (Int v))) :: s)
     | TCS_Undefined_Bool: forall tb s x m,
           type_check_store tb s ->
-          type_check_store ((x, (m, BasicType Boolean)) :: tb) ((x, Undefined) :: s)
+          type_check_store ((x, (BasicType m Boolean)) :: tb) ((x, Undefined) :: s)
     | TCS_Undefined_Int: forall tb s x m,
           type_check_store tb s ->
-          type_check_store ((x, (m, BasicType Integer)) :: tb) ((x, Undefined) :: s)
-    | TCS_Procedure: forall tb s x m proctype pb ,
+          type_check_store ((x, (BasicType m Integer)) :: tb) ((x, Undefined) :: s)
+    | TCS_Procedure: forall tb s x proctype pb ,
         eq_parameter_specification_list proctype (procedure_parameter_profile pb) ->
         type_check_store tb s ->
-        type_check_store ((x, (m, ProcType proctype)) :: tb) ((x, Procedure pb) :: s).
+        type_check_store ((x, (ProcType proctype)) :: tb) ((x, Procedure pb) :: s)
+    | TCS_TypeDef: forall tb s x typ,
+        type_check_store tb s ->
+        type_check_store ((x, DefinedType typ) :: tb) ((x, TypeDef typ)::s).
 
 
 
@@ -352,13 +371,18 @@ Inductive type_check_store: TSTACK.store -> STACK.store -> Prop :=
 Function f_type_check_store (tb: TSTACK.store) (s: STACK.store): bool :=
     match tb, s with
     | nil, nil => true
-    | ((x,(m,BasicType Integer)) :: tb'), ((y, (Value (Int _))) :: s')
-    | ((x,(m,BasicType Boolean)) :: tb'), ((y, (Value (Bool _))) :: s') =>
+    | ((x, BasicType m Integer ) :: tb'), ((y, (Value (Int _))) :: s')
+    | ((x, BasicType m Boolean) :: tb'), ((y, (Value (Bool _))) :: s') =>
       if beq_nat x y then f_type_check_store tb' s' else false
-    | ((x,(m,BasicType _)) :: tb'), ((y, Undefined) :: s') => 
+    | ((x, BasicType m _) :: tb'), ((y, Undefined) :: s') => 
       if beq_nat x y then f_type_check_store tb' s' else false
-    | ((x,(m,ProcType proct)) :: tb'), ((y, Procedure pb) :: s') => 
+    | ((x, ProcType proct) :: tb'), ((y, Procedure pb) :: s') => 
       if beq_parameter_specification_list proct (procedure_parameter_profile pb)
+      then
+        if beq_nat x y then f_type_check_store tb' s' else false
+      else false
+    | ((x, DefinedType typ) :: tb'), ((y, TypeDef typ') :: s') => 
+      if type_eq_dec typ typ'
       then
         if beq_nat x y then f_type_check_store tb' s' else false
       else false
@@ -402,9 +426,14 @@ Proof.
     | |- context[beq_nat ?x ?x] => rewrite <- (beq_nat_refl x)
     | h: f_type_check_store ?tb ?s = true |- _ => rewrite h
     end; auto.
-    apply beq_parameter_specification_list_iff in H.
-    rewrite H.
-    reflexivity.
+    - apply beq_parameter_specification_list_iff in H.
+      rewrite H.
+      reflexivity.
+    - destruct (type_eq_dec typ typ).
+      + reflexivity.
+      + exfalso.
+        apply n.
+        reflexivity.
 Qed.
 
 
@@ -423,13 +452,14 @@ Ltac typing_rename_hyp th :=
     match th with
       | (type_check_store _ _) => fresh "htype_check_store"
       | (beq_nat _ _ = _) => fresh "hbeq"
-      | (compatible_type_of_value _ _) => fresh "hcompat_t_v"
+      | (compatible_value_stored _ _) => fresh "hcompat_t_v"
       | STACK.fetch _ _ = _=> fresh "heqfetch"
       | STACK.fetchG _ _ = _=> fresh "heqfetchG"
       | fetchG _ _ = _=> fresh "heqTfetchG"
       | fetch _ _ = _=> fresh "heqTfetch"
       | f_type_check_store _ _ = _=> fresh "heqtype_check_store"
       | type_check_store _ _ => fresh "htype_check_store"
+      | language.type_beq _ _ = _ => fresh "heqT"
       | _ => semantic_rename_hyp th
     end.
 
@@ -443,35 +473,35 @@ Ltac rename_hyp ::= typing_rename_hyp.
 (** For any variable x in a type checked store, it should has some
     type t that is compatible with what is in the symbol table;.
 *)
+
 Lemma type_check_store_spec1:
   forall tb s x v,
     type_check_store tb s ->
     STACK.fetch x s = Some v ->
     exists t,
-      (compatible_type_of_value v t
-       /\ exists m, TSTACK.fetch x tb = Some (m, t)).
+      (compatible_value_stored v t /\ TSTACK.fetch x tb = Some t).
 Proof.
   intros tb s x v h1 h2.
   !induction h1; !functional inversion h2;subst;simpl;try rewrite hbeq;eauto.
-  - exists (BasicType Boolean);split;try constructor;eauto.
-  - exists (BasicType Integer);split;try constructor;eauto.
-  - exists (BasicType Boolean);split;try constructor;eauto.
-  - exists (BasicType Integer);split;try constructor;eauto.
+  - exists (BasicType m Boolean);split;try constructor;eauto.
+  - exists (BasicType m Integer);split;try constructor;eauto.
+  - exists (BasicType m Boolean);split;try constructor;eauto.
+  - exists (BasicType m Integer);split;try constructor;eauto.
   - exists (ProcType proctype);split;try constructor;eauto.
+  - exists (DefinedType typ);split;try constructor;eauto.
 Qed.
-
 
 (** typed_value' means: for any type checked store s with respect to 
     the symbol table tb, if tb includes a variable x of type t, then 
     x should also reside in store s, and if x has a defined value v,
     then v should have the type of t;
 *)
-Lemma type_check_store_spec2: forall tb s x m t,
+Lemma type_check_store_spec2: forall tb s x t,
     type_check_store tb s ->
-    fetch x tb = Some (m, t) -> 
-    exists v, (STACK.fetch x s = Some v /\ compatible_type_of_value v t).
+    fetch x tb = Some t -> 
+    exists v, (STACK.fetch x s = Some v /\ compatible_value_stored v t).
 Proof.
-    intros tb s x m t h1 h2.
+    intros tb s x t h1 h2.
     induction h1;functional inversion h2;subst;rename_norm
     ; simpl;try rewrite hbeq;eauto.
     - exists (Value (Bool b));split;auto;constructor.
@@ -480,8 +510,9 @@ Proof.
     - exists Undefined;split;auto;constructor.
     - exists (Procedure pb);split;auto;constructor.
       assumption.
+    - exists (TypeDef typ);split;auto;constructor.
+      reflexivity.
 Qed.
-
 
 Lemma type_check_store_spec2_none: forall tb s x,
     type_check_store tb s ->
@@ -584,8 +615,7 @@ Lemma type_check_stack_spec1:
     type_check_stack tb s ->
     STACK.fetchG x s = Some v ->
     exists t,
-      (compatible_type_of_value v t
-       /\ exists m, TSTACK.fetchG x tb = Some (m, t)).
+      (compatible_value_stored v t /\ TSTACK.fetchG x tb = Some t).
 Proof.
   intros tb s x v h1.
   revert x v.
@@ -596,7 +626,6 @@ Proof.
       * decomp htype_check_store.
         exists x0.
         split;auto.
-        exists x1.
         simpl.
         rewrite heqTfetch.
         reflexivity.
@@ -606,7 +635,6 @@ Proof.
       decomp IHh1.
       exists x0.
       split;auto.
-      exists x1.
       simpl.
       rewrite heqTfetchG.
       rewrite htype_check_store.
@@ -620,15 +648,15 @@ Qed.
     x should also reside in store s, and if x has a defined value v,
     then v should have the type of t;
 *)
-Lemma type_check_stack_spec2: forall tb s x m t,
+Lemma type_check_stack_spec2: forall tb s x t,
     type_check_stack tb s ->
-    fetchG x tb = Some (m, t) -> 
-    (exists v,  STACK.fetchG x s = Some v /\ compatible_type_of_value v t).
+    fetchG x tb = Some t -> 
+    (exists v,  STACK.fetchG x s = Some v /\ compatible_value_stored v t).
 Proof.
-    intros tb s x m t h1 h2.
+    intros tb s x t h1 h2.
     !induction h1; !functional inversion h2;subst.
     - !functional inversion h2;subst.
-      + generalize (type_check_store_spec2 _ _ _ _ _ htype_check_store heqTfetch0).
+      + generalize (type_check_store_spec2 _ _ _ _ htype_check_store heqTfetch0).
         intro hh.
         decomp hh.
         exists x0;simpl.

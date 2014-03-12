@@ -8,11 +8,13 @@ Kansas State University
 zhangzhi@ksu.edu
 >>
 *)
-
+Require Import util.
 Require Export environment.
 Require Export semantics.
 Require Import typing.
+Require Import monad.
 
+Open Scope option_monad_scope.
 (** * Well-Formed Program  *)
 (**
    Before executing the program, make sure that the program is well-formed
@@ -34,17 +36,17 @@ Definition binop_type (op: binary_operator) (t1 t2: type): option type :=
     | Equal | Not_Equal | Greater_Than | Greater_Than_Or_Equal 
     | Less_Than | Less_Than_Or_Equal  => 
         match t1, t2 with
-        | Integer, Integer => Some Boolean
+        | Integer, Integer => Return Boolean
         | _, _ => None
         end
     | And | Or =>
         match t1, t2 with
-        | Boolean, Boolean => Some Boolean
+        | Boolean, Boolean => Return Boolean
         | _, _ => None
         end
     | Plus | Minus | Multiply | Divide =>
         match t1, t2 with
-        | Integer, Integer => Some Integer
+        | Integer, Integer => Return Integer
         | _, _ => None
         end
     end.
@@ -52,45 +54,54 @@ Definition binop_type (op: binary_operator) (t1 t2: type): option type :=
 Definition unop_type (op: unary_operator) (t: type): option type := 
   match op with 
     | Not => match t with
-               | Boolean => Some Boolean
+               | Boolean => Return Boolean
                | _ => None
              end
     | Unary_Plus =>
       match t with
-        | Integer => Some Integer
+        | Integer => Return Integer
         | _ => None
       end
   end.
 
-(** * Well-Typed *)
+(** * Well-Typedness *)
+
 (** ** Well-typed expressions *)
-(**
-   - type check for expressions;
-*)
 Inductive well_typed_expr: symtb -> expression -> type -> Prop :=
     | WT_Literal_Int: forall ast_num n tb,
         well_typed_expr tb (E_Literal ast_num (Integer_Literal n)) Integer
     | WT_Literal_Bool: forall ast_num b tb,
         well_typed_expr tb (E_Literal ast_num (Boolean_Literal b)) Boolean
     | WT_Identifier: forall ast_num x tb m t,
-        lookup x tb = Some (m, t) ->  
+        TSTACK.fetchG x tb = Some (Entry_type.BasicType m t) ->  
         well_typed_expr tb (E_Identifier ast_num x) t
     | WT_Binary_Operation: forall ast_num tb op e1 e2 t t1,
         well_typed_expr tb e1 t ->
         well_typed_expr tb e2 t ->
-        binop_type op t t = Some t1 ->
+        binop_type op t t = Return t1 ->
         well_typed_expr tb (E_Binary_Operation ast_num op e1 e2) t1
-    | WT_Unary_Operation: forall ast_num tb op e,
-        well_typed_expr tb e Boolean ->
-        well_typed_expr tb (E_Unary_Operation ast_num op e) Boolean.
+    | WT_Unary_Operation: forall ast_num tb op e t t',
+        well_typed_expr tb e t ->
+        unop_type op t = Return t' ->
+        well_typed_expr tb (E_Unary_Operation ast_num op e) t'.
+
+(** Typing a list of expression against a list of parameter specification. *)
+Inductive well_typed_expr_list:
+  symtb -> list expression -> list parameter_specification -> Prop :=
+  WTEL_nil: forall tb, well_typed_expr_list tb nil nil
+| WTEL_cons: 
+    forall tb typ e le spec lspec,
+      TSTACK.fetchG (spec.(parameter_subtype_mark)) tb  = Some (Entry_type.DefinedType typ) ->
+      well_typed_expr tb e typ ->
+      well_typed_expr_list tb le lspec ->
+      well_typed_expr_list tb (e::le) (spec::lspec).
 
 (** ** Well-typed statements *)
-(**
-    - type check for statements;
-*)
-Inductive well_typed_stmt: symtb -> statement  -> Prop :=
+
+(** type check statement; *)
+Inductive well_typed_stmt: symtb -> statement -> Prop :=
     | WT_Assignment: forall ast_num tb x e m t,
-        lookup x tb = Some (m, t) ->
+        TSTACK.InG x (Entry_type.BasicType m t) tb ->
         well_typed_expr tb e t ->
         well_typed_stmt tb ((S_Assignment ast_num x e))
     | WT_Sequence: forall ast_num c1 c2 tb,
@@ -104,193 +115,301 @@ Inductive well_typed_stmt: symtb -> statement  -> Prop :=
     | WT_While_Loop: forall ast_num tb b c,
         well_typed_expr tb b Boolean ->
         well_typed_stmt tb c ->
-        well_typed_stmt tb (S_While_Loop ast_num b c).
+        well_typed_stmt tb (S_While_Loop ast_num b c)
+    | WT_ProcCall: forall ast_num lspec tb pnum lexp,
+        TSTACK.InG pnum (Entry_type.ProcType lspec) tb ->
+        well_typed_expr_list tb lexp lspec ->
+        well_typed_stmt tb (S_ProcCall ast_num pnum lexp).
 
 
-(** 
-   in our formalization framework, all names used in the SPARK programs 
-   are formalized as integer numbers, for example, variables, 
-   function/procedure names and types are all represented as 
-   unique integer numbers; here I hard code that number "1" 
-   representing type "Integer", and "2" representing "Boolean";
-*)
-Inductive type_map: typenum -> type -> Prop :=
-    | T1: type_map 1 Integer
-    | T2: type_map 2 Boolean.
-
-(** type check for varialbe declaration; *)
+(** Build the resulting type environment from an initial environment
+    and a variable declaration. Also checks the intialization if
+    present. *)
 Inductive well_typed_objdecl: symtb -> object_declaration -> symtb -> Prop :=
-    | WT_ODecl0: forall d x t tb,
-        x = d.(object_name) ->
-        type_map d.(object_nominal_subtype) t ->
-        None = d.(initialization_expression) ->
-        well_typed_objdecl tb d ((x, (In_Out, t)) :: tb) (* the declared variables have in/out mode *)
-    | WT_ODecl1: forall d x t i tb,
-        x = d.(object_name) ->
-        type_map d.(object_nominal_subtype) t ->
-        Some i = d.(initialization_expression) -> 
-        well_typed_expr tb i t -> (* the type of the initialization value should be consistent with the declared variable's type *)
-        well_typed_objdecl tb d ((x, (In_Out, t)) :: tb)
-.
+| WT_ODecl0:
+    forall d t (tb tb':symtb),
+      TSTACK.InG d.(object_nominal_subtype) (Entry_type.DefinedType t) tb ->
+      None = d.(initialization_expression) ->
+      (* the declared variables have in/out mode *)
+      TSTACK.AddG d.(object_name) (Entry_type.BasicType In_Out t) tb tb' ->
+      well_typed_objdecl tb d tb'
+| WT_ODecl1:
+    forall d t i tb tb',
+      TSTACK.InG d.(object_nominal_subtype) (Entry_type.DefinedType t) tb ->
+      Some i = d.(initialization_expression) -> 
+      (* the type of the initialization value should be consistent
+         with the declared variable's type (TODO: subtyping here) *)
+      well_typed_expr tb i t ->
+      (* Note: when generative type def will be implemented, using t
+         here instead of nominal type will be incorrect. *)
+      TSTACK.AddG d.(object_name) (Entry_type.BasicType In_Out t) tb tb' ->
+      well_typed_objdecl tb d tb'.
 
-Inductive well_typed_procdecl: symtb -> procedure_body -> symtb -> Prop :=
-| WT_Proc_body:
-    
-    well_typed_procdecl tb pb ((pname,())::pb)
+(** Build the resulting type environment from an initial environment
+    and a parameter specification. Also checks the default expression
+    if present. *)
+Inductive well_typed_paramdecl: symtb -> parameter_specification -> symtb -> Prop :=
+| WT_PDecl0:
+    forall spec t (tb tb':symtb),
+      TSTACK.InG spec.(parameter_subtype_mark) (Entry_type.DefinedType t) tb ->
+      None = spec.(parameter_default_expression) ->
+      (* We store the basictype for now, but when defined types will
+         be added, we will need to keep the original type name instead. *)
+      TSTACK.AddG spec.(parameter_name) (Entry_type.BasicType spec.(parameter_mode) t) tb tb' ->
+      well_typed_paramdecl tb spec tb'
+| WT_PDecl1:
+    forall spec t e (tb tb':symtb),
+      TSTACK.InG spec.(parameter_subtype_mark) (Entry_type.DefinedType t) tb ->
+      Some e = spec.(parameter_default_expression) ->
+      (* the type of the initialization value should be consistent
+         with the declared variable's type (TODO: subtyping here) *)
+      well_typed_expr tb e t ->
+      (* We store the basictype for now, but when defined types will
+         be added, we will need to keep the original type name instead. *)
+      TSTACK.AddG spec.(parameter_name) (Entry_type.BasicType spec.(parameter_mode) t) tb tb' ->
+      well_typed_paramdecl tb spec tb'.
+
+(** Build the resulting type environment from an initial environment
+    and a list of parameter specification. *)
+Inductive well_typed_lparamdecl: symtb -> list parameter_specification -> symtb -> Prop :=
+| WT_LPDeclnil: forall tb, well_typed_lparamdecl tb nil tb
+| WT_LPDeclcpns:
+    forall tb tb' tb'' spec lspec,
+      well_typed_paramdecl tb spec tb' -> 
+      well_typed_lparamdecl tb' lspec tb'' -> 
+      well_typed_lparamdecl tb (spec::lspec) tb''.
+      
+(** Build the resulting type environment from an initial environment
+    and a procedure declaration. *)
+Inductive well_typed_proc_decl: symtb -> procedure_declaration -> symtb -> Prop :=
+| WT_Proc_body: forall pdecl ast_num proc_num laspects lparam_spec decl bdy tb tbprm tbprmloc tb',
+    pdecl = mkprocedure_declaration ast_num proc_num laspects lparam_spec decl bdy -> 
+    (* Verify that declarations and body are well typed *)
+    well_typed_lparamdecl tb lparam_spec tbprm -> 
+    well_typed_decl tbprm decl tbprmloc ->
+    well_typed_stmt tbprmloc bdy -> 
+    TSTACK.AddG proc_num (Entry_type.ProcType lparam_spec) tb tb' -> 
+    well_typed_proc_decl tb pdecl tb'
   
-
+(** Build the resulting type environment from an initial environment
+    and a declaration block: it can contain variable declarations,
+    procedures declarations. Type declaration are not yet in the
+    syntax. *)
 with well_typed_decl: symtb -> declaration -> symtb -> Prop :=
   | WT_Decl_Obj: forall objdecl tb tb',
       well_typed_objdecl tb objdecl tb'-> 
       well_typed_decl tb (D_Object_declaration objdecl) tb'
+  | WT_Decl_Seq: forall dcl1 dcl2 tb tb' tb'',
+      well_typed_decl tb dcl1 tb' ->
+      well_typed_decl tb' dcl2 tb'' ->
+      well_typed_decl tb (D_Sequence dcl1 dcl2) tb''
   | WT_Decl_Proc: forall procdecl tb tb',
-      well_typed_procdecl tb procdecl tb'-> 
-      well_typed_decl tb (D_Procedure_declaration procdecl) tb'
-.
-
-
-Inductive well_typed_decls: symtb -> list object_declaration -> symtb -> Prop :=
-    | WT_Decls_Empty: forall tb,
-        well_typed_decls tb nil tb
-    | WT_Decls: forall tb d tb'0 tl tb',
-        well_typed_decl tb d tb'0 ->
-        well_typed_decls tb'0 tl tb' ->
-        well_typed_decls tb (d :: tl) tb'.
-
-(** type check for procedure body; *)
-Inductive well_typed_proc_body: symtb -> procedure_body -> Prop :=
-    | WT_Proc_Body: forall tb f tb',
-        well_typed_decl tb (procedure_declarative_part f) tb' ->
-        well_typed_stmt tb' (procedure_statements f) ->
-        well_typed_proc_body tb f.
+      well_typed_proc_decl tb procdecl tb'-> 
+      well_typed_decl tb (D_Procedure_declaration procdecl) tb'.
 
 (** type check for subproram, which can be either procedure or function,
-    now we only consider the procedure; 
-*)
-Inductive well_typed_subprogram: symtb -> subprogram -> Prop :=
-    | WT_Procedure: forall tb f ast_num,
-        well_typed_proc_body tb f ->
-        well_typed_subprogram tb (Procedure ast_num f).
+    now we only consider the procedure; *)
+Inductive well_typed_subprogram: symtb -> subprogram -> symtb -> Prop :=
+    | WT_Procedure: forall tb tb' f ast_num,
+        well_typed_proc_decl tb f tb' ->
+        well_typed_subprogram tb (Global_Procedure ast_num f) tb'.
+
+Scheme well_typed_proc_decl_ind2 := Induction for well_typed_proc_decl Sort Prop
+with well_typed_decl_ind2 := Induction for well_typed_decl Sort Prop.
+
 
 (* =============================== *)
 
-(** functional semantics for type system *)
+(** * functional semantics for type system *)
 
-(** type check expression; *)
+(** ** Well-typed expressions *)
 Function f_well_typed_expr (tb: symtb) (e: expression): option type := 
     match e with
-    | E_Literal _ (Integer_Literal n) => Some Integer
-    | E_Literal _ (Boolean_Literal n) => Some Boolean
+    | E_Literal _ (Integer_Literal n) => Return Integer
+    | E_Literal _ (Boolean_Literal n) => Return Boolean
     | E_Identifier _ x =>
-        match (lookup x tb) with
-        | Some (m, t) => Some t
-        | None => None
-        end
+      match TSTACK.fetchG x tb with
+        | Some (Entry_type.BasicType m t) => Return t
+        (* procedure, defined type or unbound id *)
+        | _ => None
+      end
+
     | E_Binary_Operation _ op e1 e2 =>
-        match (f_well_typed_expr tb e1) with
-        | Some t1 => 
-            match (f_well_typed_expr tb e2) with
-            | Some t2 => binop_type op t1 t2
-            | None => None
-            end
-        | None => None
-        end   
-    | E_Unary_Operation _ op e => 
-        match f_well_typed_expr tb e with
-        | Some t => unop_type op t
-        | None => None
-        end
+      Let some v1 := f_well_typed_expr tb e1 in
+      Let some v2 := f_well_typed_expr tb e2 in
+      binop_type op v1 v2
+    | E_Unary_Operation _ op e =>
+      Let some v := f_well_typed_expr tb e in
+      unop_type op v
     end.
 
-Function f_typ_equal (t1: type) (t2: type): bool :=
-    match t1, t2 with
-    | Integer, Integer => true
-    | Boolean, Boolean => true
-    | _, _ => false
-    end.
+(** Typing a list of expression against a list of parameter specification. *)
+Function f_well_typed_expr_list tb le (lspec:list parameter_specification):bool :=
+  match le,lspec with
+    | nil,nil => true
+    | e::le' , spec::lspec' =>
+      let oexpected_type := TSTACK.fetchG (spec.(parameter_subtype_mark)) tb in
+      match f_well_typed_expr tb e , oexpected_type with
+        | Return actual_type, Some (Entry_type.DefinedType expected_type) =>
+          if language.type_beq actual_type expected_type
+          then f_well_typed_expr_list tb le' lspec'
+          else false
+        | _,_ => false
+      end
+    | _,_ => false (* different sizes of lists *)
+  end.
+
+(** ** Well-typed statements *)
 
 (** type check statement; *)
-Function f_well_typed_stmt (tb: symtb) (c: statement): bool :=
+Function f_well_typed_stmt tb (c: statement): bool :=
     match c with
     | S_Assignment ast_num x e =>
-        match (f_well_typed_expr tb e) with
-        | Some t1 => 
-            match lookup x tb with
-            | Some (m, t2) => (f_typ_equal t1 t2)
-            | None => false
-            end
-        | None => false
-        end
+      Let someb t1 := f_well_typed_expr tb e in
+      match TSTACK.fetchG x tb with
+        | Some (Entry_type.BasicType m t2) =>
+          if language.type_beq t1 t2 then true else false
+        | _ => false
+      end
     | S_Sequence ast_num c1 c2 =>
-        match f_well_typed_stmt tb c1 with
-        | true => f_well_typed_stmt tb c2
-        | false => false
-        end
+      if f_well_typed_stmt tb c1 then f_well_typed_stmt tb c2 else false
     | S_If ast_num b c =>
-        match f_well_typed_expr tb b with
-        | Some Boolean => f_well_typed_stmt tb c
-        | _ => false
-        end
+      Let someb vb := f_well_typed_expr tb b in
+      match vb with
+      | Boolean => f_well_typed_stmt tb c
+      | _ => false
+      end
     | S_While_Loop ast_num b c =>
-        match f_well_typed_expr tb b with
-        | Some Boolean => f_well_typed_stmt tb c
-        | _ => false
-        end
+      Let someb vb := f_well_typed_expr tb b in
+      match vb with
+      | Boolean => f_well_typed_stmt tb c
+      | _ => false
+      end
+    | S_ProcCall ast_num pnum le =>
+      let pnumftch := TSTACK.fetchG pnum tb in
+      match pnumftch with
+        | Some (Entry_type.ProcType pparams) =>
+          if f_well_typed_expr_list tb le pparams then true else false
+        | _ => false (* not a procedure or not bound *)
+      end
     end.
 
-
-(** in the SPARK formalization, natural number are used to represent 
-    identifier, type and so on, here "1" represents type Integer, 
-    and "2" represents type Boolean;
-*)
-Function f_type_map (n: typenum): option type :=
-    match n with
-    | 1 => Some Integer
-    | 2 => Some Boolean
-    | _ => None
-    end.
-
-(** type check variable declaration; *)
-Function f_well_typed_decl (tb: symtb) (d: object_declaration): option symtb :=
-    match f_type_map d.(object_nominal_subtype) with
-    | Some t =>
+(** Build the resulting type environment from an initial environment
+    and a variable declaration. Also checks the intialization if
+    present. *)
+Function f_well_typed_objdecl (tb: symtb) (d: object_declaration): option symtb :=
+  Let some t := TSTACK.fetchG d.(object_nominal_subtype) tb in
+  match t with
+    | Entry_type.DefinedType t =>
         match d.(initialization_expression) with
         | Some i => 
-            match f_well_typed_expr tb i with
-            | Some t' => if f_typ_equal t t' then Some ((d.(object_name), (In_Out, t)) :: tb) else None
-            | None => None
-            end
-        | None => Some ((d.(object_name), (In_Out, t)) :: tb)
+          Let some t' := f_well_typed_expr tb i in
+          if language.type_beq t t'
+          then TSTACK.addG d.(object_name) (Entry_type.BasicType In_Out t) tb
+          else None
+        | None => TSTACK.addG d.(object_name) (Entry_type.BasicType In_Out t) tb
         end
-    | None => None
+    | _ => None (* nominal subtype is not a defined type *)
+  end.
+
+(** Build the resulting type environment from an initial environment
+    and a parameter specification. Also checks the default expression
+    if present. *)
+Function f_well_typed_paramdecl (tb: symtb) (spec: parameter_specification): option symtb :=
+  Let some t := TSTACK.fetchG spec.(parameter_subtype_mark) tb in
+  match t with
+    | Entry_type.DefinedType t =>
+      match spec.(parameter_default_expression) with
+        | Some i => 
+          Let some t' := f_well_typed_expr tb i in
+          if language.type_beq t t'
+          then TSTACK.addG spec.(parameter_name) (Entry_type.BasicType spec.(parameter_mode) t) tb
+          else None
+        | None => TSTACK.addG spec.(parameter_name) (Entry_type.BasicType spec.(parameter_mode) t) tb
+      end
+    | _ => None (* nominal subtype is not a defined type *)
     end.
 
-Function f_well_typed_decls (tb: symtb) (ds: list object_declaration): option symtb :=
-    match ds with
+(** Build the resulting type environment from an initial environment
+    and a list of parameter specification. *)
+Function f_well_typed_lparamdecl (tb: symtb) (ds: list parameter_specification): option symtb :=
+  match ds with
     | d :: tl => 
-        match f_well_typed_decl tb d with
-        | Some tb' => f_well_typed_decls tb' tl
-        | None => None
-        end
+      Let some tb' := f_well_typed_paramdecl tb d in
+      f_well_typed_lparamdecl tb' tl
     | nil => Some tb
+  end.
+
+(** Build the resulting type environment from an initial environment
+    and a procedure declaration. *)
+Function f_well_typed_proc_decl (tb: symtb) (f: procedure_declaration) : option symtb :=
+  Let some tb' := f_well_typed_lparamdecl tb (procedure_parameter_profile f) in
+  Let some  tb'' := f_well_typed_decl tb' (procedure_declarative_part f) in
+  if f_well_typed_stmt tb'' (procedure_statements f)
+  then TSTACK.addG (procedure_name f) (Entry_type.ProcType (procedure_parameter_profile f)) tb
+  else None
+
+(** Build the resulting type environment from an initial environment
+    and a declaration block: it can contain variable declarations,
+    procedures declarations. Type declaration are not yet in the
+    syntax. *)
+with f_well_typed_decl (tb: symtb) (ds: declaration): option symtb :=
+    match ds with
+    | D_Sequence d tl => 
+      Let some tb' := f_well_typed_decl tb d in
+      f_well_typed_decl tb' tl
+    | D_Object_declaration objdcl => f_well_typed_objdecl tb objdcl
+    | D_Procedure_declaration pdecl => f_well_typed_proc_decl tb pdecl
     end.
 
-(** type check procedure body; *)
-Function f_well_typed_proc_body (tb: symtb) (f: procedure_body): bool :=
-    match f_well_typed_decls tb f.(procedure_declarative_part) with
-    | Some tb' => f_well_typed_stmt tb' f.(procedure_statements)
-    | None => false
-    end.
+Functional Scheme f_well_typed_proc_decl_ind2 := Induction for f_well_typed_proc_decl Sort Prop
+with  f_well_typed_decl_ind2 := Induction for f_well_typed_decl Sort Prop.
+
 
 (** type check subprogram, which can be either procedure or function,
-    now we only consider procedure; 
-*)
-Function f_well_typed_subprogram (tb: symtb) (p: subprogram): bool :=
+    now we only consider procedure; *)
+Function f_well_typed_subprogram (tb: symtb) (p: subprogram): option symtb :=
     match p with
-    | Procedure ast_num f => f_well_typed_proc_body tb f
+    | Global_Procedure ast_num f => f_well_typed_proc_decl tb f
     end.
 
 (* =============================== *)
+
+
+Ltac wellf_rename_hyp th :=
+    match th with
+      | TSTACK.InG _ _ _ => fresh "h_ing"
+      | TSTACK.addG _ _ _ = _ => fresh "heq_addG"
+      | TSTACK.AddG _ _ _ _ => fresh "heq_AddG"
+      | well_typed_expr _ _ _ => fresh "hwt_exp"
+      | f_well_typed_expr _ _ = _ => fresh "heq_wt_exp"
+      | well_typed_expr_list _ _ _ => fresh "hwt_lexp"
+      | f_well_typed_expr_list _ _ _ = true => fresh "heq_wt_lexp_true"
+      | f_well_typed_expr_list _ _ _ = false => fresh "heq_wt_lexp_false"
+      | f_well_typed_expr_list _ _ _ = _ => fresh "heq_wt_lexp"
+      | binop_type _ _ _ = _ => fresh "heq_binop_type"
+      | well_typed_stmt _ _=> fresh "hwt_stmt"
+      | f_well_typed_stmt _ _ = true => fresh "heq_wt_stmt_true"
+      | f_well_typed_stmt _ _ = false => fresh "heq_wt_stmt_true"
+      | f_well_typed_stmt _ _ = _ => fresh "heq_wt_stmt"
+      | f_well_typed_decl _ _ = _ => fresh "heq_wt_decl"
+      | f_well_typed_paramdecl _ _ = _ => fresh "heq_wt_param"
+      | well_typed_paramdecl _ _ _ => fresh "hwt_param"
+      | f_well_typed_lparamdecl _ _ = _ => fresh "heq_wt_lparmdecl"
+      | well_typed_lparamdecl _ _ _ => fresh "hwt_lparmdecl"
+      | f_well_typed_objdecl _ _ = _ => fresh "heq_wt_objdecl"
+      | well_typed_objdecl _ _ _ => fresh "hwt_objdecl"
+      | f_well_typed_decl _ _ = _ => fresh "heq_wt_decl"
+      | well_typed_decl _ _ _ => fresh "hwt_decl"
+      | f_well_typed_proc_decl _ _ = _ => fresh "heq_wt_proc_decl"
+      | well_typed_proc_decl _ _ _ => fresh "hwt_proc_decl"
+      | f_well_typed_subprogram _ _ = _ => fresh "heq_wt_subprog"
+      | well_typed_subprogram _ _ _ => fresh "hwt_subprog"
+      | _ => typing_rename_hyp th
+    end.
+
+Ltac rename_hyp ::= wellf_rename_hyp.
+
 
 (** Semantical equivalence between relational and functional 
     semantics for type system; 
@@ -304,24 +423,24 @@ Lemma f_well_typed_expr_correct: forall tb e t,
     well_typed_expr tb e t.
 Proof.
     intros tb e.
-    functional induction (f_well_typed_expr tb e);
+    !functional induction (f_well_typed_expr tb e);
     intros t'0 h1;
     inversion h1; subst;
     try constructor.
   - econstructor.
-    apply e1.
-  - specialize (IHo _ e3).
-    specialize (IHo0 _ e4).
+    apply heqTfetchG.
+  - specialize (IHo _ heq_wt_exp0).
+    specialize (IHo0 _ heq_wt_exp).
     econstructor.
-    apply IHo.
-    destruct t1, t2, op; 
-    inversion h1; auto.
-    destruct t1, t2, op;
-    inversion h1; auto.
-  - specialize (IHo _ e2).
-    destruct t, t'0, op; inversion h1.
-    constructor.
-    assumption.
+    + apply IHo.
+    + destruct v1, v2, op; 
+      inversion h1; auto.
+    + destruct v1, v2, op;
+      inversion h1; auto.
+  - specialize (IHo _ heq_wt_exp).
+    destruct v, t'0, op; inversion h1.
+    + apply WT_Unary_Operation with (t:=Boolean);auto.
+    + apply WT_Unary_Operation with (t:=Integer);auto.
 Qed.
 
 Lemma f_well_typed_expr_complete: forall tb e t,
@@ -329,202 +448,434 @@ Lemma f_well_typed_expr_complete: forall tb e t,
     f_well_typed_expr tb e = Some t.
 Proof.
     intros tb e t h1.
-    induction h1;
+    !induction h1;
     try constructor;
     simpl.
-  - rewrite H. reflexivity.
-  - rewrite IHh1_1, IHh1_2.
+  - rewrite heqTfetchG. reflexivity.
+  - rewrite heq_wt_exp, heq_wt_exp0.
     assumption.
-  - rewrite IHh1.
+  - rewrite heq_wt_exp.
     destruct op; auto.
 Qed.
+
+Lemma f_well_typed_expr_iff: forall tb e t,
+    well_typed_expr tb e t <->
+    f_well_typed_expr tb e = Some t.
+Proof.
+  intros tb e t.
+  split.
+  - apply f_well_typed_expr_complete.
+  - apply f_well_typed_expr_correct.
+Qed.
+
+Hint Rewrite f_well_typed_expr_iff: rewtype.
+Hint Rewrite <- f_well_typed_expr_iff: rewtype_rev.
+
+Ltac rewtype :=  autorewrite with rewtype in *.
+Ltac rewtype_rev :=  autorewrite with rewtype_rev in *.
+
+Lemma f_well_typed_expr_list_complete :
+  forall tb le lspec,
+    well_typed_expr_list tb le lspec
+    -> f_well_typed_expr_list tb le lspec = true.
+Proof.
+  intros tb le lspec h.
+  !induction h;simpl;auto; rewtype.
+  rewrite heq_wt_lexp_true.
+  rewrite hwt_exp.
+  rewrite heqTfetchG.
+  rewrite type_beq_complete;auto.
+Qed.
+
+Lemma f_well_typed_expr_list_correct :
+  forall tb le lspec,
+    f_well_typed_expr_list tb le lspec = true
+    -> well_typed_expr_list tb le lspec.
+Proof.
+  intros tb le lspec h.
+  !functional induction (f_well_typed_expr_list tb le lspec)
+  ;try discriminate h;!intros;auto;rewtype;subst.
+  - constructor.
+  - apply WTEL_cons with (typ:=expected_type);auto.
+    apply f_well_typed_expr_correct.
+    assumption.
+Qed.
+
+Lemma f_well_typed_expr_list_iff :
+  forall tb le lspec,
+    well_typed_expr_list tb le lspec
+    <-> f_well_typed_expr_list tb le lspec = true.
+  intros tb e t.
+  split.
+  - apply f_well_typed_expr_list_complete.
+  - apply f_well_typed_expr_list_correct.
+Qed.
+
+
+
+Hint Rewrite f_well_typed_expr_list_iff: rewtype.
+Hint Rewrite <- f_well_typed_expr_list_iff: rewtype_rev.
+
 
 (** bisimulation between f_well_typed_stmt and well_typed_stmt for statement *)
 Lemma f_well_typed_stmt_correct: forall tb c,
     f_well_typed_stmt tb c = true ->
     well_typed_stmt tb c.
 Proof.
-    intros tb c.
-    functional induction (f_well_typed_stmt tb c);
+  intros tb c.
+  !functional induction (f_well_typed_stmt tb c);
     intros h1;
     try match goal with
-    | [h: false = true |- _] => inversion h
-    end.
-  - econstructor.
-    apply e2.
-    specialize (f_well_typed_expr_correct _ _ _ e1); intros h2.
-    destruct t1, t2; inversion h1;
-    auto.
-  - specialize (IHb e0).
-    specialize (IHb0 h1).
-    constructor; assumption.
-  - specialize (IHb h1).
-    constructor; auto.
-    specialize (f_well_typed_expr_correct _ _ _ e0); intros h2.
-    assumption.
-  - specialize (IHb h1).
-    constructor; auto.
-    specialize (f_well_typed_expr_correct _ _ _ e0); intros h2.
-    assumption.
+          | [h: false = true |- _] => inversion h
+          | h:TSTACK.fetchG _ _ = Return _ |- _ => apply TSTACK.fetchG_in in h
+        end;rewtype_rev ;subst;econstructor;eauto.
 Qed.
 
 Lemma f_well_typed_stmt_complete: forall tb c,
     well_typed_stmt tb c ->
     f_well_typed_stmt tb c = true.
 Proof.
-    intros tb c h1.
-    induction h1; simpl.
-  - specialize (f_well_typed_expr_complete _ _ _ H0); intros h2.
-    rewrite h2.
-    rewrite H.
+  intros tb c.
+  !intros;simpl.
+  !induction hwt_stmt; simpl; rewtype.
+  - rewrite hwt_exp.
+    apply TSTACK.inG_fetchG in h_ing.
+    rewrite h_ing.
     destruct t; auto.
-  - rewrite IHh1_1, IHh1_2.
+  - rewrite heq_wt_stmt_true0,heq_wt_stmt_true.
     reflexivity.
-  - specialize (f_well_typed_expr_complete _ _ _ H); intros h2.
-    rewrite h2, IHh1.
-    reflexivity.
-  - specialize (f_well_typed_expr_complete _ _ _ H); intros h2.
-    rewrite h2, IHh1.
+  - rewrite hwt_exp.
+    assumption.
+  - rewrite hwt_exp.
+    assumption.
+  - apply TSTACK.inG_fetchG in h_ing.
+    rewrite h_ing.
+    rewrite hwt_lexp.
     reflexivity.
 Qed.
 
-Lemma type_map_equal: forall n t,
-    f_type_map n = Some t <-> type_map n t.
+Lemma f_well_typed_stmt_iff:
+  forall tb c,
+    well_typed_stmt tb c <->
+    f_well_typed_stmt tb c = true.
 Proof.
-    intros n t; split;
-    intros h1.
-  - functional induction (f_type_map n);
-    inversion h1; subst;
-    constructor.
-  - induction h1;
-    simpl; auto.
+  intros tb c.
+  split.
+  - apply f_well_typed_stmt_complete.
+  - apply f_well_typed_stmt_correct.
 Qed.
+
+Hint Rewrite f_well_typed_stmt_iff: rewtype.
+Hint Rewrite <- f_well_typed_stmt_iff: rewtype_rev.
+
 
 (** bisimulation between f_well_typed_decl and well_typed_decl for 
     variable declaration; 
 *)
+Lemma f_well_typed_objdecl_correct: forall tb d tb',
+    f_well_typed_objdecl tb d = Some tb' ->
+    well_typed_objdecl tb d tb'.
+Proof.
+  intros tb d.
+  !functional induction (f_well_typed_objdecl tb d);
+    try (now (intros tb'' h1; inversion h1)); !intros; rewtype_rev;subst.
+  - eapply WT_ODecl1;auto.
+    + apply TSTACK.fetchG_in.
+      apply heqTfetchG.
+    + symmetry.
+      eapply heq.
+    + assumption.
+    + rewrite <- TSTACK.addg_AddG.
+      assumption.
+  - eapply WT_ODecl0; auto.
+    + apply TSTACK.fetchG_in.
+      apply heqTfetchG.
+    + rewrite <- TSTACK.addg_AddG.
+      assumption.
+Qed.
+
+Lemma f_well_typed_objdecl_complete:
+  forall tb d tb',    
+    well_typed_objdecl tb d tb'
+    -> f_well_typed_objdecl tb d = Some tb'.
+Proof.
+  !intros.
+  !induction hwt_objdecl;rewtype;subst.
+  - unfold f_well_typed_objdecl.
+    apply TSTACK.inG_fetchG in h_ing.
+    rewrite h_ing.
+    rewrite <- heq.
+    rewrite TSTACK.addg_AddG.
+    assumption.
+  - unfold f_well_typed_objdecl.
+    apply TSTACK.inG_fetchG in h_ing.
+    rewrite h_ing.
+    rewrite <- heq.
+    rewrite hwt_exp.
+    rewrite type_beq_refl.
+    rewrite TSTACK.addg_AddG.
+    assumption.
+Qed.
+
+Lemma f_well_typed_objdecl_iff:
+  forall tb d tb',    
+    well_typed_objdecl tb d tb'
+    <-> f_well_typed_objdecl tb d = Some tb'.
+Proof.
+  intros tb c.
+  split.
+  - apply f_well_typed_objdecl_complete.
+  - apply f_well_typed_objdecl_correct.
+Qed.
+
+Hint Rewrite f_well_typed_objdecl_iff: rewtype.
+Hint Rewrite <- f_well_typed_objdecl_iff: rewtype_rev.
+
+
+Lemma f_well_typed_paramdecl_correct:
+  forall tb param tb',
+    f_well_typed_paramdecl tb param = Some tb'
+    ->  well_typed_paramdecl tb param tb'.
+Proof.
+  intros tb param.
+  !functional induction (f_well_typed_paramdecl tb param);try discriminate;!intros
+  ;rewtype_rev;subst.
+  - eapply WT_PDecl1.
+    + apply TSTACK.fetchG_in.
+      eassumption.
+    + symmetry.
+      eassumption.
+    + assumption.
+    + apply TSTACK.addg_AddG.
+      assumption.
+  - eapply WT_PDecl0.
+    + apply TSTACK.fetchG_in.
+      eassumption.
+    + symmetry.
+      eassumption.
+    + apply TSTACK.addg_AddG.
+      assumption.
+Qed.
+
+Lemma f_well_typed_paramdecl_complete:
+  forall tb param tb',
+    well_typed_paramdecl tb param tb'
+    -> f_well_typed_paramdecl tb param = Some tb'.
+Proof.
+  !intros.
+  !induction hwt_param; rewtype;subst.
+  - unfold f_well_typed_paramdecl.
+    apply TSTACK.inG_fetchG in h_ing.
+    rewrite h_ing.
+    rewrite <- heq.
+    rewrite TSTACK.addg_AddG.
+    assumption.
+  - unfold f_well_typed_paramdecl.
+    apply TSTACK.inG_fetchG in h_ing.
+    rewrite h_ing.
+    rewrite <- heq.
+    rewrite hwt_exp.
+    rewrite type_beq_refl.
+    rewrite TSTACK.addg_AddG.
+    assumption.
+Qed.
+
+
+Lemma f_well_typed_paramdecl_iff:
+  forall tb param tb',
+    well_typed_paramdecl tb param tb'
+    <-> f_well_typed_paramdecl tb param = Some tb'.
+Proof.
+  intros tb c.
+  split.
+  - apply f_well_typed_paramdecl_complete.
+  - apply f_well_typed_paramdecl_correct.
+Qed.
+
+Hint Rewrite f_well_typed_paramdecl_iff: rewtype.
+Hint Rewrite <- f_well_typed_paramdecl_iff: rewtype_rev.
+
+
+Lemma f_well_typed_lparamdecl_correct:
+  forall tb lparam tb',
+    f_well_typed_lparamdecl tb lparam = Some tb'
+    ->  well_typed_lparamdecl tb lparam tb'.
+Proof.
+  intros tb lparam.
+  !functional induction (f_well_typed_lparamdecl tb lparam);try discriminate;!intros
+  ;rewtype_rev;subst.
+  - econstructor;eauto.
+  - inversion heq.
+    constructor.
+Qed.
+
+Lemma f_well_typed_lparamdecl_complete:
+  forall tb lparam tb',
+    well_typed_lparamdecl tb lparam tb'
+    -> f_well_typed_lparamdecl tb lparam = Some tb'.
+Proof.
+  !intros.
+  !induction hwt_lparmdecl;rewtype;subst.
+  - reflexivity.
+  - simpl.
+    rewrite hwt_param.
+    assumption.
+Qed.
+
+Lemma f_well_typed_lparamdecl_iff:
+  forall tb param tb',
+    well_typed_lparamdecl tb param tb'
+    <-> f_well_typed_lparamdecl tb param = Some tb'.
+Proof.
+  intros tb c.
+  split.
+  - apply f_well_typed_lparamdecl_complete.
+  - apply f_well_typed_lparamdecl_correct.
+Qed.
+
+Hint Rewrite f_well_typed_lparamdecl_iff: rewtype.
+Hint Rewrite <- f_well_typed_lparamdecl_iff: rewtype_rev.
+
+
+(** bisimulation between f_well_typed_decl and well_typed_decl for 
+    variable declaration; 
+*)
+
 Lemma f_well_typed_decl_correct: forall tb d tb',
     f_well_typed_decl tb d = Some tb' ->
     well_typed_decl tb d tb'.
 Proof.
-    intros tb d.
-    functional induction f_well_typed_decl tb d;
-    intros tb' h1;
-    inversion h1; subst.
-  - eapply WT_Decl1; auto.
-    + apply type_map_equal; 
-      assumption.
-    + symmetry in e0; apply e0.
-    + specialize (f_well_typed_expr_correct _ _ _ e1); intros h2.
-      destruct t, t'; inversion e2; auto.
-  - eapply WT_Decl0; auto.
-    apply type_map_equal; assumption.
-Qed.
-
-Lemma f_well_typed_decl_complete: forall tb d tb',
-    well_typed_decl tb d tb' ->
-    f_well_typed_decl tb d = Some tb'.
-Proof.
-    intros tb d tb' h1.
-    induction h1;
-    specialize (type_map_equal (object_nominal_subtype d) t); intros h2;
-    destruct h2 as [h3 h4];
-    specialize (h4 H0);
-    unfold f_well_typed_decl;
-    rewrite h4; rewrite <- H1; rewrite <- H.
-  - reflexivity.
-  - specialize (f_well_typed_expr_complete _ _ _ H2); intros h2.
-    rewrite h2.
-    destruct t; simpl; auto.
-Qed.
-
-(** bisimulation between f_well_typed_decls and well_typed_decls for
-    list of variable declarations;
-*)
-Lemma f_well_typed_decls_correct: forall tb ds tb',
-    f_well_typed_decls tb ds = Some tb' ->
-    well_typed_decls tb ds tb'.
-Proof.
-    intros tb ds.
-    functional induction (f_well_typed_decls tb ds);
-    intros tb'0 h1.
-  - specialize (IHo _ h1).
-    econstructor.
-    specialize (f_well_typed_decl_correct _ _ _ e0); intros h2.
-    apply h2.
+  intros tb d.
+  functional induction (f_well_typed_decl tb d) using f_well_typed_decl_ind2
+  with (P:= fun tb d res => forall tb', res = Some tb' -> well_typed_proc_decl tb d tb');
+    rename_norm; unidall;!intros;try discriminate; rewtype_rev;subst.
+  - destruct  f;simpl in *.
+    eapply (WT_Proc_body _ _ _ _ _ _ _ _ _ _ tb'0);eauto.
+    apply TSTACK.addg_AddG.
     assumption.
-  - inversion h1.
-  - inversion h1; subst.
-    constructor.
-Qed.
-
-Lemma f_well_typed_decls_complete: forall tb ds tb',
-    well_typed_decls tb ds tb' ->
-    f_well_typed_decls tb ds = Some tb'.
-Proof.
-    intros tb ds tb' h1.
-    induction h1.
-  - simpl; auto.
-  - specialize (f_well_typed_decl_complete _ _ _ H); intros h2.
-    simpl.
-    rewrite h2. assumption.
-Qed.
-
-
-(** bisimulation between f_well_typed_proc_body and well_typed_proc_body for 
-    procedure body
-*)
-Lemma f_well_typed_proc_body_correct: forall tb f,
-    f_well_typed_proc_body tb f = true ->
-    well_typed_proc_body tb f.
-Proof.
-    intros tb f h1.
-    functional induction (f_well_typed_proc_body tb f).
-  - econstructor.
-    specialize (f_well_typed_decls_correct _ _ _ e); intros h2.
-    apply h2.
-    specialize (f_well_typed_stmt_correct _ _ h1); intros h2.
+  - eapply WT_Decl_Seq;auto.
+    apply IHo.
     assumption.
-  - inversion h1.
+  - eapply WT_Decl_Obj; auto.
+  - apply WT_Decl_Proc;auto.
 Qed.
 
-Lemma f_well_typed_proc_body_complete: forall tb f,
-    well_typed_proc_body tb f ->
-    f_well_typed_proc_body tb f = true.
-Proof.
-    intros tb f h1.
-    induction h1.
-    specialize (f_well_typed_decls_complete _ _ _ H); intros h1.
-    specialize (f_well_typed_stmt_complete _ _ H0); intros h2.
-    unfold f_well_typed_proc_body.
-    rewrite h1, h2.
-    auto.
+(* Exact same proof as above.  *)
+Lemma f_well_typed_proc_decl_correct:
+  forall tb d tb',
+    f_well_typed_proc_decl tb d = Some tb'
+    -> well_typed_proc_decl tb d tb'.
+  intros tb d.
+  functional induction (f_well_typed_proc_decl tb d) using f_well_typed_proc_decl_ind2
+  with (P0:= fun tb d res => forall tb', res = Some tb' -> well_typed_decl tb d tb');
+    rename_norm; unidall;!intros;try discriminate; rewtype_rev;subst.
+  - destruct  f;simpl in *.
+    eapply (WT_Proc_body _ _ _ _ _ _ _ _ _ _ tb'0);eauto.
+    apply TSTACK.addg_AddG.
+    assumption.
+  - eapply WT_Decl_Seq;auto.
+    apply IHo.
+    assumption.
+  - eapply WT_Decl_Obj; auto.
+  - apply WT_Decl_Proc;auto.
 Qed.
+
+
+Lemma f_well_typed_decl_complete:
+  forall tb d tb',
+    well_typed_decl tb d tb'
+    -> f_well_typed_decl tb d = Some tb'.
+Proof.
+  !intros.
+  induction hwt_decl using well_typed_decl_ind2
+  with (P:=fun tb pdecl tb' (h: well_typed_proc_decl tb pdecl tb') => f_well_typed_proc_decl tb pdecl = Some tb'); rename_norm; unidall;subst;simpl;rewtype;subst.
+  - rewrite hwt_lparmdecl.
+    rewrite heq_wt_decl.
+    rewrite hwt_stmt.
+    apply TSTACK.addg_AddG.
+    assumption.    
+  - assumption.
+  - rewrite heq_wt_decl0.
+    assumption.
+  - assumption.
+Qed.
+
+Lemma f_well_typed_decl_iff:
+  forall tb d tb',
+    well_typed_decl tb d tb'
+    <-> f_well_typed_decl tb d = Some tb'.
+Proof.
+  intros tb c.
+  split.
+  - apply f_well_typed_decl_complete.
+  - apply f_well_typed_decl_correct.
+Qed.
+
+Hint Rewrite f_well_typed_decl_iff: rewtype.
+Hint Rewrite <- f_well_typed_decl_iff: rewtype_rev.
+
+
+
+(* Exact same proof as above.  *)
+Lemma f_well_typed_proc_decl_complete:
+  forall tb d tb',
+    well_typed_proc_decl tb d tb'
+    -> f_well_typed_proc_decl tb d = Some tb'.
+  !intros.
+  induction hwt_proc_decl using well_typed_proc_decl_ind2
+  with (P0:= fun tb d tb' (h:well_typed_decl tb d tb') => f_well_typed_decl tb d = Some tb');
+    rename_norm; unidall;!intros;try discriminate; rewtype;subst;simpl.
+  - rewrite hwt_lparmdecl,hwt_decl,hwt_stmt.
+    apply TSTACK.addg_AddG.
+    assumption.
+  - assumption.
+  - rewrite hwt_decl0.
+    assumption.
+  - assumption.
+Qed.
+
+Lemma f_well_typed_proc_decl_iff:
+  forall tb d tb',
+    well_typed_proc_decl tb d tb'
+    <-> f_well_typed_proc_decl tb d = Some tb'.
+Proof.
+  intros tb c.
+  split.
+  - apply f_well_typed_proc_decl_complete.
+  - apply f_well_typed_proc_decl_correct.
+Qed.
+
+Hint Rewrite f_well_typed_proc_decl_iff: rewtype.
+Hint Rewrite <- f_well_typed_proc_decl_iff: rewtype_rev.
 
 
 (** bisimulation between f_well_typed_subprogram and 
-    well_typed_subprogram for subprogram; 
-*)
-Lemma f_well_typed_subprogram_correct: forall tb p,
-    f_well_typed_subprogram tb p = true ->
-    well_typed_subprogram tb p.
+    well_typed_subprogram for subprogram; *)
+Lemma f_well_typed_subprogram_correct:
+  forall tb p tb',
+    f_well_typed_subprogram tb p = Some tb' ->
+    well_typed_subprogram tb p tb'.
 Proof.
-    intros tb p h1.
-    functional induction (f_well_typed_subprogram tb p).
-    specialize (f_well_typed_proc_body_correct _ _ h1); intros h2.
+    intros tb p.
+    !functional induction (f_well_typed_subprogram tb p);!intros;rewtype_rev.
     constructor.
     assumption.
 Qed.
 
-Lemma f_well_typed_subprogram_complete: forall tb p,
-    well_typed_subprogram tb p ->
-    f_well_typed_subprogram tb p = true.
+(** bisimulation between f_well_typed_subprogram and 
+    well_typed_subprogram for subprogram; *)
+Lemma f_well_typed_subprogram_complete:
+  forall tb p tb',
+    well_typed_subprogram tb p tb'
+    -> f_well_typed_subprogram tb p = Some tb'.
 Proof.
-    intros tb p h1.
-    induction h1.
-    specialize (f_well_typed_proc_body_complete _ _ H); intros h1.
-    simpl. assumption.
+    intros tb p.
+    !functional induction (f_well_typed_subprogram tb p);!intros;rewtype_rev.
+    !inversion hwt_subprog;clear hwt_subprog.
+    assumption.
 Qed.
+
+
 
 
 (* =============================== *)
@@ -649,7 +1000,7 @@ Inductive well_defined_decls: mode_map -> list object_declaration -> mode_map ->
         well_defined_decls m'0 tl m' ->
         well_defined_decls m (d :: tl) m'.
 
-Inductive well_defined_proc_body: mode_map -> procedure_body -> mode_map -> Prop :=
+Inductive well_defined_proc_body: mode_map -> procedure_declaration -> mode_map -> Prop :=
     | WD_Proc_Body: forall m f m'0 m',
         well_defined_decls m f.(procedure_declarative_part) m'0 ->
         well_defined_stmt m'0 f.(procedure_statements) m' -> 
@@ -1022,7 +1373,7 @@ Function f_well_defined_decls (m: mode_map) (ds: list object_declaration): optio
     | nil => Some m
     end.
 
-Function f_well_defined_proc_body (m: mode_map) (f: procedure_body): option mode_map :=
+Function f_well_defined_proc_body (m: mode_map) (f: procedure_declaration): option mode_map :=
     match f_well_defined_decls m f.(procedure_declarative_part) with
     | Some m' => f_well_defined_stmt m' f.(procedure_statements)
     | None => None
@@ -1355,7 +1706,7 @@ Inductive ast_num_inc_decls: list object_declaration -> max_num -> Prop :=
         ast_num_inc_decls (d2 :: tl) n2 ->
         ast_num_inc_decls (d1 :: (d2 :: tl)) n2.
 
-Inductive ast_num_inc_proc_body: procedure_body -> max_num -> Prop :=
+Inductive ast_num_inc_proc_body: procedure_declaration -> max_num -> Prop :=
     | Inc_Proc_Body0: forall f max,
         nil = f.(procedure_declarative_part) ->
         ast_num_inc_stmt f.(procedure_statements) max ->
@@ -1475,7 +1826,7 @@ Function f_ast_num_inc_decls (ds: list object_declaration): option max_num :=
         end
     end.
 
-Function f_ast_num_inc_proc_body (f: procedure_body): option max_num :=
+Function f_ast_num_inc_proc_body (f: procedure_declaration): option max_num :=
     match f.(procedure_declarative_part) with
     | nil => 
         if leb (get_ast_num_stmt f.(procedure_statements)) f.(procedure_astnum) 
@@ -1972,7 +2323,7 @@ Inductive check_generator_decls: check_points -> list object_declaration -> chec
         check_generator_decls ls'0 tl ls' ->
         check_generator_decls ls (d :: tl) ls'.
 
-Inductive check_generator_proc_body: check_points -> procedure_body -> check_points -> Prop :=
+Inductive check_generator_proc_body: check_points -> procedure_declaration -> check_points -> Prop :=
     | CG_Proc_Body: forall ls1 f ls2 ls3,
         check_generator_decls ls1 f.(procedure_declarative_part) ls2 ->
         check_generator_stmt ls2 f.(procedure_statements) ls3 ->
@@ -2033,7 +2384,7 @@ Function f_check_generator_decls (ckp: check_points) (ds: list object_declaratio
         f_check_generator_decls ckp' tl
     end.
 
-Function f_check_generator_proc_body (ckp: check_points) (f: procedure_body): check_points :=
+Function f_check_generator_proc_body (ckp: check_points) (f: procedure_declaration): check_points :=
     let ckp' := f_check_generator_decls ckp f.(procedure_declarative_part) in
     f_check_generator_stmt ckp' f.(procedure_statements).
 
@@ -2457,7 +2808,7 @@ Inductive eval_decls_with_checks (cps: check_points):
         eval_decls_with_checks cps s (d :: tl) s'.
 
 Inductive eval_proc_body_with_checks (cps: check_points): 
-    store -> procedure_body -> state -> Prop :=
+    store -> procedure_declaration -> state -> Prop :=
     | eval_Proc_Body0: forall s f,
         eval_decls_with_checks cps s f.(procedure_declarative_part) S_Run_Time_Error ->
         eval_proc_body_with_checks cps s f S_Run_Time_Error
@@ -2769,7 +3120,7 @@ Function f_eval_decls_with_checks (cps: check_points) (s: store) (ds: list objec
         end
     end.
 
-Function f_eval_proc_body_with_checks k (cps: check_points) (s: store) (f: procedure_body): state :=
+Function f_eval_proc_body_with_checks k (cps: check_points) (s: store) (f: procedure_declaration): state :=
     match f_eval_decls_with_checks cps s f.(procedure_declarative_part) with
     | S_Normal s1 => f_eval_stmt_with_checks k cps s1 f.(procedure_statements)
     | S_Run_Time_Error => S_Run_Time_Error
