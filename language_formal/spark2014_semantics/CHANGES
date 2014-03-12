@@ -1,10 +1,31 @@
-TOOD: add a store/qstack for type definitions, even if only containing
-bool and integer, because procedure profiles are made of typnum.
+* mar 2014. well_typed_xxx are finished. the file wellformedness.v
+  is not finished: well_defined and well_checked are still pending.
 
-TODO: replace procedure_body with procedure_declaration.
+* Added autorewrite databases to help proofs.
 
-* typing.v has been adapted to stack of frames, some rephrasing of lemmas has been done +
-cleanng tactics.
+* Added monadic notation for Some and None. See monad.v.
+
+* Renamed type procedure_body into procedure_declaration.
+
+* Added type definition in the environments.
+
+* mar 2014: proof scripts: using special tactics for renaming
+  automatically hypothesis, based on a user written renaming scheme.
+  Using it in semantic.v and typing.v for now.
+
+* Both typing and execution environments now contain also type
+  declarations. Currently no type can be defined by the syntax, there
+  is only Boolean and integer that are in the initial environment (as
+  typenum 1 and 2, say, as previously). However we put these
+  definition in the stack now because dealing with an adhoc type
+  definition mechanism is not simpler anyway.
+
+* Typing environment has now the same structure as the
+  execution environment: a stack of frames. typing.v has been adapted
+  using the ENV functor.
+
+* environment.v now defines a functor ENV for stack of frames, the
+  parameter is the type of stored values.
 
 * Everywhere: trying to have a good set of tactics which smart
   hypothesis naming. Not perfect.
