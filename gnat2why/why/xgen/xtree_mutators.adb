@@ -410,7 +410,7 @@ package body Xtree_Mutators is
       end if;
 
       PL (O, Param_Name (FI) & ";");
-      PL (O, "Set_Node (+" & Node_Id_Param &", Node);");
+      PL (O, "Set_Node (+" & Node_Id_Param & ", Node);");
 
       if Is_Why_Id (FI) then
          PL (O,
