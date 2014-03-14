@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---          Copyright (C) 1992-2013, Free Software Foundation, Inc.         --
+--          Copyright (C) 1992-2014, Free Software Foundation, Inc.         --
 --                                                                          --
 -- GNAT is free software;  you can  redistribute it  and/or modify it under --
 -- terms of the  GNU General Public License as published  by the Free Soft- --
@@ -267,12 +267,14 @@ package body Get_Targ is
       Float_Str (Float_Str'First .. Float_Str'First + 4) := "float";
       Call_Back
         (C_Name => Float_Str, Digs => 6, Complex => False, Count  => 0,
-         Float_Rep => IEEE_Binary, Size => 32, Alignment => 32);
+         Float_Rep => IEEE_Binary, Precision => 32,
+         Size => 32, Alignment => 32);
 
       Double_Str (Double_Str'First .. Double_Str'First + 5) := "double";
       Call_Back
         (C_Name => Double_Str, Digs => 15, Complex => False, Count  => 0,
-         Float_Rep => IEEE_Binary, Size => 64, Alignment => 64);
+         Float_Rep => IEEE_Binary, Precision => 64,
+         Size => 64, Alignment => 64);
    end Register_Back_End_Types;
 
    ---------------------
