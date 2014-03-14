@@ -365,7 +365,7 @@ package body Why.Gen.Arrays is
            Orig_Name => To_Ident (WNE_Array_Component_Type),
            Image     => Ident_Of_Ada_Type (Component_Type (Und_Ent)));
       Cursor := Cursor + 1;
-      if Ekind (Und_Ent) in String_Kind then
+      if Ekind (Und_Ent) = E_String_Literal_Subtype then
          declare
             Low : constant Uint :=
               Expr_Value (String_Literal_Low_Bound (Und_Ent));
