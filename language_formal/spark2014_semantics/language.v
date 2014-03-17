@@ -2,22 +2,7 @@
 (*                                                                                                *)
 (*              Formalization of SPARK 2014 Subset                      *)
 (*                                                                                                *)
-(*                Zhi Zhang, Kansas State University                        *)
-(*                                                                                                *)
-(*  Copyright and licence to be determined by KSU.                 *)
-(*                                                                                                *)
 (* *********************************************************************)
-
-(** 
-_AUTHOR_
-
-<<
-Zhi Zhang
-Departmnt of Computer and Information Sciences
-Kansas State University
-zhangzhi@ksu.edu
->>
-*)
 
 Require Export ZArith.
 Require Export Coq.Lists.List.
