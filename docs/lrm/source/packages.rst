@@ -342,18 +342,19 @@ The new aspects are:
     properties Async_Writers or Effective_Reads set to True is
     considered to have an effect when read. To reconcile this
     discrepancy, a name denoting such an object shall only occur in
-    the following contexts:
+    a *non-interfering context*. A name occurs in a non-interfering
+    context if it is:
 
-   * as the name on the left-hand side of an assignment statement; or
+   * the name on the left-hand side of an assignment statement; or
 
-   * as the [right-hand side] expression of an assignment statement; or
+   * the [right-hand side] expression of an assignment statement; or
 
-   * as the expression of an initialization expression of an object declaration; or
+   * the expression of an initialization expression of an object declaration; or
 
-   * as an actual parameter in a call to an instance of Unchecked_Conversion
-     whose result is renamed [in an object renaming declaration].
+   * the actual parameter in a call to an instance of Unchecked_Conversion
+     whose result is renamed [in an object renaming declaration]; or
 
-   * as a prefix of a name which occurs in such a context.
+   * the prefix of a name occurring in a non-interfering context.
 
 .. _etu-external_state_variables-lr:
 

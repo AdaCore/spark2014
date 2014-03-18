@@ -13,15 +13,14 @@ is
    --  properties Async_Writers or Effective_Reads set to True is
    --  considered to have an effect when read. To reconcile this
    --  discrepancy, a name denoting such an object shall only occur in
-   --  the following contexts:
-   --  * as the name on the left-hand side of an assignment statement; or
-   --  * as the [right-hand side] expression of an assignment statement; or
-   --  * as the expression of an initialization expression of an object
-   --    declaration; or
-   --  * as an actual parameter in a call to an instance of
-   --    Unchecked_Conversion whose result is renamed [in an object renaming
-   --    declaration].
-   --  * as a prefix of a name which occurs in such a context
+   --  a *non-interfering context*. A name occurs in a non-interfering
+   --  context if it is:
+   --  * the name on the left-hand side of an assignment statement; or
+   --  * the [right-hand side] expression of an assignment statement; or
+   --  * the expression of an initialization expression of an object declaration; or
+   --  * the actual parameter in a call to an instance of Unchecked_Conversion
+   --    whose result is renamed [in an object renaming declaration]; or
+   --  * the prefix of a name occurring in a non-interfering context.
 
    type R is record
       F1 : Integer;
