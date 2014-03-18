@@ -19,19 +19,6 @@ is
       null;
    end Embeded;
 begin
-   --  TU: 13. Contrary to the general |SPARK| rule that expression evaluation
-   --  cannot have side effects, a read of a Volatile object with the
-   --  properties Async_Writers or Effective_Reads set to True is
-   --  considered to have an effect when read. To reconcile this
-   --  discrepancy, a name denoting such an object shall only occur in
-   --  the following contexts:
-   --  * as the name on the left-hand side of an assignment statement; or
-   --  * as the [right-hand side] expression of an assignment statement; or
-   --  * as the expression of an initialization expression of an object
-   --    declaration; or
-   --  * as an actual parameter in a call to an instance of
-   --    Unchecked_Conversion whose result is renamed [in an object renaming
-   --    declaration].
    if Vol + 5 > 0 then  --  Cannot have Vol appear here because expressions
                         --  cannot have side effects.
       A := 0;

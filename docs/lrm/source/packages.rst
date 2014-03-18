@@ -353,6 +353,8 @@ The new aspects are:
    * as an actual parameter in a call to an instance of Unchecked_Conversion
      whose result is renamed [in an object renaming declaration].
 
+   * as a prefix of a name which occurs in such a context.
+
 .. _etu-external_state_variables-lr:
 
 ..
