@@ -1466,6 +1466,7 @@ package body Why.Atree.Sprint is
       NL (O);
       Print_List (+Get_Declarations (Node), "", Newline => True);
       Relative_Indent (O, -1);
+      NL (O);
       PL (O, "end");
    end Print_Theory_Declaration;
 
