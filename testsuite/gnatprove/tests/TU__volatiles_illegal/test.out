@@ -20,6 +20,6 @@ volatiles_illegal_6.adb:5:26: external state "State" lacks property "Effective_W
 volatiles_illegal_7.adb:5:26: non-external state "State" cannot contain external constituents in refinement
 volatiles_illegal_8.adb:5:26: external state "State" requires at least one external constituent or null refinement
 volatiles_illegal_9.adb:13:07: volatile variable "Emb_Vol" must be declared at library level
-volatiles_illegal_9.adb:35:07: volatile object cannot appear in this context (SPARK RM 7.1.3(13))
+volatiles_illegal_9.adb:22:07: volatile object cannot appear in this context (SPARK RM 7.1.3(13))
 volatiles_illegal_10.ads:6:09: volatile type not allowed
 volatiles_illegal_10.ads:10:18: discriminant cannot be volatile
