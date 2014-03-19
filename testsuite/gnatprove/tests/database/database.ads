@@ -97,7 +97,7 @@ is
      Test_Case => (Name     => "non-null balance",
                    Mode     => Robustness,
                    Requires => not Money.Is_Empty (Balance (Account)),
-                   Ensures  => Existing (Account) and then
+                   Ensures  => Existing (Account) and
                                Balance (Account) = Balance (Account)'Old);
 
    procedure Deposit (Account : in Account_Num; Sum : in Money.Amount)
