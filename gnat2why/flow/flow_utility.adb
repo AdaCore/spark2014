@@ -838,7 +838,9 @@ package body Flow_Utility is
                          Proof_Ins    => Proof_Reads,
                          Reads        => Global_Reads,
                          Writes       => Global_Writes);
-            Global_Reads.Union (Proof_Reads);
+            if not Fold_Functions then
+               Global_Reads.Union (Proof_Reads);
+            end if;
          end;
 
          --  If we fold functions we need to obtain the used inputs.
