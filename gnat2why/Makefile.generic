@@ -12,8 +12,10 @@ CFLAGS=-O0 -gnata -gnat12 -gnatg -gnatVa -gnatec=$(CURDIR)/gnat2why.adc
 LOCAL_OBJ=obj
 RM=rm -rf
 MV=mv -f
-adainclude:=$(strip $(shell gnatls -v | grep adainclude))
-adalib:=$(strip $(shell gnatls -v | grep adalib))
+# adainclude and adalib are later used as input for sed, so we replace
+# backward slashes by forward slashes to avoid sed interpreting those
+adainclude:=$(subst \,/,$(strip $(shell gnatls -v | grep adainclude)))
+adalib:=$(subst \,/,$(strip $(shell gnatls -v | grep adalib)))
 uname:=$(shell uname)
 
 .PHONY: setup force clean
