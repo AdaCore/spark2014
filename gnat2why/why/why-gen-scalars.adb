@@ -344,7 +344,13 @@ package body Why.Gen.Scalars is
                        S_Small   => (Attribute_Small, Small));
    begin
       for J in Attr_Values'Range loop
-         if J /= S_Modulus or else Attr_Values (J).Value /= Why_Empty then
+
+         --  We force generation of first/last, but potentially skip
+         --  Modulus/Small
+
+         if J in S_First | S_Last or else
+           Attr_Values (J).Value /= Why_Empty
+         then
             Emit (Theory,
                   Why.Atree.Builders.New_Function_Decl
                     (Domain      => EW_Term,
