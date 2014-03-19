@@ -599,9 +599,7 @@ module Index_Type
     forall f l : int [mk f l].
       in_range_base f ->
       in_range_base l ->
-      ((f <= l -> (in_range f /\ in_range l))
-        /\
-        to_int (first (mk f l)) = f /\
+      (to_int (first (mk f l)) = f /\
         to_int (last (mk f l)) = l)
 
   (* The range check that is required by conversion to an unconstrained array.
