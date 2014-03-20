@@ -225,4 +225,31 @@ is
       end loop;
    end Test_19_Ok;
 
+   procedure Test_20_Ok (A : out Array_T)
+   is
+   begin
+      for I in reverse Index_T loop
+         A (I) := 0;
+      end loop;
+   end Test_20_Ok;
+
+   procedure Test_21_Ok (A : out Array_T)
+   is
+   begin
+      for I in reverse Index_T range 1 .. 10 loop
+         A (I) := 0;
+      end loop;
+   end Test_21_Ok;
+
+   procedure Test_22_Ok (A : out Array_T)
+   is
+   begin
+      for I in reverse Index_T range 1 .. 10 loop
+         for J in reverse Index_T range 1 .. 5 loop
+            A (J) := 5;
+         end loop;
+         A (I) := 1;
+      end loop;
+   end Test_22_Ok;
+
 end Foo;
