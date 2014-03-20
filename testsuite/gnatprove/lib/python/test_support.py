@@ -171,8 +171,8 @@ def check_marks(strlist):
             return 'DEPENDS'
         elif 'global' in text:
             return 'GLOBAL'
-        elif 'uninitialized' in text:
-            return 'INITIALIZATON'
+        elif 'initialized' in text:
+            return 'INITIALIZED'
 
         # proof tags
         # When adding a tag in this section, you need also to update the function
@@ -226,43 +226,43 @@ def check_marks(strlist):
 
     def is_flow_tag(tag):
         """Returns True if the given tag corresponds to a flow message"""
-        return tag == 'DEPENDS' or \
-               tag == 'GLOBAL' or \
-               tag == 'INITIALIZATON'
+        return tag in ("DEPENDS",
+                       "GLOBAL",
+                       "INITIALIZED")
 
     def is_proof_tag(tag):
         """Returns True if the given tag corresponds to a proof message"""
-        return tag == 'DIVISION_CHECK' or \
-               tag == 'INDEX_CHECK' or \
-               tag == 'OVERFLOW_CHECK' or \
-               tag == 'RANGE_CHECK' or \
-               tag == 'LENGTH_CHECK' or \
-               tag == 'DISCRIMINANT_CHECK' or \
-               tag == 'INITIAL_CONDITION' or \
-               tag == 'PRECONDITION' or \
-               tag == 'PRECONDITION_MAIN' or \
-               tag == 'POSTCONDITION' or \
-               tag == 'REFINED_POST' or \
-               tag == 'CONTRACT_CASE' or \
-               tag == 'DISJOINT_CONTRACT_CASE' or \
-               tag == 'COMPLETE_CONTRACT_CASE' or \
-               tag == 'LOOP_INVARIANT_INIT' or \
-               tag == 'LOOP_INVARIANT_PRESERV' or \
-               tag == 'LOOP_INVARIANT' or \
-               tag == 'LOOP_VARIANT' or \
-               tag == 'ASSERT' or \
-               tag == 'RAISE'
+        return tag in ("DIVISION_CHECK",
+                       "INDEX_CHECK",
+                       "OVERFLOW_CHECK",
+                       "RANGE_CHECK",
+                       "LENGTH_CHECK",
+                       "DISCRIMINANT_CHECK",
+                       "INITIAL_CONDITION",
+                       "PRECONDITION",
+                       "PRECONDITION_MAIN",
+                       "POSTCONDITION",
+                       "REFINED_POST",
+                       "CONTRACT_CASE",
+                       "DISJOINT_CONTRACT_CASE",
+                       "COMPLETE_CONTRACT_CASE",
+                       "LOOP_INVARIANT_INIT",
+                       "LOOP_INVARIANT_PRESERV",
+                       "LOOP_INVARIANT",
+                       "LOOP_VARIANT",
+                       "ASSERT",
+                       "RAISE")
 
     def is_negative_result(result):
         """Returns True if the given result corresponds to a negative one"""
-        return result != 'PASS'
+        return result != "PASS"
 
     def is_valid_result(result):
         """Returns True if the given result corresponds to a valid one"""
-        return result == 'PASS' or \
-               result == 'FAIL' or \
-               result == 'WARN' or \
-               result == 'ERROR'
+        return result in ("PASS",
+                          "FAIL",
+                          "WARN",
+                          "ERROR")
 
     def get_result(qualifier, text, is_flow_tag):
         """Returns the result for a given message qualifier and text.
