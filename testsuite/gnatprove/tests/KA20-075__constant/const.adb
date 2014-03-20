@@ -38,8 +38,8 @@ package body Const is
    
       --  not logic constants. assertions should not be provable.
    
-      pragma Assert (O = 1);
-      pragma Assert (P = 1);
+      pragma Assert (O = 1); -- @ASSERT:FAIL
+      pragma Assert (P = 1); -- @ASSERT:FAIL
    end Test;
    
 end Const;

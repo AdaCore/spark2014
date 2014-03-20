@@ -12,7 +12,7 @@ is
    is
    begin
       if X <= 0 then
-         P; -- this call should be proved non-executable
+         P; -- this call should be proved non-executable @PRECONDITION:PASS
       end if;
       X := X + 1;
    end Op1;
@@ -21,7 +21,7 @@ is
    is
    begin
       if X <= 1 then
-         P; -- Might be executed, therefore failed proof here
+         P; -- Might be executed, therefore failed proof here @PRECONDITION:FAIL
       end if;
       X := X + 1;
    end Op2;

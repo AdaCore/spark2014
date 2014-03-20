@@ -6,7 +6,7 @@ is
    is
    begin
       --  This should prove fine
-      A := U.Shift_Right (A, 2);
+      A := U.Shift_Right (A, 2); -- @PRECONDITION:PASS
    end Op1;
 
    procedure Op2 (A : in out U.U32)

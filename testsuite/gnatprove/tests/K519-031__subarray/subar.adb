@@ -55,8 +55,8 @@ package body Subar is
          null;
       end loop;
       X := X + 1;
-      --  The following subtype declaration check should not be proved
-      for I in K range 19 .. X loop
+      
+      for I in K range 19 .. X loop -- @RANGE_CHECK:FAIL
          null;
       end loop;
    end Loop_Test;

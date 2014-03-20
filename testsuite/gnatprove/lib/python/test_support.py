@@ -119,6 +119,219 @@ def ls(directory=None):
     print_sorted(str.splitlines(process.out))
 
 
+def matches(comp_reg, s, invert):
+    """decide whether string s matches the compiled regex comp_reg
+
+    PARAMETERS
+    comp_reg: a compiled regex
+    s: a string to be matched
+    invert: if false, negate the result
+    """
+    m = re.match(comp_reg, s)
+    return (invert and not m) or (not invert and m)
+
+
+def check_marks(strlist):
+    """Checks that marks in source code have a matching result.
+
+    Given the output from flow analysis and/or proof, check that all marks
+    mentioned in source files have a matching expected result, where source
+    files are taken to be the *.ad? files in the current directory.
+
+    Marks are any strings in the source that have the format
+        @TAG:RESULT
+    where both TAG and RESULT are alphanumeric strings without space, possibly
+    with underscores. A tag denotes a line some result is expected (typically
+    this marker will be put in comments).
+
+    TAG is either:
+    - a check (RANGE_CHECK, DIVIDE_CHECK, etc), or
+    - a flow message (UNINIT, DEPENDS, etc).
+
+    The complete list of tags is given by functions is_flow_tag and is_proof_tag.
+
+    RESULT is either
+    - PASS/FAIL for checks, or
+    - ERROR/WARN for flow messages.
+
+    Case does not matter for the tag or result, although UPPERCASE is better in
+    source code to easily locate the marks visually.
+    """
+    files = glob.glob("*.ad?")
+    is_msg = re.compile (r"(\w*\.ad.?):(\d*):\d*: (info|warning)?(: )?(.*$)")
+    is_mark = re.compile (r"@(\w*):(\w*)")
+
+    def get_tag(text):
+        """Returns the tag for a given message text, or None if no tag is recognized."""
+
+        # flow analysis tags
+        # When adding a tag in this section, you need also to update the function
+        # is_flow_tag below.
+        if 'dependency' in text:
+            return 'DEPENDS'
+        elif 'global' in text:
+            return 'GLOBAL'
+        elif 'uninitialized' in text:
+            return 'INITIALIZATON'
+
+        # proof tags
+        # When adding a tag in this section, you need also to update the function
+        # is_proof_tag below.
+        if 'division check' in text or 'divide by zero' in text:
+            return 'DIVISION_CHECK'
+        elif 'index check' in text:
+            return 'INDEX_CHECK'
+        elif 'overflow check' in text:
+            return 'OVERFLOW_CHECK'
+        elif 'range check' in text:
+            return 'RANGE_CHECK'
+        elif 'length check' in text:
+            return 'LENGTH_CHECK'
+        elif 'discriminant check' in text:
+            return 'DISCRIMINANT_CHECK'
+        elif 'initial condition' in text:
+            return 'INITIAL_CONDITION'
+        elif 'precondition' in text:
+            if 'of main program' in text:
+                return 'PRECONDITION_MAIN'
+            else:
+                return 'PRECONDITION'
+        elif 'postcondition' in text:
+            return 'POSTCONDITION'
+        elif 'refined post' in text:
+            return 'REFINED_POST'
+        elif 'contract case' in text:
+            if 'disjoint' in text and 'contract cases' in text:
+                return 'DISJOINT_CONTRACT_CASES'
+            elif 'complete' in text and 'contract cases' in text:
+                return 'COMPLETE_CONTRACT_CASES'
+            else:
+                return 'CONTRACT_CASE'
+        elif 'loop invariant' in text:
+            if 'initialization' in text or 'in first iteration' in text:
+                return 'LOOP_INVARIANT_INIT'
+            elif 'preservation' in text or 'after first iteration' in text:
+                return 'LOOP_INVARIANT_PRESERV'
+            else:
+                return 'LOOP_INVARIANT'
+        elif 'loop variant' in text:
+            return 'LOOP_VARIANT'
+        elif 'assertion' in text:
+            return 'ASSERT'
+        elif 'raise statement' in text or 'exception' in text:
+            return 'RAISE'
+
+        # no tag recognized
+        return None
+
+    def is_flow_tag(tag):
+        """Returns True if the given tag corresponds to a flow message"""
+        return tag == 'DEPENDS' or \
+               tag == 'GLOBAL' or \
+               tag == 'INITIALIZATON'
+
+    def is_proof_tag(tag):
+        """Returns True if the given tag corresponds to a proof message"""
+        return tag == 'DIVISION_CHECK' or \
+               tag == 'INDEX_CHECK' or \
+               tag == 'OVERFLOW_CHECK' or \
+               tag == 'RANGE_CHECK' or \
+               tag == 'LENGTH_CHECK' or \
+               tag == 'DISCRIMINANT_CHECK' or \
+               tag == 'INITIAL_CONDITION' or \
+               tag == 'PRECONDITION' or \
+               tag == 'PRECONDITION_MAIN' or \
+               tag == 'POSTCONDITION' or \
+               tag == 'REFINED_POST' or \
+               tag == 'CONTRACT_CASE' or \
+               tag == 'DISJOINT_CONTRACT_CASE' or \
+               tag == 'COMPLETE_CONTRACT_CASE' or \
+               tag == 'LOOP_INVARIANT_INIT' or \
+               tag == 'LOOP_INVARIANT_PRESERV' or \
+               tag == 'LOOP_INVARIANT' or \
+               tag == 'LOOP_VARIANT' or \
+               tag == 'ASSERT' or \
+               tag == 'RAISE'
+
+    def is_negative_result(result):
+        """Returns True if the given result corresponds to a negative one"""
+        return result != 'PASS'
+
+    def is_valid_result(result):
+        """Returns True if the given result corresponds to a valid one"""
+        return result == 'PASS' or \
+               result == 'FAIL' or \
+               result == 'WARN' or \
+               result == 'ERROR'
+
+    def get_result(qualifier, text, is_flow_tag):
+        """Returns the result for a given message qualifier and text.
+
+        PARAMETERS
+          qualifier:   either 'info' or 'warning'
+          text:        text of the message, stripped of the initial qualifier
+          is_flow_tag: True for flow messages, False for proof messages
+        """
+        if qualifier == 'info':
+            if 'proved' in text:
+                return 'PASS'
+            else:
+                return None
+        elif qualifier == 'warning':
+            if is_flow_tag:
+                return 'WARN'
+            else:
+                return 'FAIL'
+        else:
+            return 'ERROR'
+
+    def not_found(f, line, tag, result):
+        """Print an error that the requested mark has not been found
+
+        """
+        if is_negative_result(result):
+            print "SOUNDNESS BUG",
+        elif is_flow_tag(tag):
+            print "FLOW REGRESSION",
+        else:
+            print "PROOF REGRESSION",
+        print "at " + f + ":" + str(line) + \
+            ": mark @" + tag + ":" + result + " not found"
+
+    # store actual results in a map from (file,line) to (TAG,RESULT)
+    results = {}
+
+    for msg in strlist:
+        m = re.match(is_msg, msg)
+        if m:
+            f = m.group(1)
+            line = int(m.group(2))
+            qual = m.group(3)
+            text = m.group(5)
+            tag = get_tag(text)
+            if tag:
+                res = get_result(qual, text, is_flow_tag(tag))
+                results.setdefault((f,line),set()).add((tag, res))
+
+    # check that marks in source code have a matching actual result
+    for f in files:
+        with open(f, 'r') as ff:
+            for line,linestr in enumerate(ff):
+                line = line + 1 # first line in file is 1, not 0
+                for mark in re.finditer(is_mark, linestr):
+                    tag = mark.group(1).upper()
+                    if not (is_flow_tag(tag) or is_proof_tag(tag)):
+                        print "unrecognized tag", tag, "at", f + ":" + str(line)
+                        sys.exit(1)
+                    res = mark.group(2).upper()
+                    if not is_valid_result(res):
+                        print "unrecognized result", res, "at", f + ":" + str(line)
+                        sys.exit(1)
+                    if (f,line) not in results or \
+                       (tag, res) not in results[f,line]:
+                        not_found(f, line, tag, res)
+
+
 def gcc(src, opt=["-c"]):
     """gcc wrapper for the testsuite
 
@@ -222,6 +435,8 @@ def gnatprove_(opt=["-P", "test.gpr"]):
     if verbose_mode():
         print cmd
     process = Run(cmd)
+    # Replace line above by the one below for testing the scripts without running the tool
+    # process = open("test.out", 'r').read()
 
     # In quick mode, ignore xfail tests by simply generating a dummy output
     if quick_mode() and xfail_test():
@@ -236,9 +451,12 @@ def gnatprove_(opt=["-P", "test.gpr"]):
             fake_output_generated = True
             cat("test.out", True)
 
-    # Otherwise, print the command output sorted
+    # Otherwise, check marks in source code and print the command output sorted
     else:
         strlist = str.splitlines(process.out)
+        # Replace line above by the one below for testing the scripts without running the tool
+        # strlist = str.splitlines(process)
+        check_marks(strlist)
         print_sorted(strlist)
 
 
@@ -297,18 +515,6 @@ def to_list(arg):
         return arg
     else:
         return [arg]
-
-
-def matches(comp_reg, s, invert):
-    """decide whether string s matches the compiled regex comp_reg
-
-    PARAMETERS
-    comp_reg: a compiled regex
-    s: a string to be matched
-    invert: if false, negate the result
-    """
-    m = re.match(comp_reg, s)
-    return (invert and not m) or (not invert and m)
 
 
 def grep(regex, strlist, invert=False):

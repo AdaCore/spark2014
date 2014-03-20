@@ -9,8 +9,8 @@ package body Basic is
                Z := 1;
             end if;
          when B =>
-            --  unproved discriminant check!!
-            if V.A_Field = 0 then
+
+            if V.A_Field = 0 then -- @DISCRIMINANT_CHECK:FAIL
                Z := 1;
             end if;
          when C =>

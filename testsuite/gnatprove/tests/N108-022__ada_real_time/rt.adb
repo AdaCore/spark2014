@@ -9,7 +9,7 @@ is
       T2 := Clock;
 
       -- should NOT prove, since Clock accesses volatile state
-      pragma Assert (T1 = T2);
+      pragma Assert (T1 = T2);  -- @ASSERT:FAIL
 
       return T1 = T2;
    end F1;
