@@ -286,14 +286,11 @@ def check_marks(strlist):
             return 'ERROR'
 
     def not_found(f, line, tag, result):
-        """Print an error that the requested mark has not been found
-
-        """
+        """Print an error that the requested mark has not been found"""
         if is_negative_result(result):
             print "SOUNDNESS BUG",
-        elif is_flow_tag(tag):
-            print "FLOW REGRESSION",
         else:
+            assert is_proof_tag(tag)
             print "PROOF REGRESSION",
         print "at " + f + ":" + str(line) + \
             ": mark @" + tag + ":" + result + " not found"
