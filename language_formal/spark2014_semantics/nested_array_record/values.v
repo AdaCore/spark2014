@@ -1,3 +1,14 @@
+(** 
+_AUTHOR_
+
+<<
+Zhi Zhang
+Departmnt of Computer and Information Sciences
+Kansas State University
+zhangzhi@ksu.edu
+>>
+*)
+
 Require Export language.
 Require Export util.
 
@@ -19,7 +30,6 @@ Inductive Return (A:Type): Type :=
     | Run_Time_Error: Return A
     | Unterminated: Return A
     | Abnormal: Return A.
-
 (* TODO: add stuff in error states *)
 Arguments Normal [A] a.
 Arguments Run_Time_Error {A}.
@@ -58,13 +68,13 @@ Inductive basic_value : Type :=
     | Int (n : Z)
     | Bool (b : bool).
 
-Inductive aggregate_value : Type :=
-    | ArrayV (a: list basic_value)
-    | RecordV (r: list (idnum * basic_value)).
-
 Inductive value : Type :=
     | BasicV (v: basic_value)
-    | AggregateV (v: aggregate_value).
+    | AggregateV (v: aggregate_value)
+
+with aggregate_value : Type :=
+    | ArrayV (a: list value)
+    | RecordV (r: list (idnum*value)).
 (*
 Inductive value : Type :=
     | Int (n : Z)

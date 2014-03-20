@@ -64,17 +64,48 @@ Record type_table: Type := mktype_table{
     adding more SPARK types here and adding its corresponding value
     definition in values.v;
 *)
-Inductive basic_type: Type :=
+Inductive basic_type: Type := 
     | Boolean (* 3.5.3 *)
     | Integer (* 3.5.4 *).
 
-Inductive aggregate_type: Type :=
-    | ArrayT (t: basic_type) (l : Z) (h: Z) (* 3.6 *) (* t[l..h] *)
-    | RecordT (r: list (idnum * basic_type)) (* 3.8 *).
-
-Inductive type: Type :=
+Inductive type: Type := 
     | BasicT (t: basic_type)
-    | AggregateT (t: aggregate_type).
+    | ArrayT (t: type) (l : Z) (h: Z) (* 3.6 *) (* t[l..h] *)
+    | RecordT (r: list (idnum * type)) (* 3.8 *).
+
+(*********************************************************************
+Scheme Equality for type.
+
+Lemma type_beq_complete : forall t t', t = t' -> type_beq t t' = true.
+Proof.
+  intros t t' heq.
+  subst.
+  destruct t';simpl;auto.
+Qed.
+
+Lemma type_beq_correct : forall t t', type_beq t t' = true -> t = t'.
+Proof.
+  intros t t'.
+  destruct t; destruct t';simpl;auto;intro abs; discriminate abs.
+Qed.
+
+Lemma type_beq_iff: forall t t', type_beq t t' = true <-> t = t'.
+Proof.
+  intros t t'.
+  split;intros.
+  - apply type_beq_correct. assumption.
+  - apply type_beq_complete. assumption.
+Qed.
+
+Hint Rewrite type_beq_iff: rewtype.
+Hint Rewrite type_beq_iff: rewtype_rev.
+
+Lemma type_beq_refl : forall t, type_beq t t = true.
+Proof.
+  intros t.
+  destruct t;simpl;reflexivity.
+Qed.
+*********************************************************************)
 
 (** ** Literals *)
 Inductive literal: Type :=
@@ -121,8 +152,8 @@ Inductive expression: Type :=
 
 with name: Type := (* 4.1 *)
         | E_Identifier: idnum -> name (* 4.1 *)
-        | E_Indexed_Component: idnum -> expression -> name (* 4.1.1 *)
-        | E_Selected_Component: idnum -> idnum -> name (* 4.1.3 *).
+        | E_Indexed_Component: name -> list expression -> name (* 4.1.1 *)
+        | E_Selected_Component: name -> idnum -> name          (* 4.1.3 *).
 
 (** ** Statements *)
 (* Chapter 5 *)
@@ -134,7 +165,6 @@ Inductive statement: Type :=
 	| S_Sequence: astnum -> statement -> statement -> statement (* 5.1 *)
         | S_ProcCall: astnum -> procnum -> list expression -> statement.
 
-
 (* 6.2 *)
 Inductive mode: Type := 
     | In: mode
@@ -144,13 +174,14 @@ Inductive mode: Type :=
 Inductive type_declaration: Type := (* 3.2.1 *)
     (* Full_Type_Declaration *) (* 3.2.1 *)
     | Array_Type_Declaration: (* Constrained_Array_Definition, now only consider one-dimentional array *)
-        astnum -> typenum (* type name *) -> basic_type -> expression (*min*) -> expression (*max*) -> type_declaration (* 3.6 *)
+        astnum -> typenum (* type name *) -> typenum -> list (expression * expression) -> type_declaration (* 3.6 *)
     | Record_Type_Declaration: 
-        astnum -> typenum (* type name *) -> list (idnum * basic_type) -> type_declaration (* 3.8 *).
+        astnum -> typenum (* type name *) -> list (idnum * typenum) -> type_declaration (* 3.8 *).
 (*  | Unconstrained_Array_Type_Declaration
     | Null_Record_Declaration: astnum -> type_declaration. (* 3.8 *)
     | Other_Full_Type_Definition
     | private_type_declaration (* 3.2.1 *) *)
+
 
 (* 3.3.1 *)
 Record object_declaration: Type := mkobject_declaration{
@@ -242,8 +273,7 @@ Inductive library_unit_declaration: Type :=
 Inductive compilation_unit: Type := 
 	| Library_Unit: astnum -> library_unit_declaration -> type_table -> compilation_unit.
 
-
-(*********************************************************************
+(********************************************************************************
 (** Some useful definition, related to language structures *)
 
 (** [Is_var e] means that expression [e] is a variable *)
@@ -286,5 +316,6 @@ Ltac inversion_is_var_auto :=
           rewrite is_var_Is_var in H
           ; destruct e;simpl in H; try contradiction;subst
       end.
-*********************************************************************)
+********************************************************************************)
+
 

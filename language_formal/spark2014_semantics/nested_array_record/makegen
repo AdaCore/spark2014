@@ -1,0 +1,11 @@
+coq_makefile -o Makefile $* \
+language.v \
+LibTactics.v \
+util.v \
+more_list.v \
+values.v \
+environment.v \
+checks.v
+#semantics.v 
+#other_coq_files.v \
+#other_coq_files.v
