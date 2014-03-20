@@ -19,12 +19,7 @@ is
    procedure Proc2 (X : in out Integer)
      --  TU: 2. A ``consequence`` expression is considered to be a
      --  postcondition expression for purposes of determining the legality of
-     --  Old or Result ``attribute_references``. An expression occurring
-     --  within an ``consequence`` expression is defined to be not potentially
-     --  unevaluated. [This means that Ada's rule that "The prefix of an Old
-     --  attribute_reference that is potentially unevaluated shall statically
-     --  denote an entity" is ineffective anywhere within a ``consequence``
-     --  expression.]
+     --  Old or Result ``attribute_references``.
      with Contract_Cases => (Positive (X'Old) => X = X'Old * X'Old,
                              Negative (X)'Old => X = - (X'Old * X'Old),
                              others           => X = 0);
@@ -33,11 +28,6 @@ is
    function Func (X, Y : Integer) return Integer
      --  TU: 2. A ``consequence`` expression is considered to be a
      --  postcondition expression for purposes of determining the legality of
-     --  Old or Result ``attribute_references``. An expression occurring
-     --  within an ``consequence`` expression is defined to be not potentially
-     --  unevaluated. [This means that Ada's rule that "The prefix of an Old
-     --  attribute_reference that is potentially unevaluated shall statically
-     --  denote an entity" is ineffective anywhere within a ``consequence``
-     --  expression.]
+     --  Old or Result ``attribute_references``.
      with Contract_Cases => (Positive(Func'Result) => X * Y > 0);
 end Contract_Cases_Illegal;
