@@ -19,8 +19,6 @@ foo.adb:186:25: warning: "A" might not be initialized in "Test_16_E"
 foo.adb:191:16: warning: "A" might not be initialized
 foo.adb:199:26: warning: "A" might not be initialized
 foo.adb:208:22: warning: "A" might not be initialized
-foo.adb:220:25: warning: "A" might not be initialized
-foo.adb:222:25: warning: "A" might not be initialized
    compilation of foo.adb failed
 
 

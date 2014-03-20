@@ -34,11 +34,11 @@ is
    is
    begin
       for I in Index_T loop
-         A (I) := A (I);
+         A (I) := A (I);      -- @INITIALIZED:ERROR
       end loop;
    end Test_03_E;
 
-   procedure Test_04_E (A : out Array_T)
+   procedure Test_04_E (A : out Array_T) -- @INITIALIZED:WARN
    is
    begin
       for I in Index_T loop
@@ -65,9 +65,9 @@ is
    begin
       for I in Index_T loop
          if A (I) > 5 then
-            A (I) := 0;
+            A (I) := 0; -- @INITIALIZED:WARN
          else
-            A (I) := 1;
+            A (I) := 1; -- @INITIALIZED:WARN
          end if;
       end loop;
    end Test_06_E;
@@ -79,7 +79,7 @@ is
    begin
       for I in Index_T loop
          A (I) := 0;
-         if A = B then
+         if A = B then -- @INITIALIZED:WARN
             C := True;
          end if;
       end loop;
@@ -108,7 +108,7 @@ is
    is
    begin
       for I in Index_T loop
-         A (I) := 0;
+         A (I) := 0; -- @INITIALIZED:WARN
          if I > 5 then
             return;
          end if;
@@ -143,7 +143,7 @@ is
    is
    begin
       for I in Index_T loop
-         A (I, I) := Integer (I);
+         A (I, I) := Integer (I); -- @INITIALIZED:WARN
       end loop;
    end Test_12_E;
 
@@ -151,7 +151,7 @@ is
    is
    begin
       for I in Index_T loop
-         A (I, 1) := Integer (I);
+         A (I, 1) := Integer (I); -- @INITIALIZED:WARN
       end loop;
    end Test_13_E;
 
@@ -161,7 +161,7 @@ is
    begin
       for I in Index_T loop
          A (I) := 0;
-         B     := A (I + 1);
+         B     := A (I + 1); -- @INITIALIZED:WARN
       end loop;
    end Test_14_E;
 
@@ -179,11 +179,11 @@ is
    is
    begin
       for I in Index_T range 2 .. Index_T'Last loop
-         A (I) := 0;
+         A (I) := 0; -- @INITIALIZED:WARN
       end loop;
    end Test_15_E;
 
-   procedure Test_16_E (A : out Array_T;
+   procedure Test_16_E (A : out Array_T; -- @INITIALIZED:WARN
                         N :     Index_T)
    is
    begin
@@ -205,7 +205,7 @@ is
    begin
       for J in Index_T loop
          for I in Index_T loop
-            A (I, J) := Integer (I) + Integer (J);
+            A (I, J) := Integer (I) + Integer (J); -- @INITIALIZED:WARN
             exit when I = 5;
          end loop;
       end loop;
@@ -219,7 +219,7 @@ is
             if I < 5 then
                A (I, J) := 0;
             else
-               A (J, I) := 0;
+               A (I, J) := 0;
             end if;
          end loop;
       end loop;
