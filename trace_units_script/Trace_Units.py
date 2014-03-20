@@ -22,15 +22,14 @@ for i in range(1, len(argv)):
         #If argument is a directory.
         for r,d,f in walk(argv[i]):
             for files in f:
-                if files.endswith(".ads") or files.endswith(".adb") or \
-                files.endswith(".ada"):
+                if re.search ("\.ad[abs]$", files, re.I):
+                    #If it ends in ".ads", ".adb" or ".ada".
                     test_case_files.append(path.join(r,files))
                 elif files.endswith(".rst"):
                     rst_files.append(path.join(r,files))
     elif path.isfile(argv[i]):
         #If argument is a file.
-        if argv[i].endswith(".ads") or argv[i].endswith(".adb") or \
-        argv[i].endswith(".ada"):
+        if re.search ("\.ad[abs]$", argv [i], re.I):
             #If it ends in ".ads", ".adb" or ".ada".
             if argv[i].startswith("./") or argv[i].startswith("/"):
                 #If file starts with "./" or "/" then we just append it.
@@ -114,8 +113,7 @@ for i in range(len(rst_files)):
             trace_unit = ""
             j = 1
             while line + j < len(lines) \
-            and not re.search("_tu-", lines[line + j], re.I) \
-            and not re.search("_etu-", lines[line + j], re.I):
+            and not re.search("_[e]?tu-", lines[line + j], re.I):
                 #Continue adding lines to the TU until we either reach
                 #the last line or we find a line that contains either
                 #of the strings "_tu-" or "_etu-".
