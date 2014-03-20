@@ -1174,99 +1174,146 @@ package body Flow.Control_Flow_Graph is
               N_Qualified_Expression =>
             --  A := (X => foo, Y => bar);
             --  A := A'(X => foo, Y => bar);
+
+            Vars_Used := Flow_Id_Sets.Empty_Set;
+            --  It starts off empty but will be populated later.
+
             declare
-               N_Comp : constant Node_Id :=
-                 F_Comp.Component (F_Comp.Component.Last);
+               Current_Component : Node_Id := F_Comp.Component.First_Element;
+               Current_Search    : Node_Id := Search;
+               Found             : Node_Id;
 
-               Comp_Assoc : Node_Id;
-               Choice     : Node_Id;
-            begin
-               Comp_Assoc := (case Nkind (Search) is
-                                when N_Aggregate =>
-                                   First (Component_Associations (Search)),
-                                when N_Qualified_Expression =>
-                                   First (Component_Associations
-                                            (Expression (Search))),
-                                when others =>
-                                   raise Why.Unexpected_Node);
+               procedure Find_Matching_Choice
+                 (Component    : Node_Id;
+                  Search_Under : Node_Id;
+                  Found        : out Node_Id);
+               --  Searches under Search_Under for Component and point Found
+               --  to the corresponding expression. At the end Component is
+               --  pointed to the next element.
 
-               while Present (Comp_Assoc) loop
-                  Choice := First (Choices (Comp_Assoc));
-                  while Present (Choice) loop
-                     if Is_Record_Type (Get_Full_Type (Entity (Choice))) then
-                        --  Choice is a record.
-                        declare
-                           F1, F2 : Flow_Id;
-                        begin
-                           F1 := Compare_Components
-                             (Direct_Mapping_Id (Entity (Choice)),
-                              F_Comp);
+               --------------------------
+               -- Find_Matching_Choice --
+               --------------------------
 
-                           if F1 /= Null_Flow_Id then
-                              case Nkind (Expression (Comp_Assoc)) is
-                                 when N_Identifier =>
-                                    if Direct_Mapping_Id
-                                         (Entity
-                                            (Expression (Comp_Assoc))).Kind in
-                                      Direct_Mapping | Record_Field
-                                    then
-                                       F2 := Compare_Components
-                                         (Direct_Mapping_Id
-                                            (Entity (Expression (Comp_Assoc))),
-                                          F1);
+               procedure Find_Matching_Choice
+                 (Component    : Node_Id;
+                  Search_Under : Node_Id;
+                  Found        : out Node_Id)
+               is
+                  Comp_Assoc : Node_Id;
+                  Choice     : Node_Id;
+                  F          : Flow_Id;
+               begin
+                  Found := Empty;
 
-                                       Vars_Used := Null_Or_Constant (F2);
-                                    else
-                                       Ctx.Folded_Function_Checks (N).Include
-                                         (Expression (Comp_Assoc));
+                  case Nkind (Search_Under) is
+                     when N_Identifier =>
+                        F := Direct_Mapping_Id (Entity (Search_Under));
 
-                                       Vars_Used := Get_Variable_Set
-                                         (Expression (Comp_Assoc),
-                                          Scope           => FA.B_Scope,
-                                          Local_Constants =>
-                                            FA.Local_Constants,
-                                          Fold_Functions  => True);
-                                    end if;
+                        if Is_Record_Type (Get_Full_Type
+                                             (Etype (Search_Under)))
+                        then
+                           --  N_Identifier is a record so we need to find the
+                           --  correct field.
+                           F := Compare_Components (F, F_Comp);
+                           Vars_Used := Vars_Used or Null_Or_Constant (F);
+                        else
+                           --  N_Identifier is a simple variable so we just
+                           --  add this directly.
+                           Vars_Used := Vars_Used or Null_Or_Constant (F);
+                        end if;
 
-                                    return;
+                     when N_Aggregate            |
+                          N_Qualified_Expression =>
+                        Comp_Assoc := (if Nkind (Search_Under) = N_Aggregate
+                                       then First (Component_Associations
+                                                     (Search_Under))
+                                       else First (Component_Associations
+                                                     (Expression
+                                                        (Search_Under))));
 
-                                 when others =>
-                                    Ctx.Folded_Function_Checks (N).Include
-                                      (Expression (Comp_Assoc));
+                        while Present (Comp_Assoc) loop
+                           Choice := First (Choices (Comp_Assoc));
+                           while Present (Choice) loop
+                              if Entity (Choice) = Component
+                                or else (Is_Record_Type
+                                           (Get_Full_Type
+                                              (Etype (Choice)))
+                                           and then Original_Record_Component
+                                                      (Component) =
+                                                    Original_Record_Component
+                                                      (Entity (Choice)))
+                              then
+                                 Found := Expression (Comp_Assoc);
+                              end if;
 
-                                    Vars_Used := Get_Variable_Set
-                                      (Expression (Comp_Assoc),
-                                       Scope           => FA.B_Scope,
-                                       Local_Constants => FA.Local_Constants,
-                                       Fold_Functions  => True);
+                              Next (Choice);
+                           end loop;
 
-                                    return;
-                              end case;
-                           end if;
-                        end;
-                     else
-                        --  Choice is not a record.
-                        if Entity (Choice) = N_Comp then
-                           Ctx.Folded_Function_Checks (N).Include
-                             (Expression (Comp_Assoc));
+                           Next (Comp_Assoc);
+                        end loop;
 
-                           Vars_Used := Get_Variable_Set
-                             (Expression (Comp_Assoc),
+                        if Present (Found)
+                          and Component = F_Comp.Component.Last_Element
+                        then
+                           Ctx.Folded_Function_Checks (N).Include (Found);
+
+                           Vars_Used := Vars_Used or Get_Variable_Set
+                             (Found,
                               Scope           => FA.B_Scope,
                               Local_Constants => FA.Local_Constants,
                               Fold_Functions  => True);
-
-                           return;
                         end if;
-                     end if;
-                     Next (Choice);
-                  end loop;
-                  Next (Comp_Assoc);
+
+                     when N_Selected_Component =>
+                        F := Direct_Mapping_Id (Entity (Search_Under));
+                        Vars_Used := Vars_Used or Null_Or_Constant (F);
+
+                     when N_Attribute_Reference |
+                          N_Expanded_Name       |
+                          N_Function_Call       |
+                          N_Indexed_Component   =>
+                        Ctx.Folded_Function_Checks (N).Include (Search_Under);
+
+                        Vars_Used := Vars_Used or Get_Variable_Set
+                          (Search_Under,
+                           Scope           => FA.B_Scope,
+                           Local_Constants => FA.Local_Constants,
+                           Fold_Functions  => True);
+
+                     when others =>
+                        raise Why.Unexpected_Node;
+                  end case;
+               end Find_Matching_Choice;
+
+            begin
+               loop
+                  Find_Matching_Choice (Current_Component,
+                                        Current_Search,
+                                        Found);
+
+                  if Present (Found) then
+                     Current_Search := Found;
+                  end if;
+
+                  --  Termination condition
+                  exit when Current_Component = F_Comp.Component.Last_Element;
+
+                  declare
+                     This_Is_The_Next : Boolean := False;
+                  begin
+                     for C of F_Comp.Component loop
+                        if This_Is_The_Next then
+                           Current_Component := C;
+                           exit;
+                        end if;
+                        if C = Current_Component then
+                           This_Is_The_Next := True;
+                        end if;
+                     end loop;
+                  end;
                end loop;
             end;
-
-            --  If nothing was found then return the empty set.
-            Vars_Used := Flow_Id_Sets.Empty_Set;
 
          when N_Expanded_Name     |
               N_Function_Call     |
