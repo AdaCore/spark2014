@@ -546,14 +546,7 @@ and objects in |SPARK|:
 .. _tu-shared_variable_control-01:
 
 1. A volatile representation aspect may only be applied to an
-   ``object_declaration``. Volatile types are not permitted in |SPARK|.
-
-..
-   volatile_types_trace
-   The original rule appears below - this should be re-instated
-   when volatile types are re-introduced.
-   1. A volatile representation aspect may only be applied to an
-      ``object_declaration`` or a ``full_type_declaration``.
+   ``object_declaration`` or a ``full_type_declaration``.
 
 .. _tu-shared_variable_control-02:
 
@@ -569,23 +562,11 @@ and objects in |SPARK|:
 
 .. _tu-shared_variable_control-04:
 
-4. An object of a discriminated type shall not be volatile.
-
-..
-   volatile_types_trace
-   The original rule appears below - this should be re-instated
-   when volatile types are re-introduced.
-   4. Neither a discriminated type nor an object of such a type shall be volatile.
+4. Neither a discriminated type nor an object of such a type shall be volatile.
 
 .. _tu-shared_variable_control-05:
 
-5. An object of a tagged type shall not be volatile.
-
-..
-   volatile_types_trace
-   The original rule appears below - this should be re-instated
-   when volatile types are re-introduced.
-   5. Neither a tagged type nor an object of such a type shall be volatile.
+5. Neither a tagged type nor an object of such a type shall be volatile.
 
 .. _tu-shared_variable_control-06:
 
