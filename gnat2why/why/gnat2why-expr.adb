@@ -6557,7 +6557,8 @@ package body Gnat2Why.Expr is
          null;
       end tip;
 
-      --  beginning of processing for Transform_Pragma
+   --  Start of Transform_Pragma
+
    begin
       case Prag_Id is
 
@@ -6627,6 +6628,7 @@ package body Gnat2Why.Expr is
               Pragma_SPARK_Mode                   |
               Pragma_Style_Checks                 |
               Pragma_Test_Case                    |
+              Pragma_Unevaluated_Use_Of_Old       |
               Pragma_Unmodified                   |
               Pragma_Unreferenced                 |
               Pragma_Validity_Checks              |
