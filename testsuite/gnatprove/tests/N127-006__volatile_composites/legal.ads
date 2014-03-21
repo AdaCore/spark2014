@@ -20,6 +20,8 @@ is
    --  * the expression of an initialization expression of an object declaration; or
    --  * the actual parameter in a call to an instance of Unchecked_Conversion
    --    whose result is renamed [in an object renaming declaration]; or
+   --  * the actual parameter in a procedure call of which the corresponding
+   --    formal parameter is of a non-scalar Volatile type; or
    --  * the prefix of a name occurring in a non-interfering context.
 
    type R is record
@@ -58,7 +60,7 @@ is
      with Global => (Input => V2);
 
    procedure WV2 (X : in Boolean)
-     with Global => (Output => V2);
+     with Global => (In_Out => V2);
 
 
 
@@ -69,7 +71,7 @@ is
      with Global => (Input => V3);
 
    procedure WV3 (X : in Integer)
-     with Global => (Output => V3);
+     with Global => (In_Out => V3);
 
 
 
@@ -77,7 +79,7 @@ is
      with Global => (Input => V4);
 
    procedure WV4 (X : in Boolean)
-     with Global => (Output => V4);
+     with Global => (In_Out => V4);
 
    procedure RV4b (X : out Boolean)
      with Global => (Input => V4);

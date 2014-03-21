@@ -1,13 +1,1 @@
-legal.adb:25:12: volatile object cannot appear in this context (SPARK RM 7.1.3(13))
-legal.adb:32:07: volatile object cannot appear in this context (SPARK RM 7.1.3(13))
-legal.adb:41:12: volatile object cannot appear in this context (SPARK RM 7.1.3(13))
-legal.adb:48:36: volatile object cannot appear in this context (SPARK RM 7.1.3(13))
-legal.adb:57:07: volatile object cannot appear in this context (SPARK RM 7.1.3(13))
-legal.adb:65:12: volatile object cannot appear in this context (SPARK RM 7.1.3(13))
-legal.adb:72:07: volatile object cannot appear in this context (SPARK RM 7.1.3(13))
-legal.adb:78:24: volatile object cannot appear in this context (SPARK RM 7.1.3(13))
-   compilation of legal.adb failed
-
-
-gnatprove: error during frame condition computation, aborting.
-gprbuild: *** compilation phase failed
+legal.adb:48:33: warning: range check might fail
