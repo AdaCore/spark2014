@@ -2642,9 +2642,12 @@ package body Flow.Control_Flow_Graph is
                  Nkind (F.Node) = N_Assignment_Statement and then
                  Get_Array_Index (Name (F.Node)) = T
                then
-                  FA.CFG.DFS (Start         => V,
-                              Include_Start => False,
-                              Visitor       => Check_Unused'Access);
+                  --  Edit the following lines once N324-007 is fixed in the
+                  --  front-end.
+                  Fully_Defined := False;
+                  --  FA.CFG.DFS (Start         => V,
+                  --              Include_Start => False,
+                  --              Visitor       => Check_Unused'Access);
                   if Fully_Defined then
                      Tv := Flow_Graphs.Skip_Children;
                   else
