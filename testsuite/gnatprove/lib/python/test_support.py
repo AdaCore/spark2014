@@ -145,7 +145,7 @@ def check_marks(strlist):
     this marker will be put in comments).
 
     TAG is either:
-    - a check (RANGE_CHECK, DIVIDE_CHECK, etc), or
+    - a check (RANGE_CHECK, DIVISION_CHECK, etc), or
     - a flow message (UNINIT, DEPENDS, etc).
 
     The complete list of tags is given by functions is_flow_tag and is_proof_tag.
