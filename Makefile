@@ -138,22 +138,3 @@ clean:
 	$(MAKE) -C docs/lrm clean
 	$(MAKE) -C why3 clean
 	$(MAKE) -C alt-ergo clean
-
-# Translating the standard library for GNATprove
-# ==============================================
-#
-# This applies gnat2why to the standard GNAT library. This is only used for debug.
-
-STDLIB_TMP=stdlib_tmp
-
-stdlib:
-	rm -rf $(STDLIB_TMP)
-	mkdir -p $(STDLIB_TMP)
-	$(CP) Makefile.libprove $(STDLIB_TMP)
-	$(MAKE) -C $(STDLIB_TMP) -f Makefile.libprove ROOT=$(GNAT_ROOT)
-
-# "make stdlib-check" will run why on all Why files of the standard library,
-# to detect problems with the translation to Why
-
-stdlib-check:
-	$(MAKE) -C $(STDLIB_TMP) -f Makefile.libprove ROOT=$(GNAT_ROOT) check
