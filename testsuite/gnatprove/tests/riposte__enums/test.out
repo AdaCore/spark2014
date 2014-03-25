@@ -1,0 +1,22 @@
+enums.adb:10:19: info: postcondition proved
+enums.adb:16:38: warning: unused variable "B"
+enums.adb:19:22: warning: postcondition might fail, requires Enum_Equals_Broken_A'Result = (A = B
+enums.adb:27:19: warning: postcondition might fail, requires Enum_Equals_Broken_B'Result = (A = B
+enums.adb:36:19: info: postcondition proved
+enums.adb:43:19: info: postcondition proved
+enums.adb:67:19: warning: postcondition might fail, requires Enum_LT_5_Broken_A'Result = (A < Elem_5
+enums.adb:89:19: info: postcondition proved
+enums.adb:106:19: info: postcondition proved
+enums.adb:106:41: info: range check proved
+enums.adb:145:22: info: postcondition proved
+enums.adb:145:66: info: range check proved
+enums.adb:152:33: info: range check proved
+enums.adb:152:39: info: range check proved
+enums.adb:160:19: info: postcondition proved
+enums.adb:167:27: info: range check proved
+enums.adb:167:34: info: range check proved
+enums.adb:175:19: info: postcondition proved
+enums.adb:176:71: info: range check proved
+enums.adb:191:19: info: postcondition proved
+enums.adb:191:50: info: range check proved
+enums.adb:194:29: warning: range check might fail

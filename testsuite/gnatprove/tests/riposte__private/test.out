@@ -1,0 +1,21 @@
+PROOF REGRESSION at private_a.adb:79: mark @POSTCONDITION:PASS not found
+private_a.adb:14:22: info: postcondition proved
+private_a.adb:23:22: warning: postcondition might fail, requires Dst = Complex.Create (N, 0)
+private_a.adb:32:22: warning: postcondition might fail, requires Dst = Complex.Create (0, 0)
+private_a.adb:40:22: info: postcondition proved
+private_a.adb:45:12: info: precondition proved
+private_a.adb:46:17: info: precondition proved
+private_a.adb:51:22: info: postcondition proved
+private_a.adb:55:09: warning: statement has no effect
+private_a.adb:57:7: info: assertion proved
+private_a.adb:58:12: info: precondition proved
+private_a.adb:59:17: info: precondition proved
+private_a.adb:64:22: info: postcondition proved
+private_a.adb:68:09: warning: statement has no effect
+private_a.adb:70:7: info: assertion proved
+private_a.adb:71:12: info: precondition proved
+private_a.adb:72:7: warning: assertion might fail, requires Stack.Get_Length (S.The_Stack) = 2
+private_a.adb:73:17: info: precondition proved
+private_a.adb:80:13: warning: postcondition might fail, requires Dst = Optional_StackOptional_Stack'(Exists => Src = Stack.null_stack), (The_Stack => Src)
+private_a.adb:96:7: info: assertion proved
+stack.ads:36:54: info: length check proved

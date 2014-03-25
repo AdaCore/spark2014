@@ -1,0 +1,49 @@
+PROOF REGRESSION at logic.adb:104: mark @ASSERT:PASS not found
+logic.adb:4:13: warning: null global effect assumed on imported subprogram
+logic.adb:13:7: info: assertion proved
+logic.adb:14:7: info: assertion proved
+logic.adb:15:7: info: assertion proved
+logic.adb:16:7: info: assertion proved
+logic.adb:20:7: warning: assertion might fail, requires false
+logic.adb:22:7: info: assertion proved
+logic.adb:23:7: warning: assertion might fail, requires false
+logic.adb:25:7: info: assertion proved
+logic.adb:26:7: warning: assertion might fail, requires if true then false else true
+logic.adb:28:7: info: assertion proved
+logic.adb:29:7: warning: assertion might fail, requires false
+logic.adb:39:7: info: assertion proved
+logic.adb:40:7: info: assertion proved
+logic.adb:41:7: info: assertion proved
+logic.adb:42:7: info: assertion proved
+logic.adb:46:7: warning: assertion might fail, requires false
+logic.adb:48:7: info: assertion proved
+logic.adb:49:7: warning: assertion might fail, requires false
+logic.adb:51:7: info: assertion proved
+logic.adb:52:7: warning: assertion might fail, requires false
+logic.adb:54:7: info: assertion proved
+logic.adb:55:7: warning: assertion might fail, requires false
+logic.adb:69:7: info: assertion proved
+logic.adb:70:7: info: assertion proved
+logic.adb:72:7: info: assertion proved
+logic.adb:73:7: info: assertion proved
+logic.adb:77:7: info: assertion proved
+logic.adb:78:7: warning: assertion might fail, requires not (A and B)) = (not A and not B
+logic.adb:80:7: info: assertion proved
+logic.adb:81:7: warning: assertion might fail, requires A or B) = (not A and not B
+logic.adb:83:7: info: assertion proved
+logic.adb:84:7: warning: assertion might fail, requires not (A or B) = (A and not B
+logic.adb:86:7: info: assertion proved
+logic.adb:87:7: warning: assertion might fail, requires not (A or B) = (not A and B
+logic.adb:99:7: info: assertion proved
+logic.adb:100:7: info: assertion proved
+logic.adb:104:19: info: postcondition proved
+logic.adb:128:7: info: assertion proved
+logic.adb:129:7: info: assertion proved
+logic.adb:131:7: info: assertion proved
+logic.adb:132:7: info: assertion proved
+logic.adb:139:22: info: postcondition proved
+logic.adb:147:19: info: postcondition proved
+logic.adb:154:29: warning: unused variable "A"
+logic.adb:154:32: warning: unused variable "B"
+logic.adb:154:35: warning: unused variable "C"
+logic.adb:157:22: warning: postcondition might fail, requires Implies_Test_1'Result =  ((if (if A then B) then C) = (if A then if B then C else true else true

@@ -1,0 +1,100 @@
+PROOF REGRESSION at array_aggregates.adb:462: mark @ASSERT:PASS not found
+array_aggregates.adb:19:50: info: length check proved
+array_aggregates.adb:57:21: info: length check proved
+array_aggregates.adb:63:7: info: assertion proved
+array_aggregates.adb:73:21: info: length check proved
+array_aggregates.adb:75:7: warning: assertion might fail, requires M (Elem_1) = Elem_0
+array_aggregates.adb:84:7: info: assertion proved
+array_aggregates.adb:92:7: warning: assertion might fail, requires M (Elem_1) = Elem_1
+array_aggregates.adb:99:22: info: length check proved
+array_aggregates.adb:100:7: warning: assertion might fail, requires X (4) = 2
+array_aggregates.adb:107:22: info: length check proved
+array_aggregates.adb:108:7: info: assertion proved
+array_aggregates.adb:115:22: info: length check proved
+array_aggregates.adb:118:7: warning: assertion might fail, requires X (4) = 2
+array_aggregates.adb:125:22: info: length check proved
+array_aggregates.adb:128:7: warning: assertion might fail, requires X (7) = 2
+array_aggregates.adb:135:22: info: length check proved
+array_aggregates.adb:137:7: warning: assertion might fail, requires X (4) = 5
+array_aggregates.adb:144:22: info: length check proved
+array_aggregates.adb:146:7: warning: assertion might fail, requires X (5) = 5
+array_aggregates.adb:153:22: info: length check proved
+array_aggregates.adb:155:7: warning: assertion might fail, requires X (3) = 5
+array_aggregates.adb:162:27: info: length check proved
+array_aggregates.adb:164:7: warning: assertion might fail, requires X (3) = Elem_2
+array_aggregates.adb:171:27: info: length check proved
+array_aggregates.adb:173:7: info: assertion proved
+array_aggregates.adb:180:29: info: length check proved
+array_aggregates.adb:186:7: warning: assertion might fail, requires X (3).C = Elem_2
+array_aggregates.adb:193:29: info: length check proved
+array_aggregates.adb:199:7: info: assertion proved
+array_aggregates.adb:206:28: info: length check proved
+array_aggregates.adb:206:51: info: length check proved
+array_aggregates.adb:210:51: info: length check proved
+array_aggregates.adb:212:7: warning: assertion might fail, requires X (3) (4) = 10
+array_aggregates.adb:219:28: info: length check proved
+array_aggregates.adb:219:51: info: length check proved
+array_aggregates.adb:223:51: info: length check proved
+array_aggregates.adb:225:7: info: assertion proved
+array_aggregates.adb:232:28: info: length check proved
+array_aggregates.adb:232:49: info: length check proved
+array_aggregates.adb:234:7: warning: assertion might fail, requires X (3) (4) = 10
+array_aggregates.adb:241:28: info: length check proved
+array_aggregates.adb:241:49: info: length check proved
+array_aggregates.adb:243:7: info: assertion proved
+array_aggregates.adb:250:28: info: length check proved
+array_aggregates.adb:250:49: info: length check proved
+array_aggregates.adb:251:7: warning: assertion might fail, requires X (3) (4) = 10
+array_aggregates.adb:258:28: info: length check proved
+array_aggregates.adb:258:49: info: length check proved
+array_aggregates.adb:259:7: info: assertion proved
+array_aggregates.adb:266:31: info: length check proved
+array_aggregates.adb:268:66: info: length check proved
+array_aggregates.adb:273:7: warning: assertion might fail, requires X (3).Len = 3
+array_aggregates.adb:280:31: info: length check proved
+array_aggregates.adb:282:66: info: length check proved
+array_aggregates.adb:287:7: info: assertion proved
+array_aggregates.adb:294:27: info: length check proved
+array_aggregates.adb:297:7: warning: assertion might fail, requires X (1000) = Elem_1
+array_aggregates.adb:306:27: info: length check proved
+array_aggregates.adb:309:7: warning: assertion might fail, requires X (N) = Elem_0
+array_aggregates.adb:318:27: info: length check proved
+array_aggregates.adb:321:7: warning: assertion might fail, requires X (N) = Elem_1
+array_aggregates.adb:330:27: info: length check proved
+array_aggregates.adb:333:7: warning: assertion might fail, requires X (N) = Elem_2
+array_aggregates.adb:342:27: info: length check proved
+array_aggregates.adb:345:46: warning: assertion might fail, requires X (N) = Elem_2
+array_aggregates.adb:352:21: info: length check proved
+array_aggregates.adb:353:7: warning: assertion might fail, requires X (True) = 4
+array_aggregates.adb:360:21: info: length check proved
+array_aggregates.adb:362:7: warning: assertion might fail, requires X (True) = 4
+array_aggregates.adb:369:21: info: length check proved
+array_aggregates.adb:371:7: warning: assertion might fail, requires X (True) = 4
+array_aggregates.adb:378:22: info: length check proved
+array_aggregates.adb:380:7: warning: assertion might fail, requires X (2) = 3
+array_aggregates.adb:387:22: info: length check proved
+array_aggregates.adb:389:7: warning: assertion might fail, requires X (2) = 3
+array_aggregates.adb:396:30: info: length check proved
+array_aggregates.adb:397:7: warning: assertion might fail, requires Stack.Get_Length (X (2)) = 2
+array_aggregates.adb:404:31: info: length check proved
+array_aggregates.adb:407:60: info: length check proved
+array_aggregates.adb:408:7: info: assertion proved
+array_aggregates.adb:411:59: info: length check proved
+array_aggregates.adb:418:31: info: length check proved
+array_aggregates.adb:421:60: info: length check proved
+array_aggregates.adb:422:7: info: assertion proved
+array_aggregates.adb:425:59: info: length check proved
+array_aggregates.adb:432:14: warning: subprogram "Aggregate_Test_Aj_Simplified" has no effect
+array_aggregates.adb:436:7: info: assertion proved
+array_aggregates.adb:436:36: info: length check proved
+array_aggregates.adb:437:38: info: length check proved
+array_aggregates.adb:439:7: info: assertion proved
+array_aggregates.adb:440:54: info: length check proved
+array_aggregates.adb:442:56: info: length check proved
+array_aggregates.adb:451:21: info: length check proved
+array_aggregates.adb:452:7: info: assertion proved
+array_aggregates.adb:453:38: info: length check proved
+array_aggregates.adb:461:21: info: length check proved
+array_aggregates.adb:463:24: warning: assertion might fail, requires X = Char_SetChar_Set'(others => N = N)
+array_aggregates.adb:463:38: info: length check proved
+stack.ads:35:54: info: length check proved
