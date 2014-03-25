@@ -669,8 +669,8 @@ entities in the program.
 Attribute Old
 -------------
 
-Inside Postcondition
-^^^^^^^^^^^^^^^^^^^^
+In a Postcondition
+^^^^^^^^^^^^^^^^^^
 
 Inside a postcondition, Ada 2012 defines attribute Old to refer to the
 values that expressions had at subprogram entry. For example, the postcondition
@@ -728,8 +728,57 @@ attribute Old to the entity prefix ``A``:
    procedure Extract (A : in out My_Array; J : Integer; V : out Value) with
      Post => (if J in A'Range then V = A'Old(J));
 
-In some cases, though, this transformation is not possible but it is
-still correct to evaluate the expression on subprogram entry, for example:
+In Contract Cases
+^^^^^^^^^^^^^^^^^
+
+The rule for attribute Old inside contract cases (see :ref:`Contract Cases`) is
+more permissive. Take for example the same contract
+as above for procedure ``Extract``, expressed with contract cases:
+
+.. code-block:: ada
+
+   procedure Extract (A : in out My_Array; J : Integer; V : out Value) with
+     Contract_Cases => ((J in A'Range) => V = A(J)'Old,
+                        others         => True);
+
+Only the expressions used as prefixes of attribute Old in the *currently
+enabled case* are copied on entry to the subprogram. So if ``Extract`` is
+called with ``J`` out of the range of ``A``, then the second case is enabled,
+so ``A(J)`` is not copied when entering procedure ``Extract``. Hence, the above
+code is allowed.
+
+It may still be the case that some contracts refer to the value of objects at
+subprogram entry inside potentially unevaluated expressions. For example, an
+incorrect variation of the above contract would be:
+
+.. code-block:: ada
+
+   procedure Extract (A : in out My_Array; J : Integer; V : out Value) with
+     Contract_Cases => (J >= A'First => (if J <= A'Last then V = A(J)'Old),  --  INCORRECT
+                        others       => True);
+
+For the same reason that such uses are forbidden by Ada RM inside
+postconditions, the SPARK RM forbids these uses inside contract cases (see
+SPARK RM 6.1.3(2)). The GNAT compiler issues the following error on the code
+above::
+
+   prefix of attribute "Old" that is potentially unevaluated must denote an entity
+
+The correct way to specify the consequence expression in the case above is to
+apply attribute Old to the entity prefix ``A``:
+
+.. code-block:: ada
+
+   procedure Extract (A : in out My_Array; J : Integer; V : out Value) with
+     Contract_Cases => (J >= A'First => (if J <= A'Last then V = A'Old(J)),
+                        others       => True);
+
+In a Potentially Unevaluated Expression
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+In some cases, the compiler issues the error discussed above (on attribute Old
+applied to a non-entity in a potentially unevaluated context) on an expression
+that can safely be evaluated on subprogram entry, for example:
 
 .. code-block:: ada
 
@@ -739,9 +788,9 @@ still correct to evaluate the expression on subprogram entry, for example:
 where function ``Get_If_In_Range`` returns the value ``A(J)`` when ``J`` is in
 the bounds of ``A``, and a default value otherwise.
 
-In that case, the solution is to rewrite the postcondition using non-shortcut
-boolean operators, so that the expression is not *potentially evaluated*
-anymore, for example:
+In that case, the solution is either to rewrite the postcondition using
+non-shortcut boolean operators, so that the expression is not *potentially
+evaluated* anymore, for example:
 
 .. code-block:: ada
 
@@ -758,49 +807,16 @@ attribute Old in potentially unevaluated expressions:
    procedure Extract (A : in out My_Array; J : Integer; V : out Value) with
      Post => (if J in A'Range then V = Get_If_In_Range(A,J)'Old);
 
-Inside Contract Cases
-^^^^^^^^^^^^^^^^^^^^^
+GNAT does not issue an error on the code above, and always evaluates the call
+to ``Get_If_In_Range`` on entry to procedure ``Extract``, even if this value
+may not be used when executing the postcondition. Note that the formal
+verification tool |GNATprove| correctly generates all required checks to prove
+that this evaluation on subprogram entry does not fail a run-time check or a
+contract (like the precondition of ``Get_If_In_Range`` if any).
 
-The rule for attribute Old inside contract cases (see :ref:`Contract Cases`) is
-more permissive. Take for example the same contract
-as above for procedure ``Extract``, expressed with contract cases:
-
-.. code-block:: ada
-
-   procedure Extract (A : in out My_Array; J : Integer; V : out Value) with
-     Contract_Cases => ((J in A'Range) => V = A(J)'Old,
-                        others         => True);
-
-Only the expressions used as prefixes of attribute Old in the *currently
-enabled case* are copied on entry to the subprogram. So if ``Extract`` is
-called with ``J`` out of the range of ``A``, then the second case is enabled,
-so ``A(J)`` is not copied when entering procedure ``Extract``. So the above is
-allowed.
-
-It may still be the case that some complex contracts require referring to the
-value of complex objects at subprogram entry, in particular when getter
-functions are involved.  For example, the contract of procedure ``Extract`` may
-specify that, when ``J`` in is in the range of ``A``, then for all values ``K``
-in some range, then either a condition holds or the value of ``V`` is equal to
-some expression involving attribute Old applied to a call to a getter function
-(using here a shortcut boolean expression):
-
-.. code-block:: ada
-
-   procedure Extract (A : in out My_Array; J : Integer; V : out Value) with
-     Contract_Cases => ((J in A'Range) =>
-                          (for all K in 1 .. J =>
-                             (Condition(A(K)) or else V = Get(A)'Old(K))),
-                        others         => True);
-
-In such a case, the GNAT compiler does not issue an error (contrary to what it
-does in postconditions), instead it issues a warning::
-
-   warning: prefix of attribute "Old" is always evaluated when related consequence is selected
-
-It is then up to the user to decide if this warning uncovers a potential
-problem. If not, the user can silence the compiler with a suitable pragma
-Warnings Off.
+Pragma Unevaluated_Use_Of_Old applies to uses of attribute Old both inside
+postconditions and inside contract cases. See GNAT RM for a detailed
+description of this pragma.
 
 .. _loop invariants:
 
