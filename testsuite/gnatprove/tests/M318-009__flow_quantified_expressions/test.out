@@ -1,6 +1,5 @@
 test.adb:22:26: warning: statement has no effect
 test.adb:23:28: warning: unused assignment
-test.adb:26:10: warning: "Temp_Table" might not be initialized
 // package_body_test_cfg
 digraph G {
    graph [splines=True];
@@ -126,7 +125,8 @@ digraph G {
     18 [label="i'initial\nVD: {I}\n<VId: 18>",shape="plaintext"];
     19 [label="i'final\nVU: {I}\n<VId: 19>",shape="plaintext",fontcolor="red"];
     20 [label="for i in 1 .. 9\nLoops:&nbsp;L_3\nVD: {I}\n<VId: 20>",shape="diamond"];
-    21 [label="pragma check (assert,  for all x in 1 .. 9 => table (x) /= temp_table (x));\nVU: {X, Temp_Table, Table}\n<VId: 21>"];
+    21 [label="initialization in loop L_3\nVD: {Temp_Table}\n<VId: 21>"];
+    22 [label="pragma check (assert,  for all x in 1 .. 9 => table (x) /= temp_table (x));\nVU: {X, Temp_Table, Table}\n<VId: 22>"];
 
     1 ->  11 [arrowType="normal"];
     2 ->  6 [arrowType="normal"];
@@ -137,13 +137,14 @@ digraph G {
     7 ->  1 [arrowType="normal"];
     11 ->  12 [arrowType="normal"];
     12 ->  13 [arrowType="normal"];
-    13 ->  17 [arrowType="normal"];
+    13 ->  21 [arrowType="normal"];
     14 ->  1 [arrowType="normal"];
     17 ->  20 [arrowType="normal"];
     18 ->  1 [arrowType="normal"];
     20 ->  17 [arrowType="normal"];
-    20 ->  21 [arrowType="normal"];
-    21 ->  2 [arrowType="normal"];
+    20 ->  22 [arrowType="normal"];
+    21 ->  17 [arrowType="normal"];
+    22 ->  2 [arrowType="normal"];
 }
 
 // subprogram_qe_2_pdg
@@ -164,27 +165,29 @@ digraph G {
     18 [label="i'initial\nVD: {I}\n<VId: 18>",shape="plaintext"];
     19 [label="i'final\nVU: {I}\n<VId: 19>",shape="plaintext",fontcolor="red"];
     20 [label="for i in 1 .. 9\nLoops:&nbsp;L_3\nVD: {I}\n<VId: 20>",shape="diamond"];
-    21 [label="pragma check (assert,  for all x in 1 .. 9 => table (x) /= temp_table (x));\nVU: {X, Temp_Table, Table}\n<VId: 21>"];
+    21 [label="initialization in loop L_3\nVD: {Temp_Table}\n<VId: 21>"];
+    22 [label="pragma check (assert,  for all x in 1 .. 9 => table (x) /= temp_table (x));\nVU: {X, Temp_Table, Table}\n<VId: 22>"];
 
     1 ->  11 [arrowType="normal"];
     1 ->  17 [arrowType="normal"];
     1 ->  20 [arrowType="normal"];
     1 ->  21 [arrowType="normal"];
+    1 ->  22 [arrowType="normal"];
     5 ->  12 [arrowType="normal",color="red"];
     7 ->  8 [arrowType="normal",color="red"];
-    7 ->  21 [arrowType="normal",color="red"];
+    7 ->  22 [arrowType="normal",color="red"];
     11 ->  12 [arrowType="normal"];
     11 ->  13 [arrowType="normal"];
     12 ->  13 [arrowType="normal",color="cornflowerblue"];
     13 ->  6 [arrowType="normal",color="red"];
-    13 ->  21 [arrowType="normal",color="red"];
-    14 ->  17 [arrowType="normal",color="red"];
+    13 ->  22 [arrowType="normal",color="red"];
     17 ->  15 [arrowType="normal",color="red"];
     17 ->  17 [arrowType="normal",color="red"];
-    17 ->  21 [arrowType="normal",color="red"];
+    17 ->  22 [arrowType="normal",color="red"];
     18 ->  17 [arrowType="normal",color="red"];
     20 ->  17 [arrowType="normal"];
     20 ->  19 [arrowType="normal",color="red"];
     20 ->  20 [arrowType="normal"];
+    21 ->  17 [arrowType="normal",color="red"];
 }
 
