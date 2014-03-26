@@ -298,15 +298,6 @@ message, or on line 23 in file ``linear_search.adb``, to show the path on which
 
 Another click on the icon makes the path disappear.
 
-.. note::
-
-   If you use the SPARK-HiLite GPL 2013 release, the way to display a path in
-   GPS is slightly different. Instead of clicking on an icon, you need to
-   right-click on the error message in the Location View, and select
-   :menuselection:`Prove --> Show Path` in the contextual menu that is
-   raised. The menu :menuselection:`Prove --> Show Path` displayed when
-   right-clicking in the code panel should not be used.
-
 This shows that, when the value is not found, the component ``At_Index``
 of the value returned is indeed not initialized. Although that is allowed in Ada,
 |SPARK| requires that all inputs and outputs of subprograms are completely
@@ -456,15 +447,6 @@ the left of the message, or on line 35 in file ``linear_search.ads``, to show th
 on which the contract case is not proved:
 
 .. image:: static/search_path_info.png
-
-.. note::
-
-   If you use the SPARK-HiLite GPL 2013 release, the way to display a path in
-   GPS is slightly different. Instead of clicking on an icon, you need to
-   right-click on the error message in the Location View, and select
-   :menuselection:`Prove --> Show Path` in the contextual menu that is
-   raised. The menu :menuselection:`Prove --> Show Path` displayed when
-   right-clicking in the code panel should not be used.
 
 This corresponds to a case where the implementation of ``Search`` does not
 find the searched value, but the guard of the second contract case holds,
