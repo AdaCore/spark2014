@@ -13,12 +13,12 @@ is
 
    procedure P3 (Par : in out Vol_Rec_T) is
    begin
-      Par.X := Par.X + 1;
+      Par.X := Par.X + 1; -- illegal RM 7.1.3(13)
    end P3;
 
    procedure P4 (X : in out Integer) is
    begin
-      X := X + 1;
+      X := X + 1; -- legal, X is not Volatile
    end P4;
 begin
    P1 (Vol1, A);  --  Vol1 does not have Effective_Reads => False.

@@ -2,6 +2,7 @@ package P
   with SPARK_Mode => On
 is
    -- N110-011 calls for the removal of volatile types for SPARK 2014 rel 1.
+   -- N127-006 reverts this, allowing Volatile types.
    --
    -- This small test case provides evidence that this has been implemented.
 
