@@ -1,10 +1,12 @@
 caller.adb:29:09: warning: unused assignment to "Tmp"
-types.adb:40:14: warning: subprogram "Test_01" has no effect
+types.adb:34:14: warning: subprogram "Test_01" has no effect
+types.adb:34:23: warning: unused variable "R"
+types.adb:40:23: "R.X" is not written in "Test_02"
 types.adb:40:23: warning: unused variable "R"
-types.adb:46:23: "R.X" is not initialized in "Test_02"
+types.adb:46:23: warning: "R.X" is not modified, could be "in"
 types.adb:46:23: warning: unused variable "R"
-types.adb:52:23: warning: "R.X" is not modified, could be "in"
-types.adb:52:23: warning: unused variable "R"
+types.adb:56:09: volatile formal out "R" cannot be read (SPARK RM 7.1.3(14))
+types.adb:64:09: volatile formal out "R" cannot be read (SPARK RM 7.1.3(14))
    compilation of types.adb failed
 
 

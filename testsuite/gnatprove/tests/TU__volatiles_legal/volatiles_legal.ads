@@ -35,24 +35,20 @@ is
 
    type Vol_Rec_T is record
       X : Integer;
-   end record;
---   end record with Volatile;
+   end record with Volatile;
 
    Vol : Vol_Rec_T
-     with Volatile,
-          Async_Readers,
+     with Async_Readers,
           Async_Writers => False,
           Address => System.Storage_Elements.To_Address (16#BA12#);
 
    Vol2 : Vol_Rec_T
-     with Volatile,
-          Async_Writers,
+     with Async_Writers,
           Address => System.Storage_Elements.To_Address (16#BABE5#);
 
    procedure P2
      with Global => (In_Out => Vol);
 
-   --  Enable once N108-024 is fixed.
-   --  procedure P3
-   --    with Global => (Output => Vol2);
+   procedure P3
+     with Global => (Output => Vol2);
 end Volatiles_Legal;

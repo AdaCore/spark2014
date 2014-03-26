@@ -1,11 +1,13 @@
 with System.Storage_Elements; use System.Storage_Elements;
 
 package body Types
-   with Refined_State => (State => (A, C, D, E))
+  with Refined_State => (State => (A,
+                                   --  B,
+                                   C,
+                                   D,
+                                   E))
 is
---  Restore this when Volatile types are re-introduced
---   type Volatile_Integer is new Integer with Volatile;
-   type Volatile_Integer is new Integer;
+   type Volatile_Integer is new Integer with Volatile;
 
    A : Volatile_Integer;
 
@@ -16,13 +18,11 @@ is
 
    type Record_T is record
       X : Integer;
-   end record;
---  Restore this when Volatile types are re-introduced
---   end record with Volatile;
+   end record with Volatile;
 
    --  B : Illegal_Record_T with Volatile, Async_Writers, Effective_Reads;
 
-   C : Volatile_Integer with Volatile, Async_Writers, Effective_Reads;
+   C : Volatile_Integer with Async_Writers, Effective_Reads;
 
    D : Integer with Volatile;
 
@@ -30,12 +30,6 @@ is
 
    --  We can't do this, thankfully (SPARK RM 7.1.3(6))
    --  VC : constant Record_T with Address => To_Address (16#deadbeef#);
-
---     procedure Fail (V : Volatile_Integer)
---     is
---     begin
---        null;
---     end Fail;
 
    procedure Test_01 (R : in Record_T)
    is
@@ -55,19 +49,19 @@ is
       null;
    end Test_03;
 
-   --  procedure Test_04 (R : out Record_T;
-   --                     X : out Integer)
-   --  is
-   --  begin
-   --     X := R.X;  -- illegal
-   --  end Test_04;
+   procedure Test_04 (R : out Record_T;
+                      X : out Integer)
+   is
+   begin
+      X := R.X;  -- illegal
+   end Test_04;
 
-   --  procedure Test_05 (R : out Record_T;
-   --                     X : out Integer)
-   --  is
-   --  begin
-   --     R.X := 12;
-   --     X := R.X;  -- illegal
-   --  end Test_05;
+   procedure Test_05 (R : out Record_T;
+                      X : out Integer)
+   is
+   begin
+      R.X := 12;
+      X := R.X;  -- illegal
+   end Test_05;
 
 end Types;
