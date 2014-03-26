@@ -6311,11 +6311,15 @@ package body Gnat2Why.Expr is
       --  If we have an object with Async_Writers, we must havoc it before
       --  dereferencing it. Given a ref term t, this produces the sequence:
       --     (__havoc(t); !t)
+      --  It is sound (and necessary) to only do that in the program domain. We
+      --  can be sure that the relevant Ada code will pass this point at least
+      --  once in program domain.
 
-      if Has_Async_Writers (Direct_Mapping_Id (Ent)) then
+      if Has_Async_Writers (Direct_Mapping_Id (Ent))
+        and then Domain = EW_Prog
+      then
          pragma Assert (Is_Mutable_In_Why (Ent));
          pragma Assert (Params.Ref_Allowed);
-         pragma Assert (Domain = EW_Prog);
          T := +Sequence (Left  => New_Call (Name => To_Ident (WNE_Havoc),
                                             Args => (1 => T)),
                          Right => New_Deref (Ada_Node => Get_Ada_Node (+T),
