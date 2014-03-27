@@ -345,7 +345,11 @@ The new aspects are:
    * the actual parameter in a procedure call of which the corresponding
      formal parameter is of a non-scalar Volatile type; or
 
-   * the prefix of a name occurring in a non-interfering context.
+   * the prefix of a ``slice``, ``selected_component``, ``indexed_component``,
+     or ``attribute_reference`` which is itself a name occurring in a
+     non-interfering context.
+
+[Note: the final rule forbids the use of a ``slice`` of a volatile array.]
 
 .. _etu-external_state_variables-lr:
 
