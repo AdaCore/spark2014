@@ -1,0 +1,24 @@
+array_applications.adb:9:22: warning: postcondition might fail
+array_applications.adb:11:43: warning: overflow check might fail
+array_applications.adb:19:10: info: loop invariant initialization proved
+array_applications.adb:19:10: info: loop invariant preservation proved
+array_applications.adb:20:22: info: range check proved
+array_applications.adb:21:18: info: index check proved
+array_applications.adb:21:27: info: index check proved
+array_applications.adb:21:32: info: overflow check proved
+array_applications.adb:21:38: info: index check proved
+array_applications.adb:25:27: warning: overflow check might fail
+array_applications.adb:32:22: warning: postcondition might fail
+array_applications.adb:34:43: warning: overflow check might fail
+array_applications.adb:42:10: info: loop invariant initialization proved
+array_applications.adb:42:10: warning: loop invariant might fail after first iteration
+array_applications.adb:43:22: info: range check proved
+array_applications.adb:44:18: info: index check proved
+array_applications.adb:44:27: info: index check proved
+array_applications.adb:44:32: info: overflow check proved
+array_applications.adb:44:38: info: index check proved
+array_applications.adb:45:26: info: range check proved
+array_applications.adb:47:24: info: index check proved
+array_applications.adb:47:38: info: index check proved
+array_applications.adb:47:44: warning: overflow check might fail
+array_applications.adb:49:27: warning: overflow check might fail
