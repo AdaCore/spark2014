@@ -222,9 +222,11 @@ package body Flow_Tree_Utility is
 
          when E_In_Parameter =>
             case A is
-               when Pragma_Async_Writers | Pragma_Effective_Reads =>
+               when Pragma_Async_Writers =>
                   return True;
-               when Pragma_Async_Readers | Pragma_Effective_Writes =>
+               when Pragma_Async_Readers    |
+                    Pragma_Effective_Reads  |
+                    Pragma_Effective_Writes =>
                   return False;
                when others =>
                   raise Program_Error;
