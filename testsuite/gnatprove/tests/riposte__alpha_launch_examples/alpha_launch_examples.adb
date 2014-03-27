@@ -10,7 +10,7 @@ is
       C : Integer;
    end record;
 
-   type Scale is range 0 .. 100;
+   type Scale            is range 0 .. 100;
    type Display_Quantity is range 0 .. 1000;
 
    function Example_1 (X : in Integer) return Integer
@@ -37,7 +37,7 @@ is
                        B : in U64)
                       return U64
      with Pre  => A > 17 and B > 19,
-          Post => Example_3'Result > 0
+          Post => Example_3'Result > 0  --  @POSTCONDITION:FAIL
    is
    begin
       return 73 xor (A * B);
@@ -53,7 +53,7 @@ is
                                          Enum_T'Pred (Enum_T'Last) =>
                (for all J in Enum_T range Enum_T'Succ (I) .. Enum_T'Last =>
                   (A (I) /= A (J)))),
-          Post    => Example_5'Result = (A (V1) = A (V2))
+          Post    => Example_5'Result = (A (V1) = A (V2))  --  @POSTCONDITION:FAIL
    is
    begin
       return V1 = V2;
