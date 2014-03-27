@@ -349,8 +349,6 @@ The new aspects are:
      or ``attribute_reference`` which is itself a name occurring in a
      non-interfering context.
 
-[Note: the final rule forbids the use of a ``slice`` of a volatile array.]
-
 .. _etu-external_state_variables-lr:
 
 
