@@ -1,0 +1,29 @@
+arrays_of_records.adb:23:7: warning: assertion might fail, requires A(17).First_Value = 23
+arrays_of_records.adb:30:7: warning: assertion might fail, requires A(I).First_Value = 23
+arrays_of_records.adb:35:22: warning: postcondition might fail, requires A(17).First_Value = 23
+arrays_of_records.adb:44:22: warning: postcondition might fail, requires A(I).First_Value = 23
+arrays_of_records.adb:55:22: warning: postcondition might fail, requires A(17).First_Value = 23
+arrays_of_records.adb:61:7: info: assertion proved
+arrays_of_records.adb:68:22: warning: postcondition might fail, requires A(I).First_Value = 23
+arrays_of_records.adb:74:7: info: assertion proved
+arrays_of_records.adb:81:22: warning: postcondition might fail, requires A(17).First_Value = 42
+arrays_of_records.adb:90:22: warning: postcondition might fail, requires A(I).First_Value = 42
+arrays_of_records.adb:102:22: warning: postcondition might fail, requires A(17).First_Value = 42
+arrays_of_records.adb:109:7: info: assertion proved
+arrays_of_records.adb:116:22: warning: postcondition might fail, requires A(I).First_Value = 42
+arrays_of_records.adb:123:7: info: assertion proved
+arrays_of_records.adb:130:22: warning: postcondition might fail, requires A(17).First_Value /= 23
+arrays_of_records.adb:141:22: warning: postcondition might fail, requires A(I).First_Value /= 23
+arrays_of_records.adb:153:22: warning: postcondition might fail, requires A(17).First_Value /= 23
+arrays_of_records.adb:160:7: info: assertion proved
+arrays_of_records.adb:168:22: warning: postcondition might fail, requires A(I).First_Value /= 23
+arrays_of_records.adb:175:7: info: assertion proved
+arrays_of_records.adb:182:22: warning: postcondition might fail, requires A /= A'old
+arrays_of_records.adb:193:22: warning: postcondition might fail, requires A = A'old
+arrays_of_records.adb:206:22: warning: postcondition might fail, requires A /= A'old
+arrays_of_records.adb:220:22: warning: postcondition might fail, requires A /= A'old
+arrays_of_records.adb:236:22: warning: postcondition might fail, requires A /= A'old
+arrays_of_records.adb:252:22: warning: postcondition might fail
+arrays_of_records.adb:264:22: warning: postcondition might fail
+arrays_of_records.adb:276:22: warning: postcondition might fail, requires A /= A'old
+arrays_of_records.adb:289:22: warning: postcondition might fail, requires A /= A'old
