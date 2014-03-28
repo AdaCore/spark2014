@@ -1,14 +1,3 @@
-(** 
-_AUTHOR_
-
-<<
-Zhi Zhang
-Departmnt of Computer and Information Sciences
-Kansas State University
-zhangzhi@ksu.edu
->>
-*)
-
 Require Export values.
 
 (** for any valid variable x, it has an in/out mode, type and value 

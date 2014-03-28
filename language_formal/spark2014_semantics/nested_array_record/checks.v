@@ -29,33 +29,6 @@ Inductive run_time_checks: Type :=
 *)
 Definition run_time_check_set := list run_time_checks.
 
-(** produce check flags for expressions according to the checking rules; 
-    it is a mapping from one ast node to a set of run time checks;
-*)
-Inductive check_flags: expression -> run_time_check_set -> Prop :=
-    | CF_Literal_Int: forall ast_num n,
-        check_flags (E_Literal ast_num (Integer_Literal n)) nil
-    | CF_Literal_Bool: forall ast_num b,
-        check_flags (E_Literal ast_num (Boolean_Literal b)) nil
-    | CF_Identifier: forall ast_num x,  
-        check_flags (E_Name ast_num (E_Identifier x)) nil
-    | CF_Binary_Operation_Plus: forall ast_num e1 e2,
-        check_flags (E_Binary_Operation ast_num Plus e1 e2) (Do_Overflow_Check :: nil)
-    | CF_Binary_Operation_Minus: forall ast_num e1 e2,
-        check_flags (E_Binary_Operation ast_num Minus e1 e2) (Do_Overflow_Check :: nil)
-    | CF_Binary_Operation_Multiply: forall ast_num e1 e2,
-        check_flags (E_Binary_Operation ast_num Multiply e1 e2) (Do_Overflow_Check :: nil)
-    | CF_Binary_Operation_Div: forall ast_num e1 e2,
-        check_flags (E_Binary_Operation ast_num Divide e1 e2) (Do_Division_Check :: Do_Overflow_Check :: nil)
-    | CF_Binary_Operation_Others: forall ast_num op e1 e2,
-        op <> Plus ->
-        op <> Minus ->
-        op <> Multiply ->
-        op <> Divide ->
-        check_flags (E_Binary_Operation ast_num op e1 e2) nil
-    | CF_Unary_Operation: forall ast_num op e, (* extend  with more unary operators later *)
-        check_flags (E_Unary_Operation ast_num op e) nil.
-
 (** ** semantics for run time checks *)
 (** 32-bit integer is in the range of min_signed and max_signed, where
     min_signed: -2^31 

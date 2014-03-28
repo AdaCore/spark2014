@@ -1,6 +1,4 @@
-Require Import language.
 Require Import values.
-Require Import util.
 
 (** * Run Time Check Rules *)
 (** ** check rules marking _what_ and _where_ to check *)
@@ -14,6 +12,12 @@ Require Import util.
 
        This flag is set on an operator where an overflow check is required on
        the operation.
+     
+     - Do_Range_Check
+       
+       Subscript expressions in an indexed component. In this case the
+       target type is determined from the type of the array, which is
+       referenced by the Prefix of the N_Indexed_Component node.
 *)
 
 
@@ -22,6 +26,7 @@ Require Import util.
 Inductive run_time_checks: Type := 
     | Do_Division_Check: run_time_checks
     | Do_Overflow_Check: run_time_checks.
+(*  | Do_Range_Check: run_time_checks *)
 
 (** For an expression or statement, there may exists list of checks 
     enforced on it, for example, for division expression, both
@@ -37,8 +42,9 @@ Inductive check_flags: expression -> run_time_check_set -> Prop :=
         check_flags (E_Literal ast_num (Integer_Literal n)) nil
     | CF_Literal_Bool: forall ast_num b,
         check_flags (E_Literal ast_num (Boolean_Literal b)) nil
-    | CF_Identifier: forall ast_num x,  
-        check_flags (E_Name ast_num (E_Identifier x)) nil
+    | CF_Name: forall n flags ast_num,
+        name_check_flags n flags -> 
+        check_flags (E_Name ast_num n) flags
     | CF_Binary_Operation_Plus: forall ast_num e1 e2,
         check_flags (E_Binary_Operation ast_num Plus e1 e2) (Do_Overflow_Check :: nil)
     | CF_Binary_Operation_Minus: forall ast_num e1 e2,
@@ -54,7 +60,23 @@ Inductive check_flags: expression -> run_time_check_set -> Prop :=
         op <> Divide ->
         check_flags (E_Binary_Operation ast_num op e1 e2) nil
     | CF_Unary_Operation: forall ast_num op e, (* extend  with more unary operators later *)
-        check_flags (E_Unary_Operation ast_num op e) nil.
+        check_flags (E_Unary_Operation ast_num op e) nil
+(*
+    | CF_Named_Record_Aggregate:    
+        check_flags (E_Named_Record_Aggregate ast_num lie) flags
+    | CF_Positional_Array_Aggregate
+        check_flags (E_Positional_Array_Aggregate ast_num le) flags
+*)
+
+with name_check_flags: name -> run_time_check_set -> Prop :=
+    | NCF_Identifier: forall ast_num x,
+        name_check_flags (E_Identifier ast_num x) nil
+    | NCF_Indexed_Component: forall e flags ast_num x_ast_num x,
+        check_flags e flags ->
+        name_check_flags (E_Indexed_Component ast_num x_ast_num x e) flags
+    | NCF_Selected_Component: forall ast_num x_ast_num x y,
+        name_check_flags (E_Selected_Component ast_num x_ast_num x y) nil.
+
 
 (** ** semantics for run time checks *)
 (** 32-bit integer is in the range of min_signed and max_signed, where

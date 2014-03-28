@@ -1,14 +1,3 @@
-(** 
-_AUTHOR_
-
-<<
-Zhi Zhang
-Departmnt of Computer and Information Sciences
-Kansas State University
-zhangzhi@ksu.edu
->>
-*)
-
 Require Export language.
 Require Export util.
 
@@ -30,13 +19,12 @@ Inductive Return (A:Type): Type :=
     | Run_Time_Error: Return A
     | Unterminated: Return A
     | Abnormal: Return A.
+
 (* TODO: add stuff in error states *)
 Arguments Normal [A] a.
 Arguments Run_Time_Error {A}.
 Arguments Unterminated {A}.
 Arguments Abnormal {A}.
-
-
 
 
 (** * Value Types *) 
@@ -75,17 +63,10 @@ Inductive value : Type :=
 with aggregate_value : Type :=
     | ArrayV (a: list value)
     | RecordV (r: list (idnum*value)).
-(*
-Inductive value : Type :=
-    | Int (n : Z)
-    | Bool (b : bool)
-    | ArrayV (a: list value)
-    | RecordV (r: list (idnum*value)).
-*)
 
 (** Type of stored values in the store.
 TODO: rename into value_stored, for uniformity with type_stored. *)
-Inductive val: Type := 
+Inductive value_stored: Type := 
     | Value (v:value)
     | Procedure (pb: procedure_declaration)
     | TypeDef (typ: type)

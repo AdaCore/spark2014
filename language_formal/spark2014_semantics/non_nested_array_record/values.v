@@ -27,8 +27,6 @@ Arguments Unterminated {A}.
 Arguments Abnormal {A}.
 
 
-
-
 (** * Value Types *) 
 
 (** the range of 32-bit (singed/unsigned) integer type: 
@@ -65,17 +63,10 @@ Inductive aggregate_value : Type :=
 Inductive value : Type :=
     | BasicV (v: basic_value)
     | AggregateV (v: aggregate_value).
-(*
-Inductive value : Type :=
-    | Int (n : Z)
-    | Bool (b : bool)
-    | ArrayV (a: list value)
-    | RecordV (r: list (idnum*value)).
-*)
 
 (** Type of stored values in the store.
 TODO: rename into value_stored, for uniformity with type_stored. *)
-Inductive val: Type := 
+Inductive value_stored: Type := 
     | Value (v:value)
     | Procedure (pb: procedure_declaration)
     | TypeDef (typ: type)

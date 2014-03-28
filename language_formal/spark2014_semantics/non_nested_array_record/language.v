@@ -69,7 +69,7 @@ Inductive basic_type: Type :=
     | Integer (* 3.5.4 *).
 
 Inductive aggregate_type: Type :=
-    | ArrayT (t: basic_type) (l : Z) (h: Z) (* 3.6 *) (* t[l..h] *)
+    | ArrayT (t: basic_type) (l : Z) (u: Z) (* 3.6 *) (* t[l..u] *)
     | RecordT (r: list (idnum * basic_type)) (* 3.8 *).
 
 Inductive type: Type :=
@@ -78,61 +78,57 @@ Inductive type: Type :=
 
 (** ** Literals *)
 Inductive literal: Type :=
-	| Integer_Literal: Z -> literal (* 2.4 *)
-        | Boolean_Literal: bool -> literal (* 3.5.3 *).
+    | Integer_Literal: Z -> literal (* 2.4 *)
+    | Boolean_Literal: bool -> literal (* 3.5.3 *).
 
 (** unary and binary operators *)
 Inductive unary_operator: Type := 
-        | Not: unary_operator     
-        | Unary_Plus: unary_operator.
-(*	| Unary_Minus: unary_operator. *)
+    | Not: unary_operator     
+    | Unary_Plus: unary_operator.
+(*  | Unary_Minus: unary_operator. *)
 
 Inductive binary_operator: Type := 
-	| Equal: binary_operator 
-	| Not_Equal: binary_operator
-	| Greater_Than: binary_operator
-	| Greater_Than_Or_Equal: binary_operator
-	| Less_Than: binary_operator
-	| Less_Than_Or_Equal: binary_operator
-	| And: binary_operator
-	| Or: binary_operator
-	| Plus: binary_operator
-	| Minus: binary_operator
-	| Multiply: binary_operator
-	| Divide: binary_operator.
+    | Equal: binary_operator 
+    | Not_Equal: binary_operator
+    | Greater_Than: binary_operator
+    | Greater_Than_Or_Equal: binary_operator
+    | Less_Than: binary_operator
+    | Less_Than_Or_Equal: binary_operator
+    | And: binary_operator
+    | Or: binary_operator
+    | Plus: binary_operator
+    | Minus: binary_operator
+    | Multiply: binary_operator
+    | Divide: binary_operator.
 
 (* Ada 2012 RM, Chapter 3. Declaration and Types *)
 
 (** ** Expressions *)
 (* Chapter 4 *)
 Inductive expression: Type := 
-	| E_Literal: astnum -> literal -> expression (* 4.2 *)
-	| E_Binary_Operation: astnum -> binary_operator -> expression -> expression -> expression (* 4.5.3 and 4.5.5 *)
-	| E_Unary_Operation: astnum -> unary_operator -> expression -> expression (* 4.5.4 *) 
-        (* variable/indexed/selected component *)
-        | E_Name: astnum -> name -> expression (* 4.1 *)
-        (* array/record *) 
-        | E_Named_Record_Aggregate: astnum -> list (idnum * expression) -> expression (* 4.3.1 *) 
-        | E_Positional_Array_Aggregate: astnum -> list expression -> expression (* 4.3.3 *)
-(*      (* other forms of array/record *)
-        | E_Positional_Record_Aggregate: astnum -> list expression -> expression (* 4.3.1 *) 
-        | E_Named_Array_Aggregate: astnum -> list ((list expression (* or Range *)) * expression) -> expression (* 4.3.3 *)
-        | E_Positional_Array_Aggregate_With_Others: astnum -> list expression ->  (* others *) option expression -> expression (* 4.3.3 *) *)
+    | E_Literal: astnum -> literal -> expression (* 4.2 *)
+    | E_Name: astnum -> name -> expression (* 4.1 *)
+    | E_Binary_Operation: astnum -> binary_operator -> expression -> expression -> expression (* 4.5.3 and 4.5.5 *)
+    | E_Unary_Operation: astnum -> unary_operator -> expression -> expression (* 4.5.4 *) 
+    (* array/record *) 
+    | E_Positional_Array_Aggregate: astnum -> list expression -> expression (* 4.3.3 *)
+    | E_Named_Record_Aggregate: astnum -> list ((astnum * idnum) * expression) -> expression (* 4.3.1 *)
 
 with name: Type := (* 4.1 *)
-        | E_Identifier: idnum -> name (* 4.1 *)
-        | E_Indexed_Component: idnum -> expression -> name (* 4.1.1 *)
-        | E_Selected_Component: idnum -> idnum -> name (* 4.1.3 *).
+    | E_Identifier: astnum -> idnum -> name (* 4.1 *)
+    | E_Indexed_Component: astnum -> astnum -> idnum -> expression -> name (* 4.1.1 *)
+    | E_Selected_Component: astnum -> astnum -> idnum -> idnum -> name (* 4.1.3 *). (* the first astnum for the record field and second one for record *)
+
 
 (** ** Statements *)
 (* Chapter 5 *)
 (* Sequence is not a statement in Ada, it's a shortcut for now *)
 Inductive statement: Type := 
-	| S_Assignment: astnum -> name -> expression -> statement (* 5.2 *)
-	| S_If: astnum -> expression -> statement -> statement (* 5.3 *)
-	| S_While_Loop: astnum -> expression -> statement -> statement (* 5.5 *)
-	| S_Sequence: astnum -> statement -> statement -> statement (* 5.1 *)
-        | S_ProcCall: astnum -> procnum -> list expression -> statement.
+    | S_Assignment: astnum -> name -> expression -> statement (* 5.2 *)
+    | S_If: astnum -> expression -> statement -> statement (* 5.3 *)
+    | S_While_Loop: astnum -> expression -> statement -> statement (* 5.5 *)
+    | S_Sequence: astnum -> statement -> statement -> statement (* 5.1 *)
+    | S_ProcCall: astnum -> procnum -> list expression -> statement.
 
 
 (* 6.2 *)
@@ -142,46 +138,42 @@ Inductive mode: Type :=
     | In_Out: mode.
 
 Inductive type_declaration: Type := (* 3.2.1 *)
-    (* Full_Type_Declaration *) (* 3.2.1 *)
-    | Array_Type_Declaration: (* Constrained_Array_Definition, now only consider one-dimentional array *)
-        astnum -> typenum (* type name *) -> basic_type -> expression (*min*) -> expression (*max*) -> type_declaration (* 3.6 *)
+    | Array_Type_Declaration: (* Constrained_Array_Definition, non-nested one-dimentional array *)
+        astnum -> typenum (*array name*) -> typenum (*component type*) -> 
+          expression (*lower bound*) -> expression (*upper bound*) -> type_declaration (* 3.6 *)
     | Record_Type_Declaration: 
-        astnum -> typenum (* type name *) -> list (idnum * basic_type) -> type_declaration (* 3.8 *).
-(*  | Unconstrained_Array_Type_Declaration
-    | Null_Record_Declaration: astnum -> type_declaration. (* 3.8 *)
-    | Other_Full_Type_Definition
-    | private_type_declaration (* 3.2.1 *) *)
+        astnum -> typenum (*record name*) -> list (idnum * typenum (*field type*)) -> type_declaration (* 3.8 *).
 
 (* 3.3.1 *)
 Record object_declaration: Type := mkobject_declaration{
-	declaration_astnum: astnum;
-        object_name: idnum;
-	object_nominal_subtype: typenum;
-	initialization_expression: option (expression)
+    declaration_astnum: astnum;
+    object_name: idnum;
+    object_nominal_subtype: typenum;
+    initialization_expression: option (expression)
 }.
 
 (* 6.1 (15/3) *)
 Record parameter_specification: Type := mkparameter_specification{
-	parameter_astnum: astnum;
-        parameter_name: idnum;
-	parameter_subtype_mark: typenum;
-	parameter_mode: mode;
-	parameter_default_expression: option (expression)
+    parameter_astnum: astnum;
+    parameter_name: idnum;
+    parameter_subtype_mark: typenum;
+    parameter_mode: mode;
+    parameter_default_expression: option (expression)
 }.
 
 (* 13.1.1 *)
 Record aspect_specification: Type := mkaspect_specification{
-	aspect_astnum: astnum;
-	aspect_mark: aspectnum;
-	aspect_definition: expression
+    aspect_astnum: astnum;
+    aspect_mark: aspectnum;
+    aspect_definition: expression
 }.
 
 (* Mutual records/inductives are not allowed in coq, so we build a record by hand. *)
 Inductive declaration: Type :=  (* 3.1 *)
     | D_Object_Declaration: astnum -> object_declaration -> declaration (* 3.3.1 *) 
-    | D_Procedure_Declaration: procedure_declaration -> declaration (* 6.1 *)
-    | Type_Declaration: astnum -> type_declaration -> declaration (* 3.2.1 *)
-    | D_Sequence: declaration -> declaration -> declaration
+    | D_Procedure_Declaration: astnum -> procedure_declaration -> declaration (* 6.1 *)
+    | D_Type_Declaration: astnum -> type_declaration -> declaration (* 3.2.1 *)
+    | D_Sequence: astnum -> declaration -> declaration -> declaration
  (* | package_declaration 
     | Other_Declarations *)
 
@@ -219,28 +211,28 @@ end.
 
 (* 6.3 *)
 Record function_body: Type := mkfunction_body{
-	function_astnum: astnum;
-	function_name: procnum;
-	function_result_subtype: typenum; (* 6.5 (3/2) *)
-	function_contracts: list aspect_specification;
-	function_parameter_profile: list parameter_specification;
-	function_declarative_part: declaration;
-	function_statements: statement
+    function_astnum: astnum;
+    function_name: procnum;
+    function_result_subtype: typenum; (* 6.5 (3/2) *)
+    function_contracts: list aspect_specification;
+    function_parameter_profile: list parameter_specification;
+    function_declarative_part: declaration;
+    function_statements: statement
 }.
 
 (** ** Compilation unit: subprogram *)
 (* 6.1 *)
 Inductive subprogram: Type := 
-	| Global_Procedure: astnum -> procedure_declaration -> subprogram
-(*	| Global_Function: astnum -> function_body -> subprogram *).
+    | Global_Procedure: astnum -> procedure_declaration -> subprogram
+(*  | Global_Function: astnum -> function_body -> subprogram *).
 
 (* 10.1.1 *)
 Inductive library_unit_declaration: Type := 
-	| Library_Subprogram: astnum -> subprogram -> library_unit_declaration.
+    | Library_Subprogram: astnum -> subprogram -> library_unit_declaration.
 
 (* 10.1.1 *)
 Inductive compilation_unit: Type := 
-	| Library_Unit: astnum -> library_unit_declaration -> type_table -> compilation_unit.
+    | Library_Unit: astnum -> library_unit_declaration -> type_table -> compilation_unit.
 
 
 (*********************************************************************

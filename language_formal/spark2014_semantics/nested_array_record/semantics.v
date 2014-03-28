@@ -5,14 +5,25 @@ Require Export values.
 Require Export environment.
 Require Export checks.
 
-Module Entry_val <: Entry.
+Module Entry_Value_Stored <: Entry.
 
-  Definition T := val.
+  Definition T := value_stored.
 
-End Entry_val.
+End Entry_Value_Stored.
 
-Module STACK := ENV(Entry_val).
+Module Entry_TypeID <: Entry.
+
+  Definition T := typenum.
+
+End Entry_TypeID.
+
+Module TYPE_STORE := ENV(Entry_TypeID).
+Import TYPE_STORE.
+
+Module STACK := ENV(Entry_Value_Stored).
 Import STACK.
+
+Definition type_table := TYPE_STORE.store.
 
 (** * Relational Semantics (big-step) *)
 (** interpret the literal expressions *)
@@ -103,146 +114,187 @@ Qed.
     time error is detected and the program is terminated, otherwise, 
     normal binary operation result is returned;
 *)
+Function record_select (r: list (idnum * value)) (f: idnum): option value :=
+    match r with 
+    | (f1, v1) :: r1 =>
+        if beq_nat f1 f then 
+          Some v1
+        else
+          record_select r1 f
+    | nil => None 
+    end.
 
-Inductive eval_expr: stack -> expression -> Return value -> Prop :=
-    | eval_E_Literal: forall l v s ast_num,
+Function array_select_n (a: list value) (i: nat): option value :=
+    match a with 
+    | a0 :: a1 =>
+        match i with
+        | 0 => Some a0 
+        | S i1 => array_select_n a1 i1
+        end
+    | nil => None
+    end.
+
+Function array_select (a: value) (indexes: list basic_value) (t: type): option value :=
+    match (a, indexes, t) with
+    | (AggregateV (ArrayV a1), (Int i)::tl, ArrayT t1 l u) =>
+        let index := (Z.to_nat (i - l)) in 
+        match (array_select_n a1 index) with
+        | Some a2 => array_select a2 tl t1
+        | None => None
+        end
+    | (_, _, _) => None
+    end.
+
+Inductive do_range_check: Z -> Z -> Z -> bool -> Prop :=
+    | Do_Range_Check: forall b i l u,
+        b = (Zge_bool i l) && (Zge_bool u i) -> (* i >= l /\ u >= i *)
+        do_range_check i l u b.
+
+Inductive eval_expr: stack -> type_table -> expression -> Return value -> Prop :=
+    | eval_E_Literal: forall l v s tb ast_num,
         eval_literal l = v ->
-        eval_expr s (E_Literal ast_num l) (Normal v)
-    | eval_E_Identifier: forall x s v ast_num,
-        fetchG x s = Some (Value v) ->
-        eval_expr s (E_Identifier ast_num x) (Normal v)
-    | eval_E_Binary_Operation1: forall s e1 ast_num op e2,
-        eval_expr s e1 Run_Time_Error ->
-        eval_expr s (E_Binary_Operation ast_num op e1 e2) Run_Time_Error
-    | eval_E_Binary_Operation2: forall s e1 v1 e2 ast_num op,
-        eval_expr s e1 (Normal v1) ->
-        eval_expr s e2 Run_Time_Error ->
-        eval_expr s (E_Binary_Operation ast_num op e1 e2) Run_Time_Error
-    | eval_E_Binary_Operation3: forall s e1 v1 e2 v2 ast_num op,
-        eval_expr s e1 (Normal v1) ->
-        eval_expr s e2 (Normal v2) ->
+        eval_expr s tb (E_Literal ast_num l) (Normal v)
+    | eval_E_Name: forall s tb n v ast_num,
+        eval_name s tb n v ->
+        eval_expr s tb (E_Name ast_num n) v
+    | eval_E_Binary_Operation_RTE_E1: forall s tb e1 ast_num op e2,
+        eval_expr s tb e1 Run_Time_Error ->
+        eval_expr s tb (E_Binary_Operation ast_num op e1 e2) Run_Time_Error
+    | eval_E_Binary_Operation_RTE_E2: forall s tb e1 v1 e2 ast_num op,
+        eval_expr s tb e1 (Normal v1) ->
+        eval_expr s tb e2 Run_Time_Error ->
+        eval_expr s tb (E_Binary_Operation ast_num op e1 e2) Run_Time_Error
+    | eval_E_Binary_Operation_RTE_Bin: forall s tb e1 v1 e2 v2 ast_num op,
+        eval_expr s tb e1 (Normal v1) ->
+        eval_expr s tb e2 (Normal v2) ->
         do_check op v1 v2 false ->
-        eval_expr s (E_Binary_Operation ast_num op e1 e2) Run_Time_Error
-    | eval_E_Binary_Operation4: forall s e1 v1 e2 v2 ast_num op v,
-        eval_expr s e1 (Normal v1) ->
-        eval_expr s e2 (Normal v2) ->
+        eval_expr s tb (E_Binary_Operation ast_num op e1 e2) Run_Time_Error
+    | eval_E_Binary_Operation: forall s tb e1 v1 e2 v2 ast_num op v,
+        eval_expr s tb e1 (Normal v1) ->
+        eval_expr s tb e2 (Normal v2) ->
         do_check op v1 v2 true ->
         eval_bin_expr op v1 v2 v ->
-        eval_expr s (E_Binary_Operation ast_num op e1 e2) (Normal v)
-    | eval_E_Unary_Operation1: forall s e ast_num op,
-        eval_expr s e Run_Time_Error ->
-        eval_expr s (E_Unary_Operation ast_num op e) Run_Time_Error
-    | eval_E_Unary_Operation2: forall s e v ast_num op v1,
-        eval_expr s e (Normal v) ->
+        eval_expr s tb (E_Binary_Operation ast_num op e1 e2) (Normal v)
+    | eval_E_Unary_Operation_RTE_E: forall s tb e ast_num op,
+        eval_expr s tb e Run_Time_Error ->
+        eval_expr s tb (E_Unary_Operation ast_num op e) Run_Time_Error
+    | eval_E_Unary_Operation: forall s tb e v ast_num op v1,
+        eval_expr s tb e (Normal v) ->
         eval_unary_expr op v v1 ->
-        eval_expr s (E_Unary_Operation ast_num op e) (Normal v1)
-    | eval_E_Aggregate: forall s a v ast_num,
-        eval_aggregate s a v ->
-        eval_expr s (E_Aggregate ast_num a) v
-    | eval_E_Name: forall s n v ast_num,
-        eval_name s n v -> 
-        eval_expr s (E_Name ast_num n) v
+        eval_expr s tb (E_Unary_Operation ast_num op e) (Normal v1)
+    | eval_E_Named_Record_Aggregate: forall s tb nra rv ast_num,
+        eval_named_record_component_associations s tb nra rv ->
+        eval_expr s tb (E_Named_Record_Aggregate ast_num nra) rv
+    | eval_E_Positional_Array_Aggregate: forall s tb paa rv ast_num,
+        eval_positional_array_aggregate s tb paa rv ->
+        eval_expr s tb (E_Positional_Array_Aggregate ast_num paa) rv 
 
-with eval_aggregate : stack -> aggregate -> Return value -> Prop :=
-    | eval_Record_Aggregate: forall s lrca v ast_num,
-        eval_list_record_component_association s lrca v ->
-        eval_aggregate s (Record_Aggregate ast_num lrca) v
-    | eval_Array_Aggregate: forall s aa v ast_num,
-        eval_array_aggregate s aa v ->
-        eval_aggregate s (Array_Aggregate ast_num aa) v
+with eval_name: stack -> type_table -> name -> Return value -> Prop :=
+    | eval_E_Identifier: forall x s tb v ast_num, 
+        fetchG x s = Some (Value v) ->
+        eval_name s tb (E_Identifier ast_num x) (Normal v)
+    | eval_E_Indexed_Component_RTE_N: forall s tb n ast_num n_ast_num le,
+        eval_name s tb n Run_Time_Error ->
+        eval_name s tb (E_Indexed_Component ast_num n_ast_num n le) Run_Time_Error
+    | eval_E_Indexed_Component_RTE_E: forall s tb n a le ast_num n_ast_num, 
+        eval_name s tb n (Normal (AggregateV (ArrayV a))) ->
+        eval_exprs s tb le None ->
+        eval_name s tb (E_Indexed_Component ast_num n_ast_num n le) Run_Time_Error
+    | eval_E_Indexed_Component_RTE_Range: forall s tb n a le lv n_ast_num tid t ast_num, 
+        eval_name s tb n (Normal (AggregateV (ArrayV a))) ->
+        eval_exprs s tb le (Some lv) ->
+        (* get the type for prefix of indexed component *)
+        TYPE_STORE.fetch n_ast_num tb = Some tid ->
+        fetchG tid s = Some (TypeDef t) -> 
+        check_array_ranges t lv false ->
+        eval_name s tb (E_Indexed_Component ast_num n_ast_num n le) Run_Time_Error
+    | eval_E_Indexed_Component: forall s tb n a le lv n_ast_num tid t v ast_num, 
+        eval_name s tb n (Normal a) ->
+        eval_exprs s tb le (Some lv) ->
+        (* get the type for prefix of indexed component *)
+        TYPE_STORE.fetch n_ast_num tb = Some tid ->
+        fetchG tid s = Some (TypeDef t) -> 
+        check_array_ranges t lv true ->
+        array_select a lv t = Some v ->
+        eval_name s tb (E_Indexed_Component ast_num n_ast_num n le) (Normal v)
+    | eval_E_Selected_Component_RTE: forall s tb n ast_num n_ast_num f,
+        eval_name s tb n Run_Time_Error ->
+        eval_name s tb (E_Selected_Component ast_num n_ast_num n f) Run_Time_Error
+    | eval_E_Selected_Component: forall s tb n r f v ast_num n_ast_num,
+        eval_name s tb n (Normal (AggregateV (RecordV r))) ->
+        record_select r f = Some v ->
+        eval_name s tb (E_Selected_Component ast_num n_ast_num n f) (Normal v)
 
-with eval_array_aggregate : stack -> array_aggregate -> Return value -> Prop :=
-    | eval_Positional_Array_Aggregate: forall s pa v ast_num,
-        eval_positional_array_aggregate s pa v ->
-        eval_array_aggregate s (Positional_Array_Aggregate ast_num pa) v
- (* | eval_Named_Array_Aggregate *)
+with check_array_ranges: type -> list basic_value -> bool -> Prop :=
+    | Check_Ranges_RTE: forall i l u t tl, 
+        do_range_check i l u false ->
+        check_array_ranges (ArrayT t l u) ((Int i) :: tl) false
+    | Check_Ranges_Single: forall i l u t,
+        do_range_check i l u true ->
+        check_array_ranges (ArrayT (BasicT t) l u) ((Int i) :: nil) true
+    | Check_Ranges_List_RTE: forall i l u t j tl, 
+        do_range_check i l u true ->
+        check_array_ranges t ((Int j) :: tl) false ->
+        check_array_ranges (ArrayT t l u) ((Int i) :: (Int j) :: tl) false
+    | Check_Ranges_List: forall i l u t j tl, 
+        do_range_check i l u true ->
+        check_array_ranges t ((Int j) :: tl) true ->
+        check_array_ranges (ArrayT t l u) ((Int i) :: (Int j) :: tl) true
 
-with eval_list_record_component_association : stack -> list record_component_association -> Return value -> Prop :=
-    | eval_Named_Component_Associations1: forall s e ast_num x lnca,
-        eval_expr s e Run_Time_Error ->
-        eval_list_record_component_association s ((Named_Component_Association ast_num x e) :: lnca) Run_Time_Error
-    | eval_Named_Component_Associations2: forall s e v ast_num x,
-        eval_expr s e (Normal v) ->
-        eval_list_record_component_association s ((Named_Component_Association ast_num x e) :: nil) (Normal (AggregateV (RecordV ((x, v) :: nil))))
-    | eval_Named_Component_Associations3: forall s e v rca lrca ast_num x,
-        eval_expr s e (Normal v) ->
-        eval_list_record_component_association s (rca :: lrca) Run_Time_Error -> 
-        eval_list_record_component_association s ((Named_Component_Association ast_num x e) :: rca :: lrca) Run_Time_Error 
-    | eval_Named_Component_Associations4: forall s e v rca lrca lv ast_num x,
-        eval_expr s e (Normal v) ->
-        eval_list_record_component_association s (rca :: lrca) (Normal (AggregateV (RecordV lv))) ->
-        eval_list_record_component_association s ((Named_Component_Association ast_num x e) :: rca :: lrca) (Normal (AggregateV (RecordV ((x, v) :: lv))))
+with eval_exprs: stack -> type_table -> list expression -> option (list basic_value) -> Prop := 
+    | eval_Exps_RTE: forall s tb e le,
+        eval_expr s tb e Run_Time_Error ->
+        eval_exprs s tb (e :: le) None
+    | eval_Exps_Single: forall s tb e v,
+        eval_expr s tb e (Normal (BasicV (Int v))) ->
+        eval_exprs s tb (e :: nil) (Some ((Int v) :: nil))
+    | eval_Exps3: forall s tb e1 v1 e2 le,
+        eval_expr s tb e1 (Normal (BasicV (Int v1))) ->
+        eval_exprs s tb (e2 :: le) None ->
+        eval_exprs s tb (e1 :: e2 :: le) None
+    | eval_Exps4: forall s tb e1 v1 e2 le lv,
+        eval_expr s tb e1 (Normal (BasicV v1)) ->
+        eval_exprs s tb (e2 :: le) (Some lv) ->
+        eval_exprs s tb (e1 :: e2 :: le) (Some (v1 :: lv))
 
-(*
-with eval_record_component_association : stack -> record_component_association -> Return value -> Prop :=
-    | eval_Positional_Component_Association
-    | eval_Named_Component_Associatio
-*)
+with eval_named_record_component_associations : stack -> type_table -> list ((astnum * idnum) * expression) -> Return value -> Prop :=
+    | eval_Named_Component_Associations_RTE_E: forall s tb e ast_num x lnca,
+        eval_expr s tb e Run_Time_Error ->
+        eval_named_record_component_associations s tb (((ast_num, x), e) :: lnca) Run_Time_Error
+    | eval_Named_Component_Associations_Single: forall s tb e v ast_num x,
+        eval_expr s tb e (Normal v) ->
+        eval_named_record_component_associations s tb (((ast_num, x), e) :: nil) (Normal (AggregateV (RecordV ((x, v) :: nil))))
+    | eval_Named_Component_Associations_RTE: forall s tb e v nca lnca ast_num x,
+        eval_expr s tb e (Normal v) ->
+        eval_named_record_component_associations s tb (nca :: lnca) Run_Time_Error -> 
+        eval_named_record_component_associations s tb (((ast_num, x), e) :: nca :: lnca) Run_Time_Error 
+    | eval_Named_Component_Associations_List: forall s tb e v nca lnca lrv ast_num x,
+        eval_expr s tb e (Normal v) ->
+        eval_named_record_component_associations s tb (nca :: lnca) (Normal (AggregateV (RecordV lrv))) ->
+        eval_named_record_component_associations s tb (((ast_num, x), e) :: nca :: lnca) (Normal (AggregateV (RecordV ((x, v) :: lrv))))
 
-with eval_positional_array_aggregate : stack -> positional_array_aggregate -> Return value -> Prop :=
-    | eval_Positional_Array_Component_Association1: forall s le v astnum,
-        eval_list_exprs s le v ->
-        eval_positional_array_aggregate s (Positional_Array_Component_Association astnum le) v
-(*  | eval_Positional_Array_Component_Association_Others: 
-        ...
-        eval_positional_array_aggregate s (Positional_Array_Component_Association_Others astnum le others) v *)
-
-with eval_list_exprs: stack -> list expression -> Return value -> Prop := 
-    | eval_List_Exps1: forall s e le,
-        eval_expr s e Run_Time_Error ->
-        eval_list_exprs s (e :: le) Run_Time_Error
-    | eval_List_Exps2: forall s e v,
-        eval_expr s e (Normal v) ->
-        eval_list_exprs s (e :: nil) (Normal (AggregateV (ArrayV (v :: nil))))
-    | eval_List_Exps3: forall s e1 v1 e2 le,
-        eval_expr s e1 (Normal v1) ->
-        eval_list_exprs s (e2 :: le) Run_Time_Error ->
-        eval_list_exprs s (e1 :: e2 :: le) Run_Time_Error
-    | eval_List_Exps4: forall s e1 v1 e2 le lv,
-        eval_expr s e1 (Normal v1) ->
-        eval_list_exprs s (e2 :: le) (Normal (AggregateV (ArrayV lv))) ->
-        eval_list_exprs s (e1 :: e2 :: le) (Normal (AggregateV (ArrayV (v1 :: lv))))
-
-(*
-with name: Type := (* 4.1 *)
-        | Indexed_Component: astnum -> name -> list expression -> name (* 4.1.1 *)
-        | Selected_Component: astnum -> name -> idnum -> name          (* 4.1.3 *)
-*)
-with eval_name: stack -> name -> Return value -> Prop :=
-    | eval_Indexed_Component1: forall s n ast_num le,
-        eval_name s n Run_Time_Error ->
-        eval_name s (Indexed_Component ast_num n le) Run_Time_Error
-    | eval_Indexed_Component2: forall s n v le ast_num,
-        eval_name s n (Normal v) ->
-        eval_list_exprs s le Run_Time_Error ->
-        eval_name s (Indexed_Component ast_num n le) Run_Time_Error
-    | eval_Indexed_Component3: forall s n mapv le lv result ast_num,
-        eval_name s n (Normal (AggregateV (ArrayV mapv))) ->
-        eval_list_exprs s le (Normal (AggregateV (ArrayV lv))) ->
-        array_index_result mapv lv result ->
-        eval_name s (Indexed_Component ast_num n le) result
-    | eval_Selected_Component: forall s n ast_num x,
-        eval_name s n Run_Time_Error -> 
-        eval_name s (Selected_Component ast_num n x) Run_Time_Error
-
-with array_index_result: list value -> list value -> Return value -> Prop :=
-     | Index1: 
-         array_index_result nil nil Run_Time_Error
-.
-
-Fixpoint array_index (a: list value) (i: list value): Return value :=
-  match a with
-  | nil => Run_Time_Error
-  | (a1 :: al) => 
-      match i with
-      | 
-.
-
+with eval_positional_array_aggregate : stack -> type_table -> list expression -> Return value -> Prop :=
+    | eval_List_Exps_RTE_E: forall s tb e le,
+        eval_expr s tb e Run_Time_Error ->
+        eval_positional_array_aggregate s tb (e :: le) Run_Time_Error
+    | eval_List_Exps_Single: forall s tb e v,
+        eval_expr s tb e (Normal v) ->
+        eval_positional_array_aggregate s tb (e :: nil) (Normal (AggregateV (ArrayV (v :: nil))))
+    | eval_List_Exps_RTE: forall s tb e1 v1 e2 le,
+        eval_expr s tb e1 (Normal v1) ->
+        eval_positional_array_aggregate s tb (e2 :: le) Run_Time_Error ->
+        eval_positional_array_aggregate s tb (e1 :: e2 :: le) Run_Time_Error
+    | eval_List_Exps_List: forall s tb e1 v1 e2 le lv,
+        eval_expr s tb e1 (Normal v1) ->
+        eval_positional_array_aggregate s tb (e2 :: le) (Normal (AggregateV (ArrayV lv))) ->
+        eval_positional_array_aggregate s tb (e1 :: e2 :: le) (Normal (AggregateV (ArrayV (v1 :: lv)))).
 
 
 (** * Statement semantics *)
 
 (** ** Stack manipulation for procedure calls and return *)
+
+(**********************************************************************
 
 (** [Copy_out prefix lparams lexp s s'] means that s' is the result of
     copying Out params of the currently finished procedure of prefix
@@ -315,47 +367,112 @@ Inductive Copy_in: stack -> list parameter_specification
       -> Copy_in σ (prm::lparam) (e::lexp)
                  (Normal ((prm.(parameter_name),Value v)::frame)).
 
+**********************************************************************)
 
 (** *** Inductive semantic of declarations. [eval_decl s nil decl
         rsto] means that rsto is the frame to be pushed on s after
         evaluating decl, sto is used as an accumulator for building
         the frame.
  *)
-Inductive eval_decl: stack -> store -> declaration -> Return store -> Prop :=
+Definition type_id (t: type_declaration): typenum :=
+  match t with
+  | Array_Type_Declaration _ typnum _ _ _ => typnum 
+  | Record_Type_Declaration _ typnum _ => typnum 
+  end.
+
+Definition basic_type_def (t: typenum): option type :=
+  match t with
+  | 0 => Some (BasicT Boolean)
+  | 1 => Some (BasicT Integer)
+  | _ => None
+  end.
+
+Fixpoint get_record_fields_types (s: stack) (r: (list (idnum * typenum (*field -> type*)))) :=
+  match r with 
+  | nil => None
+  | (f, t) :: r1 => 
+    match (basic_type_def t) with
+    | Some t1 => 
+      match (get_record_fields_types s r1) with 
+      | Some fts => Some ((f, t1) :: fts)
+      | None => None 
+      end
+    | None =>
+      match (fetchG t s) with
+      | Some (TypeDef t1) => 
+        match (get_record_fields_types s r1) with 
+          | Some fts => Some ((f, t1) :: fts)
+          | None => None 
+        end
+      | _ => None
+      end
+    end 
+  end.
+
+Inductive type_def: stack -> type_table -> type_declaration -> option type -> Prop :=
+  | TD_Array_RTE_L: forall s tb l ast_num typ_num t u,
+      eval_expr s tb l Run_Time_Error ->
+      type_def s tb (Array_Type_Declaration ast_num typ_num t l u) None
+  | TD_Array_RTE_U: forall s tb l v u ast_num typ_num t,
+      eval_expr s tb l (Normal (BasicV (Int v))) ->
+      eval_expr s tb u Run_Time_Error ->
+      type_def s tb (Array_Type_Declaration ast_num typ_num t l u) None
+  | TD_Array_NonNested: forall s tb l v1 u v2 t td ast_num typ_num,
+      eval_expr s tb l (Normal (BasicV (Int v1))) ->
+      eval_expr s tb u (Normal (BasicV (Int v2))) ->
+      basic_type_def t = Some td ->
+      type_def s tb (Array_Type_Declaration ast_num typ_num t l u) (Some (ArrayT td v1 v2))
+  | TD_Array_Nested: forall s tb l v1 u v2 t td ast_num typ_num,
+      eval_expr s tb l (Normal (BasicV (Int v1))) ->
+      eval_expr s tb u (Normal (BasicV (Int v2))) ->
+      basic_type_def t = None ->
+      fetchG t s = Some (TypeDef td) ->
+      type_def s tb (Array_Type_Declaration ast_num typ_num t l u) (Some (ArrayT td v1 v2))
+  | TD_Record: forall s r fts tb ast_num typ_num,
+      get_record_fields_types s r = Some fts ->
+      type_def s tb (Record_Type_Declaration ast_num typ_num r) (Some (RecordT fts)).
+
+
+Inductive eval_decl: stack -> store -> type_table -> declaration -> Return store -> Prop :=
 | eval_Decl_E:
-    forall e d s sto,
+    forall e d s sto tb ast_num,
       Some e = d.(initialization_expression) ->
-      eval_expr (sto::s) e Run_Time_Error ->
-      eval_decl s sto (D_Object_declaration d) Run_Time_Error
+      eval_expr (sto::s) tb e Run_Time_Error ->
+      eval_decl s sto tb (D_Object_Declaration ast_num d) Run_Time_Error
 | eval_Decl:
-    forall d x e v s sto,
+    forall d x e v s sto tb ast_num,
       x = d.(object_name) ->
       Some e = d.(initialization_expression) ->
-      eval_expr (sto::s) e (Normal v) ->
-      eval_decl s sto (D_Object_declaration d) (Normal ((x, Value v) :: sto))
+      eval_expr (sto::s) tb e (Normal v) ->
+      eval_decl s sto tb (D_Object_Declaration ast_num d) (Normal ((x, Value v) :: sto))
 | eval_UndefDecl:
-    forall d x s sto,
+    forall d x s sto tb ast_num,
       x = d.(object_name) ->
       None = d.(initialization_expression) ->
-      eval_decl s sto (D_Object_declaration d) (Normal ((x, Undefined) :: sto))
+      eval_decl s sto tb (D_Object_Declaration ast_num d) (Normal ((x, Undefined) :: sto))
 | eval_decl_Seq:
-    forall dcl1 dcl2 s s' s'' sto,
-      eval_decl s sto dcl1 (Normal s') ->
-      eval_decl s s' dcl2 (Normal s'') ->
-      eval_decl s sto (D_Sequence dcl1 dcl2) (Normal s'')
+    forall dcl1 dcl2 s s' s'' sto tb ast_num,
+      eval_decl s sto tb dcl1 (Normal s') ->
+      eval_decl s s' tb dcl2 (Normal s'') ->
+      eval_decl s sto tb (D_Sequence ast_num dcl1 dcl2) (Normal s'')
 | eval_decl_Seq_err1:
-    forall dcl1 dcl2 s sto,
-      eval_decl s sto dcl1 Run_Time_Error ->
-      eval_decl s sto (D_Sequence dcl1 dcl2) Run_Time_Error
+    forall dcl1 dcl2 s sto tb ast_num,
+      eval_decl s sto tb dcl1 Run_Time_Error ->
+      eval_decl s sto tb (D_Sequence ast_num dcl1 dcl2) Run_Time_Error
 | eval_decl_Seq_err2:
-    forall dcl1 dcl2 s s' sto,
-      eval_decl s sto dcl1 (Normal s') ->
-      eval_decl s s' dcl2 Run_Time_Error ->
-      eval_decl s sto (D_Sequence dcl1 dcl2) Run_Time_Error
+    forall dcl1 dcl2 s s' sto tb ast_num,
+      eval_decl s sto tb dcl1 (Normal s') ->
+      eval_decl s s' tb dcl2 Run_Time_Error ->
+      eval_decl s sto tb (D_Sequence ast_num dcl1 dcl2) Run_Time_Error
 | eval_decl_proc:
-    forall s pbody sto,
-      eval_decl s sto (D_Procedure_declaration pbody)
-                (Normal ((procedure_name pbody,Procedure pbody)::sto)).
+    forall s pbody sto tb ast_num,
+      eval_decl s sto tb (D_Procedure_Declaration ast_num pbody)
+                (Normal ((procedure_name pbody,Procedure pbody)::sto))
+| eval_decl_type: 
+      forall typdec t s sto tb ast_num,
+      type_def (sto::s) tb typdec (Some t) ->
+      eval_decl s sto tb (D_Type_Declaration ast_num typdec)
+                (Normal ((type_id typdec, TypeDef t)::sto)).
 
 (** ** Inductive semantic of statement and declaration
 
@@ -366,82 +483,207 @@ Inductive eval_decl: stack -> store -> declaration -> Return store -> Prop :=
 
  *)
 
+(* a[i] := v *)
+Function arrayUpdate (a: list value) (i: nat) (v: value): option (list value) :=
+  match a with
+  | a0::a1 => 
+      match i with
+      | 0 => Some (v :: a1) 
+      | S i1 => 
+          match (arrayUpdate a1 i1 v) with
+          | Some a2 => Some (a0 :: a2)
+          | None => None
+          end 
+      end
+  | nil => None
+  end.
 
-Inductive eval_stmt: stack -> statement -> Return stack -> Prop := 
-    | eval_S_Assignment1: forall s e ast_num x,
-        eval_expr s e Run_Time_Error ->
-        eval_stmt s (S_Assignment ast_num x e) Run_Time_Error
-    | eval_S_Assignment2: forall s e v x s1 ast_num,
-        eval_expr s e (Normal v) ->
+(* r.f := v *)
+Function recordUpdate (r: list (idnum * value)) (f : idnum) (v: value): option (list (idnum * value)) := 
+    match r with 
+    | (f1, v1) :: r1 => 
+      if beq_nat f1 f then 
+        Some ((f1,v)::r1) 
+      else 
+        match recordUpdate r1 f v with
+        | Some r2 => Some ((f1,v1)::r2)
+        | None => None
+        end
+   | nil => None
+   end.
+
+(* 
+  a: array or record, t: its type,
+  i: a list of indexes;
+  a[i0][i1]..[ik] := v
+*)
+Function array_aggregate_update (t: type) (a: value) (i: list basic_value) (v: value): option value :=
+  match (t, a, i) with
+  | ((ArrayT t1 l u), (AggregateV (ArrayV a1)), ((Int i0) :: nil)) =>
+      match (arrayUpdate a1 (Z.to_nat (i0 - l)) v) with
+      | Some a2 => Some (AggregateV (ArrayV a1))
+      | None => None 
+      end
+  | ((ArrayT t1 l u), (AggregateV (ArrayV a1)), ((Int i0) :: (Int i1) :: tl)) =>
+      match (array_select_n a1 (Z.to_nat (i0 - l))) with
+      | Some a2 => 
+          match (array_aggregate_update t1 a2 ((Int i1) :: tl) v) with
+          | Some a3 => 
+              match (arrayUpdate a1 (Z.to_nat (i0 - l)) a3) with
+              | Some v1 => Some (AggregateV (ArrayV v1))
+              | None => None
+              end
+          | None => None
+          end
+      | None => None
+      end
+  | (_, _, _) => None
+  end.
+
+(* r.f := v *)
+Function record_aggregate_update (r: value) (f: idnum) (v: value): option value :=
+  match r with
+  | AggregateV (RecordV r1) =>
+      match (recordUpdate r1 f v) with
+      | Some r2 => Some (AggregateV (RecordV r2)) 
+      | None => None 
+      end
+  | _ => None
+  end.
+
+Function unfold_nested_aggregate (n: name): list name := 
+  match n with
+  | E_Identifier _ _ => n :: nil
+  | E_Indexed_Component ast_num n_ast_num a le => 
+      (unfold_nested_aggregate a) ++ (n :: nil)
+  | E_Selected_Component ast_num n_ast_num r f => 
+      (unfold_nested_aggregate r) ++ (n :: nil)
+  end.
+
+Inductive eval_nested_aggregate: stack -> type_table -> list name -> option value -> value -> list (name * value) -> Prop :=
+  | ENA_Identifier_Single: forall s tb n prefix v,
+      eval_nested_aggregate s tb (n :: nil) (Some prefix) v ((n, v) :: nil)
+  | ENA_Identifier_List: forall n0 ast_num x s v0 tb n1 ln1 lnv prefix v,
+      n0 = E_Identifier ast_num x ->
+      fetchG x s = Some (Value v0) ->
+      eval_nested_aggregate s tb (n1 :: ln1) (Some v0) v lnv ->
+      eval_nested_aggregate s tb (n0 :: n1 :: ln1) (Some prefix) v ((n0, v0) :: lnv)
+  | ENA_Indexed_Component_List: forall n0 ast_num n_ast_num a le prefix a0 s tb indexes tid arrayTyp v0 n1 ln1 v lnv,
+      n0 = E_Indexed_Component ast_num n_ast_num a le ->
+      prefix = AggregateV (ArrayV a0) ->
+      eval_exprs s tb le (Some indexes) ->
+      TYPE_STORE.fetch n_ast_num tb = Some tid ->
+      fetchG tid s = Some (TypeDef arrayTyp) -> 
+      array_select prefix indexes arrayTyp = Some v0 ->
+      eval_nested_aggregate s tb (n1 :: ln1) (Some v0) v lnv ->
+      eval_nested_aggregate s tb (n0 :: n1 :: ln1) (Some prefix) v ((n0, v0) :: lnv)
+  | ENA_Selected_Component_List: forall n0 ast_num n_ast_num r f prefix r0 v0 s tb n1 ln1 v lnv,
+      n0 = E_Selected_Component ast_num n_ast_num r f ->
+      prefix = AggregateV (RecordV r0) ->
+      record_select r0 f = Some v0 ->
+      eval_nested_aggregate s tb (n1 :: ln1) (Some v0) v lnv ->
+      eval_nested_aggregate s tb (n0 :: n1 :: ln1) (Some prefix) v ((n0, v0) :: lnv).
+
+Inductive update_nested_aggregate: stack -> type_table -> list (name * value) -> value -> Prop :=
+  | UNA_Single: forall s tb n v,
+      update_nested_aggregate s tb ((n, v) :: nil) v
+  | UNA_Indexed_Component_List: forall n1 ast_num n_ast_num n le s tb v1 lnv newVal indexes tid arrayTyp a0 retVal n0,
+      (* a0[indexes] := newVal *)
+      n1 = E_Indexed_Component ast_num n_ast_num n le ->
+      update_nested_aggregate s tb ((n1, v1) :: lnv) newVal ->
+      eval_exprs s tb le (Some indexes) -> 
+      TYPE_STORE.fetch n_ast_num tb = Some tid ->
+      fetchG tid s = Some (TypeDef arrayTyp) ->     
+      array_aggregate_update arrayTyp a0 indexes newVal = Some retVal ->
+      update_nested_aggregate s tb ((n0, a0) :: (n1, v1) :: lnv) retVal
+  | UNA_Selected_Component_List: forall n1 ast_num n_ast_num n f s tb v1 lnv newVal r0 retVal n0,
+      (* r0.f := newVal *)
+      n1 = E_Selected_Component ast_num n_ast_num n f ->
+      update_nested_aggregate s tb ((n1, v1) :: lnv) newVal ->
+      record_aggregate_update r0 f newVal = Some retVal ->
+      update_nested_aggregate s tb ((n0, r0) :: (n1, v1) :: lnv) retVal.
+
+Definition is_var (e: name): bool :=
+  match e with
+    |  E_Identifier _ _ => true
+    | _ => false
+  end.
+
+
+
+Inductive eval_stmt: stack -> type_table -> statement -> Return stack -> Prop := 
+    | eval_S_Assignment_RTE: forall s tb e ast_num n,
+        eval_expr s tb e Run_Time_Error ->
+        eval_stmt s tb (S_Assignment ast_num n e) Run_Time_Error
+    | eval_S_Assignment: forall s tb e v n s1 ast_num,
+        eval_expr s tb e (Normal v) ->
+        storeUpdate s tb n v s1 ->
+        eval_stmt s tb (S_Assignment ast_num n e) s1
+    | eval_S_Sequence_RTE: forall s tb c1 ast_num c2,
+        eval_stmt s tb c1 Run_Time_Error ->
+        eval_stmt s tb (S_Sequence ast_num c1 c2) Run_Time_Error
+    | eval_S_Sequence: forall ast_num s tb s1 s2 c1 c2,
+        eval_stmt s tb c1 (Normal s1) ->
+        eval_stmt s1 tb c2 s2 ->
+        eval_stmt s tb (S_Sequence ast_num c1 c2) s2
+    | eval_S_If_RTE: forall s tb b ast_num c,
+        eval_expr s tb b Run_Time_Error ->
+        eval_stmt s tb (S_If ast_num b c) Run_Time_Error
+    | eval_S_If_True: forall s tb b c s1 ast_num,
+        eval_expr s tb b (Normal (BasicV (Bool true))) ->
+        eval_stmt s tb c s1 ->
+        eval_stmt s tb (S_If ast_num b c) s1
+    | eval_S_If_False: forall s tb b ast_num c,
+        eval_expr s tb b (Normal (BasicV (Bool false))) ->
+        eval_stmt s tb (S_If ast_num b c) (Normal s)
+    | eval_S_While_Loop_RTE: forall s tb b ast_num c,
+        eval_expr s tb b Run_Time_Error ->
+        eval_stmt s tb (S_While_Loop ast_num b c) Run_Time_Error
+    | eval_S_While_Loop_True_RTE: forall s tb b c ast_num,
+        eval_expr s tb b (Normal (BasicV (Bool true))) ->
+        eval_stmt s tb c Run_Time_Error ->
+        eval_stmt s tb (S_While_Loop ast_num b c) Run_Time_Error
+    | eval_S_While_Loop_True: forall s tb b c s1 ast_num s2,
+        eval_expr s tb b (Normal (BasicV (Bool true))) ->
+        eval_stmt s tb c (Normal s1) ->
+        eval_stmt s1 tb (S_While_Loop ast_num b c) s2 ->
+        eval_stmt s tb (S_While_Loop ast_num b c) s2
+    | eval_S_While_Loop_False: forall s tb b ast_num c,
+        eval_expr s tb b (Normal (BasicV (Bool false))) ->
+        eval_stmt s tb (S_While_Loop ast_num b c) (Normal s)
+
+with storeUpdate: stack -> type_table -> name -> value -> Return stack -> Prop := 
+    | SU_Identifier: forall s tb x v s1 ast_num,
         updateG s x (Value v) = Some s1 ->
-        eval_stmt s (S_Assignment ast_num x e) (Normal s1)
-    | eval_S_Sequence1: forall s c1 ast_num c2,
-        eval_stmt s c1 Run_Time_Error ->
-        eval_stmt s (S_Sequence ast_num c1 c2) Run_Time_Error
-    | eval_S_Sequence2: forall ast_num s s1 s2 c1 c2,
-        eval_stmt s c1 (Normal s1) ->
-        eval_stmt s1 c2 s2 ->
-        eval_stmt s (S_Sequence ast_num c1 c2) s2
-    | eval_S_If: forall s b ast_num c,
-        eval_expr s b Run_Time_Error ->
-        eval_stmt s (S_If ast_num b c) Run_Time_Error
-    | eval_S_If_True: forall s b c s1 ast_num,
-        eval_expr s b (Normal (Bool true)) ->
-        eval_stmt s c s1 ->
-        eval_stmt s (S_If ast_num b c) s1
-    | eval_S_If_False: forall s b ast_num c,
-        eval_expr s b (Normal (Bool false)) ->
-        eval_stmt s (S_If ast_num b c) (Normal s)
-    | eval_S_While_Loop: forall s b ast_num c,
-        eval_expr s b Run_Time_Error ->
-        eval_stmt s (S_While_Loop ast_num b c) Run_Time_Error
-    | eval_S_While_Loop_True1: forall s b c ast_num,
-        eval_expr s b (Normal (Bool true)) ->
-        eval_stmt s c Run_Time_Error ->
-        eval_stmt s (S_While_Loop ast_num b c) Run_Time_Error
-    | eval_S_While_Loop_True2: forall s b c s1 ast_num s2,
-        eval_expr s b (Normal (Bool true)) ->
-        eval_stmt s c (Normal s1) ->
-        eval_stmt s1 (S_While_Loop ast_num b c) s2 ->
-        eval_stmt s (S_While_Loop ast_num b c) s2
-    | eval_S_While_Loop_False: forall s b ast_num c,
-        eval_expr s b (Normal (Bool false)) ->
-        eval_stmt s (S_While_Loop ast_num b c) (Normal s)
-    | eval_S_Proc_rteargs:
-        forall pbname (pb:procedure_declaration) lexp s ast_num,
-          fetchG pbname s = Some (Procedure pb) ->
-          Copy_in s (procedure_parameter_profile pb) lexp Run_Time_Error ->
-          eval_stmt s (S_ProcCall ast_num pbname lexp) Run_Time_Error
-    | eval_S_Proc_rtedecl:
-        forall pbname (pb:procedure_declaration) lexp s_caller s_forget s ast_num prefix,
-          fetchG pbname s_caller = Some (Procedure pb) ->
-          Copy_in s_caller (procedure_parameter_profile pb) lexp (Normal prefix) ->
-          Cut_until s_caller pbname s_forget s -> (* s_caller = s_forget++s *)
-          eval_decl s prefix (procedure_declarative_part pb) Run_Time_Error ->
-          eval_stmt s_caller (S_ProcCall ast_num pbname lexp) Run_Time_Error
-    | eval_S_Proc_rtebody:
-        forall pbname (pb:procedure_declaration) lexp s_caller s_forget s ast_num s2 prefix,
-          fetchG pbname s_caller = Some (Procedure pb) ->
-          Copy_in s_caller (procedure_parameter_profile pb) lexp (Normal prefix) ->
-          Cut_until s_caller pbname s_forget s -> (* s_caller = s_forget++s *)
-          eval_decl s prefix (procedure_declarative_part pb) (Normal s2) ->
-          eval_stmt (s2::s) (procedure_statements pb) Run_Time_Error ->
-          eval_stmt s_caller (S_ProcCall ast_num pbname lexp) Run_Time_Error
-    | eval_S_Proc:
-        forall pbname (pb:procedure_declaration) lexp s_caller s_forget s ast_num
-               s2 s3 s' s'' slocal prefix prefix',
-          fetchG pbname s_caller = Some (Procedure pb) ->
-          Copy_in s_caller (procedure_parameter_profile pb) lexp (Normal prefix) ->
-          Cut_until s_caller pbname s_forget s -> (* s_caller = s_forget++s *)
-          eval_decl s prefix (procedure_declarative_part pb) (Normal s2) ->          
-          eval_stmt (s2::s) (procedure_statements pb) (Normal s3) ->
-          s3 = (slocal ++ prefix') :: s' -> (* extract parameters from local frame *)
-          List.length prefix = List.length prefix' ->
-          Copy_out prefix' (procedure_parameter_profile pb) lexp (s_forget++s') s'' ->
-          eval_stmt s_caller (S_ProcCall ast_num pbname lexp) (Normal s'')
-.
+        storeUpdate s tb (E_Identifier ast_num x) v (Normal s1)
+    | SU_Indexed_Component_RTE_N: forall s tb n ast_num n_ast_num le v,
+        eval_name s tb n Run_Time_Error ->
+        storeUpdate s tb (E_Indexed_Component ast_num n_ast_num n le) v Run_Time_Error
+    | SU_Indexed_Component_RTE_E: forall s tb n a le ast_num n_ast_num v, 
+        eval_name s tb n (Normal (AggregateV (ArrayV a))) ->
+        eval_exprs s tb le None ->
+        storeUpdate s tb (E_Indexed_Component ast_num n_ast_num n le) v Run_Time_Error
+    | SU_Indexed_Component_RTE_Range: forall s tb n a le lv n_ast_num tid t ast_num v, 
+        eval_name s tb n (Normal (AggregateV (ArrayV a))) ->
+        eval_exprs s tb le (Some lv) ->
+        (* get the type for prefix of indexed component *)
+        TYPE_STORE.fetch n_ast_num tb = Some tid ->
+        fetchG tid s = Some (TypeDef t) -> 
+        check_array_ranges t lv false ->
+        storeUpdate s tb (E_Indexed_Component ast_num n_ast_num n le) v Run_Time_Error
+    | SU_Selected_Component_RTE: forall s tb r ast_num r_ast_num f v,
+        eval_name s tb r Run_Time_Error ->
+        storeUpdate s tb (E_Selected_Component ast_num r_ast_num r f) v Run_Time_Error
+    | SU_Aggregate: forall na ast_num x ln s tb v lnv newVal s1,
+        is_var na = false ->
+        unfold_nested_aggregate na = (E_Identifier ast_num x) :: ln ->
+        eval_nested_aggregate s tb ln None v lnv ->
+        update_nested_aggregate s tb lnv newVal ->
+        updateG s x (Value newVal) = Some s1 -> 
+        storeUpdate s tb na v (Normal s1).
 
 
+(*********************************************************************
 (** ** examples *)
 
 Module ExampleProcedures.
@@ -2219,3 +2461,5 @@ Qed.
 
 End ExampleProcedures2.
 (* END EXAMPLE *)
+
+*******************************************************************************)

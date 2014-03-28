@@ -1,85 +1,84 @@
-(** 
-_AUTHOR_
-
-<<
-Zhi Zhang
-Departmnt of Computer and Information Sciences
-Kansas State University
-zhangzhi@ksu.edu
->>
-*)
-
 Require Import util.
 Require Import LibTactics.
 Require Import more_list.
 Require Export values.
 Require Export environment.
-Require Export util.
 Require Export checks.
 
-Module Entry_val <: Entry.
+Module Entry_Value_Stored <: Entry.
 
-  Definition T := val.
+  Definition T := value_stored.
 
-End Entry_val.
+End Entry_Value_Stored.
 
-Module STACK := ENV(Entry_val).
+Module Entry_TypeID <: Entry.
+
+  Definition T := typenum.
+
+End Entry_TypeID.
+
+Module TYPE_STORE := ENV(Entry_TypeID).
+Import TYPE_STORE.
+
+Module STACK := ENV(Entry_Value_Stored).
 Import STACK.
+
+Definition type_table := TYPE_STORE.store.
 
 (** * Relational Semantics (big-step) *)
 (** interpret the literal expressions *)
 Definition eval_literal (l: literal): value :=
     match l with
-    | Integer_Literal v => (Int v)
-    | Boolean_Literal b => (Bool b)
+    | Integer_Literal v => BasicV (Int v)
+    | Boolean_Literal b => BasicV (Bool b)
     end.
 
 (** interpret the binary operators *)
 Inductive eval_bin_expr: binary_operator -> value -> value -> value -> Prop :=
     | Bin_Eq: forall v1 v2 b,
         Zeq_bool v1 v2 = b ->
-        eval_bin_expr Equal (Int v1) (Int v2) (Bool b)
+        eval_bin_expr Equal (BasicV (Int v1)) (BasicV (Int v2)) (BasicV (Bool b))
     | Bin_Ne: forall v1 v2 b,
         Zneq_bool v1 v2 = b ->
-         eval_bin_expr Not_Equal (Int v1) (Int v2) (Bool b)
+         eval_bin_expr Not_Equal (BasicV (Int v1)) (BasicV (Int v2)) (BasicV (Bool b))
     | Bin_Gt: forall v1 v2 b,
         Zgt_bool v1 v2 = b ->
-        eval_bin_expr Greater_Than (Int v1) (Int v2) (Bool b)
+        eval_bin_expr Greater_Than (BasicV (Int v1)) (BasicV (Int v2)) (BasicV (Bool b))
     | Bin_Ge: forall v1 v2 b,
         Zge_bool v1 v2 = b ->
-        eval_bin_expr Greater_Than_Or_Equal (Int v1) (Int v2) (Bool b)
+        eval_bin_expr Greater_Than_Or_Equal (BasicV (Int v1)) (BasicV (Int v2)) (BasicV (Bool b))
     | Bin_Lt: forall v1 v2 b,
         Zlt_bool v1 v2 = b ->
-        eval_bin_expr Less_Than (Int v1) (Int v2) (Bool b)
+        eval_bin_expr Less_Than (BasicV (Int v1)) (BasicV (Int v2)) (BasicV (Bool b))
     | Bin_Le: forall v1 v2 b,
         Zle_bool v1 v2 = b ->
-        eval_bin_expr Less_Than_Or_Equal (Int v1) (Int v2) (Bool b)
+        eval_bin_expr Less_Than_Or_Equal (BasicV (Int v1)) (BasicV (Int v2)) (BasicV (Bool b))
     | Bin_And: forall v1 v2 b,
         andb v1 v2 = b ->
-        eval_bin_expr And (Bool v1) (Bool v2) (Bool b)
+        eval_bin_expr And (BasicV (Bool v1)) (BasicV (Bool v2)) (BasicV (Bool b))
     | Bin_Or: forall v1 v2 b,
         orb v1 v2 = b ->
-        eval_bin_expr Or (Bool v1) (Bool v2) (Bool b)
+        eval_bin_expr Or (BasicV (Bool v1)) (BasicV (Bool v2)) (BasicV (Bool b))
     | Bin_Plus: forall v1 v2 v3,
         (v1 + v2)%Z =v3 ->
-        eval_bin_expr Plus (Int v1) (Int v2) (Int v3)
+        eval_bin_expr Plus (BasicV (Int v1)) (BasicV (Int v2)) (BasicV (Int v3))
     | Bin_Minus: forall v1 v2 v3,
         (v1 - v2)%Z =v3 ->
-        eval_bin_expr Minus (Int v1) (Int v2) (Int v3)
+        eval_bin_expr Minus (BasicV (Int v1)) (BasicV (Int v2)) (BasicV (Int v3))
     | Bin_Mul: forall v1 v2 v3,
         (v1 * v2)%Z =v3 ->
-        eval_bin_expr Multiply (Int v1) (Int v2) (Int v3)
+        eval_bin_expr Multiply (BasicV (Int v1)) (BasicV (Int v2)) (BasicV (Int v3))
     | Bin_Div: forall v1 v2 v3,
         (Z.quot v1 v2)%Z =v3 ->
-        eval_bin_expr Divide (Int v1) (Int v2) (Int v3).
+        eval_bin_expr Divide (BasicV (Int v1)) (BasicV (Int v2)) (BasicV (Int v3)).
 
 (** interpret the unary operation *)
 Inductive eval_unary_expr : unary_operator -> value -> value -> Prop :=
     | Unary_Not: forall b v,
         negb b = v ->
-        eval_unary_expr Not (Bool b) (Bool v)
+        eval_unary_expr Not (BasicV (Bool b)) (BasicV (Bool v))
     | EUnary_Plus: forall v,
-        eval_unary_expr Unary_Plus (Int v) (Int v).
+        eval_unary_expr Unary_Plus (BasicV (Int v)) (BasicV (Int v)).
 
 Lemma eval_bin_unique: forall op v1 v2 x y,
     eval_bin_expr op v1 v2 x ->
@@ -116,45 +115,140 @@ Qed.
     normal binary operation result is returned;
 *)
 
-Inductive eval_expr: stack -> expression -> Return value -> Prop :=
-    | eval_E_Literal: forall l v s ast_num,
+Function record_select (r: list (idnum * basic_value)) (f: idnum): option basic_value :=
+    match r with 
+    | (f1, v1) :: r1 =>
+        if beq_nat f1 f then 
+          Some v1
+        else
+          record_select r1 f
+    | nil => None 
+    end.
+
+Function array_select_n (a: list basic_value) (i: nat): option basic_value :=
+    match a with 
+    | a0 :: a1 =>
+        match i with
+        | 0 => Some a0 
+        | S i1 => array_select_n a1 i1
+        end
+    | nil => None
+    end.
+
+Function array_select (a: list basic_value) (i: Z) (l: Z): option basic_value :=
+    array_select_n a (Z.to_nat (i - l)).
+
+Inductive do_range_check: Z -> Z -> Z -> bool -> Prop :=
+    | Do_Range_Check: forall b i l u,
+        b = (Zge_bool i l) && (Zge_bool u i) -> (* i >= l /\ u >= i *)
+        do_range_check i l u b.
+
+Inductive eval_expr: stack -> type_table -> expression -> Return value -> Prop :=
+    | eval_E_Literal: forall l v s tb ast_num,
         eval_literal l = v ->
-        eval_expr s (E_Literal ast_num l) (Normal v)
-    | eval_E_Identifier: forall x s v ast_num,
-        fetchG x s = Some (Value v) ->
-        eval_expr s (E_Identifier ast_num x) (Normal v)
-    | eval_E_Binary_Operation1: forall s e1 ast_num op e2,
-        eval_expr s e1 Run_Time_Error ->
-        eval_expr s (E_Binary_Operation ast_num op e1 e2) Run_Time_Error
-    | eval_E_Binary_Operation2: forall s e1 v1 e2 ast_num op,
-        eval_expr s e1 (Normal v1) ->
-        eval_expr s e2 Run_Time_Error ->
-        eval_expr s (E_Binary_Operation ast_num op e1 e2) Run_Time_Error
-    | eval_E_Binary_Operation3: forall s e1 v1 e2 v2 ast_num op,
-        eval_expr s e1 (Normal v1) ->
-        eval_expr s e2 (Normal v2) ->
+        eval_expr s tb (E_Literal ast_num l) (Normal v)
+    | eval_E_Name: forall s tb n v ast_num,
+        eval_name s tb n v ->
+        eval_expr s tb (E_Name ast_num n) v
+    | eval_E_Binary_Operation_RTE_E1: forall s tb e1 ast_num op e2,
+        eval_expr s tb e1 Run_Time_Error ->
+        eval_expr s tb (E_Binary_Operation ast_num op e1 e2) Run_Time_Error
+    | eval_E_Binary_Operation_RTE_E2: forall s tb e1 v1 e2 ast_num op,
+        eval_expr s tb e1 (Normal v1) ->
+        eval_expr s tb e2 Run_Time_Error ->
+        eval_expr s tb (E_Binary_Operation ast_num op e1 e2) Run_Time_Error
+    | eval_E_Binary_Operation_RTE_Bin: forall s tb e1 v1 e2 v2 ast_num op,
+        eval_expr s tb e1 (Normal v1) ->
+        eval_expr s tb e2 (Normal v2) ->
         do_check op v1 v2 false ->
-        eval_expr s (E_Binary_Operation ast_num op e1 e2) Run_Time_Error
-    | eval_E_Binary_Operation4: forall s e1 v1 e2 v2 ast_num op v,
-        eval_expr s e1 (Normal v1) ->
-        eval_expr s e2 (Normal v2) ->
+        eval_expr s tb (E_Binary_Operation ast_num op e1 e2) Run_Time_Error
+    | eval_E_Binary_Operation: forall s tb e1 v1 e2 v2 ast_num op v,
+        eval_expr s tb e1 (Normal v1) ->
+        eval_expr s tb e2 (Normal v2) ->
         do_check op v1 v2 true ->
         eval_bin_expr op v1 v2 v ->
-        eval_expr s (E_Binary_Operation ast_num op e1 e2) (Normal v)
-    | eval_E_Unary_Operation1: forall s e ast_num op,
-        eval_expr s e Run_Time_Error ->
-        eval_expr s (E_Unary_Operation ast_num op e) Run_Time_Error
-    | eval_E_Unary_Operation2: forall s e v ast_num op v1,
-        eval_expr s e (Normal v) ->
+        eval_expr s tb (E_Binary_Operation ast_num op e1 e2) (Normal v)
+    | eval_E_Unary_Operation_RTE_E: forall s tb e ast_num op,
+        eval_expr s tb e Run_Time_Error ->
+        eval_expr s tb (E_Unary_Operation ast_num op e) Run_Time_Error
+    | eval_E_Unary_Operation: forall s tb e v ast_num op v1,
+        eval_expr s tb e (Normal v) ->
         eval_unary_expr op v v1 ->
-        eval_expr s (E_Unary_Operation ast_num op e) (Normal v1).
+        eval_expr s tb (E_Unary_Operation ast_num op e) (Normal v1)
+    | eval_E_Named_Record_Aggregate: forall s tb nra v ast_num,
+        eval_named_record_component_associations s tb nra v ->
+        eval_expr s tb (E_Named_Record_Aggregate ast_num nra) v
+    | eval_E_Positional_Array_Aggregate: forall s tb paa v ast_num,
+        eval_positional_array_aggregate s tb paa v ->
+        eval_expr s tb (E_Positional_Array_Aggregate ast_num paa) v 
 
+with eval_name: stack -> type_table -> name -> Return value -> Prop :=
+    | eval_E_Identifier: forall x s tb v ast_num, 
+        fetchG x s = Some (Value v) ->
+        eval_name s tb (E_Identifier ast_num x) (Normal v)
+    | eval_E_Indexed_Component_RTE_E: forall s tb e ast_num x_ast_num x,
+        eval_expr s tb e Run_Time_Error ->
+        eval_name s tb (E_Indexed_Component ast_num x_ast_num x e) Run_Time_Error
+    | eval_E_Indexed_Component_RTE_Range: forall s tb e i x a tid t l u ast_num x_ast_num, 
+        eval_expr s tb e (Normal (BasicV (Int i))) ->
+        fetchG x s = Some (Value (AggregateV (ArrayV a))) ->
+        (* get the type for prefix of indexed component *)
+        TYPE_STORE.fetch x_ast_num tb = Some tid ->
+        fetchG tid s = Some (TypeDef (AggregateT (ArrayT t l u))) -> 
+        do_range_check i l u false ->
+        eval_name s tb (E_Indexed_Component ast_num x_ast_num x e) Run_Time_Error
+    | eval_E_Indexed_Component: forall s tb e i x a tid t l u v ast_num x_ast_num, 
+        eval_expr s tb e (Normal (BasicV (Int i))) ->
+        fetchG x s = Some (Value (AggregateV (ArrayV a))) ->
+        (* get the type for prefix of indexed component *)
+        TYPE_STORE.fetch x_ast_num tb = Some tid ->
+        fetchG tid s = Some (TypeDef (AggregateT (ArrayT t l u))) -> 
+        do_range_check i l u true ->
+        array_select a i l = Some v ->
+        eval_name s tb (E_Indexed_Component ast_num x_ast_num x e) (Normal (BasicV v))
+    | eval_E_Selected_Component: forall x s r f v tb ast_num x_ast_num,
+        fetchG x s = Some (Value (AggregateV (RecordV r))) ->
+        record_select r f = Some v ->
+        eval_name s tb (E_Selected_Component ast_num x_ast_num x f) (Normal (BasicV v))
 
+with eval_named_record_component_associations : stack -> type_table -> list ((astnum * idnum) * expression) -> Return value -> Prop :=
+    | eval_Named_Component_Associations_RTE_E: forall s tb e ast_num x lnca,
+        eval_expr s tb e Run_Time_Error ->
+        eval_named_record_component_associations s tb (((ast_num, x), e) :: lnca) Run_Time_Error
+    | eval_Named_Component_Associations_Single: forall s tb e v ast_num x,
+        eval_expr s tb e (Normal (BasicV v)) ->
+        eval_named_record_component_associations s tb (((ast_num, x), e) :: nil) (Normal (AggregateV (RecordV ((x, v) :: nil))))
+    | eval_Named_Component_Associations_RTE: forall s tb e v nca lnca ast_num x,
+        eval_expr s tb e (Normal v) ->
+        eval_named_record_component_associations s tb (nca :: lnca) Run_Time_Error -> 
+        eval_named_record_component_associations s tb (((ast_num, x), e) :: nca :: lnca) Run_Time_Error 
+    | eval_Named_Component_Associations_List: forall s tb e v nca lnca lrv ast_num x,
+        eval_expr s tb e (Normal (BasicV v)) ->
+        eval_named_record_component_associations s tb (nca :: lnca) (Normal (AggregateV (RecordV lrv))) ->
+        eval_named_record_component_associations s tb (((ast_num, x), e) :: nca :: lnca) (Normal (AggregateV (RecordV ((x, v) :: lrv))))
+
+with eval_positional_array_aggregate : stack -> type_table -> list expression -> Return value -> Prop :=
+    | eval_List_Exps_RTE_E: forall s tb e le,
+        eval_expr s tb e Run_Time_Error ->
+        eval_positional_array_aggregate s tb (e :: le) Run_Time_Error
+    | eval_List_Exps_Single: forall s tb e v,
+        eval_expr s tb e (Normal (BasicV v)) ->
+        eval_positional_array_aggregate s tb (e :: nil) (Normal (AggregateV (ArrayV (v :: nil))))
+    | eval_List_Exps_RTE: forall s tb e1 v1 e2 le,
+        eval_expr s tb e1 (Normal (BasicV v1)) ->
+        eval_positional_array_aggregate s tb (e2 :: le) Run_Time_Error ->
+        eval_positional_array_aggregate s tb (e1 :: e2 :: le) Run_Time_Error
+    | eval_List_Exps_List: forall s tb e1 v1 e2 le lv,
+        eval_expr s tb e1 (Normal (BasicV v1)) ->
+        eval_positional_array_aggregate s tb (e2 :: le) (Normal (AggregateV (ArrayV lv))) ->
+        eval_positional_array_aggregate s tb (e1 :: e2 :: le) (Normal (AggregateV (ArrayV (v1 :: lv)))).
 
 
 (** * Statement semantics *)
 
 (** ** Stack manipulation for procedure calls and return *)
+
+(**********************************************************************
 
 (** [Copy_out prefix lparams lexp s s'] means that s' is the result of
     copying Out params of the currently finished procedure of prefix
@@ -227,47 +321,98 @@ Inductive Copy_in: stack -> list parameter_specification
       -> Copy_in σ (prm::lparam) (e::lexp)
                  (Normal ((prm.(parameter_name),Value v)::frame)).
 
-
+**********************************************************************)
 (** *** Inductive semantic of declarations. [eval_decl s nil decl
         rsto] means that rsto is the frame to be pushed on s after
         evaluating decl, sto is used as an accumulator for building
         the frame.
  *)
-Inductive eval_decl: stack -> store -> declaration -> Return store -> Prop :=
-| eval_Decl_E:
-    forall e d s sto,
+
+Definition type_id (t: type_declaration): typenum :=
+  match t with
+  | Array_Type_Declaration _ typnum _ _ _ => typnum 
+  | Record_Type_Declaration _ typnum _ => typnum 
+  end.
+
+Definition basic_type_def (t: typenum): option basic_type :=
+  match t with
+  | 0 => Some Boolean
+  | 1 => Some Integer
+  | _ => None
+  end.
+
+Fixpoint get_record_types (r: (list (idnum * typenum (*field -> type*)))) :=
+  match r with 
+  | nil => None
+  | (f, t) :: r1 => 
+    match (basic_type_def t) with
+    | Some t1 => 
+      match (get_record_types r1) with 
+      | Some fts => Some ((f, t1) :: fts)
+      | None => None 
+      end
+    | None => None 
+    end 
+  end.
+
+Inductive type_def: stack -> type_table -> type_declaration -> option type -> Prop :=
+  | TD_Array_RTE_L: forall s tb l ast_num typ_num t u,
+      eval_expr s tb l Run_Time_Error ->
+      type_def s tb (Array_Type_Declaration ast_num typ_num t l u) None
+  | TD_Array_RTE_U: forall s tb l v u ast_num typ_num t,
+      eval_expr s tb l (Normal (BasicV (Int v))) ->
+      eval_expr s tb u Run_Time_Error ->
+      type_def s tb (Array_Type_Declaration ast_num typ_num t l u) None
+  | TD_Array: forall s tb l v1 u v2 t td ast_num typ_num,
+      eval_expr s tb l (Normal (BasicV (Int v1))) ->
+      eval_expr s tb u (Normal (BasicV (Int v2))) ->
+      basic_type_def t = Some td ->
+      type_def s tb (Array_Type_Declaration ast_num typ_num t l u) (Some (AggregateT (ArrayT td v1 v2)))
+  | TD_Record: forall r rt s tb ast_num typ_num,
+      get_record_types r = Some rt ->
+      type_def s tb (Record_Type_Declaration ast_num typ_num r) (Some (AggregateT (RecordT rt))).
+
+Inductive eval_decl: stack -> store -> type_table -> declaration -> Return store -> Prop :=
+| eval_Decl_RTE:
+    forall e d s sto tb ast_num,
       Some e = d.(initialization_expression) ->
-      eval_expr (sto::s) e Run_Time_Error ->
-      eval_decl s sto (D_Object_declaration d) Run_Time_Error
+      eval_expr (sto::s) tb e Run_Time_Error ->
+      eval_decl s sto tb (D_Object_Declaration ast_num d) Run_Time_Error
 | eval_Decl:
-    forall d x e v s sto,
+    forall d x e v s sto tb ast_num,
       x = d.(object_name) ->
       Some e = d.(initialization_expression) ->
-      eval_expr (sto::s) e (Normal v) ->
-      eval_decl s sto (D_Object_declaration d) (Normal ((x, Value v) :: sto))
+      eval_expr (sto::s) tb e (Normal v) ->
+      eval_decl s sto tb (D_Object_Declaration ast_num d) (Normal ((x, Value v) :: sto))
 | eval_UndefDecl:
-    forall d x s sto,
+    forall d x s sto tb ast_num,
       x = d.(object_name) ->
       None = d.(initialization_expression) ->
-      eval_decl s sto (D_Object_declaration d) (Normal ((x, Undefined) :: sto))
-| eval_decl_Seq:
-    forall dcl1 dcl2 s s' s'' sto,
-      eval_decl s sto dcl1 (Normal s') ->
-      eval_decl s s' dcl2 (Normal s'') ->
-      eval_decl s sto (D_Sequence dcl1 dcl2) (Normal s'')
-| eval_decl_Seq_err1:
-    forall dcl1 dcl2 s sto,
-      eval_decl s sto dcl1 Run_Time_Error ->
-      eval_decl s sto (D_Sequence dcl1 dcl2) Run_Time_Error
-| eval_decl_Seq_err2:
-    forall dcl1 dcl2 s s' sto,
-      eval_decl s sto dcl1 (Normal s') ->
-      eval_decl s s' dcl2 Run_Time_Error ->
-      eval_decl s sto (D_Sequence dcl1 dcl2) Run_Time_Error
-| eval_decl_proc:
-    forall s pbody sto,
-      eval_decl s sto (D_Procedure_declaration pbody)
-                (Normal ((procedure_name pbody,Procedure pbody)::sto)).
+      eval_decl s sto tb (D_Object_Declaration ast_num d) (Normal ((x, Undefined) :: sto))
+| eval_Decl_Seq:
+    forall dcl1 dcl2 s s' s'' sto tb ast_num,
+      eval_decl s sto tb dcl1 (Normal s') ->
+      eval_decl s s' tb dcl2 (Normal s'') ->
+      eval_decl s sto tb (D_Sequence ast_num dcl1 dcl2) (Normal s'')
+| eval_Decl_Seq_RTE1:
+    forall dcl1 dcl2 s sto tb ast_num,
+      eval_decl s sto tb dcl1 Run_Time_Error ->
+      eval_decl s sto tb (D_Sequence ast_num dcl1 dcl2) Run_Time_Error
+| eval_Decl_Seq_RTE2:
+    forall dcl1 dcl2 s s' sto tb ast_num,
+      eval_decl s sto tb dcl1 (Normal s') ->
+      eval_decl s s' tb dcl2 Run_Time_Error ->
+      eval_decl s sto tb (D_Sequence ast_num dcl1 dcl2) Run_Time_Error
+| eval_Decl_Proc:
+    forall s pbody sto tb ast_num,
+      eval_decl s sto tb (D_Procedure_Declaration ast_num pbody)
+                (Normal ((procedure_name pbody,Procedure pbody)::sto))
+| eval_Decl_Type: 
+      forall typdec t s sto tb ast_num,
+      type_def (sto::s) tb typdec (Some t) ->
+      eval_decl s sto tb (D_Type_Declaration ast_num typdec)
+                (Normal ((type_id typdec, TypeDef t)::sto)).
+
 
 (** ** Inductive semantic of statement and declaration
 
@@ -278,81 +423,124 @@ Inductive eval_decl: stack -> store -> declaration -> Return store -> Prop :=
 
  *)
 
+(* a[i] := v *)
+Function arrayUpdate (a: list basic_value) (i: nat) (v: basic_value): option (list basic_value) :=
+  match a with
+  | a0::a1 => 
+      match i with
+      | 0 => Some (v :: a1) 
+      | S i1 => 
+          match (arrayUpdate a1 i1 v) with
+          | Some a2 => Some (a0 :: a2)
+          | None => None
+          end 
+      end
+  | nil => None
+  end.
 
-Inductive eval_stmt: stack -> statement -> Return stack -> Prop := 
-    | eval_S_Assignment1: forall s e ast_num x,
-        eval_expr s e Run_Time_Error ->
-        eval_stmt s (S_Assignment ast_num x e) Run_Time_Error
-    | eval_S_Assignment2: forall s e v x s1 ast_num,
-        eval_expr s e (Normal v) ->
+(* r.f := v *)
+Function recordUpdate (r: list (idnum * basic_value)) (f : idnum) (v: basic_value): option (list (idnum * basic_value)) := 
+    match r with 
+    | (f1, v1) :: r1 => 
+      if beq_nat f1 f then 
+        Some ((f1,v)::r1) 
+      else 
+        match recordUpdate r1 f v with
+        | Some r2 => Some ((f1,v1)::r2)
+        | None => None
+        end
+   | nil => None
+   end.
+
+Function aggregateUpdate (x: aggregate_value) (y: nat) (v: basic_value): option aggregate_value :=
+  match x with
+  | ArrayV a =>
+      match (arrayUpdate a y v) with
+      | Some a1 => Some (ArrayV a1)
+      | None => None 
+      end
+  | RecordV r =>
+      match (recordUpdate r y v) with
+      | Some r1 => Some (RecordV r1) 
+      | None => None 
+      end
+  end.
+
+Inductive eval_stmt: stack -> type_table -> statement -> Return stack -> Prop := 
+    | eval_S_Assignment_RTE: forall s tb e ast_num x,
+        eval_expr s tb e Run_Time_Error ->
+        eval_stmt s tb (S_Assignment ast_num x e) Run_Time_Error
+    | eval_S_Assignment: forall s tb e v x s1 ast_num,
+        eval_expr s tb e (Normal v) ->
+        storeUpdate s tb x v s1 ->
+        eval_stmt s tb (S_Assignment ast_num x e) s1
+    | eval_S_Sequence_RTE: forall s tb c1 ast_num c2,
+        eval_stmt s tb c1 Run_Time_Error ->
+        eval_stmt s tb (S_Sequence ast_num c1 c2) Run_Time_Error
+    | eval_S_Sequence: forall ast_num s tb s1 s2 c1 c2,
+        eval_stmt s tb c1 (Normal s1) ->
+        eval_stmt s1 tb c2 s2 ->
+        eval_stmt s tb (S_Sequence ast_num c1 c2) s2
+    | eval_S_If_RTE: forall s tb b ast_num c,
+        eval_expr s tb b Run_Time_Error ->
+        eval_stmt s tb (S_If ast_num b c) Run_Time_Error
+    | eval_S_If_True: forall s tb b c s1 ast_num,
+        eval_expr s tb b (Normal (BasicV (Bool true))) ->
+        eval_stmt s tb c s1 ->
+        eval_stmt s tb (S_If ast_num b c) s1
+    | eval_S_If_False: forall s tb b ast_num c,
+        eval_expr s tb b (Normal (BasicV (Bool false))) ->
+        eval_stmt s tb (S_If ast_num b c) (Normal s)
+    | eval_S_While_Loop_RTE: forall s tb b ast_num c,
+        eval_expr s tb b Run_Time_Error ->
+        eval_stmt s tb (S_While_Loop ast_num b c) Run_Time_Error
+    | eval_S_While_Loop_True_RTE: forall s tb b c ast_num,
+        eval_expr s tb b (Normal (BasicV (Bool true))) ->
+        eval_stmt s tb c Run_Time_Error ->
+        eval_stmt s tb (S_While_Loop ast_num b c) Run_Time_Error
+    | eval_S_While_Loop_True: forall s tb b c s1 ast_num s2,
+        eval_expr s tb b (Normal (BasicV (Bool true))) ->
+        eval_stmt s tb c (Normal s1) ->
+        eval_stmt s1 tb (S_While_Loop ast_num b c) s2 ->
+        eval_stmt s tb (S_While_Loop ast_num b c) s2
+    | eval_S_While_Loop_False: forall s tb b ast_num c,
+        eval_expr s tb b (Normal (BasicV (Bool false))) ->
+        eval_stmt s tb (S_While_Loop ast_num b c) (Normal s)
+
+with storeUpdate: stack -> type_table -> name -> value -> Return stack -> Prop := 
+    | SU_Identifier: forall s tb x v s1 ast_num,
         updateG s x (Value v) = Some s1 ->
-        eval_stmt s (S_Assignment ast_num x e) (Normal s1)
-    | eval_S_Sequence1: forall s c1 ast_num c2,
-        eval_stmt s c1 Run_Time_Error ->
-        eval_stmt s (S_Sequence ast_num c1 c2) Run_Time_Error
-    | eval_S_Sequence2: forall ast_num s s1 s2 c1 c2,
-        eval_stmt s c1 (Normal s1) ->
-        eval_stmt s1 c2 s2 ->
-        eval_stmt s (S_Sequence ast_num c1 c2) s2
-    | eval_S_If: forall s b ast_num c,
-        eval_expr s b Run_Time_Error ->
-        eval_stmt s (S_If ast_num b c) Run_Time_Error
-    | eval_S_If_True: forall s b c s1 ast_num,
-        eval_expr s b (Normal (Bool true)) ->
-        eval_stmt s c s1 ->
-        eval_stmt s (S_If ast_num b c) s1
-    | eval_S_If_False: forall s b ast_num c,
-        eval_expr s b (Normal (Bool false)) ->
-        eval_stmt s (S_If ast_num b c) (Normal s)
-    | eval_S_While_Loop: forall s b ast_num c,
-        eval_expr s b Run_Time_Error ->
-        eval_stmt s (S_While_Loop ast_num b c) Run_Time_Error
-    | eval_S_While_Loop_True1: forall s b c ast_num,
-        eval_expr s b (Normal (Bool true)) ->
-        eval_stmt s c Run_Time_Error ->
-        eval_stmt s (S_While_Loop ast_num b c) Run_Time_Error
-    | eval_S_While_Loop_True2: forall s b c s1 ast_num s2,
-        eval_expr s b (Normal (Bool true)) ->
-        eval_stmt s c (Normal s1) ->
-        eval_stmt s1 (S_While_Loop ast_num b c) s2 ->
-        eval_stmt s (S_While_Loop ast_num b c) s2
-    | eval_S_While_Loop_False: forall s b ast_num c,
-        eval_expr s b (Normal (Bool false)) ->
-        eval_stmt s (S_While_Loop ast_num b c) (Normal s)
-    | eval_S_Proc_rteargs:
-        forall pbname (pb:procedure_declaration) lexp s ast_num,
-          fetchG pbname s = Some (Procedure pb) ->
-          Copy_in s (procedure_parameter_profile pb) lexp Run_Time_Error ->
-          eval_stmt s (S_ProcCall ast_num pbname lexp) Run_Time_Error
-    | eval_S_Proc_rtedecl:
-        forall pbname (pb:procedure_declaration) lexp s_caller s_forget s ast_num prefix,
-          fetchG pbname s_caller = Some (Procedure pb) ->
-          Copy_in s_caller (procedure_parameter_profile pb) lexp (Normal prefix) ->
-          Cut_until s_caller pbname s_forget s -> (* s_caller = s_forget++s *)
-          eval_decl s prefix (procedure_declarative_part pb) Run_Time_Error ->
-          eval_stmt s_caller (S_ProcCall ast_num pbname lexp) Run_Time_Error
-    | eval_S_Proc_rtebody:
-        forall pbname (pb:procedure_declaration) lexp s_caller s_forget s ast_num s2 prefix,
-          fetchG pbname s_caller = Some (Procedure pb) ->
-          Copy_in s_caller (procedure_parameter_profile pb) lexp (Normal prefix) ->
-          Cut_until s_caller pbname s_forget s -> (* s_caller = s_forget++s *)
-          eval_decl s prefix (procedure_declarative_part pb) (Normal s2) ->
-          eval_stmt (s2::s) (procedure_statements pb) Run_Time_Error ->
-          eval_stmt s_caller (S_ProcCall ast_num pbname lexp) Run_Time_Error
-    | eval_S_Proc:
-        forall pbname (pb:procedure_declaration) lexp s_caller s_forget s ast_num
-               s2 s3 s' s'' slocal prefix prefix',
-          fetchG pbname s_caller = Some (Procedure pb) ->
-          Copy_in s_caller (procedure_parameter_profile pb) lexp (Normal prefix) ->
-          Cut_until s_caller pbname s_forget s -> (* s_caller = s_forget++s *)
-          eval_decl s prefix (procedure_declarative_part pb) (Normal s2) ->          
-          eval_stmt (s2::s) (procedure_statements pb) (Normal s3) ->
-          s3 = (slocal ++ prefix') :: s' -> (* extract parameters from local frame *)
-          List.length prefix = List.length prefix' ->
-          Copy_out prefix' (procedure_parameter_profile pb) lexp (s_forget++s') s'' ->
-          eval_stmt s_caller (S_ProcCall ast_num pbname lexp) (Normal s'')
-.
+        storeUpdate s tb (E_Identifier ast_num x) v (Normal s1)
+    | SU_Indexed_Component_RTE_E: forall x s tb a e ast_num x_ast_num v,
+        fetchG x s = Some (Value (AggregateV (ArrayV a))) ->
+        eval_expr s tb e Run_Time_Error ->
+        storeUpdate s tb (E_Indexed_Component ast_num x_ast_num x e) v Run_Time_Error
+    | SU_Indexed_Component_RTE_Range: forall x s a tb e i x_ast_num tid t l u ast_num v,
+        fetchG x s = Some (Value (AggregateV (ArrayV a))) ->
+        eval_expr s tb e (Normal (BasicV (Int i))) ->
+        (* get the type for prefix of indexed component *)
+        TYPE_STORE.fetch x_ast_num tb = Some tid ->
+        fetchG tid s = Some (TypeDef (AggregateT (ArrayT t l u))) ->
+        do_range_check i l u false ->
+        storeUpdate s tb (E_Indexed_Component ast_num x_ast_num x e) v Run_Time_Error
+    | SU_Indexed_Component: forall x s a tb e i x_ast_num tid t l u v a1 s1 ast_num,
+        fetchG x s = Some (Value (AggregateV (ArrayV a))) ->
+        eval_expr s tb e (Normal (BasicV (Int i))) ->
+        (* get the type for prefix of indexed component *)
+        TYPE_STORE.fetch x_ast_num tb = Some tid ->
+        fetchG tid s = Some (TypeDef (AggregateT (ArrayT t l u))) ->
+        do_range_check i l u true ->
+        aggregateUpdate (ArrayV a) (Z.to_nat (i - l)) v = Some a1 -> (* a[i] := v *)
+        updateG s x (Value (AggregateV a1)) = Some s1 ->
+        storeUpdate s tb (E_Indexed_Component ast_num x_ast_num x e) (BasicV v) (Normal s1)
+    | SU_Selected_Component: forall r s r1 f v r2 s1 tb ast_num r_ast_num,
+        fetchG r s = Some (Value (AggregateV (RecordV r1))) ->
+        aggregateUpdate (RecordV r1) f v = Some r2 -> (* r1.f := v *)
+        updateG s r (Value (AggregateV r2)) = Some s1 ->
+        storeUpdate s tb (E_Selected_Component ast_num r_ast_num r f) (BasicV v) (Normal s1).
 
+
+(**********************************************************************************************************
 
 (** ** examples *)
 
@@ -2011,7 +2199,65 @@ Eval vm_compute in f_eval_stmt 200 (s1::nil) (S_ProcCall 13 101 nil).
 Lemma essai: eval_stmt (s1::nil) (S_ProcCall 13 101 nil) (Normal (s2::nil)).
 Proof.
   apply f_eval_stmt_correct1 with (k:=2).
-  compute.
+  compute.f_eval_proc k s f'
+    end.
+
+(** ** Bisimulation Between Relational And Functional Semantics For Main Procedure *)
+
+(** *** f_eval_subprogram_correct *)
+Theorem f_eval_subprogram_correct: forall k s f s',
+    (f_eval_subprogram k s f = Normal s' -> 
+        eval_subprogram s f (Normal s')) /\
+    (f_eval_subprogram k s f = Run_Time_Error -> 
+        eval_subprogram s f Run_Time_Error).
+Proof.
+    intros.
+    !! (split; intros;
+        destruct f;
+        simpl in H;
+        constructor;
+        unfold f_eval_proc in H ;
+        remember (f_eval_decl s nil (procedure_declarative_part p)) as x;
+        symmetry in Heqx).
+  - (* normal state *)
+    destruct x; !invclear heq.
+    econstructor.
+    + apply f_eval_decl_correct.
+      apply heqeval_decl.
+    + rewrite heqeval_stmt.
+      apply f_eval_stmt_correct in heqeval_stmt;assumption.
+  - (* run time error *)
+    destruct x; !invclear heq; subst.
+    + econstructor.
+       * apply f_eval_decl_correct in heqeval_decl.
+         apply heqeval_decl.
+       * rewrite heqeval_stmt.
+         apply f_eval_stmt_correct in heqeval_stmt; assumption.
+    + econstructor.
+      apply f_eval_decl_correct2 in heqeval_decl; assumption.
+Qed.
+
+(** *** f_eval_subprogram_complete *)
+Theorem f_eval_subprogram_complete: forall s f s',
+    eval_subprogram s f s' ->
+    exists k, f_eval_subprogram k s f = s'.
+Proof.
+  intros s f s' h.
+  unfold f_eval_subprogram.
+  unfold f_eval_proc.
+  !invclear h.
+  !invclear H;simpl.
+  - exists 0.
+    apply f_eval_decl_complete in heval_decl.
+    rewrite heval_decl.
+    reflexivity.
+  - apply f_eval_decl_complete in heval_decl.
+    rewrite heval_decl.
+    apply f_eval_stmt_complete in heval_stmt.
+    assumption.
+Qed.
+
+
   reflexivity.
 Qed.
 
@@ -2073,3 +2319,5 @@ Qed.
 
 End ExampleProcedures2.
 (* END EXAMPLE *)
+
+**********************************************************************************************************)
