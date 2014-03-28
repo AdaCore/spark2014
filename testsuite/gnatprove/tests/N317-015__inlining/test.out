@@ -1,0 +1,63 @@
+array_arith.adb:12:12: warning: "X" might not be initialized
+array_arith.adb:29:19: info: overflow check proved, in instantiation at array_arith.adb:32
+array_arith.adb:29:19: info: overflow check proved, in instantiation at array_arith.adb:33
+array_arith.adb:29:19: info: overflow check proved, in instantiation at array_arith.adb:34
+array_arith.adb:29:19: info: overflow check proved, in instantiation at array_arith.adb:35
+array_arith.adb:29:19: info: overflow check proved, in instantiation at array_arith.adb:36
+array_arith.adb:29:19: info: overflow check proved, in instantiation at array_arith.adb:37
+array_arith.adb:29:19: info: overflow check proved, in instantiation at array_arith.adb:38
+array_arith.adb:29:19: info: overflow check proved, in instantiation at array_arith.adb:39
+array_arith.adb:29:19: info: overflow check proved, in instantiation at array_arith.adb:40
+array_arith.adb:29:19: info: overflow check proved, in instantiation at array_arith.adb:41
+array_arith.adb:32:12: warning: "X" might not be initialized
+array_arith.adb:50:15: warning: "X" might not be initialized, in instantiation at array_arith.adb:66
+array_arith.adb:63:19: info: overflow check proved, in instantiation at array_arith.adb:50, in instantiation at array_arith.adb:66
+array_arith.adb:63:19: info: overflow check proved, in instantiation at array_arith.adb:51, in instantiation at array_arith.adb:66
+array_arith.adb:63:19: info: overflow check proved, in instantiation at array_arith.adb:52, in instantiation at array_arith.adb:66
+array_arith.adb:63:19: info: overflow check proved, in instantiation at array_arith.adb:53, in instantiation at array_arith.adb:66
+array_arith.adb:63:19: info: overflow check proved, in instantiation at array_arith.adb:54, in instantiation at array_arith.adb:66
+array_arith.adb:63:19: info: overflow check proved, in instantiation at array_arith.adb:55, in instantiation at array_arith.adb:66
+array_arith.adb:63:19: info: overflow check proved, in instantiation at array_arith.adb:56, in instantiation at array_arith.adb:66
+array_arith.adb:63:19: info: overflow check proved, in instantiation at array_arith.adb:57, in instantiation at array_arith.adb:66
+array_arith.adb:63:19: info: overflow check proved, in instantiation at array_arith.adb:58, in instantiation at array_arith.adb:66
+array_arith.adb:63:19: info: overflow check proved, in instantiation at array_arith.adb:59, in instantiation at array_arith.adb:66
+array_arith.adb:73:12: warning: "X" might not be initialized, in instantiation at array_arith.adb:76
+array_arith.ads:9:14: info: postcondition proved
+array_arith.ads:12:14: info: postcondition proved
+array_arith.ads:15:14: info: postcondition proved
+array_arith.ads:18:14: info: postcondition proved
+ident.adb:38:14: warning: subprogram "Test" has no effect
+ident.adb:42:7: warning: assertion might fail, requires Id_Public (X) = X
+ident.adb:43:7: info: assertion proved
+ident.adb:44:7: info: assertion proved
+ident.adb:47:7: warning: assertion might fail, requires Y = 9
+ident.adb:49:7: info: assertion proved
+ident.adb:51:7: info: assertion proved
+incr_expr_fun.adb:4:62: warning: overflow check might fail
+incr_expr_fun.adb:6:63: warning: overflow check might fail
+incr_expr_fun.adb:8:58: warning: overflow check might fail
+incr_expr_fun.adb:11:63: warning: overflow check might fail
+incr_expr_fun.adb:13:14: warning: subprogram "Test" has no effect
+incr_expr_fun.adb:16:7: info: assertion proved
+incr_expr_fun.adb:16:39: info: overflow check proved
+incr_expr_fun.adb:17:7: info: assertion proved
+incr_expr_fun.adb:17:43: info: overflow check proved
+incr_expr_fun.adb:18:7: info: assertion proved
+incr_expr_fun.adb:18:44: info: overflow check proved
+incr_expr_fun.adb:19:7: info: assertion proved
+incr_expr_fun.adb:19:44: info: overflow check proved
+incr_expr_fun.adb:20:7: info: assertion proved
+incr_expr_fun.adb:20:40: info: overflow check proved
+incr_expr_fun.adb:21:7: info: assertion proved
+incr_expr_fun.adb:21:45: info: overflow check proved
+incr_expr_fun.adb:22:7: info: assertion proved
+incr_expr_fun.adb:22:45: info: overflow check proved
+incr_expr_fun.adb:23:7: info: assertion proved
+incr_expr_fun.adb:23:40: info: overflow check proved
+incr_expr_fun.adb:24:7: info: assertion proved
+incr_expr_fun.adb:24:45: info: overflow check proved
+incr_expr_fun.ads:4:57: warning: overflow check might fail
+incr_expr_fun.ads:7:61: warning: overflow check might fail
+incr_expr_fun.ads:14:62: warning: overflow check might fail
+incr_expr_fun.ads:16:58: warning: overflow check might fail
+incr_expr_fun.ads:19:63: warning: overflow check might fail

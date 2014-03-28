@@ -167,6 +167,11 @@ package SPARK_Util is
    function Get_Subprogram_Spec (E : Entity_Id) return Node_Id;
    --  Return the N_Specification node for a subprogram entity E
 
+   function Get_Subprogram_Decl (E : Entity_Id) return Node_Id;
+   --  Return the N_Subprogram_Declaration node for a subprogram entity E, if
+   --  any. Otherwise, return Empty, in particular in the case of a subprogram
+   --  body acting as declaration.
+
    function Get_Package_Spec (E : Entity_Id) return Node_Id with
      Pre  => Ekind_In (E, E_Package, E_Generic_Package),
      Post => Nkind (Get_Package_Spec'Result) = N_Package_Specification;

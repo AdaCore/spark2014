@@ -3361,56 +3361,63 @@ package body SPARK_Definition is
         and not Unit_In_Standard_Library (Main_Unit)
       then
          return;
-      end if;
 
-      --  Content of packages with external axioms is not to be proved
+      --  Ignore body of packages with external axioms
 
-      if Entity_In_External_Axioms (E) then
+      elsif Entity_In_External_Axioms (E) then
          return;
-      end if;
 
-      --  Do not analyze generic bodies
+      --  Ignore generic subprograms
 
-      if Ekind (E) in Generic_Subprogram_Kind then
+      elsif Ekind (E) in Generic_Subprogram_Kind then
          return;
-      end if;
 
-      Current_SPARK_Pragma := SPARK_Pragma (Defining_Entity (N));
+      --  Ignore inlined subprograms
 
-      --  Only analyze subprogram body declarations in SPARK_Mode => On
+      elsif not Acts_As_Spec (N)
+        and then Present (Get_Subprogram_Decl (E))
+        and then Present (Body_To_Inline (Get_Subprogram_Decl (E)))
+      then
+         return;
 
-      if SPARK_Pragma_Is (Opt.On) then
+      else
+         Current_SPARK_Pragma := SPARK_Pragma (Defining_Entity (N));
 
-         --  Always mark the body in SPARK
+         --  Only analyze subprogram body declarations in SPARK_Mode => On
 
-         Bodies_In_SPARK.Include (E);
+         if SPARK_Pragma_Is (Opt.On) then
 
-         --  Detect violations in the body itself
+            --  Always mark the body in SPARK
 
-         Mark_List (Declarations (N));
-         Mark (HSS);
+            Bodies_In_SPARK.Include (E);
 
-         --  For the special case of an expression function, the frontend
-         --  generates a distinct body if not already in source code. Use as
-         --  entity for the body the distinct E_Subprogram_Body entity. This
-         --  allows a separate definition of theories in Why3 for declaring
-         --  the logic function and its axiom. This is necessary so that they
-         --  are defined with the proper visibility over previously defined
-         --  entities.
+            --  Detect violations in the body itself
 
-         if Ekind (E) = E_Function
-           and then Present (Get_Expression_Function (E))
-         then
-            Entity_List.Append (Defining_Entity (N));
+            Mark_List (Declarations (N));
+            Mark (HSS);
+
+            --  For the special case of an expression function, the frontend
+            --  generates a distinct body if not already in source code. Use as
+            --  entity for the body the distinct E_Subprogram_Body entity. This
+            --  allows a separate definition of theories in Why3 for declaring
+            --  the logic function and its axiom. This is necessary so that
+            --  they are defined with the proper visibility over previously
+            --  defined entities.
+
+            if Ekind (E) = E_Function
+              and then Present (Get_Expression_Function (E))
+            then
+               Entity_List.Append (Defining_Entity (N));
+            end if;
          end if;
+
+         --  Postprocessing: indicate in output file if subprogram is in
+         --  SPARK or not, for reporting, debug and verifications.
+
+         Generate_Output_In_Out_SPARK (E);
+
+         Current_SPARK_Pragma := Save_SPARK_Pragma;
       end if;
-
-      --  Postprocessing: indicate in output file if subprogram is in
-      --  SPARK or not, for reporting, debug and verifications.
-
-      Generate_Output_In_Out_SPARK (E);
-
-      Current_SPARK_Pragma := Save_SPARK_Pragma;
    end Mark_Subprogram_Body;
 
    ---------------------------------
@@ -3422,23 +3429,31 @@ package body SPARK_Definition is
       E : constant Entity_Id := Defining_Entity (N);
 
    begin
-      --  Do not analyze generics
+      --  Ignore generic subprograms
 
       if Ekind (E) in Generic_Subprogram_Kind then
          return;
-      end if;
+
+      --  Ignore inlined subprograms
+
+      elsif Nkind (N) = N_Subprogram_Declaration
+        and then Present (Body_To_Inline (N))
+      then
+         return;
 
       --  Mark entity
 
-      Current_SPARK_Pragma := SPARK_Pragma (E);
+      else
+         Current_SPARK_Pragma := SPARK_Pragma (E);
 
-      if SPARK_Pragma_Is (Opt.On) then
-         Specs_In_SPARK.Include (E);
+         if SPARK_Pragma_Is (Opt.On) then
+            Specs_In_SPARK.Include (E);
+         end if;
+
+         Mark_Entity (E);
+
+         Current_SPARK_Pragma := Save_SPARK_Pragma;
       end if;
-
-      Mark_Entity (E);
-
-      Current_SPARK_Pragma := Save_SPARK_Pragma;
    end Mark_Subprogram_Declaration;
 
    -----------------------------

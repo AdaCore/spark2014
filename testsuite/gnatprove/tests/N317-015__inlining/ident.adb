@@ -1,0 +1,54 @@
+package body Ident
+  with SPARK_Mode
+is
+
+   function Id_Body (X : Integer) return Integer;
+   procedure Incr_Body (X : in Positive; Y : out Natural);
+
+   function Id_Body (X : Integer) return Integer is
+   begin
+      return X;
+   end Id_Body;
+
+   procedure Incr_Body (X : in Positive; Y : out Natural) is
+   begin
+      Y := X - 1;
+   end Incr_Body;
+
+   function Id_Public (X : Integer) return Integer is
+   begin
+      return X;
+   end Id_Public;
+
+   procedure Incr_Public (X : in Positive; Y : out Natural) is
+   begin
+      Y := X - 1;
+   end Incr_Public;
+
+   function Id_Private (X : Integer) return Integer is
+   begin
+      return X;
+   end Id_Private;
+
+   procedure Incr_Private (X : in Positive; Y : out Natural) is
+   begin
+      Y := X - 1;
+   end Incr_Private;
+
+   procedure Test is
+      X : Positive := 10;
+      Y : Natural;
+   begin
+      pragma Assert (Id_Public (X) = X);   -- @ASSERT:FAIL
+      pragma Assert (Id_Private (X) = X);  -- @ASSERT:PASS
+      pragma Assert (Id_Body (X) = X);     -- @ASSERT:PASS
+
+      Incr_Public (X, Y);
+      pragma Assert (Y = 9);   -- @ASSERT:FAIL
+      Incr_Private (X, Y);
+      pragma Assert (Y = 9);   -- @ASSERT:PASS
+      Incr_Body (X, Y);
+      pragma Assert (Y = 9);   -- @ASSERT:PASS
+   end Test;
+
+end Ident;

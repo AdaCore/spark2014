@@ -1004,6 +1004,7 @@ package body Gnat2Why.Subprograms is
          Label_Set : Name_Id_Set := Name_Id_Sets.To_Set (Cur_Subp_Sloc);
       begin
          Label_Set.Include (Cur_Subp_Name_Label);
+         Label_Set.Include (NID ("W:diverges:N"));
          Emit (File.Cur_Theory,
                 Why.Gen.Binders.New_Function_Decl
                  (Domain  => EW_Prog,

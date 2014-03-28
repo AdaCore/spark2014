@@ -928,6 +928,28 @@ package body SPARK_Util is
    end Get_Subprogram_Contract_Cases;
 
    -------------------------
+   -- Get_Subprogram_Decl --
+   -------------------------
+
+   function Get_Subprogram_Decl (E : Entity_Id) return Node_Id is
+      N : Node_Id;
+
+   begin
+      --  Retrieve the declaration for E
+
+      N := Parent (Get_Subprogram_Spec (E));
+
+      --  This declaration is either subprogram declaration or a subprogram
+      --  body, in which case return Empty.
+
+      if Nkind (N) = N_Subprogram_Declaration then
+         return N;
+      else
+         return Empty;
+      end if;
+   end Get_Subprogram_Decl;
+
+   -------------------------
    -- Get_Subprogram_Spec --
    -------------------------
 
