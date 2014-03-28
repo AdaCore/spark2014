@@ -315,9 +315,9 @@ Tool Limitations
    automate this.
 
 #. |GNATprove| automatically re-analyzes source files when they have changed,
-   or when compilation options have changed. However, |GNATprove| does not
-   detect changes in target configuration files and pragma configuration
-   files. Use option ``-f`` in that case.
+   when compilation options have changed, or when pragma configuration files
+   have changed. However, |GNATprove| does not detect changes in target
+   configuration files. Use option ``-f`` in that case.
 
 #. A subset of all Ada fixed-point types and fixed-point operations is
    supported:
@@ -336,7 +336,7 @@ Legality Rules
 
 #. |SPARK| Reference Manual rule 4.3(1), concerning use of the box
    symbol "<>" in aggregates, is not currently checked.
-   
+
 #. The elaboration order rules described in the |SPARK| Reference
    Manual 7.7 are not currently checked.
 
