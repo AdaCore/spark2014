@@ -1187,7 +1187,7 @@ package body Flow.Control_Flow_Graph is
                  (Component    : Node_Id;
                   Search_Under : Node_Id;
                   Found        : out Node_Id);
-               --  Searches under Search_Under for Component and point Found
+               --  Searches under Search_Under for Component and points Found
                --  to the corresponding expression. At the end Component is
                --  pointed to the next element.
 
