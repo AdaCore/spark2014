@@ -1498,6 +1498,23 @@ package body Flow_Utility is
                         --  also used.
                         Vars_Implicitly_Used.Union (Vars_Defined);
 
+                     when N_Attribute_Reference =>
+                        --  Here, we are adding all variables used within the
+                        --  'Update attribute.
+                        Vars_Defined.Union
+                          (Get_Variable_Set
+                             (Expressions (Prefix (End_Of_Record)),
+                              Scope           => Scope,
+                              Local_Constants => Local_Constants,
+                              Fold_Functions  => False));
+
+                        --  We also add the record field itself
+                        Vars_Defined.Union
+                          (Flow_Id_Sets.To_Set
+                             (Record_Field_Id (End_Of_Record)));
+
+                        Vars_Implicitly_Used.Union (Vars_Defined);
+
                      when others =>
                         declare
                            F : constant Flow_Id :=
