@@ -727,7 +727,7 @@ procedure Gnatprove is
       case Warning is
          when Opt.Suppress       => return "off";
          when Opt.Treat_As_Error => return "error";
-         when Opt.Normal         => return "on";
+         when Opt.Normal         => return "continue";
       end case;
    end To_String;
 

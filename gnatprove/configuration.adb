@@ -124,7 +124,7 @@ ASCII.LF &
 "     --version      Output version of the tool and exit" &
 ASCII.LF &
 "     --warnings=w   Set the warning mode of GNATprove " &
-"(w=off, on, error*)"
+"(w=off, continue, error*)"
 &
 ASCII.LF &
 " -h, --help         Display this usage information" &
@@ -152,11 +152,11 @@ ASCII.LF &
 ASCII.LF &
 " * Warning mode values" &
 ASCII.LF &
-"   . off   - Do not issue warnings" &
+"   . off      - Do not issue warnings" &
 ASCII.LF &
-"   . on    - Issue warnings" &
+"   . continue - Issue warnings and continue" &
 ASCII.LF &
-"   . error - Treat warnings as errors (default)" &
+"   . error    - Treat warnings as errors (default)" &
 ASCII.LF &
 ASCII.LF &
 "gnatprove advanced switches:" &
@@ -607,14 +607,18 @@ ASCII.LF;
                     With_Help => False);
       end if;
 
+      --  Note that "on" here is retained for backwards compatibility
+      --  with release 14.0.1
       if Warning_Input.all = "off" then
          Warning_Mode := Opt.Suppress;
-      elsif Warning_Input.all = "on" then
+      elsif Warning_Input.all = "on"
+        or else Warning_Input.all = "continue"
+      then
          Warning_Mode := Opt.Normal;
       elsif Warning_Input.all = "error" or else Warning_Input.all = "" then
          Warning_Mode := Opt.Treat_As_Error;
       else
-         Abort_Msg ("warnings should be one of (off | on | error)",
+         Abort_Msg ("warnings should be one of (off | continue | error)",
                     With_Help => False);
       end if;
 

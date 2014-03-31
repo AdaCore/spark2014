@@ -324,12 +324,15 @@ Warning Control
     See the GNAT User's Guide for more details. These should passed through
     the compilation switches specified in the project file.
 
-* Flow analysis warnings are controlled with switch ``--warnings``:
+* Warnings regarding SPARK legality rules and flow analysis are controlled with switch ``--warnings``:
 
   * ``--warnings=off`` suppresses all warnings
-  * ``--warnings=on`` issues warnings
-  * ``--warnings=error`` treats warnings as errors
-    The default is to treat |GNATprove| specific warnings as errors.
+  * ``--warnings=error`` treats warnings as errors (default)
+  * ``--warnings=continue`` issues warnings but allows further analyses to proceed
+
+    The default is to treat |GNATprove| specific warnings as errors. In this mode,
+    warnings prevent the generation of verification conditions
+    since such warnings may impact the validity of proof.
 
 * Proof warnings are currently not suppressible
 

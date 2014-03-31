@@ -29,7 +29,7 @@ Command-line Options
  -U                 Analyze all units of all projects
  -v, --verbose      Output extra verbose information
      --version      Output version of the tool and exit
-     --warnings=w   Set the warning mode of GNATprove (w=off, on, error*)
+     --warnings=w   Set the warning mode of GNATprove (w=off, continue, error*)
  -h, --help         Display this usage information
 
  * Main mode values
@@ -44,9 +44,9 @@ Command-line Options
    . statistics - Same as all, plus timing and steps information
 
  * Warning mode values
-   . off   - Do not issue warnings
-   . on    - Issue warnings
-   . error - Treat warnings as errors (default)
+   . off      - Do not issue warnings
+   . continue - Issue warnings and continue
+   . error    - Treat warnings as errors (default)
 
  gnatprove advanced switches:
  -d, --debug        Debug mode
