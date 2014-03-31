@@ -1,0 +1,14 @@
+conv.adb:1:11: warning: subprogram "Conv" has no effect
+conv.adb:11:14: info: overflow check proved, in instantiation at conv.adb:15
+conv.adb:15:10: info: range check proved
+conv.adb:16:4: info: assertion proved
+ident.adb:38:14: warning: subprogram "Test" has no effect
+ident.adb:42:7: warning: assertion might fail, requires Id_Public (X) = X
+ident.adb:43:7: info: assertion proved
+ident.adb:44:7: info: assertion proved
+ident.adb:46:20: info: range check proved
+ident.adb:47:7: warning: assertion might fail, requires Y = 9
+ident.adb:48:21: info: range check proved
+ident.adb:49:7: info: assertion proved
+ident.adb:50:18: info: range check proved
+ident.adb:51:7: info: assertion proved

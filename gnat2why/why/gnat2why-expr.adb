@@ -1170,6 +1170,13 @@ package body Gnat2Why.Expr is
    function Expected_Type_Of_Prefix (N : Node_Id) return W_Type_Id is
    begin
       case Nkind (N) is
+         --  The frontend may introduce an unchecked type conversion on the
+         --  variable assigned to, in particular for inlining. Reach through
+         --  the variable assigned in that case.
+
+         when N_Unchecked_Type_Conversion =>
+            return Expected_Type_Of_Prefix (Expression (N));
+
          when N_Identifier | N_Expanded_Name =>
             return
               Get_Typ (Ada_Ent_To_Why.Element
@@ -1613,7 +1620,7 @@ package body Gnat2Why.Expr is
             when N_Identifier | N_Expanded_Name =>
                null;
 
-            when N_Type_Conversion =>
+            when N_Type_Conversion | N_Unchecked_Type_Conversion =>
                   N := Expression (N);
                   Expr :=
                     +Insert_Simple_Conversion
@@ -1641,7 +1648,7 @@ package body Gnat2Why.Expr is
                end;
 
             when others =>
-               Ada.Text_IO.Put_Line ("[Compute_Rvalue] kind ="
+               Ada.Text_IO.Put_Line ("[Shift_Rvalue] kind ="
                                      & Node_Kind'Image (Nkind (N)));
                raise Not_Implemented;
          end case;

@@ -898,7 +898,12 @@ package body Why.Gen.Expr is
                end if;
             end Indexed_Component;
 
-         when N_Type_Conversion =>
+         --  Frontend may have introduced unchecked type conversions on
+         --  expressions or variables assigned to, which require range
+         --  checking. Look at the parent of the N_Unchecked_Type_Conversion
+         --  node in that case.
+
+         when N_Type_Conversion | N_Unchecked_Type_Conversion =>
             Check_Type := Etype (Par);
 
          when N_Qualified_Expression =>

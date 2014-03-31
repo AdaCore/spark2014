@@ -1392,7 +1392,7 @@ package body Flow_Utility is
       end if;
 
       case Nkind (N) is
-         when N_Type_Conversion =>
+         when N_Type_Conversion | N_Unchecked_Type_Conversion =>
             Untangle_Assignment_Target
               (N                    => Expression (N),
                Scope                => Scope,
