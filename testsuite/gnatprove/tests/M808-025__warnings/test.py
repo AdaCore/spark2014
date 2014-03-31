@@ -28,19 +28,19 @@ def cmd_line_or_ide_mode(opt=[]):
     print ""
     print "Issue all compilation warnings, issue flow warnings and continue:"
     print "-----------------------------------------------------------------"
-    prove(opt=opt+["--warnings=on", "-cargs", "-gnatwa"], mode="all")
+    prove(opt=opt+["--warnings=continue", "-cargs", "-gnatwa"], mode="all")
     clean()
 
     print ""
     print "Do not issue all compilation warnings, do not issue flow warnings and continue:"
     print "------------------------------------------------------------------------"
-    prove(opt=opt+["--warnings=on"], mode="all")
+    prove(opt=opt+["--warnings=continue"], mode="all")
     clean()
 
     print ""
     print "Do not issue any compilation warnings, issue flow warnings and continue:"
     print "------------------------------------------------------------------------"
-    prove(opt=opt+["--warnings=on", "-cargs", "-gnatws"], mode="all")
+    prove(opt=opt+["--warnings=continue", "-cargs", "-gnatws"], mode="all")
     clean()
 
     print ""

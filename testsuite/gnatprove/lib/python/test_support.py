@@ -469,7 +469,8 @@ def gnatprove(opt=["-P", "test.gpr"]):
 def prove(opt=None, steps=max_steps, procs=parallel_procs,
           vc_timeout=vc_timeout(), mode="prove"):
     """Call gnatprove with standard options"""
-    fullopt = ["--report=all", "--warnings=on", "-P", "test.gpr", "--quiet"]
+    fullopt = ["--report=all", "--warnings=continue"]
+    fullopt += ["-P", "test.gpr", "--quiet"]
     fullopt += ["--timeout=%d" % (vc_timeout)]
     fullopt += ["--steps=%d" % (steps)]
     fullopt += ["--mode=%s" % (mode)]
