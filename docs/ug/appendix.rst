@@ -314,11 +314,6 @@ Tool Limitations
    define each unit in a separate file. You can use the gnatchop tool to
    automate this.
 
-#. |GNATprove| automatically re-analyzes source files when they have changed,
-   when compilation options have changed, or when pragma configuration files
-   have changed. However, |GNATprove| does not detect changes in target
-   configuration files. Use option ``-f`` in that case.
-
 #. A subset of all Ada fixed-point types and fixed-point operations is
    supported:
 
