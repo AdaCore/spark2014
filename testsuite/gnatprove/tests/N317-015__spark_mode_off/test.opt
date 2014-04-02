@@ -1,0 +1,1 @@
+ALL XFAIL SPARK_Mode Off not yet recognized for inlining

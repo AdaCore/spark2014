@@ -1,0 +1,1 @@
+spark_modes.ads:5:14: warning: postcondition might fail, requires B = true
