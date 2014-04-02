@@ -475,7 +475,8 @@ package body Gnat2Why.Expr.Loops is
                   2 => New_Ignore (Prog => One_Variant_Prog),
                   3 => New_Located_Assert (Ada_Node => Loop_Variant,
                                            Pred     => One_Variant_Pred,
-                                           Reason   => VC_Loop_Variant)));
+                                           Reason   => VC_Loop_Variant,
+                                           Kind     => EW_Check)));
          end;
       end loop;
 

@@ -538,6 +538,16 @@ package body Why.Images is
       end case;
    end P;
 
+   procedure P (O : Output_Id; Value : EW_Assert_Kind) is
+   begin
+      case Value is
+         when EW_Assert =>
+            P (O, "assert");
+         when EW_Check =>
+            P (O, "check");
+      end case;
+   end P;
+
    procedure P (O : Output_Id; Node : Node_Id) is
    begin
       P (O, Img (Node));

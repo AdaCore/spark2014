@@ -4046,9 +4046,11 @@ package body Gnat2Why.Expr is
 
          --  Length check, Left and Right should have the same length
 
-         T := +Sequence (New_Ignore (Prog => New_Located_Assert (Ada_Node,
-                                     +Length_Check,
-                                     VC_Length_Check)),
+         T := +Sequence (New_Ignore (Prog =>
+               New_Located_Assert (Ada_Node,
+                                   +Length_Check,
+                                   VC_Length_Check,
+                                   EW_Assert)),
                          +T);
 
          --  Range check : for all I, Left (I) Op Right (I) should be in range.
@@ -4059,9 +4061,11 @@ package body Gnat2Why.Expr is
          if not Is_Standard_Boolean_Type (Component_Type (Left_Type)) and then
            W_Op = WNE_Bool_Xor
          then
-            T :=  +Sequence (New_Ignore (Prog => New_Located_Assert (Ada_Node,
+            T :=  +Sequence (New_Ignore (Prog =>
+                     New_Located_Assert (Ada_Node,
                                          +Range_Check,
-                                         VC_Range_Check)),
+                                         VC_Range_Check,
+                                         EW_Assert)),
                              +T);
          end if;
       end if;
@@ -4158,9 +4162,11 @@ package body Gnat2Why.Expr is
          --  is to call it on an array of a singleton subtype of boolean.
 
          if not Is_Standard_Boolean_Type (Component_Type (Right_Type)) then
-            T :=  +Sequence (New_Ignore (Prog => New_Located_Assert (Ada_Node,
+            T :=  +Sequence (New_Ignore (Prog =>
+                     New_Located_Assert (Ada_Node,
                                          +Range_Check,
-                                         VC_Range_Check)),
+                                         VC_Range_Check,
+                                         EW_Assert)),
                              +T);
          end if;
       end if;
@@ -4249,7 +4255,7 @@ package body Gnat2Why.Expr is
             end loop;
             T :=
               Sequence
-                (New_Located_Assert (Stmt, Check, VC_Length_Check),
+                (New_Located_Assert (Stmt, Check, VC_Length_Check, EW_Assert),
                  +Tmp);
             T := +Binding_For_Temp (Ada_Node => Empty,
                                    Domain   => EW_Prog,
@@ -6782,7 +6788,7 @@ package body Gnat2Why.Expr is
       if Is_Pragma_Check (Prag, Name_Assume) then
          T := New_Assume_Statement (Post => Pred);
       else
-         T := New_Located_Assert (Prag, Pred, Reason);
+         T := New_Located_Assert (Prag, Pred, Reason, EW_Assert);
       end if;
 
       if Check_Expr /= Why_Empty then
@@ -7168,8 +7174,9 @@ package body Gnat2Why.Expr is
               New_Assert
                 (Pred =>
                     New_Label
-                   (Labels => New_VC_Labels (Stat, VC_Raise),
-                    Def    => +False_Pred));
+                   (Labels   => New_VC_Labels (Stat, VC_Raise),
+                    Def      => +False_Pred),
+                 Assert_Kind => EW_Assert);
 
          when others =>
             raise Program_Error;
@@ -7389,8 +7396,11 @@ package body Gnat2Why.Expr is
                               Right2  => +Ar_High)));
             begin
                T :=
-                 +Sequence
-                 (New_Located_Assert (Expr, Check, VC_Range_Check), +T);
+                 +Sequence (New_Located_Assert (Expr,
+                                                Check,
+                                                VC_Range_Check,
+                                                EW_Assert),
+                 +T);
             end;
          end if;
 

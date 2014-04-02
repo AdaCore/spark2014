@@ -306,7 +306,10 @@ package body Why.Gen.Expr is
                                N        => "range_check"),
                      Args   => Args,
                      Typ    => EW_Abstract (To_Ent));
-         return New_Located_Assert (Ada_Node, Check, VC_Range_Check);
+         return New_Located_Assert (Ada_Node,
+                                    Check,
+                                    VC_Range_Check,
+                                    EW_Assert);
       end Insert_Array_Range_Check;
 
       -------------------------
@@ -339,7 +342,8 @@ package body Why.Gen.Expr is
                          Right   => +Expected_Length));
             end;
          end loop;
-         return New_Located_Assert (Ada_Node, Check, VC_Length_Check);
+         return
+           New_Located_Assert (Ada_Node, Check, VC_Length_Check, EW_Assert);
       end Insert_Length_Check;
 
       -----------------
@@ -781,7 +785,8 @@ package body Why.Gen.Expr is
                         Prefix (M        => M,
                                 W        => WNE_Range_Pred,
                                 Ada_Node => Ty),
-                      Args   => (1 => Expr)));
+                      Args   => (1 => Expr)),
+                 Kind     => EW_Assert);
             return
               +Binding_For_Temp (Domain => EW_Prog,
                                  Tmp    => Expr,

@@ -448,8 +448,12 @@ package Why.Sinfo is
    --  -- W_Assert --
    --  --------------
    --  Pred       W_Pred_Id
+   --  Kind       EW_Assert_Kind
    --
    --  An assertion expression. The type of the expression is always "unit".
+   --  The Kind is one of (Assert | Check). A check simply requires to prove
+   --  the predicate, while an assert also enriches the context of following
+   --  VCs.
    --
    --  -------------
    --  -- W_Raise --
@@ -850,6 +854,10 @@ package Why.Sinfo is
       EW_Equivalent,
       EW_Or,
       EW_And);
+
+   type EW_Assert_Kind is
+     (EW_Assert,
+      EW_Check);
 
    type EW_Unary_Op is (EW_Minus);
 

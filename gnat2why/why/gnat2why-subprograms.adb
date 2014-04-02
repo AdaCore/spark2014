@@ -637,7 +637,7 @@ package body Gnat2Why.Subprograms is
          Result := Sequence
            (Result,
             New_Assert
-              (Pred => +New_VC_Expr
+              (Pred     => +New_VC_Expr
                    (Prag,
                     New_Relation (Domain   => EW_Pred,
                                   Op_Type  => EW_Int,
@@ -646,7 +646,8 @@ package body Gnat2Why.Subprograms is
                                   Right    =>
                                     New_Integer_Constant (Value => Uint_1)),
                     VC_Disjoint_Contract_Cases,
-                    EW_Pred)));
+                    EW_Pred),
+             Assert_Kind => EW_Check));
       end if;
 
       --  A check that contract cases are complete is generated only when there
@@ -656,7 +657,7 @@ package body Gnat2Why.Subprograms is
          Result := Sequence
            (Result,
             New_Assert
-              (Pred => +New_VC_Expr
+              (Pred       => +New_VC_Expr
                  (Prag,
                   New_Relation (Domain   => EW_Pred,
                                 Op_Type  => EW_Int,
@@ -665,7 +666,8 @@ package body Gnat2Why.Subprograms is
                                 Right    =>
                                   New_Integer_Constant (Value => Uint_1)),
                   VC_Complete_Contract_Cases,
-                  EW_Pred)));
+                    EW_Pred),
+               Assert_Kind => EW_Check));
       end if;
 
       return New_Ignore (Prog => Result);
@@ -747,7 +749,8 @@ package body Gnat2Why.Subprograms is
                      Then_Part   =>
                        +Transform_Expr (Consequence, EW_Pred, Params)),
                   VC_Contract_Case,
-                  EW_Pred)));
+                  EW_Pred),
+               Assert_Kind => EW_Assert));
       end Do_One_Contract_Case;
 
       Result : W_Prog_Id := New_Void;
@@ -1113,8 +1116,9 @@ package body Gnat2Why.Subprograms is
             Precondition :=
               New_Located_Assert
                 (Ada_Node => Get_Location_For_Aspect (E, Name_Precondition),
-                 Pred => Pre,
-                 Reason => VC_Precondition_Main);
+                 Pred     => Pre,
+                 Reason   => VC_Precondition_Main,
+                 Kind     => EW_Assert);
          else
             Precondition := New_Assume_Statement (Post => Pre);
          end if;

@@ -69,10 +69,13 @@ package Why.Gen.Progs is
    function New_Located_Assert
       (Ada_Node : Node_Id;
        Pred     : W_Pred_Id;
-       Reason   : VC_Kind) return W_Prog_Id;
+       Reason   : VC_Kind;
+       Kind     : EW_Assert_Kind) return W_Prog_Id;
+
    function New_Located_Assert
       (Ada_Node : Node_Id;
-       Pred     : W_Pred_Id) return W_Prog_Id;
+       Pred     : W_Pred_Id;
+       Kind     : EW_Assert_Kind) return W_Prog_Id;
    --  Build a named assert (in programs) of a predicate
 
    function New_Located_Abstract

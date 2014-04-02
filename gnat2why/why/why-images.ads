@@ -51,6 +51,8 @@ package Why.Images is
 
    procedure P (O : Output_Id; Value : EW_Type);
 
+   procedure P (O : Output_Id; Value : EW_Assert_Kind);
+
    procedure P
      (O         : Output_Id;
       Value     : Name_Id_Set;

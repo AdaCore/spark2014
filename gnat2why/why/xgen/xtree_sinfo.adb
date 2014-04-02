@@ -497,6 +497,8 @@ package body Xtree_Sinfo is
 
       New_Field (W_Assert,
                  "Pred", "W_Pred", Id_One);
+      New_Field (W_Assert,
+                 "Assert_Kind", "EW_Assert_Kind");
 
       -------------
       -- W_Raise --

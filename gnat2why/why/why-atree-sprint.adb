@@ -166,7 +166,8 @@ package body Why.Atree.Sprint is
 
    procedure Print_Assert (Node : W_Assert_Id) is
    begin
-      P (O, "assert { ");
+      P (O, Get_Assert_Kind (Node));
+      P (O, " { ");
       Print_Node (+Get_Pred (Node));
       P (O, " }");
    end Print_Assert;
