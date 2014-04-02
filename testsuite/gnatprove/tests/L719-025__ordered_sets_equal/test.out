@@ -15,7 +15,7 @@ p.adb:26:10: info: precondition proved
 p.ads:18:13: info: precondition proved
 p.ads:18:32: info: precondition proved
 p.ads:19:14: info: postcondition proved
-p.ads:19:14: warning: precondition might fail
+p.ads:19:14: info: precondition proved
 p.ads:19:26: info: precondition proved
 p.ads:22:13: info: precondition proved
 p.ads:22:45: info: precondition proved

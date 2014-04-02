@@ -7,4 +7,4 @@ p2.adb:27:21: info: overflow check proved
 p2.ads:4:4: info: assertion proved
 p2.ads:11:19: info: postcondition proved
 p2.ads:11:32: info: overflow check proved
-p2.ads:12:37: info: overflow check proved
+p2.ads:12:37: warning: overflow check might fail

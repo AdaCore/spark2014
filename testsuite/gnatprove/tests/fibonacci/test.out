@@ -1,6 +1,7 @@
+SOUNDNESS BUG at fib.adb:46: mark @OVERFLOW_CHECK:FAIL not found
 fib.adb:7:11: info: range check proved
 fib.adb:8:10: info: loop invariant initialization proved
-fib.adb:8:10: warning: loop invariant might fail after first iteration
+fib.adb:8:10: info: loop invariant preservation proved
 fib.adb:10:17: warning: overflow check might fail
 fib.adb:20:15: warning: unused assignment
 fib.adb:21:15: warning: unused assignment
@@ -25,8 +26,8 @@ fib.adb:41:30: info: precondition proved
 fib.adb:41:42: warning: range check might fail
 fib.adb:44:10: info: loop variant proved
 fib.adb:45:19: warning: overflow check might fail
+fib.adb:46:19: info: overflow check proved
 fib.adb:46:19: info: range check proved
-fib.adb:46:19: warning: overflow check might fail
 fib.adb:47:19: info: range check proved
 fib.adb:48:12: warning: unused assignment
 fib.adb:48:17: info: overflow check proved

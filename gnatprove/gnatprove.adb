@@ -615,7 +615,7 @@ procedure Gnatprove is
       Start_Section ("prover");
       declare
          Altergo_Command : constant String :=
-           "why3-cpulimit %t %m -s alt-ergo-gp %f";
+           "why3-cpulimit %t %m -s alt-ergo-gp -max-split 5 %f";
       begin
          if Steps /= 0 then
             Put_Keyval ("command",

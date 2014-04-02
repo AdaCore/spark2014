@@ -37,9 +37,9 @@ binary_fixed.adb:53:14: info: range check proved
 binary_fixed.adb:54:7: info: assertion proved
 binary_fixed.adb:54:28: info: overflow check proved
 binary_fixed.adb:64:17: info: division check proved
-binary_fixed.adb:64:17: warning: overflow check might fail
-binary_fixed.adb:64:17: warning: range check might fail
-binary_fixed.adb:65:10: warning: assertion might fail, requires Z = 
+binary_fixed.adb:64:17: info: overflow check proved
+binary_fixed.adb:64:17: info: range check proved
+binary_fixed.adb:65:10: warning: assertion might fail, requires Z =
 binary_fixed.adb:67:14: info: division check proved
 binary_fixed.adb:67:14: info: overflow check proved
 binary_fixed.adb:67:14: info: range check proved
@@ -145,7 +145,7 @@ decimal_fixed.adb:54:28: info: overflow check proved
 decimal_fixed.adb:64:17: info: division check proved
 decimal_fixed.adb:64:17: info: overflow check proved
 decimal_fixed.adb:64:17: info: range check proved
-decimal_fixed.adb:65:10: warning: assertion might fail, requires Z = 
+decimal_fixed.adb:65:10: warning: assertion might fail, requires Z =
 decimal_fixed.adb:67:14: info: division check proved
 decimal_fixed.adb:67:14: info: overflow check proved
 decimal_fixed.adb:67:14: info: range check proved

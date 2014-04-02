@@ -320,10 +320,10 @@ ar.ads:904:22: warning: postcondition might fail, requires R = R'Old'update
 ar.ads:909:22: info: postcondition proved
 ar.ads:914:22: info: postcondition proved
 ar.ads:919:22: warning: postcondition might fail, requires R = Rec3TRec3T'((F3 => Rec2T'((F2 => F), (G2 => Rec1T'(F1 => E), (G1 => ...............)), ...)), ...)
-ar.ads:925:22: warning: postcondition might fail, requires R = R'Old'update
+ar.ads:925:22: info: postcondition proved
 ar.ads:931:22: info: postcondition proved
-ar.ads:937:22: warning: postcondition might fail, requires R = R'Old'update
-ar.ads:943:22: warning: postcondition might fail, requires R = Rec3TRec3T'((F3 => Rec2T'((F2 => R'old.F3.F2), (G2 => Rec1T'((F1 => .......), ...)), ...)), ...)
+ar.ads:937:22: info: postcondition proved
+ar.ads:943:22: info: postcondition proved
 ar.ads:948:22: info: postcondition proved
 ar.ads:953:22: info: postcondition proved
 ar.ads:958:22: info: postcondition proved
@@ -343,7 +343,7 @@ ar.ads:1026:22: warning: postcondition might fail
 ar.ads:1031:22: info: postcondition proved
 ar.ads:1036:22: warning: postcondition might fail, requires R = Rec4TRec4T'((F4 => Rec3T'((F3 => Rec2T'((F2 => R'old.F4.F3.F2), (... => ...), ...)), ...)), ...)
 ar.ads:1041:22: warning: postcondition might fail, requires R = R'Old'update
-ar.ads:1046:22: warning: postcondition might fail
+ar.ads:1046:22: info: postcondition proved
 ar.ads:1051:22: info: postcondition proved
 ar.ads:1056:22: warning: postcondition might fail, requires R = Rec4TRec4T'((F4 => Rec3T'((F3 => Rec2T'((F2 => R'old.F4.F3.F2), (... => ...), ...)), ...)), ...)
 ar.ads:1062:22: warning: postcondition might fail, requires R = R'Old'update
@@ -375,7 +375,7 @@ ar.ads:1200:22: info: postcondition proved
 ar.ads:1205:22: info: postcondition proved
 ar.ads:1210:22: info: postcondition proved
 ar.ads:1216:22: info: postcondition proved
-ar.ads:1222:22: warning: postcondition might fail
+ar.ads:1222:22: info: postcondition proved
 ar.ads:1228:22: info: postcondition proved
 ar.ads:1234:22: info: postcondition proved
 ar.ads:1239:22: info: postcondition proved
@@ -397,19 +397,19 @@ ar.ads:1317:22: info: postcondition proved
 ar.ads:1322:22: info: postcondition proved
 ar.ads:1327:22: warning: postcondition might fail
 ar.ads:1332:22: warning: postcondition might fail, requires A = A'Old'update
-ar.ads:1337:22: warning: postcondition might fail
-ar.ads:1345:22: warning: postcondition might fail
+ar.ads:1337:22: info: postcondition proved
+ar.ads:1345:22: info: postcondition proved
 ar.ads:1350:22: warning: postcondition might fail
 ar.ads:1355:22: info: postcondition proved
 ar.ads:1360:22: info: postcondition proved
-ar.ads:1366:22: warning: postcondition might fail
+ar.ads:1366:22: info: postcondition proved
 ar.ads:1372:22: warning: postcondition might fail
 ar.ads:1378:22: warning: postcondition might fail, requires A = A'Old'update
 ar.ads:1384:22: warning: postcondition might fail
 ar.ads:1392:22: warning: postcondition might fail
 ar.ads:1397:22: warning: postcondition might fail
-ar.ads:1402:22: warning: postcondition might fail, requires A = A'Old'update
-ar.ads:1407:22: warning: postcondition might fail
+ar.ads:1402:22: info: postcondition proved
+ar.ads:1407:22: info: postcondition proved
 ar.ads:1415:22: info: postcondition proved
 ar.ads:1420:22: info: postcondition proved
 ar.ads:1425:22: info: postcondition proved
@@ -424,7 +424,7 @@ ar.ads:1465:22: info: postcondition proved
 ar.ads:1470:22: info: postcondition proved
 ar.ads:1475:22: info: postcondition proved
 ar.ads:1481:22: info: postcondition proved
-ar.ads:1487:22: warning: postcondition might fail, requires R = R'Old'update
+ar.ads:1487:22: info: postcondition proved
 ar.ads:1493:22: info: postcondition proved
 ar.ads:1498:22: info: postcondition proved
 ar.ads:1503:22: info: postcondition proved
@@ -475,11 +475,11 @@ ar.ads:1748:22: warning: postcondition might fail
 ar.ads:1753:22: warning: postcondition might fail, requires A = A'Old'update
 ar.ads:1758:22: warning: postcondition might fail, requires A = A'Old'update
 ar.ads:1766:22: info: postcondition proved
-ar.ads:1771:22: warning: postcondition might fail
-ar.ads:1776:22: warning: postcondition might fail, requires R = R'Old'update
-ar.ads:1781:22: warning: postcondition might fail, requires R = RofAofR1RofAofR1'(A1 => R'old.A1'update), (B1 => R'old.B1), (C1 => R'old.C1)
+ar.ads:1771:22: info: postcondition proved
+ar.ads:1776:22: info: postcondition proved
+ar.ads:1781:22: info: postcondition proved
 ar.ads:1786:22: warning: postcondition might fail
-ar.ads:1791:22: warning: postcondition might fail
+ar.ads:1791:22: info: postcondition proved
 ar.ads:1796:22: warning: postcondition might fail, requires R = R'Old'update
 ar.ads:1801:22: warning: postcondition might fail, requires R = RofAofR1RofAofR1'(A1 => R'old.A1'update), (B1 => true), (C1 => R'old.C1)
 ar.ads:1809:22: warning: postcondition might fail
@@ -490,7 +490,7 @@ ar.ads:1829:22: warning: postcondition might fail
 ar.ads:1835:22: warning: postcondition might fail
 ar.ads:1841:22: warning: postcondition might fail, requires R = R'Old'update
 ar.ads:1847:22: warning: postcondition might fail, requires R = RofAofR2RofAofR2'(A2 => I), (B2 => R'old.B2'update)
-ar.ads:1855:22: warning: postcondition might fail
+ar.ads:1855:22: info: postcondition proved
 ar.ads:1860:22: warning: postcondition might fail
 ar.ads:1865:22: warning: postcondition might fail, requires A = A'Old'update
 ar.ads:1870:22: warning: postcondition might fail, requires A(I) = RofAofR1RofAofR1'(A1 => A'old (I).A1'update), (B1 => A'old (I).B1), (C1 => ... (...)....)

@@ -63,7 +63,7 @@ auditlog.adb:758:50: warning: overflow check might fail
 auditlog.adb:758:69: warning: overflow check might fail
 auditlog.adb:808:13: info: postcondition proved
 auditlog.adb:821:75: info: range check proved
-auditlog.adb:868:13: warning: postcondition might fail
+auditlog.adb:868:13: info: postcondition proved
 auditlog.adb:881:16: info: assertion proved
 auditlog.adb:899:53: info: range check proved
 auditlog.adb:924:10: info: precondition proved
@@ -213,8 +213,8 @@ configdata.adb:237:44: info: range check proved
 configdata.adb:276:51: info: overflow check proved
 configdata.adb:276:51: info: range check proved
 configdata.adb:323:20: warning: range check might fail
-configdata.adb:331:48: warning: array index check might fail
-configdata.adb:331:63: warning: array index check might fail
+configdata.adb:331:48: info: index check proved
+configdata.adb:331:63: info: index check proved
 configdata.adb:379:35: info: overflow check proved
 configdata.adb:379:35: info: range check proved
 configdata.adb:380:35: info: range check proved

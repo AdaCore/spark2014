@@ -125,7 +125,7 @@ auditlog.adb:1023:10: info: precondition proved
 auditlog.adb:1031:7: info: precondition proved
 auditlog.adb:1070:55: info: refined post proved
 auditlog.adb:1072:67: info: range check proved
-auditlog.adb:1072:72: warning: overflow check might fail
+auditlog.adb:1072:72: info: overflow check proved
 auditlog.adb:1073:50: info: overflow check proved
 auditlog.adb:1168:55: info: range check proved
 auditlog.adb:1232:20: info: range check proved
@@ -140,8 +140,8 @@ auditlog.adb:1248:64: warning: range check might fail
 auditlog.adb:1249:65: warning: range check might fail
 auditlog.adb:1270:62: info: range check proved
 auditlog.adb:1270:67: info: overflow check proved
+auditlog.adb:1271:27: info: range check proved
 auditlog.adb:1271:27: warning: overflow check might fail
-auditlog.adb:1271:27: warning: range check might fail
 auditlog.adb:1332:55: info: refined post proved
 auditlog.adb:1334:67: info: range check proved
 auditlog.adb:1334:72: info: overflow check proved

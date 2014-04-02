@@ -15,5 +15,5 @@ pupils.ads:103:60: info: index check proved
 pupils.ads:107:39: info: length check proved
 pupils.ads:109:39: info: length check proved
 pupils.ads:112:39: info: length check proved
-pupils.ads:116:38: warning: array index check might fail
+pupils.ads:116:38: info: index check proved
 pupils.ads:122:68: info: index check proved

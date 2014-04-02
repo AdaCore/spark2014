@@ -8,7 +8,7 @@ p.adb:17:33: info: precondition proved
 p.adb:19:7: info: precondition proved
 p.adb:20:7: warning: assertion might fail, requires Element (L, I1) = Element (L_In, I2)
 p.adb:20:22: info: precondition proved
-p.adb:20:40: warning: precondition might fail
+p.adb:20:40: info: precondition proved
 p.adb:21:7: info: precondition proved
 p.ads:17:13: info: precondition proved
 p.ads:18:6: info: precondition proved

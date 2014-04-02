@@ -65,7 +65,7 @@ prefixsum.adb:129:25: info: division check proved
 prefixsum.ads:26:23: info: division check proved
 prefixsum.ads:27:28: info: overflow check proved
 prefixsum.ads:27:36: info: overflow check proved
-prefixsum.ads:27:44: warning: overflow check might fail
+prefixsum.ads:27:44: info: overflow check proved
 prefixsum.ads:27:52: warning: overflow check might fail
 prefixsum.ads:28:28: warning: overflow check might fail
 prefixsum.ads:28:36: warning: overflow check might fail
@@ -158,8 +158,8 @@ prefixsum_expanded.ads:45:17: info: precondition proved
 prefixsum_expanded.ads:48:07: warning: unused initial value of "Ghost"
 prefixsum_expanded.ads:53:17: info: precondition proved
 prefixsum_expanded.ads:55:8: warning: postcondition might fail
+prefixsum_general.adb:12:10: info: loop invariant initialization proved
 prefixsum_general.adb:12:10: warning: loop invariant might fail after first iteration
-prefixsum_general.adb:12:10: warning: loop invariant might fail in first iteration
 prefixsum_general.adb:13:22: info: division check proved
 prefixsum_general.adb:21:24: info: division check proved
 prefixsum_general.adb:30:27: info: division check proved
@@ -175,7 +175,7 @@ prefixsum_general.adb:56:43: info: division check proved
 prefixsum_general.adb:57:28: warning: precondition might fail
 prefixsum_general.adb:57:52: warning: range check might fail
 prefixsum_general.adb:58:46: info: division check proved
-prefixsum_general.adb:59:28: warning: precondition might fail
+prefixsum_general.adb:59:28: info: precondition proved
 prefixsum_general.adb:59:52: warning: range check might fail
 prefixsum_general.adb:61:19: warning: array index check might fail
 prefixsum_general.adb:61:27: info: precondition proved

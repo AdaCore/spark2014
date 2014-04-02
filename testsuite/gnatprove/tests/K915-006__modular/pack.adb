@@ -24,6 +24,6 @@ package body Pack is
    function Test_Div (A, B : Modular) return Modular
    is
    begin
-      return (A + B) / (Subst (A,B));
+      return (A + B) / (Subst (A,B)); -- OK
    end Test_Div;
 end Pack;
