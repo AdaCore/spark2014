@@ -459,6 +459,12 @@ Proof Limitations
          Crash (Zero_Plus, Zero_Neg);
       end Zero_And_Unchecked;
 
+#. In an instance of a formal container, actuals for function parameters are
+   assumed to have the expected signature. For example, if a formal parameter
+   takes an input of type T and returns a result of type R, then the actual must
+   take an input of a type that includes every value of type T and must only return
+   values of type R.
+
 
 Portability Issues
 ==================
