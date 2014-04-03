@@ -2,10 +2,9 @@ cannot_inline.adb:6:14: warning: subprogram "Has_Local_Subprogram" has no effect
 cannot_inline.adb:7:14: warning: subprogram "Has_Local_Subprogram_In_Block" has no effect
 cannot_inline.adb:9:04: warning: cannot inline "Return_String" (unconstrained return type)
 cannot_inline.adb:15:07: warning: cannot inline "Has_Local_Subprogram" (non-allowed declaration)
-cannot_inline.adb:15:17: warning: subprogram "Local" has no effect
 cannot_inline.adb:26:10: warning: cannot inline "Has_Local_Subprogram_In_Block" (non-allowed declaration)
-cannot_inline.adb:26:20: warning: subprogram "Local" has no effect
 cannot_inline.adb:42:17: warning: subprogram "Proc" has no effect
 cannot_inline.adb:46:17: warning: subprogram "Other" has no effect
+cannot_inline.adb:47:10: warning: cannot inline "Other" (non-allowed declaration)
 cannot_inline.adb:59:07: warning: cannot inline "Proc" (forward instance within enclosing body)
 cannot_inline.ads:5:14: warning: subprogram "Test" has no effect

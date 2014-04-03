@@ -1,10 +1,14 @@
-flight_manager.adb:16:21: warning: overflow check might fail
-flight_manager.adb:16:43: info: division check proved
+flight_manager.adb:16:15: warning: "Result.X_Speed" might not be initialized, in call inlined at flight_manager.adb:42
+flight_manager.adb:16:15: warning: "Result.Y_Speed" might not be initialized, in call inlined at flight_manager.adb:43
+flight_manager.adb:16:21: warning: overflow check might fail, in call inlined at flight_manager.adb:42
+flight_manager.adb:16:21: warning: overflow check might fail, in call inlined at flight_manager.adb:43
+flight_manager.adb:16:43: info: division check proved, in call inlined at flight_manager.adb:42
+flight_manager.adb:16:43: info: division check proved, in call inlined at flight_manager.adb:43
 flight_manager.adb:23:20: warning: overflow check might fail
-flight_manager.adb:42:27: warning: "Result.X_Speed" might not be initialized
 flight_manager.adb:42:56: warning: overflow check might fail
-flight_manager.adb:43:27: warning: "Result.Y_Speed" might not be initialized
 flight_manager.adb:43:56: warning: overflow check might fail
+flight_manager.adb:45:07: warning: "Result.X_Speed" might not be initialized
+flight_manager.adb:45:07: warning: "Result.Y_Speed" might not be initialized
 flight_manager.ads:13:14: warning: postcondition might fail
 flight_manager.ads:13:27: warning: overflow check might fail
 flight_manager.ads:13:62: warning: overflow check might fail

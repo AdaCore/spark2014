@@ -1,4 +1,7 @@
 package Not_Main
 is
-   pragma Elaborate_Body (Not_Main);
+   package Nested
+   is
+      procedure Do_Nothing;
+   end Nested;
 end Not_Main;

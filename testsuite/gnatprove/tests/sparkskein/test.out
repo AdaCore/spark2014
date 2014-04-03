@@ -1,5 +1,6 @@
 skein.adb:113:19: warning: postcondition might fail
-skein.adb:238:14: warning: range check might fail
+skein.adb:219:07: warning: cannot inline "To_LittleEndian" (non-allowed declaration)
+skein.adb:238:14: info: range check proved
 skein.adb:239:29: warning: array index check might fail
 skein.adb:241:44: info: division check proved
 skein.adb:241:44: warning: array index check might fail
@@ -15,12 +16,15 @@ skein.adb:267:44: warning: array index check might fail
 skein.adb:268:44: warning: array index check might fail
 skein.adb:269:44: warning: array index check might fail
 skein.adb:273:33: warning: range check might fail
-skein.adb:358:26: info: length check proved
-skein.adb:367:25: info: length check proved
-skein.adb:400:45: info: division check proved
-skein.adb:403:58: info: division check proved
-skein.adb:404:64: info: division check proved
-skein.adb:599:41: info: length check proved
+skein.adb:358:26: info: length check proved, in call inlined at skein.adb:621
+skein.adb:367:25: info: length check proved, in call inlined at skein.adb:637
+skein.adb:400:45: info: division check proved, in call inlined at skein.adb:583
+skein.adb:400:45: info: division check proved, in call inlined at skein.adb:592
+skein.adb:403:58: info: division check proved, in call inlined at skein.adb:583
+skein.adb:403:58: info: division check proved, in call inlined at skein.adb:592
+skein.adb:404:64: info: division check proved, in call inlined at skein.adb:583
+skein.adb:404:64: info: division check proved, in call inlined at skein.adb:592
+skein.adb:599:41: info: length check proved, in call inlined at skein.adb:647
 skein.adb:623:10: warning: precondition might fail
 skein.adb:656:17: warning: range check might fail
 skein.adb:686:11: warning: statement has no effect
@@ -39,42 +43,38 @@ skein.adb:803:49: info: division check proved
 skein.adb:803:49: warning: range check might fail
 skein.adb:805:13: warning: precondition might fail
 skein.adb:824:7: warning: precondition might fail
-skein.adb:851:22: warning: postcondition might fail
-skein.adb:860:22: warning: postcondition might fail, requires Local_Ctx.H.Hash_Bit_Len > 0
-skein.adb:865:14: info: range check proved
-skein.adb:869:13: info: loop invariant initialization proved
-skein.adb:869:13: info: loop invariant preservation proved
-skein.adb:883:43: warning: range check might fail
-skein.adb:884:61: warning: range check might fail
-skein.adb:885:61: warning: range check might fail
-skein.adb:886:61: warning: range check might fail
-skein.adb:887:61: warning: range check might fail
-skein.adb:888:61: warning: range check might fail
-skein.adb:889:61: warning: range check might fail
-skein.adb:890:61: warning: range check might fail
+skein.adb:865:14: warning: range check might fail, in call inlined at skein.adb:900
+skein.adb:869:13: info: loop invariant preservation proved, in call inlined at skein.adb:900
+skein.adb:869:13: warning: loop invariant might fail in first iteration, in call inlined at skein.adb:900
+skein.adb:883:43: warning: range check might fail, in call inlined at skein.adb:926
+skein.adb:884:61: warning: range check might fail, in call inlined at skein.adb:926
+skein.adb:885:61: warning: range check might fail, in call inlined at skein.adb:926
+skein.adb:886:61: warning: range check might fail, in call inlined at skein.adb:926
+skein.adb:887:61: warning: range check might fail, in call inlined at skein.adb:926
+skein.adb:888:61: warning: range check might fail, in call inlined at skein.adb:926
+skein.adb:889:61: warning: range check might fail, in call inlined at skein.adb:926
+skein.adb:890:61: warning: range check might fail, in call inlined at skein.adb:926
 skein.adb:895:17: warning: statement has no effect
 skein.adb:896:12: warning: length check might fail
-skein.adb:900:10: warning: precondition might fail
 skein.adb:906:7: warning: precondition might fail
 skein.adb:914:52: info: division check proved
 skein.adb:914:52: warning: range check might fail
 skein.adb:919:44: info: length check proved
-skein.adb:922:44: warning: divide by zero might fail
-skein.adb:926:10: warning: precondition might fail
+skein.adb:922:44: info: division check proved
 skein.adb:936:10: warning: precondition might fail
 skein.adb:949:10: warning: precondition might fail
 skein.adb:965:37: warning: range check might fail
 skein.adb:981:7: warning: precondition might fail
 skein.adb:984:7: warning: precondition might fail
 skein.adb:1007:12: warning: precondition might fail
-skein.ads:126:21: warning: length check might fail
-skein.ads:129:21: warning: length check might fail
-skein.ads:132:21: warning: length check might fail
-skein.ads:138:21: warning: length check might fail
+skein.ads:126:21: info: length check proved
+skein.ads:129:21: info: length check proved
+skein.ads:132:21: info: length check proved
+skein.ads:138:21: info: length check proved
 skein.ads:155:19: warning: postcondition might fail
 skein.ads:168:20: warning: postcondition might fail
 skein.ads:178:47: info: division check proved
 skein.ads:191:14: warning: subprogram "Set_Debug_Flags" has no effect
 skein.ads:196:14: warning: subprogram "Show_Msg_8" has no effect
-skein.ads:347:52: warning: length check might fail
-skein.ads:348:52: warning: length check might fail
+skein.ads:347:52: info: length check proved
+skein.ads:348:52: info: length check proved

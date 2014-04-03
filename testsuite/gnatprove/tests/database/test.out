@@ -1,3 +1,4 @@
+database.adb:39:07: warning: initialization has no effect
 database.adb:40:35: info: length check proved
 database.adb:53:17: info: postcondition proved
 database.adb:61:17: info: postcondition proved
@@ -9,10 +10,10 @@ database.adb:125:36: info: index check proved
 database.adb:133:35: info: index check proved
 database.adb:136:35: info: index check proved
 database.adb:142:44: info: index check proved
-database.adb:153:13: info: loop invariant initialization proved
-database.adb:153:13: info: loop invariant preservation proved
-database.adb:155:31: info: overflow check proved
-database.adb:174:30: info: range check proved
+database.adb:153:13: info: loop invariant initialization proved, in call inlined at database.adb:199
+database.adb:153:13: info: loop invariant preservation proved, in call inlined at database.adb:199
+database.adb:155:31: info: overflow check proved, in call inlined at database.adb:199
+database.adb:174:30: info: range check proved, in call inlined at database.adb:183
 database.adb:252:19: info: precondition proved
 database.adb:273:10: info: precondition proved
 database.adb:284:22: info: precondition proved

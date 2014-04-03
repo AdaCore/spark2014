@@ -17,6 +17,8 @@ procedure Init is
          return A;
       end Get;
    end P;
+
+   X : P.Arr;
 begin
-   null;
+   X := P.Get;
 end Init;

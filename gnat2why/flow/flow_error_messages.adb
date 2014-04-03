@@ -433,16 +433,28 @@ package body Flow_Error_Messages is
          Slc := Original_Location (Sloc (N));
 
          declare
-            Tmp  : Source_Ptr := Sloc (First_Node (N));
-            File : Unbounded_String;
-            Line : Physical_Line_Number;
+            Tmp     : Source_Ptr := Sloc (First_Node (N));
+            File    : Unbounded_String;
+            Line    : Physical_Line_Number;
+            Context : Unbounded_String;
          begin
             loop
+               exit when Instantiation_Location (Tmp) = No_Location;
+
+               --  This wording for messages related to instantiations and
+               --  inlined calls is the same for flow and proof messages.
+               --  If you change it here, also change it in gnat_loc.ml
+
+               if Comes_From_Inlined_Body (Tmp) then
+                  Context := To_Unbounded_String (", in call inlined at ");
+               else
+                  Context := To_Unbounded_String (", in instantiation at ");
+               end if;
+
                Tmp := Instantiation_Location (Tmp);
-               exit when Tmp = No_Location;
                File := To_Unbounded_String (File_Name (Tmp));
                Line := Get_Physical_Line_Number (Tmp);
-               Append (M, ", in instantiation at " &
+               Append (M, To_String (Context) &
                          To_String (File) & ":" & Int_Image (Integer (Line)));
             end loop;
          end;

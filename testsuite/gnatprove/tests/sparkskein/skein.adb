@@ -311,17 +311,17 @@ is
       Src_Offset : U64;
 
 
-      procedure Initialize_Key_Schedule
-        with Global => (Input  => Ctx,
-                        Output => KS);
+      procedure Initialize_Key_Schedule;
+        --  with Global => (Input  => Ctx,
+        --                  Output => KS);
 
-      procedure Initialize_TS
-        with Global => (Input  => Ctx,
-                        Output => TS);
+      procedure Initialize_TS;
+        --  with Global => (Input  => Ctx,
+        --                  Output => TS);
 
-      procedure Do_First_Key_Injection
-        with Global => (Input => (W, TS, KS),
-                        Output => X);
+      procedure Do_First_Key_Injection;
+        --  with Global => (Input => (W, TS, KS),
+        --                  Output => X);
 
       procedure Threefish_Block
         with Global => (Input  => (KS, TS),
@@ -379,9 +379,9 @@ is
 
       procedure Threefish_Block
       is
-         procedure Inject_Key (R : in U64)
-           with Global => (Input  => (KS, TS),
-                           In_Out => X);
+         procedure Inject_Key (R : in U64);
+           --  with Global => (Input  => (KS, TS),
+           --                  In_Out => X);
 
          procedure Round_1;
          procedure Round_2;
@@ -845,19 +845,19 @@ is
       Tmp_B              : Skein_512_Block_Bytes;
       Tmp_Byte_Count_Add : U64;
 
-      procedure Zero_Pad
-        with Pre => Local_Ctx.H.Byte_Count < Skein_512_Block_Bytes_C and
-                    Local_Ctx.H.Hash_Bit_Len > 0,
-             Post => Local_Ctx.H.Hash_Bit_Len =
-                       Local_Ctx'Old.H.Hash_Bit_Len and
-                     Local_Ctx.H.Hash_Bit_Len > 0 and
-                     Local_Ctx.H.Byte_Count < Skein_512_Block_Bytes_C and
-                     Local_Ctx.H.Byte_Count = Local_Ctx'Old.H.Byte_Count;
+      procedure Zero_Pad;
+        --  with Pre => Local_Ctx.H.Byte_Count < Skein_512_Block_Bytes_C and
+        --              Local_Ctx.H.Hash_Bit_Len > 0,
+        --       Post => Local_Ctx.H.Hash_Bit_Len =
+        --                 Local_Ctx'Old.H.Hash_Bit_Len and
+        --               Local_Ctx.H.Hash_Bit_Len > 0 and
+        --               Local_Ctx.H.Byte_Count < Skein_512_Block_Bytes_C and
+        --               Local_Ctx.H.Byte_Count = Local_Ctx'Old.H.Byte_Count;
 
-      procedure Set_Counter (Counter : in U64)
-        with Global => (In_Out => Local_Ctx),
-             Pre => Local_Ctx.H.Hash_Bit_Len > 0,
-             Post => Local_Ctx.H.Hash_Bit_Len > 0;
+      procedure Set_Counter (Counter : in U64);
+        --  with Global => (In_Out => Local_Ctx),
+        --       Pre => Local_Ctx.H.Hash_Bit_Len > 0,
+        --       Post => Local_Ctx.H.Hash_Bit_Len > 0;
 
       procedure Zero_Pad
       is

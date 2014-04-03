@@ -132,7 +132,7 @@ package body Simple_Unc_Arrays is pragma SPARK_Mode (On);
 
    procedure Quick_Sort (A : in out Table) is
 
-      procedure Q_S (First, Last : Natural);
+      procedure Q_S (First, Last : Natural) with Pre => Last = 0 or else First <= Last;
       -- for the recursive call
 
       procedure Q_S (First, Last : Natural) is

@@ -1832,9 +1832,15 @@ package body Why.Gen.Expr is
             Append (Buf, Int_Image (Integer (Line)));
             Append (Buf, ':');
             Append (Buf, Int_Image (Integer (Column)));
-            Slc := Instantiation_Location (Slc);
-            exit when Slc = No_Location;
+            exit when Instantiation_Location (Slc) = No_Location;
             Append (Buf, ':');
+            if Comes_From_Inlined_Body (Slc) then
+               Append (Buf, "inlined");
+            else
+               Append (Buf, "instantiated");
+            end if;
+            Append (Buf, ':');
+            Slc := Instantiation_Location (Slc);
          end;
       end loop;
       return NID (Prefix & To_String (Buf));

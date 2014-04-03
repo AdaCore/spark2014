@@ -1,9 +1,5 @@
 p.adb:2:09: dynamic type predicate is not allowed in SPARK
 p.adb:2:09: violation of pragma SPARK_Mode at line 1
-p.adb:6:20: "T" is not allowed in SPARK
-p.adb:6:20: violation of pragma SPARK_Mode at line 1
-p.adb:6:32: "T" is not allowed in SPARK
-p.adb:6:32: violation of pragma SPARK_Mode at line 1
 p.adb:8:14: "T" is not allowed in SPARK
 p.adb:8:14: violation of pragma SPARK_Mode at line 1
 p.adb:10:07: "T" is not allowed in SPARK
@@ -12,6 +8,10 @@ p.adb:10:25: "T" is not allowed in SPARK
 p.adb:10:25: violation of pragma SPARK_Mode at line 1
 p.adb:11:07: "T" is not allowed in SPARK
 p.adb:11:07: violation of pragma SPARK_Mode at line 1
+p.adb:14:04: "T" is not allowed in SPARK
+p.adb:14:04: violation of pragma SPARK_Mode at line 1
+p.adb:17:09: "T" is not allowed in SPARK
+p.adb:17:09: violation of pragma SPARK_Mode at line 1
 sub.ads:7:12: dynamic type predicate is not allowed in SPARK
 sub.ads:7:12: violation of pragma SPARK_Mode at line 1
 sub.ads:11:12: dynamic type predicate is not allowed in SPARK

@@ -1,4 +1,4 @@
-procedure Main is  
+procedure Main is
    B : Boolean;
 
    procedure Sub0 (X : out Boolean)

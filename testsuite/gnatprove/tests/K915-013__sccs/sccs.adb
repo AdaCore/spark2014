@@ -20,7 +20,7 @@ procedure Sccs (B : in out Boolean) is
 begin
    pragma Assert (B);
    F2;
-   pragma Assert (B); -- unprovable
+   pragma Assert (B); -- proved with inlining
    F5;
-   pragma Assert (B); -- unprovable
+   pragma Assert (B); -- proved with inlining
 end Sccs;

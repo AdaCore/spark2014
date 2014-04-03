@@ -39,4 +39,20 @@ package body Opers is
 
    function Fixed_False2 is new Equal_With_Self (My_Int, "=");
 
+   procedure Test (A : in out Integer) is
+   begin
+      A := Double1 (A);
+      A := Double2 (A);
+      A := Integer (Ten1 (My_Int (A)));
+      A := Integer (Ten2 (My_Int (A)));
+      pragma Assert (not False1 (A));
+      pragma Assert (not False2 (A));
+      pragma Assert (Fixed_False1 (My_Int (A)));
+      pragma Assert (Fixed_False2 (My_Int (A)));
+      pragma Assert (True1 (A));
+      pragma Assert (True2 (A));
+      pragma Assert (not Fixed_True1 (My_Int (A)));
+      pragma Assert (not Fixed_True2 (My_Int (A)));
+   end Test;
+
 end Opers;

@@ -21,4 +21,6 @@ package Opers is
       with function "=" (X, Y : T) return Boolean is <>;
    function Equal_With_Self (X : T) return Boolean;
 
+   procedure Test (A : in out Integer);
+
 end Opers;

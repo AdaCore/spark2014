@@ -1,27 +1,27 @@
 array_arith.adb:12:12: warning: "X" might not be initialized
-array_arith.adb:29:19: info: overflow check proved, in instantiation at array_arith.adb:32
-array_arith.adb:29:19: info: overflow check proved, in instantiation at array_arith.adb:33
-array_arith.adb:29:19: info: overflow check proved, in instantiation at array_arith.adb:34
-array_arith.adb:29:19: info: overflow check proved, in instantiation at array_arith.adb:35
-array_arith.adb:29:19: info: overflow check proved, in instantiation at array_arith.adb:36
-array_arith.adb:29:19: info: overflow check proved, in instantiation at array_arith.adb:37
-array_arith.adb:29:19: info: overflow check proved, in instantiation at array_arith.adb:38
-array_arith.adb:29:19: info: overflow check proved, in instantiation at array_arith.adb:39
-array_arith.adb:29:19: info: overflow check proved, in instantiation at array_arith.adb:40
-array_arith.adb:29:19: info: overflow check proved, in instantiation at array_arith.adb:41
+array_arith.adb:29:19: info: overflow check proved, in call inlined at array_arith.adb:32
+array_arith.adb:29:19: info: overflow check proved, in call inlined at array_arith.adb:33
+array_arith.adb:29:19: info: overflow check proved, in call inlined at array_arith.adb:34
+array_arith.adb:29:19: info: overflow check proved, in call inlined at array_arith.adb:35
+array_arith.adb:29:19: info: overflow check proved, in call inlined at array_arith.adb:36
+array_arith.adb:29:19: info: overflow check proved, in call inlined at array_arith.adb:37
+array_arith.adb:29:19: info: overflow check proved, in call inlined at array_arith.adb:38
+array_arith.adb:29:19: info: overflow check proved, in call inlined at array_arith.adb:39
+array_arith.adb:29:19: info: overflow check proved, in call inlined at array_arith.adb:40
+array_arith.adb:29:19: info: overflow check proved, in call inlined at array_arith.adb:41
 array_arith.adb:32:12: warning: "X" might not be initialized
-array_arith.adb:50:15: warning: "X" might not be initialized, in instantiation at array_arith.adb:66
-array_arith.adb:63:19: info: overflow check proved, in instantiation at array_arith.adb:50, in instantiation at array_arith.adb:66
-array_arith.adb:63:19: info: overflow check proved, in instantiation at array_arith.adb:51, in instantiation at array_arith.adb:66
-array_arith.adb:63:19: info: overflow check proved, in instantiation at array_arith.adb:52, in instantiation at array_arith.adb:66
-array_arith.adb:63:19: info: overflow check proved, in instantiation at array_arith.adb:53, in instantiation at array_arith.adb:66
-array_arith.adb:63:19: info: overflow check proved, in instantiation at array_arith.adb:54, in instantiation at array_arith.adb:66
-array_arith.adb:63:19: info: overflow check proved, in instantiation at array_arith.adb:55, in instantiation at array_arith.adb:66
-array_arith.adb:63:19: info: overflow check proved, in instantiation at array_arith.adb:56, in instantiation at array_arith.adb:66
-array_arith.adb:63:19: info: overflow check proved, in instantiation at array_arith.adb:57, in instantiation at array_arith.adb:66
-array_arith.adb:63:19: info: overflow check proved, in instantiation at array_arith.adb:58, in instantiation at array_arith.adb:66
-array_arith.adb:63:19: info: overflow check proved, in instantiation at array_arith.adb:59, in instantiation at array_arith.adb:66
-array_arith.adb:73:12: warning: "X" might not be initialized, in instantiation at array_arith.adb:76
+array_arith.adb:50:15: warning: "X" might not be initialized, in call inlined at array_arith.adb:66
+array_arith.adb:63:19: info: overflow check proved, in call inlined at array_arith.adb:50, in call inlined at array_arith.adb:66
+array_arith.adb:63:19: info: overflow check proved, in call inlined at array_arith.adb:51, in call inlined at array_arith.adb:66
+array_arith.adb:63:19: info: overflow check proved, in call inlined at array_arith.adb:52, in call inlined at array_arith.adb:66
+array_arith.adb:63:19: info: overflow check proved, in call inlined at array_arith.adb:53, in call inlined at array_arith.adb:66
+array_arith.adb:63:19: info: overflow check proved, in call inlined at array_arith.adb:54, in call inlined at array_arith.adb:66
+array_arith.adb:63:19: info: overflow check proved, in call inlined at array_arith.adb:55, in call inlined at array_arith.adb:66
+array_arith.adb:63:19: info: overflow check proved, in call inlined at array_arith.adb:56, in call inlined at array_arith.adb:66
+array_arith.adb:63:19: info: overflow check proved, in call inlined at array_arith.adb:57, in call inlined at array_arith.adb:66
+array_arith.adb:63:19: info: overflow check proved, in call inlined at array_arith.adb:58, in call inlined at array_arith.adb:66
+array_arith.adb:63:19: info: overflow check proved, in call inlined at array_arith.adb:59, in call inlined at array_arith.adb:66
+array_arith.adb:73:12: warning: "X" might not be initialized, in call inlined at array_arith.adb:76
 array_arith.ads:9:14: info: postcondition proved
 array_arith.ads:12:14: info: postcondition proved
 array_arith.ads:15:14: info: postcondition proved

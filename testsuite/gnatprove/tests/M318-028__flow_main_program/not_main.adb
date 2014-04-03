@@ -22,11 +22,6 @@ is
       (X = Y)
       with Global => (X, Y);
 
-   package Nested
-   is
-      procedure Do_Nothing;
-   end Nested;
-
    package body Nested
    is
       procedure Do_Nothing

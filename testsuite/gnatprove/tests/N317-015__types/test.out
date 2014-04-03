@@ -1,5 +1,5 @@
 conv.adb:1:11: warning: subprogram "Conv" has no effect
-conv.adb:11:14: info: overflow check proved, in instantiation at conv.adb:15
+conv.adb:11:14: info: overflow check proved, in call inlined at conv.adb:15
 conv.adb:15:10: info: range check proved
 conv.adb:16:4: info: assertion proved
 ident.adb:42:7: warning: assertion might fail, requires Id_Public (X) = X
