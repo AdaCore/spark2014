@@ -1,0 +1,29 @@
+vc.ads:9:11: aspect "ASYNC_READERS" must apply to a volatile object
+vc.ads:12:11: aspect "ASYNC_READERS" must apply to a volatile object
+vc.ads:15:11: aspect "ASYNC_READERS" must apply to a volatile object
+vc.ads:22:11: aspect "ASYNC_READERS" must apply to a volatile object
+vc.ads:23:11: aspect "ASYNC_WRITERS" must apply to a volatile object
+vc.ads:24:11: aspect "EFFECTIVE_WRITES" must apply to a volatile object
+vc.ads:25:11: aspect "EFFECTIVE_READS" must apply to a volatile object
+vc.ads:30:11: aspect "ASYNC_READERS" must apply to a volatile object
+vc.ads:31:11: aspect "ASYNC_WRITERS" must apply to a volatile object
+vc.ads:32:11: aspect "EFFECTIVE_WRITES" must apply to a volatile object
+vc.ads:33:11: aspect "EFFECTIVE_READS" must apply to a volatile object
+vc.ads:38:11: aspect "ASYNC_READERS" must apply to a volatile object
+vc.ads:41:11: aspect "ASYNC_READERS" must apply to a volatile object
+vc.ads:44:11: aspect "ASYNC_READERS" must apply to a volatile object
+vc.ads:48:04: constant cannot be volatile
+vc.ads:51:04: constant cannot be volatile
+vc.ads:53:11: aspect "ASYNC_READERS" must apply to a volatile object
+vc.ads:57:04: constant cannot be volatile
+vc.ads:59:11: aspect "ASYNC_READERS" must apply to a volatile object
+vc.ads:63:04: constant cannot be volatile
+vc.ads:65:11: aspect "ASYNC_READERS" must apply to a volatile object
+vc.ads:77:11: aspect "ASYNC_READERS" must apply to a volatile object
+vc.ads:82:11: aspect "ASYNC_READERS" must apply to a volatile object
+vc.ads:87:11: aspect "ASYNC_READERS" must apply to a volatile object
+   compilation of vc.ads failed
+
+
+gnatprove: error during frame condition computation, aborting.
+gprbuild: *** compilation phase failed
