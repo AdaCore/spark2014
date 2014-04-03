@@ -1,0 +1,25 @@
+Informations en français à propos de SPARK Pro 14.0 pour le 'Catalogue produits du pole Systematic' (http://www.systematic-paris-region.org/fr/formulaire/catalogue-produits-systematic)
+
+- Phrase d'accroche du produit (12 mots)
+
+version anglaise : Expanding the boundaries of safe and secure programming
+
+version française : Pour aller plus loin dans la sûreté et la sécurité des programmes
+
+- Description du produit (limite de 120 mots)
+
+Le produit SPARK Pro comprend un langage de programmation pour les applications
+critiques dans les domaines de la sûreté de fonctionnement et de la sécurité,
+et des outils d'analyse de code qui permettent d'assurer qu'un programme SPARK
+s'exécute sans erreurs et sans violations des propriétés attendues de sûreté et
+de sécurité. La nouvelle version SPARK Pro 14.0 permet d'exprimer les
+propriétés attendues comme des contrats exécutables attachés aux programmes,
+qui peuvent être testés et debuggés avec les outils de développement usuels, et
+prouvés de façon certaine avec les outils SPARK. Les nouveaux outils de preuve
+rendent possible l'automatisation complète des preuves d'un module, et
+l'utilisation en mode interactif dans un environnement de développement.
+
+- innovations clés (limite de 20 mots)
+
+contrats exécutables / automatisation des preuves / combinaison test et preuve
+/ application au code existant
