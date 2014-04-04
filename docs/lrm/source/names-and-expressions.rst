@@ -221,28 +221,35 @@ syntax:
   index_expression_list ::=
     ( expression {, expression} )
 
-.. centered:: **Dynamic Semantics**
+.. centered:: **Legality Rules**
 
 .. _tu-update_expressions-01:
 
-1. In all cases (i.e., whether ``T`` is a record type, a record
+1. The box symbol, <>, may not appear in any ``expression`` appearing
+   in an *update expression*.
+
+.. centered:: **Dynamic Semantics**
+
+.. _tu-update_expressions-02:
+
+2. In all cases (i.e., whether ``T`` is a record type, a record
    extension type, or an array type - see below), evaluation of
    ``X'Update`` begins with the creation of an anonymous object of
    type ``T`` which is initialized to the value of ``X`` in the same
    way as for an occurrence of ``X'Old`` (except that the object is
    constrained by its initial value but not constant).
 
-.. _tu-update_expressions-02:
+.. _tu-update_expressions-03:
 
-2. Next, components of this object are updated as described in the
+3. Next, components of this object are updated as described in the
    following subsections. The attribute reference then denotes a
    constant view of this updated object. The master and accessibility
    level of this object are defined as for the anonymous object of an
    aggregate.
 
-.. _tu-update_expressions-03:
+.. _tu-update_expressions-04:
 
-3. The assignments to components of the result object described in the
+4. The assignments to components of the result object described in the
    following subsections are assignment operations and include
    performance of any checks associated with evaluation of the target
    component name or with implicit conversion of the source value to
@@ -259,28 +266,28 @@ required.
 
 .. centered:: **Legality Rules**
 
-.. _tu-update_expressions-04:
+.. _tu-update_expressions-05:
 
-4. The ``record_component_association_list`` shall have one or more
+5. The ``record_component_association_list`` shall have one or more
    ``record_component_associations``, each of which shall have a
    non-**others** ``component_choice_list`` and an expression.
 
-.. _tu-update_expressions-05:
-
-5. Each ``selector_name`` of each ``record_component_name`` shall denote a
-   distinct non discriminant component of ``T``.
-
 .. _tu-update_expressions-06:
 
-6. Each ``record_component_association``'s associated components shall
+6. Each ``selector_name`` of each ``record_component_name`` shall denote a
+   distinct non discriminant component of ``T``.
+
+.. _tu-update_expressions-07:
+
+7. Each ``record_component_association``'s associated components shall
    all be of the same type. The expected type and applicable index
    constraint of the expression is defined as for a
    ``record_component_association`` occurring within a record
    aggregate.
 
-.. _tu-update_expressions-07:
+.. _tu-update_expressions-08:
 
-7. Each selector of all ``component_choice_lists`` of a record
+8. Each selector of all ``component_choice_lists`` of a record
    update expression shall denote a distinct component.
 
 .. _etu-record_update_expressions-lr:
@@ -288,9 +295,9 @@ required.
 
 .. centered:: **Dynamic Semantics**
 
-.. _tu-update_expressions-08:
+.. _tu-update_expressions-09:
 
-8. For each component for which an expression is provided, the
+9. For each component for which an expression is provided, the
    expression value is assigned to the corresponding component of the
    result object. The order in which the components are updated is
    unspecified.
@@ -316,22 +323,22 @@ required.
 
 .. centered:: **Legality Rules**
 
-.. _tu-update_expressions-09:
-
-9. Each ``array_component_association`` of the attribute reference
-   shall have one or more ``array_component_associations``, each of
-   which shall have an expression.
-
 .. _tu-update_expressions-10:
 
-10. The expected type and applicable index constraint of the
+10. Each ``array_component_association`` of the attribute reference
+    shall have one or more ``array_component_associations``, each of
+    which shall have an expression.
+
+.. _tu-update_expressions-11:
+
+11. The expected type and applicable index constraint of the
     expression is defined as for an ``array_component_association``
     occurring within an array aggregate of type ``T``. The expected
     type for each ``discrete_choice`` is the index type of ``T``.
 
-.. _tu-update_expressions-11:
+.. _tu-update_expressions-12:
 
-11. The reserved word **others** shall not occur as a
+12. The reserved word **others** shall not occur as a
     ``discrete_choice`` of an ``array_component_association`` of the
     ``attribute_reference``.
 
@@ -339,23 +346,23 @@ required.
 
 .. centered:: **Dynamic Semantics**
 
-.. _tu-update_expressions-12:
+.. _tu-update_expressions-13:
 
-12. The discrete choices and array component expressions are
+13. The discrete choices and array component expressions are
     evaluated. Each array component expression is evaluated once for
     each associated component, as for an array aggregate. For each
     such associated component of the result object, the expression
     value is assigned to the component.
 
-.. _tu-update_expressions-13:
+.. _tu-update_expressions-14:
 
-13. Evaluations and updates are performed in the order in which the
+14. Evaluations and updates are performed in the order in which the
     ``array_component_associations`` are given; within a single
     ``array_component_association``, in the order of the
     ``discrete_choice_list``; and within the range of a single
     ``discrete_choice``, in ascending order.
 
-.. _tu-update_expressions-13.1:
+.. _tu-update_expressions-14.1:
 
 [Note: the ``Update`` attribute for an array object allows multiple
 assignments to the same component, as in either
@@ -381,17 +388,17 @@ following are required.
 
 .. centered:: **Legality Rules**
 
-.. _tu-update_expressions-14:
+.. _tu-update_expressions-15:
 
-14. The expected type and applicable index constraint of the
+15. The expected type and applicable index constraint of the
     expression of a ``multidimensional_array_component_association``
     are defined as for the expression of an
     ``array_component_association`` occurring within an array
     aggregate of type ``T``.
 
-.. _tu-update_expressions-15:
+.. _tu-update_expressions-16:
 
-15. The length of each ``index_expression_list`` shall equal the
+16. The length of each ``index_expression_list`` shall equal the
     dimensionality of ``T``. The expected type for each expression in
     an ``index_expression_list`` is the corresponding index type of
     ``T``.
@@ -400,9 +407,9 @@ following are required.
 
 .. centered:: **Dynamic Semantics**
 
-.. _tu-multi_dimensional_array_update_expressions-16:
+.. _tu-multi_dimensional_array_update_expressions-17:
 
-16. For each ``multidimensional_array_component`` association (in the
+17. For each ``multidimensional_array_component`` association (in the
     order in which they are given) and for each
     ``index_expression_list`` (in the order in which they are given),
     the index values of the ``index_expression_list`` and the
