@@ -88,7 +88,9 @@ package body SPARK_Util is
       Assocs      : List_Id;
       Component   : Entity_Id;
       Association : Node_Id;
-
+      Not_Init    : constant Boolean :=
+        Default_Initialization (Typ) /= Full_Default_Initialization
+          and then not Is_Initialized_By_Formal_Container (N);
    --  Start of Aggregate_Is_Fully_Initialized
 
    begin
@@ -105,7 +107,7 @@ package body SPARK_Util is
             if Present (Association)
               and then Matching_Component_Association (Component, Association)
             then
-               if Box_Present (Association) then
+               if Box_Present (Association) and then Not_Init then
                   return False;
                end if;
                Next (Association);
@@ -126,7 +128,7 @@ package body SPARK_Util is
             Association := First (Assocs);
 
             while Present (Association) loop
-               if Box_Present (Association) then
+               if Box_Present (Association) and then Not_Init then
                   return False;
                end if;
                Next (Association);
@@ -431,7 +433,7 @@ package body SPARK_Util is
             Result := No_Default_Initialization;
 
          --  If the type is private, it is fine if the implementation uses
-         --  mixed initialization. An error will be issued when analying the
+         --  mixed initialization. An error will be issued when analyzing the
          --  implementation if it is in a SPARK part of the code.
 
          elsif Is_Private_Type (Typ) then
@@ -441,6 +443,24 @@ package body SPARK_Util is
 
       return Result;
    end Default_Initialization;
+
+   ----------------------------------------
+   -- Is_Initialized_By_Formal_Container --
+   ----------------------------------------
+
+   function Is_Initialized_By_Formal_Container (N : Node_Id) return Boolean
+   is
+      Typ : Entity_Id := Etype (N);
+   begin
+      --  If the Parent is an N_Private_Type_Declaration, then we need to use
+      --  the Full_View.
+      if Nkind (Parent (Typ)) = N_Private_Type_Declaration then
+         Typ := Full_View (Typ);
+      end if;
+
+      return In_Predefined_Unit (Root_Type (Typ))
+        and then Type_Based_On_External_Axioms (Typ);
+   end Is_Initialized_By_Formal_Container;
 
    --------------------------------------
    -- Expression_Functions_All_The_Way --

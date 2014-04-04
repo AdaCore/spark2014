@@ -560,10 +560,7 @@ package body SPARK_Definition is
             pragma Assert (No (Loop_Actions (N)));
             Mark_List (Choices (N));
 
-            if Box_Present (N) then
-               Mark_Violation ("aggregate not full defined", N,
-                               SRM_Reference => "SPARK RM 4.3");
-            else
+            if not Box_Present (N) then
                Mark (Expression (N));
             end if;
 

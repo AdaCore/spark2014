@@ -11,10 +11,18 @@ is
    type T1 is range 1 .. 10
      with Default_Value => 5;
 
+   type P1 is private;
+
+   type P2 is private;
+
    --  T2 does NOT have a default value
    type T2 is range 11 .. 20;
 
    type A1 is array (I) of T1;
+
+   type AP1 is array (I) of P1;
+
+   type AP2 is array (I) of P2;
 
    type A2 is array (I) of T2;
 
@@ -31,4 +39,15 @@ is
    procedure Init3 (X : out A3)
      with Depends => (X => null);
 
+   procedure Init4 (X : out AP1)
+     with Depends => (X => null);
+
+   procedure Init5 (X : out AP2)
+     with Depends => (X => null);
+
+private
+   type P1 is range 1 .. 10
+     with Default_Value => 5;
+
+   type P2 is range 1 .. 10;
 end Aggs;

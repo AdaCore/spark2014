@@ -19,4 +19,15 @@ is
       X := A3'(others => <>); -- OK, since A3 has FDE
    end Init3;
 
+   procedure Init4 (X : out AP1)
+   is
+   begin
+      X := AP1'(1 => 6, others => <>); -- OK, since AP1 has FDE
+   end Init4;
+
+   procedure Init5 (X : out AP2)
+   is
+   begin
+      X := AP2'(1 => 6, others => <>); -- illegal
+   end Init5;
 end Aggs;

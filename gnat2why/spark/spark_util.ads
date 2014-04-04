@@ -131,6 +131,15 @@ package SPARK_Util is
    --  private types are treated specially, so that they are either considered
    --  as having full default initialized, or no default initialization.
 
+   function Is_Initialized_By_Formal_Container (N : Node_Id) return Boolean;
+   --  Returns true if the type of the corresponding entity appears within
+   --  the source text of a predefined unit (i.e. within Ada, Interfaces,
+   --  System or within one of the descendent packages of one of these three
+   --  packages) and is considered to be default initialized because it is
+   --  declared in a formal container.
+   --
+   --  ??? This should be removed once N122-014 is implemented.
+
    ---------------
    -- Utilities --
    ---------------

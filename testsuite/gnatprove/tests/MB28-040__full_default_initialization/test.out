@@ -1,7 +1,9 @@
-aggs.adb:13:15:  violation of aspect SPARK_Mode at line 2
-aggs.adb:13:15: aggregate not fully defined is not allowed in SPARK ("srm" 4.3)
+aggs.adb:13:15: aggregate not fully defined is not allowed in SPARK (SPARK RM 4.3)
+aggs.adb:13:15: violation of aspect SPARK_Mode at line 2
+aggs.adb:31:16: aggregate not fully defined is not allowed in SPARK (SPARK RM 4.3)
+aggs.adb:31:16: violation of aspect SPARK_Mode at line 2
    compilation of aggs.adb failed
 
 
-gnatprove: error during translation to intermediate language, aborting.
+gnatprove: error during analysis and translation to intermediate language, aborting.
 gprbuild: *** compilation phase failed

@@ -22,7 +22,6 @@
 ------------------------------------------------------------------------------
 
 with Aspects;          use Aspects;
-with Lib;              use Lib;
 with Nlists;           use Nlists;
 
 with Why;
@@ -145,51 +144,27 @@ package body Flow_Utility.Initialization is
 
    function Is_Default_Initialized (F : Flow_Id) return Boolean
    is
-      function Is_Initialized_By_Formal_Container return Boolean
-        with Pre => F.Kind in Direct_Mapping | Record_Field;
-      --  Returns true if the type of the corresponding entity appears within
-      --  the source text of a predefined unit (i.e. within Ada, Interfaces,
-      --  System or within one of the descendent packages of one of these three
-      --  packages) and is considered to be default initialized because it is
-      --  declared in a formal container.
-      --
-      --  This will be removed after release 1 (once N122-014 is implemented).
-
-      ----------------------------------------
-      -- Is_Initialized_By_Formal_Container --
-      ----------------------------------------
-
-      function Is_Initialized_By_Formal_Container return Boolean
-      is
-         E : Entity_Id := Etype (Get_Direct_Mapping_Id (F));
-      begin
-         --  If the Parent is an N_Private_Type_Declaration, then we need
-         --  to use the Full_View.
-         if Nkind (Parent (E)) = N_Private_Type_Declaration then
-            E := Full_View (E);
-         end if;
-
-         return In_Predefined_Unit (Root_Type (E)) and then
-           Type_Based_On_External_Axioms (E);
-      end Is_Initialized_By_Formal_Container;
-
    begin
       case F.Kind is
          when Direct_Mapping =>
-            return Default_Initialization (Etype (Get_Direct_Mapping_Id (F)))
-              = Full_Default_Initialization or else
-              Is_Initialized_By_Formal_Container;
+            return Default_Initialization
+                     (Etype (Get_Direct_Mapping_Id (F))) =
+                        Full_Default_Initialization
+              or else Is_Initialized_By_Formal_Container
+                        (Get_Direct_Mapping_Id (F));
 
          when Record_Field =>
             if Is_Discriminant (F) then
                return Present (Discriminant_Default_Value
-                                 (F.Component.Last_Element)) or else
-                 Is_Initialized_By_Formal_Container;
+                                 (F.Component.Last_Element))
+                 or else Is_Initialized_By_Formal_Container
+                           (Get_Direct_Mapping_Id (F));
             else
                return Default_Initialization
-                 (Etype (Get_Direct_Mapping_Id (F)))
-                 = Full_Default_Initialization or else
-                 Is_Initialized_By_Formal_Container;
+                        (Etype (Get_Direct_Mapping_Id (F))) =
+                           Full_Default_Initialization
+                 or else Is_Initialized_By_Formal_Container
+                           (Get_Direct_Mapping_Id (F));
             end if;
 
          when Magic_String | Synthetic_Null_Export =>
