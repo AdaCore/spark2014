@@ -762,7 +762,6 @@ package body SPARK_Frame_Conditions is
       --  those, instead return false.
 
       if Is_Abstract_Subprogram (E_Alias) then
-         Ada.Text_IO.Put_Line ("abstract " & Name);
          return False;
       end if;
 
