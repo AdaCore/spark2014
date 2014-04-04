@@ -42,9 +42,7 @@ The features listed above are excluded from |SPARK| because, currently, they def
 formal verification. As formal verification technology advances the list will be
 revisited and it may be possible to relax some of these restrictions. There are
 other features which are technically feasible to formally verify but which were
-excluded from Release 1 of the |SPARK| language and tools for scheduling reasons.
-These are scheduled for inclusion in Release 2, the most notable items being
-support for tasking and tagged types.
+initially excluded for scheduling reasons.
 
 Identifying |SPARK| Code
 ========================
