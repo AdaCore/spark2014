@@ -133,6 +133,9 @@ package body SPARK_Frame_Conditions is
    Callers      : Id_Map.Map;  --  Callers for each subprogram
    Calls        : Id_Map.Map;  --  Subprograms called in each subprogram
 
+   Non_Rec_Subp : Id_Set.Set;
+   --  All non-recursive subprograms containing at least one call
+
    Next_Id : Id := 1;     --  Next available identity
 
    -----------------------
@@ -742,6 +745,36 @@ package body SPARK_Frame_Conditions is
    function Is_Heap_Variable (Ent : Entity_Name) return Boolean is
       (Ent.all = SPARK_Xrefs.Name_Of_Heap_Variable);
 
+   ---------------------------------
+   -- Is_Non_Recursive_Subprogram --
+   ---------------------------------
+
+   function Is_Non_Recursive_Subprogram (E : Entity_Id) return Boolean is
+      E_Alias  : constant Entity_Id :=
+        (if Present (Alias (E)) then Ultimate_Alias (E) else E);
+      Name     : aliased constant String := Unique_Name (E_Alias);
+      E_Name   : constant Entity_Name    :=
+        Make_Entity_Name (Name'Unrestricted_Access);
+      E_Id     : Id;
+
+   begin
+      --  Abstract subprograms not yet supported. Avoid issuing an error on
+      --  those, instead return false.
+
+      if Is_Abstract_Subprogram (E_Alias) then
+         Ada.Text_IO.Put_Line ("abstract " & Name);
+         return False;
+      end if;
+
+      E_Id := Entity_Ids.Element (E_Name);
+
+      --  A subprogram is non-recursive if either it contains no call or its
+      --  id has been stored in Non_Rec_Subp.
+
+      return Calls.Element (E_Id).Is_Empty
+        or else Non_Rec_Subp.Contains (E_Id);
+   end Is_Non_Recursive_Subprogram;
+
    ----------------------
    -- Load_SPARK_Xrefs --
    ----------------------
@@ -1224,6 +1257,22 @@ package body SPARK_Frame_Conditions is
          Set_Default_To_Empty (Reads,   Scopes);
          Set_Default_To_Empty (Callers, Scopes);
          Set_Default_To_Empty (Calls,   Scopes);
+
+         --  Collect non-recursive subprograms
+         --  A subprogram is non-recursive if it is alone in its strongly
+         --  connected component and if it does not call itself directly.
+
+         for J in Cur_SCCs'Range loop
+            if Cur_SCCs (J)'Length = 1 then
+               declare
+                  E : constant Id := Cur_SCCs (J) (1);
+               begin
+                  if not Id_Set.Contains (Calls.Element (E), E) then
+                     Non_Rec_Subp.Insert (E);
+                  end if;
+               end;
+            end if;
+         end loop;
 
          --  Iterate on SCCs
 

@@ -95,6 +95,10 @@ package SPARK_Frame_Conditions is
    --  callers. If Ignore_Errors is true, then ignore failures to find some
    --  scope that should have been present in some ALI file. This mode is used
    --  in simpler modes of operation that do not lead to translation into Why.
+   --  It also determines which subprograms are (mutually) recursive.
+
+   function Is_Non_Recursive_Subprogram (E : Entity_Id) return Boolean;
+   --  Returns True if E is not a (mutually) recursive subprogram.
 
    --  -----------------------------------------
    --  Mapping between Entities and Entity_Names

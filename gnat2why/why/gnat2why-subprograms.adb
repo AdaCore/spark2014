@@ -1401,9 +1401,12 @@ package body Gnat2Why.Subprograms is
                           else "")
                        & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
-      --  If the entity's body is not in SPARK, generate an empty module.
+      --  If the entity's body is not in SPARK,
+      --  or if the function is (mutually) recursive, generate an empty module.
 
-      if not Entity_Body_In_SPARK (E) then
+      if not Entity_Body_In_SPARK (E)
+        or else not Is_Non_Recursive_Subprogram (E)
+      then
          Close_Theory (File,
                        Kind => Standalone_Theory);
          return;
