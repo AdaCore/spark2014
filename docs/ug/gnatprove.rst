@@ -218,7 +218,7 @@ When editing an Ada file, |GNATprove| can also be run from a
 |GNATprove| project switches can be edited from the panel ``GNATprove`` (in
 :menuselection:`Project --> Edit Project Properties --> Switches`).
 
-In some proof modes (``--proof=then_split`` or ``--proof=path_wp``),
+In some proof modes (``--proof=progressive`` or ``--proof=per_path``),
 |GNATprove| attempts to prove checks separately for the possible paths leading
 to a check. If the proof fails on a specific path, the user can display this
 path in GPS by clicking on the icon to the left of the failed proof message, or
