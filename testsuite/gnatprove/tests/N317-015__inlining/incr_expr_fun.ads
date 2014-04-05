@@ -10,6 +10,7 @@ is
 
    function Incr_Pub_Body (X : Integer) return Integer;
 
+   procedure Test;
 private
    function Incr_Pub_Priv (X : Integer) return Integer is (X + 1);
 
