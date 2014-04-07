@@ -478,7 +478,6 @@ def prove(opt=None, steps=max_steps, procs=parallel_procs,
     # Add opt last, so that if may include switch -cargs
     if opt is not None:
         fullopt += opt
-    fullopt += ["-cargs", "-gnatdQ"]
     gnatprove(fullopt)
 
 
