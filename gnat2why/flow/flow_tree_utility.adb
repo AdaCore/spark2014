@@ -199,11 +199,30 @@ package body Flow_Tree_Utility is
                                  A : Pragma_Id)
                                  return Boolean
    is
-      function Has_Specific_Aspect (E : Entity_Id) return Boolean
-      is (Present (Get_Pragma (E, Pragma_Async_Readers)) or else
-            Present (Get_Pragma (E, Pragma_Async_Writers)) or else
-            Present (Get_Pragma (E, Pragma_Effective_Reads)) or else
-            Present (Get_Pragma (E, Pragma_Effective_Writes)));
+      function Has_No_Aspect (E : Entity_Id) return Boolean
+      is (No (Get_Pragma (E, Pragma_Async_Readers))
+            and then No (Get_Pragma (E, Pragma_Async_Writers))
+            and then No (Get_Pragma (E, Pragma_Effective_Reads))
+            and then No (Get_Pragma (E, Pragma_Effective_Writes)));
+
+      function Has_Specific_Aspect (E : Entity_Id;
+                                    A : Pragma_Id)
+                                    return Boolean
+      is (case A is
+            when Pragma_Async_Readers =>
+               Present (Get_Pragma (E, Pragma_Async_Readers))
+                 and then Async_Readers_Enabled (E),
+            when Pragma_Async_Writers =>
+               Present (Get_Pragma (E, Pragma_Async_Writers))
+                 and then Async_Writers_Enabled (E),
+            when Pragma_Effective_Reads =>
+               Present (Get_Pragma (E, Pragma_Effective_Reads))
+                 and then Effective_Reads_Enabled (E),
+            when Pragma_Effective_Writes =>
+               Present (Get_Pragma (E, Pragma_Effective_Writes))
+                 and then Effective_Writes_Enabled (E),
+            when others =>
+               raise Why.Unexpected_Node);
    begin
       case Ekind (E) is
          when E_Abstract_State =>
@@ -246,12 +265,12 @@ package body Flow_Tree_Utility is
             return True;
 
          when E_Variable =>
-            if Present (Get_Pragma (E, A)) then
+            if Has_Specific_Aspect (E, A) then
                return True;
-            elsif Has_Specific_Aspect (E) then
-               return False;
+            elsif Has_No_Aspect (E) then
+               return True;
             else
-               return True;
+               return False;
             end if;
 
          when E_Constant =>
