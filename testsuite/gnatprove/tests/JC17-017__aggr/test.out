@@ -1,30 +1,30 @@
 p.adb:6:12: info: length check proved
-p.adb:9:14: warning: subprogram "Proc2" has no effect
 p.adb:12:14: info: length check proved
-p.adb:15:14: warning: subprogram "Proc3" has no effect
 p.adb:18:14: info: length check proved
-p.adb:21:14: warning: subprogram "Proc4" has no effect
 p.adb:24:12: info: length check proved
-p.adb:27:14: warning: subprogram "Proc5" has no effect
 p.adb:30:12: info: length check proved
-p.adb:33:14: warning: subprogram "Proc6" has no effect
 p.adb:36:12: info: length check proved
-p.adb:39:14: warning: subprogram "Proc7" has no effect
 p.adb:43:12: info: length check proved
-p.adb:46:14: warning: subprogram "Proc8" has no effect
 p.adb:50:12: info: length check proved
 p.ads:2:14: warning: subprogram "Proc" has no effect
+p.ads:3:14: warning: subprogram "Proc2" has no effect
+p.ads:4:14: warning: subprogram "Proc3" has no effect
+p.ads:5:14: warning: subprogram "Proc4" has no effect
+p.ads:6:14: warning: subprogram "Proc5" has no effect
+p.ads:7:14: warning: subprogram "Proc6" has no effect
+p.ads:8:14: warning: subprogram "Proc7" has no effect
+p.ads:9:14: warning: subprogram "Proc8" has no effect
 [
 { "name" : "P.Proc", "file" :"p.ads", "line" :  2, "spark" : "all" }
-, { "name" : "P.Proc2", "file" :"p.adb", "line" :  9, "spark" : "all" }
-, { "name" : "P.Proc3", "file" :"p.adb", "line" :  15, "spark" : "all" }
-, { "name" : "P.Proc4", "file" :"p.adb", "line" :  21, "spark" : "all" }
-, { "name" : "P.Proc5", "file" :"p.adb", "line" :  27, "spark" : "all" }
-, { "name" : "P.Proc6", "file" :"p.adb", "line" :  33, "spark" : "all" }
+, { "name" : "P.Proc2", "file" :"p.ads", "line" :  3, "spark" : "all" }
+, { "name" : "P.Proc3", "file" :"p.ads", "line" :  4, "spark" : "all" }
+, { "name" : "P.Proc4", "file" :"p.ads", "line" :  5, "spark" : "all" }
+, { "name" : "P.Proc5", "file" :"p.ads", "line" :  6, "spark" : "all" }
+, { "name" : "P.Proc6", "file" :"p.ads", "line" :  7, "spark" : "all" }
 , { "name" : "P.Proc7.Zero", "file" :"p.adb", "line" :  40, "spark" : "all" }
-, { "name" : "P.Proc7", "file" :"p.adb", "line" :  39, "spark" : "all" }
+, { "name" : "P.Proc7", "file" :"p.ads", "line" :  8, "spark" : "all" }
 , { "name" : "P.Proc8.Zero", "file" :"p.adb", "line" :  47, "spark" : "all" }
-, { "name" : "P.Proc8", "file" :"p.adb", "line" :  46, "spark" : "all" }
+, { "name" : "P.Proc8", "file" :"p.ads", "line" :  9, "spark" : "all" }
 , { "name" : "P", "file" :"p.ads", "line" :  1, "spark" : "all" }
 ]
 
