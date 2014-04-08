@@ -1,4 +1,4 @@
-procedure C74211B is 
+procedure C74211B is
 
     package P1 is
          type Lt1 is limited private;
@@ -13,7 +13,7 @@ procedure C74211B is
          type Lt3 is limited private;
     private
          type Lt3 is new Lt1;
- end P2;
+    end P2;
 
     package body P1 is
 

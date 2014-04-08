@@ -7,21 +7,25 @@ is
       function Recurse2 (X : Boolean) return Boolean;
 
       function Recurse1 (X : Boolean) return Boolean is
+         Tmp : Boolean;
       begin
          if X then
-            return True;
+            Tmp := True;
          else
-            return Recurse2 (not X);
+            Tmp := Recurse2 (not X);
          end if;
+         return Tmp;
       end Recurse1;
 
       function Recurse2 (X : Boolean) return Boolean is
+         Tmp : Boolean;
       begin
          if X then
-            return True;
+            Tmp := True;
          else
-            return Recurse1 (not X);
+            Tmp := Recurse1 (not X);
          end if;
+         return Tmp;
       end Recurse2;
    begin
       Res := Recurse1 (False);

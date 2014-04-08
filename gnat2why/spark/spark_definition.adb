@@ -3374,6 +3374,7 @@ package body SPARK_Definition is
       elsif not Acts_As_Spec (N)
         and then Present (Get_Subprogram_Decl (E))
         and then Present (Body_To_Inline (Get_Subprogram_Decl (E)))
+        and then Is_Inlined (E)
       then
          return;
 
@@ -3435,6 +3436,7 @@ package body SPARK_Definition is
 
       elsif Nkind (N) = N_Subprogram_Declaration
         and then Present (Body_To_Inline (N))
+        and then Is_Inlined (E)
       then
          return;
 
