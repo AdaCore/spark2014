@@ -5,12 +5,14 @@ is
    procedure Test_Recursion (Res : out Boolean) is
       function Recurse (X : Boolean) return Boolean;
       function Recurse (X : Boolean) return Boolean is
+         Tmp : Boolean;
       begin
          if X then
-            return True;
+            Tmp := True;
          else
-            return Recurse (not X);
+            Tmp := Recurse (not X);
          end if;
+         return Tmp;
       end Recurse;
    begin
       Res := Recurse (False);

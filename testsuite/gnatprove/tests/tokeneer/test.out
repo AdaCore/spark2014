@@ -327,7 +327,7 @@ enclave.adb:1883:22: info: precondition proved
 enclave.adb:1885:17: info: precondition proved
 enclave.adb:1887:13: info: precondition proved
 enclave.adb:1890:13: info: precondition proved
-enclave.adb:1893:13: info: precondition proved
+enclave.adb:1893:13: warning: precondition might fail
 enclave.adb:1896:13: warning: precondition might fail
 enclave.adb:2079:13: info: precondition proved
 enclave.adb:2082:13: info: precondition proved
