@@ -145,7 +145,7 @@ step_function.ads:46:24: warning: overflow check might fail
 step_function.ads:46:50: warning: array index check might fail
 step_function.ads:52:23: warning: array index check might fail
 step_function.ads:52:49: warning: array index check might fail
-step_function.ads:56:12: warning: postcondition might fail
+step_function.ads:56:12: warning: postcondition might fail, requires for some i in Num_Delimiters_Range'First..(SFun.Number_Of_Delimiters - 1) => (SFun.Step(i).Delimiter <= X and X < SFun.Step(i+1).Delimiter and Get_Value'Result = SFun.Step(i).Value)) or (X >= SFun.Step(SFun.Number_Of_Delimiters).Delimiter and Get_Value'Result = SFun.Step(SFun.Number_Of_Delimiters).Value
 step_function.ads:58:27: warning: array index check might fail
 step_function.ads:59:36: warning: array index check might fail
 step_function.ads:60:50: warning: array index check might fail

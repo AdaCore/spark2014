@@ -4288,6 +4288,13 @@ package body Gnat2Why.Expr is
       Params : Transformation_Params) return W_Expr_Id
    is
    begin
+
+      --  Do not generate old when references are not allowed.
+
+      if not Params.Ref_Allowed then
+         return Transform_Expr (Expr, Domain, Params);
+      end if;
+
       --  Expressions that cannot be translated to predicates directly are
       --  translated to (boolean) terms, and compared to "True"
 

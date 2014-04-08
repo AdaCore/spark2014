@@ -711,7 +711,7 @@ package body Why.Atree.Sprint is
       Exists_Sequence : constant Boolean :=
         Get_Kind (+Pred) = W_Existential_Quantif;
    begin
-      P (O, "exists ");
+      P (O, "(exists ");
       Print_List (+Variables, " ");
       P (O, " ");
       P (O, Get_Labels (Node), As_String => True);
@@ -729,6 +729,7 @@ package body Why.Atree.Sprint is
       if not Exists_Sequence then
          Relative_Indent (O, -1);
       end if;
+      P (O, ")");
    end Print_Existential_Quantif;
 
    --------------------------

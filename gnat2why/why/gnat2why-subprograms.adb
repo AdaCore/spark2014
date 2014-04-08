@@ -1412,18 +1412,6 @@ package body Gnat2Why.Subprograms is
          return;
       end if;
 
-      --  If the body of the expression function contains aggregates that are
-      --  not fully initialized, skip the definition of an axiom for this
-      --  expression function.
-
-      if not
-        All_Aggregates_Are_Fully_Initialized (Expression (Expr_Fun_N))
-      then
-         Close_Theory (File,
-                       Kind => Standalone_Theory);
-         return;
-      end if;
-
       Add_Effect_Imports (File, Read_Names);
 
       Params :=
@@ -1645,6 +1633,9 @@ package body Gnat2Why.Subprograms is
                                Right  => +Post,
                                Domain => EW_Pred);
 
+            Guard   : constant W_Pred_Id :=
+              Compute_Guard_Formula (Logic_Func_Binders);
+
          begin
             --  Generate a logic function
 
@@ -1668,6 +1659,90 @@ package body Gnat2Why.Subprograms is
                   Effects     => Effects,
                   Pre         => Pre,
                   Post        => Param_Post));
+
+            --  If the function has a postcondition and is not (mutually)
+            --  recursive, then generate an axiom:
+            --  axiom def_axiom:
+            --     forall args [f (args)]. pre (args) ->
+            --           let result = f (args) in post (args)
+
+            if not No_Return (E)
+              and then Is_Non_Recursive_Subprogram (E)
+              and then (Has_Contracts (E, Name_Postcondition)
+                        or else Has_Contracts (E, Name_Contract_Cases))
+            then
+
+               Params :=
+                 (File        => File.File,
+                  Theory      => File.Cur_Theory,
+                  Phase       => Generate_Logic,
+                  Gen_Image   => False,
+                  Ref_Allowed => False);
+
+               Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+
+               for Binder of Logic_Func_Binders loop
+                  declare
+                     A : constant Node_Id := Binder.Main.Ada_Node;
+                  begin
+                     if Present (A) then
+                        Ada_Ent_To_Why.Insert (Symbol_Table,
+                                               Unique_Entity (A),
+                                               Binder);
+                     elsif Binder.Main.B_Ent /= null then
+
+                        --  if there is no Ada_Node, this in a binder generated
+                        --  from an effect; we add the parameter in the name
+                        --  map using its unique name
+
+                        Ada_Ent_To_Why.Insert
+                          (Symbol_Table,
+                           Binder.Main.B_Ent,
+                           Binder);
+                     end if;
+                  end;
+               end loop;
+
+               Pre := +Compute_Spec (Params, E, Name_Precondition, EW_Pred);
+               Post :=
+                 +New_And_Expr
+                 (Left   =>
+                    +Compute_Spec (Params, E, Name_Postcondition, EW_Pred),
+                  Right  => +Compute_Contract_Cases_Postcondition (Params, E),
+                  Domain => EW_Pred);
+
+               Emit
+                 (File.Cur_Theory,
+                  New_Guarded_Axiom
+                    (Ada_Node => Empty,
+                     Name     => NID (Def_Axiom),
+                     Binders  => Logic_Why_Binders,
+                     Triggers =>
+                       New_Triggers
+                         (Triggers =>
+                              (1 => New_Trigger
+                                 (Terms =>
+                                    (1 => New_Call
+                                         (Domain  => EW_Term,
+                                          Name    => Logic_Id,
+                                          Binders => Logic_Why_Binders))))),
+                     Pre      =>
+                       +New_And_Expr (Left   => +Guard,
+                                      Right  => +Pre,
+                                      Domain => EW_Pred),
+                     Def      =>
+                       +New_Typed_Binding
+                       (Ada_Node => Empty,
+                        Domain   => EW_Pred,
+                        Name     => +New_Result_Ident (Why_Type),
+                        Def      => New_Call
+                          (Domain  => EW_Term,
+                           Name    => Logic_Id,
+                           Binders => Logic_Why_Binders),
+                        Context  => +Post)));
+
+               Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+            end if;
          end;
       else
          Emit
