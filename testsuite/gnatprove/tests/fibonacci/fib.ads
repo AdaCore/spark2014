@@ -11,7 +11,7 @@ package Fib is pragma SPARK_Mode (On);   --In total 608 VCs
    --nth Fibonacci number and stores the result in l
    procedure FibonacciSC (n1, n2, l1, l2 : in out Natural) with
      Pre  => (n1 = n2 and then l1 = l2 and then n1 <= 23),
-     Post => l1 = l2; -- @POSTCONDITION:FAIL
+     Post => l1 = l2;
 
    --Function to use in assertions which computes n!
    function Factorial (n : Natural) return Natural with

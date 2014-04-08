@@ -1,4 +1,4 @@
-package body Fib is pragma SPARK_Mode (On);  
+package body Fib is pragma SPARK_Mode (On);
    function Fibonacci (n : Natural) return Natural is
       a, b, t : Natural;
    begin
@@ -7,7 +7,7 @@ package body Fib is pragma SPARK_Mode (On);
       for i in Natural range 2..n loop
          pragma Loop_Invariant (b <= a and then a <= 2 ** (i - 2));
          t := a;
-         a := a + b; -- @OVERFLOW_CHECK:FAIL
+         a := a + b;
          b := t;
       end loop;
       return a;
@@ -43,7 +43,7 @@ package body Fib is pragma SPARK_Mode (On);
                         n2 + i - 2 = copy_n2);
          pragma Loop_Variant (Decreases => n2);
          a2 := a2 + b2; -- @OVERFLOW_CHECK:FAIL
-         b2 := a2 - b2; -- @OVERFLOW_CHECK:FAIL
+         b2 := a2 - b2;
          n2 := n2 - 1;
          i := i + 1;
       end loop;
