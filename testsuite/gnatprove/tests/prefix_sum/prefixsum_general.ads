@@ -6,14 +6,11 @@ package PrefixSum_General is pragma SPARK_Mode (On);
    Maximum    : constant := Integer'Last / (Index'Last + 1);
 
    function Is_Even (K : Integer) return Boolean is (K mod 2 = 0);
-
+   
    function Summation (A : Input; Start_Pos, End_Pos : Index) return Integer
    with
-     Pre => Start_Pos <= End_Pos;
-
-   function Summation (A : Input; Start_Pos, End_Pos : Index) return Integer is
-      (if Start_Pos = End_Pos then A (Start_Pos)
-       else A (End_Pos) + Summation (A, Start_Pos, End_Pos - 1));
+     Pre  => Start_Pos <= End_Pos,
+     Post => (if Start_Pos = End_Pos then Summation'Result = A (Start_Pos));
 
    procedure Upsweep (A : in out Input; Output_Space : out Positive) with
      Pre  => (for all K in A'Range => A (K) in -Maximum .. Maximum),

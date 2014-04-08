@@ -158,8 +158,8 @@ prefixsum_expanded.ads:45:17: info: precondition proved
 prefixsum_expanded.ads:48:07: warning: unused initial value of "Ghost"
 prefixsum_expanded.ads:53:17: info: precondition proved
 prefixsum_expanded.ads:55:8: warning: postcondition might fail
+prefixsum_general.adb:12:10: info: loop invariant initialization proved
 prefixsum_general.adb:12:10: warning: loop invariant might fail after first iteration
-prefixsum_general.adb:12:10: warning: loop invariant might fail in first iteration
 prefixsum_general.adb:13:22: info: division check proved
 prefixsum_general.adb:21:24: info: division check proved
 prefixsum_general.adb:30:27: info: division check proved
@@ -181,10 +181,10 @@ prefixsum_general.adb:61:19: warning: array index check might fail
 prefixsum_general.adb:61:27: info: precondition proved
 prefixsum_general.adb:61:54: warning: range check might fail
 prefixsum_general.adb:61:63: warning: range check might fail
-prefixsum_general.adb:63:24: info: index check proved
+prefixsum_general.adb:63:24: warning: array index check might fail
 prefixsum_general.adb:63:35: info: precondition proved
 prefixsum_general.adb:63:58: warning: range check might fail
-prefixsum_general.adb:63:68: info: range check proved
+prefixsum_general.adb:63:68: warning: range check might fail
 prefixsum_general.adb:64:13: info: loop variant proved
 prefixsum_general.adb:66:31: warning: overflow check might fail
 prefixsum_general.adb:67:16: warning: array index check might fail
@@ -214,10 +214,13 @@ prefixsum_general.adb:97:32: info: overflow check proved
 prefixsum_general.adb:97:32: info: range check proved
 prefixsum_general.adb:97:40: info: overflow check proved
 prefixsum_general.adb:99:25: info: division check proved
+prefixsum_general.adb:114:17: info: postcondition proved
+prefixsum_general.adb:123:27: warning: overflow check might fail
+prefixsum_general.adb:123:29: info: precondition proved
+prefixsum_general.adb:123:66: info: range check proved
+prefixsum_general.adb:126:14: info: precondition proved
 prefixsum_general.ads:8:56: info: division check proved
-prefixsum_general.ads:16:25: warning: overflow check might fail
-prefixsum_general.ads:16:27: info: precondition proved
-prefixsum_general.ads:16:60: info: range check proved
-prefixsum_general.ads:20:14: warning: postcondition might fail
-prefixsum_general.ads:21:30: info: precondition proved
-prefixsum_general.ads:24:07: warning: unused variable "Ghost"
+prefixsum_general.ads:13:14: info: postcondition proved
+prefixsum_general.ads:17:14: warning: postcondition might fail
+prefixsum_general.ads:18:30: info: precondition proved
+prefixsum_general.ads:21:07: warning: unused variable "Ghost"
