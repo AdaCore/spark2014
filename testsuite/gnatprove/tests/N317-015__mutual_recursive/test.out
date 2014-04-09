@@ -1,0 +1,3 @@
+no_inlining.adb:26:20: warning: call to recursive subprogram cannot be inlined
+no_inlining.adb:26:20: warning: in inlined body at line 15
+no_inlining.ads:6:14: info: postcondition proved
