@@ -17,9 +17,9 @@ is
    end Add_I;
 
    function Min_UB (A, B: Unsigned_Byte) return Unsigned_Byte
-     with Post => (Min_UB'Result <= A
-                     and then Min_UB'Result <= B
-                     and then (Min_UB'Result = A or else Min_UB'Result = B))
+     with Post => (Min_UB'Result <= A and
+                   Min_UB'Result <= B and
+                   (Min_UB'Result = A or Min_UB'Result = B))
    is
       R : Unsigned_Byte;
    begin
@@ -28,46 +28,46 @@ is
       else
          R := B;
       end if;
-      pragma Assert_And_Cut ((if A <= B then R = A)
-        and then (if B <= A then R = B));
+      pragma Assert_And_Cut ((if A <= B then R = A) and
+                             (if B <= A then R = B));
       return R;
    end Min_UB;
 
-   pragma Warnings (Off, "* has no effect");
-   procedure Plus_Test
+   --  FS: Rewritten from original test as the front-end constant
+   --      folds everything to true otherwise.
+   procedure Plus_Test (One, Two, Three : Integer;
+                        X, Y            : out Integer)
+   with Pre  => One = 1 and Two = 2 and Three = 3,
+        Post => X = 5 and Y = 5
    is
    begin
-      pragma Assert (5 = 2 + 3);
-      pragma Assert_And_Cut (True);
-      pragma Assert (5 = 1 + 1 + 1 + 1 + 1);
-      pragma Assert_And_Cut (True);
-      null;
+      X := Two + Three;
+      Y := One + One + One + One + One;
    end Plus_Test;
-   pragma Warnings (On, "* has no effect");
 
+   --  FS: This test was originally for the SPARK 2005 x~ notation,
+   --  but 'Old in SPARK 2014 does not quite work the same way.
    procedure Tilde_Test_A (X : in out Integer)
      with Depends => (X => X),
-          Pre     => X > 0 and then X < 10,
+          Pre     => X > 0 and X < 10,
           Post    => X = X'Old + 5
    is
       X_Old : constant Integer := X;
    begin
       X := X + 3;
-      pragma Assert_And_Cut (X >= X_Old + 3
-                               and then X <= X_Old + 3);
+      pragma Assert_And_Cut (X >= X_Old + 3 and X <= X_Old + 3);
       X := X + 2;
    end Tilde_Test_A;
 
    procedure Tilde_Test_B (X : in out Integer)
      with Depends => (X => X),
-          Pre     => X > 0 and then X < 10,
+          Pre     => X > 0 and X < 10,
           Post    => X = X'Old + 5  --  @POSTCONDITION:FAIL
    is
       X_Old : constant Integer := X;
    begin
       X := X + 3;
-      pragma Assert_And_Cut (X >= X_Old + 3
-                               and then X <= X_Old + 3);
+      pragma Assert_And_Cut (X >= X_Old + 3 and X <= X_Old + 3);
       X := X + 3;
    end Tilde_Test_B;
 
@@ -112,26 +112,14 @@ is
 
    function Equality_Rewrite_Loop_Test (X, Y : in Integer) return Integer
      with Depends => (Equality_Rewrite_Loop_Test'Result => X,
-                      null => Y),
+                      null                              => Y),
           Pre     => X = Y,
           Post    => Equality_Rewrite_Loop_Test'Result = Y
    is
    begin
-      pragma Assert (X = X);
+      pragma Assert (X = X);  --  FS: Rewritten by front-end, see N321-020
       pragma Assert (Y = X);
       return X;
    end Equality_Rewrite_Loop_Test;
 
-   --  This is a testcase for L813-012 showing that SPARK/FDL
-   --  variables can potentially namecapture AnsPL variables (or
-   --  constants in this case).
-   --
-   --  To fix this we need to name-mangle all user-inputs.
-   procedure Be_Aware_Of_Name_Capture_In_AnsPL (Bi_Const_0 : out Integer)
-     with Post => Bi_Const_0 = 5  --  @POSTCONDITION:FAIL
-   is
-   begin
-      Bi_Const_0 := 3;
-      pragma Assert_And_Cut (Bi_Const_0 in 0..10);
-   end Be_Aware_Of_Name_Capture_In_AnsPL;
 end Basic;
