@@ -2483,7 +2483,8 @@ package body Gnat2Why.Expr is
                        Context => T);
                end;
 
-            when N_Freeze_Entity =>
+            when N_Null_Statement
+               | N_Freeze_Entity =>
                null;
 
             when others =>
@@ -2531,7 +2532,8 @@ package body Gnat2Why.Expr is
                  (Defining_Identifier (N),
                   Id);
 
-            when N_Freeze_Entity =>
+            when N_Null_Statement
+               | N_Freeze_Entity =>
                null;
 
             when others =>

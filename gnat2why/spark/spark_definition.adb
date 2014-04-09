@@ -1224,7 +1224,8 @@ package body SPARK_Definition is
                      return False;
                   end if;
 
-               when N_Freeze_Entity =>
+               when N_Null_Statement
+                  | N_Freeze_Entity =>
                   null;
 
                when others =>
