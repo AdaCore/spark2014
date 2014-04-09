@@ -11,6 +11,8 @@ is
 
    X : Rec1 := (others => 0);
    Y : Rec2;
+   Z : Rec2;
 begin
    Y := To_Rec2 (X);
+   Z := Rec2 (X);
 end Uconv_Rec;

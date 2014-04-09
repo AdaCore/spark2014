@@ -1318,11 +1318,13 @@ package body Flow.Control_Flow_Graph is
          when N_Expanded_Name             |
               N_Function_Call             |
               N_Indexed_Component         |
+              N_Type_Conversion           |
               N_Unchecked_Type_Conversion =>
-            --  This covers the following 4 cases:
+            --  This covers the following 5 cases:
             --    A := 0;
             --    A := function(X);
             --    A := Array(X);
+            --    A := A (B);
             --    A := Some_Unchecked_Conversion_Function (X);
             declare
                S : constant Node_Id :=
@@ -1331,7 +1333,8 @@ package body Flow.Control_Flow_Graph is
                           N_Function_Call     |
                           N_Indexed_Component =>
                         Search,
-                     when N_Unchecked_Type_Conversion =>
+                     when N_Type_Conversion           |
+                          N_Unchecked_Type_Conversion =>
                         Expression (Search),
                      when others =>
                         raise Why.Unexpected_Node);
