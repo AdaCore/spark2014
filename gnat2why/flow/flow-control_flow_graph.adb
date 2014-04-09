@@ -1315,20 +1315,35 @@ package body Flow.Control_Flow_Graph is
                end loop;
             end;
 
-         when N_Expanded_Name     |
-              N_Function_Call     |
-              N_Indexed_Component =>
-            --  This covers the following 3 cases:
+         when N_Expanded_Name             |
+              N_Function_Call             |
+              N_Indexed_Component         |
+              N_Unchecked_Type_Conversion =>
+            --  This covers the following 4 cases:
             --    A := 0;
             --    A := function(X);
             --    A := Array(X);
-            Ctx.Folded_Function_Checks (N).Include (Search);
+            --    A := Some_Unchecked_Conversion_Function (X);
+            declare
+               S : constant Node_Id :=
+                 (case Nkind (Search) is
+                     when N_Expanded_Name     |
+                          N_Function_Call     |
+                          N_Indexed_Component =>
+                        Search,
+                     when N_Unchecked_Type_Conversion =>
+                        Expression (Search),
+                     when others =>
+                        raise Why.Unexpected_Node);
+            begin
+               Ctx.Folded_Function_Checks (N).Include (S);
 
-            Vars_Used := Get_Variable_Set
-              (Search,
-               Scope           => FA.B_Scope,
-               Local_Constants => FA.Local_Constants,
-               Fold_Functions  => True);
+               Vars_Used := Get_Variable_Set
+                 (S,
+                  Scope           => FA.B_Scope,
+                  Local_Constants => FA.Local_Constants,
+                  Fold_Functions  => True);
+            end;
 
          when others =>
             raise Why.Unexpected_Node;
