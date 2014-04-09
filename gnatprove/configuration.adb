@@ -680,31 +680,18 @@ ASCII.LF;
 
          if Limit_String /= null then
             declare
-               Index : Integer := Limit_String.all'Last;
+               Index : Integer := Limit_String.all'First;
             begin
-               while Index > Limit_String.all'First and then
+               while Index < Limit_String.all'Last and then
                  Limit_String.all (Index) /= ':' loop
-                  Index := Index - 1;
+                  Index := Index + 1;
                end loop;
-               if Index = Limit_String.all'First then
+               if Index = Limit_String.all'Last then
                   Abort_Msg
                     ("limit-line: incorrect line specification" &
-                       " - missing ':'",
+                       " - missing ':' followed by operand",
                      With_Help => False);
                end if;
-                -- Block used to handle the extended version of Limit_Line and
-                -- an additionnal field is in the string
-               declare
-                  Index2 : Integer := Index - 1;
-               begin
-                  while Index2 > Limit_String.all'First and then
-                    Limit_String.all (Index2) /= ':' loop
-                     Index2 := Index2 - 1;
-                  end loop;
-                  if Index2 /= Limit_String.all'First then
-                     Index := Index2;
-                  end if;
-               end;
                File_List.Append
                  (Limit_String.all (Limit_String.all'First .. Index - 1));
             end;
