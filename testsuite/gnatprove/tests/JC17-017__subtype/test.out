@@ -2,6 +2,7 @@ p.adb:4:14: warning: subprogram "Proc" has no effect
 p.adb:4:20: warning: unused initial value of "X"
 p.adb:4:23: warning: unused initial value of "Y"
 p.adb:8:15: info: range check proved
+p.adb:11:07: warning: analyzing unreferenced procedure "Proc_Loop"
 p.adb:11:17: warning: subprogram "Proc_Loop" has no effect
 p.adb:11:28: warning: unused initial value of "X"
 p.adb:11:31: warning: unused initial value of "Y"
@@ -13,6 +14,7 @@ p.adb:23:11: warning: range check might fail
 p.adb:23:37: warning: overflow check might fail
 p.adb:24:25: warning: overflow check might fail
 p.adb:24:25: warning: range check might fail
+p.adb:28:04: warning: analyzing unreferenced procedure "Proc_Loop"
 p.adb:28:14: warning: subprogram "Proc_Loop" has no effect
 p.adb:28:25: warning: unused initial value of "X"
 p.adb:28:28: warning: unused initial value of "Y"

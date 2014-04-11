@@ -20,3 +20,4 @@ enums.adb:176:71: info: range check proved
 enums.adb:191:19: info: postcondition proved
 enums.adb:191:50: info: range check proved
 enums.adb:194:29: warning: range check might fail
+enums.adb:197:04: warning: analyzing unreferenced function "Subtypes_Broken"

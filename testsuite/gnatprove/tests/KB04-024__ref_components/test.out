@@ -2,4 +2,3 @@ p.adb:1:11: warning: subprogram "P" has no effect
 p.adb:1:14: warning: unused initial value of "Havok_A"
 p.adb:1:23: warning: unused initial value of "Havok_B"
 p.adb:3:13: info: length check proved
-p.adb:12:22: warning: unused initial value of "B"

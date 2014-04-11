@@ -1,3 +1,4 @@
+loop_related_legal.adb:5:04: warning: analyzing unreferenced procedure "Loop_Entry_And_Quantified_Expressions"
 loop_related_legal.adb:9:32: info: overflow check proved
 loop_related_legal.adb:11:10: info: loop invariant initialization proved
 loop_related_legal.adb:11:10: info: loop invariant preservation proved

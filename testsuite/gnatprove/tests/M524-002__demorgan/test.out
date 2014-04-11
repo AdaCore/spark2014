@@ -1,3 +1,4 @@
+test.adb:3:04: warning: analyzing unreferenced procedure "Logic"
 test.adb:3:14: warning: subprogram "Logic" has no effect
 test.adb:3:21: warning: unused initial value of "A"
 test.adb:3:24: warning: unused initial value of "B"

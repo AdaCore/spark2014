@@ -205,7 +205,7 @@ procedure Do_Checks is
          --  UNCOMMENT WHEN SUPPORTED IN GNATPROVE
          --  when 100 =>
          --     declare
-         --        procedure P (X, Y : in out A1) is
+         --        procedure P (X, Y : in out A1) with Pre => True is
          --        begin
          --           X := X and Y;  --  BAD
          --        end;
@@ -216,7 +216,7 @@ procedure Do_Checks is
          --     end;
          --  when 101 =>
          --     declare
-         --        procedure P (X, Y : in out A1) is
+         --        procedure P (X, Y : in out A1) with Pre => True is
          --        begin
          --           X := X and Y;  --  OK
          --        end;
@@ -229,7 +229,7 @@ procedure Do_Checks is
          --  value conversion to constrained array
          when 102 =>
             declare
-               procedure P (X : A1; Y : out A2) is
+               procedure P (X : A1; Y : out A2) with Pre => True is
                begin
                   Y := X;  --  BAD
                end;
@@ -255,11 +255,11 @@ procedure Do_Checks is
          --  view conversion to constrained array
          when 104 =>
             declare
-               procedure P1 (X : in out A2) is
+               procedure P1 (X : in out A2) with Pre => True is
                begin
                   null;
                end;
-               procedure P2 (X : in out A1) is
+               procedure P2 (X : in out A1) with Pre => True is
                begin
                   P1(X);  --  BAD
                end;
@@ -269,7 +269,7 @@ procedure Do_Checks is
             end;
          when 105 =>
             declare
-               procedure P1 (X : in out A2) is
+               procedure P1 (X : in out A2) with Pre => True is
                begin
                   null;
                end;
@@ -307,7 +307,7 @@ procedure Do_Checks is
          --  Ada RM 4.1.3(15): selected_component on component of variant
          when 1000 =>
             declare
-               procedure P (X, Y : in out R1) is
+               procedure P (X, Y : in out R1) with Pre => True is
                begin
                   X.Arr(1) := Y.Arr(10);  --  BAD
                end;
@@ -339,7 +339,7 @@ procedure Do_Checks is
          --           null;
          --        end record;
          --        type Square (K : Integer) is new Rect(K,K);
-         --        procedure P (X : in Rect) is
+         --        procedure P (X : in Rect) with Pre => True is
          --           Y : Square := Square(X);  --  BAD
          --        begin
          --           null;
@@ -370,7 +370,7 @@ procedure Do_Checks is
          --  UNCOMMENT AFTER M923-035 HAS BEEN CORRECTED
          --  when 1004 =>
          --     declare
-         --        procedure P (X : in R1; Y : out R3) is
+         --        procedure P (X : in R1; Y : out R3) with Pre => True is
          --        begin
          --           Y := R3(X);  --  BAD
          --        end;
@@ -396,7 +396,7 @@ procedure Do_Checks is
          --  Ada RM 4.6(51/3): conversion to constrained discriminated subtype
          when 1006 =>
             declare
-               procedure P (X : in R1; Y : out R2) is
+               procedure P (X : in R1; Y : out R2) with Pre => True is
                begin
                   Y := X;  --  BAD
                end;
@@ -423,7 +423,7 @@ procedure Do_Checks is
          --  UNCOMMENT AFTER M923-035 HAS BEEN CORRECTED
          --  when 1008 =>
          --     declare
-         --        procedure P (X : in out R3; Y : out R3) is
+         --        procedure P (X : in out R3; Y : out R3) with Pre => True is
          --        begin
          --           Y := X;
          --        end;
@@ -434,7 +434,7 @@ procedure Do_Checks is
          --     end;
          --  when 1009 =>
          --     declare
-         --        procedure P (X : in out R3; Y : out R3) is
+         --        procedure P (X : in out R3; Y : out R3) with Pre => True is
          --        begin
          --           Y := X;
          --        end;
@@ -447,11 +447,11 @@ procedure Do_Checks is
          --  Ada RM 4.6(52): view conversion to constrained discriminated subtype
          when 1010 =>
             declare
-               procedure P1 (X : in out R2; Y : out R2) is
+               procedure P1 (X : in out R2; Y : out R2) with Pre => True is
                begin
                   Y := X;
                end;
-               procedure P2 (X : in out R1; Y : out R2) is
+               procedure P2 (X : in out R1; Y : out R2) with Pre => True is
                begin
                   P1 (X,Y);  --  BAD
                end;
@@ -463,7 +463,7 @@ procedure Do_Checks is
             end;
          when 1011 =>
             declare
-               procedure P (X : in out R2; Y : out R2) is
+               procedure P (X : in out R2; Y : out R2) with Pre => True is
                begin
                   Y := X;
                end;
@@ -476,7 +476,7 @@ procedure Do_Checks is
          --  Ada RM 4.7(4): qualified expression on discriminated type
          when 1012 =>
             declare
-               procedure P (X : in out R1; Y : in out R2) is
+               procedure P (X : in out R1; Y : in out R2) with Pre => True is
                begin
                   if R2'(X) = Y then  --  BAD
                      null;

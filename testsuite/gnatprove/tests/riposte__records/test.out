@@ -42,6 +42,7 @@ records.adb:409:7: warning: assertion might fail, requires X.The_Pair.A = 0
 records.adb:417:7: warning: assertion might fail, requires X.The_Pair.A = X.The_Pair.B
 records.adb:425:7: warning: assertion might fail, requires X.The_Pair.A /= X.The_Pair.B
 records.adb:435:7: warning: assertion might fail, requires not X.Exists
+records.adb:445:04: warning: analyzing unreferenced function "Apply_Command"
 records.adb:452:24: warning: range check might fail
 records.adb:465:22: info: postcondition proved
 records.adb:473:7: info: assertion proved

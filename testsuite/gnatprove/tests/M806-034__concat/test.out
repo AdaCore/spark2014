@@ -1,11 +1,11 @@
-concat.adb:4:28: info: length check proved
-concat.adb:4:28: info: range check proved
-concat.adb:6:7: info: assertion proved
-concat.adb:7:7: info: assertion proved
-concat.adb:11:29: info: length check proved
-concat.adb:11:29: info: range check proved
-concat.adb:13:7: info: assertion proved
-concat.adb:14:7: info: assertion proved
+concat.adb:4:28: info: length check proved, in call inlined at concat.adb:34
+concat.adb:4:28: info: range check proved, in call inlined at concat.adb:34
+concat.adb:6:7: info: assertion proved, in call inlined at concat.adb:34
+concat.adb:7:7: info: assertion proved, in call inlined at concat.adb:34
+concat.adb:11:29: info: length check proved, in call inlined at concat.adb:35
+concat.adb:11:29: info: range check proved, in call inlined at concat.adb:35
+concat.adb:13:7: info: assertion proved, in call inlined at concat.adb:35
+concat.adb:14:7: info: assertion proved, in call inlined at concat.adb:35
 concat.adb:20:14: warning: overflow check might fail
 concat.adb:20:24: warning: overflow check might fail
 concat.adb:23:19: info: range check proved
@@ -23,14 +23,14 @@ concat_left.adb:11:7: warning: assertion might fail, requires Z'First = Integer'
 concat_left.adb:12:7: info: assertion proved
 concat_left.adb:12:26: info: index check proved
 concat_left.adb:13:7: warning: assertion might fail, requires Z'Length = Y'Length + 1
-concat_left.adb:17:18: info: length check proved
-concat_left.adb:17:18: info: range check proved
-concat_left.adb:19:7: info: assertion proved
-concat_left.adb:20:7: info: assertion proved
-concat_left.adb:24:19: info: length check proved
-concat_left.adb:24:19: info: range check proved
-concat_left.adb:26:7: info: assertion proved
-concat_left.adb:27:7: info: assertion proved
+concat_left.adb:17:18: info: length check proved, in call inlined at concat_left.adb:36
+concat_left.adb:17:18: info: range check proved, in call inlined at concat_left.adb:36
+concat_left.adb:19:7: info: assertion proved, in call inlined at concat_left.adb:36
+concat_left.adb:20:7: info: assertion proved, in call inlined at concat_left.adb:36
+concat_left.adb:24:19: info: length check proved, in call inlined at concat_left.adb:37
+concat_left.adb:24:19: info: range check proved, in call inlined at concat_left.adb:37
+concat_left.adb:26:7: info: assertion proved, in call inlined at concat_left.adb:37
+concat_left.adb:27:7: info: assertion proved, in call inlined at concat_left.adb:37
 concat_left.adb:30:13: info: length check proved
 concat_left.adb:31:14: info: length check proved
 concat_left.adb:35:7: info: precondition proved
@@ -42,14 +42,14 @@ concat_right.adb:11:40: info: index check proved
 concat_right.adb:12:7: warning: assertion might fail, requires Z (Z'Last) = X
 concat_right.adb:12:26: info: index check proved
 concat_right.adb:13:7: info: assertion proved
-concat_right.adb:17:27: info: length check proved
-concat_right.adb:17:27: info: range check proved
-concat_right.adb:19:7: info: assertion proved
-concat_right.adb:20:7: info: assertion proved
-concat_right.adb:24:28: info: length check proved
-concat_right.adb:24:28: info: range check proved
-concat_right.adb:26:7: info: assertion proved
-concat_right.adb:27:7: info: assertion proved
+concat_right.adb:17:27: info: length check proved, in call inlined at concat_right.adb:36
+concat_right.adb:17:27: info: range check proved, in call inlined at concat_right.adb:36
+concat_right.adb:19:7: info: assertion proved, in call inlined at concat_right.adb:36
+concat_right.adb:20:7: info: assertion proved, in call inlined at concat_right.adb:36
+concat_right.adb:24:28: info: length check proved, in call inlined at concat_right.adb:37
+concat_right.adb:24:28: info: range check proved, in call inlined at concat_right.adb:37
+concat_right.adb:26:7: info: assertion proved, in call inlined at concat_right.adb:37
+concat_right.adb:27:7: info: assertion proved, in call inlined at concat_right.adb:37
 concat_right.adb:30:13: info: length check proved
 concat_right.adb:31:14: info: length check proved
 concat_right.adb:35:7: info: precondition proved

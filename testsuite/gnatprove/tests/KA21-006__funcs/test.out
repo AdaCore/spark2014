@@ -1,6 +1,7 @@
 funcs.adb:21:17: warning: unused variable "X"
 funcs.adb:23:17: warning: unused variable "X"
 funcs.adb:53:58: info: postcondition proved
+funcs.adb:61:04: warning: analyzing unreferenced procedure "Test"
 funcs.adb:64:7: info: assertion proved
 funcs.adb:65:09: warning: unused assignment
 funcs.adb:65:20: info: assertion proved

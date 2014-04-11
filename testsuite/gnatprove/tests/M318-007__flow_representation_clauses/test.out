@@ -1,3 +1,4 @@
+test.adb:4:04: warning: analyzing unreferenced procedure "Edit"
 test.adb:9:09: "Temp" is not initialized
    compilation of test.adb failed
 

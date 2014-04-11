@@ -1,3 +1,4 @@
+assume_and_assert_and_cut_illegal.adb:2:04: warning: analyzing unreferenced procedure "Prover_Forgets_After_Assert_And_Cut"
 assume_and_assert_and_cut_illegal.adb:2:14: warning: subprogram "Prover_Forgets_After_Assert_And_Cut" has no effect
 assume_and_assert_and_cut_illegal.adb:13:7: info: assertion proved
 assume_and_assert_and_cut_illegal.adb:14:7: warning: assertion might fail, requires Y = 0

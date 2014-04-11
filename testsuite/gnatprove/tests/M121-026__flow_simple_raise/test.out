@@ -1,3 +1,4 @@
+simple_exceptions.adb:3:04: warning: analyzing unreferenced procedure "In_SPARK"
 simple_exceptions.adb:5:07: warning: statement has no effect
 simple_exceptions.adb:6:10: warning: exception might be raised
 simple_exceptions.adb:9:14: info: overflow check proved

@@ -1,3 +1,4 @@
+foo.adb:4:04: warning: analyzing unreferenced procedure "Floats_And_Double"
 foo.adb:7:7: warning: assertion might fail, requires Float (Y) = X) = (Long_Float (X) = Y
 foo.adb:7:30: warning: range check might fail
 generic_float_tests.adb:22:7: info: assertion proved, in instantiation at foo.ads:14

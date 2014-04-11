@@ -8,9 +8,13 @@ tests.adb:17:7: info: assertion proved
 tests.adb:18:12: warning: range check might fail
 tests.adb:23:7: info: assertion proved
 tests.adb:24:12: warning: range check might fail
+tests.adb:27:04: warning: analyzing unreferenced procedure "Mem_Vowels"
 tests.adb:30:15: info: range check proved
+tests.adb:34:04: warning: analyzing unreferenced procedure "Mem_Positive_But_Not_Ten"
 tests.adb:37:15: info: range check proved
+tests.adb:41:04: warning: analyzing unreferenced procedure "Mem_Positive_With_Hole"
 tests.adb:44:15: info: range check proved
+tests.adb:48:04: warning: analyzing unreferenced procedure "Mem_Positive_Not_One"
 tests.adb:51:15: info: range check proved
 tests.ads:4:20: warning: unused initial value of "V"
 tests.ads:6:27: warning: unused initial value of "V"

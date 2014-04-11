@@ -93,7 +93,7 @@ is
    end Contraposition;
 
    function XOR_Test_A (A, B: Boolean) return Boolean
-     with Post => XOR_Test_A'Result = A xor B  --  @ASSERT:PASS
+     with Post => XOR_Test_A'Result = A xor B  --  @POSTCONDITION:PASS
    is
       R : Boolean;
    begin
