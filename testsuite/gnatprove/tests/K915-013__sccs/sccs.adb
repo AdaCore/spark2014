@@ -5,7 +5,7 @@ procedure Sccs (B : in out Boolean) is
       B := True;
    end Set_True;
 
-   procedure F2;
+   procedure F2 with Inline_Always;
    procedure G2 is begin if B then F2; end if; Set_True; end G2;
    procedure F2 is begin if not B then G2; end if; end F2;
 

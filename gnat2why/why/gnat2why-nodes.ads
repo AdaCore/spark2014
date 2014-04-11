@@ -151,6 +151,8 @@ package Gnat2Why.Nodes is
    --  Same as Body_File_Name but without the suffix.
 
    function Source_Name (E : Entity_Id) return String;
+   --  Returns the name of entity E capitalized as it appears in the source
+   --  code.
 
    function Type_Of_Node (N : Node_Id) return String;
    --  Get the name of the type of an Ada node, as a string

@@ -38,7 +38,7 @@ is
 
    procedure Op_R1 (X : in out Record_A;
                     Y : in out Record_A)
-   is
+   with Global => null is
    begin
       X.A := Y.B;
       Y.B := X.C;
@@ -55,7 +55,7 @@ is
    procedure Op_R1_B (X : Record_A;
                       Y : Record_A;
                       Z : out Record_A)
-   is
+   with Global => null is
    begin
       Z.A := X.A and Y.A;
       Z.B := X.B or Y.B;
@@ -64,14 +64,14 @@ is
 
    procedure Op_R2 (X : in out Record_B;
                     Y : in     Record_B)
-   is
+   with Global => null is
    begin
       X.C := X.B = Y.B;
    end Op_R2;
 
    procedure Op_R3 (X : in out Record_B;
                     Y : in out Record_A)
-   is
+   with Global => null is
    begin
       Y.A := False;
       X.D := Y;
@@ -79,7 +79,7 @@ is
 
    procedure Op_R4 (X : in out Record_A;
                     Y : in out Boolean)
-   is
+   with Global => null is
    begin
       X.A := Y;
       Y := X.B;
@@ -87,21 +87,21 @@ is
 
    procedure Op_R5 (X : in out Record_A;
                     Y : Record_A2)
-   is
+   with Global => null is
    begin
       X.A := Y.Y;
    end Op_R5;
 
    procedure Op_String_IO_I (X : in out String;
                              Y : String)
-   is
+   with Global => null is
    begin
-      X (1) := Y (Y'Last);
+      X (X'First) := Y (Y'Last);
    end Op_String_IO_I;
 
    procedure Op_String_Char (X : in out String;
                              Y : in out Character)
-   is
+   with Global => null is
    begin
       X (X'First) := Y;
    end Op_String_Char;

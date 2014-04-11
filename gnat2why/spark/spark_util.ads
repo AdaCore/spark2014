@@ -396,4 +396,8 @@ package SPARK_Util is
      (Typ : Entity_Id) return Entity_Id;
    --  Returns the element type implied by an Iterable aspect over the type Typ
 
+   function Is_Local_Subprogram_Always_Inlined (E : Entity_Id) return Boolean;
+   --  Returns True if E is a local subprogram that is always inlined by the
+   --  frontend in GNATprove mode.
+
 end SPARK_Util;

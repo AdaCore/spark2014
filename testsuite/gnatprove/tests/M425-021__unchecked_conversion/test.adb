@@ -27,7 +27,7 @@ is
 
    procedure Op_R5 (X : in out Record_A;
                     Y : Record_A2)
-   is
+   with Global => null is
    begin
       X.A := Y.Y;
    end Op_R5;

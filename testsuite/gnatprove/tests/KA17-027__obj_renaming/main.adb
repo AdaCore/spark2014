@@ -1,4 +1,4 @@
-procedure Main is
+procedure Main (Choose : Integer) is
    type Rec is record
       Comp : Natural := 1234;
    end record;
@@ -82,8 +82,14 @@ begin
    --  It should not be possible to prove the assertions below, after the
    --  calls to Set_Obj_?
 
-   pragma Assert (Obj_1.Comp = 9012); -- @ASSERT:FAIL
-   pragma Assert (Obj_2.Comp = 9012); -- @ASSERT:FAIL
-   pragma Assert (Obj_4 = 5678);      -- @ASSERT:FAIL
-
+   case Choose is
+      when 0 =>
+         pragma Assert (Obj_1.Comp = 9012); -- @ASSERT:FAIL
+      when 1 =>
+         pragma Assert (Obj_2.Comp = 9012); -- @ASSERT:FAIL
+      when 2 =>
+         pragma Assert (Obj_4 = 5678);      -- @ASSERT:FAIL
+      when others =>
+         null;
+   end case;
 end Main;
