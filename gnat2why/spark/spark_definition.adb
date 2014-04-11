@@ -3370,13 +3370,9 @@ package body SPARK_Definition is
       elsif Ekind (E) in Generic_Subprogram_Kind then
          return;
 
-      --  Ignore inlined subprograms
+      --  ??? Ignore predicate functions (MC20-028)
 
-      elsif not Acts_As_Spec (N)
-        and then Present (Get_Subprogram_Decl (E))
-        and then Present (Body_To_Inline (Get_Subprogram_Decl (E)))
-        and then Is_Inlined (E)
-      then
+      elsif Is_Predicate_Function (E) then
          return;
 
       else
@@ -3385,6 +3381,21 @@ package body SPARK_Definition is
          --  Only analyze subprogram body declarations in SPARK_Mode => On
 
          if SPARK_Pragma_Is (Opt.On) then
+
+            --  Issue warning on unreferenced local subprograms, which are
+            --  analyzed anyway, unless the subprogram is marked with pragma
+            --  Unreferenced.
+
+            if Is_Local_Subprogram_Always_Inlined (E)
+              and then not Referenced (E)
+              and then not Has_Unreferenced (E)
+            then
+               if Ekind (E) = E_Function then
+                  Error_Msg_NE ("?analyzing unreferenced function &", N, E);
+               else
+                  Error_Msg_NE ("?analyzing unreferenced procedure &", N, E);
+               end if;
+            end if;
 
             --  Always mark the body in SPARK
 
@@ -3433,12 +3444,9 @@ package body SPARK_Definition is
       if Ekind (E) in Generic_Subprogram_Kind then
          return;
 
-      --  Ignore inlined subprograms
+      --  ??? Ignore predicate functions (MC20-028)
 
-      elsif Nkind (N) = N_Subprogram_Declaration
-        and then Present (Body_To_Inline (N))
-        and then Is_Inlined (E)
-      then
+      elsif Is_Predicate_Function (E) then
          return;
 
       --  Mark entity

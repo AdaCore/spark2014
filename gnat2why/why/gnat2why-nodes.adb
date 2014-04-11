@@ -23,8 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-
 with String_Utils;          use String_Utils;
 
 with AA_Util;               use AA_Util;
@@ -569,7 +567,9 @@ package body Gnat2Why.Nodes is
    -----------------
 
    function Source_Name (E : Entity_Id) return String is
+
       function Short_Name (E : Entity_Id) return String;
+      --  Returns the uncapitalized unqualified name for entity E
 
       ----------------
       -- Short_Name --
@@ -581,26 +581,28 @@ package body Gnat2Why.Nodes is
          return Name_Buffer (1 .. Name_Len);
       end Short_Name;
 
+      Name : String := Short_Name (E);
+      Loc  : Source_Ptr := Sloc (E);
+      Buf  : Source_Buffer_Ptr;
+
+   --  Start of Source_Name
+
    begin
-      if not (Comes_From_Source (E)) then
-         return Short_Name (E);
-      else
-         declare
-            Sl   : Source_Ptr := Sloc (E);
-            TBuf : constant Source_Buffer_Ptr :=
-              Source_Text (Get_Source_File_Index (Sl));
-            Buf  : Unbounded_String := Null_Unbounded_String;
-         begin
-            if TBuf (Sl) = '"' then
-               return Short_Name (E);
-            end if;
-            while Identifier_Char (TBuf (Sl)) loop
-               Append (Buf, TBuf (Sl));
-               Sl := Sl + 1;
-            end loop;
-            return To_String (Buf);
-         end;
+      if Name /= "" and then Loc >= First_Source_Ptr then
+         Buf := Source_Text (Get_Source_File_Index (Loc));
+
+         --  Copy characters from source while they match (modulo
+         --  capitalization) the name of the entity.
+
+         for Idx in Name'Range loop
+            exit when not Identifier_Char (Buf (Loc))
+              or else Fold_Lower (Buf (Loc)) /= Name (Idx);
+            Name (Idx) := Buf (Loc);
+            Loc := Loc + 1;
+         end loop;
       end if;
+
+      return Name;
    end Source_Name;
 
    ----------------

@@ -182,8 +182,21 @@ package body Gnat2Why.Driver is
 
    procedure Do_Generate_VCs (E : Entity_Id) is
    begin
-      if Ekind (E) in Subprogram_Kind and Entity_Spec_In_SPARK (E) then
+      if Ekind (E) in Subprogram_Kind
+        and then Entity_Spec_In_SPARK (E)
 
+        --  Ignore inlined subprograms that are referenced. Unreferenced
+        --  subprograms are analyzed anyway, as they are likely to
+        --  correspond to an intermediate stage of development.
+
+        and then (not Is_Local_Subprogram_Always_Inlined (E)
+                    or else
+                  not Referenced (E))
+
+        --  ??? Ignore predicate functions (MC20-028)
+
+        and then not Is_Predicate_Function (E)
+      then
          --  Generate Why3 code to check absence of run-time errors in
          --  contracts and body.
 
@@ -230,7 +243,7 @@ package body Gnat2Why.Driver is
       --  user has specifically requested analysis of this file.
 
       if Is_Generic_Unit (Unique_Defining_Entity (N))
-        and then Analysis_Requested (N)
+        and then Analysis_Requested (Unique_Defining_Entity (N))
       then
          Touch_Main_File (Base_Name);
          if Gnat2Why_Args.Single_File then
@@ -502,7 +515,20 @@ package body Gnat2Why.Driver is
             Generate_Empty_Axiom_Theory (File, E);
 
          when Subprogram_Kind =>
-            if Entity_In_SPARK (E) then
+            if Entity_In_SPARK (E)
+
+              --  Ignore inlined subprograms that are referenced. Unreferenced
+              --  subprograms are analyzed anyway, as they are likely to
+              --  correspond to an intermediate stage of development.
+
+              and then (not Is_Local_Subprogram_Always_Inlined (E)
+                          or else
+                        not Referenced (E))
+
+              --  ??? Ignore predicate functions (MC20-028)
+
+              and then not Is_Predicate_Function (E)
+            then
                Translate_Subprogram_Spec (File, E);
 
                if not (Present (Get_Expression_Function (E)))

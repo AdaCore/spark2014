@@ -11,6 +11,6 @@ main.adb:73:4: info: assertion proved
 main.adb:74:4: info: assertion proved
 main.adb:75:4: info: assertion proved
 main.adb:76:4: info: assertion proved
-main.adb:85:4: warning: assertion might fail, requires Obj_1.Comp = 9012
-main.adb:86:4: warning: assertion might fail, requires Obj_2.Comp = 9012
-main.adb:87:4: warning: assertion might fail, requires Obj_4 = 5678
+main.adb:87:10: warning: assertion might fail, requires Obj_1.Comp = 9012
+main.adb:89:10: warning: assertion might fail, requires Obj_2.Comp = 9012
+main.adb:91:10: warning: assertion might fail, requires Obj_4 = 5678

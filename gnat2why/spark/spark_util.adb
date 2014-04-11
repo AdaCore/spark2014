@@ -178,6 +178,99 @@ package body SPARK_Util is
       return not Aggregate_Not_Fully_Initialized;
    end All_Aggregates_Are_Fully_Initialized;
 
+   ------------------------
+   -- Analysis_Requested --
+   ------------------------
+
+   function Analysis_Requested (E : Entity_Id) return Boolean is
+
+      function Is_In_Analyzed_Files (E : Entity_Id) return Boolean;
+      --  Returns true if E belongs to one of the entities that correspond
+      --  to the files that are to be analyzed.
+
+      function Is_Requested_Subprogram (E : Entity_Id) return Boolean;
+      --  Returns true if E is the entity corresponding to the single
+      --  subprogram that needs to be analyzed, or if Gnat2Why_Args.Limit_Subp
+      --  is the Null_Unbounded_String.
+
+      --------------------------
+      -- Is_In_Analyzed_Files --
+      --------------------------
+
+      function Is_In_Analyzed_Files (E : Entity_Id) return Boolean is
+      begin
+         --  If the entity is not in the compilation unit that is
+         --  currently being analyzed then return false.
+
+         if Cunit (Main_Unit) /= Enclosing_Comp_Unit_Node (E)
+           and then Library_Unit (Cunit (Main_Unit)) /=
+             Enclosing_Comp_Unit_Node (E)
+         then
+            return False;
+         end if;
+
+         --  If an empty files list has been provided then all entities that
+         --  are in the compilation unit that is currently being analyzed must
+         --  be analyzed.
+
+         if Gnat2Why_Args.Analyze_File.Is_Empty then
+            return True;
+         end if;
+
+         declare
+            Spec_Prefix : constant String := Spec_File_Name (E);
+            Body_Prefix : constant String := Body_File_Name (E);
+         begin
+            for A_File of Gnat2Why_Args.Analyze_File loop
+               declare
+                  Filename : constant String := File_Name (A_File);
+               begin
+                  if Equal_Case_Insensitive (Filename, Body_Prefix)
+                    or else Equal_Case_Insensitive (Filename, Spec_Prefix)
+                  then
+                     return True;
+                  end if;
+               end;
+            end loop;
+            return False;
+         end;
+      end Is_In_Analyzed_Files;
+
+      -----------------------------
+      -- Is_Requested_Subprogram --
+      -----------------------------
+
+      function Is_Requested_Subprogram (E : Entity_Id) return Boolean is
+      begin
+         if Gnat2Why_Args.Limit_Subp = Null_Unbounded_String then
+            return True;
+         end if;
+
+         if Ekind (E) in Subprogram_Kind
+           and then "GP_Subp:" & To_String (Gnat2Why_Args.Limit_Subp) =
+           Gnat2Why.Nodes.Subp_Location (E)
+         then
+            return True;
+         else
+            return False;
+         end if;
+      end Is_Requested_Subprogram;
+
+   --  Start of Analysis_Requested
+
+   begin
+      return Is_In_Analyzed_Files (E)
+        and then Is_Requested_Subprogram (E)
+
+        --  Ignore inlined subprograms that are referenced. Unreferenced
+        --  subprograms are analyzed anyway, as they are likely to
+        --  correspond to an intermediate stage of development.
+
+        and then (not Is_Local_Subprogram_Always_Inlined (E)
+                    or else
+                  not Referenced (E));
+   end Analysis_Requested;
+
    ------------
    -- Append --
    ------------
@@ -1163,93 +1256,21 @@ package body SPARK_Util is
    function Is_Full_View (E : Entity_Id) return Boolean is
       (Full_To_Partial_Entities.Contains (E));
 
-   ------------------------
-   -- Analysis_Requested --
-   ------------------------
+   ----------------------------------------
+   -- Is_Local_Subprogram_Always_Inlined --
+   ----------------------------------------
 
-   function Analysis_Requested (E : Entity_Id) return Boolean is
-
-      -----------------------
-      -- Local Subprograms --
-      -----------------------
-
-      function Is_In_Analyzed_Files (E : Entity_Id) return Boolean;
-      --  Returns true if E belongs to one of the entities that correspond
-      --  to the files that are to be analyzed.
-
-      function Is_Requested_Subprogram (E : Entity_Id) return Boolean;
-      --  Returns true if E is the entity corresponding to the single
-      --  subprogram that needs to be analyzed, or if Gnat2Why_Args.Limit_Subp
-      --  is the Null_Unbounded_String.
-
-      --------------------------
-      -- Is_In_Analyzed_Files --
-      --------------------------
-
-      function Is_In_Analyzed_Files (E : Entity_Id) return Boolean is
-      begin
-         --  If the entity is not in the compilation unit that is
-         --  currently being analyzed then return false.
-
-         if Cunit (Main_Unit) /= Enclosing_Comp_Unit_Node (E)
-           and then Library_Unit (Cunit (Main_Unit)) /=
-             Enclosing_Comp_Unit_Node (E)
-         then
-            return False;
-         end if;
-
-         --  If an empty files list has been provided then all entities that
-         --  are in the compilation unit that is currently being analyzed must
-         --  be analyzed.
-         if Gnat2Why_Args.Analyze_File.Is_Empty then
-            return True;
-         end if;
-
-         declare
-            Spec_Prefix : constant String := Spec_File_Name (E);
-            Body_Prefix : constant String := Body_File_Name (E);
-         begin
-            for A_File of Gnat2Why_Args.Analyze_File loop
-               declare
-                  Filename : constant String := File_Name (A_File);
-               begin
-                  if Equal_Case_Insensitive (Filename, Body_Prefix)
-                    or else Equal_Case_Insensitive (Filename, Spec_Prefix)
-                  then
-                     return True;
-                  end if;
-               end;
-            end loop;
-            return False;
-         end;
-      end Is_In_Analyzed_Files;
-
-      -----------------------------
-      -- Is_Requested_Subprogram --
-      -----------------------------
-
-      function Is_Requested_Subprogram (E : Entity_Id) return Boolean is
-      begin
-         if Gnat2Why_Args.Limit_Subp = Null_Unbounded_String then
-            return True;
-         end if;
-
-         if Ekind (E) in Subprogram_Kind
-           and then "GP_Subp:" & To_String (Gnat2Why_Args.Limit_Subp) =
-           Gnat2Why.Nodes.Subp_Location (E)
-         then
-            return True;
-         else
-            return False;
-         end if;
-      end Is_Requested_Subprogram;
-
-   --  Start of Analysis_Requested
-
+   function Is_Local_Subprogram_Always_Inlined
+     (E : Entity_Id) return Boolean is
    begin
-      return Is_In_Analyzed_Files (E)
-        and then Is_Requested_Subprogram (E);
-   end Analysis_Requested;
+      --  A subprogram always inlined should have Body_To_Inline set and flag
+      --  Is_Inlined_Always set to True.
+
+      return Ekind_In (E, E_Function, E_Procedure)
+        and then Present (Get_Subprogram_Decl (E))
+        and then Present (Body_To_Inline (Get_Subprogram_Decl (E)))
+        and then Is_Inlined_Always (E);
+   end Is_Local_Subprogram_Always_Inlined;
 
    ---------------------------------------------
    -- Is_Single_Precision_Floating_Point_Type --

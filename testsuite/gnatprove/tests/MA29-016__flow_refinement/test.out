@@ -3,3 +3,4 @@ fruit-pub_child.ads:13:13: warning: unused global "Apples"
 fruit-pub_child.ads:13:13: warning: unused global "Oranges"
 levels.ads:14:14: warning: subprogram "Post_Test_01" has no effect
 levels.ads:18:14: warning: subprogram "Post_Test_02" has no effect
+par.adb:16:04: warning: analyzing unreferenced function "Wibble"
