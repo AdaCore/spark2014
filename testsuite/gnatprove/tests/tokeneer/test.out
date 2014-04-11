@@ -47,13 +47,18 @@ auditlog.adb:166:28: info: length check proved
 auditlog.adb:167:28: info: length check proved
 auditlog.adb:168:28: info: length check proved
 auditlog.adb:169:28: info: length check proved
-auditlog.adb:194:26: info: range check proved
-auditlog.adb:244:43: warning: length check might fail
-auditlog.adb:244:46: warning: range check might fail
-auditlog.adb:246:23: info: length check proved
-auditlog.adb:499:22: info: precondition proved
-auditlog.adb:600:12: warning: length check might fail
-auditlog.adb:600:34: warning: range check might fail
+auditlog.adb:194:26: warning: range check might fail, in call inlined at auditlog.adb:1007
+auditlog.adb:194:26: warning: range check might fail, in call inlined at auditlog.adb:1733
+auditlog.adb:194:26: warning: range check might fail, in call inlined at auditlog.adb:1859
+auditlog.adb:194:26: warning: range check might fail, in call inlined at auditlog.adb:900
+auditlog.adb:244:43: warning: length check might fail, in call inlined at auditlog.adb:1570
+auditlog.adb:244:43: warning: length check might fail, in call inlined at auditlog.adb:1660
+auditlog.adb:246:23: info: length check proved, in call inlined at auditlog.adb:1570
+auditlog.adb:246:23: info: length check proved, in call inlined at auditlog.adb:1660
+auditlog.adb:499:22: info: precondition proved, in call inlined at auditlog.adb:1920
+auditlog.adb:499:22: warning: precondition might fail, in call inlined at auditlog.adb:1895
+auditlog.adb:600:12: warning: length check might fail, in call inlined at auditlog.adb:652
+auditlog.adb:600:34: warning: range check might fail, in call inlined at auditlog.adb:652
 auditlog.adb:753:47: warning: range check might fail
 auditlog.adb:753:50: info: overflow check proved
 auditlog.adb:753:69: info: overflow check proved
@@ -63,16 +68,16 @@ auditlog.adb:758:50: warning: overflow check might fail
 auditlog.adb:758:69: warning: overflow check might fail
 auditlog.adb:808:13: info: postcondition proved
 auditlog.adb:821:75: info: range check proved
-auditlog.adb:868:13: info: postcondition proved
-auditlog.adb:881:16: info: assertion proved
+auditlog.adb:868:13: warning: postcondition might fail
+auditlog.adb:881:16: info: assertion proved, in call inlined at auditlog.adb:894
 auditlog.adb:899:53: info: range check proved
 auditlog.adb:924:10: info: precondition proved
 auditlog.adb:933:10: info: assertion proved
 auditlog.adb:935:10: info: precondition proved
 auditlog.adb:942:44: info: range check proved
 auditlog.adb:984:47: info: overflow check proved
-auditlog.adb:986:10: info: postcondition proved
-auditlog.adb:988:47: info: overflow check proved
+auditlog.adb:986:10: warning: postcondition might fail
+auditlog.adb:988:47: warning: overflow check might fail
 auditlog.adb:1008:50: info: range check proved
 auditlog.adb:1010:44: info: range check proved
 auditlog.adb:1074:47: warning: range check might fail
@@ -102,8 +107,10 @@ auditlog.adb:1127:50: warning: overflow check might fail
 auditlog.adb:1127:69: warning: overflow check might fail
 auditlog.adb:1132:7: warning: precondition might fail
 auditlog.adb:1566:7: warning: precondition might fail
+auditlog.adb:1570:26: warning: range check might fail
 auditlog.adb:1576:10: info: precondition proved
 auditlog.adb:1658:22: info: precondition proved
+auditlog.adb:1660:22: warning: range check might fail
 auditlog.adb:1697:13: warning: assertion might fail
 auditlog.adb:1702:53: warning: range check might fail
 auditlog.adb:1702:56: warning: overflow check might fail
@@ -121,8 +128,8 @@ auditlog.adb:1847:10: info: assertion proved
 auditlog.adb:1852:50: info: range check proved
 auditlog.adb:1852:53: info: overflow check proved
 auditlog.adb:1852:72: info: overflow check proved
-auditlog.adb:1858:53: info: range check proved
-auditlog.adb:1861:47: info: range check proved
+auditlog.adb:1858:53: warning: range check might fail
+auditlog.adb:1861:47: warning: range check might fail
 auditlog.adb:1868:7: warning: assertion might fail, requires NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile)
 auditlog.adb:1870:47: warning: range check might fail
 auditlog.adb:1870:50: warning: overflow check might fail
@@ -130,13 +137,12 @@ auditlog.adb:1870:69: warning: overflow check might fail
 auditlog.adb:1914:10: info: assertion proved
 audittypes.ads:94:58: info: length check proved
 audittypes.ads:107:6: info: length check proved
-bio.adb:126:10: warning: assertion might fail, requires Result = InternalError
 certificatestore.adb:37:42: info: length check proved
-certificatestore.adb:223:31: warning: range check might fail
-certificatestore.adb:224:26: warning: length check might fail
-certificatestore.adb:224:29: warning: range check might fail
-certificatestore.adb:225:42: warning: length check might fail
-certificatestore.adb:225:45: warning: range check might fail
+certificatestore.adb:223:31: warning: range check might fail, in call inlined at certificatestore.adb:239
+certificatestore.adb:224:26: warning: length check might fail, in call inlined at certificatestore.adb:239
+certificatestore.adb:224:29: warning: range check might fail, in call inlined at certificatestore.adb:239
+certificatestore.adb:225:42: warning: length check might fail, in call inlined at certificatestore.adb:239
+certificatestore.adb:225:45: warning: range check might fail, in call inlined at certificatestore.adb:239
 certificatestore.adb:353:47: info: range check proved
 certtypes.ads:39:22: info: length check proved
 clock.adb:74:11: info: range check proved
@@ -208,33 +214,76 @@ configdata.adb:132:47: info: length check proved
 configdata.adb:145:6: info: length check proved
 configdata.adb:145:38: info: length check proved
 configdata.adb:146:38: info: length check proved
-configdata.adb:237:44: info: overflow check proved
-configdata.adb:237:44: info: range check proved
-configdata.adb:276:51: info: overflow check proved
-configdata.adb:276:51: info: range check proved
-configdata.adb:323:20: warning: range check might fail
-configdata.adb:331:48: info: index check proved
-configdata.adb:331:63: info: index check proved
-configdata.adb:379:35: info: overflow check proved
-configdata.adb:379:35: info: range check proved
-configdata.adb:380:35: info: range check proved
-configdata.adb:380:45: info: overflow check proved
-configdata.adb:380:50: info: overflow check proved
-configdata.adb:380:68: info: range check proved
-configdata.adb:416:38: info: range check proved
-configdata.adb:723:23: warning: range check might fail
-configdata.adb:729:53: warning: array index check might fail
-configdata.adb:729:75: warning: array index check might fail
-configdata.adb:1057:34: info: length check proved
-configdata.adb:1062:30: info: division check proved
-configdata.adb:1064:59: warning: range check might fail
-configdata.adb:1064:72: info: division check proved
-configdata.adb:1065:72: info: division check proved
-configdata.adb:1068:31: info: division check proved
-configdata.adb:1068:42: info: division check proved
-configdata.adb:1069:59: warning: range check might fail
-configdata.adb:1069:72: info: division check proved
-configdata.adb:1070:72: info: division check proved
+configdata.adb:237:44: info: overflow check proved, in call inlined at configdata.adb:455, in call inlined at configdata.adb:889
+configdata.adb:237:44: info: range check proved, in call inlined at configdata.adb:455, in call inlined at configdata.adb:889
+configdata.adb:237:44: warning: overflow check might fail, in call inlined at configdata.adb:487, in call inlined at configdata.adb:897
+configdata.adb:237:44: warning: overflow check might fail, in call inlined at configdata.adb:519, in call inlined at configdata.adb:913
+configdata.adb:237:44: warning: overflow check might fail, in call inlined at configdata.adb:551, in call inlined at configdata.adb:905
+configdata.adb:237:44: warning: range check might fail, in call inlined at configdata.adb:487, in call inlined at configdata.adb:897
+configdata.adb:237:44: warning: range check might fail, in call inlined at configdata.adb:519, in call inlined at configdata.adb:913
+configdata.adb:237:44: warning: range check might fail, in call inlined at configdata.adb:551, in call inlined at configdata.adb:905
+configdata.adb:276:51: warning: overflow check might fail, in call inlined at configdata.adb:806, in call inlined at configdata.adb:967
+configdata.adb:276:51: warning: overflow check might fail, in call inlined at configdata.adb:838, in call inlined at configdata.adb:975
+configdata.adb:276:51: warning: range check might fail, in call inlined at configdata.adb:806, in call inlined at configdata.adb:967
+configdata.adb:276:51: warning: range check might fail, in call inlined at configdata.adb:838, in call inlined at configdata.adb:975
+configdata.adb:323:20: warning: range check might fail, in call inlined at configdata.adb:583, in call inlined at configdata.adb:919
+configdata.adb:323:20: warning: range check might fail, in call inlined at configdata.adb:774, in call inlined at configdata.adb:959
+configdata.adb:331:48: warning: array index check might fail, in call inlined at configdata.adb:583, in call inlined at configdata.adb:919
+configdata.adb:331:48: warning: array index check might fail, in call inlined at configdata.adb:774, in call inlined at configdata.adb:959
+configdata.adb:331:63: warning: array index check might fail, in call inlined at configdata.adb:583, in call inlined at configdata.adb:919
+configdata.adb:331:63: warning: array index check might fail, in call inlined at configdata.adb:774, in call inlined at configdata.adb:959
+configdata.adb:379:35: info: overflow check proved, in call inlined at configdata.adb:615, in call inlined at configdata.adb:927
+configdata.adb:379:35: info: overflow check proved, in call inlined at configdata.adb:647, in call inlined at configdata.adb:935
+configdata.adb:379:35: info: overflow check proved, in call inlined at configdata.adb:679, in call inlined at configdata.adb:943
+configdata.adb:379:35: info: range check proved, in call inlined at configdata.adb:615, in call inlined at configdata.adb:927
+configdata.adb:379:35: info: range check proved, in call inlined at configdata.adb:647, in call inlined at configdata.adb:935
+configdata.adb:379:35: info: range check proved, in call inlined at configdata.adb:679, in call inlined at configdata.adb:943
+configdata.adb:380:35: info: range check proved, in call inlined at configdata.adb:615, in call inlined at configdata.adb:927
+configdata.adb:380:35: info: range check proved, in call inlined at configdata.adb:647, in call inlined at configdata.adb:935
+configdata.adb:380:35: info: range check proved, in call inlined at configdata.adb:679, in call inlined at configdata.adb:943
+configdata.adb:380:45: info: overflow check proved, in call inlined at configdata.adb:615, in call inlined at configdata.adb:927
+configdata.adb:380:45: info: overflow check proved, in call inlined at configdata.adb:647, in call inlined at configdata.adb:935
+configdata.adb:380:45: info: overflow check proved, in call inlined at configdata.adb:679, in call inlined at configdata.adb:943
+configdata.adb:380:50: info: overflow check proved, in call inlined at configdata.adb:615, in call inlined at configdata.adb:927
+configdata.adb:380:50: info: overflow check proved, in call inlined at configdata.adb:647, in call inlined at configdata.adb:935
+configdata.adb:380:50: info: overflow check proved, in call inlined at configdata.adb:679, in call inlined at configdata.adb:943
+configdata.adb:380:68: info: range check proved, in call inlined at configdata.adb:615, in call inlined at configdata.adb:927
+configdata.adb:380:68: info: range check proved, in call inlined at configdata.adb:647, in call inlined at configdata.adb:935
+configdata.adb:380:68: info: range check proved, in call inlined at configdata.adb:679, in call inlined at configdata.adb:943
+configdata.adb:416:38: warning: range check might fail, in call inlined at configdata.adb:871, in call inlined at configdata.adb:983
+configdata.adb:723:23: warning: range check might fail, in call inlined at configdata.adb:951
+configdata.adb:729:53: warning: array index check might fail, in call inlined at configdata.adb:951
+configdata.adb:729:75: warning: array index check might fail, in call inlined at configdata.adb:951
+configdata.adb:1057:34: info: length check proved, in call inlined at configdata.adb:1144
+configdata.adb:1057:34: info: length check proved, in call inlined at configdata.adb:1154
+configdata.adb:1057:34: info: length check proved, in call inlined at configdata.adb:1164
+configdata.adb:1062:30: info: division check proved, in call inlined at configdata.adb:1144
+configdata.adb:1062:30: info: division check proved, in call inlined at configdata.adb:1154
+configdata.adb:1062:30: info: division check proved, in call inlined at configdata.adb:1164
+configdata.adb:1064:59: warning: range check might fail, in call inlined at configdata.adb:1144
+configdata.adb:1064:59: warning: range check might fail, in call inlined at configdata.adb:1154
+configdata.adb:1064:59: warning: range check might fail, in call inlined at configdata.adb:1164
+configdata.adb:1064:72: info: division check proved, in call inlined at configdata.adb:1144
+configdata.adb:1064:72: info: division check proved, in call inlined at configdata.adb:1154
+configdata.adb:1064:72: info: division check proved, in call inlined at configdata.adb:1164
+configdata.adb:1065:72: info: division check proved, in call inlined at configdata.adb:1144
+configdata.adb:1065:72: info: division check proved, in call inlined at configdata.adb:1154
+configdata.adb:1065:72: info: division check proved, in call inlined at configdata.adb:1164
+configdata.adb:1068:31: info: division check proved, in call inlined at configdata.adb:1144
+configdata.adb:1068:31: info: division check proved, in call inlined at configdata.adb:1154
+configdata.adb:1068:31: info: division check proved, in call inlined at configdata.adb:1164
+configdata.adb:1068:42: info: division check proved, in call inlined at configdata.adb:1144
+configdata.adb:1068:42: info: division check proved, in call inlined at configdata.adb:1154
+configdata.adb:1068:42: info: division check proved, in call inlined at configdata.adb:1164
+configdata.adb:1069:59: warning: range check might fail, in call inlined at configdata.adb:1144
+configdata.adb:1069:59: warning: range check might fail, in call inlined at configdata.adb:1154
+configdata.adb:1069:59: warning: range check might fail, in call inlined at configdata.adb:1164
+configdata.adb:1069:72: info: division check proved, in call inlined at configdata.adb:1144
+configdata.adb:1069:72: info: division check proved, in call inlined at configdata.adb:1154
+configdata.adb:1069:72: info: division check proved, in call inlined at configdata.adb:1164
+configdata.adb:1070:72: info: division check proved, in call inlined at configdata.adb:1144
+configdata.adb:1070:72: info: division check proved, in call inlined at configdata.adb:1154
+configdata.adb:1070:72: info: division check proved, in call inlined at configdata.adb:1164
 configdata.adb:1094:69: info: division check proved
 configdata.adb:1104:69: info: division check proved
 configdata.adb:1114:70: info: division check proved
@@ -257,22 +306,33 @@ display.adb:76:43: info: length check proved
 display.adb:79:43: info: length check proved
 display.adb:84:43: info: length check proved
 display.adb:89:43: info: length check proved
-display.adb:123:51: info: length check proved
-display.adb:128:11: info: range check proved
-display.adb:137:30: info: index check proved
-display.adb:138:30: info: index check proved
-display.adb:139:30: info: index check proved
-display.adb:140:32: warning: range check might fail
-display.adb:143:11: info: range check proved
-display.adb:148:33: warning: array index check might fail
-display.adb:148:33: warning: overflow check might fail
-display.adb:150:32: warning: range check might fail
+display.adb:123:51: info: length check proved, in call inlined at display.adb:189
+display.adb:123:51: info: length check proved, in call inlined at display.adb:289
+display.adb:128:11: info: range check proved, in call inlined at display.adb:189
+display.adb:128:11: warning: range check might fail, in call inlined at display.adb:289
+display.adb:137:30: info: index check proved, in call inlined at display.adb:189
+display.adb:137:30: warning: array index check might fail, in call inlined at display.adb:289
+display.adb:138:30: warning: array index check might fail, in call inlined at display.adb:189
+display.adb:138:30: warning: array index check might fail, in call inlined at display.adb:289
+display.adb:139:30: warning: array index check might fail, in call inlined at display.adb:189
+display.adb:139:30: warning: array index check might fail, in call inlined at display.adb:289
+display.adb:140:32: warning: range check might fail, in call inlined at display.adb:189
+display.adb:140:32: warning: range check might fail, in call inlined at display.adb:289
+display.adb:143:11: warning: range check might fail, in call inlined at display.adb:189
+display.adb:143:11: warning: range check might fail, in call inlined at display.adb:289
+display.adb:148:33: warning: array index check might fail, in call inlined at display.adb:189
+display.adb:148:33: warning: array index check might fail, in call inlined at display.adb:289
+display.adb:148:33: warning: overflow check might fail, in call inlined at display.adb:189
+display.adb:148:33: warning: overflow check might fail, in call inlined at display.adb:289
+display.adb:150:32: warning: range check might fail, in call inlined at display.adb:189
+display.adb:150:32: warning: range check might fail, in call inlined at display.adb:289
 display.ads:66:48: info: length check proved
 door.adb:99:10: warning: postcondition might fail, requires CurrentDoor = Open and then Latch.IsLocked and then Clock.GreaterThanOrEqual(Clock.TheCurrentTime, AlarmTimeout) ) = (DoorAlarm = AlarmTypes.alarming
 door.ads:148:8: warning: postcondition might fail
 door.ads:215:8: warning: postcondition might fail
 door.ads:270:8: warning: postcondition might fail
-enclave.adb:109:18: info: precondition proved
+enclave.adb:109:18: info: precondition proved, in call inlined at enclave.adb:1961
+enclave.adb:109:18: info: precondition proved, in call inlined at enclave.adb:2150
 enclave.adb:207:29: info: postcondition proved
 enclave.adb:276:10: warning: postcondition might fail, requires Status = EnclaveQuiescent and then KeyStore.PrivateKeyPresent) or else (Status = WaitingEndEnrol and then not KeyStore(KeyStore.privatekeypresent)
 enclave.adb:288:16: info: precondition proved
@@ -370,7 +430,10 @@ keystore.adb:223:52: info: division check proved
 keystore.adb:226:14: warning: range check might fail
 keystore.adb:242:22: warning: precondition might fail
 keystore.adb:253:36: warning: range check might fail
-keystore.adb:337:40: info: length check proved
+keystore.adb:337:40: info: length check proved, in call inlined at keystore.adb:431, in call inlined at keystore.adb:612
+keystore.adb:337:40: info: length check proved, in call inlined at keystore.adb:431, in call inlined at keystore.adb:715
+keystore.adb:337:40: info: length check proved, in call inlined at keystore.adb:496, in call inlined at keystore.adb:565
+keystore.adb:337:40: info: length check proved, in call inlined at keystore.adb:496, in call inlined at keystore.adb:786
 keystore.adb:810:77: info: length check proved
 keystore.ads:255:7: warning: postcondition might fail
 keystore.ads:275:26: warning: postcondition might fail, requires not (PrivateKeyPresent)
@@ -394,9 +457,18 @@ screen.adb:133:7: info: length check proved
 screen.adb:134:7: info: length check proved
 screen.adb:135:7: info: length check proved
 screen.adb:136:7: info: length check proved
-screen.adb:816:40: info: length check proved
-screen.adb:818:37: warning: length check might fail
-screen.adb:818:40: warning: range check might fail
+screen.adb:816:40: info: length check proved, in call inlined at screen.adb:841
+screen.adb:816:40: info: length check proved, in call inlined at screen.adb:847
+screen.adb:816:40: info: length check proved, in call inlined at screen.adb:853
+screen.adb:816:40: info: length check proved, in call inlined at screen.adb:859
+screen.adb:818:37: warning: length check might fail, in call inlined at screen.adb:841
+screen.adb:818:37: warning: length check might fail, in call inlined at screen.adb:847
+screen.adb:818:37: warning: length check might fail, in call inlined at screen.adb:853
+screen.adb:818:37: warning: length check might fail, in call inlined at screen.adb:859
+screen.adb:818:40: warning: range check might fail, in call inlined at screen.adb:841
+screen.adb:818:40: warning: range check might fail, in call inlined at screen.adb:847
+screen.adb:818:40: warning: range check might fail, in call inlined at screen.adb:853
+screen.adb:818:40: warning: range check might fail, in call inlined at screen.adb:859
 stats.adb:53:57: info: overflow check proved
 stats.adb:70:51: info: overflow check proved
 stats.adb:87:53: info: overflow check proved
@@ -406,11 +478,10 @@ tokenreader.adb:63:26: info: length check proved
 tokenreader.adb:68:26: info: length check proved
 tokenreader.adb:68:36: info: length check proved
 tokenreader.adb:69:36: info: length check proved
-tokenreader.adb:101:47: info: range check proved
-tokenreader.adb:127:46: info: range check proved
-tokenreader.adb:153:44: info: range check proved
 tokenreader.adb:314:17: info: range check proved
 tokenreader.adb:315:48: info: range check proved
+tokenreader.adb:675:26: info: range check proved
+tokenreader.adb:752:22: info: range check proved
 tokenreader.adb:755:43: info: range check proved
 updates.ads:96:12: warning: postcondition might fail
 updates.ads:188:11: warning: postcondition might fail

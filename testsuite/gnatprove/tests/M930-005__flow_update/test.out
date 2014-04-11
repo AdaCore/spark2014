@@ -7,6 +7,7 @@ update_uninitialized.adb:15:11: warning: "Element" might not be initialized
 update_uninitialized.adb:30:11: warning: "Element" might not be initialized
 update_uninitialized_2.adb:16:32: warning: "Z" might not be initialized
 update_uninitialized_2.adb:19:07: "Z" is not initialized
+update_uninitialized_2.adb:28:04: warning: analyzing unreferenced procedure "P2"
    compilation of update_uninitialized_2.adb failed
 
 

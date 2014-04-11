@@ -1,3 +1,6 @@
+test.adb:2:04: warning: analyzing unreferenced procedure "Compare_And_Swap"
+test.adb:14:04: warning: analyzing unreferenced procedure "Parallel_Block_Statements"
+test.adb:49:04: warning: analyzing unreferenced procedure "Nested_Block_Statements"
 // package_body_test_cfg
 digraph G {
    graph [splines=True];

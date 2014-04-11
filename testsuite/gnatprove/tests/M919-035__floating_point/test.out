@@ -4,13 +4,7 @@ dynamic_float.adb:7:19: warning: range check might fail
 dynamic_float.adb:9:10: warning: assertion might fail, requires Integer (S'Last) = I
 dynamic_float.adb:10:10: warning: assertion might fail, requires S'First /= S'last
 zero_and_min.adb:5:11: warning: subprogram "Zero_And_Min" has no effect
-zero_and_min.adb:7:14: warning: subprogram "Crash" has no effect
-zero_and_min.adb:7:21: warning: unused initial value of "A"
-zero_and_min.adb:7:24: warning: unused initial value of "B"
-zero_and_min.adb:14:10: info: assertion proved
+zero_and_min.adb:14:10: info: assertion proved, in call inlined at zero_and_min.adb:26
 zero_and_unchecked.adb:5:11: warning: subprogram "Zero_And_Unchecked" has no effect
-zero_and_unchecked.adb:7:14: warning: subprogram "Crash" has no effect
-zero_and_unchecked.adb:7:21: warning: unused initial value of "A"
-zero_and_unchecked.adb:7:24: warning: unused initial value of "B"
-zero_and_unchecked.adb:14:22: info: division check proved
-zero_and_unchecked.adb:14:22: warning: overflow check might fail
+zero_and_unchecked.adb:14:22: info: division check proved, in call inlined at zero_and_unchecked.adb:27
+zero_and_unchecked.adb:14:22: warning: overflow check might fail, in call inlined at zero_and_unchecked.adb:27

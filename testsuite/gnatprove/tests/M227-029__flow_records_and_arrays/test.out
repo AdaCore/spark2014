@@ -1,11 +1,26 @@
+message_tests.adb:14:04: warning: analyzing unreferenced procedure "Not_All_Used_In_1"
+message_tests.adb:23:04: warning: analyzing unreferenced procedure "Not_All_Used_In_2"
+message_tests.adb:32:04: warning: analyzing unreferenced procedure "Not_All_Used_In_3"
+message_tests.adb:40:04: warning: analyzing unreferenced procedure "Not_All_Used_In_4"
 message_tests.adb:40:33: warning: unused variable "C"
+message_tests.adb:48:04: warning: analyzing unreferenced procedure "Not_All_Used_Out"
 message_tests.adb:48:32: "C.Flags.A" is not initialized in "Not_All_Used_Out"
 message_tests.adb:48:32: "C.Flags.B" is not initialized in "Not_All_Used_Out"
 message_tests.adb:48:32: "C.W" is not initialized in "Not_All_Used_Out"
+message_tests.adb:56:04: warning: analyzing unreferenced procedure "Undefined_Used_1"
 message_tests.adb:66:15: "F.B" is not initialized
+parameter_tests.adb:28:04: warning: analyzing unreferenced procedure "Clear_Position"
 parameter_tests.adb:36:32: "G.Y" is not initialized
 parameter_tests.adb:50:33: warning: unused initial value of "G"
 parameter_tests.adb:50:36: warning: "H" is not modified, could be "input"
+test.adb:26:04: warning: analyzing unreferenced function "New_Player_01"
+test.adb:36:04: warning: analyzing unreferenced function "New_Player_02"
+test.adb:46:04: warning: analyzing unreferenced function "New_Player_03"
+untangle_tests.adb:22:04: warning: analyzing unreferenced function "New_Coordinate"
+untangle_tests.adb:34:04: warning: analyzing unreferenced procedure "Swap_Triangle"
+untangle_tests.adb:44:04: warning: analyzing unreferenced procedure "Sieve"
+untangle_tests.adb:63:04: warning: analyzing unreferenced procedure "Transform"
+untangle_tests.adb:77:04: warning: analyzing unreferenced procedure "Set_Normal"
    compilation of message_tests.adb failed
    compilation of parameter_tests.adb failed
 

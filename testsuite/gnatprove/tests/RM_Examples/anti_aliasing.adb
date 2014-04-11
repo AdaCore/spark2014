@@ -22,7 +22,7 @@ procedure Anti_Aliasing is
       Y := X + Y;
    end One_In_One_Out;
 
-   procedure Two_In_Out (X, Y : in out Integer)
+   procedure Two_In_Out (X, Y : in out Integer) with Global => null
    is
       Temp : Integer;
    begin

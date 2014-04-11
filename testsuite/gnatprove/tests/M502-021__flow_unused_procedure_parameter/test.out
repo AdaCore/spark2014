@@ -1,2 +1,4 @@
-test.adb:14:15: warning: unused assignment to "Y"
-test.adb:24:15: warning: unused assignment to "Y"
+test.adb:6:10: warning: unused assignment, in call inlined at test.adb:14
+test.adb:6:10: warning: unused assignment, in call inlined at test.adb:24
+test.adb:10:04: warning: analyzing unreferenced procedure "Test_01"
+test.adb:20:04: warning: analyzing unreferenced procedure "Test_02"

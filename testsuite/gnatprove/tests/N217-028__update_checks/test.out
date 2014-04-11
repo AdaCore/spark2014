@@ -8,25 +8,36 @@ ar.adb:19:40: info: range check proved
 ar.adb:19:49: info: range check proved
 ar.adb:19:56: info: range check proved
 ar.adb:19:65: info: range check proved
+ar.adb:30:04: warning: analyzing unreferenced procedure "Test3"
 ar.adb:33:12: warning: array index check might fail
 ar.adb:33:22: warning: range check might fail
+ar.adb:39:04: warning: analyzing unreferenced procedure "Test4"
 ar.adb:43:15: info: index check proved
 ar.adb:43:25: info: range check proved
+ar.adb:52:04: warning: analyzing unreferenced procedure "Test5"
 ar.adb:55:18: info: length check proved
 ar.adb:55:45: warning: range check might fail
+ar.adb:64:04: warning: analyzing unreferenced procedure "Test6"
 ar.adb:68:21: warning: length check might fail
 ar.adb:68:24: warning: range check might fail
 ar.adb:68:33: info: range check proved
+ar.adb:76:04: warning: analyzing unreferenced procedure "Test7"
+ar.adb:85:04: warning: analyzing unreferenced procedure "Test8"
 ar.adb:88:25: warning: range check might fail
 ar.adb:88:34: warning: range check might fail
+ar.adb:94:04: warning: analyzing unreferenced procedure "Test9"
 ar.adb:98:27: info: range check proved
 ar.adb:98:36: info: range check proved
+ar.adb:106:04: warning: analyzing unreferenced procedure "Test10"
+ar.adb:115:04: warning: analyzing unreferenced procedure "Test11"
 ar.adb:119:25: warning: range check might fail
 ar.adb:119:34: warning: range check might fail
 ar.adb:119:43: warning: range check might fail
+ar.adb:125:04: warning: analyzing unreferenced procedure "Test12"
 ar.adb:128:25: warning: range check might fail
 ar.adb:128:33: warning: range check might fail
 ar.adb:128:42: warning: range check might fail
+ar.adb:134:04: warning: analyzing unreferenced procedure "Test13"
 ar.adb:137:39: warning: range check might fail
 ar.ads:19:5: info: postcondition proved
 ar.ads:19:25: info: range check proved

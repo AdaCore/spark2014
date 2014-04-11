@@ -38,10 +38,14 @@ is
    procedure Test is
       X : Integer := 10;
       Y : Integer;
+      Res : Integer;
    begin
-      pragma Assert (Id_Public (X) = X);   -- @ASSERT:FAIL
-      pragma Assert (Id_Private (X) = X);  -- @ASSERT:PASS
-      pragma Assert (Id_Body (X) = X);     -- @ASSERT:PASS
+      Res := Id_Public (X);
+      pragma Assert (Res = X);     -- @ASSERT:FAIL
+      Res := Id_Private (X);
+      pragma Assert (Res = X);     -- @ASSERT:PASS
+      Res := Id_Body (X);
+      pragma Assert (Res = X);     -- @ASSERT:PASS
 
       Incr_Public (X, Y);
       pragma Assert (Y = 9);   -- @ASSERT:FAIL

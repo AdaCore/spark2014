@@ -23,6 +23,7 @@ loop_related_illegal_2.adb:33:17: info: overflow check proved
 loop_related_illegal_2.ads:4:14: warning: subprogram "Loop_Invariant_Acts_As_Cut_Point" has no effect
 loop_related_illegal_2.ads:5:14: warning: subprogram "Expression_Remains_The_Same" has no effect
 loop_related_illegal_2.ads:5:43: warning: unused initial value of "Par"
+loop_related_illegal_3.adb:4:04: warning: analyzing unreferenced procedure "Unevaluated"
 loop_related_illegal_3.adb:17:38: "X" is not initialized
    compilation of loop_related_illegal_3.adb failed
 

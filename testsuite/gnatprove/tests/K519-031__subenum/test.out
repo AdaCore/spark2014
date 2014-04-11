@@ -1,5 +1,7 @@
+sub.adb:22:04: warning: analyzing unreferenced procedure "P"
 sub.adb:22:14: warning: subprogram "P" has no effect
 sub.adb:25:18: info: range check proved
+sub.adb:30:04: warning: analyzing unreferenced procedure "P"
 sub.adb:30:14: warning: subprogram "P__2" has no effect
 sub.adb:30:17: warning: unused initial value of "X"
 sub.adb:32:18: info: range check proved

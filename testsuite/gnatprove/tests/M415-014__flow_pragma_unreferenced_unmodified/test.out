@@ -1,0 +1,2 @@
+unreferenced_unmodified.adb:6:04: warning: analyzing unreferenced function "Return_5"
+unreferenced_unmodified.adb:13:04: warning: analyzing unreferenced procedure "Do_Something"

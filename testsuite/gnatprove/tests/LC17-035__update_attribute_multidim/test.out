@@ -25,14 +25,19 @@ update.ads:8:34: info: length check proved
 update.ads:18:19: warning: postcondition might fail
 update.ads:31:19: info: postcondition proved
 update.ads:38:19: warning: postcondition might fail, requires A = A'Old'update
+update_checks.adb:10:04: warning: analyzing unreferenced procedure "Test1"
+update_checks.adb:22:04: warning: analyzing unreferenced procedure "Test2"
 update_checks.adb:29:25: warning: range check might fail
 update_checks.adb:29:32: warning: range check might fail
 update_checks.adb:29:39: warning: range check might fail
 update_checks.adb:29:55: warning: range check might fail
+update_checks.adb:34:04: warning: analyzing unreferenced procedure "Test3"
 update_checks.adb:43:28: info: range check proved
 update_checks.adb:43:35: info: range check proved
 update_checks.adb:43:42: info: range check proved
 update_checks.adb:43:58: info: range check proved
+update_checks.adb:49:04: warning: analyzing unreferenced procedure "Test4"
+update_checks.adb:61:04: warning: analyzing unreferenced procedure "Test5"
 update_checks.adb:68:26: warning: range check might fail
 update_checks.adb:68:34: warning: range check might fail
 update_checks.adb:68:42: warning: range check might fail
@@ -40,6 +45,7 @@ update_checks.adb:69:28: warning: range check might fail
 update_checks.adb:69:36: warning: range check might fail
 update_checks.adb:69:44: warning: range check might fail
 update_checks.adb:69:60: warning: range check might fail
+update_checks.adb:74:04: warning: analyzing unreferenced procedure "Test6"
 update_checks.adb:84:29: info: range check proved
 update_checks.adb:84:37: info: range check proved
 update_checks.adb:84:45: info: range check proved
@@ -47,6 +53,7 @@ update_checks.adb:85:31: info: range check proved
 update_checks.adb:85:39: info: range check proved
 update_checks.adb:85:47: info: range check proved
 update_checks.adb:85:63: info: range check proved
+update_checks.adb:91:04: warning: analyzing unreferenced procedure "Test7"
 update_checks.adb:99:26: warning: range check might fail
 update_checks.adb:99:34: warning: range check might fail
 update_checks.adb:99:42: warning: range check might fail
@@ -58,6 +65,7 @@ update_checks.adb:101:26: warning: range check might fail
 update_checks.adb:101:34: warning: range check might fail
 update_checks.adb:101:42: warning: range check might fail
 update_checks.adb:101:62: warning: range check might fail
+update_checks.adb:106:04: warning: analyzing unreferenced procedure "Test8"
 update_checks.adb:118:29: info: range check proved
 update_checks.adb:118:37: info: range check proved
 update_checks.adb:118:45: info: range check proved

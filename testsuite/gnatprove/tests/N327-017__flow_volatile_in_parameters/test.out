@@ -1,3 +1,4 @@
+types.adb:4:04: warning: analyzing unreferenced procedure "Test_01"
 // package_body_types_cfg
 digraph G {
    graph [splines=True];

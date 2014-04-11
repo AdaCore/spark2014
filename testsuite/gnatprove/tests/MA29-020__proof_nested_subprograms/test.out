@@ -1,23 +1,39 @@
-skein.adb:34:14: info: range check proved
-skein.adb:35:29: warning: array index check might fail
-skein.adb:36:77: info: division check proved
-skein.adb:36:77: warning: array index check might fail
-skein.adb:37:57: warning: range check might fail
-skein.adb:37:71: warning: range check might fail
+skein.adb:34:14: warning: range check might fail, in call inlined at skein.adb:139
+skein.adb:35:29: warning: array index check might fail, in call inlined at skein.adb:139
+skein.adb:36:77: warning: array index check might fail, in call inlined at skein.adb:139
+skein.adb:36:77: warning: divide by zero might fail, in call inlined at skein.adb:139
+skein.adb:37:57: warning: range check might fail, in call inlined at skein.adb:139
+skein.adb:37:71: warning: range check might fail, in call inlined at skein.adb:139
+skein.adb:48:23: warning: statement has no effect, in call inlined at skein.adb:127
+skein.adb:56:22: warning: unused assignment, in call inlined at skein.adb:127
+skein.adb:60:04: warning: analyzing unreferenced procedure "Zero_Pad"
 skein.adb:64:11: info: range check proved
-skein.adb:87:14: info: range check proved
-skein.adb:95:43: warning: range check might fail
-skein.adb:96:72: warning: range check might fail
-skein.adb:97:72: warning: range check might fail
-skein.adb:98:72: warning: range check might fail
-skein.adb:99:72: warning: range check might fail
-skein.adb:100:72: warning: range check might fail
-skein.adb:101:72: warning: range check might fail
-skein.adb:102:72: warning: range check might fail
+skein.adb:87:14: info: range check proved, in call inlined at skein.adb:111
+skein.adb:87:112: warning: statement has no effect, in call inlined at skein.adb:111
+skein.adb:88:29: warning: unused assignment, in call inlined at skein.adb:111
+skein.adb:95:26: warning: unused assignment, in call inlined at skein.adb:125
+skein.adb:95:43: warning: range check might fail, in call inlined at skein.adb:125
+skein.adb:96:26: warning: unused assignment, in call inlined at skein.adb:125
+skein.adb:96:72: warning: range check might fail, in call inlined at skein.adb:125
+skein.adb:97:26: warning: unused assignment, in call inlined at skein.adb:125
+skein.adb:97:72: warning: range check might fail, in call inlined at skein.adb:125
+skein.adb:98:26: warning: unused assignment, in call inlined at skein.adb:125
+skein.adb:98:72: warning: range check might fail, in call inlined at skein.adb:125
+skein.adb:99:26: warning: unused assignment, in call inlined at skein.adb:125
+skein.adb:99:72: warning: range check might fail, in call inlined at skein.adb:125
+skein.adb:100:26: warning: unused assignment, in call inlined at skein.adb:125
+skein.adb:100:72: warning: range check might fail, in call inlined at skein.adb:125
+skein.adb:101:26: warning: unused assignment, in call inlined at skein.adb:125
+skein.adb:101:72: warning: range check might fail, in call inlined at skein.adb:125
+skein.adb:102:26: warning: unused assignment, in call inlined at skein.adb:125
+skein.adb:102:72: warning: range check might fail, in call inlined at skein.adb:125
 skein.adb:106:17: warning: statement has no effect
-skein.adb:107:12: warning: length check might fail
+skein.adb:107:12: info: length check proved
+skein.adb:109:43: warning: unused assignment
+skein.adb:110:07: warning: statement has no effect
 skein.adb:115:52: info: division check proved
 skein.adb:115:52: warning: range check might fail
+skein.adb:118:19: warning: unused assignment
 skein.adb:118:44: info: length check proved
 skein.adb:121:44: warning: divide by zero might fail
 skein.adb:146:37: warning: range check might fail
@@ -28,12 +44,8 @@ skein.ads:121:21: warning: length check might fail
 skein.ads:268:52: warning: length check might fail
 skein.ads:269:52: warning: length check might fail
 Analyzed 1 units
-in unit skein, 7 subprograms and packages out of 7 analyzed
-  Skein.Put_64_LSB_First at skein.adb:27 flow analyzed (0 errors and 0 warnings) and not proved, 2 checks out of 6 proved
-  Skein.Skein_512_Final.Set_B_Counter at skein.adb:92 flow analyzed (0 errors and 0 warnings) and not proved, 0 checks out of 8 proved
-  Skein.Skein_512_Final.Zero_Pad_B at skein.adb:84 flow analyzed (0 errors and 0 warnings) and proved (1 checks)
-  Skein.Skein_Start_New_Type at skein.adb:42 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
+in unit skein, 3 subprograms and packages out of 3 analyzed
   Skein.Zero_Pad at skein.adb:60 flow analyzed (0 errors and 0 warnings) and proved (1 checks)
   Skein at skein.ads:6 flow analyzed (0 errors and 0 warnings) and not proved, 0 checks out of 6 proved
-  Skein.Skein_512_Final at skein.ads:131 flow analyzed (0 errors and 1 warnings) and not proved, 2 checks out of 6 proved
+  Skein.Skein_512_Final at skein.ads:131 flow analyzed (0 errors and 32 warnings) and not proved, 4 checks out of 21 proved
 

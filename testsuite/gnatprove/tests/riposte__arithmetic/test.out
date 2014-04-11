@@ -7,6 +7,7 @@ arithmetic.adb:17:14: warning: overflow check might fail
 arithmetic.adb:21:19: info: postcondition proved
 arithmetic.adb:21:41: info: overflow check proved
 arithmetic.adb:24:16: warning: overflow check might fail
+arithmetic.adb:27:04: warning: analyzing unreferenced function "Multiply_B"
 arithmetic.adb:32:11: info: range check proved
 arithmetic.adb:33:17: info: overflow check proved
 arithmetic.adb:34:10: info: loop invariant initialization proved
@@ -63,6 +64,7 @@ arithmetic.adb:205:19: warning: postcondition might fail, requires Test_Mod_B'Re
 arithmetic.adb:208:16: info: division check proved
 arithmetic.adb:215:19: warning: postcondition might fail, requires Test_Mod_C'Result = A
 arithmetic.adb:218:16: info: division check proved
+arithmetic.adb:223:04: warning: analyzing unreferenced function "Test_Div_A"
 arithmetic.adb:226:36: warning: assertion might fail, requires N / 10 < 0
 arithmetic.adb:226:38: info: division check proved
 arithmetic.adb:234:19: warning: postcondition might fail, requires Test_Rem_A'Result = A

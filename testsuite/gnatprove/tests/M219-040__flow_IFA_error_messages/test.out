@@ -1,10 +1,16 @@
+test.adb:7:04: warning: analyzing unreferenced function "Uninitialized_1"
 test.adb:16:07: warning: "Y" might not be initialized
+test.adb:38:04: warning: analyzing unreferenced procedure "Uninitialized_3"
 test.adb:38:51: warning: "C" might not be initialized in "Uninitialized_3"
+test.adb:56:04: warning: analyzing unreferenced procedure "Uninitialized_4"
 test.adb:56:31: warning: "Export" might not be initialized in "Uninitialized_4"
+test.adb:76:04: warning: analyzing unreferenced procedure "Uninitialized_5"
 test.adb:76:31: warning: "A" might not be initialized in "Uninitialized_5"
 test.adb:79:21: "C" is not initialized
 test.adb:80:12: "A" is not initialized
+test.adb:88:04: warning: analyzing unreferenced procedure "Ineffective_Statements_1"
 test.adb:92:12: warning: unused assignment
+test.adb:101:04: warning: analyzing unreferenced procedure "Ineffective_Statements_2"
 test.adb:101:40: warning: unused initial value of "A"
 test.adb:101:43: warning: unused initial value of "B"
 test.adb:103:07: warning: statement has no effect

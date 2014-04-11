@@ -12,7 +12,7 @@ is
      Post => (for all J in Idx => X(J) = Natural(J) + 1);  -- @POSTCONDITION:PASS
 
    procedure Init3 (X : out T) with
-     Post => (for all J in Idx => X(J) = Natural(J) + 1);  -- @POSTCONDITION:PASS
+     Post => (for all J in Idx => X(J) = Natural(J) + 1);
 
    procedure Zero (X : out T) with
      Post => (for all J in Idx => X(J) = 0);  -- @POSTCONDITION:PASS

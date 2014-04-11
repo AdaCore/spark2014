@@ -1,3 +1,4 @@
+test.adb:2:04: warning: analyzing unreferenced procedure "Null_Statement"
 test.adb:2:14: warning: subprogram "Null_Statement" has no effect
 // package_body_test_cfg
 digraph G {

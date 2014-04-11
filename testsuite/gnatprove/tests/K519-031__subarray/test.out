@@ -1,13 +1,16 @@
 subar.adb:5:7: info: assertion proved
+subar.adb:9:04: warning: analyzing unreferenced procedure "Try_B"
 subar.adb:9:14: warning: subprogram "Try_B" has no effect
 subar.adb:13:7: info: precondition proved
 subar.adb:13:10: info: length check proved
 subar.adb:13:10: warning: "Ab" might not be initialized
 subar.adb:18:7: info: assertion proved
 subar.adb:18:26: warning: array index check might fail
+subar.adb:22:04: warning: analyzing unreferenced procedure "Try_D"
 subar.adb:22:14: warning: subprogram "Try_D" has no effect
 subar.adb:25:14: info: length check proved
 subar.adb:27:7: info: precondition proved
+subar.adb:30:04: warning: analyzing unreferenced procedure "Try_E"
 subar.adb:30:14: warning: subprogram "Try_E" has no effect
 subar.adb:34:7: info: precondition proved
 subar.adb:34:10: warning: "Ae" might not be initialized
@@ -15,6 +18,7 @@ subar.adb:38:7: warning: range check might fail
 subar.adb:41:9: warning: length check might fail
 subar.adb:41:26: info: range check proved
 subar.adb:42:10: info: index check proved
+subar.adb:45:04: warning: analyzing unreferenced procedure "Loop_Test"
 subar.adb:45:14: warning: subprogram "Loop_Test" has no effect
 subar.adb:50:11: info: range check proved
 subar.adb:53:14: info: overflow check proved

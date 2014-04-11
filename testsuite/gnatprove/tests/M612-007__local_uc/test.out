@@ -1,1 +1,2 @@
+test.adb:9:04: warning: analyzing unreferenced procedure "Test"
 test.adb:9:14: warning: subprogram "Test" has no effect

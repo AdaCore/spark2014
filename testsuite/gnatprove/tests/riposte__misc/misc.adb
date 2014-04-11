@@ -6,10 +6,10 @@ is
    is
       X : Enum_T;
 
-      function Foo return Enum_T
+      function Foo return Enum_T with Global => null
       is
       begin
-         return Elem_1;
+         return Elem_2;
       end Foo;
    begin
       X := Enum_T'Succ (Foo);  --  @RANGE_CHECK:FAIL

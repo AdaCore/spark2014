@@ -4,7 +4,7 @@ main.adb:15:14: info: postcondition proved
 main.adb:15:35: info: length check proved
 main.adb:18:14: info: postcondition proved
 main.adb:27:32: info: length check proved
-main.adb:60:32: warning: overflow check might fail
+main.adb:60:32: info: overflow check proved, in call inlined at main.adb:79
 main.adb:71:4: info: assertion proved
 main.adb:72:4: info: assertion proved
 main.adb:73:4: info: assertion proved

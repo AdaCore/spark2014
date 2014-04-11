@@ -1556,7 +1556,7 @@ package body SPARK_Definition is
          then
             null;
          else
-            Mark_Violation ("Call to No_Return procedure in this context", N);
+            Mark_Violation ("call to No_Return procedure in this context", N);
          end if;
       end if;
 
