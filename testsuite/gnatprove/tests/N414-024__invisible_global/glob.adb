@@ -1,0 +1,19 @@
+PROCEDURE Glob with SPARK_Mode IS
+   SUBTYPE STD4 IS STRING(5 .. 8);
+
+   GENERIC
+      D4 : STD4 := "ABCD";
+   PROCEDURE PROC1;
+
+   PROCEDURE PROC1 IS
+   BEGIN
+      IF D4 /= "ABCD" THEN
+         null;
+      END IF;
+   END PROC1;
+
+   PROCEDURE PROC2 IS NEW PROC1;
+
+BEGIN
+   PROC2;
+END Glob;
