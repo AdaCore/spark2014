@@ -29,6 +29,7 @@ with Namet;                  use Namet;
 with Nlists;                 use Nlists;
 with Sem_Aux;                use Sem_Aux;
 with Sem_Eval;               use Sem_Eval;
+with Sem_Util;               use Sem_Util;
 with Sinfo;                  use Sinfo;
 with Snames;                 use Snames;
 with Tbuild;                 use Tbuild;
@@ -170,8 +171,9 @@ package body SPARK_Rewrite is
 
       function Rewrite_Node (N : Node_Id) return Traverse_Result is
       begin
-         --  Register any object/subprogram coming from an object/subprogram
-         --  declaration.
+         --  Register any object/subprogram appearing in an expression, which
+         --  comes from an object/subprogram declaration.
+
          if Nkind (N) in N_Has_Entity
            and then Nkind (Entity (N)) in N_Entity
          then
@@ -212,6 +214,16 @@ package body SPARK_Rewrite is
                      null;
                end case;
             end;
+         end if;
+
+         --  In some cases, an object still needs to be registered although
+         --  it does not appear in an expression. This is the case for example
+         --  for a formal generic constant parameter which is simplified out in
+         --  the generic instance. It may still appear in the effects for the
+         --  instance, and as such should be registered.
+
+         if Nkind (N) = N_Object_Declaration then
+            Register_Entity (Defining_Entity (N));
          end if;
 
          case Nkind (N) is
