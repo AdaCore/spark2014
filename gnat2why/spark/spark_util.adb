@@ -213,7 +213,9 @@ package body SPARK_Util is
          --  are in the compilation unit that is currently being analyzed must
          --  be analyzed.
 
-         if Gnat2Why_Args.Analyze_File.Is_Empty then
+         if not Gnat2Why_Args.Single_File or else
+           Gnat2Why_Args.Analyze_File.Is_Empty
+         then
             return True;
          end if;
 
