@@ -1,9 +1,9 @@
 sccs.adb:9:26: warning: statement has no effect, in call inlined at sccs.adb:10
-sccs.adb:9:36: warning: cannot inline call to "F2" (body not seen yet)
+sccs.adb:9:36: warning: no contextual analysis of "F2" (body not seen yet)
 sccs.adb:9:36: warning: statement has no effect, in call inlined at sccs.adb:10
 sccs.adb:9:36: warning: unused assignment to "B", in call inlined at sccs.adb:10
 sccs.adb:13:26: warning: statement has no effect, in call inlined at sccs.adb:14, in call inlined at sccs.adb:15, in call inlined at sccs.adb:16, in call inlined at sccs.adb:17
-sccs.adb:13:36: warning: cannot inline call to "F5" (body not seen yet)
+sccs.adb:13:36: warning: no contextual analysis of "F5" (body not seen yet)
 sccs.adb:13:36: warning: statement has no effect, in call inlined at sccs.adb:14, in call inlined at sccs.adb:15, in call inlined at sccs.adb:16, in call inlined at sccs.adb:17
 sccs.adb:13:36: warning: unused assignment to "B", in call inlined at sccs.adb:14, in call inlined at sccs.adb:15, in call inlined at sccs.adb:16, in call inlined at sccs.adb:17
 sccs.adb:21:4: warning: assertion might fail, requires B

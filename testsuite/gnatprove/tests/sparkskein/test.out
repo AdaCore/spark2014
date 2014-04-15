@@ -1,5 +1,5 @@
 skein.adb:113:19: warning: postcondition might fail
-skein.adb:218:04: warning: cannot inline "To_LittleEndian" (multiple returns)
+skein.adb:218:04: warning: no contextual analysis of "To_LittleEndian" (multiple returns)
 skein.adb:238:14: info: range check proved
 skein.adb:239:29: warning: array index check might fail
 skein.adb:241:44: info: division check proved
