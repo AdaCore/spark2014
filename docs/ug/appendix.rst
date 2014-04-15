@@ -398,13 +398,6 @@ Flow Analysis Limitations
 Proof Limitations
 -----------------
 
-#. Postconditions of recursive functions called in contracts and assertion
-   pragmas are not available, possibly leading to unproved checks. The current
-   workaround is to use a non-recursive wrapper instead for those functions called
-   in contracts and assertion pragmas. In the same way, definitions of recursive
-   expression functions are not available, both in contracts and in bodies.
-   The current workaround is to add an explicit postcondition for them.
-
 #. Attribute 'Valid is currently assumed to always return True.
 
 #. Values read from an external source are assumed to be valid values.
