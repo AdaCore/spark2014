@@ -1,0 +1,4 @@
+arith_with_local_subp.adb:7:14: info: overflow check proved, in call inlined at arith_with_local_subp.adb:19
+arith_with_local_subp.adb:15:17: info: overflow check proved, in call inlined at arith_with_local_subp.adb:20
+arith_with_local_subp.ads:6:14: info: postcondition proved
+arith_with_local_subp.ads:6:24: info: overflow check proved
