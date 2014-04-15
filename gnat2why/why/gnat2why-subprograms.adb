@@ -1402,11 +1402,9 @@ package body Gnat2Why.Subprograms is
                        & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
       --  If the entity's body is not in SPARK,
-      --  or if the function is (mutually) recursive, generate an empty module.
+      --  or if the function does not return, generate an empty module.
 
-      if not Entity_Body_In_SPARK (E)
-        or else not Is_Non_Recursive_Subprogram (E)
-      then
+      if not Entity_Body_In_SPARK (E) or else No_Return (E) then
          Close_Theory (File,
                        Kind => Standalone_Theory);
          return;
@@ -1660,14 +1658,13 @@ package body Gnat2Why.Subprograms is
                   Pre         => Pre,
                   Post        => Param_Post));
 
-            --  If the function has a postcondition and is not (mutually)
-            --  recursive, then generate an axiom:
+            --  If the function has a postcondition and is not annotated with
+            --  No_Return, then generate an axiom:
             --  axiom def_axiom:
             --     forall args [f (args)]. pre (args) ->
             --           let result = f (args) in post (args)
 
             if not No_Return (E)
-              and then Is_Non_Recursive_Subprogram (E)
               and then (Has_Contracts (E, Name_Postcondition)
                         or else Has_Contracts (E, Name_Contract_Cases))
             then
