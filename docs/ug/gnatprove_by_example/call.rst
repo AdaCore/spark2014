@@ -99,11 +99,11 @@ implement the contract of ``Add_Two``:
    :language: none
    :linenos:
 
-This contextual analysis is available only for functions or procedures that
-respect the following conditions:
+This contextual analysis is available only for regular functions (not
+expression functions) or procedures that are not externally visible (not
+declared in the public part of the unit), without contracts (any of Global,
+Depends, Pre, Post, Contract_Cases), and respect the following conditions:
 
- * not externally visible (not declared in the public part of the unit)
- * without contracts (any of Global, Depends, Pre, Post, Contract_Cases)
  * does not contain nested subprogram or package declarations or instantiations
  * not recursive
  * not a generic instance
@@ -116,6 +116,10 @@ respect the following conditions:
 If any of the above conditions is violated, |GNATprove| issues a warning to
 explain why the subprogram could not be analyzed in the context of its calls,
 and then proceeds to analyze it normally, using the default contract.
+
+Note that it is very simple to prevent contextual analysis of a local
+subprogram, by adding a contract to it, for example a simple ``Pre => True`` or
+``Global => null``.
 
 Otherwise, both flow analysis and proof are done for the subprogram in the
 context of its calls.
