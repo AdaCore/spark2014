@@ -1,4 +1,4 @@
-flight_manager.adb:10:07: warning: cannot inline "My_Abs" (multiple returns)
+flight_manager.adb:10:07: warning: no contextual analysis of "My_Abs" (multiple returns)
 flight_manager.adb:13:20: warning: overflow check might fail
 flight_manager.adb:21:33: warning: overflow check might fail
 flight_manager.ads:6:19: warning: unused variable "Position_Y"
