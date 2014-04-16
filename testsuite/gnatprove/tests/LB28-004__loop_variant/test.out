@@ -1,6 +1,4 @@
 p.adb:1:11: warning: subprogram "P" has no effect
-p.adb:1:14: warning: unused initial value of "A"
-p.adb:1:17: warning: unused initial value of "B"
 p.adb:10:12: warning: array index check might fail
 p.adb:10:15: warning: "Tab" might not be initialized
 p.adb:11:14: warning: overflow check might fail

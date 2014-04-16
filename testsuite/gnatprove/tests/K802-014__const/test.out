@@ -3,5 +3,4 @@ a.adb:7:07: warning: analyzing unreferenced function "Test"
 a.adb:18:07: warning: analyzing unreferenced function "Test"
 a.adb:29:10: warning: analyzing unreferenced function "Test"
 a.adb:40:17: warning: subprogram "Outer" has no effect
-a.adb:40:24: warning: unused variable "X"
 a.adb:41:10: warning: analyzing unreferenced function "Test"

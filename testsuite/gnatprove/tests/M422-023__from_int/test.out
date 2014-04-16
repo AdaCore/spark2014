@@ -10,8 +10,4 @@ sgs.adb:21:7: info: assertion proved
 sgs.adb:22:7: info: assertion proved
 sgs.ads:5:53: info: range check proved
 sgs.ads:10:14: warning: subprogram "F" has no effect
-sgs.ads:10:17: warning: unused initial value of "X1"
-sgs.ads:10:25: warning: unused initial value of "X2"
-sgs.ads:10:33: warning: unused initial value of "X3"
-sgs.ads:10:41: warning: unused initial value of "X4"
 sgs.ads:13:17: warning: postcondition might fail

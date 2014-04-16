@@ -4,7 +4,5 @@ a2.adb:2:11: warning: subprogram "A2" has no effect
 a2.adb:4:5: info: precondition proved
 b.adb:7:8: info: precondition proved
 b.ads:3:14: warning: subprogram "P" has no effect
-b.ads:3:17: warning: unused initial value of "X"
 c.adb:5:7: info: assertion proved
 c.ads:3:14: warning: subprogram "P" has no effect
-c.ads:3:17: warning: unused initial value of "X"

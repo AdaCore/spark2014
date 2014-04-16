@@ -26,9 +26,6 @@ subar.adb:54:11: info: range check proved
 subar.adb:57:14: info: overflow check proved
 subar.adb:59:11: warning: range check might fail
 subar.ads:21:14: warning: subprogram "F" has no effect
-subar.ads:21:17: warning: unused initial value of "X"
 subar.ads:24:14: warning: subprogram "G" has no effect
-subar.ads:24:17: warning: unused initial value of "X"
 subar.ads:25:23: warning: array index check might fail
 subar.ads:27:14: warning: subprogram "Local" has no effect
-subar.ads:27:21: warning: unused initial value of "X"

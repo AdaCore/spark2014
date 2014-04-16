@@ -1,6 +1,4 @@
 p.adb:3:11: warning: subprogram "P" has no effect
-p.adb:3:14: warning: unused initial value of "Havok_A"
-p.adb:3:23: warning: unused initial value of "Havok_B"
 p.adb:11:18: info: range check proved
 p.adb:12:18: info: range check proved
 pack.ads:4:21: warning: "A" is not modified, could be "in"

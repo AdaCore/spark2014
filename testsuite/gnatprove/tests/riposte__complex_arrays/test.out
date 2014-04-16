@@ -1,11 +1,4 @@
-complex_arrays.adb:22:33: warning: unused variable "A"
-complex_arrays.adb:23:33: warning: unused variable "I"
-complex_arrays.adb:23:36: warning: unused variable "J"
-complex_arrays.adb:24:33: warning: unused variable "V"
 complex_arrays.adb:26:22: warning: postcondition might fail, requires A(I)(J) = V
-complex_arrays.adb:32:31: warning: unused variable "A"
-complex_arrays.adb:33:31: warning: unused variable "I"
-complex_arrays.adb:33:34: warning: unused variable "J"
 complex_arrays.adb:35:22: warning: postcondition might fail, requires A(I) = A(J)
 complex_arrays.adb:46:22: warning: postcondition might fail, requires A(I)(J) = 17
 complex_arrays.adb:55:22: warning: postcondition might fail, requires A(I) = A(23)

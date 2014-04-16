@@ -1,6 +1,4 @@
 succ_floats.adb:1:11: warning: subprogram "Succ_Floats" has no effect
-succ_floats.adb:1:24: warning: unused initial value of "A"
-succ_floats.adb:1:27: warning: unused initial value of "B"
 succ_floats.adb:5:4: info: assertion proved
 succ_floats.adb:5:31: info: overflow check proved
 succ_floats.adb:6:4: warning: assertion might fail, requires Float'Succ (X) < 

@@ -4714,6 +4714,23 @@ package body Flow.Control_Flow_Graph is
       --  Simplify graph by removing all null vertices.
       Simplify_CFG (FA);
 
+      --  Note if this is a subprogram with no effects.
+      if FA.Kind = E_Subprogram_Body then
+         FA.No_Effects := True;
+         for F of FA.All_Vars loop
+            declare
+               V : constant Flow_Graphs.Vertex_Id :=
+                 FA.CFG.Get_Vertex (Change_Variant (F, Final_Value));
+            begin
+               pragma Assert (V /= Flow_Graphs.Null_Vertex);
+               if FA.Atr.Element (V).Is_Export then
+                  FA.No_Effects := False;
+                  exit;
+               end if;
+            end;
+         end loop;
+      end if;
+
       --  Finally, we need to make sure that all extra checks for folded
       --  functions have been processed.
       pragma Assert (The_Context.Folded_Function_Checks.Length = 0);

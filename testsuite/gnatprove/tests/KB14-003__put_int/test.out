@@ -1,5 +1,4 @@
 put.adb:2:11: warning: subprogram "Put" has no effect
-put.adb:2:16: warning: unused initial value of "X"
 put.adb:11:33: info: overflow check proved
 put.adb:16:18: info: division check proved
 put.adb:17:19: info: overflow check proved

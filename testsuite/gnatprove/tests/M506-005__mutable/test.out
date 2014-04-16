@@ -5,7 +5,6 @@ const.adb:22:09: warning: unused assignment
 const.adb:22:13: info: discriminant check proved
 const.adb:22:19: warning: array index check might fail
 const.ads:12:13: warning: subprogram "Simple" has no effect
-const.ads:12:21: warning: unused initial value of "X"
 mutable.adb:6:13: info: discriminant check proved
 mutable.adb:6:19: warning: array index check might fail
 mutable.adb:12:19: info: length check proved, in call inlined at mutable.adb:21
@@ -13,4 +12,3 @@ mutable.adb:23:07: warning: unused assignment
 mutable.adb:23:11: info: discriminant check proved
 mutable.adb:23:17: warning: array index check might fail
 mutable.ads:12:13: warning: subprogram "Simple" has no effect
-mutable.ads:12:21: warning: unused initial value of "X"

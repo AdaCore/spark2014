@@ -1,5 +1,4 @@
 p.adb:1:11: warning: subprogram "P" has no effect
-p.adb:1:14: warning: unused initial value of "X"
 p.adb:7:4: info: assertion proved
 p.adb:8:4: warning: assertion might fail, requires C-1.0 < X
 p.adb:8:20: warning: overflow check might fail

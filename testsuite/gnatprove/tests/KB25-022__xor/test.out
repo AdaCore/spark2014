@@ -1,4 +1,2 @@
 xor_bool.adb:1:11: warning: subprogram "Xor_Bool" has no effect
-xor_bool.adb:1:21: warning: unused initial value of "A"
-xor_bool.adb:1:24: warning: unused initial value of "B"
 xor_mod.adb:1:11: warning: subprogram "Xor_Mod" has no effect

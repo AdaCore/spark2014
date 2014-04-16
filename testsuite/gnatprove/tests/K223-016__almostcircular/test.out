@@ -1,3 +1,2 @@
 bot.ads:8:14: warning: subprogram "B" has no effect
-bot.ads:8:17: warning: unused variable "X"
 top.ads:4:17: warning: unused variable "X"
