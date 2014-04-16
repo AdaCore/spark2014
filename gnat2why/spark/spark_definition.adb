@@ -823,6 +823,27 @@ package body SPARK_Definition is
 
          when N_Selected_Component =>
 
+            --  In some cases, the static type of the prefix does not contain
+            --  the selected component. This may happen for generic instances,
+            --  or inlined subprograms, whose body is analyzed in the general
+            --  context only. Issue an error in that case.
+
+            declare
+               Selector    : constant Entity_Id := Entity (Selector_Name (N));
+               Prefix_Type : constant Entity_Id :=
+                 Unique_Entity (Etype (Prefix (N)));
+            begin
+               if No (Search_Component_By_Name (Prefix_Type, Selector)) then
+                  Violation_Detected := True;
+                  if SPARK_Pragma_Is (Opt.On) then
+                     Apply_Compile_Time_Constraint_Error
+                       (N, "component not present in }",
+                        CE_Discriminant_Check_Failed,
+                        Ent => Prefix_Type, Rep => False);
+                  end if;
+               end if;
+            end;
+
             --  In most cases, it is enough to look at the record type (the
             --  most underlying one) to see whether the access is in SPARK. An
             --  exception is the access to discrimants to a private type whose
