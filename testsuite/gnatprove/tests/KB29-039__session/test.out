@@ -2,8 +2,6 @@ a.adb:5:7: warning: assertion might fail, requires X < Y
 a.adb:6:7: warning: assertion might fail, requires X + 1 < Y
 a.adb:6:24: info: overflow check proved
 a.ads:3:14: warning: subprogram "P" has no effect
-a.ads:3:17: warning: unused initial value of "X"
-a.ads:3:20: warning: unused initial value of "Y"
 a.adb:5:7: warning: assertion might fail, requires X < Y
 a.adb:6:7: warning: assertion might fail, requires X + 1 < Y
 a.adb:6:24: info: overflow check proved
@@ -11,11 +9,7 @@ a.adb:7:7: warning: assertion might fail, requires X + 2 < Y
 a.adb:7:24: info: overflow check proved
 a.adb:10:04: warning: analyzing unreferenced procedure "Q"
 a.adb:10:14: warning: subprogram "Q" has no effect
-a.adb:10:17: warning: unused initial value of "X"
-a.adb:10:20: warning: unused initial value of "Y"
 a.adb:12:7: warning: assertion might fail, requires X < Y
 a.adb:13:7: warning: assertion might fail, requires X + 1 < Y
 a.adb:13:24: info: overflow check proved
 a.ads:3:14: warning: subprogram "P" has no effect
-a.ads:3:17: warning: unused initial value of "X"
-a.ads:3:20: warning: unused initial value of "Y"

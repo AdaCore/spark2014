@@ -1,3 +1,2 @@
 prepost.ads:2:14: warning: subprogram "F" has no effect
-prepost.ads:2:17: warning: unused initial value of "X"
 prepost.ads:4:20: warning: postcondition might fail, requires X < 0

@@ -166,6 +166,11 @@ package Flow is
       Dependency_Map    : Dependency_Maps.Map;
       --  A map of all the dependencies.
 
+      No_Effects        : Boolean;
+      --  True if this is a subprogram with no effects. Certain analysis
+      --  are disabled in this case as we would spam the user with error
+      --  messages for almost every statement.
+
       case Kind is
          when E_Subprogram_Body =>
             Is_Main : Boolean;

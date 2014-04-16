@@ -3,7 +3,6 @@ basic.adb:13:17: warning: discriminant check might fail
 basic.adb:17:17: info: discriminant check proved
 basic.adb:18:22: info: discriminant check proved
 basic.ads:45:14: warning: subprogram "P" has no effect
-basic.ads:45:17: warning: unused initial value of "V"
 conv.adb:6:20: info: postcondition proved
 conv.adb:15:17: info: discriminant check proved
 conv.adb:17:17: warning: discriminant check might fail
@@ -30,4 +29,3 @@ subty.adb:12:35: info: discriminant check proved
 subty.adb:12:44: info: overflow check proved
 subty.adb:13:7: info: assertion proved
 subty.ads:7:14: warning: subprogram "P" has no effect
-subty.ads:7:17: warning: unused initial value of "V"

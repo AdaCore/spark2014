@@ -1,6 +1,4 @@
 p.adb:1:11: warning: subprogram "P" has no effect
-p.adb:1:14: warning: unused initial value of "A"
-p.adb:1:17: warning: unused initial value of "B"
 p.adb:3:36: info: length check proved
 p.adb:5:7: info: index check proved
 p.adb:6:7: info: index check proved

@@ -3,6 +3,4 @@ p.adb:27:22: warning: overflow check might fail
 p.adb:27:32: warning: precondition might fail
 p.adb:28:19: warning: precondition might fail
 p.ads:18:14: warning: subprogram "Iter_Over_Lists" has no effect
-p.ads:18:31: warning: unused initial value of "X"
 p.ads:20:14: warning: subprogram "Quant_Over_Lists" has no effect
-p.ads:20:32: warning: unused variable "X"

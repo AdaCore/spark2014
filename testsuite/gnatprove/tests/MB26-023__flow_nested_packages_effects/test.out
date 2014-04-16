@@ -1,6 +1,5 @@
 flo_review_tests.adb:49:10: "N" is not initialized
 flo_review_tests.adb:55:14: warning: subprogram "Test_04" has no effect
-flo_review_tests.adb:63:10: warning: unused variable "N"
 flo_review_tests.adb:91:13: "Y" is not initialized in "P5_Inner"
 outer.adb:60:46: warning: overflow check might fail
 outer.adb:66:14: info: overflow check proved

@@ -1,2 +1,1 @@
 p.adb:1:11: warning: subprogram "P" has no effect
-p.adb:6:07: warning: unused variable "T", in instantiation at p.adb:9

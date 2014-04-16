@@ -4,10 +4,8 @@ test.adb:24:14: warning: unused global "Z"
 test.adb:25:11: warning: missing dependency "null => Z"
 test.adb:28:12: called subprogram "Initialise" requires "global" aspect to make state visible
 test.adb:31:14: warning: subprogram "Test_03_B" has no effect
-test.adb:31:14: warning: unused global "Z"
 test.adb:32:11: warning: missing dependency "null => Z"
 test.adb:38:14: warning: subprogram "Test_03_C" has no effect
-test.adb:38:14: warning: unused global "Z"
 test.adb:46:04: warning: analyzing unreferenced procedure "Test_04"
 test.adb:53:14: warning: unused initial value of "Z"
 test.adb:54:11: warning: missing dependency "null => Z"

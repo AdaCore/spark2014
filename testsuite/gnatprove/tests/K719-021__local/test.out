@@ -1,3 +1,2 @@
 refi.adb:7:17: warning: subprogram "Recurse" has no effect
-refi.adb:7:26: warning: unused initial value of "File_Name"
 refi.ads:4:07: warning: unused variable "Ignore_Non_Existing_Files"
