@@ -7266,6 +7266,7 @@ package body Gnat2Why.Expr is
             pragma Assert (Nkind (Choice) /= N_Others_Choice);
 
             Component := Search_Component_By_Name (Typ, Choice);
+            pragma Assert (Present (Component));
 
             if not Box_Present (Association) then
                Expr := Transform_Expr

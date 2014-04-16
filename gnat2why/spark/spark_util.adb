@@ -1681,8 +1681,7 @@ package body SPARK_Util is
          Next_Component_Or_Discriminant (Cur_Comp);
       end loop;
 
-      --  We *must* find a component, so we should never be here
-      raise Program_Error;
+      return Empty;
    end Search_Component_By_Name;
 
    -----------------------------------
