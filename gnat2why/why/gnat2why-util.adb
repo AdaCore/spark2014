@@ -39,9 +39,10 @@ with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 with Flow_Types;
 with Flow_Utility;
 
-with Gnat2Why.Nodes;         use Gnat2Why.Nodes;
 with Why.Atree.Accessors;    use Why.Atree.Accessors;
 with Why.Atree.Builders;     use Why.Atree.Builders;
+
+with Gnat2Why.Nodes;         use Gnat2Why.Nodes;
 
 package body Gnat2Why.Util is
 

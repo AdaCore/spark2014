@@ -128,8 +128,8 @@ use_enum_io.adb:51:14: info: precondition proved
 use_enum_io.adb:54:10: info: precondition proved
 use_float_io.adb:32:18: warning: precondition of main program might fail
 use_float_io.adb:38:19: info: range check proved
+use_float_io.adb:38:22: info: range check proved
 use_float_io.adb:38:22: warning: overflow check might fail
-use_float_io.adb:38:22: warning: range check might fail
 use_float_io.adb:39:7: info: loop invariant initialization proved
 use_float_io.adb:39:7: info: loop invariant preservation proved
 use_float_io.adb:42:10: info: precondition proved

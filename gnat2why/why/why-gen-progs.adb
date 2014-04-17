@@ -35,6 +35,25 @@ with Why.Inter;            use Why.Inter;
 
 package body Why.Gen.Progs is
 
+   ------------------------------------
+   -- Insert_Always_True_Range_Check --
+   ------------------------------------
+
+   function Insert_Always_True_Range_Check
+     (Ada_Node   : Node_Id;
+      Check_Kind : Range_Check_Kind;
+      T          : W_Expr_Id) return W_Expr_Id
+   is
+      Asrt : W_Prog_Id;
+   begin
+      Asrt := New_Located_Assert
+                (Ada_Node => Ada_Node,
+                 Reason   => To_VC_Kind (Check_Kind),
+                 Pred     => True_Pred,
+                 Kind     => EW_Assert);
+      return +Sequence (Asrt, +T);
+   end Insert_Always_True_Range_Check;
+
    --------------------------
    -- New_Assume_Statement --
    --------------------------
