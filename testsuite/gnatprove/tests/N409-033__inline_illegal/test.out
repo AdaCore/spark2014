@@ -1,9 +1,11 @@
-static_discr.adb:8:08: "Constraint_Error" would have been raised at run time
-static_discr.adb:8:08: component not present in subtype of "R" defined at line 5
-static_discr.adb:8:15: "Constraint_Error" would have been raised at run time
-static_discr.adb:8:15: component not present in subtype of "R" defined at line 6
-   compilation of static_discr.adb failed
+discr.adb:13:07: component not present in subtype of "R" defined at line 10
+discr.adb:13:07: component not present in subtype of "R" defined at line 11
+discr.adb:13:07: error in inlined body at line 8
+discr.adb:13:07: error in inlined body at line 8
+discr.adb:13:07: static expression fails Constraint_Check
+discr.adb:13:07: static expression fails Constraint_Check
+compilation of discr.adb failed
 
 
-gnatprove: error during generation of Global contracts, aborting.
+gnatprove: error during proof of contracts and absence of runtime errors, aborting.
 gprbuild: *** compilation phase failed
