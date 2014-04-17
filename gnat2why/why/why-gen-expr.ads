@@ -137,13 +137,6 @@ package Why.Gen.Expr is
    function New_Pretty_Label (N : Node_Id) return Name_Id;
    --  Return a label that contains the pretty printing for the given node
 
-   function New_Located_Expr
-     (Ada_Node : Node_Id;
-      Expr     : W_Expr_Id;
-      Domain   : EW_Domain;
-      Is_VC    : Boolean) return W_Expr_Id;
-   --  put a location label on the given expression
-
    function New_VC_Call
       (Ada_Node : Node_Id;
        Name     : W_Identifier_Id;
