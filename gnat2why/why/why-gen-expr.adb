@@ -1792,24 +1792,6 @@ package body Why.Gen.Expr is
                 To     => EW_Int_Type));
    end New_Int_Substract;
 
-   ----------------------
-   -- New_Located_Expr --
-   ----------------------
-
-   function New_Located_Expr (Ada_Node : Node_Id;
-                              Expr     : W_Expr_Id;
-                              Domain   : EW_Domain;
-                              Is_VC    : Boolean) return W_Expr_Id
-   is
-   begin
-      return
-        New_Label (Labels =>
-                     Name_Id_Sets.To_Set
-                       (New_Located_Label (Ada_Node, Is_VC)),
-                   Def    => Expr,
-                   Domain => Domain);
-   end New_Located_Expr;
-
    -----------------------
    -- New_Located_Label --
    -----------------------
