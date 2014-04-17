@@ -1,4 +1,4 @@
 example.adb:9:20: info: overflow check proved
-example.adb:9:20: warning: range check might fail
+example.adb:9:20: info: range check proved
 example.adb:9:30: info: division check proved
 example.adb:9:30: info: overflow check proved

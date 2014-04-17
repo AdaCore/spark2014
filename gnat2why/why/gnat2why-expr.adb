@@ -31,6 +31,7 @@ with GNAT.Source_Info;
 with Ada.Containers;         use Ada.Containers;
 
 with Atree;                  use Atree;
+with Checks;                 use Checks;
 with Einfo;                  use Einfo;
 with Errout;                 use Errout;
 with Namet;                  use Namet;
@@ -6202,7 +6203,60 @@ package body Gnat2Why.Expr is
                end case;
             end;
 
-         --  Not a signed integer type. Always perform the overflow check.
+         elsif Is_Floating_Point_Type (Expr_Type) then
+            declare
+               Tlo : constant Node_Id := Type_Low_Bound  (Expr_Type);
+               Thi : constant Node_Id := Type_High_Bound (Expr_Type);
+               Lov : Ureal;
+               Hiv : Ureal;
+               Lo  : Ureal;
+               Hi  : Ureal;
+               OK  : Boolean;
+               True_Check_Inserted : Boolean := False;
+
+            begin
+              --  We can only remove the check if we can compute the expected
+              --  bounds of the Range_Type now.
+
+               if Compile_Time_Known_Value (Tlo)
+                 and then Compile_Time_Known_Value (Thi)
+               then
+                  Lov := Expr_Value_R (Tlo);
+                  Hiv := Expr_Value_R (Thi);
+
+                  Determine_Range_R
+                    (Expr, OK, Lo, Hi, Assume_Valid => True);
+
+                  if OK then
+
+                     --  If definitely in range, generate a check always true
+                     --  for the overflow check. When gnat2why directly handles
+                     --  check messages, a message could be generated instead
+                     --  here.
+
+                     --  Note in the test below that we assume that the range
+                     --  is not OK if a bound of the range is equal to that
+                     --  of the type. That's not the most precise check, but
+                     --  we do it for the same reasons as those presented in
+                     --  Checks.Enable_Overflow_Check in the same case.
+
+                     if Lo > Lov and then Hi < Hiv then
+                        True_Check_Inserted := True;
+                        T := Insert_Always_True_Range_Check
+                               (Ada_Node   => Expr,
+                                Check_Kind => RCK_Overflow,
+                                T          => T);
+                     end if;
+                  end if;
+               end if;
+
+               if not True_Check_Inserted then
+                  T := Insert_Overflow_Check (Expr, T, Expr_Type);
+               end if;
+            end;
+
+         --  Not a signed integer type or a floating-point type. Always perform
+         --  the overflow check.
 
          else
             T := Insert_Overflow_Check (Expr, T, Expr_Type);

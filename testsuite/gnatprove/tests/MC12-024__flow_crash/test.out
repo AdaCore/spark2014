@@ -1,6 +1,6 @@
 p.adb:31:28: warning: overflow check might fail
+p.adb:32:28: info: range check proved
 p.adb:32:28: warning: overflow check might fail
-p.adb:32:28: warning: range check might fail
 p.ads:18:55: info: length check proved
 p.ads:27:22: warning: postcondition might fail
 p.ads:32:41: warning: unused initial value of "Raw_S"

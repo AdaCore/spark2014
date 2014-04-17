@@ -27,6 +27,7 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO;
 
 with Atree;                 use Atree;
+with Checks;                use Checks;
 with Einfo;                 use Einfo;
 with Errout;                use Errout;
 with Nlists;                use Nlists;
@@ -37,6 +38,7 @@ with Sinput;                use Sinput;
 with Stand;                 use Stand;
 with String_Utils;          use String_Utils;
 with Uintp;                 use Uintp;
+with Urealp;                use Urealp;
 
 with SPARK_Util;            use SPARK_Util;
 
@@ -824,16 +826,8 @@ package body Why.Gen.Expr is
       --  procedure, which also sets the bounds against which the value of Expr
       --  should be checked. Expr should have the flag Do_Range_Check flag set
       --  to True. Check_Type is set to the entity giving the bounds for the
-      --  check. Check_Kind is set to VC_Range_Check or VC_Index_Check.
-
-      function Insert_Range_Check
-        (Expr : Node_Id;
-         T    : W_Expr_Id) return W_Expr_Id;
-      --  Inserts a check on top of the Why expression T, which might be either
-      --  a range check, or an index check, depending on the corresponding
-      --  Ada node Expr. Expr also determines the bounds for the check.
-      --  [Get_Range_Check_Info] is called to determine the type and kind
-      --  of the check.
+      --  check. Check_Kind is set to an appropriate check kind, denoting a
+      --  range check, an overflow check or an index check.
 
       --------------------------
       -- Get_Range_Check_Info --
@@ -1118,30 +1112,6 @@ package body Why.Gen.Expr is
          end if;
       end Get_Range_Check_Info;
 
-      ------------------------
-      -- Insert_Range_Check --
-      ------------------------
-
-      function Insert_Range_Check
-        (Expr : Node_Id;
-         T    : W_Expr_Id) return W_Expr_Id
-      is
-         Check_Type : Entity_Id;
-         Check_Kind : Range_Check_Kind;
-
-      begin
-         --  Determine the type Check_Type, whose base type will give the
-         --  bounds for the check, and whether the check is a range check or
-         --  an index check.
-
-         Get_Range_Check_Info (Expr, Check_Type, Check_Kind);
-
-         return +Do_Range_Or_Index_Check (Ada_Node   => Expr,
-                                          Ty         => Check_Type,
-                                          W_Expr     => T,
-                                          Check_Kind => Check_Kind);
-      end Insert_Range_Check;
-
       From : constant W_Type_Id := Get_Type (Expr);
 
       --  Current result expression
@@ -1182,7 +1152,62 @@ package body Why.Gen.Expr is
          Get_Range_Check_Info (Range_Check, Range_Type, Check_Kind);
       end if;
 
-      --  the regular case, we take care to insert the range check at a
+      --  If the check is a range check on a floating-point type, and we can
+      --  determine that the expression is always within bounds, then issue a
+      --  check always true.
+
+      if Present (Range_Check)
+        and then Is_Floating_Point_Type (Range_Type)
+      then
+         declare
+            Tlo : constant Node_Id := Type_Low_Bound  (Range_Type);
+            Thi : constant Node_Id := Type_High_Bound (Range_Type);
+            Lov : Ureal;
+            Hiv : Ureal;
+            Lo  : Ureal;
+            Hi  : Ureal;
+            OK  : Boolean;
+
+         begin
+            --  The computation of the range assumes at worst that the type of
+            --  the expression is respected, so it is not suitable for overflow
+            --  checks, for example the overflow check on 'Pred and 'Succ,
+            --  therefore test first that Check_Kind is a range check.
+
+            if Check_Kind = RCK_Range
+
+              --  We can only remove the check if we can compute the expected
+              --  bounds of the Range_Type now.
+
+              and then Compile_Time_Known_Value (Tlo)
+              and then Compile_Time_Known_Value (Thi)
+            then
+               Lov := Expr_Value_R (Tlo);
+               Hiv := Expr_Value_R (Thi);
+
+               Determine_Range_R
+                 (Range_Check, OK, Lo, Hi, Assume_Valid => True);
+
+               if OK then
+
+                  --  If definitely in range, generate a check always true for
+                  --  the range check. When gnat2why directly handles check
+                  --  messages, a message could be generated instead here.
+
+                  if Lo >= Lov and then Hi <= Hiv then
+                     Result :=
+                       Insert_Always_True_Range_Check
+                         (Ada_Node   => Ada_Node,
+                          Check_Kind => Check_Kind,
+                          T          => Result);
+                     Range_Check_Applied := True;
+                  end if;
+               end if;
+            end if;
+         end;
+      end if;
+
+      --  The regular case, we take care to insert the range check at a
       --  valid place where the expression is of the appropriate Why base
       --  type (real for a range check of a floating point type, int for a
       --  range check of a discrete type).
@@ -1203,11 +1228,15 @@ package body Why.Gen.Expr is
       --     their conversion to int.
 
       if Present (Range_Check)
+        and then not Range_Check_Applied
         and then Base_Why_Type (Range_Type) = Cur
         and then Get_Base_Type (From) /= EW_Bool
       then
          Range_Check_Applied := True;
-         Result := Insert_Range_Check (Range_Check, Result);
+         Result := +Do_Range_Or_Index_Check (Ada_Node   => Range_Check,
+                                             Ty         => Range_Type,
+                                             W_Expr     => Result,
+                                             Check_Kind => Check_Kind);
       end if;
 
       --  3. If From and To do not share the same base type (bool, int, __fixed
@@ -1279,7 +1308,10 @@ package body Why.Gen.Expr is
          pragma Assert (Base_Why_Type (Range_Type) = Cur
                           or else
                         Base_Why_Type (Range_Type) = EW_Bool_Type);
-         Result := Insert_Range_Check (Range_Check, Result);
+         Result := +Do_Range_Or_Index_Check (Ada_Node   => Range_Check,
+                                             Ty         => Range_Type,
+                                             W_Expr     => Result,
+                                             Check_Kind => Check_Kind);
       end if;
 
       --  6. If To is an abstract type, convert from int, __fixed or real to it

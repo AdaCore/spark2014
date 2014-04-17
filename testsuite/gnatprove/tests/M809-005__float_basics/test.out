@@ -27,18 +27,18 @@ generic_float_tests.adb:80:19: warning: postcondition might fail, requires Under
 generic_float_tests.adb:80:19: warning: postcondition might fail, requires Underflow_1'Result > , in instantiation at foo.ads:9
 generic_float_tests.adb:83:16: info: division check proved, in instantiation at foo.ads:14
 generic_float_tests.adb:83:16: info: division check proved, in instantiation at foo.ads:9
+generic_float_tests.adb:83:16: info: range check proved, in instantiation at foo.ads:14
+generic_float_tests.adb:83:16: info: range check proved, in instantiation at foo.ads:9
 generic_float_tests.adb:83:16: warning: overflow check might fail, in instantiation at foo.ads:14
 generic_float_tests.adb:83:16: warning: overflow check might fail, in instantiation at foo.ads:9
-generic_float_tests.adb:83:16: warning: range check might fail, in instantiation at foo.ads:14
-generic_float_tests.adb:83:16: warning: range check might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:90:19: warning: postcondition might fail, requires Inverse_Reciprocal'Result = A, in instantiation at foo.ads:14
 generic_float_tests.adb:90:19: warning: postcondition might fail, requires Inverse_Reciprocal'Result = A, in instantiation at foo.ads:9
+generic_float_tests.adb:93:18: info: range check proved, in instantiation at foo.ads:14
+generic_float_tests.adb:93:18: info: range check proved, in instantiation at foo.ads:9
 generic_float_tests.adb:93:18: warning: divide by zero might fail, in instantiation at foo.ads:14
 generic_float_tests.adb:93:18: warning: divide by zero might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:93:18: warning: overflow check might fail, in instantiation at foo.ads:14
 generic_float_tests.adb:93:18: warning: overflow check might fail, in instantiation at foo.ads:9
-generic_float_tests.adb:93:18: warning: range check might fail, in instantiation at foo.ads:14
-generic_float_tests.adb:93:18: warning: range check might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:93:25: info: division check proved, in instantiation at foo.ads:14
 generic_float_tests.adb:93:25: info: division check proved, in instantiation at foo.ads:9
 generic_float_tests.adb:93:25: info: overflow check proved, in instantiation at foo.ads:14
@@ -49,10 +49,10 @@ generic_float_tests.adb:98:19: warning: postcondition might fail, requires Under
 generic_float_tests.adb:98:19: warning: postcondition might fail, requires Underflow_2'result, in instantiation at foo.ads:9
 generic_float_tests.adb:106:19: warning: postcondition might fail, requires Underflow_3'Result > , in instantiation at foo.ads:14
 generic_float_tests.adb:106:19: warning: postcondition might fail, requires Underflow_3'Result > , in instantiation at foo.ads:9
+generic_float_tests.adb:109:16: info: range check proved, in instantiation at foo.ads:14
+generic_float_tests.adb:109:16: info: range check proved, in instantiation at foo.ads:9
 generic_float_tests.adb:109:16: warning: overflow check might fail, in instantiation at foo.ads:14
 generic_float_tests.adb:109:16: warning: overflow check might fail, in instantiation at foo.ads:9
-generic_float_tests.adb:109:16: warning: range check might fail, in instantiation at foo.ads:14
-generic_float_tests.adb:109:16: warning: range check might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:113:20: warning: overflow check might fail, in instantiation at foo.ads:14
 generic_float_tests.adb:113:20: warning: overflow check might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:113:34: warning: overflow check might fail, in instantiation at foo.ads:14
@@ -65,10 +65,10 @@ generic_float_tests.adb:122:49: info: division check proved, in instantiation at
 generic_float_tests.adb:122:49: info: division check proved, in instantiation at foo.ads:9
 generic_float_tests.adb:122:49: warning: overflow check might fail, in instantiation at foo.ads:14
 generic_float_tests.adb:122:49: warning: overflow check might fail, in instantiation at foo.ads:9
+generic_float_tests.adb:125:16: info: range check proved, in instantiation at foo.ads:14
+generic_float_tests.adb:125:16: info: range check proved, in instantiation at foo.ads:9
 generic_float_tests.adb:125:16: warning: overflow check might fail, in instantiation at foo.ads:14
 generic_float_tests.adb:125:16: warning: overflow check might fail, in instantiation at foo.ads:9
-generic_float_tests.adb:125:16: warning: range check might fail, in instantiation at foo.ads:14
-generic_float_tests.adb:125:16: warning: range check might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:125:23: info: division check proved, in instantiation at foo.ads:14
 generic_float_tests.adb:125:23: info: division check proved, in instantiation at foo.ads:9
 generic_float_tests.adb:125:23: warning: overflow check might fail, in instantiation at foo.ads:14
@@ -133,12 +133,12 @@ generic_float_tests.adb:177:49: warning: overflow check might fail, in instantia
 generic_float_tests.adb:177:49: warning: overflow check might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:190:7: info: assertion proved, in instantiation at foo.ads:14
 generic_float_tests.adb:190:7: info: assertion proved, in instantiation at foo.ads:9
+generic_float_tests.adb:198:14: info: range check proved, in instantiation at foo.ads:14
+generic_float_tests.adb:198:14: info: range check proved, in instantiation at foo.ads:9
 generic_float_tests.adb:198:14: warning: divide by zero might fail, in instantiation at foo.ads:14
 generic_float_tests.adb:198:14: warning: divide by zero might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:198:14: warning: overflow check might fail, in instantiation at foo.ads:14
 generic_float_tests.adb:198:14: warning: overflow check might fail, in instantiation at foo.ads:9
-generic_float_tests.adb:198:14: warning: range check might fail, in instantiation at foo.ads:14
-generic_float_tests.adb:198:14: warning: range check might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:208:7: info: assertion proved, in instantiation at foo.ads:14
 generic_float_tests.adb:208:7: info: assertion proved, in instantiation at foo.ads:9
 generic_float_tests.adb:208:24: warning: divide by zero might fail, in instantiation at foo.ads:14
@@ -177,44 +177,44 @@ generic_float_tests.adb:259:24: info: division check proved, in instantiation at
 generic_float_tests.adb:259:24: info: division check proved, in instantiation at foo.ads:9
 generic_float_tests.adb:259:24: warning: overflow check might fail, in instantiation at foo.ads:14
 generic_float_tests.adb:259:24: warning: overflow check might fail, in instantiation at foo.ads:9
+generic_float_tests.adb:271:16: info: range check proved, in instantiation at foo.ads:14
+generic_float_tests.adb:271:16: info: range check proved, in instantiation at foo.ads:9
 generic_float_tests.adb:271:16: warning: divide by zero might fail, in instantiation at foo.ads:14
 generic_float_tests.adb:271:16: warning: divide by zero might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:271:16: warning: overflow check might fail, in instantiation at foo.ads:14
 generic_float_tests.adb:271:16: warning: overflow check might fail, in instantiation at foo.ads:9
-generic_float_tests.adb:271:16: warning: range check might fail, in instantiation at foo.ads:14
-generic_float_tests.adb:271:16: warning: range check might fail, in instantiation at foo.ads:9
+generic_float_tests.adb:272:16: info: range check proved, in instantiation at foo.ads:14
+generic_float_tests.adb:272:16: info: range check proved, in instantiation at foo.ads:9
 generic_float_tests.adb:272:16: warning: divide by zero might fail, in instantiation at foo.ads:14
 generic_float_tests.adb:272:16: warning: divide by zero might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:272:16: warning: overflow check might fail, in instantiation at foo.ads:14
 generic_float_tests.adb:272:16: warning: overflow check might fail, in instantiation at foo.ads:9
-generic_float_tests.adb:272:16: warning: range check might fail, in instantiation at foo.ads:14
-generic_float_tests.adb:272:16: warning: range check might fail, in instantiation at foo.ads:9
+generic_float_tests.adb:273:16: info: range check proved, in instantiation at foo.ads:14
+generic_float_tests.adb:273:16: info: range check proved, in instantiation at foo.ads:9
 generic_float_tests.adb:273:16: warning: divide by zero might fail, in instantiation at foo.ads:14
 generic_float_tests.adb:273:16: warning: divide by zero might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:273:16: warning: overflow check might fail, in instantiation at foo.ads:14
 generic_float_tests.adb:273:16: warning: overflow check might fail, in instantiation at foo.ads:9
-generic_float_tests.adb:273:16: warning: range check might fail, in instantiation at foo.ads:14
-generic_float_tests.adb:273:16: warning: range check might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:274:7: warning: assertion might fail, requires A = C, in instantiation at foo.ads:14
 generic_float_tests.adb:274:7: warning: assertion might fail, requires A = C, in instantiation at foo.ads:9
+generic_float_tests.adb:281:16: info: range check proved, in instantiation at foo.ads:14
+generic_float_tests.adb:281:16: info: range check proved, in instantiation at foo.ads:9
 generic_float_tests.adb:281:16: warning: divide by zero might fail, in instantiation at foo.ads:14
 generic_float_tests.adb:281:16: warning: divide by zero might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:281:16: warning: overflow check might fail, in instantiation at foo.ads:14
 generic_float_tests.adb:281:16: warning: overflow check might fail, in instantiation at foo.ads:9
-generic_float_tests.adb:281:16: warning: range check might fail, in instantiation at foo.ads:14
-generic_float_tests.adb:281:16: warning: range check might fail, in instantiation at foo.ads:9
+generic_float_tests.adb:282:16: info: range check proved, in instantiation at foo.ads:14
+generic_float_tests.adb:282:16: info: range check proved, in instantiation at foo.ads:9
 generic_float_tests.adb:282:16: warning: divide by zero might fail, in instantiation at foo.ads:14
 generic_float_tests.adb:282:16: warning: divide by zero might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:282:16: warning: overflow check might fail, in instantiation at foo.ads:14
 generic_float_tests.adb:282:16: warning: overflow check might fail, in instantiation at foo.ads:9
-generic_float_tests.adb:282:16: warning: range check might fail, in instantiation at foo.ads:14
-generic_float_tests.adb:282:16: warning: range check might fail, in instantiation at foo.ads:9
+generic_float_tests.adb:283:16: info: range check proved, in instantiation at foo.ads:14
+generic_float_tests.adb:283:16: info: range check proved, in instantiation at foo.ads:9
 generic_float_tests.adb:283:16: warning: divide by zero might fail, in instantiation at foo.ads:14
 generic_float_tests.adb:283:16: warning: divide by zero might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:283:16: warning: overflow check might fail, in instantiation at foo.ads:14
 generic_float_tests.adb:283:16: warning: overflow check might fail, in instantiation at foo.ads:9
-generic_float_tests.adb:283:16: warning: range check might fail, in instantiation at foo.ads:14
-generic_float_tests.adb:283:16: warning: range check might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:284:7: warning: assertion might fail, requires X = B, in instantiation at foo.ads:14
 generic_float_tests.adb:284:7: warning: assertion might fail, requires X = B, in instantiation at foo.ads:9
 generic_float_tests.adb:296:7: warning: assertion might fail, requires - (- X) = + X, in instantiation at foo.ads:14
@@ -397,18 +397,18 @@ generic_interval_tests.adb:156:19: warning: postcondition might fail, requires Z
 generic_interval_tests.adb:156:19: warning: postcondition might fail, requires Z > X, in instantiation at bar.ads:7
 generic_interval_tests.adb:159:15: info: overflow check proved, in instantiation at bar.ads:11
 generic_interval_tests.adb:159:15: info: overflow check proved, in instantiation at bar.ads:7
+generic_interval_tests.adb:159:22: info: range check proved, in instantiation at bar.ads:11
+generic_interval_tests.adb:159:22: info: range check proved, in instantiation at bar.ads:7
 generic_interval_tests.adb:159:22: warning: overflow check might fail, in instantiation at bar.ads:11
 generic_interval_tests.adb:159:22: warning: overflow check might fail, in instantiation at bar.ads:7
-generic_interval_tests.adb:159:22: warning: range check might fail, in instantiation at bar.ads:11
-generic_interval_tests.adb:159:22: warning: range check might fail, in instantiation at bar.ads:7
 generic_interval_tests.adb:165:19: warning: postcondition might fail, requires Z >= X, in instantiation at bar.ads:11
 generic_interval_tests.adb:165:19: warning: postcondition might fail, requires Z >= X, in instantiation at bar.ads:7
 generic_interval_tests.adb:168:15: info: overflow check proved, in instantiation at bar.ads:11
 generic_interval_tests.adb:168:15: info: overflow check proved, in instantiation at bar.ads:7
+generic_interval_tests.adb:168:22: info: range check proved, in instantiation at bar.ads:11
+generic_interval_tests.adb:168:22: info: range check proved, in instantiation at bar.ads:7
 generic_interval_tests.adb:168:22: warning: overflow check might fail, in instantiation at bar.ads:11
 generic_interval_tests.adb:168:22: warning: overflow check might fail, in instantiation at bar.ads:7
-generic_interval_tests.adb:168:22: warning: range check might fail, in instantiation at bar.ads:11
-generic_interval_tests.adb:168:22: warning: range check might fail, in instantiation at bar.ads:7
 generic_interval_tests.adb:178:19: info: postcondition proved, in instantiation at bar.ads:11
 generic_interval_tests.adb:178:19: info: postcondition proved, in instantiation at bar.ads:7
 generic_interval_tests.adb:181:7: info: assertion proved, in instantiation at bar.ads:11
@@ -431,8 +431,8 @@ homothetical.adb:12:21: warning: overflow check might fail
 homothetical.adb:12:24: info: division check proved
 homothetical.adb:12:24: warning: overflow check might fail
 homothetical.adb:13:22: warning: overflow check might fail
+homothetical.adb:13:28: info: range check proved
 homothetical.adb:13:28: warning: overflow check might fail
-homothetical.adb:13:28: warning: range check might fail
 homothetical.adb:31:32: info: length check proved
 homothetical.adb:34:33: info: length check proved
 homothetical.adb:38:29: info: length check proved
@@ -455,11 +455,11 @@ homothetical.adb:60:70: warning: divide by zero might fail
 homothetical.adb:60:70: warning: overflow check might fail
 homothetical.adb:60:78: warning: overflow check might fail
 homothetical.adb:60:79: warning: overflow check might fail
+homothetical.adb:64:33: info: range check proved
 homothetical.adb:64:33: warning: overflow check might fail
-homothetical.adb:64:33: warning: range check might fail
+homothetical.adb:65:33: info: range check proved
 homothetical.adb:65:33: warning: overflow check might fail
-homothetical.adb:65:33: warning: range check might fail
 homothetical.ads:24:14: warning: postcondition might fail
+reduced_01.ads:7:32: info: range check proved
 reduced_01.ads:7:32: warning: overflow check might fail
-reduced_01.ads:7:32: warning: range check might fail
 reduced_02.ads:9:15: info: range check proved

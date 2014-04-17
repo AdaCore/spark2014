@@ -32,10 +32,18 @@ with Why.Sinfo;           use Why.Sinfo;
 with Why.Types;           use Why.Types;
 with Why.Gen.Preds;       use Why.Gen.Preds;
 
+with Gnat2Why.Nodes;         use Gnat2Why.Nodes;
+
 package Why.Gen.Progs is
 
    True_Prog  : constant W_Prog_Id := New_Literal (Value => EW_True);
    False_Prog : constant W_Prog_Id := New_Literal (Value => EW_False);
+
+   function Insert_Always_True_Range_Check
+     (Ada_Node   : Node_Id;
+      Check_Kind : Range_Check_Kind;
+      T          : W_Expr_Id) return W_Expr_Id;
+   --  Inserts a check always true on top of expression T
 
    function New_Assume_Statement
      (Ada_Node    : Node_Id := Empty;

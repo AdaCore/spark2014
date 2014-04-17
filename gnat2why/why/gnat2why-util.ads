@@ -31,11 +31,11 @@ with Ada.Strings.Unbounded;              use Ada.Strings.Unbounded;
 
 with Types;                  use Types;
 
-with Why.Atree.Tables;       use Why.Atree.Tables;
-with Why.Ids;                use Why.Ids;
-
 with Common_Containers;      use Common_Containers;
+
+with Why.Atree.Tables;       use Why.Atree.Tables;
 with Why.Gen.Binders;        use Why.Gen.Binders;
+with Why.Ids;                use Why.Ids;
 with Why.Types;
 
 package Gnat2Why.Util is
