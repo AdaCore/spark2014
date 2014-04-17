@@ -20,8 +20,8 @@ records.adb:166:22: warning: postcondition might fail, requires Dst = Src
 records.adb:177:22: info: postcondition proved
 records.adb:191:22: warning: postcondition might fail
 records.adb:205:22: warning: postcondition might fail
-records.adb:214:7: info: assertion proved
-records.adb:217:7: info: assertion proved
+records.adb:214:07: info: assertion proved
+records.adb:217:07: info: assertion proved
 records.adb:226:22: info: postcondition proved
 records.adb:242:22: info: postcondition proved
 records.adb:255:22: warning: postcondition might fail, requires X = X'Old'update
@@ -38,19 +38,19 @@ records.adb:358:19: info: postcondition proved
 records.adb:365:19: info: postcondition proved
 records.adb:379:19: warning: postcondition might fail, requires Make_Optional_Pair_A_2'Result =  Optional_PairOptional_Pair'(Exists => false), (The_Pair => X)
 records.adb:393:19: info: postcondition proved
-records.adb:409:7: warning: assertion might fail, requires X.The_Pair.A = 0
-records.adb:417:7: warning: assertion might fail, requires X.The_Pair.A = X.The_Pair.B
-records.adb:425:7: warning: assertion might fail, requires X.The_Pair.A /= X.The_Pair.B
-records.adb:435:7: warning: assertion might fail, requires not X.Exists
+records.adb:409:22: warning: assertion might fail, requires X.The_Pair.A = 0
+records.adb:417:22: warning: assertion might fail, requires X.The_Pair.A = X.The_Pair.B
+records.adb:425:22: warning: assertion might fail, requires X.The_Pair.A /= X.The_Pair.B
+records.adb:435:22: warning: assertion might fail, requires not X.Exists
 records.adb:445:04: warning: analyzing unreferenced function "Apply_Command"
 records.adb:452:24: warning: range check might fail
 records.adb:465:22: info: postcondition proved
-records.adb:473:7: info: assertion proved
+records.adb:473:07: info: assertion proved
 records.adb:482:22: warning: postcondition might fail, requires R = R'Old'update
-records.adb:490:7: info: assertion proved
+records.adb:490:07: info: assertion proved
 records.adb:500:19: info: postcondition proved
-records.adb:503:7: warning: assertion might fail, requires R.Exists
+records.adb:503:22: warning: assertion might fail, requires R.Exists
 records.adb:513:22: info: postcondition proved
 records.adb:522:19: info: postcondition proved
-records.adb:533:7: warning: assertion might fail, requires F_Of_Pair (PairPair'(A => 5), (B => 5))
+records.adb:533:22: warning: assertion might fail, requires F_Of_Pair (PairPair'(A => 5), (B => 5))
 stack.ads:35:54: info: length check proved

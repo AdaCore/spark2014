@@ -1,2 +1,2 @@
 a1.adb:2:11: warning: subprogram "A1" has no effect
-a1.adb:4:5: info: precondition proved
+a1.adb:4:05: info: precondition proved

@@ -1,6 +1,6 @@
 list.adb:16:35: info: precondition proved
 list.adb:17:35: info: precondition proved
-list.adb:19:7: info: precondition proved
+list.adb:19:07: info: precondition proved
 list.adb:22:10: warning: precondition might fail
 list.adb:22:19: info: precondition proved
 list.adb:22:31: warning: range check might fail

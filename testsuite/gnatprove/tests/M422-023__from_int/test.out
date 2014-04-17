@@ -1,13 +1,13 @@
-sgs.adb:9:7: info: assertion proved
-sgs.adb:10:7: info: assertion proved
-sgs.adb:12:7: info: assertion proved
-sgs.adb:13:7: info: assertion proved
-sgs.adb:15:7: info: assertion proved
+sgs.adb:9:07: info: assertion proved
+sgs.adb:10:07: info: assertion proved
+sgs.adb:12:07: info: assertion proved
+sgs.adb:13:07: info: assertion proved
+sgs.adb:15:07: info: assertion proved
 sgs.adb:18:13: info: range check proved
-sgs.adb:19:7: info: assertion proved
-sgs.adb:20:7: info: assertion proved
-sgs.adb:21:7: info: assertion proved
-sgs.adb:22:7: info: assertion proved
+sgs.adb:19:07: info: assertion proved
+sgs.adb:20:07: info: assertion proved
+sgs.adb:21:07: info: assertion proved
+sgs.adb:22:07: info: assertion proved
 sgs.ads:5:53: info: range check proved
 sgs.ads:10:14: warning: subprogram "F" has no effect
 sgs.ads:13:17: warning: postcondition might fail

@@ -1,6 +1,6 @@
 main.adb:2:11: warning: subprogram "Main" has no effect
-main.adb:5:7: info: assertion proved, in call inlined at main.adb:12
-main.adb:6:7: info: assertion proved, in call inlined at main.adb:12
-main.adb:9:4: info: assertion proved
-main.adb:10:4: info: assertion proved
-main.adb:11:4: info: assertion proved
+main.adb:5:07: info: assertion proved, in call inlined at main.adb:12
+main.adb:6:07: info: assertion proved, in call inlined at main.adb:12
+main.adb:9:04: info: assertion proved
+main.adb:10:04: info: assertion proved
+main.adb:11:04: info: assertion proved

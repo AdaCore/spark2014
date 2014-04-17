@@ -4,9 +4,9 @@ p.adb:16:04: warning: analyzing unreferenced procedure "Sub"
 p.adb:16:14: warning: subprogram "Sub" has no effect
 p.adb:22:22: info: postcondition proved
 p.adb:27:22: info: postcondition proved
-p.adb:32:7: info: assertion proved
-p.adb:34:7: info: assertion proved
-p.adb:36:7: info: assertion proved
-p.adb:38:7: info: assertion proved
+p.adb:32:07: info: assertion proved
+p.adb:34:07: info: assertion proved
+p.adb:36:07: info: assertion proved
+p.adb:38:07: info: assertion proved
 p.ads:9:19: info: postcondition proved
 p.ads:14:19: info: postcondition proved

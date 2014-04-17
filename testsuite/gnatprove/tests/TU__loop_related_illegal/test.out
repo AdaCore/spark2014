@@ -14,7 +14,7 @@ loop_related_illegal.adb:155:10: pragma "Loop_Invariant" must appear next to pra
 loop_related_illegal_2.adb:15:10: info: loop invariant initialization proved
 loop_related_illegal_2.adb:15:10: info: loop invariant preservation proved
 loop_related_illegal_2.adb:16:17: info: overflow check proved
-loop_related_illegal_2.adb:19:7: warning: assertion might fail, requires Y = 10
+loop_related_illegal_2.adb:19:22: warning: assertion might fail, requires Y = 10
 loop_related_illegal_2.adb:30:10: info: loop invariant initialization proved
 loop_related_illegal_2.adb:30:10: info: loop invariant preservation proved
 loop_related_illegal_2.adb:30:51: info: overflow check proved

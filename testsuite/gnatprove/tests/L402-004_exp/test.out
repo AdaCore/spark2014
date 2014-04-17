@@ -1,4 +1,4 @@
-p.adb:3:7: warning: overflow check might fail
+p.adb:3:07: warning: overflow check might fail
 p.adb:3:29: info: overflow check proved
 p.adb:4:14: warning: overflow check might fail
 p.adb:5:14: info: range check proved

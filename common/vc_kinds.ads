@@ -39,8 +39,7 @@ package VC_Kinds is
    type VC_Kind is
       --  Run-time checks
 
-     (VC_Unused,
-      VC_Division_Check,
+     (VC_Division_Check,
       VC_Index_Check,
       VC_Overflow_Check,
       VC_Range_Check,
@@ -69,6 +68,8 @@ package VC_Kinds is
         VC_Postcondition |
         VC_Precondition_Main  |
         VC_Loop_Invariant |
+        VC_Loop_Invariant_Init |
+        VC_Loop_Invariant_Preserv |
         VC_Assert);
 
    SPARK_Suffix : constant String := "spark";

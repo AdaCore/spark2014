@@ -1,1 +1,4 @@
+test_if.ads:5:14: info: postcondition proved
+test_if.ads:5:31: info: overflow check proved
 test_if.ads:5:37: info: overflow check proved
+test_if.ads:5:43: info: overflow check proved

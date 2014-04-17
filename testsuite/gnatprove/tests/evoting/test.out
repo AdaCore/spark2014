@@ -37,7 +37,7 @@ evoting.adb:94:07: warning: statement has no effect
 evoting.adb:95:07: warning: assuming "Put_Line" has no effect on global items
 evoting.adb:95:07: warning: no Global contract available for "Put_Line"
 evoting.adb:95:07: warning: statement has no effect
-evoting.adb:97:7: info: precondition proved
+evoting.adb:97:07: info: precondition proved
 evoting.adb:99:07: warning: assuming "Put" has no effect on global items
 evoting.adb:99:07: warning: no Global contract available for "Put"
 evoting.adb:99:07: warning: statement has no effect
@@ -117,7 +117,7 @@ evoting.adb:291:07: warning: assuming "Put" has no effect on global items
 evoting.adb:291:07: warning: no Global contract available for "Put"
 evoting.adb:292:07: warning: assuming "Put_Line" has no effect on global items
 evoting.adb:292:07: warning: no Global contract available for "Put_Line"
-evoting.adb:294:7: info: precondition proved
+evoting.adb:294:07: info: precondition proved
 evoting.adb:296:07: warning: assuming "Put_Line" has no effect on global items
 evoting.adb:296:07: warning: no Global contract available for "Put_Line"
 evoting.adb:300:13: warning: assuming "Put_Line" has no effect on global items
@@ -125,9 +125,9 @@ evoting.adb:300:13: warning: no Global contract available for "Put_Line"
 evoting.adb:307:32: info: length check proved
 evoting.adb:311:07: warning: assuming "Put_Line" has no effect on global items
 evoting.adb:311:07: warning: no Global contract available for "Put_Line"
-evoting.adb:313:7: info: precondition proved
-evoting.adb:315:7: info: precondition proved
-evoting.adb:317:7: info: precondition proved
+evoting.adb:313:07: info: precondition proved
+evoting.adb:315:07: info: precondition proved
+evoting.adb:317:07: info: precondition proved
 evoting.ads:32:45: info: length check proved
 evoting.ads:51:30: warning: unused initial value of "Program_Phase"
 evoting.ads:58:28: warning: postcondition might fail, requires candidates(i)(j) = ' '

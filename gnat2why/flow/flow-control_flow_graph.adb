@@ -4366,7 +4366,6 @@ package body Flow.Control_Flow_Graph is
       Precon_Block    : Graph_Connections;
       Body_N          : Node_Id;
       Spec_N          : Node_Id;
-      Tracefile       : Unbounded_String;
       Package_Writes  : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
    begin
       pragma Assert (Is_Valid (FA));
@@ -4517,7 +4516,6 @@ package body Flow.Control_Flow_Graph is
                      if Ekind (FA.Analyzed_Entity) = E_Function then
                         Error_Msg_Flow
                           (FA  => FA,
-                           Tracefile => Tracefile,
                            Msg       => "function with output global & " &
                              "is not allowed in SPARK",
                            N   => FA.Analyzed_Entity,

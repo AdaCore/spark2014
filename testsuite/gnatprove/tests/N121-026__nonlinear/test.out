@@ -3,4 +3,4 @@ nonlinear.adb:9:20: info: overflow check proved
 nonlinear.adb:10:16: info: overflow check proved
 nonlinear.adb:10:16: info: range check proved
 nonlinear.adb:10:20: info: overflow check proved
-nonlinear.adb:11:4: warning: assertion might fail
+nonlinear.adb:11:04: warning: assertion might fail

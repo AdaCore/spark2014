@@ -1,14 +1,14 @@
 my_lists.adb:6:23: info: discriminant check proved
-my_lists.adb:13:7: info: precondition proved
-my_lists.adb:14:7: info: precondition proved
-my_lists.adb:15:7: info: precondition proved
-my_lists.adb:16:7: info: precondition proved
-my_lists.adb:17:7: info: precondition proved
-my_lists.adb:18:7: info: precondition proved
-my_lists.adb:20:7: info: assertion proved
-my_lists.adb:21:7: info: assertion proved
-my_lists.adb:22:7: info: assertion proved
-my_lists.adb:23:7: info: assertion proved
-my_lists.adb:24:7: info: assertion proved
-my_lists.adb:25:7: info: assertion proved
+my_lists.adb:13:07: info: precondition proved
+my_lists.adb:14:07: info: precondition proved
+my_lists.adb:15:07: info: precondition proved
+my_lists.adb:16:07: info: precondition proved
+my_lists.adb:17:07: info: precondition proved
+my_lists.adb:18:07: info: precondition proved
+my_lists.adb:20:07: info: assertion proved
+my_lists.adb:21:07: info: assertion proved
+my_lists.adb:22:07: info: assertion proved
+my_lists.adb:23:07: info: assertion proved
+my_lists.adb:24:07: info: assertion proved
+my_lists.adb:25:07: info: assertion proved
 my_lists.ads:32:14: warning: subprogram "P" has no effect

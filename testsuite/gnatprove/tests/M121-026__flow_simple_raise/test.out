@@ -2,4 +2,4 @@ simple_exceptions.adb:3:04: warning: analyzing unreferenced procedure "In_SPARK"
 simple_exceptions.adb:5:07: warning: statement has no effect
 simple_exceptions.adb:6:10: warning: exception might be raised
 simple_exceptions.adb:9:14: info: overflow check proved
-simple_exceptions.adb:21:7: info: raise statement proved unreachable
+simple_exceptions.adb:21:07: info: raise statement proved unreachable

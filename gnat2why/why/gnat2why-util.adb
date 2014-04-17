@@ -23,11 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with AA_Util;                use AA_Util;
 with Atree;                  use Atree;
 with Einfo;                  use Einfo;
-with Lib;                    use Lib;
-with Namet;                  use Namet;
 with Sem_Eval;               use Sem_Eval;
 with Sem_Util;               use Sem_Util;
 with Sinfo;                  use Sinfo;
@@ -328,9 +325,7 @@ package body Gnat2Why.Util is
    --------------------
 
    procedure Init_Why_Sections is
-      Body_Prefix : constant String :=
-        File_Name_Without_Suffix
-          (Get_Name_String (Unit_File_Name (Main_Unit)));
+      Body_Prefix : constant String := Unit_Name;
    begin
       Why_File_Name := new String'(Body_Prefix & Why_File_Suffix);
       for Kind in Why_Section_Enum'First ..

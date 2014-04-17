@@ -1,13 +1,13 @@
 p.adb:1:11: warning: subprogram "P" has no effect
 p.adb:5:31: info: length check proved, in call inlined at p.adb:37
 p.adb:6:31: info: length check proved, in call inlined at p.adb:37
-p.adb:9:7: info: assertion proved, in call inlined at p.adb:37
+p.adb:9:07: info: assertion proved, in call inlined at p.adb:37
 p.adb:13:31: info: length check proved, in call inlined at p.adb:38
 p.adb:14:31: info: length check proved, in call inlined at p.adb:38
-p.adb:17:7: warning: assertion might fail, requires My_S2 (2) /= 1, in call inlined at p.adb:38
+p.adb:17:32: warning: assertion might fail, requires My_S2 (2) /= 1, in call inlined at p.adb:38
 p.adb:21:31: info: length check proved, in call inlined at p.adb:39
 p.adb:22:31: info: length check proved, in call inlined at p.adb:39
-p.adb:25:7: info: assertion proved, in call inlined at p.adb:39
+p.adb:25:07: info: assertion proved, in call inlined at p.adb:39
 p.adb:29:31: info: length check proved, in call inlined at p.adb:40
 p.adb:30:31: info: length check proved, in call inlined at p.adb:40
-p.adb:33:7: info: assertion proved, in call inlined at p.adb:40
+p.adb:33:07: info: assertion proved, in call inlined at p.adb:40

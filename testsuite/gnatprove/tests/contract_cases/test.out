@@ -4,14 +4,14 @@ p.adb:22:17: info: overflow check proved
 p.adb:29:17: info: overflow check proved
 p.ads:12:14: warning: postcondition might fail, requires X = Integer'min
 p.ads:12:37: warning: overflow check might fail
-p.ads:15:6: info: complete contract cases proved
-p.ads:15:6: info: disjoint contract cases proved
+p.ads:15:06: info: complete contract cases proved
+p.ads:15:06: info: disjoint contract cases proved
 p.ads:15:40: info: contract case proved
 p.ads:15:53: info: overflow check proved
 p.ads:16:40: info: contract case proved
 p.ads:20:14: info: postcondition proved
-p.ads:21:6: info: complete contract cases proved
-p.ads:21:6: info: disjoint contract cases proved
+p.ads:21:06: info: complete contract cases proved
+p.ads:21:06: info: disjoint contract cases proved
 p.ads:21:40: info: contract case proved
 p.ads:21:53: info: overflow check proved
 p.ads:22:40: info: contract case proved

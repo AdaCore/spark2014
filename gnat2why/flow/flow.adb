@@ -994,18 +994,13 @@ package body Flow is
                when E_Subprogram_Body =>
                   Analysis.Find_Unwritten_Exports (FA);
                   if FA.No_Effects then
-                     declare
-                        Unused : Unbounded_String;
-                     begin
-                        Error_Msg_Flow
-                          (FA        => FA,
-                           Tracefile => Unused,
-                           Msg       => "subprogram & has no effect",
-                           N         => FA.Analyzed_Entity,
-                           F1        => Direct_Mapping_Id (FA.Analyzed_Entity),
-                           Tag       => "ineffective",
-                           Warning   => True);
-                     end;
+                     Error_Msg_Flow
+                       (FA        => FA,
+                        Msg       => "subprogram & has no effect",
+                        N         => FA.Analyzed_Entity,
+                        F1        => Direct_Mapping_Id (FA.Analyzed_Entity),
+                        Tag       => "ineffective",
+                        Warning   => True);
                   else
                      Analysis.Find_Ineffective_Imports_And_Unused_Objects (FA);
                      Analysis.Find_Ineffective_Statements (FA);

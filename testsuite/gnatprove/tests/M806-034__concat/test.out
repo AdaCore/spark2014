@@ -1,63 +1,63 @@
 concat.adb:4:28: info: length check proved, in call inlined at concat.adb:34
 concat.adb:4:28: info: range check proved, in call inlined at concat.adb:34
-concat.adb:6:7: info: assertion proved, in call inlined at concat.adb:34
-concat.adb:7:7: info: assertion proved, in call inlined at concat.adb:34
+concat.adb:6:07: info: assertion proved, in call inlined at concat.adb:34
+concat.adb:7:07: info: assertion proved, in call inlined at concat.adb:34
 concat.adb:11:29: info: length check proved, in call inlined at concat.adb:35
 concat.adb:11:29: info: range check proved, in call inlined at concat.adb:35
-concat.adb:13:7: info: assertion proved, in call inlined at concat.adb:35
-concat.adb:14:7: info: assertion proved, in call inlined at concat.adb:35
+concat.adb:13:07: info: assertion proved, in call inlined at concat.adb:35
+concat.adb:14:07: info: assertion proved, in call inlined at concat.adb:35
 concat.adb:17:14: warning: subprogram "Three" has no effect
 concat.adb:20:14: warning: overflow check might fail
 concat.adb:20:24: warning: overflow check might fail
 concat.adb:23:19: warning: range check might fail
-concat.adb:25:7: warning: assertion might fail, requires D'First = A'first
-concat.adb:26:7: warning: assertion might fail, requires D'Length = A'Length + B'length
-concat.adb:27:7: warning: assertion might fail, requires D'Last = A'Last + 1 + (B'Last - B'first
+concat.adb:25:22: warning: assertion might fail, requires D'First = A'first
+concat.adb:26:22: warning: assertion might fail, requires D'Length = A'Length + B'length
+concat.adb:27:22: warning: assertion might fail, requires D'Last = A'Last + 1 + (B'Last - B'first
 concat.adb:27:38: info: overflow check proved
 concat.adb:27:42: info: overflow check proved
 concat.adb:27:52: warning: overflow check might fail
 concat.adb:30:13: info: length check proved
 concat.adb:31:14: info: length check proved
-concat.adb:36:7: info: precondition proved
+concat.adb:36:07: info: precondition proved
 concat.ads:10:14: warning: subprogram "P" has no effect
 concat_left.adb:4:14: warning: subprogram "One" has no effect
 concat_left.adb:9:19: info: range check proved
-concat_left.adb:11:7: warning: assertion might fail, requires Z'First = Integer'first
-concat_left.adb:12:7: info: assertion proved
+concat_left.adb:11:22: warning: assertion might fail, requires Z'First = Integer'first
+concat_left.adb:12:07: info: assertion proved
 concat_left.adb:12:26: info: index check proved
-concat_left.adb:13:7: warning: assertion might fail, requires Z'Length = Y'Length + 1
+concat_left.adb:13:22: warning: assertion might fail, requires Z'Length = Y'Length + 1
 concat_left.adb:17:18: info: length check proved, in call inlined at concat_left.adb:36
 concat_left.adb:17:18: info: range check proved, in call inlined at concat_left.adb:36
-concat_left.adb:19:7: info: assertion proved, in call inlined at concat_left.adb:36
-concat_left.adb:20:7: info: assertion proved, in call inlined at concat_left.adb:36
+concat_left.adb:19:07: info: assertion proved, in call inlined at concat_left.adb:36
+concat_left.adb:20:07: info: assertion proved, in call inlined at concat_left.adb:36
 concat_left.adb:24:19: info: length check proved, in call inlined at concat_left.adb:37
 concat_left.adb:24:19: info: range check proved, in call inlined at concat_left.adb:37
-concat_left.adb:26:7: info: assertion proved, in call inlined at concat_left.adb:37
-concat_left.adb:27:7: info: assertion proved, in call inlined at concat_left.adb:37
+concat_left.adb:26:07: info: assertion proved, in call inlined at concat_left.adb:37
+concat_left.adb:27:07: info: assertion proved, in call inlined at concat_left.adb:37
 concat_left.adb:30:13: info: length check proved
 concat_left.adb:31:14: info: length check proved
-concat_left.adb:35:7: info: precondition proved
+concat_left.adb:35:07: info: precondition proved
 concat_left.ads:2:14: warning: subprogram "P" has no effect
 concat_right.adb:4:14: warning: subprogram "One" has no effect
 concat_right.adb:8:19: info: range check proved
-concat_right.adb:10:7: info: assertion proved
-concat_right.adb:11:7: info: assertion proved
+concat_right.adb:10:07: info: assertion proved
+concat_right.adb:11:07: info: assertion proved
 concat_right.adb:11:26: info: index check proved
 concat_right.adb:11:40: info: index check proved
-concat_right.adb:12:7: warning: assertion might fail, requires Z (Z'Last) = X
+concat_right.adb:12:22: warning: assertion might fail, requires Z (Z'Last) = X
 concat_right.adb:12:26: info: index check proved
-concat_right.adb:13:7: warning: assertion might fail, requires Z'Length = Y'Length + 1
+concat_right.adb:13:22: warning: assertion might fail, requires Z'Length = Y'Length + 1
 concat_right.adb:17:27: info: length check proved, in call inlined at concat_right.adb:36
 concat_right.adb:17:27: info: range check proved, in call inlined at concat_right.adb:36
-concat_right.adb:19:7: info: assertion proved, in call inlined at concat_right.adb:36
-concat_right.adb:20:7: info: assertion proved, in call inlined at concat_right.adb:36
+concat_right.adb:19:07: info: assertion proved, in call inlined at concat_right.adb:36
+concat_right.adb:20:07: info: assertion proved, in call inlined at concat_right.adb:36
 concat_right.adb:24:28: info: length check proved, in call inlined at concat_right.adb:37
 concat_right.adb:24:28: info: range check proved, in call inlined at concat_right.adb:37
-concat_right.adb:26:7: info: assertion proved, in call inlined at concat_right.adb:37
-concat_right.adb:27:7: info: assertion proved, in call inlined at concat_right.adb:37
+concat_right.adb:26:07: info: assertion proved, in call inlined at concat_right.adb:37
+concat_right.adb:27:07: info: assertion proved, in call inlined at concat_right.adb:37
 concat_right.adb:30:13: info: length check proved
 concat_right.adb:31:14: info: length check proved
-concat_right.adb:35:7: info: precondition proved
+concat_right.adb:35:07: info: precondition proved
 concat_right.ads:2:14: warning: subprogram "P" has no effect
 main.adb:5:11: warning: "concat.x" might not be initialized after elaboration of main program "Main"
 main.adb:5:11: warning: "concat.y" might not be initialized after elaboration of main program "Main"

@@ -1,6 +1,6 @@
 copy.adb:42:14: warning: precondition of main program might fail
-copy.adb:62:7: info: loop invariant initialization proved
-copy.adb:62:7: warning: loop invariant might fail after first iteration
+copy.adb:62:07: info: loop invariant initialization proved
+copy.adb:62:07: warning: loop invariant might fail after first iteration
 copy.adb:66:10: info: precondition proved
 copy.adb:68:10: info: precondition proved
 copy.adb:82:40: info: range check proved
@@ -17,8 +17,8 @@ copy.adb:110:22: info: precondition proved
 copy.adb:113:22: info: precondition proved
 copy.adb:122:13: info: precondition proved
 copy.adb:124:13: info: precondition proved
-copy.adb:133:7: warning: loop invariant might fail after first iteration
-copy.adb:133:7: warning: loop invariant might fail in first iteration
+copy.adb:133:07: warning: loop invariant might fail after first iteration
+copy.adb:133:07: warning: loop invariant might fail in first iteration
 copy.adb:140:10: info: precondition proved
 copy.adb:142:10: info: precondition proved
 copy.adb:155:40: info: range check proved
@@ -54,9 +54,9 @@ copy.adb:256:13: info: precondition proved
 copy.adb:259:13: info: precondition proved
 copy.adb:262:10: info: precondition proved
 copy.adb:269:14: warning: precondition might fail
-copy.adb:270:7: warning: loop invariant might fail after first iteration
-copy.adb:270:7: warning: loop invariant might fail in first iteration
-copy.adb:278:7: info: precondition proved
+copy.adb:270:07: warning: loop invariant might fail after first iteration
+copy.adb:270:07: warning: loop invariant might fail in first iteration
+copy.adb:278:07: info: precondition proved
 copy.adb:281:13: info: precondition proved
 copy.adb:281:32: info: discriminant check proved
 copy.adb:284:34: warning: overflow check might fail
@@ -77,29 +77,29 @@ copy.adb:323:10: info: precondition proved
 copy.adb:327:10: info: precondition proved
 copy.adb:331:10: info: precondition proved
 copy.adb:335:10: info: precondition proved
-copy.adb:340:7: info: precondition proved
-copy.adb:343:7: warning: precondition might fail
-copy.adb:347:7: warning: precondition might fail
+copy.adb:340:07: info: precondition proved
+copy.adb:343:07: warning: precondition might fail
+copy.adb:347:07: warning: precondition might fail
 echo.adb:32:18: warning: precondition of main program might fail
-echo.adb:37:7: info: loop invariant initialization proved
-echo.adb:37:7: info: loop invariant preservation proved
-echo.adb:38:7: info: precondition proved
+echo.adb:37:07: info: loop invariant initialization proved
+echo.adb:37:07: info: loop invariant preservation proved
+echo.adb:38:07: info: precondition proved
 echo.adb:41:13: info: precondition proved
 echo.adb:41:19: info: discriminant check proved
 echo.adb:44:16: info: precondition proved
 echo.adb:51:13: info: precondition proved
 echo_1.adb:32:18: warning: precondition of main program might fail
 echo_1.adb:38:14: info: precondition proved
-echo_1.adb:39:7: info: loop invariant initialization proved
-echo_1.adb:39:7: info: loop invariant preservation proved
-echo_1.adb:42:7: info: precondition proved
+echo_1.adb:39:07: info: loop invariant initialization proved
+echo_1.adb:39:07: info: loop invariant preservation proved
+echo_1.adb:42:07: info: precondition proved
 echo_1.adb:45:13: info: precondition proved
 echo_1.adb:45:36: info: discriminant check proved
 echo_1.adb:48:16: info: precondition proved
 echo_1.adb:55:13: info: precondition proved
 hello_world.adb:31:13: warning: precondition of main program might fail
-hello_world.adb:35:4: info: precondition proved
-hello_world.adb:37:7: info: precondition proved
+hello_world.adb:35:04: info: precondition proved
+hello_world.adb:37:07: info: precondition proved
 spark-text_io.ads:134:31: info: precondition proved
 spark-text_io.ads:139:12: info: precondition proved
 spark-text_io.ads:139:43: info: precondition proved
@@ -119,10 +119,10 @@ spark-text_io.ads:519:31: info: precondition proved
 spark-text_io.ads:576:51: info: precondition proved
 spark-text_io.ads:595:51: info: precondition proved
 use_enum_io.adb:32:18: warning: precondition of main program might fail
-use_enum_io.adb:37:7: info: loop invariant initialization proved
-use_enum_io.adb:37:7: info: loop invariant preservation proved
+use_enum_io.adb:37:07: info: loop invariant initialization proved
+use_enum_io.adb:37:07: info: loop invariant preservation proved
 use_enum_io.adb:40:10: info: precondition proved
-use_enum_io.adb:44:7: info: precondition proved
+use_enum_io.adb:44:07: info: precondition proved
 use_enum_io.adb:47:10: info: precondition proved
 use_enum_io.adb:51:14: info: precondition proved
 use_enum_io.adb:54:10: info: precondition proved
@@ -130,34 +130,34 @@ use_float_io.adb:32:18: warning: precondition of main program might fail
 use_float_io.adb:38:19: info: range check proved
 use_float_io.adb:38:22: info: range check proved
 use_float_io.adb:38:22: warning: overflow check might fail
-use_float_io.adb:39:7: info: loop invariant initialization proved
-use_float_io.adb:39:7: info: loop invariant preservation proved
+use_float_io.adb:39:07: info: loop invariant initialization proved
+use_float_io.adb:39:07: info: loop invariant preservation proved
 use_float_io.adb:42:10: info: precondition proved
-use_float_io.adb:46:7: info: precondition proved
+use_float_io.adb:46:07: info: precondition proved
 use_float_io.adb:49:10: info: precondition proved
-use_float_io.adb:53:7: info: precondition proved
+use_float_io.adb:53:07: info: precondition proved
 use_float_io.adb:56:10: info: precondition proved
 use_int_io.adb:32:18: warning: precondition of main program might fail
-use_int_io.adb:37:7: info: loop invariant initialization proved
-use_int_io.adb:37:7: info: loop invariant preservation proved
+use_int_io.adb:37:07: info: loop invariant initialization proved
+use_int_io.adb:37:07: info: loop invariant preservation proved
 use_int_io.adb:40:10: info: precondition proved
 use_int_io.adb:42:13: info: precondition proved
 use_int_io.adb:46:16: info: precondition proved
 use_int_io.adb:50:13: info: precondition proved
 use_int_io.adb:54:10: info: precondition proved
 use_int_io_1.adb:32:18: warning: precondition of main program might fail
-use_int_io_1.adb:37:7: info: loop invariant initialization proved
-use_int_io_1.adb:37:7: info: loop invariant preservation proved
+use_int_io_1.adb:37:07: info: loop invariant initialization proved
+use_int_io_1.adb:37:07: info: loop invariant preservation proved
 use_int_io_1.adb:40:10: info: precondition proved
 use_int_io_1.adb:42:10: info: precondition proved
 use_int_io_1.adb:47:10: info: precondition proved
 use_int_io_1.adb:49:10: info: precondition proved
 use_int_io_1.adb:56:10: info: precondition proved
 use_int_io_2.adb:32:18: warning: precondition of main program might fail
-use_int_io_2.adb:37:7: info: loop invariant initialization proved
-use_int_io_2.adb:37:7: info: loop invariant preservation proved
+use_int_io_2.adb:37:07: info: loop invariant initialization proved
+use_int_io_2.adb:37:07: info: loop invariant preservation proved
 use_int_io_2.adb:40:10: info: precondition proved
-use_int_io_2.adb:44:7: info: precondition proved
+use_int_io_2.adb:44:07: info: precondition proved
 use_int_io_2.adb:47:10: info: precondition proved
-use_int_io_2.adb:51:7: info: precondition proved
+use_int_io_2.adb:51:07: info: precondition proved
 use_int_io_2.adb:54:10: info: precondition proved

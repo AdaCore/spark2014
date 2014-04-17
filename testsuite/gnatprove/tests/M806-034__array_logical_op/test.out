@@ -4,25 +4,25 @@ array_logical_ops.adb:15:37: info: length check proved, in call inlined at array
 array_logical_ops.adb:15:37: info: range check proved, in call inlined at array_logical_ops.adb:54
 array_logical_ops.adb:16:37: info: length check proved, in call inlined at array_logical_ops.adb:54
 array_logical_ops.adb:17:35: info: range check proved, in call inlined at array_logical_ops.adb:54
-array_logical_ops.adb:19:7: info: assertion proved, in call inlined at array_logical_ops.adb:54
-array_logical_ops.adb:20:7: info: assertion proved, in call inlined at array_logical_ops.adb:54
-array_logical_ops.adb:21:7: info: assertion proved, in call inlined at array_logical_ops.adb:54
-array_logical_ops.adb:22:7: info: assertion proved, in call inlined at array_logical_ops.adb:54
-array_logical_ops.adb:23:7: info: assertion proved, in call inlined at array_logical_ops.adb:54
+array_logical_ops.adb:19:07: info: assertion proved, in call inlined at array_logical_ops.adb:54
+array_logical_ops.adb:20:07: info: assertion proved, in call inlined at array_logical_ops.adb:54
+array_logical_ops.adb:21:07: info: assertion proved, in call inlined at array_logical_ops.adb:54
+array_logical_ops.adb:22:07: info: assertion proved, in call inlined at array_logical_ops.adb:54
+array_logical_ops.adb:23:07: info: assertion proved, in call inlined at array_logical_ops.adb:54
 array_logical_ops.adb:24:61: info: index check proved, in call inlined at array_logical_ops.adb:54
-array_logical_ops.adb:25:7: info: assertion proved, in call inlined at array_logical_ops.adb:54
+array_logical_ops.adb:25:07: info: assertion proved, in call inlined at array_logical_ops.adb:54
 array_logical_ops.adb:25:51: info: index check proved, in call inlined at array_logical_ops.adb:54
-array_logical_ops.adb:26:7: info: assertion proved, in call inlined at array_logical_ops.adb:54
+array_logical_ops.adb:26:07: info: assertion proved, in call inlined at array_logical_ops.adb:54
 array_logical_ops.adb:26:57: info: index check proved, in call inlined at array_logical_ops.adb:54
-array_logical_ops.adb:27:7: info: assertion proved, in call inlined at array_logical_ops.adb:54
+array_logical_ops.adb:27:07: info: assertion proved, in call inlined at array_logical_ops.adb:54
 array_logical_ops.adb:27:60: info: index check proved, in call inlined at array_logical_ops.adb:54
-array_logical_ops.adb:28:7: info: assertion proved, in call inlined at array_logical_ops.adb:54
+array_logical_ops.adb:28:07: info: assertion proved, in call inlined at array_logical_ops.adb:54
 array_logical_ops.adb:28:57: info: index check proved, in call inlined at array_logical_ops.adb:54
-array_logical_ops.adb:29:7: info: assertion proved, in call inlined at array_logical_ops.adb:54
+array_logical_ops.adb:29:07: info: assertion proved, in call inlined at array_logical_ops.adb:54
 array_logical_ops.adb:29:60: info: index check proved, in call inlined at array_logical_ops.adb:54
-array_logical_ops.adb:30:7: info: assertion proved, in call inlined at array_logical_ops.adb:54
+array_logical_ops.adb:30:07: info: assertion proved, in call inlined at array_logical_ops.adb:54
 array_logical_ops.adb:31:57: info: index check proved, in call inlined at array_logical_ops.adb:54
-array_logical_ops.adb:32:7: info: assertion proved, in call inlined at array_logical_ops.adb:54
+array_logical_ops.adb:32:07: info: assertion proved, in call inlined at array_logical_ops.adb:54
 array_logical_ops.adb:32:55: info: index check proved, in call inlined at array_logical_ops.adb:54
 array_logical_ops.adb:37:36: warning: length check might fail, in call inlined at array_logical_ops.adb:56
 array_logical_ops.adb:45:37: info: length check proved, in call inlined at array_logical_ops.adb:55

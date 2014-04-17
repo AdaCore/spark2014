@@ -23,38 +23,39 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Strings.Unbounded;   use Ada.Strings.Unbounded;
 with Ada.Text_IO;
 
-with Atree;                 use Atree;
-with Checks;                use Checks;
-with Einfo;                 use Einfo;
-with Errout;                use Errout;
-with Nlists;                use Nlists;
-with Sem_Eval;              use Sem_Eval;
-with Sem_Util;              use Sem_Util;
-with Sinfo;                 use Sinfo;
-with Sinput;                use Sinput;
-with Stand;                 use Stand;
-with String_Utils;          use String_Utils;
-with Uintp;                 use Uintp;
-with Urealp;                use Urealp;
+with Atree;                   use Atree;
+with Checks;                  use Checks;
+with Einfo;                   use Einfo;
+with Errout;                  use Errout;
+with Nlists;                  use Nlists;
+with Sem_Eval;                use Sem_Eval;
+with Sem_Util;                use Sem_Util;
+with Sinfo;                   use Sinfo;
+with Sinput;                  use Sinput;
+with Stand;                   use Stand;
+with String_Utils;            use String_Utils;
+with Uintp;                   use Uintp;
+with Urealp;                  use Urealp;
 
-with SPARK_Util;            use SPARK_Util;
+with SPARK_Util;              use SPARK_Util;
 
-with Why.Atree.Accessors;   use Why.Atree.Accessors;
-with Why.Atree.Tables;      use Why.Atree.Tables;
-with Why.Atree.Modules;     use Why.Atree.Modules;
-with Why.Conversions;       use Why.Conversions;
-with Why.Gen.Arrays;        use Why.Gen.Arrays;
-with Why.Gen.Names;         use Why.Gen.Names;
-with Why.Gen.Preds;         use Why.Gen.Preds;
-with Why.Gen.Progs;         use Why.Gen.Progs;
-with Why.Gen.Records;       use Why.Gen.Records;
-with Why.Inter;             use Why.Inter;
+with Why.Atree.Accessors;     use Why.Atree.Accessors;
+with Why.Atree.Tables;        use Why.Atree.Tables;
+with Why.Atree.Modules;       use Why.Atree.Modules;
+with Why.Conversions;         use Why.Conversions;
+with Why.Gen.Arrays;          use Why.Gen.Arrays;
+with Why.Gen.Names;           use Why.Gen.Names;
+with Why.Gen.Preds;           use Why.Gen.Preds;
+with Why.Gen.Progs;           use Why.Gen.Progs;
+with Why.Gen.Records;         use Why.Gen.Records;
+with Why.Inter;               use Why.Inter;
 
-with Gnat2Why.Subprograms;  use Gnat2Why.Subprograms;
-with Gnat2Why.Util;         use Gnat2Why.Util;
+with Gnat2Why.Error_Messages; use Gnat2Why.Error_Messages;
+with Gnat2Why.Subprograms;    use Gnat2Why.Subprograms;
+with Gnat2Why.Util;           use Gnat2Why.Util;
 
 package body Why.Gen.Expr is
 
@@ -240,19 +241,6 @@ package body Why.Gen.Expr is
       end case;
 
    end Get_Type;
-
-   -------------------------
-   -- Cur_Subp_Name_Label --
-   -------------------------
-
-   function Cur_Subp_Name_Label
-      return Name_Id is
-   begin
-      return
-        NID
-          (Pretty_Ada_Tag & ":" &
-               Subprogram_Full_Source_Name (Current_Subp));
-   end Cur_Subp_Name_Label;
 
    -----------------------------
    -- Insert_Array_Conversion --
@@ -1905,14 +1893,12 @@ package body Why.Gen.Expr is
 
    function New_Located_Label
      (N         : Node_Id;
-      Is_VC     : Boolean;
       Left_Most : Boolean := False)
       return Name_Id
    is
       Slc    : Source_Ptr;
       Buf    : Unbounded_String := Null_Unbounded_String;
-      Prefix : constant String :=
-        (if Is_VC then "GP_Sloc_VC:" else "GP_Sloc:");
+      Prefix : constant String := "GP_Sloc:";
    begin
 
       --  For VCs, we mostly want to point directly to the relevant node [N].
@@ -1923,7 +1909,7 @@ package body Why.Gen.Expr is
       --  are rewritten in a strange manner, so we do not do this optimization
       --  in that case. See also [New_Pretty_Label].
 
-      if (not Left_Most and Is_VC)
+      if not Left_Most
             or else
          (Comes_From_Source (N)
            and then Original_Node (N) /= N
@@ -2076,11 +2062,11 @@ package body Why.Gen.Expr is
       end if;
    end New_Or_Else_Expr;
 
-   ----------------------
-   -- New_Pretty_Label --
-   ----------------------
+   -----------------------
+   -- New_Sub_VC_Marker --
+   -----------------------
 
-   function New_Pretty_Label (N : Node_Id) return Name_Id
+   function New_Sub_VC_Marker (N : Node_Id) return Name_Id
    is
       Used_Node : Node_Id := N;
    begin
@@ -2099,17 +2085,9 @@ package body Why.Gen.Expr is
       then
          Used_Node := Right_Opnd (Original_Node (N));
       end if;
-      declare
-         S : constant String := String_Of_Node (Used_Node);
-      begin
-         if S /= "" then
-            return
-              NID (Pretty_Ada_Tag & ":" & S);
-         else
-            return No_Name;
-         end if;
-      end;
-   end New_Pretty_Label;
+
+      return NID (Pretty_Ada_Tag & ":" & Int_Image (Integer (Used_Node)));
+   end New_Sub_VC_Marker;
 
    --------------------
    -- New_Range_Expr --
@@ -2291,13 +2269,12 @@ package body Why.Gen.Expr is
       --  top-level instantiation. This could be refined in the future.
 
       Set : Name_Id_Set := Name_Id_Sets.Empty_Set;
+      Id  : constant VC_Id := Register_VC (N, Current_Subp);
    begin
       Set.Include (NID ("GP_Reason:" & VC_Kind'Image (Reason)));
+      Set.Include (NID ("GP_Id:" & Int_Image (Integer (Id))));
       Set.Include
-        (New_Located_Label
-           (N,
-            Is_VC => True,
-            Left_Most => Is_Assertion_Kind (Reason)));
+        (New_Located_Label (N, Left_Most => Is_Assertion_Kind (Reason)));
       Set.Include (NID (Keep_On_Simp));
       return Set;
    end New_VC_Labels;

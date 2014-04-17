@@ -1,4 +1,4 @@
-simple_arrays.adb:19:7: info: assertion proved
+simple_arrays.adb:19:07: info: assertion proved
 simple_arrays.adb:27:22: info: postcondition proved
 simple_arrays.adb:37:22: info: postcondition proved
 simple_arrays.adb:42:10: info: loop invariant initialization proved
@@ -7,17 +7,17 @@ simple_arrays.adb:42:41: info: range check proved
 simple_arrays.adb:53:23: info: postcondition proved
 simple_arrays.adb:68:22: warning: postcondition might fail, requires A /= B
 simple_arrays.adb:81:13: info: postcondition proved
-simple_arrays.adb:89:7: warning: assertion might fail, requires A'Update (1 => 5,  N => 6) = A'update
+simple_arrays.adb:89:22: warning: assertion might fail, requires A'Update (1 => 5,  N => 6) = A'update
 simple_arrays.adb:101:22: warning: postcondition might fail, requires Array_Axiom_Transitivity'Result = 42
 simple_arrays.adb:116:22: info: postcondition proved
 simple_arrays.adb:127:22: info: postcondition proved
 simple_arrays.adb:142:22: info: postcondition proved
-simple_arrays.adb:152:7: info: assertion proved
-simple_arrays.adb:157:7: info: assertion proved
-simple_arrays.adb:162:7: info: assertion proved
+simple_arrays.adb:152:07: info: assertion proved
+simple_arrays.adb:157:07: info: assertion proved
+simple_arrays.adb:162:07: info: assertion proved
 simple_arrays.adb:179:22: info: postcondition proved
-simple_arrays.adb:192:7: info: assertion proved
-simple_arrays.adb:204:7: info: assertion proved
+simple_arrays.adb:192:07: info: assertion proved
+simple_arrays.adb:204:07: info: assertion proved
 simple_arrays.adb:216:36: warning: assertion might fail, requires B = A'Update (I => (42))) = (A (I) = A'Update (I => 42) (I)
 simple_arrays.adb:229:36: warning: assertion might fail, requires B = C'Update (I => 42)) = (A (I) = A'Update (I => 42) (I)
 simple_arrays.adb:244:27: warning: assertion might fail, requires B = D) = (A (I) = A'Update (I => 42) (I)
@@ -28,11 +28,11 @@ simple_arrays.adb:310:27: warning: assertion might fail, requires B = D) = (X = 
 simple_arrays.adb:329:27: warning: assertion might fail, requires B = D) = (X = Y
 simple_arrays.adb:349:27: warning: assertion might fail, requires B = D) = (X = Y
 simple_arrays.adb:360:22: info: postcondition proved
-simple_arrays.adb:376:7: info: assertion proved
-simple_arrays.adb:385:7: info: assertion proved
-simple_arrays.adb:393:7: info: assertion proved
-simple_arrays.adb:405:7: warning: assertion might fail, requires A(Elem_0) = Elem_0
-simple_arrays.adb:412:7: warning: assertion might fail, requires A(I) = Elem_0
+simple_arrays.adb:376:07: info: assertion proved
+simple_arrays.adb:385:07: info: assertion proved
+simple_arrays.adb:393:07: info: assertion proved
+simple_arrays.adb:405:22: warning: assertion might fail, requires A(Elem_0) = Elem_0
+simple_arrays.adb:412:22: warning: assertion might fail, requires A(I) = Elem_0
 simple_arrays.adb:418:22: warning: postcondition might fail, requires A(Elem_0) = Elem_0
 simple_arrays.adb:428:22: warning: postcondition might fail, requires A(I) = Elem_0
 simple_arrays.adb:437:22: warning: postcondition might fail, requires A(Elem_0) = Elem_1
@@ -43,8 +43,8 @@ simple_arrays.adb:479:22: warning: postcondition might fail, requires A /= A'old
 simple_arrays.adb:493:22: warning: postcondition might fail, requires A /= A'old
 simple_arrays.adb:505:22: warning: postcondition might fail
 simple_arrays.adb:518:22: warning: postcondition might fail
-simple_arrays.adb:535:7: warning: assertion might fail, requires A(42) = Elem_0
-simple_arrays.adb:543:7: warning: assertion might fail, requires A(I) = Elem_0
+simple_arrays.adb:535:22: warning: assertion might fail, requires A(42) = Elem_0
+simple_arrays.adb:543:22: warning: assertion might fail, requires A(I) = Elem_0
 simple_arrays.adb:549:22: warning: postcondition might fail, requires A(42) = Elem_0
 simple_arrays.adb:559:22: warning: postcondition might fail, requires A(I) = Elem_0
 simple_arrays.adb:568:22: warning: postcondition might fail, requires A(42) = Elem_1
@@ -55,8 +55,8 @@ simple_arrays.adb:610:22: warning: postcondition might fail, requires A /= A'old
 simple_arrays.adb:624:22: warning: postcondition might fail, requires A /= A'old
 simple_arrays.adb:636:22: warning: postcondition might fail
 simple_arrays.adb:649:22: warning: postcondition might fail
-simple_arrays.adb:666:7: warning: assertion might fail, requires A(Elem_0) = 69
-simple_arrays.adb:674:7: warning: assertion might fail, requires A(I) = 69
+simple_arrays.adb:666:22: warning: assertion might fail, requires A(Elem_0) = 69
+simple_arrays.adb:674:22: warning: assertion might fail, requires A(I) = 69
 simple_arrays.adb:680:22: warning: postcondition might fail, requires A(Elem_0) = 69
 simple_arrays.adb:689:22: warning: postcondition might fail, requires A(I) = 69
 simple_arrays.adb:698:22: warning: postcondition might fail, requires A(Elem_0) = 1337
@@ -67,8 +67,8 @@ simple_arrays.adb:740:22: warning: postcondition might fail, requires A /= A'old
 simple_arrays.adb:754:22: warning: postcondition might fail, requires A /= A'old
 simple_arrays.adb:766:22: warning: postcondition might fail
 simple_arrays.adb:779:22: warning: postcondition might fail
-simple_arrays.adb:796:7: warning: assertion might fail, requires A(42) = 69
-simple_arrays.adb:804:7: warning: assertion might fail, requires A(I) = 69
+simple_arrays.adb:796:22: warning: assertion might fail, requires A(42) = 69
+simple_arrays.adb:804:22: warning: assertion might fail, requires A(I) = 69
 simple_arrays.adb:810:22: warning: postcondition might fail, requires A(42) = 69
 simple_arrays.adb:820:22: warning: postcondition might fail, requires A(I) = 69
 simple_arrays.adb:829:22: warning: postcondition might fail, requires A(42) = 1337

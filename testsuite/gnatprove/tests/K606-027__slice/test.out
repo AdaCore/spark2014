@@ -1,5 +1,5 @@
-fb20a00.adb:9:7: info: range check proved
-fb20a00.adb:10:7: info: range check proved
+fb20a00.adb:9:07: info: range check proved
+fb20a00.adb:10:07: info: range check proved
 fb20a00.adb:18:10: info: range check proved
 fb20a00.adb:25:24: warning: "Ret" might not be initialized
 fb20a00.adb:25:38: info: range check proved

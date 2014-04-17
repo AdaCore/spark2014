@@ -8,10 +8,10 @@ deceleration_curve.adb:41:34: info: division check proved
 deceleration_curve.adb:41:34: info: overflow check proved
 deceleration_curve.adb:41:48: info: division check proved
 deceleration_curve.adb:41:48: info: overflow check proved
-deceleration_curve.adb:42:10: warning: assertion might fail, requires Speed_t(Minimum_Valid_Acceleration) / Minimum_Valid_Speed) <= Speed_t(Acceleration) / speed
+deceleration_curve.adb:43:14: warning: assertion might fail, requires Speed_t(Minimum_Valid_Acceleration) / Minimum_Valid_Speed) <= Speed_t(Acceleration) / speed
 deceleration_curve.adb:44:38: info: division check proved
 deceleration_curve.adb:44:38: warning: overflow check might fail
-deceleration_curve.adb:45:10: warning: assertion might fail, requires Speed_t(Minimum_Valid_Acceleration) / Minimum_Valid_Speed) * Speed_t(Distance_Resolution) <= (Speed_t(Acceleration) / speed) * Distance_Resolution
+deceleration_curve.adb:46:14: warning: assertion might fail, requires Speed_t(Minimum_Valid_Acceleration) / Minimum_Valid_Speed) * Speed_t(Distance_Resolution) <= (Speed_t(Acceleration) / speed) * Distance_Resolution
 deceleration_curve.adb:48:39: info: division check proved
 deceleration_curve.adb:48:39: warning: overflow check might fail
 deceleration_curve.adb:48:48: warning: overflow check might fail
@@ -25,7 +25,7 @@ deceleration_curve.adb:59:25: warning: overflow check might fail
 deceleration_curve.adb:61:31: warning: overflow check might fail
 deceleration_curve.adb:70:36: info: division check proved
 deceleration_curve.adb:70:36: info: range check proved
-deceleration_curve.adb:82:9: info: precondition proved
+deceleration_curve.adb:82:09: info: precondition proved
 deceleration_curve.adb:85:47: warning: "Braking_Curve.Curve" might not be initialized
 deceleration_curve.adb:90:19: warning: overflow check might fail
 deceleration_curve.adb:90:21: warning: assuming "Sqrt" has no effect on global items
@@ -40,7 +40,7 @@ deceleration_curve.adb:92:46: info: overflow check proved
 deceleration_curve.adb:92:46: info: range check proved
 deceleration_curve.adb:97:36: warning: overflow check might fail
 deceleration_curve.adb:97:36: warning: range check might fail
-deceleration_curve.adb:107:9: warning: precondition might fail
+deceleration_curve.adb:107:09: warning: precondition might fail
 deceleration_curve.adb:108:10: warning: assuming "Put" has no effect on global items
 deceleration_curve.adb:108:10: warning: no Global contract available for "Put"
 deceleration_curve.adb:109:10: warning: assuming "Put" has no effect on global items
@@ -50,7 +50,7 @@ deceleration_curve.adb:110:10: warning: no Global contract available for "Put"
 deceleration_curve.adb:111:12: warning: precondition might fail
 deceleration_curve.adb:112:10: warning: assuming "New_Line" has no effect on global items
 deceleration_curve.adb:112:10: warning: no Global contract available for "New_Line"
-deceleration_curve.ads:27:6: info: precondition proved
+deceleration_curve.ads:27:06: info: precondition proved
 deceleration_curve.ads:84:14: warning: subprogram "Print_Curve" has no effect
 deceleration_curve_test.adb:5:11: warning: "appendix_a_3_1.m_nvavadh" might not be initialized after elaboration of main program "Deceleration_Curve_Test"
 deceleration_curve_test.adb:5:11: warning: "deceleration_curve.minimum_valid_speed" might not be initialized after elaboration of main program "Deceleration_Curve_Test"
@@ -59,9 +59,9 @@ deceleration_curve_test.adb:5:11: warning: "sec_3_13_2_monitoring_inputs.kdry_rs
 deceleration_curve_test.adb:5:11: warning: "sec_3_13_2_monitoring_inputs.kwet_rst_model" might not be initialized after elaboration of main program "Deceleration_Curve_Test"
 deceleration_curve_test.adb:5:11: warning: subprogram "Deceleration_Curve_Test" has no effect
 deceleration_curve_test.adb:6:31: info: precondition proved
-deceleration_curve_test.adb:15:4: warning: assertion might fail, requires Distance_To_Speed(initial_speed, 0.0, -1.0) = 1000
+deceleration_curve_test.adb:15:19: warning: assertion might fail, requires Distance_To_Speed(initial_speed, 0.0, -1.0) = 1000
 deceleration_curve_test.adb:15:19: warning: precondition might fail
-deceleration_curve_test.adb:17:4: info: precondition proved
+deceleration_curve_test.adb:17:04: info: precondition proved
 example.adb:4:13: info: overflow check proved
 example.adb:5:20: info: overflow check proved
 example.ads:5:14: info: postcondition proved
@@ -70,9 +70,9 @@ sec_3_13_2_monitoring_inputs.adb:37:27: info: precondition proved
 sec_3_13_2_monitoring_inputs.ads:70:15: info: length check proved
 sec_3_13_2_monitoring_inputs.ads:164:15: info: length check proved
 sec_3_13_2_monitoring_inputs.ads:169:15: info: length check proved
-sec_3_13_2_monitoring_inputs.ads:183:8: info: postcondition proved
+sec_3_13_2_monitoring_inputs.ads:183:08: info: postcondition proved
 sec_3_13_2_monitoring_inputs.ads:184:24: info: precondition proved
-sec_3_13_2_monitoring_inputs.ads:199:8: info: postcondition proved
+sec_3_13_2_monitoring_inputs.ads:199:08: info: postcondition proved
 sec_3_13_2_monitoring_inputs.ads:200:24: info: precondition proved
 sec_3_13_2_monitoring_inputs.ads:243:46: info: precondition proved
 sec_3_13_2_monitoring_inputs.ads:247:14: warning: subprogram "Dummy" has no effect
@@ -80,7 +80,7 @@ sec_3_13_4_gradient_accel_decel.ads:26:24: warning: unused variable "D"
 sec_3_13_6_deceleration.adb:26:37: warning: precondition might fail
 sec_3_13_6_deceleration.adb:26:37: warning: range check might fail
 sec_3_13_6_deceleration.ads:34:43: warning: unused variable "D"
-sec_3_13_6_deceleration.ads:39:6: warning: postcondition might fail, requires A_brake_emergency'Result = (Step_Function.get_value (A_brake_emergency_model, V))
+sec_3_13_6_deceleration.ads:39:06: warning: postcondition might fail, requires A_brake_emergency'Result = (Step_Function.get_value (A_brake_emergency_model, V))
 sec_3_13_6_deceleration.ads:40:37: info: range check proved
 sec_3_13_6_deceleration.ads:40:37: warning: precondition might fail
 sec_3_13_6_deceleration.ads:45:23: warning: precondition might fail
@@ -95,7 +95,7 @@ sec_3_13_6_deceleration.ads:47:22: warning: range check might fail
 sec_3_13_6_deceleration.ads:47:30: warning: precondition might fail
 sec_3_13_6_deceleration.ads:52:26: info: range check proved
 sec_3_13_6_deceleration.ads:52:26: warning: overflow check might fail
-sec_3_13_8_targets_decel_curves.adb:24:7: warning: precondition might fail
+sec_3_13_8_targets_decel_curves.adb:24:07: warning: precondition might fail
 sec_3_13_test.adb:5:11: warning: subprogram "Sec_3_13_Test" has no effect
 section_3_5_3.adb:41:54: info: overflow check proved
 section_3_5_3.ads:51:53: info: precondition proved
@@ -103,8 +103,8 @@ section_3_5_3.ads:68:14: warning: subprogram "Initiate_Communication_Session" ha
 section_3_5_3.ads:75:14: warning: postcondition might fail, requires Contains(Connections, destination)
 section_3_5_3.ads:80:14: warning: subprogram "Contact_Rbc" has no effect
 section_4_6.ads:102:24: warning: unused variable "Mode"
-section_4_6.ads:106:6: warning: contract cases might not be complete
-section_4_6.ads:106:6: warning: contract cases might not be disjoint
+section_4_6.ads:106:06: warning: contract cases might not be complete
+section_4_6.ads:106:06: warning: contract cases might not be disjoint
 section_4_6.ads:106:55: info: contract case proved
 section_4_6.ads:107:55: info: contract case proved
 section_4_6.ads:108:55: info: contract case proved
@@ -165,13 +165,13 @@ step_function.ads:56:12: warning: postcondition might fail, requires for some i 
 step_function.ads:58:27: warning: array index check might fail
 step_function.ads:59:36: warning: array index check might fail
 step_function.ads:60:50: warning: array index check might fail
-step_function.ads:72:6: warning: postcondition might fail
+step_function.ads:72:06: warning: postcondition might fail
 step_function.ads:73:28: warning: array index check might fail
 step_function.ads:74:50: warning: array index check might fail
 step_function.ads:78:26: warning: array index check might fail
 step_function.ads:80:53: warning: array index check might fail
-step_function.ads:86:6: info: postcondition proved
-step_function.ads:101:4: warning: postcondition might fail
+step_function.ads:86:06: info: postcondition proved
+step_function.ads:101:04: warning: postcondition might fail
 step_function.ads:106:30: warning: array index check might fail
 step_function.ads:106:56: info: index check proved
 step_function.ads:111:30: warning: array index check might fail
@@ -186,34 +186,34 @@ step_function_test.adb:7:15: info: length check proved
 step_function_test.adb:14:15: info: length check proved
 step_function_test.adb:21:15: info: length check proved
 step_function_test.adb:31:15: info: length check proved
-step_function_test.adb:41:4: warning: assertion might fail, requires Is_Valid(SFun1)
-step_function_test.adb:42:4: warning: assertion might fail, requires Is_Valid(SFun2)
-step_function_test.adb:43:4: warning: assertion might fail, requires Step_Function.Is_Valid(sfun3)
-step_function_test.adb:44:4: warning: assertion might fail, requires Step_Function.Is_Valid(sfun4)
-step_function_test.adb:46:4: warning: assertion might fail, requires Get_Value(SFun1, 0) = 
+step_function_test.adb:41:19: warning: assertion might fail, requires Is_Valid(SFun1)
+step_function_test.adb:42:19: warning: assertion might fail, requires Is_Valid(SFun2)
+step_function_test.adb:43:19: warning: assertion might fail, requires Step_Function.Is_Valid(sfun3)
+step_function_test.adb:44:19: warning: assertion might fail, requires Step_Function.Is_Valid(sfun4)
 step_function_test.adb:46:19: info: precondition proved
-step_function_test.adb:47:4: warning: assertion might fail, requires Get_Value(SFun1, 1) = 
+step_function_test.adb:46:19: warning: assertion might fail, requires Get_Value(SFun1, 0) =
 step_function_test.adb:47:19: info: precondition proved
-step_function_test.adb:48:4: warning: assertion might fail, requires Get_Value(SFun1, 3) = 
+step_function_test.adb:47:19: warning: assertion might fail, requires Get_Value(SFun1, 1) =
 step_function_test.adb:48:19: info: precondition proved
-step_function_test.adb:49:4: warning: assertion might fail, requires Get_Value(SFun1, 4) = 
+step_function_test.adb:48:19: warning: assertion might fail, requires Get_Value(SFun1, 3) =
 step_function_test.adb:49:19: info: precondition proved
-step_function_test.adb:50:4: warning: assertion might fail, requires Get_Value(SFun1, 5) = 
+step_function_test.adb:49:19: warning: assertion might fail, requires Get_Value(SFun1, 4) =
 step_function_test.adb:50:19: info: precondition proved
-step_function_test.adb:51:4: warning: assertion might fail, requires Get_Value(SFun1, Function_Range'Last) = 
+step_function_test.adb:50:19: warning: assertion might fail, requires Get_Value(SFun1, 5) =
 step_function_test.adb:51:19: info: precondition proved
-step_function_test.adb:54:4: warning: assertion might fail, requires Has_Same_Delimiters(SFun1, SFun2)
-step_function_test.adb:56:4: info: precondition proved
-step_function_test.adb:61:7: warning: assertion might fail, requires Get_Value(sfun_merge, i) = Min(Get_Value(sfun3, i), Get_Value(sfun4, i)
+step_function_test.adb:51:19: warning: assertion might fail, requires Get_Value(SFun1, Function_Range'Last) =
+step_function_test.adb:54:19: warning: assertion might fail, requires Has_Same_Delimiters(SFun1, SFun2)
+step_function_test.adb:56:04: info: precondition proved
 step_function_test.adb:61:22: info: precondition proved
+step_function_test.adb:61:22: warning: assertion might fail, requires Get_Value(sfun_merge, i) = Min(Get_Value(sfun3, i), Get_Value(sfun4, i)
 step_function_test.adb:62:28: info: precondition proved
 step_function_test.adb:62:49: info: precondition proved
-step_function_test.adb:65:4: warning: assertion might fail, requires Minimum_Until_Point(sfun4, 1) = 
 step_function_test.adb:65:19: info: precondition proved
-step_function_test.adb:66:4: warning: assertion might fail, requires Minimum_Until_Point(sfun4, 5) = 
+step_function_test.adb:65:19: warning: assertion might fail, requires Minimum_Until_Point(sfun4, 1) =
 step_function_test.adb:66:19: info: precondition proved
-step_function_test.adb:67:4: warning: assertion might fail, requires Minimum_Until_Point(sfun_merge, 11) = 
+step_function_test.adb:66:19: warning: assertion might fail, requires Minimum_Until_Point(sfun4, 5) =
 step_function_test.adb:67:19: info: precondition proved
+step_function_test.adb:67:19: warning: assertion might fail, requires Minimum_Until_Point(sfun_merge, 11) =
 units.adb:24:38: warning: overflow check might fail
 units.adb:24:48: info: division check proved
 units.adb:24:48: info: overflow check proved

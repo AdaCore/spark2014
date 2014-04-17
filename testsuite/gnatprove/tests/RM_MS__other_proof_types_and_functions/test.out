@@ -8,7 +8,7 @@ stack.adb:51:35: info: index check proved
 stack.adb:52:27: info: index check proved
 stack.adb:52:69: info: index check proved
 stack.adb:53:36: info: index check proved
-stack.ads:5:8: info: initial condition proved
+stack.ads:5:08: info: initial condition proved
 stack.ads:53:21: info: postcondition proved
 stack.ads:53:39: info: overflow check proved
 stack.ads:55:21: info: precondition proved
@@ -29,7 +29,7 @@ stack_external_prover.adb:41:35: warning: array index check might fail
 stack_external_prover.adb:42:27: warning: array index check might fail
 stack_external_prover.adb:42:69: warning: array index check might fail
 stack_external_prover.adb:43:36: warning: array index check might fail
-stack_external_prover.ads:5:8: warning: initial condition might fail
+stack_external_prover.ads:5:08: warning: initial condition might fail
 stack_external_prover.ads:42:21: warning: postcondition might fail
 stack_external_prover.ads:42:39: warning: overflow check might fail
 stack_external_prover.ads:48:21: warning: postcondition might fail, requires Count = Count'Old - 1
@@ -46,7 +46,7 @@ stack_functional_spec.adb:55:35: info: index check proved
 stack_functional_spec.adb:56:27: info: index check proved
 stack_functional_spec.adb:56:69: info: index check proved
 stack_functional_spec.adb:57:36: info: index check proved
-stack_functional_spec.ads:5:8: info: initial condition proved
+stack_functional_spec.ads:5:08: info: initial condition proved
 stack_functional_spec.ads:57:21: warning: postcondition might fail
 stack_functional_spec.ads:57:55: info: overflow check proved
 stack_functional_spec.ads:59:21: info: precondition proved

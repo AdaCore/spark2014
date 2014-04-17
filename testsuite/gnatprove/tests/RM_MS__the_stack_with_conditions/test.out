@@ -5,4 +5,4 @@ the_stack_with_conditions_14.adb:58:15: info: index check proved
 the_stack_with_conditions_14.adb:59:26: info: range check proved
 the_stack_with_conditions_14.adb:67:10: info: index check proved
 the_stack_with_conditions_14.adb:73:16: info: length check proved
-the_stack_with_conditions_14.ads:23:8: info: initial condition proved
+the_stack_with_conditions_14.ads:23:08: info: initial condition proved

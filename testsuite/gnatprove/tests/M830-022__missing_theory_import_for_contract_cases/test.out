@@ -1,4 +1,4 @@
-state_machine.adb:25:8: info: disjoint contract cases proved
+state_machine.adb:25:08: info: disjoint contract cases proved
 state_machine.adb:25:35: info: contract case proved
 state_machine.adb:26:35: info: contract case proved
 state_machine.adb:27:35: info: contract case proved
@@ -7,4 +7,4 @@ state_machine.adb:29:35: warning: contract case might fail
 state_machine.adb:36:20: info: overflow check proved
 state_machine.adb:39:17: info: overflow check proved
 state_machine.adb:41:20: info: overflow check proved
-state_machine.adb:44:9: warning: assertion might fail, requires false
+state_machine.adb:44:24: warning: assertion might fail, requires false

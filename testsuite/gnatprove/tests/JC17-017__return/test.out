@@ -1,15 +1,15 @@
 p.adb:4:19: info: postcondition proved
 p.adb:4:29: info: overflow check proved
-p.adb:15:9: info: overflow check proved
-p.adb:20:4: info: assertion proved
+p.adb:15:09: info: overflow check proved
+p.adb:20:04: info: assertion proved
 p.adb:20:69: info: overflow check proved
-p.adb:23:7: info: loop invariant initialization proved
-p.adb:23:7: info: loop invariant preservation proved
-p.adb:30:4: info: assertion proved
+p.adb:23:07: info: loop invariant initialization proved
+p.adb:23:07: info: loop invariant preservation proved
+p.adb:30:04: info: assertion proved
 p.adb:30:69: info: overflow check proved
-p.adb:33:7: info: loop invariant initialization proved
-p.adb:33:7: info: loop invariant preservation proved
-p.adb:41:4: info: assertion proved
+p.adb:33:07: info: loop invariant initialization proved
+p.adb:33:07: info: loop invariant preservation proved
+p.adb:41:04: info: assertion proved
 p.adb:41:69: info: overflow check proved
 p.adb:45:10: info: loop invariant initialization proved
 p.adb:45:10: info: loop invariant preservation proved

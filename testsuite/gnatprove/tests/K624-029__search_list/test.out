@@ -8,7 +8,7 @@ linked_list.adb:11:13: info: precondition proved
 linked_list.adb:15:10: info: precondition proved
 linked_list.ads:12:14: warning: postcondition might fail, requires Search'Result = No_Element and then not Contains (L, 0)) or else (Has_Element (L, Search'Result) and then Element (L, Search'Result) = 0 and then not Contains (First_To_Previous (L, Search'Result), 0)
 linked_list.ads:12:56: info: precondition proved
-linked_list.ads:13:7: info: precondition proved
-linked_list.ads:14:7: info: precondition proved
+linked_list.ads:13:07: info: precondition proved
+linked_list.ads:14:07: info: precondition proved
 linked_list.ads:15:15: info: precondition proved
 linked_list.ads:15:25: info: precondition proved

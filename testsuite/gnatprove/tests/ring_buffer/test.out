@@ -1,13 +1,13 @@
 harness.adb:3:11: warning: subprogram "Harness" has no effect
-harness.adb:10:4: info: precondition proved
-harness.adb:11:4: info: precondition proved
-harness.adb:12:4: info: precondition proved
-harness.adb:13:4: warning: assertion might fail, requires H = X
-harness.adb:14:4: info: precondition proved
-harness.adb:15:4: info: precondition proved
-harness.adb:16:4: warning: assertion might fail, requires H = Y
-harness.adb:17:4: info: precondition proved
-harness.adb:18:4: warning: assertion might fail, requires H = Z
+harness.adb:10:04: info: precondition proved
+harness.adb:11:04: info: precondition proved
+harness.adb:12:04: info: precondition proved
+harness.adb:13:19: warning: assertion might fail, requires H = X
+harness.adb:14:04: info: precondition proved
+harness.adb:15:04: info: precondition proved
+harness.adb:16:19: warning: assertion might fail, requires H = Y
+harness.adb:17:04: info: precondition proved
+harness.adb:18:19: warning: assertion might fail, requires H = Z
 ring_buf.adb:9:29: info: length check proved
 ring_buf.adb:15:36: info: division check proved
 ring_buf.adb:16:28: info: range check proved

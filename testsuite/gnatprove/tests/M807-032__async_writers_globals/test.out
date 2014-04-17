@@ -1,2 +1,2 @@
-async_globals.adb:24:7: warning: assertion might fail, requires X = Y
-async_globals.adb:34:7: warning: assertion might fail, requires X = Y
+async_globals.adb:24:22: warning: assertion might fail, requires X = Y
+async_globals.adb:34:22: warning: assertion might fail, requires X = Y

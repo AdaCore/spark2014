@@ -1,22 +1,22 @@
-arrays_in_records.adb:23:7: warning: assertion might fail, requires A.First_Array(17) = 23
-arrays_in_records.adb:30:7: warning: assertion might fail, requires A.First_Array(I) = 23
+arrays_in_records.adb:23:22: warning: assertion might fail, requires A.First_Array(17) = 23
+arrays_in_records.adb:30:22: warning: assertion might fail, requires A.First_Array(I) = 23
 arrays_in_records.adb:37:22: warning: postcondition might fail, requires A.First_Array(17) = 23
 arrays_in_records.adb:46:22: warning: postcondition might fail, requires A.First_Array(I) = 23
 arrays_in_records.adb:57:22: warning: postcondition might fail, requires A.First_Array(17) = 23
-arrays_in_records.adb:63:7: info: assertion proved
-arrays_in_records.adb:76:7: info: assertion proved
+arrays_in_records.adb:63:07: info: assertion proved
+arrays_in_records.adb:76:07: info: assertion proved
 arrays_in_records.adb:83:22: warning: postcondition might fail, requires A.First_Array(17) = 42
 arrays_in_records.adb:93:22: warning: postcondition might fail, requires A.First_Array(I) = 42
 arrays_in_records.adb:105:22: warning: postcondition might fail, requires A.First_Array(17) = 42
-arrays_in_records.adb:112:7: info: assertion proved
+arrays_in_records.adb:112:07: info: assertion proved
 arrays_in_records.adb:119:22: warning: postcondition might fail, requires A.First_Array(I) = 42
-arrays_in_records.adb:126:7: info: assertion proved
+arrays_in_records.adb:126:07: info: assertion proved
 arrays_in_records.adb:133:22: warning: postcondition might fail, requires A.First_Array(17) /= 23
 arrays_in_records.adb:144:22: warning: postcondition might fail, requires A.First_Array(I) /= 23
 arrays_in_records.adb:156:22: warning: postcondition might fail, requires A.First_Array(17) /= 23
-arrays_in_records.adb:163:7: info: assertion proved
+arrays_in_records.adb:163:07: info: assertion proved
 arrays_in_records.adb:171:22: warning: postcondition might fail, requires A.First_Array(I) /= 23
-arrays_in_records.adb:178:7: info: assertion proved
+arrays_in_records.adb:178:07: info: assertion proved
 arrays_in_records.adb:185:22: warning: postcondition might fail, requires A /= A'old
 arrays_in_records.adb:198:22: warning: postcondition might fail, requires A /= A'old
 arrays_in_records.adb:212:22: warning: postcondition might fail, requires A /= A'old

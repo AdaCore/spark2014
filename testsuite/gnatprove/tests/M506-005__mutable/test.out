@@ -1,6 +1,6 @@
 const.adb:6:13: info: discriminant check proved
 const.adb:6:19: warning: array index check might fail
-const.adb:12:6: info: discriminant check proved, in call inlined at const.adb:21
+const.adb:12:06: info: discriminant check proved, in call inlined at const.adb:21
 const.adb:22:09: warning: unused assignment
 const.adb:22:13: info: discriminant check proved
 const.adb:22:19: warning: array index check might fail

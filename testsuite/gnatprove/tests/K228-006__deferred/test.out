@@ -1,6 +1,6 @@
 client.adb:3:11: warning: subprogram "Client" has no effect
-client.adb:6:7: info: assertion proved
-client.adb:8:7: info: assertion proved
-client.adb:10:7: info: assertion proved
+client.adb:6:07: info: assertion proved
+client.adb:8:07: info: assertion proved
+client.adb:10:07: info: assertion proved
 const.ads:3:45: info: postcondition proved
 const.ads:4:46: info: postcondition proved

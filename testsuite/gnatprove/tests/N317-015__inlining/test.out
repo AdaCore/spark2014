@@ -18,34 +18,34 @@ array_arith.ads:9:14: info: postcondition proved
 array_arith.ads:12:14: info: postcondition proved
 array_arith.ads:15:35: warning: postcondition might fail, requires X(J) = Natural(J) + 1
 array_arith.ads:18:14: info: postcondition proved
-ident.adb:44:7: warning: assertion might fail, requires Res = X
-ident.adb:46:7: info: assertion proved
-ident.adb:48:7: info: assertion proved
-ident.adb:51:7: warning: assertion might fail, requires Y = 9
-ident.adb:53:7: info: assertion proved
-ident.adb:55:7: info: assertion proved
+ident.adb:44:22: warning: assertion might fail, requires Res = X
+ident.adb:46:07: info: assertion proved
+ident.adb:48:07: info: assertion proved
+ident.adb:51:22: warning: assertion might fail, requires Y = 9
+ident.adb:53:07: info: assertion proved
+ident.adb:55:07: info: assertion proved
 ident.ads:6:14: warning: subprogram "Test" has no effect
 incr_expr_fun.adb:4:62: warning: overflow check might fail
 incr_expr_fun.adb:6:63: warning: overflow check might fail
 incr_expr_fun.adb:8:58: warning: overflow check might fail
 incr_expr_fun.adb:11:63: warning: overflow check might fail
-incr_expr_fun.adb:16:7: info: assertion proved
+incr_expr_fun.adb:16:07: info: assertion proved
 incr_expr_fun.adb:16:39: info: overflow check proved
-incr_expr_fun.adb:17:7: info: assertion proved
+incr_expr_fun.adb:17:07: info: assertion proved
 incr_expr_fun.adb:17:43: info: overflow check proved
-incr_expr_fun.adb:18:7: info: assertion proved
+incr_expr_fun.adb:18:07: info: assertion proved
 incr_expr_fun.adb:18:44: info: overflow check proved
-incr_expr_fun.adb:19:7: info: assertion proved
+incr_expr_fun.adb:19:07: info: assertion proved
 incr_expr_fun.adb:19:44: info: overflow check proved
-incr_expr_fun.adb:20:7: info: assertion proved
+incr_expr_fun.adb:20:07: info: assertion proved
 incr_expr_fun.adb:20:40: info: overflow check proved
-incr_expr_fun.adb:21:7: info: assertion proved
+incr_expr_fun.adb:21:07: info: assertion proved
 incr_expr_fun.adb:21:45: info: overflow check proved
-incr_expr_fun.adb:22:7: info: assertion proved
+incr_expr_fun.adb:22:07: info: assertion proved
 incr_expr_fun.adb:22:45: info: overflow check proved
-incr_expr_fun.adb:23:7: info: assertion proved
+incr_expr_fun.adb:23:07: info: assertion proved
 incr_expr_fun.adb:23:40: info: overflow check proved
-incr_expr_fun.adb:24:7: info: assertion proved
+incr_expr_fun.adb:24:07: info: assertion proved
 incr_expr_fun.adb:24:45: info: overflow check proved
 incr_expr_fun.ads:4:57: warning: overflow check might fail
 incr_expr_fun.ads:7:61: warning: overflow check might fail

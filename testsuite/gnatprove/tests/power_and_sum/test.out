@@ -3,25 +3,25 @@ power_and_sum.adb:9:10: warning: loop invariant might fail in first iteration
 power_and_sum.adb:9:47: warning: range check might fail
 power_and_sum.adb:10:27: warning: overflow check might fail
 power_and_sum.adb:11:17: warning: overflow check might fail
-power_and_sum.adb:20:10: warning: loop invariant might fail after first iteration, requires 2*TotalSum = I*(I-1
-power_and_sum.adb:20:10: warning: loop invariant might fail in first iteration, requires 2*TotalSum = I*(I-1
+power_and_sum.adb:20:33: warning: loop invariant might fail after first iteration, requires 2*TotalSum = I*(I-1
+power_and_sum.adb:20:33: warning: loop invariant might fail in first iteration, requires 2*TotalSum = I*(I-1
 power_and_sum.adb:22:31: warning: overflow check might fail
 power_and_sum.adb:23:17: warning: overflow check might fail
-power_and_sum.adb:25:7: warning: assertion might fail, requires 2*TotalSum = N*(N+1
+power_and_sum.adb:25:22: warning: assertion might fail, requires 2*TotalSum = N*(N+1
 power_and_sum.adb:26:17: warning: range check might fail
 power_and_sum.adb:31:07: warning: initialization has no effect
 power_and_sum.adb:33:07: warning: initialization has no effect
-power_and_sum.adb:36:10: warning: loop invariant might fail after first iteration, requires 6*TotalSum = (I-1)*I*(I+1
-power_and_sum.adb:36:10: warning: loop invariant might fail in first iteration, requires 6*TotalSum = (I-1)*I*(I+1
-power_and_sum.adb:41:13: warning: loop invariant might fail after first iteration, requires 2*InnerSum = J*(J-1
-power_and_sum.adb:41:13: warning: loop invariant might fail in first iteration, requires 2*InnerSum = J*(J-1
+power_and_sum.adb:36:33: warning: loop invariant might fail after first iteration, requires 6*TotalSum = (I-1)*I*(I+1
+power_and_sum.adb:36:33: warning: loop invariant might fail in first iteration, requires 6*TotalSum = (I-1)*I*(I+1
+power_and_sum.adb:41:36: warning: loop invariant might fail after first iteration, requires 2*InnerSum = J*(J-1
+power_and_sum.adb:41:36: warning: loop invariant might fail in first iteration, requires 2*InnerSum = J*(J-1
 power_and_sum.adb:43:34: warning: overflow check might fail
 power_and_sum.adb:44:20: warning: overflow check might fail
-power_and_sum.adb:46:10: warning: assertion might fail, requires J = I + 1
-power_and_sum.adb:47:10: warning: assertion might fail, requires 2*InnerSum = I*(I+1
+power_and_sum.adb:46:25: warning: assertion might fail, requires J = I + 1
+power_and_sum.adb:47:25: warning: assertion might fail, requires 2*InnerSum = I*(I+1
 power_and_sum.adb:48:31: warning: overflow check might fail
 power_and_sum.adb:49:17: warning: overflow check might fail
-power_and_sum.adb:51:7: warning: assertion might fail, requires 6*TotalSum = N*(N+1)*(N+2
+power_and_sum.adb:51:22: warning: assertion might fail, requires 6*TotalSum = N*(N+1)*(N+2
 power_and_sum.adb:52:17: warning: range check might fail
 power_and_sum.ads:3:14: warning: postcondition might fail, requires X ** N = Result
 power_and_sum.ads:6:14: warning: postcondition might fail, requires 2 * Result = N * (N+1

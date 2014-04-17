@@ -1,20 +1,20 @@
 null_concat.adb:7:37: info: range check proved
 null_concat.adb:8:37: info: range check proved
-null_concat.adb:10:7: info: assertion proved
-null_concat.adb:11:7: info: assertion proved
+null_concat.adb:10:07: info: assertion proved
+null_concat.adb:11:07: info: assertion proved
 null_concat.adb:11:26: info: index check proved
-null_concat.adb:12:7: info: assertion proved
-null_concat.adb:13:7: info: assertion proved
+null_concat.adb:12:07: info: assertion proved
+null_concat.adb:13:07: info: assertion proved
 null_concat.adb:13:28: info: index check proved
 null_concat.adb:19:37: info: range check proved
-null_concat.adb:21:7: info: assertion proved
-null_concat.adb:22:7: warning: assertion might fail, requires A3 (1) = 2
+null_concat.adb:21:07: info: assertion proved
+null_concat.adb:22:22: warning: assertion might fail, requires A3 (1) = 2
 null_concat.adb:22:26: info: index check proved
 null_concat.ads:6:14: warning: subprogram "P_Good" has no effect
 null_concat.ads:8:14: warning: subprogram "P_Bad" has no effect
 purecat.adb:1:11: warning: subprogram "Purecat" has no effect
 purecat.adb:2:29: info: length check proved
 purecat.adb:4:16: warning: unused initial value of "Y"
-purecat.adb:9:6: info: assertion proved
-purecat.adb:11:6: info: assertion proved
-purecat.adb:14:3: info: precondition proved
+purecat.adb:9:06: info: assertion proved
+purecat.adb:11:06: info: assertion proved
+purecat.adb:14:03: info: precondition proved

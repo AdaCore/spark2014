@@ -26,8 +26,10 @@
 with Ada.Containers;
 with Ada.Containers.Hashed_Maps;
 
+with AA_Util;   use AA_Util;
 with Atree;     use Atree;
 with Einfo;     use Einfo;
+with Lib;       use Lib;
 with Namet;     use Namet;
 with Sem_Util;  use Sem_Util;
 with Sinfo;     use Sinfo;
@@ -128,6 +130,10 @@ package Gnat2Why.Nodes is
         Instantiation_Location (Loc)
       else
         Loc);
+
+   function Unit_Name return String is
+     (File_Name_Without_Suffix
+          (Get_Name_String (Unit_File_Name (Main_Unit))));
 
    function File_Name (Loc : Source_Ptr) return String is
      (Get_Name_String (File_Name

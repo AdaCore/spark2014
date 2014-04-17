@@ -15,9 +15,9 @@ arithmetic.adb:34:10: info: loop invariant preservation proved
 arithmetic.adb:34:48: info: overflow check proved
 arithmetic.adb:45:14: info: overflow check proved
 arithmetic.adb:45:14: info: range check proved
-arithmetic.adb:59:7: warning: assertion might fail, requires Double_A * Double_B /= C
+arithmetic.adb:59:22: warning: assertion might fail, requires Double_A * Double_B /= C
 arithmetic.adb:59:31: warning: overflow check might fail
-arithmetic.adb:71:7: warning: assertion might fail, requires A * B /= C
+arithmetic.adb:71:22: warning: assertion might fail, requires A * B /= C
 arithmetic.adb:71:24: warning: overflow check might fail
 arithmetic.adb:76:21: warning: overflow check might fail
 arithmetic.adb:77:19: info: postcondition proved
@@ -33,15 +33,15 @@ arithmetic.adb:90:13: info: loop invariant initialization proved
 arithmetic.adb:90:13: info: loop invariant preservation proved
 arithmetic.adb:90:42: info: overflow check proved
 arithmetic.adb:97:19: info: postcondition proved
-arithmetic.adb:103:7: info: assertion proved
+arithmetic.adb:103:07: info: assertion proved
 arithmetic.adb:107:10: info: loop invariant initialization proved
 arithmetic.adb:107:10: info: loop invariant preservation proved
 arithmetic.adb:113:19: warning: postcondition might fail, requires Halve_B'Result + Halve_B'Result = N  or Halve_B'Result + Halve_B'Result + 1 = N
-arithmetic.adb:119:7: info: assertion proved
+arithmetic.adb:119:07: info: assertion proved
 arithmetic.adb:123:10: info: loop invariant initialization proved
 arithmetic.adb:123:10: warning: loop invariant might fail after first iteration
 arithmetic.adb:130:19: info: postcondition proved
-arithmetic.adb:136:7: info: assertion proved
+arithmetic.adb:136:07: info: assertion proved
 arithmetic.adb:140:10: info: loop invariant initialization proved
 arithmetic.adb:140:10: info: loop invariant preservation proved
 arithmetic.adb:148:19: warning: postcondition might fail, requires Halve_D'Result = N / 2
@@ -81,16 +81,16 @@ arithmetic.adb:257:17: info: overflow check proved
 arithmetic.adb:257:22: warning: divide by zero might fail
 arithmetic.adb:257:30: info: division check proved
 arithmetic.adb:257:37: warning: overflow check might fail
-arithmetic.adb:266:7: warning: assertion might fail, requires 101 rem A /= 0
+arithmetic.adb:266:22: warning: assertion might fail, requires 101 rem A /= 0
 arithmetic.adb:266:26: info: division check proved
-arithmetic.adb:277:7: warning: assertion might fail, requires 100 rem A /= 0
+arithmetic.adb:277:22: warning: assertion might fail, requires 100 rem A /= 0
 arithmetic.adb:277:26: info: division check proved
 arithmetic.adb:283:19: warning: postcondition might fail
 arithmetic.adb:288:29: info: range check proved
 arithmetic.adb:288:34: info: overflow check proved
 arithmetic.adb:288:42: info: overflow check proved
 arithmetic.adb:288:47: info: division check proved
-arithmetic.adb:293:6: warning: postcondition might fail
+arithmetic.adb:293:06: warning: postcondition might fail
 arithmetic.adb:298:29: info: range check proved
 arithmetic.adb:298:34: info: overflow check proved
 arithmetic.adb:298:42: info: overflow check proved

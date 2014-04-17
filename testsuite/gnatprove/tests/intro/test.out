@@ -12,12 +12,12 @@ sat.adb:14:12: info: range check proved
 sat.adb:19:12: info: overflow check proved
 sat.adb:20:12: info: overflow check proved
 sat.adb:20:12: info: range check proved
-sat.ads:15:6: info: complete contract cases proved
-sat.ads:15:6: info: disjoint contract cases proved
+sat.ads:15:06: info: complete contract cases proved
+sat.ads:15:06: info: disjoint contract cases proved
 sat.ads:15:41: info: contract case proved
 sat.ads:16:41: info: contract case proved
-sat.ads:19:6: info: complete contract cases proved
-sat.ads:19:6: info: disjoint contract cases proved
+sat.ads:19:06: info: complete contract cases proved
+sat.ads:19:06: info: disjoint contract cases proved
 sat.ads:19:27: info: overflow check proved
 sat.ads:19:41: info: contract case proved
 sat.ads:19:60: info: overflow check proved

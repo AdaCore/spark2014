@@ -25,10 +25,8 @@
 
 with String_Utils;          use String_Utils;
 
-with AA_Util;               use AA_Util;
 with Csets;                 use Csets;
 with Elists;                use Elists;
-with Lib;                   use Lib;
 with Nlists;                use Nlists;
 with Pprint;                use Pprint;
 with Sem_Eval;              use Sem_Eval;

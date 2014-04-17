@@ -1,4 +1,4 @@
-p.adb:6:8: info: assertion proved
+p.adb:6:08: info: assertion proved
 p.ads:3:15: info: postcondition proved
 p.ads:3:53: info: range check proved
 p.ads:3:56: warning: overflow check might fail

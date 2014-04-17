@@ -84,7 +84,7 @@ prefixsum.ads:38:14: warning: postcondition might fail
 prefixsum.ads:40:17: info: precondition proved
 prefixsum.ads:43:07: warning: unused initial value of "Ghost"
 prefixsum.ads:48:17: info: precondition proved
-prefixsum.ads:50:8: warning: postcondition might fail
+prefixsum.ads:50:08: warning: postcondition might fail
 prefixsum_expanded.adb:11:10: info: loop invariant initialization proved
 prefixsum_expanded.adb:11:10: warning: loop invariant might fail after first iteration
 prefixsum_expanded.adb:12:40: info: range check proved
@@ -108,10 +108,10 @@ prefixsum_expanded.adb:79:31: warning: range check might fail
 prefixsum_expanded.adb:79:39: info: overflow check proved
 prefixsum_expanded.adb:81:25: info: overflow check proved
 prefixsum_expanded.adb:81:25: info: range check proved
-prefixsum_expanded.adb:84:7: warning: assertion might fail
+prefixsum_expanded.adb:84:07: warning: assertion might fail
 prefixsum_expanded.adb:116:27: info: division check proved
 prefixsum_expanded.adb:117:15: warning: unused assignment
-prefixsum_expanded.adb:118:7: warning: assertion might fail
+prefixsum_expanded.adb:118:07: warning: assertion might fail
 prefixsum_expanded.adb:136:10: warning: loop invariant might fail after first iteration
 prefixsum_expanded.adb:136:10: warning: loop invariant might fail in first iteration
 prefixsum_expanded.adb:139:36: info: division check proved
@@ -140,7 +140,7 @@ prefixsum_expanded.adb:187:32: warning: overflow check might fail
 prefixsum_expanded.adb:187:32: warning: range check might fail
 prefixsum_expanded.adb:187:40: info: overflow check proved
 prefixsum_expanded.adb:189:25: info: division check proved
-prefixsum_expanded.adb:192:7: warning: assertion might fail
+prefixsum_expanded.adb:192:07: warning: assertion might fail
 prefixsum_expanded.ads:25:23: info: overflow check proved
 prefixsum_expanded.ads:25:31: info: overflow check proved
 prefixsum_expanded.ads:25:39: info: overflow check proved
@@ -157,7 +157,7 @@ prefixsum_expanded.ads:43:14: warning: postcondition might fail
 prefixsum_expanded.ads:45:17: info: precondition proved
 prefixsum_expanded.ads:48:07: warning: unused initial value of "Ghost"
 prefixsum_expanded.ads:53:17: info: precondition proved
-prefixsum_expanded.ads:55:8: warning: postcondition might fail
+prefixsum_expanded.ads:55:08: warning: postcondition might fail
 prefixsum_general.adb:12:10: info: loop invariant initialization proved
 prefixsum_general.adb:12:10: warning: loop invariant might fail after first iteration
 prefixsum_general.adb:13:22: info: division check proved

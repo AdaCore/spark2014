@@ -130,11 +130,10 @@ package Why.Gen.Expr is
 
    function New_Located_Label
      (N         : Node_Id;
-      Is_VC     : Boolean;
       Left_Most : Boolean := False) return Name_Id;
    --  Return a label that contains the Ada Sloc of the node
 
-   function New_Pretty_Label (N : Node_Id) return Name_Id;
+   function New_Sub_VC_Marker (N : Node_Id) return Name_Id;
    --  Return a label that contains the pretty printing for the given node
 
    function New_VC_Call
@@ -163,10 +162,6 @@ package Why.Gen.Expr is
 
    function Cur_Subp_Sloc return Name_Id;
    --  Return a label that identifies the current subprogram or package
-
-   function Cur_Subp_Name_Label return Name_Id;
-   --  Return a label that contains the name of the current subprogram or
-   --  package.
 
    function New_Range_Expr
      (Domain    : EW_Domain;

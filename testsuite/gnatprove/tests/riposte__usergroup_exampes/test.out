@@ -8,4 +8,4 @@ usergroup_examples.adb:51:32: warning: array index check might fail
 usergroup_examples.adb:59:19: warning: postcondition might fail, requires Example_5'Result > 0
 usergroup_examples.adb:73:22: info: postcondition proved
 usergroup_examples.adb:93:22: info: postcondition proved
-usergroup_examples.adb:104:7: info: assertion proved
+usergroup_examples.adb:104:07: info: assertion proved

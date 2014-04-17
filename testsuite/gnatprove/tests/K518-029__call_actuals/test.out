@@ -12,7 +12,9 @@ call_actuals.adb:31:12: warning: range check might fail
 call_actuals.adb:31:14: warning: range check might fail
 call_actuals.adb:32:14: info: range check proved
 call_actuals.adb:32:17: warning: range check might fail
+call_actuals.adb:38:11: info: range check proved
 call_actuals.adb:38:11: warning: range check might fail
+call_actuals.adb:38:15: info: range check proved
 call_actuals.adb:38:15: warning: range check might fail
 call_actuals.adb:41:11: info: range check proved
 call_actuals.adb:41:18: info: range check proved

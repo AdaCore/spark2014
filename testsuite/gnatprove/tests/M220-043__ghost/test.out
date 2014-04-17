@@ -1,4 +1,4 @@
-semantics.adb:9:7: warning: assertion might fail, requires Formal + Ghost_Func > 0
+semantics.adb:9:22: warning: assertion might fail, requires Formal + Ghost_Func > 0
 semantics.adb:9:29: warning: overflow check might fail
 semantics.adb:10:29: warning: overflow check might fail
 semantics.adb:13:27: warning: overflow check might fail

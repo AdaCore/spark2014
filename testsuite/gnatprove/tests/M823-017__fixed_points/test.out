@@ -1,54 +1,54 @@
 binary_fixed.adb:7:12: info: overflow check proved
 binary_fixed.adb:7:12: info: range check proved
-binary_fixed.adb:8:7: info: assertion proved
-binary_fixed.adb:10:7: info: assertion proved
+binary_fixed.adb:8:07: info: assertion proved
+binary_fixed.adb:10:07: info: assertion proved
 binary_fixed.adb:17:14: info: overflow check proved
 binary_fixed.adb:17:14: info: range check proved
-binary_fixed.adb:18:7: info: assertion proved
+binary_fixed.adb:18:07: info: assertion proved
 binary_fixed.adb:19:14: info: overflow check proved
 binary_fixed.adb:19:14: info: range check proved
-binary_fixed.adb:20:7: info: assertion proved
-binary_fixed.adb:22:7: info: assertion proved
+binary_fixed.adb:20:07: info: assertion proved
+binary_fixed.adb:22:07: info: assertion proved
 binary_fixed.adb:30:14: info: overflow check proved
 binary_fixed.adb:30:14: info: range check proved
-binary_fixed.adb:31:7: info: assertion proved
+binary_fixed.adb:31:07: info: assertion proved
 binary_fixed.adb:32:14: info: overflow check proved
 binary_fixed.adb:32:14: info: range check proved
-binary_fixed.adb:33:7: info: assertion proved
-binary_fixed.adb:35:7: info: assertion proved
+binary_fixed.adb:33:07: info: assertion proved
+binary_fixed.adb:35:07: info: assertion proved
 binary_fixed.adb:43:14: info: overflow check proved
 binary_fixed.adb:43:14: info: range check proved
-binary_fixed.adb:44:7: info: assertion proved
+binary_fixed.adb:44:07: info: assertion proved
 binary_fixed.adb:44:28: info: overflow check proved
 binary_fixed.adb:45:14: info: overflow check proved
 binary_fixed.adb:45:14: info: range check proved
-binary_fixed.adb:46:7: info: assertion proved
+binary_fixed.adb:46:07: info: assertion proved
 binary_fixed.adb:46:28: info: overflow check proved
 binary_fixed.adb:47:14: info: overflow check proved
 binary_fixed.adb:47:14: info: range check proved
-binary_fixed.adb:48:7: info: assertion proved
+binary_fixed.adb:48:07: info: assertion proved
 binary_fixed.adb:48:28: info: overflow check proved
 binary_fixed.adb:49:16: info: overflow check proved
 binary_fixed.adb:49:16: info: range check proved
-binary_fixed.adb:50:7: info: assertion proved
+binary_fixed.adb:50:07: info: assertion proved
 binary_fixed.adb:50:28: info: overflow check proved
 binary_fixed.adb:53:14: info: overflow check proved
 binary_fixed.adb:53:14: info: range check proved
-binary_fixed.adb:54:7: info: assertion proved
+binary_fixed.adb:54:07: info: assertion proved
 binary_fixed.adb:54:28: info: overflow check proved
 binary_fixed.adb:64:17: info: division check proved
 binary_fixed.adb:64:17: info: overflow check proved
 binary_fixed.adb:64:17: info: range check proved
-binary_fixed.adb:65:10: warning: assertion might fail, requires Z = 
+binary_fixed.adb:65:25: warning: assertion might fail, requires Z =
 binary_fixed.adb:67:14: info: division check proved
 binary_fixed.adb:67:14: info: overflow check proved
 binary_fixed.adb:67:14: info: range check proved
-binary_fixed.adb:68:7: warning: assertion might fail, requires Z = Inv_Y * X
+binary_fixed.adb:68:22: warning: assertion might fail, requires Z = Inv_Y * X
 binary_fixed.adb:68:32: warning: overflow check might fail
 binary_fixed.adb:69:14: info: division check proved
 binary_fixed.adb:69:14: warning: overflow check might fail
 binary_fixed.adb:69:14: warning: range check might fail
-binary_fixed.adb:70:7: warning: assertion might fail, requires X in 2 * Z - T'Small .. 2 * Z + T'small
+binary_fixed.adb:70:22: warning: assertion might fail, requires X in 2 * Z - T'Small .. 2 * Z + T'small
 binary_fixed.adb:70:29: info: overflow check proved
 binary_fixed.adb:70:33: info: overflow check proved
 binary_fixed.adb:70:48: info: overflow check proved
@@ -56,7 +56,7 @@ binary_fixed.adb:70:52: info: overflow check proved
 binary_fixed.adb:71:14: info: division check proved
 binary_fixed.adb:71:14: info: overflow check proved
 binary_fixed.adb:71:14: info: range check proved
-binary_fixed.adb:72:7: info: assertion proved
+binary_fixed.adb:72:07: info: assertion proved
 binary_fixed.adb:72:29: info: overflow check proved
 binary_fixed.adb:72:33: info: overflow check proved
 binary_fixed.adb:72:48: info: overflow check proved
@@ -99,55 +99,55 @@ binary_fixed.ads:20:14: warning: subprogram "Test_Type_Conversion" has no effect
 binary_fixed.ads:23:14: warning: subprogram "Test_Compare" has no effect
 decimal_fixed.adb:7:12: info: overflow check proved
 decimal_fixed.adb:7:12: info: range check proved
-decimal_fixed.adb:8:7: info: assertion proved
-decimal_fixed.adb:10:7: info: assertion proved
+decimal_fixed.adb:8:07: info: assertion proved
+decimal_fixed.adb:10:07: info: assertion proved
 decimal_fixed.adb:17:14: info: overflow check proved
 decimal_fixed.adb:17:14: info: range check proved
-decimal_fixed.adb:18:7: info: assertion proved
+decimal_fixed.adb:18:07: info: assertion proved
 decimal_fixed.adb:19:14: info: overflow check proved
 decimal_fixed.adb:19:14: info: range check proved
-decimal_fixed.adb:20:7: info: assertion proved
-decimal_fixed.adb:22:7: info: assertion proved
+decimal_fixed.adb:20:07: info: assertion proved
+decimal_fixed.adb:22:07: info: assertion proved
 decimal_fixed.adb:30:14: info: overflow check proved
 decimal_fixed.adb:30:14: info: range check proved
-decimal_fixed.adb:31:7: info: assertion proved
+decimal_fixed.adb:31:07: info: assertion proved
 decimal_fixed.adb:32:14: info: overflow check proved
 decimal_fixed.adb:32:14: info: range check proved
-decimal_fixed.adb:33:7: info: assertion proved
-decimal_fixed.adb:35:7: info: assertion proved
+decimal_fixed.adb:33:07: info: assertion proved
+decimal_fixed.adb:35:07: info: assertion proved
 decimal_fixed.adb:43:14: info: overflow check proved
 decimal_fixed.adb:43:14: info: range check proved
-decimal_fixed.adb:44:7: info: assertion proved
+decimal_fixed.adb:44:07: info: assertion proved
 decimal_fixed.adb:44:28: info: overflow check proved
 decimal_fixed.adb:45:14: info: overflow check proved
 decimal_fixed.adb:45:14: info: range check proved
-decimal_fixed.adb:46:7: info: assertion proved
+decimal_fixed.adb:46:07: info: assertion proved
 decimal_fixed.adb:46:28: info: overflow check proved
 decimal_fixed.adb:47:14: info: overflow check proved
 decimal_fixed.adb:47:14: info: range check proved
-decimal_fixed.adb:48:7: info: assertion proved
+decimal_fixed.adb:48:07: info: assertion proved
 decimal_fixed.adb:48:28: info: overflow check proved
 decimal_fixed.adb:49:16: info: overflow check proved
 decimal_fixed.adb:49:16: info: range check proved
-decimal_fixed.adb:50:7: info: assertion proved
+decimal_fixed.adb:50:07: info: assertion proved
 decimal_fixed.adb:50:28: info: overflow check proved
 decimal_fixed.adb:53:14: info: overflow check proved
 decimal_fixed.adb:53:14: info: range check proved
-decimal_fixed.adb:54:7: info: assertion proved
+decimal_fixed.adb:54:07: info: assertion proved
 decimal_fixed.adb:54:28: info: overflow check proved
 decimal_fixed.adb:64:17: info: division check proved
 decimal_fixed.adb:64:17: info: overflow check proved
 decimal_fixed.adb:64:17: info: range check proved
-decimal_fixed.adb:65:10: warning: assertion might fail, requires Z = 
+decimal_fixed.adb:65:25: warning: assertion might fail, requires Z =
 decimal_fixed.adb:67:14: info: division check proved
 decimal_fixed.adb:67:14: info: overflow check proved
 decimal_fixed.adb:67:14: info: range check proved
-decimal_fixed.adb:68:7: warning: assertion might fail, requires Z = Inv_Y * X
+decimal_fixed.adb:68:22: warning: assertion might fail, requires Z = Inv_Y * X
 decimal_fixed.adb:68:32: warning: overflow check might fail
 decimal_fixed.adb:69:14: info: division check proved
 decimal_fixed.adb:69:14: warning: overflow check might fail
 decimal_fixed.adb:69:14: warning: range check might fail
-decimal_fixed.adb:70:7: warning: assertion might fail, requires X in 2 * Z - T'Small .. 2 * Z + T'small
+decimal_fixed.adb:70:22: warning: assertion might fail, requires X in 2 * Z - T'Small .. 2 * Z + T'small
 decimal_fixed.adb:70:29: info: overflow check proved
 decimal_fixed.adb:70:33: info: overflow check proved
 decimal_fixed.adb:70:48: info: overflow check proved
@@ -155,7 +155,7 @@ decimal_fixed.adb:70:52: info: overflow check proved
 decimal_fixed.adb:71:14: info: division check proved
 decimal_fixed.adb:71:14: info: overflow check proved
 decimal_fixed.adb:71:14: info: range check proved
-decimal_fixed.adb:72:7: info: assertion proved
+decimal_fixed.adb:72:07: info: assertion proved
 decimal_fixed.adb:72:29: info: overflow check proved
 decimal_fixed.adb:72:33: info: overflow check proved
 decimal_fixed.adb:72:48: info: overflow check proved
@@ -200,7 +200,7 @@ dynamic_fixed.adb:1:11: warning: subprogram "Dynamic_Fixed" has no effect
 dynamic_fixed.adb:6:18: info: range check proved
 dynamic_fixed.adb:6:40: info: range check proved
 dynamic_fixed.adb:7:19: info: range check proved
-dynamic_fixed.adb:9:10: warning: assertion might fail, requires Integer (T'Last) = I
+dynamic_fixed.adb:9:25: warning: assertion might fail, requires Integer (T'Last) = I
 dynamic_fixed.adb:10:10: info: assertion proved
 unsupported.adb:2:04: fixed-point type whose small is not a negative power of 2 or 10 is not yet supported
 unsupported.adb:5:04: fixed-point type whose small is not a negative power of 2 or 10 is not yet supported

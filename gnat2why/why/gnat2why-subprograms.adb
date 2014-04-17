@@ -1198,7 +1198,7 @@ package body Gnat2Why.Subprograms is
       Params := (File        => File.File,
                  Theory      => File.Cur_Theory,
                  Phase       => Generate_VCs_For_Body,
-                 Gen_Image   => False,
+                 Gen_Marker   => False,
                  Ref_Allowed => True);
 
       --  Translate initial condition of E
@@ -1260,7 +1260,6 @@ package body Gnat2Why.Subprograms is
       declare
          Label_Set : Name_Id_Set := Name_Id_Sets.To_Set (Cur_Subp_Sloc);
       begin
-         Label_Set.Include (Cur_Subp_Name_Label);
          Label_Set.Include (NID ("W:diverges:N"));
          Emit (File.Cur_Theory,
                 Why.Gen.Binders.New_Function_Decl
@@ -1339,7 +1338,7 @@ package body Gnat2Why.Subprograms is
         (File        => File.File,
          Theory      => File.Cur_Theory,
          Phase       => Generate_VCs_For_Contract,
-         Gen_Image   => False,
+         Gen_Marker   => False,
          Ref_Allowed => True);
 
       --  The body of the subprogram may contain declarations that are in fact
@@ -1420,9 +1419,9 @@ package body Gnat2Why.Subprograms is
          if No_Return (E) then
             Post := False_Pred;
          else
-            Params.Gen_Image := True;
+            Params.Gen_Marker := True;
             Post := +Compute_Spec (Params, E, Name_Postcondition, EW_Pred);
-            Params.Gen_Image := False;
+            Params.Gen_Marker := False;
          end if;
 
          Post := +New_VC_Expr (Post_N, +Post, VC_Postcondition, EW_Pred);
@@ -1587,7 +1586,6 @@ package body Gnat2Why.Subprograms is
       declare
          Label_Set : Name_Id_Set := Name_Id_Sets.To_Set (Cur_Subp_Sloc);
       begin
-         Label_Set.Include (Cur_Subp_Name_Label);
          Label_Set.Include (NID ("W:diverges:N"));
          Emit (File.Cur_Theory,
                Why.Gen.Binders.New_Function_Decl
@@ -1677,7 +1675,7 @@ package body Gnat2Why.Subprograms is
         (File        => File.File,
          Theory      => File.Cur_Theory,
          Phase       => Generate_Logic,
-         Gen_Image   => False,
+         Gen_Marker  => False,
          Ref_Allowed => False);
 
       --  We fill the map of parameters, so that in the pre and post, we use
@@ -1816,7 +1814,7 @@ package body Gnat2Why.Subprograms is
         (File        => File.File,
          Theory      => File.Cur_Theory,
          Phase       => Generate_Logic,
-         Gen_Image   => False,
+         Gen_Marker   => False,
          Ref_Allowed => True);
 
       --  We fill the map of parameters, so that in the pre and post, we use
@@ -1969,7 +1967,7 @@ package body Gnat2Why.Subprograms is
         (File        => File.File,
          Theory      => File.Cur_Theory,
          Phase       => Generate_Logic,
-         Gen_Image   => False,
+         Gen_Marker   => False,
          Ref_Allowed => False);
 
       Ada_Ent_To_Why.Push_Scope (Symbol_Table);

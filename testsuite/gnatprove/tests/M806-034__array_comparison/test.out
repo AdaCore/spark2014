@@ -1,5 +1,5 @@
-array_comparison.adb:8:7: info: assertion proved
-array_comparison.adb:9:7: info: assertion proved
-array_comparison.adb:10:7: warning: assertion might fail, requires X > Z
-array_comparison.adb:11:7: warning: assertion might fail, requires X < Z
+array_comparison.adb:8:07: info: assertion proved
+array_comparison.adb:9:07: info: assertion proved
+array_comparison.adb:10:22: warning: assertion might fail, requires X > Z
+array_comparison.adb:11:22: warning: assertion might fail, requires X < Z
 array_comparison.ads:5:14: warning: subprogram "P" has no effect

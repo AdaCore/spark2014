@@ -1,5 +1,5 @@
 testtarg.adb:3:11: warning: subprogram "Testtarg" has no effect
-testtarg.adb:5:4: info: assertion proved
-testtarg.adb:6:4: info: assertion proved
-testtarg.adb:7:4: info: assertion proved
-testtarg.adb:8:4: info: assertion proved
+testtarg.adb:5:04: info: assertion proved
+testtarg.adb:6:04: info: assertion proved
+testtarg.adb:7:04: info: assertion proved
+testtarg.adb:8:04: info: assertion proved

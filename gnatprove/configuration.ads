@@ -34,6 +34,8 @@ with String_Utils;      use String_Utils;
 with Opt;
 with Call;              use Call;
 
+with Gnat2Why_Args;     use  Gnat2Why_Args;
+
 package Configuration is
 
    Max_Non_Blank_Lines : constant := 6;
@@ -83,13 +85,6 @@ package Configuration is
    --  * GPM_Flow   : Check validity of Globals, Depends
    --  * GPM_All    : Union of GPM_Prove and GPM_Flow
 
-   type Report_Mode is (GPR_Fail, GPR_Verbose, GPR_Statistics);
-   --  The modes for reporting of VCs.
-   --    GPR_Fail means that only unproved VCs will be reported.
-   --    GPR_Verbose means that all VCs will be reported
-   --    GPR_Statistics means that all VCs will be reported, plus steps and
-   --    timing information.
-
    type Proof_Mode is (Then_Split, No_WP, All_Split, Path_WP, No_Split);
    --  The modes for generating VCs.
    --    Then_Split: compute WP, split VCs and call prover as necessary
@@ -101,7 +96,7 @@ package Configuration is
 
    MMode        : GP_Mode := GPM_Prove;
    Warning_Mode : Opt.Warning_Mode_Type := Opt.Treat_As_Error;
-   Report       : Report_Mode := GPR_Fail;
+   Report       : Report_Mode_Type := GPR_Fail;
    --  Silent reporting is the default
    Proof        : Proof_Mode;
    --  The default proof mode depends on other switches

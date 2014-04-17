@@ -1,7 +1,7 @@
 natural_set.adb:8:34: info: length check proved
 natural_set.adb:17:31: info: range check proved
 natural_set.adb:18:16: info: index check proved
-natural_set.ads:11:6: info: postcondition proved
+natural_set.ads:11:06: info: postcondition proved
 natural_set.ads:16:19: info: postcondition proved
 natural_set.ads:25:14: warning: postcondition might fail, requires Contains (S, Value)
 natural_set.ads:45:16: info: range check proved
@@ -12,7 +12,7 @@ natural_set.ads:52:47: info: index check proved
 natural_set.adb:8:34: info: length check proved
 natural_set.adb:17:31: info: range check proved
 natural_set.adb:18:16: info: index check proved
-natural_set.ads:11:6: info: postcondition proved
+natural_set.ads:11:06: info: postcondition proved
 natural_set.ads:16:19: info: postcondition proved
 natural_set.ads:25:14: warning: postcondition might fail, requires Contains (S, Value)
 natural_set.ads:45:16: info: range check proved

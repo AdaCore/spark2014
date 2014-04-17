@@ -85,7 +85,6 @@ with GNATCOLL.Utils;     use GNATCOLL.Utils;
 with GNAT.Strings;       use GNAT.Strings;
 with String_Utils;       use String_Utils;
 
-with Opt;
 with Gnat2Why_Args;
 
 procedure Gnatprove is
@@ -163,8 +162,6 @@ procedure Gnatprove is
 
    procedure Kill (P : in out Process_Descriptor);
    --  kill the process
-
-   function To_String (Warning : Opt.Warning_Mode_Type) return String;
 
    -------------------
    -- Call_Gprbuild --
@@ -306,27 +303,8 @@ procedure Gnatprove is
          Args.Append ("--steps");
          Args.Append (Int_Image (Steps));
       end if;
-      if Verbose then
-         Args.Append ("--verbose");
-      elsif Quiet then
-         Args.Append ("--quiet");
-      end if;
-      Args.Append ("--report");
-      case Report is
-         when GPR_Fail =>
-            Args.Append ("fail");
-
-         when GPR_Verbose =>
-            Args.Append ("all");
-
-         when GPR_Statistics =>
-            Args.Append ("statistics");
-
-      end case;
       Args.Append ("--socket");
       Args.Append (Socket_Name);
-      Args.Append ("--warnings");
-      Args.Append (To_String (Warning_Mode));
       if Debug then
          Args.Append ("--debug");
       end if;
@@ -336,9 +314,6 @@ procedure Gnatprove is
       if Proof /= Then_Split then
          Args.Append ("--proof");
          Args.Append (To_String (Proof));
-      end if;
-      if IDE_Progress_Bar then
-         Args.Append ("--ide-progress-bar");
       end if;
 
       Args.Append ("-j");
@@ -644,6 +619,7 @@ procedure Gnatprove is
          Gnat2Why_Args.Limit_Subp :=
            Ada.Strings.Unbounded.To_Unbounded_String (Limit_Subp.all);
          Gnat2Why_Args.Why3_Args := Compute_Why3_Args;
+         Gnat2Why_Args.Report_Mode := Report;
          Gnat2Why_Args.Why3_Dir := To_Unbounded_String (Obj_Dir);
 
       --  In the globals generation phase, only set Global_Gen_Mode
@@ -701,15 +677,6 @@ procedure Gnatprove is
             end case;
       end case;
    end Text_Of_Step;
-
-   function To_String (Warning : Opt.Warning_Mode_Type) return String is
-   begin
-      case Warning is
-         when Opt.Suppress       => return "off";
-         when Opt.Treat_As_Error => return "error";
-         when Opt.Normal         => return "continue";
-      end case;
-   end To_String;
 
    ----------------------
    -- Translate_To_Why --

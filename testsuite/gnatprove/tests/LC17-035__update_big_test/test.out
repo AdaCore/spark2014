@@ -3,20 +3,20 @@ ar.adb:66:14: info: range check proved
 ar.adb:81:14: info: range check proved
 ar.adb:86:14: info: range check proved
 ar.adb:98:07: warning: unused assignment
-ar.adb:100:5: info: assertion proved
+ar.adb:100:05: info: assertion proved
 ar.adb:104:14: info: range check proved
 ar.adb:109:14: info: range check proved
 ar.adb:121:07: warning: unused assignment
-ar.adb:123:5: info: assertion proved
+ar.adb:123:05: info: assertion proved
 ar.adb:127:14: info: range check proved
 ar.adb:132:14: info: range check proved
 ar.adb:144:07: warning: unused assignment
 ar.adb:149:14: info: range check proved
-ar.adb:151:5: info: assertion proved
+ar.adb:151:05: info: assertion proved
 ar.adb:155:14: info: range check proved
 ar.adb:167:07: warning: unused assignment
 ar.adb:172:14: info: range check proved
-ar.adb:174:5: info: assertion proved
+ar.adb:174:05: info: assertion proved
 ar.adb:178:14: info: range check proved
 ar.adb:237:18: info: range check proved
 ar.adb:241:18: warning: range check might fail
@@ -35,40 +35,40 @@ ar.adb:456:14: info: range check proved
 ar.adb:471:19: info: range check proved
 ar.adb:476:14: info: range check proved
 ar.adb:488:07: warning: unused assignment
-ar.adb:490:5: warning: assertion might fail, requires A = T'update
+ar.adb:490:28: warning: assertion might fail, requires A = T'update
 ar.adb:494:19: info: range check proved
 ar.adb:499:14: info: range check proved
 ar.adb:511:07: warning: unused assignment
-ar.adb:513:5: warning: assertion might fail, requires A = T'update
+ar.adb:513:28: warning: assertion might fail, requires A = T'update
 ar.adb:517:19: info: range check proved
 ar.adb:522:14: info: range check proved
 ar.adb:534:07: warning: unused assignment
 ar.adb:539:19: info: range check proved
-ar.adb:541:5: warning: assertion might fail
+ar.adb:541:05: warning: assertion might fail
 ar.adb:545:14: info: range check proved
 ar.adb:557:07: warning: unused assignment
 ar.adb:562:19: info: range check proved
-ar.adb:564:5: warning: assertion might fail
+ar.adb:564:05: warning: assertion might fail
 ar.adb:568:14: info: range check proved
 ar.adb:751:19: info: range check proved
 ar.adb:756:14: info: range check proved
 ar.adb:771:19: info: range check proved
 ar.adb:776:14: info: range check proved
 ar.adb:788:07: warning: unused assignment
-ar.adb:790:5: warning: assertion might fail, requires A = T'update
+ar.adb:790:28: warning: assertion might fail, requires A = T'update
 ar.adb:794:19: info: range check proved
 ar.adb:799:14: info: range check proved
 ar.adb:811:07: warning: unused assignment
-ar.adb:813:5: warning: assertion might fail, requires A = T'update
+ar.adb:813:28: warning: assertion might fail, requires A = T'update
 ar.adb:817:19: info: range check proved
 ar.adb:822:14: info: range check proved
 ar.adb:834:07: warning: unused assignment
 ar.adb:839:19: info: range check proved
-ar.adb:841:5: warning: assertion might fail
+ar.adb:841:05: warning: assertion might fail
 ar.adb:845:14: info: range check proved
 ar.adb:857:07: warning: unused assignment
 ar.adb:862:19: info: range check proved
-ar.adb:864:5: warning: assertion might fail
+ar.adb:864:05: warning: assertion might fail
 ar.adb:868:14: info: range check proved
 ar.adb:1218:14: info: range check proved
 ar.adb:1228:14: info: range check proved

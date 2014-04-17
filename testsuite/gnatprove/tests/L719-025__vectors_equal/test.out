@@ -1,17 +1,17 @@
-p.adb:5:7: info: precondition proved
-p.adb:6:7: info: precondition proved
+p.adb:5:07: info: precondition proved
+p.adb:6:07: info: precondition proved
 p.adb:10:27: info: precondition proved
-p.adb:12:7: info: precondition proved
-p.adb:13:7: warning: precondition might fail
+p.adb:12:07: info: precondition proved
+p.adb:13:07: warning: precondition might fail
 p.adb:17:07: warning: statement has no effect
 p.adb:17:33: info: precondition proved
-p.adb:19:7: info: precondition proved
-p.adb:20:7: warning: assertion might fail, requires Element (L, I1) = Element (L_In, I2)
+p.adb:19:07: info: precondition proved
 p.adb:20:22: info: precondition proved
+p.adb:20:22: warning: assertion might fail, requires Element (L, I1) = Element (L_In, I2)
 p.adb:20:40: info: precondition proved
-p.adb:21:7: info: precondition proved
+p.adb:21:07: info: precondition proved
 p.ads:17:13: info: precondition proved
-p.ads:18:6: info: precondition proved
+p.ads:18:06: info: precondition proved
 p.ads:18:36: info: precondition proved
 p.ads:19:14: warning: postcondition might fail, requires L = L'old
 p.ads:19:16: info: precondition proved
@@ -21,7 +21,7 @@ p.ads:23:14: warning: postcondition might fail, requires L = L'old
 p.ads:23:16: info: precondition proved
 p.ads:26:13: info: precondition proved
 p.ads:26:45: info: precondition proved
-p.ads:27:9: info: precondition proved
+p.ads:27:09: info: precondition proved
 p.ads:27:41: info: precondition proved
 p.ads:28:14: info: postcondition proved
 p.ads:28:16: info: precondition proved

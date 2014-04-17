@@ -2,8 +2,8 @@ p.adb:8:19: warning: overflow check might fail, in instantiation at q.adb:13
 p.adb:8:19: warning: overflow check might fail, in instantiation at q.ads:8
 p.adb:8:29: warning: overflow check might fail, in instantiation at q.adb:13
 p.adb:8:29: warning: overflow check might fail, in instantiation at q.ads:8
-p.adb:9:7: warning: precondition might fail, in instantiation at q.adb:13
-p.adb:9:7: warning: precondition might fail, in instantiation at q.ads:8
+p.adb:9:07: warning: precondition might fail, in instantiation at q.adb:13
+p.adb:9:07: warning: precondition might fail, in instantiation at q.ads:8
 q.adb:10:14: info: overflow check proved
 q.adb:19:10: warning: statement has no effect
 q.adb:20:10: warning: statement has no effect

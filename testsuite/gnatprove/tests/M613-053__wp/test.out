@@ -1,5 +1,5 @@
-sorters_not_global.adb:11:8: info: postcondition proved
-sorters_not_global.adb:34:8: info: postcondition proved
+sorters_not_global.adb:11:08: info: postcondition proved
+sorters_not_global.adb:34:08: info: postcondition proved
 sorters_not_global.adb:36:17: info: range check proved
 sorters_not_global.adb:37:57: info: index check proved
 sorters_not_global.adb:46:11: info: range check proved
@@ -20,7 +20,7 @@ sorters_not_global.adb:76:40: info: overflow check proved
 sorters_not_global.adb:77:22: info: range check proved
 sorters_not_global.adb:78:24: info: index check proved
 sorters_not_global.adb:78:44: info: index check proved
-sorters_not_global.ads:19:8: info: postcondition proved
+sorters_not_global.ads:19:08: info: postcondition proved
 sorters_not_global.ads:19:17: info: range check proved
 sorters_not_global.ads:20:19: info: index check proved
 sorters_not_global.ads:20:35: info: index check proved

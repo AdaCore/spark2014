@@ -1,7 +1,7 @@
 main.adb:10:40: info: length check proved
 main.adb:17:17: info: postcondition proved
 main.adb:28:17: info: postcondition proved
-main.adb:31:7: info: assertion proved
+main.adb:31:07: info: assertion proved
 main.adb:40:17: info: postcondition proved
-main.adb:43:7: info: assertion proved
-main.adb:44:7: info: assertion proved
+main.adb:43:07: info: assertion proved
+main.adb:44:07: info: assertion proved

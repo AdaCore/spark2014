@@ -55,6 +55,7 @@ package body Gnat2Why_Args is
    Limit_Subp_Name          : constant String := "limit_subp";
    Pedantic_Name            : constant String := "pedantic";
    Ide_Mode_Name            : constant String := "ide_mode";
+   Report_Mode_Name         : constant String := "report_mode";
    Single_File_Name         : constant String := "single_file";
    Why3_Args_Name           : constant String := "why3_args";
    Why3_Dir_Name            : constant String := "why3_dir";
@@ -113,6 +114,17 @@ package body Gnat2Why_Args is
 
       elsif Token = Single_File_Name then
          Single_File := True;
+
+      elsif Starts_With (Token, Report_Mode_Name) and then
+        Token (Token'First + Report_Mode_Name'Length) = '='
+      then
+         declare
+            Start : constant Integer :=
+              Token'First + Report_Mode_Name'Length + 1;
+         begin
+            Report_Mode :=
+              Report_Mode_Type'Value (Token (Start .. Token'Last));
+         end;
 
       elsif Starts_With (Token, Warning_Mode_Name) and then
         Token (Token'First + Warning_Mode_Name'Length) = '='
@@ -263,6 +275,8 @@ package body Gnat2Why_Args is
       if Single_File then
          Add_Line (Single_File_Name);
       end if;
+
+      Add_Line (Report_Mode_Name & "=" & Report_Mode_Type'Image (Report_Mode));
 
       for File of Analyze_File loop
          Add_Line (Analyze_File_Name & "=" & File);

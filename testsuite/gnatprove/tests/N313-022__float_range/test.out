@@ -27,7 +27,7 @@ fr.adb:33:14: info: range check proved
 fr.adb:34:14: info: division check proved
 fr.adb:34:14: info: overflow check proved
 fr.adb:34:14: warning: range check might fail
-fr.adb:41:4: info: precondition proved
-fr.adb:43:4: info: precondition proved
-fr.adb:45:4: info: precondition proved
-fr.adb:47:4: info: precondition proved
+fr.adb:41:04: info: precondition proved
+fr.adb:43:04: info: precondition proved
+fr.adb:45:04: info: precondition proved
+fr.adb:47:04: info: precondition proved

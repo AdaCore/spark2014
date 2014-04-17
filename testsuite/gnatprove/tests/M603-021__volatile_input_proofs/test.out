@@ -6,9 +6,9 @@ port.adb:54:16: warning: range check might fail
 port.adb:55:10: warning: attribute Valid is assumed to return True
 port.adb:109:10: warning: attribute Valid is assumed to return True
 port.adb:124:10: warning: attribute Valid is assumed to return True
-port.adb:143:7: warning: assertion might fail, requires T1 = T2
-port.adb:160:7: info: assertion proved
-port.ads:16:4: info: assertion proved
+port.adb:143:22: warning: assertion might fail, requires T1 = T2
+port.adb:160:07: info: assertion proved
+port.ads:16:04: info: assertion proved
 port.ads:68:22: info: postcondition proved
 port.ads:68:22: warning: attribute Valid is assumed to return True
 port.ads:73:22: info: postcondition proved

@@ -1,9 +1,9 @@
-pack.adb:4:7: warning: assertion might fail, requires X > 0
-pack.adb:6:7: warning: assertion might fail, requires X = 10
-pack.adb:11:4: info: assertion proved
-pack.adb:14:7: warning: assertion might fail, requires X > 0
-pack.adb:16:7: warning: assertion might fail, requires X = 10
-pack.ads:5:4: info: assertion proved
+pack.adb:4:22: warning: assertion might fail, requires X > 0
+pack.adb:6:22: warning: assertion might fail, requires X = 10
+pack.adb:11:04: info: assertion proved
+pack.adb:14:22: warning: assertion might fail, requires X > 0
+pack.adb:16:22: warning: assertion might fail, requires X = 10
+pack.ads:5:04: info: assertion proved
 pack.ads:9:19: warning: postcondition might fail, requires 1 / X > 0
 pack.ads:9:21: info: division check proved
 pack.ads:11:14: warning: subprogram "P" has no effect

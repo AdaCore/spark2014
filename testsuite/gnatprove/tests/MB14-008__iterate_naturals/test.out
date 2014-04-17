@@ -1,5 +1,5 @@
 test_iterable.ads:16:16: info: discriminant check proved
 test_iterable.ads:18:52: info: overflow check proved
-test_iterable.ads:20:7: info: precondition proved
+test_iterable.ads:20:07: info: precondition proved
 test_iterable.ads:20:32: info: discriminant check proved
 test_iterable.ads:20:42: warning: array index check might fail

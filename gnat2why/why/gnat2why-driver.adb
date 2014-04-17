@@ -24,53 +24,56 @@
 ------------------------------------------------------------------------------
 
 with GNAT.Source_Info;
+with GNAT.Expect;
 
 with Ada.Directories;
-with Ada.Strings.Unbounded;  use Ada.Strings.Unbounded;
-with AA_Util;                use AA_Util;
-with ALI.Util;               use ALI.Util;
-with ALI;                    use ALI;
-with Atree;                  use Atree;
+with Ada.Strings.Unbounded;    use Ada.Strings.Unbounded;
+with AA_Util;                  use AA_Util;
+with ALI.Util;                 use ALI.Util;
+with ALI;                      use ALI;
+with Atree;                    use Atree;
 with Binderr;
 with Call;
-with Debug;                  use Debug;
-with Einfo;                  use Einfo;
-with Errout;                 use Errout;
-with Flow;                   use Flow;
-with Lib;                    use Lib;
-with Namet;                  use Namet;
-with Nlists;                 use Nlists;
-with Osint.C;                use Osint.C;
-with Osint;                  use Osint;
-with Output;                 use Output;
-with Outputs;                use Outputs;
+with Debug;                    use Debug;
+with Einfo;                    use Einfo;
+with Errout;                   use Errout;
+with Flow;                     use Flow;
+with Flow_Error_Messages;      use Flow_Error_Messages;
+with Lib;                      use Lib;
+with Namet;                    use Namet;
+with Nlists;                   use Nlists;
+with Osint.C;                  use Osint.C;
+with Osint;                    use Osint;
+with Output;                   use Output;
+with Outputs;                  use Outputs;
 with Sem;
-with Sem_Util;               use Sem_Util;
-with Sinfo;                  use Sinfo;
-with Sinput;                 use Sinput;
-with Stand;                  use Stand;
-with Switch;                 use Switch;
+with Sem_Util;                 use Sem_Util;
+with Sinfo;                    use Sinfo;
+with Sinput;                   use Sinput;
+with Stand;                    use Stand;
+with Switch;                   use Switch;
 
-with SPARK_Definition;       use SPARK_Definition;
-with SPARK_Rewrite;          use SPARK_Rewrite;
-with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
-with SPARK_Util;             use SPARK_Util;
+with SPARK_Definition;         use SPARK_Definition;
+with SPARK_Rewrite;            use SPARK_Rewrite;
+with SPARK_Frame_Conditions;   use SPARK_Frame_Conditions;
+with SPARK_Util;               use SPARK_Util;
 
-with Why;                    use Why;
+with Why;                      use Why;
 with Why.Atree.Modules;
-with Why.Atree.Sprint;       use Why.Atree.Sprint;
-with Why.Gen.Names;          use Why.Gen.Names;
-with Why.Inter;              use Why.Inter;
-with Why.Types;              use Why.Types;
+with Why.Atree.Sprint;         use Why.Atree.Sprint;
+with Why.Gen.Names;            use Why.Gen.Names;
+with Why.Inter;                use Why.Inter;
+with Why.Types;                use Why.Types;
 
-with Common_Containers;      use Common_Containers;
-with Gnat2Why.Decls;         use Gnat2Why.Decls;
-with Gnat2Why.Nodes;         use Gnat2Why.Nodes;
-with Gnat2Why_Args;
-with Gnat2Why.Subprograms;   use Gnat2Why.Subprograms;
-with Gnat2Why.Types;         use Gnat2Why.Types;
-with Gnat2Why.Util;          use Gnat2Why.Util;
+with Common_Containers;        use Common_Containers;
+with Gnat2Why.Decls;           use Gnat2Why.Decls;
+with Gnat2Why.Error_Messages;  use Gnat2Why.Error_Messages;
 with Gnat2Why.External_Axioms; use Gnat2Why.External_Axioms;
+with Gnat2Why.Nodes;           use Gnat2Why.Nodes;
+with Gnat2Why_Args;
+with Gnat2Why.Subprograms;     use Gnat2Why.Subprograms;
+with Gnat2Why.Types;           use Gnat2Why.Types;
+with Gnat2Why.Util;            use Gnat2Why.Util;
 
 pragma Warnings (Off, "unit ""Why.Atree.Treepr"" is not referenced");
 with Why.Atree.Treepr;  --  To force the link of debug routines (wpn, wpt)
@@ -107,7 +110,7 @@ package body Gnat2Why.Driver is
    --  signalled that everything went fine. This is done by creating the main
    --  output file of gnat2why, the main Why file.
 
-   procedure Run_Gnatwhy3;
+   procedure Run_Gnatwhy3 (GNAT_Root : Node_Id);
    --  After generating the Why file, run the proof tool
 
    ----------------------------
@@ -299,7 +302,7 @@ package body Gnat2Why.Driver is
          Init_Why_Sections;
          Translate_Standard_Package;
          Translate_CUnit;
-         Run_Gnatwhy3;
+         Run_Gnatwhy3 (GNAT_Root);
       end if;
    end GNAT_To_Why;
 
@@ -349,27 +352,34 @@ package body Gnat2Why.Driver is
    -- Run_Gnatwhy3 --
    ------------------
 
-   procedure Run_Gnatwhy3 is
+   procedure Run_Gnatwhy3 (GNAT_Root : Node_Id) is
       use Ada.Directories;
-      Status : Integer;
-      pragma Unreferenced (Status);
-      Fn     : constant String :=
+      Status  : aliased Integer;
+      Fn      : constant String :=
         Compose (Current_Directory, Why_File_Name.all);
+      Old_Dir : constant String := Current_Directory;
    begin
-      Set_Directory (To_String (Gnat2Why_Args.Why3_Dir));
-      Gnat2Why_Args.Why3_Args.Append (Fn);
-      if Gnat2Why_Args.Debug_Mode then
-         Ada.Text_IO.Put ("gnatwhy3 ");
-         for Elt of Gnat2Why_Args.Why3_Args loop
-            Ada.Text_IO.Put (Elt);
-            Ada.Text_IO.Put (" ");
-         end loop;
-         Ada.Text_IO.New_Line;
+      if Has_Registered_VCs then
+         Set_Directory (To_String (Gnat2Why_Args.Why3_Dir));
+         Gnat2Why_Args.Why3_Args.Append (Fn);
+         if Gnat2Why_Args.Debug_Mode then
+            Ada.Text_IO.Put ("gnatwhy3 ");
+            for Elt of Gnat2Why_Args.Why3_Args loop
+               Ada.Text_IO.Put (Elt);
+               Ada.Text_IO.Put (" ");
+            end loop;
+            Ada.Text_IO.New_Line;
+         end if;
+         Parse_Why3_Results
+           (GNAT.Expect.Get_Command_Output
+              ("gnatwhy3",
+               Call.Argument_List_Of_String_List (Gnat2Why_Args.Why3_Args),
+               Err_To_Out => False,
+               Input      => "",
+               Status     => Status'Access));
+         Set_Directory (Old_Dir);
       end if;
-      Call.Call_With_Status ("gnatwhy3",
-                             Gnat2Why_Args.Why3_Args,
-                             Verbose => False,
-                             Status  => Status);
+      Create_Proof_Msgs_File (GNAT_Root);
    end Run_Gnatwhy3;
 
    ---------------------

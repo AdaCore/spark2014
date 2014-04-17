@@ -12,4 +12,4 @@ put.adb:25:10: warning: array index check might fail
 put.adb:28:04: warning: assuming "Put" has no effect on global items
 put.adb:28:04: warning: no Global contract available for "Put"
 put.adb:28:09: warning: "S" might not be initialized
-put.adb:28:9: warning: range check might fail
+put.adb:28:09: warning: range check might fail

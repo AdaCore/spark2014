@@ -88,7 +88,7 @@ update_checks.adb:136:26: info: range check proved
 update_checks.adb:136:34: info: range check proved
 update_checks.adb:136:42: info: range check proved
 update_checks.adb:136:62: info: range check proved
-update_checks.ads:26:6: info: postcondition proved
+update_checks.ads:26:06: info: postcondition proved
 update_checks.ads:26:28: info: range check proved
 update_checks.ads:26:36: info: range check proved
 update_checks.ads:26:44: info: range check proved
@@ -114,4 +114,4 @@ update_logic_fn.ads:90:24: info: length check proved
 update_logic_fn.ads:103:14: info: postcondition proved
 update_logic_fn.ads:116:14: info: postcondition proved
 update_logic_fn.ads:127:19: info: postcondition proved
-update_logic_fn.ads:140:6: warning: postcondition might fail, requires A = A_3D_Arr'update
+update_logic_fn.ads:140:06: warning: postcondition might fail, requires A = A_3D_Arr'update

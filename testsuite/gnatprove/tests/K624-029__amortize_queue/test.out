@@ -1,9 +1,9 @@
 amortized_queue.adb:4:27: info: precondition proved
-amortized_queue.adb:6:7: info: precondition proved
+amortized_queue.adb:6:07: info: precondition proved
 amortized_queue.adb:7:22: warning: precondition might fail
 amortized_queue.adb:11:25: info: precondition proved
 amortized_queue.adb:12:24: info: precondition proved
-amortized_queue.adb:14:7: info: precondition proved
+amortized_queue.adb:14:07: info: precondition proved
 amortized_queue.adb:15:10: info: precondition proved
 amortized_queue.adb:15:27: info: precondition proved
 amortized_queue.adb:16:10: info: precondition proved
@@ -13,7 +13,7 @@ amortized_queue.adb:20:30: warning: discriminant check might fail
 amortized_queue.adb:20:45: warning: discriminant check might fail
 amortized_queue.adb:24:25: info: precondition proved
 amortized_queue.adb:25:24: info: precondition proved
-amortized_queue.adb:27:7: warning: precondition might fail
+amortized_queue.adb:27:07: warning: precondition might fail
 amortized_queue.adb:28:10: info: precondition proved
 amortized_queue.adb:28:27: info: precondition proved
 amortized_queue.adb:29:10: info: precondition proved
@@ -21,11 +21,11 @@ amortized_queue.adb:30:10: warning: precondition might fail
 amortized_queue.adb:31:10: info: precondition proved
 amortized_queue.adb:33:30: warning: discriminant check might fail
 amortized_queue.adb:33:45: warning: discriminant check might fail
-amortized_queue.ads:25:7: info: precondition proved
+amortized_queue.ads:25:07: info: precondition proved
 amortized_queue.ads:25:27: info: precondition proved
 amortized_queue.ads:26:26: info: precondition proved
 amortized_queue.ads:26:46: info: precondition proved
-amortized_queue.ads:30:7: info: precondition proved
+amortized_queue.ads:30:07: info: precondition proved
 amortized_queue.ads:30:24: info: overflow check proved
 amortized_queue.ads:30:26: info: precondition proved
 amortized_queue.ads:30:44: info: precondition proved
@@ -54,7 +54,7 @@ amortized_queue.ads:48:31: info: precondition proved
 amortized_queue.ads:49:14: warning: postcondition might fail
 amortized_queue.ads:50:23: info: precondition proved
 amortized_queue.ads:50:61: info: precondition proved
-amortized_queue.ads:51:9: info: precondition proved
+amortized_queue.ads:51:09: info: precondition proved
 amortized_queue.ads:51:19: info: precondition proved
 amortized_queue.ads:51:21: info: precondition proved
 amortized_queue.ads:51:41: warning: precondition might fail

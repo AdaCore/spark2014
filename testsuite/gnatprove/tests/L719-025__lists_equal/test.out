@@ -1,25 +1,25 @@
-p.adb:5:7: info: precondition proved
+p.adb:5:07: info: precondition proved
 p.adb:6:38: info: precondition proved
 p.adb:7:19: info: precondition proved
-p.adb:8:7: warning: precondition might fail
+p.adb:8:07: warning: precondition might fail
 p.adb:12:27: info: precondition proved
 p.adb:13:07: warning: statement has no effect
 p.adb:13:33: info: precondition proved
 p.adb:14:32: info: precondition proved
-p.adb:16:7: info: precondition proved
+p.adb:16:07: info: precondition proved
 p.adb:16:18: warning: unused assignment to "Cu"
-p.adb:17:7: warning: precondition might fail
+p.adb:17:07: warning: precondition might fail
 p.adb:21:07: warning: statement has no effect
 p.adb:21:31: info: precondition proved
-p.adb:23:7: info: precondition proved
-p.adb:24:7: info: assertion proved
+p.adb:23:07: info: precondition proved
+p.adb:24:07: info: assertion proved
 p.adb:24:22: info: precondition proved
 p.adb:24:41: info: precondition proved
-p.adb:25:7: info: precondition proved
-p.adb:31:7: info: precondition proved
-p.adb:32:7: info: precondition proved
+p.adb:25:07: info: precondition proved
+p.adb:31:07: info: precondition proved
+p.adb:32:07: info: precondition proved
 p.ads:15:13: info: precondition proved
-p.ads:16:7: info: precondition proved
+p.ads:16:07: info: precondition proved
 p.ads:17:14: info: precondition proved
 p.ads:17:14: warning: postcondition might fail
 p.ads:20:13: info: precondition proved

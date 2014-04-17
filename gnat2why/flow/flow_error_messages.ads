@@ -37,18 +37,24 @@ package Flow_Error_Messages is
    --  flow warning while Warning_Mode = Treat_As_Error.
 
    procedure Create_Flow_Msgs_File (GNAT_Root : Node_Id);
-   --  Creates the "unit.flow" file that will later be populated by
-   --  all flow messages that were emitted in JSON format.
+   --  Writes out the flow messages to the file "unit.flow", in JSON format
+
+   procedure Create_Proof_Msgs_File (GNAT_Root : Node_Id);
+   --  Writes out the proof messages to the file "unit.proof", in JSON format
+
+   function Fresh_Trace_File return String;
+   --  Returns a name for a trace file. This name should be unique for the
+   --  project.
 
    procedure Error_Msg_Flow
      (FA        : Flow_Analysis_Graphs;
-      Tracefile : out Unbounded_String;
       Msg       : String;
       N         : Node_Id;
       F1        : Flow_Id               := Null_Flow_Id;
       F2        : Flow_Id               := Null_Flow_Id;
       Tag       : String                := "";
       SRM_Ref   : String                := "";
+      Tracefile : String                := "";
       Warning   : Boolean               := False;
       Vertex    : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex)
    with Pre => (if Present (F2) then Present (F1));
@@ -62,5 +68,14 @@ package Flow_Error_Messages is
    --
    --  Finally, for debug purposes, Vertex should be set to the vertex
    --  where the error was detected. This is printed in debug mode.
+
+   procedure Error_Msg_Proof
+     (N           : Node_Id;
+      Msg         : String;
+      Is_Proved   : Boolean;
+      Tag         : String;
+      Tracefile   : String;
+      E           : Entity_Id;
+      Place_First : Boolean);
 
 end Flow_Error_Messages;

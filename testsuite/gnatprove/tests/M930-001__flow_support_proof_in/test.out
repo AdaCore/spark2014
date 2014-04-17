@@ -1,4 +1,4 @@
-proof_in_legal.adb:16:7: warning: assertion might fail, requires Var = 0
+proof_in_legal.adb:16:22: warning: assertion might fail, requires Var = 0
 proof_in_legal.adb:18:14: warning: overflow check might fail
 proof_in_legal.ads:16:22: info: postcondition proved
 proof_in_illegal.adb:8:43: export "Error_Derived_From_Proof_In" must not depend on Proof_In "Body_Var" (SPARK RM 6.1.4(17))
@@ -15,5 +15,5 @@ gprbuild: *** compilation phase failed
 
 gnatprove: error during flow analysis and proof, aborting.
 gprbuild: *** compilation phase failed
-{"file": "proof_in_illegal_2.adb", "line": 10, "col": 7, "message": "warning: initialization has no effect", "rule": "ineffective", "severity": "warning", "entity": {"file": "proof_in_illegal_2.ads", "line": 6, "name": "Proof_In_Illegal_2.Error_Derived_From_Proof_In"}, "tracefile": "7fae17bbd7cf369942fca75496183f10c1f7d38c.trace"}
-{"file": "proof_in_illegal_2.adb", "line": 8, "col": 42, "message": "export \"X\" must not depend on Proof_In \"Body_Var\" (SPARK RM 6.1.4(17))", "rule": "export_depends_on_proof_in", "severity": "error", "entity": {"file": "proof_in_illegal_2.ads", "line": 6, "name": "Proof_In_Illegal_2.Error_Derived_From_Proof_In"}, "tracefile": "6fc8c6c9fa51ca81de3f63cde27bb729635540a7.trace"}
+{"file": "proof_in_illegal_2.adb","line": 10,"col": 7,"message": "warning: initialization has no effect","rule": "ineffective","severity": "warning","entity": {"file": "proof_in_illegal_2.ads","line": 6,"name": "Proof_In_Illegal_2.Error_Derived_From_Proof_In"},"tracefile": "proof_in_illegal_2__flow__26.trace"}
+{"file": "proof_in_illegal_2.adb","line": 8,"col": 42,"message": "export \"X\" must not depend on Proof_In \"Body_Var\" (SPARK RM 6.1.4(17))","rule": "export_depends_on_proof_in","severity": "error","entity": {"file": "proof_in_illegal_2.ads","line": 6,"name": "Proof_In_Illegal_2.Error_Derived_From_Proof_In"},"tracefile": "proof_in_illegal_2__flow__39.trace"}

@@ -1,7 +1,7 @@
 loopvariant.adb:3:11: warning: subprogram "Loopvariant" has no effect
 loopvariant.adb:10:17: info: overflow check proved
 loopvariant.adb:13:17: info: overflow check proved
-loopvariant.adb:15:7: info: loop variant proved
+loopvariant.adb:15:07: info: loop variant proved
 loopvariant.adb:21:17: info: overflow check proved
 loopvariant.adb:24:17: info: overflow check proved
-loopvariant.adb:26:7: warning: loop variant might fail
+loopvariant.adb:26:07: warning: loop variant might fail

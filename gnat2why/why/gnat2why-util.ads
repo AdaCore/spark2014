@@ -158,10 +158,10 @@ package Gnat2Why.Util is
       Phase       : Transformation_Phase;
       --  Current transformation phase, which impacts the way code is
       --  transformed from Ada to Why3.
-      Gen_Image   : Boolean;
+      Gen_Marker   : Boolean;
       --  Flag that is True when the transformation should include in the
-      --  generated Why3 node a pretty printing label, to be used to show which
-      --  part of a possibly large assertion is not proved.
+      --  generated Why3 node a special label, to be used to show which part
+      --  of a possibly large assertion is not proved.
       Ref_Allowed : Boolean;
       --  Flag that is True if references are allowed
    end record;
@@ -207,7 +207,7 @@ package Gnat2Why.Util is
      (Transformation_Params'(File        => Why_Sections (WF_Main).File,
                              Theory      => Why_Sections (WF_Main).Cur_Theory,
                              Phase       => Phase,
-                             Gen_Image   => False,
+                             Gen_Marker   => False,
                              Ref_Allowed => True));
    --  Usual set of transformation parameters for a given phase
 

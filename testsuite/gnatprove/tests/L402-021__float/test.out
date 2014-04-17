@@ -1,9 +1,9 @@
 p.adb:1:11: warning: subprogram "P" has no effect
-p.adb:7:4: info: assertion proved
-p.adb:8:4: warning: assertion might fail, requires C-1.0 < X
+p.adb:7:04: info: assertion proved
+p.adb:8:19: warning: assertion might fail, requires C-1.0 < X
 p.adb:8:20: warning: overflow check might fail
-p.adb:9:4: info: assertion proved
-p.adb:10:4: warning: assertion might fail, requires F+1.0 > X
+p.adb:9:04: info: assertion proved
+p.adb:10:19: warning: assertion might fail, requires F+1.0 > X
 p.adb:10:20: warning: overflow check might fail
-p.adb:11:4: warning: assertion might fail, requires R = C or else R = F
-p.adb:12:4: warning: assertion might fail, requires T = C or else T = F
+p.adb:11:19: warning: assertion might fail, requires R = C or else R = F
+p.adb:12:19: warning: assertion might fail, requires T = C or else T = F

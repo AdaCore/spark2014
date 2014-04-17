@@ -1,4 +1,4 @@
-over.adb:18:7: info: assertion proved
+over.adb:18:07: info: assertion proved
 over.ads:4:20: info: postcondition proved
 over.ads:5:16: warning: unused variable "Z"
 over.ads:7:14: warning: subprogram "G" has no effect

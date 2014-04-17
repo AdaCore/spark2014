@@ -3,8 +3,8 @@ init.adb:8:48: warning: overflow check might fail
 init.adb:11:42: warning: overflow check might fail
 init.adb:11:46: warning: overflow check might fail
 init.adb:11:50: warning: overflow check might fail
-init.ads:5:8: info: initial condition proved
-init_2.ads:7:8: warning: initial condition might fail
+init.ads:5:08: info: initial condition proved
+init_2.ads:7:08: warning: initial condition might fail
 init_2.ads:7:31: warning: overflow check might fail
 initializes_legal.adb:11:55: warning: overflow check might fail
 initializes_legal.ads:6:08: warning: initialization of V must not depend on A (SPARK RM 7.1.5(11))

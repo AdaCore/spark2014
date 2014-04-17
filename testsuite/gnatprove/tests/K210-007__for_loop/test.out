@@ -3,10 +3,10 @@ s.adb:6:10: info: loop invariant preservation proved
 s.adb:7:34: info: index check proved
 s.adb:21:10: info: loop invariant initialization proved
 s.adb:21:10: info: loop invariant preservation proved
-s.adb:24:7: info: assertion proved
+s.adb:24:07: info: assertion proved
 s.adb:27:10: info: loop invariant initialization proved
 s.adb:27:10: info: loop invariant preservation proved
-s.adb:30:7: info: assertion proved
+s.adb:30:07: info: assertion proved
 s.adb:39:10: info: loop invariant initialization proved
 s.adb:39:10: info: loop invariant preservation proved
 s.adb:40:36: warning: "Dest" might not be initialized

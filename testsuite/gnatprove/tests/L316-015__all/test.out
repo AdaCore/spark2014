@@ -1,8 +1,8 @@
 a1.adb:2:11: warning: subprogram "A1" has no effect
-a1.adb:4:5: info: precondition proved
+a1.adb:4:05: info: precondition proved
 a2.adb:2:11: warning: subprogram "A2" has no effect
-a2.adb:4:5: info: precondition proved
-b.adb:7:8: info: precondition proved
+a2.adb:4:05: info: precondition proved
+b.adb:7:08: info: precondition proved
 b.ads:3:14: warning: subprogram "P" has no effect
-c.adb:5:7: info: assertion proved
+c.adb:5:07: info: assertion proved
 c.ads:3:14: warning: subprogram "P" has no effect

@@ -1,2 +1,2 @@
-pre.adb:12:7: info: assertion proved
+pre.adb:12:07: info: assertion proved
 pre.ads:8:14: warning: subprogram "P" has no effect

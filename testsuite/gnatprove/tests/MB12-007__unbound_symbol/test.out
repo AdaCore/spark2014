@@ -1,4 +1,4 @@
-pupils.adb:20:8: info: length check proved
+pupils.adb:20:08: info: length check proved
 pupils.adb:25:49: warning: array index check might fail
 pupils.adb:29:43: warning: array index check might fail
 pupils.adb:33:46: warning: range check might fail

@@ -2,7 +2,7 @@ main.adb:1:11: warning: subprogram "Main" has no effect
 main.adb:5:19: info: postcondition proved
 main.adb:13:19: info: postcondition proved
 main.adb:21:22: info: postcondition proved
-main.adb:27:4: info: assertion proved
-main.adb:29:4: info: assertion proved
-main.adb:31:4: warning: assertion might fail, requires not B
-main.adb:33:4: info: assertion proved
+main.adb:27:04: info: assertion proved
+main.adb:29:04: info: assertion proved
+main.adb:31:19: warning: assertion might fail, requires not B
+main.adb:33:04: info: assertion proved

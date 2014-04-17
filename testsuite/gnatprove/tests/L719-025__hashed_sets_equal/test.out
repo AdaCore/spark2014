@@ -1,14 +1,14 @@
-p.adb:7:7: info: precondition proved
+p.adb:7:07: info: precondition proved
 p.adb:7:25: warning: unused assignment to "I"
-p.adb:8:7: info: assertion proved
-p.adb:9:7: info: precondition proved
+p.adb:8:07: info: assertion proved
+p.adb:9:07: info: precondition proved
 p.adb:9:18: warning: unused assignment to "Cu"
 p.adb:13:27: info: precondition proved
-p.adb:16:7: info: precondition proved
+p.adb:16:07: info: precondition proved
 p.adb:16:18: warning: unused assignment to "Cu"
-p.adb:17:7: info: precondition proved
+p.adb:17:07: info: precondition proved
 p.adb:17:25: warning: unused assignment to "I"
-p.adb:18:7: info: assertion proved
+p.adb:18:07: info: assertion proved
 p.adb:23:10: info: precondition proved
 p.adb:24:10: info: precondition proved
 p.adb:26:10: info: precondition proved

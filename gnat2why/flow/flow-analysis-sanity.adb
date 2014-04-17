@@ -47,7 +47,6 @@ package body Flow.Analysis.Sanity is
      (FA   : Flow_Analysis_Graphs;
       Sane : out Boolean)
    is
-      Unused : Unbounded_String;
    begin
       Sane := True;
 
@@ -57,7 +56,6 @@ package body Flow.Analysis.Sanity is
          if Gnat2Why_Args.Debug_Mode then
             Error_Msg_Flow
               (FA        => FA,
-               Tracefile => Unused,
                Msg       => "flow analysis of & abandoned due to " &
                  "function with side effects",
                N         => FA.Analyzed_Entity,
@@ -76,7 +74,6 @@ package body Flow.Analysis.Sanity is
      (FA   : Flow_Analysis_Graphs;
       Sane : out Boolean)
    is
-      Unused : Unbounded_String;
    begin
       Sane := True;
 
@@ -84,7 +81,6 @@ package body Flow.Analysis.Sanity is
          if Gnat2Why_Args.Debug_Mode then
             Error_Msg_Flow
               (FA        => FA,
-               Tracefile => Unused,
                Msg       => "flow analysis of & abandoned due to aliasing",
                N         => FA.Analyzed_Entity,
                F1        => Direct_Mapping_Id (FA.Analyzed_Entity));
@@ -173,7 +169,6 @@ package body Flow.Analysis.Sanity is
             Err_Msg  : String;
             Err_Node : Node_Id)
          is
-            Unused : Unbounded_String;
          begin
             for F of Flow_Ids loop
                if (if F.Kind in Direct_Mapping | Record_Field
@@ -183,7 +178,6 @@ package body Flow.Analysis.Sanity is
                then
                   Error_Msg_Flow
                     (FA        => FA,
-                     Tracefile => Unused,
                      Msg       => Err_Msg,
                      SRM_Ref   => "4.4(2)",
                      N         => Err_Node,
@@ -373,7 +367,6 @@ package body Flow.Analysis.Sanity is
          if Gnat2Why_Args.Debug_Mode then
             Error_Msg_Flow
               (FA        => FA,
-               Tracefile => Unused,
                Msg       => "flow analysis of & abandoned due to " &
                  "expressions with variable inputs",
                N         => FA.Analyzed_Entity,
@@ -390,7 +383,6 @@ package body Flow.Analysis.Sanity is
      (FA   : Flow_Analysis_Graphs;
       Sane : out Boolean)
    is
-      Unused : Unbounded_String;
    begin
       Sane := True;
 
@@ -405,7 +397,6 @@ package body Flow.Analysis.Sanity is
                      then
                         Error_Msg_Flow
                           (FA        => FA,
-                           Tracefile => Unused,
                            Msg       => "volatile formal out & cannot be read",
                            SRM_Ref   => "7.1.3(14)",
                            N         => Error_Location (FA.PDG, FA.Atr, V),
@@ -462,7 +453,6 @@ package body Flow.Analysis.Sanity is
                      when Direct_Mapping | Record_Field =>
                         Error_Msg_Flow
                           (FA        => FA,
-                           Tracefile => Unused,
                            Msg       => "cannot write & during " &
                              "elaboration of &",
                            SRM_Ref   => "7.7.1(5)",
@@ -505,7 +495,6 @@ package body Flow.Analysis.Sanity is
                      if FA.Kind in E_Package | E_Package_Body then
                         Error_Msg_Flow
                           (FA        => FA,
-                           Tracefile => Unused,
                            Msg       => "cannot write & during " &
                              "elaboration of &",
                            SRM_Ref   => "7.7.1(5)",
@@ -517,7 +506,6 @@ package body Flow.Analysis.Sanity is
                      else
                         Error_Msg_Flow
                           (FA        => FA,
-                           Tracefile => Unused,
                            Msg       => "& must be a global output of &",
                            SRM_Ref   => "6.1.4",
                            N         => Error_Location (FA.PDG, FA.Atr, V),
@@ -581,7 +569,6 @@ package body Flow.Analysis.Sanity is
                      when Direct_Mapping | Record_Field =>
                         Error_Msg_Flow
                           (FA        => FA,
-                           Tracefile => Unused,
                            Msg       => "& must be listed in the " &
                              Aspect_To_Fix & " aspect of &",
                            SRM_Ref   => SRM_Ref,

@@ -105,6 +105,17 @@ package Gnat2Why_Args is
 
    Analyze_File : String_Lists.List := String_Lists.Empty_List;
 
+   --  Set the report mode (only failing VCs, all VCs, details)
+
+   type Report_Mode_Type is (GPR_Fail, GPR_Verbose, GPR_Statistics);
+   --  The modes for reporting of VCs.
+   --    GPR_Fail means that only unproved VCs will be reported.
+   --    GPR_Verbose means that all VCs will be reported
+   --    GPR_Statistics means that all VCs will be reported, plus steps and
+   --    timing information.
+
+   Report_Mode : Report_Mode_Type := GPR_Fail;
+
    --  Limit analysis to this subprogram
 
    Limit_Subp : Unbounded_String := Null_Unbounded_String;

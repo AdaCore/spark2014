@@ -181,9 +181,10 @@ package body Gnat2Why.Expr is
    --
    --  Nb_Of_Refs should be set to the number of such parameters in Ada_Call.
 
-   function Is_Pretty_Node (N : Node_Id) return Boolean;
+   function Is_Terminal_Node (N : Node_Id) return Boolean;
    --  Decide whether this is a node where we should put a pretty printing
-   --  label, or if we should descend further
+   --  label, or if we should descend further. Basically, everything that's
+   --  not a quantifier or conjunction is a terminal node.
 
    function One_Level_Access
      (N           : Node_Id;
@@ -1306,7 +1307,7 @@ package body Gnat2Why.Expr is
         (Theory      => File.Cur_Theory,
          File        => File.File,
          Phase       => Generate_Logic,
-         Gen_Image   => False,
+         Gen_Marker   => False,
          Ref_Allowed => True);
       Result : constant W_Term_Id :=
         +Transform_Expr (Expr, Expected_Type, EW_Term, Params);
@@ -1515,7 +1516,7 @@ package body Gnat2Why.Expr is
    -- Is_Pretty_Node --
    --------------------
 
-   function Is_Pretty_Node (N : Node_Id) return Boolean is
+   function Is_Terminal_Node (N : Node_Id) return Boolean is
    begin
       case Nkind (N) is
          when N_Quantified_Expression | N_And_Then |
@@ -1523,7 +1524,7 @@ package body Gnat2Why.Expr is
             => return False;
          when others => return True;
       end case;
-   end Is_Pretty_Node;
+   end Is_Terminal_Node;
 
    -------------------------
    -- Name_For_Loop_Entry --
@@ -2855,7 +2856,7 @@ package body Gnat2Why.Expr is
                            (Theory      => Params.Theory,
                             File        => Params.File,
                             Phase       => Params.Phase,
-                            Gen_Image   => False,
+                            Gen_Marker   => False,
                             Ref_Allowed => False);
 
          --  Values used in calls to the aggregate function
@@ -5529,11 +5530,11 @@ package body Gnat2Why.Expr is
       --  printed for subterms.
 
       if Domain = EW_Pred
-        and then Local_Params.Gen_Image
-        and then Is_Pretty_Node (Expr)
+        and then Local_Params.Gen_Marker
+        and then Is_Terminal_Node (Expr)
       then
-         Pretty_Label := New_Pretty_Label (Expr);
-         Local_Params.Gen_Image := False;
+         Pretty_Label := New_Sub_VC_Marker (Expr);
+         Local_Params.Gen_Marker := False;
       end if;
 
       --  Expressions that cannot be translated to predicates directly are
@@ -6061,7 +6062,7 @@ package body Gnat2Why.Expr is
                                               Type_Of_Node (Expr_Type),
                                               Domain,
                                               Local_Params);
-               Local_Params.Gen_Image := False;
+               Local_Params.Gen_Marker := False;
                Condition :=
                  +Transform_Expr (Cond,
                                   EW_Bool_Type,
@@ -6250,7 +6251,7 @@ package body Gnat2Why.Expr is
          declare
             Label_Set : Name_Id_Set := Name_Id_Sets.To_Set (Pretty_Label);
          begin
-            Label_Set.Include (New_Located_Label (Expr, Is_VC => False));
+            Label_Set.Include (New_Located_Label (Expr));
             T :=
               New_Label (Labels => Label_Set,
                          Def => T,
@@ -6898,7 +6899,7 @@ package body Gnat2Why.Expr is
       if Present (Expr) then
          Runtime := New_Ignore
            (Prog => +Transform_Expr (Expr, EW_Prog, Params => Params));
-         Params.Gen_Image := True;
+         Params.Gen_Marker := True;
          Pred := +Transform_Expr (Expr, EW_Pred, Params => Params);
          return;
       else
@@ -7778,9 +7779,7 @@ package body Gnat2Why.Expr is
                         Tail :=
                           New_Label
                             (Labels =>
-                               Name_Id_Sets.To_Set
-                                 (New_Located_Label
-                                    (Cur, Is_VC => False)),
+                               Name_Id_Sets.To_Set (New_Located_Label (Cur)),
                              Def    =>
                              +New_Simpl_Conditional
                                (Condition =>
@@ -7902,9 +7901,7 @@ package body Gnat2Why.Expr is
           (Result,
            New_Label (Labels =>
                             Name_Id_Sets.To_Set
-                        (New_Located_Label
-                           (Stmt_Or_Decl,
-                            Is_VC => False)),
+                        (New_Located_Label (Stmt_Or_Decl)),
                       Def    => +Prog));
       if Cut_Assertion /= Why_Empty then
          Result :=

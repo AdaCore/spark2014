@@ -17,7 +17,7 @@ ng.adb:65:29: warning: overflow check might fail
 ng.adb:65:37: warning: divide by zero might fail
 ng.adb:65:37: warning: range check might fail
 ng.adb:65:43: warning: overflow check might fail
-ng.adb:78:7: warning: precondition might fail
+ng.adb:78:07: warning: precondition might fail
 ng_v1.adb:5:13: warning: null global effect assumed on imported subprogram
 ng_v1.adb:8:13: warning: null global effect assumed on imported subprogram
 ng_v1.adb:11:13: warning: null global effect assumed on imported subprogram
@@ -29,7 +29,7 @@ ng_v1.ads:32:28: warning: divide by zero might fail
 ng_v2.adb:5:13: warning: null global effect assumed on imported subprogram
 ng_v2.adb:8:13: warning: null global effect assumed on imported subprogram
 ng_v2.adb:11:13: warning: null global effect assumed on imported subprogram
-ng_v2.adb:49:9: info: division check proved
+ng_v2.adb:49:09: info: division check proved
 ng_v2.adb:52:44: warning: precondition might fail
 ng_v2.adb:65:13: info: precondition proved
 ng_v2.adb:68:53: warning: divide by zero might fail

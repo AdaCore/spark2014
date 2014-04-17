@@ -17,7 +17,7 @@ ap-altitude-pitch-rate.adb:70:14: warning: range check might fail
 ap-altitude-pitch-rate.adb:75:55: info: division check proved
 ap-altitude-pitch.adb:28:69: info: division check proved, in call inlined at ap-altitude-pitch.adb:45, in call inlined at ap-altitude-pitch.adb:101
 ap-altitude-pitch.adb:28:69: info: range check proved, in call inlined at ap-altitude-pitch.adb:45, in call inlined at ap-altitude-pitch.adb:101
-ap-altitude-pitch.adb:53:7: info: assertion proved, in call inlined at ap-altitude-pitch.adb:101
+ap-altitude-pitch.adb:53:07: info: assertion proved, in call inlined at ap-altitude-pitch.adb:101
 ap-altitude-pitch.adb:55:71: info: division check proved, in call inlined at ap-altitude-pitch.adb:101
 ap-altitude-pitch.adb:71:28: info: precondition proved, in call inlined at ap-altitude-pitch.adb:104
 ap-altitude-pitch.adb:73:54: info: division check proved, in call inlined at ap-altitude-pitch.adb:104
@@ -58,8 +58,8 @@ scale.adb:58:64: info: overflow check proved
 scale.adb:58:70: info: division check proved
 scale.adb:58:70: warning: overflow check might fail
 scale.adb:58:70: warning: range check might fail
-scale.adb:74:7: info: assertion proved
+scale.adb:74:07: info: assertion proved
 scale.adb:76:17: info: overflow check proved
-scale.adb:78:7: info: assertion proved
+scale.adb:78:07: info: assertion proved
 scale.adb:79:38: info: range check proved
 scale.ads:16:19: warning: postcondition might fail

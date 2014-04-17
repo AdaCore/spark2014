@@ -1,7 +1,7 @@
-arrays_multidim.adb:21:7: warning: assertion might fail, requires X (5, 5) > 1
-arrays_multidim.adb:30:7: info: assertion proved
-arrays_multidim.adb:38:7: warning: assertion might fail, requires X (5, 5) = 11
-arrays_multidim.adb:46:7: warning: assertion might fail, requires X (5, 5) = 11
+arrays_multidim.adb:21:22: warning: assertion might fail, requires X (5, 5) > 1
+arrays_multidim.adb:30:07: info: assertion proved
+arrays_multidim.adb:38:22: warning: assertion might fail, requires X (5, 5) = 11
+arrays_multidim.adb:46:22: warning: assertion might fail, requires X (5, 5) = 11
 arrays_multidim.adb:52:22: info: postcondition proved
 arrays_multidim.adb:60:22: info: postcondition proved
 arrays_multidim.adb:68:22: info: postcondition proved

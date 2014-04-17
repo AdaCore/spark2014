@@ -25,7 +25,7 @@ infoflow.adb:108:39: warning: array index check might fail
 infoflow.adb:108:39: warning: overflow check might fail
 infoflow.adb:109:24: warning: array index check might fail
 infoflow.adb:109:24: warning: overflow check might fail
-infoflow.adb:113:7: info: assertion proved
+infoflow.adb:113:07: info: assertion proved
 infoflow.adb:121:28: info: division check proved
 infoflow.adb:123:13: warning: loop invariant might fail after first iteration
 infoflow.adb:123:13: warning: loop invariant might fail in first iteration
@@ -64,8 +64,8 @@ infoflow.adb:155:31: warning: array index check might fail
 infoflow.adb:155:31: warning: overflow check might fail
 infoflow.adb:156:18: info: index check proved
 infoflow.adb:156:18: warning: overflow check might fail
-infoflow.adb:161:7: warning: precondition might fail
-infoflow.adb:163:7: warning: precondition might fail
+infoflow.adb:161:07: warning: precondition might fail
+infoflow.adb:163:07: warning: precondition might fail
 infoflow.adb:172:10: info: loop invariant initialization proved
 infoflow.adb:172:10: info: loop invariant preservation proved
 infoflow.adb:173:27: warning: "A_V1" might not be initialized
@@ -73,7 +73,7 @@ infoflow.adb:173:33: info: index check proved
 infoflow.adb:173:44: info: index check proved
 infoflow.adb:174:16: info: index check proved
 infoflow.adb:174:31: info: index check proved
-infoflow.adb:177:7: info: assertion proved
+infoflow.adb:177:07: info: assertion proved
 infoflow.adb:179:12: warning: "A_V1" might not be initialized
 infoflow.adb:179:18: info: index check proved
 infoflow.adb:179:29: info: index check proved
@@ -89,7 +89,7 @@ infoflow.adb:187:16: info: index check proved
 infoflow.adb:187:22: warning: "A_V1" might not be initialized
 infoflow.adb:187:36: info: index check proved
 infoflow.adb:187:36: info: overflow check proved
-infoflow.adb:190:7: warning: assertion might fail
+infoflow.adb:190:07: warning: assertion might fail
 infoflow.adb:192:13: warning: "A_V1" might not be initialized
 infoflow.adb:192:19: info: index check proved
 infoflow.adb:192:30: info: index check proved
@@ -102,7 +102,7 @@ infoflow.adb:201:33: info: index check proved
 infoflow.adb:201:44: info: index check proved
 infoflow.adb:202:16: info: index check proved
 infoflow.adb:202:31: info: index check proved
-infoflow.adb:205:7: info: assertion proved
+infoflow.adb:205:07: info: assertion proved
 infoflow.adb:207:13: warning: "A_V1" might not be initialized
 infoflow.adb:207:19: info: index check proved
 infoflow.adb:207:30: info: index check proved
@@ -123,21 +123,21 @@ infoflow.adb:221:16: info: index check proved
 infoflow.adb:221:22: warning: "A_V2" might not be initialized
 infoflow.adb:221:36: info: index check proved
 infoflow.adb:221:36: info: overflow check proved
-infoflow.ads:9:6: info: disjoint contract cases proved
-infoflow.ads:9:6: warning: contract cases might not be complete
+infoflow.ads:9:06: info: disjoint contract cases proved
+infoflow.ads:9:06: warning: contract cases might not be complete
 infoflow.ads:12:24: warning: contract case might fail
 infoflow.ads:16:24: warning: contract case might fail
 infoflow.ads:29:14: info: postcondition proved
-infoflow.ads:37:6: warning: contract cases might not be complete
+infoflow.ads:37:06: warning: contract cases might not be complete
 infoflow.ads:38:24: info: contract case proved
-infoflow.ads:48:6: info: complete contract cases proved
+infoflow.ads:48:06: info: complete contract cases proved
 infoflow.ads:48:30: info: contract case proved
 infoflow.ads:61:07: warning: unused initial value of "J"
-infoflow.ads:63:6: warning: contract cases might not be complete
+infoflow.ads:63:06: warning: contract cases might not be complete
 infoflow.ads:64:27: info: contract case proved
 infoflow.ads:73:54: warning: unused initial value of "I"
-infoflow.ads:74:6: warning: contract cases might not be complete
-infoflow.ads:74:6: warning: contract cases might not be disjoint
+infoflow.ads:74:06: warning: contract cases might not be complete
+infoflow.ads:74:06: warning: contract cases might not be disjoint
 infoflow.ads:78:40: info: division check proved
 infoflow.ads:79:34: warning: array index check might fail
 infoflow.ads:79:45: info: division check proved
@@ -155,8 +155,8 @@ infoflow.ads:87:24: warning: contract case might fail
 infoflow.ads:87:33: warning: array index check might fail
 infoflow.ads:87:44: warning: array index check might fail
 infoflow.ads:89:55: warning: unused initial value of "I"
-infoflow.ads:90:6: warning: contract cases might not be complete
-infoflow.ads:90:6: warning: contract cases might not be disjoint
+infoflow.ads:90:06: warning: contract cases might not be complete
+infoflow.ads:90:06: warning: contract cases might not be disjoint
 infoflow.ads:94:40: info: division check proved
 infoflow.ads:95:34: warning: array index check might fail
 infoflow.ads:95:45: info: division check proved
@@ -176,8 +176,8 @@ infoflow.ads:103:44: warning: array index check might fail
 infoflow.ads:112:07: warning: "A_V1" might not be initialized in "Arraypartitionedtransfer"
 infoflow.ads:112:13: warning: "A_V2" might not be initialized in "Arraypartitionedtransfer"
 infoflow.ads:114:17: warning: unused initial value of "I"
-infoflow.ads:129:6: warning: contract cases might not be complete
-infoflow.ads:129:6: warning: contract cases might not be disjoint
+infoflow.ads:129:06: warning: contract cases might not be complete
+infoflow.ads:129:06: warning: contract cases might not be disjoint
 infoflow.ads:131:33: info: index check proved
 infoflow.ads:131:44: info: index check proved
 infoflow.ads:132:24: warning: contract case might fail

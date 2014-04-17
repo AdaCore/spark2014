@@ -1,48 +1,48 @@
-logic.adb:17:7: info: assertion proved
-logic.adb:18:7: info: assertion proved
-logic.adb:19:7: info: assertion proved
-logic.adb:20:7: info: assertion proved
-logic.adb:24:7: warning: assertion might fail, requires not (if F then F else true
-logic.adb:26:7: info: assertion proved
-logic.adb:27:7: warning: assertion might fail, requires not (if F then T else true
-logic.adb:29:7: info: assertion proved
+logic.adb:17:07: info: assertion proved
+logic.adb:18:07: info: assertion proved
+logic.adb:19:07: info: assertion proved
+logic.adb:20:07: info: assertion proved
+logic.adb:24:22: warning: assertion might fail, requires not (if F then F else true
+logic.adb:26:07: info: assertion proved
+logic.adb:27:22: warning: assertion might fail, requires not (if F then T else true
+logic.adb:29:07: info: assertion proved
 logic.adb:30:33: warning: assertion might fail, requires F
-logic.adb:32:7: info: assertion proved
-logic.adb:33:7: warning: assertion might fail, requires not (if T then T else true
-logic.adb:43:7: info: assertion proved
-logic.adb:44:7: info: assertion proved
-logic.adb:45:7: info: assertion proved
-logic.adb:46:7: info: assertion proved
-logic.adb:50:7: warning: assertion might fail, requires false
-logic.adb:52:7: info: assertion proved
-logic.adb:53:7: warning: assertion might fail, requires F = T
-logic.adb:55:7: info: assertion proved
-logic.adb:56:7: warning: assertion might fail, requires T = F
-logic.adb:58:7: info: assertion proved
-logic.adb:59:7: warning: assertion might fail, requires false
+logic.adb:32:07: info: assertion proved
+logic.adb:33:22: warning: assertion might fail, requires not (if T then T else true
+logic.adb:43:07: info: assertion proved
+logic.adb:44:07: info: assertion proved
+logic.adb:45:07: info: assertion proved
+logic.adb:46:07: info: assertion proved
+logic.adb:50:22: warning: assertion might fail, requires false
+logic.adb:52:07: info: assertion proved
+logic.adb:53:22: warning: assertion might fail, requires F = T
+logic.adb:55:07: info: assertion proved
+logic.adb:56:22: warning: assertion might fail, requires T = F
+logic.adb:58:07: info: assertion proved
+logic.adb:59:22: warning: assertion might fail, requires false
 logic.adb:63:04: warning: analyzing unreferenced procedure "De_Morgan"
-logic.adb:66:7: info: assertion proved
-logic.adb:67:7: info: assertion proved
-logic.adb:69:7: info: assertion proved
-logic.adb:70:7: info: assertion proved
-logic.adb:74:7: info: assertion proved
-logic.adb:75:7: warning: assertion might fail, requires not (A and B)) = (not A and not B
-logic.adb:77:7: info: assertion proved
-logic.adb:78:7: warning: assertion might fail, requires A or B) = (not A and not B
-logic.adb:80:7: info: assertion proved
-logic.adb:81:7: warning: assertion might fail, requires not (A or B) = (A and not B
-logic.adb:83:7: info: assertion proved
-logic.adb:84:7: warning: assertion might fail, requires not (A or B) = (not A and B
+logic.adb:66:07: info: assertion proved
+logic.adb:67:07: info: assertion proved
+logic.adb:69:07: info: assertion proved
+logic.adb:70:07: info: assertion proved
+logic.adb:74:07: info: assertion proved
+logic.adb:75:22: warning: assertion might fail, requires not (A and B)) = (not A and not B
+logic.adb:77:07: info: assertion proved
+logic.adb:78:22: warning: assertion might fail, requires A or B) = (not A and not B
+logic.adb:80:07: info: assertion proved
+logic.adb:81:22: warning: assertion might fail, requires not (A or B) = (A and not B
+logic.adb:83:07: info: assertion proved
+logic.adb:84:22: warning: assertion might fail, requires not (A or B) = (not A and B
 logic.adb:87:04: warning: analyzing unreferenced procedure "Contraposition"
-logic.adb:90:7: info: assertion proved
-logic.adb:91:7: info: assertion proved
+logic.adb:90:07: info: assertion proved
+logic.adb:91:07: info: assertion proved
 logic.adb:96:19: info: postcondition proved
 logic.adb:112:04: warning: analyzing unreferenced procedure "XOR_Test_B"
-logic.adb:115:7: info: assertion proved
-logic.adb:116:7: info: assertion proved
-logic.adb:118:7: info: assertion proved
-logic.adb:119:7: info: assertion proved
+logic.adb:115:07: info: assertion proved
+logic.adb:116:07: info: assertion proved
+logic.adb:118:07: info: assertion proved
+logic.adb:119:07: info: assertion proved
 logic.adb:125:22: info: postcondition proved
 logic.adb:132:19: info: postcondition proved
 logic.adb:139:04: warning: analyzing unreferenced procedure "Implies_Test_1"
-logic.adb:142:7: warning: assertion might fail, requires if (if A then B) then C) =  (if A then if B then C else true else true
+logic.adb:142:22: warning: assertion might fail, requires if (if A then B) then C) =  (if A then if B then C else true else true
