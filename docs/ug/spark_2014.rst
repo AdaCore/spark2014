@@ -829,7 +829,13 @@ loop at each iteration. Loop invariants in |SPARK| are expressed with the
 statements in a loop body, or directly in a chain of nested block statements in
 this main list of statements.
 
-Internally, |GNATprove| forms a "virtual loop" around these loop
+Users that are already familiar with the notion of loop invariant in other
+proof systems should be aware that |SPARK| loop invariants are slightly
+different: they only need to hold when the control flow of
+the program passes over it, so only when the loop is actually entered, and
+only after iterations excepting the last one.
+
+Internally, |GNATprove| forms a "virtual loop" around the loop
 invariants to prove the subprogram. The virtual loop is formed by "unrolling"
 the statements preceding the first ``Loop_Invariant`` pragma until it is at
 the top of the loop body.
