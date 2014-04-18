@@ -4274,11 +4274,90 @@ package body Gnat2Why.Expr is
          To     => Exp_Entity,
          Expr   => +T);
       T := +Binding_For_Temp (Empty, EW_Prog, Tmp, +T);
-      return
+      T :=
         Gnat2Why.Expr.New_Assignment
           (Ada_Node => Stmt,
            Lvalue   => Lvalue,
            Expr     => T);
+
+      --  When assigning to a floating-point object, add an assumption about
+      --  the known range of values of the object after assignment when it is
+      --  not implied by the type of the object, and the expression assigned
+      --  is not a literal. This currently helps the prover in a few cases.
+
+      if Is_Floating_Point_Type (Etype (Lvalue))
+        and then Nkind (Expression (Stmt)) /= N_Real_Literal
+      then
+         declare
+            function Assume_Range (Lo, Hi : Ureal) return W_Prog_Id;
+            --  Returns the assumption that the object assigned to is in the
+            --  range Lo .. Hi.
+
+            ------------------
+            -- Assume_Range --
+            ------------------
+
+            function Assume_Range (Lo, Hi : Ureal) return W_Prog_Id is
+               Lval : constant W_Expr_Id :=
+                 Transform_Expr (Lvalue, EW_Real_Type, EW_Term, Body_Params);
+               Expr_Lo : constant W_Expr_Id :=
+                 New_Real_Constant (Value => Lo);
+               Expr_Hi : constant W_Expr_Id :=
+                 New_Real_Constant (Value => Hi);
+               Comp_Lo : constant W_Pred_Id :=
+                 New_Relation (Op_Type  => EW_Real,
+                               Left     => Lval,
+                               Op       => EW_Ge,
+                               Right    => Expr_Lo);
+               Comp_Hi : constant W_Pred_Id :=
+                 New_Relation (Op_Type  => EW_Real,
+                               Left     => Lval,
+                               Op       => EW_Le,
+                               Right    => Expr_Hi);
+               Comp : constant W_Pred_Id :=
+                 +New_And_Expr (Left   => +Comp_Lo,
+                                Right  => +Comp_Hi,
+                                Domain => EW_Pred);
+            begin
+               return New_Assume_Statement (Post => Comp);
+            end Assume_Range;
+
+            Tlo : constant Node_Id := Type_Low_Bound  (Etype (Lvalue));
+            Thi : constant Node_Id := Type_High_Bound (Etype (Lvalue));
+            Lov : Ureal;
+            Hiv : Ureal;
+            Lo  : Ureal;
+            Hi  : Ureal;
+            OK  : Boolean;
+
+         begin
+            Determine_Range_R
+              (Expression (Stmt), OK, Lo, Hi, Assume_Valid => True);
+
+            if OK then
+
+               --  If the object assigned to has a type with static bounds,
+               --  generate an assumption only if the computed range refines
+               --  these bounds.
+
+               if Compile_Time_Known_Value (Tlo)
+                 and then Compile_Time_Known_Value (Thi)
+               then
+                  Lov := Expr_Value_R (Tlo);
+                  Hiv := Expr_Value_R (Thi);
+
+                  if Lo > Lov or else Hi < Hiv then
+                     T := Sequence (T, Assume_Range (Lo, Hi));
+                  end if;
+
+               else
+                  T := Sequence (T, Assume_Range (Lo, Hi));
+               end if;
+            end if;
+         end;
+      end if;
+
+      return T;
    end Transform_Assignment_Statement;
 
    -----------------------------
