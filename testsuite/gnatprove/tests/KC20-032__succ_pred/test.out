@@ -1,5 +1,3 @@
-ident.adb:3:31: info: overflow check proved
-ident.adb:3:38: warning: overflow check might fail
 p.adb:1:11: warning: subprogram "P" has no effect
 p.adb:10:14: info: postcondition proved
 p.adb:14:21: info: range check proved
