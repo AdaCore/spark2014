@@ -65,7 +65,6 @@ obj/smissing.o: smissing.c
 MPFR_LIB_DIR=$(GNAT_BUILD_DIR)/libmpfr/install/lib
 GMP_LIB_DIR=$(MPFR_LIB_DIR)
 MPC_LIB_DIR=$(MPFR_LIB_DIR)
-ELF_LIB_DIR=$(MPFR_LIB_DIR)
 
 # Optional environment variables:
 # ADAFLAGS: additional gnat switches to pass to gnatmake
@@ -91,7 +90,7 @@ GNAT1_RTS_OBJS=$(RTS)/mkdir.o $(RTS)/errno.o $(RTS)/ctrl_c.o \
   $(RTS)/sysdep.o $(RTS)/exit.o $(RTS)/cal.o $(RTS)/tracebak.o
 
 ifeq ($(filter-out Linux,$(uname)),)
-  EXTRA_LIBS=-rdynamic -ldl -lelf
+  EXTRA_LIBS=-rdynamic -ldl
 endif
 
 ifeq ($(filter-out Darwin,$(uname)),)
@@ -99,7 +98,7 @@ ifeq ($(filter-out Darwin,$(uname)),)
 endif
 
 ifeq ($(filter-out SunOS,$(uname)),)
-  EXTRA_LIBS=-ldl -lelf
+  EXTRA_LIBS=-ldl
   LDFLAGS=
 endif
 
@@ -111,7 +110,7 @@ GCC47_LIBS=$(shell if [ -f $(OBJ)/../libcommon-target.a ]; then echo $(OBJ)/../l
 
 GNAT1_LIBS=$(OBJ)/../libbackend.a $(GCC47_LIBS) $(OBJ)/../../libcpp/libcpp.a \
    $(OBJ)/../../libdecnumber/libdecnumber.a $(OBJ)/../../libiberty/libiberty.a \
-   -L$(MPFR_LIB_DIR) -L$(GMP_LIB_DIR) -L$(MPC_LIB_DIR) -L$(ELF_LIB_DIR) -lmpc -lmpfr -lgmp $(EXTRA_LIBS) \
+   -L$(MPFR_LIB_DIR) -L$(GMP_LIB_DIR) -L$(MPC_LIB_DIR) -lmpc -lmpfr -lgmp $(EXTRA_LIBS) \
    $(OBJ)/../../zlib/libz.a
 
 gnat1: force
