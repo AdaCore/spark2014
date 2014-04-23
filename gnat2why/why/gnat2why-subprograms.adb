@@ -1658,13 +1658,14 @@ package body Gnat2Why.Subprograms is
                   Pre         => Pre,
                   Post        => Param_Post));
 
-            --  If the function has a postcondition and is not annotated with
-            --  No_Return, then generate an axiom:
+            --  If the function has a postcondition is not mutually recursive
+            --  and is not annotated with No_Return, then generate an axiom:
             --  axiom def_axiom:
             --     forall args [f (args)]. pre (args) ->
             --           let result = f (args) in post (args)
 
             if not No_Return (E)
+              and then Is_Non_Recursive_Subprogram (E)
               and then (Has_Contracts (E, Name_Postcondition)
                         or else Has_Contracts (E, Name_Contract_Cases))
             then
