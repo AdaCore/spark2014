@@ -66,12 +66,40 @@ with Why.Types;              use Why.Types;
 with Gnat2Why.Decls;         use Gnat2Why.Decls;
 with Gnat2Why.Expr;          use Gnat2Why.Expr;
 with Gnat2Why.Nodes;         use Gnat2Why.Nodes;
+with Sem_Eval;               use Sem_Eval;
 
 package body Gnat2Why.Subprograms is
 
    -----------------------
    -- Local Subprograms --
    -----------------------
+
+   procedure Assign_Bounds_For_Dynamic_Types
+     (Params    :        Transformation_Params;
+      Subp      :        Entity_Id;
+      Assume    : in out W_Prog_Id;
+      Dyn_Types : in out Node_Sets.Set;
+      Objects   : in out Node_Sets.Set);
+   --  For each element of Dyn_Types not declared in Subp, add to Assume an
+   --  updates of the corresponding bounds. If a dynamic type is a subtype or a
+   --  derived type of a dynamic type, this type is added to Dyn_Types.
+
+   procedure Assume_Dynamic_Property_For_Objects
+     (Assume  : in out W_Prog_Id;
+      Objects :        Node_Sets.Set);
+   --  For each element of Objects, add to Assume an
+   --  assumption of its dynamic property.
+
+   procedure Collect_Objects (W : Why_Node_Id; Result : in out Node_Sets.Set);
+   --  Given a Why node, collects the set of external objects that are
+   --  referenced in this node.
+
+   procedure Collect_Dynamic_Types
+     (W : Why_Node_Id; Result : in out Node_Sets.Set);
+   --  Given a Why node, collects the set of external dynamic types
+   --  that are referenced in this node.
+   --  For now, it only collects types that are either unconstrained arrays or
+   --  dynamic discrete.
 
    function Compute_Args
      (E       : Entity_Id;
@@ -163,6 +191,197 @@ package body Gnat2Why.Subprograms is
       Prag : Name_Id) return Node_Id;
    --  Return a node with a proper location for the pre- or postcondition of E,
    --  if any
+
+   -------------------------------------
+   -- Assume_Bounds_For_Dynamic_Types --
+   -------------------------------------
+
+   procedure Assign_Bounds_For_Dynamic_Types
+     (Params    :        Transformation_Params;
+      Subp      :        Entity_Id;
+      Assume    : in out W_Prog_Id;
+      Dyn_Types : in out Node_Sets.Set;
+      Objects   : in out Node_Sets.Set) is
+
+      procedure Assume_Constraints_For_Type (Ty : Entity_Id);
+      --  Calls itself recursively on the parent type used in Ty's declaration
+      --  Adds affectations to the bounds of Ty to Assume
+      --  Collects objects and types from bounds of Ty
+
+      Input_Set : Node_Sets.Set;
+
+      procedure Assume_Constraints_For_Type (Ty : Entity_Id) is
+      begin
+         if Is_Discrete_Type (Ty)
+           and then not Is_Static_Subtype (Ty)
+           and then not Dyn_Types.Contains (Ty)
+         then
+            declare
+               --  Type used in the declaration of Ty
+               Base : constant Node_Id :=
+                 (if Is_Itype (Ty) and then not Itype_Has_Declaration (Ty) then
+                       Etype (Ty)
+                  elsif Nkind (Parent (Ty)) = N_Subtype_Declaration then
+                       Etype (Subtype_Mark (Subtype_Indication (Parent (Ty))))
+                  else Etype (Subtype_Mark
+                    (Subtype_Indication (Type_Definition (Parent (Ty))))));
+            begin
+
+               --  The constraints for Ty's parent type should be assumed
+               --  before the constraints for Ty
+
+               Assume_Constraints_For_Type (Base);
+
+               --  If an Itype is declared in a record with discriminants, its
+               --  bounds can depend on a discriminant.
+               --  ??? are there other cases ?
+
+               if Is_Itype (Ty) and then Is_Record_Type (Scope (Ty))
+                 and then Has_Discriminants (Scope (Ty))
+               then
+                  return;
+               end if;
+
+               --  No need to assume anything if Ty is declared in Subp
+
+               if Enclosing_Subprogram (Ty) = Subp then
+                  return;
+               end if;
+
+               declare
+                  Rng       : constant Node_Id := Get_Range (Ty);
+                  Low_Expr  : constant W_Term_Id :=
+                    +Transform_Expr (Low_Bound (Rng), Base_Why_Type (Ty),
+                                     EW_Term, Params);
+                  High_Expr : constant W_Term_Id :=
+                    +Transform_Expr (High_Bound (Rng), Base_Why_Type (Ty),
+                                     EW_Term, Params);
+                  New_Types : Node_Sets.Set;
+               begin
+
+                  --  Assuming the value of Ty's bounds
+
+                  Assume := Sequence (Left  => Assume,
+                                      Right => Assume_Of_Scalar_Subtype
+                                        (Params   => Params,
+                                         N        => Ty,
+                                         Base     => Base,
+                                         Do_Check => False));
+
+                  --  Add Ty to the set of already handled types
+
+                  Dyn_Types.Include (Ty);
+
+                  --  Extend Objects with objects that appear in Rng and
+                  --  Dyn_Types with their types
+
+                  Collect_Objects (+Low_Expr, Objects);
+                  Collect_Objects (+High_Expr, Objects);
+
+                  Collect_Dynamic_Types (+Low_Expr, New_Types);
+                  Collect_Dynamic_Types (+High_Expr, New_Types);
+
+                  for E of New_Types loop
+                     Assume_Constraints_For_Type (E);
+                  end loop;
+               end;
+            end;
+         end if;
+      end Assume_Constraints_For_Type;
+
+   begin
+      Node_Sets.Move (Input_Set, Dyn_Types);
+
+      --  Add affectations to the ranges of elements of Dyn_Types to Assume
+
+      for E of Input_Set loop
+         Assume_Constraints_For_Type (E);
+      end loop;
+   end Assign_Bounds_For_Dynamic_Types;
+
+   -----------------------------------------
+   -- Assume_Dynamic_Property_For_Objects --
+   -----------------------------------------
+
+   procedure Assume_Dynamic_Property_For_Objects
+     (Assume  : in out W_Prog_Id;
+      Objects :        Node_Sets.Set) is
+   begin
+      for Obj of Objects loop
+         if Is_Mutable_In_Why (Obj) then
+            Assume :=
+              Sequence ((1 => Assume,
+                         2 => Assume_Dynamic_Property
+                           (New_Deref
+                              (Ada_Node => Obj,
+                               Right    => To_Why_Id
+                                 (E => Obj,
+                                  Typ => Why_Type_Of_Entity (Obj)),
+                               Typ      =>
+                                 Why_Type_Of_Entity (Obj)),
+                            Etype (Obj))));
+         else
+            Assume :=
+              Sequence ((1 => Assume,
+                         2 => Assume_Dynamic_Property
+                           (+To_Why_Id
+                              (E => Obj,
+                               Typ => Why_Type_Of_Entity (Obj)),
+                            Etype (Obj))));
+         end if;
+      end loop;
+   end Assume_Dynamic_Property_For_Objects;
+
+   ---------------------------
+   -- Collect_Dynamic_Types --
+   ---------------------------
+
+   procedure Collect_Dynamic_Types (W      :     Why_Node_Id;
+                                    Result : in out Node_Sets.Set) is
+
+      procedure Include (Ty : Entity_Id);
+      --  Collects dynamic discrete types relevant for Ty
+      --  If Ty is a dynamic discrete type, add it to Result.
+      --  If Ty is an unconstrained array type, add its index types if they are
+      --  dynamic.
+
+      Includes : constant Node_Sets.Set := Compute_Ada_Nodeset (W);
+
+      procedure Include (Ty : Entity_Id) is
+         Index : Node_Id;
+      begin
+         if Is_Discrete_Type (Ty) and then not Is_Static_Subtype (Ty) then
+            Result.Include (Ty);
+         elsif Is_Array_Type (Ty) and then not Is_Static_Array_Type (Ty) then
+            Index := First_Index (Ty);
+            while Present (Index) loop
+               Include (Etype (Index));
+               Next_Index (Index);
+            end loop;
+         end if;
+      end Include;
+   begin
+      for E of Includes loop
+         if Nkind (E) in N_Entity and then Is_Type (E) then
+            Include (E);
+         end if;
+      end loop;
+   end Collect_Dynamic_Types;
+
+   ---------------------
+   -- Collect_Objects --
+   ---------------------
+
+   procedure Collect_Objects (W      :     Why_Node_Id;
+                              Result : in out Node_Sets.Set) is
+      Includes : constant Node_Sets.Set := Compute_Ada_Nodeset (W);
+   begin
+      for E of Includes loop
+         if Nkind (E) in N_Entity and then Is_Object (E) then
+            Result.Include (E);
+         end if;
+      end loop;
+   end Collect_Objects;
 
    ------------------
    -- Compute_Args --
@@ -1088,16 +1307,13 @@ package body Gnat2Why.Subprograms is
          Gen_Image   => False,
          Ref_Allowed => True);
 
-      --  Generate checks for absence of run-time error in the precondition, if
-      --  any.
-
       --  The body of the subprogram may contain declarations that are in fact
       --  essantial to prove absence of RTE in the pre, e.g. compiler-generated
       --  subtype declarations. We need to take those into account.
 
       if Present (Body_N) and then Entity_Body_In_SPARK (E) then
-         Assume :=
-           Transform_Declarations_Not_From_Source (Declarations (Body_N));
+         Assume := Transform_Declarations_Not_From_Source
+           (Declarations (Body_N));
       else
          Assume := New_Void;
       end if;
@@ -1294,6 +1510,38 @@ package body Gnat2Why.Subprograms is
       --  program and the rest of it.
 
       Prog := Sequence (Init_Prog, Prog);
+
+      --  Generate assumptions for dynamic types used in the program.
+
+      if Present (Body_N) and then Entity_Body_In_SPARK (E) then
+         Assume := New_Void;
+
+         declare
+            Used_Dyn_Types : Node_Sets.Set;
+            Used_Objects   : Node_Sets.Set;
+         begin
+            Collect_Dynamic_Types (W      => +Prog,
+                                   Result => Used_Dyn_Types);
+            Collect_Objects (W      => +Prog,
+                             Result => Used_Objects);
+
+            --  Assume bounds of external dynamic types used in the program
+
+            Assign_Bounds_For_Dynamic_Types (Params    => Params,
+                                             Subp      => E,
+                                             Assume    => Assume,
+                                             Dyn_Types => Used_Dyn_Types,
+                                             Objects   => Used_Objects);
+
+            --  We assume that objects used in the program are in range, if
+            --  they are of a dynamic type
+
+            Assume_Dynamic_Property_For_Objects (Assume  => Assume,
+                                                 Objects => Used_Objects);
+         end;
+
+         Prog := Sequence (Assume, Prog);
+      end if;
 
       --  We always need to add the int theory as
       --  Compute_Contract_Cases_Entry_Checks may make use of the

@@ -46,6 +46,10 @@ package Why.Inter is
       Axiom_Theory,           --  axioms for previously defined symbols
       VC_Generation_Theory);  --  generation of VCs
 
+   function Compute_Ada_Nodeset (W : Why_Node_Id) return Node_Sets.Set;
+   --  For a given Why node, compute the required Ada nodes, from which we can
+   --  compute the necessary inclusions on the Why side
+
    procedure Close_Theory
      (P              : in out Why_Section;
       Kind           : Theory_Kind;

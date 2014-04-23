@@ -1,6 +1,6 @@
 fib.adb:7:11: info: range check proved
 fib.adb:8:10: info: loop invariant initialization proved
-fib.adb:8:10: info: loop invariant preservation proved
+fib.adb:8:10: warning: loop invariant might fail after first iteration
 fib.adb:10:17: warning: overflow check might fail
 fib.adb:20:15: warning: unused assignment
 fib.adb:21:15: warning: unused assignment

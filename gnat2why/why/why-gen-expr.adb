@@ -295,19 +295,33 @@ package body Why.Gen.Expr is
          Args    : W_Expr_Array (1 .. 2 * Dim);
          Arg_Ind : Positive := 1;
       begin
-         for I in 1 .. Dim loop
-            Add_Attr_Arg
-              (EW_Prog, Args, Expr, Attribute_First, I, Arg_Ind);
-            Add_Attr_Arg
-              (EW_Prog, Args, Expr, Attribute_Last, I, Arg_Ind);
-         end loop;
-         Check :=
-           New_Call (Name   =>
-                       Prefix (Ada_Node => To_Ent,
-                               M        => E_Module (To_Ent),
-                               N        => "range_check"),
-                     Args   => Args,
-                     Typ    => EW_Abstract (To_Ent));
+
+         if not Is_Static_Array_Type (To_Ent) then
+
+            --  For dynamic types, use dynamic_property instead of range_check
+
+            Check := +New_Dynamic_Property
+              (Domain => EW_Prog,
+               Ty     => To_Ent,
+               Expr   => Expr);
+
+         else
+
+            for I in 1 .. Dim loop
+               Add_Attr_Arg
+                 (EW_Prog, Args, Expr, Attribute_First, I, Arg_Ind);
+               Add_Attr_Arg
+                 (EW_Prog, Args, Expr, Attribute_Last, I, Arg_Ind);
+            end loop;
+            Check :=
+              New_Call (Name   =>
+                          Prefix (Ada_Node => To_Ent,
+                                  M        => E_Module (To_Ent),
+                                  N        => "range_check"),
+                        Args   => Args,
+                        Typ    => EW_Abstract (To_Ent));
+         end if;
+
          return New_Located_Assert (Ada_Node,
                                     Check,
                                     VC_Range_Check,
@@ -772,22 +786,15 @@ package body Why.Gen.Expr is
       if Type_Is_Modeled_As_Int_Or_Real (Ty) then
          declare
             Expr : constant W_Expr_Id := New_Temp_For_Expr (W_Expr);
-            M : constant W_Module_Id :=
-              (if Is_Standard_Boolean_Type (Ty) then Boolean_Module
-               else E_Module (Ty));
             T : W_Prog_Id;
          begin
             T :=
               New_Located_Assert
                 (Ada_Node => Ada_Node,
                  Reason   => To_VC_Kind (Check_Kind),
-                 Pred     =>
-                   New_Call
-                     (Name   =>
-                        Prefix (M        => M,
-                                W        => WNE_Range_Pred,
-                                Ada_Node => Ty),
-                      Args   => (1 => Expr)),
+                 Pred     => +New_Dynamic_Property (Domain => EW_Prog,
+                                                    Ty     => Ty,
+                                                    Expr   => Expr),
                  Kind     => EW_Assert);
             return
               +Binding_For_Temp (Domain => EW_Prog,
@@ -1626,8 +1633,9 @@ package body Why.Gen.Expr is
    ------------------------
 
    function New_Attribute_Expr
-     (Ty   : Entity_Id;
-      Attr : Supported_Attribute_Id) return W_Expr_Id is
+     (Ty            : Entity_Id;
+      Attr          : Supported_Attribute_Id;
+      Use_Base_Type : Boolean := True) return W_Expr_Id is
    begin
       if Attr in Attribute_First | Attribute_Last | Attribute_Length and then
         Ekind (Ty) = E_String_Literal_Subtype
@@ -1668,15 +1676,31 @@ package body Why.Gen.Expr is
                      EW_Int_Type,
                   when Attribute_Image =>
                      New_Named_Type (Name => To_Ident (WNE_String_Image)));
+            IT : constant W_Type_Id :=
+              (if not Is_Static_Subtype (Ty)
+               and then Is_Discrete_Type (Ty) then
+                    EW_Abstract (Base_Type (Ty)) else BT);
          begin
             T := +Prefix (Ada_Node => Ty,
                           M        => M,
                           W        => Attr_To_Why_Name (Attr),
-                          Typ      => BT);
+                          Typ      => IT);
 
-            if Type_Is_Modeled_As_Int_Or_Real (Ty) then
+            if not Is_Static_Subtype (Ty) and then Is_Discrete_Type (Ty) then
                T := New_Deref (Right => +T,
-                               Typ   => BT);
+                               Typ   => IT);
+
+               if Use_Base_Type  then
+                  T := New_Call (Domain   => EW_Term,
+                                 Ada_Node => Ty,
+                                 Name     =>
+                                   Conversion_Name (From => IT, To => BT),
+                                 Args     => (1 => +T),
+                                 Typ      => BT);
+               end if;
+            elsif Type_Is_Modeled_As_Int_Or_Real (Ty) then
+               T := New_Deref (Right => +T,
+                               Typ   => IT);
             end if;
 
             return T;
@@ -1741,6 +1765,89 @@ package body Why.Gen.Expr is
               Typ    => EW_Bool_Type);
       end if;
    end New_Comparison;
+
+   --------------------------
+   -- New_Dynamic_Property --
+   --------------------------
+
+   function New_Dynamic_Property
+     (Domain : EW_Domain;
+      Ty     : Entity_Id;
+      Expr   : W_Expr_Id) return W_Expr_Id
+   is
+   begin
+
+      --  For now, only supports dynamic discrete types and
+      --  unconstrained array types.
+
+      if Is_Discrete_Type (Ty) and then not Is_Static_Subtype (Ty) then
+         return New_Call (Domain => Domain,
+                          Name   => Dynamic_Prop_Name (Ty),
+                          Args   => (1 => New_Attribute_Expr
+                                     (Ty   => Ty,
+                                      Attr => Attribute_First),
+                                     2 => New_Attribute_Expr
+                                       (Ty   => Ty,
+                                        Attr => Attribute_Last),
+                                     3 =>
+                                       Insert_Simple_Conversion
+                                         (Ada_Node => Ty,
+                                          Domain   => Domain,
+                                          Expr     => Expr,
+                                          To       => EW_Int_Type)),
+                          Typ    => EW_Bool_Type);
+      elsif Is_Array_Type (Ty) and then not Is_Static_Array_Type (Ty) then
+         declare
+            Dim   : constant Pos := Number_Dimensions (Ty);
+            Args  : W_Expr_Array (1 .. Positive (4 * Dim));
+            Index : Node_Id := First_Index (Ty);
+            Count : Integer := 0;
+         begin
+            while Present (Index) loop
+               declare
+                  Index_Type : constant Entity_Id := Etype (Index);
+               begin
+                  Args (4 * Count + 1) := New_Attribute_Expr
+                    (Ty   => Index_Type,
+                     Attr => Attribute_First);
+                  Args (4 * Count + 2) := New_Attribute_Expr
+                    (Ty   => Index_Type,
+                     Attr => Attribute_Last);
+                  Args (4 * Count + 3) :=
+                    Insert_Simple_Conversion
+                      (Ada_Node => Ty,
+                       Domain   => Domain,
+                       Expr     => Get_Array_Attr
+                         (Domain => Domain,
+                          Expr   => Expr,
+                          Attr   => Attribute_First,
+                          Dim    => Count + 1),
+                       To       => EW_Int_Type);
+                  Args (4 * Count + 4) :=
+                    Insert_Simple_Conversion
+                      (Ada_Node => Ty,
+                       Domain   => Domain,
+                       Expr     => Get_Array_Attr
+                         (Domain => Domain,
+                          Expr   => Expr,
+                          Attr   => Attribute_Last,
+                          Dim    => Count + 1),
+                       To       => EW_Int_Type);
+               end;
+
+               Next (Index);
+               Count := Count + 1;
+            end loop;
+
+            return New_Call (Domain => Domain,
+                             Name   => Dynamic_Prop_Name (Ty),
+                             Args   => Args,
+                             Typ    => EW_Bool_Type);
+         end;
+      else
+         return Bool_True (Domain);
+      end if;
+   end New_Dynamic_Property;
 
    -----------------
    -- New_Int_Add --

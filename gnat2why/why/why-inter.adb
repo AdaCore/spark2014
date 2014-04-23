@@ -68,11 +68,6 @@ package body Why.Inter is
    -- Local Subprograms --
    -----------------------
 
-   function Compute_Ada_Nodeset (W : Why_Node_Id) return
-     Node_Sets.Set;
-   --  For a given Why node, compute the required Ada nodes, from which we can
-   --  compute the necessary inclusions on the Why side
-
    subtype N_Has_Theory is Node_Kind with
      Static_Predicate => N_Has_Theory in N_String_Literal |
                                          N_Aggregate;

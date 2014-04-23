@@ -189,6 +189,13 @@ package Why.Gen.Expr is
    --  Function to build Left - Right with integer addition; will convert Left
    --  and Right to "int" if necessary
 
+   function New_Dynamic_Property
+     (Domain : EW_Domain;
+      Ty     : Entity_Id;
+      Expr   : W_Expr_Id) return W_Expr_Id;
+   --  Function to generate a call expressing that Expr is of the dynamic type
+   --  Ty;
+
    function To_Int (D : EW_Domain; E : W_Expr_Id) return W_Expr_Id;
    --  Convert argument to int if not already done
 
@@ -279,8 +286,9 @@ package Why.Gen.Expr is
                                                  | Attribute_Value;
 
    function New_Attribute_Expr
-     (Ty   : Entity_Id;
-      Attr : Supported_Attribute_Id) return W_Expr_Id;
+     (Ty            : Entity_Id;
+      Attr          : Supported_Attribute_Id;
+      Use_Base_Type : Boolean := True) return W_Expr_Id;
 
    function Get_Type (E : W_Expr_Id) return W_Type_Id;
    --  extract the type of a given expression

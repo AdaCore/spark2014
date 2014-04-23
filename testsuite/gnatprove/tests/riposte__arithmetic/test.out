@@ -9,7 +9,7 @@ arithmetic.adb:21:41: info: overflow check proved
 arithmetic.adb:24:16: warning: overflow check might fail
 arithmetic.adb:27:04: warning: analyzing unreferenced function "Multiply_B"
 arithmetic.adb:32:11: info: range check proved
-arithmetic.adb:33:17: info: overflow check proved
+arithmetic.adb:33:17: warning: overflow check might fail
 arithmetic.adb:34:10: info: loop invariant initialization proved
 arithmetic.adb:34:10: info: loop invariant preservation proved
 arithmetic.adb:34:48: info: overflow check proved

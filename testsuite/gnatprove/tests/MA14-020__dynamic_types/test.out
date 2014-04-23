@@ -6,5 +6,5 @@ dynamic_in_post.adb:10:14: warning: subprogram "Test_2" has no effect
 dynamic_in_post.adb:12:22: info: postcondition proved
 dynamic_in_post.adb:12:40: info: range check proved
 dynamic_in_post.adb:22:7: warning: assertion might fail, requires A = B
-dynamic_in_post.adb:29:13: info: range check proved, in call inlined at dynamic_in_post.adb:37
+dynamic_in_post.adb:29:13: warning: range check might fail, in call inlined at dynamic_in_post.adb:37
 dynamic_in_post.adb:30:10: warning: assertion might fail, requires X = 1, in call inlined at dynamic_in_post.adb:37

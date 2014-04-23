@@ -70,6 +70,8 @@ module Static_Discrete_Base
 
   axiom range_axiom "bounded_type" :
     forall x : t. in_range (to_int x)
+
+  predicate dynamic_property "inline" (f l x : int) = in_range x
 end
 
 module Static_Discrete
@@ -111,8 +113,27 @@ module Dynamic_Discrete_Base
 end
 
 module Dynamic_Discrete
-  use import int.Int
-  clone export Dynamic_Discrete_Base
+ use import "int".Int
+  use import ref.Ref
+
+ type base
+
+ function to_int_base base : int
+ function of_int_base int : base
+
+ function to_int "inline" (x : base) : int = to_int_base (x)
+ function of_int "inline" (x : int) : base = of_int_base (x)
+
+ val first : ref base
+
+ val last : ref base
+
+ predicate dynamic_property (first : int) (last : int) (x : int) =
+    first <= x /\ x <= last
+
+ val range_check_ (x : int) : int
+   requires { dynamic_property (to_int (!first)) (to_int (!last)) x }
+   ensures { result = x } 
 end
 
 module Dynamic_Modular
@@ -123,6 +144,8 @@ module Dynamic_Modular
   axiom coerce_axiom "bounded_type" :
     forall x  : int [to_int (of_int x)].
       to_int (of_int x) = Integer.math_mod x attr__ATTRIBUTE_MODULUS
+
+  predicate dynamic_property "inline" (f l x : int) = in_range x
 end
 
 module Fixed_Point_Base
@@ -572,7 +595,7 @@ module Index_Type
 
   function to_int base : int
   predicate in_range_base int
-  predicate in_range int
+  predicate index_dynamic_property int int int
 
   (* the index type itself *)
   type t
@@ -585,16 +608,6 @@ module Index_Type
   (* constructing and deconstructing the index *)
   function mk int int : t
 
-  axiom range_axiom_first :
-    forall a : t [first a].
-      to_int (first a) <= to_int (last a) ->
-        in_range (to_int (first a))
-
-  axiom range_axiom_last :
-    forall a : t [last a].
-      to_int (first a) <= to_int (last a) ->
-        in_range (to_int (last a))
-
   axiom mk_def :
     forall f l : int [mk f l].
       in_range_base f ->
@@ -604,9 +617,9 @@ module Index_Type
 
   (* The range check that is required by conversion to an unconstrained array.
      See RM 3.6.2(4-6) and 4.6(38) *)
-  predicate range_check (low : int) (high : int) =
+  predicate dynamic_property (range_first : int) (range_last : int) (low : int) (high : int) =
     in_range_base low /\ in_range_base high /\
-       (high >= low -> (in_range low /\ in_range high))
+       (high >= low -> (index_dynamic_property range_first range_last low /\ index_dynamic_property range_first range_last high))
 
 end
 
@@ -732,13 +745,13 @@ module Unconstr_Array
   type base_type
   function to_int base_type : int
   predicate in_range_base int
-  predicate in_range int
+  predicate index_dynamic_property int int int
 
   clone Index_Type as I1 with
     type      base          = base_type,
     function  to_int        = to_int,
     predicate in_range_base = in_range_base,
-    predicate in_range      = in_range
+    predicate index_dynamic_property  = index_dynamic_property
 
   type __split = Array__1.map component_type
 
@@ -757,8 +770,8 @@ module Unconstr_Array
     if first a <= last a then
       last a - first a + 1 else 0
 
-  predicate range_check (f1 l1 : int) =
-    I1.range_check f1 l1
+  predicate dynamic_property (range_first range_last f1 l1 : int) =
+    I1.dynamic_property range_first range_last f1 l1
 
   function bool_eq (x : __t) (y : __t) : bool =
     Array__1.bool_eq
@@ -781,24 +794,24 @@ module Unconstr_Array_2
   type base_type
   function to_int base_type : int
   predicate in_range_base int
-  predicate in_range int
+  predicate index_dynamic_property int int int
 
   type base_type_2
   function to_int_2 base_type_2 : int
   predicate in_range_base_2 int
-  predicate in_range_2 int
+  predicate index_dynamic_property_2 int int int
 
   clone Index_Type as I1 with
     type      base          = base_type,
     function  to_int        = to_int,
     predicate in_range_base = in_range_base,
-    predicate in_range      = in_range
+    predicate index_dynamic_property      = index_dynamic_property
 
   clone Index_Type as I2 with
     type      base          = base_type_2,
     function  to_int        = to_int_2,
     predicate in_range_base = in_range_base_2,
-    predicate in_range      = in_range_2
+    predicate index_dynamic_property      = index_dynamic_property_2
 
   type __split = Array__2.map component_type
   type __t =
@@ -828,8 +841,8 @@ module Unconstr_Array_2
     if first_2 a <= last_2 a then
       last_2 a - first_2 a + 1 else 0
 
-  predicate range_check (f1 l1 f2 l2 : int) =
-    I1.range_check f1 l1 /\ I2.range_check f2 l2
+  predicate dynamic_property (range_first1 range_last1 f1 l1 range_first2 range_last2 f2 l2 : int) =
+    I1.dynamic_property range_first1 range_last1 f1 l1 /\ I2.dynamic_property range_first2 range_last2 f2 l2
 
   function user_eq (x : __t) (y : __t) : bool
   function bool_eq (x : __t) (y : __t) : bool =
@@ -853,36 +866,36 @@ module Unconstr_Array_3
   type base_type
   function to_int base_type : int
   predicate in_range_base int
-  predicate in_range int
+  predicate index_dynamic_property int int int
 
   type base_type_2
   function to_int_2 base_type_2 : int
   predicate in_range_base_2 int
-  predicate in_range_2 int
+  predicate index_dynamic_property_2 int int int
 
   type base_type_3
   function to_int_3 base_type_3 : int
   predicate in_range_base_3 int
-  predicate in_range_3 int
+  predicate index_dynamic_property_3 int int int
 
 
   clone Index_Type as I1 with
     type      base          = base_type,
     function  to_int        = to_int,
     predicate in_range_base = in_range_base,
-    predicate in_range      = in_range
+    predicate index_dynamic_property      = index_dynamic_property
 
   clone Index_Type as I2 with
     type      base          = base_type_2,
     function  to_int        = to_int_2,
     predicate in_range_base = in_range_base_2,
-    predicate in_range      = in_range_2
+    predicate index_dynamic_property      = index_dynamic_property_2
 
   clone Index_Type as I3 with
     type      base          = base_type_3,
     function  to_int        = to_int_3,
     predicate in_range_base = in_range_base_3,
-    predicate in_range      = in_range_3
+    predicate index_dynamic_property      = index_dynamic_property_3
 
   type __split = Array__3.map component_type
   type __t =
@@ -921,8 +934,8 @@ module Unconstr_Array_3
     if first_3 a <= last_3 a then
       last_3 a - first_3 a + 1 else 0
 
-  predicate range_check (f1 l1 f2 l2 f3 l3 : int) =
-    I1.range_check f1 l1 /\ I2.range_check f2 l2 /\ I3.range_check f3 l3
+  predicate dynamic_property (range_first1 range_last1 f1 l1 range_first2 range_last2 f2 l2 range_first3 range_last3 f3 l3 : int) =
+    I1.dynamic_property range_first1 range_last1 f1 l1 /\ I2.dynamic_property range_first2 range_last2 f2 l2 /\ I3.dynamic_property range_first3 range_last3 f3 l3
 
   function user_eq (x : __t) (y : __t) : bool
 
@@ -949,47 +962,47 @@ module Unconstr_Array_4
   type base_type
   function to_int base_type : int
   predicate in_range_base int
-  predicate in_range int
+  predicate index_dynamic_property int int int
 
   type base_type_2
   function to_int_2 base_type_2 : int
   predicate in_range_base_2 int
-  predicate in_range_2 int
+  predicate index_dynamic_property_2 int int int
 
   type base_type_3
   function to_int_3 base_type_3 : int
   predicate in_range_base_3 int
-  predicate in_range_3 int
+  predicate index_dynamic_property_3 int int int
 
   type base_type_4
   function to_int_4 base_type_4 : int
   predicate in_range_base_4 int
-  predicate in_range_4 int
+  predicate index_dynamic_property_4 int int int
 
 
   clone Index_Type as I1 with
     type      base          = base_type,
     function  to_int        = to_int,
     predicate in_range_base = in_range_base,
-    predicate in_range      = in_range
+    predicate index_dynamic_property      = index_dynamic_property
 
   clone Index_Type as I2 with
     type      base          = base_type_2,
     function  to_int        = to_int_2,
     predicate in_range_base = in_range_base_2,
-    predicate in_range      = in_range_2
+    predicate index_dynamic_property      = index_dynamic_property_2
 
   clone Index_Type as I3 with
     type      base          = base_type_3,
     function  to_int        = to_int_3,
     predicate in_range_base = in_range_base_3,
-    predicate in_range      = in_range_3
+    predicate index_dynamic_property      = index_dynamic_property_3
 
   clone Index_Type as I4 with
     type      base          = base_type_4,
     function  to_int        = to_int_4,
     predicate in_range_base = in_range_base_4,
-    predicate in_range      = in_range_4
+    predicate index_dynamic_property      = index_dynamic_property_4
 
   type __split = Array__4.map component_type
 
@@ -1037,9 +1050,9 @@ module Unconstr_Array_4
     if first_4 a <= last_4 a then
       last_4 a - first_4 a + 1 else 0
 
-  predicate range_check (f1 l1 f2 l2 f3 l3 f4 l4 : int) =
-    I1.range_check f1 l1 /\ I2.range_check f2 l2 /\
-    I3.range_check f3 l3 /\ I4.range_check f4 l4
+  predicate dynamic_property (range_first1 range_last1 f1 l1 range_first2 range_last2 f2 l2 range_first3 range_last3 f3 l3 range_first4 range_last4 f4 l4 : int) =
+    I1.dynamic_property range_first1 range_last1 f1 l1 /\ I2.dynamic_property range_first2 range_last2 f2 l2 /\
+    I3.dynamic_property range_first3 range_last3 f3 l3 /\ I4.dynamic_property range_first4 range_last4 f4 l4
 
   function user_eq (x : __t) (y : __t) : bool
 

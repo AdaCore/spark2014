@@ -24,8 +24,8 @@ list.adb:37:15: warning: precondition might fail
 list.adb:37:29: warning: range check might fail
 list.adb:37:34: info: precondition proved
 list.adb:37:46: info: precondition proved
-list.adb:37:61: warning: overflow check might fail
-list.adb:37:65: warning: overflow check might fail
+list.adb:37:61: info: overflow check proved
+list.adb:37:65: info: overflow check proved
 list.adb:37:65: warning: range check might fail
 list.ads:15:14: info: postcondition proved
 list.ads:15:28: info: precondition proved
@@ -34,8 +34,8 @@ list.ads:16:17: info: precondition proved
 list.ads:16:29: warning: range check might fail
 list.ads:16:34: warning: precondition might fail
 list.ads:16:64: info: precondition proved
-list.ads:16:79: warning: overflow check might fail
-list.ads:16:83: warning: overflow check might fail
+list.ads:16:79: info: overflow check proved
+list.ads:16:83: info: overflow check proved
 list.ads:16:83: warning: range check might fail
 main.adb:3:11: warning: subprogram "Main" has no effect
 main.adb:9:15: warning: precondition might fail

@@ -270,6 +270,58 @@ package body Why.Gen.Scalars is
    --  Start of Declare_Scalar_Type
 
    begin
+      if not Is_Static_Subtype (E) and then Is_Discrete_Type (E) then
+         declare
+            Why_Base_Type : constant W_Type_Id := EW_Abstract (Base_Type (E));
+
+            Default_Clone_Subst : constant W_Clone_Substitution_Id :=
+              New_Clone_Substitution
+                (Kind      => EW_Type_Subst,
+                 Orig_Name => New_Identifier (Name => "base"),
+                 Image     => Why_Name);
+
+            To_Int_Clone_Subst : constant W_Clone_Substitution_Id :=
+              New_Clone_Substitution
+                (Kind      => EW_Function,
+                 Orig_Name => New_Identifier (Name => "to_int_base"),
+                 Image     => Conversion_Name
+                                (From => Why_Base_Type,
+                                 To   => EW_Int_Type));
+
+            Of_Int_Clone_Subst : constant W_Clone_Substitution_Id :=
+              New_Clone_Substitution
+                (Kind      => EW_Function,
+                 Orig_Name => New_Identifier (Name => "of_int_base"),
+                 Image     => Conversion_Name
+                                (To   => Why_Base_Type,
+                                 From => EW_Int_Type));
+         begin
+
+            --  declare the abstract type
+
+            Emit (Theory,
+                  New_Type_Decl
+                    (Name       => Why_Name,
+                     Labels     => Name_Id_Sets.Empty_Set,
+                     Definition => New_Transparent_Type_Definition
+                       (Domain          => EW_Term,
+                        Type_Definition => Why_Base_Type)));
+
+            --  clone the appropriate module
+
+            Emit (Theory,
+                  New_Clone_Declaration
+                    (Theory_Kind   => EW_Module,
+                     Clone_Kind    => EW_Export,
+                     Origin        => Dynamic_Discrete,
+                     Substitutions =>
+                       Default_Clone_Subst & To_Int_Clone_Subst &
+                       Of_Int_Clone_Subst));
+
+            return;
+         end;
+      end if;
+
       --  declare the abstract type
 
       Emit (Theory,

@@ -199,7 +199,7 @@ decimal_fixed.ads:23:14: warning: subprogram "Test_Compare" has no effect
 dynamic_fixed.adb:1:11: warning: subprogram "Dynamic_Fixed" has no effect
 dynamic_fixed.adb:6:18: info: range check proved
 dynamic_fixed.adb:6:40: info: range check proved
-dynamic_fixed.adb:7:19: warning: range check might fail
+dynamic_fixed.adb:7:19: info: range check proved
 dynamic_fixed.adb:9:10: warning: assertion might fail, requires Integer (T'Last) = I
 dynamic_fixed.adb:10:10: info: assertion proved
 unsupported.adb:2:04: fixed-point type whose small is not a negative power of 2 or 10 is not yet supported

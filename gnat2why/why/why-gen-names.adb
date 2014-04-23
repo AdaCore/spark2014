@@ -277,6 +277,24 @@ package body Why.Gen.Names is
    end Convert_To;
 
    -----------------------
+   -- Dynamic_Prop_Name --
+   -----------------------
+
+   function Dynamic_Prop_Name (Ty : Entity_Id) return W_Identifier_Id
+   is
+   begin
+      if Is_Standard_Boolean_Type (Ty) then
+         return Prefix (Ada_Node => Standard_Boolean,
+                        M        => Boolean_Module,
+                        W        => WNE_Dynamic_Property);
+      else
+         return Prefix (Ada_Node => Ty,
+                        M        => E_Module (Ty),
+                        W        => WNE_Dynamic_Property);
+      end if;
+   end Dynamic_Prop_Name;
+
+   -----------------------
    -- EW_Base_Type_Name --
    -----------------------
 
@@ -526,6 +544,8 @@ package body Why.Gen.Names is
    begin
       case W is
          when WNE_Range_Pred   => return "in_range";
+         when WNE_Dynamic_Property => return "dynamic_property";
+         when WNE_Index_Dynamic_Property => return "index_dynamic_property";
          when WNE_To_Int       => return "to_int";
          when WNE_Of_Int       => return "of_int";
          when WNE_To_Fixed     => return "to_fixed";

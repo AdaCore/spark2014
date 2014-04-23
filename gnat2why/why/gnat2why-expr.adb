@@ -570,6 +570,33 @@ package body Gnat2Why.Expr is
       end if;
    end Assignment_Of_Obj_Decl;
 
+   -----------------------------
+   -- Assume_Dynamic_Property --
+   -----------------------------
+
+   function Assume_Dynamic_Property
+     (Expr : W_Expr_Id;
+      Ty   : Entity_Id) return W_Prog_Id
+   is
+   begin
+      --  For now, only generate assumption for dynamic discrete types and
+      --  unconstrained array types.
+
+      if (Is_Discrete_Type (Ty) and then not Is_Static_Subtype (Ty))
+        or else (Is_Array_Type (Ty) and then not Is_Static_Array_Type (Ty))
+      then
+         return New_Assume_Statement
+           (Ada_Node => Ty,
+            Pre      => True_Pred,
+            Post     =>
+              +New_Dynamic_Property (Domain => EW_Prog,
+                                     Ty     => Ty,
+                                     Expr   => Expr));
+      else
+         return New_Void;
+      end if;
+   end Assume_Dynamic_Property;
+
    ------------------------------
    -- Assume_Of_Scalar_Subtype --
    ------------------------------
@@ -591,6 +618,7 @@ package body Gnat2Why.Expr is
          declare
             Rng              : constant Node_Id := Get_Range (N);
             Why_Base         : constant W_Type_Id := Base_Why_Type (N);
+            Why_Type         : constant W_Type_Id := Type_Of_Node (N);
             Why_Base_EW      : constant EW_Type := Get_EW_Type (N);
             Low_Expr         : constant W_Term_Id :=
               +Transform_Expr (Low_Bound (Rng), Why_Base, EW_Term, Params);
@@ -600,6 +628,8 @@ package body Gnat2Why.Expr is
               +New_Attribute_Expr (N, Attribute_First);
             Last_Term        : constant W_Term_Id :=
               +New_Attribute_Expr (N, Attribute_Last);
+            Low_Expr_Conv    : W_Expr_Id := +Low_Expr;
+            High_Expr_Conv   : W_Expr_Id := +High_Expr;
             Rel_First        : constant W_Pred_Id :=
               New_Relation
                 (Op_Type  => EW_Bool,
@@ -646,6 +676,53 @@ package body Gnat2Why.Expr is
             Assuming : W_Prog_Id;
 
          begin
+
+            if not Is_Static_Subtype (N) and then Is_Discrete_Type (N) then
+               Low_Expr_Conv :=
+                 Insert_Simple_Conversion
+                   (Ada_Node => N,
+                    Domain   => EW_Term,
+                    Expr     => Low_Expr_Conv,
+                    To       => Why_Type);
+               High_Expr_Conv :=
+                 Insert_Simple_Conversion
+                   (Ada_Node => N,
+                    Domain   => EW_Term,
+                    Expr     => High_Expr_Conv,
+                    To       => Why_Type);
+               declare
+                  Low_Var : constant W_Expr_Id :=
+                    +Get_Right
+                    (W_Deref_Id
+                       (New_Attribute_Expr (N, Attribute_First, False)));
+                  High_Var : constant W_Expr_Id :=
+                    +Get_Right
+                    (W_Deref_Id
+                       (New_Attribute_Expr (N, Attribute_Last, False)));
+                  Set_Bounds : constant W_Prog_Id :=
+                    Sequence (New_Assignment
+                              (Name  => +Low_Var,
+                               Value => +Low_Expr_Conv),
+                              New_Assignment
+                                (Name  => +High_Var,
+                                 Value => +High_Expr_Conv));
+               begin
+                  if Do_Check then
+                     Assuming := New_Assume_Statement (Ada_Node => N,
+                                                       Pre      => Precond,
+                                                       Post     => True_Pred);
+                     return
+                       Sequence (Set_Bounds,
+                                 +New_VC_Expr (Ada_Node => N,
+                                               Domain   => EW_Prog,
+                                               Reason   => VC_Range_Check,
+                                               Expr     => +Assuming));
+                  else
+                     return Set_Bounds;
+                  end if;
+               end;
+            end if;
+
             --  If the scalar subtype is modeled as "int" or "real", assign the
             --  variables corresponding to its bounds instead of assuming the
             --  values of constants corresponding to its bounds.
@@ -654,15 +731,19 @@ package body Gnat2Why.Expr is
                declare
                   Low_Var : constant W_Expr_Id :=
                     +Get_Right
-                      (W_Deref_Id (New_Attribute_Expr (N, Attribute_First)));
+                    (W_Deref_Id
+                       (New_Attribute_Expr (N, Attribute_First, False)));
                   High_Var : constant W_Expr_Id :=
                     +Get_Right
-                      (W_Deref_Id (New_Attribute_Expr (N, Attribute_Last)));
+                    (W_Deref_Id
+                       (New_Attribute_Expr (N, Attribute_Last, False)));
                   Set_Bounds : constant W_Prog_Id :=
-                    Sequence (New_Assignment (Name => +Low_Var,
-                                              Value => +Low_Expr),
-                              New_Assignment (Name => +High_Var,
-                                              Value => +High_Expr));
+                    Sequence (New_Assignment
+                              (Name  => +Low_Var,
+                               Value => +Low_Expr),
+                              New_Assignment
+                                (Name  => +High_Var,
+                                 Value => +High_Expr));
                begin
                   if Do_Check then
                      Assuming := New_Assume_Statement (Ada_Node => N,
@@ -6068,26 +6149,52 @@ package body Gnat2Why.Expr is
                Nb_Of_Refs : Natural;
                Args       : constant W_Expr_Array :=
                  Compute_Call_Args (Expr, Domain, Nb_Of_Refs, Local_Params);
-
             begin
                if Why_Subp_Has_Precondition (Subp) then
-                  T :=
-                    +New_VC_Call
-                    (Name     => Why_Name,
+                  T := +New_VC_Call
+                    (Ada_Node => Expr,
+                     Name     => Why_Name,
                      Progs    => Args,
-                     Ada_Node => Expr,
-                     Domain   => Domain,
                      Reason   => VC_Precondition,
+                     Domain   => Domain,
                      Typ      => Get_Typ (Why_Name));
-
                else
-                  T :=
-                    New_Call
+                  T := New_Call
                       (Name     => Why_Name,
                        Args     => Args,
                        Ada_Node => Expr,
                        Domain   => Domain,
                        Typ      => Get_Typ (Why_Name));
+               end if;
+
+               if Domain = EW_Prog then
+                  declare
+                     Tmp        : constant W_Expr_Id :=
+                       New_Temp_For_Expr (T);
+                     Dyn_Prop   : constant W_Expr_Id := New_Dynamic_Property
+                       (Domain => Domain,
+                        Ty     => Etype (Subp),
+                        Expr   => Tmp);
+                  begin
+
+                     if Dyn_Prop /= Bool_True (Domain) then
+
+                        --  If the function returns a dynamic type and the call
+                        --  is in the program domain, assume that the result
+                        --  has the dynamic property.
+
+                        T := Binding_For_Temp
+                          (Ada_Node => Expr,
+                           Domain   => Domain,
+                           Tmp      => Tmp,
+                           Context  => +Sequence
+                             (Left  => New_Assume_Statement
+                                  (Ada_Node    => Expr,
+                                   Pre         => True_Pred,
+                                   Post        => +Dyn_Prop),
+                              Right => +Tmp));
+                     end if;
+                  end;
                end if;
 
                pragma Assert (Nb_Of_Refs = 0,

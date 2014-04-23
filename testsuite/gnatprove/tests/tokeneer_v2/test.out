@@ -87,7 +87,7 @@ auditlog.adb:416:42: info: overflow check proved
 auditlog.adb:417:42: info: overflow check proved
 auditlog.adb:421:24: info: range check proved
 auditlog.adb:421:35: info: range check proved
-auditlog.adb:421:44: warning: range check might fail
+auditlog.adb:421:44: info: range check proved
 auditlog.adb:425:16: info: range check proved
 auditlog.adb:425:28: info: range check proved
 auditlog.adb:425:37: warning: range check might fail
@@ -140,8 +140,8 @@ auditlog.adb:1248:64: warning: range check might fail
 auditlog.adb:1249:65: warning: range check might fail
 auditlog.adb:1270:62: info: range check proved
 auditlog.adb:1270:67: info: overflow check proved
-auditlog.adb:1271:27: info: overflow check proved
-auditlog.adb:1271:27: info: range check proved
+auditlog.adb:1271:27: warning: overflow check might fail
+auditlog.adb:1271:27: warning: range check might fail
 auditlog.adb:1332:55: info: refined post proved
 auditlog.adb:1334:67: info: range check proved
 auditlog.adb:1334:72: info: overflow check proved
@@ -173,7 +173,7 @@ auditlog.adb:1587:75: info: overflow check proved
 auditlog.adb:1595:53: info: range check proved
 auditlog.adb:1598:47: info: range check proved
 auditlog.adb:1611:10: info: precondition proved
-auditlog.adb:1619:7: warning: precondition might fail
+auditlog.adb:1619:7: info: precondition proved
 auditlog.ads:60:22: info: postcondition proved
 auditlog.ads:92:22: info: postcondition proved
 auditlog.ads:119:22: info: postcondition proved
@@ -615,12 +615,12 @@ keystore.adb:199:35: info: index check proved
 keystore.adb:199:35: info: overflow check proved
 keystore.adb:199:51: info: overflow check proved
 keystore.adb:218:51: info: division check proved
-keystore.adb:222:13: info: loop invariant initialization proved
 keystore.adb:222:13: info: loop invariant preservation proved
+keystore.adb:222:13: warning: loop invariant might fail in first iteration
 keystore.adb:223:56: info: division check proved
 keystore.adb:226:57: info: overflow check proved
 keystore.adb:226:67: info: overflow check proved
-keystore.adb:236:22: info: precondition proved
+keystore.adb:236:22: warning: precondition might fail
 keystore.adb:248:36: warning: range check might fail
 keystore.adb:264:18: warning: precondition might fail
 keystore.adb:272:18: warning: precondition might fail
@@ -738,7 +738,7 @@ screen.adb:597:49: info: range check proved
 screen.adb:603:18: warning: unused assignment to "Interfac.Output"
 screen.adb:603:49: info: range check proved
 screen.adb:609:18: warning: unused assignment to "Interfac.Output"
-screen.adb:609:49: info: range check proved
+screen.adb:609:49: warning: range check might fail
 screen.adb:615:18: warning: unused assignment to "Interfac.Output"
 screen.adb:621:18: warning: unused assignment to "Interfac.Output"
 screen.adb:627:18: warning: unused assignment to "Interfac.Output"

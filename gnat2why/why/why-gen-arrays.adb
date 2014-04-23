@@ -530,9 +530,10 @@ package body Why.Gen.Arrays is
             Subst (Cursor) :=
               New_Clone_Substitution
                 (Kind      => EW_Predicate,
-                 Orig_Name => Append_Num (WNE_Range_Pred, Dim_Count),
+                 Orig_Name =>
+                   Append_Num (WNE_Index_Dynamic_Property, Dim_Count),
                  Image     =>
-                   Range_Pred_Name (Ind_Ty));
+                   Dynamic_Prop_Name (Ind_Ty));
             Cursor := Cursor + 1;
          end;
          Dim_Count := Dim_Count + 1;

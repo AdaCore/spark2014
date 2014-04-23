@@ -178,6 +178,8 @@ module Boolean
 
   predicate in_range (x : int) = x = 0 \/ x = 1
 
+  predicate dynamic_property "inline" (f l x : int) = in_range x
+
   function attr__ATTRIBUTE_IMAGE bool : __image
 
   predicate attr__ATTRIBUTE_VALUE__pre_check (x : __image)

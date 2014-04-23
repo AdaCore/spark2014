@@ -102,8 +102,8 @@ step_function.adb:51:31: info: index check proved
 step_function.adb:53:34: info: index check proved
 step_function.adb:78:17: info: range check proved
 step_function.adb:95:7: info: assertion proved
+step_function.adb:98:10: info: loop invariant initialization proved
 step_function.adb:98:10: warning: loop invariant might fail after first iteration
-step_function.adb:98:10: warning: loop invariant might fail in first iteration
 step_function.adb:118:35: warning: "Merge.Step" may be referenced before it has a value
 step_function.adb:118:47: info: index check proved
 step_function.adb:118:74: info: index check proved

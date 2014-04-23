@@ -59,6 +59,10 @@ package Why.Gen.Names is
      (Ty : Entity_Id) return W_Identifier_Id;
    --  Return the name of the "in_range" predicate for the type
 
+   function Dynamic_Prop_Name
+     (Ty : Entity_Id) return W_Identifier_Id;
+   --  Return the name of the "dynamic_property" predicate for the type
+
    function Float_Round_Name (Ty : Entity_Id) return W_Identifier_Id
    with Pre => Ekind (Ty) in Real_Kind;
    --  Returns the name of the floating-point rounding operation for type Ty
@@ -186,6 +190,7 @@ package Why.Gen.Names is
       WNE_Check_Not_Last,
       WNE_Def,
       WNE_Dummy,
+      WNE_Dynamic_Property,
 
       --  Division operator for a fixed-point type
       WNE_Fixed_Point_Div,
@@ -208,6 +213,7 @@ package Why.Gen.Names is
       WNE_Float_Succ,
 
       WNE_Ignore,
+      WNE_Index_Dynamic_Property,
 
       --  Polymorphic __havoc procedure sets the value of its parameter to any
       --  possible value allowed by its type.

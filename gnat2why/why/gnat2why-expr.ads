@@ -62,6 +62,12 @@ package Gnat2Why.Expr is
    --  the subtype. Returns the empty program if N is not a scalar subtype,
    --  or is a scalar subtype with a static range_constraint.
 
+   function Assume_Dynamic_Property
+     (Expr : W_Expr_Id;
+      Ty   : Entity_Id) return W_Prog_Id;
+   --  Generate an assumption that N is a value of its type. Returns the empty
+   --  Program if N is not a value of a dynamic type.
+
    function Get_Pure_Logic_Term_If_Possible
      (File          : Why_Section;
       Expr          : Node_Id;
