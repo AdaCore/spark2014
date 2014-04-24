@@ -1,18 +1,29 @@
 foo.adb:4:04: warning: analyzing unreferenced procedure "Floats_And_Double"
+foo.adb:4:14: warning: subprogram "Floats_And_Double" has no effect
 foo.adb:7:7: warning: assertion might fail, requires Float (Y) = X) = (Long_Float (X) = Y
 foo.adb:7:30: warning: range check might fail
+generic_float_tests.adb:14:14: warning: subprogram "Equality_Matters" has no effect, in instantiation at foo.ads:14
+generic_float_tests.adb:14:14: warning: subprogram "Equality_Matters" has no effect, in instantiation at foo.ads:9
 generic_float_tests.adb:22:7: info: assertion proved, in instantiation at foo.ads:14
 generic_float_tests.adb:22:7: info: assertion proved, in instantiation at foo.ads:9
+generic_float_tests.adb:25:14: warning: subprogram "A_Minimum_Of_Care_Is_Needed" has no effect, in instantiation at foo.ads:14
+generic_float_tests.adb:25:14: warning: subprogram "A_Minimum_Of_Care_Is_Needed" has no effect, in instantiation at foo.ads:9
 generic_float_tests.adb:35:7: info: assertion proved, in instantiation at foo.ads:14
 generic_float_tests.adb:35:7: info: assertion proved, in instantiation at foo.ads:9
+generic_float_tests.adb:44:14: warning: subprogram "Add_Monotonic" has no effect, in instantiation at foo.ads:14
+generic_float_tests.adb:44:14: warning: subprogram "Add_Monotonic" has no effect, in instantiation at foo.ads:9
 generic_float_tests.adb:48:7: warning: assertion might fail, requires X + Y >= X, in instantiation at foo.ads:14
 generic_float_tests.adb:48:7: warning: assertion might fail, requires X + Y >= X, in instantiation at foo.ads:9
 generic_float_tests.adb:48:24: warning: overflow check might fail, in instantiation at foo.ads:14
 generic_float_tests.adb:48:24: warning: overflow check might fail, in instantiation at foo.ads:9
+generic_float_tests.adb:53:14: warning: subprogram "Add_Strictly_Monotonic" has no effect, in instantiation at foo.ads:14
+generic_float_tests.adb:53:14: warning: subprogram "Add_Strictly_Monotonic" has no effect, in instantiation at foo.ads:9
 generic_float_tests.adb:57:7: warning: assertion might fail, requires X + Y > X, in instantiation at foo.ads:14
 generic_float_tests.adb:57:7: warning: assertion might fail, requires X + Y > X, in instantiation at foo.ads:9
 generic_float_tests.adb:57:24: warning: overflow check might fail, in instantiation at foo.ads:14
 generic_float_tests.adb:57:24: warning: overflow check might fail, in instantiation at foo.ads:9
+generic_float_tests.adb:62:14: warning: subprogram "Smooth" has no effect, in instantiation at foo.ads:14
+generic_float_tests.adb:62:14: warning: subprogram "Smooth" has no effect, in instantiation at foo.ads:9
 generic_float_tests.adb:66:7: warning: assertion might fail, requires false, in instantiation at foo.ads:14
 generic_float_tests.adb:66:7: warning: assertion might fail, requires false, in instantiation at foo.ads:9
 generic_float_tests.adb:72:19: info: postcondition proved, in instantiation at foo.ads:14
@@ -53,6 +64,8 @@ generic_float_tests.adb:109:16: info: range check proved, in instantiation at fo
 generic_float_tests.adb:109:16: info: range check proved, in instantiation at foo.ads:9
 generic_float_tests.adb:109:16: warning: overflow check might fail, in instantiation at foo.ads:14
 generic_float_tests.adb:109:16: warning: overflow check might fail, in instantiation at foo.ads:9
+generic_float_tests.adb:112:34: warning: unused initial value of "C", in instantiation at foo.ads:14
+generic_float_tests.adb:112:34: warning: unused initial value of "C", in instantiation at foo.ads:9
 generic_float_tests.adb:113:20: warning: overflow check might fail, in instantiation at foo.ads:14
 generic_float_tests.adb:113:20: warning: overflow check might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:113:34: warning: overflow check might fail, in instantiation at foo.ads:14
@@ -73,6 +86,8 @@ generic_float_tests.adb:125:23: info: division check proved, in instantiation at
 generic_float_tests.adb:125:23: info: division check proved, in instantiation at foo.ads:9
 generic_float_tests.adb:125:23: warning: overflow check might fail, in instantiation at foo.ads:14
 generic_float_tests.adb:125:23: warning: overflow check might fail, in instantiation at foo.ads:9
+generic_float_tests.adb:128:14: warning: subprogram "Inverse_Addition" has no effect, in instantiation at foo.ads:14
+generic_float_tests.adb:128:14: warning: subprogram "Inverse_Addition" has no effect, in instantiation at foo.ads:9
 generic_float_tests.adb:131:7: warning: assertion might fail, requires X + X = X - (-X, in instantiation at foo.ads:14
 generic_float_tests.adb:131:7: warning: assertion might fail, requires X + X = X - (-X, in instantiation at foo.ads:9
 generic_float_tests.adb:131:24: warning: overflow check might fail, in instantiation at foo.ads:14
@@ -81,28 +96,38 @@ generic_float_tests.adb:131:32: warning: overflow check might fail, in instantia
 generic_float_tests.adb:131:32: warning: overflow check might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:131:35: info: overflow check proved, in instantiation at foo.ads:14
 generic_float_tests.adb:131:35: info: overflow check proved, in instantiation at foo.ads:9
+generic_float_tests.adb:134:14: warning: subprogram "Substract_Identity_1" has no effect, in instantiation at foo.ads:14
+generic_float_tests.adb:134:14: warning: subprogram "Substract_Identity_1" has no effect, in instantiation at foo.ads:9
 generic_float_tests.adb:138:7: warning: assertion might fail, requires X - Y = 0.0) = (X = Y, in instantiation at foo.ads:14
 generic_float_tests.adb:138:7: warning: assertion might fail, requires X - Y = 0.0) = (X = Y, in instantiation at foo.ads:9
 generic_float_tests.adb:138:25: warning: overflow check might fail, in instantiation at foo.ads:14
 generic_float_tests.adb:138:25: warning: overflow check might fail, in instantiation at foo.ads:9
+generic_float_tests.adb:141:14: warning: subprogram "Substract_Identity_2" has no effect, in instantiation at foo.ads:14
+generic_float_tests.adb:141:14: warning: subprogram "Substract_Identity_2" has no effect, in instantiation at foo.ads:9
 generic_float_tests.adb:145:7: warning: assertion might fail, requires X - Y) + Y = X, in instantiation at foo.ads:14
 generic_float_tests.adb:145:7: warning: assertion might fail, requires X - Y) + Y = X, in instantiation at foo.ads:9
 generic_float_tests.adb:145:25: warning: overflow check might fail, in instantiation at foo.ads:14
 generic_float_tests.adb:145:25: warning: overflow check might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:145:30: warning: overflow check might fail, in instantiation at foo.ads:14
 generic_float_tests.adb:145:30: warning: overflow check might fail, in instantiation at foo.ads:9
+generic_float_tests.adb:148:14: warning: subprogram "Substract_Identity_3" has no effect, in instantiation at foo.ads:14
+generic_float_tests.adb:148:14: warning: subprogram "Substract_Identity_3" has no effect, in instantiation at foo.ads:9
 generic_float_tests.adb:152:7: warning: assertion might fail, requires X + Y) - Y = X, in instantiation at foo.ads:14
 generic_float_tests.adb:152:7: warning: assertion might fail, requires X + Y) - Y = X, in instantiation at foo.ads:9
 generic_float_tests.adb:152:25: warning: overflow check might fail, in instantiation at foo.ads:14
 generic_float_tests.adb:152:25: warning: overflow check might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:152:30: warning: overflow check might fail, in instantiation at foo.ads:14
 generic_float_tests.adb:152:30: warning: overflow check might fail, in instantiation at foo.ads:9
+generic_float_tests.adb:155:14: warning: subprogram "Underflow_4" has no effect, in instantiation at foo.ads:14
+generic_float_tests.adb:155:14: warning: subprogram "Underflow_4" has no effect, in instantiation at foo.ads:9
 generic_float_tests.adb:159:7: warning: assertion might fail, requires 1.0 / X > , in instantiation at foo.ads:14
 generic_float_tests.adb:159:7: warning: assertion might fail, requires 1.0 / X > , in instantiation at foo.ads:9
 generic_float_tests.adb:159:26: info: division check proved, in instantiation at foo.ads:14
 generic_float_tests.adb:159:26: info: division check proved, in instantiation at foo.ads:9
 generic_float_tests.adb:159:26: warning: overflow check might fail, in instantiation at foo.ads:14
 generic_float_tests.adb:159:26: warning: overflow check might fail, in instantiation at foo.ads:9
+generic_float_tests.adb:162:14: warning: subprogram "Not_So_Associative" has no effect, in instantiation at foo.ads:14
+generic_float_tests.adb:162:14: warning: subprogram "Not_So_Associative" has no effect, in instantiation at foo.ads:9
 generic_float_tests.adb:165:7: warning: assertion might fail, requires A + B) + C = A + (B + C, in instantiation at foo.ads:14
 generic_float_tests.adb:165:7: warning: assertion might fail, requires A + B) + C = A + (B + C, in instantiation at foo.ads:9
 generic_float_tests.adb:165:25: warning: overflow check might fail, in instantiation at foo.ads:14
@@ -113,12 +138,16 @@ generic_float_tests.adb:165:38: warning: overflow check might fail, in instantia
 generic_float_tests.adb:165:38: warning: overflow check might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:165:43: warning: overflow check might fail, in instantiation at foo.ads:14
 generic_float_tests.adb:165:43: warning: overflow check might fail, in instantiation at foo.ads:9
+generic_float_tests.adb:168:14: warning: subprogram "I_Like_To_Commute_To_Work" has no effect, in instantiation at foo.ads:14
+generic_float_tests.adb:168:14: warning: subprogram "I_Like_To_Commute_To_Work" has no effect, in instantiation at foo.ads:9
 generic_float_tests.adb:171:7: info: assertion proved, in instantiation at foo.ads:14
 generic_float_tests.adb:171:7: info: assertion proved, in instantiation at foo.ads:9
 generic_float_tests.adb:171:25: warning: overflow check might fail, in instantiation at foo.ads:14
 generic_float_tests.adb:171:25: warning: overflow check might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:171:35: warning: overflow check might fail, in instantiation at foo.ads:14
 generic_float_tests.adb:171:35: warning: overflow check might fail, in instantiation at foo.ads:9
+generic_float_tests.adb:174:14: warning: subprogram "Distributed_Fun" has no effect, in instantiation at foo.ads:14
+generic_float_tests.adb:174:14: warning: subprogram "Distributed_Fun" has no effect, in instantiation at foo.ads:9
 generic_float_tests.adb:177:7: warning: assertion might fail, requires A * (B + C) = (A * B) + (A * C, in instantiation at foo.ads:14
 generic_float_tests.adb:177:7: warning: assertion might fail, requires A * (B + C) = (A * B) + (A * C, in instantiation at foo.ads:9
 generic_float_tests.adb:177:24: warning: overflow check might fail, in instantiation at foo.ads:14
@@ -131,6 +160,8 @@ generic_float_tests.adb:177:44: warning: overflow check might fail, in instantia
 generic_float_tests.adb:177:44: warning: overflow check might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:177:49: warning: overflow check might fail, in instantiation at foo.ads:14
 generic_float_tests.adb:177:49: warning: overflow check might fail, in instantiation at foo.ads:9
+generic_float_tests.adb:187:14: warning: subprogram "Equality" has no effect, in instantiation at foo.ads:14
+generic_float_tests.adb:187:14: warning: subprogram "Equality" has no effect, in instantiation at foo.ads:9
 generic_float_tests.adb:190:7: info: assertion proved, in instantiation at foo.ads:14
 generic_float_tests.adb:190:7: info: assertion proved, in instantiation at foo.ads:9
 generic_float_tests.adb:198:14: info: range check proved, in instantiation at foo.ads:14
@@ -139,6 +170,8 @@ generic_float_tests.adb:198:14: warning: divide by zero might fail, in instantia
 generic_float_tests.adb:198:14: warning: divide by zero might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:198:14: warning: overflow check might fail, in instantiation at foo.ads:14
 generic_float_tests.adb:198:14: warning: overflow check might fail, in instantiation at foo.ads:9
+generic_float_tests.adb:204:14: warning: subprogram "Introduce_Nan_2" has no effect, in instantiation at foo.ads:14
+generic_float_tests.adb:204:14: warning: subprogram "Introduce_Nan_2" has no effect, in instantiation at foo.ads:9
 generic_float_tests.adb:208:7: info: assertion proved, in instantiation at foo.ads:14
 generic_float_tests.adb:208:7: info: assertion proved, in instantiation at foo.ads:9
 generic_float_tests.adb:208:24: warning: divide by zero might fail, in instantiation at foo.ads:14
@@ -157,10 +190,14 @@ generic_float_tests.adb:216:28: warning: divide by zero might fail, in instantia
 generic_float_tests.adb:216:28: warning: divide by zero might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:216:28: warning: overflow check might fail, in instantiation at foo.ads:14
 generic_float_tests.adb:216:28: warning: overflow check might fail, in instantiation at foo.ads:9
+generic_float_tests.adb:221:14: warning: subprogram "Transitive" has no effect, in instantiation at foo.ads:14
+generic_float_tests.adb:221:14: warning: subprogram "Transitive" has no effect, in instantiation at foo.ads:9
 generic_float_tests.adb:225:7: info: assertion proved, in instantiation at foo.ads:14
 generic_float_tests.adb:225:7: info: assertion proved, in instantiation at foo.ads:9
 generic_float_tests.adb:236:10: info: assertion proved, in instantiation at foo.ads:14
 generic_float_tests.adb:236:10: info: assertion proved, in instantiation at foo.ads:9
+generic_float_tests.adb:241:14: warning: subprogram "Negation_1" has no effect, in instantiation at foo.ads:14
+generic_float_tests.adb:241:14: warning: subprogram "Negation_1" has no effect, in instantiation at foo.ads:9
 generic_float_tests.adb:242:22: info: overflow check proved, in instantiation at foo.ads:14
 generic_float_tests.adb:242:22: info: overflow check proved, in instantiation at foo.ads:9
 generic_float_tests.adb:245:7: warning: assertion might fail, requires F = , in instantiation at foo.ads:14
@@ -171,6 +208,8 @@ generic_float_tests.adb:252:14: info: overflow check proved, in instantiation at
 generic_float_tests.adb:252:14: info: overflow check proved, in instantiation at foo.ads:9
 generic_float_tests.adb:252:14: info: range check proved, in instantiation at foo.ads:14
 generic_float_tests.adb:252:14: info: range check proved, in instantiation at foo.ads:9
+generic_float_tests.adb:255:14: warning: subprogram "Identity_2" has no effect, in instantiation at foo.ads:14
+generic_float_tests.adb:255:14: warning: subprogram "Identity_2" has no effect, in instantiation at foo.ads:9
 generic_float_tests.adb:259:7: warning: assertion might fail, requires X / X = , in instantiation at foo.ads:14
 generic_float_tests.adb:259:7: warning: assertion might fail, requires X / X = , in instantiation at foo.ads:9
 generic_float_tests.adb:259:24: info: division check proved, in instantiation at foo.ads:14
@@ -217,6 +256,8 @@ generic_float_tests.adb:283:16: warning: overflow check might fail, in instantia
 generic_float_tests.adb:283:16: warning: overflow check might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:284:7: warning: assertion might fail, requires X = B, in instantiation at foo.ads:14
 generic_float_tests.adb:284:7: warning: assertion might fail, requires X = B, in instantiation at foo.ads:9
+generic_float_tests.adb:293:14: warning: subprogram "Unary_Ops" has no effect, in instantiation at foo.ads:14
+generic_float_tests.adb:293:14: warning: subprogram "Unary_Ops" has no effect, in instantiation at foo.ads:9
 generic_float_tests.adb:296:7: warning: assertion might fail, requires - (- X) = + X, in instantiation at foo.ads:14
 generic_float_tests.adb:296:7: warning: assertion might fail, requires - (- X) = + X, in instantiation at foo.ads:9
 generic_float_tests.adb:296:22: info: overflow check proved, in instantiation at foo.ads:14
@@ -229,20 +270,30 @@ generic_float_tests.adb:309:19: info: postcondition proved, in instantiation at 
 generic_float_tests.adb:309:19: info: postcondition proved, in instantiation at foo.ads:9
 generic_float_tests.adb:318:19: info: postcondition proved, in instantiation at foo.ads:14
 generic_float_tests.adb:318:19: info: postcondition proved, in instantiation at foo.ads:9
+generic_float_tests.adb:324:14: warning: subprogram "Test_Floor_2" has no effect, in instantiation at foo.ads:14
+generic_float_tests.adb:324:14: warning: subprogram "Test_Floor_2" has no effect, in instantiation at foo.ads:9
 generic_float_tests.adb:328:7: warning: assertion might fail, requires FT'Floor (X) <= FT'floor, in instantiation at foo.ads:14
 generic_float_tests.adb:328:7: warning: assertion might fail, requires FT'Floor (X) <= FT'floor, in instantiation at foo.ads:9
 generic_float_tests.adb:328:50: warning: overflow check might fail, in instantiation at foo.ads:14
 generic_float_tests.adb:328:50: warning: overflow check might fail, in instantiation at foo.ads:9
+generic_float_tests.adb:331:14: warning: subprogram "Test_Floor_3" has no effect, in instantiation at foo.ads:14
+generic_float_tests.adb:331:14: warning: subprogram "Test_Floor_3" has no effect, in instantiation at foo.ads:9
 generic_float_tests.adb:335:7: warning: assertion might fail, requires X < FT'floor, in instantiation at foo.ads:14
 generic_float_tests.adb:335:7: warning: assertion might fail, requires X < FT'floor, in instantiation at foo.ads:9
 generic_float_tests.adb:335:38: info: overflow check proved, in instantiation at foo.ads:14
 generic_float_tests.adb:335:38: info: overflow check proved, in instantiation at foo.ads:9
+generic_float_tests.adb:338:14: warning: subprogram "Test_Floor_4" has no effect, in instantiation at foo.ads:14
+generic_float_tests.adb:338:14: warning: subprogram "Test_Floor_4" has no effect, in instantiation at foo.ads:9
 generic_float_tests.adb:342:7: warning: assertion might fail, requires X < FT'floor, in instantiation at foo.ads:14
 generic_float_tests.adb:342:7: warning: assertion might fail, requires X < FT'floor, in instantiation at foo.ads:9
 generic_float_tests.adb:342:38: warning: overflow check might fail, in instantiation at foo.ads:14
 generic_float_tests.adb:342:38: warning: overflow check might fail, in instantiation at foo.ads:9
+generic_float_tests.adb:345:14: warning: subprogram "Test_Floor_5" has no effect, in instantiation at foo.ads:14
+generic_float_tests.adb:345:14: warning: subprogram "Test_Floor_5" has no effect, in instantiation at foo.ads:9
 generic_float_tests.adb:348:7: info: assertion proved, in instantiation at foo.ads:14
 generic_float_tests.adb:348:7: info: assertion proved, in instantiation at foo.ads:9
+generic_float_tests.adb:351:14: warning: subprogram "Test_Floor_6" has no effect, in instantiation at foo.ads:14
+generic_float_tests.adb:351:14: warning: subprogram "Test_Floor_6" has no effect, in instantiation at foo.ads:9
 generic_float_tests.adb:357:10: warning: assertion might fail, requires FT'Floor (X) = , in instantiation at foo.ads:14
 generic_float_tests.adb:357:10: warning: assertion might fail, requires FT'Floor (X) = , in instantiation at foo.ads:9
 generic_float_tests.adb:358:10: warning: assertion might fail, requires FT'Ceiling (X) = , in instantiation at foo.ads:14
@@ -293,6 +344,8 @@ generic_float_tests.adb:398:37: warning: overflow check might fail, in instantia
 generic_float_tests.adb:398:37: warning: overflow check might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:406:19: info: postcondition proved, in instantiation at foo.ads:14
 generic_float_tests.adb:406:19: info: postcondition proved, in instantiation at foo.ads:9
+generic_float_tests.adb:414:09: warning: statement has no effect, in instantiation at foo.ads:14
+generic_float_tests.adb:414:09: warning: statement has no effect, in instantiation at foo.ads:9
 generic_float_tests.adb:421:19: info: postcondition proved, in instantiation at foo.ads:14
 generic_float_tests.adb:421:19: info: postcondition proved, in instantiation at foo.ads:9
 generic_float_tests.adb:426:18: info: length check proved, in instantiation at foo.ads:14
@@ -331,28 +384,40 @@ generic_interval_tests.adb:21:14: info: overflow check proved, in instantiation 
 generic_interval_tests.adb:21:14: info: overflow check proved, in instantiation at bar.ads:7
 generic_interval_tests.adb:21:14: info: range check proved, in instantiation at bar.ads:11
 generic_interval_tests.adb:21:14: info: range check proved, in instantiation at bar.ads:7
+generic_interval_tests.adb:24:14: warning: subprogram "Test_03" has no effect, in instantiation at bar.ads:11
+generic_interval_tests.adb:24:14: warning: subprogram "Test_03" has no effect, in instantiation at bar.ads:7
 generic_interval_tests.adb:25:21: warning: overflow check might fail, in instantiation at bar.ads:11
 generic_interval_tests.adb:25:21: warning: overflow check might fail, in instantiation at bar.ads:7
 generic_interval_tests.adb:26:19: warning: postcondition might fail, requires X in 0.0 .. , in instantiation at bar.ads:11
 generic_interval_tests.adb:26:19: warning: postcondition might fail, requires X in 0.0 .. , in instantiation at bar.ads:7
+generic_interval_tests.adb:32:14: warning: subprogram "Test_04" has no effect, in instantiation at bar.ads:11
+generic_interval_tests.adb:32:14: warning: subprogram "Test_04" has no effect, in instantiation at bar.ads:7
 generic_interval_tests.adb:34:19: warning: postcondition might fail, requires X * X in 0.0 .. , in instantiation at bar.ads:11
 generic_interval_tests.adb:34:19: warning: postcondition might fail, requires X * X in 0.0 .. , in instantiation at bar.ads:7
 generic_interval_tests.adb:34:21: info: overflow check proved, in instantiation at bar.ads:11
 generic_interval_tests.adb:34:21: info: overflow check proved, in instantiation at bar.ads:7
+generic_interval_tests.adb:40:14: warning: subprogram "Test_05" has no effect, in instantiation at bar.ads:11
+generic_interval_tests.adb:40:14: warning: subprogram "Test_05" has no effect, in instantiation at bar.ads:7
 generic_interval_tests.adb:41:21: warning: overflow check might fail, in instantiation at bar.ads:11
 generic_interval_tests.adb:41:21: warning: overflow check might fail, in instantiation at bar.ads:7
 generic_interval_tests.adb:41:23: info: overflow check proved, in instantiation at bar.ads:11
 generic_interval_tests.adb:41:23: info: overflow check proved, in instantiation at bar.ads:7
 generic_interval_tests.adb:42:19: warning: postcondition might fail, requires X in 0.0 .. , in instantiation at bar.ads:11
 generic_interval_tests.adb:42:19: warning: postcondition might fail, requires X in 0.0 .. , in instantiation at bar.ads:7
+generic_interval_tests.adb:48:14: warning: subprogram "Test_06" has no effect, in instantiation at bar.ads:11
+generic_interval_tests.adb:48:14: warning: subprogram "Test_06" has no effect, in instantiation at bar.ads:7
 generic_interval_tests.adb:50:19: warning: postcondition might fail, requires X * Y >= X, in instantiation at bar.ads:11
 generic_interval_tests.adb:50:19: warning: postcondition might fail, requires X * Y >= X, in instantiation at bar.ads:7
 generic_interval_tests.adb:50:21: warning: overflow check might fail, in instantiation at bar.ads:11
 generic_interval_tests.adb:50:21: warning: overflow check might fail, in instantiation at bar.ads:7
+generic_interval_tests.adb:56:14: warning: subprogram "Test_07" has no effect, in instantiation at bar.ads:11
+generic_interval_tests.adb:56:14: warning: subprogram "Test_07" has no effect, in instantiation at bar.ads:7
 generic_interval_tests.adb:58:19: warning: postcondition might fail, requires X * Y > X, in instantiation at bar.ads:11
 generic_interval_tests.adb:58:19: warning: postcondition might fail, requires X * Y > X, in instantiation at bar.ads:7
 generic_interval_tests.adb:58:21: warning: overflow check might fail, in instantiation at bar.ads:11
 generic_interval_tests.adb:58:21: warning: overflow check might fail, in instantiation at bar.ads:7
+generic_interval_tests.adb:64:14: warning: subprogram "Test_08" has no effect, in instantiation at bar.ads:11
+generic_interval_tests.adb:64:14: warning: subprogram "Test_08" has no effect, in instantiation at bar.ads:7
 generic_interval_tests.adb:65:19: info: overflow check proved, in instantiation at bar.ads:11
 generic_interval_tests.adb:65:19: info: overflow check proved, in instantiation at bar.ads:7
 generic_interval_tests.adb:66:19: warning: postcondition might fail, requires X / Y <= abs X, in instantiation at bar.ads:11
@@ -363,14 +428,20 @@ generic_interval_tests.adb:66:21: warning: overflow check might fail, in instant
 generic_interval_tests.adb:66:21: warning: overflow check might fail, in instantiation at bar.ads:7
 generic_interval_tests.adb:66:28: info: overflow check proved, in instantiation at bar.ads:11
 generic_interval_tests.adb:66:28: info: overflow check proved, in instantiation at bar.ads:7
+generic_interval_tests.adb:72:14: warning: subprogram "Test_09" has no effect, in instantiation at bar.ads:11
+generic_interval_tests.adb:72:14: warning: subprogram "Test_09" has no effect, in instantiation at bar.ads:7
 generic_interval_tests.adb:77:12: info: overflow check proved, in instantiation at bar.ads:11
 generic_interval_tests.adb:77:12: info: overflow check proved, in instantiation at bar.ads:7
 generic_interval_tests.adb:78:10: warning: assertion might fail, requires X < , in instantiation at bar.ads:11
 generic_interval_tests.adb:78:10: warning: assertion might fail, requires X < , in instantiation at bar.ads:7
+generic_interval_tests.adb:82:14: warning: subprogram "Test_10" has no effect, in instantiation at bar.ads:11
+generic_interval_tests.adb:82:14: warning: subprogram "Test_10" has no effect, in instantiation at bar.ads:7
 generic_interval_tests.adb:87:12: info: overflow check proved, in instantiation at bar.ads:11
 generic_interval_tests.adb:87:12: info: overflow check proved, in instantiation at bar.ads:7
 generic_interval_tests.adb:88:10: warning: assertion might fail, requires X < , in instantiation at bar.ads:11
 generic_interval_tests.adb:88:10: warning: assertion might fail, requires X < , in instantiation at bar.ads:7
+generic_interval_tests.adb:92:14: warning: subprogram "Test_11" has no effect, in instantiation at bar.ads:11
+generic_interval_tests.adb:92:14: warning: subprogram "Test_11" has no effect, in instantiation at bar.ads:7
 generic_interval_tests.adb:97:12: info: overflow check proved, in instantiation at bar.ads:11
 generic_interval_tests.adb:97:12: info: overflow check proved, in instantiation at bar.ads:7
 generic_interval_tests.adb:98:10: warning: assertion might fail, requires X < , in instantiation at bar.ads:11
@@ -440,7 +511,9 @@ homothetical.adb:41:10: info: loop invariant initialization proved
 homothetical.adb:41:10: info: loop invariant preservation proved
 homothetical.adb:42:40: info: index check proved
 homothetical.adb:44:20: info: precondition proved
+homothetical.adb:47:13: warning: unused assignment
 homothetical.adb:47:16: info: length check proved
+homothetical.adb:48:13: warning: unused assignment
 homothetical.adb:48:16: info: length check proved
 homothetical.adb:50:7: warning: assertion might fail
 homothetical.adb:59:58: warning: overflow check might fail

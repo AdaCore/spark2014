@@ -1,2 +1,2 @@
-ext_pack.adb:7:14: warning: overflow check might fail
-ext_pack.adb:8:20: warning: overflow check might fail
+ext_pack.adb:9:14: warning: overflow check might fail
+ext_pack.adb:10:20: warning: overflow check might fail

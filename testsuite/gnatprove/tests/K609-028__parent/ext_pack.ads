@@ -1,4 +1,7 @@
-package Ext_Pack is 
+package Ext_Pack
+  with Abstract_State => S, 
+       Initializes => (C, S)
+is 
 
    C : Integer := 0;
 

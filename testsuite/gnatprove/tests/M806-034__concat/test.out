@@ -6,6 +6,7 @@ concat.adb:11:29: info: length check proved, in call inlined at concat.adb:35
 concat.adb:11:29: info: range check proved, in call inlined at concat.adb:35
 concat.adb:13:7: info: assertion proved, in call inlined at concat.adb:35
 concat.adb:14:7: info: assertion proved, in call inlined at concat.adb:35
+concat.adb:17:14: warning: subprogram "Three" has no effect
 concat.adb:20:14: warning: overflow check might fail
 concat.adb:20:24: warning: overflow check might fail
 concat.adb:23:19: info: range check proved
@@ -18,6 +19,8 @@ concat.adb:27:52: warning: overflow check might fail
 concat.adb:30:13: info: length check proved
 concat.adb:31:14: info: length check proved
 concat.adb:36:7: info: precondition proved
+concat.ads:10:14: warning: subprogram "P" has no effect
+concat_left.adb:4:14: warning: subprogram "One" has no effect
 concat_left.adb:9:19: info: range check proved
 concat_left.adb:11:7: warning: assertion might fail, requires Z'First = Integer'first
 concat_left.adb:12:7: info: assertion proved
@@ -34,6 +37,8 @@ concat_left.adb:27:7: info: assertion proved, in call inlined at concat_left.adb
 concat_left.adb:30:13: info: length check proved
 concat_left.adb:31:14: info: length check proved
 concat_left.adb:35:7: info: precondition proved
+concat_left.ads:2:14: warning: subprogram "P" has no effect
+concat_right.adb:4:14: warning: subprogram "One" has no effect
 concat_right.adb:8:19: info: range check proved
 concat_right.adb:10:7: info: assertion proved
 concat_right.adb:11:7: info: assertion proved
@@ -53,3 +58,11 @@ concat_right.adb:27:7: info: assertion proved, in call inlined at concat_right.a
 concat_right.adb:30:13: info: length check proved
 concat_right.adb:31:14: info: length check proved
 concat_right.adb:35:7: info: precondition proved
+concat_right.ads:2:14: warning: subprogram "P" has no effect
+main.adb:5:11: warning: "concat.x" might not be initialized after elaboration of main program "Main"
+main.adb:5:11: warning: "concat.y" might not be initialized after elaboration of main program "Main"
+main.adb:5:11: warning: "concat_left.x" might not be initialized after elaboration of main program "Main"
+main.adb:5:11: warning: "concat_left.y" might not be initialized after elaboration of main program "Main"
+main.adb:5:11: warning: "concat_right.x" might not be initialized after elaboration of main program "Main"
+main.adb:5:11: warning: "concat_right.y" might not be initialized after elaboration of main program "Main"
+main.adb:5:11: warning: subprogram "Main" has no effect

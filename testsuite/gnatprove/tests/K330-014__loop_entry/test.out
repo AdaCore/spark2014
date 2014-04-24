@@ -1,3 +1,4 @@
+for_loops.adb:5:11: warning: subprogram "For_Loops" has no effect
 for_loops.adb:9:04: warning: assuming "Put_Line" has no effect on global items
 for_loops.adb:9:04: warning: no Global contract available for "Put_Line"
 for_loops.adb:16:10: info: loop invariant preservation proved
@@ -16,6 +17,7 @@ for_loops.adb:59:13: warning: assuming "Put_Line" has no effect on global items
 for_loops.adb:59:13: warning: no Global contract available for "Put_Line"
 for_loops.adb:61:13: info: loop invariant initialization proved
 for_loops.adb:61:13: info: loop invariant preservation proved
+optional.adb:5:11: warning: subprogram "Optional" has no effect
 optional.adb:10:04: warning: assuming "Put_Line" has no effect on global items
 optional.adb:10:04: warning: no Global contract available for "Put_Line"
 optional.adb:13:35: info: length check proved
@@ -29,6 +31,7 @@ optional.adb:35:07: warning: assuming "Put_Line" has no effect on global items
 optional.adb:35:07: warning: no Global contract available for "Put_Line"
 utils.adb:10:29: info: range check proved
 utils.adb:10:34: warning: overflow check might fail
+while_loops.adb:5:11: warning: subprogram "While_Loops" has no effect
 while_loops.adb:9:04: warning: assuming "Put_Line" has no effect on global items
 while_loops.adb:9:04: warning: no Global contract available for "Put_Line"
 while_loops.adb:16:10: warning: assuming "Put_Line" has no effect on global items

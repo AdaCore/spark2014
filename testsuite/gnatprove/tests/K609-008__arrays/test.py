@@ -1,3 +1,3 @@
 from test_support import *
 
-prove(steps=500) # flow analysis irrelevant here
+prove_all(steps=500)

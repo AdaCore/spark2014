@@ -57,6 +57,12 @@ auditlog.adb:246:23: info: length check proved, in call inlined at auditlog.adb:
 auditlog.adb:246:23: info: length check proved, in call inlined at auditlog.adb:1660
 auditlog.adb:499:22: info: precondition proved, in call inlined at auditlog.adb:1920
 auditlog.adb:499:22: warning: precondition might fail, in call inlined at auditlog.adb:1895
+auditlog.adb:502:21: warning: unused assignment to "Unused", in call inlined at auditlog.adb:1895
+auditlog.adb:502:21: warning: unused assignment to "Unused", in call inlined at auditlog.adb:1920
+auditlog.adb:503:19: warning: unused assignment to "Archive", in call inlined at auditlog.adb:1895
+auditlog.adb:503:19: warning: unused assignment to "Archive", in call inlined at auditlog.adb:1920
+auditlog.adb:504:19: warning: unused assignment to "Unused", in call inlined at auditlog.adb:1895
+auditlog.adb:504:19: warning: unused assignment to "Unused", in call inlined at auditlog.adb:1920
 auditlog.adb:600:12: warning: length check might fail, in call inlined at auditlog.adb:652
 auditlog.adb:600:34: warning: range check might fail, in call inlined at auditlog.adb:652
 auditlog.adb:753:47: warning: range check might fail
@@ -139,6 +145,7 @@ audittypes.ads:94:58: info: length check proved
 audittypes.ads:107:6: info: length check proved
 certificatestore.adb:37:42: info: length check proved
 certificatestore.adb:223:31: warning: range check might fail, in call inlined at certificatestore.adb:239
+certificatestore.adb:224:26: warning: "Rawnext" might not be initialized, in call inlined at certificatestore.adb:239
 certificatestore.adb:224:26: warning: length check might fail, in call inlined at certificatestore.adb:239
 certificatestore.adb:224:29: warning: range check might fail, in call inlined at certificatestore.adb:239
 certificatestore.adb:225:42: warning: length check might fail, in call inlined at certificatestore.adb:239
@@ -290,6 +297,8 @@ configdata.adb:1114:70: info: division check proved
 configdata.adb:1124:68: info: division check proved
 configdata.adb:1194:69: info: division check proved
 configdata.adb:1204:68: info: division check proved
+configdata.adb:1389:40: warning: unused assignment to "Unused"
+configdata.adb:1390:38: warning: unused assignment to "Unused"
 configdata.adb:1599:70: info: range check proved
 configdata.adb:1767:17: info: division check proved
 configdata.adb:1767:17: warning: range check might fail
@@ -306,6 +315,8 @@ display.adb:76:43: info: length check proved
 display.adb:79:43: info: length check proved
 display.adb:84:43: info: length check proved
 display.adb:89:43: info: length check proved
+display.adb:122:07: warning: statement has no effect, in call inlined at display.adb:189
+display.adb:122:07: warning: statement has no effect, in call inlined at display.adb:289
 display.adb:123:51: info: length check proved, in call inlined at display.adb:189
 display.adb:123:51: info: length check proved, in call inlined at display.adb:289
 display.adb:128:11: info: range check proved, in call inlined at display.adb:189
@@ -326,6 +337,7 @@ display.adb:148:33: warning: overflow check might fail, in call inlined at displ
 display.adb:148:33: warning: overflow check might fail, in call inlined at display.adb:289
 display.adb:150:32: warning: range check might fail, in call inlined at display.adb:189
 display.adb:150:32: warning: range check might fail, in call inlined at display.adb:289
+display.adb:189:32: warning: statement has no effect
 display.ads:66:48: info: length check proved
 door.adb:99:10: warning: postcondition might fail, requires CurrentDoor = Open and then Latch.IsLocked and then Clock.GreaterThanOrEqual(Clock.TheCurrentTime, AlarmTimeout) ) = (DoorAlarm = AlarmTypes.alarming
 door.ads:148:8: warning: postcondition might fail
@@ -334,8 +346,10 @@ door.ads:270:8: warning: postcondition might fail
 enclave.adb:109:18: info: precondition proved, in call inlined at enclave.adb:1961
 enclave.adb:109:18: info: precondition proved, in call inlined at enclave.adb:2150
 enclave.adb:207:29: info: postcondition proved
+enclave.adb:212:16: warning: statement has no effect
 enclave.adb:276:10: warning: postcondition might fail, requires Status = EnclaveQuiescent and then KeyStore.PrivateKeyPresent) or else (Status = WaitingEndEnrol and then not KeyStore(KeyStore.privatekeypresent)
 enclave.adb:288:16: info: precondition proved
+enclave.adb:288:26: warning: unused assignment to "Thecurrentfloppy"
 enclave.adb:362:29: info: postcondition proved
 enclave.adb:441:29: info: postcondition proved
 enclave.adb:570:19: warning: precondition might fail
@@ -353,13 +367,18 @@ enclave.adb:856:19: warning: precondition might fail
 enclave.adb:867:19: info: precondition proved
 enclave.adb:872:24: info: precondition proved
 enclave.adb:924:13: info: postcondition proved
+enclave.adb:932:33: warning: unused assignment to "Thelog"
+enclave.adb:937:19: warning: statement has no effect
 enclave.adb:998:13: info: postcondition proved
+enclave.adb:1006:19: warning: statement has no effect
 enclave.adb:1046:15: info: precondition proved
 enclave.adb:1055:10: info: precondition proved
 enclave.adb:1057:10: info: precondition proved
 enclave.adb:1138:15: info: precondition proved
 enclave.adb:1140:10: warning: postcondition might fail
 enclave.adb:1148:19: warning: precondition might fail
+enclave.adb:1164:19: warning: statement has no effect
+enclave.adb:1178:14: warning: unused assignment to "Thecurrentfloppy"
 enclave.adb:1189:15: info: precondition proved
 enclave.adb:1302:15: info: precondition proved
 enclave.adb:1311:19: info: precondition proved
@@ -416,8 +435,14 @@ enclave.ads:630:19: warning: precondition might fail
 enclave.ads:635:24: warning: precondition might fail
 enclave.ads:652:23: warning: precondition might fail
 floppy.adb:43:37: info: length check proved
+floppy.ads:55:14: warning: subprogram "Write" has no effect
+floppy.ads:76:14: warning: subprogram "Read" has no effect
+floppy.ads:124:14: warning: subprogram "Init" has no effect
 iandatypes.ads:49:22: info: length check proved
 iandatypes.ads:67:38: info: length check proved
+keyboard.ads:50:14: warning: subprogram "Init" has no effect
+keyboard.ads:64:14: warning: subprogram "Finalise" has no effect
+keyboard.ads:98:14: warning: subprogram "Poll" has no effect
 keystore.adb:57:47: info: length check proved
 keystore.adb:195:30: info: range check proved
 keystore.adb:195:41: info: overflow check proved
@@ -434,12 +459,14 @@ keystore.adb:337:40: info: length check proved, in call inlined at keystore.adb:
 keystore.adb:337:40: info: length check proved, in call inlined at keystore.adb:431, in call inlined at keystore.adb:715
 keystore.adb:337:40: info: length check proved, in call inlined at keystore.adb:496, in call inlined at keystore.adb:565
 keystore.adb:337:40: info: length check proved, in call inlined at keystore.adb:496, in call inlined at keystore.adb:786
+keystore.adb:571:38: warning: unused assignment to "Theprivatekey"
 keystore.adb:810:77: info: length check proved
 keystore.ads:255:7: warning: postcondition might fail
 keystore.ads:275:26: warning: postcondition might fail, requires not (PrivateKeyPresent)
 latch.ads:107:7: warning: postcondition might fail
 latch.ads:142:8: warning: postcondition might fail, requires IsLocked = LatchisLocked or SystemFault
 latch.ads:162:26: warning: postcondition might fail, requires Latch_Timeout = Time
+poll.adb:52:15: warning: statement has no effect
 poll.ads:132:11: warning: postcondition might fail
 screen.adb:122:6: info: length check proved
 screen.adb:122:7: info: length check proved
@@ -457,6 +484,10 @@ screen.adb:133:7: info: length check proved
 screen.adb:134:7: info: length check proved
 screen.adb:135:7: info: length check proved
 screen.adb:136:7: info: length check proved
+screen.adb:273:15: warning: statement has no effect, in call inlined at screen.adb:1076
+screen.adb:277:29: warning: unused assignment to "Unused", in call inlined at screen.adb:1076
+screen.adb:725:15: warning: statement has no effect, in call inlined at screen.adb:1077
+screen.adb:729:29: warning: unused assignment to "Unused", in call inlined at screen.adb:1077
 screen.adb:816:40: info: length check proved, in call inlined at screen.adb:841
 screen.adb:816:40: info: length check proved, in call inlined at screen.adb:847
 screen.adb:816:40: info: length check proved, in call inlined at screen.adb:853
@@ -480,6 +511,14 @@ tokenreader.adb:68:36: info: length check proved
 tokenreader.adb:69:36: info: length check proved
 tokenreader.adb:314:17: info: range check proved
 tokenreader.adb:315:48: info: range check proved
+tokenreader.adb:479:16: warning: unused assignment to "Unusedresponsecode", in call inlined at tokenreader.adb:501, in call inlined at tokenreader.adb:600
+tokenreader.adb:479:16: warning: unused assignment to "Unusedresponsecode", in call inlined at tokenreader.adb:501, in call inlined at tokenreader.adb:605
+tokenreader.adb:479:16: warning: unused assignment to "Unusedresponsecode", in call inlined at tokenreader.adb:501, in call inlined at tokenreader.adb:687
+tokenreader.adb:479:16: warning: unused assignment to "Unusedresponsecode", in call inlined at tokenreader.adb:501, in call inlined at tokenreader.adb:692
+tokenreader.adb:479:16: warning: unused assignment to "Unusedresponsecode", in call inlined at tokenreader.adb:527, in call inlined at tokenreader.adb:588
+tokenreader.adb:479:16: warning: unused assignment to "Unusedresponsecode", in call inlined at tokenreader.adb:527, in call inlined at tokenreader.adb:608
+tokenreader.adb:479:16: warning: unused assignment to "Unusedresponsecode", in call inlined at tokenreader.adb:527, in call inlined at tokenreader.adb:679
+tokenreader.adb:479:16: warning: unused assignment to "Unusedresponsecode", in call inlined at tokenreader.adb:527, in call inlined at tokenreader.adb:767
 tokenreader.adb:675:26: info: range check proved
 tokenreader.adb:752:22: info: range check proved
 tokenreader.adb:755:43: info: range check proved

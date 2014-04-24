@@ -1,3 +1,3 @@
 from test_support import *
 
-gnatprove()
+prove_all()

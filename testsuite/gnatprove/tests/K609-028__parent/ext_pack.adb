@@ -1,4 +1,6 @@
-package body Ext_Pack is 
+package body Ext_Pack with
+  Refined_State => (S => Step)
+is 
    
    Step : Integer := 0;
    

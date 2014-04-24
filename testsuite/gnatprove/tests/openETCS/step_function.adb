@@ -86,7 +86,7 @@ package body Step_Function is pragma SPARK_Mode (On);
       scan_sfun1 : Boolean := True;
       scan_sfun2 : Boolean := True;
    begin
-      loop
+      loop Merge.Step(Im) := (0, 0.0); -- dummy assignment to silence flow warning on loop invariant
          -- im, i1 and i2 bounds
          Pragma Loop_Invariant (i1 >= 0);
          Pragma Loop_Invariant (i2 >= 0);

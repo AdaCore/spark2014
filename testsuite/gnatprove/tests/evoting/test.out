@@ -1,3 +1,5 @@
+evoting.adb:44:07: warning: statement has no effect
+evoting.adb:49:30: warning: "Candidates" might not be initialized
 evoting.adb:54:60: info: length check proved
 evoting.adb:55:07: warning: assuming "Open" has no effect on global items
 evoting.adb:55:07: warning: no Global contract available for "Open"
@@ -10,6 +12,8 @@ evoting.adb:60:52: warning: range check might fail
 evoting.adb:62:49: info: range check proved
 evoting.adb:65:07: warning: assuming "Close" has no effect on global items
 evoting.adb:65:07: warning: no Global contract available for "Close"
+evoting.adb:65:07: warning: statement has no effect
+evoting.adb:65:13: warning: unused assignment to "File"
 evoting.adb:66:43: info: range check proved
 evoting.adb:73:10: warning: assuming "Put" has no effect on global items
 evoting.adb:73:10: warning: no Global contract available for "Put"
@@ -23,36 +27,51 @@ evoting.adb:84:10: warning: assuming "Put_Line" has no effect on global items
 evoting.adb:84:10: warning: no Global contract available for "Put_Line"
 evoting.adb:92:07: warning: assuming "Put_Line" has no effect on global items
 evoting.adb:92:07: warning: no Global contract available for "Put_Line"
+evoting.adb:92:07: warning: statement has no effect
 evoting.adb:93:07: warning: assuming "Put" has no effect on global items
 evoting.adb:93:07: warning: no Global contract available for "Put"
+evoting.adb:93:07: warning: statement has no effect
 evoting.adb:94:07: warning: assuming "Put" has no effect on global items
 evoting.adb:94:07: warning: no Global contract available for "Put"
+evoting.adb:94:07: warning: statement has no effect
 evoting.adb:95:07: warning: assuming "Put_Line" has no effect on global items
 evoting.adb:95:07: warning: no Global contract available for "Put_Line"
+evoting.adb:95:07: warning: statement has no effect
 evoting.adb:97:7: info: precondition proved
 evoting.adb:99:07: warning: assuming "Put" has no effect on global items
 evoting.adb:99:07: warning: no Global contract available for "Put"
+evoting.adb:99:07: warning: statement has no effect
 evoting.adb:100:07: warning: assuming "Put_Line" has no effect on global items
 evoting.adb:100:07: warning: no Global contract available for "Put_Line"
+evoting.adb:100:07: warning: statement has no effect
+evoting.adb:101:07: warning: statement has no effect
 evoting.adb:153:10: info: loop invariant initialization proved
 evoting.adb:153:10: info: loop invariant preservation proved
 evoting.adb:153:70: info: overflow check proved
 evoting.adb:158:21: info: overflow check proved
 evoting.adb:172:07: warning: assuming "Put_Line" has no effect on global items
 evoting.adb:172:07: warning: no Global contract available for "Put_Line"
+evoting.adb:172:07: warning: statement has no effect
 evoting.adb:174:54: info: range check proved
 evoting.adb:174:54: warning: overflow check might fail
 evoting.adb:175:10: warning: assuming "Put_Line" has no effect on global items
 evoting.adb:175:10: warning: no Global contract available for "Put_Line"
+evoting.adb:175:10: warning: statement has no effect
 evoting.adb:176:10: warning: assuming "Get_Line" has no effect on global items
 evoting.adb:176:10: warning: no Global contract available for "Get_Line"
+evoting.adb:176:32: warning: unused assignment to "Last"
 evoting.adb:178:13: info: precondition proved
 evoting.adb:181:63: info: range check proved
 evoting.adb:182:51: info: overflow check proved
 evoting.adb:183:16: warning: assuming "Put" has no effect on global items
 evoting.adb:183:16: warning: no Global contract available for "Put"
+evoting.adb:183:16: warning: statement has no effect
+evoting.adb:184:16: warning: statement has no effect
 evoting.adb:185:16: warning: assuming "Put_Line" has no effect on global items
 evoting.adb:185:16: warning: no Global contract available for "Put_Line"
+evoting.adb:185:16: warning: statement has no effect
+evoting.adb:202:07: warning: statement has no effect
+evoting.adb:205:41: warning: "Winners" might not be initialized
 evoting.adb:211:10: info: loop invariant initialization proved
 evoting.adb:211:10: info: loop invariant preservation proved
 evoting.adb:215:24: info: range check proved
@@ -66,6 +85,7 @@ evoting.adb:228:16: info: loop invariant preservation proved
 evoting.adb:229:27: info: range check proved
 evoting.adb:230:31: info: index check proved
 evoting.adb:231:24: info: index check proved
+evoting.adb:244:10: warning: initialization has no effect
 evoting.adb:247:13: info: loop invariant initialization proved
 evoting.adb:247:13: info: loop invariant preservation proved
 evoting.adb:247:73: info: overflow check proved
@@ -109,10 +129,14 @@ evoting.adb:313:7: info: precondition proved
 evoting.adb:315:7: info: precondition proved
 evoting.adb:317:7: info: precondition proved
 evoting.ads:32:45: info: length check proved
+evoting.ads:51:30: warning: unused initial value of "Program_Phase"
 evoting.ads:58:28: warning: postcondition might fail, requires candidates(i)(j) = ' '
 evoting.ads:58:40: info: index check proved
+evoting.ads:60:14: warning: subprogram "Print_A_Candidate" has no effect
+evoting.ads:63:14: warning: subprogram "Print_Candidates" has no effect
 evoting.ads:95:11: warning: postcondition might fail, requires counters(i) = 0
 evoting.ads:95:20: info: index check proved
+evoting.ads:99:29: warning: unused initial value of "Program_Phase"
 evoting.ads:105:25: info: range check proved
 evoting.ads:106:57: info: index check proved
 evoting.ads:107:22: warning: postcondition might fail, requires counters(winner) > counters(i)
@@ -120,3 +144,5 @@ evoting.ads:107:50: info: index check proved
 evoting.ads:109:55: info: index check proved
 evoting.ads:110:52: info: index check proved
 evoting.ads:114:27: info: index check proved
+evoting.ads:116:14: warning: subprogram "Compute_Print_Results" has no effect
+evoting.ads:122:14: warning: subprogram "Do_Vote" has no effect

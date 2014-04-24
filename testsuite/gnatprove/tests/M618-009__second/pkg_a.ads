@@ -3,7 +3,7 @@ package Pkg_A
 is
    
 
-   X : Integer;
+   X : Integer := 0;
    Y : Integer;
 
    function Do_Something (X : Integer) return Integer

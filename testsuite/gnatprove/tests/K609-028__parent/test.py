@@ -1,3 +1,3 @@
 from test_support import *
 
-prove() # flow analysis requires M314-014 (packages)
+prove_all() # flow analysis requires M314-014 (packages)
