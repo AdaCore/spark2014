@@ -1515,9 +1515,9 @@ package body Flow.Analysis is
          V_Use     : Flow_Graphs.Vertex_Id;
          Found     : out Boolean;
          V_Error   : out Flow_Graphs.Vertex_Id);
-      --  Sets Found to wheather the variable corresponding to V_Initial is
-      --  defined on any of the paths that lead to V_Use. V_Error is the
-      --  vertex where the message should be emmited.
+      --  Sets Found when the variable corresponding to V_Initial is
+      --  defined on a path that lead to V_Use. V_Error is the vertex
+      --  where the message should be emitted.
 
       -------------------------------
       -- Mark_Definition_Free_Path --
