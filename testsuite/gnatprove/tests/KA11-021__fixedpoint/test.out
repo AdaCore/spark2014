@@ -3,6 +3,7 @@ pack.adb:6:25: info: range check proved
 pack.adb:7:27: info: overflow check proved
 pack.adb:7:27: warning: range check might fail
 pack.ads:7:12: info: range check proved
+pack.ads:7:28: warning: range check might fail
 pack.ads:18:19: info: postcondition proved
 pack.ads:18:26: info: overflow check proved
 pack.ads:18:47: info: overflow check proved

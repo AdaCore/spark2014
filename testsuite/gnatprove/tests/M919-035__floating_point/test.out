@@ -1,5 +1,6 @@
 dynamic_float.adb:1:11: warning: subprogram "Dynamic_Float" has no effect
 dynamic_float.adb:6:18: warning: range check might fail
+dynamic_float.adb:6:40: info: range check proved
 dynamic_float.adb:7:19: warning: range check might fail
 dynamic_float.adb:9:10: warning: assertion might fail, requires Integer (S'Last) = I
 dynamic_float.adb:10:10: warning: assertion might fail, requires S'First /= S'last

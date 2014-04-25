@@ -1,7 +1,3 @@
-discr_rename.adb:26:21: discriminant renaming is not allowed in SPARK
-discr_rename.adb:26:21: violation of pragma SPARK_Mode at test.adc:1
-discr_rename.adb:41:21: discriminant renaming is not allowed in SPARK
-discr_rename.adb:41:21: violation of pragma SPARK_Mode at test.adc:1
 do_checks.adb:1:11: warning: subprogram "Do_Checks" has no effect
 do_checks.adb:14:24: info: range check proved, in call inlined at do_checks.adb:480
 do_checks.adb:20:24: info: range check proved, in call inlined at do_checks.adb:480
@@ -160,8 +156,3 @@ do_checks.adb:468:47: info: length check proved
 do_checks.adb:469:30: info: discriminant check proved
 do_checks.adb:469:47: info: length check proved
 do_checks.adb:471:16: info: precondition proved
-   compilation of discr_rename.adb failed
-
-
-gnatprove: error during flow analysis and proof, aborting.
-gprbuild: *** compilation phase failed
