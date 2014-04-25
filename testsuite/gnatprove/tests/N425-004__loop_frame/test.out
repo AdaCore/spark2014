@@ -1,0 +1,2 @@
+loopframe.ads:12:39: warning: postcondition might fail, requires A (Get'result)
+loopframe.ads:12:45: info: index check proved
