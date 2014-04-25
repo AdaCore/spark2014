@@ -387,6 +387,10 @@ package SPARK_Util is
    function Analysis_Requested (E : Entity_Id) return Boolean;
    --  Returns true if entity E has to be analyzed.
 
+   function Is_Requested_Subprogram (E : Entity_Id) return Boolean;
+   --  Returns true if entity E is the one whose analysis was specifically
+   --  requested, so it should be analyzed even if otherwise inlined.
+
    function Is_In_Analyzed_Files (E : Entity_Id) return Boolean;
    --  Returns true if E belongs to one of the entities that correspond
    --  to the files that are to be analyzed.

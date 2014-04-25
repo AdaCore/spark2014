@@ -1,1 +1,0 @@
-ALL XFAIL local subp without contract not analyzed with --limit-subp (N425-007)

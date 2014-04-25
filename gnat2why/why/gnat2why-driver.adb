@@ -189,17 +189,10 @@ package body Gnat2Why.Driver is
    procedure Do_Generate_VCs (E : Entity_Id) is
    begin
       if Ekind (E) in Subprogram_Kind
+        and then Analysis_Requested (E)
         and then Entity_Spec_In_SPARK (E)
 
-        --  Ignore inlined subprograms that are referenced. Unreferenced
-        --  subprograms are analyzed anyway, as they are likely to
-        --  correspond to an intermediate stage of development.
-
-        and then (not Is_Local_Subprogram_Always_Inlined (E)
-                    or else
-                  not Referenced (E))
-
-        --  ??? Ignore predicate functions (MC20-028)
+        --  Ignore predicate functions
 
         and then not Is_Predicate_Function (E)
       then
@@ -551,15 +544,15 @@ package body Gnat2Why.Driver is
          when Subprogram_Kind =>
             if Entity_In_SPARK (E)
 
-              --  Ignore inlined subprograms that are referenced. Unreferenced
-              --  subprograms are analyzed anyway, as they are likely to
-              --  correspond to an intermediate stage of development.
+              --  Ignore inlined subprograms. Either these are not analyzed
+              --  (when referenced and analysis was not specifically requested
+              --  for them), in which case it's safer to skip a declaration
+              --  which could be called. Or they are analyzed, but there is
+              --  no call to them anyway, so skipping the declaration is safe.
 
-              and then (not Is_Local_Subprogram_Always_Inlined (E)
-                          or else
-                        not Referenced (E))
+              and then not Is_Local_Subprogram_Always_Inlined (E)
 
-              --  ??? Ignore predicate functions (MC20-028)
+              --  Ignore predicate functions
 
               and then not Is_Predicate_Function (E)
             then

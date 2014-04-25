@@ -183,45 +183,26 @@ package body SPARK_Util is
    ------------------------
 
    function Analysis_Requested (E : Entity_Id) return Boolean is
-
-      function Is_Requested_Subprogram (E : Entity_Id) return Boolean;
-      --  Returns true if E is the entity corresponding to the single
-      --  subprogram that needs to be analyzed, or if Gnat2Why_Args.Limit_Subp
-      --  is the Null_Unbounded_String.
-
-      -----------------------------
-      -- Is_Requested_Subprogram --
-      -----------------------------
-
-      function Is_Requested_Subprogram (E : Entity_Id) return Boolean is
-      begin
-         if Gnat2Why_Args.Limit_Subp = Null_Unbounded_String then
-            return True;
-         end if;
-
-         if Ekind (E) in Subprogram_Kind
-           and then "GP_Subp:" & To_String (Gnat2Why_Args.Limit_Subp) =
-           Gnat2Why.Nodes.Subp_Location (E)
-         then
-            return True;
-         else
-            return False;
-         end if;
-      end Is_Requested_Subprogram;
-
-   --  Start of Analysis_Requested
-
    begin
       return Is_In_Analyzed_Files (E)
-        and then Is_Requested_Subprogram (E)
+
+       --  Either the analysis is requested for the complete unit, or if it is
+       --  requested for a specific subprogram, check whether it is E.
+
+        and then (Gnat2Why_Args.Limit_Subp = Null_Unbounded_String
+                    or else
+                  Is_Requested_Subprogram (E))
 
         --  Ignore inlined subprograms that are referenced. Unreferenced
-        --  subprograms are analyzed anyway, as they are likely to
-        --  correspond to an intermediate stage of development.
+        --  subprograms are analyzed anyway, as they are likely to correspond
+        --  to an intermediate stage of development. Also always analyze the
+        --  subprogram if analysis was specifically requested for it.
 
         and then (not Is_Local_Subprogram_Always_Inlined (E)
                     or else
-                  not Referenced (E));
+                  not Referenced (E)
+                    or else
+                  Is_Requested_Subprogram (E));
    end Analysis_Requested;
 
    ------------
@@ -552,6 +533,18 @@ package body SPARK_Util is
       return In_Predefined_Unit (Root_Type (Typ))
         and then Type_Based_On_External_Axioms (Typ);
    end Is_Initialized_By_Formal_Container;
+
+   -----------------------------
+   -- Is_Requested_Subprogram --
+   -----------------------------
+
+   function Is_Requested_Subprogram (E : Entity_Id) return Boolean is
+   begin
+      return Ekind (E) in Subprogram_Kind
+               and then
+             "GP_Subp:" & To_String (Gnat2Why_Args.Limit_Subp) =
+             Gnat2Why.Nodes.Subp_Location (E);
+   end Is_Requested_Subprogram;
 
    --------------------------------------
    -- Expression_Functions_All_The_Way --
