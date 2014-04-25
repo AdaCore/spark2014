@@ -261,7 +261,6 @@ package body SPARK_Util is
    function Default_Initialization
      (Typ : Entity_Id) return Default_Initialization_Kind
    is
-      Comp : Entity_Id;
       Init : Default_Initialization_Kind;
 
       FDI : Boolean := False;
@@ -270,11 +269,26 @@ package body SPARK_Util is
       --  fully default initialized component and/or one not fully default
       --  initialized component.
 
-      procedure Process_Component (Comp : Entity_Id);
-      --  Process component Comp of a record or protected type
+      procedure Process_Component (Rec_Prot_Comp : Entity_Id);
+      --  Process component Rec_Prot_Comp of a record or protected type
 
-      procedure Process_Component (Comp : Entity_Id) is
+      -----------------------
+      -- Process_Component --
+      -----------------------
+
+      procedure Process_Component (Rec_Prot_Comp : Entity_Id) is
+         Comp : Entity_Id := Rec_Prot_Comp;
+
       begin
+         --  The components of discriminated subtypes are not marked as source
+         --  entities because they are technically "inherited" on the spot. To
+         --  handle such components, use the original record component defined
+         --  in the parent type.
+
+         if Present (Original_Record_Component (Comp)) then
+            Comp := Original_Record_Component (Comp);
+         end if;
+
          --  Do not process internally generated components except for _parent
          --  which represents the ancestor portion of a derived type.
 
@@ -313,6 +327,9 @@ package body SPARK_Util is
          end if;
       end Process_Component;
 
+      --  Local variables
+
+      Comp   : Entity_Id;
       Result : Default_Initialization_Kind;
 
    --  Start of Default_Initialization
@@ -339,48 +356,10 @@ package body SPARK_Util is
       elsif Is_Private_Type (Typ) and then Present (Full_View (Typ)) then
          Result := Default_Initialization (Full_View (Typ));
 
-      --  Record types offer several initialization options depending on their
-      --  components (if any).
+      --  Record types and protected types offer several initialization options
+      --  depending on their components (if any).
 
-      elsif Is_Record_Type (Typ) then
-         Comp := First_Component (Typ);
-
-         --  Inspect all components
-
-         if Present (Comp) then
-            while Present (Comp) loop
-               Process_Component (Comp);
-               Next_Component (Comp);
-            end loop;
-
-            --  Detect a mixed case of initialization
-
-            if FDI and NDI then
-               Result := Mixed_Initialization;
-
-            elsif FDI then
-               Result := Full_Default_Initialization;
-
-            elsif NDI then
-               Result := No_Default_Initialization;
-
-            --  The type either has no components or they are all internally
-            --  generated.
-
-            else
-               Result := No_Possible_Initialization;
-            end if;
-
-         --  The protected type is null, there is nothing to initialize
-
-         else
-            Result := No_Possible_Initialization;
-         end if;
-
-      --  Protected types offer several initialization options depending on
-      --  their components (if any).
-
-      elsif Is_Protected_Type (Typ) then
+      elsif Is_Record_Type (Typ) or else Is_Protected_Type (Typ) then
          Comp := First_Entity (Typ);
 
          --  Inspect all components
@@ -390,7 +369,8 @@ package body SPARK_Util is
                if Ekind (Comp) = E_Component then
                   Process_Component (Comp);
                end if;
-               Next_Component (Comp);
+
+               Next_Entity (Comp);
             end loop;
 
             --  Detect a mixed case of initialization
@@ -411,7 +391,7 @@ package body SPARK_Util is
                Result := No_Possible_Initialization;
             end if;
 
-         --  The record type is null, there is nothing to initialize
+         --  The type is null, there is nothing to initialize
 
          else
             Result := No_Possible_Initialization;
