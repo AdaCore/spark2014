@@ -23,7 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
---  This is the SPARK2014 specific body for this package
+--  This is the SPARK-specific body for this package
 
 package body Get_Targ is
 
@@ -234,6 +234,15 @@ package body Get_Targ is
       return 64;  -- Can be different on some targets (e.g., AAMP)
    end Get_Max_Unaligned_Field;
 
+   ------------------------------
+   -- Get_Back_End_Config_File --
+   ------------------------------
+
+   function Get_Back_End_Config_File return String_Ptr is
+   begin
+      return null;
+   end Get_Back_End_Config_File;
+
    ----------------------
    -- Digits_From_Size --
    ----------------------
@@ -267,14 +276,14 @@ package body Get_Targ is
       Float_Str (Float_Str'First .. Float_Str'First + 4) := "float";
       Call_Back
         (C_Name => Float_Str, Digs => 6, Complex => False, Count  => 0,
-         Float_Rep => IEEE_Binary, Precision => 32,
-         Size => 32, Alignment => 32);
+         Float_Rep => IEEE_Binary,
+         Precision => 32, Size => 32, Alignment => 32);
 
       Double_Str (Double_Str'First .. Double_Str'First + 5) := "double";
       Call_Back
         (C_Name => Double_Str, Digs => 15, Complex => False, Count  => 0,
-         Float_Rep => IEEE_Binary, Precision => 64,
-         Size => 64, Alignment => 64);
+         Float_Rep => IEEE_Binary,
+         Precision => 64, Size => 64, Alignment => 64);
    end Register_Back_End_Types;
 
    ---------------------
