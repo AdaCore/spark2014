@@ -30,8 +30,8 @@ f.adb:13:26: info: range check proved
 f.adb:13:37: warning: array index check might fail
 f.adb:13:37: warning: overflow check might fail
 f.adb:21:4: info: assertion proved
-f.adb:21:04: warning: "Control_Char" might not be initialized
-f.adb:34:07: warning: "Control_Char" might not be initialized
+f.adb:21:41: warning: "Control_Char" might not be initialized
+f.adb:34:12: warning: "Control_Char" might not be initialized
 param_1_illegal.adb:5:28: warning: "X" might not be initialized in "Param_1_Illegal"
 param_1_illegal.adb:9:10: info: index check proved
 param_1_illegal.adb:9:13: warning: "X" might not be initialized

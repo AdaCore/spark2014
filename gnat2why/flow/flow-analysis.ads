@@ -138,11 +138,12 @@ private
    --  Emit an error message that (the first call) introducing the
    --  global Var requires a global annotation.
 
-   function First_Variable_Use (N       : Node_Id;
-                                FA      : Flow_Analysis_Graphs;
-                                Scope   : Flow_Scope;
-                                Var     : Flow_Id;
-                                Precise : Boolean)
+   function First_Variable_Use (N        : Node_Id;
+                                FA       : Flow_Analysis_Graphs;
+                                Scope    : Flow_Scope;
+                                Var      : Flow_Id;
+                                Precise  : Boolean;
+                                Targeted : Boolean := False)
                                 return Node_Id;
    --  Given a node N, we traverse the tree to find the most deeply
    --  nested node which still uses Var. If Precise is True look only
@@ -150,7 +151,15 @@ private
    --  entire variable represented by Var (in our example we'd also
    --  look for R).
    --
-   --  If we cannot find any suitable node we return N itself.
+   --  When Targeted is set, we only search under specific nodes of
+   --  the AST:
+   --
+   --    * For assignment statement, we only look at the right
+   --      hand side of the assignment.
+   --
+   --    * For if statements we only check under the condition.
+   --
+   --    If we cannot find any suitable node we return N itself.
 
    function First_Variable_Use (FA      : Flow_Analysis_Graphs;
                                 Var     : Flow_Id;

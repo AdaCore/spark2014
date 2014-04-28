@@ -4,7 +4,7 @@ fb20a00.adb:18:10: info: range check proved
 fb20a00.adb:25:24: warning: "Ret" might not be initialized
 fb20a00.adb:25:38: info: range check proved
 fb20a00.adb:27:24: warning: "Ret" might not be initialized
-fb20a00.adb:30:10: warning: "Ret" might not be initialized
+fb20a00.adb:30:18: warning: "Ret" might not be initialized
 fb20a00.adb:34:15: warning: length check might fail
 fb20a00.adb:34:18: warning: range check might fail
 fb20a00.adb:35:15: warning: length check might fail

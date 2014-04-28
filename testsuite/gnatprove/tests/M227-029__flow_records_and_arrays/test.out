@@ -8,7 +8,7 @@ message_tests.adb:48:32: "C.Flags.A" is not initialized in "Not_All_Used_Out"
 message_tests.adb:48:32: "C.Flags.B" is not initialized in "Not_All_Used_Out"
 message_tests.adb:48:32: "C.W" is not initialized in "Not_All_Used_Out"
 message_tests.adb:56:04: warning: analyzing unreferenced procedure "Undefined_Used_1"
-message_tests.adb:66:15: "F.B" is not initialized
+message_tests.adb:66:18: "F.B" is not initialized
 parameter_tests.adb:28:04: warning: analyzing unreferenced procedure "Clear_Position"
 parameter_tests.adb:36:32: "G.Y" is not initialized
 parameter_tests.adb:50:33: warning: unused initial value of "G"

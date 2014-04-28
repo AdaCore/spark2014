@@ -1,6 +1,6 @@
-p1.adb:60:13: "X" is not initialized
+p1.adb:60:28: "X" is not initialized
 p1.ads:28:17: "X" is not initialized in "D"
-p2.adb:27:10: "L" is not initialized
+p2.adb:27:25: "L" is not initialized
    compilation of p1.adb failed
    compilation of p2.adb failed
 

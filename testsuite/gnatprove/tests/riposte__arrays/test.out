@@ -27,13 +27,13 @@ arrays.adb:178:7: warning: assertion might fail
 arrays.adb:183:19: info: postcondition proved
 arrays.adb:191:10: info: loop invariant initialization proved
 arrays.adb:191:10: info: loop invariant preservation proved
-arrays.adb:191:10: warning: "R" might not be initialized
 arrays.adb:191:41: info: range check proved
+arrays.adb:192:57: warning: "R" might not be initialized
 arrays.adb:199:22: warning: postcondition might fail, requires Single_Char_Set_Broken'Result (I) = (I > C
 arrays.adb:206:10: info: loop invariant initialization proved
 arrays.adb:206:10: info: loop invariant preservation proved
-arrays.adb:206:10: warning: "R" might not be initialized
 arrays.adb:206:41: info: range check proved
+arrays.adb:207:57: warning: "R" might not be initialized
 arrays.adb:218:7: warning: assertion might fail, requires A ('A')
 arrays.adb:227:7: info: assertion proved
 arrays.adb:236:7: warning: assertion might fail, requires A ('A')

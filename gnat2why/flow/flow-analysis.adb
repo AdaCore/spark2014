@@ -327,14 +327,16 @@ package body Flow.Analysis is
    ------------------------
 
    function First_Variable_Use
-     (N       : Node_Id;
-      FA      : Flow_Analysis_Graphs;
-      Scope   : Flow_Scope;
-      Var     : Flow_Id;
-      Precise : Boolean) return Node_Id
+     (N        : Node_Id;
+      FA       : Flow_Analysis_Graphs;
+      Scope    : Flow_Scope;
+      Var      : Flow_Id;
+      Precise  : Boolean;
+      Targeted : Boolean := False) return Node_Id
    is
-      First_Use : Node_Id := N;
-      Var_Tgt   : constant Flow_Id :=
+      Search_Under : Node_Id := N;
+      First_Use    : Node_Id := N;
+      Var_Tgt      : constant Flow_Id :=
         Change_Variant ((if Precise then Var else Entire_Variable (Var)),
                         Normal_Use);
 
@@ -368,7 +370,20 @@ package body Flow.Analysis is
       --  variable in the given node as far as possible.
 
    begin
-      Search_Expression (N);
+      if Targeted then
+         case Nkind (N) is
+            when N_Assignment_Statement =>
+               Search_Under := Expression (N);
+
+            when N_If_Statement =>
+               Search_Under := Condition (N);
+
+            when others =>
+               null;
+         end case;
+      end if;
+
+      Search_Expression (Search_Under);
       return First_Use;
    end First_Variable_Use;
 
@@ -1939,10 +1954,9 @@ package body Flow.Analysis is
                                  Tracefile => Tracefile,
                                  Msg       =>
                                    "possibly missing return statement in &",
-                                 N         =>
-                                   Error_Location (FA.PDG,
-                                                   FA.Atr,
-                                                   FA.Start_Vertex),
+                                 N         => Error_Location (FA.PDG,
+                                                              FA.Atr,
+                                                              FA.Start_Vertex),
                                  F1        => Direct_Mapping_Id
                                    (FA.Analyzed_Entity),
                                  Tag       => "missing_return",
@@ -1965,9 +1979,15 @@ package body Flow.Analysis is
                                  Tracefile => Tracefile,
                                  Msg       => "& might not be " & Action &
                                    " in &",
-                                 N         => Error_Location (FA.PDG,
-                                                              FA.Atr,
-                                                              V_Error),
+                                 N         => First_Variable_Use
+                                   (N        =>  Error_Location (FA.PDG,
+                                                                 FA.Atr,
+                                                                 V_Error),
+                                    FA       => FA,
+                                    Scope    => FA.B_Scope,
+                                    Var      => Key_I,
+                                    Precise  => True,
+                                    Targeted => True),
                                  F1        => Key_I,
                                  F2        => Direct_Mapping_Id
                                    (FA.Analyzed_Entity),
@@ -1979,9 +1999,15 @@ package body Flow.Analysis is
                                 (FA        => FA,
                                  Tracefile => Tracefile,
                                  Msg       => "& is not " & Action & " in &",
-                                 N         => Error_Location (FA.PDG,
-                                                              FA.Atr,
-                                                              V_Error),
+                                 N         => First_Variable_Use
+                                   (N        =>  Error_Location (FA.PDG,
+                                                                 FA.Atr,
+                                                                 V_Error),
+                                    FA       => FA,
+                                    Scope    => FA.B_Scope,
+                                    Var      => Key_I,
+                                    Precise  => True,
+                                    Targeted => True),
                                  F1        => Key_I,
                                  F2        => Direct_Mapping_Id
                                    (FA.Analyzed_Entity),
@@ -2011,9 +2037,15 @@ package body Flow.Analysis is
                              (FA        => FA,
                               Tracefile => Tracefile,
                               Msg       => "& might not be " & Action,
-                              N         => Error_Location (FA.PDG,
-                                                           FA.Atr,
-                                                           V_Error),
+                              N         => First_Variable_Use
+                                (N        =>  Error_Location (FA.PDG,
+                                                              FA.Atr,
+                                                              V_Error),
+                                 FA       => FA,
+                                 Scope    => FA.B_Scope,
+                                 Var      => Key_I,
+                                 Precise  => True,
+                                 Targeted => True),
                               F1        => Key_I,
                               Tag       => "uninitialized",
                               Warning   => True,
@@ -2023,9 +2055,15 @@ package body Flow.Analysis is
                              (FA        => FA,
                               Tracefile => Tracefile,
                               Msg       => "& is not " & Action,
-                              N         => Error_Location (FA.PDG,
-                                                           FA.Atr,
-                                                           V_Error),
+                              N         => First_Variable_Use
+                                (N        =>  Error_Location (FA.PDG,
+                                                              FA.Atr,
+                                                              V_Error),
+                                 FA       => FA,
+                                 Scope    => FA.B_Scope,
+                                 Var      => Key_I,
+                                 Precise  => True,
+                                 Targeted => True),
                               F1        => Key_I,
                               Tag       => "uninitialized",
                               Vertex    => V_Use);

@@ -3,19 +3,19 @@ foo.adb:25:04: warning: analyzing unreferenced procedure "Test_02_Ok_Hard"
 foo.adb:25:31: warning: "A" might not be initialized in "Test_02_Ok_Hard"
 foo.adb:29:16: warning: "A" might not be initialized
 foo.adb:33:04: warning: analyzing unreferenced procedure "Test_03_E"
-foo.adb:37:16: "A" is not initialized
+foo.adb:37:19: "A" is not initialized
 foo.adb:41:04: warning: analyzing unreferenced procedure "Test_04_E"
 foo.adb:41:25: warning: "A" might not be initialized in "Test_04_E"
 foo.adb:46:19: warning: "A" might not be initialized
 foo.adb:51:04: warning: analyzing unreferenced procedure "Test_05_Ok"
 foo.adb:63:04: warning: analyzing unreferenced procedure "Test_06_E"
-foo.adb:67:10: "A" is not initialized
+foo.adb:67:13: "A" is not initialized
 foo.adb:68:19: warning: "A" might not be initialized
 foo.adb:70:19: warning: "A" might not be initialized
 foo.adb:75:04: warning: analyzing unreferenced procedure "Test_07_E"
-foo.adb:82:10: warning: "A" might not be initialized
+foo.adb:82:13: warning: "A" might not be initialized
 foo.adb:88:04: warning: analyzing unreferenced procedure "Test_07_Ok_Hard"
-foo.adb:93:10: warning: "A" might not be initialized
+foo.adb:94:38: warning: "A" might not be initialized
 foo.adb:98:04: warning: analyzing unreferenced procedure "Test_08_E"
 foo.adb:102:16: warning: "A" might not be initialized
 foo.adb:111:16: warning: "A" might not be initialized
@@ -26,9 +26,9 @@ foo.adb:146:19: warning: "A" might not be initialized
 foo.adb:150:04: warning: analyzing unreferenced procedure "Test_13_E"
 foo.adb:154:19: warning: "A" might not be initialized
 foo.adb:158:04: warning: analyzing unreferenced procedure "Test_14_E"
-foo.adb:164:16: warning: "A" might not be initialized
+foo.adb:164:19: warning: "A" might not be initialized
 foo.adb:168:04: warning: analyzing unreferenced procedure "Test_15_Ok_Hard"
-foo.adb:174:16: warning: "A" might not be initialized
+foo.adb:174:19: warning: "A" might not be initialized
 foo.adb:178:04: warning: analyzing unreferenced procedure "Test_15_E"
 foo.adb:182:16: warning: "A" might not be initialized
 foo.adb:186:04: warning: analyzing unreferenced procedure "Test_16_E"

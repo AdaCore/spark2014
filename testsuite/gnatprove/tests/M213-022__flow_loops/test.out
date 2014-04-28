@@ -10,7 +10,7 @@ test.adb:35:12: warning: unused assignment
 test.adb:40:04: warning: analyzing unreferenced procedure "While_Loop"
 test.adb:50:04: warning: analyzing unreferenced function "Bergeretti_Fig9_Correct"
 test.adb:68:04: warning: analyzing unreferenced function "Bergeretti_Fig9_Incorrect"
-test.adb:77:20: "R" is not initialized
+test.adb:77:23: "R" is not initialized
 test.adb:86:04: warning: analyzing unreferenced procedure "Stable_Test_01"
 test.adb:96:04: warning: analyzing unreferenced procedure "Stable_Test_02"
 test.adb:109:04: warning: analyzing unreferenced procedure "For_Test_01"

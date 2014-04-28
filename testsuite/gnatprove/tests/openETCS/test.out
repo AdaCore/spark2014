@@ -126,7 +126,7 @@ step_function.adb:60:55: warning: array index check might fail
 step_function.adb:72:17: warning: range check might fail
 step_function.adb:91:10: warning: loop invariant might fail after first iteration
 step_function.adb:91:10: warning: loop invariant might fail in first iteration
-step_function.adb:106:10: warning: "Merge.Step" might not be initialized
+step_function.adb:107:28: warning: "Merge.Step" might not be initialized
 step_function.adb:110:29: info: index check proved
 step_function.adb:113:29: info: index check proved
 step_function.adb:116:27: info: index check proved

@@ -1,15 +1,15 @@
 infoflow.adb:60:10: info: loop invariant initialization proved
 infoflow.adb:60:10: info: loop invariant preservation proved
-infoflow.adb:60:10: warning: "Cache_V1" might not be initialized
+infoflow.adb:61:51: warning: "Cache_V1" might not be initialized
 infoflow.adb:68:10: info: loop invariant initialization proved
 infoflow.adb:68:10: info: loop invariant preservation proved
-infoflow.adb:68:10: warning: "Cache_V2" might not be initialized
+infoflow.adb:69:51: warning: "Cache_V2" might not be initialized
 infoflow.adb:80:10: info: loop invariant initialization proved
 infoflow.adb:80:10: info: loop invariant preservation proved
-infoflow.adb:80:10: warning: "Outkeys_V1" might not be initialized
+infoflow.adb:81:47: warning: "Outkeys_V1" might not be initialized
 infoflow.adb:88:10: info: loop invariant initialization proved
 infoflow.adb:88:10: info: loop invariant preservation proved
-infoflow.adb:88:10: warning: "Outkeys_V2" might not be initialized
+infoflow.adb:89:47: warning: "Outkeys_V2" might not be initialized
 infoflow.adb:99:28: info: division check proved
 infoflow.adb:101:13: warning: loop invariant might fail after first iteration
 infoflow.adb:101:13: warning: loop invariant might fail in first iteration
@@ -68,19 +68,19 @@ infoflow.adb:161:7: warning: precondition might fail
 infoflow.adb:163:7: warning: precondition might fail
 infoflow.adb:172:10: info: loop invariant initialization proved
 infoflow.adb:172:10: info: loop invariant preservation proved
-infoflow.adb:172:10: warning: "A_V1" might not be initialized
+infoflow.adb:173:27: warning: "A_V1" might not be initialized
 infoflow.adb:173:33: info: index check proved
 infoflow.adb:173:44: info: index check proved
 infoflow.adb:174:16: info: index check proved
 infoflow.adb:174:31: info: index check proved
 infoflow.adb:177:7: info: assertion proved
-infoflow.adb:177:07: warning: "A_V1" might not be initialized
+infoflow.adb:179:12: warning: "A_V1" might not be initialized
 infoflow.adb:179:18: info: index check proved
 infoflow.adb:179:29: info: index check proved
 infoflow.adb:181:22: warning: overflow check might fail
 infoflow.adb:182:10: info: loop invariant initialization proved
 infoflow.adb:182:10: info: loop invariant preservation proved
-infoflow.adb:182:10: warning: "A_V1" might not be initialized
+infoflow.adb:183:36: warning: "A_V1" might not be initialized
 infoflow.adb:183:42: info: index check proved
 infoflow.adb:183:53: info: index check proved
 infoflow.adb:186:42: info: index check proved
@@ -89,32 +89,32 @@ infoflow.adb:187:16: info: index check proved
 infoflow.adb:187:22: warning: "A_V1" might not be initialized
 infoflow.adb:187:36: info: index check proved
 infoflow.adb:187:36: info: overflow check proved
-infoflow.adb:190:07: warning: "A_V1" might not be initialized
 infoflow.adb:190:7: warning: assertion might fail
+infoflow.adb:192:13: warning: "A_V1" might not be initialized
 infoflow.adb:192:19: info: index check proved
 infoflow.adb:192:30: info: index check proved
 infoflow.adb:195:19: info: index check proved
 infoflow.adb:195:32: info: index check proved
 infoflow.adb:200:10: info: loop invariant initialization proved
 infoflow.adb:200:10: info: loop invariant preservation proved
-infoflow.adb:200:10: warning: "A_V2" might not be initialized
+infoflow.adb:201:27: warning: "A_V2" might not be initialized
 infoflow.adb:201:33: info: index check proved
 infoflow.adb:201:44: info: index check proved
 infoflow.adb:202:16: info: index check proved
 infoflow.adb:202:31: info: index check proved
-infoflow.adb:205:07: warning: "A_V1" might not be initialized
-infoflow.adb:205:07: warning: "A_V2" might not be initialized
 infoflow.adb:205:7: warning: assertion might fail
+infoflow.adb:207:13: warning: "A_V1" might not be initialized
 infoflow.adb:207:19: info: index check proved
 infoflow.adb:207:30: info: index check proved
 infoflow.adb:210:19: info: index check proved
 infoflow.adb:210:32: info: index check proved
+infoflow.adb:213:13: warning: "A_V2" might not be initialized
 infoflow.adb:213:19: info: index check proved
 infoflow.adb:213:30: info: index check proved
 infoflow.adb:215:22: warning: overflow check might fail
 infoflow.adb:216:10: info: loop invariant initialization proved
 infoflow.adb:216:10: info: loop invariant preservation proved
-infoflow.adb:216:10: warning: "A_V2" might not be initialized
+infoflow.adb:217:36: warning: "A_V2" might not be initialized
 infoflow.adb:217:42: info: index check proved
 infoflow.adb:217:53: info: index check proved
 infoflow.adb:220:42: info: index check proved

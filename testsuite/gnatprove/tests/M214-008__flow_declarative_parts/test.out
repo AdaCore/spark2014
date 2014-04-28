@@ -5,8 +5,8 @@ test.adb:43:04: warning: analyzing unreferenced procedure "Test_01"
 test.adb:66:24: warning: unused initial value of "A"
 test.adb:69:09: warning: missing dependency "null => A"
 test.adb:69:21: warning: incorrect dependency "B => A"
-test.adb:90:07: "A" is not initialized
-test.adb:100:07: "A" is not initialized
+test.adb:90:33: "A" is not initialized
+test.adb:100:31: "A" is not initialized
 test.adb:122:24: warning: unused initial value of "A"
 test.adb:133:24: warning: unused initial value of "A"
    compilation of test.adb failed

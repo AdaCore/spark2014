@@ -3,7 +3,7 @@ s.adb:6:9: info: loop invariant preservation proved
 s.adb:7:33: info: index check proved
 s.adb:24:9: info: loop invariant initialization proved
 s.adb:24:9: info: loop invariant preservation proved
-s.adb:24:09: warning: "Dest" might not be initialized
+s.adb:25:27: warning: "Dest" might not be initialized
 s.adb:25:33: info: index check proved
 s.adb:25:47: info: index check proved
 s.adb:27:34: info: index check proved

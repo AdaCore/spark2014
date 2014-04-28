@@ -15,7 +15,7 @@ my_test.adb:22:4: warning: assertion might fail, requires T1 = T3
 simple_unc_arrays.adb:10:07: warning: "C.V" might not be initialized
 simple_unc_arrays.adb:12:13: info: loop invariant initialization proved
 simple_unc_arrays.adb:12:13: info: loop invariant preservation proved
-simple_unc_arrays.adb:12:13: warning: "C.V" might not be initialized
+simple_unc_arrays.adb:13:42: warning: "C.V" might not be initialized
 simple_unc_arrays.adb:13:43: info: discriminant check proved
 simple_unc_arrays.adb:13:47: warning: array index check might fail
 simple_unc_arrays.adb:13:53: info: discriminant check proved

@@ -1,5 +1,5 @@
-test.adb:14:06: "Tmp_A" is not initialized
-test.adb:15:06: "Tmp_B" is not initialized
+test.adb:14:09: "Tmp_A" is not initialized
+test.adb:15:09: "Tmp_B" is not initialized
    compilation of test.adb failed
 
 

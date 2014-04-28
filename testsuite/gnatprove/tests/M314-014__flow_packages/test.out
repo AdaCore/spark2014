@@ -7,7 +7,7 @@ ic.adb:108:35: "Y" must be listed in the Global aspect of "Sanity_Check_1" (SPAR
 ic.adb:117:41: "Y" must be listed in the Global aspect of "Sanity_Check_2" (SPARK RM 6.1.4(13))
 pkg_a.adb:7:04: "A" is not initialized in "Pkg_A"
 pkg_a.adb:9:04: warning: initialization has no effect
-pkg_a.adb:16:06: "X" is not initialized
+pkg_a.adb:16:23: "X" is not initialized
 pkg_a.adb:17:06: warning: unused assignment
 pkg_a.ads:8:04: "X" is not initialized in "Pkg_A"
 pkg_a.ads:10:04: warning: initialization has no effect

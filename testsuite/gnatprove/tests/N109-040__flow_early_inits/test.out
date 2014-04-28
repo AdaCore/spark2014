@@ -1,5 +1,5 @@
-early_init.adb:25:07: "V3" is not initialized
-early_init.ads:16:07: "V1" is not initialized
+early_init.adb:25:31: "V3" is not initialized
+early_init.ads:16:31: "V1" is not initialized
    compilation of early_init.adb failed
 
 
