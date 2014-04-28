@@ -1061,16 +1061,41 @@ package body Flow.Control_Flow_Graph is
                            when N_Attribute_Reference =>
                               Pref := Prefix (Pref);
                            when N_Qualified_Expression =>
+                              --  We cannot possibly have anything before the
+                              --  N_Qualified_Expression node.
                               Vars_Used := Vars_Used_By_Nested_Expr;
                               return;
                            when others =>
                               raise Why.Unexpected_Node;
                         end case;
 
+                     when N_Indexed_Component =>
+                        --  A := B (foo).X;
+                        Vars_Used_By_Nested_Expr := Vars_Used_By_Nested_Expr or
+                          Get_Variable_Set
+                            (Expressions (Pref),
+                             Scope           => FA.B_Scope,
+                             Local_Constants => FA.Local_Constants,
+                             Fold_Functions  => True);
+
+                        Pref := Prefix (Pref);
+
                      when others =>
                         raise Why.Unexpected_Node;
                   end case;
                end loop;
+
+               if Nkind (Parent (Pref)) = N_Indexed_Component then
+                  --  If the leftmost node is an array, then we add it
+                  --  to the set of variables used and then return.
+                  Vars_Used := Vars_Used_By_Nested_Expr or
+                    Get_Variable_Set
+                      (Pref,
+                       Scope           => FA.B_Scope,
+                       Local_Constants => FA.Local_Constants,
+                       Fold_Functions  => True);
+                  return;
+               end if;
 
                F := Compare_Components (Direct_Mapping_Id (Entity (Pref)),
                                         F_Comp);
