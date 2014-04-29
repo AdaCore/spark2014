@@ -159,7 +159,7 @@ private
    --
    --    * For if statements we only check under the condition.
    --
-   --    If we cannot find any suitable node we return N itself.
+   --  If we cannot find any suitable node we return N itself.
 
    function First_Variable_Use (FA      : Flow_Analysis_Graphs;
                                 Var     : Flow_Id;
