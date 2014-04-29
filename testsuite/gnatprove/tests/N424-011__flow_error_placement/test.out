@@ -1,0 +1,10 @@
+assignment_error.adb:4:09: "X" is not initialized
+longest_common_prefix.adb:8:17: "L" is not initialized
+longest_common_prefix.adb:12:15: "L" is not initialized
+longest_common_prefix.adb:14:14: warning: "L" might not be initialized
+   compilation of assignment_error.adb failed
+   compilation of longest_common_prefix.adb failed
+
+
+gnatprove: error during flow analysis and proof, aborting.
+gprbuild: *** compilation phase failed
