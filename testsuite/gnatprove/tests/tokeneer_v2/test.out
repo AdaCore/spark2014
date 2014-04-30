@@ -140,8 +140,8 @@ auditlog.adb:1248:64: warning: range check might fail
 auditlog.adb:1249:65: warning: range check might fail
 auditlog.adb:1270:62: info: range check proved
 auditlog.adb:1270:67: info: overflow check proved
+auditlog.adb:1271:27: info: overflow check proved
 auditlog.adb:1271:27: info: range check proved
-auditlog.adb:1271:27: warning: overflow check might fail
 auditlog.adb:1332:55: info: refined post proved
 auditlog.adb:1334:67: info: range check proved
 auditlog.adb:1334:72: info: overflow check proved
@@ -185,8 +185,8 @@ bio.ads:85:14: warning: subprogram "Flush" has no effect
 cert-id.adb:87:47: info: range check proved
 certificatestore.adb:38:42: info: length check proved
 certificatestore.adb:221:31: warning: range check might fail
+certificatestore.adb:222:26: info: length check proved
 certificatestore.adb:222:26: warning: "Text" might not be initialized
-certificatestore.adb:222:26: warning: length check might fail
 certificatestore.adb:222:29: warning: range check might fail
 certificatestore.adb:223:42: info: length check proved
 certificatestore.adb:223:45: warning: range check might fail
@@ -615,12 +615,12 @@ keystore.adb:199:35: info: index check proved
 keystore.adb:199:35: info: overflow check proved
 keystore.adb:199:51: info: overflow check proved
 keystore.adb:218:51: info: division check proved
+keystore.adb:222:13: info: loop invariant initialization proved
 keystore.adb:222:13: info: loop invariant preservation proved
-keystore.adb:222:13: warning: loop invariant might fail in first iteration
 keystore.adb:223:56: info: division check proved
-keystore.adb:226:57: warning: overflow check might fail
-keystore.adb:226:67: warning: overflow check might fail
-keystore.adb:236:22: warning: precondition might fail
+keystore.adb:226:57: info: overflow check proved
+keystore.adb:226:67: info: overflow check proved
+keystore.adb:236:22: info: precondition proved
 keystore.adb:248:36: warning: range check might fail
 keystore.adb:264:18: warning: precondition might fail
 keystore.adb:272:18: warning: precondition might fail
