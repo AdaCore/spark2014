@@ -71,5 +71,16 @@ is
       R := (T1 = T2) and (T3 = T4);
    end F3;
 
+   procedure F4 (R : out Boolean)
+   is
+      T1, T2 : Integer;
+   begin
+      T1 := V4 (2);
+      T2 := V4 (2);
+      pragma Assert (T1 = T2); --@ASSERT:FAIL
+
+      R := (T1 = T2);
+   end F4;
+
 
 end VC4;

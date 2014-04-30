@@ -25,7 +25,8 @@ is
    V2 : A2 with Volatile;
    V3 : A3;
 
-   -- V4 : A2; -- should this be legal without "with Volatile" on the end?
+   -- Object of anon array type with Volatile_Comoponents
+   V4 : array (I) of Integer with Volatile_Components;
 
    procedure F0 (X : in A0; R : out Boolean)
      with Global => (Input => V0),
@@ -37,7 +38,7 @@ is
                       V1 => V1);
 
    procedure F2 (X : in A2; R : out Boolean)
-     with Global => (In_Out=> V2),
+     with Global => (In_Out => V2),
           Depends => (R => (X, V2),
                       V2 => V2);
 
@@ -45,5 +46,10 @@ is
      with Global => (In_Out => V3),
           Depends => (R => (X, V3),
                       V3 => V3);
+
+   procedure F4 (R : out Boolean)
+     with Global => (In_Out => V4),
+          Depends => (R  => V4,
+                      V4 => V4);
 
 end VC4;
