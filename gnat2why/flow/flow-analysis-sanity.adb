@@ -537,6 +537,10 @@ package body Flow.Analysis.Sanity is
       end loop;
    end Check_Illegal_Writes;
 
+   -------------------------------
+   -- Check_All_Variables_Known --
+   -------------------------------
+
    procedure Check_All_Variables_Known
      (FA   : Flow_Analysis_Graphs;
       Sane : out Boolean)

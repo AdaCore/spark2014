@@ -1,0 +1,2 @@
+buf-no_data.adb:11:42: warning: overflow check might fail
+buf-no_data.adb:12:30: warning: overflow check might fail

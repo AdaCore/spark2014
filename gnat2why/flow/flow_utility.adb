@@ -371,42 +371,50 @@ package body Flow_Utility is
 
             procedure Process (The_Mode   : Name_Id;
                                The_Global : Entity_Id);
-            --  Add the given global to the reads or writes list,
-            --  depending on the mode.
+            --  Add the given global to the reads, writes or Proof_In
+            --  list, depending on the mode.
 
             procedure Process (The_Mode   : Name_Id;
                                The_Global : Entity_Id)
             is
+               Non_Limited_Global : constant Entity_Id :=
+                 (if Ekind (The_Global) = E_Abstract_State
+                    and then Present (Non_Limited_View (The_Global))
+                  then Non_Limited_View (The_Global)
+                  else The_Global);
+               --  If a Non_Limited_View exists, then use that. In
+               --  doing so we avoid generating two Flow_Ids for a
+               --  single variable.
             begin
                case The_Mode is
                   when Name_Input =>
                      if not Globals_For_Proof or else
-                       Ekind (The_Global) /= E_In_Parameter
+                       Ekind (Non_Limited_Global) /= E_In_Parameter
                      then
                         --  Proof does not count in parameters as
                         --  globals (as they are constants).
-                        G_In.Insert (The_Global);
+                        G_In.Insert (Non_Limited_Global);
                      end if;
 
                   when Name_In_Out =>
-                     G_In.Insert (The_Global);
-                     G_Out.Insert (The_Global);
+                     G_In.Insert (Non_Limited_Global);
+                     G_Out.Insert (Non_Limited_Global);
 
                   when Name_Output =>
                      if Consider_Discriminants and then
                        Contains_Discriminants
-                       (Direct_Mapping_Id (The_Global, In_View))
+                       (Direct_Mapping_Id (Non_Limited_Global, In_View))
                      then
-                        G_In.Insert (The_Global);
+                        G_In.Insert (Non_Limited_Global);
                      end if;
-                     G_Out.Insert (The_Global);
+                     G_Out.Insert (Non_Limited_Global);
 
                   when Name_Proof_In =>
                      if not Globals_For_Proof or else
-                       Ekind (The_Global) /= E_In_Parameter
+                       Ekind (Non_Limited_Global) /= E_In_Parameter
                      then
                         --  See above.
-                        G_Proof.Insert (The_Global);
+                        G_Proof.Insert (Non_Limited_Global);
                      end if;
 
                   when others =>
