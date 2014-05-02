@@ -3420,24 +3420,15 @@ package body Flow.Control_Flow_Graph is
       V : Flow_Graphs.Vertex_Id;
    begin
       if Pragma_Relevant_To_Flow (N) then
-         --  If we care, we create a sink vertex to check for
-         --  uninitialized variables.
-         Add_Vertex
-           (FA,
-            Direct_Mapping_Id (N),
-            Make_Sink_Vertex_Attributes
-              (Var_Use => Get_Variable_Set
-                 (Pragma_Argument_Associations (N),
-                  Scope           => FA.B_Scope,
-                  Local_Constants => FA.Local_Constants,
-                  Fold_Functions  => False),
-               E_Loc   => N),
-            V);
 
          case Get_Pragma_Id (N) is
 
             when Pragma_Unmodified   |
                  Pragma_Unreferenced =>
+
+               --  For pragma unmodified and pragma unreferenced we
+               --  produce a null vertex.
+               Add_Vertex (FA, Null_Node_Attributes, V);
 
                declare
                   Argument_Association : Node_Id;
@@ -3471,7 +3462,22 @@ package body Flow.Control_Flow_Graph is
                end;
 
             when others =>
-               null;
+               --  If we are processing a pragma that is relevant to
+               --  flow analysis, and we are not dealing with either
+               --  pragma unmodified or pragma unreferenced then we
+               --  create a sink vertex to check for uninitialized
+               --  variables.
+               Add_Vertex
+                 (FA,
+                  Direct_Mapping_Id (N),
+                  Make_Sink_Vertex_Attributes
+                    (Var_Use => Get_Variable_Set
+                       (Pragma_Argument_Associations (N),
+                        Scope           => FA.B_Scope,
+                        Local_Constants => FA.Local_Constants,
+                        Fold_Functions  => False),
+                     E_Loc   => N),
+                  V);
          end case;
 
       else
