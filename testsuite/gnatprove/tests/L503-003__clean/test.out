@@ -25,6 +25,7 @@ natural_set.o
 natural_set.adb
 natural_set.ads
 obj
+proof
 test.gpr
 test.out
 test.py

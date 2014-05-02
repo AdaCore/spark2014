@@ -60,6 +60,8 @@ package body Configuration is
 
    procedure Clean_Up (Tree : Project_Tree);
 
+   procedure Configure_Proof_Dir (Proj_Type : Project_Type);
+
    procedure Handle_Scenarios
      (Switch    : String;
       Parameter : String;
@@ -192,6 +194,19 @@ ASCII.LF &
 ASCII.LF &
 "                   paths when needed" &
 ASCII.LF;
+
+   -------------------------
+   -- Configure_Proof_Dir --
+   -------------------------
+
+   procedure Configure_Proof_Dir (Proj_Type : Project_Type) is
+      Cpy : constant String := Proof_Dir.all;
+   begin
+      GNAT.Strings.Free (Proof_Dir);
+      Proof_Dir := new String'(Attribute_Value
+           (Proj_Type, Build ("Prove", "Proof_Dir"),
+            Default => Cpy));
+   end Configure_Proof_Dir;
 
    --------------
    -- Clean_Up --
@@ -339,14 +354,24 @@ ASCII.LF;
          Set_Object_Subdir (Proj_Env.all, Subdir_Name);
          Proj_Env.Register_Default_Language_Extension ("C", ".h", ".c");
          declare
-            S : constant String :=
+            Sswitches : constant String :=
                   Register_New_Attribute ("Switches", "Prove",
                                           Is_List => True);
          begin
-            if S /= "" then
-               Abort_Msg (S, With_Help => False);
+            if Sswitches /= "" then
+               Abort_Msg (Sswitches, With_Help => False);
             end if;
          end;
+
+         declare
+            Sproof_dir : constant String :=
+              Register_New_Attribute ("Proof_Dir", "Prove");
+         begin
+            if Sproof_dir /= "" then
+               Abort_Msg (Sproof_dir, With_Help => False);
+            end if;
+         end;
+
          if Project_File.all /= "" then
             Tree.Load
               (GNATCOLL.VFS.Create (Filesystem_String (Project_File.all)),
@@ -584,6 +609,7 @@ ASCII.LF;
                     Callback => Handle_Switch'Access,
                     Concatenate => False);
          end if;
+         Configure_Proof_Dir (Proj_Type);
       end;
 
       --  Adjust the number of parallel processes. If -j0 was used, the
