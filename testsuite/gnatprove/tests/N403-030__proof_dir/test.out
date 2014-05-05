@@ -1,0 +1,13 @@
+simple_test.adb:13:14: info: overflow check proved
+simple_test.adb:15:7: info: assertion proved
+simple_test.ads:5:14: info: postcondition proved
+simple_test.ads:5:31: info: overflow check proved
+simple_test.ads:5:37: info: overflow check proved
+simple_test.ads:5:43: info: overflow check proved
+why3session.xml
+proof
+simple_test.adb
+simple_test.ads
+test.gpr
+test.out
+test.py
