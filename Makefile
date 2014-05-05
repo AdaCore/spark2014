@@ -31,8 +31,6 @@
 .PHONY: clean doc gnat1why gnat2why gnatprove install \
 	install-all gnatmerge why3 alt-ergo all setup all-nightly doc-nightly
 
-ADAINCLUDE=$(strip $(shell gnatls -v | grep adainclude))
-GNAT_ROOT=$(shell echo $(ADAINCLUDE) | sed -e 's!\(.*\)/lib/gcc/\(.*\)!\1!')
 INSTALLDIR=$(CURDIR)/install
 SHAREDIR=$(INSTALLDIR)/share
 EXAMPLESDIR=$(SHAREDIR)/examples/spark
@@ -43,6 +41,7 @@ THEORIESDIR=$(GNATPROVEDIR)/theories
 DOC=ug lrm
 
 CP=cp -pr
+GNATMAKE=gnatmake
 
 # main target for developers
 all: gnat2why gnatprove why3 alt-ergo
@@ -77,8 +76,10 @@ install-all:
 	$(MAKE) -C alt-ergo install
 
 install:
-	mkdir -p $(CONFIGDIR)
-	mkdir -p $(THEORIESDIR)
+	mkdir -p $(INSTALLDIR)/bin $(CONFIGDIR) $(THEORIESDIR)
+	@echo "generating default target.atp in $(INSTALLDIR)/bin:"
+	$(GNATMAKE) -q -c -u -gnats spark2014vsn.ads \
+	  -gnatet=$(INSTALLDIR)/bin/target.atp
 	$(CP) share/spark/config/*cgpr $(CONFIGDIR)
 	$(CP) share/spark/theories/*why $(THEORIESDIR)
 	$(CP) share/spark/theories/*mlw $(THEORIESDIR)
@@ -99,7 +100,7 @@ $(DOC):
 
 gnat1why:
 	$(MAKE) -C gnat2why/why/xgen
-	$(MAKE) -C gnat2why gnat1 gnat2why
+	$(MAKE) -C gnat2why AUTOMATED=1 gnat1 gnat2why
 
 gnat2why:
 	$(MAKE) -C gnat2why/why/xgen
