@@ -214,6 +214,7 @@ When editing an Ada file, |GNATprove| can also be run from a
    "Prove File",         "This runs |GNATprove| on the current unit, its body and any subunits."
    "Prove Subprogram",   "This runs |GNATprove| on the current subprogram."
    "Prove Line",         "This runs |GNATprove| on the current line."
+   "Prove Check",        "This runs |GNATprove| on the current failing condition. |GNATprove| must have been run at least once for this option to be available in order to know which conditions are failing."
 
 |GNATprove| project switches can be edited from the panel ``GNATprove`` (in
 :menuselection:`Project --> Edit Project Properties --> Switches`).
@@ -278,6 +279,95 @@ When editing an Ada file, |GNATprove| can also be run from a
    "Prove File",         "This runs |GNATprove| on the current unit, its body and any subunits."
    "Prove Subprogram",   "This runs |GNATprove| on the current subprogram."
    "Prove Line",         "This runs |GNATprove| on the current line."
+
+|GNATprove| and manual proof
+----------------------------
+
+When automated provers fail to prove some condition that is valid, the validity
+may be proved using a manual prover.
+
+In the appendix, section :ref:`Alternative_Provers`, is explained how to use
+different provers than |GNATprove| 's default.
+
+Manual proof in command line:
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+When the prover used by |GNATprove| is configured as interactive, for each
+analysed condition, either:
+
+* It is the first time the prover is used on the condition then a file
+  (containing the condition as input to the specified prover) is created in the
+  project's proof directory (see :ref:`Project_Attributes`). |GNATprove|
+  outputs a warning concerning this condition indicating the file that was
+  created. The created file should be edited by the user in order to prove the
+  condition.
+
+* The prover has already been used on this condition and the editable file
+  exists. The prover is run on the file and the success or failure of the proof
+  is reported in the same way it is done with the default prover.
+
+.. note::
+
+   Once a manual proof file is created and has been edited by the user, in
+   order to run the prover on the file, the same prover must be once again
+   specified to |GNATprove|. Once the condition is proved, the result will be
+   saved in the why3 session so |GNATprove| won't need to be specified the
+   prover again to know that the condition is valid.
+
+|GNATprove| 's analisys can be limited to a single condition with the
+``--limit-line`` option::
+
+    gnatprove -P <project-file.gpr> --prover=<prover> --limit-line=<file>:<line>:<column>:<check-kind>
+
+Where ``check-kind`` can be deduced from |GNATprove| 's warning:
+
+.. csv-table::
+   :header: "Warning", "Check kind"
+   :widths: 1, 4
+
+   "divide by zero might fail",                         "VC_DIVISION_CHECK"
+   "array index check might fail",                      "VC_INDEX_CHECK"
+   "overflow check might fail",                         "VC_OVERFLOW_CHECK"
+   "range check might fail",                            "VC_RANGE_CHECK"
+   "length check might fail",                           "VC_LENGTH_CHECK"
+   "discriminant check might fail",                     "VC_DISCRIMINANT_CHECK"
+   "initial condition might fail",                      "VC_INITIAL_CONDITION"
+   "precondition might fail",                           "VC_PRECONDITION"
+   "precondition of main program might fail",           "VC_PRECONDITION_MAIN"
+   "postcondition might fail",                          "VC_POSTCONDITION"
+   "refined postcondition might fail",                  "VC_REFINED_POST"
+   "contract case might fail",                          "VC_CONTRACT_CASE"
+   "contract cases might not be disjoint",              "VC_DISJOINT_CONTRACT_CASES"
+   "contract cases might not be complete",              "VC_COMPLETE_CONTRACT_CASES"
+   "loop invariant might fail",                         "VC_LOOP_INVARIANT"
+   "loop invariant might fail in first iteration",      "VC_LOOP_INVARIANT_INIT"
+   "loop invariant might fail after first iteration",   "VC_LOOP_INVARIANT_PRESERV"
+   "loop variant might fail",                           "VC_LOOP_VARIANT"
+   "assertion might fail",                              "VC_ASSERT"
+   "exception might be raised",                         "VC_RAISE"
+
+
+Manual proof in GPS:
+^^^^^^^^^^^^^^^^^^^^
+
+After running |GNATprove| with proof mode, the menu
+:menuselection:`SPARK --> Prove Check` is available by right-clicking on a
+warning message in the location tab or by right-clicking on a line that fails
+because of a single condition (i.e. there is only one warning in the output of
+|GNATprove| concerning this line).
+
+In the dialog box, the field "Alternate prover" can be filled to use another
+prover than Alt-Ergo. If the alternative prover is configured as
+"interactive", after the execution of :menuselection:`SPARK --> Prove Check`,
+GPS opens the manual proof file with the editor corresponding to the prover
+under the condition that an editor is specified in the configuration of the
+alternative prover.
+
+Once the editor is closed, GPS re-executes
+:menuselection:`SPARK --> Prove Check`. The user should verify the same
+alternative prover as before is still specified. After execution, GPS will
+offer to re-edit the file if the proof fails.
+
 
 How to View |GNATprove| Output
 ==============================

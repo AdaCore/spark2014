@@ -87,17 +87,26 @@ Project Attributes
 ==================
 
 |GNATprove| reads the package ``Prove`` in the given project file. This package
-is allowed to contain an attribute ``Switches``, which defines additional
-command line switches that are used for the invokation of |GNATprove|. As an
-example, the following package in the project file sets the default report mode
-of |GNATprove| to ``all``::
+is allowed to contain the following attributes:
+
+* ``Switches``, which defines additional command line switches that are used
+  for the invokation of |GNATprove|. As an example, the following package in
+  the project file sets the default report mode of |GNATprove| to ``all``::
 
     package Prove is
        for Switches use ("--report=all");
     end Prove;
 
-Switches given on the command line have priority over switches given in the
-project file.
+  Switches given on the command line have priority over switches given in the
+  project file.
+
+* ``Proof_Dir``, which defines the directory where are stored the files
+  concerning the state of the proof of a project. This directory contains one
+  directory per source package analysed for proof. Each package directory
+  contains a why3-session and directories to store manual proof files.
+
+  The default value for this directory is a ``proof`` directory at the root of
+  the project.
 
 Implementation Defined Pragmas
 ==============================
