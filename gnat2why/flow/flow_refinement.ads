@@ -128,8 +128,7 @@ package Flow_Refinement is
      with Pre  => (for all V of Vars => Nkind (V) in N_Entity),
           Post => (for all V of Down_Project'Result => Nkind (V) in N_Entity);
    --  Given a set of variables and a scope, recursively expand all
-   --  abstract state where its refinement is visible in S. This function
-   --  only ever expands the set, it never contracts it.
+   --  abstract state where its refinement is visible in S.
 
    function Get_Enclosing_Flow_Scope (S : Flow_Scope) return Flow_Scope
      with Pre => S.Section in Spec_Part | Private_Part;

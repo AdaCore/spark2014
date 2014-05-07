@@ -532,6 +532,37 @@ package body Flow_Utility is
                Writes.Include (Direct_Mapping_Id (V, Out_View));
             end loop;
 
+            if Debug_Trace_Get_Global then
+               Indent;
+               Write_Str ("proof ins");
+               Write_Eol;
+               Indent;
+               for F of Proof_Ins loop
+                  Sprint_Flow_Id (F);
+                  Write_Eol;
+               end loop;
+
+               Outdent;
+               Write_Str ("reads");
+               Write_Eol;
+               Indent;
+               for F of Reads loop
+                  Sprint_Flow_Id (F);
+                  Write_Eol;
+               end loop;
+
+               Outdent;
+               Write_Str ("writes");
+               Write_Eol;
+               Indent;
+               for F of Writes loop
+                  Sprint_Flow_Id (F);
+                  Write_Eol;
+               end loop;
+               Outdent;
+               Outdent;
+            end if;
+
          end;
       else
          --  We don't have a global aspect, so we should look at the
