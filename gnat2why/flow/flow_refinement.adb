@@ -256,6 +256,24 @@ package body Flow_Refinement is
                end if;
                exit;
 
+            when N_Aspect_Specification =>
+               --  We only get here when we call Get_Flow_Scope on an
+               --  abstract state. On this occasion we want to return
+               --  the Spec_Part followed by the name of the package
+               --  that introduces the abstract state.
+               pragma Assert (Nkind (N) = N_Defining_Identifier
+                                and then Ekind (N) = E_Abstract_State);
+
+               if Nkind (Parent (P)) = N_Package_Declaration then
+                  V := Spec_Part;
+
+                  P := Defining_Unit_Name (Specification (Parent (P)));
+                  if Nkind (P) = N_Defining_Program_Unit_Name then
+                     P := Defining_Identifier (P);
+                  end if;
+                  exit;
+               end if;
+
             when others =>
                null;
          end case;
