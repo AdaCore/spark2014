@@ -200,12 +200,10 @@ ASCII.LF;
    -------------------------
 
    procedure Configure_Proof_Dir (Proj_Type : Project_Type) is
-      Cpy : constant String := Proof_Dir.all;
    begin
-      GNAT.Strings.Free (Proof_Dir);
       Proof_Dir := new String'(Attribute_Value
            (Proj_Type, Build ("Prove", "Proof_Dir"),
-            Default => Cpy));
+            Default => ""));
    end Configure_Proof_Dir;
 
    --------------

@@ -126,7 +126,7 @@ package Configuration is
    Subdir_Name  : constant Filesystem_String := "gnatprove";
    --  The name of the directory in which all work takes place
 
-   Proof_Dir : aliased GNAT.Strings.String_Access := new String'("proof");
+   Proof_Dir : aliased GNAT.Strings.String_Access := null;
    --  The name of the directory in which will be stored Why3 session file and
    --  manual proof files (Attribute of gpr package Prove).
 

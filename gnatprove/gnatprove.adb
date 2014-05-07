@@ -315,6 +315,7 @@ procedure Gnatprove is
             GNAT.Directory_Operations.Make_Dir (Proof_Dir.all);
          end if;
       end Create_Proof_Dir;
+
    begin
       if Timeout /= 0 then
          Args.Append ("--timeout");
@@ -380,12 +381,18 @@ procedure Gnatprove is
          Args.Append (Alter_Prover.all);
       end if;
 
-      Create_Proof_Dir;
-      Args.Append ("--proof-dir");
-      --  Why3 is executed in the gnatprove directory and does not know the
-      --  project directory so we give it an absolute path to the proof_dir
-      Args.Append (Ada.Directories.Full_Name (Proof_Dir.all));
-      GNAT.Strings.Free (Proof_Dir);
+      if Proof_Dir /= null then
+         if Proof_Dir.all /= "" then
+            Create_Proof_Dir;
+            Args.Append ("--proof-dir");
+            --  Why3 is executed in the gnatprove directory and does not know
+            --  the project directory so we give it an absolute path to the
+            --  proof_dir
+            Args.Append (Ada.Directories.Full_Name (Proof_Dir.all));
+         end if;
+         GNAT.Strings.Free (Proof_Dir);
+      end if;
+
       return Args;
    end Compute_Why3_Args;
 
