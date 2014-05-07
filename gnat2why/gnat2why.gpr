@@ -1,22 +1,44 @@
+with "gnat2why_c";
+with "gnatcoll";
+
 project GNAT2Why is
 
    for Object_Dir use "obj";
    for Exec_Dir use "../install/bin";
 
    for Source_Dirs use ("why", ".", "spark", "utils", "..",
-                        "flow", "../common", "gnat_src", "obj");
+                        "flow", "../common", "obj");
 
    for Main use ("gnat1drv.adb");
 
-   package Builder is
-      for Executable ("gnat1drv.adb") use "gnat2why";
-      for Global_Configuration_Pragmas use "gnat2why.adc";
-   end Builder;
+   type Build_Type is ("Debug", "Production");
+   Build : Build_Type := External ("Build", "Debug");
+
+   Common_Switches := ("-gnatg", "-g");
 
    package Compiler is
-      for Default_Switches ("Ada") use
-        ("-O0", "-gnata", "-gnat12", "-gnatg", "-gnatVa");
+      for Local_Configuration_Pragmas use "gnat.adc";
+
+      case Build is
+         when "Debug" =>
+            for Default_Switches ("Ada") use
+               Common_Switches & ("-O0", "-gnata", "-gnatVa");
+         when "Production" =>
+            for Default_Switches ("Ada") use
+               Common_Switches & ("-O2", "-gnatpn");
+      end case;
    end Compiler;
+
+   package Builder is
+      for Executable ("gnat1drv.adb") use "gnat2why";
+
+      case Build is
+         when "Debug" =>
+            for Global_Configuration_Pragmas use "gnat2why.adc";
+         when "Production" =>
+            null;
+      end case;
+   end Builder;
 
    package IDE is
       for VCS_Kind use "Auto";

@@ -28,7 +28,7 @@
 # 4) Put the directory install/bin in your path:
 #	export PATH=<path_to_hilite_repo>/install/bin:$PATH
 
-.PHONY: clean doc gnat1why gnat2why gnatprove install \
+.PHONY: clean doc gnat2why gnat2why-nightly gnatprove install \
 	install-all gnatmerge why3 alt-ergo all setup all-nightly doc-nightly
 
 INSTALLDIR=$(CURDIR)/install
@@ -47,7 +47,7 @@ GNATMAKE=gnatmake
 all: gnat2why gnatprove why3 alt-ergo
 
 # main target for nightly builds
-all-nightly: gnat1why gnatprove-nightly install install-examples
+all-nightly: gnat2why-nightly gnatprove-nightly install install-examples
 
 # Setup and installation of why3 and alt-ergo
 # ===========================================
@@ -98,9 +98,9 @@ $(DOC):
 	$(CP) docs/$@/_build/html/* $(DOCDIR)/html/$@
 	$(MAKE) -C docs/$@ clean
 
-gnat1why:
+gnat2why-nightly:
 	$(MAKE) -C gnat2why/why/xgen
-	$(MAKE) -C gnat2why AUTOMATED=1 gnat1 gnat2why
+	$(MAKE) -C gnat2why AUTOMATED=1
 
 gnat2why:
 	$(MAKE) -C gnat2why/why/xgen
