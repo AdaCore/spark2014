@@ -63,6 +63,9 @@ package SPARK_Frame_Conditions is
    function Is_Heap_Variable (Ent : Entity_Name) return Boolean;
    --  Return whether Ent is the special variable "__HEAP"
 
+   function Is_Constant (Ent : Entity_Name) return Boolean;
+   --  Tests if Ent is a constant (or in parameter, etc.)
+
    procedure Display_Maps;
    --  Send maps to output for debug
 

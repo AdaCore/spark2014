@@ -745,6 +745,13 @@ package body SPARK_Frame_Conditions is
    function Is_Heap_Variable (Ent : Entity_Name) return Boolean is
       (Ent.all = SPARK_Xrefs.Name_Of_Heap_Variable);
 
+   -----------------
+   -- Is_Constant --
+   -----------------
+
+   function Is_Constant (Ent : Entity_Name) return Boolean is
+      (Constants.Contains (Id_Of_Entity (Ent)));
+
    ---------------------------------
    -- Is_Non_Recursive_Subprogram --
    ---------------------------------

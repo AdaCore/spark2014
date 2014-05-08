@@ -244,7 +244,12 @@ package body Flow_Utility is
                   end if;
                end;
 
-            when Magic_String | Synthetic_Null_Export =>
+            when Magic_String =>
+               if not Is_Constant (F.Name) then
+                  R.Include (F);
+               end if;
+
+            when Synthetic_Null_Export =>
                R.Include (F);
 
             when Null_Value =>

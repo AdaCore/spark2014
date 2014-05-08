@@ -1,0 +1,4 @@
+aip-arp.ads:4:14: warning: subprogram "Send_Request" has no effect
+aip-net.adb:17:23: info: overflow check proved
+aip-net.adb:20:23: info: overflow check proved
+aip-net.adb:22:20: info: overflow check proved
