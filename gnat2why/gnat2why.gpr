@@ -39,6 +39,8 @@ project GNAT2Why is
          when "Production" =>
             null;
       end case;
+
+      for Switches ("Ada") use ("-m");
    end Builder;
 
    package IDE is

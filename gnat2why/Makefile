@@ -56,10 +56,10 @@ setup:
 	mv -f ada_get_targ.adb get_targ.adb
 
 build: setup force
-	$(GPRBUILD) $(GPRARGS) -Pgnat2why -j$(PROCS) -m -largs $(LDFLAGS)
+	$(GPRBUILD) $(GPRARGS) -Pgnat2why -j$(PROCS) -largs $(LDFLAGS)
 
 coverage: setup force
-	$(GPRBUILD) $(GPRARGS) -Pgnat2why -j$(PROCS) -m \
+	$(GPRBUILD) $(GPRARGS) -Pgnat2why -j$(PROCS) \
 	  -cargs -fprofile-arcs -ftest-coverage \
 	  -largs $(LDFLAGS) -fprofile-arcs -ftest-coverage
 
