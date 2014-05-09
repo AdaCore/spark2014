@@ -22,10 +22,10 @@ project GNAT2Why is
 
       case Build is
          when "Debug" =>
-            for Default_Switches ("Ada") use
+            for Switches ("Ada") use
                Common_Switches & ("-O0", "-gnata", "-gnatVa");
          when "Production" =>
-            for Default_Switches ("Ada") use
+            for Switches ("Ada") use
                Common_Switches & ("-O2", "-gnatpn");
       end case;
    end Compiler;
