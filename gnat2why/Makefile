@@ -43,7 +43,12 @@ setup:
 	done
 	cd obj-tools && gnatmake -q xtreeprs xnmake &&\
 	./xtreeprs && ./xnmake && mv nmake.ads nmake.adb treeprs.ads ../obj
+ifeq ($(OS),Windows_NT)
+	cp -p gnat_src/*.ad? obj
+	$(RM) obj/x*.ad? obj/?-*.ad?
+else
 	cp -p gnat_src/[^x][^-]*.ad? obj
+endif
 	cd obj && $(RM) back_end.adb system.ads ada.ads \
 	  gnat.ads interfac.ads `cat ../gnat_src/MANIFEST.gnat_util` && \
 	  mv -f ada_get_targ.adb get_targ.adb
