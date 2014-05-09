@@ -50,11 +50,10 @@ setup:
 	done
 	cd obj-tools && gnatmake -q xtreeprs xnmake &&\
 	./xtreeprs && ./xnmake && mv nmake.ads nmake.adb treeprs.ads ../obj
-	cd obj && $(LN_S) ../gnat_src/*.ad[sb] .
-	$(RM) obj/x*.ad? obj/?-*.ad? obj/mlib-*
-	cd obj && $(RM) back_end.adb system.ads ada.ads \
+	cd obj && $(LN_S) ../gnat_src/*.ad[sb] . && \
+	$(RM) x*.ad? ?-*.ad? mlib* back_end.adb system.ads ada.ads \
 	  gnat.ads interfac.ads `cat ../gnat_src/MANIFEST.gnat_util` && \
-	  mv -f ada_get_targ.adb get_targ.adb
+	mv -f ada_get_targ.adb get_targ.adb
 
 build: setup force
 	$(GPRBUILD) $(GPRARGS) -Pgnat2why -j$(PROCS) -m -largs $(LDFLAGS)
