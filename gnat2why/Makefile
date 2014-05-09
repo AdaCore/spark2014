@@ -26,6 +26,13 @@ endif
 
 uname:=$(shell uname)
 
+ifeq ($(filter-out CYGWIN%,$(uname)),)
+  LDFLAGS=-Wl,--stack=0x2000000
+  LN_S=cp -p
+else
+  LN_S=ln -sf
+endif
+
 .PHONY: setup force clean
 
 all: build
@@ -43,19 +50,11 @@ setup:
 	done
 	cd obj-tools && gnatmake -q xtreeprs xnmake &&\
 	./xtreeprs && ./xnmake && mv nmake.ads nmake.adb treeprs.ads ../obj
-ifeq ($(OS),Windows_NT)
-	cp -p gnat_src/*.ad? obj
-	$(RM) obj/x*.ad? obj/?-*.ad?
-else
-	cd obj && ln -sf ../gnat_src/[^x][^-]*.ad[sb] .
-endif
+	cd obj && $(LN_S) ../gnat_src/*.ad[sb] .
+	$(RM) obj/x*.ad? obj/?-*.ad? obj/mlib-*
 	cd obj && $(RM) back_end.adb system.ads ada.ads \
 	  gnat.ads interfac.ads `cat ../gnat_src/MANIFEST.gnat_util` && \
 	  mv -f ada_get_targ.adb get_targ.adb
-
-ifeq ($(filter-out CYGWIN%,$(uname)),)
-  LDFLAGS=-Wl,--stack=0x2000000
-endif
 
 build: setup force
 	$(GPRBUILD) $(GPRARGS) -Pgnat2why -j$(PROCS) -m -largs $(LDFLAGS)
