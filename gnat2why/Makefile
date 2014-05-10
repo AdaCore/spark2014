@@ -51,9 +51,10 @@ setup:
 	cd obj-tools && gnatmake -q xtreeprs xnmake &&\
 	./xtreeprs && ./xnmake && mv nmake.ads nmake.adb treeprs.ads ../obj
 	cd obj && $(LN_S) ../gnat_src/*.ad[sb] . && \
-	$(RM) x*.ad? ?-*.ad? mlib* back_end.adb system.ads ada.ads \
-	  gnat.ads interfac.ads `cat ../gnat_src/MANIFEST.gnat_util` && \
-	mv -f ada_get_targ.adb get_targ.adb
+	$(RM) x*.ad? system* mlib* back_end.adb ada.ads \
+	  gnat.ads interfac.ads `cat ../gnat_src/MANIFEST.gnat_util`
+	cd obj && $(RM) `ls *.ad[sb] | grep '^.-'`
+	mv -f obj/ada_get_targ.adb obj/get_targ.adb
 
 build: setup force
 	$(GPRBUILD) $(GPRARGS) -Pgnat2why -j$(PROCS) -largs $(LDFLAGS)
