@@ -52,7 +52,7 @@ setup:
 ifeq ($(USE_LN),true)
 	cd obj && ln -sf ../gnat_src/*.ad[sb] .
 else
-	cd gnat_src && cp -p *.ad[sb] ../obj
+	cd gnat_src && cp -p *.ads ../obj && cp -p *.adb ../obj
 endif
 	cd obj && $(RM) x*.ad? system* mlib* back_end.adb \
 	  ada.ads gnat.ads interfac.ads && \
