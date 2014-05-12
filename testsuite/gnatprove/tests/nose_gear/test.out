@@ -4,21 +4,17 @@ ng.adb:36:62: warning: overflow check might fail
 ng.adb:37:29: warning: overflow check might fail
 ng.adb:38:22: warning: overflow check might fail
 ng.adb:39:22: warning: divide by zero might fail
-ng.adb:39:22: warning: overflow check might fail
 ng.adb:40:19: warning: overflow check might fail
 ng.adb:41:19: warning: divide by zero might fail
-ng.adb:41:19: warning: overflow check might fail
 ng.adb:41:19: warning: range check might fail
 ng.adb:61:18: warning: overflow check might fail
 ng.adb:61:18: warning: range check might fail
 ng.adb:62:17: warning: overflow check might fail
 ng.adb:62:23: warning: divide by zero might fail
-ng.adb:62:23: warning: overflow check might fail
 ng.adb:62:23: warning: range check might fail
 ng.adb:65:23: warning: overflow check might fail
 ng.adb:65:29: warning: overflow check might fail
 ng.adb:65:37: warning: divide by zero might fail
-ng.adb:65:37: warning: overflow check might fail
 ng.adb:65:37: warning: range check might fail
 ng.adb:65:43: warning: overflow check might fail
 ng.adb:78:7: warning: precondition might fail

@@ -9,4 +9,3 @@ p.ads:10:31: info: division check proved
 p.ads:10:31: warning: overflow check might fail
 p.ads:12:14: warning: subprogram "No_Need_For_Guard" has no effect
 p.ads:13:15: info: division check proved
-p.ads:13:15: info: overflow check proved

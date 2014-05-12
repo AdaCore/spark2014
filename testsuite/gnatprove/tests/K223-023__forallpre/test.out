@@ -1,3 +1,2 @@
 forall.ads:5:45: warning: divide by zero might fail
-forall.ads:5:45: warning: overflow check might fail
 forall.ads:6:20: warning: postcondition might fail, requires Get_One'Result > 1

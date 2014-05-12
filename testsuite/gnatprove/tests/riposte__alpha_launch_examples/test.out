@@ -8,9 +8,7 @@ alpha_launch_examples.adb:54:56: info: range check proved
 alpha_launch_examples.adb:56:22: warning: postcondition might fail, requires Example_5'Result = (A (V1) = A (V2)
 alpha_launch_examples.adb:65:22: warning: postcondition might fail
 alpha_launch_examples.adb:76:30: warning: divide by zero might fail
-alpha_launch_examples.adb:76:30: warning: overflow check might fail
 alpha_launch_examples.adb:80:36: warning: divide by zero might fail
-alpha_launch_examples.adb:80:36: warning: overflow check might fail
 alpha_launch_examples.adb:80:36: warning: range check might fail
 alpha_launch_examples.adb:84:19: warning: postcondition might fail, requires 73 rem Example_7'Result /= 42
 alpha_launch_examples.adb:84:22: warning: divide by zero might fail

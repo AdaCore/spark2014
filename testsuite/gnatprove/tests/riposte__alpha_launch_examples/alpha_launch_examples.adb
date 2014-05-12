@@ -77,7 +77,7 @@ is
          Display_Quantity'Last
    is
    begin
-      return Display_Quantity'Last / Display_Quantity (A);  --  @DIVISION_CHECK:FAIL @OVERFLOW_CHECK:FAIL @RANGE_CHECK:FAIL
+      return Display_Quantity'Last / Display_Quantity (A);  --  @DIVISION_CHECK:FAIL @RANGE_CHECK:FAIL
    end Example_6;
 
    function Example_7 (X : in Integer) return Integer

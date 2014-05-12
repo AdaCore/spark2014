@@ -1,6 +1,4 @@
 check.ads:2:21: warning: unused initial value of "Y"
 check.ads:3:37: info: division check proved
-check.ads:3:37: info: overflow check proved
 check.ads:3:70: info: division check proved
-check.ads:3:70: info: overflow check proved
 check.ads:4:20: warning: postcondition might fail, requires Div'Result > 0
