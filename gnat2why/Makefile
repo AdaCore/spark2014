@@ -48,10 +48,11 @@ setup:
 	do \
 	  cp -p gnat_src/$$f obj-tools; \
 	done
-	cd obj-tools && gnatmake -q xtreeprs xnmake &&\
+	cd obj-tools && gnatmake -q xtreeprs xnmake && \
 	./xtreeprs && ./xnmake && mv nmake.ads nmake.adb treeprs.ads ../obj
-	cd obj && $(LN_S) ../gnat_src/*.ad[sb] . && \
-	$(RM) x*.ad? system* mlib* back_end.adb ada.ads gnat.ads interfac.ads
+	cd obj && $(LN_S) ../gnat_src/*.ad[sb] .
+	cd obj && $(RM) x*.ad? system* mlib* back_end.adb \
+	  ada.ads gnat.ads interfac.ads
 	cd obj && $(RM) `ls *.ad[sb] | grep '^.-'`
 	cd obj && $(RM) `cat ../gnat_src/MANIFEST.gnat_util`
 	mv -f obj/ada_get_targ.adb obj/get_targ.adb
