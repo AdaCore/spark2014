@@ -50,7 +50,7 @@ setup:
 	cd obj-tools && gnatmake -q xtreeprs xnmake && \
 	./xtreeprs && ./xnmake && mv nmake.ads nmake.adb treeprs.ads ../obj
 ifeq ($(USE_LN),true)
-	cd obj && ln -sf ../gnat_src/*.ad[sb] ../obj
+	cd obj && ln -sf ../gnat_src/*.ad[sb] .
 else
 	cd gnat_src && cp -p *.ad[sb] ../obj
 endif
