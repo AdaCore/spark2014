@@ -69,7 +69,6 @@ simple_unc_arrays.adb:84:20: warning: overflow check might fail
 simple_unc_arrays.adb:84:23: info: discriminant check proved
 simple_unc_arrays.adb:84:27: warning: array index check might fail
 simple_unc_arrays.adb:87:18: info: division check proved
-simple_unc_arrays.adb:87:18: warning: overflow check might fail
 simple_unc_arrays.adb:97:17: info: discriminant check proved
 simple_unc_arrays.adb:98:10: info: loop invariant initialization proved
 simple_unc_arrays.adb:98:10: info: loop invariant preservation proved
