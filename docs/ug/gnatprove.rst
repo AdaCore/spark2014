@@ -287,7 +287,7 @@ When automated provers fail to prove some condition that is valid, the validity
 may be proved using a manual prover.
 
 In the appendix, section :ref:`Alternative_Provers`, is explained how to use
-different provers than |GNATprove| 's default.
+different provers than the one |GNATprove| uses as default.
 
 Manual proof in command line:
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -314,12 +314,13 @@ analysed condition, either:
    saved in the why3 session so |GNATprove| won't need to be specified the
    prover again to know that the condition is valid.
 
-|GNATprove| 's analisys can be limited to a single condition with the
+Analisys with |GNATprove| can be limited to a single condition with the
 ``--limit-line`` option::
 
     gnatprove -P <project-file.gpr> --prover=<prover> --limit-line=<file>:<line>:<column>:<check-kind>
 
-Where ``check-kind`` can be deduced from |GNATprove| 's warning:
+Where ``check-kind`` can be deduced from the warning associated to the
+failing condition reported by |GNATprove|:
 
 .. csv-table::
    :header: "Warning", "Check kind"

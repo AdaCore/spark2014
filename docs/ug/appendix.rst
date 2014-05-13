@@ -105,9 +105,6 @@ is allowed to contain the following attributes:
   directory per source package analysed for proof. Each package directory
   contains a why3-session and directories to store manual proof files.
 
-  The default value for this directory is a ``proof`` directory at the root of
-  the project.
-
 Implementation Defined Pragmas
 ==============================
 
