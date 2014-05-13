@@ -1,4 +1,3 @@
-PROOF REGRESSION at private_a.adb:79: mark @POSTCONDITION:PASS not found
 private_a.adb:14:22: info: postcondition proved
 private_a.adb:23:22: warning: postcondition might fail, requires Dst = Complex.Create (N, 0)
 private_a.adb:32:22: warning: postcondition might fail, requires Dst = Complex.Create (0, 0)

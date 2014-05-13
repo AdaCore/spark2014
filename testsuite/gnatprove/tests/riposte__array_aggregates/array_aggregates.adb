@@ -459,7 +459,7 @@ is
    is
    begin
       X := Char_Set'(others => (Y xor Y) = 0);
-      pragma Assert (for all N in Character =>  --  @ASSERT:PASS
+      pragma Assert (for all N in Character =>
                        (X = Char_Set'(others => N = N)));
    end Aggregate_Test_AL;
 end Array_Aggregates;

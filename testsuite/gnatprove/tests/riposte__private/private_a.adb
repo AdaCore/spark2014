@@ -76,7 +76,7 @@ is
    procedure Test_Stack_D (Dst :    out Optional_Stack;
                            Src : in     Stack.T)
      with Depends => (Dst => Src),
-          Post    =>  --  @POSTCONDITION:PASS
+          Post    =>
             Dst = Optional_Stack'(Exists    => Src = Stack.Null_Stack,
                                   The_Stack => Src)
    is

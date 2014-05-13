@@ -98,7 +98,7 @@ is
      with Depends => (Array_Axiom_Transitivity'Result => C,
                       null => (A, B)),
           Pre     => A = B'Update (23 => 42) and A = C,
-          Post    => Array_Axiom_Transitivity'Result = 42  --  @POSTCONDITION:PASS
+          Post    => Array_Axiom_Transitivity'Result = 42
    is
    begin
       return C(23);
@@ -213,7 +213,7 @@ is
      with Depends => (null => (A, B, I))
    is
    begin
-      pragma Assert (if B = A then (B = A'Update (I => (42))) =  --  @ASSERT:PASS
+      pragma Assert (if B = A then (B = A'Update (I => (42))) =
                        (A (I) = A'Update (I => 42) (I)));
 
       null;
@@ -226,7 +226,7 @@ is
    is
    begin
       pragma Assert
-        (if (B = A and C = A) then (B = C'Update (I => 42)) =  --  @ASSERT:PASS
+        (if (B = A and C = A) then (B = C'Update (I => 42)) =
                                       (A (I) = A'Update (I => 42) (I)));
 
       null;
@@ -238,7 +238,7 @@ is
      with Depends => (null => (A, B, C, D, I))
    is
    begin
-      pragma Assert (if (B = A  --  @ASSERT:PASS
+      pragma Assert (if (B = A
                            and C = A
                            and D = C'Update (I => 42))
                      then (B = D) = (A (I) = A'Update (I => 42) (I)));
@@ -252,7 +252,7 @@ is
      with Depends => (null => (A, B, C, D, E, I))
    is
    begin
-      pragma Assert (if (B = A  --  @ASSERT:PASS
+      pragma Assert (if (B = A
                            and C = A
                            and D = C'Update (I => 42)
                            and E = A)
@@ -267,7 +267,7 @@ is
      with Depends => (null => (A, B, C, D, E, F, I))
    is
    begin
-      pragma Assert (if (B = A  --  @ASSERT:PASS
+      pragma Assert (if (B = A
                            and C = A
                            and D = C'Update (I => 42)
                            and E = A
@@ -283,7 +283,7 @@ is
      with Depends => (null => (A, B, C, D, E, F, G, I))
    is
    begin
-      pragma Assert (if (B = A  --  @ASSERT:PASS
+      pragma Assert (if (B = A
                            and C = A
                            and D = C'Update (I => 42)
                            and E = A
@@ -300,7 +300,7 @@ is
      with Depends => (null => (A, B, C, D, E, F, G, I, X))
    is
    begin
-      pragma Assert (if (B = A  --  @ASSERT:PASS
+      pragma Assert (if (B = A
                            and C = A
                            and D = C'Update (I => 42)
                            and E = A
@@ -318,7 +318,7 @@ is
      with Depends => (null => (A, B, C, D, E, F, G, I, X, Y))
    is
    begin
-      pragma Assert (if (B = A  --  @ASSERT:PASS
+      pragma Assert (if (B = A
                            and C = A
                            and D = C'Update (I => 42)
                            and E = A
@@ -337,7 +337,7 @@ is
      with Depends => (null => (A, B, C, D, E, F, G, I, J, X, Y))
    is
    begin
-      pragma Assert (if (B = A  --  @ASSERT:PASS
+      pragma Assert (if (B = A
                            and C = A
                            and D = C'Update (J => 42)
                            and E = A

@@ -1,13 +1,3 @@
-PROOF REGRESSION at simple_arrays.adb:101: mark @POSTCONDITION:PASS not found
-PROOF REGRESSION at simple_arrays.adb:216: mark @ASSERT:PASS not found
-PROOF REGRESSION at simple_arrays.adb:229: mark @ASSERT:PASS not found
-PROOF REGRESSION at simple_arrays.adb:241: mark @ASSERT:PASS not found
-PROOF REGRESSION at simple_arrays.adb:255: mark @ASSERT:PASS not found
-PROOF REGRESSION at simple_arrays.adb:270: mark @ASSERT:PASS not found
-PROOF REGRESSION at simple_arrays.adb:286: mark @ASSERT:PASS not found
-PROOF REGRESSION at simple_arrays.adb:303: mark @ASSERT:PASS not found
-PROOF REGRESSION at simple_arrays.adb:321: mark @ASSERT:PASS not found
-PROOF REGRESSION at simple_arrays.adb:340: mark @ASSERT:PASS not found
 simple_arrays.adb:19:7: info: assertion proved
 simple_arrays.adb:27:22: info: postcondition proved
 simple_arrays.adb:37:22: info: postcondition proved
@@ -28,8 +18,8 @@ simple_arrays.adb:162:7: info: assertion proved
 simple_arrays.adb:179:22: info: postcondition proved
 simple_arrays.adb:192:7: info: assertion proved
 simple_arrays.adb:204:7: info: assertion proved
-simple_arrays.adb:216:36: warning: assertion might fail, requires B = A'Update (I => (42))) =  (A (I) = A'Update (I => 42) (I)
-simple_arrays.adb:229:36: warning: assertion might fail, requires B = C'Update (I => 42)) =  (A (I) = A'Update (I => 42) (I)
+simple_arrays.adb:216:36: warning: assertion might fail, requires B = A'Update (I => (42))) = (A (I) = A'Update (I => 42) (I)
+simple_arrays.adb:229:36: warning: assertion might fail, requires B = C'Update (I => 42)) = (A (I) = A'Update (I => 42) (I)
 simple_arrays.adb:244:27: warning: assertion might fail, requires B = D) = (A (I) = A'Update (I => 42) (I)
 simple_arrays.adb:259:27: warning: assertion might fail, requires B = D) = (E (I) = A'Update (I => 42) (I)
 simple_arrays.adb:275:27: warning: assertion might fail, requires B = D) = (E (I) = F'Update (I => 42) (I)
