@@ -7526,15 +7526,21 @@ package body Gnat2Why.Expr is
          if Domain = EW_Prog then
             declare
                Ar_Low   : constant W_Expr_Id :=
-                 Get_Array_Attr (Domain => EW_Pred,
-                                 Expr   => Pref_Expr,
-                                 Attr   => Attribute_First,
-                                 Dim    => 1);
+                 Insert_Simple_Conversion
+                   (Domain => EW_Pred,
+                    To     => EW_Int_Type,
+                    Expr   => Get_Array_Attr (Domain => EW_Pred,
+                                              Expr   => Pref_Expr,
+                                              Attr   => Attribute_First,
+                                              Dim    => 1));
                Ar_High  : constant W_Expr_Id :=
-                 Get_Array_Attr (Domain => EW_Pred,
-                                 Expr   => Pref_Expr,
-                                 Attr   => Attribute_Last,
-                                 Dim    => 1);
+                 Insert_Simple_Conversion
+                   (Domain => EW_Pred,
+                    To     => EW_Int_Type,
+                    Expr   => Get_Array_Attr (Domain => EW_Pred,
+                                              Expr   => Pref_Expr,
+                                              Attr   => Attribute_Last,
+                                              Dim    => 1));
                Check    : constant W_Pred_Id :=
                  New_Connection
                    (Op     => EW_Imply,
