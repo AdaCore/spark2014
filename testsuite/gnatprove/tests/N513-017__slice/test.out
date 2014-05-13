@@ -1,0 +1,51 @@
+repr.adb:1:11: warning: subprogram "Repr" has no effect
+repr.adb:6:31: warning: unused initial value of "Unsorted"
+repr.adb:10:30: warning: "Values" is not modified, could be "in"
+repr.adb:16:16: warning: unused assignment
+repr.adb:16:37: warning: range check might fail
+sorters.adb:15:20: info: index check proved
+sorters.adb:15:37: info: index check proved
+sorters.adb:16:20: info: index check proved
+sorters.adb:16:37: info: index check proved
+sorters.adb:17:13: info: postcondition proved
+sorters.adb:18:51: info: index check proved
+sorters.adb:18:68: info: index check proved
+sorters.adb:22:29: info: index check proved
+sorters.adb:23:15: info: index check proved
+sorters.adb:23:29: info: index check proved
+sorters.adb:24:15: info: index check proved
+sorters.adb:36:11: info: postcondition proved
+sorters.adb:37:39: info: index check proved
+sorters.adb:37:61: info: index check proved
+sorters.adb:41:22: info: range check proved
+sorters.adb:42:11: info: range check proved
+sorters.adb:42:50: info: overflow check proved
+sorters.adb:43:10: info: loop invariant initialization proved
+sorters.adb:43:10: info: loop invariant preservation proved
+sorters.adb:45:24: info: range check proved
+sorters.adb:45:68: info: overflow check proved
+sorters.adb:46:30: info: index check proved
+sorters.adb:46:48: info: index check proved
+sorters.adb:48:23: info: index check proved
+sorters.adb:48:42: info: index check proved
+sorters.adb:49:20: info: range check proved
+sorters.adb:59:50: info: overflow check proved
+sorters.adb:60:22: warning: precondition might fail
+sorters.adb:60:40: info: range check proved
+sorters.adb:62:13: warning: precondition might fail
+sorters.adb:62:26: info: range check proved
+sorters.adb:66:10: warning: loop invariant might fail after first iteration
+sorters.adb:66:10: warning: loop invariant might fail in first iteration
+sorters.adb:69:22: info: range check proved
+sorters.adb:69:66: info: overflow check proved
+sorters.adb:70:24: info: index check proved
+sorters.adb:70:40: info: index check proved
+sorters.adb:70:40: info: overflow check proved
+sorters.adb:71:22: info: range check proved
+sorters.adb:72:24: info: index check proved
+sorters.adb:72:44: info: index check proved
+sorters.ads:11:61: info: overflow check proved
+sorters.ads:12:20: warning: postcondition might fail, requires Values (J) <= Values (J + 1)
+sorters.ads:12:28: info: index check proved
+sorters.ads:12:44: info: index check proved
+sorters.ads:12:44: info: overflow check proved
