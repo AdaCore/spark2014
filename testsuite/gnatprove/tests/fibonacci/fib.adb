@@ -91,14 +91,14 @@ package body Fib is pragma SPARK_Mode (On);
       b1 := a1;
       k1 := n1;
       while (k1 > 0) loop
-         pragma Loop_Invariant (a1 ** n1 = p1 * (b1 ** k1) and then k1 >= 0); -- @LOOP_INVARIANT_PRESERV:FAIL
+         pragma Loop_Invariant (a1 ** n1 = p1 * (b1 ** k1) and then k1 >= 0);
          pragma Loop_Variant (Decreases => k1);
          if (k1 rem 2 = 0) then
-            pragma Assert (p1 * (b1 * b1) ** (k1 mod 2) = a1 ** n1); -- @ASSERT:FAIL
-            k1 := k1 mod 2;
+            pragma Assert (p1 * (b1 * b1) ** (k1 / 2) = a1 ** n1);
+            k1 := k1 / 2;
             b1 := b1 * b1; -- @OVERFLOW_CHECK:FAIL
          else
-            pragma Assert ((p1 * b1) * (b1 ** (k1 - 1)) = a1 ** n1); -- @RANGE_CHECK:FAIL
+            pragma Assert ((p1 * b1) * (b1 ** (k1 - 1)) = a1 ** n1);
             k1 := k1 - 1;
             p1 := b1 * p1; -- @OVERFLOW_CHECK:FAIL
          end if;
@@ -111,13 +111,13 @@ package body Fib is pragma SPARK_Mode (On);
                           p2 <= a2 ** n2 and then b2 <= a2 ** n2);
          pragma Loop_Variant (Decreases => k2);
          if (k2 rem 2 = 0) then
-            pragma Assert (p2 * (b2 * b2) ** (k2 mod 2) = a2 ** n2); -- @ASSERT:FAIL
-            k2 := k2 mod 2;
+            pragma Assert (p2 * (b2 * b2) ** (k2 / 2) = a2 ** n2);
+            k2 := k2 / 2;
             b2 := b2 * b2; -- @OVERFLOW_CHECK:FAIL
          else
-            pragma Assert ((p2 * b2) * (b2 ** (k2 - 1)) = a2 ** n2 -- @RANGE_CHECK:FAIL
+            pragma Assert ((p2 * b2) * (b2 ** (k2 - 1)) = a2 ** n2
                           and then k2 >= 1);
-            k2 := k2 - 1; -- @RANGE_CHECK:FAIL
+            k2 := k2 - 1;
             p2 := b2 * p2; -- @OVERFLOW_CHECK:FAIL
          end if;
       end loop;

@@ -49,7 +49,7 @@ fib.adb:94:10: info: loop invariant initialization proved
 fib.adb:94:10: warning: loop invariant might fail after first iteration, requires a1 ** n1 = p1 * (b1 ** k1
 fib.adb:95:10: warning: loop variant might fail
 fib.adb:96:17: info: division check proved
-fib.adb:97:13: warning: assertion might fail, requires p1 * (b1 * b1) ** (k1 mod 2) = a1 ** n1
+fib.adb:97:13: warning: assertion might fail, requires p1 * (b1 * b1) ** (k1 / 2) = a1 ** n1
 fib.adb:97:50: info: division check proved
 fib.adb:98:22: info: division check proved
 fib.adb:99:22: warning: overflow check might fail
@@ -61,7 +61,7 @@ fib.adb:110:10: warning: loop invariant might fail after first iteration
 fib.adb:110:10: warning: loop invariant might fail in first iteration
 fib.adb:112:10: warning: loop variant might fail
 fib.adb:113:17: info: division check proved
-fib.adb:114:13: warning: assertion might fail, requires p2 * (b2 * b2) ** (k2 mod 2) = a2 ** n2
+fib.adb:114:13: warning: assertion might fail, requires p2 * (b2 * b2) ** (k2 / 2) = a2 ** n2
 fib.adb:114:50: info: division check proved
 fib.adb:115:22: info: division check proved
 fib.adb:116:22: warning: overflow check might fail
