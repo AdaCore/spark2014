@@ -6821,7 +6821,8 @@ package body Gnat2Why.Expr is
               Pragma_Validity_Checks              |
               Pragma_Volatile                     |
               Pragma_Volatile_Components          |
-              Pragma_Warnings                     =>
+              Pragma_Warnings                     |
+              Pragma_Weak_External                =>
             return New_Void (Prag);
 
          --  Pragma Inspection_Point is also ignored, but we insert a call to a

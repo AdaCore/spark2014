@@ -136,5 +136,6 @@ Unmodified                    Yes
 Unreferenced                  Yes
 Validity_Checks               Yes
 Warnings           	      Yes
+Weak_External          	      Yes
 ============================= ====================== =================================================
 

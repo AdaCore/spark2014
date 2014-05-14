@@ -4319,7 +4319,8 @@ package body Flow.Control_Flow_Graph is
               Pragma_Validity_Checks              |
               Pragma_Volatile                     |
               Pragma_Volatile_Components          |
-              Pragma_Warnings                     =>
+              Pragma_Warnings                     |
+              Pragma_Weak_External                =>
 
             return False;
 

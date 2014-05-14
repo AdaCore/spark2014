@@ -3077,6 +3077,7 @@ package body SPARK_Definition is
               Pragma_Unreferenced                 |
               Pragma_Validity_Checks              |
               Pragma_Warnings                     |
+              Pragma_Weak_External                |
 
          --  Group 1d - pragma that are re-written and/or removed
          --  by the front-end in GNATProve, so they should
@@ -3233,7 +3234,6 @@ package body SPARK_Definition is
            Pragma_Unreserve_All_Interrupts       |
            Pragma_Use_VADS_Size                  |
            Pragma_Warning_As_Error               |
-           Pragma_Weak_External                  |
            Pragma_Wide_Character_Encoding        |
 
            --  Group 2b - Ada RM pragmas
