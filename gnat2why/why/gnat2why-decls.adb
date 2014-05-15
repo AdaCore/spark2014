@@ -461,6 +461,8 @@ package body Gnat2Why.Decls is
             end loop;
          when Regular =>
             null;
+         when Func =>
+            raise Program_Error;
       end case;
       Insert_Item (E, Var);
 

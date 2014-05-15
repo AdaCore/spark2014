@@ -61,7 +61,7 @@ package Why.Gen.Binders is
 
    type Binder_Array is array (Positive range <>) of Binder_Type;
 
-   type Item_Enum is (Regular, UCArray);
+   type Item_Enum is (Regular, UCArray, Func);
 
    type Item_Bounds is record
       First : W_Identifier_Id;
@@ -77,14 +77,18 @@ package Why.Gen.Binders is
          when UCArray =>
             Dim    : Positive;
             Bounds : Array_Bounds;
+         when Func    =>
+            For_Prog : Binder_Type;
       end case;
    end record;
    --  An item is like a generalized binder. It is used to represent the
    --  mapping
    --    Ada object  -> Why variables
    --  which is not always 1 to 1. In the common case where it is 1 to 1, the
-   --  Kind "Regular" is used. The only other case for now is unconstrained
-   --  arrays, where extra objects are created to represent the bounds.
+   --  Kind "Regular" is used. We have two other acses for now: unconstrained
+   --  arrays, where extra objects are created to represent the bounds, and
+   --  functions where we need different translations when used in programs
+   --  or in assertions.
 
    type Item_Array is array (Positive range <>) of Item_Type;
 

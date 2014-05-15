@@ -75,16 +75,20 @@ package Gnat2Why.Subprograms is
    procedure Translate_Subprogram_Spec
      (File : in out Why_Section;
       E    : Entity_Id);
-   --  Generate a Why declaration that corresponds to an Ada subprogram. Entity
-   --  E is a E_Function or E_Procedure.
+   --  Generate a Why logic declaration that corresponds to an Ada subprogram.
+   --  Entity E is a E_Function or E_Procedure.
+
+   procedure Generate_Subprogram_Completion
+     (File : in out Why_Section;
+      E    : Entity_Id);
+   --  Generate a Why program declaration and potentially a defining axiom for
+   --  an Ada subprogram. Entity E is a E_Function or E_Procedure.
 
    procedure Translate_Expression_Function_Body
      (File : in out Why_Section;
       E    : Entity_Id);
    --  If subprogram E's body is in SPARK, generate a Why axiom that, given a
    --  function F with expression E, states that: "for all <args> => F(<args>)
-   --  = E". The axiom is only generated if the body of the expression function
-   --  only contains aggregates that are fully initialized. If subprogram E's
-   --  body is not in SPARK, generate an empty module.
+   --  = E". Also generate a program function for E.
 
 end Gnat2Why.Subprograms;

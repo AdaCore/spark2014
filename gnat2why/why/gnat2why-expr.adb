@@ -6476,8 +6476,19 @@ package body Gnat2Why.Expr is
       --  * quantified variables (use local name instead of global name)
 
       if Ada_Ent_To_Why.Has_Element (C) then
-         T := +Ada_Ent_To_Why.Element (C).Main.B_Name;
+         declare
+            E : constant Item_Type := Ada_Ent_To_Why.Element (C);
+         begin
 
+            --  If E is a function and Domain is Prog, use the program specific
+            --  identifier instead.
+
+            if E.Kind = Func and then Domain = EW_Prog then
+               T := +E.For_Prog.B_Name;
+            else
+               T := +E.Main.B_Name;
+            end if;
+         end;
       elsif Ekind (Ent) = E_Enumeration_Literal then
          T := Transform_Enum_Literal (Expr, Ent, Domain);
 
@@ -7083,7 +7094,12 @@ package body Gnat2Why.Expr is
       begin
          T := New_VC_Call
            (Ada_Node => Ada_Node,
-            Name     => To_Why_Id (Has_Element),
+            Name     =>
+                 W_Identifier_Id
+                   (Transform_Identifier (Params       => Params,
+                                          Expr         => Has_Element,
+                                          Ent          => Has_Element,
+                                          Domain       => Subdomain)),
             Progs    => (1 => Cont_Expr,
                          2 => Curs_Expr),
             Reason   => VC_Precondition,
@@ -7136,7 +7152,12 @@ package body Gnat2Why.Expr is
       begin
          return New_VC_Call
            (Ada_Node => Ada_Node,
-            Name     => To_Why_Id (Element_E),
+            Name     =>
+                 W_Identifier_Id
+                   (Transform_Identifier (Params       => Params,
+                                          Expr         => Element_E,
+                                          Ent          => Element_E,
+                                          Domain       => Subdomain)),
             Progs    => (1 => Cont_Expr,
                          2 => Curs_Expr),
             Reason   => VC_Precondition,
@@ -7708,7 +7729,7 @@ package body Gnat2Why.Expr is
                    (Stmt_Or_Decl, EW_Prog, Nb_Of_Refs, Params => Body_Params);
                Subp       : constant Entity_Id := Entity (Name (Stmt_Or_Decl));
                Why_Name   : constant W_Identifier_Id :=
-                 To_Why_Id (Subp, EW_Prog);
+                 Ada_Ent_To_Why.Element (Symbol_Table, Subp).Main.B_Name;
                Call       : W_Expr_Id;
             begin
                if Why_Subp_Has_Precondition (Subp) then

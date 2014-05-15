@@ -147,6 +147,9 @@ package Why.Gen.Names is
    Def_Axiom : constant String := "def_axiom";
    --  suffix for a definition axiom
 
+   Post_Axiom : constant String := "post_axiom";
+   --  suffix for a postcondition axiom
+
    Axiom_Theory_Suffix : constant String := "__axiom";
    --  suffix for the name of the theory defining the axiom for an entity
 

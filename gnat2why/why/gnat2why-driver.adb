@@ -389,9 +389,36 @@ package body Gnat2Why.Driver is
 
    procedure Translate_CUnit is
 
+      procedure Complete_Subprograms (List_Entities : List_Of_Nodes.List);
+      --  Generate completion for every subprogram entity in List_Entities
+
       procedure Translate_List_Entities (List_Entities : List_Of_Nodes.List);
       --  Translate the list of entities from the spec or body, in batches, in
       --  order to ensure proper definition before use in Why files.
+
+      --------------------------
+      -- Complete_Subprograms --
+      --------------------------
+
+      procedure Complete_Subprograms (List_Entities : List_Of_Nodes.List) is
+      begin
+         for E of List_Entities loop
+            if Ekind (E) in Subprogram_Kind
+              and then Entity_In_SPARK (E)
+              and then not Is_Local_Subprogram_Always_Inlined (E)
+              and then not Is_Predicate_Function (E)
+              and then (not (Present (Get_Expression_Function (E)))
+                        or else not Entity_Body_In_SPARK (E))
+            then
+               declare
+                  Compl_File : Why_Section :=
+                    Why_Sections (Dispatch_Entity_Completion (E));
+               begin
+                  Generate_Subprogram_Completion (Compl_File, E);
+               end;
+            end if;
+         end loop;
+      end Complete_Subprograms;
 
       -----------------------------
       -- Translate_List_Entities --
@@ -410,6 +437,8 @@ package body Gnat2Why.Driver is
       --  Translate Ada entities into Why3
 
       Translate_List_Entities (Entity_List);
+
+      Complete_Subprograms (Entity_List);
 
       --  For all objects whose declaration is not visible (has not been
       --  translated to Why), we generate a dummy declaration. This must
@@ -556,13 +585,10 @@ package body Gnat2Why.Driver is
 
               and then not Is_Predicate_Function (E)
             then
-               Translate_Subprogram_Spec (File, E);
 
-               if not (Present (Get_Expression_Function (E)))
-                 or else not Entity_Body_In_SPARK (E)
-               then
-                  Generate_Empty_Axiom_Theory (File, E);
-               end if;
+               --  Generate a logic function for Ada functions
+
+               Translate_Subprogram_Spec (File, E);
             end if;
 
          --  An entity E_Subprogram_Body should be present only for expression

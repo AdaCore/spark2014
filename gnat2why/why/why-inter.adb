@@ -700,6 +700,8 @@ package body Why.Inter is
       begin
          return N /= Filter_Entity
            and then
+             (if Nkind (N) in N_Entity then Ekind (N) /= E_Void)
+           and then
              (if Nkind (N) in N_Entity and then Is_Full_View (N) then
                 Partial_View (N) /= Filter_Entity)
            and then
@@ -1302,6 +1304,18 @@ package body Why.Inter is
          return New_Identifier (Ada_Node => E,
                                 Name     => Full_Name (E),
                                 Typ      => Typ);
+      elsif Ekind (E) in Subprogram_Kind and then Domain = EW_Prog then
+         return
+           New_Identifier
+             (Ada_Node => E,
+              Name     => Suffix,
+              Module   =>
+               New_Module
+                  (File => No_Name,
+                   Name =>
+                     NID (Get_Name_String (Get_Name (E_Module (E)))
+                       & Axiom_Theory_Suffix)),
+              Typ      => Typ);
       else
          return
            New_Identifier

@@ -51,6 +51,7 @@ package body Why.Gen.Binders is
          case Arr (Index).Kind is
             when Regular => Count := Count + 1;
             when UCArray => Count := Count + 1 + 2 * Arr (Index).Dim;
+            when Func    => raise Program_Error;
          end case;
       end loop;
       return Count;
@@ -458,6 +459,8 @@ package body Why.Gen.Binders is
                         others => <>);
                      Count := Count + 2;
                   end loop;
+               when Func    =>
+                  raise Program_Error;
             end case;
          end;
       end loop;

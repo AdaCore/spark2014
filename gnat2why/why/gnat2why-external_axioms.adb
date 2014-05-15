@@ -1188,13 +1188,14 @@ package body Gnat2Why.External_Axioms is
                begin
                   Insert_Entity
                     (E,
-                     To_Why_Id (E, Typ => EW_Abstract (Etype (E))),
+                     To_Why_Id (E, Typ => EW_Abstract (Etype (E)),
+                                Domain => EW_Term),
                      Mutable => Ekind (E) in Object_Kind and then
                      Is_Mutable_In_Why (E));
                end;
             end if;
 
-            --  Call Complete_Decls recursively on Package_Declaration and
+            --  Call Register_Decls recursively on Package_Declaration and
             --  Package_Instantiation.
 
             if Comes_From_Source (N) and then

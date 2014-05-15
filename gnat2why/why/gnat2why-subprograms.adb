@@ -74,6 +74,11 @@ package body Gnat2Why.Subprograms is
    -- Local Subprograms --
    -----------------------
 
+   procedure Add_Dependencies_For_Effects
+     (File : Why_Section;
+      E    : Entity_Id);
+   --  Adds imports for the globals in the current theory
+
    procedure Assign_Bounds_For_Dynamic_Types
      (Params    :        Transformation_Params;
       Subp      :        Entity_Id;
@@ -159,8 +164,7 @@ package body Gnat2Why.Subprograms is
    --  function.
 
    function Compute_Effects
-     (File : Why_Section;
-      E    : Entity_Id) return W_Effects_Id;
+     (E : Entity_Id) return W_Effects_Id;
    --  Compute the effects of the generated Why function.
 
    function Compute_Logic_Binders (E : Entity_Id) return Item_Array;
@@ -191,6 +195,42 @@ package body Gnat2Why.Subprograms is
       Prag : Name_Id) return Node_Id;
    --  Return a node with a proper location for the pre- or postcondition of E,
    --  if any
+
+   procedure Generate_Subprogram_Program_Fun
+     (File : Why_Section;
+      E    : Entity_Id);
+   --  Generate a why program function for E
+
+   procedure Generate_Axiom_For_Post
+     (File : Why_Section;
+      E    : Entity_Id);
+   --  Generate an axiom stating the postcondition of a Subprogram
+
+   ----------------------------------
+   -- Add_Dependencies_For_Effects --
+   ----------------------------------
+
+   procedure Add_Dependencies_For_Effects
+     (File : Why_Section;
+      E    : Entity_Id)
+   is
+      Read_Ids    : Flow_Types.Flow_Id_Sets.Set;
+      Write_Ids   : Flow_Types.Flow_Id_Sets.Set;
+      Read_Names  : Name_Set.Set;
+      Write_Names : Name_Set.Set;
+   begin
+      --  Collect global variables potentially read and written
+
+      Flow_Utility.Get_Proof_Globals (Subprogram => E,
+                                      Reads      => Read_Ids,
+                                      Writes     => Write_Ids);
+      Read_Names  := Flow_Types.To_Name_Set (Read_Ids);
+      Write_Names := Flow_Types.To_Name_Set (Write_Ids);
+
+      Add_Effect_Imports (File, Read_Names);
+      Add_Effect_Imports (File, Write_Names);
+
+   end Add_Dependencies_For_Effects;
 
    -------------------------------------
    -- Assume_Bounds_For_Dynamic_Types --
@@ -441,9 +481,7 @@ package body Gnat2Why.Subprograms is
    -- Compute_Effects --
    ---------------------
 
-   function Compute_Effects
-     (File : Why_Section;
-      E    : Entity_Id) return W_Effects_Id
+   function Compute_Effects (E : Entity_Id) return W_Effects_Id
    is
       Read_Ids    : Flow_Types.Flow_Id_Sets.Set;
       Write_Ids   : Flow_Types.Flow_Id_Sets.Set;
@@ -495,9 +533,6 @@ package body Gnat2Why.Subprograms is
          Effects_Append_To_Reads (Eff, To_Why_Id (Obj   => Name.all,
                                                   Local => False));
       end loop;
-
-      Add_Effect_Imports (File, Read_Names);
-      Add_Effect_Imports (File, Write_Names);
 
       return +Eff;
    end Compute_Effects;
@@ -1605,6 +1640,283 @@ package body Gnat2Why.Subprograms is
       end;
    end Get_Location_For_Aspect;
 
+   -----------------------------
+   -- Generate_Axiom_For_Post --
+   -----------------------------
+
+   procedure Generate_Axiom_For_Post
+     (File : Why_Section;
+      E    : Entity_Id)
+   is
+      Logic_Func_Binders : constant Item_Array :=
+        Compute_Logic_Binders (E);
+      Params       : Transformation_Params;
+      Pre          : W_Pred_Id;
+      Post         : W_Pred_Id;
+      Why_Type     : W_Type_Id := Why_Empty;
+   begin
+
+      if Ekind (E) = E_Procedure
+        or else No_Return (E)
+        or else not Is_Non_Recursive_Subprogram (E)
+        or else (not Has_Contracts (E, Name_Postcondition)
+                 and then not Has_Contracts (E, Name_Contract_Cases))
+      then
+         return;
+      end if;
+
+      Why_Type := EW_Abstract (Etype (E));
+
+      --  If the function has a postcondition is not mutually recursive
+      --  and is not annotated with No_Return, then generate an axiom:
+      --  axiom def_axiom:
+      --     forall args [f (args)]. pre (args) ->
+      --           let result = f (args) in post (args)
+
+      Params :=
+        (File        => File.File,
+         Theory      => File.Cur_Theory,
+         Phase       => Generate_Logic,
+         Gen_Image   => False,
+         Ref_Allowed => False);
+
+      --  We fill the map of parameters, so that in the pre and post, we use
+      --  local names of the parameters, instead of the global names
+
+      Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+
+      for Binder of Logic_Func_Binders loop
+         declare
+            A : constant Node_Id := Binder.Main.Ada_Node;
+         begin
+            if Present (A) then
+               Ada_Ent_To_Why.Insert (Symbol_Table,
+                                      Unique_Entity (A),
+                                      Binder);
+            elsif Binder.Main.B_Ent /= null then
+
+               --  if there is no Ada_Node, this is a binder generated
+               --  from an effect; we add the parameter in the name
+               --  map using its unique name
+
+               Ada_Ent_To_Why.Insert
+                 (Symbol_Table,
+                  Binder.Main.B_Ent,
+                  Binder);
+            end if;
+         end;
+      end loop;
+
+      Pre := +Compute_Spec (Params, E, Name_Precondition, EW_Pred);
+      Post :=
+        +New_And_Expr
+        (Left   =>
+           +Compute_Spec (Params, E, Name_Postcondition, EW_Pred),
+         Right  => +Compute_Contract_Cases_Postcondition (Params, E),
+         Domain => EW_Pred);
+
+      declare
+         Logic_Why_Binders : constant Binder_Array :=
+           To_Binder_Array (Logic_Func_Binders);
+         Logic_Id        : constant W_Identifier_Id :=
+           To_Why_Id (E, Domain => EW_Term, Local => False);
+         Guard   : constant W_Pred_Id :=
+           Compute_Guard_Formula (Logic_Func_Binders);
+      begin
+
+         Emit
+           (File.Cur_Theory,
+            New_Guarded_Axiom
+              (Ada_Node => Empty,
+               Name     => NID (Post_Axiom),
+               Binders  => Logic_Why_Binders,
+               Triggers =>
+                 New_Triggers
+                   (Triggers =>
+                        (1 => New_Trigger
+                           (Terms =>
+                              (1 => New_Call
+                                   (Domain  => EW_Term,
+                                    Name    => Logic_Id,
+                                    Binders => Logic_Why_Binders))))),
+               Pre      =>
+                 +New_And_Expr (Left   => +Guard,
+                                Right  => +Pre,
+                                Domain => EW_Pred),
+               Def      =>
+                 +New_Typed_Binding
+                 (Ada_Node => Empty,
+                  Domain   => EW_Pred,
+                  Name     => +New_Result_Ident (Why_Type),
+                  Def      => New_Call
+                    (Domain  => EW_Term,
+                     Name    => Logic_Id,
+                     Binders => Logic_Why_Binders),
+                  Context  => +Post)));
+      end;
+
+      Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+   end Generate_Axiom_For_Post;
+
+   ------------------------------------
+   -- Generate_Subprogram_Completion --
+   ------------------------------------
+
+   procedure Generate_Subprogram_Completion
+     (File : in out Why_Section;
+      E    : Entity_Id)
+   is
+      Base_Name : constant String := Full_Name (E);
+      Name      : constant String := Base_Name & Axiom_Theory_Suffix;
+   begin
+      Open_Theory (File, Name,
+                   Comment =>
+                     "Module for declaring a program function (and possibly "
+                       & "an axiom) for "
+                       & """" & Get_Name_String (Chars (E)) & """"
+                       & (if Sloc (E) > 0 then
+                            " defined at " & Build_Location_String (Sloc (E))
+                          else "")
+                   & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+      Add_Dependencies_For_Effects (File, E);
+
+      Generate_Subprogram_Program_Fun (File, E);
+
+      Generate_Axiom_For_Post (File, E);
+
+      Close_Theory (File,
+                    Kind => Axiom_Theory,
+                    Defined_Entity => E);
+   end Generate_Subprogram_Completion;
+
+   --------------------------------------
+   -- Generate_Subprogram_Program_Fun --
+   --------------------------------------
+
+   procedure Generate_Subprogram_Program_Fun
+     (File : Why_Section;
+      E    : Entity_Id)
+   is
+      Logic_Func_Binders : constant Item_Array :=
+        Compute_Logic_Binders (E);
+
+      Func_Binders : constant Item_Array := Compute_Binders (E);
+      Func_Why_Binders : constant Binder_Array :=
+        To_Binder_Array (Func_Binders);
+      Params       : Transformation_Params;
+      Effects      : W_Effects_Id;
+      Pre          : W_Pred_Id;
+      Post         : W_Pred_Id;
+      Prog_Id      : constant W_Identifier_Id :=
+        To_Why_Id (E, Domain => EW_Prog, Local => True);
+      Why_Type     : W_Type_Id := Why_Empty;
+   begin
+      Params :=
+        (File        => File.File,
+         Theory      => File.Cur_Theory,
+         Phase       => Generate_Logic,
+         Gen_Image   => False,
+         Ref_Allowed => True);
+
+      --  We fill the map of parameters, so that in the pre and post, we use
+      --  local names of the parameters, instead of the global names
+
+      Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+
+      for Binder of Func_Binders loop
+         declare
+            A : constant Node_Id := Binder.Main.Ada_Node;
+         begin
+
+            --  If the Ada_Node is empty, it's not an interesting binder
+            --  (e.g. void_param)
+
+            if Present (A) then
+               Ada_Ent_To_Why.Insert (Symbol_Table, A, Binder);
+            end if;
+         end;
+      end loop;
+
+      Effects := Compute_Effects (E);
+
+      --  From the outside, a No_Return subprogram has both Pre and Post set
+      --  to "False".
+
+      if No_Return (E) then
+         Pre := False_Pred;
+         Post := False_Pred;
+      else
+         Pre := +Compute_Spec (Params, E, Name_Precondition, EW_Pred);
+         Post :=
+           +New_And_Expr
+           (Left   => +Compute_Spec
+              (Params, E, Name_Postcondition, EW_Pred),
+            Right  => +Compute_Contract_Cases_Postcondition (Params, E),
+            Domain => EW_Pred);
+      end if;
+
+      if Ekind (E) = E_Function then
+
+         Why_Type := EW_Abstract (Etype (E));
+
+         declare
+            Logic_Why_Binders : constant Binder_Array :=
+              To_Binder_Array (Logic_Func_Binders);
+            Logic_Func_Args : constant W_Expr_Array :=
+              Compute_Args (E, Logic_Why_Binders);
+            Logic_Id        : constant W_Identifier_Id :=
+              To_Why_Id (E, Domain => EW_Term, Local => False);
+
+            --  Each function has in its postcondition that its result is
+            --  equal to the application of the corresponding logic function
+            --  to the same arguments.
+
+            Param_Post : constant W_Pred_Id :=
+              +New_And_Expr
+              (Left   => New_Relation
+                 (Op      => EW_Eq,
+                  Op_Type =>
+                    Get_EW_Type (Why_Type),
+                  Left    => +New_Result_Ident (Why_Type),
+                  Right   =>
+                    New_Call
+                      (Domain  => EW_Term,
+                       Name    => Logic_Id,
+                       Args    => Logic_Func_Args),
+                  Domain => EW_Pred),
+               Right  => +Post,
+               Domain => EW_Pred);
+         begin
+
+            Emit
+              (File.Cur_Theory,
+               New_Function_Decl
+                 (Domain      => EW_Prog,
+                  Name        => Prog_Id,
+                  Binders     => Func_Why_Binders,
+                  Return_Type => EW_Abstract (Etype (E)),
+                  Labels      => Name_Id_Sets.Empty_Set,
+                  Pre         => Pre,
+                  Post        => Param_Post));
+         end;
+      else
+         Emit
+           (File.Cur_Theory,
+            New_Function_Decl
+              (Domain      => EW_Prog,
+               Name        => Prog_Id,
+               Binders     => Func_Why_Binders,
+               Labels      => Name_Id_Sets.Empty_Set,
+               Return_Type => EW_Unit_Type,
+               Effects     => Effects,
+               Pre         => Pre,
+               Post        => Post));
+      end if;
+
+      Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+   end Generate_Subprogram_Program_Fun;
+
    ----------------------------------------
    -- Translate_Expression_Function_Body --
    ----------------------------------------
@@ -1626,39 +1938,32 @@ package body Gnat2Why.Subprograms is
       Name      : constant String := Base_Name & Axiom_Theory_Suffix;
 
       Params : Transformation_Params;
-
-      Read_Ids    : Flow_Types.Flow_Id_Sets.Set;
-      Write_Ids   : Flow_Types.Flow_Id_Sets.Set;
-      Read_Names  : Name_Set.Set;
-
    begin
-      --  Collect global variables potentially read
-
-      Flow_Utility.Get_Proof_Globals (Subprogram => E,
-                                      Reads      => Read_Ids,
-                                      Writes     => Write_Ids);
-      Read_Names := Flow_Types.To_Name_Set (Read_Ids);
 
       Open_Theory (File, Name,
                    Comment =>
-                     "Module giving a defining axiom for the "
-                       & "expression function "
+                     "Module giving a program function and a defining axiom "
+                       & "for the expression function "
                        & """" & Get_Name_String (Chars (E)) & """"
                        & (if Sloc (E) > 0 then
                             " defined at " & Build_Location_String (Sloc (E))
                           else "")
-                       & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+                   & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+      Add_Dependencies_For_Effects (File, E);
+
+      Generate_Subprogram_Program_Fun (File, E);
+
+      Generate_Axiom_For_Post (File, E);
 
       --  If the entity's body is not in SPARK,
-      --  or if the function does not return, generate an empty module.
+      --  or if the function does not return, do not generate axiom.
 
       if not Entity_Body_In_SPARK (E) or else No_Return (E) then
          Close_Theory (File,
                        Kind => Standalone_Theory);
          return;
       end if;
-
-      Add_Effect_Imports (File, Read_Names);
 
       Params :=
         (File        => File.File,
@@ -1768,122 +2073,38 @@ package body Gnat2Why.Subprograms is
       E    : Entity_Id)
    is
       Name         : constant String := Full_Name (E);
-      Effects      : W_Effects_Id;
       Logic_Func_Binders : constant Item_Array :=
         Compute_Logic_Binders (E);
-
-      Func_Binders : constant Item_Array := Compute_Binders (E);
-      Func_Why_Binders : constant Binder_Array :=
-        To_Binder_Array (Func_Binders);
-      Params       : Transformation_Params;
-      Pre          : W_Pred_Id;
-      Post         : W_Pred_Id;
-      Prog_Id      : constant W_Identifier_Id :=
-        To_Why_Id (E, Domain => EW_Prog, Local => True);
       Why_Type     : W_Type_Id := Why_Empty;
+      Effects      : W_Effects_Id;
    begin
+
+      pragma Unreferenced (Effects);
+
       Open_Theory (File, Name,
                    Comment =>
-                     "Module for declaring a program function (and possibly "
-                       & "a logic function) for "
+                     "Module for possibly declaring "
+                       & "a logic function for "
                        & """" & Get_Name_String (Chars (E)) & """"
                        & (if Sloc (E) > 0 then
                             " defined at " & Build_Location_String (Sloc (E))
                           else "")
                        & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
-      Params :=
-        (File        => File.File,
-         Theory      => File.Cur_Theory,
-         Phase       => Generate_Logic,
-         Gen_Image   => False,
-         Ref_Allowed => True);
-
-      --  We fill the map of parameters, so that in the pre and post, we use
-      --  local names of the parameters, instead of the global names
-
-      Ada_Ent_To_Why.Push_Scope (Symbol_Table);
-
-      for Binder of Func_Binders loop
-         declare
-            A : constant Node_Id := Binder.Main.Ada_Node;
-         begin
-
-            --  If the Ada_Node is empty, it's not an interesting binder (e.g.
-            --  void_param)
-
-            if Present (A) then
-               Ada_Ent_To_Why.Insert (Symbol_Table, A, Binder);
-            end if;
-         end;
-      end loop;
-
-      --  The name of the function is added to the name map, so that, for
-      --  recursive functions, the local name F is used instead of the global
-      --  one P.F
-
       if Ekind (E) = E_Function then
          Why_Type := EW_Abstract (Etype (E));
-         Insert_Entity
-           (E,
-            Name =>
-              +To_Why_Id (E      => E,
-                          Domain => EW_Term,
-                          Local  => True,
-                          Typ    => Why_Type));
-      end if;
 
-      Effects := Compute_Effects (File, E);
-
-      --  From the outside, a No_Return subprogram has both Pre and Post set to
-      --  "False".
-
-      if No_Return (E) then
-         Pre := False_Pred;
-         Post := False_Pred;
-      else
-         Pre := +Compute_Spec (Params, E, Name_Precondition, EW_Pred);
-         Post :=
-           +New_And_Expr
-           (Left   => +Compute_Spec (Params, E, Name_Postcondition, EW_Pred),
-            Right  => +Compute_Contract_Cases_Postcondition (Params, E),
-            Domain => EW_Pred);
-      end if;
-
-      if Ekind (E) = E_Function then
          declare
             Logic_Why_Binders : constant Binder_Array :=
               To_Binder_Array (Logic_Func_Binders);
-            Logic_Func_Args : constant W_Expr_Array :=
-              Compute_Args (E, Logic_Why_Binders);
             Logic_Id        : constant W_Identifier_Id :=
               To_Why_Id (E, Domain => EW_Term, Local => True);
-
-            --  Each function has in its postcondition that its result is equal
-            --  to the application of the corresponding logic function to the
-            --  same arguments.
-
-            Param_Post : constant W_Pred_Id :=
-                            +New_And_Expr
-                              (Left   => New_Relation
-                                   (Op      => EW_Eq,
-                                    Op_Type =>
-                                      Get_EW_Type (Why_Type),
-                                    Left    => +New_Result_Ident (Why_Type),
-                                    Right   =>
-                                    New_Call
-                                      (Domain  => EW_Term,
-                                       Name    => Logic_Id,
-                                       Args    => Logic_Func_Args),
-                                    Domain => EW_Pred),
-                               Right  => +Post,
-                               Domain => EW_Pred);
-
-            Guard   : constant W_Pred_Id :=
-              Compute_Guard_Formula (Logic_Func_Binders);
-
          begin
             --  Generate a logic function
+
+            Add_Dependencies_For_Effects (File, E);
+
+            Effects := Compute_Effects (E);
 
             Emit
               (File.Cur_Theory,
@@ -1893,119 +2114,26 @@ package body Gnat2Why.Subprograms is
                   Binders     => Logic_Why_Binders,
                   Labels      => Name_Id_Sets.Empty_Set,
                   Return_Type => Why_Type));
-
-            Emit
-              (File.Cur_Theory,
-               New_Function_Decl
-                 (Domain      => EW_Prog,
-                  Name        => Prog_Id,
-                  Binders     => Func_Why_Binders,
-                  Return_Type => EW_Abstract (Etype (E)),
-                  Labels      => Name_Id_Sets.Empty_Set,
-                  Effects     => Effects,
-                  Pre         => Pre,
-                  Post        => Param_Post));
-
-            --  If the function has a postcondition is not mutually recursive
-            --  and is not annotated with No_Return, then generate an axiom:
-            --  axiom def_axiom:
-            --     forall args [f (args)]. pre (args) ->
-            --           let result = f (args) in post (args)
-
-            if not No_Return (E)
-              and then Is_Non_Recursive_Subprogram (E)
-              and then (Has_Contracts (E, Name_Postcondition)
-                        or else Has_Contracts (E, Name_Contract_Cases))
-            then
-
-               Params :=
-                 (File        => File.File,
-                  Theory      => File.Cur_Theory,
-                  Phase       => Generate_Logic,
-                  Gen_Image   => False,
-                  Ref_Allowed => False);
-
-               Ada_Ent_To_Why.Push_Scope (Symbol_Table);
-
-               for Binder of Logic_Func_Binders loop
-                  declare
-                     A : constant Node_Id := Binder.Main.Ada_Node;
-                  begin
-                     if Present (A) then
-                        Ada_Ent_To_Why.Insert (Symbol_Table,
-                                               Unique_Entity (A),
-                                               Binder);
-                     elsif Binder.Main.B_Ent /= null then
-
-                        --  if there is no Ada_Node, this in a binder generated
-                        --  from an effect; we add the parameter in the name
-                        --  map using its unique name
-
-                        Ada_Ent_To_Why.Insert
-                          (Symbol_Table,
-                           Binder.Main.B_Ent,
-                           Binder);
-                     end if;
-                  end;
-               end loop;
-
-               Pre := +Compute_Spec (Params, E, Name_Precondition, EW_Pred);
-               Post :=
-                 +New_And_Expr
-                 (Left   =>
-                    +Compute_Spec (Params, E, Name_Postcondition, EW_Pred),
-                  Right  => +Compute_Contract_Cases_Postcondition (Params, E),
-                  Domain => EW_Pred);
-
-               Emit
-                 (File.Cur_Theory,
-                  New_Guarded_Axiom
-                    (Ada_Node => Empty,
-                     Name     => NID (Def_Axiom),
-                     Binders  => Logic_Why_Binders,
-                     Triggers =>
-                       New_Triggers
-                         (Triggers =>
-                              (1 => New_Trigger
-                                 (Terms =>
-                                    (1 => New_Call
-                                         (Domain  => EW_Term,
-                                          Name    => Logic_Id,
-                                          Binders => Logic_Why_Binders))))),
-                     Pre      =>
-                       +New_And_Expr (Left   => +Guard,
-                                      Right  => +Pre,
-                                      Domain => EW_Pred),
-                     Def      =>
-                       +New_Typed_Binding
-                       (Ada_Node => Empty,
-                        Domain   => EW_Pred,
-                        Name     => +New_Result_Ident (Why_Type),
-                        Def      => New_Call
-                          (Domain  => EW_Term,
-                           Name    => Logic_Id,
-                           Binders => Logic_Why_Binders),
-                        Context  => +Post)));
-
-               Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
-            end if;
          end;
-      else
-         Emit
-           (File.Cur_Theory,
-            New_Function_Decl
-              (Domain      => EW_Prog,
-               Name        => Prog_Id,
-               Binders     => Func_Why_Binders,
-               Labels      => Name_Id_Sets.Empty_Set,
-               Return_Type => EW_Unit_Type,
-               Effects     => Effects,
-               Pre         => Pre,
-               Post        => Post));
-      end if;
-      Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
 
-      Insert_Entity (E, To_Why_Id (E, Typ => Why_Type));
+         Ada_Ent_To_Why.Insert
+           (Symbol_Table, E,
+            Item_Type'(Func,
+              Main => Binder_Type'(
+                B_Name   =>
+                  To_Why_Id (E, Typ => Why_Type, Domain => EW_Term),
+                B_Ent    => null,
+                Ada_Node => E,
+                Mutable  => False),
+              For_Prog => Binder_Type'(
+                B_Name   =>
+                  To_Why_Id (E, Typ => Why_Type),
+                B_Ent    => null,
+                Ada_Node => E,
+                Mutable  => False)));
+      else
+         Insert_Entity (E, To_Why_Id (E, Typ => Why_Type));
+      end if;
 
       Close_Theory (File,
                     Kind => Definition_Theory,
