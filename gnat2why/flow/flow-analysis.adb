@@ -1089,6 +1089,12 @@ package body Flow.Analysis is
       --  Checks if the given vertex V is a final-use vertex that is
       --  also an export.
 
+      function Is_Final_Use_Unreferenced (V : Flow_Graphs.Vertex_Id)
+                                          return Boolean;
+      --  Checks if the given vertex V is a final-use vertex that
+      --  corresponds to a variable that is mentioned in a pragma
+      --  Unreferenced.
+
       function Is_Any_Final_Use (V : Flow_Graphs.Vertex_Id)
                                  return Boolean;
       --  Checks if the given vertex V is a final-use vertex.
@@ -1123,6 +1129,19 @@ package body Flow.Analysis is
          return FA.PDG.Get_Key (V).Variant = Final_Value and then
            FA.Atr.Element (V).Is_Export;
       end Is_Final_Use_Any_Export;
+
+      -------------------------------
+      -- Is_Final_Use_Unreferenced --
+      -------------------------------
+
+      function Is_Final_Use_Unreferenced (V : Flow_Graphs.Vertex_Id)
+                                          return Boolean is
+      begin
+         return FA.PDG.Get_Key (V).Variant = Final_Value and then
+           FA.Unreferenced_Vars.Contains
+             (Get_Direct_Mapping_Id (Change_Variant
+                                       (FA.PDG.Get_Key (V), Normal_Use)));
+      end Is_Final_Use_Unreferenced;
 
       ----------------------
       -- Is_Any_Final_Use --
@@ -1249,8 +1268,8 @@ package body Flow.Analysis is
                --  PDG to *any* final use vertex that is also an
                --  export.
                --
-               --  If we analyse a package, we suppress this message if
-               --  we don't have a initializes clause *and* the the
+               --  If we analyse a package, we suppress this message
+               --  if we don't have an initializes clause *and* the
                --  given vertex has an effect on any final use (export
                --  or otherwise).
                if
@@ -1266,7 +1285,13 @@ package body Flow.Analysis is
                     not Present (FA.Initializes_N)
                   then
                      not FA.PDG.Non_Trivial_Path_Exists
-                       (V, Is_Any_Final_Use'Access))
+                       (V, Is_Any_Final_Use'Access)) and then
+
+                 --  Suppression for vertices that lead to a final
+                 --  vertex that corresponds to a variable that is
+                 --  mentioned in a pragma unreferenced.
+                 not FA.PDG.Non_Trivial_Path_Exists
+                 (V, Is_Final_Use_Unreferenced'Access)
                then
                   Mask := Find_Masking_Code (V);
                   if FA.PDG.Get_Key (V) = Null_Flow_Id then
