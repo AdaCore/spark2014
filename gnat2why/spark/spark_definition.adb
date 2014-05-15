@@ -1602,7 +1602,7 @@ package body SPARK_Definition is
             Mark_Violation ("indirect call", N);
          end if;
 
-      --  ??? Ignore calls to predicate functions (MC20-028)
+      --  Ignore calls to predicate functions
 
       elsif not In_SPARK (Entity (Nam))
         and then not Is_Predicate_Function (Entity (Nam))
@@ -1976,10 +1976,57 @@ package body SPARK_Definition is
          -----------------------------------
 
          procedure Mark_Subprogram_Specification (N : Node_Id) is
+
+            procedure Mark_Global_Items (Subp_Items : Elist_Id);
+            --  Mark global inputs or outputs of the subprogram
+
+            -----------------------
+            -- Mark_Global_Items --
+            -----------------------
+
+            procedure Mark_Global_Items (Subp_Items : Elist_Id) is
+               Elmt    : Elmt_Id;
+               Item    : Node_Id;
+               Item_Id : Entity_Id;
+            begin
+               if No (Subp_Items) then
+                  return;
+               end if;
+
+               Elmt := First_Elmt (Subp_Items);
+               while Present (Elmt) loop
+                  Item := Node (Elmt);
+
+                  if Nkind (Item) = N_Defining_Identifier then
+                     Item_Id := Item;
+                  else
+                     Item_Id := Entity_Of (Item);
+                  end if;
+
+                  if From_Limited_With (Item_Id) then
+                     Item_Id := Non_Limited_View (Item_Id);
+                  end if;
+
+                  if Present (Item_Id) then
+                     Mark_Entity (Item_Id);
+                  end if;
+
+                  Next_Elmt (Elmt);
+               end loop;
+            end Mark_Global_Items;
+
             Id         : constant Entity_Id := Defining_Entity (N);
             Formals    : constant List_Id   := Parameter_Specifications (N);
             Param_Spec : Node_Id;
             Formal     : Entity_Id;
+
+            --  Variables for collecting the subprogram's inputs and outputs
+            Subp_Inputs  : Elist_Id := No_Elist;
+            Subp_Outputs : Elist_Id := No_Elist;
+            Global_Seen  : Boolean;
+            pragma Unreferenced (Global_Seen);
+
+         --  Start of Mark_Subprogram_Specification
 
          begin
             if Ekind (Id) = E_Function then
@@ -2010,6 +2057,15 @@ package body SPARK_Definition is
             then
                Mark_Violation (Result_Definition (N), From => Etype (Id));
             end if;
+
+            --  Mark global items that appear in Global and Depends contracts,
+            --  so that they get translated to Why3, even if this is the only
+            --  occurrence of these variables/states.
+
+            Collect_Subprogram_Inputs_Outputs
+              (Id, Subp_Inputs, Subp_Outputs, Global_Seen);
+            Mark_Global_Items (Subp_Inputs);
+            Mark_Global_Items (Subp_Outputs);
          end Mark_Subprogram_Specification;
 
          Prag : Node_Id;
@@ -2410,7 +2466,7 @@ package body SPARK_Definition is
 
    begin
 
-      --  ??? predicate_functions ignored for now (MC20-028)
+      --  Ignore predicate functions
 
       if Ekind (E) in E_Function | E_Procedure
         and then Is_Predicate_Function (E)
@@ -3395,7 +3451,7 @@ package body SPARK_Definition is
       elsif Ekind (E) in Generic_Subprogram_Kind then
          return;
 
-      --  ??? Ignore predicate functions (MC20-028)
+      --  Ignore predicate functions
 
       elsif Is_Predicate_Function (E) then
          return;
@@ -3469,7 +3525,7 @@ package body SPARK_Definition is
       if Ekind (E) in Generic_Subprogram_Kind then
          return;
 
-      --  ??? Ignore predicate functions (MC20-028)
+      --  Ignore predicate functions
 
       elsif Is_Predicate_Function (E) then
          return;
