@@ -24,7 +24,7 @@ use type System.Address;
 use type Interfaces.C.Size_T;
 
 package body Floppy
-is pragma SPARK_Mode (On);
+is pragma SPARK_Mode (Off);
 
    OFS_MAXPATHNAME : constant := 4096;
    subtype FilePathNameT is

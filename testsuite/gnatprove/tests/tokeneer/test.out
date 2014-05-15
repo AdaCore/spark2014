@@ -321,7 +321,7 @@ display.adb:123:51: info: length check proved, in call inlined at display.adb:18
 display.adb:123:51: info: length check proved, in call inlined at display.adb:289
 display.adb:128:11: info: range check proved, in call inlined at display.adb:189
 display.adb:128:11: warning: range check might fail, in call inlined at display.adb:289
-display.adb:137:30: warning: index check might fail, in call inlined at display.adb:189
+display.adb:137:30: warning: array index check might fail, in call inlined at display.adb:189
 display.adb:137:30: warning: array index check might fail, in call inlined at display.adb:289
 display.adb:138:30: warning: array index check might fail, in call inlined at display.adb:189
 display.adb:138:30: warning: array index check might fail, in call inlined at display.adb:289
@@ -434,10 +434,6 @@ enclave.ads:621:19: warning: precondition might fail
 enclave.ads:630:19: warning: precondition might fail
 enclave.ads:635:24: warning: precondition might fail
 enclave.ads:652:23: warning: precondition might fail
-floppy.adb:43:37: info: length check proved
-floppy.ads:55:14: warning: subprogram "Write" has no effect
-floppy.ads:76:14: warning: subprogram "Read" has no effect
-floppy.ads:124:14: warning: subprogram "Init" has no effect
 iandatypes.ads:49:22: info: length check proved
 iandatypes.ads:67:38: info: length check proved
 keyboard.ads:50:14: warning: subprogram "Init" has no effect
