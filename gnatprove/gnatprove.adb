@@ -88,8 +88,6 @@ with String_Utils;       use String_Utils;
 with Opt;
 with Gnat2Why_Args;
 
-with GNAT.Directory_Operations;
-
 procedure Gnatprove is
 
    type Gnatprove_Step is (GS_ALI, GS_Gnat2Why);
@@ -294,28 +292,6 @@ procedure Gnatprove is
    function Compute_Why3_Args return String_Lists.List is
       Args : String_Lists.List := String_Lists.Empty_List;
 
-      procedure Create_Proof_Dir;
-
-      procedure Create_Proof_Dir is
-      begin
-         --  Create parent directories
-         for It in Proof_Dir.all'Range loop
-            if (Proof_Dir.all (It) = GNAT.Directory_Operations.Dir_Separator)
-              and then (not Ada.Directories.Exists
-                        (Proof_Dir.all
-                             (Proof_Dir.all'First .. It)))
-            then
-               GNAT.Directory_Operations.Make_Dir
-                 (Proof_Dir.all (Proof_Dir.all'First .. It));
-            end if;
-         end loop;
-
-         --  Create proof dir
-         if not Ada.Directories.Exists (Proof_Dir.all) then
-            GNAT.Directory_Operations.Make_Dir (Proof_Dir.all);
-         end if;
-      end Create_Proof_Dir;
-
    begin
       if Timeout /= 0 then
          Args.Append ("--timeout");
@@ -383,12 +359,12 @@ procedure Gnatprove is
 
       if Proof_Dir /= null then
          if Proof_Dir.all /= "" then
-            Create_Proof_Dir;
+            Create_Path (Proof_Dir.all);
             Args.Append ("--proof-dir");
             --  Why3 is executed in the gnatprove directory and does not know
             --  the project directory so we give it an absolute path to the
             --  proof_dir
-            Args.Append (Ada.Directories.Full_Name (Proof_Dir.all));
+            Args.Append (Ada.Directories.Full_Name (+(+(Proof_Dir.all))));
          end if;
          GNAT.Strings.Free (Proof_Dir);
       end if;
