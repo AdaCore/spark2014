@@ -1,0 +1,4 @@
+project Sub is
+  for Source_Dirs use ("sub");
+  for Object_Dir use "sub";
+end Sub;
