@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---          Copyright (C) 2010-2012, Free Software Foundation, Inc.         --
+--          Copyright (C) 2010-2014, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 with Ada.Unchecked_Conversion;
@@ -231,7 +231,7 @@ package body AIP.NIF is
       Buf : Buffers.Buffer_Id;
       Err : out Err_T)
    is
-      --# hide Link_Output;
+      --# hide Link_Output;
 
       type Link_Output_CB_Ptr is access
         procedure (Nid : Netif_Id;
@@ -301,7 +301,7 @@ package body AIP.NIF is
       Buf         : Buffers.Buffer_Id;
       Dst_Address : IPaddrs.IPaddr)
    is
-      --# hide Output;
+      --# hide Output;
 
       type Output_CB_Ptr is access procedure
         (Nid         : Netif_Id;
