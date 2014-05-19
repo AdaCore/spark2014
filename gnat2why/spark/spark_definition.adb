@@ -2167,10 +2167,6 @@ package body SPARK_Definition is
                Component_Typ : constant Node_Id := Component_Type (E);
                Index         : Node_Id := First_Index (E);
             begin
-               if Has_Aliased_Components (E) then
-                  Mark_Violation ("ALIASED", E);
-               end if;
-
                if Present (Component_Typ) then
                   Mark_Entity (Component_Typ);
                end if;
