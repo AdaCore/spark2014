@@ -1,11 +1,13 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---             Copyright (C) 2010, Free Software Foundation, Inc.           --
+--          Copyright (C) 2010-2014, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 with Ada.Command_Line;
 
-package body AIP.Config is
+package body AIP.Config with
+  SPARK_Mode => Off
+is
 
    type String_Ptr is access all String;
    Params : String_Ptr;

@@ -1,18 +1,16 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---          Copyright (C) 2010-2012, Free Software Foundation, Inc.         --
+--          Copyright (C) 2010-2014, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 --  Generic Packet Buffers (network packet data containers) management, for
 --  buffers holding internally some data
 
 with AIP.Config;
+limited with AIP.Buffers.Common;
 
---# inherit System, AIP.Config, AIP.Buffers, AIP.Buffers.Common, AIP.Support,
---#         AIP.Conversions;
-
-private package AIP.Buffers.Data
---# own State, Free_List;
+private package AIP.Buffers.Data with
+   Abstract_State => (State with Part_Of => AIP.Buffers.State)
 is
    pragma Preelaborate;
 
@@ -41,16 +39,18 @@ is
    --  insert appropriately the freed buffers in the free list to maintain the
    --  ordering property.
 
-   Free_List : Dbuf_Id;  --  Head of the free-list for data buffers
+   Free_List : Dbuf_Id with  --  Head of the free-list for data buffers
+     Part_Of => AIP.Buffers.State;
 
    ---------------------------
    -- Global initialization --
    ---------------------------
 
-   procedure Buffer_Init;
-   --# global out State, Free_List;
+   procedure Buffer_Init
    --  Initialize the array of buffers to zero except special fields properly
    --  given an initial value, and set the head of the free-list
+   with
+     Global => (Output => (Free_List, State));
 
    -----------------------
    -- Buffer allocation --
@@ -60,24 +60,27 @@ is
      (Offset : Buffers.Buffer_Length;
       Size   : Buffers.Data_Length;
       Kind   : Buffers.Data_Buffer_Kind;
-      Buf    : out Dbuf_Id);
-   --# global in out Common.Buf_List, State, Free_List;
+      Buf    : out Dbuf_Id)
+   with
+     Global => (In_Out => (Common.Buf_List, Free_List, State));
 
    procedure Buffer_Free
      (Buf      : Dbuf_Id;
-      Next_Buf : out Buffers.Buffer_Id);
-   --# global in out Common.Buf_List, State, Free_List;
+      Next_Buf : out Buffers.Buffer_Id)
    --  Free buffer Buf, and set the next buffer
+   with
+     Global => (In_Out => (Common.Buf_List, Free_List, State));
 
    --------------------------------------------
    -- Buffer struct accessors and operations --
    --------------------------------------------
 
-   function Buffer_Payload (Buf : Dbuf_Id) return System.Address;
-   --# global in State;
+   function Buffer_Payload (Buf : Dbuf_Id) return System.Address with
+     Global => (Common.Buf_List, State);
 
-   function Buffer_Get_Kind (Buf : Dbuf_Id) return Buffers.Data_Buffer_Kind;
-   --# global in State;
+   function Buffer_Get_Kind (Buf : Dbuf_Id) return Buffers.Data_Buffer_Kind
+   with
+     Global => State;
 
    ----------------------------
    -- Buffer id translations --
@@ -102,41 +105,44 @@ private
    subtype Dbuf_Count_Or_Null is Dbuf_Id;
    subtype Dbuf_Count is Dbuf_Index;
 
-   function Next_Data_Buf (Buf : Dbuf_Id) return Dbuf_Id;
-   --# global in Common.Buf_List;
+   function Next_Data_Buf (Buf : Dbuf_Id) return Dbuf_Id
    --  Return next buffer, performing necessary conversions between Dbuf_Id and
    --  Buffers.Buffer_Id.
+   with
+     Global => Common.Buf_List;
 
    procedure Advance_To_Next_Contiguous_Block
      (Buf      : in out Dbuf_Id;
       Prev_Buf : out Dbuf_Id;
-      Num      : out Dbuf_Count);
-   --# global in Common.Buf_List, State;
+      Num      : out Dbuf_Count)
    --  Set Buf to the first buffer of the contiguous block that follows it,
    --  Prev_Buf to the last buffer before it, and Num to the number of buffers
    --  from the previous value of Buf to Prev_Buf (included).
+   with
+    Global => (Input => (Common.Buf_List, State));
 
-   procedure Insert_Contiguous_In_Free_List (Buf : Dbuf_Id; Num : Dbuf_Count);
-   --# global in out Common.Buf_List, State, Free_List;
+   procedure Insert_Contiguous_In_Free_List (Buf : Dbuf_Id; Num : Dbuf_Count)
    --  Insert Num contiguous buffers in the free list, starting with buffer
    --  Buf, in a way that preserves the ordering and structure of the free
    --  list. Inserting those contiguous buffers should not lead to fragmenting
    --  the free list, which depends on the caller knowing that the buffers
    --  inserted do not follow or precede other buffers already in the free
    --  list.
+   with
+     Global => (In_Out => (Common.Buf_List, Free_List, State));
 
-   procedure Remove_From_Free_List (Buf : Dbuf_Id; Num : Dbuf_Count);
-   --# global in out Common.Buf_List, State, Free_List;
+   procedure Remove_From_Free_List (Buf : Dbuf_Id; Num : Dbuf_Count)
    --  Remove Num buffers from the free list, starting with buffer Buf, which
    --  should be the first one in a sequence of contiguous buffers. Note that
    --  the Num buffers starting from Buf may not be contiguous. It is the
    --  responsibility of the caller to ensure that this sequence of buffers is
    --  appropriate.
+   with
+     Global => (In_Out => (Common.Buf_List, Free_List, State));
 
    procedure Extract_Contiguous_From_Free_List
      (Buf : in out Dbuf_Id;
-      Num : in out Dbuf_Count);
-   --# global in out Common.Buf_List, State, Free_List;
+      Num : in out Dbuf_Count)
    --  Prepare for the insertion of Num contiguous buffers starting at Buf in
    --  the free list, by removing from the free list those buffers preceding
    --  and following this contiguous block. Return in Buf and Num the possibly
@@ -144,11 +150,14 @@ private
    --  single chain. Note that this new contiguous block can now be inserted in
    --  the free list by calling Insert_Contiguous_In_Free_List without
    --  introducing fragmentation.
+   with
+     Global => (In_Out => (Common.Buf_List, Free_List, State));
 
-   procedure Insert_In_Free_List (Buf : Dbuf_Id; Num : Dbuf_Count);
-   --# global in out Common.Buf_List, State, Free_List;
+   procedure Insert_In_Free_List (Buf : Dbuf_Id; Num : Dbuf_Count)
    --  Insert Num buffers in the free list, starting with buffer Buf, in a
    --  way that preserves the ordering and structure of the free list. The
    --  Num buffers may not be contiguous.
+   with
+     Global => (In_Out => (Common.Buf_List, Free_List, State));
 
 end AIP.Buffers.Data;

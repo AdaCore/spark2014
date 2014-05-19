@@ -5,7 +5,9 @@
 
 with Ada.Unchecked_Conversion;
 
-package body AIP.NIF is
+package body AIP.NIF with
+  SPARK_Mode => Off
+is
 
    type Offload_Checksums_Array is array (Checksum_Type) of Boolean;
    pragma Convention (C, Offload_Checksums_Array);
@@ -97,11 +99,11 @@ package body AIP.NIF is
       LL_Address_Length : out AIP.LL_Address_Range)
    is
       pragma Assert (LL_Address'First = 1);
-      subtype This_LL_Address_Range is
-        LL_Address_Range range 1 .. NIFs (Nid).LL_Address_Length;
+      This_LL_Address_Last : constant LL_Address_Range :=
+        NIFs (Nid).LL_Address_Length;
    begin
-      LL_Address (This_LL_Address_Range) :=
-        NIFs (Nid).LL_Address (This_LL_Address_Range);
+      LL_Address (1 .. This_LL_Address_Last) :=
+        NIFs (Nid).LL_Address (1 .. This_LL_Address_Last);
       LL_Address_Length := NIFs (Nid).LL_Address_Length;
    end Get_LL_Address;
 
@@ -152,8 +154,6 @@ package body AIP.NIF is
       Remote    : IPaddrs.IPaddr;
       Err       : out Err_T)
    is
-      --# hide If_Config;
-
       type Configured_CB_Ptr is access
         procedure (Nid : Netif_Id; Err : out Err_T);
       pragma Convention (C, Configured_CB_Ptr);
@@ -231,8 +231,6 @@ package body AIP.NIF is
       Buf : Buffers.Buffer_Id;
       Err : out Err_T)
    is
-      --# hide Link_Output;
-
       type Link_Output_CB_Ptr is access
         procedure (Nid : Netif_Id;
                    Buf : Buffers.Buffer_Id;
@@ -301,8 +299,6 @@ package body AIP.NIF is
       Buf         : Buffers.Buffer_Id;
       Dst_Address : IPaddrs.IPaddr)
    is
-      --# hide Output;
-
       type Output_CB_Ptr is access procedure
         (Nid         : Netif_Id;
          Buf         : Buffers.Buffer_Id;

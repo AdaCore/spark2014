@@ -1,9 +1,7 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---          Copyright (C) 2010-2012, Free Software Foundation, Inc.         --
+--          Copyright (C) 2010-2014, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
-
---# inherit AIP;
 
 package AIP.Time_Types is
 

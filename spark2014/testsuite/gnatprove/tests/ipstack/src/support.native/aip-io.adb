@@ -1,11 +1,13 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---             Copyright (C) 2012, Free Software Foundation, Inc.           --
+--          Copyright (C) 2012-2014, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 with Ada.Text_IO;
 
-package body AIP.IO is
+package body AIP.IO with
+  SPARK_Mode => Off
+is
 
    Line : String (1 .. 1024);
    Last : Integer := 0;

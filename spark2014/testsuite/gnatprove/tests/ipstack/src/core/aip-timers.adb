@@ -1,9 +1,11 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---             Copyright (C) 2010, Free Software Foundation, Inc.           --
+--          Copyright (C) 2010-2014, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
-package body AIP.Timers is
+package body AIP.Timers with
+  SPARK_Mode => Off
+is
 
    use type Time_Types.Time;
 

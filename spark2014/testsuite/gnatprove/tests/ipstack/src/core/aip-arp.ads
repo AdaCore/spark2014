@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---          Copyright (C) 2010-2012, Free Software Foundation, Inc.         --
+--          Copyright (C) 2010-2014, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 --  RFC826 - Address Resolution Protocol
@@ -14,24 +14,24 @@ with AIP.NIF;
 with AIP.Time_Types;
 use type AIP.Time_Types.Time;
 
---# inherit System, AIP, AIP.ARPH, AIP.Buffers, AIP.Conversions, AIP.EtherH,
---#         AIP.Inet, AIP.IPaddrs, AIP.NIF, AIP.Time_Types, AIP.Timers;
-
-package AIP.ARP
---# own State;
+package AIP.ARP with
+  Abstract_State => State
 is
 
-   procedure Initialize;
-   --# global out State;
+   procedure Initialize
    --  Initialize ARP subsystem and empty ARP table
+   with
+     Global => (Output => State);
 
-   procedure ARP_Timer;
-   --# global in out Buffers.State, State;
+   procedure ARP_Timer
    --  Called periodically to expire old, unused entries
+   with
+     Global => (In_Out => (Buffers.State, State));
 
-   procedure ARP_Clear;
-   --# global in out Buffers.State, State;
+   procedure ARP_Clear
    --  Remove all non-permanent entries
+   with
+     Global => (In_Out => (Buffers.State, State));
 
 private
 
@@ -67,11 +67,12 @@ private
    procedure ARP_Input
      (Nid                : NIF.Netif_Id;
       Netif_MAC_Addr_Ptr : System.Address;
-      Buf                : Buffers.Buffer_Id);
-   --# global in out Buffers.State, State;
-   pragma Export (C, ARP_Input, "AIP_arp_input");
+      Buf                : Buffers.Buffer_Id)
    --  Process ARP packet in Buf received on interface Nid. Netif_MAC_Address
    --  designates Nid's hardware address.
+   with
+     Global => (In_Out => (Buffers.State, State));
+   pragma Export (C, ARP_Input, "AIP_arp_input");
 
    procedure IP_Input
      (Nid   : NIF.Netif_Id;
@@ -82,10 +83,11 @@ private
    procedure ARP_Output
      (Nid         : NIF.Netif_Id;
       Buf         : Buffers.Buffer_Id;
-      Dst_Address : IPaddrs.IPaddr);
-   --# global in out Buffers.State, State;
-   pragma Export (C, ARP_Output, "AIP_arp_output");
+      Dst_Address : IPaddrs.IPaddr)
    --  Send packet in Buf to Dst_Address through Nid
+   with
+     Global => (In_Out => (Buffers.State, State));
+   pragma Export (C, ARP_Output, "AIP_arp_output");
 
    ------------------------------------
    -- Low-level ARP table management --
@@ -97,50 +99,56 @@ private
    procedure ARP_Find
      (Addr     : IPaddrs.IPaddr;
       Id       : out Any_ARP_Entry_Id;
-      Allocate : Boolean);
-   --# global in out State;
+      Allocate : Boolean)
    --  Find existing entry for Addr, or allocate a new one if not found and
    --  Allocate is True.
    --  Note: May recycle old non-permanent entries.
    --  Id is No_ARP_Entry on return if no storage is available for the
    --  requested allocation.
+   with
+     Global => (In_Out => State);
 
    procedure ARP_Update
      (Nid         : NIF.Netif_Id;
       Eth_Address : AIP.Ethernet_Address;
       IP_Address  : IPaddrs.IPaddr;
       Allocate    : Boolean;
-      Err         : out AIP.Err_T);
-   --# global in out Buffers.State, State;
+      Err         : out AIP.Err_T)
    --  Update entry for the given (Eth_Address, IP_Address) couple seen on Nid.
    --  If Allocate is True, create new entry if none exists.
+   with
+     Global => (In_Out => (Buffers.State, State));
 
    procedure ARP_Prepend
      (List : in out Any_ARP_Entry_Id;
-      AEID : ARP_Entry_Id);
-   --# global in out State;
+      AEID : ARP_Entry_Id)
    --  Prepend AEID to List
+   with
+     Global => (In_Out => State);
 
    procedure ARP_Unlink
      (List : in out Any_ARP_Entry_Id;
-      AEID : ARP_Entry_Id);
-   --# global in out State;
+      AEID : ARP_Entry_Id)
    --  Remove AEID from list
+   with
+     Global => (In_Out => State);
 
    procedure Send_Request
      (Nid            : NIF.Netif_Id;
-      Dst_IP_Address : IPaddrs.IPaddr);
-   --# global in out Buffers.State;
+      Dst_IP_Address : IPaddrs.IPaddr)
    --  Send ARP request for Dst_IP_Address on Nid
+   with
+     Global => (In_Out => Buffers.State);
 
    procedure Send_Packet
      (Nid             : NIF.Netif_Id;
       Frame_Type      : AIP.U16_T;
       Buf             : Buffers.Buffer_Id;
-      Dst_MAC_Address : AIP.Ethernet_Address);
-   --# global in out Buffers.State;
+      Dst_MAC_Address : AIP.Ethernet_Address)
    --  Send payload Buf to Dst_MAC_Address on Nid, as the payload of a frame
    --  with the given Frame_Type.
+   with
+     Global => (In_Out => Buffers.State);
 
    -----------------------
    -- Utility functions --

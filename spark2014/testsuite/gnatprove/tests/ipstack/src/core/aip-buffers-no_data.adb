@@ -1,14 +1,14 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---          Copyright (C) 2010-2012, Free Software Foundation, Inc.         --
+--          Copyright (C) 2010-2014, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 with AIP.Buffers.Common;
 with AIP.Conversions;
 with AIP.Support;
 
-package body AIP.Buffers.No_Data
---# own State is Buf_List;
+package body AIP.Buffers.No_Data with
+  Refined_State => (State => Buf_List)
 is
 
    type Buffer is record
@@ -58,8 +58,8 @@ is
    -- Buffer_Init --
    -----------------
 
-   procedure Buffer_Init
-   --# global out Buf_List, Free_List;
+   procedure Buffer_Init with
+     Refined_Global => (Output => (Buf_List, Free_List))
    is
    begin
       --  Initialize all the memory for buffers to zero and point the head
@@ -79,7 +79,8 @@ is
       Size     : Buffers.Data_Length;
       Data_Ref : System.Address;
       Buf      : out Rbuf_Id)
-   --# global in out Common.Buf_List, Buf_List, Free_List;
+   with
+     Refined_Global => (In_Out => (Buf_List, Common.Buf_List, Free_List))
    is
       Cbuf : Buffers.Buffer_Id;
    begin
@@ -131,8 +132,8 @@ is
    -- Buffer_Payload --
    --------------------
 
-   function Buffer_Payload (Buf : Rbuf_Id) return System.Address
-   --# global in Common.Buf_List, Buf_List;
+   function Buffer_Payload (Buf : Rbuf_Id) return System.Address with
+     Refined_Global => (Buf_List, Common.Buf_List)
    is
    begin
       return Conversions.Ofs

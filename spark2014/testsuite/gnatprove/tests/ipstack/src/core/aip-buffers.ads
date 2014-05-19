@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---          Copyright (C) 2010-2012, Free Software Foundation, Inc.         --
+--          Copyright (C) 2010-2014, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 --  Generic Packet Buffers (network packet data containers) management
@@ -8,12 +8,8 @@
 with System;
 with AIP.Config;
 
---# inherit AIP,  --  Needed in order to inherit AIP.Buffers in child packages
---#         AIP.Support, AIP.Conversions,
---#         System, AIP.Config;
-
-package AIP.Buffers
---# own State;
+package AIP.Buffers with
+  Abstract_State => State
 is
    pragma Preelaborate;
 
@@ -84,8 +80,8 @@ is
    -- Global initialization --
    ---------------------------
 
-   procedure Buffer_Init;
-   --# global out State;
+   procedure Buffer_Init with
+     Global => (Output => State);
    --  Initialize all arrays of buffers to form initial singly linked
    --  free-lists and set the head of the free-lists
 
@@ -99,98 +95,107 @@ is
      (Offset : Buffer_Length;
       Size   : Data_Length;
       Kind   : Data_Buffer_Kind;
-      Buf    : out Buffer_Id);
-   --# global in out State;
+      Buf    : out Buffer_Id)
    --  Allocate and return a new Buf of kind Kind, suitable to hold Size
    --  elements of payload data preceded by Offset bytes of room (initial
    --  payload offset).
+   with
+     Global => (In_Out => State);
    pragma Export (C, Buffer_Alloc, "AIP_buffer_alloc");
 
    procedure Ref_Buffer_Alloc
      (Offset   : Buffer_Length;
       Size     : Data_Length;
       Data_Ref : System.Address;
-      Buf      : out Buffer_Id);
-   --# global in out State;
+      Buf      : out Buffer_Id)
    --  Allocate and return a new REF_BUF Buf, suitable to reference Size
    --  elements of payload data located at Ref, preceded by Offset bytes of
    --  room (initial payload offset).
+   with
+     Global => (In_Out => State);
    pragma Export (C, Ref_Buffer_Alloc, "AIP_ref_buffer_alloc");
 
    -----------------------------
    -- Buffer struct accessors --
    -----------------------------
 
-   function Buffer_Get_Kind (Buf : Buffer_Id) return Buffer_Kind;
-   --# global in State;
+   function Buffer_Get_Kind (Buf : Buffer_Id) return Buffer_Kind with
+     Global => State;
    pragma Export (C, Buffer_Get_Kind, "AIP_buffer_get_kind");
 
    --  Note: Buffer_Len and Buffer_Tlen names are too close. We should rename
    --        them after reimplementing the rest of the TCP/IP stack.
 
-   function Buffer_Len (Buf : Buffer_Id) return AIP.U16_T;
-   --# global in State;
+   function Buffer_Len (Buf : Buffer_Id) return AIP.U16_T
    --  Amount of payload data
    --  - held in buffer Buf for Kind = LINK_BUF
    --  - held in all buffers of the split buffer Buf for Kind = SPLIT_BUF
    --  - referenced by buffer Buf for Kind = REF_BUF
+   with
+     Global => State;
    pragma Export (C, Buffer_Len, "AIP_buffer_len");
 
-   function Buffer_Tlen (Buf : Buffer_Id) return AIP.U16_T;
-   --# global in State;
+   function Buffer_Tlen (Buf : Buffer_Id) return AIP.U16_T
    --  Amount of payload data
    --  - held in all buffers from Buf through the chain for Kind /= REF_BUF
    --    Tlen = Len means Buf is the last buffer in the chain for a packet.
    --  - referenced by buffer Buf for Kind = REF_BUF
    --    Tlen = Len is an invariant in this case.
+   with
+     Global  => State;
    pragma Export (C, Buffer_Tlen, "AIP_buffer_tlen");
 
    procedure Buffer_Set_Payload_Len
      (Buf : Buffer_Id;
       Len : AIP.U16_T;
-      Err : out AIP.Err_T);
-   --# global in out State;
+      Err : out AIP.Err_T)
    --  Set the payload length of the buffer chain starting at Buf to Len.
    --  Len must be no greater than Buffer_Tlen (Buf).
    --  Note that no memory deallocation occurs.
+   with
+     Global => (In_Out => State);
    pragma Export (C, Buffer_Set_Payload_Len, "AIP_buffer_set_payload_len");
 
-   function Buffer_Next (Buf : Buffer_Id) return Buffer_Id;
-   --# global in State;
+   function Buffer_Next (Buf : Buffer_Id) return Buffer_Id
    --  Buffer following Buf in a chain, either next buffer for the same packet
    --  or first buffer of another one, or NOBUF
+   with
+     Global => State;
    pragma Export (C, Buffer_Next, "AIP_buffer_next");
 
-   function Buffer_Payload (Buf : Buffer_Id) return System.Address;
-   --# global in State;
+   function Buffer_Payload (Buf : Buffer_Id) return System.Address
    --  Pointer to data held or referenced by buffer Buf
+   with
+     Global => State;
    pragma Export (C, Buffer_Payload, "AIP_buffer_payload");
 
-   function Buffer_Poffset (Buf : Buffer_Id) return AIP.U16_T;
-   --# global in State;
+   function Buffer_Poffset (Buf : Buffer_Id) return AIP.U16_T
    --  Room available in BUF in front of payload, typically for
    --  protocol headers
+   with
+     Global => State;
 
    procedure Buffer_Set_Payload
      (Buf   : Buffer_Id;
       Pload : System.Address;
-      Err   : out AIP.Err_T);
-   --# global in out State;
+      Err   : out AIP.Err_T)
    --  Set payload pointer of BUF to PLOAD.
    --
    --  ERR_MEM if PLOAD if off the buffer area.
+   with
+     Global => (In_Out => State);
 
    ----------------------------------
    -- Buffer reference and release --
    ----------------------------------
 
-   procedure Buffer_Ref (Buf : Buffer_Id);
-   --# global in out State;
+   procedure Buffer_Ref (Buf : Buffer_Id)
    --  Increase reference count of Buffer Buf, with influence on Buffer_Free
+   with
+     Global => (In_Out => State);
    pragma Export (C, Buffer_Ref, "AIP_buffer_ref");
 
-   procedure Buffer_Free (Buf : Buffer_Id; N_Deallocs : out AIP.U8_T);
-   --# global in out State;
+   procedure Buffer_Free (Buf : Buffer_Id; N_Deallocs : out AIP.U8_T)
    --  Decrement Buf's reference count, and deallocate if the count reaches
    --  zero. In the latter case, repeat for the following buffers in a chain
    --  for the same packet. Return the number of buffers that were de-allocated
@@ -200,38 +205,42 @@ is
    --  1->1->2 yields ......1
    --  2->1->1 yields 1->1->1
    --  1->1->1 yields .......
+   with
+     Global => (In_Out => State);
 
-   procedure Buffer_Blind_Free (Buf : Buffer_Id);
-   --# global in out State;
-   pragma Export (C, Buffer_Blind_Free, "AIP_buffer_blind_free");
+   procedure Buffer_Blind_Free (Buf : Buffer_Id)
    --  Same as Buffer_Free, ignoring return value
+   with
+     Global => (In_Out => State);
+   pragma Export (C, Buffer_Blind_Free, "AIP_buffer_blind_free");
 
-   procedure Buffer_Release (Buf : Buffer_Id);
-   --# global in out State;
+   procedure Buffer_Release (Buf : Buffer_Id)
    --  Buffer_Free on Buf until it deallocates
+   with
+     Global => (In_Out => State);
 
    -----------------------
    -- Buffer operations --
    -----------------------
 
-   procedure Buffer_Cat (Head : Buffer_Id; Tail : Buffer_Id);
-   --# global in out State;
+   procedure Buffer_Cat (Head : Buffer_Id; Tail : Buffer_Id)
    --  Append Tail at the end of the chain starting at Head, taking over
    --  the caller's reference to Tail.
+   with
+     Global => (In_Out => State);
    pragma Export (C, Buffer_Cat, "AIP_buffer_cat");
 
-   procedure Buffer_Chain (Head : Buffer_Id; Tail : Buffer_Id);
-   --# global in out State;
+   procedure Buffer_Chain (Head : Buffer_Id; Tail : Buffer_Id)
    --  Append Tail at the end of the chain starting at Head, and bump Tail's
    --  reference count. The caller remains responsible of its own reference,
    --  in particular wrt release duties.
+   with
+     Global => (In_Out => State);
 
    procedure Buffer_Header
      (Buf  : Buffer_Id;
       Bump : AIP.S16_T;
-      Err  : out AIP.Err_T);
-   --# global in out State;
-   pragma Export (C, Buffer_Header, "AIP_buffer_header");
+      Err  : out AIP.Err_T)
    --  Move the payload pointer of Buf by Bump elements, signed.  Typically
    --  used to reveal or hide protocol headers. This should only be called on
    --  front buffers (heads of buffer chain). A number of assumed invariants
@@ -239,14 +248,18 @@ is
    --
    --  ERR_MEM if the requested move would get the payload pointer off the
    --          buffer area.
+   with
+     Global => (In_Out => State);
+   pragma Export (C, Buffer_Header, "AIP_buffer_header");
 
    procedure Buffer_Copy
      (Dst : Buffer_Id;
       Src : Buffer_Id;
       Len : AIP.U16_T;
-      Err : out AIP.Err_T);
-   --# global in out State;
+      Err : out AIP.Err_T)
    --  Copy Len bytes from Src's payload into Dst's payload
+   with
+     Global => (In_Out => State);
 
    ----------------------------
    -- Packet queue structure --
@@ -273,24 +286,26 @@ is
    procedure Append_Packet
      (Layer : Packet_Layer;
       Queue : in out Packet_Queue;
-      Buf   : Buffer_Id);
-   --# global in out State;
+      Buf   : Buffer_Id)
    --  Append (push) packet designated by Buf at the tail of Queue
+   with
+     Global => (In_Out => State);
 
    procedure Remove_Packet
      (Layer : Packet_Layer;
       Queue : in out Packet_Queue;
-      Buf   : out Buffer_Id);
-   --# global in out State;
+      Buf   : out Buffer_Id)
    --  Detach (pop) head packet from Queue and return its id in Buf
+   with
+     Global => (In_Out => State);
 
    function Empty (Queue : Packet_Queue) return Boolean;
    --  True if Queue contains no packets
 
-   function Packet_Info (B : Buffer_Id) return System.Address;
-   --# global in State;
-   procedure Set_Packet_Info (B : Buffer_Id; PI : System.Address);
-   --# global in out State;
+   function Packet_Info (B : Buffer_Id) return System.Address with
+     Global => State;
+   procedure Set_Packet_Info (B : Buffer_Id; PI : System.Address) with
+     Global => (In_Out => State);
    --  Get/set layer 3 packet info associated with B
 
 private

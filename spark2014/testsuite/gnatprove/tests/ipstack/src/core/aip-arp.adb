@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---          Copyright (C) 2010-2012, Free Software Foundation, Inc.         --
+--          Copyright (C) 2010-2014, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 with AIP.ARPH;
@@ -9,8 +9,8 @@ with AIP.EtherH;
 with AIP.Inet;
 with AIP.Timers;
 
-package body AIP.ARP
---# own State is ARP_Table, ARP_Free_List, ARP_Active_List;
+package body AIP.ARP with
+  Refined_State => (State => (ARP_Table, ARP_Free_List, ARP_Active_List))
 is
    type ARP_Table_T is array (ARP_Entry_Id) of ARP_Entry;
    ARP_Table : ARP_Table_T;
@@ -24,8 +24,8 @@ is
    function Get_MAC_Address (Nid : NIF.Netif_Id) return AIP.Ethernet_Address is
       Nid_LL_Address        : AIP.Ethernet_Address;
       Nid_LL_Address_Length : AIP.LL_Address_Range;
-      --# accept F,10,Nid_LL_Address_Length,"Used in assertion only";
-      --# accept F,33,Nid_LL_Address_Length,"Used in assertion only";
+      pragma Warnings (Off, "unused assignment to ""Nid_LL_Address_Length""");
+      --  Used in assertion only
    begin
       NIF.Get_LL_Address (Nid, Nid_LL_Address, Nid_LL_Address_Length);
       pragma Assert (Nid_LL_Address_Length = Nid_LL_Address'Last);
@@ -56,9 +56,10 @@ is
          EtherH.Set_EtherH_Src_MAC_Address (Ehdr, Get_MAC_Address (Nid));
          EtherH.Set_EtherH_Frame_Type      (Ehdr, Frame_Type);
 
-         --# accept F,10,Err,"Ignore error from link output";
+         pragma Warnings (Off, "unused assignment to ""Err""");
+         --  Ignore error from link output
          NIF.Link_Output (Nid, Buf, Err);
-         --# end accept;
+         pragma Warnings (On, "unused assignment to ""Err""");
       end if;
    end Send_Packet;
 
@@ -108,7 +109,8 @@ is
    procedure ARP_Prepend
      (List : in out Any_ARP_Entry_Id;
       AEID : ARP_Entry_Id)
-   --# global in out ARP_Table;
+   with
+     Refined_Global => (In_Out => ARP_Table)
    is
    begin
       ARP_Table (AEID).Next := List;
@@ -122,7 +124,8 @@ is
    procedure ARP_Unlink
      (List : in out Any_ARP_Entry_Id;
       AEID : ARP_Entry_Id)
-   --# global in out ARP_Table;
+   with
+     Refined_Global => (In_Out => ARP_Table)
    is
       Prev, Cur : Any_ARP_Entry_Id;
    begin
@@ -164,7 +167,8 @@ is
      (Addr     : IPaddrs.IPaddr;
       Id       : out Any_ARP_Entry_Id;
       Allocate : Boolean)
-   --# global in out ARP_Table, ARP_Free_List, ARP_Active_List;
+   with
+     Refined_Global => (In_Out => (ARP_Active_List, ARP_Free_List, ARP_Table))
    is
       Last_Active_Id : Any_ARP_Entry_Id;
    begin
@@ -229,8 +233,8 @@ is
    -- Initialize --
    ----------------
 
-   procedure Initialize
-   --# global out ARP_Table, ARP_Free_List, ARP_Active_List;
+   procedure Initialize with
+     Refined_Global => (Output => (ARP_Active_List, ARP_Free_List, ARP_Table))
    is
    begin
       ARP_Table := ARP_Table_T'
@@ -261,7 +265,9 @@ is
       IP_Address  : IPaddrs.IPaddr;
       Allocate    : Boolean;
       Err         : out AIP.Err_T)
-   --# global in out Buffers.State, ARP_Table, ARP_Free_List, ARP_Active_List;
+   with
+     Refined_Global =>
+       (In_Out => (ARP_Active_List, ARP_Free_List, ARP_Table, Buffers.State))
    is
       AEID       : Any_ARP_Entry_Id;
       Packet_Buf : Buffers.Buffer_Id;
@@ -299,7 +305,9 @@ is
      (Nid                : NIF.Netif_Id;
       Netif_MAC_Addr_Ptr : System.Address;
       Buf                : Buffers.Buffer_Id)
-   --# global in out Buffers.State, ARP_Table, ARP_Free_List, ARP_Active_List;
+   with
+     Refined_Global =>
+       (In_Out => (ARP_Active_List, ARP_Free_List, ARP_Table, Buffers.State))
    is
       Err        : AIP.Err_T;
       Ehdr, Ahdr : System.Address;
@@ -310,14 +318,20 @@ is
       -- Netif_MAC --
       ---------------
 
-      function Netif_MAC return AIP.Ethernet_Address
-         --# global in Netif_MAC_Addr_Ptr;
+      function Netif_MAC return AIP.Ethernet_Address with
+        Global => null
       is
-         --# hide Netif_MAC;
          Result : Ethernet_Address;
          for Result'Address use Netif_MAC_Addr_Ptr;
          pragma Import (Ada, Result);
       begin
+         --  Fake initialisation of Result, to avoid an error being generated,
+         --  and justify the warning.
+
+         if False then
+            Result := Ethernet_Address'(others => 0);
+         end if;
+
          return Result;
       end Netif_MAC;
 
@@ -381,10 +395,10 @@ is
                      ARPH.Set_ARPH_Src_Eth_Address (Ahdr, Netif_MAC);
                      ARPH.Set_ARPH_Src_IP_Address  (Ahdr, Ifa);
 
-                     --# accept F,10,Err,"Ignore error from link output";
+                     pragma Warnings (Off, "unused assignment to ""Err""");
+                     --  Ignore error from link output
                      NIF.Link_Output (Nid, Buf, Err);
-                     --# end accept;
-
+                     pragma Warnings (On, "unused assignment to ""Err""");
                   end if;
 
                when ARPH.ARP_Op_Reply =>
@@ -413,7 +427,9 @@ is
      (Nid         : NIF.Netif_Id;
       Buf         : Buffers.Buffer_Id;
       Dst_Address : IPaddrs.IPaddr)
-   --# global in out Buffers.State, ARP_Table, ARP_Free_List, ARP_Active_List;
+   with
+     Refined_Global =>
+       (In_Out => (ARP_Active_List, ARP_Free_List, ARP_Table, Buffers.State))
    is
       AEID : Any_ARP_Entry_Id;
    begin
@@ -465,8 +481,11 @@ is
    -- ARP_Flush --
    ---------------
 
-   procedure ARP_Flush (All_Entries : Boolean)
-   --# global in out Buffers.State, ARP_Table, ARP_Free_List, ARP_Active_List;
+   procedure ARP_Flush (All_Entries : Boolean) with
+     Global => (In_Out => (ARP_Active_List,
+                           ARP_Free_List,
+                           ARP_Table,
+                           Buffers.State))
    is
       Now        : Time_Types.Time;
       AEID       : Any_ARP_Entry_Id;
@@ -513,8 +532,9 @@ is
    -- ARP_Timer --
    ---------------
 
-   procedure ARP_Timer
-   --# global in out Buffers.State, ARP_Table, ARP_Free_List, ARP_Active_List;
+   procedure ARP_Timer with
+     Refined_Global =>
+       (In_Out => (ARP_Active_List, ARP_Free_List, ARP_Table, Buffers.State))
    is
    begin
       ARP_Flush (All_Entries => False);
@@ -524,8 +544,9 @@ is
    -- ARP_Clear --
    ---------------
 
-   procedure ARP_Clear
-   --# global in out Buffers.State, ARP_Table, ARP_Free_List, ARP_Active_List;
+   procedure ARP_Clear with
+     Refined_Global =>
+       (In_Out => (ARP_Active_List, ARP_Free_List, ARP_Table, Buffers.State))
    is
    begin
       ARP_Flush (All_Entries => True);
@@ -538,9 +559,10 @@ is
    procedure IP_Input
      (Nid   : NIF.Netif_Id;
       Buf   : Buffers.Buffer_Id)
+   with
+     SPARK_Mode => Off
    is
       pragma Unreferenced (Nid, Buf);
-      --# hide IP_Input;
    begin
       --  TBD???
       null;

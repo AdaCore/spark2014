@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---          Copyright (C) 2010-2012, Free Software Foundation, Inc.         --
+--          Copyright (C) 2010-2014, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 --  Network Interface abstraction
@@ -10,8 +10,6 @@ with System;
 with AIP.Config;
 with AIP.Buffers;
 with AIP.IPaddrs;
-
---# inherit System, AIP, AIP.Config, AIP.Buffers, AIP.Callbacks, AIP.IPaddrs;
 
 package AIP.NIF is
    pragma Preelaborate;
@@ -33,12 +31,17 @@ package AIP.NIF is
    type Checksum_Type is (IP_CS, ICMP_CS, UDP_CS, TCP_CS);
    pragma Convention (C, Checksum_Type);
 
-   function NIF_Addr      (Nid : Netif_Id) return IPaddrs.IPaddr;
-   function NIF_Mask      (Nid : Netif_Id) return IPaddrs.IPaddr;
-   function NIF_Broadcast (Nid : Netif_Id) return IPaddrs.IPaddr;
+   function NIF_Addr      (Nid : Netif_Id) return IPaddrs.IPaddr with
+     Global => null;
+   function NIF_Mask      (Nid : Netif_Id) return IPaddrs.IPaddr with
+     Global => null;
+   function NIF_Broadcast (Nid : Netif_Id) return IPaddrs.IPaddr with
+     Global => null;
 
-   function NIF_MTU       (Nid : Netif_Id) return AIP.U16_T;
+   function NIF_MTU       (Nid : Netif_Id) return AIP.U16_T
    --  Maximum transmission unit
+   with
+     Global => null;
 
    procedure If_Config
      (Nid       : Netif_Id;
@@ -46,52 +49,69 @@ package AIP.NIF is
       Mask      : IPaddrs.IPaddr;
       Broadcast : IPaddrs.IPaddr;
       Remote    : IPaddrs.IPaddr;
-      Err       : out AIP.Err_T);
+      Err       : out AIP.Err_T)
    --  Set up IP address, netmask, broadcast address and remote address for
    --  Nid, and mark interface as UP.
+   with
+     Global => null;
 
    function Is_Local_Address
      (Nid  : Netif_Id;
-      Addr : IPaddrs.IPaddr) return Boolean;
+      Addr : IPaddrs.IPaddr) return Boolean
    --  True if Addr is a local address for Nid
+   with
+     Global => null;
 
    function Is_Broadcast_Address
      (Nid  : Netif_Id;
-      Addr : IPaddrs.IPaddr) return Boolean;
+      Addr : IPaddrs.IPaddr) return Boolean
    --  True if Addr is a broadcast address for Nid
+   with
+     Global => null;
 
    function Offload
      (Nid      : Netif_Id;
-      Checksum : Checksum_Type) return Boolean;
+      Checksum : Checksum_Type) return Boolean
    --  True if the driver for Nid supports checksum offloading for the given
    --  checksum.
+   with
+     Global => null;
 
    procedure Get_Netif_By_Address
      (Addr : IPaddrs.IPaddr;
       Mask : Boolean;
-      Nid  : out AIP.EID);
+      Nid  : out AIP.EID)
    --  Find a netif whose address or broadcast address is Addr. If Mask is
    --  True, only the network part of addresses is considered.
+   with
+     Global => null;
 
    procedure Get_LL_Address
      (Nid               : Netif_Id;
       LL_Address        : out AIP.LL_Address;
-      LL_Address_Length : out AIP.LL_Address_Range);
+      LL_Address_Length : out AIP.LL_Address_Range)
    --  Copy Nid's link level address into LL_Address, and set LL_Address_Length
    --  to the amount of data copied.
    --  LL_Address'First is expected to be 1.
+   with
+     Global => null;
 
    procedure Output
      (Nid         : Netif_Id;
       Buf         : Buffers.Buffer_Id;
-      Dst_Address : IPaddrs.IPaddr);
+      Dst_Address : IPaddrs.IPaddr)
    --  Call Nid's Ouptut_CB callback with Buf
+   with
+     Global => null,
+     Depends => (null => (Nid, Buf, Dst_Address));
 
    procedure Link_Output
      (Nid : Netif_Id;
       Buf : Buffers.Buffer_Id;
-      Err : out AIP.Err_T);
+      Err : out AIP.Err_T)
    --  Call Nid's Link_Output_CB callback with Buf
+   with
+     Global => null;
 
 private
 

@@ -96,7 +96,7 @@ To run another OS in QEmu on the virtual Ethernet, use:
 SPARK
 -----
 
-To run SPARK examiner on the stack, use:
+To run SPARK tools (currently only flow analysis) on the stack, use:
    make spark
 
 ACKNOWLEDGEMENTS

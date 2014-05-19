@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---           Copyright (C) 2010-2012, Free Software Foundation, Inc.        --
+--           Copyright (C) 2010-2014, Free Software Foundation, Inc.        --
 ------------------------------------------------------------------------------
 
 pragma Ada_2005;
@@ -700,6 +700,13 @@ procedure Tranxgen is
                             & " (P : System.Address; V : "
                             & Field_Type (F) & ")";
 
+            Set_Contract : constant String :=
+                            "  with Depends => (null => (P, V))";
+            --  Dependency contract that should be used to prevent flow
+            --  analysis warnings about useless calls to the imported
+            --  procedures, and useless computations of their actual
+            --  parameters.
+
             procedure Generate_M_Decl;
             --  Generate declaration of object M and its address clause
 
@@ -742,7 +749,8 @@ procedure Tranxgen is
          begin
             NL (Ctx.P_Spec);
             PL (Ctx.P_Spec, Get_Profile & ";");
-            PL (Ctx.P_Spec, Set_Profile & ";");
+            PL (Ctx.P_Spec, Set_Profile);
+            PL (Ctx.P_Spec, Set_Contract & ";");
             if Export_Prefix /= null and then F.Export then
                declare
                   C_Get_Name : constant String :=
@@ -1049,7 +1057,7 @@ procedure Tranxgen is
             NL (U);
             PL (U, "pragma Warnings (Off);");
             PL (U, "pragma Style_Checks (""NM32766"");");
-            PL (U, "pragma Ada_2005;");
+            PL (U, "pragma Ada_2012;");
             NL (U);
          end if;
       end Prelude;
@@ -1070,9 +1078,6 @@ procedure Tranxgen is
             return;
          end if;
       end Process_Child;
-
-      Imports_Inherits : Unbounded_String;
-      Inherit_Sep : constant String := "," & ASCII.LF & "--#   ";
 
    --  Start of processing for Process_Package
 
@@ -1111,23 +1116,11 @@ procedure Tranxgen is
                if Import_Use then
                   PL (Ctx.P_Spec, "use " & Import_Name & ";");
                end if;
-               Append (Imports_Inherits, Inherit_Sep & Import_Name);
             end;
          end loop;
          Free (Imports);
       end;
 
-      NL (Ctx.P_Spec);
-      P  (Ctx.P_Spec, "--# inherit System");
-      declare
-         Types_Unit : constant String := To_String (Ctx.Types_Unit);
-      begin
-         if Types_Unit /= "" then
-            P (Ctx.P_Spec, Inherit_Sep & Types_Unit);
-         end if;
-      end;
-      P  (Ctx.P_Spec, To_String (Imports_Inherits));
-      PL (Ctx.P_Spec, ";");
       NL (Ctx.P_Spec);
       PL (Ctx.P_Spec, "package " & Package_Name & " is");
       II (Ctx.P_Spec);
@@ -1136,7 +1129,9 @@ procedure Tranxgen is
 
       II (Ctx.P_Private);
 
-      PL (Ctx.P_Body, "package body " & Package_Name & " is");
+      PL (Ctx.P_Body, "package body " & Package_Name & " with");
+      PL (Ctx.P_Body, "  SPARK_Mode => Off");
+      PL (Ctx.P_Body, "is");
       II (Ctx.P_Body);
 
       Walk_Siblings

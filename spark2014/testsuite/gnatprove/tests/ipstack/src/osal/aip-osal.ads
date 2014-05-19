@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---             Copyright (C) 2010, Free Software Foundation, Inc.           --
+--          Copyright (C) 2010-2014, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 --  IP stack OS adaptation layer
@@ -9,9 +9,6 @@
 --  the IP stack within its operating environment.
 
 with AIP.NIF;
-
---# inherit AIP.ARP, AIP.Buffers, AIP.IPaddrs, AIP.NIF, AIP.Platform,
---#         AIP.TCP, AIP.UDP;
 
 package AIP.OSAL is
 

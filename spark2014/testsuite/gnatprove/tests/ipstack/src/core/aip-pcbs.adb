@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---             Copyright (C) 2010, Free Software Foundation, Inc.           --
+--          Copyright (C) 2010-2014, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 package body AIP.PCBs is
@@ -198,9 +198,9 @@ package body AIP.PCBs is
       Cid : PCB_Id;
       Match_Wildcard : Natural;
 
-      --  function Wildcard_Count
-      --    (Addr : IPaddrs.IPaddr;
-      --     Port : Port_T) return Natural;
+      function Wildcard_Count
+        (Addr : IPaddrs.IPaddr;
+         Port : Port_T) return Natural;
       --  Return 1 if Addr is IP_ADDR_ANY or Port is Any_Port, 0 otherwise
 
       --------------------
@@ -211,12 +211,14 @@ package body AIP.PCBs is
         (Addr : IPaddrs.IPaddr;
          Port : Port_T) return Natural
       is
+         Count : Natural;
       begin
          if Addr = IPaddrs.IP_ADDR_ANY or else Port = NOPORT then
-            return 1;
+            Count := 1;
          else
-            return 0;
+            Count := 0;
          end if;
+         return Count;
       end Wildcard_Count;
 
    --  Start of processing for Find_PCB_In_List

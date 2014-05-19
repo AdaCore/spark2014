@@ -1,16 +1,12 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---          Copyright (C) 2010-2012, Free Software Foundation, Inc.         --
+--          Copyright (C) 2010-2014, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 --  Generic Packet Buffers (network packet data containers) management.
 --  Common data structures for both Data and No_Data buffers.
 
---# inherit System, AIP.Buffers;
-
-private package AIP.Buffers.Common
---# own Buf_List;
-is
+private package AIP.Buffers.Common is
    pragma Preelaborate;
 
    type Packet_Queue_Ptrs is array (Buffers.Packet_Layer) of Buffers.Buffer_Id;
@@ -59,7 +55,7 @@ is
 
    subtype Buffer_Index is AIP.U16_T range 1 .. Buffers.Buffer_Id'Last;
    type Buffer_Array is array (Buffer_Index) of Buffer;
-   Buf_List : Buffer_Array;
+   Buf_List : Buffer_Array with Part_Of => AIP.Buffers.State;
 
    function Is_Data_Buffer (Buf : Buffers.Buffer_Id) return Boolean;
    --  Return True if Buf is a Data buffer, False if it is a No_Data buffer

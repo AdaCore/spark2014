@@ -1,11 +1,13 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---             Copyright (C) 2010, Free Software Foundation, Inc.           --
+--          Copyright (C) 2010-2014, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 with System.Storage_Elements;
 
-package body AIP.Checksum is
+package body AIP.Checksum with
+  SPARK_Mode => Off
+is
 
    function Sum_Chunk
      (Data   : System.Address;

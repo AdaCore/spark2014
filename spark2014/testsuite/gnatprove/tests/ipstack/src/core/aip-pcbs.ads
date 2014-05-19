@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---          Copyright (C) 2010-2012, Free Software Foundation, Inc.         --
+--          Copyright (C) 2010-2014, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 --  Protocol Control Blocks (shared between UDP and TCP)
@@ -10,8 +10,6 @@ with System;
 with AIP.Config;
 with AIP.IPaddrs;
 with AIP.NIF;
-
---# inherit System, AIP.Config, AIP.IPaddrs, AIP.NIF;
 
 package AIP.PCBs is
 
@@ -98,8 +96,10 @@ package AIP.PCBs is
       Local_Port : Port_T;
       PCB_Heads  : PCB_List;
       PCB_Pool   : in out IP_PCB_Array;
-      Err        : out AIP.Err_T);
+      Err        : out AIP.Err_T)
    --  Bind PCB to the given local address and port
+   with
+     Global => null;
 
    procedure Find_PCB
      (Local_IP    : IPaddrs.IPaddr;
@@ -108,9 +108,11 @@ package AIP.PCBs is
       Remote_Port : Port_T;
       PCB_Heads   : PCB_List;
       PCB_Pool    : IP_PCB_Array;
-      PCB         : out PCB_Id);
+      PCB         : out PCB_Id)
    --  PCB_Heads denotes the heads of each PCB list to be considered
    --  PCB_Pool is the set of all PCBs, indexed by PCB Id.
+   with
+     Global => null;
 
    procedure Find_PCB_In_List
      (Local_IP    : IPaddrs.IPaddr;
@@ -120,9 +122,11 @@ package AIP.PCBs is
       PCB_Head    : PCB_Id;
       PCB_Pool    : IP_PCB_Array;
       PCB         : out PCB_Id;
-      Wildcard    : out Natural);
+      Wildcard    : out Natural)
    --  Same as above but search a single list whose head is PCB_Head. Wildcard
    --  counts how many items (0, 1 or 2) were a wildcard match.
+   with
+     Global => null;
 
    procedure Prepend
      (PCB      : PCB_Id;

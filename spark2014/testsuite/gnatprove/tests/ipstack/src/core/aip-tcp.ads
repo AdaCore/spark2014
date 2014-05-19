@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---           Copyright (C) 2010-2011, Free Software Foundation, Inc.        --
+--          Copyright (C) 2010-2014, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 --  Callback oriented low level access to the TCP services. At this point,
@@ -8,28 +8,26 @@
 
 with System;
 
+limited with AIP.IP;
+
 with AIP.Buffers;
 with AIP.Callbacks;
 with AIP.IPaddrs;
 with AIP.NIF;
 with AIP.PCBs;
 
---# inherit System, AIP.Buffers, AIP.Callbacks, AIP.Checksum, AIP.Config,
---#         AIP.IP, AIP.IPaddrs, AIP.IPH, AIP.NIF, AIP.PCBs, AIP.TCPH,
---#         AIP.Time_Types, AIP.Timers, AIP.Inet, AIP.Conversions;
-
-package AIP.TCP
---# own State;
+package AIP.TCP with
+  Abstract_State => State
 is
 
    --------------------
    -- User interface --
    --------------------
 
-   procedure TCP_Init;
-   --# global out State;
+   procedure TCP_Init
    --  Initialize internal datastructures. To be called once, before any of
    --  the other subprograms.
+   with Global => (Output => State);
 
    -------------------------
    -- Callbacks interface --
@@ -64,57 +62,63 @@ is
      (Ev   : TCP_Event_T;
       PCB  : PCBs.PCB_Id;
       Cbid : Callbacks.CBK_Id;
-      Err  : out AIP.Err_T);
-   --# global in out Buffers.State;
-   pragma Import (Ada, TCP_Event, "AIP_tcp_event");
-   pragma Weak_External (TCP_Event);
+      Err  : out AIP.Err_T)
    --  Process TCP event EV, aimed at bound PCB, for which Cbid was registered.
    --  Expected to be provided by the applicative code.
+   with
+     Global => (In_Out => Buffers.State);
+   pragma Import (Ada, TCP_Event, "AIP_tcp_event");
+   pragma Weak_External (TCP_Event);
 
-   procedure TCP_Set_Udata (PCB : PCBs.PCB_Id; Udata : System.Address);
-   --# global in out State;
+   procedure TCP_Set_Udata (PCB : PCBs.PCB_Id; Udata : System.Address)
    --  Attach Udata to PCB, for later retrieval on event callbacks
+   with
+     Global => (In_Out => State);
 
-   function TCP_Udata (PCB : PCBs.PCB_Id) return System.Address;
-   --# global in State;
-   --  Retrive callback Udata attached to PCB
+   function TCP_Udata (PCB : PCBs.PCB_Id) return System.Address
+   --  Retrieve callback Udata attached to PCB
+   with
+     Global => State;
 
    --------------------------------
    -- Setting up TCP connections --
    --------------------------------
 
-   procedure TCP_New (PCB : out PCBs.PCB_Id);
-   --# global in out State;
+   procedure TCP_New (PCB : out PCBs.PCB_Id)
    --  Allocate a new TCP PCB and return the corresponding id, or NOPCB on
    --  allocation failure.
+   with
+     Global => (In_Out => State);
 
    procedure TCP_Bind
      (PCB        : PCBs.PCB_Id;
       Local_IP   : IPaddrs.IPaddr;
       Local_Port : AIP.U16_T;
-      Err        : out AIP.Err_T);
-   --# global in out State;
+      Err        : out AIP.Err_T)
    --  Bind PCB to the provided IP address (possibly IP_ADDR_ANY) and
    --  local PORT number. Return ERR_USE if the requested binding is already
    --  established for another PCB, NOERR otherwise.
+   with
+     Global => (In_Out => State);
 
-   procedure TCP_Listen (PCB : PCBs.PCB_Id; Err : out AIP.Err_T);
-   --# global in out State;
+   procedure TCP_Listen (PCB : PCBs.PCB_Id; Err : out AIP.Err_T)
    --  Setup PCB to listen for at most Config.TCP_DEFAULT_LISTEN_BACKLOG
    --  simultaneous connection requests and trigger the acceptation callback
    --  on such events.
+   with
+     Global => (In_Out => State);
 
    procedure TCP_Listen_BL
      (PCB     : PCBs.PCB_Id;
       Backlog : Natural;
-      Err     : out AIP.Err_T);
-   --# global in out State;
+      Err     : out AIP.Err_T)
    --  Same as TCP_Listen but with a user-specified backlog size
+   with
+     Global => (In_Out => State);
 
    procedure On_TCP_Accept
      (PCB : PCBs.PCB_Id;
-      Cb  : Callbacks.CBK_Id);
-   --# global in out State;
+      Cb  : Callbacks.CBK_Id)
    --  Register CB as the id to pass TCP_Event on TCP_EVENT_ACCEPT for PCB.
    --
    --  TCP_EVENT_ACCEPT triggers when a connection request comes in.
@@ -126,20 +130,22 @@ is
    --  TCP_Accepted and returns NOERR if all went well. If anything goes
    --  wrong, the callback returns the appropriate error code and AIP aborts
    --  the connection.
+   with
+     Global => (In_Out => State);
 
-   procedure TCP_Accepted (PCB : PCBs.PCB_Id);
-   --# global in out State;
+   procedure TCP_Accepted (PCB : PCBs.PCB_Id)
    --  Inform the AIP stack that a connection has just been accepted on PCB.
    --  To be called by the TCP_EVENT_ACCEPT callback for proper management of
    --  the listen backlog.
+   with
+     Global => (In_Out => State);
 
    procedure TCP_Connect
      (PCB  : PCBs.PCB_Id;
       Addr : IPaddrs.IPaddr;
       Port : PCBs.Port_T;
       Cb   : Callbacks.CBK_Id;
-      Err  : out AIP.Err_T);
-   --# global in out Buffers.State, IP.State, State; in IP.FIB;
+      Err  : out AIP.Err_T)
    --  Setup PCB to connect to the remote ADDR/PORT and send the initial SYN
    --  segment.  Do not wait for the connection to be entirely setup, but
    --  instead arrange to have CB called when the connection is established or
@@ -148,6 +154,9 @@ is
    --  ERR_MEM if no memory is available for enqueueing the SYN segment,
    --
    --  NOERR   if all went well.
+   with
+     Global => (Input  => IP.FIB,
+                In_Out => (Buffers.State, IP.State, State));
 
    ----------------------
    -- Sending TCP data --
@@ -163,8 +172,7 @@ is
       Len   : AIP.M32_T;
       Copy  : Boolean;
       Push  : Boolean;
-      Err   : out AIP.Err_T);
-   --# global in out Buffers.State, IP.State, State;
+      Err   : out AIP.Err_T)
    --  Enqueue DATA/LEN for output through PCB. COPY controls whether data is
    --  copied into AIP's memory before processing, or whether it only gets
    --  referenced from there, in which case clients should not modify it until
@@ -181,15 +189,17 @@ is
    --          not one of Established | Close_Wait | Syn_Sent | Syn_Received.
    --
    --  NOERR   if all went well.
+   with
+     Global => (In_Out => (Buffers.State, IP.State, State));
 
-   function TCP_Sndbuf (PCB : PCBs.PCB_Id) return AIP.U16_T;
-   --# global in State;
+   function TCP_Sndbuf (PCB : PCBs.PCB_Id) return AIP.U16_T
    --  Room available for output data queuing.
+   with
+     Global => State;
 
    procedure On_TCP_Sent
      (PCB : PCBs.PCB_Id;
-      Cb  : Callbacks.CBK_Id);
-   --# global in out State;
+      Cb  : Callbacks.CBK_Id)
    --  Register CB as the id to pass TCP_Event on TCP_EVENT_SENT for PCB.
    --
    --  TCP_EVENT_SENT triggers when sent data has been acknowledged by
@@ -198,6 +208,8 @@ is
    --  Ev.Len is the amount data just acknowledged by the remote peer.
    --
    --  NOERR is expected on return.
+   with
+     Global => (In_Out => State);
 
    ------------------------
    -- Receiving TCP data --
@@ -207,8 +219,7 @@ is
 
    procedure On_TCP_Recv
      (PCB : PCBs.PCB_Id;
-      Cb  : Callbacks.CBK_Id);
-   --# global in out State;
+      Cb  : Callbacks.CBK_Id)
    --  Register CB as the id to pass TCP_Event on TCP_EVENT_RECV for PCB.
    --
    --  TCP_EVENT_RECV triggers when new data or a close-connection request
@@ -221,13 +232,16 @@ is
    --  should be Buffer_Free'd by the callback if it isn't needed by the app
    --  any more. Otherwise, the callback should leave Ev.Buf untouched and
    --  return a descriptive error code.
+   with
+     Global => (In_Out => State);
 
    procedure TCP_Recved
      (PCB : PCBs.PCB_Id;
-      Len : AIP.U16_T);
-   --# global in out State;
+      Len : AIP.U16_T)
    --  Inform AIP that LEN bytes of data have been processed and can be
    --  acknowledged.
+   with
+     Global => (In_Out => State);
 
    -------------
    -- Polling --
@@ -240,127 +254,68 @@ is
    procedure On_TCP_Poll
      (PCB : PCBs.PCB_Id;
       Cb  : Callbacks.CBK_Id;
-      Ivl : AIP.U16_T);
-   --# global in out State;
+      Ivl : AIP.U16_T)
    --  Register CB as the id to pass TCP_Event on TCP_EVENT_POLL for PCB,
    --  and request that it triggers every IVL ticks from now on.
+   with
+     Global => (In_Out => State);
 
    ------------------------------
    --  Closing TCP connections --
    ------------------------------
 
-   procedure TCP_Close (PCB : PCBs.PCB_Id; Err : out AIP.Err_T);
-   --# global in out Buffers.State, IP.State, State;
+   procedure TCP_Close (PCB : PCBs.PCB_Id; Err : out AIP.Err_T)
    --  Closes the connection held by the provided PCB, which may not be
    --  referenced any more.
+   with
+     Global => (In_Out => (Buffers.State, IP.State, State));
 
-   procedure TCP_Drop (PCB : PCBs.PCB_Id);
-   --# global in out Buffers.State, IP.State, State; in IP.FIB;
+   procedure TCP_Drop (PCB : PCBs.PCB_Id)
    --  Aborts a connection by sending a RST to the remote host and deletes
    --  the local PCB. This is done when a connection is killed because of
    --  shortage of memory.
+   with
+     Global => (Input  => IP.FIB,
+                In_Out => (Buffers.State, IP.State, State));
 
    procedure On_TCP_Abort
      (PCB : PCBs.PCB_Id;
-      Cb  : Callbacks.CBK_Id);
-   --# global in out State;
+      Cb  : Callbacks.CBK_Id)
    --  Register CB as the id to pass TCP_Event on TCP_EVENT_ABORT for PCB.
    --
    --  TCP_EVENT_ABORT triggers when a connection gets aborted because
    --  of some error.
    --
    --  Ev.Err is the aborting error code.
+   with
+     Global => (In_Out => State);
 
    -----------------------
    -- IPstack interface --
    -----------------------
 
-   procedure TCP_Input (Buf : Buffers.Buffer_Id; Netif : NIF.Netif_Id);
-   --# global in out Buffers.State, State, IP.State; in IP.FIB;
+   procedure TCP_Input (Buf : Buffers.Buffer_Id; Netif : NIF.Netif_Id)
    --  Hook for IP.  Process a TCP segment in BUF, and dispatch the TCP payload
    --  to the appropriate user callback. Buf is then free'd.
+   with
+     Global => (Input  => IP.FIB,
+                In_Out => (Buffers.State, IP.State, State));
 
    ------------
    -- Timers --
    ------------
 
-   procedure TCP_Fast_Timer;
-   --# global in out Buffers.State, IP.State, State;
+   procedure TCP_Fast_Timer
    --  Called every TCP_FAST_INTERVAL (250 ms) and process data previously
    --  "refused" by upper layer (application) and sends delayed ACKs.
+   with
+     Global => (In_Out => (Buffers.State, IP.State, State));
 
-   procedure TCP_Slow_Timer;
-   --# global in out Buffers.State, IP.State, State;
+   procedure TCP_Slow_Timer
    --  Called every 500 ms and implements the retransmission timer and the
    --  timer that removes PCBs that have been in TIME-WAIT for enough time. It
    --  also increments various timers such as the inactivity timer in each PCB.
-
-private
-
-   procedure TCP_Free (PCB : PCBs.PCB_Id);
-   --# global in out State;
-   --  Destroy PCB and mark it as unallocated
-
-   procedure TCP_Output (PCB : PCBs.PCB_Id; Ack_Now : Boolean);
-   --# global in out State, IP.State, Buffers.State;
-   --  Start output for any pending data or control information on PCB. If
-   --  Ack_Now, make sure at least an ACK segment gets sent.
-
-   procedure TCP_Send_Rst
-     (Src_IP   : IPaddrs.IPaddr;
-      Src_Port : PCBs.Port_T;
-      Dst_IP   : IPaddrs.IPaddr;
-      Dst_Port : PCBs.Port_T;
-      Ack      : Boolean;
-      Seq_Num  : AIP.M32_T;
-      Ack_Num  : AIP.M32_T;
-      Err      : out AIP.Err_T);
-   --# global in out IP.State, Buffers.State; in IP.FIB, State;
-   --  Send a TCP RST segment
-
-   procedure TCP_Send_Control
-     (PCB : PCBs.PCB_Id;
-      Syn : Boolean;
-      Fin : Boolean;
-      Err : out AIP.Err_T);
-   --# global in out Buffers.State, IP.State, State;
-   --  Send a TCP segment with no payload, just control bits set according
-   --  to Syn and Fin. Ack will be set as well unless in Syn_Sent state.
-
-   --  Send_Control shortcuts for common occurrences:
-
-   procedure TCP_Fin (PCB : PCBs.PCB_Id; Err : out AIP.Err_T);
-   --# global in out Buffers.State, IP.State, State;
-   pragma Inline (TCP_Fin);
-
-   procedure TCP_Syn (PCB : PCBs.PCB_Id; Err : out AIP.Err_T);
-   --# global in out Buffers.State, IP.State, State;
-   pragma Inline (TCP_Syn);
-
-   procedure TCP_Ack (PCB : PCBs.PCB_Id; Err : out AIP.Err_T);
-   --# global in out Buffers.State, IP.State, State;
-   pragma Inline (TCP_Ack);
-
-   function Initial_Sequence_Number
-     (Local_IP    : IPaddrs.IPaddr;
-      Local_Port  : PCBs.Port_T;
-      Remote_IP   : IPaddrs.IPaddr;
-      Remote_Port : PCBs.Port_T) return AIP.M32_T;
-   --# global in State;
-   --  Initial sequence number for connection with the given parameters
-
-   --  Sequence number comparisons
-
-   function Seq_Lt (L, R : AIP.M32_T) return Boolean;
-   pragma Inline (Seq_Lt);
-   --  L < R
-
-   function Seq_Le (L, R : AIP.M32_T) return Boolean;
-   pragma Inline (Seq_Le);
-   --  L <= R
-
-   function Seq_Range (L, S, R : AIP.M32_T) return Boolean;
-   pragma Inline (Seq_Range);
-   --  L <= S < R
+   with
+     Global => (In_Out => (Buffers.State, IP.State, State));
 
 end AIP.TCP;

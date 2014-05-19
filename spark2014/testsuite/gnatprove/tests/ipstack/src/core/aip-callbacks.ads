@@ -1,12 +1,9 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---             Copyright (C) 2010, Free Software Foundation, Inc.           --
+--          Copyright (C) 2010-2014, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 --  Definition of external (application-level) callbacks
-
-with AIP_Constants;
---# inherit AIP, AIP_constants;
 
 package AIP.Callbacks is
 

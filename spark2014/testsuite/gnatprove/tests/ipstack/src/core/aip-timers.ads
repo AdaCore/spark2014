@@ -1,11 +1,9 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---             Copyright (C) 2010, Free Software Foundation, Inc.           --
+--          Copyright (C) 2010-2014, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 with AIP.Time_Types;
-
---# inherit AIP.Time_Types;
 
 package AIP.Timers is
 
@@ -16,7 +14,9 @@ package AIP.Timers is
 
    procedure Initialize;
 
-   procedure Set_Interval (TID : Timer_Id; Interval : Time_Types.Interval);
+   procedure Set_Interval (TID : Timer_Id; Interval : Time_Types.Interval) with
+     Global  => null,
+     Depends => (null => (TID, Interval));
 
    function Timer_Fired
      (Now : Time_Types.Time;

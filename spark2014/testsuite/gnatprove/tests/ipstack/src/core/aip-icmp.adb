@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---          Copyright (C) 2010-2012, Free Software Foundation, Inc.         --
+--          Copyright (C) 2010-2014, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 with System;
@@ -12,7 +12,9 @@ with AIP.IP;
 with AIP.IPaddrs;
 with AIP.IPH;
 
-package body AIP.ICMP is
+package body AIP.ICMP with
+  SPARK_Mode => Off
+is
 
    ICMP_Default_TTL : constant := 32;
    --  Make configurable???

@@ -7,10 +7,12 @@ project IPStack_Config is
    package Compiler is
       Common_Switches := ("-g");
       for Default_Switches ("Ada")
-        use Common_Switches & ("-gnat05", "-gnatwa", "-gnatyg", "-gnata");
+        use Common_Switches & ("-gnat2012", "-gnatwa", "-gnatyg", "-gnata");
       for Default_Switches ("C")
         use Common_Switches & ("-I" & IPStack_Config'Project_Dir & "/"
                                     & Gen_Prefix);
+      for Local_Configuration_Pragmas
+        use IPStack_Config'Project_Dir & "/" & "ipstack.adc";
    end Compiler;
 
    for Source_Dirs use ();

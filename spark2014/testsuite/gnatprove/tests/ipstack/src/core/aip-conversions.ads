@@ -1,12 +1,11 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---             Copyright (C) 2010, Free Software Foundation, Inc.           --
+--          Copyright (C) 2010-2014, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 --  Internal conversion services for AIP
 
 with System;
---# inherit System;
 
 package AIP.Conversions is
 
@@ -21,7 +20,9 @@ package AIP.Conversions is
    procedure Memcpy
      (Dst : System.Address;
       Src : System.Address;
-      Len : Integer);
+      Len : Integer)
+   with
+     Depends => (null => (Dst, Src, Len));
    pragma Export (C, Memcpy, "aip_memcpy");
    --  Copies N storage units from area starting at Src to area starting at
    --  Dest. The memory areas must not overlap, or the result of this call is

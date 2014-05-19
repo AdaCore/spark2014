@@ -1,0 +1,16 @@
+aip-tcp.adb:359:14: warning: procedure "TCP_Syn" is not referenced
+aip-tcp.adb:364:14: warning: procedure "TCP_Ack" is not referenced
+aip-tcp.adb:1822:25: warning: no contextual analysis of "Seq_Le"
+aip-tcp.adb:1822:25: warning: call appears in assertion expression
+aip-tcp.adb:2603:41: warning: no contextual analysis of "Seq_Lt"
+aip-tcp.adb:2603:41: warning: call appears in assertion expression
+aip-tcp.adb:1091:07: warning: statement has no effect
+aip-tcp.adb:1092:07: warning: statement has no effect
+aip-tcp.adb:2771:15: warning: "Result" might not be initialized
+aip-tcp.adb:2794:11: warning: statement has no effect
+aip-tcp.adb:3049:11: warning: unused assignment
+aip-pcbs.adb:136:04: warning: analyzing unreferenced function "Bound_To"
+aip-arp.adb:61:13: warning: statement has no effect
+aip-arp.adb:335:17: warning: "Result" might not be initialized
+aip-arp.adb:400:25: warning: statement has no effect
+aip-arp.ads:69:07: warning: unused variable "Netif_Mac_Addr_Ptr"

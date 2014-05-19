@@ -1,14 +1,14 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---          Copyright (C) 2010-2012, Free Software Foundation, Inc.         --
+--          Copyright (C) 2010-2014, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 with AIP.Support;
 with AIP.Conversions;
 with AIP.Buffers.Common;
 
-package body AIP.Buffers.Data
---# own State is Data_Array, Buf_List;
+package body AIP.Buffers.Data with
+  Refined_State => (State => (Data_Array, Buf_List))
 is
    --  All data is stored in a statically allocated array Data_Array, while
    --  data structures to manage the allocation of pieces of this array to
@@ -74,7 +74,8 @@ is
      (Buf      : in out Dbuf_Id;
       Prev_Buf : out Dbuf_Id;
       Num      : out Dbuf_Count)
-   --# global in Common.Buf_List, Buf_List;
+   with
+     Refined_Global => (Input => (Buf_List, Common.Buf_List))
    is
       Tmp_Buf : Dbuf_Id;
       Tmp_Num : Dbuf_Count_Or_Null;
@@ -104,7 +105,8 @@ is
    ------------------------------------
 
    procedure Insert_Contiguous_In_Free_List (Buf : Dbuf_Id; Num : Dbuf_Count)
-   --# global in out Common.Buf_List, Buf_List, Free_List;
+   with
+     Refined_Global  => (In_Out => (Buf_List, Common.Buf_List, Free_List))
    is
       Last_Buf : Dbuf_Id;
       --  Last buffer to be inserted
@@ -184,12 +186,11 @@ is
          while Insert_Buf /= Buffers.NOBUF
            and then Buf_List (Insert_Buf).Num_No_Jump < Num
          loop
-            --# accept F, 10, Free_Count,
-            --#        "The value set for Free_Count at each call to ",
-            --#        "Advance_To_Next_Contiguous_Block is ignored.";
+            pragma Warnings (Off, "unused assignment to ""Free_Count""");
             Advance_To_Next_Contiguous_Block (Buf      => Insert_Buf,
                                               Prev_Buf => Prev_Insert_Buf,
                                               Num      => Free_Count);
+            pragma Warnings (On, "unused assignment to ""Free_Count""");
          end loop;
 
          --  Update the Num component for the previous buffers in the free list
@@ -224,8 +225,8 @@ is
    -- Remove_From_Free_List --
    ---------------------------
 
-   procedure Remove_From_Free_List (Buf : Dbuf_Id; Num : Dbuf_Count)
-   --# global in out Common.Buf_List, Buf_List, Free_List;
+   procedure Remove_From_Free_List (Buf : Dbuf_Id; Num : Dbuf_Count) with
+     Refined_Global => (In_Out => (Buf_List, Common.Buf_List, Free_List))
    is
       Last_Buf_In_Prev_Block  : Dbuf_Id;
       --  Last buffer in contiguous block preceding Buf, if any
@@ -348,7 +349,8 @@ is
    procedure Extract_Contiguous_From_Free_List
      (Buf : in out Dbuf_Id;
       Num : in out Dbuf_Count)
-   --# global in out Common.Buf_List, Buf_List, Free_List;
+   with
+       Refined_Global => (In_Out => (Buf_List, Common.Buf_List, Free_List))
    is
       Last_Buf : Dbuf_Id;
       --  Last buffer to be inserted
@@ -447,8 +449,8 @@ is
    -- Insert_In_Free_List --
    -------------------------
 
-   procedure Insert_In_Free_List (Buf : Dbuf_Id; Num : Dbuf_Count)
-   --# global in out Common.Buf_List, Buf_List, Free_List;
+   procedure Insert_In_Free_List (Buf : Dbuf_Id; Num : Dbuf_Count) with
+     Refined_Global => (In_Out => (Buf_List, Common.Buf_List, Free_List))
    is
       Free_Buf, First_Buf, Last_Buf : Dbuf_Id;
       --  Temporary buffers
@@ -473,12 +475,11 @@ is
          --  Advance_To_Next_Contiguous_Block is ignored.
 
          Free_Buf := First_Buf;
-         --# accept F, 10, Last_Buf,
-         --#        "The value assigned to Last_Buf by the call to ",
-         --#        "Advance_To_Next_Contiguous_Block is ignored.";
+         pragma Warnings (Off, "unused assignment to ""Last_Buf""");
          Advance_To_Next_Contiguous_Block (Buf      => Free_Buf,
                                            Prev_Buf => Last_Buf,
                                            Num      => Free_Count);
+         pragma Warnings (On, "unused assignment to ""Last_Buf""");
 
          --  Adjust the number of buffers to insert, which might be smaller
          --  than the number of contiguous buffers from First_Buf.
@@ -502,19 +503,19 @@ is
          Num_To_Insert := Num_To_Insert - Free_Count;
          First_Buf := Free_Buf;
       end loop;
-
-      --# accept F, 33, Last_Buf,
-      --#        "The value assigned to Last_Buf by the call to ",
-      --#        "Advance_To_Next_Contiguous_Block is ignored.";
    end Insert_In_Free_List;
 
    -----------------
    -- Buffer_Init --
    -----------------
 
-   procedure Buffer_Init
-   --# global out Data_Array, Buf_List, Free_List;
+   --  Intentionally leave Data_Array not initialized
+
+   pragma Warnings (Off, """Data_Array"" might not be initialized");
+   procedure Buffer_Init with
+     Refined_Global => (Output => (Buf_List, Data_Array, Free_List))
    is
+      pragma Warnings (On, """Data_Array"" might not be initialized");
    begin
       --  First initialize all the memory for buffers to zero, except for
       --  special number fields initialized to one.
@@ -534,11 +535,12 @@ is
 
       Free_List := Buf_List'First;
 
-      --  Intentionally leave Data_Array not initialized
-      --# accept F, 32, Data_Array,
-      --#               "The variable is neither imported nor defined";
-      --# accept F, 31, Data_Array,
-      --#           "The variable is exported but not (internally) defined";
+      --  Fake initialization of Data_Array to avoid getting a flow error.
+      --  Instead a flow warning is issued which is justified.
+
+      if False then
+         Data_Array := Data_Array_Type'(others => ' ');
+      end if;
    end Buffer_Init;
 
    ------------------
@@ -550,7 +552,8 @@ is
       Size   : Buffers.Data_Length;
       Kind   : Buffers.Data_Buffer_Kind;
       Buf    : out Dbuf_Id)
-   --# global in out Common.Buf_List, Buf_List, Free_List;
+   with
+     Refined_Global => (In_Out => (Buf_List, Common.Buf_List, Free_List))
    is
       Requested_Size    : AIP.U16_T;
       Requested_Buffers : Dbuf_Count;
@@ -644,7 +647,6 @@ is
          Common.Buf_List (Cur_Cbuf).Tot_Len :=
            Remaining_Size - Common.Buf_List (Cur_Cbuf).Poffset;
 
-         --# accept F, 41, "Expression is stable";
          case Kind is
             when Buffers.LINK_BUF =>
                --  Length completes offset to buffer size unless not enough
@@ -660,7 +662,6 @@ is
                Common.Buf_List (Cur_Cbuf).Len :=
                  Common.Buf_List (Cur_Cbuf).Tot_Len;
          end case;
-         --# end accept;
 
          --  Save allocated lengths to limit later adjustments
 
@@ -694,7 +695,8 @@ is
    procedure Buffer_Free
      (Buf      : Dbuf_Id;
       Next_Buf : out Buffers.Buffer_Id)
-   --# global in out Common.Buf_List, Buf_List, Free_List;
+   with
+     Refined_Global => (In_Out => (Buf_List, Common.Buf_List, Free_List))
    is
       Num : Dbuf_Count;
 
@@ -719,7 +721,8 @@ is
    ---------------------
 
    function Buffer_Get_Kind (Buf : Dbuf_Id) return Buffers.Data_Buffer_Kind
-   --# global in Buf_List;
+   with
+     Refined_Global => Buf_List
    is
    begin
       return Buf_List (Buf).Kind;
@@ -729,10 +732,9 @@ is
    -- Buffer_Payload --
    --------------------
 
-   function Buffer_Payload (Buf : Dbuf_Id) return System.Address
-   --# global in Data_Array, Buf_List;
+   function Buffer_Payload (Buf : Dbuf_Id) return System.Address with
+     Refined_Global => (Common.Buf_List, Data_Array)
    is
-      --# hide Buffer_Payload;  --  Using 'Address
       Buf_Start_Offset : constant Data_Offset :=
         Data_Offset (Buf - Dbuf_Index'First) * Config.Data_Buffer_Size;
    begin

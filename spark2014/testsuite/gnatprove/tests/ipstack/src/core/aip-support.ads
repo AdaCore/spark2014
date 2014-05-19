@@ -1,14 +1,13 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---             Copyright (C) 2010, Free Software Foundation, Inc.           --
+--          Copyright (C) 2010-2014, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
-
---# inherit AIP;
 
 package AIP.Support is
    pragma Preelaborate;
 
-   procedure Verify (T : Boolean);
+   procedure Verify (T : Boolean) with
+     Depends => (null => T);
 
    procedure Verify_Or_Err
      (T        : Boolean;

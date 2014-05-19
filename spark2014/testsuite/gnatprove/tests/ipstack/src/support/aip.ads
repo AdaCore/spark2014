@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---          Copyright (C) 2010-2012, Free Software Foundation, Inc.         --
+--          Copyright (C) 2010-2014, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 --  This is the root of the Ada IP stack package hierarchy.
@@ -61,8 +61,6 @@
 --  AIP.Inet            Internetting facilities (hton/ntoh etc)
 
 with AIP_Constants;
-
---# inherit AIP_Constants;
 
 package AIP is
    pragma Pure;

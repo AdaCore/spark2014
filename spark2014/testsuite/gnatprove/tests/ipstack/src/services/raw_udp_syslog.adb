@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---          Copyright (C) 2010-2012, Free Software Foundation, Inc.         --
+--          Copyright (C) 2010-2014, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 with System;
@@ -20,7 +20,6 @@ package body RAW_UDP_Syslog is
 
    procedure SYSLOG_Process_Recv
      (Ev : AIP.UDP.UDP_Event_T; Pcb : AIP.PCBs.PCB_Id)
-      --# global in out AIP.Pools.Buffer_POOL;
    is
       --  Process datagram received on our syslog port.  We build a packet
       --  buffer with a valid user.debug syslog header + the start of an
@@ -104,9 +103,7 @@ package body RAW_UDP_Syslog is
    -- Init --
    ----------
 
-   procedure Init
-      --# global out Syslog_Recv_Cb_Id;
-   is
+   procedure Init is
       Pcb : AIP.PCBs.PCB_Id;
       Err : AIP.Err_T;
    begin

@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---          Copyright (C) 2010-2012, Free Software Foundation, Inc.         --
+--          Copyright (C) 2010-2014, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 with AIP.Buffers.Common;
@@ -11,10 +11,12 @@ with AIP.Support;
 
 use type AIP.Buffers.Common.Packet_Queue_Ptrs;
 
-package body AIP.Buffers
---# own State is AIP.Buffers.Common.Buf_List,
---#              AIP.Buffers.Data.State, AIP.Buffers.Data.Free_List,
---#              AIP.Buffers.No_Data.State, AIP.Buffers.No_Data.Free_List;
+package body AIP.Buffers with
+  Refined_State => (State => (AIP.Buffers.Common.Buf_List,
+                              AIP.Buffers.Data.State,
+                              AIP.Buffers.Data.Free_List,
+                              AIP.Buffers.No_Data.State,
+                              AIP.Buffers.No_Data.Free_List))
 is
 
    -------------------
@@ -25,7 +27,8 @@ is
      (Layer : Packet_Layer;
       Queue : in out Packet_Queue;
       Buf   : Buffer_Id)
-   --# global in out Common.Buf_List;
+   with
+     Refined_Global => (In_Out => Common.Buf_List)
    is
    begin
       if Queue.Tail /= NOBUF then
@@ -52,10 +55,10 @@ is
       Src : Buffer_Id;
       Len : AIP.U16_T;
       Err : out AIP.Err_T)
-   --# global in out Data.State, No_Data.State;
+   with
+     Refined_Global => (In_Out => (Data.State, No_Data.State)),
+     SPARK_Mode => Off  --  Modifications through aliasing
    is
-      --# hide Buffer_Copy;
-
       type Data is array (1 .. Len) of U8_T;
 
       Src_Data : Data;
@@ -79,10 +82,12 @@ is
    -- Buffer_Init --
    -----------------
 
-   procedure Buffer_Init
-   --# global out Common.Buf_List,
-   --#            Data.State, Data.Free_List,
-   --#            No_Data.State, No_Data.Free_List;
+   procedure Buffer_Init with
+     Refined_Global => (Output => (Common.Buf_List,
+                                   Data.Free_List,
+                                   Data.State,
+                                   No_Data.Free_List,
+                                   No_Data.State))
    is
    begin
       --  Zero out all the memory for common buffers data structure to zero
@@ -128,7 +133,10 @@ is
       Size   : Data_Length;
       Kind   : Data_Buffer_Kind;
       Buf    : out Buffer_Id)
-   --# global in out Common.Buf_List, Data.State, Data.Free_List;
+   with
+     Refined_Global => (In_Out => (Common.Buf_List,
+                                   Data.Free_List,
+                                   Data.State))
    is
 
       Dbuf : Data.Dbuf_Id;
@@ -152,7 +160,10 @@ is
       Size     : Data_Length;
       Data_Ref : System.Address;
       Buf      : out Buffer_Id)
-   --# global in out Common.Buf_List, No_Data.State, No_Data.Free_List;
+   with
+     Refined_Global => (In_Out => (Common.Buf_List,
+                                   No_Data.Free_List,
+                                   No_Data.State))
    is
       Rbuf : No_Data.Rbuf_Id;
    begin
@@ -170,8 +181,8 @@ is
    -- Buffer_Get_Kind --
    ---------------------
 
-   function Buffer_Get_Kind (Buf : Buffer_Id) return Buffer_Kind
-   --# global in Data.State;
+   function Buffer_Get_Kind (Buf : Buffer_Id) return Buffer_Kind with
+     Refined_Global => Data.State
    is
       Kind : Buffer_Kind;
    begin
@@ -187,8 +198,8 @@ is
    -- Buffer_Len --
    ----------------
 
-   function Buffer_Len (Buf : Buffer_Id) return AIP.U16_T
-   --# global in Common.Buf_List;
+   function Buffer_Len (Buf : Buffer_Id) return AIP.U16_T with
+     Refined_Global => Common.Buf_List
    is
    begin
       return Common.Buf_List (Buf).Len;
@@ -198,8 +209,8 @@ is
    -- Buffer_Tlen --
    -----------------
 
-   function Buffer_Tlen (Buf : Buffer_Id) return AIP.U16_T
-   --# global in Common.Buf_List;
+   function Buffer_Tlen (Buf : Buffer_Id) return AIP.U16_T with
+     Refined_Global => Common.Buf_List
    is
    begin
       return Common.Buf_List (Buf).Tot_Len;
@@ -209,8 +220,8 @@ is
    -- Buffer_Next --
    -----------------
 
-   function Buffer_Next (Buf : Buffer_Id) return Buffer_Id
-   --# global in Common.Buf_List;
+   function Buffer_Next (Buf : Buffer_Id) return Buffer_Id with
+     Refined_Global => Common.Buf_List
    is
    begin
       return Common.Buf_List (Buf).Next;
@@ -220,8 +231,8 @@ is
    -- Buffer_Payload --
    --------------------
 
-   function Buffer_Payload (Buf : Buffer_Id) return System.Address
-   --# global in Data.State, No_Data.State, Common.Buf_List;
+   function Buffer_Payload (Buf : Buffer_Id) return System.Address with
+     Refined_Global => (Common.Buf_List, Data.State, No_Data.State)
    is
       Result : System.Address;
    begin
@@ -237,8 +248,8 @@ is
    -- Buffer_Poffset --
    --------------------
 
-   function Buffer_Poffset (Buf : Buffer_Id) return AIP.U16_T
-   --# global in Common.Buf_List;
+   function Buffer_Poffset (Buf : Buffer_Id) return AIP.U16_T with
+     Refined_Global => Common.Buf_List
    is
    begin
       return Common.Buf_List (Buf).Poffset;
@@ -252,7 +263,8 @@ is
      (Buf  : Buffer_Id;
       Bump : AIP.S16_T;
       Err  : out AIP.Err_T)
-   --# global in out Common.Buf_List;
+   with
+     Refined_Global => (In_Out => Common.Buf_List)
    is
       Offset : AIP.U16_T;
    begin
@@ -308,7 +320,9 @@ is
      (Buf   : Buffer_Id;
       Pload : System.Address;
       Err   : out AIP.Err_T)
-   --# global in out Common.Buf_List; in Data.State, No_Data.State;
+   with
+     Refined_Global => (Input  => (Data.State, No_Data.State),
+                        In_Out => Common.Buf_List)
    is
       Pload_Shift : AIP.S16_T;
       --  Amount by which we need to shift the payload pointer. Positive
@@ -327,7 +341,9 @@ is
      (Buf : Buffer_Id;
       Len : AIP.U16_T;
       Err : out AIP.Err_T)
-   --# global in out Common.Buf_List; in Data.State;
+   with
+     Refined_Global => (Input  => Data.State,
+                        In_Out => Common.Buf_List)
    is
       Kind    : Buffer_Kind;
       Cur_Buf : Buffer_Id;
@@ -350,7 +366,6 @@ is
       loop
          Common.Buf_List (Cur_Buf).Tot_Len := New_Len;
 
-         --# accept F, 41, "Expression is stable";
          case Kind is
             when SPLIT_BUF =>
                Common.Buf_List (Cur_Buf).Len := New_Len;
@@ -371,7 +386,6 @@ is
                                 New_Len);
                New_Len := New_Len - Common.Buf_List (Cur_Buf).Len;
          end case;
-         --# end accept;
 
          Cur_Buf := Common.Buf_List (Cur_Buf).Next;
       end loop;
@@ -381,8 +395,8 @@ is
    -- Buffer_Ref --
    ----------------
 
-   procedure Buffer_Ref (Buf : Buffer_Id)
-   --# global in out Common.Buf_List;
+   procedure Buffer_Ref (Buf : Buffer_Id) with
+     Refined_Global => (In_Out => Common.Buf_List)
    is
    begin
       Common.Buf_List (Buf).Ref := Common.Buf_List (Buf).Ref + 1;
@@ -392,9 +406,11 @@ is
    -- Buffer_Free --
    -----------------
 
-   procedure Buffer_Free (Buf : Buffer_Id; N_Deallocs : out AIP.U8_T)
-   --# global in out Common.Buf_List, Data.State,
-   --#               Data.Free_List, No_Data.Free_List;
+   procedure Buffer_Free (Buf : Buffer_Id; N_Deallocs : out AIP.U8_T) with
+     Refined_Global => (In_Out => (Common.Buf_List,
+                                   Data.Free_List,
+                                   Data.State,
+                                   No_Data.Free_List))
    is
       Cur_Buf, Next_Buf : Buffer_Id;
 
@@ -448,27 +464,28 @@ is
    -- Buffer_Blind_Free --
    -----------------------
 
-   procedure Buffer_Blind_Free (Buf : Buffer_Id)
-   --# global in out Common.Buf_List, Data.State,
-   --#               Data.Free_List, No_Data.Free_List;
+   procedure Buffer_Blind_Free (Buf : Buffer_Id) with
+     Refined_Global => (In_Out => (Common.Buf_List,
+                                   Data.Free_List,
+                                   Data.State,
+                                   No_Data.Free_List))
    is
       N_Deallocs : AIP.U8_T;
       pragma Unreferenced (N_Deallocs);
    begin
-      --# accept F, 10, N_Deallocs, "Assignment is ineffective";
+      pragma Warnings (Off, "unused assignment to ""N_Deallocs""");
       Buffer_Free (Buf, N_Deallocs);
-      --# end accept;
-      --# accept F, 33, N_Deallocs,
-      --#               "The variable is neither referenced nor exported";
    end Buffer_Blind_Free;
 
    --------------------
    -- Buffer_Release --
    --------------------
 
-   procedure Buffer_Release (Buf : Buffer_Id)
-   --# global in out Common.Buf_List, Data.State,
-   --#               Data.Free_List, No_Data.Free_List;
+   procedure Buffer_Release (Buf : Buffer_Id) with
+     Refined_Global => (In_Out => (Common.Buf_List,
+                                   Data.Free_List,
+                                   Data.State,
+                                   No_Data.Free_List))
    is
       N_Deallocs : AIP.U8_T := 0;
    begin
@@ -482,8 +499,8 @@ is
    -- Buffer_Cat --
    ----------------
 
-   procedure Buffer_Cat (Head : Buffer_Id; Tail : Buffer_Id)
-   --# global in out Common.Buf_List;
+   procedure Buffer_Cat (Head : Buffer_Id; Tail : Buffer_Id) with
+     Refined_Global => (In_Out => Common.Buf_List)
    is
       Cur_Buf, Next_Buf : Buffer_Id;
       Tail_Len          : Data_Length;
@@ -518,8 +535,8 @@ is
    -- Buffer_Chain --
    ------------------
 
-   procedure Buffer_Chain (Head : Buffer_Id; Tail : Buffer_Id)
-   --# global in out Common.Buf_List;
+   procedure Buffer_Chain (Head : Buffer_Id; Tail : Buffer_Id) with
+     Refined_Global => (In_Out => Common.Buf_List)
    is
    begin
       Buffer_Ref (Tail);
@@ -560,8 +577,8 @@ is
    -- Packet_Info --
    -----------------
 
-   function Packet_Info (B : Buffer_Id) return System.Address
-   --# global in Common.Buf_List;
+   function Packet_Info (B : Buffer_Id) return System.Address with
+     Refined_Global => Common.Buf_List
    is
    begin
       return Common.Buf_List (B).Packet_Info;
@@ -575,7 +592,8 @@ is
      (Layer : Packet_Layer;
       Queue : in out Packet_Queue;
       Buf   : out Buffer_Id)
-   --# global in out Common.Buf_List;
+   with
+     Refined_Global => (In_Out => Common.Buf_List)
    is
    begin
       Buf := Queue.Head;
@@ -596,8 +614,8 @@ is
    -- Set_Packet_Info --
    ---------------------
 
-   procedure Set_Packet_Info (B : Buffer_Id; PI : System.Address)
-   --# global in out Common.Buf_List;
+   procedure Set_Packet_Info (B : Buffer_Id; PI : System.Address) with
+     Refined_Global => (In_Out => Common.Buf_List)
    is
    begin
       Common.Buf_List (B).Packet_Info := PI;

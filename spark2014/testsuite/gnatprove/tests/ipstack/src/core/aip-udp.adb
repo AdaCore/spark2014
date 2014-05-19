@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---          Copyright (C) 2010-2012, Free Software Foundation, Inc.         --
+--          Copyright (C) 2010-2014, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 with AIP.Checksum;
@@ -9,13 +9,54 @@ with AIP.Inet;
 
 with AIP.ICMP;
 with AIP.ICMPH;
-with AIP.IP;
 with AIP.IPH;
 with AIP.UDPH;
 
-package body AIP.UDP
-   --# own State is IPCBs, UPCBs, Bound_PCBs;
+package body AIP.UDP with
+  Refined_State => (State => (IPCBs, UPCBs, Bound_PCBs))
 is
+
+   -----------------------
+   -- Local subprograms --
+   -----------------------
+
+   procedure PCB_Force_Bind (PCB : PCBs.PCB_Id; Err : out AIP.Err_T)
+   --  Force a local binding on PCB if it isn't bound already.
+   --
+   --  ERR as UDP_Bind.
+   with
+     Global => (In_Out => (Bound_PCBs, IPCBs));
+
+   ------------------------
+   -- UDP_Send internals --
+   ------------------------
+
+   procedure Prepend_UDP_Header
+     (Buf  : Buffers.Buffer_Id;
+      Ubuf : out Buffers.Buffer_Id;
+      Err  : out AIP.Err_T)
+   --  Setup space for a UDP header before the data in Buf. See if there is
+   --  enough room preallocated for this purpose, and adjust the payload
+   --  pointer in this case. Prepend a separate buffer otherwise.
+   --
+   --  ERR_MEM if the operation failed. BUF is unchanged in this case.
+   with
+     Global => (In_Out => Buffers.State);
+
+   procedure UDP_Send_To_If
+     (PCB      : PCBs.PCB_Id;
+      Buf      : Buffers.Buffer_Id;
+      Dst_IP   : IPaddrs.IPaddr;
+      NH_IP    : IPaddrs.IPaddr;
+      Dst_Port : PCBs.Port_T;
+      Netif    : NIF.Netif_Id;
+      Err      : out AIP.Err_T)
+   --  Send BUF to DST_IP/DST_PORT via next hop NH_IP through NETIF, acting
+   --  for PCB. This involves prepending a UDP header in front of BUF.
+   --
+   --  ERR_VAL if PCB has a specific local IP set which differs from NETIF's.
+   with
+     Global => (In_Out => (Bound_PCBs, Buffers.State, IP.State, IPCBs));
 
    ---------------------
    -- Data structures --
@@ -51,8 +92,8 @@ is
    -- UDP_Init --
    --------------
 
-   procedure UDP_Init
-      --# global out IPCBs, UPCBs, Bound_PCBs;
+   procedure UDP_Init with
+     Refined_Global => (Output => (Bound_PCBs, IPCBs, UPCBs))
    is
    begin
       --  Initialize all the PCBs, marking them unused, and initialize the list
@@ -68,8 +109,8 @@ is
    -- UDP_New --
    -------------
 
-   procedure UDP_New (PCB : out PCBs.PCB_Id)
-      --# global in out IPCBs, UPCBs;
+   procedure UDP_New (PCB : out PCBs.PCB_Id) with
+     Refined_Global => (In_Out => (IPCBs, UPCBs))
    is
    begin
       PCBs.Allocate (IPCBs, PCB);
@@ -87,8 +128,9 @@ is
    procedure UDP_Input
      (Buf   : Buffers.Buffer_Id;
       Netif : NIF.Netif_Id)
-      --# global in out Buffers.State; in Bound_PCBs, IPCBs, UPCBs;
-
+   with
+     Refined_Global => (Input  => (Bound_PCBs, IPCBs, UPCBs),
+                        In_Out => Buffers.State)
    is
       Ihdr, Uhdr, PUhdr : System.Address;
 
@@ -96,8 +138,6 @@ is
       Err      : AIP.Err_T;
       PCB      : PCBs.PCB_Id := PCBs.NOPCB;
       Wildcard : Natural;
-      --# accept F,33,Wildcard,"Value discarded";
-      --# accept F,10,Wildcard,"Value discarded";
    begin
       --  Latch address of IP header and retrieve a UDP view of the incoming
       --  datagram.
@@ -141,6 +181,7 @@ is
       --  unreachable if none could be found.
 
       if AIP.No (Err) then
+         pragma Warnings (Off, "unused assignment to ""Wildcard""");
          PCBs.Find_PCB_In_List
            (Local_IP    => IPH.IPH_Dst_Address (Ihdr),
             Local_Port  => UDPH.UDPH_Dst_Port  (Uhdr),
@@ -150,6 +191,7 @@ is
             PCB_Pool    => IPCBs,
             PCB         => PCB,
             Wildcard    => Wildcard);
+         pragma Warnings (On, "unused assignment to ""Wildcard""");
 
          if PCB = PCBs.NOPCB then
             --  Recover IP header and send ICMP destination unreachable
@@ -198,7 +240,8 @@ is
       Local_IP   : IPaddrs.IPaddr;
       Local_Port : PCBs.Port_T;
       Err        : out AIP.Err_T)
-      --# global in out IPCBs, Bound_PCBs;
+   with
+     Refined_Global => (In_Out => (Bound_PCBs, IPCBs))
    is
    begin
       PCBs.Bind_PCB
@@ -219,9 +262,7 @@ is
    -- PCB_Force_Bind --
    --------------------
 
-   procedure PCB_Force_Bind (PCB : PCBs.PCB_Id; Err : out AIP.Err_T)
-      --# global in out IPCBs, Bound_PCBs;
-   is
+   procedure PCB_Force_Bind (PCB : PCBs.PCB_Id; Err : out AIP.Err_T) is
    begin
       if IPCBs (PCB).Local_Port = PCBs.NOPORT then
          UDP_Bind (PCB, IPaddrs.IP_ADDR_ANY, PCBs.NOPORT, Err);
@@ -239,7 +280,8 @@ is
       Remote_IP   : IPaddrs.IPaddr;
       Remote_Port : PCBs.Port_T;
       Err         : out AIP.Err_T)
-      --# global in out IPCBs, Bound_PCBs;
+   with
+     Refined_Global => (In_Out => (Bound_PCBs, IPCBs))
    is
    begin
       --  Make sure we have a local binding in place, so that the (dummy)
@@ -314,7 +356,6 @@ is
       Dst_Port : PCBs.Port_T;
       Netif    : NIF.Netif_Id;
       Err      : out AIP.Err_T)
-      --# global in out Buffers.State, IP.State, IPCBs, Bound_PCBs;
    is
       Ubuf : Buffers.Buffer_Id;
       Ulen : AIP.U16_T;
@@ -374,11 +415,11 @@ is
                --  IP and link layers downstack and not yet filled with
                --  anything of use.
 
-               --# accept F, 10, Err, "Assignment is ineffective";
+               pragma Warnings (Off, "unused assignment to ""Err""");
                Buffers.Buffer_Header
                  (Ubuf, UDPH.UDP_Pseudo_Header_Size / 8, Err);
                pragma Assert (No (Err));
-               --# end accept;
+               pragma Warnings (On, "unused assignment to ""Err""");
 
                PUhdr := Buffers.Buffer_Payload (Ubuf);
                UDPH.Set_UDPP_Src_Address (PUhdr, Src_IP);
@@ -396,11 +437,11 @@ is
 
                --  Remove pseudo-header
 
-               --# accept F, 10, Err, "Assignment is ineffective";
+               pragma Warnings (Off, "unused assignment to ""Err""");
                Buffers.Buffer_Header
                  (Ubuf, -UDPH.UDP_Pseudo_Header_Size / 8, Err);
                pragma Assert (No (Err));
-               --# end accept;
+               pragma Warnings (On, "unused assignment to ""Err""");
 
             end if;
 
@@ -437,7 +478,9 @@ is
      (PCB : PCBs.PCB_Id;
       Buf : Buffers.Buffer_Id;
       Err : out AIP.Err_T)
-      --# global in out Buffers.State, IP.State, IPCBs, Bound_PCBs; in IP.FIB;
+   with
+     Refined_Global => (Input  => IP.FIB,
+                        In_Out => (Bound_PCBs, Buffers.State, IP.State, IPCBs))
    is
       Dst_IP : IPaddrs.IPaddr;
       Dst_Port : PCBs.Port_T;
@@ -476,8 +519,8 @@ is
    -- UDP_Disconnect --
    --------------------
 
-   procedure UDP_Disconnect (PCB : PCBs.PCB_Id)
-      --# global in out IPCBs;
+   procedure UDP_Disconnect (PCB : PCBs.PCB_Id) with
+     Refined_Global => (In_Out => IPCBs)
    is
    begin
       --  Reset the remote address association and flag PCB as unconnected
@@ -491,8 +534,8 @@ is
    -- UDP_Release --
    -----------------
 
-   procedure UDP_Release (PCB : PCBs.PCB_Id)
-      --# global in out IPCBs, Bound_PCBs;
+   procedure UDP_Release (PCB : PCBs.PCB_Id) with
+     Refined_Global => (In_Out => (Bound_PCBs, IPCBs))
    is
    begin
       PCBs.Unlink (PCB, Bound_PCBs, IPCBs);
@@ -507,7 +550,8 @@ is
      (Evk  : UDP_Event_Kind;
       PCB  : PCBs.PCB_Id;
       Cbid : Callbacks.CBK_Id)
-   --# global in out UPCBs;
+   with
+     Global => (In_Out => UPCBs)
    is
    begin
       UPCBs (PCB).Callbacks (Evk) := Cbid;
@@ -520,7 +564,8 @@ is
    procedure On_UDP_Recv
      (PCB  : PCBs.PCB_Id;
       Cbid : Callbacks.CBK_Id)
-   --# global in out UPCBs;
+   with
+     Refined_Global => (In_Out => UPCBs)
    is
    begin
       UDP_Callback (UDP_EVENT_RECV, PCB, Cbid);
@@ -530,15 +575,15 @@ is
    -- UDP_Udata --
    ---------------
 
-   procedure UDP_Set_Udata (PCB : PCBs.PCB_Id; Udata : System.Address)
-      --# global in out IPCBs;
+   procedure UDP_Set_Udata (PCB : PCBs.PCB_Id; Udata : System.Address) with
+     Refined_Global => (In_Out => IPCBs)
    is
    begin
       IPCBs (PCB).Udata := Udata;
    end UDP_Set_Udata;
 
-   function UDP_Udata (PCB : PCBs.PCB_Id) return System.Address
-      --# global in IPCBs;
+   function UDP_Udata (PCB : PCBs.PCB_Id) return System.Address with
+     Refined_Global => IPCBs
    is
    begin
       return IPCBs (PCB).Udata;

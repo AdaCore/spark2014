@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---             Copyright (C) 2010, Free Software Foundation, Inc.           --
+--          Copyright (C) 2010-2014, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 --  Internal conversion services for AIP
@@ -37,7 +37,8 @@ package body AIP.Conversions is
      (Dst : System.Address;
       Src : System.Address;
       Len : Integer)
-   --# hide Memcpy;
+   with
+     SPARK_Mode => Off
    is
       type Mem is array (Positive range 1 .. Len) of Character;
       Dst_M : Mem;

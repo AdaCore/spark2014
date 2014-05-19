@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---         Copyright (C) 2010-2012, Free Software Foundation, Inc.          --
+--         Copyright (C) 2010-2014, Free Software Foundation, Inc.          --
 ------------------------------------------------------------------------------
 
 with AIP.TCP;
@@ -12,8 +12,8 @@ with System, RAW_TCP_Callbacks;
 
 use type AIP.S8_T, AIP.U8_T, AIP.U16_T, AIP.S32_T;
 
-package body RAW_TCP_Echo
-   --#  own ECHO_STATE_POOL is ESP;
+package body RAW_TCP_Echo with
+  Refined_State => (ECHO_STATE_POOL => ESP)
 is
 
    use type System.Address;
@@ -43,8 +43,12 @@ is
 
    ESP : Echo_State_Array; -- Echo_State Pool
 
-   procedure Init_ES_Pool;
-   procedure ES_Alloc   (Sid : out ES_Id);
+   procedure Init_ES_Pool with
+     Global => (In_Out => ESP);
+
+   procedure ES_Alloc (Sid : out ES_Id) with
+     Global => (In_Out => ESP);
+
    procedure ES_Release (PCB : AIP.PCBs.PCB_Id; Es : in out Echo_State);
 
    -----------------------
@@ -53,11 +57,15 @@ is
 
    procedure Echo_Close
      (Pcb : AIP.PCBs.PCB_Id;
-      Es  : in out Echo_State);
+      Es  : in out Echo_State)
+   with
+     Global => (In_Out => ESP);
 
    procedure Echo_Send
      (Pcb : AIP.PCBs.PCB_Id;
-      Es  : in out Echo_State);
+      Es  : in out Echo_State)
+   with
+     Global => (In_Out => (AIP.Buffers.State, ESP));
 
    procedure ECHO_Process_Sent
      (Ev  : AIP.TCP.TCP_Event_T;
@@ -67,7 +75,9 @@ is
    procedure ECHO_Process_Abort
      (Ev  : AIP.TCP.TCP_Event_T;
       Pcb : AIP.PCBs.PCB_Id;
-      Err : out AIP.Err_T);
+      Err : out AIP.Err_T)
+   with
+     Global => (In_Out => ESP);
 
    procedure ECHO_Process_Poll
      (Ev  : AIP.TCP.TCP_Event_T;
@@ -90,9 +100,7 @@ is
 
    --  Initialize the Echo_State pool, required before any other op
 
-   procedure Init_ES_Pool
-   --# global in out ESP;
-   is
+   procedure Init_ES_Pool is
    begin
       for Id in Valid_ES_Id loop
          ESP (Id).Kind := ES_FREE;
@@ -106,9 +114,7 @@ is
    --  Search a free for use entry in the pool. If found, move to ES_NONE and
    --  return Id. Return NOES otherwise.
 
-   procedure ES_Alloc (Sid : out ES_Id)
-   --# global in out ESP;
-   is
+   procedure ES_Alloc (Sid : out ES_Id) is
    begin
       Sid := NOES;
       for Id in Valid_ES_Id loop
@@ -139,7 +145,6 @@ is
    procedure Echo_Close
      (Pcb : AIP.PCBs.PCB_Id;
       Es  : in out Echo_State)
-   --# global in out ESP;
    is
       Err : AIP.Err_T;
    begin
@@ -155,7 +160,6 @@ is
    procedure Echo_Send
      (Pcb : AIP.PCBs.PCB_Id;
       Es  : in out Echo_State)
-   --# global in out ESP; in out AIP.Buffers.State;
    is
       Buf  : AIP.Buffers.Buffer_Id;
       Plen : AIP.U16_T;
@@ -251,7 +255,6 @@ is
      (Ev  : AIP.TCP.TCP_Event_T;
       Pcb : AIP.PCBs.PCB_Id;
       Err : out AIP.Err_T)
-   --# global in out ESP;
    is
       Es : Echo_State;
       for Es'Address use AIP.TCP.TCP_Udata (Pcb);
@@ -388,7 +391,8 @@ is
    -- Init --
    ----------
 
-   procedure Init
+   procedure Init with
+     Refined_Global => (In_Out => ESP)
    is
       Pcb : AIP.PCBs.PCB_Id;
       Err : AIP.Err_T;

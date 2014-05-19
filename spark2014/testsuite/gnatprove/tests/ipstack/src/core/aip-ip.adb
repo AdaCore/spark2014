@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---          Copyright (C) 2010-2012, Free Software Foundation, Inc.         --
+--          Copyright (C) 2010-2014, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 with AIP.Checksum;
@@ -13,9 +13,9 @@ with AIP.ICMP;
 with AIP.UDP;
 with AIP.TCP;
 
-package body AIP.IP
-   --# own State is IP_Serial
-   --#     & FIB is Default_Router;
+package body AIP.IP with
+  Refined_State => (State => IP_Serial,
+                    FIB   => Default_Router)
 is
 
    Default_Router : IPaddrs.IPaddr := IPaddrs.IP_ADDR_ANY;
@@ -67,9 +67,10 @@ is
    -- IP_Forward --
    ----------------
 
-   procedure IP_Forward (Buf : Buffers.Buffer_Id; Netif : NIF.Netif_Id) is
+   procedure IP_Forward (Buf : Buffers.Buffer_Id; Netif : NIF.Netif_Id) with
+     SPARK_Mode => Off
+   is
       pragma Unreferenced (Netif);
-      --# hide IP_Forward;
    begin
       --  ??? TBD
 
@@ -80,7 +81,10 @@ is
    -- IP_Input --
    --------------
 
-   procedure IP_Input (Netif : NIF.Netif_Id; Buf : Buffers.Buffer_Id) is
+   procedure IP_Input (Netif : NIF.Netif_Id; Buf : Buffers.Buffer_Id) with
+     Refined_Global => (Input  => (Default_Router, UDP.State),
+                        In_Out => (IP_Serial, Buffers.State, TCP.State))
+   is
       Err  : AIP.Err_T := AIP.NOERR;
 
       Ihdr : System.Address;
@@ -91,20 +95,20 @@ is
       Local : Boolean := False;
       --  Set True for a packet bound for the local node
 
---    procedure Dispatch_Upper
---      (Proto : AIP.U8_T;
---       Buf   : Buffers.Buffer_Id;
---       Netif : NIF.Netif_Id;
---       Err   : out AIP.Err_T);
+      procedure Dispatch_Upper
+        (Proto : AIP.U8_T;
+         Buf   : Buffers.Buffer_Id;
+         Netif : NIF.Netif_Id;
+         Err   : out AIP.Err_T)
       --  Dispatch packet in Buf received on Netif to upper protocol layer
       --  according to IP protocol identifier Proto.
+      with
+        Global => (Input  => (Default_Router, UDP.State),
+                   In_Out => (IP_Serial, Buffers.State, TCP.State));
 
       --------------------
       -- Dispatch_Upper --
       --------------------
-
-      --  Dispatch packet in Buf received on Netif to upper protocol layer
-      --  according to IP protocol identifier Proto.
 
       procedure Dispatch_Upper
         (Proto : AIP.U8_T;
@@ -112,8 +116,6 @@ is
          Netif : NIF.Netif_Id;
          Err   : out AIP.Err_T)
       is
-         --# hide Dispatch_Upper;
-         --  Hidden to avoid circular dependency in inherit clauses
       begin
          Err := NOERR;
 
@@ -184,9 +186,7 @@ is
          --  case of multicast???
             Local := True;
 
-         --# accept F,22,"Static config value";
          elsif Config.Enable_Forwarding then
-         --# end accept;
             Local := False;
 
          else
@@ -201,9 +201,10 @@ is
 
       if AIP.No (Err) then
          if Local then
-            --# accept F,10,Err,"Discard error from upper layer";
+            pragma Warnings (Off, "unused assignment to ""Err""");
+            --  Discard error from upper layer
             Dispatch_Upper (IPH.IPH_Protocol (Ihdr), Buf, Netif, Err);
-            --# end accept;
+            pragma Warnings (On, "unused assignment to ""Err""");
          else
             IP_Forward (Buf, Netif);
          end if;
@@ -226,7 +227,8 @@ is
       Proto  : AIP.U8_T;
       Netif  : NIF.Netif_Id;
       Err    : out AIP.Err_T)
-   --# global in out IP_Serial, Buffers.State;
+   with
+     Refined_Global => (In_Out => (Buffers.State, IP_Serial))
    is
       Ihdr : System.Address;
    begin
@@ -269,7 +271,8 @@ is
      (Dst_IP   : IPaddrs.IPaddr;
       Next_Hop : out IPaddrs.IPaddr;
       Netif    : out AIP.EID)
-   --# global in Default_Router;
+   with
+     Refined_Global => (Input => Default_Router)
    is
    begin
       --  Currently we support only direct interface routes and the default
@@ -295,8 +298,8 @@ is
    -- Set_Default_Router --
    ------------------------
 
-   procedure Set_Default_Router (IPA : IPaddrs.IPaddr)
-   --# global out Default_Router;
+   procedure Set_Default_Router (IPA : IPaddrs.IPaddr) with
+     Refined_Global => (Output => Default_Router)
    is
    begin
       Default_Router := IPA;

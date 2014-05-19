@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---             Copyright (C) 2010, Free Software Foundation, Inc.           --
+--          Copyright (C) 2010-2014, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 with GNAT.IO;
@@ -11,8 +11,9 @@ package body AIP.Support is
    -- Log --
    ---------
 
-   procedure Log (Msg : String) is
-      --# hide Log;
+   procedure Log (Msg : String) with
+     SPARK_Mode => Off
+   is
    begin
       GNAT.IO.Put_Line (Msg);
    end Log;
@@ -21,8 +22,9 @@ package body AIP.Support is
    -- Verify --
    ------------
 
-   procedure Verify (T : Boolean) is
-      --# hide Verify;
+   procedure Verify (T : Boolean) with
+      SPARK_Mode => Off
+   is
    begin
       if not T then
          raise Program_Error;

@@ -16,5 +16,7 @@ project IPStack_Support is
    package Compiler is
       for Default_Switches ("Ada")
         use IPStack_Config.Compiler'Default_Switches ("Ada");
+      for Local_Configuration_Pragmas
+        use IPStack_Config.Compiler'Local_Configuration_Pragmas;
    end Compiler;
 end IPStack_Support;

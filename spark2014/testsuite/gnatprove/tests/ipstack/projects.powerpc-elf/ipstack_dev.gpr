@@ -20,5 +20,7 @@ project IPStack_Dev is
         use IPStack_Config.Compiler'Default_Switches ("Ada");
       for Default_Switches ("C")
         use IPStack_Config.Compiler'Default_Switches ("C");
+      for Local_Configuration_Pragmas
+        use IPStack_Config.Compiler'Local_Configuration_Pragmas;
    end Compiler;
 end IPStack_Dev;

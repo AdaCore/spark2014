@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---             Copyright (C) 2010, Free Software Foundation, Inc.           --
+--         Copyright (C) 2010-2014, Free Software Foundation, Inc.          --
 ------------------------------------------------------------------------------
 
 --  Callback identifiers for UDP services. In a standalone unit to allow
@@ -8,7 +8,6 @@
 --  in service implementations and the events dispatcher.
 
 with AIP.Callbacks;
---# inherit AIP.Callbacks;
 
 package RAW_UDP_Callbacks is
 

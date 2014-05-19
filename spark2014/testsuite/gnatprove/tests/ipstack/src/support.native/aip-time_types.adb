@@ -1,11 +1,13 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---          Copyright (C) 2010-2012, Free Software Foundation, Inc.         --
+--          Copyright (C) 2010-2014, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 with Ada.Real_Time;
 
-package body AIP.Time_Types is
+package body AIP.Time_Types with
+  SPARK_Mode => Off
+is
    Start : constant Ada.Real_Time.Time := Ada.Real_Time.Clock;
 
    ---------

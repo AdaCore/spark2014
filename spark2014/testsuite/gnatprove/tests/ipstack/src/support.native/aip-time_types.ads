@@ -1,9 +1,7 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---          Copyright (C) 2010-2012, Free Software Foundation, Inc.         --
+--          Copyright (C) 2010-2014, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
-
---# inherit AIP;
 
 package AIP.Time_Types is
 
@@ -13,7 +11,9 @@ package AIP.Time_Types is
    Hz : constant Interval := 1_000;
    --  Number of Time units per second
 
-   function Now return Time;
+   function Now return Time
    --  Elapsed time since unspecified epoch, in 1/Hz units
+   with
+     Global => null;
 
 end AIP.Time_Types;
