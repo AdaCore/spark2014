@@ -374,7 +374,7 @@ package body Gnat2Why.Driver is
            (GNAT.Expect.Get_Command_Output
               ("gnatwhy3",
                Call.Argument_List_Of_String_List (Gnat2Why_Args.Why3_Args),
-               Err_To_Out => False,
+               Err_To_Out => True,
                Input      => "",
                Status     => Status'Access));
          Set_Directory (Old_Dir);
