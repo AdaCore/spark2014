@@ -93,8 +93,14 @@ reading a temperature from a device or writing the same value to a
 lamp driver or display. |SPARK| provides a mechanism to indicate
 whether a read or write is always significant.
 
-External state is a variable declared as Volatile or a state abstraction which
-represents one or more volatile variables (or it could be a null state
+In |SPARK|, the terms *volatile type* and *volatile object* are defined
+as per Ada RM C.6(8/3). An *effectively volatile type* is a volatile type
+or an array type to which the Volatile_Components aspect has
+been applied. An *effectively volatile object* is a volatile object or
+an object of an array type to which Volatile_Components has been applied.
+
+External state is an effectively volatile object or a state abstraction which
+represents one or more effectively volatile objects (or it could be a null state
 abstraction; see :ref:`abstract-state-aspect`).
 
 Four Boolean valued *properties* of external states that may be specified are
@@ -110,8 +116,8 @@ defined:
 
   * Effective_Reads - every read of the external state is significant.
 
-These properties may be specified for a Volatile variable as Boolean aspects or
-as external properties of an external state abstraction.
+These properties may be specified for an effectively volatile object
+as Boolean aspects or as external properties of an external state abstraction.
 
 .. centered:: **Legality Rules**
 
@@ -220,16 +226,14 @@ External State - Variables
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 In Ada interfacing to an external device or subsystem normally entails
-using one or more volatile variables to ensure that writes and reads
+using one or more effectively volatile objects to ensure that writes and reads
 to the device are not optimized by the compiler into internal register
-reads and writes. A variable is specified as Volatile using the Ada
-aspect or pragma Volatile or Atomic.  Additionally a variable is
-volatile if its subtype is specified as volatile.
+reads and writes.
 
-|SPARK| refines the Volatile specification by introducing four new Boolean
-aspects which may be applied only to objects declared as Volatile. The aspects
-may be specified in the aspect specification of a Volatile object declaration
-(this excludes volatile objects that are formal parameters).
+|SPARK| refines the specification of volatility by introducing four new Boolean
+aspects which may be applied only to effectively volatile objects. The aspects
+may be specified in the aspect specification of an object declaration
+(this excludes effectively volatile objects that are formal parameters).
 
 The new aspects are:
 
@@ -243,13 +247,13 @@ The new aspects are:
 
 .. centered:: **Static Semantics**
 
-1. Concurrent accesses of a volatile variable may cause a run-time
+1. Concurrent accesses of an effectively volatile object may cause a run-time
    exception that cannot be proven to be absent by |SPARK|.
 
    [An example is a strictly 32-bit machine with a 64-bit Long_Float
    type, where some (invalid) floating point values will trap (and
    cause program termination) when loaded into a floating point
-   register.  If, on such a system, we have a volatile variable X of
+   register.  If, on such a system, we have a volatile object X of
    type Long_Float, this variable will have to be stored using two
    memory writes, so concurrent reads/writes could cause the trap, as
    we could be unlucky and see a partially updated value that happens
@@ -266,47 +270,51 @@ The new aspects are:
 
 .. _tu-cbatu-external_state_variables-03:
 
-3. All Volatile objects are considered to have one or more external
+3. All effectively volatile objects are considered to have one or more external
    state properties, either given explicitly in their declaration or
    implicitly when all the properties are considered to be True. The
-   following rules also apply to all Volatile objects.
+   following rules also apply to all effectively volatile objects.
 
 .. _tu-fe-external_state_variables-04:
 
-4. The aspects shall only be specified in the aspect specification of a Volatile
-   object declaration excluding Volatile formal parameter declarations.
+4. The aspects shall only be specified in the aspect specification of an
+   effectively volatile object declaration excluding volatile formal
+   parameter declarations.
 
 .. _tu-fe-external_state_variables-05:
 
-5. The declaration of a Volatile object (other than as a formal
+5. The declaration of an effectively volatile object (other than as a formal
    parameter) shall be at library level. [That is, it shall not be
-   declared within the scope of a subprogram body. A Volatile variable
-   has an external effect and therefore should be global even if it is
-   not visible. It is made visible via a state abstraction.]
+   declared within the scope of a subprogram body. An effectively
+   volatile object has an external effect and therefore should be global
+   even if it is not visible. It is made visible via a state abstraction.]
 
 .. _tu-fe-external_state_variables-06:
 
-6. A constant, a discriminant or a loop parameter shall not be Volatile.
+6. A constant object, a discriminant or a loop parameter shall not
+   be effectively volatile.
 
 .. _tu-fe-external_state_variables-07:
 
-7. A non-volatile object shall not have a Volatile component.
+7. A object which is not effectively volatile shall not have a volatile component.
 
 .. _tu-fe-external_state_variables-08:
 
-8. A Volatile object shall not be used as an actual parameter in a generic instantiation.
+8. An effectively volatile object shall not be used as an actual parameter in a
+   generic instantiation.
 
 .. _tu-fe-external_state_variables-09:
 
-9. A Volatile object shall not be a ``global_item`` of a function.
+9. An effectively volatile object shall not be a ``global_item`` of a function.
 
 .. _tu-fe-nt-external_state_variables-10:
 
-10. A function shall not have a formal parameter of a Volatile type.
+10. A function shall not have a formal parameter of an effectively
+    volatile type.
 
 .. _tu-fe-external_state_variables-11:
 
-11. If a Volatile object has set to True any of:
+11. If an effectively volatile object has set to True any of:
 
    - Async_Readers, Effective_Writes or Effective_Reads - it may only
      used as an actual parameter of a procedure whose corresponding
@@ -318,16 +326,16 @@ The new aspects are:
 
 .. _tu-fe-nt-external_state_variables-12:
 
-12. A Volatile object shall only occur as an actual parameter of a
+12. A effectively volatile object shall only occur as an actual parameter of a
     subprogram if the corresponding formal parameter is of a
-    non-scalar Volatile type or as an actual parameter in a call to an
+    non-scalar effectively volatile type or as an actual parameter in a call to an
     instance of Unchecked_Conversion.
 
 .. _tu-fe-external_state_variables-13:
 
 13. Contrary to the general |SPARK| rule that expression evaluation
-    cannot have side effects, a read of a Volatile object with the
-    properties Async_Writers or Effective_Reads set to True is
+    cannot have side effects, a read of an effectively volatile object with
+    the properties Async_Writers or Effective_Reads set to True is
     considered to have an effect when read. To reconcile this
     discrepancy, a name denoting such an object shall only occur in
     a *non-interfering context*. A name occurs in a non-interfering
@@ -343,7 +351,7 @@ The new aspects are:
      whose result is renamed [in an object renaming declaration]; or
 
    * the actual parameter in a procedure call of which the corresponding
-     formal parameter is of a non-scalar Volatile type; or
+     formal parameter is of a non-scalar effectively volatile type; or
 
    * the prefix of a ``slice``, ``selected_component``, ``indexed_component``,
      or ``attribute_reference`` which is itself a name occurring in a
@@ -364,15 +372,15 @@ There are no dynamic semantics associated with these aspects.
 
 .. _tu-nt-external_state_variables-14:
 
-14. As formal subprogram parameters of a Volatile type cannot have
-    these aspects specified assumptions have to be made in the body of
-    the subprogram of the properties that the formal parameter of a
+14. As formal subprogram parameters of an effectively volatile type cannot
+    have these aspects specified assumptions have to be made in the body
+    of the subprogram of the properties that the formal parameter of a
     given mode may have as follows:
 
     * mode **in**: the formal parameter cannot be updated by the
       subprogram and is considered to have the properties
       Async_Writers => True and Effective_Reads => False. The actual
-      parameter in a call must be Volatile and have these properties
+      parameter in a call must be effectively volatile and have these properties
       but may also have the properties Async_Readers and
       Effective_Writes set to True.
 
@@ -381,16 +389,16 @@ There are no dynamic semantics associated with these aspects.
       effect. The formal parameter is considered to have the
       properties Async_Readers => True and/or Effective_Writes =>
       True. The actual parameter in a call to the subprogram must be
-      Volatile and have either or both of these properties True but
-      may also have Async_Writers and Effective_Reads set to True. If
+      effectively volatile and have either or both of these properties True
+      but may also have Async_Writers and Effective_Reads set to True. If
       the subprogram attempts a read of the formal parameter a flow
       anomaly will be reported.
 
     * mode **in out**: the formal parameter is considered to have all
       properties; Async_Readers => True, Async_Writers => True,
       Effective_Reads => True, Effective_Writes => True. The actual
-      parameter in a subprogram call must be Volatile and have all of
-      these properties set to True.
+      parameter in a subprogram call must be effectively volatile and have
+      all of these properties set to True.
 
 .. _etu-external_state_variables-vr:
 

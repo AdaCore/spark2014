@@ -74,7 +74,7 @@ Type_Invariant'Class	      No		     No tasking
 Unchecked_Union		      No
 Variable_Indexing	      No
 Volatile           	      Yes
-Volatile_Components 	      No
+Volatile_Components 	      Yes
 Write			      No		     No streams
 ============================= ====================== ===============================================
 

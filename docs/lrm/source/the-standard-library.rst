@@ -570,7 +570,7 @@ and objects in |SPARK|:
 
 .. _tu-shared_variable_control-06:
 
-6. A volatile variable shall only be declared at library-level.
+6. An effectively volatile object shall only be declared at library-level.
 
 .. _etu-shared_variable_control:
 

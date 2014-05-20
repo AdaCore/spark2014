@@ -65,7 +65,7 @@ Task_Dispatching_Policy       No		     No tasking
 Unchecked_Union	 	      No
 Unsuppress 	  	      Yes
 Volatile           	      Yes
-Volatile_Components 	      Warning
+Volatile_Components 	      Yes
 ============================= ====================== ===============================================
 
 
