@@ -1,4 +1,4 @@
-admin.adb:37:6: info: length check proved
+admin.adb:37:06: info: length check proved
 admin.adb:39:52: info: length check proved
 admin.adb:42:52: info: length check proved
 admin.adb:45:51: info: length check proved
@@ -18,7 +18,7 @@ admin.ads:170:21: info: postcondition proved
 admin.ads:188:22: info: postcondition proved
 admin.ads:191:28: info: precondition proved
 admin.ads:206:22: info: postcondition proved
-admin.ads:233:8: info: length check proved
+admin.ads:233:08: info: length check proved
 admin.ads:233:48: info: length check proved
 admin.ads:235:48: info: length check proved
 admin.ads:237:48: info: length check proved
@@ -122,7 +122,7 @@ auditlog.adb:1012:61: info: overflow check proved
 auditlog.adb:1013:39: info: overflow check proved
 auditlog.adb:1021:10: info: precondition proved
 auditlog.adb:1023:10: info: precondition proved
-auditlog.adb:1031:7: info: precondition proved
+auditlog.adb:1031:07: info: precondition proved
 auditlog.adb:1070:55: info: refined post proved
 auditlog.adb:1072:67: info: range check proved
 auditlog.adb:1072:72: info: overflow check proved
@@ -146,7 +146,7 @@ auditlog.adb:1332:55: info: refined post proved
 auditlog.adb:1334:67: info: range check proved
 auditlog.adb:1334:72: info: overflow check proved
 auditlog.adb:1335:50: info: overflow check proved
-auditlog.adb:1342:7: info: precondition proved
+auditlog.adb:1342:07: info: precondition proved
 auditlog.adb:1352:10: info: precondition proved
 auditlog.adb:1411:55: info: refined post proved
 auditlog.adb:1413:67: info: range check proved
@@ -160,7 +160,7 @@ auditlog.adb:1461:58: info: overflow check proved
 auditlog.adb:1461:78: info: overflow check proved
 auditlog.adb:1491:52: info: range check proved
 auditlog.adb:1499:10: info: precondition proved
-auditlog.adb:1509:7: info: precondition proved
+auditlog.adb:1509:07: info: precondition proved
 auditlog.adb:1564:55: info: refined post proved
 auditlog.adb:1566:67: info: range check proved
 auditlog.adb:1566:72: info: overflow check proved
@@ -173,13 +173,13 @@ auditlog.adb:1587:75: info: overflow check proved
 auditlog.adb:1595:53: info: range check proved
 auditlog.adb:1598:47: info: range check proved
 auditlog.adb:1611:10: info: precondition proved
-auditlog.adb:1619:7: info: precondition proved
+auditlog.adb:1619:07: info: precondition proved
 auditlog.ads:60:22: info: postcondition proved
 auditlog.ads:92:22: info: postcondition proved
 auditlog.ads:119:22: info: postcondition proved
 auditlog.ads:143:22: info: postcondition proved
 audittypes.ads:93:58: info: length check proved
-audittypes.ads:106:6: info: length check proved
+audittypes.ads:106:06: info: length check proved
 bio.adb:244:18: warning: precondition might fail
 bio.ads:85:14: warning: subprogram "Flush" has no effect
 cert-id.adb:87:47: info: range check proved
@@ -214,52 +214,52 @@ clock.adb:246:44: info: division check proved
 clock.adb:247:25: info: division check proved
 clock.adb:247:25: info: range check proved
 clock.adb:272:36: info: length check proved
-clock.adb:289:7: info: precondition proved
+clock.adb:289:07: info: precondition proved
 clock.adb:290:44: info: division check proved
-clock.adb:294:7: info: precondition proved
+clock.adb:294:07: info: precondition proved
 clock.adb:295:45: info: division check proved
 clock.adb:296:32: info: division check proved
-clock.adb:300:7: info: precondition proved
+clock.adb:300:07: info: precondition proved
 clock.adb:301:45: info: division check proved
 clock.adb:302:32: info: division check proved
-clock.adb:306:7: info: precondition proved
+clock.adb:306:07: info: precondition proved
 clock.adb:307:44: info: division check proved
 clock.adb:323:38: info: length check proved
-clock.adb:346:7: info: precondition proved
-clock.adb:351:7: info: precondition proved
-clock.adb:356:7: info: precondition proved
-clock.adb:361:7: info: precondition proved
+clock.adb:346:07: info: precondition proved
+clock.adb:351:07: info: precondition proved
+clock.adb:356:07: info: precondition proved
+clock.adb:361:07: info: precondition proved
 clock.adb:362:49: info: division check proved
-clock.adb:366:7: info: precondition proved
+clock.adb:366:07: info: precondition proved
 clock.adb:367:50: info: division check proved
 clock.adb:368:32: info: division check proved
-clock.adb:372:7: info: precondition proved
+clock.adb:372:07: info: precondition proved
 clock.adb:373:50: info: division check proved
 clock.adb:374:32: info: division check proved
-clock.adb:378:7: info: precondition proved
+clock.adb:378:07: info: precondition proved
 clock.adb:379:50: info: division check proved
 clock.adb:380:32: info: division check proved
-configdata.adb:89:9: info: length check proved
-configdata.adb:91:9: info: length check proved
-configdata.adb:93:9: info: length check proved
-configdata.adb:95:9: info: length check proved
-configdata.adb:97:9: info: length check proved
-configdata.adb:99:9: info: length check proved
-configdata.adb:101:9: info: length check proved
-configdata.adb:103:9: info: length check proved
-configdata.adb:105:9: info: length check proved
-configdata.adb:107:9: info: length check proved
-configdata.adb:109:9: info: length check proved
-configdata.adb:111:9: info: length check proved
-configdata.adb:113:9: info: length check proved
-configdata.adb:126:6: info: length check proved
+configdata.adb:89:09: info: length check proved
+configdata.adb:91:09: info: length check proved
+configdata.adb:93:09: info: length check proved
+configdata.adb:95:09: info: length check proved
+configdata.adb:97:09: info: length check proved
+configdata.adb:99:09: info: length check proved
+configdata.adb:101:09: info: length check proved
+configdata.adb:103:09: info: length check proved
+configdata.adb:105:09: info: length check proved
+configdata.adb:107:09: info: length check proved
+configdata.adb:109:09: info: length check proved
+configdata.adb:111:09: info: length check proved
+configdata.adb:113:09: info: length check proved
+configdata.adb:126:06: info: length check proved
 configdata.adb:126:47: info: length check proved
 configdata.adb:127:47: info: length check proved
 configdata.adb:128:47: info: length check proved
 configdata.adb:129:47: info: length check proved
 configdata.adb:130:47: info: length check proved
 configdata.adb:131:47: info: length check proved
-configdata.adb:144:6: info: length check proved
+configdata.adb:144:06: info: length check proved
 configdata.adb:144:38: info: length check proved
 configdata.adb:145:38: info: length check proved
 configdata.adb:233:44: info: overflow check proved
@@ -428,7 +428,6 @@ doorapi.adb:57:32: warning: precondition might fail
 enclave.adb:105:18: info: precondition proved
 enclave.adb:189:22: info: postcondition proved
 enclave.adb:250:22: info: postcondition proved
-enclave.adb:262:16: info: precondition proved
 enclave.adb:274:18: warning: precondition might fail
 enclave.adb:286:18: warning: precondition might fail
 enclave.adb:329:22: info: postcondition proved
@@ -436,7 +435,7 @@ enclave.adb:394:22: info: postcondition proved
 enclave.adb:399:15: warning: precondition might fail
 enclave.adb:481:18: warning: precondition might fail
 enclave.adb:487:19: warning: precondition might fail
-enclave.adb:490:6: warning: postcondition might fail
+enclave.adb:490:06: warning: postcondition might fail
 enclave.adb:504:18: warning: precondition might fail
 enclave.adb:510:19: warning: precondition might fail
 enclave.adb:528:18: warning: precondition might fail
@@ -449,7 +448,7 @@ enclave.adb:636:39: warning: "Floppy.Output" might not be written
 enclave.adb:674:11: warning: precondition might fail
 enclave.adb:682:18: warning: precondition might fail
 enclave.adb:688:19: warning: precondition might fail
-enclave.adb:691:6: info: postcondition proved
+enclave.adb:691:06: info: postcondition proved
 enclave.adb:702:18: info: precondition proved
 enclave.adb:713:18: warning: precondition might fail
 enclave.adb:719:19: info: precondition proved
@@ -464,13 +463,13 @@ enclave.adb:879:15: warning: precondition might fail
 enclave.adb:887:10: info: precondition proved
 enclave.adb:889:10: info: precondition proved
 enclave.adb:943:27: warning: precondition might fail
-enclave.adb:945:6: info: postcondition proved
+enclave.adb:945:06: info: postcondition proved
 enclave.adb:956:18: info: precondition proved
 enclave.adb:997:15: info: precondition proved
 enclave.adb:1048:11: warning: precondition might fail
 enclave.adb:1057:18: warning: precondition might fail
 enclave.adb:1063:19: warning: precondition might fail
-enclave.adb:1072:6: info: postcondition proved
+enclave.adb:1072:06: info: postcondition proved
 enclave.adb:1094:18: warning: precondition might fail
 enclave.adb:1100:19: warning: precondition might fail
 enclave.adb:1105:18: info: precondition proved
@@ -478,7 +477,7 @@ enclave.adb:1108:15: warning: precondition might fail
 enclave.adb:1119:12: warning: precondition might fail
 enclave.adb:1182:11: warning: precondition might fail
 enclave.adb:1197:19: warning: precondition might fail
-enclave.adb:1206:6: warning: postcondition might fail
+enclave.adb:1206:06: warning: postcondition might fail
 enclave.adb:1215:18: warning: precondition might fail
 enclave.adb:1223:15: warning: precondition might fail
 enclave.adb:1243:18: warning: precondition might fail
@@ -488,7 +487,7 @@ enclave.adb:1295:39: warning: "Floppy.Output" might not be written
 enclave.adb:1375:18: warning: precondition might fail
 enclave.adb:1394:18: warning: precondition might fail
 enclave.adb:1400:19: warning: precondition might fail
-enclave.adb:1409:6: warning: postcondition might fail
+enclave.adb:1409:06: warning: postcondition might fail
 enclave.adb:1433:18: warning: precondition might fail
 enclave.adb:1454:18: warning: precondition might fail
 enclave.adb:1460:19: warning: precondition might fail
@@ -520,7 +519,7 @@ enclave.adb:2080:58: warning: refined postcondition might fail
 enclave.adb:2084:19: warning: precondition might fail
 enclave.adb:2179:21: warning: precondition might fail
 enclave.adb:2185:22: warning: precondition might fail
-enclave.adb:2188:9: warning: postcondition might fail
+enclave.adb:2188:09: warning: postcondition might fail
 enclave.adb:2197:21: warning: precondition might fail
 enclave.adb:2203:22: warning: precondition might fail
 enclave.adb:2207:21: warning: precondition might fail
@@ -564,17 +563,17 @@ iandatypes.ads:62:47: info: length check proved
 keyboard.ads:47:14: warning: subprogram "Init" has no effect
 keyboard.ads:60:14: warning: subprogram "Finalise" has no effect
 keyboard.ads:90:14: warning: subprogram "Poll" has no effect
-keystore.adb:58:6: info: length check proved
-keystore.adb:112:9: warning: range check might fail, in call inlined at keystore.adb:268
-keystore.adb:112:9: warning: range check might fail, in call inlined at keystore.adb:276
-keystore.adb:112:9: warning: range check might fail, in call inlined at keystore.adb:284
-keystore.adb:112:9: warning: range check might fail, in call inlined at keystore.adb:347
-keystore.adb:112:9: warning: range check might fail, in call inlined at keystore.adb:355
-keystore.adb:112:9: warning: range check might fail, in call inlined at keystore.adb:363
-keystore.adb:112:9: warning: range check might fail, in call inlined at keystore.adb:542
-keystore.adb:112:9: warning: range check might fail, in call inlined at keystore.adb:694
-keystore.adb:112:9: warning: range check might fail, in call inlined at keystore.adb:762
-keystore.adb:112:9: warning: range check might fail, in call inlined at keystore.adb:847
+keystore.adb:58:06: info: length check proved
+keystore.adb:112:09: warning: range check might fail, in call inlined at keystore.adb:268
+keystore.adb:112:09: warning: range check might fail, in call inlined at keystore.adb:276
+keystore.adb:112:09: warning: range check might fail, in call inlined at keystore.adb:284
+keystore.adb:112:09: warning: range check might fail, in call inlined at keystore.adb:347
+keystore.adb:112:09: warning: range check might fail, in call inlined at keystore.adb:355
+keystore.adb:112:09: warning: range check might fail, in call inlined at keystore.adb:363
+keystore.adb:112:09: warning: range check might fail, in call inlined at keystore.adb:542
+keystore.adb:112:09: warning: range check might fail, in call inlined at keystore.adb:694
+keystore.adb:112:09: warning: range check might fail, in call inlined at keystore.adb:762
+keystore.adb:112:09: warning: range check might fail, in call inlined at keystore.adb:847
 keystore.adb:116:41: warning: length check might fail, in call inlined at keystore.adb:268
 keystore.adb:116:41: warning: length check might fail, in call inlined at keystore.adb:276
 keystore.adb:116:41: warning: length check might fail, in call inlined at keystore.adb:284
@@ -656,22 +655,22 @@ latchapi.adb:129:37: warning: length check might fail
 latchapi.adb:129:37: warning: no Global contract available for "Overwrite"
 latchapi.adb:140:10: warning: unused assignment to "Inmsg"
 poll.ads:113:13: warning: postcondition might fail
-screen.adb:113:6: info: length check proved
-screen.adb:113:7: info: length check proved
-screen.adb:114:7: info: length check proved
-screen.adb:115:7: info: length check proved
-screen.adb:116:7: info: length check proved
-screen.adb:117:7: info: length check proved
-screen.adb:118:7: info: length check proved
-screen.adb:119:7: info: length check proved
-screen.adb:120:7: info: length check proved
-screen.adb:121:7: info: length check proved
-screen.adb:122:7: info: length check proved
-screen.adb:123:7: info: length check proved
-screen.adb:124:7: info: length check proved
-screen.adb:125:7: info: length check proved
-screen.adb:126:7: info: length check proved
-screen.adb:127:7: info: length check proved
+screen.adb:113:06: info: length check proved
+screen.adb:113:07: info: length check proved
+screen.adb:114:07: info: length check proved
+screen.adb:115:07: info: length check proved
+screen.adb:116:07: info: length check proved
+screen.adb:117:07: info: length check proved
+screen.adb:118:07: info: length check proved
+screen.adb:119:07: info: length check proved
+screen.adb:120:07: info: length check proved
+screen.adb:121:07: info: length check proved
+screen.adb:122:07: info: length check proved
+screen.adb:123:07: info: length check proved
+screen.adb:124:07: info: length check proved
+screen.adb:125:07: info: length check proved
+screen.adb:126:07: info: length check proved
+screen.adb:127:07: info: length check proved
 screen.adb:158:41: warning: "Interfac.Output" might not be written
 screen.adb:192:41: warning: "Interfac.Output" might not be written
 screen.adb:293:15: warning: unused assignment to "Interfac.Output"
@@ -795,7 +794,7 @@ tismain.adb:280:43: warning: "Usertoken.Output" might not be written
 tismain.adb:556:20: warning: precondition might fail
 tismain.adb:562:21: warning: precondition might fail
 tismain.adb:569:20: warning: precondition might fail
-tismain.adb:602:8: warning: postcondition might fail
+tismain.adb:602:08: warning: postcondition might fail
 tismain.adb:617:22: warning: precondition might fail
 tismain.adb:623:23: warning: precondition might fail
 tismain.adb:630:22: warning: precondition might fail
@@ -819,17 +818,17 @@ tismain.adb:1162:26: warning: precondition might fail
 tismain.adb:1169:25: warning: precondition might fail
 tismain.adb:1208:13: info: precondition proved
 tismain.adb:1342:04: warning: unused assignment to "Screen.Output"
-tismain.adb:1346:7: info: loop invariant preservation proved
-tismain.adb:1346:7: warning: loop invariant might fail in first iteration
+tismain.adb:1346:07: info: loop invariant preservation proved
+tismain.adb:1346:07: warning: loop invariant might fail in first iteration
 tismain.adb:1359:22: warning: precondition might fail
 tismain.adb:1365:23: warning: precondition might fail
 tismain.adb:1372:22: warning: precondition might fail
-tismain.adb:1397:7: info: precondition proved
-tismain.adb:1403:7: info: assertion proved
+tismain.adb:1397:07: info: precondition proved
+tismain.adb:1403:07: info: assertion proved
 tismain.adb:1443:22: warning: precondition might fail
 tismain.adb:1449:23: warning: precondition might fail
 tismain.adb:1456:22: warning: precondition might fail
-tismain.adb:1496:7: warning: assertion might fail
+tismain.adb:1496:07: warning: assertion might fail
 tismain.adb:1536:22: warning: precondition might fail
 tismain.adb:1542:23: warning: precondition might fail
 tismain.adb:1549:22: warning: precondition might fail

@@ -1,9 +1,9 @@
-admin.adb:42:6: info: length check proved
+admin.adb:42:06: info: length check proved
 admin.adb:45:34: info: length check proved
 admin.adb:49:34: info: length check proved
 admin.adb:53:33: info: length check proved
 admin.adb:57:34: info: length check proved
-admin.adb:103:7: info: assertion proved
+admin.adb:103:07: info: assertion proved
 admin.adb:110:10: info: loop invariant initialization proved
 admin.adb:110:10: info: loop invariant preservation proved
 admin.adb:121:13: warning: assertion might fail
@@ -14,16 +14,16 @@ admin.adb:144:38: info: index check proved
 admin.adb:156:36: info: index check proved
 admin.adb:253:16: info: range check proved
 admin.ads:103:26: info: postcondition proved
-admin.ads:143:7: info: postcondition proved
+admin.ads:143:07: info: postcondition proved
 admin.ads:163:26: info: postcondition proved
-admin.ads:190:7: warning: postcondition might fail
-admin.ads:191:7: info: precondition proved
+admin.ads:190:07: warning: postcondition might fail
+admin.ads:191:07: info: precondition proved
 admin.ads:215:26: info: postcondition proved
 admin.ads:245:29: info: length check proved
 admin.ads:246:58: info: length check proved
 admin.ads:250:58: info: length check proved
 admin.ads:254:58: info: length check proved
-alarm.ads:82:7: warning: postcondition might fail, requires Door.TheDoorAlarm = AlarmTypes.Alarming) <= (IsAlarming)
+alarm.ads:82:07: warning: postcondition might fail, requires Door.TheDoorAlarm = AlarmTypes.Alarming) <= (IsAlarming)
 auditlog.adb:80:32: info: length check proved
 auditlog.adb:89:45: info: length check proved
 auditlog.adb:94:53: info: length check proved
@@ -94,7 +94,7 @@ auditlog.adb:1078:47: warning: range check might fail
 auditlog.adb:1078:50: warning: overflow check might fail
 auditlog.adb:1078:69: warning: overflow check might fail
 auditlog.adb:1086:10: info: precondition proved
-auditlog.adb:1093:10: warning: assertion might fail, requires NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile)
+auditlog.adb:1094:13: warning: assertion might fail, requires NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile)
 auditlog.adb:1095:50: info: range check proved
 auditlog.adb:1095:53: info: overflow check proved
 auditlog.adb:1095:72: info: overflow check proved
@@ -105,14 +105,14 @@ auditlog.adb:1111:10: info: assertion proved
 auditlog.adb:1113:50: warning: range check might fail
 auditlog.adb:1113:53: warning: overflow check might fail
 auditlog.adb:1113:72: info: overflow check proved
-auditlog.adb:1115:10: warning: assertion might fail, requires LogFileEntries(CurrentLogFile) = 1
+auditlog.adb:1115:25: warning: assertion might fail, requires LogFileEntries(CurrentLogFile) = 1
 auditlog.adb:1116:10: info: assertion proved
-auditlog.adb:1125:7: warning: assertion might fail
+auditlog.adb:1125:07: warning: assertion might fail
 auditlog.adb:1127:47: warning: range check might fail
 auditlog.adb:1127:50: warning: overflow check might fail
 auditlog.adb:1127:69: warning: overflow check might fail
-auditlog.adb:1132:7: warning: precondition might fail
-auditlog.adb:1566:7: warning: precondition might fail
+auditlog.adb:1132:07: warning: precondition might fail
+auditlog.adb:1566:07: warning: precondition might fail
 auditlog.adb:1570:26: warning: range check might fail
 auditlog.adb:1576:10: info: precondition proved
 auditlog.adb:1658:22: info: precondition proved
@@ -122,7 +122,7 @@ auditlog.adb:1702:53: warning: range check might fail
 auditlog.adb:1702:56: warning: overflow check might fail
 auditlog.adb:1702:75: warning: overflow check might fail
 auditlog.adb:1732:52: warning: range check might fail
-auditlog.adb:1742:7: warning: assertion might fail, requires NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile)
+auditlog.adb:1743:10: warning: assertion might fail, requires NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile)
 auditlog.adb:1744:47: warning: range check might fail
 auditlog.adb:1744:50: warning: overflow check might fail
 auditlog.adb:1744:69: warning: overflow check might fail
@@ -136,13 +136,13 @@ auditlog.adb:1852:53: info: overflow check proved
 auditlog.adb:1852:72: info: overflow check proved
 auditlog.adb:1858:53: warning: range check might fail
 auditlog.adb:1861:47: warning: range check might fail
-auditlog.adb:1868:7: warning: assertion might fail, requires NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile)
+auditlog.adb:1869:10: warning: assertion might fail, requires NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile)
 auditlog.adb:1870:47: warning: range check might fail
 auditlog.adb:1870:50: warning: overflow check might fail
 auditlog.adb:1870:69: warning: overflow check might fail
 auditlog.adb:1914:10: info: assertion proved
 audittypes.ads:94:58: info: length check proved
-audittypes.ads:107:6: info: length check proved
+audittypes.ads:107:06: info: length check proved
 certificatestore.adb:37:42: info: length check proved
 certificatestore.adb:223:31: warning: range check might fail, in call inlined at certificatestore.adb:239
 certificatestore.adb:224:26: warning: "Rawnext" might not be initialized, in call inlined at certificatestore.adb:239
@@ -172,53 +172,53 @@ clock.adb:281:44: info: division check proved
 clock.adb:282:25: info: division check proved
 clock.adb:282:25: warning: range check might fail
 clock.adb:311:36: info: length check proved
-clock.adb:328:7: info: precondition proved
+clock.adb:328:07: info: precondition proved
 clock.adb:329:44: info: division check proved
-clock.adb:333:7: info: precondition proved
+clock.adb:333:07: info: precondition proved
 clock.adb:334:45: info: division check proved
 clock.adb:335:32: info: division check proved
-clock.adb:339:7: info: precondition proved
+clock.adb:339:07: info: precondition proved
 clock.adb:340:45: info: division check proved
 clock.adb:341:32: info: division check proved
-clock.adb:345:7: info: precondition proved
+clock.adb:345:07: info: precondition proved
 clock.adb:346:44: info: division check proved
 clock.adb:362:32: info: length check proved
-clock.adb:387:7: info: assertion proved
-clock.adb:391:7: info: precondition proved
-clock.adb:396:7: info: precondition proved
-clock.adb:401:7: info: precondition proved
-clock.adb:406:7: info: precondition proved
+clock.adb:387:07: info: assertion proved
+clock.adb:391:07: info: precondition proved
+clock.adb:396:07: info: precondition proved
+clock.adb:401:07: info: precondition proved
+clock.adb:406:07: info: precondition proved
 clock.adb:407:49: info: division check proved
-clock.adb:411:7: info: precondition proved
+clock.adb:411:07: info: precondition proved
 clock.adb:412:50: info: division check proved
 clock.adb:413:32: info: division check proved
-clock.adb:417:7: info: precondition proved
+clock.adb:417:07: info: precondition proved
 clock.adb:418:50: info: division check proved
 clock.adb:419:32: info: division check proved
-clock.adb:423:7: info: precondition proved
+clock.adb:423:07: info: precondition proved
 clock.adb:424:50: info: division check proved
 clock.adb:425:32: info: division check proved
-configdata.adb:90:9: info: length check proved
-configdata.adb:92:9: info: length check proved
-configdata.adb:94:9: info: length check proved
-configdata.adb:96:9: info: length check proved
-configdata.adb:98:9: info: length check proved
-configdata.adb:100:9: info: length check proved
-configdata.adb:102:9: info: length check proved
-configdata.adb:104:9: info: length check proved
-configdata.adb:106:9: info: length check proved
-configdata.adb:108:9: info: length check proved
-configdata.adb:110:9: info: length check proved
-configdata.adb:112:9: info: length check proved
-configdata.adb:114:9: info: length check proved
-configdata.adb:127:6: info: length check proved
+configdata.adb:90:09: info: length check proved
+configdata.adb:92:09: info: length check proved
+configdata.adb:94:09: info: length check proved
+configdata.adb:96:09: info: length check proved
+configdata.adb:98:09: info: length check proved
+configdata.adb:100:09: info: length check proved
+configdata.adb:102:09: info: length check proved
+configdata.adb:104:09: info: length check proved
+configdata.adb:106:09: info: length check proved
+configdata.adb:108:09: info: length check proved
+configdata.adb:110:09: info: length check proved
+configdata.adb:112:09: info: length check proved
+configdata.adb:114:09: info: length check proved
+configdata.adb:127:06: info: length check proved
 configdata.adb:127:47: info: length check proved
 configdata.adb:128:47: info: length check proved
 configdata.adb:129:47: info: length check proved
 configdata.adb:130:47: info: length check proved
 configdata.adb:131:47: info: length check proved
 configdata.adb:132:47: info: length check proved
-configdata.adb:145:6: info: length check proved
+configdata.adb:145:06: info: length check proved
 configdata.adb:145:38: info: length check proved
 configdata.adb:146:38: info: length check proved
 configdata.adb:237:44: info: overflow check proved, in call inlined at configdata.adb:455, in call inlined at configdata.adb:889
@@ -340,9 +340,9 @@ display.adb:150:32: warning: range check might fail, in call inlined at display.
 display.adb:189:32: warning: statement has no effect
 display.ads:66:48: info: length check proved
 door.adb:99:10: warning: postcondition might fail, requires CurrentDoor = Open and then Latch.IsLocked and then Clock.GreaterThanOrEqual(Clock.TheCurrentTime, AlarmTimeout) ) = (DoorAlarm = AlarmTypes.alarming
-door.ads:148:8: warning: postcondition might fail
-door.ads:215:8: warning: postcondition might fail
-door.ads:270:8: warning: postcondition might fail
+door.ads:148:08: warning: postcondition might fail
+door.ads:215:08: warning: postcondition might fail
+door.ads:270:08: warning: postcondition might fail
 enclave.adb:109:18: info: precondition proved, in call inlined at enclave.adb:1961
 enclave.adb:109:18: info: precondition proved, in call inlined at enclave.adb:2150
 enclave.adb:207:29: info: postcondition proved
@@ -423,13 +423,13 @@ enclave.adb:2956:27: info: precondition proved
 enclave.adb:2965:21: info: precondition proved
 enclave.adb:2966:42: warning: range check might fail
 enclave.adb:2997:10: warning: precondition might fail
-enclave.ads:118:7: warning: postcondition might fail
-enclave.ads:226:7: warning: postcondition might fail
-enclave.ads:286:7: warning: postcondition might fail
+enclave.ads:118:07: warning: postcondition might fail
+enclave.ads:226:07: warning: postcondition might fail
+enclave.ads:286:07: warning: postcondition might fail
 enclave.ads:576:19: info: precondition proved
 enclave.ads:585:19: info: precondition proved
 enclave.ads:590:24: info: precondition proved
-enclave.ads:594:7: warning: postcondition might fail
+enclave.ads:594:07: warning: postcondition might fail
 enclave.ads:621:19: warning: precondition might fail
 enclave.ads:630:19: warning: precondition might fail
 enclave.ads:635:24: warning: precondition might fail
@@ -457,29 +457,29 @@ keystore.adb:337:40: info: length check proved, in call inlined at keystore.adb:
 keystore.adb:337:40: info: length check proved, in call inlined at keystore.adb:496, in call inlined at keystore.adb:786
 keystore.adb:571:38: warning: unused assignment to "Theprivatekey"
 keystore.adb:810:77: info: length check proved
-keystore.ads:255:7: warning: postcondition might fail
+keystore.ads:255:07: warning: postcondition might fail
 keystore.ads:275:26: warning: postcondition might fail, requires not (PrivateKeyPresent)
-latch.ads:107:7: warning: postcondition might fail
-latch.ads:142:8: warning: postcondition might fail, requires IsLocked = LatchisLocked or SystemFault
+latch.ads:107:07: warning: postcondition might fail
+latch.ads:142:08: warning: postcondition might fail, requires IsLocked = LatchisLocked or SystemFault
 latch.ads:162:26: warning: postcondition might fail, requires Latch_Timeout = Time
 poll.adb:52:15: warning: statement has no effect
 poll.ads:132:11: warning: postcondition might fail
-screen.adb:122:6: info: length check proved
-screen.adb:122:7: info: length check proved
-screen.adb:123:7: info: length check proved
-screen.adb:124:7: info: length check proved
-screen.adb:125:7: info: length check proved
-screen.adb:126:7: info: length check proved
-screen.adb:127:7: info: length check proved
-screen.adb:128:7: info: length check proved
-screen.adb:129:7: info: length check proved
-screen.adb:130:7: info: length check proved
-screen.adb:131:7: info: length check proved
-screen.adb:132:7: info: length check proved
-screen.adb:133:7: info: length check proved
-screen.adb:134:7: info: length check proved
-screen.adb:135:7: info: length check proved
-screen.adb:136:7: info: length check proved
+screen.adb:122:06: info: length check proved
+screen.adb:122:07: info: length check proved
+screen.adb:123:07: info: length check proved
+screen.adb:124:07: info: length check proved
+screen.adb:125:07: info: length check proved
+screen.adb:126:07: info: length check proved
+screen.adb:127:07: info: length check proved
+screen.adb:128:07: info: length check proved
+screen.adb:129:07: info: length check proved
+screen.adb:130:07: info: length check proved
+screen.adb:131:07: info: length check proved
+screen.adb:132:07: info: length check proved
+screen.adb:133:07: info: length check proved
+screen.adb:134:07: info: length check proved
+screen.adb:135:07: info: length check proved
+screen.adb:136:07: info: length check proved
 screen.adb:273:15: warning: statement has no effect, in call inlined at screen.adb:1076
 screen.adb:277:29: warning: unused assignment to "Unused", in call inlined at screen.adb:1076
 screen.adb:725:15: warning: statement has no effect, in call inlined at screen.adb:1077
