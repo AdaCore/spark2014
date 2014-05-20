@@ -10,10 +10,10 @@ proof_in_illegal.adb:21:43: warning: unused global "Var"
 
 gnatprove: error during flow analysis and proof, aborting.
 gprbuild: *** compilation phase failed
+proof_in_illegal_2.adb:8:42: export "X" must not depend on Proof_In "Body_Var" (SPARK RM 6.1.4(17))
+proof_in_illegal_2.adb:10:07: warning: initialization has no effect
    compilation of proof_in_illegal_2.adb failed
 
 
 gnatprove: error during flow analysis and proof, aborting.
 gprbuild: *** compilation phase failed
-{"file": "proof_in_illegal_2.adb","line": 10,"col": 7,"message": "warning: initialization has no effect","rule": "ineffective","severity": "warning","entity": {"file": "proof_in_illegal_2.ads","line": 6,"name": "Proof_In_Illegal_2.Error_Derived_From_Proof_In"},"tracefile": "proof_in_illegal_2__flow__26.trace"}
-{"file": "proof_in_illegal_2.adb","line": 8,"col": 42,"message": "export \"X\" must not depend on Proof_In \"Body_Var\" (SPARK RM 6.1.4(17))","rule": "export_depends_on_proof_in","severity": "error","entity": {"file": "proof_in_illegal_2.ads","line": 6,"name": "Proof_In_Illegal_2.Error_Derived_From_Proof_In"},"tracefile": "proof_in_illegal_2__flow__39.trace"}

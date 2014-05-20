@@ -61,6 +61,11 @@ def sort_key_for_errors(line):
     if the line is of the form "file:line:col:msg", then the key is a tuple
     (file, line, col, rest), where file and rest are strings, and line and
     col are integers for correct sorting.
+    [typical case of error messages]
+
+    if the line is of the form "file:line", then the key is a tuple (file,
+    line), where file is a string and line is an integer for correct sorting.
+    [case of program traces]
 
     if the line is of the form "compilation of file failed", then the key
     is "zzzfile", to be bigger than most other strings of the previous kind,
@@ -68,11 +73,17 @@ def sort_key_for_errors(line):
 
     otherwise the key is a constant string which is bigger than most other
     strings, completed to a dummy tuple
+
     """
     sl = line.split(':', 3)
     if len(sl) == 4:
         try:
             return (sl[0], int(sl[1]), int(sl[2]), sl[3])
+        except ValueError:
+            return ("zzzzz", 0, 0, line)
+    elif len(sl) == 2:
+        try:
+            return (sl[0], int(sl[1]))
         except ValueError:
             return ("zzzzz", 0, 0, line)
     else:
@@ -148,7 +159,8 @@ def check_marks(strlist):
     - a check (RANGE_CHECK, DIVISION_CHECK, etc), or
     - a flow message (UNINIT, DEPENDS, etc).
 
-    The complete list of tags is given by functions is_flow_tag and is_proof_tag.
+    The complete list of tags is given by functions is_flow_tag and
+    is_proof_tag.
 
     RESULT is either
     - PASS/FAIL for checks, or
@@ -156,17 +168,20 @@ def check_marks(strlist):
 
     Case does not matter for the tag or result, although UPPERCASE is better in
     source code to easily locate the marks visually.
+
     """
     files = glob.glob("*.ad?")
-    is_msg = re.compile (r"(\w*\.ad.?):(\d*):\d*: (info|warning)?(: )?(.*$)")
-    is_mark = re.compile (r"@(\w*):(\w*)")
+    is_msg = re.compile(r"(\w*\.ad.?):(\d*):\d*: (info|warning)?(: )?(.*$)")
+    is_mark = re.compile(r"@(\w*):(\w*)")
 
     def get_tag(text):
-        """Returns the tag for a given message text, or None if no tag is recognized."""
+        """Returns the tag for a given message text, or None if no tag is
+        recognized."""
 
         # flow analysis tags
-        # When adding a tag in this section, you need also to update the function
-        # is_flow_tag below.
+
+        # When adding a tag in this section, you need also to update the
+        # function is_flow_tag below.
         if 'dependency' in text:
             return 'DEPENDS'
         elif 'global' in text:
@@ -175,8 +190,9 @@ def check_marks(strlist):
             return 'INITIALIZED'
 
         # proof tags
-        # When adding a tag in this section, you need also to update the function
-        # is_proof_tag below.
+
+        # When adding a tag in this section, you need also to update the
+        # function is_proof_tag below.
         if 'division check' in text or 'divide by zero' in text:
             return 'DIVISION_CHECK'
         elif 'index check' in text:
@@ -308,24 +324,26 @@ def check_marks(strlist):
             tag = get_tag(text)
             if tag:
                 res = get_result(qual, text, is_flow_tag(tag))
-                results.setdefault((f,line),set()).add((tag, res))
+                results.setdefault((f, line), set()).add((tag, res))
 
     # check that marks in source code have a matching actual result
     for f in files:
         with open(f, 'r') as ff:
-            for line,linestr in enumerate(ff):
-                line = line + 1 # first line in file is 1, not 0
+            for line, linestr in enumerate(ff):
+                line = line + 1  # first line in file is 1, not 0
                 for mark in re.finditer(is_mark, linestr):
                     tag = mark.group(1).upper()
                     if not (is_flow_tag(tag) or is_proof_tag(tag)):
-                        print "unrecognized tag", tag, "at", f + ":" + str(line)
+                        print "unrecognized tag", \
+                            tag, "at", f + ":" + str(line)
                         sys.exit(1)
                     res = mark.group(2).upper()
                     if not is_valid_result(res):
-                        print "unrecognized result", res, "at", f + ":" + str(line)
+                        print "unrecognized result", \
+                            res, "at", f + ":" + str(line)
                         sys.exit(1)
-                    if (f,line) not in results or \
-                       (tag, res) not in results[f,line]:
+                    if (f, line) not in results or \
+                       (tag, res) not in results[f, line]:
                         not_found(f, line, tag, res)
 
 
@@ -432,7 +450,8 @@ def gnatprove_(opt=["-P", "test.gpr"]):
     if verbose_mode():
         print cmd
     process = Run(cmd)
-    # Replace line above by the one below for testing the scripts without running the tool
+    # Replace line above by the one below for testing the scripts without
+    # running the tool:
     # process = open("test.out", 'r').read()
 
     # In quick mode, ignore xfail tests by simply generating a dummy output
@@ -451,7 +470,8 @@ def gnatprove_(opt=["-P", "test.gpr"]):
     # Otherwise, check marks in source code and print the command output sorted
     else:
         strlist = str.splitlines(process.out)
-        # Replace line above by the one below for testing the scripts without running the tool
+        # Replace line above by the one below for testing the scripts without
+        # running the tool
         # strlist = str.splitlines(process)
         check_marks(strlist)
         print_sorted(strlist)
@@ -524,7 +544,7 @@ def grep(regex, strlist, invert=False):
     invert: if false, select strings that do *not* match
     """
     p = re.compile(regex)
-    return [ line for line in strlist if matches(p,line,invert) ]
+    return [line for line in strlist if matches(p, line, invert)]
 
 
 def check_dot_files(opt=None):

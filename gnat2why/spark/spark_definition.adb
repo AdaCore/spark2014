@@ -1669,10 +1669,6 @@ package body SPARK_Definition is
       Def : constant Node_Id   := Component_Definition (N);
 
    begin
-      if Aliased_Present (Def) then
-         Mark_Violation ("ALIASED", N);
-      end if;
-
       if Present (Access_Definition (Def)) then
          Mark_Violation ("access type", Def);
       else
@@ -1729,9 +1725,8 @@ package body SPARK_Definition is
          Sub  : constant Entity_Id := Actual_Subtype (E);
 
       begin
-         --  The object is in SPARK if-and-only-if its type is in SPARK, it
-         --  is not aliased, and its initialization expression, if any, is
-         --  in SPARK.
+         --  The object is in SPARK if-and-only-if its type is in SPARK and
+         --  its initialization expression, if any, is in SPARK.
 
          if not In_SPARK (T) then
             Mark_Violation (Def, From => T);
@@ -1741,10 +1736,6 @@ package body SPARK_Definition is
            and then not In_SPARK (Sub)
          then
             Mark_Violation (Def, From => Sub);
-         end if;
-
-         if Aliased_Present (N) then
-            Mark_Violation ("ALIASED", N);
          end if;
 
          if Present (Expr) then
@@ -2036,10 +2027,6 @@ package body SPARK_Definition is
             if Present (Formals) then
                Param_Spec := First (Formals);
                while Present (Param_Spec) loop
-                  if Aliased_Present (Param_Spec) then
-                     Mark_Violation ("aliased formal parameter", Param_Spec);
-                  end if;
-
                   Formal := Defining_Identifier (Param_Spec);
                   if not In_SPARK (Etype (Formal)) then
                      Mark_Violation (E, From => Etype (Formal));
@@ -2376,8 +2363,6 @@ package body SPARK_Definition is
 
                      if Is_Tag (Field) then
                         Mark_Violation ("tagged type", E);
-                     elsif Is_Aliased (Field) then
-                        Mark_Violation ("ALIASED", Field);
                      end if;
 
                      if Ekind (Field) in Object_Kind

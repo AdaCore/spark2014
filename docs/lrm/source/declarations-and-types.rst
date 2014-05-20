@@ -153,10 +153,9 @@ Object Declarations
 
 .. _tu-object_declarations-01:
 
-1. The entity declared by an ``object_declaration`` is in |SPARK| if
-   its declaration does not contain the reserved word **aliased**, its
-   type is in |SPARK|, and its *initialization_*\ ``expression``, if
-   any, is in |SPARK|.
+1. The entity declared by an ``object_declaration`` is in |SPARK| if its type
+    is in |SPARK|, and its *initialization_*\ ``expression``, if any, is in
+    |SPARK|.
 
 .. _tu-object_declarations-02:
 

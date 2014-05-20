@@ -7,10 +7,6 @@ test.ads:4:30
 
 test2.adb:5:05: warning: initialization has no effect
 test2.ads:4:18: warning: postcondition might fail, requires Test'Result = 1
-test2.adb:10
-
-test2.adb:8
-
 test2.adb:12:5
 
 test2.adb:7:5
@@ -18,4 +14,8 @@ test2.adb:7:5
 test2.adb:8:14
 
 test2.ads:4:30
+
+test2.adb:8
+
+test2.adb:10
 
