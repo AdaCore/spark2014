@@ -25,12 +25,14 @@
 
 with Ada.Containers;
 with Ada.Containers.Hashed_Maps;
+with Ada.Text_IO;
 
 with GNATCOLL.JSON;
 
 with Atree;               use Atree;
 with Errout;              use Errout;
 with Flow_Error_Messages; use Flow_Error_Messages;
+with Osint;               use Osint;
 
 with Gnat2Why.Nodes;      use Gnat2Why.Nodes;
 
@@ -174,6 +176,13 @@ package body Gnat2Why.Error_Messages is
             Handle_Result (Get (Results, Index));
          end loop;
       end;
+   exception
+      when Invalid_JSON_Stream =>
+         --  something bad happened, output gnatwhy3 error as is
+
+         Ada.Text_IO.Put_Line ("Internal error");
+         Ada.Text_IO.Put_Line (S);
+         Exit_Program (E_Abort);
    end Parse_Why3_Results;
 
    --------------------
