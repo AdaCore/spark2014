@@ -3,7 +3,7 @@ import glob
 import os.path
 
 def cat_traces():
-    files = glob.glob("gnatprove/*POSTCONDITION*trace")
+    files = glob.glob("gnatprove/*postcondition*trace")
     for file in files:
         cat (file, sort=True)
 
