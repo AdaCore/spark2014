@@ -75,6 +75,8 @@ package Flow_Error_Messages is
       Is_Proved   : Boolean;
       Tag         : String;
       Tracefile   : String;
+      VC_File     : String;
+      Editor_Cmd  : String;
       E           : Entity_Id;
       Place_First : Boolean);
 

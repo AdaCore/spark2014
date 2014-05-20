@@ -153,6 +153,13 @@ package body Gnat2Why.Error_Messages is
          Tracefile : constant String :=
            (if Has_Field (V, "tracefile") then Get (Get (V, "tracefile"))
             else "");
+         VC_File : constant String :=
+           (if Has_Field (V, "vc_file") then Get (Get (V, "vc_file"))
+            else "");
+         Editor_Cmd : constant String :=
+           (if Has_Field (V, "editor_cmd") then Get (Get (V, "editor_cmd"))
+            else "");
+
       begin
 
          Errout.Error_Msg_String (1 .. Extra_Msg'Length) := Extra_Msg;
@@ -164,6 +171,8 @@ package body Gnat2Why.Error_Messages is
             To_Tag (Kind),
             Place_First => Is_Assertion_Kind (Kind),
             Tracefile   => Tracefile,
+            VC_File     => VC_File,
+            Editor_Cmd  => Editor_Cmd,
             E           => VC.Entity);
       end Handle_Result;
 

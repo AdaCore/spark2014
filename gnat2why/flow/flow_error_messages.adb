@@ -87,6 +87,8 @@ package body Flow_Error_Messages is
       SRM_Ref     : String;
       Kind        : Msg_Kind;
       Place_First : Boolean;
+      VC_File     : String;
+      Editor_Cmd  : String;
       Msg_List    : in out GNATCOLL.JSON.JSON_Array;
       Tracefile   : String;
       E           : Entity_Id)
@@ -181,6 +183,8 @@ package body Flow_Error_Messages is
          Kind        => (if Warning then Warning_Kind else Error_Kind),
          Msg_List    => Flow_Msgs,
          Tracefile   => Tracefile,
+         VC_File     => "",
+         Editor_Cmd  => "",
          Place_First => False,
          E           => E);
 
@@ -196,6 +200,8 @@ package body Flow_Error_Messages is
       Is_Proved   : Boolean;
       Tag         : String;
       Tracefile   : String;
+      VC_File     : String;
+      Editor_Cmd  : String;
       E           : Entity_Id;
       Place_First : Boolean) is
    begin
@@ -209,6 +215,8 @@ package body Flow_Error_Messages is
          SRM_Ref     => "",
          Msg_List    => Proof_Msgs,
          Tracefile   => Tracefile,
+         VC_File     => VC_File,
+         Editor_Cmd  => Editor_Cmd,
          Place_First => Place_First,
          E           => E);
    end Error_Msg_Proof;
@@ -270,6 +278,8 @@ package body Flow_Error_Messages is
       SRM_Ref     : String;
       Kind        : Msg_Kind;
       Place_First : Boolean;
+      VC_File     : String;
+      Editor_Cmd  : String;
       Msg_List    : in out GNATCOLL.JSON.JSON_Array;
       Tracefile   : String;
       E           : Entity_Id)
@@ -388,6 +398,14 @@ package body Flow_Error_Messages is
 
          if Tracefile /= "" then
             Set_Field (Value, "tracefile", Tracefile);
+         end if;
+
+         if VC_File /= "" then
+            Set_Field (Value, "vc_file", VC_File);
+         end if;
+
+         if Editor_Cmd /= "" then
+            Set_Field (Value, "editor_cmd", Editor_Cmd);
          end if;
 
          return Value;
