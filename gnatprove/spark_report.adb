@@ -205,11 +205,24 @@ procedure SPARK_Report is
          declare
             Result : constant JSON_Value := Get (Entries, Index);
             Severe : constant String     := Get (Get (Result, "severity"));
+            Kind   : constant String     := Get (Get (Result, "rule"));
+            Subp   : constant Subp_Type  :=
+              Mk_Subp_Of_Entity (Get (Result, "entity"));
          begin
-            Add_Proof_Result
-              (Unit   => Unit,
-               Subp   => Mk_Subp_Of_Entity (Get (Result, "entity")),
-               Proved => Severe = "info");
+            if Kind = "pragma_warning" then
+               Add_Suppressed_Warning
+                 (Unit   => Unit,
+                  Subp   => Subp,
+                  Reason => Get (Get (Result, "message")),
+                  File   => Get (Get (Result, "file")),
+                  Line   => Get (Get (Result, "line")),
+                  Column => Get (Get (Result, "col")));
+            else
+               Add_Proof_Result
+                 (Unit   => Unit,
+                  Subp   => Mk_Subp_Of_Entity (Get (Result, "entity")),
+                  Proved => Severe = "info");
+            end if;
          end;
       end loop;
    end Handle_Proof_File;
