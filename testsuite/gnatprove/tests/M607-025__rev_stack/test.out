@@ -1,41 +1,39 @@
 list.adb:16:35: info: precondition proved
 list.adb:17:35: info: precondition proved
 list.adb:19:07: info: precondition proved
-list.adb:22:10: warning: precondition might fail
+list.adb:22:10: info: precondition proved
 list.adb:22:19: info: precondition proved
-list.adb:22:31: warning: range check might fail
-list.adb:23:10: warning: loop invariant might fail after first iteration
-list.adb:23:10: warning: loop invariant might fail in first iteration
+list.adb:22:31: info: range check proved
+list.adb:23:10: info: loop invariant initialization proved
+list.adb:23:10: info: loop invariant preservation proved
 list.adb:25:35: info: overflow check proved
 list.adb:25:43: info: overflow check proved
 list.adb:28:35: info: overflow check proved
 list.adb:28:43: info: index check proved
 list.adb:28:43: info: overflow check proved
-list.adb:28:67: info: precondition proved
-list.adb:28:79: warning: range check might fail
+list.adb:28:50: info: precondition proved
+list.adb:28:62: warning: range check might fail
 list.adb:32:10: info: loop invariant initialization proved
 list.adb:32:10: warning: loop invariant might fail after first iteration
 list.adb:34:22: info: precondition proved
 list.adb:34:40: warning: overflow check might fail
-list.adb:36:38: info: overflow check proved
+list.adb:36:38: warning: overflow check might fail
 list.adb:36:42: info: overflow check proved
-list.adb:38:56: info: overflow check proved
-list.adb:38:60: info: overflow check proved
+list.adb:38:39: warning: overflow check might fail
+list.adb:38:43: info: overflow check proved
 list.adb:39:34: warning: array index check might fail
-list.adb:40:19: warning: overflow check might fail
-list.adb:40:40: warning: array index check might fail
-list.adb:40:40: warning: overflow check might fail
-list.adb:42:40: warning: overflow check might fail
-list.adb:43:20: info: precondition proved
-list.adb:43:34: warning: range check might fail
-list.adb:43:39: info: precondition proved
-list.adb:43:56: warning: overflow check might fail
-list.adb:43:60: warning: overflow check might fail
-list.adb:43:60: warning: range check might fail
-list.adb:44:10: info: range check proved
-list.adb:44:10: warning: precondition might fail
-list.adb:44:23: info: precondition proved
-list.adb:45:10: info: precondition proved
+list.adb:39:64: warning: array index check might fail
+list.adb:41:40: warning: overflow check might fail
+list.adb:42:20: info: precondition proved
+list.adb:42:34: warning: range check might fail
+list.adb:42:39: info: precondition proved
+list.adb:42:56: warning: overflow check might fail
+list.adb:42:60: warning: overflow check might fail
+list.adb:42:60: warning: range check might fail
+list.adb:43:10: info: range check proved
+list.adb:43:10: warning: precondition might fail
+list.adb:43:23: info: precondition proved
+list.adb:44:10: info: precondition proved
 list.ads:13:28: info: precondition proved
 list.ads:13:47: info: precondition proved
 list.ads:14:19: warning: postcondition might fail, requires Element (L, I) = Element (Reverse_List'Result, Last_Index (L) - I + First_Index (L)
@@ -52,12 +50,17 @@ stack.adb:17:22: info: range check proved
 stack.adb:18:19: info: index check proved
 stack.adb:29:22: info: range check proved
 stack.adb:37:28: info: length check proved
-stack.ads:16:19: info: overflow check proved
-stack.ads:16:34: info: overflow check proved
-stack.ads:21:14: info: postcondition proved
-stack.ads:28:14: warning: postcondition might fail, requires To (S) = To (S'Old) & X
-stack.ads:28:34: warning: range check might fail
-stack.ads:32:14: warning: postcondition might fail, requires To (S) = (To (S'old)) ((To (S'old))'first..(To (S'old))'last - 1)
-stack.ads:32:23: info: range check proved
-stack.ads:32:71: info: overflow check proved
-stack.ads:43:60: info: index check proved
+stack.ads:12:17: info: postcondition proved
+stack.ads:23:14: info: postcondition proved
+stack.ads:27:14: info: postcondition proved
+stack.ads:27:41: info: index check proved
+stack.ads:32:14: warning: postcondition might fail
+stack.ads:32:44: info: overflow check proved
+stack.ads:33:20: warning: array index check might fail
+stack.ads:35:27: info: index check proved
+stack.ads:35:44: info: index check proved
+stack.ads:40:14: warning: postcondition might fail
+stack.ads:40:44: info: overflow check proved
+stack.ads:42:27: warning: array index check might fail
+stack.ads:42:44: warning: array index check might fail
+stack.ads:53:60: info: index check proved

@@ -984,6 +984,7 @@ module Ada__containers__formal_vectors__append__2
   use "ada__containers__formal_vectors__args".Ada__containers__formal_vectors__element_type
   use import Ada__containers__formal_vectors__vector
   use import Ada__containers__formal_vectors__length
+  use import Ada__containers__formal_vectors__element
   use import Ada__containers__formal_vectors__to_vector
   use import Ada__containers__formal_vectors__insert
 
@@ -992,7 +993,8 @@ module Ada__containers__formal_vectors__append__2
      requires { length_ !co + c <= capacity !co }
      writes     { co }
      reads      { co }
-     ensures { insert_vect (old !co)  (length_ (old !co) + 1) (to_vector e c) !co }
+     ensures { (c = 1 -> Ada__containers__formal_vectors__element_type.to_base (element_ !co (length_ !co)) = e) /\ (* This is redundant *)
+                           insert_vect (old !co)  (length_ (old !co) + 1) (to_vector e c) !co }
 end
 
 module Ada__containers__formal_vectors__Oconcat
