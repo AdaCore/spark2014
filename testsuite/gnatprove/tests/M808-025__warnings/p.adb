@@ -9,7 +9,6 @@ procedure P (Y : out Integer) is pragma SPARK_Mode (On);
    pragma Warnings (Off, Reason => "unused Z3, but that's also OK");
    Z3 : Natural := 0;
    pragma Warnings (On);
-   pragma Unreferenced (Z2);
    X : Natural := 0;
 begin
    if X = 0 then
