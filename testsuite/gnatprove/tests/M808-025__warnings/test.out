@@ -99,34 +99,34 @@ p.adb:2:09: warning: type "M" is not referenced
 p.adb:2:19: warning: suspicious "mod" value, was ** intended?
 p.adb:7:04: warning: variable "Z2" is not referenced
 p.adb:12:04: warning: "X" is not modified, could be declared constant
+p.adb:14:04: warning: statement has no effect[#0]
+p.adb:15:09: warning: unused assignment[#1]
    compilation of p.adb failed
 
 
 gnatprove: error during flow analysis and proof, aborting.
 gprbuild: *** compilation phase failed
-{"file": "p.adb","line": 14,"col": 4,"message": "warning: statement has no effect","rule": "ineffective","severity": "warning","entity": {"file": "p.adb","line": 1,"name": "P"},"tracefile": "p__flow__27.trace"}
-{"file": "p.adb","line": 15,"col": 9,"message": "warning: unused assignment","rule": "ineffective","severity": "warning","entity": {"file": "p.adb","line": 1,"name": "P"},"tracefile": "p__flow__28.trace"}
 
 Do not issue all compilation warnings, stop at flow warnings treated as errors:
 -------------------------------------------------------------------------------
 p.adb:2:19: warning: suspicious "mod" value, was ** intended?
+p.adb:14:04: warning: statement has no effect[#0]
+p.adb:15:09: warning: unused assignment[#1]
    compilation of p.adb failed
 
 
 gnatprove: error during flow analysis and proof, aborting.
 gprbuild: *** compilation phase failed
-{"file": "p.adb","line": 14,"col": 4,"message": "warning: statement has no effect","rule": "ineffective","severity": "warning","entity": {"file": "p.adb","line": 1,"name": "P"},"tracefile": "p__flow__27.trace"}
-{"file": "p.adb","line": 15,"col": 9,"message": "warning: unused assignment","rule": "ineffective","severity": "warning","entity": {"file": "p.adb","line": 1,"name": "P"},"tracefile": "p__flow__28.trace"}
 
 Do not issue any compilation warnings, stop at flow warnings treated as errors:
 -------------------------------------------------------------------------------
+p.adb:14:04: warning: statement has no effect[#0]
+p.adb:15:09: warning: unused assignment[#1]
    compilation of p.adb failed
 
 
 gnatprove: error during flow analysis and proof, aborting.
 gprbuild: *** compilation phase failed
-{"file": "p.adb","line": 14,"col": 4,"message": "warning: statement has no effect","rule": "ineffective","severity": "warning","entity": {"file": "p.adb","line": 1,"name": "P"},"tracefile": "p__flow__27.trace"}
-{"file": "p.adb","line": 15,"col": 9,"message": "warning: unused assignment","rule": "ineffective","severity": "warning","entity": {"file": "p.adb","line": 1,"name": "P"},"tracefile": "p__flow__28.trace"}
 
 Issue all compilation warnings, issue flow warnings and continue:
 -----------------------------------------------------------------
@@ -134,22 +134,22 @@ p.adb:2:09: warning: type "M" is not referenced
 p.adb:2:19: warning: suspicious "mod" value, was ** intended?
 p.adb:7:04: warning: variable "Z2" is not referenced
 p.adb:12:04: warning: "X" is not modified, could be declared constant
-{"file": "p.adb","line": 14,"col": 4,"message": "warning: statement has no effect","rule": "ineffective","severity": "warning","entity": {"file": "p.adb","line": 1,"name": "P"},"tracefile": "p__flow__27.trace"}
-{"file": "p.adb","line": 15,"col": 9,"message": "warning: unused assignment","rule": "ineffective","severity": "warning","entity": {"file": "p.adb","line": 1,"name": "P"},"tracefile": "p__flow__28.trace"}
-{"file": "p.adb","line": 18,"col": 4,"message": "info: assertion proved","rule": "assertion","severity": "info","entity": {"file": "p.adb","line": 1,"name": "P"}}
+p.adb:14:04: warning: statement has no effect[#0]
+p.adb:15:09: warning: unused assignment[#1]
+p.adb:18:04: info: assertion proved[#2]
 
 Do not issue all compilation warnings, do not issue flow warnings and continue:
 ------------------------------------------------------------------------
 p.adb:2:19: warning: suspicious "mod" value, was ** intended?
-{"file": "p.adb","line": 14,"col": 4,"message": "warning: statement has no effect","rule": "ineffective","severity": "warning","entity": {"file": "p.adb","line": 1,"name": "P"},"tracefile": "p__flow__27.trace"}
-{"file": "p.adb","line": 15,"col": 9,"message": "warning: unused assignment","rule": "ineffective","severity": "warning","entity": {"file": "p.adb","line": 1,"name": "P"},"tracefile": "p__flow__28.trace"}
-{"file": "p.adb","line": 18,"col": 4,"message": "info: assertion proved","rule": "assertion","severity": "info","entity": {"file": "p.adb","line": 1,"name": "P"}}
+p.adb:14:04: warning: statement has no effect[#0]
+p.adb:15:09: warning: unused assignment[#1]
+p.adb:18:04: info: assertion proved[#2]
 
 Do not issue any compilation warnings, issue flow warnings and continue:
 ------------------------------------------------------------------------
-{"file": "p.adb","line": 14,"col": 4,"message": "warning: statement has no effect","rule": "ineffective","severity": "warning","entity": {"file": "p.adb","line": 1,"name": "P"},"tracefile": "p__flow__27.trace"}
-{"file": "p.adb","line": 15,"col": 9,"message": "warning: unused assignment","rule": "ineffective","severity": "warning","entity": {"file": "p.adb","line": 1,"name": "P"},"tracefile": "p__flow__28.trace"}
-{"file": "p.adb","line": 18,"col": 4,"message": "info: assertion proved","rule": "assertion","severity": "info","entity": {"file": "p.adb","line": 1,"name": "P"}}
+p.adb:14:04: warning: statement has no effect[#0]
+p.adb:15:09: warning: unused assignment[#1]
+p.adb:18:04: info: assertion proved[#2]
 
 Issue all compilation warnings, do not issue flow warnings and continue:
 ------------------------------------------------------------------------
@@ -157,16 +157,13 @@ p.adb:2:09: warning: type "M" is not referenced
 p.adb:2:19: warning: suspicious "mod" value, was ** intended?
 p.adb:7:04: warning: variable "Z2" is not referenced
 p.adb:12:04: warning: "X" is not modified, could be declared constant
-{"file": "p.adb","line": 18,"col": 4,"message": "info: assertion proved","rule": "assertion","severity": "info","entity": {"file": "p.adb","line": 1,"name": "P"}}
 
 Do not issue all compilation warnings, do not issue flow warnings and continue:
 -------------------------------------------------------------------------------
 p.adb:2:19: warning: suspicious "mod" value, was ** intended?
-{"file": "p.adb","line": 18,"col": 4,"message": "info: assertion proved","rule": "assertion","severity": "info","entity": {"file": "p.adb","line": 1,"name": "P"}}
 
 Do not issue any compilation warnings, do not issue flow warnings and continue:
 -------------------------------------------------------------------------------
-{"file": "p.adb","line": 18,"col": 4,"message": "info: assertion proved","rule": "assertion","severity": "info","entity": {"file": "p.adb","line": 1,"name": "P"}}
 p.adb:2:19: warning: suspicious "mod" value, was ** intended?
 p.adb:14:04: warning: statement has no effect
 p.adb:15:09: warning: unused assignment
@@ -175,7 +172,7 @@ Analyzed 1 units
 in unit p, 1 subprograms and packages out of 1 analyzed
   P at p.adb:1 flow analyzed (0 errors and 2 warnings) and proved (1 checks)
    suppressed messages:
-    p.adb:4:4:
+    p.adb:4:4: 
     p.adb:7:4: unused Z2, but that's OK
     p.adb:10:4: unused Z3, but that's also OK
 

@@ -51,11 +51,60 @@ package body Flow_Error_Messages is
    function Msg_Kind_To_String (Kind : Msg_Kind) return String;
    --  transform the msg kind into a string, for the JSON output
 
+   type Message_Id is new Integer;
+   --  type used to identify a message issued by gnat2why
+
    procedure  Create_JSON_File
      (GNAT_Root : Node_Id;
       List      : GNATCOLL.JSON.JSON_Array;
       Suffix    : String);
    --  Write the JSON list in argument to the file "unit.suffix"
+
+   function Compute_Message
+     (Msg  : String;
+      N    : Node_Id;
+      F1   : Flow_Id := Null_Flow_Id;
+      F2   : Flow_Id := Null_Flow_Id)
+      return String;
+   --  This function does:
+   --    * add more precise location for generics and inlining
+   --    * substitute flow nodes
+
+   function Compute_Sloc
+     (N           : Node_Id;
+      Place_First : Boolean := False)
+      return Source_Ptr;
+
+   procedure Add_Json_Msg
+     (Suppr       : String_Id;
+      Tag         : String;
+      Kind        : Msg_Kind;
+      Slc         : Source_Ptr;
+      Msg_List    : in out GNATCOLL.JSON.JSON_Array;
+      E           : Entity_Id;
+      Msg_Id      : Message_Id;
+      Tracefile   : String := "";
+      VC_File     : String := "";
+      Editor_Cmd  : String := "");
+
+   function Warning_Is_Suppressed
+     (N   : Node_Id;
+      Msg : String;
+      F1   : Flow_Id := Null_Flow_Id;
+      F2   : Flow_Id := Null_Flow_Id)
+     return String_Id;
+   --  Check if the warning for the given node, message and flow Id is
+   --  suppressed. If the function returns No_String, the warning is not
+   --  suppressed. If it returns Null_String_Id the warning is suppressed,
+   --  but no reason has been given. Otherwise, the String_Id of the reason
+   --  is provided.
+
+   function Print_Regular_Msg
+     (Msg  : String;
+      Slc  : Source_Ptr;
+      Kind : Msg_Kind) return Message_Id;
+   --  print a regular error, warning or info message using the frontend
+   --  mechanism. return an Id which can be used to identify this message.
 
    Flow_Msgs : GNATCOLL.JSON.JSON_Array;
    --  This will hold all of the emitted flow messages in JSON format
@@ -66,8 +115,7 @@ package body Flow_Error_Messages is
    use type Flow_Graphs.Vertex_Id;
    use type Flow_Id_Sets.Set;
 
-   function Escape (S : Unbounded_String) return Unbounded_String
-     with Post => Length (Escape'Result) >= Length (S);
+   function Escape (S : String) return String;
    --  Escape any special characters used in the error message (for
    --  example transforms "=>" into "='>" as > is a special insertion
    --  character.
@@ -78,27 +126,80 @@ package body Flow_Error_Messages is
    --  Find the first '&' or '#' and substitute with the given flow
    --  id, with or without enclosing quotes respectively.
 
-   procedure Print_JSON_Or_Normal_Msg
-     (Msg         : String;
-      N           : Node_Id;
-      F1          : Flow_Id;
-      F2          : Flow_Id;
-      Tag         : String;
-      SRM_Ref     : String;
-      Kind        : Msg_Kind;
-      Place_First : Boolean;
-      VC_File     : String;
-      Editor_Cmd  : String;
-      Msg_List    : in out GNATCOLL.JSON.JSON_Array;
-      Tracefile   : String;
-      E           : Entity_Id)
-     with Pre => Present (E);
-   --  If Ide_Mode is set then we print a JSON message. Otherwise, we just
-   --  print a regular message. It also generates a unique Tracefile name
-   --  based on a SHA1 hash of the JSON_Msg and adds a JSON entry to the
-   --  "basename.flow" file.
-
    File_Counter : Integer := 0;
+   Message_Id_Counter : Message_Id := 0;
+   No_Message_Id : constant Message_Id := -1;
+
+   ---------------------
+   -- Compute_Message --
+   ---------------------
+
+   function Compute_Message
+     (Msg  : String;
+      N    : Node_Id;
+      F1   : Flow_Id := Null_Flow_Id;
+      F2   : Flow_Id := Null_Flow_Id)
+      return String is
+      M : Unbounded_String := Null_Unbounded_String;
+   begin
+      Append (M, Msg);
+      if Present (F1) then
+         M := Substitute (M, F1);
+      end if;
+      if Present (F2) then
+         M := Substitute (M, F2);
+      end if;
+
+      if Instantiation_Location (Sloc (N)) /= No_Location then
+
+         --  If we are dealing with an instantiation of a generic we change
+         --  the message to point at the implementation of the generic and we
+         --  mention where the generic is instantiated.
+
+         declare
+            Tmp     : Source_Ptr := Sloc (First_Node (N));
+            File    : Unbounded_String;
+            Line    : Physical_Line_Number;
+            Context : Unbounded_String;
+         begin
+            loop
+               exit when Instantiation_Location (Tmp) = No_Location;
+               if Comes_From_Inlined_Body (Tmp) then
+                  Context := To_Unbounded_String (", in call inlined at ");
+               else
+                  Context := To_Unbounded_String (", in instantiation at ");
+               end if;
+
+               Tmp := Instantiation_Location (Tmp);
+               File := To_Unbounded_String (File_Name (Tmp));
+               Line := Get_Physical_Line_Number (Tmp);
+               Append (M, To_String (Context) &
+                         To_String (File) & ":" & Int_Image (Integer (Line)));
+            end loop;
+         end;
+      end if;
+      return To_String (M);
+   end Compute_Message;
+
+   function Compute_Sloc
+     (N           : Node_Id;
+      Place_First : Boolean := False) return Source_Ptr
+   is
+      Slc : Source_Ptr;
+   begin
+      if Instantiation_Location (Sloc (N)) /= No_Location then
+         --  If we are dealing with an instantiation of a generic we change
+         --  the message to point at the implementation of the generic and we
+         --  mention where the generic is instantiated.
+         Slc := Original_Location (Sloc (N));
+
+      elsif Place_First then
+         Slc := First_Sloc (N);
+      else
+         Slc := Sloc (N);
+      end if;
+      return Slc;
+   end Compute_Sloc;
 
    ---------------------------
    -- Create_Flow_Msgs_File --
@@ -164,6 +265,16 @@ package body Flow_Error_Messages is
                                   Vertex /= Flow_Graphs.Null_Vertex
                                 then Msg & " <" & Img (2 .. Img'Last) & ">"
                                 else Msg);
+      Msg2 : constant String :=
+        (if SRM_Ref'Length > 0 then Tmp & " (SPARK RM " & SRM_Ref & ")"
+         else Tmp);
+      Kind : constant Msg_Kind :=
+        (if Warning then Warning_Kind else Error_Kind);
+      Msg3 : constant String := Compute_Message (Msg2, N, F1, F2);
+      Suppr : constant String_Id :=
+        Warning_Is_Suppressed (N, Msg3, F1, F2);
+      Slc   : constant Source_Ptr := Compute_Sloc (N);
+      Msg_Id : Message_Id := No_Message_Id;
    begin
 
       case FA.Kind is
@@ -173,20 +284,35 @@ package body Flow_Error_Messages is
             E := Spec_Entity (FA.Analyzed_Entity);
       end case;
 
-      Print_JSON_Or_Normal_Msg
-        (Msg         => Tmp,
-         N           => N,
-         F1          => F1,
-         F2          => F2,
-         Tag         => Tag,
-         SRM_Ref     => SRM_Ref,
-         Kind        => (if Warning then Warning_Kind else Error_Kind),
-         Msg_List    => Flow_Msgs,
-         Tracefile   => Tracefile,
-         VC_File     => "",
-         Editor_Cmd  => "",
-         Place_First => False,
-         E           => E);
+      --  print the message except when it's a suppressed warning
+
+      if Kind = Error_Kind or else
+        (Kind = Warning_Kind and then
+         Suppr = No_String)
+      then
+         Msg_Id := Print_Regular_Msg (Msg3, Slc, Kind);
+      end if;
+
+      Add_Json_Msg
+        (Suppr     => Suppr,
+         Tag       => Tag,
+         Kind      => Kind,
+         Slc       => Slc,
+         Msg_List  => Flow_Msgs,
+         E         => E,
+         Tracefile => Tracefile,
+         Msg_Id    => Msg_Id);
+
+      --  set the error flag if we have an error or an unsuppressed warning
+      --  with warnings-as-errors
+
+      if Kind = Error_Kind or else
+        (Kind = Warning_Kind and then
+         Opt.Warning_Mode = Treat_As_Error and then
+         Suppr = No_String)
+      then
+         Found_Flow_Error := True;
+      end if;
 
    end Error_Msg_Flow;
 
@@ -204,42 +330,61 @@ package body Flow_Error_Messages is
       Editor_Cmd  : String;
       E           : Entity_Id;
       Place_First : Boolean) is
+      Kind   : constant Msg_Kind :=
+        (if Is_Proved then Info_Kind else Warning_Kind);
+      Msg2   : constant String :=
+        Compute_Message (Msg, N);
+      Suppr  : constant String_Id := Warning_Is_Suppressed (N, Msg2);
+      Slc    : constant Source_Ptr := Compute_Sloc (N, Place_First);
+      Msg_Id : Message_Id := No_Message_Id;
    begin
-      Print_JSON_Or_Normal_Msg
-        (Msg         => Msg,
-         N           => N,
-         F1          => Null_Flow_Id,
-         F2          => Null_Flow_Id,
-         Tag         => Tag,
-         Kind        => (if Is_Proved then Info_Kind else Warning_Kind),
-         SRM_Ref     => "",
-         Msg_List    => Proof_Msgs,
-         Tracefile   => Tracefile,
-         VC_File     => VC_File,
-         Editor_Cmd  => Editor_Cmd,
-         Place_First => Place_First,
-         E           => E);
+      case Kind is
+         when Warning_Kind =>
+            if Suppr = No_String then
+               Msg_Id := Print_Regular_Msg (Msg2, Slc, Kind);
+            end if;
+         when Info_Kind =>
+            if Report_Mode /= GPR_Fail then
+               Msg_Id := Print_Regular_Msg (Msg2, Slc, Kind);
+            end if;
+         when Error_Kind =>
+            --  cannot happen
+            null;
+      end case;
+
+      Add_Json_Msg
+        (Suppr      => Suppr,
+         Tag        => Tag,
+         Kind       => Kind,
+         Slc        => Compute_Sloc (N, Place_First),
+         Msg_List   => Proof_Msgs,
+         Msg_Id     => Msg_Id,
+         E          => E,
+         Tracefile  => Tracefile,
+         VC_File    => VC_File,
+         Editor_Cmd => Editor_Cmd);
+
    end Error_Msg_Proof;
 
    ------------
    -- Escape --
    ------------
 
-   function Escape (S : Unbounded_String) return Unbounded_String is
+   function Escape (S : String) return String is
       R : Unbounded_String := Null_Unbounded_String;
    begin
-      for Index in Positive range 1 .. Length (S) loop
-         if Element (S, Index) in '%' | '$' | '{' | '*' | '&' |
+      for Index in S'Range loop
+         if S (Index) in '%' | '$' | '{' | '*' | '&' |
            '#' | '}' | '@' | '^' | '>' |
            '!' | '?' | '<' | '`' | ''' | '\' | '|'
          then
             Append (R, "'");
          end if;
 
-         Append (R, Element (S, Index));
+         Append (R, S (Index));
       end loop;
 
-      return R;
+      return To_String (R);
    end Escape;
 
    function Fresh_Trace_File return String is
@@ -265,284 +410,104 @@ package body Flow_Error_Messages is
       end case;
    end Msg_Kind_To_String;
 
-   ------------------------------
-   -- Print_JSON_Or_Normal_Msg --
-   ------------------------------
+   ------------------
+   -- Add_Json_Msg --
+   ------------------
 
-   procedure Print_JSON_Or_Normal_Msg
-     (Msg         : String;
-      N           : Node_Id;
-      F1          : Flow_Id;
-      F2          : Flow_Id;
+   procedure Add_Json_Msg
+     (Suppr       : String_Id;
       Tag         : String;
-      SRM_Ref     : String;
       Kind        : Msg_Kind;
-      Place_First : Boolean;
-      VC_File     : String;
-      Editor_Cmd  : String;
+      Slc         : Source_Ptr;
       Msg_List    : in out GNATCOLL.JSON.JSON_Array;
-      Tracefile   : String;
-      E           : Entity_Id)
-   is
+      E           : Entity_Id;
+      Msg_Id      : Message_Id;
+      Tracefile   : String := "";
+      VC_File     : String := "";
+      Editor_Cmd  : String := "") is
 
       use GNATCOLL.JSON;
 
-      M          : Unbounded_String;
-      JSON_V     : JSON_Value;
-      Slc        : Source_Ptr;
-
-      Suppr_Reason : String_Id := No_String;
-
-      function Warning_Disabled_For_Entity return Boolean;
-      --  Returns True if either of N, F1, F2 correspond to an entity that
-      --  Has_Warnings_Off.
-
-      function Json_Entry (Reason : String_Id) return JSON_Value;
-      --  Build the JSON value for a message. The Reason
-      --  argument has the following meaning: if it is absent (= No_String),
-      --  the warning is not suppressed; if it is empty (=Null_String_Id)
-      --  the warning is suppressed, but we don't have a reason; Otherwise,
-      --  the String contains the reason for the suppression.
-      --  For suppressed messages, the JSON record will contain the reason of
-      --  the suppression, if available.
-
-      ---------------------------------
-      -- Warning_Disabled_For_Entity --
-      ---------------------------------
-
-      function Warning_Disabled_For_Entity return Boolean is
-
-         function Is_Entity_And_Has_Warnings_Off (N : Node_Or_Entity_Id)
-                                                  return Boolean
-         is ((Is_Entity_Name (N) and then Has_Warnings_Off (Entity (N)))
-             or else (Nkind (N) in N_Entity and then Has_Warnings_Off (N)));
-         --  Returns True if N is an entity and Has_Warnings_Off (N)
-
-      begin
-         if Is_Entity_And_Has_Warnings_Off (N) then
-            return True;
-         end if;
-
-         if Present (F1)
-           and then F1.Kind in Direct_Mapping | Record_Field
-           and then Is_Entity_And_Has_Warnings_Off (Get_Direct_Mapping_Id (F1))
-         then
-            return True;
-         end if;
-
-         if Present (F2)
-           and then F2.Kind in Direct_Mapping | Record_Field
-           and then Is_Entity_And_Has_Warnings_Off (Get_Direct_Mapping_Id (F2))
-         then
-            return True;
-         end if;
-
-         return False;
-      end Warning_Disabled_For_Entity;
-
-      ----------------
-      -- Json_Entry --
-      ----------------
-
-      function Json_Entry (Reason : String_Id) return JSON_Value is
-         Value    : JSON_Value;
-         Prefix    : constant String :=
-           (case Kind is
-               when Warning_Kind => "warning: ",
-               when Info_Kind | Error_Kind => "");
-         File       : constant String := File_Name (Sloc (N));
-         Line       : constant Integer :=
-           Integer (Get_Logical_Line_Number (Sloc (N)));
-         Col        : constant Integer :=
-           Integer (Get_Column_Number (Sloc (N)));
-      begin
-
-         --  Append file, line and column
-
-         Value := Create_Object;
-         Set_Field (Value, "file", File);
-         Set_Field (Value, "line", Line);
-         Set_Field (Value, "col", Col);
-
-         if Reason = No_String then
-            Set_Field (Value, "message", Prefix & M);
-         else
-            declare
-               Len           : constant Natural :=
-                 Natural (String_Length (Reason));
-               Reason_String : String (1 .. Len);
-            begin
-               String_To_Name_Buffer (Reason);
-               Reason_String := Name_Buffer (1 .. Len);
-               Set_Field (Value, "message", Reason_String);
-            end;
-         end if;
-
-         Set_Field (Value, "rule",
-                    (if Reason /= No_String then "pragma_warning" else Tag));
-
-         Set_Field (Value, "severity", Msg_Kind_To_String (Kind));
-
-            --  Append entity information
-
-         declare
-            Ent_Value : constant JSON_Value := Create_Object;
-            Loc       : constant Source_Ptr := Translate_Location (Sloc (E));
-         begin
-            Set_Field (Ent_Value, "file", File_Name (Loc));
-            Set_Field (Ent_Value, "line",
-                       Integer (Get_Physical_Line_Number (Loc)));
-            Set_Field (Ent_Value, "name", Subprogram_Full_Source_Name (E));
-            Set_Field (Value, "entity", Ent_Value);
-         end;
-
-         if Tracefile /= "" then
-            Set_Field (Value, "tracefile", Tracefile);
-         end if;
-
-         if VC_File /= "" then
-            Set_Field (Value, "vc_file", VC_File);
-         end if;
-
-         if Editor_Cmd /= "" then
-            Set_Field (Value, "editor_cmd", Editor_Cmd);
-         end if;
-
-         return Value;
-      end Json_Entry;
-
+      Value     : constant JSON_Value := Create_Object;
+      File       : constant String := File_Name (Slc);
+      Line       : constant Integer :=
+        Integer (Get_Logical_Line_Number (Slc));
+      Col        : constant Integer := Integer (Get_Column_Number (Slc));
    begin
-      --  Assemble message string
+      Set_Field (Value, "file", File);
+      Set_Field (Value, "line", Line);
+      Set_Field (Value, "col", Col);
 
-      if Kind = Info_Kind then
-         Append (M, "info: ");
-      end if;
-
-      Append (M, Msg);
-      if Present (F1) then
-         M := Substitute (M, F1);
-      end if;
-      if Present (F2) then
-         M := Substitute (M, F2);
-      end if;
-
-      if SRM_Ref'Length > 0 then
-         Append (M, " (SPARK RM ");
-         Append (M, SRM_Ref);
-         Append (M, ")");
-      end if;
-
-      if Instantiation_Location (Sloc (N)) /= No_Location then
-         --  If we are dealing with an instantiation of a generic we change
-         --  the message to point at the implementation of the generic and we
-         --  mention where the generic is instantiated.
-         Slc := Original_Location (Sloc (N));
-
+      if Kind = Warning_Kind and then Suppr /= No_String then
          declare
-            Tmp     : Source_Ptr := Sloc (First_Node (N));
-            File    : Unbounded_String;
-            Line    : Physical_Line_Number;
-            Context : Unbounded_String;
+            Len           : constant Natural :=
+              Natural (String_Length (Suppr));
+            Reason_String : String (1 .. Len);
          begin
-            loop
-               exit when Instantiation_Location (Tmp) = No_Location;
-
-               --  This wording for messages related to instantiations and
-               --  inlined calls is the same for flow and proof messages.
-               --  If you change it here, also change it in gnat_loc.ml
-
-               if Comes_From_Inlined_Body (Tmp) then
-                  Context := To_Unbounded_String (", in call inlined at ");
-               else
-                  Context := To_Unbounded_String (", in instantiation at ");
-               end if;
-
-               Tmp := Instantiation_Location (Tmp);
-               File := To_Unbounded_String (File_Name (Tmp));
-               Line := Get_Physical_Line_Number (Tmp);
-               Append (M, To_String (Context) &
-                         To_String (File) & ":" & Int_Image (Integer (Line)));
-            end loop;
+            String_To_Name_Buffer (Suppr);
+            Reason_String := Name_Buffer (1 .. Len);
+            Set_Field (Value, "message", Reason_String);
          end;
-
-      elsif Place_First then
-         Slc := First_Sloc (N);
-      else
-         Slc := Sloc (N);
       end if;
 
-      --  If the current message is a warning, we check if the warning should
-      --  be suppressed. Suppressed warnings will still be handled below.
+      Set_Field (Value, "rule",
+                 (if Suppr /= No_String then "pragma_warning" else Tag));
 
-      if Kind = Warning_Kind then
-         Suppr_Reason := Warnings_Suppressed (Sloc (N));
+      Set_Field (Value, "severity", Msg_Kind_To_String (Kind));
 
-         if Suppr_Reason = No_String then
-            declare
-               Temp : aliased String := To_String (M);
-            begin
-               Suppr_Reason :=
-                 Warning_Specifically_Suppressed (Loc => Sloc (N),
-                                                  Msg => Temp'Unchecked_Access,
-                                                  Tag => Tag);
-            end;
+      --  Append entity information
 
-            if Suppr_Reason = No_String
-              and then Warning_Disabled_For_Entity
-            then
-               Suppr_Reason := Null_String_Id;
-            end if;
-         end if;
+      declare
+         Ent_Value : constant JSON_Value := Create_Object;
+         Loc       : constant Source_Ptr := Translate_Location (Sloc (E));
+      begin
+         Set_Field (Ent_Value, "file", File_Name (Loc));
+         Set_Field (Ent_Value, "line",
+                    Integer (Get_Physical_Line_Number (Loc)));
+         Set_Field (Ent_Value, "name", Subprogram_Full_Source_Name (E));
+         Set_Field (Value, "entity", Ent_Value);
+      end;
+
+      if Tracefile /= "" then
+         Set_Field (Value, "tracefile", Tracefile);
       end if;
 
-      --  Signal we have found an error if:
-      --     * we are not dealing with a warning or
-      --     * the Warning_Mode is Treat_As_Error and the warning is not
-      --       suppressed.
-
-      if Kind = Error_Kind or else
-        (Kind = Warning_Kind and then
-         Opt.Warning_Mode = Treat_As_Error and then
-         Suppr_Reason = No_String)
-      then
-         Found_Flow_Error := True;
+      if VC_File /= "" then
+         Set_Field (Value, "vc_file", VC_File);
       end if;
 
-      JSON_V := Json_Entry (Suppr_Reason);
-      Append (Msg_List, JSON_V);
-
-      --  ??? remove this covert channel We use the fact that only proved
-      --  messages are info messages to detect when we are about to issue
-      --  a proof message
-      --  if report mode is "fail", do not actually print the message
-
-      if Kind = Info_Kind and then Report_Mode = GPR_Fail then
-         return;
+      if Editor_Cmd /= "" then
+         Set_Field (Value, "editor_cmd", Editor_Cmd);
       end if;
 
-      if Suppr_Reason = No_String then
-         if Ide_Mode then
-
-            --  If Ide_Mode is set, then we print the JSON message
-
-            Put_Line (Write (JSON_V));
-
-         else
-
-            --  Otherwise we issue an error message
-
-            M := Escape (M);
-            Append (M, "!!");
-
-            if Kind /= Error_Kind then
-               Append (M, "?");
-            end if;
-
-            Error_Msg (To_String (M), Slc);
-
-         end if;
+      if Msg_Id /= No_Message_Id then
+         Set_Field (Value, "msg_id", Integer (Msg_Id));
       end if;
-   end Print_JSON_Or_Normal_Msg;
+
+      Append (Msg_List, Value);
+   end Add_Json_Msg;
+
+   -----------------------
+   -- Print_Regular_Msg --
+   -----------------------
+
+   function Print_Regular_Msg
+     (Msg  : String;
+      Slc  : Source_Ptr;
+      Kind : Msg_Kind) return Message_Id is
+      Id : constant Message_Id := Message_Id_Counter;
+      Actual_Msg : constant String :=
+        (if Kind = Info_Kind then "info: " else "") &
+        Escape (Msg) & "!!" &
+      (if Kind /= Error_Kind then "?" else "") &
+      (if Ide_Mode then
+          "'['#" & Int_Image (Integer (Id)) & "']"
+       else "");
+   begin
+      Message_Id_Counter := Message_Id_Counter + 1;
+      Error_Msg (Actual_Msg, Slc);
+      return Id;
+   end Print_Regular_Msg;
 
    ----------------
    -- Substitute --
@@ -627,5 +592,72 @@ package body Flow_Error_Messages is
 
       return R;
    end Substitute;
+
+   ---------------------------
+   -- Warning_Is_Suppressed --
+   ---------------------------
+
+   function Warning_Is_Suppressed
+     (N   : Node_Id;
+      Msg : String;
+      F1   : Flow_Id := Null_Flow_Id;
+      F2   : Flow_Id := Null_Flow_Id)
+     return String_Id is
+
+      function Warning_Disabled_For_Entity return Boolean;
+      --  Returns True if either of N, F1, F2 correspond to an entity that
+      --  Has_Warnings_Off.
+
+      ---------------------------------
+      -- Warning_Disabled_For_Entity --
+      ---------------------------------
+
+      function Warning_Disabled_For_Entity return Boolean is
+
+         function Is_Entity_And_Has_Warnings_Off (N : Node_Or_Entity_Id)
+                                                  return Boolean
+         is ((Is_Entity_Name (N) and then Has_Warnings_Off (Entity (N)))
+             or else (Nkind (N) in N_Entity and then Has_Warnings_Off (N)));
+         --  Returns True if N is an entity and Has_Warnings_Off (N)
+
+      begin
+         if Is_Entity_And_Has_Warnings_Off (N) then
+            return True;
+         end if;
+
+         if Present (F1)
+           and then F1.Kind in Direct_Mapping | Record_Field
+           and then Is_Entity_And_Has_Warnings_Off (Get_Direct_Mapping_Id (F1))
+         then
+            return True;
+         end if;
+
+         if Present (F2)
+           and then F2.Kind in Direct_Mapping | Record_Field
+           and then Is_Entity_And_Has_Warnings_Off (Get_Direct_Mapping_Id (F2))
+         then
+            return True;
+         end if;
+
+         return False;
+      end Warning_Disabled_For_Entity;
+
+      Suppr_Reason : String_Id := Warnings_Suppressed (Sloc (N));
+
+   begin
+      if Suppr_Reason = No_String then
+         Suppr_Reason :=
+           Warning_Specifically_Suppressed
+             (Loc => Sloc (N),
+              Msg => Msg'Unrestricted_Access);
+
+         if Suppr_Reason = No_String
+           and then Warning_Disabled_For_Entity
+         then
+            Suppr_Reason := Null_String_Id;
+         end if;
+      end if;
+      return Suppr_Reason;
+   end Warning_Is_Suppressed;
 
 end Flow_Error_Messages;
