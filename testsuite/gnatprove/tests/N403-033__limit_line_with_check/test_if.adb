@@ -12,7 +12,12 @@ package body Test_If is
 
       C := C + B;
 
-      pragma assert (C > 0);
+      while B < Integer'Last / 2 loop
+         pragma Loop_Invariant (B < Integer'Last / 2);
+         B := 1 + B;
+      end loop;
+
+      C := C + B;
 
       return C;
    end;
