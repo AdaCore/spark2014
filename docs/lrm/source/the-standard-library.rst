@@ -550,7 +550,7 @@ and objects in |SPARK|:
 
 .. _tu-shared_variable_control-02:
 
-2. A component of a non-volatile type declaration shall not be volatile.
+2. A component of a non-volatile record type declaration shall not be volatile.
 
 .. todo:: This may require determining whether a private type is volatile.
 

@@ -93,11 +93,11 @@ reading a temperature from a device or writing the same value to a
 lamp driver or display. |SPARK| provides a mechanism to indicate
 whether a read or write is always significant.
 
-In |SPARK|, the terms *volatile type* and *volatile object* are defined
-as per Ada RM C.6(8/3). An *effectively volatile type* is a volatile type
-or an array type to which the Volatile_Components aspect has
-been applied. An *effectively volatile object* is a volatile object or
-an object of an array type to which Volatile_Components has been applied.
+A type is said to be *effectively volatile* if it is either
+a volatile type, an array type whose Volatile_Component
+aspect is True, or an array type whose component type is
+effectively volatile. An *effectively volatile object* is a
+volatile object or is of an effectively volatile type.
 
 External state is an effectively volatile object or a state abstraction which
 represents one or more effectively volatile objects (or it could be a null state
