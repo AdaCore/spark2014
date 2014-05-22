@@ -136,7 +136,7 @@ programming language approach to program verification. However, there
 are still many remaining challenges before we can expect verifying
 compilers to be as widely used as testing.
 
-Formal software verification has been successfully used and scaled to
+Formal software verification has been successfully applied and scaled to
 industrial projects \cite{Woodcock2009,vcc2009}. While many case
 studies have been successful, few formal methods have reached the
 take-up and maturity level where industrial non-experts continue to
@@ -155,12 +155,11 @@ take-up of verifying compiler technology:
 \item lack of convincing cost-benefit argument.
 \end{enumerate}
 %
-In this paper we will describe our approach to solving these two
-problems in the design of the \newspark language, a subset of \adatwtw designed
-for formal verification, and the associated
-a verification tool \gnatprove. We will use running examples from
-the VerifyThis 2012 competition and discuss the results of using our
-tools on those problems.
+In this paper we will describe our approach to solving these two problems
+in the design of the \newspark language, a subset of \adatwtw designed for
+formal verification, and the associated verification tool \gnatprove. We
+will use running examples from the VerifyThis 2012 competition and discuss
+the results of using our tools on those problems.
 
 This paper is organised as follows: first we describe the key language
 features of \newspark, which is a complete update of the \oldspark\
@@ -175,9 +174,9 @@ compiler and the verifier are based on the same front-end
 \cite{ksd2012}. In Section \ref{overflowsemantics} we describe
 specific language features that enables specifications to be written
 more naturally. In Section \ref{automation}, we present GNATprove, our
-formal verification tool, and in
-Section \ref{verifythis} its results in the VerifyThis 2012
-competition. We conclude with future work.
+formal verification tool, and in Section \ref{verifythis} its results in
+the VerifyThis 2012 competition. Finally we discuss ongoing work in Section
+\ref{ongoing} and conclusions in Section \ref{conclusions}.
 
 \section{Key Language Features for Verification}
 \label{langfeatures}
@@ -188,7 +187,7 @@ the program, or statically with a dedicated formal verification tool.
 
 \subsection{Ada 2012}
 
-Ada 2012 introduced new language features for facilitating the
+\adatwtw introduced new language features for facilitating the
 specification of programs~\cite{ada2012rationale}, many of which were
 inspired from the corresponding features in \oldspark. In the following,
 we describe some of these which we used in the solutions for the
@@ -199,23 +198,23 @@ preconditions and postconditions popularised by the Design-by-Contract
 approach~\cite{meyer:1988:OSC}. In challenge~1 (the longest common
 prefix problem) we can for example specify that function \verb|LCP|
 expects arguments within bounds, and that it returns a bounded
-result. Note the use of the new \textit{aspect} syntax in Ada 2012, in
+result. Note the use of the new \textit{aspect} syntax in \adatwtw, in
 which the declaration of \verb|LCP| is followed by keyword \verb|with|
 and a list of aspects, each of which specifies a property of the declared
 entity, such as pre- and post-condition.
-
+%
 \begin{lstlisting}
 function LCP (A : Text; X, Y : Integer) return Natural with
   Pre  => X in A'Range and then Y in A'Range,
   Post => LCP'Result in 0 .. Index'Last;
 \end{lstlisting}
-
+%
 In the postcondition of a function, the new attribute \verb|Result| is
 used to refer to the result of the function. The attribute \verb|Last|
 represents the last value (upper bound) in the range of type
 \verb|Index|. Another new attribute \verb|Old| is used to refer to the
 value of some variables on entry to a subprogram. These were used
-in solving challenge~2 (the binary tree sum) of the VerifyThis
+in solving challenge~2 (the prefix sum) of the VerifyThis
 competition. Note that we use the short-circuit Boolean operator
 \verb|and then| for which the second argument is only executed or
 evaluated if the first argument is not enough to determine the value
@@ -224,7 +223,7 @@ specifications involving partial functions, like
 \verb|Y /= 0 and then X / Y|.
 
 Writing specifications is made easier by new expression
-forms in Ada 2012. If-expressions and case-expressions are the
+forms in \adatwtw. If-expressions and case-expressions are the
 expression forms which correspond to the usual if-statements and
 case-statements. An if-expression without else-part
 \verb|(if A then B)| expresses a logical implication of \verb|B| by
@@ -240,22 +239,22 @@ specifications.
 
 \subsection{SPARK 2014}
 
-The new version of SPARK is based on the features of Ada 2012. There
+The new version of SPARK is based on the features of \adatwtw. There
 are also new features added, some of which are inspired from
 \oldspark. An example is the loop invariant.
 
 Like preconditions and postconditions are essential new features of
-Ada 2012 for specification, the loop invariant pragma is essential in
+\adatwtw for specification, the loop invariant pragma is essential in
 \newspark. A loop invariant can be inserted anywhere in the main list
 of statements in a loop, and it expresses the cumulated effect of the
 loop up to that point. For example, here is the loop invariant used in
 challenge~1:
-
+%
 \begin{lstlisting}
 pragma Loop_Invariant
   (for all K in 0 .. L - 1 => A (X + K) = A (Y + K));
 \end{lstlisting}
-
+%
 Note that a loop invariant in SPARK has a slightly different semantics
 to the classic loop invariant introduced by Hoare
 \cite{hoare69cacm}. A classic loop invariant has to hold when reaching
@@ -274,7 +273,7 @@ In formal verification, it is very common that loop invariants compare
 the value of a variable at loop entry and at the n$^{th}$ iteration of
 the loop. To enable such specifications, SPARK 2014 introduces the
 \verb|Loop_Entry| attribute, which can be applied to such a
-variable. We have used that feature in our solution to the binary tree sum
+variable. We have used that feature in our solution to the prefix sum
 challenge, see Section \ref{verifythis}.
 
 A loop variant pragma has been defined in SPARK 2014, to express
@@ -282,11 +281,11 @@ a quantity varying monotonically at each iteration of the loop. As
 loop invariants, a loop variant can appear anywhere in the main list
 of statements in a loop. For example, here is the loop variant used in
 the longest common prefix challenge:
-
+%
 \begin{lstlisting}
 pragma Loop_Variant (Increases => L);
 \end{lstlisting}
-
+%
 Note that this variant does not take the usual non-negative decreasing
 argument. Instead, it takes a list of increasing or decreasing integer
 values, bounded by their type in Ada, and the overall order over this
@@ -305,7 +304,7 @@ JML \cite{JML}. For example, the contract of \verb|LCP| can state separately
 sub-contracts for the cases where the elements at \verb|X| and \verb|Y| are
 different, or \verb|X| and \verb|Y| are equal. This contract may be used
 instead of or in addition to a precondition and a postcondition.
-
+%
 \begin{lstlisting}
 function LCP (A : Text; X, Y : Integer) return Natural with
   Contract_Cases =>
@@ -313,11 +312,15 @@ function LCP (A : Text; X, Y : Integer) return Natural with
      X = Y          => LCP'Result = A'Last - X + 1,
      others         => LCP'Result > 0);
 \end{lstlisting}
-
-Note that the cases above are disjoint and complete, as expected given
-the SPARK design goals: one and only one case should be applicable at
-every call. The presence of the \verb|others| case ensures the
-completeness here.
+%
+Note that the cases above are disjoint and complete, as expected given the
+SPARK design goals: one and only one case should be applicable at every
+call. The presence of the \verb|others| case ensures the completeness
+here. The SPARK tools ensures disjointness and completeness of the contract
+cases by augmenting the precondition with a check that exactly one of the
+conditions of the contract case list is satisfied, and conjoining the
+postcondition with conditional expressions representing each of the
+contract cases.
 
 \section{Integrated Testing and Proving}
 \label{hilite}
@@ -414,14 +417,14 @@ parameters and function results have values allowed by their type. As
 an example, consider what difference it makes to the user-supplied
 contract, if you would use the type \verb|Natural| instead of
 \verb|Integer| for the \verb|Input| parameter of procedure \verb|Sqrt|:
-
+%
 \begin{lstlisting}
 procedure Sqrt (Input : Integer; Res: out Natural) with
   Pre  => Input >= 0,
   Post => (Res * Res) <= Input and then
           (Res + 1) * (Res + 1) > Input;
 \end{lstlisting}
-
+%
 In this case the implicit precondition would be sufficient and a
 user-supplied precondition would not be necessary. Since there is a
 cost associated with users writing contracts, there is a benefit in
@@ -445,6 +448,18 @@ checking, in the hope that those users who are already annotating
 their code with assert statements, could more easily be convinced to
 start writing contracts. Ada 2012 and thus \newspark have such
 semantics.
+
+\adatwtw assertions have an executable semantics prescribed by the
+standard, in which an assertion may fail due to a run-time error during its
+evaluation, and types are the machine ones (bounded integers,
+floating-point or fixed-point). This is in contrast to \oldspark
+assertions, that have a logical semantics in which run-time errors are
+ignored, and types are the mathematical ones (infinite precision integers
+and reals). We have reconciled these views in \newspark so that assertions
+have both an executable and a logical interpretation. Furthermore, these
+interpretations are consistent in the sense that if a run-time error could
+occur during execution, there will be a corresponding verification
+condition during formal verification with the SPARK tools.
 
 As users can execute contracts, they can also debug them like code, and test
 them when formal verification is too difficult to achieve.
@@ -470,7 +485,6 @@ the benefits of formal executable contracts are:
 \item Low-level requirements expressed as contracts
 \item Successful execution of postcondition $\rightarrow$ test successful
 \item No need to collect and verify output
-\item An increase in run-time checks gives better robustness testing
 \end{itemize}
 If the chosen verification method for a subprogram is proof, the
 benefits of formal executable contracts are:
@@ -479,8 +493,6 @@ benefits of formal executable contracts are:
 \item Successful proof of postcondition $\rightarrow$ low-level
   requirement verified for all input
 \item Approach allowed by \DOC\ formal methods supplement
-\item Proof of absence of some run-time exceptions provides for some
-  robustness testing
 \item Proving process faster when annotations can be executed (debugging failed proof attempts is very time-consuming)
 \end{itemize}
 %
@@ -536,7 +548,9 @@ CUTE \cite{CUTE2005} and EXE \cite{EXE2006}, contract and invariant
 inference tools that use testing such as Daikon \cite{ErnstPGMPTX2007} and
 QuickSpec \cite{QuickSpec2010}, and finally HipSpec \cite{HipSpec2012},
 which uses a combination of automatic inductive theorem proving and
-testing to generate lemmas. It would be interesting to explore some
+testing to generate lemmas. Other related systems included \cite{specsharp}
+whose compiler also emits run-time checks for contracts, as well as the KeY
+Unit Test Generator \cite{KeYGenU}. It would be interesting to explore some
 of these approaches in SPARK in the future.
 
 The work perhaps most similar to our combination of test and proof is
@@ -560,12 +574,11 @@ the program code is that run-time exceptions must be considered, and
 avoided, in the assertions as well as in the program. As an example,
 consider a programmer who wants to state a precondition that the
 addition of two numbers fits in a desired integer type:
-
+%
 \begin{lstlisting}
   Pre => X + Y in Some_Integer_Type
 \end{lstlisting}
-
-\noindent
+%
 The problem is that
 \verb|X + Y| itself can cause an arithmetic overflow, and worse this
 is not relevant to the correctness of either the program or the
@@ -609,12 +622,15 @@ three alternative overflow checking modes in GNAT and \gnatprove:
 \item Eliminated mode: use bignum library in the remaining cases
 \end{enumerate}
 In the second and third cases the compiler performs a simple static
-analysis and decides if a larger machine integer, or even an unbounded
-one, is needed. This gives a flexible solution, where the user chooses
-between 3 modes. The choice is independent for assertions and
-code. However, the same choice for execution and formal verification
-is required for our hybrid verification with test and proof to be
-sound.
+analysis and decides if a larger machine integer, or even an unbounded one,
+is needed to fit the intermediate value of an arithmetic operation. In
+minimized mode, if the compiler static analysis decides that the value will
+fit in the 64 bit type, it will use a variable of the 64 bit type for the
+intermediate result. If it finds that the value may overflow the 64 bit
+type, a check will be emitted. These three modes for the user to choose
+from, gives a flexible solution. The choice is independent for assertions
+and code. However, the same choice for execution and formal verification is
+required for our hybrid verification with test and proof to be sound.
 
 There is a potential source of confusion in providing several overflow
 checking modes but this is managed with SPARK language profiles. SPARK
@@ -626,13 +642,13 @@ and regulations.
 \section{Making Automatic Verification Work}
 \label{automation}
 
-\gnatprove uses the Why3 platform~\cite{why3} to generate VCs and
-call provers. It can target as many output formats and automatic or
-manual provers as the Why3 platform allows (many!), but we focus on
-the automatic proof of VCs through the use of the SMT prover
-Alt-Ergo~\cite{altergo}, which is distributed with \gnatprove. There
-are two steps to make automatic verification work: first make it
-possible, then make it efficient.
+\gnatprove uses the Why3 platform~\cite{why3} to generate verification
+conditions (\emph{VC}s) and call provers. It can target as many output
+formats and automatic or manual provers as the Why3 platform allows
+(many!), but we focus on the automatic proof of VCs through the use of the
+SMT prover Alt-Ergo~\cite{altergo}, which is distributed with
+\gnatprove. There are two steps to make automatic verification work: first
+make it possible, then make it efficient.
 
 The choice of source programming language is essential to make
 automatic verification possible. On the one hand, it should proscribe
@@ -685,20 +701,18 @@ associated annotations, to avoid unnecessary rework.
 
 \section{VerifyThis Competition}
 \label{verifythis}
-In this section, we will describe our solutions to two of the
-challenges from the 2012 VerifyThis competition. The organizers report
-of the competition \cite {verifythis2012}, include the full
-descriptions of the challenges. In this section we will restate the
-descriptions of the verification tasks briefly. The first challenge is
-the longest common prefix problem, \verb|LCP|. The second challenge is
-a tree sum, \verb|PrefixSum|, which is a binary tree summation
-algorithm implemented in-place on an array. For the latter we have one
-complete fixed-size solution suitable for automatic verification using
-the current version of \newspark\ and \gnatprove. Furthermore, we have
-specified a general version of the \verb|Upsweep| procedure of the
-second challenge initially using \oldspark\ as a reference, then
-translated into \newspark, experiencing the benefits of executable
-annotations.
+In this section, we will describe our solutions to two of the challenges
+from the 2012 VerifyThis competition. The organizers report of the
+competition \cite {verifythis2012}, includes the full descriptions of the
+challenges. In this section we will restate the descriptions of the
+verification tasks briefly. The first challenge is the longest common
+prefix problem, \verb|LCP|. The second challenge, \verb|PrefixSum|, is a
+binary tree summation algorithm implemented in-place on an array. For the
+latter we have one complete fixed-size solution suitable for automatic
+verification using the current version of \newspark\ and
+\gnatprove. Furthermore, we have specified a general version of the
+\verb|Upsweep| procedure of the second challenge initially using
+\oldspark\ as a reference.
 
 \subsection{How the Solutions Were Produced}
 A solution to challenge~1 and an initial solution to challenge~2 was
@@ -763,7 +777,7 @@ begin
    return L;
 end LCP;
 \end{lstlisting}
-
+%
 The input
 specification that parameters \verb|X| and \verb|Y| are indices in the array
 parameter \verb|A| can be expressed as a precondition involving the Ada
@@ -815,7 +829,7 @@ is proved by \gnatprove.
 The final version of \verb|LCP| is proved in 6s on a laptop with 4G
 RAM and a 3GHz processor.
 
-\subsection{Challenge~2: Tree Sum}
+\subsection{Challenge~2: Prefix Sum}
 This is an abbreviated description of the challenge from the
 organizers report of the competition \cite {verifythis2012}, excluding
 the provided reference implementations and figures.
@@ -859,7 +873,7 @@ may choose one of these to your liking.
 If a general specification is not possible with your tool, assume the
 length of array is 8.
 
-\subsection{Solution to Challenge~2: Tree Sum}
+\subsection{Solution to Challenge~2: Prefix Sum}
 \label{solution2}
 We have chosen to implement an iterative version of prefix sum
 instead of a recursive one, which better matches the constraints
@@ -870,7 +884,7 @@ lines of code, not counting empty lines), so we only show here
 selected parts. The initial solution without annotations is
 straightforward and only 50 lines long. As an example, here is the
 implementation of procedure \verb|Upsweep|:
-
+%
 \begin{lstlisting}
 procedure Upsweep (A : in out Input;
                    Output_Space : out Positive) is
@@ -890,7 +904,7 @@ begin
    Output_Space := Space;
 end Upsweep;
 \end{lstlisting}
-
+%
 The postcondition of procedure \verb|Upsweep| states that the array
 parameter \verb|A| is put in an intermediate form \wrt its initial
 value (denoted \verb|A'Old|). The contract of procedure
@@ -903,7 +917,7 @@ sums of array \verb|Ghost|. By calling in sequence \verb|Upsweep| and
 desired in-place modification of \verb|A|. Although \newspark does not
 yet support ghost parameters, which are only used for proofs, this is
 the role of parameter \verb|Ghost| here, hence its name.
-
+%
 \begin{lstlisting}
 procedure Upsweep (A : in out Input;
                    Output_Space : out Positive) with
@@ -940,6 +954,7 @@ with
     A (7) = Ghost (0) + Ghost (1) + Ghost (2) + Ghost (3)
           + Ghost (4) + Ghost (5) + Ghost (6);
 \end{lstlisting}
+%
 
 The function \verb|Intermediate_Form| gives the exact relationship between the
 initial value of the array (parameter \verb|B| below) and its intermediate
@@ -949,7 +964,7 @@ the benefit that \gnatprove automatically generates a postcondition for
 \verb|Intermediate_Form| equivalent to its body. We also give a precondition to
 \verb|Intermediate_Form| to prove that its evaluation cannot fail run-time
 checks (overflow checks and index checks here).
-
+%
 \begin{lstlisting}
 function Intermediate_Form (A, B : Input) return Boolean
   with Pre => All_Elements_In (A, Maximum * 8)
@@ -967,24 +982,26 @@ function Intermediate_Form (A, B : Input) return Boolean is
      else
         A (K) = B (K)));
 \end{lstlisting}
+%
 
 Note that the contracts of all previous procedures and functions contain calls
 to function \verb|All_Elements_In|, which returns \verb|True| if all elements
 of an array are bounded in absolute value, which we also define as an
 expression function:
-
+%
 \begin{lstlisting}
 function All_Elements_In (A : Input; Max : Positive)
 return Boolean is
    (for all K in A'Range => A (K) in -Max .. Max);
 \end{lstlisting}
+%
 
 These specifications add 62 lines to the initial 50 lines for the solution. To
 prove them with \gnatprove, we add 84 more lines for loop invariants and loop
 variants. As an example, here are the loop invariant and loop variant for the
 inner loop of procedure \verb|Upsweep|. Inside the loop invariant,
 \verb|A'Loop_Entry| denotes the value of \verb|A| on entry to the loop.
-
+%
 \begin{lstlisting}
 pragma Loop_Invariant (
   (Left + 1) mod Space = 0
@@ -1006,6 +1023,7 @@ pragma Loop_Invariant (
         A (K) = A'Loop_Entry (K))));
 pragma Loop_Variant (Increases => Left);
 \end{lstlisting}
+%
 
 The final version of prefix sum is partially proved (78 VCs proved, 8 VCs
 %
@@ -1021,7 +1039,7 @@ version of loop invariants and intermediate function where all occurrences of
 the \verb|mod| operator are replaced by an explicit enumeration of the possible
 cases for all indexes, which \gnatprove is able to fully prove automatically.
 
-\subsection{General Tree Sum}
+\subsection{General Prefix Sum}
 \label{solution2general}
 As mentioned, we chose to implement an iterative version of
 \verb|PrefixSum| as a better fit for critical embedded software.
@@ -1043,24 +1061,28 @@ left unchanged during the upsweep, and 2) upon completion of
 \verb|Upsweep|, the last element holds the sum of all the elements in
 the array.
 
-We have added a constant \verb|Tree_Depth| for the size of the tree
-that fits in the input array. This is to be able to neatly specify an
-important precondition on \verb|Upsweep| that the size of the array is
-a power of 2. Otherwise the binary tree algorithm is not guaranteed to
-work, so we want to be explicit about this precondition. By adding
-this constant and precondition we ask the user to effectively fix the
-size, but it is done in a general fashion. It is worth noting that
-this precondition could have been stated without asking the user to fix
-the size, and perhaps more naturally as $\exists n: \mathit{Integer}.~ A'\mathit{Length} = 2^n$, but it is our experience that existential quantification is
-difficult for the automatic provers that we have available.
+We have added a constant \verb|Tree_Depth| for the size of the tree that
+fits in the input array. This is to be able to neatly specify an important
+precondition on \verb|Upsweep| that the size of the array is a power of
+2. Otherwise the binary tree algorithm is not guaranteed to work, so we
+want to be explicit about this precondition. By adding this constant and
+precondition we ask the user to effectively fix the size, but it is done in
+a general fashion. It is worth noting that this precondition could have
+been stated without asking the user to fix the size, and perhaps more
+naturally as $\exists n: \mathit{Integer}.~ A'\mathit{Length} = 2^n$, but
+it is our experience that existential quantification is difficult for the
+automatic provers that we have available. In this example the problem would
+show for callers of \verb|Upsweep| trying to establish its precondition,
+and our typical automatic prover would essentially stay busy trying to find
+a model for $\forall n: \mathit{Integer}.~ A'\mathit{Length} \neq 2^n$.
 
 We have added a couple of functions to make the specification
 intuitive: \verb|Is_Even|, and more importantly \verb|Summation|, the
 mathematical operation for adding a sequence of numbers.
-
+%
 \begin{lstlisting}
 Tree_Depth : constant := 3;
-Maximum    : constant := Integer'Last / (Index'Last + 1);
+Maximum    : constant := Integer'Last / 2 ** Tree_Depth;
 
 function Is_Even (K : Integer) return Boolean is
   (K mod 2 = 0);
@@ -1088,6 +1110,7 @@ procedure Upsweep (A : in out Input;
     and then
    A (A'Last) = Summation (A'Old, 0, A'Last);
 \end{lstlisting}
+%
 
 The downside is that this improved specification does not yet verify
 with the current version of \gnatprove, since the proof requires
@@ -1210,17 +1233,24 @@ correct erroneous ones. This feature won the prize of user-assistance
 tool feature awarded by the jury of the VerifyThis competition.
 
 Another very useful feature for these challenges was the ability to
-eliminate completely all possibilities of numeric overflow in
-annotations, as described in Section~\ref{overflowsemantics}. This was
-done by setting the overflow checking mode of GNAT and
-\gnatprove to ``eliminated''. While using the ``strict'' overflow mode
-results in only 10 more overflow VCs in challenge~1, which are all
-proved with the current annotations, it adds 60 overflow VCs in
-challenge~2, most of which require modifications of annotations, or
-addition of new annotations, to be proved. Note that this feature is
-compatible with the execution of annotations, as compilation also
-takes into account the overflow mode when compiling arithmetic
-expressions.
+eliminate completely all possibilities of numeric overflow in annotations,
+as described in Section~\ref{overflowsemantics}. This reduced the number of
+false alarms. It was done by setting the overflow checking mode of GNAT and
+\gnatprove to ``eliminated''.  While using the ``strict'' overflow mode
+results in only 10 more overflow VCs in challenge~1, which are all proved
+with the current annotations, it adds 60 overflow VCs in challenge~2, most
+of which require modifications of annotations, or addition of new
+annotations, to be proved. Note that this feature is compatible with the
+execution of annotations, as compilation also takes into account the
+overflow mode when compiling arithmetic expressions.
+
+\begin{figure*}
+\includegraphics[width=\linewidth]{gnatprove.png}
+\caption{Snapshot of GNATprove results on challenge~1 inside GPS}
+\label{fig:snapshot}
+\end{figure*}
+
+%% \caption Snapshot of GNATprove results on challenge 1 in GPS
 
 Various features of \gnatprove make it very convenient to use inside
 an Integrated Development Environment (currently GPS, the GNAT
@@ -1238,14 +1268,6 @@ invariants and loop variants, special attributes \verb|'Result|,
 \verb|'Old| and \verb|'Loop_Entry|, expression functions, quantified
 expressions and if expressions.
 
-\begin{figure*}
-\includegraphics[width=\linewidth]{gnatprove.png}
-\caption{Snapshot of GNATprove results on challenge~1 inside GPS}
-\label{fig:snapshot}
-\end{figure*}
-
-%% \caption Snapshot of GNATprove results on challenge 1 in GPS
-
 \section{Ongoing Work}
 \label{ongoing}
 
@@ -1256,8 +1278,8 @@ the start of 2014. On the tool side, current work focuses on flow analysis,
 support for investigating unproved VCs, and improvements of the SMT prover.
 
 Flow analysis is the verification of the data dependences of
-subprograms. This analysis which has always been a component of SPARK
-verification is being redeveloped for \newspark, based on program
+subprograms. This analysis, which has always been a component of SPARK
+verification, is being redeveloped for \newspark based on program
 dependence graphs~\cite{horwitz:1988:pldi}. An important novelty is
 that, while \oldspark requires that the user annotates programs with
 data dependence contracts, they are optional in \newspark, and
@@ -1302,6 +1324,10 @@ using formal verification in regulated industries. \newspark and
 \DOC, but early evaluations are very encouraging, and some are
 documented in the case study developed by Astrium Space Transportation
 \cite{dasia2013}.
+%
+\section{Acknowledgement}
+The authors would like to thank the anonymous reviewers for their valuable
+comments and suggestions to improve the quality of this report.
 %
 \bibliographystyle{alpha}
 \bibliography{sttt_2013}
