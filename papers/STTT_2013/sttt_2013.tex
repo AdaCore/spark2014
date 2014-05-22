@@ -136,16 +136,16 @@ programming language approach to program verification. However, there
 are still many remaining challenges before we can expect verifying
 compilers to be as widely used as testing.
 
-Formal software verification has been successfully applied and scaled to
-industrial projects \cite{Woodcock2009,vcc2009}. While many case
-studies have been successful, few formal methods have reached the
-take-up and maturity level where industrial non-experts continue to
-use the method for project after project, and where this formal
-method is a permanent part of the business of industrial software
-development. There are some notable exceptions: for example, the SPARK
-language and toolset for static verification has been applied for many
-years in on-board aircraft systems, control systems, cryptographic
-systems, and rail systems \cite{sparkbook2012,oneill2012}.
+Formal software verification has been successfully applied and demonstrated
+to scale to industrial projects \cite{Woodcock2009,vcc2009}. While many
+case studies have been successful, few formal methods have reached the
+take-up and maturity level where industrial non-experts continue to use the
+method for project after project, and where this formal method is a
+permanent part of the business of industrial software development. There
+are some notable exceptions: for example, the SPARK language and toolset
+for static verification has been applied for many years in on-board
+aircraft systems, control systems, cryptographic systems, and rail systems
+\cite{sparkbook2012,oneill2012}.
 
 We identify two main hurdles that currently hinder the
 take-up of verifying compiler technology:
@@ -222,20 +222,18 @@ of the expression. This is helpful for example in producing valid
 specifications involving partial functions, like
 \verb|Y /= 0 and then X / Y|.
 
-Writing specifications is made easier by new expression
-forms in \adatwtw. If-expressions and case-expressions are the
-expression forms which correspond to the usual if-statements and
-case-statements. An if-expression without else-part
+Writing specifications is made easier by new expression forms in
+\adatwtw. If- and case-expressions correspond to the usual if-statements
+and case-statements. An if-expression without else-part
 \verb|(if A then B)| expresses a logical implication of \verb|B| by
 \verb|A|. Quantified expressions \verb|(for all X in A)| and
 \verb|(for some X in A)| correspond to the mathematical universal and
-existential quantifications (see Section \ref{overflowsemantics} for
-more information about the domain of bound variables). Expression
-functions define a function with a single expression, like in
-functional programming languages. As expression functions can be part
-of the specification of programs (contrary to regular function
-bodies), they provide a powerful way to abstract complex parts of
-specifications.
+existential quantifications (see Section \ref{overflowsemantics} for more
+information about the domain of bound variables). Expression functions
+define a function with a single expression, like in functional programming
+languages. As expression functions can be part of the specification of
+programs (contrary to regular function bodies), they provide a powerful way
+to abstract complex parts of specifications.
 
 \subsection{SPARK 2014}
 
@@ -286,7 +284,7 @@ the longest common prefix challenge:
 pragma Loop_Variant (Increases => L);
 \end{lstlisting}
 %
-Note that this variant does not take the usual non-negative decreasing
+Note that this variant does not take the usual decreasing non-negative
 argument. Instead, it takes a list of increasing or decreasing integer
 values, bounded by their type in Ada, and the overall order over this
 list is the lexicographic order combined with individual
