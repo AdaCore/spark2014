@@ -314,7 +314,7 @@ function LCP (A : Text; X, Y : Integer) return Natural with
 Note that the cases above are disjoint and complete, as expected given the
 SPARK design goals: one and only one case should be applicable at every
 call. The presence of the \verb|others| case ensures the completeness
-here. The SPARK tools ensures disjointness and completeness of the contract
+here. The SPARK tools ensure disjointness and completeness of the contract
 cases by augmenting the precondition with a check that exactly one of the
 conditions of the contract case list is satisfied, and conjoining the
 postcondition with conditional expressions representing each of the
