@@ -52,15 +52,12 @@ with Why.Atree.Builders;     use Why.Atree.Builders;
 with Why.Atree.Modules;      use Why.Atree.Modules;
 with Why.Atree.Mutators;     use Why.Atree.Mutators;
 with Why.Conversions;        use Why.Conversions;
-with Why.Gen.Binders;        use Why.Gen.Binders;
 with Why.Gen.Decl;           use Why.Gen.Decl;
 with Why.Gen.Expr;           use Why.Gen.Expr;
 with Why.Gen.Names;          use Why.Gen.Names;
 with Why.Gen.Preds;          use Why.Gen.Preds;
 with Why.Gen.Progs;          use Why.Gen.Progs;
-with Why.Ids;                use Why.Ids;
 with Why.Inter;              use Why.Inter;
-with Why.Sinfo;              use Why.Sinfo;
 with Why.Types;              use Why.Types;
 
 with Gnat2Why.Decls;         use Gnat2Why.Decls;
@@ -73,11 +70,6 @@ package body Gnat2Why.Subprograms is
    -----------------------
    -- Local Subprograms --
    -----------------------
-
-   procedure Add_Dependencies_For_Effects
-     (File : Why_Section;
-      E    : Entity_Id);
-   --  Adds imports for the globals in the current theory
 
    procedure Assign_Bounds_For_Dynamic_Types
      (Params    :        Transformation_Params;
@@ -114,10 +106,6 @@ package body Gnat2Why.Subprograms is
    --  In general, the binder array has *more* arguments than the Ada entity,
    --  because of effects. Note that these effect variables are not bound here,
    --  they refer to the global variables
-
-   function Compute_Binders (E : Entity_Id) return Item_Array;
-   --  Return Why binders for the parameters of subprogram E. The array is
-   --  a singleton of unit type if E has no parameters.
 
    procedure Compute_Contract_Cases_Guard_Map
      (E                  : Entity_Id;
@@ -167,7 +155,14 @@ package body Gnat2Why.Subprograms is
      (E : Entity_Id) return W_Effects_Id;
    --  Compute the effects of the generated Why function.
 
-   function Compute_Logic_Binders (E : Entity_Id) return Item_Array;
+   function Compute_Binders (E : Entity_Id; Domain : EW_Domain)
+                             return Item_Array;
+   --  Return Why binders for the parameters of subprogram E.
+   --  If Domain is EW_Term also generates binders for E's read effects.
+   --  The array is a singleton of unit type if the array is empty.
+
+   function Add_Logic_Binders (E           : Entity_Id;
+                               Raw_Binders : Item_Array) return Item_Array;
    --  Return Why binders for the parameters and read effects of function E.
    --  The array is a singleton of unit type if E has no parameters and no
    --  effects.
@@ -211,8 +206,8 @@ package body Gnat2Why.Subprograms is
    ----------------------------------
 
    procedure Add_Dependencies_For_Effects
-     (File : Why_Section;
-      E    : Entity_Id)
+     (T : W_Theory_Declaration_Id;
+      E : Entity_Id)
    is
       Read_Ids    : Flow_Types.Flow_Id_Sets.Set;
       Write_Ids   : Flow_Types.Flow_Id_Sets.Set;
@@ -227,8 +222,8 @@ package body Gnat2Why.Subprograms is
       Read_Names  := Flow_Types.To_Name_Set (Read_Ids);
       Write_Names := Flow_Types.To_Name_Set (Write_Ids);
 
-      Add_Effect_Imports (File, Read_Names);
-      Add_Effect_Imports (File, Write_Names);
+      Add_Effect_Imports (T, Read_Names);
+      Add_Effect_Imports (T, Write_Names);
 
    end Add_Dependencies_For_Effects;
 
@@ -465,16 +460,19 @@ package body Gnat2Why.Subprograms is
    -- Compute_Binders --
    ---------------------
 
-   function Compute_Binders (E : Entity_Id) return Item_Array is
-      Binders : constant Item_Array := Compute_Raw_Binders (E);
+   function Compute_Binders (E : Entity_Id; Domain : EW_Domain)
+                             return Item_Array is
+      Binders     : constant Item_Array :=
+        Compute_Subprogram_Parameters  (E, Domain);
    begin
-      --  If E has no parameters, return a singleton of unit type
 
-      if Binders'Length = 0 then
-         return (1 => (Regular, Unit_Param));
-      else
-         return Binders;
-      end if;
+         --  If E has no parameters, return a singleton of unit type.
+
+         if Binders'Length = 0 then
+            return (1 => (Regular, Unit_Param));
+         else
+            return Binders;
+         end if;
    end Compute_Binders;
 
    ---------------------
@@ -573,12 +571,25 @@ package body Gnat2Why.Subprograms is
       return Pred;
    end Compute_Guard_Formula;
 
-   ---------------------------
-   -- Compute_Logic_Binders --
-   ---------------------------
+   ------------------------------------
+   -- Compute_Subprogram_Parameters  --
+   ------------------------------------
 
-   function Compute_Logic_Binders (E : Entity_Id) return Item_Array is
-      Binders     : constant Item_Array := Compute_Raw_Binders (E);
+   function Compute_Subprogram_Parameters  (E : Entity_Id; Domain : EW_Domain)
+                             return Item_Array is
+      Raw_Binders : constant Item_Array := Compute_Raw_Binders (E);
+   begin
+      return (if Domain = EW_Prog then Raw_Binders
+              else Add_Logic_Binders (E, Raw_Binders));
+   end Compute_Subprogram_Parameters;
+
+   -----------------------
+   -- Add_Logic_Binders --
+   -----------------------
+
+   function Add_Logic_Binders (E           : Entity_Id;
+                               Raw_Binders : Item_Array)
+                                     return Item_Array is
       Num_Binders : Integer;
       Count       : Integer;
 
@@ -597,56 +608,51 @@ package body Gnat2Why.Subprograms is
       --  If E has no parameters and no read effects, return a singleton of
       --  unit type.
 
-      Num_Binders := Binders'Length + Integer (Read_Names.Length);
+      Num_Binders := Raw_Binders'Length + Integer (Read_Names.Length);
 
-      if Num_Binders = 0 then
-         return (1 => (Regular, Unit_Param));
+      declare
+         Result : Item_Array (1 .. Num_Binders);
 
-      else
-         declare
-            Result : Item_Array (1 .. Num_Binders);
+      begin
+         --  First, copy all binders for parameters of E
 
-         begin
-            --  First, copy all binders for parameters of E
+         Result (1 .. Raw_Binders'Length) := Raw_Binders;
 
-            Result (1 .. Binders'Length) := Binders;
+         --  Next, add binders for read effects of E
 
-            --  Next, add binders for read effects of E
+         Count := Raw_Binders'Length + 1;
+         for R of Read_Names loop
+            declare
+               Entity : constant Entity_Id := Find_Entity (R);
+            begin
+               if Present (Entity) and Entity_In_SPARK (Entity) then
+                  Result (Count) :=
+                    (Regular,
+                     (Ada_Node => Entity,
+                      B_Name   =>
+                        New_Identifier
+                          (Name => Full_Name (Entity),
+                           Typ  => EW_Abstract (Etype (Entity))),
+                      B_Ent    => null,
+                      Mutable  => False));
+               else
+                  Result (Count) :=
+                    (Regular,
+                     (Ada_Node => Empty,
+                      B_Name   =>
+                        New_Identifier
+                          (Name => R.all,
+                           Typ  => New_Named_Type (To_Why_Type (R.all))),
+                      B_Ent    => R,
+                      Mutable  => False));
+               end if;
+            end;
+            Count := Count + 1;
+         end loop;
 
-            Count := Binders'Length + 1;
-            for R of Read_Names loop
-               declare
-                  Entity : constant Entity_Id := Find_Entity (R);
-               begin
-                  if Present (Entity) and Entity_In_SPARK (Entity) then
-                     Result (Count) :=
-                       (Regular,
-                        (Ada_Node => Entity,
-                         B_Name   =>
-                           New_Identifier
-                             (Name => Full_Name (Entity),
-                              Typ  => EW_Abstract (Etype (Entity))),
-                         B_Ent    => null,
-                         Mutable  => False));
-                  else
-                     Result (Count) :=
-                       (Regular,
-                        (Ada_Node => Empty,
-                         B_Name   =>
-                           New_Identifier
-                             (Name => R.all,
-                              Typ  => New_Named_Type (To_Why_Type (R.all))),
-                         B_Ent    => R,
-                         Mutable  => False));
-                  end if;
-               end;
-               Count := Count + 1;
-            end loop;
-
-            return Result;
-         end;
-      end if;
-   end Compute_Logic_Binders;
+         return Result;
+      end;
+   end Add_Logic_Binders;
 
    -------------------------
    -- Compute_Raw_Binders --
@@ -673,18 +679,71 @@ package body Gnat2Why.Subprograms is
             Typ  : constant W_Type_Id :=
                  (if Use_Why_Base_Type (Id) then
                        Base_Why_Type (Unique_Entity (Etype (Id)))
+                  elsif Is_Array_Type (Etype (Id))
+                  and then not Is_Static_Array_Type (Etype (Id))
+                  and then Is_Mutable_In_Why (Id) then
+                     EW_Split (Etype (Id))
                   else EW_Abstract (Etype (Id)));
             Name : constant W_Identifier_Id :=
-              New_Identifier (Ada_Node => Empty,
+              New_Identifier (Ada_Node => Id,
                               Name     => Short_Name (Id),
                               Typ      => Typ);
          begin
-            Result (Count) :=
-              (Regular,
-               (Ada_Node => Id,
-                B_Name   => Name,
-                B_Ent    => null,
-                Mutable  => Is_Mutable_In_Why (Id)));
+            if Is_Array_Type (Etype (Id))
+              and then not Is_Static_Array_Type (Etype (Id))
+              and then Is_Mutable_In_Why (Id)
+            then
+
+               --  Binders for mutable unconstrained array parameters have to
+               --  be given in split form to preserve the bounds through
+               --  procedure calls. That is:
+               --    procedure P (A : in out UCArray);
+               --  is should be translated as:
+               --    val p (a : ref __split, a__first : int, a__last : int)
+
+               declare
+                  Dim    : constant Positive :=
+                    Positive (Number_Dimensions (Etype (Id)));
+                  Bounds : Array_Bounds;
+                  Index  : Node_Id := First_Index (Etype (Id));
+               begin
+                  for I in 1 .. Dim loop
+                     declare
+                        Index_Typ : constant W_Type_Id :=
+                          (if Use_Base_Type_For_Type (Etype (Index)) then
+                                Base_Why_Type (Base_Type (Etype (Index)))
+                           else EW_Abstract (Etype (Index)));
+                     begin
+                        Bounds (I) :=
+                          (Append_Num (S        => Short_Name (Id) & "__first",
+                                       Count    => I,
+                                       Typ      => Index_Typ,
+                                       Ada_Node => Empty),
+                           Append_Num (S        => Short_Name (Id) & "__last",
+                                       Count    => I,
+                                       Typ      => Index_Typ,
+                                       Ada_Node => Empty));
+                     end;
+                     Next_Index (Index);
+                  end loop;
+
+                  Result (Count) :=
+                    (UCArray,
+                     Main   => (Ada_Node => Id,
+                                B_Name   => Name,
+                                B_Ent    => null,
+                                Mutable  => Is_Mutable_In_Why (Id)),
+                     Dim    => Dim,
+                     Bounds => Bounds);
+               end;
+            else
+               Result (Count) :=
+                 (Regular,
+                  (Ada_Node => Id,
+                   B_Name   => Name,
+                   B_Ent    => null,
+                   Mutable  => Is_Mutable_In_Why (Id)));
+            end if;
             Next (Param);
             Count := Count + 1;
          end;
@@ -1646,8 +1705,7 @@ package body Gnat2Why.Subprograms is
      (File : Why_Section;
       E    : Entity_Id)
    is
-      Logic_Func_Binders : constant Item_Array :=
-        Compute_Logic_Binders (E);
+      Logic_Func_Binders : constant Item_Array := Compute_Binders (E, EW_Term);
       Params       : Transformation_Params;
       Pre          : W_Pred_Id;
       Post         : W_Pred_Id;
@@ -1777,7 +1835,7 @@ package body Gnat2Why.Subprograms is
                           else "")
                    & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
-      Add_Dependencies_For_Effects (File, E);
+      Add_Dependencies_For_Effects (File.Cur_Theory, E);
 
       Generate_Subprogram_Program_Fun (File, E);
 
@@ -1796,10 +1854,8 @@ package body Gnat2Why.Subprograms is
      (File : Why_Section;
       E    : Entity_Id)
    is
-      Logic_Func_Binders : constant Item_Array :=
-        Compute_Logic_Binders (E);
-
-      Func_Binders : constant Item_Array := Compute_Binders (E);
+      Logic_Func_Binders : constant Item_Array := Compute_Binders (E, EW_Term);
+      Func_Binders : constant Item_Array := Compute_Binders (E, EW_Prog);
       Func_Why_Binders : constant Binder_Array :=
         To_Binder_Array (Func_Binders);
       Params       : Transformation_Params;
@@ -1925,8 +1981,7 @@ package body Gnat2Why.Subprograms is
    is
       Expr_Fun_N         : constant Node_Id := Get_Expression_Function (E);
       pragma Assert (Present (Expr_Fun_N));
-      Logic_Func_Binders : constant Item_Array :=
-        Compute_Logic_Binders (E);
+      Logic_Func_Binders : constant Item_Array := Compute_Binders (E, EW_Term);
       Flat_Binders       : constant Binder_Array :=
         To_Binder_Array (Logic_Func_Binders);
       Logic_Id           : constant W_Identifier_Id :=
@@ -1948,7 +2003,7 @@ package body Gnat2Why.Subprograms is
                           else "")
                    & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
-      Add_Dependencies_For_Effects (File, E);
+      Add_Dependencies_For_Effects (File.Cur_Theory, E);
 
       Generate_Subprogram_Program_Fun (File, E);
 
@@ -2071,8 +2126,7 @@ package body Gnat2Why.Subprograms is
       E    : Entity_Id)
    is
       Name         : constant String := Full_Name (E);
-      Logic_Func_Binders : constant Item_Array :=
-        Compute_Logic_Binders (E);
+      Logic_Func_Binders : constant Item_Array := Compute_Binders (E, EW_Term);
       Why_Type     : W_Type_Id := Why_Empty;
       Effects      : W_Effects_Id;
    begin
@@ -2100,7 +2154,7 @@ package body Gnat2Why.Subprograms is
          begin
             --  Generate a logic function
 
-            Add_Dependencies_For_Effects (File, E);
+            Add_Dependencies_For_Effects (File.Cur_Theory, E);
 
             Effects := Compute_Effects (E);
 

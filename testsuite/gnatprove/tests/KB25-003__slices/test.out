@@ -46,7 +46,7 @@ pack.adb:77:47: info: index check proved
 pack.adb:81:09: info: length check proved
 pack.adb:84:04: warning: analyzing unreferenced procedure "P"
 pack.adb:84:14: warning: subprogram "P" has no effect
-pack.adb:88:22: warning: assertion might fail, requires A (8) = 1
+pack.adb:88:07: info: assertion proved
 pack.adb:89:22: warning: assertion might fail, requires A (9) = 2
 pack.ads:3:14: warning: subprogram "A1" has no effect
 pack.ads:5:14: warning: subprogram "A2" has no effect

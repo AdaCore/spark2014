@@ -65,7 +65,7 @@ skein.adb:936:10: warning: precondition might fail
 skein.adb:949:10: warning: precondition might fail
 skein.adb:965:37: warning: range check might fail
 skein.adb:981:07: warning: precondition might fail
-skein.adb:984:07: warning: precondition might fail
+skein.adb:984:07: info: precondition proved
 skein.adb:1007:12: warning: precondition might fail
 skein.ads:126:21: info: length check proved
 skein.ads:129:21: info: length check proved

@@ -141,6 +141,7 @@ package body Gnat2Why.Expr is
      (Call        : Node_Id;
       Domain      : EW_Domain;
       Nb_Of_Refs  : out Natural;
+      Nb_Of_Lets  : out Natural;
       Params      : Transformation_Params) return W_Expr_Array;
    --  Compute arguments for a function call or procedure call. The node in
    --  argument must have a "Name" field and a "Parameter_Associations" field.
@@ -156,16 +157,17 @@ package body Gnat2Why.Expr is
    --  Return whether Choice is a range ("others" counts as a range)
 
    function Needs_Temporary_Ref
-     (Actual : Node_Id;
-      Formal : Node_Id)
-     return Boolean;
+     (Actual     : Node_Id;
+      Formal     : Node_Id;
+      Typ_Formal : W_Type_Id) return Boolean;
    --  True if the parameter passing needs a temporary ref to be performed.
 
    function Insert_Ref_Context
      (Params     : Transformation_Params;
       Ada_Call   : Node_Id;
       Why_Call   : W_Prog_Id;
-      Nb_Of_Refs : Positive) return W_Prog_Id;
+      Nb_Of_Refs : Positive;
+      Nb_Of_Lets : Natural) return W_Prog_Id;
    --  Considering a call to an Ada subprogram; Ada_Call being its node
    --  in the Ada syntax tree, and Why_Call its corresponding call in the
    --  Why syntax tree:
@@ -1087,38 +1089,26 @@ package body Gnat2Why.Expr is
      (Call        : Node_Id;
       Domain      : EW_Domain;
       Nb_Of_Refs  : out Natural;
+      Nb_Of_Lets  : out Natural;
       Params      : Transformation_Params) return W_Expr_Array
    is
       Subp   : constant Entity_Id := Entity (Name (Call));
-      Assocs : constant List_Id := Parameter_Associations (Call);
-      Len    : Nat;
-
-      Read_Ids    : Flow_Types.Flow_Id_Sets.Set;
-      Write_Ids   : Flow_Types.Flow_Id_Sets.Set;
-      Read_Names  : Name_Set.Set;
+      Binders : constant Item_Array :=
+        Compute_Subprogram_Parameters (Subp, Domain);
 
    begin
-      --  Collect global variables potentially read
-
-      Flow_Utility.Get_Proof_Globals (Subprogram => Subp,
-                                      Reads      => Read_Ids,
-                                      Writes     => Write_Ids);
-      Read_Names := Flow_Types.To_Name_Set (Read_Ids);
 
       Nb_Of_Refs := 0;
-      Len := List_Length (Assocs);
+      Nb_Of_Lets := 0;
 
-      if Domain = EW_Term then
-         Len := Len + Int (Read_Names.Length);
-      end if;
-
-      if Len = 0 then
+      if Binders'Length = 0 then
          return (1 => New_Void (Call));
       end if;
 
       declare
-         Why_Args : W_Expr_Array (1 .. Integer (Len));
-         Cnt      : Positive := 1;
+         Why_Args : W_Expr_Array (1 .. Item_Array_Length (Binders));
+         Arg_Cnt  : Positive := 1;
+         Bind_Cnt : Positive := Binders'First;
 
          procedure Compute_Arg (Formal, Actual : Node_Id);
          --  Compute a Why expression for each parameter
@@ -1129,15 +1119,19 @@ package body Gnat2Why.Expr is
 
          procedure Compute_Arg (Formal, Actual : Node_Id) is
          begin
-            if Needs_Temporary_Ref (Actual, Formal) then
+            if Needs_Temporary_Ref
+              (Actual, Formal, Get_Typ (Binders (Bind_Cnt).Main.B_Name))
+            then
 
                --  We should never use the Formal for the Ada_Node,
                --  because there is no real dependency here; We only
                --  use the Formal to get a sensible name.
 
-               Why_Args (Cnt) :=
+               Why_Args (Arg_Cnt) :=
                  +New_Identifier (Ada_Node => Empty,
-                                  Name     => Full_Name (Formal));
+                                  Name     => Full_Name (Formal),
+                                  Typ      =>
+                                    Get_Typ (Binders (Bind_Cnt).Main.B_Name));
                Nb_Of_Refs := Nb_Of_Refs + 1;
             else
                case Ekind (Formal) is
@@ -1147,9 +1141,12 @@ package body Gnat2Why.Expr is
                      --  if the actual is a simple identifier and no conversion
                      --  is needed, it can be translated "as is".
 
-                     Why_Args (Cnt) :=
-                       +New_Identifier (Ada_Node => Actual,
-                                        Name     => Full_Name (Actual));
+                     Why_Args (Arg_Cnt) :=
+                       +New_Identifier
+                       (Ada_Node => Actual,
+                        Name     => Full_Name (Actual),
+                        Typ      =>
+                           Get_Typ (Binders (Bind_Cnt).Main.B_Name));
 
                      --  If a conversion or a component indexing is needed,
                      --  it can only be done for a value. That is to say,
@@ -1167,18 +1164,70 @@ package body Gnat2Why.Expr is
                      --  When the formal is an "in" scalar, we actually use
                      --  "int" as a type.
 
-                     Why_Args (Cnt) :=
-                       Transform_Expr (Actual,
-                                       (if Use_Why_Base_Type (Formal) then
-                                           Base_Why_Type
-                                          (Unique_Entity (Etype (Formal)))
-                                        else
-                                           Type_Of_Node (Formal)),
-                                       Domain,
-                                       Params);
+                     Why_Args (Arg_Cnt) :=
+                       Transform_Expr
+                         (Actual,
+                          Get_Typ (Binders (Bind_Cnt).Main.B_Name),
+                          Domain,
+                          Params);
                end case;
             end if;
-            Cnt := Cnt + 1;
+
+            --  If the binder is an unconstrained array in split form, we
+            --  also need to give arguments for its bounds.
+            --  Since these bounds are integer constants, they don't need a
+            --  temporary variable and are translated as is.
+            --  Still, if the actual is not in split form, we use a temporary
+            --  variable for it to avoid computing it multiple times.
+
+            case Binders (Bind_Cnt).Kind is
+               when Regular =>
+                  Arg_Cnt := Arg_Cnt + 1;
+               when UCArray =>
+                  declare
+                     Actual_Type : constant W_Type_Id :=
+                       Type_Of_Node (Actual);
+                     Array_Expr  : constant W_Expr_Id :=
+                       (if Get_Base_Type (Actual_Type) = EW_Abstract then
+                        +New_Identifier
+                          (Ada_Node => Empty,
+                           Name     => Full_Name (Formal) & "__compl",
+                           Typ      => Actual_Type)
+                        else Transform_Expr (Actual, Domain, Params));
+                  begin
+                     if Get_Base_Type (Actual_Type) = EW_Abstract then
+                        Nb_Of_Lets := Nb_Of_Lets + 1;
+                     end if;
+
+                     Arg_Cnt := Arg_Cnt + 1;
+
+                     for I in 1 .. Binders (Bind_Cnt).Dim loop
+                        Why_Args (Arg_Cnt) :=
+                          Insert_Simple_Conversion
+                            (Domain   => Domain,
+                             Expr     => Get_Array_Attr (Domain => Domain,
+                                             Expr   => Array_Expr,
+                                             Attr   => Attribute_First,
+                                             Dim    => I),
+                             To       =>
+                               Get_Typ (Binders (Bind_Cnt).Bounds (I).First));
+                        Why_Args (Arg_Cnt + 1) :=
+                          Insert_Simple_Conversion
+                            (Domain   => Domain,
+                             Expr     => Get_Array_Attr (Domain => Domain,
+                                             Expr   => Array_Expr,
+                                             Attr   => Attribute_Last,
+                                             Dim    => I),
+                             To       =>
+                               Get_Typ (Binders (Bind_Cnt).Bounds (I).Last));
+                        Arg_Cnt := Arg_Cnt + 2;
+                     end loop;
+                  end;
+               when Func    =>
+                  raise Program_Error;
+            end case;
+
+            Bind_Cnt := Bind_Cnt + 1;
          end Compute_Arg;
 
          procedure Iterate_Call is new
@@ -1186,37 +1235,46 @@ package body Gnat2Why.Expr is
       begin
          Iterate_Call (Call);
 
-         if Domain = EW_Term then
-            for Elt of Read_Names loop
-               declare
-                  C : constant Ada_Ent_To_Why.Cursor :=
-                        Ada_Ent_To_Why.Find (Symbol_Table, Elt);
-                  T : W_Expr_Id;
-               begin
+         for B in Bind_Cnt .. Binders'Last loop
+            declare
+               T : W_Expr_Id;
+            begin
+               if Present (Binders (B).Main.Ada_Node) then
+                  T := +Ada_Ent_To_Why.Element
+                    (Symbol_Table, Binders (B).Main.Ada_Node).Main.B_Name;
+               else
+                  declare
+                     C : constant Ada_Ent_To_Why.Cursor :=
+                       Ada_Ent_To_Why.Find (Symbol_Table,
+                                            Binders (B).Main.B_Ent);
+                  begin
 
-                  --  If the effect parameter is found in the map, use the name
-                  --  stored.
+                     --  If the effect parameter is found in the map, use the
+                     --  name stored.
 
-                  if Ada_Ent_To_Why.Has_Element (C) then
-                     T := +Ada_Ent_To_Why.Element (C).Main.B_Name;
-                  else
-                     T := +To_Why_Id (Elt.all, Local => False);
-                  end if;
+                     if Ada_Ent_To_Why.Has_Element (C) then
+                        T := +Ada_Ent_To_Why.Element (C).Main.B_Name;
+                     else
+                        T := +To_Why_Id
+                          (Binders (B).Main.B_Ent.all, Local => False);
 
-                  if Params.Ref_Allowed then
-                     Why_Args (Cnt) := New_Deref (Right => +T);
-                  else
-                     Why_Args (Cnt) := T;
-                  end if;
-               end;
-               Cnt := Cnt + 1;
-            end loop;
+                     end if;
+                  end;
+               end if;
+
+               if Params.Ref_Allowed then
+                  Why_Args (Arg_Cnt) := New_Deref (Right => +T);
+               else
+                  Why_Args (Arg_Cnt) := T;
+               end if;
+            end;
+            Arg_Cnt := Arg_Cnt + 1;
+         end loop;
 
             --  We also need to add inclusions to allow the usage of those read
             --  variables
 
-            Add_Effect_Imports (Params.Theory, Read_Names);
-         end if;
+         Add_Dependencies_For_Effects (Params.Theory, Subp);
 
          return Why_Args;
       end;
@@ -1349,7 +1407,8 @@ package body Gnat2Why.Expr is
      (Params     : Transformation_Params;
       Ada_Call   : Node_Id;
       Why_Call   : W_Prog_Id;
-      Nb_Of_Refs : Positive) return W_Prog_Id
+      Nb_Of_Refs : Positive;
+      Nb_Of_Lets : Natural) return W_Prog_Id
    is
       --  This goes recursively through the out/"in out" parameters
       --  to be converted; and collects, for each of them:
@@ -1364,11 +1423,18 @@ package body Gnat2Why.Expr is
       --  their children modified.
 
       Ref_Context : W_Prog_Id;
-      Index       : Positive := 1;
-      Tmp_Vars    : W_Identifier_Array (1 .. Nb_Of_Refs);
-      Fetch       : W_Prog_Array (1 .. Nb_Of_Refs);
+      Ref_Index       : Positive := 1;
+      Ref_Tmp_Vars    : W_Identifier_Array (1 .. Nb_Of_Refs);
+      Ref_Fetch       : W_Prog_Array (1 .. Nb_Of_Refs);
+      Let_Index       : Positive := 1;
+      Let_Tmp_Vars    : W_Identifier_Array (1 .. Nb_Of_Lets);
+      Let_Fetch       : W_Prog_Array (1 .. Nb_Of_Lets);
       Store       : constant W_Statement_Sequence_Unchecked_Id :=
-                      New_Unchecked_Statement_Sequence;
+        New_Unchecked_Statement_Sequence;
+      Subp        : constant Entity_Id := Entity (Name (Ada_Call));
+      Binders     : constant Item_Array :=
+        Compute_Subprogram_Parameters (Subp, EW_Prog);
+      Bind_Cnt    : Positive := Binders'First;
 
       procedure Process_Arg (Formal, Actual : Node_Id);
 
@@ -1378,12 +1444,14 @@ package body Gnat2Why.Expr is
 
       procedure Process_Arg (Formal, Actual : Node_Id) is
       begin
-         if Needs_Temporary_Ref (Actual, Formal) then
+         if Needs_Temporary_Ref
+           (Actual, Formal, Get_Typ (Binders (Bind_Cnt).Main.B_Name))
+         then
             declare
                --  Types:
 
                Formal_T      : constant W_Type_Id :=
-                                 Type_Of_Node (Formal);
+                                 Get_Typ (Binders (Bind_Cnt).Main.B_Name);
                Actual_T      : constant W_Type_Id :=
                                  Type_Of_Node (Actual);
 
@@ -1400,6 +1468,15 @@ package body Gnat2Why.Expr is
                Tmp_Var_Deref : constant W_Prog_Id :=
                  New_Deref (Right => Tmp_Var,
                             Typ   => Formal_T);
+
+               --  If the argument is in split form and not the actual, we
+               --  need to reconstruct the argument using the actual's bounds
+               --  before applying the conversion. To only do the actual
+               --  computation once, we introduce a temporary variable for it.
+
+               Need_Reconstruction : constant Boolean :=
+                 Get_Base_Type (Formal_T) = EW_Split
+                 and then Get_Base_Type (Actual_T) = EW_Abstract;
 
                --  1/ Before the call (saving into a temporary variable):
                ----------------------------------------------------------
@@ -1427,17 +1504,26 @@ package body Gnat2Why.Expr is
                                   EW_Prog,
                                   Params);
 
+               Prefetch_Actual_Tmp : constant W_Identifier_Id :=
+                 New_Identifier (Name => Full_Name (Formal) & "__compl",
+                                 Typ  => Actual_T);
+
+               Prefetch_Actual_Rec : constant W_Prog_Id :=
+                 (if Need_Reconstruction then +Prefetch_Actual_Tmp
+                  else Prefetch_Actual);
+
                Fetch_Actual  : constant W_Prog_Id :=
                  (if Need_Check_On_Fetch then
                    +Insert_Checked_Conversion (Ada_Node => Actual,
                                                Ada_Type => Etype (Actual),
                                                Domain   => EW_Prog,
-                                               Expr     => +Prefetch_Actual,
+                                               Expr     =>
+                                                 +Prefetch_Actual_Rec,
                                                To       => Formal_T)
                   else
                    +Insert_Simple_Conversion (Ada_Node => Actual,
                                               Domain   => EW_Prog,
-                                              Expr     => +Prefetch_Actual,
+                                              Expr     => +Prefetch_Actual_Rec,
                                               To       => Formal_T));
 
                --  2/ After the call (storing the result):
@@ -1454,6 +1540,16 @@ package body Gnat2Why.Expr is
                   else
                     False);
 
+               --  If the argument is in split form and not the actual, we
+               --  need to reconstruct the argument using the actual's bounds
+               --  before applying the conversion.
+
+               Reconstructed_Temp : constant W_Prog_Id :=
+                 (if Need_Reconstruction then
+                       +Array_Convert_From_Base
+                          (EW_Prog, +Prefetch_Actual_Tmp, +Tmp_Var_Deref)
+                  else +Tmp_Var_Deref);
+
                --  Generate an expression of the form:
                --
                --    to_actual_type_ (from_formal_type (!tmp_var))
@@ -1465,12 +1561,12 @@ package body Gnat2Why.Expr is
                    +Insert_Checked_Conversion (Ada_Node => Actual,
                                                Ada_Type => Etype (Actual),
                                                Domain   => EW_Prog,
-                                               Expr     => +Tmp_Var_Deref,
+                                               Expr     => +Reconstructed_Temp,
                                                To       => Actual_T)
                   else
                    +Insert_Simple_Conversion (Ada_Node => Actual,
                                               Domain   => EW_Prog,
-                                              Expr     => +Tmp_Var_Deref,
+                                              Expr     => +Reconstructed_Temp,
                                               To       => Actual_T));
 
                --  ...then store it into the actual:
@@ -1482,11 +1578,18 @@ package body Gnat2Why.Expr is
                                     Expr     => Arg_Value);
             begin
                Statement_Sequence_Append_To_Statements (Store, Store_Value);
-               Tmp_Vars (Index) := Tmp_Var;
-               Fetch (Index) := Fetch_Actual;
-               Index := Index + 1;
+               Ref_Tmp_Vars (Ref_Index) := Tmp_Var;
+               Ref_Fetch (Ref_Index) := Fetch_Actual;
+               Ref_Index := Ref_Index + 1;
+
+               if Need_Reconstruction then
+                  Let_Tmp_Vars (Let_Index) := Prefetch_Actual_Tmp;
+                  Let_Fetch (Let_Index) := Prefetch_Actual;
+                  Let_Index := Let_Index + 1;
+               end if;
             end;
          end if;
+         Bind_Cnt := Bind_Cnt + 1;
       end Process_Arg;
 
       procedure Iterate_Call is new
@@ -1501,12 +1604,21 @@ package body Gnat2Why.Expr is
       --  Set the pieces together
 
       Ref_Context := +Store;
-      for J in Fetch'Range loop
+      for J in Ref_Fetch'Range loop
          Ref_Context :=
            New_Binding_Ref
-             (Name    => Tmp_Vars (J),
-              Def     => Fetch (J),
+             (Name    => Ref_Tmp_Vars (J),
+              Def     => Ref_Fetch (J),
               Context => Ref_Context);
+      end loop;
+
+      for J in Let_Fetch'Range loop
+         Ref_Context :=
+              +New_Typed_Binding
+                (Domain   => EW_Prog,
+                 Name     => Let_Tmp_Vars (J),
+                 Def      => +Let_Fetch (J),
+                 Context  => +Ref_Context);
       end loop;
 
       return Ref_Context;
@@ -1631,14 +1743,15 @@ package body Gnat2Why.Expr is
    -------------------------
 
    function Needs_Temporary_Ref
-     (Actual : Node_Id;
-      Formal : Node_Id) return Boolean is
+     (Actual     : Node_Id;
+      Formal     : Node_Id;
+      Typ_Formal : W_Type_Id) return Boolean is
    begin
       --  Temporary refs are needed for out or in out parameters that
       --  need a conversion or who are not an identifier.
       case Ekind (Formal) is
          when E_In_Out_Parameter | E_Out_Parameter =>
-            return not Eq (Etype (Actual), Etype (Formal))
+            return not Eq_Base (Type_Of_Node (Etype (Actual)), Typ_Formal)
               or else not (Nkind (Actual) in N_Entity);
          when E_In_Parameter =>
             return Has_Async_Writers (Direct_Mapping_Id (Formal));
@@ -6148,8 +6261,10 @@ package body Gnat2Why.Expr is
                                           Ent          => Subp,
                                           Domain       => Domain));
                Nb_Of_Refs : Natural;
+               Nb_Of_Lets : Natural;
                Args       : constant W_Expr_Array :=
-                 Compute_Call_Args (Expr, Domain, Nb_Of_Refs, Local_Params);
+                 Compute_Call_Args (Expr, Domain, Nb_Of_Refs, Nb_Of_Lets,
+                                    Local_Params);
             begin
                if Why_Subp_Has_Precondition (Subp) then
                   T := +New_VC_Call
@@ -7725,9 +7840,11 @@ package body Gnat2Why.Expr is
          when N_Procedure_Call_Statement =>
             declare
                Nb_Of_Refs : Natural;
+               Nb_Of_Lets : Natural;
                Args       : constant W_Expr_Array :=
                  Compute_Call_Args
-                   (Stmt_Or_Decl, EW_Prog, Nb_Of_Refs, Params => Body_Params);
+                   (Stmt_Or_Decl, EW_Prog, Nb_Of_Refs, Nb_Of_Lets,
+                    Params => Body_Params);
                Subp       : constant Entity_Id := Entity (Name (Stmt_Or_Decl));
                Why_Name   : constant W_Identifier_Id :=
                  Ada_Ent_To_Why.Element (Symbol_Table, Subp).Main.B_Name;
@@ -7756,7 +7873,8 @@ package body Gnat2Why.Expr is
                   return +Call;
                else
                   return Insert_Ref_Context
-                           (Body_Params, Stmt_Or_Decl, +Call, Nb_Of_Refs);
+                    (Body_Params, Stmt_Or_Decl, +Call,
+                     Nb_Of_Refs, Nb_Of_Lets);
                end if;
             end;
 

@@ -42,7 +42,7 @@ simple_unc_arrays.adb:32:75: warning: array index check might fail
 simple_unc_arrays.adb:34:10: warning: precondition might fail
 simple_unc_arrays.adb:34:23: info: discriminant check proved
 simple_unc_arrays.adb:34:23: warning: range check might fail
-simple_unc_arrays.adb:34:32: warning: range check might fail
+simple_unc_arrays.adb:34:32: info: range check proved
 simple_unc_arrays.adb:35:22: warning: overflow check might fail
 simple_unc_arrays.adb:36:23: warning: range check might fail
 simple_unc_arrays.adb:45:22: info: discriminant check proved

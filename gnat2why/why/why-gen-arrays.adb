@@ -206,6 +206,31 @@ package body Why.Gen.Arrays is
            Typ    => EW_Abstract (Target));
    end Array_Convert_From_Base;
 
+   function Array_Convert_From_Base
+     (Domain    : EW_Domain;
+      Old_Ar    : W_Expr_Id;
+      New_Base  : W_Expr_Id) return W_Expr_Id
+   is
+      Ty     : constant W_Type_Id := Get_Type (New_Base);
+      Ty_Ent : constant Entity_Id := Get_Ada_Node (+Ty);
+      Len    : constant Integer :=
+        1 + 2 * Integer (Number_Dimensions (Ty_Ent));
+      Args   : W_Expr_Array (1 .. Len);
+      Count  : Positive := 1;
+   begin
+      Add_Array_Arg (Domain, Args, Old_Ar, Count);
+      Args (1) := New_Base;
+      return
+        New_Call
+          (Domain => Domain,
+           Name   =>
+             Prefix (Ada_Node => Ty_Ent,
+                     M        => E_Module (Ty_Ent),
+                     W        => WNE_Of_Array),
+           Args   => Args,
+           Typ    => EW_Abstract (Ty_Ent));
+   end Array_Convert_From_Base;
+
    ---------------------------
    -- Array_Convert_To_Base --
    ---------------------------

@@ -25,6 +25,9 @@
 
 with Types;           use Types;
 with Gnat2Why.Util;   use Gnat2Why.Util;
+with Why.Sinfo;       use Why.Sinfo;
+with Why.Gen.Binders; use Why.Gen.Binders;
+with Why.Ids; use Why.Ids;
 
 package Gnat2Why.Subprograms is
 
@@ -90,5 +93,15 @@ package Gnat2Why.Subprograms is
    --  If subprogram E's body is in SPARK, generate a Why axiom that, given a
    --  function F with expression E, states that: "for all <args> => F(<args>)
    --  = E". Also generate a program function for E.
+
+   function Compute_Subprogram_Parameters (E : Entity_Id; Domain : EW_Domain)
+                             return Item_Array;
+   --  Return Why binders for the parameters of subprogram E.
+   --  If Domain is EW_Term also generates binders for E's read effects.
+
+   procedure Add_Dependencies_For_Effects
+     (T : W_Theory_Declaration_Id;
+      E : Entity_Id);
+   --  Adds imports for the globals of a subprogram E in the current theory
 
 end Gnat2Why.Subprograms;

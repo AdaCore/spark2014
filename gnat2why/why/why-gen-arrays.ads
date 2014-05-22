@@ -186,6 +186,15 @@ package Why.Gen.Arrays is
    --  but "Ar" is not in split form. We need to provide the target type and
    --  first/last expressions explicitly.
 
+   function Array_Convert_From_Base
+     (Domain    : EW_Domain;
+      Old_Ar    : W_Expr_Id;
+      New_Base  : W_Expr_Id) return W_Expr_Id
+   with Pre => Get_Base_Type (Get_Type (New_Base)) = EW_Split;
+   --  "New_Base" must be a Why expression of unconstrained array type, in
+   --  split form. Convert it to the regular unconstrained form, using Old_Ar's
+   --  bounds.
+
    function New_Array_Update
       (Ada_Node  : Node_Id;
        Ar        : W_Expr_Id;

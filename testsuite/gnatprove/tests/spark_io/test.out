@@ -36,7 +36,7 @@ copy.adb:186:22: info: precondition proved
 copy.adb:188:22: info: precondition proved
 copy.adb:194:22: warning: loop invariant might fail after first iteration
 copy.adb:194:22: warning: loop invariant might fail in first iteration
-copy.adb:202:55: warning: overflow check might fail
+copy.adb:202:55: info: overflow check proved
 copy.adb:206:30: warning: range check might fail
 copy.adb:207:31: warning: range check might fail
 copy.adb:210:34: warning: range check might fail
