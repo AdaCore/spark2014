@@ -21,6 +21,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers.Hashed_Maps;
+
 with Elists;                 use Elists;
 with Errout;                 use Errout;
 with Nlists;                 use Nlists;
@@ -49,6 +51,19 @@ package body Flow_Utility is
    Debug_Trace_Untangle   : constant Boolean := False;
    --  Enable this to print the tree and def/use sets in each call of
    --  Untangle_Assignment_Target.
+
+   ----------------------------------------------------------------------
+   --  Loop information
+   ----------------------------------------------------------------------
+
+   package Loop_Maps is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Entity_Id,
+      Element_Type    => Flow_Id_Sets.Set,
+      Hash            => Node_Hash,
+      Equivalent_Keys => "=");
+
+   Loop_Info_Frozen : Boolean       := False;
+   Loop_Info        : Loop_Maps.Map := Loop_Maps.Empty_Map;
 
    ----------------------------------------------------------------------
    --  Local
@@ -1777,5 +1792,60 @@ package body Flow_Utility is
 
       end case;
    end Is_Initialized_In_Specification;
+
+   --------------
+   -- Add_Loop --
+   --------------
+
+   procedure Add_Loop (E : Entity_Id)
+   is
+   begin
+      pragma Assert (not Loop_Info_Frozen);
+      Loop_Info.Insert (E, Flow_Id_Sets.Empty_Set);
+   end Add_Loop;
+
+   --------------------
+   -- Add_Loop_Write --
+   --------------------
+
+   procedure Add_Loop_Write (E : Entity_Id;
+                             F : Flow_Id)
+   is
+   begin
+      pragma Assert (not Loop_Info_Frozen);
+      pragma Assert (Loop_Info.Contains (E));
+      Loop_Info (E).Include (F);
+   end Add_Loop_Write;
+
+   ----------------------
+   -- Freeze_Loop_Info --
+   ----------------------
+
+   procedure Freeze_Loop_Info
+   is
+   begin
+      pragma Assert (not Loop_Info_Frozen);
+      Loop_Info_Frozen := True;
+   end Freeze_Loop_Info;
+
+   -----------------------
+   -- Loop_Writes_Known --
+   -----------------------
+
+   function Loop_Writes_Known (E : Entity_Id) return Boolean
+   is
+   begin
+      return Loop_Info_Frozen and then Loop_Info.Contains (E);
+   end Loop_Writes_Known;
+
+   ---------------------
+   -- Get_Loop_Writes --
+   ---------------------
+
+   function Get_Loop_Writes (E : Entity_Id) return Flow_Id_Sets.Set
+   is
+   begin
+      return Loop_Info (E);
+   end Get_Loop_Writes;
 
 end Flow_Utility;

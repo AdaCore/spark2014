@@ -482,6 +482,9 @@ package body Flow.Control_Flow_Graph is
    --
    --  Refer to the documentation of the nested procedures on how the
    --  constructed CFG will look like.
+   --
+   --  This will also update the information on variables modified by loops
+   --  in Flow_Utility.
 
    procedure Do_Null_Or_Raise_Statement
      (N   : Node_Id;
@@ -2921,6 +2924,22 @@ package body Flow.Control_Flow_Graph is
       end;
 
       Ctx.Current_Loops.Delete (Loop_Id);
+
+      --  Finally, we can update the loop information in Flow_Utility.
+
+      Add_Loop (Loop_Id);
+      for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
+         if FA.Atr (V).Loops.Contains (Loop_Id) then
+            declare
+               Combined_Writes : constant Flow_Id_Sets.Set :=
+                 FA.Atr (V).Variables_Defined or FA.Atr (V).Volatiles_Read;
+            begin
+               for F of Combined_Writes loop
+                  Add_Loop_Write (Loop_Id, F);
+               end loop;
+            end;
+         end if;
+      end loop;
 
    end Do_Loop_Statement;
 

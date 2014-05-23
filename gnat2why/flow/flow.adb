@@ -55,6 +55,7 @@ with Flow.Slice;                    use Flow.Slice;
 with Flow_Debug;                    use Flow_Debug;
 with Flow_Error_Messages;           use Flow_Error_Messages;
 with Flow_Tree_Utility;             use Flow_Tree_Utility;
+with Flow_Utility;                  use Flow_Utility;
 
 use type Ada.Containers.Count_Type;
 
@@ -1043,6 +1044,11 @@ package body Flow is
          Errout.Output_Messages;
          Exit_Program (E_Errors);
       end if;
+
+      --  Finalize extra loop info available from Flow_Utility;
+
+      Freeze_Loop_Info;
+
    end Flow_Analyse_CUnit;
 
    -----------------------------

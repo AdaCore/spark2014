@@ -301,4 +301,29 @@ package Flow_Utility is
    --  Return True if the subprogram in argument has the given kind of
    --  contract, False otherwise.
 
+   procedure Add_Loop (E : Entity_Id)
+     with Pre => Ekind (E) = E_Loop;
+   --  Indicates that the loop E has been analyzed by flow analysis.
+
+   procedure Add_Loop_Write (E : Entity_Id;
+                             F : Flow_Id)
+     with Pre => Ekind (E) = E_Loop;
+   --  Adds F to the set of variables written by the loop E.
+
+   procedure Freeze_Loop_Info;
+   --  Must be called at the end of flow analysis - this makes it an error
+   --  to use Add_Loop and Add_Loop_Write, and enables the use of
+   --  Get_Loop_Writes.
+
+   function Loop_Writes_Known (E : Entity_Id) return Boolean
+     with Pre => Ekind (E) = E_Loop;
+   --  Checks if the variables written by loop E are known.
+
+   function Get_Loop_Writes (E : Entity_Id) return Flow_Id_Sets.Set
+     with Pre => Ekind (E) = E_Loop and then
+                 Loop_Writes_Known (E);
+   --  Returns the set of variables a given loop *may* write to. Please
+   --  note that if a function returns inside a loop, the name of the
+   --  function will be "written to" and will be returned here.
+
 end Flow_Utility;
