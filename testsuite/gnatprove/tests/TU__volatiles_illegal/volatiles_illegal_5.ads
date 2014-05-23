@@ -3,8 +3,8 @@ with System.Storage_Elements;
 package Volatiles_Illegal_5
   with SPARK_Mode
 is
-   --  TU: 6. A constant, a discriminant or a loop parameter shall not be
-   --  Volatile.
+   --  TU: 6. A constant object, a discriminant or a loop parameter
+   --  shall not be effectively volatile.
    Const_Vol : constant Integer
      with Volatile,
           Address => System.Storage_Elements.To_Address (16#A110#);

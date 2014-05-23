@@ -4,11 +4,12 @@ package body Volatiles_Illegal_9
   with SPARK_Mode
 is
    procedure Embeded is
-      --  TU: 5. The declaration of a Volatile object (other than as a formal
-      --  parameter) shall be at library level. [That is, it shall not be
-      --  declared within the scope of a subprogram body. A Volatile variable
-      --  has an external effect and therefore should be global even if it is
-      --  not visible. It is made visible via a state abstraction.]
+      --  TU: 5. The declaration of an effectively volatile object
+      --  (other than as a formal parameter) shall be at library
+      --  level. [That is, it shall not be declared within the scope
+      --  of a subprogram body. An effectively volatile object has
+      --  an external effect and therefore should be global even if it
+      --  is not visible. It is made visible via a state abstraction.]
 
       Emb_Vol : Integer
         with Volatile,
