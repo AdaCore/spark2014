@@ -1,4 +1,3 @@
-SOUNDNESS BUG at vc4.adb:80: mark @ASSERT:FAIL not found
 legality.ads:33:19: inappropriate entity for aspect "Volatile_Components"
 legality.ads:34:29: inappropriate entity for aspect "Volatile_Components"
 legality.ads:35:19: inappropriate entity for aspect "Volatile_Components"
