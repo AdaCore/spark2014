@@ -3009,21 +3009,6 @@ package body SPARK_Definition is
          when Pragma_Overflow_Mode =>
             Error_Msg_F ("?pragma Overflow_Mode in code is ignored", N);
 
-         when Pragma_Volatile_Components =>
-            --  Volatile_Components is treated as a special-case.
-            --  For now, it is allowed with a warning although it is
-            --  not respected by the flow-analysis and proof engines.
-            --
-            --  In the short term, this eases transition for SPARK2005 users.
-            --
-            --  In the long term, it will be fully supported in
-            --  flow analysis and proof following the re-introduction
-            --  of volatile types.
-            Error_Msg_Name_1 := Pname;
-            Error_Msg_N
-              ("?pragma % is not yet supported in flow analysis or proof", N);
-            Error_Msg_N ("\\it is currently ignored", N);
-
          when Unknown_Pragma =>
             Error_Msg_Name_1 := Pname;
             Mark_Violation ("unknown pragma %", N);
@@ -3070,6 +3055,7 @@ package body SPARK_Definition is
               Pragma_Suppress                     |
               Pragma_Unsuppress                   |
               Pragma_Volatile                     |
+              Pragma_Volatile_Components          |
 
          --  Group 1b - RM Table 16.2, SPARK language-defined pragmas marked
          --  "Yes".

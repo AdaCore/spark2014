@@ -184,10 +184,8 @@ package body Flow_Tree_Utility is
       case Ekind (E) is
          when E_Abstract_State =>
             return Is_External_State (E);
-         when Type_Kind =>
-            return Is_Volatile (E);
          when others =>
-            return Is_Volatile (E) or else Has_Volatile (Etype (E));
+            return Is_Effectively_Volatile (E);
       end case;
    end Has_Volatile;
 

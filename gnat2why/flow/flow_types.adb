@@ -286,8 +286,7 @@ package body Flow_Types is
                   when E_Abstract_State =>
                      return Is_External_State (E);
                   when Object_Kind =>
-                     return Is_Volatile (E) or else
-                       Is_Volatile (Etype (E));
+                     return Is_Effectively_Volatile (E);
                   when others =>
                      return False;
                end case;
