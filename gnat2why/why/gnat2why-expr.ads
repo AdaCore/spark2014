@@ -63,10 +63,12 @@ package Gnat2Why.Expr is
    --  or is a scalar subtype with a static range_constraint.
 
    function Assume_Dynamic_Property
-     (Expr : W_Expr_Id;
-      Ty   : Entity_Id) return W_Prog_Id;
-   --  Generate an assumption that N is a value of its type. Returns the empty
-   --  Program if N is not a value of a dynamic type.
+     (Expr     : W_Expr_Id;
+      Ty       : Entity_Id;
+      Only_Var : Boolean) return W_Prog_Id;
+   --  Generate an assumption that N is a value of its type.
+   --  If Only_Var is true, then don't assume properties of constant parts
+   --  of the object, such as the bounds of an array.
 
    function Get_Pure_Logic_Term_If_Possible
      (File          : Why_Section;

@@ -189,7 +189,7 @@ package Why.Gen.Expr is
       Ty     : Entity_Id;
       Expr   : W_Expr_Id) return W_Expr_Id;
    --  Function to generate a call expressing that Expr is of the dynamic type
-   --  Ty;
+   --  Ty
 
    function To_Int (D : EW_Domain; E : W_Expr_Id) return W_Expr_Id;
    --  Convert argument to int if not already done

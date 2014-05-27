@@ -354,7 +354,7 @@ package body Gnat2Why.Subprograms is
                                   Typ => Why_Type_Of_Entity (Obj)),
                                Typ      =>
                                  Why_Type_Of_Entity (Obj)),
-                            Etype (Obj))));
+                            Etype (Obj), False)));
          else
             Assume :=
               Sequence ((1 => Assume,
@@ -362,7 +362,7 @@ package body Gnat2Why.Subprograms is
                            (+To_Why_Id
                               (E => Obj,
                                Typ => Why_Type_Of_Entity (Obj)),
-                            Etype (Obj))));
+                            Etype (Obj), False)));
          end if;
       end loop;
    end Assume_Dynamic_Property_For_Objects;

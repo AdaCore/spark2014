@@ -774,16 +774,27 @@ package body Why.Gen.Expr is
       if Type_Is_Modeled_As_Int_Or_Real (Ty) then
          declare
             Expr : constant W_Expr_Id := New_Temp_For_Expr (W_Expr);
+            M : constant W_Module_Id :=
+              (if Is_Standard_Boolean_Type (Ty) then Boolean_Module
+               else E_Module (Ty));
             T : W_Prog_Id;
          begin
-            T :=
-              New_Located_Assert
-                (Ada_Node => Ada_Node,
-                 Reason   => To_VC_Kind (Check_Kind),
-                 Pred     => +New_Dynamic_Property (Domain => EW_Prog,
-                                                    Ty     => Ty,
-                                                    Expr   => Expr),
-                 Kind     => EW_Assert);
+               T :=
+                 New_Located_Assert
+                   (Ada_Node => Ada_Node,
+                    Reason   => To_VC_Kind (Check_Kind),
+                    Pred     =>
+                       (if Is_Discrete_Type (Ty) then
+                        +New_Dynamic_Property (Domain => EW_Prog,
+                                               Ty     => Ty,
+                                               Expr   => Expr)
+                        else New_Call
+                          (Name   =>
+                               Prefix (M        => M,
+                                       W        => WNE_Range_Pred,
+                                       Ada_Node => Ty),
+                           Args   => (1 => Expr))),
+                    Kind     => EW_Assert);
             return
               +Binding_For_Temp (Domain => EW_Prog,
                                  Tmp    => Expr,
@@ -1768,7 +1779,7 @@ package body Why.Gen.Expr is
       --  For now, only supports dynamic discrete types and
       --  unconstrained array types.
 
-      if Is_Discrete_Type (Ty) and then not Is_Static_Subtype (Ty) then
+      if Is_Discrete_Type (Ty) then
          return New_Call (Domain => Domain,
                           Name   => Dynamic_Prop_Name (Ty),
                           Args   => (1 => New_Attribute_Expr
@@ -1833,7 +1844,7 @@ package body Why.Gen.Expr is
                              Typ    => EW_Bool_Type);
          end;
       else
-         return Bool_True (Domain);
+         raise Program_Error;
       end if;
    end New_Dynamic_Property;
 

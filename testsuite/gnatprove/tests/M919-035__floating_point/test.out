@@ -1,7 +1,7 @@
 dynamic_float.adb:1:11: warning: subprogram "Dynamic_Float" has no effect
 dynamic_float.adb:6:18: warning: range check might fail
 dynamic_float.adb:6:40: info: range check proved
-dynamic_float.adb:7:19: info: range check proved
+dynamic_float.adb:7:19: warning: range check might faild
 dynamic_float.adb:9:25: warning: assertion might fail, requires Integer (S'Last) = I
 dynamic_float.adb:10:25: warning: assertion might fail, requires S'First /= S'last
 zero_and_min.adb:5:11: warning: subprogram "Zero_And_Min" has no effect

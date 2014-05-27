@@ -379,7 +379,6 @@ package body Gnat2Why.Decls is
         (if Ekind (E) = E_Loop_Parameter then
            EW_Int_Type
          elsif Is_Array_Type (Etype (E))
---             and then Ekind (E) in Formal_Kind
            and then not Is_Static_Array_Type (Etype (E))
          then EW_Split (Etype (E))
          else Use_Ty);

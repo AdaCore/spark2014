@@ -459,6 +459,14 @@ package body Gnat2Why.Expr is
      Pre => Nkind (Stat) in N_Raise_xxx_Error | N_Raise_Statement;
    --  Returns the Why program for raise statement Stat
 
+   function Compute_Dynamic_Property
+     (Expr     : W_Expr_Id;
+      Ty       : Entity_Id;
+      Only_Var : Boolean) return W_Pred_Id;
+   --  Computes the dynamic property of an expression Expr of a type Ty.
+   --  If Only_Var is true, does not assume properties of constant parts of
+   --  Expr.
+
    -------------------
    -- Apply_Modulus --
    -------------------
@@ -669,23 +677,17 @@ package body Gnat2Why.Expr is
    -----------------------------
 
    function Assume_Dynamic_Property
-     (Expr : W_Expr_Id;
-      Ty   : Entity_Id) return W_Prog_Id
+     (Expr     : W_Expr_Id;
+      Ty       : Entity_Id;
+      Only_Var : Boolean) return W_Prog_Id
    is
+      T : constant W_Pred_Id :=
+        Compute_Dynamic_Property (Expr, Ty, Only_Var);
    begin
-      --  For now, only generate assumption for dynamic discrete types and
-      --  unconstrained array types.
-
-      if (Is_Discrete_Type (Ty) and then not Is_Static_Subtype (Ty))
-        or else (Is_Array_Type (Ty) and then not Is_Static_Array_Type (Ty))
-      then
-         return New_Assume_Statement
-           (Ada_Node => Ty,
-            Pre      => True_Pred,
-            Post     =>
-              +New_Dynamic_Property (Domain => EW_Prog,
-                                     Ty     => Ty,
-                                     Expr   => Expr));
+      if T /= True_Pred then
+         return New_Assume_Statement (Ada_Node => Ty,
+                                      Pre      => True_Pred,
+                                      Post     => T);
       else
          return New_Void;
       end if;
@@ -1372,6 +1374,93 @@ package body Gnat2Why.Expr is
    end Compute_Call_Args;
 
    ------------------------------
+   -- Compute_Dynamic_Property --
+   ------------------------------
+
+   function Compute_Dynamic_Property
+     (Expr     : W_Expr_Id;
+      Ty       : Entity_Id;
+      Only_Var : Boolean) return W_Pred_Id
+   is
+      T : W_Pred_Id;
+   begin
+      --  Dynamic property of the type itself
+
+      if (Is_Discrete_Type (Ty) and then not Is_Static_Subtype (Ty))
+        or else (not Only_Var
+                 and then Is_Array_Type (Ty)
+                 and then not Is_Static_Array_Type (Ty))
+      then
+         T := +New_Dynamic_Property (Domain => EW_Pred,
+                                     Ty     => Ty,
+                                     Expr   => Expr);
+      else
+         T := True_Pred;
+      end if;
+
+      --  Compute dynamic property for its components
+
+      if Is_Array_Type (Ty) then
+         declare
+            Dim        : constant Positive :=
+              Positive (Number_Dimensions (Ty));
+            Vars       : Binder_Array (1 .. Dim);
+            Indices    : W_Expr_Array (1 .. Dim);
+            Range_Expr : W_Pred_Id := True_Pred;
+            Index      : Node_Id := First_Index (Ty);
+            I          : Positive := 1;
+            T_Comp     : W_Pred_Id;
+            Tmp        : W_Identifier_Id;
+         begin
+            while Present (Index) loop
+               Tmp := New_Temp_Identifier (Typ => EW_Int_Type);
+               Vars (I) := Binder_Type'(Ada_Node => Empty,
+                                        B_Name   => Tmp,
+                                        B_Ent    => null,
+                                        Mutable  => False);
+               Indices (I) := +Tmp;
+               Range_Expr := +New_And_Expr
+                 (Left   => +Range_Expr,
+                  Right  =>
+                    New_Dynamic_Property (EW_Pred, Etype (Index), +Tmp),
+                  Domain => EW_Pred);
+               Next_Index (Index);
+               I := I + 1;
+            end loop;
+
+            T_Comp :=
+              Compute_Dynamic_Property
+                (New_Array_Access (Empty, Expr, Indices, EW_Term),
+                 Etype (Component_Type (Ty)), False);
+
+            if T_Comp /= True_Pred then
+               declare
+                  Q_Expr : constant W_Pred_Id :=
+                    New_Universal_Quantif
+                      (Binders  => Vars,
+                       Pred     => T_Comp);
+               begin
+                  if T = True_Pred then
+                     T := Q_Expr;
+                  else
+                     T := +New_And_Expr (Left   => +T,
+                                         Right  => +Q_Expr,
+                                         Domain => EW_Pred);
+                  end if;
+               end;
+            end if;
+         end;
+      elsif Is_Record_Type (Ty) then
+
+         --  Record types are not handled yet.
+
+         null;
+      end if;
+
+      return T;
+   end Compute_Dynamic_Property;
+
+   ------------------------------
    -- Discrete_Choice_Is_Range --
    ------------------------------
 
@@ -1701,6 +1790,25 @@ package body Gnat2Why.Expr is
              (Name    => Ref_Tmp_Vars (J),
               Def     => Ref_Fetch (J),
               Context => Ref_Context);
+
+         --  Assume dynamic property of modified parameters
+         declare
+            Typ   : constant W_Type_Id := Get_Typ (Ref_Tmp_Vars (J));
+            E_Typ : constant Entity_Id := Get_Ada_Node (+Typ);
+            Dyn_Prop : constant W_Prog_Id :=
+              Assume_Dynamic_Property
+                (Expr    =>
+                   New_Deref (Right => Ref_Tmp_Vars (J),
+                              Typ   => Typ),
+                 Ty      => E_Typ,
+                 Only_Var => True);
+         begin
+            if Dyn_Prop /= New_Void then
+               Ref_Context :=
+                 Sequence (Left  => Ref_Context,
+                           Right => Dyn_Prop);
+            end if;
+         end;
       end loop;
 
       for J in Let_Fetch'Range loop
@@ -6378,13 +6486,14 @@ package body Gnat2Why.Expr is
                   declare
                      Tmp        : constant W_Expr_Id :=
                        New_Temp_For_Expr (T);
-                     Dyn_Prop   : constant W_Expr_Id := New_Dynamic_Property
-                       (Domain => Domain,
-                        Ty     => Etype (Subp),
-                        Expr   => Tmp);
+                     Dyn_Prop   : constant W_Pred_Id :=
+                       Compute_Dynamic_Property
+                         (Ty       => Etype (Subp),
+                          Expr     => Tmp,
+                          Only_Var => False);
                   begin
 
-                     if Dyn_Prop /= Bool_True (Domain) then
+                     if Dyn_Prop /= True_Pred then
 
                         --  If the function returns a dynamic type and the call
                         --  is in the program domain, assume that the result
@@ -6855,20 +6964,28 @@ package body Gnat2Why.Expr is
                   end;
                else
                   pragma Assert (Is_Scalar_Type (Ty));
-                  declare
-                     M : constant W_Module_Id :=
-                       (if Is_Standard_Boolean_Type (Ty) then Boolean_Module
-                        else E_Module (Ty));
-                  begin
-                     return
-                       New_Call (Domain => Domain,
-                                 Name =>
-                                   Prefix (M        => M,
-                                           W        => WNE_Range_Pred,
-                                           Ada_Node => Ty),
-                                 Args => (1 => Var),
-                                 Typ  => EW_Bool_Type);
-                  end;
+                  if Is_Discrete_Type (Ty)
+                    and then not Is_Static_Subtype (Ty)
+                  then
+                     return New_Dynamic_Property (Domain => Domain,
+                                                  Ty     => Ty,
+                                                  Expr   => Var);
+                  else
+                     declare
+                        M : constant W_Module_Id :=
+                          (if Is_Standard_Boolean_Type (Ty) then Boolean_Module
+                           else E_Module (Ty));
+                     begin
+                        return
+                          New_Call (Domain => Domain,
+                                    Name =>
+                                      Prefix (M        => M,
+                                              W        => WNE_Range_Pred,
+                                              Ada_Node => Ty),
+                                    Args => (1 => Var),
+                                    Typ  => EW_Bool_Type);
+                     end;
+                  end if;
                end if;
             end;
          else

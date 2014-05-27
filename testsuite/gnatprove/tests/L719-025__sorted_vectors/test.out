@@ -24,7 +24,7 @@ sorted_vectors.ads:32:48: info: precondition proved
 sorted_vectors.ads:33:14: info: precondition proved
 sorted_vectors.ads:33:34: warning: range check might fail
 sorted_vectors.ads:33:39: info: precondition proved
-sorted_vectors.ads:33:64: warning: overflow check might fail
+sorted_vectors.ads:33:64: info: overflow check proved
 sorted_vectors.ads:33:64: warning: range check might fail
 sorted_vectors.ads:34:22: info: precondition proved
 sorted_vectors.ads:34:61: info: precondition proved
