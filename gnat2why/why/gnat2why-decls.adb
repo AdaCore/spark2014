@@ -71,8 +71,7 @@ package body Gnat2Why.Decls is
                      B_Ent    => null,
                      Mutable  => Is_Mutable_In_Why (E));
    begin
-      if Ekind (E) in Formal_Kind
-        and then Is_Array_Type (Etype (E))
+      if Is_Array_Type (Etype (E))
         and then not Is_Static_Array_Type (Etype (E))
       then
          declare
@@ -380,7 +379,7 @@ package body Gnat2Why.Decls is
         (if Ekind (E) = E_Loop_Parameter then
            EW_Int_Type
          elsif Is_Array_Type (Etype (E))
-           and then Ekind (E) in Formal_Kind
+--             and then Ekind (E) in Formal_Kind
            and then not Is_Static_Array_Type (Etype (E))
          then EW_Split (Etype (E))
          else Use_Ty);

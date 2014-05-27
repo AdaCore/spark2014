@@ -521,18 +521,109 @@ package body Gnat2Why.Expr is
 
       if Present (Rexpr) then
          declare
+            Is_Split : constant Boolean :=
+              Is_Array_Type (Etype (Lvalue)) and then
+              not Is_Static_Array_Type (Etype (Lvalue)) and then
+              Is_Mutable_In_Why (Lvalue);
+            Why_Ty   : constant W_Type_Id := EW_Abstract (Etype (Lvalue));
             Why_Expr : constant W_Prog_Id :=
                          +Transform_Expr (Rexpr,
-                                          EW_Abstract (Etype (Lvalue)),
+                                          Why_Ty,
                                           EW_Prog,
                                           Params => Body_Params);
             L_Name   : constant String := Full_Name (Lvalue);
-            L_Id     : constant W_Identifier_Id := To_Why_Id (Lvalue);
+            L_Id     : constant W_Identifier_Id :=
+              To_Why_Id (Lvalue,
+                         Typ => (if Is_Split then EW_Split (Etype (Lvalue))
+                                 else Why_Ty));
          begin
-            if Is_Mutable_In_Why (Lvalue) then
+            if Is_Split then
+
+               --  Mutable objects of an unconstrained (or dynamically
+               --  constrained array type are declared in split form.
+               --  For them, we produce:
+               --  let <v_name>__assume = <init_value> in
+               --    <v> := of_array (<v_name>__assume);
+               --    assume (<v__first> := <v_name>__assume.first);
+               --    assume (<v__last> := <v_name>__assume.last);
+
+               declare
+                  Tmp_Var : constant W_Identifier_Id :=
+                    New_Identifier (Name => L_Name & "__assume",
+                                    Typ  => Why_Ty);
+                  Index : Node_Id := First_Index (Etype (Lvalue));
+                  Res   : W_Prog_Id := New_Assignment
+                    (Ada_Node => N,
+                     Name     => L_Id,
+                     Value    => +Array_Convert_To_Base (EW_Prog, +Tmp_Var));
+                  I     : Positive := 1;
+               begin
+                  while Present (Index) loop
+                     Res := Sequence
+                       ((1 => Res,
+                         2 => New_Assume_Statement
+                           (Ada_Node => N,
+                            Post     =>
+                              New_Relation
+                                (Op      => EW_Eq,
+                                 Op_Type => EW_Int,
+                                 Left    =>
+                                   Insert_Simple_Conversion
+                                     (Domain =>  EW_Prog,
+                                      Expr   => +Get_Array_Attr
+                                        (Domain => EW_Prog,
+                                         Expr   => +L_Id,
+                                         Attr   => Attribute_First,
+                                         Dim    => I),
+                                      To     => EW_Int_Type),
+                                 Right   =>
+                                   Insert_Simple_Conversion
+                                     (Domain =>  EW_Prog,
+                                      Expr   => +Get_Array_Attr
+                                        (Domain => EW_Prog,
+                                         Expr   => +Tmp_Var,
+                                         Attr   => Attribute_First,
+                                         Dim    => I),
+                                      To     => EW_Int_Type))),
+                         3 => New_Assume_Statement
+                           (Ada_Node => N,
+                            Post     =>
+                              New_Relation
+                                (Op      => EW_Eq,
+                                 Op_Type => EW_Int,
+                                 Left    =>
+                                   Insert_Simple_Conversion
+                                     (Domain =>  EW_Prog,
+                                      Expr   => +Get_Array_Attr
+                                        (Domain => EW_Prog,
+                                         Expr   => +L_Id,
+                                         Attr   => Attribute_Last,
+                                         Dim    => I),
+                                      To     => EW_Int_Type),
+                                 Right   =>
+                                   Insert_Simple_Conversion
+                                     (Domain =>  EW_Prog,
+                                      Expr   => +Get_Array_Attr
+                                        (Domain => EW_Prog,
+                                         Expr   => +Tmp_Var,
+                                         Attr   => Attribute_Last,
+                                         Dim    => I),
+                                      To     => EW_Int_Type)))));
+                     I := I + 1;
+                     Next_Index (Index);
+                  end loop;
+
+                  return +New_Typed_Binding
+                    (Ada_Node => N,
+                     Domain   => EW_Prog,
+                     Name     => Tmp_Var,
+                     Def      => +Why_Expr,
+                     Context  => +Res);
+               end;
+            elsif Is_Mutable_In_Why (Lvalue) then
                return New_Assignment
                  (Ada_Node => N,
-                  Name     => To_Why_Id (Lvalue),
+                  Name     => L_Id,
                   Value    => Why_Expr);
 
             elsif Is_Static_Expression (Rexpr) then
@@ -547,7 +638,7 @@ package body Gnat2Why.Expr is
                declare
                   Tmp_Var : constant W_Identifier_Id :=
                     New_Identifier (Name => L_Name & "__assume",
-                                    Typ  => EW_Abstract (Etype (Lvalue)));
+                                    Typ  => Why_Ty);
                   Eq      : constant W_Pred_Id :=
                               New_Relation
                                 (Op      => EW_Eq,

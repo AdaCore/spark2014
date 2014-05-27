@@ -1,0 +1,39 @@
+hello.adb:14:14: info: index check proved
+hello.adb:14:34: info: index check proved
+hello.adb:15:20: info: index check proved
+hello.adb:15:20: info: overflow check proved
+hello.adb:16:25: info: index check proved
+hello.adb:16:25: info: overflow check proved
+hello.adb:18:15: info: index check proved
+hello.adb:18:35: info: index check proved
+hello.adb:20:15: info: index check proved
+hello.adb:20:35: info: index check proved
+hello.adb:29:20: info: index check proved
+hello.adb:29:40: info: index check proved
+hello.adb:30:23: info: index check proved
+hello.adb:30:23: info: overflow check proved
+hello.adb:31:26: info: index check proved
+hello.adb:31:26: info: overflow check proved
+hello.adb:33:18: info: index check proved
+hello.adb:33:38: info: index check proved
+hello.adb:35:18: info: index check proved
+hello.adb:35:38: info: index check proved
+hello.adb:41:08: warning: postcondition might fail
+hello.adb:45:08: info: precondition proved
+hello.adb:53:07: info: range check proved
+hello.adb:53:48: info: range check proved
+hello.adb:64:10: info: assertion proved
+hello.adb:65:10: info: assertion proved
+hello.adb:66:10: info: assertion proved
+hello.adb:67:10: warning: loop invariant might fail after first iteration
+hello.adb:67:10: warning: loop invariant might fail in first iteration
+hello.adb:67:33: info: precondition proved
+hello.adb:70:37: info: index check proved
+hello.adb:70:47: info: index check proved
+hello.adb:81:07: info: assertion proved
+hello.adb:113:18: warning: assuming "Put_Line" has no effect on global items
+hello.adb:113:18: warning: no Global contract available for "Put_Line"
+hello.adb:113:35: warning: range check might fail
+hello.adb:113:44: warning: range check might fail
+hello.adb:113:66: warning: range check might fail
+hello.ads:10:14: warning: subprogram "Say_Hello" has no effect

@@ -185,8 +185,8 @@ bio.ads:85:14: warning: subprogram "Flush" has no effect
 cert-id.adb:87:47: info: range check proved
 certificatestore.adb:38:42: info: length check proved
 certificatestore.adb:221:31: warning: range check might fail
-certificatestore.adb:222:26: info: length check proved
 certificatestore.adb:222:26: warning: "Text" might not be initialized
+certificatestore.adb:222:26: warning: length check might fail
 certificatestore.adb:222:29: warning: range check might fail
 certificatestore.adb:223:42: info: length check proved
 certificatestore.adb:223:45: warning: range check might fail
