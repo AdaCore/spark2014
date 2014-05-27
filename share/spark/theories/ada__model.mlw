@@ -134,6 +134,8 @@ module Dynamic_Discrete
  val range_check_ (x : int) : int
    requires { dynamic_property (to_int (!first)) (to_int (!last)) x }
    ensures { result = x } 
+
+ function dummy : base
 end
 
 module Dynamic_Modular
