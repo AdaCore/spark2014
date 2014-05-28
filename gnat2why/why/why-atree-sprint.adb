@@ -477,6 +477,12 @@ package body Why.Atree.Sprint is
          Dir : String_Access := Locate_Exec_On_Path (Exec_Name => "gnatprove");
 
          function Get_Proof_Dir return String;
+         --  Retrieve the name of the Proof_Dir project attribute from
+         --  gnatwhy3's arguments.
+
+         -------------------
+         -- Get_Proof_Dir --
+         -------------------
 
          function Get_Proof_Dir return String is
             Index : String_Lists.Cursor;
