@@ -77,9 +77,9 @@ platform. To use a prover, it must be listed in your ``.why3.conf``
 file. The command ``why3config --detect-provers`` can be used to
 search your PATH for any supported provers and add them to the config
 file. Any such prover can then be used with the ``--prover`` option,
-for example:
+using the name stored in the ``.why3.conf`` file. For example:
 
-   ``gnatprove -P foo.gpr --prover=cvc4``
+   ``gnatprove -P foo.gpr --prover=CVC4``
 
 .. _Project_Attributes:
 
