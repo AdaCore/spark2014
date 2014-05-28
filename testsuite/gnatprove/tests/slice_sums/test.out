@@ -1,0 +1,60 @@
+slice_sums.adb:13:11: info: range check proved
+slice_sums.adb:14:10: info: loop invariant initialization proved
+slice_sums.adb:14:10: warning: loop invariant might fail after first iteration
+slice_sums.adb:15:21: info: range check proved
+slice_sums.adb:15:59: info: overflow check proved
+slice_sums.adb:16:24: info: range check proved
+slice_sums.adb:17:32: info: precondition proved
+slice_sums.adb:22:26: info: precondition proved
+slice_sums.adb:24:14: info: range check proved
+slice_sums.adb:25:13: warning: loop invariant might fail after first iteration
+slice_sums.adb:25:13: warning: loop invariant might fail in first iteration
+slice_sums.adb:26:25: info: range check proved
+slice_sums.adb:26:63: info: overflow check proved
+slice_sums.adb:27:30: info: range check proved
+slice_sums.adb:28:36: info: precondition proved
+slice_sums.adb:30:27: info: range check proved
+slice_sums.adb:30:65: info: overflow check proved
+slice_sums.adb:31:35: info: precondition proved
+slice_sums.adb:36:29: info: precondition proved
+slice_sums.adb:38:44: info: range check proved
+slice_sums.adb:38:48: info: range check proved
+slice_sums.adb:39:28: info: precondition proved
+slice_sums.adb:42:27: warning: range check might fail
+slice_sums.adb:63:41: info: range check proved
+slice_sums.adb:66:14: info: range check proved
+slice_sums.adb:67:13: warning: loop invariant might fail after first iteration
+slice_sums.adb:67:13: warning: loop invariant might fail in first iteration
+slice_sums.adb:71:43: info: overflow check proved
+slice_sums.adb:71:57: info: overflow check proved
+slice_sums.adb:73:30: info: precondition proved
+slice_sums.adb:74:36: info: overflow check proved
+slice_sums.adb:74:36: info: range check proved
+slice_sums.adb:79:29: info: precondition proved
+slice_sums.adb:81:24: info: range check proved
+slice_sums.adb:81:70: info: overflow check proved
+slice_sums.adb:82:30: info: range check proved
+slice_sums.adb:82:76: info: overflow check proved
+slice_sums.adb:83:36: info: precondition proved
+slice_sums.adb:86:24: info: range check proved
+slice_sums.adb:87:18: info: precondition proved
+slice_sums.adb:89:24: info: range check proved
+slice_sums.adb:89:73: info: overflow check proved
+slice_sums.adb:90:18: info: precondition proved
+slice_sums.adb:92:40: info: overflow check proved
+slice_sums.adb:94:27: info: range check proved
+slice_sums.adb:96:29: info: range check proved
+slice_sums.adb:99:44: info: overflow check proved
+slice_sums.adb:99:44: info: range check proved
+slice_sums.ads:6:14: warning: postcondition might fail
+slice_sums.ads:10:31: warning: range check might fail
+slice_sums.ads:11:34: warning: range check might fail
+slice_sums.ads:12:31: info: precondition proved
+slice_sums.ads:13:37: info: precondition proved
+slice_sums.ads:14:23: info: precondition proved
+slice_sums.ads:17:14: warning: postcondition might fail
+slice_sums.ads:21:31: warning: range check might fail
+slice_sums.ads:22:34: warning: range check might fail
+slice_sums.ads:23:31: info: precondition proved
+slice_sums.ads:24:37: info: precondition proved
+slice_sums.ads:25:23: info: precondition proved

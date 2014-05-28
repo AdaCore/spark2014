@@ -43,6 +43,8 @@ with GNAT.Regpat;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Ada.Strings.Unbounded;
 
+with Gnat2Why_Args;
+
 package body Why.Atree.Sprint is
 
    O : Output_Id := Stdout;
@@ -473,6 +475,22 @@ package body Why.Atree.Sprint is
          use Ada.Directories;
 
          Dir : String_Access := Locate_Exec_On_Path (Exec_Name => "gnatprove");
+
+         function Get_Proof_Dir return String;
+
+         function Get_Proof_Dir return String is
+            Index : String_Lists.Cursor;
+         begin
+            Index := String_Lists.Find (Container => Gnat2Why_Args.Why3_Args,
+                                        Item => "--proof-dir");
+
+            if String_Lists.Has_Element (Index) then
+               String_Lists.Next (Index);
+               return String_Lists.Element (Index);
+            end if;
+
+            return "";
+         end Get_Proof_Dir;
       begin
          if Dir = null then
             Error_Msg_N
@@ -483,16 +501,23 @@ package body Why.Atree.Sprint is
          declare
             File_Name : constant String :=
               Get_Name_String (Get_File_Name (Node));
+
             From_Command : constant String :=
               Compose (Compose (Compose (Compose (Containing_Directory
                        (Containing_Directory (Dir.all)), "share"),
                        "spark"), "theories"), File_Name);
-
+            Proof_Dir : constant String := Get_Proof_Dir;
+            From_Proof_Dir : constant String :=
+              Compose (Compose (Proof_Dir, "_theories"), File_Name);
          begin
             Free (Dir);
 
             if Is_Readable_File (From_Command) then
                return From_Command;
+            elsif Proof_Dir /= ""
+               and then Is_Readable_File (From_Proof_Dir)
+            then
+               return From_Proof_Dir;
             else
                Name_Len := From_Command'Length;
                Name_Buffer (1 .. Name_Len) := From_Command;
