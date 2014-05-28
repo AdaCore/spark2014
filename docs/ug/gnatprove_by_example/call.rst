@@ -25,7 +25,7 @@ If we try to prove this with |GNATprove| it reports the following:
    :linenos:
 
 For each call to ``Increment`` we are required to show that its precondition
-holds, i.e. ``X`` must be strictly less than ``Integer'Last``. One possible
+holds, i.e., ``X`` must be strictly less than ``Integer'Last``. One possible
 approach here would be to guard each call to ``Increment`` with an ``if``
 statement so that it is only called it the precondition is met. This would
 make ``Add2`` saturate at ``Integer'Last``. However, the specification

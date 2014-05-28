@@ -111,7 +111,7 @@ or defined in a library-level package.
 The SPARK_Mode pragma can be used in the following places:
 
 * As a configuration pragma, in which case it sets the default mode for
-  all units compiled with this pragma.
+  all units compiled with this pragma
 
 * Immediately within or before a library-level package spec
 
@@ -217,7 +217,7 @@ of situations, for example:
   synthesized for analysis purposes. This is also regarded as generative
   analysis.
 
-- Legacy code is analyzed which has no (or incomplete) |SPARK| specific aspects
+- Legacy code is analyzed which has no (or incomplete) |SPARK| specific aspects.
   This is regarded as *retrospective analysis*, where code is being analyzed
   that was not originally written with analysis in mind.
 
