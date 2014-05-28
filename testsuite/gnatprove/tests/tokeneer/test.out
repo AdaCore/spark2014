@@ -337,7 +337,6 @@ display.adb:148:33: warning: overflow check might fail, in call inlined at displ
 display.adb:148:33: warning: overflow check might fail, in call inlined at display.adb:289
 display.adb:150:32: warning: range check might fail, in call inlined at display.adb:189
 display.adb:150:32: warning: range check might fail, in call inlined at display.adb:289
-display.adb:189:32: warning: statement has no effect
 display.ads:66:48: info: length check proved
 door.adb:99:10: warning: postcondition might fail, requires CurrentDoor = Open and then Latch.IsLocked and then Clock.GreaterThanOrEqual(Clock.TheCurrentTime, AlarmTimeout) ) = (DoorAlarm = AlarmTypes.alarming
 door.ads:148:08: warning: postcondition might fail

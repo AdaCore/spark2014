@@ -3,13 +3,11 @@ p.adb:6:38: info: precondition proved
 p.adb:7:19: info: precondition proved
 p.adb:8:07: warning: precondition might fail
 p.adb:12:27: info: precondition proved
-p.adb:13:07: warning: statement has no effect
 p.adb:13:33: info: precondition proved
 p.adb:14:32: info: precondition proved
 p.adb:16:07: info: precondition proved
 p.adb:16:18: warning: unused assignment to "Cu"
 p.adb:17:07: warning: precondition might fail
-p.adb:21:07: warning: statement has no effect
 p.adb:21:31: info: precondition proved
 p.adb:23:07: info: precondition proved
 p.adb:24:07: info: assertion proved

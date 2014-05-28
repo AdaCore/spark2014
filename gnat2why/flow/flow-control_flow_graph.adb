@@ -752,6 +752,14 @@ package body Flow.Control_Flow_Graph is
    --  Process an arbitrary statement (this is basically a big case
    --  block which calls the various Do_XYZ procedures).
 
+   function Right_Hand_Side_Needs_Splitting (N : Node_Id) return Boolean
+     with Pre => Nkind (N) in N_Assignment_Statement |
+                              N_Object_Declaration
+                   and then Present (Expression (N));
+   --  Checks the right hand side of an assignment statement (or the
+   --  expression on an object declaration) and determines if we need
+   --  to perform some splitting.
+
    procedure Simplify_CFG (FA : in out Flow_Analysis_Graphs);
    --  Remove all null vertices from the control flow graph.
 
@@ -1343,39 +1351,6 @@ package body Flow.Control_Flow_Graph is
                end loop;
             end;
 
-         when N_Expanded_Name             |
-              N_Function_Call             |
-              N_Indexed_Component         |
-              N_Type_Conversion           |
-              N_Unchecked_Type_Conversion =>
-            --  This covers the following 5 cases:
-            --    A := 0;
-            --    A := function(X);
-            --    A := Array(X);
-            --    A := A (B);
-            --    A := Some_Unchecked_Conversion_Function (X);
-            declare
-               S : constant Node_Id :=
-                 (case Nkind (Search) is
-                     when N_Expanded_Name     |
-                          N_Function_Call     |
-                          N_Indexed_Component =>
-                        Search,
-                     when N_Type_Conversion           |
-                          N_Unchecked_Type_Conversion =>
-                        Expression (Search),
-                     when others =>
-                        raise Why.Unexpected_Node);
-            begin
-               Ctx.Folded_Function_Checks (N).Include (S);
-
-               Vars_Used := Get_Variable_Set
-                 (S,
-                  Scope           => FA.B_Scope,
-                  Local_Constants => FA.Local_Constants,
-                  Fold_Functions  => True);
-            end;
-
          when others =>
             raise Why.Unexpected_Node;
       end case;
@@ -1634,7 +1609,9 @@ package body Flow.Control_Flow_Graph is
                            V_Used_RHS);
       end if;
 
-      if V_Def_LHS.Length > 1 then
+      if V_Def_LHS.Length > 1
+        and then Right_Hand_Side_Needs_Splitting (N)
+      then
          --  If the LHS defines more than 1 variables, then we are dealing
          --  with a record.
          declare
@@ -3050,7 +3027,9 @@ package body Flow.Control_Flow_Graph is
                end if;
             end loop;
 
-            if Var_Is_Record then
+            if Var_Is_Record
+              and then Right_Hand_Side_Needs_Splitting (N)
+            then
                for F of Var_Def loop
                   Vars_Used := Flow_Id_Sets.Empty_Set;
 
@@ -4248,6 +4227,17 @@ package body Flow.Control_Flow_Graph is
 
       Ctx.Folded_Function_Checks.Delete (N);
    end Process_Statement;
+
+   -------------------------------------
+   -- Right_Hand_Side_Needs_Splitting --
+   -------------------------------------
+
+   function Right_Hand_Side_Needs_Splitting (N : Node_Id) return Boolean is
+     (Nkind (Expression (N)) in N_Identifier           |
+                                N_Selected_Component   |
+                                N_Attribute_Reference  |
+                                N_Aggregate            |
+                                N_Qualified_Expression);
 
    ------------------
    -- Simplify_CFG --

@@ -403,7 +403,6 @@ display.adb:148:33: info: overflow check proved, in call inlined at display.adb:
 display.adb:150:32: info: range check proved, in call inlined at display.adb:188
 display.adb:150:32: warning: range check might fail, in call inlined at display.adb:280
 display.adb:184:18: warning: precondition might fail
-display.adb:188:32: warning: statement has no effect
 display.adb:235:49: warning: "Interfac.Output" might not be written
 display.adb:264:18: warning: statement has no effect
 display.adb:264:18: warning: unused assignment to "Interfac.Output"
@@ -554,7 +553,6 @@ enrolment.adb:71:40: warning: length check might fail
 enrolment.adb:71:43: warning: range check might fail
 enrolment.adb:73:23: info: length check proved
 enrolment.adb:123:25: warning: postcondition might fail
-enrolment.adb:156:23: warning: statement has no effect
 enrolment.adb:228:27: info: overflow check proved
 enrolment.adb:238:30: warning: overflow check might fail
 enrolment.ads:78:22: warning: postcondition might fail, requires DataOK = KeyStore(KeyStore.privatekeypresent)
