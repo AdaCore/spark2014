@@ -37,6 +37,7 @@ with Opt;                    use Opt;
 with Sem_Ch12;               use Sem_Ch12;
 with Sem_Prag;               use Sem_Prag;
 with Sem_Util;               use Sem_Util;
+with Exp_Util;               use Exp_Util;
 with Sinfo;                  use Sinfo;
 with Sinput;                 use Sinput;
 with Snames;                 use Snames;
@@ -2128,7 +2129,8 @@ package body SPARK_Definition is
          --  For types in external axioms, mark the package entity.
 
          if Entity_In_External_Axioms (E) then
-            Mark_Entity (Axiomatized_Package_For_Entity (E));
+            Mark_Entity
+              (Get_First_Parent_With_External_Axiomatization_For_Entity (E));
          end if;
 
          --  The base type or original type should be marked before the current

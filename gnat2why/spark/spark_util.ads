@@ -37,13 +37,6 @@ with Common_Containers; use Common_Containers;
 
 package SPARK_Util is
 
-   -------------------
-   -- Special Names --
-   -------------------
-
-   Name_GNATprove : constant String := "gnatprove";
-   Name_External_Axiomatization : constant String := "external_axiomatization";
-
    ------------------------------
    -- Queries on Type Entities --
    ------------------------------
@@ -255,10 +248,6 @@ package SPARK_Util is
    --  Return the underlying (private) base type declared in a package with
    --  external axioms of a private type E, if any
 
-   function Axiomatized_Package_For_Entity (E : Entity_Id) return Entity_Id;
-   --  Returns the package entity with an external axiomatization containing E,
-   --  if any, or Empty if none.
-
    function Is_External_Axioms_Discriminant (E : Entity_Id) return Boolean
    with
      Pre => Ekind (E) = E_Discriminant;
@@ -345,18 +334,6 @@ package SPARK_Util is
 
    function Is_Unchecked_Conversion_Instance (E : Entity_Id) return Boolean;
    --  Returns whether E is an instance of Ada.Unchecked_Conversion
-
-   function Is_Annotate_Pragma_For_External_Axiomatization
-     (N : Node_Id) return Boolean;
-   --  Returns whether N is
-   --    pragma Annotate (GNATprove, External_Axiomatization);
-
-   function Has_Annotate_Pragma_For_External_Axiomatization
-     (E : Entity_Id) return Boolean
-   with Pre => Ekind_In (E, E_Package, E_Generic_Package);
-   --  Returns whether E is a package entity, for which the initial list of
-   --  pragmas at the start of the package declaration contains
-   --    pragma Annotate (GNATprove, External_Axiomatization);
 
    procedure Get_Global_Items
      (P      : Node_Id;
