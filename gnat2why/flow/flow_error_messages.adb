@@ -22,31 +22,43 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers.Hashed_Sets;
 with Ada.Directories;
-with Ada.Text_IO;       use Ada.Text_IO;
+with Ada.Strings.Unbounded.Hash;
+with Ada.Text_IO;                use Ada.Text_IO;
 
 with GNATCOLL.JSON;
 
-with Atree;             use Atree;
-with Einfo;             use Einfo;
-with Errout;            use Errout;
-with Erroutc;           use Erroutc;
-with Namet;             use Namet;
-with Opt;               use Opt;
-with Sem_Util;          use Sem_Util;
-with Sinfo;             use Sinfo;
-with Sinput;            use Sinput;
-with Stringt;           use Stringt;
-with String_Utils;      use String_Utils;
+with Atree;                      use Atree;
+with Einfo;                      use Einfo;
+with Errout;                     use Errout;
+with Erroutc;                    use Erroutc;
+with Namet;                      use Namet;
+with Opt;                        use Opt;
+with Sem_Util;                   use Sem_Util;
+with Sinfo;                      use Sinfo;
+with Sinput;                     use Sinput;
+with Stringt;                    use Stringt;
+with String_Utils;               use String_Utils;
 with VC_Kinds;
 
-with Gnat2Why.Nodes;    use Gnat2Why.Nodes;
-with Gnat2Why_Args;     use Gnat2Why_Args;
+with Gnat2Why.Nodes;             use Gnat2Why.Nodes;
+with Gnat2Why_Args;              use Gnat2Why_Args;
 
 package body Flow_Error_Messages is
 
    type Msg_Kind is (Error_Kind, Warning_Kind, Info_Kind);
    --  describes the three kinds of messages issued by gnat2why
+
+   package Msgs_Sets is new Ada.Containers.Hashed_Sets
+     (Element_Type        => Unbounded_String,
+      Hash                => Ada.Strings.Unbounded.Hash,
+      Equivalent_Elements => "=",
+      "="                 => "=");
+
+   Flow_Msgs_Set : Msgs_Sets.Set;
+   --  This set will contain flow related messages. It is used so as
+   --  to not emit duplicate messages.
 
    function Msg_Kind_To_String (Kind : Msg_Kind) return String;
    --  transform the msg kind into a string, for the JSON output
@@ -275,43 +287,55 @@ package body Flow_Error_Messages is
         Warning_Is_Suppressed (N, Msg3, F1, F2);
       Slc   : constant Source_Ptr := Compute_Sloc (N);
       Msg_Id : Message_Id := No_Message_Id;
+      Unb_Msg : constant Unbounded_String :=
+        To_Unbounded_String (Msg3) &
+        To_Unbounded_String (Source_Ptr'Image (Slc)) &
+        To_Unbounded_String (Msg_Kind_To_String (Kind));
    begin
+      --  If the message that we are about to emit has already been
+      --  emitted in the past then we do nothing.
 
-      case FA.Kind is
-         when E_Subprogram_Body | E_Package =>
-            E := FA.Analyzed_Entity;
-         when E_Package_Body =>
-            E := Spec_Entity (FA.Analyzed_Entity);
-      end case;
+      if not Flow_Msgs_Set.Contains (Unb_Msg) then
 
-      --  print the message except when it's a suppressed warning
+         Flow_Msgs_Set.Insert (Unb_Msg);
 
-      if Kind = Error_Kind or else
-        (Kind = Warning_Kind and then
-         Suppr = No_String)
-      then
-         Msg_Id := Print_Regular_Msg (Msg3, Slc, Kind);
-      end if;
+         case FA.Kind is
+            when E_Subprogram_Body | E_Package =>
+               E := FA.Analyzed_Entity;
+            when E_Package_Body =>
+               E := Spec_Entity (FA.Analyzed_Entity);
+         end case;
 
-      Add_Json_Msg
-        (Suppr     => Suppr,
-         Tag       => Tag,
-         Kind      => Kind,
-         Slc       => Slc,
-         Msg_List  => Flow_Msgs,
-         E         => E,
-         Tracefile => Tracefile,
-         Msg_Id    => Msg_Id);
+         --  print the message except when it's a suppressed warning
 
-      --  set the error flag if we have an error or an unsuppressed warning
-      --  with warnings-as-errors
+         if Kind = Error_Kind or else
+           (Kind = Warning_Kind and then
+              Suppr = No_String)
+         then
+            Msg_Id := Print_Regular_Msg (Msg3, Slc, Kind);
+         end if;
 
-      if Kind = Error_Kind or else
-        (Kind = Warning_Kind and then
-         Opt.Warning_Mode = Treat_As_Error and then
-         Suppr = No_String)
-      then
-         Found_Flow_Error := True;
+         Add_Json_Msg
+           (Suppr     => Suppr,
+            Tag       => Tag,
+            Kind      => Kind,
+            Slc       => Slc,
+            Msg_List  => Flow_Msgs,
+            E         => E,
+            Tracefile => Tracefile,
+            Msg_Id    => Msg_Id);
+
+         --  set the error flag if we have an error or an unsuppressed warning
+         --  with warnings-as-errors
+
+         if Kind = Error_Kind or else
+           (Kind = Warning_Kind and then
+              Opt.Warning_Mode = Treat_As_Error and then
+              Suppr = No_String)
+         then
+            Found_Flow_Error := True;
+         end if;
+
       end if;
 
    end Error_Msg_Flow;
@@ -394,6 +418,7 @@ package body Flow_Error_Messages is
       File_Counter := File_Counter + 1;
       return Result;
    end Fresh_Trace_File;
+
    ------------------------
    -- Msg_Kind_To_String --
    ------------------------

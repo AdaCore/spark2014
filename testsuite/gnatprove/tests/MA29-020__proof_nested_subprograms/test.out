@@ -47,5 +47,5 @@ Analyzed 1 units
 in unit skein, 3 subprograms and packages out of 3 analyzed
   Skein.Zero_Pad at skein.adb:60 flow analyzed (0 errors and 0 warnings) and proved (1 checks)
   Skein at skein.ads:6 flow analyzed (0 errors and 0 warnings) and not proved, 0 checks out of 6 proved
-  Skein.Skein_512_Final at skein.ads:131 flow analyzed (0 errors and 32 warnings) and not proved, 2 checks out of 21 proved
+  Skein.Skein_512_Final at skein.ads:131 flow analyzed (0 errors and 16 warnings) and not proved, 2 checks out of 21 proved
 

@@ -1,3 +1,3 @@
-{"file": "assign_aggr.adb", "line": 16, "col": 9, "message": "warning: statement has no effect", "rule": "ineffective", "severity": "warning", "entity": {"file": "assign_aggr.ads", "line": 9, "name": "Assign_Aggr.Compute"}, "tracefile": "4803e1af4c32387377240bb419486f9e4096277e.trace"}
-{"file": "assign_aggr.adb", "line": 17, "col": 19, "message": "warning: unused assignment to \"Err\"", "rule": "ineffective", "severity": "warning", "entity": {"file": "assign_aggr.ads", "line": 9, "name": "Assign_Aggr.Compute"}, "tracefile": "646e34d7a083f3dc6a807d0b9fd97ad113730937.trace"}
-{"file": "assign_aggr.adb", "line": 17, "col": 7, "message": "warning: statement has no effect", "rule": "ineffective", "severity": "warning", "entity": {"file": "assign_aggr.ads", "line": 9, "name": "Assign_Aggr.Compute"}, "tracefile": "632d95584b615d78fffdc4f346fab935c4347ef1.trace"}
+assign_aggr.adb:16:09: warning: statement has no effect[#0]
+assign_aggr.adb:17:07: warning: statement has no effect[#1]
+assign_aggr.adb:17:19: warning: unused assignment to "Err"[#2]
