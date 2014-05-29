@@ -2206,6 +2206,53 @@ Type Invariants
      [Note that these checks are only performed statically, and this does not create an
      obligation to extend the run-time checks performed in relation to type invariants.]
 
+.. _default_initial_condition_aspect:
+
+Default_Initial_Condition Aspects
+---------------------------------
+
+   The Default_Initial_Condition aspect is introduced by an aspect_specification
+   where the aspect_mark is Default_Initial_Condition. The aspect may be
+   specified only as part the aspect_specification of a
+   ``private_type_declaration``.
+   The ``aspect_definition``, if any, of such an aspect specification
+   shall be either a null literal or a *Boolean_*\ ``expression``.
+
+   The ``aspect_definition`` may be omitted; this is semantically
+   equivalent to specifying a static *Boolean_*\ ``expression`` having the
+   value True.
+
+   An aspect specification of "null" indicates that the partial view of the
+   type does not define full default initialization (see Spark RM 3.1).
+   [The full view of the type might or might not define full default
+   initialization.]
+
+   Conversely, an aspect specification of a *Boolean_*\ ``expression`` indicates
+   that the partial view of the type does define full default initialization.
+   In this case, the completion of the private type shall define full
+   default initialization. [Implementations may provide a mechanism for
+   suppressing enforcement of this rule as described, for example, in
+   |SPARK| User's Guide section 5.3, Warning Control; the burden is then on
+   the user to ensure that this does not result in undetected uses of
+   uninitialized variables.]
+
+   Unlike the null literal case, this case has associated dynamic semantics.
+   The *Boolean_*\ ``expression`` (which might typically mention the current
+   instance of the type, although this is not required) is an assertion
+   which is checked (at runtime) after any object of the given type, or of
+   any type descended from the given type, is "initialized by default" (see
+   Ada RM 3.3.1).
+
+   Default_Initial_Condition assertion is an assertion aspect, which means
+   that it may be used in an Assertion_Policy pragma.
+
+   In the case where an object is initialized by default and multiple
+   Default_Initial_Condition checks are to be performed, checks associated
+   with a more distant ancestor type are performed before those associated
+   with a less distant ancestor type. [In other words, if a type T1 is an
+   ancestor of another type T2, then the performance of any check which is
+   explicitly specified for T1 precedes that of any check explicitly specified
+   for T2.]
 
 Deferred Constants
 ------------------

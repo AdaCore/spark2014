@@ -815,11 +815,12 @@ specific aspects from the source code of a unit.
 Synthesis of |SPARK| aspects is fundamental to the analysis
 of pre-existing code where no |SPARK| specific aspects are provided.
 
-The mandatory requirements of a |SPARK| analysis tool is that it shall be
+A |SPARK| analysis tool is required to be
 capable of synthesizing at least a basic, conservative :ref:`global-aspects`,
 :ref:`depends-aspects` , :ref:`refined-global-aspect`,
 :ref:`refined-depends-aspect`, :ref:`abstract-state-aspect`,
-:ref:`refined_state_aspect` and :ref:`initializes_aspect` from either the
+:ref:`refined_state_aspect`, :ref:`initializes_aspect` and
+:ref:`default_initial_condition_aspect` from either the
 implementation code or from other |SPARK| aspects as follows:
 
   * if subprogram has no Depends aspect but has a Global aspect, an
@@ -857,6 +858,14 @@ implementation code or from other |SPARK| aspects as follows:
     a single state abstraction for every variable shall be provided. A
     Refined_State aspect shall be synthesized which shows the constituents of
     each state.
+
+  * if no Default_Initial_Condition is specified for a private type declaration,
+    then the synthesized value of this aspect of the type is determined
+    by whether the full view of the private type defines full default
+    initialization (see Spark RM 3.1). If it does, then the synthesized
+    aspect value is a static *Boolean_*\ ``expression`` having
+    the value True; if it does not, then the synthesized aspect value
+    is a null literal.
 
 The syntheses described above do not include all of the |SPARK| aspects and nor
 do the syntheses cover all facets of the aspects. In complex programs where
