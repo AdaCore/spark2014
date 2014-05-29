@@ -207,8 +207,8 @@ package Flow is
 
    function Is_Valid (X : Flow_Analysis_Graphs_Root) return Boolean;
 
-   subtype Flow_Analysis_Graphs is Flow_Analysis_Graphs_Root;
-   --  with Dynamic_Predicate => Is_Valid (Flow_Analysis_Graphs);
+   subtype Flow_Analysis_Graphs is Flow_Analysis_Graphs_Root
+     with Dynamic_Predicate => Is_Valid (Flow_Analysis_Graphs);
 
    package Analysis_Maps is new Ada.Containers.Hashed_Maps
      (Key_Type        => Entity_Id,

@@ -712,11 +712,11 @@ package body Flow is
                                  S : Node_Id)
                                  return Flow_Analysis_Graphs
    is
-      FA : Flow_Analysis_Graphs;
+      Tmp : Flow_Analysis_Graphs_Root;
    begin
       case Ekind (E) is
          when Subprogram_Kind =>
-            FA := Flow_Analysis_Graphs'
+            Tmp := Flow_Analysis_Graphs_Root'
               (Kind              => E_Subprogram_Body,
                Analyzed_Entity   => E,
                B_Scope           => Get_Flow_Scope
@@ -753,7 +753,7 @@ package body Flow is
                Function_Side_Effects_Present => False);
 
          when E_Package =>
-            FA := Flow_Analysis_Graphs'
+            Tmp := Flow_Analysis_Graphs_Root'
               (Kind              => E_Package,
                Analyzed_Entity   => E,
                B_Scope           => Flow_Scope'(E, Private_Part),
@@ -780,7 +780,7 @@ package body Flow is
                Visible_Vars      => Flow_Id_Sets.Empty_Set);
 
          when E_Package_Body =>
-            FA := Flow_Analysis_Graphs'
+            Tmp := Flow_Analysis_Graphs_Root'
               (Kind              => E_Package_Body,
                Analyzed_Entity   => E,
                B_Scope           => Flow_Scope'(Spec_Entity (E), Body_Part),
@@ -809,98 +809,101 @@ package body Flow is
          when others =>
             raise Why.Not_SPARK;
       end case;
-      pragma Assert (Is_Valid (FA));
 
-      Append (FA.Base_Filename, Get_Name_String (Chars (E)));
+      declare
+         FA : Flow_Analysis_Graphs := Tmp;
+      begin
+         Append (FA.Base_Filename, Get_Name_String (Chars (E)));
 
-      if Gnat2Why_Args.Flow_Advanced_Debug then
-         Write_Str (Character'Val (8#33#) & "[32m" &
-                      "Flow analysis (cons) of " &
-                      Entity_Kind'Image (FA.Kind) &
-                      " " &
-                      Character'Val (8#33#) & "[1m" &
-                      Get_Name_String (Chars (E)) &
-                      Character'Val (8#33#) & "[0m");
-         Write_Eol;
-
-         Indent;
-
-         if Debug_Trace_Scoping then
-            Write_Str ("Spec_Scope: ");
-            Print_Flow_Scope (FA.S_Scope);
+         if Gnat2Why_Args.Flow_Advanced_Debug then
+            Write_Str (Character'Val (8#33#) & "[32m" &
+                         "Flow analysis (cons) of " &
+                         Entity_Kind'Image (FA.Kind) &
+                         " " &
+                         Character'Val (8#33#) & "[1m" &
+                         Get_Name_String (Chars (E)) &
+                         Character'Val (8#33#) & "[0m");
             Write_Eol;
-            declare
-               Ptr : Flow_Scope := FA.S_Scope;
-            begin
-               Indent;
-               while Ptr /= Null_Flow_Scope loop
-                  case Valid_Section_T'(Ptr.Section) is
-                     when Body_Part =>
-                        Ptr.Section := Private_Part;
 
-                     when Private_Part | Spec_Part =>
-                        Ptr := Get_Enclosing_Flow_Scope (Ptr);
-                  end case;
-                  if Ptr /= Null_Flow_Scope then
-                     Print_Flow_Scope (Ptr);
-                     Write_Eol;
-                  end if;
-               end loop;
-               Outdent;
-            end;
-            Write_Str ("Body_Scope: ");
-            Print_Flow_Scope (FA.B_Scope);
-            Write_Eol;
+            Indent;
+
+            if Debug_Trace_Scoping then
+               Write_Str ("Spec_Scope: ");
+               Print_Flow_Scope (FA.S_Scope);
+               Write_Eol;
+               declare
+                  Ptr : Flow_Scope := FA.S_Scope;
+               begin
+                  Indent;
+                  while Ptr /= Null_Flow_Scope loop
+                     case Valid_Section_T'(Ptr.Section) is
+                        when Body_Part =>
+                           Ptr.Section := Private_Part;
+
+                        when Private_Part | Spec_Part =>
+                           Ptr := Get_Enclosing_Flow_Scope (Ptr);
+                     end case;
+                     if Ptr /= Null_Flow_Scope then
+                        Print_Flow_Scope (Ptr);
+                        Write_Eol;
+                     end if;
+                  end loop;
+                  Outdent;
+               end;
+               Write_Str ("Body_Scope: ");
+               Print_Flow_Scope (FA.B_Scope);
+               Write_Eol;
+            end if;
          end if;
-      end if;
 
-      Control_Flow_Graph.Create (FA);
+         Control_Flow_Graph.Create (FA);
 
-      --  We print this graph first in case the other algorithms
-      --  barf.
-      if Debug_Print_CFG then
-         Print_Graph (Filename     => To_String (FA.Base_Filename) & "_cfg",
-                      G            => FA.CFG,
-                      M            => FA.Atr,
-                      Start_Vertex => FA.Start_Vertex,
-                      End_Vertex   => FA.End_Vertex);
-      end if;
+         --  We print this graph first in case the other algorithms
+         --  barf.
+         if Debug_Print_CFG then
+            Print_Graph (Filename     => To_String (FA.Base_Filename) & "_cfg",
+                         G            => FA.CFG,
+                         M            => FA.Atr,
+                         Start_Vertex => FA.Start_Vertex,
+                         End_Vertex   => FA.End_Vertex);
+         end if;
 
-      Control_Dependence_Graph.Create (FA);
+         Control_Dependence_Graph.Create (FA);
 
-      if Debug_Print_Intermediates then
-         Print_Graph (Filename     => To_String (FA.Base_Filename) & "_cdg",
-                      G            => FA.CDG,
-                      M            => FA.Atr,
-                      Start_Vertex => FA.Start_Vertex,
-                      End_Vertex   => FA.End_Vertex);
-      end if;
+         if Debug_Print_Intermediates then
+            Print_Graph (Filename     => To_String (FA.Base_Filename) & "_cdg",
+                         G            => FA.CDG,
+                         M            => FA.Atr,
+                         Start_Vertex => FA.Start_Vertex,
+                         End_Vertex   => FA.End_Vertex);
+         end if;
 
-      Data_Dependence_Graph.Create (FA);
-      Interprocedural.Create (FA);
-      Program_Dependence_Graph.Create (FA);
+         Data_Dependence_Graph.Create (FA);
+         Interprocedural.Create (FA);
+         Program_Dependence_Graph.Create (FA);
 
-      if Debug_Print_Intermediates then
-         Print_Graph (Filename     => To_String (FA.Base_Filename) & "_ddg",
-                      G            => FA.DDG,
-                      M            => FA.Atr,
-                      Start_Vertex => FA.Start_Vertex,
-                      End_Vertex   => FA.End_Vertex);
-      end if;
+         if Debug_Print_Intermediates then
+            Print_Graph (Filename     => To_String (FA.Base_Filename) & "_ddg",
+                         G            => FA.DDG,
+                         M            => FA.Atr,
+                         Start_Vertex => FA.Start_Vertex,
+                         End_Vertex   => FA.End_Vertex);
+         end if;
 
-      if Debug_Print_PDG then
-         Print_Graph (Filename     => To_String (FA.Base_Filename) & "_pdg",
-                      G            => FA.PDG,
-                      M            => FA.Atr,
-                      Start_Vertex => FA.Start_Vertex,
-                      End_Vertex   => FA.End_Vertex);
-      end if;
+         if Debug_Print_PDG then
+            Print_Graph (Filename     => To_String (FA.Base_Filename) & "_pdg",
+                         G            => FA.PDG,
+                         M            => FA.Atr,
+                         Start_Vertex => FA.Start_Vertex,
+                         End_Vertex   => FA.End_Vertex);
+         end if;
 
-      if Gnat2Why_Args.Flow_Advanced_Debug then
-         Outdent;
-      end if;
+         if Gnat2Why_Args.Flow_Advanced_Debug then
+            Outdent;
+         end if;
 
-      return FA;
+         return FA;
+      end;
    end Flow_Analyse_Entity;
 
    ------------------------
