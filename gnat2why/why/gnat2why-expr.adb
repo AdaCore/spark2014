@@ -32,7 +32,6 @@ with Ada.Containers;         use Ada.Containers;
 
 with Atree;                  use Atree;
 with Checks;                 use Checks;
-with Einfo;                  use Einfo;
 with Errout;                 use Errout;
 with Namet;                  use Namet;
 with Nlists;                 use Nlists;
@@ -458,14 +457,6 @@ package body Gnat2Why.Expr is
    function Transform_Raise (Stat : Node_Id) return W_Prog_Id with
      Pre => Nkind (Stat) in N_Raise_xxx_Error | N_Raise_Statement;
    --  Returns the Why program for raise statement Stat
-
-   function Compute_Dynamic_Property
-     (Expr     : W_Expr_Id;
-      Ty       : Entity_Id;
-      Only_Var : Boolean) return W_Pred_Id;
-   --  Computes the dynamic property of an expression Expr of a type Ty.
-   --  If Only_Var is true, does not assume properties of constant parts of
-   --  Expr.
 
    -------------------
    -- Apply_Modulus --
@@ -1383,16 +1374,17 @@ package body Gnat2Why.Expr is
       Only_Var : Boolean) return W_Pred_Id
    is
       T : W_Pred_Id;
+      Ty_Ext : constant Entity_Id := MUT (Ty);
    begin
       --  Dynamic property of the type itself
 
-      if (Is_Discrete_Type (Ty) and then not Is_Static_Subtype (Ty))
+      if (Is_Discrete_Type (Ty_Ext) and then not Is_Static_Subtype (Ty_Ext))
         or else (not Only_Var
-                 and then Is_Array_Type (Ty)
-                 and then not Is_Static_Array_Type (Ty))
+                 and then Is_Array_Type (Ty_Ext)
+                 and then not Is_Static_Array_Type (Ty_Ext))
       then
          T := +New_Dynamic_Property (Domain => EW_Pred,
-                                     Ty     => Ty,
+                                     Ty     => Ty_Ext,
                                      Expr   => Expr);
       else
          T := True_Pred;
@@ -1400,14 +1392,14 @@ package body Gnat2Why.Expr is
 
       --  Compute dynamic property for its components
 
-      if Is_Array_Type (Ty) then
+      if Is_Array_Type (Ty_Ext) then
          declare
             Dim        : constant Positive :=
-              Positive (Number_Dimensions (Ty));
+              Positive (Number_Dimensions (Ty_Ext));
             Vars       : Binder_Array (1 .. Dim);
             Indices    : W_Expr_Array (1 .. Dim);
             Range_Expr : W_Pred_Id := True_Pred;
-            Index      : Node_Id := First_Index (Ty);
+            Index      : Node_Id := First_Index (Ty_Ext);
             I          : Positive := 1;
             T_Comp     : W_Pred_Id;
             Tmp        : W_Identifier_Id;
@@ -1431,7 +1423,7 @@ package body Gnat2Why.Expr is
             T_Comp :=
               Compute_Dynamic_Property
                 (New_Array_Access (Empty, Expr, Indices, EW_Term),
-                 Etype (Component_Type (Ty)), False);
+                 Etype (Component_Type (Ty_Ext)), False);
 
             if T_Comp /= True_Pred then
                declare
@@ -1450,7 +1442,7 @@ package body Gnat2Why.Expr is
                end;
             end if;
          end;
-      elsif Is_Record_Type (Ty) then
+      elsif Is_Record_Type (Ty_Ext) then
 
          --  Record types are not handled yet.
 
@@ -1756,7 +1748,20 @@ package body Gnat2Why.Expr is
                                    (Ada_Node => Actual,
                                     Lvalue   => Actual,
                                     Expr     => Arg_Value);
+
+               --  Assume dynamic property of the temporary variable
+
+               Dyn_Prop : constant W_Prog_Id :=
+                 Assume_Dynamic_Property
+                   (Expr     => +Tmp_Var_Deref,
+                    Ty       => Etype (Formal),
+                    Only_Var => True);
             begin
+
+               if Dyn_Prop /= New_Void then
+                  Statement_Sequence_Append_To_Statements (Store, Dyn_Prop);
+               end if;
+
                Statement_Sequence_Append_To_Statements (Store, Store_Value);
                Ref_Tmp_Vars (Ref_Index) := Tmp_Var;
                Ref_Fetch (Ref_Index) := Fetch_Actual;
@@ -1790,25 +1795,6 @@ package body Gnat2Why.Expr is
              (Name    => Ref_Tmp_Vars (J),
               Def     => Ref_Fetch (J),
               Context => Ref_Context);
-
-         --  Assume dynamic property of modified parameters
-         declare
-            Typ   : constant W_Type_Id := Get_Typ (Ref_Tmp_Vars (J));
-            E_Typ : constant Entity_Id := Get_Ada_Node (+Typ);
-            Dyn_Prop : constant W_Prog_Id :=
-              Assume_Dynamic_Property
-                (Expr    =>
-                   New_Deref (Right => Ref_Tmp_Vars (J),
-                              Typ   => Typ),
-                 Ty      => E_Typ,
-                 Only_Var => True);
-         begin
-            if Dyn_Prop /= New_Void then
-               Ref_Context :=
-                 Sequence (Left  => Ref_Context,
-                           Right => Dyn_Prop);
-            end if;
-         end;
       end loop;
 
       for J in Let_Fetch'Range loop

@@ -35,6 +35,8 @@ with Uintp;              use Uintp;
 with VC_Kinds;           use VC_Kinds;
 
 with SPARK_Util;         use SPARK_Util;
+with Flow_Types;
+with Flow_Utility;       use Flow_Utility;
 
 with Why;                use Why;
 with Why.Atree.Builders; use Why.Atree.Builders;
@@ -48,6 +50,7 @@ with Why.Inter;          use Why.Inter;
 
 with Gnat2Why.Nodes;     use Gnat2Why.Nodes;
 with Gnat2Why.Util;      use Gnat2Why.Util;
+with Einfo; use Einfo;
 
 package body Gnat2Why.Expr.Loops is
 
@@ -366,6 +369,11 @@ package body Gnat2Why.Expr.Loops is
       Inv_Check       : W_Prog_Id := New_Void;
       Invariant       : W_Pred_Id := True_Pred;
 
+      --  Variable for the implicit invariant for dynamic properties of
+      --  modified objects.
+
+      Dyn_Types_Inv   : W_Pred_Id := True_Pred;
+
       --  Variables for the selected loop variants, default initialized to the
       --  proper values when the loop does not have a selected variant.
 
@@ -407,6 +415,45 @@ package body Gnat2Why.Expr.Loops is
 
       Initial_Prog := Transform_Loop_Body_Statements (Initial_Stmts);
       Final_Prog   := Transform_Loop_Body_Statements (Final_Stmts);
+
+      --  Generate the implicit invariant for the dynamic properties of objects
+      --  modified in the loop.
+
+      if Loop_Writes_Known (Loop_Id) then
+         declare
+            use Flow_Types;
+
+            Modified : constant Flow_Id_Sets.Set :=
+              To_Entire_Variables (Get_Loop_Writes (Loop_Id));
+            N        : Node_Id;
+            Dyn_Prop : W_Pred_Id;
+            Id       : W_Identifier_Id;
+         begin
+            for F of Modified loop
+               if F.Kind = Direct_Mapping then
+                  N := Get_Direct_Mapping_Id (F);
+                  if Nkind (N) in N_Entity
+                    and then Ekind (N) = E_Variable
+                  then
+                     Id := Ada_Ent_To_Why.Element
+                       (Symbol_Table, N).Main.B_Name;
+                     Dyn_Prop := Compute_Dynamic_Property
+                       (Expr     => New_Deref (Right => Id,
+                                               Typ   => Get_Type (+Id)),
+                        Ty       => Etype (N),
+                        Only_Var => True);
+
+                     if Dyn_Prop /= True_Pred then
+                        Dyn_Types_Inv :=
+                          +New_And_Expr (Left   => +Dyn_Types_Inv,
+                                         Right  => +Dyn_Prop,
+                                         Domain => EW_Prog);
+                     end if;
+                  end if;
+               end if;
+            end loop;
+         end;
+      end if;
 
       --  Generate a VC for the loop invariants, located on the first one
 
@@ -492,7 +539,7 @@ package body Gnat2Why.Expr.Loops is
                            Loop_Restart       => Initial_Prog,
                            Enter_Condition    => True_Prog,
                            Loop_Condition     => True_Prog,
-                           Implicit_Invariant => True_Pred,
+                           Implicit_Invariant => Dyn_Types_Inv,
                            User_Invariant     => Invariant,
                            Invariant_Check    => Inv_Check,
                            Variant_Tmps       => Variant_Tmps,
@@ -529,7 +576,12 @@ package body Gnat2Why.Expr.Loops is
               (if Get_Kind (+Initial_Prog) = W_Void then
                  Cond_Pred
                else
-                 True_Pred);
+                  True_Pred);
+
+            Impl_Inv  : constant W_Pred_Id :=
+              +New_And_Expr (Left   => +Dyn_Types_Inv,
+                             Right  => +Impl_Pred,
+                             Domain => EW_Prog);
          begin
             return Wrap_Loop (Loop_Id            => Loop_Id,
                               Loop_Start         => Initial_Prog,
@@ -537,7 +589,7 @@ package body Gnat2Why.Expr.Loops is
                               Loop_Restart       => Initial_Prog,
                               Enter_Condition    => Cond_Prog,
                               Loop_Condition     => Cond_Prog,
-                              Implicit_Invariant => Impl_Pred,
+                              Implicit_Invariant => Impl_Inv,
                               User_Invariant     => Invariant,
                               Invariant_Check    => Inv_Check,
                               Variant_Tmps       => Variant_Tmps,
@@ -616,6 +668,10 @@ package body Gnat2Why.Expr.Loops is
                                Low       => +Low_Ident,
                                High      => +High_Ident,
                                Expr      => +Index_Deref);
+            Impl_Inv  : constant W_Pred_Id :=
+              +New_And_Expr (Left   => +Dyn_Types_Inv,
+                             Right  => +Cond_Pred,
+                             Domain => EW_Prog);
             Entire_Loop  : W_Prog_Id :=
               Wrap_Loop (Loop_Id            => Loop_Id,
                          Loop_Start         => Initial_Prog,
@@ -624,7 +680,7 @@ package body Gnat2Why.Expr.Loops is
                          Loop_Restart       => Initial_Prog,
                          Enter_Condition    => Cond_Prog,
                          Loop_Condition     => +Exit_Cond,
-                         Implicit_Invariant => Cond_Pred,
+                         Implicit_Invariant => Impl_Inv,
                          User_Invariant     => Invariant,
                          Invariant_Check    => Inv_Check,
                          Variant_Tmps       => Variant_Tmps,

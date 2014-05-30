@@ -34,6 +34,7 @@ with Sinfo;          use Sinfo;
 
 with Common_Containers; use Common_Containers;
 with Gnat2Why.Util;     use Gnat2Why.Util;
+with Einfo; use Einfo;
 
 package Gnat2Why.Expr is
 
@@ -61,6 +62,16 @@ package Gnat2Why.Expr is
    --  a range check that the range_constraint in Sub_Typ is compatible with
    --  the subtype. Returns the empty program if N is not a scalar subtype,
    --  or is a scalar subtype with a static range_constraint.
+
+   function Compute_Dynamic_Property
+     (Expr     : W_Expr_Id;
+      Ty       : Entity_Id;
+      Only_Var : Boolean) return W_Pred_Id
+   with
+       Pre => Is_Type (Ty);
+   --  Computes the dynamic property of an expression Expr of a type Ty.
+   --  If Only_Var is true, does not assume properties of constant parts of
+   --  Expr.
 
    function Assume_Dynamic_Property
      (Expr     : W_Expr_Id;
