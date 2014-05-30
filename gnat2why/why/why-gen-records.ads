@@ -56,6 +56,16 @@ package Why.Gen.Records is
    --  Generate a Why3 expression that corresponds to the access to an Ada
    --  record field. Emit all necessary checks.
 
+   function New_Ada_Record_Check_For_Field
+     (Ada_Node : Node_Id := Empty;
+      Domain   : EW_Domain;
+      Name     : W_Expr_Id;
+      Field    : Entity_Id;
+      Ty       : Entity_Id)
+      return W_Expr_Id;
+   --  Generate a Why3 expression that corresponds to the cases where a record
+   --  field is present in an Ada record.
+
    function New_Ada_Record_Update
      (Ada_Node : Node_Id;
       Domain   : EW_Domain;

@@ -554,11 +554,15 @@ package body Gnat2Why.Subprograms is
                Ty    : constant Entity_Id :=
                  Unique_Entity (Etype (B.Main.Ada_Node));
                Guard : constant W_Pred_Id :=
-                 New_Call (Name =>
-                              Prefix (M        => E_Module (Ty),
-                                      W        => WNE_Range_Pred,
-                                      Ada_Node => Ty),
-                            Args => (1 => +B.Main.B_Name));
+                 (if Is_Discrete_Type (Etype (B.Main.Ada_Node)) then
+                  +New_Dynamic_Property (Domain => EW_Pred,
+                                         Ty     => Ty,
+                                         Expr   => +B.Main.B_Name)
+                  else New_Call (Name =>
+                                     Prefix (M        => E_Module (Ty),
+                                             W        => WNE_Range_Pred,
+                                             Ada_Node => Ty),
+                                 Args => (1 => +B.Main.B_Name)));
             begin
                Pred :=
                  +New_And_Then_Expr

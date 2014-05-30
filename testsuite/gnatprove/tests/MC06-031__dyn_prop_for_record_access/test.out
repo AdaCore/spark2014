@@ -1,0 +1,20 @@
+dynamic_types.adb:4:15: info: range check proved
+dynamic_types.adb:18:17: warning: postcondition might fail, requires Search_Range'Result.Result = 0 and then (for all I in From .. Search_Range'Result.From (1) => A (I) /= C)) or else (Search_Range'Result.Result in A'Range and then A (Search_Range'Result.Result) = C
+dynamic_types.adb:20:35: warning: array index check might fail
+dynamic_types.adb:22:49: info: index check proved
+dynamic_types.adb:26:16: info: index check proved
+dynamic_types.adb:27:41: info: length check proved
+dynamic_types.adb:27:47: warning: range check might fail
+dynamic_types.adb:29:41: info: length check proved
+dynamic_types.adb:29:47: warning: range check might fail
+dynamic_types.adb:33:28: info: range check proved
+dynamic_types.adb:38:10: info: loop invariant initialization proved
+dynamic_types.adb:38:10: info: loop invariant preservation proved
+dynamic_types.adb:39:42: info: overflow check proved
+dynamic_types.adb:39:52: info: index check proved
+dynamic_types.adb:40:17: info: precondition proved
+dynamic_types.adb:40:31: info: range check proved
+dynamic_types.adb:49:26: warning: overflow check might fail
+dynamic_types.adb:49:26: warning: range check might fail
+dynamic_types.ads:6:14: warning: postcondition might fail, requires Search'Result = 0 or else (Search'Result in A'Range and then A (Search'Result) = C
+dynamic_types.ads:7:58: info: index check proved

@@ -147,6 +147,15 @@ package body Why.Gen.Records is
    function Count_Discriminants (E : Entity_Id) return Natural;
    --  count the number of discriminants
 
+   function Discriminant_Check_Pred_Name (E     : Entity_Id;
+                                          Field : Entity_Id;
+                                          Local : Boolean)
+                                          return W_Identifier_Id;
+   --  Given a record field, return the name of its discrimant check
+   --  predicate. If Local is true, do not prefix the identifier.
+   --  If the current record type is not a root type, return the name of the
+   --  corresponding predicate in the root type module.
+
    -------------------------
    -- Count_Discriminants --
    -------------------------
@@ -226,12 +235,6 @@ package body Why.Gen.Records is
       --  predicate, with the given argument. If that predicate is defined
       --  elsewhere (i.e. in the module for the root record type, prefix the
       --  call accordingly and add a conversion.
-
-      function Discriminant_Check_Pred_Name (Field : Entity_Id)
-                                             return W_Identifier_Id;
-      --  Given a record field, return the name of its discrimant check
-      --  predicate. If the current record type is not a root type, return the
-      --  name of the corresponding predicate in the root type module.
 
       function Transform_Discrete_Choices (Case_N : Node_Id;
                                            Expr   : W_Term_Id)
@@ -548,7 +551,7 @@ package body Why.Gen.Records is
             if Is_Not_Hidden_Discriminant (Field) then
                declare
                   Pred_Name : constant W_Identifier_Id :=
-                    Discriminant_Check_Pred_Name (Field);
+                    Discriminant_Check_Pred_Name (E, Field, True);
                begin
 
                   --  For fields of root record types, we generate a
@@ -654,29 +657,9 @@ package body Why.Gen.Records is
       begin
          return
            New_Call
-             (Name => Discriminant_Check_Pred_Name (Field),
+             (Name => Discriminant_Check_Pred_Name (E, Field, True),
               Args => (1 => +Precond_Arg));
       end Discriminant_Check_Pred_Call;
-
-      ----------------------------------
-      -- Discriminant_Check_Pred_Name --
-      ----------------------------------
-
-      function Discriminant_Check_Pred_Name (Field : Entity_Id)
-                                             return W_Identifier_Id
-      is
-         Name : constant String := Short_Name (Field) & "__pred";
-      begin
-         if Is_Root then
-            return New_Identifier (Name => Name);
-         else
-            return New_Identifier
-              (Domain   => EW_Pred,
-               Ada_Node => Root,
-               Module  => E_Module (Root),
-               Name     => Name);
-         end if;
-      end Discriminant_Check_Pred_Name;
 
       -------------------------
       -- Init_Component_Info --
@@ -952,6 +935,38 @@ package body Why.Gen.Records is
                Post        => Post));
    end Declare_Conversion_Check_Function;
 
+   ----------------------------------
+   -- Discriminant_Check_Pred_Name --
+   ----------------------------------
+
+   function Discriminant_Check_Pred_Name (E     : Entity_Id;
+                                          Field : Entity_Id;
+                                          Local : Boolean)
+                                          return W_Identifier_Id
+   is
+      Root       : constant Entity_Id := Root_Record_Type (E);
+      Is_Root    : constant Boolean := Root = E;
+      Name   : constant String := Short_Name (Field) & "__pred";
+   begin
+      if Is_Root then
+         if Local then
+            return New_Identifier (Name => Name);
+         else
+            return New_Identifier
+              (Domain   => EW_Pred,
+               Ada_Node => E,
+               Module   => E_Module (E),
+               Name     => Name);
+         end if;
+      else
+         return New_Identifier
+           (Domain   => EW_Pred,
+            Ada_Node => Root,
+            Module   => E_Module (Root),
+            Name     => Name);
+      end if;
+   end Discriminant_Check_Pred_Name;
+
    ---------------------------------------
    -- Insert_Subtype_Discriminant_Check --
    ---------------------------------------
@@ -1044,6 +1059,28 @@ package body Why.Gen.Records is
               Typ      => Ret_Ty);
       end if;
    end New_Ada_Record_Access;
+
+   ------------------------------------
+   -- New_Ada_Record_Check_For_Field --
+   ------------------------------------
+
+   function New_Ada_Record_Check_For_Field
+     (Ada_Node : Node_Id := Empty;
+      Domain   : EW_Domain;
+      Name     : W_Expr_Id;
+      Field    : Entity_Id;
+      Ty       : Entity_Id)
+      return W_Expr_Id
+   is
+   begin
+      return
+        New_Call
+          (Ada_Node => Ada_Node,
+           Name     => Discriminant_Check_Pred_Name (Ty, Field, False),
+           Args     => (1 => Name),
+           Domain   => Domain,
+           Typ      => EW_Bool_Type);
+   end New_Ada_Record_Check_For_Field;
 
    ---------------------------
    -- New_Ada_Record_Update --

@@ -75,6 +75,7 @@ with Gnat2Why.Decls;         use Gnat2Why.Decls;
 with Gnat2Why.Expr.Loops;    use Gnat2Why.Expr.Loops;
 with Gnat2Why.Nodes;         use Gnat2Why.Nodes;
 with Gnat2Why.Subprograms;   use Gnat2Why.Subprograms;
+with SPARK_Definition; use SPARK_Definition;
 
 package body Gnat2Why.Expr is
 
@@ -1374,8 +1375,14 @@ package body Gnat2Why.Expr is
       Only_Var : Boolean) return W_Pred_Id
    is
       T : W_Pred_Id;
-      Ty_Ext : constant Entity_Id := MUT (Ty);
+
+      --  If Ty's fullview is in SPARK, go to its underlying type to check its
+      --  kind.
+
+      Ty_Ext : constant Entity_Id :=
+        (if Fullview_Not_In_SPARK (Ty) then Ty else MUT (Ty));
    begin
+
       --  Dynamic property of the type itself
 
       if (Is_Discrete_Type (Ty_Ext) and then not Is_Static_Subtype (Ty_Ext))
@@ -1393,6 +1400,11 @@ package body Gnat2Why.Expr is
       --  Compute dynamic property for its components
 
       if Is_Array_Type (Ty_Ext) then
+
+         --  Generates:
+         --  forall i1 .. in : int. in_range i1 /\ .. /\ in_range in ->
+         --    dynamic_property (get <Expr> i1 .. in)
+
          declare
             Dim        : constant Positive :=
               Positive (Number_Dimensions (Ty_Ext));
@@ -1403,6 +1415,7 @@ package body Gnat2Why.Expr is
             I          : Positive := 1;
             T_Comp     : W_Pred_Id;
             Tmp        : W_Identifier_Id;
+            Q_Expr     : W_Pred_Id;
          begin
             while Present (Index) loop
                Tmp := New_Temp_Identifier (Typ => EW_Int_Type);
@@ -1423,30 +1436,63 @@ package body Gnat2Why.Expr is
             T_Comp :=
               Compute_Dynamic_Property
                 (New_Array_Access (Empty, Expr, Indices, EW_Term),
-                 Etype (Component_Type (Ty_Ext)), False);
+                 Component_Type (Ty_Ext), False);
 
             if T_Comp /= True_Pred then
-               declare
-                  Q_Expr : constant W_Pred_Id :=
-                    New_Universal_Quantif
-                      (Binders  => Vars,
-                       Pred     => T_Comp);
-               begin
-                  if T = True_Pred then
-                     T := Q_Expr;
-                  else
-                     T := +New_And_Expr (Left   => +T,
-                                         Right  => +Q_Expr,
-                                         Domain => EW_Pred);
-                  end if;
-               end;
+               Q_Expr := New_Universal_Quantif
+                 (Binders  => Vars,
+                  Pred     => T_Comp);
+
+               if T = True_Pred then
+                  T := Q_Expr;
+               else
+                  T := +New_And_Then_Expr (Left   => +T,
+                                           Right  => +Q_Expr,
+                                           Domain => EW_Pred);
+               end if;
             end if;
          end;
+
       elsif Is_Record_Type (Ty_Ext) then
 
-         --  Record types are not handled yet.
+         --  Generates:
+         --  (check_for_f1 <Expr> -> dynamic_property <Expr>.rec__f1)
+         --  /\ .. /\ (check_for_fn <Expr> -> dynamic_property <Expr>.rec__fn)
 
-         null;
+         declare
+            Field   : Node_Id := First_Component_Or_Discriminant (Ty_Ext);
+            T_Comp  : W_Pred_Id;
+            T_Guard : W_Pred_Id;
+            F_Expr  : W_Expr_Id;
+         begin
+            while Present (Field) loop
+               T_Comp :=
+                 Compute_Dynamic_Property
+                   (New_Ada_Record_Access
+                      (Empty, EW_Term, Expr, Field, Ty_Ext),
+                    Etype (Field), False);
+
+               if T_Comp /= True_Pred then
+                  T_Guard := (if Ekind (Field) = E_Discriminant then True_Pred
+                              else +New_Ada_Record_Check_For_Field
+                                (Empty, EW_Pred, Expr, Field, Ty_Ext));
+
+                  F_Expr  := New_Conditional (Domain      => EW_Pred,
+                                              Condition   => +T_Guard,
+                                              Then_Part   => +T_Comp);
+
+                  if T = True_Pred then
+                     T := +F_Expr;
+                  else
+                     T := +New_And_Then_Expr (Left   => +T,
+                                              Right  => +F_Expr,
+                                              Domain => EW_Pred);
+                  end if;
+               end if;
+
+               Next_Component_Or_Discriminant (Field);
+            end loop;
+         end;
       end if;
 
       return T;
