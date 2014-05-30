@@ -380,7 +380,7 @@ package body Flow_Error_Messages is
         (Suppr      => Suppr,
          Tag        => Tag,
          Kind       => Kind,
-         Slc        => Compute_Sloc (N, Place_First),
+         Slc        => Slc,
          Msg_List   => Proof_Msgs,
          Msg_Id     => Msg_Id,
          E          => E,
