@@ -1,0 +1,41 @@
+module For 
+
+   use import "int".Int
+   use import "ref".Ref
+
+(* Valid *)
+  let f ()
+     requires { true }
+     ensures { result = 10 }
+  =
+   let x = ref 0 in
+   for i = 1 to 10 do
+      invariant { !x = i - 1 }
+      x := !x + 1
+   done;
+   !x
+
+(* Valid *)
+  let g ()
+     requires { true }
+     ensures { result = 0 }
+  =
+   let x = ref 0 in
+   for i = 10 to 1 do
+      invariant { !x = i - 1 }
+      x := !x + 1
+   done;
+   !x
+
+(* Unknown *)
+  let h ()
+     requires { true }
+     ensures { result = 9 }
+  =
+   let x = ref 0 in
+   for i = 1 to 10 do
+      invariant { !x = i - 1 }
+      x := !x + 1
+   done;
+   !x
+end

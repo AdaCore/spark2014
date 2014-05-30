@@ -1,0 +1,41 @@
+module Test
+ use import ref.Ref
+ use import "int".Int
+
+ exception L
+ exception R
+
+val x : ref int
+
+(* Valid *)
+  let test1 ()
+   requires { true }
+   ensures { true }
+   raises { R -> true }
+   raises { L -> true }
+    =
+       if True then
+          x := !x
+         else ( raise R );
+      if True then ( raise L)
+
+(* Valid *)
+  let test2 ()
+   requires { true }
+   ensures { true }
+   raises { R -> true }
+   diverges
+    =
+      try
+       while True do
+        invariant { true }
+         if True then
+            x := !x
+           else ( raise R );
+        if True then ( raise L)
+       done
+      with
+       L -> ()
+      end
+end
+

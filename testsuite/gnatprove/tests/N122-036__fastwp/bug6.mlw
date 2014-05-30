@@ -1,0 +1,24 @@
+module Database__open__def
+ use import "int".Int
+ use import "ref".Ref
+
+ val func
+   (x : ref int)  :unit
+  requires { true }
+  ensures { forall z  : int.
+   z <> !x ->  !x = (old !x)  }
+  writes {x }
+
+val x : ref int
+
+(* Valid *)
+ let def ()
+ requires { true }
+ ensures { true }
+  =
+   let d  = ref (!x) in
+    (
+    "keep_on_simp" (func(d)) );
+    x := ( !d )
+end
+

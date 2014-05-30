@@ -1,0 +1,37 @@
+module Var
+   use import "int".Int
+   use import "ref".Ref
+
+(* Valid *)
+  let f ()
+     requires { true }
+     ensures { true }
+  =
+    let x = ref 1 in
+    while !x < 10 do
+      variant { 10 - !x }
+      x := !x + 1
+    done
+
+(* Unknown *)
+  let g ()
+     requires { true }
+     ensures { true }
+  =
+    let x = ref 10 in
+    while !x > 1 do
+      variant { !x }
+      x := !x + 1
+    done
+
+(* Valid *)
+  let h ()
+     requires { true }
+     ensures { true }
+  =
+    let x = ref 10 in
+    while !x > 1 do
+      variant { !x }
+      x := !x - 1
+    done
+end

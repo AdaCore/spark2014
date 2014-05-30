@@ -1,0 +1,172 @@
+module Loop
+ use import        "ref".Ref
+ use import        "int".Int
+
+function sum_of int : int
+
+axiom sum_of_base :
+   sum_of 0 = 0
+
+axiom sum_of_ind :
+   forall x : int. sum_of (x + 1) = sum_of x + x + 1
+
+(* Valid *)
+   val z : ref int
+
+ let test1 (x : ref int)
+   requires { !x = 0 /\ !z = 0 }
+   ensures { !x = sum_of 10 }
+   diverges
+   =
+   while !z < 10 do
+      invariant { !x = sum_of !z /\ 0 <= !z <= 10}
+      z := !z + 1;
+      x := !x + !z
+   done
+end
+
+module Loop2
+
+ use import        "ref".Ref
+ use import        "int".Int
+
+   predicate even int
+
+   val havoc (x : ref int) : unit
+      requires {even !x}
+      ensures {even !x}
+      writes { x}
+
+(* Valid *)
+   let test2 (x : ref int)
+   requires { even !x}
+   ensures { even !x }
+   diverges
+   =
+      loop
+         invariant { even !x }
+         havoc x
+      end
+
+(* Valid *)
+   let test3 (x : ref int)
+   requires { even !x }
+   ensures { not (even !x) }
+   diverges
+   =
+      loop
+         invariant { even !x }
+         havoc x
+      end
+
+   predicate odd int
+
+   val havoc_switch (x : ref int) : unit
+      requires {even !x}
+      writes { x}
+      ensures {odd !x}
+
+(* Unknown *)
+   let test4 (x : ref int)
+   requires { even !x }
+   diverges
+   ensures { odd !x }
+   =
+      loop
+         invariant { even !x }
+         havoc_switch x
+      end
+
+exception Exit
+
+(* Valid *)
+ let test5 (x : ref int)
+   requires { true }
+   ensures { !x = 0 }
+   diverges
+   =
+   try
+      loop
+         invariant { true }
+         if !x = 0 then raise Exit
+      end
+   with Exit -> ()
+   end
+
+(* Valid *)
+ let test6 (x : ref int)
+   requires { true }
+   ensures { !x = 0 }
+   diverges
+   =
+   try
+      loop
+         invariant { true }
+         x := !x + 1;
+         if !x = 0 then raise Exit
+      end
+   with Exit -> ()
+   end
+
+(* Valid *)
+ let test7 (x : ref int)
+   requires { true }
+   ensures { !x = 1 }
+   diverges
+   =
+   try
+      loop
+         invariant { true }
+         if !x = 0 then (
+         x := !x + 1;
+         raise Exit)
+      end
+   with Exit -> ()
+   end
+
+(* Unknown *)
+ let test8 (x : ref int)
+   requires { true }
+   ensures { !x = 0 }
+   diverges
+   =
+   try
+      loop
+         invariant { true }
+         if !x = 0 then (
+         x := !x + 1;
+         raise Exit)
+      end
+   with Exit -> ()
+   end
+
+(* Unknown *)
+ let test9 (x : ref int)
+   requires { true }
+   ensures { !x = 0 }
+   diverges
+   =
+   try
+      loop
+         invariant { true }
+         if !x = 0 then x := !x + 1
+         else raise Exit
+      end
+   with Exit -> ()
+   end
+
+(* Valid *)
+ let test10 (x : ref int)
+   requires { true }
+   ensures { !x <> 0 }
+   diverges
+   =
+   try
+      loop
+         invariant { true }
+         if !x = 0 then x := !x + 1
+         else raise Exit
+      end
+   with Exit -> ()
+   end
+end

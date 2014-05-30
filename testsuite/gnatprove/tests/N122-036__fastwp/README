@@ -1,0 +1,19 @@
+This test is a bit different to other tests. It runs the why3 tool on a number
+of mlw files, and checks if sinple VCs are proved. It is basically a testsuite
+in itself.
+
+1) How to write a test
+
+  Create a new .mlw file or add a new function to an existing one.
+  The function should be preceded by a comment of the form
+
+(* RESULT *)
+
+  where RESULT is one of "Valid" or "Unknown" (no quotes). There should be no
+  spaces at the beginning of the line, nor at the end.
+
+3) How to add the test to the testsuite
+
+  Edit "test.py" and add the file to the variable "list_of_files" at the
+  beginning of the script.
+

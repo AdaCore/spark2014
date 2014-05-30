@@ -1,0 +1,47 @@
+module M
+  use import int.Int
+  use import ref.Ref
+
+  type t = { mutable r : int; mutable s : int }
+
+  val x : t
+
+  val havoc_r (x : t) (y : int) : unit
+    writes { x.r }
+    ensures { x.r = y }
+
+  val y : ref int
+
+(* Valid *)
+  let f ()
+    requires { x.r = 0 /\ x.s = 0 /\ !y = 0 }
+    ensures { true }
+  =
+    abstract ensures {x.r > 0 } (havoc_r x 1) end;
+    assert { !y = 0 }
+
+(* Valid *)
+  let g ()
+    requires { x.r = 0 /\ x.s = 0 /\ !y = 0 }
+    ensures { true }
+  =
+    abstract ensures {x.r > 0 } (havoc_r x 1) end;
+    assert { x.s = 0 }
+
+(* Unknown *)
+  let h ()
+    requires { x.r = 0 /\ x.s = 0 /\ !y = 0 }
+    ensures { true }
+  =
+    abstract ensures {x.r > 0 } (havoc_r x 1) end;
+    assert { x.r = 1 }
+
+(* Valid *)
+  let i ()
+    requires { x.r = 0 /\ x.s = 0 /\ !y = 0 }
+    ensures { true }
+  =
+    abstract ensures {x.r > 0 } (havoc_r x 1) end;
+    assert { x.r > 0 }
+
+end

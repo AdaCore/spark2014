@@ -1,0 +1,64 @@
+module Assign
+
+  use import int.Int
+
+  type t = { mutable m : int; n : int }
+
+  type u = { mutable m1 : int; mutable m2 : int }
+
+(* Valid *)
+  let f (x : t)
+    requires { x = { m = 1; n = 2 } }
+    ensures { x.m = 0 }
+    =
+    x.m <- 0
+
+(* Valid *)
+  let g (x : t)
+    requires { x = { m = 1; n = 2 } }
+    ensures { x.n = 2 }
+    =
+    x.m <- 0
+
+(* Unknown *)
+  let h (x : t)
+    requires { x = { m = 1; n = 2 } }
+    ensures { x.m = 1 }
+    =
+    x.m <- 0
+
+(* Unknown *)
+  let i (x : t)
+    requires { x = { m = 1; n = 2 } }
+    ensures { x.n = 1 }
+    =
+    x.m <- 0
+
+(* Valid *)
+  let j (x : u)
+    requires { x = { m1 = 1; m2 = 2 } }
+    ensures { x.m1 = 0 }
+    =
+    x.m1 <- 0
+
+(* Valid *)
+  let k (x : u)
+    requires { x = { m1 = 1; m2 = 2 } }
+    ensures { x.m2 = 2 }
+    =
+    x.m1 <- 0
+
+(* Unknown *)
+  let l (x : u)
+    requires { x = { m1 = 1; m2 = 2 } }
+    ensures { x.m2 = 1 }
+    =
+    x.m1 <- 0
+
+(* Unknown *)
+  let z (x : u)
+    requires { x = { m1 = 1; m2 = 2 } }
+    ensures { x.m2 = 1 }
+    =
+    x.m1 <- 0
+end

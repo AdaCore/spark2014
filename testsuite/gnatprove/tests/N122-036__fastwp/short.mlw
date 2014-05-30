@@ -1,0 +1,14 @@
+module Short
+  use import int.Int
+  use import ref.Ref
+
+  predicate p int
+
+  let test1 (x : ref int) (y : ref int)
+    requires {true }
+    ensures { true }
+    =
+    if 0 <= !x && !x <= 10 then
+      if 0 <= !y && !y <= 10 then
+        assert { p !x }
+end

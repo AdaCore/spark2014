@@ -1,0 +1,37 @@
+module Abstr
+   use import int.Int
+   use import ref.Ref
+
+(* Unknown *)
+   let test1 (x : ref int)
+      requires { !x = 1 }
+      ensures { !x = 1 }
+      =
+      abstract
+         ensures { !x > 0 }
+         (x := !x + 1;
+         x := !x - 1)
+      end
+
+(* Unknown *)
+   let test2 (x : ref int)
+      requires { !x = 1 }
+      ensures { !x > 1 }
+      =
+      abstract
+         ensures { !x > 0 }
+         (x := !x + 1;
+         x := !x - 1)
+      end
+
+(* Valid *)
+   let test3 (x : ref int)
+      requires { !x = 1 }
+      ensures { !x > 0 }
+      =
+      abstract
+         ensures { !x > 0 }
+         (x := !x + 1;
+         x := !x - 1)
+      end
+end

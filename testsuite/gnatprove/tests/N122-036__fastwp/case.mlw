@@ -1,0 +1,30 @@
+module Case 
+
+   use import "int".Int
+   use import "ref".Ref
+
+   type t = A | B | C
+
+(* Valid *)
+  let f (x : t)
+     requires { x = C }
+     ensures { result = 3 }
+  =
+      match x with
+      | A -> 1
+      | B -> 2
+      | C -> 3
+      end
+   
+(* Unknown *)
+  let g (x : t)
+     requires { x = B }
+     ensures { result = 3 }
+  =
+      match x with
+      | A -> 1
+      | B -> 2
+      | C -> 3
+      end
+
+end

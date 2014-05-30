@@ -1,0 +1,19 @@
+module Test
+ use import bool.Bool
+ use import        "ref".Ref
+
+ val x  : ref bool
+ exception Exit
+
+(* Unknown *)
+ let def  ()
+  requires { true }
+  ensures { !x = old !x }
+  =
+   try
+      x := False;
+      raise Exit
+    with Exit -> ()
+    end
+end
+

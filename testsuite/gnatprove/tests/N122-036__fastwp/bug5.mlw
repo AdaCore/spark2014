@@ -1,0 +1,22 @@
+(* Module for checking absence of run-time errors and subprogram contract on subprogram body of "remove_absent" defined at sub.ads:6, created in Gnat2Why.Subprograms.Generate_VCs_For_Subprogram_Body *)
+module Sub__remove_absent__def
+ use import "int".Int
+ use import "ref".Ref
+
+ val res : ref int
+ val x : int
+ exception R
+
+(* Valid *)
+ let def ()
+ requires { 0 <= x <= 2 }
+ ensures { if x = 2 then !res = 2 else true }
+  =
+  try
+   if x = 0 || x = 1 then ( res := 1; raise R ) else ( res := 2; raise R);
+   raise R
+  with
+   R -> ()
+  end
+end
+

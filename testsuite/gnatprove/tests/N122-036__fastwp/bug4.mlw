@@ -1,0 +1,26 @@
+(* Module for checking absence of run-time errors and subprogram contract on subprogram body of "p1" defined at pack.ads:7, created in Gnat2Why.Subprograms.Generate_VCs_For_Subprogram_Body *)
+module Pack__p1__def
+ use import "int".Int
+ use import "ref".Ref
+ use import "bool".Bool
+
+ val func
+   (k : ref bool)  :unit
+  requires { true }
+  ensures { true }
+  writes {k }
+
+  val x : ref bool
+
+
+(* Unknown *)
+ let def ()
+ requires { true }
+ ensures { true }
+  =
+    let z  = ref (!x) in
+    'Lab :
+      func(z);
+      assert { z = (at z 'Lab) };
+      x := !z
+end

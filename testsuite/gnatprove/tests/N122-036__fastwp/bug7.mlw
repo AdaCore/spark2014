@@ -1,0 +1,33 @@
+module Bug7
+ use import "int".Int
+ use import "ref".Ref
+
+ val right  : ref int
+
+ function cond : bool
+
+ function token : bool
+
+ val my_havoc (x : ref int) : unit
+  writes { x }
+  ensures { !x <> (old !x) }
+
+ val havoc (x : ref int) : unit
+  writes { x }
+
+ exception L
+ exception R
+
+(* Unknown *)
+ let def () : int
+  raises { R -> token = True -> false }
+   =
+   ( havoc right;
+     if cond = True then
+       (assume {token = False};
+        raise R);
+     my_havoc right);
+   assume {token = True };
+   raise R
+
+end

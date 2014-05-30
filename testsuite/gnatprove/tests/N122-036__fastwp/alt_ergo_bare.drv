@@ -1,0 +1,171 @@
+(* Why driver for Alt-Ergo *)
+
+prelude "(* this is a prelude for Alt-Ergo*)"
+
+printer "alt-ergo"
+filename "%f-%t-%g.why"
+
+valid "Valid"
+invalid "Invalid"
+unknown "I don't know" ""
+timeout "Timeout"
+outofmemory "Fatal error: out of memory"
+outofmemory "Fatal error: exception Stack_overflow"
+fail "typing error:\\(.*\\)$" "Failure : File generation error : \\1"
+fail "Steps limit reached: \\(.*\\)" "steps:\\1"
+time "Valid (%s)"
+time "why3cpulimit time : %s s"
+
+(* À discuter *)
+transformation "inline_trivial"
+
+transformation "explode_record_param"
+transformation "inline_tagged"
+transformation "eval_match"
+transformation "eliminate_builtin"
+transformation "eliminate_recursion"
+transformation "eliminate_inductive"
+transformation "eliminate_algebraic"
+transformation "eliminate_epsilon"
+transformation "eliminate_if"
+transformation "eliminate_let"
+transformation "float_literal"
+
+transformation "simplify_formula"
+(*transformation "simplify_trivial_quantification_in_goal"*)
+
+theory BuiltIn
+  syntax type int   "int"
+  syntax type real  "real"
+
+  syntax predicate (=)  "(%1 = %2)"
+end
+
+theory int.Int
+
+  prelude "(* this is a prelude for Alt-Ergo integer arithmetic *)"
+
+  syntax function zero "0"
+  syntax function one  "1"
+
+  syntax function (+)  "(%1 + %2)"
+  syntax function (-)  "(%1 - %2)"
+  syntax function (*)  "(%1 * %2)"
+  syntax function (-_) "(-%1)"
+
+  meta "invalid trigger" predicate (<=)
+  meta "invalid trigger" predicate (<)
+  meta "invalid trigger" predicate (>=)
+  meta "invalid trigger" predicate (>)
+
+  syntax predicate (<=) "(%1 <= %2)"
+  syntax predicate (<)  "(%1 <  %2)"
+  syntax predicate (>=) "(%1 >= %2)"
+  syntax predicate (>)  "(%1 >  %2)"
+
+  remove prop CommutativeGroup.Comm.Comm
+  remove prop CommutativeGroup.Assoc
+  remove prop CommutativeGroup.Unit_def_l
+  remove prop CommutativeGroup.Unit_def_r
+  remove prop CommutativeGroup.Inv_def_l
+  remove prop CommutativeGroup.Inv_def_r
+  remove prop Assoc.Assoc
+  remove prop Mul_distr_l
+  remove prop Mul_distr_r
+  remove prop Comm.Comm
+  remove prop Unitary
+  remove prop Refl
+  remove prop Trans
+  remove prop Total
+  remove prop Antisymm
+  remove prop NonTrivialRing
+  remove prop CompatOrderAdd
+  remove prop CompatOrderMult
+  remove prop ZeroLessOne
+
+end
+
+
+theory real.Real
+
+  prelude "(* this is a prelude for Alt-Ergo real arithmetic *)"
+
+  syntax function zero "0.0"
+  syntax function one  "1.0"
+
+  syntax function (+)  "(%1 + %2)"
+  syntax function (-)  "(%1 - %2)"
+  syntax function (*)  "(%1 * %2)"
+  syntax function (/)  "(%1 / %2)"
+  syntax function (-_) "(-%1)"
+  syntax function inv  "(1.0 / %1)"
+
+  meta "invalid trigger" predicate (<=)
+  meta "invalid trigger" predicate (<)
+  meta "invalid trigger" predicate (>=)
+  meta "invalid trigger" predicate (>)
+
+  syntax predicate (<=) "(%1 <= %2)"
+  syntax predicate (<)  "(%1 <  %2)"
+  syntax predicate (>=) "(%1 >= %2)"
+  syntax predicate (>)  "(%1 >  %2)"
+
+  remove prop CommutativeGroup.Comm.Comm
+  remove prop CommutativeGroup.Assoc
+  remove prop CommutativeGroup.Unit_def_l
+  remove prop CommutativeGroup.Unit_def_r
+  remove prop CommutativeGroup.Inv_def_l
+  remove prop CommutativeGroup.Inv_def_r
+  remove prop Assoc.Assoc
+  remove prop Mul_distr_l
+  remove prop Mul_distr_r
+  remove prop Comm.Comm
+  remove prop Unitary
+  remove prop Refl
+  remove prop Trans
+  remove prop Total
+  remove prop Antisymm
+  remove prop Inverse
+  remove prop NonTrivialRing
+  remove prop CompatOrderAdd
+  remove prop CompatOrderMult
+  remove prop ZeroLessOne
+
+end
+
+theory real.RealInfix
+
+  syntax function (+.)  "(%1 + %2)"
+  syntax function (-.)  "(%1 - %2)"
+  syntax function ( *.) "(%1 * %2)"
+  syntax function (/.)  "(%1 / %2)"
+  syntax function (-._) "(-%1)"
+
+  meta "invalid trigger" predicate (<=.)
+  meta "invalid trigger" predicate (<.)
+  meta "invalid trigger" predicate (>=.)
+  meta "invalid trigger" predicate (>.)
+
+  syntax predicate (<=.) "(%1 <= %2)"
+  syntax predicate (<.)  "(%1 <  %2)"
+  syntax predicate (>=.) "(%1 >= %2)"
+  syntax predicate (>.)  "(%1 >  %2)"
+
+end
+
+theory Bool
+  syntax type     bool  "bool"
+  syntax function True  "true"
+  syntax function False "false"
+end
+
+theory Tuple0
+  syntax type     tuple0 "unit"
+  syntax function Tuple0 "void"
+end
+
+theory algebra.AC
+  meta AC function op
+  remove prop Comm.Comm
+  remove prop Assoc
+end

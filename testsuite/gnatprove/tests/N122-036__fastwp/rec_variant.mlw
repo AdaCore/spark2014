@@ -1,0 +1,53 @@
+module Rec_Variant
+   use import "int".Int
+   use import "ref".Ref
+
+(* Valid *)
+  let rec f (x : int)
+     requires { true }
+     ensures { true }
+     variant { x }
+  =
+   if x <= 0 then 1
+   else f (x -1)
+     
+
+  val x : ref int
+
+(* Valid *)
+  let rec g ()
+     requires { true }
+     ensures { true }
+     variant { !x }
+  =
+   if !x <= 0 then 1
+   else begin
+      x := !x - 1;
+      g ()
+   end
+
+(* Unknown *)
+
+  let rec h ()
+     requires { true }
+     ensures { true }
+     variant { !x }
+  =
+   if !x = 0 then 1
+   else begin
+      x := !x + 1;
+      h ()
+   end
+
+(* Valid *)
+  let rec i ()
+     requires { true }
+     ensures { true }
+     variant { 10 - !x }
+  =
+   if !x >= 10 then 1
+   else begin
+      x := !x + 1;
+      i ()
+   end
+end
