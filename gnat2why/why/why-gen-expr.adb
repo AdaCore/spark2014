@@ -966,34 +966,41 @@ package body Why.Gen.Expr is
                --  prefix to the 'Update aggregate, or
                --  2) a component expression of a 'Update aggregate, and
                --  needs a range check towards the component type.
+               --  3) an expression of a regular record aggregate, and
+               --  needs a range check towards the expected type.
 
-               pragma Assert
-                 (Nkind (Parent (Par)) = N_Aggregate
-                    and then Nkind (Parent (Parent (Par))) =
-                      N_Attribute_Reference
-                    and then
-                      Get_Attribute_Id
-                        (Attribute_Name (Parent (Parent (Par)))) =
-                          Attribute_Update);
-
-               Pref := Prefix (Parent (Parent (Par)));
-
-               --  When present, the Actual_Subtype of the entity should be
-               --  used instead of the Etype of the prefix.
-
-               if Is_Entity_Name (Pref)
-                 and then Present (Actual_Subtype (Entity (Pref)))
+               if Nkind (Parent (Par)) = N_Aggregate
+                   and then Nkind (Parent (Parent (Par))) =
+                     N_Attribute_Reference
+                   and then
+                   Get_Attribute_Id
+                     (Attribute_Name (Parent (Parent (Par)))) =
+                       Attribute_Update
                then
-                  Array_Type := Actual_Subtype (Entity (Pref));
-               else
-                  Array_Type := Etype (Pref);
-               end if;
 
-               if Expression (Par) = Expr then
-                  Check_Type := Component_Type (Unique_Entity (Array_Type));
+                  Pref := Prefix (Parent (Parent (Par)));
+
+                  --  When present, the Actual_Subtype of the entity should be
+                  --  used instead of the Etype of the prefix.
+
+                  if Is_Entity_Name (Pref)
+                    and then Present (Actual_Subtype (Entity (Pref)))
+                  then
+                     Array_Type := Actual_Subtype (Entity (Pref));
+                  else
+                     Array_Type := Etype (Pref);
+                  end if;
+
+                  if Expression (Par) = Expr then
+                     Check_Type := Component_Type (Unique_Entity (Array_Type));
+                  else
+                     Check_Type :=
+                       Etype (First_Index (Unique_Entity (Array_Type)));
+                  end if;
                else
-                  Check_Type :=
-                    Etype (First_Index (Unique_Entity (Array_Type)));
+                  pragma Assert (Expression (Par) = Expr);
+
+                  Check_Type := Etype (First (Choices (Par)));
                end if;
             end;
 
