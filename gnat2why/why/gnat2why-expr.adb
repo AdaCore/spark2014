@@ -6566,7 +6566,7 @@ package body Gnat2Why.Expr is
          declare
             Label_Set : Name_Id_Set := Name_Id_Sets.To_Set (Pretty_Label);
          begin
-            Label_Set.Include (New_Located_Label (Expr));
+            Label_Set.Include (New_Located_Label (Expr, Left_Most => True));
             T :=
               New_Label (Labels => Label_Set,
                          Def => T,
