@@ -1072,12 +1072,17 @@ package body Why.Gen.Records is
       Ty       : Entity_Id)
       return W_Expr_Id
    is
+      Root : constant Entity_Id := Root_Record_Type (Ty);
    begin
       return
         New_Call
           (Ada_Node => Ada_Node,
            Name     => Discriminant_Check_Pred_Name (Ty, Field, False),
-           Args     => (1 => Name),
+           Args     => (1 => Insert_Simple_Conversion (Ada_Node => Ada_Node,
+                                                       Domain   => Domain,
+                                                       Expr     => Name,
+                                                       To       =>
+                                                         EW_Abstract (Root))),
            Domain   => Domain,
            Typ      => EW_Bool_Type);
    end New_Ada_Record_Check_For_Field;
