@@ -4,6 +4,8 @@ Declarations and Types
 |SPARK| does not add any declarations or types to Ada 2012, but it restricts
 their usage.
 
+.. _declarations:
+
 Declarations
 ------------
 

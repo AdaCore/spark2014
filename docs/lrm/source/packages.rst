@@ -2209,7 +2209,7 @@ Type Invariants
 .. _default_initial_condition_aspect:
 
 Default_Initial_Condition Aspects
----------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
    The Default_Initial_Condition aspect is introduced by an aspect_specification
    where the aspect_mark is Default_Initial_Condition. The aspect may be
@@ -2223,7 +2223,7 @@ Default_Initial_Condition Aspects
    value True.
 
    An aspect specification of "null" indicates that the partial view of the
-   type does not define full default initialization (see Spark RM 3.1).
+   type does not define full default initialization (see :ref:`declarations`).
    [The full view of the type might or might not define full default
    initialization.]
 
@@ -2231,15 +2231,14 @@ Default_Initial_Condition Aspects
    that the partial view of the type does define full default initialization.
    In this case, the completion of the private type shall define full
    default initialization. [Implementations may provide a mechanism for
-   suppressing enforcement of this rule as described, for example, in
-   |SPARK| User's Guide section 5.3, Warning Control; the burden is then on
+   suppressing enforcement of this rule as described; the burden is then on
    the user to ensure that this does not result in undetected uses of
    uninitialized variables.]
 
    Unlike the null literal case, this case has associated dynamic semantics.
    The *Boolean_*\ ``expression`` (which might typically mention the current
    instance of the type, although this is not required) is an assertion
-   which is checked (at runtime) after any object of the given type, or of
+   which is checked (at run time) after any object of the given type, or of
    any type descended from the given type, is "initialized by default" (see
    Ada RM 3.3.1).
 
