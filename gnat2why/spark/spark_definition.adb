@@ -3130,7 +3130,6 @@ package body SPARK_Definition is
          when Pragma_Abort_Defer                 |
            Pragma_Allow_Integer_Address          |
            Pragma_Attribute_Definition           |
-           Pragma_AST_Entry                      |
            Pragma_C_Pass_By_Copy                 |
            Pragma_Check_Float_Overflow           |
            Pragma_Check_Name                     |
@@ -3160,7 +3159,6 @@ package body SPARK_Definition is
            Pragma_Elaboration_Checks             |
            Pragma_Eliminate                      |
            Pragma_Enable_Atomic_Synchronization  |
-           Pragma_Export_Exception               |
            Pragma_Export_Function                |
            Pragma_Export_Object                  |
            Pragma_Export_Procedure               |
@@ -3173,12 +3171,10 @@ package body SPARK_Definition is
            Pragma_Fast_Math                      |
            Pragma_Favor_Top_Level                |
            Pragma_Finalize_Storage_Only          |
-           Pragma_Float_Representation           |
            Pragma_Ident                          |
            Pragma_Implementation_Defined         |
            Pragma_Implemented                    |
            Pragma_Implicit_Packing               |
-           Pragma_Import_Exception               |
            Pragma_Import_Function                |
            Pragma_Import_Object                  |
            Pragma_Import_Procedure               |
@@ -3198,7 +3194,6 @@ package body SPARK_Definition is
            Pragma_Linker_Alias                   |
            Pragma_Linker_Constructor             |
            Pragma_Linker_Destructor              |
-           Pragma_Long_Float                     |
            Pragma_Loop_Optimize                  |
            Pragma_Machine_Attribute              |
            Pragma_Main                           |
