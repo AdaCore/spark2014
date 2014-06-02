@@ -28,6 +28,8 @@ with Why.Gen.Expr;        use Why.Gen.Expr;
 with Why.Gen.Names;       use Why.Gen.Names;
 with Why.Inter;           use Why.Inter;
 
+with Gnat2Why.Nodes;
+
 package body Why.Gen.Binders is
 
    function New_Binders
@@ -97,6 +99,12 @@ package body Why.Gen.Binders is
                                               Name    => Name,
                                               Binders => Binders);
       Equality : W_Pred_Id;
+      Node_Name : constant String := (if Ada_Node /= Empty then
+                                         Gnat2Why.Nodes.Short_Name (Ada_Node)
+                                      else "");
+      Axiom_Name : constant String := (if Node_Name /= "" then
+                                          Node_Name & "__"
+                                       else "") & Def_Axiom;
    begin
       Equality :=
         New_Relation
@@ -106,7 +114,7 @@ package body Why.Gen.Binders is
            Right   => +Def);
       return New_Guarded_Axiom
         (Ada_Node => Ada_Node,
-         Name     => NID (Def_Axiom),
+         Name     => NID (Axiom_Name),
          Binders  => Binders,
          Triggers => New_Triggers (Triggers =>
                           (1 => New_Trigger (Terms => (1 => +Left)))),
@@ -135,10 +143,14 @@ package body Why.Gen.Binders is
                    New_Equal_Bool
                      (Left  => Left,
                       Right => Def);
+      Axiom_Name : constant String :=
+        (if Ada_Node /= Empty then
+            Gnat2Why.Nodes.Short_Name (Ada_Node) & "__"
+         else "") & Def_Axiom;
    begin
       return New_Guarded_Axiom
         (Ada_Node => Ada_Node,
-         Name     => NID (Def_Axiom),
+         Name     => NID (Axiom_Name),
          Binders  => Binders,
          Triggers => New_Triggers (Triggers =>
                           (1 => New_Trigger (Terms => (1 => +Left)))),

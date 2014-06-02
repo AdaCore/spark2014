@@ -273,7 +273,8 @@ package body Gnat2Why.Decls is
             Emit
               (File.Cur_Theory,
                New_Defining_Axiom
-                 (Name        =>
+                 (Ada_Node    => E,
+                  Name        =>
                     To_Why_Id (E, Domain => EW_Term, Local => False),
                   Return_Type => Get_EW_Type (Typ),
                   Binders     => (1 .. 0 => <>),
@@ -286,7 +287,8 @@ package body Gnat2Why.Decls is
             Emit
               (File.Cur_Theory,
                New_Defining_Axiom
-                 (Name        =>
+                 (Ada_Node    => E,
+                  Name        =>
                     To_Why_Id (E, Domain => EW_Term, Local => False),
                   Return_Type => Get_EW_Type (Typ),
                   Binders     => (1 .. 0 => <>),

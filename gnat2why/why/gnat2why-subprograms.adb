@@ -1788,7 +1788,7 @@ package body Gnat2Why.Subprograms is
            (File.Cur_Theory,
             New_Guarded_Axiom
               (Ada_Node => Empty,
-               Name     => NID (Post_Axiom),
+               Name     => NID (Short_Name (E) & "__" & Post_Axiom),
                Binders  => Logic_Why_Binders,
                Triggers =>
                  New_Triggers
@@ -2062,11 +2062,12 @@ package body Gnat2Why.Subprograms is
          Emit
            (File.Cur_Theory,
             New_Defining_Bool_Axiom
-              (Name    => Logic_Id,
-               Binders => Flat_Binders,
-               Def     => +Transform_Expr (Expression (Expr_Fun_N),
-                                           EW_Pred,
-                                           Params)));
+              (Ada_Node => E,
+               Name     => Logic_Id,
+               Binders  => Flat_Binders,
+               Def      => +Transform_Expr (Expression (Expr_Fun_N),
+                                            EW_Pred,
+                                            Params)));
 
       else
          declare
@@ -2095,7 +2096,8 @@ package body Gnat2Why.Subprograms is
             Emit
               (File.Cur_Theory,
                New_Defining_Axiom
-                 (Name        => Logic_Id,
+                 (Ada_Node    => Ty_Ent,
+                  Name        => Logic_Id,
                   Return_Type => Get_EW_Type (Expression (Expr_Fun_N)),
                   Binders     => Flat_Binders,
                   Pre         => Guard,
