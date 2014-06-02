@@ -13,6 +13,10 @@ package body Aggregate_Checks with SPARK_Mode is
 
       Should_Fail2 : constant Wrapper2 := (1 => 0); --  @RANGE_CHECK:FAIL
 
+      type Wrapper3 is array (1 .. 2) of A_Range;
+
+      Should_Fail22 : constant Wrapper3 := (1 => 1, 2 => 0); --  @RANGE_CHECK:FAIL
+
       type UArray is array (A_Range range <>) of Natural;
 
       Should_Fail3 : constant UArray := (0 .. A'Last => 0); --  @RANGE_CHECK:FAIL

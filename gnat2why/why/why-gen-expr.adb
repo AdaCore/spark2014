@@ -1000,7 +1000,7 @@ package body Why.Gen.Expr is
                else
                   pragma Assert (Expression (Par) = Expr);
 
-                  Check_Type := Etype (First (Choices (Par)));
+                  Check_Type := Etype (Expr);
                end if;
             end;
 
