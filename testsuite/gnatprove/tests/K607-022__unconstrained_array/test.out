@@ -9,7 +9,7 @@ my_test.adb:17:10: info: precondition proved
 my_test.adb:17:10: warning: discriminant check might fail
 my_test.adb:18:48: warning: assertion might fail, requires T3.V (I) = 9
 my_test.adb:18:50: info: discriminant check proved
-my_test.adb:18:54: info: index check proved
+my_test.adb:18:54: warning: array index check might fail
 my_test.adb:20:10: warning: discriminant check might fail
 my_test.adb:22:19: warning: assertion might fail, requires T1 = T3
 simple_unc_arrays.adb:10:07: warning: "C.V" might not be initialized
@@ -42,7 +42,7 @@ simple_unc_arrays.adb:32:75: warning: array index check might fail
 simple_unc_arrays.adb:34:10: warning: precondition might fail
 simple_unc_arrays.adb:34:23: info: discriminant check proved
 simple_unc_arrays.adb:34:23: warning: range check might fail
-simple_unc_arrays.adb:34:32: info: range check proved
+simple_unc_arrays.adb:34:32: warning: range check might fail
 simple_unc_arrays.adb:35:22: warning: overflow check might fail
 simple_unc_arrays.adb:36:23: warning: range check might fail
 simple_unc_arrays.adb:45:22: info: discriminant check proved
