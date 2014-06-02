@@ -6,5 +6,5 @@ longest_common_prefix.adb:14:14: warning: "L" might not be initialized
    compilation of longest_common_prefix.adb failed
 
 
-gnatprove: error during flow analysis and proof, aborting.
+gnatprove: error during flow analysis and proof
 gprbuild: *** compilation phase failed

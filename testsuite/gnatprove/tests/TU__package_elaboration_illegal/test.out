@@ -6,5 +6,5 @@ initialize_remote_stuff.ads:9:14: "Remote.State" must be listed in the Global as
    compilation of initialize_remote_stuff.adb failed
 
 
-gnatprove: error during flow analysis and proof, aborting.
+gnatprove: error during flow analysis and proof
 gprbuild: *** compilation phase failed

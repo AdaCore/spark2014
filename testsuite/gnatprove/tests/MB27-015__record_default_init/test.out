@@ -22,5 +22,5 @@ p.ads:30:28: default initialization cannot depend on "S" (SPARK RM 4.4(2))
    compilation of p.adb failed
 
 
-gnatprove: error during flow analysis and proof, aborting.
+gnatprove: error during flow analysis and proof
 gprbuild: *** compilation phase failed

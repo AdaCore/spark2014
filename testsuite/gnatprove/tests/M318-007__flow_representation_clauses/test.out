@@ -3,5 +3,5 @@ test.adb:9:12: "Temp" is not initialized
    compilation of test.adb failed
 
 
-gnatprove: error during flow analysis and proof, aborting.
+gnatprove: error during flow analysis and proof
 gprbuild: *** compilation phase failed

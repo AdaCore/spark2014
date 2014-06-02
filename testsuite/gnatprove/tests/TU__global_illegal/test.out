@@ -37,5 +37,5 @@ global_illegal_3.adb:138:15: warning: "Arr2" might not be initialized
    compilation of global_illegal_3.adb failed
 
 
-gnatprove: error during flow analysis and proof, aborting.
+gnatprove: error during flow analysis and proof
 gprbuild: *** compilation phase failed

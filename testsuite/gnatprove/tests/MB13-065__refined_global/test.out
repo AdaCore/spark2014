@@ -2,5 +2,5 @@ pack.adb:11:16: "B" must be listed in the Refined_Global aspect of "Update_Conte
    compilation of pack.adb failed
 
 
-gnatprove: error during flow analysis and proof, aborting.
+gnatprove: error during flow analysis and proof
 gprbuild: *** compilation phase failed

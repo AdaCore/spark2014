@@ -13,5 +13,5 @@ functions_illegal_2.ads:10:13: violation of aspect SPARK_Mode at line 2
    compilation of functions_illegal_2.adb failed
 
 
-gnatprove: error during flow analysis and proof, aborting.
+gnatprove: error during flow analysis and proof
 gprbuild: *** compilation phase failed

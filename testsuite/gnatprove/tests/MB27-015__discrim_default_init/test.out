@@ -6,5 +6,5 @@ discrims.ads:42:30: default initialization cannot depend on "V0" (SPARK RM 4.4(2
    compilation of discrims.adb failed
 
 
-gnatprove: error during flow analysis and proof, aborting.
+gnatprove: error during flow analysis and proof
 gprbuild: *** compilation phase failed

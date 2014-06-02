@@ -385,7 +385,7 @@ procedure Gnatprove is
 
       if Status /= 0 then
          Abort_With_Message
-           ("gnatprove: error during " & Text_Of_Step (Step) & ", aborting.");
+           ("gnatprove: error during " & Text_Of_Step (Step));
       end if;
    end Execute_Step;
 

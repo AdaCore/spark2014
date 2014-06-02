@@ -12,5 +12,5 @@ test.adb:133:24: warning: unused initial value of "A"
    compilation of test.adb failed
 
 
-gnatprove: error during analysis of data and information flow, aborting.
+gnatprove: error during analysis of data and information flow
 gprbuild: *** compilation phase failed

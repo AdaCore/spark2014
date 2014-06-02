@@ -23,5 +23,5 @@ test.adb:138:04: warning: analyzing unreferenced function "Loop_Stability"
    compilation of test.adb failed
 
 
-gnatprove: error during analysis of data and information flow, aborting.
+gnatprove: error during analysis of data and information flow
 gprbuild: *** compilation phase failed

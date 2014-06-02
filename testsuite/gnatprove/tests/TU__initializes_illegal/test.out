@@ -24,7 +24,7 @@ initializes_illegal_4.ads:64:22: "G_Var" must be listed in the Initializes aspec
    compilation of initializes_illegal_4.adb failed
 
 
-gnatprove: error during flow analysis and proof, aborting.
+gnatprove: error during flow analysis and proof
 gprbuild: *** compilation phase failed
 initializes_illegal_5.ads:1:14: current unit must also be private descendant of "Initializes_Illegal_5"
 initializes_illegal_5.ads:14:66: "Pr_Var" not declared in "Pr_Child"
@@ -32,5 +32,5 @@ initializes_illegal_6.adb:8:04: "Var" is not initialized in "Initializes_Illegal
    compilation of initializes_illegal_6.adb failed
 
 
-gnatprove: error during flow analysis and proof, aborting.
+gnatprove: error during flow analysis and proof
 gprbuild: *** compilation phase failed

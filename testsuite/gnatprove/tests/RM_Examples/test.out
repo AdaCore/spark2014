@@ -40,9 +40,9 @@ anti_aliasing.adb:62:16: writable actual for "X" overlaps with actual for "Y"
    compilation of anti_aliasing.adb failed
 
 
-gnatprove: error during generation of Global contracts, aborting.
+gnatprove: error during generation of Global contracts
 gprbuild: *** compilation phase failed
-gnatprove: error during generation of Global contracts, aborting.
+gnatprove: error during generation of Global contracts
 gprbuild: "multiple_porst.adb" is not a source of any project
 stacks_1.adb:16:57: info: refined post proved
 stacks_1.adb:17:44: info: range check proved
@@ -72,7 +72,7 @@ externals.adb:94:13: warning: statement has no effect
    compilation of externals.adb failed
 
 
-gnatprove: error during flow analysis and proof, aborting.
+gnatprove: error during flow analysis and proof
 gprbuild: *** compilation phase failed
 inter_unit_elaboration_examples.adb:8:14: warning: overflow check might fail
 intra_unit_elaboration_order_examples.adb:3:50: warning: overflow check might fail

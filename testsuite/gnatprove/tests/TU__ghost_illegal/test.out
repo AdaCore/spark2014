@@ -9,5 +9,5 @@ ghost_illegal_2.ads:2:06: file "helper.ads" not found
    compilation of ghost_illegal_2.adb failed
 
 
-gnatprove: error during generation of Global contracts, aborting.
+gnatprove: error during generation of Global contracts
 gprbuild: *** compilation phase failed

@@ -71,7 +71,7 @@ depends_illegal_3.adb:98:25: warning: missing dependency "F1'Result => Par1"
    compilation of depends_illegal_3.adb failed
 
 
-gnatprove: error during flow analysis and proof, aborting.
+gnatprove: error during flow analysis and proof
 gprbuild: *** compilation phase failed
 depends_illegal_4.adb:15:11: warning: missing dependency "null => Y"
 depends_illegal_4.adb:15:23: warning: missing dependency "Par2 => Y"

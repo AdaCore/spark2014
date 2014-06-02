@@ -6,5 +6,5 @@ device.adb:56:13: warning: statement has no effect
    compilation of device.adb failed
 
 
-gnatprove: error during flow analysis and proof, aborting.
+gnatprove: error during flow analysis and proof
 gprbuild: *** compilation phase failed

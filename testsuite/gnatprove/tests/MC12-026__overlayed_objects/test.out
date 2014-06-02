@@ -10,5 +10,5 @@ p2.ads:27:22: warning: postcondition might fail
    compilation of p.adb failed
 
 
-gnatprove: error during flow analysis and proof, aborting.
+gnatprove: error during flow analysis and proof
 gprbuild: *** compilation phase failed

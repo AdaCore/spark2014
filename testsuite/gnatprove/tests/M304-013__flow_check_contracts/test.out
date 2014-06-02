@@ -9,5 +9,5 @@ test.adb:47:14: warning: unused global "G"
    compilation of test.adb failed
 
 
-gnatprove: error during analysis of data and information flow, aborting.
+gnatprove: error during analysis of data and information flow
 gprbuild: *** compilation phase failed

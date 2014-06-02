@@ -4,5 +4,5 @@ try_init_4.ads:7:25: cannot mix null and non-null initialization items
    compilation of try_init_4.ads failed
 
 
-gnatprove: error during generation of Global contracts, aborting.
+gnatprove: error during generation of Global contracts
 gprbuild: *** compilation phase failed

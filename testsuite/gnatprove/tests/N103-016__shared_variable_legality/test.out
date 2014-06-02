@@ -8,5 +8,5 @@ p.ads:48:04: tagged object "SV2" cannot be volatile
    compilation of p.ads failed
 
 
-gnatprove: error during generation of Global contracts, aborting.
+gnatprove: error during generation of Global contracts
 gprbuild: *** compilation phase failed

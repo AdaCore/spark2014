@@ -7,5 +7,5 @@ p.ads:3:08: violation of pragma SPARK_Mode at line 2
    compilation of p.adb failed
 
 
-gnatprove: error during flow analysis and proof, aborting.
+gnatprove: error during flow analysis and proof
 gprbuild: *** compilation phase failed

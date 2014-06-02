@@ -14,5 +14,5 @@ types.adb:64:09: volatile formal out "R" cannot be read (SPARK RM 7.1.3(14))
    compilation of types.adb failed
 
 
-gnatprove: error during flow analysis and proof, aborting.
+gnatprove: error during flow analysis and proof
 gprbuild: *** compilation phase failed

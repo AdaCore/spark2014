@@ -17,5 +17,5 @@ abstract_state_illegal_4-pub_child.adb:5:57: Part_Of indicator specifies "State"
    compilation of abstract_state_illegal_4-pub_child.adb failed
 
 
-gnatprove: error during generation of Global contracts, aborting.
+gnatprove: error during generation of Global contracts
 gprbuild: *** compilation phase failed

@@ -18,7 +18,7 @@ initializes_illegal.ads:14:14: warning: subprogram "Does_Nothing" has no effect
    compilation of initializes_illegal.adb failed
 
 
-gnatprove: error during flow analysis and proof, aborting.
+gnatprove: error during flow analysis and proof
 gprbuild: *** compilation phase failed
 initializes_illegal_2.adb:9:11: warning: overflow check might fail
 initializes_illegal_2.ads:7:27: warning: initialization of Initializes_Illegal_2.As2 must not depend on X (SPARK RM 7.1.5(11))
@@ -28,5 +28,5 @@ initializes_illegal_3.ads:5:35: Z must be initialized at elaboration
    compilation of initializes_illegal_3.ads failed
 
 
-gnatprove: error during flow analysis and proof, aborting.
+gnatprove: error during flow analysis and proof
 gprbuild: *** compilation phase failed

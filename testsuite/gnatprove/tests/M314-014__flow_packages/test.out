@@ -26,5 +26,5 @@ pkg_e.ads:10:03: warning: initialization has no effect
    compilation of pkg_e.adb failed
 
 
-gnatprove: error during analysis of data and information flow, aborting.
+gnatprove: error during analysis of data and information flow
 gprbuild: *** compilation phase failed

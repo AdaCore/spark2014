@@ -8,12 +8,12 @@ proof_in_illegal.adb:21:43: warning: unused global "Var"
    compilation of proof_in_illegal.adb failed
 
 
-gnatprove: error during flow analysis and proof, aborting.
+gnatprove: error during flow analysis and proof
 gprbuild: *** compilation phase failed
 proof_in_illegal_2.adb:8:42: export "X" must not depend on Proof_In "Body_Var" (SPARK RM 6.1.4(17))
 proof_in_illegal_2.adb:10:07: warning: initialization has no effect
    compilation of proof_in_illegal_2.adb failed
 
 
-gnatprove: error during flow analysis and proof, aborting.
+gnatprove: error during flow analysis and proof
 gprbuild: *** compilation phase failed

@@ -3,5 +3,5 @@ broken.adb:4:19: possible infinite recursion
    compilation of broken.adb failed
 
 
-gnatprove: error during generation of Global contracts, aborting.
+gnatprove: error during generation of Global contracts
 gprbuild: *** compilation phase failed

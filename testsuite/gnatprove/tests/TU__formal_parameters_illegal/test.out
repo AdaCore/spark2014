@@ -4,5 +4,5 @@ formal_parameters_illegal.adb:30:14: "Arr" is not initialized
    compilation of formal_parameters_illegal.adb failed
 
 
-gnatprove: error during flow analysis and proof, aborting.
+gnatprove: error during flow analysis and proof
 gprbuild: *** compilation phase failed

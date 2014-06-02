@@ -7,5 +7,5 @@ discr.adb:13:07: static expression fails Constraint_Check
    compilation of discr.adb failed
 
 
-gnatprove: error during flow analysis and proof, aborting.
+gnatprove: error during flow analysis and proof
 gprbuild: *** compilation phase failed

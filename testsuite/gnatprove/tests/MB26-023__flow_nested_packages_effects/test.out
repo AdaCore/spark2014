@@ -7,5 +7,5 @@ outer.adb:85:58: warning: overflow check might fail
    compilation of flo_review_tests.adb failed
 
 
-gnatprove: error during flow analysis and proof, aborting.
+gnatprove: error during flow analysis and proof
 gprbuild: *** compilation phase failed

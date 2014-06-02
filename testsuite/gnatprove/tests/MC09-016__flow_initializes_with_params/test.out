@@ -5,5 +5,5 @@ p2.adb:27:25: "L" is not initialized
    compilation of p2.adb failed
 
 
-gnatprove: error during flow analysis and proof, aborting.
+gnatprove: error during flow analysis and proof
 gprbuild: *** compilation phase failed
