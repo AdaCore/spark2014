@@ -18,17 +18,8 @@ the code.
 How to Install |GNATprove|
 ==========================
 
-The ``README`` file distributed with the release of SPARK explains what should
-be done on each platform to install |GNATprove|. The user should have
-sufficient rights for installing the package (administrator or normal rights on
-Windows depending on whether it is installed for all or one user, superuser or
-normal rights on Linux/Mac depending on where the package is installed).
-
-The installation script searches for an existing installation of GNAT/GPS, and
-proposes the same path to install |GNATprove|. This is the simplest setup. The
-files installed for |GNATprove| are completely separate from the files
-installed for GNAT/GPS, so any two versions of GNAT (for compilation) and SPARK
-(for formal verification) can coexist.
+We recommend to first install GPS (and optionally GNAT), and then install
+|GNATprove| under the same location.
 
 If you choose to install |GNATprove| in a different location, you should also
 modify environment variables ``GPR_PROJECT_PATH`` and ``GPS_DOC_PATH``. On
@@ -45,6 +36,42 @@ or on Linux/Mac with C shell::
 
   setenv GPR_PROJECT_PATH <GNAT install dir>/lib/gnat:$GPR_PROJECT_PATH
   setenv GPS_DOC_PATH <SPARK install dir>/share/doc/spark:$GPS_DOC_PATH
+
+See below for detailed installation instructions of GPS and |GNATprove|.
+
+Installation under Windows
+--------------------------
+
+If not already done, first run the GPS installer by e.g. double clicking
+on `gps-6.0.2-i686-pc-mingw32.exe` and follow the instructions.
+
+Then similarly run the |GNATprove| installer, by e.g. double clicking on
+`spark-15.0.2-x86-windows-bin.exe`.
+
+You should have sufficient rights for installing the package (administrator
+or normal rights depending on whether it is installed for all users or a
+single user).
+
+Installation under Linux/Mac
+----------------------------
+
+If not already done, you need to extract and install the GPS compressed
+tarball and then run the install, e.g.::
+
+  $ gzip -dc gps-6.0.2-x86_64-linux-bin.tar.gz | tar xf -
+  $ cd gps-6.0.2-x86_64-linux-bin
+  $ ./doinstall
+
+Then follow the instructions displayed.
+
+Then do the same with the SPARK tarball, e.g.::
+
+  $ gzip -dc spark-15.0.2-x86_64-linux-bin.tar.gz | tar xf -
+  $ cd spark-15.0.2-x86_64-linux-bin
+  $ ./doinstall
+
+Note that you need to have sufficient rights for installing the package at the
+chosen location (e.g. root rights for installing under /opt/spark).
 
 How to Run |GNATprove|
 ======================
