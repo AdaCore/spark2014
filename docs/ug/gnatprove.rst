@@ -45,6 +45,11 @@ Installation under Windows
 If not already done, first run the GPS installer by e.g. double clicking
 on `gps-6.0.2-i686-pc-mingw32.exe` and follow the instructions.
 
+.. note::
+
+  If you're using GNAT GPL instead of GNAT Pro, you should run instead
+  the GNAT GPL installer, which installs GPS.
+
 Then similarly run the |GNATprove| installer, by e.g. double clicking on
 `spark-15.0.2-x86-windows-bin.exe`.
 
@@ -63,6 +68,11 @@ tarball and then run the install, e.g.::
   $ ./doinstall
 
 Then follow the instructions displayed.
+
+.. note::
+
+  If you're using GNAT GPL instead of GNAT Pro, you should install instead
+  the GNAT GPL package, which installs GPS.
 
 Then do the same with the SPARK tarball, e.g.::
 
