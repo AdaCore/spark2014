@@ -81,6 +81,43 @@ using the name stored in the ``.why3.conf`` file. For example:
 
    ``gnatprove -P foo.gpr --prover=CVC4``
 
+Coq
+---
+
+When manual proof is needed, one possibility is to use the interactive prover
+Coq. For this you can install or compile your version of Coq on your system,
+it is recommended to also install an appropriate editor (for instance
+CoqIDE or ProofGeneral). Even if running ``why3config --detect-provers``
+outputs:
+
+    ``Found prover Coq version X, but Why3 wasn't compiled with support for it``
+
+you can still use Coq on |SPARK| VCs. To do so, you just have to add the
+following lines to your ``.why3.conf``::
+
+    [prover]
+    command = "coqtop -batch -I %l/coq-tactic -R %l/coq Why3 -l %f"
+    driver = "${install_dir}/share/why3/drivers/coq.drv"
+    editor = "${editor}"
+    in_place = false
+    interactive = true
+    name = "Coq"
+    shortcut = "coq"
+    version = "X"
+
+For this to work:
+
+- ``coqtop`` must be in your executable path (alternatively you can provide the
+  full path to ``coqtop``);
+
+- ``${install_dir}`` should be the directory where you installed |SPARK|;
+
+- ``${editor}`` must be a previously defined editor in ``.why3.conf``, the
+  default ``.why3.conf`` already defines two commonly used editors for Coq:
+  ``coqide`` and ``proofgeneral-coq``;
+
+- replace the version by your Coq version (e.g. ``version = "8.4pl3"``)
+
 .. _Project_Attributes:
 
 Project Attributes
