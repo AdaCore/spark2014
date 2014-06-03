@@ -15,8 +15,91 @@ statically with |GNATprove|. |GNATprove| also performs additional verifications
 on the specification of the expected behavior itself, and its correspondence to
 the code.
 
+How to Install |GNATprove|
+==========================
+
+The ``README`` file distributed with the release of SPARK explains what should
+be done on each platform to install |GNATprove|. The user should have
+sufficient rights for installing the package (administrator or normal rights on
+Windows depending on whether it is installed for all or one user, superuser or
+normal rights on Linux/Mac depending on where the package is installed).
+
+The installation script searches for an existing installation of GNAT/GPS, and
+proposes the same path to install |GNATprove|. This is the simplest setup. The
+files installed for |GNATprove| are completely separate from the files
+installed for GNAT/GPS, so any two versions of GNAT (for compilation) and SPARK
+(for formal verification) can coexist.
+
+If you choose to install |GNATprove| in a different location, you should also
+modify environment variables ``GPR_PROJECT_PATH`` and ``GPS_DOC_PATH``. On
+Windows, edit the value of ``GPR_PROJECT_PATH`` under the Environnement
+Variables panel, and add to it the value of ``<GNAT install
+dir>/lib/gnat``. Similarly, edit the value of ``GPS_DOC_PATH`` and add to it
+the value of ``<SPARK install dir>/share/doc/spark``. On Linux/Mac with Bourne
+shell, use::
+
+  export GPR_PROJECT_PATH=<GNAT install dir>/lib/gnat:$GPR_PROJECT_PATH
+  export GPS_DOC_PATH=<SPARK install dir>/share/doc:$GPS_DOC_PATH
+
+or on Linux/Mac with C shell::
+
+  setenv GPR_PROJECT_PATH <GNAT install dir>/lib/gnat:$GPR_PROJECT_PATH
+  setenv GPS_DOC_PATH <SPARK install dir>/share/doc:$GPS_DOC_PATH
+
 How to Run |GNATprove|
 ======================
+
+Setting Up a Project File
+-------------------------
+
+Basic Project Set Up
+^^^^^^^^^^^^^^^^^^^^
+
+If not already done, create a GNAT project file (`.gpr`), as documented in
+the GNAT User's Guide, section `GNAT Project Manager`. See also
+:ref:`Project_Attributes` for optional project attributes to specify the
+proof directory and other |GNATprove| switches in the project file directly.
+
+Note that you can use the project wizard from GPS to create a project file
+interactively, via the menu :menuselection:`Project --> New...` See in
+particular the first option (:menuselection:`Single Project`).
+
+If you want to get started quickly, and assuming a standard naming scheme using
+``.ads/.adb`` lower case files and a single source directory, then your project
+file will look like:
+
+.. code-block:: ada
+
+  project My_Project is
+     for Source_Dirs use (".");
+  end My_Project;
+
+saved in a file called ``my_project.gpr``.
+
+Having Different Switches for Compilation and Verification
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+In some cases, you may want to pass different compilation-level switches to
+GNAT and |GNATprove|, for example use warning switches only for compilation, in
+the same project file. In that case, you can use a scenario variable to specify
+different switches for compilation and verification:
+
+.. code-block:: ada
+
+  project My_Project is
+
+    type Modes is ("Compile", "Analyze");
+    Mode : Modes := External ("MODE", "Compile");
+
+    package Compiler is
+       case Mode is
+          when "Compile" =>
+             for Default_Switches use ...
+          when "Analyze" =>
+             for Default_Switches use ...
+    end Compiler;
+
+  end My_Project;
 
 Running |GNATprove| from the Command Line
 -----------------------------------------
