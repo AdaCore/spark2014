@@ -39,12 +39,12 @@ the value of ``<SPARK install dir>/share/doc/spark``. On Linux/Mac with Bourne
 shell, use::
 
   export GPR_PROJECT_PATH=<GNAT install dir>/lib/gnat:$GPR_PROJECT_PATH
-  export GPS_DOC_PATH=<SPARK install dir>/share/doc:$GPS_DOC_PATH
+  export GPS_DOC_PATH=<SPARK install dir>/share/doc/spark:$GPS_DOC_PATH
 
 or on Linux/Mac with C shell::
 
   setenv GPR_PROJECT_PATH <GNAT install dir>/lib/gnat:$GPR_PROJECT_PATH
-  setenv GPS_DOC_PATH <SPARK install dir>/share/doc:$GPS_DOC_PATH
+  setenv GPS_DOC_PATH <SPARK install dir>/share/doc/spark:$GPS_DOC_PATH
 
 How to Run |GNATprove|
 ======================
