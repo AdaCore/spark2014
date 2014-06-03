@@ -23,15 +23,17 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Uintp;                use Uintp;
+with Uintp;                   use Uintp;
 
-with Why.Conversions;      use Why.Conversions;
-with Why.Atree.Mutators;   use Why.Atree.Mutators;
-with Why.Atree.Properties; use Why.Atree.Properties;
-with Why.Atree.Tables;     use Why.Atree.Tables;
-with Why.Gen.Names;        use Why.Gen.Names;
-with Why.Gen.Expr;         use Why.Gen.Expr;
-with Why.Inter;            use Why.Inter;
+with Why.Conversions;         use Why.Conversions;
+with Why.Atree.Mutators;      use Why.Atree.Mutators;
+with Why.Atree.Properties;    use Why.Atree.Properties;
+with Why.Atree.Tables;        use Why.Atree.Tables;
+with Why.Gen.Names;           use Why.Gen.Names;
+with Why.Gen.Expr;            use Why.Gen.Expr;
+with Why.Inter;               use Why.Inter;
+with Gnat2Why.Subprograms;    use Gnat2Why.Subprograms;
+with Gnat2Why.Error_Messages; use Gnat2Why.Error_Messages;
 
 package body Why.Gen.Progs is
 
@@ -39,20 +41,16 @@ package body Why.Gen.Progs is
    -- Insert_Always_True_Range_Check --
    ------------------------------------
 
-   function Insert_Always_True_Range_Check
+   procedure Emit_Always_True_Range_Check
      (Ada_Node   : Node_Id;
-      Check_Kind : Range_Check_Kind;
-      T          : W_Expr_Id) return W_Expr_Id
-   is
-      Asrt : W_Prog_Id;
+      Check_Kind : Range_Check_Kind) is
    begin
-      Asrt := New_Located_Assert
-                (Ada_Node => Ada_Node,
-                 Reason   => To_VC_Kind (Check_Kind),
-                 Pred     => True_Pred,
-                 Kind     => EW_Assert);
-      return +Sequence (Asrt, +T);
-   end Insert_Always_True_Range_Check;
+      Emit_Proof_Result
+        (Ada_Node,
+         To_VC_Kind (Check_Kind),
+         True,
+         Current_Subp);
+   end Emit_Always_True_Range_Check;
 
    --------------------------
    -- New_Assume_Statement --

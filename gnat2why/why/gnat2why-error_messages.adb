@@ -57,6 +57,31 @@ package body Gnat2Why.Error_Messages is
 
    VC_Table : Id_Maps.Map := Id_Maps.Empty_Map;
 
+   procedure Emit_Proof_Result
+     (Node       : Node_Id;
+      Kind       : VC_Kind;
+      Proved     : Boolean;
+      E          : Entity_Id;
+      Extra_Msg  : String := "";
+      Tracefile  : String := "";
+      VC_File    : String := "";
+      Editor_Cmd : String := "") is
+      Msg : constant String :=
+        (if Proved then Proved_Message (Kind) else Not_Proved_Message (Kind)) &
+        Extra_Msg;
+   begin
+      Error_Msg_Proof
+        (Node,
+         Msg,
+         Proved,
+         To_Tag (Kind),
+         Place_First => Is_Assertion_Kind (Kind),
+         Tracefile   => Tracefile,
+         VC_File     => VC_File,
+         Editor_Cmd  => Editor_Cmd,
+         E           => E);
+   end Emit_Proof_Result;
+
    ------------------------
    -- Has_Registered_VCs --
    ------------------------
@@ -136,18 +161,15 @@ package body Gnat2Why.Error_Messages is
          Kind      : constant VC_Kind :=
            VC_Kind'Value (Get (Get (V, "reason")));
          Proved    : constant Boolean := Get (Get (V, "result"));
-         Base_Msg  : constant String  :=
-           (if Proved then Proved_Message (Kind)
-            else Not_Proved_Message (Kind));
          Extra     : constant Node_Id :=
            Node_Id (Integer'(Get (Get (V, "extra_info"))));
-         Extra_Msg : constant String :=
+         Extra_Text : constant String :=
            (if not Proved and then Present (Extra) then
                  String_Of_Node (Extra)
             else "");
-         Msg       : constant String :=
-           (if Extra_Msg /= "" then Base_Msg & ", requires ~"
-            else Base_Msg);
+         Extra_Msg  : constant String :=
+           (if Extra_Text /= "" then ", requires ~"
+            else "");
          Node   : constant Node_Id :=
            (if Present (Extra) then Extra else VC.Node);
          Tracefile : constant String :=
@@ -159,21 +181,18 @@ package body Gnat2Why.Error_Messages is
          Editor_Cmd : constant String :=
            (if Has_Field (V, "editor_cmd") then Get (Get (V, "editor_cmd"))
             else "");
-
       begin
-
-         Errout.Error_Msg_String (1 .. Extra_Msg'Length) := Extra_Msg;
-         Errout.Error_Msg_Strlen := Extra_Msg'Length;
-         Error_Msg_Proof
-           (Node,
-            Msg,
-            Proved,
-            To_Tag (Kind),
-            Place_First => Is_Assertion_Kind (Kind),
-            Tracefile   => Tracefile,
-            VC_File     => VC_File,
-            Editor_Cmd  => Editor_Cmd,
-            E           => VC.Entity);
+         Errout.Error_Msg_String (1 .. Extra_Text'Length) := Extra_Text;
+         Errout.Error_Msg_Strlen := Extra_Text'Length;
+         Emit_Proof_Result
+           (Node       => Node,
+            Kind       => Kind,
+            Proved     => Proved,
+            E          => VC.Entity,
+            Tracefile  => Tracefile,
+            VC_File    => VC_File,
+            Editor_Cmd => Editor_Cmd,
+            Extra_Msg  => Extra_Msg);
       end Handle_Result;
 
    begin

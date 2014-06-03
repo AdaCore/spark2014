@@ -1208,11 +1208,7 @@ package body Why.Gen.Expr is
                   --  messages, a message could be generated instead here.
 
                   if Lo >= Lov and then Hi <= Hiv then
-                     Result :=
-                       Insert_Always_True_Range_Check
-                         (Ada_Node   => Ada_Node,
-                          Check_Kind => Check_Kind,
-                          T          => Result);
+                     Emit_Always_True_Range_Check (Ada_Node, Check_Kind);
                      Range_Check_Applied := True;
                   end if;
                end if;

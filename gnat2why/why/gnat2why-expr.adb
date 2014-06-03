@@ -6697,10 +6697,7 @@ package body Gnat2Why.Expr is
 
                      if Lo > Lov and then Hi < Hiv then
                         True_Check_Inserted := True;
-                        T := Insert_Always_True_Range_Check
-                               (Ada_Node   => Expr,
-                                Check_Kind => RCK_Overflow,
-                                T          => T);
+                        Emit_Always_True_Range_Check (Expr, RCK_Overflow);
                      end if;
                   end if;
                end if;
