@@ -327,8 +327,8 @@ display.adb:138:30: warning: array index check might fail, in call inlined at di
 display.adb:138:30: warning: array index check might fail, in call inlined at display.adb:289
 display.adb:139:30: warning: array index check might fail, in call inlined at display.adb:189
 display.adb:139:30: warning: array index check might fail, in call inlined at display.adb:289
-display.adb:140:32: warning: range check might fail, in call inlined at display.adb:189
-display.adb:140:32: warning: range check might fail, in call inlined at display.adb:289
+display.adb:140:32: info: range check proved, in call inlined at display.adb:189
+display.adb:140:32: info: range check proved, in call inlined at display.adb:289
 display.adb:143:11: warning: range check might fail, in call inlined at display.adb:189
 display.adb:143:11: warning: range check might fail, in call inlined at display.adb:289
 display.adb:148:33: warning: array index check might fail, in call inlined at display.adb:189

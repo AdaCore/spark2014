@@ -700,7 +700,7 @@ screen.adb:440:44: warning: range check might fail, in call inlined at screen.ad
 screen.adb:440:44: warning: range check might fail, in call inlined at screen.adb:597
 screen.adb:440:44: warning: range check might fail, in call inlined at screen.adb:603
 screen.adb:440:44: warning: range check might fail, in call inlined at screen.adb:609
-creen.adb:440:72: info: overflow check proved, in call inlined at screen.adb:591
+screen.adb:440:72: info: overflow check proved, in call inlined at screen.adb:591
 screen.adb:440:72: warning: overflow check might fail, in call inlined at screen.adb:597
 screen.adb:440:72: warning: overflow check might fail, in call inlined at screen.adb:603
 screen.adb:440:72: warning: overflow check might fail, in call inlined at screen.adb:609
