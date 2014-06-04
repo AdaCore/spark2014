@@ -1,4 +1,4 @@
-package body Pupils
+package body Pupils with SPARK_Mode
 is
 
  procedure AddPupil (SName, FName: in PupilName; Fm: in FormType;

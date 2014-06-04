@@ -194,13 +194,20 @@ package Why.Gen.Expr is
    function To_Int (D : EW_Domain; E : W_Expr_Id) return W_Expr_Id;
    --  Convert argument to int if not already done
 
-   function Do_Range_Or_Index_Check
+   function Do_Range_Check
      (Ada_Node   : Node_Id;
       Ty         : Entity_Id;
       W_Expr     : W_Expr_Id;
       Check_Kind : Range_Check_Kind) return W_Prog_Id;
-   --  Returns the Why program that does range of index checking on W_Expr, for
-   --  type Ty.
+   --  Returns the Why program that does range checking on W_Expr, for type Ty.
+
+   function Do_Index_Check
+     (Ada_Node   : Node_Id;
+      Arr_Expr   : W_Expr_Id;
+      W_Expr     : W_Expr_Id;
+      Dim        : Positive) return W_Prog_Id;
+   --  Returns the Why program that does index checking on an index W_Expr in
+   --  an array Arr_Expr.
 
    function Insert_Array_Conversion
      (Domain         : EW_Domain;

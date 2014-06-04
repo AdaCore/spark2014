@@ -1,4 +1,4 @@
-package Pupils
+package Pupils with SPARK_Mode
 is
   MaxPupils: constant Natural := 250;
 

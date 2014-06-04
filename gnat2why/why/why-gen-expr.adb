@@ -761,11 +761,55 @@ package body Why.Gen.Expr is
       return Result;
    end Insert_Record_Conversion;
 
-   -----------------------------
-   -- Do_Range_Or_Index_Check --
-   -----------------------------
+   --------------------
+   -- Do_Index_Check --
+   --------------------
 
-   function Do_Range_Or_Index_Check
+   function Do_Index_Check
+     (Ada_Node   : Node_Id;
+      Arr_Expr   : W_Expr_Id;
+      W_Expr     : W_Expr_Id;
+      Dim        : Positive) return W_Prog_Id
+   is
+      Tmp        : constant W_Expr_Id :=
+        New_Temp_For_Expr (W_Expr);
+      First_Expr : constant W_Expr_Id :=
+        Insert_Simple_Conversion (Domain => EW_Term,
+                                  Expr   => Get_Array_Attr
+                                    (Domain => EW_Term,
+                                     Expr   => Arr_Expr,
+                                     Attr   => Attribute_First,
+                                     Dim    => Dim),
+                                  To     => EW_Int_Type);
+      Last_Expr  : constant W_Expr_Id :=
+        Insert_Simple_Conversion (Domain => EW_Term,
+                                  Expr   => Get_Array_Attr
+                                    (Domain => EW_Term,
+                                     Expr   => Arr_Expr,
+                                     Attr   => Attribute_Last,
+                                     Dim    => Dim),
+                                  To     => EW_Int_Type);
+      T : W_Prog_Id;
+   begin
+      T := New_Located_Assert (Ada_Node => Ada_Node,
+                               Reason   => VC_Index_Check,
+                               Pred     => +New_Range_Expr
+                                 (Domain => EW_Pred,
+                                  Low    => First_Expr,
+                                  High   => Last_Expr,
+                                  Expr   => Tmp),
+                               Kind     => EW_Assert);
+
+      return +Binding_For_Temp (Domain => EW_Prog,
+                                Tmp    => Tmp,
+                                Context => +Sequence (T, +Tmp));
+   end Do_Index_Check;
+
+   --------------------
+   -- Do_Range_Check --
+   --------------------
+
+   function Do_Range_Check
      (Ada_Node   : Node_Id;
       Ty         : Entity_Id;
       W_Expr     : W_Expr_Id;
@@ -809,7 +853,7 @@ package body Why.Gen.Expr is
                               Reason   => To_VC_Kind (Check_Kind),
                               Typ      => Get_Type (W_Expr));
       end if;
-   end Do_Range_Or_Index_Check;
+   end Do_Range_Check;
 
    ------------------------------
    -- Insert_Scalar_Conversion --
@@ -855,53 +899,13 @@ package body Why.Gen.Expr is
          when N_Assignment_Statement =>
             Check_Type := Etype (Name (Par));
 
-         --  For an array access, retrieve the type for the corresponding index
+         --  For an array access, an index check has already been introduced
+         --  if needed. There is no other check to do.
 
          when N_Indexed_Component =>
-
-            Indexed_Component : declare
-               Obj        : constant Node_Id := Prefix (Par);
-               Array_Type : Entity_Id;
-               Act_Cursor : Node_Id;
-               Ty_Cursor  : Node_Id;
-               Found      : Boolean;
-
-            begin
-               --  When present, the Actual_Subtype of the entity should be
-               --  used instead of the Etype of the prefix.
-
-               if Is_Entity_Name (Obj)
-                 and then Present (Actual_Subtype (Entity (Obj)))
-               then
-                  Array_Type := Actual_Subtype (Entity (Obj));
-               else
-                  Array_Type := Etype (Obj);
-               end if;
-
-               --  Find the index type that corresponds to the expression
-
-               Ty_Cursor  := First_Index (Unique_Entity (Array_Type));
-               Act_Cursor := First (Expressions (Par));
-               Found      := False;
-               while Present (Act_Cursor) loop
-                  if Expr = Act_Cursor then
-                     Check_Type := Etype (Ty_Cursor);
-                     Found := True;
-                     exit;
-                  end if;
-
-                  Next (Act_Cursor);
-                  Next_Index (Ty_Cursor);
-               end loop;
-
-               --  The only possible child node of an indexed component with a
-               --  range check should be one of the expressions, so Found
-               --  should always be True at this point.
-
-               if not Found then
-                  raise Program_Error;
-               end if;
-            end Indexed_Component;
+            Check_Type := Empty;
+            Check_Kind := RCK_Index;
+            return;
 
          --  Frontend may have introduced unchecked type conversions on
          --  expressions or variables assigned to, which require range
@@ -1082,15 +1086,9 @@ package body Why.Gen.Expr is
 
          Check_Type := MUT (Check_Type);
 
-         --  If the parent expression is an array access, this is an index
-         --  check.
-
-         if Nkind (Par) = N_Indexed_Component then
-            Check_Kind := RCK_Index;
-
          --  If the target type is a constrained array, we have a length check.
 
-         elsif Is_Array_Type (Check_Type) and then
+         if Is_Array_Type (Check_Type) and then
            Is_Constrained (Check_Type)
          then
             Check_Kind := RCK_Length;
@@ -1134,7 +1132,7 @@ package body Why.Gen.Expr is
       Cur : W_Type_Id := From;
 
       --  Type and kind for the range check
-      Range_Type : Entity_Id;
+      Range_Type : Entity_Id := Empty;
       Check_Kind : Range_Check_Kind;
 
       --  Set to True after range check has been applied
@@ -1169,7 +1167,7 @@ package body Why.Gen.Expr is
       --  determine that the expression is always within bounds, then issue a
       --  check always true.
 
-      if Present (Range_Check)
+      if Present (Range_Type)
         and then Is_Floating_Point_Type (Range_Type)
       then
          declare
@@ -1236,16 +1234,17 @@ package body Why.Gen.Expr is
       --     case is that range checks on boolean variables are performed after
       --     their conversion to int.
 
-      if Present (Range_Check)
+      if Present (Range_Type)
         and then not Range_Check_Applied
         and then Base_Why_Type (Range_Type) = Cur
         and then Get_Base_Type (From) /= EW_Bool
       then
          Range_Check_Applied := True;
-         Result := +Do_Range_Or_Index_Check (Ada_Node   => Range_Check,
-                                             Ty         => Range_Type,
-                                             W_Expr     => Result,
-                                             Check_Kind => Check_Kind);
+
+         Result := +Do_Range_Check (Ada_Node   => Range_Check,
+                                    Ty         => Range_Type,
+                                    W_Expr     => Result,
+                                    Check_Kind => Check_Kind);
       end if;
 
       --  3. If From and To do not share the same base type (bool, int, __fixed
@@ -1311,16 +1310,16 @@ package body Why.Gen.Expr is
 
       --  5. Possibly perform the range check, if not already applied
 
-      if Present (Range_Check)
+      if Present (Range_Type)
         and then not Range_Check_Applied
       then
          pragma Assert (Base_Why_Type (Range_Type) = Cur
                           or else
                         Base_Why_Type (Range_Type) = EW_Bool_Type);
-         Result := +Do_Range_Or_Index_Check (Ada_Node   => Range_Check,
-                                             Ty         => Range_Type,
-                                             W_Expr     => Result,
-                                             Check_Kind => Check_Kind);
+         Result := +Do_Range_Check (Ada_Node   => Range_Check,
+                                    Ty         => Range_Type,
+                                    W_Expr     => Result,
+                                    Check_Kind => Check_Kind);
       end if;
 
       --  6. If To is an abstract type, convert from int, __fixed or real to it
@@ -1783,6 +1782,9 @@ package body Why.Gen.Expr is
       --  unconstrained array types.
 
       if Is_Discrete_Type (Ty) then
+
+         pragma Assert (not Depends_On_Discriminant (Get_Range (Ty)));
+
          return New_Call (Domain => Domain,
                           Name   => Dynamic_Prop_Name (Ty),
                           Args   => (1 => New_Attribute_Expr
@@ -1809,6 +1811,10 @@ package body Why.Gen.Expr is
                declare
                   Index_Type : constant Entity_Id := Etype (Index);
                begin
+
+                  pragma Assert (not Depends_On_Discriminant
+                                 (Get_Range (Index_Type)));
+
                   Args (4 * Count + 1) := New_Attribute_Expr
                     (Ty   => Index_Type,
                      Attr => Attribute_First);

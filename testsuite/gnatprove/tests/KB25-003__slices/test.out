@@ -1,7 +1,7 @@
 p.adb:3:11: warning: subprogram "P" has no effect
 pack.adb:4:32: info: length check proved
 pack.adb:12:34: info: length check proved
-pack.adb:12:51: info: index check proved
+pack.adb:12:51: warning: array index check might fail
 pack.adb:13:41: info: length check proved
 pack.adb:14:41: info: length check proved
 pack.adb:16:07: info: assertion proved

@@ -1,6 +1,6 @@
 dynamic_types.adb:4:15: info: range check proved
 dynamic_types.adb:18:17: warning: postcondition might fail, requires Search_Range'Result.Result = 0 and then (for all I in From .. Search_Range'Result.From (1) => A (I) /= C)) or else (Search_Range'Result.Result in A'Range and then A (Search_Range'Result.Result) = C
-dynamic_types.adb:20:35: warning: array index check might fail
+dynamic_types.adb:20:35: info: index check proved
 dynamic_types.adb:22:49: info: index check proved
 dynamic_types.adb:26:16: info: index check proved
 dynamic_types.adb:27:41: info: length check proved

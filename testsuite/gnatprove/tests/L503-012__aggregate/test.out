@@ -19,5 +19,5 @@ r.adb:51:22: warning: array index check might fail
 r.adb:51:25: info: index check proved
 r.adb:53:12: info: length check proved
 r.adb:53:23: info: length check proved
-r.adb:53:45: warning: array index check might fail
+r.adb:53:45: info: index check proved
 r.adb:53:48: info: index check proved

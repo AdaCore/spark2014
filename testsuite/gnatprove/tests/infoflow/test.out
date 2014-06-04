@@ -16,15 +16,15 @@ infoflow.adb:101:13: warning: loop invariant might fail in first iteration
 infoflow.adb:103:40: info: index check proved
 infoflow.adb:103:64: warning: array index check might fail
 infoflow.adb:105:40: info: index check proved
-infoflow.adb:105:64: info: index check proved
+infoflow.adb:105:64: warning: array index check might fail
 infoflow.adb:106:42: info: index check proved
 infoflow.adb:106:64: info: index check proved
 infoflow.adb:107:27: warning: array index check might fail
-infoflow.adb:108:19: warning: array index check might fail
+infoflow.adb:108:19: info: index check proved
 infoflow.adb:108:39: warning: array index check might fail
 infoflow.adb:108:39: warning: overflow check might fail
-infoflow.adb:109:24: warning: array index check might fail
-infoflow.adb:109:24: warning: overflow check might fail
+infoflow.adb:109:24: info: index check proved
+infoflow.adb:109:24: info: overflow check proved
 infoflow.adb:113:07: info: assertion proved
 infoflow.adb:121:28: info: division check proved
 infoflow.adb:123:13: warning: loop invariant might fail after first iteration
@@ -32,19 +32,19 @@ infoflow.adb:123:13: warning: loop invariant might fail in first iteration
 infoflow.adb:125:40: info: index check proved
 infoflow.adb:125:64: warning: array index check might fail
 infoflow.adb:127:40: info: index check proved
-infoflow.adb:127:64: info: index check proved
+infoflow.adb:127:64: warning: array index check might fail
 infoflow.adb:128:42: info: index check proved
 infoflow.adb:128:64: info: index check proved
 infoflow.adb:129:27: warning: array index check might fail
-infoflow.adb:130:19: warning: array index check might fail
+infoflow.adb:130:19: info: index check proved
 infoflow.adb:130:39: warning: array index check might fail
 infoflow.adb:130:39: warning: overflow check might fail
-infoflow.adb:131:24: warning: array index check might fail
-infoflow.adb:131:24: warning: overflow check might fail
+infoflow.adb:131:24: info: index check proved
+infoflow.adb:131:24: info: overflow check proved
 infoflow.adb:139:17: warning: postcondition might fail
 infoflow.adb:140:35: info: division check proved
 infoflow.adb:140:46: info: index check proved
-infoflow.adb:140:60: warning: array index check might fail
+infoflow.adb:140:60: info: index check proved
 infoflow.adb:140:68: info: division check proved
 infoflow.adb:141:29: info: index check proved
 infoflow.adb:141:43: info: index check proved
@@ -63,7 +63,7 @@ infoflow.adb:155:16: info: index check proved
 infoflow.adb:155:31: warning: array index check might fail
 infoflow.adb:155:31: warning: overflow check might fail
 infoflow.adb:156:18: info: index check proved
-infoflow.adb:156:18: warning: overflow check might fail
+infoflow.adb:156:18: info: overflow check proved
 infoflow.adb:161:07: warning: precondition might fail
 infoflow.adb:163:07: warning: precondition might fail
 infoflow.adb:172:10: info: loop invariant initialization proved
@@ -102,7 +102,7 @@ infoflow.adb:201:33: info: index check proved
 infoflow.adb:201:44: info: index check proved
 infoflow.adb:202:16: info: index check proved
 infoflow.adb:202:31: info: index check proved
-infoflow.adb:205:07: info: assertion proved
+infoflow.adb:205:07: warning: assertion might fail
 infoflow.adb:207:13: warning: "A_V1" might not be initialized
 infoflow.adb:207:19: info: index check proved
 infoflow.adb:207:30: info: index check proved
@@ -181,10 +181,10 @@ infoflow.ads:129:06: warning: contract cases might not be disjoint
 infoflow.ads:131:33: info: index check proved
 infoflow.ads:131:44: info: index check proved
 infoflow.ads:132:24: warning: contract case might fail
-infoflow.ads:132:33: warning: array index check might fail
+infoflow.ads:132:33: info: index check proved
 infoflow.ads:132:44: warning: array index check might fail
 infoflow.ads:135:34: info: index check proved
 infoflow.ads:135:49: info: index check proved
 infoflow.ads:136:24: warning: contract case might fail
-infoflow.ads:136:33: warning: array index check might fail
+infoflow.ads:136:33: info: index check proved
 infoflow.ads:136:44: warning: array index check might fail

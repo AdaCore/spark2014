@@ -62,6 +62,7 @@ package Why.Atree.Modules is
 
    Static_Discrete           : W_Module_Id;
    Static_Modular            : W_Module_Id;
+   Dynamic_Discrete_Base     : W_Module_Id;
    Dynamic_Discrete          : W_Module_Id;
    Dynamic_Modular           : W_Module_Id;
    Static_Fixed_Point        : W_Module_Id;

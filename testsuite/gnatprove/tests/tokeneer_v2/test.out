@@ -393,15 +393,15 @@ display.adb:140:32: info: range check proved, in call inlined at display.adb:280
 display.adb:143:11: info: range check proved, in call inlined at display.adb:188
 display.adb:143:11: info: range check proved, in call inlined at display.adb:280
 display.adb:144:10: info: loop invariant initialization proved, in call inlined at display.adb:188
+display.adb:144:10: info: loop invariant initialization proved, in call inlined at display.adb:280
 display.adb:144:10: info: loop invariant preservation proved, in call inlined at display.adb:188
 display.adb:144:10: info: loop invariant preservation proved, in call inlined at display.adb:280
-display.adb:144:10: warning: loop invariant might fail in first iteration, in call inlined at display.adb:280
 display.adb:148:33: info: index check proved, in call inlined at display.adb:188
 display.adb:148:33: info: index check proved, in call inlined at display.adb:280
 display.adb:148:33: info: overflow check proved, in call inlined at display.adb:188
 display.adb:148:33: info: overflow check proved, in call inlined at display.adb:280
 display.adb:150:32: info: range check proved, in call inlined at display.adb:188
-display.adb:150:32: warning: range check might fail, in call inlined at display.adb:280
+display.adb:150:32: info: range check proved, in call inlined at display.adb:280
 display.adb:184:18: warning: precondition might fail
 display.adb:235:49: warning: "Interfac.Output" might not be written
 display.adb:264:18: warning: statement has no effect
@@ -700,7 +700,7 @@ screen.adb:440:44: warning: range check might fail, in call inlined at screen.ad
 screen.adb:440:44: warning: range check might fail, in call inlined at screen.adb:597
 screen.adb:440:44: warning: range check might fail, in call inlined at screen.adb:603
 screen.adb:440:44: warning: range check might fail, in call inlined at screen.adb:609
-screen.adb:440:72: warning: overflow check might fail, in call inlined at screen.adb:591
+creen.adb:440:72: info: overflow check proved, in call inlined at screen.adb:591
 screen.adb:440:72: warning: overflow check might fail, in call inlined at screen.adb:597
 screen.adb:440:72: warning: overflow check might fail, in call inlined at screen.adb:603
 screen.adb:440:72: warning: overflow check might fail, in call inlined at screen.adb:609
@@ -733,7 +733,7 @@ screen.adb:591:49: info: range check proved
 screen.adb:597:18: warning: unused assignment to "Interfac.Output"
 screen.adb:597:49: info: range check proved
 screen.adb:603:18: warning: unused assignment to "Interfac.Output"
-screen.adb:603:49: info: range check proved
+screen.adb:603:49: warning: range check might fail
 screen.adb:609:18: warning: unused assignment to "Interfac.Output"
 screen.adb:609:49: warning: range check might fail
 screen.adb:615:18: warning: unused assignment to "Interfac.Output"

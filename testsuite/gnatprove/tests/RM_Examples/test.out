@@ -24,11 +24,11 @@ up_timer.adb:14:36: info: overflow check proved
 f.adb:3:16: info: postcondition proved
 f.adb:10:16: info: range check proved
 f.adb:10:38: info: overflow check proved
+f.adb:11:36: info: index check proved
 f.adb:11:36: info: overflow check proved
-f.adb:11:36: warning: array index check might fail
 f.adb:13:26: info: range check proved
-f.adb:13:37: warning: array index check might fail
-f.adb:13:37: warning: overflow check might fail
+f.adb:13:37: info: index check proved
+f.adb:13:37: info: overflow check proved
 f.adb:21:04: info: assertion proved
 f.adb:21:41: warning: "Control_Char" might not be initialized
 f.adb:34:12: warning: "Control_Char" might not be initialized

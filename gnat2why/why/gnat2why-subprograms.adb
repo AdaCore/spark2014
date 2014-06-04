@@ -267,19 +267,18 @@ package body Gnat2Why.Subprograms is
 
                Assume_Constraints_For_Type (Base);
 
-               --  If an Itype is declared in a record with discriminants, its
-               --  bounds can depend on a discriminant.
-               --  ??? are there other cases ?
-
-               if Is_Itype (Ty) and then Is_Record_Type (Scope (Ty))
-                 and then Has_Discriminants (Scope (Ty))
-               then
-                  return;
-               end if;
-
                --  No need to assume anything if Ty is declared in Subp
 
                if Enclosing_Subprogram (Ty) = Subp then
+                  return;
+               end if;
+
+               --  Do not assume the bounds of a type that depends on a
+               --  discriminant.
+               --  ??? are there other cases ?
+
+               if Depends_On_Discriminant (Get_Range (Ty))
+               then
                   return;
                end if;
 
@@ -343,7 +342,13 @@ package body Gnat2Why.Subprograms is
       Objects :        Node_Sets.Set) is
    begin
       for Obj of Objects loop
-         if Is_Mutable_In_Why (Obj) then
+
+         --  No need to assume anything if Obj is a local object of the
+         --  subprogram.
+
+         if not Ada_Ent_To_Why.Has_Element (Symbol_Table, Obj) then
+            null;
+         elsif Is_Mutable_In_Why (Obj) then
             Assume :=
               Sequence ((1 => Assume,
                          2 => Assume_Dynamic_Property

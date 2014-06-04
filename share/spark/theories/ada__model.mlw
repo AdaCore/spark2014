@@ -94,12 +94,40 @@ module Static_Modular
 end
 
 module Dynamic_Discrete_Base
-  (* The module that is used as basis for all "dynamic" discrete types.
-     It contains the whole discrete theory, except the coerce_axiom which
-     differs between modular and non-modular types. "Dynamic" here means that
-     Why sees a dynamic version of the type, with references for the bounds,
-     which correspond to some cases of dynamic types in Ada. *)
+ (* Theory for dynamic discrete types without references for first and last,
+       it is used when there cannot be one relevant value of first and last at a
+       program point. *)
+ use import "int".Int
 
+ type base
+
+ function to_int_base base : int
+ function of_int_base int : base
+
+ function to_int "inline" (x : base) : int = to_int_base (x)
+ function of_int "inline" (x : int) : base = of_int_base (x)
+
+ predicate dynamic_property (first : int) (last : int) (x : int) =
+    first <= x /\ x <= last
+
+ function dummy : base
+end
+
+module Dynamic_Discrete
+ use import "int".Int
+  use import ref.Ref
+  clone export Dynamic_Discrete_Base
+
+ val first : ref base
+
+ val last : ref base
+
+ val range_check_ (x : int) : int
+   requires { dynamic_property (to_int (!first)) (to_int (!last)) x }
+   ensures { result = x } 
+end
+
+module Dynamic_Modular
   use import int.Int
   use import ref.Ref
   clone export Discrete_Base
@@ -110,36 +138,6 @@ module Dynamic_Discrete_Base
   val first : ref int
 
   val last : ref int
-end
-
-module Dynamic_Discrete
- use import "int".Int
-  use import ref.Ref
-
- type base
-
- function to_int_base base : int
- function of_int_base int : base
-
- function to_int "inline" (x : base) : int = to_int_base (x)
- function of_int "inline" (x : int) : base = of_int_base (x)
-
- val first : ref base
-
- val last : ref base
-
- predicate dynamic_property (first : int) (last : int) (x : int) =
-    first <= x /\ x <= last
-
- val range_check_ (x : int) : int
-   requires { dynamic_property (to_int (!first)) (to_int (!last)) x }
-   ensures { result = x } 
-
- function dummy : base
-end
-
-module Dynamic_Modular
-  clone export Dynamic_Discrete_Base
 
   function attr__ATTRIBUTE_MODULUS : int
 

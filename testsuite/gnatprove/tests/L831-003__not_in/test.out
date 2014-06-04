@@ -6,8 +6,8 @@ lcp.adb:13:28: info: index check proved
 lcp.adb:13:28: info: overflow check proved
 lcp.adb:17:14: info: overflow check proved
 lcp.ads:6:05: warning: postcondition might fail
+lcp.ads:6:43: info: overflow check proved
 lcp.ads:6:43: warning: array index check might fail
-lcp.ads:6:43: warning: overflow check might fail
 lcp.ads:6:55: warning: array index check might fail
 lcp.ads:6:55: warning: overflow check might fail
 lcp.ads:7:19: warning: overflow check might fail

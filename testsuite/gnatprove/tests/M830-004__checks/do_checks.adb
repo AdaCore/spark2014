@@ -2,16 +2,19 @@ procedure Do_Checks is
 
    Zero : Integer := 0;
    Branch : Natural := 1001;
+   procedure Do_Range_Check (Zero : Integer) with Pre => True;
+   procedure Do_Length_Check with Pre => True;
+   procedure Do_Discriminant_Check with Pre => True;
 
    --  Check that a range check is performed on every subtype indication with
    --  a range_constraint.
-   procedure Do_Range_Check is
+   procedure Do_Range_Check (Zero : Integer) is
    begin
       case Branch is
          --  subtype_indication in a subtype_declaration
          when 0 =>
             declare
-               subtype S is Positive range Zero .. 1;  --  BAD
+               subtype S is Positive range Zero .. 1;  -- @RANGE_CHECK:FAIL
             begin
                null;
             end;
@@ -25,7 +28,7 @@ procedure Do_Checks is
          --  subtype_indication in an object_declaration
          when 2 =>
             declare
-               A : Positive range Zero .. 1;  --  BAD
+               A : Positive range Zero .. 1;  -- @RANGE_CHECK:FAIL
                pragma Unreferenced (A);
             begin
                null;
@@ -41,7 +44,7 @@ procedure Do_Checks is
          --  subtype_indication in a derived_type_definition
          when 4 =>
             declare
-               type S is new Positive range Zero .. 1;  --  BAD
+               type S is new Positive range Zero .. 1;  -- @RANGE_CHECK:FAIL
             begin
                null;
             end;
@@ -55,20 +58,20 @@ procedure Do_Checks is
          --  subtype_indication in a constrained_array_definition
          when 6 =>
             declare
-               type S is array (Positive range Zero .. 1) of Integer;  --  BAD
+               type S is array (Positive range Zero .. 1) of Integer;  -- @RANGE_CHECK:FAIL
             begin
                null;
             end;
          when 7 =>
             declare
-               type S is array (Positive range Zero .. Zero - 1) of Positive;  --  OK
+               type S is array (Positive range Zero .. Zero - 1) of Positive;
             begin
                null;
             end;
 
          --  subtype_indication in a loop_parameter_specification
          when 8 =>
-            for J in Positive range Zero .. 1 loop  --  BAD
+            for J in Positive range Zero .. 1 loop -- @RANGE_CHECK:FAIL
                null;
             end loop;
          when 9 =>
@@ -80,7 +83,7 @@ procedure Do_Checks is
          when 10 =>
             declare
                type S is record
-                  C : Positive range Zero .. 1;  --  BAD
+                  C : Positive range Zero .. 1;  -- @RANGE_CHECK:FAIL
                end record;
             begin
                null;
@@ -97,7 +100,7 @@ procedure Do_Checks is
          --  subtype_indication in an index_constraint
          when 12 =>
             declare
-               subtype S is String (Positive range Zero .. 1);  --  BAD
+               subtype S is String (Positive range Zero .. 1);  -- @RANGE_CHECK:FAIL
             begin
                null;
             end;
@@ -113,7 +116,7 @@ procedure Do_Checks is
          --  when 14 =>
          --     declare
          --        A : String := "hello world";
-         --        B : String := A(Positive range Zero .. 1);  --  BAD
+         --        B : String := A(Positive range Zero .. 1);  -- RANGE_CHECK:FAIL
          --     begin
          --        null;
          --     end;
@@ -131,7 +134,7 @@ procedure Do_Checks is
                type S (B : Boolean) is record
                   case B is
                      when True =>
-                        C : Positive range Zero .. 1;  --  BAD
+                        C : Positive range Zero .. 1; -- @RANGE_CHECK:FAIL
                      when False =>
                         null;
                   end case;
@@ -156,7 +159,7 @@ procedure Do_Checks is
          --  subtype_indication in an array_component_association
          when 18 =>
             declare
-               A : String(1 .. 10) := (Positive range Zero .. 1 => '0');  --  BAD
+               A : String(1 .. 10) := (Positive range Zero .. 1 => '0');  -- @RANGE_CHECK:FAIL
             begin
                null;
             end;
@@ -175,7 +178,7 @@ procedure Do_Checks is
          --     declare
          --        A : String := "hello world";
          --     begin
-         --        for J : Positive range Zero .. 1 of A loop  --  BAD
+         --        for J : Positive range Zero .. 1 of A loop  -- RANGE_CHECK: FAIL
          --           null;
          --        end loop;
          --     end;
@@ -207,7 +210,7 @@ procedure Do_Checks is
             declare
                procedure P (X, Y : in out A1) with Pre => True is
                begin
-                  X := X and Y;  --  BAD
+                  X := X and Y;  -- @LENGTH_CHECK:FAIL
                end;
                X : A1(0 .. 10) := (others => False);
                Y : A1(1 .. 10) := (others => False);
@@ -231,7 +234,7 @@ procedure Do_Checks is
             declare
                procedure P (X : A1; Y : out A2) with Pre => True is
                begin
-                  Y := X;  --  BAD
+                  Y := X;  -- @LENGTH_CHECK:FAIL
                end;
                X : A1(1 .. 10) := (others => False);
                Y : A2;
@@ -261,7 +264,7 @@ procedure Do_Checks is
                end;
                procedure P2 (X : in out A1) with Pre => True is
                begin
-                  P1(X);  --  BAD
+                  P1(X);  -- @LENGTH_CHECK:FAIL
                end;
                X : A1(1 .. 10) := (others => False);
             begin
@@ -309,7 +312,7 @@ procedure Do_Checks is
             declare
                procedure P (X, Y : in out R1) with Pre => True is
                begin
-                  X.Arr(1) := Y.Arr(10);  --  BAD
+                  X.Arr(1) := Y.Arr(10);  -- @DISCRIMINANT_CHECK:FAIL
                end;
                X : R1(0)  := (J => 0);
                Y : R1(-1) := (J => -1);
@@ -340,7 +343,7 @@ procedure Do_Checks is
             declare
                procedure P (X : in R1; Y : out R3) with Pre => True is
                begin
-                  Y := R3(X);  --  BAD
+                  Y := R3(X);  -- @DISCRIMINANT_CHECK:FAIL
                end;
                X : R1(0) := (J => 0);
                Y : R3    := (J => 10, Arr => (others => True));
@@ -366,7 +369,7 @@ procedure Do_Checks is
             declare
                procedure P (X : in R1; Y : out R2) with Pre => True is
                begin
-                  Y := X;  --  BAD
+                  Y := X;  -- @DISCRIMINANT_CHECK:FAIL
                end;
                X : R1(0) := (J => 0);
                Y : R2    := (J => 10, Arr => (others => True));
@@ -398,7 +401,7 @@ procedure Do_Checks is
                X : R1(0) := (J => 0);
                Y : R3    := (J => 10, Arr => (others => True));
             begin
-               P (R3(X), Y);  --  BAD
+               P (R3(X), Y);  -- @DISCRIMINANT_CHECK:FAIL
             end;
          when 1009 =>
             declare
@@ -421,7 +424,7 @@ procedure Do_Checks is
                end;
                procedure P2 (X : in out R1; Y : out R2) with Pre => True is
                begin
-                  P1 (X,Y);  --  BAD
+                  P1 (X,Y);  -- @DISCRIMINANT_CHECK:FAIL
                end;
 
                X : R1(0) := (J => 0);
@@ -446,7 +449,7 @@ procedure Do_Checks is
             declare
                procedure P (X : in out R1; Y : in out R2) with Pre => True is
                begin
-                  if R2'(X) = Y then  --  BAD
+                  if R2'(X) = Y then  -- @DISCRIMINANT_CHECK:FAIL
                      null;
                   end if;
                end;
@@ -477,7 +480,7 @@ procedure Do_Checks is
    end Do_Discriminant_Check;
 
 begin
-   Do_Range_Check;
+   Do_Range_Check (Zero);
    Do_Length_Check;
    Do_Discriminant_Check;
 end Do_Checks;

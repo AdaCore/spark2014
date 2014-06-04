@@ -8,5 +8,5 @@ tab.adb:12:53: info: overflow check proved
 tab.adb:12:62: warning: array index check might fail
 tab.adb:12:67: info: index check proved
 tab.adb:14:15: warning: array index check might fail
-tab.adb:15:24: warning: overflow check might fail
+tab.adb:15:24: info: overflow check proved
 tab.ads:6:17: warning: postcondition might fail

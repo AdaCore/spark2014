@@ -3,11 +3,11 @@ prefixsum.adb:9:10: warning: loop invariant might fail after first iteration
 prefixsum.adb:10:40: info: range check proved
 prefixsum.adb:15:27: info: division check proved
 prefixsum.adb:22:30: info: division check proved
-prefixsum.adb:25:60: warning: array index check might fail
-prefixsum.adb:26:41: warning: array index check might fail
+prefixsum.adb:25:60: info: index check proved
+prefixsum.adb:26:41: info: index check proved
 prefixsum.adb:26:62: warning: array index check might fail
 prefixsum.adb:27:30: info: division check proved
-prefixsum.adb:30:60: warning: array index check might fail
+prefixsum.adb:30:60: info: index check proved
 prefixsum.adb:33:10: info: loop variant proved
 prefixsum.adb:38:13: warning: loop invariant might fail after first iteration
 prefixsum.adb:38:13: warning: loop invariant might fail in first iteration
@@ -19,7 +19,7 @@ prefixsum.adb:51:37: info: division check proved
 prefixsum.adb:53:64: warning: array index check might fail
 prefixsum.adb:56:13: info: loop variant proved
 prefixsum.adb:58:31: info: overflow check proved
-prefixsum.adb:59:16: warning: array index check might fail
+prefixsum.adb:59:16: info: index check proved
 prefixsum.adb:59:29: info: index check proved
 prefixsum.adb:59:35: warning: overflow check might fail
 prefixsum.adb:59:40: warning: array index check might fail
@@ -53,13 +53,13 @@ prefixsum.adb:121:13: info: loop variant proved
 prefixsum.adb:123:32: info: overflow check proved
 prefixsum.adb:123:32: warning: range check might fail
 prefixsum.adb:124:29: warning: array index check might fail
-prefixsum.adb:125:16: warning: array index check might fail
+prefixsum.adb:125:16: info: index check proved
 prefixsum.adb:125:29: info: index check proved
 prefixsum.adb:125:35: warning: overflow check might fail
-prefixsum.adb:125:40: warning: array index check might fail
-prefixsum.adb:126:16: warning: array index check might fail
-prefixsum.adb:127:32: warning: overflow check might fail
-prefixsum.adb:127:32: warning: range check might fail
+prefixsum.adb:125:40: info: index check proved
+prefixsum.adb:126:16: info: index check proved
+prefixsum.adb:127:32: info: overflow check proved
+prefixsum.adb:127:32: info: range check proved
 prefixsum.adb:127:40: info: overflow check proved
 prefixsum.adb:129:25: info: division check proved
 prefixsum.ads:26:23: info: division check proved
@@ -99,12 +99,12 @@ prefixsum_expanded.adb:70:37: info: division check proved
 prefixsum_expanded.adb:72:64: warning: array index check might fail
 prefixsum_expanded.adb:75:13: info: loop variant proved
 prefixsum_expanded.adb:77:31: warning: overflow check might fail
-prefixsum_expanded.adb:78:16: warning: array index check might fail
+prefixsum_expanded.adb:78:16: info: index check proved
 prefixsum_expanded.adb:78:29: info: index check proved
 prefixsum_expanded.adb:78:35: warning: overflow check might fail
 prefixsum_expanded.adb:78:40: warning: array index check might fail
-prefixsum_expanded.adb:79:31: warning: overflow check might fail
-prefixsum_expanded.adb:79:31: warning: range check might fail
+prefixsum_expanded.adb:79:31: info: overflow check proved
+prefixsum_expanded.adb:79:31: info: range check proved
 prefixsum_expanded.adb:79:39: info: overflow check proved
 prefixsum_expanded.adb:81:25: info: overflow check proved
 prefixsum_expanded.adb:81:25: info: range check proved
@@ -131,13 +131,13 @@ prefixsum_expanded.adb:181:13: info: loop variant proved
 prefixsum_expanded.adb:183:32: warning: overflow check might fail
 prefixsum_expanded.adb:183:32: warning: range check might fail
 prefixsum_expanded.adb:184:29: warning: array index check might fail
-prefixsum_expanded.adb:185:16: warning: array index check might fail
+prefixsum_expanded.adb:185:16: info: index check proved
 prefixsum_expanded.adb:185:29: info: index check proved
 prefixsum_expanded.adb:185:35: warning: overflow check might fail
-prefixsum_expanded.adb:185:40: warning: array index check might fail
-prefixsum_expanded.adb:186:16: warning: array index check might fail
-prefixsum_expanded.adb:187:32: warning: overflow check might fail
-prefixsum_expanded.adb:187:32: warning: range check might fail
+prefixsum_expanded.adb:185:40: info: index check proved
+prefixsum_expanded.adb:186:16: info: index check proved
+prefixsum_expanded.adb:187:32: info: overflow check proved
+prefixsum_expanded.adb:187:32: info: range check proved
 prefixsum_expanded.adb:187:40: info: overflow check proved
 prefixsum_expanded.adb:189:25: info: division check proved
 prefixsum_expanded.adb:192:07: warning: assertion might fail
@@ -181,17 +181,17 @@ prefixsum_general.adb:61:19: warning: array index check might fail
 prefixsum_general.adb:61:27: info: precondition proved
 prefixsum_general.adb:61:54: warning: range check might fail
 prefixsum_general.adb:61:63: warning: range check might fail
-prefixsum_general.adb:63:24: warning: array index check might fail
-prefixsum_general.adb:63:35: info: precondition proved
+prefixsum_general.adb:63:24: info: index check proved
+prefixsum_general.adb:63:35: warning: precondition might fail
 prefixsum_general.adb:63:58: warning: range check might fail
-prefixsum_general.adb:63:68: warning: range check might fail
-prefixsum_general.adb:64:13: info: loop variant proved
+prefixsum_general.adb:63:68: info: range check proved
+prefixsum_general.adb:64:13: warning: loop variant might fail
 prefixsum_general.adb:66:31: warning: overflow check might fail
-prefixsum_general.adb:67:16: warning: array index check might fail
-prefixsum_general.adb:67:29: warning: array index check might fail
+prefixsum_general.adb:67:16: info: index check proved
+prefixsum_general.adb:67:29: info: index check proved
 prefixsum_general.adb:67:35: warning: overflow check might fail
 prefixsum_general.adb:67:40: info: index check proved
-prefixsum_general.adb:68:31: warning: overflow check might fail
+prefixsum_general.adb:68:31: info: overflow check proved
 prefixsum_general.adb:68:31: warning: range check might fail
 prefixsum_general.adb:68:39: info: overflow check proved
 prefixsum_general.adb:70:25: info: overflow check proved

@@ -9,5 +9,5 @@ search.adb:13:70: warning: array index check might fail
 search.ads:5:55: info: index check proved
 search.ads:8:09: warning: postcondition might fail, requires Search'Result = 0 and then No_V_In_Range(T,V,T'First,T'Last)) or else (T(Search'Result) = V and then No_V_In_Range(T,V,T'First,Search'Result-1)
 search.ads:10:21: warning: array index check might fail
-search.ads:11:54: warning: overflow check might fail
+search.ads:11:54: info: overflow check proved
 search.ads:11:54: warning: range check might fail

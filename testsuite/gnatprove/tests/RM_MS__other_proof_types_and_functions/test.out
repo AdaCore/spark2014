@@ -24,11 +24,11 @@ stack_external_prover.adb:16:36: info: length check proved
 stack_external_prover.adb:24:44: warning: range check might fail
 stack_external_prover.adb:25:26: info: index check proved
 stack_external_prover.adb:32:32: warning: array index check might fail
-stack_external_prover.adb:33:44: warning: range check might fail
+stack_external_prover.adb:33:44: info: range check proved
 stack_external_prover.adb:41:35: warning: array index check might fail
-stack_external_prover.adb:42:27: warning: array index check might fail
+stack_external_prover.adb:42:27: info: index check proved
 stack_external_prover.adb:42:69: warning: array index check might fail
-stack_external_prover.adb:43:36: warning: array index check might fail
+stack_external_prover.adb:43:36: info: index check proved
 stack_external_prover.ads:5:08: warning: initial condition might fail
 stack_external_prover.ads:42:21: warning: postcondition might fail
 stack_external_prover.ads:42:39: warning: overflow check might fail

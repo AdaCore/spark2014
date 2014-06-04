@@ -15,7 +15,7 @@ subar.adb:30:14: warning: subprogram "Try_E" has no effect
 subar.adb:34:07: info: precondition proved
 subar.adb:34:10: warning: "Ae" might not be initialized
 subar.adb:38:07: warning: range check might fail
-subar.adb:41:09: warning: length check might fail
+subar.adb:41:09: info: length check proved
 subar.adb:41:26: info: range check proved
 subar.adb:42:10: info: index check proved
 subar.adb:45:04: warning: analyzing unreferenced procedure "Loop_Test"

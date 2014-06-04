@@ -4,5 +4,5 @@ search.adb:8:21: info: range check proved
 search.adb:8:62: info: index check proved
 search.ads:6:11: warning: postcondition might fail
 search.ads:9:24: warning: array index check might fail
-search.ads:10:54: warning: overflow check might fail
-search.ads:10:63: warning: array index check might fail
+search.ads:10:54: info: overflow check proved
+search.ads:10:63: info: index check proved

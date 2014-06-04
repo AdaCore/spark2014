@@ -125,6 +125,10 @@ package body Why.Atree.Modules is
         New_Module
           (File => Ada_Model_File,
            Name => NID ("Dynamic_Discrete"));
+      Dynamic_Discrete_Base :=
+        New_Module
+          (File => Ada_Model_File,
+           Name => NID ("Dynamic_Discrete_Base"));
       Static_Fixed_Point :=
         New_Module
           (File => Ada_Model_File,

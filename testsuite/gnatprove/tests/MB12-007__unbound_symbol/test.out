@@ -1,10 +1,11 @@
 pupils.adb:20:08: info: length check proved
 pupils.adb:25:49: warning: array index check might fail
-pupils.adb:29:43: warning: array index check might fail
-pupils.adb:33:46: warning: range check might fail
+pupils.adb:29:43: info: index check proved
+pupils.adb:33:46: info: range check proved
 pupils.adb:34:26: info: index check proved
 pupils.adb:35:26: info: index check proved
 pupils.adb:36:26: info: index check proved
+pupils.adb:36:26: warning: array index check might fail
 pupils.ads:40:17: info: length check proved
 pupils.ads:46:46: info: length check proved
 pupils.ads:76:32: info: length check proved
@@ -15,5 +16,5 @@ pupils.ads:103:60: info: index check proved
 pupils.ads:107:39: info: length check proved
 pupils.ads:109:39: info: length check proved
 pupils.ads:112:39: info: length check proved
-pupils.ads:116:38: info: index check proved
+pupils.ads:116:38: warning: array index check might fail
 pupils.ads:122:68: info: index check proved

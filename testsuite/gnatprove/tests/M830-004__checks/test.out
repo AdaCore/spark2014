@@ -1,158 +1,158 @@
 do_checks.adb:1:11: warning: subprogram "Do_Checks" has no effect
-do_checks.adb:14:24: info: range check proved, in call inlined at do_checks.adb:480
-do_checks.adb:20:24: info: range check proved, in call inlined at do_checks.adb:480
-do_checks.adb:20:57: info: overflow check proved, in call inlined at do_checks.adb:480
-do_checks.adb:28:16: info: range check proved, in call inlined at do_checks.adb:480
-do_checks.adb:35:16: info: range check proved, in call inlined at do_checks.adb:480
-do_checks.adb:35:48: info: overflow check proved, in call inlined at do_checks.adb:480
-do_checks.adb:44:21: info: range check proved, in call inlined at do_checks.adb:480
-do_checks.adb:50:21: info: range check proved, in call inlined at do_checks.adb:480
-do_checks.adb:50:58: info: overflow check proved, in call inlined at do_checks.adb:480
-do_checks.adb:58:16: info: range check proved, in call inlined at do_checks.adb:480
-do_checks.adb:64:16: info: range check proved, in call inlined at do_checks.adb:480
-do_checks.adb:64:61: info: overflow check proved, in call inlined at do_checks.adb:480
-do_checks.adb:71:17: info: range check proved, in call inlined at do_checks.adb:480
-do_checks.adb:75:17: info: range check proved, in call inlined at do_checks.adb:480
-do_checks.adb:75:50: info: overflow check proved, in call inlined at do_checks.adb:480
-do_checks.adb:83:19: info: range check proved, in call inlined at do_checks.adb:480
-do_checks.adb:91:19: info: range check proved, in call inlined at do_checks.adb:480
-do_checks.adb:91:51: info: overflow check proved, in call inlined at do_checks.adb:480
-do_checks.adb:100:16: info: range check proved, in call inlined at do_checks.adb:480
-do_checks.adb:106:16: info: range check proved, in call inlined at do_checks.adb:480
-do_checks.adb:106:65: info: overflow check proved, in call inlined at do_checks.adb:480
-do_checks.adb:134:25: info: range check proved, in call inlined at do_checks.adb:480
-do_checks.adb:147:25: info: range check proved, in call inlined at do_checks.adb:480
-do_checks.adb:147:57: info: overflow check proved, in call inlined at do_checks.adb:480
-do_checks.adb:159:39: info: length check proved, in call inlined at do_checks.adb:480
-do_checks.adb:159:39: info: range check proved, in call inlined at do_checks.adb:480
-do_checks.adb:165:38: info: length check proved, in call inlined at do_checks.adb:480
-do_checks.adb:165:38: info: range check proved, in call inlined at do_checks.adb:480
-do_checks.adb:165:67: info: overflow check proved, in call inlined at do_checks.adb:480
-do_checks.adb:199:14: warning: subprogram "Do_Length_Check" has no effect
-do_checks.adb:208:32: warning: "Y" is not modified, could be "in"
-do_checks.adb:210:21: info: length check proved
-do_checks.adb:210:26: warning: length check might fail
-do_checks.adb:212:35: info: length check proved
-do_checks.adb:213:35: info: length check proved
-do_checks.adb:215:16: info: precondition proved
-do_checks.adb:219:32: warning: "Y" is not modified, could be "in"
-do_checks.adb:221:21: info: length check proved
-do_checks.adb:221:26: warning: length check might fail
-do_checks.adb:223:35: info: length check proved
-do_checks.adb:224:35: info: length check proved
-do_checks.adb:226:16: info: precondition proved
-do_checks.adb:234:24: warning: length check might fail
-do_checks.adb:236:35: info: length check proved
-do_checks.adb:239:16: info: precondition proved
-do_checks.adb:247:24: info: length check proved
-do_checks.adb:249:35: info: length check proved
-do_checks.adb:252:16: info: precondition proved
-do_checks.adb:258:30: warning: "X" is not modified, could be "in"
-do_checks.adb:258:30: warning: unused variable "X"
-do_checks.adb:264:19: info: precondition proved
-do_checks.adb:264:22: warning: length check might fail
-do_checks.adb:266:35: info: length check proved
-do_checks.adb:268:16: info: precondition proved
-do_checks.adb:272:30: warning: "X" is not modified, could be "in"
-do_checks.adb:272:30: warning: unused variable "X"
-do_checks.adb:280:19: info: precondition proved
-do_checks.adb:280:22: info: length check proved
-do_checks.adb:282:35: info: length check proved
-do_checks.adb:284:16: info: precondition proved
-do_checks.adb:293:14: warning: subprogram "Do_Discriminant_Check" has no effect
-do_checks.adb:310:32: warning: "Y.Arr" is not modified, could be "in"
-do_checks.adb:310:32: warning: "Y.J" is not modified, could be "in"
-do_checks.adb:312:20: warning: discriminant check might fail
-do_checks.adb:312:25: warning: array index check might fail
-do_checks.adb:312:32: warning: discriminant check might fail
-do_checks.adb:312:37: warning: array index check might fail
-do_checks.adb:314:30: info: discriminant check proved
-do_checks.adb:315:30: info: discriminant check proved
-do_checks.adb:317:16: info: precondition proved
-do_checks.adb:321:32: warning: "Y.Arr" is not modified, could be "in"
-do_checks.adb:321:32: warning: "Y.J" is not modified, could be "in"
-do_checks.adb:325:20: info: discriminant check proved
-do_checks.adb:325:25: warning: array index check might fail
-do_checks.adb:325:32: info: discriminant check proved
-do_checks.adb:325:37: warning: array index check might fail
-do_checks.adb:327:26: info: discriminant check proved
-do_checks.adb:327:43: info: length check proved
-do_checks.adb:328:26: info: discriminant check proved
-do_checks.adb:328:43: info: length check proved
-do_checks.adb:330:16: info: precondition proved
-do_checks.adb:343:27: warning: discriminant check might fail
-do_checks.adb:345:29: info: discriminant check proved
-do_checks.adb:346:29: info: discriminant check proved
-do_checks.adb:346:46: info: length check proved
-do_checks.adb:348:16: info: precondition proved
-do_checks.adb:356:27: info: discriminant check proved
-do_checks.adb:358:30: info: discriminant check proved
-do_checks.adb:358:47: info: length check proved
-do_checks.adb:359:30: info: discriminant check proved
-do_checks.adb:359:47: info: length check proved
-do_checks.adb:361:16: info: precondition proved
-do_checks.adb:369:24: warning: discriminant check might fail
-do_checks.adb:371:29: info: discriminant check proved
-do_checks.adb:372:29: info: discriminant check proved
-do_checks.adb:372:46: info: length check proved
-do_checks.adb:374:16: info: precondition proved
-do_checks.adb:378:29: warning: "X.Arr" is not modified, could be "in"
-do_checks.adb:378:29: warning: "X.J" is not modified, could be "in"
-do_checks.adb:382:24: info: discriminant check proved
-do_checks.adb:384:30: info: discriminant check proved
-do_checks.adb:384:47: info: length check proved
-do_checks.adb:385:30: info: discriminant check proved
-do_checks.adb:385:47: info: length check proved
-do_checks.adb:387:16: info: precondition proved
-do_checks.adb:394:29: warning: "X.Arr" is not modified, could be "in"
-do_checks.adb:394:29: warning: "X.J" is not modified, could be "in"
-do_checks.adb:398:29: info: discriminant check proved
-do_checks.adb:399:29: info: discriminant check proved
-do_checks.adb:399:46: info: length check proved
-do_checks.adb:401:16: info: precondition proved
-do_checks.adb:401:22: warning: discriminant check might fail
-do_checks.adb:405:29: warning: "X.Arr" is not modified, could be "in"
-do_checks.adb:405:29: warning: "X.J" is not modified, could be "in"
-do_checks.adb:409:30: info: discriminant check proved
-do_checks.adb:409:47: info: length check proved
-do_checks.adb:410:30: info: discriminant check proved
-do_checks.adb:410:47: info: length check proved
-do_checks.adb:412:16: info: precondition proved
-do_checks.adb:412:22: info: discriminant check proved
-do_checks.adb:418:30: warning: "X.Arr" is not modified, could be "in"
-do_checks.adb:418:30: warning: "X.J" is not modified, could be "in"
-do_checks.adb:424:19: info: precondition proved
-do_checks.adb:424:23: warning: discriminant check might fail
-do_checks.adb:427:29: info: discriminant check proved
-do_checks.adb:428:29: info: discriminant check proved
-do_checks.adb:428:46: info: length check proved
-do_checks.adb:430:16: info: precondition proved
-do_checks.adb:434:29: warning: "X.Arr" is not modified, could be "in"
-do_checks.adb:434:29: warning: "X.J" is not modified, could be "in"
-do_checks.adb:438:30: info: discriminant check proved
-do_checks.adb:438:47: info: length check proved
-do_checks.adb:439:30: info: discriminant check proved
-do_checks.adb:439:47: info: length check proved
-do_checks.adb:441:16: info: precondition proved
-do_checks.adb:441:19: info: discriminant check proved
-do_checks.adb:447:29: warning: "X.Arr" is not modified, could be "in"
-do_checks.adb:447:29: warning: "X.J" is not modified, could be "in"
-do_checks.adb:447:44: warning: "Y.Arr" is not modified, could be "in"
-do_checks.adb:447:44: warning: "Y.J" is not modified, could be "in"
-do_checks.adb:449:19: warning: statement has no effect
-do_checks.adb:449:26: warning: discriminant check might fail
-do_checks.adb:453:29: info: discriminant check proved
-do_checks.adb:454:29: info: discriminant check proved
-do_checks.adb:454:46: info: length check proved
-do_checks.adb:456:16: info: precondition proved
-do_checks.adb:460:29: warning: "X.Arr" is not modified, could be "in"
-do_checks.adb:460:29: warning: "X.J" is not modified, could be "in"
-do_checks.adb:460:44: warning: "Y.Arr" is not modified, could be "in"
-do_checks.adb:460:44: warning: "Y.J" is not modified, could be "in"
-do_checks.adb:464:19: warning: statement has no effect
-do_checks.adb:464:26: info: discriminant check proved
-do_checks.adb:468:30: info: discriminant check proved
-do_checks.adb:468:47: info: length check proved
-do_checks.adb:469:30: info: discriminant check proved
-do_checks.adb:469:47: info: length check proved
-do_checks.adb:471:16: info: precondition proved
+do_checks.adb:5:14: warning: subprogram "Do_Range_Check" has no effect
+do_checks.adb:6:14: warning: subprogram "Do_Length_Check" has no effect
+do_checks.adb:7:14: warning: subprogram "Do_Discriminant_Check" has no effect
+do_checks.adb:17:24: warning: range check might fail
+do_checks.adb:23:24: info: range check proved
+do_checks.adb:23:57: warning: overflow check might fail
+do_checks.adb:31:16: warning: range check might fail
+do_checks.adb:38:16: info: range check proved
+do_checks.adb:38:48: warning: overflow check might fail
+do_checks.adb:47:21: warning: range check might fail
+do_checks.adb:53:21: info: range check proved
+do_checks.adb:53:58: warning: overflow check might fail
+do_checks.adb:61:16: warning: range check might fail
+do_checks.adb:67:16: info: range check proved
+do_checks.adb:74:17: warning: range check might fail
+do_checks.adb:78:17: info: range check proved
+do_checks.adb:78:50: warning: overflow check might fail
+do_checks.adb:86:19: warning: range check might fail
+do_checks.adb:94:19: info: range check proved
+do_checks.adb:103:16: warning: range check might fail
+do_checks.adb:109:16: info: range check proved
+do_checks.adb:137:25: warning: range check might fail
+do_checks.adb:150:25: info: range check proved
+do_checks.adb:162:39: warning: length check might fail
+do_checks.adb:162:39: warning: range check might fail
+do_checks.adb:168:38: info: length check proved
+do_checks.adb:168:38: info: range check proved
+do_checks.adb:168:67: warning: overflow check might fail
+do_checks.adb:211:32: warning: "Y" is not modified, could be "in"
+do_checks.adb:213:21: info: length check proved
+do_checks.adb:213:26: warning: length check might fail
+do_checks.adb:215:35: info: length check proved
+do_checks.adb:216:35: info: length check proved
+do_checks.adb:218:16: info: precondition proved
+do_checks.adb:222:32: warning: "Y" is not modified, could be "in"
+do_checks.adb:224:21: info: length check proved
+do_checks.adb:224:26: warning: length check might fail
+do_checks.adb:226:35: info: length check proved
+do_checks.adb:227:35: info: length check proved
+do_checks.adb:229:16: info: precondition proved
+do_checks.adb:237:24: warning: length check might fail
+do_checks.adb:239:35: info: length check proved
+do_checks.adb:242:16: info: precondition proved
+do_checks.adb:250:24: info: length check proved
+do_checks.adb:252:35: info: length check proved
+do_checks.adb:255:16: info: precondition proved
+do_checks.adb:261:30: warning: "X" is not modified, could be "in"
+do_checks.adb:261:30: warning: unused variable "X"
+do_checks.adb:267:19: info: precondition proved
+do_checks.adb:267:22: warning: length check might fail
+do_checks.adb:269:35: info: length check proved
+do_checks.adb:271:16: info: precondition proved
+do_checks.adb:275:30: warning: "X" is not modified, could be "in"
+do_checks.adb:275:30: warning: unused variable "X"
+do_checks.adb:283:19: info: precondition proved
+do_checks.adb:283:22: info: length check proved
+do_checks.adb:285:35: info: length check proved
+do_checks.adb:287:16: info: precondition proved
+do_checks.adb:313:32: warning: "Y.Arr" is not modified, could be "in"
+do_checks.adb:313:32: warning: "Y.J" is not modified, could be "in"
+do_checks.adb:315:20: warning: discriminant check might fail
+do_checks.adb:315:25: warning: array index check might fail
+do_checks.adb:315:32: warning: discriminant check might fail
+do_checks.adb:315:37: warning: array index check might fail
+do_checks.adb:317:30: info: discriminant check proved
+do_checks.adb:318:30: info: discriminant check proved
+do_checks.adb:320:16: info: precondition proved
+do_checks.adb:324:32: warning: "Y.Arr" is not modified, could be "in"
+do_checks.adb:324:32: warning: "Y.J" is not modified, could be "in"
+do_checks.adb:328:20: info: discriminant check proved
+do_checks.adb:328:25: info: index check proved
+do_checks.adb:328:32: info: discriminant check proved
+do_checks.adb:328:37: info: index check proved
+do_checks.adb:330:26: info: discriminant check proved
+do_checks.adb:330:43: info: length check proved
+do_checks.adb:331:26: info: discriminant check proved
+do_checks.adb:331:43: info: length check proved
+do_checks.adb:333:16: info: precondition proved
+do_checks.adb:346:27: warning: discriminant check might fail
+do_checks.adb:348:29: info: discriminant check proved
+do_checks.adb:349:29: info: discriminant check proved
+do_checks.adb:349:46: info: length check proved
+do_checks.adb:351:16: info: precondition proved
+do_checks.adb:359:27: info: discriminant check proved
+do_checks.adb:361:30: info: discriminant check proved
+do_checks.adb:361:47: info: length check proved
+do_checks.adb:362:30: info: discriminant check proved
+do_checks.adb:362:47: info: length check proved
+do_checks.adb:364:16: info: precondition proved
+do_checks.adb:372:24: warning: discriminant check might fail
+do_checks.adb:374:29: info: discriminant check proved
+do_checks.adb:375:29: info: discriminant check proved
+do_checks.adb:375:46: info: length check proved
+do_checks.adb:377:16: info: precondition proved
+do_checks.adb:381:29: warning: "X.Arr" is not modified, could be "in"
+do_checks.adb:381:29: warning: "X.J" is not modified, could be "in"
+do_checks.adb:385:24: info: discriminant check proved
+do_checks.adb:387:30: info: discriminant check proved
+do_checks.adb:387:47: info: length check proved
+do_checks.adb:388:30: info: discriminant check proved
+do_checks.adb:388:47: info: length check proved
+do_checks.adb:390:16: info: precondition proved
+do_checks.adb:397:29: warning: "X.Arr" is not modified, could be "in"
+do_checks.adb:397:29: warning: "X.J" is not modified, could be "in"
+do_checks.adb:401:29: info: discriminant check proved
+do_checks.adb:402:29: info: discriminant check proved
+do_checks.adb:402:46: info: length check proved
+do_checks.adb:404:16: info: precondition proved
+do_checks.adb:404:22: warning: discriminant check might fail
+do_checks.adb:408:29: warning: "X.Arr" is not modified, could be "in"
+do_checks.adb:408:29: warning: "X.J" is not modified, could be "in"
+do_checks.adb:412:30: info: discriminant check proved
+do_checks.adb:412:47: info: length check proved
+do_checks.adb:413:30: info: discriminant check proved
+do_checks.adb:413:47: info: length check proved
+do_checks.adb:415:16: info: precondition proved
+do_checks.adb:415:22: info: discriminant check proved
+do_checks.adb:421:30: warning: "X.Arr" is not modified, could be "in"
+do_checks.adb:421:30: warning: "X.J" is not modified, could be "in"
+do_checks.adb:427:19: info: precondition proved
+do_checks.adb:427:23: warning: discriminant check might fail
+do_checks.adb:430:29: info: discriminant check proved
+do_checks.adb:431:29: info: discriminant check proved
+do_checks.adb:431:46: info: length check proved
+do_checks.adb:433:16: info: precondition proved
+do_checks.adb:437:29: warning: "X.Arr" is not modified, could be "in"
+do_checks.adb:437:29: warning: "X.J" is not modified, could be "in"
+do_checks.adb:441:30: info: discriminant check proved
+do_checks.adb:441:47: info: length check proved
+do_checks.adb:442:30: info: discriminant check proved
+do_checks.adb:442:47: info: length check proved
+do_checks.adb:444:16: info: precondition proved
+do_checks.adb:444:19: info: discriminant check proved
+do_checks.adb:450:29: warning: "X.Arr" is not modified, could be "in"
+do_checks.adb:450:29: warning: "X.J" is not modified, could be "in"
+do_checks.adb:450:44: warning: "Y.Arr" is not modified, could be "in"
+do_checks.adb:450:44: warning: "Y.J" is not modified, could be "in"
+do_checks.adb:452:19: warning: statement has no effect
+do_checks.adb:452:26: warning: discriminant check might fail
+do_checks.adb:456:29: info: discriminant check proved
+do_checks.adb:457:29: info: discriminant check proved
+do_checks.adb:457:46: info: length check proved
+do_checks.adb:459:16: info: precondition proved
+do_checks.adb:463:29: warning: "X.Arr" is not modified, could be "in"
+do_checks.adb:463:29: warning: "X.J" is not modified, could be "in"
+do_checks.adb:463:44: warning: "Y.Arr" is not modified, could be "in"
+do_checks.adb:463:44: warning: "Y.J" is not modified, could be "in"
+do_checks.adb:467:19: warning: statement has no effect
+do_checks.adb:467:26: info: discriminant check proved
+do_checks.adb:471:30: info: discriminant check proved
+do_checks.adb:471:47: info: length check proved
+do_checks.adb:472:30: info: discriminant check proved
+do_checks.adb:472:47: info: length check proved
+do_checks.adb:474:16: info: precondition proved
+do_checks.adb:483:04: info: precondition proved
+do_checks.adb:484:04: info: precondition proved
+do_checks.adb:485:04: info: precondition proved

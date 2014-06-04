@@ -1,4 +1,4 @@
 stack_14.adb:10:26: warning: range check might fail
 stack_14.adb:11:10: info: index check proved
 stack_14.adb:19:15: warning: array index check might fail
-stack_14.adb:20:26: warning: range check might fail
+stack_14.adb:20:26: info: range check proved
