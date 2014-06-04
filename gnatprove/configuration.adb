@@ -52,7 +52,7 @@ package body Configuration is
    --  The input variable for command line parsing set by option --proof
 
    Clean        : aliased Boolean;
-   --  Set to True when --clean was given. Triggers clean_up of GNATprove
+   --  Set to True when --clean was given. Triggers cleanup of GNATprove
    --  intermediate files.
 
    Proj_Env     : Project_Environment_Access;
@@ -60,6 +60,8 @@ package body Configuration is
    --  modified before loading it, e.g. -X switches
 
    procedure Clean_Up (Tree : Project_Tree);
+   --  Deletes generated "gnatprove" sub-directories in all object directories
+   --  of the project.
 
    procedure Configure_Proof_Dir (Proj_Type : Project_Type);
 
@@ -213,9 +215,18 @@ ASCII.LF;
 
    procedure Clean_Up (Tree : Project_Tree) is
       Proj_Type : constant Project_Type := Root_Project (Tree);
-      Obj_Dir   : constant GNATCOLL.VFS.Virtual_File := Proj_Type.Object_Dir;
+      Iter      : Project_Iterator := Proj_Type.Start;
+      Project   : Project_Type;
    begin
-      GNAT.Directory_Operations.Remove_Dir (Obj_Dir.Display_Full_Name, True);
+      loop
+         Project := Current (Iter);
+         exit when Project = No_Project;
+
+         GNAT.Directory_Operations.Remove_Dir
+           (Project.Object_Dir.Display_Full_Name, True);
+
+         Next (Iter);
+      end loop;
    end Clean_Up;
 
    ----------------
