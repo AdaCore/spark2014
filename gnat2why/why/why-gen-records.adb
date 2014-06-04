@@ -1099,11 +1099,12 @@ package body Why.Gen.Records is
       Value    : W_Expr_Id)
       return W_Expr_Id
    is
+      Tmp         : constant W_Expr_Id := New_Temp_For_Expr (Name);
       Ty          : constant Entity_Id := Get_Ada_Node (+Get_Type (Name));
       Update_Expr : constant W_Expr_Id :=
         New_Record_Update
           (Ada_Node => Ada_Node,
-           Name     => Name,
+           Name     => Tmp,
            Updates  =>
              (1 =>
                 New_Field_Association
@@ -1111,20 +1112,20 @@ package body Why.Gen.Records is
                    Field  => To_Why_Id (Field, Domain, Rec => Ty),
                    Value  => Value)),
            Typ      => Get_Type (Name));
-
+      T           : W_Expr_Id;
    begin
       if Domain = EW_Prog then
-         return
-           +Sequence
-             (+New_Ignore
-                  (Ada_Node => Ada_Node,
-                   Prog     =>
-                   +New_Ada_Record_Access
-                     (Ada_Node, Domain, Name, Field, Ty)),
-              +Update_Expr);
+         T := +Sequence
+           (+New_Ignore
+              (Ada_Node => Ada_Node,
+               Prog     =>
+                 +New_Ada_Record_Access
+                 (Ada_Node, Domain, Tmp, Field, Ty)),
+            +Update_Expr);
       else
-         return Update_Expr;
+         T := Update_Expr;
       end if;
+      return Binding_For_Temp (Ada_Node, Domain, Tmp, T);
    end New_Ada_Record_Update;
 
    ------------------------------------

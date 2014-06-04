@@ -2267,8 +2267,13 @@ package body Gnat2Why.Expr is
                declare
                   Prefix_Type : constant W_Type_Id :=
                     Expected_Type_Of_Prefix (Prefix (N));
+
+                  --  We compute the expression for the Prefix in the EW_Term
+                  --  domain so that checks are not done for it as they are
+                  --  duplicates of those done in One_Level_Update.
+
                   Prefix_Expr : constant W_Expr_Id :=
-                    +Transform_Expr (Domain        => EW_Prog,
+                    +Transform_Expr (Domain        => EW_Term,
                                      Expr          => Prefix (N),
                                      Expected_Type => Prefix_Type,
                                      Params        => Body_Params);
