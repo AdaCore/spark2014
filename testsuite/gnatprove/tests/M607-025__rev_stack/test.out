@@ -9,8 +9,8 @@ list.adb:23:10: info: loop invariant preservation proved
 list.adb:25:35: info: overflow check proved
 list.adb:25:43: info: overflow check proved
 list.adb:28:35: info: overflow check proved
-list.adb:28:43: info: index check proved
 list.adb:28:43: info: overflow check proved
+list.adb:28:43: warning: array index check might fail
 list.adb:28:50: info: precondition proved
 list.adb:28:62: warning: range check might fail
 list.adb:32:10: info: loop invariant initialization proved
@@ -57,7 +57,7 @@ stack.ads:27:41: info: index check proved
 stack.ads:32:14: warning: postcondition might fail
 stack.ads:32:44: info: overflow check proved
 stack.ads:33:20: warning: array index check might fail
-stack.ads:35:27: info: index check proved
+stack.ads:35:27: warning: array index check might fail
 stack.ads:35:44: info: index check proved
 stack.ads:40:14: warning: postcondition might fail
 stack.ads:40:44: info: overflow check proved

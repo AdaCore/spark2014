@@ -3,5 +3,5 @@ test.adb:15:09: "Tmp_B" is not initialized
    compilation of test.adb failed
 
 
-gnatprove: error during analysis of data and information flow, aborting.
+gnatprove: error during analysis of data and information flow
 gprbuild: *** compilation phase failed

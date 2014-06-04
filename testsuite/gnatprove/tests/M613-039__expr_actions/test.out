@@ -7,7 +7,7 @@ list.adb:24:10: warning: loop invariant might fail after first iteration
 list.adb:24:10: warning: loop invariant might fail in first iteration
 list.adb:25:35: info: overflow check proved
 list.adb:25:43: info: overflow check proved
-list.adb:26:54: info: index check proved
+list.adb:26:54: warning: array index check might fail
 list.adb:26:59: info: precondition proved
 list.adb:26:71: info: range check proved
 list.adb:30:10: warning: precondition might fail

@@ -117,11 +117,11 @@ step_function.adb:32:61: warning: overflow check might fail
 step_function.adb:45:10: warning: loop invariant might fail after first iteration
 step_function.adb:45:10: warning: loop invariant might fail in first iteration
 step_function.adb:47:34: warning: array index check might fail
-step_function.adb:48:33: warning: array index check might fail
-step_function.adb:51:31: warning: array index check might fail
+step_function.adb:48:33: info: index check proved
+step_function.adb:51:31: info: index check proved
 step_function.adb:53:34: warning: array index check might fail
 step_function.adb:60:18: warning: assertion might fail, requires SFun.Step(j-1).Delimiter < SFun.Step(j).Delimiter
-step_function.adb:60:29: warning: array index check might fail
+step_function.adb:60:29: info: index check proved
 step_function.adb:60:55: warning: array index check might fail
 step_function.adb:72:17: warning: range check might fail
 step_function.adb:91:10: warning: loop invariant might fail after first iteration
@@ -133,14 +133,14 @@ step_function.adb:116:27: info: index check proved
 step_function.adb:116:54: info: index check proved
 step_function.adb:122:30: info: index check proved
 step_function.adb:122:56: info: index check proved
-step_function.adb:127:36: info: index check proved
+step_function.adb:127:36: warning: array index check might fail
 step_function.adb:127:62: info: index check proved
 step_function.adb:133:30: info: index check proved
 step_function.adb:133:56: info: index check proved
-step_function.adb:138:36: info: index check proved
+step_function.adb:138:36: warning: array index check might fail
 step_function.adb:138:62: info: index check proved
 step_function.adb:143:26: warning: array index check might fail
-step_function.adb:144:19: info: precondition proved
+step_function.adb:144:19: warning: precondition might fail
 step_function.adb:144:47: info: index check proved
 step_function.adb:145:17: info: precondition proved
 step_function.adb:145:45: info: index check proved
@@ -156,19 +156,19 @@ step_function.adb:182:22: info: precondition proved
 step_function.adb:183:22: info: precondition proved
 step_function.adb:188:22: warning: range check might fail
 step_function.ads:40:17: info: postcondition proved
+step_function.ads:46:24: info: overflow check proved
 step_function.ads:46:24: warning: array index check might fail
-step_function.ads:46:24: warning: overflow check might fail
 step_function.ads:46:50: warning: array index check might fail
-step_function.ads:52:23: warning: array index check might fail
+step_function.ads:52:23: info: index check proved
 step_function.ads:52:49: warning: array index check might fail
 step_function.ads:56:12: warning: postcondition might fail, requires for some i in Num_Delimiters_Range'First..(SFun.Number_Of_Delimiters - 1) => (SFun.Step(i).Delimiter <= X and X < SFun.Step(i+1).Delimiter and Get_Value'Result = SFun.Step(i).Value)) or (X >= SFun.Step(SFun.Number_Of_Delimiters).Delimiter and Get_Value'Result = SFun.Step(SFun.Number_Of_Delimiters).Value
-step_function.ads:58:27: warning: array index check might fail
+step_function.ads:58:27: info: index check proved
 step_function.ads:59:36: warning: array index check might fail
 step_function.ads:60:50: warning: array index check might fail
 step_function.ads:72:06: warning: postcondition might fail
 step_function.ads:73:28: warning: array index check might fail
-step_function.ads:74:50: warning: array index check might fail
-step_function.ads:78:26: warning: array index check might fail
+step_function.ads:74:50: info: index check proved
+step_function.ads:78:26: info: index check proved
 step_function.ads:80:53: warning: array index check might fail
 step_function.ads:86:06: info: postcondition proved
 step_function.ads:101:04: warning: postcondition might fail
@@ -176,9 +176,9 @@ step_function.ads:106:30: warning: array index check might fail
 step_function.ads:106:56: info: index check proved
 step_function.ads:111:30: warning: array index check might fail
 step_function.ads:111:56: info: index check proved
-step_function.ads:114:25: warning: array index check might fail
+step_function.ads:114:25: info: index check proved
 step_function.ads:114:40: info: precondition proved
-step_function.ads:115:61: warning: array index check might fail
+step_function.ads:115:61: info: index check proved
 step_function.ads:116:40: info: precondition proved
 step_function.ads:117:61: warning: array index check might fail
 step_function_test.adb:4:11: warning: subprogram "Step_Function_Test" has no effect

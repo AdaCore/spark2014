@@ -3,7 +3,6 @@ p.adb:6:07: info: precondition proved
 p.adb:10:27: info: precondition proved
 p.adb:12:07: info: precondition proved
 p.adb:13:07: warning: precondition might fail
-p.adb:17:07: warning: statement has no effect
 p.adb:17:33: info: precondition proved
 p.adb:19:07: info: precondition proved
 p.adb:20:22: info: precondition proved
