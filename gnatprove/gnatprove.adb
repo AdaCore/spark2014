@@ -304,7 +304,7 @@ procedure Gnatprove is
          Args.Append (Int_Image (Steps));
       end if;
       Args.Append ("--socket");
-      Args.Append (Socket_Name);
+      Args.Append (Socket_Name.all);
       if Debug then
          Args.Append ("--debug");
       end if;
@@ -646,7 +646,7 @@ procedure Gnatprove is
       Args.Append ("-j");
       Args.Append (Int_Image (Parallel));
       Args.Append ("--socket");
-      Args.Append (Socket_Name);
+      Args.Append (Socket_Name.all);
       Id := Non_Blocking_Spawn ("why3server", Args);
       Ada.Directories.Set_Directory (Cur);
       return Id;

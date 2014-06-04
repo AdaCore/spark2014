@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010-2013, AdaCore                   --
+--                       Copyright (C) 2010-2014, AdaCore                   --
 --                                                                          --
 -- gnatprove is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers;
 with Ada.Containers.Indefinite_Doubly_Linked_Lists;
 with Ada.Containers.Indefinite_Hashed_Sets;
 with Ada.Strings.Hash;
@@ -54,6 +55,9 @@ package String_Utils is
 
    procedure Lower_Case_First (S : in out String);
    --  Modify S in place to capitalize the first character
+
+   function Hash_Image (N : Ada.Containers.Hash_Type) return String;
+   --  Generate a string from an hash, without the leading space.
 
    function Int_Image (N : Integer) return String;
    --  Generate a string from an Integer, without the leading space.

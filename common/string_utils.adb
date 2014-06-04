@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2013, AdaCore                   --
+--                       Copyright (C) 2010-2014, AdaCore                   --
 --                                                                          --
 -- gnatprove is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -60,6 +60,16 @@ package body String_Utils is
    begin
       S (S'First) := Ada.Characters.Handling.To_Upper (S (S'First));
    end Capitalize_First;
+
+   ----------------
+   -- Hash_Image --
+   ----------------
+
+   function Hash_Image (N : Ada.Containers.Hash_Type) return String is
+      Result : constant String := Ada.Containers.Hash_Type'Image (N);
+   begin
+      return Result (Result'First + 1 .. Result'Last);
+   end Hash_Image;
 
    ---------------
    -- Int_Image --

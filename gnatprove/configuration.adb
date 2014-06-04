@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Command_Line;
+with Ada.Containers;            use Ada.Containers;
 with Ada.Text_IO;               use Ada.Text_IO;
 with System.Multiprocessors;
 
@@ -607,7 +608,16 @@ ASCII.LF;
                     Callback => Handle_Switch'Access,
                     Concatenate => False);
          end if;
+
          Configure_Proof_Dir (Proj_Type);
+
+         declare
+            Obj_Dir_Hash : constant Hash_Type :=
+              Full_Name_Hash (Proj_Type.Object_Dir);
+         begin
+            Socket_Name := new String'
+              ("why3server" & Hash_Image (Obj_Dir_Hash) & ".sock");
+         end;
       end;
 
       --  Adjust the number of parallel processes. If -j0 was used, the

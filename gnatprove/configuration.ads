@@ -32,7 +32,6 @@ with GNATCOLL.Utils;    use GNATCOLL.Utils;
 with GNATCOLL.VFS;      use GNATCOLL.VFS;
 with String_Utils;      use String_Utils;
 with Opt;
-with Call;              use Call;
 
 with Gnat2Why_Args;     use  Gnat2Why_Args;
 
@@ -121,9 +120,13 @@ package Configuration is
    Subdir_Name  : constant Filesystem_String := "gnatprove";
    --  The name of the directory in which all work takes place
 
-   Proof_Dir : aliased GNAT.Strings.String_Access := null;
+   Proof_Dir    : aliased GNAT.Strings.String_Access := null;
    --  The name of the directory in which will be stored Why3 session file and
    --  manual proof files (Attribute of gpr package Prove).
+
+   Socket_Name  : aliased GNAT.Strings.String_Access := null;
+   --  Name of the socket used by why3server, based on a hash of the main
+   --  object directory.
 
    --  Here we set the various paths that are needed during a run of
    --  gnatprove. The hierarchy looks as follows:
@@ -148,8 +151,6 @@ package Configuration is
    Theories_Dir     : constant String := Compose (Gnatprove_Dir, "theories");
    Gpr_Cnf_Dir      : constant String := Compose (Gnatprove_Dir, "config");
    Why3_Drivers_Dir : constant String := Compose (Why3_Dir, "drivers");
-   Socket_Name      : constant String :=
-     "why3server" & String_Utils.Int_Image (Get_Process_Id) & ".sock";
 
    --  The exact places for the three configuration files used by gnatprove
    Gpr_Translation_Cnf_File : constant String :=
