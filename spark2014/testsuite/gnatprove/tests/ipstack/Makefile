@@ -88,11 +88,11 @@ run: $(APP_IMAGE).bin
 # Currently apply only flow analysis.
 # Ideally expected.out should be empty. Use until SPARK tools corrected to
 # avoid generating useless messages in some cases.
-# COMMENTED OUT UNTIL GNATPROVE IS INSTALLED ON SUITABLE MACHINES (N519-025)
 spark: force
-	mkdir -p spark # && \
+	mkdir -p spark && \
 	cd spark && \
-	gnatprove -P../projects.native/ipstack_dev.gpr --mode=flow --warnings=continue --quiet \
+	GPR_PROJECT_PATH=../projects:../projects.$(TARGET) \
+	gnatprove -P../projects.native/ipstack_dev.gpr --mode=flow --warnings=continue --quiet | sort \
 	> actual.out && \
 	diff ../src/spark/expected.out actual.out
 
