@@ -3,7 +3,6 @@ uninitialized.adb:6:26: "B" is not initialized
 
 
 gnatprove: error during analysis of data and information flow
-gprbuild: *** compilation phase failed
 // package_body_uninitialized_cfg
 digraph G {
    graph [splines=True];

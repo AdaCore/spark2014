@@ -10,4 +10,3 @@ test.adb:69:14: warning: subprogram "Multiple_Preconditions" has no effect
 
 
 gnatprove: error during analysis of data and information flow
-gprbuild: *** compilation phase failed

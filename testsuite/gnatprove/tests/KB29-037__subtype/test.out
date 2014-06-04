@@ -21,4 +21,3 @@ sub.ads:24:14: violation of pragma SPARK_Mode at line 1
 
 
 gnatprove: error during flow analysis and proof
-gprbuild: *** compilation phase failed

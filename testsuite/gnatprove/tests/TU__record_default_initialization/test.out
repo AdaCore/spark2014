@@ -16,4 +16,3 @@ drc.ads:107:09: violation of aspect SPARK_Mode at line 2
 
 
 gnatprove: error during flow analysis and proof
-gprbuild: *** compilation phase failed

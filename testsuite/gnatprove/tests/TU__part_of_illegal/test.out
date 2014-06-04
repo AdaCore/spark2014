@@ -14,4 +14,3 @@ part_of_illegal-pr_child.ads:15:04: indicator Part_Of is required in this contex
 
 
 gnatprove: error during generation of Global contracts
-gprbuild: *** compilation phase failed

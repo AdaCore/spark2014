@@ -8,4 +8,3 @@ derived_types_and_classes_illegal.ads:20:09: violation of aspect SPARK_Mode at l
 
 
 gnatprove: error during flow analysis and proof
-gprbuild: *** compilation phase failed

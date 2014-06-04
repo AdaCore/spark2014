@@ -26,4 +26,3 @@ untangle_tests.adb:77:04: warning: analyzing unreferenced procedure "Set_Normal"
 
 
 gnatprove: error during analysis of data and information flow
-gprbuild: *** compilation phase failed

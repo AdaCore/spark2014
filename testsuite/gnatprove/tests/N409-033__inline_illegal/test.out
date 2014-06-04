@@ -8,4 +8,3 @@ discr.adb:13:07: static expression fails Constraint_Check
 
 
 gnatprove: error during flow analysis and proof
-gprbuild: *** compilation phase failed

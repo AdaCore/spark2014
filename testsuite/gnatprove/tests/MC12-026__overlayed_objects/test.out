@@ -11,4 +11,3 @@ p2.ads:27:22: warning: postcondition might fail
 
 
 gnatprove: error during flow analysis and proof
-gprbuild: *** compilation phase failed

@@ -30,4 +30,3 @@ test.adb:217:15: dead code
 
 
 gnatprove: error during analysis of data and information flow
-gprbuild: *** compilation phase failed

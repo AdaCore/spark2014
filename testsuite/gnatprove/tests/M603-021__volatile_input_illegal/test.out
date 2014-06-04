@@ -6,4 +6,3 @@ port2.ads:17:04: constant cannot be volatile
 
 
 gnatprove: error during generation of Global contracts
-gprbuild: *** compilation phase failed

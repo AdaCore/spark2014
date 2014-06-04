@@ -18,4 +18,3 @@ test.adb:183:21: warning: missing dependency "R => R"
 
 
 gnatprove: error during analysis of data and information flow
-gprbuild: *** compilation phase failed

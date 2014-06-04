@@ -12,4 +12,3 @@ p.ads:60:32: global "A" must appear in at least one input dependence list
 
 
 gnatprove: error during generation of Global contracts
-gprbuild: *** compilation phase failed

@@ -16,4 +16,3 @@ test.adb:73:17: called subprogram "Get_X" requires "global" aspect to make state
 
 
 gnatprove: error during analysis of data and information flow
-gprbuild: *** compilation phase failed

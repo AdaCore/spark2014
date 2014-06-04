@@ -13,4 +13,3 @@ test.adb:133:24: warning: unused initial value of "A"
 
 
 gnatprove: error during analysis of data and information flow
-gprbuild: *** compilation phase failed

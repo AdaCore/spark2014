@@ -28,4 +28,3 @@ loop_related_illegal_3.adb:17:38: "X" is not initialized
 
 
 gnatprove: error during flow analysis and proof
-gprbuild: *** compilation phase failed

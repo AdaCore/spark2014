@@ -18,4 +18,3 @@ abstract_state_illegal_4-pub_child.adb:5:57: Part_Of indicator specifies "State"
 
 
 gnatprove: error during generation of Global contracts
-gprbuild: *** compilation phase failed

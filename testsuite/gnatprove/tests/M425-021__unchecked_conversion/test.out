@@ -4,4 +4,3 @@ test.adb:38:14: formal parameters "X" and "Y" must not be aliased
 
 
 gnatprove: error during flow analysis and proof
-gprbuild: *** compilation phase failed

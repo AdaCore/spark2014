@@ -8,7 +8,6 @@ p.adb:12:04: warning: "X" is not modified, could be declared constant
 
 
 gnatprove: error during generation of Global contracts
-gprbuild: *** compilation phase failed
 
 Issue all compilation warnings, stop at flow warnings treated as errors:
 ------------------------------------------------------------------------
@@ -22,7 +21,6 @@ p.adb:15:09: warning: unused assignment
 
 
 gnatprove: error during flow analysis and proof
-gprbuild: *** compilation phase failed
 
 Do not issue all compilation warnings, stop at flow warnings treated as errors:
 -------------------------------------------------------------------------------
@@ -33,7 +31,6 @@ p.adb:15:09: warning: unused assignment
 
 
 gnatprove: error during flow analysis and proof
-gprbuild: *** compilation phase failed
 
 Do not issue any compilation warnings, stop at flow warnings treated as errors:
 -------------------------------------------------------------------------------
@@ -43,7 +40,6 @@ p.adb:15:09: warning: unused assignment
 
 
 gnatprove: error during flow analysis and proof
-gprbuild: *** compilation phase failed
 
 Issue all compilation warnings, issue flow warnings and continue:
 -----------------------------------------------------------------
@@ -91,7 +87,6 @@ p.adb:12:04: warning: "X" is not modified, could be declared constant
 
 
 gnatprove: error during generation of Global contracts
-gprbuild: *** compilation phase failed
 
 Issue all compilation warnings, stop at flow warnings treated as errors:
 ------------------------------------------------------------------------
@@ -105,7 +100,6 @@ p.adb:15:09: warning: unused assignment[#1]
 
 
 gnatprove: error during flow analysis and proof
-gprbuild: *** compilation phase failed
 
 Do not issue all compilation warnings, stop at flow warnings treated as errors:
 -------------------------------------------------------------------------------
@@ -116,7 +110,6 @@ p.adb:15:09: warning: unused assignment[#1]
 
 
 gnatprove: error during flow analysis and proof
-gprbuild: *** compilation phase failed
 
 Do not issue any compilation warnings, stop at flow warnings treated as errors:
 -------------------------------------------------------------------------------
@@ -126,7 +119,6 @@ p.adb:15:09: warning: unused assignment[#1]
 
 
 gnatprove: error during flow analysis and proof
-gprbuild: *** compilation phase failed
 
 Issue all compilation warnings, issue flow warnings and continue:
 -----------------------------------------------------------------

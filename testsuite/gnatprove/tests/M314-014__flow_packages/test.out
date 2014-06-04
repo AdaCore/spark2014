@@ -27,4 +27,3 @@ pkg_e.ads:10:03: warning: initialization has no effect
 
 
 gnatprove: error during analysis of data and information flow
-gprbuild: *** compilation phase failed

@@ -8,4 +8,3 @@ outer.adb:85:58: warning: overflow check might fail
 
 
 gnatprove: error during flow analysis and proof
-gprbuild: *** compilation phase failed

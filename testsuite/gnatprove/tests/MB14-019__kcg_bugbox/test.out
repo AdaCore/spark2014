@@ -6,4 +6,3 @@ applies_to_all.adb:116:04: file "applies_to_all-proc_7.adb" not found
 
 
 gnatprove: error during generation of Global contracts
-gprbuild: *** compilation phase failed

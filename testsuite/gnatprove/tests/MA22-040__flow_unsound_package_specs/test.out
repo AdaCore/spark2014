@@ -3,4 +3,3 @@ foo.ads:10:04: "X" is not initialized in "Foo"
 
 
 gnatprove: error during analysis of data and information flow
-gprbuild: *** compilation phase failed

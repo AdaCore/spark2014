@@ -5,4 +5,3 @@ c45532o.adb:14:33: operation between different fixed-point types is not yet supp
 
 
 gnatprove: error during flow analysis and proof
-gprbuild: *** compilation phase failed

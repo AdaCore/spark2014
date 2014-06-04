@@ -19,4 +19,3 @@ p.ads:55:18: subtype constraint cannot depend on "B" (SPARK RM 4.4(2))
 
 
 gnatprove: error during flow analysis and proof
-gprbuild: *** compilation phase failed

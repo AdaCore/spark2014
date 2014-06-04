@@ -4,4 +4,3 @@ test.adb:100:25: default initialization cannot depend on "Tmp" (SPARK RM 4.4(2))
 
 
 gnatprove: error during analysis of data and information flow
-gprbuild: *** compilation phase failed

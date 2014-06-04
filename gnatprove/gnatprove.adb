@@ -179,6 +179,7 @@ procedure Gnatprove is
       else
          Args.Prepend ("-q");
          Args.Prepend ("-ws");
+         Args.Prepend ("--no-exit-message");
       end if;
 
       if Parallel > 1 then

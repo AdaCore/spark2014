@@ -8,4 +8,3 @@ foo.adb:65:09: procedure "Nr_Test_03" is marked as No_Return
 
 
 gnatprove: error during generation of Global contracts
-gprbuild: *** compilation phase failed

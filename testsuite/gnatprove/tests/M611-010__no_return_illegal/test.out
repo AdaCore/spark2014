@@ -8,4 +8,3 @@ no_return_illegal.adb:44:10: violation of pragma SPARK_Mode at test.adc:1
 
 
 gnatprove: error during flow analysis and proof
-gprbuild: *** compilation phase failed

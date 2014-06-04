@@ -14,4 +14,3 @@ segway.ads:25:38: warning: "State" might not be initialized
 
 
 gnatprove: error during analysis of data and information flow
-gprbuild: *** compilation phase failed

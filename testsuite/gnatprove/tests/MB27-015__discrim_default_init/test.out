@@ -7,4 +7,3 @@ discrims.ads:42:30: default initialization cannot depend on "V0" (SPARK RM 4.4(2
 
 
 gnatprove: error during flow analysis and proof
-gprbuild: *** compilation phase failed

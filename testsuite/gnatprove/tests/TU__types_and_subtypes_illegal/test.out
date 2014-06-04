@@ -14,7 +14,6 @@ types_and_subtypes_illegal.ads:34:09: violation of aspect SPARK_Mode at line 2
 
 
 gnatprove: error during flow analysis and proof
-gprbuild: *** compilation phase failed
 types_and_subtypes_illegal_2.ads:4:34: initialization item must denote variable or state
 types_and_subtypes_illegal_2.ads:14:21: global item cannot denote a constant
 types_and_subtypes_illegal_2.ads:17:30: item must denote parameter, variable, or state

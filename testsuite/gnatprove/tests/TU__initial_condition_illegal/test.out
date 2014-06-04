@@ -7,7 +7,6 @@ initial_condition_illegal_2.ads:10:32: "Initial_Condition_Illegal_2.State" must 
 
 
 gnatprove: error during flow analysis and proof
-gprbuild: *** compilation phase failed
 initial_condition_illegal_3.ads:13:08: warning: initial condition might fail
 initial_condition_illegal_3.ads:15:04: warning: initialization has no effect
 initial_condition_illegal_4.ads:8:29: "Var" must be initialized at elaboration
@@ -16,4 +15,3 @@ initial_condition_illegal_4.ads:11:14: warning: subprogram "P1" has no effect
 
 
 gnatprove: error during flow analysis and proof
-gprbuild: *** compilation phase failed

@@ -7,4 +7,3 @@ foo.adb:71:07: "B" must be listed in the Global aspect of "Verify_Gen_4_2" (SPAR
 
 
 gnatprove: error during analysis of data and information flow
-gprbuild: *** compilation phase failed

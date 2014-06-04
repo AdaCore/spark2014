@@ -10,4 +10,3 @@ ghost_illegal_2.ads:2:06: file "helper.ads" not found
 
 
 gnatprove: error during generation of Global contracts
-gprbuild: *** compilation phase failed

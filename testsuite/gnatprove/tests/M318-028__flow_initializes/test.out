@@ -6,4 +6,3 @@ test_07.adb:4:32: warning: "State" might not be initialized after elaboration of
 
 
 gnatprove: error during analysis of data and information flow
-gprbuild: *** compilation phase failed

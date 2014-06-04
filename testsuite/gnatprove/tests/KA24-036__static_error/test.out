@@ -6,4 +6,3 @@ p.adb:7:13: value not in range of type "T" defined at pack.ads:2
 
 
 gnatprove: error during generation of Global contracts
-gprbuild: *** compilation phase failed

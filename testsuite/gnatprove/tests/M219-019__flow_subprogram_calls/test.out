@@ -20,4 +20,3 @@ test.ads:25:21: warning: missing dependency "Y => Y"
 
 
 gnatprove: error during analysis of data and information flow
-gprbuild: *** compilation phase failed

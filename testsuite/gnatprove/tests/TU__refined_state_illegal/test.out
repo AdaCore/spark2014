@@ -17,4 +17,3 @@ refined_state_illegal.ads:124:34: abstract state "S2" must be refined
 
 
 gnatprove: error during generation of Global contracts
-gprbuild: *** compilation phase failed

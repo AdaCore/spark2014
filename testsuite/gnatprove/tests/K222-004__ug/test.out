@@ -8,4 +8,3 @@ p.ads:3:08: violation of pragma SPARK_Mode at line 2
 
 
 gnatprove: error during flow analysis and proof
-gprbuild: *** compilation phase failed

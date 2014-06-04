@@ -4,4 +4,3 @@ broken.adb:4:19: possible infinite recursion
 
 
 gnatprove: error during generation of Global contracts
-gprbuild: *** compilation phase failed

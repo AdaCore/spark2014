@@ -7,4 +7,3 @@ device.adb:56:13: warning: statement has no effect
 
 
 gnatprove: error during flow analysis and proof
-gprbuild: *** compilation phase failed

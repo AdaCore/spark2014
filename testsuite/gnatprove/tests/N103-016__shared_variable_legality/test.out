@@ -9,4 +9,3 @@ p.ads:48:04: tagged object "SV2" cannot be volatile
 
 
 gnatprove: error during generation of Global contracts
-gprbuild: *** compilation phase failed

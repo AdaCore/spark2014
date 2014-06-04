@@ -6,4 +6,3 @@ p2.adb:27:25: "L" is not initialized
 
 
 gnatprove: error during flow analysis and proof
-gprbuild: *** compilation phase failed

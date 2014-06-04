@@ -23,4 +23,3 @@ p.ads:30:28: default initialization cannot depend on "S" (SPARK RM 4.4(2))
 
 
 gnatprove: error during flow analysis and proof
-gprbuild: *** compilation phase failed

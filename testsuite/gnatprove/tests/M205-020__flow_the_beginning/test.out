@@ -9,4 +9,3 @@ foo.adb:15:12: "B" is not initialized
 
 
 gnatprove: error during analysis of data and information flow
-gprbuild: *** compilation phase failed

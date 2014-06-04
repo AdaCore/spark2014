@@ -4,4 +4,3 @@ early_init.ads:16:31: "V1" is not initialized
 
 
 gnatprove: error during flow analysis and proof
-gprbuild: *** compilation phase failed

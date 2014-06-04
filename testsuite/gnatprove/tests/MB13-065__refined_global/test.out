@@ -3,4 +3,3 @@ pack.adb:11:16: "B" must be listed in the Refined_Global aspect of "Update_Conte
 
 
 gnatprove: error during flow analysis and proof
-gprbuild: *** compilation phase failed

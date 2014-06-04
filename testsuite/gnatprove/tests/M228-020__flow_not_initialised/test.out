@@ -9,4 +9,3 @@ test.adb:31:23: warning: unused variable "C"
 
 
 gnatprove: error during analysis of data and information flow
-gprbuild: *** compilation phase failed

@@ -25,4 +25,3 @@ typeinv.ads:12:09: violation of pragma SPARK_Mode at test.adc:1
 
 
 gnatprove: error during flow analysis and proof
-gprbuild: *** compilation phase failed

@@ -13,7 +13,6 @@ pack.ads:15:30: violation of pragma SPARK_Mode at line 2
 
 
 gnatprove: error during flow analysis and proof
-gprbuild: *** compilation phase failed
 [
 { "name" : "Pack.P0.P3", "file" :"pack.adb", "line" :  4, "spark" : "all" }
 , { "name" : "Pack.P0.P0_Ok", "file" :"pack.adb", "line" :  10, "spark" : "all" }
