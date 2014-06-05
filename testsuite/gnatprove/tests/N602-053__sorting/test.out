@@ -1,0 +1,35 @@
+sorters.adb:16:21: info: index check proved
+sorters.adb:16:38: info: index check proved
+sorters.adb:17:21: info: index check proved
+sorters.adb:17:38: info: index check proved
+sorters.adb:18:13: info: postcondition proved
+sorters.adb:19:51: info: index check proved
+sorters.adb:19:68: info: index check proved
+sorters.adb:23:29: info: index check proved
+sorters.adb:24:15: info: index check proved
+sorters.adb:24:29: info: index check proved
+sorters.adb:25:15: info: index check proved
+sorters.adb:54:11: info: postcondition proved
+sorters.adb:55:39: info: index check proved
+sorters.adb:55:61: info: index check proved
+sorters.adb:59:22: info: range check proved
+sorters.adb:61:10: info: loop invariant initialization proved
+sorters.adb:61:10: info: loop invariant preservation proved
+sorters.adb:63:50: info: overflow check proved
+sorters.adb:64:25: info: index check proved
+sorters.adb:64:43: info: index check proved
+sorters.adb:66:42: info: index check proved
+sorters.adb:67:20: info: range check proved
+sorters.adb:78:50: info: overflow check proved
+sorters.adb:79:22: warning: precondition might fail
+sorters.adb:79:40: info: range check proved
+sorters.adb:82:13: warning: precondition might fail
+sorters.adb:83:29: info: range check proved
+sorters.adb:94:10: warning: loop invariant might fail after first iteration
+sorters.adb:94:10: warning: loop invariant might fail in first iteration
+sorters.adb:96:26: info: index check proved
+sorters.adb:96:46: info: index check proved
+sorters.adb:99:52: info: overflow check proved
+sorters.adb:100:25: info: index check proved
+sorters.adb:100:41: info: index check proved
+sorters.adb:100:41: info: overflow check proved
