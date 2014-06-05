@@ -440,10 +440,14 @@ procedure Gnatprove is
          declare
             File : constant String := SPARK_Report_File (Obj_Dir);
          begin
-            --  If nothing is in SPARK, the user has probably forgotten to put
-            --  a SPARK_Mode pragma somewhere.
+            --  Unless the mode is only checking SPARK legality rules, code in
+            --  SPARK will result in either flow or proof results. Otherwise,
+            --  the user has probably forgotten to put a SPARK_Mode pragma
+            --  somewhere.
 
-            if Report_File_Is_Empty (File) then
+            if MMode /= GPM_Check
+              and then Report_File_Is_Empty (File)
+            then
                Put_Line
                  (Standard_Error,
                   "warning: no bodies have been analyzed by GNATprove");
