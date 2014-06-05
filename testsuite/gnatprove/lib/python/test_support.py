@@ -207,7 +207,7 @@ def check_marks(strlist):
             return 'DISCRIMINANT_CHECK'
         elif 'initial condition' in text:
             return 'INITIAL_CONDITION'
-        elif 'precondition' in text:
+        elif 'precondition' in text or 'nonreturning' in text:
             if 'of main program' in text:
                 return 'PRECONDITION_MAIN'
             else:
@@ -289,7 +289,7 @@ def check_marks(strlist):
           is_flow_tag: True for flow messages, False for proof messages
         """
         if qualifier == 'info':
-            if 'proved' in text:
+            if 'proved' in text or 'nonreturning' in text:
                 return 'PASS'
             else:
                 return None

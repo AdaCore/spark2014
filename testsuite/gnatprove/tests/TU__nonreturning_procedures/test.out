@@ -1,6 +1,6 @@
-nr.adb:15:10: info: precondition proved
+nr.adb:15:10: info: call to nonreturning procedure never executed
 nr.adb:17:14: warning: overflow check might fail
-nr.adb:24:10: warning: precondition might fail
+nr.adb:24:10: warning: call to nonreturning subprogram might be executed
 nr.adb:26:14: warning: overflow check might fail
 nr.ads:10:19: info: postcondition proved
 nr.ads:10:29: info: overflow check proved

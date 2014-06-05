@@ -30,9 +30,6 @@ package Gnat2Why.Error_Messages is
 
    type VC_Id is new Integer;
 
-   function Proved_Message (Kind : VC_Kind) return String;
-   function Not_Proved_Message (Kind : VC_Kind) return String;
-
    function Register_VC (N : Node_Id; E : Entity_Id) return VC_Id;
    --  register a VC for entity E, located at node N
 

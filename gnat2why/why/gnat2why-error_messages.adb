@@ -30,9 +30,11 @@ with Ada.Text_IO;
 with GNATCOLL.JSON;
 
 with Atree;               use Atree;
+with Einfo;               use Einfo;
 with Errout;              use Errout;
 with Flow_Error_Messages; use Flow_Error_Messages;
 with Osint;               use Osint;
+with Sinfo;               use Sinfo;
 
 with Gnat2Why.Nodes;      use Gnat2Why.Nodes;
 
@@ -55,6 +57,16 @@ package body Gnat2Why.Error_Messages is
       Equivalent_Keys => "=",
       "="             => "=");
 
+   function Proved_Message
+     (Node : Node_Id;
+      Kind : VC_Kind) return String;
+   --  return the message string for a proved VC
+
+   function Not_Proved_Message
+     (Node : Node_Id;
+      Kind : VC_Kind) return String;
+   --  return the message string for an unproved VC
+
    VC_Table : Id_Maps.Map := Id_Maps.Empty_Map;
 
    procedure Emit_Proof_Result
@@ -67,7 +79,8 @@ package body Gnat2Why.Error_Messages is
       VC_File    : String := "";
       Editor_Cmd : String := "") is
       Msg : constant String :=
-        (if Proved then Proved_Message (Kind) else Not_Proved_Message (Kind)) &
+        (if Proved then Proved_Message (Node, Kind)
+         else Not_Proved_Message (Node, Kind)) &
         Extra_Msg;
    begin
       Error_Msg_Proof
@@ -95,7 +108,9 @@ package body Gnat2Why.Error_Messages is
    -- Not_Proved_Message --
    ------------------------
 
-   function Not_Proved_Message (Kind : VC_Kind) return String is
+   function Not_Proved_Message
+     (Node : Node_Id;
+      Kind : VC_Kind) return String is
    begin
       case Kind is
          when VC_Division_Check          =>
@@ -113,7 +128,14 @@ package body Gnat2Why.Error_Messages is
          when VC_Initial_Condition       =>
             return "initial condition might fail";
          when VC_Precondition            =>
-            return "precondition might fail";
+            if Nkind (Node) in N_Function_Call | N_Procedure_Call_Statement
+              and then No_Return (Entity (Name (Node)))
+            then
+               return
+                 "call to nonreturning subprogram might be executed";
+            else
+               return "precondition might fail";
+            end if;
          when VC_Precondition_Main       =>
             return "precondition of main program might fail";
          when VC_Postcondition           =>
@@ -217,7 +239,9 @@ package body Gnat2Why.Error_Messages is
    -- Proved_Message --
    --------------------
 
-   function Proved_Message (Kind : VC_Kind) return String is
+   function Proved_Message
+     (Node : Node_Id;
+      Kind : VC_Kind) return String is
    begin
       case Kind is
          when VC_Division_Check          => return "division check proved";
@@ -227,7 +251,14 @@ package body Gnat2Why.Error_Messages is
          when VC_Length_Check            => return "length check proved";
          when VC_Discriminant_Check      => return "discriminant check proved";
          when VC_Initial_Condition       => return "initial condition proved";
-         when VC_Precondition            => return "precondition proved";
+         when VC_Precondition            =>
+            if Nkind (Node) in N_Function_Call | N_Procedure_Call_Statement
+              and then No_Return (Entity (Name (Node)))
+            then
+               return "call to nonreturning procedure never executed";
+            else
+               return "precondition proved";
+            end if;
          when VC_Precondition_Main       =>
             return "precondition of main program proved";
          when VC_Postcondition           => return "postcondition proved";
