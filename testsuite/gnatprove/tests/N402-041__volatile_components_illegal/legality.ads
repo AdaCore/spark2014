@@ -3,7 +3,7 @@ package Legality
 is
    -- Cases for the placement of Volatile_Components
 
-   -- See RM C.6(6.5/3) which bascially says that Volatile_Components
+   -- See RM C.6(6.5/3) which basically says that Volatile_Components
    -- can appear on an entity which is either
    --  1) a full type declaration of an array type
    -- or

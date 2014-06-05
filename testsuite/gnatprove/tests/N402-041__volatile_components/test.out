@@ -1,21 +1,9 @@
-legality.ads:33:19: inappropriate entity for aspect "Volatile_Components"
-legality.ads:34:29: inappropriate entity for aspect "Volatile_Components"
-legality.ads:35:19: inappropriate entity for aspect "Volatile_Components"
-legality.ads:39:19: inappropriate entity for aspect "Volatile_Components"
-legality.ads:40:29: inappropriate entity for aspect "Volatile_Components"
-legality.ads:41:19: inappropriate entity for aspect "Volatile_Components"
-legality.ads:45:19: inappropriate entity for aspect "Volatile_Components"
-legality.ads:46:29: inappropriate entity for aspect "Volatile_Components"
-legality.ads:47:19: inappropriate entity for aspect "Volatile_Components"
-legality.ads:51:19: inappropriate entity for aspect "Volatile_Components"
-legality.ads:52:29: inappropriate entity for aspect "Volatile_Components"
-legality.ads:53:19: inappropriate entity for aspect "Volatile_Components"
-vc5.ads:16:11: aspect "ASYNC_WRITERS" must apply to a volatile object
-vc5.ads:24:11: external property "ASYNC_WRITERS" must apply to a volatile object
-   compilation of legality.ads failed
-   compilation of vc5.ads failed
-   compilation of vc6.ads failed
-
-
-gnatprove: error during generation of Global contracts, aborting.
-gprbuild: *** compilation phase failed
+vc4.adb:13:07: info: assertion proved
+vc4.adb:17:07: info: assertion proved
+vc4.adb:30:22: warning: assertion might fail, requires T1 = T2
+vc4.adb:34:22: warning: assertion might fail, requires T3 = T4
+vc4.adb:47:22: warning: assertion might fail, requires T1 = T2
+vc4.adb:51:22: warning: assertion might fail, requires T3 = T4
+vc4.adb:65:22: warning: assertion might fail, requires T1 = T2
+vc4.adb:69:22: warning: assertion might fail, requires T3 = T4
+vc4.adb:80:22: warning: assertion might fail, requires T1 = T2
