@@ -15,7 +15,7 @@ package body Pack is
    begin
       pragma Assert (My_A = (1 .. 4 => 42));
       pragma Assert (My_B = (1 .. 4 => 42));
-      pragma Assert (My_B /= (1 .. 4 => 42)); --  FALSE
+      pragma Assert (My_B /= (1 .. 4 => 42)); --  @ASSERT:FAIL
       null;
    end A1;
 
@@ -26,7 +26,7 @@ package body Pack is
    begin
       pragma Assert (My_S2 (1 .. 3) = Glob (1 .. 3));
       pragma Assert (My_B = My_A (1 .. 4));
-      pragma Assert (My_S2 (1 .. 3) /= Glob (1 .. 3)); --  FALSE
+      pragma Assert (My_S2 (1 .. 3) /= Glob (1 .. 3)); --  @ASSERT:FAIL
       null;
    end A2;
 
@@ -36,7 +36,7 @@ package body Pack is
       My_B  : constant Arr1 (1 .. 4) := My_A (1 .. 4);
    begin
       pragma Assert (My_S2 (1 .. 3) = Glob (1 .. 3));
-      pragma Assert (My_S2 (1 .. 3) /= Glob (1 .. 3)); --  FALSE
+      pragma Assert (My_S2 (1 .. 3) /= Glob (1 .. 3)); --  @ASSERT:FAIL
       null;
    end AN21;
 
@@ -46,7 +46,7 @@ package body Pack is
       My_B  : constant Arr1 (1 .. 4) := My_A (1 .. 4);
    begin
       pragma Assert (My_S2 (1 .. 3) = Glob (1 .. 3));
-      pragma Assert (My_S2 (1 .. 3) /= Glob (1 .. 3)); --  FALSE
+      pragma Assert (My_S2 (1 .. 3) /= Glob (1 .. 3)); --  @ASSERT:FAIL
       null;
    end AN22;
 
@@ -62,7 +62,7 @@ package body Pack is
       null;
       My_S4 (1 .. 4) := G;
       pragma Assert (My_S4 (2) = G (2));
-      pragma Assert (My_S4 (2) /= G (2)); --  FALSE
+      pragma Assert (My_S4 (2) /= G (2)); --  @ASSERT:FAIL
       My_S4 (2 .. 3) := Glob (2 .. 3);
    end A4;
 
@@ -86,7 +86,7 @@ package body Pack is
    begin
       Init (A);
       pragma Assert (A (8) = 1);
-      pragma Assert (A (9) = 2); --  FALSE
+      pragma Assert (A (9) = 2); --  @ASSERT:FAIL
    end P;
 
 end Pack;
