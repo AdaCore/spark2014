@@ -1898,22 +1898,9 @@ package body SPARK_Definition is
 
       procedure Mark_Parameter_Entity (E : Entity_Id) is
          T   : constant Entity_Id := Etype (E);
-
-         --  Actual_Subtype is only defined for subprogram parameters, not on
-         --  loop parameters.
-
-         Sub : constant Entity_Id :=
-           (if Is_Formal (E) then Actual_Subtype (E) else Empty);
-
       begin
          if not In_SPARK (T) then
             Mark_Violation (E, From => T);
-         end if;
-
-         if Present (Sub)
-           and then not In_SPARK (Sub)
-         then
-            Mark_Violation (E, From => Sub);
          end if;
       end Mark_Parameter_Entity;
 
@@ -3445,6 +3432,30 @@ package body SPARK_Definition is
             --  Always mark the body in SPARK
 
             Bodies_In_SPARK.Include (E);
+
+            --  Mark Actual_Subtypes of parameters if any
+
+            declare
+               Formals    : constant List_Id :=
+                 Parameter_Specifications (Specification (N));
+               Param_Spec : Node_Id;
+               Formal     : Node_Id;
+               Sub        : Node_Id;
+            begin
+               if Present (Formals) then
+                  Param_Spec := First (Formals);
+                  while Present (Param_Spec) loop
+                     Formal := Defining_Identifier (Param_Spec);
+                     Sub := Actual_Subtype (Formal);
+                     if Present (Sub)
+                       and then not In_SPARK (Sub)
+                     then
+                        Mark_Violation (Formal, From => Sub);
+                     end if;
+                     Next (Param_Spec);
+                  end loop;
+               end if;
+            end;
 
             --  Detect violations in the body itself
 

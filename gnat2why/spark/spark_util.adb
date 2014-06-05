@@ -1414,7 +1414,14 @@ package body SPARK_Util is
       Component : Entity_Id := First_Component_Or_Discriminant (Typ);
    begin
       while Component /= Empty loop
-         Count := Count + 1;
+
+         --  Do not count completely hidden discrimiants
+
+         if not (Ekind (Component) in E_Discriminant
+                 and then Is_Completely_Hidden (Component))
+         then
+            Count := Count + 1;
+         end if;
          Component := Next_Component_Or_Discriminant (Component);
       end loop;
       return Count;

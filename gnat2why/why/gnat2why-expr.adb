@@ -1646,39 +1646,45 @@ package body Gnat2Why.Expr is
             I       : Positive := 1;
          begin
             while Present (Field) loop
-               R_Acc := New_Ada_Record_Access
-                 (Empty, EW_Term, Expr, Field, Ty_Ext);
+               if not (Ekind (Field) in E_Discriminant)
+                 or else not Is_Completely_Hidden (Field)
+               then
 
-               if Ekind (Field) = E_Discriminant then
-                  Tmps (I) := New_Temp_Identifier
-                    (Field, Type_Of_Node (Etype (Field)));
-                  Binds (I) := R_Acc;
-                  Ada_Ent_To_Why.Insert (Symbol_Table, Field,
-                                         (Regular, Main =>
-                                            (Ada_Node => Field,
-                                             B_Name   => Tmps (I),
-                                             B_Ent    => null,
-                                             Mutable   => False)));
-               end if;
+                  R_Acc := New_Ada_Record_Access
+                    (Empty, EW_Term, Expr, Field, Ty_Ext);
 
-               T_Comp :=
-                 Compute_Dynamic_Property (R_Acc, Etype (Field), False);
+                  if Ekind (Field) = E_Discriminant then
+                     Tmps (I) := New_Temp_Identifier
+                       (Field, Type_Of_Node (Etype (Field)));
+                     Binds (I) := R_Acc;
+                     Ada_Ent_To_Why.Insert (Symbol_Table, Field,
+                                            (Regular, Main =>
+                                               (Ada_Node => Field,
+                                                B_Name   => Tmps (I),
+                                                B_Ent    => null,
+                                                Mutable   => False)));
+                  end if;
 
-               if T_Comp /= True_Pred then
-                  T_Guard := (if Ekind (Field) = E_Discriminant then True_Pred
-                              else +New_Ada_Record_Check_For_Field
-                                (Empty, EW_Pred, Expr, Field, Ty_Ext));
+                  T_Comp :=
+                    Compute_Dynamic_Property (R_Acc, Etype (Field), False);
 
-                  F_Expr  := New_Conditional (Domain      => EW_Pred,
-                                              Condition   => +T_Guard,
-                                              Then_Part   => +T_Comp);
+                  if T_Comp /= True_Pred then
+                     T_Guard := (if Ekind (Field) = E_Discriminant
+                                 then True_Pred
+                                 else +New_Ada_Record_Check_For_Field
+                                   (Empty, EW_Pred, Expr, Field, Ty_Ext));
 
-                  if T = True_Pred then
-                     T := +F_Expr;
-                  else
-                     T := +New_And_Then_Expr (Left   => +T,
-                                              Right  => +F_Expr,
-                                              Domain => EW_Pred);
+                     F_Expr  := New_Conditional (Domain      => EW_Pred,
+                                                 Condition   => +T_Guard,
+                                                 Then_Part   => +T_Comp);
+
+                     if T = True_Pred then
+                        T := +F_Expr;
+                     else
+                        T := +New_And_Then_Expr (Left   => +T,
+                                                 Right  => +F_Expr,
+                                                 Domain => EW_Pred);
+                     end if;
                   end if;
                end if;
 
