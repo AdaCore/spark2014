@@ -64,7 +64,7 @@ auditlog.adb:503:19: warning: unused assignment to "Archive", in call inlined at
 auditlog.adb:504:19: warning: unused assignment to "Unused", in call inlined at auditlog.adb:1895
 auditlog.adb:504:19: warning: unused assignment to "Unused", in call inlined at auditlog.adb:1920
 auditlog.adb:600:12: warning: length check might fail, in call inlined at auditlog.adb:652
-auditlog.adb:600:34: warning: range check might fail, in call inlined at auditlog.adb:652
+auditlog.adb:600:34: warning: length check might fail, in call inlined at auditlog.adb:652
 auditlog.adb:753:47: warning: range check might fail
 auditlog.adb:753:50: info: overflow check proved
 auditlog.adb:753:69: info: overflow check proved
@@ -113,10 +113,10 @@ auditlog.adb:1127:50: warning: overflow check might fail
 auditlog.adb:1127:69: warning: overflow check might fail
 auditlog.adb:1132:07: warning: precondition might fail
 auditlog.adb:1566:07: warning: precondition might fail
-auditlog.adb:1570:26: warning: range check might fail
+auditlog.adb:1570:26: warning: length check might fail
 auditlog.adb:1576:10: info: precondition proved
 auditlog.adb:1658:22: info: precondition proved
-auditlog.adb:1660:22: warning: range check might fail
+auditlog.adb:1660:22: warning: length check might fail
 auditlog.adb:1697:13: warning: assertion might fail
 auditlog.adb:1702:53: warning: range check might fail
 auditlog.adb:1702:56: warning: overflow check might fail
@@ -147,9 +147,10 @@ certificatestore.adb:37:42: info: length check proved
 certificatestore.adb:223:31: warning: range check might fail, in call inlined at certificatestore.adb:239
 certificatestore.adb:224:26: warning: "Rawnext" might not be initialized, in call inlined at certificatestore.adb:239
 certificatestore.adb:224:26: warning: length check might fail, in call inlined at certificatestore.adb:239
+certificatestore.adb:224:29: warning: length check might fail, in call inlined at certificatestore.adb:239
 certificatestore.adb:224:29: warning: range check might fail, in call inlined at certificatestore.adb:239
 certificatestore.adb:225:42: warning: length check might fail, in call inlined at certificatestore.adb:239
-certificatestore.adb:225:45: warning: range check might fail, in call inlined at certificatestore.adb:239
+certificatestore.adb:225:45: warning: length check might fail, in call inlined at certificatestore.adb:239
 certificatestore.adb:353:47: info: range check proved
 certtypes.ads:39:22: info: length check proved
 clock.adb:74:11: info: range check proved
@@ -491,6 +492,10 @@ screen.adb:818:37: warning: length check might fail, in call inlined at screen.a
 screen.adb:818:37: warning: length check might fail, in call inlined at screen.adb:847
 screen.adb:818:37: warning: length check might fail, in call inlined at screen.adb:853
 screen.adb:818:37: warning: length check might fail, in call inlined at screen.adb:859
+screen.adb:818:40: warning: length check might fail, in call inlined at screen.adb:841
+screen.adb:818:40: warning: length check might fail, in call inlined at screen.adb:847
+screen.adb:818:40: warning: length check might fail, in call inlined at screen.adb:853
+screen.adb:818:40: warning: length check might fail, in call inlined at screen.adb:859
 screen.adb:818:40: warning: range check might fail, in call inlined at screen.adb:841
 screen.adb:818:40: warning: range check might fail, in call inlined at screen.adb:847
 screen.adb:818:40: warning: range check might fail, in call inlined at screen.adb:853

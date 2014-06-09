@@ -732,6 +732,7 @@ screen.adb:517:36: warning: length check might fail, in call inlined at screen.a
 screen.adb:517:36: warning: length check might fail, in call inlined at screen.adb:645
 screen.adb:535:33: info: length check proved, in call inlined at screen.adb:663
 screen.adb:537:37: warning: length check might fail, in call inlined at screen.adb:663
+screen.adb:537:40: warning: length check might fail, in call inlined at screen.adb:663
 screen.adb:537:40: warning: range check might fail, in call inlined at screen.adb:663
 screen.adb:578:18: warning: unused assignment to "Interfac.Output"
 screen.adb:584:18: warning: unused assignment to "Interfac.Output"
@@ -763,6 +764,10 @@ screen.adb:784:37: warning: length check might fail, in call inlined at screen.a
 screen.adb:784:37: warning: length check might fail, in call inlined at screen.adb:812
 screen.adb:784:37: warning: length check might fail, in call inlined at screen.adb:818
 screen.adb:784:37: warning: length check might fail, in call inlined at screen.adb:824
+screen.adb:784:40: warning: length check might fail, in call inlined at screen.adb:806
+screen.adb:784:40: warning: length check might fail, in call inlined at screen.adb:812
+screen.adb:784:40: warning: length check might fail, in call inlined at screen.adb:818
+screen.adb:784:40: warning: length check might fail, in call inlined at screen.adb:824
 screen.adb:784:40: warning: range check might fail, in call inlined at screen.adb:806
 screen.adb:784:40: warning: range check might fail, in call inlined at screen.adb:812
 screen.adb:784:40: warning: range check might fail, in call inlined at screen.adb:818
