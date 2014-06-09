@@ -17,4 +17,3 @@ vc5.ads:24:11: external property "ASYNC_WRITERS" must apply to a volatile object
 
 
 gnatprove: error during generation of Global contracts
-gprbuild: *** compilation phase failed
