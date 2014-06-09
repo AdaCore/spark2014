@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Snames;              use Snames;
+with Einfo;               use Einfo;
 with Types;               use Types;
 with Why.Ids;             use Why.Ids;
 with Why.Sinfo;           use Why.Sinfo;
@@ -145,7 +146,8 @@ package Why.Gen.Arrays is
       Ty      : Entity_Id;
       Attr    : Attribute_Id;
       Dim     : Positive;
-      Arg_Ind : in out Positive);
+      Arg_Ind : in out Positive)
+   with Pre => Is_Constrained (Ty);
    --  This variant of Add_Attr_Arg will only work for constrained types
 
    procedure Declare_Ada_Array
@@ -229,7 +231,8 @@ package Why.Gen.Arrays is
    function Build_Length_Expr
      (Domain : EW_Domain;
       Ty     : Entity_Id;
-      Dim    : Positive) return W_Expr_Id;
+      Dim    : Positive) return W_Expr_Id
+   with Pre => Is_Constrained (Ty);
 
    function Build_Length_Expr
      (Domain : EW_Domain;
@@ -265,7 +268,8 @@ package Why.Gen.Arrays is
      (Ty     : Entity_Id;
       Attr   : Attribute_Id;
       Dim    : Positive) return W_Expr_Id;
-   --  Same as Get_Array_Attr, can be used when the type is already known
+   --  Same as Get_Array_Attr, can be used when the type is already known.
+   --  On unconstrained array types, return bounds used to constrain the index.
 
    function New_Concat_Call
      (Domain : EW_Domain;

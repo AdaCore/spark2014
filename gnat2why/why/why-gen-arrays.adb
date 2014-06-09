@@ -24,7 +24,6 @@
 ------------------------------------------------------------------------------
 
 with Atree;               use Atree;
-with Einfo;               use Einfo;
 with Sem_Eval;            use Sem_Eval;
 with Sem_Util;            use Sem_Util;
 with Sinfo;               use Sinfo;
@@ -34,6 +33,7 @@ with Uintp;               use Uintp;
 with Gnat2Why.Nodes;      use Gnat2Why.Nodes;
 with Gnat2Why.Types;      use Gnat2Why.Types;
 with Gnat2Why.Util;       use Gnat2Why.Util;
+with Gnat2Why.Expr;       use Gnat2Why.Expr;
 
 with Why.Conversions;     use Why.Conversions;
 with Why.Atree.Builders;  use Why.Atree.Builders;
@@ -693,9 +693,39 @@ package body Why.Gen.Arrays is
       Attr   : Attribute_Id;
       Dim    : Positive) return W_Expr_Id is
    begin
+
+      --  Do not use first and last of types that depend on a discriminant
+      --  as there is no common value for them at a given program point.
+      --  We should also avoid using bounds of Itypes as their values will not
+      --  in general be assumed.
+
       if Attr in Attribute_First | Attribute_Last then
-         return New_Attribute_Expr (Nth_Index_Type (Ty, Dim), Attr);
+         declare
+            Index_Type : constant Entity_Id := Nth_Index_Type (Ty, Dim);
+            Use_Expr   : constant Boolean :=
+              not Is_Static_Array_Type (Ty) and then
+              (Depends_On_Discriminant (Get_Range (Index_Type)) or else
+               Is_Itype (Index_Type));
+         begin
+            pragma Assert (if Use_Expr then Is_Constrained (Ty));
+
+            if Use_Expr then
+               return Transform_Expr
+                 (Expr          =>
+                    (if Attr = Attribute_First then
+                          Low_Bound (Get_Range (Index_Type))
+                     else High_Bound (Get_Range (Index_Type))),
+                  Expected_Type => EW_Int_Type,
+                  Domain        => EW_Term,
+                  Params        => Body_Params);
+            else
+               return New_Attribute_Expr (Ty   => Index_Type,
+                                          Attr => Attr);
+            end if;
+         end;
       else
+         pragma Assert (Is_Constrained (Ty));
+
          return
            New_Integer_Constant (Value => Static_Array_Length (Ty, Dim));
       end if;

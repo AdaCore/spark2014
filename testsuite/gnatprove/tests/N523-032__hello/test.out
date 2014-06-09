@@ -27,7 +27,7 @@ hello.adb:65:10: info: assertion proved
 hello.adb:66:10: info: assertion proved
 hello.adb:67:10: warning: loop invariant might fail after first iteration
 hello.adb:67:10: warning: loop invariant might fail in first iteration
-hello.adb:67:33: warning: precondition might fail
+hello.adb:67:33: info: precondition proved
 hello.adb:70:37: info: index check proved
 hello.adb:70:47: info: index check proved
 hello.adb:81:07: info: assertion proved

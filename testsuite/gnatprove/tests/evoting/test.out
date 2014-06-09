@@ -8,7 +8,7 @@ evoting.adb:57:17: warning: no Global contract available for "End_Of_File"
 evoting.adb:59:10: warning: assuming "Get_Line" has no effect on global items
 evoting.adb:59:10: warning: no Global contract available for "Get_Line"
 evoting.adb:60:49: info: length check proved
-evoting.adb:60:52: warning: length check might fail
+evoting.adb:60:52: info: length check proved
 evoting.adb:60:52: warning: range check might fail
 evoting.adb:62:49: info: range check proved
 evoting.adb:65:07: warning: assuming "Close" has no effect on global items

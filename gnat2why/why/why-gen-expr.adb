@@ -1802,25 +1802,22 @@ package body Why.Gen.Expr is
                           Typ    => EW_Bool_Type);
       elsif Is_Array_Type (Ty) and then not Is_Static_Array_Type (Ty) then
          declare
-            Dim   : constant Pos := Number_Dimensions (Ty);
-            Args  : W_Expr_Array (1 .. Positive (4 * Dim));
-            Index : Node_Id := First_Index (Ty);
-            Count : Integer := 0;
+            Dim   : constant Positive := Positive (Number_Dimensions (Ty));
+            Args  : W_Expr_Array (1 .. 4 * Dim);
          begin
-            while Present (Index) loop
+            for Count in 0 .. Dim - 1 loop
                declare
-                  Index_Type : constant Entity_Id := Etype (Index);
+                  First_Expr : constant W_Expr_Id :=
+                    Get_Array_Attr (Ty     => Ty,
+                                    Attr   => Attribute_First,
+                                    Dim    => Count + 1);
+                  Last_Expr : constant W_Expr_Id :=
+                    Get_Array_Attr (Ty     => Ty,
+                                    Attr   => Attribute_Last,
+                                    Dim    => Count + 1);
                begin
-
-                  pragma Assert (not Depends_On_Discriminant
-                                 (Get_Range (Index_Type)));
-
-                  Args (4 * Count + 1) := New_Attribute_Expr
-                    (Ty   => Index_Type,
-                     Attr => Attribute_First);
-                  Args (4 * Count + 2) := New_Attribute_Expr
-                    (Ty   => Index_Type,
-                     Attr => Attribute_Last);
+                  Args (4 * Count + 1) := First_Expr;
+                  Args (4 * Count + 2) := Last_Expr;
                   Args (4 * Count + 3) :=
                     Insert_Simple_Conversion
                       (Ada_Node => Ty,
@@ -1842,9 +1839,6 @@ package body Why.Gen.Expr is
                           Dim    => Count + 1),
                        To       => EW_Int_Type);
                end;
-
-               Next (Index);
-               Count := Count + 1;
             end loop;
 
             return New_Call (Domain => Domain,

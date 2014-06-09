@@ -1,2 +1,2 @@
 slice_test_2.adb:9:23: info: length check proved
-slice_test_2.adb:10:09: warning: length check might fail
+slice_test_2.adb:10:09: info: length check proved

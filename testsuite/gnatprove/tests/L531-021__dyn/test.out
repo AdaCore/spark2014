@@ -1,3 +1,3 @@
 proc.adb:1:11: warning: subprogram "Proc" has no effect
 proc.adb:19:14: warning: subprogram "P" has no effect
-proc.adb:21:33: warning: length check might fail
+proc.adb:21:33: info: length check proved

@@ -75,7 +75,7 @@ with Gnat2Why.Decls;         use Gnat2Why.Decls;
 with Gnat2Why.Expr.Loops;    use Gnat2Why.Expr.Loops;
 with Gnat2Why.Nodes;         use Gnat2Why.Nodes;
 with Gnat2Why.Subprograms;   use Gnat2Why.Subprograms;
-with SPARK_Definition; use SPARK_Definition;
+with SPARK_Definition;       use SPARK_Definition;
 
 package body Gnat2Why.Expr is
 
@@ -1375,89 +1375,6 @@ package body Gnat2Why.Expr is
       Only_Var : Boolean) return W_Pred_Id
    is
 
-      function New_Dynamic_Property_Support_Discr
-        (Domain : EW_Domain;
-         Ty     : Entity_Id;
-         Expr   : W_Expr_Id) return W_Expr_Id;
-      --  Variant of New_Dynamic_Property that supports ranges that depend
-      --  on discriminant values.
-
-      ----------------------------------------
-      -- New_Dynamic_Property_Support_Discr --
-      ----------------------------------------
-
-      function New_Dynamic_Property_Support_Discr
-        (Domain : EW_Domain;
-         Ty     : Entity_Id;
-         Expr   : W_Expr_Id) return W_Expr_Id
-      is
-      begin
-
-         --  Do not use first and last of types that depend on a discriminant
-         --  as there is no common value for them at a given program point.
-
-         if Is_Array_Type (Ty) and then not Is_Static_Array_Type (Ty) then
-            declare
-               Dim   : constant Pos := Number_Dimensions (Ty);
-               Args  : W_Expr_Array (1 .. Positive (4 * Dim));
-               Index : Node_Id := First_Index (Ty);
-               Count : Integer := 0;
-            begin
-               while Present (Index) loop
-                  declare
-                     Index_Type : constant Entity_Id := Etype (Index);
-                     Rng        : constant Node_Id := Get_Range (Index_Type);
-                     First_Expr : constant W_Expr_Id :=
-                       (if Depends_On_Discriminant (Rng)
-                        then Transform_Expr
-                          (Low_Bound (Rng), EW_Int_Type, EW_Term, Body_Params)
-                        else New_Attribute_Expr (Ty   => Index_Type,
-                                                 Attr => Attribute_First));
-                     Last_Expr : constant W_Expr_Id :=
-                       (if Depends_On_Discriminant (Rng)
-                        then Transform_Expr
-                          (High_Bound (Rng), EW_Int_Type, EW_Term, Body_Params)
-                        else New_Attribute_Expr (Ty   => Index_Type,
-                                                 Attr => Attribute_Last));
-                  begin
-                     Args (4 * Count + 1) := First_Expr;
-                     Args (4 * Count + 2) := Last_Expr;
-                     Args (4 * Count + 3) :=
-                       Insert_Simple_Conversion
-                         (Ada_Node => Ty,
-                          Domain   => Domain,
-                          Expr     => Get_Array_Attr
-                            (Domain => Domain,
-                             Expr   => Expr,
-                             Attr   => Attribute_First,
-                             Dim    => Count + 1),
-                          To       => EW_Int_Type);
-                     Args (4 * Count + 4) :=
-                       Insert_Simple_Conversion
-                         (Ada_Node => Ty,
-                          Domain   => Domain,
-                          Expr     => Get_Array_Attr
-                            (Domain => Domain,
-                             Expr   => Expr,
-                             Attr   => Attribute_Last,
-                             Dim    => Count + 1),
-                          To       => EW_Int_Type);
-                  end;
-
-                  Next (Index);
-                  Count := Count + 1;
-               end loop;
-
-               return New_Call (Domain => Domain,
-                                Name   => Dynamic_Prop_Name (Ty),
-                                Args   => Args,
-                                Typ    => EW_Bool_Type);
-            end;
-         else
-            return New_Dynamic_Property (Domain, Ty, Expr);
-         end if;
-      end New_Dynamic_Property_Support_Discr;
-
       T : W_Pred_Id;
 
       --  If Ty's fullview is in SPARK, go to its underlying type to check its
@@ -1479,9 +1396,9 @@ package body Gnat2Why.Expr is
         and then Is_Array_Type (Ty_Ext)
         and then not Is_Static_Array_Type (Ty_Ext)
       then
-         T := +New_Dynamic_Property_Support_Discr (Domain => EW_Pred,
-                                                   Ty     => Ty_Ext,
-                                                   Expr   => Expr);
+         T := +New_Dynamic_Property (Domain => EW_Pred,
+                                     Ty     => Ty_Ext,
+                                     Expr   => Expr);
 
          --  For arrays, also assume the value of its bounds
 
@@ -1621,7 +1538,7 @@ package body Gnat2Why.Expr is
             end if;
          end;
 
-      elsif Is_Record_Type (Ty_Ext) then
+      elsif Is_Record_Type (Ty_Ext) or else Is_Private_Type (Ty_Ext) then
 
          --  Generates:
          --  (check_for_f1 <Expr> -> dynamic_property <Expr>.rec__f1)
@@ -1646,8 +1563,10 @@ package body Gnat2Why.Expr is
             I       : Positive := 1;
          begin
             while Present (Field) loop
-               if not (Ekind (Field) in E_Discriminant)
-                 or else not Is_Completely_Hidden (Field)
+               if (Is_Record_Type (Ty_Ext)
+                   or else Ekind (Field) = E_Discriminant)
+                 and then not (Ekind (Field) in E_Discriminant
+                             and then Is_Completely_Hidden (Field))
                then
 
                   R_Acc := New_Ada_Record_Access
@@ -5139,9 +5058,10 @@ package body Gnat2Why.Expr is
                      if Nkind (Var) in N_Identifier | N_Expanded_Name
                        and then Is_Type (Entity (Var))
                      then
-                        T := New_Attribute_Expr
-                          (Nth_Index_Type (Entity (Var), Dim),
-                           Attr_Id);
+                        T := Get_Array_Attr (Ty   => Entity (Var),
+                                             Attr => Attr_Id,
+                                             Dim  =>
+                                               Positive (UI_To_Int (Dim)));
 
                      --  Object'First
 
@@ -5815,27 +5735,6 @@ package body Gnat2Why.Expr is
                                         Sub_Type => Etype (Index),
                                         Do_Check => Comes_From_Source (Index)),
                                       R);
-
-                           elsif Is_Itype (Etype (Index)) then
-
-                              --  Itypes declared in arrays are never declared,
-                              --  so we assign their bounds here.
-                              --  Note that we use the Index as a base type.
-                              --  This does not matter as we do not ask for
-                              --  checks.
-
-                              if not Depends_On_Discriminant
-                                (Get_Range (Etype (Index)))
-                              then
-
-                                 R := Sequence
-                                   (Assume_Of_Scalar_Subtype
-                                      (Params   => Body_Params,
-                                       N        => Etype (Index),
-                                       Base     => Etype (Index),
-                                       Do_Check => False),
-                                    R);
-                              end if;
                            end if;
 
                            Next (Index);
