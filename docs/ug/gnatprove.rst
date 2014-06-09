@@ -436,7 +436,7 @@ analysed condition, either:
    saved in the why3 session so |GNATprove| won't need to be specified the
    prover again to know that the condition is valid.
 
-Analisys with |GNATprove| can be limited to a single condition with the
+Analysis with |GNATprove| can be limited to a single condition with the
 ``--limit-line`` option::
 
     gnatprove -P <project-file.gpr> --prover=<prover> --limit-line=<file>:<line>:<column>:<check-kind>
