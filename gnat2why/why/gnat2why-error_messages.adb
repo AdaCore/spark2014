@@ -81,7 +81,7 @@ package body Gnat2Why.Error_Messages is
       Msg : constant String :=
         (if Proved then Proved_Message (Node, Kind)
          else Not_Proved_Message (Node, Kind)) &
-        Extra_Msg;
+        Extra_Msg & (if VC_File /= "" then ", vc file: " & VC_File else "");
    begin
       Error_Msg_Proof
         (Node,
