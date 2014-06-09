@@ -1,0 +1,31 @@
+
+Syntax extensions
+
+   * Add unary operators +/- based on original “not” operator
+   * Add array/record type declarations
+   * add Indexed component and selected component to expression
+   * add null statement (so it can used in if-statement if its else branch is empty)
+   * extend if-then statement to if-then-else statement
+   * add procedure call
+   * in declaration, remove “D_Sequence”, because, in procedure we should allow empty declarations
+
+
+Other changes
+
+   * values.v
+      * add error_type to run time error state
+
+   * consider named array / record aggregate
+       
+     Because positional array aggregate should have at least two elements, otherwise it 
+     cannot distinguish whether it’s an array aggregate or a just a single value;
+	 So named array aggregate is used in our formalization, 
+	 (1) which allows one element aggregate; 
+	 (2) if it’s a named array aggregate, when do array_select, we don’t need 
+	     to compute the offset;
+
+
+Restrictions
+
+   * now consider only non-nested array / record
+      * array lower and upper bound to be type of Z instead of expression
