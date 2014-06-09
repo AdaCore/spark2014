@@ -1,3 +1,2 @@
 seqs.adb:1:11: warning: subprogram "Seqs" has no effect
-seqs.adb:6:4: info: assertion proved
-
+seqs.adb:6:04: info: assertion proved
