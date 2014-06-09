@@ -1,4 +1,4 @@
-kmp.adb:6:29: warning: range check might fail
+kmp.adb:6:29: info: length check proved
 kmp.adb:11:23: warning: overflow check might fail
 kmp.adb:12:39: warning: overflow check might fail
 kmp.adb:13:13: warning: loop invariant might fail after first iteration

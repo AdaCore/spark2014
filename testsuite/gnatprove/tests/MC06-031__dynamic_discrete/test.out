@@ -2,7 +2,7 @@ dynamic_ranges.adb:7:20: info: range check proved
 dynamic_ranges.adb:15:34: info: range check proved
 dynamic_ranges.adb:17:07: info: assertion proved
 dynamic_ranges.adb:18:07: info: assertion proved
-dynamic_ranges.adb:19:29: info: range check proved
+dynamic_ranges.adb:19:29: info: length check proved
 dynamic_ranges.adb:23:15: info: range check proved
 dynamic_ranges.adb:24:15: info: range check proved
 dynamic_ranges.adb:24:49: info: overflow check proved

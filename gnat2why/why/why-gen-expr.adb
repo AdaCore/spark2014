@@ -509,7 +509,7 @@ package body Why.Gen.Expr is
          declare
             Check_Type : constant Entity_Id := Get_Ada_Node (+To);
          begin
-            if Is_Static_Array_Type (Check_Type) then
+            if Is_Constrained (Check_Type) then
                T := +Sequence
                  (Insert_Length_Check (Arr_Expr, Check_Type),
                   +T);

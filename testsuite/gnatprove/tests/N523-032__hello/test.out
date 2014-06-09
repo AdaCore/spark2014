@@ -21,7 +21,7 @@ hello.adb:35:38: info: index check proved
 hello.adb:41:08: warning: postcondition might fail
 hello.adb:45:08: info: precondition proved
 hello.adb:53:07: info: range check proved
-hello.adb:53:48: info: range check proved
+hello.adb:53:48: info: length check proved
 hello.adb:64:10: info: assertion proved
 hello.adb:65:10: info: assertion proved
 hello.adb:66:10: info: assertion proved
