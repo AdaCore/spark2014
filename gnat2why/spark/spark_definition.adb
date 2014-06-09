@@ -2117,7 +2117,7 @@ package body SPARK_Definition is
 
          if Entity_In_External_Axioms (E) then
             Mark_Entity
-              (Get_First_Parent_With_External_Axiomatization_For_Entity (E));
+              (Get_First_Parent_With_Ext_Axioms_For_Entity (E));
          end if;
 
          --  The base type or original type should be marked before the current

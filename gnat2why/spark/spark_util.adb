@@ -1205,7 +1205,7 @@ package body SPARK_Util is
       end if;
 
       return Present
-        (Get_First_Parent_With_External_Axiomatization_For_Entity (E));
+        (Get_First_Parent_With_Ext_Axioms_For_Entity (E));
    end Entity_In_External_Axioms;
 
    -----------------------------------------------
