@@ -3,4 +3,4 @@ dir.adb:6:07: warning: unused variable "Resolve_Links"
 dir.adb:18:07: warning: unused initial value of "Directory"
 dir.adb:23:23: warning: unused initial value of "Name"
 dir.adb:33:13: info: range check proved
-dir.adb:36:28: warning: length check might fail
+dir.adb:36:28: info: length check proved
