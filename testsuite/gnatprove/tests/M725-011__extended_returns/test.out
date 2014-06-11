@@ -2,8 +2,8 @@ extended_returns.adb:7:07: warning: "Result.B" might not be initialized
 extended_returns.adb:7:07: warning: "Result.C" might not be initialized
 extended_returns.adb:7:07: warning: "Result.D" might not be initialized
 extended_returns.adb:8:16: info: discriminant check proved
-extended_returns.adb:11:19: warning: discriminant check might fail
-extended_returns.adb:13:19: warning: discriminant check might fail
-extended_returns.adb:14:19: warning: discriminant check might fail
+extended_returns.adb:11:19: info: discriminant check proved
+extended_returns.adb:13:19: info: discriminant check proved
+extended_returns.adb:14:19: info: discriminant check proved
 extended_returns.ads:17:20: info: postcondition proved
 extended_returns.ads:17:31: info: discriminant check proved

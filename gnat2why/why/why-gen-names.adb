@@ -26,6 +26,7 @@
 with Stand;               use Stand;
 with String_Utils;        use String_Utils;
 
+with SPARK_Definition;    use SPARK_Definition;
 with SPARK_Util;          use SPARK_Util;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Builders;  use Why.Atree.Builders;
@@ -223,15 +224,15 @@ package body Why.Gen.Names is
                                W => Convert_To (To_Kind));
                   end;
 
-               --  Case of a conversion between two record types
+               --  Case of a conversion between two record or private types
 
                when EW_Abstract | EW_Split =>
                   declare
                      From_Node : constant Node_Id := Get_Ada_Node (+From);
                      To_Node   : constant Node_Id := Get_Ada_Node (+To);
                      From_Base : constant Node_Id :=
-                       (if Type_Based_On_External_Axioms (From_Node) then
-                             Underlying_External_Axioms_Type (From_Node)
+                       (if Fullview_Not_In_SPARK (From_Node) then
+                             Get_First_Ancestor_In_SPARK (From_Node)
                         else Root_Record_Type (From_Node));
                   begin
                      if From_Base = From_Node then

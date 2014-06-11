@@ -125,6 +125,10 @@ package Gnat2Why.Nodes is
        and then Has_Static_Array_Bounds (E))
    with Pre => (Ekind (E) in Type_Kind);
 
+   function Only_Static_Discriminants (E : Entity_Id) return Boolean with
+     Pre => (Has_Discriminants (E) and then Is_Constrained (E));
+   --  return true is E has only statically constrained discriminants
+
    function Translate_Location (Loc : Source_Ptr) return Source_Ptr is
      (if Instantiation_Location (Loc) /= No_Location then
         Instantiation_Location (Loc)

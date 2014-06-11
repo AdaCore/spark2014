@@ -560,6 +560,22 @@ package body Gnat2Why.Nodes is
       return Nth_Index_Type (E, UI_From_Int (Int (Dim)));
    end Nth_Index_Type;
 
+   -------------------------------
+   -- Only_Static_Discriminants --
+   -------------------------------
+
+   function Only_Static_Discriminants (E : Entity_Id) return Boolean is
+      Elmt      : Elmt_Id := First_Elmt (Stored_Constraint (E));
+   begin
+      while Present (Elmt) loop
+         if not Is_OK_Static_Expression (Node (Elmt)) then
+            return False;
+         end if;
+         Next_Elmt (Elmt);
+      end loop;
+      return True;
+   end Only_Static_Discriminants;
+
    -----------------
    -- Source_Name --
    -----------------

@@ -158,9 +158,10 @@ package body SPARK_Definition is
    Bodies_In_SPARK   : Node_Sets.Set;
    --  Subprograms and packages whose body is marked in SPARK
 
-   Entities_Fullview_Not_In_SPARK : Node_Sets.Set;
-   --  Type entities in SPARK whose fullview was declared in a private part
-   --  with SPARK_Mode => Off or a subtype or derived type of such an entity.
+   Entities_Fullview_Not_In_SPARK : Node_Maps.Map;
+   --  Maps type entities in SPARK whose fullview was declared in a private
+   --  part with SPARK_Mode => Off or a subtype or derived type of such an
+   --  entity to its first ancester in SPARK.
 
    function Entity_In_SPARK (E : Entity_Id) return Boolean is
      (Entities_In_SPARK.Contains (E));
@@ -359,6 +360,13 @@ package body SPARK_Definition is
               """spark"" : """ & SPARK_Status & """ }");
       end if;
    end Generate_Output_In_Out_SPARK;
+
+   ---------------------------------
+   -- Get_First_Ancestor_In_SPARK --
+   ---------------------------------
+
+   function Get_First_Ancestor_In_SPARK (E : Entity_Id) return Entity_Id is
+     (Entities_Fullview_Not_In_SPARK.Element (E));
 
    ----------------
    -- Initialize --
@@ -2183,18 +2191,22 @@ package body SPARK_Definition is
             --  The same is true for a subtype or a derived type of such a
             --  type or of types whose fullview is not in SPARK.
 
-            if (Etype (E) = E and then
-                  (Entity_In_External_Axioms (E) or else
-                   Is_Private_Entity_Mode_Off (E))) or else
-              (Etype (E) /= E and then
-               Fullview_Not_In_SPARK (Etype (E)))
+            if Etype (E) = E and then
+              (Entity_In_External_Axioms (E) or else
+               Is_Private_Entity_Mode_Off (E))
             then
-               Entities_Fullview_Not_In_SPARK.Insert (E);
+               Entities_Fullview_Not_In_SPARK.Insert (E, E);
+               Entity_Set.Include (Underlying_Type (E));
+            elsif Etype (E) /= E and then
+              Fullview_Not_In_SPARK (Etype (E))
+            then
+               Entities_Fullview_Not_In_SPARK.Insert
+                 (E, Entities_Fullview_Not_In_SPARK.Element (Etype (E)));
                Entity_Set.Include (Underlying_Type (E));
             else
                Mark_Entity (Underlying_Type (E));
                if not Entity_In_SPARK (Underlying_Type (E)) then
-                  Entities_Fullview_Not_In_SPARK.Insert (E);
+                  Entities_Fullview_Not_In_SPARK.Insert (E, E);
                end if;
             end if;
          when others =>

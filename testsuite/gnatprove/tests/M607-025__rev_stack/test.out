@@ -12,24 +12,24 @@ list.adb:28:35: info: overflow check proved
 list.adb:28:43: info: overflow check proved
 list.adb:28:43: warning: array index check might fail
 list.adb:28:50: info: precondition proved
-list.adb:28:62: warning: range check might fail
+list.adb:28:62: info: range check proved
 list.adb:32:10: info: loop invariant initialization proved
 list.adb:32:10: warning: loop invariant might fail after first iteration
 list.adb:34:22: info: precondition proved
-list.adb:34:40: warning: overflow check might fail
-list.adb:36:38: warning: overflow check might fail
+list.adb:34:40: info: overflow check proved
+list.adb:36:38: info: overflow check proved
 list.adb:36:42: info: overflow check proved
 list.adb:38:39: warning: overflow check might fail
 list.adb:38:43: info: overflow check proved
 list.adb:39:34: warning: array index check might fail
 list.adb:39:64: warning: array index check might fail
-list.adb:41:40: warning: overflow check might fail
+list.adb:41:40: info: overflow check proved
 list.adb:42:20: info: precondition proved
 list.adb:42:34: warning: range check might fail
 list.adb:42:39: info: precondition proved
-list.adb:42:56: warning: overflow check might fail
-list.adb:42:60: warning: overflow check might fail
-list.adb:42:60: warning: range check might fail
+list.adb:42:56: info: overflow check proved
+list.adb:42:60: info: overflow check proved
+list.adb:42:60: info: range check proved
 list.adb:43:10: info: range check proved
 list.adb:43:10: warning: precondition might fail
 list.adb:43:23: info: precondition proved

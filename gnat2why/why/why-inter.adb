@@ -199,12 +199,21 @@ package body Why.Inter is
                   end case;
 
                when Private_Kind =>
-                  if not Fullview_Not_In_SPARK (UE) or else
-                    Type_Based_On_External_Axioms (UE)
-                  then
+                  if not Fullview_Not_In_SPARK (UE) then
                      Set_SI_Internal (MUT (UE));
+                  elsif Has_Discriminants (UE) then
+                     declare
+                        Field            : Node_Id :=
+                          First_Discriminant (UE);
+                     begin
+                        while Present (Field) loop
+                           if Ekind (Field) in Object_Kind then
+                              Set_SI_Internal (Etype (Field));
+                           end if;
+                           Next_Discriminant (Field);
+                        end loop;
+                     end;
                   end if;
-
                when E_Record_Type | E_Record_Subtype =>
                   declare
                      Field            : Node_Id :=
@@ -328,14 +337,11 @@ package body Why.Inter is
                   null;
             end case;
 
-            --  We should never depend on discriminants, unless this is the
-            --  discriminant of a type declared in a package with external
-            --  axioms. In all other cases, we add a reference to the
-            --  record instead.
+            --  We should never depend on discriminants, we add a reference to
+            --  the record instead.
 
             if Nkind (N) = N_Defining_Identifier
               and then Ekind (N) = E_Discriminant
-              and then not SPARK_Util.Is_External_Axioms_Discriminant (N)
             then
                N := Scope (N);
             end if;
@@ -569,8 +575,8 @@ package body Why.Inter is
             --  expected to be noop, so the base type is taken to be the same
             --  as the type in that case.
 
-            if Type_Based_On_External_Axioms (Typ) then
-               return EW_Abstract (Underlying_External_Axioms_Type (Typ));
+            if Fullview_Not_In_SPARK (Typ) then
+               return EW_Abstract (Get_First_Ancestor_In_SPARK (Typ));
             elsif Has_Record_Type (Typ) then
                return EW_Abstract (Root_Record_Type (Typ));
             else
@@ -956,23 +962,28 @@ package body Why.Inter is
       elsif Ekind (N) in Private_Kind
         or else Has_Private_Declaration (N)
       then
-         if Type_Based_On_External_Axioms (N) then
-            return New_Kind_Base_Type (N, Kind);
-         elsif Entity_In_SPARK (N) and then not Fullview_Not_In_SPARK (N) then
+         if Entity_In_SPARK (N) and then not Fullview_Not_In_SPARK (N) then
             if MUT (N) = N then
                return New_Kind_Base_Type (N, Kind);
             else
                return EW_Abstract (MUT (N));
             end if;
          else
-            return EW_Private_Type;
+            return New_Kind_Base_Type (N, Kind);
          end if;
       elsif not Entity_In_SPARK (N) then
+
+         --  This can happen for globals
+
          return EW_Private_Type;
       else
          return New_Kind_Base_Type (N, Kind);
       end if;
    end EW_Abstract_Shared;
+
+   --------------
+   -- EW_Split --
+   --------------
 
    function EW_Split (N : Node_Id) return W_Type_Id is
    begin
@@ -1069,12 +1080,10 @@ package body Why.Inter is
             end if;
 
          when Private_Kind =>
-            if Type_Based_On_External_Axioms (Ty) then
+            if Fullview_Not_In_SPARK (Ty) then
                return EW_Abstract;
-            elsif not Fullview_Not_In_SPARK (Ty) then
-               return Get_EW_Term_Type (MUT (Ty));
             else
-               return EW_Private;
+               return Get_EW_Term_Type (MUT (Ty));
             end if;
 
          when others =>
@@ -1093,29 +1102,14 @@ package body Why.Inter is
        Has_Array_Type (Get_Ada_Node (+Right)));
 
    ------------------------------
-   -- Is_Ext_Axioms_Conversion --
+   -- Is_Private_Conversion --
    ------------------------------
 
-   function Is_Ext_Axioms_Conversion (Left, Right : W_Type_Id) return Boolean
-   is
-   begin
-      if Get_Base_Type (Base_Why_Type (Left)) in EW_Abstract | EW_Split
-        and then
-        Get_Base_Type (Base_Why_Type (Right)) in EW_Abstract | EW_Split
-      then
-         declare
-            Uleft  : constant Entity_Id :=
-              Underlying_External_Axioms_Type (Get_Ada_Node (+Left));
-            Uright : constant Entity_Id :=
-              Underlying_External_Axioms_Type (Get_Ada_Node (+Right));
-         begin
-            return
-              Present (Uleft) and then Is_Private_Type (Uleft) and then
-              Present (Uright) and then Is_Private_Type (Uright);
-         end;
-      end if;
-      return False;
-   end Is_Ext_Axioms_Conversion;
+   function Is_Private_Conversion (Left, Right : W_Type_Id) return Boolean
+   is (Get_Base_Type (Base_Why_Type (Left)) in EW_Abstract | EW_Split
+       and then Get_Base_Type (Base_Why_Type (Right)) in EW_Abstract | EW_Split
+       and then Fullview_Not_In_SPARK (Get_Ada_Node (+Left))
+       and then Fullview_Not_In_SPARK (Get_Ada_Node (+Right)));
 
    --------------------------
    -- Is_Record_Conversion --
@@ -1279,11 +1273,7 @@ package body Why.Inter is
               "rec__" & Get_Name_String (Chars (E));
             Ada_N : constant Node_Id :=
               (if Rec = Empty then
-                 (if Type_Based_On_External_Axioms
-                      (Etype (Unique_Entity (Scope (E))))
-                  then Underlying_External_Axioms_Type
-                    (Etype (Unique_Entity (Scope (E))))
-                  else Unique_Entity (Scope (E))) else Rec);
+                  Unique_Entity (Scope (E)) else Rec);
          begin
             if Local then
                return New_Identifier (Ada_Node => Ada_N,
@@ -1294,7 +1284,7 @@ package body Why.Inter is
                  New_Identifier
                    (Ada_Node => Ada_N,
                     Name     => Field,
-                    Module  => E_Module (Ada_N),
+                    Module   => E_Module (Ada_N),
                     Typ      => Typ);
             end if;
          end;

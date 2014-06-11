@@ -40,6 +40,7 @@ with String_Utils;            use String_Utils;
 with Uintp;                   use Uintp;
 with Urealp;                  use Urealp;
 
+with SPARK_Definition;        use SPARK_Definition;
 with SPARK_Util;              use SPARK_Util;
 
 with Why.Atree.Accessors;     use Why.Atree.Accessors;
@@ -556,9 +557,9 @@ package body Why.Gen.Expr is
 
    begin
 
-      if Is_Ext_Axioms_Conversion (From, To) then
-         --  Conversion between private types need to go through their common
-         --  root private type. A discriminant check may be needed.
+      if Is_Private_Conversion (From, To) then
+         --  No conversion is needed between private types, but a discriminant
+         --  check may be needed.
 
          T := Insert_Private_Conversion (Domain     => Domain,
                                          Ada_Node   => Ada_Node,
@@ -654,54 +655,32 @@ package body Why.Gen.Expr is
       Need_Check : Boolean := False) return W_Expr_Id
    is
       From       : constant W_Type_Id := Get_Type (Expr);
-      --  Current result expression
-      Result : W_Expr_Id := Expr;
 
       L : constant Node_Id := Get_Ada_Node (+From);
       R : constant Node_Id := Get_Ada_Node (+To);
-      pragma Assert (Root_Record_Type (L) = Root_Record_Type (R));
 
-      --  Record in units with external axiomatization may have a root type not
-      --  in SPARK. We use the private type declared in the package with
-      --  external axioms as the common type.
-
-      Base : constant W_Type_Id :=
-        EW_Abstract (Underlying_External_Axioms_Type (L));
+      pragma Assert (Get_First_Ancestor_In_SPARK (L) =
+                       Get_First_Ancestor_In_SPARK (R));
 
    begin
       --  When From = To and no check needs to be inserted, do nothing
 
-      if Eq_Base (To, From) and not Need_Check then
+      if not Need_Check
+        or else To = From
+        or else not Has_Discriminants (L)
+        or else Get_First_Ancestor_In_SPARK (L) = R
+      then
          return Expr;
       end if;
 
-      --  1. Convert From -> Base
-
-      Result := Insert_Single_Conversion (Domain   => Domain,
-                                          Ada_Node => Ada_Node,
-                                          To       => Base,
-                                          Expr     => Result);
-
-      --  2. Possibly perform the discriminant check
+      --  No need for a conversion as private types have in fact the same type.
+      --  We only output the checks.
 
       if Domain = EW_Prog and Need_Check then
-         declare
-            Check_Entity : constant Entity_Id := Get_Ada_Node (+To);
-         begin
-            Result := +Insert_Subtype_Discriminant_Check (Ada_Node,
-                                                          Check_Entity,
-                                                          +Result);
-         end;
+         return +Insert_Subtype_Discriminant_Check (Ada_Node, R, +Expr);
       end if;
 
-      --  3. Convert Base -> To
-
-      Result := Insert_Single_Conversion (Domain   => Domain,
-                                          Ada_Node => Ada_Node,
-                                          To       => To,
-                                          Expr     => Result);
-
-      return Result;
+      return Expr;
    end Insert_Private_Conversion;
 
    ------------------------------
@@ -1353,7 +1332,7 @@ package body Why.Gen.Expr is
          return Expr;
       end if;
 
-      if Is_Ext_Axioms_Conversion (To, From) then
+      if Is_Private_Conversion (To, From) then
          return Insert_Private_Conversion (Domain     => Domain,
                                            Ada_Node   => Ada_Node,
                                            Expr       => Expr,
@@ -1778,8 +1757,8 @@ package body Why.Gen.Expr is
    is
    begin
 
-      --  For now, only supports dynamic discrete types and
-      --  unconstrained array types.
+      --  For now, only supports dynamic discrete types, unconstrained array
+      --  types and record or private types with discriminants.
 
       if Is_Discrete_Type (Ty) then
 
@@ -1845,6 +1824,24 @@ package body Why.Gen.Expr is
                              Name   => Dynamic_Prop_Name (Ty),
                              Args   => Args,
                              Typ    => EW_Bool_Type);
+         end;
+      elsif Has_Discriminants (Ty) and then Is_Constrained (Ty) then
+         declare
+            Base_Expr : constant W_Expr_Id :=
+              (if Is_Record_Type (Ty) then
+                    Insert_Single_Conversion (Domain   => EW_Term,
+                                              Ada_Node => Ty,
+                                              To       =>
+                                                EW_Abstract
+                                                  (Root_Record_Type (Ty)),
+                                              Expr     => Expr)
+               else Expr);
+         begin
+            return New_Call
+              (Name   => Range_Pred_Name (Ty),
+               Args   => Prepare_Args_For_Subtype_Check (Ty, Base_Expr),
+               Domain => Domain,
+               Typ    => EW_Bool_Type);
          end;
       else
          raise Program_Error;

@@ -8,7 +8,7 @@ conv.adb:15:17: info: discriminant check proved
 conv.adb:17:17: warning: discriminant check might fail
 conv.adb:19:22: warning: assertion might fail, requires Id (X) = Id (Y)
 conv.ads:3:14: warning: subprogram "P" has no effect
-special.adb:7:22: warning: assertion might fail, requires V.X = A
+special.adb:7:07: info: assertion proved
 special.adb:8:08: info: discriminant check proved
 special.adb:14:07: info: assertion proved
 special.adb:15:08: info: discriminant check proved
@@ -19,7 +19,7 @@ subty.adb:7:07: info: assertion proved
 subty.adb:7:23: info: discriminant check proved
 subty.adb:8:07: info: assertion proved
 subty.adb:8:23: info: discriminant check proved
-subty.adb:9:22: warning: assertion might fail, requires V.X = A
+subty.adb:9:07: info: assertion proved
 subty.adb:11:08: info: discriminant check proved
 subty.adb:11:21: info: discriminant check proved
 subty.adb:11:30: warning: overflow check might fail

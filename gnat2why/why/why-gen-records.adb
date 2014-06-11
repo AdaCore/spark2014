@@ -32,6 +32,7 @@ with Nlists;              use Nlists;
 with Sem_Util;            use Sem_Util;
 with Sinfo;               use Sinfo;
 
+with SPARK_Definition;    use SPARK_Definition;
 with SPARK_Util;          use SPARK_Util;
 with VC_Kinds;            use VC_Kinds;
 
@@ -977,8 +978,8 @@ package body Why.Gen.Records is
       Expr     : W_Prog_Id) return W_Prog_Id
    is
       Root : constant Entity_Id :=
-        (if Type_Based_On_External_Axioms (Check_Ty) then
-              Underlying_External_Axioms_Type (Check_Ty)
+        (if Fullview_Not_In_SPARK (Check_Ty) then
+              Get_First_Ancestor_In_SPARK (Check_Ty)
          else Root_Record_Type (Check_Ty));
    begin
       --  We make a last verification here to see whether a discriminant check
@@ -1002,13 +1003,9 @@ package body Why.Gen.Records is
          return Expr;
       end if;
 
-      --  The check type can still have default discriminants. We check that
-      --  explicitly here.
+      --  The check type is not constrained, we don't have checks.
 
-      if not Is_Constrained (Check_Ty) and then
-        Present (Discriminant_Constraint (Check_Ty)) and then
-        not Is_Empty_Elmt_List (Discriminant_Constraint (Check_Ty))
-      then
+      if not Is_Constrained (Check_Ty) then
          return Expr;
       end if;
 

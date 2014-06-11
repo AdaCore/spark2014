@@ -50,7 +50,6 @@ with Why.Gen.Expr;       use Why.Gen.Expr;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Records;    use Why.Gen.Records;
 with Why.Gen.Scalars;    use Why.Gen.Scalars;
-with Why.Gen.Terms;      use Why.Gen.Terms;
 with Why.Inter;          use Why.Inter;
 with Why.Sinfo;          use Why.Sinfo;
 with Why.Types;          use Why.Types;
@@ -71,7 +70,12 @@ package body Gnat2Why.Types is
    procedure Declare_Private_Type
      (Theory : W_Theory_Declaration_Id;
       E      : Entity_Id) is
-      Discr    : Entity_Id := First_Discriminant (E);
+
+      Root     : constant Entity_Id :=
+        (if Fullview_Not_In_SPARK (E) then Get_First_Ancestor_In_SPARK (E)
+         else E);
+      Discr    : Entity_Id :=
+        (if Root /= E then Empty else First_Discriminant (E));
       X_Binder : constant Binder_Type :=
         Binder_Type'(B_Name =>
                        New_Identifier (Name => "x",
@@ -82,7 +86,6 @@ package body Gnat2Why.Types is
                        New_Identifier (Name => "y",
                                        Typ  => EW_Private_Type),
                      others => <>);
-
    begin
 
       --  We define a name for this type, as well as accessors for the
@@ -92,6 +95,7 @@ package body Gnat2Why.Types is
             New_Type_Decl
               (New_Identifier (Name => Short_Name (E)),
                Alias => EW_Private_Type));
+
       while Present (Discr) loop
          Emit
            (Theory,
@@ -104,6 +108,13 @@ package body Gnat2Why.Types is
                Binders     => (1 => X_Binder)));
          Next_Discriminant (Discr);
       end loop;
+
+      if Has_Discriminants (E) and then Root /= E then
+         Declare_Conversion_Check_Function (Theory => Theory,
+                                            E      => E,
+                                            Root   => Root);
+      end if;
+
       Emit
         (Theory,
          Why.Gen.Binders.New_Function_Decl
@@ -221,9 +232,7 @@ package body Gnat2Why.Types is
    begin
       if Is_Standard_Boolean_Type (E) then
          return New_Identifier (Name => "bool");
-      elsif Fullview_Not_In_SPARK (E) and then
-        not Type_Based_On_External_Axioms (E)
-      then
+      elsif Fullview_Not_In_SPARK (E) then
          return New_Identifier (Name => To_String (WNE_Private));
       else
          return To_Why_Id (E);
@@ -252,215 +261,8 @@ package body Gnat2Why.Types is
         (Theory : W_Theory_Declaration_Id;
          E      : Entity_Id) is
 
-         procedure Declare_Private_Type (Theory : W_Theory_Declaration_Id;
-                                         E      : Entity_Id;
-                                         Base_E : Entity_Id);
-
-         --  Translation for private types based on packages with external
-         --  axioms. It contains a logic type t, two conversion functions
-         --  of_base and to_base and a discriminant check if needed.
-
-         procedure Declare_Private_Type (Theory : W_Theory_Declaration_Id;
-                                         E      : Entity_Id;
-                                         Base_E : Entity_Id) is
-
-            Constrained : constant Boolean :=
-              Has_Discriminants (E) and then Is_Constrained (E);
-            Base_Id     : constant W_Identifier_Id :=
-              To_Why_Id (Base_E);
-            E_Id        : constant W_Identifier_Id :=
-              To_Why_Id (E, Local => True);
-            E_Type      : constant W_Type_Id :=
-              New_Named_Type (Name => E_Id);
-            A_Ident     : constant W_Identifier_Id :=
-              New_Identifier (Name     => "a",
-                              Typ      => E_Type);
-            To_Base_A   : constant W_Expr_Id :=
-              New_Call (Domain   => EW_Term,
-                        Name     => To_Ident (WNE_To_Base),
-                        Args     => (1 => +A_Ident),
-                        Typ      => EW_Abstract (Base_E));
-            B_Ident     : constant W_Identifier_Id :=
-              New_Identifier (Name     => "b",
-                              Typ      => E_Type);
-            To_Base_B   : constant W_Expr_Id :=
-              New_Call (Domain   => EW_Term,
-                        Name     => To_Ident (WNE_To_Base),
-                        Args     => (1 => +B_Ident),
-                        Typ      => EW_Abstract (Base_E));
-            Comparison  : constant W_Pred_Id :=
-              +New_Ada_Equality
-              (Typ    => Base_E,
-               Domain => EW_Pred,
-               Left   => To_Base_A,
-               Right  => To_Base_B,
-               Force_Predefined => False);
-         begin
-            Add_Use_For_Entity (File,
-                                Base_E,
-                                EW_Clone_Default,
-                                With_Completion => False);
-
-            --  New type declaration. If the type is unconstrained, we only
-            --  create an alias.
-
-            if Constrained then
-               Emit (Theory,
-                     New_Type_Decl (Name => Short_Name (E)));
-            else
-               Emit (Theory,
-                     New_Type_Decl (Name  => E_Id,
-                                    Alias => EW_Abstract (Base_E)));
-            end if;
-
-            --  Declare range functions.
-
-            if Has_Discriminants (E) then
-               Declare_Conversion_Check_Function (Theory, E, Base_E);
-            end if;
-
-            --  Clone the appropriate module in Ada_Model_File.
-
-            if Constrained then
-               Emit (Theory,
-                     New_Clone_Declaration
-                       (Theory_Kind   => EW_Module,
-                        Clone_Kind    => EW_Export,
-                        Origin        => New_Module
-                          (File => Ada_Model_File,
-                           Name => NID ("Constrained_Private_Type")),
-                        Substitutions =>
-                          (1 => New_Clone_Substitution
-                               (Kind      => EW_Type_Subst,
-                                Orig_Name => To_Ident (WNE_Type),
-                                Image     => E_Id),
-                           2 => New_Clone_Substitution
-                             (Kind      => EW_Type_Subst,
-                              Orig_Name => To_Ident (WNE_Base_Type),
-                              Image     => Base_Id))));
-
-               --  If the type is constrained, generate range_axiom and
-               --  coerce_axiom. We must generate those as range_pred may
-               --  have different signatures.
-
-               declare
-                  Range_Expr  : constant W_Expr_Id :=
-                    New_Call (Domain   => EW_Pred,
-                              Name     => To_Ident (WNE_Range_Pred),
-                              Args     => Prepare_Args_For_Subtype_Check
-                                (E, To_Base_A));
-                  X_Ident     : constant W_Identifier_Id :=
-                    New_Identifier (Name     => "x",
-                                    Typ      => EW_Abstract (Base_E));
-                  Coerce_Expr : constant W_Expr_Id :=
-                    New_Call (Domain   => EW_Term,
-                              Name     => To_Ident (WNE_To_Base),
-                              Args     =>
-                                (1 => New_Call
-                                     (Domain   => EW_Term,
-                                      Name     => To_Ident (WNE_Of_Base),
-                                      Args     => (1 => +X_Ident),
-                                      Typ      => E_Type)),
-                              Typ      => EW_Abstract (Base_E));
-                  Coerce_Pred : constant W_Expr_Id :=
-                    New_Relation
-                      (Domain   => EW_Pred,
-                       Op_Type  => EW_Abstract,
-                       Left     => Coerce_Expr,
-                       Op       => EW_Eq,
-                       Right    => +X_Ident);
-               begin
-                  Emit (Theory,
-                        New_Axiom
-                          (Name     =>
-                             NID (Short_Name (E) & "__range_axiom"),
-                           Def      =>
-                             New_Universal_Quantif
-                               (Binders  =>
-                                    (1 => Binder_Type'(B_Name => A_Ident,
-                                                       others => <>)),
-                                Triggers =>
-                                  New_Triggers
-                                    (Triggers =>
-                                       (1 => New_Trigger
-                                          (Terms => (1 => To_Base_A)))),
-                                Pred     => +Range_Expr)));
-                  Emit (Theory,
-                        New_Axiom
-                          (Name     =>
-                             NID (Short_Name (E) & "__coerce_axiom"),
-                           Def      =>
-                             New_Universal_Quantif
-                               (Binders  =>
-                                    (1 => Binder_Type'(B_Name => X_Ident,
-                                                       others => <>)),
-                                Triggers =>
-                                  New_Triggers
-                                    (Triggers =>
-                                       (1 => New_Trigger
-                                          (Terms => (1 => Coerce_Expr)))),
-                                Pred     => +Coerce_Pred)));
-               end;
-            else
-               Emit (Theory,
-                     New_Clone_Declaration
-                       (Theory_Kind   => EW_Module,
-                        Clone_Kind    => EW_Export,
-                        Origin        => New_Module
-                          (File => Ada_Model_File,
-                           Name => NID ("Unconstrained_Private_Type")),
-                        Substitutions =>
-                          (1 => New_Clone_Substitution
-                               (Kind      => EW_Type_Subst,
-                                Orig_Name => To_Ident (WNE_Type),
-                                Image     => E_Id))));
-            end if;
-
-            --  Declare equality functions using equality on the base type.
-
-            Emit
-              (Theory,
-               New_Function_Decl
-                 (Domain      => EW_Term,
-                  Name        => To_Ident (WNE_Bool_Eq),
-                  Binders     =>
-                    Binder_Array'(1 =>
-                                      Binder_Type'(B_Name => A_Ident,
-                                                   others => <>),
-                                  2 =>
-                                    Binder_Type'(B_Name => B_Ident,
-                                                 others => <>)),
-                  Return_Type => +EW_Bool_Type,
-                  Labels      => Name_Id_Sets.Empty_Set,
-                  Def         => New_Conditional
-                    (Domain    => EW_Term,
-                     Condition => +Comparison,
-                     Then_Part => +True_Term,
-                     Else_Part => +False_Term)));
-            Emit
-              (Theory,
-               New_Function_Decl
-                 (Domain      => EW_Term,
-                  Name        => New_Identifier (Name => "user_eq"),
-                  Return_Type => EW_Bool_Type,
-                  Binders     =>
-                    Binder_Array'(1 =>
-                                      Binder_Type'(B_Name => A_Ident,
-                                                   others => <>),
-                                  2 =>
-                                    Binder_Type'(B_Name => B_Ident,
-                                                 others => <>)),
-                  Labels      => Name_Id_Sets.Empty_Set));
-         end Declare_Private_Type;
-
       begin
-         if Type_Based_On_External_Axioms (E) and then
-           Ekind (Underlying_External_Axioms_Type (E)) in Private_Kind
-         then
-            Declare_Private_Type (Theory, E,
-                                  Underlying_External_Axioms_Type (E));
-         else
-            case Ekind (E) is
+         case Ekind (E) is
             when Scalar_Kind =>
                Declare_Scalar_Type (Theory, E);
 
@@ -477,8 +279,7 @@ package body Gnat2Why.Types is
                Ada.Text_IO.Put_Line ("[Translate_Underlying_Type] ekind ="
                                      & Entity_Kind'Image (Ekind (E)));
                raise Not_Implemented;
-            end case;
-         end if;
+         end case;
       end Translate_Underlying_Type;
 
       Name : constant String := Full_Name (E);

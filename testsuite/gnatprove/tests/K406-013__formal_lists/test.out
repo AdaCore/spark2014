@@ -7,7 +7,7 @@ test_vdll.adb:28:04: info: precondition proved
 test_vdll.adb:31:04: info: assertion proved
 test_vdll.adb:31:19: info: precondition proved
 test_vdll.adb:31:36: info: precondition proved
-test_vdll.adb:34:11: info: discriminant check proved
+test_vdll.adb:34:11: warning: discriminant check might fail
 test_vdll.adb:34:11: warning: precondition might fail
 test_vdll.adb:35:19: info: precondition proved
 test_vdll.adb:35:19: warning: assertion might fail, requires Has_Element (L2, First (L1)
@@ -25,8 +25,8 @@ test_vdll.adb:44:23: info: precondition proved
 test_vdll.adb:44:40: warning: precondition might fail
 test_vdll.adb:44:50: info: precondition proved
 test_vdll.adb:47:04: warning: precondition might fail
-test_vdll.adb:48:11: info: precondition proved
 test_vdll.adb:48:11: warning: discriminant check might fail
+test_vdll.adb:48:11: warning: precondition might fail
 test_vdll.adb:49:10: info: precondition proved
 test_vdll.adb:49:20: info: precondition proved
 test_vdll.adb:50:04: warning: precondition might fail
@@ -192,7 +192,7 @@ test_vdll.adb:169:47: info: precondition proved
 test_vdll.adb:177:12: warning: precondition might fail
 test_vdll.adb:177:25: warning: precondition might fail
 test_vdll.adb:177:39: info: precondition proved
-test_vdll.adb:181:11: info: discriminant check proved
+test_vdll.adb:181:11: warning: discriminant check might fail
 test_vdll.adb:181:11: warning: precondition might fail
 test_vdll.adb:182:04: info: precondition proved
 test_vdll.adb:183:19: info: precondition proved

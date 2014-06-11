@@ -1462,6 +1462,14 @@ package body Gnat2Why.Expr is
                end loop;
             end;
          end if;
+
+      elsif not Only_Var
+        and then Has_Discriminants (Ty_Ext)
+        and then Is_Constrained (Ty_Ext)
+      then
+         T := +New_Dynamic_Property (Domain => EW_Pred,
+                                     Ty     => Ty_Ext,
+                                     Expr   => Expr);
       else
          T := True_Pred;
       end if;
@@ -1549,6 +1557,15 @@ package body Gnat2Why.Expr is
          Ada_Ent_To_Why.Push_Scope (Symbol_Table);
 
          declare
+            Root_Ty : constant Entity_Id :=
+              (if Fullview_Not_In_SPARK (Ty_Ext) then
+                    Get_First_Ancestor_In_SPARK (Ty_Ext)
+               else Ty_Ext);
+            R_Expr  : constant W_Expr_Id :=
+              Insert_Simple_Conversion (Ada_Node => Ty,
+                                        Domain   => EW_Term,
+                                        Expr     => Expr,
+                                        To       => EW_Abstract (Root_Ty));
             Discrs  : constant Natural :=
               (if Has_Discriminants (Ty_Ext) then
                     Natural (Number_Discriminants (Ty_Ext))
@@ -1570,7 +1587,7 @@ package body Gnat2Why.Expr is
                then
 
                   R_Acc := New_Ada_Record_Access
-                    (Empty, EW_Term, Expr, Field, Ty_Ext);
+                    (Empty, EW_Term, R_Expr, Field, Root_Ty);
 
                   if Ekind (Field) = E_Discriminant then
                      Tmps (I) := New_Temp_Identifier
@@ -1591,7 +1608,7 @@ package body Gnat2Why.Expr is
                      T_Guard := (if Ekind (Field) = E_Discriminant
                                  then True_Pred
                                  else +New_Ada_Record_Check_For_Field
-                                   (Empty, EW_Pred, Expr, Field, Ty_Ext));
+                                   (Empty, EW_Pred, R_Expr, Field, Ty_Ext));
 
                      F_Expr  := New_Conditional (Domain      => EW_Pred,
                                                  Condition   => +T_Guard,
@@ -2739,36 +2756,28 @@ package body Gnat2Why.Expr is
          when N_Selected_Component =>
             declare
                Sel_Ent : constant Entity_Id := Entity (Selector_Name (N));
-               Id      : constant W_Identifier_Id := To_Why_Id (Sel_Ent);
+               Ty      : constant Entity_Id := Etype (Prefix (N));
+
+               --  For private types, functions are declared in the first
+               --  ancestor only
+
                Rec_Ty  : constant Entity_Id :=
-                 Unique_Entity (Etype (Prefix (N)));
+                 (if Fullview_Not_In_SPARK (Ty) then
+                       Get_First_Ancestor_In_SPARK (Ty)
+                  else Unique_Entity (Ty));
+               R_Expr  : constant W_Expr_Id :=
+                 Insert_Simple_Conversion (Ada_Node => N,
+                                           Domain   => EW_Term,
+                                           Expr     => Expr,
+                                           To       => EW_Abstract (Rec_Ty));
             begin
-               if Is_Access_To_External_Axioms_Discriminant (N) then
-                  return
-                    New_Call (Ada_Node => N,
-                              Domain   => Domain,
-                              Name     => Id,
-                              Args     =>
-                                (1 => Insert_Simple_Conversion
-                                     (Ada_Node => N,
-                                      Domain   => Domain,
-                                      Expr     => Expr,
-                                      To       =>
-                                        EW_Abstract
-                                          (Underlying_External_Axioms_Type
-                                             (Unique_Defining_Entity
-                                                (Get_Enclosing_Declaration
-                                                     (Sel_Ent)))))),
-                              Typ      => Type_Of_Node (N));
-               else
-                  return
-                    New_Ada_Record_Access
-                      (Ada_Node => N,
-                       Domain   => Domain,
-                       Name     => Expr,
-                       Ty       => Rec_Ty,
-                       Field    => Sel_Ent);
-               end if;
+               return
+                 New_Ada_Record_Access
+                   (Ada_Node => N,
+                    Domain   => Domain,
+                    Name     => R_Expr,
+                    Ty       => Rec_Ty,
+                    Field    => Sel_Ent);
             end;
 
          when N_Indexed_Component =>

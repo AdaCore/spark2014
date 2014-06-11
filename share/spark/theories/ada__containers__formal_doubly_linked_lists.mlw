@@ -3,16 +3,12 @@ module Ada__containers__formal_doubly_linked_lists__list
   use import "_gnatprove_standard".Main
   use Ada__containers__count_type
 
-  type list
+  type list = __private
 
   function rec__capacity list : Ada__containers__count_type.count_type
 
    function capacity  (co : list) : int =
           Ada__containers__count_type.to_int (rec__capacity co)
-
-  function to_base "inline" (co : list) : list = co
-
-  function of_base "inline" (co : list) : list = co
 
   function bool_eq list list : bool
   function user_eq list list : bool
@@ -43,7 +39,7 @@ module Ada__containers__formal_doubly_linked_lists__cursor
   use import Ada__containers__formal_doubly_linked_lists__list
   use import Ada__containers__formal_doubly_linked_lists__length
 
-  type cursor
+  type cursor = __private
 
   function position list cursor : int
 
@@ -61,7 +57,8 @@ module Ada__containers__formal_doubly_linked_lists__cursor
     forall co:list, cu:cursor [position co cu].
           position co cu > 0 -> position_inv co (position co cu) = cu
 
-  function bool_eq list list : bool
+  function bool_eq cursor cursor : bool
+  function user_eq cursor cursor : bool
 end
 
 module Ada__containers__formal_doubly_linked_lists__no_element

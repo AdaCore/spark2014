@@ -98,4 +98,10 @@ package SPARK_Definition is
    --  of a package with external axioms. It is also true if E is a subtype or
    --  derived type of such an entity.
 
+   function Get_First_Ancestor_In_SPARK (E : Entity_Id) return Entity_Id with
+     Pre  => Fullview_Not_In_SPARK (E),
+     Post => Fullview_Not_In_SPARK (Get_First_Ancestor_In_SPARK'Result);
+   --  Returns the first type with Fullview_Not_In_SPARK in the ancestors of
+   --  E.
+
 end SPARK_Definition;

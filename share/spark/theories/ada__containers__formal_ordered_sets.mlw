@@ -16,16 +16,12 @@ module Ada__containers__formal_ordered_sets__set
   use Ada__containers__hash_type
   use Ada__containers__count_type
 
-  type set
+  type set = __private
 
   function rec__capacity set : Ada__containers__count_type.count_type
 
    function capacity  (co : set) : int =
           Ada__containers__count_type.to_int (rec__capacity co)
-
-  function to_base "inline" (co : set) : set = co
-
-  function of_base "inline" (co : set) : set = co
 
   function bool_eq set set : bool
   function user_eq set set : bool
@@ -56,7 +52,7 @@ module Ada__containers__formal_ordered_sets__cursor
   use import Ada__containers__formal_ordered_sets__set
   use import Ada__containers__formal_ordered_sets__length
 
-  type cursor
+  type cursor = __private
 
   function position set cursor : int
 
@@ -75,6 +71,7 @@ module Ada__containers__formal_ordered_sets__cursor
           position co cu > 0 -> position_inv co (position co cu) = cu
 
   function bool_eq cursor cursor : bool
+  function user_eq cursor cursor : bool
 end
 
 module Ada__containers__formal_ordered_sets__no_element
