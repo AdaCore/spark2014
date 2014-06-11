@@ -1,6 +1,9 @@
 vs.adb:8:14: info: length check proved
+vs.adb:8:14: info: range check proved
 vs.adb:16:14: info: length check proved
+vs.adb:16:14: info: range check proved
 vs.adb:24:16: info: length check proved
+vs.adb:24:16: info: range check proved
 vs.adb:31:24: info: length check proved
 vs.adb:31:25: info: length check proved
 vs.adb:37:28: info: length check proved

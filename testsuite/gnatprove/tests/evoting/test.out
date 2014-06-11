@@ -71,6 +71,7 @@ evoting.adb:184:16: warning: statement has no effect
 evoting.adb:185:16: warning: assuming "Put_Line" has no effect on global items
 evoting.adb:185:16: warning: no Global contract available for "Put_Line"
 evoting.adb:185:16: warning: statement has no effect
+evoting.adb:190:16: info: range check proved
 evoting.adb:202:07: warning: statement has no effect
 evoting.adb:205:41: warning: "Winners" might not be initialized
 evoting.adb:211:10: info: loop invariant initialization proved

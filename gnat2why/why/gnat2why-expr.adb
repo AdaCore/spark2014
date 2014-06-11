@@ -8046,11 +8046,80 @@ package body Gnat2Why.Expr is
 
       --  We start by translating the prefix itself.
 
-      Pref_Expr :=
-        Transform_Expr (Prefx, Domain, Params);
+      Pref_Expr := Transform_Expr (Prefx, Domain, Params);
+      Pref_Expr := New_Temp_For_Expr (Pref_Expr);
+      T := Pref_Expr;
 
-      --  in the case where the slice indices are static, we can simply deal
-      --  with the array contents, and bounds will be derived from the type
+      --  if needed, we convert the arrray to a simple base type
+
+      if not Is_Static_Array_Type (Etype (Expr))
+        and then
+          not Is_Static_Array_Type (Get_Ada_Node (+Get_Type (Pref_Expr)))
+        and then Get_Base_Type (Get_Type (Pref_Expr)) /= EW_Split
+      then
+         T := Array_Convert_To_Base (Domain, T);
+      end if;
+
+      --  if needed, we insert a check that the slice bounds are in the bounds
+      --  of the prefix
+
+      if Domain = EW_Prog then
+         declare
+            Ar_Low   : constant W_Expr_Id :=
+              Insert_Simple_Conversion
+                (Domain => EW_Pred,
+                 To     => EW_Int_Type,
+                 Expr   => Get_Array_Attr (Domain => EW_Pred,
+                                           Expr   => Pref_Expr,
+                                           Attr   => Attribute_First,
+                                           Dim    => 1));
+            Ar_High  : constant W_Expr_Id :=
+              Insert_Simple_Conversion
+                (Domain => EW_Pred,
+                 To     => EW_Int_Type,
+                 Expr   => Get_Array_Attr (Domain => EW_Pred,
+                                           Expr   => Pref_Expr,
+                                           Attr   => Attribute_Last,
+                                           Dim    => 1));
+            Check    : constant W_Pred_Id :=
+              New_Connection
+                (Op     => EW_Imply,
+                 Left   =>
+                   New_Relation (Domain  => EW_Pred,
+                                 Op_Type => EW_Int,
+                                 Op      => EW_Le,
+                                 Left    => Low_Expr,
+                                 Right   => High_Expr),
+                 Right  =>
+                   New_And_Then_Expr
+                     (Domain => EW_Pred,
+                      Left   =>
+                        New_Relation
+                          (Domain  => EW_Pred,
+                           Op_Type => EW_Int,
+                           Op      => EW_Le,
+                           Left    => +Ar_Low,
+                           Right   => Low_Expr,
+                           Op2     => EW_Le,
+                           Right2  => +Ar_High),
+                      Right =>
+                        New_Relation
+                          (Domain  => EW_Pred,
+                           Op_Type => EW_Int,
+                           Op      => EW_Le,
+                           Left    => +Ar_Low,
+                           Right   => +High_Expr,
+                           Op2     => EW_Le,
+                           Right2  => +Ar_High)));
+         begin
+            T :=
+              +Sequence (New_Located_Assert (Expr,
+                         Check,
+                         VC_Range_Check,
+                         EW_Assert),
+                         +T);
+         end;
+      end if;
 
       if Is_Static_Array_Type (Etype (Expr)) then
 
@@ -8059,86 +8128,14 @@ package body Gnat2Why.Expr is
          T :=
            Insert_Array_Conversion
              (Domain         => Domain,
-              Expr           => Pref_Expr,
+              Expr           => T,
               To             => Target_Ty,
               Force_No_Slide => True);
 
-         --  when the slice bounds are not static, we produce a compound object
-         --  contents + bounds.
+      --  when the slice bounds are not static, we produce a compound object
+      --  contents + bounds.
 
       else
-         Pref_Expr := New_Temp_For_Expr (Pref_Expr);
-         T := Pref_Expr;
-
-         if not Is_Static_Array_Type (Get_Ada_Node (+Get_Type (Pref_Expr)))
-           and then Get_Base_Type (Get_Type (Pref_Expr)) /= EW_Split
-         then
-            T := Array_Convert_To_Base (Domain, Pref_Expr);
-         end if;
-
-         if Domain = EW_Prog then
-            declare
-               Ar_Low   : constant W_Expr_Id :=
-                 Insert_Simple_Conversion
-                   (Domain => EW_Pred,
-                    To     => EW_Int_Type,
-                    Expr   => Get_Array_Attr (Domain => EW_Pred,
-                                              Expr   => Pref_Expr,
-                                              Attr   => Attribute_First,
-                                              Dim    => 1));
-               Ar_High  : constant W_Expr_Id :=
-                 Insert_Simple_Conversion
-                   (Domain => EW_Pred,
-                    To     => EW_Int_Type,
-                    Expr   => Get_Array_Attr (Domain => EW_Pred,
-                                              Expr   => Pref_Expr,
-                                              Attr   => Attribute_Last,
-                                              Dim    => 1));
-               Check    : constant W_Pred_Id :=
-                 New_Connection
-                   (Op     => EW_Imply,
-                    Left   =>
-                      New_Relation (Domain  => EW_Pred,
-                                    Op_Type => EW_Int,
-                                    Op      => EW_Le,
-                                    Left    => Low_Expr,
-                                    Right   => High_Expr),
-                    Right  =>
-                      New_And_Then_Expr
-                        (Domain => EW_Pred,
-                         Left   =>
-                           New_Relation
-                             (Domain  => EW_Pred,
-                              Op_Type => EW_Int,
-                              Op      => EW_Le,
-                              Left    => +Ar_Low,
-                              Right   => Low_Expr,
-                              Op2     => EW_Le,
-                              Right2  => +Ar_High),
-                         Right =>
-                           New_Relation
-                             (Domain  => EW_Pred,
-                              Op_Type => EW_Int,
-                              Op      => EW_Le,
-                              Left    => +Ar_Low,
-                              Right   => +High_Expr,
-                              Op2     => EW_Le,
-                              Right2  => +Ar_High)));
-            begin
-               T :=
-                 +Sequence (New_Located_Assert (Expr,
-                                                Check,
-                                                VC_Range_Check,
-                                                EW_Assert),
-                 +T);
-            end;
-         end if;
-
-         T :=
-           Binding_For_Temp
-             (Domain  => Domain,
-              Tmp     => Pref_Expr,
-              Context => T);
          T :=
            Array_Convert_From_Base
              (Domain => Domain,
@@ -8146,17 +8143,22 @@ package body Gnat2Why.Expr is
               Target => Get_Ada_Node (+Target_Ty),
               First  => Low_Expr,
               Last   => High_Expr);
-         T :=
-           Binding_For_Temp
-             (Domain  => Domain,
-              Tmp     => Low_Expr,
-              Context => T);
-         T :=
-           Binding_For_Temp
-             (Domain  => Domain,
-              Tmp     => High_Expr,
-              Context => T);
       end if;
+      T :=
+        Binding_For_Temp
+          (Domain  => Domain,
+           Tmp     => Pref_Expr,
+           Context => T);
+      T :=
+        Binding_For_Temp
+          (Domain  => Domain,
+           Tmp     => Low_Expr,
+           Context => T);
+      T :=
+        Binding_For_Temp
+          (Domain  => Domain,
+           Tmp     => High_Expr,
+           Context => T);
 
       return T;
    end Transform_Slice;

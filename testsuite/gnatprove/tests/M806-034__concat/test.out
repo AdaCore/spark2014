@@ -1,9 +1,13 @@
+concat.adb:4:16: info: range check proved, in call inlined at concat.adb:34
 concat.adb:4:28: info: length check proved, in call inlined at concat.adb:34
 concat.adb:4:28: info: range check proved, in call inlined at concat.adb:34
+concat.adb:4:30: info: range check proved, in call inlined at concat.adb:34
 concat.adb:6:07: info: assertion proved, in call inlined at concat.adb:34
 concat.adb:7:07: info: assertion proved, in call inlined at concat.adb:34
+concat.adb:11:17: info: range check proved, in call inlined at concat.adb:35
 concat.adb:11:29: info: length check proved, in call inlined at concat.adb:35
 concat.adb:11:29: info: range check proved, in call inlined at concat.adb:35
+concat.adb:11:31: info: range check proved, in call inlined at concat.adb:35
 concat.adb:13:07: info: assertion proved, in call inlined at concat.adb:35
 concat.adb:14:07: info: assertion proved, in call inlined at concat.adb:35
 concat.adb:17:14: warning: subprogram "Three" has no effect
@@ -28,10 +32,12 @@ concat_left.adb:12:26: info: index check proved
 concat_left.adb:13:22: warning: assertion might fail, requires Z'Length = Y'Length + 1
 concat_left.adb:17:18: info: length check proved, in call inlined at concat_left.adb:36
 concat_left.adb:17:18: info: range check proved, in call inlined at concat_left.adb:36
+concat_left.adb:17:20: info: range check proved, in call inlined at concat_left.adb:36
 concat_left.adb:19:07: info: assertion proved, in call inlined at concat_left.adb:36
 concat_left.adb:20:07: info: assertion proved, in call inlined at concat_left.adb:36
 concat_left.adb:24:19: info: length check proved, in call inlined at concat_left.adb:37
 concat_left.adb:24:19: info: range check proved, in call inlined at concat_left.adb:37
+concat_left.adb:24:21: info: range check proved, in call inlined at concat_left.adb:37
 concat_left.adb:26:07: info: assertion proved, in call inlined at concat_left.adb:37
 concat_left.adb:27:07: info: assertion proved, in call inlined at concat_left.adb:37
 concat_left.adb:30:13: info: length check proved
@@ -47,10 +53,12 @@ concat_right.adb:11:40: info: index check proved
 concat_right.adb:12:22: warning: assertion might fail, requires Z (Z'Last) = X
 concat_right.adb:12:26: info: index check proved
 concat_right.adb:13:22: warning: assertion might fail, requires Z'Length = Y'Length + 1
+concat_right.adb:17:16: info: range check proved, in call inlined at concat_right.adb:36
 concat_right.adb:17:27: info: length check proved, in call inlined at concat_right.adb:36
 concat_right.adb:17:27: info: range check proved, in call inlined at concat_right.adb:36
 concat_right.adb:19:07: info: assertion proved, in call inlined at concat_right.adb:36
 concat_right.adb:20:07: info: assertion proved, in call inlined at concat_right.adb:36
+concat_right.adb:24:17: info: range check proved, in call inlined at concat_right.adb:37
 concat_right.adb:24:28: info: length check proved, in call inlined at concat_right.adb:37
 concat_right.adb:24:28: info: range check proved, in call inlined at concat_right.adb:37
 concat_right.adb:26:07: info: assertion proved, in call inlined at concat_right.adb:37
