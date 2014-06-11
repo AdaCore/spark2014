@@ -274,7 +274,12 @@ the formal verification tools to determine whether or not a given construct
 is in |SPARK|.
 
 A SPARK_Mode pragma or aspect specification shall only apply to a
-(section of a) library-level package or subprogram.
+(section of a) library-level package, generic package, subprogram, or
+generic subprogram. If a generic unit contains a Spark_Mode pragma or
+aspect specification, then this rule also applies to the corresponding
+pragma or aspect specification which implicitly occurs within any
+instance of the generic unit. This means that instances of such a
+generic shall only be declared at library level.
 
 The SPARK_Mode aspect value of an arbitrary section of an arbitrary
 Ada entity or construct is then defined to be the following value

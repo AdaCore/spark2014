@@ -957,9 +957,11 @@ Examples of this are:
 Hence, |SPARK| and non-|SPARK| code may mix at a fine level of granularity.
 The following combinations may be typical:
 
-- Package specification in |SPARK|. Package body entirely not in |SPARK|.
+- Package (or generic package) specification in |SPARK|. Package body entirely
+  not in |SPARK|.
 
-- Visible part of package specification in |SPARK|. Private part and body not in |SPARK|.
+- Visible part of package (or generic package) specification in |SPARK|.
+  Private part and body not in |SPARK|.
 
 - Package specification in |SPARK|. Package body almost entirely in |SPARK|, with a small
   number of subprogram bodies not in |SPARK|.

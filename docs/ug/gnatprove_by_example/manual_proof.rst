@@ -180,7 +180,7 @@ of course this is provided in Coq's standard library::
 In the lemma, the conclusion contains only two of it's variables while it
 uses three. Then, using tactic ``apply Zle_trans.`` will generate an error
 stating that Coq wasn't able to find a term for its variable ``m``.
-In this case, ``m`` is instanciated with the intermediate value 1:
+In this case, ``m`` is instantiated with the intermediate value 1:
 ``apply Zle_trans with (m:= 1%Z).``
 There are two new subgoals, one to prove that ``0 <= 1`` and the other that
 ``1 <= to_int1 x``::
