@@ -16,8 +16,9 @@ Require Export util.
 
 Inductive error_type: Type :=
     | RTE_Division_By_Zero
-    | RTE_Overflow 
-    | RTE_Out_Of_Range.
+    | RTE_Overflow
+    | RTE_Index.   (* index check for an array access *)
+(*  | RTE_Range *) (* range check for a scalar range, e.g. -1 is assigned to natural variable *)
 
 (* return value for exp/statement evaluation defined in inductive type *)
 Inductive Return (A:Type): Type :=
@@ -66,7 +67,7 @@ Inductive basic_value : Type :=
     | Bool (b : bool).
 
 Inductive aggregate_value : Type :=
-    | ArrayV (a: list (index * basic_value))
+    | ArrayV (a: (Z * Z) * (list (index * basic_value))) (* array value with lower and upper bound *)
     | RecordV (r: list (idnum * basic_value)).
 
 Inductive value : Type :=
@@ -74,15 +75,20 @@ Inductive value : Type :=
     | AggregateV (v: aggregate_value).
 
 (** Type of stored values in the store *)
-Inductive value_stored: Type := 
+Inductive value_stored(Procedure_Decl: Type) (Type_Decl: Type): Type := 
     | Value (v:value)
-    | Procedure (pd: procedure_declaration)
-    | TypeDef (td: type_declaration)
+    | Procedure (pd: Procedure_Decl)
+    | TypeDef (td: Type_Decl)
     | Undefined.
+
+Arguments Value [Procedure_Decl] [Type_Decl] _.
+Arguments Procedure [Procedure_Decl] [Type_Decl] _.
+Arguments TypeDef [Procedure_Decl] [Type_Decl] _.
+Arguments Undefined [Procedure_Decl] [Type_Decl].
 
 Definition Division_Error: Return value := Run_Time_Error RTE_Division_By_Zero.
 Definition Overflow_Error: Return value := Run_Time_Error RTE_Overflow.
-Definition Range_Error: Return value := Run_Time_Error RTE_Out_Of_Range.
+Definition Index_Error: Return value := Run_Time_Error RTE_Index.
 
 
 (** * Value Operations *)

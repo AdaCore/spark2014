@@ -1,3 +1,0 @@
-Require Export values.
-
-

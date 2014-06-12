@@ -1,28 +1,134 @@
-Require Import util.
-Require Import more_list.
+Require Export util.
+Require Export more_list.
 Require Export values.
 Require Export environment.
-Require Export checks.
 
-Module Entry_Value_Stored <: Entry.
+Module Entry_Value_Stored <: ENTRY.
 
-  Definition T := value_stored.
+  Definition T := value_stored procedure_declaration type_declaration.
 
 End Entry_Value_Stored.
 
-Module Entry_Type <: Entry.
+Module STACK := STORE(Entry_Value_Stored).
 
-  Definition T := type.
-  
-End Entry_Type.
-
-Module TYPE_STORE := ENV(Entry_Type).
-Import TYPE_STORE.
-
-Module STACK := ENV(Entry_Value_Stored).
 Import STACK.
 
-Definition type_table := TYPE_STORE.store.
+
+Inductive check_status :=
+    | Success
+    | Exception (m: error_type).
+
+Inductive do_overflow_check: binary_operator -> value -> value -> check_status -> Prop :=
+    | Do_Overflow_Check_On_Plus': forall v1 v2,
+        (* min_signed <= (v1 + v2) <= max_signed *)
+        (Zge_bool (v1 + v2) min_signed) && (Zle_bool (v1 + v2) max_signed) = true ->
+        do_overflow_check Plus (BasicV (Int v1)) (BasicV (Int v2)) Success
+    | Do_Overflow_Check_On_Plus_E': forall v1 v2,
+        (* min_signed <= (v1 + v2) <= max_signed *)
+        (Zge_bool (v1 + v2) min_signed) && (Zle_bool (v1 + v2) max_signed) = false ->
+        do_overflow_check Plus (BasicV (Int v1)) (BasicV (Int v2)) (Exception RTE_Overflow)
+    | Do_Overflow_Check_On_Minus': forall v1 v2,
+        (* min_signed <= (v1 - v2) <= max_signed *)
+        (Zge_bool (v1 - v2) min_signed) && (Zle_bool (v1 - v2) max_signed) = true ->
+        do_overflow_check Minus (BasicV (Int v1)) (BasicV (Int v2)) Success
+    | Do_Overflow_Check_On_Minus_E': forall v1 v2,
+        (* min_signed <= (v1 - v2) <= max_signed *)
+        (Zge_bool (v1 - v2) min_signed) && (Zle_bool (v1 - v2) max_signed) = false ->
+        do_overflow_check Minus (BasicV (Int v1)) (BasicV (Int v2)) (Exception RTE_Overflow)
+    | Do_Overflow_Check_On_Multiply': forall v1 v2,
+        (* min_signed <= (v1 * v2) <= max_signed *)
+        (Zge_bool (v1 * v2) min_signed) && (Zle_bool (v1 * v2) max_signed) = true ->
+        do_overflow_check Multiply (BasicV (Int v1)) (BasicV (Int v2)) Success
+    | Do_Overflow_Check_On_Multiply_E': forall v1 v2,
+        (* min_signed <= (v1 * v2) <= max_signed *)
+        (Zge_bool (v1 * v2) min_signed) && (Zle_bool (v1 * v2) max_signed) = false ->
+        do_overflow_check Multiply (BasicV (Int v1)) (BasicV (Int v2)) (Exception RTE_Overflow)
+    | Do_Overflow_Check_On_Divide': forall v1 v2,
+        (* min_signed <= (v1 / v2) <= max_signed *)
+        (* (Zeq_bool v1 min_signed) && (Zeq_bool v2 (-1)) = b -> *)
+        ((Zge_bool (Z.quot v1 v2) min_signed) && (Zle_bool (Z.quot v1 v2) max_signed)) = true ->
+        do_overflow_check Divide (BasicV (Int v1)) (BasicV (Int v2)) Success
+    | Do_Overflow_Check_On_Divide_E': forall v1 v2,
+        (* min_signed <= (v1 / v2) <= max_signed *)
+        ((Zge_bool (Z.quot v1 v2) min_signed) && (Zle_bool (Z.quot v1 v2) max_signed)) = false ->
+        do_overflow_check Divide (BasicV (Int v1)) (BasicV (Int v2)) (Exception RTE_Overflow).
+
+Inductive do_overflow_check_on_unop: unary_operator -> value -> check_status -> Prop :=
+    | Do_Overflow_Check_On_Unary_Minus': forall v,
+        (Zge_bool (Z.opp v) min_signed) && (Zle_bool (Z.opp v) max_signed) = true ->
+        do_overflow_check_on_unop Unary_Minus (BasicV (Int v)) Success
+    | Do_Overflow_Check_On_Unary_Minus_E': forall v,
+        (Zge_bool (Z.opp v) min_signed) && (Zle_bool (Z.opp v) max_signed) = false ->
+        do_overflow_check_on_unop Unary_Minus (BasicV (Int v)) (Exception RTE_Overflow).
+
+Inductive do_division_check: binary_operator -> value -> value -> check_status -> Prop :=
+    | Do_Division_Check': forall v1 v2,
+        (* v2 is not zero *)
+        (negb (Zeq_bool v2 0)) = true ->
+        do_division_check Divide (BasicV (Int v1)) (BasicV (Int v2)) Success
+    | Do_Division_Check_E': forall v1 v2,
+        (* v2 is not zero *)
+        (negb (Zeq_bool v2 0)) = false ->
+        do_division_check Divide (BasicV (Int v1)) (BasicV (Int v2)) (Exception RTE_Division_By_Zero).
+
+Inductive do_index_check: Z -> Z -> Z -> check_status -> Prop :=
+    | Do_Index_Check: forall i l u,
+        (* i >= l /\ u >= i *)
+        (Zge_bool i l) && (Zge_bool u i) = true ->
+        do_index_check i l u Success
+    | Do_Index_Check_E: forall i l u,
+        (Zge_bool i l) && (Zge_bool u i) = false ->
+        do_index_check i l u (Exception RTE_Index).
+
+(* verify run time checks on binary / unary operations *)
+Inductive do_run_time_check_on_binop: binary_operator -> value -> value -> check_status -> Prop :=
+    | Do_Overflow_Check_On_Plus: forall v1 v2,
+        do_overflow_check Plus v1 v2 Success ->
+        do_run_time_check_on_binop Plus v1 v2 Success
+    | Do_Overflow_Check_On_Plus_E: forall v1 v2,
+        do_overflow_check Plus v1 v2 (Exception RTE_Overflow) ->
+        do_run_time_check_on_binop Plus v1 v2 (Exception RTE_Overflow)
+    | Do_Overflow_Check_On_Minus: forall v1 v2,
+        do_overflow_check Minus v1 v2 Success ->
+        do_run_time_check_on_binop Minus v1 v2 Success
+    | Do_Overflow_Check_On_Minus_E: forall v1 v2,
+        do_overflow_check Minus v1 v2 (Exception RTE_Overflow) ->
+        do_run_time_check_on_binop Minus v1 v2 (Exception RTE_Overflow)
+    | Do_Overflow_Check_On_Multiply: forall v1 v2,
+        do_overflow_check Multiply v1 v2 Success ->
+        do_run_time_check_on_binop Multiply v1 v2 Success
+    | Do_Overflow_Check_On_Multiply_E: forall v1 v2,
+        do_overflow_check Multiply v1 v2 (Exception RTE_Overflow) ->
+        do_run_time_check_on_binop Multiply v1 v2 (Exception RTE_Overflow)
+    | Do_Division_By_Zero_And_Overflow_Check_On_Divide: forall v1 v2,
+        do_division_check Divide v1 v2 Success ->
+        do_overflow_check Divide v1 v2 Success ->
+        do_run_time_check_on_binop Divide v1 v2 Success
+    | Do_Division_By_Zero_On_Divide_E: forall v1 v2,
+        do_division_check Divide v1 v2 (Exception RTE_Division_By_Zero) ->
+        do_run_time_check_on_binop Divide v1 v2 (Exception RTE_Division_By_Zero)
+    | Do_Overflow_Check_On_Divide_E: forall v1 v2,
+        do_division_check Divide v1 v2 Success ->
+        do_overflow_check Divide v1 v2 (Exception RTE_Overflow) ->
+        do_run_time_check_on_binop Divide v1 v2 (Exception RTE_Overflow)
+    | Do_Nothing_On_BinOp: forall op v1 v2,
+        op <> Plus ->
+        op <> Minus ->
+        op <> Multiply ->
+        op <> Divide ->
+        do_run_time_check_on_binop op v1 v2 Success.
+
+Inductive do_run_time_check_on_unop: unary_operator -> value -> check_status -> Prop :=
+    | Do_Overflow_Check_On_Unary_Minus: forall v,
+        do_overflow_check_on_unop Unary_Minus v Success ->
+        do_run_time_check_on_unop Unary_Minus v Success
+    | Do_Overflow_Check_On_Unary_Minus_E: forall v,
+        do_overflow_check_on_unop Unary_Minus v (Exception RTE_Overflow) ->
+        do_run_time_check_on_unop Unary_Minus v (Exception RTE_Overflow)
+    | Do_Nothing_On_UnOp: forall op v,
+        op <> Unary_Minus ->
+        do_run_time_check_on_unop op (BasicV (Int v)) Success.
+
 
 
 Function astnum_of_name (n: name): idnum :=
@@ -53,101 +159,6 @@ Function array_select (a: list (index * basic_value)) (i: Z): option basic_value
     | nil => None
     end.
 
-Inductive run_time_check_status :=
-    | Success
-    | Exception (m: error_type).
-
-Inductive do_run_time_check_on_binop: binary_operator -> value -> value -> run_time_check_status -> Prop :=
-    | Do_Overflow_Check_On_Plus: forall v1 v2,
-        (* min_signed <= (v1 + v2) <= max_signed *)
-        (Zge_bool (v1 + v2) min_signed) && (Zle_bool (v1 + v2) max_signed) = true ->
-        do_run_time_check_on_binop Plus (BasicV (Int v1)) (BasicV (Int v2)) Success
-    | Do_Overflow_Check_On_Plus_E: forall v1 v2,
-        (* min_signed <= (v1 + v2) <= max_signed *)
-        (Zge_bool (v1 + v2) min_signed) && (Zle_bool (v1 + v2) max_signed) = false ->
-        do_run_time_check_on_binop Plus (BasicV (Int v1)) (BasicV (Int v2)) (Exception RTE_Overflow)
-    | Do_Overflow_Check_On_Minus: forall v1 v2,
-        (* min_signed <= (v1 - v2) <= max_signed *)
-        (Zge_bool (v1 - v2) min_signed) && (Zle_bool (v1 - v2) max_signed) = true ->
-        do_run_time_check_on_binop Minus (BasicV (Int v1)) (BasicV (Int v2)) Success
-    | Do_Overflow_Check_On_Minus_E: forall v1 v2,
-        (* min_signed <= (v1 - v2) <= max_signed *)
-        (Zge_bool (v1 - v2) min_signed) && (Zle_bool (v1 - v2) max_signed) = false ->
-        do_run_time_check_on_binop Minus (BasicV (Int v1)) (BasicV (Int v2)) (Exception RTE_Overflow)
-    | Do_Overflow_Check_On_Multiply: forall v1 v2,
-        (* min_signed <= (v1 * v2) <= max_signed *)
-        (Zge_bool (v1 * v2) min_signed) && (Zle_bool (v1 * v2) max_signed) = true ->
-        do_run_time_check_on_binop Multiply (BasicV (Int v1)) (BasicV (Int v2)) Success
-    | Do_Overflow_Check_On_Multiply_E: forall v1 v2,
-        (* min_signed <= (v1 * v2) <= max_signed *)
-        (Zge_bool (v1 * v2) min_signed) && (Zle_bool (v1 * v2) max_signed) = false ->
-        do_run_time_check_on_binop Multiply (BasicV (Int v1)) (BasicV (Int v2)) (Exception RTE_Overflow)
-    | Do_Division_By_Zero_And_Overflow_Check_On_Divide: forall v1 v2,
-        (* min_signed <= (v1 / v2) <= max_signed and v2 is not zero *)
-        (* (negb (Zeq_bool v2 0)) && (Zeq_bool v1 min_signed) && (Zeq_bool v2 (-1)) = b -> *)
-        (negb (Zeq_bool v2 0)) && ((Zge_bool (Z.quot v1 v2) min_signed) && (Zle_bool (Z.quot v1 v2) max_signed)) = true ->
-        do_run_time_check_on_binop Divide (BasicV (Int v1)) (BasicV (Int v2)) Success
-    | Do_Division_By_Zero_On_Divide_E: forall v1 v2,
-        (* v2 is not zero *)
-        (negb (Zeq_bool v2 0)) = false ->
-        do_run_time_check_on_binop Divide (BasicV (Int v1)) (BasicV (Int v2)) (Exception RTE_Division_By_Zero)
-    | Do_Overflow_On_Divide_E: forall v1 v2,
-        (* min_signed <= (v1 / v2) <= max_signed *)
-        (negb (Zeq_bool v2 0)) = true ->
-        ((Zge_bool (Z.quot v1 v2) min_signed) && (Zle_bool (Z.quot v1 v2) max_signed)) = false ->
-        do_run_time_check_on_binop Divide (BasicV (Int v1)) (BasicV (Int v2)) (Exception RTE_Overflow)
-    | Do_Nothing_On_BinOp: forall op v1 v2,
-        op <> Plus ->
-        op <> Minus ->
-        op <> Multiply ->
-        op <> Divide ->
-        do_run_time_check_on_binop op v1 v2 Success.
-
-Inductive do_run_time_check_on_unop: unary_operator -> value -> run_time_check_status -> Prop :=
-    | Do_Overflow_Check_On_Unary_Minus: forall v,
-        (Zge_bool (Z.opp v) min_signed) && (Zle_bool (Z.opp v) max_signed) = true ->
-        do_run_time_check_on_unop Unary_Minus (BasicV (Int v)) Success
-    | Do_Overflow_Check_On_Unary_Minus_E: forall v,
-        (Zge_bool (Z.opp v) min_signed) && (Zle_bool (Z.opp v) max_signed) = false ->
-        do_run_time_check_on_unop Unary_Minus (BasicV (Int v)) (Exception RTE_Overflow)
-    | Do_Nothing_On_UnOp: forall op v,
-        op <> Unary_Minus ->
-        do_run_time_check_on_unop op (BasicV (Int v)) Success.
-
-Inductive do_range_check: Z -> Z -> Z -> run_time_check_status -> Prop :=
-    | Do_Range_Check: forall i l u,
-        (* i >= l /\ u >= i *)
-        (Zge_bool i l) && (Zge_bool u i) = true ->
-        do_range_check i l u Success
-    | Do_Range_Check_E: forall i l u,
-        (Zge_bool i l) && (Zge_bool u i) = false ->
-        do_range_check i l u (Exception RTE_Out_Of_Range).
-
-(*
-Inductive do_overflow_check: binary_operator -> value -> value -> bool -> Prop :=
-    | Do_Overflow_Check_On_Plus: forall v1 v2 b,
-        (* min_signed <= (v1 + v2) <= max_signed *)
-        (Zge_bool (v1 + v2) min_signed) && (Zle_bool (v1 + v2) max_signed) = b ->
-        do_overflow_check Plus (BasicV (Int v1)) (BasicV (Int v2)) b
-    | Do_Overflow_Check_On_Minus: forall v1 v2 b,
-        (* min_signed <= (v1 - v2) <= max_signed *)
-        (Zge_bool (v1 - v2) min_signed) && (Zle_bool (v1 - v2) max_signed) = b ->
-        do_overflow_check Minus (BasicV (Int v1)) (BasicV (Int v2)) b
-    | Do_Overflow_Check_On_Multiply: forall v1 v2 b,
-        (* min_signed <= (v1 * v2) <= max_signed *)
-        (Zge_bool (v1 * v2) min_signed) && (Zle_bool (v1 * v2) max_signed) = b ->
-        do_overflow_check Multiply (BasicV (Int v1)) (BasicV (Int v2)) b
-    | Do_Overflow_Check_On_Divide: forall v1 v2 b,
-        (* min_signed <= (v1 / v2) <= max_signed *)
-        ((Zge_bool (Z.quot v1 v2) min_signed) && (Zle_bool (Z.quot v1 v2) max_signed)) = b ->
-        do_overflow_check Divide (BasicV (Int v1)) (BasicV (Int v2)) b.
-
-Inductive do_division_check: binary_operator -> value -> value -> bool -> Prop :=
-    | Do_Division_Check: forall v1 v2 b,
-        (* v2 is not zero *)
-        (negb (Zeq_bool v2 0)) = b ->
-        do_division_check Divide (BasicV (Int v1)) (BasicV (Int v2)) b.
-*)
 
 (** interpret the literal expressions *)
 Definition eval_literal (l: literal): value :=
@@ -170,72 +181,66 @@ Definition eval_literal (l: literal): value :=
     normal binary operation result is returned;
 *)
 
-Inductive eval_expr: stack -> type_table -> expression -> Return value -> Prop :=
-    | eval_E_Literal: forall l v s env ast_num,
+Inductive eval_expr: stack -> expression -> Return value -> Prop :=
+    | Eval_E_Literal: forall l v s ast_num,
         eval_literal l = v ->
-        eval_expr s env (E_Literal ast_num l) (Normal v)
-    | eval_E_Name: forall s env n v ast_num,
-        eval_name s env n v ->
-        eval_expr s env (E_Name ast_num n) v
-    | eval_E_Binary_Operation_RTE_E1: forall s env e1 msg ast_num op e2,
-        eval_expr s env e1 (Run_Time_Error msg) ->
-        eval_expr s env (E_Binary_Operation ast_num op e1 e2) (Run_Time_Error msg)
-    | eval_E_Binary_Operation_RTE_E2: forall s env e1 v1 e2 msg ast_num op,
-        eval_expr s env e1 (Normal v1) ->
-        eval_expr s env e2 (Run_Time_Error msg) ->
-        eval_expr s env (E_Binary_Operation ast_num op e1 e2) (Run_Time_Error msg)
-    | eval_E_Binary_Operation_RTE_Bin: forall s env e1 v1 e2 v2 msg ast_num op,
-        eval_expr s env e1 (Normal v1) ->
-        eval_expr s env e2 (Normal v2) ->
+        eval_expr s (E_Literal ast_num l) (Normal v)
+    | Eval_E_Name: forall s n v ast_num,
+        eval_name s n v ->
+        eval_expr s (E_Name ast_num n) v
+    | Eval_E_Binary_Operation_RTE_E1: forall s e1 msg ast_num op e2,
+        eval_expr s e1 (Run_Time_Error msg) ->
+        eval_expr s (E_Binary_Operation ast_num op e1 e2) (Run_Time_Error msg)
+    | Eval_E_Binary_Operation_RTE_E2: forall s e1 v1 e2 msg ast_num op,
+        eval_expr s e1 (Normal v1) ->
+        eval_expr s e2 (Run_Time_Error msg) ->
+        eval_expr s (E_Binary_Operation ast_num op e1 e2) (Run_Time_Error msg)
+    | Eval_E_Binary_Operation_RTE_Bin: forall s e1 v1 e2 v2 msg ast_num op,
+        eval_expr s e1 (Normal v1) ->
+        eval_expr s e2 (Normal v2) ->
         do_run_time_check_on_binop op v1 v2 (Exception msg) ->
-        eval_expr s env (E_Binary_Operation ast_num op e1 e2) (Run_Time_Error msg)
-    | eval_E_Binary_Operation: forall s env e1 v1 e2 v2 ast_num op v,
-        eval_expr s env e1 (Normal v1) ->
-        eval_expr s env e2 (Normal v2) ->
+        eval_expr s (E_Binary_Operation ast_num op e1 e2) (Run_Time_Error msg)
+    | Eval_E_Binary_Operation: forall s e1 v1 e2 v2 ast_num op v,
+        eval_expr s e1 (Normal v1) ->
+        eval_expr s e2 (Normal v2) ->
         do_run_time_check_on_binop op v1 v2 Success ->
         Val.binary_operation op v1 v2 = Some v ->
-        eval_expr s env (E_Binary_Operation ast_num op e1 e2) (Normal v)
-    | eval_E_Unary_Operation_RTE_E: forall s env e msg ast_num op,
-        eval_expr s env e (Run_Time_Error msg) ->
-        eval_expr s env (E_Unary_Operation ast_num op e) (Run_Time_Error msg)
-    | eval_E_Unary_Operation_RTE: forall s env e v msg ast_num op,
-        eval_expr s env e (Normal v) ->
+        eval_expr s (E_Binary_Operation ast_num op e1 e2) (Normal v)
+    | Eval_E_Unary_Operation_RTE_E: forall s e msg ast_num op,
+        eval_expr s e (Run_Time_Error msg) ->
+        eval_expr s (E_Unary_Operation ast_num op e) (Run_Time_Error msg)
+    | Eval_E_Unary_Operation_RTE: forall s e v msg ast_num op,
+        eval_expr s e (Normal v) ->
         do_run_time_check_on_unop op v (Exception msg) ->
-        eval_expr s env (E_Unary_Operation ast_num op e) (Run_Time_Error msg)
-    | eval_E_Unary_Operation: forall s env e v ast_num op v1,
-        eval_expr s env e (Normal v) ->
+        eval_expr s (E_Unary_Operation ast_num op e) (Run_Time_Error msg)
+    | Eval_E_Unary_Operation: forall s e v ast_num op v1,
+        eval_expr s e (Normal v) ->
         do_run_time_check_on_unop op v Success ->
         Val.unary_operation op v = Some v1 ->
-        eval_expr s env (E_Unary_Operation ast_num op e) (Normal v1)
+        eval_expr s (E_Unary_Operation ast_num op e) (Normal v1)
 
-with eval_name: stack -> type_table -> name -> Return value -> Prop :=
-    | Eval_E_Identifier: forall x s env v ast_num, 
+with eval_name: stack -> name -> Return value -> Prop :=
+    | Eval_E_Identifier: forall x s v ast_num, 
         fetchG x s = Some (Value v) ->
-        eval_name s env (E_Identifier ast_num x) (Normal v)
-    | Eval_E_Indexed_Component_RTE_E: forall s env e msg ast_num x_ast_num x,
-        eval_expr s env e (Run_Time_Error msg) ->
-        eval_name s env (E_Indexed_Component ast_num x_ast_num x e) (Run_Time_Error msg)
-    | Eval_E_Indexed_Component_RTE_Range: forall s env e i x a tid an tn t l u ast_num x_ast_num, 
-        eval_expr s env e (Normal (BasicV (Int i))) ->
-        fetchG x s = Some (Value (AggregateV (ArrayV a))) ->
-        (* get the type for prefix of indexed component *)
-        TYPE_STORE.fetch x_ast_num env = Some (Aggregate tid) ->
-        fetchG tid s = Some (TypeDef (Array_Type_Declaration an tn t l u)) -> 
-        do_range_check i l u (Exception RTE_Out_Of_Range) ->
-        eval_name s env (E_Indexed_Component ast_num x_ast_num x e) Range_Error
-    | Eval_E_Indexed_Component: forall s env e i x a tid an tn t l u v ast_num x_ast_num, 
-        eval_expr s env e (Normal (BasicV (Int i))) ->
-        fetchG x s = Some (Value (AggregateV (ArrayV a))) ->
-        (* get the type for prefix of indexed component *)
-        TYPE_STORE.fetch x_ast_num env = Some (Aggregate tid) ->
-        fetchG tid s = Some (TypeDef (Array_Type_Declaration an tn t l u)) -> 
-        do_range_check i l u Success ->
+        eval_name s (E_Identifier ast_num x) (Normal v)
+    | Eval_E_Indexed_Component_RTE_E: forall s e msg ast_num x_ast_num x,
+        eval_expr s e (Run_Time_Error msg) ->
+        eval_name s (E_Indexed_Component ast_num x_ast_num x e) (Run_Time_Error msg)
+    | Eval_E_Indexed_Component_RTE_Index: forall s e i x l u a ast_num x_ast_num, 
+        eval_expr s e (Normal (BasicV (Int i))) ->
+        fetchG x s = Some (Value (AggregateV (ArrayV (l, u, a)))) ->
+        do_index_check i l u (Exception RTE_Index) ->
+        eval_name s (E_Indexed_Component ast_num x_ast_num x e) Index_Error
+    | Eval_E_Indexed_Component: forall s e i x l u a v ast_num x_ast_num, 
+        eval_expr s e (Normal (BasicV (Int i))) ->
+        fetchG x s = Some (Value (AggregateV (ArrayV (l, u, a)))) ->
+        do_index_check i l u Success ->
         array_select a i = Some v ->
-        eval_name s env (E_Indexed_Component ast_num x_ast_num x e) (Normal (BasicV v))
-    | Eval_E_Selected_Component: forall x s r f v env ast_num x_ast_num,
+        eval_name s (E_Indexed_Component ast_num x_ast_num x e) (Normal (BasicV v))
+    | Eval_E_Selected_Component: forall x s r f v ast_num x_ast_num,
         fetchG x s = Some (Value (AggregateV (RecordV r))) ->
         record_select r f = Some v ->
-        eval_name s env (E_Selected_Component ast_num x_ast_num x f) (Normal (BasicV v)).
+        eval_name s (E_Selected_Component ast_num x_ast_num x f) (Normal (BasicV v)).
 
 (** * Statement semantics *)
 
@@ -259,16 +264,16 @@ with eval_name: stack -> type_table -> name -> Return value -> Prop :=
 Inductive copy_out: store -> list parameter_specification -> list expression -> stack -> stack -> Prop :=
     | Copy_Out_Nil : forall prf σ, 
         copy_out prf nil nil σ σ
-    | Copy_Out_Cons_Out: forall σ σ' σ'' v prf prm lprm lexp x ast_num1 ast_num2,
-        prm.(parameter_mode) = Out ->
-        fetch prm.(parameter_name) prf = Some v ->
+    | Copy_Out_Cons_Out: forall σ σ' σ'' v prf param lparam lexp x ast_num1 ast_num2,
+        param.(parameter_mode) = Out ->
+        fetch param.(parameter_name) prf = Some v ->
         updateG σ x v = Some σ' ->
-        copy_out prf lprm lexp σ' σ'' ->
-        copy_out prf (prm::lprm) ((E_Name ast_num1 (E_Identifier ast_num2 x)) :: lexp) σ σ''
-    | Copy_Out_Cons_In: forall σ σ'  prf prm lprm lexp e,
-        prm.(parameter_mode) = In ->
-        copy_out prf lprm lexp σ σ' ->
-        copy_out prf (prm::lprm) (e :: lexp) σ σ'.
+        copy_out prf lparam lexp σ' σ'' ->
+        copy_out prf (param::lparam) ((E_Name ast_num1 (E_Identifier ast_num2 x)) :: lexp) σ σ''
+    | Copy_Out_Cons_In: forall σ σ' prf param lparam lexp e,
+        param.(parameter_mode) = In ->
+        copy_out prf lparam lexp σ σ' ->
+        copy_out prf (param::lparam) (e :: lexp) σ σ'.
 
 (** [Copy_in s lparams lexp frame] means the frame is the portion of
     stack to push on the stack to start evaluating the procedure
@@ -278,33 +283,31 @@ Inductive copy_out: store -> list parameter_specification -> list expression -> 
     [lexp]. Only "In" parameters are evaluated, "Out" parameters are
     set to [Undefined]. *)
 
-Inductive copy_in: stack -> type_table -> list parameter_specification -> list expression -> 
-                   Return store -> Prop :=
-    | Copy_In_Nil : forall σ env, 
-        copy_in σ env nil nil (Normal nil)
-    | Copy_In_Cons_Out: forall σ env lparam lexp (frame:store) prm idv ast_num1 ast_num2,
-        copy_in σ env lparam lexp (Normal frame) ->
-        prm.(parameter_mode) = Out ->
-        copy_in σ env (prm::lparam) ((E_Name ast_num1 (E_Identifier ast_num2 idv))::lexp)
-                 (Normal ((prm.(parameter_name),Undefined)::frame))
-    | Copy_In_Cons_Out_RTE: forall σ env lparam lexp msg prm idv ast_num1 ast_num2,
-        copy_in σ env lparam lexp (Run_Time_Error msg) ->
-        prm.(parameter_mode) = Out ->
-        copy_in σ env (prm::lparam) (E_Name ast_num1 (E_Identifier ast_num2 idv)::lexp) (Run_Time_Error msg)
-    | Copy_In_Cons_In_RTE1: forall σ env lparam lexp prm e msg,
-        prm.(parameter_mode) = In ->
-        eval_expr σ env e (Run_Time_Error msg) ->
-        copy_in σ env (prm::lparam) (e::lexp) (Run_Time_Error msg)
-    | Copy_In_Cons_In_RTE2: forall σ env lparam lexp prm msg e v,
-        copy_in σ env lparam lexp (Run_Time_Error msg) ->
-        eval_expr σ env e (Normal v) ->
-        prm.(parameter_mode) = In ->
-        copy_in σ env (prm::lparam) (e::lexp) (Run_Time_Error msg)
-    | Copy_In_Cons_In: forall σ env lparam lexp frame prm e v,
-        copy_in σ env lparam lexp (Normal frame) ->
-        prm.(parameter_mode) = In ->
-        eval_expr σ env e (Normal v) ->
-        copy_in σ env (prm::lparam) (e::lexp) (Normal ((prm.(parameter_name),Value v)::frame)).
+Inductive copy_in: stack -> list parameter_specification -> list expression -> Return store -> Prop :=
+    | Copy_In_Nil : forall σ, 
+        copy_in σ nil nil (Normal nil)
+    | Copy_In_Cons_Out: forall σ param lparam lexp frame ast_num1 ast_num2 x,
+        param.(parameter_mode) = Out ->
+        copy_in σ lparam lexp (Normal frame) ->
+        copy_in σ (param::lparam) ((E_Name ast_num1 (E_Identifier ast_num2 x))::lexp) (Normal ((param.(parameter_name),Undefined)::frame))
+    | Copy_In_Cons_Out_E: forall σ param lparam lexp msg ast_num1 ast_num2 x,
+        param.(parameter_mode) = Out ->
+        copy_in σ lparam lexp (Run_Time_Error msg) ->
+        copy_in σ (param::lparam) (E_Name ast_num1 (E_Identifier ast_num2 x)::lexp) (Run_Time_Error msg)
+    | Copy_In_Cons_In: forall σ param e v lparam lexp frame,
+        param.(parameter_mode) = In ->
+        eval_expr σ e (Normal v) ->
+        copy_in σ lparam lexp (Normal frame) ->
+        copy_in σ (param::lparam) (e::lexp) (Normal ((param.(parameter_name),Value v)::frame))
+    | Copy_In_Cons_In_E1: forall σ param e msg lparam lexp,
+        param.(parameter_mode) = In ->
+        eval_expr σ e (Run_Time_Error msg) ->
+        copy_in σ (param::lparam) (e::lexp) (Run_Time_Error msg)
+    | Copy_In_Cons_In_E2: forall σ param e v lparam lexp msg,
+        param.(parameter_mode) = In ->
+        eval_expr σ e (Normal v) ->
+        copy_in σ lparam lexp (Run_Time_Error msg) ->
+        copy_in σ (param::lparam) (e::lexp) (Run_Time_Error msg).
 
 (** *** Inductive semantic of declarations. [eval_decl s nil decl
         rsto] means that rsto is the frame to be pushed on s after
@@ -312,35 +315,33 @@ Inductive copy_in: stack -> type_table -> list parameter_specification -> list e
         the frame.
  *)
 
-Inductive eval_decl: stack -> store -> type_table -> declaration -> Return store -> Prop :=
-    | Eval_Decl_RTE: forall e d s sto env msg ast_num,
-        Some e = d.(initialization_expression) ->
-        eval_expr (sto::s) env e (Run_Time_Error msg) ->
-        eval_decl s sto env (D_Object_Declaration ast_num d) (Run_Time_Error msg)
-    | Eval_Decl: forall d x e v s sto env ast_num,
-        x = d.(object_name) ->
-        Some e = d.(initialization_expression) ->
-        eval_expr (sto::s) env e (Normal v) ->
-        eval_decl s sto env (D_Object_Declaration ast_num d) (Normal ((x, Value v) :: sto))
-    | Eval_UndefDecl: forall d x s sto env ast_num,
-        x = d.(object_name) ->
-        None = d.(initialization_expression) ->
-        eval_decl s sto env (D_Object_Declaration ast_num d) (Normal ((x, Undefined) :: sto))
-    | Eval_Decl_Proc: forall s sto env ast_num pbody, (* ######### *)
-        eval_decl s sto env (D_Procedure_Declaration ast_num pbody) (Normal sto)
-    | Eval_Decl_Type: forall s sto env ast_num typdec, (* ########## *)
-        eval_decl s sto env (D_Type_Declaration ast_num typdec) (Normal sto).
+Inductive eval_decl: stack -> store -> declaration -> Return store -> Prop :=
+    | Eval_Decl_E: forall d e sto s msg ast_num,
+        d.(initialization_expression) = Some e ->
+        eval_expr (sto::s) e (Run_Time_Error msg) ->
+        eval_decl s sto (D_Object_Declaration ast_num d) (Run_Time_Error msg)
+    | Eval_Decl: forall d e sto s v ast_num,
+        d.(initialization_expression) = Some e ->
+        eval_expr (sto::s) e (Normal v) ->
+        eval_decl s sto (D_Object_Declaration ast_num d) (Normal ((d.(object_name), Value v) :: sto))
+    | Eval_UndefDecl: forall d s sto ast_num,
+        d.(initialization_expression) = None ->
+        eval_decl s sto (D_Object_Declaration ast_num d) (Normal ((d.(object_name), Undefined) :: sto))
+    | Eval_Decl_Proc: forall s sto ast_num p,
+        eval_decl s sto (D_Procedure_Declaration ast_num p) (Normal ((procedure_name p,Procedure p)::sto))
+    | Eval_Decl_Type: forall s sto ast_num t,
+        eval_decl s sto (D_Type_Declaration ast_num t) (Normal ((type_name t, TypeDef t) :: sto)).
 
-Inductive eval_decls: stack -> store -> type_table -> list declaration -> Return store -> Prop :=
-    | Eval_Decls_Nil: forall s sto env,
-        eval_decls s sto env nil (Normal sto)
-    | Eval_Decls_RTE: forall s sto env d msg ds,
-        eval_decl s sto env d (Run_Time_Error msg) ->
-        eval_decls s sto env (d :: ds) (Run_Time_Error msg)
-    | Eval_Decls: forall s sto env d sto1 ds sto2,
-        eval_decl s sto env d (Normal sto1) ->
-        eval_decls s sto1 env ds sto2 ->
-        eval_decls s sto env (d :: ds) sto2.
+Inductive eval_decls: stack -> store -> list declaration -> Return store -> Prop :=
+    | Eval_Decls_Nil: forall s sto,
+        eval_decls s sto nil (Normal sto)
+    | Eval_Decls_RTE: forall s sto d msg ld,
+        eval_decl s sto d (Run_Time_Error msg) ->
+        eval_decls s sto (d :: ld) (Run_Time_Error msg)
+    | Eval_Decls: forall s sto d sto1 ld sto2,
+        eval_decl s sto d (Normal sto1) ->
+        eval_decls s sto1 ld sto2 ->
+        eval_decls s sto (d :: ld) sto2.
 
 (** ** Inductive semantic of statement and declaration
 
@@ -374,107 +375,103 @@ Function recordUpdate (r: list (idnum * basic_value)) (f : idnum) (v: basic_valu
    end.
 
 
-Inductive eval_stmt: stack -> type_table -> statement -> Return stack -> Prop := 
-    | Eval_S_Assignment_RTE: forall s env e msg ast_num x,
-        eval_expr s env e (Run_Time_Error msg) ->
-        eval_stmt s env (S_Assignment ast_num x e) (Run_Time_Error msg)
-    | Eval_S_Assignment: forall s env e v x s1 ast_num,
-        eval_expr s env e (Normal v) ->
-        storeUpdate s env x v s1 ->
-        eval_stmt s env (S_Assignment ast_num x e) s1
-    | Eval_S_Sequence_RTE: forall s env c1 msg ast_num c2,
-        eval_stmt s env c1 (Run_Time_Error msg) ->
-        eval_stmt s env (S_Sequence ast_num c1 c2) (Run_Time_Error msg)
-    | Eval_S_Sequence: forall ast_num s env s1 s2 c1 c2,
-        eval_stmt s env c1 (Normal s1) ->
-        eval_stmt s1 env c2 s2 ->
-        eval_stmt s env (S_Sequence ast_num c1 c2) s2
-    | Eval_S_If_RTE: forall s env b msg ast_num c1 c2,
-        eval_expr s env b (Run_Time_Error msg) ->
-        eval_stmt s env (S_If ast_num b c1 c2) (Run_Time_Error msg)
-    | Eval_S_If_True: forall s env b c1 s1 ast_num c2,
-        eval_expr s env b (Normal (BasicV (Bool true))) ->
-        eval_stmt s env c1 s1 ->
-        eval_stmt s env (S_If ast_num b c1 c2) s1
-    | Eval_S_If_False: forall s env b c2 s1 ast_num c1,
-        eval_expr s env b (Normal (BasicV (Bool false))) ->
-        eval_stmt s env c2 s1 ->
-        eval_stmt s env (S_If ast_num b c1 c2) s1
-    | Eval_S_While_Loop_RTE: forall s env b msg ast_num c,
-        eval_expr s env b (Run_Time_Error msg) ->
-        eval_stmt s env (S_While_Loop ast_num b c) (Run_Time_Error msg)
-    | Eval_S_While_Loop_True_RTE: forall s env b c msg ast_num,
-        eval_expr s env b (Normal (BasicV (Bool true))) ->
-        eval_stmt s env c (Run_Time_Error msg) ->
-        eval_stmt s env (S_While_Loop ast_num b c) (Run_Time_Error msg)
-    | Eval_S_While_Loop_True: forall s env b c s1 ast_num s2,
-        eval_expr s env b (Normal (BasicV (Bool true))) ->
-        eval_stmt s env c (Normal s1) ->
-        eval_stmt s1 env (S_While_Loop ast_num b c) s2 ->
-        eval_stmt s env (S_While_Loop ast_num b c) s2
-    | Eval_S_While_Loop_False: forall s env b ast_num c,
-        eval_expr s env b (Normal (BasicV (Bool false))) ->
-        eval_stmt s env (S_While_Loop ast_num b c) (Normal s)
-    | Eval_S_Proc_RTE_Args: forall pid s pb env args msg ast_num1 ast_num2,
+Inductive eval_stmt: stack -> statement -> Return stack -> Prop := 
+    | Eval_S_Null: forall s ast_num,
+        eval_stmt s (S_Null ast_num) (Normal s)
+    | Eval_S_Assignment_RTE: forall s e msg ast_num x,
+        eval_expr s e (Run_Time_Error msg) ->
+        eval_stmt s (S_Assignment ast_num x e) (Run_Time_Error msg)
+    | Eval_S_Assignment: forall s e v x s1 ast_num,
+        eval_expr s e (Normal v) ->
+        storeUpdate s x v s1 ->
+        eval_stmt s (S_Assignment ast_num x e) s1
+    | Eval_S_If_RTE: forall s b msg ast_num c1 c2,
+        eval_expr s b (Run_Time_Error msg) ->
+        eval_stmt s (S_If ast_num b c1 c2) (Run_Time_Error msg)
+    | Eval_S_If_True: forall s b c1 s1 ast_num c2,
+        eval_expr s b (Normal (BasicV (Bool true))) ->
+        eval_stmt s c1 s1 ->
+        eval_stmt s (S_If ast_num b c1 c2) s1
+    | Eval_S_If_False: forall s b c2 s1 ast_num c1,
+        eval_expr s b (Normal (BasicV (Bool false))) ->
+        eval_stmt s c2 s1 ->
+        eval_stmt s (S_If ast_num b c1 c2) s1
+    | Eval_S_While_Loop_RTE: forall s b msg ast_num c,
+        eval_expr s b (Run_Time_Error msg) ->
+        eval_stmt s (S_While_Loop ast_num b c) (Run_Time_Error msg)
+    | Eval_S_While_Loop_True_RTE: forall s b c msg ast_num,
+        eval_expr s b (Normal (BasicV (Bool true))) ->
+        eval_stmt s c (Run_Time_Error msg) ->
+        eval_stmt s (S_While_Loop ast_num b c) (Run_Time_Error msg)
+    | Eval_S_While_Loop_True: forall s b c s1 ast_num s2,
+        eval_expr s b (Normal (BasicV (Bool true))) ->
+        eval_stmt s c (Normal s1) ->
+        eval_stmt s1 (S_While_Loop ast_num b c) s2 ->
+        eval_stmt s (S_While_Loop ast_num b c) s2
+    | Eval_S_While_Loop_False: forall s b ast_num c,
+        eval_expr s b (Normal (BasicV (Bool false))) ->
+        eval_stmt s (S_While_Loop ast_num b c) (Normal s)
+    | Eval_S_Proc_RTE_Args: forall pid s pb args msg ast_num1 ast_num2,
         fetchG pid s = Some (Procedure pb) ->
-        copy_in s env (procedure_parameter_profile pb) args (Run_Time_Error msg) ->
-        eval_stmt s env (S_ProcCall ast_num1 ast_num2 pid args) (Run_Time_Error msg)
-    | Eval_S_Proc_RTE_Decl: forall pid s pb env args newframe s_forget s1 msg ast_num1 ast_num2,
+        copy_in s (procedure_parameter_profile pb) args (Run_Time_Error msg) ->
+        eval_stmt s (S_ProcCall ast_num1 ast_num2 pid args) (Run_Time_Error msg)
+    | Eval_S_Proc_RTE_Decl: forall pid s pb args newframe s_intact s1 msg ast_num1 ast_num2,
         fetchG pid s = Some (Procedure pb) ->
-        copy_in s env (procedure_parameter_profile pb) args (Normal newframe) ->
-        cut_until s pid s_forget s1 -> (* s = s_forget++s1 *)
-        eval_decls s1 newframe env (procedure_declarative_part pb) (Run_Time_Error msg) ->
-        eval_stmt s env (S_ProcCall ast_num1 ast_num2 pid args) (Run_Time_Error msg)
-    | Eval_S_Proc_RTE_Body: forall pid s pb env args newframe s_forget s1 newframe1 msg ast_num1 ast_num2,
+        copy_in s (procedure_parameter_profile pb) args (Normal newframe) ->
+        cut_until s pid s_intact s1 -> (* s = s_intact ++ s1 *)
+        eval_decls s1 newframe (procedure_declarative_part pb) (Run_Time_Error msg) ->
+        eval_stmt s (S_ProcCall ast_num1 ast_num2 pid args) (Run_Time_Error msg)
+    | Eval_S_Proc_RTE_Body: forall pid s pb args newframe s_intact s1 newframe1 msg ast_num1 ast_num2,
         fetchG pid s = Some (Procedure pb) ->
-        copy_in s env (procedure_parameter_profile pb) args (Normal newframe) ->
-        cut_until s pid s_forget s1 -> (* s = s_forget ++ s1 *)
-        eval_decls s newframe env (procedure_declarative_part pb) (Normal newframe1) ->
-        eval_stmt (newframe1 :: s1) env (procedure_statements pb) (Run_Time_Error msg) ->
-        eval_stmt s env (S_ProcCall ast_num1 ast_num2 pid args) (Run_Time_Error msg)
-    | Eval_S_Proc: forall pid s pb env args newframe s_forget s1 newframe1 s2
+        copy_in s (procedure_parameter_profile pb) args (Normal newframe) ->
+        cut_until s pid s_intact s1 -> (* s = s_intact ++ s1 *)
+        eval_decls s1 newframe (procedure_declarative_part pb) (Normal newframe1) ->
+        eval_stmt (newframe1 :: s1) (procedure_statements pb) (Run_Time_Error msg) ->
+        eval_stmt s (S_ProcCall ast_num1 ast_num2 pid args) (Run_Time_Error msg)
+    | Eval_S_Proc: forall pid s pb args newframe s_intact s1 newframe1 s2
                           slocal prefix s3 s4 ast_num1 ast_num2,
         fetchG pid s = Some (Procedure pb) ->
-        copy_in s env (procedure_parameter_profile pb) args (Normal newframe) ->
-        cut_until s pid s_forget s1 -> (* s = s_forget ++ s1 *)
-        eval_decls s1 newframe env (procedure_declarative_part pb) (Normal newframe1) ->          
-        eval_stmt (newframe1 :: s1) env (procedure_statements pb) (Normal s2) ->
+        copy_in s (procedure_parameter_profile pb) args (Normal newframe) ->
+        cut_until s pid s_intact s1 -> (* s = s_intact ++ s1 *)
+        eval_decls s1 newframe (procedure_declarative_part pb) (Normal newframe1) ->          
+        eval_stmt (newframe1 :: s1) (procedure_statements pb) (Normal s2) ->
         s2 = (slocal ++ prefix) :: s3 -> (* extract parameters from local frame *)
         List.length newframe = List.length prefix ->
-        copy_out prefix (procedure_parameter_profile pb) args (s_forget ++ s3) s4 ->
-        eval_stmt s env (S_ProcCall ast_num1 ast_num2 pid args) (Normal s4)
+        copy_out prefix (procedure_parameter_profile pb) args (s_intact ++ s3) s4 ->
+        eval_stmt s (S_ProcCall ast_num1 ast_num2 pid args) (Normal s4)
+    | Eval_S_Sequence_RTE: forall s c1 msg ast_num c2,
+        eval_stmt s c1 (Run_Time_Error msg) ->
+        eval_stmt s (S_Sequence ast_num c1 c2) (Run_Time_Error msg)
+    | Eval_S_Sequence: forall s c1 s1 c2 s2 ast_num,
+        eval_stmt s c1 (Normal s1) ->
+        eval_stmt s1 c2 s2 ->
+        eval_stmt s (S_Sequence ast_num c1 c2) s2
 
-with storeUpdate: stack -> type_table -> name -> value -> Return stack -> Prop := 
-    | SU_Identifier: forall s env x v s1 ast_num,
+with storeUpdate: stack -> name -> value -> Return stack -> Prop := 
+    | SU_Identifier: forall s x v s1 ast_num,
         updateG s x (Value v) = Some s1 ->
-        storeUpdate s env (E_Identifier ast_num x) v (Normal s1)
-    | SU_Indexed_Component_RTE_E: forall x s env a e msg ast_num x_ast_num v,
+        storeUpdate s (E_Identifier ast_num x) v (Normal s1)
+    | SU_Indexed_Component_RTE_E: forall x s a e msg ast_num x_ast_num v,
         fetchG x s = Some (Value (AggregateV (ArrayV a))) ->
-        eval_expr s env e (Run_Time_Error msg) ->
-        storeUpdate s env (E_Indexed_Component ast_num x_ast_num x e) v (Run_Time_Error msg)
-    | SU_Indexed_Component_RTE_Range: forall x s a env e i x_ast_num tid ast_num1 tn t l u ast_num v,
-        fetchG x s = Some (Value (AggregateV (ArrayV a))) ->
-        eval_expr s env e (Normal (BasicV (Int i))) ->
-        (* get the type for prefix of indexed component *)
-        TYPE_STORE.fetch x_ast_num env = Some (Aggregate tid) ->
-        fetchG tid s = Some (TypeDef (Array_Type_Declaration ast_num1 tn t l u)) ->
-        do_range_check i l u (Exception RTE_Out_Of_Range) ->
-        storeUpdate s env (E_Indexed_Component ast_num x_ast_num x e) v (Run_Time_Error RTE_Out_Of_Range)
-    | SU_Indexed_Component: forall x s a env e i x_ast_num tid ast_num1 tn t l u v a1 s1 ast_num,
-        fetchG x s = Some (Value (AggregateV (ArrayV a))) ->
-        eval_expr s env e (Normal (BasicV (Int i))) ->
-        (* get the type for prefix of indexed component *)
-        TYPE_STORE.fetch x_ast_num env = Some (Aggregate tid) ->
-        fetchG tid s = Some (TypeDef (Array_Type_Declaration ast_num1 tn t l u)) ->
-        do_range_check i l u Success ->
+        eval_expr s e (Run_Time_Error msg) ->
+        storeUpdate s (E_Indexed_Component ast_num x_ast_num x e) v (Run_Time_Error msg)
+    | SU_Indexed_Component_RTE_Index: forall x s l u a e i ast_num x_ast_num v,
+        fetchG x s = Some (Value (AggregateV (ArrayV (l, u, a)))) ->
+        eval_expr s e (Normal (BasicV (Int i))) ->
+        do_index_check i l u (Exception RTE_Index) ->
+        storeUpdate s (E_Indexed_Component ast_num x_ast_num x e) v (Run_Time_Error RTE_Index)
+    | SU_Indexed_Component: forall x s l u a e i v a1 s1 ast_num x_ast_num,
+        fetchG x s = Some (Value (AggregateV (ArrayV (l, u, a)))) ->
+        eval_expr s e (Normal (BasicV (Int i))) ->
+        do_index_check i l u Success ->
         arrayUpdate a i v = a1 -> (* a[i] := v *)
-        updateG s x (Value (AggregateV (ArrayV a1))) = Some s1 ->
-        storeUpdate s env (E_Indexed_Component ast_num x_ast_num x e) (BasicV v) (Normal s1)
-    | SU_Selected_Component: forall r s r1 f v r2 s1 env ast_num r_ast_num,
+        updateG s x (Value (AggregateV (ArrayV (l, u, a1)))) = Some s1 ->
+        storeUpdate s (E_Indexed_Component ast_num x_ast_num x e) (BasicV v) (Normal s1)
+    | SU_Selected_Component: forall r s r1 f v r2 s1 ast_num r_ast_num,
         fetchG r s = Some (Value (AggregateV (RecordV r1))) ->
         recordUpdate r1 f v = r2 -> (* r1.f := v *)
         updateG s r (Value (AggregateV (RecordV r2))) = Some s1 ->
-        storeUpdate s env (E_Selected_Component ast_num r_ast_num r f) (BasicV v) (Normal s1).
+        storeUpdate s (E_Selected_Component ast_num r_ast_num r f) (BasicV v) (Normal s1).
 
 
 (**********************************************************************************************************

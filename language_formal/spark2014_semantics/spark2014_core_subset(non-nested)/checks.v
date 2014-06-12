@@ -1,141 +1,173 @@
-Require Import values.
+Require Export semantics.
 
 (** * Run Time Check Rules *)
-(** ** check rules marking _what_ and _where_ to check *)
+(** ** a subset of run time checks to be verified *)
 (**
-      - Do_Division_Check
+     - Division Check
        
-       This flag is set on a division operator (/ mod rem) to indicate
-       that a zero divide check is required. 
+       Check that the second operand of the the division, mod or rem 
+       operation is different from zero.
 
-     - Do_Overflow_Check
+     - Overflow Check
 
-       This flag is set on an operator where an overflow check is required on
-       the operation.
+       Check that the result of the given arithmetic operation is within 
+       the bounds of the base type.
+
+     - Index Check
+       
+       Check that the given index is within the bounds of the array.
      
-     - Do_Range_Check
+     - Range Check
        
-       Subscript expressions in an indexed component. In this case the
-       target type is determined from the type of the array, which is
-       referenced by the Prefix of the N_Indexed_Component node.
+       Check that the given value is within the bounds of the expected scalar 
+       subtype.
 *)
 
+(** ** run time check flags *)
+(** checks that are needed to be verified at run time *)
+Inductive check_flag: Type := 
+    | Do_Division_Check: check_flag
+    | Do_Overflow_Check: check_flag
+    | Do_Index_Check:    check_flag.   (* index check for an array access *)
+(*  | Do_Range_Check:    check_flag *) (* range check for a scalar range, e.g. -1 is assigned to natural variable *) 
 
-(** ** run time checks *)
-(** checks that are needed to be performed at run time *)
-Inductive run_time_check: Type := 
-    | Do_Division_Check: run_time_check
-    | Do_Overflow_Check: run_time_check
-    | Do_Range_Check: run_time_check.
 
 (** For an expression or statement, there may exists a list of checks 
     enforced on it, for example, for division expression, both
     division by zero and overflow checks are needed to be performed;
 *)
-Definition run_time_checks := list run_time_check.
+Definition check_flags := list check_flag.
 
 (** produce check flags for expressions according to the checking rules; 
     it is a mapping from one ast node to a set of run time checks;
 *)
 
-Inductive check_flags: expression -> run_time_checks -> Prop :=
-    | CF_Literal_Int: forall ast_num n,
-        check_flags (E_Literal ast_num (Integer_Literal n)) nil
-    | CF_Literal_Bool: forall ast_num b,
-        check_flags (E_Literal ast_num (Boolean_Literal b)) nil
-    | CF_Name: forall n flags ast_num,
-        name_check_flags n flags -> 
-        check_flags (E_Name ast_num n) flags
-    | CF_Binary_Operation_Plus: forall ast_num e1 e2,
-        check_flags (E_Binary_Operation ast_num Plus e1 e2) (Do_Overflow_Check :: nil)
-    | CF_Binary_Operation_Minus: forall ast_num e1 e2,
-        check_flags (E_Binary_Operation ast_num Minus e1 e2) (Do_Overflow_Check :: nil)
-    | CF_Binary_Operation_Multiply: forall ast_num e1 e2,
-        check_flags (E_Binary_Operation ast_num Multiply e1 e2) (Do_Overflow_Check :: nil)
-    | CF_Binary_Operation_Div: forall ast_num e1 e2,
-        check_flags (E_Binary_Operation ast_num Divide e1 e2) (Do_Division_Check :: Do_Overflow_Check :: nil)
-    | CF_Binary_Operation_Others: forall ast_num op e1 e2,
+Inductive gen_check_flags: expression -> check_flags -> Prop :=
+    | GCF_Literal_Int: forall ast_num n,
+        gen_check_flags (E_Literal ast_num (Integer_Literal n)) nil
+    | GCF_Literal_Bool: forall ast_num b,
+        gen_check_flags (E_Literal ast_num (Boolean_Literal b)) nil
+    | GCF_Name: forall n flags ast_num,
+        gen_name_check_flags n flags ->        (* ########## *)
+        gen_check_flags (E_Name ast_num n) nil (* ########## *)
+    | GCF_Binary_Operation_Plus: forall ast_num e1 e2,
+        gen_check_flags (E_Binary_Operation ast_num Plus e1 e2) (Do_Overflow_Check :: nil)
+    | GCF_Binary_Operation_Minus: forall ast_num e1 e2,
+        gen_check_flags (E_Binary_Operation ast_num Minus e1 e2) (Do_Overflow_Check :: nil)
+    | GCF_Binary_Operation_Multiply: forall ast_num e1 e2,
+        gen_check_flags (E_Binary_Operation ast_num Multiply e1 e2) (Do_Overflow_Check :: nil)
+    | GCF_Binary_Operation_Div: forall ast_num e1 e2,
+        gen_check_flags (E_Binary_Operation ast_num Divide e1 e2) (Do_Division_Check :: Do_Overflow_Check :: nil)
+    | GCF_Binary_Operation_Others: forall ast_num op e1 e2,
         op <> Plus ->
         op <> Minus ->
         op <> Multiply ->
         op <> Divide ->
-        check_flags (E_Binary_Operation ast_num op e1 e2) nil
-    | CF_Unary_Operation_Minus: forall ast_num e,
-        check_flags (E_Unary_Operation ast_num Unary_Minus e) (Do_Overflow_Check :: nil)
-    | CF_Unary_Operation_Others: forall ast_num op e,
+        gen_check_flags (E_Binary_Operation ast_num op e1 e2) nil
+    | GCF_Unary_Operation_Minus: forall ast_num e,
+        gen_check_flags (E_Unary_Operation ast_num Unary_Minus e) (Do_Overflow_Check :: nil)
+    | GCF_Unary_Operation_Others: forall ast_num op e,
         op <> Unary_Minus ->
-        check_flags (E_Unary_Operation ast_num op e) nil
+        gen_check_flags (E_Unary_Operation ast_num op e) nil
 
-with name_check_flags: name -> run_time_checks -> Prop :=
-    | NCF_Identifier: forall ast_num x,
-        name_check_flags (E_Identifier ast_num x) nil
-    | NCF_Indexed_Component: forall ast_num x_ast_num x e,
-        name_check_flags (E_Indexed_Component ast_num x_ast_num x e) (Do_Range_Check :: nil)
-    | NCF_Selected_Component: forall ast_num x_ast_num x f,
-        name_check_flags (E_Selected_Component ast_num x_ast_num x f) nil.
+with gen_name_check_flags: name -> check_flags -> Prop :=
+    | GNCF_Identifier: forall ast_num x,
+        gen_name_check_flags (E_Identifier ast_num x) nil
+    | GNCF_Indexed_Component: forall ast_num x_ast_num x e,
+        gen_name_check_flags (E_Indexed_Component ast_num x_ast_num x e) (Do_Index_Check :: nil)
+    | GNCF_Selected_Component: forall ast_num x_ast_num x f,
+        gen_name_check_flags (E_Selected_Component ast_num x_ast_num x f) nil.
 
-(** ** semantics for run time checks *)
-(** 32-bit integer is in the range of min_signed and max_signed, where
-    min_signed: -2^31 
-    max_signed: 2^31-1
-    
-    if v1 = -2^31 and v2 = -1 then v1 / v2 = 2^31, which is out of its range; 
-*)
-Inductive do_check: binary_operator -> value -> value -> bool -> Prop :=
-    | Do_Overflow_Check_On_Plus: forall v1 v2 b,
-        (* min_signed <= (v1 + v2) <= max_signed *)
-        (Zge_bool (v1 + v2) min_signed) && (Zle_bool (v1 + v2) max_signed) = b ->
-        do_check Plus (BasicV (Int v1)) (BasicV (Int v2)) b
-    | Do_Overflow_Check_On_Minus: forall v1 v2 b,
-        (* min_signed <= (v1 - v2) <= max_signed *)
-        (Zge_bool (v1 - v2) min_signed) && (Zle_bool (v1 - v2) max_signed) = b ->
-        do_check Minus (BasicV (Int v1)) (BasicV (Int v2)) b
-    | Do_Overflow_Check_On_Multiply: forall v1 v2 b,
-        (* min_signed <= (v1 * v2) <= max_signed *)
-        (Zge_bool (v1 * v2) min_signed) && (Zle_bool (v1 * v2) max_signed) = b ->
-        do_check Multiply (BasicV (Int v1)) (BasicV (Int v2)) b
-    | Do_Division_By_Zero_And_Overflow_Check_On_Divide: forall v1 v2 b,
-        (* min_signed <= (v1 / v2) <= max_signed and v2 is not zero *)
-        (* (negb (Zeq_bool v2 0)) && (Zeq_bool v1 min_signed) && (Zeq_bool v2 (-1)) = b -> *)
-        (negb (Zeq_bool v2 0)) && ((Zge_bool (Z.quot v1 v2) min_signed) && (Zle_bool (Z.quot v1 v2) max_signed)) = b ->
-        do_check Divide (BasicV (Int v1)) (BasicV (Int v2)) b
-    | Do_Nothing: forall op v1 v2,
-        op <> Plus ->
-        op <> Minus ->
-        op <> Multiply ->
-        op <> Divide ->
-        do_check op v1 v2 true.
 
-(** do run time check only when the operator is labled with certain check flags  *)
+(** do run time check according to the check flags  *)
 
-Inductive do_flagged_check: run_time_check -> binary_operator -> value -> value -> bool -> Prop :=
-    | Do_Overflow_Check_Plus: forall v1 v2 b,
-        (Zge_bool (v1 + v2) min_signed) && (Zle_bool (v1 + v2) max_signed) = b ->
-        do_flagged_check Do_Overflow_Check Plus (BasicV (Int v1)) (BasicV (Int v2)) b
-    | Do_Overflow_Check_Minus: forall v1 v2 b,
-        (Zge_bool (v1 - v2) min_signed) && (Zle_bool (v1 - v2) max_signed) = b ->
-        do_flagged_check Do_Overflow_Check Minus (BasicV (Int v1)) (BasicV (Int v2)) b
-    | Do_Overflow_Check_Multiply: forall v1 v2 b,
-        (Zge_bool (v1 * v2) min_signed) && (Zle_bool (v1 * v2) max_signed) = b ->
-        do_flagged_check Do_Overflow_Check Multiply (BasicV (Int v1)) (BasicV (Int v2)) b
-    | Do_Overflow_Check_Divide: forall v1 v2 b,
-        (* (Zeq_bool v1 min_signed) && (Zeq_bool v2 (-1)) = b -> *)
-        (Zge_bool (Z.quot v1 v2) min_signed) && (Zle_bool (Z.quot v1 v2) max_signed) = b ->
-        do_flagged_check Do_Overflow_Check Divide (BasicV (Int v1)) (BasicV (Int v2)) b
-    | Do_Division_By_Zero_Check: forall v1 v2 b,
-        negb (Zeq_bool v2 0) = b ->
-        do_flagged_check Do_Division_Check Divide (BasicV (Int v1)) (BasicV (Int v2)) b.
+Inductive do_flagged_check_on_binop: check_flag -> binary_operator -> value -> value -> check_status -> Prop :=
+    | Do_Overflow_Check_Binop: forall op v1 v2,
+        do_overflow_check op v1 v2 Success ->
+        do_flagged_check_on_binop Do_Overflow_Check op v1 v2 Success
+    | Do_Overflow_Check_Binop_E: forall op v1 v2,
+        do_overflow_check op v1 v2 (Exception RTE_Overflow) ->
+        do_flagged_check_on_binop Do_Overflow_Check op v1 v2 (Exception RTE_Overflow)
+    | Do_Division_By_Zero_Check_Binop: forall v1 v2,
+        do_division_check Divide v1 v2 Success ->
+        do_flagged_check_on_binop Do_Division_Check Divide v1 v2 Success
+    | Do_Division_By_Zero_Check_Binop_E: forall v1 v2,
+        do_division_check Divide v1 v2 (Exception RTE_Overflow) ->
+        do_flagged_check_on_binop Do_Division_Check Divide v1 v2 (Exception RTE_Overflow).
 
-Inductive do_flagged_checks: run_time_checks -> binary_operator -> value -> value -> bool -> Prop :=
+Inductive do_flagged_check_on_unop: check_flag -> unary_operator -> value -> check_status -> Prop :=
+    | Do_Overflow_Check_Unop: forall op v,
+        do_overflow_check_on_unop op v Success ->
+        do_flagged_check_on_unop Do_Overflow_Check op v Success
+    | Do_Overflow_Check_Unop_E: forall op v,
+        do_overflow_check_on_unop op v (Exception RTE_Overflow) ->
+        do_flagged_check_on_unop Do_Overflow_Check op v (Exception RTE_Overflow).
+
+Inductive do_flagged_index_check: check_flag -> Z -> Z -> Z -> check_status -> Prop :=
+    | Do_Index_Check': forall i l u,
+        do_index_check i i u Success ->
+        do_flagged_index_check Do_Index_Check i l u Success
+    | Do_Index_Check_E': forall i l u,
+        do_index_check i l u (Exception RTE_Overflow) ->
+        do_flagged_index_check Do_Index_Check i l u (Exception RTE_Index).
+
+
+
+
+
+Inductive do_flagged_checks_on_binop: check_flags -> binary_operator -> value -> value -> check_status -> Prop :=
     | Do_No_Check: forall op v1 v2,
-        do_flagged_checks nil op v1 v2 true
-    | Do_Checks_False: forall ck op v1 v2 cks,
-        do_flagged_check ck op v1 v2 false ->
-        do_flagged_checks (ck :: cks) op v1 v2 false
-    | Do_Checks_True: forall ck op v1 v2 cks b,
-        do_flagged_check ck op v1 v2 true ->
-        do_flagged_checks cks op v1 v2 b ->
-        do_flagged_checks (ck :: cks) op v1 v2 b.
+        do_flagged_checks_on_binop nil op v1 v2 Success
+    | Do_Checks_True: forall ck op v1 v2 cks,
+        do_flagged_check_on_binop ck op v1 v2 Success ->
+        do_flagged_checks_on_binop cks op v1 v2 Success ->
+        do_flagged_checks_on_binop (ck :: cks) op v1 v2 Success
+    | Do_Checks_False_Head: forall ck op v1 v2 msg cks,
+        do_flagged_check_on_binop ck op v1 v2 (Exception msg) ->
+        do_flagged_checks_on_binop (ck :: cks) op v1 v2 (Exception msg)
+    | Do_Checks_False_Tail: forall ck op v1 v2 cks msg,
+        do_flagged_check_on_binop ck op v1 v2 Success ->
+        do_flagged_checks_on_binop cks op v1 v2 (Exception msg) ->
+        do_flagged_checks_on_binop (ck :: cks) op v1 v2 (Exception msg).
+
+Inductive do_flagged_checks_on_unop: check_flags -> unary_operator -> value -> check_status -> Prop :=
+    | Do_No_Check_Unop: forall op v,
+        do_flagged_checks_on_unop nil op v Success
+    | Do_Checks_True_Unop: forall ck op v cks,
+        do_flagged_check_on_unop ck op v Success ->
+        do_flagged_checks_on_unop cks op v Success ->
+        do_flagged_checks_on_unop (ck :: cks) op v Success
+    | Do_Checks_False_Head_Unop: forall ck op v msg cks,
+        do_flagged_check_on_unop ck op v (Exception msg) ->
+        do_flagged_checks_on_unop (ck :: cks) op v (Exception msg)
+    | Do_Checks_False_Tail_Unop: forall ck op v cks msg,
+        do_flagged_check_on_unop ck op v Success ->
+        do_flagged_checks_on_unop cks op v (Exception msg) ->
+        do_flagged_checks_on_unop (ck :: cks) op v (Exception msg).
+
+Inductive do_flagged_index_checks: check_flags -> Z -> Z -> Z -> check_status -> Prop :=
+    | Do_No_Check_Index: forall i l u,
+        do_flagged_index_checks nil i l u Success
+    | Do_Checks_True_Index: forall ck i l u cks,
+        do_flagged_index_check ck i l u Success ->
+        do_flagged_index_checks cks i l u Success ->
+        do_flagged_index_checks (ck :: cks) i l u Success
+    | Do_Checks_False_Head_Index: forall ck i l u msg cks,
+        do_flagged_index_check ck i l u (Exception msg) ->
+        do_flagged_index_checks (ck :: cks) i l u (Exception msg)
+    | Do_Checks_False_Tail_Index: forall ck i l u cks msg,
+        do_flagged_index_check ck i l u Success ->
+        do_flagged_index_checks cks i l u (Exception msg) ->
+        do_flagged_index_checks (ck :: cks) i l u (Exception msg).
+
+
+
+
+
+
+
+
+
 
 (******************************************************************
 

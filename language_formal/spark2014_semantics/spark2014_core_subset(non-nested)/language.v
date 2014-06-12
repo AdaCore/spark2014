@@ -124,8 +124,8 @@ Inductive statement: Type :=
     | S_Assignment: astnum -> name -> expression -> statement (* 5.2 *)
     | S_If: astnum -> expression -> statement -> statement -> statement (* 5.3 *)
     | S_While_Loop: astnum -> expression -> statement -> statement (* 5.5 *)
-    | S_Sequence: astnum -> statement -> statement -> statement (* 5.1 *)
-    | S_ProcCall: astnum -> astnum -> procnum -> list expression -> statement (* 6.4 *). (* the second astnum for the called procedure *)
+    | S_ProcCall: astnum -> astnum -> procnum -> list expression -> statement (* 6.4 *) (* the second astnum for the called procedure *)
+    | S_Sequence: astnum -> statement -> statement -> statement (* 5.1 *).
 
 (* 6.2 *)
 Inductive mode: Type := 
@@ -181,24 +181,12 @@ with procedure_declaration: Type :=
     (procedure_declarative_part: list declaration)
     (procedure_statements: statement).
 
-(* Declarations are of two kinds and can be sequenced *)
-
-(* 6.3 *)
-Record function_body: Type := mkfunction_body{
-    function_astnum: astnum;
-    function_name: procnum;
-    function_result_subtype: type; (* 6.5 (3/2) *)
-    function_contracts: list aspect_specification;
-    function_parameter_profile: list parameter_specification;
-    function_declarative_part: list declaration;
-    function_statements: statement
-}.
 
 (** ** Compilation unit: subprogram *)
 (* 6.1 *)
 Inductive subprogram: Type := 
     | Global_Procedure: astnum -> procedure_declaration -> subprogram
-(*  | Global_Function: astnum -> function_body -> subprogram *).
+(*  | Global_Function: astnum -> function_declaration -> subprogram *).
 
 (* 10.1.1 *)
 Inductive library_unit_declaration: Type := 
@@ -229,6 +217,12 @@ Section AuxiliaryFunctions.
   Definition procedure_name pb :=
     match pb with
       | mkprocedure_declaration _ x _ _ _ _ => x
+    end.
+
+  Definition type_name td :=
+    match td with
+    | Array_Type_Declaration _ tn _ _ _ => tn
+    | Record_Type_Declaration _ tn _ => tn
     end.
 
   (** Some useful definition, related to language structures *)
