@@ -10,6 +10,6 @@ package Dyn_Arrays with SPARK_Mode is
 
    procedure Copy_Bad (From : Nat_Array_Max; To : out Nat_Array) with
      Pre  => To'Last >= To'First and then To'Last - To'First = 99,
-     Post => (for all I in From'Range => -- @POSTCONDITION:FAIL
-                (if I in To'Range then To (I) = From (I)));
+     Post => (for all I in From'Range =>
+                (if I in To'Range then To (I) = From (I))); -- @POSTCONDITION:FAIL
 end;

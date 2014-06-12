@@ -33,6 +33,7 @@ with Sinput;              use Sinput;
 with Snames;              use Snames;
 with String_Utils;        use String_Utils;
 
+with SPARK_Definition;    use SPARK_Definition;
 with SPARK_Util;          use SPARK_Util;
 
 with Why.Ids;             use Why.Ids;
@@ -375,15 +376,18 @@ package body Gnat2Why.Decls is
 
       --  We first build the type that we use in Why; this may be e.g. String
 
-      Use_Ty : constant W_Type_Id := EW_Abstract (Etype (E));
+      Use_Ty : constant Entity_Id :=
+        (if Present (Actual_Subtype (E))
+         and then Entity_In_SPARK (Actual_Subtype (E)) then
+              Actual_Subtype (E) else Etype (E));
 
       Typ  : constant W_Type_Id :=
         (if Ekind (E) = E_Loop_Parameter then
            EW_Int_Type
-         elsif Is_Array_Type (Etype (E))
-           and then not Is_Static_Array_Type (Etype (E))
-         then EW_Split (Etype (E))
-         else Use_Ty);
+         elsif Is_Array_Type (Use_Ty)
+           and then not Is_Static_Array_Type (Use_Ty)
+         then EW_Split (Use_Ty)
+         else EW_Abstract (Use_Ty));
       Why_Name : constant W_Identifier_Id :=
         To_Why_Id (E => E, Typ => Typ);
       Local_Name : constant W_Identifier_Id :=
@@ -420,7 +424,7 @@ package body Gnat2Why.Decls is
         (File.Cur_Theory,
          New_Global_Ref_Declaration
            (Name     => To_Why_Id (E, Local => True),
-            Labels      => Name_Id_Sets.Empty_Set,
+            Labels   => Name_Id_Sets.Empty_Set,
             Ref_Type => New_Named_Type (To_Ident (WNE_Type))));
       case Var.Kind is
          when UCArray =>

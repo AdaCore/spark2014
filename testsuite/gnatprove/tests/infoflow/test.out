@@ -102,7 +102,7 @@ infoflow.adb:201:33: info: index check proved
 infoflow.adb:201:44: info: index check proved
 infoflow.adb:202:16: info: index check proved
 infoflow.adb:202:31: info: index check proved
-infoflow.adb:205:07: info: assertion proved
+infoflow.adb:205:07: warning: assertion might fail
 infoflow.adb:207:13: warning: "A_V1" might not be initialized
 infoflow.adb:207:19: info: index check proved
 infoflow.adb:207:30: info: index check proved

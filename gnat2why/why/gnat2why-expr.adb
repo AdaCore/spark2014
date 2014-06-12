@@ -1904,14 +1904,14 @@ package body Gnat2Why.Expr is
                   else
                     False);
 
-               --  If the argument is in split form and not the actual, we
+               --  If the argument is in split form, we
                --  need to reconstruct the argument using the actual's bounds
                --  before applying the conversion.
 
                Reconstructed_Temp : constant W_Prog_Id :=
-                 (if Need_Reconstruction then
+                 (if Get_Base_Type (Formal_T) = EW_Split then
                        +Array_Convert_From_Base
-                          (EW_Prog, +Prefetch_Actual_Tmp, +Tmp_Var_Deref)
+                          (EW_Prog, +Prefetch_Actual_Rec, +Tmp_Var_Deref)
                   else +Tmp_Var_Deref);
 
                --  Generate an expression of the form:
