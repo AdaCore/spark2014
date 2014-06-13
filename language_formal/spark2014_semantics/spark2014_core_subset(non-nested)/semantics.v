@@ -414,20 +414,20 @@ Inductive eval_stmt: stack -> statement -> Return stack -> Prop :=
     | Eval_S_Proc_RTE_Args: forall pid s pb args msg ast_num1 ast_num2,
         fetchG pid s = Some (Procedure pb) ->
         copy_in s (procedure_parameter_profile pb) args (Run_Time_Error msg) ->
-        eval_stmt s (S_ProcCall ast_num1 ast_num2 pid args) (Run_Time_Error msg)
+        eval_stmt s (S_Procedure_Call ast_num1 ast_num2 pid args) (Run_Time_Error msg)
     | Eval_S_Proc_RTE_Decl: forall pid s pb args newframe s_intact s1 msg ast_num1 ast_num2,
         fetchG pid s = Some (Procedure pb) ->
         copy_in s (procedure_parameter_profile pb) args (Normal newframe) ->
         cut_until s pid s_intact s1 -> (* s = s_intact ++ s1 *)
         eval_decls s1 newframe (procedure_declarative_part pb) (Run_Time_Error msg) ->
-        eval_stmt s (S_ProcCall ast_num1 ast_num2 pid args) (Run_Time_Error msg)
+        eval_stmt s (S_Procedure_Call ast_num1 ast_num2 pid args) (Run_Time_Error msg)
     | Eval_S_Proc_RTE_Body: forall pid s pb args newframe s_intact s1 newframe1 msg ast_num1 ast_num2,
         fetchG pid s = Some (Procedure pb) ->
         copy_in s (procedure_parameter_profile pb) args (Normal newframe) ->
         cut_until s pid s_intact s1 -> (* s = s_intact ++ s1 *)
         eval_decls s1 newframe (procedure_declarative_part pb) (Normal newframe1) ->
         eval_stmt (newframe1 :: s1) (procedure_statements pb) (Run_Time_Error msg) ->
-        eval_stmt s (S_ProcCall ast_num1 ast_num2 pid args) (Run_Time_Error msg)
+        eval_stmt s (S_Procedure_Call ast_num1 ast_num2 pid args) (Run_Time_Error msg)
     | Eval_S_Proc: forall pid s pb args newframe s_intact s1 newframe1 s2
                           slocal prefix s3 s4 ast_num1 ast_num2,
         fetchG pid s = Some (Procedure pb) ->
@@ -438,7 +438,7 @@ Inductive eval_stmt: stack -> statement -> Return stack -> Prop :=
         s2 = (slocal ++ prefix) :: s3 -> (* extract parameters from local frame *)
         List.length newframe = List.length prefix ->
         copy_out prefix (procedure_parameter_profile pb) args (s_intact ++ s3) s4 ->
-        eval_stmt s (S_ProcCall ast_num1 ast_num2 pid args) (Normal s4)
+        eval_stmt s (S_Procedure_Call ast_num1 ast_num2 pid args) (Normal s4)
     | Eval_S_Sequence_RTE: forall s c1 msg ast_num c2,
         eval_stmt s c1 (Run_Time_Error msg) ->
         eval_stmt s (S_Sequence ast_num c1 c2) (Run_Time_Error msg)

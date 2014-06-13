@@ -124,7 +124,7 @@ Inductive statement: Type :=
     | S_Assignment: astnum -> name -> expression -> statement (* 5.2 *)
     | S_If: astnum -> expression -> statement -> statement -> statement (* 5.3 *)
     | S_While_Loop: astnum -> expression -> statement -> statement (* 5.5 *)
-    | S_ProcCall: astnum -> astnum -> procnum -> list expression -> statement (* 6.4 *) (* the second astnum for the called procedure *)
+    | S_Procedure_Call: astnum -> astnum -> procnum -> list expression -> statement (* 6.4 *) (* the second astnum for the called procedure *)
     | S_Sequence: astnum -> statement -> statement -> statement (* 5.1 *).
 
 (* 6.2 *)
@@ -153,8 +153,8 @@ Record parameter_specification: Type := mkparameter_specification{
     parameter_astnum: astnum;
     parameter_name: idnum;
     parameter_subtype_mark: type;
-    parameter_mode: mode;
-    parameter_default_expression: option (expression)
+    parameter_mode: mode
+(*  parameter_default_expression: option (expression) *)
 }.
 
 (* 13.1.1 *)
