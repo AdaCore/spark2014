@@ -111,8 +111,9 @@ package body Gnat2Why.Decls is
       Typ      : constant W_Type_Id := EW_Private_Type;
       Why_Name : constant W_Identifier_Id := To_Why_Id (E => E, Typ => Typ);
       Decl     : constant W_Declaration_Id :=
-        New_Type_Decl (Name  => To_Ident (WNE_Type),
-                       Alias => Typ);
+        New_Type_Decl
+          (Name  => New_Name (Symbol => NID (To_String (WNE_Type))),
+           Alias => Typ);
       Var      : constant Item_Type := Mk_Item_Of_Entity (E, Why_Name);
 
    begin
@@ -140,7 +141,7 @@ package body Gnat2Why.Decls is
          New_Global_Ref_Declaration
            (Name     => To_Why_Id (E, Local => True),
             Labels   => Name_Id_Sets.Empty_Set,
-            Ref_Type => New_Named_Type (To_Ident (WNE_Type))));
+            Ref_Type => New_Named_Type (To_String (WNE_Type))));
 
       Insert_Item (E, Var);
 
@@ -324,14 +325,15 @@ package body Gnat2Why.Decls is
       Add_With_Clause (File.Cur_Theory, Ref_Module, EW_Import, EW_Module);
 
       Emit (File.Cur_Theory,
-            New_Type_Decl (Name   => To_Ident (WNE_Type),
+            New_Type_Decl (Name   =>
+                             New_Name (Symbol => NID (To_String (WNE_Type))),
                            Labels => Name_Id_Sets.Empty_Set));
       Emit
         (File.Cur_Theory,
          New_Global_Ref_Declaration
            (Name     => To_Why_Id (E.all, Local => True),
             Labels   => Name_Id_Sets.Empty_Set,
-            Ref_Type => New_Named_Type (Name => To_Ident (WNE_Type))));
+            Ref_Type => New_Named_Type (S => To_String (WNE_Type))));
 
       Close_Theory (File,
                     Kind => Standalone_Theory);
@@ -394,7 +396,7 @@ package body Gnat2Why.Decls is
         To_Why_Id (E => E, Typ => Typ, Local => True);
       Decl : constant W_Declaration_Id :=
         New_Type_Decl
-          (Name  => To_Ident (WNE_Type),
+          (Name  => New_Name (Symbol => NID (To_String (WNE_Type))),
            Alias => Typ);
 
       Var : constant Item_Type := Mk_Item_Of_Entity (E, Why_Name);
@@ -425,7 +427,7 @@ package body Gnat2Why.Decls is
          New_Global_Ref_Declaration
            (Name     => To_Why_Id (E, Local => True),
             Labels   => Name_Id_Sets.Empty_Set,
-            Ref_Type => New_Named_Type (To_Ident (WNE_Type))));
+            Ref_Type => New_Named_Type (To_String (WNE_Type))));
       case Var.Kind is
          when UCArray =>
             for D in 1 .. Var.Dim loop

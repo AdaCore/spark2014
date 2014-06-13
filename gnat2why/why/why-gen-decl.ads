@@ -32,7 +32,7 @@ package Why.Gen.Decl is
    function New_Type_Decl (Name : String) return W_Declaration_Id;
 
    function New_Type_Decl
-     (Name  : W_Identifier_Id;
+     (Name  : W_Name_Id;
       Alias : W_Type_Id) return W_Declaration_Id;
 
    procedure Emit

@@ -464,6 +464,14 @@ package body Why.Gen.Names is
                         Typ      => Typ);
    end New_Identifier;
 
+   function New_Identifier (Name : W_Name_Id) return W_Identifier_Id is
+   begin
+      return New_Identifier (Ada_Node => Get_Ada_Node (+Name),
+                             Domain   => EW_Term,
+                             Symbol   => Get_Symbol (Name),
+                             Module   => Get_Module (Name));
+   end New_Identifier;
+
    ---------
    -- NID --
    ---------

@@ -74,7 +74,7 @@ package body Why.Gen.Scalars is
      (Theory : W_Theory_Declaration_Id;
       E      : Entity_Id)
    is
-      Why_Name  : constant W_Identifier_Id := To_Why_Id (E, Local => True);
+      Why_Name  : constant W_Name_Id := To_Why_Type (E, Local => True);
       Is_Static : constant Boolean := not Type_Is_Modeled_As_Int_Or_Real (E);
 
       function Pick_Clone return W_Module_Id;
@@ -107,7 +107,7 @@ package body Why.Gen.Scalars is
            New_Clone_Substitution
              (Kind      => EW_Type_Subst,
               Orig_Name => New_Identifier (Name => "t"),
-              Image     => Why_Name);
+              Image     => New_Identifier (Why_Name));
          Round_Clone_Subst : constant W_Clone_Substitution_Array :=
            (if Has_Round_Real then
               (1 => New_Clone_Substitution
@@ -280,7 +280,7 @@ package body Why.Gen.Scalars is
               New_Clone_Substitution
                 (Kind      => EW_Type_Subst,
                  Orig_Name => New_Identifier (Name => "base"),
-                 Image     => Why_Name);
+                 Image     => New_Identifier (Why_Name));
 
             To_Int_Clone_Subst : constant W_Clone_Substitution_Id :=
               New_Clone_Substitution

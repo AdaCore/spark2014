@@ -874,7 +874,7 @@ package body Gnat2Why.External_Axioms is
                     (TFile.Cur_Theory,
                      New_Type_Decl
                        (Name  =>
-                            New_Identifier (Name => Short_Name (Formal)),
+                            New_Name (Symbol => NID (Short_Name (Formal))),
                         Alias => EW_Abstract (Actual)));
                end if;
 
@@ -887,9 +887,7 @@ package body Gnat2Why.External_Axioms is
 
                   declare
                      F_Ty   : constant W_Type_Id :=
-                       +New_Named_Type
-                       (Name => New_Identifier
-                          (Name => Short_Name (Formal)));
+                       +New_Named_Type (Short_Name (Formal));
                      A_Ident    : constant W_Identifier_Id :=
                        New_Identifier (Name => "a", Typ => F_Ty);
                      R_Binder   : constant Binder_Array :=

@@ -93,7 +93,7 @@ package body Gnat2Why.Types is
 
       Emit (Theory,
             New_Type_Decl
-              (New_Identifier (Name => Short_Name (E)),
+              (New_Name (Symbol => NID (Short_Name (E))),
                Alias => EW_Private_Type));
 
       while Present (Discr) loop
@@ -322,7 +322,7 @@ package body Gnat2Why.Types is
                   Binders     => (1 .. 0 => <>),
                   Labels      => Name_Id_Sets.Empty_Set,
                   Return_Type =>
-                    +New_Named_Type (Name => To_Why_Id (E, Local => True))));
+                    +New_Named_Type (Name => To_Why_Type (E, Local => True))));
          end if;
 
          --  If E is the full view of a private type, use its partial view as

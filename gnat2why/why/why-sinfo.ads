@@ -56,11 +56,30 @@ package Why.Sinfo is
    --  expression. In some other cases, the Why type can be computed from
    --  the expression.
 
+   --  --------------
+   --  -- W_Module --
+   --  --------------
+   --  File        Name_Id
+   --  Name        Name_Id
+   --
+   --  Identifies a module. If the module is in the current file, File is set
+   --  to No_Name.
+   --
+   --  ------------
+   --  -- W_Name --
+   --  ------------
+   --  Symbol      Name_Id
+   --  Module      W_Module_Id
+   --
+   --  A why "scoped name", i.e. a name for all kinds of Why entities: types,
+   --  functions, variables, etc. The difference with W_Identifier is the
+   --  absence of a type field
+
    --  ------------
    --  -- W_Type --
    --  ------------
    --  Base_Type   EW_Type
-   --  Name        W_Identifier_Id
+   --  Name        W_Name_Id
    --  Is_Mutable  Boolean
 
    --  A type node represents Why3 types. It also contains information that
@@ -223,15 +242,6 @@ package Why.Sinfo is
    --
    --  Every expression in Why3 can be labeled with strings. This special node
    --  allows this.
-   --
-   --  --------------
-   --  -- W_Module --
-   --  --------------
-   --  File        Name_Id
-   --  Name        Name_Id
-   --
-   --  Identifies a module. If the module is in the current file, File is set
-   --  to No_Name.
    --
    --  ------------------
    --  -- W_Identifier --
@@ -472,6 +482,7 @@ package Why.Sinfo is
    --  Prog       W_Prog_Id
    --  Handler    W_Handler_List
    --  Typ        W_Type_Id
+
    --  ---------------
    --  -- W_Handler --
    --  ---------------
@@ -518,7 +529,7 @@ package Why.Sinfo is
    --  -- W_Type_Decl --
    --  -----------------
    --  Args       W_Identifier_List
-   --  Name       W_Identifier_Id
+   --  Name       W_Name_Id
    --  Labels     Name_Id_Set
    --  Definition W_Type_Definition_Id
    --
@@ -561,6 +572,7 @@ package Why.Sinfo is
    --  Clone_Kind    EW_Clone_Type
    --  Substitutions W_Clone_Substitution_List
    --  Theory_Kind   EW_Theory_Type
+
    --  --------------------------
    --  -- W_Clone_Substitution --
    --  --------------------------
@@ -597,6 +609,7 @@ package Why.Sinfo is
    --  ---------------------------
    --  From          Name_Id
    --  To            W_Any_Node_Id
+
    --  --------------------------
    --  -- W_Custom_Declaration --
    --  --------------------------
@@ -621,6 +634,7 @@ package Why.Sinfo is
       -----------
 
       W_Type,
+      W_Name,
 
       --------------------
       -- Type structure --

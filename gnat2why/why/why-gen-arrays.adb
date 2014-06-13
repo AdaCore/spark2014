@@ -49,11 +49,11 @@ with SPARK_Util; use SPARK_Util;
 package body Why.Gen.Arrays is
 
    procedure Declare_Constrained (Theory         : W_Theory_Declaration_Id;
-                                  Why3_Type_Name : W_Identifier_Id;
+                                  Why3_Type_Name : W_Name_Id;
                                   Und_Ent        : Entity_Id);
 
    procedure Declare_Unconstrained (Theory         : W_Theory_Declaration_Id;
-                                    Why3_Type_Name : W_Identifier_Id;
+                                    Why3_Type_Name : W_Name_Id;
                                     Und_Ent        : Entity_Id);
 
    --  The following two procedures take an array [Args] and an index [Arg_Ind]
@@ -325,7 +325,7 @@ package body Why.Gen.Arrays is
      (Theory : W_Theory_Declaration_Id;
       E      : Entity_Id)
    is
-      Why_Name : constant W_Identifier_Id := To_Why_Id (E, Local => True);
+      Why_Name : constant W_Name_Id := To_Why_Type (E, Local => True);
    begin
       if Is_Static_Array_Type (E) then
          Declare_Constrained (Theory, Why_Name, E);
@@ -339,7 +339,7 @@ package body Why.Gen.Arrays is
    -------------------------
 
    procedure Declare_Constrained (Theory         : W_Theory_Declaration_Id;
-                                  Why3_Type_Name : W_Identifier_Id;
+                                  Why3_Type_Name : W_Name_Id;
                                   Und_Ent        : Entity_Id)
    is
       Dimension  : constant Pos := Number_Dimensions (Und_Ent);
@@ -431,7 +431,7 @@ package body Why.Gen.Arrays is
             New_Type_Decl
               (Why3_Type_Name,
                Alias =>
-                 +New_Named_Type (Name => To_Ident (WNE_Array_Type))));
+                 +New_Named_Type (To_String (WNE_Array_Type))));
 
       if Dimension = 1 and then
         Is_Discrete_Type (Component_Type (Und_Ent))
@@ -506,7 +506,7 @@ package body Why.Gen.Arrays is
    ---------------------------
 
    procedure Declare_Unconstrained (Theory         : W_Theory_Declaration_Id;
-                                    Why3_Type_Name : W_Identifier_Id;
+                                    Why3_Type_Name : W_Name_Id;
                                     Und_Ent        : Entity_Id)
    is
       Dimension  : constant Pos := Number_Dimensions (Und_Ent);
@@ -575,11 +575,11 @@ package body Why.Gen.Arrays is
             New_Type_Decl
               (Why3_Type_Name,
                Alias =>
-                 New_Named_Type (Name => To_Ident (WNE_Array_Type))));
+                 New_Named_Type (To_String (WNE_Array_Type))));
       if Und_Ent = Standard_String then
          declare
             Image_Ty    : constant W_Type_Id :=
-              New_Named_Type (Name => To_Ident (WNE_String_Image));
+              New_Named_Type (To_String (WNE_String_Image));
             Dummy_Ident : constant W_Identifier_Id :=
               New_Identifier (Name => "x", Typ => Image_Ty);
             Str_Typ     : constant W_Type_Id :=

@@ -52,12 +52,12 @@ package body Why.Gen.Decl is
    begin
       return
         New_Type_Decl
-          (Name   => New_Identifier (Name => Name),
+          (Name   => New_Name (Symbol => NID (Name)),
            Labels => Name_Id_Sets.Empty_Set);
    end New_Type_Decl;
 
    function New_Type_Decl
-     (Name  : W_Identifier_Id;
+     (Name  : W_Name_Id;
       Alias : W_Type_Id) return W_Declaration_Id is
    begin
       return New_Type_Decl

@@ -248,8 +248,8 @@ package body Why.Gen.Records is
 
       Root       : constant Entity_Id := Root_Record_Type (E);
       Is_Root    : constant Boolean := Root = E;
-      Ty_Ident   : constant W_Identifier_Id := To_Why_Id (E, Local => True);
-      Abstr_Ty   : constant W_Type_Id := New_Named_Type (Name => Ty_Ident);
+      Ty_Name    : constant W_Name_Id := To_Why_Type (E, Local => True);
+      Abstr_Ty   : constant W_Type_Id := New_Named_Type (Name => Ty_Name);
       Comp_Info  : Info_Maps.Map := Info_Maps.Empty_Map;
       --  This map maps each component and each N_Variant node to a
       --  Component_Info record. This map is initialized by a call to
@@ -642,7 +642,7 @@ package body Why.Gen.Records is
             end loop;
          end loop;
          Emit (Theory,
-           New_Record_Definition (Name    => Ty_Ident,
+           New_Record_Definition (Name    => Ty_Name,
                                   Binders => Binders));
       end Declare_Record_Type;
 
@@ -769,7 +769,7 @@ package body Why.Gen.Records is
       if Count_Why_Record_Fields (E) = 0 then
          Emit (Theory,
                New_Type_Decl
-                 (Name => Ty_Ident,
+                 (Name => Ty_Name,
                   Labels => Name_Id_Sets.Empty_Set));
          return;
       end if;
@@ -796,11 +796,11 @@ package body Why.Gen.Records is
             if Short_Name (E) /= Short_Name (Clone) then
                Emit (Theory,
                      New_Type_Decl
-                       (Name => Ty_Ident,
+                       (Name => Ty_Name,
                         Alias =>
                           +New_Named_Type
                           (Name =>
-                               To_Why_Id (Clone, Local => True))));
+                               To_Why_Type (Clone, Local => True))));
             end if;
 
             --  if the cloned type is a root type, we need to define the
@@ -860,9 +860,9 @@ package body Why.Gen.Records is
       E      : Entity_Id;
       Root   : Entity_Id)
    is
-      Root_Ident : constant W_Identifier_Id := To_Why_Id (Root);
+      Root_Name  : constant W_Name_Id := To_Why_Type (Root);
       Root_Abstr : constant W_Type_Id :=
-        +New_Named_Type (Name => Root_Ident);
+        +New_Named_Type (Name => Root_Name);
       A_Ident    : constant W_Identifier_Id :=
         New_Identifier (Name => "a", Typ => Root_Abstr);
       Num_Discr  : constant Natural := Count_Discriminants (E);

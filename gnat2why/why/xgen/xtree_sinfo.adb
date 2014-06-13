@@ -76,14 +76,22 @@ package body Xtree_Sinfo is
       New_Special_Field ("Link", "Why_Node_Set", "Why_Empty");
       New_Special_Field ("Checked", "Boolean", Checked_Default_Value);
 
-      -----------------
+      ------------
+      -- W_Name --
+      ------------
+
+      New_Field (W_Name, "Symbol", "Name_Id");
+      New_Field (W_Name, "Module", "W_Module", Id_Lone);
+      Set_Domain (W_Name, EW_Term);
+
+      ------------
       -- W_Type --
-      -----------------
+      ------------
 
       New_Field (W_Type,
                  "Base_Type", "EW_Type");
       New_Field (W_Type,
-                 "Name", "W_Identifier", Id_One);
+                 "Name", "W_Name", Id_One);
       New_Field (W_Type,
                  "Is_Mutable", "Boolean");
       Set_Domain (W_Type, EW_Term);
@@ -570,7 +578,7 @@ package body Xtree_Sinfo is
       New_Field (W_Type_Decl,
                  "Args", "W_Identifier", Id_Set);
       New_Field (W_Type_Decl,
-                 "Name", "W_Identifier", Id_One);
+                 "Name", "W_Name", Id_One);
       New_Field (W_Type_Decl,
                  "Labels", "Name_Id_Set");
       New_Field (W_Type_Decl,

@@ -100,6 +100,7 @@ package body Why.Atree.Sprint is
    procedure Print_Label (Node : W_Label_Id);
    procedure Print_Literal (Node : W_Literal_Id);
    procedure Print_Loop_Annot (Node : W_Loop_Annot_Id);
+   procedure Print_Name (Node : W_Name_Id);
    procedure Print_Not (Node : W_Not_Id);
    procedure Print_Postcondition (Node : W_Postcondition_Id);
    procedure Print_Raise (Node : W_Raise_Id);
@@ -1120,6 +1121,22 @@ package body Why.Atree.Sprint is
    end Print_Module_Id;
 
    ----------------
+   -- Print_Name --
+   ----------------
+
+   procedure Print_Name (Node : W_Name_Id) is
+      Module : constant W_Module_Id := Get_Module (Node);
+   begin
+      if Module /= Why_Empty
+        and then Get_Name (Module) /= No_Name
+      then
+         Print_Module_Id (Module);
+         P (O, ".");
+      end if;
+      P (O, Get_Symbol (Node));
+   end Print_Name;
+
+   ----------------
    -- Print_Node --
    ----------------
 
@@ -1185,6 +1202,9 @@ package body Why.Atree.Sprint is
 
          when W_Identifier =>
             Print_Identifier (+N);
+
+         when W_Name =>
+            Print_Name (+N);
 
          when W_Tagged =>
             Print_Tagged (+N);
@@ -1563,7 +1583,7 @@ package body Why.Atree.Sprint is
    procedure Print_Type (Node : W_Type_Id)
    is
       Base_Type : constant EW_Type := Get_Base_Type (Node);
-      Name      : constant W_Identifier_Id := Get_Name (Node);
+      Name      : constant W_Name_Id := Get_Name (Node);
    begin
       if Get_Is_Mutable (Node) then
          P (O, "ref ");
@@ -1594,7 +1614,7 @@ package body Why.Atree.Sprint is
       Args       : constant List := Get_List (+Get_Args (Node));
       Nb_Args    : constant Count_Type := Length (Args);
       Position   : Cursor := First (Args);
-      Name       : constant W_Identifier_Id := Get_Name (Node);
+      Name       : constant W_Name_Id := Get_Name (Node);
       Definition : constant W_Type_Definition_Id := Get_Definition (Node);
    begin
       P (O, "type ");

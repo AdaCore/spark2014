@@ -299,6 +299,10 @@ package body Why.Inter is
         (State : in out Search_State;
          Node  : W_Identifier_Id);
 
+      procedure Name_Pre_Op
+        (State : in out Search_State;
+         Node  : W_Name_Id);
+
       procedure Integer_Constant_Pre_Op
         (State : in out Search_State;
          Node  : W_Integer_Constant_Id);
@@ -407,6 +411,13 @@ package body Why.Inter is
          Analyze_Ada_Node (State.S, Get_Ada_Node (+Node));
       end Literal_Pre_Op;
 
+      procedure Name_Pre_Op
+        (State : in out Search_State;
+         Node  : W_Name_Id)
+      is
+      begin
+         Analyze_Ada_Node (State.S, Get_Ada_Node (+Node));
+      end Name_Pre_Op;
       --------------------------
       -- Real_Constant_Pre_Op --
       --------------------------
@@ -906,8 +917,8 @@ package body Why.Inter is
          return True;
       end if;
       declare
-         N1 : constant W_Identifier_Id := Get_Name (+Left);
-         N2 : constant W_Identifier_Id := Get_Name (+Right);
+         N1 : constant W_Name_Id := Get_Name (+Left);
+         N2 : constant W_Name_Id := Get_Name (+Right);
       begin
          if N1 = N2 then
             return True;
@@ -1177,15 +1188,15 @@ package body Why.Inter is
          return New_Type (Ada_Node   => E,
                           Is_Mutable => False,
                           Base_Type  => EW_Abstract,
-                          Name       => To_Why_Id (E));
+                          Name       => To_Why_Type (E));
       else
          return New_Type (Ada_Node   => E,
                           Is_Mutable => False,
                           Base_Type  => EW_Split,
                           Name       =>
-                            New_Identifier
+                            New_Name
                               (Ada_Node => E,
-                               Name     => "__split",
+                               Symbol   => NID ("__split"),
                                Module   => E_Module (E)));
       end if;
    end New_Kind_Base_Type;
@@ -1194,12 +1205,17 @@ package body Why.Inter is
    -- New_Named_Type --
    --------------------
 
-   function New_Named_Type (Name : W_Identifier_Id) return W_Type_Id is
+   function New_Named_Type (Name : W_Name_Id) return W_Type_Id is
    begin
       return New_Type (Ada_Node   => Empty,
                        Is_Mutable => False,
                        Base_Type  => EW_Abstract,
                        Name       => Name);
+   end New_Named_Type;
+
+   function New_Named_Type (S : String) return W_Type_Id is
+   begin
+      return New_Named_Type (Name => New_Name (Symbol => NID (S)));
    end New_Named_Type;
 
    ------------------
@@ -1340,15 +1356,32 @@ package body Why.Inter is
    -- To_Why_Type --
    -----------------
 
-   function To_Why_Type (T : String) return W_Identifier_Id
+   function To_Why_Type (E     : Entity_Id;
+                         Local : Boolean := False)
+                         return W_Name_Id is
+      Suffix : constant String := Short_Name (E);
+   begin
+      if Local then
+         return New_Name (Ada_Node => E, Symbol => NID (Suffix));
+      else
+         return
+           New_Name
+             (Ada_Node => E,
+              Symbol   => NID (Suffix),
+              Module   => E_Module (E));
+      end if;
+
+   end To_Why_Type;
+
+   function To_Why_Type (T : String) return W_Name_Id
    is
    begin
       if T = SPARK_Xrefs.Name_Of_Heap_Variable then
-         return New_Identifier (Name => "__type_of_heap");
+         return New_Name (Symbol => NID ("__type_of_heap"));
       else
          return
-           Prefix (New_Module (File => No_Name, Name => NID (T)),
-                   WNE_Type);
+           New_Name (Module => New_Module (File => No_Name, Name => NID (T)),
+                     Symbol => NID (To_String (WNE_Type)));
       end if;
    end To_Why_Type;
 
@@ -1429,7 +1462,7 @@ package body Why.Inter is
         New_Type (Ada_Node   => Empty,
                        Base_Type  => E,
                        Is_Mutable => False,
-                       Name       => New_Identifier (Name => Img (E)));
+                       Name       => New_Name (Symbol => NID (Img (E))));
       return Why_Types_Array (E);
    end Why_Types;
 

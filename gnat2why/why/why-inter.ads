@@ -128,7 +128,11 @@ package Why.Inter is
    function To_Why_Id (Obj : String; Local : Boolean) return W_Identifier_Id;
    --  This function should only be called for object references for effects
 
-   function To_Why_Type (T : String) return W_Identifier_Id;
+   function To_Why_Type (E     : Entity_Id;
+                         Local : Boolean := False)
+                         return W_Name_Id;
+
+   function To_Why_Type (T : String) return W_Name_Id;
 
    function EW_Bool_Type return W_Type_Id;
    function EW_Int_Type return W_Type_Id;
@@ -150,7 +154,8 @@ package Why.Inter is
    --  kind of the node to EW_Split
 
    function New_Abstract_Base_Type (E : Entity_Id) return W_Type_Id;
-   function New_Named_Type (Name : W_Identifier_Id) return W_Type_Id;
+   function New_Named_Type (S : String) return W_Type_Id;
+   function New_Named_Type (Name : W_Name_Id) return W_Type_Id;
    function New_Ref_Type (Ty : W_Type_Id) return W_Type_Id;
 
    function Type_Of_Node (N : Node_Id) return W_Type_Id;
