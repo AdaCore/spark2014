@@ -11,9 +11,9 @@ module Sums__extended_index
  function last  : int =
   65536
 
- predicate in_range (x : int)  =
-  ( ( first <= x ) /\ ( x <= last ) )
+ predicate in_range (x : int)  = first <= x /\ x <= last
 
+ (* Clone of the model module for discrete types with static bounds *)
  clone export "ada__model".Static_Discrete with
  type t = extended_index,
  function first = first,
@@ -27,7 +27,7 @@ module Sums__index
  use        "_gnatprove_standard".Integer
  use import "int".Int
 
- type index "bounded_type"
+ type index
 
  function first  : int =
   1
@@ -35,9 +35,9 @@ module Sums__index
  function last  : int =
   65536
 
- predicate in_range (x : int)  =
-  ( ( first <= x ) /\ ( x <= last ) )
+ predicate in_range (x : int)  = first <= x /\ x <= last
 
+ (* Clone of the model module for discrete types with static bounds *)
  clone export "ada__model".Static_Discrete with
  type t = index,
  function first = first,
@@ -49,20 +49,19 @@ end
 module Sums__vector_element
  use import "_gnatprove_standard".Main
  use        "_gnatprove_standard".Integer
+ use import Standard__integer
  use import "int".Int
 
  type vector_element
 
- function first  : int =
-  -32768
+ function first  : int = Integer.div Standard__integer.first 65536
 
- function last  : int =
-  32767
+ function last  : int  = Integer.div Standard__integer.last 65536
 
- predicate in_range (x : int)  =
-  ( ( first <= x ) /\ ( x <= last ) )
+ predicate in_range (x : int)  = first <= x /\ x <= last
 
 
+ (* Clone of the model module for discrete types with static bounds *)
  clone export "ada__model".Static_Discrete with
  type t = vector_element,
  function first = first,
@@ -81,8 +80,9 @@ module Sums__vector
  use import Sums__vector_element
 
  predicate index_dynamic_property (first : int) (last : int) (x : int) =
- ( ( first <= x ) /\ ( x <= last ) )
+      first <= x /\ x <= last
 
+ (* Clone of the model module for unconstrained arrays *)
  clone export "ada__model".Unconstr_Array with
  type component_type = Sums__vector_element.vector_element,
  type base_type = Standard__integer.integer,
@@ -90,8 +90,11 @@ module Sums__vector
  predicate in_range_base = Standard__integer.in_range,
  predicate index_dynamic_property = index_dynamic_property
 
- type vector  =
-  __t
+ type vector  = __t
+
+ (* Helper function *)
+ function _get "inline" (v : vector) (i : int) : int =
+   	  Sums__vector_element.to_int (Array__1.get (to_array v) i)
 end
 
 module Sums__slice_bounds
@@ -101,34 +104,43 @@ module Sums__slice_bounds
  use import Sums__index
  use import Sums__extended_index
 
+ (* Record type *)
  type slice_bounds  =
   { rec__lo : Sums__index.index; rec__hi : Sums__extended_index.extended_index }
 
+ (* Helper function *)
+ function _rec__lo "inline" (b : slice_bounds) : int =
+   	  Sums__index.to_int (rec__lo (b))
+
+ (* Helper function *)
+ function _rec__hi "inline" (b : slice_bounds) : int =
+   	  Sums__extended_index.to_int (rec__hi (b))
+
+ (* Condition to be allowed to access Lo *)
  predicate lo__pred  (a : slice_bounds) =
   true
 
  val rec__lo_
    (a : slice_bounds)  :Sums__index.index
-  requires { (lo__pred a) }
-  ensures { ( result = a.rec__lo ) }
+  requires { lo__pred a }
+  ensures  { result = a.rec__lo }
 
 
+ (* Condition to be allowed to access Hi *)
  predicate hi__pred  (a : slice_bounds) =
   true
 
  val rec__hi_
    (a : slice_bounds)  :Sums__extended_index.extended_index
-  requires { (hi__pred a) }
-  ensures { ( result = a.rec__hi ) }
+  requires { hi__pred a }
+  ensures  { result = a.rec__hi }
 
 
+ (* Equality function over slice_bounds *)
  function bool_eq  (a : slice_bounds) (b : slice_bounds) : bool =
-  (if (( ( a.rec__lo = b.rec__lo ) /\ ( a.rec__hi = b.rec__hi ) )) then (
-   True) else (
-   False))
+  if  a.rec__lo = b.rec__lo /\ a.rec__hi = b.rec__hi then True else False
 
- function dummy
-   :slice_bounds
+ function dummy : slice_bounds
 end
 
 module Sums__sum
@@ -142,34 +154,45 @@ module Sums__sum
  use import "int".Int
  use        "_gnatprove_standard".Array__1
 
+ (* Logic complete function for sum *)
  function sum
-   (sums__sum__x : Sums__vector.vector) (sums__sum__bounds : Sums__slice_bounds.slice_bounds)  :Standard__integer.integer
+   (x : vector) (bounds : slice_bounds)  :integer
 
+ (* Helper function *)
+ function _sum "inline" (x : vector) (bounds : slice_bounds)  :int =
+   	  Standard__integer.to_int (sum x bounds)
+
+ (* Axiom for defining the sum function *)
  axiom sum_def:
-    forall v : Sums__vector.vector, b : Sums__slice_bounds.slice_bounds
+    forall v : vector, b : slice_bounds
       [sum v b].
-      (* b.lo > b.hi -> sum v b = 0 *)
-      (Sums__index.to_int (Sums__slice_bounds.rec__lo b) >
-          Sums__extended_index.to_int (Sums__slice_bounds.rec__hi b) ->
-       Standard__integer.to_int (sum v b) = 0) /\
+      (* Case of the empty slice *)
+      (_rec__lo b > _rec__hi b -> _sum v b = 0) /\
 
-      (* v'first <= b.lo <= b.hi <= v'last ->  *)
-      (Sums__vector.first v <= Sums__index.to_int (Sums__slice_bounds.rec__lo b) <= Sums__extended_index.to_int (Sums__slice_bounds.rec__hi b) <= (Sums__vector.last v) ->
-      (* b.lo = b.hi -> sum v b = get v b.lo *)
-       (Sums__index.to_int (Sums__slice_bounds.rec__lo b) = Sums__extended_index.to_int (Sums__slice_bounds.rec__hi b) ->
-    Standard__integer.to_int (sum v b) = Sums__vector_element.to_int (Array__1.get (Sums__vector.to_array v) (Sums__index.to_int (Sums__slice_bounds.rec__lo b)))) /\
-       (forall b' : Sums__slice_bounds.slice_bounds [sum v b'].
-          (* b.lo < i <= b.hi -> sum v b = sum v (b.lo, i - 1) + sum v (i, b.hi) *)
-          (Sums__extended_index.to_int (Sums__slice_bounds.rec__hi b') = Sums__extended_index.to_int (Sums__slice_bounds.rec__hi b) -> Sums__index.to_int (Sums__slice_bounds.rec__lo b) < Sums__index.to_int (Sums__slice_bounds.rec__lo b') <= Sums__extended_index.to_int (Sums__slice_bounds.rec__hi b) ->
-          Standard__integer.to_int (sum v b) = Standard__integer.to_int (sum v b') + Standard__integer.to_int (sum v {Sums__slice_bounds.rec__lo = Sums__slice_bounds.rec__lo b; Sums__slice_bounds.rec__hi = Sums__extended_index.of_int (Sums__index.to_int (Sums__slice_bounds.rec__lo b') - 1)})) /\
-          (* b.lo <= i < b.hi -> sum v b = sum v (b.lo, i) + sum v (i + 1, b.hi) *)
-          (Sums__index.to_int (Sums__slice_bounds.rec__lo b') = Sums__index.to_int (Sums__slice_bounds.rec__lo b) -> Sums__index.to_int (Sums__slice_bounds.rec__lo b) <= Sums__extended_index.to_int (Sums__slice_bounds.rec__hi b') < Sums__extended_index.to_int (Sums__slice_bounds.rec__hi b) ->
-          Standard__integer.to_int (sum v b) = Standard__integer.to_int (sum v b') + Standard__integer.to_int (sum v {Sums__slice_bounds.rec__lo = Sums__index.of_int (Sums__extended_index.to_int (Sums__slice_bounds.rec__hi b') + 1); Sums__slice_bounds.rec__hi = Sums__slice_bounds.rec__hi b})))
-      )
+      (* Case of a non-empty slice  *)
+      (first v <= _rec__lo b <= _rec__hi b <= last v ->
 
- val sum
-   (sums__sum__x : Sums__vector.vector) (sums__sum__bounds : Sums__slice_bounds.slice_bounds)  :Standard__integer.integer
-  requires { ( ( (Sums__index.to_int (Sums__slice_bounds.rec__lo sums__sum__bounds)) > (Sums__extended_index.to_int (Sums__slice_bounds.rec__hi sums__sum__bounds)) ) \/ ( ( (Sums__vector.first sums__sum__x) <= (Sums__index.to_int (Sums__slice_bounds.rec__lo sums__sum__bounds)) ) /\ ( (Sums__extended_index.to_int (Sums__slice_bounds.rec__hi sums__sum__bounds)) <= (Sums__vector.last sums__sum__x) ) ) ) }
-  ensures { ( result = (sum sums__sum__x sums__sum__bounds) ) }
+         (* If the slice only contains one element *)
+         (_rec__lo b = _rec__hi b -> _sum v b = _get v (_rec__lo b)) /\
+
+         (* Link to smaller slices of the same vector *)
+         (forall b1 : slice_bounds [sum v b1].
+
+             (* Ending at the same index *)
+             ((_rec__hi b1 = _rec__hi b /\ _rec__lo b < _rec__lo b1 <= _rec__hi b) ->
+              let b2 = {rec__lo = rec__lo b;
+                        rec__hi = Sums__extended_index.of_int ((_rec__lo b1) - 1)} in
+                 _sum v b = _sum v b1 + _sum v b2) /\
+             (* Sartind at the same index *)
+             ((_rec__lo b1 = _rec__lo b /\ _rec__lo b <= _rec__hi b1 < _rec__hi b) ->
+              let b2 = {rec__lo = Sums__index.of_int ((_rec__hi b1) + 1);
+                        rec__hi = rec__hi b} in
+                 _sum v b = _sum v b1 + _sum v b2)))
+
+ (* Program partial function with a precondition for sum *)
+ val sum (x : vector) (bounds : slice_bounds)  :integer
+  requires { _rec__lo bounds > _rec__hi bounds \/
+             first x <= _rec__lo bounds /\ _rec__hi bounds <= last x }
+  ensures  { result = sum x bounds }
 
 end
