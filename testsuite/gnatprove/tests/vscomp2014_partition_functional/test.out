@@ -1,0 +1,397 @@
+partition_refinement.adb:14:14: info: postcondition proved
+partition_refinement.adb:23:15: info: precondition proved
+partition_refinement.adb:24:15: info: precondition proved
+partition_refinement.adb:25:17: info: precondition proved
+partition_refinement.adb:25:68: info: precondition proved
+partition_refinement.adb:25:68: info: range check proved
+partition_refinement.adb:26:38: info: precondition proved
+partition_refinement.adb:27:16: info: precondition proved
+partition_refinement.adb:27:37: info: precondition proved
+partition_refinement.adb:27:55: info: precondition proved
+partition_refinement.adb:28:15: warning: postcondition might fail
+partition_refinement.adb:29:26: info: precondition proved
+partition_refinement.adb:30:27: info: precondition proved
+partition_refinement.adb:30:41: info: precondition proved
+partition_refinement.adb:30:73: warning: array index check might fail
+partition_refinement.adb:30:75: info: precondition proved
+partition_refinement.adb:30:89: info: precondition proved
+partition_refinement.adb:31:36: info: precondition proved
+partition_refinement.adb:31:50: info: precondition proved
+partition_refinement.adb:31:80: info: precondition proved
+partition_refinement.adb:31:94: info: precondition proved
+partition_refinement.adb:32:23: info: precondition proved
+partition_refinement.adb:35:17: info: precondition proved
+partition_refinement.adb:35:32: info: precondition proved
+partition_refinement.adb:36:17: info: precondition proved
+partition_refinement.adb:36:30: info: precondition proved
+partition_refinement.adb:37:52: info: precondition proved
+partition_refinement.adb:37:52: info: range check proved
+partition_refinement.adb:37:71: info: precondition proved
+partition_refinement.adb:37:83: info: range check proved
+partition_refinement.adb:37:94: info: precondition proved
+partition_refinement.adb:37:110: info: range check proved
+partition_refinement.adb:38:52: info: precondition proved
+partition_refinement.adb:38:52: info: range check proved
+partition_refinement.adb:38:71: info: precondition proved
+partition_refinement.adb:38:83: info: range check proved
+partition_refinement.adb:38:93: info: precondition proved
+partition_refinement.adb:38:109: info: range check proved
+partition_refinement.adb:39:52: info: precondition proved
+partition_refinement.adb:39:52: info: range check proved
+partition_refinement.adb:40:20: info: precondition proved
+partition_refinement.adb:40:32: info: range check proved
+partition_refinement.adb:40:43: warning: precondition might fail
+partition_refinement.adb:40:59: info: range check proved
+partition_refinement.adb:40:68: warning: overflow check might fail
+partition_refinement.adb:40:80: warning: precondition might fail
+partition_refinement.adb:41:40: info: precondition proved
+partition_refinement.adb:42:18: info: precondition proved
+partition_refinement.adb:42:39: warning: precondition might fail
+partition_refinement.adb:42:57: warning: precondition might fail
+partition_refinement.adb:43:18: info: precondition proved
+partition_refinement.adb:43:40: info: precondition proved
+partition_refinement.adb:50:17: info: overflow check proved
+partition_refinement.adb:50:19: info: precondition proved
+partition_refinement.adb:50:33: info: precondition proved
+partition_refinement.adb:51:15: info: precondition proved
+partition_refinement.adb:53:73: info: precondition proved
+partition_refinement.adb:53:73: info: range check proved
+partition_refinement.adb:54:43: info: precondition proved
+partition_refinement.adb:54:70: info: precondition proved
+partition_refinement.adb:55:56: info: precondition proved
+partition_refinement.adb:55:56: info: range check proved
+partition_refinement.adb:55:89: info: precondition proved
+partition_refinement.adb:55:101: info: range check proved
+partition_refinement.adb:55:113: info: precondition proved
+partition_refinement.adb:55:125: info: range check proved
+partition_refinement.adb:55:138: info: index check proved
+partition_refinement.adb:57:15: warning: postcondition might fail
+partition_refinement.adb:57:73: info: precondition proved
+partition_refinement.adb:57:73: warning: range check might fail
+partition_refinement.adb:58:43: info: precondition proved
+partition_refinement.adb:58:70: info: precondition proved
+partition_refinement.adb:59:56: info: precondition proved
+partition_refinement.adb:59:56: warning: range check might fail
+partition_refinement.adb:59:89: info: precondition proved
+partition_refinement.adb:59:101: warning: range check might fail
+partition_refinement.adb:59:113: info: precondition proved
+partition_refinement.adb:59:125: warning: range check might fail
+partition_refinement.adb:59:138: warning: array index check might fail
+partition_refinement.adb:86:29: info: precondition proved
+partition_refinement.adb:87:28: info: precondition proved
+partition_refinement.adb:93:42: info: range check proved
+partition_refinement.adb:100:22: warning: assertion might fail, requires A = A_Update
+partition_refinement.adb:102:22: info: precondition proved
+partition_refinement.adb:102:44: info: precondition proved
+partition_refinement.adb:102:67: info: precondition proved
+partition_refinement.adb:102:91: warning: assertion might fail, requires A (Element (D, C)) = Key (D, C)
+partition_refinement.adb:102:94: info: precondition proved
+partition_refinement.adb:102:112: info: precondition proved
+partition_refinement.adb:105:44: info: precondition proved
+partition_refinement.adb:105:44: warning: assertion might fail, requires Contains (D, A(J)
+partition_refinement.adb:106:07: warning: precondition might fail
+partition_refinement.adb:107:07: info: assertion proved
+partition_refinement.adb:109:22: info: precondition proved
+partition_refinement.adb:109:44: info: precondition proved
+partition_refinement.adb:109:67: info: precondition proved
+partition_refinement.adb:109:91: warning: assertion might fail, requires A (Element (D, C)) = Key (D, C)
+partition_refinement.adb:109:94: info: precondition proved
+partition_refinement.adb:109:112: info: precondition proved
+partition_refinement.adb:110:22: info: precondition proved
+partition_refinement.adb:110:44: info: precondition proved
+partition_refinement.adb:110:67: warning: assertion might fail, requires A (Element (D, C)) = Key (D, C)
+partition_refinement.adb:110:70: info: precondition proved
+partition_refinement.adb:110:88: info: precondition proved
+partition_refinement.adb:111:07: warning: precondition might fail
+partition_refinement.adb:112:07: info: assertion proved
+partition_refinement.adb:114:22: info: precondition proved
+partition_refinement.adb:114:44: info: precondition proved
+partition_refinement.adb:114:67: info: precondition proved
+partition_refinement.adb:114:91: warning: assertion might fail, requires A (Element (D, C)) = Key (D, C)
+partition_refinement.adb:114:94: info: precondition proved
+partition_refinement.adb:114:112: info: precondition proved
+partition_refinement.adb:115:22: info: precondition proved
+partition_refinement.adb:115:44: info: precondition proved
+partition_refinement.adb:115:67: warning: assertion might fail, requires A (Element (D, C)) = Key (D, C)
+partition_refinement.adb:115:70: info: precondition proved
+partition_refinement.adb:115:88: info: precondition proved
+partition_refinement.adb:116:22: info: precondition proved
+partition_refinement.adb:116:44: info: precondition proved
+partition_refinement.adb:116:67: warning: assertion might fail, requires A (Element (D, C)) = Key (D, C)
+partition_refinement.adb:116:70: info: precondition proved
+partition_refinement.adb:116:88: info: precondition proved
+partition_refinement.adb:117:07: info: assertion proved
+partition_refinement.adb:117:22: info: precondition proved
+partition_refinement.adb:117:43: info: precondition proved
+partition_refinement.adb:117:61: info: precondition proved
+partition_refinement.adb:118:36: warning: range check might fail
+partition_refinement.adb:123:49: info: precondition proved
+partition_refinement.adb:125:10: info: precondition proved
+partition_refinement.adb:126:25: info: precondition proved
+partition_refinement.adb:129:07: info: assertion proved
+partition_refinement.adb:150:43: info: precondition proved
+partition_refinement.adb:150:43: info: range check proved
+partition_refinement.adb:156:20: info: precondition proved
+partition_refinement.adb:156:32: info: range check proved
+partition_refinement.adb:158:56: warning: range check might fail
+partition_refinement.adb:161:56: warning: range check might fail
+partition_refinement.adb:167:55: info: precondition proved
+partition_refinement.adb:169:16: info: precondition proved
+partition_refinement.adb:169:36: info: range check proved
+partition_refinement.adb:170:31: info: precondition proved
+partition_refinement.adb:174:53: info: precondition proved
+partition_refinement.adb:176:50: info: precondition proved
+partition_refinement.adb:176:50: info: range check proved
+partition_refinement.adb:177:16: warning: precondition might fail
+partition_refinement.adb:178:31: info: precondition proved
+partition_refinement.adb:178:31: warning: assertion might fail, requires Length (P) = Save_Length + 1
+partition_refinement.adb:178:56: info: overflow check proved
+partition_refinement.adb:179:16: info: assertion proved
+partition_refinement.adb:179:64: info: precondition proved
+partition_refinement.adb:179:64: info: range check proved
+partition_refinement.adb:181:31: info: precondition proved
+partition_refinement.adb:182:39: info: range check proved
+partition_refinement.adb:182:108: warning: precondition might fail
+partition_refinement.adb:182:120: warning: range check might fail
+partition_refinement.adb:182:125: warning: precondition might fail
+partition_refinement.adb:182:142: warning: range check might fail
+partition_refinement.adb:190:19: warning: loop invariant might fail after first iteration
+partition_refinement.adb:190:19: warning: loop invariant might fail in first iteration
+partition_refinement.adb:190:50: warning: range check might fail
+partition_refinement.adb:190:91: warning: array index check might fail
+partition_refinement.adb:191:50: warning: range check might fail
+partition_refinement.adb:191:95: info: index check proved
+partition_refinement.adb:191:113: warning: array index check might fail
+partition_refinement.adb:192:50: warning: range check might fail
+partition_refinement.adb:192:69: warning: overflow check might fail
+partition_refinement.adb:192:92: info: index check proved
+partition_refinement.adb:192:110: warning: array index check might fail
+partition_refinement.adb:197:39: warning: range check might fail
+partition_refinement.adb:197:89: warning: assertion might fail, requires F(K) = Partition_Index'Base (Length (P)) - 1
+partition_refinement.adb:197:91: warning: array index check might fail
+partition_refinement.adb:197:118: info: precondition proved
+partition_refinement.adb:197:118: info: range check proved
+partition_refinement.adb:198:39: warning: range check might fail
+partition_refinement.adb:198:82: warning: assertion might fail, requires F(K) in 0 .. Partition_Index'Base (Length (P)) - 1
+partition_refinement.adb:198:84: warning: array index check might fail
+partition_refinement.adb:198:117: info: precondition proved
+partition_refinement.adb:198:117: info: range check proved
+partition_refinement.adb:199:39: warning: range check might fail
+partition_refinement.adb:199:90: warning: assertion might fail, requires F(K) in 0 .. Partition_Index'Base (Length (P)) - 1
+partition_refinement.adb:199:92: warning: array index check might fail
+partition_refinement.adb:199:125: info: precondition proved
+partition_refinement.adb:199:125: info: range check proved
+partition_refinement.adb:202:39: warning: range check might fail
+partition_refinement.adb:202:87: warning: assertion might fail, requires Element (P, F(K)) = P_Elem
+partition_refinement.adb:202:87: warning: precondition might fail
+partition_refinement.adb:202:101: warning: array index check might fail
+partition_refinement.adb:203:39: warning: range check might fail
+partition_refinement.adb:203:87: warning: assertion might fail, requires K in Element (P, F(K)).First .. Element (P, F(K)).Last
+partition_refinement.adb:203:92: warning: precondition might fail
+partition_refinement.adb:203:106: info: index check proved
+partition_refinement.adb:203:119: warning: precondition might fail
+partition_refinement.adb:203:133: warning: array index check might fail
+partition_refinement.adb:204:16: info: assertion proved
+partition_refinement.adb:204:39: warning: range check might fail
+partition_refinement.adb:204:89: warning: precondition might fail
+partition_refinement.adb:204:103: warning: array index check might fail
+partition_refinement.adb:205:39: warning: range check might fail
+partition_refinement.adb:205:89: warning: assertion might fail, requires K in Element (P, F(K)).First .. Element (P, F(K)).Last
+partition_refinement.adb:205:94: warning: precondition might fail
+partition_refinement.adb:205:108: info: index check proved
+partition_refinement.adb:205:121: warning: precondition might fail
+partition_refinement.adb:205:135: warning: array index check might fail
+partition_refinement.adb:206:39: warning: range check might fail
+partition_refinement.adb:206:81: warning: assertion might fail, requires Element (P, F(K)) = Element (P_Save, F(K)
+partition_refinement.adb:206:81: warning: precondition might fail
+partition_refinement.adb:206:95: info: index check proved
+partition_refinement.adb:206:101: warning: precondition might fail
+partition_refinement.adb:206:120: warning: array index check might fail
+partition_refinement.adb:207:39: warning: range check might fail
+partition_refinement.adb:207:81: warning: assertion might fail, requires K in Element (P_Save, F_Loop_Entry(K)).First .. Element (P_Save, F_Loop_Entry(K)).Last
+partition_refinement.adb:207:86: warning: precondition might fail
+partition_refinement.adb:207:116: info: index check proved
+partition_refinement.adb:207:129: warning: precondition might fail
+partition_refinement.adb:207:159: warning: array index check might fail
+partition_refinement.adb:208:39: warning: range check might fail
+partition_refinement.adb:208:81: warning: assertion might fail, requires K in Element (P, F(K)).First .. Element (P, F(K)).Last
+partition_refinement.adb:208:86: warning: precondition might fail
+partition_refinement.adb:208:100: info: index check proved
+partition_refinement.adb:208:113: warning: precondition might fail
+partition_refinement.adb:208:127: warning: array index check might fail
+partition_refinement.adb:209:39: warning: range check might fail
+partition_refinement.adb:209:90: warning: assertion might fail, requires Element (P, F(K)) = Element (P_Save, F(K)
+partition_refinement.adb:209:90: warning: precondition might fail
+partition_refinement.adb:209:104: info: index check proved
+partition_refinement.adb:209:110: warning: precondition might fail
+partition_refinement.adb:209:129: warning: array index check might fail
+partition_refinement.adb:210:39: warning: range check might fail
+partition_refinement.adb:210:90: warning: assertion might fail, requires K in Element (P_Save, F_Loop_Entry(K)).First .. Element (P_Save, F_Loop_Entry(K)).Last
+partition_refinement.adb:210:95: warning: precondition might fail
+partition_refinement.adb:210:125: info: index check proved
+partition_refinement.adb:210:138: warning: precondition might fail
+partition_refinement.adb:210:168: warning: array index check might fail
+partition_refinement.adb:211:39: warning: range check might fail
+partition_refinement.adb:211:90: warning: assertion might fail, requires K in Element (P, F(K)).First .. Element (P, F(K)).Last
+partition_refinement.adb:211:95: warning: precondition might fail
+partition_refinement.adb:211:109: info: index check proved
+partition_refinement.adb:211:122: warning: precondition might fail
+partition_refinement.adb:211:136: warning: array index check might fail
+partition_refinement.adb:213:67: warning: range check might fail
+partition_refinement.adb:213:84: info: precondition proved
+partition_refinement.adb:213:96: info: range check proved
+partition_refinement.adb:213:108: info: precondition proved
+partition_refinement.adb:213:120: info: range check proved
+partition_refinement.adb:213:131: warning: assertion might fail, requires F(L) = K
+partition_refinement.adb:213:133: warning: array index check might fail
+partition_refinement.adb:214:39: warning: range check might fail
+partition_refinement.adb:214:56: info: precondition proved
+partition_refinement.adb:214:68: info: range check proved
+partition_refinement.adb:214:80: info: precondition proved
+partition_refinement.adb:214:92: info: range check proved
+partition_refinement.adb:214:103: warning: assertion might fail, requires F(L) = J
+partition_refinement.adb:214:105: warning: array index check might fail
+partition_refinement.adb:215:46: info: overflow check proved
+partition_refinement.adb:215:75: info: precondition proved
+partition_refinement.adb:215:75: info: range check proved
+partition_refinement.adb:215:103: warning: range check might fail
+partition_refinement.adb:215:120: warning: precondition might fail
+partition_refinement.adb:215:132: info: range check proved
+partition_refinement.adb:215:144: warning: precondition might fail
+partition_refinement.adb:215:156: info: range check proved
+partition_refinement.adb:215:167: warning: assertion might fail, requires F(L) = K
+partition_refinement.adb:215:169: warning: array index check might fail
+partition_refinement.adb:220:40: info: overflow check proved
+partition_refinement.adb:220:69: info: precondition proved
+partition_refinement.adb:220:79: info: range check proved
+partition_refinement.adb:220:99: warning: assertion might fail, requires Element (P, K) = Element (P'Loop_Entry, K)
+partition_refinement.adb:220:99: warning: precondition might fail
+partition_refinement.adb:220:111: info: range check proved
+partition_refinement.adb:220:116: warning: precondition might fail
+partition_refinement.adb:220:139: info: range check proved
+partition_refinement.adb:222:25: info: precondition proved
+partition_refinement.adb:222:25: warning: assertion might fail, requires Capacity (P) = Capacity (P)'loop_entry
+partition_refinement.adb:222:40: info: precondition proved
+partition_refinement.adb:223:25: info: precondition proved
+partition_refinement.adb:223:25: warning: assertion might fail, requires Length (P) - Length (P)'Loop_Entry in 0 .. Count_Type(J) + 1
+partition_refinement.adb:223:36: warning: overflow check might fail
+partition_refinement.adb:223:38: info: precondition proved
+partition_refinement.adb:224:10: info: assertion proved
+partition_refinement.adb:224:40: info: overflow check proved
+partition_refinement.adb:224:69: info: precondition proved
+partition_refinement.adb:224:79: info: range check proved
+partition_refinement.adb:224:99: warning: precondition might fail
+partition_refinement.adb:224:111: info: range check proved
+partition_refinement.adb:224:116: warning: precondition might fail
+partition_refinement.adb:224:139: info: range check proved
+partition_refinement.adb:225:47: warning: assertion might fail, requires F(K) in 0 .. Partition_Index'Base (Length (P)) - 1
+partition_refinement.adb:225:82: info: precondition proved
+partition_refinement.adb:225:82: info: range check proved
+partition_refinement.adb:226:47: warning: assertion might fail, requires K in Element (P, F(K)).First .. Element (P, F(K)).Last
+partition_refinement.adb:226:52: warning: precondition might fail
+partition_refinement.adb:226:79: warning: precondition might fail
+partition_refinement.adb:227:65: info: precondition proved
+partition_refinement.adb:227:65: info: range check proved
+partition_refinement.adb:227:93: warning: range check might fail
+partition_refinement.adb:227:110: info: precondition proved
+partition_refinement.adb:227:122: info: range check proved
+partition_refinement.adb:227:134: info: precondition proved
+partition_refinement.adb:227:146: info: range check proved
+partition_refinement.adb:227:157: warning: assertion might fail, requires F(L) = K
+partition_refinement.adb:227:159: warning: array index check might fail
+partition_refinement.adb:229:10: warning: loop invariant might fail after first iteration
+partition_refinement.adb:229:10: warning: loop invariant might fail in first iteration
+partition_refinement.adb:229:33: info: precondition proved
+partition_refinement.adb:229:48: info: precondition proved
+partition_refinement.adb:230:33: info: precondition proved
+partition_refinement.adb:230:44: info: overflow check proved
+partition_refinement.adb:230:46: info: precondition proved
+partition_refinement.adb:231:48: info: overflow check proved
+partition_refinement.adb:231:77: info: precondition proved
+partition_refinement.adb:231:87: info: range check proved
+partition_refinement.adb:231:107: warning: precondition might fail
+partition_refinement.adb:231:119: info: range check proved
+partition_refinement.adb:231:124: warning: precondition might fail
+partition_refinement.adb:231:147: info: range check proved
+partition_refinement.adb:232:90: info: precondition proved
+partition_refinement.adb:232:90: info: range check proved
+partition_refinement.adb:233:60: info: precondition proved
+partition_refinement.adb:233:87: info: precondition proved
+partition_refinement.adb:234:73: info: precondition proved
+partition_refinement.adb:234:73: info: range check proved
+partition_refinement.adb:234:106: warning: precondition might fail
+partition_refinement.adb:234:118: info: range check proved
+partition_refinement.adb:234:130: warning: precondition might fail
+partition_refinement.adb:234:142: info: range check proved
+partition_refinement.adb:234:155: warning: array index check might fail
+partition_refinement.adb:249:39: info: precondition proved
+partition_refinement.adb:256:13: info: precondition proved
+partition_refinement.adb:258:10: info: assertion proved
+partition_refinement.adb:258:25: info: precondition proved
+partition_refinement.adb:258:42: info: precondition proved
+partition_refinement.adb:258:55: info: precondition proved
+partition_refinement.adb:260:25: info: precondition proved
+partition_refinement.adb:260:38: info: precondition proved
+partition_refinement.adb:261:10: warning: precondition might fail
+partition_refinement.adb:261:34: info: precondition proved
+partition_refinement.adb:262:10: info: precondition proved
+partition_refinement.adb:265:10: warning: loop invariant might fail after first iteration
+partition_refinement.adb:265:10: warning: loop invariant might fail in first iteration
+partition_refinement.adb:265:33: info: precondition proved
+partition_refinement.adb:265:48: info: precondition proved
+partition_refinement.adb:266:33: info: precondition proved
+partition_refinement.adb:266:46: info: precondition proved
+partition_refinement.adb:268:55: info: precondition proved
+partition_refinement.adb:269:33: info: precondition proved
+partition_refinement.adb:269:54: info: precondition proved
+partition_refinement.adb:269:72: info: precondition proved
+partition_refinement.adb:271:33: info: precondition proved
+partition_refinement.adb:271:55: info: precondition proved
+partition_refinement.adb:272:33: info: precondition proved
+partition_refinement.adb:272:51: info: precondition proved
+partition_refinement.adb:272:68: info: precondition proved
+partition_refinement.adb:272:81: info: precondition proved
+partition_refinement.adb:274:90: info: precondition proved
+partition_refinement.adb:274:90: info: range check proved
+partition_refinement.adb:275:60: info: precondition proved
+partition_refinement.adb:275:87: info: precondition proved
+partition_refinement.adb:276:73: info: precondition proved
+partition_refinement.adb:276:73: info: range check proved
+partition_refinement.adb:276:106: info: precondition proved
+partition_refinement.adb:276:118: info: range check proved
+partition_refinement.adb:276:130: info: precondition proved
+partition_refinement.adb:276:142: info: range check proved
+partition_refinement.adb:276:155: warning: array index check might fail
+partition_refinement.adb:282:07: warning: precondition might fail
+partition_refinement.ads:56:17: info: overflow check proved
+partition_refinement.ads:56:19: info: precondition proved
+partition_refinement.ads:56:33: info: precondition proved
+partition_refinement.ads:57:15: info: precondition proved
+partition_refinement.ads:59:38: info: precondition proved
+partition_refinement.ads:60:16: info: precondition proved
+partition_refinement.ads:60:37: info: precondition proved
+partition_refinement.ads:60:55: info: precondition proved
+partition_refinement.ads:62:16: info: precondition proved
+partition_refinement.ads:62:34: info: precondition proved
+partition_refinement.ads:62:47: info: precondition proved
+partition_refinement.ads:64:73: info: precondition proved
+partition_refinement.ads:64:73: info: range check proved
+partition_refinement.ads:65:43: info: precondition proved
+partition_refinement.ads:65:70: info: precondition proved
+partition_refinement.ads:66:56: info: precondition proved
+partition_refinement.ads:66:56: info: range check proved
+partition_refinement.ads:66:84: info: range check proved
+partition_refinement.ads:66:101: info: precondition proved
+partition_refinement.ads:66:113: info: range check proved
+partition_refinement.ads:66:125: info: precondition proved
+partition_refinement.ads:66:137: info: range check proved
+partition_refinement.ads:66:150: info: index check proved
+partition_refinement.ads:68:50: info: precondition proved
+partition_refinement.ads:68:50: info: range check proved
+partition_refinement.ads:68:69: info: precondition proved
+partition_refinement.ads:68:81: info: range check proved
+partition_refinement.ads:70:15: warning: postcondition might fail
+partition_refinement.ads:70:73: info: precondition proved
+partition_refinement.ads:70:73: info: range check proved
+partition_refinement.ads:71:43: info: precondition proved
+partition_refinement.ads:71:70: info: precondition proved
