@@ -411,6 +411,10 @@ package body Flow_Error_Messages is
       return To_String (R);
    end Escape;
 
+   ----------------------
+   -- Fresh_Trace_File --
+   ----------------------
+
    function Fresh_Trace_File return String is
       Result : constant String :=
         Unit_Name & "__flow__" & Int_Image (File_Counter) & ".trace";

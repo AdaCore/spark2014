@@ -389,6 +389,9 @@ package Flow_Types is
       Is_Precondition     : Boolean;
       --  True if this vertex represents the precondition.
 
+      Is_Postcondition    : Boolean;
+      --  True if this vertex represents the postcondition.
+
       Is_Default_Init     : Boolean;
       --  True if this vertex represents a default initialization.
 
@@ -503,6 +506,7 @@ package Flow_Types is
      V_Attributes'(Is_Null_Node                    => False,
                    Is_Program_Node                 => False,
                    Is_Precondition                 => False,
+                   Is_Postcondition                => False,
                    Is_Default_Init                 => False,
                    Is_Loop_Entry                   => False,
                    Is_Initialized                  => False,

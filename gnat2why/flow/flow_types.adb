@@ -211,7 +211,7 @@ package body Flow_Types is
                --  X'Update(...).Y.Z
                --  X'Old .Y.Z
                case Attribute_Name (P) is
-                  when Name_Old | Name_Update =>
+                  when Name_Old | Name_Result | Name_Update =>
                      P := Prefix (P);
 
                   when others =>

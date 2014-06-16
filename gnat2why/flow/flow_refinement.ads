@@ -148,6 +148,6 @@ package Flow_Refinement is
    --        package Inner (X, not initialized, but part of State)
    --
    --  Then from the scope of Inner, X is not initialized at elaboration,
-   --  but fromt he scope of Outer, it is.
+   --  but from the scope of Outer, it is.
 
 end Flow_Refinement;

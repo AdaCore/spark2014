@@ -254,11 +254,12 @@ package body Flow is
    -----------------
 
    procedure Print_Graph
-     (Filename     : String;
-      G            : T;
-      M            : Attribute_Maps.Map;
-      Start_Vertex : Vertex_Id := Null_Vertex;
-      End_Vertex   : Vertex_Id := Null_Vertex) is
+     (Filename          : String;
+      G                 : T;
+      M                 : Attribute_Maps.Map;
+      Start_Vertex      : Vertex_Id := Null_Vertex;
+      Helper_End_Vertex : Vertex_Id := Null_Vertex;
+      End_Vertex        : Vertex_Id := Null_Vertex) is
 
       function NDI
         (G : T'Class;
@@ -311,6 +312,12 @@ package body Flow is
 
          elsif V = Start_Vertex then
             Write_Str ("start");
+            Rv.Shape := Shape_None;
+            Rv.Show  := G.In_Neighbour_Count (V) > 0 or
+              G.Out_Neighbour_Count (V) > 0;
+
+         elsif V = Helper_End_Vertex then
+            Write_Str ("helper end");
             Rv.Shape := Shape_None;
             Rv.Show  := G.In_Neighbour_Count (V) > 0 or
               G.Out_Neighbour_Count (V) > 0;
@@ -441,6 +448,9 @@ package body Flow is
             elsif A.Is_Precondition then
                Rv.Shape := Shape_None;
                Write_Str ("precondition ");
+            elsif A.Is_Postcondition then
+               Rv.Shape := Shape_None;
+               Write_Str ("postcondition ");
             elsif A.Is_Loop_Entry then
                Rv.Shape := Shape_None;
                Write_Str ("loop entry ");
@@ -724,6 +734,7 @@ package body Flow is
                S_Scope           => Get_Flow_Scope (E),
                Spec_Node         => S,
                Start_Vertex      => Null_Vertex,
+               Helper_End_Vertex => Null_Vertex,
                End_Vertex        => Null_Vertex,
                CFG               => Create,
                DDG               => Create,
@@ -760,6 +771,7 @@ package body Flow is
                S_Scope           => Flow_Scope'(E, Private_Part),
                Spec_Node         => S,
                Start_Vertex      => Null_Vertex,
+               Helper_End_Vertex => Null_Vertex,
                End_Vertex        => Null_Vertex,
                CFG               => Create,
                DDG               => Create,
@@ -787,6 +799,7 @@ package body Flow is
                S_Scope           => Flow_Scope'(Spec_Entity (E), Private_Part),
                Spec_Node         => S,
                Start_Vertex      => Null_Vertex,
+               Helper_End_Vertex => Null_Vertex,
                End_Vertex        => Null_Vertex,
                CFG               => Create,
                DDG               => Create,
@@ -861,21 +874,25 @@ package body Flow is
          --  We print this graph first in case the other algorithms
          --  barf.
          if Debug_Print_CFG then
-            Print_Graph (Filename     => To_String (FA.Base_Filename) & "_cfg",
-                         G            => FA.CFG,
-                         M            => FA.Atr,
-                         Start_Vertex => FA.Start_Vertex,
-                         End_Vertex   => FA.End_Vertex);
+            Print_Graph (Filename          =>
+                           To_String (FA.Base_Filename) & "_cfg",
+                         G                 => FA.CFG,
+                         M                 => FA.Atr,
+                         Start_Vertex      => FA.Start_Vertex,
+                         Helper_End_Vertex => FA.Helper_End_Vertex,
+                         End_Vertex        => FA.End_Vertex);
          end if;
 
          Control_Dependence_Graph.Create (FA);
 
          if Debug_Print_Intermediates then
-            Print_Graph (Filename     => To_String (FA.Base_Filename) & "_cdg",
-                         G            => FA.CDG,
-                         M            => FA.Atr,
-                         Start_Vertex => FA.Start_Vertex,
-                         End_Vertex   => FA.End_Vertex);
+            Print_Graph (Filename          =>
+                           To_String (FA.Base_Filename) & "_cdg",
+                         G                 => FA.CDG,
+                         M                 => FA.Atr,
+                         Start_Vertex      => FA.Start_Vertex,
+                         Helper_End_Vertex => FA.Helper_End_Vertex,
+                         End_Vertex        => FA.End_Vertex);
          end if;
 
          Data_Dependence_Graph.Create (FA);
@@ -883,19 +900,23 @@ package body Flow is
          Program_Dependence_Graph.Create (FA);
 
          if Debug_Print_Intermediates then
-            Print_Graph (Filename     => To_String (FA.Base_Filename) & "_ddg",
-                         G            => FA.DDG,
-                         M            => FA.Atr,
-                         Start_Vertex => FA.Start_Vertex,
-                         End_Vertex   => FA.End_Vertex);
+            Print_Graph (Filename          =>
+                           To_String (FA.Base_Filename) & "_ddg",
+                         G                 => FA.DDG,
+                         M                 => FA.Atr,
+                         Start_Vertex      => FA.Start_Vertex,
+                         Helper_End_Vertex => FA.Helper_End_Vertex,
+                         End_Vertex        => FA.End_Vertex);
          end if;
 
          if Debug_Print_PDG then
-            Print_Graph (Filename     => To_String (FA.Base_Filename) & "_pdg",
-                         G            => FA.PDG,
-                         M            => FA.Atr,
-                         Start_Vertex => FA.Start_Vertex,
-                         End_Vertex   => FA.End_Vertex);
+            Print_Graph (Filename          =>
+                           To_String (FA.Base_Filename) & "_pdg",
+                         G                 => FA.PDG,
+                         M                 => FA.Atr,
+                         Start_Vertex      => FA.Start_Vertex,
+                         Helper_End_Vertex => FA.Helper_End_Vertex,
+                         End_Vertex        => FA.End_Vertex);
          end if;
 
          if Gnat2Why_Args.Flow_Advanced_Debug then

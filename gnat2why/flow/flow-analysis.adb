@@ -454,7 +454,9 @@ package body Flow.Analysis is
          --  interesting. We want to deal only with program statements
          --  and procedure calls.
 
-         if (Atr.Is_Program_Node or Atr.Is_Precondition) and
+         if (Atr.Is_Program_Node
+               or Atr.Is_Precondition
+               or Atr.Is_Postcondition) and
            not Atr.Is_Callsite
          then
             First_Use := Get_Direct_Mapping_Id (FA.CFG.Get_Key (V));
@@ -691,7 +693,7 @@ package body Flow.Analysis is
                                                                 FA.B_Scope)
                   then
 
-                     --  If check an initial_condition aspect, we make sure
+                     --  To check an initial_condition aspect, we make sure
                      --  that all variables mentioned are also mentioned in
                      --  an initializes aspect.
 
@@ -1215,7 +1217,7 @@ package body Flow.Analysis is
          begin
             if Atr.Execution /= Normal_Execution then
                TV := Flow_Graphs.Skip_Children;
-            elsif V = FA.End_Vertex then
+            elsif V = FA.Helper_End_Vertex then
                Dead_End := False;
                TV := Flow_Graphs.Abort_Traversal;
             else
@@ -1459,7 +1461,7 @@ package body Flow.Analysis is
       is
          Atr : constant V_Attributes := FA.Atr.Element (V);
       begin
-         if V = FA.End_Vertex then
+         if V = FA.Helper_End_Vertex then
             Ins := Flow_Graphs.Found_Destination;
          elsif Atr.Execution /= Normal_Execution then
             Ins := Flow_Graphs.Skip_Children;
@@ -1913,120 +1915,139 @@ package body Flow.Analysis is
                         --  suggests there is a path in the CFG that
                         --  never sets the variable.
 
-                        if Atr_U.Is_Global then
-                           if Defined_Elsewhere then
-                              Error_Msg_Flow
-                                (FA        => FA,
-                                 Msg       => "& might not be " & Action,
-                                 N         => Find_Global
-                                   (FA.Analyzed_Entity, Key_I),
-                                 F1        => Key_I,
-                                 Tag       => "uninitialized",
-                                 Warning   => True,
-                                 Vertex    => V_Use);
-                           else
-                              Error_Msg_Flow
-                                (FA        => FA,
-                                 Msg       => "& is not " & Action,
-                                 N         => Find_Global
-                                   (FA.Analyzed_Entity, Key_I),
-                                 F1        => Key_I,
-                                 Tag       => "uninitialized",
-                                 Vertex    => V_Use);
-                           end if;
-                           Mark_Definition_Free_Path
-                             (From => FA.Start_Vertex,
-                              To   => FA.End_Vertex,
-                              Var  => Change_Variant (Key_I, Normal_Use));
+                        if not (Is_Abstract_State (Key_U) and then
+                                  Ekind (FA.Analyzed_Entity) in E_Package |
+                                                                E_Package_Body)
+                        then
 
-                        elsif Atr_U.Is_Function_Return then
+                           --  If the final vertex corresponds to a
+                           --  state abstraction and we are analyzing
+                           --  a package then we do not consider this
+                           --  to be an issue as state abstractions do
+                           --  not have to always be initialized after
+                           --  a package's elaboration.
 
-                           --  This is actually a totally different
-                           --  error. It means we have a path where we
-                           --  do not return from the function.
-
-                           if not FA.Last_Statement_Is_Raise then
-
-                              --  We only issue this error when the
-                              --  last statement is not a raise
-                              --  statement.
-
-                              Error_Msg_Flow
-                                (FA        => FA,
-                                 Msg       =>
-                                   "possibly missing return statement in &",
-                                 N         => Error_Location (FA.PDG,
-                                                              FA.Atr,
-                                                              FA.Start_Vertex),
-                                 F1        => Direct_Mapping_Id
-                                   (FA.Analyzed_Entity),
-                                 Tag       => "missing_return",
-                                 Vertex    => V_Use);
+                           if Atr_U.Is_Global then
+                              if Defined_Elsewhere then
+                                 Error_Msg_Flow
+                                   (FA        => FA,
+                                    Msg       => "& might not be " & Action,
+                                    N         => Find_Global
+                                      (FA.Analyzed_Entity, Key_I),
+                                    F1        => Key_I,
+                                    Tag       => "uninitialized",
+                                    Warning   => True,
+                                    Vertex    => V_Use);
+                              else
+                                 Error_Msg_Flow
+                                   (FA        => FA,
+                                    Msg       => "& is not " & Action,
+                                    N         => Find_Global
+                                      (FA.Analyzed_Entity, Key_I),
+                                    F1        => Key_I,
+                                    Tag       => "uninitialized",
+                                    Vertex    => V_Use);
+                              end if;
                               Mark_Definition_Free_Path
                                 (From => FA.Start_Vertex,
-                                 To   => FA.End_Vertex,
+                                 To   => FA.Helper_End_Vertex,
                                  Var  => Change_Variant (Key_I, Normal_Use));
-                           end if;
 
-                        elsif Atr_U.Is_Export then
+                           elsif Atr_U.Is_Function_Return then
 
-                           --  As we don't have a global, but an
-                           --  export, it means we must be dealing
-                           --  with a parameter.
+                              --  This is actually a totally different
+                              --  error. It means we have a path where we
+                              --  do not return from the function.
 
-                           if Defined_Elsewhere then
-                              Error_Msg_Flow
-                                (FA        => FA,
-                                 Msg       => "& might not be " & Action &
-                                   " in &",
-                                 N         => First_Variable_Use
-                                   (N        =>  Error_Location (FA.PDG,
-                                                                 FA.Atr,
-                                                                 V_Error),
-                                    FA       => FA,
-                                    Scope    => FA.B_Scope,
-                                    Var      => Key_I,
-                                    Precise  => True,
-                                    Targeted => True),
-                                 F1        => Key_I,
-                                 F2        => Direct_Mapping_Id
-                                   (FA.Analyzed_Entity),
-                                 Tag       => "uninitialized",
-                                 Warning   => True,
-                                 Vertex    => V_Use);
+                              if not FA.Last_Statement_Is_Raise then
+
+                                 --  We only issue this error when the
+                                 --  last statement is not a raise
+                                 --  statement.
+
+                                 Error_Msg_Flow
+                                   (FA        => FA,
+                                    Msg       =>
+                                      "possibly missing return statement in &",
+                                    N         =>
+                                      Error_Location (FA.PDG,
+                                                      FA.Atr,
+                                                      FA.Start_Vertex),
+                                    F1        => Direct_Mapping_Id
+                                      (FA.Analyzed_Entity),
+                                    Tag       => "missing_return",
+                                    Vertex    => V_Use);
+                                 Mark_Definition_Free_Path
+                                   (From => FA.Start_Vertex,
+                                    To   => FA.Helper_End_Vertex,
+                                    Var  => Change_Variant (Key_I,
+                                                            Normal_Use));
+                              end if;
+
+                           elsif Atr_U.Is_Export then
+
+                              --  As we don't have a global, but an
+                              --  export, it means we must be dealing
+                              --  with a parameter.
+
+                              if Defined_Elsewhere then
+                                 Error_Msg_Flow
+                                   (FA        => FA,
+                                    Msg       => "& might not be " & Action &
+                                      " in &",
+                                    N         => First_Variable_Use
+                                      (N        =>  Error_Location (FA.PDG,
+                                                                    FA.Atr,
+                                                                    V_Error),
+                                       FA       => FA,
+                                       Scope    => FA.B_Scope,
+                                       Var      => Key_I,
+                                       Precise  => True,
+                                       Targeted => True),
+                                    F1        => Key_I,
+                                    F2        => Direct_Mapping_Id
+                                      (FA.Analyzed_Entity),
+                                    Tag       => "uninitialized",
+                                    Warning   => True,
+                                    Vertex    => V_Use);
+                              else
+                                 Error_Msg_Flow
+                                   (FA        => FA,
+                                    Msg       => "& is not " & Action &
+                                      " in &",
+                                    N         => First_Variable_Use
+                                      (N        =>  Error_Location (FA.PDG,
+                                                                    FA.Atr,
+                                                                    V_Error),
+                                       FA       => FA,
+                                       Scope    => FA.B_Scope,
+                                       Var      => Key_I,
+                                       Precise  => True,
+                                       Targeted => True),
+                                    F1        => Key_I,
+                                    F2        => Direct_Mapping_Id
+                                      (FA.Analyzed_Entity),
+                                    Tag       => "uninitialized",
+                                    Vertex    => V_Use);
+                              end if;
+                              Mark_Definition_Free_Path
+                                (From      => FA.Start_Vertex,
+                                 To        => V_Error,
+                                 Var       => Change_Variant (Key_I,
+                                                              Normal_Use),
+                                 V_Allowed => V_Use);
+
                            else
-                              Error_Msg_Flow
-                                (FA        => FA,
-                                 Msg       => "& is not " & Action & " in &",
-                                 N         => First_Variable_Use
-                                   (N        =>  Error_Location (FA.PDG,
-                                                                 FA.Atr,
-                                                                 V_Error),
-                                    FA       => FA,
-                                    Scope    => FA.B_Scope,
-                                    Var      => Key_I,
-                                    Precise  => True,
-                                    Targeted => True),
-                                 F1        => Key_I,
-                                 F2        => Direct_Mapping_Id
-                                   (FA.Analyzed_Entity),
-                                 Tag       => "uninitialized",
-                                 Vertex    => V_Use);
+
+                              --  We are dealing with a local variable,
+                              --  so we don't care if there is a path
+                              --  where it is not set.
+
+                              null;
                            end if;
-                           Mark_Definition_Free_Path
-                             (From      => FA.Start_Vertex,
-                              To        => V_Error,
-                              Var       => Change_Variant (Key_I, Normal_Use),
-                              V_Allowed => V_Use);
 
-                        else
-
-                           --  We are dealing with a local variable,
-                           --  so we don't care if there is a path
-                           --  where it is not set.
-
-                           null;
                         end if;
+
                      else
 
                         --  V_Use is not a final vertex.
@@ -2895,7 +2916,9 @@ package body Flow.Analysis is
             --  Raise warnings for actual inputs that are not
             --  mentioned by the Initializes.
             for Actual_In of All_Actual_Ins loop
-               if not All_Contract_Ins.Contains (Actual_In) then
+               if not All_Contract_Ins.Contains (Actual_In)
+                 and then not All_Contract_Outs.Contains (Actual_In)
+               then
                   declare
                      Tracefile : constant String := Fresh_Trace_File;
                   begin

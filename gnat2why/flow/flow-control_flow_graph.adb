@@ -662,6 +662,13 @@ package body Flow.Control_Flow_Graph is
    --  the dependencies. This decision is made in
    --  Control_Flow_Graph.Utility.
 
+   procedure Do_Postcondition
+     (Post : Node_Id;
+      FA   : in out Flow_Analysis_Graphs;
+      CM   : in out Connection_Maps.Map;
+      Ctx  : in out Context);
+   --  Deals with the given postcondition expression.
+
    procedure Do_Simple_Return_Statement
      (N   : Node_Id;
       FA  : in out Flow_Analysis_Graphs;
@@ -1580,7 +1587,7 @@ package body Flow.Control_Flow_Graph is
       --  Things defined because they appear on the LHS (in A (J), A would
       --  be used).
 
-      V_Need_Checking_LHS : Flow_Id_Sets.Set;
+      V_Need_Checking_LHS : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
    begin
       --  Work out which variables we use and define.
       V_Used_RHS := Get_Variable_Set (Expression (N),
@@ -1885,8 +1892,8 @@ package body Flow.Control_Flow_Graph is
                  V);
       end if;
 
-      --  We link the implicit return statement to the end_vertex
-      Linkup (FA.CFG, V, FA.End_Vertex);
+      --  We link the implicit return statement to the helper end vertex
+      Linkup (FA.CFG, V, FA.Helper_End_Vertex);
 
    end Do_Extended_Return_Statement;
 
@@ -3148,31 +3155,42 @@ package body Flow.Control_Flow_Graph is
                        Entity (Ancestor_Part (AS))
                      else
                        Entity (AS));
+
+                  Final_F_Id : constant Flow_Id :=
+                    Change_Variant (Direct_Mapping_Id (New_E),
+                                    Final_Value);
+
+                  Final_V_Id : Flow_Graphs.Vertex_Id :=
+                    FA.CFG.Get_Vertex (Final_F_Id);
                begin
-                  Create_Initial_And_Final_Vertices
-                    (New_E,
-                     Is_Param => False,
-                     FA       => FA);
+                  --  Both the Refined_State aspect of the
+                  --  Analyzed_Entity and the Abstract_State aspect of
+                  --  the nested packages add vertices for state
+                  --  abstractions so we have to be careful not to
+                  --  add something that already exists.
+                  if Final_V_Id = Flow_Graphs.Null_Vertex then
 
-                  if Ekind (FA.Analyzed_Entity) in
-                    E_Package | E_Package_Body
-                  then
-                     declare
-                        Final_F_Id : constant Flow_Id :=
-                          Change_Variant (Direct_Mapping_Id (New_E),
-                                          Final_Value);
+                     Create_Initial_And_Final_Vertices
+                       (New_E,
+                        Is_Param => False,
+                        FA       => FA);
 
-                        Final_V_Id : constant Flow_Graphs.Vertex_Id :=
-                          FA.CFG.Get_Vertex (Final_F_Id);
+                     Final_V_Id := FA.CFG.Get_Vertex (Final_F_Id);
 
-                        Final_Atr  : V_Attributes := FA.Atr (Final_V_Id);
-                     begin
-                        Final_Atr.Is_Export := Final_Atr.Is_Export
-                          or else Is_Initialized_At_Elaboration (New_E,
-                                                                 FA.B_Scope);
+                     if Ekind (FA.Analyzed_Entity) in E_Package |
+                                                      E_Package_Body
+                     then
+                        declare
+                           Final_Atr  : V_Attributes := FA.Atr (Final_V_Id);
+                        begin
+                           Final_Atr.Is_Export := Final_Atr.Is_Export
+                             or else Is_Initialized_At_Elaboration
+                                       (New_E,
+                                        FA.B_Scope);
 
-                        FA.Atr (Final_V_Id) := Final_Atr;
-                     end;
+                           FA.Atr (Final_V_Id) := Final_Atr;
+                        end;
+                     end if;
                   end if;
                end;
 
@@ -3658,7 +3676,7 @@ package body Flow.Control_Flow_Graph is
                Graph_Connections'
                  (Standard_Entry => V,
                   Standard_Exits => Vertex_Sets.Empty_Set));
-            Linkup (FA.CFG, Prev, FA.End_Vertex);
+            Linkup (FA.CFG, Prev, FA.Helper_End_Vertex);
             FA.Atr (Prev).Execution := Get_Abend_Kind;
          else
             CM.Include
@@ -3669,6 +3687,37 @@ package body Flow.Control_Flow_Graph is
          end if;
       end;
    end Do_Procedure_Call_Statement;
+
+   ----------------------
+   -- Do_Postcondition --
+   ----------------------
+
+   procedure Do_Postcondition
+     (Post : Node_Id;
+      FA   : in out Flow_Analysis_Graphs;
+      CM   : in out Connection_Maps.Map;
+      Ctx  : in out Context)
+   is
+      pragma Unreferenced (Ctx);
+
+      V : Flow_Graphs.Vertex_Id;
+   begin
+      --  We just need to check for uninitialized variables.
+      Add_Vertex
+        (FA,
+         Direct_Mapping_Id (Post),
+         Make_Sink_Vertex_Attributes
+           (Var_Use          => Get_Variable_Set
+              (Post,
+               Scope           => FA.B_Scope,
+               Local_Constants => FA.Local_Constants,
+               Fold_Functions  => False),
+            Is_Postcondition => True,
+            E_Loc            => Post),
+         V);
+
+      CM.Include (Union_Id (Post), Trivial_Connection (V));
+   end Do_Postcondition;
 
    ----------------------------------
    --  Do_Simple_Return_Statement  --
@@ -3711,8 +3760,8 @@ package body Flow.Control_Flow_Graph is
                   Graph_Connections'(Standard_Entry => V,
                                      Standard_Exits => Empty_Set));
 
-      --  Instead we link this vertex directly to the end vertex.
-      Linkup (FA.CFG, V, FA.End_Vertex);
+      --  Instead we link this vertex directly to the helper end vertex.
+      Linkup (FA.CFG, V, FA.Helper_End_Vertex);
    end Do_Simple_Return_Statement;
 
    ----------------------------
@@ -4392,6 +4441,7 @@ package body Flow.Control_Flow_Graph is
       Subprogram_Spec : Entity_Id;
       Preconditions   : Node_Lists.List;
       Precon_Block    : Graph_Connections;
+      Postcon_Block   : Graph_Connections;
       Body_N          : Node_Id;
       Spec_N          : Node_Id;
       Package_Writes  : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
@@ -4440,7 +4490,7 @@ package body Flow.Control_Flow_Graph is
                                             Pragma_Initializes);
       end case;
 
-      --  Create the magic start and end vertices.
+      --  Create the magic start, helper end and end vertices.
       declare
          Start_Atr : V_Attributes := Null_Attributes;
       begin
@@ -4450,6 +4500,7 @@ package body Flow.Control_Flow_Graph is
          Start_Atr.Error_Location := Body_N;
          Add_Vertex (FA, Start_Atr, FA.Start_Vertex);
       end;
+      Add_Vertex (FA, Null_Attributes, FA.Helper_End_Vertex);
       Add_Vertex (FA, Null_Attributes, FA.End_Vertex);
 
       --  Create the magic null export vertices.
@@ -4625,11 +4676,57 @@ package body Flow.Control_Flow_Graph is
                end if;
             end;
 
+            --  If a Refined_State aspect exists, we gather all
+            --  constituents that are abstract states and create
+            --  Initial and Final vertices for them.
+
+            if FA.Kind = E_Package_Body then
+               declare
+                  Refined_State_N : constant Node_Id :=
+                    Get_Pragma (FA.Analyzed_Entity,
+                                Pragma_Refined_State);
+
+                  Constituents    : Flow_Id_Sets.Set;
+                  DM              : Dependency_Maps.Map;
+               begin
+                  if Present (Refined_State_N) then
+                     DM := Parse_Initializes (Refined_State_N);
+                     for C in DM.Iterate loop
+                        Constituents := Dependency_Maps.Element (C);
+
+                        for Constituent of Constituents loop
+                           if Is_Abstract_State (Constituent) then
+                              --  Found a constituent that is an
+                              --  abstract state. We now create
+                              --  Initial and Final vertices for it.
+
+                              Create_Initial_And_Final_Vertices
+                                (F             => Constituent,
+                                 Mode          =>
+                                   (if Is_Initialized_At_Elaboration
+                                         (Constituent,
+                                          FA.B_Scope)
+                                    then Mode_In_Out
+                                    else Mode_In),
+                                 Uninitialized =>
+                                   not Is_Initialized_At_Elaboration
+                                         (Constituent,
+                                          FA.B_Scope),
+                                 FA            => FA);
+                           end if;
+                        end loop;
+                     end loop;
+                  end if;
+               end;
+            end if;
+
       end case;
 
       --  Collect variables introduced by quantified expressions. We
       --  need to look at the following parts:
       --     - precondition
+      --     - postcondition
+      --     - initial_condition
       --     - declarative part
       --     - body
       case FA.Kind is
@@ -4638,6 +4735,18 @@ package body Flow.Control_Flow_Graph is
                Process_Quantified_Expressions
                  (Precondition, FA, Connection_Map, The_Context);
             end loop;
+            for Refined in Boolean loop
+               declare
+                  Postconditions : Node_Lists.List :=
+                    Get_Postcondition_Expressions (FA.Analyzed_Entity,
+                                                   Refined);
+               begin
+                  for Postcondition of Postconditions loop
+                     Process_Quantified_Expressions
+                       (Postcondition, FA, Connection_Map, The_Context);
+                  end loop;
+               end;
+            end loop;
             Process_Quantified_Expressions
               (Declarations (Body_N), FA, Connection_Map, The_Context);
             Process_Quantified_Expressions
@@ -4645,11 +4754,21 @@ package body Flow.Control_Flow_Graph is
                FA, Connection_Map, The_Context);
 
          when E_Package =>
-            --  ??? Look into initial conditions
             Process_Quantified_Expressions
               (Visible_Declarations (Spec_N), FA, Connection_Map, The_Context);
             Process_Quantified_Expressions
               (Private_Declarations (Spec_N), FA, Connection_Map, The_Context);
+            --  Look into initial conditions
+            declare
+               Postconditions : Node_Lists.List :=
+                 Get_Postcondition_Expressions (FA.Analyzed_Entity,
+                                                False);
+            begin
+               for Postcondition of Postconditions loop
+                  Process_Quantified_Expressions
+                    (Postcondition, FA, Connection_Map, The_Context);
+               end loop;
+            end;
 
          when E_Package_Body =>
             --  Look into the spec
@@ -4667,6 +4786,19 @@ package body Flow.Control_Flow_Graph is
                   FA, Connection_Map, The_Context);
             end if;
 
+            --  Look into initial conditions
+            declare
+               Postconditions : Node_Lists.List :=
+                 Get_Postcondition_Expressions (Spec_Entity
+                                                  (FA.Analyzed_Entity),
+                                                False);
+            begin
+               for Postcondition of Postconditions loop
+                  Process_Quantified_Expressions
+                    (Postcondition, FA, Connection_Map, The_Context);
+               end loop;
+            end;
+
       end case;
 
       --  If we are dealing with a function, we use its entity to deal
@@ -4679,9 +4811,12 @@ package body Flow.Control_Flow_Graph is
       --  objects; we deal with them as they are encountered. See
       --  Do_Object_Declaration for enlightenment.
 
-      --  Produce flowgraph for the precondition, if any.
+      --  Produce flowgraph for the precondition and postcondition if
+      --  any.
       case FA.Kind is
          when E_Subprogram_Body =>
+            --  Flowgraph for preconditions and left hand sides of
+            --  contract cases.
             declare
                NL : Union_Lists.List := Union_Lists.Empty_List;
             begin
@@ -4698,13 +4833,60 @@ package body Flow.Control_Flow_Graph is
                      Block => Precon_Block);
             end;
 
+            --  Flowgraph for postconditions and right hand sides of
+            --  contract cases.
+            declare
+               NL             : Union_Lists.List := Union_Lists.Empty_List;
+               Postconditions : Node_Lists.List;
+            begin
+               for Refined in Boolean loop
+                  Postconditions := Get_Postcondition_Expressions
+                    (FA.Analyzed_Entity,
+                     Refined);
+
+                  for Postcondition of Postconditions loop
+                     Do_Postcondition (Postcondition,
+                                       FA,
+                                       Connection_Map,
+                                       The_Context);
+                     NL.Append (Union_Id (Postcondition));
+                  end loop;
+               end loop;
+               Join (FA    => FA,
+                     CM    => Connection_Map,
+                     Nodes => NL,
+                     Block => Postcon_Block);
+            end;
+
          when E_Package | E_Package_Body =>
-            --  ??? process initial condition
-            null;
+            --  Flowgraph for initial_condition aspect
+            declare
+               Spec_E         : constant Entity_Id :=
+                 (if Ekind (FA.Analyzed_Entity) = E_Package
+                  then FA.Analyzed_Entity
+                  else Spec_Entity (FA.Analyzed_Entity));
+               NL             : Union_Lists.List := Union_Lists.Empty_List;
+               Postconditions : constant Node_Lists.List :=
+                 Get_Postcondition_Expressions (Spec_E,
+                                                False);
+            begin
+               for Postcondition of Postconditions loop
+                  Do_Postcondition (Postcondition,
+                                    FA,
+                                    Connection_Map,
+                                    The_Context);
+                  NL.Append (Union_Id (Postcondition));
+               end loop;
+               Join (FA    => FA,
+                     CM    => Connection_Map,
+                     Nodes => NL,
+                     Block => Postcon_Block);
+            end;
+
       end case;
 
-      --  Produce flowgraphs for the body and link to start and end
-      --  vertex.
+      --  Produce flowgraphs for the body and link to start, helper
+      --  end and end vertex.
       case FA.Kind is
          when E_Subprogram_Body =>
             Do_Subprogram_Or_Block (Body_N, FA, Connection_Map, The_Context);
@@ -4718,6 +4900,12 @@ package body Flow.Control_Flow_Graph is
                     Connection_Map (Union_Id (Body_N)).Standard_Entry);
             Linkup (FA.CFG,
                     Connection_Map (Union_Id (Body_N)).Standard_Exits,
+                    FA.Helper_End_Vertex);
+            Linkup (FA.CFG,
+                    FA.Helper_End_Vertex,
+                    Postcon_Block.Standard_Entry);
+            Linkup (FA.CFG,
+                    Postcon_Block.Standard_Exits,
                     FA.End_Vertex);
 
          when E_Package | E_Package_Body =>
@@ -4728,6 +4916,7 @@ package body Flow.Control_Flow_Graph is
                if Present (Visible_Declarations (Spec_N)) then
                   Process_Statement_List (Visible_Declarations (Spec_N),
                                           FA, Connection_Map, The_Context);
+
                   UL.Append (Union_Id (Visible_Declarations (Spec_N)));
                end if;
 
@@ -4764,6 +4953,12 @@ package body Flow.Control_Flow_Graph is
                end loop;
                Linkup (FA.CFG,
                        Connection_Map (UL.Last_Element).Standard_Exits,
+                       FA.Helper_End_Vertex);
+               Linkup (FA.CFG,
+                       FA.Helper_End_Vertex,
+                       Postcon_Block.Standard_Entry);
+               Linkup (FA.CFG,
+                       Postcon_Block.Standard_Exits,
                        FA.End_Vertex);
 
             end;

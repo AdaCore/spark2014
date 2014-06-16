@@ -4,43 +4,51 @@ test.adb:2:14: warning: subprogram "Null_Statement" has no effect
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="end\n<VId: 2>",shape="plaintext"];
-    4 [label="null\nVU: {null}\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
-    7 [label="null;\n<VId: 7>"];
+    2 [label="helper end\n<VId: 2>",shape="plaintext"];
+    3 [label="end\n<VId: 3>",shape="plaintext"];
+    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    9 [label="null;\n<VId: 9>"];
 
-    1 ->  7 [arrowType="normal"];
-    7 ->  2 [arrowType="normal"];
+    1 ->  9 [arrowType="normal"];
+    2 ->  3 [arrowType="normal"];
+    9 ->  2 [arrowType="normal"];
 }
 
 // package_body_test_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
-    4 [label="null\nVU: {null}\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
-    7 [label="null;\n<VId: 7>"];
+    2 [label="helper end\n<VId: 2>",shape="plaintext"];
+    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    9 [label="null;\n<VId: 9>"];
 
-    1 ->  7 [arrowType="normal"];
+    1 ->  2 [arrowType="normal"];
+    1 ->  9 [arrowType="normal"];
 }
 
 // subprogram_null_statement_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="end\n<VId: 2>",shape="plaintext"];
-    4 [label="null\nVU: {null}\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
-    7 [label="null;\n<VId: 7>"];
+    2 [label="helper end\n<VId: 2>",shape="plaintext"];
+    3 [label="end\n<VId: 3>",shape="plaintext"];
+    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    9 [label="null;\n<VId: 9>"];
 
-    1 ->  7 [arrowType="normal"];
-    7 ->  2 [arrowType="normal"];
+    1 ->  9 [arrowType="normal"];
+    2 ->  3 [arrowType="normal"];
+    9 ->  2 [arrowType="normal"];
 }
 
 // subprogram_null_statement_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
-    4 [label="null\nVU: {null}\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
-    7 [label="null;\n<VId: 7>"];
+    2 [label="helper end\n<VId: 2>",shape="plaintext"];
+    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    9 [label="null;\n<VId: 9>"];
 
-    1 ->  7 [arrowType="normal"];
+    1 ->  2 [arrowType="normal"];
+    1 ->  9 [arrowType="normal"];
 }
 

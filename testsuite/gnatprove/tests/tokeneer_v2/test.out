@@ -22,19 +22,19 @@ admin.ads:233:08: info: length check proved
 admin.ads:233:48: info: length check proved
 admin.ads:235:48: info: length check proved
 admin.ads:237:48: info: length check proved
-admintoken.adb:195:38: warning: refined postcondition might fail
-admintoken.adb:221:37: info: length check proved
-admintoken.adb:221:40: info: length check proved
-admintoken.adb:223:23: info: length check proved
-admintoken.adb:309:28: info: precondition proved
-admintoken.adb:312:15: info: precondition proved
-admintoken.adb:420:31: info: precondition proved
-admintoken.adb:423:19: info: precondition proved
-admintoken.adb:426:19: info: precondition proved
-admintoken.adb:455:31: info: precondition proved
-admintoken.adb:467:25: info: precondition proved
-admintoken.adb:542:21: info: range check proved
-admintoken.adb:544:31: warning: unused initial value of "Idcert"
+admintoken.adb:199:38: warning: refined postcondition might fail
+admintoken.adb:225:37: info: length check proved
+admintoken.adb:225:40: info: length check proved
+admintoken.adb:227:23: info: length check proved
+admintoken.adb:313:28: info: precondition proved
+admintoken.adb:316:15: info: precondition proved
+admintoken.adb:424:31: info: precondition proved
+admintoken.adb:427:19: info: precondition proved
+admintoken.adb:430:19: info: precondition proved
+admintoken.adb:459:31: info: precondition proved
+admintoken.adb:471:25: info: precondition proved
+admintoken.adb:546:21: info: range check proved
+admintoken.adb:548:31: warning: unused initial value of "Idcert"
 admintoken.ads:66:22: info: postcondition proved
 admintoken.ads:101:22: info: postcondition proved
 admintoken.ads:148:22: info: postcondition proved

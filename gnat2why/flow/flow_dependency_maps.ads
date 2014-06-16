@@ -60,7 +60,8 @@ package Flow_Dependency_Maps is
    function Parse_Initializes (N : Node_Id)
                                return Dependency_Maps.Map
      with Pre => Nkind (N) = N_Pragma and then
-                 Get_Pragma_Id (Chars (Pragma_Identifier (N))) =
-                   Pragma_Initializes;
+                 Get_Pragma_Id (Chars (Pragma_Identifier (N))) in
+                   Pragma_Initializes |
+                   Pragma_Refined_State;
 
 end Flow_Dependency_Maps;

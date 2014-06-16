@@ -7,281 +7,305 @@ test.adb:40:04: warning: analyzing unreferenced procedure "case_1"
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="end\n<VId: 2>",shape="plaintext"];
-    4 [label="null\nVU: {null}\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
-    7 [label="null;\n<VId: 7>"];
+    2 [label="helper end\n<VId: 2>",shape="plaintext"];
+    3 [label="end\n<VId: 3>",shape="plaintext"];
+    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    9 [label="null;\n<VId: 9>"];
 
-    1 ->  7 [arrowType="normal"];
-    7 ->  2 [arrowType="normal"];
+    1 ->  9 [arrowType="normal"];
+    2 ->  3 [arrowType="normal"];
+    9 ->  2 [arrowType="normal"];
 }
 
 // package_body_test_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
-    4 [label="null\nVU: {null}\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
-    7 [label="null;\n<VId: 7>"];
+    2 [label="helper end\n<VId: 2>",shape="plaintext"];
+    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    9 [label="null;\n<VId: 9>"];
 
-    1 ->  7 [arrowType="normal"];
+    1 ->  2 [arrowType="normal"];
+    1 ->  9 [arrowType="normal"];
 }
 
 // subprogram_case_1_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="end\n<VId: 2>",shape="plaintext"];
-    4 [label="null\nVU: {null}\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
-    5 [label="par1'initial\nVD: {Par1}\n<VId: 5>",shape="plaintext"];
-    6 [label="par1'final\nVU: {Par1}\n<VId: 6>",shape="plaintext",fontcolor="red"];
-    7 [label="par2'initial\nVD: {Par2}\n<VId: 7>",shape="plaintext",fontcolor="red"];
-    8 [label="par2'final\nVU: {Par2}\n<VId: 8>",shape="plaintext",fontcolor="blue"];
-    11 [label="case par1\nVU: {Par1}\n<VId: 11>",shape="diamond"];
-    12 [label="when 1\n<VId: 12>",shape="plaintext"];
-    13 [label="par2 := 1;\nVD: {Par2}\n<VId: 13>"];
-    14 [label="when 2, 3\n<VId: 14>",shape="plaintext"];
-    15 [label="par2 := 2;\nVD: {Par2}\n<VId: 15>"];
-    16 [label="when 4 .. 10\n<VId: 16>",shape="plaintext"];
-    17 [label="par2 := 3;\nVD: {Par2}\n<VId: 17>"];
-    18 [label="when others\n<VId: 18>",shape="plaintext"];
-    19 [label="par2 := 4;\nVD: {Par2}\n<VId: 19>"];
+    2 [label="helper end\n<VId: 2>",shape="plaintext"];
+    3 [label="end\n<VId: 3>",shape="plaintext"];
+    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="par1'initial\nVD: {Par1}\n<VId: 6>",shape="plaintext"];
+    7 [label="par1'final\nVU: {Par1}\n<VId: 7>",shape="plaintext",fontcolor="red"];
+    8 [label="par2'initial\nVD: {Par2}\n<VId: 8>",shape="plaintext",fontcolor="red"];
+    9 [label="par2'final\nVU: {Par2}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
+    13 [label="case par1\nVU: {Par1}\n<VId: 13>",shape="diamond"];
+    14 [label="when 1\n<VId: 14>",shape="plaintext"];
+    15 [label="par2 := 1;\nVD: {Par2}\n<VId: 15>"];
+    16 [label="when 2, 3\n<VId: 16>",shape="plaintext"];
+    17 [label="par2 := 2;\nVD: {Par2}\n<VId: 17>"];
+    18 [label="when 4 .. 10\n<VId: 18>",shape="plaintext"];
+    19 [label="par2 := 3;\nVD: {Par2}\n<VId: 19>"];
+    20 [label="when others\n<VId: 20>",shape="plaintext"];
+    21 [label="par2 := 4;\nVD: {Par2}\n<VId: 21>"];
 
-    1 ->  11 [arrowType="normal"];
-    2 ->  6 [arrowType="normal"];
-    2 ->  8 [arrowType="normal"];
-    5 ->  1 [arrowType="normal"];
-    7 ->  1 [arrowType="normal"];
-    11 ->  12 [arrowType="normal"];
-    11 ->  14 [arrowType="normal"];
-    11 ->  16 [arrowType="normal"];
-    11 ->  18 [arrowType="normal"];
-    12 ->  13 [arrowType="normal"];
-    13 ->  2 [arrowType="normal"];
+    1 ->  13 [arrowType="normal"];
+    2 ->  3 [arrowType="normal"];
+    3 ->  7 [arrowType="normal"];
+    3 ->  9 [arrowType="normal"];
+    6 ->  1 [arrowType="normal"];
+    8 ->  1 [arrowType="normal"];
+    13 ->  14 [arrowType="normal"];
+    13 ->  16 [arrowType="normal"];
+    13 ->  18 [arrowType="normal"];
+    13 ->  20 [arrowType="normal"];
     14 ->  15 [arrowType="normal"];
     15 ->  2 [arrowType="normal"];
     16 ->  17 [arrowType="normal"];
     17 ->  2 [arrowType="normal"];
     18 ->  19 [arrowType="normal"];
     19 ->  2 [arrowType="normal"];
+    20 ->  21 [arrowType="normal"];
+    21 ->  2 [arrowType="normal"];
 }
 
 // subprogram_case_1_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
-    4 [label="null\nVU: {null}\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
-    5 [label="par1'initial\nVD: {Par1}\n<VId: 5>",shape="plaintext"];
-    6 [label="par1'final\nVU: {Par1}\n<VId: 6>",shape="plaintext",fontcolor="red"];
-    7 [label="par2'initial\nVD: {Par2}\n<VId: 7>",shape="plaintext",fontcolor="red"];
-    8 [label="par2'final\nVU: {Par2}\n<VId: 8>",shape="plaintext",fontcolor="blue"];
-    11 [label="case par1\nVU: {Par1}\n<VId: 11>",shape="diamond"];
-    12 [label="when 1\n<VId: 12>",shape="plaintext"];
-    13 [label="par2 := 1;\nVD: {Par2}\n<VId: 13>"];
-    14 [label="when 2, 3\n<VId: 14>",shape="plaintext"];
-    15 [label="par2 := 2;\nVD: {Par2}\n<VId: 15>"];
-    16 [label="when 4 .. 10\n<VId: 16>",shape="plaintext"];
-    17 [label="par2 := 3;\nVD: {Par2}\n<VId: 17>"];
-    18 [label="when others\n<VId: 18>",shape="plaintext"];
-    19 [label="par2 := 4;\nVD: {Par2}\n<VId: 19>"];
+    2 [label="helper end\n<VId: 2>",shape="plaintext"];
+    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="par1'initial\nVD: {Par1}\n<VId: 6>",shape="plaintext"];
+    7 [label="par1'final\nVU: {Par1}\n<VId: 7>",shape="plaintext",fontcolor="red"];
+    8 [label="par2'initial\nVD: {Par2}\n<VId: 8>",shape="plaintext",fontcolor="red"];
+    9 [label="par2'final\nVU: {Par2}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
+    13 [label="case par1\nVU: {Par1}\n<VId: 13>",shape="diamond"];
+    14 [label="when 1\n<VId: 14>",shape="plaintext"];
+    15 [label="par2 := 1;\nVD: {Par2}\n<VId: 15>"];
+    16 [label="when 2, 3\n<VId: 16>",shape="plaintext"];
+    17 [label="par2 := 2;\nVD: {Par2}\n<VId: 17>"];
+    18 [label="when 4 .. 10\n<VId: 18>",shape="plaintext"];
+    19 [label="par2 := 3;\nVD: {Par2}\n<VId: 19>"];
+    20 [label="when others\n<VId: 20>",shape="plaintext"];
+    21 [label="par2 := 4;\nVD: {Par2}\n<VId: 21>"];
 
-    1 ->  11 [arrowType="normal"];
-    5 ->  6 [arrowType="normal",color="red"];
-    5 ->  11 [arrowType="normal",color="red"];
-    11 ->  12 [arrowType="normal"];
-    11 ->  13 [arrowType="normal"];
-    11 ->  14 [arrowType="normal"];
-    11 ->  15 [arrowType="normal"];
-    11 ->  16 [arrowType="normal"];
-    11 ->  17 [arrowType="normal"];
-    11 ->  18 [arrowType="normal"];
-    11 ->  19 [arrowType="normal"];
-    13 ->  8 [arrowType="normal",color="red"];
-    15 ->  8 [arrowType="normal",color="red"];
-    17 ->  8 [arrowType="normal",color="red"];
-    19 ->  8 [arrowType="normal",color="red"];
+    1 ->  2 [arrowType="normal"];
+    1 ->  13 [arrowType="normal"];
+    6 ->  7 [arrowType="normal",color="red"];
+    6 ->  13 [arrowType="normal",color="red"];
+    13 ->  14 [arrowType="normal"];
+    13 ->  15 [arrowType="normal"];
+    13 ->  16 [arrowType="normal"];
+    13 ->  17 [arrowType="normal"];
+    13 ->  18 [arrowType="normal"];
+    13 ->  19 [arrowType="normal"];
+    13 ->  20 [arrowType="normal"];
+    13 ->  21 [arrowType="normal"];
+    15 ->  9 [arrowType="normal",color="red"];
+    17 ->  9 [arrowType="normal",color="red"];
+    19 ->  9 [arrowType="normal",color="red"];
+    21 ->  9 [arrowType="normal",color="red"];
 }
 
 // subprogram_if_1_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="end\n<VId: 2>",shape="plaintext"];
-    4 [label="null\nVU: {null}\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
-    5 [label="par1'initial\nVD: {Par1}\n<VId: 5>",shape="plaintext"];
-    6 [label="par1'final\nVU: {Par1}\n<VId: 6>",shape="plaintext",fontcolor="blue"];
-    9 [label="if par1 > 1000\nVU: {Par1}\n<VId: 9>",shape="diamond"];
-    10 [label="par1 := 999;\nVD: {Par1}\n<VId: 10>"];
-    11 [label="elsif par1 > 100\nVU: {Par1}\n<VId: 11>",shape="diamond"];
-    12 [label="par1 := 99;\nVD: {Par1}\n<VId: 12>"];
-    13 [label="elsif par1 > 10\nVU: {Par1}\n<VId: 13>",shape="diamond"];
-    14 [label="par1 := 9;\nVD: {Par1}\n<VId: 14>"];
-    15 [label="par1 := 0;\nVD: {Par1}\n<VId: 15>"];
+    2 [label="helper end\n<VId: 2>",shape="plaintext"];
+    3 [label="end\n<VId: 3>",shape="plaintext"];
+    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="par1'initial\nVD: {Par1}\n<VId: 6>",shape="plaintext"];
+    7 [label="par1'final\nVU: {Par1}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
+    11 [label="if par1 > 1000\nVU: {Par1}\n<VId: 11>",shape="diamond"];
+    12 [label="par1 := 999;\nVD: {Par1}\n<VId: 12>"];
+    13 [label="elsif par1 > 100\nVU: {Par1}\n<VId: 13>",shape="diamond"];
+    14 [label="par1 := 99;\nVD: {Par1}\n<VId: 14>"];
+    15 [label="elsif par1 > 10\nVU: {Par1}\n<VId: 15>",shape="diamond"];
+    16 [label="par1 := 9;\nVD: {Par1}\n<VId: 16>"];
+    17 [label="par1 := 0;\nVD: {Par1}\n<VId: 17>"];
 
-    1 ->  9 [arrowType="normal"];
-    2 ->  6 [arrowType="normal"];
-    5 ->  1 [arrowType="normal"];
-    9 ->  10 [arrowType="normal"];
-    9 ->  11 [arrowType="normal"];
-    10 ->  2 [arrowType="normal"];
+    1 ->  11 [arrowType="normal"];
+    2 ->  3 [arrowType="normal"];
+    3 ->  7 [arrowType="normal"];
+    6 ->  1 [arrowType="normal"];
     11 ->  12 [arrowType="normal"];
     11 ->  13 [arrowType="normal"];
     12 ->  2 [arrowType="normal"];
     13 ->  14 [arrowType="normal"];
     13 ->  15 [arrowType="normal"];
     14 ->  2 [arrowType="normal"];
-    15 ->  2 [arrowType="normal"];
+    15 ->  16 [arrowType="normal"];
+    15 ->  17 [arrowType="normal"];
+    16 ->  2 [arrowType="normal"];
+    17 ->  2 [arrowType="normal"];
 }
 
 // subprogram_if_1_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
-    4 [label="null\nVU: {null}\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
-    5 [label="par1'initial\nVD: {Par1}\n<VId: 5>",shape="plaintext"];
-    6 [label="par1'final\nVU: {Par1}\n<VId: 6>",shape="plaintext",fontcolor="blue"];
-    9 [label="if par1 > 1000\nVU: {Par1}\n<VId: 9>",shape="diamond"];
-    10 [label="par1 := 999;\nVD: {Par1}\n<VId: 10>"];
-    11 [label="elsif par1 > 100\nVU: {Par1}\n<VId: 11>",shape="diamond"];
-    12 [label="par1 := 99;\nVD: {Par1}\n<VId: 12>"];
-    13 [label="elsif par1 > 10\nVU: {Par1}\n<VId: 13>",shape="diamond"];
-    14 [label="par1 := 9;\nVD: {Par1}\n<VId: 14>"];
-    15 [label="par1 := 0;\nVD: {Par1}\n<VId: 15>"];
+    2 [label="helper end\n<VId: 2>",shape="plaintext"];
+    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="par1'initial\nVD: {Par1}\n<VId: 6>",shape="plaintext"];
+    7 [label="par1'final\nVU: {Par1}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
+    11 [label="if par1 > 1000\nVU: {Par1}\n<VId: 11>",shape="diamond"];
+    12 [label="par1 := 999;\nVD: {Par1}\n<VId: 12>"];
+    13 [label="elsif par1 > 100\nVU: {Par1}\n<VId: 13>",shape="diamond"];
+    14 [label="par1 := 99;\nVD: {Par1}\n<VId: 14>"];
+    15 [label="elsif par1 > 10\nVU: {Par1}\n<VId: 15>",shape="diamond"];
+    16 [label="par1 := 9;\nVD: {Par1}\n<VId: 16>"];
+    17 [label="par1 := 0;\nVD: {Par1}\n<VId: 17>"];
 
-    1 ->  9 [arrowType="normal"];
-    5 ->  9 [arrowType="normal",color="red"];
-    5 ->  11 [arrowType="normal",color="red"];
-    5 ->  13 [arrowType="normal",color="red"];
-    9 ->  10 [arrowType="normal"];
-    9 ->  11 [arrowType="normal"];
-    10 ->  6 [arrowType="normal",color="red"];
+    1 ->  2 [arrowType="normal"];
+    1 ->  11 [arrowType="normal"];
+    6 ->  11 [arrowType="normal",color="red"];
+    6 ->  13 [arrowType="normal",color="red"];
+    6 ->  15 [arrowType="normal",color="red"];
     11 ->  12 [arrowType="normal"];
     11 ->  13 [arrowType="normal"];
-    12 ->  6 [arrowType="normal",color="red"];
+    12 ->  7 [arrowType="normal",color="red"];
     13 ->  14 [arrowType="normal"];
     13 ->  15 [arrowType="normal"];
-    14 ->  6 [arrowType="normal",color="red"];
-    15 ->  6 [arrowType="normal",color="red"];
+    14 ->  7 [arrowType="normal",color="red"];
+    15 ->  16 [arrowType="normal"];
+    15 ->  17 [arrowType="normal"];
+    16 ->  7 [arrowType="normal",color="red"];
+    17 ->  7 [arrowType="normal",color="red"];
 }
 
 // subprogram_if_2_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="end\n<VId: 2>",shape="plaintext"];
-    4 [label="null\nVU: {null}\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
-    5 [label="par1'initial\nVD: {Par1}\n<VId: 5>",shape="plaintext"];
-    6 [label="par1'final\nVU: {Par1}\n<VId: 6>",shape="plaintext",fontcolor="blue"];
-    9 [label="if par1 > 1000\nVU: {Par1}\n<VId: 9>",shape="diamond"];
-    10 [label="par1 := 999;\nVD: {Par1}\n<VId: 10>"];
-    11 [label="elsif par1 > 100\nVU: {Par1}\n<VId: 11>",shape="diamond"];
-    12 [label="par1 := 99;\nVD: {Par1}\n<VId: 12>"];
+    2 [label="helper end\n<VId: 2>",shape="plaintext"];
+    3 [label="end\n<VId: 3>",shape="plaintext"];
+    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="par1'initial\nVD: {Par1}\n<VId: 6>",shape="plaintext"];
+    7 [label="par1'final\nVU: {Par1}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
+    11 [label="if par1 > 1000\nVU: {Par1}\n<VId: 11>",shape="diamond"];
+    12 [label="par1 := 999;\nVD: {Par1}\n<VId: 12>"];
+    13 [label="elsif par1 > 100\nVU: {Par1}\n<VId: 13>",shape="diamond"];
+    14 [label="par1 := 99;\nVD: {Par1}\n<VId: 14>"];
 
-    1 ->  9 [arrowType="normal"];
-    2 ->  6 [arrowType="normal"];
-    5 ->  1 [arrowType="normal"];
-    9 ->  10 [arrowType="normal"];
-    9 ->  11 [arrowType="normal"];
-    10 ->  2 [arrowType="normal"];
-    11 ->  2 [arrowType="normal"];
+    1 ->  11 [arrowType="normal"];
+    2 ->  3 [arrowType="normal"];
+    3 ->  7 [arrowType="normal"];
+    6 ->  1 [arrowType="normal"];
     11 ->  12 [arrowType="normal"];
+    11 ->  13 [arrowType="normal"];
     12 ->  2 [arrowType="normal"];
+    13 ->  2 [arrowType="normal"];
+    13 ->  14 [arrowType="normal"];
+    14 ->  2 [arrowType="normal"];
 }
 
 // subprogram_if_2_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
-    4 [label="null\nVU: {null}\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
-    5 [label="par1'initial\nVD: {Par1}\n<VId: 5>",shape="plaintext"];
-    6 [label="par1'final\nVU: {Par1}\n<VId: 6>",shape="plaintext",fontcolor="blue"];
-    9 [label="if par1 > 1000\nVU: {Par1}\n<VId: 9>",shape="diamond"];
-    10 [label="par1 := 999;\nVD: {Par1}\n<VId: 10>"];
-    11 [label="elsif par1 > 100\nVU: {Par1}\n<VId: 11>",shape="diamond"];
-    12 [label="par1 := 99;\nVD: {Par1}\n<VId: 12>"];
+    2 [label="helper end\n<VId: 2>",shape="plaintext"];
+    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="par1'initial\nVD: {Par1}\n<VId: 6>",shape="plaintext"];
+    7 [label="par1'final\nVU: {Par1}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
+    11 [label="if par1 > 1000\nVU: {Par1}\n<VId: 11>",shape="diamond"];
+    12 [label="par1 := 999;\nVD: {Par1}\n<VId: 12>"];
+    13 [label="elsif par1 > 100\nVU: {Par1}\n<VId: 13>",shape="diamond"];
+    14 [label="par1 := 99;\nVD: {Par1}\n<VId: 14>"];
 
-    1 ->  9 [arrowType="normal"];
-    5 ->  6 [arrowType="normal",color="red"];
-    5 ->  9 [arrowType="normal",color="red"];
-    5 ->  11 [arrowType="normal",color="red"];
-    9 ->  10 [arrowType="normal"];
-    9 ->  11 [arrowType="normal"];
-    10 ->  6 [arrowType="normal",color="red"];
+    1 ->  2 [arrowType="normal"];
+    1 ->  11 [arrowType="normal"];
+    6 ->  7 [arrowType="normal",color="red"];
+    6 ->  11 [arrowType="normal",color="red"];
+    6 ->  13 [arrowType="normal",color="red"];
     11 ->  12 [arrowType="normal"];
-    12 ->  6 [arrowType="normal",color="red"];
+    11 ->  13 [arrowType="normal"];
+    12 ->  7 [arrowType="normal",color="red"];
+    13 ->  14 [arrowType="normal"];
+    14 ->  7 [arrowType="normal",color="red"];
 }
 
 // subprogram_if_3_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="end\n<VId: 2>",shape="plaintext"];
-    4 [label="null\nVU: {null}\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
-    5 [label="par1'initial\nVD: {Par1}\n<VId: 5>",shape="plaintext"];
-    6 [label="par1'final\nVU: {Par1}\n<VId: 6>",shape="plaintext",fontcolor="blue"];
-    9 [label="if par1 > 1000\nVU: {Par1}\n<VId: 9>",shape="diamond"];
-    10 [label="par1 := 999;\nVD: {Par1}\n<VId: 10>"];
-    11 [label="par1 := 0;\nVD: {Par1}\n<VId: 11>"];
+    2 [label="helper end\n<VId: 2>",shape="plaintext"];
+    3 [label="end\n<VId: 3>",shape="plaintext"];
+    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="par1'initial\nVD: {Par1}\n<VId: 6>",shape="plaintext"];
+    7 [label="par1'final\nVU: {Par1}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
+    11 [label="if par1 > 1000\nVU: {Par1}\n<VId: 11>",shape="diamond"];
+    12 [label="par1 := 999;\nVD: {Par1}\n<VId: 12>"];
+    13 [label="par1 := 0;\nVD: {Par1}\n<VId: 13>"];
 
-    1 ->  9 [arrowType="normal"];
-    2 ->  6 [arrowType="normal"];
-    5 ->  1 [arrowType="normal"];
-    9 ->  10 [arrowType="normal"];
-    9 ->  11 [arrowType="normal"];
-    10 ->  2 [arrowType="normal"];
-    11 ->  2 [arrowType="normal"];
+    1 ->  11 [arrowType="normal"];
+    2 ->  3 [arrowType="normal"];
+    3 ->  7 [arrowType="normal"];
+    6 ->  1 [arrowType="normal"];
+    11 ->  12 [arrowType="normal"];
+    11 ->  13 [arrowType="normal"];
+    12 ->  2 [arrowType="normal"];
+    13 ->  2 [arrowType="normal"];
 }
 
 // subprogram_if_3_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
-    4 [label="null\nVU: {null}\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
-    5 [label="par1'initial\nVD: {Par1}\n<VId: 5>",shape="plaintext"];
-    6 [label="par1'final\nVU: {Par1}\n<VId: 6>",shape="plaintext",fontcolor="blue"];
-    9 [label="if par1 > 1000\nVU: {Par1}\n<VId: 9>",shape="diamond"];
-    10 [label="par1 := 999;\nVD: {Par1}\n<VId: 10>"];
-    11 [label="par1 := 0;\nVD: {Par1}\n<VId: 11>"];
+    2 [label="helper end\n<VId: 2>",shape="plaintext"];
+    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="par1'initial\nVD: {Par1}\n<VId: 6>",shape="plaintext"];
+    7 [label="par1'final\nVU: {Par1}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
+    11 [label="if par1 > 1000\nVU: {Par1}\n<VId: 11>",shape="diamond"];
+    12 [label="par1 := 999;\nVD: {Par1}\n<VId: 12>"];
+    13 [label="par1 := 0;\nVD: {Par1}\n<VId: 13>"];
 
-    1 ->  9 [arrowType="normal"];
-    5 ->  9 [arrowType="normal",color="red"];
-    9 ->  10 [arrowType="normal"];
-    9 ->  11 [arrowType="normal"];
-    10 ->  6 [arrowType="normal",color="red"];
-    11 ->  6 [arrowType="normal",color="red"];
+    1 ->  2 [arrowType="normal"];
+    1 ->  11 [arrowType="normal"];
+    6 ->  11 [arrowType="normal",color="red"];
+    11 ->  12 [arrowType="normal"];
+    11 ->  13 [arrowType="normal"];
+    12 ->  7 [arrowType="normal",color="red"];
+    13 ->  7 [arrowType="normal",color="red"];
 }
 
 // subprogram_if_4_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="end\n<VId: 2>",shape="plaintext"];
-    4 [label="null\nVU: {null}\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
-    5 [label="par1'initial\nVD: {Par1}\n<VId: 5>",shape="plaintext"];
-    6 [label="par1'final\nVU: {Par1}\n<VId: 6>",shape="plaintext",fontcolor="blue"];
-    9 [label="if par1 > 1000\nVU: {Par1}\n<VId: 9>",shape="diamond"];
-    10 [label="par1 := 999;\nVD: {Par1}\n<VId: 10>"];
+    2 [label="helper end\n<VId: 2>",shape="plaintext"];
+    3 [label="end\n<VId: 3>",shape="plaintext"];
+    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="par1'initial\nVD: {Par1}\n<VId: 6>",shape="plaintext"];
+    7 [label="par1'final\nVU: {Par1}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
+    11 [label="if par1 > 1000\nVU: {Par1}\n<VId: 11>",shape="diamond"];
+    12 [label="par1 := 999;\nVD: {Par1}\n<VId: 12>"];
 
-    1 ->  9 [arrowType="normal"];
-    2 ->  6 [arrowType="normal"];
-    5 ->  1 [arrowType="normal"];
-    9 ->  2 [arrowType="normal"];
-    9 ->  10 [arrowType="normal"];
-    10 ->  2 [arrowType="normal"];
+    1 ->  11 [arrowType="normal"];
+    2 ->  3 [arrowType="normal"];
+    3 ->  7 [arrowType="normal"];
+    6 ->  1 [arrowType="normal"];
+    11 ->  2 [arrowType="normal"];
+    11 ->  12 [arrowType="normal"];
+    12 ->  2 [arrowType="normal"];
 }
 
 // subprogram_if_4_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
-    4 [label="null\nVU: {null}\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
-    5 [label="par1'initial\nVD: {Par1}\n<VId: 5>",shape="plaintext"];
-    6 [label="par1'final\nVU: {Par1}\n<VId: 6>",shape="plaintext",fontcolor="blue"];
-    9 [label="if par1 > 1000\nVU: {Par1}\n<VId: 9>",shape="diamond"];
-    10 [label="par1 := 999;\nVD: {Par1}\n<VId: 10>"];
+    2 [label="helper end\n<VId: 2>",shape="plaintext"];
+    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="par1'initial\nVD: {Par1}\n<VId: 6>",shape="plaintext"];
+    7 [label="par1'final\nVU: {Par1}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
+    11 [label="if par1 > 1000\nVU: {Par1}\n<VId: 11>",shape="diamond"];
+    12 [label="par1 := 999;\nVD: {Par1}\n<VId: 12>"];
 
-    1 ->  9 [arrowType="normal"];
-    5 ->  6 [arrowType="normal",color="red"];
-    5 ->  9 [arrowType="normal",color="red"];
-    9 ->  10 [arrowType="normal"];
-    10 ->  6 [arrowType="normal",color="red"];
+    1 ->  2 [arrowType="normal"];
+    1 ->  11 [arrowType="normal"];
+    6 ->  7 [arrowType="normal",color="red"];
+    6 ->  11 [arrowType="normal",color="red"];
+    11 ->  12 [arrowType="normal"];
+    12 ->  7 [arrowType="normal",color="red"];
 }
 

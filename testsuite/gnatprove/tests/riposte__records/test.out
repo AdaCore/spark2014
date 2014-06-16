@@ -16,6 +16,10 @@ records.adb:120:19: warning: postcondition might fail, requires Is_Valid_C'Resul
 records.adb:133:22: info: postcondition proved
 records.adb:143:22: warning: postcondition might fail
 records.adb:153:22: info: postcondition proved
+records.adb:154:49: warning: "Dst.The_Pair.A" might not be initialized
+records.adb:154:49: warning: "Dst.The_Pair.B" might not be initialized
+records.adb:166:22: warning: "Dst.The_Pair.A" might not be initialized
+records.adb:166:22: warning: "Dst.The_Pair.B" might not be initialized
 records.adb:166:22: warning: postcondition might fail, requires Dst = Src
 records.adb:177:22: info: postcondition proved
 records.adb:191:22: warning: postcondition might fail

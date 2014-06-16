@@ -181,10 +181,14 @@ infoflow.ads:129:06: warning: contract cases might not be disjoint
 infoflow.ads:131:33: info: index check proved
 infoflow.ads:131:44: info: index check proved
 infoflow.ads:132:24: warning: contract case might fail
+infoflow.ads:132:27: warning: "A_V1" might not be initialized
 infoflow.ads:132:33: info: index check proved
+infoflow.ads:132:38: warning: "A_V2" might not be initialized
 infoflow.ads:132:44: warning: array index check might fail
 infoflow.ads:135:34: info: index check proved
 infoflow.ads:135:49: info: index check proved
 infoflow.ads:136:24: warning: contract case might fail
+infoflow.ads:136:27: warning: "A_V1" might not be initialized
 infoflow.ads:136:33: info: index check proved
+infoflow.ads:136:38: warning: "A_V2" might not be initialized
 infoflow.ads:136:44: warning: array index check might fail

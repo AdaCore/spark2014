@@ -38,8 +38,9 @@ package body Flow_Dependency_Maps is
                                       return Dependency_Maps.Map
      with Pre => Nkind (N) = N_Pragma and then
                  Get_Pragma_Id (Chars (Pragma_Identifier (N))) in
-                   Pragma_Depends |
+                   Pragma_Depends         |
                    Pragma_Refined_Depends |
+                   Pragma_Refined_State   |
                    Pragma_Initializes;
    --  Helper function to parse something that looks like a dependency
    --  map; in particular we can parse either a depends or an

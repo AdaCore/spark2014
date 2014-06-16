@@ -135,11 +135,12 @@ package body Flow.Control_Flow_Graph.Utility is
    ---------------------------------
 
    function Make_Sink_Vertex_Attributes
-     (Var_Use         : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
-      Is_Precondition : Boolean           := False;
-      Is_Loop_Entry   : Boolean           := False;
-      Is_Fold_Check   : Boolean           := False;
-      E_Loc           : Node_Or_Entity_Id := Empty)
+     (Var_Use          : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
+      Is_Precondition  : Boolean           := False;
+      Is_Postcondition : Boolean           := False;
+      Is_Loop_Entry    : Boolean           := False;
+      Is_Fold_Check    : Boolean           := False;
+      E_Loc            : Node_Or_Entity_Id := Empty)
       return V_Attributes
    is
       A : V_Attributes := Null_Attributes;
@@ -147,6 +148,7 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Variables_Used            := Var_Use;
       A.Variables_Explicitly_Used := Var_Use;
       A.Is_Precondition           := Is_Precondition;
+      A.Is_Postcondition          := Is_Postcondition;
       A.Is_Loop_Entry             := Is_Loop_Entry;
       A.Error_Location            := E_Loc;
 
@@ -252,7 +254,7 @@ package body Flow.Control_Flow_Graph.Utility is
       A        : V_Attributes        := Null_Attributes;
       Tmp_Used : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
       Scope    : constant Flow_Scope := Get_Flow_Scope (Call_Vertex);
-      Unused   : Flow_Id_Sets.Set;
+      Unused   : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
    begin
       A.Is_Parameter                  := True;
       A.Is_Discr_Or_Bounds_Parameter  := Discriminants_Or_Bounds_Only;

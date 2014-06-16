@@ -1,0 +1,4 @@
+test.adb:20:31: info: refined post proved
+test.adb:24:19: warning: overflow check might fail
+test.ads:12:22: warning: postcondition might fail, requires Proof_Var
+test.ads:19:21: info: postcondition proved

@@ -1,7 +1,6 @@
 arrays.adb:21:50: info: length check proved
 arrays.adb:43:13: warning: null global effect assumed on imported subprogram
 arrays.adb:51:18: info: postcondition proved
-arrays.adb:58:25: warning: unused variable "C"
 arrays.adb:62:22: warning: postcondition might fail, requires Contains_B'Result = S (C)
 arrays.adb:71:19: info: postcondition proved
 arrays.adb:80:19: warning: postcondition might fail, requires Is_Id_2'Result = (M (C) = C

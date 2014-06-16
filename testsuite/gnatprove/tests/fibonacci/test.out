@@ -71,7 +71,6 @@ fib.adb:120:22: warning: range check might fail
 fib.adb:121:22: warning: overflow check might fail
 fib.adb:130:11: info: range check proved
 fib.adb:131:13: info: index check proved
-fib.adb:131:16: warning: "A1" might not be initialized
 fib.adb:131:22: info: index check proved
 fib.adb:133:11: info: range check proved
 fib.adb:133:33: info: overflow check proved
@@ -81,7 +80,6 @@ fib.adb:134:24: info: index check proved
 fib.adb:134:24: info: overflow check proved
 fib.adb:136:11: info: range check proved
 fib.adb:137:13: info: index check proved
-fib.adb:137:16: warning: "A2" might not be initialized
 fib.adb:137:22: info: index check proved
 fib.adb:139:11: info: range check proved
 fib.adb:139:33: info: overflow check proved
@@ -91,7 +89,6 @@ fib.adb:140:24: info: index check proved
 fib.adb:140:24: info: overflow check proved
 fib.adb:148:11: info: range check proved
 fib.adb:149:13: info: index check proved
-fib.adb:149:16: warning: "A1" might not be initialized
 fib.adb:149:22: info: index check proved
 fib.adb:151:11: info: range check proved
 fib.adb:151:32: info: overflow check proved
@@ -101,7 +98,6 @@ fib.adb:152:24: info: index check proved
 fib.adb:152:24: info: overflow check proved
 fib.adb:154:11: info: range check proved
 fib.adb:155:13: info: index check proved
-fib.adb:155:16: warning: "A2" might not be initialized
 fib.adb:155:22: info: index check proved
 fib.adb:157:11: info: range check proved
 fib.adb:157:32: info: overflow check proved
@@ -118,11 +114,15 @@ fib.ads:41:50: info: index check proved
 fib.ads:41:58: info: index check proved
 fib.ads:42:55: info: index check proved
 fib.ads:42:68: info: index check proved
+fib.ads:43:49: warning: "A1" might not be initialized
 fib.ads:43:49: warning: postcondition might fail, requires A1(I) = A2(I)
+fib.ads:43:57: warning: "A2" might not be initialized
 fib.ads:47:43: warning: "A1" might not be initialized in "Arraypartitionedtransfersifl"
 fib.ads:47:47: warning: "A2" might not be initialized in "Arraypartitionedtransfersifl"
 fib.ads:51:49: info: index check proved
 fib.ads:51:57: info: index check proved
 fib.ads:52:54: info: index check proved
 fib.ads:52:66: info: index check proved
+fib.ads:53:49: warning: "A1" might not be initialized
 fib.ads:53:49: warning: postcondition might fail, requires A1(I) = A2(I)
+fib.ads:53:57: warning: "A2" might not be initialized

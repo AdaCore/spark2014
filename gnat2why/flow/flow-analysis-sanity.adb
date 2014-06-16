@@ -24,7 +24,7 @@
 --  This package implements a variety of sanity checks that are run before
 --  the rest of flow analysis is performed.
 
-with Sinfo; use Sinfo;
+with Sinfo;               use Sinfo;
 
 with Why;
 with Gnat2Why_Args;
@@ -491,6 +491,7 @@ package body Flow.Analysis.Sanity is
                   if Final_Atr.Is_Global
                     and Final_Atr.Is_Constant
                     and not Final_Atr.Is_Loop_Parameter
+                    and not Is_Abstract_State (Var)
                   then
                      if FA.Kind in E_Package | E_Package_Body then
                         Error_Msg_Flow

@@ -23,19 +23,19 @@
 
 with Ada.Containers.Hashed_Maps;
 
-with Elists;                 use Elists;
-with Errout;                 use Errout;
-with Nlists;                 use Nlists;
-with Output;                 use Output;
-with Sprint;                 use Sprint;
-with Treepr;                 use Treepr;
+with Elists;                     use Elists;
+with Errout;                     use Errout;
+with Nlists;                     use Nlists;
+with Output;                     use Output;
+with Sprint;                     use Sprint;
+with Treepr;                     use Treepr;
 
 with Why;
-with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
-with SPARK_Definition;       use SPARK_Definition;
+with SPARK_Frame_Conditions;     use SPARK_Frame_Conditions;
+with SPARK_Definition;           use SPARK_Definition;
 
-with Flow_Debug;             use Flow_Debug;
-with Flow_Tree_Utility;      use Flow_Tree_Utility;
+with Flow_Debug;                 use Flow_Debug;
+with Flow_Tree_Utility;          use Flow_Tree_Utility;
 
 package body Flow_Utility is
 
@@ -1320,10 +1320,10 @@ package body Flow_Utility is
      (N                    : Node_Id;
       Scope                : Flow_Scope;
       Local_Constants      : Node_Sets.Set;
-      Vars_Defined         : out Flow_Id_Sets.Set;
-      Vars_Explicitly_Used : out Flow_Id_Sets.Set;
-      Vars_Implicitly_Used : out Flow_Id_Sets.Set;
-      Vars_Semi_Used       : out Flow_Id_Sets.Set)
+      Vars_Defined         : in out Flow_Id_Sets.Set;
+      Vars_Explicitly_Used : in out Flow_Id_Sets.Set;
+      Vars_Implicitly_Used : in out Flow_Id_Sets.Set;
+      Vars_Semi_Used       : in out Flow_Id_Sets.Set)
    is
       --  Fold_Functions (a parameter for Get_Variable_Set) is specified as
       --  `false' here because Untangle should only ever be called where we
@@ -1440,11 +1440,6 @@ package body Flow_Utility is
       Partial_Use   : Boolean;
 
    begin
-      Vars_Defined         := Flow_Id_Sets.Empty_Set;
-      Vars_Explicitly_Used := Flow_Id_Sets.Empty_Set;
-      Vars_Implicitly_Used := Flow_Id_Sets.Empty_Set;
-      Vars_Semi_Used       := Flow_Id_Sets.Empty_Set;
-
       if Debug_Trace_Untangle then
          Sprint_Node (N);
          Print_Node_Subtree (N);
@@ -1463,11 +1458,20 @@ package body Flow_Utility is
 
          when N_Identifier | N_Expanded_Name =>
             --  X :=
-            Vars_Defined := Get_Variable_Set
-              (N,
-               Scope           => Scope,
-               Local_Constants => Local_Constants,
-               Fold_Functions  => False);
+            Vars_Defined.Union (Get_Variable_Set
+                                  (N,
+                                   Scope           => Scope,
+                                   Local_Constants => Local_Constants,
+                                   Fold_Functions  => False));
+
+         when N_Function_Call =>
+            --  Not strictly right, but this will satisfy the
+            --  postcondition.
+            Vars_Defined.Union (Get_Variable_Set
+                                  (N,
+                                   Scope           => Scope,
+                                   Local_Constants => Local_Constants,
+                                   Fold_Functions  => False));
 
          when N_Selected_Component | N_Indexed_Component | N_Slice =>
             --  R.A :=
@@ -1567,9 +1571,12 @@ package body Flow_Utility is
                               Local_Constants => Local_Constants,
                               Fold_Functions  => False));
 
-                        --  We also add the record field itself
+                        --  We also add the record field itself. If we
+                        --  are dealing with a record instead of a
+                        --  record field, then we add all record
+                        --  components.
                         Vars_Defined.Union
-                          (Flow_Id_Sets.To_Set
+                          (All_Record_Components
                              (Record_Field_Id (End_Of_Record)));
 
                         Vars_Implicitly_Used.Union (Vars_Defined);
@@ -1617,19 +1624,23 @@ package body Flow_Utility is
                                          Fold_Functions  => False));
 
                when N_Attribute_Reference =>
-                  declare
-                     P : Node_Id := End_Of_Record;
-                  begin
-                     while Nkind (P) = N_Attribute_Reference loop
-                        P := Prefix (P);
-                     end loop;
-                     Vars_Defined.Include
-                       (Direct_Mapping_Id (Entity (P)));
-                     if Partial_Use then
-                        Vars_Implicitly_Used.Include
-                          (Direct_Mapping_Id (Entity (P)));
-                     end if;
-                  end;
+
+                  if Present (Expressions (End_Of_Record)) then
+                     Vars_Explicitly_Used.Union
+                       (Get_Variable_Set (Expressions (End_Of_Record),
+                                          Scope           => Scope,
+                                          Local_Constants => Local_Constants,
+                                          Fold_Functions  => False));
+                  end if;
+
+                  Untangle_Assignment_Target
+                    (N                    => Prefix (End_Of_Record),
+                     Scope                => Scope,
+                     Local_Constants      => Local_Constants,
+                     Vars_Defined         => Vars_Defined,
+                     Vars_Explicitly_Used => Vars_Explicitly_Used,
+                     Vars_Implicitly_Used => Vars_Implicitly_Used,
+                     Vars_Semi_Used       => Vars_Semi_Used);
 
                when others =>
                   Vars_Defined.Include

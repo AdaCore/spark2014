@@ -1,5 +1,4 @@
 enums.adb:10:19: info: postcondition proved
-enums.adb:16:38: warning: unused variable "B"
 enums.adb:19:22: warning: postcondition might fail, requires Enum_Equals_Broken_A'Result = (A = B
 enums.adb:27:19: warning: postcondition might fail, requires Enum_Equals_Broken_B'Result = (A = B
 enums.adb:36:19: info: postcondition proved
