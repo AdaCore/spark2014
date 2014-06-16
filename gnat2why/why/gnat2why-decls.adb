@@ -359,8 +359,9 @@ package body Gnat2Why.Decls is
                    & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
       Emit (File.Cur_Theory,
-            New_Exception_Declaration (Name => To_Why_Id (E, Local => True),
-                                       Arg  => Why_Empty));
+            New_Exception_Declaration
+              (Name => Loop_Exception_Name (E, Local => True),
+               Arg  => Why_Empty));
 
       Close_Theory (File,
                     Kind => Standalone_Theory);

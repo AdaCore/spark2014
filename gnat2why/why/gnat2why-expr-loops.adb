@@ -301,8 +301,8 @@ package body Gnat2Why.Expr.Loops is
 
    function Transform_Exit_Statement (Stmt : Node_Id) return W_Prog_Id
    is
-      Exc_Name    : constant W_Identifier_Id :=
-        To_Why_Id (Loop_Entity_Of_Exit_Statement (Stmt));
+      Exc_Name    : constant W_Name_Id :=
+        Loop_Exception_Name (Loop_Entity_Of_Exit_Statement (Stmt));
       Raise_Stmt  : constant W_Prog_Id :=
                       New_Raise
                         (Ada_Node => Stmt,
@@ -1003,7 +1003,7 @@ package body Gnat2Why.Expr.Loops is
       Variant_Update     : W_Prog_Id;
       Variant_Check      : W_Prog_Id) return W_Prog_Id
    is
-      Loop_Ident : constant W_Identifier_Id := To_Why_Id (Loop_Id);
+      Loop_Ident : constant W_Name_Id := Loop_Exception_Name (Loop_Id);
       Loop_Inner : constant W_Prog_Id :=
         Sequence ((1 => Variant_Update,
                    2 => Loop_End,

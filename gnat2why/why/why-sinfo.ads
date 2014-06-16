@@ -468,7 +468,7 @@ package Why.Sinfo is
    --  -------------
    --  -- W_Raise --
    --  -------------
-   --  Name       W_Identifier_Id
+   --  Name       W_Name_Id
    --  Exn_Type   W_Type_Id
    --  Typ        W_Type_Id
    --
@@ -486,7 +486,7 @@ package Why.Sinfo is
    --  ---------------
    --  -- W_Handler --
    --  ---------------
-   --  Name       W_Identifier_Id
+   --  Name       W_Name_Id
    --  Arg        W_Prog_Id
    --  Def        W_Prog_Id
    --
@@ -549,7 +549,7 @@ package Why.Sinfo is
    --  -----------------------------
    --  -- W_Exception_Declaration --
    --  -----------------------------
-   --  Name       W_Identifier_Id
+   --  Name       W_Name_Id
    --  Arg        W_Type_Id
    --
    --  Declaration of an exception, with a possible argument.

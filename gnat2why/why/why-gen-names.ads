@@ -234,7 +234,6 @@ package Why.Gen.Names is
       WNE_Pre_Check,
       WNE_Private,
       WNE_Range_Pred,
-      WNE_Result_Exc,
       WNE_To_Array,
       WNE_To_Base,
       WNE_To_Int,

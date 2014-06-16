@@ -1534,7 +1534,7 @@ package body Gnat2Why.Subprograms is
             Raise_Stmt : constant W_Prog_Id :=
               New_Raise
                 (Ada_Node => Body_N,
-                 Name     => To_Ident (WNE_Result_Exc));
+                 Name     => Return_Exc);
          begin
             Why_Body :=
               New_Try_Block
@@ -1542,7 +1542,7 @@ package body Gnat2Why.Subprograms is
                  Handler =>
                    (1 =>
                           New_Handler
-                      (Name => To_Ident (WNE_Result_Exc),
+                      (Name => Return_Exc,
                        Def  => New_Void)));
          end;
 

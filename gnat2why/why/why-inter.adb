@@ -1167,6 +1167,29 @@ package body Why.Inter is
       end if;
    end LCA;
 
+   -------------------------
+   -- Loop_Exception_Name --
+   -------------------------
+
+   function Loop_Exception_Name
+     (E     : Entity_Id;
+      Local : Boolean := False)
+      return W_Name_Id
+   is
+      Suffix : constant Name_Id :=
+        NID (Capitalize_First (Short_Name (E)));
+   begin
+      if Local then
+         return New_Name (Ada_Node => E, Symbol => Suffix);
+      else
+         return
+           New_Name
+             (Ada_Node => E,
+              Symbol   => Suffix,
+              Module   => E_Module (E));
+      end if;
+   end Loop_Exception_Name;
+
    ----------------------------
    -- New_Abstract_Base_Type --
    ----------------------------
@@ -1275,8 +1298,6 @@ package body Why.Inter is
                           | E_Abstract_State
          then
             Short_Name (E)
-         elsif Ekind (E) = E_Loop then
-            Capitalize_First (Short_Name (E))
          else "");
    begin
 

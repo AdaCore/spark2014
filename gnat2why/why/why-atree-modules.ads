@@ -111,6 +111,7 @@ package Why.Atree.Modules is
    --  Other identifiers
 
    Old_Tag                   : Name_Id;
+   Return_Exc                : W_Name_Id;
 
    procedure Initialize;
    --  Call this procedure before using any of the entities in this package.

@@ -183,7 +183,7 @@ package body Xtree_Sinfo is
       ---------------
 
       New_Field (W_Handler,
-                 "Name", "W_Identifier", Id_One);
+                 "Name", "W_Name", Id_One);
       New_Field (W_Handler,
                  "Arg", "W_Prog", Id_Lone);
       New_Field (W_Handler,
@@ -513,7 +513,7 @@ package body Xtree_Sinfo is
       -------------
 
       New_Field (W_Raise,
-                 "Name", "W_Identifier", Id_One);
+                 "Name", "W_Name", Id_One);
       New_Field (W_Raise,
                  "Exn_Type", "W_Type", Id_Lone);
       New_Field (W_Raise,
@@ -602,7 +602,7 @@ package body Xtree_Sinfo is
       -----------------------------
 
       New_Field (W_Exception_Declaration,
-                 "Name", "W_Identifier", Id_One);
+                 "Name", "W_Name", Id_One);
       New_Field (W_Exception_Declaration,
                  "Arg", "W_Type", Id_Lone);
       Set_Domain (W_Exception_Declaration, EW_Prog);

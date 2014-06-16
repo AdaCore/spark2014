@@ -8192,7 +8192,7 @@ package body Gnat2Why.Expr is
                Raise_Stmt  : constant W_Prog_Id :=
                  New_Raise
                    (Ada_Node => Stmt_Or_Decl,
-                    Name     => To_Ident (WNE_Result_Exc),
+                    Name     => Return_Exc,
                     Typ      => EW_Unit_Type);
                Result_Stmt : W_Prog_Id;
             begin
@@ -8223,7 +8223,7 @@ package body Gnat2Why.Expr is
                Raise_Stmt  : constant W_Prog_Id :=
                  New_Raise
                    (Ada_Node => Stmt_Or_Decl,
-                    Name     => To_Ident (WNE_Result_Exc));
+                    Name     => Return_Exc);
                Expr        : W_Prog_Id :=
                  Transform_Statements_And_Declarations
                    (Return_Object_Declarations (Stmt_Or_Decl));

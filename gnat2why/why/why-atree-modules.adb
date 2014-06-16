@@ -239,6 +239,9 @@ package body Why.Atree.Modules is
                   Name       => New_Name (Symbol => NID ("__type_of_heap")),
                   Is_Mutable => False);
 
+      Return_Exc :=
+        New_Name (Symbol => NID ("Return__exc"));
+
       --  identifiers of the "_gnatprove_standard.Floating" module
 
       Floating_Div_Real :=
