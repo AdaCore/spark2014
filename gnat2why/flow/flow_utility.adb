@@ -348,9 +348,12 @@ package body Flow_Utility is
                           Consider_Discriminants : Boolean := False;
                           Globals_For_Proof      : Boolean := False)
    is
-      Global_Node : constant Node_Id := Get_Contract_Node (Subprogram,
-                                                           Scope,
-                                                           Global_Contract);
+      Global_Node  : constant Node_Id := Get_Contract_Node (Subprogram,
+                                                            Scope,
+                                                            Global_Contract);
+      Depends_Node : constant Node_Id := Get_Contract_Node (Subprogram,
+                                                            Scope,
+                                                            Depends_Contract);
    begin
       Proof_Ins := Flow_Id_Sets.Empty_Set;
       Reads     := Flow_Id_Sets.Empty_Set;
@@ -556,8 +559,8 @@ package body Flow_Utility is
                   Sprint_Flow_Id (F);
                   Write_Eol;
                end loop;
-
                Outdent;
+
                Write_Str ("reads");
                Write_Eol;
                Indent;
@@ -565,8 +568,8 @@ package body Flow_Utility is
                   Sprint_Flow_Id (F);
                   Write_Eol;
                end loop;
-
                Outdent;
+
                Write_Str ("writes");
                Write_Eol;
                Indent;
@@ -579,6 +582,101 @@ package body Flow_Utility is
             end if;
 
          end;
+
+      elsif Present (Depends_Node) then
+
+         --  If we have no global, but we do have a depends, we can
+         --  reverse-engineer the global. This also solves the issue where
+         --  the (computed) global is inconsistent with the depends. (See
+         --  M807-032 for an example.)
+
+         if Debug_Trace_Get_Global then
+            Indent;
+            Write_Str ("reversing depends annotation");
+            Write_Eol;
+            Outdent;
+         end if;
+
+         declare
+            D_Map  : Dependency_Maps.Map;
+            Params : Node_Sets.Set;
+            E      : Entity_Id;
+         begin
+            Get_Depends (Subprogram => Subprogram,
+                         Scope      => Scope,
+                         Depends    => D_Map);
+
+            --  We need to make sure not to include our own parameters in
+            --  the globals we produce here.
+
+            E := First_Formal (Subprogram);
+            while Present (E) loop
+               Params.Include (E);
+               E := Next_Formal (E);
+            end loop;
+
+            --  Always OK to call direct_mapping here since you can't refer
+            --  to hidden state in user-written depends contracts.
+
+            for C in D_Map.Iterate loop
+               declare
+                  Output : constant Flow_Id := Dependency_Maps.Key (C);
+                  Inputs : constant Flow_Id_Sets.Set :=
+                    Dependency_Maps.Element (C);
+               begin
+                  E := (if Present (Output)
+                        then Get_Direct_Mapping_Id (Output)
+                        else Empty);
+                  if Present (E) and then E /= Subprogram
+                    and then not Params.Contains (E)
+                  then
+                     --  Note we also filter out the function'result
+                     --  construct here.
+                     Writes.Include (Change_Variant (Output, Out_View));
+                  end if;
+
+                  for R of Inputs loop
+                     E := (if Present (R)
+                           then Get_Direct_Mapping_Id (R)
+                           else Empty);
+                     if Present (E) and then not Params.Contains (E) then
+                        Reads.Include (Change_Variant (R, In_View));
+
+                        if Has_Effective_Reads (R) then
+                           --  A volatile with effective reads is always an
+                           --  output as well (this should be recorded in
+                           --  the depends, but the front-end does not
+                           --  enforce this).
+                           Writes.Include (Change_Variant (R, Out_View));
+                        end if;
+                     end if;
+                  end loop;
+               end;
+            end loop;
+
+            if Debug_Trace_Get_Global then
+               Indent;
+               Write_Str ("reads");
+               Write_Eol;
+               Indent;
+               for F of Reads loop
+                  Sprint_Flow_Id (F);
+                  Write_Eol;
+               end loop;
+               Outdent;
+
+               Write_Str ("writes");
+               Write_Eol;
+               Indent;
+               for F of Writes loop
+                  Sprint_Flow_Id (F);
+                  Write_Eol;
+               end loop;
+               Outdent;
+               Outdent;
+            end if;
+         end;
+
       else
          --  We don't have a global aspect, so we should look at the
          --  computed globals...

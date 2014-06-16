@@ -117,9 +117,10 @@ package Flow_Utility is
                   (for all G of Reads     => G.Variant = In_View) and
                   (for all G of Writes    => G.Variant = Out_View);
    --  Given a subprogram call, work out globals from the appropriate
-   --  aspect (relative to Scope) or the computed globals, if no global
-   --  contract is given. The sets returned will contain Flow_Id with the
-   --  variant set to In_View and Out_View.
+   --  global aspect (relative to Scope), or the depends aspect (if no
+   --  global aspect is given), or finally the computed globals, if neither
+   --  global nor depends aspects are provided. The sets returned will
+   --  contain Flow_Id with the variant set to In_View and Out_View.
    --
    --  If Consider_Discriminants is provided then an out global will
    --  include a corresponding read if the global includes at least

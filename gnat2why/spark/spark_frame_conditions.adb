@@ -1139,7 +1139,8 @@ package body SPARK_Frame_Conditions is
             --  we use the Globals that we gathered from the ALI files.
 
             if Present (E)
-              and then Present (Get_Pragma (E, Pragma_Global))
+              and then (Present (Get_Pragma (E, Pragma_Global)) or else
+                          Present (Get_Pragma (E, Pragma_Depends)))
             then
                declare
                   Read_Ids  : Flow_Types.Flow_Id_Sets.Set;
