@@ -892,9 +892,11 @@ package body Why.Gen.Records is
                    To_Why_Id
                      (Discr,
                       Local => True,
-                      Typ => EW_Abstract (Etype (Discr))),
+                      Typ => Base_Why_Type (Unique_Entity (Etype (Discr)))),
                  others => <>);
-            Args (Count) := +To_Why_Id (Discr, Local => True);
+            Args (Count) := +To_Why_Id
+              (Discr, Local => True,
+               Typ => Base_Why_Type (Unique_Entity (Etype (Discr))));
             Check_Pred :=
               +New_And_Expr
               (Domain => EW_Pred,
@@ -903,14 +905,21 @@ package body Why.Gen.Records is
                  New_Relation
                    (Domain => EW_Pred,
                     Op      => EW_Eq,
-                    Op_Type => EW_Abstract,
-                    Left    => +To_Why_Id (Discr, Local => True),
+                    Op_Type => EW_Int,
+                    Left    => +To_Why_Id
+                      (Discr, Local => True,
+                       Typ => Base_Why_Type (Unique_Entity (Etype (Discr)))),
                     Right   =>
-                      New_Call
-                        (Ada_Node => Root,
-                         Name     => To_Why_Id (Discr, Rec => Root),
-                         Args     => (1 => +A_Ident),
-                         Domain   => EW_Term)));
+                      Insert_Simple_Conversion
+                        (Domain   => EW_Term,
+                         Expr     => New_Call
+                           (Ada_Node => Root,
+                            Name     => To_Why_Id (Discr, Rec => Root),
+                            Args     => (1 => +A_Ident),
+                            Domain   => EW_Term,
+                            Typ      => EW_Abstract (Etype (Discr))),
+                         To       =>
+                           Base_Why_Type (Unique_Entity (Etype (Discr))))));
             Count := Count + 1;
          end if;
          Next_Discriminant (Discr);
@@ -1147,7 +1156,8 @@ package body Why.Gen.Records is
                 (Domain => EW_Term,
                  Params => Logic_Params,
                  Expr   => Node (Elmt),
-                 Expected_Type => EW_Abstract (Etype (Discr)));
+                 Expected_Type =>
+                   Base_Why_Type (Unique_Entity (Etype (Discr))));
             Count := Count + 1;
             Next_Elmt (Elmt);
          end if;

@@ -5,7 +5,7 @@ basic.adb:18:22: info: discriminant check proved
 basic.ads:45:14: warning: subprogram "P" has no effect
 conv.adb:6:20: info: postcondition proved
 conv.adb:15:17: info: discriminant check proved
-conv.adb:17:17: warning: discriminant check might fail
+conv.adb:17:17: info: discriminant check proved
 conv.adb:19:22: warning: assertion might fail, requires Id (X) = Id (Y)
 conv.ads:3:14: warning: subprogram "P" has no effect
 special.adb:7:07: info: assertion proved

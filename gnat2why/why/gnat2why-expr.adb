@@ -1463,8 +1463,7 @@ package body Gnat2Why.Expr is
             end;
          end if;
 
-      elsif not Only_Var
-        and then Has_Discriminants (Ty_Ext)
+      elsif Has_Discriminants (Ty_Ext)
         and then Is_Constrained (Ty_Ext)
       then
          T := +New_Dynamic_Property (Domain => EW_Pred,
