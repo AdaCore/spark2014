@@ -658,7 +658,8 @@ module Ada__containers__formal_vectors__replace_element
       Ada__containers__formal_vectors__element_type.to_base (element_ co2 i) = e /\
        (forall j:int [element_ co2 j | element_ co1 j].
           0 < j <= length_ co1 ->  i <> j ->  element_ co2 j = element_ co1 j) /\
-       (forall cu:cursor[real_to_index co1 cu | real_to_index co2 cu].  to_index_ co1 cu = to_index_ co2 cu)
+       (forall cu:cursor[real_to_index co1 cu | real_to_index co2 cu].  to_index_ co1 cu = to_index_ co2 cu) /\
+       capacity co1 = capacity co2
 
   val replace_element (co:ref vector) (i:int) (e:Ada__containers__formal_vectors__element_type.base_type): unit
     requires { 0 < index_type__to_index i <= length_ !co }
