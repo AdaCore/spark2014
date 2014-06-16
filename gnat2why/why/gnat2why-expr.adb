@@ -4999,28 +4999,28 @@ package body Gnat2Why.Expr is
                   Old    : W_Expr_Id;
                   Offset : W_Expr_Id;
                   A_Type : constant Entity_Id := Etype (Var);
-                  W_Type : EW_Scalar;
+                  W_Type : W_Type_Id;
                begin
                   if Ekind (Etype (Var)) in Discrete_Kind then
                      if Is_Standard_Boolean_Type (A_Type) then
-                        W_Type := EW_Bool;
+                        W_Type := EW_Bool_Type;
                         Ada.Text_IO.Put_Line
                           ("[Transform_Attr] boolean"
                            & Attribute_Id'Image (Attr_Id));
                         raise Not_Implemented;
                      else
-                        W_Type := EW_Int;
+                        W_Type := EW_Int_Type;
                         Offset := New_Integer_Constant (Value => Uint_1);
                      end if;
 
                   else
                      pragma Assert (Ekind (Etype (Var)) in Fixed_Point_Kind);
-                     W_Type := EW_Fixed;
+                     W_Type := EW_Fixed_Type;
                      Offset := New_Fixed_Constant (Value => Uint_1);
                   end if;
 
                   Old := Transform_Expr (First (Expressions (Expr)),
-                                         Why_Types (W_Type),
+                                         W_Type,
                                          Domain,
                                          Params);
 
@@ -5028,7 +5028,8 @@ package body Gnat2Why.Expr is
                                       Left     => Old,
                                       Right    => Offset,
                                       Op       => Op,
-                                      Op_Type  => W_Type);
+                                      Op_Type  =>
+                                        Get_Base_Type (W_Type));
                end;
             end if;
 

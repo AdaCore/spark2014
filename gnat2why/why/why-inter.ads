@@ -140,15 +140,6 @@ package Why.Inter is
 
    function To_Why_Type (T : String) return W_Type_Id;
 
-   function EW_Bool_Type return W_Type_Id;
-   function EW_Int_Type return W_Type_Id;
-   function EW_Fixed_Type return W_Type_Id;
-   function EW_Real_Type return W_Type_Id;
-   function EW_Private_Type return W_Type_Id;
-   function EW_Unit_Type return W_Type_Id;
-   function EW_Prop_Type return W_Type_Id;
-   function Why_Types (E : EW_Basic_Type) return W_Type_Id;
-
    function EW_Abstract (N : Node_Id) return W_Type_Id;
    --  Convert an Ada type entity into a Why type. This function respects the
    --  gnat2why encoding. For example, for N = Boolean the function returns
@@ -220,13 +211,5 @@ private
    Entity_Dependencies : Node_Graphs.Map;
    --  Mapping from an entity to the set of entities on which it depends. This
    --  map is filled by Close_Theory.
-
-   function EW_Bool_Type return W_Type_Id is (Why_Types (EW_Bool));
-   function EW_Int_Type return W_Type_Id is (Why_Types (EW_Int));
-   function EW_Fixed_Type return W_Type_Id is (Why_Types (EW_Fixed));
-   function EW_Private_Type return W_Type_Id is (Why_Types (EW_Private));
-   function EW_Prop_Type return W_Type_Id is (Why_Types (EW_Prop));
-   function EW_Real_Type return W_Type_Id is (Why_Types (EW_Real));
-   function EW_Unit_Type return W_Type_Id is (Why_Types (EW_Unit));
 
 end Why.Inter;

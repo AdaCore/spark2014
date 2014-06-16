@@ -50,6 +50,19 @@ package Why.Atree.Modules is
    RealInfix                 : W_Module_Id;
    Ref_Module                : W_Module_Id;
 
+   --  basic Why types
+
+   EW_Bool_Type    : W_Type_Id;
+   EW_Int_Type     : W_Type_Id;
+   EW_Fixed_Type   : W_Type_Id;
+   EW_Private_Type : W_Type_Id;
+   EW_Prop_Type    : W_Type_Id;
+   EW_Real_Type    : W_Type_Id;
+   EW_Unit_Type    : W_Type_Id;
+
+   Why_Types       : array (EW_Type) of W_Type_Id;
+   --  the types above, in an array indexed by the enumerations of EW_Type
+
    --  Modules of "_gnatprove_standard.mlw"
 
    Main_Module               : W_Module_Id;

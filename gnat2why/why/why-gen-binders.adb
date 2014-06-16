@@ -23,10 +23,11 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Conversions;     use Why.Conversions;
-with Why.Gen.Expr;        use Why.Gen.Expr;
-with Why.Gen.Names;       use Why.Gen.Names;
-with Why.Inter;           use Why.Inter;
+with Why.Atree.Modules; use Why.Atree.Modules;
+with Why.Conversions;   use Why.Conversions;
+with Why.Gen.Expr;      use Why.Gen.Expr;
+with Why.Gen.Names;     use Why.Gen.Names;
+with Why.Inter;         use Why.Inter;
 
 with Gnat2Why.Nodes;
 

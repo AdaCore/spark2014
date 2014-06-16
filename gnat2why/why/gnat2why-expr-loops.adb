@@ -40,6 +40,7 @@ with Flow_Utility;       use Flow_Utility;
 
 with Why;                use Why;
 with Why.Atree.Builders; use Why.Atree.Builders;
+with Why.Atree.Modules;  use Why.Atree.Modules;
 with Why.Atree.Tables;   use Why.Atree.Tables;
 with Why.Conversions;    use Why.Conversions;
 with Why.Gen.Expr;       use Why.Gen.Expr;

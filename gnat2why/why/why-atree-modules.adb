@@ -78,6 +78,45 @@ package body Why.Atree.Modules is
       RealInfix := New_Module (File => Real_File, Name => NID ("RealInfix"));
       Ref_Module := New_Module (File => Ref_File, Name => NID ("Ref"));
 
+      --  builtin Why types
+
+      EW_Bool_Type :=
+        New_Type (Base_Type  => EW_Bool,
+                  Name       => New_Name (Symbol => NID ("bool")),
+                  Is_Mutable => False);
+      EW_Int_Type :=
+        New_Type (Base_Type  => EW_Int,
+                  Name       => New_Name (Symbol => NID ("int")),
+                  Is_Mutable => False);
+      EW_Fixed_Type :=
+        New_Type (Base_Type  => EW_Fixed,
+                  Name       => New_Name (Symbol => NID ("__fixed")),
+                  Is_Mutable => False);
+      EW_Private_Type :=
+        New_Type (Base_Type  => EW_Private,
+                  Name       => New_Name (Symbol => NID ("__private")),
+                  Is_Mutable => False);
+      EW_Prop_Type :=
+        New_Type (Base_Type  => EW_Prop,
+                  Name       => New_Name (Symbol => NID ("prop")),
+                  Is_Mutable => False);
+      EW_Real_Type :=
+        New_Type (Base_Type  => EW_Real,
+                  Name       => New_Name (Symbol => NID ("real")),
+                  Is_Mutable => False);
+      EW_Unit_Type :=
+        New_Type (Base_Type  => EW_Unit,
+                  Name       => New_Name (Symbol => NID ("unit")),
+                  Is_Mutable => False);
+
+      Why_Types (EW_Bool) := EW_Bool_Type;
+      Why_Types (EW_Int) := EW_Int_Type;
+      Why_Types (EW_Fixed) := EW_Fixed_Type;
+      Why_Types (EW_Private) := EW_Private_Type;
+      Why_Types (EW_Prop) := EW_Prop_Type;
+      Why_Types (EW_Real) := EW_Real_Type;
+      Why_Types (EW_Unit) := EW_Unit_Type;
+
       --  modules of "_gnatprove_standard.mlw" file
 
       Main_Module :=
@@ -184,47 +223,58 @@ package body Why.Atree.Modules is
       Integer_Bitwise_And :=
         New_Identifier (Module => Integer_Module,
                         Domain => EW_Term,
-                        Symbol => NID ("bitwise_and"));
+                        Symbol => NID ("bitwise_and"),
+                        Typ    => EW_Int_Type);
       Integer_Bitwise_Or :=
         New_Identifier (Module => Integer_Module,
                         Domain => EW_Term,
-                        Symbol => NID ("bitwise_or"));
+                        Symbol => NID ("bitwise_or"),
+                        Typ    => EW_Int_Type);
       Integer_Bitwise_Xor :=
         New_Identifier (Module => Integer_Module,
                         Domain => EW_Term,
-                        Symbol => NID ("bitwise_xor"));
+                        Symbol => NID ("bitwise_xor"),
+                        Typ    => EW_Int_Type);
       Integer_Div :=
         New_Identifier (Module => Integer_Module,
                         Domain => EW_Term,
-                        Symbol => NID ("div"));
+                        Symbol => NID ("div"),
+                        Typ    => EW_Int_Type);
       Integer_Rem :=
         New_Identifier (Module => Integer_Module,
                         Domain => EW_Term,
-                        Symbol => NID ("rem"));
+                        Symbol => NID ("rem"),
+                        Typ    => EW_Int_Type);
       Integer_Mod :=
         New_Identifier (Module => Integer_Module,
                         Domain => EW_Term,
-                        Symbol => NID ("mod"));
+                        Symbol => NID ("mod"),
+                        Typ    => EW_Int_Type);
       Integer_Power :=
         New_Identifier (Module => Integer_Module,
                         Domain => EW_Term,
-                        Symbol => NID ("power"));
+                        Symbol => NID ("power"),
+                        Typ    => EW_Int_Type);
       Integer_Math_Mod :=
         New_Identifier (Module => Integer_Module,
                         Domain => EW_Term,
-                        Symbol => NID ("math_mod"));
+                        Symbol => NID ("math_mod"),
+                        Typ    => EW_Int_Type);
       Integer_Max :=
         New_Identifier (Module => Integer_Module,
                         Domain => EW_Term,
-                        Symbol => NID ("int_max"));
+                        Symbol => NID ("int_max"),
+                        Typ    => EW_Int_Type);
       Integer_Min :=
         New_Identifier (Module => Integer_Module,
                         Domain => EW_Term,
-                        Symbol => NID ("int_min"));
+                        Symbol => NID ("int_min"),
+                        Typ    => EW_Int_Type);
       Integer_Abs :=
         New_Identifier (Module => Integer_Module,
                         Domain => EW_Term,
-                        Symbol => NID ("abs"));
+                        Symbol => NID ("abs"),
+                        Typ    => EW_Int_Type);
 
    --  Identifiers of the Main module
 

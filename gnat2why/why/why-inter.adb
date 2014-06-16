@@ -51,18 +51,11 @@ with Why.Atree.Traversal; use Why.Atree.Traversal;
 with Why.Conversions;     use Why.Conversions;
 with Why.Gen.Names;       use Why.Gen.Names;
 
-with Why.Images;          use Why.Images;
-
 ---------------
 -- Why.Inter --
 ---------------
 
 package body Why.Inter is
-
-   type Why_Types_Array_Type is array (EW_Basic_Type) of W_Type_Id;
-
-   Why_Types_Array : Why_Types_Array_Type := (others => Why_Empty);
-   --  is initialized as needed in function Why_Types
 
    -----------------------
    -- Local Subprograms --
@@ -1472,23 +1465,6 @@ package body Why.Inter is
          return Up (From);
       end if;
    end Up;
-
-   ---------------
-   -- Why_Types --
-   ---------------
-
-   function Why_Types (E : EW_Basic_Type) return W_Type_Id is
-   begin
-      if Why_Types_Array (E) /= Why_Empty then
-         return Why_Types_Array (E);
-      end if;
-      Why_Types_Array (E) :=
-        New_Type (Ada_Node   => Empty,
-                       Base_Type  => E,
-                       Is_Mutable => False,
-                       Name       => New_Name (Symbol => NID (Img (E))));
-      return Why_Types_Array (E);
-   end Why_Types;
 
 begin
    Type_Hierarchy.Move_Child (EW_Unit, EW_Real);

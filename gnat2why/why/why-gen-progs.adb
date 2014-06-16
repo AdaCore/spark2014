@@ -26,12 +26,12 @@
 with Uintp;                   use Uintp;
 
 with Why.Conversions;         use Why.Conversions;
+with Why.Atree.Modules;      use Why.Atree.Modules;
 with Why.Atree.Mutators;      use Why.Atree.Mutators;
 with Why.Atree.Properties;    use Why.Atree.Properties;
 with Why.Atree.Tables;        use Why.Atree.Tables;
 with Why.Gen.Names;           use Why.Gen.Names;
 with Why.Gen.Expr;            use Why.Gen.Expr;
-with Why.Inter;               use Why.Inter;
 with Gnat2Why.Subprograms;    use Gnat2Why.Subprograms;
 with Gnat2Why.Error_Messages; use Gnat2Why.Error_Messages;
 
@@ -69,7 +69,7 @@ package body Why.Gen.Progs is
            Pre      => Pre,
            Post     => Post,
            Return_Type =>
-             +(if Return_Type = Why_Empty then +EW_Unit_Type
+             (if Return_Type = Why_Empty then EW_Unit_Type
                else Return_Type));
    end New_Assume_Statement;
 
