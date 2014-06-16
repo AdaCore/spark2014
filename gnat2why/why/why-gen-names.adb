@@ -649,6 +649,23 @@ package body Why.Gen.Names is
       end if;
    end To_Ident;
 
+   -------------
+   -- To_Name --
+   -------------
+
+   function To_Name (W : Why_Name_Enum) return W_Name_Id is
+   begin
+      return New_Name (Symbol => NID (To_String (W)));
+   end To_Name;
+
+   function To_Name (I : W_Identifier_Id) return W_Name_Id is
+   begin
+      return New_Name
+        (Symbol => Get_Symbol (I),
+         Ada_Node => Get_Ada_Node (+I),
+         Module   => Get_Module (I));
+   end To_Name;
+
    ------------
    -- Prefix --
    ------------

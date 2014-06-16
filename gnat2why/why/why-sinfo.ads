@@ -576,8 +576,8 @@ package Why.Sinfo is
    --  -- W_Clone_Substitution --
    --  --------------------------
    --  Kind       EW_Subst_Type
-   --  Orig_Name  W_Identifier_Id
-   --  Image      W_Identifier_Id
+   --  Orig_Name  W_Name_Id
+   --  Image      W_Name_Id
    --
    --  An clone directive. A clone is similar to an Ada generic instantiation.
    --  A major difference is that any module can be cloned, there are no

@@ -365,12 +365,13 @@ package body Why.Gen.Arrays is
          Value     : Uint;
          Dim_Count : Positive)
       is
-         Attr_Name : constant W_Identifier_Id := Append_Num (Kind, Dim_Count);
+         Attr_Name : constant W_Name_Id :=
+           To_Name (Append_Num (Kind, Dim_Count));
       begin
             Emit (Theory,
                   Why.Atree.Builders.New_Function_Decl
                     (Domain      => EW_Term,
-                     Name        => Attr_Name,
+                     Name        => New_Identifier (Attr_Name),
                      Binders     => (1 .. 0 => <>),
                      Labels      => Name_Id_Sets.Empty_Set,
                      Return_Type => Int_Type,
@@ -388,7 +389,7 @@ package body Why.Gen.Arrays is
       Subst (Cursor) :=
         New_Clone_Substitution
           (Kind      => EW_Type_Subst,
-           Orig_Name => To_Ident (WNE_Array_Component_Type),
+           Orig_Name => To_Name (WNE_Array_Component_Type),
            Image     => Ident_Of_Ada_Type (Component_Type (Und_Ent)));
       Cursor := Cursor + 1;
       if Ekind (Und_Ent) = E_String_Literal_Subtype then
@@ -453,15 +454,19 @@ package body Why.Gen.Arrays is
                   Substitutions =>
                     (1 => New_Clone_Substitution
                          (Kind      => EW_Type_Subst,
-                          Orig_Name => To_Ident (WNE_Array_Component_Type),
+                          Orig_Name => To_Name (WNE_Array_Component_Type),
                           Image     => Ident_Of_Ada_Type
                             (Component_Type (Und_Ent))),
-                     2 => New_Clone_Substitution
-                       (Kind      => EW_Function,
-                        Orig_Name => To_Ident (WNE_To_Int),
-                        Image     => Conversion_Name
-                          (From => +Type_Of_Node (Component_Type (Und_Ent)),
-                           To   => +Int_Type)))));
+                     2 =>
+                       New_Clone_Substitution
+                         (Kind      => EW_Function,
+                          Orig_Name => To_Name (WNE_To_Int),
+                          Image     =>
+                            To_Name
+                              (Conversion_Name
+                                 (From =>
+                                    Type_Of_Node (Component_Type (Und_Ent)),
+                                  To   => +Int_Type))))));
       end if;
 
       if Dimension = 1 and then
@@ -492,15 +497,17 @@ package body Why.Gen.Arrays is
                      Substitutions =>
                        (1 => New_Clone_Substitution
                             (Kind      => EW_Type_Subst,
-                             Orig_Name => To_Ident (WNE_Array_Component_Type),
+                             Orig_Name => To_Name (WNE_Array_Component_Type),
                              Image     => Ident_Of_Ada_Type
                                (Component_Type (Und_Ent))),
                         2 => New_Clone_Substitution
                           (Kind      => EW_Function,
-                           Orig_Name => To_Ident (WNE_To_Int),
-                           Image     => Conversion_Name
+                           Orig_Name => To_Name (WNE_To_Int),
+                           Image     =>
+                             To_Name
+                               (Conversion_Name
                              (From => +Type_Of_Node (Component_Type (Und_Ent)),
-                              To   => +Int_Type)))));
+                              To   => +Int_Type))))));
          end if;
       end if;
    end Declare_Constrained;
@@ -526,7 +533,7 @@ package body Why.Gen.Arrays is
       Subst (Cursor) :=
         New_Clone_Substitution
           (Kind      => EW_Type_Subst,
-           Orig_Name => To_Ident (WNE_Array_Component_Type),
+           Orig_Name => To_Name (WNE_Array_Component_Type),
            Image     => Ident_Of_Ada_Type (Component_Type (Und_Ent)));
       Cursor := Cursor + 1;
       while Present (Index) loop
@@ -539,30 +546,33 @@ package body Why.Gen.Arrays is
             Subst (Cursor) :=
               New_Clone_Substitution
                 (Kind      => EW_Type_Subst,
-                 Orig_Name => Append_Num (WNE_Base_Type, Dim_Count),
+                 Orig_Name => To_Name (Append_Num (WNE_Base_Type, Dim_Count)),
                  Image     => Ident_Of_Ada_Type (B_Ty));
             Cursor := Cursor + 1;
             Subst (Cursor) :=
               New_Clone_Substitution
                 (Kind      => EW_Function,
-                 Orig_Name => Append_Num (WNE_To_Int, Dim_Count),
-                 Image     => Conversion_Name (From => +B_Type,
-                                               To => +Int_Type));
-            Cursor := Cursor + 1;
-            Subst (Cursor) :=
-              New_Clone_Substitution
-                (Kind      => EW_Predicate,
-                 Orig_Name => Append_Num
-                   (WNE_Array_Base_Range_Pred, Dim_Count),
-                 Image     => Range_Pred_Name (B_Ty));
+                 Orig_Name =>
+                   To_Name (Append_Num (WNE_To_Int, Dim_Count)),
+                 Image     =>
+                   To_Name (Conversion_Name (From => +B_Type,
+                                             To => +Int_Type)));
             Cursor := Cursor + 1;
             Subst (Cursor) :=
               New_Clone_Substitution
                 (Kind      => EW_Predicate,
                  Orig_Name =>
-                   Append_Num (WNE_Index_Dynamic_Property, Dim_Count),
+                   To_Name (Append_Num (WNE_Array_Base_Range_Pred, Dim_Count)),
+                 Image     => To_Name (Range_Pred_Name (B_Ty)));
+            Cursor := Cursor + 1;
+            Subst (Cursor) :=
+              New_Clone_Substitution
+                (Kind      => EW_Predicate,
+                 Orig_Name =>
+                   To_Name
+                     (Append_Num (WNE_Index_Dynamic_Property, Dim_Count)),
                  Image     =>
-                   Dynamic_Prop_Name (Ind_Ty));
+                   To_Name (Dynamic_Prop_Name (Ind_Ty)));
             Cursor := Cursor + 1;
          end;
          Dim_Count := Dim_Count + 1;
@@ -637,15 +647,16 @@ package body Why.Gen.Arrays is
                   Substitutions =>
                     (1 => New_Clone_Substitution
                          (Kind      => EW_Type_Subst,
-                          Orig_Name => To_Ident (WNE_Array_Component_Type),
+                          Orig_Name => To_Name (WNE_Array_Component_Type),
                           Image     => Ident_Of_Ada_Type
                             (Component_Type (Und_Ent))),
                      2 => New_Clone_Substitution
                        (Kind      => EW_Function,
-                        Orig_Name => To_Ident (WNE_To_Int),
-                        Image     => Conversion_Name
+                        Orig_Name => To_Name (WNE_To_Int),
+                        Image     =>
+                          To_Name (Conversion_Name
                           (From => +Type_Of_Node (Component_Type (Und_Ent)),
-                           To   => +Int_Type)))));
+                           To   => +Int_Type))))));
       end if;
 
       if Dimension = 1 and then
@@ -676,15 +687,16 @@ package body Why.Gen.Arrays is
                      Substitutions =>
                        (1 => New_Clone_Substitution
                             (Kind      => EW_Type_Subst,
-                             Orig_Name => To_Ident (WNE_Array_Component_Type),
+                             Orig_Name => To_Name (WNE_Array_Component_Type),
                              Image     => Ident_Of_Ada_Type
                                (Component_Type (Und_Ent))),
                         2 => New_Clone_Substitution
                           (Kind      => EW_Function,
-                           Orig_Name => To_Ident (WNE_To_Int),
-                           Image     => Conversion_Name
+                           Orig_Name => To_Name (WNE_To_Int),
+                           Image     =>
+                             To_Name (Conversion_Name
                              (From => +Type_Of_Node (Component_Type (Und_Ent)),
-                              To   => +Int_Type)))));
+                              To   => +Int_Type))))));
          end if;
       end if;
    end Declare_Unconstrained;

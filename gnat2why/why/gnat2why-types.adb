@@ -29,32 +29,33 @@ use Ada.Text_IO;
 
 with GNAT.Source_Info;
 
-with Atree;              use Atree;
-with Einfo;              use Einfo;
-with Namet;              use Namet;
-with Sinfo;              use Sinfo;
-with Sinput;             use Sinput;
-with Stand;              use Stand;
+with Atree;               use Atree;
+with Einfo;               use Einfo;
+with Namet;               use Namet;
+with Sinfo;               use Sinfo;
+with Sinput;              use Sinput;
+with Stand;               use Stand;
 
-with SPARK_Definition;   use SPARK_Definition;
-with SPARK_Util;         use SPARK_Util;
+with SPARK_Definition;    use SPARK_Definition;
+with SPARK_Util;          use SPARK_Util;
 
-with Why;                use Why;
-with Why.Atree.Builders; use Why.Atree.Builders;
-with Why.Atree.Modules;  use Why.Atree.Modules;
-with Why.Conversions;    use Why.Conversions;
-with Why.Gen.Arrays;     use Why.Gen.Arrays;
-with Why.Gen.Binders;    use Why.Gen.Binders;
-with Why.Gen.Decl;       use Why.Gen.Decl;
-with Why.Gen.Expr;       use Why.Gen.Expr;
-with Why.Gen.Names;      use Why.Gen.Names;
-with Why.Gen.Records;    use Why.Gen.Records;
-with Why.Gen.Scalars;    use Why.Gen.Scalars;
-with Why.Inter;          use Why.Inter;
-with Why.Sinfo;          use Why.Sinfo;
-with Why.Types;          use Why.Types;
+with Why;                 use Why;
+with Why.Atree.Accessors; use Why.Atree.Accessors;
+with Why.Atree.Builders;  use Why.Atree.Builders;
+with Why.Atree.Modules;   use Why.Atree.Modules;
+with Why.Conversions;     use Why.Conversions;
+with Why.Gen.Arrays;      use Why.Gen.Arrays;
+with Why.Gen.Binders;     use Why.Gen.Binders;
+with Why.Gen.Decl;        use Why.Gen.Decl;
+with Why.Gen.Expr;        use Why.Gen.Expr;
+with Why.Gen.Names;       use Why.Gen.Names;
+with Why.Gen.Records;     use Why.Gen.Records;
+with Why.Gen.Scalars;     use Why.Gen.Scalars;
+with Why.Inter;           use Why.Inter;
+with Why.Sinfo;           use Why.Sinfo;
+with Why.Types;           use Why.Types;
 
-with Gnat2Why.Nodes;     use Gnat2Why.Nodes;
+with Gnat2Why.Nodes;      use Gnat2Why.Nodes;
 
 package body Gnat2Why.Types is
 
@@ -227,15 +228,15 @@ package body Gnat2Why.Types is
    -- Ident_Of_Ada_Type --
    -----------------------
 
-   function Ident_Of_Ada_Type (E : Entity_Id) return W_Identifier_Id
+   function Ident_Of_Ada_Type (E : Entity_Id) return W_Name_Id
    is
    begin
       if Is_Standard_Boolean_Type (E) then
-         return New_Identifier (Name => "bool");
+         return Get_Name (EW_Bool_Type);
       elsif Fullview_Not_In_SPARK (E) then
-         return New_Identifier (Name => To_String (WNE_Private));
+         return Get_Name (EW_Private_Type);
       else
-         return To_Why_Id (E);
+         return To_Why_Type (E);
       end if;
    end Ident_Of_Ada_Type;
 

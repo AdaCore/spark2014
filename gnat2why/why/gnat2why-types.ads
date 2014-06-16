@@ -85,7 +85,7 @@ package Gnat2Why.Types is
    --  in Why.Gen.* (Scalars, Records, or Arrays). New_Theory is set to True if
    --  a new theory was created for E.
 
-   function Ident_Of_Ada_Type (E : Entity_Id) return W_Identifier_Id;
+   function Ident_Of_Ada_Type (E : Entity_Id) return W_Name_Id;
    --  Transform the type entity in argument to an identifier. This function
    --  works with Boolean, but not with things like Universal_Integer.
 

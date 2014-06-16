@@ -107,46 +107,46 @@ package body Why.Gen.Scalars is
          Default_Clone_Subst : constant W_Clone_Substitution_Id :=
            New_Clone_Substitution
              (Kind      => EW_Type_Subst,
-              Orig_Name => New_Identifier (Name => "t"),
-              Image     => New_Identifier (Why_Name));
+              Orig_Name => New_Name (Symbol => NID ("t")),
+              Image     => Why_Name);
          Round_Clone_Subst : constant W_Clone_Substitution_Array :=
            (if Has_Round_Real then
               (1 => New_Clone_Substitution
                    (Kind      => EW_Function,
-                    Orig_Name => To_Ident (WNE_Float_Round_Tmp),
-                    Image     => Round_Id))
+                    Orig_Name => To_Name (WNE_Float_Round_Tmp),
+                    Image     => To_Name (Round_Id)))
             else (1 .. 0 => <>));
          Static_Clone_Subst : constant W_Clone_Substitution_Array :=
            (if Is_Static then
               (1 => New_Clone_Substitution
                    (Kind      => EW_Function,
-                    Orig_Name => To_Ident (WNE_Attr_First),
-                    Image     => To_Ident (WNE_Attr_First)),
+                    Orig_Name => To_Name (WNE_Attr_First),
+                    Image     => To_Name (WNE_Attr_First)),
                2 => New_Clone_Substitution
                  (Kind      => EW_Function,
-                  Orig_Name => To_Ident (WNE_Attr_Last),
-                  Image     => To_Ident (WNE_Attr_Last)))
+                  Orig_Name => To_Name (WNE_Attr_Last),
+                  Image     => To_Name (WNE_Attr_Last)))
             else (1 .. 0 => <>));
          Mod_Clone_Subst : constant W_Clone_Substitution_Array :=
            (if Is_Modular_Integer_Type (E) then
                 (1 => New_Clone_Substitution
                  (Kind      => EW_Function,
-                  Orig_Name => To_Ident (WNE_Attr_Modulus),
-                  Image     => To_Ident (WNE_Attr_Modulus)))
+                  Orig_Name => To_Name (WNE_Attr_Modulus),
+                  Image     => To_Name (WNE_Attr_Modulus)))
             else (1 .. 0 => <>));
          Range_Clone_Subst : constant W_Clone_Substitution_Array :=
            (if Is_Static or else Is_Discrete_Type (E) then
               (1 => New_Clone_Substitution
                (Kind      => EW_Predicate,
-                Orig_Name => To_Ident (WNE_Range_Pred),
-                Image     => To_Ident (WNE_Range_Pred)))
+                Orig_Name => To_Name (WNE_Range_Pred),
+                Image     => To_Name (WNE_Range_Pred)))
             else (1 .. 0 => <>));
          Fixed_Clone_Subst : constant W_Clone_Substitution_Array :=
            (if Is_Fixed_Point_Type (E) then
                 (1 => New_Clone_Substitution
                  (Kind      => EW_Function,
-                  Orig_Name => To_Ident (WNE_Attr_Small),
-                  Image     => To_Ident (WNE_Attr_Small)))
+                  Orig_Name => To_Name (WNE_Attr_Small),
+                  Image     => To_Name (WNE_Attr_Small)))
             else (1 .. 0 => <>));
       begin
 
@@ -280,24 +280,28 @@ package body Why.Gen.Scalars is
             Default_Clone_Subst : constant W_Clone_Substitution_Id :=
               New_Clone_Substitution
                 (Kind      => EW_Type_Subst,
-                 Orig_Name => New_Identifier (Name => "base"),
-                 Image     => New_Identifier (Why_Name));
+                 Orig_Name => New_Name (Symbol => NID ("base")),
+                 Image     => Why_Name);
 
             To_Int_Clone_Subst : constant W_Clone_Substitution_Id :=
               New_Clone_Substitution
                 (Kind      => EW_Function,
-                 Orig_Name => New_Identifier (Name => "to_int_base"),
-                 Image     => Conversion_Name
-                                (From => Why_Base_Type,
-                                 To   => EW_Int_Type));
+                 Orig_Name => New_Name (Symbol => NID ("to_int_base")),
+                 Image     =>
+                   To_Name
+                     (Conversion_Name
+                        (From => Why_Base_Type,
+                         To   => EW_Int_Type)));
 
             Of_Int_Clone_Subst : constant W_Clone_Substitution_Id :=
               New_Clone_Substitution
                 (Kind      => EW_Function,
-                 Orig_Name => New_Identifier (Name => "of_int_base"),
-                 Image     => Conversion_Name
-                                (To   => Why_Base_Type,
-                                 From => EW_Int_Type));
+                 Orig_Name => New_Name (Symbol => NID ("of_int_base")),
+                 Image     =>
+                   To_Name
+                     (Conversion_Name
+                        (To   => Why_Base_Type,
+                         From => EW_Int_Type)));
          begin
 
             --  declare the abstract type

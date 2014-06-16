@@ -641,9 +641,9 @@ package body Xtree_Sinfo is
 
       New_Field (W_Clone_Substitution, "Kind", "EW_Subst_Type");
       New_Field (W_Clone_Substitution,
-                 "Orig_Name", "W_Identifier", Id_One);
+                 "Orig_Name", "W_Name", Id_One);
       New_Field (W_Clone_Substitution,
-                 "Image", "W_Identifier", Id_One);
+                 "Image", "W_Name", Id_One);
       Set_Domain (W_Clone_Substitution, EW_Term);
 
       --------------------------
