@@ -264,6 +264,12 @@ theory Array__1
 
   function slide (map 'a) int int : map 'a
 
+  axiom slide_eq :
+    forall a : map 'a.
+    forall first : int
+      [slide a first first].
+      slide a first first = a
+
   axiom slide_def :
     forall a : map 'a.
     forall old_first : int.
