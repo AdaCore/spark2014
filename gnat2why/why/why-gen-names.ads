@@ -235,7 +235,6 @@ package Why.Gen.Names is
       WNE_Private,
       WNE_Range_Pred,
       WNE_Result_Exc,
-      WNE_String_Image,
       WNE_To_Array,
       WNE_To_Base,
       WNE_To_Int,

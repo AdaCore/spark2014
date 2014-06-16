@@ -226,6 +226,14 @@ package body Why.Atree.Modules is
                         Domain => EW_Term,
                         Symbol => NID ("abs"));
 
+   --  Identifiers of the Main module
+
+      String_Image_Type :=
+        New_Type (Base_Type  => EW_Abstract,
+                  Name       =>
+                    New_Name (Symbol => NID ("__image")),
+                  Is_Mutable => False);
+
       --  identifiers of the "_gnatprove_standard.Floating" module
 
       Floating_Div_Real :=

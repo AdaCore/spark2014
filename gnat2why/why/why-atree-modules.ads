@@ -76,6 +76,10 @@ package Why.Atree.Modules is
    Standard_Array_Logical_Ax : W_Module_Id;
    Subtype_Array_Logical_Ax  : W_Module_Id;
 
+   --  Identifiers of the Main module
+
+   String_Image_Type         : W_Type_Id;
+
    --  Identifiers of the Integer module
 
    Integer_Bitwise_And       : W_Identifier_Id;

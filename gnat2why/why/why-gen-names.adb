@@ -593,7 +593,6 @@ package body Why.Gen.Names is
          when WNE_Array_Singleton => return "singleton";
          when WNE_Array_Slide  => return "slide";
          when WNE_Array_Type   => return "__t";
-         when WNE_String_Image => return "__image";
          when WNE_To_String    => return "to_string";
          when WNE_Of_String    => return "from_string";
          when WNE_Bool_Eq      => return "bool_eq";

@@ -578,10 +578,8 @@ package body Why.Gen.Arrays is
                  New_Named_Type (To_String (WNE_Array_Type))));
       if Und_Ent = Standard_String then
          declare
-            Image_Ty    : constant W_Type_Id :=
-              New_Named_Type (To_String (WNE_String_Image));
             Dummy_Ident : constant W_Identifier_Id :=
-              New_Identifier (Name => "x", Typ => Image_Ty);
+              New_Identifier (Name => "x", Typ => String_Image_Type);
             Str_Typ     : constant W_Type_Id :=
               New_Named_Type (Name => Why3_Type_Name);
             Dummy_Ident2 : constant W_Identifier_Id :=
@@ -612,7 +610,7 @@ package body Why.Gen.Arrays is
                           Mutable  => False,
                           B_Ent    => null,
                           B_Name   => Dummy_Ident2)),
-                     Return_Type => Image_Ty));
+                     Return_Type => String_Image_Type));
          end;
       end if;
 
