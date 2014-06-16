@@ -177,7 +177,6 @@ package Why.Inter is
    --  Return the most general base type for Left and Right
    --  (e.g. real in Left=int and Right=real).
 
-   function Get_EW_Type (T : W_Type_Id) return EW_Type;
    function Get_EW_Type (T : Node_Id) return EW_Type;
    --  Return the EW_Type of the given entity
 

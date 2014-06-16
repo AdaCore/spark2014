@@ -1940,7 +1940,7 @@ package body Gnat2Why.Subprograms is
               (Left   => New_Relation
                  (Op      => EW_Eq,
                   Op_Type =>
-                    Get_EW_Type (Why_Type),
+                    Get_Base_Type (Why_Type),
                   Left    => +New_Result_Ident (Why_Type),
                   Right   =>
                     New_Call

@@ -46,7 +46,6 @@ with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Atree.Modules;   use Why.Atree.Modules;
 with Why.Atree.Mutators;  use Why.Atree.Mutators;
-with Why.Atree.Tables;    use Why.Atree.Tables;
 with Why.Atree.Traversal; use Why.Atree.Traversal;
 with Why.Conversions;     use Why.Conversions;
 with Why.Gen.Names;       use Why.Gen.Names;
@@ -1018,19 +1017,6 @@ package body Why.Inter is
          return Obj;
       end if;
    end Extract_Object_Name;
-
-   -----------------
-   -- Get_EW_Type --
-   -----------------
-
-   function Get_EW_Type (T : W_Type_Id) return EW_Type is
-   begin
-      if Get_Kind (+T) = W_Type then
-         return Get_Base_Type (+T);
-      else
-         return EW_Abstract;
-      end if;
-   end Get_EW_Type;
 
    function Get_EW_Type (T : Node_Id) return EW_Type is
       E : constant EW_Type := Get_EW_Term_Type (T);
