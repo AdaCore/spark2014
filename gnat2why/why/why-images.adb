@@ -23,8 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Gen.Names; use Why.Gen.Names;
-
 package body Why.Images is
 
    function Img (Node : Node_Id) return String;
@@ -68,7 +66,7 @@ package body Why.Images is
          when EW_Real => return "real";
          when EW_Int =>  return "int";
          when EW_Bool => return "bool";
-         when EW_Private => return To_String (WNE_Private);
+         when EW_Private => return "__private";
          when EW_Abstract => return "[abstract node]";
          when EW_Split => return "[split node]";
          when EW_Fixed => return "__fixed";

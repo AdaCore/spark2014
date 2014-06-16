@@ -71,9 +71,6 @@ package Why.Gen.Names is
      (Ty : Entity_Id; R : Range_Check_Kind) return W_Identifier_Id;
    --  Return the name of the "range_check_" program function for the type
 
-   function EW_Base_Type_Name (Kind : EW_Basic_Type) return String;
-   --  Return the Why name of a base type (e.g. "int" for int)
-
    function New_Bool_Cmp
      (Rel       : EW_Relation;
       Arg_Types : W_Type_Id)
@@ -232,7 +229,6 @@ package Why.Gen.Names is
       WNE_Of_String,
       WNE_Range_Check_Fun,
       WNE_Pre_Check,
-      WNE_Private,
       WNE_Range_Pred,
       WNE_To_Array,
       WNE_To_Base,

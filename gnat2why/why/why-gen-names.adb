@@ -295,30 +295,6 @@ package body Why.Gen.Names is
       end if;
    end Dynamic_Prop_Name;
 
-   -----------------------
-   -- EW_Base_Type_Name --
-   -----------------------
-
-   function EW_Base_Type_Name (Kind : EW_Basic_Type) return String is
-   begin
-      case Kind is
-         when EW_Unit =>
-            return "unit";
-         when EW_Prop =>
-            return "prop";
-         when EW_Real =>
-            return "real";
-         when EW_Int =>
-            return "int";
-         when EW_Fixed =>
-            return "** special ""fixed"" type **";
-         when EW_Bool =>
-            return "bool";
-         when EW_Private =>
-            return "__private";
-      end case;
-   end EW_Base_Type_Name;
-
    ----------------------
    -- Float_Round_Name --
    ----------------------
@@ -603,7 +579,6 @@ package body Why.Gen.Names is
          when WNE_Def          => return "def";
          when WNE_Pre_Check    => return "pre_check";
          when WNE_Dummy        => return "dummy";
-         when WNE_Private      => return "__private";
          when WNE_Check_Not_First => return "check_not_first";
          when WNE_Check_Not_Last => return "check_not_last";
          when WNE_Attr_First => return "first";
