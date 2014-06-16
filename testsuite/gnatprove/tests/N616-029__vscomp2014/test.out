@@ -1,0 +1,12 @@
+sum_elem.adb:4:11: warning: subprogram "Sum_Elem" has no effect
+sum_elem.adb:25:14: warning: subprogram "Local" has no effect
+sum_elem.adb:26:40: info: precondition proved
+sum_elem.adb:26:40: warning: range check might fail
+sum_elem.adb:27:14: info: precondition proved
+sum_elem.adb:27:32: info: precondition proved
+sum_elem.adb:27:55: info: precondition proved
+sum_elem.adb:31:22: info: precondition proved
+sum_elem.adb:31:22: warning: assertion might fail, requires Element (P, X).First + Element (P, X).Last in Index
+sum_elem.adb:31:45: info: precondition proved
+sum_elem.adb:37:04: warning: precondition might fail
+sum_elem.adb:38:04: warning: precondition might fail
