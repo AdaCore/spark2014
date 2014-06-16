@@ -132,7 +132,7 @@ package Why.Inter is
                          Local : Boolean := False)
                          return W_Name_Id;
 
-   function To_Why_Type (T : String) return W_Name_Id;
+   function To_Why_Type (T : String) return W_Type_Id;
 
    function EW_Bool_Type return W_Type_Id;
    function EW_Int_Type return W_Type_Id;

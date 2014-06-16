@@ -651,7 +651,7 @@ package body Gnat2Why.Subprograms is
                       B_Name   =>
                         New_Identifier
                           (Name => R.all,
-                           Typ  => New_Named_Type (To_Why_Type (R.all))),
+                           Typ  => To_Why_Type (R.all)),
                       B_Ent    => R,
                       Mutable  => False));
                end if;

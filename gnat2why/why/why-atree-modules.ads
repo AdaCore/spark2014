@@ -79,6 +79,7 @@ package Why.Atree.Modules is
    --  Identifiers of the Main module
 
    String_Image_Type         : W_Type_Id;
+   Type_Of_Heap              : W_Type_Id;
 
    --  Identifiers of the Integer module
 

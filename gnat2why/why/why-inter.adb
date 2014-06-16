@@ -1373,15 +1373,18 @@ package body Why.Inter is
 
    end To_Why_Type;
 
-   function To_Why_Type (T : String) return W_Name_Id
+   function To_Why_Type (T : String) return W_Type_Id
    is
    begin
       if T = SPARK_Xrefs.Name_Of_Heap_Variable then
-         return New_Name (Symbol => NID ("__type_of_heap"));
+         return Type_Of_Heap;
       else
          return
-           New_Name (Module => New_Module (File => No_Name, Name => NID (T)),
-                     Symbol => NID (To_String (WNE_Type)));
+           New_Named_Type
+             (Name =>
+                New_Name (Module =>
+                                New_Module (File => No_Name, Name => NID (T)),
+                          Symbol => NID (To_String (WNE_Type))));
       end if;
    end To_Why_Type;
 

@@ -234,6 +234,11 @@ package body Why.Atree.Modules is
                     New_Name (Symbol => NID ("__image")),
                   Is_Mutable => False);
 
+      Type_Of_Heap :=
+        New_Type (Base_Type  => EW_Abstract,
+                  Name       => New_Name (Symbol => NID ("__type_of_heap")),
+                  Is_Mutable => False);
+
       --  identifiers of the "_gnatprove_standard.Floating" module
 
       Floating_Div_Real :=
