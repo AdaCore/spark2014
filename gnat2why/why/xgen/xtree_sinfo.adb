@@ -626,7 +626,7 @@ package body Xtree_Sinfo is
       New_Field (W_Clone_Declaration,
                  "Origin", "W_Module", Id_One);
       New_Field (W_Clone_Declaration,
-                 "As_Name", "W_Identifier", Id_Lone);
+                 "As_Name", "Name_Id");
       New_Field (W_Clone_Declaration,
                  "Clone_Kind", "EW_Clone_Type");
       New_Field (W_Clone_Declaration,

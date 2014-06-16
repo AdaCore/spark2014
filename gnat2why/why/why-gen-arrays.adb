@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Atree;               use Atree;
+with Namet;               use Namet;
 with Sem_Eval;            use Sem_Eval;
 with Sem_Util;            use Sem_Util;
 with Sinfo;               use Sinfo;
@@ -425,6 +426,7 @@ package body Why.Gen.Arrays is
             New_Clone_Declaration
               (Theory_Kind   => EW_Module,
                Clone_Kind    => EW_Export,
+               As_Name       => No_Name,
                Origin        => Clone,
                Substitutions => Subst));
       Emit (Theory,
@@ -447,6 +449,7 @@ package body Why.Gen.Arrays is
                  (Theory_Kind   => EW_Module,
                   Clone_Kind    => EW_Export,
                   Origin        => Array_Comparison_Ax,
+                  As_Name       => No_Name,
                   Substitutions =>
                     (1 => New_Clone_Substitution
                          (Kind      => EW_Type_Subst,
@@ -485,6 +488,7 @@ package body Why.Gen.Arrays is
                     (Theory_Kind   => EW_Module,
                      Clone_Kind    => EW_Export,
                      Origin        => Subtype_Array_Logical_Ax,
+                     As_Name       => No_Name,
                      Substitutions =>
                        (1 => New_Clone_Substitution
                             (Kind      => EW_Type_Subst,
@@ -569,6 +573,7 @@ package body Why.Gen.Arrays is
             New_Clone_Declaration
               (Theory_Kind   => EW_Module,
                Clone_Kind    => EW_Export,
+               As_Name       => No_Name,
                Origin        => Clone,
                Substitutions => Subst));
       Emit (Theory,
@@ -627,6 +632,7 @@ package body Why.Gen.Arrays is
                New_Clone_Declaration
                  (Theory_Kind   => EW_Module,
                   Clone_Kind    => EW_Export,
+                  As_Name       => No_Name,
                   Origin        => Array_Comparison_Ax,
                   Substitutions =>
                     (1 => New_Clone_Substitution
@@ -665,6 +671,7 @@ package body Why.Gen.Arrays is
                   New_Clone_Declaration
                     (Theory_Kind   => EW_Module,
                      Clone_Kind    => EW_Export,
+                     As_Name       => No_Name,
                      Origin        => Subtype_Array_Logical_Ax,
                      Substitutions =>
                        (1 => New_Clone_Substitution

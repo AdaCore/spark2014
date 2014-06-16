@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Atree;               use Atree;
+with Namet;               use Namet;
 with Nlists;              use Nlists;
 with Sem_Eval;            use Sem_Eval;
 with Sem_Util;            use Sem_Util;
@@ -315,6 +316,7 @@ package body Why.Gen.Scalars is
                   New_Clone_Declaration
                     (Theory_Kind   => EW_Module,
                      Clone_Kind    => EW_Export,
+                     As_Name       => No_Name,
                      Origin        =>
                        (if Depends_On_Discriminant (Rng) then
                              Dynamic_Discrete_Base
@@ -371,6 +373,7 @@ package body Why.Gen.Scalars is
       Emit (Theory,
             New_Clone_Declaration (Theory_Kind   => EW_Module,
                                    Clone_Kind    => EW_Export,
+                                   As_Name       => No_Name,
                                    Origin        => Pick_Clone,
                                    Substitutions => Compute_Clone_Subst));
    end Declare_Scalar_Type;

@@ -322,7 +322,7 @@ package body Why.Atree.Sprint is
    ------------------------------
 
    procedure Print_Clone_Declaration (Node : W_Clone_Declaration_Id) is
-      As_Name    : constant W_Identifier_OId := +Get_As_Name (Node);
+      As_Name    : constant Name_Id := Get_As_Name (Node);
       Subst_List : constant W_Clone_Substitution_OList :=
         +Get_Substitutions (Node);
    begin
@@ -330,9 +330,9 @@ package body Why.Atree.Sprint is
       P (O, Get_Clone_Kind (Node));
       P (O, " ");
       Print_Module_Id (Get_Origin (Node), With_File => True);
-      if As_Name /= Why_Empty then
+      if As_Name /= No_Name then
          P (O, " as ");
-         Print_Node (+As_Name);
+         P (O, As_Name);
       end if;
       if not Is_Empty (+Subst_List) then
          P (O, " with");

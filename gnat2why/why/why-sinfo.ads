@@ -557,8 +557,7 @@ package Why.Sinfo is
    --  ---------------------------
    --  -- W_Include_Declaration --
    --  ---------------------------
-   --  File       W_Identifier_Id
-   --  T_Name     W_Identifier_Id
+   --  Module     W_Module_Id
    --  Kind       EW_Theory_Type
    --  Use_Kind   EW_Clone_Type
    --
@@ -568,7 +567,7 @@ package Why.Sinfo is
    --  -- W_Clone_Declaration --
    --  -------------------------
    --  Origin        W_Module_Id
-   --  As_Name       W_Identifier_Id
+   --  As_Name       Name_Id
    --  Clone_Kind    EW_Clone_Type
    --  Substitutions W_Clone_Substitution_List
    --  Theory_Kind   EW_Theory_Type
