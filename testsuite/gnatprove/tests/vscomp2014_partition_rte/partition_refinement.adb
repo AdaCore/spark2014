@@ -189,8 +189,9 @@ is
    begin
       while Has_Element (X, C) loop
 
+         pragma Assert (for all C in D_Old => Has_Element (D, C));
          pragma Assert (Has_Element (D, (Find (D_Old, Element (X, C)))));
-         --  This assumption is a logical consequence of the assertion above, that SPARK GPL 2014 does not prove.
+         --  This assumption is a logical consequence of the two assertion above, that SPARK GPL 2014 does not prove.
          pragma Assume (Contains (D, Element (X, C)));
          Refine_One (A, D, P, F, Element (X, C));
          Next (X, C);
