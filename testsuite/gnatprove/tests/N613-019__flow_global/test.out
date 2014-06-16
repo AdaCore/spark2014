@@ -1,6 +1,6 @@
+client.adb:7:07: "Y" must be listed in the Global aspect of "P" (SPARK RM 6.1.4(13))
 client.adb:7:12: "X" must be listed in the Global aspect of "P" (SPARK RM 6.1.4(13))
 client.adb:8:07: "Z" must be listed in the Global aspect of "P" (SPARK RM 6.1.4(13))
-client.ads:4:14: "Y" must be listed in the Global aspect of "P" (SPARK RM 6.1.4(13))
    compilation of client.adb failed
 
 

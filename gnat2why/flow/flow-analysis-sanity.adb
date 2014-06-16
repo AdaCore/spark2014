@@ -574,7 +574,7 @@ package body Flow.Analysis.Sanity is
                            SRM_Ref   => SRM_Ref,
                            N   => First_Variable_Use (FA      => FA,
                                                       Var     => Var,
-                                                      Kind    => Use_Read,
+                                                      Kind    => Use_Any,
                                                       Precise => False),
                            F1  => Entire_Variable (Var),
                            F2  => Direct_Mapping_Id (FA.Analyzed_Entity));
