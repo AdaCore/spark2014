@@ -16,17 +16,15 @@ is
                    X      : in     Positive;
                    Y      : in     Positive)
      with
-      Depends => (Values => (Values, X, Y)),
-      Pre     => (X in Values'Range and then
-                  Y in Values'Range and then
-                  X /= Y),
-      Post => Perm (Values, Values'Old)
---
---         Post =>
---             (Values (X) = Values'Old (Y) and then
---              Values (Y) = Values'Old (X) and then
---              (for all J in Values'Range =>
---                 (if J /= X and J /= Y then Values (J) = Values'Old (J))))
+       Depends => (Values => (Values, X, Y)),
+       Pre     => (X in Values'Range and then
+                     Y in Values'Range and then
+                       X /= Y),
+       Post    => Perm (Values'Old, Values) and then
+     (Values (X) = Values'Old (Y) and then
+          Values (Y) = Values'Old (X) and then
+          (for all J in Values'Range =>
+               (if J /= X and J /= Y then Values (J) = Values'Old (J))))
    is
       Values_Old : constant Array_Type := Values;
       Temp : Integer;
@@ -34,7 +32,7 @@ is
       Temp       := Values (X);
       Values (X) := Values (Y);
       Values (Y) := Temp;
-      pragma Assume (Perm (Values, Values_Old));
+      pragma Assume (Perm (Values_Old, Values));
    end Swap;
 
 
@@ -71,7 +69,6 @@ is
    begin -- Selection_Sort
       pragma Assume (Perm (Values, Values));
       for Current in Values'First .. Values'Last - 1 loop
-         pragma Loop_Invariant (Perm (Values'Loop_Entry, Values));
          pragma Warnings (Off, "unused assignment", Reason => "ghost variable");
          Values_Last := Values;
          pragma Warnings (On, "unused assignment", Reason => "ghost variable");
@@ -85,13 +82,15 @@ is
 
          pragma Assume (Perm_Transitive (Values'Loop_Entry, Values_Last, Values));
 
---           pragma Loop_Invariant   -- Simple partition property
---             ((for all J in Current .. Values'Last =>
---                   Values (Current) <= Values (J)));
---
---           pragma Loop_Invariant  -- order property
---             ((for all J in Values'First .. Current =>
---                 Values (J) <= Values (J + 1)));
+         pragma Loop_Invariant (Perm (Values'Loop_Entry, Values));
+
+         pragma Loop_Invariant   -- Simple partition property
+           ((for all J in Current .. Values'Last =>
+                 Values (Current) <= Values (J)));
+
+         pragma Loop_Invariant  -- order property
+           ((for all J in Values'First .. Current =>
+               Values (J) <= Values (J + 1)));
       end loop;
 
    end Selection_Sort;
