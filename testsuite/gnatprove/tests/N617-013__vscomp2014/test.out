@@ -1,0 +1,22 @@
+partition_refinement.adb:11:43: info: precondition proved
+partition_refinement.adb:11:43: info: range check proved
+partition_refinement.adb:12:20: info: precondition proved
+partition_refinement.adb:12:32: info: range check proved
+partition_refinement.adb:14:21: warning: statement has no effect
+partition_refinement.adb:14:56: info: range check proved
+partition_refinement.adb:17:47: info: precondition proved
+partition_refinement.adb:17:47: warning: range check might fail
+partition_refinement.adb:21:16: info: loop invariant preservation proved
+partition_refinement.adb:21:47: info: range check proved
+partition_refinement.adb:21:88: info: index check proved
+partition_refinement.adb:22:47: info: range check proved
+partition_refinement.adb:22:90: warning: loop invariant might fail in first iteration, requires F(J) = F'Loop_Entry(J)
+partition_refinement.adb:22:92: info: index check proved
+partition_refinement.adb:22:110: info: index check proved
+partition_refinement.adb:23:47: info: range check proved
+partition_refinement.adb:23:66: info: overflow check proved
+partition_refinement.adb:23:89: info: index check proved
+partition_refinement.adb:23:107: info: index check proved
+partition_refinement.ads:31:07: warning: "P.Capacity" is not modified, could be "in"
+partition_refinement.ads:31:07: warning: "P.Elements" is not modified, could be "in"
+partition_refinement.ads:31:07: warning: "P.Last" is not modified, could be "in"
