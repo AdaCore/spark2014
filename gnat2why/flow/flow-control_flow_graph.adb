@@ -1022,7 +1022,7 @@ package body Flow.Control_Flow_Graph is
          then Flow_Id_Sets.Empty_Set
          else Flow_Id_Sets.To_Set (F));
 
-   begin
+   begin  --  Beginning of Calculate_Variables_Used_By_Component
       case Nkind (Search) is
          when N_Identifier =>
             --  A := B;
@@ -1279,9 +1279,8 @@ package body Flow.Control_Flow_Graph is
                            Choice := First (Choices (Comp_Assoc));
                            while Present (Choice) loop
                               if Entity (Choice) = Component
-                                or else (Is_Record_Type
-                                           (Get_Full_Type
-                                              (Etype (Choice)))
+                                or else (Ekind (Entity (Choice)) in
+                                           E_Component | E_Discriminant
                                            and then Original_Record_Component
                                                       (Component) =
                                                     Original_Record_Component

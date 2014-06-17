@@ -25,7 +25,6 @@ record_discr.ads:16:44: info: index check proved
 record_discr.ads:16:44: info: precondition proved
 record_discr.ads:17:52: info: discriminant check proved
 record_discr.ads:17:64: info: index check proved
-record_discr.ads:20:21: warning: unused initial value of "A"
 record_discr.ads:22:14: warning: postcondition might fail
 record_discr.ads:22:46: info: index check proved
 record_discr.ads:22:46: info: precondition proved
