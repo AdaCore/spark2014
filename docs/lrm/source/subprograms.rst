@@ -381,7 +381,8 @@ follow the grammar of ``global_specification``
 
 7. A ``global_item`` shall not denote a constant object other than a formal
    parameter [of an enclosing subprogram] of mode **in** or a *constant
-   with variable input*.
+   with variable input*. The ``mode_selector`` of such a ``global_item``
+   must be ``Input`` or ``Proof_In``.
 
 .. _tu-fe-global_aspects-08:
 
