@@ -154,6 +154,13 @@ Objects and Named Numbers
 Object Declarations
 ~~~~~~~~~~~~~~~~~~~
 
+A constant is a *constant with variable inputs* if its initialization
+expression depends on:
+
+  * A variable or parameter
+
+  * Another *constant with variable inputs*
+
 .. centered:: **Legality Rules**
 
 .. _tu-object_declarations-01:
@@ -164,15 +171,25 @@ Object Declarations
 
 .. _tu-object_declarations-02:
 
-2. Constants including those that are not preelaborable shall not be
-   denoted in Global, Depends, Initializes or Refined_State
-   aspects. [This means that non-preelaborable constants are not taken
-   into account in determining and checking dependency relations.]
+2. Constants without variable inputs shall not be denoted in Global,
+   Depends, Initializes or Refined_State aspects. [This means that
+   non-preelaborable constants are not taken into account in determining
+   and checking dependency relations.]
 
-.. _etu-object_declarations:
+.. centered:: **Examples**
 
-.. todo:: Lift restriction that non-preelaborable constants are not subject
-          to flow analysis. To be completed in a post-Release 1 version of this document.
+.. code-block:: ada
+
+   A : constant Integer := 12;
+   --  No variable inputs
+
+   B : constant Integer := F (12, A);
+   --  No variable inputs if F is a function without global inputs (although
+   --  it could have global proof inputs)
+
+   C : constant Integer := Param + Var;
+   --  Constant with variable inputs
+
 
 Number Declarations
 ~~~~~~~~~~~~~~~~~~~

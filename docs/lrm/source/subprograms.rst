@@ -379,12 +379,9 @@ follow the grammar of ``global_specification``
 
 .. _tu-fe-global_aspects-07:
 
-7. A ``global_item`` shall not denote a constant object other than
-   a formal parameter [of an enclosing subprogram] of mode **in**.
-
-.. _etu-global_aspects-07:
-
-.. todo:: Consider relaxing this restriction.
+7. A ``global_item`` shall not denote a constant object other than a formal
+   parameter [of an enclosing subprogram] of mode **in** or a *constant
+   with variable input*.
 
 .. _tu-fe-global_aspects-08:
 
@@ -1301,4 +1298,3 @@ ghosts-have-no-effect-on-program-behavior rule.]
           Convention => Ghost,
           Import;
    -- The body of the function is not declared elsewhere.
-
