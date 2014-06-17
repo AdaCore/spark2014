@@ -96,7 +96,7 @@ you can still use Coq on |SPARK| VCs. To do so, you just have to add the
 following lines to your ``.why3.conf``::
 
     [prover]
-    command = "coqtop -batch -I %l/coq-tactic -R %l/coq Why3 -l %f"
+    command = "coqtop -batch -I %o/coq-tactic -R %o/coq Why3 -l %f"
     driver = "${install_dir}/share/why3/drivers/coq.drv"
     editor = "${editor}"
     in_place = false
@@ -425,7 +425,7 @@ providing a summation function for slices of arrays of integers:
 
   end Sums;
 
-We can provide the following Why3 translation for it, that we should store in a 
+We can provide the following Why3 translation for it, that we should store in a
 file named sum.mlw::
 
   module Sums__extended_index
@@ -505,7 +505,7 @@ file named sum.mlw::
 
    (* Clone of the axiom module for array comparison *)
    clone export "ada__model".Array_Comparison_Axiom with
-   type component_type = Sums__vector_element.vector_element, 
+   type component_type = Sums__vector_element.vector_element,
    function to_int = Sums__vector_element.to_int
 
    (* Helper function *)
@@ -667,7 +667,7 @@ following way::
   module Ada__containers__formal_doubly_linked_lists__element_type
       type base_type
       type element_type
-      
+
       (* Translations of subprograms taking element_type as an argument will
          have an argument of type base_type.
          We therefore rely on the presence of conversion functions for it. *)
@@ -681,7 +681,7 @@ following way::
 
     (* The name of operators is prefixed with o. Expects arguments of
        element_type's base_type. *)
-    function oeq 
+    function oeq
            Ada__containers__formal_doubly_linked_lists__element_type.base_type
            Ada__containers__formal_doubly_linked_lists__element_type.base_type :
                      bool
@@ -724,7 +724,7 @@ ada__containers__formal_doubly_linked_lists.mlw::
     axiom oeq__2_element:
      forall co1 co2 : list [oeq__2 co1 co2]. oeq__2 co1 co2 = True ->
        forall cu1 : cursor [element co1 cu1]. position co1 cu1 > 0 ->
-           Ada__containers__formal_doubly_linked_lists__oeq.oeq 
+           Ada__containers__formal_doubly_linked_lists__oeq.oeq
             (Ada__containers__formal_doubly_linked_lists__element_type.to_base
               (element co2 (position_inv co2 (position co1 cu1))))
             (Ada__containers__formal_doubly_linked_lists__element_type.to_base
