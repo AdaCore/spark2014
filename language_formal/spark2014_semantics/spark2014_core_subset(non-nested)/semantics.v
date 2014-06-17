@@ -2,10 +2,11 @@ Require Export util.
 Require Export more_list.
 Require Export values.
 Require Export environment.
+Require Export symboltable.
 
 Module Entry_Value_Stored <: ENTRY.
 
-  Definition T := value_stored procedure_declaration type_declaration.
+  Definition T := value.
 
 End Entry_Value_Stored.
 
@@ -221,24 +222,24 @@ Inductive eval_expr: stack -> expression -> Return value -> Prop :=
 
 with eval_name: stack -> name -> Return value -> Prop :=
     | Eval_E_Identifier: forall x s v ast_num, 
-        fetchG x s = Some (Value v) ->
+        fetchG x s = Some v ->
         eval_name s (E_Identifier ast_num x) (Normal v)
     | Eval_E_Indexed_Component_RTE_E: forall s e msg ast_num x_ast_num x,
         eval_expr s e (Run_Time_Error msg) ->
         eval_name s (E_Indexed_Component ast_num x_ast_num x e) (Run_Time_Error msg)
     | Eval_E_Indexed_Component_RTE_Index: forall s e i x l u a ast_num x_ast_num, 
         eval_expr s e (Normal (BasicV (Int i))) ->
-        fetchG x s = Some (Value (AggregateV (ArrayV (l, u, a)))) ->
+        fetchG x s = Some (AggregateV (ArrayV (l, u, a))) ->
         do_index_check i l u (Exception RTE_Index) ->
         eval_name s (E_Indexed_Component ast_num x_ast_num x e) Index_Error
     | Eval_E_Indexed_Component: forall s e i x l u a v ast_num x_ast_num, 
         eval_expr s e (Normal (BasicV (Int i))) ->
-        fetchG x s = Some (Value (AggregateV (ArrayV (l, u, a)))) ->
+        fetchG x s = Some (AggregateV (ArrayV (l, u, a))) ->
         do_index_check i l u Success ->
         array_select a i = Some v ->
         eval_name s (E_Indexed_Component ast_num x_ast_num x e) (Normal (BasicV v))
     | Eval_E_Selected_Component: forall x s r f v ast_num x_ast_num,
-        fetchG x s = Some (Value (AggregateV (RecordV r))) ->
+        fetchG x s = Some (AggregateV (RecordV r)) ->
         record_select r f = Some v ->
         eval_name s (E_Selected_Component ast_num x_ast_num x f) (Normal (BasicV v)).
 
@@ -261,19 +262,19 @@ with eval_name: stack -> name -> Return value -> Prop :=
     parameters + the local environment of the colling procedure;
   - [s'] is the resulting state. *)
 
-Inductive copy_out: store -> list parameter_specification -> list expression -> stack -> stack -> Prop :=
-    | Copy_Out_Nil : forall prf σ, 
-        copy_out prf nil nil σ σ
-    | Copy_Out_Cons_Out: forall σ σ' σ'' v prf param lparam lexp x ast_num1 ast_num2,
+Inductive copy_out: stack -> frame -> list parameter_specification -> list expression -> stack -> Prop :=
+    | Copy_Out_Nil : forall s f, 
+        copy_out s f nil nil s
+    | Copy_Out_Cons_Out: forall s s' s'' v f param lparam lexp x ast_num1 ast_num2,
         param.(parameter_mode) = Out ->
-        fetch param.(parameter_name) prf = Some v ->
-        updateG σ x v = Some σ' ->
-        copy_out prf lparam lexp σ' σ'' ->
-        copy_out prf (param::lparam) ((E_Name ast_num1 (E_Identifier ast_num2 x)) :: lexp) σ σ''
-    | Copy_Out_Cons_In: forall σ σ' prf param lparam lexp e,
+        fetch param.(parameter_name) f = Some v ->
+        updateG s x v = Some s' ->
+        copy_out s' f lparam lexp s'' ->
+        copy_out s f (param :: lparam) ((E_Name ast_num1 (E_Identifier ast_num2 x)) :: lexp) s''
+    | Copy_Out_Cons_In: forall s s' f param lparam lexp e,
         param.(parameter_mode) = In ->
-        copy_out prf lparam lexp σ σ' ->
-        copy_out prf (param::lparam) (e :: lexp) σ σ'.
+        copy_out s f lparam lexp s' ->
+        copy_out s f (param :: lparam) (e :: lexp) s'.
 
 (** [Copy_in s lparams lexp frame] means the frame is the portion of
     stack to push on the stack to start evaluating the procedure
@@ -283,31 +284,33 @@ Inductive copy_out: store -> list parameter_specification -> list expression -> 
     [lexp]. Only "In" parameters are evaluated, "Out" parameters are
     set to [Undefined]. *)
 
-Inductive copy_in: stack -> list parameter_specification -> list expression -> Return store -> Prop :=
-    | Copy_In_Nil : forall σ, 
-        copy_in σ nil nil (Normal nil)
-    | Copy_In_Cons_Out: forall σ param lparam lexp frame ast_num1 ast_num2 x,
+(* start from an empty frame and then push the values of arguments into it *)
+
+Inductive copy_in: stack -> frame -> list parameter_specification -> list expression -> Return frame -> Prop :=
+    | Copy_In_Nil : forall s f, 
+        copy_in s f nil nil (Normal f)
+    | Copy_In_Cons_Out: forall param s f lparam le f' ast_num1 ast_num2 x,
         param.(parameter_mode) = Out ->
-        copy_in σ lparam lexp (Normal frame) ->
-        copy_in σ (param::lparam) ((E_Name ast_num1 (E_Identifier ast_num2 x))::lexp) (Normal ((param.(parameter_name),Undefined)::frame))
-    | Copy_In_Cons_Out_E: forall σ param lparam lexp msg ast_num1 ast_num2 x,
+        copy_in s f lparam le (Normal f') ->
+        copy_in s f (param :: lparam) ((E_Name ast_num1 (E_Identifier ast_num2 x)) :: le) (Normal (push f' param.(parameter_name) Undefined))
+    | Copy_In_Cons_Out_E: forall param s f lparam le msg ast_num1 ast_num2 x,
         param.(parameter_mode) = Out ->
-        copy_in σ lparam lexp (Run_Time_Error msg) ->
-        copy_in σ (param::lparam) (E_Name ast_num1 (E_Identifier ast_num2 x)::lexp) (Run_Time_Error msg)
-    | Copy_In_Cons_In: forall σ param e v lparam lexp frame,
+        copy_in s f lparam le (Run_Time_Error msg) ->
+        copy_in s f (param :: lparam) (E_Name ast_num1 (E_Identifier ast_num2 x) :: le) (Run_Time_Error msg)
+    | Copy_In_Cons_In: forall param s e v f lparam le f',
         param.(parameter_mode) = In ->
-        eval_expr σ e (Normal v) ->
-        copy_in σ lparam lexp (Normal frame) ->
-        copy_in σ (param::lparam) (e::lexp) (Normal ((param.(parameter_name),Value v)::frame))
-    | Copy_In_Cons_In_E1: forall σ param e msg lparam lexp,
+        eval_expr s e (Normal v) ->
+        copy_in s f lparam le (Normal f') ->
+        copy_in s f (param :: lparam) (e :: le) (Normal (push f' param.(parameter_name) v))
+    | Copy_In_Cons_In_E1: forall param s e msg f lparam le,
         param.(parameter_mode) = In ->
-        eval_expr σ e (Run_Time_Error msg) ->
-        copy_in σ (param::lparam) (e::lexp) (Run_Time_Error msg)
-    | Copy_In_Cons_In_E2: forall σ param e v lparam lexp msg,
+        eval_expr s e (Run_Time_Error msg) ->
+        copy_in s f (param :: lparam) (e :: le) (Run_Time_Error msg)
+    | Copy_In_Cons_In_E2: forall param s e v f lparam le msg,
         param.(parameter_mode) = In ->
-        eval_expr σ e (Normal v) ->
-        copy_in σ lparam lexp (Run_Time_Error msg) ->
-        copy_in σ (param::lparam) (e::lexp) (Run_Time_Error msg).
+        eval_expr s e (Normal v) ->
+        copy_in s f lparam le (Run_Time_Error msg) ->
+        copy_in s f (param :: lparam) (e :: le) (Run_Time_Error msg).
 
 (** *** Inductive semantic of declarations. [eval_decl s nil decl
         rsto] means that rsto is the frame to be pushed on s after
@@ -315,33 +318,34 @@ Inductive copy_in: stack -> list parameter_specification -> list expression -> R
         the frame.
  *)
 
-Inductive eval_decl: stack -> store -> declaration -> Return store -> Prop :=
-    | Eval_Decl_E: forall d e sto s msg ast_num,
+Inductive eval_decl: stack -> frame -> declaration -> Return frame -> Prop :=
+    | Eval_Decl_E: forall d e f s msg ast_num,
         d.(initialization_expression) = Some e ->
-        eval_expr (sto::s) e (Run_Time_Error msg) ->
-        eval_decl s sto (D_Object_Declaration ast_num d) (Run_Time_Error msg)
-    | Eval_Decl: forall d e sto s v ast_num,
+        eval_expr (f :: s) e (Run_Time_Error msg) ->
+        eval_decl s f (D_Object_Declaration ast_num d) (Run_Time_Error msg)
+    | Eval_Decl: forall d e f s v ast_num,
         d.(initialization_expression) = Some e ->
-        eval_expr (sto::s) e (Normal v) ->
-        eval_decl s sto (D_Object_Declaration ast_num d) (Normal ((d.(object_name), Value v) :: sto))
-    | Eval_UndefDecl: forall d s sto ast_num,
+        eval_expr (f :: s) e (Normal v) ->
+        eval_decl s f (D_Object_Declaration ast_num d) (Normal (push f d.(object_name) v))
+    | Eval_UndefDecl: forall d s f ast_num,
         d.(initialization_expression) = None ->
-        eval_decl s sto (D_Object_Declaration ast_num d) (Normal ((d.(object_name), Undefined) :: sto))
-    | Eval_Decl_Proc: forall s sto ast_num p,
-        eval_decl s sto (D_Procedure_Declaration ast_num p) (Normal ((procedure_name p,Procedure p)::sto))
-    | Eval_Decl_Type: forall s sto ast_num t,
-        eval_decl s sto (D_Type_Declaration ast_num t) (Normal ((type_name t, TypeDef t) :: sto)).
+        eval_decl s f (D_Object_Declaration ast_num d) (Normal (push f d.(object_name) Undefined)).
+(*  | Eval_Decl_Proc: forall s f ast_num p,
+        eval_decl s f (D_Procedure_Declaration ast_num p) (Normal (push f (procedure_name p) (Procedure p)))
+    | Eval_Decl_Type: forall s f ast_num t,
+        eval_decl s f (D_Type_Declaration ast_num t) (Normal (push frm (type_name t) (TypeDef t)))
+*)
 
-Inductive eval_decls: stack -> store -> list declaration -> Return store -> Prop :=
-    | Eval_Decls_Nil: forall s sto,
-        eval_decls s sto nil (Normal sto)
-    | Eval_Decls_RTE: forall s sto d msg ld,
-        eval_decl s sto d (Run_Time_Error msg) ->
-        eval_decls s sto (d :: ld) (Run_Time_Error msg)
-    | Eval_Decls: forall s sto d sto1 ld sto2,
-        eval_decl s sto d (Normal sto1) ->
-        eval_decls s sto1 ld sto2 ->
-        eval_decls s sto (d :: ld) sto2.
+Inductive eval_decls: stack -> frame -> list declaration -> Return frame -> Prop :=
+    | Eval_Decls_Nil: forall s f,
+        eval_decls s f nil (Normal f)
+    | Eval_Decls_RTE: forall s f d msg ld,
+        eval_decl  s f d (Run_Time_Error msg) ->
+        eval_decls s f (d :: ld) (Run_Time_Error msg)
+    | Eval_Decls: forall s f d f1 ld f2,
+        eval_decl s f d (Normal f1) ->
+        eval_decls s f1 ld f2 ->
+        eval_decls s f (d :: ld) f2.
 
 (** ** Inductive semantic of statement and declaration
 
@@ -354,14 +358,14 @@ Inductive eval_decls: stack -> store -> list declaration -> Return store -> Prop
 
 (* a[i] := v *)
 Function arrayUpdate (a: list (index * basic_value)) (i: index) (v: basic_value): list (index * basic_value) :=
-  match a with
-  | (i0, v0)::a1 => 
-      if Zeq_bool i0 i then
-        (i0, v) :: a1
-      else
-        (i0, v0) :: (arrayUpdate a1 i v)
-  | nil => (i, v) :: nil
-  end.
+    match a with
+    | (i0, v0)::a1 => 
+        if Zeq_bool i0 i then
+          (i0, v) :: a1
+        else
+          (i0, v0) :: (arrayUpdate a1 i v)
+    | nil => (i, v) :: nil
+    end.
 
 (* r.f := v *)
 Function recordUpdate (r: list (idnum * basic_value)) (f : idnum) (v: basic_value): list (idnum * basic_value) := 
@@ -374,103 +378,114 @@ Function recordUpdate (r: list (idnum * basic_value)) (f : idnum) (v: basic_valu
    | nil => (f, v) :: nil
    end.
 
+  
+Inductive cut_until: stack -> scope_level -> stack -> stack -> Prop :=
+    | Cut_Until_Nil: forall n,
+        cut_until nil n nil nil
+    | Cut_Until_Head: forall f n s,
+        (level_of f) < n ->
+        cut_until (f :: s) n nil (f :: s) 
+    | Cut_Until_Tail: forall f n s s' s'',
+        ~ (level_of f < n) ->
+        cut_until s n s' s'' -> 
+        cut_until (f :: s) n (f :: s') s''.
 
-Inductive eval_stmt: stack -> statement -> Return stack -> Prop := 
-    | Eval_S_Null: forall s ast_num,
-        eval_stmt s (S_Null ast_num) (Normal s)
-    | Eval_S_Assignment_RTE: forall s e msg ast_num x,
+
+Inductive eval_stmt: symboltable -> stack -> statement -> Return stack -> Prop := 
+    | Eval_S_Null: forall st s ast_num,
+        eval_stmt st s (S_Null ast_num) (Normal s)
+    | Eval_S_Assignment_RTE: forall s e msg st ast_num x,
         eval_expr s e (Run_Time_Error msg) ->
-        eval_stmt s (S_Assignment ast_num x e) (Run_Time_Error msg)
-    | Eval_S_Assignment: forall s e v x s1 ast_num,
+        eval_stmt st s (S_Assignment ast_num x e) (Run_Time_Error msg)
+    | Eval_S_Assignment: forall s e v x s1 st ast_num,
         eval_expr s e (Normal v) ->
         storeUpdate s x v s1 ->
-        eval_stmt s (S_Assignment ast_num x e) s1
-    | Eval_S_If_RTE: forall s b msg ast_num c1 c2,
+        eval_stmt st s (S_Assignment ast_num x e) s1
+    | Eval_S_If_RTE: forall s b msg st ast_num c1 c2,
         eval_expr s b (Run_Time_Error msg) ->
-        eval_stmt s (S_If ast_num b c1 c2) (Run_Time_Error msg)
-    | Eval_S_If_True: forall s b c1 s1 ast_num c2,
+        eval_stmt st s (S_If ast_num b c1 c2) (Run_Time_Error msg)
+    | Eval_S_If_True: forall s b st c1 s1 ast_num c2,
         eval_expr s b (Normal (BasicV (Bool true))) ->
-        eval_stmt s c1 s1 ->
-        eval_stmt s (S_If ast_num b c1 c2) s1
-    | Eval_S_If_False: forall s b c2 s1 ast_num c1,
+        eval_stmt st s c1 s1 ->
+        eval_stmt st s (S_If ast_num b c1 c2) s1
+    | Eval_S_If_False: forall s b st c2 s1 ast_num c1,
         eval_expr s b (Normal (BasicV (Bool false))) ->
-        eval_stmt s c2 s1 ->
-        eval_stmt s (S_If ast_num b c1 c2) s1
-    | Eval_S_While_Loop_RTE: forall s b msg ast_num c,
+        eval_stmt st s c2 s1 ->
+        eval_stmt st s (S_If ast_num b c1 c2) s1
+    | Eval_S_While_Loop_RTE: forall s b msg st ast_num c,
         eval_expr s b (Run_Time_Error msg) ->
-        eval_stmt s (S_While_Loop ast_num b c) (Run_Time_Error msg)
-    | Eval_S_While_Loop_True_RTE: forall s b c msg ast_num,
+        eval_stmt st s (S_While_Loop ast_num b c) (Run_Time_Error msg)
+    | Eval_S_While_Loop_True_RTE: forall s b st c msg ast_num,
         eval_expr s b (Normal (BasicV (Bool true))) ->
-        eval_stmt s c (Run_Time_Error msg) ->
-        eval_stmt s (S_While_Loop ast_num b c) (Run_Time_Error msg)
-    | Eval_S_While_Loop_True: forall s b c s1 ast_num s2,
+        eval_stmt st s c (Run_Time_Error msg) ->
+        eval_stmt st s (S_While_Loop ast_num b c) (Run_Time_Error msg)
+    | Eval_S_While_Loop_True: forall s b st c s1 ast_num s2,
         eval_expr s b (Normal (BasicV (Bool true))) ->
-        eval_stmt s c (Normal s1) ->
-        eval_stmt s1 (S_While_Loop ast_num b c) s2 ->
-        eval_stmt s (S_While_Loop ast_num b c) s2
-    | Eval_S_While_Loop_False: forall s b ast_num c,
+        eval_stmt st s c (Normal s1) ->
+        eval_stmt st s1 (S_While_Loop ast_num b c) s2 ->
+        eval_stmt st s (S_While_Loop ast_num b c) s2
+    | Eval_S_While_Loop_False: forall s b st ast_num c,
         eval_expr s b (Normal (BasicV (Bool false))) ->
-        eval_stmt s (S_While_Loop ast_num b c) (Normal s)
-    | Eval_S_Proc_RTE_Args: forall pid s pb args msg ast_num1 ast_num2,
-        fetchG pid s = Some (Procedure pb) ->
-        copy_in s (procedure_parameter_profile pb) args (Run_Time_Error msg) ->
-        eval_stmt s (S_Procedure_Call ast_num1 ast_num2 pid args) (Run_Time_Error msg)
-    | Eval_S_Proc_RTE_Decl: forall pid s pb args newframe s_intact s1 msg ast_num1 ast_num2,
-        fetchG pid s = Some (Procedure pb) ->
-        copy_in s (procedure_parameter_profile pb) args (Normal newframe) ->
-        cut_until s pid s_intact s1 -> (* s = s_intact ++ s1 *)
-        eval_decls s1 newframe (procedure_declarative_part pb) (Run_Time_Error msg) ->
-        eval_stmt s (S_Procedure_Call ast_num1 ast_num2 pid args) (Run_Time_Error msg)
-    | Eval_S_Proc_RTE_Body: forall pid s pb args newframe s_intact s1 newframe1 msg ast_num1 ast_num2,
-        fetchG pid s = Some (Procedure pb) ->
-        copy_in s (procedure_parameter_profile pb) args (Normal newframe) ->
-        cut_until s pid s_intact s1 -> (* s = s_intact ++ s1 *)
-        eval_decls s1 newframe (procedure_declarative_part pb) (Normal newframe1) ->
-        eval_stmt (newframe1 :: s1) (procedure_statements pb) (Run_Time_Error msg) ->
-        eval_stmt s (S_Procedure_Call ast_num1 ast_num2 pid args) (Run_Time_Error msg)
-    | Eval_S_Proc: forall pid s pb args newframe s_intact s1 newframe1 s2
-                          slocal prefix s3 s4 ast_num1 ast_num2,
-        fetchG pid s = Some (Procedure pb) ->
-        copy_in s (procedure_parameter_profile pb) args (Normal newframe) ->
-        cut_until s pid s_intact s1 -> (* s = s_intact ++ s1 *)
-        eval_decls s1 newframe (procedure_declarative_part pb) (Normal newframe1) ->          
-        eval_stmt (newframe1 :: s1) (procedure_statements pb) (Normal s2) ->
-        s2 = (slocal ++ prefix) :: s3 -> (* extract parameters from local frame *)
-        List.length newframe = List.length prefix ->
-        copy_out prefix (procedure_parameter_profile pb) args (s_intact ++ s3) s4 ->
-        eval_stmt s (S_Procedure_Call ast_num1 ast_num2 pid args) (Normal s4)
-    | Eval_S_Sequence_RTE: forall s c1 msg ast_num c2,
-        eval_stmt s c1 (Run_Time_Error msg) ->
-        eval_stmt s (S_Sequence ast_num c1 c2) (Run_Time_Error msg)
-    | Eval_S_Sequence: forall s c1 s1 c2 s2 ast_num,
-        eval_stmt s c1 (Normal s1) ->
-        eval_stmt s1 c2 s2 ->
-        eval_stmt s (S_Sequence ast_num c1 c2) s2
+        eval_stmt st s (S_While_Loop ast_num b c) (Normal s)
+    | Eval_S_Proc_RTE_Args: forall p st n pb s args msg ast_num p_ast_num,
+        fetch_proc p st = Some (n, pb) ->
+        copy_in s (newFrame n) (procedure_parameter_profile pb) args (Run_Time_Error msg) ->
+        eval_stmt st s (S_Procedure_Call ast_num p_ast_num p args) (Run_Time_Error msg)
+    | Eval_S_Proc_RTE_Decl: forall p st n pb s args f intact_s s1 msg ast_num p_ast_num,
+        fetch_proc p st = Some (n, pb) ->
+        copy_in s (newFrame n) (procedure_parameter_profile pb) args (Normal f) ->
+        cut_until s n intact_s s1 -> (* s = intact_s ++ s1 *)
+        eval_decls s1 f (procedure_declarative_part pb) (Run_Time_Error msg) ->
+        eval_stmt st s (S_Procedure_Call ast_num p_ast_num p args) (Run_Time_Error msg)
+    | Eval_S_Proc_RTE_Body: forall p st n pb s args f intact_s s1 f1 msg ast_num p_ast_num,
+        fetch_proc p st = Some (n, pb) ->
+        copy_in s (newFrame n) (procedure_parameter_profile pb) args (Normal f) ->
+        cut_until s n intact_s s1 -> (* s = intact_s ++ s1 *)
+        eval_decls s1 f (procedure_declarative_part pb) (Normal f1) ->
+        eval_stmt st (f1 :: s1) (procedure_statements pb) (Run_Time_Error msg) ->
+        eval_stmt st s (S_Procedure_Call ast_num p_ast_num p args) (Run_Time_Error msg)
+    | Eval_S_Proc: forall p st n pb s args f intact_s s1 f1 s2 locals_section params_section s3 s4 ast_num p_ast_num,
+        fetch_proc p st = Some (n, pb) ->
+        copy_in s (newFrame n) (procedure_parameter_profile pb) args (Normal f) ->
+        cut_until s n intact_s s1 -> (* s = intact_s ++ s1 *)
+        eval_decls s1 f (procedure_declarative_part pb) (Normal f1) ->          
+        eval_stmt st (f1 :: s1) (procedure_statements pb) (Normal s2) ->
+        s2 = (n, locals_section ++ params_section) :: s3 -> (* extract parameters from local frame *)
+        List.length (store_of f) = List.length params_section ->
+        copy_out (intact_s ++ s3) (n, params_section) (procedure_parameter_profile pb) args s4 ->
+        eval_stmt st s (S_Procedure_Call ast_num p_ast_num p args) (Normal s4)
+    | Eval_S_Sequence_RTE: forall st s c1 msg ast_num c2,
+        eval_stmt st s c1 (Run_Time_Error msg) ->
+        eval_stmt st s (S_Sequence ast_num c1 c2) (Run_Time_Error msg)
+    | Eval_S_Sequence: forall st s c1 s1 c2 s2 ast_num,
+        eval_stmt st s c1 (Normal s1) ->
+        eval_stmt st s1 c2 s2 ->
+        eval_stmt st s (S_Sequence ast_num c1 c2) s2
 
 with storeUpdate: stack -> name -> value -> Return stack -> Prop := 
     | SU_Identifier: forall s x v s1 ast_num,
-        updateG s x (Value v) = Some s1 ->
+        updateG s x v = Some s1 ->
         storeUpdate s (E_Identifier ast_num x) v (Normal s1)
     | SU_Indexed_Component_RTE_E: forall x s a e msg ast_num x_ast_num v,
-        fetchG x s = Some (Value (AggregateV (ArrayV a))) ->
+        fetchG x s = Some (AggregateV (ArrayV a)) ->
         eval_expr s e (Run_Time_Error msg) ->
         storeUpdate s (E_Indexed_Component ast_num x_ast_num x e) v (Run_Time_Error msg)
     | SU_Indexed_Component_RTE_Index: forall x s l u a e i ast_num x_ast_num v,
-        fetchG x s = Some (Value (AggregateV (ArrayV (l, u, a)))) ->
+        fetchG x s = Some (AggregateV (ArrayV (l, u, a))) ->
         eval_expr s e (Normal (BasicV (Int i))) ->
         do_index_check i l u (Exception RTE_Index) ->
         storeUpdate s (E_Indexed_Component ast_num x_ast_num x e) v (Run_Time_Error RTE_Index)
     | SU_Indexed_Component: forall x s l u a e i v a1 s1 ast_num x_ast_num,
-        fetchG x s = Some (Value (AggregateV (ArrayV (l, u, a)))) ->
+        fetchG x s = Some (AggregateV (ArrayV (l, u, a))) ->
         eval_expr s e (Normal (BasicV (Int i))) ->
         do_index_check i l u Success ->
         arrayUpdate a i v = a1 -> (* a[i] := v *)
-        updateG s x (Value (AggregateV (ArrayV (l, u, a1)))) = Some s1 ->
+        updateG s x (AggregateV (ArrayV (l, u, a1))) = Some s1 ->
         storeUpdate s (E_Indexed_Component ast_num x_ast_num x e) (BasicV v) (Normal s1)
     | SU_Selected_Component: forall r s r1 f v r2 s1 ast_num r_ast_num,
-        fetchG r s = Some (Value (AggregateV (RecordV r1))) ->
+        fetchG r s = Some (AggregateV (RecordV r1)) ->
         recordUpdate r1 f v = r2 -> (* r1.f := v *)
-        updateG s r (Value (AggregateV (RecordV r2))) = Some s1 ->
+        updateG s r (AggregateV (RecordV r2)) = Some s1 ->
         storeUpdate s (E_Selected_Component ast_num r_ast_num r f) (BasicV v) (Normal s1).
 
 

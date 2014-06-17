@@ -70,11 +70,13 @@ Inductive aggregate_value : Type :=
     | ArrayV (a: (Z * Z) * (list (index * basic_value))) (* array value with lower and upper bound *)
     | RecordV (r: list (idnum * basic_value)).
 
+(** Type of stored values in the store *)
 Inductive value : Type :=
     | BasicV (v: basic_value)
-    | AggregateV (v: aggregate_value).
+    | AggregateV (v: aggregate_value)
+    | Undefined.
 
-(** Type of stored values in the store *)
+(*
 Inductive value_stored(Procedure_Decl: Type) (Type_Decl: Type): Type := 
     | Value (v:value)
     | Procedure (pd: Procedure_Decl)
@@ -85,6 +87,7 @@ Arguments Value [Procedure_Decl] [Type_Decl] _.
 Arguments Procedure [Procedure_Decl] [Type_Decl] _.
 Arguments TypeDef [Procedure_Decl] [Type_Decl] _.
 Arguments Undefined [Procedure_Decl] [Type_Decl].
+*)
 
 Definition Division_Error: Return value := Run_Time_Error RTE_Division_By_Zero.
 Definition Overflow_Error: Return value := Run_Time_Error RTE_Overflow.

@@ -26,24 +26,25 @@ Module STORE(V:ENTRY).
 
   Definition store : Type := list (idnum * V).
 
-  Inductive FirstOcc {A B} : A -> B -> list (A*B) -> Prop :=
-  | FO_Here: forall l a b, FirstOcc a b ((a,b)::l)
-  | FO_Later: forall l a b a' b', 
+  Inductive first_occ {A B} : A -> B -> list (A*B) -> Prop :=
+  | FO_Head: forall l a b, 
+      first_occ a b ((a,b)::l)
+  | FO_Tail: forall l a b a' b', 
       a<>a' -> 
-      FirstOcc a b l -> 
-      FirstOcc a b ((a',b')::l).
+      first_occ a b l -> 
+      first_occ a b ((a',b')::l).
 
   Ltac wellf_rename_hyp th :=
     match th with
-    | FirstOcc _ _ _ => fresh "h_firstocc"
+    | first_occ _ _ _ => fresh "h_firstocc"
     | _ => default_rename_hyp
     end.
 
   Ltac rename_hyp ::= wellf_rename_hyp.
 
-  Lemma FirstOcc_det : forall A B l (a:A) (b b':B), 
-    FirstOcc a b l -> 
-      FirstOcc a b' l -> 
+  Lemma first_occ_det : forall A B l (a:A) (b b':B), 
+    first_occ a b l -> 
+      first_occ a b' l -> 
         b = b'.
   Proof.
     intros A B l a b b' h.  
@@ -60,42 +61,42 @@ Module STORE(V:ENTRY).
 
   (** ** Store operations *)
   (** check whether variable x has already been declared *)
-  Function reside (x : idnum) (s : store) := 
+  Function resides (x : idnum) (s : store) := 
     match s with 
     | (y, v) :: s' =>
-      if beq_nat x y then true else reside x s' 
+      if beq_nat x y then true else resides x s' 
     | nil => false
     end.
 
   (** fetch the value of x that has already been initialized in store *)
-  Function fetch (x : idnum) (s : store): option V := 
+  Function fetches (x : idnum) (s : store): option V := 
     match s with 
     | (y, v) :: s' =>
       if beq_nat x y then Some v
-      else fetch x s' 
+      else fetches x s' 
     | nil => None
     end.
 
   (** [cut_to x s] return the pair (s',s'') where s = s' ++ s'' and s''
       starts with the first occurrence of [x] in [s]. If no occurrence
       of [x] exists in [s] then (nil,nil) is returned. *)
-  Function cut_to (x : idnum) (s : store): store*store := 
+  Function cuts_to (x : idnum) (s : store): store*store := 
     match s with 
     | (y, v) :: s' =>
       (if beq_nat x y then (nil,s) 
-       else let (l1,l2) := cut_to x s' in
+       else let (l1,l2) := cuts_to x s' in
             (((y, v)::l1) , l2))
     | nil => (nil, nil)
     end.
 
   (** update the latest binding for x *)
-  Function update (s: store) (x : idnum) (v: V): option store := 
+  Function updates (s: store) (x : idnum) (v: V): option store := 
     match s with 
     | (y, v') :: s' => 
       if beq_nat x y then 
         Some ((y,v)::s') 
       else 
-        match update s' x v with
+        match updates s' x v with
         | Some s'' => Some ((y,v')::s'')
         | None => None
         end
@@ -103,11 +104,11 @@ Module STORE(V:ENTRY).
    end.
 
   (** ** Lemmas about store operations *)
-  Lemma fetch_in: forall x s v, 
-    fetch x s = Some v -> FirstOcc x v s.
+  Lemma fetches_in: forall x s v, 
+    fetches x s = Some v -> first_occ x v s.
   Proof.
     intros x s.
-    functional induction (fetch x s);
+    functional induction (fetches x s);
     intros v1 H;
     try match goal with
     | h: None = Some ?v |- _ => inversion h
@@ -123,12 +124,12 @@ Module STORE(V:ENTRY).
   Qed.
 
   (** ** Lemmas about store operations *)
-  Lemma in_fetch: forall x s v, 
-    FirstOcc x v s -> 
-      fetch x s = Some v.
+  Lemma in_fetches: forall x s v, 
+    first_occ x v s -> 
+      fetches x s = Some v.
   Proof.
     intros x s.
-    functional induction (fetch x s);
+    functional induction (fetches x s);
       intros v1 H;
       try match goal with
       | h: None = Some ?v |- _ => inversion h
@@ -146,12 +147,12 @@ Module STORE(V:ENTRY).
     - inversion H.
   Qed.
 
-  Lemma update_in: forall s x v' s', 
-    update s x v' = Some s' -> 
-      (exists v, FirstOcc x v s).
+  Lemma updates_in: forall s x v' s', 
+    updates s x v' = Some s' -> 
+      (exists v, first_occ x v s).
   Proof.
     intros s x v'.
-    functional induction (update s x v');
+    functional induction (updates s x v');
     intros s1 h1;
     try match goal with
     | h: None = Some ?s |- _ => inversion h
@@ -169,13 +170,13 @@ Module STORE(V:ENTRY).
     + assumption.
   Qed.
     
-  Lemma in_update: forall s x v' y v s',
-    update s x v' = Some s' ->
-      FirstOcc y v s' ->
-        ((y=x /\ v=v') \/ FirstOcc y v s).
+  Lemma in_updates: forall s x v' y v s',
+    updates s x v' = Some s' ->
+      first_occ y v s' ->
+        ((y=x /\ v=v') \/ first_occ y v s).
   Proof.
     intros s x v'.
-    functional induction (update s x v'); simpl; intros y0 v0 s0 h h'; subst;
+    functional induction (updates s x v'); simpl; intros y0 v0 s0 h h'; subst;
     (inversion h; clear h); subst.
 
   - apply beq_nat_true_iff in e0; subst.
@@ -194,98 +195,112 @@ Module STORE(V:ENTRY).
   Qed.
 
 
-  Lemma update_length: forall s x v s', 
-    update s x v = Some s' -> 
+  Lemma updates_length: forall s x v s', 
+    updates s x v = Some s' -> 
       List.length s = List.length s'.
   Proof.
     intros s x v.
-    functional induction update s x v;simpl
+    functional induction updates s x v;simpl
     ; intros updateds heq; inversion heq;clear heq
     ; subst;simpl;auto.
   Qed.
 
-  (** [UpdateList lid lv s s'] iff s' is s updated by the values in (combine lid lv). *)
-  Inductive UpdateList : list idnum -> list V -> store -> store -> Prop :=
-    | UpdateListnil: forall lid lv s, UpdateList lid lv s s
-    | UpdateListcons: forall id lid v lv s s' s'',
-       UpdateList lid lv s s' ->
-       update s' id v = Some s'' ->
-       UpdateList (id::lid) (v::lv) s  s''.
+
 
   (* The global stack is a stack of stores. One store per procedure
      currently running. *)
-  Definition stack := list store.
+  Definition scope_level := nat. (* the scope level of the declared procedure to be called *)
+
+  Definition frame := prod scope_level store.
+  
+  Definition level_of (f: frame) := fst f.
+
+  Definition store_of (f: frame) := snd f.
+  
+  Definition stack := list frame.
+
+
+
+  Definition reside (x: idnum) (f: frame) := resides x (store_of f).
+
+  Definition fetch (x: idnum) (f: frame) := fetches x (store_of f).
+  
+  Definition cut_to (x: idnum) (f: frame) := cuts_to x (store_of f).
+
+  Definition update (f: frame) (x: idnum) (v: V): option frame := 
+    match updates (store_of f) x v with 
+    | Some s => Some (level_of f, s)
+    | None => None 
+    end.
+  
+  Definition push (f: frame) (x: idnum) (v: V) := (level_of f, (x, v) :: (store_of f)).
+  
+  Definition newFrame (n: scope_level): frame := (n, nil). 
+
+  (* split the stack into two substacks, scope levels of the first substack 
+     equal or greater than n, and scope levels of another substack is less 
+     than n;
+  *)
+  
 
   (** ** Stack properties *)
-  (* TODO: rename this into MapsToG, and have InG of type idnum -> stack
+  (* TODO: rename this into MapsToG, and have inG of type idnum -> stack
      -> Prop + lamms between the two. *)
-  Inductive InG: idnum -> V -> stack -> Prop := 
-    | InG1: forall x v (sto:store) (s:stack),
-            FirstOcc x v sto -> InG x v (sto::s)
-    | InG2: forall x v (sto:store) (s:stack),
-           (forall e, ~FirstOcc x e sto) -> InG x v s -> InG x v (sto::s).
+  Inductive inG: idnum -> V -> stack -> Prop := 
+    | InG1: forall x v f s,
+            first_occ x v (store_of f) -> inG x v (f :: s)
+    | InG2: forall x v f s,
+           (forall e, ~first_occ x e (store_of f)) -> inG x v s -> inG x v (f :: s).
 
 
   (* TODO: verifiy that x is not already bound in s? *)
-  Definition addG x v (s:stack) :=
+  Definition pushG x v (s: stack) :=
     match s with
     | nil => None
-    | sto :: s' => Some (((x,v)::sto)::s')
+    | f :: s' => Some ((push f x v) :: s')
     end.
-
-  (* TODO: verifiy that x is not already bound in s? *)
-  Inductive AddG : idnum -> V -> stack -> stack -> Prop :=
-    | AddG1: forall id v sto st, 
-      AddG id v (sto::st) (((id,v)::sto)::st).
-
-  Lemma addg_AddG : forall id v st st', 
-    addG id v st = Some st' <-> AddG id v st st'.
-  Proof.
-    intros id v st.
-    !induction st; intros st'; simpl;split;intro h; try discriminate h;try now inversion h.
-  Qed.
 
 
   (** ** Stack operations *)
   Function fetchG (x : idnum) (s : stack) := 
     match s with 
-    | sto :: s' =>
-      match fetch x sto with
-          Some x => Some x
+    | f :: s' =>
+      match fetch x f with
+        | Some v => Some v
         | None => fetchG x s'
       end
     | nil => None
     end.
 
-  Function updateG (s : stack) (x : idnum) (v:V): option stack := 
+  Function updateG (s: stack) (x: idnum) (v: V): option stack := 
     match s with 
-    | sto :: s' =>
-      match update sto x v with
-          Some x => Some (x::s')
-        | None => match (updateG s' x v) with
-                      Some y => Some (sto::y)
-                    | None  => None
-                  end
+    | f :: s' =>
+      match update f x v with
+      | Some f' => Some (f' :: s')
+      | None => match (updateG s' x v) with
+                | Some s'' => Some (f :: s'')
+                | None  => None
+                end
       end
     | nil => None
     end.
 
   Function resideG (x : idnum) (s : stack) := 
     match s with 
-    | sto :: s' =>
-      if reside x sto then
+    | f :: s' =>
+      if reside x f then
         true
       else 
         resideG x s' 
     | nil => false
     end.
 
-  Lemma fetch_in_none: forall x s, 
-    fetch x s = None -> 
-      forall v, ~FirstOcc x v s.
+  Lemma fetch_in_none: forall x f, 
+    fetch x f = None -> 
+      forall v, ~first_occ x v (store_of f).
   Proof.
-    intros x s.
-    functional induction fetch x s.
+    intros x s. unfold fetch.
+    functional induction fetches x (store_of s).
     - inversion 1.
     - apply beq_nat_false_iff in e0; subst.
       intros H v0.
@@ -301,7 +316,7 @@ Module STORE(V:ENTRY).
 
   Lemma fetchG_in_none: forall x s, 
     fetchG x s = None -> 
-      forall v, ~InG x v s.
+      forall v, ~inG x v s.
   Proof.
     intros x s.
     functional induction fetchG x s.
@@ -322,7 +337,7 @@ Module STORE(V:ENTRY).
   (** ** Lemmas about stack operations *)
   Lemma fetchG_in: forall x s v, 
     fetchG x s = Some v -> 
-      InG x v s.
+      inG x v s.
   Proof.
     intros x s.
     functional induction (fetchG x s);
@@ -331,7 +346,7 @@ Module STORE(V:ENTRY).
           | h: None = Some ?v |- _ => inversion h
           | h: Some ?v1 = Some ?v2 |- _ => inversion h; subst
           end; simpl.
-    - apply fetch_in in e0.
+    - apply fetches_in in e0.
       constructor 1.
       assumption.
     - constructor 2.
@@ -342,7 +357,7 @@ Module STORE(V:ENTRY).
   Qed.
 
   Lemma inG_fetchG: forall x s v, 
-    InG x v s -> 
+    inG x v s -> 
       fetchG x s = Some v.
   Proof.
     intros x s.
@@ -352,9 +367,9 @@ Module STORE(V:ENTRY).
           | h: None = Some ?v |- _ => inversion h
           | h: Some ?v1 = Some ?v2 |- _ => inversion h; subst
           end; simpl.
-    - apply fetch_in in e0.
+    - apply fetches_in in e0.
       !inversion H;clear H.
-      + rewrite (FirstOcc_det _ _ sto x x0 v1);auto.
+      + rewrite (first_occ_det _ _ (store_of f) x v v1);auto.
       + destruct (H4 _ e0).
     - apply IHo.
       !inversion H.
@@ -366,10 +381,10 @@ Module STORE(V:ENTRY).
 
   Inductive stack_eq_length : stack -> stack -> Prop :=
     | eqnil: stack_eq_length nil nil
-    | eqncons: forall l l' e e',
-        stack_eq_length l l' ->
-        List.length e = List.length e' ->
-        stack_eq_length (e::l) (e'::l').
+    | eqncons: forall s s' f f',
+        stack_eq_length s s' ->
+        List.length (store_of f) = List.length (store_of f') ->
+        stack_eq_length (f :: s) (f' :: s').
 
   Lemma stack_eq_length_refl: forall s s', 
     s = s' -> 
@@ -427,7 +442,7 @@ Module STORE(V:ENTRY).
     subst.
     constructor.
     + apply IHs' ;assumption.
-    + transitivity (List.length a);auto.
+    + transitivity (List.length (store_of a));auto.
   Qed.
 
   Lemma stack_eq_length_trans2: transitive _ stack_eq_length.
@@ -443,7 +458,7 @@ Module STORE(V:ENTRY).
       transitivity proved by stack_eq_length_trans2
         as stack_eq_length_equiv_rel.
 
-  Add Parametric Morphism: (@List.app store)
+  Add Parametric Morphism: (@List.app frame)
       with signature stack_eq_length ==> stack_eq_length ==> stack_eq_length
         as app_morph_stack_eq_length.
   Proof.
@@ -461,17 +476,20 @@ Module STORE(V:ENTRY).
     updateG s x v = Some s' -> 
       stack_eq_length s s'.
   Proof.
+    admit.
+  (*
     intros s x v.
     functional induction updateG s x v;simpl
     ; intros updateds heq; inversion heq;clear heq
     ; subst;simpl;auto.
     - constructor.
       + apply stack_eq_length_refl;auto.
-      + eapply update_length;eauto.
+      + unfold update in e0. eapply updates_length;eauto.
     - constructor.
       + apply IHo.
         assumption.
       + reflexivity.
+  *)
   Qed.
 
 
@@ -483,111 +501,6 @@ Module STORE(V:ENTRY).
     functional induction updateG s x v;simpl
     ; intros updateds heq; inversion heq;clear heq
     ; subst;simpl;auto.
-  Qed.
-
-
-  Inductive cut_until: stack -> procnum -> stack -> stack -> Prop :=
-    | Cut_Until1: forall pname e s,
-        reside pname e = true -> (* TODO: define an inductive here *)
-        cut_until (e::s) pname nil (e::s)
-    | Cut_Until2: forall pname e s1 s2 s3,
-        reside pname e = false -> (* TODO: define an inductive here *)
-        cut_until s1 pname s2 s3 -> 
-        cut_until (e::s1) pname (e::s2) s3.
-
-
-  Function cut_until_f s pbname :=
-    match s with
-    | nil => None
-    | e::s' =>
-      if reside pbname e then Some (nil,s)
-      else
-        match cut_until_f s' pbname with
-        | None => None
-        | Some (forget,called) => Some (e::forget , called)
-        end
-    end.
-
-
-  Lemma cut_until_correct : forall s pbname s' s'',
-    cut_until s pbname s' s'' -> 
-      cut_until_f s pbname = Some (s',s'').
-  Proof.
-    intros s pbname s' s'' H.
-    induction H;simpl.
-    - rewrite H.
-      reflexivity.
-    - rewrite H.
-      rewrite IHcut_until.
-      reflexivity.
-  Qed.
-
-
-  Lemma cut_until_complete1 : forall s pbname s' s'',
-    cut_until_f s pbname = Some (s',s'') ->
-      cut_until s pbname s' s''.
-  Proof.
-    intros s pbname.
-    functional induction cut_until_f s pbname;simpl;intros s1 s2 H;try discriminate.
-    - injection H.
-      clear H.
-      intros;subst.
-      constructor 1.
-      assumption.
-    - injection H. clear H. intros ; subst.
-      constructor 2.
-      + assumption.
-      + auto.
-  Qed.
-
-  Lemma cut_until_complete2 : forall s pbname s' s'',
-    cut_until_f s pbname = None ->
-      ~ cut_until s pbname s' s''.
-  Proof.
-    intros s pbname s' s'' H.
-    intro abs.
-    apply cut_until_correct in abs.
-    rewrite abs in H.
-    discriminate.
-  Qed.
-
-  Lemma cut_until_def : forall s pbname s1 s2, 
-    cut_until s pbname s1 s2 -> 
-      s = s1++s2.
-  Proof.
-    intros s pbname s1 s2 H.
-    induction H.
-    - reflexivity.
-    - rewrite IHcut_until.
-      reflexivity.
-  Qed.
-
-
-  Lemma cut_until_def2 : forall s pbname s1 s2,
-    cut_until s pbname s1 s2 ->
-      (forall e, List.In e s1 -> reside pbname e = false).
-  Proof.
-    intros s pbname s1 s2 H.
-    induction H;intros.
-    - inversion H0.
-    - inversion H1; clear H1; subst.
-      + assumption.
-      + auto.
-  Qed.
-
-  Lemma cut_until_def3 : forall s pbname s1 s2 e s2',
-    cut_until s pbname s1 s2 ->
-      s2 = e::s2' ->
-        reside pbname e = true.
-  Proof.
-    intros s pbname s1 s2 e s2' H.
-    revert e s2'.
-    induction H;intros.
-    - injection H0. clear H0; intros ; subst.
-      assumption.
-    - subst.
-      apply IHcut_until with s2'.
-      reflexivity.
   Qed.
 
 End STORE.
