@@ -1279,8 +1279,7 @@ package body Flow.Control_Flow_Graph is
                            Choice := First (Choices (Comp_Assoc));
                            while Present (Choice) loop
                               if Entity (Choice) = Component
-                                or else (Ekind (Entity (Choice)) in
-                                           E_Component | E_Discriminant
+                                or else (Ekind (Entity (Choice)) = E_Component
                                            and then Original_Record_Component
                                                       (Component) =
                                                     Original_Record_Component
