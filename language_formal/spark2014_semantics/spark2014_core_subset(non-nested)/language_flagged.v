@@ -29,7 +29,7 @@ with name_x: Type := (* 4.1 *)
    check flags can be easily added if they are needed later;
 *)
 Inductive statement_x: Type := 
-    | S_Null_X: astnum -> statement_x (* 5.1 *)
+    | S_Null_X: statement_x (* 5.1 *)
     | S_Assignment_X: astnum -> name_x -> expression_x -> statement_x (* 5.2 *)
     | S_If_X: astnum -> expression_x -> statement_x -> statement_x -> statement_x (* 5.3 *)
     | S_While_Loop_X: astnum -> expression_x -> statement_x -> statement_x (* 5.5 *)
@@ -184,8 +184,8 @@ Inductive compile2_flagged_exps: list expression -> list expression_x -> Prop :=
 
 
 Inductive compile2_flagged_stmt: statement -> statement_x -> Prop := 
-    | C2_Flagged_Null: forall ast_num,
-        compile2_flagged_stmt (S_Null ast_num) (S_Null_X ast_num) 
+    | C2_Flagged_Null:
+        compile2_flagged_stmt S_Null S_Null_X 
     | C2_Flagged_Assignment: forall x x_flagged e e_flagged ast_num,
         compile2_flagged_name x x_flagged ->
         compile2_flagged_exp  e e_flagged -> 

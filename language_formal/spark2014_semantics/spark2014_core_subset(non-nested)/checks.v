@@ -1,4 +1,4 @@
-Require Export semantics.
+Require Export language.
 
 (** * Run Time Check Rules *)
 (** ** a subset of run time checks to be verified *)
@@ -77,91 +77,6 @@ with gen_name_check_flags: name -> check_flags -> Prop :=
         gen_name_check_flags (E_Indexed_Component ast_num x_ast_num x e) (Do_Index_Check :: nil)
     | GNCF_Selected_Component: forall ast_num x_ast_num x f,
         gen_name_check_flags (E_Selected_Component ast_num x_ast_num x f) nil.
-
-
-(** do run time check according to the check flags  *)
-
-Inductive do_flagged_check_on_binop: check_flag -> binary_operator -> value -> value -> check_status -> Prop :=
-    | Do_Overflow_Check_Binop: forall op v1 v2,
-        do_overflow_check op v1 v2 Success ->
-        do_flagged_check_on_binop Do_Overflow_Check op v1 v2 Success
-    | Do_Overflow_Check_Binop_E: forall op v1 v2,
-        do_overflow_check op v1 v2 (Exception RTE_Overflow) ->
-        do_flagged_check_on_binop Do_Overflow_Check op v1 v2 (Exception RTE_Overflow)
-    | Do_Division_By_Zero_Check_Binop: forall v1 v2,
-        do_division_check Divide v1 v2 Success ->
-        do_flagged_check_on_binop Do_Division_Check Divide v1 v2 Success
-    | Do_Division_By_Zero_Check_Binop_E: forall v1 v2,
-        do_division_check Divide v1 v2 (Exception RTE_Overflow) ->
-        do_flagged_check_on_binop Do_Division_Check Divide v1 v2 (Exception RTE_Overflow).
-
-Inductive do_flagged_check_on_unop: check_flag -> unary_operator -> value -> check_status -> Prop :=
-    | Do_Overflow_Check_Unop: forall op v,
-        do_overflow_check_on_unop op v Success ->
-        do_flagged_check_on_unop Do_Overflow_Check op v Success
-    | Do_Overflow_Check_Unop_E: forall op v,
-        do_overflow_check_on_unop op v (Exception RTE_Overflow) ->
-        do_flagged_check_on_unop Do_Overflow_Check op v (Exception RTE_Overflow).
-
-Inductive do_flagged_index_check: check_flag -> Z -> Z -> Z -> check_status -> Prop :=
-    | Do_Index_Check': forall i l u,
-        do_index_check i i u Success ->
-        do_flagged_index_check Do_Index_Check i l u Success
-    | Do_Index_Check_E': forall i l u,
-        do_index_check i l u (Exception RTE_Overflow) ->
-        do_flagged_index_check Do_Index_Check i l u (Exception RTE_Index).
-
-
-
-
-
-Inductive do_flagged_checks_on_binop: check_flags -> binary_operator -> value -> value -> check_status -> Prop :=
-    | Do_No_Check: forall op v1 v2,
-        do_flagged_checks_on_binop nil op v1 v2 Success
-    | Do_Checks_True: forall ck op v1 v2 cks,
-        do_flagged_check_on_binop ck op v1 v2 Success ->
-        do_flagged_checks_on_binop cks op v1 v2 Success ->
-        do_flagged_checks_on_binop (ck :: cks) op v1 v2 Success
-    | Do_Checks_False_Head: forall ck op v1 v2 msg cks,
-        do_flagged_check_on_binop ck op v1 v2 (Exception msg) ->
-        do_flagged_checks_on_binop (ck :: cks) op v1 v2 (Exception msg)
-    | Do_Checks_False_Tail: forall ck op v1 v2 cks msg,
-        do_flagged_check_on_binop ck op v1 v2 Success ->
-        do_flagged_checks_on_binop cks op v1 v2 (Exception msg) ->
-        do_flagged_checks_on_binop (ck :: cks) op v1 v2 (Exception msg).
-
-Inductive do_flagged_checks_on_unop: check_flags -> unary_operator -> value -> check_status -> Prop :=
-    | Do_No_Check_Unop: forall op v,
-        do_flagged_checks_on_unop nil op v Success
-    | Do_Checks_True_Unop: forall ck op v cks,
-        do_flagged_check_on_unop ck op v Success ->
-        do_flagged_checks_on_unop cks op v Success ->
-        do_flagged_checks_on_unop (ck :: cks) op v Success
-    | Do_Checks_False_Head_Unop: forall ck op v msg cks,
-        do_flagged_check_on_unop ck op v (Exception msg) ->
-        do_flagged_checks_on_unop (ck :: cks) op v (Exception msg)
-    | Do_Checks_False_Tail_Unop: forall ck op v cks msg,
-        do_flagged_check_on_unop ck op v Success ->
-        do_flagged_checks_on_unop cks op v (Exception msg) ->
-        do_flagged_checks_on_unop (ck :: cks) op v (Exception msg).
-
-Inductive do_flagged_index_checks: check_flags -> Z -> Z -> Z -> check_status -> Prop :=
-    | Do_No_Check_Index: forall i l u,
-        do_flagged_index_checks nil i l u Success
-    | Do_Checks_True_Index: forall ck i l u cks,
-        do_flagged_index_check ck i l u Success ->
-        do_flagged_index_checks cks i l u Success ->
-        do_flagged_index_checks (ck :: cks) i l u Success
-    | Do_Checks_False_Head_Index: forall ck i l u msg cks,
-        do_flagged_index_check ck i l u (Exception msg) ->
-        do_flagged_index_checks (ck :: cks) i l u (Exception msg)
-    | Do_Checks_False_Tail_Index: forall ck i l u cks msg,
-        do_flagged_index_check ck i l u Success ->
-        do_flagged_index_checks cks i l u (Exception msg) ->
-        do_flagged_index_checks (ck :: cks) i l u (Exception msg).
-
-
-
 
 
 

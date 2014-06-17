@@ -20,95 +20,95 @@ Inductive check_status :=
     | Exception (m: error_type).
 
 Inductive do_overflow_check: binary_operator -> value -> value -> check_status -> Prop :=
-    | Do_Overflow_Check_On_Plus': forall v1 v2,
+    | Do_Overflow_Check_On_Plus: forall v1 v2,
         (* min_signed <= (v1 + v2) <= max_signed *)
         (Zge_bool (v1 + v2) min_signed) && (Zle_bool (v1 + v2) max_signed) = true ->
         do_overflow_check Plus (BasicV (Int v1)) (BasicV (Int v2)) Success
-    | Do_Overflow_Check_On_Plus_E': forall v1 v2,
+    | Do_Overflow_Check_On_Plus_E: forall v1 v2,
         (* min_signed <= (v1 + v2) <= max_signed *)
         (Zge_bool (v1 + v2) min_signed) && (Zle_bool (v1 + v2) max_signed) = false ->
         do_overflow_check Plus (BasicV (Int v1)) (BasicV (Int v2)) (Exception RTE_Overflow)
-    | Do_Overflow_Check_On_Minus': forall v1 v2,
+    | Do_Overflow_Check_On_Minus: forall v1 v2,
         (* min_signed <= (v1 - v2) <= max_signed *)
         (Zge_bool (v1 - v2) min_signed) && (Zle_bool (v1 - v2) max_signed) = true ->
         do_overflow_check Minus (BasicV (Int v1)) (BasicV (Int v2)) Success
-    | Do_Overflow_Check_On_Minus_E': forall v1 v2,
+    | Do_Overflow_Check_On_Minus_E: forall v1 v2,
         (* min_signed <= (v1 - v2) <= max_signed *)
         (Zge_bool (v1 - v2) min_signed) && (Zle_bool (v1 - v2) max_signed) = false ->
         do_overflow_check Minus (BasicV (Int v1)) (BasicV (Int v2)) (Exception RTE_Overflow)
-    | Do_Overflow_Check_On_Multiply': forall v1 v2,
+    | Do_Overflow_Check_On_Multiply: forall v1 v2,
         (* min_signed <= (v1 * v2) <= max_signed *)
         (Zge_bool (v1 * v2) min_signed) && (Zle_bool (v1 * v2) max_signed) = true ->
         do_overflow_check Multiply (BasicV (Int v1)) (BasicV (Int v2)) Success
-    | Do_Overflow_Check_On_Multiply_E': forall v1 v2,
+    | Do_Overflow_Check_On_Multiply_E: forall v1 v2,
         (* min_signed <= (v1 * v2) <= max_signed *)
         (Zge_bool (v1 * v2) min_signed) && (Zle_bool (v1 * v2) max_signed) = false ->
         do_overflow_check Multiply (BasicV (Int v1)) (BasicV (Int v2)) (Exception RTE_Overflow)
-    | Do_Overflow_Check_On_Divide': forall v1 v2,
+    | Do_Overflow_Check_On_Divide: forall v1 v2,
         (* min_signed <= (v1 / v2) <= max_signed *)
         (* (Zeq_bool v1 min_signed) && (Zeq_bool v2 (-1)) = b -> *)
         ((Zge_bool (Z.quot v1 v2) min_signed) && (Zle_bool (Z.quot v1 v2) max_signed)) = true ->
         do_overflow_check Divide (BasicV (Int v1)) (BasicV (Int v2)) Success
-    | Do_Overflow_Check_On_Divide_E': forall v1 v2,
+    | Do_Overflow_Check_On_Divide_E: forall v1 v2,
         (* min_signed <= (v1 / v2) <= max_signed *)
         ((Zge_bool (Z.quot v1 v2) min_signed) && (Zle_bool (Z.quot v1 v2) max_signed)) = false ->
         do_overflow_check Divide (BasicV (Int v1)) (BasicV (Int v2)) (Exception RTE_Overflow).
 
 Inductive do_overflow_check_on_unop: unary_operator -> value -> check_status -> Prop :=
-    | Do_Overflow_Check_On_Unary_Minus': forall v,
+    | Do_Overflow_Check_On_Unary_Minus: forall v,
         (Zge_bool (Z.opp v) min_signed) && (Zle_bool (Z.opp v) max_signed) = true ->
         do_overflow_check_on_unop Unary_Minus (BasicV (Int v)) Success
-    | Do_Overflow_Check_On_Unary_Minus_E': forall v,
+    | Do_Overflow_Check_On_Unary_Minus_E: forall v,
         (Zge_bool (Z.opp v) min_signed) && (Zle_bool (Z.opp v) max_signed) = false ->
         do_overflow_check_on_unop Unary_Minus (BasicV (Int v)) (Exception RTE_Overflow).
 
 Inductive do_division_check: binary_operator -> value -> value -> check_status -> Prop :=
-    | Do_Division_Check': forall v1 v2,
+    | Do_Division_By_Zero_Check: forall v1 v2,
         (* v2 is not zero *)
         (negb (Zeq_bool v2 0)) = true ->
         do_division_check Divide (BasicV (Int v1)) (BasicV (Int v2)) Success
-    | Do_Division_Check_E': forall v1 v2,
+    | Do_Division_By_Zero_Check_E: forall v1 v2,
         (* v2 is not zero *)
         (negb (Zeq_bool v2 0)) = false ->
         do_division_check Divide (BasicV (Int v1)) (BasicV (Int v2)) (Exception RTE_Division_By_Zero).
 
 Inductive do_index_check: Z -> Z -> Z -> check_status -> Prop :=
-    | Do_Index_Check: forall i l u,
+    | Do_Array_Index_Check: forall i l u,
         (* i >= l /\ u >= i *)
         (Zge_bool i l) && (Zge_bool u i) = true ->
         do_index_check i l u Success
-    | Do_Index_Check_E: forall i l u,
+    | Do_Array_Index_Check_E: forall i l u,
         (Zge_bool i l) && (Zge_bool u i) = false ->
         do_index_check i l u (Exception RTE_Index).
 
 (* verify run time checks on binary / unary operations *)
 Inductive do_run_time_check_on_binop: binary_operator -> value -> value -> check_status -> Prop :=
-    | Do_Overflow_Check_On_Plus: forall v1 v2,
+    | Do_Check_On_Plus: forall v1 v2,
         do_overflow_check Plus v1 v2 Success ->
         do_run_time_check_on_binop Plus v1 v2 Success
-    | Do_Overflow_Check_On_Plus_E: forall v1 v2,
+    | Do_Check_On_Plus_E: forall v1 v2,
         do_overflow_check Plus v1 v2 (Exception RTE_Overflow) ->
         do_run_time_check_on_binop Plus v1 v2 (Exception RTE_Overflow)
-    | Do_Overflow_Check_On_Minus: forall v1 v2,
+    | Do_Check_On_Minus: forall v1 v2,
         do_overflow_check Minus v1 v2 Success ->
         do_run_time_check_on_binop Minus v1 v2 Success
-    | Do_Overflow_Check_On_Minus_E: forall v1 v2,
+    | Do_Check_On_Minus_E: forall v1 v2,
         do_overflow_check Minus v1 v2 (Exception RTE_Overflow) ->
         do_run_time_check_on_binop Minus v1 v2 (Exception RTE_Overflow)
-    | Do_Overflow_Check_On_Multiply: forall v1 v2,
+    | Do_Check_On_Multiply: forall v1 v2,
         do_overflow_check Multiply v1 v2 Success ->
         do_run_time_check_on_binop Multiply v1 v2 Success
-    | Do_Overflow_Check_On_Multiply_E: forall v1 v2,
+    | Do_Check_On_Multiply_E: forall v1 v2,
         do_overflow_check Multiply v1 v2 (Exception RTE_Overflow) ->
         do_run_time_check_on_binop Multiply v1 v2 (Exception RTE_Overflow)
-    | Do_Division_By_Zero_And_Overflow_Check_On_Divide: forall v1 v2,
+    | Do_Check_On_Divide: forall v1 v2,
         do_division_check Divide v1 v2 Success ->
         do_overflow_check Divide v1 v2 Success ->
         do_run_time_check_on_binop Divide v1 v2 Success
-    | Do_Division_By_Zero_On_Divide_E: forall v1 v2,
+    | Do_Check_On_Divide_Division_By_Zero_E: forall v1 v2,
         do_division_check Divide v1 v2 (Exception RTE_Division_By_Zero) ->
         do_run_time_check_on_binop Divide v1 v2 (Exception RTE_Division_By_Zero)
-    | Do_Overflow_Check_On_Divide_E: forall v1 v2,
+    | Do_Check_On_Divide_Overflow_E: forall v1 v2,
         do_division_check Divide v1 v2 Success ->
         do_overflow_check Divide v1 v2 (Exception RTE_Overflow) ->
         do_run_time_check_on_binop Divide v1 v2 (Exception RTE_Overflow)
@@ -120,10 +120,10 @@ Inductive do_run_time_check_on_binop: binary_operator -> value -> value -> check
         do_run_time_check_on_binop op v1 v2 Success.
 
 Inductive do_run_time_check_on_unop: unary_operator -> value -> check_status -> Prop :=
-    | Do_Overflow_Check_On_Unary_Minus: forall v,
+    | Do_Check_On_Unary_Minus: forall v,
         do_overflow_check_on_unop Unary_Minus v Success ->
         do_run_time_check_on_unop Unary_Minus v Success
-    | Do_Overflow_Check_On_Unary_Minus_E: forall v,
+    | Do_Check_On_Unary_Minus_E: forall v,
         do_overflow_check_on_unop Unary_Minus v (Exception RTE_Overflow) ->
         do_run_time_check_on_unop Unary_Minus v (Exception RTE_Overflow)
     | Do_Nothing_On_UnOp: forall op v,
@@ -265,12 +265,12 @@ with eval_name: stack -> name -> Return value -> Prop :=
 Inductive copy_out: stack -> frame -> list parameter_specification -> list expression -> stack -> Prop :=
     | Copy_Out_Nil : forall s f, 
         copy_out s f nil nil s
-    | Copy_Out_Cons_Out: forall s s' s'' v f param lparam lexp x ast_num1 ast_num2,
+    | Copy_Out_Cons_Out: forall s s' s'' v f param lparam lexp x ast_num x_ast_num,
         param.(parameter_mode) = Out ->
         fetch param.(parameter_name) f = Some v ->
         updateG s x v = Some s' ->
         copy_out s' f lparam lexp s'' ->
-        copy_out s f (param :: lparam) ((E_Name ast_num1 (E_Identifier ast_num2 x)) :: lexp) s''
+        copy_out s f (param :: lparam) ((E_Name ast_num (E_Identifier x_ast_num x)) :: lexp) s''
     | Copy_Out_Cons_In: forall s s' f param lparam lexp e,
         param.(parameter_mode) = In ->
         copy_out s f lparam lexp s' ->
@@ -289,14 +289,14 @@ Inductive copy_out: stack -> frame -> list parameter_specification -> list expre
 Inductive copy_in: stack -> frame -> list parameter_specification -> list expression -> Return frame -> Prop :=
     | Copy_In_Nil : forall s f, 
         copy_in s f nil nil (Normal f)
-    | Copy_In_Cons_Out: forall param s f lparam le f' ast_num1 ast_num2 x,
+    | Copy_In_Cons_Out: forall param s f lparam le f' ast_num x_ast_num x,
         param.(parameter_mode) = Out ->
         copy_in s f lparam le (Normal f') ->
-        copy_in s f (param :: lparam) ((E_Name ast_num1 (E_Identifier ast_num2 x)) :: le) (Normal (push f' param.(parameter_name) Undefined))
-    | Copy_In_Cons_Out_E: forall param s f lparam le msg ast_num1 ast_num2 x,
+        copy_in s f (param :: lparam) ((E_Name ast_num (E_Identifier x_ast_num x)) :: le) (Normal (push f' param.(parameter_name) Undefined))
+    | Copy_In_Cons_Out_E: forall param s f lparam le msg ast_num x_ast_num x,
         param.(parameter_mode) = Out ->
         copy_in s f lparam le (Run_Time_Error msg) ->
-        copy_in s f (param :: lparam) (E_Name ast_num1 (E_Identifier ast_num2 x) :: le) (Run_Time_Error msg)
+        copy_in s f (param :: lparam) (E_Name ast_num (E_Identifier x_ast_num x) :: le) (Run_Time_Error msg)
     | Copy_In_Cons_In: forall param s e v f lparam le f',
         param.(parameter_mode) = In ->
         eval_expr s e (Normal v) ->
@@ -392,8 +392,8 @@ Inductive cut_until: stack -> scope_level -> stack -> stack -> Prop :=
 
 
 Inductive eval_stmt: symboltable -> stack -> statement -> Return stack -> Prop := 
-    | Eval_S_Null: forall st s ast_num,
-        eval_stmt st s (S_Null ast_num) (Normal s)
+    | Eval_S_Null: forall st s,
+        eval_stmt st s S_Null (Normal s)
     | Eval_S_Assignment_RTE: forall s e msg st ast_num x,
         eval_expr s e (Run_Time_Error msg) ->
         eval_stmt st s (S_Assignment ast_num x e) (Run_Time_Error msg)
