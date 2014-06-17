@@ -463,6 +463,7 @@ package body Flow_Error_Messages is
         Integer (Get_Logical_Line_Number (Slc));
       Col        : constant Integer := Integer (Get_Column_Number (Slc));
    begin
+
       Set_Field (Value, "file", File);
       Set_Field (Value, "line", Line);
       Set_Field (Value, "col", Col);
@@ -480,7 +481,9 @@ package body Flow_Error_Messages is
       end if;
 
       Set_Field (Value, "rule",
-                 (if Suppr /= No_String then "pragma_warning" else Tag));
+                 (if Kind = Warning_Kind and then Suppr /= No_String then
+                     "pragma_warning"
+                  else Tag));
 
       Set_Field (Value, "severity", Msg_Kind_To_String (Kind));
 
