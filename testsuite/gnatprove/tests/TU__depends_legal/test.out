@@ -1,0 +1,3 @@
+depends_legal_2.adb:35:15: info: discriminant check proved
+depends_legal_2.adb:37:15: info: discriminant check proved
+depends_legal_2.adb:40:12: warning: discriminant check might fail

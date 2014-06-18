@@ -135,13 +135,14 @@ package body Why.Gen.Names is
    is
    begin
       case A is
-         when Attribute_First   => return WNE_Attr_First;
-         when Attribute_Image   => return WNE_Attr_Image;
-         when Attribute_Last    => return WNE_Attr_Last;
-         when Attribute_Modulus => return WNE_Attr_Modulus;
-         when Attribute_Length  => return WNE_Attr_Length;
-         when Attribute_Value   => return WNE_Attr_Value;
-         when Attribute_Small   => return WNE_Attr_Small;
+         when Attribute_Constrained => return WNE_Attr_Constrained;
+         when Attribute_First       => return WNE_Attr_First;
+         when Attribute_Image       => return WNE_Attr_Image;
+         when Attribute_Last        => return WNE_Attr_Last;
+         when Attribute_Modulus     => return WNE_Attr_Modulus;
+         when Attribute_Length      => return WNE_Attr_Length;
+         when Attribute_Value       => return WNE_Attr_Value;
+         when Attribute_Small       => return WNE_Attr_Small;
          when others =>
             raise Program_Error;
       end case;
@@ -581,6 +582,7 @@ package body Why.Gen.Names is
          when WNE_Dummy        => return "dummy";
          when WNE_Check_Not_First => return "check_not_first";
          when WNE_Check_Not_Last => return "check_not_last";
+         when WNE_Attr_Constrained => return "attr__is_constrained";
          when WNE_Attr_First => return "first";
          when WNE_Attr_Last => return "last";
          when WNE_Attr_Length => return "length";

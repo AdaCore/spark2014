@@ -1,3 +1,4 @@
 p.adb:1:11: warning: subprogram "P" has no effect
 p.adb:8:16: info: discriminant check proved
+p.adb:17:05: info: discriminant check proved
 p.adb:18:09: warning: discriminant check might fail

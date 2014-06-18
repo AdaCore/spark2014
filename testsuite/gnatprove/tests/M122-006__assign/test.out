@@ -1,2 +1,4 @@
+p.adb:8:09: warning: discriminant check might fail
+p.adb:14:09: info: discriminant check proved
 p.ads:3:14: warning: subprogram "Bad" has no effect
 p.ads:5:14: warning: subprogram "Good" has no effect

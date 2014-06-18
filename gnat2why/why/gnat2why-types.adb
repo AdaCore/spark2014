@@ -32,6 +32,7 @@ with GNAT.Source_Info;
 with Atree;               use Atree;
 with Einfo;               use Einfo;
 with Namet;               use Namet;
+with Sem_Util;            use Sem_Util;
 with Sinfo;               use Sinfo;
 with Sinput;              use Sinput;
 with Stand;               use Stand;
@@ -109,6 +110,20 @@ package body Gnat2Why.Types is
                Binders     => (1 => X_Binder)));
          Next_Discriminant (Discr);
       end loop;
+
+      if Has_Defaulted_Discriminants (E) and then
+        not Is_Constrained (E)
+      then
+         Emit
+           (Theory,
+            Why.Gen.Binders.New_Function_Decl
+              (Ada_Node    => E,
+               Domain      => EW_Term,
+               Name        => To_Ident (WNE_Attr_Constrained),
+               Return_Type => EW_Bool_Type,
+               Labels      => Name_Id_Sets.Empty_Set,
+               Binders     => (1 => X_Binder)));
+      end if;
 
       if Has_Discriminants (E) and then Root /= E then
          Declare_Conversion_Check_Function (Theory => Theory,

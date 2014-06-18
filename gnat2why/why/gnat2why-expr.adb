@@ -621,10 +621,24 @@ package body Gnat2Why.Expr is
                      Context  => +Res);
                end;
             elsif Is_Mutable_In_Why (Lvalue) then
+
+               --  If the type has default discriminants and is not constrained
+               --  then the object is not constrained.
+
                return New_Assignment
                  (Ada_Node => N,
                   Name     => L_Id,
-                  Value    => Why_Expr);
+                  Value    =>
+                    (if Has_Defaulted_Discriminants (Etype (Lvalue))
+                     and then not Is_Constrained (Etype (Lvalue))
+                     then
+                     +New_Is_Constrained_Update
+                       (Ada_Node => N,
+                        Domain   => EW_Prog,
+                        Name     => +Why_Expr,
+                        Value    => +False_Term,
+                        Ty       => Etype (Lvalue))
+                     else Why_Expr));
 
             elsif Is_Static_Expression (Rexpr) then
 
@@ -658,6 +672,100 @@ package body Gnat2Why.Expr is
                             Post     => Eq));
                end;
             end if;
+         end;
+      elsif Has_Defaulted_Discriminants (Etype (Lvalue)) and then
+        not Is_Constrained (Etype (Lvalue))
+      then
+
+         --  Assume values of discriminants for unconstrained record types
+         --  with default discriminants.
+
+         declare
+            L_Id       : constant W_Identifier_Id :=
+              To_Why_Id (Lvalue, Typ => EW_Abstract (Etype (Lvalue)));
+            L_Deref    : constant W_Expr_Id :=
+              (if Is_Mutable_In_Why (Lvalue) then
+                    New_Deref (Ada_Node => N,
+                               Right    => L_Id,
+                               Typ      => EW_Abstract (Etype (Lvalue)))
+               else +L_Id);
+            Assumption : W_Expr_Id :=
+              New_Relation (Domain   => EW_Pred,
+                            Op_Type  => EW_Bool,
+                            Left     => New_Is_Constrained_Access
+                              (Ada_Node => N,
+                               Domain   => EW_Term,
+                               Name     => L_Deref,
+                               Ty       => Etype (Lvalue)),
+                            Op       => EW_Eq,
+                            Right    => +False_Term);
+            --  The variable is not constrained.
+
+            Discr      : Node_Id :=
+              SPARK_Util.First_Discriminant (Etype (Lvalue));
+            Ty_Base    : W_Type_Id;
+            T          : W_Prog_Id := New_Void;
+         begin
+
+            --  Construct the assumption. Also translate default value of
+            --  discriminants into the prog domain to get the checks.
+
+            while Present (Discr) loop
+               if not Is_Completely_Hidden (Discr) then
+                  Ty_Base := Base_Why_Type (Etype (Discr));
+                  T := Sequence
+                    (Left  => T,
+                     Right =>
+                       New_Ignore
+                         (Ada_Node => N,
+                          Prog     =>
+                            +Transform_Expr
+                            (Expr          =>
+                                   Discriminant_Default_Value (Discr),
+                             Expected_Type => EW_Abstract (Etype (Discr)),
+                             Domain        => EW_Prog,
+                             Params        => Body_Params)));
+                  Assumption := New_And_Expr
+                    (Domain => EW_Pred,
+                     Left   => Assumption,
+                     Right   =>
+                       New_Relation
+                         (Domain   => EW_Pred,
+                          Op_Type  => Get_Base_Type (Ty_Base),
+                          Left     =>
+                            Insert_Simple_Conversion
+                              (Ada_Node => N,
+                               Domain   => EW_Term,
+                               To       => Ty_Base,
+                               Expr     =>
+                                 New_Ada_Record_Access
+                                   (Ada_Node => N,
+                                    Domain   => EW_Term,
+                                    Name     => L_Deref,
+                                    Field    => Discr,
+                                    Ty       => Etype (Lvalue))),
+                          Op       => EW_Eq,
+                          Right    =>
+                            Transform_Expr
+                              (Expr          =>
+                                     Discriminant_Default_Value (Discr),
+                               Expected_Type => Ty_Base,
+                               Domain        => EW_Term,
+                               Params        => Body_Params)));
+               end if;
+               Next_Discriminant (Discr);
+            end loop;
+
+            --  Generate assumption
+
+            T := Sequence
+              (Left  => T,
+               Right => New_Assume_Statement
+                 (Ada_Node    => N,
+                  Pre         => True_Pred,
+                  Post        => +Assumption));
+
+            return T;
          end;
       else
          return New_Void (N);
@@ -1530,6 +1638,29 @@ package body Gnat2Why.Expr is
                 (New_Array_Access (Empty, Expr, Indices, EW_Term),
                  Component_Type (Ty_Ext), False);
 
+            --  If elements of an array have default discriminants and are not
+            --  constrained then 'Constrained returns false on them.
+
+            if Has_Defaulted_Discriminants (Component_Type (Ty_Ext))
+              and then not Is_Constrained (Component_Type (Ty_Ext))
+            then
+               T_Comp := +New_And_Expr
+                 (Left   => +T_Comp,
+                  Right  => New_Relation
+                    (Ada_Node => Empty,
+                     Domain   => EW_Term,
+                     Op_Type  => EW_Bool,
+                     Left     => New_Is_Constrained_Access
+                       (Ada_Node => Empty,
+                        Domain   => EW_Term,
+                        Name     =>
+                          New_Array_Access (Empty, Expr, Indices, EW_Term),
+                        Ty       => Component_Type (Ty_Ext)),
+                     Op       => EW_Eq,
+                     Right    => +False_Term),
+                  Domain => EW_Pred);
+            end if;
+
             if T_Comp /= True_Pred then
                Q_Expr := New_Universal_Quantif
                  (Binders  => Vars,
@@ -1602,6 +1733,28 @@ package body Gnat2Why.Expr is
 
                   T_Comp :=
                     Compute_Dynamic_Property (R_Acc, Etype (Field), False);
+
+                  --  If fields of a record have default discriminants and are
+                  --  not constrained then 'Constrained returns false on them.
+
+                  if Has_Defaulted_Discriminants (Etype (Field))
+                    and then not Is_Constrained (Etype (Field))
+                  then
+                     T_Comp := +New_And_Expr
+                       (Left   => +T_Comp,
+                        Right  => New_Relation
+                          (Ada_Node => Empty,
+                           Domain   => EW_Term,
+                           Op_Type  => EW_Bool,
+                           Left     => New_Is_Constrained_Access
+                             (Ada_Node => Empty,
+                              Domain   => EW_Term,
+                              Name     => R_Acc,
+                              Ty       => Etype (Field)),
+                           Op       => EW_Eq,
+                           Right    => +False_Term),
+                        Domain => EW_Pred);
+                  end if;
 
                   if T_Comp /= True_Pred then
                      T_Guard := (if Ekind (Field) = E_Discriminant
@@ -2240,6 +2393,29 @@ package body Gnat2Why.Expr is
       Left_Side  : Node_Id := Lvalue;
       Right_Side : W_Prog_Id := Expr;
    begin
+
+      --  Is_Constrained attribute of objects is not modified by assignments
+
+      declare
+         Ty : constant Entity_Id := Etype (Lvalue);
+      begin
+         if Is_Record_Type (Ty) then
+            Right_Side :=
+              +New_Is_Constrained_Update
+              (Ada_Node => Ada_Node,
+               Domain   => EW_Prog,
+               Name     => +Right_Side,
+               Value    =>
+                 New_Is_Constrained_Access
+                   (Ada_Node => Ada_Node,
+                    Domain   => EW_Prog,
+                    Name     =>
+                      Transform_Expr (Left_Side, EW_Term, Body_Params),
+                    Ty       => Ty),
+               Ty       => Ty);
+         end if;
+      end;
+
       while not (Nkind (Left_Side) in N_Identifier | N_Expanded_Name) loop
          Shift_Rvalue (Left_Side, Right_Side);
       end loop;
@@ -4804,22 +4980,35 @@ package body Gnat2Why.Expr is
 
    function Transform_Assignment_Statement (Stmt : Node_Id) return W_Prog_Id
    is
-      Lvalue   : constant Node_Id := Name (Stmt);
+      Lvalue     : constant Node_Id := Name (Stmt);
       Exp_Entity : constant W_Type_Id := Expected_Type_Of_Prefix (Lvalue);
-      L_Type   : constant W_Type_Id :=
+      L_Type     : constant W_Type_Id :=
         EW_Abstract (Etype (Lvalue));
-      T        : W_Prog_Id :=
+      T          : W_Prog_Id :=
         +Transform_Expr
         (Expression (Stmt),
          L_Type,
          EW_Prog,
          Params => Body_Params);
-      Need_Check : constant Boolean :=
+      Lgth_Check : constant Boolean :=
         Present (Get_Ada_Node (+L_Type)) and then
-        Is_Array_Type (Get_Ada_Node (+L_Type)) and then
-        not Is_Static_Array_Type (Get_Ada_Node (+L_Type));
+
+        --  Length check needed for assignment into a non-static array type
+
+        (Is_Array_Type (Get_Ada_Node (+L_Type)) and then
+           not Is_Static_Array_Type (Get_Ada_Node (+L_Type))); --   or else
+
+         --  Discriminant check needed for assignment into a non-constrained
+         --  record type. Constrained record type are handled by the
+         --  conversion.
+
+      Disc_Check : constant Boolean :=
+        Present (Get_Ada_Node (+L_Type)) and then
+        Is_Record_Type (Get_Ada_Node (+L_Type)) and then
+        Has_Discriminants (Get_Ada_Node (+L_Type)) and then
+        not Is_Constrained (Get_Ada_Node (+L_Type));
       Tmp      : constant W_Expr_Id :=
-        New_Temp_For_Expr (+T, Need_Check);
+        New_Temp_For_Expr (+T, Lgth_Check or else Disc_Check);
    begin
 
       --  The Exp_Entity type is in fact the type that is expected in Why.
@@ -4828,12 +5017,13 @@ package body Gnat2Why.Expr is
       --  (to get checks), and then convert to Why (without checks) to get the
       --  types right.
 
-      if Need_Check then
+      if Lgth_Check then
+         --           if Is_Array_Type (Get_Ada_Node (+L_Type)) then
          declare
             Check : W_Pred_Id := True_Pred;
             Lval  : constant W_Expr_Id :=
-              New_Temp_For_Expr (Transform_Expr (Lvalue, EW_Term, Body_Params),
-                                 True);
+              New_Temp_For_Expr
+                (Transform_Expr (Lvalue, EW_Term, Body_Params), True);
             Dim   : constant Positive :=
               Positive (Number_Dimensions (Get_Ada_Node (+L_Type)));
          begin
@@ -4859,12 +5049,75 @@ package body Gnat2Why.Expr is
             end loop;
             T :=
               Sequence
-                (New_Located_Assert (Stmt, Check, VC_Length_Check, EW_Assert),
+                (New_Located_Assert
+                   (Stmt, Check, VC_Length_Check, EW_Assert),
                  +Tmp);
             T := +Binding_For_Temp (Ada_Node => Empty,
-                                   Domain   => EW_Prog,
-                                   Tmp      => Lval,
-                                   Context  => +T);
+                                    Domain   => EW_Prog,
+                                    Tmp      => Lval,
+                                    Context  => +T);
+         end;
+      elsif Disc_Check then
+         pragma Assert
+           (Is_Record_Type (Get_Ada_Node (+L_Type)) and then
+            Has_Discriminants (Get_Ada_Node (+L_Type)) and then
+              not Is_Constrained (Get_Ada_Node (+L_Type)));
+
+         --  Discriminants should be preserved by assignment except if the
+         --  object is not constrained.
+
+         declare
+            Ty    : constant Entity_Id := Get_Ada_Node (+L_Type);
+            Check : W_Expr_Id := +True_Pred;
+            Lval  : constant W_Expr_Id :=
+              New_Temp_For_Expr
+                (Transform_Expr (Lvalue, EW_Term, Body_Params), True);
+            Discr : Node_Id := SPARK_Util.First_Discriminant (Ty);
+         begin
+            while Present (Discr) loop
+               if not Is_Completely_Hidden (Discr) then
+                  declare
+                     Input_Discr    : constant W_Expr_Id :=
+                       New_Ada_Record_Access
+                         (Empty, EW_Term, Tmp, Discr, Ty);
+                     Expected_Discr : constant W_Expr_Id :=
+                       New_Ada_Record_Access
+                         (Empty, EW_Term, Lval, Discr, Ty);
+                  begin
+                     Check :=
+                       New_And_Then_Expr
+                         (Domain => EW_Pred,
+                          Left   => Check,
+                          Right  =>
+                            New_Relation
+                              (Domain  => EW_Pred,
+                               Op_Type =>
+                                 Get_Base_Type (Base_Why_Type (Etype (Discr))),
+                               Op      => EW_Eq,
+                               Left    => +Input_Discr,
+                               Right   => +Expected_Discr));
+                  end;
+               end if;
+               Next_Discriminant (Discr);
+            end loop;
+
+            if Has_Defaulted_Discriminants (Ty) then
+               Check := New_Conditional
+                 (Domain      => EW_Pred,
+                  Condition   =>
+                    New_Is_Constrained_Access (Empty, EW_Term, Lval, Ty),
+                  Then_Part   => Check);
+            end if;
+
+            T :=
+              Sequence
+                (New_Located_Assert
+                   (Stmt, +Check, VC_Discriminant_Check, EW_Assert),
+                 +Tmp);
+            T := +Binding_For_Temp (Ada_Node => Empty,
+                                    Domain   => EW_Prog,
+                                    Tmp      => Lval,
+                                    Context  => +T);
          end;
       else
          T := +Tmp;
@@ -5309,6 +5562,25 @@ package body Gnat2Why.Expr is
             else
                T := +True_Term;
             end if;
+
+         when Attribute_Constrained =>
+            declare
+               Ty_Ent : constant Entity_Id :=
+                 Unique_Entity (Etype (Var));
+            begin
+               declare
+                  Why_Expr : constant W_Expr_Id :=
+                    Transform_Expr (Var, Domain, Params);
+               begin
+                  T := New_Is_Constrained_Access (Domain   => Domain,
+                                                  Name     => Why_Expr,
+                                                  Ty       => Ty_Ent);
+                  if Domain = EW_Prog then
+                     T :=
+                       +Sequence (New_Ignore (Prog => +Why_Expr), +T);
+                  end if;
+               end;
+            end;
 
          when others =>
             Ada.Text_IO.Put_Line ("[Transform_Attr] id ="

@@ -1655,7 +1655,9 @@ package body Why.Gen.Expr is
                   when Attribute_Length =>
                      EW_Int_Type,
                   when Attribute_Image =>
-                     String_Image_Type);
+                     String_Image_Type,
+                  when Attribute_Constrained =>
+                     EW_Bool_Type);
             IT : constant W_Type_Id :=
               (if not Is_Static_Subtype (Ty)
                and then Is_Discrete_Type (Ty) then

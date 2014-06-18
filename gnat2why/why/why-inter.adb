@@ -326,7 +326,14 @@ package body Why.Inter is
                   N := Entity (A);
                when N_Has_Theory |
                     N_Entity     =>
-                  N := A;
+
+                  --  Modules are only created for array aggregates
+
+                  if Nkind (A) /= N_Aggregate
+                    or else Is_Array_Type (Etype (A))
+                  then
+                     N := A;
+                  end if;
                when N_Object_Declaration =>
                   N := Defining_Identifier (A);
                when others =>

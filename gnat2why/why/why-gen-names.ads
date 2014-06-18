@@ -166,6 +166,7 @@ package Why.Gen.Names is
       WNE_Array_Slide,
       WNE_Array_Type,
       WNE_Array_Update,
+      WNE_Attr_Constrained,
       WNE_Attr_First,
       WNE_Attr_Image,
       WNE_Attr_Last,

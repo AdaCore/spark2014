@@ -7,6 +7,7 @@ const.adb:22:19: info: index check proved
 const.ads:12:13: warning: subprogram "Simple" has no effect
 mutable.adb:6:13: info: discriminant check proved
 mutable.adb:6:19: info: index check proved
+mutable.adb:12:09: info: discriminant check proved, in call inlined at mutable.adb:21
 mutable.adb:12:19: info: length check proved, in call inlined at mutable.adb:21
 mutable.adb:23:07: warning: unused assignment
 mutable.adb:23:11: info: discriminant check proved

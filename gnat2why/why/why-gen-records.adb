@@ -54,6 +54,7 @@ with Why.Gen.Progs;       use Why.Gen.Progs;
 with Why.Gen.Terms;       use Why.Gen.Terms;
 with Why.Inter;           use Why.Inter;
 with Why.Types;           use Why.Types;
+with Snames; use Snames;
 
 package body Why.Gen.Records is
 
@@ -190,6 +191,13 @@ package body Why.Gen.Records is
          end if;
          Next_Component_Or_Discriminant (Field);
       end loop;
+
+      --  Add a field used to encode that a specific record is contrained.
+      --  Only necessary if E has mutable discriminants.
+      if not Is_Constrained (E) and then Has_Defaulted_Discriminants (E) then
+         Cnt := Cnt + 1;
+      end if;
+
       return Cnt;
    end Count_Why_Record_Fields;
 
@@ -404,6 +412,37 @@ package body Why.Gen.Records is
             Next_Component_Or_Discriminant (Field);
          end loop;
 
+         --  Add conversion of the Is_Constrained field if E needs one
+
+         if not Is_Constrained (E)
+           and then Has_Defaulted_Discriminants (E)
+         then
+            pragma Assert (not Is_Constrained (Root) and then
+                           Has_Defaulted_Discriminants (Root));
+
+            From_Root_Aggr (Index) :=
+              New_Field_Association
+                (Domain => EW_Term,
+                 Field  => To_Ident (WNE_Attr_Constrained),
+                 Value  =>
+                   New_Record_Access
+                     (Name => +A_Ident,
+                      Field =>
+                        +New_Attribute_Expr (Root, Attribute_Constrained),
+                      Typ   => EW_Bool_Type));
+            To_Root_Aggr (Index) :=
+              New_Field_Association
+                (Domain => EW_Term,
+                 Field  =>
+                   +New_Attribute_Expr (Root, Attribute_Constrained),
+                 Value  =>
+                   New_Record_Access
+                     (Name  => +A_Ident,
+                      Field => To_Ident (WNE_Attr_Constrained),
+                      Typ   => EW_Bool_Type));
+            Index := Index + 1;
+         end if;
+
          --  We now iterate over the components of the root type, to fill in
          --  the missing part of the 'to' aggregate. As the subtype cannot
          --  provide a value for these fields, we use the dummy value of the
@@ -428,6 +467,20 @@ package body Why.Gen.Records is
             end if;
             Next_Component_Or_Discriminant (Field);
          end loop;
+
+         --  Add conversion of the Is_Constrained field if E does not have one.
+
+         if (Is_Constrained (E)
+             or else not Has_Defaulted_Discriminants (E))
+           and then not Is_Constrained (Root)
+           and then Has_Defaulted_Discriminants (Root)
+         then
+            To_Root_Aggr (Index) :=
+              New_Field_Association
+                (Domain => EW_Term,
+                 Field  => +New_Attribute_Expr (Root, Attribute_Constrained),
+                 Value  => +True_Term);
+         end if;
 
          Emit
            (Theory,
@@ -626,21 +679,34 @@ package body Why.Gen.Records is
          Num_Fields : constant Natural := Count_Why_Record_Fields (E);
          Binders    : Binder_Array (1 .. Num_Fields);
          Field      : Entity_Id := First_Component_Or_Discriminant (E);
+         Index      : Positive := 1;
       begin
-         for Index in 1 .. Num_Fields loop
+         while Present (Field) loop
+            if Is_Not_Hidden_Discriminant (Field) then
+               Binders (Index) :=
+                 (B_Name =>
+                    To_Why_Id
+                      (Field,
+                       Local => True,
+                       Typ => EW_Abstract (Etype (Field))),
+                  others => <>);
+               Index := Index + 1;
+            end if;
+            Next_Component_Or_Discriminant (Field);
+         end loop;
+
+         --  Additional record field for records with mutable discriminants
+
+         if not Is_Constrained (E)
+           and then Has_Defaulted_Discriminants (E)
+         then
             Binders (Index) :=
               (B_Name =>
-                 To_Why_Id
-                   (Field,
-                    Local => True,
-                    Typ => EW_Abstract (Etype (Field))),
+                 New_Identifier (Name => To_String (WNE_Attr_Constrained),
+                                 Typ  => EW_Bool_Type),
                others => <>);
-            loop
-               Next_Component_Or_Discriminant (Field);
-               exit when not (Present (Field)) or else
-                 Is_Not_Hidden_Discriminant (Field);
-            end loop;
-         end loop;
+         end if;
+
          Emit (Theory,
            New_Record_Definition (Name    => Ty_Name,
                                   Binders => Binders));
@@ -1133,6 +1199,67 @@ package body Why.Gen.Records is
       end if;
       return Binding_For_Temp (Ada_Node, Domain, Tmp, T);
    end New_Ada_Record_Update;
+
+   -------------------------------
+   -- New_Is_Constrained_Access --
+   -------------------------------
+
+   function New_Is_Constrained_Access
+     (Ada_Node : Node_Id := Empty;
+      Domain   : EW_Domain;
+      Name     : W_Expr_Id;
+      Ty       : Entity_Id)
+      return W_Expr_Id
+   is
+   begin
+      if Has_Defaulted_Discriminants (Ty)
+        and then not Is_Constrained (Ty)
+      then
+         return New_Call
+           (Ada_Node => Ada_Node,
+            Name     => +New_Attribute_Expr
+              (Ty   => Ty,
+               Attr => Attribute_Constrained),
+            Args     => (1 => Name),
+            Domain   => Domain,
+            Typ      => EW_Bool_Type);
+      else
+         return +True_Term;
+      end if;
+   end New_Is_Constrained_Access;
+
+   -------------------------------
+   -- New_Is_Constrained_Update --
+   -------------------------------
+
+   function New_Is_Constrained_Update
+     (Ada_Node : Node_Id := Empty;
+      Domain   : EW_Domain;
+      Name     : W_Expr_Id;
+      Value    : W_Expr_Id;
+      Ty       : Entity_Id)
+      return W_Expr_Id
+   is
+   begin
+      if Has_Defaulted_Discriminants (Ty)
+        and then not Is_Constrained (Ty)
+      then
+         return New_Record_Update
+           (Ada_Node => Ada_Node,
+            Name     => Name,
+            Updates  =>
+              (1 =>
+                   New_Field_Association
+                 (Domain => Domain,
+                  Field  => +New_Attribute_Expr
+                    (Ty   => Ty,
+                     Attr => Attribute_Constrained),
+                  Value  => Value)),
+            Typ      => Get_Type (Name));
+      else
+         return Name;
+      end if;
+   end New_Is_Constrained_Update;
 
    ------------------------------------
    -- Prepare_Args_For_Subtype_Check --
