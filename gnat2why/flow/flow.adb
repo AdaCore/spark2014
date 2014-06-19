@@ -85,8 +85,9 @@ package body Flow is
    --  Nasty nasty hack to add the given string to a global variable,
    --  Temp_String. We use this to pretty print nodes via Sprint_Node.
 
-   function Flow_Analyse_Entity (E : Entity_Id;
-                                 S : Node_Id)
+   function Flow_Analyse_Entity (E               : Entity_Id;
+                                 S               : Node_Id;
+                                 Compute_Globals : Boolean)
                                  return Flow_Analysis_Graphs
      with Pre  => Ekind (E) in Subprogram_Kind | E_Package | E_Package_Body,
           Post => Is_Valid (Flow_Analyse_Entity'Result);
@@ -718,110 +719,95 @@ package body Flow is
    -- Flow_Analyse_Entity --
    -------------------------
 
-   function Flow_Analyse_Entity (E : Entity_Id;
-                                 S : Node_Id)
+   function Flow_Analyse_Entity (E               : Entity_Id;
+                                 S               : Node_Id;
+                                 Compute_Globals : Boolean)
                                  return Flow_Analysis_Graphs
    is
-      Tmp : Flow_Analysis_Graphs_Root;
+      Tmp : Flow_Analysis_Graphs_Root
+         (Kind            => (case Ekind (E) is
+                              when Subprogram_Kind => E_Subprogram_Body,
+                              when others          => Ekind (E)),
+          Compute_Globals => Compute_Globals);
    begin
+      Tmp.Analyzed_Entity   := E;
+      Tmp.Spec_Node         := S;
+      Tmp.Start_Vertex      := Null_Vertex;
+      Tmp.Helper_End_Vertex := Null_Vertex;
+      Tmp.End_Vertex        := Null_Vertex;
+      Tmp.CFG               := Create;
+      Tmp.DDG               := Create;
+      Tmp.CDG               := Create;
+      Tmp.TDG               := Create;
+      Tmp.PDG               := Create;
+      Tmp.Atr               := Attribute_Maps.Empty_Map;
+      Tmp.Local_Constants   := Node_Sets.Empty_Set;
+      Tmp.All_Vars          := Flow_Id_Sets.Empty_Set;
+      Tmp.Unmodified_Vars   := Node_Sets.Empty_Set;
+      Tmp.Unreferenced_Vars := Node_Sets.Empty_Set;
+      Tmp.Loops             := Node_Sets.Empty_Set;
+      Tmp.Aliasing_Present  := False;
+      Tmp.Dependency_Map    := Dependency_Maps.Empty_Map;
+      Tmp.No_Effects        := False;
+
+      if Compute_Globals then
+         --  Generate Globals
+         Tmp.Base_Filename := To_Unbounded_String ("gg_");
+      else
+         --  Flow Analysis
+         Tmp.Base_Filename := To_Unbounded_String ("fa_");
+      end if;
+
       case Ekind (E) is
          when Subprogram_Kind =>
-            Tmp := Flow_Analysis_Graphs_Root'
-              (Kind              => E_Subprogram_Body,
-               Analyzed_Entity   => E,
-               B_Scope           => Get_Flow_Scope
-                 (SPARK_Util.Get_Subprogram_Body (E)),
-               S_Scope           => Get_Flow_Scope (E),
-               Spec_Node         => S,
-               Start_Vertex      => Null_Vertex,
-               Helper_End_Vertex => Null_Vertex,
-               End_Vertex        => Null_Vertex,
-               CFG               => Create,
-               DDG               => Create,
-               CDG               => Create,
-               TDG               => Create,
-               PDG               => Create,
-               Atr               => Attribute_Maps.Empty_Map,
-               Local_Constants   => Node_Sets.Empty_Set,
-               All_Vars          => Flow_Id_Sets.Empty_Set,
-               Unmodified_Vars   => Node_Sets.Empty_Set,
-               Unreferenced_Vars => Node_Sets.Empty_Set,
-               Loops             => Node_Sets.Empty_Set,
-               Aliasing_Present  => False,
-               Dependency_Map    => Dependency_Maps.Empty_Map,
-               No_Effects        => False,
-               Base_Filename     => To_Unbounded_String ("subprogram_"),
-               Is_Main           => Might_Be_Main (E),
-               Is_Generative     => not (Present
-                                           (Get_Pragma (E, Pragma_Global)) or
-                                         Present
-                                           (Get_Pragma (E, Pragma_Depends))),
-               Last_Statement_Is_Raise => Last_Statement_Is_Raise (E),
-               Depends_N         => Empty,
-               Refined_Depends_N => Empty,
-               Global_N          => Empty,
-               Refined_Global_N  => Empty,
-               Function_Side_Effects_Present => False);
+            Tmp.B_Scope := Get_Flow_Scope (SPARK_Util.Get_Subprogram_Body (E));
+            Tmp.S_Scope := Get_Flow_Scope (E);
+
+            Append (Tmp.Base_Filename, "subprogram_");
+
+            Tmp.Is_Main := Might_Be_Main (E);
+
+            Tmp.Is_Generative     :=
+              not (Present
+                     (Get_Pragma (E, Pragma_Global)) or
+                     Present
+                     (Get_Pragma (E, Pragma_Depends)));
+
+            Tmp.Last_Statement_Is_Raise := Last_Statement_Is_Raise (E);
+
+            Tmp.Depends_N         := Empty;
+            Tmp.Refined_Depends_N := Empty;
+            Tmp.Global_N          := Empty;
+            Tmp.Refined_Global_N  := Empty;
+
+            Tmp.Function_Side_Effects_Present := False;
 
          when E_Package =>
-            Tmp := Flow_Analysis_Graphs_Root'
-              (Kind              => E_Package,
-               Analyzed_Entity   => E,
-               B_Scope           => Flow_Scope'(E, Private_Part),
-               S_Scope           => Flow_Scope'(E, Private_Part),
-               Spec_Node         => S,
-               Start_Vertex      => Null_Vertex,
-               Helper_End_Vertex => Null_Vertex,
-               End_Vertex        => Null_Vertex,
-               CFG               => Create,
-               DDG               => Create,
-               CDG               => Create,
-               TDG               => Create,
-               PDG               => Create,
-               Atr               => Attribute_Maps.Empty_Map,
-               Local_Constants   => Node_Sets.Empty_Set,
-               All_Vars          => Flow_Id_Sets.Empty_Set,
-               Unmodified_Vars   => Node_Sets.Empty_Set,
-               Unreferenced_Vars => Node_Sets.Empty_Set,
-               Loops             => Node_Sets.Empty_Set,
-               Aliasing_Present  => False,
-               Dependency_Map    => Dependency_Maps.Empty_Map,
-               No_Effects        => False,
-               Base_Filename     => To_Unbounded_String ("package_spec_"),
-               Initializes_N     => Empty,
-               Visible_Vars      => Flow_Id_Sets.Empty_Set);
+            Tmp.B_Scope       := Flow_Scope'(E, Private_Part);
+            Tmp.S_Scope       := Flow_Scope'(E, Private_Part);
+
+            Append (Tmp.Base_Filename, "pkg_spec_");
+
+            Tmp.Initializes_N := Empty;
+
+            Tmp.Visible_Vars  := Flow_Id_Sets.Empty_Set;
 
          when E_Package_Body =>
-            Tmp := Flow_Analysis_Graphs_Root'
-              (Kind              => E_Package_Body,
-               Analyzed_Entity   => E,
-               B_Scope           => Flow_Scope'(Spec_Entity (E), Body_Part),
-               S_Scope           => Flow_Scope'(Spec_Entity (E), Private_Part),
-               Spec_Node         => S,
-               Start_Vertex      => Null_Vertex,
-               Helper_End_Vertex => Null_Vertex,
-               End_Vertex        => Null_Vertex,
-               CFG               => Create,
-               DDG               => Create,
-               CDG               => Create,
-               TDG               => Create,
-               PDG               => Create,
-               Atr               => Attribute_Maps.Empty_Map,
-               Local_Constants   => Node_Sets.Empty_Set,
-               All_Vars          => Flow_Id_Sets.Empty_Set,
-               Unmodified_Vars   => Node_Sets.Empty_Set,
-               Unreferenced_Vars => Node_Sets.Empty_Set,
-               Loops             => Node_Sets.Empty_Set,
-               Aliasing_Present  => False,
-               Dependency_Map    => Dependency_Maps.Empty_Map,
-               No_Effects        => False,
-               Base_Filename     => To_Unbounded_String ("package_body_"),
-               Initializes_N     => Empty,
-               Visible_Vars      => Flow_Id_Sets.Empty_Set);
+            Tmp.B_Scope       := Flow_Scope'(Spec_Entity (E), Body_Part);
+            Tmp.S_Scope       := Flow_Scope'(Spec_Entity (E), Private_Part);
+
+            Append (Tmp.Base_Filename, "pkg_body_");
+
+            Tmp.Initializes_N := Empty;
+
+            Tmp.Visible_Vars  := Flow_Id_Sets.Empty_Set;
 
          when others =>
             raise Why.Not_SPARK;
       end case;
+
+      pragma Assert (not Tmp.Compute_Globals);
+      --  Fail for now, until we implement the better computation of globals
 
       declare
          FA : Flow_Analysis_Graphs := Tmp;
@@ -942,7 +928,7 @@ package body Flow is
                if SPARK_Util.Analysis_Requested (E)
                  and Entity_Body_In_SPARK (E)
                then
-                  FA_Graphs.Include (E, Flow_Analyse_Entity (E, E));
+                  FA_Graphs.Include (E, Flow_Analyse_Entity (E, E, False));
                end if;
 
             when E_Package =>
@@ -976,9 +962,11 @@ package body Flow is
                      if Needs_Body and Entity_Body_In_SPARK (E) then
                         FA_Graphs.Include
                           (Pkg_Body,
-                           Flow_Analyse_Entity (Pkg_Body, E));
+                           Flow_Analyse_Entity (Pkg_Body, E, False));
                      elsif not Needs_Body then
-                        FA_Graphs.Include (E, Flow_Analyse_Entity (E, E));
+                        FA_Graphs.Include (E, Flow_Analyse_Entity (E,
+                                                                   E,
+                                                                   False));
                      else
                         null;
                         --  ??? warning that we can't flow analyze

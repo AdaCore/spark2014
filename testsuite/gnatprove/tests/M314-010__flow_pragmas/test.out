@@ -3,7 +3,7 @@ uninitialized.adb:6:26: "B" is not initialized
 
 
 gnatprove: error during analysis of data and information flow
-// package_body_uninitialized_cfg
+// fa_pkg_body_uninitialized_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -21,7 +21,7 @@ digraph G {
     12 ->  2 [arrowType="normal"];
 }
 
-// package_body_uninitialized_pdg
+// fa_pkg_body_uninitialized_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -36,7 +36,7 @@ digraph G {
     7 ->  8 [arrowType="normal",color="red"];
 }
 
-// package_body_vehicle_cfg
+// fa_pkg_body_vehicle_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -66,7 +66,7 @@ digraph G {
     22 ->  2 [arrowType="normal"];
 }
 
-// package_body_vehicle_pdg
+// fa_pkg_body_vehicle_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -92,7 +92,7 @@ digraph G {
     14 ->  15 [arrowType="normal",color="red"];
 }
 
-// subprogram_compare_cfg
+// fa_subprogram_compare_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -116,7 +116,7 @@ digraph G {
     14 ->  2 [arrowType="normal"];
 }
 
-// subprogram_compare_pdg
+// fa_subprogram_compare_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -138,7 +138,7 @@ digraph G {
     13 ->  14 [arrowType="normal",color="red"];
 }
 
-// subprogram_halt_cfg
+// fa_subprogram_halt_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -194,7 +194,7 @@ digraph G {
     27 ->  13 [arrowType="normal"];
 }
 
-// subprogram_halt_pdg
+// fa_subprogram_halt_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -293,7 +293,7 @@ digraph G {
     27 ->  27 [arrowType="normal"];
 }
 
-// subprogram_speed_is_valid_cfg
+// fa_subprogram_speed_is_valid_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -319,7 +319,7 @@ digraph G {
     15 ->  2 [arrowType="normal"];
 }
 
-// subprogram_speed_is_valid_pdg
+// fa_subprogram_speed_is_valid_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -342,7 +342,7 @@ digraph G {
     15 ->  11 [arrowType="normal",color="red"];
 }
 
-// subprogram_state_update_cfg
+// fa_subprogram_state_update_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -401,7 +401,7 @@ digraph G {
     26 ->  2 [arrowType="normal"];
 }
 
-// subprogram_state_update_pdg
+// fa_subprogram_state_update_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];

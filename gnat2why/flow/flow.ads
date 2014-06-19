@@ -107,9 +107,18 @@ package Flow is
                                 E_Package |
                                 E_Package_Body;
 
-   type Flow_Analysis_Graphs_Root (Kind : Valid_Analyzed_Entity :=
-                                     E_Subprogram_Body)
+   type Flow_Analysis_Graphs_Root
+     (Kind            : Valid_Analyzed_Entity := E_Subprogram_Body;
+      Compute_Globals : Boolean               := False)
    is record
+      --  Compute_Globals: If true we are trying to compute globals and
+      --  will construct the graphs slightly differently. In particular we
+      --  will deal with subprogram calls differently and we don't try to
+      --  create initial and final vertices for globals.
+      --
+      --  After we have constructed the graph, we can create a list of
+      --  global variables (kinda what the analysis sanity check would do).
+
       Analyzed_Entity   : Entity_Id;
       B_Scope           : Flow_Scope;
       S_Scope           : Flow_Scope;
