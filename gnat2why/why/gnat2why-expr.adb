@@ -629,7 +629,8 @@ package body Gnat2Why.Expr is
                  (Ada_Node => N,
                   Name     => L_Id,
                   Value    =>
-                    (if Has_Defaulted_Discriminants (Etype (Lvalue))
+                    (if Is_Record_Type (Etype (Lvalue))
+                     and then Has_Defaulted_Discriminants (Etype (Lvalue))
                      and then not Is_Constrained (Etype (Lvalue))
                      then
                      +New_Is_Constrained_Update
@@ -5004,7 +5005,6 @@ package body Gnat2Why.Expr is
 
       Disc_Check : constant Boolean :=
         Present (Get_Ada_Node (+L_Type)) and then
-        Is_Record_Type (Get_Ada_Node (+L_Type)) and then
         Has_Discriminants (Get_Ada_Node (+L_Type)) and then
         not Is_Constrained (Get_Ada_Node (+L_Type));
       Tmp      : constant W_Expr_Id :=
@@ -5058,10 +5058,6 @@ package body Gnat2Why.Expr is
                                     Context  => +T);
          end;
       elsif Disc_Check then
-         pragma Assert
-           (Is_Record_Type (Get_Ada_Node (+L_Type)) and then
-            Has_Discriminants (Get_Ada_Node (+L_Type)) and then
-              not Is_Constrained (Get_Ada_Node (+L_Type)));
 
          --  Discriminants should be preserved by assignment except if the
          --  object is not constrained.
