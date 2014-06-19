@@ -31,6 +31,8 @@ with Aspects;                use Aspects;
 with Einfo;                  use Einfo;
 with Elists;                 use Elists;
 with Errout;                 use Errout;
+with Fname;                  use Fname;
+with Lib;                    use Lib;
 with Namet;                  use Namet;
 with Nlists;                 use Nlists;
 with Opt;                    use Opt;
@@ -47,7 +49,6 @@ with Urealp;                 use Urealp;
 
 with VC_Kinds;
 
-with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 with SPARK_Util;             use SPARK_Util;
 
 with Gnat2Why_Args;
@@ -1558,7 +1559,7 @@ package body SPARK_Definition is
 
    procedure Mark_Call (N : Node_Id) is
       Nam     : constant Node_Id := Name (N);
-      E       : Node_Id;
+      E       : constant Entity_Id := Entity (Nam);
       Actuals : constant List_Id := Parameter_Associations (N);
 
    begin
@@ -1571,7 +1572,7 @@ package body SPARK_Definition is
 
       if Nkind (N) = N_Procedure_Call_Statement
         and then Is_Entity_Name (Nam)
-        and then No_Return (Entity (Nam))
+        and then No_Return (E)
       then
 
          --  SPARK RM 6.5.1 (1) says that a call to a No_Return
@@ -1594,7 +1595,7 @@ package body SPARK_Definition is
       --  then the call is not in SPARK.
 
       if not Is_Entity_Name (Nam)
-        or else No (Entity (Nam))
+        or else No (E)
       then
          if Nkind (Nam) = N_Explicit_Dereference then
             if Nkind (N) = N_Procedure_Call_Statement then
@@ -1613,32 +1614,40 @@ package body SPARK_Definition is
 
       --  Ignore calls to predicate functions
 
-      elsif not In_SPARK (Entity (Nam))
-        and then not Is_Predicate_Function (Entity (Nam))
+      elsif not In_SPARK (E)
+        and then not Is_Predicate_Function (E)
       then
-         Mark_Violation (N, From => Entity (Nam));
+         Mark_Violation (N, From => E);
 
       else
-         E := Entity (Nam);
 
-         --  Issue a warning for calls to subprograms with no Global contract,
-         --  either manually-written or computed. This is the case for standard
-         --  and external library subprograms for which no Global contract
-         --  is supplied. Note that subprograms for which an external
-         --  axiomatization is provided are exempted, as they should not
-         --  have any effect on global items.
-         --  Exempt also pure subprograms which have no global effects.
+         declare
+            Unit : constant Unit_Number_Type := Get_Source_Unit (Sloc (E));
+            File : constant File_Name_Type   := Unit_File_Name (Unit);
+         begin
+            --  Issue a warning for calls to subprograms with no
+            --  Global contract, either manually-written or
+            --  computed. This is the case for standard and external
+            --  library subprograms for which no Global contract is
+            --  supplied. Note that subprograms for which an external
+            --  axiomatization is provided are exempted, as they
+            --  should not have any effect on global items. Exempt
+            --  also pure subprograms which have no global effects.
 
-         if not Has_Computed_Global (E)
-           and then No (Get_Pragma (E, Pragma_Global))
-           and then not Entity_In_External_Axioms (E)
-           and then not Is_Pure (E)
-         then
-            Error_Msg_NE
-              ("?no Global contract available for &", N, E);
-            Error_Msg_NE
-              ("\\assuming & has no effect on global items", N, E);
-         end if;
+            if ((Is_Imported (E)
+                   and then not (Convention (E) in Convention_Ada |
+                                                   Convention_Ghost))
+                or else Is_Internal_File_Name (File))
+              and then No (Get_Pragma (E, Pragma_Global))
+              and then not Entity_In_External_Axioms (E)
+              and then not Is_Pure (E)
+            then
+               Error_Msg_NE
+                 ("?no Global contract available for &", N, E);
+               Error_Msg_NE
+                 ("\\assuming & has no effect on global items", N, E);
+            end if;
+         end;
       end if;
    end Mark_Call;
 
