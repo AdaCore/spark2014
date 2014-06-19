@@ -164,7 +164,8 @@ package body Flow is
       Indent;
 
       Format_Item ("Is_Null_Node", Boolean'Image (A.Is_Null_Node));
-      Format_Item ("Is_Prorgam_Node", Boolean'Image (A.Is_Program_Node));
+      Format_Item ("Is_Program_Node", Boolean'Image (A.Is_Program_Node));
+      Format_Item ("Is_Proof", Boolean'Image (A.Is_Proof));
       Format_Item ("Is_Precondition", Boolean'Image (A.Is_Precondition));
       Format_Item ("Is_Default_Init", Boolean'Image (A.Is_Default_Init));
       Format_Item ("Is_Loop_Entry", Boolean'Image (A.Is_Loop_Entry));
@@ -200,6 +201,9 @@ package body Flow is
 
       Write_Str ("Variables_Used: ");
       Print_Node_Set (A.Variables_Used);
+
+      Write_Str ("Subprograms_Called: ");
+      Print_Node_Set (A.Subprograms_Called);
 
       Write_Str ("Variables_Explicitly_Used: ");
       Print_Node_Set (A.Variables_Explicitly_Used);
@@ -641,6 +645,23 @@ package body Flow is
             Write_Str ("}");
          end if;
 
+         if A.Subprograms_Called.Length > 0 then
+            Write_Str ("\nSC: {");
+            declare
+               First : Boolean := True;
+            begin
+               for E of A.Subprograms_Called loop
+                  if First then
+                     First := False;
+                  else
+                     Write_Str (", ");
+                  end if;
+                  Sprint_Flow_Id (Direct_Mapping_Id (E));
+               end loop;
+            end;
+            Write_Str ("}");
+         end if;
+
          if A.Variables_Defined.Length > 0 then
             Write_Str ("\nVD: {");
             declare
@@ -656,6 +677,10 @@ package body Flow is
                end loop;
             end;
             Write_Str ("}");
+         end if;
+
+         if A.Is_Proof then
+            Write_Str ("\nPROOF");
          end if;
 
          Write_Str ("\n<VId:" & Natural'Image (G.Vertex_To_Natural (V)) & ">");

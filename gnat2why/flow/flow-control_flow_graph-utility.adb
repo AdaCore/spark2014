@@ -136,6 +136,7 @@ package body Flow.Control_Flow_Graph.Utility is
 
    function Make_Sink_Vertex_Attributes
      (Var_Use          : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
+      Is_Proof         : Boolean           := False;
       Is_Precondition  : Boolean           := False;
       Is_Postcondition : Boolean           := False;
       Is_Loop_Entry    : Boolean           := False;
@@ -147,6 +148,7 @@ package body Flow.Control_Flow_Graph.Utility is
    begin
       A.Variables_Used            := Var_Use;
       A.Variables_Explicitly_Used := Var_Use;
+      A.Is_Proof                  := Is_Proof;
       A.Is_Precondition           := Is_Precondition;
       A.Is_Postcondition          := Is_Postcondition;
       A.Is_Loop_Entry             := Is_Loop_Entry;
@@ -479,6 +481,7 @@ package body Flow.Control_Flow_Graph.Utility is
    begin
       A.Error_Location := E_Loc;
       A.Is_Global      := True;
+      A.Is_Proof       := Mode = Mode_Proof;
       A.Is_Constant    := Mode in In_Global_Modes;
       A.Mode           := Mode;
 

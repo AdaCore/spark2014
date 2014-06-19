@@ -386,6 +386,10 @@ package Flow_Types is
       --  It should be noted that most vertices we construct will have
       --  this set to true.
 
+      Is_Proof            : Boolean;
+      --  True if this vertex represents something in a proof context
+      --  (ghost code, asserts, contracts, etc.)
+
       Is_Precondition     : Boolean;
       --  True if this vertex represents the precondition.
 
@@ -482,6 +486,10 @@ package Flow_Types is
       --  Again, for producing the DDG. These are implied updates due
       --  to reads of volatiles where reads are effective.
 
+      Subprograms_Called  : Node_Sets.Set;
+      --  The set of all subprograms (functions and procedures) called;
+      --  think of this as Variables_Used, but for subprogram calls.
+
       Loops               : Node_Sets.Set;
       --  Which loops are we a member of (identified by loop
       --  name/label). For loop stability analysis.
@@ -505,6 +513,7 @@ package Flow_Types is
    Null_Attributes : constant V_Attributes :=
      V_Attributes'(Is_Null_Node                    => False,
                    Is_Program_Node                 => False,
+                   Is_Proof                        => False,
                    Is_Precondition                 => False,
                    Is_Postcondition                => False,
                    Is_Default_Init                 => False,
@@ -534,6 +543,7 @@ package Flow_Types is
                    Variables_Explicitly_Used       => Flow_Id_Sets.Empty_Set,
                    Volatiles_Read                  => Flow_Id_Sets.Empty_Set,
                    Volatiles_Written               => Flow_Id_Sets.Empty_Set,
+                   Subprograms_Called              => Node_Sets.Empty_Set,
                    Loops                           => Node_Sets.Empty_Set,
                    Error_Location                  => Empty,
                    Aux_Node                        => Empty,

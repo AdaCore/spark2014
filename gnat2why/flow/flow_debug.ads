@@ -25,11 +25,16 @@
 --  datastructures used by flow analysis in a vaguely human-readable
 --  form.
 
+with Common_Containers;    use Common_Containers;
+
 with Flow_Dependency_Maps; use Flow_Dependency_Maps;
 with Flow_Refinement;      use Flow_Refinement;
 with Flow_Types;           use Flow_Types;
 
 package Flow_Debug is
+
+   procedure Print_Node_Set (S : Node_Sets.Set);
+   --  Print a mostly human-readable form the given node set.
 
    procedure Print_Node_Set (S : Flow_Id_Sets.Set);
    --  Print a mostly human-readable form the given node set.

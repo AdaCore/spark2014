@@ -114,7 +114,7 @@ digraph G {
     18 [label="temp : integer := y;\nVU: {Y}\nVD: {Temp}\n<VId: 18>"];
     19 [label="x := x {*} temp;\nVU: {Temp, X}\nVD: {X}\n<VId: 19>"];
     20 [label="y := y {*} temp;\nVU: {Temp, Y}\nVD: {Y}\n<VId: 20>"];
-    21 [label="pragma check (assert, x = y);\nVU: {X, Y}\n<VId: 21>"];
+    21 [label="pragma check (assert, x = y);\nVU: {X, Y}\nPROOF\n<VId: 21>"];
 
     1 ->  15 [arrowType="normal"];
     2 ->  3 [arrowType="normal"];
@@ -151,7 +151,7 @@ digraph G {
     18 [label="temp : integer := y;\nVU: {Y}\nVD: {Temp}\n<VId: 18>"];
     19 [label="x := x {*} temp;\nVU: {Temp, X}\nVD: {X}\n<VId: 19>"];
     20 [label="y := y {*} temp;\nVU: {Temp, Y}\nVD: {Y}\n<VId: 20>"];
-    21 [label="pragma check (assert, x = y);\nVU: {X, Y}\n<VId: 21>"];
+    21 [label="pragma check (assert, x = y);\nVU: {X, Y}\nPROOF\n<VId: 21>"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  15 [arrowType="normal"];

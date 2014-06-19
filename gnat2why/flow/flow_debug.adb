@@ -33,6 +33,19 @@ package body Flow_Debug is
    -- Print_Node_Set --
    --------------------
 
+   procedure Print_Node_Set (S : Node_Sets.Set) is
+   begin
+      Write_Str ("Node_Set with ");
+      Write_Int (Int (S.Length));
+      Write_Str (" elements:");
+      Write_Eol;
+      Indent;
+      for E of S loop
+         Sprint_Node (E);
+      end loop;
+      Outdent;
+   end Print_Node_Set;
+
    procedure Print_Node_Set (S : Flow_Id_Sets.Set) is
    begin
       Write_Str ("Flow_Id_Set with ");
