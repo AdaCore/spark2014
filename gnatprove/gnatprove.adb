@@ -627,10 +627,13 @@ procedure Gnatprove is
          Gnat2Why_Args.Report_Mode := Report;
          Gnat2Why_Args.Why3_Dir := To_Unbounded_String (Obj_Dir);
 
-      --  In the globals generation phase, only set Global_Gen_Mode
+      --  In the globals generation phase, only set Global_Gen_Mode and
+      --  debug flags
 
       else
          Gnat2Why_Args.Global_Gen_Mode := True;
+         Gnat2Why_Args.Debug_Mode := Debug;
+         Gnat2Why_Args.Flow_Advanced_Debug := Flow_Extra_Debug;
       end if;
 
       return Gnat2Why_Args.Set (Obj_Dir);
