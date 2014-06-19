@@ -5,15 +5,19 @@ Require Export environment.
 Require Export symboltable.
 
 Module Entry_Value_Stored <: ENTRY.
-
   Definition T := value.
-
 End Entry_Value_Stored.
 
 Module STACK := STORE(Entry_Value_Stored).
-
 Import STACK.
 
+Module Symbol_Table_Elements <: SymTable_Element.
+  Definition Procedure_Decl := procedure_declaration.
+  Definition Type_Decl := type_declaration.
+End Symbol_Table_Elements.
+
+Module Symbol_Table_Module := SymbolTableM (Symbol_Table_Elements).
+Import Symbol_Table_Module.
 
 Inductive check_status :=
     | Success

@@ -2,6 +2,14 @@ Require Export checks.
 Require Export language_flagged.
 Require Export semantics.
 
+Module Symbol_Table_Elements_X <: SymTable_Element.
+  Definition Procedure_Decl := procedure_declaration_x.
+  Definition Type_Decl := type_declaration_x.
+End Symbol_Table_Elements_X.
+
+Module Symbol_Table_Module_X := SymbolTableM (Symbol_Table_Elements_X).
+Import Symbol_Table_Module_X.
+
 Import STACK.
 
 (** do run time checks according to the check flags  *)
@@ -246,7 +254,7 @@ Inductive eval_decls_x: stack -> frame -> list declaration_x -> Return frame -> 
 
  *)
 
-Inductive eval_stmt_x: symboltable_x -> stack -> statement_x -> Return stack -> Prop := 
+Inductive eval_stmt_x: symboltable -> stack -> statement_x -> Return stack -> Prop := 
     | Eval_S_Null_X: forall st s,
         eval_stmt_x st s S_Null_X (Normal s)
     | Eval_S_Assignment_RTE_X: forall s e msg st ast_num x,
@@ -283,24 +291,24 @@ Inductive eval_stmt_x: symboltable_x -> stack -> statement_x -> Return stack -> 
         eval_expr_x s b (Normal (BasicV (Bool false))) ->
         eval_stmt_x st s (S_While_Loop_X ast_num b c) (Normal s)
     | Eval_S_Proc_RTE_Args_X: forall p st n pb s args msg ast_num p_ast_num,
-        fetch_proc_x p st = Some (n, pb) ->
+        fetch_proc p st = Some (n, pb) ->
         copy_in_x s (newFrame n) (procedure_parameter_profile_x pb) args (Run_Time_Error msg) ->
         eval_stmt_x st s (S_Procedure_Call_X ast_num p_ast_num p args) (Run_Time_Error msg)
     | Eval_S_Proc_RTE_Decl_X: forall p st n pb s args f intact_s s1 msg ast_num p_ast_num,
-        fetch_proc_x p st = Some (n, pb) ->
+        fetch_proc p st = Some (n, pb) ->
         copy_in_x s (newFrame n) (procedure_parameter_profile_x pb) args (Normal f) ->
         cut_until s n intact_s s1 -> (* s = intact_s ++ s1 *)
         eval_decls_x s1 f (procedure_declarative_part_x pb) (Run_Time_Error msg) ->
         eval_stmt_x st s (S_Procedure_Call_X ast_num p_ast_num p args) (Run_Time_Error msg)
     | Eval_S_Proc_RTE_Body_X: forall p st n pb s args f intact_s s1 f1 msg ast_num p_ast_num,
-        fetch_proc_x p st = Some (n, pb) ->
+        fetch_proc p st = Some (n, pb) ->
         copy_in_x s (newFrame n) (procedure_parameter_profile_x pb) args (Normal f) ->
         cut_until s n intact_s s1 -> (* s = intact_s ++ s1 *)
         eval_decls_x s1 f (procedure_declarative_part_x pb) (Normal f1) ->
         eval_stmt_x st (f1 :: s1) (procedure_statements_x pb) (Run_Time_Error msg) ->
         eval_stmt_x st s (S_Procedure_Call_X ast_num p_ast_num p args) (Run_Time_Error msg)
     | Eval_S_Proc_X: forall p st n pb s args f intact_s s1 f1 s2 locals_section params_section s3 s4 ast_num p_ast_num,
-        fetch_proc_x p st = Some (n, pb) ->
+        fetch_proc p st = Some (n, pb) ->
         copy_in_x s (newFrame n) (procedure_parameter_profile_x pb) args (Normal f) ->
         cut_until s n intact_s s1 -> (* s = intact_s ++ s1 *)
         eval_decls_x s1 f (procedure_declarative_part_x pb) (Normal f1) ->          

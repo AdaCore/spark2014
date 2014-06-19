@@ -120,7 +120,7 @@ with name: Type := (* 4.1 *)
 (* Chapter 5 *)
 (* Sequence is not a statement in Ada, it's a shortcut for now *)
 Inductive statement: Type := 
-    | S_Null: astnum -> statement (* 5.1 *)
+    | S_Null: statement (* 5.1 *)
     | S_Assignment: astnum -> name -> expression -> statement (* 5.2 *)
     | S_If: astnum -> expression -> statement -> statement -> statement (* 5.3 *)
     | S_While_Loop: astnum -> expression -> statement -> statement (* 5.5 *)

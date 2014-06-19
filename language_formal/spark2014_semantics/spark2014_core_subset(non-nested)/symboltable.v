@@ -2,125 +2,75 @@ Require Export language.
 Require Export language_flagged.
 Require Export environment.
 
-Definition level := nat.
+Module Type SymTable_Element.
 
-(****************************************
+  Parameter Procedure_Decl: Type.
 
-   Symbol Table for Unflagged Semantics
+  Parameter Type_Decl: Type.
 
- ****************************************)
-
-(* each procedure declaration is associated with a scope level, 
-   which can be used to determine what variables are visible to 
-   the procedure when it's called;
-*)
-
-Record symboltable := mkSymbolTable{
-  vars:   list (idnum * (mode * type));
-  procs: list (procnum * (level * procedure_declaration));
-  types:  list (typenum * type_declaration)
-}.
-
-Module Entry_Type <: ENTRY.
-
-  Definition T := prod mode type.
-
-End Entry_Type.
-
-Module Entry_Procedure_Decl <: ENTRY.
-
-  Definition T := prod level procedure_declaration.
-
-End Entry_Procedure_Decl.
-
-Module Entry_Type_Decl <: ENTRY.
-
-  Definition T := type_declaration.
-
-End Entry_Type_Decl.
-
-Module SymTable_Vars  := STORE(Entry_Type).
-Module SymTable_Procs := STORE(Entry_Procedure_Decl).
-Module SymTable_Types := STORE(Entry_Type_Decl).
-
-Function reside_symtable_vars (x: idnum)   (st: symboltable) := SymTable_Vars.resides x st.(vars).
-Function reside_symtable_procs (x: procnum) (st: symboltable) := SymTable_Procs.resides x st.(procs).
-Function reside_symtable_types (x: typenum) (st: symboltable) := SymTable_Types.resides x st.(types).
-
-Function fetch_var  (x: idnum)   (st: symboltable) := SymTable_Vars.fetches x st.(vars).
-Function fetch_proc (x: procnum) (st: symboltable) := SymTable_Procs.fetches x st.(procs).
-Function fetch_type (x: typenum) (st: symboltable) := SymTable_Types.fetches x st.(types).  
-
-Function update_store {V} (s: list (idnum * V)) (i: idnum) (v: V): list (idnum * V) :=
-  match s with 
-  | (i1, v1) :: s1 =>
-      if beq_nat i1 i then
-        (i1, v) :: s1
-      else
-        (i1, v1) :: (update_store s1 i v)
-  | nil => (i, v) :: nil
-  end.
-
-Arguments update_store {V} _ _ _.
-
-Function update_vars (st: symboltable) (x: idnum) (mt: mode * type): symboltable :=
-  mkSymbolTable (update_store st.(vars) x mt) st.(procs) st.(types).
-
-Function update_procs (st: symboltable) (pid: procnum) (p: level * procedure_declaration): symboltable :=
-  mkSymbolTable st.(vars) (update_store st.(procs) pid p) st.(types).
-
-Function update_types (st: symboltable) (tid: typenum) (td: type_declaration): symboltable :=
-  mkSymbolTable st.(vars) st.(procs) (update_store st.(types) tid td).
+End SymTable_Element.
 
 
+Module SymbolTableM (S: SymTable_Element).
 
-(****************************************
+  Definition level := nat.
+  
+  Definition proc_decl := S.Procedure_Decl.
 
-    Symbol Table for Flagged Semantics
+  Definition type_decl := S.Type_Decl.
+  
+  Record symboltable := mkSymbolTable{
+    vars:   list (idnum * (mode * type));
+    procs: list (procnum * (level * proc_decl));
+    types:  list (typenum * type_decl)
+  }.
 
- ****************************************)
+  Module Entry_Type <: ENTRY.
+    Definition T := prod mode type.
+  End Entry_Type.
 
-Record symboltable_x := mkSymbolTable_x{
-  vars_x:   list (idnum * (mode * type));
-  procs_x: list (procnum * (level * procedure_declaration_x));
-  types_x:  list (typenum * type_declaration_x)
-}.
+  Module Entry_Procedure_Decl <: ENTRY.
+    Definition T := prod level proc_decl.
+  End Entry_Procedure_Decl.
 
+  Module Entry_Type_Decl <: ENTRY.
+    Definition T := type_decl.
+  End Entry_Type_Decl.
 
-Module Entry_Procedure_Decl_X <: ENTRY.
+  Module SymTable_Vars  := STORE(Entry_Type).
+  Module SymTable_Procs := STORE(Entry_Procedure_Decl).
+  Module SymTable_Types := STORE(Entry_Type_Decl).
 
-  Definition T := prod level procedure_declaration_x.
+  Function reside_symtable_vars (x: idnum)   (st: symboltable) := SymTable_Vars.resides x st.(vars).
+  Function reside_symtable_procs (x: procnum) (st: symboltable) := SymTable_Procs.resides x st.(procs).
+  Function reside_symtable_types (x: typenum) (st: symboltable) := SymTable_Types.resides x st.(types).
 
-End Entry_Procedure_Decl_X.
+  Function fetch_var  (x: idnum)   (st: symboltable) := SymTable_Vars.fetches x st.(vars).
+  Function fetch_proc (x: procnum) (st: symboltable) := SymTable_Procs.fetches x st.(procs).
+  Function fetch_type (x: typenum) (st: symboltable) := SymTable_Types.fetches x st.(types).  
 
-Module Entry_Type_Decl_X <: ENTRY.
+  Function update_store {V} (s: list (idnum * V)) (i: idnum) (v: V): list (idnum * V) :=
+    match s with 
+    | (i1, v1) :: s1 =>
+        if beq_nat i1 i then
+          (i1, v) :: s1
+        else
+          (i1, v1) :: (update_store s1 i v)
+    | nil => (i, v) :: nil
+    end.
 
-  Definition T := type_declaration_x.
+  Arguments update_store {V} _ _ _.
 
-End Entry_Type_Decl_X.
+  Function update_vars (st: symboltable) (x: idnum) (mt: mode * type): symboltable :=
+    mkSymbolTable (update_store st.(vars) x mt) st.(procs) st.(types).
 
-Module SymTable_Vars_X  := STORE(Entry_Type).
-Module SymTable_Procs_X := STORE(Entry_Procedure_Decl_X).
-Module SymTable_Types_X := STORE(Entry_Type_Decl_X).
+  Function update_procs (st: symboltable) (pid: procnum) (p: level * proc_decl): symboltable :=
+    mkSymbolTable st.(vars) (update_store st.(procs) pid p) st.(types).
 
-Function reside_symtable_vars_x (x: idnum)   (st: symboltable_x) := SymTable_Vars_X.resides x st.(vars_x).
-Function reside_symtable_procs_x (x: procnum) (st: symboltable_x) := SymTable_Procs_X.resides x st.(procs_x).
-Function reside_symtable_types_x (x: typenum) (st: symboltable_x) := SymTable_Types_X.resides x st.(types_x).
+  Function update_types (st: symboltable) (tid: typenum) (td: type_decl): symboltable :=
+    mkSymbolTable st.(vars) st.(procs) (update_store st.(types) tid td).
 
-Function fetch_var_x  (x: idnum)   (st: symboltable_x) := SymTable_Vars_X.fetches x st.(vars_x).
-Function fetch_proc_x (x: procnum) (st: symboltable_x) := SymTable_Procs_X.fetches x st.(procs_x).
-Function fetch_type_x (x: typenum) (st: symboltable_x) := SymTable_Types_X.fetches x st.(types_x).  
-
-Function update_vars_x (st: symboltable_x) (x: idnum) (mt: mode * type): symboltable_x :=
-  mkSymbolTable_x (update_store st.(vars_x) x mt) st.(procs_x) st.(types_x).
-
-Function update_procs_x (st: symboltable_x) (pid: procnum) (p: level * procedure_declaration_x): symboltable_x :=
-  mkSymbolTable_x st.(vars_x) (update_store st.(procs_x) pid p) st.(types_x).
-
-Function update_types_x (st: symboltable_x) (tid: typenum) (td: type_declaration_x): symboltable_x :=
-  mkSymbolTable_x st.(vars_x) st.(procs_x) (update_store st.(types_x) tid td).
-
-
+End SymbolTableM.
 
 
 (* **********************************
