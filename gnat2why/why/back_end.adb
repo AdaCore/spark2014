@@ -54,38 +54,25 @@ package body Back_End is
 
       use type Opt.Warning_Mode_Type;
    begin
-      --  If Global_Gen_Mode = True, ALI have been generated at this point,
-      --  with suitable cross-reference section. Return now.
+      Namet.Unlock;
+      Stringt.Unlock;
+      Elists.Unlock;
 
-      if Gnat2Why_Args.Global_Gen_Mode then
-         return;
+      --  Frontend warnings were suppressed in this mode. Change that to the
+      --  expected warning mode for gnat2why.
 
-      --  If Global_Gen_Mode = False, we run flow analysis and proof with
-      --  warnings as set by the caller of gnat2why (default is that warnings
-      --  are treated as errors).
-
-      else
-         --  Since the back end is called with all tables locked,
-         --  first unlock any tables that we need to change.
-
-         Namet.Unlock;
-         Stringt.Unlock;
-         Elists.Unlock;
-
-         --  Frontend warnings were suppressed in this mode. Change that to the
-         --  expected warning mode for gnat2why.
-
+      if not Gnat2Why_Args.Global_Gen_Mode then
          pragma Assert (Opt.Warning_Mode = Opt.Suppress);
          Opt.Warning_Mode := Gnat2Why_Args.Warning_Mode;
-
-         GNAT2Why_BE.Call_Back_End;
-
-         --  Make sure to lock any unlocked tables again before returning
-
-         Namet.Lock;
-         Stringt.Lock;
-         Elists.Lock;
       end if;
+
+      GNAT2Why_BE.Call_Back_End;
+
+      --  Make sure to lock any unlocked tables again before returning
+
+      Namet.Lock;
+      Stringt.Lock;
+      Elists.Lock;
    end Call_Back_End;
 
    -------------------------------

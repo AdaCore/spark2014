@@ -237,22 +237,28 @@ package body Gnat2Why.Driver is
         (Action => Mark_Compilation_Unit);
 
    begin
-      --  We do nothing for generic units currently. If this get revised at
-      --  some point to provide proof of generics, then the special SPARK
-      --  expansion in the frontend should be applied to generic units as well.
-      --  We still need to create the Why files to indicate that everything
-      --  went OK. We also print a warning that nothing has been done, if the
-      --  user has specifically requested analysis of this file.
 
-      if Is_Generic_Unit (Unique_Defining_Entity (N))
-        and then Analysis_Requested (Unique_Defining_Entity (N))
-      then
-         Touch_Main_File (Base_Name);
-         if Gnat2Why_Args.Single_File then
-            Error_Msg_N (N   => GNAT_Root,
-                         Msg => "!Generic unit is not analyzed");
+      if not Gnat2Why_Args.Global_Gen_Mode then
+
+         --  We do nothing for generic units currently. If this get revised
+         --  at some point to provide proof of generics, then the special
+         --  SPARK expansion in the frontend should be applied to generic
+         --  units as well. We still need to create the Why files to
+         --  indicate that everything went OK. We also print a warning that
+         --  nothing has been done, if the user has specifically requested
+         --  analysis of this file.
+
+         if Is_Generic_Unit (Unique_Defining_Entity (N))
+           and then Analysis_Requested (Unique_Defining_Entity (N))
+         then
+            Touch_Main_File (Base_Name);
+            if Gnat2Why_Args.Single_File then
+               Error_Msg_N (N   => GNAT_Root,
+                            Msg => "!Generic unit is not analyzed");
+            end if;
+            return;
          end if;
-         return;
+
       end if;
 
       --  All temporaries created for this unit should be different from
@@ -279,30 +285,47 @@ package body Gnat2Why.Driver is
       --  are not included, except for the main unit itself, which always
       --  comes last.
 
+      if Gnat2Why_Args.Global_Gen_Mode then
+         Errout.Set_Ignore_Errors (True);
+      end if;
+
       Before_Marking (Base_Name);
       Mark_All_Compilation_Units;
       After_Marking;
 
-      Compute_Global_Effects;
-
-      if Compilation_Errors or else Gnat2Why_Args.Check_Mode then
-         return;
+      if Gnat2Why_Args.Global_Gen_Mode then
+         Errout.Set_Ignore_Errors (False);
       end if;
 
-      --  Do some flow analysis
+      if Gnat2Why_Args.Global_Gen_Mode then
 
-      if Gnat2Why_Args.Flow_Analysis_Mode then
-         Flow_Analyse_CUnit (GNAT_Root);
-      end if;
+         --  Add better global computation here
+         null;
 
-      --  Start the translation to Why
+      else
 
-      if Gnat2Why_Args.Prove_Mode and then Is_In_Analyzed_Files (N) then
-         Why.Atree.Modules.Initialize;
-         Init_Why_Sections;
-         Translate_Standard_Package;
-         Translate_CUnit;
-         Run_Gnatwhy3 (GNAT_Root);
+         Compute_Global_Effects;
+
+         if Compilation_Errors or else Gnat2Why_Args.Check_Mode then
+            return;
+         end if;
+
+         --  Do some flow analysis
+
+         if Gnat2Why_Args.Flow_Analysis_Mode then
+            Flow_Analyse_CUnit (GNAT_Root);
+         end if;
+
+         --  Start the translation to Why
+
+         if Gnat2Why_Args.Prove_Mode and then Is_In_Analyzed_Files (N) then
+            Why.Atree.Modules.Initialize;
+            Init_Why_Sections;
+            Translate_Standard_Package;
+            Translate_CUnit;
+            Run_Gnatwhy3 (GNAT_Root);
+         end if;
+
       end if;
    end GNAT_To_Why;
 
