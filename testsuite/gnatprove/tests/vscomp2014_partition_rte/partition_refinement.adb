@@ -107,16 +107,9 @@ is
       pragma Assert (for all C in D => (if Key (D, C) = A(I) then A (Element (D, C)) = Key (D, C)));
       pragma Assert (for all C in D => (if Key (D, C) = A(J) then A (Element (D, C)) = Key (D, C)));
       pragma Assert (for all C in D => A (Element (D, C)) = Key (D, C));
-      P_Elem.Count := P_Elem.Count + 1;
 
-      --  Replace_Element does not modify the capacity of the vector, but SPARK GPL 2014 does not prove it.
-      --  Use a local assumption to convey this information.
-      declare
-         Save_Capacity : constant Count_Type := Capacity (P);
-      begin
-         Replace_Element (P, F(I), P_Elem);
-         pragma Assume (Capacity (P) = Save_Capacity);
-      end;
+      P_Elem.Count := P_Elem.Count + 1;
+      Replace_Element (P, F(I), P_Elem);
 
       pragma Assert (A = A_Update);
       --  This assumption is equivalent to the assertion above, although SPARK GPL 2014 does not prove it.
@@ -143,15 +136,7 @@ is
             P_Elem.Last := P_Elem.First + P_Elem.Count - 1;
             P_Elem.Count := 0;
 
-            --  Replace_Element does not modify the capacity of the vector, but SPARK GPL 2014 does not prove it.
-            --  Use a local assumption to convey this information.
-            declare
-               Save_Capacity : constant Count_Type := Capacity (P);
-            begin
-               Replace_Element (P, J, P_Elem);
-               pragma Assume (Capacity (P) = Save_Capacity);
-            end;
-
+            Replace_Element (P, J, P_Elem);
             P_Prime_Index := Partition_Index (Length (P));
             Append (P, P_Prime);
 
