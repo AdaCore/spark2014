@@ -49,7 +49,10 @@ package body Why.Atree.Modules is
       elsif Nkind (E) in N_Entity then
          declare
             M : constant W_Module_Id :=
-              New_Module (File => No_Name, Name => NID (Full_Name (E)));
+              New_Module
+                (Ada_Node => E,
+                 File     => No_Name,
+                 Name     => NID (Full_Name (E)));
          begin
             Entity_Modules.Insert (E, Why_Node_Id (M));
             return M;
@@ -73,8 +76,9 @@ package body Why.Atree.Modules is
          declare
             M : constant W_Module_Id :=
               New_Module
-                (File => No_Name,
-                 Name => NID (Full_Name (E) & "__axiom"));
+                (Ada_Node => E,
+                 File     => No_Name,
+                 Name     => NID (Full_Name (E) & "__axiom"));
          begin
             Axiom_Modules.Insert (E, Why_Node_Id (M));
             return M;

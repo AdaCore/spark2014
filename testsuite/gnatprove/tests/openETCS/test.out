@@ -72,7 +72,7 @@ sec_3_13_2_monitoring_inputs.ads:164:15: info: length check proved
 sec_3_13_2_monitoring_inputs.ads:169:15: info: length check proved
 sec_3_13_2_monitoring_inputs.ads:183:08: info: postcondition proved
 sec_3_13_2_monitoring_inputs.ads:184:24: info: precondition proved
-sec_3_13_2_monitoring_inputs.ads:199:08: info: postcondition proved
+sec_3_13_2_monitoring_inputs.ads:199:08: warning: postcondition might fail, requires Kwet_rst'Result = Step_Function.Get_Value(SFun => Kwet_rst_model, X => V)
 sec_3_13_2_monitoring_inputs.ads:200:24: info: precondition proved
 sec_3_13_2_monitoring_inputs.ads:243:46: info: precondition proved
 sec_3_13_2_monitoring_inputs.ads:247:14: warning: subprogram "Dummy" has no effect

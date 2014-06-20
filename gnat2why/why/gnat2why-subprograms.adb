@@ -385,7 +385,7 @@ package body Gnat2Why.Subprograms is
       --  If Ty is an unconstrained array type, add its index types if they are
       --  dynamic.
 
-      Includes : constant Node_Sets.Set := Compute_Ada_Nodeset (W);
+      Includes : constant Node_Sets.Set := Compute_Ada_Node_Set (W);
 
       procedure Include (Ty : Entity_Id) is
          Index : Node_Id;
@@ -414,7 +414,7 @@ package body Gnat2Why.Subprograms is
 
    procedure Collect_Objects (W      :     Why_Node_Id;
                               Result : in out Node_Sets.Set) is
-      Includes : constant Node_Sets.Set := Compute_Ada_Nodeset (W);
+      Includes : constant Node_Sets.Set := Compute_Ada_Node_Set (W);
    begin
       for E of Includes loop
          if Nkind (E) in N_Entity and then Is_Object (E) then

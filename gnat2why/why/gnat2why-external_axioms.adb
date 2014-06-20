@@ -1197,7 +1197,6 @@ package body Gnat2Why.External_Axioms is
                   E : constant Entity_Id := Defining_Entity (N);
                begin
                   if Ekind (E) = E_Function then
-
                      Ada_Ent_To_Why.Insert
                        (Symbol_Table, E,
                         Item_Type'(Func,
@@ -1219,6 +1218,11 @@ package body Gnat2Why.External_Axioms is
                             B_Ent    => null,
                             Ada_Node => E,
                             Mutable  => False)));
+                  elsif Ekind (E) = E_Procedure then
+                     Insert_Entity
+                       (E,
+                        To_Why_Id (E, Domain => EW_Term),
+                        Mutable => False);
                   else
                      Insert_Entity
                        (E,

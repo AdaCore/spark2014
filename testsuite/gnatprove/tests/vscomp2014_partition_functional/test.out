@@ -368,7 +368,7 @@ partition_refinement.ads:59:38: info: precondition proved
 partition_refinement.ads:60:16: info: precondition proved
 partition_refinement.ads:60:37: warning: precondition might fail
 partition_refinement.ads:60:55: warning: precondition might fail
-partition_refinement.ads:62:16: warning: precondition might fail
+partition_refinement.ads:62:16: info: precondition proved
 partition_refinement.ads:62:34: warning: precondition might fail
 partition_refinement.ads:62:47: warning: precondition might fail
 partition_refinement.ads:64:73: info: precondition proved

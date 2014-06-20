@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Types;                              use Types;
+with Why.Atree.Tables;                   use Why.Atree.Tables;
 pragma Warnings (Off);
 --  ??? Why.Sinfo" is directly visible as "Sinfo", as it has "Why" as a
 --  common ancestor with the current package. So it hides compilation unit
@@ -46,9 +47,11 @@ package Why.Inter is
       Axiom_Theory,           --  axioms for previously defined symbols
       VC_Generation_Theory);  --  generation of VCs
 
-   function Compute_Ada_Nodeset (W : Why_Node_Id) return Node_Sets.Set;
-   --  For a given Why node, compute the required Ada nodes, from which we can
-   --  compute the necessary inclusions on the Why side
+   function Compute_Module_Set (W : Why_Node_Id) return Why_Node_Sets.Set;
+   --  For a given Why node, compute the required modules, to be included to
+   --  make this Why node a valid node
+
+   function Compute_Ada_Node_Set (W : Why_Node_Id) return Node_Sets.Set;
 
    procedure Close_Theory
      (P              : in out Why_Section;

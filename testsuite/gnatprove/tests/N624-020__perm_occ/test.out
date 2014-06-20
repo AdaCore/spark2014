@@ -69,7 +69,7 @@ sort.adb:35:38: warning: loop invariant might fail in first iteration, requires 
 sort.adb:40:29: info: index check proved
 sort.adb:41:15: info: index check proved
 sort.adb:41:29: info: index check proved
-sort.adb:44:14: info: length check proved
+sort.adb:44:14: warning: length check might fail
 sort.adb:44:14: warning: unused assignment
 sort.adb:44:17: info: length check proved
 sort.adb:46:15: info: index check proved

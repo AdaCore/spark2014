@@ -75,6 +75,10 @@ package body Why.Inter is
    --  entity when all we have is its fully scoped name (for hidden effects of
    --  other units).
 
+   function Compute_Ada_Node_Set (S : Why_Node_Sets.Set) return Node_Sets.Set;
+   --  transform a module set into a node set by taking the Ada_Node of each
+   --  element.
+
    function Get_EW_Term_Type (N : Node_Id) return EW_Type;
 
    function EW_Abstract_Shared
@@ -87,205 +91,41 @@ package body Why.Inter is
    function New_Kind_Base_Type (E : Entity_Id; Kind : EW_Type) return W_Type_Id
      with Pre => Kind in EW_Abstract | EW_Split;
 
-   package Standard_Imports is
+   --------------------------
+   -- Compute_Ada_Node_Set --
+   --------------------------
 
-      --  This package serves to trigger the necessary imports on the
-      --  _gnatprove_standard file.
+   function Compute_Ada_Node_Set (W : Why_Node_Id) return Node_Sets.Set is
+   begin
+      return Compute_Ada_Node_Set (Compute_Module_Set (W));
+   end Compute_Ada_Node_Set;
 
-      type Standard_Imports_Enum is (SI_Integer,
-                                     SI_Float,
-                                     SI_Boolean,
-                                     SI_Array1,
-                                     SI_Array2,
-                                     SI_Array3,
-                                     SI_Array4
-                                    );
-
-      Imports : array (Standard_Imports_Enum) of Boolean;
-      --  This array records whether a standard import is necessary
-
-      procedure Clear;
-      --  Reset the import information
-
-      procedure Set_SI (E : Entity_Id);
-      --  Depending on the entity, set a required import
-
-      function To_Module (E : Standard_Imports_Enum) return W_Module_Id;
-
-   end Standard_Imports;
-
-   package body Standard_Imports is
-
-      procedure Set_SI_Internal (E : Entity_Id);
-      --  Internal version of Set_SI doing all the work, with protection
-      --  against infinite recursion; is called by Set_SI
-
-      SI_Seen : Node_Sets.Set := Node_Sets.Empty_Set;
-      --  "Seen"-Set to infinite recursion of Set_SI_Internal
-
-      -----------
-      -- Clear --
-      -----------
-
-      procedure Clear is
-      begin
-         for I in Imports'Range loop
-            Imports (I) := False;
-         end loop;
-      end Clear;
-
-      ---------------------
-      -- Set_SI_Internal --
-      ---------------------
-
-      procedure Set_SI_Internal (E : Entity_Id) is
-      begin
-         if not (Nkind (E) in N_Entity) then
-            Set_SI_Internal (Etype (E));
-            return;
-         end if;
+   function Compute_Ada_Node_Set (S : Why_Node_Sets.Set) return Node_Sets.Set
+   is
+      Result : Node_Sets.Set := Node_Sets.Empty_Set;
+   begin
+      for M of S loop
          declare
-            UE : constant Entity_Id := E;  --  ??? remove indirection
+            N : constant Node_Id := Get_Ada_Node (M);
          begin
-            if SI_Seen.Contains (UE) then
-               return;
-            end if;
-            SI_Seen.Include (UE);
-            if Ekind (UE) in Object_Kind and then
-              not Entity_In_SPARK (UE)
-            then
-               return;
-            end if;
-            if Ekind (UE) in Type_Kind and then not Entity_In_SPARK (UE) then
-               return;
-            end if;
-
-            --  Only Standard.Boolean is modeled as bool; any other boolean
-            --  subtype is modeled as an abstract type to have range checks.
-
-            if Is_Standard_Boolean_Type (UE) then
-               Imports (SI_Boolean) := True;
-               Imports (SI_Integer) := True;
-            else
-               case Ekind (UE) is
-               when Discrete_Kind | Fixed_Point_Kind | E_Named_Integer =>
-                  Imports (SI_Integer) := True;
-
-               when Float_Kind | E_Named_Real =>
-                  Imports (SI_Float) := True;
-
-               when Array_Kind =>
-                  Imports (SI_Integer) := True;
-                  Set_SI_Internal (Component_Type (UE));
-                  case Number_Dimensions (UE) is
-                  when 1 =>
-                     Imports (SI_Array1) := True;
-                  when 2 =>
-                     Imports (SI_Array2) := True;
-                  when 3 =>
-                     Imports (SI_Array3) := True;
-                  when 4 =>
-                     Imports (SI_Array4) := True;
-                  when others =>
-                     raise Program_Error;
-                  end case;
-
-               when Private_Kind =>
-                  if not Fullview_Not_In_SPARK (UE) then
-                     Set_SI_Internal (MUT (UE));
-                  elsif Has_Discriminants (UE) then
-                     declare
-                        Field            : Node_Id :=
-                          First_Discriminant (UE);
-                     begin
-                        while Present (Field) loop
-                           if Ekind (Field) in Object_Kind then
-                              Set_SI_Internal (Etype (Field));
-                           end if;
-                           Next_Discriminant (Field);
-                        end loop;
-                     end;
-                  end if;
-               when E_Record_Type | E_Record_Subtype =>
-                  declare
-                     Field            : Node_Id :=
-                       First_Component_Or_Discriminant (UE);
-                  begin
-                     while Present (Field) loop
-                        if Ekind (Field) in Object_Kind then
-                           Set_SI_Internal (Etype (Field));
-                        end if;
-                        Next_Component_Or_Discriminant (Field);
-                     end loop;
-                  end;
-
-               when Object_Kind =>
-                  Set_SI_Internal (Etype (UE));
-
-               when Subprogram_Kind =>
-                  declare
-                     Formal : Node_Id :=
-                       First_Formal (UE);
-                  begin
-                     while Present (Formal) loop
-                        Set_SI_Internal (Etype (Formal));
-                        Next_Formal (Formal);
-                     end loop;
-                  end;
-
-               when E_Loop =>
-                  null;
-
-               when others =>
-                  raise Program_Error;
-               end case;
+            if Present (N) then
+               Result.Include (N);
             end if;
          end;
-      end Set_SI_Internal;
+      end loop;
+      return Result;
+   end Compute_Ada_Node_Set;
 
-      ------------
-      -- Set_SI --
-      ------------
+   ------------------------
+   -- Compute_Module_Set --
+   ------------------------
 
-      procedure Set_SI (E : Entity_Id) is
-      begin
-         Set_SI_Internal (E);
-         SI_Seen.Clear;
-      end Set_SI;
-
-      ---------------
-      -- To_String --
-      ---------------
-
-      function To_Module (E : Standard_Imports_Enum) return W_Module_Id is
-      begin
-         case E is
-            when SI_Integer => return Integer_Module;
-            when SI_Float   => return Floating_Module;
-            when SI_Boolean => return Boolean_Module;
-            when SI_Array1  => return Array_Modules (1);
-            when SI_Array2  => return Array_Modules (2);
-            when SI_Array3  => return Array_Modules (3);
-            when SI_Array4  => return Array_Modules (4);
-         end case;
-      end To_Module;
-
-   end Standard_Imports;
-
-   -------------------------
-   -- Compute_Ada_Nodeset --
-   -------------------------
-
-   function Compute_Ada_Nodeset (W : Why_Node_Id) return Node_Sets.Set is
-      use Node_Sets;
+   function Compute_Module_Set (W : Why_Node_Id) return Why_Node_Sets.Set is
+      use Why_Node_Sets;
 
       type Search_State is new Traversal_State with record
          S : Set;
       end record;
-
-      procedure Type_Pre_Op
-        (State : in out Search_State;
-         Node  : W_Type_Id);
 
       procedure Identifier_Pre_Op
         (State : in out Search_State;
@@ -295,79 +135,74 @@ package body Why.Inter is
         (State : in out Search_State;
          Node  : W_Name_Id);
 
+      procedure Relation_Pre_Op
+        (State : in out Search_State;
+         Node  : W_Relation_Id);
+
+      procedure Unary_Op_Pre_Op
+        (State : in out Search_State;
+         Node  : W_Unary_Op_Id);
+
+      procedure Binary_Op_Pre_Op
+        (State : in out Search_State;
+         Node  : W_Binary_Op_Id);
+
       procedure Integer_Constant_Pre_Op
         (State : in out Search_State;
          Node  : W_Integer_Constant_Id);
-      --  Integer constants may require the use of integer infix + or -
-
-      procedure Literal_Pre_Op
-        (State : in out Search_State;
-         Node  : W_Literal_Id);
 
       procedure Real_Constant_Pre_Op
         (State : in out Search_State;
          Node  : W_Real_Constant_Id);
-      --  Real constants may require the use of real infix + or -
 
-      procedure Analyze_Ada_Node (S : in out Set; A : Node_Id);
-      --  Include if necessary node A or a node derived from A to the set S
-
-      ----------------------
-      -- Analyze_Ada_Node --
-      ----------------------
-
-      procedure Analyze_Ada_Node (S : in out Set; A : Node_Id) is
-         N : Node_Id := Empty;
-      begin
-         if Present (A) then
-            case Nkind (A) is
-               when N_Identifier    |
-                    N_Expanded_Name =>
-                  N := Entity (A);
-               when N_Has_Theory |
-                    N_Entity     =>
-
-                  --  Modules are only created for array aggregates
-
-                  if Nkind (A) /= N_Aggregate
-                    or else Is_Array_Type (Etype (A))
-                  then
-                     N := A;
-                  end if;
-               when N_Object_Declaration =>
-                  N := Defining_Identifier (A);
-               when others =>
-                  null;
-            end case;
-
-            --  We should never depend on discriminants, we add a reference to
-            --  the record instead.
-
-            if Nkind (N) = N_Defining_Identifier
-              and then Ekind (N) = E_Discriminant
-            then
-               N := Scope (N);
-            end if;
-
-            if Present (N) then
-               S.Include (N);
-            end if;
-         end if;
-      end Analyze_Ada_Node;
-
-      -----------------
-      -- Type_Pre_Op --
-      -----------------
-
-      procedure Type_Pre_Op
+      procedure Fixed_Constant_Pre_Op
         (State : in out Search_State;
-         Node  : W_Type_Id)
-      is
+         Node  : W_Fixed_Constant_Id);
+
+      procedure Handle_Op (S : in out Set; Op : EW_Type);
+      --  add needed modules for basic scalar (unary and binary +,- etc) to the
+      --  state
+
+      ----------------------
+      -- Binary_Op_Pre_Op --
+      ----------------------
+
+      procedure Binary_Op_Pre_Op
+        (State : in out Search_State;
+         Node  : W_Binary_Op_Id) is
       begin
-         if Get_Base_Type (+Node) = EW_Abstract then
-            Analyze_Ada_Node (State.S, Get_Ada_Node (+Node));
-         end if;
-      end Type_Pre_Op;
+         Handle_Op (State.S, Get_Op_Type (Node));
+      end Binary_Op_Pre_Op;
+
+      ---------------------------
+      -- Fixed_Constant_Pre_Op --
+      ---------------------------
+
+      procedure Fixed_Constant_Pre_Op
+        (State : in out Search_State;
+         Node  : W_Fixed_Constant_Id) is
+         pragma Unreferenced (Node);
+      begin
+         State.S.Include (+Int_Module);
+      end Fixed_Constant_Pre_Op;
+
+      ---------------
+      -- Handle_Op --
+      ---------------
+
+      procedure Handle_Op (S : in out Set; Op : EW_Type) is
+      begin
+         case Op is
+            when EW_Int | EW_Fixed =>
+               S.Include (+Integer_Module);
+               S.Include (+Int_Module);
+            when EW_Real =>
+               S.Include (+Floating_Module);
+               S.Include (+RealInfix);
+            when others =>
+               null;
+         end case;
+      end Handle_Op;
 
       -----------------------
       -- Identifier_Pre_Op --
@@ -377,8 +212,11 @@ package body Why.Inter is
         (State : in out Search_State;
          Node  : W_Identifier_Id)
       is
+         Module : constant W_Module_Id := Get_Module (Node);
       begin
-         Analyze_Ada_Node (State.S, Get_Ada_Node (+Node));
+         if Module /= Why_Empty then
+            State.S.Include (+Module);
+         end if;
       end Identifier_Pre_Op;
 
       -----------------------------
@@ -387,52 +225,60 @@ package body Why.Inter is
 
       procedure Integer_Constant_Pre_Op
         (State : in out Search_State;
-         Node  : W_Integer_Constant_Id)
-      is
-         N : constant Node_Id := Get_Ada_Node (+Node);
+         Node  : W_Integer_Constant_Id) is
+         pragma Unreferenced (Node);
       begin
-         if Present (N)
-           and then Nkind (N) in N_Has_Etype
-         then
-            Analyze_Ada_Node (State.S, Etype (N));
-         end if;
+         State.S.Include (+Int_Module);
       end Integer_Constant_Pre_Op;
 
-      --------------------
-      -- Literal_Pre_Op --
-      --------------------
-
-      procedure Literal_Pre_Op
-        (State : in out Search_State;
-         Node  : W_Literal_Id)
-      is
-      begin
-         Analyze_Ada_Node (State.S, Get_Ada_Node (+Node));
-      end Literal_Pre_Op;
+      -----------------
+      -- Name_Pre_Op --
+      -----------------
 
       procedure Name_Pre_Op
         (State : in out Search_State;
          Node  : W_Name_Id)
       is
+         Module : constant W_Module_Id := Get_Module (Node);
       begin
-         Analyze_Ada_Node (State.S, Get_Ada_Node (+Node));
+         if Module /= Why_Empty then
+            State.S.Include (+Module);
+         end if;
       end Name_Pre_Op;
+
       --------------------------
       -- Real_Constant_Pre_Op --
       --------------------------
 
       procedure Real_Constant_Pre_Op
         (State : in out Search_State;
-         Node  : W_Real_Constant_Id)
-      is
-         N : constant Node_Id := Get_Ada_Node (+Node);
+         Node  : W_Real_Constant_Id) is
+         pragma Unreferenced (Node);
       begin
-         if Present (N)
-           and then Nkind (N) in N_Has_Etype
-         then
-            Analyze_Ada_Node (State.S, Etype (N));
-         end if;
+         State.S.Include (+RealInfix);
       end Real_Constant_Pre_Op;
+
+      ---------------------
+      -- Relation_Pre_Op --
+      ---------------------
+
+      procedure Relation_Pre_Op
+        (State : in out Search_State;
+         Node  : W_Relation_Id) is
+      begin
+         Handle_Op (State.S, Get_Op_Type (Node));
+      end Relation_Pre_Op;
+
+      ---------------------
+      -- Unary_Op_Pre_Op --
+      ---------------------
+
+      procedure Unary_Op_Pre_Op
+        (State : in out Search_State;
+         Node  : W_Unary_Op_Id) is
+      begin
+         Handle_Op (State.S, Get_Op_Type (Node));
+      end Unary_Op_Pre_Op;
 
       SS : Search_State := (Control => Continue, S => Empty_Set);
 
@@ -441,7 +287,7 @@ package body Why.Inter is
    begin
       Traverse (SS, +W);
       return SS.S;
-   end Compute_Ada_Nodeset;
+   end Compute_Module_Set;
 
    ------------------------
    -- Add_Effect_Imports --
@@ -529,12 +375,19 @@ package body Why.Inter is
                               Module   : W_Module_Id;
                               Use_Kind : EW_Clone_Type;
                               Th_Type  : EW_Theory_Type := EW_Module) is
+      Use_Kind2 : EW_Clone_Type := Use_Kind;
    begin
+      if Module = Int_Module
+        or else Module = RealInfix
+        or else Module = Main_Module
+      then
+         Use_Kind2 := EW_Import;
+      end if;
       Theory_Declaration_Append_To_Includes
         (T,
          New_Include_Declaration
            (Module   => Module,
-            Use_Kind => Use_Kind,
+            Use_Kind => Use_Kind2,
             Kind     => Th_Type));
    end Add_With_Clause;
 
@@ -609,8 +462,8 @@ package body Why.Inter is
       Kind           : Theory_Kind;
       Defined_Entity : Entity_Id := Empty)
    is
-      use Node_Sets;
-      S : Set := Compute_Ada_Nodeset (+P.Cur_Theory);
+      use Why_Node_Sets;
+      S : constant Set := Compute_Module_Set (+P.Cur_Theory);
 
       function Is_Relevant_Node_For_Imports
         (N             : Node_Id;
@@ -618,14 +471,12 @@ package body Why.Inter is
       --  Returns True if N is relevant for theory imports. Filter_Entity is a
       --  node that should not be considered in these imports.
 
-      procedure Add_Definition_Imports (Filter_Entity : Node_Id := Empty);
+      procedure Add_Definition_Imports
+        (Filter_Module : W_Module_Id := Why_Empty);
       --  Adds imports for the definitions of symbols in S
 
-      procedure Add_Axiom_Imports;
+      procedure Add_Axiom_Imports (S : Node_Sets.Set);
       --  Adds imports for the axioms of symbols in S
-
-      procedure Add_Standard_Imports;
-      --  Adds imports for the standard Why library
 
       procedure Record_Dependencies (Defined_Entity : Entity_Id);
       --  Records the dependencies between Defined_Entity and the nodes in S
@@ -634,12 +485,15 @@ package body Why.Inter is
       -- Add_Axiom_Imports --
       -----------------------
 
-      procedure Add_Axiom_Imports is
+      procedure Add_Axiom_Imports (S : Node_Sets.Set) is
       begin
          for N of S loop
-            if Is_Relevant_Node_For_Imports (N) then
-               Standard_Imports.Set_SI (N);
-               Add_Use_For_Entity (P, N, With_Completion => True);
+            if not (Nkind (N) in N_Entity)
+              or else not Entity_In_External_Axioms (N)
+            then
+               Add_With_Clause (P,
+                                E_Axiom_Module (N),
+                                EW_Clone_Default);
             end if;
          end loop;
       end Add_Axiom_Imports;
@@ -648,50 +502,15 @@ package body Why.Inter is
       -- Add_Definition_Imports --
       ----------------------------
 
-      procedure Add_Definition_Imports (Filter_Entity : Node_Id := Empty) is
+      procedure Add_Definition_Imports
+        (Filter_Module : W_Module_Id := Why_Empty) is
       begin
-         for N of S loop
-            if Is_Relevant_Node_For_Imports (N, Filter_Entity) then
-               Standard_Imports.Set_SI (N);
-               Add_Use_For_Entity (P, N, With_Completion => False);
+         for M of S loop
+            if +M /= Filter_Module then
+               Add_With_Clause (P, W_Module_Id (M), EW_Clone_Default);
             end if;
          end loop;
       end Add_Definition_Imports;
-
-      --------------------------
-      -- Add_Standard_Imports --
-      --------------------------
-
-      procedure Add_Standard_Imports is
-         --  We add the dependencies to Gnatprove_Standard theories that may
-         --  have been triggered
-         use Standard_Imports;
-      begin
-         for Index in Imports'Range loop
-            if Imports (Index) then
-               Add_With_Clause
-                 (P,
-                  To_Module (Index),
-                  EW_Clone_Default);
-
-               --  Two special cases for infix symbols; these are the only
-               --  theories (as opposed to modules) that are used, and the
-               --  only ones to be "use import"ed
-
-               if Index = SI_Integer then
-                  Add_With_Clause (P.Cur_Theory,
-                                   Int_Module,
-                                   EW_Import,
-                                   EW_Theory);
-               elsif Index = SI_Float then
-                  Add_With_Clause (P.Cur_Theory,
-                                   RealInfix,
-                                   EW_Import,
-                                   EW_Theory);
-               end if;
-            end if;
-         end loop;
-      end Add_Standard_Imports;
 
       ----------------------------------
       -- Is_Relevant_Node_For_Imports --
@@ -724,9 +543,11 @@ package body Why.Inter is
 
       procedure Record_Dependencies (Defined_Entity : Entity_Id) is
       begin
-         for N of S loop
-            if Is_Relevant_Node_For_Imports (N) then
-               Add_To_Graph (Entity_Dependencies, Defined_Entity, N);
+         for M of S loop
+            if Is_Relevant_Node_For_Imports (Get_Ada_Node (M)) then
+               Add_To_Graph (Entity_Dependencies,
+                             Defined_Entity,
+                             Get_Ada_Node (M));
             end if;
          end loop;
       end Record_Dependencies;
@@ -734,7 +555,6 @@ package body Why.Inter is
    --  Start of Close_Theory
 
    begin
-      Standard_Imports.Clear;
       Add_With_Clause (P, Main_Module, EW_Import);
 
       case Kind is
@@ -755,11 +575,10 @@ package body Why.Inter is
 
          when Definition_Theory =>
             if Present (Defined_Entity) then
-               Standard_Imports.Set_SI (Defined_Entity);
                Record_Dependencies (Defined_Entity);
             end if;
-            Add_Definition_Imports (Filter_Entity => Defined_Entity);
-            Add_Standard_Imports;
+            Add_Definition_Imports
+              (Filter_Module => E_Module (Defined_Entity));
 
          --  case 3: a theory giving axioms for Defined_Entity
 
@@ -775,7 +594,6 @@ package body Why.Inter is
             pragma Assert (Present (Defined_Entity));
             Record_Dependencies (Defined_Entity);
             Add_Definition_Imports;
-            Add_Standard_Imports;
 
          --  case 4: a theory for generating VCs
 
@@ -784,9 +602,13 @@ package body Why.Inter is
          --  axioms. Add standard imports.
 
          when VC_Generation_Theory =>
-            S.Union (Get_Graph_Closure (Entity_Dependencies, S));
-            Add_Axiom_Imports;
-            Add_Standard_Imports;
+            Add_Definition_Imports;
+            declare
+               NS : Node_Sets.Set := Compute_Ada_Node_Set (S);
+            begin
+               NS.Union (Get_Graph_Closure (Entity_Dependencies, NS));
+               Add_Axiom_Imports (NS);
+            end;
       end case;
 
       File_Append_To_Theories (P.File, +P.Cur_Theory);
