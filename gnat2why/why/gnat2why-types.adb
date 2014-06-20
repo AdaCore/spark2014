@@ -157,12 +157,11 @@ package body Gnat2Why.Types is
      (File       : in out Why_Section;
       E          : Entity_Id)
    is
-      Name : constant String := Full_Name (E) & Axiom_Theory_Suffix;
       Eq   : Entity_Id := Has_User_Defined_Eq (E);
       Ty   : constant W_Type_Id := EW_Abstract (E);
    begin
       Open_Theory
-        (File, Name,
+        (File, E_Axiom_Module (E),
          Comment =>
            "Module giving axioms for the type entity "
          & """" & Get_Name_String (Chars (E)) & """"
@@ -298,8 +297,6 @@ package body Gnat2Why.Types is
          end case;
       end Translate_Underlying_Type;
 
-      Name : constant String := Full_Name (E);
-
       --  Start of Translate_Type
 
    begin
@@ -311,7 +308,7 @@ package body Gnat2Why.Types is
          New_Theory := True;
 
          Open_Theory
-           (File, Name,
+           (File, E_Module (E),
             Comment =>
               "Module for axiomatizing type "
             & """" & Get_Name_String (Chars (E)) & """"

@@ -852,8 +852,13 @@ package body Gnat2Why.External_Axioms is
                --  theory of the actual. Necessary for conversion functions.
 
                Open_Theory
-                 (TFile, Capitalize_First (Instance_Name) & "__"
-                  & Short_Name (Formal),
+                 (TFile,
+                  Module =>
+                    New_Module
+                      (Name =>
+                           NID (Capitalize_First (Instance_Name) & "__"
+                         & Short_Name (Formal)),
+                       File => No_Name),
                   Comment =>
                     "Module for declaring a why type for the formal "
                   & """" & Get_Name_String (Chars (Formal)) & """"
@@ -932,8 +937,12 @@ package body Gnat2Why.External_Axioms is
                --      (<ty_formal1__to__ty_actual1> (x1)) ...)
 
                Open_Theory
-                 (TFile, Capitalize_First (Instance_Name) & "__"
-                  & Get_Name_String (Chars (Formal)),
+                 (TFile,
+                  New_Module
+                    (File => No_Name,
+                     Name =>
+                       NID (Capitalize_First (Instance_Name) & "__"
+                         & Get_Name_String (Chars (Formal)))),
                   Comment =>
                     "Module for declaring a logic function for the formal "
                   & """" & Get_Name_String (Chars (Formal)) & """"
@@ -1051,8 +1060,11 @@ package body Gnat2Why.External_Axioms is
                --      (<ty_formal2__to__ty_actual2> (x2)))
 
                Open_Theory
-                 (TFile, Capitalize_First (Instance_Name) & "__"
-                  & Get_Name_String (Chars (Formal)),
+                 (TFile,
+                  New_Module
+                    (Name => NID (Capitalize_First (Instance_Name) & "__"
+                     & Get_Name_String (Chars (Formal))),
+                     File => No_Name),
                   Comment =>
                     "Module for declaring a logic function for the formal "
                   & """" & Get_Name_String (Chars (Formal)) & """"

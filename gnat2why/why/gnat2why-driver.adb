@@ -59,7 +59,7 @@ with SPARK_Frame_Conditions;   use SPARK_Frame_Conditions;
 with SPARK_Util;               use SPARK_Util;
 
 with Why;                      use Why;
-with Why.Atree.Modules;
+with Why.Atree.Modules;        use Why.Atree.Modules;
 with Why.Atree.Sprint;         use Why.Atree.Sprint;
 with Why.Gen.Names;            use Why.Gen.Names;
 with Why.Inter;                use Why.Inter;
@@ -512,12 +512,10 @@ package body Gnat2Why.Driver is
 
       procedure Generate_Empty_Axiom_Theory
         (File : in out Why_Section;
-         E    : Entity_Id)
-      is
-         Name : constant String := Full_Name (E) & Axiom_Theory_Suffix;
+         E    : Entity_Id) is
       begin
          Open_Theory
-           (File, Name,
+           (File, E_Axiom_Module (E),
             Comment =>
               "Module giving an empty axiom for the entity "
                 & """" & Get_Name_String (Chars (E)) & """"

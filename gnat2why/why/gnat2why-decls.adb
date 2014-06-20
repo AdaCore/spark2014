@@ -107,7 +107,6 @@ package body Gnat2Why.Decls is
      (File : in out Why_Section;
       E    : Entity_Id)
    is
-      Name     : constant String := Full_Name (E);
       Typ      : constant W_Type_Id := EW_Private_Type;
       Why_Name : constant W_Identifier_Id := To_Why_Id (E => E, Typ => Typ);
       Decl     : constant W_Declaration_Id :=
@@ -117,7 +116,7 @@ package body Gnat2Why.Decls is
       Var      : constant Item_Type := Mk_Item_Of_Entity (E, Why_Name);
 
    begin
-      Open_Theory (File, Name,
+      Open_Theory (File, E_Module (E),
                    Comment =>
                      "Module for defining a ref holding the value "
                        & "of abstract state "
@@ -157,8 +156,6 @@ package body Gnat2Why.Decls is
      (File : in out Why_Section;
       E    : Entity_Id)
    is
-      Base_Name : constant String := Full_Name (E);
-      Name      : constant String := Base_Name;
       Typ       : constant W_Type_Id := EW_Abstract (Etype (E));
 
    begin
@@ -166,7 +163,7 @@ package body Gnat2Why.Decls is
       --  function for the logic term needs the current theory to insert an
       --  include declaration.
 
-      Open_Theory (File, Name,
+      Open_Theory (File, E_Module (E),
                    Comment =>
                      "Module for defining the constant "
                        & """" & Get_Name_String (Chars (E)) & """"
@@ -198,8 +195,6 @@ package body Gnat2Why.Decls is
      (File : in out Why_Section;
       E    : Entity_Id)
    is
-      Base_Name : constant String := Full_Name (E);
-      Name      : constant String := Base_Name & Axiom_Theory_Suffix;
       Typ    : constant W_Type_Id := EW_Abstract (Etype (E));
       Decl   : constant Node_Id := Parent (E);
       Def    : W_Term_Id;
@@ -226,7 +221,7 @@ package body Gnat2Why.Decls is
       --  function for the logic term needs the current theory to insert an
       --  include declaration.
 
-      Open_Theory (File, Name,
+      Open_Theory (File, E_Axiom_Module (E),
                    Comment =>
                      "Module for defining the value of constant "
                        & """" & Get_Name_String (Chars (E)) & """"
@@ -317,7 +312,10 @@ package body Gnat2Why.Decls is
       File : Why_Section := Why_Sections (WF_Variables);
    begin
       Open_Theory
-        (File, Capitalize_First (E.all),
+        (File,
+         Module =>
+           New_Module (Name => NID (Capitalize_First (E.all)),
+                       File => No_Name),
          Comment =>
            "Module declaring the external object """ & E.all &
            ","" created in " & GNAT.Source_Info.Enclosing_Entity);
@@ -347,9 +345,8 @@ package body Gnat2Why.Decls is
      (File : in out Why_Section;
       E    : Entity_Id)
    is
-      Name : constant String := Full_Name (E);
    begin
-      Open_Theory (File, Name,
+      Open_Theory (File, E_Module (E),
                    Comment =>
                      "Module for defining the loop exit exception for the loop"
                    & """" & Get_Name_String (Chars (E)) & """"
@@ -375,8 +372,6 @@ package body Gnat2Why.Decls is
      (File : in out Why_Section;
       E     : Entity_Id)
    is
-      Name : constant String := Full_Name (E);
-
       --  We first build the type that we use in Why; this may be e.g. String
 
       Use_Ty : constant Entity_Id :=
@@ -405,7 +400,7 @@ package body Gnat2Why.Decls is
    --  Start of Translate_Variable
 
    begin
-      Open_Theory (File, Name,
+      Open_Theory (File, E_Module (E),
                    Comment =>
                      "Module for defining a ref holding the value of variable "
                        & """" & Get_Name_String (Chars (E)) & """"

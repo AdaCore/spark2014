@@ -71,9 +71,8 @@ package Why.Inter is
    --  Remove the current theory from P
 
    procedure Open_Theory (P       : in out Why_Section;
-                          Name    : String;
-                          Comment : String;
-                          Kind    : EW_Theory_Type := EW_Module)
+                          Module  : W_Module_Id;
+                          Comment : String)
      with Pre => (P.Cur_Theory = Why_Empty);
    --  Open a new theory in the file.
 

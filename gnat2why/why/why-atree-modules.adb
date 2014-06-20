@@ -34,6 +34,8 @@ with Gnat2Why.Nodes;     use Gnat2Why.Nodes;
 package body Why.Atree.Modules is
 
    Entity_Modules : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Axiom_Modules  : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+
    --------------
    -- E_Module --
    --------------
@@ -56,6 +58,32 @@ package body Why.Atree.Modules is
          return Why_Empty;
       end if;
    end E_Module;
+
+   --------------------
+   -- E_Axiom_Module --
+   --------------------
+
+   function E_Axiom_Module (E : Entity_Id) return W_Module_Id is
+      use Ada_To_Why;
+      C : constant Cursor := Axiom_Modules.Find (E);
+   begin
+      if Has_Element (C) then
+         return W_Module_Id (Element (C));
+      elsif Nkind (E) in N_Entity then
+         declare
+            M : constant W_Module_Id :=
+              New_Module
+                (File => No_Name,
+                 Name => NID (Full_Name (E) & "__axiom"));
+         begin
+            Axiom_Modules.Insert (E, Why_Node_Id (M));
+            return M;
+         end;
+      else
+         return Why_Empty;
+      end if;
+
+   end E_Axiom_Module;
 
    ----------------
    -- Initialize --

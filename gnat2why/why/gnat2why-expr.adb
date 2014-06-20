@@ -3653,7 +3653,7 @@ package body Gnat2Why.Expr is
             Decl_File.Cur_Theory := Why_Empty;
          end if;
          Open_Theory
-           (Decl_File, Name,
+           (Decl_File, E_Module (Expr),
             Comment =>
               "Module for defining the value of the "
                 & (if In_Attribute_Update
@@ -8763,7 +8763,11 @@ package body Gnat2Why.Expr is
          Decl_File.Cur_Theory := Why_Empty;
       end if;
 
-      Open_Theory (Decl_File, Name,
+      Insert_Extra_Module
+        (N,
+         New_Module (File => No_Name, Name => NID (Name)));
+
+      Open_Theory (Decl_File, E_Module (N),
                    Comment =>
                      "Module for defining a value for string literal "
                        & (if Sloc (N) > 0 then
@@ -8785,9 +8789,6 @@ package body Gnat2Why.Expr is
       if Params.File = Decl_File.File then
          Decl_File.Cur_Theory := Params.Theory;
       end if;
-
-      Insert_Extra_Module (N,
-                           New_Module (File => No_Name, Name => NID (Name)));
    end Transform_String_Literal;
 
    -------------------------------

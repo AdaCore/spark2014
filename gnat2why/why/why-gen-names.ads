@@ -149,9 +149,6 @@ package Why.Gen.Names is
    Post_Axiom : constant String := "post_axiom";
    --  suffix for a postcondition axiom
 
-   Axiom_Theory_Suffix : constant String := "__axiom";
-   --  suffix for the name of the theory defining the axiom for an entity
-
    Keep_On_Simp : constant String := "keep_on_simp";
 
    type Why_Name_Enum is

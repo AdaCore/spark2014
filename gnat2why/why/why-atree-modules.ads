@@ -135,6 +135,8 @@ package Why.Atree.Modules is
    --  with a node which is not an entity, and no module is known for this
    --  entity.
 
+   function E_Axiom_Module (E : Entity_Id) return W_Module_Id;
+
    procedure Insert_Extra_Module (N : Node_Id; M : W_Module_Id);
    --  After a call to this procedure, E_Module (N) will return M.
 

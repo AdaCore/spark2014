@@ -513,19 +513,11 @@ package body Why.Inter is
 
       Add_With_Clause (P, Module, Use_Kind);
 
-      if With_Completion then
-         if Nkind (N) in N_Entity
-           and then not Entity_In_External_Axioms (N)
-         then
-            Add_With_Clause
-              (P,
-               New_Module
-                 (File => No_Name,
-                  Name =>
-                    NID (Get_Name_String (Get_Name (Module))
-                      & Axiom_Theory_Suffix)),
-               Use_Kind);
-         end if;
+      if With_Completion
+        and then Nkind (N) in N_Entity
+        and then not Entity_In_External_Axioms (N)
+      then
+         Add_With_Clause (P, E_Axiom_Module (N), Use_Kind);
       end if;
    end Add_Use_For_Entity;
 
@@ -1249,15 +1241,15 @@ package body Why.Inter is
    -----------------
 
    procedure Open_Theory (P       : in out Why_Section;
-                          Name    : String;
-                          Comment : String;
-                          Kind    : EW_Theory_Type := EW_Module)
+                          Module  : W_Module_Id;
+                          Comment : String)
    is
-      S : constant String := Capitalize_First (Name);
+      S : constant String :=
+        Capitalize_First (Get_Name_String (Get_Name (Module)));
    begin
       P.Cur_Theory :=
         New_Theory_Declaration (Name    => NID (S),
-                                Kind    => Kind,
+                                Kind    => EW_Module,
                                 Comment => NID (Comment));
    end Open_Theory;
 
@@ -1322,12 +1314,7 @@ package body Why.Inter is
            New_Identifier
              (Ada_Node => E,
               Name     => Suffix,
-              Module   =>
-               New_Module
-                  (File => No_Name,
-                   Name =>
-                     NID (Get_Name_String (Get_Name (E_Module (E)))
-                       & Axiom_Theory_Suffix)),
+              Module   => E_Axiom_Module (E),
               Typ      => Typ);
       else
          return

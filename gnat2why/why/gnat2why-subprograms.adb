@@ -1252,7 +1252,10 @@ package body Gnat2Why.Subprograms is
    begin
       --  We open a new theory, so that the context is fresh for that package
 
-      Open_Theory (File, Name & "__package_def",
+      Open_Theory (File,
+                   New_Module
+                     (Name => NID (Name & "__package_def"),
+                      File => No_Name),
                    Comment =>
                      "Module for checking absence of run-time errors and "
                        & "package initial condition on package elaboration of "
@@ -1376,7 +1379,10 @@ package body Gnat2Why.Subprograms is
       Result_Var : W_Prog_Id;
 
    begin
-      Open_Theory (File, Name & "__subprogram_def",
+      Open_Theory (File,
+                   New_Module
+                     (Name => NID (Name & "__subprogram_def"),
+                      File => No_Name),
                    Comment =>
                      "Module for checking contracts and absence of "
                        & "run-time errors in subprogram "
@@ -1829,12 +1835,9 @@ package body Gnat2Why.Subprograms is
 
    procedure Generate_Subprogram_Completion
      (File : in out Why_Section;
-      E    : Entity_Id)
-   is
-      Base_Name : constant String := Full_Name (E);
-      Name      : constant String := Base_Name & Axiom_Theory_Suffix;
+      E    : Entity_Id) is
    begin
-      Open_Theory (File, Name,
+      Open_Theory (File, E_Axiom_Module (E),
                    Comment =>
                      "Module for declaring a program function (and possibly "
                        & "an axiom) for "
@@ -1996,13 +1999,10 @@ package body Gnat2Why.Subprograms is
       Logic_Id           : constant W_Identifier_Id :=
                              To_Why_Id (E, Domain => EW_Term, Local => False);
 
-      Base_Name : constant String := Full_Name (E);
-      Name      : constant String := Base_Name & Axiom_Theory_Suffix;
-
       Params : Transformation_Params;
    begin
 
-      Open_Theory (File, Name,
+      Open_Theory (File, E_Axiom_Module (E),
                    Comment =>
                      "Module giving a program function and a defining axiom "
                        & "for the expression function "
@@ -2136,7 +2136,6 @@ package body Gnat2Why.Subprograms is
      (File : in out Why_Section;
       E    : Entity_Id)
    is
-      Name         : constant String := Full_Name (E);
       Logic_Func_Binders : constant Item_Array := Compute_Binders (E, EW_Term);
       Why_Type     : W_Type_Id := Why_Empty;
       Effects      : W_Effects_Id;
@@ -2144,7 +2143,7 @@ package body Gnat2Why.Subprograms is
 
       pragma Unreferenced (Effects);
 
-      Open_Theory (File, Name,
+      Open_Theory (File, E_Module (E),
                    Comment =>
                      "Module for possibly declaring "
                        & "a logic function for "
