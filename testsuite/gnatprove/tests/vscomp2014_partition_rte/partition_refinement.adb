@@ -40,8 +40,7 @@ is
                    Element (P, J).Count = Element (P'Old, J).Count + (if J = F(Element (D'Old, X_Elem)) then 1 else 0)) and then
                 (for all J in Index => Contains (D, A(J))) and then
                 (for all C in D => A (Element (D, C)) = Key (D, C)) and then
-                (for all C in D'Old => Has_Element (D, C));
-
+                (for all C in D'Old => Has_Element (D, C) and then Key (D'Old, C) = Key (D, C));
 
    procedure Make_New_Partitions
      (P : in out Partition;
@@ -174,8 +173,8 @@ is
    begin
       while Has_Element (X, C) loop
 
-         pragma Assert (for all C in D_Old => Has_Element (D, C));
-         pragma Assert (Has_Element (D, (Find (D_Old, Element (X, C)))));
+--         pragma Assert (for all C in D_Old => Has_Element (D, C));
+--         pragma Assert (Has_Element (D, (Find (D_Old, Element (X, C)))));
          --  This assumption is a logical consequence of the two assertion above, that SPARK GPL 2014 does not prove.
          pragma Assume (Contains (D, Element (X, C)));
          Refine_One (A, D, P, F, Element (X, C));
@@ -184,8 +183,9 @@ is
          pragma Loop_Invariant (Capacity (P) = Capacity (P)'Loop_Entry);
          pragma Loop_Invariant (Length (P) = Length (P)'Loop_Entry);
          pragma Loop_Invariant (for all C in D => A (Element (D, C)) = Key (D, C));
-         pragma Loop_Invariant (for all C in D_Old => Has_Element (D, C));
-         pragma Loop_Invariant (for all C in X => Has_Element (D, (Find (D_Old, Element (X, C)))));
+--         pragma Loop_Invariant (for all C in D_Old => Has_Element (D, C));
+--         pragma Loop_Invariant (for all C in X => Has_Element (D, (Find (D_Old, Element (X, C)))));
+         pragma Loop_Invariant (for all C in X => Contains (D, Element (X, C)));
          pragma Loop_Invariant (for all J in Index => Contains (D, A(J)));
 
          --  Uncomment loop variant to prove termination. It is commented because its presence causes GNATprove to fail to prove the loop invariant. But as the loop invariant is proved otherwise, we know it holds, thus the loop variant and invariant are both proved.
