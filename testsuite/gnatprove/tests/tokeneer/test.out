@@ -55,6 +55,8 @@ auditlog.adb:244:43: warning: length check might fail, in call inlined at auditl
 auditlog.adb:244:43: warning: length check might fail, in call inlined at auditlog.adb:1660
 auditlog.adb:246:23: info: length check proved, in call inlined at auditlog.adb:1570
 auditlog.adb:246:23: info: length check proved, in call inlined at auditlog.adb:1660
+auditlog.adb:246:23: warning: range check might fail, in call inlined at auditlog.adb:1570
+auditlog.adb:246:23: warning: range check might fail, in call inlined at auditlog.adb:1660
 auditlog.adb:499:22: info: precondition proved, in call inlined at auditlog.adb:1920
 auditlog.adb:499:22: warning: precondition might fail, in call inlined at auditlog.adb:1895
 auditlog.adb:502:21: warning: unused assignment to "Unused", in call inlined at auditlog.adb:1895
