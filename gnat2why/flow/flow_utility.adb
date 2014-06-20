@@ -1240,10 +1240,29 @@ package body Flow_Utility is
 
             when N_Attribute_Reference =>
                case Get_Attribute_Id (Attribute_Name (N)) is
+                  when Attribute_Constrained =>
+                     declare
+                        A, B, C, D : Flow_Id_Sets.Set;
+                     begin
+                        Untangle_Assignment_Target
+                          (N                    => Prefix (N),
+                           Scope                => Scope,
+                           Local_Constants      => Local_Constants,
+                           Vars_Explicitly_Used => A,
+                           Vars_Implicitly_Used => B,
+                           Vars_Defined         => C,
+                           Vars_Semi_Used       => D);
+                        VS.Union (A);
+                        if not Fold_Functions then
+                           VS.Union (D);
+                        end if;
+                     end;
+                     return Skip;
+
                   when Attribute_First |
-                    Attribute_Last |
-                    Attribute_Length |
-                    Attribute_Range =>
+                    Attribute_Last     |
+                    Attribute_Length   |
+                    Attribute_Range    =>
                      for F of Recurse_On (Prefix (N)) loop
                         if F.Kind in Direct_Mapping | Record_Field and then
                           F.Bound.Kind = No_Bound and then
