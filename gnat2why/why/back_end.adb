@@ -53,13 +53,23 @@ package body Back_End is
       pragma Unreferenced (Mode);
 
       use type Opt.Warning_Mode_Type;
+
    begin
+      --  Since the back end is called with all tables locked, first unlock any
+      --  tables that we need to change.
+
       Namet.Unlock;
       Stringt.Unlock;
       Elists.Unlock;
 
-      --  Frontend warnings were suppressed in this mode. Change that to the
-      --  expected warning mode for gnat2why.
+      --  gnat2why is run in two main modes:
+      --    Global_Gen_Mode = True for generating ALI files with effects.
+      --    Global_Gen_Mode = False for flow analysis and proof.
+
+      --  Frontend warnings are issued when running in the first mode, and
+      --  suppressed in the second mode to avoid issuing twice the same
+      --  warnings. Change that setting in the second mode to the expected
+      --  warning mode for flow analysis and proof.
 
       if not Gnat2Why_Args.Global_Gen_Mode then
          pragma Assert (Opt.Warning_Mode = Opt.Suppress);
