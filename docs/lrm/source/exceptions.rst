@@ -23,36 +23,19 @@ Raise Statements
 ----------------
 
 Raise statements are in |SPARK|, but must (as described below) be
-provably never executed.]
-
-.. centered:: **Legality Rules**
-
-.. _tu-raise_statements-01:
-
-1.  for a ``raise_statement`` to be in |SPARK|, it must be
-
-   * immediately enclosed by an if statement which encloses no other
-     statement; or
-
-   * be the last statement of a subprogram.
-
-.. _tu-raise_statements-02:
-
-2. A  ``raise_statement`` shall not have a *string_*\ ``expression``.
-
-.. _etu-raise_statements-lr:
+provably never executed.
 
 .. centered:: **Verification Rules**
 
-.. _tu-raise_statements-03:
+.. _tu-raise_statements-01:
 
-3. A ``raise_statement`` introduces an obligation to prove that the statement
+1. A ``raise_statement`` introduces an obligation to prove that the statement
    will not be executed, much like the verification condition associated with
 
        ``pragma Assert (False);``
 
    [In other words, the verification conditions introduced for a raise
-   statement are the same as those introduced for a runtime check
+   statement are the same as those introduced for a run-time check
    which fails unconditionally.]
 
 .. commented out since raise expression are not part of the language yet
@@ -105,4 +88,3 @@ Pragmas Assert and Assertion_Policy
    these assertions.
 
 .. _etu-pragmas-assert and assertion_policy:
-
