@@ -52,4 +52,27 @@ package Flow.Slice is
    --
    --  Complexity is O(N^2)
 
+   procedure Compute_Globals
+     (FA                : Flow_Analysis_Graphs;
+      Inputs_Proof      : out Node_Sets.Set;
+      Inputs            : out Node_Sets.Set;
+      Outputs           : out Node_Sets.Set;
+      Proof_Calls       : out Node_Sets.Set;
+      Definite_Calls    : out Node_Sets.Set;
+      Conditional_Calls : out Node_Sets.Set)
+   with Pre => (FA.Compute_Globals and then
+                  FA.Is_Generative and then
+                  not FA.GG.Aborted),
+        Post => (for all E of Definite_Calls =>
+                   not Conditional_Calls.Contains (E)) and then
+                (for all E of Proof_Calls =>
+                   not (Definite_Calls.Contains (E) or
+                          Conditional_Calls.Contains (E))) and then
+                (for all E of Inputs_Proof =>
+                   not (Inputs.Contains (E) or Outputs.Contains (E)));
+   --  Computes the set of globals (and procedure calls) of the given
+   --  subprogram.
+   --
+   --  Complexity is ???
+
 end Flow.Slice;

@@ -253,4 +253,24 @@ package body Flow.Slice is
 
    end Compute_Dependency_Relation;
 
+   procedure Compute_Globals
+     (FA                : Flow_Analysis_Graphs;
+      Inputs_Proof      : out Node_Sets.Set;
+      Inputs            : out Node_Sets.Set;
+      Outputs           : out Node_Sets.Set;
+      Proof_Calls       : out Node_Sets.Set;
+      Definite_Calls    : out Node_Sets.Set;
+      Conditional_Calls : out Node_Sets.Set)
+   is
+      --  !!! obviously stubbed, Pavlos please implement
+      pragma Unreferenced (FA);
+   begin
+      Inputs_Proof      := Node_Sets.Empty_Set;
+      Inputs            := Node_Sets.Empty_Set;
+      Outputs           := Node_Sets.Empty_Set;
+      Proof_Calls       := Node_Sets.Empty_Set;
+      Definite_Calls    := Node_Sets.Empty_Set;
+      Conditional_Calls := Node_Sets.Empty_Set; -- call me maybe :D
+   end Compute_Globals;
+
 end Flow.Slice;
