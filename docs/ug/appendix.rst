@@ -329,6 +329,15 @@ SPARK_Mode is Off unless the non-SPARK code is part of the "completion"
 (using that term imprecisely, because we are including the private
 part of a package as part of its "completion" here) of a SPARK declaration.
 
+Code where SPARK_Mode is Off shall not enclose code where Spark_Mode is On.
+However, if an instance of a generic unit is enclosed
+by code where SPARK_Mode is Off and if any SPARK_Mode specifications occur
+within the generic unit, then the corresponding SPARK_Mode specifications
+occurring with the instance have no semantic effect. [In particular,
+such an ignored SPARK_Mode specification could not violate the preceding
+"Off shall not enclose On" rule because the Spark_Mode of the
+entire instance is Off.]
+
 SPARK_Mode is an implementation-defined Ada aspect; it is not (strictly
 speaking) part of the |SPARK| language. It is used to notionally transform
 programs which would otherwise not be in |SPARK| so that they can
