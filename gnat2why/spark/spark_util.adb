@@ -1091,13 +1091,12 @@ package body SPARK_Util is
    ------------------------------
 
    function Innermost_Enclosing_Loop (N : Node_Id) return Node_Id is
-      Cur    : Node_Id := N;
-      Result : Node_Id := Empty;
+      Cur : Node_Id := N;
 
    begin
       while Present (Cur) loop
          if Nkind (Cur) = N_Loop_Statement then
-            Result := Cur;
+            return Cur;
 
          --  Prevent the search from going too far
 
@@ -1108,13 +1107,15 @@ package body SPARK_Util is
                               N_Subprogram_Body,
                               N_Task_Body)
          then
-            exit;
+            raise Program_Error;
          end if;
 
          Cur := Parent (Cur);
       end loop;
 
-      return Result;
+      --  Should not be reachable
+
+      raise Program_Error;
    end Innermost_Enclosing_Loop;
 
    ---------------------------------------------

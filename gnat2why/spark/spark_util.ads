@@ -326,7 +326,7 @@ package SPARK_Util is
    --  Returns whether N has the form pragma Check (Name, ...)
 
    function Innermost_Enclosing_Loop (N : Node_Id) return Node_Id;
-   --  Returns the innermost loop enclosing N, if any, and Empty otherwise
+   --  Returns the innermost loop enclosing N
 
    function Is_Toplevel_Entity (E : Entity_Id) return Boolean;
    --  Returns True if E is a toplevel entity, only enclosed in package specs

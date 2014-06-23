@@ -1,3 +1,6 @@
+p.adb:9:13: info: loop invariant preservation proved
+p.adb:9:36: warning: loop invariant might fail in first iteration, requires F'Loop_Entry = Saved
+p.ads:5:17: warning: unused initial value of "F"
 partition_refinement.adb:11:43: info: precondition proved
 partition_refinement.adb:11:43: info: range check proved
 partition_refinement.adb:12:20: info: precondition proved
@@ -6,11 +9,11 @@ partition_refinement.adb:14:21: warning: statement has no effect
 partition_refinement.adb:14:56: info: range check proved
 partition_refinement.adb:17:47: info: precondition proved
 partition_refinement.adb:17:47: warning: range check might fail
+partition_refinement.adb:21:16: info: loop invariant initialization proved
 partition_refinement.adb:21:16: info: loop invariant preservation proved
 partition_refinement.adb:21:47: info: range check proved
 partition_refinement.adb:21:88: info: index check proved
 partition_refinement.adb:22:47: info: range check proved
-partition_refinement.adb:22:90: warning: loop invariant might fail in first iteration, requires F(J) = F'Loop_Entry(J)
 partition_refinement.adb:22:92: info: index check proved
 partition_refinement.adb:22:110: info: index check proved
 partition_refinement.adb:23:47: info: range check proved

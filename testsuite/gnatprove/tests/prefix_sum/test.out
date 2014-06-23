@@ -182,8 +182,8 @@ prefixsum_general.adb:61:27: info: precondition proved
 prefixsum_general.adb:61:54: warning: range check might fail
 prefixsum_general.adb:61:63: warning: range check might fail
 prefixsum_general.adb:63:24: info: index check proved
-prefixsum_general.adb:63:35: warning: precondition might fail
-prefixsum_general.adb:63:58: warning: range check might fail
+prefixsum_general.adb:63:35: info: precondition proved
+prefixsum_general.adb:63:58: info: range check proved
 prefixsum_general.adb:63:68: info: range check proved
 prefixsum_general.adb:64:13: warning: loop variant might fail
 prefixsum_general.adb:66:31: warning: overflow check might fail
@@ -192,7 +192,7 @@ prefixsum_general.adb:67:29: info: index check proved
 prefixsum_general.adb:67:35: warning: overflow check might fail
 prefixsum_general.adb:67:40: info: index check proved
 prefixsum_general.adb:68:31: info: overflow check proved
-prefixsum_general.adb:68:31: warning: range check might fail
+prefixsum_general.adb:68:31: info: range check proved
 prefixsum_general.adb:68:39: info: overflow check proved
 prefixsum_general.adb:70:25: info: overflow check proved
 prefixsum_general.adb:70:25: info: range check proved
