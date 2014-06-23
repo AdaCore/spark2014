@@ -1439,17 +1439,23 @@ digraph G {
     7 [label="double_max'final\nVU: {Double_Max}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
     10 [label="temp'initial\nVD: {Temp}\n<VId: 10>",shape="plaintext",fontcolor="red"];
     11 [label="temp'final\nVU: {Temp}\n<VId: 11>",shape="plaintext"];
-    13 [label="call max\n<VId: 13>",shape="box"];
+    13 [label="call max\nSC: {Max}\n<VId: 13>",shape="box"];
     14 [label="maximum'in&nbsp;:=&nbsp;temp'discr_or_bounds\n<VId: 14>",shape="plaintext"];
     15 [label="temp&nbsp;:=&nbsp;maximum'out\nVD: {Temp}\n<VId: 15>",shape="plaintext"];
     16 [label="global&nbsp;X'in\nVU: {X}\n<VId: 16>",shape="plaintext"];
     17 [label="global&nbsp;Y'in\nVU: {Y}\n<VId: 17>",shape="plaintext"];
     18 [label="return 2 {*} temp;\nVU: {Temp}\nVD: {Double_Max}\n<VId: 18>"];
+    19 [label="x'initial\n(global)\nVD: {X}\n<VId: 19>",shape="plaintext"];
+    20 [label="x'final\n(global)\nVU: {X}\n<VId: 20>",shape="plaintext",fontcolor="blue"];
+    21 [label="y'initial\n(global)\nVD: {Y}\n<VId: 21>",shape="plaintext"];
+    22 [label="y'final\n(global)\nVU: {Y}\n<VId: 22>",shape="plaintext",fontcolor="blue"];
 
     1 ->  13 [arrowType="normal"];
     2 ->  3 [arrowType="normal"];
     3 ->  7 [arrowType="normal"];
     3 ->  11 [arrowType="normal"];
+    3 ->  20 [arrowType="normal"];
+    3 ->  22 [arrowType="normal"];
     6 ->  1 [arrowType="normal"];
     10 ->  1 [arrowType="normal"];
     13 ->  14 [arrowType="normal"];
@@ -1458,6 +1464,8 @@ digraph G {
     16 ->  17 [arrowType="normal"];
     17 ->  15 [arrowType="normal"];
     18 ->  2 [arrowType="normal"];
+    19 ->  1 [arrowType="normal"];
+    21 ->  1 [arrowType="normal"];
 }
 
 // gg_subprogram_double_max_pdg
@@ -1470,12 +1478,16 @@ digraph G {
     7 [label="double_max'final\nVU: {Double_Max}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
     10 [label="temp'initial\nVD: {Temp}\n<VId: 10>",shape="plaintext",fontcolor="red"];
     11 [label="temp'final\nVU: {Temp}\n<VId: 11>",shape="plaintext"];
-    13 [label="call max\n<VId: 13>",shape="box"];
+    13 [label="call max\nSC: {Max}\n<VId: 13>",shape="box"];
     14 [label="maximum'in&nbsp;:=&nbsp;temp'discr_or_bounds\n<VId: 14>",shape="plaintext"];
     15 [label="temp&nbsp;:=&nbsp;maximum'out\nVD: {Temp}\n<VId: 15>",shape="plaintext"];
     16 [label="global&nbsp;X'in\nVU: {X}\n<VId: 16>",shape="plaintext"];
     17 [label="global&nbsp;Y'in\nVU: {Y}\n<VId: 17>",shape="plaintext"];
     18 [label="return 2 {*} temp;\nVU: {Temp}\nVD: {Double_Max}\n<VId: 18>"];
+    19 [label="x'initial\n(global)\nVD: {X}\n<VId: 19>",shape="plaintext"];
+    20 [label="x'final\n(global)\nVU: {X}\n<VId: 20>",shape="plaintext",fontcolor="blue"];
+    21 [label="y'initial\n(global)\nVD: {Y}\n<VId: 21>",shape="plaintext"];
+    22 [label="y'final\n(global)\nVU: {Y}\n<VId: 22>",shape="plaintext",fontcolor="blue"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  13 [arrowType="normal"];
@@ -1489,6 +1501,10 @@ digraph G {
     16 ->  15 [arrowType="normal",color="cornflowerblue"];
     17 ->  15 [arrowType="normal",color="cornflowerblue"];
     18 ->  7 [arrowType="normal",color="red"];
+    19 ->  16 [arrowType="normal",color="red"];
+    19 ->  20 [arrowType="normal",color="red"];
+    21 ->  17 [arrowType="normal",color="red"];
+    21 ->  22 [arrowType="normal",color="red"];
 }
 
 // gg_subprogram_factorial_cfg
@@ -1503,7 +1519,7 @@ digraph G {
     8 [label="fact'initial\nVD: {Fact}\n<VId: 8>",shape="plaintext",fontcolor="red"];
     9 [label="fact'final\nVU: {Fact}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
     13 [label="if var > 1\nVU: {Var}\n<VId: 13>",shape="diamond"];
-    14 [label="call factorial\n<VId: 14>",shape="box"];
+    14 [label="call factorial\nSC: {Factorial}\n<VId: 14>",shape="box"];
     15 [label="var'in&nbsp;:=&nbsp;{var - 1}\nVU: {Var}\n<VId: 15>",shape="plaintext"];
     16 [label="fact'in&nbsp;:=&nbsp;fact'discr_or_bounds\n<VId: 16>",shape="plaintext"];
     17 [label="fact&nbsp;:=&nbsp;fact'out\nVD: {Fact}\n<VId: 17>",shape="plaintext"];
@@ -1537,7 +1553,7 @@ digraph G {
     8 [label="fact'initial\nVD: {Fact}\n<VId: 8>",shape="plaintext",fontcolor="red"];
     9 [label="fact'final\nVU: {Fact}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
     13 [label="if var > 1\nVU: {Var}\n<VId: 13>",shape="diamond"];
-    14 [label="call factorial\n<VId: 14>",shape="box"];
+    14 [label="call factorial\nSC: {Factorial}\n<VId: 14>",shape="box"];
     15 [label="var'in&nbsp;:=&nbsp;{var - 1}\nVU: {Var}\n<VId: 15>",shape="plaintext"];
     16 [label="fact'in&nbsp;:=&nbsp;fact'discr_or_bounds\n<VId: 16>",shape="plaintext"];
     17 [label="fact&nbsp;:=&nbsp;fact'out\nVD: {Fact}\n<VId: 17>",shape="plaintext"];
@@ -1748,19 +1764,28 @@ digraph G {
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    9 [label="call swap\n<VId: 9>",shape="box"];
+    9 [label="call swap\nSC: {Swap}\n<VId: 9>",shape="box"];
     10 [label="x'in&nbsp;:=&nbsp;x\nVU: {X}\n<VId: 10>",shape="plaintext"];
     11 [label="x&nbsp;:=&nbsp;x'out\nVD: {X}\n<VId: 11>",shape="plaintext"];
     12 [label="y'in&nbsp;:=&nbsp;y\nVU: {Y}\n<VId: 12>",shape="plaintext"];
     13 [label="y&nbsp;:=&nbsp;y'out\nVD: {Y}\n<VId: 13>",shape="plaintext"];
-    14 [label="call swap\n<VId: 14>",shape="box"];
+    14 [label="call swap\nSC: {Swap}\n<VId: 14>",shape="box"];
     15 [label="x'in&nbsp;:=&nbsp;x\nVU: {X}\n<VId: 15>",shape="plaintext"];
     16 [label="x&nbsp;:=&nbsp;x'out\nVD: {X}\n<VId: 16>",shape="plaintext"];
     17 [label="y'in&nbsp;:=&nbsp;z\nVU: {Z}\n<VId: 17>",shape="plaintext"];
     18 [label="z&nbsp;:=&nbsp;y'out\nVD: {Z}\n<VId: 18>",shape="plaintext"];
+    19 [label="x'initial\n(global)\nVD: {X}\n<VId: 19>",shape="plaintext"];
+    20 [label="x'final\n(global)\nVU: {X}\n<VId: 20>",shape="plaintext",fontcolor="blue"];
+    21 [label="y'initial\n(global)\nVD: {Y}\n<VId: 21>",shape="plaintext"];
+    22 [label="y'final\n(global)\nVU: {Y}\n<VId: 22>",shape="plaintext",fontcolor="blue"];
+    23 [label="z'initial\n(global)\nVD: {Z}\n<VId: 23>",shape="plaintext"];
+    24 [label="z'final\n(global)\nVU: {Z}\n<VId: 24>",shape="plaintext",fontcolor="blue"];
 
     1 ->  9 [arrowType="normal"];
     2 ->  3 [arrowType="normal"];
+    3 ->  20 [arrowType="normal"];
+    3 ->  22 [arrowType="normal"];
+    3 ->  24 [arrowType="normal"];
     9 ->  10 [arrowType="normal"];
     10 ->  12 [arrowType="normal"];
     11 ->  13 [arrowType="normal"];
@@ -1771,6 +1796,9 @@ digraph G {
     16 ->  18 [arrowType="normal"];
     17 ->  16 [arrowType="normal"];
     18 ->  2 [arrowType="normal"];
+    19 ->  1 [arrowType="normal"];
+    21 ->  1 [arrowType="normal"];
+    23 ->  1 [arrowType="normal"];
 }
 
 // gg_subprogram_round_swap_1_pdg
@@ -1779,16 +1807,22 @@ digraph G {
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    9 [label="call swap\n<VId: 9>",shape="box"];
+    9 [label="call swap\nSC: {Swap}\n<VId: 9>",shape="box"];
     10 [label="x'in&nbsp;:=&nbsp;x\nVU: {X}\n<VId: 10>",shape="plaintext"];
     11 [label="x&nbsp;:=&nbsp;x'out\nVD: {X}\n<VId: 11>",shape="plaintext"];
     12 [label="y'in&nbsp;:=&nbsp;y\nVU: {Y}\n<VId: 12>",shape="plaintext"];
     13 [label="y&nbsp;:=&nbsp;y'out\nVD: {Y}\n<VId: 13>",shape="plaintext"];
-    14 [label="call swap\n<VId: 14>",shape="box"];
+    14 [label="call swap\nSC: {Swap}\n<VId: 14>",shape="box"];
     15 [label="x'in&nbsp;:=&nbsp;x\nVU: {X}\n<VId: 15>",shape="plaintext"];
     16 [label="x&nbsp;:=&nbsp;x'out\nVD: {X}\n<VId: 16>",shape="plaintext"];
     17 [label="y'in&nbsp;:=&nbsp;z\nVU: {Z}\n<VId: 17>",shape="plaintext"];
     18 [label="z&nbsp;:=&nbsp;y'out\nVD: {Z}\n<VId: 18>",shape="plaintext"];
+    19 [label="x'initial\n(global)\nVD: {X}\n<VId: 19>",shape="plaintext"];
+    20 [label="x'final\n(global)\nVU: {X}\n<VId: 20>",shape="plaintext",fontcolor="blue"];
+    21 [label="y'initial\n(global)\nVD: {Y}\n<VId: 21>",shape="plaintext"];
+    22 [label="y'final\n(global)\nVU: {Y}\n<VId: 22>",shape="plaintext",fontcolor="blue"];
+    23 [label="z'initial\n(global)\nVD: {Z}\n<VId: 23>",shape="plaintext"];
+    24 [label="z'final\n(global)\nVU: {Z}\n<VId: 24>",shape="plaintext",fontcolor="blue"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  9 [arrowType="normal"];
@@ -1802,14 +1836,20 @@ digraph G {
     11 ->  15 [arrowType="normal",color="red"];
     12 ->  11 [arrowType="normal",color="cornflowerblue"];
     12 ->  13 [arrowType="normal",color="cornflowerblue"];
+    13 ->  22 [arrowType="normal",color="red"];
     14 ->  15 [arrowType="normal"];
     14 ->  16 [arrowType="normal"];
     14 ->  17 [arrowType="normal"];
     14 ->  18 [arrowType="normal"];
     15 ->  16 [arrowType="normal",color="cornflowerblue"];
     15 ->  18 [arrowType="normal",color="cornflowerblue"];
+    16 ->  20 [arrowType="normal",color="red"];
     17 ->  16 [arrowType="normal",color="cornflowerblue"];
     17 ->  18 [arrowType="normal",color="cornflowerblue"];
+    18 ->  24 [arrowType="normal",color="red"];
+    19 ->  10 [arrowType="normal",color="red"];
+    21 ->  12 [arrowType="normal",color="red"];
+    23 ->  17 [arrowType="normal",color="red"];
 }
 
 // gg_subprogram_round_swap_2_cfg
@@ -1819,19 +1859,28 @@ digraph G {
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    9 [label="call swap_with_depends\n<VId: 9>",shape="box"];
+    9 [label="call swap_with_depends\nSC: {Swap_With_Depends}\n<VId: 9>",shape="box"];
     10 [label="x'in&nbsp;:=&nbsp;x\nVU: {X}\n<VId: 10>",shape="plaintext"];
     11 [label="x&nbsp;:=&nbsp;x'out\nVD: {X}\n<VId: 11>",shape="plaintext"];
     12 [label="y'in&nbsp;:=&nbsp;y\nVU: {Y}\n<VId: 12>",shape="plaintext"];
     13 [label="y&nbsp;:=&nbsp;y'out\nVD: {Y}\n<VId: 13>",shape="plaintext"];
-    14 [label="call swap_with_depends\n<VId: 14>",shape="box"];
+    14 [label="call swap_with_depends\nSC: {Swap_With_Depends}\n<VId: 14>",shape="box"];
     15 [label="x'in&nbsp;:=&nbsp;x\nVU: {X}\n<VId: 15>",shape="plaintext"];
     16 [label="x&nbsp;:=&nbsp;x'out\nVD: {X}\n<VId: 16>",shape="plaintext"];
     17 [label="y'in&nbsp;:=&nbsp;z\nVU: {Z}\n<VId: 17>",shape="plaintext"];
     18 [label="z&nbsp;:=&nbsp;y'out\nVD: {Z}\n<VId: 18>",shape="plaintext"];
+    19 [label="x'initial\n(global)\nVD: {X}\n<VId: 19>",shape="plaintext"];
+    20 [label="x'final\n(global)\nVU: {X}\n<VId: 20>",shape="plaintext",fontcolor="blue"];
+    21 [label="y'initial\n(global)\nVD: {Y}\n<VId: 21>",shape="plaintext"];
+    22 [label="y'final\n(global)\nVU: {Y}\n<VId: 22>",shape="plaintext",fontcolor="blue"];
+    23 [label="z'initial\n(global)\nVD: {Z}\n<VId: 23>",shape="plaintext"];
+    24 [label="z'final\n(global)\nVU: {Z}\n<VId: 24>",shape="plaintext",fontcolor="blue"];
 
     1 ->  9 [arrowType="normal"];
     2 ->  3 [arrowType="normal"];
+    3 ->  20 [arrowType="normal"];
+    3 ->  22 [arrowType="normal"];
+    3 ->  24 [arrowType="normal"];
     9 ->  10 [arrowType="normal"];
     10 ->  12 [arrowType="normal"];
     11 ->  13 [arrowType="normal"];
@@ -1842,6 +1891,9 @@ digraph G {
     16 ->  18 [arrowType="normal"];
     17 ->  16 [arrowType="normal"];
     18 ->  2 [arrowType="normal"];
+    19 ->  1 [arrowType="normal"];
+    21 ->  1 [arrowType="normal"];
+    23 ->  1 [arrowType="normal"];
 }
 
 // gg_subprogram_round_swap_2_pdg
@@ -1850,16 +1902,22 @@ digraph G {
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    9 [label="call swap_with_depends\n<VId: 9>",shape="box"];
+    9 [label="call swap_with_depends\nSC: {Swap_With_Depends}\n<VId: 9>",shape="box"];
     10 [label="x'in&nbsp;:=&nbsp;x\nVU: {X}\n<VId: 10>",shape="plaintext"];
     11 [label="x&nbsp;:=&nbsp;x'out\nVD: {X}\n<VId: 11>",shape="plaintext"];
     12 [label="y'in&nbsp;:=&nbsp;y\nVU: {Y}\n<VId: 12>",shape="plaintext"];
     13 [label="y&nbsp;:=&nbsp;y'out\nVD: {Y}\n<VId: 13>",shape="plaintext"];
-    14 [label="call swap_with_depends\n<VId: 14>",shape="box"];
+    14 [label="call swap_with_depends\nSC: {Swap_With_Depends}\n<VId: 14>",shape="box"];
     15 [label="x'in&nbsp;:=&nbsp;x\nVU: {X}\n<VId: 15>",shape="plaintext"];
     16 [label="x&nbsp;:=&nbsp;x'out\nVD: {X}\n<VId: 16>",shape="plaintext"];
     17 [label="y'in&nbsp;:=&nbsp;z\nVU: {Z}\n<VId: 17>",shape="plaintext"];
     18 [label="z&nbsp;:=&nbsp;y'out\nVD: {Z}\n<VId: 18>",shape="plaintext"];
+    19 [label="x'initial\n(global)\nVD: {X}\n<VId: 19>",shape="plaintext"];
+    20 [label="x'final\n(global)\nVU: {X}\n<VId: 20>",shape="plaintext",fontcolor="blue"];
+    21 [label="y'initial\n(global)\nVD: {Y}\n<VId: 21>",shape="plaintext"];
+    22 [label="y'final\n(global)\nVU: {Y}\n<VId: 22>",shape="plaintext",fontcolor="blue"];
+    23 [label="z'initial\n(global)\nVD: {Z}\n<VId: 23>",shape="plaintext"];
+    24 [label="z'final\n(global)\nVU: {Z}\n<VId: 24>",shape="plaintext",fontcolor="blue"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  9 [arrowType="normal"];
@@ -1871,12 +1929,18 @@ digraph G {
     10 ->  13 [arrowType="normal",color="cornflowerblue"];
     11 ->  15 [arrowType="normal",color="red"];
     12 ->  11 [arrowType="normal",color="cornflowerblue"];
+    13 ->  22 [arrowType="normal",color="red"];
     14 ->  15 [arrowType="normal"];
     14 ->  16 [arrowType="normal"];
     14 ->  17 [arrowType="normal"];
     14 ->  18 [arrowType="normal"];
     15 ->  18 [arrowType="normal",color="cornflowerblue"];
+    16 ->  20 [arrowType="normal",color="red"];
     17 ->  16 [arrowType="normal",color="cornflowerblue"];
+    18 ->  24 [arrowType="normal",color="red"];
+    19 ->  10 [arrowType="normal",color="red"];
+    21 ->  12 [arrowType="normal",color="red"];
+    23 ->  17 [arrowType="normal",color="red"];
 }
 
 // gg_subprogram_swap_cfg

@@ -5019,6 +5019,44 @@ package body Flow.Control_Flow_Graph is
       --  Simplify graph by removing all null vertices.
       Simplify_CFG (FA);
 
+      --  In GG mode, we assemble a list of globals now (and retroactively
+      --  make some initial and final vertices).
+      if FA.Compute_Globals then
+         declare
+            Known_Vars : constant Flow_Id_Sets.Set :=
+              To_Entire_Variables (FA.All_Vars);
+         begin
+            for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
+               declare
+                  Atr : constant V_Attributes := FA.Atr (V);
+
+                  Vars : constant Flow_Id_Sets.Set :=
+                    To_Entire_Variables (Atr.Variables_Used or
+                                           Atr.Variables_Defined);
+               begin
+                  for Var of Vars loop
+                     if not Synthetic (Var) and then
+                       not Known_Vars.Contains (Var)
+                     then
+                        FA.GG.Globals.Include (Get_Direct_Mapping_Id (Var));
+                     end if;
+                  end loop;
+               end;
+            end loop;
+         end;
+
+         for E of FA.GG.Globals loop
+            case Ekind (E) is
+               when E_In_Parameter | E_Constant =>
+                  Create_Initial_And_Final_Vertices (Direct_Mapping_Id (E),
+                                                     Mode_In, False, FA);
+               when others =>
+                  Create_Initial_And_Final_Vertices (Direct_Mapping_Id (E),
+                                                     Mode_In_Out, False, FA);
+            end case;
+         end loop;
+      end if;
+
       --  Note if this is a subprogram with no effects.
       if FA.Kind = E_Subprogram_Body then
          FA.No_Effects := True;

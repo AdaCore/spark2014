@@ -111,6 +111,14 @@ package Flow is
       case Present is
          when True =>
             Aborted : Boolean;
+            --  Set if graph creation, processing or analysis raised some
+            --  error; or if the entity should not be analyzed in the first
+            --  place.
+
+            Globals : Node_Sets.Set;
+            --  All obvious globals (non-local variables or parameters that
+            --  are not subprogram parameters of the analyzed entity).
+
          when False =>
             null;
       end case;
