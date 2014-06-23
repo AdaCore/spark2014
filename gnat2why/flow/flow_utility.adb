@@ -918,9 +918,40 @@ package body Flow_Utility is
       return not Write_Ids.Is_Empty;
    end Has_Proof_Global_Writes;
 
-   ------------------------
-   --  Get_Variable_Set  --
-   ------------------------
+   ----------------------
+   -- Get_Function_Set --
+   ----------------------
+
+   function Get_Function_Set (N : Node_Id) return Node_Sets.Set is
+      NS : Node_Sets.Set := Node_Sets.Empty_Set;
+
+      function Proc (N : Node_Id) return Traverse_Result;
+      --  If the node being processed is an N_Function call, it add
+      --  the corresponding Flow_Id to FS.
+
+      ----------
+      -- Proc --
+      ----------
+
+      function Proc (N : Node_Id) return Traverse_Result is
+      begin
+         if Nkind (N) = N_Function_Call then
+            NS.Include (Entity (Name (N)));
+         end if;
+
+         return OK;
+      end Proc;
+
+      procedure Traverse is new Traverse_Proc (Process => Proc);
+
+   begin
+      Traverse (N);
+      return NS;
+   end Get_Function_Set;
+
+   ----------------------
+   -- Get_Variable_Set --
+   ----------------------
 
    function Get_Variable_Set
      (N                            : Node_Id;

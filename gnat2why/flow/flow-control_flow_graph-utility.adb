@@ -85,6 +85,7 @@ package body Flow.Control_Flow_Graph.Utility is
      (Var_Def    : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
       Var_Ex_Use : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
       Var_Im_Use : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
+      Sub_Called : Node_Sets.Set       := Node_Sets.Empty_Set;
       Loops      : Node_Sets.Set       := Node_Sets.Empty_Set;
       E_Loc      : Node_Or_Entity_Id   := Empty;
       Print_Hint : Pretty_Print_Kind_T := Pretty_Print_Null)
@@ -96,6 +97,7 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Variables_Defined         := Var_Def;
       A.Variables_Used            := Var_Ex_Use or Var_Im_Use;
       A.Variables_Explicitly_Used := Var_Ex_Use;
+      A.Subprograms_Called        := Sub_Called;
       A.Loops                     := Loops;
       A.Error_Location            := E_Loc;
       A.Pretty_Print_Kind         := Print_Hint;
@@ -112,6 +114,7 @@ package body Flow.Control_Flow_Graph.Utility is
      (Var_Def         : Flow_Id_Sets.Set;
       Var_Use         : Flow_Id_Sets.Set;
       Object_Returned : Entity_Id;
+      Sub_Called      : Node_Sets.Set     := Node_Sets.Empty_Set;
       Loops           : Node_Sets.Set     := Node_Sets.Empty_Set;
       E_Loc           : Node_Or_Entity_Id := Empty)
      return V_Attributes
@@ -122,6 +125,7 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Variables_Defined         := Var_Def;
       A.Variables_Used            := Var_Use;
       A.Variables_Explicitly_Used := Var_Use;
+      A.Subprograms_Called        := Sub_Called;
       A.Loops                     := Loops;
       A.Error_Location            := E_Loc;
       A.Aux_Node                  := Object_Returned;
@@ -136,6 +140,7 @@ package body Flow.Control_Flow_Graph.Utility is
 
    function Make_Sink_Vertex_Attributes
      (Var_Use          : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
+      Sub_Called       : Node_Sets.Set     := Node_Sets.Empty_Set;
       Is_Proof         : Boolean           := False;
       Is_Precondition  : Boolean           := False;
       Is_Postcondition : Boolean           := False;
@@ -148,6 +153,7 @@ package body Flow.Control_Flow_Graph.Utility is
    begin
       A.Variables_Used            := Var_Use;
       A.Variables_Explicitly_Used := Var_Use;
+      A.Subprograms_Called        := Sub_Called;
       A.Is_Proof                  := Is_Proof;
       A.Is_Precondition           := Is_Precondition;
       A.Is_Postcondition          := Is_Postcondition;

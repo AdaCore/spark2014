@@ -149,6 +149,9 @@ package Flow_Utility is
    --  Returns True if Subprogram has a Global Output or In_Out contract,
    --  whether user-defined or generated.
 
+   function Get_Function_Set (N : Node_Id) return Node_Sets.Set;
+   --  Obtains all function calls used in an expression.
+
    function Get_Variable_Set
      (N                            : Node_Id;
       Scope                        : Flow_Scope;

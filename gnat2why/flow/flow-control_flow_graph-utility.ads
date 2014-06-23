@@ -31,6 +31,7 @@ package Flow.Control_Flow_Graph.Utility is
      (Var_Def    : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
       Var_Ex_Use : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
       Var_Im_Use : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
+      Sub_Called : Node_Sets.Set       := Node_Sets.Empty_Set;
       Loops      : Node_Sets.Set       := Node_Sets.Empty_Set;
       E_Loc      : Node_Or_Entity_Id   := Empty;
       Print_Hint : Pretty_Print_Kind_T := Pretty_Print_Null)
@@ -44,6 +45,7 @@ package Flow.Control_Flow_Graph.Utility is
      (Var_Def         : Flow_Id_Sets.Set;
       Var_Use         : Flow_Id_Sets.Set;
       Object_Returned : Entity_Id;
+      Sub_Called      : Node_Sets.Set     := Node_Sets.Empty_Set;
       Loops           : Node_Sets.Set     := Node_Sets.Empty_Set;
       E_Loc           : Node_Or_Entity_Id := Empty)
       return V_Attributes
@@ -57,6 +59,7 @@ package Flow.Control_Flow_Graph.Utility is
 
    function Make_Sink_Vertex_Attributes
      (Var_Use          : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
+      Sub_Called       : Node_Sets.Set     := Node_Sets.Empty_Set;
       Is_Proof         : Boolean           := False;
       Is_Precondition  : Boolean           := False;
       Is_Postcondition : Boolean           := False;

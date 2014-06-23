@@ -149,8 +149,8 @@ digraph G {
     7 [label="state'final\n(global)\nVU: {State}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
     8 [label="speed'initial\n(global)\nVD: {Speed}\n<VId: 8>",shape="plaintext"];
     9 [label="speed'final\n(global)\nVU: {Speed}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
-    10 [label="precondition speed_is_valid\nVU: {State, Speed}\nPROOF\n<VId: 10>",shape="plaintext"];
-    11 [label="postcondition state = still and speed_is_valid\nVU: {State, Speed}\nPROOF\n<VId: 11>",shape="plaintext"];
+    10 [label="precondition speed_is_valid\nVU: {State, Speed}\nSC: {Speed_Is_Valid}\nPROOF\n<VId: 10>",shape="plaintext"];
+    11 [label="postcondition state = still and speed_is_valid\nVU: {State, Speed}\nSC: {Speed_Is_Valid}\nPROOF\n<VId: 11>",shape="plaintext"];
     13 [label="pragma check (loop_invariant, speed_is_valid);\nVU: {State, Speed}\nPROOF\n<VId: 13>"];
     14 [label="if speed > 0\nLoops:&nbsp;L_1\nVU: {Speed}\n<VId: 14>",shape="diamond"];
     15 [label="call state_update\nLoops:&nbsp;L_1\n<VId: 15>",shape="box"];
@@ -204,8 +204,8 @@ digraph G {
     7 [label="state'final\n(global)\nVU: {State}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
     8 [label="speed'initial\n(global)\nVD: {Speed}\n<VId: 8>",shape="plaintext"];
     9 [label="speed'final\n(global)\nVU: {Speed}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
-    10 [label="precondition speed_is_valid\nVU: {State, Speed}\nPROOF\n<VId: 10>",shape="plaintext"];
-    11 [label="postcondition state = still and speed_is_valid\nVU: {State, Speed}\nPROOF\n<VId: 11>",shape="plaintext"];
+    10 [label="precondition speed_is_valid\nVU: {State, Speed}\nSC: {Speed_Is_Valid}\nPROOF\n<VId: 10>",shape="plaintext"];
+    11 [label="postcondition state = still and speed_is_valid\nVU: {State, Speed}\nSC: {Speed_Is_Valid}\nPROOF\n<VId: 11>",shape="plaintext"];
     13 [label="pragma check (loop_invariant, speed_is_valid);\nVU: {State, Speed}\nPROOF\n<VId: 13>"];
     14 [label="if speed > 0\nLoops:&nbsp;L_1\nVU: {Speed}\n<VId: 14>",shape="diamond"];
     15 [label="call state_update\nLoops:&nbsp;L_1\n<VId: 15>",shape="box"];
@@ -355,8 +355,8 @@ digraph G {
     9 [label="state'final\n(global)\nVU: {State}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
     10 [label="speed'initial\n(global)\nVD: {Speed}\n<VId: 10>",shape="plaintext"];
     11 [label="speed'final\n(global)\nVU: {Speed}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
-    12 [label="precondition speed_is_valid\nVU: {State, Speed}\nPROOF\n<VId: 12>",shape="plaintext"];
-    13 [label="postcondition speed_is_valid\nVU: {State, Speed}\nPROOF\n<VId: 13>",shape="plaintext"];
+    12 [label="precondition speed_is_valid\nVU: {State, Speed}\nSC: {Speed_Is_Valid}\nPROOF\n<VId: 12>",shape="plaintext"];
+    13 [label="postcondition speed_is_valid\nVU: {State, Speed}\nSC: {Speed_Is_Valid}\nPROOF\n<VId: 13>",shape="plaintext"];
     15 [label="if i = accelerate\nVU: {I}\n<VId: 15>",shape="diamond"];
     16 [label="if speed < 100\nVU: {Speed}\n<VId: 16>",shape="diamond"];
     17 [label="speed := {speed + 1};\nVU: {Speed}\nVD: {Speed}\n<VId: 17>"];
@@ -413,8 +413,8 @@ digraph G {
     9 [label="state'final\n(global)\nVU: {State}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
     10 [label="speed'initial\n(global)\nVD: {Speed}\n<VId: 10>",shape="plaintext"];
     11 [label="speed'final\n(global)\nVU: {Speed}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
-    12 [label="precondition speed_is_valid\nVU: {State, Speed}\nPROOF\n<VId: 12>",shape="plaintext"];
-    13 [label="postcondition speed_is_valid\nVU: {State, Speed}\nPROOF\n<VId: 13>",shape="plaintext"];
+    12 [label="precondition speed_is_valid\nVU: {State, Speed}\nSC: {Speed_Is_Valid}\nPROOF\n<VId: 12>",shape="plaintext"];
+    13 [label="postcondition speed_is_valid\nVU: {State, Speed}\nSC: {Speed_Is_Valid}\nPROOF\n<VId: 13>",shape="plaintext"];
     15 [label="if i = accelerate\nVU: {I}\n<VId: 15>",shape="diamond"];
     16 [label="if speed < 100\nVU: {Speed}\n<VId: 16>",shape="diamond"];
     17 [label="speed := {speed + 1};\nVU: {Speed}\nVD: {Speed}\n<VId: 17>"];

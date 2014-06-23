@@ -163,11 +163,11 @@ digraph G {
     9 [label="y'final\nVU: {Y}\n<VId: 9>",shape="plaintext",fontcolor="red"];
     10 [label="coprime'initial\nVD: {Coprime}\n<VId: 10>",shape="plaintext",fontcolor="red"];
     11 [label="coprime'final\nVU: {Coprime}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
-    15 [label="if prime (x) or else prime (y)\nVU: {X, Y}\n<VId: 15>",shape="diamond"];
+    15 [label="if prime (x) or else prime (y)\nVU: {X, Y}\nSC: {Prime}\n<VId: 15>",shape="diamond"];
     16 [label="return true;\nVD: {Coprime}\n<VId: 16>"];
     17 [label="R4b'initial\nVD: {R4b}\n<VId: 17>",shape="plaintext",fontcolor="red"];
     18 [label="R4b'final\nVU: {R4b}\n<VId: 18>",shape="plaintext"];
-    19 [label="R4b : constant natural := min (x, y);\nVU: {X, Y}\nVD: {R4b}\n<VId: 19>"];
+    19 [label="R4b : constant natural := min (x, y);\nVU: {X, Y}\nSC: {Min}\nVD: {R4b}\n<VId: 19>"];
     20 [label="if (x mod i) = 0 and then (y mod i) = 0\nLoops:&nbsp;L_1\nVU: {I, X, Y}\n<VId: 20>",shape="diamond"];
     21 [label="return false;\nLoops:&nbsp;L_1\nVD: {Coprime}\n<VId: 21>"];
     22 [label="i'initial\nVD: {I}\n<VId: 22>",shape="plaintext"];
@@ -211,11 +211,11 @@ digraph G {
     9 [label="y'final\nVU: {Y}\n<VId: 9>",shape="plaintext",fontcolor="red"];
     10 [label="coprime'initial\nVD: {Coprime}\n<VId: 10>",shape="plaintext",fontcolor="red"];
     11 [label="coprime'final\nVU: {Coprime}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
-    15 [label="if prime (x) or else prime (y)\nVU: {X, Y}\n<VId: 15>",shape="diamond"];
+    15 [label="if prime (x) or else prime (y)\nVU: {X, Y}\nSC: {Prime}\n<VId: 15>",shape="diamond"];
     16 [label="return true;\nVD: {Coprime}\n<VId: 16>"];
     17 [label="R4b'initial\nVD: {R4b}\n<VId: 17>",shape="plaintext",fontcolor="red"];
     18 [label="R4b'final\nVU: {R4b}\n<VId: 18>",shape="plaintext"];
-    19 [label="R4b : constant natural := min (x, y);\nVU: {X, Y}\nVD: {R4b}\n<VId: 19>"];
+    19 [label="R4b : constant natural := min (x, y);\nVU: {X, Y}\nSC: {Min}\nVD: {R4b}\n<VId: 19>"];
     20 [label="if (x mod i) = 0 and then (y mod i) = 0\nLoops:&nbsp;L_1\nVU: {I, X, Y}\n<VId: 20>",shape="diamond"];
     21 [label="return false;\nLoops:&nbsp;L_1\nVD: {Coprime}\n<VId: 21>"];
     22 [label="i'initial\nVD: {I}\n<VId: 22>",shape="plaintext"];
@@ -414,7 +414,7 @@ digraph G {
     9 [label="fibonacci'final\nVU: {Fibonacci}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
     13 [label="if n < 3\nVU: {N}\n<VId: 13>",shape="diamond"];
     14 [label="return 1;\nVD: {Fibonacci}\n<VId: 14>"];
-    15 [label="return fibonacci (n {-} 1) {+} fibonacci (n {-} 2);\nVU: {N}\nVD: {Fibonacci}\n<VId: 15>"];
+    15 [label="return fibonacci (n {-} 1) {+} fibonacci (n {-} 2);\nVU: {N}\nSC: {Fibonacci}\nVD: {Fibonacci}\n<VId: 15>"];
 
     1 ->  13 [arrowType="normal"];
     2 ->  3 [arrowType="normal"];
@@ -440,7 +440,7 @@ digraph G {
     9 [label="fibonacci'final\nVU: {Fibonacci}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
     13 [label="if n < 3\nVU: {N}\n<VId: 13>",shape="diamond"];
     14 [label="return 1;\nVD: {Fibonacci}\n<VId: 14>"];
-    15 [label="return fibonacci (n {-} 1) {+} fibonacci (n {-} 2);\nVU: {N}\nVD: {Fibonacci}\n<VId: 15>"];
+    15 [label="return fibonacci (n {-} 1) {+} fibonacci (n {-} 2);\nVU: {N}\nSC: {Fibonacci}\nVD: {Fibonacci}\n<VId: 15>"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  13 [arrowType="normal"];
