@@ -38,7 +38,7 @@ Inductive do_flagged_check_on_unop: check_flag -> unary_operator -> value -> che
 
 Inductive do_flagged_index_check: check_flag -> Z -> Z -> Z -> check_status -> Prop :=
     | Do_Index_Check_Array: forall i l u,
-        do_index_check i i u Success ->
+        do_index_check i l u Success ->
         do_flagged_index_check Do_Index_Check i l u Success
     | Do_Index_Check_Array_E: forall i l u,
         do_index_check i l u (Exception RTE_Overflow) ->

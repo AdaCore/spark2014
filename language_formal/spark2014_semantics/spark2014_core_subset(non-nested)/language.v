@@ -11,9 +11,9 @@ Require Export Coq.Strings.String.
 Require Export more_list.
 
 (* 1. command to generate HTML document from Coq source files: 
-       coqdoc language.v values.v environment.v util.v checks.v semantics.v wellformedness.v propertyProof.v -toc --no-lib-name
+       coqdoc X_Case.v X_CpdtTactics.v X_SparkTactics.v LibTactics.v more_list.v util.v language.v checks.v language_flagged.v values.v environment.v symboltable.v semantics.v semantics_flagged.v -toc --no-lib-name
     2. compile all the Coq files 
-       coqc language.v values.v environment.v util.v checks.v semantics.v wellformedness.v propertyProof.v
+       coqc X_Case.v X_CpdtTactics.v X_SparkTactics.v LibTactics.v more_list.v util.v language.v checks.v language_flagged.v values.v environment.v symboltable.v semantics.v semantics_flagged.v
 *)
 
 (** * SPARK Subset Language *)
