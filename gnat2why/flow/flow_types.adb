@@ -201,7 +201,7 @@ package body Flow_Types is
                  (Original_Record_Component (Entity (Selector_Name (P))));
                P := Prefix (P);
 
-            when N_Identifier | N_Expanded_Name =>
+            when N_Identifier | N_Expanded_Name | N_Operator_Symbol =>
                --  X .Y.Z
                F.Node := Unique_Entity (Entity (P));
 
