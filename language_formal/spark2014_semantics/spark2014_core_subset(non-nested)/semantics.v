@@ -333,7 +333,11 @@ Inductive eval_decl: stack -> frame -> declaration -> Return frame -> Prop :=
         eval_decl s f (D_Object_Declaration ast_num d) (Normal (push f d.(object_name) v))
     | Eval_UndefDecl: forall d s f ast_num,
         d.(initialization_expression) = None ->
-        eval_decl s f (D_Object_Declaration ast_num d) (Normal (push f d.(object_name) Undefined)).
+        eval_decl s f (D_Object_Declaration ast_num d) (Normal (push f d.(object_name) Undefined))
+    | Eval_Decl_Proc: forall s f ast_num p,
+        eval_decl s f (D_Procedure_Declaration ast_num p) (Normal f)
+    | Eval_Decl_Type: forall s f ast_num t,
+        eval_decl s f (D_Type_Declaration ast_num t) (Normal f).
 (*  | Eval_Decl_Proc: forall s f ast_num p,
         eval_decl s f (D_Procedure_Declaration ast_num p) (Normal (push f (procedure_name p) (Procedure p)))
     | Eval_Decl_Type: forall s f ast_num t,

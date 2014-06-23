@@ -282,6 +282,12 @@ Proof.
   end.
 Qed.
 
+Lemma declaration_checks_completeness: ,
+  eval_decl s f d f' ->
+    eval_decl_x s f d' f'' ->
+      compile2_flagged_declaration d d' ->
+        f' = f''. 
+
 
 
 Lemma statement_checks_completeness: forall e e' s v v',
