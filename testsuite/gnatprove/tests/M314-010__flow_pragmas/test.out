@@ -481,3 +481,155 @@ digraph G {
     26 ->  13 [arrowType="normal",color="red"];
 }
 
+// gg_subprogram_halt_cfg
+digraph G {
+   graph [splines=True];
+    1 [label="start\n<VId: 1>",shape="plaintext"];
+    2 [label="helper end\n<VId: 2>",shape="plaintext"];
+    3 [label="end\n<VId: 3>",shape="plaintext"];
+    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="precondition speed_is_valid\nSC: {Speed_Is_Valid}\nPROOF\n<VId: 6>",shape="plaintext"];
+    7 [label="postcondition state = still and speed_is_valid\nVU: {State}\nSC: {Speed_Is_Valid}\nPROOF\n<VId: 7>",shape="plaintext"];
+    9 [label="pragma check (loop_invariant, speed_is_valid);\nPROOF\n<VId: 9>"];
+    10 [label="if speed > 0\nLoops:&nbsp;L_1\nVU: {Speed}\n<VId: 10>",shape="diamond"];
+    11 [label="call state_update\nLoops:&nbsp;L_1\n<VId: 11>",shape="box"];
+    12 [label="i'in&nbsp;:=&nbsp;brake\n<VId: 12>",shape="plaintext"];
+    13 [label="global&nbsp;State'in\nVU: {State}\n<VId: 13>",shape="plaintext"];
+    14 [label="global&nbsp;Speed'in\nVU: {Speed}\n<VId: 14>",shape="plaintext"];
+    15 [label="global&nbsp;State'out\nVD: {State}\n<VId: 15>",shape="plaintext"];
+    16 [label="global&nbsp;Speed'out\nVD: {Speed}\n<VId: 16>",shape="plaintext"];
+    17 [label="call state_update\nLoops:&nbsp;L_1\n<VId: 17>",shape="box"];
+    18 [label="i'in&nbsp;:=&nbsp;accelerate\n<VId: 18>",shape="plaintext"];
+    19 [label="global&nbsp;State'in\nVU: {State}\n<VId: 19>",shape="plaintext"];
+    20 [label="global&nbsp;Speed'in\nVU: {Speed}\n<VId: 20>",shape="plaintext"];
+    21 [label="global&nbsp;State'out\nVD: {State}\n<VId: 21>",shape="plaintext"];
+    22 [label="global&nbsp;Speed'out\nVD: {Speed}\n<VId: 22>",shape="plaintext"];
+    23 [label="while state /= still\nLoops:&nbsp;L_1\nVU: {State}\n<VId: 23>",shape="diamond"];
+
+    1 ->  6 [arrowType="normal"];
+    2 ->  7 [arrowType="normal"];
+    6 ->  23 [arrowType="normal"];
+    7 ->  3 [arrowType="normal"];
+    9 ->  10 [arrowType="normal"];
+    10 ->  11 [arrowType="normal"];
+    10 ->  17 [arrowType="normal"];
+    11 ->  12 [arrowType="normal"];
+    12 ->  13 [arrowType="normal"];
+    13 ->  14 [arrowType="normal"];
+    14 ->  15 [arrowType="normal"];
+    15 ->  16 [arrowType="normal"];
+    16 ->  23 [arrowType="normal"];
+    17 ->  18 [arrowType="normal"];
+    18 ->  19 [arrowType="normal"];
+    19 ->  20 [arrowType="normal"];
+    20 ->  21 [arrowType="normal"];
+    21 ->  22 [arrowType="normal"];
+    22 ->  23 [arrowType="normal"];
+    23 ->  2 [arrowType="normal"];
+    23 ->  9 [arrowType="normal"];
+}
+
+// gg_subprogram_halt_pdg
+digraph G {
+   graph [splines=True];
+    1 [label="start\n<VId: 1>",shape="plaintext"];
+    2 [label="helper end\n<VId: 2>",shape="plaintext"];
+    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="precondition speed_is_valid\nSC: {Speed_Is_Valid}\nPROOF\n<VId: 6>",shape="plaintext"];
+    7 [label="postcondition state = still and speed_is_valid\nVU: {State}\nSC: {Speed_Is_Valid}\nPROOF\n<VId: 7>",shape="plaintext"];
+    9 [label="pragma check (loop_invariant, speed_is_valid);\nPROOF\n<VId: 9>"];
+    10 [label="if speed > 0\nLoops:&nbsp;L_1\nVU: {Speed}\n<VId: 10>",shape="diamond"];
+    11 [label="call state_update\nLoops:&nbsp;L_1\n<VId: 11>",shape="box"];
+    12 [label="i'in&nbsp;:=&nbsp;brake\n<VId: 12>",shape="plaintext"];
+    13 [label="global&nbsp;State'in\nVU: {State}\n<VId: 13>",shape="plaintext"];
+    14 [label="global&nbsp;Speed'in\nVU: {Speed}\n<VId: 14>",shape="plaintext"];
+    15 [label="global&nbsp;State'out\nVD: {State}\n<VId: 15>",shape="plaintext"];
+    16 [label="global&nbsp;Speed'out\nVD: {Speed}\n<VId: 16>",shape="plaintext"];
+    17 [label="call state_update\nLoops:&nbsp;L_1\n<VId: 17>",shape="box"];
+    18 [label="i'in&nbsp;:=&nbsp;accelerate\n<VId: 18>",shape="plaintext"];
+    19 [label="global&nbsp;State'in\nVU: {State}\n<VId: 19>",shape="plaintext"];
+    20 [label="global&nbsp;Speed'in\nVU: {Speed}\n<VId: 20>",shape="plaintext"];
+    21 [label="global&nbsp;State'out\nVD: {State}\n<VId: 21>",shape="plaintext"];
+    22 [label="global&nbsp;Speed'out\nVD: {Speed}\n<VId: 22>",shape="plaintext"];
+    23 [label="while state /= still\nLoops:&nbsp;L_1\nVU: {State}\n<VId: 23>",shape="diamond"];
+
+    1 ->  2 [arrowType="normal"];
+    1 ->  6 [arrowType="normal"];
+    1 ->  7 [arrowType="normal"];
+    1 ->  23 [arrowType="normal"];
+    10 ->  11 [arrowType="normal"];
+    10 ->  17 [arrowType="normal"];
+    11 ->  12 [arrowType="normal"];
+    11 ->  13 [arrowType="normal"];
+    11 ->  14 [arrowType="normal"];
+    11 ->  15 [arrowType="normal"];
+    11 ->  16 [arrowType="normal"];
+    12 ->  15 [arrowType="normal",color="cornflowerblue"];
+    12 ->  16 [arrowType="normal",color="cornflowerblue"];
+    13 ->  15 [arrowType="normal",color="cornflowerblue"];
+    13 ->  16 [arrowType="normal",color="cornflowerblue"];
+    14 ->  15 [arrowType="normal",color="cornflowerblue"];
+    14 ->  16 [arrowType="normal",color="cornflowerblue"];
+    15 ->  7 [arrowType="normal",color="red"];
+    15 ->  13 [arrowType="normal",color="red"];
+    15 ->  19 [arrowType="normal",color="red"];
+    15 ->  23 [arrowType="normal",color="red"];
+    16 ->  10 [arrowType="normal",color="red"];
+    16 ->  14 [arrowType="normal",color="red"];
+    16 ->  20 [arrowType="normal",color="red"];
+    17 ->  18 [arrowType="normal"];
+    17 ->  19 [arrowType="normal"];
+    17 ->  20 [arrowType="normal"];
+    17 ->  21 [arrowType="normal"];
+    17 ->  22 [arrowType="normal"];
+    18 ->  21 [arrowType="normal",color="cornflowerblue"];
+    18 ->  22 [arrowType="normal",color="cornflowerblue"];
+    19 ->  21 [arrowType="normal",color="cornflowerblue"];
+    19 ->  22 [arrowType="normal",color="cornflowerblue"];
+    20 ->  21 [arrowType="normal",color="cornflowerblue"];
+    20 ->  22 [arrowType="normal",color="cornflowerblue"];
+    21 ->  7 [arrowType="normal",color="red"];
+    21 ->  13 [arrowType="normal",color="red"];
+    21 ->  19 [arrowType="normal",color="red"];
+    21 ->  23 [arrowType="normal",color="red"];
+    22 ->  10 [arrowType="normal",color="red"];
+    22 ->  14 [arrowType="normal",color="red"];
+    22 ->  20 [arrowType="normal",color="red"];
+    23 ->  9 [arrowType="normal"];
+    23 ->  10 [arrowType="normal"];
+    23 ->  23 [arrowType="normal"];
+}
+
+// gg_subprogram_speed_is_valid_cfg
+digraph G {
+   graph [splines=True];
+    1 [label="start\n<VId: 1>",shape="plaintext"];
+    2 [label="helper end\n<VId: 2>",shape="plaintext"];
+    3 [label="end\n<VId: 3>",shape="plaintext"];
+    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="speed_is_valid'initial\nVD: {Speed_Is_Valid}\n<VId: 6>",shape="plaintext",fontcolor="red"];
+    7 [label="speed_is_valid'final\nVU: {Speed_Is_Valid}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
+    11 [label="return (case state is when still => speed = 0, when forward => speed >0, when backward => speed < 0);\nVU: {State, Speed}\nVD: {Speed_Is_Valid}\n<VId: 11>"];
+
+    1 ->  11 [arrowType="normal"];
+    2 ->  3 [arrowType="normal"];
+    3 ->  7 [arrowType="normal"];
+    6 ->  1 [arrowType="normal"];
+    11 ->  2 [arrowType="normal"];
+}
+
+// gg_subprogram_speed_is_valid_pdg
+digraph G {
+   graph [splines=True];
+    1 [label="start\n<VId: 1>",shape="plaintext"];
+    2 [label="helper end\n<VId: 2>",shape="plaintext"];
+    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="speed_is_valid'initial\nVD: {Speed_Is_Valid}\n<VId: 6>",shape="plaintext",fontcolor="red"];
+    7 [label="speed_is_valid'final\nVU: {Speed_Is_Valid}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
+    11 [label="return (case state is when still => speed = 0, when forward => speed >0, when backward => speed < 0);\nVU: {State, Speed}\nVD: {Speed_Is_Valid}\n<VId: 11>"];
+
+    1 ->  2 [arrowType="normal"];
+    1 ->  11 [arrowType="normal"];
+    11 ->  7 [arrowType="normal",color="red"];
+}
+

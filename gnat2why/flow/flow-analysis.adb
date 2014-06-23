@@ -346,11 +346,12 @@ package body Flow.Analysis is
       function Search_Expr (N : Node_Id) return Traverse_Result is
       begin
          if Get_Variable_Set (N,
-                              Scope            => Scope,
-                              Local_Constants  => FA.Local_Constants,
-                              Reduced          => not Precise,
-                              Allow_Statements => True,
-                              Fold_Functions   => False).Contains (Var_Tgt)
+                              Scope                => Scope,
+                              Local_Constants      => FA.Local_Constants,
+                              Reduced              => not Precise,
+                              Allow_Statements     => True,
+                              Fold_Functions       => False,
+                              Use_Computed_Globals => True).Contains (Var_Tgt)
          then
             First_Use := N;
             return OK;
@@ -653,19 +654,21 @@ package body Flow.Analysis is
                      Vars_Used := To_Entire_Variables
                        (Get_Variable_Set
                           (Expr,
-                           Scope           => Get_Flow_Scope (Expr),
-                           Local_Constants => FA.Local_Constants,
-                           Fold_Functions  => False,
-                           Reduced         => True));
+                           Scope                => Get_Flow_Scope (Expr),
+                           Local_Constants      => FA.Local_Constants,
+                           Fold_Functions       => False,
+                           Reduced              => True,
+                           Use_Computed_Globals => True));
                   when others =>
                      Vars_Used := To_Entire_Variables
                        (Get_Variable_Set
                           (Expr,
-                           Scope           => Private_Scope (Get_Flow_Scope
-                                                               (Expr)),
-                           Local_Constants => FA.Local_Constants,
-                           Fold_Functions  => False,
-                           Reduced         => True));
+                           Scope                => Private_Scope
+                             (Get_Flow_Scope (Expr)),
+                           Local_Constants      => FA.Local_Constants,
+                           Fold_Functions       => False,
+                           Reduced              => True,
+                           Use_Computed_Globals => True));
                end case;
                Vars_Used.Difference (Quantified_Variables (Expr));
 

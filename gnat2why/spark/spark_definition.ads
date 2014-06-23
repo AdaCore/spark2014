@@ -7,6 +7,7 @@
 --                                  S p e c                                 --
 --                                                                          --
 --                     Copyright (C) 2011-2014, AdaCore                     --
+--                     Copyright (C) 2014, Altran UK Limited                --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -39,6 +40,10 @@
 --  in SPARK, and listed for translation, or not listed for translation if a
 --  violation was detected in the body.
 
+with Atree;             use Atree;
+with Einfo;             use Einfo;
+with Sinfo;             use Sinfo;
+
 with Types;             use Types;
 
 with Common_Containers; use Common_Containers;
@@ -66,6 +71,11 @@ package SPARK_Definition is
    Max_Array_Dimensions : constant Positive := 4;
    --  maximal number of dimensions that are currently supported
 
+   Emit_Messages : Boolean := True;
+   --  Emit messages only if this is set. We do not want to produce any
+   --  error messages during marking when we generate globals (only the
+   --  marking itself is important).
+
    procedure Before_Marking (Basename : String);
    --  Create a file to store detailed information about the SPARK status of
    --  toplevel subprograms (spec/body in SPARK or not). Use the argument as
@@ -85,12 +95,27 @@ package SPARK_Definition is
    --  Returns True if entity E is in SPARK. Note that E may be in SPARK
    --  without being marked by the user in SPARK, in which case it can be
    --  called from SPARK code, but no VC will be generated for E.
+   --
+   --  Further note for subprograms this only works for the specification.
+   --  To check if a subprogram's body is in SPARK and contains no SPARK
+   --  violations use Entity_Body_Valid_SPARK.
 
    function Entity_Spec_In_SPARK (E : Entity_Id) return Boolean;
-   --  Returns True if the spec of subprogram or package E was marked in SPARK
+   --  Returns True if the spec of subprogram or package E was marked in
+   --  SPARK. Note this does not mean that the subprogram is valid SPARK,
+   --  only that SPARK_Mode is On.
 
    function Entity_Body_In_SPARK (E : Entity_Id) return Boolean;
-   --  Returns True if the body of subprogram or package E was marked in SPARK
+   --  Returns True if the body of subprogram or package E was marked in
+   --  SPARK. Note this does not mean that the subprogram is valid SPARK,
+   --  only that SPARK_Mode is On.
+
+   function Entity_Body_Valid_SPARK (E : Entity_Id) return Boolean
+     with Pre => Nkind (E) in N_Entity and then
+                 Ekind (E) in E_Function | E_Procedure and then
+                 Entity_Body_In_SPARK (E);
+   --  Returns true if the given entitys' body contains no SPARK
+   --  violations.
 
    function Fullview_Not_In_SPARK (E : Entity_Id) return Boolean;
    --  Returns true if the underlying type of the type E is not in SPARK,

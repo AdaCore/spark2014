@@ -96,6 +96,11 @@ package body Flow is
    --  node is attached). This subprogram does nothing for entities
    --  without a body and not in SPARK 2014.
 
+   procedure Build_Graphs_For_Compilation_Unit
+     (Compute_Globals : Boolean;
+      FA_Graphs       : out Analysis_Maps.Map);
+   --  Construct all flow graphs for the current compilation unit.
+
    -------------------------
    -- Add_To_Temp_String  --
    -------------------------
@@ -754,6 +759,11 @@ package body Flow is
                               when Subprogram_Kind => E_Subprogram_Body,
                               when others          => Ekind (E)),
           Compute_Globals => Compute_Globals);
+
+      Phase : constant String :=
+        (if Compute_Globals
+         then "Global generation"
+         else "Flow analysis");
    begin
       Tmp.Analyzed_Entity   := E;
       Tmp.Spec_Node         := S;
@@ -792,18 +802,24 @@ package body Flow is
 
             Tmp.Is_Main := Might_Be_Main (E);
 
-            Tmp.Is_Generative     :=
-              not (Present
-                     (Get_Pragma (E, Pragma_Global)) or
-                     Present
-                     (Get_Pragma (E, Pragma_Depends)));
-
             Tmp.Last_Statement_Is_Raise := Last_Statement_Is_Raise (E);
 
-            Tmp.Depends_N         := Empty;
-            Tmp.Refined_Depends_N := Empty;
-            Tmp.Global_N          := Empty;
-            Tmp.Refined_Global_N  := Empty;
+            Tmp.Depends_N := Get_Pragma (E, Pragma_Depends);
+            Tmp.Global_N  := Get_Pragma (E, Pragma_Global);
+
+            Tmp.Is_Generative := No (Tmp.Depends_N) and No (Tmp.Global_N);
+
+            declare
+               Body_N : constant Node_Id :=
+                 (if Acts_As_Spec (SPARK_Util.Get_Subprogram_Body (E))
+                  then E
+                  else Get_Body (E));
+            begin
+               Tmp.Refined_Depends_N := Get_Pragma (Body_N,
+                                                    Pragma_Refined_Depends);
+               Tmp.Refined_Global_N  := Get_Pragma (Body_N,
+                                                    Pragma_Refined_Global);
+            end;
 
             Tmp.Function_Side_Effects_Present := False;
 
@@ -813,7 +829,7 @@ package body Flow is
 
             Append (Tmp.Base_Filename, "pkg_spec_");
 
-            Tmp.Initializes_N := Empty;
+            Tmp.Initializes_N := Get_Pragma (E, Pragma_Initializes);
 
             Tmp.Visible_Vars  := Flow_Id_Sets.Empty_Set;
 
@@ -823,7 +839,8 @@ package body Flow is
 
             Append (Tmp.Base_Filename, "pkg_body_");
 
-            Tmp.Initializes_N := Empty;
+            Tmp.Initializes_N := Get_Pragma (Spec_Entity (E),
+                                             Pragma_Initializes);
 
             Tmp.Visible_Vars  := Flow_Id_Sets.Empty_Set;
 
@@ -831,8 +848,9 @@ package body Flow is
             raise Why.Not_SPARK;
       end case;
 
-      pragma Assert (not Tmp.Compute_Globals);
-      --  Fail for now, until we implement the better computation of globals
+      if Compute_Globals then
+         Tmp.GG.Aborted := False;
+      end if;
 
       declare
          FA : Flow_Analysis_Graphs := Tmp;
@@ -841,7 +859,7 @@ package body Flow is
 
          if Gnat2Why_Args.Flow_Advanced_Debug then
             Write_Str (Character'Val (8#33#) & "[32m" &
-                         "Flow analysis (cons) of " &
+                         Phase & " (cons) of " &
                          Entity_Kind'Image (FA.Kind) &
                          " " &
                          Character'Val (8#33#) & "[1m" &
@@ -851,7 +869,7 @@ package body Flow is
 
             Indent;
 
-            if Debug_Trace_Scoping then
+            if Debug_Trace_Scoping and not FA.Compute_Globals then
                Write_Str ("Spec_Scope: ");
                Print_Flow_Scope (FA.S_Scope);
                Write_Eol;
@@ -877,6 +895,51 @@ package body Flow is
                Write_Str ("Body_Scope: ");
                Print_Flow_Scope (FA.B_Scope);
                Write_Eol;
+            end if;
+         end if;
+
+         if FA.Compute_Globals then
+            --  There are a number of cases where we don't want to produce
+            --  graphs as we already have all the contracts we need.
+            case FA.Kind is
+               when E_Subprogram_Body =>
+                  if not FA.Is_Generative then
+                     if Gnat2Why_Args.Flow_Advanced_Debug then
+                        if Present (FA.Global_N) then
+                           Write_Str ("skipped (global found)");
+                        else
+                           Write_Str ("skipped (depends found)");
+                        end if;
+                        Write_Eol;
+                     end if;
+                     FA.GG.Aborted := True;
+                  end if;
+
+                  if Gnat2Why_Args.Flow_Advanced_Debug then
+                     Write_Str ("Spec in SPARK: " & (if Entity_In_SPARK (E)
+                                                     then "yes"
+                                                     else "no"));
+                     Write_Eol;
+                     Write_Str ("Body in SPARK: " &
+                                  (if Entity_Body_Valid_SPARK (E)
+                                   then "yes"
+                                   else "no"));
+                     Write_Eol;
+                  end if;
+
+               when E_Package | E_Package_Body =>
+                  if Gnat2Why_Args.Flow_Advanced_Debug then
+                     Write_Str ("skipped (package - TODO)");
+                     Write_Eol;
+                  end if;
+                  FA.GG.Aborted := True;
+            end case;
+
+            if FA.GG.Aborted then
+               if Gnat2Why_Args.Flow_Advanced_Debug then
+                  Outdent;
+               end if;
+               return FA;
             end if;
          end if;
 
@@ -938,22 +1001,26 @@ package body Flow is
       end;
    end Flow_Analyse_Entity;
 
-   ------------------------
-   -- Flow_Analyse_CUnit --
-   ------------------------
+   ---------------------------------------
+   -- Build_Graphs_For_Compilation_Unit --
+   ---------------------------------------
 
-   procedure Flow_Analyse_CUnit (GNAT_Root : Node_Id) is
-      FA_Graphs : Analysis_Maps.Map;
-      Success   : Boolean;
+   procedure Build_Graphs_For_Compilation_Unit
+     (Compute_Globals : Boolean;
+      FA_Graphs       : out Analysis_Maps.Map)
+   is
    begin
-      --  Process entities and construct graphs if necessary
       for E of Entity_Set loop
          case Ekind (E) is
             when Subprogram_Kind =>
                if SPARK_Util.Analysis_Requested (E)
-                 and Entity_Body_In_SPARK (E)
+                 and then Entity_Body_In_SPARK (E)
+                 and then Entity_Body_Valid_SPARK (E)
                then
-                  FA_Graphs.Include (E, Flow_Analyse_Entity (E, E, False));
+                  FA_Graphs.Include (E, Flow_Analyse_Entity
+                                       (E,
+                                        E,
+                                        Compute_Globals));
                end if;
 
             when E_Package =>
@@ -987,11 +1054,11 @@ package body Flow is
                      if Needs_Body and Entity_Body_In_SPARK (E) then
                         FA_Graphs.Include
                           (Pkg_Body,
-                           Flow_Analyse_Entity (Pkg_Body, E, False));
+                           Flow_Analyse_Entity (Pkg_Body, E, Compute_Globals));
                      elsif not Needs_Body then
-                        FA_Graphs.Include (E, Flow_Analyse_Entity (E,
-                                                                   E,
-                                                                   False));
+                        FA_Graphs.Include
+                          (E,
+                           Flow_Analyse_Entity (E, E, Compute_Globals));
                      else
                         null;
                         --  ??? warning that we can't flow analyze
@@ -1005,6 +1072,20 @@ package body Flow is
                null;
          end case;
       end loop;
+   end Build_Graphs_For_Compilation_Unit;
+
+   ------------------------
+   -- Flow_Analyse_CUnit --
+   ------------------------
+
+   procedure Flow_Analyse_CUnit (GNAT_Root : Node_Id) is
+      FA_Graphs : Analysis_Maps.Map;
+      Success   : Boolean;
+   begin
+
+      --  Process entities and construct graphs if necessary
+      Build_Graphs_For_Compilation_Unit (Compute_Globals => False,
+                                         FA_Graphs       => FA_Graphs);
 
       --  ??? Perform interprocedural analysis
 
@@ -1087,6 +1168,29 @@ package body Flow is
       Freeze_Loop_Info;
 
    end Flow_Analyse_CUnit;
+
+   ---------------------------
+   -- Generate_Flow_Globals --
+   ---------------------------
+
+   procedure Generate_Flow_Globals (GNAT_Root : Node_Id)
+   is
+      FA_Graphs : Analysis_Maps.Map;
+      pragma Unreferenced (GNAT_Root, FA_Graphs);
+   begin
+      --  Process entities and construct graphs if necessary
+      Build_Graphs_For_Compilation_Unit (Compute_Globals => True,
+                                         FA_Graphs       => FA_Graphs);
+
+      --  !!! Write computed globals to the ALI file here
+
+      if Gnat2Why_Args.Flow_Advanced_Debug then
+         Write_Str (Character'Val (8#33#) & "[33m" &
+                      "Global generation complete for current CU" &
+                      Character'Val (8#33#) & "[0m");
+         Write_Eol;
+      end if;
+   end Generate_Flow_Globals;
 
    -----------------------------
    -- Last_Statement_Is_Raise --

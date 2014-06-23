@@ -34,6 +34,7 @@ with System;
 
 with Gnat2Why.Driver;
 with Gnat2Why_Args;
+with SPARK_Definition;
 
 package body Back_End is
 
@@ -139,7 +140,7 @@ package body Back_End is
          --  In this mode, we should run the compiler with warnings as required
          --  by the user through switches -gnatw?
 
-         null;
+         SPARK_Definition.Emit_Messages := False;
 
       else
          --  In this mode, we should run the frontend with no warnings, in

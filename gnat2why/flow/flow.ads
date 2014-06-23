@@ -107,6 +107,15 @@ package Flow is
                                 E_Package |
                                 E_Package_Body;
 
+   type Flow_Global_Generation_Info (Present : Boolean) is record
+      case Present is
+         when True =>
+            Aborted : Boolean;
+         when False =>
+            null;
+      end case;
+   end record;
+
    type Flow_Analysis_Graphs_Root
      (Kind            : Valid_Analyzed_Entity := E_Subprogram_Body;
       Compute_Globals : Boolean               := False)
@@ -181,6 +190,9 @@ package Flow is
       --  are disabled in this case as we would spam the user with error
       --  messages for almost every statement.
 
+      GG : Flow_Global_Generation_Info (Compute_Globals);
+      --  Information for globals computation.
+
       case Kind is
          when E_Subprogram_Body =>
             Is_Main : Boolean;
@@ -212,6 +224,7 @@ package Flow is
             --  tedious to find.
 
             Visible_Vars : Flow_Id_Sets.Set;
+
       end case;
    end record;
 
@@ -257,6 +270,9 @@ package Flow is
 
    procedure Flow_Analyse_CUnit (GNAT_Root : Node_Id);
    --  Flow analyses the current compilation unit.
+
+   procedure Generate_Flow_Globals (GNAT_Root : Node_Id);
+   --  Generate flow globals for the current compilation unit.
 
 private
 

@@ -1071,9 +1071,10 @@ package body Flow.Control_Flow_Graph is
                         Vars_Used_By_Nested_Expr := Vars_Used_By_Nested_Expr or
                           Get_Variable_Set
                             (Expr,
-                             Scope           => FA.B_Scope,
-                             Local_Constants => FA.Local_Constants,
-                             Fold_Functions  => True);
+                             Scope                => FA.B_Scope,
+                             Local_Constants      => FA.Local_Constants,
+                             Fold_Functions       => True,
+                             Use_Computed_Globals => not FA.Compute_Globals);
 
                         case Nkind (Pref) is
                            when N_Attribute_Reference =>
@@ -1092,9 +1093,10 @@ package body Flow.Control_Flow_Graph is
                         Vars_Used_By_Nested_Expr := Vars_Used_By_Nested_Expr or
                           Get_Variable_Set
                             (Expressions (Pref),
-                             Scope           => FA.B_Scope,
-                             Local_Constants => FA.Local_Constants,
-                             Fold_Functions  => True);
+                             Scope                => FA.B_Scope,
+                             Local_Constants      => FA.Local_Constants,
+                             Fold_Functions       => True,
+                             Use_Computed_Globals => not FA.Compute_Globals);
 
                         Pref := Prefix (Pref);
 
@@ -1109,9 +1111,10 @@ package body Flow.Control_Flow_Graph is
                   Vars_Used := Vars_Used_By_Nested_Expr or
                     Get_Variable_Set
                       (Pref,
-                       Scope           => FA.B_Scope,
-                       Local_Constants => FA.Local_Constants,
-                       Fold_Functions  => True);
+                       Scope                => FA.B_Scope,
+                       Local_Constants      => FA.Local_Constants,
+                       Fold_Functions       => True,
+                       Use_Computed_Globals => not FA.Compute_Globals);
                   return;
                end if;
 
@@ -1161,9 +1164,12 @@ package body Flow.Control_Flow_Graph is
 
                                     Vars_Used := Get_Variable_Set
                                       (Expression (Comp_Assoc),
-                                       Scope           => FA.B_Scope,
-                                       Local_Constants => FA.Local_Constants,
-                                       Fold_Functions  => True);
+                                       Scope                => FA.B_Scope,
+                                       Local_Constants      =>
+                                         FA.Local_Constants,
+                                       Fold_Functions       => True,
+                                       Use_Computed_Globals =>
+                                         not FA.Compute_Globals);
 
                                     return;
                                  end if;
@@ -1187,9 +1193,11 @@ package body Flow.Control_Flow_Graph is
 
                                  Vars_Used := Get_Variable_Set
                                    (Expression (Comp_Assoc),
-                                    Scope           => FA.B_Scope,
-                                    Local_Constants => FA.Local_Constants,
-                                    Fold_Functions  => True);
+                                    Scope                => FA.B_Scope,
+                                    Local_Constants      => FA.Local_Constants,
+                                    Fold_Functions       => True,
+                                    Use_Computed_Globals =>
+                                      not FA.Compute_Globals);
 
                                  return;
                               end if;
@@ -1301,9 +1309,10 @@ package body Flow.Control_Flow_Graph is
 
                            Vars_Used := Vars_Used or Get_Variable_Set
                              (Found,
-                              Scope           => FA.B_Scope,
-                              Local_Constants => FA.Local_Constants,
-                              Fold_Functions  => True);
+                              Scope                => FA.B_Scope,
+                              Local_Constants      => FA.Local_Constants,
+                              Fold_Functions       => True,
+                              Use_Computed_Globals => not FA.Compute_Globals);
                         end if;
 
                      when N_Selected_Component =>
@@ -1318,9 +1327,10 @@ package body Flow.Control_Flow_Graph is
 
                         Vars_Used := Vars_Used or Get_Variable_Set
                           (Search_Under,
-                           Scope           => FA.B_Scope,
-                           Local_Constants => FA.Local_Constants,
-                           Fold_Functions  => True);
+                           Scope                => FA.B_Scope,
+                           Local_Constants      => FA.Local_Constants,
+                           Fold_Functions       => True,
+                           Use_Computed_Globals => not FA.Compute_Globals);
 
                      when others =>
                         raise Why.Unexpected_Node;
@@ -1588,16 +1598,19 @@ package body Flow.Control_Flow_Graph is
       V_Need_Checking_LHS : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
    begin
       --  Work out which variables we use and define.
-      V_Used_RHS := Get_Variable_Set (Expression (N),
-                                      Scope           => FA.B_Scope,
-                                      Local_Constants => FA.Local_Constants,
-                                      Fold_Functions  => True);
+      V_Used_RHS := Get_Variable_Set
+        (Expression (N),
+         Scope                => FA.B_Scope,
+         Local_Constants      => FA.Local_Constants,
+         Fold_Functions       => True,
+         Use_Computed_Globals => not FA.Compute_Globals);
       Ctx.Folded_Function_Checks (N).Insert (Expression (N));
 
       Untangle_Assignment_Target
         (N                    => Name (N),
          Scope                => FA.B_Scope,
          Local_Constants      => FA.Local_Constants,
+         Use_Computed_Globals => not FA.Compute_Globals,
          Vars_Explicitly_Used => V_Explicitly_Used_LHS,
          Vars_Implicitly_Used => V_Implicitly_Used_LHS,
          Vars_Defined         => V_Def_LHS,
@@ -1700,15 +1713,16 @@ package body Flow.Control_Flow_Graph is
       Add_Vertex
         (FA,
          Direct_Mapping_Id (N),
-         Make_Basic_Attributes (Var_Ex_Use => Get_Variable_Set
-                                  (Expression (N),
-                                   Scope           => FA.B_Scope,
-                                   Local_Constants => FA.Local_Constants,
-                                   Fold_Functions  => True),
-                                Sub_Called => Get_Function_Set
-                                                (Expression (N)),
-                                Loops      => Ctx.Current_Loops,
-                                E_Loc      => N),
+         Make_Basic_Attributes
+           (Var_Ex_Use => Get_Variable_Set
+              (Expression (N),
+               Scope                => FA.B_Scope,
+               Local_Constants      => FA.Local_Constants,
+               Fold_Functions       => True,
+               Use_Computed_Globals => not FA.Compute_Globals),
+            Sub_Called => Get_Function_Set (Expression (N)),
+            Loops      => Ctx.Current_Loops,
+            E_Loc      => N),
          V);
       Ctx.Folded_Function_Checks (N).Insert (Expression (N));
       CM.Include (Union_Id (N), No_Connections);
@@ -1785,15 +1799,16 @@ package body Flow.Control_Flow_Graph is
          Add_Vertex
            (FA,
             Direct_Mapping_Id (N),
-            Make_Basic_Attributes (Var_Ex_Use => Get_Variable_Set
-                                     (Condition (N),
-                                      Scope           => FA.B_Scope,
-                                      Local_Constants => FA.Local_Constants,
-                                      Fold_Functions  => True),
-                                   Sub_Called => Get_Function_Set
-                                                   (Condition (N)),
-                                   Loops      => Ctx.Current_Loops,
-                                   E_Loc      => N),
+            Make_Basic_Attributes
+              (Var_Ex_Use => Get_Variable_Set
+                 (Condition (N),
+                  Scope                => FA.B_Scope,
+                  Local_Constants      => FA.Local_Constants,
+                  Fold_Functions       => True,
+                  Use_Computed_Globals => not FA.Compute_Globals),
+               Sub_Called => Get_Function_Set (Condition (N)),
+               Loops      => Ctx.Current_Loops,
+               E_Loc      => N),
             V);
          Ctx.Folded_Function_Checks (N).Insert (Condition (N));
          CM.Include (Union_Id (N),
@@ -1856,9 +1871,10 @@ package body Flow.Control_Flow_Graph is
               (Var_Def         => Flatten_Variable (FA.Analyzed_Entity),
                Var_Use         => Get_Variable_Set
                  (Ret_Object,
-                  Scope           => FA.B_Scope,
-                  Local_Constants => FA.Local_Constants,
-                  Fold_Functions  => True),
+                  Scope                => FA.B_Scope,
+                  Local_Constants      => FA.Local_Constants,
+                  Fold_Functions       => True,
+                  Use_Computed_Globals => not FA.Compute_Globals),
                Object_Returned => Ret_Object,
                Sub_Called      => Get_Function_Set (Ret_Object),
                Loops           => Ctx.Current_Loops,
@@ -1940,14 +1956,16 @@ package body Flow.Control_Flow_Graph is
       Add_Vertex
         (FA,
          Direct_Mapping_Id (N),
-         Make_Basic_Attributes (Var_Ex_Use => Get_Variable_Set
-                                  (Condition (N),
-                                   Scope           => FA.B_Scope,
-                                   Local_Constants => FA.Local_Constants,
-                                   Fold_Functions  => True),
-                                Sub_Called => Get_Function_Set (Condition (N)),
-                                Loops      => Ctx.Current_Loops,
-                                E_Loc      => N),
+         Make_Basic_Attributes
+           (Var_Ex_Use => Get_Variable_Set
+              (Condition (N),
+               Scope                => FA.B_Scope,
+               Local_Constants      => FA.Local_Constants,
+               Fold_Functions       => True,
+               Use_Computed_Globals => not FA.Compute_Globals),
+            Sub_Called => Get_Function_Set (Condition (N)),
+            Loops      => Ctx.Current_Loops,
+            E_Loc      => N),
          V);
       Ctx.Folded_Function_Checks (N).Insert (Condition (N));
       CM.Include (Union_Id (N), No_Connections);
@@ -2000,11 +2018,12 @@ package body Flow.Control_Flow_Graph is
                   Make_Basic_Attributes
                     (Var_Ex_Use => Get_Variable_Set
                        (Condition (Elsif_Statement),
-                        Scope           => FA.B_Scope,
-                        Local_Constants => FA.Local_Constants,
-                        Fold_Functions  => True),
-                     Sub_Called => Get_Function_Set
-                                     (Condition (Elsif_Statement)),
+                        Scope                => FA.B_Scope,
+                        Local_Constants      => FA.Local_Constants,
+                        Fold_Functions       => True,
+                        Use_Computed_Globals => not FA.Compute_Globals),
+                     Sub_Called => Get_Function_Set (Condition
+                                                       (Elsif_Statement)),
                      Loops      => Ctx.Current_Loops,
                      E_Loc      => Elsif_Statement),
                   V);
@@ -2304,15 +2323,17 @@ package body Flow.Control_Flow_Graph is
          Add_Vertex
            (FA,
             Direct_Mapping_Id (N),
-            Make_Basic_Attributes (Var_Ex_Use => Get_Variable_Set
-                                     (Condition (Iteration_Scheme (N)),
-                                      Scope           => FA.B_Scope,
-                                      Local_Constants => FA.Local_Constants,
-                                      Fold_Functions  => True),
-                                   Sub_Called => Get_Function_Set
-                                     (Condition (Iteration_Scheme (N))),
-                                   Loops      => Ctx.Current_Loops,
-                                   E_Loc      => N),
+            Make_Basic_Attributes
+              (Var_Ex_Use => Get_Variable_Set
+                 (Condition (Iteration_Scheme (N)),
+                  Scope                => FA.B_Scope,
+                  Local_Constants      => FA.Local_Constants,
+                  Fold_Functions       => True,
+                  Use_Computed_Globals => not FA.Compute_Globals),
+               Sub_Called => Get_Function_Set (Condition
+                                                 (Iteration_Scheme (N))),
+               Loops      => Ctx.Current_Loops,
+               E_Loc      => N),
             V);
          Ctx.Folded_Function_Checks (N).Insert
            (Condition (Iteration_Scheme (N)));
@@ -2399,9 +2420,10 @@ package body Flow.Control_Flow_Graph is
                  (Var_Def    => Flatten_Variable (LP),
                   Var_Ex_Use => Get_Variable_Set
                     (DSD,
-                     Scope           => FA.B_Scope,
-                     Local_Constants => FA.Local_Constants,
-                     Fold_Functions  => True),
+                     Scope                => FA.B_Scope,
+                     Local_Constants      => FA.Local_Constants,
+                     Fold_Functions       => True,
+                     Use_Computed_Globals => not FA.Compute_Globals),
                   Sub_Called => Get_Function_Set (DSD),
                   Loops      => Ctx.Current_Loops,
                   E_Loc      => N),
@@ -2890,9 +2912,10 @@ package body Flow.Control_Flow_Graph is
                Make_Sink_Vertex_Attributes
                  (Var_Use       => Get_Variable_Set
                     (Prefix (Reference),
-                     Scope           => FA.B_Scope,
-                     Local_Constants => FA.Local_Constants,
-                     Fold_Functions  => False),
+                     Scope                => FA.B_Scope,
+                     Local_Constants      => FA.Local_Constants,
+                     Fold_Functions       => False,
+                     Use_Computed_Globals => not FA.Compute_Globals),
                   Is_Loop_Entry => True),
                V);
             Ctx.Folded_Function_Checks (N).Insert (Prefix (Reference));
@@ -3075,9 +3098,10 @@ package body Flow.Control_Flow_Graph is
                     (Var_Def    => Var_Def,
                      Var_Ex_Use => Get_Variable_Set
                        (Expression (N),
-                        Scope           => FA.B_Scope,
-                        Local_Constants => FA.Local_Constants,
-                        Fold_Functions  => True),
+                        Scope                => FA.B_Scope,
+                        Local_Constants      => FA.Local_Constants,
+                        Fold_Functions       => True,
+                        Use_Computed_Globals => not FA.Compute_Globals),
                      Sub_Called => Get_Function_Set (Expression (N)),
                      Loops      => Ctx.Current_Loops,
                      E_Loc      => N),
@@ -3498,9 +3522,10 @@ package body Flow.Control_Flow_Graph is
                   Make_Sink_Vertex_Attributes
                     (Var_Use  => Get_Variable_Set
                        (Pragma_Argument_Associations (N),
-                        Scope           => FA.B_Scope,
-                        Local_Constants => FA.Local_Constants,
-                        Fold_Functions  => False),
+                        Scope                => FA.B_Scope,
+                        Local_Constants      => FA.Local_Constants,
+                        Fold_Functions       => False,
+                        Use_Computed_Globals => not FA.Compute_Globals),
                      Is_Proof => True,
                      E_Loc    => N),
                   V);
@@ -3554,9 +3579,10 @@ package body Flow.Control_Flow_Graph is
          Make_Sink_Vertex_Attributes
            (Var_Use         => Get_Variable_Set
               (Pre,
-               Scope           => FA.B_Scope,
-               Local_Constants => FA.Local_Constants,
-               Fold_Functions  => False),
+               Scope                => FA.B_Scope,
+               Local_Constants      => FA.Local_Constants,
+               Fold_Functions       => False,
+               Use_Computed_Globals => not FA.Compute_Globals),
             Sub_Called      => Get_Function_Set (Pre),
             Is_Proof        => True,
             Is_Precondition => True,
@@ -3638,10 +3664,15 @@ package body Flow.Control_Flow_Graph is
                                       Out_List,
                                       FA, CM, Ctx);
 
-      --  Process globals.
-      Process_Subprogram_Globals (N,
-                                  In_List, Out_List,
-                                  FA, CM, Ctx);
+      --  Process globals. If we generate globals we only do this if we
+      --  have a user contract.
+      if not FA.Compute_Globals or else
+        Has_User_Supplied_Globals (Called_Procedure)
+      then
+         Process_Subprogram_Globals (N,
+                                     In_List, Out_List,
+                                     FA, CM, Ctx);
+      end if;
 
       --  Check if we need a magic null export.
       if Has_Depends (Called_Procedure) then
@@ -3725,9 +3756,10 @@ package body Flow.Control_Flow_Graph is
          Make_Sink_Vertex_Attributes
            (Var_Use          => Get_Variable_Set
               (Post,
-               Scope           => FA.B_Scope,
-               Local_Constants => FA.Local_Constants,
-               Fold_Functions  => False),
+               Scope                => FA.B_Scope,
+               Local_Constants      => FA.Local_Constants,
+               Fold_Functions       => False,
+               Use_Computed_Globals => not FA.Compute_Globals),
             Sub_Called       => Get_Function_Set (Post),
             Is_Proof         => True,
             Is_Postcondition => True,
@@ -3764,9 +3796,10 @@ package body Flow.Control_Flow_Graph is
               (Var_Def    => Flatten_Variable (FA.Analyzed_Entity),
                Var_Ex_Use => Get_Variable_Set
                  (Expression (N),
-                  Scope           => FA.B_Scope,
-                  Local_Constants => FA.Local_Constants,
-                  Fold_Functions  => True),
+                  Scope                => FA.B_Scope,
+                  Local_Constants      => FA.Local_Constants,
+                  Fold_Functions       => True,
+                  Use_Computed_Globals => not FA.Compute_Globals),
                Sub_Called => Get_Function_Set (Expression (N)),
                Loops      => Ctx.Current_Loops,
                E_Loc      => N),
@@ -3871,9 +3904,10 @@ package body Flow.Control_Flow_Graph is
          Make_Sink_Vertex_Attributes
            (Var_Use    => Get_Variable_Set
               (N,
-               Scope           => FA.B_Scope,
-               Local_Constants => FA.Local_Constants,
-               Fold_Functions  => False),
+               Scope                => FA.B_Scope,
+               Local_Constants      => FA.Local_Constants,
+               Fold_Functions       => False,
+               Use_Computed_Globals => not FA.Compute_Globals),
             Sub_Called => Get_Function_Set (N),
             E_Loc      => N),
          V);
@@ -4216,7 +4250,12 @@ package body Flow.Control_Flow_Graph is
             Do_Pragma (N, FA, CM, Ctx);
          when N_Procedure_Call_Statement =>
             --  Check for aliasing first
-            Check_Procedure_Call (N, FA.Aliasing_Present);
+            if not FA.Compute_Globals then
+               --  ??? We will get errors during flow analysis - to be
+               --  investigated if there are issues here if we produce
+               --  useless contracts?
+               Check_Procedure_Call (N, FA.Aliasing_Present);
+            end if;
 
             --  Then process the procedure call
             Do_Procedure_Call_Statement (N, FA, CM, Ctx);
@@ -4242,14 +4281,19 @@ package body Flow.Control_Flow_Graph is
       for Expr of Ctx.Folded_Function_Checks (N) loop
          declare
             Unchecked : constant Flow_Id_Sets.Set :=
-              Get_Variable_Set (Expr,
-                                Scope           => FA.B_Scope,
-                                Local_Constants => FA.Local_Constants,
-                                Fold_Functions  => False) -
-              Get_Variable_Set (Expr,
-                                Scope           => FA.B_Scope,
-                                Local_Constants => FA.Local_Constants,
-                                Fold_Functions  => True);
+              Get_Variable_Set
+              (Expr,
+               Scope                => FA.B_Scope,
+               Local_Constants      => FA.Local_Constants,
+               Fold_Functions       => False,
+               Use_Computed_Globals => not FA.Compute_Globals) -
+
+              Get_Variable_Set
+              (Expr,
+               Scope                => FA.B_Scope,
+               Local_Constants      => FA.Local_Constants,
+               Fold_Functions       => True,
+               Use_Computed_Globals => not FA.Compute_Globals);
             V : Flow_Graphs.Vertex_Id;
          begin
             if Unchecked.Length > 0 then
@@ -4473,23 +4517,10 @@ package body Flow.Control_Flow_Graph is
             Body_N        := Get_Subprogram_Body (FA.Analyzed_Entity);
             Preconditions := Get_Precondition_Expressions (FA.Analyzed_Entity);
 
-            FA.Depends_N := Get_Pragma (FA.Analyzed_Entity, Pragma_Depends);
-            FA.Global_N  := Get_Pragma (FA.Analyzed_Entity, Pragma_Global);
-
             if Acts_As_Spec (Body_N) then
                Subprogram_Spec := Defining_Unit_Name (Specification (Body_N));
-               FA.Refined_Depends_N :=
-                 Get_Pragma (FA.Analyzed_Entity, Pragma_Refined_Depends);
-               FA.Refined_Global_N :=
-                 Get_Pragma (FA.Analyzed_Entity, Pragma_Refined_Global);
             else
                Subprogram_Spec := Corresponding_Spec (Body_N);
-               FA.Refined_Depends_N :=
-                 Get_Pragma (Get_Body (FA.Analyzed_Entity),
-                             Pragma_Refined_Depends);
-               FA.Refined_Global_N :=
-                 Get_Pragma (Get_Body (FA.Analyzed_Entity),
-                             Pragma_Refined_Global);
             end if;
 
          when E_Package =>
@@ -4497,17 +4528,12 @@ package body Flow.Control_Flow_Graph is
                                      N_Package_Specification);
             Body_N := Spec_N;
 
-            FA.Initializes_N := Get_Pragma (FA.Analyzed_Entity,
-                                            Pragma_Initializes);
-
          when E_Package_Body =>
             Body_N := Get_Enclosing (FA.Analyzed_Entity,
                                      N_Package_Body);
             Spec_N := Get_Enclosing (Corresponding_Spec (Body_N),
                                      N_Package_Specification);
 
-            FA.Initializes_N := Get_Pragma (Spec_Entity (FA.Analyzed_Entity),
-                                            Pragma_Initializes);
       end case;
 
       --  Create the magic start, helper end and end vertices.
@@ -4560,95 +4586,98 @@ package body Flow.Control_Flow_Graph is
       --  and final vertices.
       case FA.Kind is
          when E_Subprogram_Body =>
-            declare
-               type G_Prop is record
-                  Is_Read     : Boolean;
-                  Is_Write    : Boolean;
-                  Is_Proof_In : Boolean;
-               end record;
+            if not FA.Compute_Globals then
+               declare
+                  type G_Prop is record
+                     Is_Read     : Boolean;
+                     Is_Write    : Boolean;
+                     Is_Proof_In : Boolean;
+                  end record;
 
-               package Global_Maps is new Ada.Containers.Hashed_Maps
-                 (Key_Type        => Flow_Id,
-                  Element_Type    => G_Prop,
-                  Hash            => Hash,
-                  Equivalent_Keys => "=",
-                  "="             => "=");
+                  package Global_Maps is new Ada.Containers.Hashed_Maps
+                    (Key_Type        => Flow_Id,
+                     Element_Type    => G_Prop,
+                     Hash            => Hash,
+                     Equivalent_Keys => "=",
+                     "="             => "=");
 
-               Proof_Ins : Flow_Id_Sets.Set;
-               Reads     : Flow_Id_Sets.Set;
-               Writes    : Flow_Id_Sets.Set;
-               Globals   : Global_Maps.Map := Global_Maps.Empty_Map;
-            begin
-               Get_Globals (Subprogram => Subprogram_Spec,
-                            Scope      => FA.B_Scope,
-                            Proof_Ins  => Proof_Ins,
-                            Reads      => Reads,
-                            Writes     => Writes);
-               for G of Proof_Ins loop
-                  Globals.Include (Change_Variant (G, Normal_Use),
-                                   G_Prop'(Is_Read     => False,
-                                           Is_Write    => False,
-                                           Is_Proof_In => True));
-               end loop;
-               for G of Reads loop
-                  Globals.Include (Change_Variant (G, Normal_Use),
-                                   G_Prop'(Is_Read     => True,
-                                           Is_Write    => False,
-                                           Is_Proof_In => False));
-               end loop;
-               for G of Writes loop
-                  declare
-                     P : G_Prop;
-                  begin
-                     if Globals.Contains (Change_Variant (G, Normal_Use)) then
-                        P := Globals (Change_Variant (G, Normal_Use));
-                        P.Is_Write := True;
-                     else
-                        P := G_Prop'(Is_Read     => False,
-                                     Is_Write    => True,
-                                     Is_Proof_In => False);
-                     end if;
-                     Globals.Include (Change_Variant (G, Normal_Use), P);
+                  Proof_Ins : Flow_Id_Sets.Set;
+                  Reads     : Flow_Id_Sets.Set;
+                  Writes    : Flow_Id_Sets.Set;
+                  Globals   : Global_Maps.Map := Global_Maps.Empty_Map;
+               begin
+                  Get_Globals (Subprogram => Subprogram_Spec,
+                               Scope      => FA.B_Scope,
+                               Proof_Ins  => Proof_Ins,
+                               Reads      => Reads,
+                               Writes     => Writes);
+                  for G of Proof_Ins loop
+                     Globals.Include (Change_Variant (G, Normal_Use),
+                                      G_Prop'(Is_Read     => False,
+                                              Is_Write    => False,
+                                              Is_Proof_In => True));
+                  end loop;
+                  for G of Reads loop
+                     Globals.Include (Change_Variant (G, Normal_Use),
+                                      G_Prop'(Is_Read     => True,
+                                              Is_Write    => False,
+                                              Is_Proof_In => False));
+                  end loop;
+                  for G of Writes loop
+                     declare
+                        P : G_Prop;
+                     begin
+                        if Globals.Contains (Change_Variant (G, Normal_Use))
+                        then
+                           P := Globals (Change_Variant (G, Normal_Use));
+                           P.Is_Write := True;
+                        else
+                           P := G_Prop'(Is_Read     => False,
+                                        Is_Write    => True,
+                                        Is_Proof_In => False);
+                        end if;
+                        Globals.Include (Change_Variant (G, Normal_Use), P);
 
-                     --  If we are dealing with a function, since we found a
-                     --  global output, we raise an error.
-                     if Ekind (FA.Analyzed_Entity) = E_Function then
-                        Error_Msg_Flow
-                          (FA  => FA,
-                           Msg       => "function with output global & " &
-                             "is not allowed in SPARK",
-                           N   => FA.Analyzed_Entity,
-                           F1  => G,
-                           Tag => "side_effects");
+                        --  If we are dealing with a function, since we found a
+                        --  global output, we raise an error.
+                        if Ekind (FA.Analyzed_Entity) = E_Function then
+                           Error_Msg_Flow
+                             (FA  => FA,
+                              Msg       => "function with output global & " &
+                                "is not allowed in SPARK",
+                              N   => FA.Analyzed_Entity,
+                              F1  => G,
+                              Tag => "side_effects");
 
-                        FA.Function_Side_Effects_Present := True;
-                     end if;
-                  end;
-               end loop;
+                           FA.Function_Side_Effects_Present := True;
+                        end if;
+                     end;
+                  end loop;
 
-               for C in Globals.Iterate loop
-                  declare
-                     G : constant Flow_Id := Global_Maps.Key (C);
-                     P : constant G_Prop  := Global_Maps.Element (C);
+                  for C in Globals.Iterate loop
+                     declare
+                        G : constant Flow_Id := Global_Maps.Key (C);
+                        P : constant G_Prop  := Global_Maps.Element (C);
 
-                     Mode : Param_Mode;
-                  begin
-                     if P.Is_Read and P.Is_Write then
-                        Mode := Mode_In_Out;
-                     elsif P.Is_Read then
-                        Mode := Mode_In;
-                     elsif P.Is_Write then
-                        Mode := Mode_Out;
-                     elsif P.Is_Proof_In then
-                        Mode := Mode_Proof;
-                     else
-                        raise Program_Error;
-                     end if;
+                        Mode : Param_Mode;
+                     begin
+                        if P.Is_Read and P.Is_Write then
+                           Mode := Mode_In_Out;
+                        elsif P.Is_Read then
+                           Mode := Mode_In;
+                        elsif P.Is_Write then
+                           Mode := Mode_Out;
+                        elsif P.Is_Proof_In then
+                           Mode := Mode_Proof;
+                        else
+                           raise Program_Error;
+                        end if;
 
-                     Create_Initial_And_Final_Vertices (G, Mode, False, FA);
-                  end;
-               end loop;
-            end;
+                        Create_Initial_And_Final_Vertices (G, Mode, False, FA);
+                     end;
+                  end loop;
+               end;
+            end if;
 
          when E_Package | E_Package_Body =>
             --  Packages have no obvious globals, but we can extract a

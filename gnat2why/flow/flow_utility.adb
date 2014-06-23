@@ -278,6 +278,18 @@ package body Flow_Utility is
    --  Package
    ----------------------------------------------------------------------
 
+   -------------------------------
+   -- Has_User_Supplied_Globals --
+   -------------------------------
+
+   function Has_User_Supplied_Globals (Subprogram : Entity_Id)
+                                       return Boolean
+   is
+   begin
+      return Present (Get_Pragma (Subprogram, Pragma_Global)) or else
+        Has_Depends (Subprogram);
+   end Has_User_Supplied_Globals;
+
    -----------------
    -- Has_Depends --
    -----------------
@@ -346,7 +358,8 @@ package body Flow_Utility is
                           Reads                  : out Flow_Id_Sets.Set;
                           Writes                 : out Flow_Id_Sets.Set;
                           Consider_Discriminants : Boolean := False;
-                          Globals_For_Proof      : Boolean := False)
+                          Globals_For_Proof      : Boolean := False;
+                          Use_Computed_Globals   : Boolean := True)
    is
       Global_Node  : constant Node_Id := Get_Contract_Node (Subprogram,
                                                             Scope,
@@ -677,7 +690,7 @@ package body Flow_Utility is
             end if;
          end;
 
-      else
+      elsif Use_Computed_Globals then
          --  We don't have a global aspect, so we should look at the
          --  computed globals...
 
@@ -783,6 +796,17 @@ package body Flow_Utility is
                Outdent;
             end if;
          end;
+
+      else
+         --  We don't have user globals and we're not allowed to use
+         --  computed globals (i.e. we're trying to compute globals).
+
+         if Debug_Trace_Get_Global then
+            Indent;
+            Write_Str ("defaulting to null globals");
+            Write_Eol;
+            Outdent;
+         end if;
 
       end if;
 
@@ -958,6 +982,7 @@ package body Flow_Utility is
       Scope                        : Flow_Scope;
       Local_Constants              : Node_Sets.Set;
       Fold_Functions               : Boolean;
+      Use_Computed_Globals         : Boolean;
       Reduced                      : Boolean := False;
       Allow_Statements             : Boolean := False;
       Expand_Synthesized_Constants : Boolean := False)
@@ -966,14 +991,15 @@ package body Flow_Utility is
       VS : Flow_Id_Sets.Set;
 
       function Recurse_On (N : Node_Id) return Flow_Id_Sets.Set
-      is (Get_Variable_Set (N,
-                            Scope                        => Scope,
-                            Local_Constants              => Local_Constants,
-                            Fold_Functions               => Fold_Functions,
-                            Reduced                      => Reduced,
-                            Allow_Statements             => False,
-                            Expand_Synthesized_Constants =>
-                              Expand_Synthesized_Constants));
+      is (Get_Variable_Set
+            (N,
+             Scope                        => Scope,
+             Local_Constants              => Local_Constants,
+             Fold_Functions               => Fold_Functions,
+             Use_Computed_Globals         => Use_Computed_Globals,
+             Reduced                      => Reduced,
+             Allow_Statements             => False,
+             Expand_Synthesized_Constants => Expand_Synthesized_Constants));
       --  Recuse on N. Please note that Allow_Statements is always false;
       --  this is intentional as we should only ever recurse on something
       --  inside expressions.
@@ -1021,11 +1047,12 @@ package body Flow_Utility is
          declare
             Proof_Reads : Flow_Id_Sets.Set;
          begin
-            Get_Globals (Subprogram   => Subprogram,
-                         Scope        => Scope,
-                         Proof_Ins    => Proof_Reads,
-                         Reads        => Global_Reads,
-                         Writes       => Global_Writes);
+            Get_Globals (Subprogram           => Subprogram,
+                         Scope                => Scope,
+                         Proof_Ins            => Proof_Reads,
+                         Reads                => Global_Reads,
+                         Writes               => Global_Writes,
+                         Use_Computed_Globals => Use_Computed_Globals);
             if not Fold_Functions then
                Global_Reads.Union (Proof_Reads);
             end if;
@@ -1250,6 +1277,7 @@ package body Flow_Utility is
                        (N                    => N,
                         Scope                => Scope,
                         Local_Constants      => Local_Constants,
+                        Use_Computed_Globals => Use_Computed_Globals,
                         Vars_Explicitly_Used => A,
                         Vars_Implicitly_Used => B,
                         Vars_Defined         => C,
@@ -1279,6 +1307,7 @@ package body Flow_Utility is
                           (N                    => Prefix (N),
                            Scope                => Scope,
                            Local_Constants      => Local_Constants,
+                           Use_Computed_Globals => Use_Computed_Globals,
                            Vars_Explicitly_Used => A,
                            Vars_Implicitly_Used => B,
                            Vars_Defined         => C,
@@ -1340,6 +1369,7 @@ package body Flow_Utility is
       Scope                        : Flow_Scope;
       Local_Constants              : Node_Sets.Set;
       Fold_Functions               : Boolean;
+      Use_Computed_Globals         : Boolean;
       Reduced                      : Boolean := False;
       Allow_Statements             : Boolean := False;
       Expand_Synthesized_Constants : Boolean := False)
@@ -1356,6 +1386,7 @@ package body Flow_Utility is
                Scope                        => Scope,
                Local_Constants              => Local_Constants,
                Fold_Functions               => Fold_Functions,
+               Use_Computed_Globals         => Use_Computed_Globals,
                Reduced                      => Reduced,
                Allow_Statements             => Allow_Statements,
                Expand_Synthesized_Constants => Expand_Synthesized_Constants));
@@ -1468,6 +1499,7 @@ package body Flow_Utility is
      (N                    : Node_Id;
       Scope                : Flow_Scope;
       Local_Constants      : Node_Sets.Set;
+      Use_Computed_Globals : Boolean;
       Vars_Defined         : in out Flow_Id_Sets.Set;
       Vars_Explicitly_Used : in out Flow_Id_Sets.Set;
       Vars_Implicitly_Used : in out Flow_Id_Sets.Set;
@@ -1553,25 +1585,29 @@ package body Flow_Utility is
             when N_Indexed_Component | N_Attribute_Reference =>
                Used_All := Get_Variable_Set
                  (Expressions (N),
-                  Scope           => Scope,
-                  Local_Constants => Local_Constants,
-                  Fold_Functions  => False);
+                  Scope                => Scope,
+                  Local_Constants      => Local_Constants,
+                  Fold_Functions       => False,
+                  Use_Computed_Globals => Use_Computed_Globals);
                Used_Folded := Get_Variable_Set
                  (Expressions (N),
-                  Scope           => Scope,
-                  Local_Constants => Local_Constants,
-                  Fold_Functions  => True);
+                  Scope                => Scope,
+                  Local_Constants      => Local_Constants,
+                  Fold_Functions       => True,
+                  Use_Computed_Globals => Use_Computed_Globals);
             when N_Slice =>
                Used_All := Get_Variable_Set
                  (Discrete_Range (N),
-                  Scope           => Scope,
-                  Local_Constants => Local_Constants,
-                  Fold_Functions  => False);
+                  Scope                => Scope,
+                  Local_Constants      => Local_Constants,
+                  Fold_Functions       => False,
+                  Use_Computed_Globals => Use_Computed_Globals);
                Used_Folded := Get_Variable_Set
                  (Discrete_Range (N),
-                  Scope           => Scope,
-                  Local_Constants => Local_Constants,
-                  Fold_Functions  => True);
+                  Scope                => Scope,
+                  Local_Constants      => Local_Constants,
+                  Fold_Functions       => True,
+                  Use_Computed_Globals => Use_Computed_Globals);
             when others =>
                return OK;
          end case;
@@ -1599,6 +1635,7 @@ package body Flow_Utility is
               (N                    => Expression (N),
                Scope                => Scope,
                Local_Constants      => Local_Constants,
+               Use_Computed_Globals => Use_Computed_Globals,
                Vars_Defined         => Vars_Defined,
                Vars_Explicitly_Used => Vars_Explicitly_Used,
                Vars_Implicitly_Used => Vars_Implicitly_Used,
@@ -1606,20 +1643,24 @@ package body Flow_Utility is
 
          when N_Identifier | N_Expanded_Name =>
             --  X :=
-            Vars_Defined.Union (Get_Variable_Set
-                                  (N,
-                                   Scope           => Scope,
-                                   Local_Constants => Local_Constants,
-                                   Fold_Functions  => False));
+            Vars_Defined.Union
+              (Get_Variable_Set
+                 (N,
+                  Scope                => Scope,
+                  Local_Constants      => Local_Constants,
+                  Fold_Functions       => False,
+                  Use_Computed_Globals => Use_Computed_Globals));
 
          when N_Function_Call =>
             --  Not strictly right, but this will satisfy the
             --  postcondition.
-            Vars_Defined.Union (Get_Variable_Set
-                                  (N,
-                                   Scope           => Scope,
-                                   Local_Constants => Local_Constants,
-                                   Fold_Functions  => False));
+            Vars_Defined.Union
+              (Get_Variable_Set
+                 (N,
+                  Scope                => Scope,
+                  Local_Constants      => Local_Constants,
+                  Fold_Functions       => False,
+                  Use_Computed_Globals => Use_Computed_Globals));
 
          when N_Selected_Component | N_Indexed_Component | N_Slice =>
             --  R.A :=
@@ -1658,9 +1699,10 @@ package body Flow_Utility is
                   Vars_Explicitly_Used.Union
                     (Get_Variable_Set
                        (Bottom_Node,
-                        Scope           => Scope,
-                        Local_Constants => Local_Constants,
-                        Fold_Functions  => False));
+                        Scope                => Scope,
+                        Local_Constants      => Local_Constants,
+                        Fold_Functions       => False,
+                        Use_Computed_Globals => Use_Computed_Globals));
                   goto Fin;
             end case;
 
@@ -1687,9 +1729,10 @@ package body Flow_Utility is
                         Vars_Defined.Union
                           (Get_Variable_Set
                              (Prefix (End_Of_Record),
-                              Scope           => Scope,
-                              Local_Constants => Local_Constants,
-                              Fold_Functions  => False));
+                              Scope                => Scope,
+                              Local_Constants      => Local_Constants,
+                              Fold_Functions       => False,
+                              Use_Computed_Globals => Use_Computed_Globals));
 
                      when N_Unchecked_Type_Conversion =>
                         --  This is an interesting special case. We
@@ -1700,9 +1743,10 @@ package body Flow_Utility is
                         Vars_Defined.Union
                           (Get_Variable_Set
                              (Expression (Prefix (End_Of_Record)),
-                              Scope           => Scope,
-                              Local_Constants => Local_Constants,
-                              Fold_Functions  => False));
+                              Scope                => Scope,
+                              Local_Constants      => Local_Constants,
+                              Fold_Functions       => False,
+                              Use_Computed_Globals => Use_Computed_Globals));
 
                         --  Since we are using the defined variable
                         --  only partially, we need to make sure its
@@ -1715,9 +1759,10 @@ package body Flow_Utility is
                         Vars_Defined.Union
                           (Get_Variable_Set
                              (Expressions (Prefix (End_Of_Record)),
-                              Scope           => Scope,
-                              Local_Constants => Local_Constants,
-                              Fold_Functions  => False));
+                              Scope                => Scope,
+                              Local_Constants      => Local_Constants,
+                              Fold_Functions       => False,
+                              Use_Computed_Globals => Use_Computed_Globals));
 
                         --  We also add the record field itself. If we
                         --  are dealing with a record instead of a
@@ -1757,34 +1802,41 @@ package body Flow_Utility is
                when N_Function_Call =>
                   --  Not strictly right, but this will satisfy the
                   --  postcondition.
-                  Vars_Defined.Union (Get_Variable_Set
-                                        (End_Of_Record,
-                                         Scope           => Scope,
-                                         Local_Constants => Local_Constants,
-                                         Fold_Functions  => False));
+                  Vars_Defined.Union
+                    (Get_Variable_Set
+                       (End_Of_Record,
+                        Scope                => Scope,
+                        Local_Constants      => Local_Constants,
+                        Fold_Functions       => False,
+                        Use_Computed_Globals => Use_Computed_Globals));
 
                when N_Unchecked_Type_Conversion =>
                   --  See above.
-                  Vars_Defined.Union (Get_Variable_Set
-                                        (Expression (End_Of_Record),
-                                         Scope           => Scope,
-                                         Local_Constants => Local_Constants,
-                                         Fold_Functions  => False));
+                  Vars_Defined.Union
+                    (Get_Variable_Set
+                       (Expression (End_Of_Record),
+                        Scope           => Scope,
+                        Local_Constants => Local_Constants,
+                        Fold_Functions  => False,
+                        Use_Computed_Globals => Use_Computed_Globals));
 
                when N_Attribute_Reference =>
 
                   if Present (Expressions (End_Of_Record)) then
                      Vars_Explicitly_Used.Union
-                       (Get_Variable_Set (Expressions (End_Of_Record),
-                                          Scope           => Scope,
-                                          Local_Constants => Local_Constants,
-                                          Fold_Functions  => False));
+                       (Get_Variable_Set
+                          (Expressions (End_Of_Record),
+                           Scope                => Scope,
+                           Local_Constants      => Local_Constants,
+                           Fold_Functions       => False,
+                           Use_Computed_Globals => Use_Computed_Globals));
                   end if;
 
                   Untangle_Assignment_Target
                     (N                    => Prefix (End_Of_Record),
                      Scope                => Scope,
                      Local_Constants      => Local_Constants,
+                     Use_Computed_Globals => Use_Computed_Globals,
                      Vars_Defined         => Vars_Defined,
                      Vars_Explicitly_Used => Vars_Explicitly_Used,
                      Vars_Implicitly_Used => Vars_Implicitly_Used,

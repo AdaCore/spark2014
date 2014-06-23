@@ -119,6 +119,7 @@ package body Flow.Analysis.Sanity is
                               Local_Constants              =>
                                 Node_Sets.Empty_Set,
                               Fold_Functions               => False,
+                              Use_Computed_Globals         => True,
                               Expand_Synthesized_Constants => True)));
       --  A helpful wrapper around Get_Variable_Set as it is used in this
       --  sanity checking procedure.
@@ -133,6 +134,7 @@ package body Flow.Analysis.Sanity is
                               Local_Constants              =>
                                 Node_Sets.Empty_Set,
                               Fold_Functions               => False,
+                              Use_Computed_Globals         => True,
                               Expand_Synthesized_Constants => True)));
       --  As above.
 

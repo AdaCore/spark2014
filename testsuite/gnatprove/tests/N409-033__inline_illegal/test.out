@@ -7,4 +7,4 @@ discr.adb:13:07: static expression fails Constraint_Check
    compilation of discr.adb failed
 
 
-gnatprove: error during flow analysis and proof
+gnatprove: error during generation of Global contracts

@@ -277,10 +277,13 @@ package body Flow.Control_Flow_Graph.Utility is
            (Ekind (Formal) in E_In_Parameter | E_In_Out_Parameter or else
               Discriminants_Or_Bounds_Only);
 
-         Tmp_Used := Get_Variable_Set (Actual,
-                                       Scope           => Scope,
-                                       Local_Constants => FA.Local_Constants,
-                                       Fold_Functions  => True);
+         Tmp_Used := Get_Variable_Set
+           (Actual,
+            Scope                => Scope,
+            Local_Constants      => FA.Local_Constants,
+            Fold_Functions       => True,
+            Use_Computed_Globals => not FA.Compute_Globals);
+
          for F of Tmp_Used loop
             if (if Discriminants_Or_Bounds_Only
                 then Is_Discriminant (F))
@@ -303,6 +306,7 @@ package body Flow.Control_Flow_Graph.Utility is
            (N                    => Actual,
             Scope                => Scope,
             Local_Constants      => FA.Local_Constants,
+            Use_Computed_Globals => not FA.Compute_Globals,
             Vars_Explicitly_Used => A.Variables_Explicitly_Used,
             Vars_Implicitly_Used => A.Variables_Used,
             Vars_Defined         => A.Variables_Defined,
@@ -555,9 +559,10 @@ package body Flow.Control_Flow_Graph.Utility is
       if Present (DI) then
          A.Variables_Used := Get_Variable_Set
            (A.Default_Init_Val,
-            Scope           => Scope,
-            Local_Constants => FA.Local_Constants,
-            Fold_Functions  => False);
+            Scope                => Scope,
+            Local_Constants      => FA.Local_Constants,
+            Fold_Functions       => False,
+            Use_Computed_Globals => not FA.Compute_Globals);
          A.Variables_Explicitly_Used := A.Variables_Used;
       end if;
 

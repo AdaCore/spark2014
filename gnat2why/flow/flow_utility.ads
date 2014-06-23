@@ -73,6 +73,11 @@ package Flow_Utility is
    --     * p.r.a
    --     * p.r.b
 
+   function Has_User_Supplied_Globals (Subprogram : Entity_Id) return Boolean
+     with Pre => Ekind (Subprogram) in Subprogram_Kind;
+   --  Return true if the given subprogram has been annotated with a global
+   --  (or depends) contract.
+
    function Has_Depends (Subprogram : Entity_Id) return Boolean
      with Pre => Ekind (Subprogram) in Subprogram_Kind;
    --  Return true if the given subprogram has been annotated with a
@@ -111,7 +116,8 @@ package Flow_Utility is
                           Reads                  : out Flow_Id_Sets.Set;
                           Writes                 : out Flow_Id_Sets.Set;
                           Consider_Discriminants : Boolean := False;
-                          Globals_For_Proof      : Boolean := False)
+                          Globals_For_Proof      : Boolean := False;
+                          Use_Computed_Globals   : Boolean := True)
      with Pre  => Ekind (Subprogram) in E_Procedure | E_Function,
           Post => (for all G of Proof_Ins => G.Variant = In_View) and
                   (for all G of Reads     => G.Variant = In_View) and
@@ -157,6 +163,7 @@ package Flow_Utility is
       Scope                        : Flow_Scope;
       Local_Constants              : Node_Sets.Set;
       Fold_Functions               : Boolean;
+      Use_Computed_Globals         : Boolean;
       Reduced                      : Boolean := False;
       Allow_Statements             : Boolean := False;
       Expand_Synthesized_Constants : Boolean := False)
@@ -198,6 +205,7 @@ package Flow_Utility is
       Scope                        : Flow_Scope;
       Local_Constants              : Node_Sets.Set;
       Fold_Functions               : Boolean;
+      Use_Computed_Globals         : Boolean;
       Reduced                      : Boolean := False;
       Allow_Statements             : Boolean := False;
       Expand_Synthesized_Constants : Boolean := False)
@@ -223,6 +231,7 @@ package Flow_Utility is
      (N                    : Node_Id;
       Scope                : Flow_Scope;
       Local_Constants      : Node_Sets.Set;
+      Use_Computed_Globals : Boolean;
       Vars_Defined         : in out Flow_Id_Sets.Set;
       Vars_Explicitly_Used : in out Flow_Id_Sets.Set;
       Vars_Implicitly_Used : in out Flow_Id_Sets.Set;

@@ -197,7 +197,8 @@ package body Flow.Interprocedural is
                          Proof_Ins              => Proof_Ins,
                          Reads                  => Inputs,
                          Writes                 => Outputs,
-                         Consider_Discriminants => True);
+                         Consider_Discriminants => True,
+                         Use_Computed_Globals   => not FA.Compute_Globals);
 
             --  Add parameters.
             E := First_Formal (Called_Procedure);

@@ -7,6 +7,7 @@
 --                                 B o d y                                  --
 --                                                                          --
 --                      Copyright (C) 2011-2014, AdaCore                    --
+--                      Copyright (C) 2014, Altran UK Limited               --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -26,9 +27,7 @@
 with Ada.Directories;
 with Ada.Text_IO;            use Ada.Text_IO;
 
-with Atree;                  use Atree;
 with Aspects;                use Aspects;
-with Einfo;                  use Einfo;
 with Elists;                 use Elists;
 with Errout;                 use Errout;
 with Fname;                  use Fname;
@@ -40,7 +39,6 @@ with Sem_Ch12;               use Sem_Ch12;
 with Sem_Prag;               use Sem_Prag;
 with Sem_Util;               use Sem_Util;
 with Exp_Util;               use Exp_Util;
-with Sinfo;                  use Sinfo;
 with Sinput;                 use Sinput;
 with Snames;                 use Snames;
 with Stand;                  use Stand;
@@ -148,16 +146,19 @@ package body SPARK_Definition is
    --  are attached to the entity itself, which is directly added to the lists
    --  for translation after marking.
 
-   Entities_In_SPARK : Node_Sets.Set;
+   Entities_In_SPARK  : Node_Sets.Set;
    --  Entities in SPARK. An entity is inserted in this set if, after marking,
    --  no violations where attached to the corresponding scope. Standard
    --  entities are individually added to this set.
 
-   Specs_In_SPARK    : Node_Sets.Set;
+   Specs_In_SPARK     : Node_Sets.Set;
    --  Subprograms and packages whose spec is marked in SPARK
 
-   Bodies_In_SPARK   : Node_Sets.Set;
+   Bodies_In_SPARK    : Node_Sets.Set;
    --  Subprograms and packages whose body is marked in SPARK
+
+   Bodies_Valid_SPARK : Node_Sets.Set;
+   --  Entities for which the body contains no SPARK violations.
 
    Entities_Fullview_Not_In_SPARK : Node_Maps.Map;
    --  Maps type entities in SPARK whose fullview was declared in a private
@@ -172,6 +173,9 @@ package body SPARK_Definition is
 
    function Entity_Body_In_SPARK (E : Entity_Id) return Boolean is
      (Bodies_In_SPARK.Contains (E));
+
+   function Entity_Body_Valid_SPARK (E : Entity_Id) return Boolean is
+     (Bodies_Valid_SPARK.Contains (E));
 
    function Fullview_Not_In_SPARK (E : Entity_Id) return Boolean is
      (Entities_Fullview_Not_In_SPARK.Contains (E));
@@ -697,7 +701,7 @@ package body SPARK_Definition is
          when N_Membership_Test =>
             if Is_Array_Type (Etype (Left_Opnd (N))) then
                Violation_Detected := True;
-               if SPARK_Pragma_Is (Opt.On) then
+               if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
                   Error_Msg_N
                     ("membership test on array values is not yet supported",
                      N);
@@ -937,7 +941,7 @@ package body SPARK_Definition is
                begin
                   if Target_Comp_Typ /= Source_Comp_Typ then
                      Violation_Detected := True;
-                     if SPARK_Pragma_Is (Opt.On) then
+                     if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
                         Error_Msg_N
                           ("conversion between array types that have "
                            & "different element types is not yet supported",
@@ -978,7 +982,7 @@ package body SPARK_Definition is
                begin
                   if Target_Base_Type /= Source_Base_Type then
                      Violation_Detected := True;
-                     if SPARK_Pragma_Is (Opt.On) then
+                     if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
                         Error_Msg_N
                           ("conversion between different fixed-point types "
                            & "is not yet supported", N);
@@ -1278,7 +1282,7 @@ package body SPARK_Definition is
 
       if Present (L) then
          Mark_List (L);
-         if not Acceptable_Actions (L) then
+         if Emit_Messages and then not Acceptable_Actions (L) then
 
             --  We should never reach here, but in case we do, we issue an
             --  understandable error message pointing to the source of the
@@ -1395,18 +1399,20 @@ package body SPARK_Definition is
            Attribute_Position       |
            Attribute_Size
          =>
-            if Gnat2Why_Args.Pedantic then
+            if Emit_Messages and then Gnat2Why_Args.Pedantic then
                Error_Msg_Name_1 := Aname;
                Error_Msg_N
                  ("?attribute % has an implementation-defined value", N);
             end if;
 
          when Attribute_Valid =>
-            Error_Msg_F ("?attribute Valid is assumed to return True", N);
+            if Emit_Messages then
+               Error_Msg_F ("?attribute Valid is assumed to return True", N);
+            end if;
 
          when others =>
             Violation_Detected := True;
-            if SPARK_Pragma_Is (Opt.On) then
+            if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
                Error_Msg_Name_1 := Aname;
                Error_Msg_N ("attribute % is not permitted in SPARK", N);
             end if;
@@ -1456,7 +1462,7 @@ package body SPARK_Definition is
                L_Type /= R_Type
             then
                Violation_Detected := True;
-               if SPARK_Pragma_Is (Opt.On) then
+               if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
                   Error_Msg_N ("operation between different fixed-point types"
                                & " is not yet supported", N);
                end if;
@@ -1470,7 +1476,7 @@ package body SPARK_Definition is
                    Is_Floating_Point_Type (L_Type))
             then
                Violation_Detected := True;
-               if SPARK_Pragma_Is (Opt.On) then
+               if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
                   Error_Msg_N ("operation between fixed-point type and"
                                & " universal real is not yet supported", N);
                end if;
@@ -1480,7 +1486,7 @@ package body SPARK_Definition is
                   (Is_Fixed_Point_Type (R_Type) and then R_Type /= E_Type)
             then
                Violation_Detected := True;
-               if SPARK_Pragma_Is (Opt.On) then
+               if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
                   Error_Msg_N ("operation on fixed-point type with different"
                                & " result type is not yet supported", N);
                end if;
@@ -1511,7 +1517,8 @@ package body SPARK_Definition is
       then
          case N_Binary_Op'(Nkind (N)) is
             when N_Op_Add | N_Op_Subtract =>
-               if Nkind_In (Left_Opnd (N), N_Op_Add, N_Op_Subtract)
+               if Emit_Messages
+                 and then Nkind_In (Left_Opnd (N), N_Op_Add, N_Op_Subtract)
                  and then Paren_Count (Left_Opnd (N)) = 0
                then
                   Error_Msg_F
@@ -1519,7 +1526,8 @@ package body SPARK_Definition is
                      Left_Opnd (N));
                end if;
 
-               if Nkind_In (Right_Opnd (N), N_Op_Add, N_Op_Subtract)
+               if Emit_Messages
+                 and then Nkind_In (Right_Opnd (N), N_Op_Add, N_Op_Subtract)
                  and then Paren_Count (Right_Opnd (N)) = 0
                then
                   Error_Msg_F
@@ -1528,7 +1536,8 @@ package body SPARK_Definition is
                end if;
 
             when N_Op_Multiply | N_Op_Divide | N_Op_Mod | N_Op_Rem =>
-               if Nkind (Left_Opnd (N)) in N_Multiplying_Operator
+               if Emit_Messages
+                 and then Nkind (Left_Opnd (N)) in N_Multiplying_Operator
                  and then Paren_Count (Left_Opnd (N)) = 0
                then
                   Error_Msg_F
@@ -1536,7 +1545,8 @@ package body SPARK_Definition is
                      Left_Opnd (N));
                end if;
 
-               if Nkind (Right_Opnd (N)) in N_Multiplying_Operator
+               if Emit_Messages
+                 and then Nkind (Right_Opnd (N)) in N_Multiplying_Operator
                  and then Paren_Count (Right_Opnd (N)) = 0
                then
                   Error_Msg_F
@@ -1634,10 +1644,11 @@ package body SPARK_Definition is
             --  should not have any effect on global items. Exempt
             --  also pure subprograms which have no global effects.
 
-            if ((Is_Imported (E)
-                   and then not (Convention (E) in Convention_Ada |
-                                                   Convention_Ghost))
-                or else Is_Internal_File_Name (File))
+            if Emit_Messages
+              and then ((Is_Imported (E)
+                           and then not (Convention (E) in Convention_Ada |
+                                           Convention_Ghost))
+                          or else Is_Internal_File_Name (File))
               and then No (Get_Pragma (E, Pragma_Global))
               and then not Entity_In_External_Axioms (E)
               and then not Is_Pure (E)
@@ -2266,7 +2277,7 @@ package body SPARK_Definition is
             begin
                if Positive (Number_Dimensions (E)) > Max_Array_Dimensions then
                   Violation_Detected := True;
-                  if SPARK_Pragma_Is (Opt.On) then
+                  if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
                      Error_Msg_Node_1 := E;
                      Error_Msg_Uint_1 := UI_From_Int (Number_Dimensions (E));
                      Error_Msg_N ("} of dimension ^ is not yet supported", E);
@@ -2343,7 +2354,7 @@ package body SPARK_Definition is
                   null;
                else
                   Violation_Detected := True;
-                  if SPARK_Pragma_Is (Opt.On) then
+                  if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
                      Error_Msg_N
                        ("fixed-point type whose small is not a negative power "
                         & "of 2 or 10 is not yet supported", E);
@@ -3005,7 +3016,8 @@ package body SPARK_Definition is
                  Associated_Node (Expression
                                     (Next (First (Argument_Associations))));
             begin
-               if Ekind (Associated_Subprogram) in Subprogram_Kind
+               if Emit_Messages
+                 and then Ekind (Associated_Subprogram) in Subprogram_Kind
                  and then Entity_In_SPARK (Associated_Subprogram)
                  and then No (Get_Pragma
                                 (Associated_Subprogram, Pragma_Global))
@@ -3017,7 +3029,9 @@ package body SPARK_Definition is
             end;
 
          when Pragma_Overflow_Mode =>
-            Error_Msg_F ("?pragma Overflow_Mode in code is ignored", N);
+            if Emit_Messages then
+               Error_Msg_F ("?pragma Overflow_Mode in code is ignored", N);
+            end if;
 
          when Unknown_Pragma =>
             Error_Msg_Name_1 := Pname;
@@ -3284,9 +3298,11 @@ package body SPARK_Definition is
            Pragma_Priority                       |
            Pragma_Storage_Size                   =>
 
-            Error_Msg_Name_1 := Pname;
-            Error_Msg_N ("?pragma % is not yet supported", N);
-            Error_Msg_N ("\\it is currently ignored", N);
+            if Emit_Messages then
+               Error_Msg_Name_1 := Pname;
+               Error_Msg_N ("?pragma % is not yet supported", N);
+               Error_Msg_N ("\\it is currently ignored", N);
+            end if;
       end case;
    end Mark_Pragma;
 
@@ -3443,10 +3459,13 @@ package body SPARK_Definition is
               and then not Referenced (E)
               and then not Has_Unreferenced (E)
             then
-               if Ekind (E) = E_Function then
-                  Error_Msg_NE ("?analyzing unreferenced function &", N, E);
-               else
-                  Error_Msg_NE ("?analyzing unreferenced procedure &", N, E);
+               if Emit_Messages then
+                  if Ekind (E) = E_Function then
+                     Error_Msg_NE ("?analyzing unreferenced function &", N, E);
+                  else
+                     Error_Msg_NE ("?analyzing unreferenced procedure &",
+                                   N, E);
+                  end if;
                end if;
             end if;
 
@@ -3495,6 +3514,10 @@ package body SPARK_Definition is
               and then Present (Get_Expression_Function (E))
             then
                Entity_List.Append (Defining_Entity (N));
+            end if;
+
+            if not Violation_Detected then
+               Bodies_Valid_SPARK.Insert (E);
             end if;
          end if;
 
@@ -3638,7 +3661,7 @@ package body SPARK_Definition is
 
       --  If SPARK_Mode is On, raise an error
 
-      if SPARK_Pragma_Is (Opt.On) then
+      if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
 
          if SRM_Reference /= "" then
             Error_Msg_F
@@ -3668,7 +3691,7 @@ package body SPARK_Definition is
 
       --  If SPARK_Mode is On, raise an error
 
-      if SPARK_Pragma_Is (Opt.On) then
+      if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
          Error_Msg_FE ("& is not allowed in SPARK", N, From);
          Error_Msg_Sloc := Sloc (Current_SPARK_Pragma);
 

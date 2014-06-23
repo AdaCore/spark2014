@@ -7,6 +7,7 @@
 --                                 B o d y                                  --
 --                                                                          --
 --                       Copyright (C) 2010-2014, AdaCore                   --
+--                       Copyright (C) 2014, Altran UK Limited              --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -238,7 +239,9 @@ package body Gnat2Why.Driver is
 
    begin
 
-      if not Gnat2Why_Args.Global_Gen_Mode then
+      if Is_Generic_Unit (Unique_Defining_Entity (N))
+        and then Analysis_Requested (Unique_Defining_Entity (N))
+      then
 
          --  We do nothing for generic units currently. If this get revised
          --  at some point to provide proof of generics, then the special
@@ -248,16 +251,14 @@ package body Gnat2Why.Driver is
          --  nothing has been done, if the user has specifically requested
          --  analysis of this file.
 
-         if Is_Generic_Unit (Unique_Defining_Entity (N))
-           and then Analysis_Requested (Unique_Defining_Entity (N))
-         then
+         if not Gnat2Why_Args.Global_Gen_Mode then
             Touch_Main_File (Base_Name);
             if Gnat2Why_Args.Single_File then
                Error_Msg_N (N   => GNAT_Root,
                             Msg => "!Generic unit is not analyzed");
             end if;
-            return;
          end if;
+         return;
 
       end if;
 
@@ -285,30 +286,26 @@ package body Gnat2Why.Driver is
       --  are not included, except for the main unit itself, which always
       --  comes last.
 
-      if Gnat2Why_Args.Global_Gen_Mode then
-         Errout.Set_Ignore_Errors (True);
-      end if;
-
       Before_Marking (Base_Name);
       Mark_All_Compilation_Units;
       After_Marking;
 
       if Gnat2Why_Args.Global_Gen_Mode then
-         Errout.Set_Ignore_Errors (False);
-      end if;
 
-      if Gnat2Why_Args.Global_Gen_Mode then
-
-         --  Add better global computation here
-         null;
+         Generate_Flow_Globals (GNAT_Root);
 
       else
-
-         Compute_Global_Effects;
 
          if Compilation_Errors or else Gnat2Why_Args.Check_Mode then
             return;
          end if;
+
+         --  Compute basic globals
+
+         Compute_Global_Effects;
+
+         --  Add computation of flow globals here
+         --  ??? Compute_Flow_Globals;
 
          --  Do some flow analysis
 
