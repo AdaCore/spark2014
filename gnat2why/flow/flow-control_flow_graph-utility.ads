@@ -98,6 +98,7 @@ package Flow.Control_Flow_Graph.Utility is
 
    function Make_Call_Attributes
      (Callsite     : Node_Id           := Empty;
+      Sub_Called   : Node_Sets.Set     := Node_Sets.Empty_Set;
       Loops        : Node_Sets.Set     := Node_Sets.Empty_Set;
       E_Loc        : Node_Or_Entity_Id := Empty)
       return V_Attributes
@@ -117,7 +118,8 @@ package Flow.Control_Flow_Graph.Utility is
       Formal                       : Node_Id;
       In_Vertex                    : Boolean;
       Discriminants_Or_Bounds_Only : Boolean;
-      Loops                        : Node_Sets.Set;
+      Sub_Called                   : Node_Sets.Set     := Node_Sets.Empty_Set;
+      Loops                        : Node_Sets.Set     := Node_Sets.Empty_Set;
       E_Loc                        : Node_Or_Entity_Id := Empty)
       return V_Attributes
    with Pre  => (if Discriminants_Or_Bounds_Only then In_Vertex),

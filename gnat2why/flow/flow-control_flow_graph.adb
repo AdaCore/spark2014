@@ -3653,9 +3653,11 @@ package body Flow.Control_Flow_Graph is
       Add_Vertex
         (FA,
          Direct_Mapping_Id (N),
-         Make_Call_Attributes (Callsite     => N,
-                               Loops        => Ctx.Current_Loops,
-                               E_Loc        => N),
+         Make_Call_Attributes (Callsite   => N,
+                               Sub_Called => Node_Sets.To_Set
+                                               (Called_Procedure),
+                               Loops      => Ctx.Current_Loops,
+                               E_Loc      => N),
          V);
 
       --  Deal with the procedures parameters.
@@ -4115,6 +4117,7 @@ package body Flow.Control_Flow_Graph is
                In_Vertex                    => True,
                Discriminants_Or_Bounds_Only =>
                  Ekind (Formal) = E_Out_Parameter,
+               Sub_Called                   => Get_Function_Set (Actual),
                Loops                        => Ctx.Current_Loops,
                E_Loc                        => P),
             V);

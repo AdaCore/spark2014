@@ -207,6 +207,7 @@ package body Flow.Control_Flow_Graph.Utility is
 
    function Make_Call_Attributes
      (Callsite     : Node_Id           := Empty;
+      Sub_Called   : Node_Sets.Set     := Node_Sets.Empty_Set;
       Loops        : Node_Sets.Set     := Node_Sets.Empty_Set;
       E_Loc        : Node_Or_Entity_Id := Empty)
       return V_Attributes
@@ -219,10 +220,11 @@ package body Flow.Control_Flow_Graph.Utility is
    begin
       pragma Assert (Nkind (Procedure_Spec) = N_Procedure_Specification);
 
-      A.Is_Program_Node  := True;
-      A.Loops            := Loops;
-      A.Is_Callsite      := True;
-      A.Error_Location   := E_Loc;
+      A.Subprograms_Called := Sub_Called;
+      A.Is_Program_Node    := True;
+      A.Loops              := Loops;
+      A.Is_Callsite        := True;
+      A.Error_Location     := E_Loc;
 
       --  ??? The below is the logic for doing IPFA within a
       --  compilation unit. To be enabled by M227-027.
@@ -255,7 +257,8 @@ package body Flow.Control_Flow_Graph.Utility is
       Formal                       : Node_Id;
       In_Vertex                    : Boolean;
       Discriminants_Or_Bounds_Only : Boolean;
-      Loops                        : Node_Sets.Set;
+      Sub_Called                   : Node_Sets.Set     := Node_Sets.Empty_Set;
+      Loops                        : Node_Sets.Set     := Node_Sets.Empty_Set;
       E_Loc                        : Node_Or_Entity_Id := Empty)
       return V_Attributes
    is
@@ -266,11 +269,12 @@ package body Flow.Control_Flow_Graph.Utility is
    begin
       A.Is_Parameter                  := True;
       A.Is_Discr_Or_Bounds_Parameter  := Discriminants_Or_Bounds_Only;
-      A.Call_Vertex      := Direct_Mapping_Id (Call_Vertex);
-      A.Parameter_Actual := Direct_Mapping_Id (Actual);
-      A.Parameter_Formal := Direct_Mapping_Id (Formal);
-      A.Loops            := Loops;
-      A.Error_Location   := E_Loc;
+      A.Subprograms_Called            := Sub_Called;
+      A.Call_Vertex                   := Direct_Mapping_Id (Call_Vertex);
+      A.Parameter_Actual              := Direct_Mapping_Id (Actual);
+      A.Parameter_Formal              := Direct_Mapping_Id (Formal);
+      A.Loops                         := Loops;
+      A.Error_Location                := E_Loc;
 
       if In_Vertex then
          pragma Assert
