@@ -56,28 +56,36 @@ package body Flow_Debug is
 
    procedure Print_Node_Set (S : Flow_Id_Sets.Set) is
    begin
-      Write_Str ("Flow_Id_Set with ");
-      Write_Int (Int (S.Length));
-      Write_Str (" elements:");
-      Write_Eol;
-      Indent;
-      for F of S loop
-         Print_Flow_Id (F);
-      end loop;
-      Outdent;
+      if S.Length > 0 then
+         Write_Str ("Flow_Id_Set with ");
+         Write_Int (Int (S.Length));
+         Write_Str (" elements:");
+         Write_Eol;
+         Indent;
+         for F of S loop
+            Print_Flow_Id (F);
+         end loop;
+         Outdent;
+      else
+         Write_Line ("<Empty Flow_Id_Set>");
+      end if;
    end Print_Node_Set;
 
    procedure Print_Node_Set (S : Ordered_Flow_Id_Sets.Set) is
    begin
-      Write_Str ("Ordered_Flow_Id_Set with ");
-      Write_Int (Int (S.Length));
-      Write_Str (" elements:");
-      Write_Eol;
-      Indent;
-      for F of S loop
-         Print_Flow_Id (F);
-      end loop;
-      Outdent;
+      if S.Length > 0 then
+         Write_Str ("Ordered_Flow_Id_Set with ");
+         Write_Int (Int (S.Length));
+         Write_Str (" elements:");
+         Write_Eol;
+         Indent;
+         for F of S loop
+            Print_Flow_Id (F);
+         end loop;
+         Outdent;
+      else
+         Write_Line ("<Empty Ordered_Flow_Id_Set>");
+      end if;
    end Print_Node_Set;
 
    --------------------------
