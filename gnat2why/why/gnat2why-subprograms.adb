@@ -2101,7 +2101,7 @@ package body Gnat2Why.Subprograms is
             Emit
               (File.Cur_Theory,
                New_Defining_Axiom
-                 (Ada_Node    => Ty_Ent,
+                 (Ada_Node    => E,
                   Name        => Logic_Id,
                   Return_Type => Get_EW_Type (Expression (Expr_Fun_N)),
                   Binders     => Flat_Binders,
