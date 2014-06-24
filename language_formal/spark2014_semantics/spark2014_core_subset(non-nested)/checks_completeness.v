@@ -282,11 +282,65 @@ Proof.
   end.
 Qed.
 
-Lemma declaration_checks_completeness: ,
+Lemma declaration_checks_completeness: forall s f d f' d' f'',
   eval_decl s f d f' ->
     eval_decl_x s f d' f'' ->
       compile2_flagged_declaration d d' ->
         f' = f''. 
+Proof.
+  intros.
+  inversion H; subst;
+  repeat progress match goal with
+  | [H: compile2_flagged_declaration _ _ |- _] => inversion H; clear H; smack
+  | [H: compile2_flagged_object_declaration _ _ |- _] => inversion H; clear H; smack
+  | [H: eval_decl _ _ _ _ |- _] => inversion H; clear H; smack
+  | [H: eval_decl_x _ _ _ _ |- _] => inversion H; clear H; smack
+  end;
+  match goal with
+  | [H1: eval_expr ?s ?e _, 
+     H2: eval_expr_x ?s ?e' _, 
+     H3: compile2_flagged_exp ?e ?e' |- _] => 
+       specialize (expression_checks_completeness _ _ _ _ _ H1 H2 H3); smack
+  | _ => idtac
+  end.
+Qed.
+
+Lemma declarations_checks_completeness: forall s f dl f' dl' f'',
+  eval_decls s f dl f' ->
+    eval_decls_x s f dl' f'' ->
+      compile2_flagged_declarations dl dl' ->
+        f' = f''. 
+Proof.
+  intros s f dl f' dl' f'' H; revert dl' f''.
+  induction H; intros;
+
+  match goal with
+  | [H: compile2_flagged_declarations _ _ |- _] => inversion H; clear H; smack
+  end;
+  match goal with
+  | [H: eval_decls_x _ _ _ _ |- _] => inversion H; clear H; smack
+  end;
+  match goal with
+  | [H1: eval_decl ?s ?f ?d _, 
+     H2: eval_decl_x ?s ?f ?d' _,
+     H3: compile2_flagged_declaration ?d ?d' |- _] => 
+       specialize (declaration_checks_completeness _ _ _ _ _ _ H1 H2 H3); smack
+  end.
+Qed.
+
+
+Lemma expression_checks_completeness: forall e e' s v v',
+  eval_expr s e v ->
+    eval_expr_x s e' v' ->
+      compile2_flagged_exp e e' ->
+        v = v'.
+
+  
+
+
+  
+Qed.
+
 
 
 
