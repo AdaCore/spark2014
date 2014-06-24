@@ -5069,16 +5069,20 @@ package body Gnat2Why.Expr is
               New_Temp_For_Expr
                 (Transform_Expr (Lvalue, EW_Term, Body_Params), True);
             Discr : Node_Id := SPARK_Util.First_Discriminant (Ty);
+            D_Ty  : constant Entity_Id :=
+              (if Fullview_Not_In_SPARK (Ty) then
+                    Get_First_Ancestor_In_SPARK (Ty)
+               else Ty);
          begin
             while Present (Discr) loop
                if not Is_Completely_Hidden (Discr) then
                   declare
                      Input_Discr    : constant W_Expr_Id :=
                        New_Ada_Record_Access
-                         (Empty, EW_Term, Tmp, Discr, Ty);
+                         (Empty, EW_Term, Tmp, Discr, D_Ty);
                      Expected_Discr : constant W_Expr_Id :=
                        New_Ada_Record_Access
-                         (Empty, EW_Term, Lval, Discr, Ty);
+                         (Empty, EW_Term, Lval, Discr, D_Ty);
                   begin
                      Check :=
                        New_And_Then_Expr
