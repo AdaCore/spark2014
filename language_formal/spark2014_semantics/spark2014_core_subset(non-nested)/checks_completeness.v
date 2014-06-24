@@ -329,6 +329,23 @@ Proof.
 Qed.
 
 
+Lemma statement_assign_checks_completeness: forall st s ast_num x e s' x' e' s'',
+  eval_stmt st s (S_Assignment ast_num x e) s' -> 
+    eval_stmt_x st s (S_Assignment_X ast_num x' e') s'' -> 
+      compile2_flagged_stmt (S_Assignment ast_num x e) (S_Assignment_X ast_num x' e') ->
+        s' = s''.
+.
+
+Lemma statement_if_checks_completeness.
+
+Lemma statement_while_checks_completeness.
+
+Lemma statement_seq_checks_completeness.
+
+Lemma statement_proc_call_checks_completeness.
+
+Lemma statement_checks_completeness.
+
 Lemma expression_checks_completeness: forall e e' s v v',
   eval_expr s e v ->
     eval_expr_x s e' v' ->

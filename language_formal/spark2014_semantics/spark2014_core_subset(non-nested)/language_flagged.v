@@ -6,6 +6,7 @@ Require Export checks.
    SPARK subset annotated with flagged run time checks
    **************************************************** *)
 
+(** * SPARK Subset Language With Check Flags *)
 
 (* Ada 2012 RM, Chapter 3. Declaration and Types *)
 
@@ -86,7 +87,7 @@ with procedure_declaration_x: Type :=
     (procedure_statements_x: statement_x).
 
 
-(** ** Compilation unit: subprogram *)
+(** ** Compilation Unit Subprogram *)
 (* 6.1 *)
 Inductive subprogram_x: Type := 
     | Global_Procedure_X: astnum -> procedure_declaration_x -> subprogram_x
@@ -139,6 +140,7 @@ End AuxiliaryFunctions_X.
    check flag generator;
    *************************************************************** *)
 
+(** * Compile To Flagged Program *)
 
 Inductive compile2_flagged_exp: expression -> expression_x -> Prop :=
     | C2_Flagged_Literal: forall ast_num l checkflags,

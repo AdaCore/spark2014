@@ -47,6 +47,7 @@ Proof.
   reflexivity.
 Qed.
 
+(** * List Split Operations *)
 
 Function split1 A n (l:list A) {struct n} :=
   match l,n with
@@ -68,6 +69,8 @@ Function split2 {A} n m (l:list A) :=
         | Some (l2,l3) => Some (l1,(l2,l3))
       end
   end.
+
+(** * List Split Lemmas *)
 
 Lemma split2_equation1 :
   forall A n m e (l l1 l2 l3: list A),

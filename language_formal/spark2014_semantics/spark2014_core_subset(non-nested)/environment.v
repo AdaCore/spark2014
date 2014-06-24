@@ -10,8 +10,6 @@ Require Export values.
 *)
 
 (** * Store *)
-
-(** ** Store as a list *)
 (** it's a map from a variable, represented with natural number,
     to its value;
 *)
@@ -59,7 +57,7 @@ Module STORE(V:ENTRY).
       + assumption.
   Qed.
 
-  (** ** Store operations *)
+  (** ** Store Operations *)
   (** check whether variable x has already been declared *)
   Function resides (x : idnum) (s : store) := 
     match s with 
@@ -103,7 +101,8 @@ Module STORE(V:ENTRY).
    | nil => None
    end.
 
-  (** ** Lemmas about store operations *)
+  (** ** Lemmas About Store Operations *)
+
   Lemma fetches_in: forall x s v, 
     fetches x s = Some v -> first_occ x v s.
   Proof.
@@ -123,7 +122,6 @@ Module STORE(V:ENTRY).
     assumption.
   Qed.
 
-  (** ** Lemmas about store operations *)
   Lemma in_fetches: forall x s v, 
     first_occ x v s -> 
       fetches x s = Some v.
@@ -206,6 +204,7 @@ Module STORE(V:ENTRY).
   Qed.
 
 
+  (** * Stack *)
 
   (* The global stack is a stack of stores. One store per procedure
      currently running. *)
@@ -243,7 +242,7 @@ Module STORE(V:ENTRY).
   *)
   
 
-  (** ** Stack properties *)
+  (** ** Stack Properties *)
   (* TODO: rename this into MapsToG, and have inG of type idnum -> stack
      -> Prop + lamms between the two. *)
   Inductive inG: idnum -> V -> stack -> Prop := 
@@ -252,6 +251,7 @@ Module STORE(V:ENTRY).
     | InG2: forall x v f s,
            (forall e, ~first_occ x e (store_of f)) -> inG x v s -> inG x v (f :: s).
 
+  (** ** Stack Operations *)
 
   (* TODO: verifiy that x is not already bound in s? *)
   Definition pushG x v (s: stack) :=
@@ -260,8 +260,6 @@ Module STORE(V:ENTRY).
     | f :: s' => Some ((push f x v) :: s')
     end.
 
-
-  (** ** Stack operations *)
   Function fetchG (x : idnum) (s : stack) := 
     match s with 
     | f :: s' =>
@@ -294,6 +292,8 @@ Module STORE(V:ENTRY).
         resideG x s' 
     | nil => false
     end.
+
+  (** ** Lemmas About Stack Operations *)
 
   Lemma fetch_in_none: forall x f, 
     fetch x f = None -> 
@@ -334,7 +334,6 @@ Module STORE(V:ENTRY).
       inversion abs.
   Qed.
 
-  (** ** Lemmas about stack operations *)
   Lemma fetchG_in: forall x s v, 
     fetchG x s = Some v -> 
       inG x v s.

@@ -10,6 +10,7 @@ checks.v \
 language_flagged.v \
 values.v \
 environment.v \
+symboltable_module.v \
 symboltable.v \
 semantics.v \
 semantics_flagged.v

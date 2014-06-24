@@ -1,7 +1,14 @@
 Require Export language.
 Require Export util.
 
-(** * Return values/states *)
+(** * Run Time Error Types *)
+Inductive error_type: Type :=
+    | RTE_Division_By_Zero
+    | RTE_Overflow
+    | RTE_Index.   (* index check for an array access *)
+(*  | RTE_Range *) (* range check for a scalar range, e.g. -1 is assigned to natural variable *)
+
+(** * Return Values / States *)
 (** Statement and expressions evaluation returns one of the following results:
     - normal result;
     - run time errors, which are required to be detected at run time,
@@ -13,12 +20,6 @@ Require Export util.
       In the future, the abnormal state can be refined into these 
       more precise categories (1.1.5);
 *)
-
-Inductive error_type: Type :=
-    | RTE_Division_By_Zero
-    | RTE_Overflow
-    | RTE_Index.   (* index check for an array access *)
-(*  | RTE_Range *) (* range check for a scalar range, e.g. -1 is assigned to natural variable *)
 
 (* return value for exp/statement evaluation defined in inductive type *)
 Inductive Return (A:Type): Type :=
@@ -37,8 +38,6 @@ Arguments NormalV [A] _.
 Arguments Unterminated [A].
 Arguments Abnormal [A].
 
-(** * Value Types *) 
-
 (** the range of 32-bit (singed/unsigned) integer type: 
     - modulus : 2^32 ;
     - half_modulus : 2^31 ;
@@ -52,6 +51,8 @@ Definition half_modulus : Z := Z.div modulus 2.
 Definition max_unsigned : Z := Z.sub modulus 1.
 Definition max_signed : Z := Z.sub half_modulus 1.
 Definition min_signed : Z := Z.opp half_modulus.
+
+(** * Stored Values *) 
 
 (** Type of basic values*)
 
@@ -97,7 +98,7 @@ Definition Index_Error: Return value := Run_Time_Error RTE_Index.
 (** * Value Operations *)
 Module Val.
 
-(** ** Arithmetic operations *)
+(** ** Arithmetic Operations *)
 
 Definition add (v1 v2: value): option value := 
     match v1, v2 with
@@ -146,7 +147,7 @@ Definition mod' (v1 v2: value): option value :=
     | _, _ => None
     end.
 
-(** ** Logic operations  *)
+(** ** Logic Operations  *)
 Definition and (v1 v2: value): option value :=
     match v1, v2 with
     | BasicV (Bool v1'), BasicV (Bool v2') => Some (BasicV (Bool (andb v1' v2')))
@@ -159,7 +160,7 @@ Definition or (v1 v2: value): option value :=
     | _, _ => None
     end.
 
-(** ** Relational operations *)
+(** ** Relational Operations *)
 Definition eq (v1 v2: value): option value :=
     match v1, v2 with
     | BasicV (Int v1'), BasicV (Int v2') => Some (BasicV (Bool (Zeq_bool v1' v2')))
@@ -196,7 +197,7 @@ Definition le (v1 v2: value): option value :=
     | _, _ => None
     end.
 
-(** ** Unary operations *)
+(** Unary Operations *)
 Definition unary_not (v: value): option value :=
     match v with
     | BasicV (Bool v') => Some (BasicV (Bool (negb v')))
@@ -216,7 +217,7 @@ Definition unary_minus (v: value): option value :=
     end.
 
 
-(* the binary operations *)
+(** * Binary Operations *)
 Definition binary_operation (op: binary_operator) (v1: value) (v2: value): option value :=
     match op with
     | Equal => eq v1 v2
@@ -233,6 +234,7 @@ Definition binary_operation (op: binary_operator) (v1: value) (v2: value): optio
     | Divide => div v1 v2
     end.
 
+(** * Unary Operations *)
 Definition unary_operation (op: unary_operator) (v: value): option value := 
     match op with
     | Not => unary_not v

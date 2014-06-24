@@ -70,7 +70,7 @@ Ltac all f ls :=
   end.
 
 (** Workhorse tactic to simplify hypotheses for a variety of proofs.
-   * Argument [invOne] is a tuple-list of predicates for which we always do inversion automatically. *)
+    Argument [invOne] is a tuple-list of predicates for which we always do inversion automatically. *)
 Ltac simplHyp invOne :=
   (** Helper function to do inversion on certain hypotheses, where [H] is the hypothesis and [F] its head symbol *)
   let invert H F :=
@@ -90,7 +90,7 @@ Ltac simplHyp invOne :=
       (** This first branch of the [||] fails the whole attempt iff the arguments of the constructor applications are already easy to prove equal. *)
       (assert (X = Y); [ assumption | fail 1 ])
       (** If we pass that filter, then we use injection on [H] and do some simplification as in [inject].
-         * The odd-looking check of the goal form is to avoid cases where [injection] gives a more complex result because of dependent typing, which we aren't equipped to handle here. *)
+          The odd-looking check of the goal form is to avoid cases where [injection] gives a more complex result because of dependent typing, which we aren't equipped to handle here. *)
       || (injection H;
         match goal with
           | [ |- X = Y -> G ] =>
@@ -139,7 +139,7 @@ Hint Rewrite app_ass.
 Definition done (T : Type) (x : T) := True.
 
 (** Try a new instantiation of a universally quantified fact, proved by [e].
-   * [trace] is an accumulator recording which instantiations we choose. *)
+     [trace] is an accumulator recording which instantiations we choose. *)
 Ltac inster e trace :=
   (** Does [e] have any quantifiers left? *)
   match type of e with
@@ -191,8 +191,8 @@ Ltac un_done :=
 Require Import JMeq.
 
 (** A more parameterized version of the famous [crush].  Extra arguments are:
-   * - A tuple-list of lemmas we try [inster]-ing 
-   * - A tuple-list of predicates we try inversion for *)
+     - A tuple-list of lemmas we try [inster]-ing 
+     - A tuple-list of predicates we try inversion for *)
 Ltac crush' lemmas invOne :=
   (** A useful combination of standard automation *)
   let sintuition := simpl in *; intuition; try subst;
@@ -227,7 +227,7 @@ Ltac crush' lemmas invOne :=
 (** [crush] instantiates [crush'] with the simplest possible parameters. *)
 Ltac crush := crush' false fail.
 
-(** * Wrap Program's [dependent destruction] in a slightly more pleasant form *)
+(** Wrap Program's [dependent destruction] in a slightly more pleasant form *)
 
 Require Import Program.Equality.
 
@@ -247,7 +247,7 @@ Ltac clear_all :=
          end.
 
 (** Instantiate a quantifier in a hypothesis [H] with value [v], or, if [v] doesn't have the right type, with a new unification variable.
-   * Also prove the lefthand sides of any implications that this exposes, simplifying [H] to leave out those implications. *)
+     Also prove the lefthand sides of any implications that this exposes, simplifying [H] to leave out those implications. *)
 Ltac guess v H :=
   repeat match type of H with
            | forall x : ?T, _ =>

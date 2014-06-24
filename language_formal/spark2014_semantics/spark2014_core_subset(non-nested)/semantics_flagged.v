@@ -2,16 +2,11 @@ Require Export checks.
 Require Export language_flagged.
 Require Export semantics.
 
-Module Symbol_Table_Elements_X <: SymTable_Element.
-  Definition Procedure_Decl := procedure_declaration_x.
-  Definition Type_Decl := type_declaration_x.
-End Symbol_Table_Elements_X.
-
-Module Symbol_Table_Module_X := SymbolTableM (Symbol_Table_Elements_X).
 Import Symbol_Table_Module_X.
 
 Import STACK.
 
+(** * Do Flagged Checks *)
 (** do run time checks according to the check flags  *)
 
 Inductive do_flagged_check_on_binop: check_flag -> binary_operator -> value -> value -> check_status -> Prop :=
@@ -91,9 +86,9 @@ Inductive do_flagged_index_checks: check_flags -> Z -> Z -> Z -> check_status ->
         do_flagged_index_checks (ck :: cks) i l u (Exception msg).
 
 
-(** * Relational Semantics (big-step) *)
+(** * Relational Semantics *)
 
-(** ** Expression semantics *)
+(** ** Expression Evaluation Semantics *)
 (**
     for binary expression and unary expression, if a run time error 
     is detected in any of its child expressions, then return a run
@@ -166,9 +161,10 @@ with eval_name_x: stack -> name_x -> Return value -> Prop :=
         record_select r f = Some v ->
         eval_name_x s (E_Selected_Component_X ast_num x_ast_num x f nil) (Normal (BasicV v)).
 
-(** * Statement semantics *)
+(** ** Statement Evaluation Semantics *)
 
-(** ** Stack manipulation for procedure calls and return *)
+(** *** Copy Out *)
+(** Stack manipulation for procedure calls and return *)
 
 Inductive copy_out_x: stack -> frame -> list parameter_specification_x -> list expression_x -> stack -> Prop :=
     | Copy_Out_Nil_X : forall s f, 
@@ -184,6 +180,7 @@ Inductive copy_out_x: stack -> frame -> list parameter_specification_x -> list e
         copy_out_x s f lparam lexp s' ->
         copy_out_x s f (param :: lparam) (e :: lexp) s'.
 
+(** *** Copy In *)
 Inductive copy_in_x: stack -> frame -> list parameter_specification_x -> list expression_x -> Return frame -> Prop :=
     | Copy_In_Nil_X : forall s f, 
         copy_in_x s f nil nil (Normal f)
@@ -210,12 +207,13 @@ Inductive copy_in_x: stack -> frame -> list parameter_specification_x -> list ex
         copy_in_x s f lparam le (Run_Time_Error msg) ->
         copy_in_x s f (param::lparam) (e::le) (Run_Time_Error msg).
 
-(** *** Inductive semantic of declarations. [eval_decl s nil decl
-        rsto] means that rsto is the frame to be pushed on s after
-        evaluating decl, sto is used as an accumulator for building
-        the frame.
+(** Inductive semantic of declarations. [eval_decl s nil decl
+    rsto] means that rsto is the frame to be pushed on s after
+    evaluating decl, sto is used as an accumulator for building
+    the frame.
  *)
 
+(** ** Declaration Evaluation Semantics *)
 Inductive eval_decl_x: stack -> frame -> declaration_x -> Return frame -> Prop :=
     | Eval_Decl_E_X: forall d e f s msg ast_num,
         d.(initialization_expression_x) = Some e ->
@@ -249,7 +247,7 @@ Inductive eval_decls_x: stack -> frame -> list declaration_x -> Return frame -> 
         eval_decls_x s f1 ld f2 ->
         eval_decls_x s f (d :: ld) f2.
 
-(** ** Inductive semantic of statement and declaration
+(** Inductive semantic of statement and declaration
 
    in a statement evaluation, whenever a run time error is detected in
    the evaluation of its sub-statements or sub-component, the

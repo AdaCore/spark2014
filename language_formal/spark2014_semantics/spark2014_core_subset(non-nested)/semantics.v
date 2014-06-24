@@ -11,18 +11,14 @@ End Entry_Value_Stored.
 Module STACK := STORE(Entry_Value_Stored).
 Import STACK.
 
-Module Symbol_Table_Elements <: SymTable_Element.
-  Definition Procedure_Decl := procedure_declaration.
-  Definition Type_Decl := type_declaration.
-End Symbol_Table_Elements.
-
-Module Symbol_Table_Module := SymbolTableM (Symbol_Table_Elements).
 Import Symbol_Table_Module.
 
+(** * Run Time Check Status *)
 Inductive check_status :=
     | Success
     | Exception (m: error_type).
 
+(** * Run Time Check Semantics *)
 Inductive do_overflow_check: binary_operator -> value -> value -> check_status -> Prop :=
     | Do_Overflow_Check_On_Plus: forall v1 v2,
         (* min_signed <= (v1 + v2) <= max_signed *)
@@ -172,9 +168,9 @@ Definition eval_literal (l: literal): value :=
     | Boolean_Literal v => BasicV (Bool v)
     end.
 
-(** * Relational Semantics (big-step) *)
+(** * Relational Semantics *)
 
-(** ** Expression semantics *)
+(** ** Expression Evaluation Semantics *)
 (**
     for binary expression and unary expression, if a run time error 
     is detected in any of its child expressions, then return a run
@@ -247,9 +243,9 @@ with eval_name: stack -> name -> Return value -> Prop :=
         record_select r f = Some v ->
         eval_name s (E_Selected_Component ast_num x_ast_num x f) (Normal (BasicV v)).
 
-(** * Statement semantics *)
+(** ** Statement Evaluation Semantics *)
 
-(** ** Stack manipulation for procedure calls and return *)
+(** Stack Manipulation For Procedure Calls And Return *)
 
 (** [Copy_out prefix lparams lexp s s'] means that s' is the result of
     copying Out params of the currently finished procedure of prefix
@@ -266,6 +262,7 @@ with eval_name: stack -> name -> Return value -> Prop :=
     parameters + the local environment of the colling procedure;
   - [s'] is the resulting state. *)
 
+(** *** Copy Out *)
 Inductive copy_out: stack -> frame -> list parameter_specification -> list expression -> stack -> Prop :=
     | Copy_Out_Nil : forall s f, 
         copy_out s f nil nil s
@@ -290,6 +287,7 @@ Inductive copy_out: stack -> frame -> list parameter_specification -> list expre
 
 (* start from an empty frame and then push the values of arguments into it *)
 
+(** *** Copy In *)
 Inductive copy_in: stack -> frame -> list parameter_specification -> list expression -> Return frame -> Prop :=
     | Copy_In_Nil : forall s f, 
         copy_in s f nil nil (Normal f)
@@ -316,10 +314,11 @@ Inductive copy_in: stack -> frame -> list parameter_specification -> list expres
         copy_in s f lparam le (Run_Time_Error msg) ->
         copy_in s f (param :: lparam) (e :: le) (Run_Time_Error msg).
 
-(** *** Inductive semantic of declarations. [eval_decl s nil decl
-        rsto] means that rsto is the frame to be pushed on s after
-        evaluating decl, sto is used as an accumulator for building
-        the frame.
+(** ** Declaration Evaluation Semantics *)
+(** Inductive semantic of declarations. [eval_decl s nil decl
+    rsto] means that rsto is the frame to be pushed on s after
+    evaluating decl, sto is used as an accumulator for building
+    the frame.
  *)
 
 Inductive eval_decl: stack -> frame -> declaration -> Return frame -> Prop :=
@@ -355,14 +354,6 @@ Inductive eval_decls: stack -> frame -> list declaration -> Return frame -> Prop
         eval_decls s f1 ld f2 ->
         eval_decls s f (d :: ld) f2.
 
-(** ** Inductive semantic of statement and declaration
-
-   in a statement evaluation, whenever a run time error is detected in
-   the evaluation of its sub-statements or sub-component, the
-   evaluation is terminated and return a run time error; otherwise,
-   evaluate the statement into a normal state.
-
- *)
 
 (* a[i] := v *)
 Function arrayUpdate (a: list (index * basic_value)) (i: index) (v: basic_value): list (index * basic_value) :=
@@ -398,6 +389,11 @@ Inductive cut_until: stack -> scope_level -> stack -> stack -> Prop :=
         cut_until s n s' s'' -> 
         cut_until (f :: s) n (f :: s') s''.
 
+(** in a statement evaluation, whenever a run time error is detected in
+    the evaluation of its sub-statements or sub-component, the
+    evaluation is terminated and return a run time error; otherwise,
+    evaluate the statement into a normal state.
+ *)
 
 Inductive eval_stmt: symboltable -> stack -> statement -> Return stack -> Prop := 
     | Eval_S_Null: forall st s,

@@ -1,7 +1,7 @@
 Require Export language.
 
-(** * Run Time Check Rules *)
-(** ** a subset of run time checks to be verified *)
+(** * Run Time Checks *)
+(** a subset of run time checks to be verified *)
 (**
      - Division Check
        
@@ -23,7 +23,7 @@ Require Export language.
        subtype.
 *)
 
-(** ** run time check flags *)
+(** ** Run Time Check Flags *)
 (** checks that are needed to be verified at run time *)
 Inductive check_flag: Type := 
     | Do_Division_Check: check_flag
@@ -41,6 +41,8 @@ Definition check_flags := list check_flag.
 (** produce check flags for expressions according to the checking rules; 
     it is a mapping from one ast node to a set of run time checks;
 *)
+
+(** ** Run Time Check Flags Generator *)
 
 Inductive gen_check_flags: expression -> check_flags -> Prop :=
     | GCF_Literal_Int: forall ast_num n,

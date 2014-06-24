@@ -11,7 +11,7 @@ Require Export Coq.Strings.String.
 Require Export more_list.
 
 (* 1. command to generate HTML document from Coq source files: 
-       coqdoc X_Case.v X_CpdtTactics.v X_SparkTactics.v LibTactics.v more_list.v util.v language.v checks.v language_flagged.v values.v environment.v symboltable.v semantics.v semantics_flagged.v -toc --no-lib-name
+       coqdoc X_Case.v X_CpdtTactics.v X_SparkTactics.v LibTactics.v more_list.v util.v language.v checks.v language_flagged.v values.v environment.v symboltable_module.v symboltable.v semantics.v semantics_flagged.v -toc --no-lib-name
     2. compile all the Coq files 
        coqc X_Case.v X_CpdtTactics.v X_SparkTactics.v LibTactics.v more_list.v util.v language.v checks.v language_flagged.v values.v environment.v symboltable.v semantics.v semantics_flagged.v
 *)
@@ -133,6 +133,8 @@ Inductive mode: Type :=
     | Out
     | In_Out.
 
+(** ** Declarations *)
+
 Inductive type_declaration: Type := (* 3.2.1 *)
     | Array_Type_Declaration: (* Constrained_Array_Definition, non-nested one-dimentional array *)
         astnum -> typenum (*array name*) -> type (*component type*) -> 
@@ -182,7 +184,7 @@ with procedure_declaration: Type :=
     (procedure_statements: statement).
 
 
-(** ** Compilation unit: subprogram *)
+(** ** Compilation Unit Subprogram *)
 (* 6.1 *)
 Inductive subprogram: Type := 
     | Global_Procedure: astnum -> procedure_declaration -> subprogram
@@ -196,6 +198,7 @@ Inductive library_unit_declaration: Type :=
 Inductive compilation_unit: Type := 
     | Library_Unit: astnum -> library_unit_declaration -> type_table -> compilation_unit.
 
+(** * Auxiliary Functions *)
 
 Section AuxiliaryFunctions.
   (* We define projection functions by hand too. *)
