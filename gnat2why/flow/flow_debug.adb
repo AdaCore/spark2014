@@ -27,6 +27,10 @@ with Types;  use Types;
 with Output; use Output;
 with Sprint; use Sprint;
 
+with Ada.Containers;
+
+use type Ada.Containers.Count_Type;
+
 package body Flow_Debug is
 
    --------------------
@@ -35,15 +39,19 @@ package body Flow_Debug is
 
    procedure Print_Node_Set (S : Node_Sets.Set) is
    begin
-      Write_Str ("Node_Set with ");
-      Write_Int (Int (S.Length));
-      Write_Str (" elements:");
-      Write_Eol;
-      Indent;
-      for E of S loop
-         Sprint_Node (E);
-      end loop;
-      Outdent;
+      if S.Length > 0 then
+         Write_Str ("Node_Set with ");
+         Write_Int (Int (S.Length));
+         Write_Str (" elements:");
+         Write_Eol;
+         Indent;
+         for E of S loop
+            Print_Flow_Id (Direct_Mapping_Id (E));
+         end loop;
+         Outdent;
+      else
+         Write_Line ("<Empty Node_Set>");
+      end if;
    end Print_Node_Set;
 
    procedure Print_Node_Set (S : Flow_Id_Sets.Set) is

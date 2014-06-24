@@ -1176,13 +1176,74 @@ package body Flow is
    procedure Generate_Flow_Globals (GNAT_Root : Node_Id)
    is
       FA_Graphs : Analysis_Maps.Map;
-      pragma Unreferenced (GNAT_Root, FA_Graphs);
+      pragma Unreferenced (GNAT_Root);
    begin
       --  Process entities and construct graphs if necessary
       Build_Graphs_For_Compilation_Unit (Compute_Globals => True,
                                          FA_Graphs       => FA_Graphs);
 
       --  !!! Write computed globals to the ALI file here
+      for FA of FA_Graphs loop
+         if Gnat2Why_Args.Flow_Advanced_Debug then
+            Write_Str (Character'Val (8#33#) & "[32m" &
+                         "Global generation (slice) for " &
+                         Entity_Kind'Image (FA.Kind) &
+                         " " &
+                         Character'Val (8#33#) & "[1m" &
+                         Get_Name_String (Chars (FA.Analyzed_Entity)) &
+                         Character'Val (8#33#) & "[0m");
+            Write_Eol;
+            Indent;
+         end if;
+
+         if FA.GG.Aborted then
+            if Gnat2Why_Args.Flow_Advanced_Debug then
+               Write_Line ("aborted earlier");
+            end if;
+         else
+            declare
+               Inputs_Proof      : Node_Sets.Set;
+               Inputs            : Node_Sets.Set;
+               Outputs           : Node_Sets.Set;
+               Proof_Calls       : Node_Sets.Set;
+               Definite_Calls    : Node_Sets.Set;
+               Conditional_Calls : Node_Sets.Set;
+            begin
+               Compute_Globals (FA,
+                                Inputs_Proof      => Inputs_Proof,
+                                Inputs            => Inputs,
+                                Outputs           => Outputs,
+                                Proof_Calls       => Proof_Calls,
+                                Definite_Calls    => Definite_Calls,
+                                Conditional_Calls => Conditional_Calls);
+
+               if Gnat2Why_Args.Flow_Advanced_Debug then
+                  Write_Str ("Proof inputs     : ");
+                  Print_Node_Set (Inputs_Proof);
+
+                  Write_Str ("Inputs           : ");
+                  Print_Node_Set (Inputs);
+
+                  Write_Str ("Outputs          : ");
+                  Print_Node_Set (Outputs);
+
+                  Write_Str ("Proof calls      : ");
+                  Print_Node_Set (Proof_Calls);
+
+                  Write_Str ("Definite calls   : ");
+                  Print_Node_Set (Definite_Calls);
+
+                  Write_Str ("Conditional calls: ");
+                  Print_Node_Set (Conditional_Calls);
+               end if;
+            end;
+         end if;
+
+         if Gnat2Why_Args.Flow_Advanced_Debug then
+            Outdent;
+         end if;
+
+      end loop;
 
       if Gnat2Why_Args.Flow_Advanced_Debug then
          Write_Str (Character'Val (8#33#) & "[33m" &
