@@ -23,9 +23,13 @@
 
 with Why;
 
+with Flow_Utility; use Flow_Utility;
+
 package body Flow.Slice is
 
+   use type Node_Sets.Set;
    use type Flow_Id_Sets.Set;
+   use type Flow_Graphs.Vertex_Id;
 
    ----------------------------------------------------------------------
    --  Local procedures for local subprograms
@@ -262,15 +266,157 @@ package body Flow.Slice is
       Definite_Calls    : out Node_Sets.Set;
       Conditional_Calls : out Node_Sets.Set)
    is
-      --  !!! obviously stubbed, Pavlos please implement
-      pragma Unreferenced (FA);
+      --  The "Get" functions that follow return sets of nodes that
+      --  are purely of the mode described in their names. This is
+      --  pointed out so as to prevent confusion between the functions
+      --  and the formal parameters of Compute_Globals (where an Input
+      --  could also appear as an Output).
+
+      function Get_Inputs_Or_Proof_Ins return Node_Sets.Set;
+      --  Returns all Globals that are purely of mode Input or Proof_In
+
+      function Get_Outputs return Node_Sets.Set;
+      --  Returns all Globals that are purely of mode Output
+
+      function Get_In_Outs return Node_Sets.Set;
+      --  Returns all Globals that are of mode In_Out
+
+      function Get_Proof_Ins return Node_Sets.Set;
+      --  Returns all Globals that are of mode Proof_In
+
+      -----------------------------
+      -- Get_Inputs_Or_Proof_Ins --
+      -----------------------------
+
+      function Get_Inputs_Or_Proof_Ins return Node_Sets.Set is
+         All_Ins   : Node_Sets.Set := Node_Sets.Empty_Set;
+
+         FS        : Flow_Id_Sets.Set;
+         V_Initial : Flow_Graphs.Vertex_Id;
+         V_Final   : Flow_Graphs.Vertex_Id;
+         Guilty    : Boolean;
+      begin
+         for G of FA.GG.Globals loop
+            --  We go through all Globals and check if their
+            --  corresponding 'Final vertex has a single in neighbour
+            --  that is the 'Initial vertex.
+
+            Guilty := False;  --  Innocent till found guilty
+
+            FS := Flatten_Variable (Direct_Mapping_Id (G));
+
+            for Comp of FS loop
+               V_Initial := FA.PDG.Get_Vertex
+                 (Change_Variant (Comp, Initial_Value));
+
+               V_Final   := FA.PDG.Get_Vertex
+                 (Change_Variant (Comp, Final_Value));
+
+               if not (FA.PDG.In_Neighbour_Count (V_Final) = 1
+                         and then (for some V of FA.PDG.Get_Collection
+                                     (V_Final,
+                                      Flow_Graphs.In_Neighbours) =>
+                                        V = V_Initial))
+               then
+                  Guilty := True;
+                  exit;
+               end if;
+            end loop;
+
+            if not Guilty then
+               All_Ins.Insert (G);
+            end if;
+         end loop;
+
+         return All_Ins;
+      end Get_Inputs_Or_Proof_Ins;
+
+      -----------------
+      -- Get_Outputs --
+      -----------------
+
+      function Get_Outputs return Node_Sets.Set is
+         All_Outs  : Node_Sets.Set := Node_Sets.Empty_Set;
+
+         FS        : Flow_Id_Sets.Set;
+         V_Initial : Flow_Graphs.Vertex_Id;
+         Guilty    : Boolean;
+      begin
+         for G of FA.GG.Globals loop
+            --  We go through all Globals and check if their
+            --  corresponding 'Initial vertex has no Out_Neighbours.
+
+            Guilty := False;  --  Innocent till found guilty
+
+            FS := Flatten_Variable (Direct_Mapping_Id (G));
+
+            for Comp of FS loop
+               V_Initial := FA.PDG.Get_Vertex
+                 (Change_Variant (Comp, Initial_Value));
+
+               if not (FA.PDG.Out_Neighbour_Count (V_Initial) = 0) then
+                  Guilty := True;
+                  exit;
+               end if;
+            end loop;
+
+            if not Guilty then
+               All_Outs.Insert (G);
+            end if;
+         end loop;
+
+         return All_Outs;
+      end Get_Outputs;
+
+      -----------------
+      -- Get_In_Outs --
+      -----------------
+
+      function Get_In_Outs return Node_Sets.Set is
+      begin
+         --  The Globals that are of mode In_Out can be computed
+         --  by subtracting from the set of all Globals the sets that
+         --  are purely of modes Input, Proof_In and Output.
+
+         return FA.GG.Globals - Get_Inputs_Or_Proof_Ins - Get_Outputs;
+      end Get_In_Outs;
+
+      -------------------
+      -- Get_Proof_Ins --
+      -------------------
+
+      function Get_Proof_Ins return Node_Sets.Set is
+         All_Proof_Ins : Node_Sets.Set := Get_Inputs_Or_Proof_Ins;
+
+         A             : V_Attributes;
+      begin
+         for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
+            --  We go through all vertices in the graph and we
+            --  subtract from the All_Proof_Ins set the variables that
+            --  are used on vertices that are not related to proof.
+
+            A := FA.Atr.Element (V);
+
+            if FA.PDG.Get_Key (V).Variant /= Final_Value
+              and then not A.Is_Proof
+            then
+               All_Proof_Ins := All_Proof_Ins -
+                 To_Node_Set (To_Entire_Variables (A.Variables_Used));
+            end if;
+         end loop;
+
+         return All_Proof_Ins;
+      end Get_Proof_Ins;
+
    begin
-      Inputs_Proof      := Node_Sets.Empty_Set;
-      Inputs            := Node_Sets.Empty_Set;
-      Outputs           := Node_Sets.Empty_Set;
+      Inputs_Proof      := Get_Proof_Ins;
+      Inputs            := Get_In_Outs or (Get_Inputs_Or_Proof_Ins -
+                                             Get_Proof_Ins);
+      Outputs           := Get_In_Outs or Get_Outputs;
       Proof_Calls       := Node_Sets.Empty_Set;
       Definite_Calls    := Node_Sets.Empty_Set;
       Conditional_Calls := Node_Sets.Empty_Set; -- call me maybe :D
+
    end Compute_Globals;
 
 end Flow.Slice;
