@@ -34,7 +34,7 @@ perm.adb:88:14: info: precondition proved
 perm.ads:9:14: warning: postcondition might fail
 perm.ads:10:48: info: overflow check proved
 perm.ads:12:38: info: index check proved
-perm.ads:12:46: warning: array index check might fail
+perm.ads:12:46: info: index check proved
 perm.ads:16:17: info: index check proved
 perm.ads:16:42: info: precondition proved
 perm.ads:16:62: warning: range check might fail
