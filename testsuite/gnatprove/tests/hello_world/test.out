@@ -1,4 +1,4 @@
-after_tax.adb:7:22: info: overflow check proved
+after_tax.adb:7:22: warning: overflow check might fail
 after_tax.adb:7:22: warning: range check might fail
 after_tax.adb:7:36: warning: overflow check might fail
 after_tax.adb:7:44: info: division check proved
