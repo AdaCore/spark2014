@@ -454,7 +454,28 @@ package body Gnat2Why.Subprograms is
            New_Deref
              (Right =>
                   To_Why_Id (Get_Name_String
-                     (Get_Symbol (Binders (Cnt).B_Name)), Local => False));
+                  (Get_Symbol (Binders (Cnt).B_Name)), Local => False));
+
+         --  If the global is associated to an entity (not a type not in spark)
+         --  the entity is registered (not an abstract state) and it is in
+         --  split form, then we need to reconstruct it.
+
+         if Present (Binders (Cnt).Ada_Node)
+           and then Ada_Ent_To_Why.Has_Element
+             (Symbol_Table, Binders (Cnt).Ada_Node)
+           and then Get_Base_Type
+             (Why_Type_Of_Entity (Binders (Cnt).Ada_Node)) = EW_Split
+         then
+            Result (Cnt) :=
+              Insert_Simple_Conversion
+                (Domain   => EW_Term,
+                 Expr     => New_Deref
+                   (Right => Ada_Ent_To_Why.Element
+                      (Symbol_Table, Binders (Cnt).Ada_Node).Main.B_Name,
+                    Typ => Why_Type_Of_Entity (Binders (Cnt).Ada_Node)),
+                 To       => Get_Typ (Binders (Cnt).B_Name));
+         end if;
+
          Cnt := Cnt + 1;
       end loop;
 
