@@ -56,6 +56,7 @@ with Flow_Debug;                    use Flow_Debug;
 with Flow_Error_Messages;           use Flow_Error_Messages;
 with Flow_Tree_Utility;             use Flow_Tree_Utility;
 with Flow_Utility;                  use Flow_Utility;
+with Flow_Computed_Globals;         use Flow_Computed_Globals;
 
 use type Ada.Containers.Count_Type;
 
@@ -1182,6 +1183,8 @@ package body Flow is
       Build_Graphs_For_Compilation_Unit (Compute_Globals => True,
                                          FA_Graphs       => FA_Graphs);
 
+      GG_Write_Initialize;
+
       --  !!! Write computed globals to the ALI file here
       for FA of FA_Graphs loop
          if Gnat2Why_Args.Flow_Advanced_Debug then
@@ -1236,6 +1239,15 @@ package body Flow is
                   Write_Str ("Conditional calls: ");
                   Print_Node_Set (Conditional_Calls);
                end if;
+
+               GG_Write_Subprogram_Info
+                 (FA.Analyzed_Entity,
+                  Inputs_Proof      => Inputs_Proof,
+                  Inputs            => Inputs,
+                  Outputs           => Outputs,
+                  Proof_Calls       => Proof_Calls,
+                  Definite_Calls    => Definite_Calls,
+                  Conditional_Calls => Conditional_Calls);
             end;
          end if;
 
@@ -1244,6 +1256,8 @@ package body Flow is
          end if;
 
       end loop;
+
+      GG_Write_Finalize;
 
       if Gnat2Why_Args.Flow_Advanced_Debug then
          Write_Str (Character'Val (8#33#) & "[33m" &
