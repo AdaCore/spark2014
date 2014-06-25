@@ -1352,6 +1352,10 @@ digraph G {
     23 [label="i'final\nVU: {I}\n<VId: 23>",shape="plaintext",fontcolor="red"];
     24 [label="for i in 2 .. R4b\nLoops:&nbsp;L_1\nVU: {R4b}\nVD: {I}\n<VId: 24>",shape="diamond"];
     25 [label="return true;\nVD: {Coprime}\n<VId: 25>"];
+    26 [label="min'initial\nVD: {Min}\n<VId: 26>",shape="plaintext",fontcolor="red"];
+    27 [label="min'final\nVU: {Min}\n<VId: 27>",shape="plaintext",fontcolor="blue"];
+    28 [label="prime'initial\nVD: {Prime}\n<VId: 28>",shape="plaintext",fontcolor="red"];
+    29 [label="prime'final\nVU: {Prime}\n<VId: 29>",shape="plaintext",fontcolor="blue"];
 
     1 ->  15 [arrowType="normal"];
     2 ->  3 [arrowType="normal"];
@@ -1360,6 +1364,8 @@ digraph G {
     3 ->  11 [arrowType="normal"];
     3 ->  18 [arrowType="normal"];
     3 ->  23 [arrowType="normal"];
+    3 ->  27 [arrowType="normal"];
+    3 ->  29 [arrowType="normal"];
     6 ->  1 [arrowType="normal"];
     8 ->  1 [arrowType="normal"];
     10 ->  1 [arrowType="normal"];
@@ -1375,6 +1381,8 @@ digraph G {
     24 ->  20 [arrowType="normal"];
     24 ->  25 [arrowType="normal"];
     25 ->  2 [arrowType="normal"];
+    26 ->  1 [arrowType="normal"];
+    28 ->  1 [arrowType="normal"];
 }
 
 // gg_subprogram_coprime_pdg
@@ -1400,6 +1408,10 @@ digraph G {
     23 [label="i'final\nVU: {I}\n<VId: 23>",shape="plaintext",fontcolor="red"];
     24 [label="for i in 2 .. R4b\nLoops:&nbsp;L_1\nVU: {R4b}\nVD: {I}\n<VId: 24>",shape="diamond"];
     25 [label="return true;\nVD: {Coprime}\n<VId: 25>"];
+    26 [label="min'initial\nVD: {Min}\n<VId: 26>",shape="plaintext",fontcolor="red"];
+    27 [label="min'final\nVU: {Min}\n<VId: 27>",shape="plaintext",fontcolor="blue"];
+    28 [label="prime'initial\nVD: {Prime}\n<VId: 28>",shape="plaintext",fontcolor="red"];
+    29 [label="prime'final\nVU: {Prime}\n<VId: 29>",shape="plaintext",fontcolor="blue"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  15 [arrowType="normal"];
@@ -1414,10 +1426,12 @@ digraph G {
     15 ->  16 [arrowType="normal"];
     15 ->  19 [arrowType="normal"];
     15 ->  24 [arrowType="normal"];
+    15 ->  29 [arrowType="normal",color="red"];
     16 ->  11 [arrowType="normal",color="red"];
     17 ->  18 [arrowType="normal",color="red"];
     19 ->  18 [arrowType="normal",color="red"];
     19 ->  24 [arrowType="normal",color="red"];
+    19 ->  27 [arrowType="normal",color="red"];
     20 ->  21 [arrowType="normal"];
     20 ->  24 [arrowType="normal"];
     21 ->  11 [arrowType="normal",color="red"];
@@ -1426,6 +1440,7 @@ digraph G {
     24 ->  23 [arrowType="normal",color="red"];
     24 ->  25 [arrowType="normal"];
     25 ->  11 [arrowType="normal",color="red"];
+    26 ->  27 [arrowType="normal",color="red"];
 }
 
 // gg_subprogram_double_max_cfg
@@ -1449,6 +1464,8 @@ digraph G {
     20 [label="x'final\n(global)\nVU: {X}\n<VId: 20>",shape="plaintext",fontcolor="blue"];
     21 [label="y'initial\n(global)\nVD: {Y}\n<VId: 21>",shape="plaintext"];
     22 [label="y'final\n(global)\nVU: {Y}\n<VId: 22>",shape="plaintext",fontcolor="blue"];
+    23 [label="max'initial\nVD: {Max}\n<VId: 23>",shape="plaintext",fontcolor="red"];
+    24 [label="max'final\nVU: {Max}\n<VId: 24>",shape="plaintext"];
 
     1 ->  13 [arrowType="normal"];
     2 ->  3 [arrowType="normal"];
@@ -1456,6 +1473,7 @@ digraph G {
     3 ->  11 [arrowType="normal"];
     3 ->  20 [arrowType="normal"];
     3 ->  22 [arrowType="normal"];
+    3 ->  24 [arrowType="normal"];
     6 ->  1 [arrowType="normal"];
     10 ->  1 [arrowType="normal"];
     13 ->  14 [arrowType="normal"];
@@ -1466,6 +1484,7 @@ digraph G {
     18 ->  2 [arrowType="normal"];
     19 ->  1 [arrowType="normal"];
     21 ->  1 [arrowType="normal"];
+    23 ->  1 [arrowType="normal"];
 }
 
 // gg_subprogram_double_max_pdg
@@ -1488,6 +1507,8 @@ digraph G {
     20 [label="x'final\n(global)\nVU: {X}\n<VId: 20>",shape="plaintext",fontcolor="blue"];
     21 [label="y'initial\n(global)\nVD: {Y}\n<VId: 21>",shape="plaintext"];
     22 [label="y'final\n(global)\nVU: {Y}\n<VId: 22>",shape="plaintext",fontcolor="blue"];
+    23 [label="max'initial\nVD: {Max}\n<VId: 23>",shape="plaintext",fontcolor="red"];
+    24 [label="max'final\nVU: {Max}\n<VId: 24>",shape="plaintext"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  13 [arrowType="normal"];
@@ -1496,6 +1517,7 @@ digraph G {
     13 ->  15 [arrowType="normal"];
     13 ->  16 [arrowType="normal"];
     13 ->  17 [arrowType="normal"];
+    13 ->  24 [arrowType="normal",color="red"];
     15 ->  11 [arrowType="normal",color="red"];
     15 ->  18 [arrowType="normal",color="red"];
     16 ->  15 [arrowType="normal",color="cornflowerblue"];
@@ -1525,11 +1547,14 @@ digraph G {
     17 [label="fact&nbsp;:=&nbsp;fact'out\nVD: {Fact}\n<VId: 17>",shape="plaintext"];
     18 [label="fact := {fact {*} var};\nVU: {Var, Fact}\nVD: {Fact}\n<VId: 18>"];
     19 [label="fact := 1;\nVD: {Fact}\n<VId: 19>"];
+    20 [label="factorial'initial\nVD: {Factorial}\n<VId: 20>",shape="plaintext",fontcolor="red"];
+    21 [label="factorial'final\nVU: {Factorial}\n<VId: 21>",shape="plaintext"];
 
     1 ->  13 [arrowType="normal"];
     2 ->  3 [arrowType="normal"];
     3 ->  7 [arrowType="normal"];
     3 ->  9 [arrowType="normal"];
+    3 ->  21 [arrowType="normal"];
     6 ->  1 [arrowType="normal"];
     8 ->  1 [arrowType="normal"];
     13 ->  14 [arrowType="normal"];
@@ -1540,6 +1565,7 @@ digraph G {
     17 ->  18 [arrowType="normal"];
     18 ->  2 [arrowType="normal"];
     19 ->  2 [arrowType="normal"];
+    20 ->  1 [arrowType="normal"];
 }
 
 // gg_subprogram_factorial_pdg
@@ -1559,6 +1585,8 @@ digraph G {
     17 [label="fact&nbsp;:=&nbsp;fact'out\nVD: {Fact}\n<VId: 17>",shape="plaintext"];
     18 [label="fact := {fact {*} var};\nVU: {Var, Fact}\nVD: {Fact}\n<VId: 18>"];
     19 [label="fact := 1;\nVD: {Fact}\n<VId: 19>"];
+    20 [label="factorial'initial\nVD: {Factorial}\n<VId: 20>",shape="plaintext",fontcolor="red"];
+    21 [label="factorial'final\nVU: {Factorial}\n<VId: 21>",shape="plaintext"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  13 [arrowType="normal"];
@@ -1572,11 +1600,13 @@ digraph G {
     14 ->  15 [arrowType="normal"];
     14 ->  16 [arrowType="normal"];
     14 ->  17 [arrowType="normal"];
+    14 ->  21 [arrowType="normal",color="red"];
     15 ->  17 [arrowType="normal",color="cornflowerblue"];
     17 ->  18 [arrowType="normal",color="red"];
     18 ->  9 [arrowType="normal",color="red"];
     18 ->  18 [arrowType="normal",color="red"];
     19 ->  9 [arrowType="normal",color="red"];
+    20 ->  21 [arrowType="normal",color="red"];
 }
 
 // gg_subprogram_fibonacci_cfg
@@ -1780,12 +1810,15 @@ digraph G {
     22 [label="y'final\n(global)\nVU: {Y}\n<VId: 22>",shape="plaintext",fontcolor="blue"];
     23 [label="z'initial\n(global)\nVD: {Z}\n<VId: 23>",shape="plaintext"];
     24 [label="z'final\n(global)\nVU: {Z}\n<VId: 24>",shape="plaintext",fontcolor="blue"];
+    25 [label="swap'initial\nVD: {Swap}\n<VId: 25>",shape="plaintext",fontcolor="red"];
+    26 [label="swap'final\nVU: {Swap}\n<VId: 26>",shape="plaintext"];
 
     1 ->  9 [arrowType="normal"];
     2 ->  3 [arrowType="normal"];
     3 ->  20 [arrowType="normal"];
     3 ->  22 [arrowType="normal"];
     3 ->  24 [arrowType="normal"];
+    3 ->  26 [arrowType="normal"];
     9 ->  10 [arrowType="normal"];
     10 ->  12 [arrowType="normal"];
     11 ->  13 [arrowType="normal"];
@@ -1799,6 +1832,7 @@ digraph G {
     19 ->  1 [arrowType="normal"];
     21 ->  1 [arrowType="normal"];
     23 ->  1 [arrowType="normal"];
+    25 ->  1 [arrowType="normal"];
 }
 
 // gg_subprogram_round_swap_1_pdg
@@ -1823,6 +1857,8 @@ digraph G {
     22 [label="y'final\n(global)\nVU: {Y}\n<VId: 22>",shape="plaintext",fontcolor="blue"];
     23 [label="z'initial\n(global)\nVD: {Z}\n<VId: 23>",shape="plaintext"];
     24 [label="z'final\n(global)\nVU: {Z}\n<VId: 24>",shape="plaintext",fontcolor="blue"];
+    25 [label="swap'initial\nVD: {Swap}\n<VId: 25>",shape="plaintext",fontcolor="red"];
+    26 [label="swap'final\nVU: {Swap}\n<VId: 26>",shape="plaintext"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  9 [arrowType="normal"];
@@ -1841,6 +1877,7 @@ digraph G {
     14 ->  16 [arrowType="normal"];
     14 ->  17 [arrowType="normal"];
     14 ->  18 [arrowType="normal"];
+    14 ->  26 [arrowType="normal",color="red"];
     15 ->  16 [arrowType="normal",color="cornflowerblue"];
     15 ->  18 [arrowType="normal",color="cornflowerblue"];
     16 ->  20 [arrowType="normal",color="red"];
@@ -1875,12 +1912,15 @@ digraph G {
     22 [label="y'final\n(global)\nVU: {Y}\n<VId: 22>",shape="plaintext",fontcolor="blue"];
     23 [label="z'initial\n(global)\nVD: {Z}\n<VId: 23>",shape="plaintext"];
     24 [label="z'final\n(global)\nVU: {Z}\n<VId: 24>",shape="plaintext",fontcolor="blue"];
+    25 [label="swap_with_depends'initial\nVD: {Swap_With_Depends}\n<VId: 25>",shape="plaintext",fontcolor="red"];
+    26 [label="swap_with_depends'final\nVU: {Swap_With_Depends}\n<VId: 26>",shape="plaintext"];
 
     1 ->  9 [arrowType="normal"];
     2 ->  3 [arrowType="normal"];
     3 ->  20 [arrowType="normal"];
     3 ->  22 [arrowType="normal"];
     3 ->  24 [arrowType="normal"];
+    3 ->  26 [arrowType="normal"];
     9 ->  10 [arrowType="normal"];
     10 ->  12 [arrowType="normal"];
     11 ->  13 [arrowType="normal"];
@@ -1894,6 +1934,7 @@ digraph G {
     19 ->  1 [arrowType="normal"];
     21 ->  1 [arrowType="normal"];
     23 ->  1 [arrowType="normal"];
+    25 ->  1 [arrowType="normal"];
 }
 
 // gg_subprogram_round_swap_2_pdg
@@ -1918,6 +1959,8 @@ digraph G {
     22 [label="y'final\n(global)\nVU: {Y}\n<VId: 22>",shape="plaintext",fontcolor="blue"];
     23 [label="z'initial\n(global)\nVD: {Z}\n<VId: 23>",shape="plaintext"];
     24 [label="z'final\n(global)\nVU: {Z}\n<VId: 24>",shape="plaintext",fontcolor="blue"];
+    25 [label="swap_with_depends'initial\nVD: {Swap_With_Depends}\n<VId: 25>",shape="plaintext",fontcolor="red"];
+    26 [label="swap_with_depends'final\nVU: {Swap_With_Depends}\n<VId: 26>",shape="plaintext"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  9 [arrowType="normal"];
@@ -1934,6 +1977,7 @@ digraph G {
     14 ->  16 [arrowType="normal"];
     14 ->  17 [arrowType="normal"];
     14 ->  18 [arrowType="normal"];
+    14 ->  26 [arrowType="normal",color="red"];
     15 ->  18 [arrowType="normal",color="cornflowerblue"];
     16 ->  20 [arrowType="normal",color="red"];
     17 ->  16 [arrowType="normal",color="cornflowerblue"];

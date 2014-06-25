@@ -110,14 +110,17 @@ package Flow is
    type Flow_Global_Generation_Info (Present : Boolean) is record
       case Present is
          when True =>
-            Aborted : Boolean;
+            Aborted     : Boolean;
             --  Set if graph creation, processing or analysis raised some
             --  error; or if the entity should not be analyzed in the first
             --  place.
 
-            Globals : Node_Sets.Set;
+            Globals     : Node_Sets.Set;
             --  All obvious globals (non-local variables or parameters that
             --  are not subprogram parameters of the analyzed entity).
+
+            Subprograms : Node_Sets.Set;
+            --  All subprograms called
 
          when False =>
             null;

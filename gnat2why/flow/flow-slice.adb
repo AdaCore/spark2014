@@ -284,6 +284,16 @@ package body Flow.Slice is
       function Get_Proof_Ins return Node_Sets.Set;
       --  Returns all Globals that are of mode Proof_In
 
+      --  The functions that follow facilitate calculation of
+      --  subprogram calls.
+
+      function Get_Proof_Subprograms return Node_Sets.Set;
+      --  Returns all subprograms that are only ever called in proof
+      --  related vertices.
+
+      function Get_Definite_Subprograms return Node_Sets.Set;
+      --  Returns all subprograms that are definitely called
+
       -----------------------------
       -- Get_Inputs_Or_Proof_Ins --
       -----------------------------
@@ -408,15 +418,65 @@ package body Flow.Slice is
          return All_Proof_Ins;
       end Get_Proof_Ins;
 
+      ---------------------------
+      -- Get_Proof_Subprograms --
+      ---------------------------
+
+      function Get_Proof_Subprograms return Node_Sets.Set is
+         All_Proof_Subprograms : Node_Sets.Set := FA.GG.Subprograms;
+
+         A                     : V_Attributes;
+      begin
+         for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
+            --  We go through all vertices in the graph and we
+            --  subtract from the All_Proof_Subprograms set the
+            --  subprograms that are called on vertices that are not
+            --  related to proof.
+
+            A := FA.Atr.Element (V);
+
+            if not A.Is_Proof then
+               All_Proof_Subprograms := All_Proof_Subprograms -
+                                          A.Subprograms_Called;
+            end if;
+         end loop;
+
+         return All_Proof_Subprograms;
+      end Get_Proof_Subprograms;
+
+      ------------------------------
+      -- Get_Definite_Subprograms --
+      ------------------------------
+
+      function Get_Definite_Subprograms return Node_Sets.Set is
+         All_Definite_Subprograms  : Node_Sets.Set := Node_Sets.Empty_Set;
+
+         F                         : Flow_Id;
+         V_Initial                 : Flow_Graphs.Vertex_Id;
+      begin
+         for G of FA.GG.Subprograms loop
+            --  We go through all Subprograms and check if their
+            --  corresponding 'Initial vertex has no Out_Neighbours.
+
+            F := Direct_Mapping_Id (G);
+            V_Initial := FA.PDG.Get_Vertex (Change_Variant (F, Initial_Value));
+
+            if FA.PDG.Out_Neighbour_Count (V_Initial) = 0 then
+               All_Definite_Subprograms.Include (G);
+            end if;
+         end loop;
+
+         return All_Definite_Subprograms;
+      end Get_Definite_Subprograms;
+
    begin
       Inputs_Proof      := Get_Proof_Ins;
       Inputs            := Get_In_Outs or (Get_Inputs_Or_Proof_Ins -
                                              Get_Proof_Ins);
       Outputs           := Get_In_Outs or Get_Outputs;
-      Proof_Calls       := Node_Sets.Empty_Set;
-      Definite_Calls    := Node_Sets.Empty_Set;
-      Conditional_Calls := Node_Sets.Empty_Set; -- call me maybe :D
-
+      Proof_Calls       := Get_Proof_Subprograms;
+      Definite_Calls    := Get_Definite_Subprograms - Proof_Calls;
+      Conditional_Calls := FA.GG.Subprograms - Definite_Calls - Proof_Calls;
    end Compute_Globals;
 
 end Flow.Slice;

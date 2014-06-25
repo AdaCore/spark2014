@@ -509,11 +509,17 @@ digraph G {
     25 [label="speed'final\n(global)\nVU: {Speed}\n<VId: 25>",shape="plaintext",fontcolor="blue"];
     26 [label="state'initial\n(global)\nVD: {State}\n<VId: 26>",shape="plaintext"];
     27 [label="state'final\n(global)\nVU: {State}\n<VId: 27>",shape="plaintext",fontcolor="blue"];
+    28 [label="speed_is_valid'initial\nVD: {Speed_Is_Valid}\n<VId: 28>",shape="plaintext",fontcolor="red"];
+    29 [label="speed_is_valid'final\nVU: {Speed_Is_Valid}\n<VId: 29>",shape="plaintext",fontcolor="blue"];
+    30 [label="state_update'initial\nVD: {State_Update}\n<VId: 30>",shape="plaintext",fontcolor="red"];
+    31 [label="state_update'final\nVU: {State_Update}\n<VId: 31>",shape="plaintext"];
 
     1 ->  6 [arrowType="normal"];
     2 ->  7 [arrowType="normal"];
     3 ->  25 [arrowType="normal"];
     3 ->  27 [arrowType="normal"];
+    3 ->  29 [arrowType="normal"];
+    3 ->  31 [arrowType="normal"];
     6 ->  23 [arrowType="normal"];
     7 ->  3 [arrowType="normal"];
     9 ->  10 [arrowType="normal"];
@@ -535,6 +541,8 @@ digraph G {
     23 ->  9 [arrowType="normal"];
     24 ->  1 [arrowType="normal"];
     26 ->  1 [arrowType="normal"];
+    28 ->  1 [arrowType="normal"];
+    30 ->  1 [arrowType="normal"];
 }
 
 // gg_subprogram_halt_pdg
@@ -564,11 +572,16 @@ digraph G {
     25 [label="speed'final\n(global)\nVU: {Speed}\n<VId: 25>",shape="plaintext",fontcolor="blue"];
     26 [label="state'initial\n(global)\nVD: {State}\n<VId: 26>",shape="plaintext"];
     27 [label="state'final\n(global)\nVU: {State}\n<VId: 27>",shape="plaintext",fontcolor="blue"];
+    28 [label="speed_is_valid'initial\nVD: {Speed_Is_Valid}\n<VId: 28>",shape="plaintext",fontcolor="red"];
+    29 [label="speed_is_valid'final\nVU: {Speed_Is_Valid}\n<VId: 29>",shape="plaintext",fontcolor="blue"];
+    30 [label="state_update'initial\nVD: {State_Update}\n<VId: 30>",shape="plaintext",fontcolor="red"];
+    31 [label="state_update'final\nVU: {State_Update}\n<VId: 31>",shape="plaintext"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  6 [arrowType="normal"];
     1 ->  7 [arrowType="normal"];
     1 ->  23 [arrowType="normal"];
+    7 ->  29 [arrowType="normal",color="red"];
     10 ->  11 [arrowType="normal"];
     10 ->  17 [arrowType="normal"];
     11 ->  12 [arrowType="normal"];
@@ -576,6 +589,7 @@ digraph G {
     11 ->  14 [arrowType="normal"];
     11 ->  15 [arrowType="normal"];
     11 ->  16 [arrowType="normal"];
+    11 ->  31 [arrowType="normal",color="red"];
     12 ->  15 [arrowType="normal",color="cornflowerblue"];
     12 ->  16 [arrowType="normal",color="cornflowerblue"];
     13 ->  15 [arrowType="normal",color="cornflowerblue"];
@@ -596,6 +610,7 @@ digraph G {
     17 ->  20 [arrowType="normal"];
     17 ->  21 [arrowType="normal"];
     17 ->  22 [arrowType="normal"];
+    17 ->  31 [arrowType="normal",color="red"];
     18 ->  21 [arrowType="normal",color="cornflowerblue"];
     18 ->  22 [arrowType="normal",color="cornflowerblue"];
     19 ->  21 [arrowType="normal",color="cornflowerblue"];
@@ -623,6 +638,7 @@ digraph G {
     26 ->  19 [arrowType="normal",color="red"];
     26 ->  23 [arrowType="normal",color="red"];
     26 ->  27 [arrowType="normal",color="red"];
+    30 ->  31 [arrowType="normal",color="red"];
 }
 
 // gg_subprogram_speed_is_valid_cfg

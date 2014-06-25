@@ -5019,8 +5019,9 @@ package body Flow.Control_Flow_Graph is
       --  Simplify graph by removing all null vertices.
       Simplify_CFG (FA);
 
-      --  In GG mode, we assemble a list of globals now (and retroactively
-      --  make some initial and final vertices).
+      --  In GG mode, we assemble a list of globals and subprograms
+      --  now (and retroactively make some initial and final
+      --  vertices).
       if FA.Compute_Globals then
          declare
             Known_Vars : constant Flow_Id_Sets.Set :=
@@ -5041,6 +5042,8 @@ package body Flow.Control_Flow_Graph is
                         FA.GG.Globals.Include (Get_Direct_Mapping_Id (Var));
                      end if;
                   end loop;
+
+                  FA.GG.Subprograms.Union (Atr.Subprograms_Called);
                end;
             end loop;
          end;
@@ -5054,6 +5057,49 @@ package body Flow.Control_Flow_Graph is
                   Create_Initial_And_Final_Vertices (Direct_Mapping_Id (E),
                                                      Mode_In_Out, False, FA);
             end case;
+         end loop;
+
+         for E of FA.GG.Subprograms loop
+            declare
+               F : constant Flow_Id := Direct_Mapping_Id (E);
+               V : Flow_Graphs.Vertex_Id;
+               A : V_Attributes;
+            begin
+               if FA.CFG.Get_Vertex (Change_Variant (F, Initial_Value)) =
+                 Flow_Graphs.Null_Vertex
+               then
+                  --  If the 'Initial and 'Final vertices do not
+                  --  already exist then we create them.
+
+                  --  Setup the n'initial vertex.
+                  A := Make_Variable_Attributes (F_Ent => Change_Variant
+                                                   (F, Initial_Value),
+                                                 Mode  => Mode_In_Out,
+                                                 E_Loc => E);
+
+                  Add_Vertex
+                    (FA,
+                     Change_Variant (F, Initial_Value),
+                     A,
+                     V);
+                  Linkup (FA.CFG, V, FA.Start_Vertex);
+
+                  Create_Record_Tree (Change_Variant (F, Initial_Value),
+                                      A,
+                                      FA);
+
+                  --  Setup the n'final vertex.
+                  Add_Vertex
+                    (FA,
+                     Change_Variant (F, Final_Value),
+                     Make_Variable_Attributes (F_Ent => Change_Variant
+                                                 (F, Final_Value),
+                                               Mode  => Mode_In_Out,
+                                               E_Loc => E),
+                     V);
+                  Linkup (FA.CFG, FA.End_Vertex, V);
+               end if;
+            end;
          end loop;
       end if;
 

@@ -33,8 +33,12 @@ package body Flow.Data_Dependence_Graph is
 
       for V_D of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
          Combined_Defined :=
-           FA.Atr.Element (V_D).Variables_Defined or
-           FA.Atr.Element (V_D).Volatiles_Read;
+           (if not FA.Compute_Globals
+            then FA.Atr.Element (V_D).Variables_Defined or
+                   FA.Atr.Element (V_D).Volatiles_Read
+            else FA.Atr.Element (V_D).Variables_Defined or
+                   FA.Atr.Element (V_D).Volatiles_Read or
+                   To_Flow_Id_Set (FA.Atr.Element (V_D).Subprograms_Called));
          for Var of Combined_Defined loop
             declare
                procedure Visitor
@@ -53,8 +57,13 @@ package body Flow.Data_Dependence_Graph is
                   if Atr.Variables_Used.Contains (Var) then
                      FA.DDG.Add_Edge (V_D, V_U, EC_DDG);
                   end if;
-                  if (Atr.Variables_Defined.Contains (Var))
-                    or (Atr.Volatiles_Read.Contains (Var))
+
+                  if Atr.Variables_Defined.Contains (Var)
+                    or Atr.Volatiles_Read.Contains (Var)
+                    or (FA.Compute_Globals
+                          and then Var.Kind = Direct_Mapping
+                          and then Atr.Subprograms_Called.Contains
+                                     (Get_Direct_Mapping_Id (Var)))
                   then
                      TV := Flow_Graphs.Skip_Children;
 
