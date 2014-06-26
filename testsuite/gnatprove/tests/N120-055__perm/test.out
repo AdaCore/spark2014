@@ -1,0 +1,24 @@
+sort.adb:12:15: info: postcondition proved
+sort.adb:12:15: info: precondition proved
+sort.adb:16:29: info: index check proved
+sort.adb:17:15: info: index check proved
+sort.adb:17:29: info: index check proved
+sort.adb:18:15: info: index check proved
+sort.adb:25:16: info: postcondition proved
+sort.adb:29:20: info: range check proved
+sort.adb:31:10: info: loop invariant initialization proved
+sort.adb:31:10: info: loop invariant preservation proved
+sort.adb:32:38: info: index check proved
+sort.adb:33:20: info: range check proved
+sort.adb:36:14: info: range check proved
+sort.adb:47:50: info: overflow check proved
+sort.adb:48:22: info: precondition proved
+sort.adb:48:40: info: range check proved
+sort.adb:51:13: info: precondition proved
+sort.adb:52:29: info: range check proved
+sort.adb:53:29: info: range check proved
+sort.adb:56:10: info: loop invariant initialization proved
+sort.adb:56:10: info: loop invariant preservation proved
+sort.adb:56:33: info: precondition proved
+sort.ads:8:16: info: postcondition proved
+sort.ads:8:16: info: precondition proved
