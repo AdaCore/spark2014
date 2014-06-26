@@ -73,6 +73,6 @@ package Flow.Slice is
    --  Computes the set of globals (and procedure calls) of the given
    --  subprogram.
    --
-   --  Complexity is ???
+   --  Complexity is O(N)
 
 end Flow.Slice;
