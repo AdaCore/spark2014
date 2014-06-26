@@ -3,7 +3,7 @@ package body Sort
 is
 
    -----------------------------------------------------------------------------
-   procedure Swap (Values : in out Array_Type;
+   procedure Swap (Values : in out Nat_Array;
                    X      : in     Positive;
                    Y      : in     Positive)
    with
@@ -16,27 +16,24 @@ is
       Temp : Integer;
 
       --  Ghost variables
-      Init   : constant Array_Type := Values;
-      Interm : Array_Type;
-      HR     : True_Bool;
+      Init   : constant Nat_Array (Values'Range) := Values;
+      Interm : Nat_Array (Values'Range);
 
-      --  Ghost function
-      function Prove_Post return True_Bool with
+      --  Ghost procedure
+      procedure Prove_Post with
         Pre  => X in Init'Range and then Y in Init'Range and then
         Interm = Set (Init, X, Init (Y)) and then
         Values = Set (Interm, Y, Init (X)),
         Post => Is_Perm (Init, Values) is
-         HR : True_Bool;
       begin
          for E in Natural loop
-            HR := Occ_Set (Init, X, Init (Y), E);
-            HR := Occ_Eq (Interm, Set (Init, X, Init (Y)), E);
-            HR := Occ_Set (Interm, Y, Init (X), E);
-            HR := Occ_Eq (Values, Set (Interm, Y, Init (X)), E);
+            Occ_Set (Init, X, Init (Y), E);
+            Occ_Eq (Interm, Set (Init, X, Init (Y)), E);
+            Occ_Set (Interm, Y, Init (X), E);
+            Occ_Eq (Values, Set (Interm, Y, Init (X)), E);
             pragma Loop_Invariant (for all F in Natural'First .. E =>
                                      Occ (Init, F) = Occ (Values, F));
          end loop;
-         return HR;
       end Prove_Post;
 
    begin
@@ -49,22 +46,21 @@ is
       Values (Y) := Temp;
 
       --  Ghost code
-      HR := Prove_Post;
+      Prove_Post;
    end Swap;
 
    -- Finds the index of the smallest element in the array
-   function Index_Of_Minimum (Values : in Array_Type; First, Last : Index)
+   function Index_Of_Minimum (Values : in Nat_Array)
                               return Positive
      with
-       Pre  => First <= Last and then First in Values'Range and then
-     Last in Values'Range,
-       Post => Index_Of_Minimum'Result in First .. Last
+       Pre  => Values'Length > 0,
+       Post => Index_Of_Minimum'Result in Values'Range
    is
       Min : Positive;
    begin
-      Min := First;
-      for Index in First .. Last loop
-         pragma Loop_Invariant (Min in First .. Last);
+      Min := Values'First;
+      for Index in Values'Range loop
+         pragma Loop_Invariant (Min in Values'Range);
          if Values (Index) < Values (Min) then
             Min := Index;
          end if;
@@ -72,20 +68,17 @@ is
       return Min;
    end Index_Of_Minimum;
 
-   procedure Selection_Sort (Values : in out Array_Type) is
+   procedure Selection_Sort (Values : in out Nat_Array) is
       Smallest : Positive;  -- Index of the smallest value in the unsorted part
-
-      --  Ghost variables
-      Init     : constant Array_Type := Values;
-      Prec     : Array_Type := Values;
-      HR       : True_Bool;
-   begin -- Selection_Sort
+   begin
+      if Values'Length = 0 then
+         return;
+      end if;
 
       for Current in Values'First .. Values'Last - 1 loop
-         Smallest := Index_Of_Minimum (Values, Current, Values'Last);
+         Smallest := Index_Of_Minimum (Values (Current .. Values'Last));
 
          if Smallest /= Current then
-            Prec := Values;
 
             Swap (Values => Values,
                   X      => Current,
