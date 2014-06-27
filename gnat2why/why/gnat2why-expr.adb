@@ -1430,43 +1430,13 @@ package body Gnat2Why.Expr is
          Iterate_Call (Call);
 
          for B in Bind_Cnt .. Binders'Last loop
-            declare
-               T : W_Expr_Id;
-            begin
-               if Present (Binders (B).Main.Ada_Node) then
-                  T := +Ada_Ent_To_Why.Element
-                    (Symbol_Table, Binders (B).Main.Ada_Node).Main.B_Name;
-               else
-                  declare
-                     C : constant Ada_Ent_To_Why.Cursor :=
-                       Ada_Ent_To_Why.Find (Symbol_Table,
-                                            Binders (B).Main.B_Ent);
-                  begin
-
-                     --  If the effect parameter is found in the map, use the
-                     --  name stored.
-
-                     if Ada_Ent_To_Why.Has_Element (C) then
-                        T := +Ada_Ent_To_Why.Element (C).Main.B_Name;
-                     else
-                        T := +To_Why_Id
-                          (Binders (B).Main.B_Ent.all, Local => False);
-
-                     end if;
-                  end;
-               end if;
-
-               if Params.Ref_Allowed then
-                  Why_Args (Arg_Cnt) := New_Deref (Right => +T);
-               else
-                  Why_Args (Arg_Cnt) := T;
-               end if;
-            end;
+            Why_Args (Arg_Cnt) :=
+              Get_Logic_Arg (Binders (B).Main, Params.Ref_Allowed);
             Arg_Cnt := Arg_Cnt + 1;
          end loop;
 
-            --  We also need to add inclusions to allow the usage of those read
-            --  variables
+         --  We also need to add inclusions to allow the usage of those read
+         --  variables
 
          Add_Dependencies_For_Effects (Params.Theory, Subp);
 

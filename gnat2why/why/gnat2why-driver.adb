@@ -446,6 +446,21 @@ package body Gnat2Why.Driver is
                begin
                   Generate_Subprogram_Completion (Compl_File, E);
                end;
+
+               --  An entity E_Subprogram_Body should be present only for
+               --  expression functions.
+               --  ??? special case of expression functions still necessary ?
+
+            elsif Ekind (E) = E_Subprogram_Body then
+               declare
+                  Decl_E : constant Entity_Id := Unique_Entity (E);
+                  File   : Why_Section :=
+                    Why_Sections (Dispatch_Entity (E));
+               begin
+                  pragma Assert (Present (Get_Expression_Function (Decl_E)));
+
+                  Translate_Expression_Function_Body (File, Decl_E);
+               end;
             end if;
          end loop;
       end Complete_Subprograms;
@@ -619,23 +634,8 @@ package body Gnat2Why.Driver is
                Translate_Subprogram_Spec (File, E);
             end if;
 
-         --  An entity E_Subprogram_Body should be present only for expression
-         --  functions. This allows a separate definition of theories in Why3
-         --  for declaring the logic function, its axiom, and the closure of
-         --  the necessary axioms. This is necessary so that they are defined
-         --  with the proper visibility over previously defined entities.
-
          when E_Subprogram_Body =>
-            declare
-               Decl_E : constant Entity_Id := Unique_Entity (E);
-            begin
-               pragma Assert (Present (Get_Expression_Function (Decl_E)));
-
-               --  Always generate a module, so that units which depend on this
-               --  one can rely on the presence of the completion.
-
-               Translate_Expression_Function_Body (File, Decl_E);
-            end;
+            null;
 
          --  Given to the handler for packages with an associated theory
 

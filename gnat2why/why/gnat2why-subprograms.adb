@@ -434,7 +434,7 @@ package body Gnat2Why.Subprograms is
       Cnt    : Integer := 1;
       Result : W_Expr_Array (1 .. Binders'Last);
       Ada_Binders : constant List_Id :=
-                      Parameter_Specifications (Get_Subprogram_Spec (E));
+        Parameter_Specifications (Get_Subprogram_Spec (E));
       Arg_Length  : constant Nat := List_Length (Ada_Binders);
 
    begin
@@ -450,32 +450,7 @@ package body Gnat2Why.Subprograms is
       end loop;
 
       while Cnt <= Binders'Last loop
-         Result (Cnt) :=
-           New_Deref
-             (Right =>
-                  To_Why_Id (Get_Name_String
-                  (Get_Symbol (Binders (Cnt).B_Name)), Local => False));
-
-         --  If the global is associated to an entity (not a type not in spark)
-         --  the entity is registered (not an abstract state) and it is in
-         --  split form, then we need to reconstruct it.
-
-         if Present (Binders (Cnt).Ada_Node)
-           and then Ada_Ent_To_Why.Has_Element
-             (Symbol_Table, Binders (Cnt).Ada_Node)
-           and then Get_Base_Type
-             (Why_Type_Of_Entity (Binders (Cnt).Ada_Node)) = EW_Split
-         then
-            Result (Cnt) :=
-              Insert_Simple_Conversion
-                (Domain   => EW_Term,
-                 Expr     => New_Deref
-                   (Right => Ada_Ent_To_Why.Element
-                      (Symbol_Table, Binders (Cnt).Ada_Node).Main.B_Name,
-                    Typ => Why_Type_Of_Entity (Binders (Cnt).Ada_Node)),
-                 To       => Get_Typ (Binders (Cnt).B_Name));
-         end if;
-
+         Result (Cnt) := Get_Logic_Arg (Binders (Cnt), True);
          Cnt := Cnt + 1;
       end loop;
 
@@ -655,7 +630,7 @@ package body Gnat2Why.Subprograms is
             declare
                Entity : constant Entity_Id := Find_Entity (R);
             begin
-               if Present (Entity) and Entity_In_SPARK (Entity) then
+               if Present (Entity) and then Entity_In_SPARK (Entity) then
                   Result (Count) :=
                     (Regular,
                      (Ada_Node => Entity,
@@ -2003,6 +1978,68 @@ package body Gnat2Why.Subprograms is
 
       Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
    end Generate_Subprogram_Program_Fun;
+
+   -------------------
+   -- Get_Logic_Arg --
+   -------------------
+
+   function Get_Logic_Arg
+     (Binder      : Binder_Type;
+      Ref_Allowed : Boolean) return W_Expr_Id
+   is
+      Id : W_Identifier_Id;
+      T  : W_Expr_Id;
+   begin
+      if Present (Binder.Ada_Node) then
+         declare
+            C : constant Ada_Ent_To_Why.Cursor :=
+              Ada_Ent_To_Why.Find (Symbol_Table,
+                                   Binder.Ada_Node);
+         begin
+            pragma Assert (Ada_Ent_To_Why.Has_Element (C));
+
+            Id := Ada_Ent_To_Why.Element (C).Main.B_Name;
+         end;
+      else
+         declare
+            C : constant Ada_Ent_To_Why.Cursor :=
+              Ada_Ent_To_Why.Find (Symbol_Table, Binder.B_Ent);
+         begin
+
+            --  If the effect parameter is found in the map, use the
+            --  name stored.
+
+            if Ada_Ent_To_Why.Has_Element (C) then
+               Id := Ada_Ent_To_Why.Element (C).Main.B_Name;
+            else
+               Id := To_Why_Id
+                 (Binder.B_Ent.all, Local => False);
+
+            end if;
+         end;
+      end if;
+
+      if Ref_Allowed then
+         T := New_Deref (Right => Id,
+                         Typ   => Get_Typ (Id));
+      else
+         T := +Id;
+      end if;
+
+      --  If the global is associated to an entity and it is in
+      --  split form, then we need to reconstruct it.
+
+      if Present (Binder.Ada_Node)
+        and then Get_Base_Type (Get_Type (T)) = EW_Split
+      then
+         T :=
+           Insert_Simple_Conversion
+             (Domain   => EW_Term,
+              Expr     => T,
+              To       => Get_Typ (Binder.B_Name));
+      end if;
+      return T;
+   end Get_Logic_Arg;
 
    ----------------------------------------
    -- Translate_Expression_Function_Body --
