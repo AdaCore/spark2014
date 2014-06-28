@@ -1,0 +1,21 @@
+replacement.adb:5:07: warning: statement has no effect
+replacement.adb:7:07: info: assertion proved
+replacement.adb:7:22: info: precondition proved
+replacement.adb:7:44: info: precondition proved
+replacement.adb:7:68: info: precondition proved
+replacement.adb:7:68: warning: array index check might fail
+replacement.adb:7:86: info: precondition proved
+replacement.adb:8:07: info: precondition proved
+replacement.adb:8:27: info: precondition proved
+replacement.adb:10:22: info: precondition proved
+replacement.adb:10:44: info: precondition proved
+replacement.adb:10:65: warning: assertion might fail, requires A (Element (D, C)) = Key (D, C)
+replacement.adb:10:68: info: precondition proved
+replacement.adb:10:68: warning: array index check might fail
+replacement.adb:10:86: info: precondition proved
+replacement.ads:19:22: warning: unused initial value of "A"
+replacement.ads:20:13: info: precondition proved
+replacement.ads:21:14: info: precondition proved
+replacement.ads:21:35: info: precondition proved
+replacement.ads:21:35: warning: array index check might fail
+replacement.ads:21:53: info: precondition proved
