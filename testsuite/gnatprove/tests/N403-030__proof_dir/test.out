@@ -4,7 +4,7 @@ simple_test.ads:5:14: info: postcondition proved
 simple_test.ads:5:31: info: overflow check proved
 simple_test.ads:5:37: info: overflow check proved
 simple_test.ads:5:43: info: overflow check proved
-why3session.xml
+simple_test
 proof
 simple_test.adb
 simple_test.ads

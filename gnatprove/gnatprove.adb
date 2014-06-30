@@ -290,6 +290,39 @@ procedure Gnatprove is
    function Compute_Why3_Args return String_Lists.List is
       Args : String_Lists.List := String_Lists.Empty_List;
 
+      ---------------------------
+      --  Prepare_Why3_Manual  --
+      ---------------------------
+
+      procedure Prepare_Why3_Manual;
+
+      procedure Prepare_Why3_Manual is
+         Args : GNAT.OS_Lib.Argument_List :=
+           (1 => new String'("--prepare-shared"),
+            2 => new String'("--prover"),
+            3 => new String'(Alter_Prover.all),
+            4 => new String'("--proof-dir"),
+            5 => new String'(Ada.Directories.Full_Name (+(+Proof_Dir.all))));
+         Res : Boolean;
+         Old_Dir : constant String := Current_Directory;
+         Gnatwhy3 : constant String := Compose (Compose (Prefix, "bin"),
+                                                "gnatwhy3");
+      begin
+         Set_Directory  (+Subdir_Name);
+         GNAT.OS_Lib.Spawn (Program_Name => Gnatwhy3,
+                            Args => Args,
+                            Success => Res);
+         for It in Args'Range loop
+            Free (Args (It));
+         end loop;
+         Set_Directory (Old_Dir);
+         if not Res then
+            Ada.Text_IO.Put_Line (Ada.Text_IO.Standard_Error,
+                                  "Failed to compile shared");
+            GNAT.OS_Lib.OS_Exit (1);
+         end if;
+      end Prepare_Why3_Manual;
+
    begin
       if Timeout /= 0 then
          Args.Append ("--timeout");
@@ -335,12 +368,15 @@ procedure Gnatprove is
 
       if Proof_Dir /= null then
          if Proof_Dir.all /= "" then
-            Create_Path (Proof_Dir.all);
+            Create_Path (Compose (Proof_Dir.all, "sessions"));
             Args.Append ("--proof-dir");
             --  Why3 is executed in the gnatprove directory and does not know
             --  the project directory so we give it an absolute path to the
             --  proof_dir
             Args.Append (Ada.Directories.Full_Name (+(+(Proof_Dir.all))));
+            if Alter_Prover /= null and then Alter_Prover.all /= "" then
+               Prepare_Why3_Manual;
+            end if;
          end if;
          GNAT.Strings.Free (Proof_Dir);
       end if;

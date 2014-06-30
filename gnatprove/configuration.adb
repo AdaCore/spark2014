@@ -335,7 +335,7 @@ ASCII.LF;
          Prover_Lib_Dir : constant String := Compose
            (Compose (Why3_Dir, "libs"), Name => Prover_Name);
          Prover_Obj_Dir : constant String := Compose
-           (+Subdir_Name, Name => Prover_Name);
+           (Compose (+Subdir_Name, "why3_libs"), Name => Prover_Name);
       begin
          if Prover_Name = "coq" then
             if not Exists (Compose (Prover_Obj_Dir, Name => "BuiltIn.vo")) then
