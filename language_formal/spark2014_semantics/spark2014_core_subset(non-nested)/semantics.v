@@ -389,6 +389,19 @@ Inductive cut_until: stack -> scope_level -> stack -> stack -> Prop :=
         cut_until s n s' s'' -> 
         cut_until (f :: s) n (f :: s') s''.
 
+Lemma cut_until_uniqueness: forall s n intact_s' s' intact_s'' s'',
+  cut_until s n intact_s' s' ->
+  cut_until s n intact_s'' s'' ->
+  intact_s' = intact_s'' /\ s' = s''.
+Proof.
+  intros s n intact_s' s' intact_s'' s'' H; revert intact_s'' s''.
+  induction H; intros.
+- inversion H; auto.
+- 
+  
+  admit.
+Qed.
+
 (** in a statement evaluation, whenever a run time error is detected in
     the evaluation of its sub-statements or sub-component, the
     evaluation is terminated and return a run time error; otherwise,
@@ -455,7 +468,7 @@ Inductive eval_stmt: symboltable -> stack -> statement -> Return stack -> Prop :
         eval_decls s1 f (procedure_declarative_part pb) (Normal f1) ->          
         eval_stmt st (f1 :: s1) (procedure_statements pb) (Normal s2) ->
         s2 = (n, locals_section ++ params_section) :: s3 -> (* extract parameters from local frame *)
-        List.length (store_of f) = List.length params_section ->
+        length (store_of f) = length params_section ->
         copy_out (intact_s ++ s3) (n, params_section) (procedure_parameter_profile pb) args s4 ->
         eval_stmt st s (S_Procedure_Call ast_num p_ast_num p args) (Normal s4)
     | Eval_S_Sequence_RTE: forall st s c1 msg ast_num c2,

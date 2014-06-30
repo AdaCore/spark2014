@@ -311,6 +311,20 @@ Proof.
       split;auto.
 Qed.
 
+Lemma app_same_length_eq2 :
+  forall A (l l' m m': list A),
+    length m = length m'
+    -> l++m = l'++m' -> l = l'/\ m=m'.
+Proof.
+  intros.
+  assert (H1: length (l ++ m) = length (l' ++ m')).
+  rewrite H0; auto.
+  assert (H2: length l = length l').
+  rewrite app_length in H1. rewrite app_length in H1.
+  rewrite H in H1; omega.
+  specialize (app_same_length_eq _ _ _ _ _ H2 H0); auto.
+Qed.
+
 Lemma split2_complete :
   forall A n m (l l1 l2 l3:list A),
     l = l1 ++ l2 ++ l3

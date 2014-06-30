@@ -99,7 +99,7 @@ Inductive library_unit_declaration_x: Type :=
 
 (* 10.1.1 *)
 Inductive compilation_unit_x: Type := 
-    | Library_Unit_X: astnum -> library_unit_declaration_x -> type_table -> compilation_unit_x.
+    | Library_Unit_X: astnum -> library_unit_declaration_x -> compilation_unit_x.
 
 
 
@@ -313,6 +313,16 @@ Inductive compile2_flagged_subprogram: subprogram -> subprogram_x -> Prop :=
 *)
 
 
+(** * Lemmas *)
+Lemma procedure_components_rel: forall p p',
+  compile2_flagged_procedure_declaration p p' ->
+  compile2_flagged_parameter_specifications (procedure_parameter_profile p) (procedure_parameter_profile_x p') /\
+  compile2_flagged_declarations (procedure_declarative_part p) (procedure_declarative_part_x p') /\
+  compile2_flagged_stmt (procedure_statements p) (procedure_statements_x p').
+Proof.
+  intros.
+  admit.
+Qed.
 
 
 

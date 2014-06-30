@@ -328,44 +328,384 @@ Proof.
   end.
 Qed.
 
-
-Lemma statement_assign_checks_completeness: forall st s ast_num x e s' x' e' s'',
-  eval_stmt st s (S_Assignment ast_num x e) s' -> 
-    eval_stmt_x st s (S_Assignment_X ast_num x' e') s'' -> 
-      compile2_flagged_stmt (S_Assignment ast_num x e) (S_Assignment_X ast_num x' e') ->
+Lemma store_update_checks_completeness: forall s x v s' x' s'',
+  storeUpdate s x v s' ->
+    storeUpdate_x s x' v s'' ->
+      compile2_flagged_name x x' ->
         s' = s''.
-.
+Proof.
+  intros;
+  inversion H1; clear H1; subst;
 
-Lemma statement_if_checks_completeness.
+  repeat progress match goal with
+    | [H: gen_name_check_flags _ _ |- _] => inversion H; clear H; subst
+    | [H: storeUpdate _ _ _ _ |- _] => inversion H; clear H; subst
+    | [H: storeUpdate_x _ _ _ _ |- _] => inversion H; clear H; smack
+  end;
+  match goal with
+  | [H1: eval_expr ?s ?e _, 
+     H2: eval_expr_x ?s ?e' _, 
+     H3: compile2_flagged_exp ?e ?e' |- _] => 
+       specialize (expression_checks_completeness _ _ _ _ _ H1 H2 H3); clear H1 H2 H3; smack
+  | _ => idtac
+  end;
+  repeat progress match goal with
+    | [H1: STACK.fetchG ?i ?s = ?v1, H2: STACK.fetchG ?i ?s = ?v2 |- _ ] => rewrite H1 in H2; clear H1; smack 
+    | [H: Normal _ = Normal _ |- _] => inversion H; clear H; subst
+    | [H: do_flagged_index_checks _ _ _ _ _ |- _] => inversion H; clear H; smack 
+    | [H: do_flagged_index_check _ _ _ _ _ |- _ ] => inversion H; clear H; smack
+    | [H: do_index_check _ _ _ _ |- _] => inversion H; clear H; smack
+  end.
+Qed.
 
-Lemma statement_while_checks_completeness.
-
-Lemma statement_seq_checks_completeness.
-
-Lemma statement_proc_call_checks_completeness.
-
-Lemma statement_checks_completeness.
-
-Lemma expression_checks_completeness: forall e e' s v v',
-  eval_expr s e v ->
-    eval_expr_x s e' v' ->
-      compile2_flagged_exp e e' ->
-        v = v'.
-
-  
-
-
-  
+Lemma statement_assign_checks_completeness: forall st s ast_num x e s' st' x' e' s'',
+  eval_stmt st s (S_Assignment ast_num x e) s' -> 
+    eval_stmt_x st' s (S_Assignment_X ast_num x' e') s'' -> 
+      compile2_flagged_stmt (S_Assignment ast_num x e) (S_Assignment_X ast_num x' e') ->
+        compile2_flagged_symbol_table st st' ->
+          s' = s''.
+Proof.
+  intros;
+  match goal with
+  | [H1: eval_stmt _ _ ?Assign _ , 
+     H2: eval_stmt_x _ _ ?Assign' _, 
+     H3: compile2_flagged_stmt ?Assign ?Assign' |- _] => 
+      inversion H3; inversion H1; inversion H2; subst; clear H1 H2 H3
+  end;
+  repeat progress match goal with
+  | [H1: eval_expr ?s ?e _, 
+     H2: eval_expr_x ?s ?e' _, 
+     H3: compile2_flagged_exp ?e ?e' |- _] => 
+       specialize (expression_checks_completeness _ _ _ _ _ H1 H2 H3); clear H1 H2 H3; smack
+  | [H1: storeUpdate ?s ?x ?v _, 
+     H2: storeUpdate_x ?s ?x' ?v _, 
+     H3: compile2_flagged_name ?x ?x' |- _] =>
+      specialize (store_update_checks_completeness _ _ _ _ _ _ H1 H2 H3); clear H1 H2 H3; smack
+  end.
 Qed.
 
 
+Lemma statement_checks_completeness: forall st s stmt s' st' stmt' s'',
+  eval_stmt st s stmt s' -> 
+    eval_stmt_x st' s stmt' s'' -> 
+      compile2_flagged_stmt stmt stmt' ->
+        compile2_flagged_symbol_table st st' ->
+          s' = s''.
+Proof.
+  intros st s stmt s' st' stmt' s'' H; revert st' stmt' s''.
+  induction H; intros.
+- repeat progress match goal with
+    | [H: compile2_flagged_stmt _ _ |- _] => inversion H; clear H; smack
+    | [H: eval_stmt_x _ _ _ _ |- _] => inversion H; clear H; smack
+  end.
+- match goal with
+    | [H: compile2_flagged_stmt _ _ |- _] => inversion H; subst
+  end.
+  repeat progress match goal with 
+    | [H: eval_expr _ _ (Run_Time_Error _) |- _] => 
+        specialize (Eval_S_Assignment_RTE _ _ _ st ast_num x H); clear H; smack
+    | [H1: eval_expr ?s _ (Normal ?v), H2: storeUpdate ?s _ ?v _ |- _] =>  
+        specialize (Eval_S_Assignment _ _ _ _ _ st ast_num H1 H2); clear H1 H2; smack
+    | [H1: eval_stmt _ _ _ _, 
+       H2: eval_stmt_x _ _ _ _ ,
+       H3: compile2_flagged_stmt _ _ ,
+       H4: compile2_flagged_symbol_table _ _ |- _] => 
+        specialize (statement_assign_checks_completeness _ _ _ _ _ _ _ _ _ _ H1 H2 H3 H4); smack
+    end.
+- match goal with
+    | [H: compile2_flagged_stmt _ _ |- _] => inversion H; subst
+  end.
+  repeat progress match goal with 
+    | [H: eval_expr _ _ (Run_Time_Error _) |- _] => 
+        specialize (Eval_S_Assignment_RTE _ _ _ st ast_num x H); clear H; smack
+    | [H1: eval_expr ?s _ (Normal ?v), H2: storeUpdate ?s _ ?v _ |- _] =>  
+        specialize (Eval_S_Assignment _ _ _ _ _ st ast_num H1 H2); clear H1 H2; smack
+    | [H1: eval_stmt _ _ _ _, 
+       H2: eval_stmt_x _ _ _ _ ,
+       H3: compile2_flagged_stmt _ _ ,
+       H4: compile2_flagged_symbol_table _ _ |- _] => 
+        specialize (statement_assign_checks_completeness _ _ _ _ _ _ _ _ _ _ H1 H2 H3 H4); smack
+    end.
+- (* If RTE *)
+  match goal with
+    | [H: compile2_flagged_stmt _ _ |- _] => inversion H; clear H; subst
+  end;
+  match goal with
+    | [H: eval_stmt_x _ _ _ _ |- _] => inversion H; clear H; subst
+  end;
+  match goal with
+    | [H1: eval_expr ?s ?e _, 
+       H2: eval_expr_x ?s ?e' _, 
+       H3: compile2_flagged_exp ?e ?e' |- _] => 
+         specialize (expression_checks_completeness _ _ _ _ _ H1 H2 H3); clear H1 H2 H3; smack
+  end.
+- (* If True *)
+  match goal with
+    | [H: compile2_flagged_stmt _ _ |- _] => inversion H; clear H; subst
+  end;
+  match goal with
+    | [H: eval_stmt_x _ _ _ _ |- _] => inversion H; clear H; subst
+  end;
+  match goal with
+    | [H1: eval_expr ?s ?e _, 
+       H2: eval_expr_x ?s ?e' _, 
+       H3: compile2_flagged_exp ?e ?e' |- _] => 
+         specialize (expression_checks_completeness _ _ _ _ _ H1 H2 H3); clear H1 H2 H3; smack
+  end.
+- (* If False *)
+  match goal with
+    | [H: compile2_flagged_stmt _ _ |- _] => inversion H; clear H; subst
+  end;
+  match goal with
+    | [H: eval_stmt_x _ _ _ _ |- _] => inversion H; clear H; subst
+  end;
+  match goal with
+    | [H1: eval_expr ?s ?e _, 
+       H2: eval_expr_x ?s ?e' _, 
+       H3: compile2_flagged_exp ?e ?e' |- _] => 
+         specialize (expression_checks_completeness _ _ _ _ _ H1 H2 H3); clear H1 H2 H3; smack
+  end.
+- (* While RTE *)
+  match goal with
+    | [H: compile2_flagged_stmt _ _ |- _] => inversion H; clear H; subst
+  end;
+  match goal with
+    | [H: eval_stmt_x _ _ _ _ |- _] => inversion H; clear H; subst
+  end;
+  match goal with
+    | [H1: eval_expr ?s ?e _, 
+       H2: eval_expr_x ?s ?e' _, 
+       H3: compile2_flagged_exp ?e ?e' |- _] => 
+         specialize (expression_checks_completeness _ _ _ _ _ H1 H2 H3); clear H1 H2 H3; smack
+  end.
+- (* While True RTE *)
+  match goal with
+    | [H: compile2_flagged_stmt _ _ |- _] => inversion H; clear H; subst
+  end;
+  match goal with
+    | [H: eval_stmt_x _ _ _ _ |- _] => inversion H; clear H; subst
+  end;
+  match goal with
+    | [H1: eval_expr ?s ?e _, 
+       H2: eval_expr_x ?s ?e' _, 
+       H3: compile2_flagged_exp ?e ?e' |- _] => 
+         specialize (expression_checks_completeness _ _ _ _ _ H1 H2 H3); clear H1 H2 H3; smack
+  end;
+  match goal with
+  | [H1: eval_stmt_x _ _ ?c' _, H2: compile2_flagged_stmt _ ?c', H3: compile2_flagged_symbol_table _ _ |- _] =>
+      specialize (IHeval_stmt _ _ _ H1 H2 H3); smack
+  end.
+- (* While True *)
+  match goal with
+    | [H: compile2_flagged_stmt _ _ |- _] => inversion H; subst
+  end;
+  match goal with
+    | [H: eval_stmt_x _ _ _ _ |- _] => inversion H; clear H; subst
+  end;
+  match goal with
+    | [H1: eval_expr ?s ?e _, 
+       H2: eval_expr_x ?s ?e' _, 
+       H3: compile2_flagged_exp ?e ?e' |- _] => 
+         specialize (expression_checks_completeness _ _ _ _ _ H1 H2 H3); smack
+  end;
+  match goal with
+  | [H1: eval_stmt_x _ _ ?c' _, H2: compile2_flagged_stmt _ ?c', H3: compile2_flagged_symbol_table _ _ |- _] =>
+      specialize (IHeval_stmt1 _ _ _ H1 H2 H3); smack
+  end.
+- (* While False *)
+  match goal with
+    | [H: compile2_flagged_stmt _ _ |- _] => inversion H; subst
+  end;
+  match goal with
+    | [H: eval_stmt_x _ _ _ _ |- _] => inversion H; clear H; subst
+  end;
+  match goal with
+    | [H1: eval_expr ?s ?e _, 
+       H2: eval_expr_x ?s ?e' _, 
+       H3: compile2_flagged_exp ?e ?e' |- _] => 
+         specialize (expression_checks_completeness _ _ _ _ _ H1 H2 H3); smack
+  end.
+- (* Procedure Call Args RTE *)
+  match goal with
+    | [H: compile2_flagged_stmt _ _ |- _] => inversion H; subst
+  end;
+  match goal with
+    | [H: eval_stmt_x _ _ _ _ |- _] => inversion H; clear H; subst
+  end;
+  match goal with
+    | [H1: Symbol_Table_Module.fetch_proc ?p ?st = _,
+       H2: Symbol_Table_Module_X.fetch_proc ?p ?st' = _, 
+       H3: compile2_flagged_symbol_table ?st ?st' |- _] => 
+        specialize (symbol_table_procedure_rel _ _ _ _ _ _ _ H1 H2 H3); smack
+  end;
+  match goal with
+    | [H: compile2_flagged_procedure_declaration _ _ |- _] => 
+        specialize (procedure_components_rel _ _ H); smack
+  end;  
+  match goal with
+    | [H1: copy_in _ _ ?params ?args _, 
+       H2: copy_in_x _ _ ?params' ?args' _, 
+       H3: compile2_flagged_parameter_specifications ?params ?params',
+       H4: compile2_flagged_exps ?args ?args' |- _] => 
+         specialize (copy_in_checks_completeness _ _ _ _ _ _ _ _ H1 H2 H3 H4); smack
+  end.
+- (* Procedure Call Decls RTE *)
+  match goal with
+    | [H: compile2_flagged_stmt _ _ |- _] => inversion H; subst
+  end;
+  match goal with
+    | [H: eval_stmt_x _ _ _ _ |- _] => inversion H; clear H; subst
+  end;
+  match goal with
+    | [H1: Symbol_Table_Module.fetch_proc ?p ?st = _,
+       H2: Symbol_Table_Module_X.fetch_proc ?p ?st' = _, 
+       H3: compile2_flagged_symbol_table ?st ?st' |- _] => 
+        specialize (symbol_table_procedure_rel _ _ _ _ _ _ _ H1 H2 H3); smack
+  end;
+  match goal with
+    | [H: compile2_flagged_procedure_declaration _ _ |- _] => 
+        specialize (procedure_components_rel _ _ H); smack
+  end;
+  match goal with
+    | [H1: cut_until _ _ _ _, H2: cut_until _ _ _ _ |- _] => 
+        specialize (cut_until_uniqueness _ _ _ _ _ _ H1 H2); smack
+    | _ => idtac
+  end;
+  match goal with
+    | [H1: copy_in _ _ ?params ?args _, 
+       H2: copy_in_x _ _ ?params' ?args' _, 
+       H3: compile2_flagged_parameter_specifications ?params ?params',
+       H4: compile2_flagged_exps ?args ?args' |- _] => 
+         specialize (copy_in_checks_completeness _ _ _ _ _ _ _ _ H1 H2 H3 H4); smack
+  end;
+  match goal with
+    | [H1: eval_decls _ _ ?dl _, 
+       H2: eval_decls_x _ _ ?dl' _,
+       H3: compile2_flagged_declarations ?dl ?dl' |- _] => 
+        specialize (declarations_checks_completeness _ _ _ _ _ _ H1 H2 H3); smack
+  end.
+- (* Procedure Call Body RTE *)
+  match goal with
+    | [H: compile2_flagged_stmt _ _ |- _] => inversion H; subst
+  end;
+  match goal with
+    | [H: eval_stmt_x _ _ _ _ |- _] => inversion H; clear H; subst
+  end;
+  match goal with
+    | [H1: Symbol_Table_Module.fetch_proc ?p ?st = _,
+       H2: Symbol_Table_Module_X.fetch_proc ?p ?st' = _, 
+       H3: compile2_flagged_symbol_table ?st ?st' |- _] => 
+        specialize (symbol_table_procedure_rel _ _ _ _ _ _ _ H1 H2 H3); smack
+  end;
+  match goal with
+    | [H: compile2_flagged_procedure_declaration _ _ |- _] => 
+        specialize (procedure_components_rel _ _ H); smack
+  end;
+  match goal with
+    | [H1: cut_until _ _ _ _, H2: cut_until _ _ _ _ |- _] => 
+        specialize (cut_until_uniqueness _ _ _ _ _ _ H1 H2); smack
+    | _ => idtac
+  end;
+  match goal with
+    | [H1: copy_in _ _ ?params ?args _, 
+       H2: copy_in_x _ _ ?params' ?args' _, 
+       H3: compile2_flagged_parameter_specifications ?params ?params',
+       H4: compile2_flagged_exps ?args ?args' |- _] => 
+         specialize (copy_in_checks_completeness _ _ _ _ _ _ _ _ H1 H2 H3 H4); smack
+  end;
+  match goal with
+    | [H1: eval_decls _ _ ?dl _, 
+       H2: eval_decls_x _ _ ?dl' _,
+       H3: compile2_flagged_declarations ?dl ?dl' |- _] => 
+        specialize (declarations_checks_completeness _ _ _ _ _ _ H1 H2 H3); smack
+  end.
+  match goal with
+    | [H1: eval_stmt_x _ _ _ _, 
+       H2: compile2_flagged_stmt _ _, 
+       H3: compile2_flagged_symbol_table _ _ |- _] =>
+        specialize (IHeval_stmt _ _ _ H1 H2 H3); smack
+  end.
+- (* Procedure Call *)
+  match goal with
+    | [H: compile2_flagged_stmt _ _ |- _] => inversion H; subst
+  end;
+  match goal with
+    | [H: eval_stmt_x _ _ _ _ |- _] => inversion H; clear H; subst
+  end;
+  match goal with
+    | [H1: Symbol_Table_Module.fetch_proc ?p ?st = _,
+       H2: Symbol_Table_Module_X.fetch_proc ?p ?st' = _, 
+       H3: compile2_flagged_symbol_table ?st ?st' |- _] => 
+        specialize (symbol_table_procedure_rel _ _ _ _ _ _ _ H1 H2 H3); smack
+  end;
+  match goal with
+    | [H: compile2_flagged_procedure_declaration _ _ |- _] => 
+        specialize (procedure_components_rel _ _ H); smack
+  end;
+  match goal with
+    | [H1: cut_until _ _ _ _, H2: cut_until _ _ _ _ |- _] => 
+        specialize (cut_until_uniqueness _ _ _ _ _ _ H1 H2); smack
+    | _ => idtac
+  end;
+  match goal with
+    | [H1: copy_in _ _ ?params ?args _, 
+       H2: copy_in_x _ _ ?params' ?args' _, 
+       H3: compile2_flagged_parameter_specifications ?params ?params',
+       H4: compile2_flagged_exps ?args ?args' |- _] => 
+         specialize (copy_in_checks_completeness _ _ _ _ _ _ _ _ H1 H2 H3 H4); smack
+  end;
+  match goal with
+    | [H1: eval_decls _ _ ?dl _, 
+       H2: eval_decls_x _ _ ?dl' _,
+       H3: compile2_flagged_declarations ?dl ?dl' |- _] => 
+        specialize (declarations_checks_completeness _ _ _ _ _ _ H1 H2 H3); smack
+  end;
+  match goal with
+    | [H1: eval_stmt_x _ _ _ _, 
+       H2: compile2_flagged_stmt _ _, 
+       H3: compile2_flagged_symbol_table _ _ |- _] =>
+        specialize (IHeval_stmt _ _ _ H1 H2 H3); smack
+  end.
+  repeat progress match goal with
+    | [H: Normal _ = Normal _ |- _] => inversion H; subst; clear H; smack
+    | [H1: length ?l = length _, H2: length ?l = length _ |- _] =>
+        rewrite H1 in H2; smack
+    | [H1: length ?m' = length ?m, 
+       H2: ?l ++ ?m = ?l' ++ ?m' |- _] => 
+        symmetry in H1; specialize (app_same_length_eq2 _ _ _ _ _ H1 H2); smack; clear H1 H2
+    | [H1: copy_out _ _ ?params ?args _,
+       H2: copy_out_x _ _ ?params' ?args' _,
+       H3: compile2_flagged_parameter_specifications ?params ?params',
+       H4: compile2_flagged_exps ?args ?args' |- _] => 
+        specialize (copy_out_checks_completeness _ _ _ _ _ _ _ _ H1 H2 H3 H4); smack
+  end.
+- (* Sequence RTE *)
+  match goal with
+    | [H: compile2_flagged_stmt _ _ |- _] => inversion H; subst
+  end;
+  match goal with
+    | [H: eval_stmt_x _ _ _ _ |- _] => inversion H; clear H; subst
+  end;
+  match goal with
+    | [H1: eval_stmt_x _ _ ?c' _, 
+       H2: compile2_flagged_stmt ?c ?c',
+       H3: compile2_flagged_symbol_table _ _ |- _] => specialize (IHeval_stmt _ _ _ H1 H2 H3); smack
+  end.
+- (* Sequence *)
+  match goal with
+    | [H: compile2_flagged_stmt _ _ |- _] => inversion H; subst
+  end;
+  match goal with
+    | [H: eval_stmt_x _ _ _ _ |- _] => inversion H; clear H; subst
+  end;
+  match goal with
+    | [H1: eval_stmt_x _ _ ?c' _, 
+       H2: compile2_flagged_stmt ?c ?c',
+       H3: compile2_flagged_symbol_table _ _ |- _] => specialize (IHeval_stmt1 _ _ _ H1 H2 H3); smack
+  end.
+Qed.
 
 
-Lemma statement_checks_completeness: forall e e' s v v',
-  eval_stmt st s c s' ->
-    eval_stmt_x st s c' s'' ->
-      compile2_flagged_stmt c c' ->
-        s' = s''.
 
 
 

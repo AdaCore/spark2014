@@ -316,7 +316,7 @@ Inductive eval_stmt_x: symboltable -> stack -> statement_x -> Return stack -> Pr
         eval_decls_x s1 f (procedure_declarative_part_x pb) (Normal f1) ->          
         eval_stmt_x st (f1 :: s1) (procedure_statements_x pb) (Normal s2) ->
         s2 = (n, locals_section ++ params_section) :: s3 -> (* extract parameters from local frame *)
-        List.length (store_of f) = List.length params_section ->
+        length (store_of f) = length params_section ->
         copy_out_x (intact_s ++ s3) (n, params_section) (procedure_parameter_profile_x pb) args s4 ->
         eval_stmt_x st s (S_Procedure_Call_X ast_num p_ast_num p args) (Normal s4)
     | Eval_S_Sequence_RTE_X: forall st s c1 msg ast_num c2,

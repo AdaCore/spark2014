@@ -7,7 +7,6 @@
 Require Export ZArith.
 Require Export Coq.Lists.List.
 Require Export Coq.Bool.Bool.
-Require Export Coq.Strings.String.
 Require Export more_list.
 
 (* 1. command to generate HTML document from Coq source files: 
@@ -51,14 +50,16 @@ Definition typedeclnum := astnum.
 
 Definition aspectnum := nat.
 
-Definition typeuri := string.
+(* Definition typeuri := string. *)
 
 Definition index := Z. (* array index *)
 
+(*
 Record type_table: Type := mktype_table{
     tt_exptype_table: list (astnum * typenum);
     tt_typename_table: list (typenum * (typeuri * option typedeclnum))
 }.
+*)
 
 (* ========================================== *)
 (** Note: now we only consider the 32-bit singed integer type for 
@@ -196,7 +197,7 @@ Inductive library_unit_declaration: Type :=
 
 (* 10.1.1 *)
 Inductive compilation_unit: Type := 
-    | Library_Unit: astnum -> library_unit_declaration -> type_table -> compilation_unit.
+    | Library_Unit: astnum -> library_unit_declaration -> compilation_unit.
 
 (** * Auxiliary Functions *)
 
