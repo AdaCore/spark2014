@@ -312,6 +312,7 @@ Inductive compile2_flagged_subprogram: subprogram -> subprogram_x -> Prop :=
                                     (Global_Procedure_X ast_num p_flagged).
 *)
 
+Require Import X_SparkTactics.
 
 (** * Lemmas *)
 Lemma procedure_components_rel: forall p p',
@@ -321,7 +322,7 @@ Lemma procedure_components_rel: forall p p',
   compile2_flagged_stmt (procedure_statements p) (procedure_statements_x p').
 Proof.
   intros.
-  admit.
+  inversion H; smack.
 Qed.
 
 

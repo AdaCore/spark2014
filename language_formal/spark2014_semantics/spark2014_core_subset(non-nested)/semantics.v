@@ -3,6 +3,7 @@ Require Export more_list.
 Require Export values.
 Require Export environment.
 Require Export symboltable.
+Require Export X_SparkTactics.
 
 Module Entry_Value_Stored <: ENTRY.
   Definition T := value.
@@ -395,11 +396,12 @@ Lemma cut_until_uniqueness: forall s n intact_s' s' intact_s'' s'',
   intact_s' = intact_s'' /\ s' = s''.
 Proof.
   intros s n intact_s' s' intact_s'' s'' H; revert intact_s'' s''.
-  induction H; intros.
-- inversion H; auto.
-- 
-  
-  admit.
+  induction H; intros;
+  match goal with
+    | [H: cut_until nil _ _ _ |- _] => inversion H
+    | [H: cut_until (?f :: ?s) _ _ _ |- _] => inversion H
+  end; smack;
+  specialize (IHcut_until _ _ H8); smack.
 Qed.
 
 (** in a statement evaluation, whenever a run time error is detected in

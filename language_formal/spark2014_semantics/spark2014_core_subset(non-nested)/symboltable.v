@@ -1,5 +1,6 @@
 Require Export symboltable_module.
 Require Export language_flagged.
+Require Export X_SparkTactics.
 
 (** * Symbol Tables *)
 
@@ -64,6 +65,24 @@ Inductive compile2_flagged_symbol_table: symbol_table -> symbol_table' -> Prop :
 
 (** * Lemmas *)
 
+Lemma procedure_declaration_rel: forall ps ps' p n pb n' pb',
+  compile2_flagged_proc_declaration_map ps ps' ->
+    Symbol_Table_Module.SymTable_Procs.fetches p ps = Some (n, pb) ->
+      Symbol_Table_Module_X.SymTable_Procs.fetches p ps' = Some (n', pb') ->
+        n = n' /\ compile2_flagged_procedure_declaration pb pb'.
+Proof.
+  intros ps ps' p n pb n' pb' H; revert p n pb n' pb'.
+  induction H; intros.
+- inversion H; inversion H0; auto.
+- unfold Symbol_Table_Module.SymTable_Procs.fetches in H1;
+  unfold Symbol_Table_Module_X.SymTable_Procs.fetches in H2.
+  remember (beq_nat p0 p) as Beq.
+  destruct Beq. 
+  + smack.
+  + specialize (IHcompile2_flagged_proc_declaration_map _ _ _ _ _ H1 H2).
+    auto.
+Qed.
+
 Lemma symbol_table_procedure_rel: forall p st n pb st' n' pb',
   Symbol_Table_Module.fetch_proc p st = Some (n, pb) ->
     Symbol_Table_Module_X.fetch_proc p st' = Some (n', pb') ->
@@ -71,6 +90,11 @@ Lemma symbol_table_procedure_rel: forall p st n pb st' n' pb',
         n = n' /\ compile2_flagged_procedure_declaration pb pb'.
 Proof.
   intros.
-  admit.
+  inversion H1; subst; clear H1.
+  unfold Symbol_Table_Module_X.fetch_proc in H0;
+  unfold Symbol_Table_Module.fetch_proc in H;
+  simpl in H0, H.
+  specialize (procedure_declaration_rel _ _ _ _ _ _ _ H2 H H0);
+  auto.
 Qed.
 
