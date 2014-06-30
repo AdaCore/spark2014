@@ -1,5 +1,4 @@
 coq_makefile -o Makefile $* \
-X_Case.v \
 X_CpdtTactics.v \
 X_SparkTactics.v \
 LibTactics.v \
