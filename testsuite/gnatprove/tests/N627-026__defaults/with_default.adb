@@ -50,7 +50,7 @@ package body With_Default with SPARK_Mode is
       type Array_With_Default1 is array (Positive range <>) of Scalar_With_Default;
       type Array_With_Default2 is array (Positive range <>) of Natural
         with Default_Component_Value => 1;
-      type Array_With_Default3 is array (Positive range <>) of Scalar_With_Default
+      type Array_With_Default3 is array (Positive range <>) of Scalar_Bad_Default
         with Default_Component_Value => 2;
       type Array_No_Default is array (Positive range <>) of Natural;
       type Array_Bad_Default1 is array (Positive range <>) of Scalar_Bad_Default;
@@ -63,7 +63,7 @@ package body With_Default with SPARK_Mode is
       No_Ini : Array_No_Default (1 .. 100);
       All_0  : Array_With_Default1 (1 .. 100);
       All_1  : Array_With_Default2 (1 .. 100);
-      All_2 : Array_With_Default3 (1 .. 100);
+      All_2  : Array_With_Default3 (1 .. 100);
    begin
       pragma Unreferenced (No_Ini);
       pragma Assert (All_0 (1) = 0);
@@ -183,5 +183,51 @@ package body With_Default with SPARK_Mode is
       pragma Assert (not W_O_Di.B);
       pragma Assert (W_O_Di.F3 = Scalar_With_Default (C));
    end OK_Record;
+
+   procedure Bad_Nested_Defaults1 (C : Natural) is
+      type Empty_Rec (D : Positive := C) is null record; --@RANGE_CHECK:FAIL
+      type Non_Init is record
+         E : Empty_Rec;
+         F : Natural;
+      end record;
+
+      Bad : Non_Init;
+   begin
+      null;
+   end Bad_Nested_Defaults1;
+
+   procedure Bad_Nested_Defaults2 (C : Natural) is
+      type Empty_Rec (D : Positive := C) is null record; --@RANGE_CHECK:FAIL
+      type My_Array is array (Positive range <>) of Empty_Rec;
+      type Non_Init is record
+         E : My_Array (1 .. 100);
+         F : Natural;
+      end record;
+
+      Bad : Non_Init;
+   begin
+      null;
+   end Bad_Nested_Defaults2;
+
+   procedure Ok_Nested_Defaults (C : Natural) is
+      type Empty_Rec1 (D : Positive := C) is null record;
+      type My_Array1 is array (Positive range <>) of Empty_Rec1;
+      type Non_Init1 is record
+         E : My_Array1 (1 .. 0);
+         F : Natural;
+      end record;
+
+      type Empty_Rec2 (D : Positive := 1) is null record;
+      type My_Array2 is array (Positive range <>) of Empty_Rec2;
+      type Non_Init2 is record
+         E : My_Array2 (1 .. 100);
+         F : Natural;
+      end record;
+
+      Empty : Non_Init1;
+      All_1 : Non_Init2;
+   begin
+      pragma Assert (All_1.E (1).D = 1);
+   end Ok_Nested_Defaults;
 
 end;

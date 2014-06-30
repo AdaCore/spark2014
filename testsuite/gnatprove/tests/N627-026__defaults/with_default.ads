@@ -18,4 +18,10 @@ package With_Default with SPARK_Mode is
 
    procedure Bad_Record3 (C : Natural);
 
+   procedure Bad_Nested_Defaults1 (C : Natural);
+
+   procedure Bad_Nested_Defaults2 (C : Natural);
+
+   procedure Ok_Nested_Defaults (C : Natural);
+
 end With_Default;
