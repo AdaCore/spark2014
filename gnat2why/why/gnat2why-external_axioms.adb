@@ -1196,12 +1196,37 @@ package body Gnat2Why.External_Axioms is
                declare
                   E : constant Entity_Id := Defining_Entity (N);
                begin
-                  Insert_Entity
-                    (E,
-                     To_Why_Id (E, Typ => EW_Abstract (Etype (E)),
+                  if Ekind (E) = E_Function then
+
+                     Ada_Ent_To_Why.Insert
+                       (Symbol_Table, E,
+                        Item_Type'(Func,
+                          Main => Binder_Type'(
+                            B_Name   =>
+                              New_Identifier
+                                (Ada_Node => E,
+                                 Name     => Short_Name (E) & "__logic",
+                                 Module   => E_Module (E),
+                                 Typ      => EW_Abstract (Etype (E))),
+                            B_Ent    => null,
+                            Ada_Node => E,
+                            Mutable  => False),
+                          For_Prog => Binder_Type'(
+                            B_Name   =>
+                              To_Why_Id (E,
+                                Typ => EW_Abstract (Etype (E)),
                                 Domain => EW_Term),
-                     Mutable => Ekind (E) in Object_Kind and then
-                     Is_Mutable_In_Why (E));
+                            B_Ent    => null,
+                            Ada_Node => E,
+                            Mutable  => False)));
+                  else
+                     Insert_Entity
+                       (E,
+                        To_Why_Id (E, Typ => EW_Abstract (Etype (E)),
+                                   Domain => EW_Term),
+                        Mutable => Ekind (E) in Object_Kind and then
+                        Is_Mutable_In_Why (E));
+                  end if;
                end;
             end if;
 

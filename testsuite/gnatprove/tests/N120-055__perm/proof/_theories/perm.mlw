@@ -71,10 +71,10 @@ module Perm__is_perm
             (v <> e -> occ e b = (occ e a) - 1) /\
             (v = e  -> occ e b = occ e a))
 
- function is_perm "inline" (a b : nat_array) : bool =
+ function is_perm__logic "inline" (a b : nat_array) : bool =
     forall v: natural. occ v a = occ v b
 
  val is_perm (a : nat_array) (b : nat_array) : bool
-  ensures { result = is_perm a b }
+  ensures { result = is_perm__logic a b }
 
 end

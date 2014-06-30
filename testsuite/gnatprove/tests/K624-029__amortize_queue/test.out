@@ -21,6 +21,7 @@ amortized_queue.adb:30:10: warning: precondition might fail
 amortized_queue.adb:31:10: info: precondition proved
 amortized_queue.adb:33:30: info: discriminant check proved
 amortized_queue.adb:33:45: info: discriminant check proved
+amortized_queue.adb:38:14: info: precondition proved
 amortized_queue.ads:25:07: info: precondition proved
 amortized_queue.ads:25:27: info: precondition proved
 amortized_queue.ads:26:26: info: precondition proved
@@ -48,6 +49,7 @@ amortized_queue.ads:36:32: info: range check proved
 amortized_queue.ads:40:14: warning: postcondition might fail, requires Is_Model (Q, Model'result)
 amortized_queue.ads:43:31: info: precondition proved
 amortized_queue.ads:44:31: info: precondition proved
+amortized_queue.ads:45:17: info: precondition proved
 amortized_queue.ads:45:17: warning: postcondition might fail, requires Last_Element (Model (Q)) = Front'result
 amortized_queue.ads:45:31: info: precondition proved
 amortized_queue.ads:48:31: info: precondition proved
@@ -58,6 +60,7 @@ amortized_queue.ads:51:09: info: precondition proved
 amortized_queue.ads:51:19: info: precondition proved
 amortized_queue.ads:51:21: info: precondition proved
 amortized_queue.ads:51:41: warning: precondition might fail
+amortized_queue.ads:51:43: warning: precondition might fail
 amortized_queue.ads:51:57: info: precondition proved
 amortized_queue.ads:55:25: info: precondition proved
 amortized_queue.ads:55:44: info: precondition proved

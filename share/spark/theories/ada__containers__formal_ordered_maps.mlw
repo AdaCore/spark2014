@@ -33,16 +33,16 @@ module Ada__containers__formal_ordered_maps__length
   use Ada__containers__count_type
   use import Ada__containers__formal_ordered_maps__map
 
-  function length map : Ada__containers__count_type.count_type
+  function length__logic map : Ada__containers__count_type.count_type
 
   function length_ "inline" (co : map) : int =
-    Ada__containers__count_type.to_int (length co)
+    Ada__containers__count_type.to_int (length__logic co)
 
   axiom length_range:
-    forall co:map [length co]. 0 <= length_ co <= capacity co
+    forall co:map [length__logic co]. 0 <= length_ co <= capacity co
 
   val length (co : map) :  Ada__containers__count_type.count_type
-     ensures { result = length co }
+     ensures { result = length__logic co }
 end
 
 module Ada__containers__formal_ordered_maps__cursor
@@ -104,14 +104,14 @@ module Ada__containers__formal_ordered_maps__is_empty
   use import Ada__containers__formal_ordered_maps__map
   use import Ada__containers__formal_ordered_maps__length
 
-  function is_empty map : bool
+  function is_empty__logic map : bool
 
   axiom is_empty:
-    forall co:map [is_empty (co)]. 
-          is_empty (co) = True <-> length_ co = 0
+    forall co:map [is_empty__logic (co)]. 
+          is_empty__logic (co) = True <-> length_ co = 0
 
   val is_empty (co:map) : bool
-     ensures  { result = is_empty co }
+     ensures  { result = is_empty__logic co }
 end
 
 module Ada__containers__formal_ordered_maps__key
@@ -123,16 +123,16 @@ module Ada__containers__formal_ordered_maps__key
   use import Ada__containers__formal_ordered_maps__length
   use import Ada__containers__formal_ordered_maps__cursor
 
-  function key map cursor : Ada__containers__formal_ordered_maps__key_type.key_type
+  function key__logic map cursor : Ada__containers__formal_ordered_maps__key_type.key_type
 
   axiom ordered:
-    forall s:map, cu1 cu2:cursor [key s cu2, key s cu1].
+    forall s:map, cu1 cu2:cursor [key__logic s cu2, key__logic s cu1].
        position s cu1 > 0 -> position s cu2 > 0 ->
-         (position s cu1 > position s cu2 <-> Real.(>) (witness (Ada__containers__formal_ordered_maps__key_type.to_base (key s cu1))) (witness (Ada__containers__formal_ordered_maps__key_type.to_base (key s cu2))))
+         (position s cu1 > position s cu2 <-> Real.(>) (witness (Ada__containers__formal_ordered_maps__key_type.to_base (key__logic s cu1))) (witness (Ada__containers__formal_ordered_maps__key_type.to_base (key__logic s cu2))))
 
   val key (co:map) (cu:cursor) : Ada__containers__formal_ordered_maps__key_type.key_type
      requires { position co cu > 0 }
-     ensures  { result = key co cu }
+     ensures  { result = key__logic co cu }
 end
 
 module Ada__containers__formal_ordered_maps__element
@@ -142,11 +142,11 @@ module Ada__containers__formal_ordered_maps__element
   use import Ada__containers__formal_ordered_maps__map
   use import Ada__containers__formal_ordered_maps__cursor
 
-  function element map cursor : Ada__containers__formal_ordered_maps__element_type.element_type
+  function element__logic map cursor : Ada__containers__formal_ordered_maps__element_type.element_type
 
   val element (co:map) (cu:cursor) : Ada__containers__formal_ordered_maps__element_type.element_type
      requires { position co cu > 0 }
-     ensures  { result = element co cu }
+     ensures  { result = element__logic co cu }
 end
 
 module Ada__containers__formal_ordered_maps__previous
@@ -157,20 +157,20 @@ module Ada__containers__formal_ordered_maps__previous
   use import Ada__containers__formal_ordered_maps__cursor
   use import Ada__containers__formal_ordered_maps__no_element
 
-  function previous map cursor : cursor
+  function previous__logic map cursor : cursor
 
   axiom previous_in:
-    forall co:map, cu:cursor [previous co cu].
-	(position co cu > 1 \/ position co (previous co cu) > 0) ->
-	position co (previous co cu) = position co cu - 1
+    forall co:map, cu:cursor [previous__logic co cu].
+	(position co cu > 1 \/ position co (previous__logic co cu) > 0) ->
+	position co (previous__logic co cu) = position co cu - 1
 
   axiom previous_ext:
-    forall co:map, cu:cursor [previous co cu].
-        (position co cu = 1 \/ cu = no_element) -> previous co cu = no_element
+    forall co:map, cu:cursor [previous__logic co cu].
+        (position co cu = 1 \/ cu = no_element) -> previous__logic co cu = no_element
 
   val previous (co:map) (cu:cursor) : cursor
      requires { cu = no_element \/ position co cu > 0 }
-     ensures  { result = previous co cu }
+     ensures  { result = previous__logic co cu }
 end
 
 module Ada__containers__formal_ordered_maps__previous__2
@@ -186,7 +186,7 @@ module Ada__containers__formal_ordered_maps__previous__2
      requires { !cu = no_element \/ position co !cu > 0 }
      writes     { cu }
      reads      { cu }
-     ensures  { !cu = previous co (old !cu) }
+     ensures  { !cu = previous__logic co (old !cu) }
 end
 
 module Ada__containers__formal_ordered_maps__next
@@ -197,20 +197,20 @@ module Ada__containers__formal_ordered_maps__next
   use import Ada__containers__formal_ordered_maps__cursor
   use import Ada__containers__formal_ordered_maps__no_element
 
-  function next map cursor : cursor
+  function next__logic map cursor : cursor
 
   axiom next_in:
-    forall co:map, cu:cursor [next co cu].
-	(length_ co > position co cu > 0 \/ position co (next co cu) > 0) ->
-	position co (next co cu) = position co cu + 1
+    forall co:map, cu:cursor [next__logic co cu].
+	(length_ co > position co cu > 0 \/ position co (next__logic co cu) > 0) ->
+	position co (next__logic co cu) = position co cu + 1
 
   axiom next_ext:
-    forall co:map, cu:cursor [next co cu].
-        (position co cu = length_ co \/ cu = no_element) -> next co cu = no_element
+    forall co:map, cu:cursor [next__logic co cu].
+        (position co cu = length_ co \/ cu = no_element) -> next__logic co cu = no_element
 
   val next (co:map) (cu:cursor) : cursor
      requires { cu = no_element \/ position co cu > 0 }
-     ensures  { result = next co cu }
+     ensures  { result = next__logic co cu }
 end
 
 module Ada__containers__formal_ordered_maps__next__2
@@ -226,7 +226,7 @@ module Ada__containers__formal_ordered_maps__next__2
      requires { !cu = no_element \/ position co !cu > 0 }
      writes     { cu }
      reads      { cu }
-     ensures  { !cu = next co (old !cu) }
+     ensures  { !cu = next__logic co (old !cu) }
 end
 
 module Ada__containers__formal_ordered_maps__last
@@ -237,16 +237,16 @@ module Ada__containers__formal_ordered_maps__last
   use import Ada__containers__formal_ordered_maps__cursor
   use import Ada__containers__formal_ordered_maps__no_element
 
-  function last map : cursor
+  function last__logic map : cursor
 
   axiom last_empty:
-    forall co:map [last co]. length_ co = 0 <-> last co = no_element
+    forall co:map [last__logic co]. length_ co = 0 <-> last__logic co = no_element
 
   axiom last_gen:
-    forall co:map [last co]. length_ co = position co (last co)
+    forall co:map [last__logic co]. length_ co = position co (last__logic co)
 
   val last (co:map) : cursor
-     ensures  { result = last co }
+     ensures  { result = last__logic co }
 end
 
 module Ada__containers__formal_ordered_maps__first
@@ -257,16 +257,16 @@ module Ada__containers__formal_ordered_maps__first
   use import Ada__containers__formal_ordered_maps__cursor
   use import Ada__containers__formal_ordered_maps__no_element
 
-  function first map : cursor
+  function first__logic map : cursor
 
   axiom first_empty:
-    forall co:map [first co]. length_ co = 0 <-> first co = no_element
+    forall co:map [first__logic co]. length_ co = 0 <-> first__logic co = no_element
 
   axiom first_gen:
-    forall co:map [first co]. length_ co > 0 -> position co (first co) = 1
+    forall co:map [first__logic co]. length_ co > 0 -> position co (first__logic co) = 1
 
   val first (co:map) : cursor
-     ensures  { result = first co }
+     ensures  { result = first__logic co }
 end
 
 module Ada__containers__formal_ordered_maps__first_key
@@ -279,11 +279,11 @@ module Ada__containers__formal_ordered_maps__first_key
   use import Ada__containers__formal_ordered_maps__first
   use import Ada__containers__formal_ordered_maps__key
 
-  function first_key (co:map) : Ada__containers__formal_ordered_maps__key_type.key_type = key co (first co)
+  function first_key__logic (co:map) : Ada__containers__formal_ordered_maps__key_type.key_type = key__logic co (first__logic co)
 
   val first_key (co:map) : Ada__containers__formal_ordered_maps__key_type.key_type
      requires { length_ co > 0 }
-     ensures  { result = key co (first co) }
+     ensures  { result = key__logic co (first__logic co) }
 end
 
 module Ada__containers__formal_ordered_maps__last_key
@@ -296,11 +296,11 @@ module Ada__containers__formal_ordered_maps__last_key
   use import Ada__containers__formal_ordered_maps__last
   use import Ada__containers__formal_ordered_maps__key
 
-  function last_key (co:map) : Ada__containers__formal_ordered_maps__key_type.key_type = key co (last co)
+  function last_key__logic (co:map) : Ada__containers__formal_ordered_maps__key_type.key_type = key__logic co (last__logic co)
 
   val last_key (co:map) : Ada__containers__formal_ordered_maps__key_type.key_type
      requires { length_ co > 0 }
-     ensures  { result = key co (last co) }
+     ensures  { result = key__logic co (last__logic co) }
 end
 
 module Ada__containers__formal_ordered_maps__first_element
@@ -313,11 +313,11 @@ module Ada__containers__formal_ordered_maps__first_element
   use import Ada__containers__formal_ordered_maps__first
   use import Ada__containers__formal_ordered_maps__element
 
-  function first_element (co:map) : Ada__containers__formal_ordered_maps__element_type.element_type = element co (first co)
+  function first_element__logic (co:map) : Ada__containers__formal_ordered_maps__element_type.element_type = element__logic co (first__logic co)
 
   val first_element (co:map) : Ada__containers__formal_ordered_maps__element_type.element_type
      requires { length_ co > 0 }
-     ensures  { result = element co (first co) }
+     ensures  { result = element__logic co (first__logic co) }
 end
 
 module Ada__containers__formal_ordered_maps__last_element
@@ -330,11 +330,11 @@ module Ada__containers__formal_ordered_maps__last_element
   use import Ada__containers__formal_ordered_maps__last
   use import Ada__containers__formal_ordered_maps__element
 
-  function last_element (co:map) : Ada__containers__formal_ordered_maps__element_type.element_type = element co (last co)
+  function last_element__logic (co:map) : Ada__containers__formal_ordered_maps__element_type.element_type = element__logic co (last__logic co)
 
   val last_element (co:map) : Ada__containers__formal_ordered_maps__element_type.element_type
      requires { length_ co > 0 }
-     ensures  { result = element co (last co) }
+     ensures  { result = element__logic co (last__logic co) }
 end
 
 module Ada__containers__formal_ordered_maps__find
@@ -354,9 +354,9 @@ module Ada__containers__formal_ordered_maps__find
     (cu = (no_element  : cursor) /\
       (forall cun:cursor.
         position co cun >  0 ->
-         witness (Ada__containers__formal_ordered_maps__key_type.to_base (key co cun)) <> i)) \/
+         witness (Ada__containers__formal_ordered_maps__key_type.to_base (key__logic co cun)) <> i)) \/
      (position co cu > 0 /\
-      witness (Ada__containers__formal_ordered_maps__key_type.to_base (key co cu)) = i)
+      witness (Ada__containers__formal_ordered_maps__key_type.to_base (key__logic co cu)) = i)
   
   axiom Find_find_val:
     (forall co:map.
@@ -364,11 +364,11 @@ module Ada__containers__formal_ordered_maps__find
         ((find__ co i (find_ co i)) /\
          ((length_ co = 0) -> (find_ co i = no_element )))))
 
-  function find "inline" (co : map) (e:Ada__containers__formal_ordered_maps__key_type.base_type) : cursor =
+  function find__logic "inline" (co : map) (e:Ada__containers__formal_ordered_maps__key_type.base_type) : cursor =
   find_ co (witness e)
 
   val find (co:map) (e:Ada__containers__formal_ordered_maps__key_type.base_type)  : cursor
-     ensures  { result = find co e }
+     ensures  { result = find__logic co e }
 end
 
 module Ada__containers__formal_ordered_maps__element__2
@@ -381,12 +381,12 @@ module Ada__containers__formal_ordered_maps__element__2
   use import Ada__containers__formal_ordered_maps__element
   use import Ada__containers__formal_ordered_maps__find
 
-  function element__2 "inline" (co:map) (k:Ada__containers__formal_ordered_maps__key_type.base_type) : Ada__containers__formal_ordered_maps__element_type.element_type =
-element co (find_ co (witness k))
+  function element__2__logic "inline" (co:map) (k:Ada__containers__formal_ordered_maps__key_type.base_type) : Ada__containers__formal_ordered_maps__element_type.element_type =
+element__logic co (find_ co (witness k))
 
   val element__2 (co:map) (k:Ada__containers__formal_ordered_maps__key_type.base_type) : Ada__containers__formal_ordered_maps__element_type.element_type
      requires { position co (find_ co (witness k)) > 0 }
-     ensures  { result = element__2 co k }
+     ensures  { result = element__2__logic co k }
 end
 
 module Ada__containers__formal_ordered_maps__ceiling
@@ -406,18 +406,18 @@ module Ada__containers__formal_ordered_maps__ceiling
   predicate is_ceiling (s : map) (i : real) (cu : cursor) =
      (cu = no_element  /\
        (length_ s = 0 \/ length_ s > 0 /\
-        Real.(>) i (witness (Ada__containers__formal_ordered_maps__key_type.to_base (key s (last s)))))) \/
+        Real.(>) i (witness (Ada__containers__formal_ordered_maps__key_type.to_base (key__logic s (last__logic s)))))) \/
       (position s cu > 0 /\
-       Real.(<=) i (witness (Ada__containers__formal_ordered_maps__key_type.to_base (key s cu))) /\
-	(forall cun : cursor [key s cun]. 0 < position s cun < position s cu
-	 -> Real.(>) i (witness (Ada__containers__formal_ordered_maps__key_type.to_base (key s cun)))))
+       Real.(<=) i (witness (Ada__containers__formal_ordered_maps__key_type.to_base (key__logic s cu))) /\
+	(forall cun : cursor [key__logic s cun]. 0 < position s cun < position s cu
+	 -> Real.(>) i (witness (Ada__containers__formal_ordered_maps__key_type.to_base (key__logic s cun)))))
   
   axiom ceiling_is_ceiling:
     forall s:map.
       forall i:real [(ceiling_ s i : cursor)].
         is_ceiling s i (ceiling_ s i : cursor)
 
-  function ceiling  "inline" (co:map) (e:Ada__containers__formal_ordered_maps__key_type.base_type) : cursor =
+  function ceiling__logic  "inline" (co:map) (e:Ada__containers__formal_ordered_maps__key_type.base_type) : cursor =
  ceiling_ co (witness e)
 
   val ceiling (co:map) (e:Ada__containers__formal_ordered_maps__key_type.base_type) :cursor
@@ -441,18 +441,18 @@ module Ada__containers__formal_ordered_maps__floor
   predicate is_floor (s : map) (i : real) (cu : cursor) =
      (cu = no_element  /\
        (length_ s = 0 \/ length_ s > 0 /\
-         Real.(<) i (witness (Ada__containers__formal_ordered_maps__key_type.to_base (key s (first s)))))) \/
+         Real.(<) i (witness (Ada__containers__formal_ordered_maps__key_type.to_base (key__logic s (first__logic s)))))) \/
       (position s cu > 0 /\
-       Real.(>=) i (witness (Ada__containers__formal_ordered_maps__key_type.to_base (key s cu))) /\
+       Real.(>=) i (witness (Ada__containers__formal_ordered_maps__key_type.to_base (key__logic s cu))) /\
 	(forall cun : cursor. position s cu < position s cun
-	 ->  Real.(<) i (witness (Ada__containers__formal_ordered_maps__key_type.to_base (key s cun)))))
+	 ->  Real.(<) i (witness (Ada__containers__formal_ordered_maps__key_type.to_base (key__logic s cun)))))
   
   axiom floor_is_floor:
     (forall s:map.
       (forall i:real [(floor_ s i : cursor)].
         (is_floor s i (floor_ s i : cursor))))
 
-  function floor  "inline" (co:map) (e:Ada__containers__formal_ordered_maps__key_type.base_type) : cursor =
+  function floor__logic  "inline" (co:map) (e:Ada__containers__formal_ordered_maps__key_type.base_type) : cursor =
  floor_ co (witness e)
 
   val floor (co:map) (e:Ada__containers__formal_ordered_maps__key_type.base_type) :cursor
@@ -471,54 +471,54 @@ module Ada__containers__formal_ordered_maps__first_to_previous
   use import Ada__containers__formal_ordered_maps__element
   use import Ada__containers__formal_ordered_maps__find
 
-  function first_to_previous map cursor : map
+  function first_to_previous__logic map cursor : map
 
   axiom first_to_previous_no_element:
-    forall co:map [first_to_previous co no_element]. first_to_previous co no_element = co
+    forall co:map [first_to_previous__logic co no_element]. first_to_previous__logic co no_element = co
 
   axiom first_to_previous_length_:
-    forall co:map, cu:cursor [first_to_previous co cu].
-	position co cu > 0 -> length_ (first_to_previous co cu) = position co cu - 1
+    forall co:map, cu:cursor [first_to_previous__logic co cu].
+	position co cu > 0 -> length_ (first_to_previous__logic co cu) = position co cu - 1
 
   axiom first_to_previous_position_in:
-    forall co:map, cu cun:cursor [position (first_to_previous co cu) cun | first_to_previous co cu, position co cun].
-	(position (first_to_previous co cu) cun > 0 \/ position co cun < position co cu) ->
-	position (first_to_previous co cu) cun = position co cun
+    forall co:map, cu cun:cursor [position (first_to_previous__logic co cu) cun | first_to_previous__logic co cu, position co cun].
+	(position (first_to_previous__logic co cu) cun > 0 \/ position co cun < position co cu) ->
+	position (first_to_previous__logic co cu) cun = position co cun
 
   axiom first_to_previous_position_ext:
-    forall co:map, cu cun:cursor [position (first_to_previous co cu) cun].
+    forall co:map, cu cun:cursor [position (first_to_previous__logic co cu) cun].
 	position co cun >= position co cu > 0 ->
-	position (first_to_previous co cu) cun = 0
+	position (first_to_previous__logic co cu) cun = 0
 
   axiom first_to_previous_key:
-    forall co:map, cu cun:cursor [key (first_to_previous co cu) cun | first_to_previous co cu, key co cun].
-	(position (first_to_previous co cu) cun > 0 \/ 0 < position co cun < position co cu) ->
-	key (first_to_previous co cu) cun = key co cun
+    forall co:map, cu cun:cursor [key__logic (first_to_previous__logic co cu) cun | first_to_previous__logic co cu, key__logic co cun].
+	(position (first_to_previous__logic co cu) cun > 0 \/ 0 < position co cun < position co cu) ->
+	key__logic (first_to_previous__logic co cu) cun = key__logic co cun
 
   axiom first_to_previous_element:
-    forall co:map, cu cun:cursor [element (first_to_previous co cu) cun | first_to_previous co cu, element co cun].
-	(position (first_to_previous co cu) cun > 0 \/ 0 < position co cun < position co cu) ->
-	element (first_to_previous co cu) cun = element co cun
+    forall co:map, cu cun:cursor [element__logic (first_to_previous__logic co cu) cun | first_to_previous__logic co cu, element__logic co cun].
+	(position (first_to_previous__logic co cu) cun > 0 \/ 0 < position co cun < position co cu) ->
+	element__logic (first_to_previous__logic co cu) cun = element__logic co cun
 
   axiom first_to_previous_find :
-    forall co:map, cu:cursor, w:real [find_ co w, first_to_previous co cu|
-     find_ (first_to_previous co cu) w].
+    forall co:map, cu:cursor, w:real [find_ co w, first_to_previous__logic co cu|
+     find_ (first_to_previous__logic co cu) w].
      ((position co cu > position co (find_ co w) > 0 \/
-      position (first_to_previous co cu) (find_ (first_to_previous co cu) w) > 0) ->
-      find_ co w = find_ (first_to_previous co cu) w) /\
-      (position co (find_ co w) >= position co cu -> find_ (first_to_previous co cu) w = no_element)
+      position (first_to_previous__logic co cu) (find_ (first_to_previous__logic co cu) w) > 0) ->
+      find_ co w = find_ (first_to_previous__logic co cu) w) /\
+      (position co (find_ co w) >= position co cu -> find_ (first_to_previous__logic co cu) w = no_element)
 
   axiom first_to_previous_find_elt :
-    forall co:map, cu:cursor, w:real [key co cu, find_ co w, first_to_previous co cu|
-     key co cu, find_ (first_to_previous co cu) w].
-     (Real.(>) (witness (Ada__containers__formal_ordered_maps__key_type.to_base (key co cu))) w  ->
-      find_ co w = find_ (first_to_previous co cu) w) /\
-     (Real.(<=) (witness (Ada__containers__formal_ordered_maps__key_type.to_base (key co cu))) w  ->
-      find_ (first_to_previous co cu) w = no_element) 
+    forall co:map, cu:cursor, w:real [key__logic co cu, find_ co w, first_to_previous__logic co cu|
+     key__logic co cu, find_ (first_to_previous__logic co cu) w].
+     (Real.(>) (witness (Ada__containers__formal_ordered_maps__key_type.to_base (key__logic co cu))) w  ->
+      find_ co w = find_ (first_to_previous__logic co cu) w) /\
+     (Real.(<=) (witness (Ada__containers__formal_ordered_maps__key_type.to_base (key__logic co cu))) w  ->
+      find_ (first_to_previous__logic co cu) w = no_element) 
      
   val first_to_previous (co:map) (cu:cursor) : map
      requires { cu = no_element \/ position co cu > 0 }
-     ensures  { result = first_to_previous co cu }
+     ensures  { result = first_to_previous__logic co cu }
 end
 
 module Ada__containers__formal_ordered_maps__current_to_last
@@ -534,53 +534,53 @@ module Ada__containers__formal_ordered_maps__current_to_last
   use import Ada__containers__formal_ordered_maps__element
   use import Ada__containers__formal_ordered_maps__find
 
-  function current_to_last map cursor : map
+  function current_to_last__logic map cursor : map
 
   axiom current_to_last_no_element:
-    forall co:map [current_to_last co no_element]. current_to_last co no_element = empty_map
+    forall co:map [current_to_last__logic co no_element]. current_to_last__logic co no_element = empty_map
 
   axiom current_to_last_length_:
-    forall co:map, cu:cursor [length_ (current_to_last co cu) ].
-	position co cu > 0 -> length_ (current_to_last co cu) = (length_ co) - (position co cu) + 1
+    forall co:map, cu:cursor [length_ (current_to_last__logic co cu) ].
+	position co cu > 0 -> length_ (current_to_last__logic co cu) = (length_ co) - (position co cu) + 1
 
   axiom current_to_last_position_in:
-    forall co:map, cu cun:cursor [position (current_to_last co cu) cun | current_to_last co cu, position co cun].
-	(position (current_to_last co cu) cun > 0 \/ position co cun >= position co cu > 0) ->
-	position (current_to_last co cu) cun = (position co cun) - (position co cu) + 1
+    forall co:map, cu cun:cursor [position (current_to_last__logic co cu) cun | current_to_last__logic co cu, position co cun].
+	(position (current_to_last__logic co cu) cun > 0 \/ position co cun >= position co cu > 0) ->
+	position (current_to_last__logic co cu) cun = (position co cun) - (position co cu) + 1
 
   axiom current_to_last_position_ext:
-    forall co:map, cu cun:cursor [position (current_to_last co cu) cun].
-	position co cun < position co cu -> position (current_to_last co cu) cun = 0
+    forall co:map, cu cun:cursor [position (current_to_last__logic co cu) cun].
+	position co cun < position co cu -> position (current_to_last__logic co cu) cun = 0
 
   axiom current_to_last_key:
-    forall co:map, cu cun:cursor [key (current_to_last co cu) cun | current_to_last co cu, key co cun].
-	(position (current_to_last co cu) cun > 0 \/ 0 < position co cu <= position co cun) ->
-	key (current_to_last co cu) cun = key co cun
+    forall co:map, cu cun:cursor [key__logic (current_to_last__logic co cu) cun | current_to_last__logic co cu, key__logic co cun].
+	(position (current_to_last__logic co cu) cun > 0 \/ 0 < position co cu <= position co cun) ->
+	key__logic (current_to_last__logic co cu) cun = key__logic co cun
 
   axiom current_to_last_element:
-    forall co:map, cu cun:cursor [element (current_to_last co cu) cun | current_to_last co cu, element co cun].
-	(position (current_to_last co cu) cun > 0 \/ 0 < position co cu <= position co cun) ->
-	element (current_to_last co cu) cun = element co cun
+    forall co:map, cu cun:cursor [element__logic (current_to_last__logic co cu) cun | current_to_last__logic co cu, element__logic co cun].
+	(position (current_to_last__logic co cu) cun > 0 \/ 0 < position co cu <= position co cun) ->
+	element__logic (current_to_last__logic co cu) cun = element__logic co cun
 
   axiom current_to_last_find :
-    forall co:map, cu:cursor, w:real [find_ (current_to_last co cu) w| current_to_last co cu,
+    forall co:map, cu:cursor, w:real [find_ (current_to_last__logic co cu) w| current_to_last__logic co cu,
      find_ co w].
      ((0 < position co cu <= position co (find_ co w) \/
-      position (current_to_last co cu) (find_ (current_to_last co cu) w) > 0) ->
-      find_ co w = find_ (current_to_last co cu) w) /\
-      (position co (find_ co w) < position co cu -> find_ (current_to_last co cu) w = no_element)
+      position (current_to_last__logic co cu) (find_ (current_to_last__logic co cu) w) > 0) ->
+      find_ co w = find_ (current_to_last__logic co cu) w) /\
+      (position co (find_ co w) < position co cu -> find_ (current_to_last__logic co cu) w = no_element)
 
   axiom current_to_last_find_elt :
-    forall co:map, cu:cursor, w:real [key co cu, find_ co w, current_to_last co cu|
-     key co cu, find_ (current_to_last co cu) w].
-     (Real.(<=) (witness (Ada__containers__formal_ordered_maps__key_type.to_base (key co cu))) w  ->
-      find_ co w = find_ (current_to_last co cu) w) /\
-     (Real.(>) (witness (Ada__containers__formal_ordered_maps__key_type.to_base (key co cu))) w  ->
-      find_ (current_to_last co cu) w = no_element) 
+    forall co:map, cu:cursor, w:real [key__logic co cu, find_ co w, current_to_last__logic co cu|
+     key__logic co cu, find_ (current_to_last__logic co cu) w].
+     (Real.(<=) (witness (Ada__containers__formal_ordered_maps__key_type.to_base (key__logic co cu))) w  ->
+      find_ co w = find_ (current_to_last__logic co cu) w) /\
+     (Real.(>) (witness (Ada__containers__formal_ordered_maps__key_type.to_base (key__logic co cu))) w  ->
+      find_ (current_to_last__logic co cu) w = no_element) 
 
   val current_to_last (co:map) (cu:cursor) : map
      requires { cu = no_element \/ position co cu > 0 }
-     ensures  { result = current_to_last co cu }
+     ensures  { result = current_to_last__logic co cu }
 end
 
 module Ada__containers__formal_ordered_maps__replace
@@ -601,15 +601,15 @@ module Ada__containers__formal_ordered_maps__replace
   predicate replace (co1:map) (k:Ada__containers__formal_ordered_maps__key_type.base_type) (e:Ada__containers__formal_ordered_maps__element_type.base_type) (co2:map) =
     (position co1 (find_ co1 (witness k)) > 0 /\
       length_ co1 = length_ co2 /\
-       Ada__containers__formal_ordered_maps__key_type.to_base (key co2 (find_ co1 (witness k))) = k /\
-       Ada__containers__formal_ordered_maps__element_type.to_base (element co2 (find_ co1 (witness k))) = e /\
+       Ada__containers__formal_ordered_maps__key_type.to_base (key__logic co2 (find_ co1 (witness k))) = k /\
+       Ada__containers__formal_ordered_maps__element_type.to_base (element__logic co2 (find_ co1 (witness k))) = e /\
         (forall cun:cursor [position co2 cun | position co1 cun]. position co2 cun = position co1 cun) /\
-         (forall cun:cursor [key co2 cun | key co1 cun].
+         (forall cun:cursor [key__logic co2 cun | key__logic co1 cun].
            position co1 cun > 0 /\ not cun = find_ co1 (witness k) ->
-            key co2 cun = key co1 cun) /\
-         (forall cun:cursor [element co2 cun | element co1 cun].
+            key__logic co2 cun = key__logic co1 cun) /\
+         (forall cun:cursor [element__logic co2 cun | element__logic co1 cun].
            position co1 cun > 0 /\ not cun = find_ co1 (witness k) ->
-            element co2 cun = element co1 cun) /\
+            element__logic co2 cun = element__logic co1 cun) /\
           (forall w:real [find_ co1 w | find_ co2 w]. find_ co1 w = find_ co2 w)) /\
      capacity co1 = capacity co2 
 
@@ -654,22 +654,22 @@ module Ada__containers__formal_ordered_maps__replace_element
 
   axiom replace_element_key:
     forall co1 co2:map, cu cun:cursor, e:Ada__containers__formal_ordered_maps__element_type.base_type
-      [replace_element co1 cu e co2, key co2 cun
-     | replace_element co1 cu e co2, key co1 cun].
+      [replace_element co1 cu e co2, key__logic co2 cun
+     | replace_element co1 cu e co2, key__logic co1 cun].
       replace_element co1 cu e co2 -> position co1 cun > 0 ->
-        key co2 cun = key co1 cun
+        key__logic co2 cun = key__logic co1 cun
 
   axiom replace_element_element_in:
     forall co1 co2:map, cu:cursor, e:Ada__containers__formal_ordered_maps__element_type.base_type
       [replace_element co1 cu e co2].
-      replace_element co1 cu e co2 -> Ada__containers__formal_ordered_maps__element_type.to_base (element co2 cu) = e
+      replace_element co1 cu e co2 -> Ada__containers__formal_ordered_maps__element_type.to_base (element__logic co2 cu) = e
 
   axiom replace_element_element_ext:
     forall co1 co2:map, cu cun:cursor, e:Ada__containers__formal_ordered_maps__element_type.base_type
-      [replace_element co1 cu e co2, element co2 cun
-     | replace_element co1 cu e co2, element co1 cun].
+      [replace_element co1 cu e co2, element__logic co2 cun
+     | replace_element co1 cu e co2, element__logic co1 cun].
       replace_element co1 cu e co2 -> cu <> cun -> position co1 cun > 0 ->
-        element co2 cun = element co1 cun
+        element__logic co2 cun = element__logic co1 cun
 
   axiom replace_element_find:
     forall co1 co2:map, cu:cursor, w:real, e:Ada__containers__formal_ordered_maps__element_type.base_type
@@ -705,7 +705,7 @@ module Ada__containers__formal_ordered_maps__insert
   axiom insert_length_:
     forall co1 co2:map,  k:Ada__containers__formal_ordered_maps__key_type.base_type, e:Ada__containers__formal_ordered_maps__element_type.base_type
       [insert co1 k e co2].
-      insert co1 k e co2 -> length_ co1 + 1 = length_ co2 /\ find_ co1 (witness k) = no_element /\ Ada__containers__formal_ordered_maps__key_type.to_base (key co2 (find_ co2 (witness k))) = k /\ Ada__containers__formal_ordered_maps__element_type.to_base (element co2 (find_ co2 (witness k))) = e
+      insert co1 k e co2 -> length_ co1 + 1 = length_ co2 /\ find_ co1 (witness k) = no_element /\ Ada__containers__formal_ordered_maps__key_type.to_base (key__logic co2 (find_ co2 (witness k))) = k /\ Ada__containers__formal_ordered_maps__element_type.to_base (element__logic co2 (find_ co2 (witness k))) = e
 
   axiom insert_capacity:
     forall co1 co2:map,  k:Ada__containers__formal_ordered_maps__key_type.base_type, e:Ada__containers__formal_ordered_maps__element_type.base_type
@@ -716,7 +716,7 @@ module Ada__containers__formal_ordered_maps__insert
     forall co1 co2:map,  k:Ada__containers__formal_ordered_maps__key_type.base_type, e:Ada__containers__formal_ordered_maps__element_type.base_type [insert co1 k e co2].
       insert co1 k e co2 -> (ceiling_ co1 (witness k) <> no_element ->
       position co2 (find_ co2 (witness k)) = position co1 (ceiling_ co1 (witness k))) /\ (ceiling_ co1 (witness k) = no_element ->
-      find_ co2 (witness k) = last co2)
+      find_ co2 (witness k) = last__logic co2)
 
   axiom insert_position_before:
     forall co1 co2:map, cun:cursor,  k:Ada__containers__formal_ordered_maps__key_type.base_type, e:Ada__containers__formal_ordered_maps__element_type.base_type
@@ -738,19 +738,19 @@ module Ada__containers__formal_ordered_maps__insert
 
   axiom insert_key:
     forall co1 co2:map, cun:cursor,  k:Ada__containers__formal_ordered_maps__key_type.base_type, e:Ada__containers__formal_ordered_maps__element_type.base_type
-      [insert co1 k e co2,  key co1 cun
-     | insert co1 k e co2,  key co2 cun].
+      [insert co1 k e co2,  key__logic co1 cun
+     | insert co1 k e co2,  key__logic co2 cun].
       insert co1 k e co2 ->
       (position co1 cun > 0 \/ position co2 cun > 0 /\ find_ co2 (witness k) <> cun) ->
-        key co1 cun = key co2 cun
+        key__logic co1 cun = key__logic co2 cun
 
   axiom insert_element:
     forall co1 co2:map, cun:cursor,  k:Ada__containers__formal_ordered_maps__key_type.base_type, e:Ada__containers__formal_ordered_maps__element_type.base_type
-      [insert co1 k e co2,  element co1 cun
-     | insert co1 k e co2,  element co2 cun].
+      [insert co1 k e co2,  element__logic co1 cun
+     | insert co1 k e co2,  element__logic co2 cun].
       insert co1 k e co2 ->
       (position co1 cun > 0 \/ position co2 cun > 0 /\ find_ co2 (witness k) <> cun) ->
-        element co1 cun = element co2 cun
+        element__logic co1 cun = element__logic co2 cun
 
   axiom insert_find :
     forall co1:map, co2:map, w:real,  k:Ada__containers__formal_ordered_maps__key_type.base_type, e:Ada__containers__formal_ordered_maps__element_type.base_type
@@ -828,32 +828,32 @@ module Ada__containers__formal_ordered_maps__delete
 
   axiom delete_position_range:
     forall co1 co2:map, cu:cursor [delete co1 cu co2].
-      delete co1 cu co2 -> position co2 cu = 0 /\ 0 < position co1 cu /\ find_ co2 (witness (Ada__containers__formal_ordered_maps__key_type.to_base (key co1 cu))) = no_element
+      delete co1 cu co2 -> position co2 cu = 0 /\ 0 < position co1 cu /\ find_ co2 (witness (Ada__containers__formal_ordered_maps__key_type.to_base (key__logic co1 cu))) = no_element
 
   axiom delete_position_next:
     forall co1 co2:map, cu:cursor [delete co1 cu co2].
-      delete co1 cu co2 -> position co1 (next co1 cu) >= 0
+      delete co1 cu co2 -> position co1 (next__logic co1 cu) >= 0
 
   axiom delete_key:
     forall co1 co2:map, cu cun:cursor
-      [delete co1 cu co2,  key co1 cun
-     | delete co1 cu co2,  key co2 cun].
+      [delete co1 cu co2,  key__logic co1 cun
+     | delete co1 cu co2,  key__logic co2 cun].
       delete co1 cu co2 ->
       0 < position co2 cun ->
-        key co1 cun = key co2 cun  
+        key__logic co1 cun = key__logic co2 cun  
 
   axiom delete_element:
     forall co1 co2:map, cu cun:cursor
-      [delete co1 cu co2,  element co1 cun
-     | delete co1 cu co2,  element co2 cun].
+      [delete co1 cu co2,  element__logic co1 cun
+     | delete co1 cu co2,  element__logic co2 cun].
       delete co1 cu co2 ->
       0 < position co2 cun ->
-        element co1 cun = element co2 cun  
+        element__logic co1 cun = element__logic co2 cun  
 
   axiom delete_find :
     forall co1:map, co2:map, cu:cursor, w:real [delete co1 cu co2,
      find_ co1 w| delete co1 cu co2, find_ co2 w].
-     delete co1 cu co2 -> not witness (Ada__containers__formal_ordered_maps__key_type.to_base (key co1 cu)) = w -> find_ co1 w = find_ co2 w
+     delete co1 cu co2 -> not witness (Ada__containers__formal_ordered_maps__key_type.to_base (key__logic co1 cu)) = w -> find_ co1 w = find_ co2 w
 
   val delete (co:ref map) (e : Ada__containers__formal_ordered_maps__key_type.base_type) : unit
      requires { find_ !co (witness e) <> no_element }
@@ -891,7 +891,7 @@ module Ada__containers__formal_ordered_maps__delete_first
   val delete__first (co:ref map) : unit
      writes     { co }
      reads      { co }
-     ensures { if length_ (old !co) = 0 then !co = (old !co) else delete (old !co) (first (old !co)) !co }
+     ensures { if length_ (old !co) = 0 then !co = (old !co) else delete (old !co) (first__logic (old !co)) !co }
  end
 
 module Ada__containers__formal_ordered_maps__delete_last
@@ -907,7 +907,7 @@ module Ada__containers__formal_ordered_maps__delete_last
   val delete__last (co:ref map) : unit
      writes     { co }
      reads      { co }
-     ensures { if length_ (old !co) = 0 then !co = (old !co) else delete (old !co) (last (old !co)) !co }
+     ensures { if length_ (old !co) = 0 then !co = (old !co) else delete (old !co) (last__logic (old !co)) !co }
  end
 
 module Ada__containers__formal_ordered_maps__include
@@ -957,18 +957,18 @@ module Ada__containers__formal_ordered_maps__has_element
   use import Ada__containers__formal_ordered_maps__length
   use import Ada__containers__formal_ordered_maps__cursor
 
-  function has_element map cursor : bool
+  function has_element__logic map cursor : bool
 
   axiom has_element_pos:
-    forall co:map, cu:cursor [has_element co cu].
-    has_element co cu = True -> 0 < position co cu
+    forall co:map, cu:cursor [has_element__logic co cu].
+    has_element__logic co cu = True -> 0 < position co cu
 
   axiom has_element_neg:
-    forall co:map, cu:cursor [has_element co cu].
-    has_element co cu <> True -> position co cu = 0
+    forall co:map, cu:cursor [has_element__logic co cu].
+    has_element__logic co cu <> True -> position co cu = 0
 
   val has_element (co:map) (cu:cursor) : bool
-     ensures { has_element co cu = result }
+     ensures { has_element__logic co cu = result }
 end
 
 module Ada__containers__formal_ordered_maps__contains
@@ -981,14 +981,14 @@ module Ada__containers__formal_ordered_maps__contains
   use import Ada__containers__formal_ordered_maps__cursor
   use import Ada__containers__formal_ordered_maps__find
 
-  function contains map Ada__containers__formal_ordered_maps__key_type.base_type : bool
+  function contains__logic map Ada__containers__formal_ordered_maps__key_type.base_type : bool
 
   axiom contains_c:
-  forall co : map, e : Ada__containers__formal_ordered_maps__key_type.base_type [contains co e].
-    contains co e = True <-> 0 < position co (find_ co (witness e))
+  forall co : map, e : Ada__containers__formal_ordered_maps__key_type.base_type [contains__logic co e].
+    contains__logic co e = True <-> 0 < position co (find_ co (witness e))
 
   val contains (co:map) (e:Ada__containers__formal_ordered_maps__key_type.base_type) : bool
-     ensures { contains co e = result }
+     ensures { contains__logic co e = result }
 end
 
 module Ada__containers__formal_ordered_maps__strict_equal
@@ -1001,28 +1001,28 @@ module Ada__containers__formal_ordered_maps__strict_equal
   use import Ada__containers__formal_ordered_maps__key
   use import Ada__containers__formal_ordered_maps__element
 
-  function strict_equal map map : bool
+  function strict_equal__logic map map : bool
 
   axiom strict_equal__def:
-    forall co1 co2 : map [strict_equal co1 co2].
+    forall co1 co2 : map [strict_equal__logic co1 co2].
     ((forall cu:cursor [position co1 cu | position co2 cu].
        position co1 cu > 0 <-> position co2 cu > 0) /\
-     (forall cu:cursor [key co1 cu | key co2 cu]. position co1 cu > 0 ->
-        Ada__containers__formal_ordered_maps__key_type.to_base (key co1 cu) = Ada__containers__formal_ordered_maps__key_type.to_base (key co2 cu)) /\
-     (forall cu:cursor [element co1 cu | element co2 cu]. position co1 cu > 0 ->
-        Ada__containers__formal_ordered_maps__element_type.to_base (element co1 cu) = Ada__containers__formal_ordered_maps__element_type.to_base (element co2 cu))) <->  strict_equal co1 co2 = True
+     (forall cu:cursor [key__logic co1 cu | key__logic co2 cu]. position co1 cu > 0 ->
+        Ada__containers__formal_ordered_maps__key_type.to_base (key__logic co1 cu) = Ada__containers__formal_ordered_maps__key_type.to_base (key__logic co2 cu)) /\
+     (forall cu:cursor [element__logic co1 cu | element__logic co2 cu]. position co1 cu > 0 ->
+        Ada__containers__formal_ordered_maps__element_type.to_base (element__logic co1 cu) = Ada__containers__formal_ordered_maps__element_type.to_base (element__logic co2 cu))) <->  strict_equal__logic co1 co2 = True
 
   axiom strict_equal__position:
-    forall co1 co2 : map [strict_equal co1 co2].
-    strict_equal co1 co2 = True -> (forall cu:cursor [position co1 cu | position co2 cu].
+    forall co1 co2 : map [strict_equal__logic co1 co2].
+    strict_equal__logic co1 co2 = True -> (forall cu:cursor [position co1 cu | position co2 cu].
        position co1 cu = position co2 cu)
 
   axiom strict_equal_length_:
-    forall co1 co2 : map [strict_equal co1 co2].
-     strict_equal co1 co2 = True -> length_ co1 = length_ co2
+    forall co1 co2 : map [strict_equal__logic co1 co2].
+     strict_equal__logic co1 co2 = True -> length_ co1 = length_ co2
 
     val strict_equal (co1:map) (co2:map) : bool
-     ensures  { result  = strict_equal co1 co2 }
+     ensures  { result  = strict_equal__logic co1 co2 }
 end
 
 module Ada__containers__formal_ordered_maps__Oeq__2
@@ -1039,35 +1039,35 @@ module Ada__containers__formal_ordered_maps__Oeq__2
   use import Ada__containers__formal_ordered_maps__element
   use import Ada__containers__formal_ordered_maps__find
 
-  function oeq__2 map map : bool
+  function oeq__2__logic map map : bool
 
   axiom oeq__2_length_:
-   forall co1 co2 : map [oeq__2 co1 co2].
-   oeq__2 co1 co2 = True -> length_ co1 = length_ co2
+   forall co1 co2 : map [oeq__2__logic co1 co2].
+   oeq__2__logic co1 co2 = True -> length_ co1 = length_ co2
 
   axiom oeq__2_element:
-   forall co1 co2 : map [oeq__2 co1 co2]. oeq__2 co1 co2 = True ->
-   forall cu1:cursor [key co1 cu1]. position co1 cu1 > 0 ->
-	let cu2 = find_ co2 (witness (Ada__containers__formal_ordered_maps__key_type.to_base (key co1 cu1))) in
-          Ada__containers__formal_ordered_maps__oeq.oeq (Ada__containers__formal_ordered_maps__element_type.to_base (element co2 cu2)) (Ada__containers__formal_ordered_maps__element_type.to_base (element co1 cu1)) = True
+   forall co1 co2 : map [oeq__2__logic co1 co2]. oeq__2__logic co1 co2 = True ->
+   forall cu1:cursor [key__logic co1 cu1]. position co1 cu1 > 0 ->
+	let cu2 = find_ co2 (witness (Ada__containers__formal_ordered_maps__key_type.to_base (key__logic co1 cu1))) in
+          Ada__containers__formal_ordered_maps__oeq.oeq (Ada__containers__formal_ordered_maps__element_type.to_base (element__logic co2 cu2)) (Ada__containers__formal_ordered_maps__element_type.to_base (element__logic co1 cu1)) = True
 
   axiom oeq__2_inv:
-   forall co1 co2 : map [oeq__2 co1 co2]. oeq__2 co1 co2 <> True ->
+   forall co1 co2 : map [oeq__2__logic co1 co2]. oeq__2__logic co1 co2 <> True ->
    (length_ co1 <> length_ co2 \/
    exists e : real. position co1 (find_ co1 e) > 0 /\
          (find_ co2 e = no_element \/ position co2 (find_ co2 e) > 0 /\ 
-          Ada__containers__formal_ordered_maps__oeq.oeq (Ada__containers__formal_ordered_maps__element_type.to_base (element co2 (find_ co2 e))) (Ada__containers__formal_ordered_maps__element_type.to_base (element co1 (find_ co1 e))) <> True))
+          Ada__containers__formal_ordered_maps__oeq.oeq (Ada__containers__formal_ordered_maps__element_type.to_base (element__logic co2 (find_ co2 e))) (Ada__containers__formal_ordered_maps__element_type.to_base (element__logic co1 (find_ co1 e))) <> True))
 
   axiom oeq__2_sym :
-  forall e1 e2 : map [oeq__2 e1 e2].
-	oeq__2 e1 e2 = True -> oeq__2 e2 e1 = True
+  forall e1 e2 : map [oeq__2__logic e1 e2].
+	oeq__2__logic e1 e2 = True -> oeq__2__logic e2 e1 = True
 
   axiom oeq__2_trans :
-  forall e1 e2 e3 : map [oeq__2 e1 e2, oeq__2 e1 e3 | oeq__2 e1 e2, oeq__2 e2 e3].
-	oeq__2 e1 e2 = True -> oeq__2 e2 e3 = True -> oeq__2 e1 e3 = True
+  forall e1 e2 e3 : map [oeq__2__logic e1 e2, oeq__2__logic e1 e3 | oeq__2__logic e1 e2, oeq__2__logic e2 e3].
+	oeq__2__logic e1 e2 = True -> oeq__2__logic e2 e3 = True -> oeq__2__logic e1 e3 = True
 
   val oeq__2 (co1:map) (co2:map) : bool
-     ensures  { result  = oeq__2 co1 co2 }
+     ensures  { result  = oeq__2__logic co1 co2 }
 end
 
 module Ada__containers__formal_ordered_maps__overlap
@@ -1080,16 +1080,16 @@ module Ada__containers__formal_ordered_maps__overlap
   use import Ada__containers__formal_ordered_maps__no_element
   use import Ada__containers__formal_ordered_maps__find
 
-  function overlap map map : bool  
+  function overlap__logic map map : bool  
 
   axiom overlap__def :
-    forall s1:map, s2:map [overlap s1 s2].
-     overlap s1 s2 <> True <->
+    forall s1:map, s2:map [overlap__logic s1 s2].
+     overlap__logic s1 s2 <> True <->
       (forall i:real [find_ s1 i| find_ s2 i].
         find_ s1 i = no_element \/ find_ s2 i = no_element)
 
   val overlap (co1 co2:map) : bool
-     ensures { result = overlap co1 co2 }
+     ensures { result = overlap__logic co1 co2 }
 end
 
 module Ada__containers__formal_ordered_maps__capacity
@@ -1099,7 +1099,7 @@ module Ada__containers__formal_ordered_maps__capacity
   use import Ada__containers__formal_ordered_maps__map
   use import Ada__containers__formal_ordered_maps__length
 
-  function capacity (co : map) : Ada__containers__count_type.count_type = rec__capacity co
+  function capacity__logic (co : map) : Ada__containers__count_type.count_type = rec__capacity co
 
   val capacity (co : map) : Ada__containers__count_type.count_type
     ensures { result = rec__capacity co }
@@ -1117,16 +1117,17 @@ end
 
 module Ada__containers__formal_ordered_maps__equivalent_keys
   use "ada__containers__formal_ordered_maps__args".Ada__containers__formal_ordered_maps__key_type
+  use "ada__containers__formal_ordered_maps__args".Ada__containers__formal_ordered_maps__olt
   use import Ada__containers__formal_ordered_maps__witness
   use import Ada__containers__formal_ordered_maps__map
   use import Ada__containers__formal_ordered_maps__cursor
   use import Ada__containers__formal_ordered_maps__key
 
-  function equivalent_keys (co1:map) (e1:Ada__containers__formal_ordered_maps__key_type.base_type) (co2:map) (e2:Ada__containers__formal_ordered_maps__key_type.base_type) : bool =
-  if witness e1 = witness e2 then True else False
+  function equivalent_keys__logic (e1:Ada__containers__formal_ordered_maps__key_type.base_type)  (e2:Ada__containers__formal_ordered_maps__key_type.base_type) : bool =
+  not (Ada__containers__formal_ordered_maps__olt.olt e1 e2) && not (Ada__containers__formal_ordered_maps__olt.olt e2 e1)
 
- val equivalent_keys__2  (co1:map) (e1:Ada__containers__formal_ordered_maps__key_type.base_type) (co2:map) (e2:Ada__containers__formal_ordered_maps__key_type.base_type) : bool
-	ensures {  result = equivalent_keys co1 e1 co2 e2 }
+ val equivalent_keys (e1:Ada__containers__formal_ordered_maps__key_type.base_type) (e2:Ada__containers__formal_ordered_maps__key_type.base_type) : bool
+	ensures {  result = equivalent_keys__logic  e1 e2 }
 end
 
 module Ada__containers__formal_ordered_maps__clear
@@ -1151,7 +1152,7 @@ module Ada__containers__formal_ordered_maps__assign
      requires { capacity !target >= length_ source }
      writes     { target }
      reads      { target }
-     ensures { oeq__2 !target source = True }
+     ensures { oeq__2__logic !target source = True }
 end
 
 module Ada__containers__formal_ordered_maps__move
@@ -1165,7 +1166,7 @@ module Ada__containers__formal_ordered_maps__move
      requires { capacity !target >= length_ !source }
      writes     { target, source }
      reads      { target, source }
-     ensures { oeq__2 !target (old !source) = True /\ length_ !source = 0 }
+     ensures { oeq__2__logic !target (old !source) = True /\ length_ !source = 0 }
 end
 
 module Ada__containers__formal_ordered_maps__copy
@@ -1175,15 +1176,15 @@ module Ada__containers__formal_ordered_maps__copy
   use import Ada__containers__formal_ordered_maps__length
   use import Ada__containers__formal_ordered_maps__strict_equal
 
-  function copy map int : map
+  function copy__logic map int : map
 
   axiom copy__def:
-    forall co : map, cap : int [copy co cap].
-       strict_equal co (copy co cap) = True /\
-       (cap = 0 -> capacity co = capacity (copy co cap)) /\
-       (cap >= capacity co ->  capacity (copy co cap) = cap)
+    forall co : map, cap : int [copy__logic co cap].
+       strict_equal__logic co (copy__logic co cap) = True /\
+       (cap = 0 -> capacity co = capacity (copy__logic co cap)) /\
+       (cap >= capacity co ->  capacity (copy__logic co cap) = cap)
 
   val copy (co: map) (cap:int) : map
      requires { cap = 0 \/ cap >= capacity co}
-     ensures { result = copy co cap }
+     ensures { result = copy__logic co cap }
 end

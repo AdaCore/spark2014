@@ -155,17 +155,17 @@ module Sums__sum
  use        "_gnatprove_standard".Array__1
 
  (* Logic complete function for sum *)
- function sum
+ function sum__logic
    (x : vector) (bounds : slice_bounds)  :integer
 
  (* Helper function *)
  function _sum "inline" (x : vector) (bounds : slice_bounds)  :int =
-   	  Standard__integer.to_int (sum x bounds)
+   	  Standard__integer.to_int (sum__logic x bounds)
 
  (* Axiom for defining the sum function *)
  axiom sum_def:
     forall v : vector, b : slice_bounds
-      [sum v b].
+      [sum__logic v b].
       (* Case of the empty slice *)
       (_rec__lo b > _rec__hi b -> _sum v b = 0) /\
 
@@ -176,7 +176,7 @@ module Sums__sum
          (_rec__lo b = _rec__hi b -> _sum v b = _get v (_rec__lo b)) /\
 
          (* Link to smaller slices of the same vector *)
-         (forall b1 : slice_bounds [sum v b1].
+         (forall b1 : slice_bounds [sum__logic v b1].
 
              (* Ending at the same index *)
              ((_rec__hi b1 = _rec__hi b /\ _rec__lo b < _rec__lo b1 <= _rec__hi b) ->
@@ -193,6 +193,6 @@ module Sums__sum
  val sum (x : vector) (bounds : slice_bounds)  :integer
   requires { _rec__lo bounds > _rec__hi bounds \/
              first x <= _rec__lo bounds /\ _rec__hi bounds <= last x }
-  ensures  { result = sum x bounds }
+  ensures  { result = sum__logic x bounds }
 
 end

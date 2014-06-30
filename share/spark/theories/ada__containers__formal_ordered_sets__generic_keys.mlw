@@ -18,19 +18,6 @@ module Ada__containers__formal_ordered_sets__generic_keys__witness
   witness (Ada__containers__formal_ordered_sets__generic_keys__key_type.to_base (Ada__containers__formal_ordered_sets__generic_keys__key.key e)))
 end
 
-module Ada__containers__formal_ordered_sets__equivalent_keys
-  use "ada__containers__formal_ordered_sets__generic_keys__args".Ada__containers__formal_ordered_sets__generic_keys__key_type
-  use import Ada__containers__formal_ordered_sets__generic_keys__witness
-  use import Ada__containers__formal_ordered_sets__set
-  use import Ada__containers__formal_ordered_sets__cursor
-
-  function equivalent_keys (co1:set) (e1:Ada__containers__formal_ordered_sets__generic_keys__key_type.base_type) (co2:set) (e2:Ada__containers__formal_ordered_sets__generic_keys__key_type.base_type) : bool =
-  if witness e1 = witness e2 then True else False
-
- val equivalent_keys__2  (co1:set) (e1:Ada__containers__formal_ordered_sets__generic_keys__key_type.base_type) (co2:set) (e2:Ada__containers__formal_ordered_sets__generic_keys__key_type.base_type) : bool
-	ensures {  result = equivalent_keys co1 e1 co2 e2 }
-end
-
 module Ada__containers__formal_ordered_sets__generic_keys__key__2
   use import int.Int
   use import "_gnatprove_standard".Main
@@ -43,12 +30,12 @@ module Ada__containers__formal_ordered_sets__generic_keys__key__2
   use import "ada__containers__formal_ordered_sets".Ada__containers__formal_ordered_sets__cursor
   use import "ada__containers__formal_ordered_sets".Ada__containers__formal_ordered_sets__element
 
-  function key__2 "inline" (co:set) (cu:cursor) : Ada__containers__formal_ordered_sets__generic_keys__key_type.key_type =
-  Ada__containers__formal_ordered_sets__generic_keys__key.key (Ada__containers__formal_ordered_sets__element_type.to_base (element co cu))
+  function key__2__logic "inline" (co:set) (cu:cursor) : Ada__containers__formal_ordered_sets__generic_keys__key_type.key_type =
+  Ada__containers__formal_ordered_sets__generic_keys__key.key (Ada__containers__formal_ordered_sets__element_type.to_base (element__logic co cu))
 
   val key__2 (co:set) (cu:cursor) : Ada__containers__formal_ordered_sets__generic_keys__key_type.key_type
      requires { position co cu > 0 }
-     ensures  { result = key__2 co cu }
+     ensures  { result = key__2__logic co cu }
 end
 
 module Ada__containers__formal_ordered_sets__generic_keys__find
@@ -60,11 +47,11 @@ module Ada__containers__formal_ordered_sets__generic_keys__find
   use import "ada__containers__formal_ordered_sets".Ada__containers__formal_ordered_sets__cursor
   use import "ada__containers__formal_ordered_sets".Ada__containers__formal_ordered_sets__find
 
-  function find "inline" (co : set) (e:Ada__containers__formal_ordered_sets__generic_keys__key_type.base_type) : cursor =
+  function find__logic "inline" (co : set) (e:Ada__containers__formal_ordered_sets__generic_keys__key_type.base_type) : cursor =
   find_ co (witness e)
 
   val find (co:set) (e:Ada__containers__formal_ordered_sets__generic_keys__key_type.base_type)  : cursor
-     ensures  { result = find co e }
+     ensures  { result = find__logic co e }
 end
 
 module Ada__containers__formal_ordered_sets__generic_keys__floor
@@ -76,11 +63,11 @@ module Ada__containers__formal_ordered_sets__generic_keys__floor
   use import "ada__containers__formal_ordered_sets".Ada__containers__formal_ordered_sets__cursor
   use import "ada__containers__formal_ordered_sets".Ada__containers__formal_ordered_sets__floor
 
-  function floor "inline" (co : set) (e:Ada__containers__formal_ordered_sets__generic_keys__key_type.base_type) : cursor =
+  function floor__logic "inline" (co : set) (e:Ada__containers__formal_ordered_sets__generic_keys__key_type.base_type) : cursor =
   floor_ co (witness e)
 
   val floor (co:set) (e:Ada__containers__formal_ordered_sets__generic_keys__key_type.base_type)  : cursor
-     ensures  { result = floor co e }
+     ensures  { result = floor__logic co e }
 end
 
 module Ada__containers__formal_ordered_sets__generic_keys__ceiling
@@ -92,11 +79,11 @@ module Ada__containers__formal_ordered_sets__generic_keys__ceiling
   use import "ada__containers__formal_ordered_sets".Ada__containers__formal_ordered_sets__cursor
   use import "ada__containers__formal_ordered_sets".Ada__containers__formal_ordered_sets__ceiling
 
-  function ceiling "inline" (co : set) (e:Ada__containers__formal_ordered_sets__generic_keys__key_type.base_type) : cursor =
+  function ceiling__logic "inline" (co : set) (e:Ada__containers__formal_ordered_sets__generic_keys__key_type.base_type) : cursor =
   ceiling_ co (witness e)
 
   val floor (co:set) (e:Ada__containers__formal_ordered_sets__generic_keys__key_type.base_type)  : cursor
-     ensures  { result = ceiling co e }
+     ensures  { result = ceiling__logic co e }
 end
 
 module Ada__containers__formal_ordered_sets__generic_keys__element
@@ -110,12 +97,12 @@ module Ada__containers__formal_ordered_sets__generic_keys__element
   use import "ada__containers__formal_ordered_sets".Ada__containers__formal_ordered_sets__element
   use import "ada__containers__formal_ordered_sets".Ada__containers__formal_ordered_sets__find
 
-  function element "inline" (co:set) (k:Ada__containers__formal_ordered_sets__generic_keys__key_type.base_type) : Ada__containers__formal_ordered_sets__element_type.element_type =
-Ada__containers__formal_ordered_sets__element.element co (find_ co (witness k))
+  function element__logic "inline" (co:set) (k:Ada__containers__formal_ordered_sets__generic_keys__key_type.base_type) : Ada__containers__formal_ordered_sets__element_type.element_type =
+Ada__containers__formal_ordered_sets__element.element__logic co (find_ co (witness k))
 
   val element (co:set) (k:Ada__containers__formal_ordered_sets__generic_keys__key_type.base_type) : Ada__containers__formal_ordered_sets__element_type.element_type
      requires { position co (find_ co (witness k)) > 0 }
-     ensures  { result = element co k }
+     ensures  { result = element__logic co k }
 end
 
 module Ada__containers__formal_ordered_sets__generic_keys__replace
@@ -183,12 +170,12 @@ module Ada__containers__formal_ordered_sets__generic_keys__contains
   use import "ada__containers__formal_ordered_sets".Ada__containers__formal_ordered_sets__find
   use import "ada__containers__formal_ordered_sets".Ada__containers__formal_ordered_sets__delete
 
-  function contains set Ada__containers__formal_ordered_sets__generic_keys__key_type.base_type : bool
+  function contains__logic set Ada__containers__formal_ordered_sets__generic_keys__key_type.base_type : bool
 
   axiom contains_c:
-  forall co : set, e : Ada__containers__formal_ordered_sets__generic_keys__key_type.base_type [contains co e].
-    contains co e = True <-> 0 < position co (find_ co (witness e))
+  forall co : set, e : Ada__containers__formal_ordered_sets__generic_keys__key_type.base_type [contains__logic co e].
+    contains__logic co e = True <-> 0 < position co (find_ co (witness e))
 
   val contains (co:set) (e:Ada__containers__formal_ordered_sets__generic_keys__key_type.base_type) : bool
-     ensures { contains co e = result }
+     ensures { contains__logic co e = result }
 end

@@ -30,12 +30,12 @@ module Ada__containers__formal_hashed_sets__generic_keys__key__2
   use import "ada__containers__formal_hashed_sets".Ada__containers__formal_hashed_sets__cursor
   use import "ada__containers__formal_hashed_sets".Ada__containers__formal_hashed_sets__element
 
-  function key__2 "inline" (co:set) (cu:cursor) : Ada__containers__formal_hashed_sets__generic_keys__key_type.key_type =
-  Ada__containers__formal_hashed_sets__generic_keys__key.key (Ada__containers__formal_hashed_sets__element_type.to_base (element co cu))
+  function key__2__logic "inline" (co:set) (cu:cursor) : Ada__containers__formal_hashed_sets__generic_keys__key_type.key_type =
+  Ada__containers__formal_hashed_sets__generic_keys__key.key (Ada__containers__formal_hashed_sets__element_type.to_base (element__logic co cu))
 
   val key__2 (co:set) (cu:cursor) : Ada__containers__formal_hashed_sets__generic_keys__key_type.key_type
      requires { position co cu > 0 }
-     ensures  { result = key__2 co cu }
+     ensures  { result = key__2__logic co cu }
 end
 
 module Ada__containers__formal_hashed_sets__generic_keys__find
@@ -47,11 +47,11 @@ module Ada__containers__formal_hashed_sets__generic_keys__find
   use import "ada__containers__formal_hashed_sets".Ada__containers__formal_hashed_sets__cursor
   use import "ada__containers__formal_hashed_sets".Ada__containers__formal_hashed_sets__find
 
-  function find "inline" (co : set) (e:Ada__containers__formal_hashed_sets__generic_keys__key_type.base_type) : cursor =
+  function find__logic "inline" (co : set) (e:Ada__containers__formal_hashed_sets__generic_keys__key_type.base_type) : cursor =
   find_ co (witness e)
 
   val find (co:set) (e:Ada__containers__formal_hashed_sets__generic_keys__key_type.base_type)  : cursor
-     ensures  { result = find co e }
+     ensures  { result = find__logic co e }
 end
 
 module Ada__containers__formal_hashed_sets__generic_keys__element
@@ -65,12 +65,12 @@ module Ada__containers__formal_hashed_sets__generic_keys__element
   use import "ada__containers__formal_hashed_sets".Ada__containers__formal_hashed_sets__element
   use import "ada__containers__formal_hashed_sets".Ada__containers__formal_hashed_sets__find
 
-  function element "inline" (co:set) (k:Ada__containers__formal_hashed_sets__generic_keys__key_type.base_type) : Ada__containers__formal_hashed_sets__element_type.element_type =
-Ada__containers__formal_hashed_sets__element.element co (find_ co (witness k))
+  function element__logic "inline" (co:set) (k:Ada__containers__formal_hashed_sets__generic_keys__key_type.base_type) : Ada__containers__formal_hashed_sets__element_type.element_type =
+Ada__containers__formal_hashed_sets__element.element__logic co (find_ co (witness k))
 
   val element (co:set) (k:Ada__containers__formal_hashed_sets__generic_keys__key_type.base_type) : Ada__containers__formal_hashed_sets__element_type.element_type
      requires { position co (find_ co (witness k)) > 0 }
-     ensures  { result = element co k }
+     ensures  { result = element__logic co k }
 end
 
 module Ada__containers__formal_hashed_sets__generic_keys__replace
@@ -138,12 +138,12 @@ module Ada__containers__formal_hashed_sets__generic_keys__contains
   use import "ada__containers__formal_hashed_sets".Ada__containers__formal_hashed_sets__find
   use import "ada__containers__formal_hashed_sets".Ada__containers__formal_hashed_sets__delete
 
-  function contains set Ada__containers__formal_hashed_sets__generic_keys__key_type.base_type : bool
+  function contains__logic set Ada__containers__formal_hashed_sets__generic_keys__key_type.base_type : bool
 
   axiom contains_c:
-  forall co : set, e : Ada__containers__formal_hashed_sets__generic_keys__key_type.base_type [contains co e].
-    contains co e = True <-> 0 < position co (find_ co (witness e))
+  forall co : set, e : Ada__containers__formal_hashed_sets__generic_keys__key_type.base_type [contains__logic co e].
+    contains__logic co e = True <-> 0 < position co (find_ co (witness e))
 
   val contains (co:set) (e:Ada__containers__formal_hashed_sets__generic_keys__key_type.base_type) : bool
-     ensures { contains co e = result }
+     ensures { contains__logic co e = result }
 end
