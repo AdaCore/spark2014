@@ -153,7 +153,7 @@ free from side-effects only retrieves or computes a value.
     * the default_expression of a discriminant_specification
       (see :ref:`discriminants`);
 
-    * a Dynamic_Predicate aspect specification;
+    * a Dynamic_Predicate or Type_Invariant aspect specification;
 
     * an indexing expresssion of an indexed_component or the discrete_range
       of a slice in an object renaming declaration which renames
@@ -164,9 +164,9 @@ free from side-effects only retrieves or computes a value.
 [An expression in one of these contexts may read a constant
 which is initialized with the value of a variable.]
 
-[The Dynamic_Predicate rule is redundant because no use of the
-Dynamic_Predicate is currently in |SPARK|. This rule is added
-in anticipation of the possible relaxation of that restriction.]
+[The Dynamic_Predicate/Type_Invariant rule is redundant because no use of
+either of those aspects is currently in |SPARK|. This rule is added
+in anticipation of the possible relaxation of those restrictions.]
 
 .. _update-expressions:
 
