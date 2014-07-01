@@ -603,20 +603,17 @@ package body Why.Gen.Expr is
             --  We can't rely on check flags for subtype predicates, so force
             --  check_node in that case
 
-            Range_Check_Node : constant Node_Id :=
+            Do_Check : constant Boolean :=
               (if Domain = EW_Prog and Check_Needed then
                  (if Do_Range_Check (Ada_Node) then
-                    Ada_Node
+                    True
                   elsif Nkind (Parent (Ada_Node)) = N_Type_Conversion
                     and then Do_Overflow_Check (Parent (Ada_Node))
                   then
-                     Ada_Node
-                  elsif Get_Base_Type (To) = EW_Abstract
-                    and then Has_Predicates (Get_Ada_Node (+To))
-                  then
-                     Ada_Node
-                  else Empty)
-               else Empty);
+                     True
+                  else Get_Base_Type (To) = EW_Abstract
+                    and then Has_Predicates (Get_Ada_Node (+To)))
+               else False);
 
             --  When converting to a floating-point, from either a discrete
             --  type or another real type, rounding should be applied on the
@@ -636,7 +633,7 @@ package body Why.Gen.Expr is
                                            Expr        => T,
                                            To          => To,
                                            Round_Func  => Round_Func,
-                                           Range_Check => Range_Check_Node);
+                                           Do_Check    => Do_Check);
          end;
       end if;
 
@@ -844,7 +841,7 @@ package body Why.Gen.Expr is
       Expr          : W_Expr_Id;
       To            : W_Type_Id;
       Round_Func    : W_Identifier_Id := Why_Empty;
-      Range_Check   : Node_Id := Empty) return W_Expr_Id
+      Do_Check      : Boolean := False) return W_Expr_Id
    is
       procedure Get_Range_Check_Info
         (Expr       : Node_Id;
@@ -1119,17 +1116,10 @@ package body Why.Gen.Expr is
       From : constant W_Type_Id := Get_Type (Expr);
 
       --  Current result expression
-      Result : W_Expr_Id := Expr;
-
-      --  Current type of the result expression
-      Cur : W_Type_Id := From;
 
       --  Type and kind for the range check
       Range_Type : Entity_Id := Empty;
-      Check_Kind : Range_Check_Kind;
-
-      --  Set to True after range check has been applied
-      Range_Check_Applied : Boolean := False;
+      Check_Kind : Range_Check_Kind := RCK_Range;
 
    --  Start of Insert_Scalar_Conversion
 
@@ -1143,7 +1133,7 @@ package body Why.Gen.Expr is
       --        (Other boolean types in Ada have a base type of EW_Int.)
 
       if Eq_Base (To, From)
-        and then (No (Range_Check)
+        and then (not Do_Check
                     or else  Get_Base_Type (To) = EW_Bool)
         and then No (Round_Func)
       then
@@ -1152,9 +1142,44 @@ package body Why.Gen.Expr is
 
       --  Retrieve range check information
 
-      if Present (Range_Check) then
-         Get_Range_Check_Info (Range_Check, Range_Type, Check_Kind);
+      if Do_Check then
+         Get_Range_Check_Info (Ada_Node, Range_Type, Check_Kind);
       end if;
+
+      return Insert_Scalar_Conversion
+        (Domain      => Domain,
+         Ada_Node    => Ada_Node,
+         Expr        => Expr,
+         To          => To,
+         Round_Func  => Round_Func,
+         Range_Type  => Range_Type,
+         Check_Kind  => Check_Kind);
+   end Insert_Scalar_Conversion;
+
+   function Insert_Scalar_Conversion
+     (Domain        : EW_Domain;
+      Ada_Node      : Node_Id := Empty;
+      Expr          : W_Expr_Id;
+      To            : W_Type_Id;
+      Round_Func    : W_Identifier_Id := Why_Empty;
+      Range_Type    : Entity_Id;
+      Check_Kind    : Range_Check_Kind) return W_Expr_Id
+   is
+
+      From : constant W_Type_Id := Get_Type (Expr);
+
+      --  Current result expression
+      Result : W_Expr_Id := Expr;
+
+      --  Current type of the result expression
+      Cur : W_Type_Id := From;
+
+      --  Set to True after range check has been applied
+      Range_Check_Applied : Boolean := False;
+
+   --  Start of Insert_Scalar_Conversion
+
+   begin
 
       --  If the check is a range check on a floating-point type, and we can
       --  determine that the expression is always within bounds, then issue a
@@ -1190,7 +1215,7 @@ package body Why.Gen.Expr is
                Hiv := Expr_Value_R (Thi);
 
                Determine_Range_R
-                 (Range_Check, OK, Lo, Hi, Assume_Valid => True);
+                 (Ada_Node, OK, Lo, Hi, Assume_Valid => True);
 
                if OK then
 
@@ -1234,7 +1259,7 @@ package body Why.Gen.Expr is
       then
          Range_Check_Applied := True;
 
-         Result := +Do_Range_Check (Ada_Node   => Range_Check,
+         Result := +Do_Range_Check (Ada_Node   => Ada_Node,
                                     Ty         => Range_Type,
                                     W_Expr     => Result,
                                     Check_Kind => Check_Kind);
@@ -1309,7 +1334,7 @@ package body Why.Gen.Expr is
          pragma Assert (Base_Why_Type (Range_Type) = Cur
                           or else
                         Base_Why_Type (Range_Type) = EW_Bool_Type);
-         Result := +Do_Range_Check (Ada_Node   => Range_Check,
+         Result := +Do_Range_Check (Ada_Node   => Ada_Node,
                                     Ty         => Range_Type,
                                     W_Expr     => Result,
                                     Check_Kind => Check_Kind);
