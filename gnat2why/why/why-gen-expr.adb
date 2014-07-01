@@ -906,7 +906,21 @@ package body Why.Gen.Expr is
          when N_Function_Call            |
               N_Procedure_Call_Statement |
               N_Parameter_Association    =>
-            Check_Type := Get_Formal_Type_From_Actual (Expr);
+            declare
+               Formal : constant Entity_Id := Get_Formal_From_Actual (Expr);
+            begin
+
+               --  ??? not particularly clean
+               --  if the formal is an in parameter, the check type is always
+               --  the type of the formal. Otherwise, the check type is the
+               --  type to convert to.
+
+               if Ekind (Formal) = E_In_Parameter then
+                  Check_Type := Etype (Formal);
+               else
+                  Check_Type := Get_Ada_Node (+To);
+               end if;
+            end;
 
          when N_Attribute_Reference =>
             Attribute : declare

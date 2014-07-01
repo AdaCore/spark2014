@@ -341,7 +341,7 @@ package SPARK_Util is
       Writes : out Node_Sets.Set);
    --  Returns the set of input and output items in Global pragma P
 
-   function Get_Formal_Type_From_Actual (Actual : Node_Id) return Entity_Id
+   function Get_Formal_From_Actual (Actual : Node_Id) return Entity_Id
    with
      Pre => Nkind_In (Parent (Actual), N_Function_Call,
                                        N_Parameter_Association,

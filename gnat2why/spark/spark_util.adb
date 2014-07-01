@@ -743,8 +743,8 @@ package body SPARK_Util is
    -- Get_Formal_Type_From_Actual --
    ---------------------------------
 
-   function Get_Formal_Type_From_Actual (Actual : Node_Id) return Entity_Id is
-      Formal_Type : Entity_Id := Empty;
+   function Get_Formal_From_Actual (Actual : Node_Id) return Entity_Id is
+      Formal : Entity_Id := Empty;
 
       procedure Check_Call_Arg (Some_Formal, Some_Actual : Node_Id);
       --  If Some_Actual is the desired actual parameter, set Formal_Type to
@@ -757,7 +757,7 @@ package body SPARK_Util is
       procedure Check_Call_Arg (Some_Formal, Some_Actual : Node_Id) is
       begin
          if Some_Actual = Actual then
-            Formal_Type := Etype (Some_Formal);
+            Formal := Some_Formal;
          end if;
       end Check_Call_Arg;
 
@@ -773,10 +773,10 @@ package body SPARK_Util is
          Find_Expr_In_Call_Args (Par);
       end if;
 
-      pragma Assert (Present (Formal_Type));
+      pragma Assert (Present (Formal));
 
-      return Formal_Type;
-   end Get_Formal_Type_From_Actual;
+      return Formal;
+   end Get_Formal_From_Actual;
 
    ----------------------
    -- Get_Global_Items --
