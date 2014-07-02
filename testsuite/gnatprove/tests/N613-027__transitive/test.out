@@ -2,7 +2,7 @@ sorters.adb:24:15: info: index check proved
 sorters.adb:24:32: info: index check proved
 sorters.adb:25:19: info: index check proved
 sorters.adb:25:36: info: index check proved
-sorters.adb:26:12: info: postcondition proved
+sorters.adb:26:12: warning: postcondition might fail
 sorters.adb:27:51: info: index check proved
 sorters.adb:27:68: info: index check proved
 sorters.adb:32:29: info: index check proved

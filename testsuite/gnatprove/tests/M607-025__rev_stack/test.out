@@ -23,9 +23,9 @@ list.adb:38:39: info: overflow check proved
 list.adb:38:43: info: overflow check proved
 list.adb:39:34: warning: array index check might fail
 list.adb:39:64: warning: array index check might fail
-list.adb:41:40: warning: overflow check might fail
+list.adb:41:40: info: overflow check proved
 list.adb:42:20: info: precondition proved
-list.adb:42:34: warning: range check might fail
+list.adb:42:34: info: range check proved
 list.adb:42:39: info: precondition proved
 list.adb:42:56: info: overflow check proved
 list.adb:42:60: info: overflow check proved

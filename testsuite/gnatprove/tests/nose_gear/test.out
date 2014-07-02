@@ -10,7 +10,7 @@ ng.adb:41:19: warning: range check might fail
 ng.adb:61:18: warning: overflow check might fail
 ng.adb:61:18: warning: range check might fail
 ng.adb:62:17: warning: overflow check might fail
-ng.adb:62:23: info: division check proved
+ng.adb:62:23: warning: divide by zero might fail
 ng.adb:62:23: warning: range check might fail
 ng.adb:65:23: warning: overflow check might fail
 ng.adb:65:29: warning: overflow check might fail

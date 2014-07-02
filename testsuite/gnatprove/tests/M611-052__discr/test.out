@@ -41,6 +41,7 @@ stack.adb:4:47: warning: range check might fail
 stack.adb:4:63: info: discriminant check proved
 stack.adb:5:55: info: discriminant check proved
 stack.adb:5:55: info: length check proved
+stack.adb:5:55: info: range check proved
 stack.adb:5:55: warning: range check might fail
 stack.adb:5:71: info: discriminant check proved
 stack.adb:7:57: info: discriminant check proved
