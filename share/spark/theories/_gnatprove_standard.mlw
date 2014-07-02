@@ -32,10 +32,100 @@ end
 
 module Integer
   use import int.Int
-  use export int.Abs
-  use export int.Power
+  use import bool.Bool
 
-  use export "_gnatprove_standard_th".Integer_Func
+  function bool_eq int int : bool
+  function bool_ne int int : bool
+  function bool_lt int int : bool
+  function bool_le int int : bool
+  function bool_gt int int : bool
+  function bool_ge int int : bool
+
+  axiom bool_eq_axiom:
+    forall x:int.
+    forall y:int.
+      bool_eq x y = True <-> x = y
+
+  axiom bool_ne_axiom:
+    forall x:int.
+    forall y:int.
+      bool_ne x y = True <-> x <> y
+
+  axiom bool_lt_axiom:
+    forall x:int.
+    forall y:int.
+      bool_lt x y = True <-> x < y
+
+  axiom bool_int__le_axiom:
+    forall x:int.
+    forall y:int.
+      bool_le x y = True <-> x <= y
+
+  axiom bool_gt_axiom:
+    forall x:int.
+    forall y:int.
+        bool_gt x y = True <-> x > y
+
+  axiom bool_ge_axiom:
+    forall x:int.
+    forall y:int.
+        bool_ge x y = True <-> x >= y
+
+end
+
+module Int_Bitwise
+  use import int.Int
+
+  (* Bitwise operations in Ada are allowed on modular types only, which always
+  range from 0 to some value N - 1. In consequence, there is no (trouble with
+  the) sign bit, and in fact there is only one bitwise operation of each kind
+  (and, or, xor), and not one for each type. *)
+
+  function bitwise_and int int : int
+  function bitwise_or int int : int
+  function bitwise_xor int int : int
+
+end
+
+module Int_Power
+  use export int.Power
+end
+
+module Int_Minmax
+  use import int.Int
+  use int.MinMax
+
+  function int_max (x y : int) : int = MinMax.max x y
+
+  function int_min (x y : int) : int = MinMax.min x y
+
+end
+
+module Int_Abs
+  use export int.Abs
+end
+
+module Int_Division
+  use import int.Int
+  use int.ComputerDivision
+  use int.EuclideanDivision
+
+  (* Ada division and rem operator correspond to what Why3 calls "computer
+  division". Ada mod operator does not correspond to any predefined operator
+  in Why3. *)
+  function div (x y : int) : int = ComputerDivision.div x y
+
+  function rem (x y : int) : int = ComputerDivision.mod x y
+
+  (* This is the formula I found after playing with mod and euclidean mod *)
+  function mod (x y : int) : int =
+    if y > 0 then EuclideanDivision.mod x y else EuclideanDivision.mod x y + y
+
+  (* This function is used for the (implicit) modulo operation on modular
+  types. The modulus is always positive, and in that case, the Ada mod or
+  Euclidean mod are OK. We take the Euclidean one because it is better
+  supported. *)
+  function math_mod (x y : int) : int = EuclideanDivision.mod x y
 
   (* These program functions are there to generate division checks *)
 
@@ -50,15 +140,6 @@ module Integer
   val mod_ (x:int) (y:int) : int
      requires { y<>0 }
      ensures { result = mod x y }
-
-  (* Bitwise operations in Ada are allowed on modular types only, which always
-  range from 0 to some value N - 1. In consequence, there is no (trouble with
-  the) sign bit, and in fact there is only one bitwise operation of each kind
-  (and, or, xor), and not one for each type. *)
-
-  function bitwise_and int int : int
-  function bitwise_or int int : int
-  function bitwise_xor int int : int
 
 end
 

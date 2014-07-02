@@ -67,6 +67,11 @@ package Why.Atree.Modules is
 
    Main_Module               : W_Module_Id;
    Integer_Module            : W_Module_Id;
+   Int_Power_Module          : W_Module_Id;
+   Int_Div_Module            : W_Module_Id;
+   Int_Bit_Module            : W_Module_Id;
+   Int_Abs_Module            : W_Module_Id;
+   Int_Minmax_Module         : W_Module_Id;
    Floating_Module           : W_Module_Id;
    Boolean_Module            : W_Module_Id;
    Array_Modules             : W_Module_Array (1 .. Max_Array_Dimensions);

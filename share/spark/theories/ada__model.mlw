@@ -85,12 +85,13 @@ end
 
 module Static_Modular
   clone export Static_Discrete_Base
+  use _gnatprove_standard.Int_Division
 
   function attr__ATTRIBUTE_MODULUS : int
 
   axiom coerce_axiom "bounded_type" :
     forall x  : int [to_int (of_int x)].
-      to_int (of_int x) = Integer.math_mod x attr__ATTRIBUTE_MODULUS
+      to_int (of_int x) = Int_Division.math_mod x attr__ATTRIBUTE_MODULUS
 end
 
 module Dynamic_Discrete_Base
@@ -124,13 +125,14 @@ module Dynamic_Discrete
 
  val range_check_ (x : int) : int
    requires { dynamic_property (to_int (!first)) (to_int (!last)) x }
-   ensures { result = x } 
+   ensures { result = x }
 end
 
 module Dynamic_Modular
   use import int.Int
   use import ref.Ref
   clone export Discrete_Base
+  use _gnatprove_standard.Int_Division
 
   (* left uninterpreted, used for unconstrained arrays based on this index range *)
   predicate in_range "bounded_type" (x : int)
@@ -143,7 +145,7 @@ module Dynamic_Modular
 
   axiom coerce_axiom "bounded_type" :
     forall x  : int [to_int (of_int x)].
-      to_int (of_int x) = Integer.math_mod x attr__ATTRIBUTE_MODULUS
+      to_int (of_int x) = Int_Division.math_mod x attr__ATTRIBUTE_MODULUS
 
   predicate dynamic_property "inline" (f l x : int) = in_range x
 end
@@ -179,7 +181,7 @@ module Fixed_Point_Base
   use import int.Int
   use import real.RealInfix
   use import "_gnatprove_standard".Main
-  use import "_gnatprove_standard_th".Integer_Func
+  use import "_gnatprove_standard".Int_Division
 
   type t
 

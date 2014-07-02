@@ -48,15 +48,15 @@ end
 
 module Sums__vector_element
  use import "_gnatprove_standard".Main
- use        "_gnatprove_standard".Integer
+ use        "_gnatprove_standard".Int_Division
  use import Standard__integer
  use import "int".Int
 
  type vector_element
 
- function first  : int = Integer.div Standard__integer.first 65536
+ function first  : int = Int_Division.div Standard__integer.first 65536
 
- function last  : int  = Integer.div Standard__integer.last 65536
+ function last  : int  = Int_Division.div Standard__integer.last 65536
 
  predicate in_range (x : int)  = first <= x /\ x <= last
 
