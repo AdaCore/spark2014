@@ -69,7 +69,7 @@ package Flow_Computed_Globals is
    --  Reading & Computing --
    --------------------------
 
-   procedure GG_Read
+   procedure GG_Read (GNAT_Root : Node_Id)
    with Pre  => GG_Mode = GG_No_Mode,
         Post => GG_Mode = GG_Read_Mode;
    --  Reads all ALI files and produces the transitive closure.

@@ -293,3 +293,12 @@ digraph G {
     32 ->  28 [arrowType="normal",color="red"];
 }
 
+// test_Globals_Graph
+digraph G {
+   graph [splines=True];
+    1 [label="test__qe_2'Ins",shape="box"];
+    2 [label="test__qe_2'Outs",shape="box"];
+    3 [label="test__qe_2'Proof_Ins",shape="box"];
+
+}
+

@@ -76,6 +76,8 @@ with Gnat2Why.Subprograms;     use Gnat2Why.Subprograms;
 with Gnat2Why.Types;           use Gnat2Why.Types;
 with Gnat2Why.Util;            use Gnat2Why.Util;
 
+with Flow_Computed_Globals;    use Flow_Computed_Globals;
+
 pragma Warnings (Off, "unit ""Why.Atree.Treepr"" is not referenced");
 with Why.Atree.Treepr;  --  To force the link of debug routines (wpn, wpt)
 pragma Warnings (On,  "unit ""Why.Atree.Treepr"" is not referenced");
@@ -301,11 +303,10 @@ package body Gnat2Why.Driver is
          end if;
 
          --  Compute basic globals
-
          Compute_Global_Effects;
 
          --  Add computation of flow globals here
-         --  ??? Compute_Flow_Globals;
+         GG_Read (GNAT_Root);
 
          --  Do some flow analysis
 

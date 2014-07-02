@@ -690,3 +690,40 @@ digraph G {
     14 ->  15 [arrowType="normal",color="red"];
 }
 
+// uninitialized_Globals_Graph
+digraph G {
+   graph [splines=True];
+
+}
+
+// vehicle_Globals_Graph
+digraph G {
+   graph [splines=True];
+    1 [label="vehicle__state"];
+    2 [label="vehicle__speed"];
+    3 [label="vehicle__speed_is_valid'Ins",shape="box"];
+    4 [label="vehicle__speed_is_valid'Outs",shape="box"];
+    5 [label="vehicle__speed_is_valid'Proof_Ins",shape="box"];
+    6 [label="vehicle__halt'Ins",shape="box"];
+    7 [label="vehicle__halt'Outs",shape="box"];
+    8 [label="vehicle__halt'Proof_Ins",shape="box"];
+    9 [label="vehicle__state_update'Ins",shape="box"];
+    10 [label="vehicle__state_update'Outs",shape="box"];
+    11 [label="vehicle__state_update'Proof_Ins",shape="box"];
+
+    3 ->  1 [arrowType="normal"];
+    3 ->  2 [arrowType="normal"];
+    6 ->  1 [arrowType="normal"];
+    6 ->  2 [arrowType="normal"];
+    6 ->  9 [arrowType="normal"];
+    6 ->  10 [arrowType="normal"];
+    7 ->  1 [arrowType="normal"];
+    7 ->  2 [arrowType="normal"];
+    7 ->  10 [arrowType="normal"];
+    8 ->  1 [arrowType="normal"];
+    8 ->  2 [arrowType="normal"];
+    8 ->  3 [arrowType="normal"];
+    8 ->  5 [arrowType="normal"];
+    8 ->  11 [arrowType="normal"];
+}
+

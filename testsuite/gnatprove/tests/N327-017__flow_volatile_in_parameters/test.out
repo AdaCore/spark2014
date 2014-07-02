@@ -123,3 +123,12 @@ digraph G {
     14 ->  9 [arrowType="normal",color="red"];
 }
 
+// types_Globals_Graph
+digraph G {
+   graph [splines=True];
+    1 [label="types__test_01'Ins",shape="box"];
+    2 [label="types__test_01'Outs",shape="box"];
+    3 [label="types__test_01'Proof_Ins",shape="box"];
+
+}
+

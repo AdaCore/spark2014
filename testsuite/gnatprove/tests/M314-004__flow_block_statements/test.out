@@ -705,3 +705,18 @@ digraph G {
     48 ->  11 [arrowType="normal",color="red"];
 }
 
+// test_Globals_Graph
+digraph G {
+   graph [splines=True];
+    1 [label="test__parallel_block_statements'Ins",shape="box"];
+    2 [label="test__parallel_block_statements'Outs",shape="box"];
+    3 [label="test__parallel_block_statements'Proof_Ins",shape="box"];
+    4 [label="test__nested_block_statements'Ins",shape="box"];
+    5 [label="test__nested_block_statements'Outs",shape="box"];
+    6 [label="test__nested_block_statements'Proof_Ins",shape="box"];
+    7 [label="test__compare_and_swap'Ins",shape="box"];
+    8 [label="test__compare_and_swap'Outs",shape="box"];
+    9 [label="test__compare_and_swap'Proof_Ins",shape="box"];
+
+}
+

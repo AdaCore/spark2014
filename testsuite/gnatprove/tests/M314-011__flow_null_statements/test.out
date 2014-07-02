@@ -78,3 +78,12 @@ digraph G {
     1 ->  9 [arrowType="normal"];
 }
 
+// test_Globals_Graph
+digraph G {
+   graph [splines=True];
+    1 [label="test__null_statement'Ins",shape="box"];
+    2 [label="test__null_statement'Outs",shape="box"];
+    3 [label="test__null_statement'Proof_Ins",shape="box"];
+
+}
+
