@@ -24,7 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers;
-with Ada.Containers.Hashed_Sets;
+with Ada.Containers.Ordered_Sets;
 
 with Namet; use Namet;
 
@@ -52,10 +52,9 @@ package Why.Types is
    function Name_Hash (N : Name_Id) return Ada.Containers.Hash_Type is
      (Ada.Containers.Hash_Type (N));
 
-   package Name_Id_Sets is new Ada.Containers.Hashed_Sets
+   package Name_Id_Sets is new Ada.Containers.Ordered_Sets
      (Element_Type        => Name_Id,
-      Hash                => Name_Hash,
-      Equivalent_Elements => "=",
+      "<"                 => "<",
       "="                 => "=");
 
    subtype Name_Id_Set is Name_Id_Sets.Set;
