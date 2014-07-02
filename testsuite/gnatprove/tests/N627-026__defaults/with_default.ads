@@ -8,7 +8,8 @@ package With_Default with SPARK_Mode is
 
    procedure Bad_Array2 (C : Natural);
 
-   procedure OK_Array (C : Natural);
+   procedure OK_Array (C : Natural) with
+     Pre => C <= 2;
 
    procedure OK_Record (C : Natural);
 

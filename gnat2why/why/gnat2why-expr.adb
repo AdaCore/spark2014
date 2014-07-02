@@ -32,6 +32,7 @@ with Ada.Containers;         use Ada.Containers;
 
 with Atree;                  use Atree;
 with Checks;                 use Checks;
+with Elists;                 use Elists;
 with Errout;                 use Errout;
 with Namet;                  use Namet;
 with Nlists;                 use Nlists;
@@ -334,6 +335,19 @@ package body Gnat2Why.Expr is
       Expr     : W_Prog_Id) return W_Prog_Id;
    --  Translate an assignment of the form "Lvalue := Expr",
    --  using Ada_Node for its source location.
+
+   function Compute_Default_Check
+     (Ty     : Entity_Id;
+      Params : Transformation_Params) return W_Prog_Id;
+   --  Compute Why3 code to check for absence of runtime errors in default
+   --  initialization of Expr of type Ty.
+
+   function Compute_Default_Init
+     (Expr   : W_Expr_Id;
+      Ty     : Entity_Id;
+      Params : Transformation_Params) return W_Pred_Id;
+   --  Compute Why3 code to assume values of default initialized variable Expr
+   --  of type Ty.
 
    ------------------------------------------
    -- Handling of Expressions with Actions --
@@ -674,102 +688,47 @@ package body Gnat2Why.Expr is
                end;
             end if;
          end;
-      elsif Has_Defaulted_Discriminants (Etype (Lvalue)) and then
-        not Is_Constrained (Etype (Lvalue))
-      then
-
-         --  Assume values of discriminants for unconstrained record types
-         --  with default discriminants.
-
+      else
          declare
-            L_Id       : constant W_Identifier_Id :=
+            L_Id            : constant W_Identifier_Id :=
               To_Why_Id (Lvalue, Typ => EW_Abstract (Etype (Lvalue)));
-            L_Deref    : constant W_Expr_Id :=
+            L_Deref         : constant W_Expr_Id :=
               (if Is_Mutable_In_Why (Lvalue) then
                     New_Deref (Ada_Node => N,
                                Right    => L_Id,
                                Typ      => EW_Abstract (Etype (Lvalue)))
                else +L_Id);
-            Assumption : W_Expr_Id :=
-              New_Relation (Domain   => EW_Pred,
-                            Op_Type  => EW_Bool,
-                            Left     => New_Is_Constrained_Access
-                              (Ada_Node => N,
-                               Domain   => EW_Term,
-                               Name     => L_Deref,
-                               Ty       => Etype (Lvalue)),
-                            Op       => EW_Eq,
-                            Right    => +False_Term);
-            --  The variable is not constrained.
 
-            Discr      : Node_Id :=
-              SPARK_Util.First_Discriminant (Etype (Lvalue));
-            Ty_Base    : W_Type_Id;
-            T          : W_Prog_Id := New_Void;
+            Default_Checks  : W_Prog_Id :=
+              Compute_Default_Check (Etype (Lvalue), Body_Params);
+            --  Checks for runtime errors in default values
+
+            Init_Assumption : constant W_Pred_Id :=
+              Compute_Default_Init (L_Deref, Etype (Lvalue), Body_Params);
+            --  Assume initial value of L
          begin
-
-            --  Construct the assumption. Also translate default value of
-            --  discriminants into the prog domain to get the checks.
-
-            while Present (Discr) loop
-               if not Is_Completely_Hidden (Discr) then
-                  Ty_Base := Base_Why_Type (Etype (Discr));
-                  T := Sequence
-                    (Left  => T,
-                     Right =>
-                       New_Ignore
-                         (Ada_Node => N,
-                          Prog     =>
-                            +Transform_Expr
-                            (Expr          =>
-                                   Discriminant_Default_Value (Discr),
-                             Expected_Type => EW_Abstract (Etype (Discr)),
-                             Domain        => EW_Prog,
-                             Params        => Body_Params)));
-                  Assumption := New_And_Expr
-                    (Domain => EW_Pred,
-                     Left   => Assumption,
-                     Right   =>
-                       New_Relation
-                         (Domain   => EW_Pred,
-                          Op_Type  => Get_Base_Type (Ty_Base),
-                          Left     =>
-                            Insert_Simple_Conversion
-                              (Ada_Node => N,
-                               Domain   => EW_Term,
-                               To       => Ty_Base,
-                               Expr     =>
-                                 New_Ada_Record_Access
-                                   (Ada_Node => N,
-                                    Domain   => EW_Term,
-                                    Name     => L_Deref,
-                                    Field    => Discr,
-                                    Ty       => Etype (Lvalue))),
-                          Op       => EW_Eq,
-                          Right    =>
-                            Transform_Expr
-                              (Expr          =>
-                                     Discriminant_Default_Value (Discr),
-                               Expected_Type => Ty_Base,
-                               Domain        => EW_Term,
-                               Params        => Body_Params)));
-               end if;
-               Next_Discriminant (Discr);
-            end loop;
 
             --  Generate assumption
 
-            T := Sequence
-              (Left  => T,
-               Right => New_Assume_Statement
-                 (Ada_Node    => N,
-                  Pre         => True_Pred,
-                  Post        => +Assumption));
+            if Default_Checks /= New_Void then
+               Default_Checks := +New_Ignore
+                 (Ada_Node => Lvalue,
+                  Prog     => Default_Checks);
+            end if;
 
-            return T;
+            if Init_Assumption = True_Pred then
+               return Default_Checks;
+            else
+               return Sequence
+                 (Left  => +New_Ignore
+                    (Ada_Node => Lvalue,
+                     Prog     => Default_Checks),
+                  Right => New_Assume_Statement
+                    (Ada_Node    => N,
+                     Pre         => True_Pred,
+                     Post        => Init_Assumption));
+            end if;
          end;
-      else
-         return New_Void (N);
       end if;
    end Assignment_Of_Obj_Decl;
 
@@ -1444,6 +1403,418 @@ package body Gnat2Why.Expr is
       end;
    end Compute_Call_Args;
 
+   ---------------------------
+   -- Compute_Default_Check --
+   ---------------------------
+
+   function Compute_Default_Check
+     (Ty     : Entity_Id;
+      Params : Transformation_Params) return W_Prog_Id is
+
+      --  If Ty's fullview is in SPARK, go to its underlying type to check its
+      --  kind.
+
+      Ty_Ext : constant Entity_Id :=
+        (if Fullview_Not_In_SPARK (Ty) then Ty else MUT (Ty));
+      Checks : W_Prog_Id := New_Void;
+   begin
+      if Is_Scalar_Type (Ty_Ext) then
+         if Has_Default_Aspect (Ty_Ext) then
+            declare
+               Default_Expr : constant W_Expr_Id :=
+                 Transform_Expr
+                      (Expr          => Default_Aspect_Value (Ty_Ext),
+                       Expected_Type => Base_Why_Type (Ty_Ext),
+                       Domain        => EW_Prog,
+                       Params        => Params);
+               Range_Check  : constant W_Expr_Id :=
+                 Insert_Scalar_Conversion
+                   (Domain     => EW_Prog,
+                    Ada_Node   => Default_Aspect_Value (Ty_Ext),
+                    Expr       => Default_Expr,
+                    To         => EW_Abstract (Ty_Ext),
+                    Range_Type => Ty_Ext,
+                    Check_Kind => RCK_Range);
+            begin
+               Checks := +Range_Check;
+            end;
+         end if;
+      elsif Is_Array_Type (Ty_Ext) then
+         pragma Assert (Is_Constrained (Ty_Ext));
+
+         --  Generates:
+         --  length (Index_Type1) > 0 /\ .. ->
+         --    Default_Component_Value         <if any>
+         --    default_checks (Component_Type) <otherwise>
+
+         declare
+            Range_Expr : W_Prog_Id := True_Prog;
+            Num_Dim    : constant Positive :=
+              Positive (Number_Dimensions (Ty_Ext));
+            T_Comp     : W_Expr_Id;
+         begin
+
+            --  Generate the condition length (Index_Type1) > 0 /\ ..
+
+            for Dim in 1 .. Num_Dim loop
+               Range_Expr := +New_And_Expr
+                 (Left   => +Range_Expr,
+                  Right  => New_Comparison
+                    (Cmp    => EW_Gt,
+                     Left   => Build_Length_Expr
+                       (Domain => EW_Prog,
+                        Ty     => Ty_Ext,
+                        Dim    => Dim),
+                     Right  => New_Integer_Constant (Empty, Uint_0),
+                     Domain => EW_Prog),
+                  Domain => EW_Prog);
+            end loop;
+
+            --  Generate the check for the default value of Component_Type
+            --    Default_Component_Value         <if any>
+            --    default_checks (Component_Type) <otherwise>
+
+            if Has_Default_Aspect (Ty_Ext) then
+
+               --  if Ty_Ext as a Default_Component_Value aspect, use it.
+
+               T_Comp := Transform_Expr
+                 (Expr          => Default_Aspect_Component_Value (Ty_Ext),
+                  Expected_Type => EW_Abstract (Component_Type (Ty_Ext)),
+                  Domain        => EW_Prog,
+                  Params        => Params);
+            else
+
+               --  otherwise, use its Component_Type default value.
+
+               T_Comp := +Compute_Default_Check
+                  (Ty     => Component_Type (Ty_Ext),
+                   Params => Params);
+            end if;
+
+            if T_Comp /= New_Void then
+               T_Comp := New_Conditional
+                 (Ada_Node    => Ty,
+                  Domain      => EW_Prog,
+                  Condition   => +Range_Expr,
+                  Then_Part   => +New_Ignore
+                    (Component_Type (Ty_Ext), +T_Comp));
+
+               Checks := +T_Comp;
+            else
+               Checks := New_Void;
+            end if;
+         end;
+
+      elsif Is_Record_Type (Ty_Ext) or else Is_Private_Type (Ty_Ext) then
+
+         --  Generates:
+         --  let tmp1 = Discr1.default in <if Ty_Ext is unconstrained>
+         --  let tmp1 = Discr1 in         <if Ty_Ext is constrained>
+         --  let tmp_exp = any <type> ensures { result.discr1 = tmp1 .. } in
+         --  (check_for_f1 expr ->
+         --          Field1.default                  <if Field1 has a default>
+         --          default_check (Etype (Field1))) <otherwise>
+         --  /\ ..
+
+         Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+
+         declare
+            Tmp_Exp : constant W_Identifier_Id :=
+              New_Temp_Identifier (Ty_Ext, EW_Abstract (Ty_Ext));
+            --  Temporary variable for tmp_exp
+
+            Post    : W_Pred_Id := True_Pred;
+            --  Post used for the assignment of tmp_exp
+
+            Discrs  : constant Natural :=
+              (if Has_Discriminants (Ty_Ext) then
+                    Natural (Number_Discriminants (Ty_Ext))
+               else 0);
+            Tmps    : W_Identifier_Array (1 .. Discrs);
+            Binds   : W_Expr_Array (1 .. Discrs);
+            --  Arrays to store the bindings for discriminants
+
+            Field   : Node_Id :=
+              SPARK_Util.First_Discriminant (Ty_Ext);
+            Elmt    : Elmt_Id :=
+              (if Has_Discriminants (Ty_Ext)
+               and then Is_Constrained (Ty_Ext) then
+                    First_Elmt (Stored_Constraint (Ty_Ext))
+               else No_Elmt);
+            T_Comp  : W_Expr_Id;
+            I       : Positive := 1;
+         begin
+
+            --  Go through discriminants to create the bindings for
+            --  let tmp1 = Discr1.default in <if Ty_Ext is unconstrained>
+            --  let tmp1 = Discr1 in         <if Ty_Ext is constrained>
+            --  Also fills Post with { result.discr1 = tmp1 /\ .. }
+
+            while Present (Field) loop
+               if not Is_Completely_Hidden (Field) then
+
+                  --  As discriminants may occur in bounds of types of other
+                  --  fields and bounds of default values, store them in the
+                  --  Symbol_Table.
+
+                  Tmps (I) := New_Temp_Identifier
+                    (Field, Type_Of_Node (Etype (Field)));
+
+                  declare
+                     Base_Field : constant Entity_Id :=
+                       (if Is_Base_Type (Ty_Ext) then Field
+                        else Original_Record_Component (Field));
+                     --  Defaults are declared in base types, so they relate
+                     --  to discriminants declared in base types.
+                  begin
+
+                     --  We need entities of discrimiants for bounds of
+                     --  component types...
+
+                     Ada_Ent_To_Why.Insert
+                       (Symbol_Table, Field,
+                        (Regular, Main =>
+                             (Ada_Node => Field,
+                              B_Name   => Tmps (I),
+                              B_Ent    => null,
+                              Mutable  => False)));
+
+                     --  and entities of discrimiants of the base type for
+                     --  bounds of defaults...
+
+                     if not Is_Base_Type (Ty_Ext) then
+                        Ada_Ent_To_Why.Insert
+                          (Symbol_Table, Base_Field,
+                           (Regular, Main =>
+                                (Ada_Node => Base_Field,
+                                 B_Name   => Tmps (I),
+                                 B_Ent    => null,
+                                 Mutable  => False)));
+                     end if;
+                  end;
+
+                  if Is_Constrained (Ty_Ext) then
+
+                     --  Store constrained value of discriminants.
+
+                     Binds (I) :=
+                       Transform_Expr
+                         (Domain        => EW_Term,
+                          Params        => Params,
+                          Expr          => Node (Elmt),
+                          Expected_Type => EW_Abstract (Etype (Field)));
+                     Next_Elmt (Elmt);
+                  else
+                     pragma Assert (Has_Defaulted_Discriminants (Ty_Ext));
+
+                     --  Store default value of discriminants for unconstrained
+                     --  record types with default discriminants.
+
+                     Binds (I) :=
+                       Transform_Expr
+                         (Expr          =>
+                            Discriminant_Default_Value (Field),
+                          Expected_Type => EW_Abstract (Etype (Field)),
+                          Domain        => EW_Prog,
+                          Params        => Params);
+                  end if;
+
+                  --  Add new Equality tmp = result.discr to Post
+
+                  if Is_Record_Type (Ty_Ext) then
+                     Post := +New_And_Then_Expr
+                       (Left   => +Post,
+                        Right  => New_Comparison
+                          (Cmp    => EW_Eq,
+                           Left   => +Tmps (I),
+                           Right  => New_Ada_Record_Access
+                             (Ada_Node => Empty,
+                              Domain   => EW_Term,
+                              Name     =>
+                                +New_Result_Ident (EW_Abstract (Ty_Ext)),
+                              Field    => Field,
+                              Ty       => Ty_Ext),
+                           Domain => EW_Pred),
+                        Domain => EW_Pred);
+                  end if;
+               end if;
+               Next_Discriminant (Field);
+               I := I + 1;
+            end loop;
+
+            --  Go through other fields to create the expression
+            --  (check_for_f1 expr ->
+            --        Field1.default                  <if Field1 has a default>
+            --        default_check (Etype (Field1))) <otherwise>
+            --  /\ ..
+
+            if Is_Record_Type (Ty_Ext) then
+               Field := First_Component (Ty_Ext);
+
+               while Present (Field) loop
+
+                  if Present (Expression (Parent (Field))) then
+
+                     --  if Field has a default expression, use it.
+
+                     T_Comp := Transform_Expr
+                       (Expr          => Expression (Parent (Field)),
+                        Expected_Type => EW_Abstract (Etype (Field)),
+                        Domain        => EW_Prog,
+                        Params        => Params);
+                  else
+
+                     --  otherwise, use its Field's Etype default value.
+
+                     T_Comp :=
+                       +Compute_Default_Check (Etype (Field), Params);
+                  end if;
+
+                  if T_Comp /= New_Void then
+
+                     --  Check values of record fields only if they are in the
+                     --  proper variant part.
+
+                     T_Comp  := New_Conditional
+                       (Domain      => EW_Prog,
+                        Condition   => New_Ada_Record_Check_For_Field
+                          (Empty, EW_Prog, +Tmp_Exp, Field, Ty_Ext),
+                        Then_Part   =>
+                          +New_Ignore
+                            (Ada_Node => Etype (Field),
+                             Prog     => +T_Comp));
+
+                     Checks := Sequence
+                       (Left  => Checks,
+                        Right => +T_Comp);
+                  end if;
+
+                  Next_Component (Field);
+               end loop;
+            end if;
+
+            --  create bindings for Tmp_Exp
+            --  let expr = any <type> ensures { expr.discr1 = tmp1 .. } in
+
+            if Checks /= New_Void and then Is_Record_Type (Ty_Ext) then
+
+                  Checks := +New_Typed_Binding
+                    (Domain   => EW_Prog,
+                     Name     => Tmp_Exp,
+                     Def      =>
+                       New_Any_Expr (Ada_Node    => Ty_Ext,
+                                     Pre         => True_Pred,
+                                     Post        => Post,
+                                     Return_Type => EW_Abstract (Ty_Ext)),
+                     Context  => +Checks);
+
+            end if;
+
+            --  Generate the bindings if we have some fields to check
+            --  or if we need to check the bindings themselves.
+
+            if Checks /= New_Void or else not Is_Constrained (Ty) then
+               for I in 1 .. Discrs loop
+                  Checks := +New_Typed_Binding
+                    (Domain   => EW_Prog,
+                     Name     => Tmps (I),
+                     Def      => Binds (I),
+                     Context  => +Checks);
+               end loop;
+            end if;
+         end;
+         Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+      end if;
+
+      return Checks;
+   end Compute_Default_Check;
+
+   --------------------------
+   -- Compute_Default_Init --
+   --------------------------
+
+   function Compute_Default_Init
+     (Expr   : W_Expr_Id;
+      Ty     : Entity_Id;
+      Params : Transformation_Params) return W_Pred_Id is
+
+      Ty_Ext     : constant Entity_Id :=
+        (if Fullview_Not_In_SPARK (Ty) then Ty else MUT (Ty));
+      Tmp        : constant W_Expr_Id := New_Temp_For_Expr (Expr);
+      Assumption : W_Expr_Id;
+   begin
+
+      if Has_Defaulted_Discriminants (Ty_Ext) and then
+        not Is_Constrained (Ty_Ext)
+      then
+         --  The variable is not constrained.
+
+         Assumption :=
+           New_Relation (Domain   => EW_Pred,
+                         Op_Type  => EW_Bool,
+                         Left     => New_Is_Constrained_Access
+                           (Ada_Node => Ty,
+                            Domain   => EW_Term,
+                            Name     => Tmp,
+                            Ty       => Ty_Ext),
+                         Op       => EW_Eq,
+                         Right    => +False_Term);
+
+         --  Assume values of discriminants for unconstrained record types
+         --  with default discriminants.
+
+         declare
+
+            Discr      : Node_Id :=
+              SPARK_Util.First_Discriminant (Ty_Ext);
+            Ty_Base    : W_Type_Id;
+         begin
+
+            --  Construct the assumption.
+
+            while Present (Discr) loop
+               if not Is_Completely_Hidden (Discr) then
+                  Ty_Base := Base_Why_Type (Etype (Discr));
+                  Assumption := New_And_Expr
+                    (Domain => EW_Pred,
+                     Left   => Assumption,
+                     Right   =>
+                       New_Relation
+                         (Domain   => EW_Pred,
+                          Op_Type  => Get_Base_Type (Ty_Base),
+                          Left     =>
+                            Insert_Simple_Conversion
+                              (Ada_Node => Ty,
+                               Domain   => EW_Term,
+                               To       => Ty_Base,
+                               Expr     =>
+                                 New_Ada_Record_Access
+                                   (Ada_Node => Ty,
+                                    Domain   => EW_Term,
+                                    Name     => Tmp,
+                                    Field    => Discr,
+                                    Ty       => Ty_Ext)),
+                          Op       => EW_Eq,
+                          Right    =>
+                            Transform_Expr
+                              (Expr          =>
+                                     Discriminant_Default_Value (Discr),
+                               Expected_Type => Ty_Base,
+                               Domain        => EW_Term,
+                               Params        => Params)));
+               end if;
+               Next_Discriminant (Discr);
+            end loop;
+         end;
+      else
+         return True_Pred;
+      end if;
+
+      return +Binding_For_Temp
+        (Domain => EW_Prog, Tmp => Tmp, Context => Assumption);
+   end Compute_Default_Init;
+
    ------------------------------
    -- Compute_Dynamic_Property --
    ------------------------------
@@ -1568,7 +1939,7 @@ package body Gnat2Why.Expr is
             Range_Expr : W_Pred_Id := True_Pred;
             Index      : Node_Id := First_Index (Ty_Ext);
             I          : Positive := 1;
-            T_Comp     : W_Pred_Id;
+            T_Comp     : W_Expr_Id;
             Tmp        : W_Identifier_Id;
             Q_Expr     : W_Pred_Id;
          begin
@@ -1605,7 +1976,7 @@ package body Gnat2Why.Expr is
             end loop;
 
             T_Comp :=
-              Compute_Dynamic_Property
+              +Compute_Dynamic_Property
                 (New_Array_Access (Empty, Expr, Indices, EW_Term),
                  Component_Type (Ty_Ext), False);
 
@@ -1615,7 +1986,7 @@ package body Gnat2Why.Expr is
             if Has_Defaulted_Discriminants (Component_Type (Ty_Ext))
               and then not Is_Constrained (Component_Type (Ty_Ext))
             then
-               T_Comp := +New_And_Expr
+               T_Comp := New_And_Expr
                  (Left   => +T_Comp,
                   Right  => New_Relation
                     (Ada_Node => Empty,
@@ -1632,10 +2003,16 @@ package body Gnat2Why.Expr is
                   Domain => EW_Pred);
             end if;
 
-            if T_Comp /= True_Pred then
+            if T_Comp /= +True_Pred then
+               T_Comp := New_Conditional
+                 (Domain      => EW_Pred,
+                  Condition   => +Range_Expr,
+                  Then_Part   => T_Comp,
+                  Typ         => EW_Bool_Type);
+
                Q_Expr := New_Universal_Quantif
                  (Binders  => Vars,
-                  Pred     => T_Comp);
+                  Pred     => +T_Comp);
 
                if T = True_Pred then
                   T := Q_Expr;

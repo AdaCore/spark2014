@@ -619,9 +619,9 @@ keystore.adb:118:20: warning: range check might fail, in call inlined at keystor
 keystore.adb:118:20: warning: range check might fail, in call inlined at keystore.adb:694
 keystore.adb:118:20: warning: range check might fail, in call inlined at keystore.adb:762
 keystore.adb:118:20: warning: range check might fail, in call inlined at keystore.adb:847
-keystore.adb:186:42: warning: range check might fail
-keystore.adb:186:53: warning: overflow check might fail
-keystore.adb:186:69: warning: overflow check might fail
+keystore.adb:186:42: info: range check proved
+keystore.adb:186:53: info: overflow check proved
+keystore.adb:186:69: info: overflow check proved
 keystore.adb:190:39: info: length check proved
 keystore.adb:193:13: info: loop invariant initialization proved
 keystore.adb:193:13: info: loop invariant preservation proved
@@ -808,6 +808,8 @@ stats.adb:49:57: info: overflow check proved
 stats.adb:64:51: info: overflow check proved
 stats.adb:79:53: info: overflow check proved
 stats.adb:94:47: info: overflow check proved
+tcpip.ads:30:41: info: length check proved
+tcpip.ads:30:41: info: length check proved
 tismain.adb:53:41: warning: "Admintoken.Input" might not be initialized after elaboration of main program "Tismain"
 tismain.adb:54:34: warning: "Bio.Input" might not be initialized after elaboration of main program "Tismain"
 tismain.adb:55:36: warning: "Clock.Now" might not be initialized after elaboration of main program "Tismain"

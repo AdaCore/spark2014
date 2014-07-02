@@ -26,6 +26,7 @@
 with Ada.Strings.Unbounded;   use Ada.Strings.Unbounded;
 with Ada.Text_IO;
 
+with Aspects;                 use Aspects;
 with Atree;                   use Atree;
 with Checks;                  use Checks;
 with Einfo;                   use Einfo;
@@ -1065,6 +1066,29 @@ package body Why.Gen.Expr is
                pragma Assert (Found);
 
             end Aggregate;
+
+         when N_Aspect_Specification =>
+
+            --  We only expect range checks on aspects for default values.
+
+            case Get_Aspect_Id (Par) is
+            when Aspect_Default_Component_Value =>
+               pragma Assert (Is_Array_Type (Entity (Par)));
+               Check_Type := Component_Type (Entity (Par));
+            when Aspect_Default_Value =>
+               pragma Assert (Is_Scalar_Type (Entity (Par)));
+               Check_Type := Entity (Par);
+            when others =>
+               Ada.Text_IO.Put_Line ("[Get_Range_Check_Info] aspect ="
+                                     & Aspect_Id'Image (Get_Aspect_Id (Par)));
+               raise Program_Error;
+            end case;
+
+         when N_Component_Declaration =>
+
+            --  We expect range checks on defaults of record fields.
+
+            Check_Type := Etype (Defining_Identifier (Par));
 
          when others =>
             Ada.Text_IO.Put_Line ("[Get_Range_Check_Info] kind ="

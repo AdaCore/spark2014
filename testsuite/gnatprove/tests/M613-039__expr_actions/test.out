@@ -48,3 +48,4 @@ stack.adb:32:22: info: range check proved
 stack.ads:19:14: info: precondition proved
 stack.ads:19:14: warning: postcondition might fail
 stack.ads:23:14: info: postcondition proved
+stack.ads:31:34: info: length check proved

@@ -170,11 +170,27 @@ package body With_Default with SPARK_Mode is
          end case;
       end record;
 
+      type Small_Natural is new Natural range 0 .. 100;
+
+      subtype Small_Positive is Small_Natural range 1 .. 100;
+
+      type Array_Bad_Default is array (Small_Positive range <>) of Scalar_Bad_Default;
+
+      type Rec_Empty_Array (D : Small_Natural := 0) is record
+         Content : Array_Bad_Default (1 .. D);
+      end record;
+
+      type Rec_Discr_Rec (B : Boolean := True) is record
+         Content : Rec_With_Bad_Discr (B);
+      end record;
+
       No_Def : Rec_With_Bad_Discr := (B => False, F2 => Scalar_With_Default (C));
       Simple : Simple_Rec;
       W_Disc : Rec_With_Discr (True);
       W_D_Di : Rec_With_Default_Discr;
       W_O_Di : Rec_With_Ok_Discr;
+      Empty  : Rec_Empty_Array;
+      Wrap   : Rec_Discr_Rec;
    begin
       pragma Assert (Simple.F1 = 0);
       pragma Assert (Simple.F2 = C);
@@ -182,6 +198,8 @@ package body With_Default with SPARK_Mode is
       pragma Assert (W_D_Di.F1 = 0);
       pragma Assert (not W_O_Di.B);
       pragma Assert (W_O_Di.F3 = Scalar_With_Default (C));
+      pragma Assert (Empty.Content'Last = 0);
+      pragma Assert (Wrap.Content.F1 = 0);
    end OK_Record;
 
    procedure Bad_Nested_Defaults1 (C : Natural) is
@@ -193,6 +211,7 @@ package body With_Default with SPARK_Mode is
 
       Bad : Non_Init;
    begin
+      pragma Unreferenced (Bad);
       null;
    end Bad_Nested_Defaults1;
 
@@ -206,6 +225,7 @@ package body With_Default with SPARK_Mode is
 
       Bad : Non_Init;
    begin
+      pragma Unreferenced (Bad);
       null;
    end Bad_Nested_Defaults2;
 
@@ -227,7 +247,9 @@ package body With_Default with SPARK_Mode is
       Empty : Non_Init1;
       All_1 : Non_Init2;
    begin
+      pragma Unreferenced (Empty);
       pragma Assert (All_1.E (1).D = 1);
+      null;
    end Ok_Nested_Defaults;
 
 end;

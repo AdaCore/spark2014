@@ -22,7 +22,7 @@ find_map.adb:37:13: info: precondition proved
 find_map.adb:37:41: info: precondition proved
 find_map.adb:40:13: info: precondition proved
 find_map.adb:40:34: info: precondition proved
-find_map.adb:41:18: warning: range check might fail
+find_map.adb:41:18: info: range check proved
 find_map.adb:41:46: warning: precondition might fail
 find_map.adb:42:17: warning: array index check might fail
 find_map.adb:42:35: info: precondition proved
