@@ -18,7 +18,7 @@ discr.adb:56:07: info: precondition proved
 discr.adb:57:07: info: precondition proved
 discr.adb:58:07: warning: precondition might fail
 discr.adb:62:32: info: discriminant check proved
-discr.adb:66:22: warning: assertion might fail, requires H.Content.C = 0
+discr.adb:66:07: info: assertion proved
 discr.adb:67:07: info: assertion proved
 discr.adb:68:17: info: discriminant check proved
 discr.adb:69:07: info: assertion proved
@@ -48,7 +48,7 @@ discr.adb:140:07: info: precondition proved
 discr.adb:141:07: warning: precondition might fail
 discr.adb:142:07: warning: precondition might fail
 discr.adb:146:34: info: discriminant check proved
-discr.adb:150:22: warning: assertion might fail, requires H.Content.C = 0
+discr.adb:150:07: info: assertion proved
 discr.adb:151:07: info: assertion proved
 discr.adb:152:17: info: discriminant check proved
 discr.adb:153:22: warning: assertion might fail, requires not H.Content'constrained

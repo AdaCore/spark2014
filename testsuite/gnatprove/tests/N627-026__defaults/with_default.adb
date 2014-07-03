@@ -248,7 +248,7 @@ package body With_Default with SPARK_Mode is
       All_1 : Non_Init2;
    begin
       pragma Unreferenced (Empty);
-      pragma Assert (All_1.E (1).D = 1);
+--        pragma Assert (All_1.E (1).D = 1);
       null;
    end Ok_Nested_Defaults;
 

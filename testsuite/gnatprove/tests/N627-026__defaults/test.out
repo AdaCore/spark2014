@@ -1,0 +1,63 @@
+with_default.adb:4:69: warning: range check might fail
+with_default.adb:5:15: info: range check proved
+with_default.adb:13:69: info: range check proved
+with_default.adb:14:15: info: range check proved
+with_default.adb:16:15: info: range check proved
+with_default.adb:19:38: info: range check proved
+with_default.adb:23:07: info: assertion proved
+with_default.adb:27:69: warning: range check might fail
+with_default.adb:28:15: info: range check proved
+with_default.adb:37:15: info: range check proved
+with_default.adb:39:41: warning: range check might fail
+with_default.adb:46:69: info: range check proved
+with_default.adb:47:15: info: range check proved
+with_default.adb:49:15: info: range check proved
+with_default.adb:54:41: info: range check proved
+with_default.adb:58:41: info: range check proved
+with_default.adb:62:51: info: range check proved
+with_default.adb:69:07: info: assertion proved
+with_default.adb:70:07: info: assertion proved
+with_default.adb:71:07: info: assertion proved
+with_default.adb:75:69: info: range check proved
+with_default.adb:76:15: info: range check proved
+with_default.adb:80:36: warning: range check might fail
+with_default.adb:89:69: warning: range check might fail
+with_default.adb:90:15: info: range check proved
+with_default.adb:108:69: info: range check proved
+with_default.adb:108:69: warning: range check might fail
+with_default.adb:109:15: info: range check proved
+with_default.adb:127:69: warning: range check might fail
+with_default.adb:128:15: warning: range check might fail
+with_default.adb:130:15: warning: range check might fail
+with_default.adb:134:36: warning: range check might fail
+with_default.adb:169:43: warning: range check might fail
+with_default.adb:187:57: warning: range check might fail
+with_default.adb:195:22: warning: assertion might fail, requires Simple.F1 = 0
+with_default.adb:196:22: warning: assertion might fail, requires Simple.F2 = C
+with_default.adb:197:22: warning: assertion might fail, requires W_Disc.F1 = 0
+with_default.adb:197:28: warning: discriminant check might fail
+with_default.adb:198:22: warning: assertion might fail, requires W_D_Di.F1 = 0
+with_default.adb:198:28: warning: discriminant check might fail
+with_default.adb:199:22: warning: assertion might fail, requires not W_O_Di.B
+with_default.adb:200:22: warning: assertion might fail, requires W_O_Di.F3 = C
+with_default.adb:200:28: warning: discriminant check might fail
+with_default.adb:201:22: warning: assertion might fail, requires Empty.Content'Last = 0
+with_default.adb:201:27: warning: discriminant check might fail
+with_default.adb:202:22: warning: assertion might fail, requires Wrap.Content.F1 = 0
+with_default.adb:202:26: warning: discriminant check might fail
+with_default.adb:202:34: warning: discriminant check might fail
+with_default.adb:206:39: warning: range check might fail
+with_default.adb:219:39: warning: range check might fail
+with_default.adb:233:40: info: range check proved
+with_default.ads:3:14: warning: subprogram "Bad_Scalar" has no effect
+with_default.ads:5:14: warning: subprogram "Ok_Scalar" has no effect
+with_default.ads:7:14: warning: subprogram "Bad_Array1" has no effect
+with_default.ads:9:14: warning: subprogram "Bad_Array2" has no effect
+with_default.ads:11:14: warning: subprogram "Ok_Array" has no effect
+with_default.ads:14:14: warning: subprogram "Ok_Record" has no effect
+with_default.ads:16:14: warning: subprogram "Bad_Record1" has no effect
+with_default.ads:18:14: warning: subprogram "Bad_Record2" has no effect
+with_default.ads:20:14: warning: subprogram "Bad_Record3" has no effect
+with_default.ads:22:14: warning: subprogram "Bad_Nested_Defaults1" has no effect
+with_default.ads:24:14: warning: subprogram "Bad_Nested_Defaults2" has no effect
+with_default.ads:26:14: warning: subprogram "Ok_Nested_Defaults" has no effect

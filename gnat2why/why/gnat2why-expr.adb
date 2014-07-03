@@ -1554,12 +1554,12 @@ package body Gnat2Why.Expr is
             while Present (Field) loop
                if not Is_Completely_Hidden (Field) then
 
+                  Tmps (I) := New_Temp_Identifier
+                    (Field, Type_Of_Node (Etype (Field)));
+
                   --  As discriminants may occur in bounds of types of other
                   --  fields and bounds of default values, store them in the
                   --  Symbol_Table.
-
-                  Tmps (I) := New_Temp_Identifier
-                    (Field, Type_Of_Node (Etype (Field)));
 
                   declare
                      Base_Field : constant Entity_Id :=
@@ -1742,77 +1742,362 @@ package body Gnat2Why.Expr is
       Ty_Ext     : constant Entity_Id :=
         (if Fullview_Not_In_SPARK (Ty) then Ty else MUT (Ty));
       Tmp        : constant W_Expr_Id := New_Temp_For_Expr (Expr);
-      Assumption : W_Expr_Id;
+      Assumption : W_Expr_Id := +True_Pred;
    begin
+      if Is_Scalar_Type (Ty_Ext) then
+         if Has_Default_Aspect (Ty_Ext) then
+            declare
+               Default_Expr : constant W_Expr_Id :=
+                 Transform_Expr
+                      (Expr          => Default_Aspect_Value (Ty_Ext),
+                       Expected_Type => Base_Why_Type (Ty_Ext),
+                       Domain        => EW_Term,
+                       Params        => Params);
+            begin
+               Assumption := New_Comparison
+                 (Cmp    => EW_Eq,
+                  Left   => Insert_Simple_Conversion
+                    (Ada_Node => Empty,
+                     Domain   => EW_Pred,
+                     Expr     => Tmp,
+                     To       => Base_Why_Type (Ty_Ext)),
+                  Right  => Default_Expr,
+                  Domain => EW_Pred);
+            end;
+         end if;
+      elsif Is_Array_Type (Ty_Ext) then
+         pragma Assert (Is_Constrained (Ty_Ext));
 
-      if Has_Defaulted_Discriminants (Ty_Ext) and then
-        not Is_Constrained (Ty_Ext)
-      then
-         --  The variable is not constrained.
-
-         Assumption :=
-           New_Relation (Domain   => EW_Pred,
-                         Op_Type  => EW_Bool,
-                         Left     => New_Is_Constrained_Access
-                           (Ada_Node => Ty,
-                            Domain   => EW_Term,
-                            Name     => Tmp,
-                            Ty       => Ty_Ext),
-                         Op       => EW_Eq,
-                         Right    => +False_Term);
-
-         --  Assume values of discriminants for unconstrained record types
-         --  with default discriminants.
+         --  Generates:
+         --  forall i1 : int ..
+         --   in_range (i1) /\ .. ->
+         --    get (<Expr>, i1, ...) = <Default_Component_Value>    <if any>
+         --    default_init (get (<Expr>, i1, ...), Component_Type) <otherwise>
 
          declare
-
-            Discr      : Node_Id :=
-              SPARK_Util.First_Discriminant (Ty_Ext);
-            Ty_Base    : W_Type_Id;
+            Num_Dim    : constant Positive :=
+              Positive (Number_Dimensions (Ty_Ext));
+            Vars       : Binder_Array (1 .. Num_Dim);
+            Indices    : W_Expr_Array (1 .. Num_Dim);
+            Range_Expr : W_Pred_Id := True_Pred;
+            Index      : Node_Id := First_Index (Ty_Ext);
+            I          : Positive := 1;
+            T_Acc      : W_Expr_Id;
          begin
 
-            --  Construct the assumption.
+            --  Generate variables i1 ..
+            --  and the condition in_range (i1) /\ ..
 
-            while Present (Discr) loop
-               if not Is_Completely_Hidden (Discr) then
-                  Ty_Base := Base_Why_Type (Etype (Discr));
-                  Assumption := New_And_Expr
-                    (Domain => EW_Pred,
-                     Left   => Assumption,
-                     Right   =>
-                       New_Relation
-                         (Domain   => EW_Pred,
-                          Op_Type  => Get_Base_Type (Ty_Base),
-                          Left     =>
-                            Insert_Simple_Conversion
-                              (Ada_Node => Ty,
-                               Domain   => EW_Term,
-                               To       => Ty_Base,
-                               Expr     =>
-                                 New_Ada_Record_Access
-                                   (Ada_Node => Ty,
-                                    Domain   => EW_Term,
-                                    Name     => Tmp,
-                                    Field    => Discr,
-                                    Ty       => Ty_Ext)),
-                          Op       => EW_Eq,
-                          Right    =>
-                            Transform_Expr
-                              (Expr          =>
-                                     Discriminant_Default_Value (Discr),
-                               Expected_Type => Ty_Base,
-                               Domain        => EW_Term,
-                               Params        => Params)));
-               end if;
-               Next_Discriminant (Discr);
+            while Present (Index) loop
+               declare
+                  Tmp : constant W_Identifier_Id :=
+                    New_Temp_Identifier (Typ => EW_Int_Type);
+               begin
+                  Vars (I) := Binder_Type'(Ada_Node => Empty,
+                                           B_Name   => Tmp,
+                                           B_Ent    => null,
+                                           Mutable  => False);
+                  Indices (I) := +Tmp;
+               end;
+
+               Range_Expr := +New_And_Then_Expr
+                 (Left   => +Range_Expr,
+                  Right  =>
+                    New_Range_Expr
+                      (Domain => EW_Pred,
+                       Low    => Insert_Simple_Conversion
+                         (Domain => EW_Term,
+                          Expr   => Get_Array_Attr (Ty   => Ty_Ext,
+                                                    Attr => Attribute_First,
+                                                    Dim  => I),
+                          To     => EW_Int_Type),
+                       High   => Insert_Simple_Conversion
+                         (Domain => EW_Term,
+                          Expr   => Get_Array_Attr (Ty   => Ty_Ext,
+                                                    Attr => Attribute_Last,
+                                                    Dim  => I),
+                          To     => EW_Int_Type),
+                       Expr   => Indices (I)),
+                  Domain => EW_Pred);
+               Next_Index (Index);
+               I := I + 1;
             end loop;
+
+            T_Acc := New_Array_Access (Empty, Tmp, Indices, EW_Term);
+
+            if Has_Default_Aspect (Ty_Ext) then
+
+               --  if Ty_Ext as a Default_Component_Value aspect,
+               --  generate get (<Expr>, i1, ...) = <Default_Component_Value>
+
+               Assumption := New_Comparison
+                 (Cmp    => EW_Eq,
+                  Left   => T_Acc,
+                  Right  => Transform_Expr
+                    (Expr          => Default_Aspect_Component_Value (Ty_Ext),
+                     Expected_Type => EW_Abstract (Component_Type (Ty_Ext)),
+                     Domain        => EW_Term,
+                     Params        => Params),
+                  Domain => EW_Pred);
+            else
+
+               --  otherwise, use its Component_Type default value.
+
+               Assumption := +Compute_Default_Init
+                 (Expr   => T_Acc,
+                  Ty     => Component_Type (Ty_Ext),
+                  Params => Params);
+            end if;
+
+            if Assumption /= +True_Pred then
+               Assumption := New_Conditional
+                 (Domain      => EW_Pred,
+                  Condition   => +Range_Expr,
+                  Then_Part   => Assumption,
+                  Typ         => EW_Bool_Type);
+
+               Assumption := +New_Universal_Quantif
+                 (Binders  => Vars,
+                  Pred     => +Assumption);
+            end if;
          end;
-      else
-         return True_Pred;
+
+      elsif Is_Record_Type (Ty_Ext) or else Is_Private_Type (Ty_Ext) then
+
+         --  Generates:
+         --  let tmp1 = <Expr>.rec__disc1 in
+         --  <Expr>.is_constrained = False /\ <if Ty_Ext as default discrs>
+         --  <Expr>.rec__disc1 = Discr1.default  <if Ty_Ext is unconstrained>
+         --  <Expr>.rec__disc1 = Discr1 /\ ..    <if Ty_Ext is constrained>
+         --  (check_for_field1 expr ->
+         --      <Expr>.rec__field1 = Field1.def      <if Field1 has a default>
+         --      default_init (<Expr>.rec__field1, Etype (Field1))) <otherwise>
+         --  /\ ..
+
+         Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+
+         declare
+            Root_Ty : constant Entity_Id :=
+              (if Fullview_Not_In_SPARK (Ty_Ext) then
+                    Get_First_Ancestor_In_SPARK (Ty_Ext)
+               else Ty_Ext);
+            R_Expr  : constant W_Expr_Id :=
+              Insert_Simple_Conversion (Ada_Node => Ty,
+                                        Domain   => EW_Term,
+                                        Expr     => Tmp,
+                                        To       => EW_Abstract (Root_Ty));
+            --  Expression that should be used for the access
+
+            Discrs  : constant Natural :=
+              (if Has_Discriminants (Ty_Ext) then
+                    Natural (Number_Discriminants (Ty_Ext))
+               else 0);
+            Tmps    : W_Identifier_Array (1 .. Discrs);
+            Binds   : W_Expr_Array (1 .. Discrs);
+            --  Arrays to store the bindings for discriminants
+
+            Field   : Node_Id :=
+              SPARK_Util.First_Discriminant (Ty_Ext);
+            Elmt    : Elmt_Id :=
+              (if Has_Discriminants (Ty_Ext)
+               and then Is_Constrained (Ty_Ext) then
+                    First_Elmt (Stored_Constraint (Ty_Ext))
+               else No_Elmt);
+            T_Comp  : W_Expr_Id;
+            I       : Positive := 1;
+         begin
+            --  if Ty_Ext as default discrs, generate
+            --     <Expr>.is_constrained = False
+
+            if Has_Defaulted_Discriminants (Ty_Ext) and then
+              not Is_Constrained (Ty_Ext)
+            then
+               --  The variable is not constrained.
+
+               Assumption := New_Relation
+                 (Domain   => EW_Pred,
+                  Op_Type  => EW_Bool,
+                  Left     => New_Is_Constrained_Access
+                    (Ada_Node => Ty,
+                     Domain   => EW_Term,
+                     Name     => Tmp,
+                     Ty       => Ty_Ext),
+                  Op       => EW_Eq,
+                  Right    => +False_Term);
+            end if;
+
+            --  Go through discriminants to create
+            --  <Expr>.rec__disc1 = Discr1.default <if Ty_Ext is unconstrained>
+            --  <Expr>.rec__disc1 = Discr1 /\ ..   <if Ty_Ext is constrained>
+
+            while Present (Field) loop
+               if not Is_Completely_Hidden (Field) then
+
+                  Tmps (I) := New_Temp_Identifier
+                    (Field, Type_Of_Node (Etype (Field)));
+
+                  Binds (I) := New_Ada_Record_Access
+                    (Empty, EW_Term, R_Expr, Field, Root_Ty);
+
+                  --  As discriminants may occur in bounds of types of other
+                  --  fields and bounds of default values, store them in the
+                  --  Symbol_Table.
+
+                  declare
+                     Base_Field : constant Entity_Id :=
+                       (if Is_Base_Type (Ty_Ext) then Field
+                        else Original_Record_Component (Field));
+                     --  Defaults are declared in base types, so they relate
+                     --  to discriminants declared in base types.
+                  begin
+
+                     --  We need entities of discrimiants for bounds of
+                     --  component types...
+
+                     Ada_Ent_To_Why.Insert
+                       (Symbol_Table, Field,
+                        (Regular, Main =>
+                             (Ada_Node => Field,
+                              B_Name   => Tmps (I),
+                              B_Ent    => null,
+                              Mutable  => False)));
+
+                     --  and entities of discrimiants of the base type for
+                     --  bounds of defaults
+
+                     if not Is_Base_Type (Ty_Ext) then
+                        Ada_Ent_To_Why.Insert
+                          (Symbol_Table, Base_Field,
+                           (Regular, Main =>
+                                (Ada_Node => Base_Field,
+                                 B_Name   => Tmps (I),
+                                 B_Ent    => null,
+                                 Mutable  => False)));
+                     end if;
+                  end;
+
+                  if Is_Constrained (Ty_Ext) then
+
+                     --  Generate <Expr>.rec__disc1 = Discr1
+
+                     Assumption :=
+                       New_And_Then_Expr
+                         (Left   => Assumption,
+                          Right  => New_Comparison
+                            (Cmp    => EW_Eq,
+                             Left   => Binds (I),
+                             Right  => Transform_Expr
+                               (Domain        => EW_Term,
+                                Params        => Params,
+                                Expr          => Node (Elmt),
+                                Expected_Type => EW_Abstract (Etype (Field))),
+                             Domain => EW_Pred),
+                          Domain => EW_Pred);
+                     Next_Elmt (Elmt);
+                  else
+                     pragma Assert (Has_Defaulted_Discriminants (Ty_Ext));
+
+                     --  Generate <Expr>.rec__disc1 = Discr1.default
+
+                     Assumption :=
+                       New_And_Then_Expr
+                         (Left   => Assumption,
+                          Right  => New_Comparison
+                            (Cmp    => EW_Eq,
+                             Left   => Binds (I),
+                             Right  => Transform_Expr
+                               (Expr          =>
+                                    Discriminant_Default_Value (Field),
+                                Expected_Type => EW_Abstract (Etype (Field)),
+                                Domain        => EW_Term,
+                                Params        => Params),
+                             Domain => EW_Pred),
+                          Domain => EW_Pred);
+                  end if;
+               end if;
+               Next_Discriminant (Field);
+               I := I + 1;
+            end loop;
+
+            --  Go through other fields to create the expression
+            --  (check_for_field1 expr ->
+            --   <Expr>.rec__field1 = Field1.def      <if Field1 has a default>
+            --   default_init (<Expr>.rec__field1, Etype (Field1))) <otherwise>
+            --  /\ ..
+
+            if Is_Record_Type (Ty_Ext) then
+               Field := First_Component (Ty_Ext);
+
+               while Present (Field) loop
+
+                  if Present (Expression (Parent (Field))) then
+
+                     --  if Field has a default expression, use it.
+                     --   <Expr>.rec__field1 = Field1.default
+
+                     T_Comp := New_Comparison
+                       (Cmp    => EW_Eq,
+                        Left   => New_Ada_Record_Access
+                          (Empty, EW_Term, Tmp, Field, Ty_Ext),
+                        Right  => Transform_Expr
+                          (Expr          => Expression (Parent (Field)),
+                           Expected_Type => EW_Abstract (Etype (Field)),
+                           Domain        => EW_Term,
+                           Params        => Params),
+                        Domain => EW_Pred);
+                  else
+
+                     --  otherwise, use its Field's Etype default value.
+                     --   default_init (<Expr>.rec__field1, Etype (Field1)))
+
+                     T_Comp := +Compute_Default_Init
+                       (New_Ada_Record_Access
+                          (Empty, EW_Term, Tmp, Field, Ty_Ext),
+                        Etype (Field), Params);
+                  end if;
+
+                  if T_Comp /= +True_Pred then
+
+                     --  Assume values of record fields only if they are in the
+                     --  proper variant part.
+
+                     T_Comp  := New_Conditional
+                       (Domain      => EW_Pred,
+                        Condition   => New_Ada_Record_Check_For_Field
+                          (Empty, EW_Term, Tmp, Field, Ty_Ext),
+                        Then_Part   => T_Comp);
+
+                     Assumption := New_And_Then_Expr
+                       (Left   => Assumption,
+                        Right  => T_Comp,
+                        Domain => EW_Pred);
+                  end if;
+
+                  Next_Component (Field);
+               end loop;
+            end if;
+
+            --  Generate the bindings for discriminants.
+
+            if Assumption /= +True_Pred then
+               for I in 1 .. Discrs loop
+                  Assumption := New_Typed_Binding
+                    (Domain   => EW_Pred,
+                     Name     => Tmps (I),
+                     Def      => Binds (I),
+                     Context  => Assumption);
+               end loop;
+            end if;
+         end;
+         Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
       end if;
 
-      return +Binding_For_Temp
-        (Domain => EW_Prog, Tmp => Tmp, Context => Assumption);
+      if Assumption = +True_Pred then
+         return True_Pred;
+      else
+         return +Binding_For_Temp
+           (Domain => EW_Pred, Tmp => Tmp, Context => Assumption);
+      end if;
    end Compute_Default_Init;
 
    ------------------------------

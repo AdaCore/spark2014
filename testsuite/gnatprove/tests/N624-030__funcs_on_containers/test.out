@@ -42,7 +42,7 @@ find_map.ads:30:20: warning: precondition might fail
 find_map.ads:30:49: info: index check proved
 find_map.ads:30:59: info: index check proved
 find_map.ads:32:13: info: precondition proved
-find_map.ads:33:14: info: precondition proved
+find_map.ads:33:14: warning: precondition might fail
 find_map.ads:34:17: info: index check proved
 find_map.ads:34:17: info: precondition proved
 find_map.ads:39:14: warning: postcondition might fail
