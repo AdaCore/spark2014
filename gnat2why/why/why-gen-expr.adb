@@ -1084,9 +1084,10 @@ package body Why.Gen.Expr is
                raise Program_Error;
             end case;
 
-         when N_Component_Declaration =>
+         when N_Component_Declaration | N_Discriminant_Specification =>
 
-            --  We expect range checks on defaults of record fields.
+            --  We expect range checks on defaults of record fields and
+            --  discriminants.
 
             Check_Type := Etype (Defining_Identifier (Par));
 
