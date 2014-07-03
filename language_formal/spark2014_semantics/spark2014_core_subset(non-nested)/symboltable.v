@@ -1,6 +1,5 @@
 Require Export symboltable_module.
-Require Export language_flagged.
-Require Export X_SparkTactics.
+Require Export checks_generator.
 
 (** * Symbol Tables *)
 

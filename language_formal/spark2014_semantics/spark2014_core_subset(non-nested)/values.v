@@ -1,5 +1,4 @@
-Require Export language.
-Require Export util.
+Require Export language_basics.
 
 (** * Run Time Error Types *)
 Inductive error_type: Type :=

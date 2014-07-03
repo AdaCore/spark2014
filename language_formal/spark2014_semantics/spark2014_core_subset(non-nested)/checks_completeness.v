@@ -5,8 +5,6 @@ Require Export X_SparkTactics.
 Scheme expression_ind := Induction for expression Sort Prop 
                          with name_ind := Induction for name Sort Prop.
 
-Check expression_ind.
-
 Lemma gen_check_flags_on_binop_completeness: forall op v1 v2 v3 ast_num e1 e2 checkflags v3',
   do_run_time_check_on_binop op v1 v2 v3 ->
     gen_check_flags (E_Binary_Operation ast_num op e1 e2) checkflags ->

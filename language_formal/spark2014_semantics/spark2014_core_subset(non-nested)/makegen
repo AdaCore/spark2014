@@ -4,9 +4,11 @@ X_SparkTactics.v \
 LibTactics.v \
 more_list.v \
 util.v \
+language_basics.v \
 language.v \
 checks.v \
 language_flagged.v \
+checks_generator.v \
 values.v \
 environment.v \
 symboltable_module.v \
