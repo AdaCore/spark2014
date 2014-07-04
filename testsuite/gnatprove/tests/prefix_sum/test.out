@@ -28,6 +28,7 @@ prefixsum.adb:60:31: info: range check proved
 prefixsum.adb:60:39: info: overflow check proved
 prefixsum.adb:62:25: info: overflow check proved
 prefixsum.adb:62:25: info: range check proved
+prefixsum.adb:70:26: info: range check proved
 prefixsum.adb:76:27: info: division check proved
 prefixsum.adb:79:10: warning: loop invariant might fail after first iteration
 prefixsum.adb:79:10: warning: loop invariant might fail in first iteration
@@ -109,6 +110,7 @@ prefixsum_expanded.adb:79:39: info: overflow check proved
 prefixsum_expanded.adb:81:25: info: overflow check proved
 prefixsum_expanded.adb:81:25: info: range check proved
 prefixsum_expanded.adb:84:07: warning: assertion might fail
+prefixsum_expanded.adb:108:26: info: range check proved
 prefixsum_expanded.adb:116:27: info: division check proved
 prefixsum_expanded.adb:117:15: warning: unused assignment
 prefixsum_expanded.adb:118:07: warning: assertion might fail
@@ -196,6 +198,7 @@ prefixsum_general.adb:68:31: info: range check proved
 prefixsum_general.adb:68:39: info: overflow check proved
 prefixsum_general.adb:70:25: info: overflow check proved
 prefixsum_general.adb:70:25: info: range check proved
+prefixsum_general.adb:78:26: info: range check proved
 prefixsum_general.adb:84:27: info: division check proved
 prefixsum_general.adb:87:10: warning: loop variant might fail
 prefixsum_general.adb:89:25: warning: overflow check might fail

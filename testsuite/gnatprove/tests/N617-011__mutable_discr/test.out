@@ -27,6 +27,7 @@ discr.adb:71:17: info: discriminant check proved
 discr.adb:72:07: info: assertion proved
 discr.adb:73:07: info: assertion proved
 discr.adb:77:48: warning: overflow check might fail
+discr.adb:77:48: warning: range check might fail
 discr.adb:80:53: info: range check proved
 discr.adb:83:46: warning: precondition might fail
 discr.adb:92:09: info: discriminant check proved

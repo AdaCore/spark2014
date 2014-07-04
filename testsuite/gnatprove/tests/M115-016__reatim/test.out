@@ -1,4 +1,6 @@
+pck.adb:16:27: info: range check proved
 pck.adb:17:27: info: division check proved
+pck.adb:17:27: warning: range check might fail
 pck.adb:34:20: info: division check proved
 pck.adb:40:22: warning: assertion might fail, requires Result_Hi < 16#7FFF_FFFF#
 pck.adb:59:11: warning: assertion might fail, requires Result_Lo <= Uint_64 (Natural'Last) * 2 ** 32 - Result_Hi
