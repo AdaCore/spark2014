@@ -688,7 +688,10 @@ package body Gnat2Why.Expr is
                end;
             end if;
          end;
-      else
+      elsif not Is_Partial_View (Defining_Identifier (N)) then
+
+         --  Only assume default initialization if we are in a fullview.
+
          declare
             L_Id            : constant W_Identifier_Id :=
               To_Why_Id (Lvalue, Typ => EW_Abstract (Etype (Lvalue)));
@@ -729,6 +732,8 @@ package body Gnat2Why.Expr is
                      Post        => Init_Assumption));
             end if;
          end;
+      else
+         return New_Void;
       end if;
    end Assignment_Of_Obj_Decl;
 
