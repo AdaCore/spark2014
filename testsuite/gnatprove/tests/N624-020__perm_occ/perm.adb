@@ -1,10 +1,5 @@
 package body Perm with SPARK_Mode is
 
---     function Remove_Last (A : Nat_Array) return Nat_Array is
---     begin
---        return A (A'First .. A'Last -1);
---     end Remove_Last;
-
    procedure Occ_Eq (A, B : Nat_Array; E : Natural) is
       begin
       if A'Length = 0 then
