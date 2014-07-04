@@ -31,46 +31,7 @@ module Main
 end
 
 module Integer
-  use import int.Int
-  use import bool.Bool
-
-  function bool_eq int int : bool
-  function bool_ne int int : bool
-  function bool_lt int int : bool
-  function bool_le int int : bool
-  function bool_gt int int : bool
-  function bool_ge int int : bool
-
-  axiom bool_eq_axiom:
-    forall x:int.
-    forall y:int.
-      bool_eq x y = True <-> x = y
-
-  axiom bool_ne_axiom:
-    forall x:int.
-    forall y:int.
-      bool_ne x y = True <-> x <> y
-
-  axiom bool_lt_axiom:
-    forall x:int.
-    forall y:int.
-      bool_lt x y = True <-> x < y
-
-  axiom bool_int__le_axiom:
-    forall x:int.
-    forall y:int.
-      bool_le x y = True <-> x <= y
-
-  axiom bool_gt_axiom:
-    forall x:int.
-    forall y:int.
-        bool_gt x y = True <-> x > y
-
-  axiom bool_ge_axiom:
-    forall x:int.
-    forall y:int.
-        bool_ge x y = True <-> x >= y
-
+  use export "_gnatprove_standard_th".Integer
 end
 
 module Int_Bitwise

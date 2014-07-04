@@ -512,6 +512,71 @@ procedure Gnatprove is
       procedure Put_Keyval (Key : String; Value : Integer);
       procedure Start_Section (Section : String);
 
+      procedure Generate_Main_Section;
+      procedure Generate_Altergo_Section;
+      procedure Generate_CVC4_Section;
+
+      ------------------------------
+      -- Generate_Altergo_Section --
+      ------------------------------
+
+      procedure Generate_Altergo_Section is
+         Altergo_Command : constant String := "alt-ergo-gp -max-split 5 %f";
+      begin
+         Start_Section ("prover");
+         if Steps /= 0 then
+            Put_Keyval ("command",
+                        Altergo_Command & " -steps " & Int_Image (Steps));
+         else
+            Put_Keyval ("command", Altergo_Command);
+         end if;
+         Put_Keyval ("driver",
+                     Ada.Directories.Compose
+                       (Why3_Drivers_Dir, "alt_ergo.drv"));
+         Put_Keyval ("name", "Alt-Ergo for GNATprove");
+         Put_Keyval ("shortcut", "altergo-gp");
+         Put_Keyval ("version", "0.95");
+      end Generate_Altergo_Section;
+
+      ---------------------------
+      -- Generate_CVC4_Section --
+      ---------------------------
+
+      procedure Generate_CVC4_Section is
+         Command : constant String := "cvc4 --lang=smt2 %f";
+      begin
+         Start_Section ("prover");
+         if Steps /= 0 then
+            Put_Keyval ("command",
+                        Command & " --rlimit=" & Int_Image (Steps));
+         else
+            Put_Keyval ("command", Command);
+         end if;
+         Put_Keyval ("driver",
+                     Ada.Directories.Compose
+                       (Why3_Drivers_Dir, "cvc4_gnatprove.drv"));
+         Put_Keyval ("name", "cvc4");
+         Put_Keyval ("shortcut", "cvc4");
+         Put_Keyval ("version", "1.3");
+      end Generate_CVC4_Section;
+
+      ---------------------------
+      -- Generate_Main_Section --
+      ---------------------------
+
+      procedure Generate_Main_Section is
+      begin
+         Start_Section ("main");
+         Put_Keyval ("loadpath",
+                     Ada.Directories.Compose (Why3_Dir, "theories"));
+         Put_Keyval ("loadpath",
+                     Ada.Directories.Compose (Why3_Dir, "modules"));
+         Put_Keyval ("loadpath", Theories_Dir);
+         Put_Keyval ("magic", 14);
+         Put_Keyval ("memlimit", 0);
+         Put_Keyval ("running_provers_max", 2);
+      end Generate_Main_Section;
+
       ----------------
       -- Put_Keyval --
       ----------------
@@ -548,30 +613,10 @@ procedure Gnatprove is
       --  begin processing for Generate_Why3_Conf_File
    begin
       Create (File, Out_File, Filename);
-      Start_Section ("main");
-      Put_Keyval ("loadpath", Ada.Directories.Compose (Why3_Dir, "theories"));
-      Put_Keyval ("loadpath", Ada.Directories.Compose (Why3_Dir, "modules"));
-      Put_Keyval ("loadpath", Theories_Dir);
-      Put_Keyval ("magic", 14);
-      Put_Keyval ("memlimit", 0);
-      Put_Keyval ("running_provers_max", 2);
-      Start_Section ("prover");
-      declare
-         Altergo_Command : constant String := "alt-ergo-gp -max-split 5 %f";
-      begin
-         if Steps /= 0 then
-            Put_Keyval ("command",
-                        Altergo_Command & " -steps " & Int_Image (Steps));
-         else
-            Put_Keyval ("command", Altergo_Command);
-         end if;
-      end;
-      Put_Keyval ("driver",
-                  Ada.Directories.Compose (Why3_Drivers_Dir,
-                                           "alt_ergo.drv"));
-      Put_Keyval ("name", "Alt-Ergo for GNATprove");
-      Put_Keyval ("shortcut", "altergo-gp");
-      Put_Keyval ("version", "0.95");
+      Generate_Main_Section;
+      Generate_Altergo_Section;
+      Generate_CVC4_Section;
+
       Close (File);
    end Generate_Why3_Conf_File;
 
