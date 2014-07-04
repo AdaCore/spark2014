@@ -702,12 +702,23 @@ package body Gnat2Why.Expr is
                                Typ      => EW_Abstract (Etype (Lvalue)))
                else +L_Id);
 
+            Constrained_Ty  : constant Entity_Id :=
+              Etype (Defining_Identifier (N));
+            --  Type of the fullview
+
             Default_Checks  : W_Prog_Id :=
-              Compute_Default_Check (Etype (Lvalue), Body_Params);
+              Compute_Default_Check (Constrained_Ty, Body_Params);
             --  Checks for runtime errors in default values
 
             Init_Assumption : constant W_Pred_Id :=
-              Compute_Default_Init (L_Deref, Etype (Lvalue), Body_Params);
+              Compute_Default_Init
+                (Expr   => Insert_Simple_Conversion
+                   (Ada_Node => Lvalue,
+                    Domain   => EW_Pred,
+                    Expr     => L_Deref,
+                    To       => EW_Abstract (Constrained_Ty)),
+                 Ty     => Constrained_Ty,
+                 Params => Body_Params);
             --  Assume initial value of L
          begin
 
