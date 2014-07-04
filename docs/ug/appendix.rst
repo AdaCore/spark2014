@@ -58,7 +58,7 @@ Command-line Options
      --timeout=s    Set the prover timeout in seconds (default: 1)
      --limit-line=s Limit analysis to given file and line
      --limit-subp=s Limit analysis to subprogram defined by file and line
-     --prover=s     Use given prover instead of default Alt-Ergo prover
+     --prover=s     Select prover (s=altergo*, cvc4)
 
  * Proof mode values
    . per_check   - Generate one formula per check (default)
@@ -71,15 +71,15 @@ Command-line Options
 Alternative Provers
 ===================
 
-|GNATprove| by default uses Alt-Ergo, but it can be used with
+|GNATprove| comes with Alt-Ergo and CVC4 provers, but it can be used with
 different provers, as long as they are supported by the Why3
 platform. To use a prover, it must be listed in your ``.why3.conf``
 file. The command ``why3config --detect-provers`` can be used to
 search your PATH for any supported provers and add them to the config
 file. Any such prover can then be used with the ``--prover`` option,
-using the name stored in the ``.why3.conf`` file. For example:
-
-   ``gnatprove -P foo.gpr --prover=CVC4``
+using the name stored in the ``.why3.conf`` file. The switch values
+``altergo`` and ``cvc4`` will select the provers which come with |GNATprove|,
+and the value ``altergo`` is the default.
 
 Coq
 ---

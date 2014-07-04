@@ -533,8 +533,8 @@ procedure Gnatprove is
          Put_Keyval ("driver",
                      Ada.Directories.Compose
                        (Why3_Drivers_Dir, "alt_ergo.drv"));
-         Put_Keyval ("name", "Alt-Ergo for GNATprove");
-         Put_Keyval ("shortcut", "altergo-gp");
+         Put_Keyval ("name", "altergo");
+         Put_Keyval ("shortcut", "altergo");
          Put_Keyval ("version", "0.95");
       end Generate_Altergo_Section;
 
