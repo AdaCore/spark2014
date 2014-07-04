@@ -1,0 +1,4 @@
+over.adb:7:20: warning: overflow check might fail
+over.adb:7:25: warning: range check might fail
+over.adb:9:19: warning: overflow check might fail
+over.adb:9:19: warning: range check might fail
