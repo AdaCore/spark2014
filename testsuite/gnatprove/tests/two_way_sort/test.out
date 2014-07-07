@@ -1,10 +1,10 @@
 p1.adb:5:14: warning: postcondition might fail
 p1.adb:5:16: info: index check proved
 p1.adb:5:23: info: index check proved
-p1.adb:6:27: info: index check proved
-p1.adb:6:34: info: index check proved
-p1.adb:8:57: info: index check proved
-p1.adb:8:68: info: index check proved
+p1.adb:6:16: info: index check proved
+p1.adb:6:23: info: index check proved
+p1.adb:8:47: info: index check proved
+p1.adb:8:58: info: index check proved
 p1.adb:11:33: info: index check proved
 p1.adb:13:09: info: index check proved
 p1.adb:13:17: info: index check proved

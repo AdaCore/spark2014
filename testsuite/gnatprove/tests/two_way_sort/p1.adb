@@ -1,11 +1,11 @@
-package body P1 is 
+package body P1 is
    procedure Swap (A : in out Arr; I, J : Index) with
      Pre  => I in A'Range
                and then J in A'Range,
-     Post => A(I) = A(J)'Old
-               and then A(J) = A(I)'Old
-               and then (for all K in A'Range =>
-                           (if K /= I and K /= J then A(K) = A'Old(K)));
+     Post => A(I) = A(J)'Old and
+             A(J) = A(I)'Old and
+             (for all K in A'Range =>
+                 (if K /= I and K /= J then A(K) = A'Old(K)));
 
    procedure Swap (A : in out Arr; I, J : Index) is
       T : constant Boolean := A(I);

@@ -98,8 +98,8 @@ is
                       State                =>+ (Input,
                                                 Status),
                       Status               =>+ null),
-          Post    => IsGood'Old = IsGood and then
-                     AuthCertValid'Old = AuthCertValid and then
+          Post    => IsGood'Old = IsGood and
+                     AuthCertValid'Old = AuthCertValid and
                      (TheAuthCertRole'Old = PrivTypes.Guard) =
                         (TheAuthCertRole = PrivTypes.Guard);
 
