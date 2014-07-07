@@ -1622,15 +1622,14 @@ package body SPARK_Definition is
             Mark_Violation ("indirect call", N);
          end if;
 
-      --  Ignore calls to predicate functions
+      --  There should not be calls to predicate functions
 
       elsif not In_SPARK (E)
         and then not Is_Predicate_Function (E)
       then
-         Mark_Violation (N, From => E);
+         raise Program_Error;
 
       else
-
          declare
             Unit : constant Unit_Number_Type := Get_Source_Unit (Sloc (E));
             File : constant File_Name_Type   := Unit_File_Name (Unit);
@@ -2262,7 +2261,19 @@ package body SPARK_Definition is
             if not Is_Discrete_Type (E)
               or else No (Static_Discrete_Predicate (E))
             then
-               Mark_Violation ("dynamic type predicate", E);
+               --  Issue a warning about unsupported Dynamic_Predicate aspect
+               --  on the original type that introduces it, not on all types
+               --  that inherit it.
+
+               if (Has_Static_Predicate_Aspect (E)
+                     or else
+                   Has_Dynamic_Predicate_Aspect (E))
+                 and then Emit_Messages
+               then
+                  Error_Msg_N
+                    ("?dynamic type predicate is not yet supported", E);
+                  Error_Msg_N ("\\it is currently ignored", E);
+               end if;
             else
                declare
                   Pred : Node_Id := First (Static_Discrete_Predicate (E));
