@@ -1,0 +1,67 @@
+part.adb:10:07: warning: postcondition might fail
+part.adb:10:10: info: index check proved
+part.adb:10:22: info: index check proved
+part.adb:10:37: info: index check proved
+part.adb:10:49: info: index check proved
+part.adb:12:51: info: index check proved
+part.adb:12:63: info: index check proved
+part.adb:24:27: info: index check proved
+part.adb:26:10: info: index check proved
+part.adb:26:19: info: index check proved
+part.adb:27:10: info: index check proved
+part.adb:35:28: warning: range check might fail, in call inlined at part.adb:72
+part.adb:35:28: warning: range check might fail, in call inlined at part.adb:79
+part.adb:36:28: warning: range check might fail, in call inlined at part.adb:72
+part.adb:36:28: warning: range check might fail, in call inlined at part.adb:79
+part.adb:39:24: warning: array index check might fail, in call inlined at part.adb:72
+part.adb:39:24: warning: array index check might fail, in call inlined at part.adb:79
+part.adb:40:28: warning: overflow check might fail, in call inlined at part.adb:72
+part.adb:40:28: warning: overflow check might fail, in call inlined at part.adb:79
+part.adb:42:13: warning: precondition might fail, in call inlined at part.adb:72
+part.adb:42:13: warning: precondition might fail, in call inlined at part.adb:79
+part.adb:43:26: warning: range check might fail, in call inlined at part.adb:72
+part.adb:43:26: warning: range check might fail, in call inlined at part.adb:79
+part.adb:45:33: warning: loop invariant might fail after first iteration, requires Same_Set (A'Loop_Entry, A), in call inlined at part.adb:72
+part.adb:45:33: warning: loop invariant might fail after first iteration, requires Same_Set (A'Loop_Entry, A), in call inlined at part.adb:79
+part.adb:45:33: warning: loop invariant might fail in first iteration, requires Same_Set (A'Loop_Entry, A), in call inlined at part.adb:72
+part.adb:45:33: warning: loop invariant might fail in first iteration, requires Same_Set (A'Loop_Entry, A), in call inlined at part.adb:79
+part.adb:47:32: warning: overflow check might fail, in call inlined at part.adb:72
+part.adb:47:32: warning: overflow check might fail, in call inlined at part.adb:79
+part.adb:48:27: warning: "Np" might not be initialized, in call inlined at part.adb:72
+part.adb:48:27: warning: "Np" might not be initialized, in call inlined at part.adb:79
+part.adb:48:31: warning: range check might fail, in call inlined at part.adb:72
+part.adb:48:31: warning: range check might fail, in call inlined at part.adb:79
+part.adb:52:35: warning: overflow check might fail, in call inlined at part.adb:72
+part.adb:52:35: warning: overflow check might fail, in call inlined at part.adb:79
+part.adb:68:33: info: range check proved
+part.adb:72:10: info: range check proved
+part.adb:72:10: warning: array index check might fail
+part.adb:72:10: warning: range check might fail
+part.adb:72:47: info: index check proved
+part.adb:79:07: info: range check proved
+part.adb:79:07: warning: array index check might fail
+part.adb:79:07: warning: range check might fail
+part.ads:8:41: info: index check proved
+part.ads:11:42: info: index check proved
+part.ads:17:47: info: index check proved
+part.ads:23:41: info: overflow check proved
+part.ads:23:51: info: index check proved
+part.ads:23:61: info: index check proved
+part.ads:23:61: info: overflow check proved
+part.ads:29:44: info: index check proved
+part.ads:38:27: info: range check proved
+part.ads:38:44: info: index check proved
+part.ads:39:12: warning: range check might fail
+part.ads:39:20: info: index check proved
+part.ads:39:31: info: index check proved
+part.ads:51:08: warning: postcondition might fail
+part.ads:51:25: warning: range check might fail
+part.ads:51:50: warning: overflow check might fail
+part.ads:51:61: warning: overflow check might fail
+part.ads:54:45: warning: overflow check might fail
+part.ads:54:56: warning: overflow check might fail
+part.ads:56:16: warning: precondition might fail
+part.ads:56:29: info: range check proved
+part.ads:56:54: warning: overflow check might fail
+part.ads:56:65: warning: overflow check might fail
+part.ads:56:71: warning: range check might fail
