@@ -296,7 +296,9 @@ package SPARK_Util is
    function First_Discriminant (Id : E) return E
      with Pre =>
        (Is_Record_Type (Id) or else Is_Incomplete_Or_Private_Type (Id));
-   --  Get the first discriminant of the record type entity [Id]
+   --  Get the first discriminant of the record type entity [Id]. Contrary
+   --  to Sem_Aux.First_Discriminant, it does not skip hidden stored
+   --  discriminants.
 
    procedure Append
      (To    : in out List_Of_Nodes.List;
@@ -324,6 +326,15 @@ package SPARK_Util is
 
    function Is_Pragma_Check (N : Node_Id; Name : Name_Id) return Boolean;
    --  Returns whether N has the form pragma Check (Name, ...)
+
+   function Is_Ignored_Pragma_Check (N : Node_Id) return Boolean;
+   --  Returns whether N is a pragma check that can be ignored by analysis,
+   --  because it is already taken into account elsewhere (precondition and
+   --  postcondition, static predicate), or because it is completely ignored
+   --  with a warning in SPARK.Definition (dynamic predicate).
+
+   function Is_Predicate_Function_Call (N : Node_Id) return Boolean;
+   --  Returns whether N is a call to a frontend-generated predicate function
 
    function Innermost_Enclosing_Loop (N : Node_Id) return Node_Id;
    --  Returns the innermost loop enclosing N

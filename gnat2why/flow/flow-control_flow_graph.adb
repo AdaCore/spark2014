@@ -35,6 +35,7 @@ with Treepr;                             use Treepr;
 with Flow_Debug;                         use Flow_Debug;
 pragma Unreferenced (Flow_Debug);
 
+with SPARK_Util;                         use SPARK_Util;
 with Why;
 with Gnat2Why.Nodes;                     use Gnat2Why.Nodes;
 
@@ -4468,20 +4469,23 @@ package body Flow.Control_Flow_Graph is
 
             return False;
 
-         when Pragma_Check        |
-              Pragma_Loop_Variant =>
+         when Pragma_Check =>
+            return not Is_Ignored_Pragma_Check (N);
 
-            if Get_Pragma_Id (N) = Pragma_Check and then
-              Is_Precondition_Check (N)
-            then
-               return False;
-            else
-               return True;
-            end if;
+         when Pragma_Loop_Variant =>
+            return True;
 
          when Pragma_Unmodified   |
               Pragma_Unreferenced =>
             return True;
+
+         --  Do not issue a warning on invariant pragmas, as one is already
+         --  issued on the corresponding type in SPARK.Definition.
+
+         when Pragma_Invariant
+            | Pragma_Type_Invariant
+            | Pragma_Type_Invariant_Class =>
+            return False;
 
          when others =>
             Errout.Error_Msg_Name_1 := Pragma_Name (N);
@@ -4517,7 +4521,8 @@ package body Flow.Control_Flow_Graph is
 
       case FA.Kind is
          when E_Subprogram_Body =>
-            Body_N        := Get_Subprogram_Body (FA.Analyzed_Entity);
+            Body_N        :=
+              SPARK_Util.Get_Subprogram_Body (FA.Analyzed_Entity);
             Preconditions := Get_Precondition_Expressions (FA.Analyzed_Entity);
 
             if Acts_As_Spec (Body_N) then

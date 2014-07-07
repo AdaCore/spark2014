@@ -506,6 +506,8 @@ stats.adb:53:57: info: overflow check proved
 stats.adb:70:51: info: overflow check proved
 stats.adb:87:53: info: overflow check proved
 stats.adb:104:47: info: overflow check proved
+tcpip.adb:60:59: warning: assuming "Stream" has no effect on global items
+tcpip.adb:60:59: warning: no Global contract available for "Stream"
 tokenreader.adb:52:37: info: length check proved
 tokenreader.adb:63:26: info: length check proved
 tokenreader.adb:68:26: info: length check proved

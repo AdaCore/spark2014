@@ -8299,6 +8299,14 @@ package body Gnat2Why.Expr is
          when Pragma_Loop_Invariant =>
             raise Program_Error;
 
+         --  Do not issue a warning on invariant pragmas, as one is already
+         --  issued on the corresponding type in SPARK.Definition.
+
+         when Pragma_Invariant
+            | Pragma_Type_Invariant
+            | Pragma_Type_Invariant_Class =>
+            return New_Void (Prag);
+
          --  Ignore other pragmas with a warning
 
          when others =>
@@ -8323,24 +8331,9 @@ package body Gnat2Why.Expr is
       Arg2   : constant Node_Id := Next (Arg1);
       Expr   : constant Node_Id := Expression (Arg2);
       Params : Transformation_Params := Assert_Params;
+
    begin
-
-      --  Pragma Check generated for Pre/Postconditions are ignored.
-      --  ??? Frontend-generated pragma check for static predicate is ignored
-      --  (MC20-028)
-
-      if Is_Pragma_Check (Stmt, Name_Precondition)
-        or else
-          Is_Pragma_Check (Stmt, Name_Pre)
-        or else
-          Is_Pragma_Check (Stmt, Name_Postcondition)
-        or else
-          Is_Pragma_Check (Stmt, Name_Post)
-        or else
-          Is_Pragma_Check (Stmt, Name_Static_Predicate)
-        or else
-          Is_Pragma_Check (Stmt, Name_Predicate)
-      then
+      if Is_Ignored_Pragma_Check (Stmt) then
          Runtime := New_Void (Stmt);
          Pred := True_Pred;
          return;

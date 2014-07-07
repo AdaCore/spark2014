@@ -1,23 +1,31 @@
-p.adb:2:09: dynamic type predicate is not allowed in SPARK
-p.adb:2:09: violation of pragma SPARK_Mode at line 1
-p.adb:8:14: "T" is not allowed in SPARK
-p.adb:8:14: violation of pragma SPARK_Mode at line 1
-p.adb:10:07: "T" is not allowed in SPARK
-p.adb:10:07: violation of pragma SPARK_Mode at line 1
-p.adb:10:25: "T" is not allowed in SPARK
-p.adb:10:25: violation of pragma SPARK_Mode at line 1
-p.adb:11:07: "T" is not allowed in SPARK
-p.adb:11:07: violation of pragma SPARK_Mode at line 1
-sub.ads:7:12: dynamic type predicate is not allowed in SPARK
-sub.ads:7:12: violation of pragma SPARK_Mode at line 1
-sub.ads:11:12: dynamic type predicate is not allowed in SPARK
-sub.ads:11:12: violation of pragma SPARK_Mode at line 1
-sub.ads:22:14: "S" is not allowed in SPARK
-sub.ads:22:14: violation of pragma SPARK_Mode at line 1
-sub.ads:24:14: "T" is not allowed in SPARK
-sub.ads:24:14: violation of pragma SPARK_Mode at line 1
-   compilation of main.adb failed
-   compilation of p.adb failed
-
-
-gnatprove: error during flow analysis and proof
+main.adb:3:11: warning: "Global" might not be initialized after elaboration of main program "Main"
+main.adb:4:22: info: range check proved
+main.adb:6:04: warning: initialization has no effect
+main.adb:6:13: info: range check proved
+main.adb:7:14: info: range check proved
+main.adb:13:06: warning: unused assignment
+main.adb:19:14: warning: unused assignment to "Tv"
+p.adb:1:11: warning: subprogram "P" has no effect
+p.adb:2:09: warning: dynamic type predicate is not yet supported
+p.adb:2:09: warning: it is currently ignored
+p.adb:10:40: info: overflow check proved, in call inlined at p.adb:17
+sub.adb:6:17: info: division check proved
+sub.adb:6:17: info: range check proved
+sub.adb:11:34: info: division check proved
+sub.adb:11:34: info: range check proved
+sub.adb:13:14: info: division check proved
+sub.adb:14:17: info: range check proved
+sub.adb:16:21: info: range check proved
+sub.adb:23:14: info: division check proved
+sub.adb:23:14: info: range check proved
+sub.adb:24:17: info: division check proved
+sub.adb:25:17: info: range check proved
+sub.adb:32:17: info: division check proved
+sub.adb:32:21: info: division check proved
+sub.adb:39:14: info: division check proved
+sub.adb:39:14: info: range check proved
+sub.adb:43:24: info: range check proved
+sub.ads:7:12: warning: dynamic type predicate is not yet supported
+sub.ads:7:12: warning: it is currently ignored
+sub.ads:11:12: warning: dynamic type predicate is not yet supported
+sub.ads:11:12: warning: it is currently ignored

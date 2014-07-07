@@ -39,6 +39,7 @@ with Sem_Ch12;               use Sem_Ch12;
 with Sem_Prag;               use Sem_Prag;
 with Sem_Util;               use Sem_Util;
 with Exp_Util;               use Exp_Util;
+with Sem_Aux;                use Sem_Aux;
 with Sinput;                 use Sinput;
 with Snames;                 use Snames;
 with Stand;                  use Stand;
@@ -1622,11 +1623,10 @@ package body SPARK_Definition is
             Mark_Violation ("indirect call", N);
          end if;
 
-      --  There should not be calls to predicate functions
+      --  There should not be calls to predicate functions and invariant
+      --  procedures.
 
-      elsif not In_SPARK (E)
-        and then not Is_Predicate_Function (E)
-      then
+      elsif Is_Predicate_Function (E) or else Is_Invariant_Procedure (E) then
          raise Program_Error;
 
       else
@@ -2254,20 +2254,31 @@ package body SPARK_Definition is
          end if;
 
          if Has_Invariants (E) then
-            Mark_Violation ("type invariant", E);
+
+            --  Do not issue a warning on both the partial view and the full
+            --  view, in the case where the invariant is declared on the
+            --  partial view.
+
+            if Present (Full_View (E))
+              and then Has_Invariants (Full_View (E))
+            then
+               null;
+
+            elsif Emit_Messages then
+               Error_Msg_N ("?type invariant is not yet supported", E);
+               Error_Msg_N ("\\it is currently ignored", E);
+            end if;
          end if;
 
          if Has_Predicates (E) then
             if not Is_Discrete_Type (E)
               or else No (Static_Discrete_Predicate (E))
             then
-               --  Issue a warning about unsupported Dynamic_Predicate aspect
-               --  on the original type that introduces it, not on all types
-               --  that inherit it.
+               --  Only issue a warning about unsupported dynamic predicate on
+               --  a type that has explicit predicates, not on a type that only
+               --  inherits them.
 
-               if (Has_Static_Predicate_Aspect (E)
-                     or else
-                   Has_Dynamic_Predicate_Aspect (E))
+               if Has_Rep_Item (E, Name_Predicate, Check_Parents => False)
                  and then Emit_Messages
                then
                   Error_Msg_N
@@ -2426,7 +2437,7 @@ package body SPARK_Definition is
             --  Discriminant renamings are not in SPARK, this is checked here
 
             declare
-               Disc  : Entity_Id := First_Discriminant (E);
+               Disc  : Entity_Id := SPARK_Util.First_Discriminant (E);
                Found : Boolean := False;
             begin
                while Present (Disc) loop
@@ -2469,7 +2480,7 @@ package body SPARK_Definition is
             --  non-SPARK type should be disallowed here
 
             declare
-               Disc : Entity_Id := First_Discriminant (E);
+               Disc : Entity_Id := SPARK_Util.First_Discriminant (E);
             begin
                while Present (Disc) loop
                   if not In_SPARK (Etype (Disc)) then
@@ -2490,14 +2501,13 @@ package body SPARK_Definition is
       Save_Violation_Detected : constant Boolean := Violation_Detected;
       Save_SPARK_Pragma : constant Node_Id := Current_SPARK_Pragma;
 
-      --  Start of Mark_Entity
+   --  Start of Mark_Entity
 
    begin
-
       --  Ignore predicate functions
 
       if Ekind (E) in E_Function | E_Procedure
-        and then Is_Predicate_Function (E)
+        and then (Is_Predicate_Function (E) or else Is_Invariant_Procedure (E))
       then
          return;
       end if;
@@ -2991,19 +3001,7 @@ package body SPARK_Definition is
          --              [,[Message =>] String_Expression]);
 
          when Pragma_Check =>
-
-            --  Ignore pragma Check for preconditions and postconditions
-
-            if Is_Pragma_Check (N, Name_Precondition)
-                 or else
-               Is_Pragma_Check (N, Name_Pre)
-                 or else
-               Is_Pragma_Check (N, Name_Postcondition)
-                 or else
-               Is_Pragma_Check (N, Name_Post)
-            then
-               null;
-            else
+            if not Is_Ignored_Pragma_Check (N) then
                Mark (Get_Pragma_Arg (Arg2));
             end if;
 
@@ -3053,6 +3051,14 @@ package body SPARK_Definition is
                                  & " subprogram", Associated_Subprogram);
                end if;
             end;
+
+         --  Do not issue a warning on invariant pragmas, as one is already
+         --  issued on the corresponding type.
+
+         when Pragma_Invariant
+            | Pragma_Type_Invariant
+            | Pragma_Type_Invariant_Class =>
+            null;
 
          when Pragma_Overflow_Mode =>
             if Emit_Messages then
@@ -3234,7 +3240,6 @@ package body SPARK_Definition is
            Pragma_Interface_Name                 |
            Pragma_Interrupt_Handler              |
            Pragma_Interrupt_State                |
-           Pragma_Invariant                      |
            Pragma_Java_Constructor               |
            Pragma_Java_Interface                 |
            Pragma_Keep_Names                     |
@@ -3297,8 +3302,6 @@ package body SPARK_Definition is
            Pragma_Thread_Local_Storage           |
            Pragma_Time_Slice                     |
            Pragma_Title                          |
-           Pragma_Type_Invariant                 |
-           Pragma_Type_Invariant_Class           |
            Pragma_Unchecked_Union                |
            Pragma_Unimplemented_Unit             |
            Pragma_Universal_Aliasing             |
@@ -3466,9 +3469,9 @@ package body SPARK_Definition is
       elsif Ekind (E) in Generic_Subprogram_Kind then
          return;
 
-      --  Ignore predicate functions
+      --  Ignore predicate functions and invariant procedures
 
-      elsif Is_Predicate_Function (E) then
+      elsif Is_Predicate_Function (E) or else Is_Invariant_Procedure (E) then
          return;
 
       else
@@ -3571,9 +3574,9 @@ package body SPARK_Definition is
       if Ekind (E) in Generic_Subprogram_Kind then
          return;
 
-      --  Ignore predicate functions
+      --  Ignore predicate functions and invariant procedures
 
-      elsif Is_Predicate_Function (E) then
+      elsif Is_Predicate_Function (E) or else Is_Invariant_Procedure (E) then
          return;
 
       --  Mark entity

@@ -1,27 +1,6 @@
-typeinv.ads:2:09: "T" is not allowed in SPARK
-typeinv.ads:2:09: "T" is not allowed in SPARK
-typeinv.ads:2:09: type invariant is not allowed in SPARK
-typeinv.ads:2:09: type invariant is not allowed in SPARK
-typeinv.ads:2:09: violation of pragma SPARK_Mode at test.adc:1
-typeinv.ads:2:09: violation of pragma SPARK_Mode at test.adc:1
-typeinv.ads:2:09: violation of pragma SPARK_Mode at test.adc:1
-typeinv.ads:2:09: violation of pragma SPARK_Mode at test.adc:1
-typeinv.ads:3:12: warning: it is currently ignored
-typeinv.ads:3:12: warning: pragma "Invariant" is not yet supported
-typeinv.ads:5:13: "T" is not allowed in SPARK
-typeinv.ads:5:13: "T" is not allowed in SPARK
-typeinv.ads:5:13: violation of pragma SPARK_Mode at test.adc:1
-typeinv.ads:5:13: violation of pragma SPARK_Mode at test.adc:1
-typeinv.ads:9:14: "T" is not allowed in SPARK
-typeinv.ads:9:14: "T" is not allowed in SPARK
-typeinv.ads:9:14: violation of pragma SPARK_Mode at test.adc:1
-typeinv.ads:9:14: violation of pragma SPARK_Mode at test.adc:1
-typeinv.ads:12:09: type invariant is not allowed in SPARK
-typeinv.ads:12:09: type invariant is not allowed in SPARK
-typeinv.ads:12:09: violation of pragma SPARK_Mode at test.adc:1
-typeinv.ads:12:09: violation of pragma SPARK_Mode at test.adc:1
-   compilation of main.adb failed
-   compilation of typeinv.adb failed
-
-
-gnatprove: error during flow analysis and proof
+main.adb:3:11: warning: subprogram "Main" has no effect
+typeinv.adb:6:17: warning: range check might fail
+typeinv.adb:12:14: info: division check proved
+typeinv.ads:12:09: warning: it is currently ignored
+typeinv.ads:12:09: warning: type invariant is not yet supported
+typeinv.ads:15:10: info: division check proved

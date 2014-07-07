@@ -198,9 +198,10 @@ package body Gnat2Why.Driver is
         and then Analysis_Requested (E)
         and then Entity_Spec_In_SPARK (E)
 
-        --  Ignore predicate functions
+        --  Ignore predicate functions and invariant procedures
 
         and then not Is_Predicate_Function (E)
+        and then not Is_Invariant_Procedure (E)
       then
          --  Generate Why3 code to check absence of run-time errors in
          --  contracts and body.
@@ -438,6 +439,7 @@ package body Gnat2Why.Driver is
               and then Entity_In_SPARK (E)
               and then not Is_Local_Subprogram_Always_Inlined (E)
               and then not Is_Predicate_Function (E)
+              and then not Is_Invariant_Procedure (E)
               and then (not (Present (Get_Expression_Function (E)))
                         or else not Entity_Body_In_SPARK (E))
             then
@@ -625,9 +627,10 @@ package body Gnat2Why.Driver is
 
               and then not Is_Local_Subprogram_Always_Inlined (E)
 
-              --  Ignore predicate functions
+              --  Ignore predicate functions and invariant procedures
 
               and then not Is_Predicate_Function (E)
+              and then not Is_Invariant_Procedure (E)
             then
 
                --  Generate a logic function for Ada functions
