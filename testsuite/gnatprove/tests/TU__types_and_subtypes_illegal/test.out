@@ -1,13 +1,11 @@
-types_and_subtypes_illegal.ads:5:12: warning: dynamic type predicate is not yet supported
-types_and_subtypes_illegal.ads:5:12: warning: it is currently ignored
+types_and_subtypes_illegal.ads:5:12: warning: dynamic type predicate ignored (not yet supported)
 types_and_subtypes_illegal.ads:13:09: tagged type is not allowed in SPARK
 types_and_subtypes_illegal.ads:13:09: violation of aspect SPARK_Mode at line 2
 types_and_subtypes_illegal.ads:15:09: tagged type is not allowed in SPARK
 types_and_subtypes_illegal.ads:15:09: violation of aspect SPARK_Mode at line 2
 types_and_subtypes_illegal.ads:20:14: "T1'Class" is not allowed in SPARK
 types_and_subtypes_illegal.ads:20:14: violation of aspect SPARK_Mode at line 2
-types_and_subtypes_illegal.ads:29:12: warning: dynamic type predicate is not yet supported
-types_and_subtypes_illegal.ads:29:12: warning: it is currently ignored
+types_and_subtypes_illegal.ads:29:12: warning: dynamic type predicate ignored (not yet supported)
 types_and_subtypes_illegal.ads:34:09: tagged type is not allowed in SPARK
 types_and_subtypes_illegal.ads:34:09: violation of aspect SPARK_Mode at line 2
    compilation of types_and_subtypes_illegal.ads failed

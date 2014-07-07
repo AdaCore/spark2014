@@ -2265,8 +2265,7 @@ package body SPARK_Definition is
                null;
 
             elsif Emit_Messages then
-               Error_Msg_N ("?type invariant is not yet supported", E);
-               Error_Msg_N ("\\it is currently ignored", E);
+               Error_Msg_N ("?type invariant ignored (not yet supported)", E);
             end if;
          end if;
 
@@ -2282,8 +2281,7 @@ package body SPARK_Definition is
                  and then Emit_Messages
                then
                   Error_Msg_N
-                    ("?dynamic type predicate is not yet supported", E);
-                  Error_Msg_N ("\\it is currently ignored", E);
+                    ("?dynamic type predicate ignored (not yet supported)", E);
                end if;
             else
                declare
@@ -3330,8 +3328,7 @@ package body SPARK_Definition is
 
             if Emit_Messages then
                Error_Msg_Name_1 := Pname;
-               Error_Msg_N ("?pragma % is not yet supported", N);
-               Error_Msg_N ("\\it is currently ignored", N);
+               Error_Msg_N ("?pragma % ignored (not yet supported)", N);
             end if;
       end case;
    end Mark_Pragma;

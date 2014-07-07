@@ -8311,8 +8311,8 @@ package body Gnat2Why.Expr is
 
          when others =>
             Error_Msg_Name_1 := Pragma_Name (Prag);
-            Error_Msg_N ("?pragma % is not yet supported in proof", Prag);
-            Error_Msg_N ("\\it is currently ignored", Prag);
+            Error_Msg_N
+              ("?pragma % ignored in proof (not yet supported)", Prag);
             return New_Void (Prag);
       end case;
    end Transform_Pragma;

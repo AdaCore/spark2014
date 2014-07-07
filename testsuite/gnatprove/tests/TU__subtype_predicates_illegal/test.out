@@ -1,2 +1,1 @@
-subtype_predicates_illegal.ads:7:12: warning: dynamic type predicate is not yet supported
-subtype_predicates_illegal.ads:7:12: warning: it is currently ignored
+subtype_predicates_illegal.ads:7:12: warning: dynamic type predicate ignored (not yet supported)
