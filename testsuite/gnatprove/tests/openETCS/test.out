@@ -66,23 +66,29 @@ example.adb:4:13: info: overflow check proved
 example.adb:5:20: info: overflow check proved
 example.ads:5:14: info: postcondition proved
 sec_3_13_2_monitoring_inputs.adb:31:27: info: precondition proved
+sec_3_13_2_monitoring_inputs.adb:32:46: info: range check proved
 sec_3_13_2_monitoring_inputs.adb:37:27: info: precondition proved
+sec_3_13_2_monitoring_inputs.adb:38:46: info: range check proved
 sec_3_13_2_monitoring_inputs.ads:70:15: info: length check proved
 sec_3_13_2_monitoring_inputs.ads:164:15: info: length check proved
 sec_3_13_2_monitoring_inputs.ads:169:15: info: length check proved
 sec_3_13_2_monitoring_inputs.ads:183:08: info: postcondition proved
 sec_3_13_2_monitoring_inputs.ads:184:24: info: precondition proved
+sec_3_13_2_monitoring_inputs.ads:185:43: info: range check proved
 sec_3_13_2_monitoring_inputs.ads:199:08: info: postcondition proved
 sec_3_13_2_monitoring_inputs.ads:200:24: info: precondition proved
+sec_3_13_2_monitoring_inputs.ads:201:43: info: range check proved
 sec_3_13_2_monitoring_inputs.ads:243:46: info: precondition proved
 sec_3_13_2_monitoring_inputs.ads:247:14: warning: subprogram "Dummy" has no effect
 sec_3_13_4_gradient_accel_decel.ads:26:24: warning: unused variable "D"
 sec_3_13_6_deceleration.adb:26:37: warning: precondition might fail
 sec_3_13_6_deceleration.adb:26:37: warning: range check might fail
+sec_3_13_6_deceleration.adb:27:56: info: range check proved
 sec_3_13_6_deceleration.ads:34:43: warning: unused variable "D"
 sec_3_13_6_deceleration.ads:39:06: warning: postcondition might fail, requires A_brake_emergency'Result = (Step_Function.get_value (A_brake_emergency_model, V))
 sec_3_13_6_deceleration.ads:40:37: info: range check proved
 sec_3_13_6_deceleration.ads:40:37: warning: precondition might fail
+sec_3_13_6_deceleration.ads:41:56: info: range check proved
 sec_3_13_6_deceleration.ads:45:23: warning: precondition might fail
 sec_3_13_6_deceleration.ads:46:23: warning: overflow check might fail
 sec_3_13_6_deceleration.ads:46:26: warning: precondition might fail
