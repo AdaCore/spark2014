@@ -2238,20 +2238,19 @@ Default_Initial_Condition Aspects
    Unlike the null literal case, this case has associated dynamic semantics.
    The *Boolean_*\ ``expression`` (which might typically mention the current
    instance of the type, although this is not required) is an assertion
-   which is checked (at run time) after any object of the given type, or of
-   any type descended from the given type, is "initialized by default" (see
-   Ada RM 3.3.1).
+   which is checked (at run time) after any object of the given type (or of
+   any descendant of the given type for which the specified aspect is
+   inherited and not overridden), is "initialized by
+   default" (see Ada RM 3.3.1).
+
+   The *Boolean_*\ ``expression``, if any, causes freezing in the
+   same way as the ``default_expression`` of a ``component_declaration``.
+   [If the expresion is non-static, this means that the expression does not
+   cause freezing where it occurs, but instead when an object of the type
+   is initialized by default.]
 
    Default_Initial_Condition assertion is an assertion aspect, which means
    that it may be used in an Assertion_Policy pragma.
-
-   In the case where an object is initialized by default and multiple
-   Default_Initial_Condition checks are to be performed, checks associated
-   with a more distant ancestor type are performed before those associated
-   with a less distant ancestor type. [In other words, if a type T1 is an
-   ancestor of another type T2, then the performance of any check which is
-   explicitly specified for T1 precedes that of any check explicitly specified
-   for T2.]
 
 Deferred Constants
 ------------------

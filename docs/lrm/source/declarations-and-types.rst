@@ -26,7 +26,7 @@ A type is said to *define full default initialization* if it is
     default initialization and, in the case of a type extension, is
     an extension of a type which defines full default initialization; or
 
-  * a private type whose Default_Initial_Condition aspect is specified to be
+  * a private type whose Default_Initial_Condition aspect is specified to be a
     *Boolean_*\ ``expression``.
 
 [The discriminants of a discriminated type play no role in determining
