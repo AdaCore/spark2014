@@ -255,6 +255,11 @@ package Flow_Utility is
    --  We have explicitly used X. The implicitly used variables are "used"
    --  variables due to a partial update. In the example above A is
    --  implicitly used.
+   --
+   --  Vars_Semi_Used indicates variables we "read" but do not influence
+   --  the output and should not be included in dependencies. For example
+   --  the proof ins of function Foo will appear in this set.
+   --     A (Foo (X)) :=
 
    function Get_Precondition_Expressions (E : Entity_Id) return Node_Lists.List
      with Pre => Ekind (E) in Subprogram_Kind;
