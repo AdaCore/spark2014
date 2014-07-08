@@ -42,7 +42,6 @@ Inductive statement_xx: Type :=
     | S_Procedure_Call_XX: astnum -> astnum -> procnum -> list expression_xx -> statement_xx (* 6.4 *) (* the second astnum for the called procedure *)
     | S_Sequence_XX: astnum -> statement_xx -> statement_xx -> statement_xx. (* 5.1 *)
 
-
 Inductive type_declaration_xx: Type := (* 3.2.1 *)
     | Array_Type_Declaration_XX: (* Constrained_Array_Definition, non-nested one-dimentional array *)
         astnum -> typenum (*array name*) -> type (*component type*) -> 
@@ -95,8 +94,8 @@ with procedure_declaration_xx: Type :=
 (** ** Compilation Unit Subprogram *)
 (* 6.1 *)
 Inductive subprogram_xx: Type := 
-    | Global_Procedure_XX: astnum -> procedure_declaration_xx -> subprogram_xx
-(*  | Global_Function_XX: astnum -> function_declaration_xx -> subprogram_xx *).
+    | Global_Procedure_XX: astnum -> procedure_declaration_xx -> subprogram_xx.
+(*  | Global_Function_XX: astnum -> function_declaration_xx -> subprogram_xx *)
 
 (* 10.1.1 *)
 Inductive library_unit_declaration_xx: Type := 
@@ -107,6 +106,7 @@ Inductive compilation_unit_xx: Type :=
     | Library_Unit_XX: astnum -> library_unit_declaration_xx -> compilation_unit_xx.
 
 
+(** ** Auxiliary Functions *)
 
 Section AuxiliaryFunctions_XX.
 

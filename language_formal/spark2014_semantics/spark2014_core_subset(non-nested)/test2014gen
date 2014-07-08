@@ -1,0 +1,1 @@
+sed 's/(\*_1_//g;s/_1_\*)//g;/_2_\*)$/d;s/_xx//g;s/_XX//g;s/(\*checks\*)//g' test2014.v > test2014_1.v

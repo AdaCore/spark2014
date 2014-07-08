@@ -54,6 +54,7 @@ Proof.
     end.
 Qed.
 
+(** * Completeness Proof of Expression *)
 
 Lemma expression_checks_completeness: forall e e' s v v',
   eval_expr s e v ->
@@ -382,6 +383,7 @@ Proof.
   end.
 Qed.
 
+(** * Completeness Proof of Statement *)
 
 Lemma statement_checks_completeness: forall st s stmt s' st' stmt' s'',
   eval_stmt st s stmt s' -> 
