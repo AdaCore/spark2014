@@ -1794,25 +1794,47 @@ package body SPARK_Definition is
          begin
             Decl := First (Decls);
 
-            --  Mark formals of the generic if any:
-            --  The mapping nodes are all nodes starting from the top of the
-            --  visible declarations upto the first source node (detectable by
-            --  Comes_From_Source (...)).
+            --  Declare entities for type and subprogram formal parameters.
 
             while Present (Decl) and then not Comes_From_Source (Decl) loop
-               if Nkind (Decl) in N_Full_Type_Declaration         |
-               N_Private_Type_Declaration      |
-               N_Private_Extension_Declaration |
-               N_Subtype_Declaration           |
-               N_Subprogram_Declaration        |
-               N_Object_Declaration
+               if Nkind (Decl) in
+                 N_Subtype_Declaration | N_Subprogram_Declaration
                then
                   Id := Defining_Entity (Decl);
-                  if Ekind (Id) in Type_Kind then
+
+                  if Ekind (Id) in Subprogram_Kind
+                    and then Is_Generic_Actual_Subprogram (Id)
+                  then
+
+                     --  Translate specification and body of subprogram
+                     --  formals to check for runtime errors.
+
+                     Mark_Subprogram_Declaration (Decl);
+                     Mark_Subprogram_Body
+                       (SPARK_Util.Get_Subprogram_Body (Id));
+
+                     --  Add the subprogram entity and its parameters to the
+                     --  list of entities to be translated.
+
+                     if Present (Parameter_Specifications
+                                 (Get_Subprogram_Spec (Id)))
+                     then
+                        declare
+                           Param_Spec : Node_Id :=
+                             First (Parameter_Specifications
+                                    (Get_Subprogram_Spec (Id)));
+                        begin
+                           while Present (Param_Spec) loop
+                              Entity_List.Append
+                                (Defining_Identifier (Param_Spec));
+                              Next (Param_Spec);
+                           end loop;
+                        end;
+                     end if;
+
+                     Entity_List.Append (Id);
+                  elsif Ekind (Id) in Type_Kind then
                      Mark_Entity (Id);
-                  elsif Ekind (Id) in Object_Kind | Subprogram_Kind then
-                     Entity_Set.Include (Id);
-                     Entities_In_SPARK.Include (Id);
                   end if;
                end if;
                Next (Decl);
@@ -1821,7 +1843,7 @@ package body SPARK_Definition is
             while Present (Decl) loop
                if Nkind (Decl) in N_Package_Declaration then
 
-                  --  Mark elements of any sub-package
+                  --  Mark elements of sub-packages
 
                   Declare_In_Package_With_External_Axioms
                     (Visible_Declarations (Specification (Decl)));
@@ -1834,17 +1856,14 @@ package body SPARK_Definition is
                then
                   Id := Defining_Entity (Decl);
 
-                  if Ekind (Id) in Type_Kind then
-                     if not Is_Hidden (Id) then
+                  if Ekind (Id) in Type_Kind | Object_Kind | Subprogram_Kind
+                    and then not Is_Hidden (Id)
+                  then
 
-                        --  Should only mark types that are public or formals
-                        --  of the generic. Others are simply ignored.
+                     --  Should only mark entities that are public.
+                     --  Others are simply ignored.
 
-                        Mark_Entity (Id);
-                     end if;
-                  elsif Ekind (Id) in Object_Kind | Subprogram_Kind then
-                     Entity_Set.Include (Id);
-                     Entities_In_SPARK.Include (Id);
+                     Mark_Entity (Id);
                   end if;
                end if;
 
@@ -2139,13 +2158,6 @@ package body SPARK_Definition is
          end Is_Private_Entity_Mode_Off;
 
       begin
-
-         --  For types in external axioms, mark the package entity.
-
-         if Entity_In_External_Axioms (E) then
-            Mark_Entity
-              (Get_First_Parent_With_Ext_Axioms_For_Entity (E));
-         end if;
 
          --  The base type or original type should be marked before the current
          --  type. We also protect ourselves against the case where the Etype
@@ -2502,6 +2514,20 @@ package body SPARK_Definition is
    --  Start of Mark_Entity
 
    begin
+
+      --  For entities in external axioms, mark the package entity.
+
+      if Entity_In_External_Axioms (E) then
+         declare
+            Pack : constant Entity_Id :=
+              Get_First_Parent_With_Ext_Axioms_For_Entity (E);
+         begin
+            if Pack /= E then
+               Mark_Entity (Pack);
+            end if;
+         end;
+      end if;
+
       --  Ignore predicate functions
 
       if Ekind (E) in E_Function | E_Procedure
@@ -2616,7 +2642,7 @@ package body SPARK_Definition is
          Entities_In_SPARK.Delete (E);
       end if;
 
-      --  Add entity to appropriate list. Type from packages with external
+      --  Add entity to appropriate list. Entities from packages with external
       --  axioms are handled by a specific mechanism and thus should not be
       --  translated.
 
@@ -2907,6 +2933,7 @@ package body SPARK_Definition is
 
          if Entity_In_External_Axioms (Id) then
             Mark_Entity (Id);
+            Specs_In_SPARK.Include (Id);
          end if;
       end if;
 
@@ -3454,11 +3481,6 @@ package body SPARK_Definition is
       if Location_In_Standard_Library (Sloc (N))
         and not Unit_In_Standard_Library (Main_Unit)
       then
-         return;
-
-      --  Ignore body of packages with external axioms
-
-      elsif Entity_In_External_Axioms (E) then
          return;
 
       --  Ignore generic subprograms

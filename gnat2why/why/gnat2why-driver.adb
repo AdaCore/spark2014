@@ -631,6 +631,13 @@ package body Gnat2Why.Driver is
 
               and then not Is_Predicate_Function (E)
               and then not Is_Invariant_Procedure (E)
+
+              --  Subprograms entities of actual parameter of generic packages
+              --  with external axioms are only needed for check of runtime
+              --  errors.
+
+              and then not (Is_Generic_Actual_Subprogram (E) and then
+                            Entity_In_External_Axioms (E))
             then
 
                --  Generate a logic function for Ada functions

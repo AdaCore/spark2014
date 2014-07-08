@@ -25,40 +25,40 @@
 
 with GNAT.Source_Info;
 
-with Atree;               use Atree;
-with Einfo;               use Einfo;
-with Namet;               use Namet;
-with Nlists;              use Nlists;
-with Sem_Ch12;            use Sem_Ch12;
-with Sem_Util;            use Sem_Util;
-with Sem_Aux;             use Sem_Aux;
-with Sinfo;               use Sinfo;
-with Sinput;              use Sinput;
-with String_Utils;        use String_Utils;
+with Atree;                use Atree;
+with Einfo;                use Einfo;
+with Namet;                use Namet;
+with Nlists;               use Nlists;
+with Sem_Aux;              use Sem_Aux;
+with Sem_Ch12;             use Sem_Ch12;
+with Sem_Util;             use Sem_Util;
+with Sinfo;                use Sinfo;
+with Sinput;               use Sinput;
+with String_Utils;         use String_Utils;
 
-with SPARK_Util;          use SPARK_Util;
+with SPARK_Util;           use SPARK_Util;
 
-with Why.Ids;             use Why.Ids;
-with Why.Sinfo;           use Why.Sinfo;
-with Why.Atree.Builders;  use Why.Atree.Builders;
-with Why.Atree.Mutators;  use Why.Atree.Mutators;
-with Why.Atree.Modules;   use Why.Atree.Modules;
-with Why.Atree.Accessors; use Why.Atree.Accessors;
-with Why.Gen.Decl;        use Why.Gen.Decl;
-with Why.Gen.Names;       use Why.Gen.Names;
-with Why.Gen.Binders;     use Why.Gen.Binders;
-with Why.Gen.Expr;        use Why.Gen.Expr;
-with Why.Inter;           use Why.Inter;
-with Why.Types;           use Why.Types;
-with Why.Conversions;     use Why.Conversions;
+with Why.Ids;              use Why.Ids;
+with Why.Sinfo;            use Why.Sinfo;
+with Why.Atree.Accessors;  use Why.Atree.Accessors;
+with Why.Atree.Builders;   use Why.Atree.Builders;
+with Why.Atree.Mutators;   use Why.Atree.Mutators;
+with Why.Atree.Modules;    use Why.Atree.Modules;
+with Why.Gen.Decl;         use Why.Gen.Decl;
+with Why.Gen.Names;        use Why.Gen.Names;
+with Why.Gen.Binders;      use Why.Gen.Binders;
+with Why.Gen.Expr;         use Why.Gen.Expr;
+with Why.Inter;            use Why.Inter;
+with Why.Types;            use Why.Types;
+with Why.Conversions;      use Why.Conversions;
 
-with Gnat2Why.Nodes;      use Gnat2Why.Nodes;
-with Gnat2Why.Util;       use Gnat2Why.Util;
-with Gnat2Why.Decls;      use Gnat2Why.Decls;
-with Gnat2Why.Expr;       use Gnat2Why.Expr;
+with Gnat2Why.Expr;        use Gnat2Why.Expr;
+with Gnat2Why.Nodes;       use Gnat2Why.Nodes;
+with Gnat2Why.Util;        use Gnat2Why.Util;
+with Gnat2Why.Decls;       use Gnat2Why.Decls;
+with Gnat2Why.Subprograms; use Gnat2Why.Subprograms;
 
 with Ada.Containers.Doubly_Linked_Lists;
-
 package body Gnat2Why.External_Axioms is
 
    package List_Of_Entity is new
@@ -929,13 +929,6 @@ package body Gnat2Why.External_Axioms is
               and then Ekind (Actual) = E_Function
             then
 
-               --  For function parameters, generate a new function
-               --  that introduced the needed conversions:
-               --  function <formal> "inline" (x1 : ty_formal_1, ...)
-               --                        : ty_formal =
-               --  <ty_actual__to__ty_formal> (<actual>
-               --      (<ty_formal1__to__ty_actual1> (x1)) ...)
-
                Open_Theory
                  (TFile,
                   New_Module
@@ -952,100 +945,174 @@ package body Gnat2Why.External_Axioms is
                     else "")
                   & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
-               Add_Use_For_Entity
-                 (P               => TFile,
-                  N               => Actual,
-                  Use_Kind        => EW_Clone_Default,
-                  With_Completion => False);
+               if Is_Generic_Actual_Subprogram (Actual) then
+                  pragma Assert (Is_Expression_Function (Actual));
 
-               declare
-                  F_Params : constant List_Id :=
-                    Parameter_Specifications
-                      (Get_Subprogram_Spec (Formal));
-                  F_Param : Node_Id := First (F_Params);
-                  F_Type : constant W_Type_Id :=
-                    Get_Logic_Type_Of_Ada_Type
-                      (Get_Actual_Type_Of_Ada_Generic_Type (Etype (Formal)),
-                       False);
-                  A_Params : constant List_Id :=
-                    Parameter_Specifications
-                      (Get_Subprogram_Spec (Actual));
-                  A_Param : Node_Id := First (A_Params);
-                  A_Type : constant W_Type_Id :=
-                    EW_Abstract (Etype (Actual));
-                  Binders : Binder_Array
-                    (1 .. Integer (List_Length (F_Params)));
-                  Args    : W_Expr_Array
-                    (1 .. Integer (List_Length (F_Params)));
-                  Count : Integer := 1;
-               begin
+                  --  Happens for default subprogram actuals.
+                  --  Use the definition in Actual:
+                  --  function <formal> "inline" (x1 : ty_formal_1, ...)
+                  --                        : ty_formal = <def_actual>
 
-                  pragma Assert (List_Length (F_Params) =
-                                   List_Length (A_Params));
+                  declare
+                     Expr_Fun_N         : constant Node_Id :=
+                       Get_Expression_Function (Actual);
+                     Raw_Binders        : constant Item_Array :=
+                       Compute_Subprogram_Parameters  (Actual, EW_Term);
+                     Why_Type           : constant W_Type_Id :=
+                       EW_Abstract (Etype (Actual));
+                     Logic_Why_Binders  : constant Binder_Array :=
+                       To_Binder_Array ((if Raw_Binders'Length = 0 then
+                                            (1 => (Regular, Unit_Param))
+                                        else Raw_Binders));
+                     Logic_Id           : constant W_Identifier_Id :=
+                       To_Why_Id (Actual, Domain => EW_Term, Local => True);
+                     Params             : constant Transformation_Params :=
+                       (File        => TFile.File,
+                        Theory      => TFile.Cur_Theory,
+                        Phase       => Generate_Logic,
+                        Gen_Marker   => False,
+                        Ref_Allowed => False);
+                  begin
+                     Ada_Ent_To_Why.Push_Scope (Symbol_Table);
 
-                  while Present (F_Param) loop
-                     declare
-                        A_Id   : constant Node_Id :=
-                          Defining_Identifier (A_Param);
-                        A_Type : constant W_Type_Id :=
-                          (if Use_Why_Base_Type (A_Id) then
-                           +Base_Why_Type (Unique_Entity (Etype (A_Id)))
-                           else EW_Abstract (Etype (A_Id)));
-                        F_Id   : constant Node_Id :=
-                          Defining_Identifier (F_Param);
-                        F_Type : constant W_Type_Id :=
-                          Get_Logic_Type_Of_Ada_Type
-                            (Get_Actual_Type_Of_Ada_Generic_Type
-                               (Etype (F_Id)), True);
-                        Name : constant W_Identifier_Id :=
-                          New_Identifier
-                            (Ada_Node => Empty,
-                             Name => Full_Name (F_Id),
-                             Typ  => F_Type);
-                     begin
-                        Binders (Count) :=
-                          (Ada_Node => F_Id,
-                           B_Name   => Name,
-                           B_Ent    => null,
-                           Mutable  => False);
+                     for Binder of Raw_Binders loop
+                        declare
+                           A : constant Node_Id := Binder.Main.Ada_Node;
+                        begin
 
-                        Args (Count) := Insert_Simple_Conversion
-                          (Domain        => EW_Term,
-                           Expr          => +Name,
-                           To            => +A_Type);
+                           --  Function parameters should not have effects.
 
-                        Next (F_Param);
-                        Next (A_Param);
-                        Count := Count + 1;
-                     end;
-                  end loop;
+                           pragma Assert (Present (A));
 
-                  Emit
-                    (TFile.Cur_Theory,
-                     New_Function_Decl
-                       (Domain      => EW_Term,
-                        Name        =>
-                          New_Identifier (Name => Short_Name (Formal)),
-                        Binders     => Binders,
-                        Return_Type => F_Type,
-                        Labels      =>
-                          Name_Id_Sets.To_Set (NID ("inline")),
-                        Def         =>
-                          Insert_Simple_Conversion
-                            (Domain        => EW_Term,
-                             Expr          => New_Call
-                               (Domain   => EW_Term,
-                                Name     => To_Why_Id (Actual,
-                                  Domain => EW_Term),
-                                Args     => Args,
-                                Typ      => A_Type),
-                             To            => F_Type)));
+                           if Present (A) then
+                              Ada_Ent_To_Why.Insert (Symbol_Table,
+                                                     Unique_Entity (A),
+                                                     Binder);
+                           end if;
+                        end;
+                     end loop;
 
-               end;
+                     Emit
+                       (TFile.Cur_Theory,
+                        New_Function_Decl
+                          (Domain      => EW_Term,
+                           Name        => Logic_Id,
+                           Binders     => Logic_Why_Binders,
+                           Labels      =>
+                             Name_Id_Sets.To_Set (NID ("inline")),
+                           Return_Type => Why_Type,
+                           Def         =>
+                             +Transform_Expr
+                             (Expression (Expr_Fun_N),
+                              Expected_Type => Why_Type,
+                              Domain        => EW_Term,
+                              Params        => Params)));
+
+                     Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+                  end;
+               else
+
+                  --  For function parameters, generate a new function
+                  --  that introduced the needed conversions:
+                  --  function <formal> "inline" (x1 : ty_formal_1, ...)
+                  --                        : ty_formal =
+                  --  <ty_actual__to__ty_formal> (<actual>
+                  --      (<ty_formal1__to__ty_actual1> (x1)) ...)
+
+                  Add_Use_For_Entity
+                    (P               => TFile,
+                     N               => Actual,
+                     Use_Kind        => EW_Clone_Default,
+                     With_Completion => False);
+
+                  declare
+                     F_Params : constant List_Id :=
+                       Parameter_Specifications
+                         (Get_Subprogram_Spec (Formal));
+                     F_Param : Node_Id := First (F_Params);
+                     F_Type : constant W_Type_Id :=
+                       Get_Logic_Type_Of_Ada_Type
+                         (Get_Actual_Type_Of_Ada_Generic_Type (Etype (Formal)),
+                          False);
+                     A_Params : constant List_Id :=
+                       Parameter_Specifications
+                         (Get_Subprogram_Spec (Actual));
+                     A_Param : Node_Id := First (A_Params);
+                     A_Type : constant W_Type_Id :=
+                       EW_Abstract (Etype (Actual));
+                     Binders : Binder_Array
+                       (1 .. Integer (List_Length (F_Params)));
+                     Args    : W_Expr_Array
+                       (1 .. Integer (List_Length (F_Params)));
+                     Count : Integer := 1;
+                  begin
+
+                     pragma Assert (List_Length (F_Params) =
+                                      List_Length (A_Params));
+
+                     while Present (F_Param) loop
+                        declare
+                           A_Id   : constant Node_Id :=
+                             Defining_Identifier (A_Param);
+                           A_Type : constant W_Type_Id :=
+                             (if Use_Why_Base_Type (A_Id) then
+                              +Base_Why_Type (Unique_Entity (Etype (A_Id)))
+                              else EW_Abstract (Etype (A_Id)));
+                           F_Id   : constant Node_Id :=
+                             Defining_Identifier (F_Param);
+                           F_Type : constant W_Type_Id :=
+                             Get_Logic_Type_Of_Ada_Type
+                               (Get_Actual_Type_Of_Ada_Generic_Type
+                                  (Etype (F_Id)), True);
+                           Name : constant W_Identifier_Id :=
+                             New_Identifier
+                               (Ada_Node => Empty,
+                                Name => Full_Name (F_Id),
+                                Typ  => F_Type);
+                        begin
+                           Binders (Count) :=
+                             (Ada_Node => F_Id,
+                              B_Name   => Name,
+                              B_Ent    => null,
+                              Mutable  => False);
+
+                           Args (Count) := Insert_Simple_Conversion
+                             (Domain        => EW_Term,
+                              Expr          => +Name,
+                              To            => +A_Type);
+
+                           Next (F_Param);
+                           Next (A_Param);
+                           Count := Count + 1;
+                        end;
+                     end loop;
+
+                     Emit
+                       (TFile.Cur_Theory,
+                        New_Function_Decl
+                          (Domain      => EW_Term,
+                           Name        =>
+                             New_Identifier (Name => Short_Name (Formal)),
+                           Binders     => Binders,
+                           Return_Type => F_Type,
+                           Labels      =>
+                             Name_Id_Sets.To_Set (NID ("inline")),
+                           Def         =>
+                             Insert_Simple_Conversion
+                               (Domain        => EW_Term,
+                                Expr          => New_Call
+                                  (Domain   => EW_Term,
+                                   Name     => To_Why_Id (Actual,
+                                     Domain => EW_Term),
+                                   Args     => Args,
+                                   Typ      => A_Type),
+                                To            => F_Type)));
+
+                  end;
+               end if;
 
                Close_Theory (TFile,
                              Kind => Definition_Theory);
-
             else
                pragma Assert (Ekind (Formal) = E_Function
                               and then Ekind (Actual) = E_Operator);
