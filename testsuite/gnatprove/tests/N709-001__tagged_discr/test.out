@@ -1,0 +1,30 @@
+classwide.ads:35:14: info: postcondition proved
+classwide.ads:39:14: info: postcondition proved
+classwide.ads:43:14: warning: postcondition might fail, requires Is_Zero (V)
+classwide.ads:47:14: info: postcondition proved
+classwide.ads:51:14: info: postcondition proved
+classwide.ads:68:14: warning: postcondition might fail, requires Is_Zero (V)
+classwide.ads:102:14: warning: postcondition might fail, requires Is_Zero (V)
+tagged_discr.adb:13:08: info: discriminant check proved
+tagged_discr.adb:16:14: info: discriminant check proved
+tagged_discr.adb:18:14: info: discriminant check proved
+tagged_discr.adb:30:08: info: discriminant check proved
+tagged_discr.adb:33:14: info: discriminant check proved
+tagged_discr.adb:35:14: info: discriminant check proved
+tagged_discr.adb:37:08: info: discriminant check proved
+tagged_discr.adb:49:08: info: discriminant check proved
+tagged_discr.adb:52:14: warning: discriminant check might fail
+tagged_discr.adb:54:14: info: discriminant check proved
+tagged_discr.ads:17:09: info: discriminant check proved
+tagged_discr.ads:19:28: info: discriminant check proved
+tagged_discr.ads:20:29: info: discriminant check proved
+tagged_discr.ads:26:14: warning: postcondition might fail, requires Is_Zero (V)
+tagged_discr.ads:33:09: info: discriminant check proved
+tagged_discr.ads:35:28: info: discriminant check proved
+tagged_discr.ads:36:29: info: discriminant check proved
+tagged_discr.ads:37:10: info: discriminant check proved
+tagged_discr.ads:43:14: warning: postcondition might fail, requires Is_Zero (V)
+tagged_discr.ads:57:09: info: discriminant check proved
+tagged_discr.ads:59:28: info: discriminant check proved
+tagged_discr.ads:60:29: info: discriminant check proved
+tagged_discr.ads:66:14: warning: postcondition might fail, requires Is_Zero (V)

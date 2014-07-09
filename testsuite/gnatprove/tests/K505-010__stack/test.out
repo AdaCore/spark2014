@@ -1,0 +1,16 @@
+stacks.adb:10:08: info: discriminant check proved
+stacks.adb:10:17: info: discriminant check proved
+stacks.adb:10:22: warning: overflow check might fail
+stacks.adb:11:08: info: discriminant check proved
+stacks.adb:11:16: info: discriminant check proved
+stacks.adb:11:16: warning: array index check might fail
+stacks.adb:21:08: info: discriminant check proved
+stacks.adb:21:17: info: discriminant check proved
+stacks.adb:21:22: info: range check proved
+stacks.ads:21:14: info: postcondition proved
+stacks.ads:21:34: info: overflow check proved
+stacks.ads:25:26: info: postcondition proved
+stacks.ads:37:50: info: discriminant check proved
+stacks.ads:43:50: info: discriminant check proved
+stacks.ads:43:58: info: discriminant check proved
+stacks.ads:43:58: warning: array index check might fail

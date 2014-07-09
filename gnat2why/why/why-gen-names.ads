@@ -169,6 +169,7 @@ package Why.Gen.Names is
       WNE_Attr_Last,
       WNE_Attr_Length,
       WNE_Attr_Modulus,
+      WNE_Attr_Tag,
 
       --  Integer value of the inverse of the "small" of a fixed-point type
       WNE_Attr_Small,
@@ -191,6 +192,24 @@ package Why.Gen.Names is
       WNE_Def,
       WNE_Dummy,
       WNE_Dynamic_Property,
+
+      --  Prefix for Why3 field names corresponding to record components
+      WNE_Rec_Comp_Prefix,
+
+      --  Name of the Why3 field representing extension components in a tagged
+      --  type or a class-wide type.
+      WNE_Rec_Extension,  --  rec__ext__
+
+      --  Suffix of the above extension field, to be used in related functions
+      WNE_Rec_Extension_Suffix,  --  ext__
+
+      --  Null extension for creating a value of a specific tagged type
+      WNE_Null_Extension,  --  __null_ext__
+
+      --  Name of the function aggregating the extension components and the
+      --  special extension field rec__ext__ in the derived type, to generate
+      --  a value of the special extension field rec__ext__ in the root type.
+      WNE_Hide_Extension,  --  hide_ext__
 
       --  Division operator for a fixed-point type
       WNE_Fixed_Point_Div,
@@ -218,6 +237,10 @@ package Why.Gen.Names is
       --  Polymorphic __havoc procedure sets the value of its parameter to any
       --  possible value allowed by its type.
       WNE_Havoc,
+
+      --  Prefix for name of functions which extract the value of an extension
+      --  component from the extension field of a value of the root type.
+      WNE_Extract_Prefix,
 
       WNE_Of_Array,
       WNE_Of_Base,

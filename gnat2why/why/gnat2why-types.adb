@@ -207,10 +207,16 @@ package body Gnat2Why.Types is
          end case;
       end Translate_Underlying_Type;
 
-      --  Start of Translate_Type
+   --  Start of Translate_Type
 
    begin
-      if Is_Standard_Boolean_Type (E) or else E = Universal_Fixed then
+      if Is_Standard_Boolean_Type (E)
+        or else E = Universal_Fixed
+
+        --  Classwide types are translated as their corresponding specific
+        --  tagged types.
+        or else Ekind (E) in E_Class_Wide_Type | E_Class_Wide_Subtype
+      then
          New_Theory := False;
          return;
 

@@ -524,7 +524,7 @@ package body SPARK_Definition is
       case Nkind (N) is
 
          when N_Abstract_Subprogram_Declaration =>
-            Mark_Violation ("abstract subprogram", N);
+            Mark_Subprogram_Declaration (N);
 
          when N_Aggregate =>
             if not Is_Update_Aggregate (N)
@@ -2221,7 +2221,41 @@ package body SPARK_Definition is
 
                   Next_Entity (Field);
                end loop;
+
+               --  Fill in the map between classwide types and their
+               --  corresponding specific type, in the case of the
+               --  implicitly declared classwide type T'Class.
+
+               if Is_Tagged_Type (E) then
+                  Add_Classwide_To_Tagged (Class_Wide_Type (E), E);
+               end if;
             end;
+
+         --  Fill in the map between classwide types and their corresponding
+         --  specific type, in the case of a user-defined classwide type.
+
+         when E_Class_Wide_Type | E_Class_Wide_Subtype =>
+            if Nkind (Parent (E)) = N_Subtype_Declaration
+              and then Defining_Entity (Parent (E)) = E
+            then
+               declare
+                  Subty : constant Node_Id :=
+                    Subtype_Indication (Parent (E));
+                  Ty : Node_Id;
+               begin
+                  case Nkind (Subty) is
+                     when N_Attribute_Reference =>
+                        pragma Assert (Attribute_Name (Subty) = Name_Class);
+                        Ty := Entity (Prefix (Subty));
+                     when N_Identifier | N_Expanded_Name =>
+                        Ty := Entity (Subty);
+                     when others =>
+                        raise Program_Error;
+                  end case;
+
+                  Add_Classwide_To_Tagged (E, Unique_Entity (Ty));
+               end;
+            end if;
 
          --  In the case of a package instantiation of a generic, the full view
          --  of a private type may not have a corresponding declaration. It is
@@ -2260,10 +2294,6 @@ package body SPARK_Definition is
          end case;
 
          --  Now mark the type itself
-
-         if Is_Tagged_Type (E) then
-            Mark_Violation ("tagged type", E);
-         end if;
 
          if Has_Invariants (E) then
 
@@ -2417,10 +2447,7 @@ package body SPARK_Definition is
                Mark_Violation (E, From => Base_Type (E));
             end if;
 
-            if Is_Interface (E) then
-               Mark_Violation ("interface", E);
-
-            else
+            if not Is_Interface (E) then
                declare
                   Field : Node_Id := First_Component_Or_Discriminant (E);
                   Typ   : Entity_Id;
@@ -2429,11 +2456,8 @@ package body SPARK_Definition is
                   while Present (Field) loop
                      Typ := Etype (Field);
 
-                     if Is_Tag (Field) then
-                        Mark_Violation ("tagged type", E);
-                     end if;
-
-                     if Ekind (Field) in Object_Kind
+                     if not Is_Tag (Field)
+                       and then Ekind (Field) in Object_Kind
                        and then not In_SPARK (Typ)
                      then
                         Mark_Violation (Typ, From => Typ);
@@ -2467,7 +2491,7 @@ package body SPARK_Definition is
 
          when E_Class_Wide_Type    |
               E_Class_Wide_Subtype =>
-            Mark_Violation ("type definition", E);
+            null;
 
          when Access_Kind =>
             Mark_Violation ("access type", E);
@@ -2476,15 +2500,6 @@ package body SPARK_Definition is
             Mark_Violation ("tasking", E);
 
          when Private_Kind =>
-
-            --  Private types that are not a record type or subtype are in
-            --  SPARK.
-
-            if Ekind_In (E, E_Record_Type_With_Private,
-                         E_Record_Subtype_With_Private)
-            then
-               Mark_Violation ("type definition", E);
-            end if;
 
             --  Private types may export discriminants. Discriminants with
             --  non-SPARK type should be disallowed here

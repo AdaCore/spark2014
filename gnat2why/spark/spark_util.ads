@@ -204,6 +204,13 @@ package SPARK_Util is
    --  Store the correspondance between the Full and Partial views of the same
    --  entity, for deferred constants and private types.
 
+   procedure Add_Classwide_To_Tagged (Classwide, Ty : Entity_Id);
+   --  Store the correspondance between a classwide type and the specific
+   --  corresponding type.
+
+   function Corresponding_Tagged (Classwide : Entity_Id) return Entity_Id;
+   --  Returns the specific tagged type corresponding to a classwide type
+
    function In_Private_Declarations (Decl : Node_Id) return Boolean;
    --  Returns whether Decl belongs to the list of private declarations of a
    --  package.
@@ -275,8 +282,8 @@ package SPARK_Util is
 
    function Root_Record_Component (E : Entity_Id) return Entity_Id;
    --  Given a component or discriminant of a record (sub-)type, return the
-   --  corresponding component or discriminant of the root type. This is the
-   --  identity when E is the component of a root type.
+   --  corresponding component or discriminant of the root type, if any. This
+   --  is the identity when E is the component of a root type.
 
    function Search_Component_By_Name
      (Rec  : Entity_Id;

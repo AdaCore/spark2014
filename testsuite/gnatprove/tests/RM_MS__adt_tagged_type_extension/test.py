@@ -1,3 +1,4 @@
 from test_support import *
 
-prove_all ()
+# flow analysis does not yet support tagged types
+prove ()

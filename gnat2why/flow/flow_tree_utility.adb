@@ -156,6 +156,9 @@ package body Flow_Tree_Utility is
             --  We should only get here from Magic_String_To_Node_Sets
             return Empty;
 
+         when N_Abstract_Subprogram_Declaration =>
+            return Empty;
+
          when others =>
             raise Why.Unexpected_Node;
       end case;

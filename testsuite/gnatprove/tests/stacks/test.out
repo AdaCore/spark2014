@@ -1,0 +1,56 @@
+main.adb:5:11: warning: subprogram "Main" has no effect
+main.adb:8:04: warning: assuming "Put_Line" has no effect on global items
+main.adb:8:04: warning: no Global contract available for "Put_Line"
+main.adb:9:04: warning: assuming "Get" has no effect on global items
+main.adb:9:04: warning: no Global contract available for "Get"
+main.adb:10:04: warning: assuming "Skip_Line" has no effect on global items
+main.adb:10:04: warning: no Global contract available for "Skip_Line"
+main.adb:18:10: warning: assuming "Put_Line" has no effect on global items
+main.adb:18:10: warning: no Global contract available for "Put_Line"
+main.adb:21:38: warning: assuming "Get_Line" has no effect on global items
+main.adb:21:38: warning: no Global contract available for "Get_Line"
+main.adb:26:40: warning: range check might fail
+main.adb:27:16: warning: "S.Data" might not be initialized
+main.adb:27:16: warning: "S.Top" might not be initialized
+main.adb:27:17: warning: precondition might fail
+main.adb:28:16: warning: assuming "Put_Line" has no effect on global items
+main.adb:28:16: warning: no Global contract available for "Put_Line"
+main.adb:30:16: warning: assuming "New_Line" has no effect on global items
+main.adb:30:16: warning: no Global contract available for "New_Line"
+main.adb:32:44: warning: range check might fail
+main.adb:33:16: warning: assuming "Get" has no effect on global items
+main.adb:33:16: warning: no Global contract available for "Get"
+main.adb:33:21: info: range check proved
+main.adb:34:16: warning: "S.Data" might not be initialized
+main.adb:34:16: warning: "S.Top" might not be initialized
+main.adb:34:17: warning: precondition might fail
+main.adb:35:16: warning: assuming "Put_Line" has no effect on global items
+main.adb:35:16: warning: no Global contract available for "Put_Line"
+main.adb:37:16: warning: assuming "New_Line" has no effect on global items
+main.adb:37:16: warning: no Global contract available for "New_Line"
+stacks.adb:11:08: info: discriminant check proved
+stacks.adb:11:17: info: discriminant check proved
+stacks.adb:11:22: warning: overflow check might fail
+stacks.adb:12:08: info: discriminant check proved
+stacks.adb:12:16: info: discriminant check proved
+stacks.adb:12:16: warning: array index check might fail
+stacks.adb:21:08: info: discriminant check proved
+stacks.adb:21:17: info: discriminant check proved
+stacks.adb:21:22: info: range check proved
+stacks.adb:26:07: warning: assuming "Put" has no effect on global items
+stacks.adb:26:07: warning: no Global contract available for "Put"
+stacks.adb:27:30: info: discriminant check proved
+stacks.adb:28:10: warning: assuming "Put" has no effect on global items
+stacks.adb:28:10: warning: no Global contract available for "Put"
+stacks.adb:28:31: info: discriminant check proved
+stacks.adb:28:38: warning: array index check might fail
+stacks.adb:30:07: warning: assuming "Put" has no effect on global items
+stacks.adb:30:07: warning: no Global contract available for "Put"
+stacks.ads:28:14: info: postcondition proved
+stacks.ads:28:34: info: overflow check proved
+stacks.ads:48:14: info: postcondition proved
+stacks.ads:69:14: warning: subprogram "Print" has no effect
+stacks.ads:78:50: info: discriminant check proved
+stacks.ads:84:50: info: discriminant check proved
+stacks.ads:84:58: info: discriminant check proved
+stacks.ads:84:58: warning: array index check might fail

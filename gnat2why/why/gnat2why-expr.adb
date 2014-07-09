@@ -6715,7 +6715,9 @@ package body Gnat2Why.Expr is
                         end loop;
                      end;
 
-                  when Private_Kind =>
+                  when Private_Kind
+                     | E_Class_Wide_Type
+                     | E_Class_Wide_Subtype =>
                      null;
 
                   when others =>
@@ -8029,12 +8031,9 @@ package body Gnat2Why.Expr is
          In_Expr   : Node_Id) return W_Expr_Id
       is
          True_Expr  : constant W_Expr_Id :=
-           (if Domain = EW_Pred then +True_Pred
-            else
-               New_Literal (Domain => EW_Term,
-                            Value  => EW_True));
-      begin
+           (if Domain = EW_Pred then +True_Pred else +True_Term);
 
+      begin
          --  First handle the simpler case of s subtype mark
 
          if Nkind (In_Expr) in N_Identifier | N_Expanded_Name

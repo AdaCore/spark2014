@@ -52,6 +52,25 @@ package body SPARK_Util is
    --  Map from full views of entities to their partial views, for deferred
    --  constants and private types.
 
+   Classwide_To_Tagged_Entities : Node_Maps.Map;
+   --  Map from classwide types to the corresponding specific tagged type
+
+   -----------------------------
+   -- Add_Classwide_To_Tagged --
+   -----------------------------
+
+   procedure Add_Classwide_To_Tagged (Classwide, Ty : Entity_Id) is
+   begin
+      Classwide_To_Tagged_Entities.Insert (Classwide, Ty);
+   end Add_Classwide_To_Tagged;
+
+   --------------------------
+   -- Corresponding_Tagged --
+   --------------------------
+
+   function Corresponding_Tagged (Classwide : Entity_Id) return Entity_Id is
+      (Classwide_To_Tagged_Entities.Element (Classwide));
+
    -------------------------------
    -- Add_Full_And_Partial_View --
    -------------------------------
@@ -1493,11 +1512,8 @@ package body SPARK_Util is
    ---------------------------
 
    function Root_Record_Component (E : Entity_Id) return Entity_Id is
-
       Rec_Type : constant Entity_Id := Unique_Entity (Scope (E));
       Root     : constant Entity_Id := Root_Record_Type (Rec_Type);
-
-   --  Start of Root_Record_Component
 
    begin
       --  If E is the component of a root type, return it

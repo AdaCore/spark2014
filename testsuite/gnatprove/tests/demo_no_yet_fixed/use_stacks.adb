@@ -6,8 +6,6 @@ with  Generic_Stack;
 
 package body Use_Stacks
 is
-   pragma SPARK_Mode (Off);  --  tagged type
-
    procedure Fill_ASM_Stack
    is
    begin

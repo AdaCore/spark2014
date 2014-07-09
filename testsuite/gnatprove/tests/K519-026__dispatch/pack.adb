@@ -1,5 +1,4 @@
 package body Pack is
-   pragma SPARK_Mode (Off);
 
    Value : Child;
 

@@ -1,7 +1,7 @@
 -- This package implement an extension of the type adt_stack
 -- with ADT_Stack; use ADT_Stack; -- inherite clause ?
 package ADT_Stack.Child
-is pragma SPARK_Mode (Off);  --  tagged type
+is
    type Child_Stack is new ADT_Stack.Stack with private;
 
    procedure Clear(S : out Child_Stack);

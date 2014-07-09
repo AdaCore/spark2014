@@ -297,7 +297,8 @@ package Why.Gen.Expr is
                                                  | Attribute_Length
                                                  | Attribute_Modulus
                                                  | Attribute_Image
-                                                 | Attribute_Value;
+                                                 | Attribute_Value
+                                                 | Attribute_Tag;
 
    function New_Attribute_Expr
      (Ty            : Entity_Id;

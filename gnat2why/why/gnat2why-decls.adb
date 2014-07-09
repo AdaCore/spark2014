@@ -156,7 +156,7 @@ package body Gnat2Why.Decls is
      (File : in out Why_Section;
       E    : Entity_Id)
    is
-      Typ       : constant W_Type_Id := EW_Abstract (Etype (E));
+      Typ : constant W_Type_Id := EW_Abstract (Etype (E));
 
    begin
       --  Start with opening the theory to define, as the creation of a

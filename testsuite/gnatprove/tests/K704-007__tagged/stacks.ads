@@ -1,4 +1,4 @@
-package Stacks is pragma SPARK_Mode (Off);  --  tagged types
+package Stacks is
 
    type Stack (Max : Positive) is tagged private;
 

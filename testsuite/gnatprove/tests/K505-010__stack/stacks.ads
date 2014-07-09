@@ -2,7 +2,6 @@ with Error;
 use Error;
 
 package Stacks is
-   pragma SPARK_Mode (Off);
 
    Empty_Stack_Str : constant String := "empty stack";
 
@@ -32,7 +31,7 @@ private
 
    type Stack (Max : Positive) is tagged record
       Top  : Natural := 0;
-      Data : Elements (1 .. Max);
+      Data : Elements (1 .. Max) := (others => 0);
    end record;
 
    function Size (S : Stack) return Natural is (S.Top);

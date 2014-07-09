@@ -1,4 +1,4 @@
-package Use_Stacks is pragma SPARK_Mode (Off);  --  tagged types
+package Use_Stacks is
 
    procedure Fill_ASM_Stack;
    procedure Fill_ADT_Stack;

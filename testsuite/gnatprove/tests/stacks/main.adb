@@ -2,7 +2,7 @@ with Ada.Text_IO;         use Ada.Text_IO;
 with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
 with Stacks;              use Stacks;
 
-procedure Main is pragma SPARK_Mode (Off); --  tagged types
+procedure Main is
    Max : Positive;
 begin
    Put_Line ("how many elements in stack at most?");
@@ -10,7 +10,8 @@ begin
    Skip_Line;
 
    declare
-      S : Stack (Max);
+      Max_Cst : constant Positive := Max;
+      S : Stack (Max_Cst);
 
    begin
       loop

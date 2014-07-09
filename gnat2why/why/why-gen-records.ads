@@ -59,8 +59,7 @@ package Why.Gen.Records is
       Domain   : EW_Domain;
       Name     : W_Expr_Id;
       Field    : Entity_Id;
-      Ty       : Entity_Id)
-      return W_Expr_Id;
+      Ty       : Entity_Id) return W_Expr_Id;
    --  Generate a Why3 expression that corresponds to the cases where a record
    --  field is present in an Ada record.
 

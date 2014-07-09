@@ -4,7 +4,6 @@ with ADT_Stack;
 with Ada.Text_IO;
 procedure Main
 is
-   pragma SPARK_Mode (Off);  --  tagged type
    X, Y : Integer := 0;
    My_Stack : ADT_Stack.Stack;
    A        : Integer;

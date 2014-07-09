@@ -1,4 +1,4 @@
-package Stacks is pragma SPARK_Mode (Off); -- tagged type
+package Stacks is
 
    type Element is new Integer;
    type Elements is array (Integer range <>) of Element;
@@ -71,7 +71,7 @@ package Stacks is pragma SPARK_Mode (Off); -- tagged type
 private
 
    type Stack (Max : Positive) is tagged record
-      Top  : Natural := 0;
+      Top  : Natural;
       Data : Elements (1 .. Max);
    end record;
 

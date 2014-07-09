@@ -131,8 +131,7 @@ package body Why.Gen.Names is
    -- Attr_To_Why_Name --
    ----------------------
 
-   function Attr_To_Why_Name (A : Attribute_Id) return Why_Name_Enum
-   is
+   function Attr_To_Why_Name (A : Attribute_Id) return Why_Name_Enum is
    begin
       case A is
          when Attribute_Constrained => return WNE_Attr_Constrained;
@@ -143,6 +142,7 @@ package body Why.Gen.Names is
          when Attribute_Length      => return WNE_Attr_Length;
          when Attribute_Value       => return WNE_Attr_Value;
          when Attribute_Small       => return WNE_Attr_Small;
+         when Attribute_Tag         => return WNE_Attr_Tag;
          when others =>
             raise Program_Error;
       end case;
@@ -582,7 +582,7 @@ package body Why.Gen.Names is
          when WNE_Dummy                => return "dummy";
          when WNE_Check_Not_First      => return "check_not_first";
          when WNE_Check_Not_Last       => return "check_not_last";
-         when WNE_Attr_Constrained     => return "attr__is_constrained";
+         when WNE_Attr_Constrained     => return "attr__constrained";
          when WNE_Attr_First           => return "first";
          when WNE_Attr_Last            => return "last";
          when WNE_Attr_Length          => return "length";
@@ -598,6 +598,13 @@ package body Why.Gen.Names is
               & "__pre_check";
          when WNE_Rec_Split_Discrs     => return "__split_discrs";
          when WNE_Rec_Split_Fields     => return "__split_fields";
+         when WNE_Attr_Tag             => return "attr__tag";
+         when WNE_Rec_Extension        => return "rec__ext__";
+         when WNE_Rec_Extension_Suffix => return "ext__";
+         when WNE_Rec_Comp_Prefix      => return "rec__";
+         when WNE_Extract_Prefix       => return "extract__";
+         when WNE_Null_Extension       => return "null_ext__";
+         when WNE_Hide_Extension       => return "hide_ext__";
       end case;
    end To_String;
 

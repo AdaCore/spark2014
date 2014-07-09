@@ -3,8 +3,13 @@ theory Main_Main
   (* ignore blocks of code *)
   function ___ignore 'a : ()
 
-  (* special private type *)
+  (* special private type for private types not in SPARK and hidden extension
+  components *)
   type __private
+
+  (* dummy value for the null extension when the dynamic type matches the
+  static type *)
+  function __null_ext__ : __private
 
   (* special type for representation of fixed_point types *)
   type __fixed = int

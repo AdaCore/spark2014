@@ -781,8 +781,16 @@ package body Why.Inter is
    begin
       if Is_Standard_Boolean_Type (N) then
          return EW_Bool_Type;
+
       elsif N = Universal_Fixed then
          return EW_Real_Type;
+
+      --  Classwide types are translated as their corresponding specific tagged
+      --  types.
+
+      elsif Ekind (N) in E_Class_Wide_Type | E_Class_Wide_Subtype then
+         return EW_Abstract_Shared (Corresponding_Tagged (N), Kind);
+
       elsif Ekind (N) in Private_Kind
         or else Has_Private_Declaration (N)
       then
@@ -795,11 +803,13 @@ package body Why.Inter is
          else
             return New_Kind_Base_Type (N, Kind);
          end if;
+
       elsif not Entity_In_SPARK (N) then
 
          --  This can happen for globals
 
          return EW_Private_Type;
+
       else
          return New_Kind_Base_Type (N, Kind);
       end if;
@@ -1079,11 +1089,12 @@ package body Why.Inter is
    -- To_Why_Id --
    ---------------
 
-   function To_Why_Id (E      : Entity_Id;
-                       Domain : EW_Domain := EW_Prog;
-                       Local  : Boolean := False;
-                       Rec    : Entity_Id := Empty;
-                       Typ    : W_Type_Id := Why_Empty) return W_Identifier_Id
+   function To_Why_Id
+     (E      : Entity_Id;
+      Domain : EW_Domain := EW_Prog;
+      Local  : Boolean := False;
+      Rec    : Entity_Id := Empty;
+      Typ    : W_Type_Id := Why_Empty) return W_Identifier_Id
    is
       Suffix : constant String :=
         (if Ekind (E) in Subprogram_Kind | E_Subprogram_Body
@@ -1107,7 +1118,7 @@ package body Why.Inter is
       if Ekind (E) in E_Component | E_Discriminant then
          declare
             Field : constant String :=
-              "rec__" & Get_Name_String (Chars (E));
+              To_String (WNE_Rec_Comp_Prefix) & Get_Name_String (Chars (E));
             Ada_N : constant Node_Id :=
               (if Rec = Empty then
                   Unique_Entity (Scope (E)) else Rec);
@@ -1125,12 +1136,15 @@ package body Why.Inter is
                     Typ      => Typ);
             end if;
          end;
+
       elsif Local then
          return New_Identifier (Ada_Node => E, Name => Suffix, Typ => Typ);
+
       elsif Suffix = "" then
          return New_Identifier (Ada_Node => E,
                                 Name     => Full_Name (E),
                                 Typ      => Typ);
+
       elsif Ekind (E) in Subprogram_Kind and then Domain = EW_Prog then
          return
            New_Identifier
@@ -1138,6 +1152,7 @@ package body Why.Inter is
               Name     => Suffix,
               Module   => E_Axiom_Module (E),
               Typ      => Typ);
+
       else
          return
            New_Identifier
@@ -1172,13 +1187,21 @@ package body Why.Inter is
    -- To_Why_Type --
    -----------------
 
-   function To_Why_Type (E     : Entity_Id;
-                         Local : Boolean := False)
-                         return W_Name_Id is
+   function To_Why_Type
+     (E     : Entity_Id;
+      Local : Boolean := False) return W_Name_Id
+   is
       Suffix : constant String := Short_Name (E);
    begin
-      if Local then
+      --  Classwide types are translated as their corresponding specific tagged
+      --  types.
+
+      if Ekind (E) in E_Class_Wide_Type | E_Class_Wide_Subtype then
+         return To_Why_Type (Corresponding_Tagged (E), Local);
+
+      elsif Local then
          return New_Name (Ada_Node => E, Symbol => NID (Suffix));
+
       else
          return
            New_Name
@@ -1189,8 +1212,7 @@ package body Why.Inter is
 
    end To_Why_Type;
 
-   function To_Why_Type (T : String) return W_Type_Id
-   is
+   function To_Why_Type (T : String) return W_Type_Id is
    begin
       if T = SPARK_Xrefs.Name_Of_Heap_Variable then
          return Type_Of_Heap;
