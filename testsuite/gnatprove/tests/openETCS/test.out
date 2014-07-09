@@ -17,10 +17,8 @@ deceleration_curve.adb:48:39: warning: overflow check might fail
 deceleration_curve.adb:48:48: warning: overflow check might fail
 deceleration_curve.adb:50:48: info: division check proved
 deceleration_curve.adb:50:48: warning: overflow check might fail
-deceleration_curve.adb:51:12: info: range check proved
 deceleration_curve.adb:51:12: warning: overflow check might fail
 deceleration_curve.adb:53:10: warning: assertion might fail
-deceleration_curve.adb:59:25: info: range check proved
 deceleration_curve.adb:59:25: warning: overflow check might fail
 deceleration_curve.adb:61:31: warning: overflow check might fail
 deceleration_curve.adb:70:36: info: division check proved
@@ -31,13 +29,11 @@ deceleration_curve.adb:90:19: warning: overflow check might fail
 deceleration_curve.adb:90:21: warning: assuming "Sqrt" has no effect on global items
 deceleration_curve.adb:90:21: warning: no Global contract available for "Sqrt"
 deceleration_curve.adb:90:32: warning: overflow check might fail
-deceleration_curve.adb:91:13: info: range check proved
 deceleration_curve.adb:91:13: warning: overflow check might fail
 deceleration_curve.adb:91:29: warning: overflow check might fail
 deceleration_curve.adb:92:13: warning: overflow check might fail
 deceleration_curve.adb:92:46: info: division check proved
 deceleration_curve.adb:92:46: info: overflow check proved
-deceleration_curve.adb:92:46: info: range check proved
 deceleration_curve.adb:97:36: warning: overflow check might fail
 deceleration_curve.adb:97:36: warning: range check might fail
 deceleration_curve.adb:107:09: warning: precondition might fail
@@ -66,29 +62,29 @@ example.adb:4:13: info: overflow check proved
 example.adb:5:20: info: overflow check proved
 example.ads:5:14: info: postcondition proved
 sec_3_13_2_monitoring_inputs.adb:31:27: info: precondition proved
-sec_3_13_2_monitoring_inputs.adb:32:46: info: range check proved
+sec_3_13_2_monitoring_inputs.adb:32:61: warning: range check might fail
 sec_3_13_2_monitoring_inputs.adb:37:27: info: precondition proved
-sec_3_13_2_monitoring_inputs.adb:38:46: info: range check proved
+sec_3_13_2_monitoring_inputs.adb:38:61: warning: range check might fail
 sec_3_13_2_monitoring_inputs.ads:70:15: info: length check proved
 sec_3_13_2_monitoring_inputs.ads:164:15: info: length check proved
 sec_3_13_2_monitoring_inputs.ads:169:15: info: length check proved
 sec_3_13_2_monitoring_inputs.ads:183:08: info: postcondition proved
 sec_3_13_2_monitoring_inputs.ads:184:24: info: precondition proved
-sec_3_13_2_monitoring_inputs.ads:185:43: info: range check proved
+sec_3_13_2_monitoring_inputs.ads:185:58: info: range check proved
 sec_3_13_2_monitoring_inputs.ads:199:08: info: postcondition proved
 sec_3_13_2_monitoring_inputs.ads:200:24: info: precondition proved
-sec_3_13_2_monitoring_inputs.ads:201:43: info: range check proved
+sec_3_13_2_monitoring_inputs.ads:201:58: info: range check proved
 sec_3_13_2_monitoring_inputs.ads:243:46: info: precondition proved
 sec_3_13_2_monitoring_inputs.ads:247:14: warning: subprogram "Dummy" has no effect
 sec_3_13_4_gradient_accel_decel.ads:26:24: warning: unused variable "D"
 sec_3_13_6_deceleration.adb:26:37: warning: precondition might fail
 sec_3_13_6_deceleration.adb:26:37: warning: range check might fail
-sec_3_13_6_deceleration.adb:27:56: info: range check proved
+sec_3_13_6_deceleration.adb:27:71: warning: range check might fail
 sec_3_13_6_deceleration.ads:34:43: warning: unused variable "D"
 sec_3_13_6_deceleration.ads:39:06: warning: postcondition might fail, requires A_brake_emergency'Result = (Step_Function.get_value (A_brake_emergency_model, V))
 sec_3_13_6_deceleration.ads:40:37: info: range check proved
 sec_3_13_6_deceleration.ads:40:37: warning: precondition might fail
-sec_3_13_6_deceleration.ads:41:56: info: range check proved
+sec_3_13_6_deceleration.ads:41:71: info: range check proved
 sec_3_13_6_deceleration.ads:45:23: warning: precondition might fail
 sec_3_13_6_deceleration.ads:46:23: warning: overflow check might fail
 sec_3_13_6_deceleration.ads:46:26: warning: precondition might fail
@@ -223,9 +219,7 @@ step_function_test.adb:67:19: warning: assertion might fail, requires Minimum_Un
 units.adb:24:38: warning: overflow check might fail
 units.adb:24:48: info: division check proved
 units.adb:24:48: info: overflow check proved
-units.adb:24:48: info: range check proved
 units.ads:37:22: warning: overflow check might fail
 units.ads:37:32: info: division check proved
 units.ads:37:32: info: overflow check proved
-units.ads:37:32: info: range check proved
 units.ads:43:20: info: precondition proved

@@ -72,7 +72,7 @@ alt-ergo:
 
 install-all:
 	$(MAKE) install
-	$(MAKE) -C why3 install
+	$(MAKE) -C why3 install_spark2014
 	$(MAKE) -C alt-ergo install
 
 install:

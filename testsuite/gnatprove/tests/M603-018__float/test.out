@@ -2,13 +2,11 @@ testfloat.adb:1:11: warning: subprogram "Testfloat" has no effect
 testfloat.adb:7:20: info: overflow check proved
 testfloat.adb:7:25: info: division check proved
 testfloat.adb:7:25: info: overflow check proved
-testfloat.adb:7:25: info: range check proved
 testfloat.adb:11:14: warning: subprogram "Triplet" has no effect
 testfloat.adb:14:23: info: overflow check proved
 testfloat.adb:19:23: warning: overflow check might fail
 testfloat.adb:19:28: info: division check proved
 testfloat.adb:19:28: info: overflow check proved
-testfloat.adb:19:28: info: range check proved
 testfloat.adb:21:07: info: assertion proved
 testfloat.adb:22:07: info: assertion proved
 testfloat.adb:23:07: info: assertion proved

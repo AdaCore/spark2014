@@ -1,5 +1,4 @@
 pack.adb:5:17: info: overflow check proved
-pack.adb:5:17: info: range check proved
 pack.adb:10:14: warning: precondition might fail
 pack.adb:10:19: info: precondition proved
 pack.adb:10:42: info: precondition proved

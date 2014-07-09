@@ -2,5 +2,4 @@ gp_exp.adb:1:11: warning: subprogram "Gp_Exp" has no effect
 gp_exp.adb:5:11: warning: overflow check might fail
 gp_exp.adb:5:14: warning: range check might fail
 gp_exp.adb:6:11: warning: overflow check might fail
-gp_exp.adb:7:11: info: range check proved
 gp_exp.adb:7:11: warning: overflow check might fail
