@@ -5,10 +5,12 @@ module Ada__containers__formal_doubly_linked_lists__list
 
   type list = __private
 
-  function rec__capacity list : Ada__containers__count_type.count_type
+  type __split_discrs = {rec__capacity : Ada__containers__count_type.count_type}
+
+  function __split_discrs list : __split_discrs
 
    function capacity  (co : list) : int =
-          Ada__containers__count_type.to_int (rec__capacity co)
+          Ada__containers__count_type.to_int (rec__capacity (__split_discrs (co)))
 
   function bool_eq list list : bool
   function user_eq list list : bool

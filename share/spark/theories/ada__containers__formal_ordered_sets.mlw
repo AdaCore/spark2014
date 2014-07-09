@@ -18,10 +18,12 @@ module Ada__containers__formal_ordered_sets__set
 
   type set = __private
 
-  function rec__capacity set : Ada__containers__count_type.count_type
+  type __split_discrs = {rec__capacity : Ada__containers__count_type.count_type}
+
+  function __split_discrs set : __split_discrs
 
    function capacity  (co : set) : int =
-          Ada__containers__count_type.to_int (rec__capacity co)
+          Ada__containers__count_type.to_int (rec__capacity (__split_discrs co))
 
   function bool_eq set set : bool
   function user_eq set set : bool
@@ -1242,10 +1244,10 @@ module Ada__containers__formal_ordered_sets__capacity
   use import Ada__containers__formal_ordered_sets__set
   use import Ada__containers__formal_ordered_sets__length
 
-  function capacity__logic (co : set) : Ada__containers__count_type.count_type = rec__capacity co
+  function capacity__logic (co : set) : Ada__containers__count_type.count_type = rec__capacity (__split_discrs co)
 
   val capacity (co : set) : Ada__containers__count_type.count_type
-    ensures { result = rec__capacity co }
+    ensures { result = rec__capacity (__split_discrs co) }
 end
 
 module Ada__containers__formal_ordered_sets__reserve_capacity

@@ -12,7 +12,7 @@ slice_sums.adb:25:13: warning: loop invariant might fail in first iteration
 slice_sums.adb:26:25: info: range check proved
 slice_sums.adb:26:63: info: overflow check proved
 slice_sums.adb:27:30: info: range check proved
-slice_sums.adb:28:36: info: precondition proved
+slice_sums.adb:28:36: warning: precondition might fail
 slice_sums.adb:30:27: info: range check proved
 slice_sums.adb:30:65: info: overflow check proved
 slice_sums.adb:31:35: info: precondition proved

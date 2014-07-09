@@ -226,6 +226,8 @@ package Why.Gen.Names is
       WNE_Of_Real,
       WNE_Of_String,
       WNE_Range_Check_Fun,
+      WNE_Rec_Split_Discrs,
+      WNE_Rec_Split_Fields,
       WNE_Pre_Check,
       WNE_Range_Pred,
       WNE_To_Array,

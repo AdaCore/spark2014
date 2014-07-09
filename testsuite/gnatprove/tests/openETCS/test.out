@@ -131,19 +131,19 @@ step_function.adb:91:10: warning: loop invariant might fail in first iteration
 step_function.adb:107:28: warning: "Merge.Step" might not be initialized
 step_function.adb:110:29: info: index check proved
 step_function.adb:113:29: info: index check proved
-step_function.adb:116:27: info: index check proved
+step_function.adb:116:27: warning: array index check might fail
 step_function.adb:116:54: info: index check proved
-step_function.adb:122:30: info: index check proved
+step_function.adb:122:30: warning: array index check might fail
 step_function.adb:122:56: info: index check proved
 step_function.adb:127:36: warning: array index check might fail
 step_function.adb:127:62: info: index check proved
-step_function.adb:133:30: info: index check proved
+step_function.adb:133:30: warning: array index check might fail
 step_function.adb:133:56: info: index check proved
 step_function.adb:138:36: warning: array index check might fail
 step_function.adb:138:62: info: index check proved
 step_function.adb:143:26: warning: array index check might fail
 step_function.adb:144:19: warning: precondition might fail
-step_function.adb:144:47: info: index check proved
+step_function.adb:144:47: warning: array index check might fail
 step_function.adb:145:17: info: precondition proved
 step_function.adb:145:45: info: index check proved
 step_function.adb:152:22: info: precondition proved
@@ -154,7 +154,7 @@ step_function.adb:166:22: info: precondition proved
 step_function.adb:167:22: info: precondition proved
 step_function.adb:175:19: info: precondition proved
 step_function.adb:176:19: info: precondition proved
-step_function.adb:182:22: info: precondition proved
+step_function.adb:182:22: warning: precondition might fail
 step_function.adb:183:22: info: precondition proved
 step_function.adb:188:22: warning: range check might fail
 step_function.ads:40:17: info: postcondition proved

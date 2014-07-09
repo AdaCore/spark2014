@@ -403,6 +403,8 @@ package body Gnat2Why.Expr is
    --  translate either an aggregate or a reference to attribute Update.
    --  In_Attribute_Update is True when translating a reference to attribute
    --  Update.
+   --  Associations for discriminants are stored before associations for
+   --  normal fields.
 
    function Transform_Binop (Op : N_Binary_Op) return EW_Binary_Op;
    --  Convert an Ada binary operator to a Why term symbol
@@ -1544,9 +1546,7 @@ package body Gnat2Why.Expr is
             --  Post used for the assignment of tmp_exp
 
             Discrs  : constant Natural :=
-              (if Has_Discriminants (Ty_Ext) then
-                    Natural (Number_Discriminants (Ty_Ext))
-               else 0);
+              SPARK_Util.Number_Discriminants (Ty_Ext);
             Tmps    : W_Identifier_Array (1 .. Discrs);
             Binds   : W_Expr_Array (1 .. Discrs);
             --  Arrays to store the bindings for discriminants
@@ -1904,10 +1904,7 @@ package body Gnat2Why.Expr is
                                         To       => EW_Abstract (Root_Ty));
             --  Expression that should be used for the access
 
-            Discrs  : constant Natural :=
-              (if Has_Discriminants (Ty_Ext) then
-                    Natural (Number_Discriminants (Ty_Ext))
-               else 0);
+            Discrs  : constant Natural := Number_Discriminants (Ty_Ext);
             Tmps    : W_Identifier_Array (1 .. Discrs);
             Binds   : W_Expr_Array (1 .. Discrs);
             --  Arrays to store the bindings for discriminants
@@ -2345,10 +2342,7 @@ package body Gnat2Why.Expr is
                                         Domain   => EW_Term,
                                         Expr     => Expr,
                                         To       => EW_Abstract (Root_Ty));
-            Discrs  : constant Natural :=
-              (if Has_Discriminants (Ty_Ext) then
-                    Natural (Number_Discriminants (Ty_Ext))
-               else 0);
+            Discrs  : constant Natural := Number_Discriminants (Ty_Ext);
             Field   : Node_Id := First_Component_Or_Discriminant (Ty_Ext);
             T_Comp  : W_Pred_Id;
             T_Guard : W_Pred_Id;
@@ -3666,11 +3660,10 @@ package body Gnat2Why.Expr is
       case Nkind (N) is
          when N_Selected_Component =>
 
-            --  The code should never update the capacity of a container by
-            --  assigning to it. This is ensured by making the formal container
-            --  type a private type, but keep the assertion in case.
+            --  The code should never update a discrimiant by assigning to it.
 
-            pragma Assert (not Is_Access_To_External_Axioms_Discriminant (N));
+            pragma Assert
+              (Ekind (Entity (Selector_Name (N))) /= E_Discriminant);
 
             return New_Ada_Record_Update
               (Ada_Node => N,
@@ -6120,17 +6113,17 @@ package body Gnat2Why.Expr is
                   Prefix_Expr := +Transform_Expr (Domain => Domain,
                                                   Expr   => Pref,
                                                   Params => Params);
-                  T := New_Record_Update
-                         (Name     => +Prefix_Expr,
-                          Updates  =>
-                            Transform_Record_Component_Associations
-                              (Domain              => Domain,
-                               Typ                 => Pref_Typ,
-                               Assocs              =>
-                                 Component_Associations (Aggr),
-                               Params              => Params,
-                               In_Attribute_Update => True),
-                          Typ      => EW_Abstract (Pref_Typ));
+                  T := New_Ada_Record_Update
+                    (Name     => +Prefix_Expr,
+                     Domain   => Domain,
+                     Updates  =>
+                       Transform_Record_Component_Associations
+                         (Domain              => Domain,
+                          Typ                 => Pref_Typ,
+                          Assocs              =>
+                            Component_Associations (Aggr),
+                          Params              => Params,
+                          In_Attribute_Update => True));
 
                else
                   pragma Assert (Is_Array_Type (Pref_Typ));
@@ -7019,14 +7012,15 @@ package body Gnat2Why.Expr is
                if Is_Record_Type (Expr_Type) then
                   pragma Assert (Is_Empty_List (Expressions (Expr)));
                   T :=
-                    New_Record_Aggregate
+                    New_Ada_Record_Aggregate
                       (Associations =>
                          Transform_Record_Component_Associations
                            (Domain,
                             Expr_Type,
                             Component_Associations (Expr),
                             Local_Params),
-                       Typ => EW_Abstract (Expr_Type));
+                       Domain       => Domain,
+                       Ty           => Expr_Type);
                else
                   pragma Assert
                     (Is_Array_Type (Expr_Type) or else
@@ -8853,9 +8847,14 @@ package body Gnat2Why.Expr is
 
       Component   : Entity_Id;
       Association : Node_Id;
+      Field_Assoc :
+        W_Field_Association_Array (1 .. Integer (Components_Count (Assocs)));
+      Discr_Assoc :
+        W_Field_Association_Array (1 .. Number_Discriminants (Typ));
       Result      :
         W_Field_Association_Array (1 .. Integer (Components_Count (Assocs)));
-      J           : Positive := Result'First;
+      Field_Index : Positive := 1;
+      Discr_Index : Positive := 1;
       CL          : List_Id;
       Choice      : Node_Id;
 
@@ -8907,11 +8906,19 @@ package body Gnat2Why.Expr is
                          (T => EW_Abstract (Etype (Component)));
             end if;
 
-            Result (J) := New_Field_Association
-                            (Domain => Domain,
-                             Field  => To_Why_Id (Component),
-                             Value  => Expr);
-            J := J + 1;
+            if Ekind (Component) = E_Discriminant then
+               Discr_Assoc (Discr_Index) := New_Field_Association
+                 (Domain => Domain,
+                  Field  => To_Why_Id (Component),
+                  Value  => Expr);
+               Discr_Index := Discr_Index + 1;
+            else
+               Field_Assoc (Field_Index) := New_Field_Association
+                 (Domain => Domain,
+                  Field  => To_Why_Id (Component),
+                  Value  => Expr);
+               Field_Index := Field_Index + 1;
+            end if;
 
             --  Getting the next component from the associations' component
             --  lists, which may require selecting the next choice (for
@@ -8931,6 +8938,11 @@ package body Gnat2Why.Expr is
       end loop;
 
       pragma Assert (No (Association));
+      pragma Assert
+        ((In_Attribute_Update and then Field_Index = Result'Last + 1)
+         or else Discr_Index = Discr_Assoc'Last + 1);
+      Result := Discr_Assoc (1 .. Discr_Index - 1) &
+        Field_Assoc (1 .. Field_Index - 1);
       return Result;
    end Transform_Record_Component_Associations;
 

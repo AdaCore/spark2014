@@ -407,7 +407,7 @@ display.adb:148:33: info: index check proved, in call inlined at display.adb:280
 display.adb:148:33: info: overflow check proved, in call inlined at display.adb:188
 display.adb:148:33: info: overflow check proved, in call inlined at display.adb:280
 display.adb:150:32: info: range check proved, in call inlined at display.adb:188
-display.adb:150:32: info: range check proved, in call inlined at display.adb:280
+display.adb:150:32: warning: range check might fail, in call inlined at display.adb:280
 display.adb:184:18: warning: precondition might fail
 display.adb:235:49: warning: "Interfac.Output" might not be written
 display.adb:264:18: warning: statement has no effect

@@ -32,7 +32,6 @@ with GNAT.Source_Info;
 with Atree;               use Atree;
 with Einfo;               use Einfo;
 with Namet;               use Namet;
-with Sem_Util;            use Sem_Util;
 with Sinfo;               use Sinfo;
 with Sinput;              use Sinput;
 with Stand;               use Stand;
@@ -59,95 +58,6 @@ with Why.Types;           use Why.Types;
 with Gnat2Why.Nodes;      use Gnat2Why.Nodes;
 
 package body Gnat2Why.Types is
-
-   procedure Declare_Private_Type
-     (Theory : W_Theory_Declaration_Id;
-      E      : Entity_Id);
-   --  Make the necessary declarations for a private type
-
-   --------------------------
-   -- Declare_Private_Type --
-   --------------------------
-
-   procedure Declare_Private_Type
-     (Theory : W_Theory_Declaration_Id;
-      E      : Entity_Id) is
-
-      Root     : constant Entity_Id :=
-        (if Fullview_Not_In_SPARK (E) then Get_First_Ancestor_In_SPARK (E)
-         else E);
-      Discr    : Entity_Id :=
-        (if Root /= E then Empty else First_Discriminant (E));
-      X_Binder : constant Binder_Type :=
-        Binder_Type'(B_Name =>
-                       New_Identifier (Name => "x",
-                                       Typ  => EW_Private_Type),
-                     others => <>);
-      Y_Binder : constant Binder_Type :=
-        Binder_Type'(B_Name =>
-                       New_Identifier (Name => "y",
-                                       Typ  => EW_Private_Type),
-                     others => <>);
-   begin
-
-      --  We define a name for this type, as well as accessors for the
-      --  discriminants
-
-      Emit (Theory,
-            New_Type_Decl
-              (New_Name (Symbol => NID (Short_Name (E))),
-               Alias => EW_Private_Type));
-
-      while Present (Discr) loop
-         Emit
-           (Theory,
-            Why.Gen.Binders.New_Function_Decl
-              (Ada_Node    => E,
-               Domain      => EW_Term,
-               Name        => To_Why_Id (Discr, Local => True),
-               Return_Type => EW_Abstract (Etype (Discr)),
-               Labels      => Name_Id_Sets.Empty_Set,
-               Binders     => (1 => X_Binder)));
-         Next_Discriminant (Discr);
-      end loop;
-
-      if Has_Defaulted_Discriminants (E) and then
-        not Is_Constrained (E)
-      then
-         Emit
-           (Theory,
-            Why.Gen.Binders.New_Function_Decl
-              (Ada_Node    => E,
-               Domain      => EW_Term,
-               Name        => To_Ident (WNE_Attr_Constrained),
-               Return_Type => EW_Bool_Type,
-               Labels      => Name_Id_Sets.Empty_Set,
-               Binders     => (1 => X_Binder)));
-      end if;
-
-      if Has_Discriminants (E) and then Root /= E then
-         Declare_Conversion_Check_Function (Theory => Theory,
-                                            E      => E,
-                                            Root   => Root);
-      end if;
-
-      Emit
-        (Theory,
-         Why.Gen.Binders.New_Function_Decl
-           (Domain      => EW_Term,
-            Name        => To_Ident (W => WNE_Bool_Eq),
-            Return_Type => EW_Bool_Type,
-            Binders     => (1 => X_Binder, 2 => Y_Binder),
-            Labels      => Name_Id_Sets.Empty_Set));
-      Emit
-        (Theory,
-         Why.Gen.Binders.New_Function_Decl
-           (Domain      => EW_Term,
-            Name        => New_Identifier (Name => "user_eq"),
-            Return_Type => EW_Bool_Type,
-            Binders     => (1 => X_Binder, 2 => Y_Binder),
-            Labels      => Name_Id_Sets.Empty_Set));
-   end Declare_Private_Type;
 
    ------------------------------
    -- Generate_Type_Completion --

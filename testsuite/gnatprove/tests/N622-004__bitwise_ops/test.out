@@ -272,12 +272,12 @@ aco-math-very_longs.adb:538:32: warning: array index check might fail
 aco-math-very_longs.adb:538:51: info: discriminant check proved
 aco-math-very_longs.adb:538:64: warning: array index check might fail
 aco-math-very_longs.adb:552:07: info: precondition proved
-aco-math-very_longs.adb:553:36: info: precondition proved
-aco-math-very_longs.adb:554:20: info: precondition proved
+aco-math-very_longs.adb:553:36: warning: precondition might fail
 aco-math-very_longs.adb:554:20: warning: discriminant check might fail
+aco-math-very_longs.adb:554:20: warning: precondition might fail
 aco-math-very_longs.adb:564:07: info: precondition proved
-aco-math-very_longs.adb:566:20: info: precondition proved
 aco-math-very_longs.adb:566:20: warning: discriminant check might fail
+aco-math-very_longs.adb:566:20: warning: precondition might fail
 aco-math-very_longs.adb:583:55: info: division check proved
 aco-math-very_longs.adb:584:34: info: division check proved
 aco-math-very_longs.adb:586:29: info: discriminant check proved

@@ -92,13 +92,15 @@ module  Ada__containers__formal_vectors__vector
 
   type vector = __private
 
-  function rec__capacity vector : Ada__containers__formal_vectors__capacity_range.capacity_range
+  type __split_discrs = {rec__capacity : Ada__containers__formal_vectors__capacity_range.capacity_range}
+
+  function __split_discrs vector : __split_discrs
 
   function capacity "inline" (co : vector) : int =
-          Ada__containers__formal_vectors__capacity_range.to_int (rec__capacity co)
+          Ada__containers__formal_vectors__capacity_range.to_int (rec__capacity (__split_discrs (co)))
 
   axiom capacity_range:
-    forall co : vector [rec__capacity co].
+    forall co : vector [rec__capacity (__split_discrs (co))].
       0 <= capacity co <= index_type_length
 
   function bool_eq vector vector : bool
@@ -1106,7 +1108,7 @@ module Ada__containers__formal_vectors__swap
 
   axiom swap_lgth_cap:
     forall v1 v2 : vector, i1 i2 : int [swap v1 i1 i2 v2 ].
-      swap v1 i1 i2 v2 -> length__logic v1 = length__logic v2 /\ rec__capacity v1 = rec__capacity v2
+      swap v1 i1 i2 v2 -> length__logic v1 = length__logic v2 /\ rec__capacity (__split_discrs (v1)) = rec__capacity (__split_discrs (v2))
 
   axiom swap_curs:
     forall v1 v2 : vector, i1 i2 : int, cu : cursor [swap v1 i1 i2 v2, real_to_index v1 cu|swap v1 i1 i2 v2, real_to_index v2 cu ].

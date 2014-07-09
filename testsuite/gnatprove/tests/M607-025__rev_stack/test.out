@@ -51,7 +51,7 @@ stack.adb:18:19: info: index check proved
 stack.adb:29:22: info: range check proved
 stack.adb:37:28: info: length check proved
 stack.ads:12:17: info: postcondition proved
-stack.ads:23:14: info: postcondition proved
+stack.ads:23:14: warning: postcondition might fail, requires Is_Empty (Empty_Stack'result)
 stack.ads:27:14: info: postcondition proved
 stack.ads:27:41: info: index check proved
 stack.ads:32:14: warning: postcondition might fail

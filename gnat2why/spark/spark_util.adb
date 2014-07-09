@@ -1459,6 +1459,28 @@ package body SPARK_Util is
       return Count;
    end Number_Components;
 
+   --------------------------
+   -- Number_Discriminants --
+   --------------------------
+
+   function Number_Discriminants (Typ : Entity_Id) return Natural is
+      Count     : Natural := 0;
+      Component : Entity_Id := First_Discriminant (Typ);
+   begin
+      while Component /= Empty loop
+
+         --  Do not count completely hidden discrimiants
+
+         if not (Ekind (Component) in E_Discriminant
+                 and then Is_Completely_Hidden (Component))
+         then
+            Count := Count + 1;
+         end if;
+         Component := Next_Discriminant (Component);
+      end loop;
+      return Count;
+   end Number_Discriminants;
+
    ------------------
    -- Partial_View --
    ------------------

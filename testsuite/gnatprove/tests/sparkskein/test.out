@@ -44,7 +44,7 @@ skein.adb:803:49: warning: range check might fail
 skein.adb:805:13: warning: precondition might fail
 skein.adb:824:07: warning: precondition might fail
 skein.adb:865:14: warning: range check might fail, in call inlined at skein.adb:900
-skein.adb:869:13: info: loop invariant preservation proved, in call inlined at skein.adb:900
+skein.adb:869:13: warning: loop invariant might fail after first iteration, in call inlined at skein.adb:900
 skein.adb:869:13: warning: loop invariant might fail in first iteration, in call inlined at skein.adb:900
 skein.adb:883:43: warning: range check might fail, in call inlined at skein.adb:926
 skein.adb:884:61: warning: range check might fail, in call inlined at skein.adb:926

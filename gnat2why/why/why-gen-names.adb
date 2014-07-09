@@ -529,74 +529,75 @@ package body Why.Gen.Names is
    is
    begin
       case W is
-         when WNE_Range_Pred   => return "in_range";
-         when WNE_Dynamic_Property => return "dynamic_property";
+         when WNE_Range_Pred           => return "in_range";
+         when WNE_Dynamic_Property     => return "dynamic_property";
          when WNE_Index_Dynamic_Property => return "index_dynamic_property";
-         when WNE_To_Int       => return "to_int";
-         when WNE_Of_Int       => return "of_int";
-         when WNE_To_Fixed     => return "to_fixed";
-         when WNE_Of_Fixed     => return "of_fixed";
-         when WNE_To_Real      => return "to_real";
-         when WNE_Of_Real      => return "of_real";
-         when WNE_To_Array     => return "to_array";
-         when WNE_Of_Array     => return "of_array";
-         when WNE_To_Base      => return "to_base";
-         when WNE_Of_Base      => return "of_base";
-         when WNE_Type         => return "t";
-         when WNE_Ignore       => return "___ignore";
-         when WNE_Havoc        => return "__havoc";
-         when WNE_Range_Check_Fun => return "range_check_";
-         when WNE_Bool_And     => return "andb";
-         when WNE_Bool_Or      => return "orb";
-         when WNE_Bool_Xor     => return "xorb";
-         when WNE_Bool_Not     => return "notb";
-         when WNE_Fixed_Point_Div => return "fxp_div";
-         when WNE_Fixed_Point_Mult => return "fxp_mult";
-         when WNE_Fixed_Point_Div_Int => return "fxp_div_int";
+         when WNE_To_Int               => return "to_int";
+         when WNE_Of_Int               => return "of_int";
+         when WNE_To_Fixed             => return "to_fixed";
+         when WNE_Of_Fixed             => return "of_fixed";
+         when WNE_To_Real              => return "to_real";
+         when WNE_Of_Real              => return "of_real";
+         when WNE_To_Array             => return "to_array";
+         when WNE_Of_Array             => return "of_array";
+         when WNE_To_Base              => return "to_base";
+         when WNE_Of_Base              => return "of_base";
+         when WNE_Type                 => return "t";
+         when WNE_Ignore               => return "___ignore";
+         when WNE_Havoc                => return "__havoc";
+         when WNE_Range_Check_Fun      => return "range_check_";
+         when WNE_Bool_And             => return "andb";
+         when WNE_Bool_Or              => return "orb";
+         when WNE_Bool_Xor             => return "xorb";
+         when WNE_Bool_Not             => return "notb";
+         when WNE_Fixed_Point_Div      => return "fxp_div";
+         when WNE_Fixed_Point_Mult     => return "fxp_mult";
+         when WNE_Fixed_Point_Div_Int  => return "fxp_div_int";
          when WNE_Fixed_Point_Mult_Int => return "fxp_mult_int";
-         when WNE_Float_Round   => return "round_real";
-         when WNE_Float_Round_Tmp => return "round_real_tmp";
-         when WNE_Float_Pred   => return "prev_representable";
-         when WNE_Float_Succ   => return "next_representable";
-         when WNE_Array_Access => return "get";
-         when WNE_Base_Type    => return "base_type";
-         when WNE_Array_Elts   => return "elts";
+         when WNE_Float_Round          => return "round_real";
+         when WNE_Float_Round_Tmp      => return "round_real_tmp";
+         when WNE_Float_Pred           => return "prev_representable";
+         when WNE_Float_Succ           => return "next_representable";
+         when WNE_Array_Access         => return "get";
+         when WNE_Base_Type            => return "base_type";
+         when WNE_Array_Elts           => return "elts";
          when WNE_Array_Base_Range_Pred => return "in_range_base";
-         when WNE_Array_Update => return "set";
-         when WNE_Array_Compare => return "compare";
+         when WNE_Array_Update         => return "set";
+         when WNE_Array_Compare        => return "compare";
          when WNE_Array_Component_Type => return "component_type";
-         when WNE_Array_Concat => return "concat";
-         when WNE_Array_Singleton => return "singleton";
-         when WNE_Array_Slide  => return "slide";
-         when WNE_Array_Type   => return "__t";
-         when WNE_To_String    => return "to_string";
-         when WNE_Of_String    => return "from_string";
-         when WNE_Bool_Eq      => return "bool_eq";
-         when WNE_Bool_Ne      => return "bool_ne";
-         when WNE_Bool_Lt      => return "bool_lt";
-         when WNE_Bool_Le      => return "bool_le";
-         when WNE_Bool_Gt      => return "bool_gt";
-         when WNE_Bool_Ge      => return "bool_ge";
-         when WNE_Def          => return "def";
-         when WNE_Pre_Check    => return "pre_check";
-         when WNE_Dummy        => return "dummy";
-         when WNE_Check_Not_First => return "check_not_first";
-         when WNE_Check_Not_Last => return "check_not_last";
-         when WNE_Attr_Constrained => return "attr__is_constrained";
-         when WNE_Attr_First => return "first";
-         when WNE_Attr_Last => return "last";
-         when WNE_Attr_Length => return "length";
-         when WNE_Attr_Image   =>
+         when WNE_Array_Concat         => return "concat";
+         when WNE_Array_Singleton      => return "singleton";
+         when WNE_Array_Slide          => return "slide";
+         when WNE_Array_Type           => return "__t";
+         when WNE_To_String            => return "to_string";
+         when WNE_Of_String            => return "from_string";
+         when WNE_Bool_Eq              => return "bool_eq";
+         when WNE_Bool_Ne              => return "bool_ne";
+         when WNE_Bool_Lt              => return "bool_lt";
+         when WNE_Bool_Le              => return "bool_le";
+         when WNE_Bool_Gt              => return "bool_gt";
+         when WNE_Bool_Ge              => return "bool_ge";
+         when WNE_Def                  => return "def";
+         when WNE_Pre_Check            => return "pre_check";
+         when WNE_Dummy                => return "dummy";
+         when WNE_Check_Not_First      => return "check_not_first";
+         when WNE_Check_Not_Last       => return "check_not_last";
+         when WNE_Attr_Constrained     => return "attr__is_constrained";
+         when WNE_Attr_First           => return "first";
+         when WNE_Attr_Last            => return "last";
+         when WNE_Attr_Length          => return "length";
+         when WNE_Attr_Image           =>
             return "attr__" & Attribute_Id'Image (Attribute_Image);
-         when WNE_Attr_Modulus =>
+         when WNE_Attr_Modulus         =>
             return "attr__" & Attribute_Id'Image (Attribute_Modulus);
-         when WNE_Attr_Small    => return "inv_small";
-         when WNE_Attr_Value   =>
+         when WNE_Attr_Small           => return "inv_small";
+         when WNE_Attr_Value           =>
             return "attr__" & Attribute_Id'Image (Attribute_Value);
          when WNE_Attr_Value_Pre_Check =>
             return "attr__" & Attribute_Id'Image (Attribute_Value)
               & "__pre_check";
-
+         when WNE_Rec_Split_Discrs     => return "__split_discrs";
+         when WNE_Rec_Split_Fields     => return "__split_fields";
       end case;
    end To_String;
 

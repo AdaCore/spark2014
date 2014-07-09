@@ -320,10 +320,10 @@ ar.ads:904:22: warning: postcondition might fail, requires R = R'Old'update
 ar.ads:909:22: info: postcondition proved
 ar.ads:914:22: info: postcondition proved
 ar.ads:919:22: warning: postcondition might fail, requires R = Rec3TRec3T'((F3 => Rec2T'((F2 => F), (G2 => Rec1T'(F1 => E), (G1 => ...............)), ...)), ...)
-ar.ads:925:22: info: postcondition proved
+ar.ads:925:22: warning: postcondition might fail, requires R = R'Old'update
 ar.ads:931:22: info: postcondition proved
-ar.ads:937:22: info: postcondition proved
-ar.ads:943:22: info: postcondition proved
++ar.ads:937:22: warning: postcondition might fail, requires R = R'Old'update
++ar.ads:943:22: warning: postcondition might fail, requires R = Rec3TRec3T'((F3 => Rec2T'((F2 => R'old.F3.F2), (G2 => Rec1T'((F1 => .......), ...)), ...)), ...)
 ar.ads:948:22: info: postcondition proved
 ar.ads:953:22: info: postcondition proved
 ar.ads:958:22: info: postcondition proved
@@ -408,8 +408,8 @@ ar.ads:1378:22: warning: postcondition might fail, requires A = A'Old'update
 ar.ads:1384:22: warning: postcondition might fail
 ar.ads:1392:22: warning: postcondition might fail
 ar.ads:1397:22: warning: postcondition might fail
-ar.ads:1402:22: info: postcondition proved
-ar.ads:1407:22: info: postcondition proved
+ar.ads:1402:22: warning: postcondition might fail, requires A = A'Old'update
+ar.ads:1407:22: warning: postcondition might fail
 ar.ads:1415:22: info: postcondition proved
 ar.ads:1420:22: info: postcondition proved
 ar.ads:1425:22: info: postcondition proved
@@ -476,10 +476,10 @@ ar.ads:1753:22: warning: postcondition might fail, requires A = A'Old'update
 ar.ads:1758:22: warning: postcondition might fail, requires A = A'Old'update
 ar.ads:1766:22: info: postcondition proved
 ar.ads:1771:22: info: postcondition proved
-ar.ads:1776:22: info: postcondition proved
-ar.ads:1781:22: info: postcondition proved
+ar.ads:1776:22: warning: postcondition might fail, requires R = R'Old'update
+ar.ads:1781:22: warning: postcondition might fail, requires R = RofAofR1RofAofR1'(A1 => R'old.A1'update), (B1 => R'old.B1), (C1 => R'old.C1)
 ar.ads:1786:22: warning: postcondition might fail
-ar.ads:1791:22: info: postcondition proved
+ar.ads:1791:22: warning: postcondition might fai
 ar.ads:1796:22: warning: postcondition might fail, requires R = R'Old'update
 ar.ads:1801:22: warning: postcondition might fail, requires R = RofAofR1RofAofR1'(A1 => R'old.A1'update), (B1 => true), (C1 => R'old.C1)
 ar.ads:1809:22: warning: postcondition might fail
