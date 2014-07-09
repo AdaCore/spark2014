@@ -586,13 +586,13 @@ package body Flow_Error_Messages is
                      Append (R, "the heap");
                   else
                      declare
-                        Index : Positive := 1;
+                        Index : Positive := F.Name.all'First;
                      begin
                         --  Replace __ with . in the magic string.
-                        while Index <= F.Name.all'Length loop
+                        while Index <= F.Name.all'Last loop
                            case F.Name.all (Index) is
                               when '_' =>
-                                 if Index < F.Name.all'Length and then
+                                 if Index < F.Name.all'Last and then
                                    F.Name.all (Index + 1) = '_'
                                  then
                                     Append (R, ".");
