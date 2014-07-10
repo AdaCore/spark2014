@@ -253,7 +253,7 @@ configdata.adb:380:35: info: range check proved, in call inlined at configdata.a
 configdata.adb:380:35: info: range check proved, in call inlined at configdata.adb:679, in call inlined at configdata.adb:943
 configdata.adb:380:45: info: overflow check proved, in call inlined at configdata.adb:615, in call inlined at configdata.adb:927
 configdata.adb:380:45: info: overflow check proved, in call inlined at configdata.adb:647, in call inlined at configdata.adb:935
-configdata.adb:380:45: info: overflow check proved, in call inlined at configdata.adb:679, in call inlined at configdata.adb:943
+configdata.adb:380:45: warning: overflow check might fail, in call inlined at configdata.adb:679, in call inlined at configdata.adb:943
 configdata.adb:380:50: warning: overflow check might fail, in call inlined at configdata.adb:615, in call inlined at configdata.adb:927
 configdata.adb:380:50: warning: overflow check might fail, in call inlined at configdata.adb:647, in call inlined at configdata.adb:935
 configdata.adb:380:50: warning: overflow check might fail, in call inlined at configdata.adb:679, in call inlined at configdata.adb:943
