@@ -360,6 +360,12 @@ package Flow_Types is
                      F.Kind = Direct_Mapping);
    --  Convert a node set to a flow_id set.
 
+   function Change_Variant (FS      : Flow_Id_Sets.Set;
+                            Variant : Flow_Id_Variant)
+                            return Flow_Id_Sets.Set;
+   --  Returns a copy of the given flow id set, but with a modified
+   --  variant.
+
    ----------------------------------------------------------------------
    --  V_Attributes
    ----------------------------------------------------------------------

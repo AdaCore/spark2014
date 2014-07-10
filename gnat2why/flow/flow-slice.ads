@@ -59,7 +59,8 @@ package Flow.Slice is
       Outputs           : out Node_Sets.Set;
       Proof_Calls       : out Node_Sets.Set;
       Definite_Calls    : out Node_Sets.Set;
-      Conditional_Calls : out Node_Sets.Set)
+      Conditional_Calls : out Node_Sets.Set;
+      Local_Variables   : out Node_Sets.Set)
    with Pre => (FA.Compute_Globals and then
                   FA.Is_Generative and then
                   not FA.GG.Aborted),

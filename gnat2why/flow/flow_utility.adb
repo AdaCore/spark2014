@@ -36,6 +36,7 @@ with SPARK_Definition;           use SPARK_Definition;
 
 with Flow_Debug;                 use Flow_Debug;
 with Flow_Tree_Utility;          use Flow_Tree_Utility;
+with Flow_Computed_Globals;      use Flow_Computed_Globals;
 
 package body Flow_Utility is
 
@@ -1159,9 +1160,59 @@ package body Flow_Utility is
             end if;
          end;
 
+      elsif Use_Computed_Globals and then GG_Exist (Subprogram) then
+         --  We don't have a global or a depends aspect so we look at
+         --  the generated globals.
+
+         if Debug_Trace_Get_Global then
+            Indent;
+            Write_Str ("using generated globals");
+            Write_Eol;
+            Outdent;
+         end if;
+
+         GG_Get_Globals (Subprogram,
+                         Scope,
+                         Proof_Ins,
+                         Reads,
+                         Writes);
+
+         --  We print everything
+         if Debug_Trace_Get_Global then
+            Indent;
+            Write_Str ("proof ins");
+            Write_Eol;
+            Indent;
+            for PI of Proof_Ins loop
+               Sprint_Flow_Id (PI);
+               Write_Eol;
+            end loop;
+            Outdent;
+
+            Write_Str ("reads");
+            Write_Eol;
+            Indent;
+            for R of Reads loop
+               Sprint_Flow_Id (R);
+               Write_Eol;
+            end loop;
+            Outdent;
+
+            Write_Str ("writes");
+            Write_Eol;
+            Indent;
+            for W of Writes loop
+               Sprint_Flow_Id (W);
+               Write_Eol;
+            end loop;
+            Outdent;
+            Outdent;
+         end if;
+
       elsif Use_Computed_Globals then
-         --  We don't have a global aspect, so we should look at the
-         --  computed globals...
+         --  We don't have a global or a depends aspect and we don't
+         --  have generated globals, so we should look at the computed
+         --  globals...
 
          if Debug_Trace_Get_Global then
             Indent;
@@ -1339,6 +1390,11 @@ package body Flow_Utility is
                         --  abstract state itself.
                         Tmp.Insert (F);
                      end if;
+
+                  when E_In_Parameter =>
+                     --  For proof we exclude formal parameters of
+                     --  mode "In" from the set of globals.
+                     null;
 
                   when others =>
                      Tmp.Insert (F);

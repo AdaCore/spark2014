@@ -707,23 +707,14 @@ digraph G {
     6 [label="vehicle__halt'Ins",shape="box"];
     7 [label="vehicle__halt'Outs",shape="box"];
     8 [label="vehicle__halt'Proof_Ins",shape="box"];
-    9 [label="vehicle__state_update'Ins",shape="box"];
-    10 [label="vehicle__state_update'Outs",shape="box"];
-    11 [label="vehicle__state_update'Proof_Ins",shape="box"];
 
     3 ->  1 [arrowType="normal"];
     3 ->  2 [arrowType="normal"];
     6 ->  1 [arrowType="normal"];
     6 ->  2 [arrowType="normal"];
-    6 ->  9 [arrowType="normal"];
-    6 ->  10 [arrowType="normal"];
     7 ->  1 [arrowType="normal"];
     7 ->  2 [arrowType="normal"];
-    7 ->  10 [arrowType="normal"];
-    8 ->  1 [arrowType="normal"];
-    8 ->  2 [arrowType="normal"];
     8 ->  3 [arrowType="normal"];
     8 ->  5 [arrowType="normal"];
-    8 ->  11 [arrowType="normal"];
 }
 

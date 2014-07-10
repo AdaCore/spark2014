@@ -434,6 +434,19 @@ package body Flow_Types is
       end case;
    end Change_Variant;
 
+   function Change_Variant (FS      : Flow_Id_Sets.Set;
+                            Variant : Flow_Id_Variant)
+                            return Flow_Id_Sets.Set
+   is
+      New_Flow_Id_Set : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+   begin
+      for F of FS loop
+         New_Flow_Id_Set.Include (Change_Variant (F, Variant));
+      end loop;
+
+      return New_Flow_Id_Set;
+   end Change_Variant;
+
    -------------------
    -- Parent_Record --
    -------------------

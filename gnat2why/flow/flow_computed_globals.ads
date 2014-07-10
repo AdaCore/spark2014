@@ -29,6 +29,7 @@ with Types;             use Types;
 with Common_Containers; use Common_Containers;
 
 with Flow_Types;        use Flow_Types;
+with Flow_Refinement;   use Flow_Refinement;
 
 package Flow_Computed_Globals is
 
@@ -55,7 +56,8 @@ package Flow_Computed_Globals is
       Outputs           : Node_Sets.Set;
       Proof_Calls       : Node_Sets.Set;
       Definite_Calls    : Node_Sets.Set;
-      Conditional_Calls : Node_Sets.Set)
+      Conditional_Calls : Node_Sets.Set;
+      Local_Variables   : Node_Sets.Set)
    with Pre  => GG_Mode = GG_Write_Mode,
         Post => GG_Mode = GG_Write_Mode;
    --  Records the information we need to later compute globals.
@@ -84,6 +86,7 @@ package Flow_Computed_Globals is
    --  entity.
 
    procedure GG_Get_Globals (E           : Entity_Id;
+                             S           : Flow_Scope;
                              Proof_Reads : out Flow_Id_Sets.Set;
                              Reads       : out Flow_Id_Sets.Set;
                              Writes      : out Flow_Id_Sets.Set)
@@ -92,25 +95,37 @@ package Flow_Computed_Globals is
         Post => GG_Mode = GG_Read_Mode;
    --  Determines the set of all globals.
 
-   function GG_Get_Proof_Reads (E : Entity_Id) return Flow_Id_Sets.Set
+   function GG_Get_Proof_Reads
+     (E : Entity_Id;
+      S : Flow_Scope)
+      return Flow_Id_Sets.Set
    with Pre => GG_Mode = GG_Read_Mode and then
                GG_Exist (E);
    --  Returns the set of variables read in proof contexts.
 
-   function GG_Get_Reads (E : Entity_Id) return Flow_Id_Sets.Set
+   function GG_Get_Reads
+     (E : Entity_Id;
+      S : Flow_Scope)
+      return Flow_Id_Sets.Set
    with Pre => GG_Mode = GG_Read_Mode and then
                GG_Exist (E);
    --  Returns the set of variables read.
 
-   function GG_Get_All_Reads (E : Entity_Id) return Flow_Id_Sets.Set
+   function GG_Get_All_Reads
+     (E : Entity_Id;
+      S : Flow_Scope)
+      return Flow_Id_Sets.Set
    with Pre => GG_Mode = GG_Read_Mode and then
                GG_Exist (E);
-   --  Returns the set all (proof and ordinary) variables read.
+   --  Returns the set of all (proof and ordinary) variables read.
 
-   function GG_Get_Writes (E : Entity_Id) return Flow_Id_Sets.Set
+   function GG_Get_Writes
+     (E : Entity_Id;
+      S : Flow_Scope)
+      return Flow_Id_Sets.Set
    with Pre => GG_Mode = GG_Read_Mode and then
                GG_Exist (E);
-   --  Returns the set all variables written.
+   --  Returns the set of all variables written.
 
 private
 

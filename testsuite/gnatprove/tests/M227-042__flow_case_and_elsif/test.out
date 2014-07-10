@@ -592,21 +592,27 @@ digraph G {
 // test_Globals_Graph
 digraph G {
    graph [splines=True];
-    1 [label="test__if_3'Ins",shape="box"];
-    2 [label="test__if_3'Outs",shape="box"];
-    3 [label="test__if_3'Proof_Ins",shape="box"];
-    4 [label="test__if_4'Ins",shape="box"];
-    5 [label="test__if_4'Outs",shape="box"];
-    6 [label="test__if_4'Proof_Ins",shape="box"];
-    7 [label="test__case_1'Ins",shape="box"];
-    8 [label="test__case_1'Outs",shape="box"];
-    9 [label="test__case_1'Proof_Ins",shape="box"];
-    10 [label="test__if_1'Ins",shape="box"];
-    11 [label="test__if_1'Outs",shape="box"];
-    12 [label="test__if_1'Proof_Ins",shape="box"];
-    13 [label="test__if_2'Ins",shape="box"];
-    14 [label="test__if_2'Outs",shape="box"];
-    15 [label="test__if_2'Proof_Ins",shape="box"];
+    1 [label="test__if_1__par1"];
+    2 [label="test__if_4__par1"];
+    3 [label="test__if_3__par1"];
+    4 [label="test__case_1__par1"];
+    5 [label="test__case_1__par2"];
+    6 [label="test__if_2__par1"];
+    7 [label="test__if_3'Ins",shape="box"];
+    8 [label="test__if_3'Outs",shape="box"];
+    9 [label="test__if_3'Proof_Ins",shape="box"];
+    10 [label="test__if_4'Ins",shape="box"];
+    11 [label="test__if_4'Outs",shape="box"];
+    12 [label="test__if_4'Proof_Ins",shape="box"];
+    13 [label="test__case_1'Ins",shape="box"];
+    14 [label="test__case_1'Outs",shape="box"];
+    15 [label="test__case_1'Proof_Ins",shape="box"];
+    16 [label="test__if_1'Ins",shape="box"];
+    17 [label="test__if_1'Outs",shape="box"];
+    18 [label="test__if_1'Proof_Ins",shape="box"];
+    19 [label="test__if_2'Ins",shape="box"];
+    20 [label="test__if_2'Outs",shape="box"];
+    21 [label="test__if_2'Proof_Ins",shape="box"];
 
 }
 

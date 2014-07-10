@@ -129,16 +129,18 @@ package Flow_Utility is
                   (for all G of Writes    => G.Variant = Out_View);
    --  Given a subprogram call, work out globals from the appropriate
    --  global aspect (relative to Scope), or the depends aspect (if no
-   --  global aspect is given), or finally the computed globals, if neither
-   --  global nor depends aspects are provided. The sets returned will
-   --  contain Flow_Id with the variant set to In_View and Out_View.
+   --  global aspect is given). If the Global and Depends aspects are
+   --  not present then use the generated globals or finally, if non
+   --  of the above exist fall back to the computed globals. The sets
+   --  returned will contain Flow_Id with the variant set to In_View
+   --  and Out_View.
    --
    --  If Consider_Discriminants is provided then an out global will
    --  include a corresponding read if the global includes at least
    --  one discriminant.
    --
-   --  If Globals_For_Proof is set then the calls to Get_Generated_Reads will
-   --  not specify Include_Constants.
+   --  If Globals_For_Proof is set then the calls to
+   --  Get_Generated_Reads will not specify Include_Constants.
 
    procedure Get_Proof_Globals (Subprogram : Entity_Id;
                                 Reads      : out Flow_Id_Sets.Set;

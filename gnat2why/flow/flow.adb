@@ -1211,6 +1211,7 @@ package body Flow is
                Proof_Calls       : Node_Sets.Set;
                Definite_Calls    : Node_Sets.Set;
                Conditional_Calls : Node_Sets.Set;
+               Local_Variables   : Node_Sets.Set;
             begin
                Compute_Globals (FA,
                                 Inputs_Proof      => Inputs_Proof,
@@ -1218,7 +1219,8 @@ package body Flow is
                                 Outputs           => Outputs,
                                 Proof_Calls       => Proof_Calls,
                                 Definite_Calls    => Definite_Calls,
-                                Conditional_Calls => Conditional_Calls);
+                                Conditional_Calls => Conditional_Calls,
+                                Local_Variables   => Local_Variables);
 
                if Gnat2Why_Args.Flow_Advanced_Debug then
                   Write_Str ("Proof inputs     : ");
@@ -1238,6 +1240,9 @@ package body Flow is
 
                   Write_Str ("Conditional calls: ");
                   Print_Node_Set (Conditional_Calls);
+
+                  Write_Str ("Local variables  : ");
+                  Print_Node_Set (Local_Variables);
                end if;
 
                GG_Write_Subprogram_Info
@@ -1247,7 +1252,8 @@ package body Flow is
                   Outputs           => Outputs,
                   Proof_Calls       => Proof_Calls,
                   Definite_Calls    => Definite_Calls,
-                  Conditional_Calls => Conditional_Calls);
+                  Conditional_Calls => Conditional_Calls,
+                  Local_Variables   => Local_Variables);
             end;
          end if;
 

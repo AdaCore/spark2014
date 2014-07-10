@@ -296,9 +296,11 @@ digraph G {
 // test_Globals_Graph
 digraph G {
    graph [splines=True];
-    1 [label="test__qe_2'Ins",shape="box"];
-    2 [label="test__qe_2'Outs",shape="box"];
-    3 [label="test__qe_2'Proof_Ins",shape="box"];
+    1 [label="test__qe_2__B_2__temp_table"];
+    2 [label="test__qe_2__table"];
+    3 [label="test__qe_2'Ins",shape="box"];
+    4 [label="test__qe_2'Outs",shape="box"];
+    5 [label="test__qe_2'Proof_Ins",shape="box"];
 
 }
 

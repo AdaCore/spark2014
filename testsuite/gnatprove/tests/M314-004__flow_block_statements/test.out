@@ -708,15 +708,31 @@ digraph G {
 // test_Globals_Graph
 digraph G {
    graph [splines=True];
-    1 [label="test__parallel_block_statements'Ins",shape="box"];
-    2 [label="test__parallel_block_statements'Outs",shape="box"];
-    3 [label="test__parallel_block_statements'Proof_Ins",shape="box"];
-    4 [label="test__nested_block_statements'Ins",shape="box"];
-    5 [label="test__nested_block_statements'Outs",shape="box"];
-    6 [label="test__nested_block_statements'Proof_Ins",shape="box"];
-    7 [label="test__compare_and_swap'Ins",shape="box"];
-    8 [label="test__compare_and_swap'Outs",shape="box"];
-    9 [label="test__compare_and_swap'Proof_Ins",shape="box"];
+    1 [label="test__nested_block_statements__B_4__B_5__temp"];
+    2 [label="test__parallel_block_statements__B_1__temp1"];
+    3 [label="test__parallel_block_statements__B_1__temp2"];
+    4 [label="test__parallel_block_statements__operation"];
+    5 [label="test__parallel_block_statements__B_3__temp1"];
+    6 [label="test__parallel_block_statements__B_3__temp2"];
+    7 [label="test__parallel_block_statements__B_2__temp1"];
+    8 [label="test__parallel_block_statements__B_2__temp2"];
+    9 [label="test__nested_block_statements__B_4__temp"];
+    10 [label="test__parallel_block_statements__x"];
+    11 [label="test__parallel_block_statements__y"];
+    12 [label="test__compare_and_swap__x"];
+    13 [label="test__compare_and_swap__y"];
+    14 [label="test__compare_and_swap__swap__temp"];
+    15 [label="test__nested_block_statements__x"];
+    16 [label="test__nested_block_statements__y"];
+    17 [label="test__parallel_block_statements'Ins",shape="box"];
+    18 [label="test__parallel_block_statements'Outs",shape="box"];
+    19 [label="test__parallel_block_statements'Proof_Ins",shape="box"];
+    20 [label="test__nested_block_statements'Ins",shape="box"];
+    21 [label="test__nested_block_statements'Outs",shape="box"];
+    22 [label="test__nested_block_statements'Proof_Ins",shape="box"];
+    23 [label="test__compare_and_swap'Ins",shape="box"];
+    24 [label="test__compare_and_swap'Outs",shape="box"];
+    25 [label="test__compare_and_swap'Proof_Ins",shape="box"];
 
 }
 

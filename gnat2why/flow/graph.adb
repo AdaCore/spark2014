@@ -131,6 +131,15 @@ package body Graph is
       Id := G.Vertices.Last_Index;
    end Add_Vertex;
 
+   procedure Add_Vertex
+     (G  : in out T'Class;
+      V  : Vertex_Key) is
+   begin
+      G.Vertices.Append ((Key            => V,
+                          In_Neighbours  => VIS.Empty_Set,
+                          Out_Neighbours => EAM.Empty_Map));
+   end Add_Vertex;
+
    -----------------
    -- Vertex_Hash --
    -----------------
@@ -181,6 +190,15 @@ package body Graph is
          and V_2 <= G.Vertices.Last_Index);
 
       return G.Vertices (V_1).Out_Neighbours.Contains (V_2);
+   end Edge_Exists;
+
+   function Edge_Exists
+     (G        : T'Class;
+      V_1, V_2 : Vertex_Key) return Boolean is
+   begin
+      return Edge_Exists (G,
+                          Get_Vertex (G, V_1),
+                          Get_Vertex (G, V_2));
    end Edge_Exists;
 
    --------------
@@ -1235,6 +1253,23 @@ package body Graph is
             end if;
          end loop;
       end loop;
+   end Close;
+
+   procedure Close (G : in out T'Class) is
+      procedure Dummy_Proc (A, B : Vertex_Id);
+      --  Dummy procedure that does nothing.
+
+      ----------------
+      -- Dummy_Proc --
+      ----------------
+
+      procedure Dummy_Proc (A, B : Vertex_Id) is
+         pragma Unreferenced (A, B);
+      begin
+         null;
+      end Dummy_Proc;
+   begin
+      Close (G, Dummy_Proc'Access);
    end Close;
 
    ----------------------------------------------------------------------

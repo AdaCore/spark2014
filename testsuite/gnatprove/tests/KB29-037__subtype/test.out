@@ -1,4 +1,3 @@
-main.adb:3:11: warning: "Global" might not be initialized after elaboration of main program "Main"
 main.adb:4:22: info: range check proved
 main.adb:6:04: warning: initialization has no effect
 main.adb:6:13: info: range check proved

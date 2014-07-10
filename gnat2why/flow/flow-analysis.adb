@@ -185,7 +185,7 @@ package body Flow.Analysis is
          Precise => True);
 
       if First_Use = FA.Analyzed_Entity then
-         --  Ok, we did not actually find a node which make use of
+         --  Ok, we did not actually find a node which makes use of
          --  Var, which is a bit odd. This means that the computed
          --  globals for FA.Analyzed_Entity contain a symbol Var for
          --  no good reason.

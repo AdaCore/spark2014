@@ -7,80 +7,91 @@ single_compilation_unit.adb:39:04: warning: analyzing unreferenced function "Dou
 // across_compilation_units-child_Globals_Graph
 digraph G {
    graph [splines=True];
-    1 [label="across_compilation_units__child__x"];
-    2 [label="across_compilation_units__child__y"];
-    3 [label="across_compilation_units__child__z"];
-    4 [label="across_compilation_units__prime'Ins",shape="box"];
-    5 [label="across_compilation_units__prime'Outs",shape="box"];
-    6 [label="across_compilation_units__prime'Proof_Ins",shape="box"];
-    7 [label="across_compilation_units__swap'Ins",shape="box"];
-    8 [label="across_compilation_units__swap'Outs",shape="box"];
-    9 [label="across_compilation_units__swap'Proof_Ins",shape="box"];
-    10 [label="across_compilation_units__child__round_swap_1'Ins",shape="box"];
-    11 [label="across_compilation_units__child__round_swap_1'Outs",shape="box"];
-    12 [label="across_compilation_units__child__round_swap_1'Proof_Ins",shape="box"];
-    13 [label="across_compilation_units__child__round_swap_2'Ins",shape="box"];
-    14 [label="across_compilation_units__child__round_swap_2'Outs",shape="box"];
-    15 [label="across_compilation_units__child__round_swap_2'Proof_Ins",shape="box"];
-    16 [label="across_compilation_units__swap_with_depends'Ins",shape="box"];
-    17 [label="across_compilation_units__swap_with_depends'Outs",shape="box"];
-    18 [label="across_compilation_units__swap_with_depends'Proof_Ins",shape="box"];
+    1 [label="across_compilation_units__prime__x"];
+    2 [label="across_compilation_units__swap__temp"];
+    3 [label="across_compilation_units__swap__x"];
+    4 [label="across_compilation_units__swap__y"];
+    5 [label="across_compilation_units__child__x"];
+    6 [label="across_compilation_units__child__y"];
+    7 [label="across_compilation_units__child__z"];
+    8 [label="across_compilation_units__prime'Ins",shape="box"];
+    9 [label="across_compilation_units__prime'Outs",shape="box"];
+    10 [label="across_compilation_units__prime'Proof_Ins",shape="box"];
+    11 [label="across_compilation_units__swap'Ins",shape="box"];
+    12 [label="across_compilation_units__swap'Outs",shape="box"];
+    13 [label="across_compilation_units__swap'Proof_Ins",shape="box"];
+    14 [label="across_compilation_units__child__round_swap_1'Ins",shape="box"];
+    15 [label="across_compilation_units__child__round_swap_1'Outs",shape="box"];
+    16 [label="across_compilation_units__child__round_swap_1'Proof_Ins",shape="box"];
+    17 [label="across_compilation_units__child__round_swap_2'Ins",shape="box"];
+    18 [label="across_compilation_units__child__round_swap_2'Outs",shape="box"];
+    19 [label="across_compilation_units__child__round_swap_2'Proof_Ins",shape="box"];
 
-    10 ->  1 [arrowType="normal"];
-    10 ->  2 [arrowType="normal"];
-    10 ->  3 [arrowType="normal"];
-    10 ->  7 [arrowType="normal"];
-    11 ->  1 [arrowType="normal"];
-    11 ->  2 [arrowType="normal"];
-    11 ->  3 [arrowType="normal"];
-    11 ->  8 [arrowType="normal"];
-    12 ->  9 [arrowType="normal"];
-    13 ->  1 [arrowType="normal"];
-    13 ->  2 [arrowType="normal"];
-    13 ->  3 [arrowType="normal"];
-    13 ->  16 [arrowType="normal"];
-    14 ->  1 [arrowType="normal"];
-    14 ->  2 [arrowType="normal"];
-    14 ->  3 [arrowType="normal"];
-    14 ->  17 [arrowType="normal"];
-    15 ->  18 [arrowType="normal"];
+    14 ->  5 [arrowType="normal"];
+    14 ->  6 [arrowType="normal"];
+    14 ->  7 [arrowType="normal"];
+    14 ->  11 [arrowType="normal"];
+    15 ->  5 [arrowType="normal"];
+    15 ->  6 [arrowType="normal"];
+    15 ->  7 [arrowType="normal"];
+    15 ->  12 [arrowType="normal"];
+    16 ->  13 [arrowType="normal"];
+    17 ->  5 [arrowType="normal"];
+    17 ->  6 [arrowType="normal"];
+    17 ->  7 [arrowType="normal"];
+    18 ->  5 [arrowType="normal"];
+    18 ->  6 [arrowType="normal"];
+    18 ->  7 [arrowType="normal"];
 }
 
 // across_compilation_units_Globals_Graph
 digraph G {
    graph [splines=True];
-    1 [label="across_compilation_units__prime'Ins",shape="box"];
-    2 [label="across_compilation_units__prime'Outs",shape="box"];
-    3 [label="across_compilation_units__prime'Proof_Ins",shape="box"];
-    4 [label="across_compilation_units__swap'Ins",shape="box"];
-    5 [label="across_compilation_units__swap'Outs",shape="box"];
-    6 [label="across_compilation_units__swap'Proof_Ins",shape="box"];
+    1 [label="across_compilation_units__prime__x"];
+    2 [label="across_compilation_units__swap__temp"];
+    3 [label="across_compilation_units__swap__x"];
+    4 [label="across_compilation_units__swap__y"];
+    5 [label="across_compilation_units__prime'Ins",shape="box"];
+    6 [label="across_compilation_units__prime'Outs",shape="box"];
+    7 [label="across_compilation_units__prime'Proof_Ins",shape="box"];
+    8 [label="across_compilation_units__swap'Ins",shape="box"];
+    9 [label="across_compilation_units__swap'Outs",shape="box"];
+    10 [label="across_compilation_units__swap'Proof_Ins",shape="box"];
 
 }
 
 // caller_of_across_compilation_units_Globals_Graph
 digraph G {
    graph [splines=True];
-    1 [label="caller_of_across_compilation_units__min'Ins",shape="box"];
-    2 [label="caller_of_across_compilation_units__min'Outs",shape="box"];
-    3 [label="caller_of_across_compilation_units__min'Proof_Ins",shape="box"];
-    4 [label="across_compilation_units__prime'Ins",shape="box"];
-    5 [label="across_compilation_units__prime'Outs",shape="box"];
-    6 [label="across_compilation_units__prime'Proof_Ins",shape="box"];
-    7 [label="across_compilation_units__swap'Ins",shape="box"];
-    8 [label="across_compilation_units__swap'Outs",shape="box"];
-    9 [label="across_compilation_units__swap'Proof_Ins",shape="box"];
-    10 [label="caller_of_across_compilation_units__coprime'Ins",shape="box"];
-    11 [label="caller_of_across_compilation_units__coprime'Outs",shape="box"];
-    12 [label="caller_of_across_compilation_units__coprime'Proof_Ins",shape="box"];
+    1 [label="across_compilation_units__prime__x"];
+    2 [label="across_compilation_units__swap__temp"];
+    3 [label="across_compilation_units__swap__x"];
+    4 [label="across_compilation_units__swap__y"];
+    5 [label="caller_of_across_compilation_units__coprime__x"];
+    6 [label="caller_of_across_compilation_units__coprime__y"];
+    7 [label="caller_of_across_compilation_units__min__x"];
+    8 [label="caller_of_across_compilation_units__coprime__L_1__R4b"];
+    9 [label="caller_of_across_compilation_units__min__y"];
+    10 [label="caller_of_across_compilation_units__min'Ins",shape="box"];
+    11 [label="caller_of_across_compilation_units__min'Outs",shape="box"];
+    12 [label="caller_of_across_compilation_units__min'Proof_Ins",shape="box"];
+    13 [label="across_compilation_units__prime'Ins",shape="box"];
+    14 [label="across_compilation_units__prime'Outs",shape="box"];
+    15 [label="across_compilation_units__prime'Proof_Ins",shape="box"];
+    16 [label="across_compilation_units__swap'Ins",shape="box"];
+    17 [label="across_compilation_units__swap'Outs",shape="box"];
+    18 [label="across_compilation_units__swap'Proof_Ins",shape="box"];
+    19 [label="caller_of_across_compilation_units__coprime'Ins",shape="box"];
+    20 [label="caller_of_across_compilation_units__coprime'Outs",shape="box"];
+    21 [label="caller_of_across_compilation_units__coprime'Proof_Ins",shape="box"];
 
-    10 ->  1 [arrowType="normal"];
-    10 ->  2 [arrowType="normal"];
-    10 ->  4 [arrowType="normal"];
-    11 ->  2 [arrowType="normal"];
-    11 ->  5 [arrowType="normal"];
-    12 ->  3 [arrowType="normal"];
-    12 ->  6 [arrowType="normal"];
+    19 ->  10 [arrowType="normal"];
+    19 ->  11 [arrowType="normal"];
+    19 ->  13 [arrowType="normal"];
+    20 ->  11 [arrowType="normal"];
+    20 ->  14 [arrowType="normal"];
+    21 ->  12 [arrowType="normal"];
+    21 ->  15 [arrowType="normal"];
 }
 
 // fa_pkg_body_across_compilation_units_cfg
@@ -2127,32 +2138,30 @@ digraph G {
 // single_compilation_unit_Globals_Graph
 digraph G {
    graph [splines=True];
-    1 [label="single_compilation_unit__x"];
-    2 [label="single_compilation_unit__y"];
-    3 [label="single_compilation_unit__fibonacci'Ins",shape="box"];
-    4 [label="single_compilation_unit__fibonacci'Outs",shape="box"];
-    5 [label="single_compilation_unit__fibonacci'Proof_Ins",shape="box"];
-    6 [label="single_compilation_unit__max'Ins",shape="box"];
-    7 [label="single_compilation_unit__max'Outs",shape="box"];
-    8 [label="single_compilation_unit__max'Proof_Ins",shape="box"];
-    9 [label="single_compilation_unit__double_max'Ins",shape="box"];
-    10 [label="single_compilation_unit__double_max'Outs",shape="box"];
-    11 [label="single_compilation_unit__double_max'Proof_Ins",shape="box"];
-    12 [label="single_compilation_unit__factorial'Ins",shape="box"];
-    13 [label="single_compilation_unit__factorial'Outs",shape="box"];
-    14 [label="single_compilation_unit__factorial'Proof_Ins",shape="box"];
+    1 [label="single_compilation_unit__fibonacci__n"];
+    2 [label="single_compilation_unit__double_max__temp"];
+    3 [label="single_compilation_unit__factorial__var"];
+    4 [label="single_compilation_unit__factorial__fact"];
+    5 [label="single_compilation_unit__x"];
+    6 [label="single_compilation_unit__y"];
+    7 [label="single_compilation_unit__fibonacci'Ins",shape="box"];
+    8 [label="single_compilation_unit__fibonacci'Outs",shape="box"];
+    9 [label="single_compilation_unit__fibonacci'Proof_Ins",shape="box"];
+    10 [label="single_compilation_unit__double_max'Ins",shape="box"];
+    11 [label="single_compilation_unit__double_max'Outs",shape="box"];
+    12 [label="single_compilation_unit__double_max'Proof_Ins",shape="box"];
+    13 [label="single_compilation_unit__factorial'Ins",shape="box"];
+    14 [label="single_compilation_unit__factorial'Outs",shape="box"];
+    15 [label="single_compilation_unit__factorial'Proof_Ins",shape="box"];
 
-    3 ->  3 [arrowType="normal"];
-    4 ->  4 [arrowType="normal"];
-    5 ->  5 [arrowType="normal"];
-    9 ->  1 [arrowType="normal"];
-    9 ->  2 [arrowType="normal"];
-    9 ->  6 [arrowType="normal"];
-    10 ->  7 [arrowType="normal"];
-    11 ->  8 [arrowType="normal"];
-    12 ->  12 [arrowType="normal"];
-    12 ->  13 [arrowType="normal"];
+    7 ->  7 [arrowType="normal"];
+    8 ->  8 [arrowType="normal"];
+    9 ->  9 [arrowType="normal"];
+    10 ->  5 [arrowType="normal"];
+    10 ->  6 [arrowType="normal"];
     13 ->  13 [arrowType="normal"];
+    13 ->  14 [arrowType="normal"];
     14 ->  14 [arrowType="normal"];
+    15 ->  15 [arrowType="normal"];
 }
 

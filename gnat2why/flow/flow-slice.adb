@@ -23,7 +23,14 @@
 
 with Why;
 
+with Sem_Util;     use Sem_Util;
+with Sinfo;        use Sinfo;
+
+with SPARK_Util;
+
 with Flow_Utility; use Flow_Utility;
+
+--  with Treepr;       use Treepr;
 
 package body Flow.Slice is
 
@@ -264,7 +271,8 @@ package body Flow.Slice is
       Outputs           : out Node_Sets.Set;
       Proof_Calls       : out Node_Sets.Set;
       Definite_Calls    : out Node_Sets.Set;
-      Conditional_Calls : out Node_Sets.Set)
+      Conditional_Calls : out Node_Sets.Set;
+      Local_Variables   : out Node_Sets.Set)
    is
       --  The "Get" functions that follow return sets of nodes that
       --  are purely of the mode described in their names. This is
@@ -293,6 +301,16 @@ package body Flow.Slice is
 
       function Get_Definite_Subprograms return Node_Sets.Set;
       --  Returns all subprograms that are definitely called
+
+      function Get_Local_Variables return Node_Sets.Set;
+      --  Traverses the tree under FA.Analyzed_Entity and gathers all
+      --  object declared.
+
+      function Subprograms_Without_Contracts
+        (NS : Node_Sets.Set)
+         return Node_Sets.Set;
+      --  Returns a subset of NS that comprises those subprograms that
+      --  have no user-provided Global or Depends contracts.
 
       -----------------------------
       -- Get_Inputs_Or_Proof_Ins --
@@ -441,7 +459,7 @@ package body Flow.Slice is
             end if;
          end loop;
 
-         return All_Proof_Subprograms;
+         return Subprograms_Without_Contracts (All_Proof_Subprograms);
       end Get_Proof_Subprograms;
 
       ------------------------------
@@ -466,8 +484,83 @@ package body Flow.Slice is
             end if;
          end loop;
 
-         return All_Definite_Subprograms;
+         return Subprograms_Without_Contracts (All_Definite_Subprograms);
       end Get_Definite_Subprograms;
+
+      -------------------------
+      -- Get_Local_Variables --
+      -------------------------
+
+      function Get_Local_Variables return Node_Sets.Set is
+         NS : Node_Sets.Set := Node_Sets.Empty_Set;
+
+         function Get_Object_Declaration (N : Node_Id) return Traverse_Result;
+         --  Picks up an object coming from an object declaration.
+
+         procedure Gather_Local_Variables is
+            new Traverse_Proc (Get_Object_Declaration);
+
+         ----------------------------
+         -- Get_Object_Declaration --
+         ----------------------------
+
+         function Get_Object_Declaration (N : Node_Id) return Traverse_Result
+         is
+         begin
+            if Nkind (N) = N_Object_Declaration then
+               if Present (Full_View (Defining_Entity (N))) then
+                  NS.Include (Full_View (Defining_Entity (N)));
+               else
+                  NS.Include (Defining_Entity (N));
+               end if;
+            end if;
+
+            return OK;
+         end Get_Object_Declaration;
+
+      begin
+         --  Gather formal parameters of the subprogram itself.
+         declare
+            E : Entity_Id;
+         begin
+            E := First_Formal (FA.Analyzed_Entity);
+
+            while Present (E) loop
+               if Present (Full_View (E)) then
+                  NS.Include (Full_View (E));
+               else
+                  NS.Include (E);
+               end if;
+               Next_Formal (E);
+            end loop;
+         end;
+
+         Gather_Local_Variables
+           (SPARK_Util.Get_Subprogram_Body (FA.Analyzed_Entity));
+
+         return NS;
+      end Get_Local_Variables;
+
+      -----------------------------------
+      -- Subprograms_Without_Contracts --
+      -----------------------------------
+
+      function Subprograms_Without_Contracts
+        (NS : Node_Sets.Set)
+         return Node_Sets.Set
+      is
+         Subs_Without_Contracts : Node_Sets.Set := Node_Sets.Empty_Set;
+      begin
+         for N of NS loop
+            if not Has_User_Supplied_Globals (N) then
+               Subs_Without_Contracts.Include (N);
+            end if;
+         end loop;
+
+         return Subs_Without_Contracts;
+      end Subprograms_Without_Contracts;
+
+   --  Beginning of Compute_Globals
 
    begin
       Inputs_Proof      := Get_Proof_Ins;
@@ -476,7 +569,9 @@ package body Flow.Slice is
       Outputs           := Get_In_Outs or Get_Outputs;
       Proof_Calls       := Get_Proof_Subprograms;
       Definite_Calls    := Get_Definite_Subprograms - Proof_Calls;
-      Conditional_Calls := FA.GG.Subprograms - Definite_Calls - Proof_Calls;
+      Conditional_Calls := Subprograms_Without_Contracts
+        (FA.GG.Subprograms - Definite_Calls - Proof_Calls);
+      Local_Variables   := Get_Local_Variables;
    end Compute_Globals;
 
 end Flow.Slice;

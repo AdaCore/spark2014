@@ -1,2 +1,6 @@
+p.adb:6:04: warning: statement has no effect
+p.adb:6:04: warning: unused assignment to "B1"
 p.adb:6:04: warning: unused assignment to "B2"
 p.adb:8:04: info: precondition proved
+test.adb:6:10: warning: unused assignment to "B1"
+test.adb:56:13: warning: unused assignment

@@ -1,0 +1,4 @@
+misc.adb:17:22: warning: assertion might fail, requires G2
+pr_01.adb:10:14: info: overflow check proved
+pr_02.adb:7:14: warning: overflow check might fail
+pr_03.adb:9:17: warning: overflow check might fail

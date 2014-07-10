@@ -186,6 +186,13 @@ package Graph is
    --  As above, but adds an unkeyed vertex. You must never lose the
    --  returned Id, otherwise you lose the vertex!
 
+   procedure Add_Vertex
+     (G  : in out T'Class;
+      V  : Vertex_Key)
+   with Pre  => not G.Is_Frozen and
+                G.Get_Vertex (V) = Null_Vertex;
+   --  As above, but we do not inquire about the new Vertex_Id.
+
    function Vertex_Hash
      (Element : Vertex_Id) return Ada.Containers.Hash_Type;
    --  Hash a vertex_id (useful for building sets of vertices).
@@ -214,6 +221,11 @@ package Graph is
    --  Tests if the given edge from V_1 to V_2 is in the graph.
    --
    --  Complexity is O(1).
+
+   function Edge_Exists
+     (G        : T'Class;
+      V_1, V_2 : Vertex_Key) return Boolean;
+   --  Same as above but takes Vertex_Keys as parameters.
 
    procedure Add_Edge
      (G        : in out T'Class;
@@ -473,6 +485,9 @@ package Graph is
    --  to the graph.
    --
    --  Complexity is O(N^2)
+
+   procedure Close (G : in out T'Class);
+   --  Same as above but without a Visitor procedure.
 
    ----------------------------------------------------------------------
    --  IO
