@@ -109,9 +109,9 @@ Inductive compile2_flagged_object_declarations: list object_declaration -> list 
 
 
 Inductive compile2_flagged_parameter_specification: parameter_specification -> parameter_specification_x -> Prop :=
-    | C2_Flagged_Parameter_Spec: forall ast_num x t m,
-        compile2_flagged_parameter_specification (mkparameter_specification   ast_num x t m)
-                                                 (mkparameter_specification_x ast_num x t m).
+    | C2_Flagged_Parameter_Spec: forall ast_num x m t,
+        compile2_flagged_parameter_specification (mkparameter_specification   ast_num x m t)
+                                                 (mkparameter_specification_x ast_num x m t).
 
 Inductive compile2_flagged_parameter_specifications: list parameter_specification -> list parameter_specification_x -> Prop :=
     | C2_Flagged_Parameter_Specs_Null:
@@ -158,8 +158,8 @@ with compile2_flagged_procedure_declaration: procedure_declaration -> procedure_
            compile2_flagged_parameter_specifications params params_flagged ->
            compile2_flagged_declarations decls decls_flagged ->
            compile2_flagged_stmt stmt stmt_flagged ->
-           compile2_flagged_procedure_declaration (mkprocedure_declaration   ast_num p aspects params decls stmt)
-                                                  (mkprocedure_declaration_x ast_num p aspects_flagged params_flagged decls_flagged stmt_flagged)
+           compile2_flagged_procedure_declaration (mkprocedure_declaration   ast_num p params aspects decls stmt)
+                                                  (mkprocedure_declaration_x ast_num p params_flagged aspects_flagged decls_flagged stmt_flagged)
 
 with compile2_flagged_declarations: list declaration -> list declaration_x -> Prop :=
        | C2_Flagged_Declarations_Null:

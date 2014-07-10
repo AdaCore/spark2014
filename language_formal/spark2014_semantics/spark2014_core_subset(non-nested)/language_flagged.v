@@ -41,7 +41,7 @@ Inductive statement_x: Type :=
     | S_Procedure_Call_X: astnum -> astnum -> procnum -> list expression_x -> statement_x (* 6.4 *) (* the second astnum for the called procedure *)
     | S_Sequence_X: astnum -> statement_x -> statement_x -> statement_x. (* 5.1 *)
 
-
+(* Array / Record Type Declaration *)
 Inductive type_declaration_x: Type := (* 3.2.1 *)
     | Array_Type_Declaration_X: (* Constrained_Array_Definition, non-nested one-dimentional array *)
         astnum -> typenum (*array name*) -> type (*component type*) -> 
@@ -85,8 +85,8 @@ with procedure_declaration_x: Type :=
   mkprocedure_declaration_x
     (procedure_astnum_x: astnum)
     (procedure_name_x: procnum)
-    (procedure_contracts_x: list aspect_specification_x)
     (procedure_parameter_profile_x: list parameter_specification_x)
+    (procedure_contracts_x: list aspect_specification_x)
     (procedure_declarative_part_x: list declaration_x)
     (procedure_statements_x: statement_x).
 
@@ -94,8 +94,8 @@ with procedure_declaration_x: Type :=
 (** ** Compilation Unit Subprogram *)
 (* 6.1 *)
 Inductive subprogram_x: Type := 
-    | Global_Procedure_X: astnum -> procedure_declaration_x -> subprogram_x
-(*  | Global_Function_X: astnum -> function_declaration_x -> subprogram_x *).
+    | Global_Procedure_X: astnum -> procedure_declaration_x -> subprogram_x.
+(*  | Global_Function_X: astnum -> function_declaration_x -> subprogram_x *)
 
 (* 10.1.1 *)
 Inductive library_unit_declaration_x: Type := 
@@ -106,6 +106,7 @@ Inductive compilation_unit_x: Type :=
     | Library_Unit_X: astnum -> library_unit_declaration_x -> compilation_unit_x.
 
 
+(** ** Auxiliary Functions *)
 
 Section AuxiliaryFunctions_X.
 
@@ -119,9 +120,14 @@ Section AuxiliaryFunctions_X.
       | mkprocedure_declaration_x _ _ _ _ x _ => x
     end.
 
-  Definition procedure_parameter_profile_x pb :=
+  Definition procedure_contracts_x pb :=
     match pb with
       | mkprocedure_declaration_x _ _ _ x _ _ => x
+    end.
+
+  Definition procedure_parameter_profile_x pb :=
+    match pb with
+      | mkprocedure_declaration_x _ _ x _ _ _ => x
     end.
 
   Definition procedure_name_x pb :=

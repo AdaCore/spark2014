@@ -1,1 +1,2 @@
-sed 's/(\*_1_//g;s/_1_\*)//g;/_2_\*)$/d;s/_xx//g;s/_XX//g;s/(\*checks\*)//g' test2014.v > test2014_1.v
+sed 's/_xx//g;s/_XX//g;s/(\*checks\*)//g' test2014.v > test2014_ast.v
+sed 's/xx/x/g;s/XX/X/g;s/(\*\*//g;s/\*\*)//g' test2014.v > test2014_ast_flagged.v

@@ -42,6 +42,7 @@ Inductive statement_xx: Type :=
     | S_Procedure_Call_XX: astnum -> astnum -> procnum -> list expression_xx -> statement_xx (* 6.4 *) (* the second astnum for the called procedure *)
     | S_Sequence_XX: astnum -> statement_xx -> statement_xx -> statement_xx. (* 5.1 *)
 
+(* Array / Record Type Declaration *)
 Inductive type_declaration_xx: Type := (* 3.2.1 *)
     | Array_Type_Declaration_XX: (* Constrained_Array_Definition, non-nested one-dimentional array *)
         astnum -> typenum (*array name*) -> type (*component type*) -> 
@@ -85,8 +86,8 @@ with procedure_declaration_xx: Type :=
   mkprocedure_declaration_xx
     (procedure_astnum_xx: astnum)
     (procedure_name_xx: procnum)
-    (procedure_contracts_xx: list aspect_specification_xx)
     (procedure_parameter_profile_xx: list parameter_specification_xx)
+    (procedure_contracts_xx: list aspect_specification_xx)
     (procedure_declarative_part_xx: list declaration_xx)
     (procedure_statements_xx: statement_xx).
 
@@ -120,9 +121,14 @@ Section AuxiliaryFunctions_XX.
       | mkprocedure_declaration_xx _ _ _ _ x _ => x
     end.
 
-  Definition procedure_parameter_profile_xx pb :=
+  Definition procedure_contracts_xx pb :=
     match pb with
       | mkprocedure_declaration_xx _ _ _ x _ _ => x
+    end.
+
+  Definition procedure_parameter_profile_xx pb :=
+    match pb with
+      | mkprocedure_declaration_xx _ _ x _ _ _ => x
     end.
 
   Definition procedure_name_xx pb :=

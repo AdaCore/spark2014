@@ -40,7 +40,7 @@ Inductive statement: Type :=
     | S_Procedure_Call: astnum -> astnum -> procnum -> list expression -> statement (* 6.4 *) (* the second astnum for the called procedure *)
     | S_Sequence: astnum -> statement -> statement -> statement. (* 5.1 *)
 
-
+(* Array / Record Type Declaration *)
 Inductive type_declaration: Type := (* 3.2.1 *)
     | Array_Type_Declaration: (* Constrained_Array_Definition, non-nested one-dimentional array *)
         astnum -> typenum (*array name*) -> type (*component type*) -> 
@@ -84,8 +84,8 @@ with procedure_declaration: Type :=
   mkprocedure_declaration
     (procedure_astnum: astnum)
     (procedure_name: procnum)
-    (procedure_contracts: list aspect_specification)
     (procedure_parameter_profile: list parameter_specification)
+    (procedure_contracts: list aspect_specification)
     (procedure_declarative_part: list declaration)
     (procedure_statements: statement).
 
@@ -93,8 +93,8 @@ with procedure_declaration: Type :=
 (** ** Compilation Unit Subprogram *)
 (* 6.1 *)
 Inductive subprogram: Type := 
-    | Global_Procedure: astnum -> procedure_declaration -> subprogram
-(*  | Global_Function: astnum -> function_declaration -> subprogram *).
+    | Global_Procedure: astnum -> procedure_declaration -> subprogram.
+(*  | Global_Function: astnum -> function_declaration -> subprogram *)
 
 (* 10.1.1 *)
 Inductive library_unit_declaration: Type := 
@@ -105,6 +105,7 @@ Inductive compilation_unit: Type :=
     | Library_Unit: astnum -> library_unit_declaration -> compilation_unit.
 
 
+(** ** Auxiliary Functions *)
 
 Section AuxiliaryFunctions.
 
@@ -118,9 +119,14 @@ Section AuxiliaryFunctions.
       | mkprocedure_declaration _ _ _ _ x _ => x
     end.
 
-  Definition procedure_parameter_profile pb :=
+  Definition procedure_contracts pb :=
     match pb with
       | mkprocedure_declaration _ _ _ x _ _ => x
+    end.
+
+  Definition procedure_parameter_profile pb :=
+    match pb with
+      | mkprocedure_declaration _ _ x _ _ _ => x
     end.
 
   Definition procedure_name pb :=
