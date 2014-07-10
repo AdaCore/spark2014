@@ -1574,7 +1574,6 @@ package body SPARK_Definition is
       Actuals : constant List_Id := Parameter_Associations (N);
 
    begin
-
       if Present (Actuals) then
          Mark_List (Actuals);
       end if;
@@ -1602,8 +1601,7 @@ package body SPARK_Definition is
          end if;
       end if;
 
-      --  If this is an indirect call or the subprogram called is not in SPARK,
-      --  then the call is not in SPARK.
+      --  If this is an indirect call then the call is not in SPARK
 
       if not Is_Entity_Name (Nam)
         or else No (E)
@@ -1622,6 +1620,12 @@ package body SPARK_Definition is
 
             Mark_Violation ("indirect call", N);
          end if;
+
+      --  If the subprogram called is not in SPARK then the call is not in
+      --  SPARK.
+
+      elsif not In_SPARK (E) then
+         Mark_Violation (N, From => E);
 
       --  There should not be calls to predicate functions and invariant
       --  procedures.

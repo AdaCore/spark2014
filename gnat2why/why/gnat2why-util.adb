@@ -53,8 +53,7 @@ package body Gnat2Why.Util is
       -- Element --
       -------------
 
-      function Element (M : Map; E : Entity_Id)
-                            return Item_Type is
+      function Element (M : Map; E : Entity_Id) return Item_Type is
       begin
          return M.Entity_Ids.Element (E);
       end Element;

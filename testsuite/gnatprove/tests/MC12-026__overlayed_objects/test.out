@@ -1,13 +1,12 @@
-p.adb:23:07: "Sync_Raw_S_With_Full_S" is not allowed in SPARK
-p.adb:23:07: violation of aspect SPARK_Mode at line 2
-p.adb:32:07: "Sync_Raw_S_With_Full_S" is not allowed in SPARK
-p.adb:32:07: violation of aspect SPARK_Mode at line 2
+p.adb:31:28: warning: overflow check might fail
+p.adb:32:28: warning: overflow check might fail
+p.ads:18:55: info: length check proved
+p.ads:27:22: warning: postcondition might fail
+p.ads:32:41: warning: unused initial value of "Raw_S"
+p.ads:33:11: warning: missing dependency "null => Raw_S"
+p.ads:33:32: warning: incorrect dependency "Raw_S => Raw_S"
+p.ads:33:32: warning: missing dependency "Raw_S => Full_S"
 p2.adb:39:28: warning: overflow check might fail
-p2.adb:40:28: info: range check proved
 p2.adb:40:28: warning: overflow check might fail
 p2.ads:18:55: info: length check proved
 p2.ads:27:22: warning: postcondition might fail
-   compilation of p.adb failed
-
-
-gnatprove: error during flow analysis and proof
