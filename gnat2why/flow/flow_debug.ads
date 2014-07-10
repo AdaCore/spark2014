@@ -25,6 +25,8 @@
 --  datastructures used by flow analysis in a vaguely human-readable
 --  form.
 
+with Types;                use Types;
+
 with Common_Containers;    use Common_Containers;
 
 with Flow_Dependency_Maps; use Flow_Dependency_Maps;
@@ -47,6 +49,11 @@ package Flow_Debug is
 
    procedure Print_Flow_Scope (S : Flow_Scope);
    --  Print a human-readable form of the given scope.
+
+   procedure Sprint_Node_Inline (N : Node_Id);
+   --  Print a node on a single line (no EOF is emitted anywhere). Note
+   --  this calls Set_Special_Output, so it is not compatible with other
+   --  code that calls this.
 
    procedure pfs (S : Flow_Scope);
    pragma Export (Ada, pfs);

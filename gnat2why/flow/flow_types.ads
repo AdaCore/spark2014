@@ -32,6 +32,7 @@ with Ada.Containers.Vectors;
 with Ada.Strings.Unbounded;              use Ada.Strings.Unbounded;
 
 with Atree;                              use Atree;
+with Einfo;                              use Einfo;
 with Sinfo;                              use Sinfo;
 with Types;                              use Types;
 
@@ -233,6 +234,16 @@ package Flow_Types is
       return Flow_Id
       with Pre => Present (N) and then Nkind (N) = N_Selected_Component;
    --  Create a Flow_Id for the given record field.
+
+   function Add_Component
+     (F    : Flow_Id;
+      Comp : Entity_Id)
+      return Flow_Id
+   with Pre  => F.Kind in Direct_Mapping | Record_Field and
+                (Nkind (Comp) in N_Entity and then
+                   Ekind (Comp) in E_Component | E_Discriminant),
+        Post => Add_Component'Result.Kind = Record_Field;
+   --  Returns the same flow id, but accessed with the given component.
 
    function Is_Discriminant (F : Flow_Id) return Boolean;
    --  Returns true if the given flow id is a record field

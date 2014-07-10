@@ -24,7 +24,6 @@
 with Ada.Strings;
 with Ada.Strings.Hash;
 
-with Einfo;            use Einfo;
 with Namet;            use Namet;
 with Sem_Util;         use Sem_Util;
 with Snames;           use Snames;
@@ -224,6 +223,31 @@ package body Flow_Types is
       end loop;
 
    end Record_Field_Id;
+
+   -------------------
+   -- Add_Component --
+   -------------------
+
+   function Add_Component
+     (F    : Flow_Id;
+      Comp : Entity_Id)
+      return Flow_Id
+   is
+      Tmp : Flow_Id;
+   begin
+      Tmp := (Kind      => Record_Field,
+              Variant   => F.Variant,
+              Node      => F.Node,
+              Bound     => F.Bound,
+              Component => Entity_Lists.Empty_Vector);
+
+      if F.Kind = Record_Field then
+         Tmp.Component := F.Component;
+      end if;
+      Tmp.Component.Append (Comp);
+
+      return Tmp;
+   end Add_Component;
 
    ---------------------
    -- Is_Discriminant --

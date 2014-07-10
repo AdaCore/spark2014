@@ -22,16 +22,49 @@
 ------------------------------------------------------------------------------
 
 with Atree;  use Atree;
-with Types;  use Types;
 
 with Output; use Output;
 with Sprint; use Sprint;
 
 with Ada.Containers;
+with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
+with Ada.Strings.Unbounded;  use Ada.Strings.Unbounded;
 
 use type Ada.Containers.Count_Type;
 
 package body Flow_Debug is
+
+   Temp_String : Unbounded_String;
+
+   procedure Add_To_Temp_String (S : String);
+   --  Helper subprogram to add to the buffer.
+
+   ------------------------
+   -- Add_To_Temp_String --
+   ------------------------
+
+   procedure Add_To_Temp_String (S : String) is
+      Prev : Character := ' ';
+   begin
+      for C of S loop
+         if Prev = ' ' and then C = ' ' then
+            null;
+         else
+            case C is
+               when Ada.Characters.Latin_1.CR =>
+                  null;
+               when Ada.Characters.Latin_1.LF =>
+                  if Prev not in '(' | ')' then
+                     Append (Temp_String, ' ');
+                  end if;
+                  Prev := C;
+               when others =>
+                  Append (Temp_String, C);
+                  Prev := C;
+            end case;
+         end if;
+      end loop;
+   end Add_To_Temp_String;
 
    --------------------
    -- Print_Node_Set --
@@ -134,6 +167,20 @@ package body Flow_Debug is
          Write_Str ("null_flow_scope");
       end if;
    end Print_Flow_Scope;
+
+   ------------------------
+   -- Sprint_Node_Inline --
+   ------------------------
+
+   procedure Sprint_Node_Inline (N : Node_Id)
+   is
+   begin
+      Temp_String := Null_Unbounded_String;
+      Set_Special_Output (Add_To_Temp_String'Access);
+      pg (Union_Id (N));
+      Cancel_Special_Output;
+      Write_Str (To_String (Trim (Temp_String, Ada.Strings.Both)));
+   end Sprint_Node_Inline;
 
    ---------
    -- pfs --

@@ -45,8 +45,13 @@ use type Ada.Containers.Count_Type;
 package Flow_Utility is
 
    function Get_Full_Type (E : Entity_Id) return Entity_Id;
-   --  Get the type of the given entity. Ignores private types and
-   --  always returns the full view.
+   --  Get the type of the given entity. Ignores private types and always
+   --  returns the full view.
+
+   function Get_Full_Etype (N : Node_Id) return Entity_Id
+   with Pre => Present (N);
+   --  Get the type of the given node. Ignores private types and always
+   --  returns the full view.
 
    function All_Record_Components
      (Entire_Var : Entity_Id)
