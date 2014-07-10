@@ -183,15 +183,15 @@ package Graph is
       Id : out Vertex_Id)
    with Pre  => not G.Is_Frozen,
         Post => Id /= Null_Vertex;
-   --  As above, but adds an unkeyed vertex. You must never lose the
-   --  returned Id, otherwise you lose the vertex!
+   --  Adds an unkeyed vertex. You must never lose the returned Id,
+   --  otherwise you lose the vertex!
 
    procedure Add_Vertex
      (G  : in out T'Class;
       V  : Vertex_Key)
    with Pre  => not G.Is_Frozen and
                 G.Get_Vertex (V) = Null_Vertex;
-   --  As above, but we do not inquire about the new Vertex_Id.
+   --  Add a new keyed vertex, but do not return its Id.
 
    function Vertex_Hash
      (Element : Vertex_Id) return Ada.Containers.Hash_Type;
@@ -224,7 +224,9 @@ package Graph is
 
    function Edge_Exists
      (G        : T'Class;
-      V_1, V_2 : Vertex_Key) return Boolean;
+      V_1, V_2 : Vertex_Key) return Boolean
+      with Pre => G.Get_Vertex (V_1) /= Null_Vertex and
+                  G.Get_Vertex (V_2) /= Null_Vertex;
    --  Same as above but takes Vertex_Keys as parameters.
 
    procedure Add_Edge

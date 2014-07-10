@@ -1248,7 +1248,9 @@ package body Graph is
       for V in Valid_Vertex_Id range 1 .. G.Vertices.Last_Index loop
          for W of Sets (Succ (V)) loop
             if not G.Edge_Exists (V, W) then
-               Visitor (V, W);
+               if Visitor /= null then
+                  Visitor (V, W);
+               end if;
                G.Add_Edge (V, W, G.Default_Colour);
             end if;
          end loop;
@@ -1256,20 +1258,8 @@ package body Graph is
    end Close;
 
    procedure Close (G : in out T'Class) is
-      procedure Dummy_Proc (A, B : Vertex_Id);
-      --  Dummy procedure that does nothing.
-
-      ----------------
-      -- Dummy_Proc --
-      ----------------
-
-      procedure Dummy_Proc (A, B : Vertex_Id) is
-         pragma Unreferenced (A, B);
-      begin
-         null;
-      end Dummy_Proc;
    begin
-      Close (G, Dummy_Proc'Access);
+      Close (G, null);
    end Close;
 
    ----------------------------------------------------------------------
