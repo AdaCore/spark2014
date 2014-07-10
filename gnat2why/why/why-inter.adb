@@ -1122,6 +1122,10 @@ package body Why.Inter is
             Ada_N : constant Node_Id :=
               (if Rec = Empty then
                   Unique_Entity (Scope (E)) else Rec);
+            Module : constant W_Module_Id :=
+              E_Module (if Rec = Empty and Ekind (E) = E_Discriminant then
+                             Unique_Entity (Root_Record_Type (Ada_N))
+                        else Ada_N);
          begin
             if Local then
                return New_Identifier (Ada_Node => Ada_N,
@@ -1132,7 +1136,7 @@ package body Why.Inter is
                  New_Identifier
                    (Ada_Node => Ada_N,
                     Name     => Field,
-                    Module   => E_Module (Ada_N),
+                    Module   => Module,
                     Typ      => Typ);
             end if;
          end;
