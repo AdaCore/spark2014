@@ -29,7 +29,6 @@ with Ada.Strings.Unbounded;       use Ada.Strings.Unbounded;
 
 with AA_Util;                     use AA_Util;
 with ALI;                         use ALI;
-with Einfo;                       use Einfo;
 with Osint;                       use Osint;
 with Osint.C;                     use Osint.C;
 with Sem_Util;                    use Sem_Util;
@@ -1135,6 +1134,8 @@ package body Flow_Computed_Globals is
                              Reads       : out Flow_Id_Sets.Set;
                              Writes      : out Flow_Id_Sets.Set)
    is
+      pragma Unreferenced (S);
+
       MR_Proof_Reads  : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
       MR_Reads        : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
       MR_Writes       : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
@@ -1186,65 +1187,13 @@ package body Flow_Computed_Globals is
          Final_View        : out Flow_Id_Sets.Set;
          Processing_Writes : Boolean := False)
       is
-         Simple_Vars     : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
-         Abstract_States : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+         pragma Unreferenced (Processing_Writes);
       begin
-         --
-         for F of Most_Refined loop
-            if F.Kind in Direct_Mapping | Record_Field and then
-              Encapsulating_State (Get_Direct_Mapping_Id (F)) /= Empty
-            then
-               declare
-                  Var               : Entity_Id := Get_Direct_Mapping_Id (F);
-                  ES                : Entity_Id := Encapsulating_State (Var);
-                  Is_Abstract_State : Boolean := False;
-               begin
-                  while not State_Refinement_Is_Visible (ES, S) loop
-                     if Encapsulating_State (ES) /= Empty then
-                        Is_Abstract_State := True;
-                        Var := ES;
-                        ES  := Encapsulating_State (ES);
-                     else
-                        exit;
-                     end if;
-                  end loop;
+         --  This will be implemented in the not so distant
+         --  future. First we need to write all State Abstractions and
+         --  their constituents on ali files and then read them back.
 
-                  Final_View.Include (Direct_Mapping_Id (Var));
-
-                  --  We add the enclosing abstract state that we just
-                  --  added to the Final_View set to the
-                  --  Abstract_States set.
-                  if Is_Abstract_State then
-                     Abstract_States.Include (Direct_Mapping_Id (Var));
-                  end if;
-               end;
-            else
-               Simple_Vars.Include (F);
-            end if;
-         end loop;
-
-         --  Add variables that do not belong to any state abstraction
-         --  to the Final_View set.
-         Final_View.Union (Simple_Vars);
-
-         --  If we Write some but not all constituents of a state
-         --  abstraction then this state abstraction is also a Read.
-         if Processing_Writes then
-            for AS of Abstract_States loop
-               declare
-                  Constituents : constant Node_Sets.Set :=
-                    Down_Project (Node_Sets.To_Set
-                                    (Get_Direct_Mapping_Id (AS)),
-                                  S);
-               begin
-                  if not (for all C of Constituents =>
-                            Most_Refined.Contains (Direct_Mapping_Id (C)))
-                  then
-                     Reads.Include (AS);
-                  end if;
-               end;
-            end loop;
-         end if;
+         Final_View := Most_Refined;
       end Up_Project;
 
    begin
