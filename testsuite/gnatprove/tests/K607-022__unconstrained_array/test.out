@@ -20,7 +20,7 @@ simple_unc_arrays.adb:13:43: info: discriminant check proved
 simple_unc_arrays.adb:13:47: info: index check proved
 simple_unc_arrays.adb:13:53: info: discriminant check proved
 simple_unc_arrays.adb:13:57: info: index check proved
-simple_unc_arrays.adb:13:60: info: overflow check proved
+simple_unc_arrays.adb:13:60: warning: overflow check might fail
 simple_unc_arrays.adb:13:63: info: discriminant check proved
 simple_unc_arrays.adb:13:67: info: index check proved
 simple_unc_arrays.adb:14:14: info: discriminant check proved

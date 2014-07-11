@@ -48,11 +48,6 @@ deceleration_curve.adb:112:10: warning: assuming "New_Line" has no effect on glo
 deceleration_curve.adb:112:10: warning: no Global contract available for "New_Line"
 deceleration_curve.ads:27:06: info: precondition proved
 deceleration_curve.ads:84:14: warning: subprogram "Print_Curve" has no effect
-deceleration_curve_test.adb:5:11: warning: "appendix_a_3_1.m_nvavadh" might not be initialized after elaboration of main program "Deceleration_Curve_Test"
-deceleration_curve_test.adb:5:11: warning: "deceleration_curve.minimum_valid_speed" might not be initialized after elaboration of main program "Deceleration_Curve_Test"
-deceleration_curve_test.adb:5:11: warning: "sec_3_13_2_monitoring_inputs.a_brake_emergency_model" might not be initialized after elaboration of main program "Deceleration_Curve_Test"
-deceleration_curve_test.adb:5:11: warning: "sec_3_13_2_monitoring_inputs.kdry_rst_model" might not be initialized after elaboration of main program "Deceleration_Curve_Test"
-deceleration_curve_test.adb:5:11: warning: "sec_3_13_2_monitoring_inputs.kwet_rst_model" might not be initialized after elaboration of main program "Deceleration_Curve_Test"
 deceleration_curve_test.adb:5:11: warning: subprogram "Deceleration_Curve_Test" has no effect
 deceleration_curve_test.adb:6:31: info: precondition proved
 deceleration_curve_test.adb:15:19: warning: assertion might fail, requires Distance_To_Speed(initial_speed, 0.0, -1.0) = 1000

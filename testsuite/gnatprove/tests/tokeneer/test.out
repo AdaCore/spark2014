@@ -352,7 +352,7 @@ enclave.adb:829:15: info: precondition proved
 enclave.adb:837:19: info: precondition proved
 enclave.adb:842:24: info: precondition proved
 enclave.adb:846:10: warning: postcondition might fail
-enclave.adb:856:19: warning: precondition might fail
+enclave.adb:856:19: info: precondition proved
 enclave.adb:867:19: info: precondition proved
 enclave.adb:872:24: info: precondition proved
 enclave.adb:924:13: info: postcondition proved
@@ -479,8 +479,6 @@ stats.adb:53:57: info: overflow check proved
 stats.adb:70:51: info: overflow check proved
 stats.adb:87:53: info: overflow check proved
 stats.adb:104:47: info: overflow check proved
-tcpip.adb:60:59: warning: assuming "Stream" has no effect on global items
-tcpip.adb:60:59: warning: no Global contract available for "Stream"
 tokenreader.adb:52:37: info: length check proved
 tokenreader.adb:63:26: info: length check proved
 tokenreader.adb:68:26: info: length check proved
@@ -491,8 +489,8 @@ tokenreader.adb:315:48: info: range check proved
 tokenreader.adb:675:26: info: range check proved
 tokenreader.adb:752:22: info: range check proved
 tokenreader.adb:755:43: info: range check proved
-updates.ads:96:12: warning: postcondition might fail
-updates.ads:188:11: warning: postcondition might fail
+updates.ads:96:12: info: postcondition proved
+updates.ads:188:11: info: postcondition proved
 userentry.adb:685:19: info: precondition proved
 userentry.adb:919:12: warning: postcondition might fail, requires Latch.IsLocked and then Door.TheCurrentDoor = Door.Open and then Clock.GreaterThanOrEqual(Clock.TheCurrentTime, Door.alarm_Timeout) ) = (Door.TheDoorAlarm = AlarmTypes.alarming
 userentry.adb:1301:13: info: precondition proved
