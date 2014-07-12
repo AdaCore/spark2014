@@ -3168,6 +3168,7 @@ package body SPARK_Definition is
               Pragma_Async_Writers                |
               Pragma_Contract_Cases               |
               Pragma_Depends                      |
+              Pragma_Default_Initial_Condition    |
               Pragma_Effective_Reads              |
               Pragma_Effective_Writes             |
               Pragma_Global                       |
