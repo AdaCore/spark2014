@@ -44,35 +44,34 @@ Definition check_flags := list check_flag.
 
 (** ** Run Time Check Flags Generator *)
 
-Inductive gen_check_flags: expression -> check_flags -> Prop :=
+Inductive gen_exp_check_flags: expression -> check_flags -> Prop :=
     | GCF_Literal_Int: forall ast_num n,
-        gen_check_flags (E_Literal ast_num (Integer_Literal n)) nil
+        gen_exp_check_flags (E_Literal ast_num (Integer_Literal n)) nil
     | GCF_Literal_Bool: forall ast_num b,
-        gen_check_flags (E_Literal ast_num (Boolean_Literal b)) nil
-    | GCF_Name: forall n flags ast_num,
-        gen_name_check_flags n flags ->        (* ########## *)
-        gen_check_flags (E_Name ast_num n) nil (* ########## *)
+        gen_exp_check_flags (E_Literal ast_num (Boolean_Literal b)) nil
+    | GCF_Name: forall ast_num n,
+        gen_exp_check_flags (E_Name ast_num n) nil
     | GCF_Binary_Operation_Plus: forall ast_num e1 e2,
-        gen_check_flags (E_Binary_Operation ast_num Plus e1 e2) (Do_Overflow_Check :: nil)
+        gen_exp_check_flags (E_Binary_Operation ast_num Plus e1 e2) (Do_Overflow_Check :: nil)
     | GCF_Binary_Operation_Minus: forall ast_num e1 e2,
-        gen_check_flags (E_Binary_Operation ast_num Minus e1 e2) (Do_Overflow_Check :: nil)
+        gen_exp_check_flags (E_Binary_Operation ast_num Minus e1 e2) (Do_Overflow_Check :: nil)
     | GCF_Binary_Operation_Multiply: forall ast_num e1 e2,
-        gen_check_flags (E_Binary_Operation ast_num Multiply e1 e2) (Do_Overflow_Check :: nil)
+        gen_exp_check_flags (E_Binary_Operation ast_num Multiply e1 e2) (Do_Overflow_Check :: nil)
     | GCF_Binary_Operation_Div: forall ast_num e1 e2,
-        gen_check_flags (E_Binary_Operation ast_num Divide e1 e2) (Do_Division_Check :: Do_Overflow_Check :: nil)
+        gen_exp_check_flags (E_Binary_Operation ast_num Divide e1 e2) (Do_Division_Check :: Do_Overflow_Check :: nil)
     | GCF_Binary_Operation_Others: forall ast_num op e1 e2,
         op <> Plus ->
         op <> Minus ->
         op <> Multiply ->
         op <> Divide ->
-        gen_check_flags (E_Binary_Operation ast_num op e1 e2) nil
+        gen_exp_check_flags (E_Binary_Operation ast_num op e1 e2) nil
     | GCF_Unary_Operation_Minus: forall ast_num e,
-        gen_check_flags (E_Unary_Operation ast_num Unary_Minus e) (Do_Overflow_Check :: nil)
+        gen_exp_check_flags (E_Unary_Operation ast_num Unary_Minus e) (Do_Overflow_Check :: nil)
     | GCF_Unary_Operation_Others: forall ast_num op e,
         op <> Unary_Minus ->
-        gen_check_flags (E_Unary_Operation ast_num op e) nil
+        gen_exp_check_flags (E_Unary_Operation ast_num op e) nil.
 
-with gen_name_check_flags: name -> check_flags -> Prop :=
+Inductive gen_name_check_flags: name -> check_flags -> Prop :=
     | GNCF_Identifier: forall ast_num x,
         gen_name_check_flags (E_Identifier ast_num x) nil
     | GNCF_Indexed_Component: forall ast_num x_ast_num x e,
@@ -81,10 +80,48 @@ with gen_name_check_flags: name -> check_flags -> Prop :=
         gen_name_check_flags (E_Selected_Component ast_num x_ast_num x f) nil.
 
 
+(** ** Run Time Check Flags Generator Function *)
 
+Function gen_exp_check_flags_f (e: expression): check_flags :=
+  match e with
+  | E_Literal ast_num (Integer_Literal n) => nil
+  | E_Literal ast_num (Boolean_Literal b) => nil
+  | E_Name ast_num n => nil
+  | E_Binary_Operation ast_num Plus e1 e2 => (Do_Overflow_Check :: nil)
+  | E_Binary_Operation ast_num Minus e1 e2 => (Do_Overflow_Check :: nil)
+  | E_Binary_Operation ast_num Multiply e1 e2 => (Do_Overflow_Check :: nil)
+  | E_Binary_Operation ast_num Divide e1 e2 => (Do_Division_Check :: Do_Overflow_Check :: nil)
+  | E_Unary_Operation ast_num Unary_Minus e => (Do_Overflow_Check :: nil)
+  | _ => nil
+  end.
 
+Function gen_name_check_flags_f (n: name): check_flags :=
+  match n with
+  | E_Identifier ast_num x => nil
+  | E_Indexed_Component ast_num x_ast_num x e => (Do_Index_Check :: nil)
+  | E_Selected_Component ast_num x_ast_num x f => nil
+  end.
 
+(** ** Semantics Equivalence Proof *)
 
+Lemma gen_exp_check_flags_f_correctness: forall e flags,
+  gen_exp_check_flags_f e = flags ->
+    gen_exp_check_flags e flags.
+Proof.
+  intros; destruct e.
+- destruct l; smack; constructor.
+- smack; constructor.
+- smack; destruct b; constructor; smack. 
+- smack; destruct u; constructor; smack.
+Qed.
+
+Lemma gen_name_check_flags_f_correctness: forall n flags,
+  gen_name_check_flags_f n = flags ->
+    gen_name_check_flags n flags.
+Proof.
+  intros; destruct n;
+  smack; constructor.
+Qed.
 
 (******************************************************************
 

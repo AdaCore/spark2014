@@ -76,9 +76,11 @@ Record aspect_specification_xx: Type := mkaspect_specification_xx{
 
 (* Mutual records/inductives are not allowed in coq, so we build a record by hand. *)
 Inductive declaration_xx: Type :=  (* 3.1 *)
+    | D_Null_Declaration_XX: declaration_xx
+    | D_Type_Declaration_XX: astnum -> type_declaration_xx -> declaration_xx (* 3.2.1 *)
     | D_Object_Declaration_XX: astnum -> object_declaration_xx -> declaration_xx (* 3.3.1 *) 
     | D_Procedure_Declaration_XX: astnum -> procedure_declaration_xx -> declaration_xx (* 6.1 *)
-    | D_Type_Declaration_XX: astnum -> type_declaration_xx -> declaration_xx (* 3.2.1 *)
+    | D_Seq_Declaration_XX: astnum -> declaration_xx -> declaration_xx -> declaration_xx (* it's introduced for easy proof *)
  (* | package_declaration 
     | Other_Declarations *)
 
@@ -87,8 +89,8 @@ with procedure_declaration_xx: Type :=
     (procedure_astnum_xx: astnum)
     (procedure_name_xx: procnum)
     (procedure_parameter_profile_xx: list parameter_specification_xx)
-    (procedure_contracts_xx: list aspect_specification_xx)
-    (procedure_declarative_part_xx: list declaration_xx)
+    (procedure_contracts_xx: list aspect_specification_xx) (* contracts are not in the formalization now *)
+    (procedure_declarative_part_xx: declaration_xx)
     (procedure_statements_xx: statement_xx).
 
 

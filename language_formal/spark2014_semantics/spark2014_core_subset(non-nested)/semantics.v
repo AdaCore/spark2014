@@ -323,6 +323,10 @@ Inductive copy_in: stack -> frame -> list parameter_specification -> list expres
  *)
 
 Inductive eval_decl: stack -> frame -> declaration -> Return frame -> Prop :=
+    | Eval_Decl_Null: forall s f,
+        eval_decl s f D_Null_Declaration (Normal f)
+    | Eval_Decl_Type: forall s f ast_num t,
+        eval_decl s f (D_Type_Declaration ast_num t) (Normal f)
     | Eval_Decl_E: forall d e f s msg ast_num,
         d.(initialization_expression) = Some e ->
         eval_expr (f :: s) e (Run_Time_Error msg) ->
@@ -336,25 +340,18 @@ Inductive eval_decl: stack -> frame -> declaration -> Return frame -> Prop :=
         eval_decl s f (D_Object_Declaration ast_num d) (Normal (push f d.(object_name) Undefined))
     | Eval_Decl_Proc: forall s f ast_num p,
         eval_decl s f (D_Procedure_Declaration ast_num p) (Normal f)
-    | Eval_Decl_Type: forall s f ast_num t,
-        eval_decl s f (D_Type_Declaration ast_num t) (Normal f).
+    | Eval_Decl_Seq_E: forall s f d1 msg ast_num d2,
+        eval_decl s f d1 (Run_Time_Error msg) ->
+        eval_decl s f (D_Seq_Declaration ast_num d1 d2) (Run_Time_Error msg)
+    | Eval_Decl_Seq: forall s f d1 f' d2 f'' ast_num,
+        eval_decl s f d1 (Normal f') ->
+        eval_decl s f d2 f'' ->
+        eval_decl s f (D_Seq_Declaration ast_num d1 d2) f''.
 (*  | Eval_Decl_Proc: forall s f ast_num p,
         eval_decl s f (D_Procedure_Declaration ast_num p) (Normal (push f (procedure_name p) (Procedure p)))
     | Eval_Decl_Type: forall s f ast_num t,
         eval_decl s f (D_Type_Declaration ast_num t) (Normal (push frm (type_name t) (TypeDef t)))
 *)
-
-Inductive eval_decls: stack -> frame -> list declaration -> Return frame -> Prop :=
-    | Eval_Decls_Nil: forall s f,
-        eval_decls s f nil (Normal f)
-    | Eval_Decls_RTE: forall s f d msg ld,
-        eval_decl  s f d (Run_Time_Error msg) ->
-        eval_decls s f (d :: ld) (Run_Time_Error msg)
-    | Eval_Decls: forall s f d f1 ld f2,
-        eval_decl s f d (Normal f1) ->
-        eval_decls s f1 ld f2 ->
-        eval_decls s f (d :: ld) f2.
-
 
 (* a[i] := v *)
 Function arrayUpdate (a: list (index * basic_value)) (i: index) (v: basic_value): list (index * basic_value) :=
@@ -454,20 +451,20 @@ Inductive eval_stmt: symboltable -> stack -> statement -> Return stack -> Prop :
         fetch_proc p st = Some (n, pb) ->
         copy_in s (newFrame n) (procedure_parameter_profile pb) args (Normal f) ->
         cut_until s n intact_s s1 -> (* s = intact_s ++ s1 *)
-        eval_decls s1 f (procedure_declarative_part pb) (Run_Time_Error msg) ->
+        eval_decl s1 f (procedure_declarative_part pb) (Run_Time_Error msg) ->
         eval_stmt st s (S_Procedure_Call ast_num p_ast_num p args) (Run_Time_Error msg)
     | Eval_S_Proc_RTE_Body: forall p st n pb s args f intact_s s1 f1 msg ast_num p_ast_num,
         fetch_proc p st = Some (n, pb) ->
         copy_in s (newFrame n) (procedure_parameter_profile pb) args (Normal f) ->
         cut_until s n intact_s s1 -> (* s = intact_s ++ s1 *)
-        eval_decls s1 f (procedure_declarative_part pb) (Normal f1) ->
+        eval_decl s1 f (procedure_declarative_part pb) (Normal f1) ->
         eval_stmt st (f1 :: s1) (procedure_statements pb) (Run_Time_Error msg) ->
         eval_stmt st s (S_Procedure_Call ast_num p_ast_num p args) (Run_Time_Error msg)
     | Eval_S_Proc: forall p st n pb s args f intact_s s1 f1 s2 locals_section params_section s3 s4 ast_num p_ast_num,
         fetch_proc p st = Some (n, pb) ->
         copy_in s (newFrame n) (procedure_parameter_profile pb) args (Normal f) ->
         cut_until s n intact_s s1 -> (* s = intact_s ++ s1 *)
-        eval_decls s1 f (procedure_declarative_part pb) (Normal f1) ->          
+        eval_decl s1 f (procedure_declarative_part pb) (Normal f1) ->          
         eval_stmt st (f1 :: s1) (procedure_statements pb) (Normal s2) ->
         s2 = (n, locals_section ++ params_section) :: s3 -> (* extract parameters from local frame *)
         length (store_of f) = length params_section ->

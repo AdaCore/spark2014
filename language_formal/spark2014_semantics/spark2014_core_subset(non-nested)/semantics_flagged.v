@@ -215,6 +215,10 @@ Inductive copy_in_x: stack -> frame -> list parameter_specification_x -> list ex
 
 (** ** Declaration Evaluation Semantics *)
 Inductive eval_decl_x: stack -> frame -> declaration_x -> Return frame -> Prop :=
+    | Eval_Decl_Null_X: forall s f,
+        eval_decl_x s f D_Null_Declaration_X (Normal f)
+    | Eval_Decl_Type_X: forall s f ast_num t,
+        eval_decl_x s f (D_Type_Declaration_X ast_num t) (Normal f)
     | Eval_Decl_E_X: forall d e f s msg ast_num,
         d.(initialization_expression_x) = Some e ->
         eval_expr_x (f :: s) e (Run_Time_Error msg) ->
@@ -228,24 +232,18 @@ Inductive eval_decl_x: stack -> frame -> declaration_x -> Return frame -> Prop :
         eval_decl_x s f (D_Object_Declaration_X ast_num d) (Normal (push f d.(object_name_x) Undefined))
     | Eval_Decl_Proc_X: forall s f ast_num p,
         eval_decl_x s f (D_Procedure_Declaration_X ast_num p) (Normal f)
-    | Eval_Decl_Type_X: forall s f ast_num t,
-        eval_decl_x s f (D_Type_Declaration_X ast_num t) (Normal f).
+    | Eval_Decl_Seq_E_X: forall s f d1 msg ast_num d2,
+        eval_decl_x s f d1 (Run_Time_Error msg) ->
+        eval_decl_x s f (D_Seq_Declaration_X ast_num d1 d2) (Run_Time_Error msg)
+    | Eval_Decl_Seq_X: forall s f d1 f' d2 f'' ast_num,
+        eval_decl_x s f d1 (Normal f') ->
+        eval_decl_x s f d2 f'' ->
+        eval_decl_x s f (D_Seq_Declaration_X ast_num d1 d2) f''.
 (*  | Eval_Decl_Proc_X: forall s sto ast_num p,
         eval_decl_x s sto (D_Procedure_Declaration_X ast_num p) (Normal ((procedure_name_x p,Procedure p)::sto))
     | Eval_Decl_Type_X: forall s sto ast_num t,
         eval_decl_x s sto (D_Type_Declaration_X ast_num t) (Normal ((type_name_x t, TypeDef t) :: sto))
 *)
-
-Inductive eval_decls_x: stack -> frame -> list declaration_x -> Return frame -> Prop :=
-    | Eval_Decls_Nil_X: forall s f,
-        eval_decls_x s f nil (Normal f)
-    | Eval_Decls_RTE_X: forall s f d msg ld,
-        eval_decl_x s f d (Run_Time_Error msg) ->
-        eval_decls_x s f (d :: ld) (Run_Time_Error msg)
-    | Eval_Decls_X: forall s f d f1 ld f2,
-        eval_decl_x s f d (Normal f1) ->
-        eval_decls_x s f1 ld f2 ->
-        eval_decls_x s f (d :: ld) f2.
 
 (** Inductive semantic of statement and declaration
 
@@ -300,20 +298,20 @@ Inductive eval_stmt_x: symboltable -> stack -> statement_x -> Return stack -> Pr
         fetch_proc p st = Some (n, pb) ->
         copy_in_x s (newFrame n) (procedure_parameter_profile_x pb) args (Normal f) ->
         cut_until s n intact_s s1 -> (* s = intact_s ++ s1 *)
-        eval_decls_x s1 f (procedure_declarative_part_x pb) (Run_Time_Error msg) ->
+        eval_decl_x s1 f (procedure_declarative_part_x pb) (Run_Time_Error msg) ->
         eval_stmt_x st s (S_Procedure_Call_X ast_num p_ast_num p args) (Run_Time_Error msg)
     | Eval_S_Proc_RTE_Body_X: forall p st n pb s args f intact_s s1 f1 msg ast_num p_ast_num,
         fetch_proc p st = Some (n, pb) ->
         copy_in_x s (newFrame n) (procedure_parameter_profile_x pb) args (Normal f) ->
         cut_until s n intact_s s1 -> (* s = intact_s ++ s1 *)
-        eval_decls_x s1 f (procedure_declarative_part_x pb) (Normal f1) ->
+        eval_decl_x s1 f (procedure_declarative_part_x pb) (Normal f1) ->
         eval_stmt_x st (f1 :: s1) (procedure_statements_x pb) (Run_Time_Error msg) ->
         eval_stmt_x st s (S_Procedure_Call_X ast_num p_ast_num p args) (Run_Time_Error msg)
     | Eval_S_Proc_X: forall p st n pb s args f intact_s s1 f1 s2 locals_section params_section s3 s4 ast_num p_ast_num,
         fetch_proc p st = Some (n, pb) ->
         copy_in_x s (newFrame n) (procedure_parameter_profile_x pb) args (Normal f) ->
         cut_until s n intact_s s1 -> (* s = intact_s ++ s1 *)
-        eval_decls_x s1 f (procedure_declarative_part_x pb) (Normal f1) ->          
+        eval_decl_x s1 f (procedure_declarative_part_x pb) (Normal f1) ->          
         eval_stmt_x st (f1 :: s1) (procedure_statements_x pb) (Normal s2) ->
         s2 = (n, locals_section ++ params_section) :: s3 -> (* extract parameters from local frame *)
         length (store_of f) = length params_section ->

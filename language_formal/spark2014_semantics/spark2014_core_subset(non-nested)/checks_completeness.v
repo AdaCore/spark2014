@@ -7,7 +7,7 @@ Scheme expression_ind := Induction for expression Sort Prop
 
 Lemma gen_check_flags_on_binop_completeness: forall op v1 v2 v3 ast_num e1 e2 checkflags v3',
   do_run_time_check_on_binop op v1 v2 v3 ->
-    gen_check_flags (E_Binary_Operation ast_num op e1 e2) checkflags ->
+    gen_exp_check_flags (E_Binary_Operation ast_num op e1 e2) checkflags ->
       do_flagged_checks_on_binop checkflags op v1 v2 v3' ->
         v3 = v3'.
 Proof.
@@ -25,7 +25,7 @@ Qed.
 
 Lemma gen_check_flags_on_unop_completeness: forall op v v' ast_num e checkflags v'',
   do_run_time_check_on_unop op v v' ->
-    gen_check_flags (E_Unary_Operation ast_num op e) checkflags ->
+    gen_exp_check_flags (E_Unary_Operation ast_num op e) checkflags ->
       do_flagged_checks_on_unop checkflags op v v'' ->
         v' = v''.
 Proof.
@@ -89,11 +89,11 @@ Proof.
     | [H1: STACK.fetchG ?i ?s = ?v1, H2: STACK.fetchG ?i ?s = ?v2 |- _ ] => rewrite H1 in H2; clear H1; smack 
   end;
   match goal with 
-  | [H1: gen_check_flags (E_Binary_Operation _ ?op ?e1 ?e2) ?checkflags, 
+  | [H1: gen_exp_check_flags (E_Binary_Operation _ ?op ?e1 ?e2) ?checkflags, 
      H2: do_flagged_checks_on_binop ?checkflags ?op ?v1 ?v2 _,
      H3: do_run_time_check_on_binop ?op ?v1 ?v2 _ |- _] => 
       specialize (gen_check_flags_on_binop_completeness _ _ _ _ _ _ _ _ _ H3 H1 H2); smack
-  | [H1: gen_check_flags (E_Unary_Operation _ ?op ?e) ?checkflags, 
+  | [H1: gen_exp_check_flags (E_Unary_Operation _ ?op ?e) ?checkflags, 
      H2: do_flagged_checks_on_unop ?checkflags ?op ?v _,
      H3: do_run_time_check_on_unop ?op ?v _ |- _] => 
       specialize (gen_check_flags_on_unop_completeness _ _ _ _ _ _ _ H3 H1 H2); smack
@@ -287,43 +287,29 @@ Lemma declaration_checks_completeness: forall s f d f' d' f'',
       compile2_flagged_declaration d d' ->
         f' = f''. 
 Proof.
-  intros.
-  inversion H; subst;
-  repeat progress match goal with
+  intros s f d f' d' f'' H; revert d' f'';
+  induction H; intros;
+  match goal with
   | [H: compile2_flagged_declaration _ _ |- _] => inversion H; clear H; smack
+  end;
+  match goal with
   | [H: compile2_flagged_object_declaration _ _ |- _] => inversion H; clear H; smack
-  | [H: eval_decl _ _ _ _ |- _] => inversion H; clear H; smack
+  | _ => idtac
+  end;
+  match goal with
   | [H: eval_decl_x _ _ _ _ |- _] => inversion H; clear H; smack
   end;
+  [ | | | | 
+    specialize (IHeval_decl _ _ H9 H6); smack |
+    specialize (IHeval_decl1 _ _ H10 H7); inversion IHeval_decl1
+  ];
   match goal with
   | [H1: eval_expr ?s ?e _, 
      H2: eval_expr_x ?s ?e' _, 
      H3: compile2_flagged_exp ?e ?e' |- _] => 
        specialize (expression_checks_completeness _ _ _ _ _ H1 H2 H3); smack
-  | _ => idtac
-  end.
-Qed.
-
-Lemma declarations_checks_completeness: forall s f dl f' dl' f'',
-  eval_decls s f dl f' ->
-    eval_decls_x s f dl' f'' ->
-      compile2_flagged_declarations dl dl' ->
-        f' = f''. 
-Proof.
-  intros s f dl f' dl' f'' H; revert dl' f''.
-  induction H; intros;
-
-  match goal with
-  | [H: compile2_flagged_declarations _ _ |- _] => inversion H; clear H; smack
-  end;
-  match goal with
-  | [H: eval_decls_x _ _ _ _ |- _] => inversion H; clear H; smack
-  end;
-  match goal with
-  | [H1: eval_decl ?s ?f ?d _, 
-     H2: eval_decl_x ?s ?f ?d' _,
-     H3: compile2_flagged_declaration ?d ?d' |- _] => 
-       specialize (declaration_checks_completeness _ _ _ _ _ _ H1 H2 H3); smack
+  | [H1: eval_decl_x ?s ?f ?d1' ?f', H2: compile2_flagged_declaration ?d1 ?d1' |- _] =>
+      specialize (IHeval_decl1 _ _ H10 H7); clear H1 H2; inversion IHeval_decl1
   end.
 Qed.
 
@@ -579,10 +565,10 @@ Proof.
          specialize (copy_in_checks_completeness _ _ _ _ _ _ _ _ H1 H2 H3 H4); smack
   end;
   match goal with
-    | [H1: eval_decls _ _ ?dl _, 
-       H2: eval_decls_x _ _ ?dl' _,
-       H3: compile2_flagged_declarations ?dl ?dl' |- _] => 
-        specialize (declarations_checks_completeness _ _ _ _ _ _ H1 H2 H3); smack
+    | [H1: eval_decl _ _ ?dl _, 
+       H2: eval_decl_x _ _ ?dl' _,
+       H3: compile2_flagged_declaration ?dl ?dl' |- _] =>
+        specialize (declaration_checks_completeness _ _ _ _ _ _ H1 H2 H3); smack
   end.
 - (* Procedure Call Body RTE *)
   match goal with
@@ -614,10 +600,10 @@ Proof.
          specialize (copy_in_checks_completeness _ _ _ _ _ _ _ _ H1 H2 H3 H4); smack
   end;
   match goal with
-    | [H1: eval_decls _ _ ?dl _, 
-       H2: eval_decls_x _ _ ?dl' _,
-       H3: compile2_flagged_declarations ?dl ?dl' |- _] => 
-        specialize (declarations_checks_completeness _ _ _ _ _ _ H1 H2 H3); smack
+    | [H1: eval_decl _ _ ?dl _, 
+       H2: eval_decl_x _ _ ?dl' _,
+       H3: compile2_flagged_declaration ?dl ?dl' |- _] => 
+        specialize (declaration_checks_completeness _ _ _ _ _ _ H1 H2 H3); smack
   end.
   match goal with
     | [H1: eval_stmt_x _ _ _ _, 
@@ -655,10 +641,10 @@ Proof.
          specialize (copy_in_checks_completeness _ _ _ _ _ _ _ _ H1 H2 H3 H4); smack
   end;
   match goal with
-    | [H1: eval_decls _ _ ?dl _, 
-       H2: eval_decls_x _ _ ?dl' _,
-       H3: compile2_flagged_declarations ?dl ?dl' |- _] => 
-        specialize (declarations_checks_completeness _ _ _ _ _ _ H1 H2 H3); smack
+    | [H1: eval_decl _ _ ?dl _, 
+       H2: eval_decl_x _ _ ?dl' _,
+       H3: compile2_flagged_declaration ?dl ?dl' |- _] => 
+        specialize (declaration_checks_completeness _ _ _ _ _ _ H1 H2 H3); smack
   end;
   match goal with
     | [H1: eval_stmt_x _ _ _ _, 
