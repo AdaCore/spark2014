@@ -159,9 +159,6 @@ package body Flow_Tree_Utility is
          when N_Abstract_Subprogram_Declaration =>
             return Empty;
 
-         when N_Subprogram_Renaming_Declaration =>
-            return Get_Body (Alias (E));
-
          when others =>
             raise Why.Unexpected_Node;
       end case;
