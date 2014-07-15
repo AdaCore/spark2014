@@ -3,6 +3,7 @@ main.adb:8:04: warning: assuming "Put_Line" has no effect on global items
 main.adb:8:04: warning: no Global contract available for "Put_Line"
 main.adb:9:04: warning: assuming "Get" has no effect on global items
 main.adb:9:04: warning: no Global contract available for "Get"
+main.adb:9:09: warning: range check might fail
 main.adb:10:04: warning: assuming "Skip_Line" has no effect on global items
 main.adb:10:04: warning: no Global contract available for "Skip_Line"
 main.adb:18:10: warning: assuming "Put_Line" has no effect on global items
