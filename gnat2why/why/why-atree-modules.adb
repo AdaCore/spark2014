@@ -287,6 +287,11 @@ package body Why.Atree.Modules is
                         Domain => EW_Term,
                         Symbol => NID ("div"),
                         Typ    => EW_Int_Type);
+      Euclid_Div :=
+        New_Identifier (Module => Int_Div_Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("euclid_div"),
+                        Typ    => EW_Int_Type);
       Integer_Rem :=
         New_Identifier (Module => Int_Div_Module,
                         Domain => EW_Term,

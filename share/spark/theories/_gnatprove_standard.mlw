@@ -75,6 +75,7 @@ module Int_Division
   division". Ada mod operator does not correspond to any predefined operator
   in Why3. *)
   function div (x y : int) : int = ComputerDivision.div x y
+  function euclid_div (x y : int) : int = EuclideanDivision.div x y
 
   function rem (x y : int) : int = ComputerDivision.mod x y
 
@@ -93,6 +94,10 @@ module Int_Division
   val div_ (x:int) (y:int) : int
      requires { y<>0 }
      ensures { result = div x y }
+
+  val euclid_div_ (x:int) (y:int) : int
+     requires { y<>0 }
+     ensures { result = euclid_div x y }
 
   val rem_ (x:int) (y:int) : int
      requires { y<>0 }

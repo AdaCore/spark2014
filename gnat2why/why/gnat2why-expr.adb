@@ -116,12 +116,15 @@ package body Gnat2Why.Expr is
    -----------------------
 
    function Apply_Modulus_Or_Rounding
-     (E      : Entity_Id;
+     (Op     : N_Op;
+      E      : Entity_Id;
       T      : W_Expr_Id;
       Domain : EW_Domain) return W_Expr_Id;
    --  If E is a modular type, apply a modulus on T. If E is a floating-point
    --  type, apply the corresponding rounding operation. If E is neither,
    --  return T unchanged.
+   --  Optimization: if E is a modular type, and Op is division, do not add the
+   --  modulus operation.
 
    function Insert_Overflow_Check
      (Ada_Node : Node_Id;
@@ -480,11 +483,12 @@ package body Gnat2Why.Expr is
    -------------------
 
    function Apply_Modulus_Or_Rounding
-     (E      : Entity_Id;
+     (Op     : N_Op;
+      E      : Entity_Id;
       T      : W_Expr_Id;
       Domain : EW_Domain) return W_Expr_Id is
    begin
-      if Is_Modular_Integer_Type (E) then
+      if Is_Modular_Integer_Type (E) and then Op /= N_Op_Divide then
          return
             New_Call (Name => Integer_Math_Mod,
                       Domain => Domain,
@@ -3209,7 +3213,7 @@ package body Gnat2Why.Expr is
                     Expr     => Right,
                     To       => Base_Why_Type (Right_Type)),
                  Op_Type  => Get_Base_Type (Base_Why_Type (Right_Type)));
-            T := Apply_Modulus_Or_Rounding (Return_Type, T, Domain);
+            T := Apply_Modulus_Or_Rounding (Op, Return_Type, T, Domain);
 
          when N_Op_Plus =>
 
@@ -3256,7 +3260,7 @@ package body Gnat2Why.Expr is
                                                 To       => Base),
                     Op       => Transform_Binop (Op),
                     Op_Type  => Get_Base_Type (Base));
-               T := Apply_Modulus_Or_Rounding (Return_Type, T, Domain);
+               T := Apply_Modulus_Or_Rounding (Op, Return_Type, T, Domain);
             end;
 
          when N_Op_Multiply =>
@@ -3335,7 +3339,7 @@ package body Gnat2Why.Expr is
                      Op_Type  => Get_Base_Type (Base));
                end if;
 
-               T := Apply_Modulus_Or_Rounding (Return_Type, T, Domain);
+               T := Apply_Modulus_Or_Rounding (Op, Return_Type, T, Domain);
             end;
 
          when N_Op_Divide =>
@@ -3366,11 +3370,15 @@ package body Gnat2Why.Expr is
                   R_Type := Base;
                end if;
 
+               --  optimization: use euclidian division for modular division
+
                Name :=
                  (if Is_Fixed_Point_Type (Return_Type) then
                        Prefix (Ada_Node => Return_Type,
                                M        => E_Module (Return_Type),
                                W        => Oper)
+                  elsif Is_Modular_Integer_Type (Return_Type) then
+                       Euclid_Div
                   else
                      New_Division (Get_Base_Type (Base)));
 
@@ -3407,7 +3415,7 @@ package body Gnat2Why.Expr is
                        Typ      => Base);
                end if;
 
-               T := Apply_Modulus_Or_Rounding (Return_Type, T, Domain);
+               T := Apply_Modulus_Or_Rounding (Op, Return_Type, T, Domain);
             end;
 
          when N_Op_Rem | N_Op_Mod =>

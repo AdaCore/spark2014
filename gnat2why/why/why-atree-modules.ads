@@ -105,6 +105,7 @@ package Why.Atree.Modules is
    Integer_Bitwise_Or        : W_Identifier_Id;
    Integer_Bitwise_Xor       : W_Identifier_Id;
    Integer_Div               : W_Identifier_Id;
+   Euclid_Div                : W_Identifier_Id;
    Integer_Rem               : W_Identifier_Id;
    Integer_Mod               : W_Identifier_Id;
    Integer_Power             : W_Identifier_Id;
