@@ -15,9 +15,9 @@ admin.ads:137:21: warning: postcondition might fail, requires for some Op in Opt
 admin.ads:138:28: info: precondition proved
 admin.ads:155:22: info: postcondition proved
 admin.ads:170:21: info: postcondition proved
-admin.ads:188:22: info: postcondition proved
+admin.ads:188:22: warning: postcondition might fail
 admin.ads:191:28: info: precondition proved
-admin.ads:206:22: info: postcondition proved
+admin.ads:206:22: warning: postcondition might fail
 admin.ads:233:08: info: length check proved
 admin.ads:233:48: info: length check proved
 admin.ads:235:48: info: length check proved
@@ -27,18 +27,18 @@ admintoken.adb:225:37: info: length check proved
 admintoken.adb:225:40: info: length check proved
 admintoken.adb:227:23: info: length check proved
 admintoken.adb:227:23: info: range check proved
-admintoken.adb:313:28: info: precondition proved
-admintoken.adb:316:15: info: precondition proved
-admintoken.adb:424:31: info: precondition proved
-admintoken.adb:427:19: info: precondition proved
-admintoken.adb:430:19: info: precondition proved
+admintoken.adb:313:28: warning: precondition might fail
+admintoken.adb:316:15: warning: precondition might fail
+admintoken.adb:424:31: warning: precondition might fail
+admintoken.adb:427:19: warning: precondition might fail
+admintoken.adb:430:19: warning: precondition might fail
 admintoken.adb:459:31: info: precondition proved
 admintoken.adb:471:25: info: precondition proved
 admintoken.adb:546:21: info: range check proved
 admintoken.adb:548:31: warning: unused initial value of "Idcert"
-admintoken.ads:66:22: info: postcondition proved
+admintoken.ads:66:22: warning: postcondition might fail
 admintoken.ads:101:22: info: postcondition proved
-admintoken.ads:148:22: info: postcondition proved
+admintoken.ads:148:22: warning: postcondition might fail, requires TokenOk = (IsGood and then AuthCertValid and then TheAuthCertRole in PrivTypes.adminprivileget
 admintoken.ads:217:22: warning: postcondition might fail
 alarm.adb:46:72: info: refined post proved
 alarm.ads:70:22: info: postcondition proved
@@ -72,36 +72,36 @@ auditlog.adb:177:69: info: overflow check proved
 auditlog.adb:211:18: info: range check proved
 auditlog.adb:254:40: info: index check proved
 auditlog.adb:254:40: info: overflow check proved
-auditlog.adb:255:46: info: index check proved
-auditlog.adb:255:46: info: overflow check proved
-auditlog.adb:260:46: info: index check proved
-auditlog.adb:260:46: info: overflow check proved
+auditlog.adb:255:46: warning: array index check might fail
+auditlog.adb:255:46: warning: overflow check might fail
+auditlog.adb:260:46: warning: array index check might fail
+auditlog.adb:260:46: warning: overflow check might fail
 auditlog.adb:306:24: info: range check proved
 auditlog.adb:306:36: info: range check proved
-auditlog.adb:306:46: info: range check proved
+auditlog.adb:306:46: warning: range check might fail
 auditlog.adb:310:16: info: range check proved
 auditlog.adb:310:27: info: range check proved
-auditlog.adb:310:36: info: range check proved
-auditlog.adb:416:23: info: length check proved
+auditlog.adb:310:36: warning: range check might fail
 auditlog.adb:416:23: info: range check proved
+auditlog.adb:416:23: warning: length check might fail
 auditlog.adb:416:42: info: overflow check proved
 auditlog.adb:417:42: info: overflow check proved
 auditlog.adb:421:24: info: range check proved
-auditlog.adb:421:35: info: range check proved
-auditlog.adb:421:44: info: range check proved
+auditlog.adb:421:35: warning: range check might fail
+auditlog.adb:421:44: warning: range check might fail
 auditlog.adb:425:16: info: range check proved
-auditlog.adb:425:28: info: range check proved
+auditlog.adb:425:28: warning: range check might fail
 auditlog.adb:425:37: warning: range check might fail
-auditlog.adb:520:22: info: postcondition proved
-auditlog.adb:588:68: info: length check proved, in call inlined at auditlog.adb:636
+auditlog.adb:522:28: warning: postcondition might fail, requires LogFileEntries (I) = LogFileEntries'Old (I)
+auditlog.adb:588:68: warning: length check might fail, in call inlined at auditlog.adb:636
 auditlog.adb:589:31: warning: length check might fail, in call inlined at auditlog.adb:636
 auditlog.adb:717:59: warning: range check might fail
 auditlog.adb:717:64: info: overflow check proved
 auditlog.adb:718:42: info: overflow check proved
 auditlog.adb:719:22: warning: postcondition might fail
-auditlog.adb:720:59: info: range check proved
-auditlog.adb:720:64: info: overflow check proved
-auditlog.adb:721:42: info: overflow check proved
+auditlog.adb:720:59: warning: range check might fail
+auditlog.adb:720:64: warning: overflow check might fail
+auditlog.adb:721:42: warning: overflow check might fail
 auditlog.adb:766:25: info: postcondition proved
 auditlog.adb:780:75: info: range check proved
 auditlog.adb:820:25: info: postcondition proved
@@ -110,71 +110,71 @@ auditlog.adb:871:10: info: precondition proved
 auditlog.adb:879:10: info: precondition proved
 auditlog.adb:886:44: info: range check proved
 auditlog.adb:922:60: info: overflow check proved
-auditlog.adb:923:22: info: postcondition proved
+auditlog.adb:923:22: warning: postcondition might fail
 auditlog.adb:928:60: info: overflow check proved
 auditlog.adb:949:50: info: range check proved
 auditlog.adb:951:44: info: range check proved
 auditlog.adb:1008:56: warning: range check might fail
 auditlog.adb:1008:61: info: overflow check proved
 auditlog.adb:1009:39: info: overflow check proved
-auditlog.adb:1010:19: info: postcondition proved
-auditlog.adb:1012:56: info: range check proved
-auditlog.adb:1012:61: info: overflow check proved
-auditlog.adb:1013:39: info: overflow check proved
+auditlog.adb:1010:19: warning: postcondition might fail
+auditlog.adb:1012:56: warning: range check might fail
+auditlog.adb:1012:61: warning: overflow check might fail
+auditlog.adb:1013:39: warning: overflow check might fail
 auditlog.adb:1021:10: info: precondition proved
 auditlog.adb:1023:10: info: precondition proved
-auditlog.adb:1031:07: info: precondition proved
-auditlog.adb:1070:55: info: refined post proved
-auditlog.adb:1072:67: info: range check proved
-auditlog.adb:1072:72: info: overflow check proved
-auditlog.adb:1073:50: info: overflow check proved
-auditlog.adb:1168:55: info: range check proved
+auditlog.adb:1031:07: warning: precondition might fail
+auditlog.adb:1070:55: warning: refined postcondition might fail
+auditlog.adb:1072:67: warning: range check might fail
+auditlog.adb:1072:72: warning: overflow check might fail
+auditlog.adb:1073:50: warning: overflow check might fail
+auditlog.adb:1168:55: warning: range check might fail
 auditlog.adb:1232:20: info: range check proved
 auditlog.adb:1236:64: warning: range check might fail
 auditlog.adb:1237:65: warning: range check might fail
-auditlog.adb:1238:26: info: range check proved
-auditlog.adb:1239:32: info: overflow check proved
-auditlog.adb:1241:43: info: index check proved
-auditlog.adb:1241:69: info: index check proved
-auditlog.adb:1241:69: info: overflow check proved
+auditlog.adb:1238:26: warning: range check might fail
+auditlog.adb:1239:32: warning: overflow check might fail
+auditlog.adb:1241:43: warning: array index check might fail
+auditlog.adb:1241:69: warning: array index check might fail
+auditlog.adb:1241:69: warning: overflow check might fail
 auditlog.adb:1248:64: warning: range check might fail
 auditlog.adb:1249:65: warning: range check might fail
-auditlog.adb:1270:62: info: range check proved
-auditlog.adb:1270:67: info: overflow check proved
+auditlog.adb:1270:62: warning: range check might fail
+auditlog.adb:1270:67: warning: overflow check might fail
 auditlog.adb:1271:27: warning: overflow check might fail
 auditlog.adb:1271:27: warning: range check might fail
-auditlog.adb:1332:55: info: refined post proved
-auditlog.adb:1334:67: info: range check proved
-auditlog.adb:1334:72: info: overflow check proved
-auditlog.adb:1335:50: info: overflow check proved
+auditlog.adb:1332:55: warning: refined postcondition might fail
+auditlog.adb:1334:67: warning: range check might fail
+auditlog.adb:1334:72: warning: overflow check might fail
+auditlog.adb:1335:50: warning: overflow check might fail
 auditlog.adb:1342:07: info: precondition proved
 auditlog.adb:1352:10: info: precondition proved
-auditlog.adb:1411:55: info: refined post proved
-auditlog.adb:1413:67: info: range check proved
-auditlog.adb:1413:72: info: overflow check proved
-auditlog.adb:1414:50: info: overflow check proved
+auditlog.adb:1411:55: warning: refined postcondition might fail
+auditlog.adb:1413:67: warning: range check might fail
+auditlog.adb:1413:72: warning: overflow check might fail
+auditlog.adb:1414:50: warning: overflow check might fail
 auditlog.adb:1425:22: info: precondition proved
 auditlog.adb:1459:13: info: loop invariant initialization proved
-auditlog.adb:1459:13: info: loop invariant preservation proved
-auditlog.adb:1461:53: info: range check proved
-auditlog.adb:1461:58: info: overflow check proved
-auditlog.adb:1461:78: info: overflow check proved
-auditlog.adb:1491:52: info: range check proved
-auditlog.adb:1499:10: info: precondition proved
-auditlog.adb:1509:07: info: precondition proved
-auditlog.adb:1564:55: info: refined post proved
-auditlog.adb:1566:67: info: range check proved
-auditlog.adb:1566:72: info: overflow check proved
-auditlog.adb:1567:50: info: overflow check proved
+auditlog.adb:1460:16: warning: loop invariant might fail after first iteration, requires NumberLogEntries = LogEntryCountT(UsedLogFiles.Length - 1) * MaxLogFileEntries + LogFileEntries(CurrentLogFile)
+auditlog.adb:1461:53: warning: range check might fail
+auditlog.adb:1461:58: warning: overflow check might fail
+auditlog.adb:1461:78: warning: overflow check might fail
+auditlog.adb:1491:52: warning: range check might fail
+auditlog.adb:1499:10: warning: precondition might fail
+auditlog.adb:1509:07: warning: precondition might fail
+auditlog.adb:1564:55: warning: refined postcondition might fail
+auditlog.adb:1566:67: warning: range check might fail
+auditlog.adb:1566:72: warning: overflow check might fail
+auditlog.adb:1567:50: warning: overflow check might fail
 auditlog.adb:1582:10: info: loop invariant initialization proved
-auditlog.adb:1582:10: info: loop invariant preservation proved
+auditlog.adb:1582:10: warning: loop invariant might fail after first iteration
 auditlog.adb:1587:50: info: range check proved
 auditlog.adb:1587:55: info: overflow check proved
 auditlog.adb:1587:75: info: overflow check proved
 auditlog.adb:1595:53: info: range check proved
-auditlog.adb:1598:47: info: range check proved
-auditlog.adb:1611:10: info: precondition proved
-auditlog.adb:1619:07: info: precondition proved
+auditlog.adb:1598:47: warning: range check might fail
+auditlog.adb:1611:10: warning: precondition might fail
+auditlog.adb:1619:07: warning: precondition might fail
 auditlog.ads:60:22: info: postcondition proved
 auditlog.ads:92:22: info: postcondition proved
 auditlog.ads:119:22: info: postcondition proved
@@ -183,15 +183,15 @@ audittypes.ads:93:58: info: length check proved
 audittypes.ads:106:06: info: length check proved
 bio.adb:244:18: warning: precondition might fail
 bio.ads:85:14: warning: subprogram "Flush" has no effect
-cert-id.adb:87:47: info: range check proved
+cert-id.adb:87:47: warning: range check might fail
 certificatestore.adb:38:42: info: length check proved
 certificatestore.adb:221:31: warning: range check might fail
-certificatestore.adb:222:26: info: length check proved
 certificatestore.adb:222:26: warning: "Text" might not be initialized
-certificatestore.adb:222:29: info: length check proved
+certificatestore.adb:222:26: warning: length check might fail
+certificatestore.adb:222:29: warning: length check might fail
 certificatestore.adb:222:29: warning: range check might fail
-certificatestore.adb:223:42: info: length check proved
-certificatestore.adb:223:45: info: length check proved
+certificatestore.adb:223:42: warning: length check might fail
+certificatestore.adb:223:45: warning: length check might fail
 certificatestore.adb:288:21: warning: precondition might fail
 certificatestore.adb:334:47: info: range check proved
 certificatestore.adb:358:18: warning: precondition might fail
@@ -214,7 +214,7 @@ clock.adb:245:41: info: division check proved
 clock.adb:245:41: info: range check proved
 clock.adb:246:44: info: division check proved
 clock.adb:247:25: info: division check proved
-clock.adb:247:25: info: range check proved
+clock.adb:247:25: warning: range check might fail
 clock.adb:272:36: info: length check proved
 clock.adb:289:07: info: precondition proved
 clock.adb:290:44: info: division check proved
@@ -268,11 +268,11 @@ configdata.adb:233:44: info: overflow check proved
 configdata.adb:233:44: info: range check proved
 configdata.adb:271:51: info: overflow check proved
 configdata.adb:271:51: info: range check proved
-configdata.adb:313:20: info: range check proved
+configdata.adb:313:20: warning: range check might fail
 configdata.adb:315:19: info: loop invariant initialization proved
-configdata.adb:315:19: info: loop invariant preservation proved
+configdata.adb:315:69: warning: loop invariant might fail after first iteration, requires I <= Stop
 configdata.adb:317:48: info: index check proved
-configdata.adb:317:63: info: index check proved
+configdata.adb:317:63: warning: array index check might fail
 configdata.adb:365:35: info: overflow check proved
 configdata.adb:365:35: info: range check proved
 configdata.adb:366:35: info: range check proved
@@ -280,11 +280,11 @@ configdata.adb:366:45: info: overflow check proved
 configdata.adb:366:50: info: overflow check proved
 configdata.adb:366:68: info: range check proved
 configdata.adb:400:38: info: range check proved
-configdata.adb:703:23: info: range check proved
+configdata.adb:703:23: warning: range check might fail
 configdata.adb:704:22: info: loop invariant initialization proved
-configdata.adb:704:22: info: loop invariant preservation proved
-configdata.adb:706:53: info: index check proved
-configdata.adb:707:40: info: index check proved
+configdata.adb:705:45: warning: loop invariant might fail after first iteration, requires I <= Stop
+configdata.adb:706:53: warning: array index check might fail
+configdata.adb:707:40: warning: array index check might fail
 configdata.adb:1012:35: info: length check proved, in call inlined at configdata.adb:1098
 configdata.adb:1012:35: info: length check proved, in call inlined at configdata.adb:1108
 configdata.adb:1012:35: info: length check proved, in call inlined at configdata.adb:1118
@@ -323,7 +323,7 @@ configdata.adb:1148:69: info: division check proved
 configdata.adb:1158:68: info: division check proved
 configdata.adb:1542:70: info: range check proved
 configdata.adb:1685:13: info: division check proved
-configdata.adb:1685:13: info: range check proved
+configdata.adb:1685:13: warning: range check might fail
 configuration.adb:99:57: info: division check proved
 configuration.adb:99:63: warning: range check might fail
 configuration.adb:100:12: warning: range check might fail
@@ -383,30 +383,30 @@ display.adb:122:07: warning: statement has no effect, in call inlined at display
 display.adb:123:41: info: length check proved, in call inlined at display.adb:188
 display.adb:123:41: info: length check proved, in call inlined at display.adb:280
 display.adb:128:11: info: range check proved, in call inlined at display.adb:188
-display.adb:128:11: info: range check proved, in call inlined at display.adb:280
-display.adb:129:10: info: loop invariant initialization proved, in call inlined at display.adb:188
-display.adb:129:10: info: loop invariant initialization proved, in call inlined at display.adb:280
+display.adb:128:11: warning: range check might fail, in call inlined at display.adb:280
 display.adb:129:10: info: loop invariant preservation proved, in call inlined at display.adb:188
 display.adb:129:10: info: loop invariant preservation proved, in call inlined at display.adb:280
-display.adb:137:30: info: index check proved, in call inlined at display.adb:188
-display.adb:137:30: info: index check proved, in call inlined at display.adb:280
-display.adb:138:30: info: index check proved, in call inlined at display.adb:188
-display.adb:138:30: info: index check proved, in call inlined at display.adb:280
-display.adb:139:30: info: index check proved, in call inlined at display.adb:188
-display.adb:139:30: info: index check proved, in call inlined at display.adb:280
-display.adb:140:32: info: range check proved, in call inlined at display.adb:188
-display.adb:140:32: info: range check proved, in call inlined at display.adb:280
-display.adb:143:11: info: range check proved, in call inlined at display.adb:188
-display.adb:143:11: info: range check proved, in call inlined at display.adb:280
-display.adb:144:10: info: loop invariant initialization proved, in call inlined at display.adb:188
-display.adb:144:10: info: loop invariant initialization proved, in call inlined at display.adb:280
-display.adb:144:10: info: loop invariant preservation proved, in call inlined at display.adb:188
-display.adb:144:10: info: loop invariant preservation proved, in call inlined at display.adb:280
-display.adb:148:33: info: index check proved, in call inlined at display.adb:188
-display.adb:148:33: info: index check proved, in call inlined at display.adb:280
-display.adb:148:33: info: overflow check proved, in call inlined at display.adb:188
-display.adb:148:33: info: overflow check proved, in call inlined at display.adb:280
-display.adb:150:32: info: range check proved, in call inlined at display.adb:188
+display.adb:129:10: warning: loop invariant might fail in first iteration, in call inlined at display.adb:188
+display.adb:129:10: warning: loop invariant might fail in first iteration, in call inlined at display.adb:280
+display.adb:137:30: warning: array index check might fail, in call inlined at display.adb:188
+display.adb:137:30: warning: array index check might fail, in call inlined at display.adb:280
+display.adb:138:30: warning: array index check might fail, in call inlined at display.adb:188
+display.adb:138:30: warning: array index check might fail, in call inlined at display.adb:280
+display.adb:139:30: warning: array index check might fail, in call inlined at display.adb:188
+display.adb:139:30: warning: array index check might fail, in call inlined at display.adb:280
+display.adb:140:32: warning: range check might fail, in call inlined at display.adb:188
+display.adb:140:32: warning: range check might fail, in call inlined at display.adb:280
+display.adb:143:11: warning: range check might fail, in call inlined at display.adb:188
+display.adb:143:11: warning: range check might fail, in call inlined at display.adb:280
+display.adb:144:10: warning: loop invariant might fail after first iteration, in call inlined at display.adb:188
+display.adb:144:10: warning: loop invariant might fail after first iteration, in call inlined at display.adb:280
+display.adb:144:10: warning: loop invariant might fail in first iteration, in call inlined at display.adb:188
+display.adb:144:10: warning: loop invariant might fail in first iteration, in call inlined at display.adb:280
+display.adb:148:33: warning: array index check might fail, in call inlined at display.adb:188
+display.adb:148:33: warning: array index check might fail, in call inlined at display.adb:280
+display.adb:148:33: warning: overflow check might fail, in call inlined at display.adb:188
+display.adb:148:33: warning: overflow check might fail, in call inlined at display.adb:280
+display.adb:150:32: warning: range check might fail, in call inlined at display.adb:188
 display.adb:150:32: warning: range check might fail, in call inlined at display.adb:280
 display.adb:184:18: warning: precondition might fail
 display.adb:235:49: warning: "Interfac.Output" might not be written
@@ -415,15 +415,15 @@ display.adb:264:18: warning: unused assignment to "Interfac.Output"
 display.adb:271:21: warning: unused assignment to "Interfac.Output"
 display.adb:286:21: warning: precondition might fail
 display.ads:65:24: info: length check proved
-door.adb:88:22: info: postcondition proved
+door.adb:88:22: warning: postcondition might fail, requires CurrentDoor = Open and Latch.IsLocked and Clock.GreaterThanOrEqual(Clock.TheCurrentTime, AlarmTimeout)) = (DoorAlarm = AlarmTypes.alarming
 door.adb:114:18: warning: precondition might fail
 door.adb:189:31: warning: refined postcondition might fail
 door.adb:200:18: warning: precondition might fail
 door.adb:218:21: warning: precondition might fail
-door.adb:283:30: info: refined post proved
+door.adb:283:30: warning: refined postcondition might fail
 door.adb:351:69: warning: refined postcondition might fail
-door.ads:116:22: info: postcondition proved
-door.ads:169:22: info: postcondition proved
+door.ads:116:22: warning: postcondition might fail
+door.ads:169:22: warning: postcondition might fail
 door.ads:213:22: info: postcondition proved
 doorapi.adb:33:29: warning: assuming "Overwrite" has no effect on global items
 doorapi.adb:33:29: warning: length check might fail
@@ -432,7 +432,7 @@ doorapi.adb:54:28: warning: precondition might fail
 doorapi.adb:57:32: warning: precondition might fail
 enclave.adb:105:18: info: precondition proved
 enclave.adb:189:22: info: postcondition proved
-enclave.adb:250:22: info: postcondition proved
+enclave.adb:250:22: warning: postcondition might fail, requires Status = EnclaveQuiescent and KeyStore.PrivateKeyPresent) or (Status = WaitingEndEnrol and not KeyStore(KeyStore.privatekeypresent)
 enclave.adb:274:18: warning: precondition might fail
 enclave.adb:286:18: warning: precondition might fail
 enclave.adb:329:22: info: postcondition proved
@@ -453,10 +453,10 @@ enclave.adb:636:39: warning: "Floppy.Output" might not be written
 enclave.adb:674:11: warning: precondition might fail
 enclave.adb:682:18: warning: precondition might fail
 enclave.adb:688:19: warning: precondition might fail
-enclave.adb:691:06: info: postcondition proved
-enclave.adb:702:18: info: precondition proved
+enclave.adb:691:06: warning: postcondition might fail
+enclave.adb:702:18: warning: precondition might fail
 enclave.adb:713:18: warning: precondition might fail
-enclave.adb:719:19: info: precondition proved
+enclave.adb:719:19: warning: precondition might fail
 enclave.adb:741:42: warning: "Floppy.Output" might not be written
 enclave.adb:766:25: info: postcondition proved
 enclave.adb:774:21: warning: precondition might fail
@@ -468,13 +468,13 @@ enclave.adb:879:15: warning: precondition might fail
 enclave.adb:887:10: info: precondition proved
 enclave.adb:889:10: info: precondition proved
 enclave.adb:943:27: warning: precondition might fail
-enclave.adb:945:06: info: postcondition proved
-enclave.adb:956:18: info: precondition proved
+enclave.adb:945:06: warning: postcondition might fail
+enclave.adb:956:18: warning: precondition might fail
 enclave.adb:997:15: info: precondition proved
 enclave.adb:1048:11: warning: precondition might fail
 enclave.adb:1057:18: warning: precondition might fail
 enclave.adb:1063:19: warning: precondition might fail
-enclave.adb:1072:06: info: postcondition proved
+enclave.adb:1072:06: warning: postcondition might fail
 enclave.adb:1094:18: warning: precondition might fail
 enclave.adb:1100:19: warning: precondition might fail
 enclave.adb:1105:18: info: precondition proved
@@ -496,12 +496,12 @@ enclave.adb:1409:06: warning: postcondition might fail
 enclave.adb:1433:18: warning: precondition might fail
 enclave.adb:1454:18: warning: precondition might fail
 enclave.adb:1460:19: warning: precondition might fail
-enclave.adb:1465:18: info: precondition proved
+enclave.adb:1465:18: warning: precondition might fail
 enclave.adb:1468:17: info: precondition proved
 enclave.adb:1470:13: info: precondition proved
 enclave.adb:1473:13: info: precondition proved
-enclave.adb:1476:13: info: precondition proved
-enclave.adb:1479:13: info: precondition proved
+enclave.adb:1476:13: warning: precondition might fail
+enclave.adb:1479:13: warning: precondition might fail
 enclave.adb:1507:60: info: refined post proved
 enclave.adb:1615:61: info: refined post proved
 enclave.adb:1625:13: info: precondition proved
@@ -515,9 +515,9 @@ enclave.adb:1906:18: warning: precondition might fail
 enclave.adb:1912:19: warning: precondition might fail
 enclave.adb:1937:18: warning: precondition might fail
 enclave.adb:1939:41: warning: refined postcondition might fail
-enclave.adb:1943:18: info: precondition proved
-enclave.adb:1952:13: info: precondition proved
-enclave.adb:1957:13: info: precondition proved
+enclave.adb:1943:18: warning: precondition might fail
+enclave.adb:1952:13: warning: precondition might fail
+enclave.adb:1957:13: warning: precondition might fail
 enclave.adb:2068:18: warning: precondition might fail
 enclave.adb:2078:18: warning: precondition might fail
 enclave.adb:2080:58: warning: refined postcondition might fail
@@ -530,10 +530,10 @@ enclave.adb:2203:22: warning: precondition might fail
 enclave.adb:2207:21: warning: precondition might fail
 enclave.adb:2236:27: info: precondition proved
 enclave.adb:2245:21: info: precondition proved
-enclave.adb:2246:42: info: range check proved
+enclave.adb:2246:42: warning: range check might fail
 enclave.adb:2248:24: warning: precondition might fail
 enclave.adb:2258:24: warning: precondition might fail
-enclave.adb:2275:10: info: precondition proved
+enclave.adb:2275:10: warning: precondition might fail
 enclave.ads:117:22: info: postcondition proved
 enclave.ads:210:22: info: postcondition proved
 enclave.ads:252:22: info: postcondition proved
@@ -544,18 +544,18 @@ enclave.ads:458:13: warning: postcondition might fail
 enclave.ads:487:25: warning: precondition might fail
 enclave.ads:497:25: warning: precondition might fail
 enclave.ads:503:26: warning: precondition might fail
-enclave.ads:516:25: info: precondition proved
+enclave.ads:516:25: warning: precondition might fail
 enclave.ads:566:25: warning: precondition might fail
 enclave.ads:592:29: warning: precondition might fail
 enclave.ads:598:30: warning: precondition might fail
-enclave.ads:603:13: info: postcondition proved
+enclave.ads:603:13: warning: postcondition might fail
 enclave.ads:632:29: warning: precondition might fail
 enclave.ads:642:29: warning: precondition might fail
 enclave.ads:648:30: warning: precondition might fail
 enrolment.adb:66:66: warning: range check might fail
 enrolment.adb:67:55: warning: range check might fail
 enrolment.adb:67:63: warning: range check might fail
-enrolment.adb:71:40: info: length check proved
+enrolment.adb:71:40: warning: length check might fail
 enrolment.adb:71:43: warning: length check might fail
 enrolment.adb:73:23: info: length check proved
 enrolment.adb:73:23: warning: range check might fail
@@ -629,11 +629,11 @@ keystore.adb:199:35: info: index check proved
 keystore.adb:199:35: info: overflow check proved
 keystore.adb:199:51: info: overflow check proved
 keystore.adb:218:51: info: division check proved
-keystore.adb:222:13: info: loop invariant preservation proved
+keystore.adb:222:13: warning: loop invariant might fail after first iteration
 keystore.adb:222:13: warning: loop invariant might fail in first iteration
 keystore.adb:223:56: info: division check proved
-keystore.adb:226:57: info: overflow check proved
-keystore.adb:226:67: info: overflow check proved
+keystore.adb:226:57: warning: overflow check might fail
+keystore.adb:226:67: warning: overflow check might fail
 keystore.adb:236:22: warning: precondition might fail
 keystore.adb:248:36: warning: range check might fail
 keystore.adb:264:18: warning: precondition might fail
@@ -655,10 +655,10 @@ keystore.ads:227:22: warning: postcondition might fail, requires Added and (not 
 keystore.ads:245:22: info: postcondition proved
 latch.adb:96:39: info: refined post proved
 latch.adb:113:18: warning: precondition might fail
-latch.adb:147:59: info: refined post proved
+latch.adb:147:59: warning: refined postcondition might fail
 latch.adb:158:18: warning: precondition might fail
 latch.adb:178:43: info: refined post proved
-latch.ads:106:22: info: postcondition proved
+latch.ads:106:22: warning: postcondition might fail
 latch.ads:135:22: info: postcondition proved
 latch.ads:150:22: info: postcondition proved
 latchapi.adb:95:37: warning: assuming "Overwrite" has no effect on global items
@@ -721,7 +721,7 @@ screen.adb:440:44: warning: range check might fail, in call inlined at screen.ad
 screen.adb:440:44: warning: range check might fail, in call inlined at screen.adb:597
 screen.adb:440:44: warning: range check might fail, in call inlined at screen.adb:603
 screen.adb:440:44: warning: range check might fail, in call inlined at screen.adb:609
-screen.adb:440:72: info: overflow check proved, in call inlined at screen.adb:591
+screen.adb:440:72: warning: overflow check might fail, in call inlined at screen.adb:591
 screen.adb:440:72: warning: overflow check might fail, in call inlined at screen.adb:597
 screen.adb:440:72: warning: overflow check might fail, in call inlined at screen.adb:603
 screen.adb:440:72: warning: overflow check might fail, in call inlined at screen.adb:609
@@ -756,9 +756,9 @@ screen.adb:537:40: warning: range check might fail, in call inlined at screen.ad
 screen.adb:578:18: warning: unused assignment to "Interfac.Output"
 screen.adb:584:18: warning: unused assignment to "Interfac.Output"
 screen.adb:591:18: warning: unused assignment to "Interfac.Output"
-screen.adb:591:49: info: range check proved
+screen.adb:591:49: warning: range check might fail
 screen.adb:597:18: warning: unused assignment to "Interfac.Output"
-screen.adb:597:49: info: range check proved
+screen.adb:597:49: warning: range check might fail
 screen.adb:603:18: warning: unused assignment to "Interfac.Output"
 screen.adb:603:49: warning: range check might fail
 screen.adb:609:18: warning: unused assignment to "Interfac.Output"
@@ -783,7 +783,7 @@ screen.adb:784:37: warning: length check might fail, in call inlined at screen.a
 screen.adb:784:37: warning: length check might fail, in call inlined at screen.adb:812
 screen.adb:784:37: warning: length check might fail, in call inlined at screen.adb:818
 screen.adb:784:37: warning: length check might fail, in call inlined at screen.adb:824
-screen.adb:784:40: info: length check proved, in call inlined at screen.adb:806
+screen.adb:784:40: warning: length check might fail, in call inlined at screen.adb:806
 screen.adb:784:40: warning: length check might fail, in call inlined at screen.adb:812
 screen.adb:784:40: warning: length check might fail, in call inlined at screen.adb:818
 screen.adb:784:40: warning: length check might fail, in call inlined at screen.adb:824
@@ -829,11 +829,11 @@ tismain.adb:602:08: warning: postcondition might fail
 tismain.adb:617:22: warning: precondition might fail
 tismain.adb:623:23: warning: precondition might fail
 tismain.adb:630:22: warning: precondition might fail
-tismain.adb:703:17: info: precondition proved
-tismain.adb:706:17: info: precondition proved
-tismain.adb:710:19: info: precondition proved
-tismain.adb:714:17: info: precondition proved
-tismain.adb:721:17: info: precondition proved
+tismain.adb:703:17: warning: precondition might fail
+tismain.adb:706:17: warning: precondition might fail
+tismain.adb:710:19: warning: precondition might fail
+tismain.adb:714:17: warning: precondition might fail
+tismain.adb:721:17: warning: precondition might fail
 tismain.adb:742:39: warning: "Alarm.Output" might not be written
 tismain.adb:744:41: warning: "Display.Output" might not be written
 tismain.adb:745:40: warning: "Floppy.Output" might not be written
@@ -847,15 +847,15 @@ tismain.adb:1118:13: warning: postcondition might fail
 tismain.adb:1156:25: warning: precondition might fail
 tismain.adb:1162:26: warning: precondition might fail
 tismain.adb:1169:25: warning: precondition might fail
-tismain.adb:1208:13: info: precondition proved
+tismain.adb:1208:13: warning: precondition might fail
 tismain.adb:1342:04: warning: unused assignment to "Screen.Output"
-tismain.adb:1346:07: info: loop invariant preservation proved
+tismain.adb:1346:07: warning: loop invariant might fail after first iteration
 tismain.adb:1346:07: warning: loop invariant might fail in first iteration
 tismain.adb:1359:22: warning: precondition might fail
 tismain.adb:1365:23: warning: precondition might fail
 tismain.adb:1372:22: warning: precondition might fail
-tismain.adb:1397:07: info: precondition proved
-tismain.adb:1403:07: info: assertion proved
+tismain.adb:1397:07: warning: precondition might fail
+tismain.adb:1403:07: warning: assertion might fail
 tismain.adb:1443:22: warning: precondition might fail
 tismain.adb:1449:23: warning: precondition might fail
 tismain.adb:1456:22: warning: precondition might fail
@@ -877,7 +877,7 @@ tokenreader.adb:174:12: warning: range check might fail
 tokenreader.adb:174:55: warning: range check might fail
 tokenreader.adb:175:12: warning: range check might fail
 tokenreader.adb:175:56: warning: range check might fail
-tokenreader.adb:180:43: info: length check proved
+tokenreader.adb:180:43: warning: length check might fail
 tokenreader.adb:180:46: warning: length check might fail
 tokenreader.adb:182:23: info: length check proved
 tokenreader.adb:182:23: warning: range check might fail
@@ -897,7 +897,7 @@ tokenreader.adb:386:17: warning: subprogram "Disconnecttoken" has no effect
 tokenreader.adb:668:43: info: range check proved
 tokenreader.adb:688:21: warning: precondition might fail
 updates.ads:79:22: info: postcondition proved
-updates.ads:143:22: info: postcondition proved
+updates.ads:143:22: warning: postcondition might fail
 userentry.adb:116:15: warning: precondition might fail
 userentry.adb:220:21: warning: precondition might fail
 userentry.adb:229:21: info: precondition proved
@@ -908,7 +908,7 @@ userentry.adb:287:24: info: precondition proved
 userentry.adb:361:21: warning: precondition might fail
 userentry.adb:379:24: warning: precondition might fail
 userentry.adb:476:15: warning: range check might fail
-userentry.adb:482:45: info: length check proved
+userentry.adb:482:45: warning: length check might fail
 userentry.adb:482:48: warning: length check might fail
 userentry.adb:484:26: info: length check proved
 userentry.adb:484:26: warning: range check might fail
@@ -930,16 +930,16 @@ userentry.adb:1207:13: info: precondition proved
 userentry.adb:1211:13: info: precondition proved
 userentry.ads:264:13: info: postcondition proved
 usertoken.adb:270:49: warning: "Interfac.Output" might not be written
-usertoken.adb:693:37: info: length check proved, in call inlined at usertoken.adb:737
-usertoken.adb:693:37: info: length check proved, in call inlined at usertoken.adb:740
-usertoken.adb:693:37: info: length check proved, in call inlined at usertoken.adb:743
-usertoken.adb:693:37: info: length check proved, in call inlined at usertoken.adb:846
-usertoken.adb:693:37: info: length check proved, in call inlined at usertoken.adb:849
-usertoken.adb:693:37: info: length check proved, in call inlined at usertoken.adb:955
-usertoken.adb:693:37: info: length check proved, in call inlined at usertoken.adb:958
-usertoken.adb:693:37: info: length check proved, in call inlined at usertoken.adb:985
+usertoken.adb:693:37: warning: length check might fail, in call inlined at usertoken.adb:737
+usertoken.adb:693:37: warning: length check might fail, in call inlined at usertoken.adb:740
+usertoken.adb:693:37: warning: length check might fail, in call inlined at usertoken.adb:743
+usertoken.adb:693:37: warning: length check might fail, in call inlined at usertoken.adb:846
+usertoken.adb:693:37: warning: length check might fail, in call inlined at usertoken.adb:849
 usertoken.adb:693:37: warning: length check might fail, in call inlined at usertoken.adb:852
+usertoken.adb:693:37: warning: length check might fail, in call inlined at usertoken.adb:955
+usertoken.adb:693:37: warning: length check might fail, in call inlined at usertoken.adb:958
 usertoken.adb:693:37: warning: length check might fail, in call inlined at usertoken.adb:961
+usertoken.adb:693:37: warning: length check might fail, in call inlined at usertoken.adb:985
 usertoken.adb:695:23: info: length check proved, in call inlined at usertoken.adb:737
 usertoken.adb:695:23: info: length check proved, in call inlined at usertoken.adb:740
 usertoken.adb:695:23: info: length check proved, in call inlined at usertoken.adb:743
