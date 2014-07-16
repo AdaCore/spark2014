@@ -151,7 +151,7 @@ digraph G {
     9 [label="speed'final\n(global)\nVU: {Speed}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
     10 [label="precondition speed_is_valid\nVU: {State, Speed}\nSC: {Speed_Is_Valid}\nPROOF\n<VId: 10>",shape="plaintext"];
     11 [label="postcondition state = still and speed_is_valid\nVU: {State, Speed}\nSC: {Speed_Is_Valid}\nPROOF\n<VId: 11>",shape="plaintext"];
-    13 [label="pragma check (loop_invariant, speed_is_valid);\nVU: {State, Speed}\nPROOF\n<VId: 13>"];
+    13 [label="pragma check (loop_invariant, speed_is_valid);\nVU: {State, Speed}\nSC: {Speed_Is_Valid}\nPROOF\n<VId: 13>"];
     14 [label="if speed > 0\nLoops:&nbsp;L_1\nVU: {Speed}\n<VId: 14>",shape="diamond"];
     15 [label="call state_update\nLoops:&nbsp;L_1\nSC: {State_Update}\n<VId: 15>",shape="box"];
     16 [label="i'in&nbsp;:=&nbsp;brake\n<VId: 16>",shape="plaintext"];
@@ -206,7 +206,7 @@ digraph G {
     9 [label="speed'final\n(global)\nVU: {Speed}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
     10 [label="precondition speed_is_valid\nVU: {State, Speed}\nSC: {Speed_Is_Valid}\nPROOF\n<VId: 10>",shape="plaintext"];
     11 [label="postcondition state = still and speed_is_valid\nVU: {State, Speed}\nSC: {Speed_Is_Valid}\nPROOF\n<VId: 11>",shape="plaintext"];
-    13 [label="pragma check (loop_invariant, speed_is_valid);\nVU: {State, Speed}\nPROOF\n<VId: 13>"];
+    13 [label="pragma check (loop_invariant, speed_is_valid);\nVU: {State, Speed}\nSC: {Speed_Is_Valid}\nPROOF\n<VId: 13>"];
     14 [label="if speed > 0\nLoops:&nbsp;L_1\nVU: {Speed}\n<VId: 14>",shape="diamond"];
     15 [label="call state_update\nLoops:&nbsp;L_1\nSC: {State_Update}\n<VId: 15>",shape="box"];
     16 [label="i'in&nbsp;:=&nbsp;brake\n<VId: 16>",shape="plaintext"];
@@ -490,7 +490,7 @@ digraph G {
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
     6 [label="precondition speed_is_valid\nSC: {Speed_Is_Valid}\nPROOF\n<VId: 6>",shape="plaintext"];
     7 [label="postcondition state = still and speed_is_valid\nVU: {State}\nSC: {Speed_Is_Valid}\nPROOF\n<VId: 7>",shape="plaintext"];
-    9 [label="pragma check (loop_invariant, speed_is_valid);\nPROOF\n<VId: 9>"];
+    9 [label="pragma check (loop_invariant, speed_is_valid);\nSC: {Speed_Is_Valid}\nPROOF\n<VId: 9>"];
     10 [label="if speed > 0\nLoops:&nbsp;L_1\nVU: {Speed}\n<VId: 10>",shape="diamond"];
     11 [label="call state_update\nLoops:&nbsp;L_1\nSC: {State_Update}\n<VId: 11>",shape="box"];
     12 [label="i'in&nbsp;:=&nbsp;brake\n<VId: 12>",shape="plaintext"];
@@ -553,7 +553,7 @@ digraph G {
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
     6 [label="precondition speed_is_valid\nSC: {Speed_Is_Valid}\nPROOF\n<VId: 6>",shape="plaintext"];
     7 [label="postcondition state = still and speed_is_valid\nVU: {State}\nSC: {Speed_Is_Valid}\nPROOF\n<VId: 7>",shape="plaintext"];
-    9 [label="pragma check (loop_invariant, speed_is_valid);\nPROOF\n<VId: 9>"];
+    9 [label="pragma check (loop_invariant, speed_is_valid);\nSC: {Speed_Is_Valid}\nPROOF\n<VId: 9>"];
     10 [label="if speed > 0\nLoops:&nbsp;L_1\nVU: {Speed}\n<VId: 10>",shape="diamond"];
     11 [label="call state_update\nLoops:&nbsp;L_1\nSC: {State_Update}\n<VId: 11>",shape="box"];
     12 [label="i'in&nbsp;:=&nbsp;brake\n<VId: 12>",shape="plaintext"];

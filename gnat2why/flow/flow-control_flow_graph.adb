@@ -3521,14 +3521,15 @@ package body Flow.Control_Flow_Graph is
                  (FA,
                   Direct_Mapping_Id (N),
                   Make_Sink_Vertex_Attributes
-                    (Var_Use  => Get_Variable_Set
+                    (Var_Use    => Get_Variable_Set
                        (Pragma_Argument_Associations (N),
                         Scope                => FA.B_Scope,
                         Local_Constants      => FA.Local_Constants,
                         Fold_Functions       => False,
                         Use_Computed_Globals => not FA.Compute_Globals),
-                     Is_Proof => True,
-                     E_Loc    => N),
+                     Sub_Called => Get_Function_Set (N),
+                     Is_Proof   => True,
+                     E_Loc      => N),
                   V);
          end case;
 

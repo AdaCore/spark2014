@@ -44,6 +44,14 @@ use type Ada.Containers.Count_Type;
 
 package Flow_Utility is
 
+   function Get_Flow_Id
+     (Name : Entity_Name;
+      View : Parameter_Variant)
+      return Flow_Id;
+   --  Return a suitable flow id for the unique_name of an entity. We
+   --  try our best to get a direct mapping, resorting to the magic
+   --  string only as a last resort.
+
    function Get_Full_Type (E : Entity_Id) return Entity_Id;
    --  Get the type of the given entity. Ignores private types and always
    --  returns the full view.

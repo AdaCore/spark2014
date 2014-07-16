@@ -87,11 +87,6 @@ package body Flow_Refinement is
    --     s.section = enclosing_scope(s).section
    --  Unless S is a private descendant, in which case it is always "priv".
 
-   function Is_Visible (N : Node_Id;
-                        S : Flow_Scope)
-                        return Boolean;
-   --  Returns true iff the node N is visible from the scope S.
-
    function Find_Node_In_Initializes (E : Entity_Id) return Node_Id
    with Post => not Present (Find_Node_In_Initializes'Result)
                 or else Entity (Find_Node_In_Initializes'Result) = E;

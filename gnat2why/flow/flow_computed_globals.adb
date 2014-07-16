@@ -38,6 +38,7 @@ with Namet;                       use Namet;
 with Output;                      use Output;
 
 with Graph;
+with Flow_Utility;                use Flow_Utility;
 
 with Gnat2Why_Args;
 with Gnat2Why.Nodes;              use Gnat2Why.Nodes;
@@ -57,6 +58,7 @@ package body Flow_Computed_Globals is
    ----------------------------------------------------------------------
 
    use type Flow_Id_Sets.Set;
+   use type Name_Set.Set;
 
    type Subprogram_Phase_1_Info is record
       Subprogram        : Entity_Name;
@@ -79,6 +81,23 @@ package body Flow_Computed_Globals is
       "="          => "=");
 
    Info_Set : Info_Sets.Set;
+
+   ----------------------------------------------------------------------
+
+   type State_Phase_1_Info is record
+      State             : Entity_Name;
+      Constituents      : Name_Set.Set;
+   end record;
+
+   function Preceeds (A, B : State_Phase_1_Info) return Boolean
+   is (A.State.all < B.State.all);
+
+   package State_Info_Sets is new Ada.Containers.Ordered_Sets
+     (Element_Type => State_Phase_1_Info,
+      "<"          => Preceeds,
+      "="          => "=");
+
+   State_Info_Set : State_Info_Sets.Set;
 
    ----------------------------------------------------------------------
    --  Global_Id
@@ -136,12 +155,38 @@ package body Flow_Computed_Globals is
    -- Local subprograms --
    -----------------------
 
+   function To_Name (E : Entity_Id) return Entity_Name;
+   --  Takes an Entity_Id and returns the corresponding Entity_Name
+
+   function To_Name_Set (S : Node_Sets.Set) return Name_Set.Set;
+   --  Takes a set of Node_Ids and returns a set of Entity_Names
+
    procedure Print_Subprogram_Phase_1_Info (Info : Subprogram_Phase_1_Info);
    --  Prints all info related to a subprogram
 
    procedure Print_Global_Graph (Filename : String;
                                  G        : T);
    --  Writes a dot and pdf file for the Global_Graph
+
+   -------------
+   -- To_Name --
+   -------------
+
+   function To_Name (E : Entity_Id) return Entity_Name
+   is (new String'(Unique_Name (E)));
+
+   -----------------
+   -- To_Name_Set --
+   -----------------
+
+   function To_Name_Set (S : Node_Sets.Set) return Name_Set.Set is
+      Rv : Name_Set.Set := Name_Set.Empty_Set;
+   begin
+      for E of S loop
+         Rv.Insert (To_Name (E));
+      end loop;
+      return Rv;
+   end To_Name_Set;
 
    -----------------------------------
    -- Print_Subprogram_Phase_1_Info --
@@ -285,9 +330,33 @@ package body Flow_Computed_Globals is
    begin
       Open_Output_Library_Info;
       Info_Set := Info_Sets.Empty_Set;
+      State_Info_Set := State_Info_Sets.Empty_Set;
 
       Current_Mode := GG_Write_Mode;
    end GG_Write_Initialize;
+
+   ---------------------------
+   -- GG_Write_Package_Info --
+   ---------------------------
+
+   procedure GG_Write_Package_Info (DM : Dependency_Maps.Map) is
+   begin
+      for S in DM.Iterate loop
+         declare
+            State        : constant Entity_Name :=
+              To_Name (Get_Direct_Mapping_Id (Dependency_Maps.Key (S)));
+
+            Constituents : constant Name_Set.Set :=
+              To_Name_Set (To_Node_Set (Dependency_Maps.Element (S)));
+
+            State_Info   : constant State_Phase_1_Info :=
+              State_Phase_1_Info'(State        => State,
+                                  Constituents => Constituents);
+         begin
+            State_Info_Set.Insert (State_Info);
+         end;
+      end loop;
+   end GG_Write_Package_Info;
 
    ------------------------------
    -- GG_Write_Subprogram_Info --
@@ -303,21 +372,6 @@ package body Flow_Computed_Globals is
       Conditional_Calls : Node_Sets.Set;
       Local_Variables   : Node_Sets.Set)
    is
-      function To_Name (E : Entity_Id) return Entity_Name;
-      function To_Name_Set (S : Node_Sets.Set) return Name_Set.Set;
-
-      function To_Name (E : Entity_Id) return Entity_Name
-      is (new String'(Unique_Name (E)));
-
-      function To_Name_Set (S : Node_Sets.Set) return Name_Set.Set
-      is
-         Rv : Name_Set.Set := Name_Set.Empty_Set;
-      begin
-         for E of S loop
-            Rv.Insert (To_Name (E));
-         end loop;
-         return Rv;
-      end To_Name_Set;
    begin
       Info_Set.Insert ((To_Name (E),
                         Inputs_Proof      => To_Name_Set (Inputs_Proof),
@@ -350,6 +404,13 @@ package body Flow_Computed_Globals is
          end loop;
       end Write_Name_Set;
    begin
+      for State_Info of State_Info_Set loop
+         Write_Info_Str ("GG AS ");
+         Write_Info_Str (State_Info.State.all);
+         Write_Name_Set (State_Info.Constituents);
+         Write_Info_Terminate;
+      end loop;
+
       for Info of Info_Set loop
          Write_Info_Str ("GG S ");
          Write_Info_Str (Info.Subprogram.all);
@@ -412,6 +473,7 @@ package body Flow_Computed_Globals is
       --
       --  The info that we read look as follows:
       --
+      --  GG AS test__state test__g
       --  GG S test__proc
       --  GG VP test__proof_var
       --  GG VI test__g test__g2
@@ -707,8 +769,18 @@ package body Flow_Computed_Globals is
 
             New_Info   : Subprogram_Phase_1_Info;
 
-         begin
-            while (for some I in 1 .. 8 => Line_Found (I) = False) loop
+            procedure Check_GG_Format;
+            --  Checks if the line start with "GG "
+
+            function Get_Names_From_Line return Name_Set.Set;
+            --  Returns a set of all names appearing in a line
+
+            ---------------------
+            -- Check_GG_Format --
+            ---------------------
+
+            procedure Check_GG_Format is
+            begin
                if Length (Line) <= 3 or else
                  Slice (Line, 1, 3) /= "GG "
                then
@@ -717,6 +789,98 @@ package body Flow_Computed_Globals is
                   --  that we are not aware of.
                   raise Program_Error;
                end if;
+            end Check_GG_Format;
+
+            -------------------------
+            -- Get_Names_From_Line --
+            -------------------------
+
+            function Get_Names_From_Line return Name_Set.Set is
+               Names_In_Line : Name_Set.Set :=
+                 Name_Set.Empty_Set;
+
+               Start_Of_Word : Natural      := 7;
+               End_Of_Word   : Natural;
+            begin
+               if Length (Line) = 5 then
+                  --  There are no names here. Return the empty set.
+                  return Names_In_Line;
+               end if;
+
+               while Start_Of_Word < Length (Line) loop
+                  End_Of_Word := Start_Of_Word;
+
+                  while End_Of_Word < Length (Line)
+                    and then Element (Line, End_Of_Word) > ' '
+                  loop
+                     End_Of_Word := End_Of_Word + 1;
+                  end loop;
+
+                  --  If we have not reached the end of the line then
+                  --  we have read one character too many.
+                  if End_Of_Word < Length (Line) then
+                     End_Of_Word := End_Of_Word - 1;
+                  end if;
+
+                  declare
+                     EN : constant Entity_Name :=
+                       new String'(Slice (Line,
+                                          Start_Of_Word,
+                                          End_Of_Word));
+                  begin
+                     Names_In_Line.Insert (EN);
+                  end;
+
+                  Start_Of_Word := End_Of_Word + 2;
+               end loop;
+
+               return Names_In_Line;
+            end Get_Names_From_Line;
+
+         begin
+            --  We special case lines that contain info about state
+            --  abstractions.
+            if Length (Line) > 6
+              and then Slice (Line, 1, 6) = "GG AS "
+            then
+               declare
+                  State         : Entity_Name;
+                  Constituents  : Name_Set.Set := Get_Names_From_Line;
+                  Start_Of_Word : constant Natural := 7;
+                  End_Of_Word   : Natural := 7;
+               begin
+                  while End_Of_Word < Length (Line)
+                    and then Element (Line, End_Of_Word) > ' '
+                  loop
+                     End_Of_Word := End_Of_Word + 1;
+                  end loop;
+
+                  --  If we have not reached the end of the line then
+                  --  we have read one character too many.
+                  if End_Of_Word < Length (Line) then
+                     End_Of_Word := End_Of_Word - 1;
+                  end if;
+
+                  State := new String'(Slice (Line,
+                                              Start_Of_Word,
+                                              End_Of_Word));
+
+                  Constituents.Exclude (State);
+
+                  State_Info_Set.Include
+                    (State_Phase_1_Info'(State        => State,
+                                         Constituents => Constituents));
+               end;
+
+               --  Go to the next line
+               if not End_Of_File (ALI_File) then
+                  Get_Line (ALI_File, Line);
+               end if;
+               return;
+            end if;
+
+            while (for some I in 1 .. 8 => Line_Found (I) = False) loop
+               Check_GG_Format;
 
                if Length (Line) >= 6 and then
                  Slice (Line, 4, 5) = "S "
@@ -724,8 +888,7 @@ package body Flow_Computed_Globals is
                   --  Line format: GG S *
                   if Line_Found (1) then
                      --  We have already processed this line.
-                     --  Something is wrong with the ali
-                     --  file.
+                     --  Something is wrong with the ali file.
                      raise Program_Error;
                   end if;
 
@@ -742,127 +905,77 @@ package body Flow_Computed_Globals is
                   end;
 
                elsif Length (Line) >= 5 then
-                  declare
-                     function Get_Names_From_Line return Name_Set.Set;
-                     --  Returns a set of all names appearing in
-                     --  a line.
-
-                     function Get_Names_From_Line return Name_Set.Set is
-                        Names_In_Line : Name_Set.Set :=
-                          Name_Set.Empty_Set;
-
-                        Start_Of_Word : Natural      := 7;
-                        End_Of_Word   : Natural;
-                     begin
-                        if Length (Line) = 5 then
-                           --  The line is of the form "GG **"
-                           --  so we return an empty set.
-                           return Names_In_Line;
-                        end if;
-
-                        while Start_Of_Word < Length (Line) loop
-                           End_Of_Word := Start_Of_Word;
-
-                           while End_Of_Word < Length (Line)
-                             and then Element (Line, End_Of_Word) > ' '
-                           loop
-                              End_Of_Word := End_Of_Word + 1;
-                           end loop;
-
-                           --  If we have not reached the end of
-                           --  the line then we have read one
-                           --  character too many.
-                           if End_Of_Word < Length (Line) then
-                              End_Of_Word := End_Of_Word - 1;
-                           end if;
-
-                           declare
-                              EN : constant Entity_Name :=
-                                new String'(Slice (Line,
-                                                   Start_Of_Word,
-                                                   End_Of_Word));
-                           begin
-                              Names_In_Line.Include (EN);
-                           end;
-
-                           Start_Of_Word := End_Of_Word + 2;
-                        end loop;
-
-                        return Names_In_Line;
-                     end Get_Names_From_Line;
-
-                  begin
-                     if Slice (Line, 4, 5) = "VP" then
-                        if Line_Found (2) then
-                           raise Program_Error;
-                        end if;
-
-                        Line_Found (2) := True;
-                        New_Info.Inputs_Proof := Get_Names_From_Line;
-                        All_Globals.Union (Get_Names_From_Line);
-
-                     elsif Slice (Line, 4, 5) = "VI" then
-                        if Line_Found (3) then
-                           raise Program_Error;
-                        end if;
-
-                        Line_Found (3) := True;
-                        New_Info.Inputs := Get_Names_From_Line;
-                        All_Globals.Union (Get_Names_From_Line);
-
-                     elsif Slice (Line, 4, 5) = "VO" then
-                        if Line_Found (4) then
-                           raise Program_Error;
-                        end if;
-
-                        Line_Found (4) := True;
-                        New_Info.Outputs := Get_Names_From_Line;
-                        All_Globals.Union (Get_Names_From_Line);
-
-                     elsif Slice (Line, 4, 5) = "CP" then
-                        if Line_Found (5) then
-                           raise Program_Error;
-                        end if;
-
-                        Line_Found (5) := True;
-                        New_Info.Proof_Calls := Get_Names_From_Line;
-                        All_Subprograms.Union (Get_Names_From_Line);
-
-                     elsif Slice (Line, 4, 5) = "CD" then
-                        if Line_Found (6) then
-                           raise Program_Error;
-                        end if;
-
-                        Line_Found (6) := True;
-                        New_Info.Definite_Calls := Get_Names_From_Line;
-                        All_Subprograms.Union (Get_Names_From_Line);
-
-                     elsif Slice (Line, 4, 5) = "CC" then
-                        if Line_Found (7) then
-                           raise Program_Error;
-                        end if;
-
-                        Line_Found (7) := True;
-                        New_Info.Conditional_Calls := Get_Names_From_Line;
-                        All_Subprograms.Union (Get_Names_From_Line);
-
-                     elsif Slice (Line, 4, 5) = "LV" then
-                        if Line_Found (8) then
-                           raise Program_Error;
-                        end if;
-
-                        Line_Found (8) := True;
-                        New_Info.Local_Variables := Get_Names_From_Line;
-                        All_Globals.Union (Get_Names_From_Line);
-
-                     else
-                        --  Unexpected type of line. Something
-                        --  is wrong with the ali file.
+                  if Slice (Line, 4, 5) = "VP" then
+                     if Line_Found (2) then
                         raise Program_Error;
                      end if;
-                  end;
+
+                     Line_Found (2) := True;
+                     New_Info.Inputs_Proof := Get_Names_From_Line;
+                     All_Globals.Union (Get_Names_From_Line);
+
+                  elsif Slice (Line, 4, 5) = "VI" then
+                     if Line_Found (3) then
+                        raise Program_Error;
+                     end if;
+
+                     Line_Found (3) := True;
+                     New_Info.Inputs := Get_Names_From_Line;
+                     All_Globals.Union (Get_Names_From_Line);
+
+                  elsif Slice (Line, 4, 5) = "VO" then
+                     if Line_Found (4) then
+                        raise Program_Error;
+                     end if;
+
+                     Line_Found (4) := True;
+                     New_Info.Outputs := Get_Names_From_Line;
+                     All_Globals.Union (Get_Names_From_Line);
+
+                  elsif Slice (Line, 4, 5) = "CP" then
+                     if Line_Found (5) then
+                        raise Program_Error;
+                     end if;
+
+                     Line_Found (5) := True;
+                     New_Info.Proof_Calls := Get_Names_From_Line;
+                     All_Subprograms.Union (Get_Names_From_Line);
+
+                  elsif Slice (Line, 4, 5) = "CD" then
+                     if Line_Found (6) then
+                        raise Program_Error;
+                     end if;
+
+                     Line_Found (6) := True;
+                     New_Info.Definite_Calls := Get_Names_From_Line;
+                     All_Subprograms.Union (Get_Names_From_Line);
+
+                  elsif Slice (Line, 4, 5) = "CC" then
+                     if Line_Found (7) then
+                        raise Program_Error;
+                     end if;
+
+                     Line_Found (7) := True;
+                     New_Info.Conditional_Calls := Get_Names_From_Line;
+                     All_Subprograms.Union (Get_Names_From_Line);
+
+                  elsif Slice (Line, 4, 5) = "LV" then
+                     if Line_Found (8) then
+                        raise Program_Error;
+                     end if;
+
+                     Line_Found (8) := True;
+                     New_Info.Local_Variables := Get_Names_From_Line;
+                     All_Globals.Union (Get_Names_From_Line);
+
+                  else
+                     --  Unexpected type of line. Something is wrong
+                     --  with the ali file.
+                     raise Program_Error;
+                  end if;
+
                else
-                  --  Something is wrong with the ali file.
+                  --  Something is wrong with the ali file
                   raise Program_Error;
                end if;
 
@@ -1084,6 +1197,16 @@ package body Flow_Computed_Globals is
             Write_Eol;
             Print_Subprogram_Phase_1_Info (Info);
          end loop;
+
+         for State_Info of State_Info_Set loop
+            Write_Eol;
+            Write_Line ("Abstract state " & State_Info.State.all);
+
+            Write_Line ("Constituents     :");
+            for Name of State_Info.Constituents loop
+               Write_Line ("   " & Name.all);
+            end loop;
+         end loop;
       end if;
 
       --  Initialize Global_Graph
@@ -1124,6 +1247,85 @@ package body Flow_Computed_Globals is
       return (for some Info of Info_Set => Name.all = Info.Subprogram.all);
    end GG_Exist;
 
+   -----------------------
+   -- GG_Has_Refinement --
+   -----------------------
+
+   function GG_Has_Refinement (EN : Entity_Name) return Boolean is
+   begin
+      return (for some S of State_Info_Set => S.State.all = EN.all);
+   end GG_Has_Refinement;
+
+   -----------------------
+   -- GG_Is_Constituent --
+   -----------------------
+
+   function GG_Is_Constituent (EN : Entity_Name) return Boolean is
+   begin
+      return (for some S of State_Info_Set =>
+                (for some C of S.Constituents => EN.all = C.all));
+   end GG_Is_Constituent;
+
+   -------------------------
+   -- GG_Get_Constituents --
+   -------------------------
+
+   function GG_Get_Constituents (EN : Entity_Name) return Name_Set.Set is
+   begin
+      for S of State_Info_Set loop
+         if S.State.all = EN.all then
+            return S.Constituents;
+         end if;
+      end loop;
+
+      return Name_Set.Empty_Set;
+   end GG_Get_Constituents;
+
+   ------------------------
+   -- GG_Enclosing_State --
+   ------------------------
+
+   function GG_Enclosing_State (EN : Entity_Name) return Entity_Name is
+   begin
+      for S of State_Info_Set loop
+         for C of S.Constituents loop
+            if EN.all = C.all then
+               return S.State;
+            end if;
+         end loop;
+      end loop;
+
+      return Null_Entity_Name;
+   end GG_Enclosing_State;
+
+   ---------------------
+   -- GG_Fully_Refine --
+   ---------------------
+
+   function GG_Fully_Refine (EN : Entity_Name) return Name_Set.Set is
+      NS       : Name_Set.Set;
+      Tmp_Name : Entity_Name;
+   begin
+      NS := GG_Get_Constituents (EN);
+
+      while (for some S of NS => GG_Has_Refinement (S)) loop
+         Tmp_Name := Null_Entity_Name;
+         for S of NS loop
+            if GG_Has_Refinement (S) then
+               Tmp_Name := S;
+               exit;
+            end if;
+         end loop;
+
+         if Tmp_Name /= Null_Entity_Name then
+            NS.Union (GG_Get_Constituents (Tmp_Name));
+            NS.Exclude (Tmp_Name);
+         end if;
+      end loop;
+
+      return NS;
+   end GG_Fully_Refine;
+
    --------------------
    -- GG_Get_Globals --
    --------------------
@@ -1134,11 +1336,9 @@ package body Flow_Computed_Globals is
                              Reads       : out Flow_Id_Sets.Set;
                              Writes      : out Flow_Id_Sets.Set)
    is
-      pragma Unreferenced (S);
-
-      MR_Proof_Reads  : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
-      MR_Reads        : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
-      MR_Writes       : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+      MR_Proof_Reads  : Name_Set.Set := Name_Set.Empty_Set;
+      MR_Reads        : Name_Set.Set := Name_Set.Empty_Set;
+      MR_Writes       : Name_Set.Set := Name_Set.Empty_Set;
       --  The above 3 sets will contain the most refined views of
       --  their respective globals.
 
@@ -1167,8 +1367,8 @@ package body Flow_Computed_Globals is
       --  Outs and Proof_Ins.
 
       procedure Up_Project
-        (Most_Refined      : Flow_Id_Sets.Set;
-         Final_View        : out Flow_Id_Sets.Set;
+        (Most_Refined      : Name_Set.Set;
+         Final_View        : out Name_Set.Set;
          Processing_Writes : Boolean := False);
       --  Distinguishes between simple vars and constituents. For
       --  constituents, it checks if they are visible and if they are
@@ -1183,17 +1383,79 @@ package body Flow_Computed_Globals is
       ----------------
 
       procedure Up_Project
-        (Most_Refined      : Flow_Id_Sets.Set;
-         Final_View        : out Flow_Id_Sets.Set;
+        (Most_Refined      : Name_Set.Set;
+         Final_View        : out Name_Set.Set;
          Processing_Writes : Boolean := False)
       is
-         pragma Unreferenced (Processing_Writes);
+         Abstract_States : Name_Set.Set := Name_Set.Empty_Set;
       begin
-         --  This will be implemented in the not so distant
-         --  future. First we need to write all State Abstractions and
-         --  their constituents on ali files and then read them back.
+         --  Initializing Final_View to empty
+         Final_View := Name_Set.Empty_Set;
 
-         Final_View := Most_Refined;
+         for N of Most_Refined loop
+            if GG_Enclosing_State (N) /= Null_Entity_Name and then
+              (Find_Entity (N) = Empty or else
+                 not Is_Visible (Find_Entity (N), S))
+            then
+               declare
+                  Var               : Entity_Name := N;
+                  ES                : Entity_Name := GG_Enclosing_State (Var);
+                  Is_Abstract_State : Boolean     := False;
+               begin
+                  while Find_Entity (ES) = Empty or else
+                    not Is_Visible (Find_Entity (ES), S)
+                  loop
+                     Is_Abstract_State := True;
+                     Var := ES;
+
+                     if GG_Enclosing_State (ES) /= Null_Entity_Name then
+                        ES := GG_Enclosing_State (ES);
+                     else
+                        --  We cannot go any further up and we still
+                        --  do not have visibility of the variable or
+                        --  state abstraction that we are making use
+                        --  of. This means that the user has neglected
+                        --  to provide some state abstraction and the
+                        --  refinement thereof. Unfortunately, we
+                        --  might now refer to a variable or state
+                        --  that the caller should not have vision of.
+                        exit;
+                     end if;
+                  end loop;
+
+                  Final_View.Include (Var);
+
+                  --  We add the enclosing abstract state that we just
+                  --  added to the Final_View set to the
+                  --  Abstract_States set.
+                  if Is_Abstract_State then
+                     Abstract_States.Include (Var);
+                  end if;
+               end;
+            else
+               --  Add variables that are directly visible or do not
+               --  belong to any state abstraction to the Final_View
+               --  set.
+               Final_View.Include (N);
+            end if;
+         end loop;
+
+         --  If we Write some but not all constituents of a state
+         --  abstraction then this state abstraction is also a Read.
+         if Processing_Writes then
+            for AS of Abstract_States loop
+               declare
+                  Constituents : constant Name_Set.Set :=
+                    GG_Fully_Refine (AS);
+               begin
+                  if not (for all C of Constituents =>
+                            Most_Refined.Contains (C))
+                  then
+                     Reads.Include (Get_Flow_Id (AS, In_View));
+                  end if;
+               end;
+            end loop;
+         end if;
       end Up_Project;
 
    begin
@@ -1204,7 +1466,7 @@ package body Flow_Computed_Globals is
 
       --  Calculate MR_Proof_Reads, MR_Reads and MR_Writes
       declare
-         function Calculate_MR (Start : Vertex_Id) return Flow_Id_Sets.Set;
+         function Calculate_MR (Start : Vertex_Id) return Name_Set.Set;
          --  Returns a set of all vertices that can be reached from
          --  Start and are of the Variable_Kind.
 
@@ -1212,29 +1474,19 @@ package body Flow_Computed_Globals is
          -- Calculate_MR --
          ------------------
 
-         function Calculate_MR (Start : Vertex_Id) return Flow_Id_Sets.Set
-         is
-            FS  : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
-            G   : Global_Id;
-            Var : Entity_Id;
+         function Calculate_MR (Start : Vertex_Id) return Name_Set.Set is
+            NS : Name_Set.Set := Name_Set.Empty_Set;
+            G  : Global_Id;
          begin
             for V of Global_Graph.Get_Collection (Start, Out_Neighbours) loop
                G := Global_Graph.Get_Key (V);
 
                if G.Kind = Variable_Kind then
-                  Var := Find_Entity (G.Name);
-
-                  if Var /= Empty then
-                     --  We found the corresponding Entity_Id.
-                     FS.Include (Direct_Mapping_Id (Var));
-                  else
-                     --  We couldn't find a corresponding Entity_Id.
-                     FS.Include (Magic_String_Id (G.Name));
-                  end if;
+                  NS.Include (G.Name);
                end if;
             end loop;
 
-            return FS;
+            return NS;
          end Calculate_MR;
 
       begin
@@ -1243,19 +1495,49 @@ package body Flow_Computed_Globals is
          MR_Writes      := Calculate_MR (V_Outs);
       end;
 
-      --  Up project variables based on scope S
-      Up_Project (Most_Refined => MR_Proof_Reads,
-                  Final_View   => Proof_Reads);
-      Up_Project (Most_Refined => MR_Reads,
-                  Final_View   => Reads);
-      Up_Project (Most_Refined      => MR_Writes,
-                  Final_View        => Writes,
-                  Processing_Writes => True);
+      --  Up project variables based on scope S and give Flow_Ids
+      --  their correct views.
+      declare
+         Temp_NS : Name_Set.Set;
 
-      --  Give Flow_Id their correct variants
-      Proof_Reads := Change_Variant (Proof_Reads, In_View);
-      Reads       := Change_Variant (Reads, In_View);
-      Writes      := Change_Variant (Writes, Out_View);
+         function To_Flow_Id_Set
+           (NS   : Name_Set.Set;
+            View : Parameter_Variant)
+            return Flow_Id_Sets.Set;
+         --  Takes a Name_Set and returns a set of Flow_Id_Set
+
+         --------------------
+         -- To_Flow_Id_Set --
+         --------------------
+
+         function To_Flow_Id_Set
+           (NS   : Name_Set.Set;
+            View : Parameter_Variant)
+            return Flow_Id_Sets.Set
+         is
+            FS : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+         begin
+            for N of NS loop
+               FS.Include (Get_Flow_Id (N, View));
+            end loop;
+
+            return FS;
+         end To_Flow_Id_Set;
+
+      begin
+         Up_Project (Most_Refined => MR_Proof_Reads,
+                     Final_View   => Temp_NS);
+         Proof_Reads.Union (To_Flow_Id_Set (Temp_NS, In_View));
+
+         Up_Project (Most_Refined => MR_Reads,
+                     Final_View   => Temp_NS);
+         Reads.Union (To_Flow_Id_Set (Temp_NS, In_View));
+
+         Up_Project (Most_Refined      => MR_Writes,
+                     Final_View        => Temp_NS,
+                     Processing_Writes => True);
+         Writes.Union (To_Flow_Id_Set (Temp_NS, Out_View));
+      end;
    end GG_Get_Globals;
 
    ------------------------

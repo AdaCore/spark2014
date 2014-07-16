@@ -150,6 +150,26 @@ package body Flow_Utility is
    --  Get_Variable_Set will be called with Reduced set to False (as this
    --  function should never be called when its true...)
 
+   -----------------
+   -- Get_Flow_Id --
+   -----------------
+
+   function Get_Flow_Id
+     (Name : Entity_Name;
+      View : Parameter_Variant)
+      return Flow_Id
+   is
+      E : constant Entity_Id := Find_Entity (Name);
+   begin
+      if Present (E) then
+         return Direct_Mapping_Id (E, View);
+      end if;
+
+      --  If none can be found, we fall back to the magic
+      --  string.
+      return Magic_String_Id (Name, View);
+   end Get_Flow_Id;
+
    ---------------------------
    -- All_Record_Components --
    ---------------------------
@@ -1177,7 +1197,6 @@ package body Flow_Utility is
                          Reads,
                          Writes);
 
-         --  We print everything
          if Debug_Trace_Get_Global then
             Indent;
             Write_Str ("proof ins");
@@ -1222,29 +1241,6 @@ package body Flow_Utility is
          end if;
 
          declare
-            function Get_Flow_Id
-              (Name : Entity_Name;
-               View : Parameter_Variant)
-               return Flow_Id;
-            --  Return a suitable flow id for the unique_name of an
-            --  entity. We try our best to get a direct mapping,
-            --  resorting to the magic string only as a last resort.
-
-            function Get_Flow_Id
-              (Name : Entity_Name;
-               View : Parameter_Variant)
-               return Flow_Id is
-               E : constant Entity_Id := Find_Entity (Name);
-            begin
-               if Present (E) then
-                  return Direct_Mapping_Id (E, View);
-               end if;
-
-               --  If none can be found, we fall back to the magic
-               --  string.
-               return Magic_String_Id (Name, View);
-            end Get_Flow_Id;
-
             ALI_Reads  : constant Name_Set.Set :=
               Get_Generated_Reads (Subprogram,
                                    Include_Constants => not Globals_For_Proof);
@@ -1347,14 +1343,15 @@ package body Flow_Utility is
 
       function Expand (F : Flow_Id) return Flow_Id_Sets.Set;
       --  If F represents abstract state, return the set of all its
-      --  components. Otherwise return F.
+      --  components. Otherwise return F. Additionally, remove formal
+      --  in parameters from the set since proof is not interested in
+      --  them.
 
       ------------
       -- Expand --
       ------------
 
-      function Expand (F : Flow_Id) return Flow_Id_Sets.Set
-      is
+      function Expand (F : Flow_Id) return Flow_Id_Sets.Set is
          Tmp : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
          Ptr : Elmt_Id;
       begin
@@ -1475,7 +1472,7 @@ package body Flow_Utility is
       NS : Node_Sets.Set := Node_Sets.Empty_Set;
 
       function Proc (N : Node_Id) return Traverse_Result;
-      --  If the node being processed is an N_Function call, it add
+      --  If the node being processed is an N_Function call, it adds
       --  the corresponding Flow_Id to FS.
 
       ----------
@@ -1525,7 +1522,7 @@ package body Flow_Utility is
              Reduced                      => Reduced,
              Allow_Statements             => False,
              Expand_Synthesized_Constants => Expand_Synthesized_Constants));
-      --  Recuse on N. Please note that Allow_Statements is always false;
+      --  Recurse on N. Please note that Allow_Statements is always false;
       --  this is intentional as we should only ever recurse on something
       --  inside expressions.
 

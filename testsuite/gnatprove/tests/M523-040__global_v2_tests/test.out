@@ -1,4 +1,9 @@
 misc.adb:17:22: warning: assertion might fail, requires G2
+p.adb:21:19: warning: overflow check might fail
+p.adb:21:25: warning: overflow check might fail
+p.adb:21:30: warning: overflow check might fail
+p.adb:33:22: warning: assertion might fail, requires G = Nest(Nest.foo)
+p.adb:34:16: warning: overflow check might fail
 pr_01.adb:10:14: info: overflow check proved
 pr_02.adb:7:14: warning: overflow check might fail
 pr_03.adb:9:17: warning: overflow check might fail

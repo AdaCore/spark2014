@@ -21,15 +21,16 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
---  This package implements writing and reading (and computing) global
+--  This package implements writing, reading and computing global
 --  contracts.
 
-with Types;             use Types;
+with Types;                use Types;
 
-with Common_Containers; use Common_Containers;
+with Common_Containers;    use Common_Containers;
 
-with Flow_Types;        use Flow_Types;
-with Flow_Refinement;   use Flow_Refinement;
+with Flow_Types;           use Flow_Types;
+with Flow_Refinement;      use Flow_Refinement;
+with Flow_Dependency_Maps; use Flow_Dependency_Maps;
 
 package Flow_Computed_Globals is
 
@@ -40,14 +41,23 @@ package Flow_Computed_Globals is
    function GG_Mode return GG_Mode_T;
    --  Returns the current mode.
 
-   ---------------
-   --  Writing  --
-   ---------------
+   -------------
+   -- Writing --
+   -------------
 
    procedure GG_Write_Initialize
    with Pre  => GG_Mode = GG_No_Mode,
         Post => GG_Mode = GG_Write_Mode;
-   --  Must be called before the first call to GG_Write_Subprogram_Info.
+   --  Must be called before the first call to
+   --  GG_Write_Subprogram_Info and GG_Write_Package_Info.
+
+   procedure GG_Write_Package_Info (DM : Dependency_Maps.Map)
+   with Pre  => GG_Mode = GG_Write_Mode,
+        Post => GG_Mode = GG_Write_Mode;
+   --  Records information related to state abstractions and the
+   --  refinements thereof. This will later be used to return the
+   --  appropriate view depending on the caller (as opposed to always
+   --  returning the most refined view).
 
    procedure GG_Write_Subprogram_Info
      (E                 : Entity_Id;
@@ -67,23 +77,48 @@ package Flow_Computed_Globals is
    with Pre  => GG_Mode = GG_Write_Mode;
    --  Appends all subprogram and package information to the ALI file.
 
-   --------------------------
-   --  Reading & Computing --
-   --------------------------
+   -------------------------
+   -- Reading & Computing --
+   -------------------------
 
    procedure GG_Read (GNAT_Root : Node_Id)
    with Pre  => GG_Mode = GG_No_Mode,
         Post => GG_Mode = GG_Read_Mode;
    --  Reads all ALI files and produces the transitive closure.
 
-   -------------
-   --  Query  --
-   -------------
+   -----------
+   -- Query --
+   -----------
 
    function GG_Exist (E : Entity_Id) return Boolean
    with Pre => GG_Mode = GG_Read_Mode;
    --  Returns true if flow globals have been computed for the given
    --  entity.
+
+   function GG_Has_Refinement (EN : Entity_Name) return Boolean
+   with Pre => GG_Mode = GG_Read_Mode;
+   --  Returns true if E is a state abstraction whose constituents we
+   --  loaded while reading the ali files.
+
+   function GG_Is_Constituent (EN : Entity_Name) return Boolean
+   with Pre => GG_Mode = GG_Read_Mode;
+   --  Returns true if E is a constituent of some state abstraction
+   --  that we loaded while reading the ali files.
+
+   function GG_Get_Constituents (EN : Entity_Name) return Name_Set.Set
+   with Pre => GG_Mode = GG_Read_Mode;
+   --  Returns the set of direct constituents of a state abstraction
+   --  or an Empty_Set if they do not exist.
+
+   function GG_Enclosing_State (EN : Entity_Name) return Entity_Name
+   with Pre => GG_Mode = GG_Read_Mode;
+   --  Returns the Entity_Name of the directly enclosing state. If one
+   --  does not exist it returns Null_Entity_Name.
+
+   function GG_Fully_Refine (EN : Entity_Name) return Name_Set.Set
+   with Pre => GG_Mode = GG_Read_Mode and then
+               GG_Has_Refinement (EN);
+   --  Returns the most refined constituents of state abstraction EN
 
    procedure GG_Get_Globals (E           : Entity_Id;
                              S           : Flow_Scope;

@@ -928,12 +928,56 @@ package body Flow is
                      Write_Eol;
                   end if;
 
-               when E_Package | E_Package_Body =>
+               when E_Package =>
                   if Gnat2Why_Args.Flow_Advanced_Debug then
-                     Write_Str ("skipped (package - TODO)");
+                     Write_Str ("skipped (package spec)");
                      Write_Eol;
                   end if;
                   FA.GG.Aborted := True;
+
+               when E_Package_Body =>
+                  declare
+                     Refined_State_N : constant Node_Id :=
+                       Get_Pragma (E,
+                                   Pragma_Refined_State);
+
+                     DM              : Dependency_Maps.Map;
+                     Constituents    : Flow_Id_Sets.Set;
+                  begin
+                     if Present (Refined_State_N) then
+                        if Gnat2Why_Args.Flow_Advanced_Debug then
+                           Write_Str ("Refinement found: yes");
+                           Write_Eol;
+                        end if;
+
+                        DM := Parse_Initializes (Refined_State_N);
+                        if Gnat2Why_Args.Flow_Advanced_Debug then
+                           for State in DM.Iterate loop
+                              Write_Line ("State       :");
+                              Indent;
+                              Print_Flow_Id (Dependency_Maps.Key (State));
+                              Outdent;
+                              Write_Line ("Constituents:");
+                              Constituents := Dependency_Maps.Element (State);
+                              Indent;
+                              for Constituent of Constituents loop
+                                 Print_Flow_Id (Constituent);
+                              end loop;
+                              Outdent;
+                           end loop;
+                        end if;
+
+                        GG_Write_Initialize;
+                        GG_Write_Package_Info (DM);
+                        GG_Write_Finalize;
+                     else
+                        if Gnat2Why_Args.Flow_Advanced_Debug then
+                           Write_Str ("Refinement found: no");
+                           Write_Eol;
+                        end if;
+                        FA.GG.Aborted := True;
+                     end if;
+                  end;
             end case;
 
             if FA.GG.Aborted then
@@ -1203,7 +1247,7 @@ package body Flow is
             if Gnat2Why_Args.Flow_Advanced_Debug then
                Write_Line ("aborted earlier");
             end if;
-         else
+         elsif FA.Kind = E_Subprogram_Body then
             declare
                Inputs_Proof      : Node_Sets.Set;
                Inputs            : Node_Sets.Set;

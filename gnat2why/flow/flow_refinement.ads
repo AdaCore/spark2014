@@ -92,6 +92,11 @@ package Flow_Refinement is
    -- Queries and utilities --
    ---------------------------
 
+   function Is_Visible (N : Node_Id;
+                        S : Flow_Scope)
+                        return Boolean;
+   --  Returns true iff the node N is visible from the scope S.
+
    function Get_Flow_Scope (N : Node_Id) return Flow_Scope
      with Pre => Present (N);
    --  Given (almost) any node in the AST, work out which flow scope we're

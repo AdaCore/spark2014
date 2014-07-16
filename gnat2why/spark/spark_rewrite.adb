@@ -206,7 +206,8 @@ package body SPARK_Rewrite is
                         end case;
                      end;
 
-                  when E_Loop_Parameter |
+                  when E_Abstract_State |
+                       E_Loop_Parameter |
                        Formal_Kind      =>
                      Register_Entity (E);
 

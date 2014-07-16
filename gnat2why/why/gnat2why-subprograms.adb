@@ -631,7 +631,12 @@ package body Gnat2Why.Subprograms is
             declare
                Entity : constant Entity_Id := Find_Entity (R);
             begin
-               if Present (Entity) and then Entity_In_SPARK (Entity) then
+               --  For state abstractions pretend there is no Entity
+
+               if Present (Entity)
+                 and then not (Ekind (Entity) = E_Abstract_State)
+                 and then Entity_In_SPARK (Entity)
+               then
                   Result (Count) :=
                     (Regular,
                      (Ada_Node => Entity,
