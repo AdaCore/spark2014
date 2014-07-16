@@ -412,6 +412,12 @@ package body Gnat2Why.Expr is
    function Transform_Binop (Op : N_Binary_Op) return EW_Binary_Op;
    --  Convert an Ada binary operator to a Why term symbol
 
+   function Transform_Function_Call
+     (Expr : Node_Id;
+      Domain : EW_Domain;
+      Params : Transformation_Params) return W_Expr_Id;
+   --  Transform a function call
+
    function Transform_Enum_Literal
      (Expr         : Node_Id;
       Enum         : Entity_Id;
@@ -7607,71 +7613,7 @@ package body Gnat2Why.Expr is
             end if;
 
          when N_Function_Call =>
-            declare
-               Subp       : constant Entity_Id := Entity (Name (Expr));
-               Why_Name   : constant W_Identifier_Id :=
-                 W_Identifier_Id
-                   (Transform_Identifier (Params       => Local_Params,
-                                          Expr         => Expr,
-                                          Ent          => Subp,
-                                          Domain       => Domain));
-               Nb_Of_Refs : Natural;
-               Nb_Of_Lets : Natural;
-               Args       : constant W_Expr_Array :=
-                 Compute_Call_Args (Expr, Domain, Nb_Of_Refs, Nb_Of_Lets,
-                                    Local_Params);
-            begin
-               if Why_Subp_Has_Precondition (Subp) then
-                  T := +New_VC_Call
-                    (Ada_Node => Expr,
-                     Name     => Why_Name,
-                     Progs    => Args,
-                     Reason   => VC_Precondition,
-                     Domain   => Domain,
-                     Typ      => Get_Typ (Why_Name));
-               else
-                  T := New_Call
-                      (Name     => Why_Name,
-                       Args     => Args,
-                       Ada_Node => Expr,
-                       Domain   => Domain,
-                       Typ      => Get_Typ (Why_Name));
-               end if;
-
-               if Domain = EW_Prog then
-                  declare
-                     Tmp        : constant W_Expr_Id :=
-                       New_Temp_For_Expr (T);
-                     Dyn_Prop   : constant W_Pred_Id :=
-                       Compute_Dynamic_Property
-                         (Ty       => Etype (Subp),
-                          Expr     => Tmp,
-                          Only_Var => False);
-                  begin
-
-                     if Dyn_Prop /= True_Pred then
-
-                        --  If the function returns a dynamic type and the call
-                        --  is in the program domain, assume that the result
-                        --  has the dynamic property.
-
-                        T := Binding_For_Temp
-                          (Ada_Node => Expr,
-                           Domain   => Domain,
-                           Tmp      => Tmp,
-                           Context  => +Sequence
-                             (Left  => New_Assume_Statement
-                                  (Ada_Node    => Expr,
-                                   Pre         => True_Pred,
-                                   Post        => +Dyn_Prop),
-                              Right => +Tmp));
-                     end if;
-                  end;
-               end if;
-
-               pragma Assert (Nb_Of_Refs = 0,
-                              "Only pure functions are in alfa");
-            end;
+            T := Transform_Function_Call (Expr, Domain, Local_Params);
 
          when N_Indexed_Component | N_Selected_Component =>
             T := One_Level_Access (Expr,
@@ -7921,6 +7863,127 @@ package body Gnat2Why.Expr is
       return Transform_Expr_With_Actions
         (Expr, Actions, Type_Of_Node (Expr), Domain, Params);
    end Transform_Expr_With_Actions;
+
+   -----------------------------
+   -- Transform_Function_Call --
+   -----------------------------
+
+   function Transform_Function_Call
+     (Expr : Node_Id;
+      Domain : EW_Domain;
+      Params : Transformation_Params) return W_Expr_Id
+   is
+
+      Subp       : constant Entity_Id := Entity (Name (Expr));
+      Why_Name   : constant W_Identifier_Id :=
+        W_Identifier_Id
+          (Transform_Identifier (Params       => Params,
+                                 Expr         => Expr,
+                                 Ent          => Subp,
+                                 Domain       => Domain));
+      Nb_Of_Refs : Natural;
+      Nb_Of_Lets : Natural;
+      Args       : constant W_Expr_Array :=
+        Compute_Call_Args (Expr, Domain, Nb_Of_Refs, Nb_Of_Lets, Params);
+
+      function Is_Constant_Shift_Right return Boolean;
+      --  detect the case of a shift_right with a constant second argument,
+      --  where the intrinsic subprogram has no contracts
+
+      -----------------------------
+      -- Is_Constant_Shift_Right --
+      -----------------------------
+
+      function Is_Constant_Shift_Right return Boolean is
+      begin
+         return Is_Intrinsic_Subprogram (Subp) and then
+           Is_Modular_Integer_Type (Etype (Subp)) and then
+           Chars (Subp) = Name_Shift_Right and then
+           not Has_Contracts (Subp, Name_Precondition) and then
+           not Has_Contracts (Subp, Name_Postcondition) and then
+           Is_Static_Expression (Next_Actual (First_Actual (Expr)));
+      end Is_Constant_Shift_Right;
+
+      T          : W_Expr_Id;
+   begin
+
+      --  Optimization: in the case of a constant shift right, we directly
+      --  replace the shift by a division of the correct power of 2
+
+      if Is_Constant_Shift_Right then
+         pragma Assert (Args'Length = 2);
+         declare
+            Op    : constant W_Expr_Id := Args (Args'First);
+            Shift : constant Uint :=
+              Expr_Value (Next_Actual (First_Actual (Expr)));
+         begin
+            if Shift = Uint_0 then
+               return Op;
+            else
+               return
+                 New_Call
+                   (Domain => EW_Term,
+                    Name   => Euclid_Div,
+                    Args   => (1 => Op,
+                               2 => New_Integer_Constant
+                                 (Value => Uint_2 ** Shift)),
+                    Typ    => EW_Int_Type);
+            end if;
+         end;
+      end if;
+
+      if Why_Subp_Has_Precondition (Subp) then
+         T := +New_VC_Call
+           (Ada_Node => Expr,
+            Name     => Why_Name,
+            Progs    => Args,
+            Reason   => VC_Precondition,
+            Domain   => Domain,
+            Typ      => Get_Typ (Why_Name));
+      else
+         T := New_Call
+           (Name     => Why_Name,
+            Args     => Args,
+            Ada_Node => Expr,
+            Domain   => Domain,
+            Typ      => Get_Typ (Why_Name));
+      end if;
+
+      if Domain = EW_Prog then
+         declare
+            Tmp        : constant W_Expr_Id :=
+              New_Temp_For_Expr (T);
+            Dyn_Prop   : constant W_Pred_Id :=
+              Compute_Dynamic_Property
+                (Ty       => Etype (Subp),
+                 Expr     => Tmp,
+                 Only_Var => False);
+         begin
+
+            if Dyn_Prop /= True_Pred then
+
+               --  If the function returns a dynamic type and the call
+               --  is in the program domain, assume that the result
+               --  has the dynamic property.
+
+               T := Binding_For_Temp
+                 (Ada_Node => Expr,
+                  Domain   => Domain,
+                  Tmp      => Tmp,
+                  Context  => +Sequence
+                    (Left  => New_Assume_Statement
+                         (Ada_Node    => Expr,
+                          Pre         => True_Pred,
+                          Post        => +Dyn_Prop),
+                     Right => +Tmp));
+            end if;
+         end;
+      end if;
+
+      pragma Assert (Nb_Of_Refs = 0,
+                     "Only pure functions are in alfa");
+      return T;
+   end Transform_Function_Call;
 
    --------------------------
    -- Transform_Identifier --

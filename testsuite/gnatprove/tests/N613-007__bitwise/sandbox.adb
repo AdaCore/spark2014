@@ -7,8 +7,7 @@ is
      with
        Import,
        Convention => Intrinsic,
-       Global     => null,
-       Post       => Shift_Right'Result = Value / (2**Count);
+       Global     => null;
 
    procedure Split(Whole : in Size64_Type; MSW, LSW : out Size32_Type) is
    begin
