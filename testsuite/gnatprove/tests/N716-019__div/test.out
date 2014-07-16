@@ -1,0 +1,6 @@
+my_div.adb:6:14: info: division check proved
+my_div.adb:7:14: info: division check proved
+my_div.adb:8:14: info: division check proved
+my_div.adb:13:14: info: division check proved
+my_div.ads:7:20: warning: postcondition might fail, requires X = X'Old / 64
+my_div.ads:7:31: info: division check proved
