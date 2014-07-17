@@ -1,3 +1,22 @@
+if [ ! $# == 2 ]; then
+  echo "Usage: $0 coq_ast_source_file_name any_file_name.v"
+  exit
+fi
+
+INPUT_FILENAME="$1"
+OUTPUT_FILENAME="$2"
+SUFFIX=".v"
+
+if [[ ! -f $INPUT_FILENAME ]]; then
+  echo "Warning: File ($INPUT_FILENAME) does not exist !"
+  exit
+fi
+
+if [[ $OUTPUT_FILENAME != *".v" ]]; then
+  echo "Warning: File ($OUTPUT_FILENAME) should end with \".v\""
+  exit
+fi
+
 > $2  # empty the file
 echo -e "Require Import checks_comparison.\n" >> $2  # -e makes \n to insert newline
 echo "" >> $2  # insert newline
