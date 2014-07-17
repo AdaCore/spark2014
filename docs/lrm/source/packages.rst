@@ -2213,7 +2213,7 @@ Default_Initial_Condition Aspects
 
    The Default_Initial_Condition aspect is introduced by an aspect_specification
    where the aspect_mark is Default_Initial_Condition. The aspect may be
-   specified only as part the aspect_specification of a
+   specified only as part of the aspect_specification of a
    ``private_type_declaration``.
    The ``aspect_definition``, if any, of such an aspect specification
    shall be either a null literal or a *Boolean_*\ ``expression``.
