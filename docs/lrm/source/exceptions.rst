@@ -74,8 +74,8 @@ Pragmas Assert and Assertion_Policy
    * Assert_And_Cut;
    * Assume;
    * Contract_Cases;
-   * Initial_Condition;
    * Default_Initial_Condition;
+   * Initial_Condition;
    * Loop_Invariant;
    * Loop_Variant; and
    * Refined_Post.
