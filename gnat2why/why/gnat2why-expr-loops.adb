@@ -43,6 +43,7 @@ with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Atree.Modules;  use Why.Atree.Modules;
 with Why.Atree.Tables;   use Why.Atree.Tables;
 with Why.Conversions;    use Why.Conversions;
+with Why.Gen.Binders;    use Why.Gen.Binders;
 with Why.Gen.Expr;       use Why.Gen.Expr;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Progs;      use Why.Gen.Progs;
@@ -429,6 +430,7 @@ package body Gnat2Why.Expr.Loops is
             N        : Node_Id;
             Dyn_Prop : W_Pred_Id;
             Id       : W_Identifier_Id;
+            Binder   : Item_Type;
          begin
             for F of Modified loop
                if F.Kind = Direct_Mapping then
@@ -436,8 +438,12 @@ package body Gnat2Why.Expr.Loops is
                   if Nkind (N) in N_Entity
                     and then Ekind (N) = E_Variable
                   then
-                     Id := Ada_Ent_To_Why.Element
-                       (Symbol_Table, N).Main.B_Name;
+                     Binder := Ada_Ent_To_Why.Element
+                       (Symbol_Table, N);
+                     Id := (case Binder.Kind is
+                               when Regular => Binder.Main.B_Name,
+                               when UCArray => Binder.Content.B_Name,
+                               when Func    => raise Program_Error);
                      Dyn_Prop := Compute_Dynamic_Property
                        (Expr     => New_Deref (Right => Id,
                                                Typ   => Get_Type (+Id)),

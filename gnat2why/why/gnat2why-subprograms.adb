@@ -545,7 +545,8 @@ package body Gnat2Why.Subprograms is
       Pred : W_Pred_Id := True_Pred;
    begin
       for B of Binders loop
-         if Present (B.Main.Ada_Node) and then
+         if B.Kind = Regular and then
+           Present (B.Main.Ada_Node) and then
            Use_Why_Base_Type (B.Main.Ada_Node)
          then
 
@@ -734,10 +735,10 @@ package body Gnat2Why.Subprograms is
 
                   Result (Count) :=
                     (UCArray,
-                     Main   => (Ada_Node => Id,
-                                B_Name   => Name,
-                                B_Ent    => null,
-                                Mutable  => Is_Mutable_In_Why (Id)),
+                     Content => (Ada_Node => Id,
+                                 B_Name   => Name,
+                                 B_Ent    => null,
+                                 Mutable  => Is_Mutable_In_Why (Id)),
                      Dim    => Dim,
                      Bounds => Bounds);
                end;
@@ -1754,8 +1755,14 @@ package body Gnat2Why.Subprograms is
 
       for Binder of Logic_Func_Binders loop
          declare
-            A : constant Node_Id := Binder.Main.Ada_Node;
+            A : constant Node_Id :=
+              (case Binder.Kind is
+                  when Regular => Binder.Main.Ada_Node,
+                  when UCArray => Binder.Content.Ada_Node,
+                  when Func    => raise Program_Error);
          begin
+            pragma Assert (Present (A) or else Binder.Kind = Regular);
+
             if Present (A) then
                Ada_Ent_To_Why.Insert (Symbol_Table,
                                       Unique_Entity (A),
@@ -1888,7 +1895,11 @@ package body Gnat2Why.Subprograms is
 
       for Binder of Func_Binders loop
          declare
-            A : constant Node_Id := Binder.Main.Ada_Node;
+            A : constant Node_Id :=
+              (case Binder.Kind is
+                  when Regular => Binder.Main.Ada_Node,
+                  when UCArray => Binder.Content.Ada_Node,
+                  when Func    => raise Program_Error);
          begin
 
             --  If the Ada_Node is empty, it's not an interesting binder
@@ -1989,55 +2000,61 @@ package body Gnat2Why.Subprograms is
    is
       Id : W_Identifier_Id;
       T  : W_Expr_Id;
+      C : constant Ada_Ent_To_Why.Cursor :=
+        (if Present (Binder.Ada_Node) then
+              Ada_Ent_To_Why.Find (Symbol_Table, Binder.Ada_Node)
+         else Ada_Ent_To_Why.Find (Symbol_Table, Binder.B_Ent));
+      E : Item_Type;
    begin
-      if Present (Binder.Ada_Node) then
-         declare
-            C : constant Ada_Ent_To_Why.Cursor :=
-              Ada_Ent_To_Why.Find (Symbol_Table,
-                                   Binder.Ada_Node);
-         begin
-            pragma Assert (Ada_Ent_To_Why.Has_Element (C));
+      pragma Assert (if Present (Binder.Ada_Node) then
+                        Ada_Ent_To_Why.Has_Element (C));
 
-            Id := Ada_Ent_To_Why.Element (C).Main.B_Name;
-         end;
-      else
-         declare
-            C : constant Ada_Ent_To_Why.Cursor :=
-              Ada_Ent_To_Why.Find (Symbol_Table, Binder.B_Ent);
-         begin
+      if Ada_Ent_To_Why.Has_Element (C) then
 
-            --  If the effect parameter is found in the map, use the
-            --  name stored.
+         E := Ada_Ent_To_Why.Element (C);
 
-            if Ada_Ent_To_Why.Has_Element (C) then
-               Id := Ada_Ent_To_Why.Element (C).Main.B_Name;
+         case E.Kind is
+         when Regular =>
+            Id := E.Main.B_Name;
+
+            if Ref_Allowed then
+               T := New_Deref (Right => Id,
+                               Typ   => Get_Typ (Id));
             else
-               Id := To_Why_Id
-                 (Binder.B_Ent.all, Local => False);
-
+               T := +Id;
             end if;
-         end;
-      end if;
+         when UCArray =>
+            Id := E.Content.B_Name;
 
-      if Ref_Allowed then
-         T := New_Deref (Right => Id,
-                         Typ   => Get_Typ (Id));
+            if Ref_Allowed then
+               T := New_Deref (Right => Id,
+                               Typ   => Get_Typ (Id));
+            else
+               T := +Id;
+            end if;
+
+            --  If the global is associated to an entity and it is in
+            --  split form, then we need to reconstruct it.
+
+            T :=
+              Insert_Simple_Conversion
+                (Domain   => EW_Term,
+                 Expr     => T,
+                 To       => Get_Typ (Binder.B_Name));
+
+         when Func => raise Program_Error;
+         end case;
       else
-         T := +Id;
+         Id := To_Why_Id (Binder.B_Ent.all, Local => False);
+
+         if Ref_Allowed then
+            T := New_Deref (Right => Id,
+                            Typ   => Get_Typ (Id));
+         else
+            T := +Id;
+         end if;
       end if;
 
-      --  If the global is associated to an entity and it is in
-      --  split form, then we need to reconstruct it.
-
-      if Present (Binder.Ada_Node)
-        and then Get_Base_Type (Get_Type (T)) = EW_Split
-      then
-         T :=
-           Insert_Simple_Conversion
-             (Domain   => EW_Term,
-              Expr     => T,
-              To       => Get_Typ (Binder.B_Name));
-      end if;
       return T;
    end Get_Logic_Arg;
 
@@ -2096,8 +2113,14 @@ package body Gnat2Why.Subprograms is
 
       for Binder of Logic_Func_Binders loop
          declare
-            A : constant Node_Id := Binder.Main.Ada_Node;
+            A : constant Node_Id :=
+              (case Binder.Kind is
+                  when Regular => Binder.Main.Ada_Node,
+                  when UCArray => Binder.Content.Ada_Node,
+                  when Func    => raise Program_Error);
          begin
+            pragma Assert (Present (A) or else Binder.Kind = Regular);
+
             if Present (A) then
                Ada_Ent_To_Why.Insert (Symbol_Table,
                                       Unique_Entity (A),
@@ -2239,13 +2262,13 @@ package body Gnat2Why.Subprograms is
          Ada_Ent_To_Why.Insert
            (Symbol_Table, E,
             Item_Type'(Func,
-              Main => Binder_Type'(
+              For_Logic => Binder_Type'(
                 B_Name   =>
                   To_Why_Id (E, Typ => Why_Type, Domain => EW_Term),
                 B_Ent    => null,
                 Ada_Node => E,
                 Mutable  => False),
-              For_Prog => Binder_Type'(
+              For_Prog  => Binder_Type'(
                 B_Name   =>
                   To_Why_Id (E, Typ => Why_Type),
                 B_Ent    => null,

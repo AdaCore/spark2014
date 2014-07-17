@@ -1293,9 +1293,13 @@ package body Gnat2Why.Expr is
          -----------------
 
          procedure Compute_Arg (Formal, Actual : Node_Id) is
+            Binder : constant Binder_Type :=
+              (case Binders (Bind_Cnt).Kind is
+                  when Regular => Binders (Bind_Cnt).Main,
+                  when UCArray => Binders (Bind_Cnt).Content,
+                  when Func    => raise Program_Error);
          begin
-            if Needs_Temporary_Ref
-              (Actual, Formal, Get_Typ (Binders (Bind_Cnt).Main.B_Name))
+            if Needs_Temporary_Ref (Actual, Formal, Get_Typ (Binder.B_Name))
             then
 
                --  We should never use the Formal for the Ada_Node,
@@ -1305,8 +1309,7 @@ package body Gnat2Why.Expr is
                Why_Args (Arg_Cnt) :=
                  +New_Identifier (Ada_Node => Empty,
                                   Name     => Full_Name (Formal),
-                                  Typ      =>
-                                    Get_Typ (Binders (Bind_Cnt).Main.B_Name));
+                                  Typ      => Get_Typ (Binder.B_Name));
                Nb_Of_Refs := Nb_Of_Refs + 1;
             else
                case Ekind (Formal) is
@@ -1320,8 +1323,7 @@ package body Gnat2Why.Expr is
                        +New_Identifier
                        (Ada_Node => Actual,
                         Name     => Full_Name (Actual),
-                        Typ      =>
-                           Get_Typ (Binders (Bind_Cnt).Main.B_Name));
+                        Typ      => Get_Typ (Binder.B_Name));
 
                      --  If a conversion or a component indexing is needed,
                      --  it can only be done for a value. That is to say,
@@ -1342,7 +1344,7 @@ package body Gnat2Why.Expr is
                      Why_Args (Arg_Cnt) :=
                        Transform_Expr
                          (Actual,
-                          Get_Typ (Binders (Bind_Cnt).Main.B_Name),
+                          Get_Typ (Binder.B_Name),
                           Domain,
                           Params);
                end case;
@@ -1410,7 +1412,10 @@ package body Gnat2Why.Expr is
       begin
          Iterate_Call (Call);
 
+         --  Loop over remaining logical binders
+
          for B in Bind_Cnt .. Binders'Last loop
+            pragma Assert (Binders (B).Kind = Regular);
             Why_Args (Arg_Cnt) :=
               Get_Logic_Arg (Binders (B).Main, Params.Ref_Allowed);
             Arg_Cnt := Arg_Cnt + 1;
@@ -2482,9 +2487,17 @@ package body Gnat2Why.Expr is
             return Expected_Type_Of_Prefix (Expression (N));
 
          when N_Identifier | N_Expanded_Name =>
-            return
-              Get_Typ (Ada_Ent_To_Why.Element
-                       (Symbol_Table, Entity (N)).Main.B_Name);
+            declare
+               Binder : constant Item_Type :=
+                 Ada_Ent_To_Why.Element (Symbol_Table, Entity (N));
+               Id     : constant W_Identifier_Id :=
+                 (case Binder.Kind is
+                     when Regular => Binder.Main.B_Name,
+                     when UCArray => Binder.Content.B_Name,
+                     when Func    => raise Program_Error);
+            begin
+               return Get_Typ (Id);
+            end;
 
          when N_Slice =>
             return Type_Of_Node (Unique_Entity (Etype (N)));
@@ -2606,17 +2619,21 @@ package body Gnat2Why.Expr is
       -----------------
 
       procedure Process_Arg (Formal, Actual : Node_Id) is
+         Binder   : constant Binder_Type :=
+           (case Binders (Bind_Cnt).Kind is
+               when Regular => Binders (Bind_Cnt).Main,
+               when UCArray => Binders (Bind_Cnt).Content,
+               when Func    => raise Program_Error);
+
+         Formal_T : constant W_Type_Id := Get_Typ (Binder.B_Name);
       begin
-         if Needs_Temporary_Ref
-           (Actual, Formal, Get_Typ (Binders (Bind_Cnt).Main.B_Name))
+         if Needs_Temporary_Ref (Actual, Formal, Formal_T)
          then
             declare
                --  Types:
 
-               Formal_T      : constant W_Type_Id :=
-                                 Get_Typ (Binders (Bind_Cnt).Main.B_Name);
                Actual_T      : constant W_Type_Id :=
-                                 Type_Of_Node (Actual);
+                 Type_Of_Node (Actual);
 
                --  Variables:
 
@@ -4692,8 +4709,13 @@ package body Gnat2Why.Expr is
                   --  access and comparison.
 
                   declare
+                     Binder  : constant Item_Type :=
+                       Ada_Ent_To_Why.Element (Args, Expr);
                      Arg_Val : constant W_Expr_Id :=
-                       +Ada_Ent_To_Why.Element (Args, Expr).Main.B_Name;
+                       (case Binder.Kind is
+                           when Regular => +Binder.Main.B_Name,
+                           when UCArray => +Binder.Content.B_Name,
+                           when others  => raise Program_Error);
                      Value   : W_Expr_Id;
                      Read    : W_Expr_Id;
                   begin
@@ -7930,11 +7952,18 @@ package body Gnat2Why.Expr is
             --  If E is a function and Domain is Prog, use the program specific
             --  identifier instead.
 
-            if E.Kind = Func and then Domain = EW_Prog then
-               T := +E.For_Prog.B_Name;
-            else
-               T := +E.Main.B_Name;
-            end if;
+            case E.Kind is
+               when Func =>
+                  if Domain = EW_Prog then
+                     T := +E.For_Prog.B_Name;
+                  else
+                     T := +E.For_Logic.B_Name;
+                  end if;
+               when Regular =>
+                  T := +E.Main.B_Name;
+               when UCArray =>
+                  T := +E.Content.B_Name;
+            end case;
          end;
       elsif Ekind (Ent) = E_Enumeration_Literal then
          T := Transform_Enum_Literal (Expr, Ent, Domain);

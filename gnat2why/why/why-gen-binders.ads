@@ -71,14 +71,16 @@ package Why.Gen.Binders is
    type Array_Bounds is array (1 .. Max_Array_Dimensions) of Item_Bounds;
 
    type Item_Type (Kind : Item_Enum := Regular) is record
-      Main : Binder_Type;
       case Kind is
-         when Regular => null;
+         when Regular =>
+            Main      : Binder_Type;
          when UCArray =>
-            Dim    : Positive;
-            Bounds : Array_Bounds;
+            Content   : Binder_Type;
+            Dim       : Positive;
+            Bounds    : Array_Bounds;
          when Func    =>
-            For_Prog : Binder_Type;
+            For_Logic : Binder_Type;
+            For_Prog  : Binder_Type;
       end case;
    end record;
    --  An item is like a generalized binder. It is used to represent the

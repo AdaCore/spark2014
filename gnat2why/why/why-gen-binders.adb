@@ -457,12 +457,13 @@ package body Why.Gen.Binders is
          declare
             Cur : Item_Type renames A (Index);
          begin
-            Result (Count) := Cur.Main;
-            Count := Count + 1;
             case Cur.Kind is
                when Regular =>
-                  null;
+                  Result (Count) := Cur.Main;
+                  Count := Count + 1;
                when UCArray =>
+                  Result (Count) := Cur.Content;
+                  Count := Count + 1;
                   for Dim_Index in 1 .. Cur.Dim loop
                      Result (Count) :=
                        (B_Name => Cur.Bounds (Dim_Index).First,

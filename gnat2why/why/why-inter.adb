@@ -1221,12 +1221,7 @@ package body Why.Inter is
       if T = SPARK_Xrefs.Name_Of_Heap_Variable then
          return Type_Of_Heap;
       else
-         return
-           New_Named_Type
-             (Name =>
-                New_Name (Module =>
-                                New_Module (File => No_Name, Name => NID (T)),
-                          Symbol => NID (To_String (WNE_Type))));
+         return EW_Private_Type;
       end if;
    end To_Why_Type;
 

@@ -54,19 +54,31 @@ with Gnat2Why.Nodes;      use Gnat2Why.Nodes;
 package body Gnat2Why.Decls is
 
    function Mk_Item_Of_Entity
-     (E    : Entity_Id;
-      Name : W_Identifier_Id) return Item_Type;
+     (E    : Entity_Id) return Item_Type;
 
    -------------------------
    -- Mk_Item_From_Entity --
    -------------------------
 
    function Mk_Item_Of_Entity
-     (E    : Entity_Id;
-      Name : W_Identifier_Id)
+     (E    : Entity_Id)
      return Item_Type
    is
-      Binder   : constant Binder_Type :=
+      --  We first build the type that we use in Why; this may be e.g. String
+
+      Use_Ty : constant Entity_Id :=
+        (if Ekind (E) in Object_Kind and then Present (Actual_Subtype (E))
+         and then Entity_In_SPARK (Actual_Subtype (E)) then
+              Actual_Subtype (E) else Etype (E));
+      Typ    : constant W_Type_Id :=
+        (if Ekind (E) = E_Abstract_State then EW_Private_Type
+         elsif Ekind (E) = E_Loop_Parameter then EW_Int_Type
+         elsif Is_Array_Type (Use_Ty)
+           and then not Is_Static_Array_Type (Use_Ty) then EW_Split (Use_Ty)
+         else EW_Abstract (Use_Ty));
+      Name   : constant W_Identifier_Id :=
+        To_Why_Id (E => E, Typ => Typ);
+      Binder : constant Binder_Type :=
         Binder_Type'(Ada_Node => E,
                      B_Name   => Name,
                      B_Ent    => null,
@@ -77,10 +89,10 @@ package body Gnat2Why.Decls is
       then
          declare
             Result : Item_Type :=
-              (Kind   => UCArray,
-               Main   => Binder,
-               Dim    => Natural (Number_Dimensions (Etype (E))),
-               Bounds => (others => <>));
+              (Kind    => UCArray,
+               Content => Binder,
+               Dim     => Natural (Number_Dimensions (Etype (E))),
+               Bounds  => (others => <>));
             Index  : Node_Id := First_Index (Etype (E));
          begin
             for D in 1 .. Result.Dim loop
@@ -107,14 +119,7 @@ package body Gnat2Why.Decls is
      (File : in out Why_Section;
       E    : Entity_Id)
    is
-      Typ      : constant W_Type_Id := EW_Private_Type;
-      Why_Name : constant W_Identifier_Id := To_Why_Id (E => E, Typ => Typ);
-      Decl     : constant W_Declaration_Id :=
-        New_Type_Decl
-          (Name  => New_Name (Symbol => NID (To_String (WNE_Type))),
-           Alias => Typ);
-      Var      : constant Item_Type := Mk_Item_Of_Entity (E, Why_Name);
-
+      Var      : constant Item_Type := Mk_Item_Of_Entity (E);
    begin
       Open_Theory (File, E_Module (E),
                    Comment =>
@@ -126,13 +131,6 @@ package body Gnat2Why.Decls is
                           else "")
                        & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
-      --  Generate an alias for the name of the object's type, based on the
-      --  name of the object. This is useful when generating logic functions
-      --  from Ada functions, to generate additional parameters for the global
-      --  objects read.
-
-      Emit (File.Cur_Theory, Decl);
-
       --  We generate a global ref
 
       Emit
@@ -140,7 +138,7 @@ package body Gnat2Why.Decls is
          New_Global_Ref_Declaration
            (Name     => To_Why_Id (E, Local => True),
             Labels   => Name_Id_Sets.Empty_Set,
-            Ref_Type => New_Named_Type (To_String (WNE_Type))));
+            Ref_Type => EW_Private_Type));
 
       Insert_Item (E, Var);
 
@@ -322,16 +320,12 @@ package body Gnat2Why.Decls is
 
       Add_With_Clause (File.Cur_Theory, Ref_Module, EW_Import, EW_Module);
 
-      Emit (File.Cur_Theory,
-            New_Type_Decl (Name   =>
-                             New_Name (Symbol => NID (To_String (WNE_Type))),
-                           Labels => Name_Id_Sets.Empty_Set));
       Emit
         (File.Cur_Theory,
          New_Global_Ref_Declaration
            (Name     => To_Why_Id (E.all, Local => True),
             Labels   => Name_Id_Sets.Empty_Set,
-            Ref_Type => New_Named_Type (S => To_String (WNE_Type))));
+            Ref_Type => EW_Private_Type));
 
       Close_Theory (File,
                     Kind => Standalone_Theory);
@@ -372,26 +366,7 @@ package body Gnat2Why.Decls is
      (File : in out Why_Section;
       E     : Entity_Id)
    is
-      --  We first build the type that we use in Why; this may be e.g. String
-
-      Use_Ty : constant Entity_Id :=
-        (if Present (Actual_Subtype (E))
-         and then Entity_In_SPARK (Actual_Subtype (E)) then
-              Actual_Subtype (E) else Etype (E));
-
-      Typ  : constant W_Type_Id :=
-        (if Ekind (E) = E_Loop_Parameter then
-           EW_Int_Type
-         elsif Is_Array_Type (Use_Ty)
-           and then not Is_Static_Array_Type (Use_Ty)
-         then EW_Split (Use_Ty)
-         else EW_Abstract (Use_Ty));
-      Why_Name : constant W_Identifier_Id :=
-        To_Why_Id (E => E, Typ => Typ);
-      Local_Name : constant W_Identifier_Id :=
-        To_Why_Id (E => E, Typ => Typ, Local => True);
-
-      Var : constant Item_Type := Mk_Item_Of_Entity (E, Why_Name);
+      Var        : constant Item_Type := Mk_Item_Of_Entity (E);
 
    --  Start of Translate_Variable
 
@@ -405,53 +380,73 @@ package body Gnat2Why.Decls is
                           else "")
                        & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
-      --  We generate a global ref
-
-      Emit
-        (File.Cur_Theory,
-         New_Global_Ref_Declaration
-           (Name     => To_Why_Id (E, Local => True),
-            Labels   => Name_Id_Sets.Empty_Set,
-            Ref_Type => Typ));
       case Var.Kind is
          when UCArray =>
-            for D in 1 .. Var.Dim loop
-               declare
-                  Ty_First : constant W_Type_Id :=
-                    Get_Typ (Var.Bounds (D).First);
-                  Ty_Last : constant W_Type_Id :=
-                    Get_Typ (Var.Bounds (D).Last);
-               begin
-                  Emit
-                    (File.Cur_Theory,
-                     Why.Atree.Builders.New_Function_Decl
-                       (Domain      => EW_Term,
-                        Name        =>
-                          Attr_Append
-                            (Local_Name,
-                             Attribute_First,
-                             D,
-                             Ty_First),
-                        Binders     => (1 .. 0 => <>),
-                        Labels      => Name_Id_Sets.Empty_Set,
-                        Return_Type => Ty_First));
-                  Emit
-                    (File.Cur_Theory,
-                     Why.Atree.Builders.New_Function_Decl
-                       (Domain      => EW_Term,
-                        Labels      => Name_Id_Sets.Empty_Set,
-                        Name        =>
-                          Attr_Append
-                            (Local_Name,
-                             Attribute_Last,
-                             D,
-                             Ty_Last),
-                        Binders     => (1 .. 0 => <>),
-                        Return_Type => Ty_Last));
-               end;
-            end loop;
+            declare
+               Typ        : constant W_Type_Id :=
+                 Get_Typ (Var.Content.B_Name);
+               Local_Name : constant W_Identifier_Id :=
+                 To_Why_Id (E => E, Typ => Typ, Local => True);
+            begin
+
+               --  generate a global ref for the content
+
+               Emit
+                 (File.Cur_Theory,
+                  New_Global_Ref_Declaration
+                    (Name     => To_Why_Id (E, Local => True),
+                     Labels   => Name_Id_Sets.Empty_Set,
+                     Ref_Type => Typ));
+
+               for D in 1 .. Var.Dim loop
+                  declare
+                     Ty_First   : constant W_Type_Id :=
+                       Get_Typ (Var.Bounds (D).First);
+                     Ty_Last    : constant W_Type_Id :=
+                       Get_Typ (Var.Bounds (D).Last);
+                  begin
+
+                     --  generate constants for bounds
+
+                     Emit
+                       (File.Cur_Theory,
+                        Why.Atree.Builders.New_Function_Decl
+                          (Domain      => EW_Term,
+                           Name        =>
+                             Attr_Append
+                               (Local_Name,
+                                Attribute_First,
+                                D,
+                                Ty_First),
+                           Binders     => (1 .. 0 => <>),
+                           Labels      => Name_Id_Sets.Empty_Set,
+                           Return_Type => Ty_First));
+                     Emit
+                       (File.Cur_Theory,
+                        Why.Atree.Builders.New_Function_Decl
+                          (Domain      => EW_Term,
+                           Labels      => Name_Id_Sets.Empty_Set,
+                           Name        =>
+                             Attr_Append
+                               (Local_Name,
+                                Attribute_Last,
+                                D,
+                                Ty_Last),
+                           Binders     => (1 .. 0 => <>),
+                           Return_Type => Ty_Last));
+                  end;
+               end loop;
+            end;
          when Regular =>
-            null;
+
+            --  generate a global ref
+
+            Emit
+              (File.Cur_Theory,
+               New_Global_Ref_Declaration
+                 (Name     => To_Why_Id (E, Local => True),
+                  Labels   => Name_Id_Sets.Empty_Set,
+                  Ref_Type => Get_Typ (Var.Main.B_Name)));
          when Func =>
             raise Program_Error;
       end case;

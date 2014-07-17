@@ -977,7 +977,11 @@ package body Gnat2Why.External_Axioms is
 
                      for Binder of Raw_Binders loop
                         declare
-                           A : constant Node_Id := Binder.Main.Ada_Node;
+                           A : constant Node_Id :=
+                             (case Binder.Kind is
+                                 when Regular => Binder.Main.Ada_Node,
+                                 when UCArray => Binder.Content.Ada_Node,
+                                 when Func    => raise Program_Error);
                         begin
 
                            --  Function parameters should not have effects.
@@ -1267,7 +1271,7 @@ package body Gnat2Why.External_Axioms is
                      Ada_Ent_To_Why.Insert
                        (Symbol_Table, E,
                         Item_Type'(Func,
-                          Main => Binder_Type'(
+                          For_Logic => Binder_Type'(
                             B_Name   =>
                               New_Identifier
                                 (Ada_Node => E,
@@ -1277,7 +1281,7 @@ package body Gnat2Why.External_Axioms is
                             B_Ent    => null,
                             Ada_Node => E,
                             Mutable  => False),
-                          For_Prog => Binder_Type'(
+                          For_Prog  => Binder_Type'(
                             B_Name   =>
                               To_Why_Id (E,
                                 Typ => EW_Abstract (Etype (E)),

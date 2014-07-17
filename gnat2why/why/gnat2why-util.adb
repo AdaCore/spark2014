@@ -465,8 +465,16 @@ package body Gnat2Why.Util is
    ------------------------
 
    function Why_Type_Of_Entity (E : Entity_Id) return W_Type_Id is
+      Binder : constant Item_Type := Ada_Ent_To_Why.Element (Symbol_Table, E);
    begin
-      return Get_Typ (Ada_Ent_To_Why.Element (Symbol_Table, E).Main.B_Name);
+      case Binder.Kind is
+      when Regular =>
+         return Get_Typ (Binder.Main.B_Name);
+      when UCArray =>
+         return Get_Typ (Binder.Content.B_Name);
+      when Func =>
+         return Get_Typ (Binder.For_Logic.B_Name);
+      end case;
    end Why_Type_Of_Entity;
 
 end Gnat2Why.Util;
