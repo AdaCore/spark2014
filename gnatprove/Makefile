@@ -2,13 +2,13 @@ all: build
 
 build: force
 	mkdir -p obj
-	gnatmake -j0 -P gnatprove.gpr
+	gprbuild -j0 -P gnatprove.gpr
 
 PROD=-XBuild=Production
 
 nightly: force
 	mkdir -p obj
-	gnatmake -j0 -P gnatprove.gpr $(PROD)
+	gprbuild -j0 -P gnatprove.gpr $(PROD)
 force:
 
 clean:

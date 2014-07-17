@@ -108,7 +108,7 @@ procedure Gnatprove is
       (Project_File : String;
        Proj         : Project_Tree;
        Status : out Integer);
-   --  Compute ALI information for all source units, using gnatmake.
+   --  Compute ALI information for all source units, using gprbuild.
 
    procedure Execute_Step
       (Step         : Gnatprove_Step;
