@@ -18,7 +18,7 @@ package Q is
    --     :ref:`record_types`);
    --   * the default_expression of a discriminant_specification
    --     (see :ref:`discriminants`);
-   --   * a Dynamic_Predicate aspect specification;
+   --   * a Dynamic_Predicate or Type_Invariant aspect specification;
    --   * an indexing expresssion of an indexed_component or the discrete_range
    --     of a slice in an object renaming declaration which renames
    --     part of that index or slice.

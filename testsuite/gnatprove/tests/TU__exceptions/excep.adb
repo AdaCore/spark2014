@@ -3,13 +3,6 @@ package body Excep
 is
    -- TU: 1. Exception handlers are not permitted in |SPARK|.
 
-   -- TU: 1.  for a ``raise_statement`` to be in |SPARK|, it must be
-   --         * immediately enclosed by an if statement which encloses no other
-   --           statement; or
-   --         * be the last statement of a subprogram.
-
-   -- TU: 2. A  ``raise_statement`` shall not have a *string_*\ ``expression``.
-
    procedure Bad1 (X : in out Integer) is
    begin
       X := X + 1;
