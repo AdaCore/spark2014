@@ -1,2 +1,2 @@
-use SPARK_Mode to enable analysis
-warning: no code was analyzed by GNATprove
+client.adb:5:11: warning: "Pack.Content" might not be initialized after elaboration of main program "Client"
+pack.adb:11:14: warning: overflow check might fail
