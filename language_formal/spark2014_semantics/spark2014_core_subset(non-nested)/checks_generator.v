@@ -109,9 +109,9 @@ Inductive compile2_flagged_object_declarations: list object_declaration -> list 
 
 
 Inductive compile2_flagged_parameter_specification: parameter_specification -> parameter_specification_x -> Prop :=
-    | C2_Flagged_Parameter_Spec: forall ast_num x m t,
-        compile2_flagged_parameter_specification (mkparameter_specification   ast_num x m t)
-                                                 (mkparameter_specification_x ast_num x m t).
+    | C2_Flagged_Parameter_Spec: forall ast_num x t m,
+        compile2_flagged_parameter_specification (mkparameter_specification   ast_num x t m)
+                                                 (mkparameter_specification_x ast_num x t m).
 
 Inductive compile2_flagged_parameter_specifications: list parameter_specification -> list parameter_specification_x -> Prop :=
     | C2_Flagged_Parameter_Specs_Null:
@@ -149,32 +149,23 @@ Inductive compile2_flagged_declaration: declaration -> declaration_x -> Prop :=
         compile2_flagged_declaration (D_Object_Declaration   ast_num o)
                                      (D_Object_Declaration_X ast_num o_flagged) 
     | C2_Flagged_D_Procedure_Declaration: forall p p_flagged ast_num,
-        compile2_flagged_procedure_declaration p p_flagged ->
-        compile2_flagged_declaration (D_Procedure_Declaration   ast_num p)
-                                     (D_Procedure_Declaration_X ast_num p_flagged) 
+        compile2_flagged_procedure_body p p_flagged ->
+        compile2_flagged_declaration (D_Procedure_Body   ast_num p)
+                                     (D_Procedure_Body_X ast_num p_flagged) 
     | C2_Flagged_D_Seq_Declaration: forall d1 d1_flagged d2 d2_flagged ast_num,
         compile2_flagged_declaration d1 d1_flagged ->
         compile2_flagged_declaration d2 d2_flagged ->
         compile2_flagged_declaration (D_Seq_Declaration ast_num d1 d2) (D_Seq_Declaration_X ast_num d1_flagged d2_flagged)
 
-with compile2_flagged_procedure_declaration: procedure_declaration -> procedure_declaration_x -> Prop :=
+with compile2_flagged_procedure_body: procedure_body -> procedure_body_x -> Prop :=
        | C2_Flagged_Procedure_Declaration: forall aspects aspects_flagged params params_flagged 
                                                   decls decls_flagged stmt stmt_flagged ast_num p,
            compile2_flagged_aspect_specifications aspects aspects_flagged ->
            compile2_flagged_parameter_specifications params params_flagged ->
            compile2_flagged_declaration decls decls_flagged ->
            compile2_flagged_stmt stmt stmt_flagged ->
-           compile2_flagged_procedure_declaration (mkprocedure_declaration   ast_num p params aspects decls stmt)
-                                                  (mkprocedure_declaration_x ast_num p params_flagged aspects_flagged decls_flagged stmt_flagged).
-
-
-(*
-Inductive compile2_flagged_subprogram: subprogram -> subprogram_x -> Prop :=
-    | C2_Flagged_Subprogram: p p_flagged ast_num
-        compile2_flagged_procedure_declaration p p_flagged ->
-        compile2_flagged_subprogram (Global_Procedure ast_num p) 
-                                    (Global_Procedure_X ast_num p_flagged).
-*)
+           compile2_flagged_procedure_body (mkprocedure_body   ast_num p params aspects decls stmt)
+                                                  (mkprocedure_body_x ast_num p params_flagged aspects_flagged decls_flagged stmt_flagged).
 
 
 (* ***************************************************************
@@ -279,8 +270,8 @@ Function compile2_flagged_object_declarations_f (lo: list object_declaration): l
 
 Function compile2_flagged_parameter_specification_f (param: parameter_specification): parameter_specification_x :=
   match param with
-  | mkparameter_specification   ast_num x m t =>
-      (mkparameter_specification_x ast_num x m t)
+  | mkparameter_specification   ast_num x t m =>
+      (mkparameter_specification_x ast_num x t m)
   end.
 
 Function compile2_flagged_parameter_specifications_f (lparam: list parameter_specification): list parameter_specification_x :=
@@ -318,45 +309,46 @@ Function compile2_flagged_declaration_f (d: declaration): declaration_x :=
   | D_Object_Declaration ast_num o =>
       let o_flagged := compile2_flagged_object_declaration_f o in
         (D_Object_Declaration_X ast_num o_flagged)
-  | D_Procedure_Declaration ast_num p =>
-      let p_flagged := compile2_flagged_procedure_declaration_f p in
-        (D_Procedure_Declaration_X ast_num p_flagged)
+  | D_Procedure_Body ast_num p =>
+      let p_flagged := compile2_flagged_procedure_body_f p in
+        (D_Procedure_Body_X ast_num p_flagged)
   | D_Seq_Declaration ast_num d1 d2 =>
       let d1_flagged := compile2_flagged_declaration_f d1 in
       let d2_flagged := compile2_flagged_declaration_f d2 in
         (D_Seq_Declaration_X ast_num d1_flagged d2_flagged)
   end
 
-with compile2_flagged_procedure_declaration_f (p: procedure_declaration): procedure_declaration_x :=
+with compile2_flagged_procedure_body_f (p: procedure_body): procedure_body_x :=
   match p with
-  | mkprocedure_declaration ast_num p params aspects decls stmt =>
+  | mkprocedure_body ast_num p params aspects decls stmt =>
       let aspects_flagged := compile2_flagged_aspect_specifications_f aspects in
       let params_flagged := compile2_flagged_parameter_specifications_f params in
       let decls_flagged := compile2_flagged_declaration_f decls in
       let stmt_flagged := compile2_flagged_stmt_f stmt in
-        (mkprocedure_declaration_x ast_num p params_flagged aspects_flagged decls_flagged stmt_flagged)
+        (mkprocedure_body_x ast_num p params_flagged aspects_flagged decls_flagged stmt_flagged)
   end.
 
 (*
-Function compile2_flagged_declaration_f1 (d: declaration): declaration_x :=
+Function compile2_flagged_declaration_f11 (d: declaration): declaration_x :=
   match d with
+  | D_Null_Declaration => D_Null_Declaration_X
   | D_Object_Declaration ast_num o =>
       let o_flagged := compile2_flagged_object_declaration_f o in
         (D_Object_Declaration_X ast_num o_flagged)
   | D_Type_Declaration ast_num t =>
       let t_flagged := compile2_flagged_type_declaration_f t in
         (D_Type_Declaration_X ast_num t_flagged)
-  | D_Procedure_Declaration ast_num p =>
+  | D_Procedure_Body ast_num p =>
       let p_flagged :=
           match p with
-          | mkprocedure_declaration ast_num p params aspects decls stmt =>
+          | mkprocedure_body ast_num p params aspects decls stmt =>
               let aspects_flagged := compile2_flagged_aspect_specifications_f aspects in
               let params_flagged := compile2_flagged_parameter_specifications_f params in
               let decls_flagged := compile2_flagged_declaration_f decls in
               let stmt_flagged := compile2_flagged_stmt_f stmt in
-                (mkprocedure_declaration_x ast_num p params_flagged aspects_flagged decls_flagged stmt_flagged)
+                (mkprocedure_body_x ast_num p params_flagged aspects_flagged decls_flagged stmt_flagged)
           end in
-        (D_Procedure_Declaration_X ast_num p_flagged)
+        (D_Procedure_Body_X ast_num p_flagged)
   | D_Seq_Declaration ast_num d1 d2 =>
       let d1_flagged := compile2_flagged_declaration_f d1 in
       let d2_flagged := compile2_flagged_declaration_f d2 in
@@ -497,7 +489,7 @@ Qed.
 
 
 Scheme declaration_ind := Induction for declaration Sort Prop 
-                          with procedure_declaration_ind := Induction for procedure_declaration Sort Prop.
+                          with procedure_body_ind := Induction for procedure_body Sort Prop.
 
 Lemma compile2_flagged_declaration_f_correctness: forall d d',
   compile2_flagged_declaration_f d = d' ->
@@ -507,9 +499,9 @@ Proof.
     (fun d: declaration => forall (d' : declaration_x),
       compile2_flagged_declaration_f d = d' ->
       compile2_flagged_declaration d d')
-    (fun p: procedure_declaration => forall (p': procedure_declaration_x),
-      compile2_flagged_procedure_declaration_f p = p' ->
-      compile2_flagged_procedure_declaration p p')
+    (fun p: procedure_body => forall (p': procedure_body_x),
+      compile2_flagged_procedure_body_f p = p' ->
+      compile2_flagged_procedure_body p p')
     ); smack.
 - constructor.
 - constructor.
@@ -528,8 +520,8 @@ Proof.
 Qed.
 
 Lemma compile2_flagged_procedure_declaration_f_correctness: forall p p',
-  compile2_flagged_procedure_declaration_f p = p' ->
-    compile2_flagged_procedure_declaration p p'.
+  compile2_flagged_procedure_body_f p = p' ->
+    compile2_flagged_procedure_body p p'.
 Proof.
   intros;
   destruct p; smack;
@@ -547,7 +539,7 @@ Qed.
 Require Import X_SparkTactics.
 
 Lemma procedure_components_rel: forall p p',
-  compile2_flagged_procedure_declaration p p' ->
+  compile2_flagged_procedure_body p p' ->
   compile2_flagged_parameter_specifications (procedure_parameter_profile p) (procedure_parameter_profile_x p') /\
   compile2_flagged_declaration (procedure_declarative_part p) (procedure_declarative_part_x p') /\
   compile2_flagged_stmt (procedure_statements p) (procedure_statements_x p').

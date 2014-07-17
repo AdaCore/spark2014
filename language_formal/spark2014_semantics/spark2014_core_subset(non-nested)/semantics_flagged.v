@@ -231,7 +231,7 @@ Inductive eval_decl_x: stack -> frame -> declaration_x -> Return frame -> Prop :
         d.(initialization_expression_x) = None ->
         eval_decl_x s f (D_Object_Declaration_X ast_num d) (Normal (push f d.(object_name_x) Undefined))
     | Eval_Decl_Proc_X: forall s f ast_num p,
-        eval_decl_x s f (D_Procedure_Declaration_X ast_num p) (Normal f)
+        eval_decl_x s f (D_Procedure_Body_X ast_num p) (Normal f)
     | Eval_Decl_Seq_E_X: forall s f d1 msg ast_num d2,
         eval_decl_x s f d1 (Run_Time_Error msg) ->
         eval_decl_x s f (D_Seq_Declaration_X ast_num d1 d2) (Run_Time_Error msg)

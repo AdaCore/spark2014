@@ -1,0 +1,14 @@
+> $2  # empty the file
+echo -e "Require Import checks_comparison.\n" >> $2  # -e makes \n to insert newline
+echo "" >> $2  # insert newline
+echo -e "Import Check_Flags_Comparison_With_Debug_Infor.\n" >> $2
+echo "Definition X :=" >> $2
+sed 's/_xx//g;s/_XX//g;s/(\*checks\*)//g' $1 >> $2
+echo -e ".\n" >> $2
+echo "Definition X_With_GnatPro_Checks :=" >> $2
+sed 's/xx/x/g;s/XX/X/g;s/(\*\*//g;s/\*\*)//g' $1 >> $2
+echo -e ".\n" >> $2
+echo -e "Definition X_With_Expected_Checks := compile2_flagged_declaration_f X.\n" >> $2
+echo -e "Definition result := declaration_check_flags_comparison X_With_Expected_Checks X_With_GnatPro_Checks.\n" >> $2
+echo "Eval compute in result." >> $2
+eval "coqc $2" # run the test

@@ -79,35 +79,34 @@ Inductive declaration_xx: Type :=  (* 3.1 *)
     | D_Null_Declaration_XX: declaration_xx
     | D_Type_Declaration_XX: astnum -> type_declaration_xx -> declaration_xx (* 3.2.1 *)
     | D_Object_Declaration_XX: astnum -> object_declaration_xx -> declaration_xx (* 3.3.1 *) 
-    | D_Procedure_Declaration_XX: astnum -> procedure_declaration_xx -> declaration_xx (* 6.1 *)
+    | D_Procedure_Body_XX: astnum -> procedure_body_xx -> declaration_xx (* 6.1 *)
     | D_Seq_Declaration_XX: astnum -> declaration_xx -> declaration_xx -> declaration_xx (* it's introduced for easy proof *)
  (* | package_declaration 
     | Other_Declarations *)
 
-with procedure_declaration_xx: Type :=
-  mkprocedure_declaration_xx
+with procedure_body_xx: Type :=
+  mkprocedure_body_xx
     (procedure_astnum_xx: astnum)
     (procedure_name_xx: procnum)
     (procedure_parameter_profile_xx: list parameter_specification_xx)
-    (procedure_contracts_xx: list aspect_specification_xx) (* contracts are not in the formalization now *)
+    (procedure_aspect_xx: list aspect_specification_xx) (* aspects are not in the formalization now *)
     (procedure_declarative_part_xx: declaration_xx)
     (procedure_statements_xx: statement_xx).
 
-
-(** ** Compilation Unit Subprogram *)
-(* 6.1 *)
-Inductive subprogram_xx: Type := 
-    | Global_Procedure_XX: astnum -> procedure_declaration_xx -> subprogram_xx.
-(*  | Global_Function_XX: astnum -> function_declaration_xx -> subprogram_xx *)
+(*
+(* Compilation Unit Subprogram *)
 
 (* 10.1.1 *)
-Inductive library_unit_declaration_xx: Type := 
-    | Library_Subprogram_XX: astnum -> subprogram_xx -> library_unit_declaration_xx.
+Inductive library_unit_body_xx: Type := 
+    | Procedure_XX: astnum -> procedure_body_xx -> library_unit_body_xx. (* 6.1 *)
+(*  | Function_XX:  astnum -> function_body_xx  -> library_unit_body_xx *)
 
 (* 10.1.1 *)
-Inductive compilation_unit_xx: Type := 
-    | Library_Unit_XX: astnum -> library_unit_declaration_xx -> compilation_unit_xx.
-
+Inductive compilation_xx: Type := 
+    | Compilation_Unit_XX: astnum -> library_unit_body_xx -> compilation_xx
+    | Compilation_Cons_XX: astnum -> compilation_xx -> compilation_xx -> compilation_xx
+(*  | Compilation_Unit2_XX: astnum -> library_unit_declaration_xx -> compilation_xx *)
+*)
 
 (** ** Auxiliary Functions *)
 
@@ -115,33 +114,48 @@ Section AuxiliaryFunctions_XX.
 
   Definition procedure_statements_xx pb :=
     match pb with 
-      | mkprocedure_declaration_xx _ _ _ _ _ x => x
+      | mkprocedure_body_xx _ _ _ _ _ x => x
     end.
 
   Definition procedure_declarative_part_xx pb :=
     match pb with
-      | mkprocedure_declaration_xx _ _ _ _ x _ => x
+      | mkprocedure_body_xx _ _ _ _ x _ => x
     end.
 
-  Definition procedure_contracts_xx pb :=
+  Definition procedure_aspect_xx pb :=
     match pb with
-      | mkprocedure_declaration_xx _ _ _ x _ _ => x
+      | mkprocedure_body_xx _ _ _ x _ _ => x
     end.
 
   Definition procedure_parameter_profile_xx pb :=
     match pb with
-      | mkprocedure_declaration_xx _ _ x _ _ _ => x
+      | mkprocedure_body_xx _ _ x _ _ _ => x
     end.
 
   Definition procedure_name_xx pb :=
     match pb with
-      | mkprocedure_declaration_xx _ x _ _ _ _ => x
+      | mkprocedure_body_xx _ x _ _ _ _ => x
     end.
 
   Definition type_name_xx td :=
     match td with
     | Array_Type_Declaration_XX _ tn _ _ _ => tn
     | Record_Type_Declaration_XX _ tn _ => tn
+    end.
+
+  Definition expression_astnum_xx e :=
+    match e with
+    | E_Literal_XX ast_num l (*checkflags*)=> ast_num
+    | E_Name_XX ast_num n (*checkflags*)=> ast_num
+    | E_Binary_Operation_XX ast_num bop e1 e2 (*checkflags*)=> ast_num
+    | E_Unary_Operation_XX ast_num uop e (*checkflags*)=> ast_num
+    end.  
+
+  Definition name_astnum_xx n :=
+    match n with
+    | E_Identifier_XX ast_num x (*checkflags*)=> ast_num
+    | E_Indexed_Component_XX ast_num x_ast_num x e (*checkflags*)=> ast_num
+    | E_Selected_Component_XX ast_num x_ast_num x f (*checkflags*)=> ast_num
     end.
 
 End AuxiliaryFunctions_XX.

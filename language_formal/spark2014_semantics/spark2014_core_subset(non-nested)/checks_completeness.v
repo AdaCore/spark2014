@@ -525,7 +525,7 @@ Proof.
         specialize (symbol_table_procedure_rel _ _ _ _ _ _ _ H1 H2 H3); smack
   end;
   match goal with
-    | [H: compile2_flagged_procedure_declaration _ _ |- _] => 
+    | [H: compile2_flagged_procedure_body _ _ |- _] => 
         specialize (procedure_components_rel _ _ H); smack
   end;  
   match goal with
@@ -549,7 +549,7 @@ Proof.
         specialize (symbol_table_procedure_rel _ _ _ _ _ _ _ H1 H2 H3); smack
   end;
   match goal with
-    | [H: compile2_flagged_procedure_declaration _ _ |- _] => 
+    | [H: compile2_flagged_procedure_body _ _ |- _] => 
         specialize (procedure_components_rel _ _ H); smack
   end;
   match goal with
@@ -584,7 +584,7 @@ Proof.
         specialize (symbol_table_procedure_rel _ _ _ _ _ _ _ H1 H2 H3); smack
   end;
   match goal with
-    | [H: compile2_flagged_procedure_declaration _ _ |- _] => 
+    | [H: compile2_flagged_procedure_body _ _ |- _] => 
         specialize (procedure_components_rel _ _ H); smack
   end;
   match goal with
@@ -625,7 +625,7 @@ Proof.
         specialize (symbol_table_procedure_rel _ _ _ _ _ _ _ H1 H2 H3); smack
   end;
   match goal with
-    | [H: compile2_flagged_procedure_declaration _ _ |- _] => 
+    | [H: compile2_flagged_procedure_body _ _ |- _] => 
         specialize (procedure_components_rel _ _ H); smack
   end;
   match goal with

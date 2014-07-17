@@ -77,35 +77,34 @@ Inductive declaration: Type :=  (* 3.1 *)
     | D_Null_Declaration: declaration
     | D_Type_Declaration: astnum -> type_declaration -> declaration (* 3.2.1 *)
     | D_Object_Declaration: astnum -> object_declaration -> declaration (* 3.3.1 *) 
-    | D_Procedure_Declaration: astnum -> procedure_declaration -> declaration (* 6.1 *)
+    | D_Procedure_Body: astnum -> procedure_body -> declaration (* 6.1 *)
     | D_Seq_Declaration: astnum -> declaration -> declaration -> declaration (* it's introduced for easy proof *)
  (* | package_declaration 
     | Other_Declarations *)
 
-with procedure_declaration: Type :=
-  mkprocedure_declaration
+with procedure_body: Type :=
+  mkprocedure_body
     (procedure_astnum: astnum)
     (procedure_name: procnum)
     (procedure_parameter_profile: list parameter_specification)
-    (procedure_contracts: list aspect_specification) (* contracts are not in the formalization now *)
+    (procedure_aspect: list aspect_specification) (* aspects are not in the formalization now *)
     (procedure_declarative_part: declaration)
     (procedure_statements: statement).
 
-
-(** ** Compilation Unit Subprogram *)
-(* 6.1 *)
-Inductive subprogram: Type := 
-    | Global_Procedure: astnum -> procedure_declaration -> subprogram.
-(*  | Global_Function: astnum -> function_declaration -> subprogram *)
+(*
+(* Compilation Unit Subprogram *)
 
 (* 10.1.1 *)
-Inductive library_unit_declaration: Type := 
-    | Library_Subprogram: astnum -> subprogram -> library_unit_declaration.
+Inductive library_unit_body: Type := 
+    | Procedure: astnum -> procedure_body -> library_unit_body. (* 6.1 *)
+(*  | Function:  astnum -> function_body  -> library_unit_body *)
 
 (* 10.1.1 *)
-Inductive compilation_unit: Type := 
-    | Library_Unit: astnum -> library_unit_declaration -> compilation_unit.
-
+Inductive compilation: Type := 
+    | Compilation_Unit: astnum -> library_unit_body -> compilation
+    | Compilation_Cons: astnum -> compilation -> compilation -> compilation
+(*  | Compilation_Unit2: astnum -> library_unit_declaration -> compilation *)
+*)
 
 (** ** Auxiliary Functions *)
 
@@ -113,33 +112,48 @@ Section AuxiliaryFunctions.
 
   Definition procedure_statements pb :=
     match pb with 
-      | mkprocedure_declaration _ _ _ _ _ x => x
+      | mkprocedure_body _ _ _ _ _ x => x
     end.
 
   Definition procedure_declarative_part pb :=
     match pb with
-      | mkprocedure_declaration _ _ _ _ x _ => x
+      | mkprocedure_body _ _ _ _ x _ => x
     end.
 
-  Definition procedure_contracts pb :=
+  Definition procedure_aspect pb :=
     match pb with
-      | mkprocedure_declaration _ _ _ x _ _ => x
+      | mkprocedure_body _ _ _ x _ _ => x
     end.
 
   Definition procedure_parameter_profile pb :=
     match pb with
-      | mkprocedure_declaration _ _ x _ _ _ => x
+      | mkprocedure_body _ _ x _ _ _ => x
     end.
 
   Definition procedure_name pb :=
     match pb with
-      | mkprocedure_declaration _ x _ _ _ _ => x
+      | mkprocedure_body _ x _ _ _ _ => x
     end.
 
   Definition type_name td :=
     match td with
     | Array_Type_Declaration _ tn _ _ _ => tn
     | Record_Type_Declaration _ tn _ => tn
+    end.
+
+  Definition expression_astnum e :=
+    match e with
+    | E_Literal ast_num l => ast_num
+    | E_Name ast_num n => ast_num
+    | E_Binary_Operation ast_num bop e1 e2 => ast_num
+    | E_Unary_Operation ast_num uop e => ast_num
+    end.  
+
+  Definition name_astnum n :=
+    match n with
+    | E_Identifier ast_num x => ast_num
+    | E_Indexed_Component ast_num x_ast_num x e => ast_num
+    | E_Selected_Component ast_num x_ast_num x f => ast_num
     end.
 
 End AuxiliaryFunctions.

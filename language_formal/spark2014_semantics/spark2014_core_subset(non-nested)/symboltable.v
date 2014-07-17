@@ -5,7 +5,7 @@ Require Export checks_generator.
 
 (* symbol table for unflagged program *)
 Module Symbol_Table_Elements <: SymTable_Element.
-  Definition Procedure_Decl := procedure_declaration.
+  Definition Procedure_Decl := procedure_body.
   Definition Type_Decl := type_declaration.
 End Symbol_Table_Elements.
 
@@ -14,7 +14,7 @@ Module Symbol_Table_Module := SymbolTableM (Symbol_Table_Elements).
 
 (* symbol table for flagged program *)
 Module Symbol_Table_Elements_X <: SymTable_Element.
-  Definition Procedure_Decl := procedure_declaration_x.
+  Definition Procedure_Decl := procedure_body_x.
   Definition Type_Decl := type_declaration_x.
 End Symbol_Table_Elements_X.
 
@@ -37,12 +37,12 @@ Definition type_decl' := Symbol_Table_Module_X.type_decl.
 
 Definition level := Symbol_Table_Module.level.
 
-Inductive compile2_flagged_proc_declaration_map: list (idnum * (level * procedure_declaration)) -> 
-                                                 list (idnum * (level * procedure_declaration_x)) -> Prop :=
+Inductive compile2_flagged_proc_declaration_map: list (idnum * (level * procedure_body)) -> 
+                                                 list (idnum * (level * procedure_body_x)) -> Prop :=
     | C2_Flagged_Proc_Declaration_Map_Null:
         compile2_flagged_proc_declaration_map nil nil
     | C2_Flagged_Proc_Declaration_Map: forall pd pd' pl pl' p l,
-        compile2_flagged_procedure_declaration pd pd' ->
+        compile2_flagged_procedure_body pd pd' ->
         compile2_flagged_proc_declaration_map pl pl' ->
         compile2_flagged_proc_declaration_map ((p, (l, pd)) :: pl) ((p, (l, pd')) :: pl').
 
@@ -68,7 +68,7 @@ Lemma procedure_declaration_rel: forall ps ps' p n pb n' pb',
   compile2_flagged_proc_declaration_map ps ps' ->
     Symbol_Table_Module.SymTable_Procs.fetches p ps = Some (n, pb) ->
       Symbol_Table_Module_X.SymTable_Procs.fetches p ps' = Some (n', pb') ->
-        n = n' /\ compile2_flagged_procedure_declaration pb pb'.
+        n = n' /\ compile2_flagged_procedure_body pb pb'.
 Proof.
   intros ps ps' p n pb n' pb' H; revert p n pb n' pb'.
   induction H; intros.
@@ -86,7 +86,7 @@ Lemma symbol_table_procedure_rel: forall p st n pb st' n' pb',
   Symbol_Table_Module.fetch_proc p st = Some (n, pb) ->
     Symbol_Table_Module_X.fetch_proc p st' = Some (n', pb') ->
       compile2_flagged_symbol_table st st' ->
-        n = n' /\ compile2_flagged_procedure_declaration pb pb'.
+        n = n' /\ compile2_flagged_procedure_body pb pb'.
 Proof.
   intros.
   inversion H1; subst; clear H1.

@@ -9,6 +9,7 @@ language.v \
 checks.v \
 language_flagged.v \
 checks_generator.v \
+checks_comparison.v \
 values.v \
 environment.v \
 symboltable_module.v \

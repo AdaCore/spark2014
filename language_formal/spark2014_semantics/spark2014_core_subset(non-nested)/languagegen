@@ -1,2 +1,2 @@
-sed 's/(\*_1_//g;s/_1_\*)//g;/_2_\*)$/d;s/_xx//g;s/_XX//g;s/(\*checks\*)//g;s/NOTICE/This file was auto-generated from language_template.v (do not modify)/g' language_template.v > language.v
-sed 's/(\*_2_//g;s/_2_\*)//g;/_1_\*)$/d;s/_xx/_x/g;s/_XX/_X/g;s/(\*checks\*)/-> check_flags /g;s/NOTICE/This file was auto-generated from language_template.v (do not modify)/g' language_template.v > language_flagged.v
+sed 's/(\*_1_//g;s/_1_\*)//g;/_2_\*)$/d;s/_xx//g;s/_XX//g;s/(\*checks\*)//g;s/(\*checkflags\*)//g;s/NOTICE/This file was auto-generated from language_template.v (do not modify)/g' language_template.v > language.v
+sed 's/(\*_2_//g;s/_2_\*)//g;/_1_\*)$/d;s/_xx/_x/g;s/_XX/_X/g;s/(\*checks\*)/-> check_flags /g;s/(\*checkflags\*)/checkflags /g;s/NOTICE/This file was auto-generated from language_template.v (do not modify)/g' language_template.v > language_flagged.v
