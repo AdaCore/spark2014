@@ -1,2 +1,2 @@
 sandbox.adb:14:26: info: range check proved
-sandbox.adb:15:32: warning: range check might fail
+sandbox.adb:15:32: info: range check proved

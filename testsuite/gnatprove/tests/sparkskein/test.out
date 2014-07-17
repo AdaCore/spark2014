@@ -4,7 +4,7 @@ skein.adb:238:14: info: range check proved
 skein.adb:239:29: warning: array index check might fail
 skein.adb:241:44: info: division check proved
 skein.adb:241:44: warning: array index check might fail
-skein.adb:242:35: warning: range check might fail
+skein.adb:242:35: info: range check proved
 skein.adb:242:49: warning: range check might fail
 skein.adb:261:15: warning: array index check might fail
 skein.adb:262:22: warning: array index check might fail

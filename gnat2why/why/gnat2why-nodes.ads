@@ -70,6 +70,8 @@ package Gnat2Why.Nodes is
       Equivalent_Keys => "=",
       "="             => "=");
 
+   function Is_Power_Of_2 (U : Uint) return Boolean;
+
    function Has_User_Defined_Eq (E : Entity_Id) return Entity_Id
      with Pre => Ekind (E) in Type_Kind;
    --  expects the entity of a type; If the type has a primitive equality,

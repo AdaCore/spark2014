@@ -60,6 +60,7 @@ with Why.Atree.Builders;     use Why.Atree.Builders;
 with Why.Atree.Accessors;    use Why.Atree.Accessors;
 with Why.Atree.Mutators;     use Why.Atree.Mutators;
 with Why.Atree.Modules;      use Why.Atree.Modules;
+with Why.Atree.Tables;      use Why.Atree.Tables;
 with Why.Conversions;        use Why.Conversions;
 with Why.Gen.Arrays;         use Why.Gen.Arrays;
 with Why.Gen.Binders;        use Why.Gen.Binders;
@@ -3535,7 +3536,26 @@ package body Gnat2Why.Expr is
 
          when N_Op_And | N_Op_Or | N_Op_Xor =>
 
-            if Is_Array_Type (Left_Type) then
+            if Is_Modular_Integer_Type (Return_Type)
+              and then Op = N_Op_And
+              and then Get_Kind (+Right) = W_Integer_Constant
+              and then Is_Power_Of_2
+                (Get_Value (W_Integer_Constant_Id (Right)) + Uint_1)
+            then
+               T :=
+                 New_Call
+                   (Ada_Node => Ada_Node,
+                    Domain   => EW_Term,
+                    Name     => Integer_Math_Mod,
+                    Args     =>
+                      (1 => Left,
+                       2 =>
+                         New_Integer_Constant
+                           (Value =>
+                                Get_Value (W_Integer_Constant_Id (Right)) +
+                              Uint_1)),
+                    Typ     => EW_Int_Type);
+            elsif Is_Array_Type (Left_Type) then
                T := Transform_Array_Logical_Op
                  (Op        => Op,
                   Left      => Left,

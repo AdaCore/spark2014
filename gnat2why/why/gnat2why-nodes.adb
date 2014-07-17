@@ -457,6 +457,19 @@ package body Gnat2Why.Nodes is
         In_Main_Unit_Body (Real_Node);
    end Is_In_Current_Unit;
 
+   -------------------
+   -- Is_Power_Of_2 --
+   -------------------
+
+   function Is_Power_Of_2 (U : Uint) return Boolean is
+      Tmp : Uint := U;
+   begin
+      while Tmp rem Uint_2 = Uint_0 loop
+         Tmp := Tmp / Uint_2;
+      end loop;
+      return (Tmp = Uint_1);
+   end Is_Power_Of_2;
+
    ------------------------------
    -- Is_Pragma_Assert_And_Cut --
    ------------------------------
