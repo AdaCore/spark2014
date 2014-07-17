@@ -1,2 +1,2 @@
 init.adb:2:11: warning: subprogram "Init" has no effect
-init.adb:15:23: warning: range check might fail, in call inlined at init.adb:23
+init.adb:15:23: warning: range check might fail

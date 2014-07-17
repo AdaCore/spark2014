@@ -1,5 +1,4 @@
 c34014g.adb:38:11: warning: subprogram "C34014g" has no effect
-c34014g.adb:47:11: warning: analyzing unreferenced function "F"
 c34014g.adb:73:16: warning: statement has no effect
 c34014g.adb:74:21: warning: statement has no effect
 c34014g.adb:77:16: warning: statement has no effect
