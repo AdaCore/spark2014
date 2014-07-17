@@ -20,6 +20,7 @@ natural_set.ads:45:57: info: index check proved
 natural_set.ads:46:18: info: range check proved
 natural_set.ads:47:18: info: index check proved
 natural_set.ads:52:47: info: index check proved
+auto.cgpr
 natural_set.ali
 natural_set.o
 natural_set.adb
