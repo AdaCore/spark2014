@@ -3928,8 +3928,7 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    is
-      pragma Unreferenced (CM);
-      pragma Unreferenced (Ctx);
+      pragma Unreferenced (CM, Ctx);
 
       function Proc (N : Node_Id) return Traverse_Result;
       --  Traverses the tree looking for quantified expressions. Once
