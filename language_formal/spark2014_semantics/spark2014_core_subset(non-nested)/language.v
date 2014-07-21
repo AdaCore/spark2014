@@ -38,10 +38,16 @@ Inductive statement: Type :=
     | S_If: astnum -> expression -> statement -> statement -> statement (* 5.3 *)
     | S_While_Loop: astnum -> expression -> statement -> statement (* 5.5 *)
     | S_Procedure_Call: astnum -> astnum -> procnum -> list expression -> statement (* 6.4 *) (* the second astnum for the called procedure *)
-    | S_Sequence: astnum -> statement -> statement -> statement. (* 5.1 *)
+    | S_Sequence: astnum -> statement -> statement -> statement (* 5.1 *).
 
 (* Array / Record Type Declaration *)
 Inductive type_declaration: Type := (* 3.2.1 *)
+    | Subtype_Declaration:
+        astnum -> typenum (*subtype name*) -> type -> Z -> Z (*range*) -> type_declaration (* 3.2.2 *)
+    | Derived_Type_Declaration:
+        astnum -> typenum (*derived type name*) -> type -> Z -> Z (*range*) -> type_declaration (* 3.4 *)
+    | Integer_Type_Declaration:
+        astnum -> typenum (*integer type name*) -> Z -> Z (*range*) -> type_declaration (* 3.5.4 *)
     | Array_Type_Declaration: (* Constrained_Array_Definition, non-nested one-dimentional array *)
         astnum -> typenum (*array name*) -> type (*component type*) -> 
           Z (*lower bound*) -> Z (*upper bound*) -> type_declaration (* 3.6 *)
@@ -65,13 +71,6 @@ Record parameter_specification: Type := mkparameter_specification{
 (*  parameter_default_expression: option (expression) *)
 }.
 
-(* 13.1.1 *)
-Record aspect_specification: Type := mkaspect_specification{
-    aspect_astnum: astnum;
-    aspect_mark: aspectnum;
-    aspect_definition: expression
-}.
-
 (* Mutual records/inductives are not allowed in coq, so we build a record by hand. *)
 Inductive declaration: Type :=  (* 3.1 *)
     | D_Null_Declaration: declaration
@@ -87,24 +86,9 @@ with procedure_body: Type :=
     (procedure_astnum: astnum)
     (procedure_name: procnum)
     (procedure_parameter_profile: list parameter_specification)
-    (procedure_aspect: list aspect_specification) (* aspects are not in the formalization now *)
     (procedure_declarative_part: declaration)
     (procedure_statements: statement).
 
-(*
-(* Compilation Unit Subprogram *)
-
-(* 10.1.1 *)
-Inductive library_unit_body: Type := 
-    | Procedure: astnum -> procedure_body -> library_unit_body. (* 6.1 *)
-(*  | Function:  astnum -> function_body  -> library_unit_body *)
-
-(* 10.1.1 *)
-Inductive compilation: Type := 
-    | Compilation_Unit: astnum -> library_unit_body -> compilation
-    | Compilation_Cons: astnum -> compilation -> compilation -> compilation
-(*  | Compilation_Unit2: astnum -> library_unit_declaration -> compilation *)
-*)
 
 (** ** Auxiliary Functions *)
 
@@ -112,33 +96,31 @@ Section AuxiliaryFunctions.
 
   Definition procedure_statements pb :=
     match pb with 
-      | mkprocedure_body _ _ _ _ _ x => x
+      | mkprocedure_body _ _ _ _ x => x
     end.
 
   Definition procedure_declarative_part pb :=
     match pb with
-      | mkprocedure_body _ _ _ _ x _ => x
-    end.
-
-  Definition procedure_aspect pb :=
-    match pb with
-      | mkprocedure_body _ _ _ x _ _ => x
+      | mkprocedure_body _ _ _ x _ => x
     end.
 
   Definition procedure_parameter_profile pb :=
     match pb with
-      | mkprocedure_body _ _ x _ _ _ => x
+      | mkprocedure_body _ _ x _ _ => x
     end.
 
   Definition procedure_name pb :=
     match pb with
-      | mkprocedure_body _ x _ _ _ _ => x
+      | mkprocedure_body _ x _ _ _ => x
     end.
 
   Definition type_name td :=
     match td with
-    | Array_Type_Declaration _ tn _ _ _ => tn
-    | Record_Type_Declaration _ tn _ => tn
+    | Subtype_Declaration _ tn _ _ _      => tn
+    | Derived_Type_Declaration _ tn _ _ _ => tn
+    | Integer_Type_Declaration _ tn _ _   => tn
+    | Array_Type_Declaration _ tn _ _ _   => tn
+    | Record_Type_Declaration _ tn _      => tn
     end.
 
   Definition expression_astnum e :=

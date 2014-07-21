@@ -13,23 +13,67 @@ Require Export language.
        Check that the result of the given arithmetic operation is within 
        the bounds of the base type.
 
-     - Index Check
-       
-       Check that the given index is within the bounds of the array.
-     
      - Range Check
        
        Check that the given value is within the bounds of the expected scalar 
        subtype.
 *)
 
+(*   the following check is not included now
+
+     - Index Check
+       
+       Check that the given index is within the bounds of the array.
+*)
+
+(** 
+   reference: sinfo.ads
+   --  Do_Range_Check (Flag9-Sem)
+   --    This flag is set on an expression which appears in a context where a
+   --    range check is required. The target type is clear from the context.
+   --    The contexts in which this flag can appear are the following:
+
+   --      Right side of an assignment. In this case the target type is
+   --      taken from the left side of the assignment, which is referenced
+   --      by the Name of the N_Assignment_Statement node.
+
+   --      Subscript expressions in an indexed component. In this case the
+   --      target type is determined from the type of the array, which is
+   --      referenced by the Prefix of the N_Indexed_Component node.
+
+   --      Argument expression for a parameter, appearing either directly in
+   --      the Parameter_Associations list of a call or as the Expression of an
+   --      N_Parameter_Association node that appears in this list. In either
+   --      case, the check is against the type of the formal. Note that the
+   --      flag is relevant only in IN and IN OUT parameters, and will be
+   --      ignored for OUT parameters, where no check is required in the call,
+   --      and if a check is required on the return, it is generated explicitly
+   --      with a type conversion.
+
+   --      Initialization expression for the initial value in an object
+   --      declaration. In this case the Do_Range_Check flag is set on
+   --      the initialization expression, and the check is against the
+   --      range of the type of the object being declared. This includes the
+   --      cases of expressions providing default discriminant values, and
+   --      expressions used to initialize record components.
+
+   --      The expression of a type conversion. In this case the range check is
+   --      against the target type of the conversion. See also the use of
+   --      Do_Overflow_Check on a type conversion. The distinction is that the
+   --      overflow check protects against a value that is outside the range of
+   --      the target base type, whereas a range check checks that the
+   --      resulting value (which is a value of the base type of the target
+   --      type), satisfies the range constraint of the target type.
+*)
+
+
 (** ** Run Time Check Flags *)
 (** checks that are needed to be verified at run time *)
 Inductive check_flag: Type := 
     | Do_Division_Check: check_flag
     | Do_Overflow_Check: check_flag
-    | Do_Index_Check:    check_flag.   (* index check for an array access *)
-(*  | Do_Range_Check:    check_flag *) (* range check for a scalar range, e.g. -1 is assigned to natural variable *) 
+    | Do_Range_Check:    check_flag
+    | Undefined_Check:   check_flag.
 
 
 (** For an expression or statement, there may exists a list of checks 
@@ -38,12 +82,46 @@ Inductive check_flag: Type :=
 *)
 Definition check_flags := list check_flag.
 
+(** * Check Flags Comparison Functions *)
+
+Function beq_check_flag (ck1 ck2: check_flag): bool :=
+  match ck1, ck2 with
+  | Do_Division_Check, Do_Division_Check => true
+  | Do_Overflow_Check, Do_Overflow_Check => true
+  | Do_Range_Check,    Do_Range_Check => true
+  | _, _ => false
+  end.
+
+Function element_of (a: check_flag) (ls: list check_flag): bool :=
+  match ls with
+  | nil => false
+  | (a' :: ls') => 
+      if beq_check_flag a a' then
+        true
+      else
+        element_of a ls'
+  end.
+
+Function subset_of (cks1 cks2: check_flags): bool :=
+  match cks1 with
+  | nil => true
+  | ck :: cks1' => 
+      if element_of ck cks2 then
+        subset_of cks1' cks2 
+      else
+        false
+  end.
+
+Function beq_check_flags (cks1 cks2: check_flags): bool :=
+  (subset_of cks1 cks2) && (subset_of cks2 cks1).
+
 (** produce check flags for expressions according to the checking rules; 
     it is a mapping from one ast node to a set of run time checks;
 *)
 
 (** ** Run Time Check Flags Generator *)
 
+(*
 Inductive gen_exp_check_flags: expression -> check_flags -> Prop :=
     | GCF_Literal_Int: forall ast_num n,
         gen_exp_check_flags (E_Literal ast_num (Integer_Literal n)) nil
@@ -122,407 +200,4 @@ Proof.
   intros; destruct n;
   smack; constructor.
 Qed.
-
-(******************************************************************
-
-(** ** Functional semantics *)
-
-(** Function for run-time checks generation according to checking rules *)
-
-Function f_check_flags (e: expression): run_time_check_set :=
-    match e with
-    | E_Literal ast_num n => nil
-    | E_Identifier ast_num x => nil
-    | E_Binary_Operation ast_num op e1 e2 => 
-        match op with
-        | Plus => (Do_Overflow_Check :: nil)
-        | Minus => (Do_Overflow_Check :: nil)
-        | Multiply => (Do_Overflow_Check :: nil)
-        | Divide => (Do_Division_Check :: Do_Overflow_Check :: nil)
-        | _ => nil
-        end
-    | E_Unary_Operation ast_num op e => nil
-    end.
-
-Function f_do_check (op: binary_operator) (v1: value) (v2: value): option bool :=
-    match op with
-    | Plus => (* overflow check *)
-        match v1, v2 with
-        | Int v1', Int v2' => Some ((Zge_bool (v1' + v2') min_signed) && (Zle_bool (v1' + v2') max_signed))
-        | _, _ => None
-        end
-    | Minus => (* overflow check *)
-        match v1, v2 with
-        | Int v1', Int v2' => Some ((Zge_bool (v1' - v2') min_signed) && (Zle_bool (v1' - v2') max_signed))
-        | _, _ => None
-        end
-    | Multiply => (* overflow check *)
-        match v1, v2 with
-        | Int v1', Int v2' => Some ((Zge_bool (v1' * v2') min_signed) && (Zle_bool (v1' * v2') max_signed))
-        | _, _ => None
-        end
-    | Divide => (* both division by zero check and overflow check *)
-        match v1, v2 with
-        | Int v1', Int v2' => 
-            Some ((negb (Zeq_bool v2' 0)) && ((Zge_bool (Z.quot v1' v2') min_signed) && (Zle_bool (Z.quot v1' v2') max_signed)))
-        | _, _ => None
-        end
-    | _ => Some true
-    end.
-
-(** perform the flagged checks on operators, but at the same time we
-    have to ensure that the flagged checks on operators are correct,
-    for exmpale, only do Do_Division_Check on Divide make sense, so 
-    Do_Division_Check on other operators should return None;
 *)
-Function f_do_flagged_check (rtc: run_time_checks) (op: binary_operator) (v1: value) (v2: value): option bool :=
-    match rtc, op with
-    | Do_Overflow_Check, Plus => 
-        match v1, v2 with
-        | Int v1', Int v2' => Some ((Zge_bool (v1' + v2') min_signed) && (Zle_bool (v1' + v2') max_signed))
-        | _, _ => None
-        end
-    | Do_Overflow_Check, Minus => 
-        match v1, v2 with
-        | Int v1', Int v2' => Some ((Zge_bool (v1' - v2') min_signed) && (Zle_bool (v1' - v2') max_signed))
-        | _, _ => None
-        end
-    | Do_Overflow_Check, Multiply => 
-        match v1, v2 with
-        | Int v1', Int v2' => Some ((Zge_bool (v1' * v2') min_signed) && (Zle_bool (v1' * v2') max_signed))
-        | _, _ => None
-        end
-    | Do_Overflow_Check, Divide => 
-        match v1, v2 with
-        | Int v1', Int v2' => Some ((Zge_bool (Z.quot v1' v2') min_signed) && (Zle_bool (Z.quot v1' v2') max_signed))
-        | _, _ => None
-        end
-    | Do_Division_Check, Divide => 
-        match v1, v2 with
-        | Int v1', Int v2' => Some (negb (Zeq_bool v2' 0))
-        | _, _ => None
-        end
-    | _, _ => None
-    end.
-
-(** perform a series of different checks on one operation *)
-Function f_do_flagged_checks (rtcs: run_time_check_set) (op: binary_operator) (v1: value) (v2: value): option bool :=
-    match rtcs with
-    | nil => Some true
-    | rtc :: rtcs' => 
-        match f_do_flagged_check rtc op v1 v2 with
-        | Some false => Some false
-        | Some true => f_do_flagged_checks rtcs' op v1 v2
-        | None => None
-        end
-    end.
-
-
-(** ** Bisimulation between relational and functional semantics *)
-
-(** bisimulation proof between f_check_flag and check_flag: 
-    - f_check_flag_correct
-    - f_check_flag_complete
-*)
-Lemma f_check_flags_correct: forall e cks,
-    f_check_flags e = cks ->
-    check_flags e cks.
-Proof.
-    intros e;
-    functional induction (f_check_flags e);
-    intros ck h1;
-    rewrite <- h1;
-     try constructor;
-    match goal with
-    | |- ?op <> Plus => idtac
-    | |- ?op <> Minus => idtac
-    | |- ?op <> Multiply => idtac
-    | |- ?op <> Divide => idtac
-    | _ => destruct n; constructor
-    end;
-    destruct op; inversion y;
-    unfold not; intros hz1; inversion hz1.
-Qed.
-
-Lemma f_check_flags_complete: forall e cks,
-    check_flags e cks ->
-    f_check_flags e = cks.
-Proof.
-    intros e ck h1.
-    induction h1;
-    auto.
-    destruct op; intuition.
-Qed.
-
-
-(** bisimulation proof between f_do_check and do_check: 
-    - f_do_check_correct
-    - f_do_check_complete
-*)
-Lemma f_do_check_correct: forall op v1 v2 b,
-    f_do_check op v1 v2 = Some b ->
-    do_check op v1 v2 b.
-Proof.
-    intros op v1 v2;
-    functional induction (f_do_check op v1 v2);
-    intros b h1;
-    inversion h1; subst;
-    match goal with 
-    | |- do_check Plus ?v1 ?v2 ?v => idtac
-    | |- do_check Minus ?v1 ?v2 ?v => idtac
-    | |- do_check Multiply ?v1 ?v2 ?v => idtac
-    | |- do_check Divide ?v1 ?v2 ?v => idtac
-    | _ => destruct op; try inversion y;
-           constructor; unfold not; intros hz1;
-           inversion hz1
-    end; constructor; try (rewrite e1); auto.
-Qed.
-
-Lemma f_do_check_complete: forall op v1 v2 b,
-    do_check op v1 v2 b ->
-    f_do_check op v1 v2 = Some b.
-Proof.
-    intros op v1 v2 b h1.
-    induction h1; simpl;
-    try (rewrite H; auto).
-    destruct op; intuition.
-Qed.
-
-Lemma f_do_flagged_check_correct: forall ck op v1 v2 b,
-    f_do_flagged_check ck op v1 v2 = Some b ->
-    do_flagged_check ck op v1 v2 b.
-Proof.
-    intros ck op v1 v2;
-    functional induction (f_do_flagged_check ck op v1 v2);
-    intros b h1;
-    inversion h1; subst;
-    constructor; auto.
-Qed.
-
-Lemma f_do_flagged_check_complete: forall ck op v1 v2 b,
-    do_flagged_check ck op v1 v2 b ->
-    f_do_flagged_check ck op v1 v2 = Some b.
-Proof.
-    intros ck op v1 v2 b h1.
-    induction h1; simpl;
-    rewrite H; auto.
-Qed.
-
-Lemma f_do_flagged_checks_correct: forall cks op v1 v2 b,
-    f_do_flagged_checks cks op v1 v2 = Some b ->
-    do_flagged_checks cks op v1 v2 b.
-Proof.
-    intros cks op v1 v2;
-    functional induction (f_do_flagged_checks cks op v1 v2);
-    intros b h1.
-  - inversion h1; subst.
-    constructor.
-  - inversion h1; subst.
-    constructor.
-    apply f_do_flagged_check_correct; auto.
-  - specialize (IHo _ h1).
-    constructor; auto.
-    apply f_do_flagged_check_correct; auto.
-  - inversion h1.
-Qed.
-
-Lemma f_do_flagged_checks_complete: forall cks op v1 v2 b,
-    do_flagged_checks cks op v1 v2 b ->
-    f_do_flagged_checks cks op v1 v2 = Some b.
-Proof.
-    intros cks op v1 v2 b h1.
-    induction h1; simpl; auto.
-  - rewrite (f_do_flagged_check_complete _ _ _ _ _ H).
-    auto.
-  - rewrite (f_do_flagged_check_complete _ _ _ _ _ H).
-    auto.
-Qed.
-
-(** * Lemmas about run time checks *)
-
-(** whenever perform the flagged checks on the binary operator, 
-    if these flagged checks are produced correctly according to 
-    the checking rules, then its result should be the same as the
-    result by the reference check semantcis do_check;
-*)
-Lemma do_complete_checks_correct: forall ast_num op e1 e2 cks v1 v2 b,
-    check_flags (E_Binary_Operation ast_num op e1 e2) cks ->
-    do_flagged_checks cks op v1 v2 b ->
-    do_check op v1 v2 b.
-Proof.
-    intros ast_num op e1 e2 cks v1 v2 b h1 h2.
-    destruct op;
-    match goal with
-    | h: check_flags (E_Binary_Operation _ Plus ?e1 ?e2) ?cks |- _ => idtac
-    | h: check_flags (E_Binary_Operation _ Minus ?e1 ?e2) ?cks |- _ => idtac
-    | h: check_flags (E_Binary_Operation _ Multiply ?e1 ?e2) ?cks |- _ => idtac
-    | h: check_flags (E_Binary_Operation _ Divide ?e1 ?e2) ?cks |- _ => idtac
-    | h: check_flags (E_Binary_Operation _ ?op ?e1 ?e2) ?cks |- _ => 
-        inversion h1; subst; inversion h2; subst; constructor; rm_always_true
-    end.
-  - (* Plus *)
-    inversion h1; subst.
-    + destruct b.
-      * inversion h2; subst.
-        inversion H1; subst.
-        constructor; auto.
-      * inversion h2; subst.
-        inversion H4; subst.
-        constructor; auto.
-        inversion H6.
-    + rm_false_hyp.
-  - (* Minus *)
-    inversion h1; subst.
-    + destruct b.
-      * inversion h2; subst.
-        inversion H1; subst.
-        constructor; auto.
-      * inversion h2; subst.
-        inversion H4; subst.
-        constructor; auto.
-        inversion H6.
-    + rm_false_hyp.
-  - (* Multiply *)
-    inversion h1; subst.
-    + destruct b.
-      * inversion h2; subst.
-        inversion H1; subst.
-        constructor; auto.
-      * inversion h2; subst.
-        inversion H4; subst.
-        constructor; auto.
-        inversion H6.
-    + rm_false_hyp.
-  - (* Divide *)
-    inversion h1; subst.
-    + destruct b.
-      * inversion h2; subst.
-        inversion H6; subst.
-        inversion H2; subst.
-        inversion H1; subst.
-        constructor; intuition.
-      * inversion h2; subst.
-        inversion H4; subst.
-        constructor; auto.
-        rewrite H; auto.
-        inversion H6; subst.
-        inversion H5; subst.
-        constructor. 
-        rewrite H. destruct (Zeq_bool v3 0); auto.
-        inversion H8.
-    + rm_false_hyp.
-Qed.
-
-
-(** whenever perform the flagged checks on the binary operator, 
-    if these flagged checks are produced correctly according to 
-    the checking rules, then its result should be the same as the
-    result by the reference check semantcis do_check;
-*)
-Lemma do_complete_checks_correct': forall ast_num op e1 e2 cks v1 v2 b,
-    check_flags (E_Binary_Operation ast_num op e1 e2) cks ->
-    do_check op v1 v2 b ->
-    do_flagged_checks cks op v1 v2 b.
-Proof.
-    intros ast_num op e1 e2 cks v1 v2 b h1 h2.
-    destruct op;
-    match goal with
-    | h: check_flags (E_Binary_Operation _ Plus ?e1 ?e2) ?cks |- _ => idtac
-    | h: check_flags (E_Binary_Operation _ Minus ?e1 ?e2) ?cks |- _ => idtac
-    | h: check_flags (E_Binary_Operation _ Multiply ?e1 ?e2) ?cks |- _ => idtac
-    | h: check_flags (E_Binary_Operation _ Divide ?e1 ?e2) ?cks |- _ => idtac
-    | h: check_flags (E_Binary_Operation _ ?op ?e1 ?e2) ?cks |- _ => 
-        inversion h1; subst; inversion h2; subst; constructor
-    end.
-  - (* Plus *)
-    inversion h1; subst.
-    + destruct b.
-      * inversion h2; subst.
-        repeat constructor; auto.
-        rm_false_hyp.
-      * inversion h2; subst.
-        repeat constructor; auto.
-    + rm_false_hyp.
-  - (* Minus *)
-    inversion h1; subst.
-    + destruct b.
-      * inversion h2; subst.
-        repeat constructor; auto.
-        rm_false_hyp.
-      * inversion h2; subst.
-        repeat constructor; auto.
-    + rm_false_hyp.
-  - (* Multiply *)
-    inversion h1; subst.
-    + destruct b.
-      * inversion h2; subst.
-        repeat constructor; auto.
-        rm_false_hyp.
-      * inversion h2; subst.
-        repeat constructor; auto.
-    + rm_false_hyp.
-  - (* Divide *)
-    inversion h1; subst.
-    + destruct b.
-      * inversion h2; subst.
-        repeat constructor;
-        destruct (Zeq_bool v3 0); inversion H; auto.
-        rm_false_hyp.
-      * inversion h2; subst.
-        remember (negb (Zeq_bool v3 0)) as x.
-        symmetry in Heqx; destruct x; simpl in H.
-        apply Do_Checks_True;
-        repeat constructor; auto.
-        repeat constructor; auto.
-    + rm_false_hyp.
-Qed.
-
-
-(** 
-    this lemma is used only to prove binop_rule2, which means that
-    run time checks on a binary operator with two integer values 
-    should always return a value b, which can be either true or false;
-*)
-
-Lemma do_check_result_ex: forall op v1 v2,
-    exists b : bool, do_check op (Int v1) (Int v2) b.
-Proof.
-    intros op v1 v2.
-    destruct op;   
-    try match goal with
-    | [ |- exists r : bool, do_check Plus (Int ?v1) (Int ?v2) r ] => idtac
-    | [ |- exists r : bool, do_check Minus (Int ?v1) (Int ?v2) r ] => idtac
-    | [ |- exists r : bool, do_check Multiply (Int ?v1) (Int ?v2) r ] => idtac
-    | [ |- exists r : bool, do_check Divide (Int ?v1) (Int ?v2) r ] => idtac
-    | [ |- exists r : bool, do_check ?op (Int ?v1) (Int ?v2) r ] =>
-            exists true; constructor; rm_always_true
-    end.
-    + (* Plus *)
-      remember ((Zge_bool (v1 + v2) min_signed) && (Zle_bool (v1 + v2) max_signed)) as b.
-      destruct b;
-      [exists true | exists false];
-      constructor; auto.
-    + (* Minus *)
-      remember ((Zge_bool (v1 - v2) min_signed) && (Zle_bool (v1 - v2) max_signed)) as b.
-      destruct b;
-      [exists true | exists false];
-      constructor; auto.
-    + (* Multiply *)
-      remember ((Zge_bool (v1 * v2) min_signed) && (Zle_bool (v1 * v2) max_signed)) as b.
-      destruct b;
-      [exists true | exists false];
-      constructor; auto.
-    + (* Divide *)
-      destruct v2.
-      * exists false; 
-        constructor; auto.
-      * remember ((Zge_bool (Z.quot v1 (Z.pos p)) min_signed) && (Zle_bool (Z.quot v1 (Z.pos p)) max_signed)) as b.
-        destruct b;
-        [exists true | exists false];
-        constructor; auto.
-      * remember ((Zge_bool (Z.quot v1 (Z.neg p)) min_signed) && (Zle_bool (Z.quot v1 (Z.neg p)) max_signed)) as b.
-        destruct b;
-        [exists true | exists false];
-        constructor; auto.
-Qed.
-******************************************************************)

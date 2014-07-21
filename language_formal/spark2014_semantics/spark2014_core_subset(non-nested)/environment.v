@@ -24,39 +24,6 @@ Module STORE(V:ENTRY).
 
   Definition store : Type := list (idnum * V).
 
-  Inductive first_occ {A B} : A -> B -> list (A*B) -> Prop :=
-  | FO_Head: forall l a b, 
-      first_occ a b ((a,b)::l)
-  | FO_Tail: forall l a b a' b', 
-      a<>a' -> 
-      first_occ a b l -> 
-      first_occ a b ((a',b')::l).
-
-  Ltac wellf_rename_hyp th :=
-    match th with
-    | first_occ _ _ _ => fresh "h_firstocc"
-    | _ => default_rename_hyp
-    end.
-
-  Ltac rename_hyp ::= wellf_rename_hyp.
-
-  Lemma first_occ_det : forall A B l (a:A) (b b':B), 
-    first_occ a b l -> 
-      first_occ a b' l -> 
-        b = b'.
-  Proof.
-    intros A B l a b b' h.  
-    revert b'.
-    !induction h;!intros.
-    - !inversion h_firstocc.
-      + reflexivity.
-      + destruct H3. reflexivity.
-    - apply IHh.
-      !inversion h_firstocc.
-      + destruct H. reflexivity.
-      + assumption.
-  Qed.
-
   (** ** Store Operations *)
   (** check whether variable x has already been declared *)
   Function resides (x : idnum) (s : store) := 
@@ -103,96 +70,6 @@ Module STORE(V:ENTRY).
 
   (** ** Lemmas About Store Operations *)
 
-  Lemma fetches_in: forall x s v, 
-    fetches x s = Some v -> first_occ x v s.
-  Proof.
-    intros x s.
-    functional induction (fetches x s);
-    intros v1 H;
-    try match goal with
-    | h: None = Some ?v |- _ => inversion h
-    | h: Some ?v1 = Some ?v2 |- _ => inversion h; subst
-    end; simpl.
-  - apply beq_nat_true_iff in e0; subst.
-    left;auto.
-  - right.
-    apply beq_nat_false_iff in e0.
-    assumption.
-    apply IHo.
-    assumption.
-  Qed.
-
-  Lemma in_fetches: forall x s v, 
-    first_occ x v s -> 
-      fetches x s = Some v.
-  Proof.
-    intros x s.
-    functional induction (fetches x s);
-      intros v1 H;
-      try match goal with
-      | h: None = Some ?v |- _ => inversion h
-      | h: Some ?v1 = Some ?v2 |- _ => inversion h; subst
-          end; simpl.
-    - apply beq_nat_true_iff in e0; subst.
-      !inversion H.
-      + reflexivity.
-      + destruct H4;auto.
-    - apply IHo.
-      !inversion H.
-      + rewrite <- beq_nat_refl in e0.
-        !inversion e0.
-      + assumption. 
-    - inversion H.
-  Qed.
-
-  Lemma updates_in: forall s x v' s', 
-    updates s x v' = Some s' -> 
-      (exists v, first_occ x v s).
-  Proof.
-    intros s x v'.
-    functional induction (updates s x v');
-    intros s1 h1;
-    try match goal with
-    | h: None = Some ?s |- _ => inversion h
-    | h: beq_nat _ _ = true |- _  => rewrite beq_nat_true_iff in h; subst
-    end.
-  - exists v'. 
-    simpl.
-    left; auto.
-  - specialize (IHo s'' e1).
-    inversion IHo.
-    exists x0. simpl.
-    right. 
-    + apply beq_nat_false_iff in e0.
-      assumption.
-    + assumption.
-  Qed.
-    
-  Lemma in_updates: forall s x v' y v s',
-    updates s x v' = Some s' ->
-      first_occ y v s' ->
-        ((y=x /\ v=v') \/ first_occ y v s).
-  Proof.
-    intros s x v'.
-    functional induction (updates s x v'); simpl; intros y0 v0 s0 h h'; subst;
-    (inversion h; clear h); subst.
-
-  - apply beq_nat_true_iff in e0; subst.
-    !inversion h'.
-    + left. auto.
-    + right.
-      right;auto.
-  - specialize (IHo y0 v0 s'' e1).
-    !inversion h'.
-    + right. left.
-    + specialize (IHo h_firstocc). 
-       destruct IHo as [h | h'']. subst.
-      * left;auto.
-      * right.
-        right;auto.
-  Qed.
-
-
   Lemma updates_length: forall s x v s', 
     updates s x v = Some s' -> 
       List.length s = List.length s'.
@@ -236,20 +113,6 @@ Module STORE(V:ENTRY).
   
   Definition newFrame (n: scope_level): frame := (n, nil). 
 
-  (* split the stack into two substacks, scope levels of the first substack 
-     equal or greater than n, and scope levels of another substack is less 
-     than n;
-  *)
-  
-
-  (** ** Stack Properties *)
-  (* TODO: rename this into MapsToG, and have inG of type idnum -> stack
-     -> Prop + lamms between the two. *)
-  Inductive inG: idnum -> V -> stack -> Prop := 
-    | InG1: forall x v f s,
-            first_occ x v (store_of f) -> inG x v (f :: s)
-    | InG2: forall x v f s,
-           (forall e, ~first_occ x e (store_of f)) -> inG x v s -> inG x v (f :: s).
 
   (** ** Stack Operations *)
 
@@ -293,91 +156,6 @@ Module STORE(V:ENTRY).
     | nil => false
     end.
 
-  (** ** Lemmas About Stack Operations *)
-
-  Lemma fetch_in_none: forall x f, 
-    fetch x f = None -> 
-      forall v, ~first_occ x v (store_of f).
-  Proof.
-    intros x s. unfold fetch.
-    functional induction fetches x (store_of s).
-    - inversion 1.
-    - apply beq_nat_false_iff in e0; subst.
-      intros H v0.
-      specialize (IHo H).
-      intro abs.
-      !inversion abs; clear abs.
-      + destruct e0;auto.
-      + destruct (IHo _ h_firstocc).
-    - intros H v.
-      intro abs.
-      inversion abs.
-  Qed.
-
-  Lemma fetchG_in_none: forall x s, 
-    fetchG x s = None -> 
-      forall v, ~inG x v s.
-  Proof.
-    intros x s.
-    functional induction fetchG x s.
-    - inversion 1.
-    - intros H v.
-      intro abs.
-      !inversion  abs.
-      + pose (xxx:= fetch_in_none _ _ e0 v).
-        clearbody xxx.
-        contradiction.
-      + specialize (IHo H v).
-        contradiction.
-    - intros H v.
-      intro abs.
-      inversion abs.
-  Qed.
-
-  Lemma fetchG_in: forall x s v, 
-    fetchG x s = Some v -> 
-      inG x v s.
-  Proof.
-    intros x s.
-    functional induction (fetchG x s);
-      intros v1 H;
-      try match goal with
-          | h: None = Some ?v |- _ => inversion h
-          | h: Some ?v1 = Some ?v2 |- _ => inversion h; subst
-          end; simpl.
-    - apply fetches_in in e0.
-      constructor 1.
-      assumption.
-    - constructor 2.
-      + apply fetch_in_none.
-        auto.
-      + apply IHo.
-        assumption.
-  Qed.
-
-  Lemma inG_fetchG: forall x s v, 
-    inG x v s -> 
-      fetchG x s = Some v.
-  Proof.
-    intros x s.
-    functional induction (fetchG x s);
-      intros v1 H;
-      try match goal with
-          | h: None = Some ?v |- _ => inversion h
-          | h: Some ?v1 = Some ?v2 |- _ => inversion h; subst
-          end; simpl.
-    - apply fetches_in in e0.
-      !inversion H;clear H.
-      + rewrite (first_occ_det _ _ (store_of f) x v v1);auto.
-      + destruct (H4 _ e0).
-    - apply IHo.
-      !inversion H.
-      + pose (fetch_in_none _ _ e0 v1). contradiction.
-      + assumption.
-    - inversion H.
-  Qed.
-
-
   Inductive stack_eq_length : stack -> stack -> Prop :=
     | eqnil: stack_eq_length nil nil
     | eqncons: forall s s' f f',
@@ -399,7 +177,6 @@ Module STORE(V:ENTRY).
         reflexivity.
       + reflexivity.
   Qed.
-
 
   Require Import Setoid.
   Require Import Morphisms.
@@ -469,28 +246,6 @@ Module STORE(V:ENTRY).
         assumption.
       + assumption.
   Qed.
-
-
-  Lemma updateG_stack_eq_length: forall s x v s', 
-    updateG s x v = Some s' -> 
-      stack_eq_length s s'.
-  Proof.
-    admit.
-  (*
-    intros s x v.
-    functional induction updateG s x v;simpl
-    ; intros updateds heq; inversion heq;clear heq
-    ; subst;simpl;auto.
-    - constructor.
-      + apply stack_eq_length_refl;auto.
-      + unfold update in e0. eapply updates_length;eauto.
-    - constructor.
-      + apply IHo.
-        assumption.
-      + reflexivity.
-  *)
-  Qed.
-
 
   Lemma updateG_length: forall s x v s', 
     updateG s x v = Some s' -> 

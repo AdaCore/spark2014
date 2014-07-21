@@ -1,57 +1,5 @@
 Require Export checks_generator.
 
-(** * Check Flags Extraction Functions *)
-
-Function exp_check_flags (e: expression_x): check_flags :=
-  match e with
-  | E_Literal_X ast_num l checkflags => checkflags
-  | E_Name_X ast_num n checkflags => checkflags
-  | E_Binary_Operation_X ast_num op e1 e2 checkflags => checkflags
-  | E_Unary_Operation_X ast_num op e checkflags => checkflags
-  end.
-
-Function name_check_flags (n: name_x): check_flags :=
-  match n with
-  | E_Identifier_X ast_num x checkflags => checkflags
-  | E_Indexed_Component_X ast_num x_ast_num x e checkflags => checkflags
-  | E_Selected_Component_X ast_num x_ast_num x f checkflags => checkflags
-  end.
-
-
-(** * Check Flags Comparison Functions *)
-
-Function beq_check_flag (ck1 ck2: check_flag): bool :=
-  match ck1, ck2 with
-  | Do_Division_Check, Do_Division_Check => true
-  | Do_Overflow_Check, Do_Overflow_Check => true
-  | Do_Index_Check,    Do_Index_Check => true
-  | _, _ => false
-  end.
-
-Function element_of (a: check_flag) (ls: list check_flag): bool :=
-  match ls with
-  | nil => false
-  | (a' :: ls') => 
-      if beq_check_flag a a' then
-        true
-      else
-        element_of a ls'
-  end.
-
-Function subset_of (cks1 cks2: check_flags): bool :=
-  match cks1 with
-  | nil => true
-  | ck :: cks1' => 
-      if element_of ck cks2 then
-        subset_of cks1' cks2 
-      else
-        false
-  end.
-
-Function beq_check_flags (cks1 cks2: check_flags): bool :=
-  (subset_of cks1 cks2) && (subset_of cks2 cks1).
-
-
 (** * Check Flags Comparison Function For Program *) 
 (** It only returns true or false *)
 

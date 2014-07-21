@@ -57,6 +57,9 @@ Record type_table: Type := mktype_table{
 Inductive type: Type :=
     | Boolean (* 3.5.3 *)
     | Integer (* 3.5.4 *)
+    | Subtype (t: typenum) (* 3.2.2 *)
+    | Derived_Type (t: typenum) (* 3.4 *)
+    | Integer_Type (t: typenum) (* 3.5.4 *)
     | Aggregate (t: typenum) (* 3.6, 3.8 *) (* t: declared array/record type name *).
 
 (** * In/Out Mode *)
@@ -95,3 +98,15 @@ Inductive literal: Type :=
     | Integer_Literal: Z -> literal (* 2.4 *)
     | Boolean_Literal: bool -> literal (* 3.5.3 *).
 
+
+Section LB_AuxiliaryFunctions.
+  
+  Definition is_range_constrainted_type (t: type): bool :=
+    match t with
+    | Subtype _ => true
+    | Derived_Type _ => true
+    | Integer_Type _ => true
+    | _ => false
+    end.
+  
+End LB_AuxiliaryFunctions.

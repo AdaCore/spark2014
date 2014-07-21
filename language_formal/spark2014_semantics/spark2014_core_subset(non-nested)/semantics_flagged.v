@@ -86,6 +86,58 @@ Inductive do_flagged_index_checks: check_flags -> Z -> Z -> Z -> check_status ->
         do_flagged_index_checks (ck :: cks) i l u (Exception msg).
 
 
+(** * Check Flags Extraction Functions *)
+
+Function name_check_flags (n: name_x): check_flags :=
+  match n with
+  | E_Identifier_X ast_num x cks => cks
+  | E_Indexed_Component_X ast_num x_ast_num x e cks => cks
+  | E_Selected_Component_X ast_num x_ast_num x f cks => cks
+  end.
+
+Function exp_check_flags (e: expression_x): check_flags :=
+  match e with
+  | E_Literal_X ast_num l cks => cks
+  | E_Name_X ast_num n cks =>
+      name_check_flags n
+  | E_Binary_Operation_X ast_num op e1 e2 cks => cks
+  | E_Unary_Operation_X ast_num op e cks => cks
+  end.
+
+Function update_name_check_flags (n: name_x) (cks: check_flags): name_x :=
+  match n with
+  | E_Identifier_X ast_num x cks0 => 
+      E_Identifier_X ast_num x cks
+  | E_Indexed_Component_X ast_num x_ast_num x e cks0 => 
+      E_Indexed_Component_X ast_num x_ast_num x e cks
+  | E_Selected_Component_X ast_num x_ast_num x f cks0 =>
+      E_Selected_Component_X ast_num x_ast_num x f cks
+  end.
+
+Function update_exp_check_flags (e: expression_x) (cks: check_flags): expression_x :=
+  match e with
+  | E_Literal_X ast_num l cks0 =>
+      E_Literal_X ast_num l cks
+  | E_Name_X ast_num n0 cks0 =>
+      let n := update_name_check_flags n0 cks in
+        E_Name_X ast_num n cks0
+  | E_Binary_Operation_X ast_num op e1 e2 cks0 =>
+      E_Binary_Operation_X ast_num op e1 e2 cks
+  | E_Unary_Operation_X ast_num op e cks0 =>
+      E_Unary_Operation_X ast_num op e cks
+  end.
+
+Function exclude_check_flag (ck: check_flag) (cks: check_flags) :=
+  match cks with
+  | nil => nil
+  | ck' :: cks' =>
+     if beq_check_flag ck ck' then
+       cks'
+     else
+       ck' :: (exclude_check_flag ck cks')
+  end.
+
+
 (** * Relational Semantics *)
 
 (** ** Expression Evaluation Semantics *)
@@ -142,20 +194,36 @@ with eval_name_x: stack -> name_x -> Return value -> Prop :=
     | Eval_E_Identifier_X: forall x s v ast_num, 
         fetchG x s = Some v ->
         eval_name_x s (E_Identifier_X ast_num x nil) (Normal v)
-    | Eval_E_Indexed_Component_RTE_E_X: forall s e msg ast_num x_ast_num x checkflags,
+    | Eval_E_Indexed_Component_No_Index_Check_RTE_X: forall e s msg ast_num x_ast_num x, 
+        ~(List.In Do_Index_Check (exp_check_flags e)) ->
         eval_expr_x s e (Run_Time_Error msg) ->
-        eval_name_x s (E_Indexed_Component_X ast_num x_ast_num x e checkflags) (Run_Time_Error msg)
-    | Eval_E_Indexed_Component_RTE_Index_X: forall s e i x l u a checkflags ast_num x_ast_num, 
+        eval_name_x s (E_Indexed_Component_X ast_num x_ast_num x e nil) (Run_Time_Error msg)
+    | Eval_E_Indexed_Component_No_Index_Check_X: forall e s i x l u a v ast_num x_ast_num,
+        ~(List.In Do_Index_Check (exp_check_flags e)) ->
         eval_expr_x s e (Normal (BasicV (Int i))) ->
         fetchG x s = Some (AggregateV (ArrayV (l, u, a))) ->
-        do_flagged_index_checks checkflags i l u (Exception RTE_Index) ->
-        eval_name_x s (E_Indexed_Component_X ast_num x_ast_num x e checkflags) Index_Error
-    | Eval_E_Indexed_Component_X: forall s e i x l u a checkflags v ast_num x_ast_num, 
-        eval_expr_x s e (Normal (BasicV (Int i))) ->
-        fetchG x s = Some (AggregateV (ArrayV (l, u, a))) ->
-        do_flagged_index_checks checkflags i l u Success ->
         array_select a i = Some v ->
-        eval_name_x s (E_Indexed_Component_X ast_num x_ast_num x e checkflags) (Normal (BasicV v))
+        eval_name_x s (E_Indexed_Component_X ast_num x_ast_num x e nil) (Normal (BasicV v))
+    | Eval_E_Indexed_Component_RTE_E_X: forall e cks' s msg ast_num x_ast_num x,
+        List.In Do_Index_Check (exp_check_flags e) ->
+        exclude_check_flag Do_Index_Check (exp_check_flags e) = cks' ->
+        eval_expr_x s (update_exp_check_flags e cks') (Run_Time_Error msg) ->
+        eval_name_x s (E_Indexed_Component_X ast_num x_ast_num x e nil) (Run_Time_Error msg)
+    | Eval_E_Indexed_Component_RTE_Index_X: forall e cks' s i x l u a ast_num x_ast_num, 
+        List.In Do_Index_Check (exp_check_flags e) ->
+        exclude_check_flag Do_Index_Check (exp_check_flags e) = cks' ->
+        eval_expr_x s (update_exp_check_flags e cks') (Normal (BasicV (Int i))) ->
+        fetchG x s = Some (AggregateV (ArrayV (l, u, a))) ->
+        do_flagged_index_check Do_Index_Check i l u (Exception RTE_Index) ->
+        eval_name_x s (E_Indexed_Component_X ast_num x_ast_num x e nil) (Run_Time_Error RTE_Index)
+    | Eval_E_Indexed_Component_X: forall e cks' s i x l u a v ast_num x_ast_num, 
+        List.In Do_Index_Check (exp_check_flags e) ->
+        exclude_check_flag Do_Index_Check (exp_check_flags e) = cks' ->
+        eval_expr_x s (update_exp_check_flags e cks') (Normal (BasicV (Int i))) ->
+        fetchG x s = Some (AggregateV (ArrayV (l, u, a))) ->
+        do_flagged_index_check Do_Index_Check i l u Success ->
+        array_select a i = Some v ->
+        eval_name_x s (E_Indexed_Component_X ast_num x_ast_num x e nil) (Normal (BasicV v))
     | Eval_E_Selected_Component_X: forall x s r f v ast_num x_ast_num,
         fetchG x s = Some (AggregateV (RecordV r)) ->
         record_select r f = Some v ->

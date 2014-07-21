@@ -40,10 +40,16 @@ Inductive statement_xx: Type :=
     | S_If_XX: astnum -> expression_xx -> statement_xx -> statement_xx -> statement_xx (* 5.3 *)
     | S_While_Loop_XX: astnum -> expression_xx -> statement_xx -> statement_xx (* 5.5 *)
     | S_Procedure_Call_XX: astnum -> astnum -> procnum -> list expression_xx -> statement_xx (* 6.4 *) (* the second astnum for the called procedure *)
-    | S_Sequence_XX: astnum -> statement_xx -> statement_xx -> statement_xx. (* 5.1 *)
+    | S_Sequence_XX: astnum -> statement_xx -> statement_xx -> statement_xx (* 5.1 *).
 
 (* Array / Record Type Declaration *)
 Inductive type_declaration_xx: Type := (* 3.2.1 *)
+    | Subtype_Declaration_XX:
+        astnum -> typenum (*subtype name*) -> type -> Z -> Z (*range*) -> type_declaration_xx (* 3.2.2 *)
+    | Derived_Type_Declaration_XX:
+        astnum -> typenum (*derived type name*) -> type -> Z -> Z (*range*) -> type_declaration_xx (* 3.4 *)
+    | Integer_Type_Declaration_XX:
+        astnum -> typenum (*integer type name*) -> Z -> Z (*range*) -> type_declaration_xx (* 3.5.4 *)
     | Array_Type_Declaration_XX: (* Constrained_Array_Definition, non-nested one-dimentional array *)
         astnum -> typenum (*array name*) -> type (*component type*) -> 
           Z (*lower bound*) -> Z (*upper bound*) -> type_declaration_xx (* 3.6 *)
@@ -67,13 +73,6 @@ Record parameter_specification_xx: Type := mkparameter_specification_xx{
 (*  parameter_default_expression_xx: option (expression_xx) *)
 }.
 
-(* 13.1.1 *)
-Record aspect_specification_xx: Type := mkaspect_specification_xx{
-    aspect_astnum_xx: astnum;
-    aspect_mark_xx: aspectnum;
-    aspect_definition_xx: expression_xx
-}.
-
 (* Mutual records/inductives are not allowed in coq, so we build a record by hand. *)
 Inductive declaration_xx: Type :=  (* 3.1 *)
     | D_Null_Declaration_XX: declaration_xx
@@ -89,24 +88,9 @@ with procedure_body_xx: Type :=
     (procedure_astnum_xx: astnum)
     (procedure_name_xx: procnum)
     (procedure_parameter_profile_xx: list parameter_specification_xx)
-    (procedure_aspect_xx: list aspect_specification_xx) (* aspects are not in the formalization now *)
     (procedure_declarative_part_xx: declaration_xx)
     (procedure_statements_xx: statement_xx).
 
-(*
-(* Compilation Unit Subprogram *)
-
-(* 10.1.1 *)
-Inductive library_unit_body_xx: Type := 
-    | Procedure_XX: astnum -> procedure_body_xx -> library_unit_body_xx. (* 6.1 *)
-(*  | Function_XX:  astnum -> function_body_xx  -> library_unit_body_xx *)
-
-(* 10.1.1 *)
-Inductive compilation_xx: Type := 
-    | Compilation_Unit_XX: astnum -> library_unit_body_xx -> compilation_xx
-    | Compilation_Cons_XX: astnum -> compilation_xx -> compilation_xx -> compilation_xx
-(*  | Compilation_Unit2_XX: astnum -> library_unit_declaration_xx -> compilation_xx *)
-*)
 
 (** ** Auxiliary Functions *)
 
@@ -114,33 +98,31 @@ Section AuxiliaryFunctions_XX.
 
   Definition procedure_statements_xx pb :=
     match pb with 
-      | mkprocedure_body_xx _ _ _ _ _ x => x
+      | mkprocedure_body_xx _ _ _ _ x => x
     end.
 
   Definition procedure_declarative_part_xx pb :=
     match pb with
-      | mkprocedure_body_xx _ _ _ _ x _ => x
-    end.
-
-  Definition procedure_aspect_xx pb :=
-    match pb with
-      | mkprocedure_body_xx _ _ _ x _ _ => x
+      | mkprocedure_body_xx _ _ _ x _ => x
     end.
 
   Definition procedure_parameter_profile_xx pb :=
     match pb with
-      | mkprocedure_body_xx _ _ x _ _ _ => x
+      | mkprocedure_body_xx _ _ x _ _ => x
     end.
 
   Definition procedure_name_xx pb :=
     match pb with
-      | mkprocedure_body_xx _ x _ _ _ _ => x
+      | mkprocedure_body_xx _ x _ _ _ => x
     end.
 
   Definition type_name_xx td :=
     match td with
-    | Array_Type_Declaration_XX _ tn _ _ _ => tn
-    | Record_Type_Declaration_XX _ tn _ => tn
+    | Subtype_Declaration_XX _ tn _ _ _      => tn
+    | Derived_Type_Declaration_XX _ tn _ _ _ => tn
+    | Integer_Type_Declaration_XX _ tn _ _   => tn
+    | Array_Type_Declaration_XX _ tn _ _ _   => tn
+    | Record_Type_Declaration_XX _ tn _      => tn
     end.
 
   Definition expression_astnum_xx e :=

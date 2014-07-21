@@ -4,8 +4,7 @@ Require Export language_basics.
 Inductive error_type: Type :=
     | RTE_Division_By_Zero
     | RTE_Overflow
-    | RTE_Index.   (* index check for an array access *)
-(*  | RTE_Range *) (* range check for a scalar range, e.g. -1 is assigned to natural variable *)
+    | RTE_Range. (* range check for a scalar range, e.g. -1 is assigned to natural variable *)
 
 (** * Return Values / States *)
 (** Statement and expressions evaluation returns one of the following results:
@@ -67,7 +66,7 @@ Inductive basic_value : Type :=
     | Bool (b : bool).
 
 Inductive aggregate_value : Type :=
-    | ArrayV (a: (Z * Z) * (list (index * basic_value))) (* array value with lower and upper bound *)
+    | ArrayV (a: list (index * basic_value)) (* array value with lower and upper bound *)
     | RecordV (r: list (idnum * basic_value)).
 
 (** Type of stored values in the store *)
@@ -91,7 +90,7 @@ Arguments Undefined [Procedure_Decl] [Type_Decl].
 
 Definition Division_Error: Return value := Run_Time_Error RTE_Division_By_Zero.
 Definition Overflow_Error: Return value := Run_Time_Error RTE_Overflow.
-Definition Index_Error: Return value := Run_Time_Error RTE_Index.
+Definition Range_Error: Return value := Run_Time_Error RTE_Range.
 
 
 (** * Value Operations *)

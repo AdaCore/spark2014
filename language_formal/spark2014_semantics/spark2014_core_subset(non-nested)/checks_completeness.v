@@ -1,18 +1,73 @@
 Require Export semantics_flagged.
 Require Export X_SparkTactics.
 
-
-Scheme expression_ind := Induction for expression Sort Prop 
-                         with name_ind := Induction for name Sort Prop.
-
-Lemma gen_check_flags_on_binop_completeness: forall op v1 v2 v3 ast_num e1 e2 checkflags v3',
-  do_run_time_check_on_binop op v1 v2 v3 ->
-    gen_exp_check_flags (E_Binary_Operation ast_num op e1 e2) checkflags ->
-      do_flagged_checks_on_binop checkflags op v1 v2 v3' ->
+Lemma binop_overflow_check_completeness: forall op v1 v2 v3 v3',
+  op = Plus \/ op = Minus \/ op = Multiply ->
+    do_run_time_check_on_binop op v1 v2 v3 -> 
+      do_flagged_checks_on_binop (Do_Overflow_Check :: nil) op v1 v2 v3' ->
         v3 = v3'.
 Proof.
   intros;
-  destruct op; inversion H0; smack;
+  repeat progress match goal with
+    | [H: do_run_time_check_on_binop _ _ _ _, H1: do_flagged_checks_on_binop nil _ _ _ _ |- _] => inversion H; inversion H1; clear H H1; smack
+    | [H: do_flagged_checks_on_binop _ _ _ _ _ |- _] => inversion H; clear H; smack
+    | [H: do_flagged_check_on_binop _ _ _ _ _ |- _] => inversion H; clear H; smack 
+    | [H: do_run_time_check_on_binop _ _ _ _ |- _] => inversion H; clear H; smack
+    | [H1: do_overflow_check _ _ _ _, H2: do_overflow_check _ _ _ _ |- _] => inversion H1; inversion H2; smack
+    end.
+Qed.
+
+Lemma plus_overflow_check_completeness: forall v1 v2 v3 v3',
+    do_run_time_check_on_binop Plus v1 v2 v3 -> 
+      do_flagged_checks_on_binop (Do_Overflow_Check :: nil) Plus v1 v2 v3' ->
+        v3 = v3'.
+Proof.
+  intros;
+  repeat progress match goal with
+    | [H: do_run_time_check_on_binop _ _ _ _, H1: do_flagged_checks_on_binop nil _ _ _ _ |- _] => inversion H; inversion H1; clear H H1; smack
+    | [H: do_flagged_checks_on_binop _ _ _ _ _ |- _] => inversion H; clear H; smack
+    | [H: do_flagged_check_on_binop _ _ _ _ _ |- _] => inversion H; clear H; smack 
+    | [H: do_run_time_check_on_binop _ _ _ _ |- _] => inversion H; clear H; smack
+    | [H1: do_overflow_check _ _ _ _, H2: do_overflow_check _ _ _ _ |- _] => inversion H1; inversion H2; smack
+    end.
+Qed.
+
+Lemma minus_overflow_check_completeness: forall v1 v2 v3 v3',
+    do_run_time_check_on_binop Minus v1 v2 v3 -> 
+      do_flagged_checks_on_binop (Do_Overflow_Check :: nil) Minus v1 v2 v3' ->
+        v3 = v3'.
+Proof.
+  intros;
+  repeat progress match goal with
+    | [H: do_run_time_check_on_binop _ _ _ _, H1: do_flagged_checks_on_binop nil _ _ _ _ |- _] => inversion H; inversion H1; clear H H1; smack
+    | [H: do_flagged_checks_on_binop _ _ _ _ _ |- _] => inversion H; clear H; smack
+    | [H: do_flagged_check_on_binop _ _ _ _ _ |- _] => inversion H; clear H; smack 
+    | [H: do_run_time_check_on_binop _ _ _ _ |- _] => inversion H; clear H; smack
+    | [H1: do_overflow_check _ _ _ _, H2: do_overflow_check _ _ _ _ |- _] => inversion H1; inversion H2; smack
+    end.
+Qed.
+
+Lemma multiply_overflow_check_completeness: forall v1 v2 v3 v3',
+    do_run_time_check_on_binop Multiply v1 v2 v3 -> 
+      do_flagged_checks_on_binop (Do_Overflow_Check :: nil) Multiply v1 v2 v3' ->
+        v3 = v3'.
+Proof.
+  intros;
+  repeat progress match goal with
+    | [H: do_run_time_check_on_binop _ _ _ _, H1: do_flagged_checks_on_binop nil _ _ _ _ |- _] => inversion H; inversion H1; clear H H1; smack
+    | [H: do_flagged_checks_on_binop _ _ _ _ _ |- _] => inversion H; clear H; smack
+    | [H: do_flagged_check_on_binop _ _ _ _ _ |- _] => inversion H; clear H; smack 
+    | [H: do_run_time_check_on_binop _ _ _ _ |- _] => inversion H; clear H; smack
+    | [H1: do_overflow_check _ _ _ _, H2: do_overflow_check _ _ _ _ |- _] => inversion H1; inversion H2; smack
+    end.
+Qed.
+
+Lemma binop_overflow_division_check_completeness: forall v1 v2 v3 v3',
+    do_run_time_check_on_binop Divide v1 v2 v3 -> 
+      do_flagged_checks_on_binop (Do_Division_Check :: Do_Overflow_Check :: nil) Divide v1 v2 v3' ->
+        v3 = v3'.
+Proof.
+  intros;
   repeat progress match goal with
     | [H: do_run_time_check_on_binop _ _ _ _, H1: do_flagged_checks_on_binop nil _ _ _ _ |- _] => inversion H; inversion H1; clear H H1; smack
     | [H: do_flagged_checks_on_binop _ _ _ _ _ |- _] => inversion H; clear H; smack
@@ -23,60 +78,130 @@ Proof.
     end.
 Qed.
 
-Lemma gen_check_flags_on_unop_completeness: forall op v v' ast_num e checkflags v'',
-  do_run_time_check_on_unop op v v' ->
-    gen_exp_check_flags (E_Unary_Operation ast_num op e) checkflags ->
-      do_flagged_checks_on_unop checkflags op v v'' ->
-        v' = v''.
+Lemma binop_no_check_completeness: forall op v1 v2 v3 v3',
+  op <> Plus /\ op <> Minus /\ op <> Multiply /\ op <> Divide ->
+    do_run_time_check_on_binop op v1 v2 v3 -> 
+      do_flagged_checks_on_binop nil op v1 v2 v3' ->
+        v3 = v3'.
 Proof.
   intros;
-  destruct op; inversion H0; clear H0; smack;
+  match goal with
+    | [H: do_run_time_check_on_binop _ _ _ _, H1: do_flagged_checks_on_binop nil _ _ _ _ |- _] => 
+        inversion H; inversion H1; clear H H1; smack
+    end.
+Qed.
+
+Lemma unop_overflow_check_completeness: forall v v1 v1',
+    do_run_time_check_on_unop Unary_Minus v v1 -> 
+      do_flagged_checks_on_unop (Do_Overflow_Check :: nil) Unary_Minus v v1' ->
+        v1 = v1'.
+Proof.
+  intros;
   repeat progress match goal with
     | [H: do_flagged_checks_on_unop _ _ _ _ |- _] => inversion H; clear H; smack
-    | [H: do_flagged_check_on_unop _ _ _ _ |- _] => inversion H; clear H; smack  
+    | [H: do_flagged_check_on_unop _ _ _ _ |- _] => inversion H; clear H; smack 
     | [H : do_run_time_check_on_unop _ _ _ |- _] => inversion H; clear H; smack
     | [H1: do_overflow_check_on_unop _ _ _, H2: do_overflow_check_on_unop _ _ _ |- _] => inversion H1; inversion H2; smack
     end.
 Qed.
 
-Lemma gen_index_check_flags_completeness: forall i l u v ast_num x_ast_num x e checkflags v',
-  do_index_check i l u v ->
-  gen_name_check_flags (E_Indexed_Component ast_num x_ast_num x e) checkflags ->
-  do_flagged_index_checks checkflags i l u v' ->
-  v = v'.
+Lemma unop_no_check_completeness: forall op v v1 v1',
+  op <> Unary_Minus ->
+    do_run_time_check_on_unop op v v1 -> 
+      do_flagged_checks_on_unop nil op v v1' ->
+        v1 = v1'.
 Proof.
   intros;
   repeat progress match goal with
-    | [H: gen_name_check_flags _ _ |- _] => inversion H; clear H; smack 
-    | [H: do_flagged_index_checks _ _ _ _ _ |- _] => inversion H; clear H; smack
-    | [H: do_flagged_index_check _ _ _ _ _ |- _] => inversion H; clear H; smack  
-    | [H1: do_index_check _ _ _ _, H2: do_index_check _ _ _ _ |- _] => inversion H1; inversion H2; smack
+    | [H: do_flagged_checks_on_unop _ _ _ _ |- _] => inversion H; clear H; smack
+    | [H: do_flagged_check_on_unop _ _ _ _ |- _] => inversion H; clear H; smack 
+    | [H : do_run_time_check_on_unop _ _ _ |- _] => inversion H; clear H; smack
     end.
 Qed.
+
+
+
+Scheme expression_ind := Induction for expression Sort Prop 
+                         with name_ind := Induction for name Sort Prop.
 
 (** * Completeness Proof of Expression *)
 
 Lemma expression_checks_completeness: forall e e' s v v',
   eval_expr s e v ->
     eval_expr_x s e' v' ->
-      compile2_flagged_exp e e' ->
+      compile2_flagged_exp nil e e' ->
         v = v'.
 Proof.
   apply (expression_ind
     (fun e: expression => forall (e' : expression_x) (s : STACK.stack) (v v' : Return value),
       eval_expr s e v ->
       eval_expr_x s e' v' ->
-      compile2_flagged_exp e e' ->
+      compile2_flagged_exp nil e e' ->
       v = v')
     (fun e: name => forall (e': name_x) (s : STACK.stack) (v v' : Return value),
       eval_name s e v ->
       eval_name_x s e' v' ->
-      compile2_flagged_name e e' ->
+      compile2_flagged_name nil e e' ->
       v = v')
-    ); smack;
+    ); smack.
+  - (* 1 *)
   match goal with
-  | [H: compile2_flagged_exp _ _ |- _] => inversion H; clear H; smack
-  | [H: compile2_flagged_name _ _ |- _] => inversion H; clear H; smack
+  | [H: compile2_flagged_exp _ _ _ |- _] => inversion H; clear H; smack
+  end;
+  match goal with
+  | [H1: eval_expr _ _ _, H2: eval_expr_x _ _ _ |- _] => inversion H1; inversion H2; clear H1 H2; smack
+  end.
+  - (* 2 *)
+  match goal with
+  | [H: compile2_flagged_exp _ _ _ |- _] => inversion H; clear H; smack
+  end.
+  match goal with
+  | [H1: eval_expr _ _ _, H2: eval_expr_x _ _ _ |- _] => inversion H1; inversion H2; clear H1 H2; smack
+  end.
+  - (* 3 *)
+  match goal with
+  | [H: compile2_flagged_exp _ _ _ |- _] => inversion H; clear H; subst
+  end.
+  match goal with
+  | [H1: eval_expr _ _ _, H2: eval_expr_x _ _ _ |- _] => inversion H1; inversion H2; clear H1 H2; subst
+  end;
+  repeat progress match goal with
+    | [H1: compile2_flagged_exp nil ?e ?e_flagged, H2: eval_expr _ ?e _, H3: eval_expr_x _ ?e_flagged _ |- _] => 
+        (specialize (H _ _ _ _ H2 H3 H1) || specialize (H0 _ _ _ _ H2 H3 H1)); clear H1 H2 H3; smack
+    | _ => idtac
+  end.
+  apply binop_overflow_check_completeness.
+  match goal with 
+  | [ H1: do_run_time_check_on_binop ?op ?v1 ?v2 _,
+      H2: do_flagged_checks_on_binop ?checkflags ?op ?v1 ?v2 _ |- _] => 
+        assert()
+        specialize (binop_overflow_check_completeness _ _ _ _ _ H1 H2); smack
+  | [H1: gen_exp_check_flags (E_Unary_Operation _ ?op ?e) ?checkflags, 
+     H2: do_flagged_checks_on_unop ?checkflags ?op ?v _,
+     H3: do_run_time_check_on_unop ?op ?v _ |- _] => 
+      specialize (gen_check_flags_on_unop_completeness _ _ _ _ _ _ _ H3 H1 H2); smack
+  end.
+
+Lemma binop_overflow_check_completeness: forall op v1 v2 v3 v3',
+  op = Plus \/ op = Minus \/ op = Multiply ->
+    do_run_time_check_on_binop op v1 v2 v3 -> 
+      do_flagged_checks_on_binop (Do_Overflow_Check :: nil) op v1 v2 v3' ->
+        v3 = v3'.
+
+
+
+  match goal with
+    | [H1: compile2_flagged_exp nil ?e ?e_flagged, H2: eval_expr _ ?e _, H3: eval_expr_x _ ?e_flagged _ |- _] => 
+        try ((specialize (H _ _ _ _ H2 H3 H1) || specialize (H0 _ _ _ _ H2 H3 H1)); clear H1 H2 H3; smack) 
+    | [H1: Normal ?v1 = Normal ?v2 |- _] => inversion H; clear H; smack
+    | [H1: STACK.fetchG ?i ?s = ?v1, H2: STACK.fetchG ?i ?s = ?v2 |- _ ] => rewrite H1 in H2; clear H1; smack 
+  end.
+
+
+(*
+  match goal with
+  | [H: compile2_flagged_exp _ _ _ |- _] => inversion H; clear H; smack
+  | [H: compile2_flagged_name _ _ _ |- _] => inversion H; clear H; smack
   end;
   match goal with
   | [H1: eval_expr _ _ _, H2: eval_expr_x _ _ _ |- _] => inversion H1; inversion H2; clear H1 H2; smack
@@ -103,6 +228,7 @@ Proof.
        specialize (gen_index_check_flags_completeness _ _ _ _ _ _ _ _ _ _ H3 H1 H2); smack
    | _ => idtac
   end.
+*)
 Qed.
 
 (*

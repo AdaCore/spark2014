@@ -25,7 +25,8 @@ Module SymbolTableM (S: SymTable_Element).
   Record symboltable := mkSymbolTable{
     vars:   list (idnum * (mode * type));
     procs: list (procnum * (level * proc_decl));
-    types:  list (typenum * type_decl)
+    types:  list (typenum * type_decl);
+    exps: list (astnum * type)
   }.
 
   Module Entry_Type <: ENTRY.
@@ -40,19 +41,27 @@ Module SymbolTableM (S: SymTable_Element).
     Definition T := type_decl.
   End Entry_Type_Decl.
 
+  Module Entry_Exp_Type <: ENTRY.
+    Definition T := type.
+  End Entry_Exp_Type.
+
+
   Module SymTable_Vars  := STORE(Entry_Type).
   Module SymTable_Procs := STORE(Entry_Procedure_Decl).
   Module SymTable_Types := STORE(Entry_Type_Decl).
+  Module SymTable_Exps := STORE(Entry_Exp_Type).
 
   (** ** Symbol Table Operations *)
 
   Function reside_symtable_vars (x: idnum)   (st: symboltable) := SymTable_Vars.resides x st.(vars).
   Function reside_symtable_procs (x: procnum) (st: symboltable) := SymTable_Procs.resides x st.(procs).
   Function reside_symtable_types (x: typenum) (st: symboltable) := SymTable_Types.resides x st.(types).
+  Function reside_symtable_exps (x: astnum) (st: symboltable) := SymTable_Exps.resides x st.(exps).
 
   Function fetch_var  (x: idnum)   (st: symboltable) := SymTable_Vars.fetches x st.(vars).
   Function fetch_proc (x: procnum) (st: symboltable) := SymTable_Procs.fetches x st.(procs).
-  Function fetch_type (x: typenum) (st: symboltable) := SymTable_Types.fetches x st.(types).  
+  Function fetch_type (x: typenum) (st: symboltable) := SymTable_Types.fetches x st.(types).
+  Function fetch_exp_type (x: astnum) (st: symboltable) := SymTable_Exps.fetches x st.(exps).
 
   Function update_store {V} (s: list (idnum * V)) (i: idnum) (v: V): list (idnum * V) :=
     match s with 
@@ -67,33 +76,19 @@ Module SymbolTableM (S: SymTable_Element).
   Arguments update_store {V} _ _ _.
 
   Function update_vars (st: symboltable) (x: idnum) (mt: mode * type): symboltable :=
-    mkSymbolTable (update_store st.(vars) x mt) st.(procs) st.(types).
+    mkSymbolTable (update_store st.(vars) x mt) st.(procs) st.(types) st.(exps).
 
   Function update_procs (st: symboltable) (pid: procnum) (p: level * proc_decl): symboltable :=
-    mkSymbolTable st.(vars) (update_store st.(procs) pid p) st.(types).
+    mkSymbolTable st.(vars) (update_store st.(procs) pid p) st.(types) st.(exps).
 
   Function update_types (st: symboltable) (tid: typenum) (td: type_decl): symboltable :=
-    mkSymbolTable st.(vars) st.(procs) (update_store st.(types) tid td).
+    mkSymbolTable st.(vars) st.(procs) (update_store st.(types) tid td) st.(exps).
+
+  Function update_exps (st: symboltable) (ast_num: astnum) (t: type): symboltable :=
+    mkSymbolTable st.(vars) st.(procs) st.(types) (update_store st.(exps) ast_num t).
 
 End SymbolTableM.
 
-
-(* **********************************
-   build symbol table from SPARK AST 
-   ********************************** *)
-
-
-(*
-Inductive symboltable_decl: symboltable -> context -> declaration -> symboltable -> Prop :=
-
-.
-
-Inductive symboltable_subprogram: symboltable -> context -> subprogram -> symboltable
-  | ST_Procedure: 
-       
-      symboltable_subprogram st1 (Global_Procedure ast_num pd) st2.
-
-*)
 
 
 
