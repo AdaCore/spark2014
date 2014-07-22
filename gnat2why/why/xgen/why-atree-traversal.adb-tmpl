@@ -49,7 +49,7 @@ package body Why.Atree.Traversal is
      (State   : in out Traversal_State'Class;
       List_Id : Why_Node_List)
    is
-      use Node_Lists;
+      use Why_Node_Lists;
 
       L        : constant List := Get_List (List_Id);
       Position : Cursor := First (L);

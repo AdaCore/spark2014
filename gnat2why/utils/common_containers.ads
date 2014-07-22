@@ -37,7 +37,7 @@ with Types; use Types;
 
 package Common_Containers is
 
-   package List_Of_Nodes is new Ada.Containers.Doubly_Linked_Lists (Node_Id);
+   package Node_Lists is new Ada.Containers.Doubly_Linked_Lists (Node_Id);
    --  Standard list of nodes. It is often more convenient to use these,
    --  compared to List_Id in the GNAT frontend as a Node_Id can be in
    --  any number of these lists, while it can be only in one List_Id.

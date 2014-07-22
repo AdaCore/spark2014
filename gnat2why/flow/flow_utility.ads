@@ -28,7 +28,6 @@ with Ada.Containers;
 
 with Types;                use Types;
 with Einfo;                use Einfo;
-with Namet;                use Namet;
 with Sem_Util;             use Sem_Util;
 with Snames;               use Snames;
 with Sinfo;                use Sinfo;
@@ -319,22 +318,6 @@ package Flow_Utility is
    --  Returns true for an entity which is initialized at elaboration *and*
    --  the initialization occurs in the specification of the enclosing
    --  package of F.
-
-   function Find_Contracts (E    : Entity_Id;
-                            Name : Name_Id)
-                            return Node_Lists.List
-     with Pre => Ekind (E) in Subprogram_Kind | E_Package;
-   --  Walk the Contract node attached to E and return the pragma
-   --  matching Name.
-
-   function Has_Contracts (E    : Entity_Id;
-                           Name : Name_Id)
-                           return Boolean
-   is
-     (not Find_Contracts (E, Name).Is_Empty)
-     with Pre => Ekind (E) in Subprogram_Kind | E_Package;
-   --  Return True if the subprogram in argument has the given kind of
-   --  contract, False otherwise.
 
    procedure Add_Loop (E : Entity_Id)
      with Pre => Ekind (E) = E_Loop;

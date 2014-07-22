@@ -88,7 +88,7 @@ package body Gnat2Why.Error_Messages is
          Msg,
          Proved,
          To_Tag (Kind),
-         Place_First => Is_Assertion_Kind (Kind),
+         Place_First => Locate_On_First_Token (Kind),
          Tracefile   => Tracefile,
          VC_File     => VC_File,
          Editor_Cmd  => Editor_Cmd,
@@ -160,6 +160,21 @@ package body Gnat2Why.Error_Messages is
             return "assertion might fail";
          when VC_Raise                   =>
             return "exception might be raised";
+         when VC_Weaker_Pre              =>
+            return "precondition might be stronger than "
+              & "class-wide precondition";
+         when VC_Trivial_Weaker_Pre      =>
+            return "precondition is stronger than the default "
+              & "class-wide precondition of True";
+         when VC_Stronger_Post           =>
+            return "postcondition might be weaker than "
+              & "class-wide postcondition";
+         when VC_Weaker_Classwide_Pre    =>
+            return
+              "class-wide precondition might be stronger than overridden one";
+         when VC_Stronger_Classwide_Post =>
+            return
+              "class-wide postcondition might be weaker than overridden one";
       end case;
    end Not_Proved_Message;
 
@@ -278,6 +293,16 @@ package body Gnat2Why.Error_Messages is
          when VC_Assert                  => return "assertion proved";
          when VC_Raise                   =>
             return "raise statement proved unreachable";
+         when VC_Weaker_Pre              =>
+            return "precondition is weaker than class-wide precondition";
+         when VC_Trivial_Weaker_Pre      =>
+            return "precondition is always True";
+         when VC_Stronger_Post           =>
+            return "postcondition is stronger than class-wide postcondition";
+         when VC_Weaker_Classwide_Pre    =>
+            return "class-wide precondition is weaker than overridden one";
+         when VC_Stronger_Classwide_Post =>
+            return "class-wide postcondition is stronger than overridden one";
       end case;
    end Proved_Message;
 
@@ -320,7 +345,13 @@ package body Gnat2Why.Error_Messages is
          when VC_Loop_Invariant_Preserv  => "loop_invariant_preservation",
          when VC_Loop_Variant            => "loop_variant",
          when VC_Assert                  => "assertion",
-         when VC_Raise                   => "raise_statement");
+         when VC_Raise                   => "raise_statement",
+         when VC_Weaker_Pre              => "weaker_pre",
+         when VC_Trivial_Weaker_Pre      => "trivial_weaker_pre",
+         when VC_Stronger_Post           => "stronger_post",
+         when VC_Weaker_Classwide_Pre    => "weaker_classwide_pre",
+         when VC_Stronger_Classwide_Post => "stronger_classwide_post"
+      );
    end To_Tag;
 
 end Gnat2Why.Error_Messages;

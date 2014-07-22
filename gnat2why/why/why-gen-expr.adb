@@ -231,7 +231,7 @@ package body Why.Gen.Expr is
 
          when W_Statement_Sequence =>
             declare
-               use Node_Lists;
+               use Why_Node_Lists;
                L : constant List :=
                  Get_List (+Get_Statements (W_Statement_Sequence_Id (E)));
             begin
@@ -2333,10 +2333,10 @@ package body Why.Gen.Expr is
    -- New_VC_Labels --
    -------------------
 
-   function New_VC_Labels (N : Node_Id; Reason : VC_Kind)
-      return Name_Id_Set
+   function New_VC_Labels
+     (N      : Node_Id;
+      Reason : VC_Kind) return Name_Id_Set
    is
-
       --  A gnatprove label in Why3 has the following form
       --
       --  "GP_Reason:VC_Kind"     - the kind of the VC
@@ -2353,7 +2353,7 @@ package body Why.Gen.Expr is
       Set.Include (NID ("GP_Reason:" & VC_Kind'Image (Reason)));
       Set.Include (NID ("GP_Id:" & Int_Image (Integer (Id))));
       Set.Include
-        (New_Located_Label (N, Left_Most => Is_Assertion_Kind (Reason)));
+        (New_Located_Label (N, Left_Most => Locate_On_First_Token (Reason)));
       Set.Include (NID (Keep_On_Simp));
       return Set;
    end New_VC_Labels;

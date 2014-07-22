@@ -32,8 +32,8 @@ package body Why.Atree.Tables is
    -- "=" --
    ---------
 
-   function "=" (Left, Right : Node_Lists.List) return Boolean is
-      use Node_Lists;
+   function "=" (Left, Right : Why_Node_Lists.List) return Boolean is
+      use Why_Node_Lists;
 
       In_Left  : Cursor  := First (Left);
       In_Right : Cursor  := First (Right);
@@ -68,7 +68,7 @@ package body Why.Atree.Tables is
 
    procedure Append (List_Id : Why_Node_List; New_Item : Why_Node_Id) is
       use Node_List_Tables;
-      use Node_Lists;
+      use Why_Node_Lists;
 
       LI : List_Info := List_Table.Element (List_Id);
    begin
@@ -89,7 +89,7 @@ package body Why.Atree.Tables is
 
    procedure Prepend (List_Id : Why_Node_List; New_Item : Why_Node_Id) is
       use Node_List_Tables;
-      use Node_Lists;
+      use Why_Node_Lists;
 
       LI : List_Info := List_Table.Element (List_Id);
    begin
@@ -128,7 +128,7 @@ package body Why.Atree.Tables is
 
    function New_List return Why_Node_List is
       use Node_List_Tables;
-      use Node_Lists;
+      use Why_Node_Lists;
 
       New_List : List;
       New_Item : constant List_Info := (False, Why_Empty, New_List);
@@ -201,7 +201,7 @@ package body Why.Atree.Tables is
       Link    : Why_Node_Set)
    is
       use Node_List_Tables;
-      use Node_Lists;
+      use Why_Node_Lists;
 
       LI : List_Info := List_Table.Element (List_Id);
    begin
@@ -254,7 +254,7 @@ package body Why.Atree.Tables is
       Checked : Boolean)
    is
       use Node_List_Tables;
-      use Node_Lists;
+      use Why_Node_Lists;
 
       LI : List_Info := List_Table.Element (List_Id);
    begin

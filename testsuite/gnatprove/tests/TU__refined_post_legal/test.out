@@ -1,7 +1,7 @@
-refined_post_legal.adb:9:34: info: refined post proved
+refined_post_legal.adb:9:29: info: refined post proved
 refined_post_legal.adb:9:40: info: overflow check proved
 refined_post_legal.adb:12:19: warning: overflow check might fail
-refined_post_legal.adb:17:41: info: refined post proved
+refined_post_legal.adb:17:29: info: refined post proved
 refined_post_legal.adb:17:47: info: overflow check proved
 refined_post_legal.adb:20:18: warning: overflow check might fail
 refined_post_legal.ads:8:21: info: postcondition proved

@@ -164,7 +164,7 @@ package Gnat2Why.Expr is
    --  Same as above, but derive the Expected_Type from the Ada Expr
 
    function Transform_Statements_And_Declarations
-     (Stmts_And_Decls : List_Of_Nodes.List) return W_Prog_Id;
+     (Stmts_And_Decls : Node_Lists.List) return W_Prog_Id;
    function Transform_Statements_And_Declarations
      (Stmts_And_Decls : List_Id) return W_Prog_Id;
    --  Transforms a list of statements and declarations into a Why expression.

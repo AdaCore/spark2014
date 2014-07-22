@@ -66,7 +66,7 @@ package Gnat2Why.Subprograms is
      (File : in out Why_Section;
       E    : Entity_Id);
    --  Generate Why code from which Why VC generator will generate all VCs
-   --  related to the absence of run-time errors in the precondition of E.
+   --  related to the absence of run-time errors in E.
 
    procedure Generate_VCs_For_Package_Elaboration
      (File : in out Why_Section;
@@ -74,6 +74,12 @@ package Gnat2Why.Subprograms is
    --  Generate Why code from which Why VC generator will generate all VCs
    --  related to the Initial_Condition of E and the absence of run-time
    --  errors in the declarations and body statements of E.
+
+   procedure Generate_VCs_For_LSP
+     (File : in out Why_Section;
+      E    : Entity_Id);
+   --  Generate Why code from which Why VC generator will generate all VCs
+   --  related to the verification of LSP for dispatching subprogram E.
 
    procedure Translate_Subprogram_Spec
      (File : in out Why_Section;

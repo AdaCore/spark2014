@@ -92,7 +92,7 @@ package Why.Atree.Tables is
      return Boolean;
    --  Return True if Node is Empty or has kind Value
 
-   package Node_Lists is
+   package Why_Node_Lists is
      new Ada.Containers.Doubly_Linked_Lists (Element_Type => Why_Node_Id,
                                              "=" => "=");
 
@@ -112,7 +112,7 @@ package Why.Atree.Tables is
                   Equivalent_Keys => "=",
                   "="             => "=");
 
-   function Get_List (List_Id : Why_Node_List) return Node_Lists.List;
+   function Get_List (List_Id : Why_Node_List) return Why_Node_Lists.List;
 
    procedure Append (List_Id : Why_Node_List; New_Item : Why_Node_Id);
 
@@ -140,13 +140,13 @@ private
 
    Node_Table : Node_Tables.Vector;
 
-   function "=" (Left, Right : Node_Lists.List) return Boolean;
+   function "=" (Left, Right : Why_Node_Lists.List) return Boolean;
    --  Return True if Left and Right have the same extension
 
    type List_Info is record
       Checked : Boolean;
       Link    : Why_Node_Set;
-      Content : Node_Lists.List;
+      Content : Why_Node_Lists.List;
    end record;
 
    package Node_List_Tables is
@@ -173,11 +173,11 @@ private
      return Boolean is
       (Node = Why_Empty or else Get_Kind (Node) = Value);
 
-   function Get_List (List_Id : Why_Node_List) return Node_Lists.List is
+   function Get_List (List_Id : Why_Node_List) return Why_Node_Lists.List is
       (Node_List_Tables.Element (List_Table, List_Id).Content);
 
    function Is_Empty (List_Id : Why_Node_List) return Boolean is
-      (Node_Lists.Is_Empty (Get_List (List_Id)));
+      (Why_Node_Lists.Is_Empty (Get_List (List_Id)));
 
    function Is_Checked (List_Id : Why_Node_List) return Boolean is
       (Node_List_Tables.Element (List_Table, List_Id).Checked);

@@ -400,6 +400,7 @@ package Why.Sinfo is
    --  ----------------
    --  -- W_Any_Expr --
    --  ----------------
+   --  Effects      W_Effects_Id
    --  Pre          W_Pred_Id
    --  Post         W_Pred_Id
    --  Return_Type  W_Type_Id
@@ -697,6 +698,7 @@ package Why.Sinfo is
       W_Fixed_Constant,
       W_Real_Constant,
       W_Void,
+      W_Comment,
       W_Binary_Op,
       W_Unary_Op,
       W_Deref,

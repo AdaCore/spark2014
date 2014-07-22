@@ -73,6 +73,21 @@ package body Why.Gen.Progs is
                else Return_Type));
    end New_Assume_Statement;
 
+   -------------------------
+   -- New_Havoc_Statement --
+   -------------------------
+
+   function New_Havoc_Statement
+     (Ada_Node : Node_Id := Empty;
+      Effects  : W_Effects_Id) return W_Prog_Id is
+   begin
+      return
+        New_Any_Expr
+          (Ada_Node => Ada_Node,
+           Effects  => Effects,
+           Return_Type => EW_Unit_Type);
+   end New_Havoc_Statement;
+
    ------------------
    -- New_For_Loop --
    ------------------

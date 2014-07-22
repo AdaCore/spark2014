@@ -2162,7 +2162,6 @@ package body SPARK_Definition is
          end Is_Private_Entity_Mode_Off;
 
       begin
-
          --  The base type or original type should be marked before the current
          --  type. We also protect ourselves against the case where the Etype
          --  of a full view points to the partial view.
@@ -2227,11 +2226,16 @@ package body SPARK_Definition is
                end loop;
 
                --  Fill in the map between classwide types and their
-               --  corresponding specific type, in the case of the
-               --  implicitly declared classwide type T'Class.
+               --  corresponding specific type, in the case of the implicitly
+               --  declared classwide type T'Class. Also fill in the map
+               --  between primitive operations and their corresponding
+               --  tagged type.
 
-               if Is_Tagged_Type (E) then
+               if Ekind (E) = E_Record_Type
+                 and then Is_Tagged_Type (E)
+               then
                   Add_Classwide_To_Tagged (Class_Wide_Type (E), E);
+                  Add_Primitive_Operations (E);
                end if;
             end;
 

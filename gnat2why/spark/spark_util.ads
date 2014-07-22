@@ -23,6 +23,11 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers;
+with Ada.Containers.Doubly_Linked_Lists;
+with Ada.Containers.Ordered_Sets;
+with Ada.Containers.Vectors;
+with Ada.Strings.Unbounded;              use Ada.Strings.Unbounded;
 with Atree;            use Atree;
 with Einfo;            use Einfo;
 with Impunit;          use Impunit;
@@ -36,6 +41,33 @@ with Why.Atree.Tables; use Why.Atree.Tables;
 with Common_Containers; use Common_Containers;
 
 package SPARK_Util is
+
+   ----------------------------------------------------------------------
+   --  Utility types related to entities and nodes
+   ----------------------------------------------------------------------
+
+   use type Ada.Containers.Count_Type;
+
+   function Lexicographic_Entity_Order
+     (Left, Right : Entity_Id) return Boolean;
+   --  Ordering for entities based on their unique name. Returns true
+   --  if Left is considered to be "less than" Right.
+
+   package Entity_Lists is new Ada.Containers.Vectors
+     (Index_Type   => Positive,
+      Element_Type => Entity_Id);
+
+   package Ordered_Entity_Sets is new Ada.Containers.Ordered_Sets
+     (Element_Type => Entity_Id,
+      "<"          => Lexicographic_Entity_Order,
+      "="          => "=");
+
+   function To_Ordered_Entity_Set
+     (S : Node_Sets.Set) return Ordered_Entity_Sets.Set;
+   --  Convert a hashed node set into an ordered node set.
+
+   package Unbounded_String_Lists is new Ada.Containers.Doubly_Linked_Lists
+     (Element_Type => Unbounded_String);
 
    ------------------------------
    -- Queries on Type Entities --
@@ -154,6 +186,28 @@ package SPARK_Util is
    --  Return whether all aggregates in node N (recursively) are fully
    --  initialized.
 
+   function Find_Contracts
+     (E         : Entity_Id;
+      Name      : Name_Id;
+      Classwide : Boolean := False;
+      Inherited : Boolean := False) return Node_Lists.List
+   with
+     Pre => Ekind (E) in Subprogram_Kind | E_Package and then
+            (if Classwide then Name in Name_Precondition | Name_Postcondition)
+              and then
+            (if Inherited then Classwide);
+   --  Walk the Contract node attached to E and return the pragma matching
+   --  Name.
+
+   function Has_Contracts
+     (E    : Entity_Id;
+      Name : Name_Id) return Boolean
+   is
+     (not Find_Contracts (E, Name).Is_Empty)
+     with Pre => Ekind (E) in Subprogram_Kind | E_Package;
+   --  Return True if the subprogram in argument has the given kind of
+   --  contract, False otherwise.
+
    function Get_Enclosing_Declaration (N : Node_Id) return Node_Id;
    --  Return the declaration node enclosing N, if any, by following the chain
    --  of Parent's links.
@@ -208,8 +262,21 @@ package SPARK_Util is
    --  Store the correspondance between a classwide type and the specific
    --  corresponding type.
 
+   procedure Add_Primitive_Operations (Ty : Entity_Id);
+   --  Given a tagged type Ty, stores the correspondance between the primitive
+   --  operations of Ty and Ty.
+
+   function Tagged_Of_Primitive (Op : Entity_Id) return Entity_Id;
+   --  Returns the tagged type corresponding to a primitive operation
+
+   function Is_Primitive_Of_Tagged (Op : Entity_Id) return Boolean;
+   --  Returns whether an operation is a primitive operation of a tagged type
+
    function Corresponding_Tagged (Classwide : Entity_Id) return Entity_Id;
    --  Returns the specific tagged type corresponding to a classwide type
+
+   function Is_Overriding_Subprogram (E : Entity_Id) return Boolean;
+   --  Returns True if E is an overriding subprogram
 
    function In_Private_Declarations (Decl : Node_Id) return Boolean;
    --  Returns whether Decl belongs to the list of private declarations of a
@@ -311,22 +378,22 @@ package SPARK_Util is
    --  discriminants.
 
    procedure Append
-     (To    : in out List_Of_Nodes.List;
-      Elmts : List_Of_Nodes.List);
-   --  Append all elements from list Elmts to the list To
-
-   procedure Append
      (To    : in out Node_Lists.List;
       Elmts : Node_Lists.List);
    --  Append all elements from list Elmts to the list To
 
+   procedure Append
+     (To    : in out Why_Node_Lists.List;
+      Elmts : Why_Node_Lists.List);
+   --  Append all elements from list Elmts to the list To
+
    function Get_Statement_And_Declaration_List
-     (Stmts : List_Id) return List_Of_Nodes.List;
+     (Stmts : List_Id) return Node_Lists.List;
    --  Given a list of statements and declarations Stmts, returns the same list
    --  seen as a container list of nodes.
 
    function Get_Flat_Statement_And_Declaration_List
-     (Stmts : List_Id) return List_Of_Nodes.List;
+     (Stmts : List_Id) return Node_Lists.List;
    --  Given a list of statements and declarations Stmts, returns the flattened
    --  list that includes these statements and declarations, and recursively
    --  all inner declarations and statements that appear in block statements.

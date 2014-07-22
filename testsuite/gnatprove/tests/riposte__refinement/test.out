@@ -1,2 +1,2 @@
-refinement.adb:12:50: info: refined post proved
+refinement.adb:12:30: info: refined post proved
 refinement.ads:14:22: info: postcondition proved

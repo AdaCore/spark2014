@@ -31,16 +31,6 @@ with Why;
 
 package body Flow_Tree_Utility is
 
-   --------------------------------
-   -- Lexicographic_Entity_Order --
-   --------------------------------
-
-   function Lexicographic_Entity_Order
-     (Left, Right : Node_Id) return Boolean is
-   begin
-      return Unique_Name (Left) < Unique_Name (Right);
-   end Lexicographic_Entity_Order;
-
    -----------------------------------
    -- Contains_Loop_Entry_Reference --
    -----------------------------------

@@ -371,6 +371,13 @@ package body Xtree_Sinfo is
 
       New_Field (W_Real_Constant, "Value", "Ureal");
 
+      ---------------
+      -- W_Comment --
+      ---------------
+
+      New_Field (W_Comment,
+                 "Comment", "Name_Id");
+
       -----------------
       -- W_Binary_Op --
       -----------------
@@ -439,6 +446,8 @@ package body Xtree_Sinfo is
       -- W_Any_Expr --
       ----------------
 
+      New_Field (W_Any_Expr,
+                 "Effects", "W_Effects", Id_Lone);
       New_Field (W_Any_Expr,
                  "Pre", "W_Pred", Id_Lone);
       New_Field (W_Any_Expr,

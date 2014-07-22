@@ -31,11 +31,6 @@ with Types;  use Types;
 
 package Flow_Tree_Utility is
 
-   function Lexicographic_Entity_Order (Left, Right : Entity_Id)
-                                        return Boolean;
-   --  Ordering for entities based on their unique name. Returns true
-   --  if Left is considered to be "less than" Right.
-
    function Contains_Loop_Entry_Reference (N : Node_Id) return Boolean;
    --  Check for 'Loop_Entry in the given tree.
 

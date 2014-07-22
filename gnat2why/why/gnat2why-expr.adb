@@ -52,7 +52,6 @@ with SPARK_Util;             use SPARK_Util;
 with VC_Kinds;               use VC_Kinds;
 
 with Flow_Types;             use Flow_Types;
-with Flow_Utility;           use Flow_Utility;
 
 with Why;                    use Why;
 with Why.Unchecked_Ids;      use Why.Unchecked_Ids;
@@ -4037,10 +4036,10 @@ package body Gnat2Why.Expr is
 
       procedure Get_Aggregate_Elements
         (Expr         : Node_Id;
-         Values       : out List_Of_Nodes.List;
-         Types        : out List_Of_Nodes.List;
-         Index_Values : out List_Of_Nodes.List;
-         Index_Types  : out List_Of_Nodes.List);
+         Values       : out Node_Lists.List;
+         Types        : out Node_Lists.List;
+         Index_Values : out Node_Lists.List;
+         Index_Types  : out Node_Lists.List);
       --  Extract parts of the aggregate Expr that will be passed in
       --  parameter to the logic function for the aggregate.
       --  Collect these parameters in Values, with the corresponding type
@@ -4055,8 +4054,8 @@ package body Gnat2Why.Expr is
 
       procedure Generate_Logic_Function
         (Expr   : Node_Id;
-         Values : List_Of_Nodes.List;
-         Types  : List_Of_Nodes.List);
+         Values : Node_Lists.List;
+         Types  : Node_Lists.List);
       --  Generate the logic function definition for the aggregate Expr, with a
       --  suitable defining axiom:
       --
@@ -4078,10 +4077,10 @@ package body Gnat2Why.Expr is
         (Params       : Transformation_Params;
          Domain       : EW_Domain;
          Func         : W_Identifier_Id;
-         Values       : List_Of_Nodes.List;
-         Types        : List_Of_Nodes.List;
-         Index_Values : List_Of_Nodes.List;
-         Index_Types  : List_Of_Nodes.List) return W_Expr_Id;
+         Values       : Node_Lists.List;
+         Types        : Node_Lists.List;
+         Index_Values : Node_Lists.List;
+         Index_Types  : Node_Lists.List) return W_Expr_Id;
       --  Given a logic function Func previously defined for the aggregate,
       --  generate the actual call to Func by translating arguments Values
       --  of type Types in the context given by Params.
@@ -4094,18 +4093,18 @@ package body Gnat2Why.Expr is
         (Params       : Transformation_Params;
          Domain       : EW_Domain;
          Func         : W_Identifier_Id;
-         Values       : List_Of_Nodes.List;
-         Types        : List_Of_Nodes.List;
-         Index_Values : List_Of_Nodes.List;
-         Index_Types  : List_Of_Nodes.List) return W_Expr_Id
+         Values       : Node_Lists.List;
+         Types        : Node_Lists.List;
+         Index_Values : Node_Lists.List;
+         Index_Types  : Node_Lists.List) return W_Expr_Id
       is
          pragma Assert (Values.Length /= 0);
 
-         use List_Of_Nodes;
+         use Node_Lists;
 
          Cnt   : Positive;
-         Value : List_Of_Nodes.Cursor;
-         Typ   : List_Of_Nodes.Cursor;
+         Value : Node_Lists.Cursor;
+         Typ   : Node_Lists.Cursor;
          Args  : W_Expr_Array (1 .. Integer (Values.Length));
 
          R : W_Expr_Id;
@@ -4221,12 +4220,12 @@ package body Gnat2Why.Expr is
 
       procedure Generate_Logic_Function
         (Expr   : Node_Id;
-         Values : List_Of_Nodes.List;
-         Types  : List_Of_Nodes.List)
+         Values : Node_Lists.List;
+         Types  : Node_Lists.List)
       is
          pragma Assert (Values.Length /= 0);
 
-         use List_Of_Nodes;
+         use Node_Lists;
 
          Expr_Typ   : constant Entity_Id  := Type_Of_Node (Expr);
 
@@ -4264,8 +4263,8 @@ package body Gnat2Why.Expr is
          --  Counter and iterators
 
          Cnt           : Positive;
-         Value         : List_Of_Nodes.Cursor;
-         Typ           : List_Of_Nodes.Cursor;
+         Value         : Node_Lists.Cursor;
+         Typ           : Node_Lists.Cursor;
 
          --  Variables for the call, guard and proposition for the axiom
 
@@ -4387,10 +4386,10 @@ package body Gnat2Why.Expr is
 
       procedure Get_Aggregate_Elements
         (Expr         : Node_Id;
-         Values       : out List_Of_Nodes.List;
-         Types        : out List_Of_Nodes.List;
-         Index_Values : out List_Of_Nodes.List;
-         Index_Types  : out List_Of_Nodes.List)
+         Values       : out Node_Lists.List;
+         Types        : out Node_Lists.List;
+         Index_Values : out Node_Lists.List;
+         Index_Types  : out Node_Lists.List)
       is
          Typ     : constant Entity_Id := Type_Of_Node (Expr);
          Num_Dim : constant Pos       := Number_Dimensions (Typ);
@@ -5276,10 +5275,10 @@ package body Gnat2Why.Expr is
 
       --  Elements of the aggregate
 
-      Values       : List_Of_Nodes.List;
-      Types        : List_Of_Nodes.List;
-      Index_Values : List_Of_Nodes.List;
-      Index_Types  : List_Of_Nodes.List;
+      Values       : Node_Lists.List;
+      Types        : Node_Lists.List;
+      Index_Values : Node_Lists.List;
+      Index_Types  : Node_Lists.List;
 
    --  Start of Transform_Aggregate
 
@@ -9499,7 +9498,7 @@ package body Gnat2Why.Expr is
    -------------------------------------------
 
    function Transform_Statements_And_Declarations
-     (Stmts_And_Decls : List_Of_Nodes.List) return W_Prog_Id
+     (Stmts_And_Decls : Node_Lists.List) return W_Prog_Id
    is
       Result : W_Prog_Id := New_Void;
    begin

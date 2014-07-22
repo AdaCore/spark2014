@@ -25,6 +25,7 @@ with Ada.Containers.Hashed_Maps;
 
 with Elists;                     use Elists;
 with Errout;                     use Errout;
+with Namet;                      use Namet;
 with Nlists;                     use Nlists;
 with Output;                     use Output;
 with Sprint;                     use Sprint;
@@ -33,6 +34,7 @@ with Treepr;                     use Treepr;
 with Why;
 with SPARK_Frame_Conditions;     use SPARK_Frame_Conditions;
 with SPARK_Definition;           use SPARK_Definition;
+with SPARK_Util;                 use SPARK_Util;
 
 with Flow_Debug;                 use Flow_Debug;
 with Flow_Tree_Utility;          use Flow_Tree_Utility;
@@ -275,64 +277,6 @@ package body Flow_Utility is
       return All_Comp;
    end All_Record_Components;
 
-   --------------------
-   -- Find_Contracts --
-   --------------------
-
-   function Find_Contracts (E    : Entity_Id;
-                            Name : Name_Id)
-                            return Node_Lists.List
-   is
-      C          : constant Node_Id := Contract (E);
-      P          : Node_Id;
-      Contracts  : Node_Lists.List := Node_Lists.Empty_List;
-      Other_Name : Name_Id;
-   begin
-      case Name is
-         when Name_Precondition      |
-              Name_Postcondition     |
-              Name_Refined_Post      |
-              Name_Contract_Cases    |
-              Name_Initial_Condition =>
-
-            if Name = Name_Precondition then
-               Other_Name := Name_Pre;
-               P := Pre_Post_Conditions (C);
-            elsif Name = Name_Postcondition then
-               Other_Name := Name_Post;
-               P := Pre_Post_Conditions (C);
-            elsif Name = Name_Refined_Post then
-               Other_Name := Name_Refined_Post;
-               P := Pre_Post_Conditions
-                 (Contract (Defining_Entity (Specification
-                                               (Get_Subprogram_Body (E)))));
-            elsif Name = Name_Initial_Condition then
-               Other_Name := Name_Initial_Condition;
-               P := Classifications (C);
-            else
-               Other_Name := Name_Contract_Cases;
-               P := Contract_Test_Cases (C);
-            end if;
-
-            while Present (P) loop
-               if Chars (Pragma_Identifier (P)) in Name | Other_Name then
-                  Contracts.Append
-                    (Expression (First (Pragma_Argument_Associations (P))));
-               end if;
-
-               P := Next_Pragma (P);
-            end loop;
-
-            return Contracts;
-
-         when Name_Global | Name_Depends =>
-            raise Why.Not_Implemented;
-
-         when others =>
-            raise Program_Error;
-      end case;
-   end Find_Contracts;
-
    ------------------------------------
    -- Filter_Out_Non_Local_Constants --
    ------------------------------------
@@ -454,7 +398,7 @@ package body Flow_Utility is
 
       Component     : Entity_Lists.Vector := Entity_Lists.Empty_Vector;
 
-      Seq           : List_Of_Nodes.List  := List_Of_Nodes.Empty_List;
+      Seq           : Node_Lists.List  := Node_Lists.Empty_List;
 
       E             : Entity_Id;
       Comp_Id       : Positive;

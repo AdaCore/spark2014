@@ -39,7 +39,7 @@
 package VC_Kinds is
 
    type VC_Kind is
-      --  Run-time checks
+      --  VC_RTE_Kind - run-time checks
 
      (VC_Division_Check,
       VC_Index_Check,
@@ -48,7 +48,7 @@ package VC_Kinds is
       VC_Length_Check,
       VC_Discriminant_Check,
 
-      --  Assertions
+      --  VC_Assert_Kind - assertions
 
       VC_Initial_Condition,
       VC_Precondition,               --  the precondition of a call
@@ -63,16 +63,33 @@ package VC_Kinds is
       VC_Loop_Invariant_Preserv,
       VC_Loop_Variant,
       VC_Assert,
-      VC_Raise);
+      VC_Raise,
 
-   function Is_Assertion_Kind (V : VC_Kind) return Boolean is
-     (V in
-        VC_Postcondition |
-        VC_Precondition_Main  |
-        VC_Loop_Invariant |
-        VC_Loop_Invariant_Init |
-        VC_Loop_Invariant_Preserv |
-        VC_Assert);
+      --  VC_LSP_Kind - Liskov Substitution Principle
+
+      VC_Weaker_Pre,                  --  pre weaker than classwide pre
+      VC_Trivial_Weaker_Pre,          --  specialization of VC_Weaker_Pre when
+                                      --  there is no classwide or inherited
+                                      --  precondition
+      VC_Stronger_Post,               --  post stronger than classwide post
+      VC_Weaker_Classwide_Pre,        --  classwide pre weaker than inherited
+      VC_Stronger_Classwide_Post);    --  classwide post stronger t/ inherited
+
+   subtype VC_RTE_Kind is VC_Kind range
+     VC_Division_Check .. VC_Discriminant_Check;
+   subtype VC_Assert_Kind is  VC_Kind range
+     VC_Initial_Condition .. VC_Raise;
+   subtype VC_LSP_Kind is  VC_Kind range
+     VC_Weaker_Pre .. VC_Stronger_Classwide_Post;
+
+   --  Returns True if this kind of VC should be considered like an assertion
+   --  when positioning the message to the left-most subexpression of the
+   --  checked expression. For example, this is not true for VC_Precondition,
+   --  which should be positioned on the location of the call.
+   function Locate_On_First_Token (V : VC_Kind) return Boolean is
+     (case V is when VC_RTE_Kind  => False,
+                when VC_Assert_Kind => V /= VC_Precondition,
+                when VC_LSP_Kind    => True);
 
    SPARK_Suffix : constant String := "spark";
 

@@ -33,25 +33,11 @@ with Casing;           use Casing;
 
 with Why;
 
+with Flow_Tree_Utility; use Flow_Tree_Utility;
+
 package body Flow_Types is
 
    use type Ada.Containers.Count_Type;
-
-   ---------------------------
-   -- To_Ordered_Entity_Set --
-   ---------------------------
-
-   function To_Ordered_Entity_Set (S : Node_Sets.Set)
-                                   return Ordered_Entity_Sets.Set
-   is
-      OS : Ordered_Entity_Sets.Set;
-   begin
-      for X of S loop
-         pragma Assert (Nkind (X) in N_Entity);
-         OS.Include (X);
-      end loop;
-      return OS;
-   end To_Ordered_Entity_Set;
 
    -----------------------
    -- Flow_Id operators --

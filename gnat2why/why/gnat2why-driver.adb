@@ -208,6 +208,12 @@ package body Gnat2Why.Driver is
 
          Generate_VCs_For_Subprogram (Why_Sections (WF_Main), E);
 
+         --  Generate Why3 code to check LSP for primitive of tagged types
+
+         if Is_Primitive_Of_Tagged (E) then
+            Generate_VCs_For_LSP (Why_Sections (WF_Main), E);
+         end if;
+
       elsif Ekind (E) = E_Package
               and then
             (if Present (Get_Package_Body (E)) then
@@ -423,10 +429,10 @@ package body Gnat2Why.Driver is
 
    procedure Translate_CUnit is
 
-      procedure Complete_Subprograms (List_Entities : List_Of_Nodes.List);
+      procedure Complete_Subprograms (List_Entities : Node_Lists.List);
       --  Generate completion for every subprogram entity in List_Entities
 
-      procedure Translate_List_Entities (List_Entities : List_Of_Nodes.List);
+      procedure Translate_List_Entities (List_Entities : Node_Lists.List);
       --  Translate the list of entities from the spec or body, in batches, in
       --  order to ensure proper definition before use in Why files.
 
@@ -434,7 +440,7 @@ package body Gnat2Why.Driver is
       -- Complete_Subprograms --
       --------------------------
 
-      procedure Complete_Subprograms (List_Entities : List_Of_Nodes.List) is
+      procedure Complete_Subprograms (List_Entities : Node_Lists.List) is
       begin
          for E of List_Entities loop
             if Ekind (E) in Subprogram_Kind
@@ -474,7 +480,7 @@ package body Gnat2Why.Driver is
       -- Translate_List_Entities --
       -----------------------------
 
-      procedure Translate_List_Entities (List_Entities : List_Of_Nodes.List) is
+      procedure Translate_List_Entities (List_Entities : Node_Lists.List) is
       begin
          for E of List_Entities loop
             Translate_Entity (E);

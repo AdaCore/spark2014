@@ -47,9 +47,12 @@ stacks.adb:28:31: info: discriminant check proved
 stacks.adb:28:38: warning: array index check might fail
 stacks.adb:30:07: warning: assuming "Put" has no effect on global items
 stacks.adb:30:07: warning: no Global contract available for "Put"
+stacks.ads:27:14: warning: precondition is stronger than the default class-wide precondition of True
 stacks.ads:28:14: info: postcondition proved
 stacks.ads:28:34: info: overflow check proved
+stacks.ads:47:14: warning: precondition is stronger than the default class-wide precondition of True
 stacks.ads:48:14: info: postcondition proved
+stacks.ads:67:13: warning: precondition is stronger than the default class-wide precondition of True
 stacks.ads:69:14: warning: subprogram "Print" has no effect
 stacks.ads:78:50: info: discriminant check proved
 stacks.ads:84:50: info: discriminant check proved

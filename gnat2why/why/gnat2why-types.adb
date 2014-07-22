@@ -197,6 +197,10 @@ package body Gnat2Why.Types is
             when E_Record_Type | E_Record_Subtype =>
                Declare_Ada_Record (File, Theory, E);
 
+            when E_Class_Wide_Type | E_Class_Wide_Subtype =>
+               Add_Use_For_Entity (File, Corresponding_Tagged (E),
+                                   EW_Export, With_Completion => False);
+
             when Private_Kind =>
                Declare_Private_Type (Theory, E);
 
@@ -212,10 +216,6 @@ package body Gnat2Why.Types is
    begin
       if Is_Standard_Boolean_Type (E)
         or else E = Universal_Fixed
-
-        --  Classwide types are translated as their corresponding specific
-        --  tagged types.
-        or else Ekind (E) in E_Class_Wide_Type | E_Class_Wide_Subtype
       then
          New_Theory := False;
          return;
@@ -240,6 +240,7 @@ package body Gnat2Why.Types is
          --  definition.
 
          if Is_Record_Type (E) and then
+           Ekind (E) not in E_Class_Wide_Type | E_Class_Wide_Subtype and then
            (if Ekind (E) = E_Record_Subtype then
                 not (Present (Cloned_Subtype (E))))
          then

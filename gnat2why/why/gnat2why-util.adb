@@ -32,13 +32,19 @@ with Uintp;                  use Uintp;
 
 with SPARK_Definition;
 with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
+with SPARK_Util;             use SPARK_Util;
 
 with Flow_Types;
 with Flow_Utility;
 
 with Why.Atree.Accessors;    use Why.Atree.Accessors;
 with Why.Atree.Builders;     use Why.Atree.Builders;
+with Why.Atree.Modules;      use Why.Atree.Modules;
+with Why.Conversions;        use Why.Conversions;
+with Why.Gen.Expr;           use Why.Gen.Expr;
+with Why.Types;              use Why.Types;
 
+with Gnat2Why.Expr;          use Gnat2Why.Expr;
 with Gnat2Why.Nodes;         use Gnat2Why.Nodes;
 
 package body Gnat2Why.Util is
@@ -299,12 +305,61 @@ package body Gnat2Why.Util is
       return Variable_Reference_Seen;
    end Expression_Depends_On_Variables;
 
+   ------------------
+   -- Compute_Spec --
+   ------------------
+
+   function Compute_Spec
+     (Params : Transformation_Params;
+      Nodes  : Node_Lists.List;
+      Domain : EW_Domain) return W_Expr_Id
+   is
+      Cur_Spec : W_Expr_Id := Why_Empty;
+   begin
+      if Nodes.Is_Empty then
+         return New_Literal (Value => EW_True, Domain => Domain);
+      end if;
+
+      for Node of Nodes loop
+         declare
+            Why_Expr : constant W_Expr_Id :=
+              Transform_Expr (Node, EW_Bool_Type, Domain, Params);
+         begin
+            if Cur_Spec /= Why_Empty then
+               Cur_Spec :=
+                 New_And_Then_Expr
+                   (Left   => Why_Expr,
+                    Right  => Cur_Spec,
+                    Domain => Domain);
+            else
+               Cur_Spec := Why_Expr;
+            end if;
+         end;
+      end loop;
+
+      return Cur_Spec;
+   end Compute_Spec;
+
+   function Compute_Spec
+     (Params    : Transformation_Params;
+      E         : Entity_Id;
+      Kind      : Name_Id;
+      Domain    : EW_Domain;
+      Classwide : Boolean := False;
+      Inherited : Boolean := False) return W_Expr_Id
+   is
+      Nodes : constant Node_Lists.List :=
+        Find_Contracts (E, Kind, Classwide, Inherited);
+   begin
+      return Compute_Spec (Params, Nodes, Domain);
+   end Compute_Spec;
+
    -------------------------
    -- Create_Zero_Binding --
    -------------------------
 
    function Create_Zero_Binding
-     (Vars : Node_Lists.List;
+     (Vars : Why_Node_Lists.List;
       Prog : W_Prog_Id) return W_Prog_Id
    is
       Result   : W_Prog_Id;
@@ -318,6 +373,44 @@ package body Gnat2Why.Util is
       end loop;
       return Result;
    end Create_Zero_Binding;
+
+   ------------------------------
+   -- Get_Dispatching_Contract --
+   ------------------------------
+
+   function Get_Dispatching_Contract
+     (Params : Transformation_Params;
+      E      : Entity_Id;
+      Kind   : Name_Id) return W_Pred_Id
+   is
+      Conjuncts_List : Node_Lists.List :=
+        Find_Contracts (E, Kind, Classwide => True);
+   begin
+      if Conjuncts_List.Is_Empty then
+         Conjuncts_List := Find_Contracts
+           (E, Kind, Classwide => True, Inherited => True);
+      end if;
+
+      return +Compute_Spec (Params, Conjuncts_List, EW_Pred);
+   end Get_Dispatching_Contract;
+
+   ------------------------------
+   -- Get_Static_Call_Contract --
+   ------------------------------
+
+   function Get_Static_Call_Contract
+     (Params : Transformation_Params;
+      E      : Entity_Id;
+      Kind   : Name_Id) return W_Pred_Id
+   is
+      Conjuncts_List : constant Node_Lists.List := Find_Contracts (E, Kind);
+   begin
+      if Conjuncts_List.Is_Empty then
+         return Get_Dispatching_Contract (Params, E, Kind);
+      end if;
+
+      return +Compute_Spec (Params, Conjuncts_List, EW_Pred);
+   end Get_Static_Call_Contract;
 
    --------------------
    -- Init_Why_Files --

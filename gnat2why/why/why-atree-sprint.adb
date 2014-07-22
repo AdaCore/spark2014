@@ -78,6 +78,7 @@ package body Why.Atree.Sprint is
    procedure Print_Call (Node : W_Call_Id);
    procedure Print_Clone_Declaration (Node : W_Clone_Declaration_Id);
    procedure Print_Clone_Substitution (Node : W_Clone_Substitution_Id);
+   procedure Print_Comment (Node : W_Comment_Id);
    procedure Print_Conditional (Node : W_Conditional_Id);
    procedure Print_Connection (Node : W_Connection_Id);
    procedure Print_Custom_Declaration (Node : W_Custom_Declaration_Id);
@@ -144,6 +145,7 @@ package body Why.Atree.Sprint is
 
    procedure Print_Any_Expr (Node : W_Any_Expr_Id) is
       Res_Ty  : constant W_Type_Id := Get_Return_Type (Node);
+      Effects : constant W_Effects_Id := Get_Effects (Node);
       Pre     : constant W_Pred_Id := Get_Pre (Node);
       Post    : constant W_Pred_Id := Get_Post (Node);
    begin
@@ -159,6 +161,10 @@ package body Why.Atree.Sprint is
          P (O, "ensures {");
          Print_Node (+Post);
          PL (O, "} ");
+      end if;
+      if Effects /= Why_Empty then
+         Print_Node (+Effects);
+         NL (O);
       end if;
       P (O, ")");
    end Print_Any_Expr;
@@ -354,6 +360,17 @@ package body Why.Atree.Sprint is
       P (O, " = ");
       Print_Node (+Get_Image (Node));
    end Print_Clone_Substitution;
+
+   -------------------
+   -- Print_Comment --
+   -------------------
+
+   procedure Print_Comment (Node : W_Comment_Id) is
+   begin
+      P (O, "() (* ");
+      P (O, Get_Comment (Node));
+      PL (O, " *)");
+   end Print_Comment;
 
    ------------------------
    -- Print_Conditional --
@@ -572,7 +589,7 @@ package body Why.Atree.Sprint is
 
       function Get_Regexp return String is
          use Ada.Strings.Unbounded;
-         use Node_Lists;
+         use Why_Node_Lists;
 
          Nodes    : constant List := Get_List (+Get_Subst (Node));
          Position : Cursor := First (Nodes);
@@ -602,7 +619,7 @@ package body Why.Atree.Sprint is
       -----------------
 
       procedure Apply_Subst (Text : String; Matches : Match_Array) is
-         use Node_Lists;
+         use Why_Node_Lists;
 
          Nodes    : constant List := Get_List (+Get_Subst (Node));
          Position : Cursor := First (Nodes);
@@ -636,7 +653,7 @@ package body Why.Atree.Sprint is
    begin
       NL (O);
 
-      if Node_Lists.Is_Empty (Get_List (+Get_Subst (Node))) then
+      if Why_Node_Lists.Is_Empty (Get_List (+Get_Subst (Node))) then
          P (O, Text);
       else
          declare
@@ -1027,7 +1044,7 @@ package body Why.Atree.Sprint is
    ------------------
 
    procedure Print_Label (Node : W_Label_Id) is
-      use Node_Lists;
+      use Why_Node_Lists;
 
       Labels : constant Name_Id_Set := Get_Labels (Node);
    begin
@@ -1050,7 +1067,7 @@ package body Why.Atree.Sprint is
       Separator : String := ", ";
       Newline   : Boolean := False)
    is
-      use Node_Lists;
+      use Why_Node_Lists;
 
       Nodes    : constant List := Get_List (List_Id);
       Position : Cursor := First (Nodes);
@@ -1235,6 +1252,9 @@ package body Why.Atree.Sprint is
 
          when W_Void =>
             Print_Void (+N);
+
+         when W_Comment =>
+            Print_Comment (+N);
 
          when W_Binary_Op =>
             Print_Binary_Op (+N);
@@ -1609,7 +1629,7 @@ package body Why.Atree.Sprint is
    ---------------------
 
    procedure Print_Type_Decl (Node : W_Type_Decl_Id) is
-      use Node_Lists;
+      use Why_Node_Lists;
 
       Args       : constant List := Get_List (+Get_Args (Node));
       Nb_Args    : constant Count_Type := Length (Args);

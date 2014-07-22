@@ -29,6 +29,7 @@ with Ada.Strings.Unbounded;              use Ada.Strings.Unbounded;
 
 --  Utilities for the transformation phase
 
+with Namet;                  use Namet;
 with Types;                  use Types;
 
 with Common_Containers;      use Common_Containers;
@@ -36,6 +37,7 @@ with Common_Containers;      use Common_Containers;
 with Why.Atree.Tables;       use Why.Atree.Tables;
 with Why.Gen.Binders;        use Why.Gen.Binders;
 with Why.Ids;                use Why.Ids;
+with Why.Sinfo;              use Why.Sinfo;
 with Why.Types;
 
 package Gnat2Why.Util is
@@ -228,10 +230,42 @@ package Gnat2Why.Util is
    -- Builders --
    --------------
 
+   function Compute_Spec
+     (Params : Transformation_Params;
+      Nodes  : Node_Lists.List;
+      Domain : EW_Domain) return W_Expr_Id;
+   --  Compute a proposition from a (possibly empty) list of conjuncts. Returns
+   --  True for the empty list.
+
+   function Compute_Spec
+     (Params    : Transformation_Params;
+      E         : Entity_Id;
+      Kind      : Name_Id;
+      Domain    : EW_Domain;
+      Classwide : Boolean := False;
+      Inherited : Boolean := False) return W_Expr_Id;
+   --  Compute the precondition or postcondition of the generated Why function.
+   --  Kind is Name_Precondition or Name_Postcondition to specify which one is
+   --  computed.
+
    function Create_Zero_Binding
-     (Vars : Node_Lists.List;
+     (Vars : Why_Node_Lists.List;
       Prog : W_Prog_Id) return W_Prog_Id;
    --  Return a program which binds every variable in Vars to 0 in Prog
+
+   function Get_Dispatching_Contract
+     (Params : Transformation_Params;
+      E      : Entity_Id;
+      Kind   : Name_Id) return W_Pred_Id;
+   --  Returns the precondition or postcondition (depending on Kind) for a
+   --  dispatching call.
+
+   function Get_Static_Call_Contract
+     (Params : Transformation_Params;
+      E      : Entity_Id;
+      Kind   : Name_Id) return W_Pred_Id;
+   --  Returns the precondition or postcondition (depending on Kind) for a
+   --  static call.
 
    -------------
    -- Queries --

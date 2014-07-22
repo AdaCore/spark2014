@@ -1,4 +1,4 @@
-segway.adb:40:45: info: refined post proved
+segway.adb:40:30: info: refined post proved
 segway.adb:62:31: info: range check proved
 segway.adb:66:31: info: range check proved
 segway.adb:89:10: info: loop invariant initialization proved

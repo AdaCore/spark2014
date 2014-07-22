@@ -152,8 +152,10 @@ package body Gnat2Why.Subprograms is
    --  function.
 
    function Compute_Effects
-     (E : Entity_Id) return W_Effects_Id;
-   --  Compute the effects of the generated Why function.
+     (E             : Entity_Id;
+      Global_Params : Boolean := False) return W_Effects_Id;
+   --  Compute the effects of the generated Why function. If Global_Params is
+   --  True, then the global version of the parameters is used.
 
    function Compute_Binders (E : Entity_Id; Domain : EW_Domain)
                              return Item_Array;
@@ -171,23 +173,15 @@ package body Gnat2Why.Subprograms is
    --  Return Why binders for the parameters of subprogram E. The array is
    --  empty if E has no parameters.
 
-   function Compute_Spec
-     (Params    : Transformation_Params;
-      E         : Entity_Id;
-      Kind      : Name_Id;
-      Domain    : EW_Domain) return W_Expr_Id;
-   --  Compute the precondition or postcondition of the generated Why function.
-   --  Kind is Name_Precondition or Name_Postcondition to specify which one is
-   --  computed.
-
    function Compute_Guard_Formula (Binders : Item_Array) return W_Pred_Id;
    --  For every scalar object in the binder array, build the formula
    --    in_range (x)
    --  and join everything together with a conjunction.
 
    function Get_Location_For_Aspect
-     (E    : Entity_Id;
-      Prag : Name_Id) return Node_Id;
+     (E         : Entity_Id;
+      Kind      : Name_Id;
+      Classwide : Boolean := False) return Node_Id;
    --  Return a node with a proper location for the pre- or postcondition of E,
    --  if any
 
@@ -480,7 +474,9 @@ package body Gnat2Why.Subprograms is
    -- Compute_Effects --
    ---------------------
 
-   function Compute_Effects (E : Entity_Id) return W_Effects_Id
+   function Compute_Effects
+     (E             : Entity_Id;
+      Global_Params : Boolean := False) return W_Effects_Id
    is
       Read_Ids    : Flow_Types.Flow_Id_Sets.Set;
       Write_Ids   : Flow_Types.Flow_Id_Sets.Set;
@@ -511,6 +507,7 @@ package body Gnat2Why.Subprograms is
       declare
          Arg : Node_Id;
          Id  : Entity_Id;
+         Ident : W_Identifier_Id;
       begin
          if Is_Non_Empty_List (Ada_Binders) then
             Arg := First (Ada_Binders);
@@ -518,9 +515,14 @@ package body Gnat2Why.Subprograms is
                Id := Defining_Identifier (Arg);
 
                if Ekind_In (Id, E_Out_Parameter, E_In_Out_Parameter) then
-                  Effects_Append_To_Writes
-                    (Eff,
-                     New_Identifier (Name => Short_Name (Id)));
+                  if Global_Params then
+                     Ident :=
+                       To_Why_Id (Obj => Full_Name (Id), Local => False);
+                  else
+                     Ident := New_Identifier (Name => Short_Name (Id));
+                  end if;
+
+                  Effects_Append_To_Writes (Eff, Ident);
                end if;
 
                Next (Arg);
@@ -1194,43 +1196,6 @@ package body Gnat2Why.Subprograms is
       return Result;
    end Compute_Contract_Cases_Postcondition;
 
-   ------------------
-   -- Compute_Spec --
-   ------------------
-
-   function Compute_Spec
-     (Params : Transformation_Params;
-      E      : Entity_Id;
-      Kind   : Name_Id;
-      Domain : EW_Domain) return W_Expr_Id
-   is
-      Cur_Spec : W_Expr_Id := Why_Empty;
-      Nodes    : Node_Lists.List := Find_Contracts (E, Kind);
-   begin
-      if Nodes.Is_Empty then
-         return New_Literal (Value => EW_True, Domain => Domain);
-      end if;
-
-      for Node of Nodes loop
-         declare
-            Why_Expr : constant W_Expr_Id :=
-              Transform_Expr (Node, EW_Bool_Type, Domain, Params);
-         begin
-            if Cur_Spec /= Why_Empty then
-               Cur_Spec :=
-                 New_And_Then_Expr
-                   (Left   => Why_Expr,
-                    Right  => Cur_Spec,
-                    Domain => Domain);
-            else
-               Cur_Spec := Why_Expr;
-            end if;
-         end;
-      end loop;
-
-      return Cur_Spec;
-   end Compute_Spec;
-
    ------------------------------------------
    -- Generate_VCs_For_Package_Elaboration --
    ------------------------------------------
@@ -1348,6 +1313,308 @@ package body Gnat2Why.Subprograms is
                     Kind => VC_Generation_Theory);
    end Generate_VCs_For_Package_Elaboration;
 
+   --------------------------
+   -- Generate_VCs_For_LSP --
+   --------------------------
+
+   procedure Generate_VCs_For_LSP
+     (File : in out Why_Section;
+      E    : Entity_Id)
+   is
+      Name      : constant String := Full_Name (E);
+      Params    : Transformation_Params;
+
+      Inherited_Pre_List  : Node_Lists.List;
+      Classwide_Pre_List  : Node_Lists.List;
+      Pre_List            : Node_Lists.List;
+      Inherited_Post_List : Node_Lists.List;
+      Classwide_Post_List : Node_Lists.List;
+      Post_List           : Node_Lists.List;
+
+      Inherited_Pre_Spec  : W_Pred_Id;
+      Classwide_Pre_Spec  : W_Pred_Id;
+      Pre_Spec            : W_Pred_Id;
+      Inherited_Post_Spec : W_Pred_Id;
+      Classwide_Post_Spec : W_Pred_Id;
+      Post_Spec           : W_Pred_Id;
+
+      Inherited_Pre_Assume  : W_Prog_Id;
+      Classwide_Pre_Check   : W_Prog_Id;
+      Classwide_Pre_Assume  : W_Prog_Id;
+      Pre_Check             : W_Prog_Id;
+      Pre_Assume            : W_Prog_Id;
+      Call_Effects          : W_Prog_Id;
+      Post_Assume           : W_Prog_Id;
+      Classwide_Post_Check  : W_Prog_Id;
+      Classwide_Post_Assume : W_Prog_Id;
+      Inherited_Post_Check  : W_Prog_Id;
+
+      Why_Body              : W_Prog_Id := New_Void;
+      Post_Checks           : W_Prog_Id;
+
+   begin
+      Open_Theory (File,
+                   New_Module
+                     (Name => NID (Name & "__subprogram_lsp"),
+                      File => No_Name),
+                   Comment =>
+                     "Module for checking LSP for subprogram "
+                       & """" & Get_Name_String (Chars (E)) & """"
+                       & (if Sloc (E) > 0 then
+                            " defined at " & Build_Location_String (Sloc (E))
+                          else "")
+                       & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+      Current_Subp := E;
+
+      --  First, clear the list of translations for X'Old expressions, and
+      --  create a new identifier for F'Result.
+
+      Reset_Map_For_Old;
+
+      Result_Name :=
+        New_Identifier
+             (Name => Name & "__result", Typ => EW_Abstract (Etype (E)));
+
+      Params :=
+        (File        => File.File,
+         Theory      => File.Cur_Theory,
+         Phase       => Generate_VCs_For_Contract,
+         Gen_Marker  => False,
+         Ref_Allowed => True);
+
+      --  First retrieve contracts specified on the subprogram and the
+      --  subprograms it overrides.
+
+      Inherited_Pre_List := Find_Contracts
+        (E, Name_Precondition, Classwide => True, Inherited => True);
+      Classwide_Pre_List := Find_Contracts
+        (E, Name_Precondition, Classwide => True);
+      Pre_List := Find_Contracts (E, Name_Precondition);
+
+      Inherited_Post_List := Find_Contracts
+        (E, Name_Postcondition, Classwide => True, Inherited => True);
+      Classwide_Post_List := Find_Contracts
+        (E, Name_Postcondition, Classwide => True);
+      Post_List := Find_Contracts (E, Name_Postcondition);
+
+      --  Then, generate suitable predicates based on the specified contracts,
+      --  with appropriate True defaults.
+
+      Inherited_Pre_Spec :=
+        +Compute_Spec (Params, Inherited_Pre_List, EW_Pred);
+      Classwide_Pre_Spec :=
+        +Compute_Spec (Params, Classwide_Pre_List, EW_Pred);
+      Pre_Spec := +Compute_Spec (Params, Pre_List, EW_Pred);
+
+      Inherited_Post_Spec :=
+        +Compute_Spec (Params, Inherited_Post_List, EW_Pred);
+      Classwide_Post_Spec :=
+        +Compute_Spec (Params, Classwide_Post_List, EW_Pred);
+      Post_Spec := +Compute_Spec (Params, Post_List, EW_Pred);
+
+      --  If E has a class-wide precondition, check that it cannot raise a
+      --  run-time error in an empty context.
+
+      if not Classwide_Pre_List.Is_Empty then
+         Why_Body := Sequence
+           ((1 => Why_Body,
+             2 => +Compute_Spec (Params, Classwide_Pre_List, EW_Prog)));
+      end if;
+
+      --  If E is overriding another subprogram, check that its specified
+      --  classwide precondition is weaker than the inherited one.
+
+      if Is_Overriding_Subprogram (E)
+        and then not Classwide_Pre_List.Is_Empty
+      then
+         Inherited_Pre_Assume :=
+           New_Assume_Statement (Post => Inherited_Pre_Spec);
+
+         Classwide_Pre_Check := New_Located_Assert
+           (Ada_Node => Get_Location_For_Aspect (E, Name_Precondition,
+                                                 Classwide => True),
+            Pred     => Classwide_Pre_Spec,
+            Reason   => VC_Weaker_Classwide_Pre,
+            Kind     => EW_Assert);
+
+         Why_Body := Sequence
+           ((1 => Why_Body,
+             2 => New_Comment (Comment =>
+                               NID ("Checking that class-wide precondition is"
+                                  & " implied by inherited precondition")),
+             3 => Inherited_Pre_Assume,
+             4 => Classwide_Pre_Check));
+
+         Why_Body := New_Abstract_Expr (Expr => Why_Body, Post => True_Pred);
+      end if;
+
+      --  If E has a specific precondition, check that it is weaker than the
+      --  dispatching one.
+
+      if not Pre_List.Is_Empty then
+         Classwide_Pre_Assume :=
+           New_Assume_Statement (Post =>
+             Get_Dispatching_Contract (Params, E, Name_Precondition));
+
+         Pre_Check := New_Located_Assert
+           (Ada_Node => Get_Location_For_Aspect (E, Name_Precondition),
+            Pred     => Pre_Spec,
+            Reason   => (if Classwide_Pre_List.Is_Empty and
+                            Inherited_Pre_List.Is_Empty
+                         then
+                           VC_Trivial_Weaker_Pre
+                         else
+                           VC_Weaker_Pre),
+            Kind     => EW_Assert);
+
+         Why_Body := Sequence
+           ((1 => Why_Body,
+             2 => New_Comment (Comment =>
+                               NID ("Checking that precondition is"
+                                  & " implied by class-wide precondition")),
+             3 => Classwide_Pre_Assume,
+             4 => Pre_Check));
+
+         Why_Body := New_Abstract_Expr (Expr => Why_Body, Post => True_Pred);
+      end if;
+
+      --  If E has a specific postcondition, check that it is stronger than the
+      --  dispatching one. To that end, perform equivalent effects of call in
+      --  context of precondition for static call.
+
+      --  Skip this check if the dispatching postcondition is the default True
+      --  postcondition.
+
+      if not Post_List.Is_Empty
+        and then not (Classwide_Post_List.Is_Empty
+                        and then
+                      Inherited_Post_List.Is_Empty)
+      then
+         Pre_Assume :=
+           New_Assume_Statement (Post =>
+             Get_Static_Call_Contract (Params, E, Name_Precondition));
+
+         Call_Effects := New_Havoc_Statement
+           (Ada_Node => E,
+            Effects  => +Compute_Effects (E, Global_Params => True));
+
+         Post_Assume := New_Assume_Statement (Post => Post_Spec);
+
+         Classwide_Post_Check := New_Located_Assert
+           (Ada_Node => Get_Location_For_Aspect (E, Name_Postcondition),
+            Pred     =>
+              Get_Dispatching_Contract (Params, E, Name_Postcondition),
+            Reason   => VC_Stronger_Post,
+            Kind     => EW_Assert);
+
+         Post_Checks := Sequence
+           ((1 => New_Comment (Comment =>
+                                 NID ("Simulate static call to subprogram "
+                                 & """" & Get_Name_String (Chars (E)) & """")),
+             2 => Pre_Assume,
+             3 => Call_Effects,
+             4 => New_Comment (Comment =>
+                               NID ("Checking that class-wide postcondition is"
+                                  & " implied by postcondition")),
+             5 => Post_Assume,
+             6 => Classwide_Post_Check));
+
+         Post_Checks :=
+           New_Abstract_Expr (Expr => Post_Checks, Post => True_Pred);
+
+         Why_Body := Sequence (Why_Body, Post_Checks);
+      end if;
+
+      --  If E is overriding another subprogram, check that its specified
+      --  classwide postcondition is stronger than the inherited one. Also
+      --  check that the class-wide postcondition cannot raise runtime errors.
+      --  To that end, perform equivalent effects of call in context of
+      --  precondition for dispatching call.
+
+      if not Classwide_Post_List.Is_Empty then
+         Classwide_Pre_Assume :=
+           New_Assume_Statement (Post =>
+             Get_Dispatching_Contract (Params, E, Name_Precondition));
+
+         Call_Effects := New_Havoc_Statement
+           (Ada_Node => E,
+            Effects  => +Compute_Effects (E, Global_Params => True));
+
+         Post_Checks := Sequence
+           ((1 => Classwide_Pre_Assume,
+             2 => Call_Effects,
+             3 => +Compute_Spec (Params, Classwide_Post_List, EW_Prog)));
+
+         if Is_Overriding_Subprogram (E) then
+            Classwide_Post_Assume :=
+              New_Assume_Statement (Post => Classwide_Post_Spec);
+
+            Inherited_Post_Check := New_Located_Assert
+              (Ada_Node => Get_Location_For_Aspect (E, Name_Postcondition,
+                                                    Classwide => True),
+               Pred     => Inherited_Post_Spec,
+               Reason   => VC_Stronger_Classwide_Post,
+               Kind     => EW_Assert);
+
+            Post_Checks := Sequence
+              ((1 => Post_Checks,
+                2 => New_Comment (Comment =>
+                               NID ("Checking that inherited postcondition is"
+                                  & " implied by class-wide postcondition")),
+                3 => Classwide_Post_Assume,
+                4 => Inherited_Post_Check));
+
+            Post_Checks :=
+              New_Abstract_Expr (Expr => Post_Checks, Post => True_Pred);
+
+            Why_Body := Sequence (Why_Body, Post_Checks);
+         end if;
+      end if;
+
+      --  Declare a global variable to hold the result of a function
+
+      if Ekind (E) = E_Function then
+         Emit
+           (File.Cur_Theory,
+            New_Global_Ref_Declaration
+              (Name     => Result_Name,
+               Labels =>
+                 Name_Id_Sets.To_Set
+                   (NID ("""GP_Ada_Name:" & Source_Name (E) & "'Result""")),
+               Ref_Type => EW_Abstract (Etype (E))));
+      end if;
+
+      --  add declarations for 'Old variables
+
+      Why_Body := Bind_From_Mapping_In_Expr
+        (Params                 => Params,
+         Map                    => Map_For_Old,
+         Expr                   => Why_Body,
+         Do_Runtime_Error_Check => False,
+         Bind_Value_Of_Old      => True);
+
+      declare
+         Label_Set : Name_Id_Set := Name_Id_Sets.To_Set (Cur_Subp_Sloc);
+      begin
+         Label_Set.Include (NID ("W:diverges:N"));
+         Emit (File.Cur_Theory,
+               Why.Gen.Binders.New_Function_Decl
+                 (Domain  => EW_Prog,
+                  Name    => To_Ident (WNE_Def),
+                  Binders => (1 => Unit_Param),
+                  Labels  => Label_Set,
+                  Def     => +Why_Body));
+      end;
+
+      --  We should *not* filter our own entity, it is needed for recursive
+      --  calls
+
+      Close_Theory (File,
+                    Kind => VC_Generation_Theory,
+                    Defined_Entity => E);
+   end Generate_VCs_For_LSP;
+
    ---------------------------------
    -- Generate_VCs_For_Subprogram --
    ---------------------------------
@@ -1414,11 +1681,11 @@ package body Gnat2Why.Subprograms is
         (File        => File.File,
          Theory      => File.Cur_Theory,
          Phase       => Generate_VCs_For_Contract,
-         Gen_Marker   => False,
+         Gen_Marker  => False,
          Ref_Allowed => True);
 
       --  The body of the subprogram may contain declarations that are in fact
-      --  essantial to prove absence of RTE in the pre, e.g. compiler-generated
+      --  essential to prove absence of RTE in the pre, e.g. compiler-generated
       --  subtype declarations. We need to take those into account.
 
       if Present (Body_N) and then Entity_Body_In_SPARK (E) then
@@ -1686,14 +1953,15 @@ package body Gnat2Why.Subprograms is
    -----------------------------
 
    function Get_Location_For_Aspect
-     (E    : Entity_Id;
-      Prag : Name_Id) return Node_Id is
+     (E         : Entity_Id;
+      Kind      : Name_Id;
+      Classwide : Boolean := False) return Node_Id is
    begin
 
       --  In the case of a No_Return Subprogram, there is no real location for
       --  the postcondition; simply return the subp entity node.
 
-      if Prag in Name_Postcondition | Name_Post
+      if Kind = Name_Postcondition
         and then No_Return (E)
       then
          return E;
@@ -1704,7 +1972,8 @@ package body Gnat2Why.Subprograms is
       --  list to get the first one in source code.
 
       declare
-         L : constant Node_Lists.List := Find_Contracts (E, Prag);
+         L : constant Node_Lists.List :=
+           Find_Contracts (E, Kind, Classwide => Classwide);
       begin
          if L.Is_Empty then
             return Empty;

@@ -53,6 +53,10 @@ package Why.Gen.Progs is
    --  is encoded as follows:
    --    [ { true } <return_type> { P} ]
 
+   function New_Havoc_Statement
+     (Ada_Node : Node_Id := Empty;
+      Effects  : W_Effects_Id) return W_Prog_Id;
+
    function New_For_Loop
      (Ada_Node   : Node_Id;
       Loop_Index : W_Identifier_Id;

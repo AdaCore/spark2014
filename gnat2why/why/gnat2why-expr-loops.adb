@@ -61,11 +61,11 @@ package body Gnat2Why.Expr.Loops is
    -----------------------
 
    procedure Get_Loop_Invariant
-     (Loop_Stmts      : List_Of_Nodes.List;
-      Initial_Stmts   : out List_Of_Nodes.List;
-      Loop_Invariants : out List_Of_Nodes.List;
-      Loop_Variants   : out List_Of_Nodes.List;
-      Final_Stmts     : out List_Of_Nodes.List);
+     (Loop_Stmts      : Node_Lists.List;
+      Initial_Stmts   : out Node_Lists.List;
+      Loop_Invariants : out Node_Lists.List;
+      Loop_Variants   : out Node_Lists.List;
+      Final_Stmts     : out Node_Lists.List);
    --  Loop_Stmts is a flattened list of statements and declarations in a loop
    --  body. It includes the statements and declarations that appear directly
    --  in the main list inside the loop, and recursively all inner declarations
@@ -97,7 +97,7 @@ package body Gnat2Why.Expr.Loops is
       Check_Prog            : out W_Prog_Id;
       Progress_Pred         : out W_Pred_Id;
       Same_Or_Progress_Pred : out W_Pred_Id;
-      Tmp_Vars              : out Node_Lists.List;
+      Tmp_Vars              : out Why_Node_Lists.List;
       Update_Prog           : out W_Prog_Id);
    --  Given a pragma Loop_Variant in Stmt, returns the Why node for checking
    --  that a loop variant does not raise run-time errors in Check_Prog;
@@ -110,7 +110,7 @@ package body Gnat2Why.Expr.Loops is
    --  to their saved values, returned in Tmp_Vars.
 
    function Transform_Loop_Body_Statements
-     (Stmts_And_Decls : List_Of_Nodes.List) return W_Prog_Id;
+     (Stmts_And_Decls : Node_Lists.List) return W_Prog_Id;
    --  Returns Why nodes for the transformation of the list of statements and
    --  declaration Stmts_And_Decls from a loop body.
 
@@ -124,7 +124,7 @@ package body Gnat2Why.Expr.Loops is
       Implicit_Invariant : W_Pred_Id;
       User_Invariant     : W_Pred_Id;
       Invariant_Check    : W_Prog_Id;
-      Variant_Tmps       : Node_Lists.List;
+      Variant_Tmps       : Why_Node_Lists.List;
       Variant_Update     : W_Prog_Id;
       Variant_Check      : W_Prog_Id) return W_Prog_Id;
    --  Returns the loop expression in Why.
@@ -157,11 +157,11 @@ package body Gnat2Why.Expr.Loops is
    ------------------------
 
    procedure Get_Loop_Invariant
-     (Loop_Stmts      : List_Of_Nodes.List;
-      Initial_Stmts   : out List_Of_Nodes.List;
-      Loop_Invariants : out List_Of_Nodes.List;
-      Loop_Variants   : out List_Of_Nodes.List;
-      Final_Stmts     : out List_Of_Nodes.List)
+     (Loop_Stmts      : Node_Lists.List;
+      Initial_Stmts   : out Node_Lists.List;
+      Loop_Invariants : out Node_Lists.List;
+      Loop_Variants   : out Node_Lists.List;
+      Final_Stmts     : out Node_Lists.List)
    is
       function Is_Last_Invariant_Or_Variant_In_Loop
         (N : Node_Id) return Boolean;
@@ -195,7 +195,7 @@ package body Gnat2Why.Expr.Loops is
       Cur_State : State := Before_Selected_Block;
       N         : Node_Id;
 
-      use List_Of_Nodes;
+      use Node_Lists;
 
    begin
       for Cur in Loop_Stmts.Iterate loop
@@ -329,7 +329,7 @@ package body Gnat2Why.Expr.Loops is
    ------------------------------------
 
    function Transform_Loop_Body_Statements
-     (Stmts_And_Decls : List_Of_Nodes.List) return W_Prog_Id
+     (Stmts_And_Decls : Node_Lists.List) return W_Prog_Id
    is
       Body_Prog : W_Prog_Id := New_Void;
    begin
@@ -356,11 +356,11 @@ package body Gnat2Why.Expr.Loops is
       Scheme    : constant Node_Id   := Iteration_Scheme (Stmt);
       Loop_Id   : constant Entity_Id := Entity (Identifier (Stmt));
 
-      Loop_Stmts      : List_Of_Nodes.List;
-      Initial_Stmts   : List_Of_Nodes.List;
-      Final_Stmts     : List_Of_Nodes.List;
-      Loop_Invariants : List_Of_Nodes.List;
-      Loop_Variants   : List_Of_Nodes.List;
+      Loop_Stmts      : Node_Lists.List;
+      Initial_Stmts   : Node_Lists.List;
+      Final_Stmts     : Node_Lists.List;
+      Loop_Invariants : Node_Lists.List;
+      Loop_Variants   : Node_Lists.List;
 
       Initial_Prog    : W_Prog_Id;
       Final_Prog      : W_Prog_Id;
@@ -381,7 +381,7 @@ package body Gnat2Why.Expr.Loops is
 
       Variant_Check   : W_Prog_Id := New_Void;
       Variant_Update  : W_Prog_Id := New_Void;
-      Variant_Tmps    : Node_Lists.List;
+      Variant_Tmps    : Why_Node_Lists.List;
 
       Loop_Param_Ent  : Entity_Id := Empty;
       Loop_Index      : W_Identifier_Id;
@@ -496,7 +496,7 @@ package body Gnat2Why.Expr.Loops is
             One_Variant_Prog   : W_Prog_Id;
             One_Variant_Pred   : W_Pred_Id;
             One_Variant_Update : W_Prog_Id;
-            One_Variant_Tmps   : Node_Lists.List;
+            One_Variant_Tmps   : Why_Node_Lists.List;
             Unused_Pred        : W_Pred_Id;
 
          begin
@@ -806,7 +806,7 @@ package body Gnat2Why.Expr.Loops is
       Check_Prog            : out W_Prog_Id;
       Progress_Pred         : out W_Pred_Id;
       Same_Or_Progress_Pred : out W_Pred_Id;
-      Tmp_Vars              : out Node_Lists.List;
+      Tmp_Vars              : out Why_Node_Lists.List;
       Update_Prog           : out W_Prog_Id)
    is
       Variant : Node_Id;
@@ -1006,7 +1006,7 @@ package body Gnat2Why.Expr.Loops is
       Implicit_Invariant : W_Pred_Id;
       User_Invariant     : W_Pred_Id;
       Invariant_Check    : W_Prog_Id;
-      Variant_Tmps       : Node_Lists.List;
+      Variant_Tmps       : Why_Node_Lists.List;
       Variant_Update     : W_Prog_Id;
       Variant_Check      : W_Prog_Id) return W_Prog_Id
    is

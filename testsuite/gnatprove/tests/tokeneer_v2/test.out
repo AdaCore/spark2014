@@ -22,7 +22,7 @@ admin.ads:233:08: info: length check proved
 admin.ads:233:48: info: length check proved
 admin.ads:235:48: info: length check proved
 admin.ads:237:48: info: length check proved
-admintoken.adb:199:38: warning: refined postcondition might fail
+admintoken.adb:199:30: warning: refined postcondition might fail
 admintoken.adb:225:37: info: length check proved
 admintoken.adb:225:40: info: length check proved
 admintoken.adb:227:23: info: length check proved
@@ -40,7 +40,7 @@ admintoken.ads:66:22: warning: postcondition might fail
 admintoken.ads:101:22: info: postcondition proved
 admintoken.ads:148:22: warning: postcondition might fail, requires TokenOk = (IsGood and then AuthCertValid and then TheAuthCertRole in PrivTypes.adminprivileget
 admintoken.ads:217:22: warning: postcondition might fail
-alarm.adb:46:72: info: refined post proved
+alarm.adb:46:30: info: refined post proved
 alarm.ads:70:22: info: postcondition proved
 auditlog.adb:77:04: warning: statement has no effect
 auditlog.adb:79:32: info: length check proved
@@ -124,7 +124,7 @@ auditlog.adb:1013:39: warning: overflow check might fail
 auditlog.adb:1021:10: info: precondition proved
 auditlog.adb:1023:10: info: precondition proved
 auditlog.adb:1031:07: warning: precondition might fail
-auditlog.adb:1070:55: warning: refined postcondition might fail
+auditlog.adb:1070:30: warning: refined postcondition might fail
 auditlog.adb:1072:67: warning: range check might fail
 auditlog.adb:1072:72: warning: overflow check might fail
 auditlog.adb:1073:50: warning: overflow check might fail
@@ -143,13 +143,13 @@ auditlog.adb:1270:62: warning: range check might fail
 auditlog.adb:1270:67: warning: overflow check might fail
 auditlog.adb:1271:27: warning: overflow check might fail
 auditlog.adb:1271:27: warning: range check might fail
-auditlog.adb:1332:55: warning: refined postcondition might fail
+auditlog.adb:1332:30: warning: refined postcondition might fail
 auditlog.adb:1334:67: warning: range check might fail
 auditlog.adb:1334:72: warning: overflow check might fail
 auditlog.adb:1335:50: warning: overflow check might fail
 auditlog.adb:1342:07: info: precondition proved
 auditlog.adb:1352:10: info: precondition proved
-auditlog.adb:1411:55: warning: refined postcondition might fail
+auditlog.adb:1411:30: warning: refined postcondition might fail
 auditlog.adb:1413:67: warning: range check might fail
 auditlog.adb:1413:72: warning: overflow check might fail
 auditlog.adb:1414:50: warning: overflow check might fail
@@ -162,7 +162,7 @@ auditlog.adb:1461:78: warning: overflow check might fail
 auditlog.adb:1491:52: warning: range check might fail
 auditlog.adb:1499:10: warning: precondition might fail
 auditlog.adb:1509:07: warning: precondition might fail
-auditlog.adb:1564:55: warning: refined postcondition might fail
+auditlog.adb:1564:30: warning: refined postcondition might fail
 auditlog.adb:1566:67: warning: range check might fail
 auditlog.adb:1566:72: warning: overflow check might fail
 auditlog.adb:1567:50: warning: overflow check might fail
@@ -417,11 +417,11 @@ display.adb:286:21: warning: precondition might fail
 display.ads:65:24: info: length check proved
 door.adb:88:22: warning: postcondition might fail, requires CurrentDoor = Open and Latch.IsLocked and Clock.GreaterThanOrEqual(Clock.TheCurrentTime, AlarmTimeout)) = (DoorAlarm = AlarmTypes.alarming
 door.adb:114:18: warning: precondition might fail
-door.adb:189:31: warning: refined postcondition might fail
+door.adb:169:30: warning: refined postcondition might fail
 door.adb:200:18: warning: precondition might fail
 door.adb:218:21: warning: precondition might fail
-door.adb:283:30: warning: refined postcondition might fail
-door.adb:351:69: warning: refined postcondition might fail
+door.adb:277:30: warning: refined postcondition might fail
+door.adb:347:30: warning: refined postcondition might fail
 door.ads:116:22: warning: postcondition might fail
 door.ads:169:22: warning: postcondition might fail
 door.ads:213:22: info: postcondition proved
@@ -502,25 +502,25 @@ enclave.adb:1470:13: info: precondition proved
 enclave.adb:1473:13: info: precondition proved
 enclave.adb:1476:13: warning: precondition might fail
 enclave.adb:1479:13: warning: precondition might fail
-enclave.adb:1507:60: info: refined post proved
-enclave.adb:1615:61: info: refined post proved
+enclave.adb:1506:30: info: refined post proved
+enclave.adb:1614:31: info: refined post proved
 enclave.adb:1625:13: info: precondition proved
 enclave.adb:1628:13: info: precondition proved
 enclave.adb:1631:13: info: precondition proved
-enclave.adb:1676:55: warning: refined postcondition might fail
+enclave.adb:1670:31: warning: refined postcondition might fail
 enclave.adb:1685:21: warning: precondition might fail
 enclave.adb:1704:18: warning: precondition might fail
 enclave.adb:1731:47: warning: "Floppy.Output" might not be written
+enclave.adb:1887:06: warning: refined postcondition might fail
 enclave.adb:1906:18: warning: precondition might fail
 enclave.adb:1912:19: warning: precondition might fail
 enclave.adb:1937:18: warning: precondition might fail
-enclave.adb:1939:41: warning: refined postcondition might fail
 enclave.adb:1943:18: warning: precondition might fail
 enclave.adb:1952:13: warning: precondition might fail
 enclave.adb:1957:13: warning: precondition might fail
+enclave.adb:2040:06: warning: refined postcondition might fail
 enclave.adb:2068:18: warning: precondition might fail
 enclave.adb:2078:18: warning: precondition might fail
-enclave.adb:2080:58: warning: refined postcondition might fail
 enclave.adb:2084:19: warning: precondition might fail
 enclave.adb:2179:21: warning: precondition might fail
 enclave.adb:2185:22: warning: precondition might fail
@@ -653,11 +653,11 @@ keystore.adb:773:47: info: length check proved
 keystore.adb:843:18: warning: precondition might fail
 keystore.ads:227:22: warning: postcondition might fail, requires Added and (not IsPublic) and PrivateKeyPresent) xor (not (Added and not IsPublic) and (PrivateKeyPresent = PrivateKeyPresent'old
 keystore.ads:245:22: info: postcondition proved
-latch.adb:96:39: info: refined post proved
+latch.adb:96:30: info: refined post proved
 latch.adb:113:18: warning: precondition might fail
-latch.adb:147:59: warning: refined postcondition might fail
+latch.adb:147:30: warning: refined postcondition might fail
 latch.adb:158:18: warning: precondition might fail
-latch.adb:178:43: info: refined post proved
+latch.adb:178:30: info: refined post proved
 latch.ads:106:22: warning: postcondition might fail
 latch.ads:135:22: info: postcondition proved
 latch.ads:150:22: info: postcondition proved
@@ -924,7 +924,7 @@ userentry.adb:859:13: warning: postcondition might fail
 userentry.adb:887:21: warning: precondition might fail
 userentry.adb:941:15: warning: precondition might fail
 userentry.adb:1045:50: warning: "Usertoken.Output" might not be written
-userentry.adb:1187:59: warning: refined postcondition might fail
+userentry.adb:1183:13: warning: refined postcondition might fail
 userentry.adb:1203:13: info: precondition proved
 userentry.adb:1207:13: info: precondition proved
 userentry.adb:1211:13: info: precondition proved

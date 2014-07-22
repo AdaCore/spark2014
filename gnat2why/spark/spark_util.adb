@@ -25,11 +25,12 @@
 
 with Ada.Strings;               use Ada.Strings;
 with Ada.Strings.Equal_Case_Insensitive;
-with Ada.Strings.Unbounded;     use Ada.Strings.Unbounded;
 
+with Elists;                    use Elists;
 with Fname;                     use Fname;
 with Lib;                       use Lib;
 with Nlists;                    use Nlists;
+with Sem_Disp;                  use Sem_Disp;
 with Sem_Util;                  use Sem_Util;
 with Exp_Util;                  use Exp_Util;
 with Sinput;                    use Sinput;
@@ -55,6 +56,9 @@ package body SPARK_Util is
    Classwide_To_Tagged_Entities : Node_Maps.Map;
    --  Map from classwide types to the corresponding specific tagged type
 
+   Primitive_To_Tagged_Entities : Node_Maps.Map;
+   --  Map from primitive operations to the corresponding specific tagged type
+
    -----------------------------
    -- Add_Classwide_To_Tagged --
    -----------------------------
@@ -63,6 +67,33 @@ package body SPARK_Util is
    begin
       Classwide_To_Tagged_Entities.Insert (Classwide, Ty);
    end Add_Classwide_To_Tagged;
+
+   ------------------------------
+   -- Add_Primitive_Operations --
+   ------------------------------
+
+   procedure Add_Primitive_Operations (Ty : Entity_Id) is
+      Op : Elmt_Id := First_Elmt (Direct_Primitive_Operations (Ty));
+   begin
+      while Present (Op) loop
+         Primitive_To_Tagged_Entities.Insert (Node (Op), Ty);
+         Next_Elmt (Op);
+      end loop;
+   end Add_Primitive_Operations;
+
+   -------------------------
+   -- Tagged_Of_Primitive --
+   -------------------------
+
+   function Tagged_Of_Primitive (Op : Entity_Id) return Entity_Id is
+      (Primitive_To_Tagged_Entities.Element (Op));
+
+   ----------------------------
+   -- Is_Primitive_Of_Tagged --
+   ----------------------------
+
+   function Is_Primitive_Of_Tagged (Op : Entity_Id) return Boolean is
+      (Primitive_To_Tagged_Entities.Contains (Op));
 
    --------------------------
    -- Corresponding_Tagged --
@@ -230,8 +261,8 @@ package body SPARK_Util is
    ------------
 
    procedure Append
-     (To    : in out List_Of_Nodes.List;
-      Elmts : List_Of_Nodes.List) is
+     (To    : in out Node_Lists.List;
+      Elmts : Node_Lists.List) is
    begin
       for E of Elmts loop
          To.Append (E);
@@ -239,8 +270,8 @@ package body SPARK_Util is
    end Append;
 
    procedure Append
-     (To    : in out Node_Lists.List;
-      Elmts : Node_Lists.List) is
+     (To    : in out Why_Node_Lists.List;
+      Elmts : Why_Node_Lists.List) is
    begin
       for E of Elmts loop
          To.Append (E);
@@ -642,6 +673,85 @@ package body SPARK_Util is
       return Only_Expression_Functions;
    end Expression_Functions_All_The_Way;
 
+   --------------------
+   -- Find_Contracts --
+   --------------------
+
+   function Find_Contracts
+     (E         : Entity_Id;
+      Name      : Name_Id;
+      Classwide : Boolean := False;
+      Inherited : Boolean := False) return Node_Lists.List
+   is
+      C         : constant Node_Id := Contract (E);
+      P         : Node_Id;
+      Contracts : Node_Lists.List := Node_Lists.Empty_List;
+
+   begin
+      --  If Inherited is True, look for an inherited contract, starting from
+      --  the closest overridden subprogram.
+
+      --  ??? Does not work for multiple inheritance through interfaces
+
+      if Inherited then
+         declare
+            Inherit_Subp : constant Subprogram_List :=
+              Inherited_Subprograms (E);
+         begin
+            for J in Inherit_Subp'Range loop
+               Contracts := Find_Contracts (Inherit_Subp (J), Name, Classwide);
+
+               if not Contracts.Is_Empty then
+                  return Contracts;
+               end if;
+            end loop;
+         end;
+
+         return Contracts;
+      end if;
+
+      case Name is
+         when Name_Precondition      |
+              Name_Postcondition     |
+              Name_Refined_Post      |
+              Name_Contract_Cases    |
+              Name_Initial_Condition =>
+
+            if Name = Name_Precondition then
+               P := Pre_Post_Conditions (C);
+            elsif Name = Name_Postcondition then
+               P := Pre_Post_Conditions (C);
+            elsif Name = Name_Refined_Post then
+               P := Pre_Post_Conditions
+                 (Contract (Defining_Entity (Specification
+                                               (Get_Subprogram_Body (E)))));
+            elsif Name = Name_Initial_Condition then
+               P := Classifications (C);
+            else
+               P := Contract_Test_Cases (C);
+            end if;
+
+            while Present (P) loop
+               if Chars (Pragma_Identifier (P)) = Name
+                 and then Classwide = Class_Present (P)
+               then
+                  Contracts.Append
+                    (Expression (First (Pragma_Argument_Associations (P))));
+               end if;
+
+               P := Next_Pragma (P);
+            end loop;
+
+            return Contracts;
+
+         when Name_Global | Name_Depends =>
+            raise Why.Not_Implemented;
+
+         when others =>
+            raise Program_Error;
+      end case;
+   end Find_Contracts;
+
    ------------------------
    -- First_Discriminant --
    ------------------------
@@ -729,10 +839,10 @@ package body SPARK_Util is
    ---------------------------------------------
 
    function Get_Flat_Statement_And_Declaration_List
-     (Stmts : List_Id) return List_Of_Nodes.List
+     (Stmts : List_Id) return Node_Lists.List
    is
       Cur_Stmt   : Node_Id := Nlists.First (Stmts);
-      Flat_Stmts : List_Of_Nodes.List;
+      Flat_Stmts : Node_Lists.List;
 
    begin
       while Present (Cur_Stmt) loop
@@ -964,10 +1074,10 @@ package body SPARK_Util is
    ----------------------------------------
 
    function Get_Statement_And_Declaration_List
-     (Stmts : List_Id) return List_Of_Nodes.List
+     (Stmts : List_Id) return Node_Lists.List
    is
       Cur_Stmt   : Node_Id := Nlists.First (Stmts);
-      New_Stmts : List_Of_Nodes.List;
+      New_Stmts : Node_Lists.List;
 
    begin
       while Present (Cur_Stmt) loop
@@ -1174,6 +1284,16 @@ package body SPARK_Util is
         and then Is_Inlined_Always (E);
    end Is_Local_Subprogram_Always_Inlined;
 
+   ------------------------------
+   -- Is_Overriding_Subprogram --
+   ------------------------------
+
+   function Is_Overriding_Subprogram (E : Entity_Id) return Boolean is
+      Inherited : constant Subprogram_List := Inherited_Subprograms (E);
+   begin
+      return Inherited'Length > 0;
+   end Is_Overriding_Subprogram;
+
    ---------------------------------------------
    -- Is_Single_Precision_Floating_Point_Type --
    ---------------------------------------------
@@ -1349,6 +1469,16 @@ package body SPARK_Util is
 
       return True;
    end Is_Toplevel_Entity;
+
+   --------------------------------
+   -- Lexicographic_Entity_Order --
+   --------------------------------
+
+   function Lexicographic_Entity_Order
+     (Left, Right : Node_Id) return Boolean is
+   begin
+      return Unique_Name (Left) < Unique_Name (Right);
+   end Lexicographic_Entity_Order;
 
    ----------------------------------
    -- Location_In_Standard_Library --
@@ -1611,6 +1741,22 @@ package body SPARK_Util is
 
       return Empty;
    end Search_Component_By_Name;
+
+   ---------------------------
+   -- To_Ordered_Entity_Set --
+   ---------------------------
+
+   function To_Ordered_Entity_Set
+     (S : Node_Sets.Set) return Ordered_Entity_Sets.Set
+   is
+      OS : Ordered_Entity_Sets.Set;
+   begin
+      for X of S loop
+         pragma Assert (Nkind (X) in N_Entity);
+         OS.Include (X);
+      end loop;
+      return OS;
+   end To_Ordered_Entity_Set;
 
    -----------------------------------
    -- Type_Based_On_External_Axioms --

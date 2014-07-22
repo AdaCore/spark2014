@@ -25,10 +25,8 @@
 --  particular Flow_Id and V_Attributes.
 
 with Ada.Containers;
-with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Containers.Hashed_Sets;
 with Ada.Containers.Ordered_Sets;
-with Ada.Containers.Vectors;
 with Ada.Strings.Unbounded;              use Ada.Strings.Unbounded;
 
 with Atree;                              use Atree;
@@ -38,33 +36,9 @@ with Types;                              use Types;
 
 with Common_Containers;                  use Common_Containers;
 
-with Flow_Tree_Utility;                  use Flow_Tree_Utility;
+with SPARK_Util;                         use SPARK_Util;
 
 package Flow_Types is
-
-   ----------------------------------------------------------------------
-   --  Utility types related to entities and nodes
-   ----------------------------------------------------------------------
-
-   package Entity_Lists is new Ada.Containers.Vectors
-     (Index_Type   => Positive,
-      Element_Type => Entity_Id);
-
-   package Ordered_Entity_Sets is new Ada.Containers.Ordered_Sets
-     (Element_Type => Entity_Id,
-      "<"          => Lexicographic_Entity_Order,
-      "="          => "=");
-
-   package Node_Lists is new Ada.Containers.Doubly_Linked_Lists
-     (Element_Type => Node_Or_Entity_Id,
-      "="          => "=");
-
-   function To_Ordered_Entity_Set (S : Node_Sets.Set)
-                                   return Ordered_Entity_Sets.Set;
-   --  Convert a hashed node set into an ordered node set.
-
-   package Unbounded_String_Lists is new Ada.Containers.Doubly_Linked_Lists
-     (Element_Type => Unbounded_String);
 
    ----------------------------------------------------------------------
    --  Flow_Id
