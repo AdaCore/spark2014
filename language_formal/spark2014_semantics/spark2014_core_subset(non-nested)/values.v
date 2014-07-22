@@ -66,7 +66,7 @@ Inductive basic_value : Type :=
     | Bool (b : bool).
 
 Inductive aggregate_value : Type :=
-    | ArrayV (a: list (index * basic_value)) (* array value with lower and upper bound *)
+    | ArrayV (a: list (index * basic_value))
     | RecordV (r: list (idnum * basic_value)).
 
 (** Type of stored values in the store *)

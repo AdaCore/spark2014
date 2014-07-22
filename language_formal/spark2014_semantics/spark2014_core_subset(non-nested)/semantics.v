@@ -12,54 +12,30 @@ End Entry_Value_Stored.
 Module STACK := STORE(Entry_Value_Stored).
 Import STACK.
 
-Import Symbol_Table_Module.
-
 (** * Run Time Check Status *)
 Inductive check_status :=
     | Success
     | Exception (m: error_type).
 
 (** * Run Time Check Semantics *)
-Inductive do_overflow_check: binary_operator -> value -> value -> check_status -> Prop :=
-    | Do_Overflow_Check_On_Plus: forall v1 v2,
-        (* min_signed <= (v1 + v2) <= max_signed *)
-        (Zge_bool (v1 + v2) min_signed) && (Zle_bool (v1 + v2) max_signed) = true ->
-        do_overflow_check Plus (BasicV (Int v1)) (BasicV (Int v2)) Success
-    | Do_Overflow_Check_On_Plus_E: forall v1 v2,
-        (* min_signed <= (v1 + v2) <= max_signed *)
-        (Zge_bool (v1 + v2) min_signed) && (Zle_bool (v1 + v2) max_signed) = false ->
-        do_overflow_check Plus (BasicV (Int v1)) (BasicV (Int v2)) (Exception RTE_Overflow)
-    | Do_Overflow_Check_On_Minus: forall v1 v2,
-        (* min_signed <= (v1 - v2) <= max_signed *)
-        (Zge_bool (v1 - v2) min_signed) && (Zle_bool (v1 - v2) max_signed) = true ->
-        do_overflow_check Minus (BasicV (Int v1)) (BasicV (Int v2)) Success
-    | Do_Overflow_Check_On_Minus_E: forall v1 v2,
-        (* min_signed <= (v1 - v2) <= max_signed *)
-        (Zge_bool (v1 - v2) min_signed) && (Zle_bool (v1 - v2) max_signed) = false ->
-        do_overflow_check Minus (BasicV (Int v1)) (BasicV (Int v2)) (Exception RTE_Overflow)
-    | Do_Overflow_Check_On_Multiply: forall v1 v2,
-        (* min_signed <= (v1 * v2) <= max_signed *)
-        (Zge_bool (v1 * v2) min_signed) && (Zle_bool (v1 * v2) max_signed) = true ->
-        do_overflow_check Multiply (BasicV (Int v1)) (BasicV (Int v2)) Success
-    | Do_Overflow_Check_On_Multiply_E: forall v1 v2,
-        (* min_signed <= (v1 * v2) <= max_signed *)
-        (Zge_bool (v1 * v2) min_signed) && (Zle_bool (v1 * v2) max_signed) = false ->
-        do_overflow_check Multiply (BasicV (Int v1)) (BasicV (Int v2)) (Exception RTE_Overflow)
-    | Do_Overflow_Check_On_Divide: forall v1 v2,
-        (* min_signed <= (v1 / v2) <= max_signed *)
-        (* (Zeq_bool v1 min_signed) && (Zeq_bool v2 (-1)) = b -> *)
-        ((Zge_bool (Z.quot v1 v2) min_signed) && (Zle_bool (Z.quot v1 v2) max_signed)) = true ->
-        do_overflow_check Divide (BasicV (Int v1)) (BasicV (Int v2)) Success
-    | Do_Overflow_Check_On_Divide_E: forall v1 v2,
-        (* min_signed <= (v1 / v2) <= max_signed *)
-        ((Zge_bool (Z.quot v1 v2) min_signed) && (Zle_bool (Z.quot v1 v2) max_signed)) = false ->
-        do_overflow_check Divide (BasicV (Int v1)) (BasicV (Int v2)) (Exception RTE_Overflow).
+Inductive do_overflow_check_on_binop: binary_operator -> value -> value -> check_status -> Prop :=
+    | Do_Overflow_Check_On_Binops: forall op v1 v2 v,
+        (* min_signed <= (v1 op v2) <= max_signed *)
+        op = Plus \/ op = Minus \/ op = Multiply \/ op = Divide ->
+        Val.binary_operation op v1 v2 = Some (BasicV (Int v)) ->
+        (Zge_bool v min_signed) && (Zle_bool v max_signed) = true ->
+        do_overflow_check_on_binop op v1 v2 Success
+    | Do_Overflow_Check_On_Binops_E: forall op v1 v2 v,
+        op = Plus \/ op = Minus \/ op = Multiply \/ op = Divide ->
+        Val.binary_operation op v1 v2 = Some (BasicV (Int v)) ->
+        (Zge_bool v min_signed) && (Zle_bool v max_signed) = false ->
+        do_overflow_check_on_binop op v1 v2 (Exception RTE_Overflow).
 
 Inductive do_overflow_check_on_unop: unary_operator -> value -> check_status -> Prop :=
-    | Do_Overflow_Check_On_Unary_Minus: forall v,
+    | Do_Overflow_Check_On_Unops: forall v,
         (Zge_bool (Z.opp v) min_signed) && (Zle_bool (Z.opp v) max_signed) = true ->
         do_overflow_check_on_unop Unary_Minus (BasicV (Int v)) Success
-    | Do_Overflow_Check_On_Unary_Minus_E: forall v,
+    | Do_Overflow_Check_On_Unops_E: forall v,
         (Zge_bool (Z.opp v) min_signed) && (Zle_bool (Z.opp v) max_signed) = false ->
         do_overflow_check_on_unop Unary_Minus (BasicV (Int v)) (Exception RTE_Overflow).
 
@@ -73,45 +49,35 @@ Inductive do_division_check: binary_operator -> value -> value -> check_status -
         (negb (Zeq_bool v2 0)) = false ->
         do_division_check Divide (BasicV (Int v1)) (BasicV (Int v2)) (Exception RTE_Division_By_Zero).
 
-Inductive do_index_check: Z -> Z -> Z -> check_status -> Prop :=
-    | Do_Array_Index_Check: forall i l u,
+Inductive do_range_check: Z -> Z -> Z -> check_status -> Prop :=
+    | Do_Range_Check: forall i l u,
         (* i >= l /\ u >= i *)
         (Zge_bool i l) && (Zge_bool u i) = true ->
-        do_index_check i l u Success
-    | Do_Array_Index_Check_E: forall i l u,
+        do_range_check i l u Success
+    | Do_Range_Check_E: forall i l u,
         (Zge_bool i l) && (Zge_bool u i) = false ->
-        do_index_check i l u (Exception RTE_Index).
+        do_range_check i l u (Exception RTE_Range).
 
 (* verify run time checks on binary / unary operations *)
 Inductive do_run_time_check_on_binop: binary_operator -> value -> value -> check_status -> Prop :=
-    | Do_Check_On_Plus: forall v1 v2,
-        do_overflow_check Plus v1 v2 Success ->
-        do_run_time_check_on_binop Plus v1 v2 Success
-    | Do_Check_On_Plus_E: forall v1 v2,
-        do_overflow_check Plus v1 v2 (Exception RTE_Overflow) ->
-        do_run_time_check_on_binop Plus v1 v2 (Exception RTE_Overflow)
-    | Do_Check_On_Minus: forall v1 v2,
-        do_overflow_check Minus v1 v2 Success ->
-        do_run_time_check_on_binop Minus v1 v2 Success
-    | Do_Check_On_Minus_E: forall v1 v2,
-        do_overflow_check Minus v1 v2 (Exception RTE_Overflow) ->
-        do_run_time_check_on_binop Minus v1 v2 (Exception RTE_Overflow)
-    | Do_Check_On_Multiply: forall v1 v2,
-        do_overflow_check Multiply v1 v2 Success ->
-        do_run_time_check_on_binop Multiply v1 v2 Success
-    | Do_Check_On_Multiply_E: forall v1 v2,
-        do_overflow_check Multiply v1 v2 (Exception RTE_Overflow) ->
-        do_run_time_check_on_binop Multiply v1 v2 (Exception RTE_Overflow)
+    | Do_Check_On_Binops_O: forall op v1 v2,
+        op = Plus \/ op = Minus \/ op = Multiply ->
+        do_overflow_check_on_binop op v1 v2 Success ->
+        do_run_time_check_on_binop op v1 v2 Success
+    | Do_Check_On_Binops_O_E: forall op v1 v2,
+        op = Plus \/ op = Minus \/ op = Multiply ->
+        do_overflow_check_on_binop op v1 v2 (Exception RTE_Overflow) ->
+        do_run_time_check_on_binop op v1 v2 (Exception RTE_Overflow)
     | Do_Check_On_Divide: forall v1 v2,
         do_division_check Divide v1 v2 Success ->
-        do_overflow_check Divide v1 v2 Success ->
+        do_overflow_check_on_binop Divide v1 v2 Success ->
         do_run_time_check_on_binop Divide v1 v2 Success
     | Do_Check_On_Divide_Division_By_Zero_E: forall v1 v2,
         do_division_check Divide v1 v2 (Exception RTE_Division_By_Zero) ->
         do_run_time_check_on_binop Divide v1 v2 (Exception RTE_Division_By_Zero)
     | Do_Check_On_Divide_Overflow_E: forall v1 v2,
         do_division_check Divide v1 v2 Success ->
-        do_overflow_check Divide v1 v2 (Exception RTE_Overflow) ->
+        do_overflow_check_on_binop Divide v1 v2 (Exception RTE_Overflow) ->
         do_run_time_check_on_binop Divide v1 v2 (Exception RTE_Overflow)
     | Do_Nothing_On_BinOp: forall op v1 v2,
         op <> Plus ->
@@ -130,15 +96,6 @@ Inductive do_run_time_check_on_unop: unary_operator -> value -> check_status -> 
     | Do_Nothing_On_UnOp: forall op v,
         op <> Unary_Minus ->
         do_run_time_check_on_unop op (BasicV (Int v)) Success.
-
-
-
-Function astnum_of_name (n: name): idnum :=
-    match n with 
-    | E_Identifier ast_num _ 
-    | E_Indexed_Component ast_num _ _ _
-    | E_Selected_Component ast_num _ _ _ => ast_num
-    end.
 
 Function record_select (r: list (idnum * basic_value)) (f: idnum): option basic_value :=
     match r with 
@@ -161,7 +118,6 @@ Function array_select (a: list (index * basic_value)) (i: Z): option basic_value
     | nil => None
     end.
 
-
 (** interpret the literal expressions *)
 Definition eval_literal (l: literal): value :=
     match l with
@@ -183,66 +139,69 @@ Definition eval_literal (l: literal): value :=
     normal binary operation result is returned;
 *)
 
-Inductive eval_expr: stack -> expression -> Return value -> Prop :=
-    | Eval_E_Literal: forall l v s ast_num,
+Inductive eval_expr: symboltable -> stack -> expression -> Return value -> Prop :=
+    | Eval_E_Literal: forall l v st s ast_num,
         eval_literal l = v ->
-        eval_expr s (E_Literal ast_num l) (Normal v)
-    | Eval_E_Name: forall s n v ast_num,
-        eval_name s n v ->
-        eval_expr s (E_Name ast_num n) v
-    | Eval_E_Binary_Operation_RTE_E1: forall s e1 msg ast_num op e2,
-        eval_expr s e1 (Run_Time_Error msg) ->
-        eval_expr s (E_Binary_Operation ast_num op e1 e2) (Run_Time_Error msg)
-    | Eval_E_Binary_Operation_RTE_E2: forall s e1 v1 e2 msg ast_num op,
-        eval_expr s e1 (Normal v1) ->
-        eval_expr s e2 (Run_Time_Error msg) ->
-        eval_expr s (E_Binary_Operation ast_num op e1 e2) (Run_Time_Error msg)
-    | Eval_E_Binary_Operation_RTE_Bin: forall s e1 v1 e2 v2 msg ast_num op,
-        eval_expr s e1 (Normal v1) ->
-        eval_expr s e2 (Normal v2) ->
+        eval_expr st s (E_Literal ast_num l) (Normal v)
+    | Eval_E_Name: forall s n v st ast_num,
+        eval_name st s n v ->
+        eval_expr st s (E_Name ast_num n) v
+    | Eval_E_Binary_Operation_RTE_E1: forall st s e1 msg ast_num op e2,
+        eval_expr st s e1 (Run_Time_Error msg) ->
+        eval_expr st s (E_Binary_Operation ast_num op e1 e2) (Run_Time_Error msg)
+    | Eval_E_Binary_Operation_RTE_E2: forall st s e1 v1 e2 msg ast_num op,
+        eval_expr st s e1 (Normal v1) ->
+        eval_expr st s e2 (Run_Time_Error msg) ->
+        eval_expr st s (E_Binary_Operation ast_num op e1 e2) (Run_Time_Error msg)
+    | Eval_E_Binary_Operation_RTE_Bin: forall st s e1 v1 e2 v2 msg ast_num op,
+        eval_expr st s e1 (Normal v1) ->
+        eval_expr st s e2 (Normal v2) ->
         do_run_time_check_on_binop op v1 v2 (Exception msg) ->
-        eval_expr s (E_Binary_Operation ast_num op e1 e2) (Run_Time_Error msg)
-    | Eval_E_Binary_Operation: forall s e1 v1 e2 v2 ast_num op v,
-        eval_expr s e1 (Normal v1) ->
-        eval_expr s e2 (Normal v2) ->
+        eval_expr st s (E_Binary_Operation ast_num op e1 e2) (Run_Time_Error msg)
+    | Eval_E_Binary_Operation: forall st s e1 v1 e2 v2 ast_num op v,
+        eval_expr st s e1 (Normal v1) ->
+        eval_expr st s e2 (Normal v2) ->
         do_run_time_check_on_binop op v1 v2 Success ->
         Val.binary_operation op v1 v2 = Some v ->
-        eval_expr s (E_Binary_Operation ast_num op e1 e2) (Normal v)
-    | Eval_E_Unary_Operation_RTE_E: forall s e msg ast_num op,
-        eval_expr s e (Run_Time_Error msg) ->
-        eval_expr s (E_Unary_Operation ast_num op e) (Run_Time_Error msg)
-    | Eval_E_Unary_Operation_RTE: forall s e v msg ast_num op,
-        eval_expr s e (Normal v) ->
+        eval_expr st s (E_Binary_Operation ast_num op e1 e2) (Normal v)
+    | Eval_E_Unary_Operation_RTE_E: forall st s e msg ast_num op,
+        eval_expr st s e (Run_Time_Error msg) ->
+        eval_expr st s (E_Unary_Operation ast_num op e) (Run_Time_Error msg)
+    | Eval_E_Unary_Operation_RTE: forall st s e v msg ast_num op,
+        eval_expr st s e (Normal v) ->
         do_run_time_check_on_unop op v (Exception msg) ->
-        eval_expr s (E_Unary_Operation ast_num op e) (Run_Time_Error msg)
-    | Eval_E_Unary_Operation: forall s e v ast_num op v1,
-        eval_expr s e (Normal v) ->
+        eval_expr st s (E_Unary_Operation ast_num op e) (Run_Time_Error msg)
+    | Eval_E_Unary_Operation: forall st s e v ast_num op v1,
+        eval_expr st s e (Normal v) ->
         do_run_time_check_on_unop op v Success ->
         Val.unary_operation op v = Some v1 ->
-        eval_expr s (E_Unary_Operation ast_num op e) (Normal v1)
+        eval_expr st s (E_Unary_Operation ast_num op e) (Normal v1)
 
-with eval_name: stack -> name -> Return value -> Prop :=
-    | Eval_E_Identifier: forall x s v ast_num, 
+with eval_name: symboltable -> stack -> name -> Return value -> Prop :=
+    | Eval_E_Identifier: forall x s v st ast_num, 
         fetchG x s = Some v ->
-        eval_name s (E_Identifier ast_num x) (Normal v)
-    | Eval_E_Indexed_Component_RTE_E: forall s e msg ast_num x_ast_num x,
-        eval_expr s e (Run_Time_Error msg) ->
-        eval_name s (E_Indexed_Component ast_num x_ast_num x e) (Run_Time_Error msg)
-    | Eval_E_Indexed_Component_RTE_Index: forall s e i x l u a ast_num x_ast_num, 
-        eval_expr s e (Normal (BasicV (Int i))) ->
-        fetchG x s = Some (AggregateV (ArrayV (l, u, a))) ->
-        do_index_check i l u (Exception RTE_Index) ->
-        eval_name s (E_Indexed_Component ast_num x_ast_num x e) Index_Error
-    | Eval_E_Indexed_Component: forall s e i x l u a v ast_num x_ast_num, 
-        eval_expr s e (Normal (BasicV (Int i))) ->
-        fetchG x s = Some (AggregateV (ArrayV (l, u, a))) ->
-        do_index_check i l u Success ->
+        eval_name st s (E_Identifier ast_num x) (Normal v)
+    | Eval_E_Indexed_Component_RTE_E: forall st s e msg ast_num x_ast_num x,
+        eval_expr st s e (Run_Time_Error msg) ->
+        eval_name st s (E_Indexed_Component ast_num x_ast_num x e) (Run_Time_Error msg)
+    | Eval_E_Indexed_Component_RTE_Index: forall st s e i x_ast_num t a_ast_num tn typ l u ast_num x, 
+        eval_expr st s e (Normal (BasicV (Int i))) ->
+        fetch_exp_type x_ast_num st = Some (Array_Type t) ->
+        fetch_type t st = Some (Array_Type_Declaration a_ast_num tn typ l u) ->
+        do_range_check i l u (Exception RTE_Range) ->
+        eval_name st s (E_Indexed_Component ast_num x_ast_num x e) (Run_Time_Error RTE_Range)
+    | Eval_E_Indexed_Component: forall st s e i x_ast_num t a_ast_num tn typ l u x a v ast_num, 
+        eval_expr st s e (Normal (BasicV (Int i))) ->
+        fetch_exp_type x_ast_num st = Some (Array_Type t) ->
+        fetch_type t st = Some (Array_Type_Declaration a_ast_num tn typ l u) ->        
+        do_range_check i l u Success ->
+        fetchG x s = Some (AggregateV (ArrayV a)) ->
         array_select a i = Some v ->
-        eval_name s (E_Indexed_Component ast_num x_ast_num x e) (Normal (BasicV v))
-    | Eval_E_Selected_Component: forall x s r f v ast_num x_ast_num,
+        eval_name st s (E_Indexed_Component ast_num x_ast_num x e) (Normal (BasicV v))
+    | Eval_E_Selected_Component: forall x s r f v st ast_num x_ast_num,
         fetchG x s = Some (AggregateV (RecordV r)) ->
         record_select r f = Some v ->
-        eval_name s (E_Selected_Component ast_num x_ast_num x f) (Normal (BasicV v)).
+        eval_name st s (E_Selected_Component ast_num x_ast_num x f) (Normal (BasicV v)).
 
 (** ** Statement Evaluation Semantics *)
 

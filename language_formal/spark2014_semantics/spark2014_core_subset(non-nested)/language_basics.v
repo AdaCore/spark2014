@@ -60,7 +60,8 @@ Inductive type: Type :=
     | Subtype (t: typenum) (* 3.2.2 *)
     | Derived_Type (t: typenum) (* 3.4 *)
     | Integer_Type (t: typenum) (* 3.5.4 *)
-    | Aggregate (t: typenum) (* 3.6, 3.8 *) (* t: declared array/record type name *).
+    | Array_Type (t: typenum) (* 3.6 *)    (* t: declared array type name *)
+    | Record_Type (t: typenum) (* 3.8 *)   (* t: declared record type name *).
 
 (** * In/Out Mode *)
 
