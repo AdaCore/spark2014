@@ -37,20 +37,26 @@ package body Shell is
       use type AIP.IPaddrs.IPaddr;
       AA     : AIP.IPaddrs.IPaddr := A;
       B      : AIP.IPaddrs.IPaddr;
-      Result : String := "000.000.000.000";
+      Result : String (1 .. 15);
       Index  : Integer := Result'Last;
+
    begin
       for J in 1 .. 4 loop
          B := AA and 16#ff#;
          for K in 0 .. 2 loop
             Result (Index) := Character'Val (Character'Pos ('0') + B mod 10);
-            B := B / 10;
             Index := Index - 1;
+            B := B / 10;
+            exit when B = 0;
          end loop;
-         Index := Index - 1;
+
+         if J < 4 then
+            Result (Index) := '.';
+            Index := Index - 1;
+         end if;
          AA := AA / 256;
       end loop;
-      return Result;
+      return Result (Index + 1 .. Result'Last);
    end Image;
 
    ----------
