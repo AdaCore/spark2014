@@ -381,7 +381,8 @@ package body Gnat2Why.Util is
    function Get_Dispatching_Contract
      (Params : Transformation_Params;
       E      : Entity_Id;
-      Kind   : Name_Id) return W_Pred_Id
+      Kind   : Name_Id;
+      Domain : EW_Domain) return W_Expr_Id
    is
       Conjuncts_List : Node_Lists.List :=
         Find_Contracts (E, Kind, Classwide => True);
@@ -391,7 +392,15 @@ package body Gnat2Why.Util is
            (E, Kind, Classwide => True, Inherited => True);
       end if;
 
-      return +Compute_Spec (Params, Conjuncts_List, EW_Pred);
+      return +Compute_Spec (Params, Conjuncts_List, Domain);
+   end Get_Dispatching_Contract;
+
+   function Get_Dispatching_Contract
+     (Params : Transformation_Params;
+      E      : Entity_Id;
+      Kind   : Name_Id) return W_Pred_Id is
+   begin
+      return +Get_Dispatching_Contract (Params, E, Kind, EW_Pred);
    end Get_Dispatching_Contract;
 
    ------------------------------
@@ -401,15 +410,24 @@ package body Gnat2Why.Util is
    function Get_Static_Call_Contract
      (Params : Transformation_Params;
       E      : Entity_Id;
-      Kind   : Name_Id) return W_Pred_Id
+      Kind   : Name_Id;
+      Domain : EW_Domain) return W_Expr_Id
    is
       Conjuncts_List : constant Node_Lists.List := Find_Contracts (E, Kind);
    begin
       if Conjuncts_List.Is_Empty then
-         return Get_Dispatching_Contract (Params, E, Kind);
+         return Get_Dispatching_Contract (Params, E, Kind, Domain);
       end if;
 
-      return +Compute_Spec (Params, Conjuncts_List, EW_Pred);
+      return +Compute_Spec (Params, Conjuncts_List, Domain);
+   end Get_Static_Call_Contract;
+
+   function Get_Static_Call_Contract
+     (Params : Transformation_Params;
+      E      : Entity_Id;
+      Kind   : Name_Id) return W_Pred_Id is
+   begin
+      return +Get_Static_Call_Contract (Params, E, Kind, EW_Pred);
    end Get_Static_Call_Contract;
 
    --------------------

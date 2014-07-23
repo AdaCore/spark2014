@@ -752,6 +752,33 @@ package body SPARK_Util is
       end case;
    end Find_Contracts;
 
+   -------------------
+   -- Has_Contracts --
+   -------------------
+
+   function Has_Contracts
+     (E         : Entity_Id;
+      Name      : Name_Id;
+      Classwide : Boolean := False;
+      Inherited : Boolean := False) return Boolean
+   is
+      Contracts : Node_Lists.List;
+   begin
+      if Classwide or Inherited then
+         if Classwide then
+            Contracts := Find_Contracts (E, Name, Classwide => True);
+         end if;
+         if Contracts.Is_Empty and Inherited then
+            Contracts :=
+              Find_Contracts (E, Name, Classwide => True, Inherited => True);
+         end if;
+      else
+         Contracts := Find_Contracts (E, Name);
+      end if;
+
+      return not Contracts.Is_Empty;
+   end Has_Contracts;
+
    ------------------------
    -- First_Discriminant --
    ------------------------

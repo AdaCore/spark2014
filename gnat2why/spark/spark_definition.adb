@@ -1051,6 +1051,20 @@ package body SPARK_Definition is
                   Add_Full_And_Partial_View (Full_View (E), E);
                end if;
 
+               --  Fill in the map between classwide types and their
+               --  corresponding specific type, in the case of the implicitly
+               --  declared classwide type T'Class. Also fill in the map
+               --  between primitive operations and their corresponding
+               --  tagged type.
+
+               if Ekind (E) = E_Record_Type
+                 and then Is_Tagged_Type (E)
+               then
+                  Mark_Entity (Class_Wide_Type (E));
+                  Add_Classwide_To_Tagged (Class_Wide_Type (E), E);
+                  Add_Primitive_Operations (E);
+               end if;
+
                Mark_Entity (E);
                if Is_Itype (BT) then
                   Mark_Entity (BT);
@@ -2224,19 +2238,6 @@ package body SPARK_Definition is
 
                   Next_Entity (Field);
                end loop;
-
-               --  Fill in the map between classwide types and their
-               --  corresponding specific type, in the case of the implicitly
-               --  declared classwide type T'Class. Also fill in the map
-               --  between primitive operations and their corresponding
-               --  tagged type.
-
-               if Ekind (E) = E_Record_Type
-                 and then Is_Tagged_Type (E)
-               then
-                  Add_Classwide_To_Tagged (Class_Wide_Type (E), E);
-                  Add_Primitive_Operations (E);
-               end if;
             end;
 
          --  Fill in the map between classwide types and their corresponding

@@ -256,9 +256,21 @@ package Gnat2Why.Util is
    function Get_Dispatching_Contract
      (Params : Transformation_Params;
       E      : Entity_Id;
+      Kind   : Name_Id;
+      Domain : EW_Domain) return W_Expr_Id;
+
+   function Get_Dispatching_Contract
+     (Params : Transformation_Params;
+      E      : Entity_Id;
       Kind   : Name_Id) return W_Pred_Id;
    --  Returns the precondition or postcondition (depending on Kind) for a
    --  dispatching call.
+
+   function Get_Static_Call_Contract
+     (Params : Transformation_Params;
+      E      : Entity_Id;
+      Kind   : Name_Id;
+      Domain : EW_Domain) return W_Expr_Id;
 
    function Get_Static_Call_Contract
      (Params : Transformation_Params;

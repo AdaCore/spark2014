@@ -242,6 +242,16 @@ package Why.Gen.Names is
       --  component from the extension field of a value of the root type.
       WNE_Extract_Prefix,
 
+      --  Prefix for name of functions which correspond to the dispatching
+      --  version of a primitive operation of a tagged type.
+      WNE_Dispatch_Subp_Prefix,  --  dispatch__
+
+      --  Suffix for name of logic functions
+      WNE_Logic_Fun_Suffix,  --  __logic
+
+      --  Prefix of the inversion axioms between root type and record type
+      WNE_Inversion_Axiom_Prefix,  --  inversion_axiom
+
       WNE_Of_Array,
       WNE_Of_Base,
       WNE_Of_Int,

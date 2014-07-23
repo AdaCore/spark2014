@@ -78,9 +78,11 @@ package Why.Gen.Binders is
             Content   : Binder_Type;
             Dim       : Positive;
             Bounds    : Array_Bounds;
-         when Func    =>
+         when Func  =>
             For_Logic : Binder_Type;
             For_Prog  : Binder_Type;
+            For_Logic_Dispatch : Binder_Type;
+            For_Prog_Dispatch  : Binder_Type;
       end case;
    end record;
    --  An item is like a generalized binder. It is used to represent the

@@ -1627,8 +1627,7 @@ package body Gnat2Why.Subprograms is
       Params    : Transformation_Params;
 
       Body_N    : constant Node_Id := SPARK_Util.Get_Subprogram_Body (E);
-      Post_N    : constant Node_Id :=
-        Get_Location_For_Aspect (E, Name_Postcondition);
+      Post_N    : Node_Id;
       Assume    : W_Prog_Id;
       Init_Prog : W_Prog_Id;
       Prog      : W_Prog_Id;
@@ -1662,6 +1661,21 @@ package body Gnat2Why.Subprograms is
                        & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
       Current_Subp := E;
+
+      --  There might be no specific postcondition for E. In that case, the
+      --  classwide or inherited postcondition is checked if present. Locate
+      --  it on E for the inherited case.
+
+      if Has_Contracts (E, Name_Postcondition) then
+         Post_N := Get_Location_For_Aspect (E, Name_Postcondition);
+      elsif Has_Contracts (E, Name_Postcondition, Classwide => True) then
+         Post_N :=
+          Get_Location_For_Aspect (E, Name_Postcondition, Classwide => True);
+      elsif Has_Contracts (E, Name_Postcondition, Inherited => True) then
+         Post_N := E;
+      else
+         Post_N := Empty;
+      end if;
 
       --  First, clear the list of translations for X'Old expressions, and
       --  create a new identifier for F'Result.
@@ -1703,7 +1717,7 @@ package body Gnat2Why.Subprograms is
 
       declare
          Pre : constant W_Pred_Id :=
-           +Compute_Spec (Params, E, Name_Precondition, EW_Pred);
+           Get_Static_Call_Contract (Params, E, Name_Precondition);
       begin
          if Might_Be_Main (E) then
             Precondition :=
@@ -1763,7 +1777,7 @@ package body Gnat2Why.Subprograms is
             Post := False_Pred;
          else
             Params.Gen_Marker := True;
-            Post := +Compute_Spec (Params, E, Name_Postcondition, EW_Pred);
+            Post := Get_Static_Call_Contract (Params, E, Name_Postcondition);
             Params.Gen_Marker := False;
          end if;
 
@@ -2151,8 +2165,12 @@ package body Gnat2Why.Subprograms is
       Effects      : W_Effects_Id;
       Pre          : W_Pred_Id;
       Post         : W_Pred_Id;
+      Dispatch_Pre : W_Pred_Id;
+      Dispatch_Post : W_Pred_Id;
       Prog_Id      : constant W_Identifier_Id :=
         To_Why_Id (E, Domain => EW_Prog, Local => True);
+      Dispatch_Prog_Id : constant W_Identifier_Id :=
+        To_Why_Id (E, Domain => EW_Prog, Local => True, Dispatch => True);
       Why_Type     : W_Type_Id := Why_Empty;
    begin
       Params :=
@@ -2193,14 +2211,26 @@ package body Gnat2Why.Subprograms is
       if No_Return (E) then
          Pre := False_Pred;
          Post := False_Pred;
+
+         if Is_Dispatching_Operation (E) then
+            Dispatch_Pre := False_Pred;
+            Dispatch_Post := False_Pred;
+         end if;
       else
-         Pre := +Compute_Spec (Params, E, Name_Precondition, EW_Pred);
+         Pre := Get_Static_Call_Contract (Params, E, Name_Precondition);
          Post :=
            +New_And_Expr
-           (Left   => +Compute_Spec
-              (Params, E, Name_Postcondition, EW_Pred),
+           (Left   =>
+              +Get_Static_Call_Contract (Params, E, Name_Postcondition),
             Right  => +Compute_Contract_Cases_Postcondition (Params, E),
             Domain => EW_Pred);
+
+         if Is_Dispatching_Operation (E) then
+            Dispatch_Pre :=
+              Get_Dispatching_Contract (Params, E, Name_Precondition);
+            Dispatch_Post :=
+              Get_Dispatching_Contract (Params, E, Name_Postcondition);
+         end if;
       end if;
 
       if Ekind (E) = E_Function then
@@ -2214,6 +2244,9 @@ package body Gnat2Why.Subprograms is
               Compute_Args (E, Logic_Why_Binders);
             Logic_Id        : constant W_Identifier_Id :=
               To_Why_Id (E, Domain => EW_Term, Local => False);
+            Dispatch_Logic_Id        : constant W_Identifier_Id :=
+              To_Why_Id
+                (E, Domain => EW_Term, Local => False, Dispatch => True);
 
             --  Each function has in its postcondition that its result is
             --  equal to the application of the corresponding logic function
@@ -2234,8 +2267,10 @@ package body Gnat2Why.Subprograms is
                   Domain => EW_Pred),
                Right  => +Post,
                Domain => EW_Pred);
-         begin
 
+            Dispatch_Param_Post : W_Pred_Id;
+
+         begin
             Emit
               (File.Cur_Theory,
                New_Function_Decl
@@ -2246,7 +2281,39 @@ package body Gnat2Why.Subprograms is
                   Labels      => Name_Id_Sets.Empty_Set,
                   Pre         => Pre,
                   Post        => Param_Post));
+
+            if Is_Dispatching_Operation (E) then
+               Dispatch_Param_Post :=
+                 +New_And_Expr
+                 (Left   => New_Relation
+                    (Op      => EW_Eq,
+                     Op_Type =>
+                       Get_Base_Type (Why_Type),
+                     Left    => +New_Result_Ident (Why_Type),
+                     Right   =>
+                       New_Call
+                         (Domain  => EW_Term,
+                          Name    => Dispatch_Logic_Id,
+                          Args    => Logic_Func_Args),
+                     Domain => EW_Pred),
+                  Right  => +Dispatch_Post,
+                  Domain => EW_Pred);
+
+               Emit
+                 (File.Cur_Theory,
+                  New_Function_Decl
+                    (Domain      => EW_Prog,
+                     Name        => Dispatch_Prog_Id,
+                     Binders     => Func_Why_Binders,
+                     Return_Type => EW_Abstract (Etype (E)),
+                     Labels      => Name_Id_Sets.Empty_Set,
+                     Pre         => Dispatch_Pre,
+                     Post        => Dispatch_Param_Post));
+            end if;
          end;
+
+      --  Ekind (E) = E_Procedure
+
       else
          Emit
            (File.Cur_Theory,
@@ -2259,6 +2326,20 @@ package body Gnat2Why.Subprograms is
                Effects     => Effects,
                Pre         => Pre,
                Post        => Post));
+
+         if Is_Dispatching_Operation (E) then
+            Emit
+              (File.Cur_Theory,
+               New_Function_Decl
+                 (Domain      => EW_Prog,
+                  Name        => Dispatch_Prog_Id,
+                  Binders     => Func_Why_Binders,
+                  Labels      => Name_Id_Sets.Empty_Set,
+                  Return_Type => EW_Unit_Type,
+                  Effects     => Effects,
+                  Pre         => Dispatch_Pre,
+                  Post        => Dispatch_Post));
+         end if;
       end if;
 
       Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
@@ -2493,11 +2574,19 @@ package body Gnat2Why.Subprograms is
    is
       Logic_Func_Binders : constant Item_Array := Compute_Binders (E, EW_Term);
       Why_Type     : W_Type_Id := Why_Empty;
-      Effects      : W_Effects_Id;
+
+      function Get_Subp_Symbol
+        (Domain   : EW_Domain;
+         Dispatch : Boolean) return Binder_Type
+      is
+        (Binder_Type'(B_Name   =>
+                        To_Why_Id (E, Typ => Why_Type, Domain => Domain,
+                                   Dispatch => Dispatch),
+                      B_Ent    => null,
+                      Ada_Node => E,
+                      Mutable  => False));
+
    begin
-
-      pragma Unreferenced (Effects);
-
       Open_Theory (File, E_Module (E),
                    Comment =>
                      "Module for possibly declaring "
@@ -2514,14 +2603,12 @@ package body Gnat2Why.Subprograms is
          declare
             Logic_Why_Binders : constant Binder_Array :=
               To_Binder_Array (Logic_Func_Binders);
-            Logic_Id        : constant W_Identifier_Id :=
+            Logic_Id          : constant W_Identifier_Id :=
               To_Why_Id (E, Domain => EW_Term, Local => True);
          begin
             --  Generate a logic function
 
             Add_Dependencies_For_Effects (File.Cur_Theory, E);
-
-            Effects := Compute_Effects (E);
 
             Emit
               (File.Cur_Theory,
@@ -2531,25 +2618,54 @@ package body Gnat2Why.Subprograms is
                   Binders     => Logic_Why_Binders,
                   Labels      => Name_Id_Sets.Empty_Set,
                   Return_Type => Why_Type));
+
+            if Is_Dispatching_Operation (E) then
+               declare
+                  Dispatch_Logic_Id : constant W_Identifier_Id :=
+                    To_Why_Id
+                      (E, Domain => EW_Term, Local => True, Dispatch => True);
+               begin
+                  Emit
+                    (File.Cur_Theory,
+                     New_Function_Decl
+                       (Domain      => EW_Term,
+                        Name        => Dispatch_Logic_Id,
+                        Binders     => Logic_Why_Binders,
+                        Labels      => Name_Id_Sets.Empty_Set,
+                        Return_Type => Why_Type));
+               end;
+            end if;
          end;
+
+         --  Why record here symbol, already in Register_Decls???
 
          Ada_Ent_To_Why.Insert
            (Symbol_Table, E,
             Item_Type'(Func,
-              For_Logic => Binder_Type'(
-                B_Name   =>
-                  To_Why_Id (E, Typ => Why_Type, Domain => EW_Term),
-                B_Ent    => null,
-                Ada_Node => E,
-                Mutable  => False),
-              For_Prog  => Binder_Type'(
-                B_Name   =>
-                  To_Why_Id (E, Typ => Why_Type),
-                B_Ent    => null,
-                Ada_Node => E,
-                Mutable  => False)));
+              For_Logic =>
+                Get_Subp_Symbol (Domain => EW_Term, Dispatch => False),
+              For_Prog  =>
+                Get_Subp_Symbol (Domain => EW_Prog, Dispatch => False),
+              For_Logic_Dispatch =>
+                Get_Subp_Symbol (Domain => EW_Term, Dispatch => True),
+              For_Prog_Dispatch =>
+                Get_Subp_Symbol (Domain => EW_Prog, Dispatch => True)));
       else
-         Insert_Entity (E, To_Why_Id (E, Typ => Why_Type));
+         if Is_Dispatching_Operation (E) then
+            Ada_Ent_To_Why.Insert
+              (Symbol_Table, E,
+               Item_Type'(Func,
+                 For_Logic =>
+                   Get_Subp_Symbol (Domain => EW_Term, Dispatch => False),
+                 For_Prog  =>
+                   Get_Subp_Symbol (Domain => EW_Prog, Dispatch => False),
+                 For_Logic_Dispatch =>
+                   Get_Subp_Symbol (Domain => EW_Term, Dispatch => True),
+                 For_Prog_Dispatch =>
+                   Get_Subp_Symbol (Domain => EW_Prog, Dispatch => True)));
+         else
+            Insert_Entity (E, To_Why_Id (E, Typ => Why_Type));
+         end if;
       end if;
 
       Close_Theory (File,

@@ -1249,16 +1249,31 @@ package body Gnat2Why.External_Axioms is
    -- Register_External_Entities --
    --------------------------------
 
-   procedure Register_External_Entities (E : Entity_Id)
-   is
+   procedure Register_External_Entities (E : Entity_Id) is
 
-      procedure Register_Decls (Decls  : List_Id);
+      procedure Register_Decls (Decls : List_Id);
       --  Register the entities of the declarations
 
-      procedure Register_Decls (Decls  : List_Id) is
-         N      : Node_Id := First (Decls);
-      begin
+      function Get_Subp_Symbol
+        (E    : Entity_Id;
+         Name : String) return Binder_Type
+      is
+         (Binder_Type'(B_Name   => New_Identifier
+                         (Ada_Node => E,
+                          Name     => Name,
+                          Module   => E_Module (E),
+                          Typ      => EW_Abstract (Etype (E))),
+                       B_Ent    => null,
+                       Ada_Node => E,
+                       Mutable  => False));
 
+      --------------------
+      -- Register_Decls --
+      --------------------
+
+      procedure Register_Decls (Decls : List_Id) is
+         N : Node_Id := First (Decls);
+      begin
          while Present (N) loop
             if Comes_From_Source (N) and then
               Nkind (N) in
@@ -1266,29 +1281,21 @@ package body Gnat2Why.External_Axioms is
             then
                declare
                   E : constant Entity_Id := Defining_Entity (N);
+                  Name : constant String := Short_Name (E);
+                  Logic_Name : constant String :=
+                    Name & To_String (WNE_Logic_Fun_Suffix);
                begin
                   if Ekind (E) = E_Function then
                      Ada_Ent_To_Why.Insert
                        (Symbol_Table, E,
                         Item_Type'(Func,
-                          For_Logic => Binder_Type'(
-                            B_Name   =>
-                              New_Identifier
-                                (Ada_Node => E,
-                                 Name     => Short_Name (E) & "__logic",
-                                 Module   => E_Module (E),
-                                 Typ      => EW_Abstract (Etype (E))),
-                            B_Ent    => null,
-                            Ada_Node => E,
-                            Mutable  => False),
-                          For_Prog  => Binder_Type'(
-                            B_Name   =>
-                              To_Why_Id (E,
-                                Typ => EW_Abstract (Etype (E)),
-                                Domain => EW_Term),
-                            B_Ent    => null,
-                            Ada_Node => E,
-                            Mutable  => False)));
+                          For_Logic => Get_Subp_Symbol (E, Logic_Name),
+                          For_Prog  => Get_Subp_Symbol (E, Name),
+                          For_Logic_Dispatch => Get_Subp_Symbol
+                            (E, To_String (WNE_Dispatch_Subp_Prefix)
+                             & Logic_Name),
+                          For_Prog_Dispatch => Get_Subp_Symbol
+                            (E, To_String (WNE_Dispatch_Subp_Prefix) & Name)));
                   elsif Ekind (E) = E_Procedure then
                      Insert_Entity
                        (E,
@@ -1326,6 +1333,8 @@ package body Gnat2Why.External_Axioms is
             Next (N);
          end loop;
       end Register_Decls;
+
+   --  Start of Register_External_Entities
 
    begin
       Register_Decls

@@ -200,11 +200,11 @@ package SPARK_Util is
    --  Name.
 
    function Has_Contracts
-     (E    : Entity_Id;
-      Name : Name_Id) return Boolean
-   is
-     (not Find_Contracts (E, Name).Is_Empty)
-     with Pre => Ekind (E) in Subprogram_Kind | E_Package;
+     (E         : Entity_Id;
+      Name      : Name_Id;
+      Classwide : Boolean := False;
+      Inherited : Boolean := False) return Boolean
+   with Pre => Ekind (E) in Subprogram_Kind | E_Package;
    --  Return True if the subprogram in argument has the given kind of
    --  contract, False otherwise.
 

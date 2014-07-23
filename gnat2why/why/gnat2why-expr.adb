@@ -59,7 +59,7 @@ with Why.Atree.Builders;     use Why.Atree.Builders;
 with Why.Atree.Accessors;    use Why.Atree.Accessors;
 with Why.Atree.Mutators;     use Why.Atree.Mutators;
 with Why.Atree.Modules;      use Why.Atree.Modules;
-with Why.Atree.Tables;      use Why.Atree.Tables;
+with Why.Atree.Tables;       use Why.Atree.Tables;
 with Why.Conversions;        use Why.Conversions;
 with Why.Gen.Arrays;         use Why.Gen.Arrays;
 with Why.Gen.Binders;        use Why.Gen.Binders;
@@ -153,7 +153,9 @@ package body Gnat2Why.Expr is
    --  translated "as is" (because of a type mismatch) and for which
    --  Insert_Ref_Context must be called.
 
-   function Why_Subp_Has_Precondition (E : Entity_Id) return Boolean;
+   function Why_Subp_Has_Precondition
+     (E        : Entity_Id;
+      Dispatch : Boolean := False) return Boolean;
    --  Return true whenever the Why declaration that corresponds to the given
    --  subprogram has a precondition.
 
@@ -228,11 +230,12 @@ package body Gnat2Why.Expr is
    --  programs, also generate a check that dynamic choices are in the subtype
    --  Choice_Type.
 
-   function Transform_Identifier (Params       : Transformation_Params;
-                                  Expr         : Node_Id;
-                                  Ent          : Entity_Id;
-                                  Domain       : EW_Domain)
-                                  return W_Expr_Id;
+   function Transform_Identifier
+     (Params   : Transformation_Params;
+      Expr     : Node_Id;
+      Ent      : Entity_Id;
+      Domain   : EW_Domain;
+      Dispatch : Boolean := False) return W_Expr_Id;
    --  Transform an Ada identifier to a Why item (take care of enumeration
    --  literals, boolean values etc)
    --
@@ -413,9 +416,10 @@ package body Gnat2Why.Expr is
    --  Convert an Ada binary operator to a Why term symbol
 
    function Transform_Function_Call
-     (Expr : Node_Id;
-      Domain : EW_Domain;
-      Params : Transformation_Params) return W_Expr_Id;
+     (Expr     : Node_Id;
+      Domain   : EW_Domain;
+      Params   : Transformation_Params;
+      Dispatch : Boolean := False) return W_Expr_Id;
    --  Transform a function call
 
    function Transform_Enum_Literal
@@ -7632,7 +7636,9 @@ package body Gnat2Why.Expr is
             end if;
 
          when N_Function_Call =>
-            T := Transform_Function_Call (Expr, Domain, Local_Params);
+            T := Transform_Function_Call
+              (Expr, Domain, Local_Params,
+               Dispatch => Present (Controlling_Argument (Expr)));
 
          when N_Indexed_Component | N_Selected_Component =>
             T := One_Level_Access (Expr,
@@ -7888,22 +7894,24 @@ package body Gnat2Why.Expr is
    -----------------------------
 
    function Transform_Function_Call
-     (Expr : Node_Id;
-      Domain : EW_Domain;
-      Params : Transformation_Params) return W_Expr_Id
+     (Expr     : Node_Id;
+      Domain   : EW_Domain;
+      Params   : Transformation_Params;
+      Dispatch : Boolean := False) return W_Expr_Id
    is
-
       Subp       : constant Entity_Id := Entity (Name (Expr));
       Why_Name   : constant W_Identifier_Id :=
         W_Identifier_Id
-          (Transform_Identifier (Params       => Params,
-                                 Expr         => Expr,
-                                 Ent          => Subp,
-                                 Domain       => Domain));
+          (Transform_Identifier (Params   => Params,
+                                 Expr     => Expr,
+                                 Ent      => Subp,
+                                 Domain   => Domain,
+                                 Dispatch => Dispatch));
       Nb_Of_Refs : Natural;
       Nb_Of_Lets : Natural;
       Args       : constant W_Expr_Array :=
         Compute_Call_Args (Expr, Domain, Nb_Of_Refs, Nb_Of_Lets, Params);
+      T          : W_Expr_Id;
 
       function Is_Constant_Shift_Right return Boolean;
       --  detect the case of a shift_right with a constant second argument,
@@ -7923,9 +7931,7 @@ package body Gnat2Why.Expr is
            Is_Static_Expression (Next_Actual (First_Actual (Expr)));
       end Is_Constant_Shift_Right;
 
-      T          : W_Expr_Id;
    begin
-
       --  Optimization: in the case of a constant shift right, we directly
       --  replace the shift by a division of the correct power of 2
 
@@ -7951,7 +7957,7 @@ package body Gnat2Why.Expr is
          end;
       end if;
 
-      if Why_Subp_Has_Precondition (Subp) then
+      if Why_Subp_Has_Precondition (Subp, Dispatch => Dispatch) then
          T := +New_VC_Call
            (Ada_Node => Expr,
             Name     => Why_Name,
@@ -8009,10 +8015,11 @@ package body Gnat2Why.Expr is
    --------------------------
 
    function Transform_Identifier
-     (Params : Transformation_Params;
-      Expr   : Node_Id;
-      Ent    : Entity_Id;
-      Domain : EW_Domain) return W_Expr_Id
+     (Params   : Transformation_Params;
+      Expr     : Node_Id;
+      Ent      : Entity_Id;
+      Domain   : EW_Domain;
+      Dispatch : Boolean := False) return W_Expr_Id
    is
       C   : constant Ada_Ent_To_Why.Cursor :=
         Ada_Ent_To_Why.Find (Symbol_Table, Ent);
@@ -8037,9 +8044,17 @@ package body Gnat2Why.Expr is
             case E.Kind is
                when Func =>
                   if Domain = EW_Prog then
-                     T := +E.For_Prog.B_Name;
+                     if Dispatch then
+                        T := +E.For_Prog_Dispatch.B_Name;
+                     else
+                        T := +E.For_Prog.B_Name;
+                     end if;
                   else
-                     T := +E.For_Logic.B_Name;
+                     if Dispatch then
+                        T := +E.For_Logic_Dispatch.B_Name;
+                     else
+                        T := +E.For_Logic.B_Name;
+                     end if;
                   end if;
                when Regular =>
                   T := +E.Main.B_Name;
@@ -9306,11 +9321,18 @@ package body Gnat2Why.Expr is
                    (Stmt_Or_Decl, EW_Prog, Nb_Of_Refs, Nb_Of_Lets,
                     Params => Body_Params);
                Subp       : constant Entity_Id := Entity (Name (Stmt_Or_Decl));
+               Dispatch   : constant Boolean :=
+                 Present (Controlling_Argument (Stmt_Or_Decl));
                Why_Name   : constant W_Identifier_Id :=
-                 Ada_Ent_To_Why.Element (Symbol_Table, Subp).Main.B_Name;
+                 W_Identifier_Id
+                   (Transform_Identifier (Params   => Body_Params,
+                                          Expr     => Stmt_Or_Decl,
+                                          Ent      => Subp,
+                                          Domain   => EW_Prog,
+                                          Dispatch => Dispatch));
                Call       : W_Expr_Id;
             begin
-               if Why_Subp_Has_Precondition (Subp) then
+               if Why_Subp_Has_Precondition (Subp, Dispatch => Dispatch) then
                   Call :=
                     +New_VC_Call
                       (Stmt_Or_Decl,
@@ -9570,9 +9592,19 @@ package body Gnat2Why.Expr is
    -- Why_Subp_Has_Precondition --
    -------------------------------
 
-   function Why_Subp_Has_Precondition (E : Entity_Id) return Boolean is
+   function Why_Subp_Has_Precondition
+     (E        : Entity_Id;
+      Dispatch : Boolean := False) return Boolean
+   is
+      Has_Precondition : constant Boolean :=
+        Has_Contracts (E, Name_Precondition);
+      Has_Classwide_Or_Inherited_Precondition : constant Boolean :=
+        Has_Contracts (E, Name_Precondition,
+                       Classwide => True,
+                       Inherited => True);
    begin
-      return Has_Contracts (E, Name_Precondition) or else
+      return (not Dispatch and Has_Precondition) or else
+        Has_Classwide_Or_Inherited_Precondition or else
         Entity_In_External_Axioms (E) or else
         No_Return (E);
    end Why_Subp_Has_Precondition;

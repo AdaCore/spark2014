@@ -2,6 +2,7 @@ main.adb:10:04: info: assertion proved
 main.adb:11:06: info: precondition proved
 main.adb:12:04: info: assertion proved
 main.adb:15:04: info: assertion proved
+main.adb:16:06: warning: precondition might fail
 main.adb:17:04: info: assertion proved
 main.adb:19:04: warning: assuming "Put_Line" has no effect on global items
 main.adb:19:04: warning: no Global contract available for "Put_Line"
@@ -20,6 +21,7 @@ unit2.ads:23:14: warning: postcondition might be weaker than class-wide postcond
 unit2.ads:23:14: warning: postcondition might fail
 unit2.ads:23:30: info: overflow check proved
 unit2.ads:23:59: warning: overflow check might fail
+unit3.adb:13:12: warning: precondition might fail
 unit3.adb:14:20: warning: overflow check might fail
 unit3.ads:12:20: warning: class-wide postcondition might be weaker than overridden one
 unit3.ads:13:20: info: postcondition is stronger than class-wide postcondition
@@ -33,4 +35,4 @@ unit3.ads:26:20: info: postcondition is stronger than class-wide postcondition
 unit3.ads:26:20: warning: postcondition might fail
 unit3.ads:26:36: info: overflow check proved
 unit3.ads:26:65: warning: overflow check might fail
-unit3.ads:26:94: warning: overflow check might fail
+unit3.ads:26:94: info: overflow check proved

@@ -547,10 +547,10 @@ package body Why.Gen.Records is
          From_Index      : Natural := 0;
          To_Index        : Natural := 0;
 
-         A_Ident         : constant W_Identifier_Id :=
-           New_Identifier (Name => "a", Typ => EW_Abstract (Root));
+         R_Ident         : constant W_Identifier_Id :=
+           New_Identifier (Name => "r", Typ => EW_Abstract (Root));
          From_Binder     : constant Binder_Array :=
-           (1 => (B_Name => A_Ident,
+           (1 => (B_Name => R_Ident,
                   others => <>));
          From_Ident     : constant W_Identifier_Id := To_Ident (WNE_Of_Base);
 
@@ -595,7 +595,7 @@ package body Why.Gen.Records is
                  New_Record_Access (Name  => +A_Ident,
                                     Field => To_Ident (WNE_Rec_Split_Discrs));
                R_Discr_Access : constant W_Expr_Id :=
-                 New_Record_Access (Name  => +A_Ident,
+                 New_Record_Access (Name  => +R_Ident,
                                     Field => Orig_D_Id);
                Field          : Entity_Id := First_Discriminant (E);
                Index          : Positive := 1;
@@ -668,7 +668,7 @@ package body Why.Gen.Records is
                  New_Record_Access (Name  => +A_Ident,
                                     Field => To_Ident (WNE_Rec_Split_Fields));
                R_Field_Access : constant W_Expr_Id :=
-                 New_Record_Access (Name  => +A_Ident,
+                 New_Record_Access (Name  => +R_Ident,
                                     Field => Orig_F_Id);
                Field          : Entity_Id := First_Component (E);
                Field_From_Index : Natural := 0;
@@ -889,7 +889,7 @@ package body Why.Gen.Records is
                  Field  => To_Ident (WNE_Attr_Constrained),
                  Value  =>
                    New_Record_Access
-                     (Name => +A_Ident,
+                     (Name => +R_Ident,
                       Field =>
                         +New_Attribute_Expr (Root, Attribute_Constrained),
                       Typ   => EW_Bool_Type));
@@ -935,7 +935,7 @@ package body Why.Gen.Records is
                  Field  => To_Ident (WNE_Attr_Tag),
                  Value  =>
                    New_Record_Access
-                     (Name  => +A_Ident,
+                     (Name  => +R_Ident,
                       Field => +New_Attribute_Expr (Root, Attribute_Tag),
                       Typ   => EW_Int_Type));
 
@@ -973,6 +973,56 @@ package body Why.Gen.Records is
                Def         =>
                  New_Record_Aggregate
                    (Associations => From_Root_Aggr)));
+
+         --  Generate axioms that state that converting back and forth is the
+         --  identity in both directions.
+
+         declare
+            Calls    : W_Expr_Id;
+            Equality : W_Pred_Id;
+         begin
+            --  forall a:t [of_base(to_base(a))]. of_base (to_base a) = a
+
+            Calls := New_Call (Domain  => EW_Term,
+                               Name    => To_Ident (WNE_To_Base),
+                               Binders => R_Binder);
+            Calls := New_Call (Domain  => EW_Term,
+                               Name    => From_Ident,
+                               Args    => (1 => Calls));
+            Equality := New_Relation (Op      => EW_Eq,
+                                      Op_Type => EW_Abstract,
+                                      Left    => Calls,
+                                      Right   => +A_Ident);
+            Emit (Theory,
+                  New_Guarded_Axiom
+                    (Name     =>
+                       NID (To_String (WNE_Inversion_Axiom_Prefix) & "__t"),
+                     Binders  => R_Binder,
+                     Triggers => New_Triggers (Triggers =>
+                                 (1 => New_Trigger (Terms => (1 => +Calls)))),
+                     Def      => Equality));
+
+            --  forall r:root [to_base(of_base(r))]. to_base (of_base r) = r
+
+            Calls := New_Call (Domain  => EW_Term,
+                               Name    => From_Ident,
+                               Binders => From_Binder);
+            Calls := New_Call (Domain  => EW_Term,
+                               Name    => To_Ident (WNE_To_Base),
+                               Args    => (1 => Calls));
+            Equality := New_Relation (Op      => EW_Eq,
+                                      Op_Type => EW_Abstract,
+                                      Left    => Calls,
+                                      Right   => +R_Ident);
+            Emit (Theory,
+                  New_Guarded_Axiom
+                    (Name     =>
+                       NID (To_String (WNE_Inversion_Axiom_Prefix) & "__root"),
+                     Binders  => From_Binder,
+                     Triggers => New_Triggers (Triggers =>
+                                 (1 => New_Trigger (Terms => (1 => +Calls)))),
+                     Def      => Equality));
+         end;
       end Declare_Conversion_Functions;
 
       -------------------------------

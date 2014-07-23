@@ -120,11 +120,12 @@ package Why.Inter is
    --  transform a loop entity into a name for a Why exception.
 
    function To_Why_Id
-     (E      : Entity_Id;
-      Domain : EW_Domain := EW_Prog;
-      Local  : Boolean := False;
-      Rec    : Entity_Id := Empty;
-      Typ    : W_Type_Id := Why_Empty) return W_Identifier_Id;
+     (E        : Entity_Id;
+      Domain   : EW_Domain := EW_Prog;
+      Local    : Boolean := False;
+      Dispatch : Boolean := False;
+      Rec      : Entity_Id := Empty;
+      Typ      : W_Type_Id := Why_Empty) return W_Identifier_Id;
    --  The one and only way to transform an Ada Entity to a Why identifier.
    --  However, sometimes the exact way differs between program and logic world
    --  There is also a local and a global name of each identifier. The local

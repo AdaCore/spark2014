@@ -1090,25 +1090,25 @@ package body Why.Inter is
    ---------------
 
    function To_Why_Id
-     (E      : Entity_Id;
-      Domain : EW_Domain := EW_Prog;
-      Local  : Boolean := False;
-      Rec    : Entity_Id := Empty;
-      Typ    : W_Type_Id := Why_Empty) return W_Identifier_Id
+     (E        : Entity_Id;
+      Domain   : EW_Domain := EW_Prog;
+      Local    : Boolean := False;
+      Dispatch : Boolean := False;
+      Rec      : Entity_Id := Empty;
+      Typ      : W_Type_Id := Why_Empty) return W_Identifier_Id
    is
       Suffix : constant String :=
-        (if Ekind (E) in Subprogram_Kind | E_Subprogram_Body
-              and then Domain = EW_Prog
+        (if Ekind (E) in Subprogram_Kind
+                       | E_Subprogram_Body
+                       | Named_Kind
+                       | Type_Kind
+                       | Object_Kind
+                       | E_Abstract_State
          then
-            Short_Name (E)
-         elsif Ekind (E) in Subprogram_Kind
-                          | E_Subprogram_Body
-                          | Named_Kind
-                          | Type_Kind
-                          | Object_Kind
-                          | E_Abstract_State
-         then
-            Short_Name (E)
+            (if Dispatch then
+               To_String (WNE_Dispatch_Subp_Prefix) & Short_Name (E)
+             else
+               Short_Name (E))
          else "");
    begin
 
