@@ -251,9 +251,9 @@ is
       return NIFs (Nid).Broadcast;
    end NIF_Broadcast;
 
-   ------------
+   --------------
    -- NIF_Addr --
-   ------------
+   --------------
 
    function NIF_Addr (Nid : Netif_Id) return IPaddrs.IPaddr is
    begin
@@ -277,6 +277,15 @@ is
    begin
       return NIFs (Nid).MTU;
    end NIF_MTU;
+
+   ---------------
+   -- NIF_State --
+   ---------------
+
+   function NIF_State (Nid : Netif_Id) return Netif_State is
+   begin
+      return NIFs (Nid).State;
+   end NIF_State;
 
    -------------
    -- Offload --

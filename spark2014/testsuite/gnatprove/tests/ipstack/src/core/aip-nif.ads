@@ -31,6 +31,8 @@ package AIP.NIF is
    type Checksum_Type is (IP_CS, ICMP_CS, UDP_CS, TCP_CS);
    pragma Convention (C, Checksum_Type);
 
+   function NIF_State     (Nid : Netif_Id) return Netif_State with
+     Global => null;
    function NIF_Addr      (Nid : Netif_Id) return IPaddrs.IPaddr with
      Global => null;
    function NIF_Mask      (Nid : Netif_Id) return IPaddrs.IPaddr with
