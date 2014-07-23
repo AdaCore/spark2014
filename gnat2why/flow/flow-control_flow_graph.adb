@@ -243,6 +243,11 @@ package body Flow.Control_Flow_Graph is
    --  check only the "unused" variables.
    --
    --  Inspect the graphs generated for test M412-008 for more information.
+   --
+   --  Finally we take a note of all vertices that are linked directly
+   --  to the Helper_End_Vertex because they belong to a non-returning
+   --  procedure. Vertices of this kind that lie within dead code will
+   --  have to be unlinked at the end.
 
    type Context is record
       Current_Loops          : Node_Sets.Set;
@@ -259,13 +264,19 @@ package body Flow.Control_Flow_Graph is
       Folded_Function_Checks : Node_Graphs.Map;
       --  A set of nodes we need to separately check for uninitialized
       --  variables due to function folding.
+
+      No_Return_Vertices     : Vertex_Sets.Set;
+      --  A set of vertices that are linked directly to the
+      --  Helper_End_Vertex because they belong to a non-returning
+      --  procedure.
    end record;
 
    No_Context : constant Context :=
      Context'(Current_Loops          => Node_Sets.Empty_Set,
               Active_Loop            => Empty,
               Entry_References       => Node_Graphs.Empty_Map,
-              Folded_Function_Checks => Node_Graphs.Empty_Map);
+              Folded_Function_Checks => Node_Graphs.Empty_Map,
+              No_Return_Vertices     => Vertex_Sets.Empty_Set);
 
    ------------------------------------------------------------
    --  Local declarations
@@ -3729,6 +3740,11 @@ package body Flow.Control_Flow_Graph is
                   Standard_Exits => Vertex_Sets.Empty_Set));
             Linkup (FA.CFG, Prev, FA.Helper_End_Vertex);
             FA.Atr (Prev).Execution := Get_Abend_Kind;
+
+            --  We note down the vertex that we just connected to the
+            --  Helper_End_Vertex. If this vertex lies within dead
+            --  code, then the edge will have to be removed.
+            Ctx.No_Return_Vertices.Include (Prev);
          else
             CM.Include
               (Union_Id (N),
@@ -5019,6 +5035,19 @@ package body Flow.Control_Flow_Graph is
 
             end;
       end case;
+
+      --  Remove edges between non-returning subprograms which are
+      --  within dead code and the Helper_End_Vertex.
+      for V of The_Context.No_Return_Vertices loop
+         if not Flow_Graphs.Non_Trivial_Path_Exists (FA.CFG,
+                                                     FA.Start_Vertex,
+                                                     V)
+         then
+            Flow_Graphs.Remove_Edge (FA.CFG,
+                                     V,
+                                     FA.Helper_End_Vertex);
+         end if;
+      end loop;
 
       --  Simplify graph by removing all null vertices.
       Simplify_CFG (FA);
