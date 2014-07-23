@@ -507,6 +507,20 @@ package body Why.Gen.Names is
       return New_Identifier (Name => "result", Typ => Typ);
    end New_Result_Ident;
 
+   -------------------
+   -- Remove_Prefix --
+   -------------------
+
+   function Remove_Prefix (I : W_Identifier_Id) return W_Identifier_Id is
+   begin
+      return New_Identifier
+        (Ada_Node => Get_Ada_Node (+I),
+         Domain   => EW_Term,
+         Symbol   => Get_Symbol (I),
+         Module   => Why.Types.Why_Empty,
+         Typ      => Get_Typ (I));
+   end Remove_Prefix;
+
    --------------
    -- To_Exprs --
    --------------

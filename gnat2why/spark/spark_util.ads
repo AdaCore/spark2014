@@ -370,6 +370,9 @@ package SPARK_Util is
    function Number_Discriminants (Typ : Entity_Id) return Natural;
    --  Count the number of discriminants in record type Typ
 
+   function Count_Fields (E : Entity_Id) return Natural;
+   --  count the number of normal fields in a record type Typ
+
    function First_Discriminant (Id : E) return E
      with Pre =>
        (Is_Record_Type (Id) or else Is_Incomplete_Or_Private_Type (Id));

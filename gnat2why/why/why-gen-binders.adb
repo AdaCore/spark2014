@@ -54,6 +54,19 @@ package body Why.Gen.Binders is
          case Arr (Index).Kind is
             when Regular => Count := Count + 1;
             when UCArray => Count := Count + 1 + 2 * Arr (Index).Dim;
+            when DRecord =>
+               if Arr (Index).Fields.Present then
+                  Count := Count + 1;
+               end if;
+               if Arr (Index).Discrs.Present then
+                  Count := Count + 1;
+               end if;
+               if Arr (Index).Constr.Present then
+                  Count := Count + 1;
+               end if;
+               if Arr (Index).Tag.Present then
+                  Count := Count + 1;
+               end if;
             when Func    => raise Program_Error;
          end case;
       end loop;
@@ -473,6 +486,27 @@ package body Why.Gen.Binders is
                         others => <>);
                      Count := Count + 2;
                   end loop;
+               when DRecord =>
+                  if Cur.Fields.Present then
+                     Result (Count) := Cur.Fields.Binder;
+                     Count := Count + 1;
+                  end if;
+                  if Cur.Discrs.Present then
+                     Result (Count) := Cur.Discrs.Binder;
+                     Count := Count + 1;
+                  end if;
+                  if Cur.Constr.Present then
+                     Result (Count) :=
+                       (B_Name => Cur.Constr.Id,
+                        others => <>);
+                     Count := Count + 1;
+                  end if;
+                  if Cur.Tag.Present then
+                     Result (Count) :=
+                       (B_Name => Cur.Tag.Id,
+                        others => <>);
+                     Count := Count + 1;
+                  end if;
                when Func    =>
                   raise Program_Error;
             end case;

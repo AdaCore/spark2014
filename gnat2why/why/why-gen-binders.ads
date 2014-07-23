@@ -61,7 +61,7 @@ package Why.Gen.Binders is
 
    type Binder_Array is array (Positive range <>) of Binder_Type;
 
-   type Item_Enum is (Regular, UCArray, Func);
+   type Item_Enum is (Regular, UCArray, DRecord, Func);
 
    type Item_Bounds is record
       First : W_Identifier_Id;
@@ -69,6 +69,22 @@ package Why.Gen.Binders is
    end record;
 
    type Array_Bounds is array (1 .. Max_Array_Dimensions) of Item_Bounds;
+
+   type Opt_Binder (Present : Boolean := False) is record
+      case Present is
+         when True  =>
+            Binder : Binder_Type;
+         when False => null;
+      end case;
+   end record;
+
+   type Opt_Id (Present : Boolean := False) is record
+      case Present is
+         when True  =>
+            Id : W_Identifier_Id;
+         when False => null;
+      end case;
+   end record;
 
    type Item_Type (Kind : Item_Enum := Regular) is record
       case Kind is
@@ -78,7 +94,13 @@ package Why.Gen.Binders is
             Content   : Binder_Type;
             Dim       : Positive;
             Bounds    : Array_Bounds;
-         when Func  =>
+         when DRecord =>
+            Typ       : Entity_Id;
+            Fields    : Opt_Binder;
+            Discrs    : Opt_Binder;
+            Constr    : Opt_Id;
+            Tag       : Opt_Id;
+         when Func    =>
             For_Logic : Binder_Type;
             For_Prog  : Binder_Type;
             For_Logic_Dispatch : Binder_Type;
@@ -89,10 +111,12 @@ package Why.Gen.Binders is
    --  mapping
    --    Ada object  -> Why variables
    --  which is not always 1 to 1. In the common case where it is 1 to 1, the
-   --  Kind "Regular" is used. We have two other acses for now: unconstrained
-   --  arrays, where extra objects are created to represent the bounds, and
+   --  Kind "Regular" is used. We have three other cases for now: unconstrained
+   --  arrays, where extra objects are created to represent the bounds,
    --  functions where we need different translations when used in programs
-   --  or in assertions.
+   --  or in assertions, and records where we can have up to four objects, a
+   --  set of fields, a set of discriminant, a 'Constrained attribute, and a
+   --  'Tag attribute.
 
    type Item_Array is array (Positive range <>) of Item_Type;
 

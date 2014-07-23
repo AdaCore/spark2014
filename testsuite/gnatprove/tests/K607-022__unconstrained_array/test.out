@@ -9,7 +9,7 @@ my_test.adb:17:10: info: discriminant check proved
 my_test.adb:17:10: info: precondition proved
 my_test.adb:18:48: warning: assertion might fail, requires T3.V (I) = 9
 my_test.adb:18:50: info: discriminant check proved
-my_test.adb:18:54: warning: array index check might fail
+my_test.adb:18:54: info: index check proved
 my_test.adb:20:10: warning: discriminant check might fail
 my_test.adb:22:19: warning: assertion might fail, requires T1 = T3
 simple_unc_arrays.adb:10:07: warning: "C.V" might not be initialized
@@ -20,7 +20,7 @@ simple_unc_arrays.adb:13:43: info: discriminant check proved
 simple_unc_arrays.adb:13:47: info: index check proved
 simple_unc_arrays.adb:13:53: info: discriminant check proved
 simple_unc_arrays.adb:13:57: info: index check proved
-simple_unc_arrays.adb:13:60: warning: overflow check might fail
+simple_unc_arrays.adb:13:60: info: overflow check proved
 simple_unc_arrays.adb:13:63: info: discriminant check proved
 simple_unc_arrays.adb:13:67: info: index check proved
 simple_unc_arrays.adb:14:14: info: discriminant check proved
@@ -77,10 +77,11 @@ simple_unc_arrays.adb:98:65: info: index check proved
 simple_unc_arrays.adb:100:14: info: discriminant check proved
 simple_unc_arrays.adb:100:18: info: index check proved
 simple_unc_arrays.adb:120:19: info: discriminant check proved
+simple_unc_arrays.adb:120:25: info: index check proved
 simple_unc_arrays.adb:120:25: info: overflow check proved
-simple_unc_arrays.adb:120:25: warning: array index check might fail
+
 simple_unc_arrays.adb:120:35: info: discriminant check proved
-simple_unc_arrays.adb:120:39: warning: array index check might fail
+simple_unc_arrays.adb:120:39: info: index check proved
 simple_unc_arrays.adb:121:16: info: precondition proved
 simple_unc_arrays.adb:121:31: info: discriminant check proved
 simple_unc_arrays.adb:121:31: info: length check proved
@@ -127,8 +128,8 @@ simple_unc_arrays.ads:30:20: warning: postcondition might fail, requires A.V (J)
 simple_unc_arrays.ads:30:22: info: discriminant check proved
 simple_unc_arrays.ads:30:26: warning: array index check might fail
 simple_unc_arrays.ads:30:32: info: discriminant check proved
-simple_unc_arrays.ads:30:51: warning: array index check might fail
-simple_unc_arrays.ads:30:51: warning: overflow check might fail
+simple_unc_arrays.ads:30:51: info: index check proved
+simple_unc_arrays.ads:30:51: info: overflow check proved
 simple_unc_arrays.ads:40:14: warning: postcondition might fail
 simple_unc_arrays.ads:40:60: info: discriminant check proved
 simple_unc_arrays.ads:40:64: info: index check proved
@@ -148,7 +149,7 @@ simple_unc_arrays.ads:75:26: warning: array index check might fail
 simple_unc_arrays.ads:76:54: info: range check proved
 simple_unc_arrays.ads:84:17: warning: postcondition might fail
 simple_unc_arrays.ads:85:34: info: discriminant check proved
-simple_unc_arrays.ads:85:38: warning: array index check might fail
+simple_unc_arrays.ads:85:38: info: index check proved
 simple_unc_arrays.ads:85:62: info: discriminant check proved
 simple_unc_arrays.ads:85:67: info: overflow check proved
 simple_unc_arrays.ads:85:67: warning: array index check might fail
@@ -163,7 +164,7 @@ simple_unc_arrays.ads:96:63: info: discriminant check proved
 simple_unc_arrays.ads:96:68: info: overflow check proved
 simple_unc_arrays.ads:96:68: warning: array index check might fail
 simple_unc_arrays.ads:98:47: info: discriminant check proved
-simple_unc_arrays.ads:98:55: warning: array index check might fail
+simple_unc_arrays.ads:98:55: info: index check proved
 simple_unc_arrays.ads:98:61: info: discriminant check proved
 simple_unc_arrays.ads:98:65: warning: array index check might fail
 simple_unc_arrays.ads:112:57: info: discriminant check proved

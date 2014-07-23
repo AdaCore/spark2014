@@ -92,7 +92,7 @@ auditlog.adb:421:44: warning: range check might fail
 auditlog.adb:425:16: info: range check proved
 auditlog.adb:425:28: warning: range check might fail
 auditlog.adb:425:37: warning: range check might fail
-auditlog.adb:522:28: warning: postcondition might fail, requires LogFileEntries (I) = LogFileEntries'Old (I)
+auditlog.adb:520:22: info: postcondition proved
 auditlog.adb:588:68: warning: length check might fail, in call inlined at auditlog.adb:636
 auditlog.adb:589:31: warning: length check might fail, in call inlined at auditlog.adb:636
 auditlog.adb:717:59: warning: range check might fail
@@ -128,15 +128,15 @@ auditlog.adb:1070:30: warning: refined postcondition might fail
 auditlog.adb:1072:67: warning: range check might fail
 auditlog.adb:1072:72: warning: overflow check might fail
 auditlog.adb:1073:50: warning: overflow check might fail
-auditlog.adb:1168:55: warning: range check might fail
+auditlog.adb:1168:55: info: range check proved
 auditlog.adb:1232:20: info: range check proved
 auditlog.adb:1236:64: warning: range check might fail
 auditlog.adb:1237:65: warning: range check might fail
-auditlog.adb:1238:26: warning: range check might fail
-auditlog.adb:1239:32: warning: overflow check might fail
-auditlog.adb:1241:43: warning: array index check might fail
-auditlog.adb:1241:69: warning: array index check might fail
-auditlog.adb:1241:69: warning: overflow check might fail
+auditlog.adb:1238:26: info: range check proved
+auditlog.adb:1239:32: info: overflow check proved
+auditlog.adb:1241:43: info: index check proved
+auditlog.adb:1241:69: info: index check proved
+auditlog.adb:1241:69: info: overflow check proved
 auditlog.adb:1248:64: warning: range check might fail
 auditlog.adb:1249:65: warning: range check might fail
 auditlog.adb:1270:62: warning: range check might fail
@@ -160,7 +160,7 @@ auditlog.adb:1461:53: warning: range check might fail
 auditlog.adb:1461:58: warning: overflow check might fail
 auditlog.adb:1461:78: warning: overflow check might fail
 auditlog.adb:1491:52: warning: range check might fail
-auditlog.adb:1499:10: warning: precondition might fail
+auditlog.adb:1499:10: info: precondition proved
 auditlog.adb:1509:07: warning: precondition might fail
 auditlog.adb:1564:30: warning: refined postcondition might fail
 auditlog.adb:1566:67: warning: range check might fail
@@ -270,9 +270,9 @@ configdata.adb:271:51: info: overflow check proved
 configdata.adb:271:51: info: range check proved
 configdata.adb:313:20: warning: range check might fail
 configdata.adb:315:19: info: loop invariant initialization proved
-configdata.adb:315:69: warning: loop invariant might fail after first iteration, requires I <= Stop
+configdata.adb:315:19: info: loop invariant preservation proved
 configdata.adb:317:48: info: index check proved
-configdata.adb:317:63: warning: array index check might fail
+configdata.adb:317:63: info: index check proved
 configdata.adb:365:35: info: overflow check proved
 configdata.adb:365:35: info: range check proved
 configdata.adb:366:35: info: range check proved
@@ -394,8 +394,8 @@ display.adb:138:30: warning: array index check might fail, in call inlined at di
 display.adb:138:30: warning: array index check might fail, in call inlined at display.adb:280
 display.adb:139:30: warning: array index check might fail, in call inlined at display.adb:188
 display.adb:139:30: warning: array index check might fail, in call inlined at display.adb:280
-display.adb:140:32: warning: range check might fail, in call inlined at display.adb:188
-display.adb:140:32: warning: range check might fail, in call inlined at display.adb:280
+display.adb:140:32: info: range check proved, in call inlined at display.adb:188
+display.adb:140:32: info: range check proved, in call inlined at display.adb:280
 display.adb:143:11: warning: range check might fail, in call inlined at display.adb:188
 display.adb:143:11: warning: range check might fail, in call inlined at display.adb:280
 display.adb:144:10: warning: loop invariant might fail after first iteration, in call inlined at display.adb:188
@@ -897,7 +897,7 @@ tokenreader.adb:386:17: warning: subprogram "Disconnecttoken" has no effect
 tokenreader.adb:668:43: info: range check proved
 tokenreader.adb:688:21: warning: precondition might fail
 updates.ads:79:22: info: postcondition proved
-updates.ads:143:22: warning: postcondition might fail
+updates.ads:143:22: info: postcondition proved
 userentry.adb:116:15: warning: precondition might fail
 userentry.adb:220:21: warning: precondition might fail
 userentry.adb:229:21: info: precondition proved

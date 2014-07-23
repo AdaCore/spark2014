@@ -23,10 +23,14 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Types;         use Types;
-with Why.Ids;       use Why.Ids;
-with Why.Sinfo;     use Why.Sinfo;
-with Gnat2Why.Util; use Gnat2Why.Util;
+with Atree;              use Atree;
+with Einfo;              use Einfo;
+with SPARK_Util;         use SPARK_Util;
+with Types;              use Types;
+with Why.Gen.Binders;    use Why.Gen.Binders;
+with Why.Ids;            use Why.Ids;
+with Why.Sinfo;          use Why.Sinfo;
+with Gnat2Why.Util;      use Gnat2Why.Util;
 
 package Why.Gen.Records is
    --  This package encapsulates the encoding of Ada records into Why. This
@@ -115,6 +119,53 @@ package Why.Gen.Records is
    --  Generate a Why3 expression that corresponds to an update to the
    --  additional field introduced in records for the 'Constrained attribute.
 
+   function New_Discriminants_Access
+     (Ada_Node : Node_Id := Empty;
+      Domain   : EW_Domain;
+      Name     : W_Expr_Id;
+      Ty       : Entity_Id)
+      return W_Expr_Id;
+   --  Generate a Why3 expression that corresponds to an access to the
+   --  top-level field for discriminants.
+
+   function New_Discriminants_Update
+     (Ada_Node : Node_Id := Empty;
+      Domain   : EW_Domain;
+      Name     : W_Expr_Id;
+      Value    : W_Expr_Id;
+      Ty       : Entity_Id)
+      return W_Expr_Id;
+   --  Generate a Why3 expression that corresponds to an update of the
+   --  top-level field for discriminants.
+
+   function New_Fields_Access
+     (Ada_Node : Node_Id := Empty;
+      Domain   : EW_Domain;
+      Name     : W_Expr_Id;
+      Ty       : Entity_Id)
+      return W_Expr_Id;
+   --  Generate a Why3 expression that corresponds to an access to the
+   --  top-level field for fields.
+
+   function New_Fields_Update
+     (Ada_Node : Node_Id := Empty;
+      Domain   : EW_Domain;
+      Name     : W_Expr_Id;
+      Value    : W_Expr_Id;
+      Ty       : Entity_Id)
+      return W_Expr_Id;
+   --  Generate a Why3 expression that corresponds to an update of the
+   --  top-level field for fields.
+
+   function New_Tag_Access
+     (Ada_Node : Node_Id := Empty;
+      Domain   : EW_Domain;
+      Name     : W_Expr_Id;
+      Ty       : Entity_Id)
+      return W_Expr_Id;
+   --  Generate a Why3 expression that corresponds to an access to the
+   --  additional field introduced for records' tag.
+
    function Insert_Subtype_Discriminant_Check
      (Ada_Node : Node_Id;
       Check_Ty : Entity_Id;
@@ -128,5 +179,27 @@ package Why.Gen.Records is
    --  Given a record type, compute the argument array that can be used
    --  together with its subtype check predicate of program function. The
    --  last argument is actually the given expression itself.
+
+   function Record_From_Split_Form (I : Item_Type; Ref_Allowed : Boolean)
+                                    return W_Expr_Id
+   with
+       Pre => I.Kind = DRecord;
+   --  Reconstructs a complete record from an item in split form.
+
+   function Record_From_Split_Form
+     (A : W_Expr_Array; Ty  : Entity_Id)
+      return W_Expr_Id;
+   --  Reconstructs a complete record of type Ty from an array of expressions
+   --  representing a split form. A should contain first the fields, then the
+   --  discriminants, the 'Constrained attribute and the 'Tag attribute.
+
+   function Field_Type_For_Discriminants (E : Entity_Id) return W_Type_Id with
+     Pre => Ekind (E) in Type_Kind and then Number_Discriminants (E) > 0;
+   --  Type of the top-level Why3 field for discriminants of E.
+
+   function Field_Type_For_Fields (E : Entity_Id) return W_Type_Id with
+     Pre => Ekind (E) in Type_Kind and then
+     (Count_Fields (E) > 0 or else Is_Tagged_Type (E));
+   --  Type of the top-level Why3 field for fields of E.
 
 end Why.Gen.Records;

@@ -57,6 +57,7 @@ with Why.Gen.Expr;           use Why.Gen.Expr;
 with Why.Gen.Names;          use Why.Gen.Names;
 with Why.Gen.Preds;          use Why.Gen.Preds;
 with Why.Gen.Progs;          use Why.Gen.Progs;
+with Why.Gen.Records;        use Why.Gen.Records;
 with Why.Inter;              use Why.Inter;
 with Why.Types;              use Why.Types;
 
@@ -343,17 +344,28 @@ package body Gnat2Why.Subprograms is
          if not Ada_Ent_To_Why.Has_Element (Symbol_Table, Obj) then
             null;
          elsif Is_Mutable_In_Why (Obj) then
-            Assume :=
-              Sequence ((1 => Assume,
-                         2 => Assume_Dynamic_Property
-                           (New_Deref
-                              (Ada_Node => Obj,
-                               Right    => To_Why_Id
-                                 (E => Obj,
-                                  Typ => Why_Type_Of_Entity (Obj)),
-                               Typ      =>
-                                 Why_Type_Of_Entity (Obj)),
-                            Etype (Obj), False)));
+            declare
+               Binder : constant Item_Type :=
+                 Ada_Ent_To_Why.Element (Symbol_Table, Obj);
+               Expr   : constant W_Expr_Id :=
+                 (case Binder.Kind is
+                     when Regular => New_Deref
+                    (Ada_Node => Obj,
+                     Right    => Binder.Main.B_Name,
+                     Typ      => Get_Typ (Binder.Main.B_Name)),
+                     when UCArray => New_Deref
+                    (Ada_Node => Obj,
+                     Right    => Binder.Content.B_Name,
+                     Typ      => Get_Typ (Binder.Content.B_Name)),
+                     when DRecord => Record_From_Split_Form (Binder, True),
+                     when Func    => raise Program_Error);
+            begin
+
+               Assume :=
+                 Sequence ((1 => Assume,
+                            2 => Assume_Dynamic_Property
+                              (Expr, Etype (Obj), False)));
+            end;
          else
             Assume :=
               Sequence ((1 => Assume,
@@ -497,9 +509,43 @@ package body Gnat2Why.Subprograms is
       Write_Names := Flow_Types.To_Name_Set (Write_Ids);
 
       for Name of Write_Names loop
-         Effects_Append_To_Writes
-           (Eff,
-            To_Why_Id (Obj => Name.all, Local => False));
+         declare
+            Entity : constant Entity_Id := Find_Entity (Name);
+         begin
+
+            if Present (Entity)
+              and then not (Ekind (Entity) = E_Abstract_State)
+              and then Entity_In_SPARK (Entity)
+            then
+               declare
+                  Binder : constant Item_Type :=
+                    Ada_Ent_To_Why.Element (Symbol_Table, Entity);
+               begin
+                  case Binder.Kind is
+                     when Regular =>
+                        Effects_Append_To_Writes (Eff, Binder.Main.B_Name);
+                     when UCArray =>
+                        Effects_Append_To_Writes (Eff, Binder.Content.B_Name);
+                     when DRecord =>
+                        if Binder.Fields.Present then
+                           Effects_Append_To_Writes
+                             (Eff, Binder.Fields.Binder.B_Name);
+                        end if;
+                        if Binder.Discrs.Present
+                          and then Binder.Discrs.Binder.Mutable
+                        then
+                           Effects_Append_To_Writes
+                             (Eff, Binder.Discrs.Binder.B_Name);
+                        end if;
+                     when Func    => raise Program_Error;
+                  end case;
+               end;
+            else
+               Effects_Append_To_Writes
+                 (Eff,
+                  To_Why_Id (Obj => Name.all, Local => False));
+            end if;
+         end;
       end loop;
 
       --  Add all OUT and IN OUT parameters as potential writes
@@ -515,14 +561,50 @@ package body Gnat2Why.Subprograms is
                Id := Defining_Identifier (Arg);
 
                if Ekind_In (Id, E_Out_Parameter, E_In_Out_Parameter) then
-                  if Global_Params then
-                     Ident :=
-                       To_Why_Id (Obj => Full_Name (Id), Local => False);
-                  else
-                     Ident := New_Identifier (Name => Short_Name (Id));
-                  end if;
 
-                  Effects_Append_To_Writes (Eff, Ident);
+                  --  For records, we modifiy the fields if any and the
+                  --  discriminants if they are mutable.
+
+                  if Entity_In_SPARK (Etype (Id))
+                    and then Is_Record_Type (Etype (Id))
+                  then
+                     if Count_Fields (Etype (Id)) > 0
+                       or else Is_Tagged_Type (Etype (Id))
+                     then
+                        if Global_Params then
+                           Ident := Prefix
+                             (W => WNE_Rec_Split_Fields,
+                              M => E_Module (Id));
+                        else
+                           Ident := New_Identifier
+                             (Name => Short_Name (Id) &
+                                To_String (WNE_Rec_Split_Fields));
+                        end if;
+                        Effects_Append_To_Writes (Eff, Ident);
+                     end if;
+                     if not Is_Constrained (Etype (Id))
+                       and then Has_Defaulted_Discriminants (Etype (Id))
+                     then
+                        if Global_Params then
+                           Ident := Prefix
+                             (W => WNE_Rec_Split_Discrs,
+                              M => E_Module (Id));
+                        else
+                           Ident := New_Identifier
+                             (Name => Short_Name (Id) &
+                                To_String (WNE_Rec_Split_Discrs));
+                        end if;
+                        Effects_Append_To_Writes (Eff, Ident);
+                     end if;
+                  else
+                     if Global_Params then
+                        Ident :=
+                          To_Why_Id (Obj => Full_Name (Id), Local => False);
+                     else
+                        Ident := New_Identifier (Name => Short_Name (Id));
+                     end if;
+                     Effects_Append_To_Writes (Eff, Ident);
+                  end if;
                end if;
 
                Next (Arg);
@@ -531,8 +613,43 @@ package body Gnat2Why.Subprograms is
       end;
 
       for Name of Read_Names loop
-         Effects_Append_To_Reads (Eff, To_Why_Id (Obj   => Name.all,
-                                                  Local => False));
+         declare
+            Entity : constant Entity_Id := Find_Entity (Name);
+         begin
+
+            if Present (Entity)
+              and then not (Ekind (Entity) = E_Abstract_State)
+              and then Entity_In_SPARK (Entity)
+            then
+               declare
+                  Binder : constant Item_Type :=
+                    Ada_Ent_To_Why.Element (Symbol_Table, Entity);
+               begin
+                  case Binder.Kind is
+                     when Regular =>
+                        Effects_Append_To_Reads (Eff, Binder.Main.B_Name);
+                     when UCArray =>
+                        Effects_Append_To_Reads (Eff, Binder.Content.B_Name);
+                     when DRecord =>
+                        if Binder.Fields.Present then
+                           Effects_Append_To_Reads
+                             (Eff, Binder.Fields.Binder.B_Name);
+                        end if;
+                        if Binder.Discrs.Present
+                          and then Binder.Discrs.Binder.Mutable
+                        then
+                           Effects_Append_To_Reads
+                             (Eff, Binder.Discrs.Binder.B_Name);
+                        end if;
+                     when Func    => raise Program_Error;
+                  end case;
+               end;
+            else
+               Effects_Append_To_Reads
+                 (Eff,
+                  To_Why_Id (Obj => Name.all, Local => False));
+            end if;
+         end;
       end loop;
 
       return +Eff;
@@ -689,20 +806,87 @@ package body Gnat2Why.Subprograms is
 
          declare
             Id   : constant Node_Id := Defining_Identifier (Param);
-            Typ  : constant W_Type_Id :=
-                 (if Use_Why_Base_Type (Id) then
-                       Base_Why_Type (Unique_Entity (Etype (Id)))
-                  elsif Is_Array_Type (Etype (Id))
-                  and then not Is_Static_Array_Type (Etype (Id))
-                  and then Is_Mutable_In_Why (Id) then
-                     EW_Split (Etype (Id))
-                  else EW_Abstract (Etype (Id)));
-            Name : constant W_Identifier_Id :=
-              New_Identifier (Ada_Node => Id,
-                              Name     => Short_Name (Id),
-                              Typ      => Typ);
          begin
-            if Is_Array_Type (Etype (Id))
+            if Is_Record_Type (Etype (Id))
+              and then Is_Mutable_In_Why (Id)
+            then
+
+               --  Binders for mutable record parameters have to be given in
+               --  split form to preserve the attributes and discriminants
+               --  through procedure calls.
+
+               declare
+                  Binder   : Item_Type :=
+                    (Kind   => DRecord,
+                     Typ    => Etype (Id),
+                     others => <>);
+                  Unconstr : constant Boolean :=
+                    not Is_Constrained (Etype (Id)) and then
+                    Has_Defaulted_Discriminants (Etype (Id));
+               begin
+                  if Count_Fields (Etype (Id)) > 0
+                    or else Is_Tagged_Type (Etype (Id))
+                  then
+                     Binder.Fields :=
+                       (Present => True,
+                        Binder  =>
+                          Binder_Type'
+                            (Ada_Node => Id,
+                             B_Name   =>
+                               New_Identifier
+                                 (Ada_Node => Id,
+                                  Domain   => EW_Term,
+                                  Name     => Short_Name (Id) &
+                                      To_String (WNE_Rec_Split_Fields),
+                                  Typ      =>
+                                    Field_Type_For_Fields (Etype (Id))),
+                             B_Ent    => null,
+                             Mutable  => True));
+                  end if;
+
+                  if Number_Discriminants (Etype (Id)) > 0 then
+                     Binder.Discrs :=
+                       (Present => True,
+                        Binder  =>
+                          Binder_Type'
+                            (Ada_Node => Id,
+                             B_Name   =>
+                               New_Identifier
+                                 (Ada_Node => Id,
+                                  Domain   => EW_Term,
+                                  Name     => Short_Name (Id) &
+                                      To_String (WNE_Rec_Split_Discrs),
+                                  Typ      =>
+                                    Field_Type_For_Discriminants (Etype (Id))),
+                             B_Ent    => null,
+                             Mutable  => Unconstr));
+                  end if;
+
+                  if Unconstr then
+                     Binder.Constr :=
+                       (Present => True,
+                        Id      => New_Identifier
+                          (Ada_Node => Id,
+                           Domain   => EW_Term,
+                           Name     => Short_Name (Id) & "__" &
+                             To_String (WNE_Attr_Constrained),
+                           Typ      => EW_Bool_Type));
+                  end if;
+
+                  if Is_Tagged_Type (Etype (Id)) then
+                     Binder.Tag :=
+                       (Present => True,
+                        Id      => New_Identifier
+                          (Ada_Node => Id,
+                           Domain   => EW_Term,
+                           Name     => Short_Name (Id) & "__" &
+                             To_String (WNE_Attr_Tag),
+                           Typ      => EW_Int_Type));
+                  end if;
+
+                  Result (Count) := Binder;
+               end;
+            elsif Is_Array_Type (Etype (Id))
               and then not Is_Static_Array_Type (Etype (Id))
               and then Is_Mutable_In_Why (Id)
             then
@@ -719,6 +903,11 @@ package body Gnat2Why.Subprograms is
                     Positive (Number_Dimensions (Etype (Id)));
                   Bounds : Array_Bounds;
                   Index  : Node_Id := First_Index (Etype (Id));
+                  Typ  : constant W_Type_Id := EW_Split (Etype (Id));
+                  Name : constant W_Identifier_Id :=
+                    New_Identifier (Ada_Node => Id,
+                                    Name     => Short_Name (Id),
+                                    Typ      => Typ);
                begin
                   for I in 1 .. Dim loop
                      declare
@@ -750,12 +939,23 @@ package body Gnat2Why.Subprograms is
                      Bounds => Bounds);
                end;
             else
-               Result (Count) :=
-                 (Regular,
-                  (Ada_Node => Id,
-                   B_Name   => Name,
-                   B_Ent    => null,
-                   Mutable  => Is_Mutable_In_Why (Id)));
+               declare
+                  Typ  : constant W_Type_Id :=
+                    (if Use_Why_Base_Type (Id) then
+                          Base_Why_Type (Unique_Entity (Etype (Id)))
+                     else EW_Abstract (Etype (Id)));
+                  Name : constant W_Identifier_Id :=
+                    New_Identifier (Ada_Node => Id,
+                                    Name     => Short_Name (Id),
+                                    Typ      => Typ);
+               begin
+                  Result (Count) :=
+                    (Regular,
+                     (Ada_Node => Id,
+                      B_Name   => Name,
+                      B_Ent    => null,
+                      Mutable  => Is_Mutable_In_Why (Id)));
+               end;
             end if;
             Next (Param);
             Count := Count + 1;
@@ -2046,8 +2246,8 @@ package body Gnat2Why.Subprograms is
             A : constant Node_Id :=
               (case Binder.Kind is
                   when Regular => Binder.Main.Ada_Node,
-                  when UCArray => Binder.Content.Ada_Node,
-                  when Func    => raise Program_Error);
+                  when others  => raise Program_Error);
+            --  in parameters should not be split
          begin
             pragma Assert (Present (A) or else Binder.Kind = Regular);
 
@@ -2191,6 +2391,9 @@ package body Gnat2Why.Subprograms is
               (case Binder.Kind is
                   when Regular => Binder.Main.Ada_Node,
                   when UCArray => Binder.Content.Ada_Node,
+                  when DRecord => (if Binder.Fields.Present then
+                                        Binder.Fields.Binder.Ada_Node
+                                   else Binder.Discrs.Binder.Ada_Node),
                   when Func    => raise Program_Error);
          begin
 
@@ -2396,7 +2599,8 @@ package body Gnat2Why.Subprograms is
                 (Domain   => EW_Term,
                  Expr     => T,
                  To       => Get_Typ (Binder.B_Name));
-
+         when DRecord =>
+            T := Record_From_Split_Form (E, Ref_Allowed);
          when Func => raise Program_Error;
          end case;
       else
@@ -2471,8 +2675,7 @@ package body Gnat2Why.Subprograms is
             A : constant Node_Id :=
               (case Binder.Kind is
                   when Regular => Binder.Main.Ada_Node,
-                  when UCArray => Binder.Content.Ada_Node,
-                  when Func    => raise Program_Error);
+                  when others  => raise Program_Error);
          begin
             pragma Assert (Present (A) or else Binder.Kind = Regular);
 

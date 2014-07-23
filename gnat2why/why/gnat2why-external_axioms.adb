@@ -975,16 +975,16 @@ package body Gnat2Why.External_Axioms is
                   begin
                      Ada_Ent_To_Why.Push_Scope (Symbol_Table);
 
+                     --  Function parameters should not be split nor have
+                     --  effects.
+
                      for Binder of Raw_Binders loop
                         declare
                            A : constant Node_Id :=
                              (case Binder.Kind is
                                  when Regular => Binder.Main.Ada_Node,
-                                 when UCArray => Binder.Content.Ada_Node,
-                                 when Func    => raise Program_Error);
+                                 when others  => raise Program_Error);
                         begin
-
-                           --  Function parameters should not have effects.
 
                            pragma Assert (Present (A));
 

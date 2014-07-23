@@ -28,31 +28,31 @@ copy.adb:166:32: warning: range check might fail
 copy.adb:168:22: info: precondition proved
 copy.adb:174:22: info: precondition proved
 copy.adb:175:32: warning: range check might fail
-copy.adb:177:22: info: precondition proved
+copy.adb:177:22: warning: precondition might fail
 copy.adb:182:22: info: precondition proved
 copy.adb:182:44: warning: range check might fail
 copy.adb:183:32: warning: range check might fail
 copy.adb:186:22: info: precondition proved
-copy.adb:188:22: info: precondition proved
+copy.adb:188:22: warning: precondition might fail
 copy.adb:194:22: warning: loop invariant might fail after first iteration
 copy.adb:194:22: warning: loop invariant might fail in first iteration
 copy.adb:202:55: info: overflow check proved
 copy.adb:202:55: info: range check proved
 copy.adb:206:30: warning: range check might fail
-copy.adb:207:31: warning: range check might fail
+copy.adb:207:31: info: range check proved
 copy.adb:210:34: warning: range check might fail
-copy.adb:211:31: warning: range check might fail
+copy.adb:211:31: info: range check proved
 copy.adb:213:31: info: precondition proved
-copy.adb:220:34: warning: precondition might fail
+copy.adb:220:34: info: precondition proved
 copy.adb:221:43: warning: range check might fail
 copy.adb:224:34: info: precondition proved
 copy.adb:232:31: info: precondition proved
 copy.adb:234:31: warning: precondition might fail
 copy.adb:243:22: info: precondition proved
-copy.adb:246:22: info: precondition proved
+copy.adb:246:22: warning: precondition might fail
 copy.adb:249:19: info: precondition proved
 copy.adb:256:13: info: precondition proved
-copy.adb:259:13: info: precondition proved
+copy.adb:259:13: warning: precondition might fail
 copy.adb:262:10: info: precondition proved
 copy.adb:269:14: warning: precondition might fail
 copy.adb:270:07: warning: loop invariant might fail after first iteration

@@ -42,6 +42,7 @@ with Why.Atree.Builders;     use Why.Atree.Builders;
 with Why.Atree.Modules;      use Why.Atree.Modules;
 with Why.Conversions;        use Why.Conversions;
 with Why.Gen.Expr;           use Why.Gen.Expr;
+with Why.Inter;              use Why.Inter;
 with Why.Types;              use Why.Types;
 
 with Gnat2Why.Expr;          use Gnat2Why.Expr;
@@ -585,6 +586,8 @@ package body Gnat2Why.Util is
          return Get_Typ (Binder.Content.B_Name);
       when Func =>
          return Get_Typ (Binder.For_Logic.B_Name);
+      when DRecord =>
+         return EW_Abstract (Binder.Typ);
       end case;
    end Why_Type_Of_Entity;
 

@@ -1,12 +1,12 @@
 search.adb:13:15: info: index check proved
-search.adb:14:17: warning: discriminant check might fail
+search.adb:14:17: info: discriminant check proved
 search.adb:15:33: info: range check proved
 search.adb:19:10: info: loop invariant initialization proved
 search.adb:19:10: info: loop invariant preservation proved
 search.adb:22:56: info: range check proved
 search.adb:23:10: info: loop variant proved
 search.adb:25:21: info: overflow check proved
-search.adb:28:11: warning: discriminant check might fail
+search.adb:28:11: info: discriminant check proved
 search.ads:23:37: info: index check proved
 search.ads:31:17: warning: postcondition might fail, requires A (Linear_Search'Result.At_Index) = Val
 search.ads:31:40: info: discriminant check proved

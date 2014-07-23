@@ -154,7 +154,7 @@ is
                         S.Elem (I) = ' ')
                      and S.Len < Length_T'Last,
           Post    => (for all I in Index_T range S.Len + 1..Index_T'Last =>
-                        S.Elem (I) = ' ')  --  @POSTCONDITION:FAIL
+                        S.Elem (I) = ' ')
    is
    begin
       S.Len := S.Len + 1;

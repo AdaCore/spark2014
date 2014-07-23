@@ -25,8 +25,6 @@
 
 with Ada.Containers.Hashed_Maps;
 
-with Atree;               use Atree;
-with Einfo;               use Einfo;
 with Elists;              use Elists;
 with Namet;               use Namet;
 with Nlists;              use Nlists;
@@ -35,7 +33,6 @@ with Sinfo;               use Sinfo;
 with Snames;              use Snames;
 
 with SPARK_Definition;    use SPARK_Definition;
-with SPARK_Util;          use SPARK_Util;
 with VC_Kinds;            use VC_Kinds;
 
 with Common_Containers;   use Common_Containers;
@@ -47,7 +44,6 @@ with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Atree.Modules;   use Why.Atree.Modules;
 with Why.Conversions;     use Why.Conversions;
-with Why.Gen.Binders;     use Why.Gen.Binders;
 with Why.Gen.Decl;        use Why.Gen.Decl;
 with Why.Gen.Expr;        use Why.Gen.Expr;
 with Why.Gen.Names;       use Why.Gen.Names;
@@ -149,9 +145,6 @@ package body Why.Gen.Records is
    --  Note that tagged types have always at least one component, for the
    --  components of possible extensions.
 
-   function Count_Fields (E : Entity_Id) return Natural;
-   --  count the number of normal fields
-
    function Count_Fields_Not_In_Root (E : Entity_Id) return Natural;
    --  Counts the number of fields for the Why3 record representing type E that
    --  are not present in the representation of the root type for E.
@@ -171,32 +164,6 @@ package body Why.Gen.Records is
    --  predicate. If Local is true, do not prefix the identifier.
    --  If the current record type is not a root type, return the name of the
    --  corresponding predicate in the root type module.
-
-   ------------------
-   -- Count_Fields --
-   ------------------
-
-   function Count_Fields (E : Entity_Id) return Natural is
-      Field : Entity_Id := First_Component (E);
-      Count : Natural := 0;
-   begin
-      while Present (Field) loop
-         if not Is_Tag (Field) then
-            Count := Count + 1;
-         end if;
-         Next_Component (Field);
-      end loop;
-
-      --  Add one field for tagged types to represent the unknown extension
-      --  components. The field for the tag itself is stored directly in the
-      --  Why3 record.
-
-      if Is_Tagged_Type (E) then
-         Count := Count + 1;
-      end if;
-
-      return Count;
-   end Count_Fields;
 
    ------------------------------
    -- Count_Fields_Not_In_Root --
@@ -236,7 +203,7 @@ package body Why.Gen.Records is
 
       --  Store fields in a separate sub-record field
 
-      if Count_Fields (E) > 0 then
+      if Count_Fields (E) > 0 or else Is_Tagged_Type (E) then
          Count := Count + 1;
       end if;
 
@@ -1282,7 +1249,7 @@ package body Why.Gen.Records is
 
          --  Generate a record type for E's normal fields
 
-         if Num_Fields > 0 then
+         if Num_Fields > 0 or else Is_Tagged_Type (E) then
             Index := 1;
             Field := First_Component (E);
             while Present (Field) loop
@@ -1830,6 +1797,35 @@ package body Why.Gen.Records is
       end if;
    end Discriminant_Check_Pred_Name;
 
+   ----------------------------------
+   -- Field_Type_For_Discriminants --
+   ----------------------------------
+
+   function Field_Type_For_Discriminants (E : Entity_Id) return W_Type_Id is
+     (New_Type (Ada_Node   => E,
+                Is_Mutable => False,
+                Base_Type  => EW_Abstract,
+                Name       =>
+                   To_Name (Prefix
+                            (Ada_Node => E,
+                             W        => WNE_Rec_Split_Discrs,
+                             M        => E_Module
+                               (Unique_Entity (Root_Record_Type (E)))))));
+
+   ---------------------------
+   -- Field_Type_For_Fields --
+   ---------------------------
+
+   function Field_Type_For_Fields (E : Entity_Id) return W_Type_Id is
+     (New_Type (Ada_Node   => E,
+                Is_Mutable => False,
+                Base_Type  => EW_Abstract,
+                Name       =>
+                   To_Name (Prefix
+                            (Ada_Node => E,
+                             W        => WNE_Rec_Split_Fields,
+                             M        => E_Module (E)))));
+
    ---------------------------------------
    -- Insert_Subtype_Discriminant_Check --
    ---------------------------------------
@@ -1901,13 +1897,9 @@ package body Why.Gen.Records is
       Ret_Ty    : constant W_Type_Id :=
         Type_Of_Node (Search_Component_By_Name (Ty, Field));
       Top_Field : constant W_Expr_Id :=
-           New_Call
-             (Ada_Node => Ada_Node,
-              Name     => Prefix (E_Module (Ty),
-               (if Ekind (Field) = E_Discriminant then WNE_Rec_Split_Discrs
-                 else WNE_Rec_Split_Fields)),
-              Args     => (1 => Name),
-              Domain   => Domain);
+        (if Ekind (Field) = E_Discriminant then
+              New_Discriminants_Access (Ada_Node, Domain, Name, Ty)
+         else New_Fields_Access (Ada_Node, Domain, Name, Ty));
    begin
       if Domain = EW_Prog and then
         Do_Discriminant_Check (Ada_Node)
@@ -2017,27 +2009,22 @@ package body Why.Gen.Records is
       Tmp         : constant W_Expr_Id := New_Temp_For_Expr (Name);
       Ty          : constant Entity_Id := Get_Ada_Node (+Get_Type (Name));
       Top_Field   : constant W_Expr_Id :=
-        New_Record_Access
-          (Name  => Tmp,
-           Field => Prefix (E_Module (Ty), WNE_Rec_Split_Fields));
+        New_Fields_Access (Ada_Node, Domain, Tmp, Ty);
       Update_Expr : constant W_Expr_Id :=
-        New_Record_Update
+        New_Fields_Update
           (Ada_Node => Ada_Node,
+           Domain   => Domain,
            Name     => Tmp,
-           Updates  =>
-             (1 => New_Field_Association
-                (Domain => Domain,
-                 Field  => Prefix (E_Module (Ty), WNE_Rec_Split_Fields),
-                 Value  =>
-                   New_Record_Update
-                     (Ada_Node => Ada_Node,
-                      Name     => Top_Field,
-                      Updates  =>
-                        (1 => New_Field_Association
-                           (Domain => Domain,
-                            Field  => To_Why_Id (Field, Domain, Rec => Ty),
-                            Value  => Value))))),
-           Typ      => Get_Type (Name));
+           Value    =>
+             New_Record_Update
+               (Ada_Node => Ada_Node,
+                Name     => Top_Field,
+                Updates  =>
+                  (1 => New_Field_Association
+                     (Domain => Domain,
+                      Field  => To_Why_Id (Field, Domain, Rec => Ty),
+                      Value  => Value))),
+           Ty       => Ty);
       T           : W_Expr_Id;
    begin
       pragma Assert (Ekind (Field) /= E_Discriminant);
@@ -2065,26 +2052,99 @@ package body Why.Gen.Records is
       Tmp         : constant W_Expr_Id := New_Temp_For_Expr (Name);
       Ty          : constant Entity_Id := Get_Ada_Node (+Get_Type (Name));
       Top_Field   : constant W_Expr_Id :=
-        New_Record_Access
-          (Name  => Tmp,
-           Field => Prefix (E_Module (Ty), WNE_Rec_Split_Fields));
+        New_Fields_Access (Ada_Node, Domain, Tmp, Ty);
       Update_Expr : constant W_Expr_Id :=
-        New_Record_Update
+        New_Fields_Update
           (Ada_Node => Ada_Node,
+           Domain   => Domain,
            Name     => Tmp,
-           Updates  =>
-             (1 => New_Field_Association
-                (Domain => Domain,
-                 Field  => Prefix (E_Module (Ty), WNE_Rec_Split_Fields),
-                 Value  =>
-                   New_Record_Update
-                     (Ada_Node => Ada_Node,
-                      Name     => Top_Field,
-                      Updates  => Updates))),
-           Typ      => Get_Type (Name));
+           Value    =>
+             New_Record_Update
+               (Ada_Node => Ada_Node,
+                Name     => Top_Field,
+                Updates  => Updates),
+           Ty      => Ty);
    begin
       return Binding_For_Temp (Ada_Node, Domain, Tmp, Update_Expr);
    end New_Ada_Record_Update;
+
+   ------------------------------
+   -- New_Discriminants_Access --
+   ------------------------------
+
+   function New_Discriminants_Access
+     (Ada_Node : Node_Id := Empty;
+      Domain   : EW_Domain;
+      Name     : W_Expr_Id;
+      Ty       : Entity_Id)
+      return W_Expr_Id
+   is
+     (New_Call
+        (Ada_Node => Ada_Node,
+         Name     => Prefix (E_Module (Ty), WNE_Rec_Split_Discrs),
+         Args     => (1 => Name),
+         Domain   => Domain));
+
+   ------------------------------
+   -- New_Discriminants_Update --
+   ------------------------------
+
+   function New_Discriminants_Update
+     (Ada_Node : Node_Id := Empty;
+      Domain   : EW_Domain;
+      Name     : W_Expr_Id;
+      Value    : W_Expr_Id;
+      Ty       : Entity_Id)
+      return W_Expr_Id
+   is
+     (New_Record_Update
+        (Ada_Node => Ada_Node,
+         Name     => Name,
+         Updates  =>
+           (1 => New_Field_Association
+                (Domain => Domain,
+                 Field  => Prefix (E_Module (Ty), WNE_Rec_Split_Discrs),
+                 Value  => Value)),
+         Typ      => EW_Abstract (Ty)));
+
+   -----------------------
+   -- New_Fields_Access --
+   -----------------------
+
+   function New_Fields_Access
+     (Ada_Node : Node_Id := Empty;
+      Domain   : EW_Domain;
+      Name     : W_Expr_Id;
+      Ty       : Entity_Id)
+      return W_Expr_Id
+   is
+     (New_Call
+        (Ada_Node => Ada_Node,
+         Name     => Prefix (E_Module (Ty), WNE_Rec_Split_Fields),
+         Args     => (1 => Name),
+         Domain   => Domain));
+
+   -----------------------
+   -- New_Fields_Update --
+   -----------------------
+
+   function New_Fields_Update
+     (Ada_Node : Node_Id := Empty;
+      Domain   : EW_Domain;
+      Name     : W_Expr_Id;
+      Value    : W_Expr_Id;
+      Ty       : Entity_Id)
+      return W_Expr_Id
+   is
+     (New_Record_Update
+        (Ada_Node => Ada_Node,
+         Name     => Name,
+         Updates  =>
+           (1 => New_Field_Association
+                (Domain => Domain,
+                 Field  => Prefix (E_Module (Ty), WNE_Rec_Split_Fields),
+                 Value  => Value)),
+         Typ      => EW_Abstract (Ty)));
 
    -------------------------------
    -- New_Is_Constrained_Access --
@@ -2147,6 +2207,29 @@ package body Why.Gen.Records is
       end if;
    end New_Is_Constrained_Update;
 
+   --------------------
+   -- New_Tag_Access --
+   --------------------
+
+   function New_Tag_Access
+     (Ada_Node : Node_Id := Empty;
+      Domain   : EW_Domain;
+      Name     : W_Expr_Id;
+      Ty       : Entity_Id)
+      return W_Expr_Id
+   is
+   begin
+      pragma Assert (Is_Tagged_Type (Ty));
+      return New_Call
+        (Ada_Node => Ada_Node,
+         Name     => +New_Attribute_Expr
+           (Ty   => Ty,
+            Attr => Attribute_Tag),
+         Args     => (1 => Name),
+         Domain   => Domain,
+         Typ      => EW_Int_Type);
+   end New_Tag_Access;
+
    ------------------------------------
    -- Prepare_Args_For_Subtype_Check --
    ------------------------------------
@@ -2178,5 +2261,117 @@ package body Why.Gen.Records is
       end loop;
       return Args;
    end Prepare_Args_For_Subtype_Check;
+
+   ----------------------------
+   -- Record_From_Split_Form --
+   ----------------------------
+
+   function Record_From_Split_Form (A : W_Expr_Array; Ty  : Entity_Id)
+                                    return W_Expr_Id
+   is
+      Associations : W_Field_Association_Array (A'Range);
+      Index        : Positive := A'First;
+   begin
+
+      --  Store association for the top-level field for fields
+
+      if Count_Fields (Ty) > 0 or else Is_Tagged_Type (Ty) then
+         Associations (Index) := New_Field_Association
+           (Domain   => EW_Term,
+            Field    => Prefix (E_Module (Ty), WNE_Rec_Split_Fields),
+            Value    => A (Index));
+         Index := Index + 1;
+      end if;
+
+      --  Store association for the top-level field for discriminants
+
+      if Number_Discriminants (Ty) > 0 then
+         Associations (Index) := New_Field_Association
+           (Domain   => EW_Term,
+            Field    => Prefix (E_Module (Ty), WNE_Rec_Split_Discrs),
+            Value    => A (Index));
+         Index := Index + 1;
+      end if;
+
+      --  Store association for the 'Constrained attribute
+
+      if not Is_Constrained (Ty) and then Has_Defaulted_Discriminants (Ty) then
+         Associations (Index) := New_Field_Association
+           (Domain   => EW_Term,
+            Field    => +New_Attribute_Expr (Ty   => Ty,
+                                             Attr => Attribute_Constrained),
+            Value    => A (Index));
+         Index := Index + 1;
+      end if;
+
+      --  Store association for the 'Tag attribute
+
+      if Is_Tagged_Type (Ty) then
+         Associations (Index) := New_Field_Association
+           (Domain   => EW_Term,
+            Field    => +New_Attribute_Expr (Ty   => Ty,
+                                             Attr => Attribute_Tag),
+            Value    => A (Index));
+         Index := Index + 1;
+      end if;
+
+      return New_Record_Aggregate
+           (Associations => Associations,
+            Typ          => EW_Abstract (Ty));
+   end Record_From_Split_Form;
+
+   function Record_From_Split_Form (I : Item_Type; Ref_Allowed : Boolean)
+                                    return W_Expr_Id
+   is
+      E      : constant Entity_Id :=
+        (if I.Fields.Present then I.Fields.Binder.Ada_Node
+         else I.Discrs.Binder.Ada_Node);
+      Ty     : constant Entity_Id := I.Typ;
+      Values : W_Expr_Array (1 .. Count_Why_Record_Fields (Ty));
+      Index  : Positive := 1;
+   begin
+
+      --  Store association for the top-level field for fields
+
+      if I.Fields.Present then
+         if Ref_Allowed then
+            Values (Index) := New_Deref
+              (E, I.Fields.Binder.B_Name, Get_Typ (I.Fields.Binder.B_Name));
+         else
+            Values (Index) := +I.Fields.Binder.B_Name;
+         end if;
+         Index := Index + 1;
+      end if;
+
+      --  Store association for the top-level field for discriminants
+
+      if I.Discrs.Present then
+         if I.Discrs.Binder.Mutable and then Ref_Allowed then
+            Values (Index) := New_Deref
+              (E, I.Discrs.Binder.B_Name, Get_Typ (I.Discrs.Binder.B_Name));
+         else
+            Values (Index) := +I.Discrs.Binder.B_Name;
+         end if;
+         Index := Index + 1;
+      end if;
+
+      --  Store association for the 'Constrained attribute
+
+      if I.Constr.Present then
+         Values (Index) := +I.Constr.Id;
+         Index := Index + 1;
+      end if;
+
+      --  Store association for the 'Tag attribute
+
+      if I.Tag.Present then
+         Values (Index) := +I.Tag.Id;
+         Index := Index + 1;
+      end if;
+
+      pragma Assert (Index = Values'Last + 1);
+
+      return Record_From_Split_Form (Values, Ty);
+   end Record_From_Split_Form;
 
 end Why.Gen.Records;

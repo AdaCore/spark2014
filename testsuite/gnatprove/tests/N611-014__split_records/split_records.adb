@@ -1,0 +1,28 @@
+package body Split_Records with SPARK_Mode is
+   procedure Update_Field_If_Possible
+     (R : in out Record_With_Mutable_Discrs; New_Field : Natural)
+   is
+   begin
+      if R.Present then
+         R.Field := New_Field;
+      elsif not R'Constrained then
+         R := (Present => True, Field => New_Field);
+      end if;
+   end Update_Field_If_Possible;
+
+   procedure Test is
+      C1 : Record_With_Mutable_Discrs (False);
+      C2 : Record_With_Mutable_Discrs;
+      H1 : Holder (False);
+      H2 : Mutable_Holder;
+   begin
+      Update_Field_If_Possible (C1, 0);
+      pragma Assert (not C1.Present);
+      Update_Field_If_Possible (C2, 0);
+      pragma Assert (not C2.Present); --@ASSERT:FAIL
+      Update_Field_If_Possible (H1.Content, 0);
+      pragma Assert (not H1.Content.Present);
+      Update_Field_If_Possible (H2.Content, 0);
+      pragma Assert (not H2.Content.Present); --@ASSERT:FAIL
+   end Test;
+end;

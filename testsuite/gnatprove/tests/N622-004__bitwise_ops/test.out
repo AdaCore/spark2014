@@ -35,7 +35,7 @@ aco-math-very_longs.adb:119:29: info: length check proved
 aco-math-very_longs.adb:122:29: info: discriminant check proved
 aco-math-very_longs.adb:122:41: warning: range check might fail
 aco-math-very_longs.adb:123:29: warning: range check might fail
-aco-math-very_longs.adb:125:32: warning: loop invariant might fail after first iteration, requires String_Index = 2 * Result.Long_Digits'last - Index + 1
+aco-math-very_longs.adb:125:10: info: loop invariant preservation proved
 aco-math-very_longs.adb:125:32: warning: loop invariant might fail in first iteration, requires String_Index = 2 * Result.Long_Digits'last - Index + 1
 aco-math-very_longs.adb:125:58: warning: overflow check might fail
 aco-math-very_longs.adb:125:67: info: discriminant check proved
@@ -266,18 +266,20 @@ aco-math-very_longs.adb:513:66: warning: array index check might fail
 aco-math-very_longs.adb:514:07: info: precondition proved
 aco-math-very_longs.adb:515:12: info: discriminant check proved
 aco-math-very_longs.adb:533:17: warning: range check might fail
-aco-math-very_longs.adb:537:11: warning: range check might fail
+aco-math-very_longs.adb:537:11: info: range check proved
 aco-math-very_longs.adb:538:19: info: discriminant check proved
 aco-math-very_longs.adb:538:32: warning: array index check might fail
 aco-math-very_longs.adb:538:51: info: discriminant check proved
 aco-math-very_longs.adb:538:64: warning: array index check might fail
 aco-math-very_longs.adb:552:07: info: precondition proved
-aco-math-very_longs.adb:553:36: warning: precondition might fail
+aco-math-very_longs.adb:553:36: info: precondition proved
+aco-math-very_longs.adb:554:20: info: precondition proved
 aco-math-very_longs.adb:554:20: warning: discriminant check might fail
-aco-math-very_longs.adb:554:20: warning: precondition might fail
+
 aco-math-very_longs.adb:564:07: info: precondition proved
+aco-math-very_longs.adb:566:20: info: precondition proved
 aco-math-very_longs.adb:566:20: warning: discriminant check might fail
-aco-math-very_longs.adb:566:20: warning: precondition might fail
+
 aco-math-very_longs.adb:583:55: info: division check proved
 aco-math-very_longs.adb:584:34: info: division check proved
 aco-math-very_longs.adb:586:29: info: discriminant check proved

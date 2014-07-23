@@ -48,6 +48,7 @@ with Why.Gen.Expr;       use Why.Gen.Expr;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Progs;      use Why.Gen.Progs;
 with Why.Gen.Preds;      use Why.Gen.Preds;
+with Why.Gen.Records;    use Why.Gen.Records;
 with Why.Inter;          use Why.Inter;
 
 with Gnat2Why.Nodes;     use Gnat2Why.Nodes;
@@ -429,7 +430,7 @@ package body Gnat2Why.Expr.Loops is
               To_Entire_Variables (Get_Loop_Writes (Loop_Id));
             N        : Node_Id;
             Dyn_Prop : W_Pred_Id;
-            Id       : W_Identifier_Id;
+            Expr     : W_Expr_Id;
             Binder   : Item_Type;
          begin
             for F of Modified loop
@@ -440,13 +441,20 @@ package body Gnat2Why.Expr.Loops is
                   then
                      Binder := Ada_Ent_To_Why.Element
                        (Symbol_Table, N);
-                     Id := (case Binder.Kind is
-                               when Regular => Binder.Main.B_Name,
-                               when UCArray => Binder.Content.B_Name,
-                               when Func    => raise Program_Error);
+                     Expr := (case Binder.Kind is
+                                 when Regular =>
+                                    New_Deref (Right => Binder.Main.B_Name,
+                                               Typ   => Get_Type
+                                                 (+Binder.Main.B_Name)),
+                                 when UCArray =>
+                                    New_Deref (Right => Binder.Content.B_Name,
+                                               Typ   => Get_Type
+                                                 (+Binder.Content.B_Name)),
+                                 when DRecord =>
+                                    Record_From_Split_Form (Binder, True),
+                                 when Func    => raise Program_Error);
                      Dyn_Prop := Compute_Dynamic_Property
-                       (Expr     => New_Deref (Right => Id,
-                                               Typ   => Get_Type (+Id)),
+                       (Expr     => Expr,
                         Ty       => Etype (N),
                         Only_Var => True);
 

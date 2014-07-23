@@ -305,6 +305,32 @@ package body SPARK_Util is
       return True;
    end Check_Needed_On_Conversion;
 
+   ------------------
+   -- Count_Fields --
+   ------------------
+
+   function Count_Fields (E : Entity_Id) return Natural is
+      Field : Entity_Id := First_Component (E);
+      Count : Natural := 0;
+   begin
+      while Present (Field) loop
+         if not Is_Tag (Field) then
+            Count := Count + 1;
+         end if;
+         Next_Component (Field);
+      end loop;
+
+      --  Add one field for tagged types to represent the unknown extension
+      --  components. The field for the tag itself is stored directly in the
+      --  Why3 record.
+
+      if Is_Tagged_Type (E) then
+         Count := Count + 1;
+      end if;
+
+      return Count;
+   end Count_Fields;
+
    ----------------------------
    -- Default_Initialization --
    ----------------------------

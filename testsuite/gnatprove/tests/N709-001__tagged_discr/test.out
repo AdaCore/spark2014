@@ -27,4 +27,4 @@ tagged_discr.ads:43:14: info: postcondition proved
 tagged_discr.ads:57:09: info: discriminant check proved
 tagged_discr.ads:59:28: info: discriminant check proved
 tagged_discr.ads:60:29: info: discriminant check proved
-tagged_discr.ads:66:14: warning: postcondition might fail, requires Is_Zero (V)
+tagged_discr.ads:66:14: info: postcondition proved

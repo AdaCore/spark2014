@@ -15,8 +15,8 @@ arrays.adb:146:07: info: assertion proved
 arrays.adb:148:22: warning: assertion might fail, requires R.A(1) = 5
 arrays.adb:153:31: info: range check proved
 arrays.adb:154:33: info: index check proved
+arrays.adb:156:22: info: postcondition proved
 arrays.adb:156:31: info: range check proved
-arrays.adb:157:25: warning: postcondition might fail, requires S.Elem (I) = ' '
 arrays.adb:157:33: info: index check proved
 arrays.adb:160:22: info: range check proved
 arrays.adb:161:16: info: index check proved
