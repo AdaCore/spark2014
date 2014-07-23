@@ -12,9 +12,10 @@ package body Split_Records with SPARK_Mode is
 
    procedure Test is
       C1 : Record_With_Mutable_Discrs (False);
-      C2 : Record_With_Mutable_Discrs;
+      C2 : Record_With_Mutable_Discrs := (Present => False);
       H1 : Holder (False);
-      H2 : Mutable_Holder;
+      H2 : Mutable_Holder := (Content => (Present => False));
+      A  : Mutable_Array (1 .. 1) := (1 => (Present => False));
    begin
       Update_Field_If_Possible (C1, 0);
       pragma Assert (not C1.Present);
@@ -22,7 +23,15 @@ package body Split_Records with SPARK_Mode is
       pragma Assert (not C2.Present); --@ASSERT:FAIL
       Update_Field_If_Possible (H1.Content, 0);
       pragma Assert (not H1.Content.Present);
+      pragma Assert (not H2.Content'Constrained);
+      H2.Content := (Present => False);
+      pragma Assert (not H2.Content'Constrained);
       Update_Field_If_Possible (H2.Content, 0);
       pragma Assert (not H2.Content.Present); --@ASSERT:FAIL
+      pragma Assert (not A (1)'Constrained);
+      A (1) := (Present => False);
+      pragma Assert (not A (1)'Constrained);
+      Update_Field_If_Possible (A (1), 0);
+      pragma Assert (not A (1).Present); --@ASSERT:FAIL
    end Test;
 end;

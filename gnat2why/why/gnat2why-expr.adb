@@ -4922,6 +4922,19 @@ package body Gnat2Why.Expr is
                  EW_Abstract (Element (Typ)),
                  Domain,
                  Params);
+
+            --  If the component's type has mutable discriminants then the
+            --  component must be unconstrained.
+
+            if not Is_Constrained (Element (Typ))
+              and then Has_Defaulted_Discriminants (Element (Typ))
+            then
+               Args (Cnt) := New_Is_Constrained_Update
+                 (Domain   => Domain,
+                  Name     => Args (Cnt),
+                  Value    => +False_Term,
+                  Ty       => Element (Typ));
+            end if;
             Next (Value);
             Next (Typ);
             Cnt := Cnt + 1;
@@ -9885,6 +9898,19 @@ package body Gnat2Why.Expr is
                pragma Assert (Domain = EW_Prog);
                Expr := +New_Simpl_Any_Prog
                          (T => EW_Abstract (Etype (Component)));
+            end if;
+
+            --  If the component's type has mutable discriminants then the
+            --  component must be unconstrained.
+
+            if not Is_Constrained (Etype (Component))
+              and then Has_Defaulted_Discriminants (Etype (Component))
+            then
+               Expr := New_Is_Constrained_Update
+                 (Domain   => Domain,
+                  Name     => Expr,
+                  Value    => +False_Term,
+                  Ty       => Etype (Component));
             end if;
 
             if Ekind (Component) = E_Discriminant then

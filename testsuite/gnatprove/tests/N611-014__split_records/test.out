@@ -1,1 +1,19 @@
-
+split_records.adb:7:11: info: discriminant check proved
+split_records.adb:9:12: info: discriminant check proved
+split_records.adb:18:38: info: length check proved
+split_records.adb:21:07: info: assertion proved
+split_records.adb:23:22: warning: assertion might fail, requires not C2.Present
+split_records.adb:24:35: info: discriminant check proved
+split_records.adb:25:07: info: assertion proved
+split_records.adb:25:28: info: discriminant check proved
+split_records.adb:26:07: info: assertion proved
+split_records.adb:27:18: info: discriminant check proved
+split_records.adb:28:07: info: assertion proved
+split_records.adb:30:22: warning: assertion might fail, requires not H2.Content.Present
+split_records.adb:31:07: info: assertion proved
+split_records.adb:32:13: info: discriminant check proved
+split_records.adb:33:07: info: assertion proved
+split_records.adb:35:22: warning: assertion might fail, requires not A (1).Present
+split_records.ads:24:14: info: postcondition proved
+split_records.ads:24:34: info: discriminant check proved
+split_records.ads:27:14: warning: subprogram "Test" has no effect

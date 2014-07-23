@@ -16,6 +16,9 @@ package Split_Records with SPARK_Mode is
       Content : Record_With_Mutable_Discrs (Present);
    end record;
 
+   type Mutable_Array is array (Positive range <>) of
+     Record_With_Mutable_Discrs;
+
    procedure Update_Field_If_Possible
      (R : in out Record_With_Mutable_Discrs; New_Field : Natural) with
      Post => (if R.Present then R.Field = New_Field);
