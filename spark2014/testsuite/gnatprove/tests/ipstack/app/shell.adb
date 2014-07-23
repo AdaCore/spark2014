@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---          Copyright (C) 2010-2012, Free Software Foundation, Inc.         --
+--          Copyright (C) 2010-2014, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 pragma Ada_2005;
@@ -8,6 +8,7 @@ pragma Ada_2005;
 with AIP.ARP;
 with AIP.Nif;
 with AIP.IO;
+with AIP.IPaddrs;
 
 package body Shell is
 
@@ -24,6 +25,33 @@ package body Shell is
    --  Command return value
 
    PS : constant String := "IPstack> ";
+
+   function Image (A : AIP.IPaddrs.IPaddr) return String;
+   --  Return dotted quad representation of A
+
+   -----------
+   -- Image --
+   -----------
+
+   function Image (A : AIP.IPaddrs.IPaddr) return String is
+      use type AIP.IPaddrs.IPaddr;
+      AA     : AIP.IPaddrs.IPaddr := A;
+      B      : AIP.IPaddrs.IPaddr;
+      Result : String := "000.000.000.000";
+      Index  : Integer := Result'Last;
+   begin
+      for J in 1 .. 4 loop
+         B := AA and 16#ff#;
+         for K in 0 .. 2 loop
+            Result (Index) := Character'Val (Character'Pos ('0') + B mod 10);
+            B := B / 10;
+            Index := Index - 1;
+         end loop;
+         Index := Index - 1;
+         AA := AA / 256;
+      end loop;
+      return Result;
+   end Image;
 
    ----------
    -- Poll --
@@ -58,7 +86,9 @@ package body Shell is
                   for J in AIP.Nif.Netif_Id'Range loop
                      If_Name := Get_Netif (J);
                      exit when If_Name (1) = ' ';
-                     AIP.IO.Put_Line (If_Name.all);
+                     AIP.IO.Put (If_Name.all & ' ');
+                     AIP.IO.Put (AIP.Nif.NIF_State (J)'Img & ' ');
+                     AIP.IO.Put_Line (Image (AIP.Nif.NIF_Addr (J)));
                   end loop;
                end;
                State := Completed;
