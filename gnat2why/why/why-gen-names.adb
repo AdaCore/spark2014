@@ -401,13 +401,15 @@ package body Why.Gen.Names is
       return New_Identifier (Ada_Node, EW_Term, Name, Typ);
    end New_Identifier;
 
-   function New_Identifier (Ada_Node : Node_Id := Empty;
-                            Name    : String;
-                            Module  : W_Module_Id;
-                            Typ      : W_Type_Id := Why_Empty)
-                            return W_Identifier_Id is
+   function New_Identifier
+     (Ada_Node  : Node_Id := Empty;
+      Name      : String;
+      Namespace : Name_Id := No_Name;
+      Module    : W_Module_Id;
+      Typ       : W_Type_Id := Why_Empty) return W_Identifier_Id is
    begin
-      return New_Identifier (Ada_Node, EW_Term, Name, Module, Typ);
+      return New_Identifier
+        (Ada_Node, EW_Term, Name, Namespace, Module, Typ);
    end New_Identifier;
 
    function New_Identifier
@@ -426,19 +428,21 @@ package body Why.Gen.Names is
    end New_Identifier;
 
    function New_Identifier
-     (Ada_Node : Node_Id := Empty;
-      Domain   : EW_Domain;
-      Name     : String;
-      Module   : W_Module_Id;
-      Typ      : W_Type_Id := Why_Empty)
+     (Ada_Node  : Node_Id := Empty;
+      Domain    : EW_Domain;
+      Name      : String;
+      Namespace : Name_Id := No_Name;
+      Module    : W_Module_Id;
+      Typ       : W_Type_Id := Why_Empty)
      return W_Identifier_Id is
    begin
       return
-        New_Identifier (Ada_Node => Ada_Node,
-                        Domain   => Domain,
-                        Symbol   => NID (Name),
-                        Module   => Module,
-                        Typ      => Typ);
+        New_Identifier (Ada_Node  => Ada_Node,
+                        Domain    => Domain,
+                        Symbol    => NID (Name),
+                        Namespace => Namespace,
+                        Module    => Module,
+                        Typ       => Typ);
    end New_Identifier;
 
    function New_Identifier (Name : W_Name_Id) return W_Identifier_Id is
@@ -619,7 +623,7 @@ package body Why.Gen.Names is
          when WNE_Extract_Prefix       => return "extract__";
          when WNE_Null_Extension       => return "null_ext__";
          when WNE_Hide_Extension       => return "hide_ext__";
-         when WNE_Dispatch_Subp_Prefix => return "dispatch__";
+         when WNE_Dispatch_Module      => return "Dispatch";
          when WNE_Logic_Fun_Suffix     => return "__logic";
          when WNE_Inversion_Axiom_Prefix => return "inversion_axiom";
       end case;
@@ -751,7 +755,8 @@ package body Why.Gen.Names is
       Img    : constant String := Get_Name_String (N_Id);
    begin
       return New_Identifier
-        (Get_Ada_Node (+Name), EW_Prog, Img & Suffix, Get_Module (Name));
+        (Get_Ada_Node (+Name), EW_Prog, Img & Suffix,
+         Module => Get_Module (Name));
    end To_Program_Space;
 
    ----------------------

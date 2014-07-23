@@ -1105,13 +1105,9 @@ package body Why.Inter is
                        | Object_Kind
                        | E_Abstract_State
          then
-            (if Dispatch then
-               To_String (WNE_Dispatch_Subp_Prefix) & Short_Name (E)
-             else
-               Short_Name (E))
+            Short_Name (E)
          else "");
    begin
-
       --  The component case is sufficiently different to treat it
       --  independently
 
@@ -1149,21 +1145,27 @@ package body Why.Inter is
                                 Name     => Full_Name (E),
                                 Typ      => Typ);
 
-      elsif Ekind (E) in Subprogram_Kind and then Domain = EW_Prog then
-         return
-           New_Identifier
-             (Ada_Node => E,
-              Name     => Suffix,
-              Module   => E_Axiom_Module (E),
-              Typ      => Typ);
-
       else
-         return
-           New_Identifier
-             (Ada_Node => E,
-              Name     => Suffix,
-              Module   => E_Module (E),
-              Typ      => Typ);
+         declare
+            Module : constant W_Module_Id :=
+              (if Ekind (E) in Subprogram_Kind and then Domain = EW_Prog then
+                 E_Axiom_Module (E)
+               else
+                 E_Module (E));
+            Namespace : constant Name_Id :=
+              (if Dispatch then
+                 NID (To_String (WNE_Dispatch_Module))
+               else
+                  No_Name);
+         begin
+            return
+              New_Identifier
+                (Ada_Node  => E,
+                 Name      => Suffix,
+                 Namespace => Namespace,
+                 Module    => Module,
+                 Typ       => Typ);
+         end;
       end if;
    end To_Why_Id;
 

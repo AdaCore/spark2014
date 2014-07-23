@@ -2369,8 +2369,6 @@ package body Gnat2Why.Subprograms is
       Dispatch_Post : W_Pred_Id;
       Prog_Id      : constant W_Identifier_Id :=
         To_Why_Id (E, Domain => EW_Prog, Local => True);
-      Dispatch_Prog_Id : constant W_Identifier_Id :=
-        To_Why_Id (E, Domain => EW_Prog, Local => True, Dispatch => True);
       Why_Type     : W_Type_Id := Why_Empty;
    begin
       Params :=
@@ -2504,14 +2502,17 @@ package body Gnat2Why.Subprograms is
 
                Emit
                  (File.Cur_Theory,
-                  New_Function_Decl
-                    (Domain      => EW_Prog,
-                     Name        => Dispatch_Prog_Id,
-                     Binders     => Func_Why_Binders,
-                     Return_Type => EW_Abstract (Etype (E)),
-                     Labels      => Name_Id_Sets.Empty_Set,
-                     Pre         => Dispatch_Pre,
-                     Post        => Dispatch_Param_Post));
+                  New_Namespace_Declaration
+                    (Name    => NID (To_String (WNE_Dispatch_Module)),
+                     Declarations =>
+                       (1 => New_Function_Decl
+                            (Domain      => EW_Prog,
+                             Name        => Prog_Id,
+                             Binders     => Func_Why_Binders,
+                             Return_Type => EW_Abstract (Etype (E)),
+                             Labels      => Name_Id_Sets.Empty_Set,
+                             Pre         => Dispatch_Pre,
+                             Post        => Dispatch_Param_Post))));
             end if;
          end;
 
@@ -2533,15 +2534,18 @@ package body Gnat2Why.Subprograms is
          if Is_Dispatching_Operation (E) then
             Emit
               (File.Cur_Theory,
-               New_Function_Decl
-                 (Domain      => EW_Prog,
-                  Name        => Dispatch_Prog_Id,
-                  Binders     => Func_Why_Binders,
-                  Labels      => Name_Id_Sets.Empty_Set,
-                  Return_Type => EW_Unit_Type,
-                  Effects     => Effects,
-                  Pre         => Dispatch_Pre,
-                  Post        => Dispatch_Post));
+               New_Namespace_Declaration
+                 (Name    => NID (To_String (WNE_Dispatch_Module)),
+                  Declarations =>
+                    (1 => New_Function_Decl
+                         (Domain      => EW_Prog,
+                          Name        => Prog_Id,
+                          Binders     => Func_Why_Binders,
+                          Labels      => Name_Id_Sets.Empty_Set,
+                          Return_Type => EW_Unit_Type,
+                          Effects     => Effects,
+                          Pre         => Dispatch_Pre,
+                          Post        => Dispatch_Post))));
          end if;
       end if;
 
@@ -2823,24 +2827,19 @@ package body Gnat2Why.Subprograms is
                   Return_Type => Why_Type));
 
             if Is_Dispatching_Operation (E) then
-               declare
-                  Dispatch_Logic_Id : constant W_Identifier_Id :=
-                    To_Why_Id
-                      (E, Domain => EW_Term, Local => True, Dispatch => True);
-               begin
-                  Emit
-                    (File.Cur_Theory,
-                     New_Function_Decl
-                       (Domain      => EW_Term,
-                        Name        => Dispatch_Logic_Id,
-                        Binders     => Logic_Why_Binders,
-                        Labels      => Name_Id_Sets.Empty_Set,
-                        Return_Type => Why_Type));
-               end;
+               Emit
+                 (File.Cur_Theory,
+                  New_Namespace_Declaration
+                    (Name    => NID (To_String (WNE_Dispatch_Module)),
+                     Declarations =>
+                       (1 => New_Function_Decl
+                            (Domain      => EW_Term,
+                             Name        => Logic_Id,
+                             Binders     => Logic_Why_Binders,
+                             Labels      => Name_Id_Sets.Empty_Set,
+                             Return_Type => Why_Type))));
             end if;
          end;
-
-         --  Why record here symbol, already in Register_Decls???
 
          Ada_Ent_To_Why.Insert
            (Symbol_Table, E,
@@ -2848,27 +2847,9 @@ package body Gnat2Why.Subprograms is
               For_Logic =>
                 Get_Subp_Symbol (Domain => EW_Term, Dispatch => False),
               For_Prog  =>
-                Get_Subp_Symbol (Domain => EW_Prog, Dispatch => False),
-              For_Logic_Dispatch =>
-                Get_Subp_Symbol (Domain => EW_Term, Dispatch => True),
-              For_Prog_Dispatch =>
-                Get_Subp_Symbol (Domain => EW_Prog, Dispatch => True)));
+                Get_Subp_Symbol (Domain => EW_Prog, Dispatch => False)));
       else
-         if Is_Dispatching_Operation (E) then
-            Ada_Ent_To_Why.Insert
-              (Symbol_Table, E,
-               Item_Type'(Func,
-                 For_Logic =>
-                   Get_Subp_Symbol (Domain => EW_Term, Dispatch => False),
-                 For_Prog  =>
-                   Get_Subp_Symbol (Domain => EW_Prog, Dispatch => False),
-                 For_Logic_Dispatch =>
-                   Get_Subp_Symbol (Domain => EW_Term, Dispatch => True),
-                 For_Prog_Dispatch =>
-                   Get_Subp_Symbol (Domain => EW_Prog, Dispatch => True)));
-         else
-            Insert_Entity (E, To_Why_Id (E, Typ => Why_Type));
-         end if;
+         Insert_Entity (E, To_Why_Id (E, Typ => Why_Type));
       end if;
 
       Close_Theory (File,

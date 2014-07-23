@@ -289,6 +289,7 @@ package body Xtree_Sinfo is
       ------------------
 
       New_Field (W_Identifier, "Symbol", "Name_Id");
+      New_Field (W_Identifier, "Namespace", "Name_Id", "No_Name");
       New_Field (W_Identifier, "Module", "W_Module", Id_Lone);
       New_Field (W_Identifier, "Typ", "W_Type", Id_Lone);
 
@@ -615,6 +616,16 @@ package body Xtree_Sinfo is
       New_Field (W_Exception_Declaration,
                  "Arg", "W_Type", Id_Lone);
       Set_Domain (W_Exception_Declaration, EW_Prog);
+
+      -----------------------------
+      -- W_Namespace_Declaration --
+      -----------------------------
+
+      New_Field (W_Namespace_Declaration,
+                 "Declarations", "W_Declaration", Id_Set);
+      New_Field (W_Namespace_Declaration,
+                 "Name", "Name_Id");
+      Set_Domain (W_Namespace_Declaration, EW_Prog);
 
       ---------------------------
       -- W_Include_Declaration --

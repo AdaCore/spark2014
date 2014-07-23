@@ -1290,12 +1290,7 @@ package body Gnat2Why.External_Axioms is
                        (Symbol_Table, E,
                         Item_Type'(Func,
                           For_Logic => Get_Subp_Symbol (E, Logic_Name),
-                          For_Prog  => Get_Subp_Symbol (E, Name),
-                          For_Logic_Dispatch => Get_Subp_Symbol
-                            (E, To_String (WNE_Dispatch_Subp_Prefix)
-                             & Logic_Name),
-                          For_Prog_Dispatch => Get_Subp_Symbol
-                            (E, To_String (WNE_Dispatch_Subp_Prefix) & Name)));
+                          For_Prog  => Get_Subp_Symbol (E, Name)));
                   elsif Ekind (E) = E_Procedure then
                      Insert_Entity
                        (E,

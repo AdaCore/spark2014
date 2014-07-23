@@ -97,11 +97,12 @@ package Why.Gen.Names is
        return W_Identifier_Id;
    --  Create a new term identifier for Name and return the result
 
-   function New_Identifier (Ada_Node : Node_Id := Empty;
-                            Name     : String;
-                            Module   : W_Module_Id;
-                            Typ      : W_Type_Id := Why.Types.Why_Empty)
-       return W_Identifier_Id;
+   function New_Identifier
+     (Ada_Node  : Node_Id := Empty;
+      Name      : String;
+      Namespace : Name_Id := No_Name;
+      Module    : W_Module_Id;
+      Typ       : W_Type_Id := Why.Types.Why_Empty) return W_Identifier_Id;
 
    function New_Identifier
      (Ada_Node : Node_Id := Empty;
@@ -111,11 +112,12 @@ package Why.Gen.Names is
       return W_Identifier_Id;
 
    function New_Identifier
-     (Ada_Node : Node_Id := Empty;
-      Domain   : EW_Domain;
-      Name     : String;
-      Module   : W_Module_Id;
-      Typ      : W_Type_Id := Why.Types.Why_Empty)
+     (Ada_Node  : Node_Id := Empty;
+      Domain    : EW_Domain;
+      Name      : String;
+      Namespace : Name_Id := No_Name;
+      Module    : W_Module_Id;
+      Typ       : W_Type_Id := Why.Types.Why_Empty)
       return W_Identifier_Id;
 
    function New_Identifier (Name : W_Name_Id) return W_Identifier_Id;
@@ -242,9 +244,9 @@ package Why.Gen.Names is
       --  component from the extension field of a value of the root type.
       WNE_Extract_Prefix,
 
-      --  Prefix for name of functions which correspond to the dispatching
-      --  version of a primitive operation of a tagged type.
-      WNE_Dispatch_Subp_Prefix,  --  dispatch__
+      --  Name of module containing the functions which correspond to the
+      --  dispatching version of a primitive operation of a tagged type.
+      WNE_Dispatch_Module,  --  Dispatch
 
       --  Suffix for name of logic functions
       WNE_Logic_Fun_Suffix,  --  __logic

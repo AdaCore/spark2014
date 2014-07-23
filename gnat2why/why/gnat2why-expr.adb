@@ -8846,24 +8846,15 @@ package body Gnat2Why.Expr is
          declare
             E : constant Item_Type := Ada_Ent_To_Why.Element (C);
          begin
-
             --  If E is a function and Domain is Prog, use the program specific
             --  identifier instead.
 
             case E.Kind is
                when Func =>
                   if Domain = EW_Prog then
-                     if Dispatch then
-                        T := +E.For_Prog_Dispatch.B_Name;
-                     else
-                        T := +E.For_Prog.B_Name;
-                     end if;
+                     T := +E.For_Prog.B_Name;
                   else
-                     if Dispatch then
-                        T := +E.For_Logic_Dispatch.B_Name;
-                     else
-                        T := +E.For_Logic.B_Name;
-                     end if;
+                     T := +E.For_Logic.B_Name;
                   end if;
                when Regular =>
                   T := +E.Main.B_Name;
@@ -8918,6 +8909,12 @@ package body Gnat2Why.Expr is
                      end if;
                   end if;
             end case;
+
+            if Dispatch then
+               T := +To_Why_Id (Ent, Domain,
+                                Dispatch => Dispatch,
+                                Typ => Get_Type (T));
+            end if;
          end;
       elsif Ekind (Ent) = E_Enumeration_Literal then
          T := Transform_Enum_Literal (Expr, Ent, Domain);

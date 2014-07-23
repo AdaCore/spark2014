@@ -236,7 +236,7 @@ package Why.Sinfo is
    --  -------------
    --  -- W_Label --
    --  -------------
-   --  Labels      Name_id_Set
+   --  Labels      Name_Id_Set
    --  Def         W_Expr_Id
    --  Typ         W_Type_Id
    --
@@ -247,12 +247,15 @@ package Why.Sinfo is
    --  -- W_Identifier --
    --  ------------------
    --  Symbol      Name_Id
+   --  Namespace   Name_Id
    --  Module      W_Module_Id
    --  Typ         W_Type
    --
    --  This node is used for all places where a name is used in Why. There are
-   --  two fields, one for the module name ("Context") and one for the symbol
-   --  name ("Symbol").
+   --  three fields to denote the precise name:
+   --   - one for the module name ("Module")
+   --   - one for a possible namespace inside the module ("Namespace")
+   --   - one for the symbol name ("Symbol").
    --
    --  --------------
    --  -- W_Tagged --
@@ -729,6 +732,7 @@ package Why.Sinfo is
       W_Goal,
       W_Type_Decl,
       W_Global_Ref_Declaration,
+      W_Namespace_Declaration,
       W_Exception_Declaration,
       W_Include_Declaration,
       W_Clone_Declaration,

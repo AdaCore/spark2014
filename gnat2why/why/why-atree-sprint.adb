@@ -102,6 +102,7 @@ package body Why.Atree.Sprint is
    procedure Print_Literal (Node : W_Literal_Id);
    procedure Print_Loop_Annot (Node : W_Loop_Annot_Id);
    procedure Print_Name (Node : W_Name_Id);
+   procedure Print_Namespace_Declaration (Node : W_Namespace_Declaration_Id);
    procedure Print_Not (Node : W_Not_Id);
    procedure Print_Postcondition (Node : W_Postcondition_Id);
    procedure Print_Raise (Node : W_Raise_Id);
@@ -999,7 +1000,8 @@ package body Why.Atree.Sprint is
    -----------------------
 
    procedure Print_Identifier (Node : W_Identifier_Id) is
-      Module : constant W_Module_Id := Get_Module (Node);
+      Module    : constant W_Module_Id := Get_Module (Node);
+      Namespace : constant Name_Id := Get_Namespace (Node);
    begin
       if Module /= Why_Empty
         and then Get_Name (Module) /= No_Name
@@ -1007,6 +1009,12 @@ package body Why.Atree.Sprint is
          Print_Module_Id (Module);
          P (O, ".");
       end if;
+
+      if Namespace /= No_Name then
+         P (O, Namespace);
+         P (O, ".");
+      end if;
+
       P (O, Get_Symbol (Node));
    end Print_Identifier;
 
@@ -1134,6 +1142,7 @@ package body Why.Atree.Sprint is
          P (O, File);
          P (O, """.");
       end if;
+
       P (O, Capitalize_First (Get_Name_String (Get_Name (Node))));
    end Print_Module_Id;
 
@@ -1152,6 +1161,22 @@ package body Why.Atree.Sprint is
       end if;
       P (O, Get_Symbol (Node));
    end Print_Name;
+
+   ---------------------------------
+   -- Print_Namespace_Declaration --
+   ---------------------------------
+
+   procedure Print_Namespace_Declaration (Node : W_Namespace_Declaration_Id) is
+   begin
+      P (O, "namespace ");
+      P (O, Get_Name (Node));
+      NL (O);
+      Relative_Indent (O, 1);
+      Print_List (+Get_Declarations (Node), "", Newline => True);
+      Relative_Indent (O, -1);
+      NL (O);
+      PL (O, "end");
+   end Print_Namespace_Declaration;
 
    ----------------
    -- Print_Node --
@@ -1315,6 +1340,9 @@ package body Why.Atree.Sprint is
 
          when W_Global_Ref_Declaration =>
             Print_Global_Ref_Declaration (+N);
+
+         when W_Namespace_Declaration =>
+            Print_Namespace_Declaration (+N);
 
          when W_Exception_Declaration =>
             Print_Exception_Declaration (+N);
