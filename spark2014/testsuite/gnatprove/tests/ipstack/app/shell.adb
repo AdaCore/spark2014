@@ -29,20 +29,30 @@ package body Shell is
    function Image (A : AIP.IPaddrs.IPaddr) return String;
    --  Return dotted quad representation of A
 
+   procedure Parse
+     (DQ  : String;
+      A   : out AIP.IPaddrs.IPaddr;
+      Err : out AIP.Err_T);
+   --  Parse dotted quad into address
+
+   function Starts_With (S, Prefix : String) return Boolean;
+   --  True if S starts with Prefix
+
    -----------
    -- Image --
    -----------
 
    function Image (A : AIP.IPaddrs.IPaddr) return String is
-      use type AIP.IPaddrs.IPaddr;
-      AA     : AIP.IPaddrs.IPaddr := A;
-      B      : AIP.IPaddrs.IPaddr;
+      use AIP, AIP.IPaddrs;
+
+      AA     : IPaddr := A;
+      B      : M8_T;
       Result : String (1 .. 15);
       Index  : Integer := Result'Last;
 
    begin
       for J in 1 .. 4 loop
-         B := AA and 16#ff#;
+         B := M8_T (AA and 16#ff#);
          for K in 0 .. 2 loop
             Result (Index) := Character'Val (Character'Pos ('0') + B mod 10);
             Index := Index - 1;
@@ -58,6 +68,58 @@ package body Shell is
       end loop;
       return Result (Index + 1 .. Result'Last);
    end Image;
+
+   -----------
+   -- Parse --
+   -----------
+
+   procedure Parse
+     (DQ  : String;
+      A   : out AIP.IPaddrs.IPaddr;
+      Err : out AIP.Err_T)
+   is
+      use AIP, AIP.IPaddrs;
+
+      D : Boolean;
+      --  True if a digit has been seen for the current byte
+
+      B : M8_T;
+      --  Current byte value being constructed
+
+      Dots : U8_T;
+      --  How many dots found
+
+   begin
+      A := 0;
+      Err := ERR_VAL;
+      D := False;
+      B := 0;
+      Dots := 0;
+
+      for J in DQ'Range loop
+         case DQ (J) is
+            when '0' .. '9' =>
+               D := True;
+               B := B * 10 + Character'Pos (DQ (J)) - Character'Pos ('0');
+            when '.' =>
+               if not D or else Dots = 3 then
+                  return;
+               end if;
+               Dots := Dots + 1;
+               A := A * 256 + IPaddr (B);
+               D := False;
+               B := 0;
+            when others =>
+               return;
+         end case;
+      end loop;
+
+      if not D or else Dots /= 3 then
+         return;
+      end if;
+      A := A * 256 + IPaddr (B);
+      Err := NOERR;
+   end Parse;
 
    ----------
    -- Poll --
@@ -100,10 +162,80 @@ package body Shell is
                State := Completed;
                Cmd_Val := 0;
 
+            elsif Starts_With (Line, "if config ") then
+               declare
+                  use AIP, AIP.IPaddrs, AIP.Nif;
+
+                  First, Last, Word : Integer;
+                  I : Netif_Id;
+                  A, M : IPaddr;
+                  E : Err_T;
+               begin
+                  Word := 0;
+                  First := 11;
+                  E := NOERR;
+
+                  while First <= Line'Last loop
+                     Last := First;
+                     while Last <= Line'Last and then Line (Last) /= ' ' loop
+                        Last := Last + 1;
+                     end loop;
+                     Last := Last - 1;
+
+                     case Word is
+                        when 0 =>
+                           I := AIP.Nif.Netif_Id'Value (Line (First .. Last));
+                           E := NOERR;
+                        when 1 =>
+                           Parse (Line (First .. Last), A, E);
+                        when 2 =>
+                           if Last = Line'Last then
+                              Parse (Line (First .. Last), M, E);
+                           else
+                              E := ERR_VAL;
+                           end if;
+                        when others =>
+                           E := ERR_VAL;
+                     end case;
+                     exit when E /= NOERR;
+
+                     First := Last + 2;
+                     Word := Word + 1;
+                  end loop;
+
+                  if E = NOERR then
+                     AIP.Nif.If_Config
+                       (Nid       => I,
+                        IP        => A,
+                        Mask      => M,
+                        Broadcast => (A and M) or (not M),
+                        Remote    => 0,
+                        Err       => E);
+                  end if;
+                  Cmd_Val := Integer (E);
+                  State := Completed;
+               end;
+
             elsif Line = "arp clear" then
                AIP.ARP.ARP_Clear;
                State := Completed;
                Cmd_Val := 0;
+
+            elsif Starts_With (Line, "parse ") then
+               declare
+                  use AIP, AIP.IPaddrs;
+
+                  A : IPaddr;
+                  E : Err_T;
+
+               begin
+                  Parse (Line (7 .. Line'Last), A, E);
+                  if E = NOERR then
+                     AIP.IO.Put_Line ("ADDR = " & Image (A));
+                  end if;
+                  Cmd_Val := Integer (E);
+                  State := Completed;
+               end;
 
             elsif Line = "exit" then
                raise Program_Error with "user requested exit";
@@ -116,5 +248,16 @@ package body Shell is
          end;
       end if;
    end Poll;
+
+   -----------------
+   -- Starts_With --
+   -----------------
+
+   function Starts_With (S, Prefix : String) return Boolean is
+   begin
+      return S'Length >= Prefix'Length
+               and then
+             S (S'First .. S'First + Prefix'Length - 1) = Prefix;
+   end Starts_With;
 
 end Shell;
