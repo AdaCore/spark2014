@@ -192,32 +192,44 @@ with eval_name_x: symboltable_x -> stack -> name_x -> Return value -> Prop :=
     | Eval_E_Identifier_X: forall x s v st ast_num, 
         fetchG x s = Some v ->
         eval_name_x st s (E_Identifier_X ast_num x nil) (Normal v)
-    | Eval_E_Indexed_Component_No_Range_Check_RTE_X: forall e st s msg ast_num x_ast_num x, 
+    | Eval_E_Indexed_Component_RTE_X: forall e st s msg ast_num x_ast_num x, 
         ~(List.In Do_Range_Check (exp_check_flags e)) ->
         eval_expr_x st s e (Run_Time_Error msg) ->
         eval_name_x st s (E_Indexed_Component_X ast_num x_ast_num x e nil) (Run_Time_Error msg)
-    | Eval_E_Indexed_Component_No_Range_Check_X: forall e st s i x a v ast_num x_ast_num,
+    | Eval_E_Indexed_Component_X: forall e st s i x a v ast_num x_ast_num,
         ~(List.In Do_Range_Check (exp_check_flags e)) ->
         eval_expr_x st s e (Normal (BasicV (Int i))) ->
         fetchG x s = Some (AggregateV (ArrayV a)) ->
         array_select a i = Some v ->
         eval_name_x st s (E_Indexed_Component_X ast_num x_ast_num x e nil) (Normal (BasicV v))
-    | Eval_E_Indexed_Component_RTE_E_X: forall e cks' st s msg ast_num x_ast_num x,
+    | Eval_E_Indexed_Component_E_RTE_X: forall e cks' st s msg ast_num x_ast_num x,
         List.In Do_Range_Check (exp_check_flags e) ->
         exclude_check_flag Do_Range_Check (exp_check_flags e) = cks' ->
         eval_expr_x st s (update_exp_check_flags e cks') (Run_Time_Error msg) ->
         eval_name_x st s (E_Indexed_Component_X ast_num x_ast_num x e nil) (Run_Time_Error msg)
-    | Eval_E_Indexed_Component_SubtypeMark_RTE_X: forall e cks' st s i x_ast_num tn a_ast_num tm typ tn' t l u ast_num x, 
+    | Eval_E_Indexed_Component_Range_RTE_X: forall e cks' st s i x_ast_num t l u ast_num x, 
         List.In Do_Range_Check (exp_check_flags e) ->
         exclude_check_flag Do_Range_Check (exp_check_flags e) = cks' ->
         eval_expr_x st s (update_exp_check_flags e cks') (Normal (BasicV (Int i))) ->
-        fetch_exp_type_x x_ast_num st = Some (Array_Type tn) ->
-        fetch_type_x tn st = Some (Array_Type_Declaration_SubtypeMark_X a_ast_num tn tm typ) ->
-        subtype_num tm = Some tn' ->
-        fetch_type_x tn' st = Some t ->
-        subtype_range_x t = Some (Range_X l u) ->
-        do_flagged_range_check Do_Range_Check i l u (Exception RTE_Range) ->
+        fetch_exp_type_x x_ast_num st = Some (Array_Type t) ->
+        extract_array_index_range_x st t (Range_X l u) ->
+        do_range_check i l u (Exception RTE_Range) ->
         eval_name_x st s (E_Indexed_Component_X ast_num x_ast_num x e nil) (Run_Time_Error RTE_Range)
+    | Eval_E_Indexed_Component_Range_X: forall e cks' st s i x_ast_num t l u x a v ast_num, 
+        List.In Do_Range_Check (exp_check_flags e) ->
+        exclude_check_flag Do_Range_Check (exp_check_flags e) = cks' ->
+        eval_expr_x st s (update_exp_check_flags e cks') (Normal (BasicV (Int i))) ->
+        fetch_exp_type_x x_ast_num st = Some (Array_Type t) ->
+        extract_array_index_range_x st t (Range_X l u) ->
+        do_range_check i l u Success ->
+        fetchG x s = Some (AggregateV (ArrayV a)) ->
+        array_select a i = Some v ->
+        eval_name_x st s (E_Indexed_Component_X ast_num x_ast_num x e nil) (Normal (BasicV v))
+    | Eval_E_Selected_Component_X: forall x s r f v st ast_num x_ast_num,
+        fetchG x s = Some (AggregateV (RecordV r)) ->
+        record_select r f = Some v ->
+        eval_name_x st s (E_Selected_Component_X ast_num x_ast_num x f nil) (Normal (BasicV v)).
+(*
     | Eval_E_Indexed_Component_Range_RTE_X: forall e cks' st s i x_ast_num tn a_ast_num t l u ast_num x, 
         List.In Do_Range_Check (exp_check_flags e) ->
         exclude_check_flag Do_Range_Check (exp_check_flags e) = cks' ->
@@ -226,19 +238,6 @@ with eval_name_x: symboltable_x -> stack -> name_x -> Return value -> Prop :=
         fetch_type_x tn st = Some (Array_Type_Declaration_Range_X a_ast_num tn (Range_X l u) t) ->
         do_flagged_range_check Do_Range_Check i l u (Exception RTE_Range) ->
         eval_name_x st s (E_Indexed_Component_X ast_num x_ast_num x e nil) (Run_Time_Error RTE_Range)
-    | Eval_E_Indexed_Component_SubtypeMark_X: forall e cks' st s i x_ast_num tn a_ast_num tm typ tn' t l u x a v ast_num, 
-        List.In Do_Range_Check (exp_check_flags e) ->
-        exclude_check_flag Do_Range_Check (exp_check_flags e) = cks' ->
-        eval_expr_x st s (update_exp_check_flags e cks') (Normal (BasicV (Int i))) ->
-        fetch_exp_type_x x_ast_num st = Some (Array_Type tn) ->
-        fetch_type_x tn st = Some (Array_Type_Declaration_SubtypeMark_X a_ast_num tn tm typ) ->
-        subtype_num tm = Some tn' ->
-        fetch_type_x tn' st = Some t ->
-        subtype_range_x t = Some (Range_X l u) ->
-        do_flagged_range_check Do_Range_Check i l u Success ->
-        fetchG x s = Some (AggregateV (ArrayV a)) ->
-        array_select a i = Some v ->
-        eval_name_x st s (E_Indexed_Component_X ast_num x_ast_num x e nil) (Normal (BasicV v))
     | Eval_E_Indexed_Component_Range_X: forall e cks' st s i x_ast_num tn a_ast_num t l u x a v ast_num, 
         List.In Do_Range_Check (exp_check_flags e) ->
         exclude_check_flag Do_Range_Check (exp_check_flags e) = cks' ->
@@ -249,50 +248,41 @@ with eval_name_x: symboltable_x -> stack -> name_x -> Return value -> Prop :=
         fetchG x s = Some (AggregateV (ArrayV a)) ->
         array_select a i = Some v ->        
         eval_name_x st s (E_Indexed_Component_X ast_num x_ast_num x e nil) (Normal (BasicV v))
-    | Eval_E_Selected_Component_X: forall x s r f v st ast_num x_ast_num,
-        fetchG x s = Some (AggregateV (RecordV r)) ->
-        record_select r f = Some v ->
-        eval_name_x st s (E_Selected_Component_X ast_num x_ast_num x f nil) (Normal (BasicV v)).
+*)
 
 (** ** Statement Evaluation Semantics *)
 
 (** *** Copy Out *)
 (** Stack manipulation for procedure calls and return *)
 
-Inductive copy_out_x: symboltable -> stack -> frame -> list parameter_specification_x -> list expression_x -> Return stack -> Prop :=
+Inductive copy_out_x: symboltable_x -> stack -> frame -> list parameter_specification_x -> list expression_x -> Return stack -> Prop :=
     | Copy_Out_Nil_X : forall st s f, 
         copy_out_x st s f nil nil (Normal s)
     | Copy_Out_Cons_Out_X: forall st s s' s'' v f param lparam lexp x ast_num x_ast_num,
-        param.(parameter_mode_x) = Out ->
+        param.(parameter_mode_x) = Out \/ param.(parameter_mode_x) = In_Out ->
         fetch param.(parameter_name_x) f = Some v ->
         updateG s x v = Some s' ->
         copy_out_x st s' f lparam lexp s'' ->
         copy_out_x st s f (param :: lparam) ((E_Name_X ast_num (E_Identifier_X x_ast_num x nil) nil) :: lexp) s''
-    | Copy_Out_Cons_Out_Range_RTE_X: forall st t tn td l u f v s param lparam lexp x ast_num x_ast_num,
-        param.(parameter_mode_x) = Out ->
-        fetch_exp_type ast_num st = Some t ->
-        is_range_constrainted_type t = true ->
-        subtype_num t = Some tn ->
-        fetch_type tn st = Some td ->
-        subtype_range td = Some (Range l u) ->
+    | Copy_Out_Cons_Out_Range_RTE_X: forall st t l u f v s param lparam lexp x ast_num x_ast_num,
+        param.(parameter_mode_x) = Out \/ param.(parameter_mode_x) = In_Out ->
         fetch param.(parameter_name_x) f = Some (BasicV (Int v)) ->
+        fetch_exp_type_x ast_num st = Some t ->
+        extract_subtype_range_x st t (Range_X l u) ->
         do_range_check v l u (Exception RTE_Range) ->
         copy_out_x st s f (param :: lparam) 
-                          ((E_Name_X ast_num (E_Identifier_X x_ast_num x nil) (Do_Range_Check :: nil)) :: lexp) 
+                          ((E_Name_X ast_num (E_Identifier_X x_ast_num x (Do_Range_Check :: nil)) nil) :: lexp) 
                           (Run_Time_Error RTE_Range)
-    | Copy_Out_Cons_Out_Range_X: forall st t tn td l u f v s s' s'' param lparam lexp x ast_num x_ast_num,
-        param.(parameter_mode_x) = Out ->
-        fetch_exp_type ast_num st = Some t ->
-        is_range_constrainted_type t = true ->
-        subtype_num t = Some tn ->
-        fetch_type tn st = Some td ->
-        subtype_range td = Some (Range l u) ->
+    | Copy_Out_Cons_Out_Range_X: forall st t l u f v s s' s'' param lparam lexp x ast_num x_ast_num,
+        param.(parameter_mode_x) = Out \/ param.(parameter_mode_x) = In_Out ->
         fetch param.(parameter_name_x) f = Some (BasicV (Int v)) ->
+        fetch_exp_type_x ast_num st = Some t ->
+        extract_subtype_range_x st t (Range_X l u) ->
         do_range_check v l u Success ->
         updateG s x (BasicV (Int v)) = Some s' ->
         copy_out_x st s' f lparam lexp s'' ->
         copy_out_x st s f (param :: lparam) 
-                          ((E_Name_X ast_num (E_Identifier_X x_ast_num x nil) (Do_Range_Check :: nil)) :: lexp) 
+                          ((E_Name_X ast_num (E_Identifier_X x_ast_num x (Do_Range_Check :: nil)) nil) :: lexp) 
                           s''
     | Copy_Out_Cons_In_X: forall st s s' f param lparam lexp e,
         param.(parameter_mode_x) = In ->
@@ -300,31 +290,51 @@ Inductive copy_out_x: symboltable -> stack -> frame -> list parameter_specificat
         copy_out_x st s f (param :: lparam) (e :: lexp) s'.
 
 (** *** Copy In *)
-Inductive copy_in_x: stack -> frame -> list parameter_specification_x -> list expression_x -> Return frame -> Prop :=
-    | Copy_In_Nil_X : forall s f, 
-        copy_in_x s f nil nil (Normal f)
-    | Copy_In_Cons_Out_X: forall param s f lparam le f' ast_num x_ast_num x,
+Inductive copy_in_x: symboltable_x -> stack -> frame -> list parameter_specification_x -> list expression_x -> Return frame -> Prop :=
+    | Copy_In_Nil_X : forall st s f, 
+        copy_in_x st s f nil nil (Normal f)
+    | Copy_In_Cons_Out_X: forall param f f' st s lparam le f'' ast_num x_ast_num x,
         param.(parameter_mode_x) = Out ->
-        copy_in_x s f lparam le (Normal f') ->
-        copy_in_x s f (param::lparam) ((E_Name_X ast_num (E_Identifier_X x_ast_num x nil) nil) :: le) (Normal (push f' param.(parameter_name_x) Undefined))
-    | Copy_In_Cons_Out_E_X: forall param s f lparam le msg ast_num x_ast_num x,
-        param.(parameter_mode_x) = Out ->
-        copy_in_x s f lparam le (Run_Time_Error msg) ->
-        copy_in_x s f (param::lparam) ((E_Name_X ast_num (E_Identifier_X x_ast_num x nil) nil)::le) (Run_Time_Error msg)
-    | Copy_In_Cons_In_X: forall param s e v f lparam le f',
-        param.(parameter_mode_x) = In ->
-        eval_expr_x s e (Normal v) ->
-        copy_in_x s f lparam le (Normal f') ->
-        copy_in_x s f (param::lparam) (e::le) (Normal (push f' param.(parameter_name_x) v))
-    | Copy_In_Cons_In_E1_X: forall param s e msg f lparam le,
-        param.(parameter_mode_x) = In ->
-        eval_expr_x s e (Run_Time_Error msg) ->
-        copy_in_x s f (param::lparam) (e::le) (Run_Time_Error msg)
-    | Copy_In_Cons_In_E2_X: forall param s e v f lparam le msg,
-        param.(parameter_mode_x) = In ->
-        eval_expr_x s e (Normal v) ->
-        copy_in_x s f lparam le (Run_Time_Error msg) ->
-        copy_in_x s f (param::lparam) (e::le) (Run_Time_Error msg).
+        push f param.(parameter_name_x) Undefined = f' ->
+        copy_in_x st s f' lparam le f'' ->
+        copy_in_x st s f (param::lparam) ((E_Name_X ast_num (E_Identifier_X x_ast_num x nil) nil) :: le) f''
+    | Copy_In_Cons_In_RTE_X: forall param e st s msg f lparam le,
+        param.(parameter_mode_x) = In \/ param.(parameter_mode_x) = In_Out -> 
+        ~(List.In Do_Range_Check (exp_check_flags e)) ->
+        eval_expr_x st s e (Run_Time_Error msg) ->
+        copy_in_x st s f (param :: lparam) (e :: le) (Run_Time_Error msg)
+    | Copy_In_Cons_In_X: forall param e st s v f f' lparam le f'',
+        param.(parameter_mode_x) = In \/ param.(parameter_mode_x) = In_Out -> 
+        ~(List.In Do_Range_Check (exp_check_flags e)) ->
+        eval_expr_x st s e (Normal v) ->
+        push f param.(parameter_name_x) v = f' ->
+        copy_in_x st s f' lparam le f'' ->
+        copy_in_x st s f (param :: lparam) (e :: le) f''
+    | Copy_In_Cons_In_E_RTE_X: forall param e cks' st s msg f lparam le,
+        param.(parameter_mode_x) = In \/ param.(parameter_mode_x) = In_Out -> 
+        List.In Do_Range_Check (exp_check_flags e) ->
+        exclude_check_flag Do_Range_Check (exp_check_flags e) = cks' ->
+        eval_expr_x st s (update_exp_check_flags e cks') (Run_Time_Error msg) ->
+        copy_in_x st s f (param :: lparam) (e :: le) (Run_Time_Error msg)
+    | Copy_In_Cons_In_Range_RTE_X: forall param e cks' st s v l u f lparam le,
+        param.(parameter_mode_x) = In \/ param.(parameter_mode_x) = In_Out -> 
+        List.In Do_Range_Check (exp_check_flags e) ->
+        exclude_check_flag Do_Range_Check (exp_check_flags e) = cks' ->
+        eval_expr_x st s (update_exp_check_flags e cks') (Normal (BasicV (Int v))) ->
+        extract_subtype_range_x st (param.(parameter_subtype_mark_x)) (Range_X l u) ->
+        do_range_check v l u (Exception RTE_Range) ->
+        copy_in_x st s f (param :: lparam) (e :: le) (Run_Time_Error RTE_Range)
+    | Copy_In_Cons_In_Range_X: forall param e cks' st s v l u f f' lparam le f'',
+        param.(parameter_mode_x) = In \/ param.(parameter_mode_x) = In_Out -> 
+        List.In Do_Range_Check (exp_check_flags e) ->
+        exclude_check_flag Do_Range_Check (exp_check_flags e) = cks' ->
+        eval_expr_x st s (update_exp_check_flags e cks') (Normal (BasicV (Int v))) ->
+        extract_subtype_range_x st (param.(parameter_subtype_mark_x)) (Range_X l u) ->
+        do_range_check v l u Success ->
+        push f param.(parameter_name_x) (BasicV (Int v)) = f' ->
+        copy_in_x st s f' lparam le f'' ->        
+        copy_in_x st s f (param :: lparam) (e :: le) f''.
+
 
 (** Inductive semantic of declarations. [eval_decl s nil decl
     rsto] means that rsto is the frame to be pushed on s after
@@ -333,36 +343,55 @@ Inductive copy_in_x: stack -> frame -> list parameter_specification_x -> list ex
  *)
 
 (** ** Declaration Evaluation Semantics *)
-Inductive eval_decl_x: stack -> frame -> declaration_x -> Return frame -> Prop :=
-    | Eval_Decl_Null_X: forall s f,
-        eval_decl_x s f D_Null_Declaration_X (Normal f)
-    | Eval_Decl_Type_X: forall s f ast_num t,
-        eval_decl_x s f (D_Type_Declaration_X ast_num t) (Normal f)
-    | Eval_Decl_E_X: forall d e f s msg ast_num,
-        d.(initialization_expression_x) = Some e ->
-        eval_expr_x (f :: s) e (Run_Time_Error msg) ->
-        eval_decl_x s f (D_Object_Declaration_X ast_num d) (Run_Time_Error msg)
-    | Eval_Decl_X: forall d e f s v ast_num,
-        d.(initialization_expression_x) = Some e ->
-        eval_expr_x (f :: s) e (Normal v) ->
-        eval_decl_x s f (D_Object_Declaration_X ast_num d) (Normal (push f d.(object_name_x) v))
-    | Eval_UndefDecl_X: forall d s f ast_num,
+Inductive eval_decl_x: symboltable_x -> stack -> frame -> declaration_x -> Return frame -> Prop :=
+    | Eval_Decl_Null_X: forall st s f,
+        eval_decl_x st s f D_Null_Declaration_X (Normal f)
+    | Eval_Decl_Type_X: forall st s f ast_num t,
+        eval_decl_x st s f (D_Type_Declaration_X ast_num t) (Normal f)
+    | Eval_Decl_Var_None_X: forall d st s f ast_num,
         d.(initialization_expression_x) = None ->
-        eval_decl_x s f (D_Object_Declaration_X ast_num d) (Normal (push f d.(object_name_x) Undefined))
-    | Eval_Decl_Proc_X: forall s f ast_num p,
-        eval_decl_x s f (D_Procedure_Body_X ast_num p) (Normal f)
-    | Eval_Decl_Seq_E_X: forall s f d1 msg ast_num d2,
-        eval_decl_x s f d1 (Run_Time_Error msg) ->
-        eval_decl_x s f (D_Seq_Declaration_X ast_num d1 d2) (Run_Time_Error msg)
-    | Eval_Decl_Seq_X: forall s f d1 f' d2 f'' ast_num,
-        eval_decl_x s f d1 (Normal f') ->
-        eval_decl_x s f d2 f'' ->
-        eval_decl_x s f (D_Seq_Declaration_X ast_num d1 d2) f''.
-(*  | Eval_Decl_Proc_X: forall s sto ast_num p,
-        eval_decl_x s sto (D_Procedure_Declaration_X ast_num p) (Normal ((procedure_name_x p,Procedure p)::sto))
-    | Eval_Decl_Type_X: forall s sto ast_num t,
-        eval_decl_x s sto (D_Type_Declaration_X ast_num t) (Normal ((type_name_x t, TypeDef t) :: sto))
-*)
+        eval_decl_x st s f (D_Object_Declaration_X ast_num d) (Normal (push f d.(object_name_x) Undefined))
+    | Eval_Decl_Var_RTE_X: forall d e st f s msg ast_num,
+        d.(initialization_expression_x) = Some e ->
+        ~(List.In Do_Range_Check (exp_check_flags e)) ->
+        eval_expr_x st (f :: s) e (Run_Time_Error msg) ->
+        eval_decl_x st s f (D_Object_Declaration_X ast_num d) (Run_Time_Error msg)
+    | Eval_Decl_Var_X: forall d e st f s v ast_num,
+        d.(initialization_expression_x) = Some e ->
+        ~(List.In Do_Range_Check (exp_check_flags e)) ->
+        eval_expr_x st (f :: s) e (Normal v) ->
+        eval_decl_x st s f (D_Object_Declaration_X ast_num d) (Normal (push f d.(object_name_x) v))
+    | Eval_Decl_Var_E_RTE_X: forall d e cks' st f s msg ast_num,
+        d.(initialization_expression_x) = Some e ->
+        List.In Do_Range_Check (exp_check_flags e) ->
+        exclude_check_flag Do_Range_Check (exp_check_flags e) = cks' ->
+        eval_expr_x st (f :: s) (update_exp_check_flags e cks') (Run_Time_Error msg) ->
+        eval_decl_x st s f (D_Object_Declaration_X ast_num d) (Run_Time_Error RTE_Range)
+    | Eval_Decl_Var_Range_RTE_X: forall d e cks' st f s v l u ast_num,
+        d.(initialization_expression_x) = Some e ->
+        List.In Do_Range_Check (exp_check_flags e) ->
+        exclude_check_flag Do_Range_Check (exp_check_flags e) = cks' ->
+        eval_expr_x st (f :: s) (update_exp_check_flags e cks') (Normal (BasicV (Int v))) ->
+        extract_subtype_range_x st (d.(object_nominal_subtype_x)) (Range_X l u) ->
+        do_range_check v l u (Exception RTE_Range) ->        
+        eval_decl_x st s f (D_Object_Declaration_X ast_num d) (Run_Time_Error RTE_Range)
+    | Eval_Decl_Var_Range_X: forall d e cks' st f s v l u ast_num,
+        d.(initialization_expression_x) = Some e ->
+        List.In Do_Range_Check (exp_check_flags e) ->
+        exclude_check_flag Do_Range_Check (exp_check_flags e) = cks' ->
+        eval_expr_x st (f :: s) (update_exp_check_flags e cks') (Normal (BasicV (Int v))) ->
+        extract_subtype_range_x st (d.(object_nominal_subtype_x)) (Range_X l u) ->
+        do_range_check v l u Success ->
+        eval_decl_x st s f (D_Object_Declaration_X ast_num d) (Normal (push f d.(object_name_x) (BasicV (Int v))))
+    | Eval_Decl_Proc_X: forall st s f ast_num p,
+        eval_decl_x st s f (D_Procedure_Body_X ast_num p) (Normal f)
+    | Eval_Decl_Seq_E_X: forall st s f d1 msg ast_num d2,
+        eval_decl_x st s f d1 (Run_Time_Error msg) ->
+        eval_decl_x st s f (D_Seq_Declaration_X ast_num d1 d2) (Run_Time_Error msg)
+    | Eval_Decl_Seq_X: forall st s f d1 f' d2 f'' ast_num,
+        eval_decl_x st s f d1 (Normal f') ->
+        eval_decl_x st s f d2 f'' ->
+        eval_decl_x st s f (D_Seq_Declaration_X ast_num d1 d2) f''.
 
 (** Inductive semantic of statement and declaration
 
@@ -373,69 +402,78 @@ Inductive eval_decl_x: stack -> frame -> declaration_x -> Return frame -> Prop :
 
  *)
 
-Inductive eval_stmt_x: symboltable -> stack -> statement_x -> Return stack -> Prop := 
+Inductive eval_stmt_x: symboltable_x -> stack -> statement_x -> Return stack -> Prop := 
     | Eval_S_Null_X: forall st s,
         eval_stmt_x st s S_Null_X (Normal s)
-    | Eval_S_Assignment_RTE_X: forall s e msg st ast_num x,
-        eval_expr_x s e (Run_Time_Error msg) ->
+    | Eval_S_Assignment_RTE_X: forall e st s msg ast_num x,
+        ~(List.In Do_Range_Check (exp_check_flags e)) ->
+        eval_expr_x st s e (Run_Time_Error msg) ->
         eval_stmt_x st s (S_Assignment_X ast_num x e) (Run_Time_Error msg)
-    | Eval_S_Assignment_X: forall s e v x s1 st ast_num,
-        eval_expr_x s e (Normal v) ->
-        storeUpdate_x s x v s1 ->
+    | Eval_S_Assignment_X: forall e st s v x s1 ast_num,
+        ~(List.In Do_Range_Check (exp_check_flags e)) ->
+        eval_expr_x st s e (Normal v) ->
+        storeUpdate_x st s x v s1 ->
         eval_stmt_x st s (S_Assignment_X ast_num x e) s1
-    | Eval_S_If_RTE_X: forall s b msg st ast_num c1 c2,
-        eval_expr_x s b (Run_Time_Error msg) ->
+
+
+
+
+
+
+
+    | Eval_S_If_RTE_X: forall st s b msg ast_num c1 c2,
+        eval_expr_x st s b (Run_Time_Error msg) ->
         eval_stmt_x st s (S_If_X ast_num b c1 c2) (Run_Time_Error msg)
-    | Eval_S_If_True_X: forall s b st c1 s1 ast_num c2,
-        eval_expr_x s b (Normal (BasicV (Bool true))) ->
+    | Eval_S_If_True_X: forall st s b c1 s1 ast_num c2,
+        eval_expr_x st s b (Normal (BasicV (Bool true))) ->
         eval_stmt_x st s c1 s1 ->
         eval_stmt_x st s (S_If_X ast_num b c1 c2) s1
-    | Eval_S_If_False_X: forall s b st c2 s1 ast_num c1,
-        eval_expr_x s b (Normal (BasicV (Bool false))) ->
+    | Eval_S_If_False_X: forall st s b c2 s1 ast_num c1,
+        eval_expr_x st s b (Normal (BasicV (Bool false))) ->
         eval_stmt_x st s c2 s1 ->
         eval_stmt_x st s (S_If_X ast_num b c1 c2) s1
-    | Eval_S_While_Loop_RTE_X: forall s b msg st ast_num c,
-        eval_expr_x s b (Run_Time_Error msg) ->
+    | Eval_S_While_Loop_RTE_X: forall st s b msg ast_num c,
+        eval_expr_x st s b (Run_Time_Error msg) ->
         eval_stmt_x st s (S_While_Loop_X ast_num b c) (Run_Time_Error msg)
-    | Eval_S_While_Loop_True_RTE_X: forall s b st c msg ast_num,
-        eval_expr_x s b (Normal (BasicV (Bool true))) ->
+    | Eval_S_While_Loop_True_RTE_X: forall st s b c msg ast_num,
+        eval_expr_x st s b (Normal (BasicV (Bool true))) ->
         eval_stmt_x st s c (Run_Time_Error msg) ->
         eval_stmt_x st s (S_While_Loop_X ast_num b c) (Run_Time_Error msg)
-    | Eval_S_While_Loop_True_X: forall s b st c s1 ast_num s2,
-        eval_expr_x s b (Normal (BasicV (Bool true))) ->
+    | Eval_S_While_Loop_True_X: forall st s b c s1 ast_num s2,
+        eval_expr_x st s b (Normal (BasicV (Bool true))) ->
         eval_stmt_x st s c (Normal s1) ->
         eval_stmt_x st s1 (S_While_Loop_X ast_num b c) s2 ->
         eval_stmt_x st s (S_While_Loop_X ast_num b c) s2
-    | Eval_S_While_Loop_False_X: forall s b st ast_num c,
-        eval_expr_x s b (Normal (BasicV (Bool false))) ->
+    | Eval_S_While_Loop_False_X: forall st s b ast_num c,
+        eval_expr_x st s b (Normal (BasicV (Bool false))) ->
         eval_stmt_x st s (S_While_Loop_X ast_num b c) (Normal s)
     | Eval_S_Proc_RTE_Args_X: forall p st n pb s args msg ast_num p_ast_num,
-        fetch_proc p st = Some (n, pb) ->
-        copy_in_x s (newFrame n) (procedure_parameter_profile_x pb) args (Run_Time_Error msg) ->
+        fetch_proc_x p st = Some (n, pb) ->
+        copy_in_x st s (newFrame n) (procedure_parameter_profile_x pb) args (Run_Time_Error msg) ->
         eval_stmt_x st s (S_Procedure_Call_X ast_num p_ast_num p args) (Run_Time_Error msg)
     | Eval_S_Proc_RTE_Decl_X: forall p st n pb s args f intact_s s1 msg ast_num p_ast_num,
-        fetch_proc p st = Some (n, pb) ->
-        copy_in_x s (newFrame n) (procedure_parameter_profile_x pb) args (Normal f) ->
+        fetch_proc_x p st = Some (n, pb) ->
+        copy_in_x st s (newFrame n) (procedure_parameter_profile_x pb) args (Normal f) ->
         cut_until s n intact_s s1 -> (* s = intact_s ++ s1 *)
-        eval_decl_x s1 f (procedure_declarative_part_x pb) (Run_Time_Error msg) ->
+        eval_decl_x st s1 f (procedure_declarative_part_x pb) (Run_Time_Error msg) ->
         eval_stmt_x st s (S_Procedure_Call_X ast_num p_ast_num p args) (Run_Time_Error msg)
     | Eval_S_Proc_RTE_Body_X: forall p st n pb s args f intact_s s1 f1 msg ast_num p_ast_num,
-        fetch_proc p st = Some (n, pb) ->
-        copy_in_x s (newFrame n) (procedure_parameter_profile_x pb) args (Normal f) ->
+        fetch_proc_x p st = Some (n, pb) ->
+        copy_in_x st s (newFrame n) (procedure_parameter_profile_x pb) args (Normal f) ->
         cut_until s n intact_s s1 -> (* s = intact_s ++ s1 *)
-        eval_decl_x s1 f (procedure_declarative_part_x pb) (Normal f1) ->
+        eval_decl_x st s1 f (procedure_declarative_part_x pb) (Normal f1) ->
         eval_stmt_x st (f1 :: s1) (procedure_statements_x pb) (Run_Time_Error msg) ->
         eval_stmt_x st s (S_Procedure_Call_X ast_num p_ast_num p args) (Run_Time_Error msg)
     | Eval_S_Proc_X: forall p st n pb s args f intact_s s1 f1 s2 locals_section params_section s3 s4 ast_num p_ast_num,
-        fetch_proc p st = Some (n, pb) ->
-        copy_in_x s (newFrame n) (procedure_parameter_profile_x pb) args (Normal f) ->
+        fetch_proc_x p st = Some (n, pb) ->
+        copy_in_x st s (newFrame n) (procedure_parameter_profile_x pb) args (Normal f) ->
         cut_until s n intact_s s1 -> (* s = intact_s ++ s1 *)
-        eval_decl_x s1 f (procedure_declarative_part_x pb) (Normal f1) ->          
+        eval_decl_x st s1 f (procedure_declarative_part_x pb) (Normal f1) ->          
         eval_stmt_x st (f1 :: s1) (procedure_statements_x pb) (Normal s2) ->
         s2 = (n, locals_section ++ params_section) :: s3 -> (* extract parameters from local frame *)
         length (store_of f) = length params_section ->
-        copy_out_x (intact_s ++ s3) (n, params_section) (procedure_parameter_profile_x pb) args s4 ->
-        eval_stmt_x st s (S_Procedure_Call_X ast_num p_ast_num p args) (Normal s4)
+        copy_out_x st (intact_s ++ s3) (n, params_section) (procedure_parameter_profile_x pb) args s4 ->
+        eval_stmt_x st s (S_Procedure_Call_X ast_num p_ast_num p args) s4
     | Eval_S_Sequence_RTE_X: forall st s c1 msg ast_num c2,
         eval_stmt_x st s c1 (Run_Time_Error msg) ->
         eval_stmt_x st s (S_Sequence_X ast_num c1 c2) (Run_Time_Error msg)
@@ -444,31 +482,70 @@ Inductive eval_stmt_x: symboltable -> stack -> statement_x -> Return stack -> Pr
         eval_stmt_x st s1 c2 s2 ->
         eval_stmt_x st s (S_Sequence_X ast_num c1 c2) s2
 
-with storeUpdate_x: stack -> name_x -> value -> Return stack -> Prop := 
-    | SU_Identifier_X: forall s x v s1 ast_num,
+with storeUpdate_x: symboltable_x -> stack -> name_x -> value -> Return stack -> Prop := 
+    | SU_Identifier_X: forall s x v s1 st ast_num,
         updateG s x v = Some s1 ->
-        storeUpdate_x s (E_Identifier_X ast_num x nil) v (Normal s1)
-    | SU_Indexed_Component_RTE_E_X: forall x s a e msg ast_num x_ast_num checkflags v,
+        storeUpdate_x st s (E_Identifier_X ast_num x nil) v (Normal s1)
+    | SU_Indexed_Component_RTE_X: forall e st s msg ast_num x_ast_num x v,
+        ~(List.In Do_Range_Check (exp_check_flags e)) ->
+        eval_expr_x st s e (Run_Time_Error msg) ->
+        storeUpdate_x st s (E_Indexed_Component_X ast_num x_ast_num x e nil) v (Run_Time_Error msg)
+    | SU_Indexed_Component_Undef_X: forall e st s i x v s1 ast_num x_ast_num,
+        ~(List.In Do_Range_Check (exp_check_flags e)) ->
+        eval_expr_x st s e (Normal (BasicV (Int i))) ->
+        fetchG x s = Some Undefined ->
+        updateG s x (AggregateV (ArrayV ((i, v) :: nil))) = Some s1 -> (* a[i] := v *)
+        storeUpdate_x st s (E_Indexed_Component_X ast_num x_ast_num x e nil) (BasicV v) (Normal s1)
+    | SU_Indexed_Component_X: forall e st s i x a v a1 s1 ast_num x_ast_num,
+        ~(List.In Do_Range_Check (exp_check_flags e)) ->
+        eval_expr_x st s e (Normal (BasicV (Int i))) ->
         fetchG x s = Some (AggregateV (ArrayV a)) ->
-        eval_expr_x s e (Run_Time_Error msg) ->
-        storeUpdate_x s (E_Indexed_Component_X ast_num x_ast_num x e checkflags) v (Run_Time_Error msg)
-    | SU_Indexed_Component_RTE_Index_X: forall x s l u a e i checkflags ast_num x_ast_num v,
-        fetchG x s = Some (AggregateV (ArrayV (l, u, a))) ->
-        eval_expr_x s e (Normal (BasicV (Int i))) ->
-        do_flagged_index_checks checkflags i l u (Exception RTE_Index) ->
-        storeUpdate_x s (E_Indexed_Component_X ast_num x_ast_num x e checkflags) v (Run_Time_Error RTE_Index)
-    | SU_Indexed_Component_X: forall x s l u a e i checkflags v a1 s1 ast_num x_ast_num,
-        fetchG x s = Some (AggregateV (ArrayV (l, u, a))) ->
-        eval_expr_x s e (Normal (BasicV (Int i))) ->
-        do_flagged_index_checks checkflags i l u Success ->
         arrayUpdate a i v = a1 -> (* a[i] := v *)
-        updateG s x (AggregateV (ArrayV (l, u, a1))) = Some s1 ->
-        storeUpdate_x s (E_Indexed_Component_X ast_num x_ast_num x e checkflags) (BasicV v) (Normal s1)
-    | SU_Selected_Component_X: forall r s r1 f v r2 s1 ast_num r_ast_num,
+        updateG s x (AggregateV (ArrayV a1)) = Some s1 ->
+        storeUpdate_x st s (E_Indexed_Component_X ast_num x_ast_num x e nil) (BasicV v) (Normal s1)
+    | SU_Indexed_Component_E_RTE_X: forall e cks' st s msg ast_num x_ast_num x v,
+        List.In Do_Range_Check (exp_check_flags e) ->
+        exclude_check_flag Do_Range_Check (exp_check_flags e) = cks' ->
+        eval_expr_x st s (update_exp_check_flags e cks') (Run_Time_Error msg) ->
+        storeUpdate_x st s (E_Indexed_Component_X ast_num x_ast_num x e nil) v (Run_Time_Error msg)
+    | SU_Indexed_Component_Range_RTE_X: forall e cks' st s i x_ast_num t l u ast_num x v,
+        List.In Do_Range_Check (exp_check_flags e) ->
+        exclude_check_flag Do_Range_Check (exp_check_flags e) = cks' ->
+        eval_expr_x st s (update_exp_check_flags e cks') (Normal (BasicV (Int i))) ->
+        fetch_exp_type_x x_ast_num st = Some (Array_Type t) ->
+        extract_array_index_range_x st t (Range_X l u) ->
+        do_range_check i l u (Exception RTE_Range) ->
+        storeUpdate_x st s (E_Indexed_Component_X ast_num x_ast_num x e nil) v (Run_Time_Error RTE_Range)
+    | SU_Indexed_Component_Range_Undef_X: forall e cks' st s i x_ast_num t l u x v s1 ast_num,
+        List.In Do_Range_Check (exp_check_flags e) ->
+        exclude_check_flag Do_Range_Check (exp_check_flags e) = cks' ->
+        eval_expr_x st s (update_exp_check_flags e cks') (Normal (BasicV (Int i))) ->
+        fetch_exp_type_x x_ast_num st = Some (Array_Type t) ->
+        extract_array_index_range_x st t (Range_X l u) ->
+        do_range_check i l u Success ->
+        fetchG x s = Some Undefined ->
+        updateG s x (AggregateV (ArrayV ((i, v) :: nil))) = Some s1 -> (* a[i] := v *)
+        storeUpdate_x st s (E_Indexed_Component_X ast_num x_ast_num x e nil) (BasicV v) (Normal s1)
+    | SU_Indexed_Component_Range_X: forall e cks' st s i x_ast_num t l u x a v a1 s1 ast_num,
+        List.In Do_Range_Check (exp_check_flags e) ->
+        exclude_check_flag Do_Range_Check (exp_check_flags e) = cks' ->
+        eval_expr_x st s (update_exp_check_flags e cks') (Normal (BasicV (Int i))) ->
+        fetch_exp_type_x x_ast_num st = Some (Array_Type t) ->
+        extract_array_index_range_x st t (Range_X l u) ->
+        do_range_check i l u Success ->
+        fetchG x s = Some (AggregateV (ArrayV a)) ->
+        arrayUpdate a i v = a1 -> (* a[i] := v *)
+        updateG s x (AggregateV (ArrayV a1)) = Some s1 ->
+        storeUpdate_x st s (E_Indexed_Component_X ast_num x_ast_num x e nil) (BasicV v) (Normal s1)
+    | SU_Selected_Component_Undef_X: forall r s f v s1 st ast_num r_ast_num,
+        fetchG r s = Some Undefined ->
+        updateG s r (AggregateV (RecordV ((f, v) :: nil))) = Some s1 -> 
+        storeUpdate_x st s (E_Selected_Component_X ast_num r_ast_num r f nil) (BasicV v) (Normal s1)
+    | SU_Selected_Component_X: forall r s r1 f v r2 s1 st ast_num r_ast_num,
         fetchG r s = Some (AggregateV (RecordV r1)) ->
         recordUpdate r1 f v = r2 -> (* r1.f := v *)
         updateG s r (AggregateV (RecordV r2)) = Some s1 ->
-        storeUpdate_x s (E_Selected_Component_X ast_num r_ast_num r f nil) (BasicV v) (Normal s1).
+        storeUpdate_x st s (E_Selected_Component_X ast_num r_ast_num r f nil) (BasicV v) (Normal s1).
 
 
 

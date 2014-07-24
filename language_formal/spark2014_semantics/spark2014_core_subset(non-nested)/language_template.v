@@ -52,10 +52,8 @@ Inductive type_declaration_xx: Type := (* 3.2.1 *)
         astnum -> typenum (*derived type name*) -> type -> range_xx -> type_declaration_xx (* 3.4 *)
     | Integer_Type_Declaration_XX:
         astnum -> typenum (*integer type name*) -> range_xx -> type_declaration_xx (* 3.5.4 *)
-    | Array_Type_Declaration_SubtypeMark_XX: (* Constrained_Array_Definition, non-nested one-dimentional array *)
+    | Array_Type_Declaration_XX: (* Constrained_Array_Definition, non-nested one-dimentional array *)
         astnum -> typenum (*array name*) -> type (*subtype mark*) -> type (*component type*) -> type_declaration_xx (* 3.6 *)
-    | Array_Type_Declaration_Range_XX: (* Constrained_Array_Definition, non-nested one-dimentional array *)
-        astnum -> typenum (*array name*) -> range_xx -> type (*component type*) -> type_declaration_xx (* 3.6 *)
     | Record_Type_Declaration_XX:
         astnum -> typenum (*record name*) -> list (idnum * type (*field type*)) -> type_declaration_xx (* 3.8 *).
 
@@ -124,8 +122,7 @@ Section AuxiliaryFunctions_XX.
     | Subtype_Declaration_XX _ tn _ _                => tn
     | Derived_Type_Declaration_XX _ tn _ _           => tn
     | Integer_Type_Declaration_XX _ tn _             => tn
-    | Array_Type_Declaration_SubtypeMark_XX _ tn _ _ => tn
-    | Array_Type_Declaration_Range_XX _ tn _ _       => tn
+    | Array_Type_Declaration_XX _ tn _ _ => tn
     | Record_Type_Declaration_XX _ tn _              => tn
     end.
 

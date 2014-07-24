@@ -117,9 +117,7 @@ Module Check_Flags_Comparison_With_Debug_Infor.
         OK
     | Integer_Type_Declaration_X ast_num tn (Range_X l u), Integer_Type_Declaration_X ast_num' tn' (Range_X l' u') =>  
         OK
-    | Array_Type_Declaration_SubtypeMark_X ast_num tn tm t, Array_Type_Declaration_SubtypeMark_X ast_num' tn' tm' t' =>
-        OK
-    | Array_Type_Declaration_Range_X ast_num tn (Range_X l u) t, Array_Type_Declaration_Range_X ast_num' tn' (Range_X l' u') t' =>
+    | Array_Type_Declaration_X ast_num tn tm t, Array_Type_Declaration_X ast_num' tn' tm' t' =>
         OK
     | Record_Type_Declaration_X ast_num tn fs, Record_Type_Declaration_X ast_num' tn' fs' =>
         OK

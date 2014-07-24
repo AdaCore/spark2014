@@ -186,12 +186,9 @@ Inductive compile2_flagged_type_declaration: type_declaration -> type_declaratio
     | C2_Flagged_Integer_Type_Decl: forall ast_num tn l u,
         compile2_flagged_type_declaration (Integer_Type_Declaration   ast_num tn (Range l u))
                                           (Integer_Type_Declaration_X ast_num tn (Range_X l u))
-    | C2_Flagged_Array_Type_Decl_SubtypeMark: forall ast_num tn tm t,
-        compile2_flagged_type_declaration (Array_Type_Declaration_SubtypeMark   ast_num tn tm t)
-                                          (Array_Type_Declaration_SubtypeMark_X ast_num tn tm t)
-    | C2_Flagged_Array_Type_Decl_Range: forall ast_num tn l u t,
-        compile2_flagged_type_declaration (Array_Type_Declaration_Range   ast_num tn (Range l u) t)
-                                          (Array_Type_Declaration_Range_X ast_num tn (Range_X l u) t)
+    | C2_Flagged_Array_Type_Decl: forall ast_num tn tm t,
+        compile2_flagged_type_declaration (Array_Type_Declaration   ast_num tn tm t)
+                                          (Array_Type_Declaration_X ast_num tn tm t)
     | C2_Flagged_Record_Type_Decl: forall ast_num tn fs,
         compile2_flagged_type_declaration (Record_Type_Declaration   ast_num tn fs) 
                                           (Record_Type_Declaration_X ast_num tn fs).
@@ -415,10 +412,8 @@ Function compile2_flagged_type_declaration_f (t: type_declaration): type_declara
       Derived_Type_Declaration_X ast_num tn t (Range_X l u)
   | Integer_Type_Declaration ast_num tn (Range l u) =>
       Integer_Type_Declaration_X ast_num tn (Range_X l u)
-  | Array_Type_Declaration_SubtypeMark ast_num tn tm t => 
-      Array_Type_Declaration_SubtypeMark_X ast_num tn tm t
-  | Array_Type_Declaration_Range ast_num tn (Range l u) t => 
-      Array_Type_Declaration_Range_X ast_num tn (Range_X l u) t
+  | Array_Type_Declaration ast_num tn tm t => 
+      Array_Type_Declaration_X ast_num tn tm t
   | Record_Type_Declaration ast_num tn fs =>
       Record_Type_Declaration_X ast_num tn fs
   end.

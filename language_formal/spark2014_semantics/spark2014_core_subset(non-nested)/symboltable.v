@@ -57,3 +57,34 @@ Definition update_procs_x := Symbol_Table_Module_X.update_procs.
 Definition update_types_x := Symbol_Table_Module_X.update_types.
 Definition update_exps_x := Symbol_Table_Module_X.update_exps.
 
+Inductive extract_subtype_range: symboltable -> type -> range -> Prop :=
+  | Extract_Range: forall t tn st td l u,
+      subtype_num t = Some tn ->
+      fetch_type tn st = Some td ->
+      subtype_range td = Some (Range l u) ->
+      extract_subtype_range st t (Range l u).
+
+(* tm is a subtype_mark *)
+Inductive extract_array_index_range: symboltable -> typenum -> range -> Prop :=
+  | Extract_Index_Range: forall t st a_ast_num tn tm typ tn' td l u, 
+      fetch_type t st = Some (Array_Type_Declaration a_ast_num tn tm typ) ->
+      subtype_num tm = Some tn' ->
+      fetch_type tn' st = Some td ->
+      subtype_range td = Some (Range l u) ->
+      extract_array_index_range st t (Range l u).
+
+Inductive extract_subtype_range_x: symboltable_x -> type -> range_x -> Prop :=
+  | Extract_Range_X: forall t tn st td l u,
+      subtype_num t = Some tn ->
+      fetch_type_x tn st = Some td ->
+      subtype_range_x td = Some (Range_X l u) ->
+      extract_subtype_range_x st t (Range_X l u).
+
+(* tm is a subtype_mark *)
+Inductive extract_array_index_range_x: symboltable_x -> typenum -> range_x -> Prop :=
+  | Extract_Index_Range_X: forall t st a_ast_num tn tm typ tn' td l u, 
+      fetch_type_x t st = Some (Array_Type_Declaration_X a_ast_num tn tm typ) ->
+      subtype_num tm = Some tn' ->
+      fetch_type_x tn' st = Some td ->
+      subtype_range_x td = Some (Range_X l u) ->
+      extract_array_index_range_x st t (Range_X l u).
