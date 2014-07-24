@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---             Copyright (C) 2010, Free Software Foundation, Inc.           --
+--          Copyright (C) 2010-2014, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 with System;
@@ -30,12 +30,6 @@ package body AIP.OSAL is
 
    procedure Initialize is
       Err : Err_T;
-
-      If_Remote_IP : constant IPaddrs.IPaddr :=
-                       192 * 2 ** 24 + 168 * 2 ** 16 + 0 * 2 ** 8 + 1;
-      If_IP        : constant IPaddrs.IPaddr := If_Remote_IP + 1;
-      If_Mask      : constant IPaddrs.IPaddr := 16#ffffff00#;
-
    begin
       --  Initialize subsystems
 
@@ -48,16 +42,6 @@ package body AIP.OSAL is
       --  Set up interfaces
 
       If_Init (Config.Interface_Parameters, Err, If_Id);
-
-      if No (Err) then
-         NIF.If_Config
-           (Nid       => If_Id,
-            IP        => If_IP,
-            Mask      => If_Mask,
-            Broadcast => (If_IP and If_Mask) + 16#ff#,
-            Remote    => If_Remote_IP,
-            Err       => Err);
-      end if;
 
       if Any (Err) then
          raise Constraint_Error;
