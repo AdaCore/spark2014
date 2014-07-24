@@ -111,7 +111,15 @@ Module Check_Flags_Comparison_With_Debug_Infor.
 
   Function type_decl_check_flags_comparison (t1 t2: type_declaration_x): return_message :=
     match t1, t2 with
-    | Array_Type_Declaration_X ast_num tn t l u, Array_Type_Declaration_X ast_num' tn' t' l' u' =>
+    | Subtype_Declaration_X ast_num tn t (Range_X l u), Subtype_Declaration_X ast_num' tn' t' (Range_X l' u') =>
+        OK
+    | Derived_Type_Declaration_X ast_num tn t (Range_X l u), Derived_Type_Declaration_X ast_num' tn' t' (Range_X l' u') =>
+        OK
+    | Integer_Type_Declaration_X ast_num tn (Range_X l u), Integer_Type_Declaration_X ast_num' tn' (Range_X l' u') =>  
+        OK
+    | Array_Type_Declaration_SubtypeMark_X ast_num tn tm t, Array_Type_Declaration_SubtypeMark_X ast_num' tn' tm' t' =>
+        OK
+    | Array_Type_Declaration_Range_X ast_num tn (Range_X l u) t, Array_Type_Declaration_Range_X ast_num' tn' (Range_X l' u') t' =>
         OK
     | Record_Type_Declaration_X ast_num tn fs, Record_Type_Declaration_X ast_num' tn' fs' =>
         OK

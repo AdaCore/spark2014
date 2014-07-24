@@ -40,18 +40,21 @@ Inductive statement: Type :=
     | S_Procedure_Call: astnum -> astnum -> procnum -> list expression -> statement (* 6.4 *) (* the second astnum for the called procedure *)
     | S_Sequence: astnum -> statement -> statement -> statement (* 5.1 *).
 
+Inductive range: Type := Range (l: Z) (u: Z). (* 3.5 *)
+
 (* Array / Record Type Declaration *)
 Inductive type_declaration: Type := (* 3.2.1 *)
     | Subtype_Declaration:
-        astnum -> typenum (*subtype name*) -> type -> Z -> Z (*range*) -> type_declaration (* 3.2.2 *)
+        astnum -> typenum (*subtype name*) -> type -> range -> type_declaration (* 3.2.2 *)
     | Derived_Type_Declaration:
-        astnum -> typenum (*derived type name*) -> type -> Z -> Z (*range*) -> type_declaration (* 3.4 *)
+        astnum -> typenum (*derived type name*) -> type -> range -> type_declaration (* 3.4 *)
     | Integer_Type_Declaration:
-        astnum -> typenum (*integer type name*) -> Z -> Z (*range*) -> type_declaration (* 3.5.4 *)
-    | Array_Type_Declaration: (* Constrained_Array_Definition, non-nested one-dimentional array *)
-        astnum -> typenum (*array name*) -> type (*component type*) -> 
-          Z (*lower bound*) -> Z (*upper bound*) -> type_declaration (* 3.6 *)
-    | Record_Type_Declaration: 
+        astnum -> typenum (*integer type name*) -> range -> type_declaration (* 3.5.4 *)
+    | Array_Type_Declaration_SubtypeMark: (* Constrained_Array_Definition, non-nested one-dimentional array *)
+        astnum -> typenum (*array name*) -> type (*subtype mark*) -> type (*component type*) -> type_declaration (* 3.6 *)
+    | Array_Type_Declaration_Range: (* Constrained_Array_Definition, non-nested one-dimentional array *)
+        astnum -> typenum (*array name*) -> range -> type (*component type*) -> type_declaration (* 3.6 *)
+    | Record_Type_Declaration:
         astnum -> typenum (*record name*) -> list (idnum * type (*field type*)) -> type_declaration (* 3.8 *).
 
 (* 3.3.1 *)
@@ -116,11 +119,20 @@ Section AuxiliaryFunctions.
 
   Definition type_name td :=
     match td with
-    | Subtype_Declaration _ tn _ _ _      => tn
-    | Derived_Type_Declaration _ tn _ _ _ => tn
-    | Integer_Type_Declaration _ tn _ _   => tn
-    | Array_Type_Declaration _ tn _ _ _   => tn
-    | Record_Type_Declaration _ tn _      => tn
+    | Subtype_Declaration _ tn _ _                => tn
+    | Derived_Type_Declaration _ tn _ _           => tn
+    | Integer_Type_Declaration _ tn _             => tn
+    | Array_Type_Declaration_SubtypeMark _ tn _ _ => tn
+    | Array_Type_Declaration_Range _ tn _ _       => tn
+    | Record_Type_Declaration _ tn _              => tn
+    end.
+
+  Definition subtype_range (t: type_declaration): option range :=
+    match t with
+    | Subtype_Declaration ast_num tn t r      => Some r
+    | Derived_Type_Declaration ast_num tn t r => Some r
+    | Integer_Type_Declaration ast_num tn r   => Some r
+    | _                                          => None
     end.
 
   Definition expression_astnum e :=

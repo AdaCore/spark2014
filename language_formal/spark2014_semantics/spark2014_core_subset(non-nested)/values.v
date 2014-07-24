@@ -24,17 +24,9 @@ Inductive Return (A:Type): Type :=
     | Normal: A -> Return A
     | Run_Time_Error: error_type -> Return A.
 
-(* return value for exp/statement evaluation defined in functional style *)
-Inductive ReturnF (A:Type): Type :=
-    | NormalV: Return A -> ReturnF A
-    | Unterminated: ReturnF A
-    | Abnormal: ReturnF A.
 
 Arguments Normal [A] _.
 Arguments Run_Time_Error [A] _.
-Arguments NormalV [A] _.
-Arguments Unterminated [A].
-Arguments Abnormal [A].
 
 (** the range of 32-bit (singed/unsigned) integer type: 
     - modulus : 2^32 ;

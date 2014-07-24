@@ -104,10 +104,48 @@ Section LB_AuxiliaryFunctions.
   
   Definition is_range_constrainted_type (t: type): bool :=
     match t with
-    | Subtype _ => true
+    | Subtype _      => true
     | Derived_Type _ => true
     | Integer_Type _ => true
-    | _ => false
+    | _              => false
     end.
-  
+
+  Definition subtype_num (t: type): option typenum :=
+    match t with
+    | Subtype tn      => Some tn
+    | Derived_Type tn => Some tn
+    | Integer_Type tn => Some tn
+    | _               => None
+    end.
+
+  Definition beq_type (t1 t2: type): bool :=
+    match t1, t2 with
+    | Boolean, Boolean => true
+    | Integer, Integer => true
+    | Subtype t1', Subtype t2' => beq_nat t1' t2'
+    | Derived_Type t1', Derived_Type t2' => beq_nat t1' t2' 
+    | Integer_Type t1', Integer_Type t2' => beq_nat t1' t2'
+    | Array_Type t1', Array_Type t2' => beq_nat t1' t2'
+    | Record_Type t1', Record_Type t2' => beq_nat t1' t2'
+    | _, _ => false
+    end.
+
+  Definition is_in_mode (x: mode): bool := 
+    match x with
+    | In => true
+    | _  => false
+    end.
+
+  Definition is_out_mode (x: mode): bool := 
+    match x with
+    | Out => true
+    | _   => false
+    end.
+
+  Definition is_in_out_mode (x: mode): bool := 
+    match x with
+    | In_Out => true
+    | _      => false
+    end.
+
 End LB_AuxiliaryFunctions.

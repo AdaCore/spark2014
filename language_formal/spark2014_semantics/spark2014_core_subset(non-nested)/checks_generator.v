@@ -14,81 +14,120 @@ Require Export symboltable.
     that are enforced by the context of the expression;
 *)
 
-Inductive compile2_flagged_exp: check_flags -> expression -> expression_x -> Prop :=
-    | C2_Flagged_Literal: forall checkflags ast_num l,
-        compile2_flagged_exp checkflags 
+(*
+  TODO: add some optimization to the checks generator:
+  - range check for literal index can be removed, similarly, 
+    overflow check and division check for literal can be optimized away;
+  - range check for varialbe index, whose type is the same as index type,
+    can be optimized away;
+  - subtype T is Integer range 1 .. 10; subtype U is Integer range 2 .. 12; 
+    X: T; Y: U;
+    Y = X + 1; (the range check for this assignment can also be optimized away)
+               (the overflow check can also be removed, as X + 1 is in the range of integer)
+    Y = Y / (X + 1);
+               (the division check can also be removed, as (X + 1) > 0 )
+*)
+
+Inductive compile2_flagged_exp: symboltable -> check_flags -> expression -> expression_x -> Prop :=
+    | C2_Flagged_Literal: forall st checkflags ast_num l,
+        compile2_flagged_exp st checkflags 
                              (E_Literal ast_num l) 
                              (E_Literal_X ast_num l checkflags)
-    | C2_Flagged_Name: forall checkflags n n_flagged ast_num,
-        compile2_flagged_name checkflags n n_flagged -> (* checkflags is passed into name expression *)
-        compile2_flagged_exp checkflags 
+    | C2_Flagged_Name: forall st checkflags n n_flagged ast_num,
+        compile2_flagged_name st checkflags n n_flagged -> (* checkflags is passed into name expression *)
+        compile2_flagged_exp st checkflags 
                              (E_Name ast_num n) 
                              (E_Name_X ast_num n_flagged nil)
-    | C2_Flagged_Binary_Operation_O: forall op e1 e1_flagged e2 e2_flagged checkflags ast_num,
+    | C2_Flagged_Binary_Operation_O: forall op st e1 e1_flagged e2 e2_flagged checkflags ast_num,
         op = Plus \/ op = Minus \/ op = Multiply ->
-        compile2_flagged_exp nil e1 e1_flagged ->
-        compile2_flagged_exp nil e2 e2_flagged ->
-        compile2_flagged_exp checkflags
+        compile2_flagged_exp st nil e1 e1_flagged ->
+        compile2_flagged_exp st nil e2 e2_flagged ->
+        compile2_flagged_exp st checkflags
                              (E_Binary_Operation ast_num op e1 e2)
                              (E_Binary_Operation_X ast_num op e1_flagged e2_flagged (Do_Overflow_Check :: checkflags))
-    | C2_Flagged_Binary_Operation_OD: forall op e1 e1_flagged e2 e2_flagged checkflags ast_num,
+    | C2_Flagged_Binary_Operation_OD: forall op st e1 e1_flagged e2 e2_flagged checkflags ast_num,
         op = Divide ->
-        compile2_flagged_exp nil e1 e1_flagged ->
-        compile2_flagged_exp nil e2 e2_flagged ->
-        compile2_flagged_exp checkflags
+        compile2_flagged_exp st nil e1 e1_flagged ->
+        compile2_flagged_exp st nil e2 e2_flagged ->
+        compile2_flagged_exp st checkflags
                              (E_Binary_Operation ast_num op e1 e2)
                              (E_Binary_Operation_X ast_num op e1_flagged e2_flagged (Do_Division_Check :: Do_Overflow_Check :: checkflags))
-    | C2_Flagged_Binary_Operation_Others: forall op e1 e1_flagged e2 e2_flagged checkflags ast_num,
+    | C2_Flagged_Binary_Operation_Others: forall op st e1 e1_flagged e2 e2_flagged checkflags ast_num,
         op <> Plus ->
         op <> Minus ->
         op <> Multiply ->
         op <> Divide ->
-        compile2_flagged_exp nil e1 e1_flagged ->
-        compile2_flagged_exp nil e2 e2_flagged ->
-        compile2_flagged_exp checkflags
+        compile2_flagged_exp st nil e1 e1_flagged ->
+        compile2_flagged_exp st nil e2 e2_flagged ->
+        compile2_flagged_exp st checkflags
                              (E_Binary_Operation ast_num op e1 e2)
                              (E_Binary_Operation_X ast_num op e1_flagged e2_flagged checkflags)
-    | C2_Flagged_Unary_Operation_O: forall op e e_flagged checkflags ast_num,
+    | C2_Flagged_Unary_Operation_O: forall op st e e_flagged checkflags ast_num,
         op = Unary_Minus ->
-        compile2_flagged_exp nil e e_flagged ->
-        compile2_flagged_exp checkflags
+        compile2_flagged_exp st nil e e_flagged ->
+        compile2_flagged_exp st checkflags
                              (E_Unary_Operation ast_num op e) 
                              (E_Unary_Operation_X ast_num op e_flagged (Do_Overflow_Check :: checkflags))
-    | C2_Flagged_Unary_Operation_Others: forall op e e_flagged checkflags ast_num,
+    | C2_Flagged_Unary_Operation_Others: forall op st e e_flagged checkflags ast_num,
         op <> Unary_Minus ->
-        compile2_flagged_exp nil e e_flagged ->
-        compile2_flagged_exp checkflags
+        compile2_flagged_exp st nil e e_flagged ->
+        compile2_flagged_exp st checkflags
                              (E_Unary_Operation ast_num op e) 
                              (E_Unary_Operation_X ast_num op e_flagged checkflags)
 
-with compile2_flagged_name: check_flags -> name -> name_x -> Prop :=
-    | C2_Flagged_Identifier: forall checkflags ast_num x,
-        compile2_flagged_name checkflags 
+with compile2_flagged_name: symboltable -> check_flags -> name -> name_x -> Prop :=
+    | C2_Flagged_Identifier: forall st checkflags ast_num x,
+        compile2_flagged_name st checkflags 
                               (E_Identifier ast_num x) 
                               (E_Identifier_X ast_num x checkflags) 
-    | C2_Flagged_Indexed_Component: forall e e_flagged checkflags ast_num x_ast_num x,
-        compile2_flagged_exp (Do_Range_Check :: nil) e e_flagged ->
-        compile2_flagged_name checkflags
+    | C2_Flagged_Indexed_Component: forall st e e_flagged checkflags ast_num x_ast_num x,
+        compile2_flagged_exp st (Do_Range_Check :: nil) e e_flagged ->
+        compile2_flagged_name st checkflags
                               (E_Indexed_Component ast_num x_ast_num x e) 
                               (E_Indexed_Component_X ast_num x_ast_num x e_flagged checkflags) 
-    | C2_Flagged_Selected_Component: forall checkflags ast_num x_ast_num x f,
-        compile2_flagged_name checkflags 
+    | C2_Flagged_Selected_Component: forall st checkflags ast_num x_ast_num x f,
+        compile2_flagged_name st checkflags 
                               (E_Selected_Component ast_num x_ast_num x f) 
                               (E_Selected_Component_X ast_num x_ast_num x f checkflags).
 
-Inductive compile2_flagged_args: list parameter_specification -> list expression -> list expression_x -> Prop :=
-    | C2_Flagged_Args_Null:
-        compile2_flagged_args nil nil nil
-    | C2_Flagged_Args: forall param arg arg_flagged lparam larg larg_flagged,
+(**
+   For In / Out parameters, whose type is an integer subtype, range check should be
+   added when it's both copied into the called procedure and copied out the procedure,
+   these two range checks should be performed before the procedure call and after the
+   procedure returns; here we only put one range check flag and don't distinguish whether
+   it's a range check for copied in or copied out procedure;
+*)
+
+Inductive compile2_flagged_args: symboltable -> list parameter_specification -> list expression -> list expression_x -> Prop :=
+    | C2_Flagged_Args_Null: forall st,
+        compile2_flagged_args st nil nil nil
+    | C2_Flagged_Args_In: forall st param arg arg_flagged lparam larg larg_flagged,
+        param.(parameter_mode) = In \/ param.(parameter_mode) = In_Out ->
         is_range_constrainted_type (param.(parameter_subtype_mark)) = false ->
-        compile2_flagged_exp nil arg arg_flagged ->
-        compile2_flagged_args lparam larg larg_flagged -> 
-        compile2_flagged_args (param :: lparam) (arg :: larg) (arg_flagged :: larg_flagged)
-    | C2_Flagged_Args_R: forall param arg arg_flagged lparam larg larg_flagged,
+        compile2_flagged_exp st nil arg arg_flagged ->
+        compile2_flagged_args st lparam larg larg_flagged -> 
+        compile2_flagged_args st (param :: lparam) (arg :: larg) (arg_flagged :: larg_flagged)
+    | C2_Flagged_Args_In_R: forall st param arg arg_flagged lparam larg larg_flagged,
+        param.(parameter_mode) = In \/ param.(parameter_mode) = In_Out ->
         is_range_constrainted_type (param.(parameter_subtype_mark)) = true ->
-        compile2_flagged_exp (Do_Range_Check :: nil) arg arg_flagged ->
-        compile2_flagged_args lparam larg larg_flagged -> 
-        compile2_flagged_args (param :: lparam) (arg :: larg) (arg_flagged :: larg_flagged).
+        compile2_flagged_exp st (Do_Range_Check :: nil) arg arg_flagged ->
+        compile2_flagged_args st lparam larg larg_flagged -> 
+        compile2_flagged_args st (param :: lparam) (arg :: larg) (arg_flagged :: larg_flagged)
+    | C2_Flagged_Args_Out: forall st param ast_num t x_ast_num x_flagged lparam larg larg_flagged x,
+        param.(parameter_mode) = Out ->
+        fetch_exp_type ast_num st = Some t ->
+        is_range_constrainted_type t = false ->
+        compile2_flagged_exp st nil (E_Name ast_num (E_Identifier x_ast_num x)) x_flagged ->
+        compile2_flagged_args st lparam larg larg_flagged -> 
+        compile2_flagged_args st (param :: lparam) ((E_Name ast_num (E_Identifier x_ast_num x)) :: larg) (x_flagged :: larg_flagged)
+    | C2_Flagged_Args_Out_R: forall st param ast_num t x_ast_num x_flagged lparam larg larg_flagged x,
+        param.(parameter_mode) = Out ->
+        fetch_exp_type ast_num st = Some t ->
+        is_range_constrainted_type t = true ->
+        compile2_flagged_exp st (Do_Range_Check :: nil) (E_Name ast_num (E_Identifier x_ast_num x)) x_flagged ->
+        compile2_flagged_args st lparam larg larg_flagged -> 
+        compile2_flagged_args st (param :: lparam) ((E_Name ast_num (E_Identifier x_ast_num x)) :: larg) (x_flagged :: larg_flagged).
+
 
 Inductive compile2_flagged_stmt: symboltable -> statement -> statement_x -> Prop := 
     | C2_Flagged_Null: forall st,
@@ -96,28 +135,28 @@ Inductive compile2_flagged_stmt: symboltable -> statement -> statement_x -> Prop
     | C2_Flagged_Assignment: forall x st t x_flagged e e_flagged ast_num,
         fetch_exp_type (name_astnum x) st = Some t ->
         is_range_constrainted_type t = false ->        
-        compile2_flagged_name nil x x_flagged ->
-        compile2_flagged_exp  nil e e_flagged ->
+        compile2_flagged_name st nil x x_flagged ->
+        compile2_flagged_exp  st nil e e_flagged ->
         compile2_flagged_stmt st
                               (S_Assignment   ast_num x e) 
                               (S_Assignment_X ast_num x_flagged e_flagged)
     | C2_Flagged_Assignment_R: forall x st t x_flagged e e_flagged ast_num,
         fetch_exp_type (name_astnum x) st = Some t ->
         is_range_constrainted_type t = true ->
-        compile2_flagged_name nil x x_flagged ->
-        compile2_flagged_exp  (Do_Range_Check :: nil) e e_flagged ->
+        compile2_flagged_name st nil x x_flagged ->
+        compile2_flagged_exp  st (Do_Range_Check :: nil) e e_flagged ->
         compile2_flagged_stmt st
                               (S_Assignment   ast_num x e)
                               (S_Assignment_X ast_num x_flagged e_flagged)
     | C2_Flagged_If: forall e e_flagged c1 c1_flagged c2 c2_flagged st ast_num,
-        compile2_flagged_exp  nil e e_flagged ->
+        compile2_flagged_exp  st nil e e_flagged ->
         compile2_flagged_stmt st c1 c1_flagged ->
         compile2_flagged_stmt st c2 c2_flagged ->
         compile2_flagged_stmt st
                               (S_If   ast_num e c1 c2) 
                               (S_If_X ast_num e_flagged c1_flagged c2_flagged)
     | C2_Flagged_While: forall e e_flagged c c_flagged st ast_num,
-        compile2_flagged_exp  nil e e_flagged ->
+        compile2_flagged_exp  st nil e e_flagged ->
         compile2_flagged_stmt st c c_flagged ->
         compile2_flagged_stmt st 
                               (S_While_Loop   ast_num e c) 
@@ -125,7 +164,7 @@ Inductive compile2_flagged_stmt: symboltable -> statement -> statement_x -> Prop
     | C2_Flagged_Procedure_Call: forall p st n pb params args args_flagged ast_num p_ast_num,
         fetch_proc p st = Some (n, pb) ->
         procedure_parameter_profile pb = params ->
-        compile2_flagged_args params args args_flagged ->
+        compile2_flagged_args st params args args_flagged ->
         compile2_flagged_stmt st
                               (S_Procedure_Call   ast_num p_ast_num p args) 
                               (S_Procedure_Call_X ast_num p_ast_num p args_flagged)
@@ -139,43 +178,49 @@ Inductive compile2_flagged_stmt: symboltable -> statement -> statement_x -> Prop
 
 Inductive compile2_flagged_type_declaration: type_declaration -> type_declaration_x -> Prop :=
     | C2_Flagged_Subtype_Decl: forall ast_num tn t l u,
-        compile2_flagged_type_declaration (Subtype_Declaration   ast_num tn t l u)
-                                          (Subtype_Declaration_X ast_num tn t l u)
+        compile2_flagged_type_declaration (Subtype_Declaration   ast_num tn t (Range l u))
+                                          (Subtype_Declaration_X ast_num tn t (Range_X l u))
     | C2_Flagged_Derived_Type_Decl: forall ast_num tn t l u,
-        compile2_flagged_type_declaration (Derived_Type_Declaration   ast_num tn t l u)
-                                          (Derived_Type_Declaration_X ast_num tn t l u)
+        compile2_flagged_type_declaration (Derived_Type_Declaration   ast_num tn t (Range l u))
+                                          (Derived_Type_Declaration_X ast_num tn t (Range_X l u))
     | C2_Flagged_Integer_Type_Decl: forall ast_num tn l u,
-        compile2_flagged_type_declaration (Integer_Type_Declaration   ast_num tn l u)
-                                          (Integer_Type_Declaration_X ast_num tn l u)
-    | C2_Flagged_Array_Type_Decl: forall ast_num tn t l u,
-        compile2_flagged_type_declaration (Array_Type_Declaration   ast_num tn t l u)
-                                          (Array_Type_Declaration_X ast_num tn t l u)
+        compile2_flagged_type_declaration (Integer_Type_Declaration   ast_num tn (Range l u))
+                                          (Integer_Type_Declaration_X ast_num tn (Range_X l u))
+    | C2_Flagged_Array_Type_Decl_SubtypeMark: forall ast_num tn tm t,
+        compile2_flagged_type_declaration (Array_Type_Declaration_SubtypeMark   ast_num tn tm t)
+                                          (Array_Type_Declaration_SubtypeMark_X ast_num tn tm t)
+    | C2_Flagged_Array_Type_Decl_Range: forall ast_num tn l u t,
+        compile2_flagged_type_declaration (Array_Type_Declaration_Range   ast_num tn (Range l u) t)
+                                          (Array_Type_Declaration_Range_X ast_num tn (Range_X l u) t)
     | C2_Flagged_Record_Type_Decl: forall ast_num tn fs,
         compile2_flagged_type_declaration (Record_Type_Declaration   ast_num tn fs) 
                                           (Record_Type_Declaration_X ast_num tn fs).
 
-Inductive compile2_flagged_object_declaration: object_declaration -> object_declaration_x -> Prop :=
-    | C2_Flagged_Object_Declaration_NoneInit: forall ast_num x t,
-        compile2_flagged_object_declaration (mkobject_declaration   ast_num x t None) 
+Inductive compile2_flagged_object_declaration: symboltable -> object_declaration -> object_declaration_x -> Prop :=
+    | C2_Flagged_Object_Declaration_NoneInit: forall st ast_num x t,
+        compile2_flagged_object_declaration st 
+                                            (mkobject_declaration   ast_num x t None) 
                                             (mkobject_declaration_x ast_num x t None) 
-    | C2_Flagged_Object_Declaration: forall t e e_flagged ast_num x,
+    | C2_Flagged_Object_Declaration: forall st t e e_flagged ast_num x,
         is_range_constrainted_type t = false ->
-        compile2_flagged_exp nil e e_flagged ->
-        compile2_flagged_object_declaration (mkobject_declaration   ast_num x t (Some e)) 
+        compile2_flagged_exp st nil e e_flagged ->
+        compile2_flagged_object_declaration st 
+                                            (mkobject_declaration   ast_num x t (Some e)) 
                                             (mkobject_declaration_x ast_num x t (Some e_flagged))
-    | C2_Flagged_Object_Declaration_R: forall t e e_flagged ast_num x,
+    | C2_Flagged_Object_Declaration_R: forall st t e e_flagged ast_num x,
         is_range_constrainted_type t = true ->
-        compile2_flagged_exp (Do_Range_Check :: nil) e e_flagged ->
-        compile2_flagged_object_declaration (mkobject_declaration   ast_num x t (Some e)) 
+        compile2_flagged_exp st (Do_Range_Check :: nil) e e_flagged ->
+        compile2_flagged_object_declaration st 
+                                            (mkobject_declaration   ast_num x t (Some e)) 
                                             (mkobject_declaration_x ast_num x t (Some e_flagged)).
 
-Inductive compile2_flagged_object_declarations: list object_declaration -> list object_declaration_x -> Prop :=
-    | C2_Flagged_Object_Declarations_Null:
-        compile2_flagged_object_declarations nil nil 
-    | C2_Flagged_Object_Declarations_List: forall o o_flagged lo lo_flagged,
-        compile2_flagged_object_declaration  o o_flagged ->
-        compile2_flagged_object_declarations lo lo_flagged ->
-        compile2_flagged_object_declarations (o :: lo) (o_flagged :: lo_flagged).
+Inductive compile2_flagged_object_declarations: symboltable -> list object_declaration -> list object_declaration_x -> Prop :=
+    | C2_Flagged_Object_Declarations_Null: forall st,
+        compile2_flagged_object_declarations st nil nil 
+    | C2_Flagged_Object_Declarations_List: forall st o o_flagged lo lo_flagged,
+        compile2_flagged_object_declaration  st o o_flagged ->
+        compile2_flagged_object_declarations st lo lo_flagged ->
+        compile2_flagged_object_declarations st (o :: lo) (o_flagged :: lo_flagged).
 
 
 Inductive compile2_flagged_parameter_specification: parameter_specification -> parameter_specification_x -> Prop :=
@@ -200,8 +245,8 @@ Inductive compile2_flagged_declaration: symboltable -> declaration -> declaratio
         compile2_flagged_declaration st
                                      (D_Type_Declaration   ast_num t) 
                                      (D_Type_Declaration_X ast_num t_flagged)
-    | C2_Flagged_D_Object_Declaration: forall o o_flagged st ast_num,
-        compile2_flagged_object_declaration o o_flagged ->
+    | C2_Flagged_D_Object_Declaration: forall st o o_flagged ast_num,
+        compile2_flagged_object_declaration st o o_flagged ->
         compile2_flagged_declaration st 
                                      (D_Object_Declaration   ast_num o)
                                      (D_Object_Declaration_X ast_num o_flagged) 
@@ -234,16 +279,16 @@ with compile2_flagged_procedure_body: symboltable -> procedure_body -> procedure
 
 (** * Translator Function To Insert Checks *)
 
-Function compile2_flagged_exp_f (checkflags: check_flags) (e: expression): expression_x :=
+Function compile2_flagged_exp_f (st: symboltable) (checkflags: check_flags) (e: expression): expression_x :=
   match e with
   | E_Literal ast_num l => 
         E_Literal_X ast_num l checkflags
   | E_Name ast_num n => 
-      let n_flagged := compile2_flagged_name_f checkflags n in
+      let n_flagged := compile2_flagged_name_f st checkflags n in
         E_Name_X ast_num n_flagged nil
   | E_Binary_Operation ast_num op e1 e2 =>
-      let e1_flagged := compile2_flagged_exp_f nil e1 in
-      let e2_flagged := compile2_flagged_exp_f nil e2 in
+      let e1_flagged := compile2_flagged_exp_f st nil e1 in
+      let e2_flagged := compile2_flagged_exp_f st nil e2 in
         match op with
         | Plus     => E_Binary_Operation_X ast_num op e1_flagged e2_flagged (Do_Overflow_Check :: checkflags)
         | Minus    => E_Binary_Operation_X ast_num op e1_flagged e2_flagged (Do_Overflow_Check :: checkflags)
@@ -252,40 +297,61 @@ Function compile2_flagged_exp_f (checkflags: check_flags) (e: expression): expre
         | _        => E_Binary_Operation_X ast_num op e1_flagged e2_flagged checkflags
         end
   | E_Unary_Operation ast_num op e => 
-      let e_flagged := compile2_flagged_exp_f nil e in
+      let e_flagged := compile2_flagged_exp_f st nil e in
         match op with
         | Unary_Minus => E_Unary_Operation_X ast_num op e_flagged (Do_Overflow_Check :: checkflags)
         | _           => E_Unary_Operation_X ast_num op e_flagged checkflags
         end
   end
 
-with compile2_flagged_name_f (checkflags: check_flags) (n: name): name_x :=
+with compile2_flagged_name_f (st: symboltable) (checkflags: check_flags) (n: name): name_x :=
   match n with
   | E_Identifier ast_num x =>
         E_Identifier_X ast_num x checkflags
   | E_Indexed_Component ast_num x_ast_num x e =>
-      let e_flagged := compile2_flagged_exp_f (Do_Range_Check :: nil) e in
+      let e_flagged := compile2_flagged_exp_f st (Do_Range_Check :: nil) e in
         E_Indexed_Component_X ast_num x_ast_num x e_flagged checkflags
   | E_Selected_Component ast_num x_ast_num x f =>
         E_Selected_Component_X ast_num x_ast_num x f checkflags
   end.
 
-Function compile2_flagged_args_f (params: list parameter_specification) (args: list expression): option (list expression_x) :=
+
+Function compile2_flagged_args_f (st: symboltable) (params: list parameter_specification) (args: list expression): option (list expression_x) :=
   match params, args with
   | nil, nil => Some nil
   | param :: params', arg :: args' =>
-      if is_range_constrainted_type (param.(parameter_subtype_mark)) then
-        let arg_flagged := compile2_flagged_exp_f (Do_Range_Check :: nil) arg in
-        match compile2_flagged_args_f params' args' with
-        | Some args_flagged => Some (arg_flagged :: args_flagged)
-        | None              => None
-        end
-      else
-        let arg_flagged := compile2_flagged_exp_f nil arg in
-        match compile2_flagged_args_f params' args' with
-        | Some args_flagged => Some (arg_flagged :: args_flagged)
-        | None              => None
-        end
+      match param.(parameter_mode) with
+      | In | In_Out =>
+        if is_range_constrainted_type (param.(parameter_subtype_mark)) then
+          let arg_flagged := compile2_flagged_exp_f st (Do_Range_Check :: nil) arg in
+            match compile2_flagged_args_f st params' args' with
+            | Some args_flagged => Some (arg_flagged :: args_flagged)
+            | None              => None
+            end
+        else
+          let arg_flagged := compile2_flagged_exp_f st nil arg in
+            match compile2_flagged_args_f st params' args' with
+            | Some args_flagged => Some (arg_flagged :: args_flagged)
+            | None              => None
+            end 
+      | Out =>
+        match arg with
+        | E_Name ast_num (E_Identifier x_ast_num x) =>
+            match fetch_exp_type ast_num st with
+            | Some t =>
+                if is_range_constrainted_type t then
+                  let x_flagged := compile2_flagged_exp_f st (Do_Range_Check :: nil) (E_Name ast_num (E_Identifier x_ast_num x)) in
+                    match compile2_flagged_args_f st params' args' with
+                    | Some args_flagged => Some (x_flagged :: args_flagged)
+                    | None              => None
+                    end 
+                else
+                  None
+            | None => None
+            end
+        | _ => None
+        end 
+      end   
   | _, _ => None
   end.
 
@@ -296,17 +362,17 @@ Function compile2_flagged_stmt_f (st: symboltable) (c: statement): option statem
       match fetch_exp_type (name_astnum x) st with
       | Some t =>
           if is_range_constrainted_type t then
-            let x_flagged := compile2_flagged_name_f nil x in
-            let e_flagged := compile2_flagged_exp_f  (Do_Range_Check :: nil) e in
+            let x_flagged := compile2_flagged_name_f st nil x in
+            let e_flagged := compile2_flagged_exp_f  st (Do_Range_Check :: nil) e in
               Some (S_Assignment_X ast_num x_flagged e_flagged) 
           else
-            let x_flagged := compile2_flagged_name_f nil x in
-            let e_flagged := compile2_flagged_exp_f  nil e in
+            let x_flagged := compile2_flagged_name_f st nil x in
+            let e_flagged := compile2_flagged_exp_f  st nil e in
               Some (S_Assignment_X ast_num x_flagged e_flagged)
       | None   => None
       end
   | S_If ast_num e c1 c2 =>
-      let e_flagged := compile2_flagged_exp_f nil e in
+      let e_flagged := compile2_flagged_exp_f st nil e in
         match compile2_flagged_stmt_f st c1 with
         | Some c1_flagged =>
             match compile2_flagged_stmt_f st c2 with
@@ -316,7 +382,7 @@ Function compile2_flagged_stmt_f (st: symboltable) (c: statement): option statem
         | None            => None
         end
   | S_While_Loop ast_num e c =>
-      let e_flagged := compile2_flagged_exp_f nil e in
+      let e_flagged := compile2_flagged_exp_f st nil e in
         match compile2_flagged_stmt_f st c with
         | Some c_flagged => Some (S_While_Loop_X ast_num e_flagged c_flagged)
         | None           => None
@@ -324,7 +390,7 @@ Function compile2_flagged_stmt_f (st: symboltable) (c: statement): option statem
   | S_Procedure_Call ast_num p_ast_num p args =>
       match fetch_proc p st with
       | Some (n, pb) => 
-          match compile2_flagged_args_f (procedure_parameter_profile pb) args with
+          match compile2_flagged_args_f st (procedure_parameter_profile pb) args with
           | Some args_flagged => Some (S_Procedure_Call_X ast_num p_ast_num p args_flagged)
           | None              => None
           end
@@ -343,37 +409,39 @@ Function compile2_flagged_stmt_f (st: symboltable) (c: statement): option statem
 
 Function compile2_flagged_type_declaration_f (t: type_declaration): type_declaration_x :=
   match t with
-  | Subtype_Declaration ast_num tn t l u =>
-      Subtype_Declaration_X ast_num tn t l u
-  | Derived_Type_Declaration ast_num tn t l u =>
-      Derived_Type_Declaration_X ast_num tn t l u
-  | Integer_Type_Declaration ast_num tn l u =>
-      Integer_Type_Declaration_X ast_num tn l u
-  | Array_Type_Declaration ast_num tn t l u => 
-      Array_Type_Declaration_X ast_num tn t l u
+  | Subtype_Declaration ast_num tn t (Range l u) =>
+      Subtype_Declaration_X ast_num tn t (Range_X l u)
+  | Derived_Type_Declaration ast_num tn t (Range l u) =>
+      Derived_Type_Declaration_X ast_num tn t (Range_X l u)
+  | Integer_Type_Declaration ast_num tn (Range l u) =>
+      Integer_Type_Declaration_X ast_num tn (Range_X l u)
+  | Array_Type_Declaration_SubtypeMark ast_num tn tm t => 
+      Array_Type_Declaration_SubtypeMark_X ast_num tn tm t
+  | Array_Type_Declaration_Range ast_num tn (Range l u) t => 
+      Array_Type_Declaration_Range_X ast_num tn (Range_X l u) t
   | Record_Type_Declaration ast_num tn fs =>
       Record_Type_Declaration_X ast_num tn fs
   end.
 
-Function compile2_flagged_object_declaration_f (o: object_declaration): object_declaration_x :=
+Function compile2_flagged_object_declaration_f (st: symboltable) (o: object_declaration): object_declaration_x :=
   match o with
   | mkobject_declaration ast_num x t None =>
         mkobject_declaration_x ast_num x t None
   | mkobject_declaration ast_num x t (Some e) => 
       if is_range_constrainted_type t then
-        let e_flagged := compile2_flagged_exp_f (Do_Range_Check :: nil) e in
+        let e_flagged := compile2_flagged_exp_f st (Do_Range_Check :: nil) e in
           mkobject_declaration_x ast_num x t (Some e_flagged) 
       else
-        let e_flagged := compile2_flagged_exp_f nil e in
+        let e_flagged := compile2_flagged_exp_f st nil e in
           mkobject_declaration_x ast_num x t (Some e_flagged)
   end.
 
-Function compile2_flagged_object_declarations_f (lo: list object_declaration): list object_declaration_x :=
+Function compile2_flagged_object_declarations_f (st: symboltable) (lo: list object_declaration): list object_declaration_x :=
   match lo with
   | nil => nil
   | o :: lo' => 
-      let o_flagged := compile2_flagged_object_declaration_f o in
-      let lo_flagged := compile2_flagged_object_declarations_f lo' in
+      let o_flagged  := compile2_flagged_object_declaration_f st o in
+      let lo_flagged := compile2_flagged_object_declarations_f st lo' in
         o_flagged :: lo_flagged
   end.
 
@@ -400,7 +468,7 @@ Function compile2_flagged_declaration_f (st: symboltable) (d: declaration): opti
       let t_flagged := compile2_flagged_type_declaration_f t in
         Some (D_Type_Declaration_X ast_num t_flagged)
   | D_Object_Declaration ast_num o =>
-      let o_flagged := compile2_flagged_object_declaration_f o in
+      let o_flagged := compile2_flagged_object_declaration_f st o in
         Some (D_Object_Declaration_X ast_num o_flagged)
   | D_Procedure_Body ast_num p =>
       match compile2_flagged_procedure_body_f st p with
@@ -414,7 +482,7 @@ Function compile2_flagged_declaration_f (st: symboltable) (d: declaration): opti
           | Some d2_flagged => Some (D_Seq_Declaration_X ast_num d1_flagged d2_flagged)
           | None            => None
           end
-      | None            => None
+      | None                => None
       end
   end
 
@@ -428,7 +496,7 @@ with compile2_flagged_procedure_body_f (st: symboltable) (p: procedure_body): op
           | Some stmt_flagged => Some (mkprocedure_body_x ast_num p params_flagged decls_flagged stmt_flagged)
           | None              => None
           end
-        | None               => None
+        | None                => None
         end
   end.
 
@@ -442,17 +510,17 @@ with compile2_flagged_procedure_body_f (st: symboltable) (p: procedure_body): op
 Scheme expression_ind := Induction for expression Sort Prop 
                          with name_ind := Induction for name Sort Prop.
 
-Lemma compile2_flagged_exp_f_correctness: forall e e' checkflags,
-  compile2_flagged_exp_f checkflags e = e' ->
-    compile2_flagged_exp checkflags e e'.
+Lemma compile2_flagged_exp_f_correctness: forall e e' checkflags st,
+  compile2_flagged_exp_f st checkflags e = e' ->
+    compile2_flagged_exp st checkflags e e'.
 Proof.
   apply (expression_ind
-    (fun e: expression => forall (e' : expression_x) (checkflags: check_flags),
-      compile2_flagged_exp_f checkflags e = e' ->
-      compile2_flagged_exp checkflags e e')
-    (fun n: name => forall (n': name_x) (checkflags: check_flags),
-      compile2_flagged_name_f checkflags n = n' ->
-      compile2_flagged_name checkflags n n')
+    (fun e: expression => forall (e' : expression_x) (checkflags: check_flags) (st: symboltable),
+      compile2_flagged_exp_f st checkflags e = e' ->
+      compile2_flagged_exp   st checkflags e e')
+    (fun n: name => forall (n': name_x) (checkflags: check_flags) (st: symboltable),
+      compile2_flagged_name_f st checkflags n = n' ->
+      compile2_flagged_name   st checkflags n n')
     ); smack;
   [ | | 
     destruct b; constructor; smack | 
@@ -461,9 +529,9 @@ Proof.
   constructor; apply H; auto.
 Qed.
 
-Lemma compile2_flagged_name_f_correctness: forall n n' checkflags,
-  compile2_flagged_name_f checkflags n = n' ->
-    compile2_flagged_name checkflags n n'.
+Lemma compile2_flagged_name_f_correctness: forall st checkflags n n',
+  compile2_flagged_name_f st checkflags n = n' ->
+    compile2_flagged_name st checkflags n n'.
 Proof.
   intros.
   destruct n; smack;
@@ -471,20 +539,33 @@ Proof.
   apply compile2_flagged_exp_f_correctness; auto.
 Qed.
 
-Lemma compile2_flagged_args_f_correctness: forall params args args',
-  compile2_flagged_args_f params args = Some args' ->
-    compile2_flagged_args params args args'.
+Lemma compile2_flagged_args_f_correctness: forall st params args args',
+  compile2_flagged_args_f st params args = Some args' ->
+    compile2_flagged_args st params args args'.
 Proof.
   induction params; smack.
 - destruct args; smack.
   constructor.
 - destruct args; smack.
-  remember (is_range_constrainted_type (parameter_subtype_mark a)) as x.
-  remember (compile2_flagged_args_f params args) as y.
-  destruct x, y; smack;
-  [ apply C2_Flagged_Args_R |
-    apply C2_Flagged_Args
-  ]; smack;
+  remember (parameter_mode a) as m;
+  remember (is_range_constrainted_type (parameter_subtype_mark a)) as x;
+  remember (compile2_flagged_args_f st params args) as y;
+  destruct m, x, y; smack;
+
+  [apply C2_Flagged_Args_In_R; smack |
+   apply C2_Flagged_Args_In; smack | | | | |
+   apply C2_Flagged_Args_In_R; smack |
+   apply C2_Flagged_Args_In; smack 
+  ]; 
+  try (apply compile2_flagged_exp_f_correctness; auto);
+
+  destruct e; smack; destruct n; smack;
+  remember (fetch_exp_type a0 st) as x;
+  destruct x; smack;
+  remember (is_range_constrainted_type t) as y;
+  destruct y; smack;
+  
+  apply C2_Flagged_Args_Out_R with (t := t); auto;
   apply compile2_flagged_exp_f_correctness; auto.
 Qed.
   
@@ -520,7 +601,7 @@ Proof.
 - remember (fetch_proc p st) as x;
   destruct x; smack.
   destruct t.
-  remember (compile2_flagged_args_f (procedure_parameter_profile p0) l) as y;
+  remember (compile2_flagged_args_f st (procedure_parameter_profile p0) l) as y;
   destruct y; smack.
   apply C2_Flagged_Procedure_Call with (n := l0) (pb := p0) (params := (procedure_parameter_profile p0)); smack.
   apply compile2_flagged_args_f_correctness; auto.
@@ -536,15 +617,15 @@ Lemma compile2_flagged_type_declaration_f_correctness: forall t t',
       compile2_flagged_type_declaration t t'.
 Proof.
   destruct t; smack;
-  constructor.  
+  try (destruct r); constructor.
 Qed.
 
-Lemma compile2_flagged_object_declaration_f_correctness: forall o o',
-  compile2_flagged_object_declaration_f o = o' ->
-    compile2_flagged_object_declaration o o'.
+Lemma compile2_flagged_object_declaration_f_correctness: forall st o o',
+  compile2_flagged_object_declaration_f st o = o' ->
+    compile2_flagged_object_declaration st o o'.
 Proof.
   intros;
-  functional induction compile2_flagged_object_declaration_f o; smack;
+  functional induction compile2_flagged_object_declaration_f st o; smack;
   [constructor |
    apply C2_Flagged_Object_Declaration_R; auto |
    apply C2_Flagged_Object_Declaration; auto
@@ -552,9 +633,9 @@ Proof.
   apply compile2_flagged_exp_f_correctness; auto.
 Qed.
 
-Lemma compile2_flagged_object_declarations_f_correctness: forall lo lo',
-  compile2_flagged_object_declarations_f lo = lo' ->
-    compile2_flagged_object_declarations lo lo'.
+Lemma compile2_flagged_object_declarations_f_correctness: forall st lo lo',
+  compile2_flagged_object_declarations_f st lo = lo' ->
+    compile2_flagged_object_declarations st lo lo'.
 Proof.
   induction lo; smack; 
   constructor; smack.
