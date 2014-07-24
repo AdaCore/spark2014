@@ -193,9 +193,7 @@ package SPARK_Util is
       Inherited : Boolean := False) return Node_Lists.List
    with
      Pre => Ekind (E) in Subprogram_Kind | E_Package and then
-            (if Classwide then Name in Name_Precondition | Name_Postcondition)
-              and then
-            (if Inherited then Classwide);
+             not (Classwide and Inherited);
    --  Walk the Contract node attached to E and return the pragma matching
    --  Name.
 

@@ -203,6 +203,11 @@ package body Gnat2Why.Driver is
         and then not Is_Predicate_Function (E)
         and then not Is_Invariant_Procedure (E)
       then
+         if Is_Primitive_Of_Tagged (E) then
+            Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+            Update_Symbol_Table_For_Inherited_Contracts (E);
+         end if;
+
          --  Generate Why3 code to check absence of run-time errors in
          --  contracts and body.
 
@@ -212,6 +217,7 @@ package body Gnat2Why.Driver is
 
          if Is_Primitive_Of_Tagged (E) then
             Generate_VCs_For_LSP (Why_Sections (WF_Main), E);
+            Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
          end if;
 
       elsif Ekind (E) = E_Package

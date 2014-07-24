@@ -29,6 +29,8 @@ with Atree;                  use Atree;
 with Einfo;                  use Einfo;
 with Namet;                  use Namet;
 with Nlists;                 use Nlists;
+with Sem_Disp;               use Sem_Disp;
+with Sem_Eval;               use Sem_Eval;
 with Sem_Util;               use Sem_Util;
 with Sinfo;                  use Sinfo;
 with Sinput;                 use Sinput;
@@ -64,7 +66,6 @@ with Why.Types;              use Why.Types;
 with Gnat2Why.Decls;         use Gnat2Why.Decls;
 with Gnat2Why.Expr;          use Gnat2Why.Expr;
 with Gnat2Why.Nodes;         use Gnat2Why.Nodes;
-with Sem_Eval;               use Sem_Eval;
 
 package body Gnat2Why.Subprograms is
 
@@ -1587,13 +1588,13 @@ package body Gnat2Why.Subprograms is
       --  subprograms it overrides.
 
       Inherited_Pre_List := Find_Contracts
-        (E, Name_Precondition, Classwide => True, Inherited => True);
+        (E, Name_Precondition, Inherited => True);
       Classwide_Pre_List := Find_Contracts
         (E, Name_Precondition, Classwide => True);
       Pre_List := Find_Contracts (E, Name_Precondition);
 
       Inherited_Post_List := Find_Contracts
-        (E, Name_Postcondition, Classwide => True, Inherited => True);
+        (E, Name_Postcondition, Inherited => True);
       Classwide_Post_List := Find_Contracts
         (E, Name_Postcondition, Classwide => True);
       Post_List := Find_Contracts (E, Name_Postcondition);
@@ -2856,5 +2857,88 @@ package body Gnat2Why.Subprograms is
                     Kind => Definition_Theory,
                     Defined_Entity => E);
    end Translate_Subprogram_Spec;
+
+   -------------------------------------------------
+   -- Update_Symbol_Table_For_Inherited_Contracts --
+   -------------------------------------------------
+
+   procedure Update_Symbol_Table_For_Inherited_Contracts (E : Entity_Id) is
+
+      procedure Relocate_Symbols (Overridden : Entity_Id);
+      --  Relocate parameters and result from Overridden subprogram to E
+
+      ----------------------
+      -- Relocate_Symbols --
+      ----------------------
+
+      procedure Relocate_Symbols (Overridden : Entity_Id) is
+         From_Params : constant List_Id :=
+           Parameter_Specifications (Get_Subprogram_Spec (Overridden));
+         To_Params   : constant List_Id :=
+           Parameter_Specifications (Get_Subprogram_Spec (E));
+         From_Param  : Node_Id;
+         To_Param    : Node_Id;
+
+      begin
+         From_Param := First (From_Params);
+         To_Param := First (To_Params);
+         while Present (From_Param) loop
+            declare
+               From_Id : constant Entity_Id :=
+                 Defining_Identifier (From_Param);
+               To_Id   : constant Entity_Id :=
+                 Defining_Identifier (To_Param);
+            begin
+               Ada_Ent_To_Why.Insert
+                 (Symbol_Table,
+                  From_Id,
+                  Ada_Ent_To_Why.Element (Symbol_Table, To_Id));
+            end;
+
+            Next (From_Param);
+            Next (To_Param);
+         end loop;
+
+         pragma Assert (No (To_Param));
+      end Relocate_Symbols;
+
+      Inherit_Subp  : constant Subprogram_List := Inherited_Subprograms (E);
+      Subp_For_Pre  : Entity_Id := Empty;
+      Subp_For_Post : Entity_Id := Empty;
+      Contracts     : Node_Lists.List;
+
+   begin
+      --  Find the subprogram from which the precondition is inherited, if any
+
+      for J in Inherit_Subp'Range loop
+         Contracts := Find_Contracts
+           (Inherit_Subp (J), Name_Precondition, Classwide => True);
+
+         if not Contracts.Is_Empty then
+            Subp_For_Pre := Inherit_Subp (J);
+            exit;
+         end if;
+      end loop;
+
+      --  Find the subprogram from which the postcondition is inherited, if any
+
+      for J in Inherit_Subp'Range loop
+         Contracts := Find_Contracts
+           (Inherit_Subp (J), Name_Postcondition, Classwide => True);
+
+         if not Contracts.Is_Empty then
+            Subp_For_Post := Inherit_Subp (J);
+            exit;
+         end if;
+      end loop;
+
+      if Present (Subp_For_Pre) then
+         Relocate_Symbols (Subp_For_Pre);
+      end if;
+
+      if Present (Subp_For_Post) and then Subp_For_Pre /= Subp_For_Post then
+         Relocate_Symbols (Subp_For_Post);
+      end if;
+   end Update_Symbol_Table_For_Inherited_Contracts;
 
 end Gnat2Why.Subprograms;

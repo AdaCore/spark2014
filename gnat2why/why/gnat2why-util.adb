@@ -389,8 +389,7 @@ package body Gnat2Why.Util is
         Find_Contracts (E, Kind, Classwide => True);
    begin
       if Conjuncts_List.Is_Empty then
-         Conjuncts_List := Find_Contracts
-           (E, Kind, Classwide => True, Inherited => True);
+         Conjuncts_List := Find_Contracts (E, Kind, Inherited => True);
       end if;
 
       return +Compute_Spec (Params, Conjuncts_List, Domain);

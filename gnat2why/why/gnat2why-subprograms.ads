@@ -116,4 +116,10 @@ package Gnat2Why.Subprograms is
       E : Entity_Id);
    --  Adds imports for the globals of a subprogram E in the current theory
 
+   procedure Update_Symbol_Table_For_Inherited_Contracts (E : Entity_Id);
+   --  The inherited precondition and postcondition for E is expressed wrt the
+   --  overridden's subprogram parameters. Make sure these are mapped in the
+   --  symbol table to the current subprogram's parameters. The result symbol
+   --  is always mapped to the current result.
+
 end Gnat2Why.Subprograms;

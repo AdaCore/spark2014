@@ -725,7 +725,8 @@ package body SPARK_Util is
               Inherited_Subprograms (E);
          begin
             for J in Inherit_Subp'Range loop
-               Contracts := Find_Contracts (Inherit_Subp (J), Name, Classwide);
+               Contracts :=
+                 Find_Contracts (Inherit_Subp (J), Name, Classwide => True);
 
                if not Contracts.Is_Empty then
                   return Contracts;
@@ -796,7 +797,7 @@ package body SPARK_Util is
          end if;
          if Contracts.Is_Empty and Inherited then
             Contracts :=
-              Find_Contracts (E, Name, Classwide => True, Inherited => True);
+              Find_Contracts (E, Name, Inherited => True);
          end if;
       else
          Contracts := Find_Contracts (E, Name);
