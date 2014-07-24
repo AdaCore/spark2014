@@ -1,7 +1,7 @@
 /*-----------------------------------------------------------------------------------*/
 /*
  * Copyright (c) 2001-2003 Swedish Institute of Computer Science.
- * Copyright (C) 2010-2012, AdaCore
+ * Copyright (C) 2010-2014, AdaCore
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -548,7 +548,6 @@ mintapif_init (char *Params, Err_T *Err, Netif_Id *Nid)
 
   low_level_init(Params, netif);
 
-  netif->State = Up;
   *Err = NOERR;
 }
 /*-----------------------------------------------------------------------------------*/
