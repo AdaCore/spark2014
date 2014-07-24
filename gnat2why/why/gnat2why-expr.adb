@@ -7073,23 +7073,34 @@ package body Gnat2Why.Expr is
             end if;
 
          when Attribute_Constrained =>
-            declare
-               Ty_Ent : constant Entity_Id :=
-                 Unique_Entity (Etype (Var));
-            begin
+
+            --  To be able to handle affectations, we put the constrained why
+            --  field to false in components of aggregates that have an
+            --  unconstrained type with defaulted discriminants.
+            --  Thus, on constant objects, we should not use this field to
+            --  translate 'Constrained but rather return true directly.
+
+            if Is_Constant_Object (Get_Enclosing_Object (Var)) then
+               T := +True_Term;
+            else
                declare
-                  Why_Expr : constant W_Expr_Id :=
-                    Transform_Expr (Var, Domain, Params);
+                  Ty_Ent : constant Entity_Id :=
+                    Unique_Entity (Etype (Var));
                begin
-                  T := New_Is_Constrained_Access (Domain   => Domain,
-                                                  Name     => Why_Expr,
-                                                  Ty       => Ty_Ent);
-                  if Domain = EW_Prog then
-                     T :=
-                       +Sequence (New_Ignore (Prog => +Why_Expr), +T);
-                  end if;
+                  declare
+                     Why_Expr : constant W_Expr_Id :=
+                       Transform_Expr (Var, Domain, Params);
+                  begin
+                     T := New_Is_Constrained_Access (Domain   => Domain,
+                                                     Name     => Why_Expr,
+                                                     Ty       => Ty_Ent);
+                     if Domain = EW_Prog then
+                        T :=
+                          +Sequence (New_Ignore (Prog => +Why_Expr), +T);
+                     end if;
+                  end;
                end;
-            end;
+            end if;
 
          when others =>
             Ada.Text_IO.Put_Line ("[Transform_Attr] id ="
