@@ -339,7 +339,7 @@ such an ignored SPARK_Mode specification could not violate the preceding
 "Off shall not enclose On" rule because the Spark_Mode of the
 entire instance is Off. Similarly, such an ignored SPARK_Mode specification
 could not violate the preceding rule that a SPARK_Mode specification
-shall only only apply to a (section of a) library-level entity.]
+shall only apply to a (section of a) library-level entity.]
 
 SPARK_Mode is an implementation-defined Ada aspect; it is not (strictly
 speaking) part of the |SPARK| language. It is used to notionally transform
@@ -611,7 +611,7 @@ file named sum.mlw::
            (forall b1 : slice_bounds [sum v b1].
 
              (* Ending at the same index *)
-             ((_rec__hi b1 = _rec__hi b /\ 
+             ((_rec__hi b1 = _rec__hi b /\
                 _rec__lo b < _rec__lo b1 <= _rec__hi b) ->
               let b2 = {__split_fields =
 	      	         {rec__lo = rec__lo (__split_fields b);
