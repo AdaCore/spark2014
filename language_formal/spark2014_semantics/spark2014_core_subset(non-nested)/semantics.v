@@ -243,7 +243,7 @@ with eval_name: symboltable -> stack -> name -> Return value -> Prop :=
 Inductive copy_out: symboltable -> stack -> frame -> list parameter_specification -> list expression -> Return stack -> Prop :=
     | Copy_Out_Nil : forall st s f, 
         copy_out st s f nil nil (Normal s)
-    | Copy_Out_Cons_Out: forall st s s' s'' t v f param lparam lexp x ast_num x_ast_num,
+    | Copy_Out_Cons_Out: forall param f v ast_num st t s x s' lparam lexp s'' x_ast_num,
         param.(parameter_mode) = Out \/ param.(parameter_mode) = In_Out ->
         fetch param.(parameter_name) f = Some v ->
         fetch_exp_type ast_num st = Some t ->
@@ -251,14 +251,14 @@ Inductive copy_out: symboltable -> stack -> frame -> list parameter_specificatio
         updateG s x v = Some s' ->
         copy_out st s' f lparam lexp s'' ->
         copy_out st s f (param :: lparam) ((E_Name ast_num (E_Identifier x_ast_num x)) :: lexp) s''
-    | Copy_Out_Cons_Out_Range_RTE: forall st t l u f v s param lparam lexp x ast_num x_ast_num,
+    | Copy_Out_Cons_Out_Range_RTE: forall param f v ast_num st t l u s lparam x_ast_num x lexp,
         param.(parameter_mode) = Out \/ param.(parameter_mode) = In_Out ->
         fetch param.(parameter_name) f = Some (BasicV (Int v)) ->
         fetch_exp_type ast_num st = Some t ->
         extract_subtype_range st t (Range l u) ->
         do_range_check v l u (Exception RTE_Range) ->
         copy_out st s f (param :: lparam) ((E_Name ast_num (E_Identifier x_ast_num x)) :: lexp) (Run_Time_Error RTE_Range)
-    | Copy_Out_Cons_Out_Range: forall st t l u f v s s' s'' param lparam lexp x ast_num x_ast_num,
+    | Copy_Out_Cons_Out_Range: forall param f v ast_num st t l u s x s' lparam lexp s'' x_ast_num,
         param.(parameter_mode) = Out \/ param.(parameter_mode) = In_Out ->
         fetch param.(parameter_name) f = Some (BasicV (Int v)) ->
         fetch_exp_type ast_num st = Some t ->
@@ -267,7 +267,7 @@ Inductive copy_out: symboltable -> stack -> frame -> list parameter_specificatio
         updateG s x (BasicV (Int v)) = Some s' ->
         copy_out st s' f lparam lexp s'' ->
         copy_out st s f (param :: lparam) ((E_Name ast_num (E_Identifier x_ast_num x)) :: lexp) s''
-    | Copy_Out_Cons_In: forall st s s' f param lparam lexp e,
+    | Copy_Out_Cons_In: forall param st s f lparam lexp s' e,
         param.(parameter_mode) = In ->
         copy_out st s f lparam lexp s' ->
         copy_out st s f (param :: lparam) (e :: lexp) s'.
