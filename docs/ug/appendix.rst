@@ -392,8 +392,8 @@ What should the translation look like ?
 - For each publicly visible entity E in the package P, it should provide the
   same elements (types as well as logic and program functions) as the automatic
   translation, all grouped in one single module named P__e. For example, the
-  module for a function F should provide both a logic function declaration and
-  a program function declaration, that should both be named f.
+  module for a function F should provide both a logic function declaration named
+  f__logic and a program function declaration named f.
 - For most types, a model module in defined in ada__model.mlw that can be cloned
   to get most of the required declarations.
 - The manual translation may use any type, constant and function that is visible
@@ -532,18 +532,20 @@ file named sum.mlw::
    use import Sums__index
    use import Sums__extended_index
 
+   (* Fields for record type *)
+   type __split_fields  =
+    { rec__lo : Sums__index.index; rec__hi : Sums__extended_index.extended_index }
+
    (* Record type *)
-   type slice_bounds  =
-    { rec__lo : Sums__index.index;
-      rec__hi : Sums__extended_index.extended_index }
+   type slice_bounds  = { __split_fields : __split_fields }
 
    (* Helper function *)
    function _rec__lo "inline" (b : slice_bounds) : int =
-     	  Sums__index.to_int (rec__lo (b))
+   	  Sums__index.to_int (rec__lo (__split_fields (b)))
 
    (* Helper function *)
    function _rec__hi "inline" (b : slice_bounds) : int =
-     	  Sums__extended_index.to_int (rec__hi (b))
+   	  Sums__extended_index.to_int (rec__hi (__split_fields (b)))
 
    (* Condition to be allowed to access Lo *)
    predicate lo__pred  (a : slice_bounds) = true
@@ -551,22 +553,21 @@ file named sum.mlw::
    val rec__lo_
      (a : slice_bounds)  :Sums__index.index
     requires { lo__pred a }
-    ensures  { result = a.rec__lo }
-
+    ensures  { result = a.__split_fields.rec__lo }
 
    (* Condition to be allowed to access Hi *)
-   predicate hi__pred  (a : slice_bounds) = true
+   predicate hi__pred  (a : slice_bounds) =  true
 
    val rec__hi_
      (a : slice_bounds)  :Sums__extended_index.extended_index
     requires { hi__pred a }
-    ensures  { result = a.rec__hi }
+    ensures  { result = a.__split_fields.rec__hi }
 
 
    (* Equality function over slice_bounds *)
    function bool_eq  (a : slice_bounds) (b : slice_bounds) : bool =
-    if  a.rec__lo = b.rec__lo /\ a.rec__hi = b.rec__hi then True else False
-
+    if  a.__split_fields.rec__lo = b.__split_fields.rec__lo /\
+        a.__split_fields.rec__hi = b.__split_fields.rec__hi then True else False
 
    (* User overloadable equality function over slice_bounds *)
    function user_eq (a : slice_bounds) (b : slice_bounds)  :bool
@@ -609,21 +610,19 @@ file named sum.mlw::
            (* Link to smaller slices of the same vector *)
            (forall b1 : slice_bounds [sum v b1].
 
-               (* Ending at the same index *)
-               ((_rec__hi b1 = _rec__hi b /\
-                 _rec__lo b < _rec__lo b1 <= _rec__hi b) ->
-
-                let b2 = {rec__lo = rec__lo b;
-                          rec__hi = Sums__extended_index.of_int
-                                                        ((_rec__lo b1) - 1)} in
-                   _sum v b = _sum v b1 + _sum v b2) /\
-               (* Sartind at the same index *)
-               ((_rec__lo b1 = _rec__lo b /\
-                 _rec__lo b <= _rec__hi b1 < _rec__hi b) ->
-
-                let b2 = {rec__lo = Sums__index.of_int ((_rec__hi b1) + 1);
-                          rec__hi = rec__hi b} in
-                   _sum v b = _sum v b1 + _sum v b2)))
+             (* Ending at the same index *)
+             ((_rec__hi b1 = _rec__hi b /\ 
+                _rec__lo b < _rec__lo b1 <= _rec__hi b) ->
+              let b2 = {__split_fields =
+	      	         {rec__lo = rec__lo (__split_fields b);
+                          rec__hi = Sums__extended_index.of_int ((_rec__lo b1) - 1)}} in
+                 _sum v b = _sum v b1 + _sum v b2) /\
+             (* Sartind at the same index *)
+             ((_rec__lo b1 = _rec__lo b /\ _rec__lo b <= _rec__hi b1 < _rec__hi b) ->
+              let b2 = {__split_fields =
+	      	         {rec__lo = Sums__index.of_int ((_rec__hi b1) + 1);
+                          rec__hi = rec__hi (__split_fields b)}} in
+                 _sum v b = _sum v b1 + _sum v b2)))
 
    (* Program partial function with a precondition for sum *)
    val sum (x : vector) (bounds : slice_bounds)  :integer
