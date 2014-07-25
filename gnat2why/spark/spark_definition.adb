@@ -2484,8 +2484,7 @@ package body SPARK_Definition is
 
                if Has_Discriminants (Etype (E)) then
                   Mark_Violation
-                    ("discriminants not allowed if parent type is "
-                     & "discriminated",
+                    ("additional discriminant on derived type",
                      E,
                      SRM_Reference => "SPARK RM 3.7(2)");
 
