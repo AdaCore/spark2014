@@ -22,8 +22,8 @@ is
    -- Echo State management --
    ---------------------------
 
-   --  We will be using the raw callback API, passing application
-   --  state information across calls for each connection.
+   --  We will be using the raw callback API, passing application state
+   --  information across calls for each connection.
 
    type State_Kind is
      (ES_FREE, ES_READY, ES_ACCEPTED, ES_RECEIVED, ES_CLOSING);
@@ -111,11 +111,11 @@ is
    -- ES_Alloc --
    --------------
 
-   --  Search a free for use entry in the pool. If found, move to ES_NONE and
-   --  return Id. Return NOES otherwise.
-
    procedure ES_Alloc (Sid : out ES_Id) is
    begin
+      --  Search a free for use entry in the pool. If found, move to ES_NONE,
+      --  and return Id. Return NOES otherwise.
+
       Sid := NOES;
       for Id in Valid_ES_Id loop
          if ESP (Id).Kind = ES_FREE then
@@ -130,11 +130,12 @@ is
    -- ES_Release --
    ----------------
 
-   --  Arrange for the Echo_State entry ES to be free for re-use
-
    procedure ES_Release (PCB : AIP.PCBs.PCB_Id; Es : in out Echo_State) is
    begin
       AIP.TCP.TCP_Set_Udata (PCB, System.Null_Address);
+
+      --  Mark entry as free so that it can be reused
+
       Es.Kind := ES_FREE;
    end ES_Release;
 
@@ -209,18 +210,17 @@ is
 
          elsif Err = AIP.ERR_MEM then
 
-            --  We are low on memory, defer to poll
+            --  We are low on memory, defer polling
 
             Es.Buf := Buf;
             --  This is a no-op???
 
          else
-            --  other problem ??
+            --  Other problem???
             null;
          end if;
 
       end loop;
-
    end Echo_Send;
 
    -----------------------
@@ -232,6 +232,8 @@ is
       Pcb : AIP.PCBs.PCB_Id;
       Err : out AIP.Err_T)
    is
+      pragma Unreferenced (Ev);
+
       Es : Echo_State;
       for Es'Address use AIP.TCP.TCP_Udata (Pcb);
    begin
@@ -256,8 +258,11 @@ is
       Pcb : AIP.PCBs.PCB_Id;
       Err : out AIP.Err_T)
    is
+      pragma Unreferenced (Ev);
+
       Es : Echo_State;
       for Es'Address use AIP.TCP.TCP_Udata (Pcb);
+
    begin
       ES_Release (Pcb, Es);
       Err := AIP.NOERR;
@@ -272,15 +277,20 @@ is
       Pcb : AIP.PCBs.PCB_Id;
       Err : out AIP.Err_T)
    is
+      pragma Unreferenced (Ev);
+
       Es : Echo_State;
       for Es'Address use AIP.TCP.TCP_Udata (Pcb);
+
    begin
       if Es'Address = System.Null_Address then
          AIP.TCP.TCP_Drop (Pcb);
          Err := AIP.ERR_ABRT;
+
       elsif Es.Buf /= AIP.Buffers.NOBUF then
          Echo_Send (Pcb, Es);
          Err := AIP.NOERR;
+
       elsif Es.Kind = ES_CLOSING then
          Echo_Close (Pcb, Es);
          Err := AIP.NOERR;
@@ -298,6 +308,7 @@ is
    is
       Es : Echo_State;
       for Es'Address use AIP.TCP.TCP_Udata (Pcb);
+
    begin
       if Ev.Buf = AIP.Buffers.NOBUF then
 
@@ -347,7 +358,6 @@ is
       end if;
 
       Err := AIP.NOERR;
-
    end ECHO_Process_Recv;
 
    -------------------------
@@ -359,7 +369,10 @@ is
       Pcb : AIP.PCBs.PCB_Id;
       Err : out AIP.Err_T)
    is
+      pragma Unreferenced (Ev);
+
       Sid : ES_Id;
+
    begin
       ES_Alloc (Sid);
 
