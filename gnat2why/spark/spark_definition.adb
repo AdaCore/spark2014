@@ -2477,6 +2477,21 @@ package body SPARK_Definition is
                end;
             end if;
 
+            if Etype (E) /= E then
+
+               --  A derived type cannot have discriminants if the parent type
+               --  is discriminated.
+
+               if Has_Discriminants (Etype (E)) then
+                  Mark_Violation
+                    ("discriminants not allowed if parent type is "
+                     & "discriminated",
+                     E,
+                     SRM_Reference => "SPARK RM 3.7(2)");
+
+               end if;
+            end if;
+
             --  Discriminant renamings are not in SPARK, this is checked here
 
             declare
