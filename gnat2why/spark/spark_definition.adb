@@ -2477,40 +2477,20 @@ package body SPARK_Definition is
                end;
             end if;
 
-            if Etype (E) /= E then
+            --  A derived type cannot have explicit discriminants if the parent
+            --  type is discriminated.
 
-               --  A derived type cannot have discriminants if the parent type
-               --  is discriminated.
-
-               if Has_Discriminants (Etype (E)) then
-                  Mark_Violation
-                    ("additional discriminant on derived type",
-                     E,
-                     SRM_Reference => "SPARK RM 3.7(2)");
-
-               end if;
+            if Nkind (Parent (E)) = N_Full_Type_Declaration
+              and then Unique_Entity (Etype (E)) /= Unique_Entity (E)
+              and then Present (Discriminant_Specifications (Parent (E)))
+              and then Has_Discriminants (Etype (E))
+              and then Comes_From_Source (E)
+            then
+               Mark_Violation
+                 ("additional discriminant on derived type",
+                  Parent (E),
+                  SRM_Reference => "SPARK RM 3.7(2)");
             end if;
-
-            --  Discriminant renamings are not in SPARK, this is checked here
-
-            declare
-               Disc  : Entity_Id := SPARK_Util.First_Discriminant (E);
-               Found : Boolean := False;
-            begin
-               while Present (Disc) loop
-                  if Present (Corresponding_Discriminant (Disc))
-                    and then
-                      Chars (Disc) /= Chars (Corresponding_Discriminant (Disc))
-                  then
-                     Found := True;
-                  end if;
-                  exit when Found;
-                  Next_Discriminant (Disc);
-               end loop;
-               if Found then
-                  Mark_Violation ("discriminant renaming", E);
-               end if;
-            end;
 
          when E_Class_Wide_Type    |
               E_Class_Wide_Subtype =>

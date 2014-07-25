@@ -42,22 +42,17 @@ is
    procedure Update (V : in out U1) with
      Post => Is_Zero (V);
 
-   type U2 (Discr : E) is new T (Discr) with record
+   type U2 is new T with record
       W : Integer;
-      case Discr is
-         when A | C =>
-            XX : Integer;
-         when others =>
-            YY : Float;
-      end case;
+      XX : Integer;
+      YY : Float;
    end record;
 
    function Is_Zero (V : U2) return Boolean is
       (Is_Zero (T(V)) and then
        V.W = 0 and then
-         (case V.Discr is
-            when A | C => V.XX = 0,
-            when others => V.YY = 0.0));
+       V.XX = 0 and then
+       V.YY = 0.0);
 
    procedure Init (V : out U2) with
      Post => Is_Zero (V);
