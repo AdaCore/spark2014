@@ -17,13 +17,23 @@ Require Export language.
        
        Check that the given value is within the bounds of the expected scalar 
        subtype.
-*)
 
-(*   the following check is not included now
-
-     - Index Check
-       
-       Check that the given index is within the bounds of the array.
+    - Do_Range_Check_On_CopyOut
+      
+      for a procedure call, if it's required a range check for its input variables
+      during copy_in procedure, then the range check flag should be set for its input
+      arguments; but if it's required a range check for its output variables during
+      copy_out procedure, then the range check flag should be set for its output 
+      parameters instead of its output arguments, but it's unreasonable to set the
+      range check on formal parameters of the called procedure as it maybe called in
+      different context where there are no range check requirement. So here we introduce
+      a new check flag Do_Range_Check_On_CopyOut for the output parameters but it's set
+      on the output arguments.
+ 
+    - Undefined_Check
+    
+      for any run time checks extracted from gnat2xml other than Do_Division_Check, 
+      Do_Overflow_Check and Do_Range_Check, they are represented by Undefined_Check.
 *)
 
 (** 
@@ -69,11 +79,13 @@ Require Export language.
 
 (** ** Run Time Check Flags *)
 (** checks that are needed to be verified at run time *)
+
 Inductive check_flag: Type := 
-    | Do_Division_Check: check_flag
-    | Do_Overflow_Check: check_flag
-    | Do_Range_Check:    check_flag
-    | Undefined_Check:   check_flag.
+    | Do_Division_Check         : check_flag
+    | Do_Overflow_Check         : check_flag
+    | Do_Range_Check            : check_flag
+    | Do_Range_Check_On_CopyOut : check_flag
+    | Undefined_Check           : check_flag.
 
 
 (** For an expression or statement, there may exists a list of checks 
@@ -88,7 +100,8 @@ Function beq_check_flag (ck1 ck2: check_flag): bool :=
   match ck1, ck2 with
   | Do_Division_Check, Do_Division_Check => true
   | Do_Overflow_Check, Do_Overflow_Check => true
-  | Do_Range_Check,    Do_Range_Check => true
+  | Do_Range_Check,    Do_Range_Check    => true
+  | Do_Range_Check_On_CopyOut, Do_Range_Check_On_CopyOut => true
   | _, _ => false
   end.
 

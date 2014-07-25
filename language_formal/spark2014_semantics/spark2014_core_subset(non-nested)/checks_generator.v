@@ -102,13 +102,13 @@ Inductive compile2_flagged_args: symboltable -> list parameter_specification -> 
     | C2_Flagged_Args_Null: forall st,
         compile2_flagged_args st nil nil nil
     | C2_Flagged_Args_In: forall st param arg arg_flagged lparam larg larg_flagged,
-        param.(parameter_mode) = In \/ param.(parameter_mode) = In_Out ->
+        param.(parameter_mode) = In ->
         is_range_constrainted_type (param.(parameter_subtype_mark)) = false ->
         compile2_flagged_exp st nil arg arg_flagged ->
         compile2_flagged_args st lparam larg larg_flagged -> 
         compile2_flagged_args st (param :: lparam) (arg :: larg) (arg_flagged :: larg_flagged)
-    | C2_Flagged_Args_In_R: forall st param arg arg_flagged lparam larg larg_flagged,
-        param.(parameter_mode) = In \/ param.(parameter_mode) = In_Out ->
+    | C2_Flagged_Args_In_Range: forall st param arg arg_flagged lparam larg larg_flagged,
+        param.(parameter_mode) = In ->
         is_range_constrainted_type (param.(parameter_subtype_mark)) = true ->
         compile2_flagged_exp st (Do_Range_Check :: nil) arg arg_flagged ->
         compile2_flagged_args st lparam larg larg_flagged -> 
@@ -120,11 +120,43 @@ Inductive compile2_flagged_args: symboltable -> list parameter_specification -> 
         compile2_flagged_exp st nil (E_Name ast_num (E_Identifier x_ast_num x)) x_flagged ->
         compile2_flagged_args st lparam larg larg_flagged -> 
         compile2_flagged_args st (param :: lparam) ((E_Name ast_num (E_Identifier x_ast_num x)) :: larg) (x_flagged :: larg_flagged)
-    | C2_Flagged_Args_Out_R: forall st param ast_num t x_ast_num x_flagged lparam larg larg_flagged x,
+    | C2_Flagged_Args_Out_Range: forall st param ast_num t x_ast_num x_flagged lparam larg larg_flagged x,
         param.(parameter_mode) = Out ->
         fetch_exp_type ast_num st = Some t ->
         is_range_constrainted_type t = true ->
+        compile2_flagged_exp st (Do_Range_Check_On_CopyOut :: nil) (E_Name ast_num (E_Identifier x_ast_num x)) x_flagged ->
+        compile2_flagged_args st lparam larg larg_flagged -> 
+        compile2_flagged_args st (param :: lparam) ((E_Name ast_num (E_Identifier x_ast_num x)) :: larg) (x_flagged :: larg_flagged)
+    | C2_Flagged_Args_InOut: forall st param ast_num t x_ast_num x_flagged lparam larg larg_flagged x,
+        param.(parameter_mode) = In_Out ->
+        is_range_constrainted_type (param.(parameter_subtype_mark)) = false ->
+        fetch_exp_type ast_num st = Some t ->
+        is_range_constrainted_type t = false ->
+        compile2_flagged_exp st nil (E_Name ast_num (E_Identifier x_ast_num x)) x_flagged ->
+        compile2_flagged_args st lparam larg larg_flagged -> 
+        compile2_flagged_args st (param :: lparam) ((E_Name ast_num (E_Identifier x_ast_num x)) :: larg) (x_flagged :: larg_flagged)
+    | C2_Flagged_Args_InOut_In_Range: forall st param ast_num t x_ast_num x_flagged lparam larg larg_flagged x,
+        param.(parameter_mode) = In_Out ->
+        is_range_constrainted_type (param.(parameter_subtype_mark)) = true ->
+        fetch_exp_type ast_num st = Some t ->
+        is_range_constrainted_type t = false ->
         compile2_flagged_exp st (Do_Range_Check :: nil) (E_Name ast_num (E_Identifier x_ast_num x)) x_flagged ->
+        compile2_flagged_args st lparam larg larg_flagged -> 
+        compile2_flagged_args st (param :: lparam) ((E_Name ast_num (E_Identifier x_ast_num x)) :: larg) (x_flagged :: larg_flagged)
+    | C2_Flagged_Args_InOut_Out_Range: forall st param ast_num t x_ast_num x_flagged lparam larg larg_flagged x,
+        param.(parameter_mode) = In_Out ->
+        is_range_constrainted_type (param.(parameter_subtype_mark)) = false ->
+        fetch_exp_type ast_num st = Some t ->
+        is_range_constrainted_type t = true ->
+        compile2_flagged_exp st (Do_Range_Check_On_CopyOut :: nil) (E_Name ast_num (E_Identifier x_ast_num x)) x_flagged ->
+        compile2_flagged_args st lparam larg larg_flagged -> 
+        compile2_flagged_args st (param :: lparam) ((E_Name ast_num (E_Identifier x_ast_num x)) :: larg) (x_flagged :: larg_flagged)
+    | C2_Flagged_Args_InOut_Range: forall st param ast_num t x_ast_num x_flagged lparam larg larg_flagged x,
+        param.(parameter_mode) = In_Out ->
+        is_range_constrainted_type (param.(parameter_subtype_mark)) = true ->
+        fetch_exp_type ast_num st = Some t ->
+        is_range_constrainted_type t = true ->
+        compile2_flagged_exp st (Do_Range_Check :: Do_Range_Check_On_CopyOut :: nil) (E_Name ast_num (E_Identifier x_ast_num x)) x_flagged ->
         compile2_flagged_args st lparam larg larg_flagged -> 
         compile2_flagged_args st (param :: lparam) ((E_Name ast_num (E_Identifier x_ast_num x)) :: larg) (x_flagged :: larg_flagged).
 
@@ -318,7 +350,7 @@ Function compile2_flagged_args_f (st: symboltable) (params: list parameter_speci
   | nil, nil => Some nil
   | param :: params', arg :: args' =>
       match param.(parameter_mode) with
-      | In | In_Out =>
+      | In =>
         if is_range_constrainted_type (param.(parameter_subtype_mark)) then
           let arg_flagged := compile2_flagged_exp_f st (Do_Range_Check :: nil) arg in
             match compile2_flagged_args_f st params' args' with
@@ -337,18 +369,66 @@ Function compile2_flagged_args_f (st: symboltable) (params: list parameter_speci
             match fetch_exp_type ast_num st with
             | Some t =>
                 if is_range_constrainted_type t then
-                  let x_flagged := compile2_flagged_exp_f st (Do_Range_Check :: nil) (E_Name ast_num (E_Identifier x_ast_num x)) in
+                  let x_flagged := compile2_flagged_exp_f st (Do_Range_Check_On_CopyOut :: nil) (E_Name ast_num (E_Identifier x_ast_num x)) in
                     match compile2_flagged_args_f st params' args' with
                     | Some args_flagged => Some (x_flagged :: args_flagged)
                     | None              => None
-                    end 
+                    end
                 else
-                  None
+                  let x_flagged := compile2_flagged_exp_f st nil (E_Name ast_num (E_Identifier x_ast_num x)) in
+                    match compile2_flagged_args_f st params' args' with
+                    | Some args_flagged => Some (x_flagged :: args_flagged)
+                    | None              => None
+                    end
             | None => None
             end
         | _ => None
         end 
-      end   
+      | In_Out => 
+        match arg with
+        | E_Name ast_num (E_Identifier x_ast_num x) =>
+            if is_range_constrainted_type (param.(parameter_subtype_mark)) then
+              match fetch_exp_type ast_num st with
+              | Some t =>
+                  if is_range_constrainted_type t then
+                    let x_flagged := compile2_flagged_exp_f st (Do_Range_Check :: Do_Range_Check_On_CopyOut :: nil) 
+                                                               (E_Name ast_num (E_Identifier x_ast_num x)) in
+                      match compile2_flagged_args_f st params' args' with
+                      | Some args_flagged => Some (x_flagged :: args_flagged)
+                      | None              => None
+                      end
+                  else
+                    let x_flagged := compile2_flagged_exp_f st (Do_Range_Check :: nil) 
+                                                               (E_Name ast_num (E_Identifier x_ast_num x)) in
+                      match compile2_flagged_args_f st params' args' with
+                      | Some args_flagged => Some (x_flagged :: args_flagged)
+                      | None              => None
+                      end
+              | None => None
+              end
+            else
+              match fetch_exp_type ast_num st with
+              | Some t =>
+                  if is_range_constrainted_type t then
+                    let x_flagged := compile2_flagged_exp_f st (Do_Range_Check_On_CopyOut :: nil) 
+                                                               (E_Name ast_num (E_Identifier x_ast_num x)) in
+                      match compile2_flagged_args_f st params' args' with
+                      | Some args_flagged => Some (x_flagged :: args_flagged)
+                      | None              => None
+                      end
+                  else
+                    let x_flagged := compile2_flagged_exp_f st nil 
+                                                               (E_Name ast_num (E_Identifier x_ast_num x)) in
+                      match compile2_flagged_args_f st params' args' with
+                      | Some args_flagged => Some (x_flagged :: args_flagged)
+                      | None              => None
+                      end
+              | None => None
+              end
+
+        | _ => None
+        end
+      end
   | _, _ => None
   end.
 
@@ -505,208 +585,428 @@ with compile2_flagged_procedure_body_f (st: symboltable) (p: procedure_body): op
 Scheme expression_ind := Induction for expression Sort Prop 
                          with name_ind := Induction for name Sort Prop.
 
-Lemma compile2_flagged_exp_f_correctness: forall e e' checkflags st,
-  compile2_flagged_exp_f st checkflags e = e' ->
-    compile2_flagged_exp st checkflags e e'.
-Proof.
-  apply (expression_ind
-    (fun e: expression => forall (e' : expression_x) (checkflags: check_flags) (st: symboltable),
-      compile2_flagged_exp_f st checkflags e = e' ->
-      compile2_flagged_exp   st checkflags e e')
-    (fun n: name => forall (n': name_x) (checkflags: check_flags) (st: symboltable),
-      compile2_flagged_name_f st checkflags n = n' ->
-      compile2_flagged_name   st checkflags n n')
-    ); smack;
-  [ | | 
-    destruct b; constructor; smack | 
-    destruct u; constructor; smack | | | 
-  ];
-  constructor; apply H; auto.
-Qed.
+Section Checks_Generator_Function_Correctness_Proof.
 
-Lemma compile2_flagged_name_f_correctness: forall st checkflags n n',
-  compile2_flagged_name_f st checkflags n = n' ->
-    compile2_flagged_name st checkflags n n'.
-Proof.
-  intros.
-  destruct n; smack;
-  repeat progress constructor;
-  apply compile2_flagged_exp_f_correctness; auto.
-Qed.
+  Lemma compile2_flagged_exp_f_correctness: forall e e' checkflags st,
+    compile2_flagged_exp_f st checkflags e = e' ->
+      compile2_flagged_exp st checkflags e e'.
+  Proof.
+    apply (expression_ind
+      (fun e: expression => forall (e' : expression_x) (checkflags: check_flags) (st: symboltable),
+        compile2_flagged_exp_f st checkflags e = e' ->
+        compile2_flagged_exp   st checkflags e e')
+      (fun n: name => forall (n': name_x) (checkflags: check_flags) (st: symboltable),
+        compile2_flagged_name_f st checkflags n = n' ->
+        compile2_flagged_name   st checkflags n n')
+      ); smack;
+    [ | | 
+      destruct b; constructor; smack | 
+      destruct u; constructor; smack | | | 
+    ];
+    constructor; apply H; auto.
+  Qed.
 
-Lemma compile2_flagged_args_f_correctness: forall st params args args',
-  compile2_flagged_args_f st params args = Some args' ->
-    compile2_flagged_args st params args args'.
-Proof.
-  induction params; smack.
-- destruct args; smack.
-  constructor.
-- destruct args; smack.
-  remember (parameter_mode a) as m;
-  remember (is_range_constrainted_type (parameter_subtype_mark a)) as x;
-  remember (compile2_flagged_args_f st params args) as y;
-  destruct m, x, y; smack;
+  Lemma compile2_flagged_name_f_correctness: forall st checkflags n n',
+    compile2_flagged_name_f st checkflags n = n' ->
+      compile2_flagged_name st checkflags n n'.
+  Proof.
+    intros.
+    destruct n; smack;
+    repeat progress constructor;
+    apply compile2_flagged_exp_f_correctness; auto.
+  Qed.
 
-  [apply C2_Flagged_Args_In_R; smack |
-   apply C2_Flagged_Args_In; smack | | | | |
-   apply C2_Flagged_Args_In_R; smack |
-   apply C2_Flagged_Args_In; smack 
-  ]; 
-  try (apply compile2_flagged_exp_f_correctness; auto);
+  Lemma compile2_flagged_args_f_correctness: forall st params args args',
+    compile2_flagged_args_f st params args = Some args' ->
+      compile2_flagged_args st params args args'.
+  Proof.
+    induction params; smack.
+  - destruct args; smack.
+    constructor.
+  - destruct args; smack.
+    remember (parameter_mode a) as m; destruct m.
+    + remember (is_range_constrainted_type (parameter_subtype_mark a)) as x;
+      remember (compile2_flagged_args_f st params args) as y;
+      destruct x, y; smack;
+      [apply C2_Flagged_Args_In_Range; smack |
+       apply C2_Flagged_Args_In; smack
+      ]; apply compile2_flagged_exp_f_correctness; auto.
+    + destruct e; smack.
+      destruct n; smack.
+      remember (fetch_exp_type a0 st) as x;
+      destruct x; smack.
+      remember (is_range_constrainted_type t) as y;
+      remember (compile2_flagged_args_f st params args) as z;
+      destruct y, z; smack;
+      [apply C2_Flagged_Args_Out_Range with (t := t); auto |
+       apply C2_Flagged_Args_Out with (t := t); auto
+      ]; apply compile2_flagged_exp_f_correctness; auto.
+    + destruct e; smack.
+      destruct n; smack.
+      remember (is_range_constrainted_type (parameter_subtype_mark a)) as x;
+      remember (fetch_exp_type a0 st) as y;
+      destruct x, y; smack;
+      remember (is_range_constrainted_type t) as z;
+      remember (compile2_flagged_args_f st params args) as w;
+      destruct z, w; smack;
+      [ apply C2_Flagged_Args_InOut_Range with (t := t); auto     |
+        apply C2_Flagged_Args_InOut_In_Range with (t := t); auto  |
+        apply C2_Flagged_Args_InOut_Out_Range with (t := t); auto |
+        apply C2_Flagged_Args_InOut with (t := t); auto
+      ]; apply compile2_flagged_exp_f_correctness; auto.
+  Qed.
 
-  destruct e; smack; destruct n; smack;
-  remember (fetch_exp_type a0 st) as x;
-  destruct x; smack;
-  remember (is_range_constrainted_type t) as y;
-  destruct y; smack;
-  
-  apply C2_Flagged_Args_Out_R with (t := t); auto;
-  apply compile2_flagged_exp_f_correctness; auto.
-Qed.
-  
-Lemma compile2_flagged_stmt_f_correctness: forall st c c',
-  compile2_flagged_stmt_f st c = Some c' ->
-    compile2_flagged_stmt st c c'.
-Proof.
-  induction c; smack.
-- constructor.
-- remember (fetch_exp_type (name_astnum n) st) as x;
-  destruct x; smack.
-  remember (is_range_constrainted_type t) as y.
-  destruct y; smack;
-  [apply C2_Flagged_Assignment_R with (t := t); smack |
-   apply C2_Flagged_Assignment with (t := t); smack 
-  ];
-  [apply compile2_flagged_name_f_correctness; auto | | 
-   apply compile2_flagged_name_f_correctness; auto | 
-  ];
-  apply compile2_flagged_exp_f_correctness; auto.
-- remember (compile2_flagged_stmt_f st c1) as x;
-  destruct x; smack.
-  remember (compile2_flagged_stmt_f st c2) as y;
-  destruct y; smack.
-  constructor;
-  [ apply compile2_flagged_exp_f_correctness | | ];
-  smack.
-- remember (compile2_flagged_stmt_f st c) as x;
-  destruct x; smack.
-  constructor;
-  [ apply compile2_flagged_exp_f_correctness | ];
-  smack.
-- remember (fetch_proc p st) as x;
-  destruct x; smack.
-  destruct t.
-  remember (compile2_flagged_args_f st (procedure_parameter_profile p0) l) as y;
-  destruct y; smack.
-  apply C2_Flagged_Procedure_Call with (n := l0) (pb := p0) (params := (procedure_parameter_profile p0)); smack.
-  apply compile2_flagged_args_f_correctness; auto.
-- remember (compile2_flagged_stmt_f st c1) as x;
-  destruct x; smack.
-  remember (compile2_flagged_stmt_f st c2) as y;
-  destruct y; smack.
-  constructor; auto.
-Qed.
+  Lemma compile2_flagged_stmt_f_correctness: forall st c c',
+    compile2_flagged_stmt_f st c = Some c' ->
+      compile2_flagged_stmt st c c'.
+  Proof.
+    induction c; smack.
+  - constructor.
+  - remember (fetch_exp_type (name_astnum n) st) as x;
+    destruct x; smack.
+    remember (is_range_constrainted_type t) as y.
+    destruct y; smack;
+    [apply C2_Flagged_Assignment_R with (t := t); smack |
+     apply C2_Flagged_Assignment with (t := t); smack 
+    ];
+    [apply compile2_flagged_name_f_correctness; auto | | 
+     apply compile2_flagged_name_f_correctness; auto | 
+    ];
+    apply compile2_flagged_exp_f_correctness; auto.
+  - remember (compile2_flagged_stmt_f st c1) as x;
+    destruct x; smack.
+    remember (compile2_flagged_stmt_f st c2) as y;
+    destruct y; smack.
+    constructor;
+    [ apply compile2_flagged_exp_f_correctness | | ];
+    smack.
+  - remember (compile2_flagged_stmt_f st c) as x;
+    destruct x; smack.
+    constructor;
+    [ apply compile2_flagged_exp_f_correctness | ];
+    smack.
+  - remember (fetch_proc p st) as x;
+    destruct x; smack.
+    destruct t.
+    remember (compile2_flagged_args_f st (procedure_parameter_profile p0) l) as y;
+    destruct y; smack.
+    apply C2_Flagged_Procedure_Call with (n := l0) (pb := p0) (params := (procedure_parameter_profile p0)); smack.
+    apply compile2_flagged_args_f_correctness; auto.
+  - remember (compile2_flagged_stmt_f st c1) as x;
+    destruct x; smack.
+    remember (compile2_flagged_stmt_f st c2) as y;
+    destruct y; smack.
+    constructor; auto.
+  Qed.
 
-Lemma compile2_flagged_type_declaration_f_correctness: forall t t',
-  compile2_flagged_type_declaration_f t = t' ->
-      compile2_flagged_type_declaration t t'.
-Proof.
-  destruct t; smack;
-  try (destruct r); constructor.
-Qed.
+  Lemma compile2_flagged_type_declaration_f_correctness: forall t t',
+    compile2_flagged_type_declaration_f t = t' ->
+        compile2_flagged_type_declaration t t'.
+  Proof.
+    destruct t; smack;
+    try (destruct r); constructor.
+  Qed.
 
-Lemma compile2_flagged_object_declaration_f_correctness: forall st o o',
-  compile2_flagged_object_declaration_f st o = o' ->
-    compile2_flagged_object_declaration st o o'.
-Proof.
-  intros;
-  functional induction compile2_flagged_object_declaration_f st o; smack;
-  [constructor |
-   apply C2_Flagged_Object_Declaration_R; auto |
-   apply C2_Flagged_Object_Declaration; auto
-  ];
-  apply compile2_flagged_exp_f_correctness; auto.
-Qed.
+  Lemma compile2_flagged_object_declaration_f_correctness: forall st o o',
+    compile2_flagged_object_declaration_f st o = o' ->
+      compile2_flagged_object_declaration st o o'.
+  Proof.
+    intros;
+    functional induction compile2_flagged_object_declaration_f st o; smack;
+    [constructor |
+     apply C2_Flagged_Object_Declaration_R; auto |
+     apply C2_Flagged_Object_Declaration; auto
+    ];
+    apply compile2_flagged_exp_f_correctness; auto.
+  Qed.
 
-Lemma compile2_flagged_object_declarations_f_correctness: forall st lo lo',
-  compile2_flagged_object_declarations_f st lo = lo' ->
-    compile2_flagged_object_declarations st lo lo'.
-Proof.
-  induction lo; smack; 
-  constructor; smack.
-  apply compile2_flagged_object_declaration_f_correctness; auto.   
-Qed.
+  Lemma compile2_flagged_object_declarations_f_correctness: forall st lo lo',
+    compile2_flagged_object_declarations_f st lo = lo' ->
+      compile2_flagged_object_declarations st lo lo'.
+  Proof.
+    induction lo; smack; 
+    constructor; smack.
+    apply compile2_flagged_object_declaration_f_correctness; auto.   
+  Qed.
 
-Lemma compile2_flagged_parameter_specification_f_correctness: forall param param',
-  compile2_flagged_parameter_specification_f param = param' ->
-    compile2_flagged_parameter_specification param param'.
-Proof.
-  smack;
-  destruct param;
-  constructor.  
-Qed.
+  Lemma compile2_flagged_parameter_specification_f_correctness: forall param param',
+    compile2_flagged_parameter_specification_f param = param' ->
+      compile2_flagged_parameter_specification param param'.
+  Proof.
+    smack;
+    destruct param;
+    constructor.  
+  Qed.
 
-Lemma compile2_flagged_parameter_specifications_f_correctness: forall lparam lparam',
-  compile2_flagged_parameter_specifications_f lparam = lparam' ->
-    compile2_flagged_parameter_specifications lparam lparam'.
-Proof.
-  induction lparam; smack;
-  constructor; smack.
-  apply compile2_flagged_parameter_specification_f_correctness; auto.
-Qed.
+  Lemma compile2_flagged_parameter_specifications_f_correctness: forall lparam lparam',
+    compile2_flagged_parameter_specifications_f lparam = lparam' ->
+      compile2_flagged_parameter_specifications lparam lparam'.
+  Proof.
+    induction lparam; smack;
+    constructor; smack.
+    apply compile2_flagged_parameter_specification_f_correctness; auto.
+  Qed.
 
 
-Scheme declaration_ind := Induction for declaration Sort Prop 
-                          with procedure_body_ind := Induction for procedure_body Sort Prop.
+  Scheme declaration_ind := Induction for declaration Sort Prop 
+                            with procedure_body_ind := Induction for procedure_body Sort Prop.
 
-Lemma compile2_flagged_declaration_f_correctness: forall d d' st,
-  compile2_flagged_declaration_f st d = Some d' ->
-    compile2_flagged_declaration st d d'.
-Proof.
-  apply (declaration_ind
-    (fun d: declaration => forall (d' : declaration_x) (st: symboltable),
-      compile2_flagged_declaration_f st d = Some d' ->
-      compile2_flagged_declaration st d d')
-    (fun p: procedure_body => forall (p': procedure_body_x) (st: symboltable),
-      compile2_flagged_procedure_body_f st p = Some p' ->
-      compile2_flagged_procedure_body st p p')
-    ); smack.
-- constructor.
-- constructor.
-  apply compile2_flagged_type_declaration_f_correctness; auto.
-- constructor.
-  apply compile2_flagged_object_declaration_f_correctness; auto.
-- remember (compile2_flagged_procedure_body_f st p) as x; 
-  destruct x; smack.
-  constructor; auto.
-- remember (compile2_flagged_declaration_f st d) as x;
-  remember (compile2_flagged_declaration_f st d0) as y;
-  destruct x, y; smack.  
-  constructor; smack.
-- remember (compile2_flagged_declaration_f st procedure_declarative_part) as x;
-  remember (compile2_flagged_stmt_f st procedure_statements) as y;
-  destruct x, y; smack.
-  constructor;
-  [ apply compile2_flagged_parameter_specifications_f_correctness | |
-    apply compile2_flagged_stmt_f_correctness
-  ]; auto.
-Qed.
+  Lemma compile2_flagged_declaration_f_correctness: forall d d' st,
+    compile2_flagged_declaration_f st d = Some d' ->
+      compile2_flagged_declaration st d d'.
+  Proof.
+    apply (declaration_ind
+      (fun d: declaration => forall (d' : declaration_x) (st: symboltable),
+        compile2_flagged_declaration_f st d = Some d' ->
+        compile2_flagged_declaration st d d')
+      (fun p: procedure_body => forall (p': procedure_body_x) (st: symboltable),
+        compile2_flagged_procedure_body_f st p = Some p' ->
+        compile2_flagged_procedure_body st p p')
+      ); smack.
+  - constructor.
+  - constructor.
+    apply compile2_flagged_type_declaration_f_correctness; auto.
+  - constructor.
+    apply compile2_flagged_object_declaration_f_correctness; auto.
+  - remember (compile2_flagged_procedure_body_f st p) as x; 
+    destruct x; smack.
+    constructor; auto.
+  - remember (compile2_flagged_declaration_f st d) as x;
+    remember (compile2_flagged_declaration_f st d0) as y;
+    destruct x, y; smack.  
+    constructor; smack.
+  - remember (compile2_flagged_declaration_f st procedure_declarative_part) as x;
+    remember (compile2_flagged_stmt_f st procedure_statements) as y;
+    destruct x, y; smack.
+    constructor;
+    [ apply compile2_flagged_parameter_specifications_f_correctness | |
+      apply compile2_flagged_stmt_f_correctness
+    ]; auto.
+  Qed.
 
-Lemma compile2_flagged_procedure_declaration_f_correctness: forall st p p',
-  compile2_flagged_procedure_body_f st p = Some p' ->
-    compile2_flagged_procedure_body st p p'.
-Proof.
-  intros;
-  destruct p; smack.
-  remember (compile2_flagged_declaration_f st procedure_declarative_part) as x;
-  remember (compile2_flagged_stmt_f st procedure_statements) as y;
-  destruct x, y; smack.  
-  constructor;
-  [ apply compile2_flagged_parameter_specifications_f_correctness |
-    apply compile2_flagged_declaration_f_correctness |
-    apply compile2_flagged_stmt_f_correctness 
-  ]; auto.
-Qed.
+  Lemma compile2_flagged_procedure_declaration_f_correctness: forall st p p',
+    compile2_flagged_procedure_body_f st p = Some p' ->
+      compile2_flagged_procedure_body st p p'.
+  Proof.
+    intros;
+    destruct p; smack.
+    remember (compile2_flagged_declaration_f st procedure_declarative_part) as x;
+    remember (compile2_flagged_stmt_f st procedure_statements) as y;
+    destruct x, y; smack.  
+    constructor;
+    [ apply compile2_flagged_parameter_specifications_f_correctness |
+      apply compile2_flagged_declaration_f_correctness |
+      apply compile2_flagged_stmt_f_correctness 
+    ]; auto.
+  Qed.
+
+End Checks_Generator_Function_Correctness_Proof.
+
+
+Section Checks_Generator_Function_Completeness_Proof.
+
+  Lemma compile2_flagged_exp_f_completeness: forall e e' checkflags st,
+    compile2_flagged_exp st checkflags e e' ->
+      compile2_flagged_exp_f st checkflags e = e'.
+  Proof.
+    apply (expression_ind
+      (fun e: expression => forall (e' : expression_x) (checkflags: check_flags) (st: symboltable),
+        compile2_flagged_exp   st checkflags e e' ->
+        compile2_flagged_exp_f st checkflags e = e')
+      (fun n: name => forall (n': name_x) (checkflags: check_flags) (st: symboltable),
+        compile2_flagged_name   st checkflags n n' ->
+        compile2_flagged_name_f st checkflags n = n')
+      ); smack;
+    match goal with
+    | [H: compile2_flagged_exp  _ _ ?e ?e' |- _] => inversion H; clear H; smack
+    | [H: compile2_flagged_name _ _ ?n ?n' |- _] => inversion H; clear H; smack
+    end;
+    repeat progress match goal with
+    | [H1:forall (e' : expression_x) (checkflags : check_flags) (st : symboltable),
+          compile2_flagged_exp _ _ ?e e' ->
+          compile2_flagged_exp_f _ _ ?e = e',
+       H2:compile2_flagged_exp _ _ ?e ?e1_flagged |- _] => specialize (H1 _ _ _ H2); smack
+    | [H1:forall (n' : name_x) (checkflags : check_flags) (st : symboltable),
+          compile2_flagged_name _ _ ?n n' ->
+          compile2_flagged_name_f _ _ ?n = n',
+       H2:compile2_flagged_name _ _ ?n ?n_flagged |- _] => specialize (H1 _ _ _ H2); smack
+    end; 
+    [ destruct b |
+      destruct u
+    ]; smack.
+  Qed.
+
+  Lemma compile2_flagged_name_f_completeness: forall st checkflags n n',
+    compile2_flagged_name st checkflags n n' ->
+      compile2_flagged_name_f st checkflags n = n'.
+  Proof.
+    intros.
+    destruct n;
+    match goal with
+    | [H: compile2_flagged_name _ _ ?n ?n' |- _] => inversion H; clear H; smack
+    end.
+    specialize (compile2_flagged_exp_f_completeness _ _ _ _ H7); smack.
+  Qed.
+
+  Lemma compile2_flagged_args_f_completeness: forall st params args args',
+    compile2_flagged_args st params args args' ->
+      compile2_flagged_args_f st params args = Some args'.
+  Proof.
+    induction params; smack;
+    match goal with
+    | [H: compile2_flagged_args _ _ ?args ?args' |- _] => inversion H; clear H; smack
+    end;
+    match goal with
+    | [H1: forall (args : list expression) (args' : list expression_x),
+           compile2_flagged_args _ ?params _ _ ->
+           compile2_flagged_args_f _ ?params _ = Some _,
+       H2: compile2_flagged_args _ ?params _ _ |- _] => specialize (H1 _ _ H2)
+    end;
+    match goal with
+    | [H: compile2_flagged_exp _ _ ?e ?e' |- _] => specialize (compile2_flagged_exp_f_completeness _ _ _ _ H); smack
+    end.
+  Qed.
+
+  Lemma compile2_flagged_stmt_f_completeness: forall st c c',
+    compile2_flagged_stmt st c c' ->
+      compile2_flagged_stmt_f st c = Some c'.
+  Proof.
+    induction c; smack;
+    match goal with
+    | [H: compile2_flagged_stmt _ ?c ?c' |- _] => inversion H; clear H; smack
+    end;
+    repeat progress match goal with
+    | [H: compile2_flagged_exp  _ _ ?e ?e' |- _] => specialize (compile2_flagged_exp_f_completeness  _ _ _ _ H); clear H
+    | [H: compile2_flagged_name _ _ ?n ?n' |- _] => specialize (compile2_flagged_name_f_completeness _ _ _ _ H); clear H
+    | [H1: forall c' : statement_x,
+           compile2_flagged_stmt _ ?c _ ->
+           compile2_flagged_stmt_f _ ?c = Some _,
+       H2: compile2_flagged_stmt _ ?c _ |- _ ] => specialize (H1 _ H2)
+    end; smack.
+     match goal with
+    | [H: compile2_flagged_args _ _ _ _ |- _ ] => specialize (compile2_flagged_args_f_completeness _ _ _ _ H)
+    end; smack.
+  Qed.
+
+  Lemma compile2_flagged_type_declaration_f_completeness: forall t t',
+    compile2_flagged_type_declaration t t' ->
+      compile2_flagged_type_declaration_f t = t'.
+  Proof.
+    destruct t; intros;
+    match goal with
+    | [H: compile2_flagged_type_declaration _ _ |- _] => inversion H; smack
+    end.
+  Qed.
+
+  Lemma compile2_flagged_object_declaration_f_completeness: forall st o o',
+    compile2_flagged_object_declaration st o o' ->
+      compile2_flagged_object_declaration_f st o = o'.
+  Proof.
+    intros;
+    functional induction compile2_flagged_object_declaration_f st o;
+    match goal with
+    | [H: compile2_flagged_object_declaration _ _ _ |- _] => inversion H; smack
+    end;
+    match goal with
+    | [H: compile2_flagged_exp _ _ _ _ |- _] => 
+        specialize (compile2_flagged_exp_f_completeness _ _ _ _ H); smack
+    end.
+  Qed.
+
+  Lemma compile2_flagged_object_declarations_f_completeness: forall st lo lo',
+    compile2_flagged_object_declarations st lo lo' ->
+      compile2_flagged_object_declarations_f st lo = lo'.
+  Proof.
+    induction lo; smack;
+    match goal with
+    | [H: compile2_flagged_object_declarations _ _ _ |- _] => inversion H; clear H; smack
+    end;
+    match goal with
+    | [H: compile2_flagged_object_declaration _ ?o ?o' |- _] => 
+        specialize (compile2_flagged_object_declaration_f_completeness _ _ _ H); smack
+    end;
+    specialize (IHlo _ H5); smack.
+  Qed.
+
+  Lemma compile2_flagged_parameter_specification_f_completeness: forall param param',
+    compile2_flagged_parameter_specification param param' ->
+      compile2_flagged_parameter_specification_f param = param'.
+  Proof.
+    intros;
+    inversion H; auto.
+  Qed.
+
+  Lemma compile2_flagged_parameter_specifications_f_completeness: forall lparam lparam',
+    compile2_flagged_parameter_specifications lparam lparam' ->
+      compile2_flagged_parameter_specifications_f lparam = lparam'.
+  Proof.
+    induction lparam; intros;
+    inversion H; auto.
+    specialize (IHlparam _ H4).
+    match goal with
+    | [H: compile2_flagged_parameter_specification _ _ |- _] => 
+        specialize (compile2_flagged_parameter_specification_f_completeness _ _ H); smack
+    end.
+  Qed.
+
+  Lemma compile2_flagged_declaration_f_completeness: forall d d' st,
+    compile2_flagged_declaration st d d' ->
+      compile2_flagged_declaration_f st d = Some d'.
+  Proof.
+    apply (declaration_ind
+      (fun d: declaration => forall (d' : declaration_x) (st: symboltable),
+        compile2_flagged_declaration st d d' ->
+        compile2_flagged_declaration_f st d = Some d')
+      (fun p: procedure_body => forall (p': procedure_body_x) (st: symboltable),
+        compile2_flagged_procedure_body st p p' ->
+        compile2_flagged_procedure_body_f st p = Some p')
+      ); smack;
+    match goal with
+    | [H: compile2_flagged_declaration _ _ _ |- _] => inversion H; clear H; smack
+    | [H: compile2_flagged_procedure_body _ _ _ |- _] => inversion H; clear H; smack
+    end;
+    repeat progress match goal with
+    | [H: compile2_flagged_type_declaration _ _ |- _] => 
+        specialize (compile2_flagged_type_declaration_f_completeness _ _ H); smack
+    | [H: compile2_flagged_object_declaration _ _ _ |- _] =>
+        specialize (compile2_flagged_object_declaration_f_completeness _ _ _ H); smack
+    | [H: compile2_flagged_parameter_specifications _ _ |- _] =>
+        specialize (compile2_flagged_parameter_specifications_f_completeness _ _ H); clear H; smack
+    | [H: compile2_flagged_stmt _ _ _ |- _] =>
+        specialize (compile2_flagged_stmt_f_completeness _ _ _ H); clear H; smack
+    | [H1: forall (p' : procedure_body_x) (st : symboltable),
+           compile2_flagged_procedure_body _ ?p _ ->
+           compile2_flagged_procedure_body_f _ ?p = Some _,
+       H2: compile2_flagged_procedure_body _ ?p _ |- _] =>
+        specialize (H1 _ _ H2); smack
+    | [H1: forall (d' : declaration_x) (st : symboltable),
+           compile2_flagged_declaration _ ?d _ ->
+           compile2_flagged_declaration_f _ ?d = Some _,
+       H2: compile2_flagged_declaration _ ?d _ |- _] => 
+        specialize (H1 _ _ H2); clear H2; smack
+    end.
+  Qed.
+
+  Lemma compile2_flagged_procedure_declaration_f_completeness: forall st p p',
+    compile2_flagged_procedure_body st p p' ->
+      compile2_flagged_procedure_body_f st p = Some p'.
+  Proof.
+    intros;
+    destruct p.
+    match goal with
+    [H: compile2_flagged_procedure_body _ _ _ |- _] => inversion H; clear H; smack
+    end;
+    repeat progress match goal with
+    | [H: compile2_flagged_parameter_specifications _ _ |- _] =>
+        specialize (compile2_flagged_parameter_specifications_f_completeness _ _ H); clear H; smack
+    | [H: compile2_flagged_stmt _ _ _ |- _] =>
+        specialize (compile2_flagged_stmt_f_completeness _ _ _ H); clear H; smack
+    | [H: compile2_flagged_declaration _ _ _ |- _] => 
+        specialize (compile2_flagged_declaration_f_completeness _ _ _ H); clear H; smack
+    end.
+  Qed.
+
+End Checks_Generator_Function_Completeness_Proof.
 
 
 (** * Lemmas *)
