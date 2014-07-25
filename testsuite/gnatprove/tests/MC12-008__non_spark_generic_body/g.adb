@@ -1,7 +1,6 @@
 with Ada.Text_IO;
 package body G
---  Aspect here currently illegal. Why?
---  with SPARK_Mode => Off
+  with SPARK_Mode => Off
 is
    procedure Op (A : in out T)
    is
@@ -13,10 +12,9 @@ is
       if A = 1 then
          goto The_End;
       end if;
-      
+
       Ada.Text_IO.Put_Line ("Final A is " & A'Img);
-      
+
       <<The_End>> null;
    end Op;
 end G;
-

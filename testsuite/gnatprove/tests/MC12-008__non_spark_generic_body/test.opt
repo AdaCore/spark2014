@@ -1,1 +1,0 @@
-ALL XFAIL instantiation of non-SPARK generic body raises errors

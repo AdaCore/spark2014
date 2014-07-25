@@ -1,10 +1,7 @@
 --  Package P2
 --
 --  As P, but "expands out" the instantiation of the generic G
---  "by hand" into a locally nested package.  Here, setting
---  SPARK_Mode => Off in the body of G works OK, which is
---  inconsistent with the way that the generic version
---  (doesn't) work...
+--  "by hand" into a locally nested package.
 package body P2
   with SPARK_Mode => On
 is
@@ -22,13 +19,13 @@ is
       is
       begin
          A := A + 1;
-         
+
          --  Something not legal SPARK here should be OK,
          --  since this package body is SPARK_Mode => Off
          if A = 1 then
             goto The_End;
          end if;
-         
+
          <<The_End>> null;
       end Op;
    end G;
@@ -39,5 +36,5 @@ is
    begin
       G.Op (X);
    end Do_It1;
-   
+
 end P2;
