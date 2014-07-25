@@ -1,6 +1,7 @@
 discrimrec.adb:9:24: info: discriminant check proved
 discrimrec.adb:11:53: info: discriminant check proved
-discrimrec.adb:11:53: warning: range check might fail
+discrimrec.adb:11:63: info: division check proved
+discrimrec.adb:11:63: info: range check proved
 discrimrec.adb:16:14: info: discriminant check proved
 discrimrec.adb:17:14: info: discriminant check proved
 discrimrec.adb:17:40: info: discriminant check proved
