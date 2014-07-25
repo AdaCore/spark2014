@@ -3,7 +3,7 @@
 --           Copyright (C) 2010-2014, Free Software Foundation, Inc.        --
 ------------------------------------------------------------------------------
 
-pragma Ada_2005;
+pragma Ada_2012;
 
 with Ada.containers.Ordered_Sets;
 with Ada.Containers.Vectors;
@@ -37,25 +37,6 @@ procedure Tranxgen is
    -- Messages, fields and subfields --
    ------------------------------------
 
-   --  Each numeric field in a protocol message is split in a number of
-   --  subfields that never cross byte boundaries.
-
-   type Subfield is record
-      Name      : Unbounded_String;
-      --  Subfield name
-
-      Shift     : Natural;
-      --  Bit count the subfield must be shifted left when constructing the
-      --  field's value.
-
-      First_Bit : Natural;
-      Length    : Natural;
-      --  First bit offset and length of subfield in message
-   end record;
-
-   package Subfield_Vectors is new Ada.Containers.Vectors
-     (Element_Type => Subfield, Index_Type => Natural);
-
    type Field_Class_T is (F_Integer, F_Modular, F_Private);
    Default_Field_Class : constant Field_Class_T := F_Integer;
 
@@ -69,13 +50,9 @@ procedure Tranxgen is
       F_Type    : Unbounded_String;
       --  Field type, if specified in source file
 
+      First_Bit : Natural;
       Length    : Natural;
-      --  Total field length in bits
-
-      Subfields : Subfield_Vectors.Vector;
-      --  Subfields (always at least one). The ranges First_Bit ..
-      --  First_Bit + Length - 1 of successive subfields are contiguous within
-      --  the message, and the sum of the lengths of these ranges is Length.
+      --  Bit offset and total bit length
 
       Export : Boolean;
       --  True if C accessors should be generated
@@ -238,9 +215,6 @@ procedure Tranxgen is
       P : access procedure (N : Node));
    --  Apply P to N and each of its (element) siblings
 
-   function Subfield_Type_Name (Subfield_Size : Natural) return String;
-   --  Return the name of a power-of-two modular type of the given size
-
    function Get_Attribute
      (N       : Node;
       Name    : String;
@@ -263,7 +237,6 @@ procedure Tranxgen is
       P_C       : Output.Unit;
       --  C binding
 
-      Subfield_Sizes : Natural_Sets.Set;
       Types_Unit : Unbounded_String;
    end record;
 
@@ -416,29 +389,6 @@ procedure Tranxgen is
       procedure Process_Literal (N : Node);
       --  Process a <literal> element
 
-      procedure Output_Literal (LC : Literal_Vectors.Cursor);
-      --  Generate declaration for literal
-
-      --------------------
-      -- Output_Literal --
-      --------------------
-
-      procedure Output_Literal (LC : Literal_Vectors.Cursor) is
-         L      : Literal renames Literal_Vectors.Element (LC);
-         L_Name : constant String :=
-                    Prefix &
-                      Head (To_String (L.Name), Max_Literal_Name_Length);
-      begin
-         PL (Ctx.P_Spec, L_Name
-                           & " : constant := "
-                           & Img (L.Value, Base => L.Base) & ";");
-
-         if Export_Prefix /= null then
-            PL (Ctx.P_C, "#define " & L_Name
-                & " " & Img (L.Value, Base => L.Base, L => Lang_C));
-         end if;
-      end Output_Literal;
-
       ---------------------
       -- Process_Literal --
       ---------------------
@@ -482,7 +432,22 @@ procedure Tranxgen is
          NL  (Ctx.P_C);
       end if;
 
-      Literals.Iterate (Output_Literal'Access);
+      for L of Literals loop
+         declare
+            L_Name : constant String :=
+                       Prefix &
+                         Head (To_String (L.Name), Max_Literal_Name_Length);
+         begin
+            PL (Ctx.P_Spec, L_Name
+                              & " : constant := "
+                              & Img (L.Value, Base => L.Base) & ";");
+
+            if Export_Prefix /= null then
+               PL (Ctx.P_C, "#define " & L_Name
+                   & " " & Img (L.Value, Base => L.Base, L => Lang_C));
+            end if;
+         end;
+      end loop;
    end Process_Enum;
 
    ---------------------
@@ -495,18 +460,12 @@ procedure Tranxgen is
       Max_Field_Name_Length    : Natural := 0;
       --  Length of longest field name
 
-      Max_Subfield_Name_Length : Natural := 0;
-      --  Length of longest subfield name
-
       Current_Bit_Offset : Natural := 0;
 
       Fields : Field_Vectors.Vector;
 
       function Field_Type (F : Field; L : Lang := Lang_Ada) return String;
       --  Return type name for field F (used in accessors)
-
-      function Subfield_Type (F : Field; SF : Subfield) return String;
-      --  Return type name for subfield SF in F (used in component declaration)
 
       procedure Process_Field (N : Node);
       --  Process <field> element
@@ -522,22 +481,6 @@ procedure Tranxgen is
          Field_Length     : constant Natural :=
                               Integer'Value (Get_Attribute (N, "length"));
 
-         Remain_Length   : Natural := Field_Length;
-         --  Count of bits to be assigned to further subfields
-
-         Subfields       : Subfield_Vectors.Vector;
-
-         Subfield        : Natural := 0;
-         --  Index of current subfield
-
-         Subfield_Length : Natural;
-         --  Length of current subfield
-
-         Subfield_Name   : Unbounded_String;
-         --  Name of current subfield
-
-      --  Start of processing for Process_Field
-
       begin
          if Field_Class_Attr = "" then
             Field_Class := Default_Field_Class;
@@ -545,48 +488,13 @@ procedure Tranxgen is
             Field_Class := Field_Class_T'Value ("F_" & Field_Class_Attr);
          end if;
 
-         while Remain_Length > 0 loop
-            --  Length of next subfield is remaining length, but not going
-            --  further than the end of the current byte.
-
-            Subfield_Length :=
-              Natural'Min (Remain_Length, 8 - Current_Bit_Offset mod 8);
-
-            if Field_Class = F_Private
-                 and then
-               Current_Bit_Offset mod 8 /= 0
-                 and then
-               Remain_Length /= Subfield_Length
-            then
-               raise Constraint_Error with
-                 "private field spanning multiple bytes must be byte aligned";
-            end if;
-
-            Subfield_Name := To_Unbounded_String (Field_Name);
-
-            --  For the case of a field that has multiple subfields, suffix
-            --  field name with subfield index, and ensure we generate an
-            --  appropriate internal subfield type.
-
-            if Subfield > 0 or else Subfield_Length < Remain_Length then
-               Append (Subfield_Name, "_" & Img (Subfield));
-               Ctx.Subfield_Sizes.Include (Subfield_Length);
-            end if;
-
-            Max_Subfield_Name_Length :=
-              Natural'Max (Length (Subfield_Name), Max_Subfield_Name_Length);
-
-            Subfields.Append
-              ((Name      => Subfield_Name,
-                First_Bit => Current_Bit_Offset,
-                Length    => Subfield_Length,
-                Shift     => Remain_Length - Subfield_Length));
-
-            Current_Bit_Offset := Current_Bit_Offset + Subfield_Length;
-            Remain_Length      := Remain_Length - Subfield_Length;
-
-            Subfield := Subfield + 1;
-         end loop;
+         if Field_Class = F_Private
+              and then
+            Current_Bit_Offset mod 8 /= 0
+         then
+            raise Constraint_Error with
+              "private field spanning multiple bytes must be byte aligned";
+         end if;
 
          Max_Field_Name_Length :=
            Natural'Max (Field_Name'Length, Max_Field_Name_Length);
@@ -595,9 +503,10 @@ procedure Tranxgen is
            ((Name      => To_Unbounded_String (Field_Name),
              Class     => Field_Class,
              F_Type    => To_Unbounded_String (Get_Attribute (N, "type")),
+             First_Bit => Current_Bit_Offset,
              Length    => Field_Length,
-             Subfields => Subfields,
              Export    => Field_Length <= 32));
+         Current_Bit_Offset := Current_Bit_Offset + Field_Length;
       end Process_Field;
 
       ----------------
@@ -626,21 +535,6 @@ procedure Tranxgen is
                return To_String (F.F_Type);
          end case;
       end Field_Type;
-
-      -------------------
-      -- Subfield_Type --
-      -------------------
-
-      function Subfield_Type (F : Field; SF : Subfield) return String is
-      begin
-         if F.Subfields.Length = 1 then
-            return Field_Type (F);
-
-         else
-            pragma Assert (F.Class /= F_Private);
-            return Subfield_Type_Name (SF.Length);
-         end if;
-      end Subfield_Type;
 
       First_Field : constant Node := First_Element_Child (N);
 
@@ -677,11 +571,9 @@ procedure Tranxgen is
 
       --  Generate accessor declarations and bodies
 
-      Accessors : declare
-         procedure Field_Accessors (FC : Field_Vectors.Cursor) is
-            F           : Field renames Field_Vectors.Element (FC);
+      for F of Fields loop
+         Field_Accessors : declare
             FT          : constant String := Field_Type (F);
-            Convert     : constant Boolean := F.Subfields.Length /= 1;
 
             Field_Name  : constant String := To_String (Prefix & F.Name);
 
@@ -700,8 +592,7 @@ procedure Tranxgen is
                             & " (P : System.Address; V : "
                             & Field_Type (F) & ")";
 
-            Set_Contract : constant String :=
-                            "  with Depends => (null => (P, V))";
+            Set_Contract : constant String := "Depends => (null => (P, V))";
             --  Dependency contract that should be used to prevent flow
             --  analysis warnings about useless calls to the imported
             --  procedures, and useless computations of their actual
@@ -710,10 +601,6 @@ procedure Tranxgen is
             procedure Generate_M_Decl;
             --  Generate declaration of object M and its address clause
 
-            procedure Generate_Private_Prologue;
-            --  Generate an object declaration for an FT object at the correct
-            --  location within M.
-
             ---------------------
             -- Generate_M_Decl --
             ---------------------
@@ -721,36 +608,19 @@ procedure Tranxgen is
             procedure Generate_M_Decl is
             begin
                II (Ctx.P_Body);
-               PL (Ctx.P_Body, "M : " & Message_Name & ";");
-               PL (Ctx.P_Body, "for M'Address use P;");
-               PL (Ctx.P_Body, "pragma Import (Ada, M);");
+               PL (Ctx.P_Body,
+                 "M : " & Message_Name & " with Address => P, Import;");
             end Generate_M_Decl;
-
-            -------------------------------
-            -- Generate_Private_Prologue --
-            -------------------------------
-
-            procedure Generate_Private_Prologue is
-            begin
-               PL (Ctx.P_Body,
-                   Field_Name & "_Storage : " & FT & ";");
-               PL (Ctx.P_Body,
-                   "for " & Field_Name & "_Storage'Address use M."
-                   & To_String (F.Subfields.Element (0).Name) & "'Address;");
-               PL (Ctx.P_Body,
-                   "pragma Import (Ada, " & Field_Name & "_Storage);");
-               DI (Ctx.P_Body);
-               PL (Ctx.P_Body, "begin");
-               II (Ctx.P_Body);
-            end Generate_Private_Prologue;
 
          --  Start of processing for Field_Accessors
 
          begin
             NL (Ctx.P_Spec);
-            PL (Ctx.P_Spec, Get_Profile & ";");
+            PL (Ctx.P_Spec, Get_Profile);
+            PL (Ctx.P_Spec, "  with Inline;");
             PL (Ctx.P_Spec, Set_Profile);
-            PL (Ctx.P_Spec, Set_Contract & ";");
+            PL (Ctx.P_Spec, "  with Inline, " & Set_Contract & ";");
+
             if Export_Prefix /= null and then F.Export then
                declare
                   C_Get_Name : constant String :=
@@ -780,56 +650,10 @@ procedure Tranxgen is
             PL (Ctx.P_Body, Get_Profile & " is");
             Generate_M_Decl;
 
-            if Convert and then F.Class = F_Private then
-               Generate_Private_Prologue;
-               PL (Ctx.P_Body, "return " & Field_Name & "_Storage;");
-               goto End_Getter;
-            end if;
-
             DI (Ctx.P_Body);
             PL (Ctx.P_Body, "begin");
             II (Ctx.P_Body);
-            P  (Ctx.P_Body, "return ");
-
-            Get_Subfields : declare
-               First_Subfield : Boolean := True;
-               --  Set True for the first subfield only
-
-               procedure Get_Subfield (SFC : Subfield_Vectors.Cursor);
-               --  Generate subexpression for subfield
-
-               procedure Get_Subfield (SFC : Subfield_Vectors.Cursor) is
-                  SF      : Subfield renames Subfield_Vectors.Element (SFC);
-                  SFT     : constant String := Subfield_Type (F, SF);
-               begin
-                  if not First_Subfield then
-                     NL (Ctx.P_Body);
-                     P  (Ctx.P_Body, "     + ");
-                  end if;
-
-                  if Convert then
-                     P  (Ctx.P_Body, FT & " (");
-                  end if;
-                  P  (Ctx.P_Body, "M." & To_String (SF.Name));
-                  if Convert then
-                     P  (Ctx.P_Body, ")");
-                  end if;
-
-                  if SF.Shift > 0 then
-                     P  (Ctx.P_Body, " * 2**" & Img (SF.Shift));
-                  end if;
-
-                  First_Subfield := False;
-               end Get_Subfield;
-
-            --  Start of processing for Get_Subfields
-
-            begin
-               F.Subfields.Iterate (Get_Subfield'Access);
-               PL (Ctx.P_Body, ";");
-            end Get_Subfields;
-
-            <<End_Getter>>
+            PL (Ctx.P_Body, "return M." & To_String (F.Name) & ";");
             DI (Ctx.P_Body);
             PL (Ctx.P_Body, "end " & Field_Name & ";");
 
@@ -839,171 +663,48 @@ procedure Tranxgen is
             PL (Ctx.P_Body, Set_Profile & " is");
             Generate_M_Decl;
 
-            if Convert and then F.Class = F_Private then
-               Generate_Private_Prologue;
-               PL (Ctx.P_Body, Field_Name & "_Storage := V;");
-               goto End_Setter;
-            end if;
-
             DI (Ctx.P_Body);
             PL (Ctx.P_Body, "begin");
             II (Ctx.P_Body);
-
-            Set_Subfields : declare
-               Prev_Shift : Natural := 0;
-               --  Shift amount of previous subfield
-
-               procedure Set_Subfield (SFC : Subfield_Vectors.Cursor);
-               --  Generate assignment to subfield
-
-               ------------------
-               -- Set_Subfield --
-               ------------------
-
-               procedure Set_Subfield (SFC : Subfield_Vectors.Cursor) is
-                  SF      : Subfield renames Subfield_Vectors.Element (SFC);
-                  SFT     : constant String := Subfield_Type (F, SF);
-                  Convert : constant Boolean := FT /= SFT;
-
-                  SF_Expr : Unbounded_String;
-
-               begin
-                  P  (Ctx.P_Body, "M." & To_String (SF.Name) & " := ");
-                  if Convert then
-                     P  (Ctx.P_Body, SFT & " (");
-                  end if;
-
-                  SF_Expr := To_Unbounded_String ("V");
-                  if SF.Shift > 0 then
-                     Append (SF_Expr, " / 2**" & Img (SF.Shift));
-                  end if;
-                  if Prev_Shift > 0 then
-                     if SF.Shift > 0 then
-                        SF_Expr := "(" & SF_Expr & ")";
-                     end if;
-                     SF_Expr := SF_Expr & " mod 2**"
-                                  & Img (Prev_Shift - SF.Shift);
-                  end if;
-                  Prev_Shift := SF.Shift;
-                  P  (Ctx.P_Body, To_String (SF_Expr));
-
-                  if Convert then
-                     P  (Ctx.P_Body, ")");
-                  end if;
-                  PL (Ctx.P_Body, ";");
-               end Set_Subfield;
-
-            --  Start of processing for Set_Subfields
-
-            begin
-               F.Subfields.Iterate (Set_Subfield'Access);
-            end Set_Subfields;
-
-            <<End_Setter>>
+            PL (Ctx.P_Body, "M." & To_String (F.Name) & " := V;");
             DI (Ctx.P_Body);
             PL (Ctx.P_Body, "end Set_" & Field_Name & ";");
-
          end Field_Accessors;
-
-      --  Start of processing for Accessors
-
-      begin
-         Fields.Iterate (Field_Accessors'Access);
-      end Accessors;
+      end loop;
 
       --  Generate record declaration
 
       NL (Ctx.P_Private);
       PL (Ctx.P_Private, "type " & Message_Name & " is record");
       II (Ctx.P_Private);
-      Field_Declarations : declare
-         procedure Field_Decl (FC : Field_Vectors.Cursor);
-         --  Generate component declarations for all subfields of field
 
-         ----------------
-         -- Field_Decl --
-         ----------------
-
-         procedure Field_Decl (FC : Field_Vectors.Cursor) is
-            F : Field renames Field_Vectors.Element (FC);
-
-            procedure Subfield_Decl (SFC : Subfield_Vectors.Cursor);
-            --  Generate component declaration for subfield
-
-            -------------------
-            -- Subfield_Decl --
-            -------------------
-
-            procedure Subfield_Decl (SFC : Subfield_Vectors.Cursor) is
-               SF : Subfield renames Subfield_Vectors.Element (SFC);
-            begin
-               PL (Ctx.P_Private,
-                   Head (To_String (SF.Name), Max_Subfield_Name_Length)
-                   & " : " & Subfield_Type (F, SF)
-                   & ";");
-            end Subfield_Decl;
-
-         --  Start of processing for Field_Decl
-
-         begin
-            F.Subfields.Iterate (Subfield_Decl'Access);
-         end Field_Decl;
-
-      --  Start of processing for Field_Declarations
-
-      begin
-         Fields.Iterate (Field_Decl'Access);
-      end Field_Declarations;
+      for F of Fields loop
+         PL (Ctx.P_Private,
+             Head (To_String (F.Name), Max_Field_Name_Length)
+             & " : " & Field_Type (F) & ";");
+      end loop;
 
       DI (Ctx.P_Private);
-      PL (Ctx.P_Private, "end record;");
+      PL (Ctx.P_Private, "end record");
+      PL (Ctx.P_Private, "with");
+      PL (Ctx.P_Private, "  Alignment            => 1,");
+      PL (Ctx.P_Private, "  Bit_Order            => System.High_Order_First,");
+      PL (Ctx.P_Private, "  Scalar_Storage_Order => System.High_Order_First;");
 
       --  Generate rep clause
 
       NL (Ctx.P_Private);
-      PL (Ctx.P_Private, "for " & Message_Name & "'Alignment use 1;");
-      PL (Ctx.P_Private, "for " & Message_Name & "'Bit_Order"
-                    & " use System.High_Order_First;");
       PL (Ctx.P_Private, "for " & Message_Name & " use record");
       II (Ctx.P_Private);
 
-      Representation_Clauses : declare
-         procedure Field_Rep_Clause (FC : Field_Vectors.Cursor);
-         --  Generate representation clauses for all subfields of field
-
-         procedure Subfield_Rep_Clause (SFC : Subfield_Vectors.Cursor);
-         --  Generate representation clause for subfield
-
-         ----------------------
-         -- Field_Rep_Clause --
-         ----------------------
-
-         procedure Field_Rep_Clause (FC : Field_Vectors.Cursor) is
-            F : Field renames Field_Vectors.Element (FC);
-         begin
-            F.Subfields.Iterate (Subfield_Rep_Clause'Access);
-         end Field_Rep_Clause;
-
-         -------------------------
-         -- Subfield_Rep_Clause --
-         -------------------------
-
-         procedure Subfield_Rep_Clause (SFC : Subfield_Vectors.Cursor) is
-            SF : Subfield renames Subfield_Vectors.Element (SFC);
-         begin
-            PL (Ctx.P_Private,
-                      Head (To_String (SF.Name), Max_Subfield_Name_Length)
-                      & " at "    & Img (SF.First_Bit / 8)
-                      & " range " & Img (SF.First_Bit mod 8)
-                      & " .. "    & Img (SF.First_Bit mod 8 + SF.Length - 1)
-                      & ";");
-         end Subfield_Rep_Clause;
-
-      --  Start of processing for Representation_Clauses
-
-      begin
-         Fields.Iterate (Field_Rep_Clause'Access);
-      end Representation_Clauses;
+      for F of Fields loop
+         PL (Ctx.P_Private,
+                   Head (To_String (F.Name), Max_Field_Name_Length)
+                   & " at "    & Img (4 * (F.First_Bit / 32))
+                   & " range " & Img (F.First_Bit mod 32)
+                   & " .. "    & Img (F.First_Bit mod 32 + F.Length - 1)
+                   & ";");
+      end loop;
 
       DI (Ctx.P_Private);
       PL (Ctx.P_Private, "end record;");
@@ -1150,25 +851,6 @@ procedure Tranxgen is
       PL (Ctx.P_Spec, "private");
       II (Ctx.P_Spec);
 
-      Subfield_Types : declare
-         procedure Declare_Subfield_Type (SFTC : Natural_Sets.Cursor);
-         --  Declare modular type for subfield size denoted by SFTC
-
-         ---------------------------
-         -- Declare_Subfield_Type --
-         ---------------------------
-
-         procedure Declare_Subfield_Type (SFTC : Natural_Sets.Cursor)  is
-            Subfield_Size : Natural renames Natural_Sets.Element (SFTC);
-         begin
-            PL (Ctx.P_Spec, "type " & Subfield_Type_Name (Subfield_Size)
-                & " is mod 2**"  & Img (Subfield_Size) & ";");
-         end Declare_Subfield_Type;
-
-      begin
-         Ctx.Subfield_Sizes.Iterate (Declare_Subfield_Type'Access);
-      end Subfield_Types;
-
       Generate_Output : declare
          use Ada.Streams.Stream_IO;
 
@@ -1187,15 +869,6 @@ procedure Tranxgen is
          end if;
       end Generate_Output;
    end Process_Package;
-
-   ------------------------
-   -- Subfield_Type_Name --
-   ------------------------
-
-   function Subfield_Type_Name (Subfield_Size : Natural) return String is
-   begin
-      return "Bits_" & Img (Subfield_Size);
-   end Subfield_Type_Name;
 
    -------------------
    -- Walk_Siblings --
