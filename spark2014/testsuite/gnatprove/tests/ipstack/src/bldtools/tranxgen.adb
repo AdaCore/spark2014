@@ -1040,7 +1040,7 @@ procedure Tranxgen is
          begin
             case L is
                when Lang_Ada =>
-                  PL (U, "-- " & S);
+                  PL (U, "--  " & S);
                when Lang_C =>
                   PL (U, "/* " & S & (1 .. 78 - S'Length - 5 => ' ') & "*/");
             end case;
