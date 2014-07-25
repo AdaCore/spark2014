@@ -1550,8 +1550,13 @@ package body Gnat2Why.Subprograms is
       Classwide_Post_Assume : W_Prog_Id;
       Inherited_Post_Check  : W_Prog_Id;
 
-      Why_Body              : W_Prog_Id := New_Void;
-      Post_Checks           : W_Prog_Id;
+      Why_Body                : W_Prog_Id := New_Void;
+      Classwide_Pre_RTE       : W_Prog_Id := New_Void;
+      Classwide_Weaker_Pre    : W_Prog_Id := New_Void;
+      Weaker_Pre              : W_Prog_Id := New_Void;
+      Stronger_Post           : W_Prog_Id := New_Void;
+      Classwide_Post_RTE      : W_Prog_Id := New_Void;
+      Stronger_Classwide_Post : W_Prog_Id := New_Void;
 
    begin
       Open_Theory (File,
@@ -1618,9 +1623,10 @@ package body Gnat2Why.Subprograms is
       --  run-time error in an empty context.
 
       if not Classwide_Pre_List.Is_Empty then
-         Why_Body := Sequence
-           ((1 => Why_Body,
-             2 => +Compute_Spec (Params, Classwide_Pre_List, EW_Prog)));
+         Classwide_Pre_RTE :=
+           +Compute_Spec (Params, Classwide_Pre_List, EW_Prog);
+         Classwide_Pre_RTE :=
+           New_Abstract_Expr (Expr => Classwide_Pre_RTE, Post => True_Pred);
       end if;
 
       --  If E is overriding another subprogram, check that its specified
@@ -1639,15 +1645,15 @@ package body Gnat2Why.Subprograms is
             Reason   => VC_Weaker_Classwide_Pre,
             Kind     => EW_Assert);
 
-         Why_Body := Sequence
-           ((1 => Why_Body,
-             2 => New_Comment (Comment =>
+         Classwide_Weaker_Pre := Sequence
+           ((1 => New_Comment (Comment =>
                                NID ("Checking that class-wide precondition is"
                                   & " implied by inherited precondition")),
-             3 => Inherited_Pre_Assume,
-             4 => Classwide_Pre_Check));
+             2 => Inherited_Pre_Assume,
+             3 => Classwide_Pre_Check));
 
-         Why_Body := New_Abstract_Expr (Expr => Why_Body, Post => True_Pred);
+         Classwide_Weaker_Pre :=
+           New_Abstract_Expr (Expr => Classwide_Weaker_Pre, Post => True_Pred);
       end if;
 
       --  If E has a specific precondition, check that it is weaker than the
@@ -1669,7 +1675,7 @@ package body Gnat2Why.Subprograms is
                            VC_Weaker_Pre),
             Kind     => EW_Assert);
 
-         Why_Body := Sequence
+         Weaker_Pre := Sequence
            ((1 => Why_Body,
              2 => New_Comment (Comment =>
                                NID ("Checking that precondition is"
@@ -1677,7 +1683,8 @@ package body Gnat2Why.Subprograms is
              3 => Classwide_Pre_Assume,
              4 => Pre_Check));
 
-         Why_Body := New_Abstract_Expr (Expr => Why_Body, Post => True_Pred);
+         Weaker_Pre :=
+           New_Abstract_Expr (Expr => Weaker_Pre, Post => True_Pred);
       end if;
 
       --  If E has a specific postcondition, check that it is stronger than the
@@ -1709,7 +1716,7 @@ package body Gnat2Why.Subprograms is
             Reason   => VC_Stronger_Post,
             Kind     => EW_Assert);
 
-         Post_Checks := Sequence
+         Stronger_Post := Sequence
            ((1 => New_Comment (Comment =>
                                  NID ("Simulate static call to subprogram "
                                  & """" & Get_Name_String (Chars (E)) & """")),
@@ -1721,31 +1728,22 @@ package body Gnat2Why.Subprograms is
              5 => Post_Assume,
              6 => Classwide_Post_Check));
 
-         Post_Checks :=
-           New_Abstract_Expr (Expr => Post_Checks, Post => True_Pred);
-
-         Why_Body := Sequence (Why_Body, Post_Checks);
+         Stronger_Post :=
+           New_Abstract_Expr (Expr => Stronger_Post, Post => True_Pred);
       end if;
 
       --  If E is overriding another subprogram, check that its specified
       --  classwide postcondition is stronger than the inherited one. Also
       --  check that the class-wide postcondition cannot raise runtime errors.
-      --  To that end, perform equivalent effects of call in context of
-      --  precondition for dispatching call.
+      --  To that end, perform equivalent effects of call in an empty context.
+      --  Note that we should *not* assume the dispatching precondition for
+      --  this check, as this would not be transitive.
 
       if not Classwide_Post_List.Is_Empty then
-         Classwide_Pre_Assume :=
-           New_Assume_Statement (Post =>
-             Get_Dispatching_Contract (Params, E, Name_Precondition));
-
-         Call_Effects := New_Havoc_Statement
-           (Ada_Node => E,
-            Effects  => +Compute_Effects (E, Global_Params => True));
-
-         Post_Checks := Sequence
-           ((1 => Classwide_Pre_Assume,
-             2 => Call_Effects,
-             3 => +Compute_Spec (Params, Classwide_Post_List, EW_Prog)));
+         Classwide_Post_RTE :=
+           +Compute_Spec (Params, Classwide_Post_List, EW_Prog);
+         Classwide_Post_RTE :=
+           New_Abstract_Expr (Expr => Classwide_Post_RTE, Post => True_Pred);
 
          if Is_Overriding_Subprogram (E) then
             Classwide_Post_Assume :=
@@ -1758,20 +1756,26 @@ package body Gnat2Why.Subprograms is
                Reason   => VC_Stronger_Classwide_Post,
                Kind     => EW_Assert);
 
-            Post_Checks := Sequence
-              ((1 => Post_Checks,
-                2 => New_Comment (Comment =>
+            Stronger_Classwide_Post := Sequence
+              ((1 => New_Comment (Comment =>
                                NID ("Checking that inherited postcondition is"
                                   & " implied by class-wide postcondition")),
-                3 => Classwide_Post_Assume,
-                4 => Inherited_Post_Check));
+                2 => Classwide_Post_Assume,
+                3 => Inherited_Post_Check));
 
-            Post_Checks :=
-              New_Abstract_Expr (Expr => Post_Checks, Post => True_Pred);
-
-            Why_Body := Sequence (Why_Body, Post_Checks);
+            Stronger_Classwide_Post :=
+              New_Abstract_Expr
+                (Expr => Stronger_Classwide_Post, Post => True_Pred);
          end if;
       end if;
+
+      Why_Body := Sequence
+        ((1 => Classwide_Pre_RTE,
+          2 => Classwide_Weaker_Pre,
+          3 => Weaker_Pre,
+          4 => Stronger_Post,
+          5 => Classwide_Post_RTE,
+          6 => Stronger_Classwide_Post));
 
       --  Declare a global variable to hold the result of a function
 

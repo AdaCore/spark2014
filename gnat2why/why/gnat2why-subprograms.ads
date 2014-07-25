@@ -119,7 +119,7 @@ package Gnat2Why.Subprograms is
    procedure Update_Symbol_Table_For_Inherited_Contracts (E : Entity_Id);
    --  The inherited precondition and postcondition for E is expressed wrt the
    --  overridden's subprogram parameters. Make sure these are mapped in the
-   --  symbol table to the current subprogram's parameters. The result symbol
+   --  symbol table to the current subprogram'ms parameters. The result symbol
    --  is always mapped to the current result.
 
 end Gnat2Why.Subprograms;

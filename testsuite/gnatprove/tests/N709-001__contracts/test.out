@@ -10,6 +10,7 @@ unit1.adb:12:20: info: overflow check proved
 unit1.ads:12:20: info: postcondition is stronger than class-wide postcondition
 unit1.ads:12:20: info: postcondition proved
 unit1.ads:30:20: info: precondition is weaker than class-wide precondition
+unit1.ads:31:29: warning: precondition might fail
 unit1.ads:32:20: info: postcondition proved
 unit1.ads:32:20: warning: postcondition might be weaker than class-wide postcondition
 unit1.ads:32:36: info: overflow check proved
