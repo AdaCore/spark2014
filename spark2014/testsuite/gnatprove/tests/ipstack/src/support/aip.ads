@@ -61,6 +61,7 @@
 --  AIP.Inet            Internetting facilities (hton/ntoh etc)
 
 with AIP_Constants;
+with System;
 
 package AIP is
    pragma Pure;
@@ -125,6 +126,7 @@ package AIP is
    subtype LL_Address_Range is U8_T range 1 .. Max_LL_Address_Length;
 
    type LL_Address is array (LL_Address_Range range <>) of U8_T;
+   for LL_Address'Scalar_Storage_Order use System.High_Order_First;
    subtype LL_Address_Storage is LL_Address (LL_Address_Range);
    --  Storage for LL address of arbitrary length
 
