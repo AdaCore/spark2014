@@ -1,0 +1,3 @@
+p.adb:12:09: info: precondition proved
+p.adb:19:09: info: precondition proved
+p2.adb:37:08: info: precondition proved
