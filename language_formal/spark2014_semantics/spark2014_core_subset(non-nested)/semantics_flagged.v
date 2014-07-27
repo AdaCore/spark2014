@@ -201,12 +201,13 @@ with eval_name_x: symboltable_x -> stack -> name_x -> Return value -> Prop :=
 Inductive copy_out_x: symboltable_x -> stack -> frame -> list parameter_specification_x -> list expression_x -> Return stack -> Prop :=
     | Copy_Out_Nil_X : forall st s f, 
         copy_out_x st s f nil nil (Normal s)
-    | Copy_Out_Cons_Out_X: forall param f v s x s' st lparam lexp s'' ast_num x_ast_num,
+    | Copy_Out_Cons_Out_X: forall param f v cks s x s' st lparam lexp s'' ast_num x_ast_num,
         param.(parameter_mode_x) = Out \/ param.(parameter_mode_x) = In_Out ->
         fetch param.(parameter_name_x) f = Some v ->
+        ~(List.In Do_Range_Check_On_CopyOut cks) ->
         updateG s x v = Some s' ->
         copy_out_x st s' f lparam lexp s'' ->
-        copy_out_x st s f (param :: lparam) ((E_Name_X ast_num (E_Identifier_X x_ast_num x nil) nil) :: lexp) s''
+        copy_out_x st s f (param :: lparam) ((E_Name_X ast_num (E_Identifier_X x_ast_num x cks) nil) :: lexp) s''
     | Copy_Out_Cons_Out_Range_RTE_X: forall param f v cks ast_num st t l u s lparam x_ast_num x lexp,
         param.(parameter_mode_x) = Out \/ param.(parameter_mode_x) = In_Out ->
         fetch param.(parameter_name_x) f = Some (BasicV (Int v)) ->
@@ -238,44 +239,68 @@ Inductive copy_out_x: symboltable_x -> stack -> frame -> list parameter_specific
 Inductive copy_in_x: symboltable_x -> stack -> frame -> list parameter_specification_x -> list expression_x -> Return frame -> Prop :=
     | Copy_In_Nil_X : forall st s f, 
         copy_in_x st s f nil nil (Normal f)
-    | Copy_In_Cons_Out_X: forall param f f' st s lparam le f'' ast_num x_ast_num x,
-        param.(parameter_mode_x) = Out ->
-        push f param.(parameter_name_x) Undefined = f' ->
-        copy_in_x st s f' lparam le f'' ->
-        copy_in_x st s f (param::lparam) ((E_Name_X ast_num (E_Identifier_X x_ast_num x nil) nil) :: le) f''
     | Copy_In_Cons_In_RTE_X: forall param e st s msg f lparam le,
-        param.(parameter_mode_x) = In \/ param.(parameter_mode_x) = In_Out -> 
+        param.(parameter_mode_x) = In -> 
         ~(List.In Do_Range_Check (exp_check_flags e)) ->
         eval_expr_x st s e (Run_Time_Error msg) ->
         copy_in_x st s f (param :: lparam) (e :: le) (Run_Time_Error msg)
     | Copy_In_Cons_In_X: forall param e st s v f f' lparam le f'',
-        param.(parameter_mode_x) = In \/ param.(parameter_mode_x) = In_Out -> 
+        param.(parameter_mode_x) = In -> 
         ~(List.In Do_Range_Check (exp_check_flags e)) ->
         eval_expr_x st s e (Normal v) ->
         push f param.(parameter_name_x) v = f' ->
         copy_in_x st s f' lparam le f'' ->
         copy_in_x st s f (param :: lparam) (e :: le) f''
     | Copy_In_Cons_In_E_RTE_X: forall param e cks1 cks2 st s msg f lparam le,
-        param.(parameter_mode_x) = In \/ param.(parameter_mode_x) = In_Out -> 
+        param.(parameter_mode_x) = In -> 
         exp_check_flags e = cks1 ++ Do_Range_Check :: cks2 ->
         eval_expr_x st s (update_exp_check_flags e (cks1 ++ cks2)) (Run_Time_Error msg) ->
         copy_in_x st s f (param :: lparam) (e :: le) (Run_Time_Error msg)
     | Copy_In_Cons_In_Range_RTE_X: forall param e cks1 cks2 st s v l u f lparam le,
-        param.(parameter_mode_x) = In \/ param.(parameter_mode_x) = In_Out ->
+        param.(parameter_mode_x) = In ->
         exp_check_flags e = cks1 ++ Do_Range_Check :: cks2 ->
         eval_expr_x st s (update_exp_check_flags e (cks1 ++ cks2)) (Normal (BasicV (Int v))) ->
         extract_subtype_range_x st (param.(parameter_subtype_mark_x)) (Range_X l u) ->
         do_range_check v l u (Exception RTE_Range) ->
         copy_in_x st s f (param :: lparam) (e :: le) (Run_Time_Error RTE_Range)
     | Copy_In_Cons_In_Range_X: forall param e cks1 cks2 st s v l u f f' lparam le f'',
-        param.(parameter_mode_x) = In \/ param.(parameter_mode_x) = In_Out -> 
+        param.(parameter_mode_x) = In -> 
         exp_check_flags e = cks1 ++ Do_Range_Check :: cks2 ->
         eval_expr_x st s (update_exp_check_flags e (cks1 ++ cks2)) (Normal (BasicV (Int v))) ->
         extract_subtype_range_x st (param.(parameter_subtype_mark_x)) (Range_X l u) ->
         do_range_check v l u Success ->
         push f param.(parameter_name_x) (BasicV (Int v)) = f' ->
         copy_in_x st s f' lparam le f'' ->        
-        copy_in_x st s f (param :: lparam) (e :: le) f''.
+        copy_in_x st s f (param :: lparam) (e :: le) f''
+    | Copy_In_Cons_Out_X: forall param f f' st s lparam le f'' ast_num x_ast_num x cks,
+        param.(parameter_mode_x) = Out ->
+        push f param.(parameter_name_x) Undefined = f' ->
+        copy_in_x st s f' lparam le f'' ->
+        copy_in_x st s f (param::lparam) ((E_Name_X ast_num (E_Identifier_X x_ast_num x cks) nil) :: le) f''
+    | Copy_In_Cons_InOut_X: forall param cks x s v f f' st lparam le f'' ast_num x_ast_num,
+        param.(parameter_mode_x) = In_Out ->
+        ~(List.In Do_Range_Check cks) ->
+        fetchG x s = Some v ->
+        push f param.(parameter_name_x) v = f' ->
+        copy_in_x st s f' lparam le f'' ->
+        copy_in_x st s f (param::lparam) ((E_Name_X ast_num (E_Identifier_X x_ast_num x cks) nil) :: le) f''
+    | Copy_In_Cons_InOut_Range_RTE_X: forall param cks x s v st l u f lparam le ast_num x_ast_num,
+        param.(parameter_mode_x) = In_Out ->
+        List.In Do_Range_Check cks ->
+        fetchG x s = Some (BasicV (Int v)) ->
+        extract_subtype_range_x st (param.(parameter_subtype_mark_x)) (Range_X l u) ->
+        do_range_check v l u (Exception RTE_Range) ->
+        copy_in_x st s f (param::lparam) ((E_Name_X ast_num (E_Identifier_X x_ast_num x cks) nil) :: le) (Run_Time_Error RTE_Range)
+    | Copy_In_Cons_InOut_Range_X: forall param cks x s v st l u f f' lparam le f'' ast_num x_ast_num,
+        param.(parameter_mode_x) = In_Out ->
+        List.In Do_Range_Check cks ->
+        fetchG x s = Some (BasicV (Int v)) ->
+        extract_subtype_range_x st (param.(parameter_subtype_mark_x)) (Range_X l u) ->
+        do_range_check v l u Success ->
+        push f param.(parameter_name_x) (BasicV (Int v)) = f' ->
+        copy_in_x st s f' lparam le f'' ->
+        copy_in_x st s f (param::lparam) ((E_Name_X ast_num (E_Identifier_X x_ast_num x cks) nil) :: le) f''.
+
 
 
 (** Inductive semantic of declarations. [eval_decl s nil decl
@@ -307,7 +332,7 @@ Inductive eval_decl_x: symboltable_x -> stack -> frame -> declaration_x -> Retur
         d.(initialization_expression_x) = Some e ->
         exp_check_flags e = cks1 ++ Do_Range_Check :: cks2 ->
         eval_expr_x st (f :: s) (update_exp_check_flags e (cks1 ++ cks2)) (Run_Time_Error msg) ->
-        eval_decl_x st s f (D_Object_Declaration_X ast_num d) (Run_Time_Error RTE_Range)
+        eval_decl_x st s f (D_Object_Declaration_X ast_num d) (Run_Time_Error msg)
     | Eval_Decl_Var_Range_RTE_X: forall d e cks1 cks2 st f s v l u ast_num,
         d.(initialization_expression_x) = Some e ->
         exp_check_flags e = cks1 ++ Do_Range_Check :: cks2 ->

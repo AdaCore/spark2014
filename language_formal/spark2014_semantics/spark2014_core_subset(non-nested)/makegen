@@ -15,6 +15,7 @@ environment.v \
 symboltable_module.v \
 symboltable.v \
 semantics.v \
-semantics_flagged.v
+semantics_flagged.v \
+checks_soundness.v
 #other_coq_files.v \
 #other_coq_files.v

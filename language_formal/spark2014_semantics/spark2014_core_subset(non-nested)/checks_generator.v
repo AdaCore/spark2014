@@ -1055,36 +1055,111 @@ Inductive compile2_flagged_symbol_table: symboltable -> symboltable_x -> Prop :=
 
 (** ** Lemmas *)
 
-Lemma procedure_declaration_rel: forall st ps ps' p n pb n' pb',
-  compile2_flagged_proc_declaration_map st ps ps' ->
-    Symbol_Table_Module.SymTable_Procs.fetches p ps = Some (n, pb) ->
-      Symbol_Table_Module_X.SymTable_Procs.fetches p ps' = Some (n', pb') ->
-        n = n' /\ compile2_flagged_procedure_body st pb pb'.
+Lemma procedure_declaration_rel: forall st pm pm' p n pb,
+  compile2_flagged_proc_declaration_map st pm pm' ->
+    Symbol_Table_Module.SymTable_Procs.fetches p pm = Some (n, pb) ->
+      exists pb',
+        Symbol_Table_Module_X.SymTable_Procs.fetches p pm' = Some (n, pb') /\ 
+        compile2_flagged_procedure_body st pb pb'.
 Proof.
-  intros st ps ps' p n pb n' pb' H; revert p n pb n' pb'.
+  intros st pm pm' p n pb H; revert p n pb.
   induction H; intros.
 - inversion H; inversion H0; auto.
-- unfold Symbol_Table_Module.SymTable_Procs.fetches in H1;
-  unfold Symbol_Table_Module_X.SymTable_Procs.fetches in H2.
+- unfold Symbol_Table_Module.SymTable_Procs.fetches in H1.
+  unfold Symbol_Table_Module_X.SymTable_Procs.fetches.
   remember (beq_nat p0 p) as Beq.
   destruct Beq. 
   + smack.
-  + specialize (IHcompile2_flagged_proc_declaration_map _ _ _ _ _ H1 H2).
+  + specialize (IHcompile2_flagged_proc_declaration_map _ _ _ H1).
     auto.
 Qed.
 
-Lemma symbol_table_procedure_rel: forall p st n pb st' n' pb',
-  Symbol_Table_Module.fetch_proc p st = Some (n, pb) ->
-    Symbol_Table_Module_X.fetch_proc p st' = Some (n', pb') ->
-      compile2_flagged_symbol_table st st' ->
-        n = n' /\ compile2_flagged_procedure_body st pb pb'.
+Lemma symbol_table_procedure_rel: forall st st' p n pb,
+  compile2_flagged_symbol_table st st' ->  
+    fetch_proc p st = Some (n, pb) ->
+      exists pb',
+        fetch_proc_x p st' = Some (n, pb') /\
+        compile2_flagged_procedure_body st pb pb'.
 Proof.
   intros.
-  inversion H1; subst; clear H1.
-  unfold Symbol_Table_Module_X.fetch_proc in H0;
-  unfold Symbol_Table_Module.fetch_proc in H;
-  simpl in H0, H.
-  specialize (procedure_declaration_rel _ _ _ _ _ _ _ _ H2 H H0);
+  inversion H; subst; clear H.
+  unfold fetch_proc_x;
+  unfold fetch_proc in H0;
+  simpl in *.
+  specialize (procedure_declaration_rel _ _ _ _ _ _ H1 H0);
   auto.
 Qed.
 
+Lemma symbol_table_var_rel: forall st st' x t,
+  compile2_flagged_symbol_table st st' ->
+    fetch_var x st = t ->
+      fetch_var_x x st' = t.
+Proof.
+  intros.
+  inversion H; smack.
+Qed.
+
+Lemma type_declaration_rel: forall tm tm' t td,
+  compile2_flagged_type_declaration_map tm tm' ->
+    Symbol_Table_Module.SymTable_Types.fetches t tm = Some td ->
+    exists td',
+      Symbol_Table_Module_X.SymTable_Types.fetches t tm' = Some td' /\
+      compile2_flagged_type_declaration td td'.
+Proof.
+  intros tm tm' t td H; revert t td.
+  induction H; smack.
+  destruct (beq_nat t0 x).
+- inversion H; smack.
+- apply IHcompile2_flagged_type_declaration_map; auto.
+Qed.
+
+Lemma symbol_table_type_rel: forall st st' t td,
+  compile2_flagged_symbol_table st st' ->
+    fetch_type t st = Some td ->
+      exists td',
+        fetch_type_x t st' = Some td' /\ compile2_flagged_type_declaration td td'.
+Proof.
+  intros.
+  inversion H; smack.
+  unfold fetch_type, Symbol_Table_Module.fetch_type in H0; 
+  unfold fetch_type_x, Symbol_Table_Module_X.fetch_type; smack.
+  apply type_declaration_rel with (tm := t0); auto.
+Qed.
+
+Lemma symbol_table_exp_type_rel: forall st st' e t,
+  compile2_flagged_symbol_table st st' ->
+    fetch_exp_type e st = t ->
+      fetch_exp_type_x e st' = t.
+Proof.
+  intros.
+  inversion H; smack.  
+Qed.
+
+Lemma subtype_range_rel: forall st st' t l u,
+  compile2_flagged_symbol_table st st' ->
+    extract_subtype_range st t (Range l u) ->
+      extract_subtype_range_x st' t (Range_X l u).
+Proof.
+  intros.
+  inversion H0; clear H0; smack.
+  specialize (symbol_table_type_rel _ _ _ _ H H6); clear H6; smack.
+  apply Extract_Range_X with (tn := tn) (td := x); smack.
+  destruct td; inversion H7; subst;
+  inversion H2; auto.
+Qed.
+
+Lemma index_range_rel: forall st st' t l u,
+  compile2_flagged_symbol_table st st' ->
+    extract_array_index_range st t (Range l u) ->
+      extract_array_index_range_x st' t (Range_X l u).
+Proof.
+  intros.
+  inversion H0; clear H0; smack.
+  specialize (symbol_table_type_rel _ _ _ _ H H3); clear H3; smack.
+  specialize (symbol_table_type_rel _ _ _ _ H H7); clear H7; smack.  
+  apply Extract_Index_Range_X with (a_ast_num := a_ast_num) (tn := tn) (tm := tm) 
+                                   (typ := typ) (tn' := tn') (td := x0); smack.
+  inversion H2; auto.
+  destruct td; inversion H8; subst;
+  inversion H5; auto.
+Qed.
