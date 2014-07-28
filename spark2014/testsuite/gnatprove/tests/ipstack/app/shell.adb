@@ -166,10 +166,21 @@ package body Shell is
                declare
                   use AIP, AIP.IPaddrs, AIP.Nif;
 
-                  First, Last, Word : Integer;
-                  I : Netif_Id;
+                  First, Last : Integer;
+                  --  Indices of first and last character of current word
+
+                  Word : Integer;
+                  --  Index of current word
+
+                  I    : AIP.EID;
+                  --  Interface identifier
+
                   A, M : IPaddr;
-                  E : Err_T;
+                  --  Address and netmask
+
+                  E    : Err_T;
+                  --  Error status returned by If_Config call
+
                begin
                   Word := 0;
                   First := 11;
@@ -184,7 +195,12 @@ package body Shell is
 
                      case Word is
                         when 0 =>
-                           I := AIP.Nif.Netif_Id'Value (Line (First .. Last));
+                           I := 0;
+                           for J in First .. Last loop
+                              I := I * 10
+                                + Character'Pos (Line (J))
+                                - Character'Pos ('0');
+                           end loop;
                            E := NOERR;
                         when 1 =>
                            Parse (Line (First .. Last), A, E);
