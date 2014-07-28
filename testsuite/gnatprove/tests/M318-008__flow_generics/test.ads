@@ -5,9 +5,9 @@ package Test is
 
    generic
       type Item_T is private;
-   procedure Exchange (U, V : in out Item_T)
-     with Depends => (U => V,
-                      V => U);
+   procedure Exchange (U, V : in out Item_T);
+
+
 
    --  Generic packages
 
