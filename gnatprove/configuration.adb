@@ -96,6 +96,10 @@ package body Configuration is
    --  crash) or on a spec when there is a body (gnat2why will incorrectly
    --  assume that there is no body)
 
+   procedure Print_Errors (S : String);
+   --  The String in argument is an error message from gnatcoll. Print it on
+   --  stderr with a prefix
+
    Usage_Message : constant String :=
      "-Pproj [files] [switches] [-cargs switches]";
 
@@ -237,9 +241,9 @@ ASCII.LF;
       end loop;
    end Clean_Up;
 
-   ----------------
-   -- Do_Nothing --
-   ----------------
+     ----------------------
+     -- Handle_Scenarios --
+     ----------------------
 
    procedure Handle_Scenarios
      (Switch    : String;
@@ -393,6 +397,14 @@ ASCII.LF;
       end case;
    end To_String;
 
+   ------------------
+   -- Print_Errors --
+   ------------------
+
+   procedure Print_Errors (S : String) is
+   begin
+      Ada.Text_IO.Put_Line (Standard_Error, "gnatprove: " & S);
+   end Print_Errors;
    -----------------------
    -- Read_Command_Line --
    -----------------------
@@ -461,11 +473,11 @@ ASCII.LF;
          if Project_File.all /= "" then
             Tree.Load
               (GNATCOLL.VFS.Create (Filesystem_String (Project_File.all)),
-               Proj_Env);
+               Proj_Env,
+               Errors => Print_Errors'Access);
          else
             Abort_Msg ("No project file is given", With_Help => False);
          end if;
-
          return Tree;
       end Init;
 

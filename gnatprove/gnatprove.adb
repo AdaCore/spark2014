@@ -687,7 +687,6 @@ procedure Gnatprove is
        Obj_Dir           : String) return String is
       use Ada.Strings.Unbounded;
    begin
-
       --  In the translation phase, set a number of values
 
       if Translation_Phase then
