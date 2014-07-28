@@ -378,8 +378,6 @@ display.adb:76:43: info: length check proved
 display.adb:79:43: info: length check proved
 display.adb:84:43: info: length check proved
 display.adb:89:43: info: length check proved
-display.adb:122:07: warning: statement has no effect, in call inlined at display.adb:188
-display.adb:122:07: warning: statement has no effect, in call inlined at display.adb:280
 display.adb:123:41: info: length check proved, in call inlined at display.adb:188
 display.adb:123:41: info: length check proved, in call inlined at display.adb:280
 display.adb:128:11: info: range check proved, in call inlined at display.adb:188

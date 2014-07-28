@@ -73,32 +73,14 @@ ar.adb:868:14: info: range check proved
 ar.adb:1218:14: info: range check proved
 ar.adb:1228:14: info: range check proved
 ar.adb:1238:14: info: range check proved
-ar.adb:1247:07: warning: statement has no effect
-ar.adb:1255:07: warning: statement has no effect
-ar.adb:1263:07: warning: statement has no effect
 ar.adb:1343:17: info: range check proved
 ar.adb:1353:17: info: range check proved
 ar.adb:1363:17: info: range check proved
 ar.adb:1373:17: info: range check proved
-ar.adb:1417:10: warning: statement has no effect
-ar.adb:1425:10: warning: statement has no effect
-ar.adb:1433:10: warning: statement has no effect
-ar.adb:1441:10: warning: statement has no effect
-ar.adb:1449:10: warning: statement has no effect
 ar.adb:1529:20: info: range check proved
 ar.adb:1539:20: info: range check proved
 ar.adb:1549:20: info: range check proved
 ar.adb:1559:20: info: range check proved
-ar.adb:1596:10: warning: statement has no effect
-ar.adb:1604:10: warning: statement has no effect
-ar.adb:1612:10: warning: statement has no effect
-ar.adb:1620:10: warning: statement has no effect
-ar.adb:1628:10: warning: statement has no effect
-ar.adb:1636:10: warning: statement has no effect
-ar.adb:1644:10: warning: statement has no effect
-ar.adb:1652:10: warning: statement has no effect
-ar.adb:1660:10: warning: statement has no effect
-ar.adb:1668:10: warning: statement has no effect
 ar.adb:1740:14: info: range check proved
 ar.adb:1750:14: info: range check proved
 ar.adb:1760:14: info: range check proved
@@ -107,18 +89,6 @@ ar.adb:1781:20: info: range check proved
 ar.adb:1791:20: info: range check proved
 ar.adb:1801:20: info: range check proved
 ar.adb:1811:20: info: range check proved
-ar.adb:1819:10: warning: statement has no effect
-ar.adb:1820:13: warning: statement has no effect
-ar.adb:1821:16: warning: statement has no effect
-ar.adb:1829:10: warning: statement has no effect
-ar.adb:1830:13: warning: statement has no effect
-ar.adb:1831:16: warning: statement has no effect
-ar.adb:1839:10: warning: statement has no effect
-ar.adb:1840:13: warning: statement has no effect
-ar.adb:1841:16: warning: statement has no effect
-ar.adb:1849:10: warning: statement has no effect
-ar.adb:1850:13: warning: statement has no effect
-ar.adb:1851:16: warning: statement has no effect
 ar.ads:137:22: info: postcondition proved
 ar.ads:142:22: info: postcondition proved
 ar.ads:147:22: info: postcondition proved

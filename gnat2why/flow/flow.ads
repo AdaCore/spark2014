@@ -97,6 +97,13 @@ package Flow is
       Element_Type => Flow_Graphs.Vertex_Id,
       "="          => Flow_Graphs."=");
 
+   package Vertex_To_Vertex_Set_Maps is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Flow_Graphs.Vertex_Id,
+      Element_Type    => Vertex_Sets.Set,
+      Hash            => Flow_Graphs.Vertex_Hash,
+      Equivalent_Keys => Flow_Graphs."=",
+      "="             => Vertex_Sets."=");
+
    ----------------------------------------------------------------------
    --  Flow_Analysis_Graphs
    ----------------------------------------------------------------------
@@ -163,6 +170,10 @@ package Flow is
 
       Atr               : Attribute_Maps.Map;
       --  The vertex attributes for the above graphs.
+
+      Other_Fields      : Vertex_To_Vertex_Set_Maps.Map;
+      --  For a vertex corresponding to a record field this map will
+      --  hold a vertex set of the other record fields.
 
       Local_Constants   : Node_Sets.Set;
       --  All constants that have been locally declared. This is used as a

@@ -27,7 +27,6 @@ skein.adb:404:64: info: division check proved, in call inlined at skein.adb:592
 skein.adb:599:41: info: length check proved, in call inlined at skein.adb:647
 skein.adb:623:10: warning: precondition might fail
 skein.adb:656:17: warning: range check might fail
-skein.adb:686:11: warning: statement has no effect
 skein.adb:695:09: info: length check proved
 skein.adb:703:38: info: length check proved
 skein.adb:706:07: warning: precondition might fail
@@ -54,7 +53,6 @@ skein.adb:887:61: warning: range check might fail, in call inlined at skein.adb:
 skein.adb:888:61: warning: range check might fail, in call inlined at skein.adb:926
 skein.adb:889:61: warning: range check might fail, in call inlined at skein.adb:926
 skein.adb:890:61: warning: range check might fail, in call inlined at skein.adb:926
-skein.adb:895:17: warning: statement has no effect
 skein.adb:896:12: warning: length check might fail
 skein.adb:906:07: warning: precondition might fail
 skein.adb:914:52: info: division check proved

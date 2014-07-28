@@ -1089,6 +1089,12 @@ package body Flow.Analysis is
       --  Checks if from the given vertex V it is impossible to reach the
       --  end vertex.
 
+      function Other_Fields_Are_Ineffective (V : Flow_Graphs.Vertex_Id)
+                                             return Boolean;
+      --  This function returns True if V corresponds to an assignment
+      --  to a record field that has been introduced by a record split
+      --  and the rest of the fields are ineffective.
+
       function Find_Masking_Code
         (Ineffective_Statement : Flow_Graphs.Vertex_Id)
          return Vertex_Sets.Set;
@@ -1235,6 +1241,33 @@ package body Flow.Analysis is
            not FA.CFG.Non_Trivial_Path_Exists (FA.Start_Vertex, V);
       end Is_Dead_End;
 
+      ----------------------------------
+      -- Other_Fields_Are_Ineffective --
+      ----------------------------------
+
+      function Other_Fields_Are_Ineffective (V : Flow_Graphs.Vertex_Id)
+                                             return Boolean
+      is
+      begin
+         if FA.Other_Fields.Contains (V) then
+            declare
+               VS : constant Vertex_Sets.Set := FA.Other_Fields.Element (V);
+            begin
+               for Other_Field of VS loop
+                  if FA.PDG.Non_Trivial_Path_Exists
+                    (Other_Field, Is_Final_Use_Any_Export'Access)
+                  then
+                     return False;
+                  end if;
+               end loop;
+            end;
+         end if;
+
+         --  If we reach this point then all other fields are
+         --  ineffective.
+         return True;
+      end Other_Fields_Are_Ineffective;
+
    begin --  Find_Ineffective_Statements
       for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
@@ -1277,7 +1310,13 @@ package body Flow.Analysis is
                  --  vertex that corresponds to a variable that is
                  --  mentioned in a pragma unreferenced.
                  not FA.PDG.Non_Trivial_Path_Exists
-                 (V, Is_Final_Use_Unreferenced'Access)
+                 (V, Is_Final_Use_Unreferenced'Access) and then
+
+                 --  Suppression for vertices that correspond to
+                 --  an assignment to a record field, that comes
+                 --  from a record split, while the rest of the
+                 --  fields are not ineffective.
+                 Other_Fields_Are_Ineffective (V)
                then
                   Mask := Find_Masking_Code (V);
                   if FA.PDG.Get_Key (V) = Null_Flow_Id then

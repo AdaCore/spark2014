@@ -777,6 +777,7 @@ package body Flow is
       Tmp.TDG               := Create;
       Tmp.PDG               := Create;
       Tmp.Atr               := Attribute_Maps.Empty_Map;
+      Tmp.Other_Fields      := Vertex_To_Vertex_Set_Maps.Empty_Map;
       Tmp.Local_Constants   := Node_Sets.Empty_Set;
       Tmp.All_Vars          := Flow_Id_Sets.Empty_Set;
       Tmp.Unmodified_Vars   := Node_Sets.Empty_Set;

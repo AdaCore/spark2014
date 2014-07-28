@@ -1647,6 +1647,8 @@ package body Flow.Control_Flow_Graph is
               Vertex_Vectors.Empty_Vector;
 
             Vars_Used       : Flow_Id_Sets.Set;
+
+            All_Vertices    : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
          begin
             for F of V_Def_LHS loop
                Vars_Used := Flow_Id_Sets.Empty_Set;
@@ -1671,6 +1673,12 @@ package body Flow.Control_Flow_Graph is
                   V);
 
                Assigned_Fields.Append (V);
+               All_Vertices.Insert (V);
+            end loop;
+
+            for V of All_Vertices loop
+               FA.Other_Fields.Insert (V,
+                                       All_Vertices - Vertex_Sets.To_Set (V));
             end loop;
 
             Assigned_Fields.Reverse_Elements;
@@ -3067,6 +3075,7 @@ package body Flow.Control_Flow_Graph is
             Var_Def       : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
             Var_Is_Record : Boolean          := False;
             Vars_Used     : Flow_Id_Sets.Set;
+            All_Vertices  : Vertex_Sets.Set  := Vertex_Sets.Empty_Set;
          begin
             for F of Flatten_Variable (Defining_Identifier (N)) loop
                Var_Def.Include (F);
@@ -3101,6 +3110,13 @@ package body Flow.Control_Flow_Graph is
                      V);
 
                   Inits.Append (V);
+                  All_Vertices.Insert (V);
+               end loop;
+
+               for V of All_Vertices loop
+                  FA.Other_Fields.Insert (V,
+                                          All_Vertices -
+                                            Vertex_Sets.To_Set (V));
                end loop;
             else
                Add_Vertex

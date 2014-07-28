@@ -310,8 +310,6 @@ generic_float_tests.adb:398:37: warning: overflow check might fail, in instantia
 generic_float_tests.adb:398:37: warning: overflow check might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:406:21: info: postcondition proved, in instantiation at foo.ads:14
 generic_float_tests.adb:406:21: info: postcondition proved, in instantiation at foo.ads:9
-generic_float_tests.adb:414:09: warning: statement has no effect, in instantiation at foo.ads:14
-generic_float_tests.adb:414:09: warning: statement has no effect, in instantiation at foo.ads:9
 generic_float_tests.adb:421:21: info: postcondition proved, in instantiation at foo.ads:14
 generic_float_tests.adb:421:21: info: postcondition proved, in instantiation at foo.ads:9
 generic_float_tests.adb:426:18: info: length check proved, in instantiation at foo.ads:14
