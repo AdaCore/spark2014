@@ -55,7 +55,7 @@ package body UserToken
 --#     Status is UserToken.Interfac.Status &
 --#     Input  is in UserToken.Interfac.Input &
 --#     Output is out UserToken.Interfac.Output;
-is pragma SPARK_Mode (Off);
+is pragma SPARK_Mode (On);
 
 
    ------------------------------------------------------------------

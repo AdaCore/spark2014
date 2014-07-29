@@ -22,7 +22,7 @@ with Ada.Characters.Handling;
 with System;
 
 package body Keyboard.Interfac
-is pragma SPARK_Mode (Off);
+is pragma SPARK_Mode (Off);  --  tasking
 
    --PromptCoord : constant Win32.WinCon.Coord := (2, 4);
 

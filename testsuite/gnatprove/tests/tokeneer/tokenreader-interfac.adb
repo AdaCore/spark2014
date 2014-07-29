@@ -21,7 +21,7 @@ with Ada.Strings.Fixed,
      Ada.Strings;
 
 package body TokenReader.Interfac
-is pragma SPARK_Mode (Off);
+is pragma SPARK_Mode (On);
 
 
    ------------------------------------------------------------------

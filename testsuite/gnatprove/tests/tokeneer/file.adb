@@ -28,7 +28,7 @@ with Text_IO;
 with Ada.Exceptions;
 
 package body File
-is pragma SPARK_Mode (Off);
+is pragma SPARK_Mode (Off);  --  exception handlers
 
    ------------------------------------------------------------------
    -- IsOpen

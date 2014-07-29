@@ -42,6 +42,14 @@ admintoken.ads:148:22: warning: postcondition might fail, requires TokenOk = (Is
 admintoken.ads:217:22: warning: postcondition might fail
 alarm.adb:46:30: info: refined post proved
 alarm.ads:70:22: info: postcondition proved
+alarmapi.adb:38:29: warning: assuming "Overwrite" has no effect on global items
+alarmapi.adb:38:29: warning: length check might fail
+alarmapi.adb:38:29: warning: no Global contract available for "Overwrite"
+alarmapi.adb:62:29: warning: assuming "Overwrite" has no effect on global items
+alarmapi.adb:62:29: warning: length check might fail
+alarmapi.adb:62:29: warning: no Global contract available for "Overwrite"
+alarmapi.ads:29:14: warning: subprogram "Activate" has no effect
+alarmapi.ads:38:14: warning: subprogram "Deactivate" has no effect
 auditlog.adb:77:04: warning: statement has no effect
 auditlog.adb:79:32: info: length check proved
 auditlog.adb:88:45: info: length check proved
@@ -92,6 +100,8 @@ auditlog.adb:421:44: warning: range check might fail
 auditlog.adb:425:16: info: range check proved
 auditlog.adb:425:28: warning: range check might fail
 auditlog.adb:425:37: warning: range check might fail
+auditlog.adb:481:14: warning: subprogram "Deletearchivefile" has no effect
+auditlog.adb:491:22: info: precondition proved
 auditlog.adb:520:22: info: postcondition proved
 auditlog.adb:588:68: warning: length check might fail, in call inlined at auditlog.adb:636
 auditlog.adb:589:31: warning: length check might fail, in call inlined at auditlog.adb:636
@@ -181,9 +191,36 @@ auditlog.ads:119:22: info: postcondition proved
 auditlog.ads:143:22: info: postcondition proved
 audittypes.ads:93:58: info: length check proved
 audittypes.ads:106:06: info: length check proved
+audittypes.ads:106:06: info: length check proved
+audittypes.ads:106:06: info: length check proved
+bio.adb:119:10: info: loop invariant initialization proved, in call inlined at bio.adb:181
+bio.adb:119:10: info: loop invariant preservation proved, in call inlined at bio.adb:181
+bio.adb:165:38: warning: range check might fail, in call inlined at bio.adb:183
+bio.adb:166:12: warning: range check might fail, in call inlined at bio.adb:183
+bio.adb:166:41: warning: range check might fail, in call inlined at bio.adb:183
+bio.adb:167:12: warning: range check might fail, in call inlined at bio.adb:183
+bio.adb:167:56: warning: range check might fail, in call inlined at bio.adb:183
+bio.adb:173:42: warning: length check might fail, in call inlined at bio.adb:183
+bio.adb:173:45: warning: length check might fail, in call inlined at bio.adb:183
+bio.adb:175:23: info: length check proved, in call inlined at bio.adb:183
+bio.adb:175:23: warning: range check might fail, in call inlined at bio.adb:183
 bio.adb:244:18: warning: precondition might fail
 bio.ads:85:14: warning: subprogram "Flush" has no effect
+cert-attr.adb:38:09: warning: range check might fail
+cert-attr.adb:39:09: warning: range check might fail
+cert-attr.adb:40:09: warning: range check might fail
+cert-attr.adb:47:43: warning: length check might fail
+cert-attr.adb:47:46: warning: length check might fail
+cert-attr.adb:49:23: info: length check proved
+cert-attr.adb:49:23: warning: range check might fail
 cert-id.adb:87:47: warning: range check might fail
+cert.adb:63:09: warning: range check might fail
+cert.adb:64:09: warning: range check might fail
+cert.adb:65:09: warning: range check might fail
+cert.adb:71:43: warning: length check might fail
+cert.adb:71:46: warning: length check might fail
+cert.adb:73:23: info: length check proved
+cert.adb:73:23: warning: range check might fail
 certificatestore.adb:38:42: info: length check proved
 certificatestore.adb:221:31: warning: range check might fail
 certificatestore.adb:222:26: warning: "Text" might not be initialized
@@ -806,6 +843,7 @@ stats.adb:49:57: info: overflow check proved
 stats.adb:64:51: info: overflow check proved
 stats.adb:79:53: info: overflow check proved
 stats.adb:94:47: info: overflow check proved
+tcpip.ads:30:41: info: length check proved
 tcpip.ads:30:41: info: length check proved
 tcpip.ads:30:41: info: length check proved
 tismain.adb:53:41: warning: "Admintoken.Input" might not be initialized after elaboration of main program "Tismain"

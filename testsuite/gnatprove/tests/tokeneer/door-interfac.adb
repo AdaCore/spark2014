@@ -19,7 +19,7 @@ with DoorAPI;
 use type DoorAPI.DoorStateT;
 
 package body Door.Interfac
-is pragma SPARK_Mode (Off);
+is pragma SPARK_Mode (On);
 
    ------------------------------------------------------------------
    -- Types

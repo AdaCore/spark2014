@@ -17,7 +17,7 @@ with Ada.Command_Line;
 use type GNAT.Sockets.Selector_Status;
 
 package body TcpIp
-  with SPARK_Mode => Off
+  with SPARK_Mode => Off  --  exception handlers
 is
 
    --

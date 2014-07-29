@@ -24,7 +24,7 @@ use type System.Address;
 use type Interfaces.C.Size_T;
 
 package body Floppy
-is pragma SPARK_Mode (Off);
+is pragma SPARK_Mode (On);
 
    OFS_MAXPATHNAME : constant := 4096;
    subtype FilePathNameT is
@@ -62,7 +62,7 @@ is pragma SPARK_Mode (Off);
    function FilePathAndName( Path : in String;
                              Name : in String) return Interfaces.C.Char_Array
    is
-      pragma SPARK_Mode (Off);  --  concatenation
+
       FullName : String := Path & "\" & Name;
    begin
       return Interfaces.C.To_C(FullName);

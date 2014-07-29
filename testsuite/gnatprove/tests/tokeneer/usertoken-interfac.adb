@@ -19,7 +19,7 @@
 with TokenReader;
 
 package body UserToken.Interfac
-is pragma SPARK_Mode (Off);
+is pragma SPARK_Mode (On);
 
 
    ------------------------------------------------------------------

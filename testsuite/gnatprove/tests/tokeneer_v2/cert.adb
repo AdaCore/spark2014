@@ -56,7 +56,7 @@ package body Cert is
    --     Prints the Issuer ID& SerialNumber.
    ------------------------------------------------------------------
    function ExtractUser (Contents : ContentsT) return AuditTypes.UserTextT
-     with SPARK_Mode => Off
+
    is
       LocalUser : AuditTypes.UserTextT := AuditTypes.NoUser;
       FullString : String := "Issuer: "

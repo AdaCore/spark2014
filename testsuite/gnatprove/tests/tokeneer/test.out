@@ -23,6 +23,41 @@ admin.ads:245:29: info: length check proved
 admin.ads:246:58: info: length check proved
 admin.ads:250:58: info: length check proved
 admin.ads:254:58: info: length check proved
+admintoken.adb:275:37: warning: length check might fail, in call inlined at admintoken.adb:366, in call inlined at admintoken.adb:502
+admintoken.adb:275:37: warning: length check might fail, in call inlined at admintoken.adb:369, in call inlined at admintoken.adb:502
+admintoken.adb:275:37: warning: length check might fail, in call inlined at admintoken.adb:476, in call inlined at admintoken.adb:504
+admintoken.adb:275:37: warning: length check might fail, in call inlined at admintoken.adb:479, in call inlined at admintoken.adb:504
+admintoken.adb:275:37: warning: length check might fail, in call inlined at admintoken.adb:482, in call inlined at admintoken.adb:504
+admintoken.adb:275:37: warning: length check might fail, in call inlined at admintoken.adb:512
+admintoken.adb:275:37: warning: length check might fail, in call inlined at admintoken.adb:524
+admintoken.adb:277:23: info: length check proved, in call inlined at admintoken.adb:366, in call inlined at admintoken.adb:502
+admintoken.adb:277:23: info: length check proved, in call inlined at admintoken.adb:369, in call inlined at admintoken.adb:502
+admintoken.adb:277:23: info: length check proved, in call inlined at admintoken.adb:476, in call inlined at admintoken.adb:504
+admintoken.adb:277:23: info: length check proved, in call inlined at admintoken.adb:479, in call inlined at admintoken.adb:504
+admintoken.adb:277:23: info: length check proved, in call inlined at admintoken.adb:482, in call inlined at admintoken.adb:504
+admintoken.adb:277:23: info: length check proved, in call inlined at admintoken.adb:512
+admintoken.adb:277:23: info: length check proved, in call inlined at admintoken.adb:524
+admintoken.adb:277:23: warning: range check might fail, in call inlined at admintoken.adb:366, in call inlined at admintoken.adb:502
+admintoken.adb:277:23: warning: range check might fail, in call inlined at admintoken.adb:369, in call inlined at admintoken.adb:502
+admintoken.adb:277:23: warning: range check might fail, in call inlined at admintoken.adb:476, in call inlined at admintoken.adb:504
+admintoken.adb:277:23: warning: range check might fail, in call inlined at admintoken.adb:479, in call inlined at admintoken.adb:504
+admintoken.adb:277:23: warning: range check might fail, in call inlined at admintoken.adb:482, in call inlined at admintoken.adb:504
+admintoken.adb:277:23: warning: range check might fail, in call inlined at admintoken.adb:512
+admintoken.adb:277:23: warning: range check might fail, in call inlined at admintoken.adb:524
+admintoken.adb:366:28: warning: length check might fail, in call inlined at admintoken.adb:366, in call inlined at admintoken.adb:502
+admintoken.adb:369:15: warning: length check might fail, in call inlined at admintoken.adb:369, in call inlined at admintoken.adb:502
+admintoken.adb:476:31: warning: length check might fail, in call inlined at admintoken.adb:476, in call inlined at admintoken.adb:504
+admintoken.adb:479:19: warning: length check might fail, in call inlined at admintoken.adb:479, in call inlined at admintoken.adb:504
+admintoken.adb:482:19: warning: length check might fail, in call inlined at admintoken.adb:482, in call inlined at admintoken.adb:504
+admintoken.adb:512:31: warning: length check might fail
+admintoken.adb:524:25: warning: length check might fail
+admintoken.adb:612:28: warning: range check might fail
+admintoken.ads:78:26: warning: postcondition might fail
+admintoken.ads:124:07: info: postcondition proved
+admintoken.ads:178:07: warning: postcondition might fail, requires TokenOk = (IsGood and then AuthCertValid and then TheAuthCertRole in PrivTypes.adminprivileget
+admintoken.ads:263:07: warning: postcondition might fail
+alarm-interfac.ads:54:26: warning: postcondition might fail, requires (IsAlarming)
+alarm-interfac.ads:70:26: warning: postcondition might fail, requires not (IsAlarming)
 alarm.ads:82:07: warning: postcondition might fail, requires Door.TheDoorAlarm = AlarmTypes.Alarming) <= (IsAlarming)
 auditlog.adb:80:32: info: length check proved
 auditlog.adb:89:45: info: length check proved
@@ -51,13 +86,44 @@ auditlog.adb:194:26: info: range check proved, in call inlined at auditlog.adb:1
 auditlog.adb:194:26: info: range check proved, in call inlined at auditlog.adb:900
 auditlog.adb:194:26: warning: range check might fail, in call inlined at auditlog.adb:1733
 auditlog.adb:194:26: warning: range check might fail, in call inlined at auditlog.adb:1859
-
 auditlog.adb:244:43: warning: length check might fail, in call inlined at auditlog.adb:1570
 auditlog.adb:244:43: warning: length check might fail, in call inlined at auditlog.adb:1660
+auditlog.adb:244:43: warning: length check might fail, in call inlined at auditlog.adb:302, in call inlined at auditlog.adb:360
+auditlog.adb:244:43: warning: length check might fail, in call inlined at auditlog.adb:305, in call inlined at auditlog.adb:360
+auditlog.adb:244:43: warning: length check might fail, in call inlined at auditlog.adb:429, in call inlined at auditlog.adb:476
+auditlog.adb:244:43: warning: length check might fail, in call inlined at auditlog.adb:432, in call inlined at auditlog.adb:476
 auditlog.adb:246:23: info: length check proved, in call inlined at auditlog.adb:1570
 auditlog.adb:246:23: info: length check proved, in call inlined at auditlog.adb:1660
+auditlog.adb:246:23: info: length check proved, in call inlined at auditlog.adb:302, in call inlined at auditlog.adb:360
+auditlog.adb:246:23: info: length check proved, in call inlined at auditlog.adb:305, in call inlined at auditlog.adb:360
+auditlog.adb:246:23: info: length check proved, in call inlined at auditlog.adb:429, in call inlined at auditlog.adb:476
+auditlog.adb:246:23: info: length check proved, in call inlined at auditlog.adb:432, in call inlined at auditlog.adb:476
 auditlog.adb:246:23: warning: range check might fail, in call inlined at auditlog.adb:1570
 auditlog.adb:246:23: warning: range check might fail, in call inlined at auditlog.adb:1660
+auditlog.adb:246:23: warning: range check might fail, in call inlined at auditlog.adb:302, in call inlined at auditlog.adb:360
+auditlog.adb:246:23: warning: range check might fail, in call inlined at auditlog.adb:305, in call inlined at auditlog.adb:360
+auditlog.adb:246:23: warning: range check might fail, in call inlined at auditlog.adb:429, in call inlined at auditlog.adb:476
+auditlog.adb:246:23: warning: range check might fail, in call inlined at auditlog.adb:432, in call inlined at auditlog.adb:476
+auditlog.adb:302:15: warning: length check might fail, in call inlined at auditlog.adb:302, in call inlined at auditlog.adb:360
+auditlog.adb:302:15: warning: range check might fail, in call inlined at auditlog.adb:360
+auditlog.adb:302:50: info: range check proved, in call inlined at auditlog.adb:360
+auditlog.adb:302:62: warning: range check might fail, in call inlined at auditlog.adb:360
+auditlog.adb:305:15: warning: length check might fail, in call inlined at auditlog.adb:305, in call inlined at auditlog.adb:360
+auditlog.adb:305:15: warning: range check might fail, in call inlined at auditlog.adb:360
+auditlog.adb:306:41: info: range check proved, in call inlined at auditlog.adb:360
+auditlog.adb:306:53: warning: range check might fail, in call inlined at auditlog.adb:360
+auditlog.adb:424:23: warning: length check might fail, in call inlined at auditlog.adb:476
+auditlog.adb:424:23: warning: range check might fail, in call inlined at auditlog.adb:476
+auditlog.adb:424:42: warning: overflow check might fail, in call inlined at auditlog.adb:476
+auditlog.adb:425:42: warning: overflow check might fail, in call inlined at auditlog.adb:476
+auditlog.adb:429:15: warning: length check might fail, in call inlined at auditlog.adb:429, in call inlined at auditlog.adb:476
+auditlog.adb:429:15: warning: range check might fail, in call inlined at auditlog.adb:476
+auditlog.adb:429:50: info: range check proved, in call inlined at auditlog.adb:476
+auditlog.adb:429:62: warning: range check might fail, in call inlined at auditlog.adb:476
+auditlog.adb:432:15: warning: length check might fail, in call inlined at auditlog.adb:432, in call inlined at auditlog.adb:476
+auditlog.adb:432:15: warning: range check might fail, in call inlined at auditlog.adb:476
+auditlog.adb:433:41: info: range check proved, in call inlined at auditlog.adb:476
+auditlog.adb:433:53: warning: range check might fail, in call inlined at auditlog.adb:476
 auditlog.adb:499:22: info: precondition proved, in call inlined at auditlog.adb:1920
 auditlog.adb:499:22: warning: precondition might fail, in call inlined at auditlog.adb:1895
 auditlog.adb:600:12: warning: length check might fail, in call inlined at auditlog.adb:652
@@ -109,6 +175,29 @@ auditlog.adb:1127:47: warning: range check might fail
 auditlog.adb:1127:50: warning: overflow check might fail
 auditlog.adb:1127:69: warning: overflow check might fail
 auditlog.adb:1132:07: warning: precondition might fail
+auditlog.adb:1278:25: warning: assertion might fail, in call inlined at auditlog.adb:1318
+auditlog.adb:1282:55: info: range check proved, in call inlined at auditlog.adb:1318
+auditlog.adb:1317:12: info: assertion proved
+auditlog.adb:1371:10: warning: assertion might fail
+auditlog.adb:1385:20: info: range check proved
+auditlog.adb:1398:19: warning: assertion might fail
+auditlog.adb:1410:63: warning: range check might fail
+auditlog.adb:1411:65: info: range check proved
+auditlog.adb:1412:26: warning: range check might fail
+auditlog.adb:1413:32: info: overflow check proved
+auditlog.adb:1428:25: warning: assertion might fail
+auditlog.adb:1432:35: info: overflow check proved
+auditlog.adb:1439:43: info: index check proved
+auditlog.adb:1439:69: info: index check proved
+auditlog.adb:1439:69: info: overflow check proved
+auditlog.adb:1446:63: warning: range check might fail
+auditlog.adb:1447:65: warning: range check might fail
+auditlog.adb:1462:07: info: assertion proved
+auditlog.adb:1481:07: warning: assertion might fail
+auditlog.adb:1487:62: info: range check proved
+auditlog.adb:1487:67: info: overflow check proved
+auditlog.adb:1488:09: info: overflow check proved
+auditlog.adb:1488:09: info: range check proved
 auditlog.adb:1566:07: warning: precondition might fail
 auditlog.adb:1570:26: warning: length check might fail
 auditlog.adb:1576:10: info: precondition proved
@@ -140,6 +229,18 @@ auditlog.adb:1870:69: warning: overflow check might fail
 auditlog.adb:1914:10: info: assertion proved
 audittypes.ads:94:58: info: length check proved
 audittypes.ads:107:06: info: length check proved
+bio-interfac.adb:66:57: info: length check proved
+bio-interfac.adb:78:38: warning: range check might fail
+bio.adb:129:20: warning: assertion might fail, requires Result = InternalError, in call inlined at bio.adb:198
+bio.adb:181:38: warning: range check might fail, in call inlined at bio.adb:200
+bio.adb:182:12: warning: range check might fail, in call inlined at bio.adb:200
+bio.adb:182:41: warning: range check might fail, in call inlined at bio.adb:200
+bio.adb:183:12: warning: range check might fail, in call inlined at bio.adb:200
+bio.adb:183:56: warning: range check might fail, in call inlined at bio.adb:200
+bio.adb:189:42: warning: length check might fail, in call inlined at bio.adb:200
+bio.adb:189:45: warning: length check might fail, in call inlined at bio.adb:200
+bio.adb:191:23: info: length check proved, in call inlined at bio.adb:200
+bio.adb:191:23: warning: range check might fail, in call inlined at bio.adb:200
 certificatestore.adb:37:42: info: length check proved
 certificatestore.adb:223:31: warning: range check might fail, in call inlined at certificatestore.adb:239
 certificatestore.adb:224:26: warning: length check might fail, in call inlined at certificatestore.adb:239
@@ -297,6 +398,46 @@ configdata.adb:1204:68: info: division check proved
 configdata.adb:1599:70: info: range check proved
 configdata.adb:1767:17: info: division check proved
 configdata.adb:1767:17: warning: range check might fail
+configuration.adb:112:57: info: division check proved, in call inlined at configuration.adb:178
+configuration.adb:112:63: warning: range check might fail, in call inlined at configuration.adb:178
+configuration.adb:113:12: warning: range check might fail, in call inlined at configuration.adb:178
+configuration.adb:113:59: info: division check proved, in call inlined at configuration.adb:178
+configuration.adb:113:65: warning: range check might fail, in call inlined at configuration.adb:178
+configuration.adb:114:12: warning: range check might fail, in call inlined at configuration.adb:178
+configuration.adb:114:60: info: division check proved, in call inlined at configuration.adb:178
+configuration.adb:114:66: warning: range check might fail, in call inlined at configuration.adb:178
+configuration.adb:115:12: warning: range check might fail, in call inlined at configuration.adb:178
+configuration.adb:115:58: info: division check proved, in call inlined at configuration.adb:178
+configuration.adb:115:64: warning: range check might fail, in call inlined at configuration.adb:178
+configuration.adb:116:12: warning: range check might fail, in call inlined at configuration.adb:178
+configuration.adb:116:58: warning: range check might fail, in call inlined at configuration.adb:178
+configuration.adb:117:12: warning: range check might fail, in call inlined at configuration.adb:178
+configuration.adb:117:19: info: range check proved, in call inlined at configuration.adb:178
+configuration.adb:117:64: warning: range check might fail, in call inlined at configuration.adb:178
+configuration.adb:118:12: warning: range check might fail, in call inlined at configuration.adb:178
+configuration.adb:118:19: info: range check proved, in call inlined at configuration.adb:178
+configuration.adb:118:62: warning: range check might fail, in call inlined at configuration.adb:178
+configuration.adb:119:12: warning: range check might fail, in call inlined at configuration.adb:178
+configuration.adb:119:19: info: range check proved, in call inlined at configuration.adb:178
+configuration.adb:119:62: warning: range check might fail, in call inlined at configuration.adb:178
+configuration.adb:120:12: warning: range check might fail, in call inlined at configuration.adb:178
+configuration.adb:120:62: warning: range check might fail, in call inlined at configuration.adb:178
+configuration.adb:121:12: warning: range check might fail, in call inlined at configuration.adb:178
+configuration.adb:121:55: warning: range check might fail, in call inlined at configuration.adb:178
+configuration.adb:122:12: warning: range check might fail, in call inlined at configuration.adb:178
+configuration.adb:122:64: info: division check proved, in call inlined at configuration.adb:178
+configuration.adb:122:72: warning: range check might fail, in call inlined at configuration.adb:178
+configuration.adb:123:12: warning: range check might fail, in call inlined at configuration.adb:178
+configuration.adb:123:63: info: division check proved, in call inlined at configuration.adb:178
+configuration.adb:123:71: warning: range check might fail, in call inlined at configuration.adb:178
+configuration.adb:124:12: warning: range check might fail, in call inlined at configuration.adb:178
+configuration.adb:129:26: info: length check proved, in call inlined at configuration.adb:178
+configuration.adb:129:26: warning: range check might fail, in call inlined at configuration.adb:178
+configuration.adb:131:38: warning: length check might fail, in call inlined at configuration.adb:178
+configuration.adb:131:41: warning: length check might fail, in call inlined at configuration.adb:178
+display-interfac.adb:75:39: info: range check proved
+display-interfac.adb:92:45: info: range check proved
+display-interfac.adb:109:45: info: range check proved
 display.adb:42:57: info: length check proved
 display.adb:45:43: info: length check proved
 display.adb:50:43: info: length check proved
@@ -419,9 +560,146 @@ enclave.ads:621:19: warning: precondition might fail
 enclave.ads:630:19: warning: precondition might fail
 enclave.ads:635:24: warning: precondition might fail
 enclave.ads:652:23: warning: precondition might fail
+enrolment.adb:69:66: warning: range check might fail, in call inlined at enrolment.adb:219
+enrolment.adb:69:66: warning: range check might fail, in call inlined at enrolment.adb:221
+enrolment.adb:69:66: warning: range check might fail, in call inlined at enrolment.adb:223
+enrolment.adb:69:66: warning: range check might fail, in call inlined at enrolment.adb:241
+enrolment.adb:69:66: warning: range check might fail, in call inlined at enrolment.adb:272
+enrolment.adb:70:55: warning: range check might fail, in call inlined at enrolment.adb:219
+enrolment.adb:70:55: warning: range check might fail, in call inlined at enrolment.adb:221
+enrolment.adb:70:55: warning: range check might fail, in call inlined at enrolment.adb:223
+enrolment.adb:70:55: warning: range check might fail, in call inlined at enrolment.adb:241
+enrolment.adb:70:55: warning: range check might fail, in call inlined at enrolment.adb:272
+enrolment.adb:70:63: warning: range check might fail, in call inlined at enrolment.adb:219
+enrolment.adb:70:63: warning: range check might fail, in call inlined at enrolment.adb:221
+enrolment.adb:70:63: warning: range check might fail, in call inlined at enrolment.adb:223
+enrolment.adb:70:63: warning: range check might fail, in call inlined at enrolment.adb:241
+enrolment.adb:70:63: warning: range check might fail, in call inlined at enrolment.adb:272
+enrolment.adb:74:40: warning: length check might fail, in call inlined at enrolment.adb:219
+enrolment.adb:74:40: warning: length check might fail, in call inlined at enrolment.adb:221
+enrolment.adb:74:40: warning: length check might fail, in call inlined at enrolment.adb:223
+enrolment.adb:74:40: warning: length check might fail, in call inlined at enrolment.adb:241
+enrolment.adb:74:40: warning: length check might fail, in call inlined at enrolment.adb:272
+enrolment.adb:74:43: warning: length check might fail, in call inlined at enrolment.adb:219
+enrolment.adb:74:43: warning: length check might fail, in call inlined at enrolment.adb:221
+enrolment.adb:74:43: warning: length check might fail, in call inlined at enrolment.adb:223
+enrolment.adb:74:43: warning: length check might fail, in call inlined at enrolment.adb:241
+enrolment.adb:74:43: warning: length check might fail, in call inlined at enrolment.adb:272
+enrolment.adb:76:23: info: length check proved, in call inlined at enrolment.adb:219
+enrolment.adb:76:23: info: length check proved, in call inlined at enrolment.adb:221
+enrolment.adb:76:23: info: length check proved, in call inlined at enrolment.adb:223
+enrolment.adb:76:23: info: length check proved, in call inlined at enrolment.adb:241
+enrolment.adb:76:23: info: length check proved, in call inlined at enrolment.adb:272
+enrolment.adb:76:23: warning: range check might fail, in call inlined at enrolment.adb:219
+enrolment.adb:76:23: warning: range check might fail, in call inlined at enrolment.adb:221
+enrolment.adb:76:23: warning: range check might fail, in call inlined at enrolment.adb:223
+enrolment.adb:76:23: warning: range check might fail, in call inlined at enrolment.adb:241
+enrolment.adb:76:23: warning: range check might fail, in call inlined at enrolment.adb:272
+enrolment.adb:135:13: warning: postcondition might fail
+enrolment.adb:246:27: info: overflow check proved
+enrolment.adb:259:27: warning: overflow check might fail
+enrolment.ads:85:07: warning: postcondition might fail, requires DataOK = KeyStore(KeyStore.privatekeypresent)
+floppy.adb:43:37: info: length check proved
+floppy.adb:66:33: warning: range check might fail
+floppy.adb:66:39: warning: range check might fail
 iandatypes.ads:49:22: info: length check proved
 iandatypes.ads:67:38: info: length check proved
 keystore.adb:57:47: info: length check proved
+keystore.adb:113:69: warning: range check might fail, in call inlined at keystore.adb:274
+keystore.adb:113:69: warning: range check might fail, in call inlined at keystore.adb:283
+keystore.adb:113:69: warning: range check might fail, in call inlined at keystore.adb:292
+keystore.adb:113:69: warning: range check might fail, in call inlined at keystore.adb:357, in call inlined at keystore.adb:431, in call inlined at keystore.adb:612
+keystore.adb:113:69: warning: range check might fail, in call inlined at keystore.adb:357, in call inlined at keystore.adb:431, in call inlined at keystore.adb:715
+keystore.adb:113:69: warning: range check might fail, in call inlined at keystore.adb:357, in call inlined at keystore.adb:496, in call inlined at keystore.adb:565
+keystore.adb:113:69: warning: range check might fail, in call inlined at keystore.adb:357, in call inlined at keystore.adb:496, in call inlined at keystore.adb:786
+keystore.adb:113:69: warning: range check might fail, in call inlined at keystore.adb:367, in call inlined at keystore.adb:431, in call inlined at keystore.adb:612
+keystore.adb:113:69: warning: range check might fail, in call inlined at keystore.adb:367, in call inlined at keystore.adb:431, in call inlined at keystore.adb:715
+keystore.adb:113:69: warning: range check might fail, in call inlined at keystore.adb:367, in call inlined at keystore.adb:496, in call inlined at keystore.adb:565
+keystore.adb:113:69: warning: range check might fail, in call inlined at keystore.adb:367, in call inlined at keystore.adb:496, in call inlined at keystore.adb:786
+keystore.adb:113:69: warning: range check might fail, in call inlined at keystore.adb:377, in call inlined at keystore.adb:431, in call inlined at keystore.adb:612
+keystore.adb:113:69: warning: range check might fail, in call inlined at keystore.adb:377, in call inlined at keystore.adb:431, in call inlined at keystore.adb:715
+keystore.adb:113:69: warning: range check might fail, in call inlined at keystore.adb:377, in call inlined at keystore.adb:496, in call inlined at keystore.adb:565
+keystore.adb:113:69: warning: range check might fail, in call inlined at keystore.adb:377, in call inlined at keystore.adb:496, in call inlined at keystore.adb:786
+keystore.adb:113:69: warning: range check might fail, in call inlined at keystore.adb:561
+keystore.adb:113:69: warning: range check might fail, in call inlined at keystore.adb:731
+keystore.adb:113:69: warning: range check might fail, in call inlined at keystore.adb:801
+keystore.adb:113:69: warning: range check might fail, in call inlined at keystore.adb:891
+keystore.adb:117:38: warning: length check might fail, in call inlined at keystore.adb:274
+keystore.adb:117:38: warning: length check might fail, in call inlined at keystore.adb:283
+keystore.adb:117:38: warning: length check might fail, in call inlined at keystore.adb:292
+keystore.adb:117:38: warning: length check might fail, in call inlined at keystore.adb:357, in call inlined at keystore.adb:431, in call inlined at keystore.adb:612
+keystore.adb:117:38: warning: length check might fail, in call inlined at keystore.adb:357, in call inlined at keystore.adb:431, in call inlined at keystore.adb:715
+keystore.adb:117:38: warning: length check might fail, in call inlined at keystore.adb:357, in call inlined at keystore.adb:496, in call inlined at keystore.adb:565
+keystore.adb:117:38: warning: length check might fail, in call inlined at keystore.adb:357, in call inlined at keystore.adb:496, in call inlined at keystore.adb:786
+keystore.adb:117:38: warning: length check might fail, in call inlined at keystore.adb:367, in call inlined at keystore.adb:431, in call inlined at keystore.adb:612
+keystore.adb:117:38: warning: length check might fail, in call inlined at keystore.adb:367, in call inlined at keystore.adb:431, in call inlined at keystore.adb:715
+keystore.adb:117:38: warning: length check might fail, in call inlined at keystore.adb:367, in call inlined at keystore.adb:496, in call inlined at keystore.adb:565
+keystore.adb:117:38: warning: length check might fail, in call inlined at keystore.adb:367, in call inlined at keystore.adb:496, in call inlined at keystore.adb:786
+keystore.adb:117:38: warning: length check might fail, in call inlined at keystore.adb:377, in call inlined at keystore.adb:431, in call inlined at keystore.adb:612
+keystore.adb:117:38: warning: length check might fail, in call inlined at keystore.adb:377, in call inlined at keystore.adb:431, in call inlined at keystore.adb:715
+keystore.adb:117:38: warning: length check might fail, in call inlined at keystore.adb:377, in call inlined at keystore.adb:496, in call inlined at keystore.adb:565
+keystore.adb:117:38: warning: length check might fail, in call inlined at keystore.adb:377, in call inlined at keystore.adb:496, in call inlined at keystore.adb:786
+keystore.adb:117:38: warning: length check might fail, in call inlined at keystore.adb:561
+keystore.adb:117:38: warning: length check might fail, in call inlined at keystore.adb:731
+keystore.adb:117:38: warning: length check might fail, in call inlined at keystore.adb:801
+keystore.adb:117:38: warning: length check might fail, in call inlined at keystore.adb:891
+keystore.adb:117:41: warning: length check might fail, in call inlined at keystore.adb:274
+keystore.adb:117:41: warning: length check might fail, in call inlined at keystore.adb:283
+keystore.adb:117:41: warning: length check might fail, in call inlined at keystore.adb:292
+keystore.adb:117:41: warning: length check might fail, in call inlined at keystore.adb:357, in call inlined at keystore.adb:431, in call inlined at keystore.adb:612
+keystore.adb:117:41: warning: length check might fail, in call inlined at keystore.adb:357, in call inlined at keystore.adb:431, in call inlined at keystore.adb:715
+keystore.adb:117:41: warning: length check might fail, in call inlined at keystore.adb:357, in call inlined at keystore.adb:496, in call inlined at keystore.adb:565
+keystore.adb:117:41: warning: length check might fail, in call inlined at keystore.adb:357, in call inlined at keystore.adb:496, in call inlined at keystore.adb:786
+keystore.adb:117:41: warning: length check might fail, in call inlined at keystore.adb:367, in call inlined at keystore.adb:431, in call inlined at keystore.adb:612
+keystore.adb:117:41: warning: length check might fail, in call inlined at keystore.adb:367, in call inlined at keystore.adb:431, in call inlined at keystore.adb:715
+keystore.adb:117:41: warning: length check might fail, in call inlined at keystore.adb:367, in call inlined at keystore.adb:496, in call inlined at keystore.adb:565
+keystore.adb:117:41: warning: length check might fail, in call inlined at keystore.adb:367, in call inlined at keystore.adb:496, in call inlined at keystore.adb:786
+keystore.adb:117:41: warning: length check might fail, in call inlined at keystore.adb:377, in call inlined at keystore.adb:431, in call inlined at keystore.adb:612
+keystore.adb:117:41: warning: length check might fail, in call inlined at keystore.adb:377, in call inlined at keystore.adb:431, in call inlined at keystore.adb:715
+keystore.adb:117:41: warning: length check might fail, in call inlined at keystore.adb:377, in call inlined at keystore.adb:496, in call inlined at keystore.adb:565
+keystore.adb:117:41: warning: length check might fail, in call inlined at keystore.adb:377, in call inlined at keystore.adb:496, in call inlined at keystore.adb:786
+keystore.adb:117:41: warning: length check might fail, in call inlined at keystore.adb:561
+keystore.adb:117:41: warning: length check might fail, in call inlined at keystore.adb:731
+keystore.adb:117:41: warning: length check might fail, in call inlined at keystore.adb:801
+keystore.adb:117:41: warning: length check might fail, in call inlined at keystore.adb:891
+keystore.adb:119:20: info: length check proved, in call inlined at keystore.adb:274
+keystore.adb:119:20: info: length check proved, in call inlined at keystore.adb:283
+keystore.adb:119:20: info: length check proved, in call inlined at keystore.adb:292
+keystore.adb:119:20: info: length check proved, in call inlined at keystore.adb:357, in call inlined at keystore.adb:431, in call inlined at keystore.adb:612
+keystore.adb:119:20: info: length check proved, in call inlined at keystore.adb:357, in call inlined at keystore.adb:431, in call inlined at keystore.adb:715
+keystore.adb:119:20: info: length check proved, in call inlined at keystore.adb:357, in call inlined at keystore.adb:496, in call inlined at keystore.adb:565
+keystore.adb:119:20: info: length check proved, in call inlined at keystore.adb:357, in call inlined at keystore.adb:496, in call inlined at keystore.adb:786
+keystore.adb:119:20: info: length check proved, in call inlined at keystore.adb:367, in call inlined at keystore.adb:431, in call inlined at keystore.adb:612
+keystore.adb:119:20: info: length check proved, in call inlined at keystore.adb:367, in call inlined at keystore.adb:431, in call inlined at keystore.adb:715
+keystore.adb:119:20: info: length check proved, in call inlined at keystore.adb:367, in call inlined at keystore.adb:496, in call inlined at keystore.adb:565
+keystore.adb:119:20: info: length check proved, in call inlined at keystore.adb:367, in call inlined at keystore.adb:496, in call inlined at keystore.adb:786
+keystore.adb:119:20: info: length check proved, in call inlined at keystore.adb:377, in call inlined at keystore.adb:431, in call inlined at keystore.adb:612
+keystore.adb:119:20: info: length check proved, in call inlined at keystore.adb:377, in call inlined at keystore.adb:431, in call inlined at keystore.adb:715
+keystore.adb:119:20: info: length check proved, in call inlined at keystore.adb:377, in call inlined at keystore.adb:496, in call inlined at keystore.adb:565
+keystore.adb:119:20: info: length check proved, in call inlined at keystore.adb:377, in call inlined at keystore.adb:496, in call inlined at keystore.adb:786
+keystore.adb:119:20: info: length check proved, in call inlined at keystore.adb:561
+keystore.adb:119:20: info: length check proved, in call inlined at keystore.adb:731
+keystore.adb:119:20: info: length check proved, in call inlined at keystore.adb:801
+keystore.adb:119:20: info: length check proved, in call inlined at keystore.adb:891
+keystore.adb:119:20: warning: range check might fail, in call inlined at keystore.adb:274
+keystore.adb:119:20: warning: range check might fail, in call inlined at keystore.adb:283
+keystore.adb:119:20: warning: range check might fail, in call inlined at keystore.adb:292
+keystore.adb:119:20: warning: range check might fail, in call inlined at keystore.adb:357, in call inlined at keystore.adb:431, in call inlined at keystore.adb:612
+keystore.adb:119:20: warning: range check might fail, in call inlined at keystore.adb:357, in call inlined at keystore.adb:431, in call inlined at keystore.adb:715
+keystore.adb:119:20: warning: range check might fail, in call inlined at keystore.adb:357, in call inlined at keystore.adb:496, in call inlined at keystore.adb:565
+keystore.adb:119:20: warning: range check might fail, in call inlined at keystore.adb:357, in call inlined at keystore.adb:496, in call inlined at keystore.adb:786
+keystore.adb:119:20: warning: range check might fail, in call inlined at keystore.adb:367, in call inlined at keystore.adb:431, in call inlined at keystore.adb:612
+keystore.adb:119:20: warning: range check might fail, in call inlined at keystore.adb:367, in call inlined at keystore.adb:431, in call inlined at keystore.adb:715
+keystore.adb:119:20: warning: range check might fail, in call inlined at keystore.adb:367, in call inlined at keystore.adb:496, in call inlined at keystore.adb:565
+keystore.adb:119:20: warning: range check might fail, in call inlined at keystore.adb:367, in call inlined at keystore.adb:496, in call inlined at keystore.adb:786
+keystore.adb:119:20: warning: range check might fail, in call inlined at keystore.adb:377, in call inlined at keystore.adb:431, in call inlined at keystore.adb:612
+keystore.adb:119:20: warning: range check might fail, in call inlined at keystore.adb:377, in call inlined at keystore.adb:431, in call inlined at keystore.adb:715
+keystore.adb:119:20: warning: range check might fail, in call inlined at keystore.adb:377, in call inlined at keystore.adb:496, in call inlined at keystore.adb:565
+keystore.adb:119:20: warning: range check might fail, in call inlined at keystore.adb:377, in call inlined at keystore.adb:496, in call inlined at keystore.adb:786
+keystore.adb:119:20: warning: range check might fail, in call inlined at keystore.adb:561
+keystore.adb:119:20: warning: range check might fail, in call inlined at keystore.adb:731
+keystore.adb:119:20: warning: range check might fail, in call inlined at keystore.adb:801
+keystore.adb:119:20: warning: range check might fail, in call inlined at keystore.adb:891
 keystore.adb:195:30: info: range check proved
 keystore.adb:195:41: info: overflow check proved
 keystore.adb:195:57: info: overflow check proved
@@ -440,6 +718,8 @@ keystore.adb:337:40: info: length check proved, in call inlined at keystore.adb:
 keystore.adb:810:77: info: length check proved
 keystore.ads:255:07: warning: postcondition might fail
 keystore.ads:275:26: warning: postcondition might fail, requires not (PrivateKeyPresent)
+latch-interfac.ads:45:26: warning: postcondition might fail, requires isLocked or Fault
+latch-interfac.ads:61:26: warning: postcondition might fail, requires not isLocked or Fault
 latch.ads:107:07: warning: postcondition might fail
 latch.ads:142:08: warning: postcondition might fail, requires IsLocked = LatchisLocked or SystemFault
 latch.ads:162:26: warning: postcondition might fail, requires Latch_Timeout = Time
@@ -460,6 +740,62 @@ screen.adb:133:07: info: length check proved
 screen.adb:134:07: info: length check proved
 screen.adb:135:07: info: length check proved
 screen.adb:136:07: info: length check proved
+screen.adb:456:34: info: length check proved, in call inlined at screen.adb:620
+screen.adb:456:34: info: length check proved, in call inlined at screen.adb:626
+screen.adb:456:34: info: length check proved, in call inlined at screen.adb:632
+screen.adb:456:34: info: length check proved, in call inlined at screen.adb:638
+screen.adb:459:37: warning: array index check might fail, in call inlined at screen.adb:620
+screen.adb:459:37: warning: array index check might fail, in call inlined at screen.adb:626
+screen.adb:459:37: warning: array index check might fail, in call inlined at screen.adb:632
+screen.adb:459:37: warning: array index check might fail, in call inlined at screen.adb:638
+screen.adb:463:15: warning: length check might fail, in call inlined at screen.adb:620
+screen.adb:463:15: warning: length check might fail, in call inlined at screen.adb:626
+screen.adb:463:15: warning: length check might fail, in call inlined at screen.adb:632
+screen.adb:463:15: warning: length check might fail, in call inlined at screen.adb:638
+screen.adb:463:18: warning: length check might fail, in call inlined at screen.adb:620
+screen.adb:463:18: warning: length check might fail, in call inlined at screen.adb:626
+screen.adb:463:18: warning: length check might fail, in call inlined at screen.adb:632
+screen.adb:463:18: warning: length check might fail, in call inlined at screen.adb:638
+screen.adb:463:18: warning: range check might fail, in call inlined at screen.adb:620
+screen.adb:463:18: warning: range check might fail, in call inlined at screen.adb:626
+screen.adb:463:18: warning: range check might fail, in call inlined at screen.adb:632
+screen.adb:463:18: warning: range check might fail, in call inlined at screen.adb:638
+screen.adb:463:46: warning: overflow check might fail, in call inlined at screen.adb:620
+screen.adb:463:46: warning: overflow check might fail, in call inlined at screen.adb:626
+screen.adb:463:46: warning: overflow check might fail, in call inlined at screen.adb:632
+screen.adb:463:46: warning: overflow check might fail, in call inlined at screen.adb:638
+screen.adb:483:22: warning: range check might fail, in call inlined at screen.adb:650
+screen.adb:483:22: warning: range check might fail, in call inlined at screen.adb:656
+screen.adb:483:22: warning: range check might fail, in call inlined at screen.adb:662
+screen.adb:500:59: warning: divide by zero might fail, in call inlined at screen.adb:680
+screen.adb:500:59: warning: divide by zero might fail, in call inlined at screen.adb:686
+screen.adb:500:67: warning: range check might fail, in call inlined at screen.adb:680
+screen.adb:500:67: warning: range check might fail, in call inlined at screen.adb:686
+screen.adb:501:38: info: length check proved, in call inlined at screen.adb:680
+screen.adb:501:38: info: length check proved, in call inlined at screen.adb:686
+screen.adb:503:37: warning: length check might fail, in call inlined at screen.adb:680
+screen.adb:503:37: warning: length check might fail, in call inlined at screen.adb:686
+screen.adb:503:40: warning: length check might fail, in call inlined at screen.adb:680
+screen.adb:503:40: warning: length check might fail, in call inlined at screen.adb:686
+screen.adb:503:40: warning: range check might fail, in call inlined at screen.adb:680
+screen.adb:503:40: warning: range check might fail, in call inlined at screen.adb:686
+screen.adb:522:42: info: length check proved, in call inlined at screen.adb:644
+screen.adb:524:33: warning: length check might fail, in call inlined at screen.adb:644
+screen.adb:524:36: warning: length check might fail, in call inlined at screen.adb:644
+screen.adb:543:35: info: length check proved, in call inlined at screen.adb:668
+screen.adb:543:35: info: length check proved, in call inlined at screen.adb:674
+screen.adb:545:33: warning: length check might fail, in call inlined at screen.adb:668
+screen.adb:545:33: warning: length check might fail, in call inlined at screen.adb:674
+screen.adb:545:36: warning: length check might fail, in call inlined at screen.adb:668
+screen.adb:545:36: warning: length check might fail, in call inlined at screen.adb:674
+screen.adb:564:33: info: length check proved, in call inlined at screen.adb:692
+screen.adb:566:37: warning: length check might fail, in call inlined at screen.adb:692
+screen.adb:566:40: warning: length check might fail, in call inlined at screen.adb:692
+screen.adb:566:40: warning: range check might fail, in call inlined at screen.adb:692
+screen.adb:620:49: warning: range check might fail
+screen.adb:626:49: warning: range check might fail
+screen.adb:632:49: warning: range check might fail
+screen.adb:638:49: warning: range check might fail
 screen.adb:816:40: info: length check proved, in call inlined at screen.adb:841
 screen.adb:816:40: info: length check proved, in call inlined at screen.adb:847
 screen.adb:816:40: info: length check proved, in call inlined at screen.adb:853
@@ -480,20 +816,89 @@ stats.adb:53:57: info: overflow check proved
 stats.adb:70:51: info: overflow check proved
 stats.adb:87:53: info: overflow check proved
 stats.adb:104:47: info: overflow check proved
+tokenreader-interfac.adb:40:19: info: length check proved, in call inlined at tokenreader-interfac.adb:226
+tokenreader-interfac.adb:40:19: info: length check proved, in call inlined at tokenreader-interfac.adb:252
+tokenreader-interfac.adb:40:19: info: length check proved, in call inlined at tokenreader-interfac.adb:278
+tokenreader-interfac.adb:40:19: info: length check proved, in call inlined at tokenreader-interfac.adb:305
+tokenreader-interfac.adb:55:48: warning: assuming "Trim" has no effect on global items
+tokenreader-interfac.adb:55:48: warning: no Global contract available for "Trim"
+tokenreader-interfac.adb:60:49: warning: assuming "Overwrite" has no effect on global items
+tokenreader-interfac.adb:60:49: warning: length check might fail
+tokenreader-interfac.adb:60:49: warning: no Global contract available for "Overwrite"
+tokenreader-interfac.adb:92:21: info: length check proved
+tokenreader-interfac.adb:120:43: warning: range check might fail
+tokenreader-interfac.adb:123:23: info: length check proved
+tokenreader-interfac.adb:148:26: info: length check proved
 tokenreader.adb:52:37: info: length check proved
 tokenreader.adb:63:26: info: length check proved
 tokenreader.adb:68:26: info: length check proved
 tokenreader.adb:68:36: info: length check proved
 tokenreader.adb:69:36: info: length check proved
+tokenreader.adb:202:38: warning: range check might fail, in call inlined at tokenreader.adb:221
+tokenreader.adb:203:12: warning: range check might fail, in call inlined at tokenreader.adb:221
+tokenreader.adb:203:56: warning: range check might fail, in call inlined at tokenreader.adb:221
+tokenreader.adb:204:12: warning: range check might fail, in call inlined at tokenreader.adb:221
+tokenreader.adb:204:57: warning: range check might fail, in call inlined at tokenreader.adb:221
+tokenreader.adb:210:42: warning: length check might fail, in call inlined at tokenreader.adb:221
+tokenreader.adb:210:45: warning: length check might fail, in call inlined at tokenreader.adb:221
+tokenreader.adb:212:23: info: length check proved, in call inlined at tokenreader.adb:221
+tokenreader.adb:212:23: warning: range check might fail, in call inlined at tokenreader.adb:221
+tokenreader.adb:219:22: info: range check proved
 tokenreader.adb:314:17: info: range check proved
 tokenreader.adb:315:48: info: range check proved
 tokenreader.adb:675:26: info: range check proved
 tokenreader.adb:752:22: info: range check proved
 tokenreader.adb:755:43: info: range check proved
 updates.ads:96:12: info: postcondition proved
-updates.ads:188:11: info: postcondition proved
+updates.ads:188:11: warning: postcondition might fail
+userentry.adb:508:12: warning: range check might fail, in call inlined at userentry.adb:526
+userentry.adb:514:42: warning: length check might fail, in call inlined at userentry.adb:526
+userentry.adb:514:45: warning: length check might fail, in call inlined at userentry.adb:526
+userentry.adb:516:23: info: length check proved, in call inlined at userentry.adb:526
+userentry.adb:516:23: warning: range check might fail, in call inlined at userentry.adb:526
 userentry.adb:685:19: info: precondition proved
 userentry.adb:919:12: warning: postcondition might fail, requires Latch.IsLocked and then Door.TheCurrentDoor = Door.Open and then Clock.GreaterThanOrEqual(Clock.TheCurrentTime, Door.alarm_Timeout) ) = (Door.TheDoorAlarm = AlarmTypes.alarming
 userentry.adb:1301:13: info: precondition proved
 userentry.adb:1305:13: warning: precondition might fail
 userentry.adb:1309:13: warning: precondition might fail
+usertoken.adb:713:37: warning: length check might fail, in call inlined at usertoken.adb:1010
+usertoken.adb:713:37: warning: length check might fail, in call inlined at usertoken.adb:759, in call inlined at usertoken.adb:1001
+usertoken.adb:713:37: warning: length check might fail, in call inlined at usertoken.adb:762, in call inlined at usertoken.adb:1001
+usertoken.adb:713:37: warning: length check might fail, in call inlined at usertoken.adb:765, in call inlined at usertoken.adb:1001
+usertoken.adb:713:37: warning: length check might fail, in call inlined at usertoken.adb:870, in call inlined at usertoken.adb:1003
+usertoken.adb:713:37: warning: length check might fail, in call inlined at usertoken.adb:873, in call inlined at usertoken.adb:1003
+usertoken.adb:713:37: warning: length check might fail, in call inlined at usertoken.adb:876, in call inlined at usertoken.adb:1003
+usertoken.adb:713:37: warning: length check might fail, in call inlined at usertoken.adb:979, in call inlined at usertoken.adb:1005
+usertoken.adb:713:37: warning: length check might fail, in call inlined at usertoken.adb:982, in call inlined at usertoken.adb:1005
+usertoken.adb:713:37: warning: length check might fail, in call inlined at usertoken.adb:985, in call inlined at usertoken.adb:1005
+usertoken.adb:715:23: info: length check proved, in call inlined at usertoken.adb:1010
+usertoken.adb:715:23: info: length check proved, in call inlined at usertoken.adb:759, in call inlined at usertoken.adb:1001
+usertoken.adb:715:23: info: length check proved, in call inlined at usertoken.adb:762, in call inlined at usertoken.adb:1001
+usertoken.adb:715:23: info: length check proved, in call inlined at usertoken.adb:765, in call inlined at usertoken.adb:1001
+usertoken.adb:715:23: info: length check proved, in call inlined at usertoken.adb:870, in call inlined at usertoken.adb:1003
+usertoken.adb:715:23: info: length check proved, in call inlined at usertoken.adb:873, in call inlined at usertoken.adb:1003
+usertoken.adb:715:23: info: length check proved, in call inlined at usertoken.adb:876, in call inlined at usertoken.adb:1003
+usertoken.adb:715:23: info: length check proved, in call inlined at usertoken.adb:979, in call inlined at usertoken.adb:1005
+usertoken.adb:715:23: info: length check proved, in call inlined at usertoken.adb:982, in call inlined at usertoken.adb:1005
+usertoken.adb:715:23: info: length check proved, in call inlined at usertoken.adb:985, in call inlined at usertoken.adb:1005
+usertoken.adb:715:23: warning: range check might fail, in call inlined at usertoken.adb:1010
+usertoken.adb:715:23: warning: range check might fail, in call inlined at usertoken.adb:759, in call inlined at usertoken.adb:1001
+usertoken.adb:715:23: warning: range check might fail, in call inlined at usertoken.adb:762, in call inlined at usertoken.adb:1001
+usertoken.adb:715:23: warning: range check might fail, in call inlined at usertoken.adb:765, in call inlined at usertoken.adb:1001
+usertoken.adb:715:23: warning: range check might fail, in call inlined at usertoken.adb:870, in call inlined at usertoken.adb:1003
+usertoken.adb:715:23: warning: range check might fail, in call inlined at usertoken.adb:873, in call inlined at usertoken.adb:1003
+usertoken.adb:715:23: warning: range check might fail, in call inlined at usertoken.adb:876, in call inlined at usertoken.adb:1003
+usertoken.adb:715:23: warning: range check might fail, in call inlined at usertoken.adb:979, in call inlined at usertoken.adb:1005
+usertoken.adb:715:23: warning: range check might fail, in call inlined at usertoken.adb:982, in call inlined at usertoken.adb:1005
+usertoken.adb:715:23: warning: range check might fail, in call inlined at usertoken.adb:985, in call inlined at usertoken.adb:1005
+usertoken.adb:759:31: warning: length check might fail, in call inlined at usertoken.adb:759, in call inlined at usertoken.adb:1001
+usertoken.adb:762:18: warning: length check might fail, in call inlined at usertoken.adb:762, in call inlined at usertoken.adb:1001
+usertoken.adb:765:18: warning: length check might fail, in call inlined at usertoken.adb:765, in call inlined at usertoken.adb:1001
+usertoken.adb:870:31: warning: length check might fail, in call inlined at usertoken.adb:870, in call inlined at usertoken.adb:1003
+usertoken.adb:873:18: warning: length check might fail, in call inlined at usertoken.adb:873, in call inlined at usertoken.adb:1003
+usertoken.adb:876:18: warning: length check might fail, in call inlined at usertoken.adb:876, in call inlined at usertoken.adb:1003
+usertoken.adb:979:31: warning: length check might fail, in call inlined at usertoken.adb:979, in call inlined at usertoken.adb:1005
+usertoken.adb:982:18: warning: length check might fail, in call inlined at usertoken.adb:982, in call inlined at usertoken.adb:1005
+usertoken.adb:985:18: warning: length check might fail, in call inlined at usertoken.adb:985, in call inlined at usertoken.adb:1005
+usertoken.adb:1010:25: warning: length check might fail
+usertoken.adb:1085:45: info: precondition proved

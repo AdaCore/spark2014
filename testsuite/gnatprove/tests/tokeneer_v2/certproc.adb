@@ -27,7 +27,7 @@ use type CryptoTypes.AlgorithmT;
 use type CryptoTypes.IssuerT;
 
 package body CertProc
-  with SPARK_Mode => Off
+  with SPARK_Mode => Off  --  exception handlers
 is
 
    ------------------------------------------------------------------

@@ -366,7 +366,7 @@ is
           Depends => (Success => DirName);
 
 private
-   pragma SPARK_Mode (Off);
+   pragma SPARK_Mode (Off);  --  access types
    -- hidden due to use of access types, required in low level file
    -- handling.
 

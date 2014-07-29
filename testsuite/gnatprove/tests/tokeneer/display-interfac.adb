@@ -25,7 +25,7 @@ with Ada.Strings.Fixed;
 use type BasicTypes.Unsigned32T;
 
 package body Display.Interfac
-is pragma SPARK_Mode (Off);
+is pragma SPARK_Mode (On);
 
    ------------------------------------------------------------------
    -- Types

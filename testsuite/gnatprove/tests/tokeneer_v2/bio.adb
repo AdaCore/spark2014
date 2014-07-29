@@ -147,7 +147,7 @@ is
      (Text        : String;
       ReturnValue : BasicTypes.Unsigned32T)
      return AuditTypes.DescriptionT
-     with SPARK_Mode => Off
+
    is
       Result      : AuditTypes.DescriptionT := AuditTypes.NoDescription;
       TheCodeName : ReturnT;

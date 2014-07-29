@@ -408,7 +408,7 @@ is pragma SPARK_Mode (On);
    --#         CurrentConfig    from CurrentConfig,
    --#                               ConfigData.State;
    is
-      pragma SPARK_Mode (Off);  --  concatenation
+
       ConsoleOK : Boolean;
 
       LatchUnlock,

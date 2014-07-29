@@ -483,7 +483,7 @@ is
           Depends => null;
 
    procedure DeleteArchiveFile
-     with SPARK_Mode => Off
+
    is
       Archive : File.T;
       Unused  : Boolean;

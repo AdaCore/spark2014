@@ -377,7 +377,7 @@ is pragma SPARK_Mode (On);
    --#   Success from
    --#      DirName;
 
-private pragma SPARK_Mode (Off);
+private pragma SPARK_Mode (Off);  --  access types
 
    --# hide File;
    -- hidden due to use of access types, required in low level file

@@ -78,7 +78,7 @@ package body DoorAPI is
    --
    ------------------------------------------------------------------
    function GetDoorState return DoorStateT
-     with SPARK_Mode => Off
+     with SPARK_Mode => Off  --  exception handlers
    is
    begin
       return GetDoorStateRaw;

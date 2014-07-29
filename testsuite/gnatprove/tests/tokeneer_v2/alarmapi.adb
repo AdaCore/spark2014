@@ -20,7 +20,7 @@ with MsgProc;
 with Ada.Strings.Fixed;
 
 package body AlarmAPI
-  with SPARK_Mode => Off
+  with SPARK_Mode => On
 is
 
    ------------------------------------------------------------------

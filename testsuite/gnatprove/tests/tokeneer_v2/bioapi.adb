@@ -23,7 +23,7 @@ with Ada.Strings.Fixed,
      Unchecked_Conversion;
 
 package body BioAPI
-  with SPARK_Mode => Off
+  with SPARK_Mode => Off  --  exception handlers
 is
 
    ------------------------------------------------------------------

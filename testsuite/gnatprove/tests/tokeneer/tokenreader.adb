@@ -174,7 +174,7 @@ is pragma SPARK_Mode (On);
      (Text         : String;
       ResponseCode : BasicTypes.Unsigned32T) return AuditTypes.DescriptionT
    is
-      pragma SPARK_Mode (Off);  --  concatenation
+
       Result : AuditTypes.DescriptionT := AuditTypes.NoDescription;
       TheCodeName : Interfac.ResponseCodeT;
 

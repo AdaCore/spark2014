@@ -20,7 +20,7 @@ with Ada.Strings.Fixed;
 with MsgProc;
 
 package body DisplayAPI
-  with SPARK_Mode => Off
+  with SPARK_Mode => Off  --  exception handlers
 is
 
    ------------------------------------------------------------------

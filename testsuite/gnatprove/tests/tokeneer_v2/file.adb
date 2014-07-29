@@ -28,7 +28,7 @@ with Text_IO;
 with Ada.Exceptions;
 
 package body File
-  with SPARK_Mode => Off
+  with SPARK_Mode => Off  --  exception handlers
 is
 
    ------------------------------------------------------------------

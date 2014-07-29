@@ -464,7 +464,7 @@ is pragma SPARK_Mode (On);
    --#                                 Bio.Input &
    --#         UserToken.State    from *;
    is
-      pragma SPARK_Mode (Off);  --  concatenation
+
 
       TheTemplate : IandATypes.TemplateT;
       MatchResult : IandATypes.MatchResultT;

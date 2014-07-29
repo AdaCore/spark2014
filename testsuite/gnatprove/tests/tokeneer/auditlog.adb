@@ -271,7 +271,7 @@ is pragma SPARK_Mode (On);
      --#                               TheFile &
      --#         Description      from TheFile;
    is
-      pragma SPARK_Mode (Off);  --  concatenation
+
       OK : Boolean;
       FirstTime : Clock.TimeTextT;
       LastTime  : Clock.TimeTextT;
@@ -385,7 +385,7 @@ is pragma SPARK_Mode (On);
      --#         Description      from *,
      --#                               TheFile;
    is
-      pragma SPARK_Mode (Off);  --  concatenation
+
       OK : Boolean;
       LastTime  : Clock.TimeTextT;
       TimeCount : Natural; -- type Natural to match formal parameter
@@ -1174,7 +1174,7 @@ is pragma SPARK_Mode (On);
    --# post NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries +
    --#                        LogFileEntries(CurrentLogFile);
    is
-      pragma SPARK_Mode (Off);  --  array comparison
+
       pragma Postcondition
         (NumberLogEntries =
            LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries +

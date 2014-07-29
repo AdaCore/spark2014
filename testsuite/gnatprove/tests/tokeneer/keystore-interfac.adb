@@ -18,7 +18,7 @@
 with Crypto;
 
 package body KeyStore.Interfac
-is pragma SPARK_Mode (Off);
+is pragma SPARK_Mode (Off);  --  assertion failure in flow analysis N728-018
 
    ------------------------------------------------------------------
    -- GetKeystoreReturn
