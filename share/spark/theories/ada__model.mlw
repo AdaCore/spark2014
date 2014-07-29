@@ -1089,6 +1089,8 @@ module Constr_Array
 
   function dummy : __t
 
+  function attr__size : int
+
   function user_eq (x : __t) (y : __t) : bool
   function bool_eq (x : __t) (y : __t) : bool =
     Array__1.bool_eq x first last
@@ -1114,6 +1116,9 @@ module Constr_Array_2
   function of_array  (a : Array__2.map component_type) : __t = a
 
   function dummy : __t
+
+  function attr__size : int
+
   function user_eq (x : __t) (y : __t) : bool
   function bool_eq (x : __t) (y : __t) : bool =
     Array__2.bool_eq x first last first_2 last_2
@@ -1142,6 +1147,9 @@ module Constr_Array_3
   function of_array  (a : Array__3.map component_type) : __t = a
 
   function dummy : __t
+
+  function attr__size : int
+
   function user_eq (x : __t) (y : __t) : bool
   function bool_eq (x : __t) (y : __t) : bool =
     Array__3.bool_eq x first last first_2 last_2 first_3 last_3
@@ -1173,6 +1181,9 @@ module Constr_Array_4
   function of_array  (a : Array__4.map component_type) : __t = a
 
   function dummy : __t
+
+  function attr__size : int
+
   function user_eq (x : __t) (y : __t) : bool
   function bool_eq (x : __t) (y : __t) : bool =
     Array__4.bool_eq x first last first_2 last_2 first_3 last_3 first_4 last_4

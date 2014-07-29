@@ -1722,6 +1722,8 @@ package body Why.Gen.Expr is
                      String_Image_Type,
                   when Attribute_Constrained =>
                      EW_Bool_Type,
+                  when Attribute_Size =>
+                     EW_Int_Type,
                   when Attribute_Tag =>
                      EW_Int_Type);
             IT : constant W_Type_Id :=

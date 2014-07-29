@@ -230,6 +230,8 @@ package body Why.Gen.Records is
       Theory  : W_Theory_Declaration_Id;
       E       : Entity_Id)
    is
+      procedure Declare_Attributes;
+      --  Declare functions for the Size and Tag attributes
 
       procedure Declare_Record_Type;
       --  declare the record type
@@ -401,6 +403,33 @@ package body Why.Gen.Records is
          return New_Identifier (Name => To_String (WNE_Extract_Prefix) &
                                         To_String (WNE_Rec_Extension_Suffix));
       end Extract_Extension_Fun;
+
+      ------------------------
+      -- Declare_Attributes --
+      ------------------------
+
+      procedure Declare_Attributes is
+      begin
+         --  The size is defined as a logic constant
+
+         Emit (Theory,
+               New_Function_Decl
+                 (Domain      => EW_Term,
+                  Name        => To_Ident (WNE_Attr_Size),
+                  Labels      => Name_Id_Sets.Empty_Set,
+                  Return_Type => EW_Int_Type));
+
+         --  The static tag for the type is defined as a logic constant
+
+         if Is_Tagged_Type (E) then
+            Emit (Theory,
+                  New_Function_Decl
+                    (Domain      => EW_Term,
+                     Name        => To_Ident (WNE_Tag),
+                     Labels      => Name_Id_Sets.Empty_Set,
+                     Return_Type => EW_Int_Type));
+         end if;
+      end Declare_Attributes;
 
       ----------------------------------
       -- Declare_Extraction_Functions --
@@ -1541,17 +1570,6 @@ package body Why.Gen.Records is
 
       Declare_Record_Type;
 
-      --  The static tag for the type is defined as a logic constant
-
-      if Is_Tagged_Type (E) then
-         Emit (Theory,
-               New_Function_Decl
-                 (Domain      => EW_Term,
-                  Name        => To_Ident (WNE_Tag),
-                  Labels      => Name_Id_Sets.Empty_Set,
-                  Return_Type => EW_Int_Type));
-      end if;
-
       --  We need to delare conversion functions before the protected access
       --  functions, because the former may be used in the latter
 
@@ -1562,6 +1580,7 @@ package body Why.Gen.Records is
 
       Declare_Protected_Access_Functions;
       Declare_Equality_Function;
+      Declare_Attributes;
 
       if not Is_Root
         and then Has_Discriminants (E)

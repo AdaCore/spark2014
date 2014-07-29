@@ -3212,17 +3212,18 @@ package body SPARK_Definition is
               Pragma_Unreferenced                 |
               Pragma_Validity_Checks              |
               Pragma_Warnings                     |
-              Pragma_Weak_External                |
+              Pragma_Weak_External                =>
+            null;
 
          --  Group 1d - pragma that are re-written and/or removed
          --  by the front-end in GNATProve, so they should
          --  never be seen here.
-              Pragma_Assert                       |
+         when Pragma_Assert                       |
               Pragma_Assert_And_Cut               |
               Pragma_Assume                       |
               Pragma_Debug                        |
               Pragma_Loop_Invariant               =>
-            null;
+            raise Program_Error;
 
          --  Group 2 - Remaining pragmas, enumerated here rather than
          --  a "when others" to force re-consideration when

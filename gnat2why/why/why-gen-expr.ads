@@ -298,6 +298,7 @@ package Why.Gen.Expr is
                                                  | Attribute_Modulus
                                                  | Attribute_Image
                                                  | Attribute_Value
+                                                 | Attribute_Size
                                                  | Attribute_Tag;
 
    function New_Attribute_Expr

@@ -142,6 +142,7 @@ package body Why.Gen.Names is
          when Attribute_Length      => return WNE_Attr_Length;
          when Attribute_Value       => return WNE_Attr_Value;
          when Attribute_Small       => return WNE_Attr_Small;
+         when Attribute_Size        => return WNE_Attr_Size;
          when Attribute_Tag         => return WNE_Attr_Tag;
          when others =>
             raise Program_Error;
@@ -627,6 +628,7 @@ package body Why.Gen.Names is
          when WNE_Logic_Fun_Suffix     => return "__logic";
          when WNE_Inversion_Axiom_Prefix => return "inversion_axiom";
          when WNE_Tag                  => return "__tag";
+         when WNE_Attr_Size            => return "attr__size";
       end case;
    end To_String;
 
