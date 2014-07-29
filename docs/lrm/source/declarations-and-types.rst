@@ -245,8 +245,7 @@ The following rules apply to discriminants in |SPARK|.
 .. _tu-discriminants-02:
 
 2. A ``discriminant_specification`` shall not occur as part of a
-   derived type declaration whose parent type is discriminated. [In
-   other words, inherited discriminants shall not be hidden.]
+   derived type declaration.
 
 .. _tu-discriminants-03:
 
