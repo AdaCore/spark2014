@@ -7892,16 +7892,25 @@ package body Gnat2Why.Expr is
             begin
                if Is_Record_Type (Expr_Type) then
                   pragma Assert (Is_Empty_List (Expressions (Expr)));
-                  T :=
-                    New_Ada_Record_Aggregate
-                      (Associations =>
-                         Transform_Record_Component_Associations
-                           (Domain,
-                            Expr_Type,
-                            Component_Associations (Expr),
-                            Local_Params),
-                       Domain       => Domain,
-                       Ty           => Expr_Type);
+                  declare
+                     Assocs : constant W_Field_Association_Array :=
+                       Transform_Record_Component_Associations
+                         (Domain,
+                          Expr_Type,
+                          Component_Associations (Expr),
+                          Local_Params);
+                     Num_Discrs : constant Natural :=
+                       Count_Non_Inherited_Discriminants
+                         (Component_Associations (Expr));
+                  begin
+                     T :=
+                       New_Ada_Record_Aggregate
+                         (Domain       => Domain,
+                          Discr_Assocs => Assocs (1 .. Num_Discrs),
+                          Field_Assocs =>
+                            Assocs (Num_Discrs + 1 .. Assocs'Last),
+                          Ty           => Expr_Type);
+                  end;
                else
                   pragma Assert
                     (Is_Array_Type (Expr_Type) or else
@@ -7911,6 +7920,65 @@ package body Gnat2Why.Expr is
                                             Domain => Domain,
                                             Expr   => Expr);
                end if;
+            end;
+
+         when N_Extension_Aggregate =>
+            declare
+               Expr_Type : constant Entity_Id := Type_Of_Node (Expr);
+               Assocs : constant W_Field_Association_Array :=
+                 Transform_Record_Component_Associations
+                   (Domain,
+                    Expr_Type,
+                    Component_Associations (Expr),
+                    Local_Params);
+               Num_Discrs : constant Natural :=
+                 Count_Non_Inherited_Discriminants
+                   (Component_Associations (Expr));
+
+               --  Use the base type of the ancestor part as intermediate type
+               --  to which the ancestor is converted if needed before copying
+               --  its fields to the extension aggregate. This takes care
+               --  of generating a dummy value for unused components in a
+               --  discriminant record, if needed.
+
+               Anc_Ty : constant Entity_Id :=
+                 Etype (Etype (Ancestor_Part (Expr)));
+
+               Anc_Expr : constant W_Expr_Id :=
+                 Transform_Expr (Ancestor_Part (Expr),
+                                 EW_Abstract (Anc_Ty),
+                                 Domain,
+                                 Params);
+               Tmp : constant W_Expr_Id := New_Temp_For_Expr (Anc_Expr);
+               Anc_Num_Discrs : constant Natural :=
+                 Number_Discriminants (Anc_Ty);
+               Anc_Num_Fields : constant Natural :=
+                 Count_Fields (Anc_Ty) - 1;
+               Anc_Discr_Assocs : W_Field_Association_Array
+                                    (1 .. Anc_Num_Discrs);
+               Anc_Field_Assocs : W_Field_Association_Array
+                                    (1 .. Anc_Num_Fields);
+
+            begin
+               Generate_Associations_From_Ancestor
+                 (Domain       => Domain,
+                  Expr         => Tmp,
+                  Anc_Ty       => Anc_Ty,
+                  Ty           => Expr_Type,
+                  Discr_Assocs => Anc_Discr_Assocs,
+                  Field_Assocs => Anc_Field_Assocs);
+               T :=
+                 New_Ada_Record_Aggregate
+                   (Domain       => Domain,
+                    Discr_Assocs =>
+                      Anc_Discr_Assocs & Assocs (1 .. Num_Discrs),
+                    Field_Assocs =>
+                      Anc_Field_Assocs
+                        & Assocs (Num_Discrs + 1 .. Assocs'Last),
+                    Ty           => Expr_Type);
+               T := Binding_For_Temp (Domain   => Domain,
+                                      Tmp      => Tmp,
+                                      Context  => T);
             end;
 
          when N_Slice =>
@@ -9839,9 +9907,11 @@ package body Gnat2Why.Expr is
          Associated_Components : Natural := 0;
       begin
          while Present (Association) loop
-            CL := Choices (Association);
-            Associated_Components := Associated_Components +
-              Integer (List_Length (CL));
+            if not Inherited_Discriminant (Association) then
+               CL := Choices (Association);
+               Associated_Components := Associated_Components +
+                 Integer (List_Length (CL));
+            end if;
             Next (Association);
          end loop;
          return Associated_Components;
@@ -9870,6 +9940,7 @@ package body Gnat2Why.Expr is
 
       pragma Assert
         (In_Attribute_Update
+          or else Is_Tagged_Type (Typ)
           or else Number_Components (Typ) = Integer (List_Length (Assocs)));
 
       Association := Nlists.First (Assocs);
@@ -9893,46 +9964,51 @@ package body Gnat2Why.Expr is
 
             pragma Assert (Nkind (Choice) /= N_Others_Choice);
 
-            Component := Search_Component_By_Name (Typ, Choice);
-            pragma Assert (Present (Component));
+            --  Inherited discriminants in an extension aggregate are already
+            --  accounted for in the ancestor part. Ignore them here.
 
-            if not Box_Present (Association) then
-               Expr := Transform_Expr
-                         (Expr          => Expression (Association),
-                          Expected_Type => EW_Abstract (Etype (Component)),
-                          Domain        => Domain,
-                          Params        => Params);
-            else
-               pragma Assert (Domain = EW_Prog);
-               Expr := +New_Simpl_Any_Prog
-                         (T => EW_Abstract (Etype (Component)));
-            end if;
+            if not Inherited_Discriminant (Association) then
+               Component := Search_Component_By_Name (Typ, Choice);
+               pragma Assert (Present (Component));
 
-            --  If the component's type has mutable discriminants then the
-            --  component must be unconstrained.
+               if not Box_Present (Association) then
+                  Expr := Transform_Expr
+                            (Expr          => Expression (Association),
+                             Expected_Type => EW_Abstract (Etype (Component)),
+                             Domain        => Domain,
+                             Params        => Params);
+               else
+                  pragma Assert (Domain = EW_Prog);
+                  Expr := +New_Simpl_Any_Prog
+                            (T => EW_Abstract (Etype (Component)));
+               end if;
 
-            if not Is_Constrained (Etype (Component))
-              and then Has_Defaulted_Discriminants (Etype (Component))
-            then
-               Expr := New_Is_Constrained_Update
-                 (Domain   => Domain,
-                  Name     => Expr,
-                  Value    => +False_Term,
-                  Ty       => Etype (Component));
-            end if;
+               --  If the component's type has mutable discriminants then the
+               --  component must be unconstrained.
 
-            if Ekind (Component) = E_Discriminant then
-               Discr_Assoc (Discr_Index) := New_Field_Association
-                 (Domain => Domain,
-                  Field  => To_Why_Id (Component),
-                  Value  => Expr);
-               Discr_Index := Discr_Index + 1;
-            else
-               Field_Assoc (Field_Index) := New_Field_Association
-                 (Domain => Domain,
-                  Field  => To_Why_Id (Component),
-                  Value  => Expr);
-               Field_Index := Field_Index + 1;
+               if not Is_Constrained (Etype (Component))
+                 and then Has_Defaulted_Discriminants (Etype (Component))
+               then
+                  Expr := New_Is_Constrained_Update
+                    (Domain   => Domain,
+                     Name     => Expr,
+                     Value    => +False_Term,
+                     Ty       => Etype (Component));
+               end if;
+
+               if Ekind (Component) = E_Discriminant then
+                  Discr_Assoc (Discr_Index) := New_Field_Association
+                    (Domain => Domain,
+                     Field  => To_Why_Id (Component),
+                     Value  => Expr);
+                  Discr_Index := Discr_Index + 1;
+               else
+                  Field_Assoc (Field_Index) := New_Field_Association
+                    (Domain => Domain,
+                     Field  => To_Why_Id (Component),
+                     Value  => Expr);
+                  Field_Index := Field_Index + 1;
+               end if;
             end if;
 
             --  Getting the next component from the associations' component
@@ -9955,6 +10031,7 @@ package body Gnat2Why.Expr is
       pragma Assert (No (Association));
       pragma Assert
         ((In_Attribute_Update and then Field_Index = Result'Last + 1)
+         or else Is_Tagged_Type (Typ)
          or else Discr_Index = Discr_Assoc'Last + 1);
       Result := Discr_Assoc (1 .. Discr_Index - 1) &
         Field_Assoc (1 .. Field_Index - 1);
@@ -10355,11 +10432,17 @@ package body Gnat2Why.Expr is
          when N_Implicit_Label_Declaration =>
             return New_Void;
 
-         --  Subprogram declarations are already taken care of explicitly.
-         --  They should not be treated as part of a list of declarations.
+         --  Subprogram and package declarations are already taken care of
+         --  explicitly. They should not be treated as part of a list of
+         --  declarations.
 
-         when N_Subprogram_Body        |
-              N_Subprogram_Declaration =>
+         when N_Function_Instantiation
+            | N_Package_Body
+            | N_Package_Declaration
+            | N_Procedure_Instantiation
+            | N_Subprogram_Body
+            | N_Subprogram_Declaration
+            | N_Validate_Unchecked_Conversion =>
             return New_Void;
 
          when others =>

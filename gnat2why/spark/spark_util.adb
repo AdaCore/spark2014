@@ -142,6 +142,7 @@ package body SPARK_Util is
       Not_Init    : constant Boolean :=
         Default_Initialization (Typ) /= Full_Default_Initialization
           and then not Is_Initialized_By_Formal_Container (N);
+
    --  Start of Aggregate_Is_Fully_Initialized
 
    begin
@@ -330,6 +331,45 @@ package body SPARK_Util is
 
       return Count;
    end Count_Fields;
+
+   ---------------------------------------
+   -- Count_Non_Inherited_Discriminants --
+   ---------------------------------------
+
+   function Count_Non_Inherited_Discriminants
+     (Assocs : List_Id) return Natural
+   is
+      Association : Node_Id;
+      CL          : List_Id;
+      Choice      : Node_Id;
+      Count       : Natural := 0;
+
+   begin
+      Association := Nlists.First (Assocs);
+      pragma Assert (Present (Association));
+
+      CL := Choices (Association);
+      Choice := First (CL);
+
+      while Present (Choice) loop
+         if Ekind (Entity (Choice)) = E_Discriminant
+           and then not Inherited_Discriminant (Association)
+         then
+            Count := Count + 1;
+         end if;
+         Next (Choice);
+
+         if No (Choice) then
+            Next (Association);
+            if Present (Association) then
+               CL := Choices (Association);
+               Choice := First (CL);
+            end if;
+         end if;
+      end loop;
+
+      return Count;
+   end Count_Non_Inherited_Discriminants;
 
    ----------------------------
    -- Default_Initialization --
@@ -1648,11 +1688,11 @@ package body SPARK_Util is
       Count     : Natural := 0;
       Component : Entity_Id := First_Component_Or_Discriminant (Typ);
    begin
-      while Component /= Empty loop
+      while Present (Component) loop
 
          --  Do not count completely hidden discrimiants
 
-         if not (Ekind (Component) in E_Discriminant
+         if not (Ekind (Component) = E_Discriminant
                  and then Is_Completely_Hidden (Component))
          then
             Count := Count + 1;
@@ -1670,11 +1710,11 @@ package body SPARK_Util is
       Count     : Natural := 0;
       Component : Entity_Id := First_Discriminant (Typ);
    begin
-      while Component /= Empty loop
+      while Present (Component) loop
 
          --  Do not count completely hidden discrimiants
 
-         if not (Ekind (Component) in E_Discriminant
+         if not (Ekind (Component) = E_Discriminant
                  and then Is_Completely_Hidden (Component))
          then
             Count := Count + 1;

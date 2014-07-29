@@ -179,7 +179,9 @@ package SPARK_Util is
    --  Return the name of the discriminant Capacity in formal containers
 
    function Aggregate_Is_Fully_Initialized (N : Node_Id) return Boolean;
-   --  Return whether aggregate N is fully initialized
+   --  Return whether aggregate or an extension aggregate N is fully
+   --  initialized. For the aggregate extension, this only deals with
+   --  the extension components.
 
    function All_Aggregates_Are_Fully_Initialized
      (N : Node_Id) return Boolean;
@@ -370,6 +372,11 @@ package SPARK_Util is
 
    function Count_Fields (E : Entity_Id) return Natural;
    --  count the number of normal fields in a record type Typ
+
+   function Count_Non_Inherited_Discriminants
+     (Assocs : List_Id) return Natural;
+   --  Counts the number of discriminants in the list of component associations
+   --  Assocs.
 
    function First_Discriminant (Id : E) return E
      with Pre =>

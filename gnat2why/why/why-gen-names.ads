@@ -205,6 +205,9 @@ package Why.Gen.Names is
       --  Suffix of the above extension field, to be used in related functions
       WNE_Rec_Extension_Suffix,  --  ext__
 
+      --  Name of constant tag value for a tagged type
+      WNE_Tag,  --  __tag
+
       --  Null extension for creating a value of a specific tagged type
       WNE_Null_Extension,  --  __null_ext__
 

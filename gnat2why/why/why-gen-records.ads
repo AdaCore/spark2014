@@ -93,12 +93,23 @@ package Why.Gen.Records is
    function New_Ada_Record_Aggregate
      (Ada_Node     : Node_Id := Empty;
       Domain       : EW_Domain;
-      Associations : W_Field_Association_Array;
+      Discr_Assocs : W_Field_Association_Array;
+      Field_Assocs : W_Field_Association_Array;
       Ty           : Entity_Id)
       return W_Expr_Id;
    --  Generate a record aggregate of ada type Ty from the association in
-   --  Associations. If any, the associations for the discrimiants should come
-   --  first;
+   --  Discr_Assocs and Field_Assocs.
+
+   procedure Generate_Associations_From_Ancestor
+     (Ada_Node     : Node_Id := Empty;
+      Domain       : EW_Domain;
+      Expr         : W_Expr_Id;
+      Anc_Ty       : Entity_Id;
+      Ty           : Entity_Id;
+      Discr_Assocs : out W_Field_Association_Array;
+      Field_Assocs : out W_Field_Association_Array);
+   --  Generate the part of a record aggregate that comes from the ancestor
+   --  part Expr.
 
    function New_Is_Constrained_Access
      (Ada_Node : Node_Id := Empty;

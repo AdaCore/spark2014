@@ -5,6 +5,7 @@ classwide.ads:47:14: warning: postcondition might fail, requires C_Is_Zero (V)
 classwide.ads:51:14: info: postcondition proved
 classwide.ads:68:14: info: postcondition proved
 classwide.ads:102:14: warning: postcondition might fail, requires Is_Zero (V)
+tagged_discr.adb:8:09: warning: discriminant check might fail
 tagged_discr.adb:13:08: info: discriminant check proved
 tagged_discr.adb:16:14: info: discriminant check proved
 tagged_discr.adb:18:14: info: discriminant check proved
@@ -18,6 +19,7 @@ tagged_discr.adb:51:08: info: discriminant check proved
 tagged_discr.ads:17:09: info: discriminant check proved
 tagged_discr.ads:19:28: info: discriminant check proved
 tagged_discr.ads:20:29: info: discriminant check proved
+tagged_discr.ads:23:14: info: postcondition proved
 tagged_discr.ads:26:14: info: postcondition proved
 tagged_discr.ads:33:09: info: discriminant check proved
 tagged_discr.ads:35:28: info: discriminant check proved

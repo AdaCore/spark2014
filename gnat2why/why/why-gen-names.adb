@@ -621,11 +621,12 @@ package body Why.Gen.Names is
          when WNE_Rec_Extension_Suffix => return "ext__";
          when WNE_Rec_Comp_Prefix      => return "rec__";
          when WNE_Extract_Prefix       => return "extract__";
-         when WNE_Null_Extension       => return "null_ext__";
+         when WNE_Null_Extension       => return "__null_ext__";
          when WNE_Hide_Extension       => return "hide_ext__";
          when WNE_Dispatch_Module      => return "Dispatch";
          when WNE_Logic_Fun_Suffix     => return "__logic";
          when WNE_Inversion_Axiom_Prefix => return "inversion_axiom";
+         when WNE_Tag                  => return "__tag";
       end case;
    end To_String;
 

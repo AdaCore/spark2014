@@ -601,7 +601,14 @@ package body SPARK_Definition is
             Mark_Extended_Return_Statement (N);
 
          when N_Extension_Aggregate =>
-            Mark_Violation ("extension aggregate", N);
+            if not Aggregate_Is_Fully_Initialized (N) then
+               Mark_Violation ("extension aggregate not fully defined", N,
+                               SRM_Reference => "SPARK RM 4.3");
+            end if;
+            Mark_Most_Underlying_Type_In_SPARK (Etype (N), N);
+            Mark (Ancestor_Part (N));
+            Mark_List (Expressions (N));
+            Mark_List (Component_Associations (N));
 
          when N_Free_Statement =>
             Mark_Violation ("free statement", N);

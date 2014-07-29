@@ -1515,7 +1515,7 @@ package body Why.Gen.Records is
                     (Domain      => EW_Term,
                      Name        => To_Ident (WNE_To_Base),
                      Binders     => R_Binder,
-                     Labels  => Name_Id_Sets.Empty_Set,
+                     Labels      => Name_Id_Sets.Empty_Set,
                      Return_Type => Abstr_Ty,
                      Def         => +A_Ident));
                Emit
@@ -1524,7 +1524,7 @@ package body Why.Gen.Records is
                     (Domain      => EW_Term,
                      Name        => To_Ident (WNE_Of_Base),
                      Binders     => R_Binder,
-                     Labels  => Name_Id_Sets.Empty_Set,
+                     Labels      => Name_Id_Sets.Empty_Set,
                      Return_Type => Abstr_Ty,
                      Def         => +A_Ident));
             end if;
@@ -1540,6 +1540,17 @@ package body Why.Gen.Records is
       end if;
 
       Declare_Record_Type;
+
+      --  The static tag for the type is defined as a logic constant
+
+      if Is_Tagged_Type (E) then
+         Emit (Theory,
+               New_Function_Decl
+                 (Domain      => EW_Term,
+                  Name        => To_Ident (WNE_Tag),
+                  Labels      => Name_Id_Sets.Empty_Set,
+                  Return_Type => EW_Int_Type));
+      end if;
 
       --  We need to delare conversion functions before the protected access
       --  functions, because the former may be used in the latter
@@ -1689,7 +1700,7 @@ package body Why.Gen.Records is
               (New_Name (Symbol => NID (Short_Name (E))),
                Alias => EW_Private_Type));
 
-      --  If E is a root type and has discrimiants, declare a record type for
+      --  If E is a root type and has discriminants, declare a record type for
       --  its dicrimiants and an accessor for this record.
 
       if Root = E and then Num_Discrs > 0 then
@@ -1734,7 +1745,7 @@ package body Why.Gen.Records is
                Binders     => (1 => X_Binder)));
       end if;
 
-      --  If E has mutable discrimiants, declare an accessor to its
+      --  If E has mutable discriminants, declare an accessor to its
       --  is_constrained field.
 
       if Has_Defaulted_Discriminants (E) and then
@@ -1930,48 +1941,127 @@ package body Why.Gen.Records is
    function New_Ada_Record_Aggregate
      (Ada_Node     : Node_Id := Empty;
       Domain       : EW_Domain;
-      Associations : W_Field_Association_Array;
+      Discr_Assocs : W_Field_Association_Array;
+      Field_Assocs : W_Field_Association_Array;
       Ty           : Entity_Id)
       return W_Expr_Id
    is
-      Num_Discr       : constant Natural := Number_Discriminants (Ty);
-      Discr_Assoc     : W_Field_Association_Id;
-      Field_Assoc     : W_Field_Association_Id;
+      Num_All    : constant Natural := Count_Why_Record_Fields (Ty);
+      Num_Discr  : constant Natural := Number_Discriminants (Ty);
+      Num_Fields : constant Natural := Count_Fields (Ty);
+      Assoc      : W_Field_Association_Id;
+      Assocs     : W_Field_Association_Array (1 .. Num_All);
+      Index      : Natural := 0;
+
    begin
       if Num_Discr > 0 then
-         Discr_Assoc := New_Field_Association
+         Assoc := New_Field_Association
            (Domain   => Domain,
             Field    => Prefix (E_Module (Ty), WNE_Rec_Split_Discrs),
-            Value    => New_Record_Aggregate
-              (Associations => Associations (1 .. Num_Discr)));
-      end if;
-      if Num_Discr < Associations'Last then
-         Field_Assoc := New_Field_Association
-           (Domain   => Domain,
-            Field    => Prefix (E_Module (Ty), WNE_Rec_Split_Fields),
-            Value    => New_Record_Aggregate
-              (Associations =>
-                   Associations (Num_Discr + 1 .. Associations'Last)));
+            Value    => New_Record_Aggregate (Associations => Discr_Assocs));
+         Index := Index + 1;
+         Assocs (Index) := Assoc;
       end if;
 
-      if Num_Discr > 0 and then Num_Discr < Associations'Last then
-         return New_Record_Aggregate
-           (Ada_Node     => Ada_Node,
-            Associations => (1 => Discr_Assoc, 2 => Field_Assoc),
-            Typ          => EW_Abstract (Ty));
-      elsif Num_Discr > 0 then
-         return New_Record_Aggregate
-           (Ada_Node     => Ada_Node,
-            Associations => (1 => Discr_Assoc),
-            Typ          => EW_Abstract (Ty));
-      else
-         pragma Assert (Num_Discr < Associations'Last);
-         return New_Record_Aggregate
-           (Ada_Node     => Ada_Node,
-            Associations => (1 => Field_Assoc),
-            Typ          => EW_Abstract (Ty));
+      if Num_Fields > 0 then
+         declare
+            All_Field_Assocs : W_Field_Association_Array (1 .. Num_Fields);
+            Num_Normal_Fields : constant Natural :=
+              (if Is_Tagged_Type (Ty) then Num_Fields - 1 else Num_Fields);
+         begin
+            All_Field_Assocs (1 .. Num_Normal_Fields) := Field_Assocs;
+
+            if Is_Tagged_Type (Ty) then
+               All_Field_Assocs (Num_Fields) :=
+                 New_Field_Association
+                   (Domain   => Domain,
+                    Field    => Prefix (E_Module (Ty), WNE_Rec_Extension),
+                    Value    => +To_Ident (WNE_Null_Extension));
+            end if;
+
+            Assoc := New_Field_Association
+              (Domain   => Domain,
+               Field    => Prefix (E_Module (Ty), WNE_Rec_Split_Fields),
+               Value    => New_Record_Aggregate
+                 (Associations => All_Field_Assocs));
+            Index := Index + 1;
+            Assocs (Index) := Assoc;
+         end;
       end if;
+
+      --  The Constrained attribute is never set, as the type of an aggregate
+      --  is always a constrained type.
+
+      pragma Assert (Is_Constrained (Ty));
+
+      if Is_Tagged_Type (Ty) then
+         Assoc := New_Field_Association
+           (Domain   => Domain,
+            Field    => Prefix (E_Module (Ty), WNE_Attr_Tag),
+            Value    => +Prefix (E_Module (Ty), WNE_Tag));
+         Index := Index + 1;
+         Assocs (Index) := Assoc;
+      end if;
+
+      return New_Record_Aggregate
+        (Ada_Node     => Ada_Node,
+         Associations => Assocs,
+         Typ          => EW_Abstract (Ty));
    end New_Ada_Record_Aggregate;
+
+   -----------------------------------------
+   -- Generate_Associations_From_Ancestor --
+   -----------------------------------------
+
+   procedure Generate_Associations_From_Ancestor
+     (Ada_Node     : Node_Id := Empty;
+      Domain       : EW_Domain;
+      Expr         : W_Expr_Id;
+      Anc_Ty       : Entity_Id;
+      Ty           : Entity_Id;
+      Discr_Assocs : out W_Field_Association_Array;
+      Field_Assocs : out W_Field_Association_Array)
+   is
+      Anc_Comp    : Entity_Id := First_Component_Or_Discriminant (Anc_Ty);
+      Component   : Entity_Id;
+      Discr_Index : Natural := 0;
+      Field_Index : Natural := 0;
+      Assoc       : W_Field_Association_Id;
+
+   begin
+      while Present (Anc_Comp) loop
+         pragma Assert (not Is_Completely_Hidden (Anc_Comp));
+
+         Component := Search_Component_By_Name (Ty, Anc_Comp);
+         pragma Assert (Present (Component));
+
+         Assoc := New_Field_Association
+           (Domain   => Domain,
+            Field    => To_Why_Id (Component),
+            Value    => New_Ada_Record_Access
+              (Ada_Node => Ada_Node,
+               Domain   => Domain,
+               Name     => Expr,
+               Field    => Anc_Comp,
+               Ty       => Etype (Ty)));
+
+         if Ekind (Component) = E_Discriminant then
+            Discr_Index := Discr_Index + 1;
+            Discr_Assocs (Discr_Index) := Assoc;
+         else
+            Field_Index := Field_Index + 1;
+            Field_Assocs (Field_Index) := Assoc;
+         end if;
+
+         Next_Component_Or_Discriminant (Anc_Comp);
+      end loop;
+
+      --  All discriminants of the ancestor part should have been set, but
+      --  possibly not all components in case of a discriminant record.
+
+      pragma Assert (Discr_Index = Discr_Assocs'Last);
+      pragma Assert (Field_Index = Field_Assocs'Last);
+   end Generate_Associations_From_Ancestor;
 
    ------------------------------------
    -- New_Ada_Record_Check_For_Field --

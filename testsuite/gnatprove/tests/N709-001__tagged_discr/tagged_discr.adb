@@ -3,7 +3,7 @@ package body Tagged_Discr with
 is
 
    procedure Init (V : out T) is
-      pragma SPARK_Mode (Off);  --  tagged aggregate
+
    begin
       V := (Discr => A, Z => False, X => 0);
    end Init;
