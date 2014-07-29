@@ -452,9 +452,41 @@ package body SPARK_Util is
    --  Start of Default_Initialization
 
    begin
+      --  If Default_Initial_Condition was specified for the type, take it into
+      --  account.
+
+      if Has_Default_Init_Cond (Typ)
+        or else Has_Inherited_Default_Init_Cond (Typ)
+      then
+         declare
+            Prag : constant Node_Id := Get_Default_Init_Cond_Pragma (Typ);
+            Expr : Node_Id;
+         begin
+            --  The pragma has an argument. If NULL, this indicates a value of
+            --  the type is not default initialized. Otherwise, a value of the
+            --  type should be fully default initialized.
+
+            if Present (Pragma_Argument_Associations (Prag)) then
+               Expr :=
+                 Get_Pragma_Arg (First (Pragma_Argument_Associations (Prag)));
+
+               if Nkind (Expr) = N_Null then
+                  Result := No_Default_Initialization;
+               else
+                  Result := Full_Default_Initialization;
+               end if;
+
+            --  Otherwise the pragma appears without an argument, indicating
+            --  a value of the type if fully default initialized.
+
+            else
+               Result := Full_Default_Initialization;
+            end if;
+         end;
+
       --  Access types are always fully default initialized
 
-      if Is_Access_Type (Typ) then
+      elsif Is_Access_Type (Typ) then
          Result := Full_Default_Initialization;
 
       --  An array type subject to aspect/pragma Default_Component_Value is
@@ -567,6 +599,28 @@ package body SPARK_Util is
 
       return Result;
    end Default_Initialization;
+
+   ----------------------------------
+   -- Get_Default_Init_Cond_Pragma --
+   ----------------------------------
+
+   function Get_Default_Init_Cond_Pragma (Typ : Entity_Id) return Node_Id is
+      Par : Entity_Id := Typ;
+   begin
+      while Has_Default_Init_Cond (Par)
+        or else Has_Inherited_Default_Init_Cond (Par)
+      loop
+         if Has_Default_Init_Cond (Par) then
+            return Get_Pragma (Typ, Pragma_Default_Initial_Condition);
+         else
+            Par := Etype (Par);
+         end if;
+      end loop;
+
+      --  We should not reach here
+
+      raise Program_Error;
+   end Get_Default_Init_Cond_Pragma;
 
    --------------------------
    -- Is_In_Analyzed_Files --

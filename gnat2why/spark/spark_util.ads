@@ -480,4 +480,10 @@ package SPARK_Util is
    --  Returns True if E is a local subprogram that is always inlined by the
    --  frontend in GNATprove mode.
 
+   function Get_Default_Init_Cond_Pragma (Typ : Entity_Id) return Node_Id with
+     Pre => Has_Default_Init_Cond (Typ) or else
+            Has_Inherited_Default_Init_Cond (Typ);
+   --  Returns the unanalyzed pragma Default_Initial_Condition applying to a
+   --  type.
+
 end SPARK_Util;
