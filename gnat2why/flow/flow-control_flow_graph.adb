@@ -1327,14 +1327,11 @@ package body Flow.Control_Flow_Graph is
                               Use_Computed_Globals => not FA.Compute_Globals);
                         end if;
 
-                     when N_Selected_Component =>
-                        F := Direct_Mapping_Id (Entity (Search_Under));
-                        Vars_Used := Vars_Used or Null_Or_Constant (F);
-
                      when N_Attribute_Reference |
                           N_Expanded_Name       |
                           N_Function_Call       |
-                          N_Indexed_Component   =>
+                          N_Indexed_Component   |
+                          N_Selected_Component  =>
                         Ctx.Folded_Function_Checks (N).Include (Search_Under);
 
                         Vars_Used := Vars_Used or Get_Variable_Set
