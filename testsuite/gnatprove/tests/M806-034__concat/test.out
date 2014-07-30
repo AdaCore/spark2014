@@ -13,7 +13,7 @@ concat.adb:14:07: info: assertion proved, in call inlined at concat.adb:35
 concat.adb:17:14: warning: subprogram "Three" has no effect
 concat.adb:20:14: warning: overflow check might fail
 concat.adb:20:24: warning: overflow check might fail
-concat.adb:23:19: warning: range check might fail
+concat.adb:23:19: info: range check proved
 concat.adb:25:22: warning: assertion might fail, requires D'First = A'first
 concat.adb:26:22: warning: assertion might fail, requires D'Length = A'Length + B'length
 concat.adb:27:22: warning: assertion might fail, requires D'Last = A'Last + 1 + (B'Last - B'first

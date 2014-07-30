@@ -56,8 +56,8 @@ with Why.Gen.Records;         use Why.Gen.Records;
 with Why.Inter;               use Why.Inter;
 
 with Gnat2Why.Error_Messages; use Gnat2Why.Error_Messages;
+with Gnat2Why.Expr;           use Gnat2Why.Expr;
 with Gnat2Why.Subprograms;    use Gnat2Why.Subprograms;
-with Gnat2Why.Util;           use Gnat2Why.Util;
 
 package body Why.Gen.Expr is
 
@@ -792,7 +792,9 @@ package body Why.Gen.Expr is
       W_Expr     : W_Expr_Id;
       Check_Kind : Range_Check_Kind) return W_Prog_Id is
    begin
-      if Type_Is_Modeled_As_Int_Or_Real (Ty) then
+      if (not Is_Static_Subtype (Ty) and then Is_Discrete_Type (Ty))
+        or else Type_Is_Modeled_As_Int_Or_Real (Ty)
+      then
          declare
             Expr : constant W_Expr_Id := New_Temp_For_Expr (W_Expr);
             M : constant W_Module_Id :=
@@ -1677,12 +1679,31 @@ package body Why.Gen.Expr is
    ------------------------
 
    function New_Attribute_Expr
-     (Ty            : Entity_Id;
-      Attr          : Supported_Attribute_Id;
-      Use_Base_Type : Boolean := True) return W_Expr_Id is
+     (Ty     : Entity_Id;
+      Attr   : Supported_Attribute_Id;
+      Params : Transformation_Params := Body_Params) return W_Expr_Id is
    begin
-      if Attr in Attribute_First | Attribute_Last | Attribute_Length and then
-        Ekind (Ty) = E_String_Literal_Subtype
+      if Attr in Attribute_First | Attribute_Last
+        and then ((not Is_Static_Subtype (Ty) and then Is_Discrete_Type (Ty))
+                  or else Type_Is_Modeled_As_Int_Or_Real (Ty))
+      then
+         --  Use expression for dynamic bounds
+
+         declare
+            Rng       : constant Node_Id := Get_Range (Ty);
+            BT        : constant W_Type_Id :=
+              (if Is_Standard_Boolean_Type (Ty) then EW_Int_Type
+               else Base_Why_Type (Ty));
+         begin
+            if Attr = Attribute_First then
+               return Transform_Expr (Low_Bound (Rng), BT, EW_Term, Params);
+            else
+               return Transform_Expr (High_Bound (Rng), BT, EW_Term, Params);
+            end if;
+         end;
+
+      elsif Attr in Attribute_First | Attribute_Last | Attribute_Length
+        and then Ekind (Ty) = E_String_Literal_Subtype
       then
          case Attr is
             when Attribute_First =>
@@ -1726,32 +1747,11 @@ package body Why.Gen.Expr is
                      EW_Int_Type,
                   when Attribute_Tag =>
                      EW_Int_Type);
-            IT : constant W_Type_Id :=
-              (if not Is_Static_Subtype (Ty)
-               and then Is_Discrete_Type (Ty) then
-                    EW_Abstract (Base_Type (Ty)) else BT);
          begin
             T := +Prefix (Ada_Node => Ty,
                           M        => M,
                           W        => Attr_To_Why_Name (Attr),
-                          Typ      => IT);
-
-            if not Is_Static_Subtype (Ty) and then Is_Discrete_Type (Ty) then
-               T := New_Deref (Right => +T,
-                               Typ   => IT);
-
-               if Use_Base_Type  then
-                  T := New_Call (Domain   => EW_Term,
-                                 Ada_Node => Ty,
-                                 Name     =>
-                                   Conversion_Name (From => IT, To => BT),
-                                 Args     => (1 => +T),
-                                 Typ      => BT);
-               end if;
-            elsif Type_Is_Modeled_As_Int_Or_Real (Ty) then
-               T := New_Deref (Right => +T,
-                               Typ   => IT);
-            end if;
+                          Typ      => BT);
 
             return T;
          end;
@@ -1837,11 +1837,13 @@ package body Why.Gen.Expr is
          return New_Call (Domain => Domain,
                           Name   => Dynamic_Prop_Name (Ty),
                           Args   => (1 => New_Attribute_Expr
-                                     (Ty   => Ty,
-                                      Attr => Attribute_First),
+                                     (Ty     => Ty,
+                                      Attr   => Attribute_First,
+                                      Params => Body_Params),
                                      2 => New_Attribute_Expr
-                                       (Ty   => Ty,
-                                        Attr => Attribute_Last),
+                                       (Ty     => Ty,
+                                        Attr   => Attribute_Last,
+                                        Params => Body_Params),
                                      3 =>
                                        Insert_Simple_Conversion
                                          (Ada_Node => Ty,

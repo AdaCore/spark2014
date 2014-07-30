@@ -27,7 +27,6 @@ with Atree;               use Atree;
 with Namet;               use Namet;
 with Nlists;              use Nlists;
 with Sem_Eval;            use Sem_Eval;
-with Sem_Util;            use Sem_Util;
 with Sinfo;               use Sinfo;
 with Snames;              use Snames;
 with Uintp;               use Uintp;
@@ -321,10 +320,7 @@ package body Why.Gen.Scalars is
                     (Theory_Kind   => EW_Module,
                      Clone_Kind    => EW_Export,
                      As_Name       => No_Name,
-                     Origin        =>
-                       (if Depends_On_Discriminant (Rng) then
-                             Dynamic_Discrete_Base
-                        else Dynamic_Discrete),
+                     Origin        => Dynamic_Discrete,
                      Substitutions =>
                        Default_Clone_Subst & To_Int_Clone_Subst &
                        Of_Int_Clone_Subst));

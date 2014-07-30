@@ -56,7 +56,7 @@ skein.adb:890:61: warning: range check might fail, in call inlined at skein.adb:
 skein.adb:896:12: warning: length check might fail
 skein.adb:906:07: warning: precondition might fail
 skein.adb:914:52: info: division check proved
-skein.adb:914:52: warning: range check might fail
+skein.adb:914:52: info: range check proved
 skein.adb:919:44: info: length check proved
 skein.adb:922:44: info: division check proved
 skein.adb:936:10: warning: precondition might fail

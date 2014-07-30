@@ -94,10 +94,7 @@ module Static_Modular
       to_int (of_int x) = Int_Division.math_mod x attr__ATTRIBUTE_MODULUS
 end
 
-module Dynamic_Discrete_Base
- (* Theory for dynamic discrete types without references for first and last,
-       it is used when there cannot be one relevant value of first and last at a
-       program point. *)
+module Dynamic_Discrete
  use import "int".Int
 
  type base
@@ -112,20 +109,6 @@ module Dynamic_Discrete_Base
     first <= x /\ x <= last
 
  function dummy : base
-end
-
-module Dynamic_Discrete
- use import "int".Int
-  use import ref.Ref
-  clone export Dynamic_Discrete_Base
-
- val first : ref base
-
- val last : ref base
-
- val range_check_ (x : int) : int
-   requires { dynamic_property (to_int (!first)) (to_int (!last)) x }
-   ensures { result = x }
 end
 
 module Dynamic_Modular

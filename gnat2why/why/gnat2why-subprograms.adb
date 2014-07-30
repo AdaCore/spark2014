@@ -85,7 +85,8 @@ package body Gnat2Why.Subprograms is
 
    procedure Assume_Dynamic_Property_For_Objects
      (Assume  : in out W_Prog_Id;
-      Objects :        Node_Sets.Set);
+      Objects :        Node_Sets.Set;
+      Subp    :        Entity_Id);
    --  For each element of Objects, add to Assume an
    --  assumption of its dynamic property.
 
@@ -335,14 +336,19 @@ package body Gnat2Why.Subprograms is
 
    procedure Assume_Dynamic_Property_For_Objects
      (Assume  : in out W_Prog_Id;
-      Objects :        Node_Sets.Set) is
+      Objects :        Node_Sets.Set;
+      Subp    :        Entity_Id) is
    begin
       for Obj of Objects loop
 
          --  No need to assume anything if Obj is a local object of the
          --  subprogram.
 
-         if not Ada_Ent_To_Why.Has_Element (Symbol_Table, Obj) then
+         if not Ada_Ent_To_Why.Has_Element (Symbol_Table, Obj)
+           or else (Enclosing_Subprogram (Obj) = Subp
+                    and then not (Ekind (Obj) in E_In_Parameter
+                                    | E_In_Out_Parameter | E_Out_Parameter))
+         then
             null;
          elsif Is_Mutable_In_Why (Obj) then
             declare
@@ -2133,7 +2139,8 @@ package body Gnat2Why.Subprograms is
             --  they are of a dynamic type
 
             Assume_Dynamic_Property_For_Objects (Assume  => Assume,
-                                                 Objects => Used_Objects);
+                                                 Objects => Used_Objects,
+                                                 Subp    => E);
          end;
 
          Prog := Sequence (Assume, Prog);

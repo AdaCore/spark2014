@@ -40,6 +40,7 @@ with Why.Ids;             use Why.Ids;
 with Why.Sinfo;           use Why.Sinfo;
 
 with Gnat2Why.Nodes;      use Gnat2Why.Nodes;
+with Gnat2Why.Util;       use Gnat2Why.Util;
 
 package Why.Gen.Expr is
 
@@ -302,9 +303,9 @@ package Why.Gen.Expr is
                                                  | Attribute_Tag;
 
    function New_Attribute_Expr
-     (Ty            : Entity_Id;
-      Attr          : Supported_Attribute_Id;
-      Use_Base_Type : Boolean := True) return W_Expr_Id;
+     (Ty     : Entity_Id;
+      Attr   : Supported_Attribute_Id;
+      Params : Transformation_Params := Body_Params) return W_Expr_Id;
 
    function Get_Type (E : W_Expr_Id) return W_Type_Id;
    --  extract the type of a given expression

@@ -956,18 +956,15 @@ package body Gnat2Why.Expr is
          declare
             Rng              : constant Node_Id := Get_Range (N);
             Why_Base         : constant W_Type_Id := Base_Why_Type (N);
-            Why_Type         : constant W_Type_Id := Type_Of_Node (N);
             Why_Base_EW      : constant EW_Type := Get_EW_Type (N);
             Low_Expr         : constant W_Term_Id :=
               +Transform_Expr (Low_Bound (Rng), Why_Base, EW_Term, Params);
             High_Expr        : constant W_Term_Id :=
               +Transform_Expr (High_Bound (Rng), Why_Base, EW_Term, Params);
             First_Term       : constant W_Term_Id :=
-              +New_Attribute_Expr (N, Attribute_First);
+              +New_Attribute_Expr (N, Attribute_First, Params);
             Last_Term        : constant W_Term_Id :=
-              +New_Attribute_Expr (N, Attribute_Last);
-            Low_Expr_Conv    : W_Expr_Id := +Low_Expr;
-            High_Expr_Conv   : W_Expr_Id := +High_Expr;
+              +New_Attribute_Expr (N, Attribute_Last, Params);
             Rel_First        : constant W_Pred_Id :=
               New_Relation
                 (Op_Type  => EW_Bool,
@@ -984,13 +981,15 @@ package body Gnat2Why.Expr is
               New_Relation
                 (Op_Type  => Why_Base_EW,
                  Left     => +Low_Expr,
-                 Right    => +New_Attribute_Expr (Base, Attribute_First),
+                 Right    => +New_Attribute_Expr
+                   (Base, Attribute_First, Params),
                  Op       => EW_Ge);
             Last_In_Range    : constant W_Pred_Id :=
               New_Relation
                 (Op_Type  => Why_Base_EW,
                  Left     => +High_Expr,
-                 Right    => +New_Attribute_Expr (Base, Attribute_Last),
+                 Right    => +New_Attribute_Expr
+                   (Base, Attribute_Last, Params),
                  Op       => EW_Le);
             First_Le_Last    : constant W_Pred_Id :=
               New_Relation
@@ -1015,88 +1014,24 @@ package body Gnat2Why.Expr is
 
          begin
 
-            if not Is_Static_Subtype (N) and then Is_Discrete_Type (N) then
-               Low_Expr_Conv :=
-                 Insert_Simple_Conversion
-                   (Ada_Node => N,
-                    Domain   => EW_Term,
-                    Expr     => Low_Expr_Conv,
-                    To       => Why_Type);
-               High_Expr_Conv :=
-                 Insert_Simple_Conversion
-                   (Ada_Node => N,
-                    Domain   => EW_Term,
-                    Expr     => High_Expr_Conv,
-                    To       => Why_Type);
-               declare
-                  Low_Var : constant W_Expr_Id :=
-                    +Get_Right
-                    (W_Deref_Id
-                       (New_Attribute_Expr (N, Attribute_First, False)));
-                  High_Var : constant W_Expr_Id :=
-                    +Get_Right
-                    (W_Deref_Id
-                       (New_Attribute_Expr (N, Attribute_Last, False)));
-                  Set_Bounds : constant W_Prog_Id :=
-                    Sequence (New_Assignment
-                              (Name  => +Low_Var,
-                               Value => +Low_Expr_Conv),
-                              New_Assignment
-                                (Name  => +High_Var,
-                                 Value => +High_Expr_Conv));
-               begin
-                  if Do_Check then
-                     Assuming := New_Assume_Statement (Ada_Node => N,
-                                                       Pre      => Precond,
-                                                       Post     => True_Pred);
-                     return
-                       Sequence (Set_Bounds,
-                                 +New_VC_Expr (Ada_Node => N,
-                                               Domain   => EW_Prog,
-                                               Reason   => VC_Range_Check,
-                                               Expr     => +Assuming));
-                  else
-                     return Set_Bounds;
-                  end if;
-               end;
-            end if;
+            --  If the scalar subtype is modeled as "int" or "real", or if it
+            --  has dynamic bounds, we use directly the bound's expression.
+            --  In this case, we only need to check the bounds.
 
-            --  If the scalar subtype is modeled as "int" or "real", assign the
-            --  variables corresponding to its bounds instead of assuming the
-            --  values of constants corresponding to its bounds.
-
-            if Type_Is_Modeled_As_Int_Or_Real (N) then
-               declare
-                  Low_Var : constant W_Expr_Id :=
-                    +Get_Right
-                    (W_Deref_Id
-                       (New_Attribute_Expr (N, Attribute_First, False)));
-                  High_Var : constant W_Expr_Id :=
-                    +Get_Right
-                    (W_Deref_Id
-                       (New_Attribute_Expr (N, Attribute_Last, False)));
-                  Set_Bounds : constant W_Prog_Id :=
-                    Sequence (New_Assignment
-                              (Name  => +Low_Var,
-                               Value => +Low_Expr),
-                              New_Assignment
-                                (Name  => +High_Var,
-                                 Value => +High_Expr));
-               begin
-                  if Do_Check then
-                     Assuming := New_Assume_Statement (Ada_Node => N,
-                                                       Pre      => Precond,
-                                                       Post     => True_Pred);
-                     return
-                       Sequence (Set_Bounds,
-                                 +New_VC_Expr (Ada_Node => N,
-                                               Domain   => EW_Prog,
-                                               Reason   => VC_Range_Check,
-                                               Expr     => +Assuming));
-                  else
-                     return Set_Bounds;
-                  end if;
-               end;
+            if (not Is_Static_Subtype (N) and then Is_Discrete_Type (N))
+              or else Type_Is_Modeled_As_Int_Or_Real (N)
+            then
+               if Do_Check then
+                  Assuming := New_Assume_Statement (Ada_Node => N,
+                                                    Pre      => Precond,
+                                                    Post     => True_Pred);
+                  return +New_VC_Expr (Ada_Node => N,
+                                       Domain   => EW_Prog,
+                                       Reason   => VC_Range_Check,
+                                       Expr     => +Assuming);
+               else
+                  return New_Void;
+               end if;
 
             --  Scalar subtype is modeled as abstract type, with constants for
             --  the bounds. Generate assumptions that relate these constants to
@@ -5674,7 +5609,9 @@ package body Gnat2Why.Expr is
                  (Value => Expr_Value (Low) + UI_From_Int (Offset));
 
             else
-               First := New_Attribute_Expr (Etype (Rng), Attribute_First);
+               First := New_Attribute_Expr (Etype (Rng),
+                                            Attribute_First,
+                                            Params);
 
                Val := New_Binary_Op
                         (Left     => First,
@@ -6853,7 +6790,7 @@ package body Gnat2Why.Expr is
                      end if;
 
                   when Discrete_Kind | Real_Kind =>
-                     T := New_Attribute_Expr (Etype (Var), Attr_Id);
+                     T := New_Attribute_Expr (Etype (Var), Attr_Id, Params);
 
                   when others =>
 
@@ -7251,7 +7188,7 @@ package body Gnat2Why.Expr is
       elsif Is_Component_Left then
          First_Expr :=
            New_Attribute_Expr
-             (Nth_Index_Type (Return_Type, 1), Attribute_First);
+             (Nth_Index_Type (Return_Type, 1), Attribute_First, Body_Params);
 
       else
          First_Expr := Get_Array_Attr (Domain, Left_Expr, Attribute_First, 1);
@@ -7352,7 +7289,8 @@ package body Gnat2Why.Expr is
                Right_First : constant W_Expr_Id :=
                  (if Is_Component_Right then
                        New_Attribute_Expr
-                    (Nth_Index_Type (Return_Type, 1), Attribute_First)
+                    (Nth_Index_Type (Return_Type, 1), Attribute_First,
+                     Body_Params)
                   else
                      Get_Array_Attr (Domain, Right_Expr, Attribute_First, 1));
                Right_Last : constant W_Expr_Id :=
@@ -7403,7 +7341,8 @@ package body Gnat2Why.Expr is
                Right_First : constant W_Expr_Id :=
                  (if Is_Component_Right then
                        New_Attribute_Expr
-                    (Nth_Index_Type (Return_Type, 1), Attribute_First)
+                    (Nth_Index_Type (Return_Type, 1), Attribute_First,
+                     Body_Params)
                   else Get_Array_Attr
                     (Domain, Right_Expr, Attribute_First, 1));
             begin
@@ -7510,6 +7449,26 @@ package body Gnat2Why.Expr is
       case Nkind (Decl) is
          when N_Object_Declaration =>
             R := Assignment_Of_Obj_Decl (Decl);
+            if not Is_Partial_View (Defining_Identifier (Decl)) then
+               declare
+                  Lvalue : Entity_Id := Defining_Identifier (Decl);
+               begin
+                  if Is_Full_View (Lvalue) then
+                     Lvalue := Partial_View (Lvalue);
+                  end if;
+
+                  R := Sequence
+                    (R,
+                     Assume_Dynamic_Property
+                       (Expr     => Transform_Identifier
+                            (Expr   => Lvalue,
+                             Ent    => Lvalue,
+                             Domain => EW_Prog,
+                             Params => Body_Params),
+                        Ty       => Etype (Lvalue),
+                        Only_Var => False));
+               end;
+            end if;
 
          when N_Subtype_Declaration | N_Full_Type_Declaration =>
             declare

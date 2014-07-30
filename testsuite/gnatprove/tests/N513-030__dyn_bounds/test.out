@@ -1,0 +1,9 @@
+dyn_bounds.adb:1:11: warning: subprogram "Dyn_Bounds" has no effect
+dyn_bounds.adb:2:12: info: range check proved
+dyn_bounds.adb:3:12: info: range check proved
+dyn_bounds.adb:10:14: info: postcondition proved
+dyn_bounds.adb:13:10: info: overflow check proved
+dyn_bounds.adb:13:10: info: range check proved
+dyn_bounds.adb:20:14: info: postcondition proved
+dyn_bounds.adb:23:10: info: overflow check proved
+dyn_bounds.adb:23:10: info: range check proved

@@ -80,9 +80,9 @@ auditlog.adb:177:69: info: overflow check proved
 auditlog.adb:211:18: info: range check proved
 auditlog.adb:254:40: info: index check proved
 auditlog.adb:254:40: info: overflow check proved
-auditlog.adb:255:46: warning: array index check might fail
+auditlog.adb:255:46: info: index check proved
 auditlog.adb:255:46: warning: overflow check might fail
-auditlog.adb:260:46: warning: array index check might fail
+auditlog.adb:260:46: info: index check proved
 auditlog.adb:260:46: warning: overflow check might fail
 auditlog.adb:306:24: info: range check proved
 auditlog.adb:306:36: info: range check proved
@@ -320,7 +320,7 @@ configdata.adb:400:38: info: range check proved
 configdata.adb:703:23: warning: range check might fail
 configdata.adb:704:22: info: loop invariant initialization proved
 configdata.adb:705:45: warning: loop invariant might fail after first iteration, requires I <= Stop
-configdata.adb:706:53: warning: array index check might fail
+configdata.adb:706:53: info: index check proved
 configdata.adb:707:40: warning: array index check might fail
 configdata.adb:1012:35: info: length check proved, in call inlined at configdata.adb:1098
 configdata.adb:1012:35: info: length check proved, in call inlined at configdata.adb:1108
@@ -664,7 +664,7 @@ keystore.adb:199:35: info: index check proved
 keystore.adb:199:35: info: overflow check proved
 keystore.adb:199:51: info: overflow check proved
 keystore.adb:218:51: info: division check proved
-keystore.adb:222:13: warning: loop invariant might fail after first iteration
+keystore.adb:222:13: info: loop invariant preservation proved
 keystore.adb:222:13: warning: loop invariant might fail in first iteration
 keystore.adb:223:56: info: division check proved
 keystore.adb:226:57: warning: overflow check might fail
@@ -791,7 +791,7 @@ screen.adb:537:40: warning: range check might fail, in call inlined at screen.ad
 screen.adb:578:18: warning: unused assignment to "Interfac.Output"
 screen.adb:584:18: warning: unused assignment to "Interfac.Output"
 screen.adb:591:18: warning: unused assignment to "Interfac.Output"
-screen.adb:591:49: warning: range check might fail
+screen.adb:591:49: info: range check proved
 screen.adb:597:18: warning: unused assignment to "Interfac.Output"
 screen.adb:597:49: warning: range check might fail
 screen.adb:603:18: warning: unused assignment to "Interfac.Output"

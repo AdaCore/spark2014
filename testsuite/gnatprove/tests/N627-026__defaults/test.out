@@ -26,12 +26,13 @@ with_default.adb:90:15: info: range check proved
 with_default.adb:108:69: info: range check proved
 with_default.adb:108:69: warning: range check might fail
 with_default.adb:109:15: info: range check proved
+with_default.adb:127:69: info: range check proved
 with_default.adb:127:69: warning: range check might fail
-with_default.adb:128:15: warning: range check might fail
-with_default.adb:130:15: warning: range check might fail
-with_default.adb:134:36: warning: range check might fail
-with_default.adb:169:43: warning: range check might fail
-with_default.adb:187:57: warning: range check might fail
+with_default.adb:128:15: info: range check proved
+with_default.adb:130:15: info: range check proved
+with_default.adb:134:36: info: range check proved
+with_default.adb:169:43: info: range check proved
+with_default.adb:187:57: info: range check proved
 with_default.adb:195:22: warning: assertion might fail, requires Simple.F1 = 0
 with_default.adb:196:22: warning: assertion might fail, requires Simple.F2 = C
 with_default.adb:197:22: warning: assertion might fail, requires W_Disc.F1 = 0

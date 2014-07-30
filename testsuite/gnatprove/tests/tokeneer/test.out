@@ -112,10 +112,10 @@ auditlog.adb:305:15: warning: length check might fail, in call inlined at auditl
 auditlog.adb:305:15: warning: range check might fail, in call inlined at auditlog.adb:360
 auditlog.adb:306:41: info: range check proved, in call inlined at auditlog.adb:360
 auditlog.adb:306:53: warning: range check might fail, in call inlined at auditlog.adb:360
+auditlog.adb:424:23: info: range check proved, in call inlined at auditlog.adb:476
 auditlog.adb:424:23: warning: length check might fail, in call inlined at auditlog.adb:476
-auditlog.adb:424:23: warning: range check might fail, in call inlined at auditlog.adb:476
-auditlog.adb:424:42: warning: overflow check might fail, in call inlined at auditlog.adb:476
-auditlog.adb:425:42: warning: overflow check might fail, in call inlined at auditlog.adb:476
+auditlog.adb:424:42: info: overflow check proved, in call inlined at auditlog.adb:476
+auditlog.adb:425:42: info: overflow check proved, in call inlined at auditlog.adb:476
 auditlog.adb:429:15: warning: length check might fail, in call inlined at auditlog.adb:429, in call inlined at auditlog.adb:476
 auditlog.adb:429:15: warning: range check might fail, in call inlined at auditlog.adb:476
 auditlog.adb:429:50: info: range check proved, in call inlined at auditlog.adb:476
@@ -181,7 +181,7 @@ auditlog.adb:1317:12: info: assertion proved
 auditlog.adb:1371:10: warning: assertion might fail
 auditlog.adb:1385:20: info: range check proved
 auditlog.adb:1398:19: warning: assertion might fail
-auditlog.adb:1410:63: warning: range check might fail
+auditlog.adb:1410:63: info: range check proved
 auditlog.adb:1411:65: info: range check proved
 auditlog.adb:1412:26: warning: range check might fail
 auditlog.adb:1413:32: info: overflow check proved
@@ -320,13 +320,13 @@ configdata.adb:145:06: info: length check proved
 configdata.adb:145:38: info: length check proved
 configdata.adb:146:38: info: length check proved
 configdata.adb:237:44: info: overflow check proved, in call inlined at configdata.adb:455, in call inlined at configdata.adb:889
+configdata.adb:237:44: info: overflow check proved, in call inlined at configdata.adb:487, in call inlined at configdata.adb:897
+configdata.adb:237:44: info: overflow check proved, in call inlined at configdata.adb:519, in call inlined at configdata.adb:913
+configdata.adb:237:44: info: overflow check proved, in call inlined at configdata.adb:551, in call inlined at configdata.adb:905
 configdata.adb:237:44: info: range check proved, in call inlined at configdata.adb:455, in call inlined at configdata.adb:889
-configdata.adb:237:44: warning: overflow check might fail, in call inlined at configdata.adb:487, in call inlined at configdata.adb:897
-configdata.adb:237:44: warning: overflow check might fail, in call inlined at configdata.adb:519, in call inlined at configdata.adb:913
-configdata.adb:237:44: warning: overflow check might fail, in call inlined at configdata.adb:551, in call inlined at configdata.adb:905
-configdata.adb:237:44: warning: range check might fail, in call inlined at configdata.adb:487, in call inlined at configdata.adb:897
-configdata.adb:237:44: warning: range check might fail, in call inlined at configdata.adb:519, in call inlined at configdata.adb:913
-configdata.adb:237:44: warning: range check might fail, in call inlined at configdata.adb:551, in call inlined at configdata.adb:905
+configdata.adb:237:44: info: range check proved, in call inlined at configdata.adb:487, in call inlined at configdata.adb:897
+configdata.adb:237:44: info: range check proved, in call inlined at configdata.adb:519, in call inlined at configdata.adb:913
+configdata.adb:237:44: info: range check proved, in call inlined at configdata.adb:551, in call inlined at configdata.adb:905
 configdata.adb:276:51: warning: overflow check might fail, in call inlined at configdata.adb:806, in call inlined at configdata.adb:967
 configdata.adb:276:51: warning: overflow check might fail, in call inlined at configdata.adb:838, in call inlined at configdata.adb:975
 configdata.adb:276:51: warning: range check might fail, in call inlined at configdata.adb:806, in call inlined at configdata.adb:967
@@ -357,7 +357,7 @@ configdata.adb:380:68: info: range check proved, in call inlined at configdata.a
 configdata.adb:380:68: info: range check proved, in call inlined at configdata.adb:679, in call inlined at configdata.adb:943
 configdata.adb:416:38: warning: range check might fail, in call inlined at configdata.adb:871, in call inlined at configdata.adb:983
 configdata.adb:723:23: warning: range check might fail, in call inlined at configdata.adb:951
-configdata.adb:729:53: warning: array index check might fail, in call inlined at configdata.adb:951
+configdata.adb:729:53: info: index check proved, in call inlined at configdata.adb:951
 configdata.adb:729:75: warning: array index check might fail, in call inlined at configdata.adb:951
 configdata.adb:1057:34: info: length check proved, in call inlined at configdata.adb:1144
 configdata.adb:1057:34: info: length check proved, in call inlined at configdata.adb:1154
@@ -792,7 +792,7 @@ screen.adb:564:33: info: length check proved, in call inlined at screen.adb:692
 screen.adb:566:37: warning: length check might fail, in call inlined at screen.adb:692
 screen.adb:566:40: warning: length check might fail, in call inlined at screen.adb:692
 screen.adb:566:40: warning: range check might fail, in call inlined at screen.adb:692
-screen.adb:620:49: warning: range check might fail
+screen.adb:620:49: info: range check proved
 screen.adb:626:49: warning: range check might fail
 screen.adb:632:49: warning: range check might fail
 screen.adb:638:49: warning: range check might fail

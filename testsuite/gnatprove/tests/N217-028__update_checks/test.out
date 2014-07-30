@@ -19,7 +19,7 @@ ar.adb:55:18: info: length check proved
 ar.adb:55:45: warning: range check might fail
 ar.adb:64:04: warning: analyzing unreferenced procedure "Test6"
 ar.adb:68:21: warning: length check might fail
-ar.adb:68:24: warning: range check might fail
+ar.adb:68:24: info: range check proved
 ar.adb:68:33: info: range check proved
 ar.adb:76:04: warning: analyzing unreferenced procedure "Test7"
 ar.adb:85:04: warning: analyzing unreferenced procedure "Test8"

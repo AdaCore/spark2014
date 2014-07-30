@@ -2,4 +2,4 @@ dyn.adb:1:11: warning: subprogram "Dyn" has no effect
 dyn.adb:3:04: info: range check proved
 dyn.adb:3:27: info: length check proved
 dyn.adb:3:30: info: overflow check proved
-dyn.adb:3:30: warning: range check might fail
+dyn.adb:3:30: info: range check proved

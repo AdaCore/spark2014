@@ -25,7 +25,7 @@ aco-math-very_longs.adb:100:26: info: length check proved
 aco-math-very_longs.adb:100:29: info: length check proved
 aco-math-very_longs.adb:102:26: info: discriminant check proved
 aco-math-very_longs.adb:103:16: info: discriminant check proved
-aco-math-very_longs.adb:103:29: warning: array index check might fail
+aco-math-very_longs.adb:103:29: info: index check proved
 aco-math-very_longs.adb:103:54: info: division check proved
 aco-math-very_longs.adb:103:54: warning: range check might fail
 aco-math-very_longs.adb:104:23: info: division check proved
@@ -82,7 +82,7 @@ aco-math-very_longs.adb:225:55: info: index check proved
 aco-math-very_longs.adb:232:16: info: discriminant check proved
 aco-math-very_longs.adb:232:29: info: index check proved
 aco-math-very_longs.adb:250:13: info: discriminant check proved
-aco-math-very_longs.adb:250:26: warning: length check might fail
+aco-math-very_longs.adb:250:26: info: length check proved
 aco-math-very_longs.adb:250:29: info: length check proved
 aco-math-very_longs.adb:253:17: info: discriminant check proved
 aco-math-very_longs.adb:255:20: info: discriminant check proved
@@ -205,7 +205,7 @@ aco-math-very_longs.adb:437:72: info: index check proved
 aco-math-very_longs.adb:437:112: info: discriminant check proved
 aco-math-very_longs.adb:437:128: warning: overflow check might fail
 aco-math-very_longs.adb:437:133: info: index check proved
-aco-math-very_longs.adb:456:14: warning: range check might fail
+aco-math-very_longs.adb:456:14: info: range check proved
 aco-math-very_longs.adb:457:50: info: discriminant check proved
 aco-math-very_longs.adb:457:63: warning: array index check might fail
 aco-math-very_longs.adb:461:34: info: discriminant check proved
@@ -251,11 +251,11 @@ aco-math-very_longs.adb:500:42: info: discriminant check proved
 aco-math-very_longs.adb:500:57: warning: overflow check might fail
 aco-math-very_longs.adb:500:61: warning: array index check might fail
 aco-math-very_longs.adb:505:15: info: discriminant check proved
-aco-math-very_longs.adb:505:29: warning: length check might fail
-aco-math-very_longs.adb:505:32: warning: length check might fail
+aco-math-very_longs.adb:505:29: info: length check proved
+aco-math-very_longs.adb:505:32: info: length check proved
 aco-math-very_longs.adb:506:16: info: discriminant check proved
-aco-math-very_longs.adb:506:29: warning: length check might fail
-aco-math-very_longs.adb:506:32: warning: length check might fail
+aco-math-very_longs.adb:506:29: info: length check proved
+aco-math-very_longs.adb:506:32: info: length check proved
 aco-math-very_longs.adb:509:12: info: precondition proved
 aco-math-very_longs.adb:509:29: warning: overflow check might fail
 aco-math-very_longs.adb:509:29: warning: range check might fail
@@ -297,7 +297,7 @@ aco-math-very_longs.ads:61:16: warning: postcondition might fail, requires ModSu
 aco-math-very_longs.ads:67:16: warning: postcondition might fail, requires ModMultiply'Result.Octet_Length = L.Octet_Length
 aco-math-very_longs.ads:72:16: warning: postcondition might fail, requires "*"'Result.Octet_Length = L.Octet_Length + R.Octet_Length
 aco-math-very_longs.ads:72:57: info: overflow check proved
-aco-math-very_longs.ads:81:45: info: overflow check proved
+aco-math-very_longs.ads:81:45: warning: overflow check might fail
 aco-math-very_longs.ads:90:16: warning: postcondition might fail, requires Add_Fp'Result.Octet_Length = L.Octet_Length
 aco-math-very_longs.ads:96:16: warning: postcondition might fail, requires Subtract_Fp'Result.Octet_Length = L.Octet_Length
 aco-math-very_longs.ads:114:26: info: discriminant check proved
