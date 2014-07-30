@@ -1242,8 +1242,8 @@ package body Flow.Control_Flow_Graph is
             --  It starts off empty but will be populated later.
 
             declare
-               Current_Component : Node_Id := F_Comp.Component.First_Element;
-               Current_Search    : Node_Id := Search;
+               Current_Component : Node_Id;
+               Current_Search    : Node_Id;
                Found             : Node_Id;
 
                procedure Find_Matching_Choice
@@ -1347,6 +1347,9 @@ package body Flow.Control_Flow_Graph is
                end Find_Matching_Choice;
 
             begin
+               Current_Component := F_Comp.Component.First_Element;
+               Current_Search    := Search;
+
                loop
                   Find_Matching_Choice (Current_Component,
                                         Current_Search,
