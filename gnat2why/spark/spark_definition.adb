@@ -855,7 +855,10 @@ package body SPARK_Definition is
                Prefix_Type : constant Entity_Id :=
                  Unique_Entity (Etype (Prefix (N)));
             begin
-               if No (Search_Component_By_Name (Prefix_Type, Selector)) then
+               if Has_Access_Type (Prefix_Type) then
+                  Mark_Violation ("implicit dereference", N);
+
+               elsif No (Search_Component_By_Name (Prefix_Type, Selector)) then
                   Violation_Detected := True;
                   if SPARK_Pragma_Is (Opt.On) then
                      Apply_Compile_Time_Constraint_Error

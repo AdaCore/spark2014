@@ -93,6 +93,9 @@ package SPARK_Util is
    --  the wrapper for function Einfo.Is_Such_And_Such_Type is called
    --  Has_Such_And_Such_Type.
 
+   function Has_Access_Type (T : Entity_Id) return Boolean is
+     (MUT_Kind (T) in Access_Kind);
+
    function Has_Array_Type (T : Entity_Id) return Boolean is
      (MUT_Kind (T) in Array_Kind);
 
