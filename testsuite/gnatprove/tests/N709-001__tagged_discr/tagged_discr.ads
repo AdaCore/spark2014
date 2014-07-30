@@ -20,7 +20,8 @@ is
             when others => V.Y = 0.0));
 
    procedure Init (V : out T) with
-     Post => Is_Zero (V);
+     Pre'Class => V.Discr = A,
+     Post      => Is_Zero (V);
 
    procedure Update (V : in out T) with
      Post => Is_Zero (V);

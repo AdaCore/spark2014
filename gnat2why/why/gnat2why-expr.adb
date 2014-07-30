@@ -7945,9 +7945,17 @@ package body Gnat2Why.Expr is
                     Expr_Type,
                     Component_Associations (Expr),
                     Local_Params);
+
+               --  Check that the derived type does not introduce any
+               --  discriminant, which is currently not allowed in SPARK,
+               --  and not supported by the current scheme which defined
+               --  all discriminant types in the root record type.
+
                Num_Discrs : constant Natural :=
                  Count_Non_Inherited_Discriminants
                    (Component_Associations (Expr));
+
+               pragma Assert (Num_Discrs = 0);
 
                --  Use the base type of the ancestor part as intermediate type
                --  to which the ancestor is converted if needed before copying
@@ -7984,11 +7992,8 @@ package body Gnat2Why.Expr is
                T :=
                  New_Ada_Record_Aggregate
                    (Domain       => Domain,
-                    Discr_Assocs =>
-                      Anc_Discr_Assocs & Assocs (1 .. Num_Discrs),
-                    Field_Assocs =>
-                      Anc_Field_Assocs
-                        & Assocs (Num_Discrs + 1 .. Assocs'Last),
+                    Discr_Assocs => Anc_Discr_Assocs,
+                    Field_Assocs => Anc_Field_Assocs & Assocs,
                     Ty           => Expr_Type);
                T := Binding_For_Temp (Domain   => Domain,
                                       Tmp      => Tmp,

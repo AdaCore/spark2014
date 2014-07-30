@@ -2062,7 +2062,7 @@ package body Why.Gen.Records is
                Domain   => Domain,
                Name     => Expr,
                Field    => Anc_Comp,
-               Ty       => Etype (Ty)));
+               Ty       => Anc_Ty));
 
          if Ekind (Component) = E_Discriminant then
             Discr_Index := Discr_Index + 1;
