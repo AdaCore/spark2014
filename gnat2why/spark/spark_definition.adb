@@ -2484,17 +2484,15 @@ package body SPARK_Definition is
                end;
             end if;
 
-            --  A derived type cannot have explicit discriminants if the parent
-            --  type is discriminated.
+            --  A derived type cannot have explicit discriminants
 
             if Nkind (Parent (E)) = N_Full_Type_Declaration
               and then Unique_Entity (Etype (E)) /= Unique_Entity (E)
               and then Present (Discriminant_Specifications (Parent (E)))
-              and then Has_Discriminants (Etype (E))
               and then Comes_From_Source (E)
             then
                Mark_Violation
-                 ("additional discriminant on derived type",
+                 ("discriminant on derived type",
                   Parent (E),
                   SRM_Reference => "SPARK RM 3.7(2)");
             end if;
