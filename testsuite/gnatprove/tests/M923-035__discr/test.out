@@ -1,11 +1,11 @@
 discr.adb:4:13: access type is not allowed in SPARK
-discr.adb:4:13: violation of pragma SPARK_Mode at /private/var/folders/k2/9n147f6j3c3472nwnqxr_k3w0000gn/T/tmp-test-M923-035__discr-44567/src/test.adc:1
+discr.adb:4:13: violation of pragma SPARK_Mode at test.adc:1
 discr.adb:16:04: discriminant on derived type is not allowed in SPARK (SPARK RM 3.7(2))
-discr.adb:16:04: violation of pragma SPARK_Mode at /private/var/folders/k2/9n147f6j3c3472nwnqxr_k3w0000gn/T/tmp-test-M923-035__discr-44567/src/test.adc:1
+discr.adb:16:04: violation of pragma SPARK_Mode at test.adc:1
 discr.adb:19:11: "Square" is not allowed in SPARK
-discr.adb:19:11: violation of pragma SPARK_Mode at /private/var/folders/k2/9n147f6j3c3472nwnqxr_k3w0000gn/T/tmp-test-M923-035__discr-44567/src/test.adc:1
+discr.adb:19:11: violation of pragma SPARK_Mode at test.adc:1
 discr.adb:19:21: "Square" is not allowed in SPARK
-discr.adb:19:21: violation of pragma SPARK_Mode at /private/var/folders/k2/9n147f6j3c3472nwnqxr_k3w0000gn/T/tmp-test-M923-035__discr-44567/src/test.adc:1
+discr.adb:19:21: violation of pragma SPARK_Mode at test.adc:1
    compilation of discr.adb failed
 
 
