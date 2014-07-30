@@ -1,0 +1,1 @@
+ALL XFAIL constants declared in loops in expr fun body
