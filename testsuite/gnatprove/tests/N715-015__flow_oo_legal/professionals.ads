@@ -15,8 +15,7 @@ is
                    Knives, Guns, Rifles, Grenades,
                    Hearts, Brains, Limbs, Skin);
 
-   type Professional (Profession : Professions)
-   is new Person and Printable.Object with private;
+   type Professional is new Person and Printable.Object with private;
 
    overriding
    function New_Person
@@ -47,6 +46,8 @@ is
    procedure Set_Training_Of_The_Day (Skill : Skills)
      with Global => (Output => State);
 
+   function Has_Licence_To_Kill (P : Professional) return Boolean;
+
    function Have_Same_Profession
      (Professional_A, Professional_B : Professional)
       return Boolean;
@@ -64,7 +65,7 @@ is
                                          Victim : in out Person'Class)
      with Pre  => Is_Alive (Killer)
                   and then Is_Alive (Victim)
-                  and then Killer.Profession in Soldier | Doctor,
+                  and then Has_Licence_To_Kill (Killer),
           Post => Is_Alive (Killer)
                   and then not Victim.Is_Alive;
 
@@ -74,19 +75,10 @@ private
 
    Empty_Skill_List : constant Skill_List := Skill_List'(others => Nothing);
 
-   type Professional (Profession : Professions)
-   is new Person and Printable.Object with record
-      Skilled_In : Skill_List;
-
-      case Profession is
-         when Soldier |
-              Doctor  =>
-            Number_Of_People_Killed : Natural;
-
-         when Programmer |
-              Unemployed =>
-            null;
-      end case;
+   type Professional is new Person and Printable.Object with record
+      Profession              : Professions;
+      Skilled_In              : Skill_List;
+      Number_Of_People_Killed : Natural;
    end record;
 
 end Professionals;

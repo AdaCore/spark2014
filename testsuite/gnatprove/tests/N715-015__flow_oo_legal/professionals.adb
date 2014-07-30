@@ -16,14 +16,16 @@ is
       DOB  : Integer)
       return Professional
    is (People.New_Person (Name, DOB)
-         with Profession => Unemployed,
-              Skilled_In => Empty_Skill_List);
+         with Profession              => Unemployed,
+              Skilled_In              => Empty_Skill_List,
+              Number_Of_People_Killed => 0);
 
    overriding
    function New_Person (Name : Unbounded_String) return Professional
    is (People.New_Person (Name)
-         with Profession => Unemployed,
-              Skilled_In => Empty_Skill_List);
+         with Profession              => Unemployed,
+              Skilled_In              => Empty_Skill_List,
+              Number_Of_People_Killed => 0);
 
    overriding
    procedure Print (This : Professional) is
@@ -53,19 +55,12 @@ is
       Prof : Professions)
       return Professional
    is
-      Tmp : Professional (Prof);
+      Tmp : Professional;
    begin
-      Person (Tmp) := New_Person (Name, DOB);
-      Tmp.Skilled_In := Empty_Skill_List;
-
-      case Prof is
-         when Soldier |
-              Doctor  =>
-            Tmp.Number_Of_People_Killed := 0;
-
-         when others =>
-            null;
-      end case;
+      Person (Tmp)                := New_Person (Name, DOB);
+      Tmp.Profession              := Prof;
+      Tmp.Skilled_In              := Empty_Skill_List;
+      Tmp.Number_Of_People_Killed := 0;
 
       return Tmp;
    end New_Professional;
@@ -75,19 +70,12 @@ is
       Prof : Professions)
       return Professional
    is
-      Tmp : Professional (Prof);
+      Tmp : Professional;
    begin
-      Person (Tmp) := P;
-      Tmp.Skilled_In := Empty_Skill_List;
-
-      case Prof is
-         when Soldier |
-              Doctor  =>
-            Tmp.Number_Of_People_Killed := 0;
-
-         when others =>
-            null;
-      end case;
+      Person (Tmp)                := P;
+      Tmp.Profession              := Prof;
+      Tmp.Skilled_In              := Empty_Skill_List;
+      Tmp.Number_Of_People_Killed := 0;
 
       return Tmp;
    end New_Professional;
@@ -104,6 +92,9 @@ is
    begin
       Skill_Of_The_Day := Skill;
    end Set_Training_Of_The_Day;
+
+   function Has_Licence_To_Kill (P : Professional) return Boolean is
+      (P.Profession in Soldier | Doctor);
 
    function Have_Same_Profession
      (Professional_A, Professional_B : Professional)
