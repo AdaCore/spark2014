@@ -29,10 +29,8 @@ sed 's/_xx//g;s/_XX//g;s/(\*checks\*)//g' $1 >> $2
 sed 's/xx/x/g;s/XX/X/g;s/(\*\*//g;s/\*\*)//g' $1 >> $2
 
 echo -e "Definition Ast_Tree_With_Expected_Checks := compile2_flagged_declaration_f $SYMBOL_TABLE $COQ_AST_TREE.\n" >> $2
-echo -e "Definition Return_Msgs :=\n" >> $2
-echo -e "  compare_with_expected_results Ast_Tree_With_Expected_Checks $COQ_AST_TREE_X.\n" >> $2
-
-echo -e "Definition Result := map_to_source_location st Return_Msgs" >> $2
+echo -e "Definition Return_Msgs := compare_with_expected_results Ast_Tree_With_Expected_Checks $COQ_AST_TREE_X.\n" >> $2
+echo -e "Definition Result := map_to_source_location $SYMBOL_TABLE Return_Msgs.\n" >> $2
 
 echo "Eval compute in Result." >> $2
 eval "coqc $2" # run the test
