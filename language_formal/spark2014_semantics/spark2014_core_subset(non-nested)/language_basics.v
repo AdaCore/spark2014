@@ -21,7 +21,7 @@ Definition astnum := nat.
 
 (** In CompCert, Cminor uses non-negative values to represent 
     identifiers, we follow this style by using natural numbers 
-    to represent dentifiers/names;
+    to represent identifiers/names;
 *)
 
 Definition idnum := nat.
@@ -29,12 +29,6 @@ Definition idnum := nat.
 Definition procnum := nat.
 
 Definition typenum := nat.
-
-Definition typedeclnum := astnum.
-
-Definition aspectnum := nat.
-
-(* Definition typeuri := string. *)
 
 Definition index := Z. (* array index *)
 
@@ -74,20 +68,20 @@ Inductive mode: Type :=
 (** * Operations *)
 
 (** unary and binary operators *)
-Inductive unary_operator: Type := 
-    | Not: unary_operator     
+Inductive unary_operator: Type :=      
     | Unary_Plus: unary_operator
-    | Unary_Minus: unary_operator.
+    | Unary_Minus: unary_operator
+    | Not: unary_operator.
 
 Inductive binary_operator: Type := 
-    | Equal: binary_operator 
-    | Not_Equal: binary_operator
-    | Greater_Than: binary_operator
-    | Greater_Than_Or_Equal: binary_operator
-    | Less_Than: binary_operator
-    | Less_Than_Or_Equal: binary_operator
     | And: binary_operator
     | Or: binary_operator
+    | Equal: binary_operator 
+    | Not_Equal: binary_operator
+    | Less_Than: binary_operator
+    | Less_Than_Or_Equal: binary_operator
+    | Greater_Than: binary_operator
+    | Greater_Than_Or_Equal: binary_operator
     | Plus: binary_operator
     | Minus: binary_operator
     | Multiply: binary_operator
@@ -99,6 +93,7 @@ Inductive literal: Type :=
     | Integer_Literal: Z -> literal (* 2.4 *)
     | Boolean_Literal: bool -> literal (* 3.5.3 *).
 
+(** * Auxiliary Functions *)
 
 Section LB_AuxiliaryFunctions.
   

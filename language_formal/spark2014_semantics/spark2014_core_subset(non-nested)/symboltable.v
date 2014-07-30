@@ -3,16 +3,26 @@ Require Export language_flagged.
 
 (** * Symbol Tables *)
 
+(** it's used to map back to the source location once an error is detected in ast tree *)
+Record source_location := sloc{
+  line   : nat; 
+  col    : nat; 
+  endline: nat; 
+  endcol : nat
+}.
+
 (* symbol table for unflagged program *)
 Module Symbol_Table_Elements <: SymTable_Element.
   Definition Procedure_Decl := procedure_body.
   Definition Type_Decl := type_declaration.
+  Definition Source_Location := source_location.
 End Symbol_Table_Elements.
 
 (* symbol table for flagged program *)
 Module Symbol_Table_Elements_X <: SymTable_Element.
   Definition Procedure_Decl := procedure_body_x.
   Definition Type_Decl := type_declaration_x.
+  Definition Source_Location := source_location.
 End Symbol_Table_Elements_X.
 
 Module Symbol_Table_Module := SymbolTableM (Symbol_Table_Elements).
@@ -35,27 +45,33 @@ Definition reside_symtable_vars := Symbol_Table_Module.reside_symtable_vars.
 Definition reside_symtable_procs := Symbol_Table_Module.reside_symtable_procs.
 Definition reside_symtable_types := Symbol_Table_Module.reside_symtable_types.
 Definition reside_symtable_exps := Symbol_Table_Module.reside_symtable_exps.
+Definition reside_symtable_sloc := Symbol_Table_Module.reside_symtable_sloc.
 Definition fetch_var := Symbol_Table_Module.fetch_var.
 Definition fetch_proc := Symbol_Table_Module.fetch_proc.
 Definition fetch_type := Symbol_Table_Module.fetch_type.
 Definition fetch_exp_type := Symbol_Table_Module.fetch_exp_type.
+Definition fetch_sloc := Symbol_Table_Module.fetch_sloc.
 Definition update_vars := Symbol_Table_Module.update_vars.
 Definition update_procs := Symbol_Table_Module.update_procs.
 Definition update_types := Symbol_Table_Module.update_types.
 Definition update_exps := Symbol_Table_Module.update_exps.
+Definition update_sloc := Symbol_Table_Module.update_sloc.
 
 Definition reside_symtable_vars_x := Symbol_Table_Module_X.reside_symtable_vars.
 Definition reside_symtable_procs_x := Symbol_Table_Module_X.reside_symtable_procs.
 Definition reside_symtable_types_x := Symbol_Table_Module_X.reside_symtable_types.
 Definition reside_symtable_exps_x := Symbol_Table_Module_X.reside_symtable_exps.
+Definition reside_symtable_sloc_x := Symbol_Table_Module_X.reside_symtable_sloc.
 Definition fetch_var_x := Symbol_Table_Module_X.fetch_var.
 Definition fetch_proc_x := Symbol_Table_Module_X.fetch_proc.
 Definition fetch_type_x := Symbol_Table_Module_X.fetch_type.
 Definition fetch_exp_type_x := Symbol_Table_Module_X.fetch_exp_type.
+Definition fetch_sloc_x := Symbol_Table_Module_X.fetch_sloc.
 Definition update_vars_x := Symbol_Table_Module_X.update_vars.
 Definition update_procs_x := Symbol_Table_Module_X.update_procs.
 Definition update_types_x := Symbol_Table_Module_X.update_types.
 Definition update_exps_x := Symbol_Table_Module_X.update_exps.
+Definition update_sloc_x := Symbol_Table_Module_X.update_sloc.
 
 Inductive extract_subtype_range: symboltable -> type -> range -> Prop :=
   | Extract_Range: forall t tn st td l u,

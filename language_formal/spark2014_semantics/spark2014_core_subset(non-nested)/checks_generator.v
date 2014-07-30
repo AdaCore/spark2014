@@ -1047,10 +1047,10 @@ Inductive compile2_flagged_type_declaration_map: list (idnum * type_declaration)
         compile2_flagged_type_declaration_map ((x, t) :: tl) ((x, t') :: tl').
 
 Inductive compile2_flagged_symbol_table: symboltable -> symboltable_x -> Prop := 
-  | C2_Flagged_SymTable: forall p p' t t' x e,
-      compile2_flagged_proc_declaration_map (mkSymbolTable x p t e) p p' ->
+  | C2_Flagged_SymTable: forall p p' t t' x e srcloc,
+      compile2_flagged_proc_declaration_map (mkSymbolTable x p t e srcloc) p p' ->
       compile2_flagged_type_declaration_map t t' ->
-      compile2_flagged_symbol_table (mkSymbolTable x p t e) (mkSymbolTable_x x p' t' e).
+      compile2_flagged_symbol_table (mkSymbolTable x p t e srcloc) (mkSymbolTable_x x p' t' e srcloc).
 
 
 (** ** Lemmas *)
