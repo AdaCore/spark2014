@@ -51,6 +51,7 @@ package VC_Kinds is
       --  VC_Assert_Kind - assertions
 
       VC_Initial_Condition,
+      VC_Default_Initial_Condition,
       VC_Precondition,               --  the precondition of a call
       VC_Precondition_Main,          --  the precondition of a main program
       VC_Postcondition,              --  a postcondition

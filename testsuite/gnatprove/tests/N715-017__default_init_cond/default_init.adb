@@ -32,13 +32,13 @@ package body Default_Init with SPARK_Mode is
    end Def_Simple;
 
    procedure Def_Wrong is
-      W : Wrong;  --@INITIAL_CONDITION:FAIL
+      W : Wrong;
    begin
       pragma Assert (W = Wrong (Init (0)));
    end Def_Wrong;
 
    procedure Def_Rte is
-      R : Rte;  --@PRECONDITION:FAIL
+      R : Rte;
    begin
       if N in 1 .. 3 then
          pragma Assert (R (N) = 0);
@@ -46,16 +46,16 @@ package body Default_Init with SPARK_Mode is
    end Def_Rte;
 
    procedure Def_Glob1 is
-      G : Glob;  --@INITIAL_CONDITION:FAIL
+      G : Glob1;
    begin
       pragma Assert (G.F = N);
    end Def_Glob1;
 
    procedure Def_Glob2 is
    begin
-      N := Init (0);
+      N := 0;
       declare
-         G : Glob;
+         G : Glob2;
       begin
          pragma Assert (G.F = N);
       end;
@@ -66,9 +66,9 @@ package body Default_Init with SPARK_Mode is
       D2 : Discr (False);
       D3 : Mut_Discr;
       D4 : Mut_Discr (False);
-      D5 : Mut_Discr (True);  --@INITIAL_CONDITION:FAIL
+      D5 : Mut_Discr (True);
    begin
       pragma Assert (D1.F = 0);
-      pragma Assert (D5.F = 0);
+      pragma Assert (D5.F = 0); --@ASSERT:FAIL
    end Def_Discr;
 end;

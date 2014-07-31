@@ -200,8 +200,7 @@ package body Gnat2Why.Driver is
 
         --  Ignore predicate functions and invariant procedures
 
-        and then not Is_Predicate_Function (E)
-        and then not Is_Invariant_Procedure (E)
+        and then not Subprogram_Is_Ignored_For_Proof (E)
       then
          if Is_Primitive_Of_Tagged (E) then
             Ada_Ent_To_Why.Push_Scope (Symbol_Table);
@@ -452,8 +451,7 @@ package body Gnat2Why.Driver is
             if Ekind (E) in Subprogram_Kind
               and then Entity_In_SPARK (E)
               and then not Is_Local_Subprogram_Always_Inlined (E)
-              and then not Is_Predicate_Function (E)
-              and then not Is_Invariant_Procedure (E)
+              and then not Subprogram_Is_Ignored_For_Proof (E)
               and then (not (Present (Get_Expression_Function (E)))
                         or else not Entity_Body_In_SPARK (E))
             then
@@ -643,8 +641,7 @@ package body Gnat2Why.Driver is
 
               --  Ignore predicate functions and invariant procedures
 
-              and then not Is_Predicate_Function (E)
-              and then not Is_Invariant_Procedure (E)
+              and then not Subprogram_Is_Ignored_For_Proof (E)
 
               --  Subprograms entities of actual parameter of generic packages
               --  with external axioms are only needed for check of runtime

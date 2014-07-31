@@ -489,4 +489,13 @@ package SPARK_Util is
    --  Returns the unanalyzed pragma Default_Initial_Condition applying to a
    --  type.
 
+   function Get_Expr_From_Check_Only_Proc (E : Entity_Id) return Node_Id with
+     Pre => Ekind (E) = E_Procedure;
+   --  Goes through a subprogram containing only a pragma Check (Expr) and
+   --  returns Expr. Returns Empty if there is no such pragma.
+
+   function Subprogram_Is_Ignored_For_Proof (E : Entity_Id) return Boolean with
+     Pre => Ekind (E) in E_Procedure | E_Function;
+   --  Returns true on subprograms that are not translated to Why.
+
 end SPARK_Util;

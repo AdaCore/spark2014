@@ -118,7 +118,8 @@ package body SPARK_Definition is
 
    Current_SPARK_Pragma : Node_Id;
    --  The current applicable SPARK_Mode pragma, if any, to reference in error
-   --  messages when a violation is encountered.
+   --  messages when a violation is encountered. For analysis of the delayed
+   --  aspects of a type T on discovery mode, this variable holds T's entity.
 
    Violation_Detected : Boolean;
    --  Set to True when a violation is detected
@@ -165,6 +166,12 @@ package body SPARK_Definition is
    --  Maps type entities in SPARK whose fullview was declared in a private
    --  part with SPARK_Mode => Off or a subtype or derived type of such an
    --  entity to its first ancester in SPARK.
+
+   Delayed_Type_Aspects : Node_Maps.Map;
+   --  Stores expressions from aspects of types whose analysis should be
+   --  delayed until the end of the analysis and maps them either to their
+   --  SPARK_Mode entity if there is one or to their type entity in discovery
+   --  mode.
 
    function Entity_In_SPARK (E : Entity_Id) return Boolean is
      (Entities_In_SPARK.Contains (E));
@@ -1654,7 +1661,7 @@ package body SPARK_Definition is
       --  There should not be calls to predicate functions and invariant
       --  procedures.
 
-      elsif Is_Predicate_Function (E) or else Is_Invariant_Procedure (E) then
+      elsif Subprogram_Is_Ignored_For_Proof (E) then
          raise Program_Error;
 
       else
@@ -1715,6 +1722,13 @@ package body SPARK_Definition is
       end loop;
 
       Mark (N);
+
+      --  Mark delayed type aspects
+
+      for Cur in Delayed_Type_Aspects.Iterate loop
+         Current_SPARK_Pragma := Node_Maps.Element (Cur);
+         Mark (Node_Maps.Key (Cur));
+      end loop;
    end Mark_Compilation_Unit;
 
    --------------------------------
@@ -2308,6 +2322,28 @@ package body SPARK_Definition is
                   Entities_Fullview_Not_In_SPARK.Insert (E, E);
                end if;
             end if;
+
+            --  If the type has a Default_Initial_Condition aspect, store the
+            --  corresponding expression in the Delayed_Type_Aspects map.
+
+            if Has_Default_Init_Cond (E)
+              or else Has_Inherited_Default_Init_Cond (E)
+            then
+               declare
+                  Default_Init_Expr : constant Node_Id :=
+                    Get_Expr_From_Check_Only_Proc
+                      (Default_Init_Cond_Procedure (E));
+                  Delayed_Mapping   : constant Node_Id :=
+                    (if Present (Current_SPARK_Pragma) then
+                          Current_SPARK_Pragma
+                     else E);
+               begin
+                  if Present (Default_Init_Expr) then
+                     Delayed_Type_Aspects.Include
+                       (Default_Init_Expr, Delayed_Mapping);
+                  end if;
+               end;
+            end if;
          when others =>
             null;
          end case;
@@ -2557,7 +2593,7 @@ package body SPARK_Definition is
       --  Ignore predicate functions
 
       if Ekind (E) in E_Function | E_Procedure
-        and then (Is_Predicate_Function (E) or else Is_Invariant_Procedure (E))
+        and then Subprogram_Is_Ignored_For_Proof (E)
       then
          return;
       end if;
@@ -3518,7 +3554,7 @@ package body SPARK_Definition is
 
       --  Ignore predicate functions and invariant procedures
 
-      elsif Is_Predicate_Function (E) or else Is_Invariant_Procedure (E) then
+      elsif Subprogram_Is_Ignored_For_Proof (E) then
          return;
 
       else
@@ -3623,7 +3659,7 @@ package body SPARK_Definition is
 
       --  Ignore predicate functions and invariant procedures
 
-      elsif Is_Predicate_Function (E) or else Is_Invariant_Procedure (E) then
+      elsif Subprogram_Is_Ignored_For_Proof (E) then
          return;
 
       --  Mark entity
@@ -3749,7 +3785,12 @@ package body SPARK_Definition is
 
          Error_Msg_Sloc := Sloc (Current_SPARK_Pragma);
 
-         if From_Aspect_Specification (Current_SPARK_Pragma) then
+         if Nkind (Current_SPARK_Pragma) /= N_Pragma then
+            pragma Assert (Nkind (Current_SPARK_Pragma) in N_Entity);
+            Error_Msg_FE
+              ("\\delayed type aspect on & is required to be in SPARK", N,
+               Current_SPARK_Pragma);
+         elsif From_Aspect_Specification (Current_SPARK_Pragma) then
             Error_Msg_F ("\\violation of aspect SPARK_Mode #", N);
          else
             Error_Msg_F ("\\violation of pragma SPARK_Mode #", N);
@@ -3772,7 +3813,12 @@ package body SPARK_Definition is
          Error_Msg_FE ("& is not allowed in SPARK", N, From);
          Error_Msg_Sloc := Sloc (Current_SPARK_Pragma);
 
-         if From_Aspect_Specification (Current_SPARK_Pragma) then
+         if Nkind (Current_SPARK_Pragma) /= N_Pragma then
+            pragma Assert (Nkind (Current_SPARK_Pragma) in N_Entity);
+            Error_Msg_FE
+              ("\\delayed type aspect on & is required to be in SPARK", N,
+               Current_SPARK_Pragma);
+         elsif From_Aspect_Specification (Current_SPARK_Pragma) then
             Error_Msg_F ("\\violation of aspect SPARK_Mode #", N);
          else
             Error_Msg_F ("\\violation of pragma SPARK_Mode #", N);
@@ -3799,6 +3845,7 @@ package body SPARK_Definition is
 
    function SPARK_Pragma_Is (Mode : Opt.SPARK_Mode_Type) return Boolean is
      (Present (Current_SPARK_Pragma)
-      and then Get_SPARK_Mode_From_Pragma (Current_SPARK_Pragma) = Mode);
+      and then (if Nkind (Current_SPARK_Pragma) = N_Pragma then
+                   Get_SPARK_Mode_From_Pragma (Current_SPARK_Pragma) = Mode));
 
 end SPARK_Definition;

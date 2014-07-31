@@ -113,21 +113,23 @@ package body Gnat2Why.Error_Messages is
       Kind : VC_Kind) return String is
    begin
       case Kind is
-         when VC_Division_Check          =>
+         when VC_Division_Check            =>
             return "divide by zero might fail";
-         when VC_Index_Check             =>
+         when VC_Index_Check               =>
             return "array index check might fail";
-         when VC_Overflow_Check          =>
+         when VC_Overflow_Check            =>
             return "overflow check might fail";
-         when VC_Range_Check             =>
+         when VC_Range_Check               =>
             return "range check might fail";
-         when VC_Length_Check            =>
+         when VC_Length_Check              =>
             return "length check might fail";
-         when VC_Discriminant_Check      =>
+         when VC_Discriminant_Check        =>
             return "discriminant check might fail";
-         when VC_Initial_Condition       =>
+         when VC_Initial_Condition         =>
             return "initial condition might fail";
-         when VC_Precondition            =>
+         when VC_Default_Initial_Condition =>
+            return "default initial condition might fail";
+         when VC_Precondition              =>
             if Nkind (Node) in N_Function_Call | N_Procedure_Call_Statement
               and then No_Return (Entity (Name (Node)))
             then
@@ -136,43 +138,43 @@ package body Gnat2Why.Error_Messages is
             else
                return "precondition might fail";
             end if;
-         when VC_Precondition_Main       =>
+         when VC_Precondition_Main         =>
             return "precondition of main program might fail";
-         when VC_Postcondition           =>
+         when VC_Postcondition             =>
             return "postcondition might fail";
-         when VC_Refined_Post            =>
+         when VC_Refined_Post              =>
             return "refined postcondition might fail";
-         when VC_Contract_Case           =>
+         when VC_Contract_Case             =>
             return "contract case might fail";
-         when VC_Disjoint_Contract_Cases =>
+         when VC_Disjoint_Contract_Cases   =>
             return "contract cases might not be disjoint";
-         when VC_Complete_Contract_Cases =>
+         when VC_Complete_Contract_Cases   =>
             return "contract cases might not be complete";
-         when VC_Loop_Invariant          =>
+         when VC_Loop_Invariant            =>
             return "loop invariant might fail";
-         when VC_Loop_Invariant_Init     =>
+         when VC_Loop_Invariant_Init       =>
             return "loop invariant might fail in first iteration";
-         when VC_Loop_Invariant_Preserv  =>
+         when VC_Loop_Invariant_Preserv    =>
             return "loop invariant might fail after first iteration";
-         when VC_Loop_Variant            =>
+         when VC_Loop_Variant              =>
             return "loop variant might fail";
-         when VC_Assert                  =>
+         when VC_Assert                    =>
             return "assertion might fail";
-         when VC_Raise                   =>
+         when VC_Raise                     =>
             return "exception might be raised";
-         when VC_Weaker_Pre              =>
+         when VC_Weaker_Pre                =>
             return "precondition might be stronger than "
               & "class-wide precondition";
-         when VC_Trivial_Weaker_Pre      =>
+         when VC_Trivial_Weaker_Pre        =>
             return "precondition is stronger than the default "
               & "class-wide precondition of True";
-         when VC_Stronger_Post           =>
+         when VC_Stronger_Post             =>
             return "postcondition might be weaker than "
               & "class-wide postcondition";
-         when VC_Weaker_Classwide_Pre    =>
+         when VC_Weaker_Classwide_Pre      =>
             return
               "class-wide precondition might be stronger than overridden one";
-         when VC_Stronger_Classwide_Post =>
+         when VC_Stronger_Classwide_Post   =>
             return
               "class-wide postcondition might be weaker than overridden one";
       end case;
@@ -259,14 +261,18 @@ package body Gnat2Why.Error_Messages is
       Kind : VC_Kind) return String is
    begin
       case Kind is
-         when VC_Division_Check          => return "division check proved";
-         when VC_Index_Check             => return "index check proved";
-         when VC_Overflow_Check          => return "overflow check proved";
-         when VC_Range_Check             => return "range check proved";
-         when VC_Length_Check            => return "length check proved";
-         when VC_Discriminant_Check      => return "discriminant check proved";
-         when VC_Initial_Condition       => return "initial condition proved";
-         when VC_Precondition            =>
+         when VC_Division_Check            => return "division check proved";
+         when VC_Index_Check               => return "index check proved";
+         when VC_Overflow_Check            => return "overflow check proved";
+         when VC_Range_Check               => return "range check proved";
+         when VC_Length_Check              => return "length check proved";
+         when VC_Discriminant_Check        =>
+            return "discriminant check proved";
+         when VC_Initial_Condition         =>
+            return "initial condition proved";
+         when VC_Default_Initial_Condition =>
+            return "default initial condition proved";
+         when VC_Precondition              =>
             if Nkind (Node) in N_Function_Call | N_Procedure_Call_Statement
               and then No_Return (Entity (Name (Node)))
             then
@@ -274,34 +280,34 @@ package body Gnat2Why.Error_Messages is
             else
                return "precondition proved";
             end if;
-         when VC_Precondition_Main       =>
+         when VC_Precondition_Main         =>
             return "precondition of main program proved";
-         when VC_Postcondition           => return "postcondition proved";
-         when VC_Refined_Post            => return "refined post proved";
-         when VC_Contract_Case           => return "contract case proved";
-         when VC_Disjoint_Contract_Cases =>
+         when VC_Postcondition             => return "postcondition proved";
+         when VC_Refined_Post              => return "refined post proved";
+         when VC_Contract_Case             => return "contract case proved";
+         when VC_Disjoint_Contract_Cases   =>
             return "disjoint contract cases proved";
-         when VC_Complete_Contract_Cases =>
+         when VC_Complete_Contract_Cases   =>
             return "complete contract cases proved";
-         when VC_Loop_Invariant          =>
+         when VC_Loop_Invariant            =>
             return "loop invariant proved";
-         when VC_Loop_Invariant_Init     =>
+         when VC_Loop_Invariant_Init       =>
             return "loop invariant initialization proved";
-         when VC_Loop_Invariant_Preserv  =>
+         when VC_Loop_Invariant_Preserv    =>
             return "loop invariant preservation proved";
-         when VC_Loop_Variant            => return "loop variant proved";
-         when VC_Assert                  => return "assertion proved";
-         when VC_Raise                   =>
+         when VC_Loop_Variant              => return "loop variant proved";
+         when VC_Assert                    => return "assertion proved";
+         when VC_Raise                     =>
             return "raise statement proved unreachable";
-         when VC_Weaker_Pre              =>
+         when VC_Weaker_Pre                =>
             return "precondition is weaker than class-wide precondition";
-         when VC_Trivial_Weaker_Pre      =>
+         when VC_Trivial_Weaker_Pre        =>
             return "precondition is always True";
-         when VC_Stronger_Post           =>
+         when VC_Stronger_Post             =>
             return "postcondition is stronger than class-wide postcondition";
-         when VC_Weaker_Classwide_Pre    =>
+         when VC_Weaker_Classwide_Pre      =>
             return "class-wide precondition is weaker than overridden one";
-         when VC_Stronger_Classwide_Post =>
+         when VC_Stronger_Classwide_Post   =>
             return "class-wide postcondition is stronger than overridden one";
       end case;
    end Proved_Message;
@@ -326,31 +332,32 @@ package body Gnat2Why.Error_Messages is
    begin
       return
       (case Kind is
-         when VC_Division_Check          => "division_check",
-         when VC_Index_Check             => "index_check",
-         when VC_Overflow_Check          => "overflow_check",
-         when VC_Range_Check             => "range_check",
-         when VC_Length_Check            => "length_check",
-         when VC_Discriminant_Check      => "discriminant_check",
-         when VC_Initial_Condition       => "initial_condition",
-         when VC_Precondition            => "precondition",
-         when VC_Precondition_Main       => "precondition_main",
-         when VC_Postcondition           => "postcondition",
-         when VC_Refined_Post            => "refined_post",
-         when VC_Contract_Case           => "contract_case",
-         when VC_Disjoint_Contract_Cases => "disjoint_contract_cases",
-         when VC_Complete_Contract_Cases => "complete_contract_cases",
-         when VC_Loop_Invariant          => "loop_invariant",
-         when VC_Loop_Invariant_Init     => "loop_invariant_initialization",
-         when VC_Loop_Invariant_Preserv  => "loop_invariant_preservation",
-         when VC_Loop_Variant            => "loop_variant",
-         when VC_Assert                  => "assertion",
-         when VC_Raise                   => "raise_statement",
-         when VC_Weaker_Pre              => "weaker_pre",
-         when VC_Trivial_Weaker_Pre      => "trivial_weaker_pre",
-         when VC_Stronger_Post           => "stronger_post",
-         when VC_Weaker_Classwide_Pre    => "weaker_classwide_pre",
-         when VC_Stronger_Classwide_Post => "stronger_classwide_post"
+         when VC_Division_Check            => "division_check",
+         when VC_Index_Check               => "index_check",
+         when VC_Overflow_Check            => "overflow_check",
+         when VC_Range_Check               => "range_check",
+         when VC_Length_Check              => "length_check",
+         when VC_Discriminant_Check        => "discriminant_check",
+         when VC_Default_Initial_Condition => "default_initial_condition",
+         when VC_Initial_Condition         => "initial_condition",
+         when VC_Precondition              => "precondition",
+         when VC_Precondition_Main         => "precondition_main",
+         when VC_Postcondition             => "postcondition",
+         when VC_Refined_Post              => "refined_post",
+         when VC_Contract_Case             => "contract_case",
+         when VC_Disjoint_Contract_Cases   => "disjoint_contract_cases",
+         when VC_Complete_Contract_Cases   => "complete_contract_cases",
+         when VC_Loop_Invariant            => "loop_invariant",
+         when VC_Loop_Invariant_Init       => "loop_invariant_initialization",
+         when VC_Loop_Invariant_Preserv    => "loop_invariant_preservation",
+         when VC_Loop_Variant              => "loop_variant",
+         when VC_Assert                    => "assertion",
+         when VC_Raise                     => "raise_statement",
+         when VC_Weaker_Pre                => "weaker_pre",
+         when VC_Trivial_Weaker_Pre        => "trivial_weaker_pre",
+         when VC_Stronger_Post             => "stronger_post",
+         when VC_Weaker_Classwide_Pre      => "weaker_classwide_pre",
+         when VC_Stronger_Classwide_Post   => "stronger_classwide_post"
       );
    end To_Tag;
 

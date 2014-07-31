@@ -205,6 +205,8 @@ def check_marks(strlist):
             return 'LENGTH_CHECK'
         elif 'discriminant check' in text:
             return 'DISCRIMINANT_CHECK'
+        elif 'default initial condition' in text:
+            return 'DEFAULT_INITIAL_CONDITION'
         elif 'initial condition' in text:
             return 'INITIAL_CONDITION'
         elif 'precondition' in text or 'nonreturning' in text:
@@ -255,6 +257,7 @@ def check_marks(strlist):
                        "LENGTH_CHECK",
                        "DISCRIMINANT_CHECK",
                        "INITIAL_CONDITION",
+                       "DEFAULT_INITIAL_CONDITION",
                        "PRECONDITION",
                        "PRECONDITION_MAIN",
                        "POSTCONDITION",

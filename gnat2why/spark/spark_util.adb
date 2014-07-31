@@ -982,6 +982,40 @@ package body SPARK_Util is
       end if;
    end Get_Expression_Function;
 
+   -----------------------------------
+   -- Get_Expr_From_Check_Only_Proc --
+   -----------------------------------
+
+   function Get_Expr_From_Check_Only_Proc (E : Entity_Id) return Node_Id is
+      Body_N : constant Node_Id := Get_Subprogram_Body (E);
+      Stmts  : constant List_Id :=
+        Statements (Handled_Statement_Sequence (Body_N));
+      Stmt   : Node_Id := First (Stmts);
+      Arg    : Node_Id;
+   begin
+      while Present (Stmt) loop
+
+         --  Return the second argument of the first pragma Check in the
+         --  declaration list if any.
+
+         if Nkind (Stmt) = N_Pragma
+           and then Get_Pragma_Id (Pragma_Name (Stmt)) = Pragma_Check
+         then
+            pragma Assert (Present (Pragma_Argument_Associations (Stmt)));
+            Arg := First (Pragma_Argument_Associations (Stmt));
+            pragma Assert (Present (Arg));
+            Arg := Next (Arg);
+            pragma Assert (Present (Arg));
+            return (Get_Pragma_Arg (Arg));
+         end if;
+         Next (Stmt);
+      end loop;
+
+      --  Otherwise return Empty
+
+      return Empty;
+   end Get_Expr_From_Check_Only_Proc;
+
    ---------------------------------------------
    -- Get_Flat_Statement_And_Declaration_List --
    ---------------------------------------------
@@ -1889,6 +1923,14 @@ package body SPARK_Util is
 
       return Empty;
    end Search_Component_By_Name;
+
+   -------------------------------------
+   -- Subprogram_Is_Ignored_For_Proof --
+   -------------------------------------
+
+   function Subprogram_Is_Ignored_For_Proof (E : Entity_Id) return Boolean is
+     (Is_Predicate_Function (E) or else Is_Invariant_Procedure (E)
+          or else Is_Default_Init_Cond_Procedure (E));
 
    ---------------------------
    -- To_Ordered_Entity_Set --

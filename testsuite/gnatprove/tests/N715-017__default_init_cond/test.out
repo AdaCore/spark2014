@@ -1,0 +1,42 @@
+default_init.adb:7:27: info: overflow check proved
+default_init.adb:15:07: info: assertion proved
+default_init.adb:16:07: info: assertion proved
+default_init.adb:17:07: info: assertion proved
+default_init.adb:19:07: info: assertion proved
+default_init.adb:20:07: info: assertion proved
+default_init.adb:21:22: warning: assertion might fail, requires Priv_With_Glob_Ok (P3)
+default_init.adb:29:07: info: assertion proved
+default_init.adb:30:07: info: assertion proved
+default_init.adb:31:07: info: assertion proved
+default_init.adb:37:07: info: assertion proved
+default_init.adb:37:33: info: precondition proved
+default_init.adb:44:10: info: assertion proved
+default_init.adb:44:28: info: index check proved
+default_init.adb:51:07: info: assertion proved
+default_init.adb:60:10: info: assertion proved
+default_init.adb:71:07: info: assertion proved
+default_init.adb:71:24: info: discriminant check proved
+default_init.adb:72:22: warning: assertion might fail, requires D5.F = 0
+default_init.adb:72:24: info: discriminant check proved
+default_init.ads:3:09: info: default initial condition proved
+default_init.ads:5:09: info: default initial condition proved
+default_init.ads:7:09: info: default initial condition proved
+default_init.ads:9:09: warning: default initial condition might fail
+default_init.ads:11:09: info: default initial condition proved
+default_init.ads:12:35: warning: precondition might fail
+default_init.ads:13:09: warning: default initial condition might fail
+default_init.ads:15:09: info: default initial condition proved
+default_init.ads:19:09: info: default initial condition proved
+default_init.ads:36:14: warning: subprogram "Def_Simple" has no effect
+default_init.ads:38:14: warning: subprogram "Def_Wrong" has no effect
+default_init.ads:40:14: warning: subprogram "Def_Rte" has no effect
+default_init.ads:42:14: warning: subprogram "Def_Glob1" has no effect
+default_init.ads:46:14: warning: subprogram "Def_Discr" has no effect
+default_init.ads:61:50: info: range check proved
+default_init.ads:63:52: info: range check proved
+default_init.ads:85:39: info: precondition proved
+default_init.ads:92:64: info: precondition proved
+default_init.ads:98:20: info: discriminant check proved
+private_default.ads:2:09: warning: default initial condition might fail
+private_default.ads:4:09: warning: default initial condition might fail
+private_default.ads:6:09: warning: default initial condition might fail

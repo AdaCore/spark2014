@@ -356,11 +356,13 @@ package body Gnat2Why.Expr is
    --  initialization of Expr of type Ty.
 
    function Compute_Default_Init
-     (Expr   : W_Expr_Id;
-      Ty     : Entity_Id;
-      Params : Transformation_Params) return W_Pred_Id;
+     (Expr           : W_Expr_Id;
+      Ty             : Entity_Id;
+      Params         : Transformation_Params;
+      Skip_Last_Cond : Boolean := False) return W_Pred_Id;
    --  Compute Why3 code to assume values of default initialized variable Expr
-   --  of type Ty.
+   --  of type Ty. If Skip_Last_Cond is True, do not assume the top-level
+   --  Default_Initial_Condition of Ty if any.
 
    ------------------------------------------
    -- Handling of Expressions with Actions --
@@ -2094,6 +2096,101 @@ package body Gnat2Why.Expr is
          Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
       end if;
 
+      --  Check for absence of runtime errors in Ty's default initial condition
+      --  and check that it is implied by the default initialization of Ty.
+      --  Generate let x = any Ty in
+      --        ignore__ (Def_Init_Cond (x));
+      --        assert {Default_Init (x) -> Def_Init_Cond (x)}
+
+      if Is_Private_Type (Ty)
+        and then (Has_Default_Init_Cond (Ty)
+                  or else Has_Inherited_Default_Init_Cond (Ty))
+      then
+         declare
+            Default_Init_Subp : constant Entity_Id :=
+              Default_Init_Cond_Procedure (Ty);
+            Default_Init_Expr : constant Node_Id :=
+              Get_Expr_From_Check_Only_Proc (Default_Init_Subp);
+            Binders           : constant Item_Array :=
+              Compute_Subprogram_Parameters (Default_Init_Subp, EW_Prog);
+            --  Binder for the reference to the type in the default property.
+         begin
+            pragma Assert (Binders'Length = 1);
+
+            if Present (Default_Init_Expr) then
+
+               --  Add the binder for the reference to the type to the
+               --  Symbol_Table.
+
+               Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+
+               declare
+                  Binder : constant Item_Type :=
+                    Binders (Binders'First);
+                  A      : constant Node_Id :=
+                    (case Binder.Kind is
+                        when Regular => Binder.Main.Ada_Node,
+                        when others  => raise Program_Error);
+               begin
+                  pragma Assert (Present (A));
+
+                  if Present (A) then
+                     Ada_Ent_To_Why.Insert (Symbol_Table,
+                                            Unique_Entity (A),
+                                            Binder);
+                  end if;
+
+                  declare
+                     W_Def_Init_Prog : constant W_Expr_Id :=
+                       Transform_Expr
+                         (Expr          => Default_Init_Expr,
+                          Domain        => EW_Prog,
+                          Params        => Params);
+                     W_Def_Init_Expr : constant W_Expr_Id :=
+                       Transform_Expr
+                         (Expr          => Default_Init_Expr,
+                          Domain        => EW_Pred,
+                          Params        => Params);
+                     Condition       : constant W_Pred_Id :=
+                       Compute_Default_Init
+                         (Expr           => +Binder.Main.B_Name,
+                          Ty             => Ty,
+                          Params         => Params,
+                          Skip_Last_Cond => True);
+                     Def_Init_Check  : constant W_Expr_Id :=
+                       New_Conditional
+                         (Domain      => EW_Pred,
+                          Condition   => +Condition,
+                          Then_Part   => W_Def_Init_Expr);
+                  begin
+
+                     Checks := Sequence
+                       (New_Ignore (Prog => Checks),
+                        +New_Typed_Binding
+                          (Domain   => EW_Prog,
+                           Name     => Binder.Main.B_Name,
+                           Def      =>
+                             New_Any_Expr
+                               (Pre         => True_Pred,
+                                Post        => True_Pred,
+                                Return_Type => Get_Typ (Binder.Main.B_Name)),
+                           Context  =>
+                             +Sequence (New_Ignore (Prog => +W_Def_Init_Prog),
+                             New_Assert
+                               (Pred        => +New_VC_Expr
+                                  (Ada_Node => Ty,
+                                   Expr     => Def_Init_Check,
+                                   Reason   => VC_Default_Initial_Condition,
+                                   Domain   => EW_Pred),
+                                Assert_Kind => EW_Check))));
+                  end;
+               end;
+
+               Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+            end if;
+         end;
+      end if;
+
       return Checks;
    end Compute_Default_Check;
 
@@ -2102,9 +2199,10 @@ package body Gnat2Why.Expr is
    --------------------------
 
    function Compute_Default_Init
-     (Expr   : W_Expr_Id;
-      Ty     : Entity_Id;
-      Params : Transformation_Params) return W_Pred_Id is
+     (Expr           : W_Expr_Id;
+      Ty             : Entity_Id;
+      Params         : Transformation_Params;
+      Skip_Last_Cond : Boolean := False) return W_Pred_Id is
 
       Ty_Ext     : constant Entity_Id :=
         (if Fullview_Not_In_SPARK (Ty) then Ty else MUT (Ty));
@@ -2454,6 +2552,71 @@ package body Gnat2Why.Expr is
             end if;
          end;
          Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+      end if;
+
+      --  If Skip_Last_Cond is False, assume the default initial condition for
+      --  Ty.
+
+      if not Skip_Last_Cond
+        and then Is_Private_Type (Ty)
+        and then (Has_Default_Init_Cond (Ty)
+                  or else Has_Inherited_Default_Init_Cond (Ty))
+      then
+         declare
+            Default_Init_Subp : constant Entity_Id :=
+              Default_Init_Cond_Procedure (Ty);
+            Default_Init_Expr : constant Node_Id :=
+              Get_Expr_From_Check_Only_Proc (Default_Init_Subp);
+            Binders           : constant Item_Array :=
+              Compute_Subprogram_Parameters (Default_Init_Subp, EW_Prog);
+            --  Binder for the reference to the type in the default property.
+         begin
+            pragma Assert (Binders'Length = 1);
+
+            if Present (Default_Init_Expr) then
+
+               --  Add the binder for the reference to the type to the
+               --  Symbol_Table.
+
+               Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+
+               declare
+                  Binder : constant Item_Type :=
+                    Binders (Binders'First);
+                  A      : constant Node_Id :=
+                    (case Binder.Kind is
+                        when Regular => Binder.Main.Ada_Node,
+                        when others  => raise Program_Error);
+               begin
+                  pragma Assert (Present (A));
+
+                  if Present (A) then
+                     Ada_Ent_To_Why.Insert (Symbol_Table,
+                                            Unique_Entity (A),
+                                            Binder);
+                  end if;
+
+                  declare
+                     W_Def_Init_Expr : constant W_Expr_Id :=
+                       Transform_Expr
+                         (Expr          => Default_Init_Expr,
+                          Domain        => EW_Pred,
+                          Params        => Params);
+                  begin
+                     Assumption := New_And_Then_Expr
+                       (Left   => Assumption,
+                        Right  => New_Typed_Binding
+                          (Domain   => EW_Pred,
+                           Name     => Binder.Main.B_Name,
+                           Def      => Tmp,
+                           Context  => W_Def_Init_Expr),
+                        Domain => EW_Pred);
+                  end;
+               end;
+
+               Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+            end if;
+         end;
       end if;
 
       if Assumption = +True_Pred then
