@@ -927,6 +927,17 @@ package body SPARK_Util is
       return Etype (Get_Iterable_Type_Primitive (Typ, Name_First));
    end Get_Cursor_Type_In_Iterable_Aspect;
 
+   --------------------------------
+   -- Get_Default_Init_Cond_Proc --
+   --------------------------------
+
+   function Get_Default_Init_Cond_Proc (E : Entity_Id) return Entity_Id is
+      Base : constant Entity_Id :=
+        (if Ekind (E) in Subtype_Kind then Etype (E) else E);
+   begin
+      return Default_Init_Cond_Procedure (Base);
+   end Get_Default_Init_Cond_Proc;
+
    -----------------------------------------
    -- Get_Element_Type_In_Iterable_Aspect --
    -----------------------------------------
@@ -1375,6 +1386,22 @@ package body SPARK_Util is
 
       return N;
    end Get_Subprogram_Spec;
+
+   --------------------------------
+   -- Has_Default_Init_Condition --
+   --------------------------------
+
+   function Has_Default_Init_Condition (E : Entity_Id) return Boolean is
+      Base : constant Entity_Id :=
+        (if Ekind (E) in Subtype_Kind then Etype (E) else E);
+   begin
+      if Is_Private_Type (Base) then
+         return Has_Default_Init_Cond (Base)
+           or else Has_Inherited_Default_Init_Cond (Base);
+      else
+         return False;
+      end if;
+   end Has_Default_Init_Condition;
 
    -----------------------------
    -- In_Private_Declarations --

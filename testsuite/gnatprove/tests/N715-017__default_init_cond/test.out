@@ -14,10 +14,12 @@ default_init.adb:44:10: info: assertion proved
 default_init.adb:44:28: info: index check proved
 default_init.adb:51:07: info: assertion proved
 default_init.adb:60:10: info: assertion proved
+default_init.adb:65:07: info: default initial condition proved
+default_init.adb:66:07: info: default initial condition proved
+default_init.adb:68:07: info: default initial condition proved
+default_init.adb:69:07: warning: default initial condition might fail
 default_init.adb:71:07: info: assertion proved
 default_init.adb:71:24: info: discriminant check proved
-default_init.adb:72:22: warning: assertion might fail, requires D5.F = 0
-default_init.adb:72:24: info: discriminant check proved
 default_init.ads:3:09: info: default initial condition proved
 default_init.ads:5:09: info: default initial condition proved
 default_init.ads:7:09: info: default initial condition proved

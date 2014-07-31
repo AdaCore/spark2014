@@ -46,6 +46,26 @@ package SPARK_Util is
    --  Utility types related to entities and nodes
    ----------------------------------------------------------------------
 
+   subtype Subtype_Kind is Entity_Kind with
+     Static_Predicate => Subtype_Kind in E_Enumeration_Subtype
+       | E_Signed_Integer_Subtype
+         | E_Modular_Integer_Subtype
+           | E_Ordinary_Fixed_Point_Subtype
+             | E_Decimal_Fixed_Point_Subtype
+               |  E_Floating_Point_Subtype
+                 |  E_Access_Subtype
+                   |  E_Array_Subtype
+                     |  E_String_Subtype
+                       |  E_String_Literal_Subtype
+                         |  E_Class_Wide_Subtype
+                           |  E_Record_Subtype
+                             |  E_Record_Subtype_With_Private
+                               |  E_Private_Subtype
+                                 |  E_Limited_Private_Subtype
+                                   | E_Incomplete_Subtype
+                                     | E_Protected_Subtype
+                                       | E_Task_Subtype;
+
    use type Ada.Containers.Count_Type;
 
    function Lexicographic_Entity_Order
@@ -497,5 +517,12 @@ package SPARK_Util is
    function Subprogram_Is_Ignored_For_Proof (E : Entity_Id) return Boolean with
      Pre => Ekind (E) in E_Procedure | E_Function;
    --  Returns true on subprograms that are not translated to Why.
+
+   function Has_Default_Init_Condition (E : Entity_Id) return Boolean with
+     Pre => Is_Type (E);
+
+   function Get_Default_Init_Cond_Proc (E : Entity_Id) return Entity_Id with
+     Pre => Is_Type (E) and then Has_Default_Init_Condition (E);
+   --  Return the default initial condition procedure for a type E
 
 end SPARK_Util;

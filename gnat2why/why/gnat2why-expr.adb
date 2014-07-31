@@ -2102,13 +2102,10 @@ package body Gnat2Why.Expr is
       --        ignore__ (Def_Init_Cond (x));
       --        assert {Default_Init (x) -> Def_Init_Cond (x)}
 
-      if Is_Private_Type (Ty)
-        and then (Has_Default_Init_Cond (Ty)
-                  or else Has_Inherited_Default_Init_Cond (Ty))
-      then
+      if Has_Default_Init_Condition (Ty) then
          declare
             Default_Init_Subp : constant Entity_Id :=
-              Default_Init_Cond_Procedure (Ty);
+              Get_Default_Init_Cond_Proc (Ty);
             Default_Init_Expr : constant Node_Id :=
               Get_Expr_From_Check_Only_Proc (Default_Init_Subp);
             Binders           : constant Item_Array :=
@@ -2153,7 +2150,10 @@ package body Gnat2Why.Expr is
                           Params        => Params);
                      Condition       : constant W_Pred_Id :=
                        Compute_Default_Init
-                         (Expr           => +Binder.Main.B_Name,
+                         (Expr           => Insert_Simple_Conversion
+                            (Domain   => EW_Term,
+                             Expr     => +Binder.Main.B_Name,
+                             To       => EW_Abstract (Ty)),
                           Ty             => Ty,
                           Params         => Params,
                           Skip_Last_Cond => True);
@@ -2557,14 +2557,10 @@ package body Gnat2Why.Expr is
       --  If Skip_Last_Cond is False, assume the default initial condition for
       --  Ty.
 
-      if not Skip_Last_Cond
-        and then Is_Private_Type (Ty)
-        and then (Has_Default_Init_Cond (Ty)
-                  or else Has_Inherited_Default_Init_Cond (Ty))
-      then
+      if not Skip_Last_Cond and then Has_Default_Init_Condition (Ty) then
          declare
             Default_Init_Subp : constant Entity_Id :=
-              Default_Init_Cond_Procedure (Ty);
+              Get_Default_Init_Cond_Proc (Ty);
             Default_Init_Expr : constant Node_Id :=
               Get_Expr_From_Check_Only_Proc (Default_Init_Subp);
             Binders           : constant Item_Array :=
@@ -2608,7 +2604,10 @@ package body Gnat2Why.Expr is
                         Right  => New_Typed_Binding
                           (Domain   => EW_Pred,
                            Name     => Binder.Main.B_Name,
-                           Def      => Tmp,
+                           Def      => Insert_Simple_Conversion
+                             (Domain   => EW_Term,
+                              Expr     => Tmp,
+                              To       => Get_Typ (Binder.Main.B_Name)),
                            Context  => W_Def_Init_Expr),
                         Domain => EW_Pred);
                   end;

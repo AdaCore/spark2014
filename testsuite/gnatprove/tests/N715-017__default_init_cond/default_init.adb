@@ -66,9 +66,8 @@ package body Default_Init with SPARK_Mode is
       D2 : Discr (False);
       D3 : Mut_Discr;
       D4 : Mut_Discr (False);
-      D5 : Mut_Discr (True);
+      D5 : Mut_Discr (True); --  @DEFAULT_INITIAL_CONDITION:FAIL
    begin
       pragma Assert (D1.F = 0);
-      pragma Assert (D5.F = 0); --@ASSERT:FAIL
    end Def_Discr;
 end;
