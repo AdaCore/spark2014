@@ -2122,25 +2122,7 @@ abstraction on to external states which are given in this section.
 Private Types and Private Extensions
 ------------------------------------
 
-.. centered:: **Legality Rules**
-
-.. _tu-private_types_and_private_extensions-01:
-
-1. The partial view of a private type may be in |SPARK| even if its
-   full view is not in |SPARK|.
-
-.. _tu-private_types_and_private_extensions-02:
-
-2. The usual rule applies here, so a private type without
-   discriminants is in |SPARK|, while a private type with
-   discriminants is in |SPARK| only if its discriminants are in
-   |SPARK|.
-
-.. _tu-private_types_and_private_extensions-03:
-
-3. ``Private_extension_declarations`` are not currently permitted.
-
-.. _etu-private_types_and_private_extensions:
+No extensions or restrictions.
 
 Private Operations
 ~~~~~~~~~~~~~~~~~~
@@ -2255,16 +2237,7 @@ Default_Initial_Condition Aspects
 Deferred Constants
 ------------------
 
-.. centered:: **Legality Rules**
-
-.. _tu-deferred_constants-01:
-
-1. The view of an entity introduced by a
-   ``deferred_constant_declaration`` is in |SPARK|, even if the
-   *initialization_*\ ``expression`` in the corresponding completion
-   is not in |SPARK|.
-
-.. _etu-deferred_constants:
+No extensions or restrictions.
 
 Limited Types
 -------------
@@ -2462,16 +2435,12 @@ global variables discussed later in this section.
 
 .. _tu-nt-elaboration_issues-07:
 
-   7. Rule removed.
-
-.. 7. In the case of a dispatching call, the subprogram_body mentioned
+   7. In the case of a dispatching call, the subprogram_body mentioned
    in the above rules is that (if any) of the statically denoted callee.
 
 .. _tu-nt-elaboration_issues-08:
 
-   8. Rule removed.
-
-.. 8. The first freezing point of a tagged type shall occur within the
+   8. The first freezing point of a tagged type shall occur within the
    early call region of each of its overriding primitive operations.
 
    [This rule is needed to prevent a dispatching call before the body
@@ -2498,7 +2467,7 @@ global variables discussed later in this section.
    immediately following the specification. This means that the early call
    region in which a call is permitted can span the specification/body boundary.
 
-.. This is important for tagged type declarations.
+   This is important for tagged type declarations.
 
 .. _tu-nt-elaboration_issues-10:
 

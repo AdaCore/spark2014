@@ -12,12 +12,7 @@ Names
 
 .. _tu-names-01:
 
-1. A name that denotes an entity is in |SPARK| if and only if the
-   entity is in |SPARK|.
-
-.. _tu-names-02:
-
-2. Neither ``explicit_dereference`` nor ``implicit_dereference`` are
+1. Neither ``explicit_dereference`` nor ``implicit_dereference`` are
    in |SPARK|.
 
 .. _etu-names:
@@ -132,8 +127,10 @@ free from side-effects only retrieves or computes a value.
 
 .. _tu-expressions-01:
 
-1. An expression is in |SPARK| only if its type is in |SPARK| and the
-   expression is side-effect free.
+1. An expression shall be side-effect free.
+   [Strictly speaking, this "rule" is a consequence of other rules,
+   most notably the rule that a function cannot have outputs other
+   than its result.]
 
 .. _tu-expressions-02:
 

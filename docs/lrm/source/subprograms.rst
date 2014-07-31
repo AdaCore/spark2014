@@ -646,9 +646,15 @@ where
    implied by the subtype of the parameter. More specifically, it includes formal
    parameters of mode **out** and ``global_items`` with a ``mode_selector`` of
    Output which are of an unconstrained array subtype, an unconstrained
-   discriminated subtype, a tagged type, or a type having a subcomponent of an
-   unconstrained discriminated subtype. [Tagged types are mentioned in this rule
-   in anticipation of a later version of |SPARK| will support them.]
+   discriminated subtype, a tagged type (with one exception), or a type having
+   a subcomponent of an unconstrained discriminated subtype. The exception
+   mentioned in the previous sentence is in the case where the formal
+   parameter is of a specific tagged type and the applicable Extensions_Visible
+   aspect is False. In that case, the tag of the parameter cannot be read
+   and so the fact that the parameter is tagged does not cause it to 
+   included in the subprogram's *input_set*, although it may be included
+   for some other reason (e.g., if the parameter is of an unconstrained
+   discriminated subtype).
 
 .. _tu-fe-depends_aspects-06:
 
@@ -850,6 +856,121 @@ as it is used purely for static analysis purposes and is not executed.
    -- parameter Y has no discernible effect on the result of the function.
 
 
+.. _extensions-visible-aspects:
+
+Extensions_Visible Aspects
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The Extensions_Visible aspect provides a mechanism for ensuring that
+"hidden" components of a formal parameter of a specific tagged type
+are unreferenced. 
+For example, if a formal parameter of a specific tagged type T is converted
+to a class-wide type and then used as a controlling operand in a dispatching
+call, then the (dynamic) callee might reference components of the parameter
+which are declared in some extension of T. Such a use of the formal parameter
+could be forbidden via an Extensions_Visible aspect specification as
+described below. The aspect also plays a corresponding role in the analysis
+of callers of the subprogram.
+
+.. centered:: **Static Semantics**
+
+Extensions_Visible is a Boolean-valued aspect which may be specified for a
+subprogram. If directly specified, the aspect_definition shall be a static
+[Boolean] expression. The aspect is inherited by an inherited primitive
+subprogram. If the aspect is neither inherited nor directly specified
+for a subprogram, then the aspect is False.
+
+.. centered:: **Legality Rules**
+
+If the Extensions_Visible aspect is False for a subprogram, then
+certain restrictions are imposed on the use of any parameter of the
+subprogram which is of a specific tagged type (or of a private type
+whose full view is a specific tagged type).
+
+Such a parameter shall not be converted (implicitly or explicitly) to
+a class-wide type. Such a parameter shall not be passed as an actual
+parameter in a call to a subprogram whose Extensions_Visible aspect is
+True. These restrictions also apply to any parenthesized expression,
+qualified expression, or type conversion whose operand is subject to
+these restrictions, and to any conditional expression having at least
+one dependent_expression which is subject to these restrictions.
+
+[A subcomponent of a parameter is not itself a parameter and is therefore
+not subject to these restrictions. A parameter whose type is class-wide
+is not subject to these restrictions.]
+
+[The restriction disallowing implicit conversion to a class-wide type
+applies, in particular, in the case described in Ada RM 6.1.1:
+
+  Within the expression for a Pre'Class or Post'Class aspect for a primitive sub
+  program of a tagged type T, a name that denotes a formal parameter of type T
+  is interpreted as having type T'Class.
+
+.]
+
+A subprogram whose Extensions_Visible aspect
+is True shall not override an inherited primitive operation of a
+tagged type whose Extensions_Visible aspect is False.
+[The reverse is allowed.]
+
+The Extensions_Visible aspect shall not be specified for a subprogram
+which has no parameters of either a specific tagged type or a private
+type unless the subprogram is declared in an instance of a generic
+unit and the corresponding subprogram in the generic unit satisifies
+this rule. [Such an aspect specification, if allowed, would be ineffective.]
+
+[These rules ensure that the value of the underlying tag (at run time) of
+the actual parameter of a call to an "Extensions_Visible => False"
+subprogram will have no effect on the behavior of that call. In particular,
+if the actual parameter has any additional components which are not components
+of the type of the formal parameter, then these components are unreferenced by
+the execution of the call.]
+
+.. centered:: **Verification Rules**
+
+|SPARK| requires that an actual parameter corresponding
+to an in mode or in out mode formal parameter in a call must be fully
+initialized before the call; similarly, the callee is responsible
+for fully initializing any out-mode parameters before returning.
+
+In the case of a formal parameter of a specific tagged type T (or of a
+private type whose full view is a specific tagged type), the set of
+components which must be initialized in order to meet these requirements
+depends on the Extensions_Visible aspect of the callee.
+
+If the aspect is False, then that set of components is the
+[statically known] set of non-discriminant components of T.
+
+If the aspect is True, then this set is the set of non-discriminant
+components of the specific type associated with the tag of the
+corresponding actual parameter. [In general, this is not statically known.
+This set will always include the non-discriminant components of T, but
+it may also include additional components.]
+
+[To put it another way, if the applicable Extensions_Visible aspect
+is True, then the initialization requirements (for both the caller and
+the callee) for a parameter of a specific tagged type T are the same as
+if the formal parameter's type were T'Class. If the aspect is False,
+then components declared in proper descendants of T need not be initialized.
+In the case of an out mode parameter, such initialization by the callee
+is not only not required, it is effectively forbidden because
+such an out-mode parameter could not be fully initialized
+without some form of dispatching (e.g., a class-wide assignment or a
+dispatching call in which an out-mode parameter is a controlling operand).
+Such a dispatching call will always fully initialize its controlling
+out-mode parameters, regardless of the Extensions_Visible aspect
+of the callee. An assignment statement whose target is of a class-wide
+type T'Class is treated, for purposes of formal verification, like a call to a
+procedure with two parameters of type T'Class, one of mode out and
+one of mode in.]
+
+[In the case of an actual parameter of a call to a subprogram whose
+Extensions_Visible aspect is False where the corresponding formal parameter
+is of a specific tagged type T, these rules imply that formal verificaiton can
+safely assume that any components of the actual parameter which are not
+components of T will be neither read nor written by the call.]
+
+
 Formal Parameter Modes
 ----------------------
 
@@ -929,14 +1050,8 @@ No extensions or restrictions.
 Subprogram Calls
 ----------------
 
-.. centered:: **Legality Rules**
+No extensions or restrictions.
 
-.. _tu-subprogram_calls-01:
-
-1. A call is in |SPARK| only if it resolves statically to a subprogram whose
-   declaration view is in |SPARK|.
-
-.. _etu-subprogram_calls:
 
 Parameter Associations
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -1209,7 +1324,7 @@ regarded implicitly as ghost entities).
 11. Ghost tagged types are disallowed. [This is because just the
     existence of a ghost tagged type (even if it is never referenced)
     changes the behavior of Ada.Tags operations. Note overriding is
-    not a problem because Convention participates in conformance
+    not a problem because the Convention aspect participates in conformance
     checks (so ghost can't override non-ghost and vice versa).]
 
 .. _tu-fe-ghost_functions-12:

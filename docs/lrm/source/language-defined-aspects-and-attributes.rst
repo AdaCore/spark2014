@@ -34,7 +34,7 @@ Dispatching_Domain 	      No		     No tasking
 Elaborate_Body     	      Yes
 Export             	      Yes
 External_Name		      Yes
-External_Tag		      No		     No tagged types
+External_Tag		      No		     No tags
 Implicit_Dereference	      No		     No access types
 Import             	      Yes
 Independent        	      Yes
@@ -50,9 +50,9 @@ No_Return          	      Yes
 Output			      No		     No streams
 Pack              	      Yes
 Pre			      Yes
-Pre'Class		      No		     No tagged types
+Pre'Class		      Yes
 Post			      Yes
-Post'Class		      No		     No tagged types
+Post'Class		      Yes
 Preelaborate       	      Yes
 Priority  	  	      No		     No tasking
 Pure               	      Yes
@@ -69,8 +69,8 @@ Storage_Size (access)         No		     No access types
 Storage_Size (task)	      No		     No tasking
 Stream_Size  		      No		     No streams
 Synchronization		      No		     No tasking
-Type_Invariant		      No
-Type_Invariant'Class	      No		     No tasking
+Type_Invariant		      Yes
+Type_Invariant'Class	      Yes
 Unchecked_Union		      No
 Variable_Indexing	      No
 Volatile           	      Yes
@@ -132,7 +132,7 @@ P'Body_Version 			      Yes
 T'Callable	    		      No		     No tasking
 E'Caller	    		      No	             No tasking
 S'Ceiling	    		      Yes
-S'Class				      No		     No tagged types
+S'Class				      Yes
 X'Component_Size    		      Warn     		     Warning in pedantic mode
 S'Compose	    		      No
 A'Constrained			      Yes
@@ -143,7 +143,7 @@ S'Delta				      Yes
 S'Denorm	    		      Yes
 S'Digits	    		      Yes
 S'Exponent	    		      No
-S'External_Tag			      No	             No tagged types
+S'External_Tag			      No	             No tags
 A'First				      Yes
 S'First	 			      Yes
 A'First(N)	    		      Yes
@@ -156,7 +156,7 @@ X'Has_Same_Storage  		      No
 E'Identity	    		      No
 T'Identity	    		      No		     No tasking
 S'Image				      Yes
-S'Class'Input			      No		     No tagged types and no streams
+S'Class'Input			      No		     No streams
 S'Input				      No		     No streams
 A'Last				      Yes
 S'Last				      Yes
@@ -187,7 +187,7 @@ S'Model_Mantissa		      Yes
 S'Model_Small			      Yes
 S'Modulus	   		      Yes
 X'Old				      Yes
-S'Class'Output			      No		     No tagged types and no streams
+S'Class'Output			      No		     No streams
 S'Output	   		      No		     No streams
 X'Overlaps_Storage 		      No
 D'Partition_Id			      Yes
@@ -198,7 +198,7 @@ P'Priority	   		      No		     No tasking
 A'Range				      Yes
 S'Range				      Yes
 A'Range(N)	   		      Yes
-S'Class'Read			      No		     No tagged types
+S'Class'Read			      No		     No streams
 S'Read				      No		     No streams
 S'Remainder	   		      Yes
 F'Result	   		      Yes
@@ -216,8 +216,8 @@ S'Storage_Size			      No		     No access types
 T'Storage_Size			      No		     No tasking
 S'Stream_Size			      No		     No streams
 S'Succ				      Yes
-S'Tag				      No		     No tagged types
-X'Tag				      No		     No tagged types
+S'Tag				      No		     No tags
+X'Tag				      No		     No tags
 T'Terminated			      No		     No tasking
 S'Truncation			      Yes
 S'Unbiased_Rounding 		      Yes
@@ -234,7 +234,7 @@ S'Wide_Wide_Value 		      Yes
 S'Wide_Wide_Width		      Yes
 S'Wide_Width			      Yes
 S'Width				      Yes
-S'Class'Write			      No		     No tagged types
+S'Class'Write			      No		     No streams
 S'Write				      No		     No streams
 ===================================== ====================== ====================================================
 

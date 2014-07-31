@@ -1,8 +1,7 @@
 Declarations and Types
 ======================
 
-|SPARK| does not add any declarations or types to Ada 2012, but it restricts
-their usage.
+No extensions or restrictions.
 
 .. _declarations:
 
@@ -11,7 +10,14 @@ Declarations
 
 The view of an entity is in |SPARK| if and only if the corresponding
 declaration is in |SPARK|. When clear from the context, we say *entity* instead
-of using the more formal term *view of an entity*.
+of using the more formal term *view of an entity*. If the initial declaration
+of an entity (e.g., a subprogram, a private type, or a deferred
+constant) requires a completion, it is possible that the initial declaration
+might be in |SPARK| (and therefore can be referenced in |SPARK| code)
+even if the completion is not in |SPARK|. [This distinction between views
+is much less important in "pure" |SPARK| than in the case where SPARK_Mode is
+used (as described in the SPARK Toolset User's Guide) to allow mixing
+of |SPARK| and non-|SPARK| code.]
 
 A type is said to *define full default initialization* if it is
 
@@ -36,34 +42,8 @@ whether the type defines full default initialization.]
 Types and Subtypes
 ------------------
 
-.. centered:: **Legality Rules**
+No extensions or restrictions.
 
-.. _tu-types_and_subtypes-01:
-
-1. The view of an entity introduced by a ``private_type_declaration``
-   is in |SPARK| if the types of any visible discriminants are in
-   |SPARK|, even if the entity declared by the corresponding
-   ``full_type_declaration`` is not in |SPARK|.
-
-.. _tu-sf-types_and_subtypes-02:
-
-2. For a type or subtype to be in |SPARK|, all predicate
-   specifications that apply to the (sub)type must be in |SPARK|.
-   Notwithstanding any rule to the contrary, a (sub)type is never in
-   |SPARK| if its applicable predicate is not in |SPARK|.
-
-.. _tu-fe-types_and_subtypes-03:
-
-3. Constants, including those implicitly declared through a
-   non-preelaborable subtype declaration shall not be denoted in
-   Global, Depends, Initializes or Refined_State aspects. [This means
-   that non-preelaborable subtypes are not taken into account in
-   determining and checking dependency relations.]
-
-.. _etu-types_and_subtypes:
-
-.. todo:: Lift restriction that non-preelaborable subtypes are not subject
-          to flow analysis. To be completed in a post-Release 1 version of this document.
 
 Type Declarations
 ~~~~~~~~~~~~~~~~~
@@ -75,18 +55,14 @@ Type Declarations
 1. The following type declarations are not permitted in |SPARK|
 
    * ``task_type_declaration``,
-   * ``protected_type_declaration``,
-   * ``private_extension_declaration``,
-   * ``interface_type_definition``, and
+   * ``protected_type_declaration``, and
    * ``access_type_definition``.
 
 .. _etu-type_declarations:
 
 [``Task_type_declarations`` and ``protected_type_declarations`` will
 be included when |SPARK| is extended to cover some of the Ada tasking
-features. ``Private_extension_declarations`` and
-``interface_type_definitions`` may be included when |SPARK| is
-extended to support tagged types.]
+features.]
 
 .. _subtype_declarations:
 
@@ -165,17 +141,11 @@ expression depends on:
 
 .. _tu-object_declarations-01:
 
-1. The entity declared by an ``object_declaration`` is in |SPARK| if its type
-    is in |SPARK|, and its *initialization_*\ ``expression``, if any, is in
-    |SPARK|.
-
-.. _tu-object_declarations-02:
-
-2. Constants without variable inputs shall not be denoted in Global,
-   Depends, Initializes or Refined_State aspects. [This means that
-   non-preelaborable constants are not taken into account in determining
-   and checking dependency relations.]
-
+1. Constants without variable inputs shall not be denoted in Global,
+   Depends, Initializes or Refined_State aspect specifications.
+   [Two elaborations of such a constant declaration will always
+   yield equal initialization expression values.]
+  
 .. centered:: **Examples**
 
 .. code-block:: ada
@@ -200,34 +170,17 @@ No extensions or restrictions.
 Derived Types and Classes
 -------------------------
 
-.. centered:: **Legality Rules**
-
-.. _tu-sf-derived_types_and_classes-01:
-
-1. An entity declared by a ``derived_type`` declaration is in |SPARK|
-   if its parent type is in |SPARK|, and if the declaration contains
-   an ``interface_list`` or a ``record_part`` these must also contain
-   entities that are in |SPARK|.
-
-.. _etu-derived_types_and_classes:
+No extensions or restrictions.
 
 Scalar Types
 ------------
 
 No extensions or restrictions.
 
-
 Array Types
 -----------
 
-.. centered:: **Legality Rules**
-
-.. _tu-sf-array_types-01:
-
-1. An entity declared by an ``array_type_definition`` is in |SPARK| if its
-   components are in |SPARK| and default initialization is in |SPARK|.
-
-.. _etu-array_types:
+No extensions or restrictions.
 
 .. _discriminants:
 
@@ -296,58 +249,52 @@ of a ``private_type`` declaration. This is inconsistent with SPARK's usual
 Tagged Types and Type Extensions
 --------------------------------
 
-|SPARK| tagged types and type extensions are not supported
-nor is the use of the 'Class attribute.
-
 .. centered:: **Legality Rules**
 
-.. _tu-tagged_types_and_type_extensions-01:
+.. _tu-tagged_types-01:
 
-1. A record or private type declaration shall not contain the reserved
-   word **tagged**.
+1.  No construct shall introduce a semantic dependence on the Ada
+    language defined package Ada.Tags.
+    [See Ada RM 10.1.1 for the definition of semantic dependence.
+    This rule implies, among other things, that any use of the Tag attribute
+    is not in |SPARK|.]
 
-.. _tu-tagged_types_and_type_extensions-02:
+.. _tu-tagged_types-02:
 
-2. The attribute 'Class shall not be denoted.
+2.  The identifier External_Tag shall not be used as an
+    '`attribute_designator``. 
 
-.. _etu-tagged_types_and_type_extensions:
+.. _etu-tagged_types:
 
-.. todo:: Add tagged types, type extensions and 'Class attribute to
-     SPARK 2014. To be completed in a post-Release 1 version of this
-     document.
 
 Type Extensions
 ~~~~~~~~~~~~~~~
 
-Tagged types are currently not in |SPARK|.
+.. centered:: **Legality Rules**
 
-.. todo:: Tagged types are not in release 1.  The following rule
-     applies to type extensions: A type extension declared within a
-     subprogram body, block statement, or generic body which does not
-     also enclose the declaration of each of its ancestor types is not
-     in |SPARK|. To be completed in a post-Release 1 of theis document.
+.. _tu-type_extensions-01:
+
+1.  A type extension shall not be declared within a
+    subprogram body, block statement, or generic body which does not
+    also enclose the declaration of each of its ancestor types.
+
+.. _etu-type_extensions:
 
 
 Dispatching Operations of Tagged Types
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Tagged types are not currently in |SPARK|
-
+No extensions or restrictions.
 
 Abstract Types and Subprograms
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Abstract types and subprograms are not currently in |SPARK|
-
+No extensions or restrictions.
 
 Interface Types
 ~~~~~~~~~~~~~~~
 
-Interface types are not in |SPARK|.
-
-.. todo:: Include interface types in SPARK 2014. To be completed in a post-Release 1
-          version of this document.
-
+No extensions or restrictions.
 
 Access Types
 ------------
