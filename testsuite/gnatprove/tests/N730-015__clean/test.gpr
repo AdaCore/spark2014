@@ -1,0 +1,4 @@
+with "gnat_util.gpr";
+
+project Test is
+end Test;

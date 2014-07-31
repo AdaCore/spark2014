@@ -234,16 +234,27 @@ ASCII.LF;
          Project := Current (Iter);
          exit when Project = No_Project;
 
-         GNAT.Directory_Operations.Remove_Dir
-           (Project.Object_Dir.Display_Full_Name, True);
+         --  Externally built projects should never be cleaned up
+
+         if Project.Attribute_Value (Build ("", "Externally_Built")) /= "True"
+         then
+            declare
+               Obj_Dir  : constant Virtual_File := Project.Object_Dir;
+               Name_Dir : constant String := +Base_Dir_Name (Obj_Dir);
+            begin
+               pragma Assert (Name_Dir = Name_GNATprove);
+               GNAT.Directory_Operations.Remove_Dir
+                 (Obj_Dir.Display_Full_Name, True);
+            end;
+         end if;
 
          Next (Iter);
       end loop;
    end Clean_Up;
 
-     ----------------------
-     -- Handle_Scenarios --
-     ----------------------
+   ----------------------
+   -- Handle_Scenarios --
+   ----------------------
 
    procedure Handle_Scenarios
      (Switch    : String;
