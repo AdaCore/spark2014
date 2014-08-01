@@ -26,7 +26,6 @@
 with Ada.Strings;               use Ada.Strings;
 with Ada.Strings.Equal_Case_Insensitive;
 
-with Elists;                    use Elists;
 with Fname;                     use Fname;
 with Lib;                       use Lib;
 with Nlists;                    use Nlists;
@@ -56,9 +55,6 @@ package body SPARK_Util is
    Classwide_To_Tagged_Entities : Node_Maps.Map;
    --  Map from classwide types to the corresponding specific tagged type
 
-   Primitive_To_Tagged_Entities : Node_Maps.Map;
-   --  Map from primitive operations to the corresponding specific tagged type
-
    -----------------------------
    -- Add_Classwide_To_Tagged --
    -----------------------------
@@ -67,33 +63,6 @@ package body SPARK_Util is
    begin
       Classwide_To_Tagged_Entities.Insert (Classwide, Ty);
    end Add_Classwide_To_Tagged;
-
-   ------------------------------
-   -- Add_Primitive_Operations --
-   ------------------------------
-
-   procedure Add_Primitive_Operations (Ty : Entity_Id) is
-      Op : Elmt_Id := First_Elmt (Direct_Primitive_Operations (Ty));
-   begin
-      while Present (Op) loop
-         Primitive_To_Tagged_Entities.Insert (Node (Op), Ty);
-         Next_Elmt (Op);
-      end loop;
-   end Add_Primitive_Operations;
-
-   -------------------------
-   -- Tagged_Of_Primitive --
-   -------------------------
-
-   function Tagged_Of_Primitive (Op : Entity_Id) return Entity_Id is
-      (Primitive_To_Tagged_Entities.Element (Op));
-
-   ----------------------------
-   -- Is_Primitive_Of_Tagged --
-   ----------------------------
-
-   function Is_Primitive_Of_Tagged (Op : Entity_Id) return Boolean is
-      (Primitive_To_Tagged_Entities.Contains (Op));
 
    --------------------------
    -- Corresponding_Tagged --

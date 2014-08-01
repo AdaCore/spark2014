@@ -202,7 +202,7 @@ package body Gnat2Why.Driver is
 
         and then not Subprogram_Is_Ignored_For_Proof (E)
       then
-         if Is_Primitive_Of_Tagged (E) then
+         if Is_Dispatching_Operation (E) then
             Ada_Ent_To_Why.Push_Scope (Symbol_Table);
             Update_Symbol_Table_For_Inherited_Contracts (E);
          end if;
@@ -214,7 +214,7 @@ package body Gnat2Why.Driver is
 
          --  Generate Why3 code to check LSP for primitive of tagged types
 
-         if Is_Primitive_Of_Tagged (E) then
+         if Is_Dispatching_Operation (E) then
             Generate_VCs_For_LSP (Why_Sections (WF_Main), E);
             Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
          end if;

@@ -36,6 +36,7 @@ with Namet;                  use Namet;
 with Nlists;                 use Nlists;
 with Opt;                    use Opt;
 with Sem_Ch12;               use Sem_Ch12;
+with Sem_Disp;               use Sem_Disp;
 with Sem_Prag;               use Sem_Prag;
 with Sem_Util;               use Sem_Util;
 with Exp_Util;               use Exp_Util;
@@ -1079,7 +1080,6 @@ package body SPARK_Definition is
                then
                   Mark_Entity (Class_Wide_Type (E));
                   Add_Classwide_To_Tagged (Class_Wide_Type (E), E);
-                  Add_Primitive_Operations (E);
                end if;
 
                Mark_Entity (E);
@@ -2134,7 +2134,7 @@ package body SPARK_Definition is
          Prag : Node_Id;
          Expr : Node_Id;
 
-         --  Start of Mark_Subprogram_Entity
+      --  Start of Mark_Subprogram_Entity
 
       begin
 
@@ -2167,6 +2167,54 @@ package body SPARK_Definition is
 
                   Next (Contract_Case);
                end loop;
+            end;
+         end if;
+
+         --  Enforce the current limitation that a subprogram is only inherited
+         --  from a single source, so that there at most one inherited
+         --  Pre'Class or Post'Class to consider for LSP.
+
+         if Is_Dispatching_Operation (E) then
+            declare
+               Inherit_Subp_No_Intf : constant Subprogram_List :=
+                 Inherited_Subprograms (E, No_Interfaces => True);
+               Inherit_Subp_Intf : constant Subprogram_List :=
+                 Inherited_Subprograms (E, Interfaces_Only => True);
+            begin
+               --  Ok to inherit a subprogram only from non-interfaces
+
+               if Inherit_Subp_Intf'Length = 0 then
+                  null;
+
+               --  Ok to inherit a subprogram from a single interface
+
+               elsif Inherit_Subp_No_Intf'Length = 0
+                 and then Inherit_Subp_Intf'Length = 1
+               then
+                  null;
+
+               --  Do not support yet a subprogram inherited from root type and
+               --  from an interface.
+
+               elsif Inherit_Subp_No_Intf'Length /= 0 then
+                  Violation_Detected := True;
+                  if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
+                     Error_Msg_N
+                       ("subprogram inherited from root and interface"
+                        & " is not yet supported", E);
+                  end if;
+
+               --  Do not support yet a subprogram inherited from multiple
+               --  interfaces.
+
+               else
+                  Violation_Detected := True;
+                  if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
+                     Error_Msg_N
+                       ("subprogram inherited from multiple interfaces"
+                        & " is not yet supported", E);
+                  end if;
+               end if;
             end;
          end if;
       end Mark_Subprogram_Entity;

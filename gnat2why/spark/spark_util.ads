@@ -285,16 +285,6 @@ package SPARK_Util is
    --  Store the correspondance between a classwide type and the specific
    --  corresponding type.
 
-   procedure Add_Primitive_Operations (Ty : Entity_Id);
-   --  Given a tagged type Ty, stores the correspondance between the primitive
-   --  operations of Ty and Ty.
-
-   function Tagged_Of_Primitive (Op : Entity_Id) return Entity_Id;
-   --  Returns the tagged type corresponding to a primitive operation
-
-   function Is_Primitive_Of_Tagged (Op : Entity_Id) return Boolean;
-   --  Returns whether an operation is a primitive operation of a tagged type
-
    function Corresponding_Tagged (Classwide : Entity_Id) return Entity_Id;
    --  Returns the specific tagged type corresponding to a classwide type
 
