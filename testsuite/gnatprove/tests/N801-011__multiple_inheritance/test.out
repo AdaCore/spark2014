@@ -1,0 +1,5 @@
+objects.ads:39:14: subprogram inherited from multiple interfaces is not yet supported
+   compilation of objects.adb failed
+
+
+gnatprove: error during flow analysis and proof
