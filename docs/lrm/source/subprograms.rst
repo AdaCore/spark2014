@@ -651,7 +651,7 @@ where
    mentioned in the previous sentence is in the case where the formal
    parameter is of a specific tagged type and the applicable Extensions_Visible
    aspect is False. In that case, the tag of the parameter cannot be read
-   and so the fact that the parameter is tagged does not cause it to 
+   and so the fact that the parameter is tagged does not cause it to
    included in the subprogram's *input_set*, although it may be included
    for some other reason (e.g., if the parameter is of an unconstrained
    discriminated subtype).
@@ -863,7 +863,7 @@ Extensions_Visible Aspects
 
 The Extensions_Visible aspect provides a mechanism for ensuring that
 "hidden" components of a formal parameter of a specific tagged type
-are unreferenced. 
+are unreferenced.
 For example, if a formal parameter of a specific tagged type T is converted
 to a class-wide type and then used as a controlling operand in a dispatching
 call, then the (dynamic) callee might reference components of the parameter
@@ -902,9 +902,9 @@ is not subject to these restrictions.]
 [The restriction disallowing implicit conversion to a class-wide type
 applies, in particular, in the case described in Ada RM 6.1.1:
 
-  Within the expression for a Pre'Class or Post'Class aspect for a primitive sub
-  program of a tagged type T, a name that denotes a formal parameter of type T
-  is interpreted as having type T'Class.
+  Within the expression for a Pre'Class or Post'Class aspect for a primitive
+  subprogram of a tagged type T, a name that denotes a formal parameter of type
+  T is interpreted as having type T'Class.
 
 .]
 
@@ -916,7 +916,7 @@ tagged type whose Extensions_Visible aspect is False.
 The Extensions_Visible aspect shall not be specified for a subprogram
 which has no parameters of either a specific tagged type or a private
 type unless the subprogram is declared in an instance of a generic
-unit and the corresponding subprogram in the generic unit satisifies
+unit and the corresponding subprogram in the generic unit satisfies
 this rule. [Such an aspect specification, if allowed, would be ineffective.]
 
 [These rules ensure that the value of the underlying tag (at run time) of
