@@ -630,11 +630,13 @@ package body Why.Inter is
 
    function Dispatch_Entity (E : Entity_Id) return Why_Section_Enum is
    begin
-      --  Theories for nodes that are not entities should never depend on
-      --  variables.
+      --  Theories for nodes that are not entities may depend on constants
+      --  declared in modules for variables (bounds of arrays for example).
+      --  Since they can only be used in expressions, we only need them for
+      --  subprogram's contracts and VCs which are all stored in WF_Main.
 
       if Nkind (E) in N_Has_Theory then
-         return WF_Pure;
+         return WF_Context;
       end if;
 
       case Ekind (E) is
