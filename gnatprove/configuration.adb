@@ -35,8 +35,7 @@ with GNAT.Directory_Operations;
 with GNAT.Strings;              use GNAT.Strings;
 with GNAT.OS_Lib;
 
-with Ada.Strings.Fixed;
-with Ada.Strings.Maps.Constants;
+with Ada.Characters.Handling;
 
 package body Configuration is
 
@@ -226,6 +225,22 @@ ASCII.LF;
    --------------
 
    procedure Clean_Up (Tree : Project_Tree) is
+
+      function Is_Externally_Built (Project : Project_Type) return Boolean;
+      --  Returns True if the project is externally built
+
+      -------------------------
+      -- Is_Externally_Built --
+      -------------------------
+
+      function Is_Externally_Built (Project : Project_Type) return Boolean is
+         Val : constant String :=
+           Ada.Characters.Handling.To_Lower
+             (Project.Attribute_Value (Build ("", "Externally_Built")));
+      begin
+         return Val = "true";
+      end Is_Externally_Built;
+
       Proj_Type : constant Project_Type := Root_Project (Tree);
       Iter      : Project_Iterator := Proj_Type.Start;
       Project   : Project_Type;
@@ -236,8 +251,7 @@ ASCII.LF;
 
          --  Externally built projects should never be cleaned up
 
-         if Project.Attribute_Value (Build ("", "Externally_Built")) /= "True"
-         then
+         if not Is_Externally_Built (Project) then
             declare
                Obj_Dir  : constant Virtual_File := Project.Object_Dir;
                Name_Dir : constant String := +Base_Dir_Name (Obj_Dir);
@@ -330,16 +344,8 @@ ASCII.LF;
    ------------------------
 
    procedure Prepare_Prover_Lib (Success : out Boolean) is
-
-      function To_Lower (S : String) return String;
-
-      function To_Lower (S : String) return String is
-      begin
-         return Ada.Strings.Fixed.Translate
-           (S, Ada.Strings.Maps.Constants.Lower_Case_Map);
-      end To_Lower;
-
-      Prover_Name : constant String := To_Lower (Alter_Prover.all);
+      Prover_Name : constant String :=
+        Ada.Characters.Handling.To_Lower (Alter_Prover.all);
    begin
       Success := True;
       if Alter_Prover = null or else Alter_Prover.all = "" then
