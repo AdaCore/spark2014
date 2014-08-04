@@ -387,8 +387,7 @@ follow the grammar of ``global_specification``
 
 7. A ``global_item`` shall not denote a constant object other than a formal
    parameter [of an enclosing subprogram] of mode **in** or a *constant
-   with variable input*. The ``mode_selector`` of such a ``global_item``
-   must be ``Input`` or ``Proof_In``.
+   with variable input*.
 
 .. _tu-fe-global_aspects-08:
 
@@ -501,6 +500,11 @@ is used purely for static analysis purposes and is not executed.
     by a subprogram but is neither an input nor an output but is only
     referenced directly, or indirectly in assertion expressions has a
     ``mode_selector`` of Proof_In.
+
+.. _tu-fa-global_aspects-18:
+
+18. The ``mode_selector`` of a ``global_item`` denoting a *constant with
+    variable input* must be ``Input`` or ``Proof_In``.
 
 .. _etu-global_aspects-vr:
 
