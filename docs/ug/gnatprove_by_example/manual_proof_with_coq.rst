@@ -1,5 +1,5 @@
-Manual Proof Examples
----------------------
+Manual Proof Using a Proof Assistant Examples
+---------------------------------------------
 
 This sections presents simple examples where |GNATprove| does not
 prove automatically some checks, which can then be proved with an interactive

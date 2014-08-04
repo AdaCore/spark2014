@@ -1,0 +1,2 @@
+perm-lemma_subprograms.ads:3:14: warning: subprogram "Occ_Eq" has no effect
+perm-lemma_subprograms.ads:14:14: warning: subprogram "Occ_Set" has no effect

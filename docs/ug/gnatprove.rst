@@ -1127,9 +1127,13 @@ This section is structured into the following subsections:
 
 .. include:: gnatprove_by_example/loop.rst
 
-.. _manual_proof_examples:
+.. _manual_proof_with_coq_examples:
 
-.. include:: gnatprove_by_example/manual_proof.rst
+.. include:: gnatprove_by_example/manual_proof_with_coq.rst
+
+.. _manual_proof_with_ghost_examples:
+
+.. include:: gnatprove_by_example/manual_proof_with_ghost.rst
 
 .. .. _advanced_examples:
 

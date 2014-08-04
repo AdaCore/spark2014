@@ -1,0 +1,71 @@
+sort.adb:15:16: warning: postcondition might fail, requires Values = Set (Set (Values'Old, X, Values'Old (Y)), Y, Values'Old (X)
+sort.adb:16:10: info: precondition proved
+sort.adb:16:15: info: precondition proved
+sort.adb:16:32: info: range check proved
+sort.adb:16:47: info: index check proved
+sort.adb:16:52: info: range check proved
+sort.adb:16:67: info: index check proved
+sort.adb:21:53: info: length check proved
+sort.adb:25:29: info: index check proved
+sort.adb:26:15: info: index check proved
+sort.adb:26:29: info: index check proved
+sort.adb:29:07: info: assertion proved
+sort.adb:29:31: info: precondition proved
+sort.adb:29:42: info: range check proved
+sort.adb:29:51: info: index check proved
+sort.adb:30:14: info: length check proved
+sort.adb:30:17: info: length check proved
+sort.adb:32:15: info: index check proved
+sort.adb:32:21: info: range check proved
+sort.adb:35:22: warning: assertion might fail, requires Values = Set (Interm, Y, Init (X)
+sort.adb:35:31: info: precondition proved
+sort.adb:35:44: info: range check proved
+sort.adb:35:53: info: index check proved
+sort.adb:44:09: info: postcondition proved
+sort.adb:45:35: info: index check proved
+sort.adb:45:55: info: index check proved
+sort.adb:49:20: info: range check proved
+sort.adb:51:38: info: index check proved
+sort.adb:52:20: info: range check proved
+sort.adb:54:10: info: loop invariant preservation proved
+sort.adb:54:10: info: loop invariant initialization proved
+sort.adb:57:28: info: index check proved
+sort.adb:57:44: info: index check proved
+sort.adb:71:19: info: precondition proved
+sort.adb:71:24: info: precondition proved
+sort.adb:71:48: info: index check proved
+sort.adb:71:64: info: index check proved
+sort.adb:72:17: info: postcondition proved
+sort.adb:75:13: info: precondition proved
+sort.adb:75:41: info: index check proved
+sort.adb:76:13: info: precondition proved
+sort.adb:76:22: info: precondition proved
+sort.adb:76:46: info: index check proved
+sort.adb:76:62: info: index check proved
+sort.adb:77:13: info: precondition proved
+sort.adb:77:27: info: precondition proved
+sort.adb:77:32: info: precondition proved
+sort.adb:77:56: info: index check proved
+sort.adb:77:72: info: index check proved
+sort.adb:80:18: warning: loop invariant might fail after first iteration, requires Occ (Values, F) = Occ (Next, F)
+sort.adb:80:18: warning: loop invariant might fail in first iteration, requires Occ (Values, F) = Occ (Next, F)
+sort.adb:88:50: info: overflow check proved
+sort.adb:89:22: info: precondition proved
+sort.adb:89:40: info: range check proved
+sort.adb:94:22: info: length check proved
+sort.adb:94:25: info: length check proved
+sort.adb:96:13: warning: precondition might fail
+sort.adb:97:29: info: range check proved
+sort.adb:101:13: warning: precondition might fail
+sort.adb:101:48: info: range check proved
+sort.adb:101:57: warning: range check might fail
+sort.adb:104:10: warning: loop invariant might fail after first iteration
+sort.adb:104:10: warning: loop invariant might fail in first iteration
+sort.adb:106:31: info: overflow check proved
+sort.adb:107:28: info: index check proved
+sort.adb:107:42: info: index check proved
+sort.ads:8:16: warning: postcondition might fail
+sort.ads:10:51: info: overflow check proved
+sort.ads:11:22: info: index check proved
+sort.ads:11:38: info: index check proved
+sort.ads:11:38: info: overflow check proved
