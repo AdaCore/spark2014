@@ -1,0 +1,81 @@
+full.adb:7:14: info: overflow check proved
+full.adb:12:07: info: precondition proved
+full.ads:9:20: info: postcondition proved
+full.ads:9:30: info: overflow check proved
+full.ads:14:22: info: postcondition proved
+my_pack.adb:13:07: info: precondition proved
+my_pack.ads:14:22: info: postcondition proved
+  Full at full.ads:1 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
+
+  Full.Bump at full.ads:7 flow analyzed (0 errors and 0 warnings) and proved (3 checks)
+
+  Full.Use_Bump at full.ads:11 flow analyzed (0 errors and 0 warnings) and proved (2 checks)
+
+  My_Pack at my_pack.ads:1 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
+
+  My_Pack.Bump at my_pack.ads:7 skipped
+
+  My_Pack.Use_Bump at my_pack.ads:11 flow analyzed (0 errors and 0 warnings) and proved (2 checks)
+
+  aorte(My_Pack.Bump)
+
+  aorte(My_Pack.Bump)
+
+  aorte(My_Pack.Bump)
+
+  aorte(My_Pack.Bump)
+
+  effects(Full.Bump)
+
+  effects(Full.Bump)
+
+  effects(Full.Bump)
+
+  effects(Full.Bump)
+
+  effects(My_Pack.Bump)
+
+  effects(My_Pack.Bump)
+
+  effects(My_Pack.Bump)
+
+  effects(My_Pack.Bump)
+
+  post(My_Pack.Bump)
+
+  post(My_Pack.Bump)
+
+  post(My_Pack.Bump)
+
+  post(My_Pack.Bump)
+
+Analyzed 2 units
+
+aorte(Full.Bump) does not depend on anything
+
+aorte(Full.Bump) does not depend on anything
+
+aorte(Full.Use_Bump) depends on
+
+aorte(Full.Use_Bump) depends on
+
+aorte(My_Pack.Use_Bump) depends on
+
+aorte(My_Pack.Use_Bump) depends on
+
+in unit full, 3 subprograms and packages out of 3 analyzed
+
+in unit my_pack, 2 subprograms and packages out of 3 analyzed
+
+post(Full.Bump) does not depend on anything
+
+post(Full.Bump) does not depend on anything
+
+post(Full.Use_Bump) depends on
+
+post(Full.Use_Bump) depends on
+
+post(My_Pack.Use_Bump) depends on
+
+post(My_Pack.Use_Bump) depends on
+

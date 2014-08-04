@@ -39,6 +39,7 @@ with Debug;                    use Debug;
 with Einfo;                    use Einfo;
 with Errout;                   use Errout;
 with Flow;                     use Flow;
+with Flow.Trivia;              use Flow.Trivia;
 with Flow_Error_Messages;      use Flow_Error_Messages;
 with Lib;                      use Lib;
 with Namet;                    use Namet;
@@ -73,6 +74,7 @@ with Gnat2Why.Error_Messages;  use Gnat2Why.Error_Messages;
 with Gnat2Why.External_Axioms; use Gnat2Why.External_Axioms;
 with Gnat2Why.Nodes;           use Gnat2Why.Nodes;
 with Gnat2Why_Args;
+with Gnat2Why.Assumptions;     use Gnat2Why.Assumptions;
 with Gnat2Why.Subprograms;     use Gnat2Why.Subprograms;
 with Gnat2Why.Types;           use Gnat2Why.Types;
 with Gnat2Why.Util;            use Gnat2Why.Util;
@@ -120,6 +122,9 @@ package body Gnat2Why.Driver is
    procedure Create_JSON_File (Flow_Done, Proof_Done : Boolean);
    --  at the very end, write the analysis results to disk
 
+   procedure Generate_Assumptions;
+   --  for all calls from a SPARK subprogram to another, register assumptions
+
    ----------------------
    -- Create_JSON_File --
    ----------------------
@@ -139,6 +144,7 @@ package body Gnat2Why.Driver is
       if Proof_Done then
          Set_Field (Full, "proof", Create (Get_Proof_JSON));
       end if;
+      Set_Field (Full, "assumptions", Get_Assume_JSON);
       Ada.Text_IO.Create (FD, Ada.Text_IO.Out_File, File_Name);
       Ada.Text_IO.Put (FD, GNATCOLL.JSON.Write (Full, Compact => False));
       Ada.Text_IO.Close (FD);
@@ -358,6 +364,10 @@ package body Gnat2Why.Driver is
             Flow_Analyse_CUnit;
          end if;
 
+         if Gnat2Why_Args.Flow_Analysis_Mode then
+            Generate_Assumptions;
+         end if;
+
          --  Start the translation to Why
 
          if Gnat2Why_Args.Prove_Mode and then Is_In_Analyzed_Files (N) then
@@ -373,6 +383,38 @@ package body Gnat2Why.Driver is
 
       Create_JSON_File (Flow_Done, Proof_Done);
    end GNAT_To_Why;
+
+   --------------------------
+   -- Generate_Assumptions --
+   --------------------------
+
+   procedure Generate_Assumptions is
+   begin
+      for E of Entity_Set loop
+         case Ekind (E) is
+            when Subprogram_Kind =>
+               if SPARK_Util.Analysis_Requested (E)
+                 and then Entity_Body_In_SPARK (E)
+                 and then Entity_Body_Valid_SPARK (E)
+               then
+                  for C of Direct_Calls (E) loop
+                     Register_Assumptions_For_Call (E, C);
+                  end loop;
+               end if;
+
+            when E_Package =>
+
+               --  ??? we need to do the same for packages, we would have to
+               --  take into account calls during elaboration, and elaboration
+               --  of the with'ed packages
+
+               null;
+
+            when others =>
+               null;
+         end case;
+      end loop;
+   end Generate_Assumptions;
 
    ------------------------
    -- Is_Back_End_Switch --

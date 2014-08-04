@@ -28,14 +28,10 @@
 
 with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-
-with GNATCOLL.Symbols;      use GNATCOLL.Symbols;
+with Assumptions;           use Assumptions;
+with Assumption_Types;      use Assumption_Types;
 
 package Report_Database is
-
-   type Unit_Type is private;
-
-   type Subp_Type is private;
 
    type Analysis_Status is
      (No_Analysis,      --  No analysis was performed on the unit
@@ -63,13 +59,6 @@ package Report_Database is
       VC_Count      : Natural;            --  Total number of checks
       VC_Proved     : Natural;            --  Number of checks that were proved
    end record;
-
-   function Mk_Unit (Name : String) return Unit_Type;
-   --  Build a unit from its name
-
-   function Mk_Subp (Name : String; File : String; Line : Integer)
-                     return Subp_Type;
-   --  Build a a subp object from its defining components
 
    procedure Add_Flow_Result
      (Unit  : Unit_Type;
@@ -102,6 +91,9 @@ package Report_Database is
    --  For the subprogram in the given unit, register a suppressed warning with
    --  a reason
 
+   procedure Add_Assumption_List (L : Rule_Lists.List);
+   --  add the assumption list in argument to the database
+
    procedure Reset_All_Results;
    --  Resets the results, removing all information on units and subprograms
 
@@ -111,12 +103,6 @@ package Report_Database is
                               Subp : Subp_Type;
                               Stat : Stat_Rec));
    --  Iterate over all subprograms of all units
-
-   function Unit_Name (Unit : Unit_Type) return String;
-
-   function Subp_Name (Subp : Subp_Type) return String;
-   function Subp_File (Subp : Subp_Type) return String;
-   function Subp_Line (Subp : Subp_Type) return Integer;
 
    function Num_Units return Integer;
    --  Return the number of units
@@ -140,17 +126,5 @@ package Report_Database is
    --  Iterate over all subprograms of a given Unit. If Ordered is True,
    --  iterate in a fixed order defined by the lexicographic order on
    --  subprogram names.
-
-private
-
-   type Unit_Type is new Symbol;
-
-   type Subp_Type_Rec is record
-      Name : Symbol;
-      File : Symbol;
-      Line : Integer;
-   end record;
-
-   type Subp_Type is access constant Subp_Type_Rec;
 
 end Report_Database;

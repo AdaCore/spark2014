@@ -25,18 +25,18 @@
 
 with Ada.Containers;
 with Ada.Containers.Hashed_Maps;
+with Ada.Containers.Hashed_Sets;
 with Ada.Text_IO;
-
+with Atree;                use Atree;
+with Common_Containers;    use Common_Containers;
+with Einfo;                use Einfo;
+with Errout;               use Errout;
+with Flow_Error_Messages;  use Flow_Error_Messages;
 with GNATCOLL.JSON;
-
-with Atree;               use Atree;
-with Einfo;               use Einfo;
-with Errout;              use Errout;
-with Flow_Error_Messages; use Flow_Error_Messages;
-with Osint;               use Osint;
-with Sinfo;               use Sinfo;
-
-with Gnat2Why.Nodes;      use Gnat2Why.Nodes;
+with Gnat2Why.Assumptions; use Gnat2Why.Assumptions;
+with Gnat2Why.Nodes;       use Gnat2Why.Nodes;
+with Osint;                use Osint;
+with Sinfo;                use Sinfo;
 
 package body Gnat2Why.Error_Messages is
 
@@ -57,6 +57,28 @@ package body Gnat2Why.Error_Messages is
       Equivalent_Keys => "=",
       "="             => "=");
 
+   package Id_Sets is new Ada.Containers.Hashed_Sets
+     (Element_Type        => VC_Id,
+      Hash                => Hash,
+      Equivalent_Elements => "=",
+      "="                 => "=");
+
+   package Ent_Id_Set_Maps is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Entity_Id,
+      Element_Type    => Id_Sets.Set,
+      Hash            => Node_Hash,
+      Equivalent_Keys => "=",
+      "="             => Id_Sets."=");
+
+   procedure Add_Id_To_Entity (Id : VC_Id; E : Entity_Id);
+   --  enter the VC_Id into the map from entities to Id_Sets
+
+   procedure Mark_VC_As_Proved_For_Entity
+     (Id   : VC_Id;
+      Kind : VC_Kind;
+      E    : Entity_Id);
+   --  remove the VC_Id from the map from entities to Id_Sets
+
    function Proved_Message
      (Node : Node_Id;
       Kind : VC_Kind) return String;
@@ -68,6 +90,43 @@ package body Gnat2Why.Error_Messages is
    --  return the message string for an unproved VC
 
    VC_Table : Id_Maps.Map := Id_Maps.Empty_Map;
+   --  This table maps ids to their VC_Info (entity and Ada node)
+
+   VC_Set_Table : Ent_Id_Set_Maps.Map := Ent_Id_Set_Maps.Empty_Map;
+   --  This table maps entities to the set of unproved VCs
+
+   ----------------------
+   -- Add_Id_To_Entity --
+   ----------------------
+
+   procedure Add_Id_To_Entity (Id : VC_Id; E : Entity_Id)
+   is
+
+      procedure Add_To_Set (Key : Entity_Id; S : in out Id_Sets.Set);
+
+      ----------------
+      -- Add_To_Set --
+      ----------------
+
+      procedure Add_To_Set (Key : Entity_Id; S : in out Id_Sets.Set) is
+         pragma Unreferenced (Key);
+      begin
+         S.Include (Id);
+      end Add_To_Set;
+
+      use Ent_Id_Set_Maps;
+      C : constant Cursor := VC_Set_Table.Find (E);
+   begin
+      if C /= No_Element then
+         VC_Set_Table.Update_Element (C, Add_To_Set'Access);
+      else
+         VC_Set_Table.Insert (E, Id_Sets.To_Set (Id));
+      end if;
+   end Add_Id_To_Entity;
+
+      -----------------------
+      -- Emit_Proof_Result --
+      -----------------------
 
    procedure Emit_Proof_Result
      (Node       : Node_Id;
@@ -103,6 +162,50 @@ package body Gnat2Why.Error_Messages is
    begin
       return not (VC_Table.Is_Empty);
    end Has_Registered_VCs;
+
+   ----------------------------------
+   -- Mark_VC_As_Proved_For_Entity --
+   ----------------------------------
+
+   procedure Mark_VC_As_Proved_For_Entity
+     (Id   : VC_Id;
+      Kind : VC_Kind;
+      E    : Entity_Id) is
+
+      Removal_Made_Set_Empty : Boolean := False;
+
+      procedure Remove_Id (Key : Entity_Id; S : in out Id_Sets.Set);
+
+      ---------------
+      -- Remove_Id --
+      ---------------
+
+      procedure Remove_Id (Key : Entity_Id; S : in out Id_Sets.Set) is
+         pragma Unreferenced (Key);
+      begin
+         S.Delete (Id);
+         if S.Is_Empty then
+            Removal_Made_Set_Empty := True;
+         end if;
+      end Remove_Id;
+
+      use Ent_Id_Set_Maps;
+      C : constant Cursor := VC_Set_Table.Find (E);
+   begin
+
+      --  ??? little trick; loop invariant assertions cannot be simply removed,
+      --  because there are two of them with the same ID. We fix this by only
+      --  counting the "preservation" one, and ignore the "init" one.
+
+      if Kind = VC_Loop_Invariant_Init then
+         return;
+      end if;
+      pragma Assert (C /= No_Element);
+      VC_Set_Table.Update_Element (C, Remove_Id'Access);
+      if Removal_Made_Set_Empty then
+         Register_Proof_Claims (E);
+      end if;
+   end Mark_VC_As_Proved_For_Entity;
 
    ------------------------
    -- Not_Proved_Message --
@@ -216,8 +319,8 @@ package body Gnat2Why.Error_Messages is
       -------------------
 
       procedure Handle_Result (V : JSON_Value) is
-         Id        : constant Integer := Get (Get (V, "id"));
-         VC        : constant VC_Info := VC_Table.Element (VC_Id (Id));
+         Id        : constant VC_Id := VC_Id (Integer'(Get (Get (V, "id"))));
+         VC        : constant VC_Info := VC_Table.Element (Id);
          Kind      : constant VC_Kind :=
            VC_Kind'Value (Get (Get (V, "reason")));
          Proved    : constant Boolean := Get (Get (V, "result"));
@@ -242,6 +345,9 @@ package body Gnat2Why.Error_Messages is
            (if Has_Field (V, "editor_cmd") then Get (Get (V, "editor_cmd"))
             else "");
       begin
+         if  Proved then
+            Mark_VC_As_Proved_For_Entity (Id, Kind, VC.Entity);
+         end if;
          Errout.Error_Msg_String (1 .. Extra_Text'Length) := Extra_Text;
          Errout.Error_Msg_Strlen := Extra_Text'Length;
          Emit_Proof_Result
@@ -350,6 +456,7 @@ package body Gnat2Why.Error_Messages is
    begin
       VC_Table.Insert (Tmp, VC_Info'(N, E));
       VC_Id_Counter := VC_Id_Counter + 1;
+      Add_Id_To_Entity (Tmp, E);
       return Tmp;
    end Register_VC;
 

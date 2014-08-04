@@ -28,6 +28,7 @@ Command-line Options
  -u                 Unique analysis. Only analyze the given units
  -U                 Analyze all units of all projects
  -v, --verbose      Output extra verbose information
+ --assumptions      Output assumptions information
      --version      Output version of the tool and exit
      --warnings=w   Set the warning mode of GNATprove (w=off, continue, error*)
  -h, --help         Display this usage information

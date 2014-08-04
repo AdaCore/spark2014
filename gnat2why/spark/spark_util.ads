@@ -23,22 +23,24 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with AA_Util;               use AA_Util;
 with Ada.Containers;
 with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Containers.Ordered_Sets;
 with Ada.Containers.Vectors;
-with Ada.Strings.Unbounded;              use Ada.Strings.Unbounded;
-with Atree;            use Atree;
-with Einfo;            use Einfo;
-with Impunit;          use Impunit;
-with Namet;            use Namet;
-with Sinfo;            use Sinfo;
-with Snames;           use Snames;
-with Types;            use Types;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Atree;                 use Atree;
+with Einfo;                 use Einfo;
+with Impunit;               use Impunit;
+with Lib;                   use Lib;
+with Namet;                 use Namet;
+with Sinfo;                 use Sinfo;
+with Snames;                use Snames;
+with Types;                 use Types;
 
-with Why.Atree.Tables; use Why.Atree.Tables;
+with Why.Atree.Tables;      use Why.Atree.Tables;
 
-with Common_Containers; use Common_Containers;
+with Common_Containers;     use Common_Containers;
 
 package SPARK_Util is
 
@@ -511,5 +513,9 @@ package SPARK_Util is
    function Get_Default_Init_Cond_Proc (E : Entity_Id) return Entity_Id with
      Pre => Is_Type (E) and then Has_Default_Init_Condition (E);
    --  Return the default initial condition procedure for a type E
+
+   function Unit_Name return String is
+     (File_Name_Without_Suffix
+          (Get_Name_String (Unit_File_Name (Main_Unit))));
 
 end SPARK_Util;

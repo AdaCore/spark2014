@@ -137,6 +137,8 @@ ASCII.LF &
 ASCII.LF &
 " -v, --verbose      Output extra verbose information" &
 ASCII.LF &
+" --assumptions      Output assumptions information" &
+ASCII.LF &
 "     --version      Output version of the tool and exit" &
 ASCII.LF &
 "     --warnings=w   Set the warning mode of GNATprove " &
@@ -683,6 +685,11 @@ ASCII.LF;
         (Config,
          Verbose'Access,
          "-v", Long_Switch => "--verbose");
+
+      Define_Switch
+        (Config,
+         Assumptions'Access,
+         Long_Switch => "--assumptions");
 
       Define_Switch
         (Config,

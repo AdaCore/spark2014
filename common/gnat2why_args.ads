@@ -79,7 +79,7 @@ package Gnat2Why_Args is
    Flow_Analysis_Mode : Boolean := False;
 
    --  Prove mode. In this mode gnat2why will perform translation to
-   --  why.
+   --  why. Note that Flow analysis mode and Prove mode can both be enabled.
 
    Prove_Mode : Boolean := False;
 

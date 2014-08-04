@@ -454,6 +454,8 @@ procedure Gnatprove is
 
       Success : Boolean;
 
+      Args    : String_Lists.List := String_Lists.Empty_List;
+
    begin
       Create (Obj_Dir_File, Out_File, Obj_Dir_Fn);
       for Index in Obj_Path'Range loop
@@ -463,9 +465,17 @@ procedure Gnatprove is
       end loop;
       Close (Obj_Dir_File);
 
+      Args.Append (Obj_Dir_Fn);
+      if Assumptions then
+         Args.Append ("--assumptions");
+         if Limit_Subp /= null and then Limit_Subp.all /= "" then
+            Args.Append ("--limit-subp=" & Limit_Subp.all);
+         end if;
+      end if;
+
       Call_Exit_On_Failure
         (Command   => "spark_report",
-         Arguments => (1 => new String'(Obj_Dir_Fn)),
+         Arguments => Args,
          Verbose   => Verbose);
 
       if not Debug then

@@ -24,19 +24,21 @@
 
 with Ada.Containers.Hashed_Sets;
 with Ada.Strings.Unbounded.Hash;
-
+with Assumption_Types;           use Assumption_Types;
 with Atree;                      use Atree;
 with Einfo;                      use Einfo;
 with Errout;                     use Errout;
 with Erroutc;                    use Erroutc;
+with Gnat2Why.Nodes;             use Gnat2Why.Nodes;
+with Gnat2Why_Args;              use Gnat2Why_Args;
+with Gnat2Why.Assumptions;       use Gnat2Why.Assumptions;
 with Namet;                      use Namet;
 with Opt;                        use Opt;
 with Sinfo;                      use Sinfo;
 with Sinput;                     use Sinput;
+with SPARK_Util;                 use SPARK_Util;
 with Stringt;                    use Stringt;
 with String_Utils;               use String_Utils;
-with Gnat2Why.Nodes;             use Gnat2Why.Nodes;
-with Gnat2Why_Args;              use Gnat2Why_Args;
 
 package body Flow_Error_Messages is
 
@@ -470,19 +472,7 @@ package body Flow_Error_Messages is
                   else Tag));
 
       Set_Field (Value, "severity", Msg_Kind_To_String (Kind));
-
-      --  Append entity information
-
-      declare
-         Ent_Value : constant JSON_Value := Create_Object;
-         Loc       : constant Source_Ptr := Translate_Location (Sloc (E));
-      begin
-         Set_Field (Ent_Value, "file", File_Name (Loc));
-         Set_Field (Ent_Value, "line",
-                    Integer (Get_Physical_Line_Number (Loc)));
-         Set_Field (Ent_Value, "name", Subprogram_Full_Source_Name (E));
-         Set_Field (Value, "entity", Ent_Value);
-      end;
+      Set_Field (Value, "entity", To_JSON (Entity_To_Subp (E)));
 
       if Tracefile /= "" then
          Set_Field (Value, "tracefile", Tracefile);

@@ -27,6 +27,7 @@
 with Ada.Text_IO;            use Ada.Text_IO;
 
 with Aspects;                use Aspects;
+with Assumption_Types;       use Assumption_Types;
 with Elists;                 use Elists;
 with Errout;                 use Errout;
 with Fname;                  use Fname;
@@ -40,7 +41,6 @@ with Sem_Prag;               use Sem_Prag;
 with Sem_Util;               use Sem_Util;
 with Exp_Util;               use Exp_Util;
 with Sem_Aux;                use Sem_Aux;
-with Sinput;                 use Sinput;
 with Snames;                 use Snames;
 with Stand;                  use Stand;
 with Uintp;                  use Uintp;
@@ -49,6 +49,7 @@ with Urealp;                 use Urealp;
 with SPARK_Util;             use SPARK_Util;
 
 with Gnat2Why_Args;
+with Gnat2Why.Assumptions;   use Gnat2Why.Assumptions;
 with Gnat2Why.Nodes;         use Gnat2Why.Nodes;
 
 package body SPARK_Definition is
@@ -294,18 +295,6 @@ package body SPARK_Definition is
    ----------------------------------
 
    procedure Generate_Output_In_Out_SPARK (Id : Entity_Id) is
-      SPARK_Status : constant String :=
-        (if Entity_Body_In_SPARK (Id) then "all"
-         elsif Entity_Spec_In_SPARK (Id) then
-             (if Ekind (Id) = E_Package
-              and then
-              No (Get_Package_Body (Id))
-              then "all" else "spec")
-         else "no");
-      Line_Num     : constant Integer :=
-        Integer (Get_Logical_Line_Number (Sloc (Id)));
-
-      V : constant JSON_Value := Create_Object;
    begin
       --  Only add infomation for Id if analysis is requested for that
       --  subprogram or package. Then, absence of errors in flow and warnings
@@ -313,11 +302,20 @@ package body SPARK_Definition is
       --  flow analysis or proof of that entity.
 
       if Analysis_Requested (Id) then
-         Set_Field (V, "name", Subprogram_Full_Source_Name (Id));
-         Set_Field (V, "file", File_Name (Sloc (Id)));
-         Set_Field (V, "line", Line_Num);
-         Set_Field (V, "spark", SPARK_Status);
-         Append (SPARK_Status_JSON, V);
+         declare
+            V : constant JSON_Value := To_JSON (Entity_To_Subp (Id));
+            SPARK_Status : constant String :=
+              (if Entity_Body_In_SPARK (Id) then "all"
+               elsif Entity_Spec_In_SPARK (Id) then
+                   (if Ekind (Id) = E_Package
+                    and then
+                    No (Get_Package_Body (Id))
+                    then "all" else "spec")
+               else "no");
+         begin
+            Set_Field (V, "spark", SPARK_Status);
+            Append (SPARK_Status_JSON, V);
+         end;
       end if;
    end Generate_Output_In_Out_SPARK;
 

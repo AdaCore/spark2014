@@ -27,7 +27,6 @@ with Ada.Strings;               use Ada.Strings;
 with Ada.Strings.Equal_Case_Insensitive;
 
 with Fname;                     use Fname;
-with Lib;                       use Lib;
 with Nlists;                    use Nlists;
 with Sem_Disp;                  use Sem_Disp;
 with Sem_Util;                  use Sem_Util;

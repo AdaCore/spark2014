@@ -10650,6 +10650,7 @@ package body Gnat2Why.Expr is
                                           Dispatch => Dispatch));
                Call       : W_Expr_Id;
             begin
+
                if Why_Subp_Has_Precondition (Subp, Dispatch => Dispatch) then
                   Call :=
                     +New_VC_Call

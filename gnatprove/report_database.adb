@@ -4,7 +4,7 @@
 --                                                                          --
 --                        R E P O R T _ D A T A B A S E                     --
 --                                                                          --
---                                 S p e c                                  --
+--                                 B o d y                                  --
 --                                                                          --
 --                       Copyright (C) 2010-2014, AdaCore                   --
 --                                                                          --
@@ -27,37 +27,13 @@ with Ada.Containers;
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Ordered_Sets;
 
-with GNATCOLL.Utils;
-
-with Hash_Cons;
-
 package body Report_Database is
-
-   Symbol_Table : constant Symbol_Table_Access := Allocate;
-
-   function Hash (S : Subp_Type_Rec) return Ada.Containers.Hash_Type;
-
-   ----------
-   -- Hash --
-   ----------
-
-   function Hash (S : Subp_Type_Rec) return Ada.Containers.Hash_Type is
-      use Ada.Containers;
-   begin
-      return 3 * Hash (S.Name) + 5 * Hash (S.File) + 7 * Hash_Type (S.Line);
-   end Hash;
-
-   package Unique_Subps is new
-     Hash_Cons (Elt_Type    => Subp_Type_Rec,
-                Access_Type => Subp_Type,
-                Hash        => Hash,
-                "="         => "=");
 
    package Subp_Maps is new
      Ada.Containers.Hashed_Maps
        (Key_Type        => Subp_Type,
         Element_Type    => Stat_Rec,
-        Hash            => Unique_Subps.Hash,
+        Hash            => Hash,
         Equivalent_Keys => "=",
         "="             => "=");
 
@@ -69,17 +45,6 @@ package body Report_Database is
                Flow_Errors   => 0,
                VC_Count      => 0,
                VC_Proved     => 0);
-
-   function "<" (Left, Right : Symbol) return Boolean is
-     (Get (Left, Empty_If_Null => True).all <
-        Get (Right, Empty_If_Null => True).all);
-
-   function "<" (Left, Right : Subp_Type) return Boolean is
-     (if Left.File < Right.File then True
-      elsif Right.File < Left.File then False
-      elsif Left.Name < Right.Name then True
-      elsif Right.Name < Left.Name then False
-      else Left.Line < Right.Line);
 
    package Ordered_Subp_Sets is new
      Ada.Containers.Ordered_Sets (Element_Type => Subp_Type,
@@ -93,14 +58,13 @@ package body Report_Database is
         Equivalent_Keys => "=",
         "="             => Subp_Maps."=");
 
-   function "<" (Left, Right : Unit_Type) return Boolean is
-     (Symbol (Left) < Symbol (Right));
-
    package Ordered_Unit_Sets is new
      Ada.Containers.Ordered_Sets (Element_Type => Unit_Type,
                                   "<"          => "<");
 
    Unit_Map : Unit_Maps.Map := Unit_Maps.Empty_Map;
+
+   Assume_List : Rule_Lists.List := Rule_Lists.Empty_List;
 
    procedure Update_Subp_Entry
      (Unit    : Unit_Type;
@@ -109,6 +73,17 @@ package body Report_Database is
    --  update the stat record of the given subp using the callback. If the
    --  unit/subp didn't exist yet, they are added, and a default Stat_Rec
    --  is created.
+
+   -------------------------
+   -- Add_Assumption_List --
+   -------------------------
+
+   procedure Add_Assumption_List (L : Rule_Lists.List) is
+   begin
+      for Elt of L loop
+         Assume_List.Append (Elt);
+      end loop;
+   end Add_Assumption_List;
 
    ---------------------
    -- Add_Flow_Result --
@@ -358,30 +333,6 @@ package body Report_Database is
       end if;
    end Iter_Unit_Subps;
 
-   -------------
-   -- Mk_Unit --
-   -------------
-
-   function Mk_Unit (Name : String) return Unit_Type is
-      S : constant Symbol := Find (Symbol_Table, Name);
-   begin
-      return Unit_Type (S);
-   end Mk_Unit;
-
-   -------------
-   -- Mk_Subp --
-   -------------
-
-   function Mk_Subp (Name : String; File : String; Line : Integer)
-                     return Subp_Type is
-   begin
-      return
-        Unique_Subps.Hash_Cons
-          (Subp_Type_Rec'(Name => Find (Symbol_Table, Name),
-                          File => Find (Symbol_Table, File),
-                          Line => Line));
-   end Mk_Subp;
-
    ---------------
    -- Num_Subps --
    ---------------
@@ -456,42 +407,6 @@ package body Report_Database is
    begin
       Unit_Map := Unit_Maps.Empty_Map;
    end Reset_All_Results;
-
-   ---------------
-   -- Subp_Name --
-   ---------------
-
-   function Subp_Name (Subp : Subp_Type) return String is
-      S : constant GNATCOLL.Utils.Cst_String_Access := Get (Subp.Name);
-   begin
-      return S.all;
-   end Subp_Name;
-
-   ---------------
-   -- Subp_File --
-   ---------------
-
-   function Subp_File (Subp : Subp_Type) return String is
-      S : constant GNATCOLL.Utils.Cst_String_Access := Get (Subp.File);
-   begin
-      return S.all;
-   end Subp_File;
-
-   ---------------
-   -- Subp_Line --
-   ---------------
-
-   function Subp_Line (Subp : Subp_Type) return Integer is (Subp.Line);
-
-   ---------------
-   -- Unit_Name --
-   ---------------
-
-   function Unit_Name (Unit : Unit_Type) return String is
-      S : constant GNATCOLL.Utils.Cst_String_Access := Get (Unit);
-   begin
-      return S.all;
-   end Unit_Name;
 
    -----------------------
    -- Update_Subp_Entry --

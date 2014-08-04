@@ -116,6 +116,9 @@ with Ada.Command_Line;
 with Ada.Directories;
 with Ada.Strings.Unbounded;
 with Ada.Text_IO;
+with Assumptions;             use Assumptions;
+with Assumptions.Search;      use Assumptions.Search;
+with Assumption_Types;        use Assumption_Types;
 with Call;                    use Call;
 with Configuration;           use Configuration;
 with GNAT.Directory_Operations.Iteration;
@@ -129,6 +132,13 @@ procedure SPARK_Report is
 
    No_Analysis_Done : Boolean := True;
 
+   Assumptions      : Boolean := False;
+
+   function Parse_Command_Line return String;
+   --  parse the command line and set the variables Assumptions and Limit_Subp.
+   --  return the name of the file which contains the object dirs to be
+   --  scanned.
+
    procedure Handle_SPARK_File (Fn : String);
    --  Parse and extract all information from a single SPARK file.
    --  No_Analysis_Done is set to true if no subprogram or package was
@@ -138,7 +148,10 @@ procedure SPARK_Report is
    --  Parse and extract all information from a flow result array
 
    procedure Handle_Proof_Items (V : JSON_Array; Unit : Unit_Type);
-   --  Parse and extract all information from a proof result file
+   --  Parse and extract all information from a proof result array
+
+   procedure Handle_Assume_Items (V : JSON_Array; Unit : Unit_Type);
+   --  Parse and extract all information from a proof result array
 
    procedure Handle_Source_Dir (Dir : String);
    --  Parse all result files of this directory.
@@ -150,22 +163,20 @@ procedure SPARK_Report is
    procedure Print_Analysis_Report (Handle : Ada.Text_IO.File_Type);
    --  print the proof report in the given file
 
-   -----------------------
-   -- Mk_Subp_Of_Entity --
-   -----------------------
+   -------------------------
+   -- Handle_Assume_Items --
+   -------------------------
 
-   function Mk_Subp_Of_Entity (Ent : GNATCOLL.JSON.JSON_Value)
-                               return Subp_Type is
+   procedure Handle_Assume_Items (V : JSON_Array; Unit : Unit_Type) is
+      pragma Unreferenced (Unit);
+      RL : constant Rule_Lists.List := From_JSON (V);
    begin
-      return
-        Mk_Subp (Get (Get (Ent, "name")),
-                 Get (Get (Ent, "file")),
-                 Get (Get (Ent, "line")));
-   end Mk_Subp_Of_Entity;
+      Import (RL);
+   end Handle_Assume_Items;
 
-   ----------------------
-   -- Handle_Flow_File --
-   ----------------------
+   -----------------------
+   -- Handle_Flow_Items --
+   -----------------------
 
    procedure Handle_Flow_Items (V : JSON_Array; Unit : Unit_Type) is
    begin
@@ -195,9 +206,9 @@ procedure SPARK_Report is
       end loop;
    end Handle_Flow_Items;
 
-   -----------------------
-   -- Handle_Proof_File --
-   -----------------------
+   ------------------------
+   -- Handle_Proof_Items --
+   ------------------------
 
    procedure Handle_Proof_Items (V : JSON_Array; Unit : Unit_Type) is
    begin
@@ -226,6 +237,51 @@ procedure SPARK_Report is
          end;
       end loop;
    end Handle_Proof_Items;
+
+   -----------------------
+   -- Handle_Source_Dir --
+   -----------------------
+
+   procedure Handle_Source_Dir (Dir : String) is
+
+      procedure Local_Handle_SPARK_File
+        (Item    : String;
+         Index   : Positive;
+         Quit    : in out Boolean);
+      --  Wrapper for Handle_SPARK_File
+
+      -----------------------------
+      -- Local_Handle_SPARK_File --
+      -----------------------------
+
+      procedure Local_Handle_SPARK_File
+        (Item    : String;
+         Index   : Positive;
+         Quit    : in out Boolean)
+      is
+      begin
+         pragma Unreferenced (Index);
+         pragma Unreferenced (Quit);
+         Handle_SPARK_File (Item);
+      end Local_Handle_SPARK_File;
+
+      procedure Iterate_SPARK is new
+         GNAT.Directory_Operations.Iteration.Wildcard_Iterator
+          (Action => Local_Handle_SPARK_File);
+
+      Save_Dir : constant String := Ada.Directories.Current_Directory;
+
+   --  Start of Handle_Source_Dir
+
+   begin
+      Ada.Directories.Set_Directory (Dir);
+      Iterate_SPARK (Path => "*." & VC_Kinds.SPARK_Suffix);
+      Ada.Directories.Set_Directory (Save_Dir);
+   exception
+      when others =>
+         Ada.Directories.Set_Directory (Save_Dir);
+         raise;
+   end Handle_Source_Dir;
 
    -----------------------
    -- Handle_SPARK_File --
@@ -281,52 +337,59 @@ procedure SPARK_Report is
       if Has_Proof then
          Handle_Proof_Items (Get (Get (Dict, "proof")), Unit);
       end if;
+      if Assumptions and then Has_Field (Dict, "assumptions") then
+         Handle_Assume_Items (Get (Get (Dict, "assumptions")), Unit);
+      end if;
    end Handle_SPARK_File;
 
    -----------------------
-   -- Handle_Source_Dir --
+   -- Mk_Subp_Of_Entity --
    -----------------------
 
-   procedure Handle_Source_Dir (Dir : String) is
-
-      procedure Local_Handle_SPARK_File
-        (Item    : String;
-         Index   : Positive;
-         Quit    : in out Boolean);
-      --  Wrapper for Handle_SPARK_File
-
-      -----------------------------
-      -- Local_Handle_SPARK_File --
-      -----------------------------
-
-      procedure Local_Handle_SPARK_File
-        (Item    : String;
-         Index   : Positive;
-         Quit    : in out Boolean)
-      is
-      begin
-         pragma Unreferenced (Index);
-         pragma Unreferenced (Quit);
-         Handle_SPARK_File (Item);
-      end Local_Handle_SPARK_File;
-
-      procedure Iterate_SPARK is new
-         GNAT.Directory_Operations.Iteration.Wildcard_Iterator
-          (Action => Local_Handle_SPARK_File);
-
-      Save_Dir : constant String := Ada.Directories.Current_Directory;
-
-   --  Start of Handle_Source_Dir
-
+   function Mk_Subp_Of_Entity (Ent : GNATCOLL.JSON.JSON_Value)
+                               return Subp_Type is
    begin
-      Ada.Directories.Set_Directory (Dir);
-      Iterate_SPARK (Path => "*." & VC_Kinds.SPARK_Suffix);
-      Ada.Directories.Set_Directory (Save_Dir);
-   exception
-      when others =>
-         Ada.Directories.Set_Directory (Save_Dir);
-         raise;
-   end Handle_Source_Dir;
+      return
+        Mk_Subp (Get (Get (Ent, "name")),
+                 Get (Get (Ent, "file")),
+                 Get (Get (Ent, "line")));
+   end Mk_Subp_Of_Entity;
+
+   ------------------------
+   -- Parse_Command_Line --
+   ------------------------
+
+   function Parse_Command_Line return String is
+
+      use Ada.Command_Line;
+
+      Source_Dirs : access String := null;
+   begin
+      for Index in 1 .. Argument_Count loop
+         declare
+            S : constant String := Argument (Index);
+         begin
+            if S = "--assumptions" then
+               Assumptions := True;
+            elsif Starts_With (S, "--limit-subp=") then
+
+               --  ??? FIXME --limit-subp currently ignored
+
+               null;
+            elsif Starts_With (S, "--") then
+               Abort_With_Message ("unknown option: " & S);
+            elsif Source_Dirs = null then
+               Source_Dirs := new String'(S);
+            else
+               Abort_With_Message ("more than one file given, aborting");
+            end if;
+         end;
+      end loop;
+      if Source_Dirs = null then
+         Abort_With_Message ("No source directory file given, aborting");
+      end if;
+      return Source_Dirs.all;
+   end Parse_Command_Line;
 
    ---------------------------
    -- Print_Analysis_Report --
@@ -411,6 +474,28 @@ procedure SPARK_Report is
                    & " subprograms and packages out of "
                    & Int_Image (Num_Subps (Unit)) & " analyzed");
          Iter_Unit_Subps (Unit, For_Each_Subp'Access, Ordered => True);
+
+         --  ??? This is slow, use a better algorithm in Assumptions.Search
+
+         if Assumptions then
+            for C of Get_All_Claims loop
+               declare
+                  S : constant Token_Sets.Set := Claim_Depends_On (C);
+               begin
+                  if S.Is_Empty then
+                     Ada.Text_IO.Put_Line
+                       (Handle,
+                        To_String (C) & " does not depend on anything");
+                  else
+                     Ada.Text_IO.Put_Line
+                       (Handle, To_String (C) & " depends on");
+                     for A of S loop
+                        Ada.Text_IO.Put_Line (Handle, "  " & To_String (A));
+                     end loop;
+                  end if;
+               end;
+            end loop;
+         end if;
       end For_Each_Unit;
 
       N_Un : constant Integer := Num_Units;
@@ -426,7 +511,7 @@ procedure SPARK_Report is
 
    procedure Iterate_Source_Dirs is new For_Line_In_File (Handle_Source_Dir);
 
-   Source_Directories_File : GNAT.OS_Lib.String_Access;
+   Source_Directories_File : constant String := Parse_Command_Line;
 
    use Ada.Text_IO;
 
@@ -435,11 +520,7 @@ procedure SPARK_Report is
    --  Start of SPARK_Report
 
 begin
-   if Ada.Command_Line.Argument_Count = 0 then
-      Abort_With_Message ("No source directory file given, aborting");
-   end if;
-   Source_Directories_File := new String'(Ada.Command_Line.Argument (1));
-   Iterate_Source_Dirs (Source_Directories_File.all);
+   Iterate_Source_Dirs (Source_Directories_File);
    if No_Analysis_Done then
       Reset_All_Results;
    end if;
@@ -447,8 +528,7 @@ begin
    Create (Handle,
            Out_File,
            Configuration.SPARK_Report_File
-             (GNAT.Directory_Operations.Dir_Name
-                (Source_Directories_File.all)));
+             (GNAT.Directory_Operations.Dir_Name (Source_Directories_File)));
    Print_Analysis_Report (Handle);
    Close (Handle);
 end SPARK_Report;

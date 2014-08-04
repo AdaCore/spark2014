@@ -23,22 +23,23 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with String_Utils;          use String_Utils;
-
-with Csets;                 use Csets;
-with Elists;                use Elists;
-with Nlists;                use Nlists;
-with Pprint;                use Pprint;
-with Sem_Eval;              use Sem_Eval;
-with Snames;                use Snames;
-with Stringt;               use Stringt;
-with Urealp;                use Urealp;
-
-with SPARK_Definition;      use SPARK_Definition;
-with SPARK_Util;            use SPARK_Util;
-
-with Why.Gen.Names;         use Why.Gen.Names;
-with Why.Sinfo;             use Why.Sinfo;
+with AA_Util;              use AA_Util;
+with Assumption_Types;     use Assumption_Types;
+with Csets;                use Csets;
+with Elists;               use Elists;
+with Gnat2Why.Assumptions; use Gnat2Why.Assumptions;
+with Lib;                  use Lib;
+with Nlists;               use Nlists;
+with Pprint;               use Pprint;
+with Sem_Eval;             use Sem_Eval;
+with Snames;               use Snames;
+with SPARK_Definition;     use SPARK_Definition;
+with SPARK_Util;           use SPARK_Util;
+with String_Utils;         use String_Utils;
+with Stringt;              use Stringt;
+with Urealp;               use Urealp;
+with Why.Gen.Names;        use Why.Gen.Names;
+with Why.Sinfo;            use Why.Sinfo;
 
 package body Gnat2Why.Nodes is
 
@@ -780,14 +781,10 @@ package body Gnat2Why.Nodes is
 
    function Subp_Location (E : Entity_Id) return String
    is
-      Loc  : constant Source_Ptr :=
-        Translate_Location (Sloc (E));
-      File : constant String := File_Name (Loc);
-      Line : constant Physical_Line_Number :=
-        Get_Physical_Line_Number (Loc);
+      S : constant Subp_Type := Entity_To_Subp (E);
    begin
       return
-        "GP_Subp:" & File & ":" & Int_Image (Integer (Line));
+        "GP_Subp:" & Subp_File (S) & ":" & Int_Image (Subp_Line (S));
    end Subp_Location;
 
    ------------------
