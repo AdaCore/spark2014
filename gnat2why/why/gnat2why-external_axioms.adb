@@ -27,6 +27,7 @@ with GNAT.Source_Info;
 
 with Atree;                use Atree;
 with Einfo;                use Einfo;
+with Errout;               use Errout;
 with Namet;                use Namet;
 with Nlists;               use Nlists;
 with Sem_Aux;              use Sem_Aux;
@@ -37,6 +38,7 @@ with Sinput;               use Sinput;
 with String_Utils;         use String_Utils;
 
 with SPARK_Util;           use SPARK_Util;
+with Flow_Utility;         use Flow_Utility;
 
 with Why.Ids;              use Why.Ids;
 with Why.Sinfo;            use Why.Sinfo;
@@ -670,7 +672,9 @@ package body Gnat2Why.External_Axioms is
       begin
          if Present (E) then
 
-            --  If E has external axioms, return the empty list
+            --  If E has external axioms, return the empty list or E if it is
+            --  generic itself.
+
             if Ekind (E) = E_Package and then
               Package_Has_External_Axioms (E)
             then
@@ -684,6 +688,7 @@ package body Gnat2Why.External_Axioms is
 
             --  If a package with external axioms has been found above
             --  Scope (E) return the list of generic parents above Scope (E)
+
             Internal_Get_Generic_Parents (Scope (E), Result, Found);
 
             if Found then
@@ -929,6 +934,14 @@ package body Gnat2Why.External_Axioms is
               and then Ekind (Actual) = E_Function
             then
 
+               --  Check that the function actual is pure
+
+               if Flow_Utility.Has_Proof_Global_Reads (Actual) then
+                  Error_Msg_FE
+                    ("& has to be pure in instance with external axioms",
+                     Package_Entity, Actual);
+               end if;
+
                Open_Theory
                  (TFile,
                   New_Module
@@ -1117,9 +1130,9 @@ package body Gnat2Why.External_Axioms is
 
                Close_Theory (TFile,
                              Kind => Definition_Theory);
-            else
-               pragma Assert (Ekind (Formal) = E_Function
-                              and then Ekind (Actual) = E_Operator);
+            elsif Ekind (Formal) = E_Function
+              and then Ekind (Actual) = E_Operator
+            then
 
                --  For function parameters, generate a new function
                --  that introduced the needed conversions:
@@ -1361,9 +1374,14 @@ package body Gnat2Why.External_Axioms is
                Domain    => EW_Prog,
                File_Name => NID (Full_Name (Package_Entity) & ".mlw")));
       else
-         if List_Of_Entity.First_Element (G_Parents) = Package_Entity then
-            Parse_Parameters (Package_Entity, G_Parents);
-         end if;
+         --  Translation will always be called on top-level packages with
+         --  external axiomatization only, that is, either packages with
+         --  no generic parents or instances of generic packages.
+
+         pragma Assert
+           (List_Of_Entity.First_Element (G_Parents) = Package_Entity);
+
+         Parse_Parameters (Package_Entity, G_Parents);
 
          Compute_Length (G_Parents, Subst_Length);
 
