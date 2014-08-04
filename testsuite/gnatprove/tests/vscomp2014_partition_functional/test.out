@@ -17,6 +17,7 @@ partition_refinement.adb:30:75: warning: precondition might fail
 partition_refinement.adb:30:89: warning: precondition might fail
 partition_refinement.adb:31:36: warning: precondition might fail
 partition_refinement.adb:31:50: warning: precondition might fail
+partition_refinement.adb:31:78: warning: range check might fail
 partition_refinement.adb:31:80: warning: precondition might fail
 partition_refinement.adb:31:94: warning: precondition might fail
 partition_refinement.adb:32:23: warning: precondition might fail

@@ -539,6 +539,7 @@ enclave.adb:1476:13: warning: precondition might fail
 enclave.adb:1479:13: warning: precondition might fail
 enclave.adb:1506:30: info: refined post proved
 enclave.adb:1614:31: info: refined post proved
+enclave.adb:1621:39: info: range check proved
 enclave.adb:1625:13: info: precondition proved
 enclave.adb:1628:13: info: precondition proved
 enclave.adb:1631:13: info: precondition proved
@@ -551,6 +552,7 @@ enclave.adb:1906:18: warning: precondition might fail
 enclave.adb:1912:19: warning: precondition might fail
 enclave.adb:1937:18: warning: precondition might fail
 enclave.adb:1943:18: warning: precondition might fail
+enclave.adb:1947:42: warning: range check might fail
 enclave.adb:1952:13: warning: precondition might fail
 enclave.adb:1957:13: warning: precondition might fail
 enclave.adb:2040:06: warning: refined postcondition might fail
@@ -961,6 +963,7 @@ userentry.adb:887:21: warning: precondition might fail
 userentry.adb:941:15: warning: precondition might fail
 userentry.adb:1045:50: warning: "Usertoken.Output" might not be written
 userentry.adb:1183:13: warning: refined postcondition might fail
+userentry.adb:1197:37: info: range check proved
 userentry.adb:1203:13: info: precondition proved
 userentry.adb:1207:13: info: precondition proved
 userentry.adb:1211:13: info: precondition proved

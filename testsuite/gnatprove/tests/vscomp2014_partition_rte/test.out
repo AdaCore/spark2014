@@ -16,6 +16,7 @@ partition_refinement.adb:30:75: info: precondition proved
 partition_refinement.adb:30:89: info: precondition proved
 partition_refinement.adb:31:36: info: precondition proved
 partition_refinement.adb:31:50: info: precondition proved
+partition_refinement.adb:31:78: warning: range check might fail
 partition_refinement.adb:31:80: info: precondition proved
 partition_refinement.adb:31:94: info: precondition proved
 partition_refinement.adb:32:23: info: precondition proved

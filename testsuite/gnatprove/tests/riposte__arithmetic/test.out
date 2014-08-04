@@ -50,10 +50,14 @@ arithmetic.adb:156:10: info: loop invariant initialization proved
 arithmetic.adb:156:10: info: loop invariant preservation proved
 arithmetic.adb:164:19: info: postcondition proved
 arithmetic.adb:164:39: info: overflow check proved
+arithmetic.adb:169:24: info: range check proved
 arithmetic.adb:171:24: warning: overflow check might fail
+arithmetic.adb:171:24: warning: range check might fail
 arithmetic.adb:178:19: info: postcondition proved
 arithmetic.adb:178:39: info: overflow check proved
+arithmetic.adb:183:24: info: range check proved
 arithmetic.adb:185:24: info: overflow check proved
+arithmetic.adb:185:24: info: range check proved
 arithmetic.adb:191:19: info: postcondition proved
 arithmetic.adb:191:39: info: overflow check proved
 arithmetic.adb:194:14: warning: overflow check might fail

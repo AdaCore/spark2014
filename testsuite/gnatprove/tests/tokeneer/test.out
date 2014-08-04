@@ -534,9 +534,11 @@ enclave.adb:1887:13: info: precondition proved
 enclave.adb:1890:13: info: precondition proved
 enclave.adb:1893:13: warning: precondition might fail
 enclave.adb:1896:13: warning: precondition might fail
+enclave.adb:2075:39: warning: range check might fail
 enclave.adb:2079:13: info: precondition proved
 enclave.adb:2082:13: info: precondition proved
 enclave.adb:2085:13: info: precondition proved
+enclave.adb:2526:42: warning: range check might fail
 enclave.adb:2531:13: warning: precondition might fail
 enclave.adb:2536:13: warning: precondition might fail
 enclave.adb:2902:22: info: precondition proved
@@ -858,6 +860,7 @@ userentry.adb:516:23: info: length check proved, in call inlined at userentry.ad
 userentry.adb:516:23: warning: range check might fail, in call inlined at userentry.adb:526
 userentry.adb:685:19: info: precondition proved
 userentry.adb:919:12: warning: postcondition might fail, requires Latch.IsLocked and then Door.TheCurrentDoor = Door.Open and then Clock.GreaterThanOrEqual(Clock.TheCurrentTime, Door.alarm_Timeout) ) = (Door.TheDoorAlarm = AlarmTypes.alarming
+userentry.adb:1295:37: warning: range check might fail
 userentry.adb:1301:13: info: precondition proved
 userentry.adb:1305:13: warning: precondition might fail
 userentry.adb:1309:13: warning: precondition might fail
