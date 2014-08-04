@@ -862,7 +862,7 @@ implementation code or from other |SPARK| aspects as follows:
   * if no Default_Initial_Condition is specified for a private type declaration,
     then the synthesized value of this aspect of the type is determined
     by whether the full view of the private type defines full default
-    initialization (see Spark RM 3.1). If it does, then the synthesized
+    initialization (see SPARK RM 3.1). If it does, then the synthesized
     aspect value is a static *Boolean_*\ ``expression`` having
     the value True; if it does not, then the synthesized aspect value
     is a null literal.

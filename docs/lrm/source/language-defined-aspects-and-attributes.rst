@@ -31,6 +31,7 @@ Default_Value		      Yes
 Default_Storage_Pool   	      No		     No access types
 Detect_Blocking	  	      No		     No tasking
 Dispatching_Domain 	      No		     No tasking
+Dynamic_Predicate             No
 Elaborate_Body     	      Yes
 Export             	      Yes
 External_Name		      Yes
@@ -69,8 +70,8 @@ Storage_Size (access)         No		     No access types
 Storage_Size (task)	      No		     No tasking
 Stream_Size  		      No		     No streams
 Synchronization		      No		     No tasking
-Type_Invariant		      Yes
-Type_Invariant'Class	      Yes
+Type_Invariant		      No
+Type_Invariant'Class	      No
 Unchecked_Union		      No
 Variable_Indexing	      No
 Volatile           	      Yes

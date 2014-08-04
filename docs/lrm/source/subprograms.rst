@@ -57,6 +57,25 @@ a subprogram.
    ``null_dependency_clause`` in the Depends aspect of the subprogram
    (see :ref:`depends-aspects`).
 
+5. An output of a subprogram is said to be *fully initialized* by a call
+   if all parts of the output are initialized as a result of any successful
+   execution of a call of the subprogram. In the case of a parameter X
+   of a class-wide type T'Class, this set of "all parts" is not limited
+   to the (statically known) parts of T. For example, if the underlying
+   dynamic tag of X is T2'Tag, where T2 is an extension of T that declares
+   a component C, then C would be included in the set. In this case,
+   this set of "all parts" is not known statically.
+   [In order to fully initialize such a parameter, it is necessary
+   to use some form of dispatching assignment. This can be done by either
+   a direct (class-wide) assignment to X, passing X as an actual out-mode
+   parameter in a call where the formal parameter is of a class-wide type,
+   or passing X as a controlling out-mode parameter in a dispatching call.]
+   The meaning of "all parts" in the case of a parameter of a specific
+   tagged type is determined by the applicable Extensions_Visible aspect
+   (see :ref:`extensions-visible-aspects`).
+   [A state abstraction cannot be fully initialized by initializing
+   individual constituents unless its refinement is visible.]
+
 .. centered:: **Legality Rules**
 
 .. _tu-fe-subprogram_declarations-05:
@@ -473,12 +492,7 @@ is used purely for static analysis purposes and is not executed.
         attributes that are dependent on the value of the object and
         shall not be used are X'Old and X'Update] and
 
-      - is always *fully initialized* (that is, all parts of the
-        ``global_item`` are initialized) as a result of any successful
-        execution of a call of the subprogram. A state abstraction
-        whose refinement is not visible is not fully initialized by
-        only updating one or more of its constituents [because it may
-        have other constituents that are not visible];
+      - is always fully initialized by a call of the subprogram. ;
 
     * otherwise the ``global_item`` denotes both an input and an output, and
       has a ``mode_selector`` of In_Out.
@@ -801,15 +815,14 @@ as it is used purely for static analysis purposes and is not executed.
 
 .. _tu-fa-depends_aspects-26:
 
-26. If only part of an entire object or state abstraction (only some
-    of its constituents) is updated then the updated entity is
+26. If not all parts of an output are updated, then the updated entity is
     dependent on itself as the parts that are not updated have their
-    current value preserved. [Where a constituent of a state
-    abstraction is updated but the refinement of the state abstraction
-    is not visible, it is not known if all of the constituents have
-    been updated by the subprogram and in such cases the the update is
-    represented as the the update of the encapsulating state
-    abstraction with a self dependency.]
+    current value preserved.
+
+    [In the case of a parameter of a tagged type (specific or class-wide),
+    see the definition of "fully initialized" for a clarification of what
+    the phrase "all parts" means in the preceding sentence.]
+    
 
 .. _etu-depends_aspects-vr:
 
@@ -910,7 +923,9 @@ applies, in particular, in the case described in Ada RM 6.1.1:
   subprogram of a tagged type T, a name that denotes a formal parameter of type
   T is interpreted as having type T'Class.
 
-.]
+As it stands today, this is excessively restrictive. It is hoped that it will
+be possible to eliminate (or at least substantially relax) this restriction
+after AI12-0113 is resolved.]
 
 A subprogram whose Extensions_Visible aspect
 is True shall not override an inherited primitive operation of a
@@ -961,7 +976,7 @@ is not only not required, it is effectively forbidden because
 such an out-mode parameter could not be fully initialized
 without some form of dispatching (e.g., a class-wide assignment or a
 dispatching call in which an out-mode parameter is a controlling operand).
-Such a dispatching call will always fully initialize its controlling
+Such a dispatching assignment will always fully initialize its controlling
 out-mode parameters, regardless of the Extensions_Visible aspect
 of the callee. An assignment statement whose target is of a class-wide
 type T'Class is treated, for purposes of formal verification, like a call to a
