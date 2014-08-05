@@ -1523,7 +1523,7 @@ package body SPARK_Util is
       end if;
 
       return Present
-        (Get_First_Parent_With_Ext_Axioms_For_Entity (E));
+        (Containing_Package_With_Ext_Axioms (E));
    end Entity_In_External_Axioms;
 
    -----------------------------------------------

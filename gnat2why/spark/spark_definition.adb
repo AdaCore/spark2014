@@ -2630,7 +2630,7 @@ package body SPARK_Definition is
       if Entity_In_External_Axioms (E) then
          declare
             Pack : constant Entity_Id :=
-              Get_First_Parent_With_Ext_Axioms_For_Entity (E);
+              Containing_Package_With_Ext_Axioms (E);
          begin
             if Pack /= E then
                Mark_Entity (Pack);
