@@ -355,7 +355,9 @@ The new aspects are:
 
    * the prefix of a ``slice``, ``selected_component``, ``indexed_component``,
      or ``attribute_reference`` which is itself a name occurring in a
-     non-interfering context.
+     non-interfering context; or
+
+   * the expression of a type conversion occurring in a non-interfering context.
 
 .. _etu-external_state_variables-lr:
 
