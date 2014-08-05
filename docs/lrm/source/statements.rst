@@ -57,7 +57,10 @@ User-Defined Iterator Types
 
 .. _tu-user_defined_iterator_types-01:
 
-1. User-defined iterator types are not currently permitted.
+1. The generic package Ada.Iterator_Interfaces shall not be referenced.
+   [In particular, Ada.Iterator_Interfaces shall not be instantiated.
+   An alternative mechanism for defining iterator types is
+   described in the next section.]
 
 .. _etu-user_defined_iterator_types:
 
@@ -75,8 +78,7 @@ Generalized Loop Iteration
 1. Ada's generalized loop iteration is supported in |SPARK|,
    but only in a modified form. Ada's existing generalized
    loop iteration is defined in terms of other constructs
-   which are not in |SPARK| (e.g., access discriminants,
-   interface types).
+   which are not in |SPARK| (e.g., access discriminants).
 
 2. Instead, |SPARK| provides a new mechanism for defining
    an iterable container type (see Ada RM 5.5.1). Iteration
