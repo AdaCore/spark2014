@@ -113,6 +113,15 @@ is
    function Is_Empty (B : Board; Y : Integer; X : Integer) return Boolean is
       (X in X_Coord and then Y in Y_Coord and then B(Y)(X) = Empty);
 
+   function Is_Complete_Line (L : Line) return Boolean is
+     (for all X in X_Coord => L(X) /= Empty);
+
+   function Is_Empty_Line (L : Line) return Boolean is
+     (for all X in X_Coord => L(X) = Empty);
+
+   function No_Complete_Lines (B : Board) return Boolean is
+      (for all Y in Y_Coord => not Is_Complete_Line (B(Y)));
+
    function No_Overlap (B : Board; P : Piece) return Boolean is
       (case P.S is
          when O => Is_Empty (B, P.Y, P.X) and then Is_Empty (B, P.Y, P.X + 1) and then
@@ -153,5 +162,22 @@ is
    procedure Do_Action (A : Action; Success : out Boolean) with
      Pre  => Valid_Configuration,
      Post => Valid_Configuration;
+
+   procedure Include_Piece_In_Board with
+     Global => (Input => Cur_Piece, In_Out => (Cur_State, Cur_Board)),
+     Pre    => Cur_State = Piece_Falling and then
+               Valid_Configuration,
+     Post   => Cur_State = No_Piece_Falling and then
+               Valid_Configuration;
+   --  transition from state where a piece is falling to its integration in the
+   --  board when it cannot fall anymore.
+
+   procedure Delete_Complete_Lines with
+     Global => (Proof_In => (Cur_Piece, Cur_State), In_Out => Cur_Board),
+     Pre    => Cur_State = No_Piece_Falling and then
+               Valid_Configuration,
+     Post   => Valid_Configuration and then
+               No_Complete_Lines (Cur_Board);
+   --  remove all complete lines from the board
 
 end Tetris;
