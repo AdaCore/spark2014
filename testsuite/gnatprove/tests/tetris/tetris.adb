@@ -9,7 +9,6 @@ is
 
    procedure Include_Piece_In_Board is
    begin
-      Cur_State := No_Piece_Falling;
       case Cur_Piece.S is
          when O =>
             Cur_Board (Cur_Piece.Y) (Cur_Piece.X)         := Cur_Piece.S;
@@ -77,6 +76,10 @@ is
                end loop;
             end loop;
       end case;
+
+      --  update current state
+
+      Cur_State := Board_Before_Clean;
    end Include_Piece_In_Board;
 
    ---------------------------
@@ -115,6 +118,10 @@ is
             end if;
          end loop;
       end if;
+
+      --  update current state
+
+      Cur_State := Board_After_Clean;
    end Delete_Complete_Lines;
 
    ---------------

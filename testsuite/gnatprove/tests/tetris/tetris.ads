@@ -44,11 +44,15 @@ is
 
    Cur_Piece : Piece;
 
-   --  either a piece is falling, in which case Cur_Piece is set to this piece,
-   --  or it has been included in the board, in which case Cur_Piece is
-   --  ignored.
+   --  the game loops through the following states:
+   --    . a piece is falling, in which case Cur_Piece is set to this piece
+   --    . the piece Cur_Piece is blocked by previous fallen pieces in the
+   --      board Cur_Board
+   --    . the piece has been included in the board, which may contain complete
+   --      lines that need to be deleted
+   --    . complete lines have been deleted from the board
 
-   type State is (Piece_Falling, No_Piece_Falling);
+   type State is (Piece_Falling, Piece_Blocked, Board_Before_Clean, Board_After_Clean);
 
    Cur_State : State;
 
@@ -136,7 +140,10 @@ is
                  (if Possible_Three_Shapes (P.S, P.D) (Y, X) then Is_Empty (B, P.Y + Y, P.X + X)))));
 
    function Valid_Configuration return Boolean is
-      (if Cur_State = Piece_Falling then No_Overlap (Cur_Board, Cur_Piece));
+      (case Cur_State is
+         when Piece_Falling | Piece_Blocked => No_Overlap (Cur_Board, Cur_Piece),
+         when Board_Before_Clean => True,
+         when Board_After_Clean => No_Complete_Lines (Cur_Board));
 
    --  movements of the piece in the 3 possible directions
 
@@ -165,19 +172,19 @@ is
 
    procedure Include_Piece_In_Board with
      Global => (Input => Cur_Piece, In_Out => (Cur_State, Cur_Board)),
-     Pre    => Cur_State = Piece_Falling and then
+     Pre    => Cur_State = Piece_Blocked and then
                Valid_Configuration,
-     Post   => Cur_State = No_Piece_Falling and then
+     Post   => Cur_State = Board_Before_Clean and then
                Valid_Configuration;
    --  transition from state where a piece is falling to its integration in the
    --  board when it cannot fall anymore.
 
    procedure Delete_Complete_Lines with
-     Global => (Proof_In => (Cur_Piece, Cur_State), In_Out => Cur_Board),
-     Pre    => Cur_State = No_Piece_Falling and then
+     Global => (Proof_In => Cur_Piece, In_Out => (Cur_State, Cur_Board)),
+     Pre    => Cur_State = Board_Before_Clean and then
                Valid_Configuration,
-     Post   => Valid_Configuration and then
-               No_Complete_Lines (Cur_Board);
+     Post   => Cur_State = Board_After_Clean and then
+               Valid_Configuration;
    --  remove all complete lines from the board
 
 end Tetris;
