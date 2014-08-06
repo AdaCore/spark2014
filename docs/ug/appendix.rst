@@ -881,12 +881,8 @@ Proof Limitations
    valid.  The use of an invalid value invalidates any proofs associated with
    the value.
 
-#. Operators are not allowed as actual parameters of a formal container
-   instance. Instead, a wrapper expression function can be defined that simply
-   calls the operator.
-
 #. The following attributes are not yet supported in proof: Address, Adjacent,
-   Aft, Alignment, Bit_Order, Body_Version, Component_Size, Constrained, Copy_Sign,
+   Aft, Alignment, Bit_Order, Body_Version, Component_Size, Copy_Sign,
    Definite, Denorm, First_Bit, First_Valid, Fore, Last_Bit, Last_Valid, Machine,
    all Machine_* attributes, Model, all Model_* attributes, Partition_Id,
    Position, Remainder, Round, Safe_First, Safe_Last, Scale, Scaling,
