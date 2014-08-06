@@ -1,0 +1,1 @@
+ALL XFAIL code not in SPARK_Mode=>On causing crash with ill-formed Global
