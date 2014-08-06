@@ -66,12 +66,15 @@ is
          Result := Move_Ok;
          Trains (Train) := New_Position;
 
+         pragma Assert (Previous_Tracks_On_Orange_Or_Red);
+
          --  the track leaved goes from Red to Orange
 
          Track_Signals (Cur_Position.Track_End) := Orange;
 
          pragma Assume (No_Track_Precedes_Itself);
          pragma Assert (Occupied_Tracks_On_Red);
+         pragma Assert (Previous_Tracks_On_Orange_Or_Red);
 
          --  the signal for tracks that precede the track leaved must be
          --  updated, depending on the position of other trains. No update is
@@ -95,10 +98,28 @@ is
                      (for some T in Train_Id range 1 .. Cur_Num_Trains =>
                         Is_Previous_Track (Trains (T), J))
                    then Track_Signals (J) = Orange)));
+            pragma Assert
+              ((if Track_Signals'Loop_Entry (1) = Red then Track_Signals (1) = Red)
+                   and then
+               (if Track_Signals'Loop_Entry (1) = Orange and then
+                  (for some T in Train_Id range 1 .. Cur_Num_Trains =>
+                     Is_Previous_Track (Trains (T), 1))
+                then Track_Signals (1) = Orange));
          end loop;
 
          pragma Assume (No_Track_Precedes_Itself);
          pragma Assert (Occupied_Tracks_On_Red);
+         pragma Assert
+           (for all Train in Train_Id range 1 .. Cur_Num_Trains =>
+              (for all Id in Prev_Id =>
+                 (if Get_Previous_Track (Trains (Train), Id) /= No_Track_Id then
+                    Track_Signals (Get_Previous_Track (Trains (Train), Id)) in
+                      Orange | Red)
+                   and then
+                 (if Get_Other_Previous_Track (Trains (Train), Id) /= No_Track_Id then
+                    Track_Signals (Get_Other_Previous_Track (Trains (Train), Id)) in
+                      Orange | Red)));
+
          pragma Assert (Previous_Tracks_On_Orange_Or_Red);
          pragma Assert (Safe_Signaling);
 
@@ -120,7 +141,7 @@ is
                Track_Signals (New_Position.Track_Begin) := Red;
 
                for Id in Prev_Id loop
-                  Prev := Get_Previous_Track (New_Position, Id);
+                  Prev := Get_Other_Previous_Track (New_Position, Id);
 
                   if Prev /= No_Track_Id
                     and then Track_Signals (Prev) = Green
@@ -130,8 +151,8 @@ is
 
                   pragma Loop_Invariant
                     (for all K in Track_Ids'First .. Id =>
-                       (if Get_Previous_Track (New_Position, K) /= No_Track_Id then
-                          Track_Signals (Get_Previous_Track (New_Position, K)) in
+                       (if Get_Other_Previous_Track (New_Position, K) /= No_Track_Id then
+                          Track_Signals (Get_Other_Previous_Track (New_Position, K)) in
                             Orange | Red));
                   pragma Loop_Invariant
                     (for all J in Track_Id =>

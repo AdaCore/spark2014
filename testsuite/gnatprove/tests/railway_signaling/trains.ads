@@ -112,23 +112,44 @@ is
          Track_Signals (Trains (Train).Track_Begin) = Red and then
          Track_Signals (Trains (Train).Track_End) = Red);
 
+   --  Return the Id'th track that precedes the ending track of the train
    function Get_Previous_Track
      (Position : Train_Position;
       Id       : Prev_Id) return Track_Opt_Id
    is
       (Previous_Tracks (Tracks (Position.Track_End).From) (Id));
 
+   --  Return the Id'th track that precedes the starting track of the train,
+   --  provided it is different from the ending track of the train
+   function Get_Other_Previous_Track
+     (Position : Train_Position;
+      Id       : Prev_Id) return Track_Opt_Id
+   is
+      (if Previous_Tracks (Tracks (Position.Track_Begin).From) (Id) =
+           Position.Track_End
+       then
+          No_Track_Id
+       else
+          Previous_Tracks (Tracks (Position.Track_Begin).From) (Id));
+
    function Is_Previous_Track
      (Position : Train_Position;
       Track    : Track_Id) return Boolean
    is
-      (for some Id in Prev_Id => Track = Get_Previous_Track (Position, Id));
+      (for some Id in Prev_Id =>
+         Track = Get_Previous_Track (Position, Id)
+           or else
+         Track = Get_Other_Previous_Track (Position, Id));
 
    function Previous_Tracks_On_Orange_Or_Red return Boolean is
       (for all Train in Train_Id range 1 .. Cur_Num_Trains =>
          (for all Id in Prev_Id =>
             (if Get_Previous_Track (Trains (Train), Id) /= No_Track_Id then
                Track_Signals (Get_Previous_Track (Trains (Train), Id)) in
+                 Orange | Red)
+              and then
+            (if Get_Other_Previous_Track (Trains (Train), Id) /= No_Track_Id then
+               Track_Signals (Get_Other_Previous_Track (Trains (Train), Id)) in
                  Orange | Red)));
 
    function Safe_Signaling return Boolean is
