@@ -2409,6 +2409,12 @@ package body SPARK_Definition is
             then
                null;
 
+            --  Do not issue a warning on an Itype derived from a user type, as
+            --  a warning is already generated for the user type.
+
+            elsif Is_Itype (E) then
+               null;
+
             elsif Emit_Messages then
                Error_Msg_N ("?type invariant ignored (not yet supported)", E);
             end if;
