@@ -70,6 +70,9 @@ is
 
          Track_Signals (Cur_Position.Track_End) := Orange;
 
+         pragma Assume (No_Track_Precedes_Itself);
+         pragma Assert (Occupied_Tracks_On_Red);
+
          --  the signal for tracks that precede the track leaved must be
          --  updated, depending on the position of other trains. No update is
          --  needed if the signal on such a track is Red, as this means some

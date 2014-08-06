@@ -8,26 +8,27 @@ trains.adb:35:47: info: index check proved
 trains.adb:61:25: warning: assertion might fail, requires (Occupied_Tracks_On_Red)
 trains.adb:62:25: warning: assertion might fail, requires (Previous_Tracks_On_Orange_Or_Red)
 trains.adb:63:10: info: assertion proved
-trains.adb:82:39: warning: array index check might fail
-trains.adb:84:16: info: precondition proved
-trains.adb:84:37: info: range check proved
-trains.adb:87:13: warning: loop invariant might fail after first iteration
-trains.adb:87:13: warning: loop invariant might fail in first iteration
-trains.adb:92:32: warning: range check might fail
-trains.adb:93:52: warning: array index check might fail
-trains.adb:98:25: warning: assertion might fail, requires (Occupied_Tracks_On_Red)
-trains.adb:99:25: warning: assertion might fail, requires (Previous_Tracks_On_Orange_Or_Red)
-trains.adb:100:10: info: assertion proved
-trains.adb:123:45: warning: array index check might fail
-trains.adb:125:37: info: index check proved
-trains.adb:128:19: warning: loop invariant might fail after first iteration
-trains.adb:128:19: warning: loop invariant might fail in first iteration
-trains.adb:130:62: info: range check proved
-trains.adb:131:42: warning: array index check might fail
-trains.adb:131:76: info: range check proved
-trains.adb:140:31: warning: assertion might fail, requires (Occupied_Tracks_On_Red)
-trains.adb:141:31: warning: assertion might fail, requires (Previous_Tracks_On_Orange_Or_Red)
-trains.adb:142:16: info: assertion proved
+trains.adb:74:25: warning: assertion might fail, requires (Occupied_Tracks_On_Red)
+trains.adb:85:39: warning: array index check might fail
+trains.adb:87:16: info: precondition proved
+trains.adb:87:37: info: range check proved
+trains.adb:90:13: warning: loop invariant might fail after first iteration
+trains.adb:90:13: warning: loop invariant might fail in first iteration
+trains.adb:95:32: warning: range check might fail
+trains.adb:96:52: warning: array index check might fail
+trains.adb:101:25: warning: assertion might fail, requires (Occupied_Tracks_On_Red)
+trains.adb:102:25: warning: assertion might fail, requires (Previous_Tracks_On_Orange_Or_Red)
+trains.adb:103:10: info: assertion proved
+trains.adb:126:45: warning: array index check might fail
+trains.adb:128:37: info: index check proved
+trains.adb:131:19: warning: loop invariant might fail after first iteration
+trains.adb:131:19: warning: loop invariant might fail in first iteration
+trains.adb:133:62: info: range check proved
+trains.adb:134:42: warning: array index check might fail
+trains.adb:134:76: info: range check proved
+trains.adb:143:31: warning: assertion might fail, requires (Occupied_Tracks_On_Red)
+trains.adb:144:31: warning: assertion might fail, requires (Previous_Tracks_On_Orange_Or_Red)
+trains.adb:145:16: info: assertion proved
 trains.ads:28:06: info: length check proved
 trains.ads:47:06: info: length check proved
 trains.ads:47:12: info: length check proved
@@ -52,4 +53,4 @@ trains.ads:128:16: info: range check proved
 trains.ads:130:45: info: index check proved
 trains.ads:131:31: info: index check proved
 trains.ads:131:59: info: index check proved
-trains.ads:204:14: warning: postcondition might fail
+trains.ads:205:14: warning: postcondition might fail
