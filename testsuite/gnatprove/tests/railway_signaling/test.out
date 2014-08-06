@@ -1,0 +1,55 @@
+trains.adb:9:14: info: postcondition proved
+trains.adb:9:28: info: range check proved
+trains.adb:10:48: info: index check proved
+trains.adb:28:11: info: range check proved
+trains.adb:33:10: info: loop invariant initialization proved
+trains.adb:33:10: info: loop invariant preservation proved
+trains.adb:35:47: info: index check proved
+trains.adb:61:25: warning: assertion might fail, requires (Occupied_Tracks_On_Red)
+trains.adb:62:25: warning: assertion might fail, requires (Previous_Tracks_On_Orange_Or_Red)
+trains.adb:63:10: info: assertion proved
+trains.adb:82:39: warning: array index check might fail
+trains.adb:84:16: info: precondition proved
+trains.adb:84:37: info: range check proved
+trains.adb:87:13: warning: loop invariant might fail after first iteration
+trains.adb:87:13: warning: loop invariant might fail in first iteration
+trains.adb:92:32: warning: range check might fail
+trains.adb:93:52: warning: array index check might fail
+trains.adb:98:25: warning: assertion might fail, requires (Occupied_Tracks_On_Red)
+trains.adb:99:25: warning: assertion might fail, requires (Previous_Tracks_On_Orange_Or_Red)
+trains.adb:100:10: info: assertion proved
+trains.adb:123:45: warning: array index check might fail
+trains.adb:125:37: info: index check proved
+trains.adb:128:19: warning: loop invariant might fail after first iteration
+trains.adb:128:19: warning: loop invariant might fail in first iteration
+trains.adb:130:62: info: range check proved
+trains.adb:131:42: warning: array index check might fail
+trains.adb:131:76: info: range check proved
+trains.adb:140:31: warning: assertion might fail, requires (Occupied_Tracks_On_Red)
+trains.adb:141:31: warning: assertion might fail, requires (Previous_Tracks_On_Orange_Or_Red)
+trains.adb:142:16: info: assertion proved
+trains.ads:28:06: info: length check proved
+trains.ads:47:06: info: length check proved
+trains.ads:47:12: info: length check proved
+trains.ads:48:12: info: length check proved
+trains.ads:49:12: info: length check proved
+trains.ads:50:12: info: length check proved
+trains.ads:51:12: info: length check proved
+trains.ads:92:16: info: range check proved
+trains.ads:93:19: info: range check proved
+trains.ads:95:25: info: index check proved
+trains.ads:95:55: info: index check proved
+trains.ads:96:25: info: index check proved
+trains.ads:96:55: info: index check proved
+trains.ads:97:25: info: index check proved
+trains.ads:97:55: info: index check proved
+trains.ads:98:25: info: index check proved
+trains.ads:98:55: info: index check proved
+trains.ads:111:16: info: range check proved
+trains.ads:112:33: info: index check proved
+trains.ads:113:33: info: index check proved
+trains.ads:128:16: info: range check proved
+trains.ads:130:45: info: index check proved
+trains.ads:131:31: info: index check proved
+trains.ads:131:59: info: index check proved
+trains.ads:204:14: warning: postcondition might fail
