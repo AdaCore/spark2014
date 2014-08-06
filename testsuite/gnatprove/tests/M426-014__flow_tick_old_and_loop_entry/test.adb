@@ -36,11 +36,11 @@ is
    begin
       Wibble: for I in Integer range 1 .. 10 loop
          X := 0;
+         pragma Loop_Invariant (X = X'Loop_Entry);  --  uninitialized
          for J in Integer loop
             pragma Loop_Invariant (X = X'Loop_Entry);  --  OK
             null;
          end loop;
-         pragma Loop_Invariant (X = X'Loop_Entry);  --  uninitialized
       end loop Wibble;
    end Test_04;
 

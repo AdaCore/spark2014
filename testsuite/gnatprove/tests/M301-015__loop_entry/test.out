@@ -2,19 +2,19 @@ p.adb:1:11: warning: subprogram "P" has no effect
 p.adb:8:14: info: length check proved
 p.adb:8:25: info: length check proved
 p.adb:8:47: info: length check proved
-p.adb:16:19: info: range check proved
-p.adb:16:19: warning: loop invariant might fail after first iteration, requires X (I3 + 1 .. Last) = XX'loop_entry (I3 + 1..3)
-p.adb:16:19: warning: loop invariant might fail in first iteration, requires X (I3 + 1 .. Last) = XX'loop_entry (I3 + 1..3)
-p.adb:16:41: info: range check proved
-p.adb:29:16: info: range check proved
-p.adb:29:16: warning: loop invariant might fail after first iteration, requires X (I3 + 1 .. Last) = XX'loop_entry (I3 + 1..3)
-p.adb:29:16: warning: loop invariant might fail in first iteration, requires X (I3 + 1 .. Last) = XX'loop_entry (I3 + 1..3)
-p.adb:29:38: info: range check proved
-p.adb:32:13: info: range check proved
-p.adb:32:13: warning: loop invariant might fail after first iteration, requires X (I3 + 1 .. Last) = XX'loop_entry (I3 + 1..3)
-p.adb:32:13: warning: loop invariant might fail in first iteration, requires X (I3 + 1 .. Last) = XX'loop_entry (I3 + 1..3)
-p.adb:32:35: info: range check proved
-p.adb:35:10: info: range check proved
-p.adb:35:10: warning: loop invariant might fail after first iteration, requires X (I3 + 1 .. Last) = XX'loop_entry (I3 + 1..3)
-p.adb:35:10: warning: loop invariant might fail in first iteration, requires X (I3 + 1 .. Last) = XX'loop_entry (I3 + 1..3)
-p.adb:35:32: info: range check proved
+p.adb:11:07: info: loop invariant initialization proved
+p.adb:12:10: info: range check proved
+p.adb:12:10: warning: loop invariant might fail after first iteration, requires X (I3 + 1 .. Last) = XX'loop_entry (I3 + 1..3)
+p.adb:12:32: info: range check proved
+p.adb:14:10: info: loop invariant initialization proved
+p.adb:15:13: info: range check proved
+p.adb:15:13: warning: loop invariant might fail after first iteration, requires X (I3 + 1 .. Last) = XX'loop_entry (I3 + 1..3)
+p.adb:15:35: info: range check proved
+p.adb:17:13: info: loop invariant initialization proved
+p.adb:18:16: info: range check proved
+p.adb:18:16: warning: loop invariant might fail after first iteration, requires X (I3 + 1 .. Last) = XX'loop_entry (I3 + 1..3)
+p.adb:18:38: info: range check proved
+p.adb:22:19: info: range check proved
+p.adb:22:19: warning: loop invariant might fail after first iteration, requires X (I3 + 1 .. Last) = XX'loop_entry (I3 + 1..3)
+p.adb:22:19: warning: loop invariant might fail in first iteration, requires X (I3 + 1 .. Last) = XX'loop_entry (I3 + 1..3)
+p.adb:22:41: info: range check proved

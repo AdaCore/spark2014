@@ -7610,6 +7610,16 @@ package body Gnat2Why.Expr is
    begin
       case Nkind (Decl) is
          when N_Object_Declaration =>
+
+            --  non scalar object declaration should not appear before the
+            --  loop invariant in a loop.
+
+            pragma Assert
+              (not Is_In_Loop_Initial_Statements
+               or else (Is_Scalar_Type (Etype (Defining_Entity (Decl)))
+                 and then Loop_Entity_Set.Contains (Defining_Entity (Decl)))
+               or else Actions_Entity_Set.Contains (Defining_Entity (Decl)));
+
             R := Assignment_Of_Obj_Decl (Decl);
             if not Is_Partial_View (Defining_Identifier (Decl)) then
                declare

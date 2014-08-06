@@ -938,8 +938,8 @@ package body Gnat2Why.External_Axioms is
 
                if Flow_Utility.Has_Proof_Global_Reads (Actual) then
                   Error_Msg_FE
-                    ("& has to be pure in instance with external axioms",
-                     Package_Entity, Actual);
+                    ("non-pure actual & in instance with external axioms not"
+                     & " yet supported", Package_Entity, Actual);
                end if;
 
                Open_Theory

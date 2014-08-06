@@ -8,8 +8,14 @@ procedure P is
    X : T3 := (others => (others => (others => (others => 0))));
 begin
    L1 : for I3 in Index loop
+      pragma Loop_Invariant
+        (X (I3 + 1 .. Last) = X'Loop_Entry (I3 + 1 .. Last));
       L2 : for I21 in Index loop
+         pragma Loop_Invariant
+           (X (I3 + 1 .. Last) = X'Loop_Entry (I3 + 1 .. Last));
          L3 : for I22 in Index loop
+            pragma Loop_Invariant
+              (X (I3 + 1 .. Last) = X'Loop_Entry (I3 + 1 .. Last));
             L4 : for I1 in Index loop
                X (I3) (I21, I22) (I1) := 1;
                pragma Loop_Invariant
@@ -25,13 +31,7 @@ begin
 --                      X (I3) (I21, I22)'Loop_Entry (L4) (I1 + 1 .. Last)
                  );
             end loop L4;
-            pragma Loop_Invariant
-              (X (I3 + 1 .. Last) = X'Loop_Entry (I3 + 1 .. Last));
          end loop L3;
-         pragma Loop_Invariant
-           (X (I3 + 1 .. Last) = X'Loop_Entry (I3 + 1 .. Last));
       end loop L2;
-      pragma Loop_Invariant
-        (X (I3 + 1 .. Last) = X'Loop_Entry (I3 + 1 .. Last));
    end loop L1;
 end P;

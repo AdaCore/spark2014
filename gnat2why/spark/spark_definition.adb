@@ -125,11 +125,6 @@ package body SPARK_Definition is
    Violation_Detected : Boolean;
    --  Set to True when a violation is detected
 
-   Inside_Loop : Boolean;
-   --  Set to True when traversing a loop. This is used to detect which
-   --  entities are defined in loops, which may require a special
-   --  translation. Those entities are stored in Loop_Entity_Set.
-
    Inside_Actions : Boolean;
    --  Set to True when traversing actions (statements introduced by the
    --  compiler inside expressions), which require a special translation.
@@ -390,7 +385,6 @@ package body SPARK_Definition is
    begin
       Current_SPARK_Pragma := Empty;
       Violation_Detected := False;
-      Inside_Loop := False;
       Inside_Actions := False;
    end Initialize;
 
@@ -457,6 +451,70 @@ package body SPARK_Definition is
       --  kind of expression (indexed components) is not, so need to detect
       --  special case here.
       --  Why aren't these kind of nodes Indexed_Components instead?
+
+      procedure Check_Loop_Invariant_Placement (Stmts : List_Id);
+      --  Checks that no non-scalar object declaration or nested loop appears
+      --  before the last loop-invariant or variant in a loop's list of
+      --  statements. Also stores scalar objects declared before the last
+      --  loop-invariant in Loop_Entity_Set.
+
+      ------------------------------------
+      -- Check_Loop_Invariant_Placement --
+      ------------------------------------
+
+      procedure Check_Loop_Invariant_Placement (Stmts : List_Id) is
+
+         use Node_Lists;
+
+         Loop_Stmts : constant Node_Lists.List :=
+           Get_Flat_Statement_And_Declaration_List (Stmts);
+         Inv_Found  : Boolean := False;
+         N          : Node_Id;
+      begin
+
+         for Cur in reverse Loop_Stmts.Iterate loop
+            N := Element (Cur);
+
+            if not Inv_Found then
+
+               --  Find last loop invariant/variant from the loop
+
+               if Is_Pragma_Check (N, Name_Loop_Invariant)
+                 or else Is_Pragma (N, Pragma_Loop_Variant)
+               then
+                  Inv_Found := True;
+               end if;
+            else
+
+               --  Check that there are no nested loops and non-scalar object
+               --  declarations before the last invariant/variant.
+
+               if Nkind (N) = N_Object_Declaration then
+                  if Is_Scalar_Type (Etype (Defining_Entity (N))) then
+
+                     --  Store scalar entities defined in loops before the
+                     --  invariant in Loop_Entity_Set
+
+                     Loop_Entity_Set.Include (Defining_Entity (N));
+                  else
+                     Violation_Detected := True;
+                     if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
+                        Error_Msg_N
+                          ("non-scalar objects declared before loop-invariant"
+                           & " not yet supported", N);
+                     end if;
+                  end if;
+               elsif Nkind (N) = N_Loop_Statement then
+                  Violation_Detected := True;
+                  if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
+                     Error_Msg_N
+                       ("nested loops before loop-invariant not yet supported",
+                        N);
+                  end if;
+               end if;
+            end if;
+         end loop;
+      end Check_Loop_Invariant_Placement;
 
       -------------------------
       -- Is_Update_Aggregate --
@@ -696,23 +754,17 @@ package body SPARK_Definition is
             end;
 
          when N_Loop_Statement =>
-            declare
-               Save_Inside_Loop : constant Boolean := Inside_Loop;
-            begin
-               Inside_Loop := True;
+            Check_Loop_Invariant_Placement (Statements (N));
 
-               --  Mark the entity for the loop, which is used in the
-               --  translation phase to generate exceptions for this loop.
+            --  Mark the entity for the loop, which is used in the
+            --  translation phase to generate exceptions for this loop.
 
-               Mark_Entity (Entity (Identifier (N)));
+            Mark_Entity (Entity (Identifier (N)));
 
-               if Present (Iteration_Scheme (N)) then
-                  Mark_Iteration_Scheme (Iteration_Scheme (N));
-               end if;
-               Mark_List (Statements (N));
-
-               Inside_Loop := Save_Inside_Loop;
-            end;
+            if Present (Iteration_Scheme (N)) then
+               Mark_Iteration_Scheme (Iteration_Scheme (N));
+            end if;
+            Mark_List (Statements (N));
 
          when N_Membership_Test =>
             if Is_Array_Type (Etype (Left_Opnd (N))) then
@@ -2656,12 +2708,6 @@ package body SPARK_Definition is
 
       if Entity_Set.Contains (E) then
          return;
-      end if;
-
-      --  Store entities defines in loops in Loop_Entity_Set
-
-      if Inside_Loop then
-         Loop_Entity_Set.Insert (E);
       end if;
 
       --  Store entities defines in actions in Actions_Entity_Set

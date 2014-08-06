@@ -61,6 +61,12 @@ package body Gnat2Why.Expr.Loops is
    -- Local Subprograms --
    -----------------------
 
+   In_Loop_Initial_Statements : Boolean := False;
+   --  Ghost variable. True when analyzing the initial statements of a loop.
+
+   function Is_In_Loop_Initial_Statements return Boolean is
+      (In_Loop_Initial_Statements);
+
    procedure Get_Loop_Invariant
      (Loop_Stmts      : Node_Lists.List;
       Initial_Stmts   : out Node_Lists.List;
@@ -390,6 +396,10 @@ package body Gnat2Why.Expr.Loops is
 
    begin
 
+      --  nested loops should not appear before the loop invariant in a loop.
+
+      pragma Assert (not In_Loop_Initial_Statements);
+
       if Present (Scheme) and then
         not Present (Condition (Scheme)) and then
         Present (Loop_Parameter_Specification (Scheme))
@@ -415,8 +425,9 @@ package body Gnat2Why.Expr.Loops is
          Final_Stmts     => Final_Stmts);
 
       --  Transform statements before and after the loop invariants
-
+      In_Loop_Initial_Statements := True;
       Initial_Prog := Transform_Loop_Body_Statements (Initial_Stmts);
+      In_Loop_Initial_Statements := False;
       Final_Prog   := Transform_Loop_Body_Statements (Final_Stmts);
 
       --  Generate the implicit invariant for the dynamic properties of objects

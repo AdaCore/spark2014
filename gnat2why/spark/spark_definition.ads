@@ -61,8 +61,8 @@ package SPARK_Definition is
    --  current compiled unit, and entities from other units.
 
    Loop_Entity_Set : Node_Sets.Set;
-   --  Set of entities defined in loops, which may require a special
-   --  translation. See gnat2why.ads for details.
+   --  Set of entities defined in loops before the invariant, which may require
+   --  a special translation. See gnat2why.ads for details.
 
    Actions_Entity_Set : Node_Sets.Set;
    --  Set of entities defined in actions which require a special translation.
