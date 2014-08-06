@@ -1,0 +1,36 @@
+\section{Formalization for A Subset of SPARK 2014 Semantics}
+\subsection{Syntax of SPARK 2014 Subset}
+%\begin{quote}
+\begin{lstlisting}[escapechar=\#]
+Inductive expr: Type := 
+  | Literal: astnum #$\rightarrow$# literal #$\rightarrow$# expr 
+  | Name: astnum #$\rightarrow$# name #$\rightarrow$# expr 
+  | BinOp: astnum #$\rightarrow$# binary_operator #$\rightarrow$# expr #$\rightarrow$# expr #$\rightarrow$# expr 
+  | UnaOp: astnum #$\rightarrow$# unary_operator #$\rightarrow$# expr #$\rightarrow$# expr
+with name: Type := 
+  | Identifier: astnum #$\rightarrow$# idnum #$\rightarrow$# name 
+  | Indexed_Component: astnum #$\rightarrow$# astnum #$\rightarrow$# idnum #$\rightarrow$# expr #$\rightarrow$# name 
+  | Selected_Component: astnum #$\rightarrow$# astnum #$\rightarrow$# idnum #$\rightarrow$# idnum #$\rightarrow$# name.
+
+Inductive stmt: Type := 
+  | Null: smt 
+  | Assignment: astnum #$\rightarrow$# name #$\rightarrow$# expr #$\rightarrow$# stmt 
+  | If: astnum #$\rightarrow$# expr #$\rightarrow$# stmt #$\rightarrow$# stmt #$\rightarrow$# stmt 
+  | While: astnum #$\rightarrow$# expr #$\rightarrow$# stmt #$\rightarrow$# stmt 
+  | Call: astnum #$\rightarrow$# astnum #$\rightarrow$# procnum #$\rightarrow$# list expr #$\rightarrow$# stmt 
+  | Sequence: astnum #$\rightarrow$# stmt #$\rightarrow$# stmt #$\rightarrow$# stmt.
+\end{lstlisting}
+
+\begin{lstlisting}[escapechar=\#]
+Inductive type_decl: Type := 
+  | Subtype: astnum #$\rightarrow$# typenum #$\rightarrow$# type #$\rightarrow$# range #$\rightarrow$# type_decl 
+  | Derived_Type: astnum #$\rightarrow$# typenum #$\rightarrow$# type #$\rightarrow$# range #$\rightarrow$# type_decl 
+  | Integer_Type: astnum #$\rightarrow$# typenum #$\rightarrow$# range #$\rightarrow$# type_decl
+  | Array_Type: astnum #$\rightarrow$# typenum #$\rightarrow$# type #$\rightarrow$# type #$\rightarrow$# type_decl 
+  | Record_Type: astnum #$\rightarrow$# typenum #$\rightarrow$# list (idnum*type) #$\rightarrow$# type_decl.
+\end{lstlisting}
+
+
+\subsection{Run-Time Check Flags}
+
+\subsection{Semantical Formalization With Run-Time Checks}

@@ -1,0 +1,48 @@
+\begin{abstract}
+\vspace*{-.5cm}
+
+\hspace{.5cm} We present the first steps of a broad effort to develop a formal
+representation of SPARK 2014 suitable for supporting machine-verified 
+static analyses and translations. In our initial work, we have developed 
+technology for translating the GNAT compiler's abstract syntax trees 
+into the Coq proof assistant, and we have formalized in Coq the dynamic
+semantics for a toy subset of the SPARK 2014 language [Spark2014].
+SPARK 2014 programs must ensure the absence of certain run-time errors 
+(for example, those arising while performing division by zero, accessing 
+non existing array cells, overflow on integer computation).  The main 
+novelty in our semantics is the encoding of (a small part of) the run-time 
+checks performed by the compiler to ensure that well-typed and well 
+initialized terminating SPARK programs do not lead to erroneous execution. 
+This and other results are mechanically proved using the Coq proof assistant. 
+The modeling of on-the-fly run-time checks within the semantics lays the 
+foundation for future work on mechanical reasoning about SPARK 2014 
+program correctness (in the particular area of robustness) and for 
+studying the correctness of compiler optimizations concerning run-time 
+checks, among others.
+\end{abstract} 
+
+
+
+
+
+% Together with a certified compiler for SPARK, 
+% This is part of a larger effort that employs certified compiler
+
+% This provides a crucial component for an eventual system of certified
+% compilation that will enable policy conformance at the source level to
+% apply to executable.
+
+% proof-carry-code   certificates translated to machine code level
+% preserved by a certified compiler.
+
+
+
+
+
+
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 

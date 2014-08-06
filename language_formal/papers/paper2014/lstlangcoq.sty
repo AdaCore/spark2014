@@ -1,0 +1,34 @@
+%%
+%% Coq definition (c) 2001 Guillaume Dufay 
+%%                           <Guillaume.Dufay@sophia.inria.fr>
+%% with some modifications by J. Charles (2005)
+%% and hacks by Andrew Appel (2011)
+%%
+\lstdefinelanguage{Coq}%
+  {morekeywords={Variable,Inductive,CoInductive,Fixpoint,CoFixpoint,%
+      Definition,Lemma,Theorem,Axiom,Local,Save,Grammar,Syntax,Intro,%
+      Trivial,Qed,Intros,Symmetry,Simpl,Rewrite,Apply,Elim,Assumption,%
+      Left,Cut,Case,Auto,Unfold,Exact,Right,Hypothesis,Pattern,Destruct,%
+      Constructor,Defined,Fix,Record,Proof,Induction,Hints,Exists,let,in,%
+      Parameter,Split,Red,Reflexivity,Transitivity,if,then,else,Opaque,%
+      Transparent,Inversion,Absurd,Generalize,Mutual,Cases,of,end,Analyze,%
+      AutoRewrite,Functional,Scheme,params,Refine,using,Discriminate,Try,%
+      Require,Load,Import,Scope,Set,Open,Section,End,match,with,Ltac, %, exists, forall
+      Declare,Instance
+	},% 
+   sensitive, %
+   morecomment=[n]{(*}{*)},%
+   morestring=[d]",%
+   literate={=>}{{$\Rightarrow$\ }}1 {>->}{{$\rightarrowtail$}}2{->}{{$\to$\ }}1
+   {<->}{$\leftrightarrow$}1
+   {forall}{$\forall\,$}1
+   {forallb}{forallb}7
+   {exists}{$\exists\,$}1
+   {existsb}{existsb}7
+   {existsv}{existsv}7
+   {\/\\}{{$\wedge$\ }}1
+   {|-}{{$\vdash$\ }}1
+   {\\\/}{{$\vee$\ }}1
+   {~}{{$\sim$}}1
+   %{<>}{{$\neq$}}1 indeed... no.
+  }[keywords,comments,strings]%

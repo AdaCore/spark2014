@@ -1,0 +1,527 @@
+
+% \usepackage{picinpar}
+% \usepackage{figsize}
+% \usepackage{graphicx}
+% \usepackage{listings}
+% \usepackage{times}
+% \usepackage{multicol}
+% \usepackage{colortbl}
+% \usepackage{color}
+% \usepackage{url}
+% \usepackage{vmargin}
+% \usepackage{amsmath}
+% \usepackage{amssymb}
+% \usepackage{latexsym}
+
+%%% Added by Edwin %%%
+
+\newcommand{\VCgen}{\ensuremath{\mathsf{Pre}}}
+
+%%% End of Added by Edwin %%%
+
+\newenvironment{citemize}{
+   \setlength{\partopsep}{0pt}
+   \vspace{-\parskip}
+   \begin{itemize}
+   \setlength{\parsep}{0pt}
+   \setlength{\parskip}{0pt}}{\end{itemize}}
+
+\newenvironment{smallitemize}{\setlength{\topsep}{0.0 truein}
+   \begin{itemize}
+   \setlength{\leftmargin}{.25 truein}
+   \setlength{\parsep}{0.0 truein}
+   \setlength{\parskip}{0.0 truein}
+   \setlength{\itemsep}{0.0 truein}}{\end{itemize}}
+
+\newenvironment{smalldescription}{\setlength{\topsep}{0.0 truein}
+   \begin{description}
+   \setlength{\leftmargin}{.25 truein}
+   \setlength{\parsep}{0.0 truein}
+   \setlength{\parskip}{0.0 truein}
+   \setlength{\itemsep}{0.0 truein}}{\end{description}}
+
+\newenvironment{smallenumerate}{\setlength{\topsep}{0.0 truein}
+   \begin{enumerate}
+   \setlength{\leftmargin}{0.25 truein}
+   \setlength{\parsep}{0.0 truein}
+   \setlength{\parskip}{0.0 truein}
+   \setlength{\itemsep}{0.0 truein}}{\end{enumerate}}
+
+\newenvironment{flatenumerate}{\setlength{\topsep}{0.0 truein}
+   \begin{enumerate}
+   \setlength{\leftmargin}{0.25 truein}
+   \setlength{\parsep}{0.0 truein}
+   \setlength{\parskip}{0.0 truein}
+   \setlength{\itemsep}{0.0 truein}}{\end{enumerate}}
+
+\newenvironment{myitemize}[1]%
+               {\begin{itemize}\setlength{\itemsep}{#1}}%
+               {\end{itemize}}
+
+\def\sqzhuge{\vspace{-14pt}}
+\def\sqzlarge{\vspace{-12pt}}
+\def\sqzsub{\vspace{-10pt}}
+\def\sqzpar{\vspace{-10pt}}
+\def\sqzsmall{\vspace{-7pt}}
+\def\sqztiny{\vspace{-5pt}}
+\def\sqz{\vspace{-10pt}}
+
+%\textheight=9in
+%\textwidth=6.5in
+%\topmargin=0in
+%\oddsidemargin=0in
+%\evensidemargin=0in
+
+%\hoffset=0in
+%\voffset=0in
+
+%% Theorem environments
+
+%\newtheorem{theorem}{Theorem}[section]
+%\newtheorem{example}[theorem]{Example}
+%\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{fact}[theorem]{Fact}
+\newtheorem{define}[theorem]{Definition}
+%\newtheorem{proposition}[theorem]{Proposition}
+
+%\newenvironment{proof}{\begin{trivlist}\item[\hskip\labelsep{\bf
+%Proof:}]}{$\Box$\end{trivlist}}
+
+\newcommand{\nextcase}[1]{\vspace{2mm}{\noindent\underline{{#1}.}}}
+
+\newcommand{\PROOF}[2]{\noindent{\bf {#1} \ref{#2}\ }}
+
+%%%  General
+\renewcommand{\vec}[1]{\bar{#1}}
+\newcommand{\comment}[1]{{\sf ({#1})}}
+\newcommand{\ie}{{\em i.e.}}
+\newcommand{\etc}{{\em etc.}}
+\newcommand{\wrt}{{\em wrt.}}
+\newcommand{\eg}{{\em e.g.}}
+\newcommand{\etal}{{\em et al.}}
+\newcommand{\ignore}[1]{}
+\newcommand{\marginnote}[1]
+  {\mbox{}\marginpar{\hspace{0pt}\tiny{#1}}}
+%%% ---
+%%%  General math
+\newcommand{\Int}{\mathsf{Int}}
+\newcommand{\True}{\mathsf{True}}
+\newcommand{\False}{\mathsf{False}}
+\newcommand{\all}[2]{\forall #1 : #2}
+\newcommand{\some}[2]{\exists #1 : #2}
+\newcommand{\powset}[1]{\ensuremath{\mathcal{P}(#1)}}
+\newcommand{\rel}[3]{#1\;#2\;#3}
+\newcommand{\mkset}[1]{\{{#1}\}}
+\newcommand{\fromto}[2]{\{{#1}\ldots{#2}\}}
+\newcommand{\dom}[1]{\mathit{dom(#1)}}
+\newcommand{\ran}[1]{\mathit{ran(#1)}}
+\newcommand{\imp}{\Rightarrow}
+% \replace{entity}{new}{old}
+\newcommand{\repl}[3]{{#1}[{#2}/{#3}]}
+\newcommand{\updsto}[3]{[#1\mid#2\!\mapsto\!#3]}
+%%% ---
+%%%  Syntax
+\newcommand{\svarset}{\mathbf{SVar}}
+\newcommand{\hvarset}{\mathbf{HVar}}
+\newcommand{\varset}{\mathbf{Var}}
+\newcommand{\fsv}[1]{\mathrm{fsv}(#1)}
+\newcommand{\fav}[1]{\mathrm{fav}(#1)}
+\newcommand{\fuv}[1]{\mathrm{fuv}(#1)}
+\newcommand{\fv}[1]{\mathrm{fv}(#1)}
+% \updarr{H}{A}{A}
+\newcommand{\updarr}[3]{{#1}\{{#2}\,:\,{#3}\}}
+% \accarr{H}{A}
+\newcommand{\accarr}[2]{{#1}[{#2}]}
+\newcommand{\zeroarr}{Z}
+% \condexp{\phi}{A}{i}{I}
+\newcommand{\condexp}[4]{\{({#1} \rightarrow {#2}) \mid {#3} \in {#4}\}}
+\newcommand{\condexptwo}[4]{\{{#1} \rightarrow {#2},\ {#3} \rightarrow {#4}\}}
+\newcommand{\conda}[4]{\{{#1} \rightarrow {#2},\ldots,{#3} \rightarrow {#4}\}}
+\newcommand{\condatwo}[4]{\{{#1} \rightarrow {#2},\,{#3} \rightarrow {#4}\}} 
+\newcommand{\expset}{\mathbf{Exp}}
+\newcommand{\aexpset}{\mathbf{AExp}}
+\newcommand{\bexpset}{\mathbf{BExp}}
+\newcommand{\hexpset}{\mathbf{HExp}}
+\newcommand{\cntxtset}{\mathbf{Cntxt}}
+\newcommand{\cmdset}{\mathbf{Cmd}}
+\newcommand{\op}{\mathsf{op}}
+\newcommand{\mod}{\mathsf{mod}}
+\newcommand{\odd}[1]{\mathsf{odd}({#1})}
+\newcommand{\bop}{\mathsf{bop}}
+\newcommand{\opexp}[3]{{#1}\:{#2}\:{#3}}
+\newcommand{\hole}{\lfloor\,\rfloor}
+\newcommand{\plug}[2]{{#1}\lfloor{#2}\rfloor}
+\newcommand{\SKIP}{\mathbf{skip}}
+\newcommand{\ASSERT}{\mathbf{assert}}
+\newcommand{\IF}{\mathbf{if}}
+\newcommand{\THEN}{\mathbf{then}}
+\newcommand{\ELSE}{\mathbf{else}}
+\newcommand{\FI}{\mathbf{fi}}
+\newcommand{\ENDIF}{\mathbf{end\;if}}
+\newcommand{\WHILE}{\mathbf{while}}
+\newcommand{\FOR}{\mathbf{for}}
+\newcommand{\DO}{\mathbf{do}}
+\newcommand{\OD}{\mathbf{od}}
+\newcommand{\NEW}{\mathbf{new}}
+\newcommand{\AND}{\mathbf{and}}
+\newcommand{\NOT}{\mathbf{not}}
+\newcommand{\assignc}[2]{\ensuremath{{#1}\;\mbox{:=}\;{#2}}}
+\newcommand{\aassignc}[2]{\ensuremath{{#1}\;\mbox{:=}\;{#2}}}
+\newcommand{\updatec}[3]{\ensuremath{{#1}[{#2}]\;\mbox{:=}\;{#3}}}
+\newcommand{\skipc}{\mathbf{skip}}
+\newcommand{\newc}[1]{{#1} := \mathbf{new}}
+\newcommand{\assertc}[1]{\mathbf{assert}({#1})}
+\newcommand{\seqc}[2]{\ensuremath{{#1}\:;{#2}}}
+\newcommand{\condc}[3]{\mathbf{if}\ {#1}\ \mathbf{then}\ {#2}\ \mathbf{else}\ {#3}}
+\newcommand{\ifc}[3]{\mathbf{if}\ {#1}\ \mathbf{then}\ {#2}\ \mathbf{else}\ {#3}}
+\newcommand{\whilec}[2]{\mathbf{while}\ {#1}\ \mathbf{do}\ {#2}}
+\newcommand{\forc}[3]{\mathbf{for}\ {#1} \leftarrow 1\ \mathbf{to}\ {#2}\ \mathbf{do}\ {#3}}
+\newcommand{\forcfm}[3]{\mathbf{for}\ {#1} \leftarrow 1\ \mathbf{to}\ {#2}\ \mathbf{do} \\ \hspace*{1cm} {#3}}
+\newcommand{\callc}[1]{\mathbf{call}\ {#1}}
+%%% ---
+%%%  Semantics
+\newcommand{\sto}{\mathit{Store}}
+\newcommand{\s}{\sigma}
+\newcommand{\arr}{\mathit{Array}}
+\newcommand{\Val}{\mathit{Val}}
+\newcommand{\PE}{\mathcal{P}}
+% \setarr{s}{h}{n}{v}
+\newcommand{\setarr}[4]{\updsto{{#1}}{{#2}({#3})}{{#4}}}
+\newcommand{\semf}[1]{\ensuremath{[\![{#1}]\!]}}
+% \seme{E}{s}
+\newcommand{\seme}[2]{\ensuremath{[\![{#1}]\!]_{#2}}}
+% \sem{s}{S}{s}
+\newcommand{\sem}[3]{\ensuremath{{#1}\;\semf{#2}\;{#3}}}
+% \semp{s}{S}{s}
+\newcommand{\semp}[3]{\ensuremath{{#1}\;{#2}\;{#3}}}
+% \semit{s}{f_i}{s}
+\newcommand{\semit}[3]{\ensuremath{{#1}\;#2\;{#3}}}
+% \notmod{S}{E}
+\newcommand{\notmod}[2]{\ensuremath{{#1} \mbox{ \textit{preserves} } {#2}}}
+%%% ---
+%%% One-store Assertions
+\newcommand{\oneassert}{\mathbf{1Assert}}
+\newcommand{\ph}{\phi}
+\newcommand{\true}{\mbox{\it true}}
+\newcommand{\false}{\mbox{\it false}}
+\newcommand{\mkuoneass}[2]{\forall {#1}.{#2}}
+% \modcond{p}{w}
+\newcommand{\modcond}[2]{\mathrm{mod}^{{#1}}_{{#2}}}
+% \satone{s}{\ph}
+\newcommand{\satone}[2]{{#1} \models {#2}}
+\newcommand{\logeqone}[2]{{#1} \equiv_1 {#2}}
+\newcommand{\LOGIMPonec}{\vartriangleright_1}
+\newcommand{\logimponec}[2]{{#1}\LOGIMPonec {#2}}
+\newcommand{\necprecf}{\mathit{NPC}}
+% \necprec{S}{\phi}
+\newcommand{\necprec}[2]{\necprecf({#1},{#2})}
+%%% ---
+%%% Two-store Assertions
+\newcommand{\twoassert}{\mathbf{twoAssn}}
+\newcommand{\twoasserts}{\powset{\twoassert}}
+\newcommand{\tht}{\theta}
+\newcommand{\Tht}{\Theta}
+\newcommand{\indpdsym}{\mathord{\ltimes}}
+\newcommand{\indpd}[1]{\ensuremath{{#1}\indpdsym}}
+\newcommand{\iindpd}[2]{\ensuremath{{#1}\indpdsym_{#2}}}
+\newcommand{\mktht}[2]{{#1} \imp \indpd{#2}}
+\newcommand{\antass}[1]{\mathsf{antec}({#1})}
+\newcommand{\conass}[1]{\mathsf{consq}({#1})}
+\newcommand{\addant}[2]{\mathsf{add}^{\wedge}_{#1}(#2)}
+\newcommand{\mkutwoass}[2]{\forall {#1}.{#2}}
+\newcommand{\refinef}{\mathit{Purify}}
+\newcommand{\refine}[1]{\refinef({#1})}
+\newcommand{\decompf}{\mathit{decomp}}
+\newcommand{\decomp}[1]{\mathit{decomp}(#1)}
+% \precond{p}{w/h[_]}
+\newcommand{\precond}[2]{\mathit{2PC}^{{#1}}_{{#2}}}
+\newcommand{\preucond}[2]{\mathit{2PC}^{{#1}}_{{#2[\_]}}}
+% \sattwo{s}{s}{\tht}
+\newcommand{\sattwo}[3]{{#1}\&{#2} \models {#3}}
+\newcommand{\nsattwo}[3]{{#1}\&{#2} \not\!\models {#3}}
+\newcommand{\logeqtwo}[2]{{#1} \equiv_2 {#2}}
+% \lhst{\theta}
+\newcommand{\LOGIMPtwoc}{\vartriangleright_2}
+\newcommand{\logimptwoc}[2]{{#1}\LOGIMPtwoc {#2}}
+\newcommand{\lhst}[1]{ant({#1})}
+% \rhst{\theta}
+\newcommand{\rhst}[1]{con({#1})}
+\newcommand{\wli}{{\cal I}}
+% normalized assertions
+\newcommand{\domn}[1]{\mathit{dom}({#1})}
+% \assn{w}{\Tht}
+\newcommand{\assn}[2]{{#1}\mathit{-assertion}({#2})}
+% \antassn{w}{\Tht}
+\newcommand{\antassn}[2]{{#1}\mathit{-antec}({#2})}
+
+%%% ---
+%%% Algorithm
+\newcommand{\Pref}{\ensuremath{\mathsf{Pre}}}
+\newcommand{\PreIf}{\ensuremath{\mathsf{Pre_{\mathrm{if}}}}}
+\newcommand{\PreCall}{\ensuremath{\mathsf{Pre_{\mathrm{call}}}}}
+\newcommand{\PreWhile}{\ensuremath{\mathsf{Pre_{\mathrm{while}}}}}
+\newcommand{\PreFor}{\ensuremath{\mathsf{Pre_{\mathrm{for}}}}}
+\newcommand{\PreProc}{\ensuremath{\mathsf{PreProc}}}
+% \algo{S}{post}{pre}
+\newcommand{\algo}[3]{\{{#3}\}\!\Longleftarrow {#1}\:\{{#2}\}\:}
+% \semcor{pre}{S}{post}
+\newcommand{\semcor}[3]{\{{#1}\} {#2} \{{#3}\}}
+\newcommand{\satvc}[1]{\models {#1}}
+\newcommand{\wide}{\bigtriangledown}
+% \remx{X}{\ph}
+\newcommand{\remx}[2]{rm^{+}_{#1}(#2)}
+\newcommand{\remxm}[2]{rm^{-}_{#1}(#2)}
+\newcommand{\remxf}{rm^{+}}
+\newcommand{\remxmf}{rm^{-}}
+\newcommand{\ism}{m}
+\newcommand{\notm}{u}
+\newcommand{\tv}{\gamma}
+
+%%% Flow judgements
+
+\newcommand{\flowsym}{\leadsto}
+\newcommand{\flowone}[3]{{#2}\stackrel{#1}{\flowsym}{#3}}
+\newcommand{\flowtwo}[5]{(\flowone{#1}{#2}{#4},\flowone{#1}{#3}{#5})}
+\newcommand{\flowjudge}[2]{{#1}\,\flowsym\,{#2}}
+\newcommand{\flowjudgev}{\kappa}
+\newcommand{\modelsr}[2]{{#1} \models {#2}}
+
+\newcommand{\logimpconsym}{\vartriangleright_\flowjudgev}
+\newcommand{\logimpconc}[2]{{#1}\logimpconsym {#2}}
+
+\newcommand{\derives}[2]{\mbox{\sf derives}({#1},{#2})}
+\newcommand{\dconv}{{\cal D}}
+\newcommand{\invars}{\mbox{IN}}
+\newcommand{\outvars}{\mbox{OUT}}
+\newcommand{\soutvars}{\mbox{{\scriptsize OUT}}}
+\newcommand{\ssoutvars}{\mbox{{\tiny OUT}}}
+
+\newcommand{\Lo}{\mathsf{Low}}
+\newcommand{\Hi}{\mathsf{High}}
+\newcommand{\hoaremod}[3]{\ensuremath{\{#1\} \; #2\; \{#3\}}}
+\newcommand{\hoaretrip}[3]{\ensuremath{\{#1\} \; #2\; \{#3\}}}
+
+\newcommand{\spc}[1]{\mbox{{\small \tt {#1}}}}
+\newcommand{\spcf}[1]{\mbox{{\scriptsize \tt {#1}}}}
+%%\newcommand{\spc}[1]{\mbox{\small \sf {#1}}}
+\newcommand{\inonedat}{\spc{IN\_1\_DAT}}
+\newcommand{\outzerdat}{\spc{OUT\_0\_DAT}}
+\newcommand{\inonerdy}{\spc{IN\_1\_RDY}}
+\newcommand{\outzerrdy}{\spc{OUT\_0\_RDY}}
+\newcommand{\datone}{\spc{DAT\_1}}
+\newcommand{\sparkcode}[1]{\spc{#1}}
+
+\newcommand{\datazer}{\spc{DATA\_0}}
+\newcommand{\dataone}{\spc{DATA\_1}}
+
+\newcommand{\inonedatf}{\spcf{IN\_1\_DAT}}
+\newcommand{\outzerdatf}{\spcf{OUT\_0\_DAT}}
+\newcommand{\inonerdyf}{\spcf{IN\_1\_RDY}}
+\newcommand{\outzerrdyf}{\spcf{OUT\_0\_RDY}}
+\newcommand{\datonef}{\spcf{DAT\_1}}
+\newcommand{\datazerf}{\spcf{DATA\_0}}
+\newcommand{\dataonef}{\spcf{DATA\_1}}
+
+\newcommand{\TRUE}{\mathbf{true}}
+\newcommand{\FALSE}{\mathbf{false}}
+
+\newcommand{\syntacticequiv}[2]{{#1}\,\equiv\,{#2}}
+
+%%% Evidence
+\newcommand{\evd}{\eta}
+\newcommand{\Evd}{H} % mappings into \evd
+% \evidtyp{pre}{C}{post}
+% \newcommand{\evidtyp}[4]{\{{#1}\}\;{#2}\;\{{#3}\}\;[{#4}]} 
+\newcommand{\evidtyp}[3]{\{{#1}\}\;{#2}\;\{{#3}\}} 
+% \evidjudg{\evd}{pre}{C}{post}
+% \newcommand{\evidjudg}[5]{\vdash\,{#1}\,:\,\{{#2}\}\;{#3}\;\{{#4}\}\;[{#5}]} 
+\newcommand{\evidjudg}[4]{\vdash\,{#1}\,:\,\{{#2}\}\;{#3}\;\{{#4}\}} 
+% \corrjudg{pre}{C}{post}{X}
+% \newcommand{\corrjudg}[4]{\models\,\{{#1}\}\;{#2}\;\{{#3}\}\;[{#4}]} 
+\newcommand{\corrjudg}[3]{\models\,\{{#1}\}\;{#2}\;\{{#3}\}} 
+
+%\newcommand{\vht}{{\sf Valid Hoare Triple}}
+%\newcommand{\nem}{{\sf Nothing Else Modified}}
+%\newcommand{\bse}{{\sf Back-Sat-Exists}}
+
+%%  other kinds of evidence
+\newcommand{\levd}{\iota}
+\newcommand{\Levd}{I} % mappings into \levd
+% \levidjudg{\levd}{\phi}{\phi}
+\newcommand{\levidjudg}[3]{\vdash\,{#1}\,:\,{#2}\;\Rightarrow_1\;{#3}}
+\newcommand{\tevd}{\tau}
+% \tevidjudg{\tevd}{\Tht}{\Tht}
+\newcommand{\tevidjudg}[3]{\vdash\,{#1}\,:\,{#2}\;\Rightarrow_2\;{#3}}
+\newcommand{\mevd}{\mu}
+% \mevidjudg{\mevd}{C}{X}
+\newcommand{\mevidjudg}[3]{\vdash\,{#1}\,:\,{#2}\;\mathsf{mods\_only}\;{#3}}
+\newcommand{\nevd}{\nu}
+% \nevidjudg{\nevd}{\phi}{C}{\phi}
+\newcommand{\nevidjudg}[4]{\vdash\,{#1}\,:\,{#2}\;\stackrel{{#3}}{\Leftarrow}\;{#4}}
+\newcommand{\aevd}{\alpha}
+% \nevidjudg{\aevd}{A}{A}
+\newcommand{\aevidjudg}[3]{\vdash\,{#1}\,:\,{#2}\;\equiv\;{#3}}
+
+%% syntax-directed evidence
+% \skipe{post}
+\newcommand{\skipe}[1]{\mathsf{SkipE}({#1})}
+% \assigne{post}{x}{A}
+\newcommand{\assigne}[3]{\mathsf{AssignE}({#1},{#2},{#3})}
+% \aassigne{post}{h}{H}
+\newcommand{\aassigne}[3]{\mathsf{HAssignE}({#1},{#2},{#3})}
+% \asserte{post}{B}
+\newcommand{\asserte}[2]{\mathsf{AssertE}({#1},{#2})}
+% \seqe{\evd}{\evd}
+\newcommand{\seqe}[2]{\mathsf{SeqE}({#1},{#2})}
+% \conde{\evd}{\evd}{\nevd}{B}
+\newcommand{\conde}[4]{\mathsf{CondE}({#1},{#2},{#3},{#4})}
+% \condef
+\newcommand{\condef}{\mathsf{CondE}}
+%%% \condnme{\evd}{\evd}{B}
+%%\newcommand{\condnme}[3]{\mathsf{CondNotModE}({#1},{#2},{#3})}
+% \whilee{pre}{post}{\mevd}{Evd}{Levd}{d}{B}
+\newcommand{\whilee}[7]{\mathsf{WhileE}({#1},{#2},{#3},{#4},{#5},{#6},{#7})}
+% \foraswhilee{\evd}{\mevd}
+\newcommand{\foraswhilee}[2]{\mathsf{ForAsWhileE}({#1},{#2})}
+% \foraswhileef
+\newcommand{\foraswhileef}{\mathsf{ForAsWhileE}}
+% \forpolye{...}
+\newcommand{\forpolye}[1]{\mathsf{ForPolyE}({#1})}
+% \forpolyef
+\newcommand{\forpolyef}{\mathsf{ForPolyE}}
+
+%% non-syntax-directed evidence
+% \preimpe{\tevd}{\evd}
+\newcommand{\preimpe}[2]{\mathsf{PreImplyE}({#1},{#2})}
+% \pstimpe{\evd}{\tevd}
+\newcommand{\pstimpe}[2]{\mathsf{PostImplyE}({#1},{#2})}
+% \preequive{\tevd}{\tevd}{\evd}
+\newcommand{\preequive}[3]{\mathsf{PreEquivE}({#1},{#2},{#3})}
+% \unione{\evd}{\evd}
+\newcommand{\unione}[2]{\mathsf{UnionE}({#1},{#2})}
+% \unionee{\evd}
+\newcommand{\unionee}[1]{\mathsf{UnionE}({#1})}
+% \unionef
+\newcommand{\unionef}{\mathsf{UnionE}}
+% \notmode{\mevd}{\Tht}
+\newcommand{\notmode}[2]{\mathsf{NotModE}({#1},{#2})}
+% \consnme{\mevd}{\nevd}{E}
+\newcommand{\consnme}[3]{\mathsf{ConseqNotModE}({#1},{#2},{#3})}
+% \consnmef
+\newcommand{\consnmef}{\mathsf{ConseqNotModE}}
+% \addante{\evd}{\nevd}
+\newcommand{\addante}[2]{\mathsf{AntecStrongerE}({#1},{#2})}
+% \pluge{\evd}{\mevd}{A}
+\newcommand{\pluge}[3]{\mathsf{InstantiateE}({#1},{#2},{#3})}
+
+%% auxiliary evidence
+%%  for not-modification
+% \checkme{C}{X} 
+\newcommand{\checkme}[2]{\mathsf{CheckNM}({#1},{#2})}
+% \skipme
+\newcommand{\skipme}{\mathsf{SkipNM}}
+% \assignme{x}{A}
+\newcommand{\assignme}[2]{\mathsf{AssignNM}({#1},{#2})}
+% \aassignme{h}{H}
+\newcommand{\aassignme}[2]{\mathsf{HAssignNM}({#1},{#2})}
+% \assertme{B}
+\newcommand{\assertme}[1]{\mathsf{AssertNM}({#1})}
+% \seqme{\mevd}{\mevd}
+\newcommand{\seqme}[2]{\mathsf{SeqNM}({#1},{#2})}
+% \condme{\mevd}{\mevd}{B}
+\newcommand{\condme}[3]{\mathsf{CondNM}({#1},{#2},{#3})}
+% \whileme{\mevd}{B}
+\newcommand{\whileme}[2]{\mathsf{WhileNM}({#1},{#2})}
+% \forme{\mevd}{q}{m}
+\newcommand{\forme}[3]{\mathsf{ForNM}({#1},{#2},{#3})}
+%%  for logical implication
+% \checkle{\phi}{\phi} 
+\newcommand{\checkle}[2]{\mathsf{CheckLI}({#1},{#2})}
+% \orelimle{\levd}{\levd}{\levd}
+\newcommand{\orelimle}[3]{\mathsf{OrElimLI}({#1},{#2},{#3})}
+%% for 2-implication
+% \binopte{E}{\phi} 
+\newcommand{\binopte}[2]{\mathsf{BinOp2I}({#1},{#2})}
+% \contravarte{\levd}{E} 
+\newcommand{\contravarte}[2]{\mathsf{Contravar2I}({#1},{#2})}
+% \supsette{\Tht}{\Tht}
+\newcommand{\supsette}[2]{\mathsf{Superset2I}({#1},{#2})}
+% \unionte{\tevd}{\tevd} 
+\newcommand{\unionte}[2]{\mathsf{Union2I}({#1},{#2})}
+% \transte{\tevd}{\tevd} 
+\newcommand{\transte}[2]{\mathsf{Trans2I}({#1},{#2})}
+% \vacuouste{\Tht}
+\newcommand{\vacuouste}[1]{\mathsf{Vacuous2I}({#1})}
+% \constte{E}{\phi}
+\newcommand{\constte}[2]{\mathsf{Const2I}({#1},{#2})}
+% \rhsequivte{\aevd}{\phi}
+\newcommand{\rhsequivte}[2]{\mathsf{RhsEquiv2I}({#1},{#2})}
+% \caseste{\aevd}{\phi}
+\newcommand{\caseste}[2]{\mathsf{Cases2I}({#1},{#2})}
+%% for NPC:
+% \skipne{\phi}
+\newcommand{\skipne}[1]{\mathsf{SkipNPC}({#1})}
+% \assignne{x}{A}{\phi} 
+\newcommand{\assignne}[3]{\mathsf{AssignNPC}({#1},{#2},{#3})}
+% \aassignne{h}{H}{\phi} 
+\newcommand{\aassignne}[3]{\mathsf{HAssignNPC}({#1},{#2},{#3})}
+% \assertne{B}{\phi} 
+\newcommand{\assertne}[2]{\mathsf{AssertNPC}({#1},{#2})}
+% \seqne{\nevd}{\nevd} 
+\newcommand{\seqne}[2]{\mathsf{SeqNPC}({#1},{#2})}
+% \condne{\nevd}{\nevd}{B} 
+\newcommand{\condne}[3]{\mathsf{CondNPC}({#1},{#2},{#3})}
+% \whilene{\nevd}{\levd}{\levd} 
+\newcommand{\whilene}[3]{\mathsf{WhileNPC}({#1},{#2},{#3})}
+% \forne{\nevd} 
+\newcommand{\forne}[1]{\mathsf{ForNPC}({#1})}
+% \notmodne{\mevid}{\phi}
+\newcommand{\notmodne}[2]{\mathsf{NotModNPC}({#1},{#2})}
+%%  for arithmetic equivalence
+% \checkae{A}{A} 
+\newcommand{\checkae}[2]{\mathsf{CheckAE}({#1},{#2})}
+
+%% Algorithms
+\newcommand{\lqegenf}{\mathbf{EquivEvdGen}}
+% \lqegen{\phi}
+\newcommand{\lqegen}[1]{\mathbf{EquivEvdGen}({#1})}
+\newcommand{\segenf}{\mathbf{SimpEvdGen}}
+% \segen{\Tht}
+\newcommand{\segen}[1]{\mathbf{SimpEvdGen}({#1})}
+\newcommand{\tegenf}{\mathbf{NormEvdGen}}
+% \tegen{\Tht}{X}
+\newcommand{\tegen}[2]{\mathbf{NormEvdGen}_{{#2}}({#1})}
+\newcommand{\tegenaf}{\mathbf{NormEvdGen1}}
+% \tegena{\Tht}{X}
+\newcommand{\tegena}[2]{\mathbf{NormEvdGen1}_{{#2}}({#1})}
+\newcommand{\tegenbf}{\mathbf{NormEvdGen2}}
+% \tegenb{\Tht}
+\newcommand{\tegenb}[1]{\mathbf{NormEvdGen2}({#1})}
+\newcommand{\megenf}{\mathbf{ModEvdGen}}
+% \megen{C}
+\newcommand{\megen}[1]{\mathbf{ModEvdGen}({#1})}
+\newcommand{\negenf}{\mathbf{NpcEvdGen}}
+% \negen{C}{\phi}
+\newcommand{\negen}[2]{\mathbf{NpcEvdGen}({#1},{#2})}
+\newcommand{\egenf}{\mathbf{EvdGen}}
+% \egen{C}{\Tht}
+\newcommand{\egen}[2]{\mathbf{EvdGen}({#1},{#2})}
+\newcommand{\findtef}{\mathbf{Find2IEvd}}
+% \findte{\Tht}
+\newcommand{\findte}[1]{\mathbf{Find2IEvd}({#1})}
+\newcommand{\findteaf}{\mathbf{Find2IEvd1}}
+% \findtea{\Tht}
+\newcommand{\findtea}[1]{\mathbf{Find2IEvd1}({#1})}
+\newcommand{\wegenf}{\mathbf{WhileEvdGen}}
+\newcommand{\whileincf}{\mathbf{Inc}}
+% \whileinc{w}{\phi}
+\newcommand{\whileinc}[2]{\mathbf{Inc}({#1}\mapsto{#2})}
+\newcommand{\purifyf}{\mathbf{MkPure}}
+% \purify{E}
+\newcommand{\purify}[1]{\mathbf{MkPure}({#1})}
+\newcommand{\properfyf}{\mathbf{MkProper}}
+% \properfy{E}
+\newcommand{\properfy}[1]{\mathbf{MkProper}({#1})}
+\newcommand{\properfyaf}{\mathbf{MkProper2}}
+% \properfya{E}
+\newcommand{\properfya}[1]{\mathbf{MkProper2}({#1})}

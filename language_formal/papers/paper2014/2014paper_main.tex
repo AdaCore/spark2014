@@ -1,0 +1,96 @@
+ \documentclass{llncs} 
+%\usepackage{latex8}
+\usepackage{times}
+\usepackage{listings}
+\usepackage{amssymb,latexsym}
+\usepackage{times}
+\usepackage{graphicx}
+\usepackage{colortbl}
+\usepackage{color}
+\usepackage{multicol}
+\usepackage{multirow}
+%\usepackage{setspace} % can be used to controll space between lines
+  
+%package for coq language in listings
+\usepackage{lstlangcoq}
+
+\usepackage{url}
+
+% remove to turn off page numbering
+\pagestyle{plain}
+
+\input{definitions}
+
+% \def\sharedaffiliation{%
+% \end{tabular}
+% \begin{tabular}{c}}
+
+%% space between bottom of "top" floats and text
+\addtolength{\textfloatsep}{-.5cm}
+
+%% allow more text on float pages
+\renewcommand{\topfraction}{.99}
+\renewcommand{\textfraction}{.001}
+% \renewcommand{\floatpagefraction}{.99}
+
+%\textheight=7.7in         % could be \textheight=9.2in
+%\topmargin=-.2in
+%\textheight=8in 
+
+%\topmargin=-.2in
+%\addtolength{\textheight}{.52in}
+
+
+%% define conditional for tech report
+
+\newif\iftechreport
+\techreportfalse
+
+%------------------------------------------------------------------------- 
+% take the % away on next line to produce the final camera-ready version 
+%\pagestyle{plain}
+
+%------------------------------------------------------------------------- 
+\begin{document}
+
+\title{Semantical Formalization, Run-Time Checks Proof and
+Verification for SPARK 2014}
+
+% \numberofauthors{3}
+
+\author{Authors}
+%\author{P. Courtieu\inst{1}, V. APonte\inst{1}, T. Crolard\inst{1}, 
+%Zhi Zhang\inst{2}, Robby\inst{2},\\ 
+% J. Belt\inst{2}, J. Hatcliff\inst{2}, J. Guitton\inst{3}, T. Jennings\inst{4}}
+
+\institute{
+    Kansas State University
+    \and
+    CNAM
+    \and 
+    AdaCore
+}
+    
+\maketitle
+
+%\thispagestyle{empty}
+
+% \setlength{\parskip}{8pt plus 1pt minus 1pt}
+
+\input{abstract}
+\input{introduction}
+\input{overview}
+\input{spark-semantics}
+\input{run-time-checks}
+\input{evaluation}
+\input{related-work}
+\input{conclusion}
+
+\bibliographystyle{splncs}
+% \bibliographystyle{nature}
+% \bibliographystyle{abbrv}
+
+
+\end{document}
+
+
