@@ -98,17 +98,11 @@ is
                      (for some T in Train_Id range 1 .. Cur_Num_Trains =>
                         Is_Previous_Track (Trains (T), J))
                    then Track_Signals (J) = Orange)));
-            pragma Assert
-              ((if Track_Signals'Loop_Entry (1) = Red then Track_Signals (1) = Red)
-                   and then
-               (if Track_Signals'Loop_Entry (1) = Orange and then
-                  (for some T in Train_Id range 1 .. Cur_Num_Trains =>
-                     Is_Previous_Track (Trains (T), 1))
-                then Track_Signals (1) = Orange));
          end loop;
 
          pragma Assume (No_Track_Precedes_Itself);
          pragma Assert (Occupied_Tracks_On_Red);
+         --  Inline definition of Previous_Tracks_On_Orange_Or_Red
          pragma Assert
            (for all Train in Train_Id range 1 .. Cur_Num_Trains =>
               (for all Id in Prev_Id =>
@@ -119,7 +113,6 @@ is
                  (if Get_Other_Previous_Track (Trains (Train), Id) /= No_Track_Id then
                     Track_Signals (Get_Other_Previous_Track (Trains (Train), Id)) in
                       Orange | Red)));
-
          pragma Assert (Previous_Tracks_On_Orange_Or_Red);
          pragma Assert (Safe_Signaling);
 
