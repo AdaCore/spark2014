@@ -646,10 +646,15 @@ package body Flow_Error_Messages is
 
       function Warning_Disabled_For_Entity return Boolean is
 
-         function Is_Entity_And_Has_Warnings_Off (N : Node_Or_Entity_Id)
-                                                  return Boolean
-         is ((Is_Entity_Name (N) and then Has_Warnings_Off (Entity (N)))
-             or else (Nkind (N) in N_Entity and then Has_Warnings_Off (N)));
+         function Is_Entity_And_Has_Warnings_Off
+           (N : Node_Or_Entity_Id) return Boolean
+         is
+           ((Nkind (N) in N_Has_Entity
+               and then Present (Entity (N))
+               and then Has_Warnings_Off (Entity (N)))
+               or else
+            (Nkind (N) in N_Entity
+               and then Has_Warnings_Off (N)));
          --  Returns True if N is an entity and Has_Warnings_Off (N)
 
       begin
