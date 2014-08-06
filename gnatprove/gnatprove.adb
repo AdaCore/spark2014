@@ -521,7 +521,7 @@ procedure Gnatprove is
       ------------------------------
 
       procedure Generate_Altergo_Section is
-         Altergo_Command : constant String := "alt-ergo-gp -max-split 5 %f";
+         Altergo_Command : constant String := "alt-ergo -max-split 5 %f";
       begin
          Start_Section ("prover");
          if Steps /= 0 then
