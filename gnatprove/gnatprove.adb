@@ -555,7 +555,7 @@ procedure Gnatprove is
          Put_Keyval ("driver",
                      Ada.Directories.Compose
                        (Why3_Drivers_Dir, "cvc4_gnatprove.drv"));
-         Put_Keyval ("name", "cvc4");
+         Put_Keyval ("name", "CVC4");
          Put_Keyval ("shortcut", "cvc4");
          Put_Keyval ("version", "1.3");
       end Generate_CVC4_Section;
